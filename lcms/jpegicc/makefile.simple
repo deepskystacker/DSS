@@ -1,0 +1,24 @@
+SHELL = /bin/sh
+
+CFLAGS = -g -O4 -fomit-frame-pointer -Wall # -I../include -I/usr/local/include -I/usr/include 
+BASEDIR = $(DESTDIR)/usr
+BINDIR  = $(BASEDIR)/bin
+
+all:	jpegicc
+
+jpegicc: jpegicc.o iccjpeg.o getopt.o
+	$(CC) $(CFLAGS) jpegicc.o iccjpeg.o getopt.o ../src/liblcms.a -o $@ -lm -ljpeg 
+
+iccjpeg.o: iccjpeg.c
+jpegicc.o: jpegicc.c
+getopt.o: getopt.c
+
+install utils:: jpegicc
+	-cp jpegicc  $(BINDIR)
+	-cp jpegicc.exe $(BINDIR)  # Cygwin
+
+	
+clean:
+	-rm jpegicc.o getopt.o iccjpeg.o jpegicc jpegicc.exe
+
+	

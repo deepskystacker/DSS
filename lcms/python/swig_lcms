@@ -1,0 +1,2 @@
+rm lcms_wrap.cxx lcms.py
+swig -I../include -python -shadow -c++ -o lcms_wrap.cxx lcms.i

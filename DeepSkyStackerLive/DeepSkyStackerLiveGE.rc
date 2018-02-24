@@ -1,0 +1,649 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE 7, 1
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+
+
+
+IDD_DEEPSKYSTACKERLIVE DIALOGEX 0, 0, 602, 458
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | 
+    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_CLIENTEDGE | WS_EX_CONTROLPARENT | WS_EX_APPWINDOW
+CAPTION "--untranslated--"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    LTEXT           "--untranslated--",IDC_STATIC,7,7,588,104,NOT WS_VISIBLE | 
+                    WS_BORDER
+END
+
+IDD_MAINBOARD DIALOGEX 0, 0, 466, 87
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CTEXT           "--untranslated--",IDC_STACKEDIMAGE,3,71,76,16,NOT WS_VISIBLE | 
+                    WS_BORDER
+    CTEXT           "--untranslated--",IDC_LASTIMAGE,79,71,76,16,NOT WS_VISIBLE | 
+                    WS_BORDER
+    CTEXT           "--untranslated--",IDC_GRAPHS,155,71,76,16,NOT WS_VISIBLE | 
+                    WS_BORDER
+    LTEXT           "--untranslated--",IDC_MONITORINGRECT,3,4,456,60,NOT WS_VISIBLE | 
+                    WS_BORDER
+    CTEXT           "--untranslated--",IDC_IMAGELIST,231,71,76,16,NOT WS_VISIBLE | 
+                    WS_BORDER
+    CTEXT           "--untranslated--",IDC_LOGLIST,307,71,76,16,NOT WS_VISIBLE | 
+                    WS_BORDER
+    LTEXT           "--untranslated--",IDC_MONITOREDFOLDER,56,7,370,8,SS_PATHELLIPSIS
+    PUSHBUTTON      "--untranslated--",IDC_MONITOR,21,22,35,32,BS_MULTILINE | 
+                    NOT WS_VISIBLE
+    PUSHBUTTON      "--untranslated--",IDC_STACK,72,22,35,32,BS_MULTILINE | 
+                    NOT WS_VISIBLE
+    PUSHBUTTON      "--untranslated--",IDC_STOP,123,22,35,32,BS_MULTILINE | 
+                    NOT WS_VISIBLE
+    CTEXT           "--untranslated--",IDC_WARNINGS,383,71,76,16,NOT WS_VISIBLE | 
+                    WS_BORDER
+    LTEXT           "--untranslated--",IDC_PROGRESS,166,24,286,22,NOT WS_VISIBLE | 
+                    WS_BORDER
+    LTEXT           "--untranslated--",IDC_STATS,168,54,284,8,NOT WS_VISIBLE
+END
+
+IDD_LOG DIALOGEX 0, 0, 336, 166
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "--untranslated--",IDC_LOG,"RichEdit20A",ES_MULTILINE | 
+                    ES_AUTOHSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | 
+                    WS_HSCROLL | WS_TABSTOP,0,0,335,166
+END
+
+IDD_IMAGEVIEW DIALOGEX 0, 0, 335, 166
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "--untranslated--",IDC_FILENAME,1,4,242,19,SS_ENDELLIPSIS
+    LTEXT           "--untranslated--",IDC_PICTURE,0,29,335,137,WS_BORDER
+    CONTROL         "--untranslated--",IDC_GAMMA,"MFCGradientCtrl",WS_TABSTOP,
+                    246,2,87,26
+END
+
+IDD_IMAGELIST DIALOGEX 0, 0, 336, 166
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "--untranslated--",IDC_IMAGELIST,"SysListView32",LVS_REPORT | 
+                    LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,0,0,335,166
+END
+
+IDD_GRAPHS DIALOGEX 0, 0, 336, 166
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "--untranslated--",IDC_GRAPH,"ChartCtrl",WS_TABSTOP,1,16,
+                    335,150
+    CONTROL         "--untranslated--",IDC_SCORE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,2,3,34,10
+    CONTROL         "--untranslated--",IDC_FWHM,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,40,3,37,10
+    CONTROL         "--untranslated--",IDC_STARS,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,81,3,38,10
+    CONTROL         "--untranslated--",IDC_OFFSET,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,123,3,35,10
+    CONTROL         "--untranslated--",IDC_ANGLE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,162,3,34,10
+END
+
+IDD_SETTINGS DIALOGEX 0, 0, 393, 244
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "--untranslated--",IDC_STACKING,7,8,306,125
+    CONTROL         "--untranslated--",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,21,88,10
+    LTEXT           "--untranslated--",IDC_STATIC,16,38,78,8
+    CONTROL         "--untranslated--",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,49,16,10
+    CONTROL         "--untranslated--",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,43,49,74,10
+    EDITTEXT        IDC_SCORE,118,50,44,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_RIGHT
+    CONTROL         "--untranslated--",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,66,16,10
+    CONTROL         "--untranslated--",IDC_DONTSTACK_STARS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,43,66,90,10
+    EDITTEXT        IDC_STARCOUNT,134,66,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
+                    NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "--untranslated--",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,83,16,10
+    CONTROL         "--untranslated--",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,43,83,94,10
+    EDITTEXT        IDC_FWHM,134,83,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_RIGHT
+    LTEXT           "--untranslated--",IDC_STATIC,165,84,19,8
+    CONTROL         "--untranslated--",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,100,16,10
+    CONTROL         "--untranslated--",IDC_DONTSTACK_OFFSET,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,43,100,100,10
+    EDITTEXT        IDC_OFFSET,140,100,31,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_RIGHT
+    LTEXT           "--untranslated--",IDC_STATIC,174,101,19,8
+    CONTROL         "--untranslated--",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,118,16,10
+    CONTROL         "--untranslated--",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,43,118,86,10
+    EDITTEXT        IDC_ANGLE,132,118,25,9,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_RIGHT
+    LTEXT           "--untranslated--",IDC_STATIC,160,119,8,8
+    GROUPBOX        "--untranslated--",IDC_WARNINGS,7,140,306,41
+    CONTROL         "--untranslated--",IDC_WARN_SOUND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,153,36,10
+    CONTROL         "--untranslated--",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,168,64,10
+    CONTROL         "--untranslated--",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,88,153,53,10
+    CONTROL         "--untranslated--",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,88,168,80,10
+    GROUPBOX        "--untranslated--",IDC_OPTIONS,7,188,306,47
+    CONTROL         "--untranslated--",IDC_SAVESTACKEDIMAGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,201,114,10
+    EDITTEXT        IDC_IMAGECOUNT,130,201,22,10,ES_RIGHT | ES_AUTOHSCROLL | 
+                    ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "--untranslated--",IDC_STATIC,156,202,28,8
+    LTEXT           "--untranslated--",IDC_STATIC,27,218,48,8
+    LTEXT           "--untranslated--",IDC_STACKEDOUTPUTFOLDER,78,218,226,8
+    PUSHBUTTON      "--untranslated--",IDC_APPLYCHANGES,319,10,69,14
+    PUSHBUTTON      "--untranslated--",IDC_CANCELCHANGES,319,30,69,14
+    EDITTEXT        IDC_MINIMAGES,106,21,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
+                    NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "--untranslated--",IDC_STATIC,136,22,66,8
+    LTEXT           "--untranslated--",IDC_WARNINGFILEFOLDER,169,168,136,8
+    LTEXT           "--untranslated--",IDC_EMAIL,144,154,160,8
+    PUSHBUTTON      "--untranslated--",IDC_RESETEMAILCOUNT,319,151,69,14,NOT WS_VISIBLE
+END
+
+IDD_RESTARTMONITORING DIALOGEX 0, 0, 217, 137
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "--untranslated--"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "--untranslated--",IDC_STATIC,7,7,106,8
+    CONTROL         "--untranslated--",IDC_CREATENEWSTACKEDIMAGE,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,23,24,129,10
+    LTEXT           "--untranslated--",IDC_STATIC,35,34,8,8
+    CONTROL         "--untranslated--",IDC_STARTFROMCURRENTSTACKEDIMAGE,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,44,134,10
+    CONTROL         "--untranslated--",IDC_DROPPENDINGIMAGES,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,23,69,104,10
+    LTEXT           "--untranslated--",IDC_STATIC,34,81,8,8
+    CONTROL         "--untranslated--",IDC_USEPENDINGIMAGES,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,23,91,133,10
+    DEFPUSHBUTTON   "--untranslated--",IDOK,101,116,50,14
+    PUSHBUTTON      "--untranslated--",IDCANCEL,160,116,50,14
+END
+
+IDD_EMAILSETTINGS DIALOGEX 0, 0, 255, 142
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "--untranslated--"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "--untranslated--",IDC_STATIC,7,7,181,68
+    LTEXT           "--untranslated--",IDC_STATIC,36,21,28,8
+    EDITTEXT        IDC_SENDTO,70,18,110,14,ES_AUTOHSCROLL
+    LTEXT           "--untranslated--",IDC_STATIC,39,39,25,8
+    EDITTEXT        IDC_OBJECT,70,36,110,14,ES_AUTOHSCROLL
+    CONTROL         "--untranslated--",IDC_SENDONCE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,11,58,141,10
+    GROUPBOX        "--untranslated--",IDC_STATIC,7,80,181,56
+    LTEXT           "--untranslated--",IDC_STATIC,20,94,44,8
+    EDITTEXT        IDC_SMTPSERVER,70,91,110,14,ES_AUTOHSCROLL
+    LTEXT           "--untranslated--",IDC_STATIC,11,116,53,8
+    EDITTEXT        IDC_ACCOUNT,70,113,110,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "--untranslated--",IDOK,198,7,50,14
+    PUSHBUTTON      "--untranslated--",IDCANCEL,198,24,50,14
+    PUSHBUTTON      "--untranslated--",IDC_TEST,198,121,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_DEEPSKYSTACKERLIVE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 595
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 451
+    END
+
+    IDD_MAINBOARD, DIALOG
+    BEGIN
+        RIGHTMARGIN, 464
+        VERTGUIDE, 6
+        VERTGUIDE, 21
+        VERTGUIDE, 228
+        VERTGUIDE, 234
+        VERTGUIDE, 452
+        VERTGUIDE, 459
+        BOTTOMMARGIN, 78
+        HORZGUIDE, 18
+        HORZGUIDE, 64
+    END
+
+    IDD_LOG, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 104
+    END
+
+    IDD_SETTINGS, DIALOG
+    BEGIN
+        RIGHTMARGIN, 388
+        VERTGUIDE, 7
+        VERTGUIDE, 16
+        VERTGUIDE, 21
+        VERTGUIDE, 43
+        VERTGUIDE, 313
+        VERTGUIDE, 319
+        VERTGUIDE, 388
+        BOTTOMMARGIN, 240
+        HORZGUIDE, 8
+    END
+
+    IDD_RESTARTMONITORING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 210
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 130
+    END
+
+    IDD_EMAILSETTINGS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 248
+        VERTGUIDE, 11
+        VERTGUIDE, 64
+        VERTGUIDE, 70
+        VERTGUIDE, 180
+        VERTGUIDE, 188
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 135
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\DeepSkyStackerLive.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_HDRUP               BITMAP                  "E:\\Astro\\Projects\\Tools\\hdrup.bmp"
+IDB_HDRDOWN             BITMAP                  "E:\\Astro\\Projects\\Tools\\hdrdown.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_SELECTMONITOREDFOLDER "--untranslated--"
+    IDS_LOG_NEWFILESFOUND   "--untranslated--"
+    IDS_LOG_NEWFILE         "--untranslated--"
+    IDS_LOG_STARTMONITORING "--untranslated--"
+    IDS_LOG_PAUSEMONITORING "--untranslated--"
+    IDS_LOG_STOPMONITORING  "--untranslated--"
+    IDS_LOG_ERRORSTARTMONITORING 
+                            "--untranslated--"
+    IDS_NOIMAGELOADED       "--untranslated--"
+    IDS_NOSTACKEDIMAGE      "--untranslated--"
+    IDS_LOG_REGISTERRESULTS "--untranslated--"
+    IDS_LOG_STARTSTACKING   "--untranslated--"
+    IDS_LOG_STOPSTACKING    "--untranslated--"
+    IDS_LOG_STARTING        "--untranslated--"
+    IDS_LOG_STARTING_1      "--untranslated--"
+    IDS_LOG_STARTING_2      "--untranslated--"
+    IDS_LOG_STARTING_3      "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RECAP_AVERAGE       "--untranslated--"
+    IDS_RECAP_MEDIAN        "--untranslated--"
+    IDS_RECAP_MAXIMUM       "--untranslated--"
+    IDS_RECAP_KAPPASIGMA    "--untranslated--"
+    IDS_RECAP_AUTOADAPTIVE  "--untranslated--"
+    IDS_RECAP_ENTROPYAVERAGE "--untranslated--"
+    IDS_RECAP_MEDIANSIGMACLIP 
+                            "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_EXPOSURE0           "--untranslated--"
+    IDS_EXPOSURE1           "--untranslated--"
+    IDS_EXPOSURE2           "--untranslated--"
+    IDS_EXPOSURE3           "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RECAP_MEGABYTES     "--untranslated--"
+    IDS_RECAP_KILOBYTES     "--untranslated--"
+    IDS_RECAP_GIGABYTES     "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_REGISTERING         "--untranslated--"
+    IDS_REGISTERINGPICTURE  "--untranslated--"
+    IDS_REGISTERINGNAME     "--untranslated--"
+    IDS_REGISTERINGNAMEPLUSTARS "--untranslated--"
+    IDS_COMPUTINGLUMINANCE  "--untranslated--"
+    IDS_LOADRGBPICTURE      "--untranslated--"
+    IDS_LOADGRAYPICTURE     "--untranslated--"
+    IDS_LOADRGBDARK         "--untranslated--"
+    IDS_LOADGRAYDARK        "--untranslated--"
+    IDS_ADDRGBDARK          "--untranslated--"
+    IDS_ADDGRAYDARK         "--untranslated--"
+    IDS_LOADRGBOFFSET       "--untranslated--"
+    IDS_LOADGRAYOFFSET      "--untranslated--"
+    IDS_ADDRGBOFFSET        "--untranslated--"
+    IDS_ADDGRAYOFFSET       "--untranslated--"
+    IDS_COMPUTINGOFFSETS    "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_DETECTINGHOTPIXELS1 "--untranslated--"
+    IDS_DETECTINGHOTPIXELS2 "--untranslated--"
+    IDS_COMPUTINGFLATCALIBRATION "--untranslated--"
+    IDS_APPLYINGFLATCALIBRATION "--untranslated--"
+    IDS_AHDDEMOSAICING      "--untranslated--"
+    IDS_PROCESSINGIMAGE     "--untranslated--"
+    IDS_APPLYINGCOSMETIC_HOT "--untranslated--"
+    IDS_APPLYINGCOSMETIC_COLD "--untranslated--"
+    IDS_CREATINGMEDIANIMAGE "--untranslated--"
+    IDS_OPTIMIZINGDARKMATCHING "--untranslated--"
+    IDS_LOADRGBDARKFLAT     "--untranslated--"
+    IDS_LOADGRAYDARKFLAT    "--untranslated--"
+    IDS_COMPUTINGMEDIANDARKFLAT "--untranslated--"
+    IDS_MEDIANDARKFLATINFO  "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_LOADGRAYFITS        "--untranslated--"
+    IDS_SAVINGFITS          "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_LOADRGBFLAT         "--untranslated--"
+    IDS_LOADGRAYFLAT        "--untranslated--"
+    IDS_ADDRGBFLAT          "--untranslated--"
+    IDS_ADDGRAYFLAT         "--untranslated--"
+    IDS_MEDIANDARKINFO      "--untranslated--"
+    IDS_MEDIANOFFSETINFO    "--untranslated--"
+    IDS_MEDIANFLATINFO      "--untranslated--"
+    IDS_SUBSTRACTINGOFFSET  "--untranslated--"
+    IDS_SUBSTRACTINGDARK    "--untranslated--"
+    IDS_APPLYINGFLAT        "--untranslated--"
+    IDS_NORMALIZINGMASTERFLAT "--untranslated--"
+    IDS_COMPUTINGMINLUMINANCE "--untranslated--"
+    IDS_COMPUTINGENTROPY    "--untranslated--"
+    IDS_COMPUTINGBACKGROUNDCALIBRATION 
+                            "--untranslated--"
+    IDS_COMPUTINGDARKOPTIMIZATIONFACTOR 
+                            "--untranslated--"
+    IDS_REMOVINGHOTPIXELS   "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COMPUTINGSTACKINGINFO "--untranslated--"
+    IDS_STACKING            "--untranslated--"
+    IDS_STACKING_PICTURE    "--untranslated--"
+    IDS_LOADRGBLIGHT        "--untranslated--"
+    IDS_LOADGRAYLIGHT       "--untranslated--"
+    IDS_STACKRGBLIGHT       "--untranslated--"
+    IDS_STACKGRAYLIGHT      "--untranslated--"
+    IDS_STACKING_COMPUTINGADJUSTMENT 
+                            "--untranslated--"
+    IDS_COMPUTINGADJUSTMENT "--untranslated--"
+    IDS_STACKING_APPLYINGADJUSTMENT 
+                            "--untranslated--"
+    IDS_STACKING_COMPUTEMAXADJUSTMENT "--untranslated--"
+    IDS_STACKING_APPLYADJUSTMENT "--untranslated--"
+    IDS_COMPUTINGMEDIANOFFSET "--untranslated--"
+    IDS_COMPUTINGMEDIANDARK "--untranslated--"
+    IDS_COMPUTINGMEDIANFLAT "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_LOADDSIMAGE         "--untranslated--"
+    IDS_LOADPICTURE         "--untranslated--"
+    IDS_SAVEDSIMAGE         "--untranslated--"
+    IDS_SAVINGDSIMAGE       "--untranslated--"
+    IDS_SAVINGTIFF          "--untranslated--"
+    IDS_SAVINGPICTURE       "--untranslated--"
+    IDS_SAVEWITHSETTINGSAPPLIED "--untranslated--"
+    IDS_SAVEWITHSETTINGSEMBEDDED "--untranslated--"
+    IDS_LOADRGBTIFF         "--untranslated--"
+    IDS_LOADGRAYTIFF        "--untranslated--"
+    IDS_DEEPSKYSTACKER      "--untranslated--"
+    IDS_SAVINGINTERMEDIATE  "--untranslated--"
+    IDS_SAVINGCALIBRATED    "--untranslated--"
+    IDS_LOADRGBFITS         "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COMPUTINGCOSMETICSTATS "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COMPUTINGMEDIANLIGHT "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_CREATEMASTERDARK    "--untranslated--"
+    IDS_CREATEMASTEROFFSET  "--untranslated--"
+    IDS_ADDOFFSET           "--untranslated--"
+    IDS_ADDDARK             "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SAVINGMASTEROFFSET  "--untranslated--"
+    IDS_SAVINGMASTERDARK    "--untranslated--"
+    IDS_CREATEMASTERFLAT    "--untranslated--"
+    IDS_ADDFLAT             "--untranslated--"
+    IDS_SAVINGMASTERFLAT    "--untranslated--"
+    IDS_CREATEMASTERDARKFLAT "--untranslated--"
+    IDS_ADDDARKFLAT         "--untranslated--"
+    IDS_SAVINGMASTERDARKFLAT "--untranslated--"
+    IDS_ADDOFFSET2          "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FORMAT_RGB          "--untranslated--"
+    IDS_FORMAT_GRAY         "--untranslated--"
+    IDS_YES                 "--untranslated--"
+    IDS_NO                  "--untranslated--"
+    IDS_EXPOSUREFORMAT_SUP  "--untranslated--"
+    IDS_EXPOSUREFORMAT_INF  "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_EXPOSURETIME1       "--untranslated--"
+    IDS_EXPOSURETIME2       "--untranslated--"
+    IDS_EXPOSURETIME3       "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COLUMN_PATH         "--untranslated--"
+    IDS_COLUMN_FILE         "--untranslated--"
+    IDS_COLUMN_TYPE         "--untranslated--"
+    IDS_COLUMN_SCORE        "--untranslated--"
+    IDS_COLUMN_DX           "--untranslated--"
+    IDS_COLUMN_DY           "--untranslated--"
+    IDS_COLUMN_ANGLE        "--untranslated--"
+    IDS_COLUMN_DATETIME     "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_COLUMN_SIZES        "--untranslated--"
+    IDS_COLUMN_CFA          "--untranslated--"
+    IDS_COLUMN_DEPTH        "--untranslated--"
+    IDS_COLUMN_INFOS        "--untranslated--"
+    IDS_COLUMN_ISO          "--untranslated--"
+    IDS_COLUMN_EXPOSURE     "--untranslated--"
+    IDS_COLUMN_STARS        "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_HAT_LINEAR          "--untranslated--"
+    IDS_HAT_CUBEROOT        "--untranslated--"
+    IDS_HAT_SQUAREROOT      "--untranslated--"
+    IDS_HAT_LOG             "--untranslated--"
+    IDS_HAT_LOGLOG          "--untranslated--"
+    IDS_HAT_LOGSQUAREROOT   "--untranslated--"
+    IDS_HAT_ASINH           "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_RECAP_WARNINGDISKSPACE 
+                            "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_WANTTOCONTINUE      "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_LOG_STARTING_4      "--untranslated--"
+    IDS_LOG_STARTING_5      "--untranslated--"
+    IDS_LOG_ERRORLOADINGFILE "--untranslated--"
+    IDS_STATUS_LOADED       "--untranslated--"
+    IDS_STATUS_REGISTERED   "--untranslated--"
+    IDS_STATUS_STACKDELAYED "--untranslated--"
+    IDS_STATUS_NOTSTACKABLE "--untranslated--"
+    IDS_STATUS_STACKED      "--untranslated--"
+    IDS_LOG_IMAGENOTSTACKABLE1 "--untranslated--"
+    IDS_NOSTACK_SCORE       "--untranslated--"
+    IDS_NOSTACK_STARS       "--untranslated--"
+    IDS_NOSTACK_FWHM        "--untranslated--"
+    IDS_NOSTACK_OFFSET      "--untranslated--"
+    IDS_NOSTACK_ANGLE       "--untranslated--"
+    IDS_NOSTACK_NOTRANSFORMATION 
+                            "--untranslated--"
+    IDS_LOG_WARNING         "--untranslated--"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SELECTWARNINGFOLDER "--untranslated--"
+    IDS_SELECTSTACKEDFOLDER "--untranslated--"
+    IDS_SAVINGSTACKEDIMAGE  "--untranslated--"
+    IDS_ERRORSENDINGEMAIL   "--untranslated--"
+    IDS_EMAILSENTOK         "--untranslated--"
+    IDS_CANTCHANGEMONITOREDFOLDER 
+                            "--untranslated--"
+    IDS_SAVESTACKEDIMAGE    "--untranslated--"
+    IDS_NOSTACKEDIMAGEFOLDER 
+                            "--untranslated--"
+    IDS_STACKEDIMAGEWILLBESAVED 
+                            "--untranslated--"
+    IDS_STACKEDIMAGESAVED   "--untranslated--"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+#include "version.rc"
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

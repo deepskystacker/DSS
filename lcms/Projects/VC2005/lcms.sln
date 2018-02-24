@@ -1,0 +1,97 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Python", "Python.vcproj", "{4B1BD179-E07A-4503-AFE7-80887FD2325B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Testbed", "Testbed.vcproj", "{9B33344A-BC90-46BC-8C5E-486486939058}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "icc2ps", "icc2ps.vcproj", "{F531CA31-233E-4BEB-AF11-75537F42AC5D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "icclink", "icclink.vcproj", "{ED798BF3-A6B6-461E-BA73-FB3DB6A405E7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "icctrans", "icctrans.vcproj", "{653AB287-0DF9-43C5-ADC8-42AD29A65E29}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpegicc", "jpegicc.vcproj", "{05DB644D-C93A-467A-8EA7-A7D126A5DBD7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lcms", "lcms.vcproj", "{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lcmsdll", "lcmsdll.vcproj", "{7F0F763A-BFD2-4AB1-B392-5F3DEAED6A0B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tifficc", "tifficc.vcproj", "{80BDA079-63BA-4B6A-ACA7-74EFB9FB5A17}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tiffdiff", "tiffdiff.vcproj", "{3867AE1B-D562-48AE-89AC-5905A18418E4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854} = {0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B1BD179-E07A-4503-AFE7-80887FD2325B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4B1BD179-E07A-4503-AFE7-80887FD2325B}.Debug|Win32.Build.0 = Debug|Win32
+		{4B1BD179-E07A-4503-AFE7-80887FD2325B}.Release|Win32.ActiveCfg = Release|Win32
+		{4B1BD179-E07A-4503-AFE7-80887FD2325B}.Release|Win32.Build.0 = Release|Win32
+		{9B33344A-BC90-46BC-8C5E-486486939058}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9B33344A-BC90-46BC-8C5E-486486939058}.Debug|Win32.Build.0 = Debug|Win32
+		{9B33344A-BC90-46BC-8C5E-486486939058}.Release|Win32.ActiveCfg = Release|Win32
+		{9B33344A-BC90-46BC-8C5E-486486939058}.Release|Win32.Build.0 = Release|Win32
+		{F531CA31-233E-4BEB-AF11-75537F42AC5D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F531CA31-233E-4BEB-AF11-75537F42AC5D}.Debug|Win32.Build.0 = Debug|Win32
+		{F531CA31-233E-4BEB-AF11-75537F42AC5D}.Release|Win32.ActiveCfg = Release|Win32
+		{F531CA31-233E-4BEB-AF11-75537F42AC5D}.Release|Win32.Build.0 = Release|Win32
+		{ED798BF3-A6B6-461E-BA73-FB3DB6A405E7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ED798BF3-A6B6-461E-BA73-FB3DB6A405E7}.Debug|Win32.Build.0 = Debug|Win32
+		{ED798BF3-A6B6-461E-BA73-FB3DB6A405E7}.Release|Win32.ActiveCfg = Release|Win32
+		{ED798BF3-A6B6-461E-BA73-FB3DB6A405E7}.Release|Win32.Build.0 = Release|Win32
+		{653AB287-0DF9-43C5-ADC8-42AD29A65E29}.Debug|Win32.ActiveCfg = Debug|Win32
+		{653AB287-0DF9-43C5-ADC8-42AD29A65E29}.Debug|Win32.Build.0 = Debug|Win32
+		{653AB287-0DF9-43C5-ADC8-42AD29A65E29}.Release|Win32.ActiveCfg = Release|Win32
+		{653AB287-0DF9-43C5-ADC8-42AD29A65E29}.Release|Win32.Build.0 = Release|Win32
+		{05DB644D-C93A-467A-8EA7-A7D126A5DBD7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{05DB644D-C93A-467A-8EA7-A7D126A5DBD7}.Debug|Win32.Build.0 = Debug|Win32
+		{05DB644D-C93A-467A-8EA7-A7D126A5DBD7}.Release|Win32.ActiveCfg = Release|Win32
+		{05DB644D-C93A-467A-8EA7-A7D126A5DBD7}.Release|Win32.Build.0 = Release|Win32
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}.Debug|Win32.Build.0 = Debug|Win32
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}.Release|Win32.ActiveCfg = Release|Win32
+		{0F1D6674-D802-4AC0-A4C3-14FCB8EE8854}.Release|Win32.Build.0 = Release|Win32
+		{7F0F763A-BFD2-4AB1-B392-5F3DEAED6A0B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7F0F763A-BFD2-4AB1-B392-5F3DEAED6A0B}.Debug|Win32.Build.0 = Debug|Win32
+		{7F0F763A-BFD2-4AB1-B392-5F3DEAED6A0B}.Release|Win32.ActiveCfg = Release|Win32
+		{7F0F763A-BFD2-4AB1-B392-5F3DEAED6A0B}.Release|Win32.Build.0 = Release|Win32
+		{80BDA079-63BA-4B6A-ACA7-74EFB9FB5A17}.Debug|Win32.ActiveCfg = Debug|Win32
+		{80BDA079-63BA-4B6A-ACA7-74EFB9FB5A17}.Debug|Win32.Build.0 = Debug|Win32
+		{80BDA079-63BA-4B6A-ACA7-74EFB9FB5A17}.Release|Win32.ActiveCfg = Release|Win32
+		{80BDA079-63BA-4B6A-ACA7-74EFB9FB5A17}.Release|Win32.Build.0 = Release|Win32
+		{3867AE1B-D562-48AE-89AC-5905A18418E4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3867AE1B-D562-48AE-89AC-5905A18418E4}.Debug|Win32.Build.0 = Debug|Win32
+		{3867AE1B-D562-48AE-89AC-5905A18418E4}.Release|Win32.ActiveCfg = Release|Win32
+		{3867AE1B-D562-48AE-89AC-5905A18418E4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

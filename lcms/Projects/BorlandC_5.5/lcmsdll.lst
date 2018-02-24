@@ -1,0 +1,27 @@
+-5 -C -DLCMS_DLL -DLCMS_DLL_BUILD
+-I..\..\include -K -O2 -a8 -d -ff -w -wucp -wsig -wdef -wnod -wamb				
+-OS	-RT- -R- -tWM -tWD  -w- -x- -c 			
+..\..\src\cmscam97.c
+..\..\src\cmscnvrt.c
+..\..\src\cmserr.c
+..\..\src\cmsgamma.c
+..\..\src\cmsgmt.c
+..\..\src\cmsintrp.c
+..\..\src\cmsio0.c
+..\..\src\cmsio1.c
+..\..\src\cmslut.c
+..\..\src\cmsmatsh.c
+..\..\src\cmsmtrx.c
+..\..\src\cmspack.c
+..\..\src\cmspcs.c
+..\..\src\cmssamp.c
+..\..\src\cmswtpnt.c
+..\..\src\cmsxform.c
+..\..\src\cmsps2.c
+..\..\src\cmsnamed.c
+..\..\src\cmscam02.c
+..\..\src\cmsvirt.c
+..\..\src\cmscgats.c
+
+
+

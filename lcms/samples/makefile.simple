@@ -1,0 +1,36 @@
+SHELL = /bin/sh
+
+CFLAGS = -g -O4 -Wall
+BASEDIR = $(DESTDIR)/usr
+BINDIR  = $(BASEDIR)/bin
+
+
+all:	icctrans wtpt icc2ps icclink
+
+icctrans: icctrans.c xgetopt.c vprf.c
+	$(CC) $(CFLAGS) icctrans.c xgetopt.c vprf.c ../src/liblcms.a -I../include -o icctrans -lm
+
+wtpt: wtpt.c
+	$(CC) $(CFLAGS) wtpt.c ../src/liblcms.a -I../include -o wtpt -lm
+
+icc2ps: icc2ps.c xgetopt.c
+	$(CC) $(CFLAGS) icc2ps.c xgetopt.c ../src/liblcms.a -I../include -o icc2ps -lm
+
+icclink: icclink.c xgetopt.c
+	$(CC) $(CFLAGS) icclink.c xgetopt.c ../src/liblcms.a -I../include -o icclink -lm
+
+
+install: icctrans icc2ps icclink
+	-cp icctrans $(BINDIR)
+	-cp icctrans.exe $(BINDIR)  # Cygwin
+	-cp icc2ps $(BINDIR)
+	-cp icc2ps.exe $(BINDIR)   # Cygwin
+	-cp icclink $(BINDIR)
+	-cp icclink.exe $(BINDIR)  # Cygwin
+
+	
+test:
+	# Nothing to do for test target
+
+clean:
+	-rm wtpt icctrans wtpt.exe icctrans.exe icc2ps icc2ps.exe icclink icclink.exe

@@ -1,0 +1,64 @@
+SHELL = /bin/sh
+
+CFLAGS  = -g -O4 -I../include -fomit-frame-pointer -Wall -Wmissing-prototypes 
+LDFLAGS = -lm
+BASEDIR = $(DESTDIR)/usr
+BINDIR  = $(BASEDIR)/bin
+LIBDIR  = $(BASEDIR)/lib
+INCDIR  = $(BASEDIR)/include
+VERSION = 1.0.15
+AR      = ar -cru
+RANLIB  = ranlib
+
+.c.o:	
+	$(CC) $(CFLAGS) -c $<
+
+SRCS = cmscnvrt.c cmserr.c cmsgamma.c cmsgmt.c cmsintrp.c cmsio1.c \
+	cmslut.c cmsmatsh.c cmsmtrx.c cmspack.c cmspcs.c cmswtpnt.c \
+	cmsxform.c cmssamp.c cmscam97.c cmsnamed.c cmsps2.c cmscam02.c \
+	cmsvirt.c cmscgats.c cmsio0.c
+
+OBJS = $(SRCS:.c=.o)
+
+
+all:	liblcms.a liblcms.so.${VERSION} 
+
+
+#
+# Library
+#
+
+liblcms.a: $(OBJS)
+	$(AR) liblcms.a $(OBJS)
+	$(RANLIB) liblcms.a
+
+liblcms.so.${VERSION}: $(OBJS) 
+	-$(CC) $(CFLAGS) $(LDFLAGS) -shared -o liblcms.so.${VERSION} $(OBJS) 
+	-ln -s liblcms.so.${VERSION} liblcms.so.1
+	-ln -s liblcms.so.1 liblcms.so
+
+#
+# Installation
+#
+
+install: liblcms.a  liblcms.so.${VERSION}
+	mkdir -p $(BINDIR) $(LIBDIR) $(INCDIR)
+	-cp -a liblcms.so* $(LIBDIR)
+	cp -a liblcms.a $(LIBDIR)
+	cp ../include/lcms.h ../include/icc34.h $(INCDIR)
+
+#
+# Test programs
+#
+
+test:
+	# we are doing nothing for the test target
+
+
+
+#
+# Cleanup
+#
+
+clean:
+	-rm $(OBJS)  liblcms.a liblcms.so.${VERSION} liblcms.so.1 liblcms.so

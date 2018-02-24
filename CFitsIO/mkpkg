@@ -1,0 +1,74 @@
+# CFITSIO -- Update the CFITSIO library.
+# copied from the fitsio mkpkg by jdd 12 sept 1996
+#
+#  this is a sample IRAF mkfile which builds a local version of the CFITSIO lib.
+
+$call update
+$exit
+
+update:
+	$checkout libcfitsio.a ftoolsbin$
+	$update   libcfitsio.a
+	$checkin  libcfitsio.a ftoolsbin$
+	;
+
+updateftools:
+	#Extra target for building fitsio inside the FTOOLS distribution
+        $checkout libcfitsio.a  ftoolsbin$
+        $update   libcfitsio.a
+        $checkin  libcfitsio.a  ftoolsbin$
+	;
+
+cfitsio:
+	# Update fitsio subdirectory if new version of cfitsio.c installed.
+	$ifolder (splitc/cfileio.c, cfileio.c)
+	    $echo "update cfitsio splitc subdirectory..."
+            $iffile(splitc/cfileio.c)
+                !\rm splitc/*
+                $delete splitc/mkpkg
+            $else
+                !mkdir splitc
+	        !./configure
+            $endif
+	    $copy buffers.c splitc/buffers.c
+	    $copy cfileio.c splitc/cfileio.c
+	    $copy checksum.c splitc/checksum.c
+	    $copy compress.c splitc/compress.c
+	    $copy f77_iter.c splitc/f77_iter.c
+	    $copy f77_wrap.c splitc/f77_wrap.c
+	    $copy drvrfile.c splitc/drvrfile.c
+	    $copy fitscore.c splitc/fitscore.c
+	    $copy editcol.c splitc/editcol.c
+	    $copy edithdu.c splitc/edithdu.c
+	    $copy getkey.c splitc/getkey.c
+	    $copy modkey.c splitc/modkey.c
+	    $copy putkey.c splitc/putkey.c
+	    $copy scalnull.c splitc/scalnull.c
+	    $copy swapproc.c splitc/swapproc.c
+	    $copy wcsutil.c splitc/wcsutil.c
+	    !cp getcol*.c splitc/
+	    !cp putcol*.c splitc/
+	    !cp *.h splitc/
+	    !cp *.h ../include
+            !cd splitc
+            !echo '$checkout libcfitsio.a ../libcfitsio.a' > splitc/mkpkg
+            !echo '$update   libcfitsio.a' >> splitc/mkpkg
+            !echo '$checkin libcfitsio.a ../libcfitsio.a' >> splitc/mkpkg
+            !echo ' ' >> splitc/mkpkg
+            !echo 'libcfitsio.a:' >> splitc/mkpkg
+            !cd splitc; ls -1 *.c | sed 's/^/ /' >> mkpkg
+            !echo '  ;' >> splitc/mkpkg
+	$endif
+	;
+
+libcfitsio.a:
+	 $ifeq (hostid, unix)
+	    # cheat and use Makefile....
+	    $call cfitsio
+	    @splitc
+	$else
+	    # simply compile the files on VMS systems.
+	    !@makevms.com
+	$endif
+
+	;

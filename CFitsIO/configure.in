@@ -1,0 +1,423 @@
+#
+# configure.in for cfitsio
+#
+# /redshift/sgi6/lheavc/ftools/cfitsio/configure.in,v 3.4 1996/07/26 20:27:53 pence Exp
+#
+#  copied from host and modified
+#
+
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT
+AC_CONFIG_SRCDIR([fitscore.c])
+
+#--------------------------------------------------------------------
+# Command options
+#--------------------------------------------------------------------
+
+AC_ARG_ENABLE(
+  hera,
+  [ --enable-hera Build for HERA project (for LHEA use only) ],
+  [ if test $enableval = yes; then BUILD_HERA=yes; fi ]
+)
+if test "x$BUILD_HERA" = xyes; then
+  AC_DEFINE(BUILD_HERA)
+fi
+
+AC_ARG_WITH(
+  gsiftp-flavour,
+  [ --with-gsiftp-flavour[[=PATH]] Enable Globus Toolkit gsiftp protocol support ],
+  [ if test "x$withval" != "xno"; then
+
+        if test "x$withval" != "xyes" ; then
+            GSIFTP_FLAVOUR=${withval}
+        fi
+        AC_DEFINE(GSIFTP_FLAVOUR,1,[Define Globus Toolkit architecture])
+    fi
+  ]
+)
+
+AC_ARG_WITH(
+  gsiftp,
+  [ --with-gsiftp[[=PATH]] Enable Globus Toolkit gsiftp protocol support ],
+  [ if test "x$withval" != "xno"; then
+
+        if test "x$withval" != "xyes" ; then
+            CFLAGS="$CFLAGS -I${withval}/include/${GSIFTP_FLAVOUR}"
+            LDFLAGS="$LDFLAGS -L${withval}/lib -lglobus_ftp_client_${GSIFTP_FLAVOUR}"
+            HAVE_GSIFTP=yes
+        fi
+        AC_DEFINE(HAVE_GSIFTP,1,[Define if you want Globus Toolkit gsiftp protocol support])
+    fi
+  ]
+)
+
+#--------------------------------------------------------------------
+# Check for install location prefix
+#--------------------------------------------------------------------
+
+AC_PREFIX_DEFAULT(`pwd`)
+
+# make will complain about duplicate targets for the install directories
+# if prefix == exec_prefix
+AC_SUBST(INSTALL_ROOT,'${prefix}')
+test "$exec_prefix" != NONE -a "$prefix" != "$exec_prefix" \
+  && INSTALL_ROOT="$INSTALL_ROOT "'${exec_prefix}'
+	
+
+#--------------------------------------------------------------------
+# Check "uname" to determine system type
+#--------------------------------------------------------------------
+AC_CHECK_PROG([uname_found],[uname],[1],[0])
+if test $uname_found -eq 0 ; then
+    echo "cfitsio: No uname found; setting system type to unknown."
+    system="unknown"
+else
+    system=`uname -s`-`uname -r`
+fi
+
+
+dnl Checks for programs.
+
+# Try first to find a proprietary C compiler, then gcc
+if test "x$CC" = x; then
+  AC_CHECK_PROGS(CC, cc)
+fi
+AC_PROG_CC
+
+AC_CHECK_PROGS(FC, f77 g77 g95 gfortran ifort xlf cf77 gf77 af77 ncf f2c , nope)
+if test $FC = 'nope' ; then
+   AC_MSG_WARN(cfitsio: == No acceptable f77 found in \$PATH)
+   AC_MSG_WARN(cfitsio: == Cfitsio will be built without Fortran wrapper support)
+   FC=
+   F77_WRAPPERS=
+else
+  CFORTRANFLAGS=
+  F77_WRAPPERS="\${FITSIO_SRC}"
+  echo $ac_n "checking whether we are using GNU Fortran""... $ac_c" 1>&6
+  if test `$FC --version -c < /dev/null 2> /dev/null | grep -c GNU` -gt 0 -o \
+          `$FC --version -c < /dev/null 2> /dev/null | grep -ic egcs` -gt 0
+  then
+    echo "$ac_t""yes" 1>&6
+    echo $ac_n "cfitsio: == Adding wrapper support for GNU Fortran""... $ac_c" 1>&6
+    CFORTRANFLAGS="-Dg77Fortran"
+    echo "$ac_t"" done" 1>&6
+  else
+    echo "$ac_t""no" 1>&6
+    if test $FC = 'f2c' ; then
+      echo $ac_n "cfitsio: == Adding wrapper support for f2c""... $ac_c" 1>&6
+      CFORTRANFLAGS="-Df2cFortran"
+      echo "$ac_t"" done" 1>&6
+    fi
+  fi
+fi
+
+AC_PROG_RANLIB
+
+dnl Checks for ANSI stdlib.h.
+AC_CHECK_HEADERS(stdlib.h string.h math.h limits.h ,ANSI_HEADER=yes,ANSI_HEADER=no)dnl
+
+dnl Check if prototyping is allowed.
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[void d( int , double) ]])],[PROTO=yes],[PROTO=no])dnl
+
+if test $ANSI_HEADER = no -o $PROTO = no; then
+     echo "   *********** WARNING: CFITSIO CONFIGURE FAILURE ************  "
+     echo "cfitsio: ANSI C environment NOT found. Aborting cfitsio configure."
+     if test $ANSI_HEADER = no; then 
+        echo "cfitsio: You're missing a needed ANSI header file."
+     fi
+     if test $PROTO = no; then
+        echo "cfitsio: Your compiler can't do ANSI function prototypes."
+     fi
+     echo "cfitsio: You need an ANSI C compiler and all ANSI trappings"
+     echo "cfitsio: to build cfitsio.   "
+     echo "     *******************************************************  "
+     exit 0;
+fi
+
+CFLAGS="$CFLAGS"
+LIBPRE=""
+
+case $system in
+    Darwin-*)
+	# Darwin can be powerpc or i386
+	ARCH=`uname -p`
+	EXT="darwin"
+        # For large file support (but may break Absoft compilers):
+        AC_DEFINE(_LARGEFILE_SOURCE)
+        AC_DEFINE(_FILE_OFFSET_BITS,64)
+	;;
+    SunOS-4*)
+	ARCH="sun"
+	EXT="sun"
+	;;
+    HP-UX-*)
+	ARCH="hp"
+	EXT="hpu"
+	if test "x$CFORTRANFLAGS" = x ; then
+		CFORTRANFLAGS="-Dappendus"
+	fi
+	CFLAGS="$CFLAGS -DPG_PPU" 
+	LIBPRE="-Wl,"
+	;;
+    SunOS-5*)
+	ARCH="solaris"
+	EXT="sol"
+	if test "x$CFORTRANFLAGS" = x ; then
+		CFORTRANFLAGS="-Dsolaris"
+	fi
+        # For large file support:
+        AC_DEFINE(_LARGEFILE_SOURCE)
+        AC_DEFINE(_FILE_OFFSET_BITS,64)
+	;;
+    OSF1*)
+	ARCH="alpha"
+	EXT="osf"
+	;;
+    IRIX*)
+	ARCH="sgi"
+	EXT="sgi"
+	CFLAGS="$CFLAGS -DHAVE_POSIX_SIGNALS"
+	RANLIB="touch"
+	;;
+    ULTRIX*)
+	ARCH="dec"
+	EXT="dec"
+	;;
+    Linux*)
+	ARCH="linux"
+	EXT="lnx"
+        # For large file support:
+        AC_DEFINE(_LARGEFILE_SOURCE)
+        AC_DEFINE(_FILE_OFFSET_BITS,64)
+	;;
+    FREEBSD*|FreeBSD*)
+	ARCH="linux"
+	EXT="lnx"
+	;;
+    CYGWIN*)
+	ARCH="cygwin"
+	EXT="cygwin"
+	CFLAGS="$CFLAGS -DHAVE_POSIX_SIGNALS"
+	;;
+    *)
+		echo "cfitsio: == Don't know what do do with $system"
+	;;
+esac
+
+CFLAGS="$CFLAGS $CFORTRANFLAGS"
+
+case $GCC in
+	yes)
+		GCCVERSION="`gcc -dumpversion 2>&1`"
+		echo "cfitsio: == Using gcc version $GCCVERSION"
+		AC_SUBST(GCCVERSION)
+                changequote(,)
+		gcc_test=`echo $GCCVERSION | grep -c '2\.[45678]'`
+		changequote([,])
+		if test $gcc_test -gt 0
+		then
+		    changequote(,)
+		    CFLAGS=`echo $CFLAGS | sed 's:-O[^ ]* *::'`
+		    changequote([,])
+		    AC_MSG_WARN(This gcc is pretty old. Disabling optimization to be safe.)
+		fi
+		;;
+	no)
+		echo "cfitsio: Old CFLAGS is $CFLAGS"
+		CFLAGS=`echo $CFLAGS | sed -e "s/-g/-O/"`
+		case $system in
+		    SunOS-5*)
+			changequote(,)
+			if test `echo $CFLAGS | grep -c fast` -gt 0
+			then
+			   echo "cfitsio: Replacing -fast with -O3"
+			   CFLAGS=`echo $CFLAGS | sed 's:-fast:-O3:'`
+			fi
+			changequote([,])
+         		CFLAGS="$CFLAGS -DHAVE_ALLOCA_H -DHAVE_POSIX_SIGNALS"
+			;;
+		    *)
+			echo "== No special changes for $system"
+			;;
+		esac
+		echo "New CFLAGS is $CFLAGS"
+		;;
+	*)
+		# Don't do anything now
+		;;
+esac
+		
+# Shared library section
+#-------------------------------------------------------------------------------
+SHLIB_LD=:
+SHLIB_SUFFIX=".so"
+lhea_shlib_cflags=
+case $EXT in
+  cygwin)
+    SHLIB_LD="$CC -shared"
+    SHLIB_SUFFIX=".dll"
+    ;;
+  darwin)
+    SHLIB_LD="$CC -dynamiclib"
+    SHLIB_SUFFIX=".dylib"
+    lhea_shlib_cflags="-fPIC -fno-common"
+    ;;
+  hpu)
+    SHLIB_LD="ld -b" 
+    SHLIB_SUFFIX=".sl"
+    ;;
+  lnx)
+    SHLIB_LD=":"
+    ;;
+  osf)
+    SHLIB_LD="ld -shared -expect_unresolved '*'"
+    LD_FLAGS="-taso"
+    ;;
+  sol)
+    SHLIB_LD="/usr/ccs/bin/ld -G"
+    lhea_shlib_cflags="-KPIC"
+    ;;
+  sgi)
+    SHLIB_LD="ld -shared -rdata_shared"
+    ;;
+  *)
+    AC_MSG_WARN(Unable to determine how to make a shared library)
+    ;;
+esac
+# Darwin uses gcc (=cc), but needs different flags (see above)
+# if test "x$GCC" = xyes; then
+if test "x$GCC" = xyes && test "x$EXT" != xdarwin && test "x$EXT" != xcygwin; then
+  SHLIB_LD="$CC -shared"
+  lhea_shlib_cflags='-fPIC'
+fi
+if test "x$lhea_shlib_cflags" != x; then
+  CFLAGS="$CFLAGS $lhea_shlib_cflags"
+fi
+
+AC_SUBST(ARCH)dnl
+AC_SUBST(CFLAGS)dnl
+AC_SUBST(CC)dnl
+AC_SUBST(FC)dnl
+AC_SUBST(LIBPRE)dnl
+AC_SUBST(SHLIB_LD)dnl
+AC_SUBST(SHLIB_SUFFIX)dnl
+AC_SUBST(F77_WRAPPERS)
+
+# ================= test for the unix ftruncate function ================
+
+AC_MSG_CHECKING("whether ftruncate works")
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <unistd.h>
+]], [[
+ftruncate(0, 0);
+]])],[
+AC_DEFINE(HAVE_FTRUNCATE)
+AC_MSG_RESULT("yes")
+],[AC_MSG_RESULT("no") ])
+
+# ---------------------------------------------------------
+# some systems define long long for 64-bit ints
+# ---------------------------------------------------------
+ 
+AC_MSG_CHECKING("whether long long is defined")
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <stdlib.h>
+]], [[
+long long filler;
+]])],[
+AC_DEFINE(HAVE_LONGLONG)
+AC_MSG_RESULT("yes")
+],[AC_MSG_RESULT("no") ])
+
+# ==================== SHARED MEMORY DRIVER SECTION =======================
+#
+# 09-Mar-98 : modified by JB/ISDC
+# 3 checks added to support autoconfiguration of shared memory
+# driver. First generic check is made whether shared memory is supported
+# at all, then 2 more specific checks are made (architecture dependent).
+# Currently tested on : sparc-solaris, intel-linux, sgi-irix, dec-alpha-osf
+
+# -------------------------------------------------------------------------
+# check is System V IPC is supported on this machine
+# -------------------------------------------------------------------------
+
+AC_MSG_CHECKING("whether system V style IPC services are supported")
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/sem.h>
+]], [[
+shmat(0, 0, 0);
+shmdt(0);
+shmget(0, 0, 0);
+semget(0, 0, 0);
+]])],[
+AC_DEFINE(HAVE_SHMEM_SERVICES)
+my_shmem=\${SOURCES_SHMEM}
+AC_MSG_RESULT("yes")
+],[AC_MSG_RESULT("no") ])
+
+AC_SUBST(my_shmem)
+
+# -------------------------------------------------------------------------
+# some systems define flock_t, for others we have to define it ourselves
+# -------------------------------------------------------------------------
+
+AC_MSG_CHECKING("do we have flock_t defined in sys/fcntl.h")
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/fcntl.h>
+]], [[
+flock_t filler;
+]])],[
+AC_DEFINE(HAVE_FLOCK_T)
+AC_MSG_RESULT("yes") 
+],[AC_MSG_RESULT("no") ])
+
+if test "$HAVE_FLOCK_T" != 1; then
+   AC_MSG_CHECKING("do we have flock_t defined in sys/flock.h")
+   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/flock.h>
+   ]], [[
+   flock_t filler;
+   ]])],[
+   AC_DEFINE(HAVE_FLOCK_T)
+   AC_MSG_RESULT("yes") 
+   ],[AC_MSG_RESULT("no") ])
+fi
+
+# -------------------------------------------------------------------------
+# there are some idiosyncrasies with semun defs (used in semxxx). Solaris
+# does not define it at all
+# -------------------------------------------------------------------------
+
+AC_MSG_CHECKING("do we have union semun defined")
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <sys/sem.h>
+]], [[
+union semun filler;
+]])],[
+AC_DEFINE(HAVE_UNION_SEMUN)   
+AC_MSG_RESULT("yes")
+],[AC_MSG_RESULT("no") ])
+
+# ==================== END OF SHARED MEMORY DRIVER SECTION ================
+# ================= test for the unix networking functions ================
+
+AC_SEARCH_LIBS([gethostbyname], [nsl], cfitsio_have_nsl=1, cfitsio_have_nsl=0)
+AC_SEARCH_LIBS([connect], [socket], cfitsio_have_socket=1,
+               cfitsio_have_socket=0, [-lnsl])
+
+if test "$cfitsio_have_nsl" = 1 -a "$cfitsio_have_socket" = 1; then
+   AC_DEFINE(HAVE_NET_SERVICES)
+fi
+
+# ==================== END OF unix networking SECTION ================
+
+
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+AC_CONFIG_FILES([cfitsio.pc])
+AC_OUTPUT
+
+
+AC_MSG_RESULT([])
+AC_MSG_RESULT([    Congratulations, Makefile update was successful.])
+AC_MSG_RESULT([    You may want to run \"make\" now.])
+AC_MSG_RESULT([])
+

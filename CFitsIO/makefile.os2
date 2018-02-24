@@ -1,0 +1,22 @@
+#
+# To be use with OS/2 and GCC/EMX Compiler.
+# Submitted by Andrea Di Paola (dipaola@coma.mporzio.astro.it)
+# June 1997
+#
+# Makefile for cfitsio library:
+#       libcfits.a
+#
+
+CFLAGS= -m486 -O3 -c
+CC=gcc
+
+OBJECTS = buffers.o cfileio.o checksum.o compress.o f77_wrap.o drvrfile.o fitscore.o \
+          getcol.o getcolb.o getcold.o getcole.o getcoli.o getcolj.o \
+          getcolk.o getcoll.o getcols.o getcolui.o getcoluj.o editcol.o \
+          edithdu.o getkey.o modkey.o putcol.o putcolb.o putcold.o putcole.o \
+          putcoli.o putcolj.o putcolk.o putcoll.o putcols.o putcolui.o \
+          putcoluj.o putcolu.o putkey.o scalnull.o swapproc.o wcsutil.o \
+          imcompress.o quantize.o ricecomp.o pliocomp.o
+
+libcfitsio.a: $(OBJECTS)
+	ar rv libcfitsio.a $(OBJECTS)

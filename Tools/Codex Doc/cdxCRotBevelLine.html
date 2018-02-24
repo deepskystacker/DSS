@@ -1,0 +1,80 @@
+<!--#include virtual="header.shtml" -->
+<html>
+
+<head>
+<title></title>
+</head>
+
+<body>
+
+<h3 align="center"><font color="#AOAO99">A bevelline with horizontal and vertical text</font></h3>
+
+<hr>
+<!-- Author and contact details -->
+
+<p>This article was contributed by <a HREF="mailto:hans.buehler@student.hu-berlin.de">Hans
+Bühler</a>. <!-- Sample image - gif or jpg --> </p>
+
+<p>The class described here replaces my former issue &quot;cdxCBevelLine&quot;.<br>
+This class provides the following options:</p>
+
+<p align="center"><img src="cdxCRotBevelLine-example.gif" width="342" height="296"
+alt="cdxCRotBevelLine-example.gif (5061 Byte)"></p>
+
+<p>Features: 
+
+<ul>
+  <li>A bevel line even if user has <em>strange</em> fonts<br>
+    (have you ever created a sunken static with a height of 1 for a bevelline and tested your
+    program on a machine that has 200% larger fonts ?). </li>
+  <li>Text rotates appropiately (usable with any font).</li>
+  <li>Reacts properly on WM_ENABLEWINDOW.</li>
+  <li>Might be used as an example for my cdxCRot90DC (which you may find in the misc section
+    of codeguru's). </li>
+</ul>
+
+<p>How to use (in a dialog): 
+
+<ol>
+  <li>Add cdxCRotBevelLine.h, cdxCRotBevelLine.cpp, cdxCRot90DC.h and cdxCRot90DC.cpp to your
+    project.</li>
+  <li>Add a static control to your dialog resource.<br>
+    Enter some appropiate text to it.<br>
+    If your static's width is greater than its height the bevelline will appear horizontal,
+    vertical otherwise.<br>
+    If the bevelline is drawn vertically, the text is rotated by 90° degrees by default (left
+    hand examples of upper image).<br>
+    To modify this, put a &quot;~&quot; in front of your control text (right hand bevels in
+    the upper image).</li>
+  <li>Change its ID to something like IDC_BEVEL_1, open classwizard and assign a member
+    variable, type control (CStatic) to it (&quot;m_wndBevel1&quot; for example).</li>
+  <li>Open your dialog class' header file.<br>
+    Add #include &quot;cdxCRotBevelLine.h&quot;.<br>
+    Find the line &quot;CStatic m_wndBevel1;&quot; and replace the &quot;CStatic&quot; by
+    &quot;cdxCRotBevelLine&quot;.</li>
+  <li>Compile and run.</li>
+</ol>
+
+<p>Notes:
+
+<ul>
+  <li>This class may even be useful to you if you only need horizontal bevels.<br>
+    Some people mentioned that it's enough to create a sunken static with a height of 1 (use
+    Alt while sizing the control) and to put another text control over it.<br>
+    In fact, this will look <u>really</u>&nbsp;strange if the user choosed <em>big</em> fonts
+    for his display - the dialog resource will automatically adapt the the newly found font
+    and your height of 1 may become 3 or stuff - and suddenly friend user doesn't have a
+    bevelline but a sunken static.</li>
+</ul>
+
+<p>Files:</p>
+
+<p><a HREF="[demo%20project%20zip%20file%20name%20here]">Download demo project - [size in
+KB] KB</a> <!-- Zipped source --> </p>
+
+<p><a HREF="[source%20code%20zip%20file%20name%20here]">Download source - [size in KB] KB</a>
+<!-- Posted / Update  date Month day, year (eg August 11, 1998) - add to the list --></p>
+
+<p>Date Posted: August 11, 1998 <!--#include virtual="footer.shtml" --> </p>
+</body>
+</html>

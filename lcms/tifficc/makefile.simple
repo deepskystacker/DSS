@@ -1,0 +1,23 @@
+SHELL = /bin/sh
+
+CFLAGS = -g -O4 -fomit-frame-pointer -Wall -I../include 
+BASEDIR = $(DESTDIR)/usr
+BINDIR  = $(BASEDIR)/bin
+
+
+all:	tifficc
+
+tifficc: tifficc.o getopt.o
+	$(CC) $(CFLAGS) tifficc.o getopt.o ../src/liblcms.a -o $@ -lm -ljpeg -ltiff -lz
+
+tifficc.o: tifficc.c
+getopt.o: getopt.c
+
+install utils:: tifficc
+	   -cp tifficc $(BINDIR)
+	   -cp tifficc.exe $(BINDIR)
+	
+clean:
+	-rm tifficc.o getopt.o tifficc tifficc.exe
+
+	

@@ -1,0 +1,98 @@
+Work
+----
+* BUG: Links on HTML buttons do not show tooltips.
+* Add ability to replace a named section of HTML.
+* Add Select/copy (make it an option).
+* Add horizontal scroll messages as per vertical scroll messages.
+* BUG: Form fields are not resized when altering the zoom level. They are okay when the page is refreshed.
+
+* Tables: Recode to support column and row spanning and to also behave properly when floating.
+		Note to self; COLSPAN is now done.
+* Add support for table CAPTION.
+* Add BASE
+* Support ISMAP
+* Notify when the mouse passes over a link (pass ID, title and URL)
+* Add support for icons to the image library.
+* Add support for image maps
+	<img src="navbar.gif" border=0 usemap="#map1">
+	<map name="map1">
+	 <area href=guide.html alt="Access Guide" shape=rect coords="0,0,118,28">
+	 <area href=search.html alt="Search" shape=rect coords="184,0,276,28">
+	 <area href=shortcut.html alt="Go" shape=rect coords="118,0,184,28">
+	 <area href=top10.html alt="Top Ten" shape=rect coords="276,0,373,28">
+	</map>
+* Add support for FRAMES...FRAMESET, FRAME etc. http://www.w3.org/TR/html401/present/frames.html
+	When adding frames would need to cascade options, fonts, etc.
+* Add "target" to links - needed for frames.
+* FORM tabindex, accesskey
+* Add hyphenation rules so hyphenated words break correctly.
+* Add <blink speed=n>text</blink> 'n' is ms
+* Add "Justify" style for paragraphs etc.
+
+CSS Stuff to support and my notes
+---------------------------------
+Nothing yet, still reading...
+
+
+HTML that causes problems
+-------------------------
+
+* This just doesn't look right, look at the difference between IE and QHTM.
+Try changing align=left and we get similar stupid differences between QHTM and IE.
+**Update - right works okay but left isn't working as the margins are pushing the second para out a bit.
+----BEGIN
+<p>a<table bgcolor=yellow align=right> <tr><td>1</td></tr></table>
+<p>b<table bgcolor=yellow align=right> <tr><td>2</td></tr></table>
+<p>c<table bgcolor=yellow align=right> <tr><td>3</td></tr></table>
+----END
+
+* This doesn't move the images onto the correct line
+----BEGIN
+<p><img src="RES:CIRCLE.BMP" align=right><br>
+<img src="RES:CIRCLE.BMP" align=right><br>
+<img src="RES:CIRCLE.BMP" align=right><br>
+<img src="RES:CIRCLE.BMP" align=right><br>
+<img src="RES:CIRCLE.BMP" align=right><br>
+----END
+
+* BUG: The second DT appears as part of the first list
+Works fine if the LI has either OL or UL.
+----BEGIN
+<DL>
+  <DT>Dweeb
+  <DD>Young excitable person who may mature into a <EM>Nerd</EM> or <EM>Geek</EM>
+  <li>This is the cause
+</DL>
+<DT>I'm in the wrong list
+----END
+
+Table should be centered. CENTER also fails.
+-----BEGIN
+<p align=center>
+<table border=1>
+<tr><td>hello</td></tr>
+</table>
+-----END
+
+There is an extra gap between item3 and item4:
+-----BEGIN
+top<br>
+<ul>
+	<li>item1</li>
+	<li>item2
+		<ul>
+			<li>item3</li>
+		</ul>
+	</li>
+	<li>item4</li>
+</ul>
+bottom
+-----END
+
+D:\HTML Test files\big report\Report.htm - just looks bad, horizontal scrollbar is set but doesn't scroll. Very bad.
+D:\HTML Test files\bad form #3 - speaks for itself.
+
+
+Internal tidying up
+-------------------
+DrawTiledBitmap in CHTMLSection needs optimising as it uses *way* to much resource.

@@ -1,0 +1,88 @@
+Written by Russ Freeman Copyright ©1998-2002.
+Email: support@gipsysoft.com
+Web site: http://www.gipsysoft.com/
+Last updated: July 28th, 2002
+
+
+How to build QHTM
+=================
+In these instruction replace <drive:> with the drive letter where you will
+build QHTM.
+e.g. If my main drive is "C:" then
+	"<drive:>\projects"
+becomes
+	"c:\projects"
+
+
+Directory Structure
+-------------------
+My directory structure is as follows, this is detailed in general on my web
+site at http://www.gipsysoft.com/articles/project/
+<drive:>
+    \projects
+    \projects\components
+    \projects\components\QHTM
+    \projects\components\QHTM\Examples
+    \projects\bin
+
+
+* \projects\components
+The base of the source tree.
+
+* \projects\components\QHTM
+The main QHTM source code is here
+
+* \projects\components\QHTM\Examples
+Example projects go here.
+
+* \projects\bin
+The LIB/DLL/EXE files are built into the "<drive:>\projects\bin" directory. Building here
+means libraries and DLLs can be found.
+
+
+Each project uses a relative path for linking and for finding header files. Because of this
+it should be fairly easy to move files to better suit your needs.
+
+
+Compiling
+---------
+To build QHTM open the devstudio project "<drive:>\projects\Components\QHTM\QHTM.sln".
+
+All of the samples can use either the DLL or the static linked libraries. To alter a project
+to use the static libraries simply add a #define before the include for QHTM as below:
+	#define QHTM_LINK_STATIC_LIBS
+	#include <qhtm/qhtm.h>
+
+For this to work you'll need to alter your project settings to specify an additional library
+path of where-ever the "bin" directrory is. By default the examples have an additional library
+path of:
+"..\..\..\..\bin\"
+
+
+
+It won't build!
+---------------
+If you have any problems email support@gipsysoft.com, before doing so please ensure all files
+are properly extracted and that every attempt has been made to resolve the problem yourself.
+
+
+Removing functionality - compiling bits out.
+-----------------------------------
+* Imaging
+To remove some image formats edit 
+\projects\components\ImLib\Config.h - Comment out the IMGLIB_* from the #else section to remove
+individual formats.
+
+* HTML
+\projects\components\qhtm\config.h - Comment out any of the bits you don't want.
+
+
+Bug reporting
+-------------
+If you find a bug please send me the minimum needed to reproduce the problem, the smaller the
+samples, C++ or HTML, the quicker I will find a solution.
+
+Thanks for purchasing QHTM. if you have any suggestions or queries don't hesitate to contact me.
+
+Russ Freeman
+russf@gipsysoft.com

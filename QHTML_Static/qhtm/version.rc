@@ -1,0 +1,50 @@
+//
+// version.rc - resources Microsoft Visual C++ does not edit directly
+//
+
+#include "buildno.h"
+
+
+#ifdef APSTUDIO_INVOKED
+	#error this file is not editable by the IDE
+#endif //APSTUDIO_INVOKED
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION QHTM_BUILD_VER_TEXT
+ PRODUCTVERSION QHTM_BUILD_VER_TEXT
+ FILEFLAGSMASK 0x17L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080904b0"
+        BEGIN
+            VALUE "FileDescription", "QHTM - Small, light Win32 HTML render control"
+            VALUE "FileVersion", QHTM_BUILD_VERSION
+            VALUE "InternalName", "qhtm"
+            VALUE "LegalCopyright", "Copyright (C) 2009"
+            VALUE "OriginalFilename", "qhtm.dll"
+            VALUE "ProductName", "qhtm Dynamic Link Library"
+            VALUE "ProductVersion", QHTM_BUILD_VERSION
+            VALUE "Comments", "GipsySoft HTML control - http://www.gipsysoft.com"
+            VALUE "SpecialBuild", QHTM_BUILD_NUMBER_TEXT
+            VALUE "PrivateBuild", QHTM_BUILD_NUMBER_TEXT
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x809, 1200
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+
+/////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,227 @@
+.\"
+.\" Man page for dcraw
+.\"
+.\" Copyright (c) 2006 by David Coffin
+.\"
+.\" You may distribute without restriction.
+.\"
+.\" David Coffin
+.\" dcoffin a cybercom o net
+.\" http://www.cybercom.net/~dcoffin
+.\"
+.TH dcraw 1 "December 21, 2006"
+.LO 1
+.SH NAME
+dcraw - command-line decoder for raw digital photos
+.SH SYNOPSIS
+.B dcraw
+[\fIOPTION\fR]... [\fIFILE\fR]...
+.SH DESCRIPTION
+.B dcraw
+decodes raw photos, displays metadata, and extracts thumbnails.
+.SH OPTIONS
+.TP
+.B -v
+Print verbose messages, not just warnings and errors.
+.TP
+.B -c
+Write decoded images or thumbnails to standard output.
+.TP
+.B -e
+Extract the camera-generated thumbnail, not the raw image.
+You'll get either a JPEG or a PPM file, depending on the camera.
+.TP
+.B -z
+Change the access and modification times of an AVI, JPEG or raw
+file to when the photo was taken, assuming that the camera clock
+was set to Universal Time.
+.TP
+.B -i
+Identify files but don't decode them.
+Exit status is 0 if
+.B dcraw
+can decode the last file, 1 if it can't.
+.B -i -v
+shows metadata.
+.TP
+.B ""
+.B dcraw
+cannot decode JPEG files!!
+.TP
+.B -d
+Show the raw data as a grayscale image with no interpolation.
+Good for photographing black-and-white documents.
+.TP
+.B -D
+Same as
+.BR -d ,
+but totally raw (no color scaling).
+.TP
+.B -h
+Output a half-size color image.  Twice as fast as
+.BR -q\ 0 .
+.TP
+.B -q 0
+Use high-speed, low-quality bilinear interpolation.
+.TP
+.B -q 2
+Use Variable Number of Gradients (VNG) interpolation.
+.TP
+.B -q 3
+Use Adaptive Homogeneity-Directed (AHD) interpolation.
+.TP
+.B -f
+Interpolate RGB as four colors.  Use this if the output shows
+false 2x2 meshes with VNG or mazes with AHD.
+.TP
+.B -B sigma_domain sigma_range
+Use a bilateral filter to smooth noise while preserving edges.
+.B sigma_domain
+is in units of pixels, while
+.B sigma_range
+is in units of CIELab colorspace.
+Try
+.B -B\ 2\ 4
+to start.
+.TP
+.B -b brightness
+By default,
+.B dcraw
+writes 8-bit PGM/PPM/PAM with a BT.709 gamma curve and a
+99th-percentile white point.  If the result is too light or
+too dark,
+.B -b
+lets you adjust it.  Default is 1.0.
+.TP
+.B -4
+Write 16-bit linear pseudo-PGM/PPM/PAM with no gamma curve,
+no white point, and no
+.B -b
+option.
+.TP
+.B -T
+Write TIFF output (with metadata) instead of PGM/PPM/PAM.
+.TP
+.B -k black
+Set the black point.  Default depends on the camera.
+.TP
+.B -K darkframe.pgm
+Subtract a dark frame from the raw data.  To generate a
+dark frame, shoot a raw photo with no light and do
+.BR dcraw\ -D\ -4\ -j\ -t\ 0 .
+.TP
+.B -a
+Automatic color balance.  The default is to use a fixed
+color balance based on a white card photographed in sunlight.
+.TP
+.B -w
+Use the color balance specified by the camera.
+If this can't be found, print a warning and revert to the default.
+.TP
+.B -r mul0 mul1 mul2 mul3
+Specify your own raw color balance.  These multipliers can be cut
+and pasted from the output of
+.BR dcraw\ -v .
+.TP
+.B -H 0
+Clip all highlights to solid white (default).
+.TP
+.B -H 1
+Leave highlights unclipped in various shades of pink.
+.TP
+.B -H 2-9
+Reconstruct highlights.  Low numbers favor whites; high numbers
+favor colors.  Try
+.B -H 5
+as a compromise.  If that's not good enough, do
+.BR -H\ 9 ,
+cut out the non-white highlights, and paste them into an image
+generated with
+.BR -H\ 3 .
+.TP
+.B -m
+Same as
+.BR -o\ 0 .
+.TP
+.B -o [0-5]
+Select the output colorspace when the
+.B -p
+option is not used:
+
+.B \t0
+\ \ Raw color (unique to each camera)
+.br
+.B \t1
+\ \ sRGB D65 (default)
+.br
+.B \t2
+\ \ Adobe RGB (1998) D65
+.br
+.B \t3
+\ \ Wide Gamut RGB D65
+.br
+.B \t4
+\ \ Kodak ProPhoto RGB D65
+.br
+.B \t5
+\ \ XYZ
+.TP
+.BR -p\ camera.icm \ [\  -o\ output.icm \ ]
+Use ICC profiles to define the camera's raw colorspace and the
+desired output colorspace (sRGB by default).
+.TP
+.B -p embed
+Use the ICC profile embedded in the raw photo.
+.TP
+.B -t [0-7,90,180,270]
+Flip the output image.  By default,
+.B dcraw
+applies the flip specified by the camera.
+.B -t 0
+disables all flipping.
+.TP
+.B -s [0-99]
+Select which raw image to decode if the file contains more than one.
+For example, Fuji\ Super\ CCD\ SR cameras generate a second image
+underexposed four stops to show detail in the highlights.
+.TP
+.B -j
+For Fuji\ Super\ CCD cameras, show the image tilted 45 degrees.
+For cameras with non-square pixels, do not stretch the image to
+its correct aspect ratio.  In any case, this option guarantees
+that each output pixel corresponds to one raw pixel.
+.TP
+.B ""
+If they don't apply to your camera,
+.B -s
+and
+.B -j
+are silently ignored.
+.SH FILES
+.TP
+\:./.badpixels, ../.badpixels, ../../.badpixels, ...
+List of your camera's dead pixels, so that
+.B dcraw
+can interpolate around them.  Each line specifies the column,
+row, and UNIX time of death for one pixel.  For example:
+.sp 1
+.nf
+ 962   91 1028350000  # died between August 1 and 4, 2002
+1285 1067 0           # don't know when this pixel died
+.fi
+.sp 1
+These coordinates are before any cropping or rotation, so use
+.B dcraw -j -t 0
+to locate dead pixels.
+.SH "SEE ALSO"
+.BR pgm (5),
+.BR ppm (5),
+.BR pam (5),
+.BR pnmgamma (1),
+.BR pnmtotiff (1),
+.BR pnmtopng (1),
+.BR gphoto2 (1),
+.BR cjpeg (1),
+.BR djpeg (1)
+.SH AUTHOR
+Written by David Coffin, dcoffin a cybercom o net

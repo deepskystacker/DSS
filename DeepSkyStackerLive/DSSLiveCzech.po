@@ -1,0 +1,868 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Resource Localizer Export\n"
+"POT-Creation-Date: 2007-12-10 20:27+0100\n"
+"PO-Revision-Date: 2007-12-10 20:27+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "DeepSkyStacker Live %s"
+msgstr "DeepSkyStacker Live %s"
+
+msgid "Stacked Image"
+msgstr "--untranslated--"
+
+msgid "Last Image"
+msgstr "--untranslated--"
+
+msgid "Graphs"
+msgstr "--untranslated--"
+
+msgid "Monitoring"
+msgstr "--untranslated--"
+
+msgid "Image List"
+msgstr "--untranslated--"
+
+msgid "Log"
+msgstr "--untranslated--"
+
+msgid "<Click here to select the Monitored Folder>"
+msgstr "--untranslated--"
+
+msgid "Monitor"
+msgstr "--untranslated--"
+
+msgid "Stack"
+msgstr "--untranslated--"
+
+msgid "Stop"
+msgstr "--untranslated--"
+
+msgid "Settings"
+msgstr "--untranslated--"
+
+msgid "Static"
+msgstr "Static"
+
+msgid "Pending: %ld - Registered: %ld - Stacked: %ld - Total exposure time: %s"
+msgstr "--untranslated--"
+
+msgid "Gradient"
+msgstr "Gradient"
+
+msgid "Score"
+msgstr "Kvalita"
+
+msgid "FWHM"
+msgstr "--untranslated--"
+
+msgid "#Stars"
+msgstr "Hvězdy"
+
+msgid "dX/dY"
+msgstr "--untranslated--"
+
+msgid "Angle"
+msgstr "Úhel"
+
+msgid "Stacking"
+msgstr "Slučování"
+
+msgid "Don't stack until at least"
+msgstr "--untranslated--"
+
+msgid "Warn     Don't stack if..."
+msgstr "--untranslated--"
+
+msgid "...score is less than"
+msgstr "--untranslated--"
+
+msgid "...star count is less than"
+msgstr "--untranslated--"
+
+msgid "...FWHM is greater than"
+msgstr "--untranslated--"
+
+msgid "pixels"
+msgstr "bodů"
+
+msgid "...dX or dY is greater than"
+msgstr "--untranslated--"
+
+msgid "...Angle is greater than"
+msgstr "--untranslated--"
+
+msgid "°"
+msgstr "°"
+
+msgid "Warnings"
+msgstr "--untranslated--"
+
+msgid "Sound"
+msgstr "--untranslated--"
+
+msgid "Flash application"
+msgstr "--untranslated--"
+
+msgid "Send email to"
+msgstr "--untranslated--"
+
+msgid "Create warning file in "
+msgstr "--untranslated-- "
+
+msgid "Options"
+msgstr "Nastavení"
+
+msgid "Save stacked image to file each"
+msgstr "--untranslated--"
+
+msgid "image(s)"
+msgstr "--untranslated--"
+
+msgid "Output Folder:"
+msgstr "--untranslated--"
+
+msgid "<Click Here to select the output folder>"
+msgstr "--untranslated--"
+
+msgid "Apply changes"
+msgstr "--untranslated--"
+
+msgid "Cancel changes"
+msgstr "--untranslated--"
+
+msgid "images are available"
+msgstr "--untranslated--"
+
+msgid "<Click Here to select the folder>"
+msgstr "--untranslated--"
+
+msgid "<Click Here to set an email address>"
+msgstr "--untranslated--"
+
+msgid "Reset email count"
+msgstr "--untranslated--"
+
+msgid "Restart Monitoring"
+msgstr "--untranslated--"
+
+msgid "Before restarting do you want to"
+msgstr "--untranslated--"
+
+msgid "Create a new empty stacked image"
+msgstr "--untranslated--"
+
+msgid "or"
+msgstr "--untranslated--"
+
+msgid "Start from the current stacked image"
+msgstr "--untranslated--"
+
+msgid "Drop all the pending images"
+msgstr "--untranslated--"
+
+msgid "Use and process the pending images"
+msgstr "--untranslated--"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Storno"
+
+msgid "Email Settings"
+msgstr "--untranslated--"
+
+msgid "Sent email settings"
+msgstr "--untranslated--"
+
+msgid "Send to:"
+msgstr "--untranslated--"
+
+msgid "Object:"
+msgstr "--untranslated--"
+
+msgid "Send an email only for the first warning"
+msgstr "--untranslated--"
+
+msgid "Account Settings"
+msgstr "--untranslated--"
+
+msgid "SMTP server:"
+msgstr "--untranslated--"
+
+msgid "Account (From):"
+msgstr "--untranslated--"
+
+msgid "Test"
+msgstr "--untranslated--"
+
+msgid "Select the monitored folder"
+msgstr "--untranslated--"
+
+msgid ""
+"%ld new file(s) found\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"-> New file: %s\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Start monitoring folder %s\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Pause monitoring folder %s\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Stop monitoring folder %s\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"An error occured when attempting to start monitoring folder %s\n"
+""
+msgstr "--untranslated--"
+
+msgid "No Image loaded"
+msgstr "--untranslated--"
+
+msgid "No Stacked Image"
+msgstr "--untranslated--"
+
+msgid ""
+"Image %s registered: %ld star(s) detected - FWHM = %.2f - Score = %.2f\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Start Stacking files\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Stop Stacking files\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"\n"
+"How to use  DeepSkyStacker Live?\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Step 1\n"
+"Check the Settings tabs for all the stacking and warning settings\n"
+"\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Step 2\n"
+"Click on the Monitor button to start monitoring the folder\n"
+"When the monitoring is on incoming images are only registered but not stacked.\n"
+"\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Step 3\n"
+"To start stacking the images click on the Stack button\n"
+"At this point all the incoming (and previously registered) images will be stacked.\n"
+""
+msgstr "--untranslated--"
+
+msgid "Average"
+msgstr "Průměr"
+
+msgid "Median"
+msgstr "Střední"
+
+msgid "Maximum"
+msgstr "Maximum"
+
+msgid "Kappa-Sigma (Kappa = %.2f, Iterations = %ld)"
+msgstr "Kappa-Sigma (Kappa = %.2f, opakovani = %ld)"
+
+msgid "Auto Adaptive Weighted Average (Iterations = %ld)"
+msgstr "Automaticky adaptivni važeny průmer (opakovani = %ld)"
+
+msgid "Entropy Weighted Average"
+msgstr "Entropicky važeny průmer"
+
+msgid "Median Kappa-Sigma (Kappa = %.2f, Iterations = %ld)"
+msgstr "Stredni Kappa-Sigma (Kappa = %.2f, opakovani = %ld)"
+
+msgid "Exposure: < 1 s "
+msgstr "Expozice: < 1 s "
+
+msgid "Exposure: %ld s "
+msgstr "Expozice: %ld s "
+
+msgid "Exposure: %ld mn %ld s "
+msgstr "Expozice: %ld min  %ld s "
+
+msgid "Exposure: %ld hr %ld mn %ld s "
+msgstr "Expozice: %ld hod  %ld min  %ld s "
+
+msgid "%.1f Mb"
+msgstr "%.1f Mb"
+
+msgid "%.1f Kb"
+msgstr "%.1f Kb"
+
+msgid "%.1f Gb"
+msgstr "%.1f Gb"
+
+msgid "Registering pictures"
+msgstr "Zarovnání snímků"
+
+msgid "Registering %ld on %ld"
+msgstr "Zarovnávání %ld z %ld"
+
+msgid "Registering %s"
+msgstr "Zarovnávání  %s"
+
+msgid "Registering %s (%ld stars)"
+msgstr "Zarovnávání %s (%ld hvězd)"
+
+msgid "Computing luminances %s"
+msgstr "Výpočet jasu %s"
+
+msgid ""
+"Loading %ld bit/ch %s picture\n"
+"%s"
+msgstr ""
+"Načítání %ld bit/k %s snímku\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s picture\n"
+"%s"
+msgstr ""
+"Načítání %ld bitového šedého %s snímku\n"
+"%s"
+
+msgid ""
+"Loading %ld bit/ch %s dark frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bit/k %s snímku temného pozadí\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s dark frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bitového šedého %s snímku temného pozadí\n"
+"%s"
+
+msgid ""
+"Adding %ld bit/ch %s dark frame\n"
+"%s"
+msgstr ""
+"Přidávání %ld bit/k %s snímku temného pozadí\n"
+"%s"
+
+msgid ""
+"Adding %ld bits gray %s dark frame\n"
+"%s"
+msgstr ""
+"Přidávání %ld bitového šedého %s snímku temného pozadí\n"
+"%s"
+
+msgid ""
+"Loading %ld bit/ch %s offset frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bit/k %s snímku zkreslení\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s offset frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bitového šedého %s snímku zkreslení\n"
+"%s"
+
+msgid ""
+"Adding %ld bit/ch %s offset frame\n"
+"%s"
+msgstr ""
+"Přidávání %ld bit/k %s snímku zkreslení\n"
+"%s"
+
+msgid ""
+"Adding %ld bits gray %s offset frame\n"
+"%s"
+msgstr ""
+"Přidávání %ld bitového šedého %s snímku zkreslení\n"
+"%s"
+
+msgid "Computing offsets"
+msgstr "Výpočet zkreslení"
+
+msgid "Detecting Hot Pixels (1/2)"
+msgstr "Zjišťování přepálených bodů (1/2)"
+
+msgid "Detecting Hot Pixels (2/2)"
+msgstr "Zjišťování přepálených bodů (2/2)"
+
+msgid "Computing Flat Calibration Parameters"
+msgstr "Výpočet kalibračních parametrů vyrovnání jasu"
+
+msgid "Applying Flat Calibration Parameters"
+msgstr "Použití kalibračních parametrů vyrovnání jasu"
+
+msgid "Interpolating with Adaptive Homogeneity Directed (AHD)"
+msgstr "Interpolace a přizpůsobení směrové homogenity (AHD)"
+
+msgid "Processing Image..."
+msgstr "Zpracování obrazu..."
+
+msgid "Applying cosmetic - Hot Pixels"
+msgstr "Použití úpravy vzhledu - přepálené body"
+
+msgid "Applying cosmetic - Cold Pixels"
+msgstr "Použití úpravy vzhledu - mrtvé body"
+
+msgid "Creating Median Filtered Image"
+msgstr "Tvorba střední filtrace obrazu"
+
+msgid "Optimizing Dark Matching"
+msgstr "Optimalizace temného srovnání"
+
+msgid ""
+"Loading %ld bit/ch %s dark flat frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bit/k %s snímku vyrovnání temného pozadí\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s dark flat frame\n"
+"%s"
+msgstr ""
+"Přidání %ld bitového šedého %s snímku vyrovnání temného pozadí\n"
+"%s"
+
+msgid "Computing master dark flat (%s)"
+msgstr "Výpočet základního vyrovnání temného pozadí(%s)"
+
+msgid "Master Dark Flat created from %ld pictures (%s)"
+msgstr "Základní vyrovnání temného pozadí vytvořeno z %ld snímků (%s)"
+
+msgid "Loading FITS %ld bit monochrome"
+msgstr "Načítání FITS %ld bit jednobarevný"
+
+msgid "Saving FITS %ld bit"
+msgstr "Ukládání FITS %ld bit"
+
+msgid ""
+"Loading %ld bit/ch %s flat frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bit/k %s snímku vyrovnání jasu\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s flat frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bit/k %s snímku vyrovnání jasu\n"
+"%s"
+
+msgid ""
+"Adding %ld bit/ch %s flat frame\n"
+"%s"
+msgstr ""
+"Přidání %ld bit/k %s snímku vyrovnání jasu\n"
+"%s"
+
+msgid ""
+"Adding %ld bits gray %s flat frame\n"
+"%s"
+msgstr ""
+"Přidání %ld bitového šedého %s snímku vyrovnání jasu\n"
+"%s"
+
+msgid "Master Dark created from %ld pictures (%s)"
+msgstr "Základní temné pozadí vytvořeno z %ld snímků (%s)"
+
+msgid "Master Offset created from %ld pictures (%s)"
+msgstr "Základní zkreslení vytvořeno z %ld snímků (%s)"
+
+msgid "Master Flat created from %ld pictures (%s)"
+msgstr "Základní vyrovnání jasu vytvořeno z %ld snímků (%s)"
+
+msgid "Subtracting Offset Frame"
+msgstr "Odečítání snímku zkreslení"
+
+msgid "Subtracting Dark Frame"
+msgstr "Odečítání snímku temného pozadí"
+
+msgid "Applying Flat Frame"
+msgstr "Použití snímku vyrovnání jasu"
+
+msgid "Calibrating Master Flat"
+msgstr "Kalibrace základního snímku vyrovnání jasu"
+
+msgid "Automatic computing minimum luminance"
+msgstr "Automatický výpočet minimálního jasu"
+
+msgid "Computing Entropy"
+msgstr "Výpočet entropie"
+
+msgid "Computing Background Calibration parameters"
+msgstr "Výpočet kalibračních parametrů pozadí"
+
+msgid "Computing Dark Optimization parameters"
+msgstr "Výpočet parametrů optimalizace temného pozadí"
+
+msgid "Detecting hot pixels"
+msgstr "Zjišťování přepálených bodů"
+
+msgid "Computing stacking info for %s"
+msgstr "Výpočet informací pro sloučení %s"
+
+msgid "Stacking %ld on %ld - Offset [%.1f,%.1f] - Angle : %.1f°"
+msgstr "Slučování %ld z %ld - posun [%.1f,%.1f] - úhel : %.1f°"
+
+msgid ""
+"Loading %ld bit/ch %s light frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bit/k %s aktivního snímku\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s light frame\n"
+"%s"
+msgstr ""
+"Načítání %ld bitového %s aktivního šedého snímku\n"
+"%s"
+
+msgid ""
+"Stacking %ld bit/ch %s light frame\n"
+"%s"
+msgstr ""
+"Slučování %ld bit/k %s aktivního snímku\n"
+"%s"
+
+msgid ""
+"Stacking %ld bits gray %s light frame\n"
+"%s"
+msgstr ""
+"Slučování %ld bitového šedého aktivního %s snímku\n"
+"%s"
+
+msgid "Stacking - Adjust Bayer - Compute adjustment"
+msgstr "Slučování - úprava Bayer - výpočet úpravy"
+
+msgid "Compute adjustment %ld on %ld"
+msgstr "Výpočet úprav %ld z %ld"
+
+msgid "Stacking - Adjust Bayer - Apply adjustment"
+msgstr "Slučování - úprava Bayer - použití úpravy"
+
+msgid "Compute maximum adjustment"
+msgstr "Výpočet maxima úprav"
+
+msgid "Applying adjustment"
+msgstr "Použití úprav"
+
+msgid "Computing master offset (%s)"
+msgstr "Výpočet základního zkreslení (%s)"
+
+msgid "Computing master dark (%s)"
+msgstr "Výpočet základního temného pozadí (%s)"
+
+msgid "Computing master flat (%s)"
+msgstr "Výpočet základního vyrovnání jasu (%s)"
+
+msgid "Loading DSImage"
+msgstr "Načítání DSImage"
+
+msgid "Loading %s"
+msgstr "Načítání %s"
+
+msgid "Saving stacked picture in %s (DSImage)"
+msgstr "Ukládání sloučených obrazů do %s (DSImage)"
+
+msgid "Saving DSImage File"
+msgstr "Ukládání souboru DSImage"
+
+msgid "Saving TIFF %ld bit"
+msgstr "Ukládání TIFF %ld bit"
+
+msgid "Saving %s"
+msgstr "Ukládání %s"
+
+msgid "Picture saved with settings applied."
+msgstr "Obraz byl uložen s použitím úprav."
+
+msgid "Picture saved with settings embedded."
+msgstr "Obraz byl uložen bez použití úprav."
+
+msgid "Loading TIFF %ld bit/ch"
+msgstr "Načítání TIFF %ld bit/k"
+
+msgid "Loading TIFF %ld bit monochrome"
+msgstr "Načítání TIFF %ld bit jednobarevného"
+
+msgid "DeepSkyStacker 3.0"
+msgstr "DeepSkyStacker 3.0"
+
+msgid "Saving Registered and Calibrated image in %s"
+msgstr "Ukládání zarovnaného a kalibrovaného obrazu do %s"
+
+msgid "Saving Calibrated image in %s"
+msgstr "Ukládání kalibrovaného obrazu do %s"
+
+msgid "Loading FITS %ld bit/ch"
+msgstr "Načítání FITS %ld bit/k"
+
+msgid "Computing Cosmetic"
+msgstr "Výpočet úpravy vzhledu"
+
+msgid "Computing Final Picture (%s)"
+msgstr "Zpracování výsledného obrazu (%s)"
+
+msgid "Create Master Dark Frame"
+msgstr "Vytvoření základního snímku temného pozadí"
+
+msgid "Create Master Offset Frame"
+msgstr "Vytvoření základního snímku zkreslení"
+
+msgid "Adding Offset frame %ld on %ld"
+msgstr "Přidávání snímku zkreslení %ld z %ld"
+
+msgid "Adding Dark frame %ld on %ld"
+msgstr "Přidávání snímku temného pozadí %ld z %ld"
+
+msgid "Saving Master Offset"
+msgstr "Uložení základního snímku zkreslení"
+
+msgid "Saving Master Dark"
+msgstr "Uložení základního snímku temného pozadí"
+
+msgid "Create Master Flat Frame"
+msgstr "Vytvoření základního snímku vyrovnání jasu"
+
+msgid "Adding Flat frame %ld on %ld"
+msgstr "Přidávání snímku vyrovnání jasu %ld z %ld"
+
+msgid "Saving Master Flat"
+msgstr "Uložení základního snímku vyrovnání jasu"
+
+msgid "Create Master Dark Flat Frame"
+msgstr "Vytvoření základního snímku vyrovnání temného pozadí"
+
+msgid "Adding Dark Flat frame %ld on %ld"
+msgstr "Přidávání snímku vyrovnání temného pozadí %ld z %ld"
+
+msgid "Saving Master Dark Flat"
+msgstr "Uložení základního snímku vyrovnání temného pozadí"
+
+msgid "RGB %ld bit/ch"
+msgstr "RGB %ld bit/k"
+
+msgid "Gray %ld bit"
+msgstr "Šedá %ld bit"
+
+msgid "Yes"
+msgstr "Ano"
+
+msgid "No"
+msgstr "Ne"
+
+msgid "%ld s"
+msgstr "%ld s"
+
+msgid "1/%ld s"
+msgstr "1/%ld s"
+
+msgid "%ld s "
+msgstr "%ld s "
+
+msgid "%ld mn %ld s "
+msgstr "%ld min %ld s "
+
+msgid "%ld hr %ld mn %ld s "
+msgstr "%ld hod %ld min %ld s "
+
+msgid "Path"
+msgstr "Cesta"
+
+msgid "File"
+msgstr "Soubor"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "dX"
+msgstr "dX"
+
+msgid "dY"
+msgstr "dY"
+
+msgid "Date/Time"
+msgstr "Datum/Čas"
+
+msgid "Size"
+msgstr "Velikost"
+
+msgid "CFA"
+msgstr "CFA"
+
+msgid "Depth"
+msgstr "Barevná hloubka"
+
+msgid "Infos"
+msgstr "Informace"
+
+msgid "ISO"
+msgstr "ISO"
+
+msgid "Exposure"
+msgstr "Expozice"
+
+msgid "Linear"
+msgstr "Lineární"
+
+msgid "Cube Root"
+msgstr "Třetí odmocnina"
+
+msgid "Square Root"
+msgstr "Druhá odmocnina"
+
+msgid "Logarithm"
+msgstr "Logaritmus"
+
+msgid "Log(Log)"
+msgstr "Log(Log)"
+
+msgid "Log(Square Root)"
+msgstr "Log(druhé odmocniny)"
+
+msgid "ASinH"
+msgstr "ASinH"
+
+msgid ""
+"The process needs temporarily %s of free space on the %s drive.\n"
+"Only %s are available on this drive."
+msgstr ""
+"Pro zpracování je třeba %s volného odkládacího prostoru na disku %s.\n"
+"Na tomto disku je dostupných jen %s."
+
+msgid ""
+"\n"
+"Do you really want to continue?"
+msgstr ""
+"\n"
+"Opravdu chcete pokračovat?"
+
+msgid ""
+"You can pause/start again the stacking process by clicking on the Stack button.\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"To stop the monitoring and stacking click on the Stop button.\n"
+"\n"
+""
+msgstr "--untranslated--"
+
+msgid ""
+"Error loading file %s\n"
+""
+msgstr "--untranslated--"
+
+msgid "Loaded"
+msgstr "--untranslated--"
+
+msgid "Registered"
+msgstr "--untranslated--"
+
+msgid "Stack delayed"
+msgstr "--untranslated--"
+
+msgid "Not stackable"
+msgstr "--untranslated--"
+
+msgid "Stacked"
+msgstr "--untranslated--"
+
+msgid ""
+"Image %s is not stackable (%s)\n"
+""
+msgstr "--untranslated--"
+
+msgid "Score (%.2f) is less than %.2f"
+msgstr "--untranslated--"
+
+msgid "Star count (%.0f) is less than %.0f"
+msgstr "--untranslated--"
+
+msgid "FWHM (%.2f pixels) is greater than %.2f pixels"
+msgstr "--untranslated--"
+
+msgid "dX (%.2f pixels) or dY (%.2f pixels) is greater than %.2f pixels"
+msgstr "--untranslated--"
+
+msgid "Angle (%.2f°) is greater than %.2f°"
+msgstr "--untranslated--"
+
+msgid "No transformation found from reference frame"
+msgstr "--untranslated--"
+
+msgid ""
+"Warning: Image %s -> %s\n"
+""
+msgstr "--untranslated--"
+
+msgid "Select Warning File Folder"
+msgstr "--untranslated--"
+
+msgid "Select Stacked Image Output Folder"
+msgstr "--untranslated--"
+
+msgid ""
+"Saving Stacked Image in\n"
+"%s"
+msgstr "--untranslated--"
+
+msgid "An error occured while sending the email!"
+msgstr "--untranslated--"
+
+msgid "The test email has been sent."
+msgstr "--untranslated--"
+
+msgid "You can not change the monitored folder while monitoring."
+msgstr "--untranslated--"
+
+msgid "Click here to save the stacked image to file"
+msgstr "--untranslated--"
+
+msgid ""
+"You must select an output folder first.\n"
+"Go to the Settings tab to select the Stacked Image Output Folder."
+msgstr "--untranslated--"
+
+msgid "The stacked image will be saved as soon as possible"
+msgstr "--untranslated--"
+
+msgid "The stacked image has been saved"
+msgstr "--untranslated--"
+

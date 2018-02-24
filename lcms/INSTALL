@@ -1,0 +1,113 @@
+
+  LittleCMS 1.16 - Installation guide
+
+
+  Configuration
+  *************
+ 
+  All configuration is done by the configure script on linux. 
+  
+  If you want to fine-tune the library, this can be done by
+  editing lcms.h
+
+  Normally, there is no need to touch anything. Only make sure
+  to set properly the NON_WINDOWS toggle if you are using the 
+  engine in non MS-Windows environments (set by default), and 
+  USE_BIG_ENDIAN if your machine does use this convention. 
+  Remaining toggles does control optimization degree. If your 
+  compiler does support the new __int64 or "long long" type, 
+  (gcc does) you can gain speed by defining the USE_INT64 toggle.
+  There is an experimetal multi-threading mode which may be 
+  activated by uncommenting USE_PTHREADS toggle. However, this
+  is only for completness sake as the current code should be 
+  thread-safe on all but a very small fraction of time. So, use
+  the toggle only if you make _extensive_ use of threads on 
+  multiprocessor architectures.
+  
+
+  Installation 
+  *************
+
+  Linux/Mac/unices
+  ================
+
+  Unpack & untar the tarball (you already did!) and then type 
+
+    ./configure
+    make
+    make check
+
+  This latter will run the testbed program as well. If you want to 
+  install the package, type 
+
+    make install
+
+  This does copy lcms.h and icc34.h into /usr/local/include and 
+  liblcms.a into /usr/local/lib
+
+  There is also a simple, old version compatible script. If you 
+  experience any problem with automake try this one:
+
+	make -f makefile.simple
+
+  this is just to keep compatibility with old versions.
+
+
+  For cleaning object and binaries files type 'make clean'
+
+  There are these targets on Makefile:
+
+      install: Does install package
+      check:   builds and executes testbed program
+      clean:   Deletes object & binary files
+
+
+  NOTE:  The package doesn't build with srcdir!=builddir
+  That is  because a pre-generated icc34.h located at 
+  'include' folder. This is needed for windows installs. 
+  So, if you plan to build the package using any builddir 
+  different from srcdir, please delete this file.
+  
+
+
+  Windows
+  =======
+
+  There are projects for most popular environments in the 
+  'Projects' folder. Just locate which one you want to use.
+    
+
+
+  Tifficc & jpegicc
+  =================
+  automake will try to detect whatever you have libtiff and
+  libjpeg and if found build these additional utilities.
+
+  Only if you are using makefile.simple:
+
+  If you have libz, libtiff and libjpeg installed, there are
+  some additional utilities for converting images using icc profiles.
+  Since lcms doesn't require these libraries to work, and in order
+  to minimize the dependency carrousel, these utilities are not builded 
+  by default. If you want to build them, type 'make utils'. I will
+  recommend to give a try if you are interested in color management. 
+  tifficc can do wonderful things like converting CMYK separations
+  to displayable files and other interesting stuff. Run the executable
+  without parameters to see how it works.
+
+
+  Removing //-C++ style comments
+  ==============================
+
+  There is a utility on root called 'filter.c' If your compiler
+  doesn't support C++-style comments, apply this filter to all
+  source & headers. Probably you would need to make your own 
+  compilation script too. I will love! to know any exotic environment
+  using lcms, so please me know if it worked.
+
+
+  
+  If you experience any difficult on installation, drop me a note
+  info@littlecms.com
+
+  

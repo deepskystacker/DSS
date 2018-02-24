@@ -1,0 +1,25 @@
+;Copyright (c) 1998 Gipsysoft. All Rights Reserved.
+;Please see the file "licence.txt" for licencing details.
+
+;File:	QHTM.def
+;Owner:	russf@gipsysoft.com
+;Purpose:	The usual DEF file.
+EXPORTS
+	QHTM_Initialize							@1
+	QHTM_PrintDestroyContext		@3
+	QHTM_PrintSetText						@4
+	QHTM_PrintSetTextFile				@5
+	QHTM_PrintSetTextResource		@6
+	QHTM_PrintLayout						@7
+	QHTM_EnableCooltips					@9
+	QHTM_PrintPage							@10
+	QHTM_PrintCreateContext			@11
+	QHTM_PrintGetHTMLHeight			@12
+	QHTM_MessageBox							@13
+	QHTM_SetHTMLButton					@14
+	QHTM_GetHTMLHeight					@15
+	QHTM_RenderHTML							@16
+	QHTM_Uninitialize						@17
+	QHTM_PrintSetImageCallback	@18
+	QHTM_RenderHTMLRect					@19
+	QHTM_SetHTMLListbox					@20

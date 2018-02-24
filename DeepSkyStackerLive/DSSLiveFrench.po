@@ -1,0 +1,916 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Resource Localizer Export\n"
+"POT-Creation-Date: 2007-12-08 21:43+0100\n"
+"PO-Revision-Date: 2007-12-08 21:43+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "DeepSkyStacker Live %s"
+msgstr "DeepSkyStacker Live %s"
+
+msgid "Stacked Image"
+msgstr "Image Empilée"
+
+msgid "Last Image"
+msgstr "Dernière Image"
+
+msgid "Graphs"
+msgstr "Graphiques"
+
+msgid "Monitoring"
+msgstr "Surveillance"
+
+msgid "Image List"
+msgstr "Liste d'images"
+
+msgid "Log"
+msgstr "Journal"
+
+msgid "<Click here to select the Monitored Folder>"
+msgstr "<Cliquez ici pour sélectionner le répertoire à surveiller>"
+
+msgid "Monitor"
+msgstr "Surveiller"
+
+msgid "Stack"
+msgstr "Empiler"
+
+msgid "Stop"
+msgstr "Stop"
+
+msgid "Settings"
+msgstr "Paramètres"
+
+msgid "Static"
+msgstr "Static"
+
+msgid "Pending: %ld - Registered: %ld - Stacked: %ld - Total exposure time: %s"
+msgstr "En attente : %ld - Enregistrées: %ld - Empilées: %ld - Temps total d'exposition: %s"
+
+msgid "Gradient"
+msgstr "Gradient"
+
+msgid "Score"
+msgstr "Score"
+
+msgid "FWHM"
+msgstr "FWHM"
+
+msgid "#Stars"
+msgstr "#Etoiles"
+
+msgid "dX/dY"
+msgstr "dX/dY"
+
+msgid "Angle"
+msgstr "Angle"
+
+msgid "Stacking"
+msgstr "Empilement"
+
+msgid "Don't stack until at least"
+msgstr "Ne pas empiler avant d'avoir au moins"
+
+msgid "Warn     Don't stack if..."
+msgstr "Avertir Ne pas empiler si..."
+
+msgid "...score is less than"
+msgstr "...le score est inférieur à"
+
+msgid "...star count is less than"
+msgstr "...le nombre d'étoiles est inférieur à"
+
+msgid "...FWHM is greater than"
+msgstr "...la FWHM is supérieure à"
+
+msgid "pixels"
+msgstr "En pixels"
+
+msgid "...dX or dY is greater than"
+msgstr "...dX ou dY is supérieur à"
+
+msgid "...Angle is greater than"
+msgstr "...l'angle est supérieur à"
+
+msgid "°"
+msgstr "°"
+
+msgid "Warnings"
+msgstr "Avertissements"
+
+msgid "Sound"
+msgstr "Son"
+
+msgid "Flash application"
+msgstr "Clignotement de l'application"
+
+msgid "Send email to"
+msgstr "Envoyer un email à"
+
+msgid "Create warning file in "
+msgstr "Créer un fichier d'avertissement dans "
+
+msgid "Options"
+msgstr "Options"
+
+msgid "Save stacked image to file each"
+msgstr "Enregistrer l'image empilée chaque"
+
+msgid "image(s)"
+msgstr "image(s)"
+
+msgid "Output Folder:"
+msgstr "Répertoire de sortie :"
+
+msgid "<Click Here to select the output folder>"
+msgstr "<Cliquer ici pour sélectionner le répertoire de sortie>"
+
+msgid "Apply changes"
+msgstr "Appliquer les modifications"
+
+msgid "Cancel changes"
+msgstr "Annuler les modifications"
+
+msgid "images are available"
+msgstr "images sont disponibles"
+
+msgid "<Click Here to select the folder>"
+msgstr "<Cliquer ici pour sélectionner le répertoire>"
+
+msgid "<Click Here to set an email address>"
+msgstr "<Cliquer ici pour choisir une adresse email>"
+
+msgid "Reset email count"
+msgstr "Remettre à zéro le compte d'emails"
+
+msgid "Restart Monitoring"
+msgstr "Rédémarrage de la surveillance"
+
+msgid "Before restarting do you want to"
+msgstr "Avant de redémarrer voulez vous"
+
+msgid "Create a new empty stacked image"
+msgstr "Créer une nouvelle image empilée"
+
+msgid "or"
+msgstr "ou"
+
+msgid "Start from the current stacked image"
+msgstr "Partir de l'image empilée courante"
+
+msgid "Drop all the pending images"
+msgstr "Ignorer les images en attente"
+
+msgid "Use and process the pending images"
+msgstr "Utiliser et traiter les images en attente"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Email Settings"
+msgstr "Paramètres de l'email"
+
+msgid "Sent email settings"
+msgstr "Paramètres d'envoi"
+
+msgid "Send to:"
+msgstr "Envoyer à :"
+
+msgid "Object:"
+msgstr "Objet :"
+
+msgid "Send an email only for the first warning"
+msgstr "Envoyer un email uniquement pour le premier avertissement"
+
+msgid "Account Settings"
+msgstr "Paramètre du compte"
+
+msgid "SMTP server:"
+msgstr "Serveur SMTP :"
+
+msgid "Account (From):"
+msgstr "Compte (de) :"
+
+msgid "Test"
+msgstr "Test"
+
+msgid "Select the monitored folder"
+msgstr "Sélectionner le répertoire à surveiller"
+
+msgid ""
+"%ld new file(s) found\n"
+""
+msgstr ""
+"%ld nouveau(x) fichier(s) trouvé(s)\n"
+""
+
+msgid ""
+"-> New file: %s\n"
+""
+msgstr ""
+"-> Nouveau fichier : %s\n"
+""
+
+msgid ""
+"Start monitoring folder %s\n"
+""
+msgstr ""
+"Début de la surveillance du répertoire %s\n"
+""
+
+msgid ""
+"Pause monitoring folder %s\n"
+""
+msgstr ""
+"Pause de la surveilance du répertoire %s\n"
+""
+
+msgid ""
+"Stop monitoring folder %s\n"
+""
+msgstr ""
+"Arrêt de la surveillance du répertoire %s\n"
+""
+
+msgid ""
+"An error occured when attempting to start monitoring folder %s\n"
+""
+msgstr ""
+"Une erreur est survenue lors de la tentative de surveillance du répertoire %s\n"
+""
+
+msgid "No Image loaded"
+msgstr "Aucune image chargée"
+
+msgid "No Stacked Image"
+msgstr "Pas d'image empilée"
+
+msgid ""
+"Image %s registered: %ld star(s) detected - FWHM = %.2f - Score = %.2f\n"
+""
+msgstr ""
+"Image %s enregistrée : %ld étoile(s) detectée(s) - FWHM = %.2f - Score = %.2f\n"
+""
+
+msgid ""
+"Start Stacking files\n"
+""
+msgstr ""
+"Début de l'empilement des fichiers\n"
+""
+
+msgid ""
+"Stop Stacking files\n"
+""
+msgstr ""
+"Arrêt de l'empilement des fichiers\n"
+""
+
+msgid ""
+"\n"
+"How to use  DeepSkyStacker Live?\n"
+""
+msgstr ""
+"\n"
+"Comment utiliser DeepSkyStacker Live ?"
+""
+msgid ""
+"Step 1\n"
+"Check the Settings tabs for all the stacking and warning settings\n"
+"\n"
+""
+msgstr ""
+"Etape 1\n"
+"Vérifiez l'onglet Paramètres pour les paramètres d'empilement et d'avertissement\n"
+"\n"
+""
+
+msgid ""
+"Step 2\n"
+"Click on the Monitor button to start monitoring the folder\n"
+"When the monitoring is on incoming images are only registered but not stacked.\n"
+"\n"
+""
+msgstr ""
+"Etape 2\n"
+"Cliquez sur le bonton Surveiller pour démarrer la surveillance du répertoire\n"
+"Quand la surveillance est active toutes les images entrantes sont enregistrées mais pas empilées.\n"
+"\n"
+""
+
+msgid ""
+"Step 3\n"
+"To start stacking the images click on the Stack button\n"
+"At this point all the incoming (and previously registered) images will be stacked.\n"
+""
+msgstr ""
+"Etape 3\n"
+"Pour démarrer l'empilement cliquez sur le bouton Empiler\n"
+"A partir de ce moment toutes les images entrantes (et celles déjà enregistrées) vont être empilées.\n"
+""
+
+msgid "Average"
+msgstr "Moyenne"
+
+msgid "Median"
+msgstr "Médiane"
+
+msgid "Maximum"
+msgstr "Maximum"
+
+msgid "Kappa-Sigma (Kappa = %.2f, Iterations = %ld)"
+msgstr "Kappa-Sigma (Kappa = %.2f, Itérations = %ld)"
+
+msgid "Auto Adaptive Weighted Average (Iterations = %ld)"
+msgstr "Moyenne pondérée auto adaptative (Itérations = %ld)"
+
+msgid "Entropy Weighted Average"
+msgstr "Moyenne pondérée par l'entropie"
+
+msgid "Median Kappa-Sigma (Kappa = %.2f, Iterations = %ld)"
+msgstr "Kappa-Sigma médian (Kappa = %.2f, Iterations = %ld)"
+
+msgid "Exposure: < 1 s "
+msgstr "Exposition totale : < 1 s "
+
+msgid "Exposure: %ld s "
+msgstr "Exposition totale : %ld s "
+
+msgid "Exposure: %ld mn %ld s "
+msgstr "Exposition totale : %ld mn %ld s "
+
+msgid "Exposure: %ld hr %ld mn %ld s "
+msgstr "Exposition totale : %ld h %ld mn %ld s "
+
+msgid "%.1f Mb"
+msgstr "%.1f Mo"
+
+msgid "%.1f Kb"
+msgstr "%.1f Ko"
+
+msgid "%.1f Gb"
+msgstr "%.1f Go"
+
+msgid "Registering pictures"
+msgstr "Enregistrement des images"
+
+msgid "Registering %ld on %ld"
+msgstr "Enregistrement %ld sur %ld"
+
+msgid "Registering %s"
+msgstr "Enregistrement de %s"
+
+msgid "Registering %s (%ld stars)"
+msgstr "Enregistrement de %s (%ld étoiles)"
+
+msgid "Computing luminances %s"
+msgstr "Calcul de la luminance de %s"
+
+msgid ""
+"Loading %ld bit/ch %s picture\n"
+"%s"
+msgstr ""
+"Chargement de l'image %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s picture\n"
+"%s"
+msgstr ""
+"Chargement de l'image monochrome %ld bits %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bit/ch %s dark frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image de dark %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s dark frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image de dark monochrome %ld bits %s\n"
+"%s"
+
+msgid ""
+"Adding %ld bit/ch %s dark frame\n"
+"%s"
+msgstr ""
+"Ajout de l'image de dark %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Adding %ld bits gray %s dark frame\n"
+"%s"
+msgstr ""
+"Ajout de l'image de dark monochrome %ld bits %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bit/ch %s offset frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image d'offset %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s offset frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image d'offset monochrome %ld bits %s\n"
+"%s"
+
+msgid ""
+"Adding %ld bit/ch %s offset frame\n"
+"%s"
+msgstr ""
+"Ajout de l'image d'offset %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Adding %ld bits gray %s offset frame\n"
+"%s"
+msgstr ""
+"Ajout de l'image d'offset monochrome %ld bits %s\n"
+"%s"
+
+msgid "Computing offsets"
+msgstr "Calcul des décalages"
+
+msgid "Detecting Hot Pixels (1/2)"
+msgstr "Détection des pixels chauds (1/2)"
+
+msgid "Detecting Hot Pixels (2/2)"
+msgstr "Détection des pixels chauds (2/2)"
+
+msgid "Computing Flat Calibration Parameters"
+msgstr "Calcul des paramètres de calibration du flat"
+
+msgid "Applying Flat Calibration Parameters"
+msgstr "Application des paramètres de calibration du flat"
+
+msgid "Interpolating with Adaptive Homogeneity Directed (AHD)"
+msgstr "Interpolation Adaptative Homogène Dirigée (AHD)"
+
+msgid "Processing Image..."
+msgstr "Traitement de l'image en cours..."
+
+msgid "Applying cosmetic - Hot Pixels"
+msgstr "Application de la cosmétique - Pixels Chauds"
+
+msgid "Applying cosmetic - Cold Pixels"
+msgstr "Application de la cosmétique - Pixels Froids"
+
+msgid "Creating Median Filtered Image"
+msgstr "Creation de l'image du filtre médian"
+
+msgid "Optimizing Dark Matching"
+msgstr "Optimisation du Dark"
+
+msgid ""
+"Loading %ld bit/ch %s dark flat frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image de dark flat %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s dark flat frame\n"
+"%s"
+msgstr ""
+"Ajout de l'image de dark flat monochrome %ld bits %s\n"
+"%s"
+
+msgid "Computing master dark flat (%s)"
+msgstr "Calcul de l'image du master dark flat (%s)"
+
+msgid "Master Dark Flat created from %ld pictures (%s)"
+msgstr "Master Dark Flat créé à partir de %ld images (%s)"
+
+msgid "Loading FITS %ld bit monochrome"
+msgstr "Chargement d'un fichier FITS %ld bits monochrome"
+
+msgid "Saving FITS %ld bit"
+msgstr "Enregistrement en FITS %ld bits"
+
+msgid ""
+"Loading %ld bit/ch %s flat frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image de flat %ld bit/ch %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s flat frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image de flat monochrome %ld bits %s\n"
+"%s"
+
+msgid ""
+"Adding %ld bit/ch %s flat frame\n"
+"%s"
+msgstr ""
+"Ajout de l'image de flat %ld bit/ch %s\n"
+"%s"
+
+msgid ""
+"Adding %ld bits gray %s flat frame\n"
+"%s"
+msgstr ""
+"Ajout de l'image de flat monochrome %ld bits %s\n"
+"%s"
+
+msgid "Master Dark created from %ld pictures (%s)"
+msgstr "Master Dark créé à partir de %ld images (%s)"
+
+msgid "Master Offset created from %ld pictures (%s)"
+msgstr "Master Offset créé à partir de %ld images (%s)"
+
+msgid "Master Flat created from %ld pictures (%s)"
+msgstr "Master Flat créé à partir de %ld images (%s)"
+
+msgid "Subtracting Offset Frame"
+msgstr "Soustraction du master offset"
+
+msgid "Subtracting Dark Frame"
+msgstr "Soustraction du master dark"
+
+msgid "Applying Flat Frame"
+msgstr "Application du master flat"
+
+msgid "Calibrating Master Flat"
+msgstr "Calibrage du master Flat"
+
+msgid "Automatic computing minimum luminance"
+msgstr "Détermination automatique de la luminance minimale"
+
+msgid "Computing Entropy"
+msgstr "Calcul de l'entropie"
+
+msgid "Computing Background Calibration parameters"
+msgstr "Calcul des paramètres de calibrage du fond"
+
+msgid "Computing Dark Optimization parameters"
+msgstr "Calcul des paramètres de l'optimisation du dark"
+
+msgid "Detecting hot pixels"
+msgstr "Détection des pixels chauds"
+
+msgid "Computing stacking info for %s"
+msgstr "Calcul des informations d'empilement pour %s"
+
+msgid "Stacking %ld on %ld - Offset [%.1f,%.1f] - Angle : %.1f°"
+msgstr "Empilement %ld sur %ld - Décalage [%.1f,%.1f] - Angle : %.1f°"
+
+msgid ""
+"Loading %ld bit/ch %s light frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Loading %ld bits gray %s light frame\n"
+"%s"
+msgstr ""
+"Chargement de l'image monochrome %ld bits %s\n"
+"%s"
+
+msgid ""
+"Stacking %ld bit/ch %s light frame\n"
+"%s"
+msgstr ""
+"Empilement de l'image %ld bits/ch %s\n"
+"%s"
+
+msgid ""
+"Stacking %ld bits gray %s light frame\n"
+"%s"
+msgstr ""
+"Empilement de l'image monochrome %ld bits %s\n"
+"%s"
+
+msgid "Stacking - Adjust Bayer - Compute adjustment"
+msgstr "Empilement - Ajustement Bayer - Calcul de l'ajustement"
+
+msgid "Compute adjustment %ld on %ld"
+msgstr "Calcul de l'ajustement %ld sur %ld"
+
+msgid "Stacking - Adjust Bayer - Apply adjustment"
+msgstr "Empilement - Ajustement Bayer - Application de l'ajustement"
+
+msgid "Compute maximum adjustment"
+msgstr "Calcul de l'ajustement maximal"
+
+msgid "Applying adjustment"
+msgstr "Application de l'ajustement"
+
+msgid "Computing master offset (%s)"
+msgstr "Calcul de l'image du master offset (%s)"
+
+msgid "Computing master dark (%s)"
+msgstr "Calcul de l'image du master dark (%s)"
+
+msgid "Computing master flat (%s)"
+msgstr "Calcul de l'image du master flat (%s)"
+
+msgid "Loading DSImage"
+msgstr "Chargement d'un fichier DSImage"
+
+msgid "Loading %s"
+msgstr "Chargement de %s"
+
+msgid "Saving stacked picture in %s (DSImage)"
+msgstr "Enregistrement d'une image dans %s (DSImage)"
+
+msgid "Saving DSImage File"
+msgstr "Enregistrement d'un fichier DSImage"
+
+msgid "Saving TIFF %ld bit"
+msgstr "Enregistrement en TIFF %ld bits"
+
+msgid "Saving %s"
+msgstr "Enregistrement de %s"
+
+msgid "Picture saved with settings applied."
+msgstr "Image enregistrée avec les ajustements appliqués."
+
+msgid "Picture saved with settings embedded."
+msgstr "Image enregistrée avec les ajustements inclus."
+
+msgid "Loading TIFF %ld bit/ch"
+msgstr "Chargement d'un fichier TIFF %ld bits/ch"
+
+msgid "Loading TIFF %ld bit monochrome"
+msgstr "Chargement d'un fichier TIFF %ld bits monochrome"
+
+msgid "DeepSkyStacker 3.0"
+msgstr "DeepSkyStacker 3.0"
+
+msgid "Saving Registered and Calibrated image in %s"
+msgstr "Enregistrement de l'image enregistrée et calibrée dans %s"
+
+msgid "Saving Calibrated image in %s"
+msgstr "Enregistrement de l'image calibrée dans %s"
+
+msgid "Loading FITS %ld bit/ch"
+msgstr "Chargement d'un fichier FITS %ld bits/ch"
+
+msgid "Computing Cosmetic"
+msgstr "Calcul de la cosmétique"
+
+msgid "Computing Final Picture (%s)"
+msgstr "Calcul de l'image (%s)"
+
+msgid "Create Master Dark Frame"
+msgstr "Création de l'image Master Dark"
+
+msgid "Create Master Offset Frame"
+msgstr "Création de l'image Master Offset"
+
+msgid "Adding Offset frame %ld on %ld"
+msgstr "Ajout de l'image d'offset %ld sur %ld"
+
+msgid "Adding Dark frame %ld on %ld"
+msgstr "Ajout de l'image de dark %ld sur %ld"
+
+msgid "Saving Master Offset"
+msgstr "Enregistrement du Master Offset"
+
+msgid "Saving Master Dark"
+msgstr "Enregistrement du Master Dark"
+
+msgid "Create Master Flat Frame"
+msgstr "Creation de l'mage Master Flat"
+
+msgid "Adding Flat frame %ld on %ld"
+msgstr "Ajout de l'image de flat %ld sur %ld"
+
+msgid "Saving Master Flat"
+msgstr "Enregistrement du Master Flat"
+
+msgid "Create Master Dark Flat Frame"
+msgstr "Création du Master Dark Flat"
+
+msgid "Adding Dark Flat frame %ld on %ld"
+msgstr "Ajout de l'image de dark flat %ld sur %ld"
+
+msgid "Saving Master Dark Flat"
+msgstr "Enregistrement du Master Dark Flat"
+
+msgid "RGB %ld bit/ch"
+msgstr "RGB %ld bits/ch"
+
+msgid "Gray %ld bit"
+msgstr "Monochrome %ld bits"
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "No"
+msgstr "Non"
+
+msgid "%ld s"
+msgstr "%ld s"
+
+msgid "1/%ld s"
+msgstr "1/%ld s"
+
+msgid "%ld s "
+msgstr "%ld s "
+
+msgid "%ld mn %ld s "
+msgstr "%ld mn %ld s "
+
+msgid "%ld hr %ld mn %ld s "
+msgstr "%ld h %ld m %ld s "
+
+msgid "Path"
+msgstr "Chemin"
+
+msgid "File"
+msgstr "Fichier"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "dX"
+msgstr "dX"
+
+msgid "dY"
+msgstr "dY"
+
+msgid "Date/Time"
+msgstr "Date/Heure"
+
+msgid "Size"
+msgstr "Taille"
+
+msgid "CFA"
+msgstr "CFA"
+
+msgid "Depth"
+msgstr "Profondeur"
+
+msgid "Infos"
+msgstr "Infos"
+
+msgid "ISO"
+msgstr "ISO"
+
+msgid "Exposure"
+msgstr "Temps de pose"
+
+msgid "Linear"
+msgstr "Linéaire"
+
+msgid "Cube Root"
+msgstr "Racine cubique"
+
+msgid "Square Root"
+msgstr "Racine carrée"
+
+msgid "Logarithm"
+msgstr "Logarithme"
+
+msgid "Log(Log)"
+msgstr "Log(Log)"
+
+msgid "Log(Square Root)"
+msgstr "Log(Racine carrée)"
+
+msgid "ASinH"
+msgstr "ASinH"
+
+msgid ""
+"The process needs temporarily %s of free space on the %s drive.\n"
+"Only %s are available on this drive."
+msgstr ""
+"Le processus nécessite temporairement %s d'espace libre sur le disque %s.\n"
+"Il ne reste que %s libre sur ce disque."
+
+msgid ""
+"\n"
+"Do you really want to continue?"
+msgstr ""
+"\n"
+"Voulez-vous réellement continuer ?"
+
+msgid ""
+"You can pause/start again the stacking process by clicking on the Stack button.\n"
+""
+msgstr ""
+"Vous pouvez arrêter/redémarrer l'empilement en cliquant sur le bouton Empiler.\n"
+""
+
+msgid ""
+"To stop the monitoring and stacking click on the Stop button.\n"
+"\n"
+""
+msgstr ""
+"Pour arrêter la surveillance et l'empilement cliquez sur le bouton Stop.\n"
+"\n"
+""
+
+msgid ""
+"Error loading file %s\n"
+""
+msgstr ""
+"Erreur lors du chargement du fichier %s\n"
+""
+
+msgid "Loaded"
+msgstr "Chargée"
+
+msgid "Registered"
+msgstr "Enregistrée"
+
+msgid "Stack delayed"
+msgstr "Empilement retardé"
+
+msgid "Not stackable"
+msgstr "Non empilable"
+
+msgid "Stacked"
+msgstr "Empilée"
+
+msgid ""
+"Image %s is not stackable (%s)\n"
+""
+msgstr ""
+"L'image %s n'est pas empilable (%s)\n"
+""
+
+msgid "Score (%.2f) is less than %.2f"
+msgstr "Le score (%.2f) est inférieur à %.2f"
+
+msgid "Star count (%.0f) is less than %.0f"
+msgstr "Le nombre d'étoiles (%.0f) est inférieur à %.0f"
+
+msgid "FWHM (%.2f pixels) is greater than %.2f pixels"
+msgstr "La FWHM (%.2f pixels) est supérieure à %.2f pixels"
+
+msgid "dX (%.2f pixels) or dY (%.2f pixels) is greater than %.2f pixels"
+msgstr "dX (%.2f pixels) ou dY (%.2f pixels) est supérieur à %.2f pixels"
+
+msgid "Angle (%.2f°) is greater than %.2f°"
+msgstr "L'angle (%.2f°) est supérieur à %.2f°"
+
+msgid "No transformation found from reference frame"
+msgstr "Aucune transformation trouvée depuis l'image de référence"
+
+msgid ""
+"Warning: Image %s -> %s\n"
+""
+msgstr ""
+"Avertissement : Image %s -> %s\n"
+""
+
+msgid "Select Warning File Folder"
+msgstr "Sélectionnez le répertoire pour le fichier d'avertissement"
+
+msgid "Select Stacked Image Output Folder"
+msgstr "Sélectionnez le répertoire de sortie pour l'image empilée"
+
+msgid ""
+"Saving Stacked Image in\n"
+"%s"
+msgstr ""
+"Enregistrement de l'image empilée dans\n"
+"%s"
+
+msgid "An error occured while sending the email!"
+msgstr "Une erreur est survenue lors de l'envoi de l'email"
+
+msgid "The test email has been sent."
+msgstr "L'email de test a été envoyé"
+
+msgid "You can not change the monitored folder while monitoring."
+msgstr "Vous ne pouvez pas changer le répertoire de surveillance pendant la surveillance"
+
+msgid "Click here to save the stacked image to file"
+msgstr "Cliquez ici pour enregistrer l'image empilée dans un fichier"
+
+msgid ""
+"You must select an output folder first.\n"
+"Go to the Settings tab to select the Stacked Image Output Folder."
+msgstr ""
+"Vous devez d'abord sélectionner un répertoire de sortie.\n"
+"Allez dans l'onglet Paramètres pour sélectionner le répertoire de sortie de l'image empilée."
+
+msgid "The stacked image will be saved as soon as possible"
+msgstr "L'image empilée va être enregistrée dès que possible"
+
+msgid "The stacked image has been saved"
+msgstr "L'image empilée a été enregistrée"
+

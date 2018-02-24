@@ -1,0 +1,179 @@
+Ideas for extensions
+====================
+
+What about a HTML message box. Identical to MessageBox except the text portion of the message
+	box would be HTML. This would be much nicer than the plain text dialog box that appears.
+	Users would be able to specify filenames, resource etc.
+	Could easily replace the MFC mechanism because all of the AfxMessageBox(...) functions go through
+	one standard function.
+	Just one exported function from the DLL.
+
+
+Scrolling HTML credits
+	Could easily be accomplished using QHTM or a derived control. This should be hours work rather than days.
+	No scroll bars.
+	Mechanism to set the scroll position.
+	Must work with out-of-bounds scroll position so the credits will scroll off the dialog totally.
+	Another window class that is registered and a couple of extra messages sent perhaps (to change the scroll
+	rate etc.).
+
+
+Static link library
+	Some users have asked for a static link library - should not be too hard but what about the other
+	libraries such as libpng and paintlib.
+
+
+
+Simple list of tasks that *should* be done.
+===========================================
+
+
+Background images.
+	Does the background scroll with the other sections or is the background fixed.
+	RG> This is determined by the watermark style, which is established like this:
+		<body background="file.gif" bgproperties="fixed">
+		The bgproperties="fixed" prevents the background from scrolling.
+
+
+Transparent control.
+	Make the entire control transparent. Why? For people with weird dialog box backgrounds.
+
+
+Ordered and unordered lists.
+	How? Could just bump the left margin until we get to the end of the list. As we
+	go down the list we can simply add a section for the blob/number.
+	We could ?probably? fake it by creating a table with two columns. Would this work? it might
+	be the easy way.
+
+
+JPEG support
+Transparent/Animated GIF
+Transparent PNG
+
+
+Proper table wrapping.
+	Tables that are right/left aligned should have text wrapped around it as per right/left align
+	images. This should be no problem due to the already implemented wrapping(margin alterations)
+	for images.
+
+
+Style sheets.
+	Full support needed.
+	? What is involved in full implementation of CSS ?
+	RG>	Good question. Better yet, how much of the spec is appropriate for this control?
+		I don't expect to support DIVs, for example, but I would like CSS support for 
+		standard tags (such as <a>, <h1>, etc.)
+
+
+Forms support
+	How much would be the minimum?
+	What is involved?
+	Why would we want forms support at all.
+
+
+Override the defaults for the control.
+	This would be similar to having a standard style sheet I guess.
+	Basically add the ability for the default font, font size, background color, etc. to be overridden
+	in one call. This would allow users to have much less HTML code and to allow them alter their pages in
+	one fell swoop.
+
+
+FRAMES
+	Frames support would be nice.
+	?How much is the least we can do?
+
+
+Forms
+	?Full support?
+
+
+Allow selection
+	Allow the user to select text/graphics etc. and copy the HTML to the clipboard.
+
+
+EXTENSION - Specify links colours on a per link basis
+	Add support for the link/alink attributes to the <A> tag, so that link colors can vary.
+
+
+Use a Notification to allow the parent window to supply images.
+	Parent should return a DIB.
+	? Other platforms - Win16, Win32s ?
+
+
+Owner drawn objects
+	Use a notification to allow the parent window to control owner drawn areas.
+	Could use <object width="" height="" name=""> and a notification could pass
+	the attribs plus a handle to the DC.
+
+
+////////////////////////////////////////////////////////////////////////////
+Printing?? Don't know how yet???	** DONE **	Doesn't support wider than page prints automatically though.
+	RG>	I'd like to take a look at this problem. I have some ideas... but I need to see
+		the source before drawing any conclusions.
+	This needs to be able to print the entire document unaided. Or, print sections of the document
+	in a section of a DC e.g. I might have a complex print where I only want to print the HTML in a section
+	of my total page.
+	Scaling?
+	????We might want to enquire how large a HTML document is on paper????
+
+Multiple font names in FONT Face attributes.	** DONE **
+
+Cache images of the same name within a document. ** DONE **
+	richg will do this.
+	RG> Images are cached for a single doument only.
+
+Horizontal scrolling ** DONE ** See Comment
+	richg will do this.
+	RG>	should centered items be centered in the window, or in the total width
+		that necessitated scrolling in the first place?
+		Answer: Center them in the window.
+
+Proper links when split over multiple lines. ** DONE **
+	Links currently do not work correctly when split over multiple lines. The current
+	solution links okay but when the link is highlighted it should highlight both links
+	(or multiple links if there are many - could be many + images).
+	Maybe we should have a list of links held in the HTMLSection, thus the link could
+	notify it's parent of the state change and the HTMLSection could then notify all the
+	other links.
+
+NOWRAP in a table cell. - ** DONE **
+	This is a little difficult because it would require two passes over a table. One pass would
+	layout all of the table cells and find the widest cells. The second pass would be to *really*
+	layout the cells.
+	In the first pass we could just layout the cells that have this attribute and nothing else,
+	this would be quicker.
+	RG>	A two pass procedure might be needed anyway, because of the table layout bug I found. 
+		It seems that the innermost table in a nested table setting would have to have it's
+		height determined before the outer cells height can be determined, etc. 
+
+Table borders. - ** DONE **
+	Should be quite simple. Just need to record the table cell rect when iterating over each
+	cell in the section creator. Then, when done go over our list of rects and create a border.
+	? does each cell shrink or grow by the size of the border ?
+	RG>	I believe that the cells grow. Otherwise it would be difficult to preset the size of
+		a cell that contained an image, for example. The Entire Area occupied by the cell
+		if the sum of the cell's contents, the cellpadding, the cell's portion of the 
+		cellspacing, and the border.
+
+Table background colours ** DONE **
+	Similar to borders I guess.
+
+
+Table cell spacing. ** DONE **
+	No idea how this works - need to experiment and read the 4.0 spec.	
+	RG>	I believe that cellpadding is the margin about the interior of the cell,
+		cellspacing is the margin between cells.
+
+
+Table cell background colours. ** DONE **
+	Simple creation of a section the same size as a tabel cell. Should not be a big problem
+
+
+Specify hotlinks colours. ** DONE **
+	Relatively easy job, currnetly they use static fucntions to acquire the link colours.
+	RG> This is done, but I think we need a master list of links so that split
+		links behave properly. The link properties could then be saved there, and save a few bytes
+		as well. Each HTMLSectionABC would have a pointer to a link structure in
+		the document. This is similar to the image pointers, which also belong in the document.
+
+

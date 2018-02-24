@@ -1,0 +1,67 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: libtiff - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\LUCCOI~1\LOCALS~1\Temp\RSP7C1.tmp" with contents
+[
+/nologo /G5 /MDd /W3 /Gm /GX /ZI /Od /I ".\\" /D "_DEBUG" /D "WIN32" /D "_MBCS" /D "_LIB" /Fp"Debug/libtiff.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Astro\Projects\port\getopt.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\LUCCOI~1\LOCALS~1\Temp\RSP7C1.tmp" 
+Creating temporary file "C:\DOCUME~1\LUCCOI~1\LOCALS~1\Temp\RSP7C2.tmp" with contents
+[
+/nologo /out:"..\..\libtiffd.lib" 
+.\Debug\fax3sm_winnt.obj
+.\Debug\getopt.obj
+.\Debug\tif_aux.obj
+.\Debug\tif_close.obj
+.\Debug\tif_codec.obj
+.\Debug\tif_color.obj
+.\Debug\tif_compress.obj
+.\Debug\tif_dir.obj
+.\Debug\tif_dirinfo.obj
+.\Debug\tif_dirread.obj
+.\Debug\tif_dirwrite.obj
+.\Debug\tif_dumpmode.obj
+.\Debug\tif_error.obj
+.\Debug\tif_fax3.obj
+.\Debug\tif_flush.obj
+.\Debug\tif_getimage.obj
+.\Debug\tif_jpeg.obj
+.\Debug\tif_luv.obj
+.\Debug\tif_lzw.obj
+.\Debug\tif_next.obj
+.\Debug\tif_ojpeg.obj
+.\Debug\tif_open.obj
+.\Debug\tif_packbits.obj
+.\Debug\tif_pixarlog.obj
+.\Debug\tif_predict.obj
+.\Debug\tif_print.obj
+.\Debug\tif_read.obj
+.\Debug\tif_strip.obj
+.\Debug\tif_swab.obj
+.\Debug\tif_thunder.obj
+.\Debug\tif_tile.obj
+.\Debug\tif_version.obj
+.\Debug\tif_warning.obj
+.\Debug\tif_win32.obj
+.\Debug\tif_write.obj
+.\Debug\tif_zip.obj
+]
+Creating command line "link.exe -lib @C:\DOCUME~1\LUCCOI~1\LOCALS~1\Temp\RSP7C2.tmp"
+<h3>Output Window</h3>
+Compiling...
+getopt.c
+Creating library...
+
+
+
+<h3>Results</h3>
+libtiffd.lib - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

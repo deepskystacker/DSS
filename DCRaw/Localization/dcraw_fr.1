@@ -1,0 +1,236 @@
+.\"
+.\" Page Man de dcraw
+.\"
+.\" Copyright (c) 2006 by David Coffin
+.\"
+.\" Vous pouvez distribuer sans aucune restriction.
+.\"
+.\" David Coffin
+.\" dcoffin a cybercom o net
+.\" http://www.cybercom.net/~dcoffin
+.\"
+.TH dcraw 1 "21 Décembre 2006"
+.LO 1
+.SH NOM
+dcraw - décodeur en ligne de commande de photos numériques raw
+.SH SYNOPSIS
+.B dcraw
+[\fIOPTION\fR]... [\fIFICHIER\fR]...
+.SH DESCRIPTION
+.B dcraw
+décode des photos numériques raw, affiche les métadonnées et
+extrait les vignettes
+.SH OPTIONS
+.TP
+.B -v
+affiche les messages complets, pas uniquement les erreurs et les
+avertissements.
+.TP
+.B -c
+Ecrit les images décodées et les vignettes sur la sortie standard.
+.TP
+.B -e
+Extrait la vignette générée par l'appareil photo (et pas l'image
+raw) Vous obtiendrez soit un fichier JPEG soit un fichier PPM en
+fonction de l'appareil photo.
+.TP
+.B -z
+Change les dates d'accès et de modification d'un fichier AVI,
+JPEG ou raw à la date de prise de la photo en supposant que
+l'horloge de l'appareil photo soit fixée sur le Temps Universel.
+.TP
+.B -i
+Identifie les fichiers sans les décoder.
+Le code de sortie est 0 si
+.B dcraw
+peut décoder le dernier fichier, 1 sinon.
+.B -i -v
+montre les métadonnées.
+.TP
+.B ""
+.B dcraw
+ne peut pas décoder les fichiers JPEG !!
+.TP
+.B -d
+Montre les données raw comme une image monochrome sans interpolation.
+Bon pour photographier des documents en noir et blanc.
+.TP
+.B -D
+Pareil que
+.BR -d ,
+mais complètement raw (aucune mise à l'échelle des couleurs).
+.TP
+.B -h
+Génère une image couleur réduite de moitié.  Deux fois plus rapide que
+.BR -q\ 0 .
+.TP
+.B -q 0
+Utilise une interpolation bilinéaire très rapide et de basse qualité.
+.TP
+.B -q 2
+Utilise une interpolation Nombre Variable de Gradient (VNG).
+.TP
+.B -q 3
+Utilise une interpolation Homogénéité Dirigée et Adaptative (AHD).
+.TP
+.B -f
+Interpole RVB comme quatre couleurs.  A utiliser si la sortie
+montre des faux motifs 2x2 avec VNG ou des labyrinthes avec AHD.
+.TP
+.B -n seuil_du_bruit
+Utilise des ondelettes pour supprimer le bruit tout en préservant
+les vrais détails.
+Le meilleur seuil devrait se trouver quelque part entre 100 et 1000.
+.TP
+.B -b clarté
+Par défaut,
+.B dcraw
+écrit les fichiers PGM/PPM/PAM en 8 bits avec une courbe gamma
+BT.709 et un point blanc au 99ème percentile.  Si le résultat
+est trop clair ou trop sombre,
+.B -b
+vous permet de l'ajuster.  La valeur par défaut est de 1.0.
+.TP
+.B -4
+Ecrit des fichiers pseudo-PGM/PPM/PAM en 16 bits linéaire sans
+ajustement du gamma, du point blanc, et sans l'option
+.B -b
+.
+.TP
+.B -T
+Ecrit des fichiers TIFF (avec les métadonnées) au lieu de
+fichiers PGM/PPM/PAM.
+.TP
+.B -k noir
+Fixe le point noir. La valeur par défaut dépend de l'appareil photo.
+.TP
+.B -K noir.pgm
+Soustrait un noir de la donnée raw.  Pour créer un noir, prendre
+une photo dans le noir et exécuter
+.BR dcraw\ -D\ -4\ -j\ -t\ 0 .
+.TP
+.B -a
+Balance des couleurs automatique.  Le fonctionnement par défaut
+esr l'utilisation d'une balance des couleurs fixe basée sur la
+photographie d'une feuille blanche éclairée par le soleil.
+.TP
+.B -w
+Utilise la balance des couleurs spécifiées par l'appareil photo.
+Si celle-ci ne peut être trouvée, affiche un avertissement et
+utilise le fonctionnement par défaut.
+.TP
+.B -r mul0 mul1 mul2 mul3
+Spécifie votre propre balance des couleurs.  Ces coefficients
+multiplicateurs peuvent être coupés et collés depuis la sortie de
+.BR dcraw\ -v .
+.TP
+.B -H 0
+Limite les zones claires à du blanc pur (par défaut).
+.TP
+.B -H 1
+Laisse les zones claires sans limite (différentes teintes rosées
+peuvent apparaitre).
+.TP
+.B -H 2-9
+Reconstruit les zones claires.  Les petites valeurs favorisent
+les blancs, les valeurs importantes favorisent les couleurs.
+Essayez
+.B -H 5
+comme un compromis.  Si cela n'est pas assez bon utilisez
+.BR -H\ 9 ,
+supprimez les zones claires non blanches et copiez les dans une
+image générée avec
+.BR -H\ 3 .
+.TP
+.B -m
+Pareil que
+.BR -o\ 0 .
+.TP
+.B -o [0-5]
+Sélectionne l'espace de couleur de sortie quand l'option
+.B -p
+n'est pas utilisée :
+
+.B \t0
+\ \ couleur raw (différente pour chaque appareil photo)
+.br
+.B \t1
+\ \ sRGB D65 (par défaut)
+.br
+.B \t2
+\ \ Adobe RGB (1998) D65
+.br
+.B \t3
+\ \ Wide Gamut RGB D65
+.br
+.B \t4
+\ \ Kodak ProPhoto RGB D65
+.br
+.B \t5
+\ \ XYZ
+.TP
+.BR -p\ appareilphoto.icm \ [\  -o\ sortie.icm \ ]
+Utilise le profil ICC pour définir l'espace de couleur de
+l'appareil photo et l'espace de couleur souhaité en sortie
+(sRGB par défaut).
+.TP
+.B -p embed
+Utilise le profil ICC contenu dans la photo raw.
+.TP
+.B -t [0-7,90,180,270]
+Change l'orientation de l'image de sortie.  Par défaut,
+.B dcraw
+applique l'orientation spécifiée par l'appareil photo.
+.B -t 0
+désactive le changement d'orientation.
+.TP
+.B -s [0-99]
+Sélectionne l'image raw a décoder si le fichier en contient plus
+d'une. Par exemple, les appareils photos Fuji\ Super\ CCD\ SR
+génèrent une seconde image sous exposée de 4 stops pour montrer
+les détails dans les zones claires.
+.TP
+.B -j
+Pour les appareils photos Fuji\ Super\ CCD, montre l'image
+tournée à 45 degrés. Pour les appareils photos avec des pixels
+non carrés, n'étire pas l'image à son rapport hauteur/largeur
+réel.  Dans tous les cas cette option garantie que chaque pixel
+en sortie correspond à un pixel raw.
+.TP
+.B ""
+Si ils ne s'appliquent pas à votre appareil photo,
+.B -s
+et
+.B -j
+sont ignorés sans message d'erreur ou avertissement.
+.SH FICHIERS
+.TP
+\:./.badpixels, ../.badpixels, ../../.badpixels, ...
+Liste des pixels morts de votre appareil photo afin que
+.B dcraw
+puisse interpoler autour d'eux.  Chaque ligne spécifie une colonne,
+une ligne, et la date UNIX de la mort pour un pixel.  Par exemple :
+.sp 1
+.nf
+ 962   91 1028350000  # mort entre le 1er et le 4 Aout 2002
+1285 1067 0           # mort à une date inconnue
+.fi
+.sp 1
+Ces coordonnées sont celles avant toute rotation ou réduction,
+donc utilisez
+.B dcraw -j -t 0
+pour identifier les pixels morts.
+.SH "VOIR AUSSI"
+.BR pgm (5),
+.BR ppm (5),
+.BR pam (5),
+.BR pnmgamma (1),
+.BR pnmtotiff (1),
+.BR pnmtopng (1),
+.BR gphoto2 (1),
+.BR cjpeg (1),
+.BR djpeg (1)
+.SH AUTEUR
+Ecrit par David Coffin, dcoffin a cybercom o net
+.SH TRADUCTION
+Luc Coiffier, luc o coiffier a free o fr

@@ -1,0 +1,18 @@
+#!/bin/sh
+# Simple installer for dcraw executable, manpages, and message catalogs.
+# Dave Coffin, dcoffin a cybercom o net
+
+prefix=/usr/local
+
+# Add a CPU-specific "-march=" for greater speed
+gcc -O4 -Wall -o $prefix/bin/dcraw dcraw.c -lm -ljpeg -llcms -s \
+	-DLOCALEDIR=\"$prefix/share/locale/\"
+
+cp dcraw.1 $prefix/share/man/man1
+
+# Please help me add more languages
+for lang in eo ru fr
+do
+  cp dcraw_$lang.1 $prefix/share/man/$lang/man1/dcraw.1
+  msgfmt -o $prefix/share/locale/$lang/LC_MESSAGES/dcraw.mo dcraw_$lang.po
+done
