@@ -253,6 +253,8 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	CString			strMask;
 	CString			strTitle;
 
+	this->DragAcceptFiles(TRUE);
+
 	GetWindowText(strMask);
 	strTitle.Format(strMask, VERSION_DEEPSKYSTACKER);
 	SetWindowText(strTitle);

@@ -13,8 +13,8 @@ void	CloseLogFile();
 void		StartLog();
 void		AddToLog(LPCTSTR szFormat, ...);
 #else
-#define StartLog()
-#define AddToLog()
+#define StartLog(...)
+#define AddToLog(...)
 #endif
 
 /* ------------------------------------------------------------------- */

@@ -289,7 +289,14 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 		bFirstInstance = false;
 	AddToLog("Checking Mutex - ok\n");
 
-	AddToLog("OLE Initialize\n");
+	AddToLog("AFXOleInit\n");
+
+	if (!AfxOleInit())
+	{
+		cerr << _T("Fatal Error: AFXOleInit() failed") << endl;
+		nRetCode = 1;
+		return nRetCode;
+	}
 
 	OleInitialize(NULL);
 	AddToLog("OLE Initialize - ok\n");
@@ -367,8 +374,6 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 
 			theApp.m_pMainDlg = &dlg;
 			AddToLog("Creating Main Window - ok\n");
-
-			dlg.DragAcceptFiles(TRUE);
 
 			AddToLog("Set Starting File List\n");
 			dlg.SetStartingFileList(strStartFileList);
