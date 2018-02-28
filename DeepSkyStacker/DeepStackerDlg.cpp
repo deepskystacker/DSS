@@ -253,7 +253,11 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	CString			strMask;
 	CString			strTitle;
 
-	this->DragAcceptFiles(TRUE);
+	//
+	// The call to CWnd::DragAcceptFiles() was moved here from DeepSkyStacker.cpp because it can only be called once
+	// the HWND for the dialog is valid (not NULL).  This is only true once CDialog::OnInitDialog() above has been called.
+	//
+	this->DragAcceptFiles(TRUE);		
 
 	GetWindowText(strMask);
 	strTitle.Format(strMask, VERSION_DEEPSKYSTACKER);
