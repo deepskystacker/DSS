@@ -311,6 +311,12 @@
     <ResourceCompile Include="DeepSkyStacker.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerEN.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerGeneric.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StdAfx.h">
