@@ -56,7 +56,6 @@ BOOL CLibraryDlg::OnInitDialog()
 
 	m_HeaderHTML.SetToolTips(FALSE);
 	m_LibraryHTML.SetToolTips(FALSE);
-//	SetWindowLong(m_HeaderHTML.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(m_HeaderHTML.GetSafeHwnd(), GWL_STYLE ) | WS_EX_CLIENTEDGE );
 
 	m_HeaderHTML.SetWindowText("<b><font size='6' color='#6699FF'>Library</font><font size='5' color='#0000FF'><br>Use&nbsp;&nbsp;&nbsp; Manage</font></b>");
 	m_LibraryHTML.SetWindowText("Library Content");

@@ -25,7 +25,7 @@ namespace GS
 	template <class base>
 	LRESULT CALLBACK TemplateWndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 	{
-		LPARAM lparam = GetWindowLong( hwnd, WINDOW_DATA );
+		LPARAM lparam = GetWindowLongPtr( hwnd, WINDOW_DATA );
 		base *pWnd = reinterpret_cast<base*>( lparam );
 
 		switch( message )
@@ -35,7 +35,11 @@ namespace GS
 			{
 				LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>( lParam );
 				pWnd = new base( hwnd, lpcs->style );
-				::SetWindowLong( hwnd, WINDOW_DATA, reinterpret_cast<long>( pWnd ) );
+#if defined(_WIN64)
+				::SetWindowLongPtr( hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>( pWnd ) );
+#else
+				::SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(pWnd));
+#endif
 			}
 		}
 
@@ -49,7 +53,11 @@ namespace GS
 		switch( message )
 		{
 		case WM_NCDESTROY:
-			::SetWindowLong( hwnd, WINDOW_DATA, GS::knDeadWindow );
+#if defined(_WIN64)
+			::SetWindowLongPtr(hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>(GS::knDeadWindow));
+#else
+			::SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(GS::knDeadWindow));
+#endif
 			delete pWnd;
 			break;
 		}

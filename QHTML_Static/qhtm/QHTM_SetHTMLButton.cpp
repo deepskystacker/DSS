@@ -114,7 +114,7 @@ extern "C" BOOL WINAPI QHTM_SetHTMLButton( HWND hwndButton )
 	LONG_PTR lp = ::GetWindowLongPtr( hwndButton, GWLP_WNDPROC );
 	::SetProp( hwndButton, QHTM_SUBCLASSED_BUTTON_WNDPROC_PROP, reinterpret_cast< HANDLE >( lp ) );
 	::SetWindowLongPtr( hwndButton, GWLP_WNDPROC, reinterpret_cast< LONG_PTR >( QHTM_BUTTON_SubClassFunc ) );
-	::SetWindowLongPtr( hwndButton, GWL_STYLE, ::GetWindowLongPtr( hwndButton, GWL_STYLE ) );
+	::SetWindowLong( hwndButton, GWL_STYLE, ::GetWindowLong( hwndButton, GWL_STYLE ) );
 	
 
 	HFONT hFont = (HFONT)::SendMessage( hwndButton, WM_GETFONT, 0, 0 );

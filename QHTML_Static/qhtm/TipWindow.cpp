@@ -66,7 +66,7 @@ enum {knDeadWindow = 1};
 
 LRESULT CALLBACK CTipWindow::WndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	LPARAM lparam = GetWindowLong( hwnd, WINDOW_DATA );
+	LPARAM lparam = GetWindowLongPtr( hwnd, WINDOW_DATA );
 
 	if( lparam == knDeadWindow )
 	{
@@ -150,14 +150,22 @@ LRESULT CALLBACK CTipWindow::WndProc( HWND hwnd, UINT message, WPARAM wParam, LP
 
 	case WM_NCDESTROY:
 		pWnd->OnWindowDestroyed();
-		SetWindowLong( hwnd, WINDOW_DATA, knDeadWindow );
+#if defined(_WIN64)
+		SetWindowLongPtr(hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>(knDeadWindow));
+#else
+		SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(knDeadWindow));
+#endif
 		break;
 
 	case WM_NCCREATE:
 		if( pWnd == NULL )
 		{
 			LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>( lParam );
-			SetWindowLong( hwnd, WINDOW_DATA, reinterpret_cast<long>( lpcs->lpCreateParams ) );
+#if defined(_WIN64)
+			SetWindowLongPtr(hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>(lpcs->lpCreateParams);
+#else
+			SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(lpcs->lpCreateParams));
+#endif
 		}
 		return TRUE;
 
