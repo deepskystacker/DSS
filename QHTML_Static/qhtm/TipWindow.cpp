@@ -38,7 +38,7 @@ BOOL CTipWindow::Register( HINSTANCE hInst )
 	if( !GetClassInfo( hInst, QHTM_TIP_WINDOW_CLASS, &wc ) )
 	{
 
-		memset(&wc, 0, sizeof(WNDCLASS);
+		memset(&wc, 0, sizeof(WNDCLASS));
 		wc.style			= CS_BYTEALIGNCLIENT;
 
 		if(IsWindowsXPOrGreater())
