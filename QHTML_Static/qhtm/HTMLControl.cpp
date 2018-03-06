@@ -148,7 +148,8 @@ void CHTMLControl::AddDisplayElements( class CHTMLSectionCreator *psc )
 		break;
 
 	case knPercent:
-		uWidth = min( UINT( (float( uMaxWidth ) / 100 ) * abs( uWidth ) ), uMaxWidth );
+		// uWidth = min( UINT( (float( uMaxWidth ) / 100 ) * abs( uWidth ) ), uMaxWidth );
+		uWidth = min(UINT((float(uMaxWidth) / 100) * uWidth), uMaxWidth);
 		break;
 	}
 
