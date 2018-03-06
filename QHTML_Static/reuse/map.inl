@@ -195,7 +195,7 @@ void CMap<Key, Value>::SetAt( const Key &key, Value value )
 	}
 	else
 	{
-		MapBucketEntry<Key, Value>	*pEntry = new MapBucketEntry<Key, Value>;
+		pEntry = new MapBucketEntry<Key, Value>;
 		m_uCount++;
 		pEntry -> m_Value = value;
 		pEntry -> m_Key = key;

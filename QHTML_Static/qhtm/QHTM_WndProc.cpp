@@ -19,16 +19,6 @@ Owner:	russf@gipsysoft.com
 #define WINDOW_DATA	0
 enum {knDeadWindow = 1};
 
-#if !defined (_WIN32_WCE)
-static UINT nMsgMouseWheel =
-   (((::GetVersion() & 0x80000000) && LOBYTE(LOWORD(::GetVersion()) == 4)) ||
-	 (!(::GetVersion() & 0x80000000) && LOBYTE(LOWORD(::GetVersion()) == 3)))
-	 ? ::RegisterWindowMessage(MSH_MOUSEWHEEL) : 0;
-
-extern LRESULT FASTCALL HandleMouseWheelRegisteredMessage( HWND hwnd, WPARAM wParam, LPARAM lParam );
-
-#endif	//	if !defined (_WIN32_WCE)
-
 //
 //	Some globals
 extern CSectionABC *g_pSectHighlight;
@@ -751,12 +741,7 @@ LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM w
 		return g_defaults.Set( (LPQHTM_DEFAULTS)lParam );
 
 	default:
-#if !defined (_WIN32_WCE)
-		if( message == nMsgMouseWheel && nMsgMouseWheel )
-		{
-			return HandleMouseWheelRegisteredMessage( hwnd, wParam, lParam );
-		}
-#endif	//	#if !defined (_WIN32_WCE)
+
 		return DefWindowProc( hwnd, message, wParam, lParam );
 	}
 	return 0;
