@@ -590,9 +590,9 @@ LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM w
 		pWnd->OnDestroy();
 
 #if defined(_WIN64)
-		SetWindowLongPtr(hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>(knDeadWindow));
+		SetWindowLongPtr(hwnd, WINDOW_DATA, (LONG_PTR)(knDeadWindow));
 #else
-		SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(knDeadWindow));
+		SetWindowLong(hwnd, WINDOW_DATA, (LONG)(knDeadWindow));
 #endif
 
 		delete pWnd;
