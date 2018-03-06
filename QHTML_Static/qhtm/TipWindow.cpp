@@ -40,16 +40,11 @@ BOOL CTipWindow::Register( HINSTANCE hInst )
 		WNDCLASS wc = {0};
 		wc.style			= CS_BYTEALIGNCLIENT;
 
-		OSVERSIONINFO osvi;
-		osvi.dwOSVersionInfoSize = sizeof( osvi );
-		VAPI( GetVersionEx( &osvi ) );
-		if( osvi.dwPlatformId == VER_PLATFORM_WIN32_NT )
+		if(IsWindowsXPOrGreater())
 		{
-			if( osvi.dwMajorVersion > 5 || (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1) ) 
-			{
-				wc.style |= 0x00020000;
-			}
+			wc.style |= 0x00020000;
 		}
+
 
 		wc.lpfnWndProc	= (WNDPROC)CTipWindow::WndProc;
 		wc.cbClsExtra		= 0;
