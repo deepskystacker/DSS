@@ -287,13 +287,13 @@ void CQHTMControlSection::LayoutHTML()
 
 	//
 	//	If the window has scroll bars then remove them from our width and height
-	if( GetWindowLong m_hwnd, GWL_STYLE ) & WS_VSCROLL )
+	if( GetWindowLong( m_hwnd, GWL_STYLE ) & WS_VSCROLL )
 	{
 		right += nScrollWidth;
 		nVerticalPos = ::GetScrollPos( m_hwnd, SB_VERT );
 	}
 
-	if( GetWindowLong m_hwnd, GWL_STYLE ) & WS_HSCROLL )
+	if( GetWindowLong( m_hwnd, GWL_STYLE ) & WS_HSCROLL )
 	{
 		bottom += nScrollHeight;
 		nHorizontalPos = ::GetScrollPos( m_hwnd, SB_HORZ );
