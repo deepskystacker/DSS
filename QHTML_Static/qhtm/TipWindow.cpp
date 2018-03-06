@@ -8,6 +8,7 @@ Purpose:	Tool tips window
 ----------------------------------------------------------------------*/
 #include "stdafx.h"
 #include <guitools/guitools.h>
+#include <versionhelpers.h>
 #include "Defaults.h"
 #include "TipWindow.h"
 #include "utils.h"
@@ -33,16 +34,16 @@ BOOL CTipWindow::Register( HINSTANCE hInst )
 {
 	//	Needs an instance handle!
 	ASSERT( hInst );
-	WNDCLASS wc = { sizeof( WNDCLASS ) };
+	WNDCLASS wc = { 0 };
 	if( !GetClassInfo( hInst, QHTM_TIP_WINDOW_CLASS, &wc ) )
 	{
 
-		WNDCLASS wc = {0};
+		memset(&wc, 0, sizeof(WNDCLASS);
 		wc.style			= CS_BYTEALIGNCLIENT;
 
 		if(IsWindowsXPOrGreater())
 		{
-			wc.style |= 0x00020000;
+			wc.style |= CS_BYTEALIGNWINDOW;	// Use the correct named style not a *magic number*
 		}
 
 
