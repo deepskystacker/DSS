@@ -1019,7 +1019,7 @@ int parse_data( long    totalrows,     /* I - Total rows to be processed     */
           }
           repeat = outcol->repeat;
           if (DEBUG_PIXFILTER)
-            printf("using null value %ld\n", jnull);
+            printf("using null value %lld\n", jnull);
        } else {
 
           Data = userInfo->dataPtr;
