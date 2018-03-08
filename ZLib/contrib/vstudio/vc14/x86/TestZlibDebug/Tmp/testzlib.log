@@ -1,3 +1,0 @@
-﻿match686.obj : error LNK2026: module unsafe for SAFESEH image.
-inffas32.obj : error LNK2026: module unsafe for SAFESEH image.
-x86\TestZlibDebug\testzlib.exe : fatal error LNK1281: Unable to generate SAFESEH image.
