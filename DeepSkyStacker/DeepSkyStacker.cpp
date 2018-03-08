@@ -211,42 +211,40 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	bResult = CWinApp::InitInstance();
 	SetRegistryKey("DeepSkyStacker");
 
-	if (!IsWin98())
-	{
-		AddToLog("Reset dssfilelist extension association with DSS\n");
+	
+	AddToLog("Reset dssfilelist extension association with DSS\n");
 
-		CGCFileTypeAccess	FTA;
-		TCHAR				szPath[_MAX_PATH];
-		CString				strPath;
-		CString				strTemp;
+	CGCFileTypeAccess	FTA;
+	TCHAR				szPath[_MAX_PATH];
+	CString				strPath;
+	CString				strTemp;
+	
+	::GetModuleFileName(NULL, szPath, sizeof(szPath));
+	strPath = szPath;
 
-		::GetModuleFileName(NULL, szPath, sizeof(szPath));
-		strPath = szPath;
+	FTA.SetExtension("dssfilelist");
 
-		FTA.SetExtension("dssfilelist");
-
-		strTemp = strPath;
-		strTemp += " \"%1\"";
-		FTA.SetShellOpenCommand(strTemp);
-		FTA.SetDocumentShellOpenCommand(strTemp);
-
-		FTA.SetDocumentClassName("DeepSkyStacker.FileList");
+	strTemp = strPath;
+	strTemp += " \"%1\"";
+	FTA.SetShellOpenCommand(strTemp);
+	FTA.SetDocumentShellOpenCommand(strTemp);
+	FTA.SetDocumentClassName("DeepSkyStacker.FileList");
 		
-		CString				strFileListDescription;
+	CString				strFileListDescription;
 
-		strFileListDescription.LoadString(IDS_FILELISTDESCRIPTION);
+	strFileListDescription.LoadString(IDS_FILELISTDESCRIPTION);
 
-		FTA.SetDocumentDescription(strFileListDescription);
+	FTA.SetDocumentDescription(strFileListDescription);
 
-		// use first icon in program
-		strTemp  = strPath;
-		strTemp += ",1";
-		FTA.SetDocumentDefaultIcon(strTemp);
+	// use first icon in program
+	strTemp  = strPath;
+	strTemp += ",1";
+	FTA.SetDocumentDefaultIcon(strTemp);
 
-		// set the necessary registry entries	
-		FTA.RegSetAllInfo();
-		AddToLog("Reset dssfilelist extension association with DSS - ok\n");
-	};
+	// set the necessary registry entries	
+	FTA.RegSetAllInfo();
+	AddToLog("Reset dssfilelist extension association with DSS - ok\n");
+
 
 	AddToLog("Initialized QHTM\n");
 	QHTM_Initialize( AfxGetInstanceHandle() );
