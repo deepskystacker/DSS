@@ -1,0 +1,532 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Kernel">
+      <UniqueIdentifier>{0fe438ea-977e-4ce3-a037-34e693533f73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{84d72efc-2d1e-4b4c-bbcc-5548631dbce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\ChartCtrl">
+      <UniqueIdentifier>{d16bcf5c-7ba8-426c-8511-b28330c8078d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\SMTP">
+      <UniqueIdentifier>{49f47abc-e9dd-4995-a63b-affee1bed0c4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DeepSkyStackerLive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepSkyStackerLiveDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EmailSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiveEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiveSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LogTab.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainBoard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RestartMonitoring.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StackedSink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DCRaw\dcraw.c">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\DeBloom.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\EntropyInfo.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\Filters.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\FITSUtil.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\FlatFrame.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\FrameList.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\LogFile.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MatchingStars.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\Multitask.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\RAWUtils.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\RegisterEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\RunningStackingEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\Settings.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\StackedBitmap.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\StackingTasks.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\TIFFUtil.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\Workspace.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\BtnST.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ControlPos.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\FolderDlg.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\Gradient.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\GradientCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\Label.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\Registry.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\RegMFC.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ToolTipButton.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\WndImage.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartAxis.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartAxisLabel.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartCtrl.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartGrid.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartLegend.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartLineSerie.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartPointsSerie.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartSerie.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartSurfaceSerie.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ChartCtrl\ChartTitle.cpp">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SMTP\Base64.cpp">
+      <Filter>Tools\SMTP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp">
+      <Filter>Tools\SMTP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SMTP\PJNSMTP.cpp">
+      <Filter>Tools\SMTP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SMTP\SocMFC.cpp">
+      <Filter>Tools\SMTP</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DeepSkyStackerLiveDlg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EmailSettings.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphView.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageList.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageView.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiveEngine.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LiveSettings.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LogTab.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MainBoard.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RestartMonitoring.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackedSink.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeepSkyStackerLive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\AHDDemosaicing.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BitmapExt.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Common.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\DarkFrame.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\DeBloom.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\DSSCommon.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\DSSProgress.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\DSSTools.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\DSSVersion.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\EntropyInfo.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Filters.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\FITSUtil.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\FlatFrame.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\FrameInfo.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\FrameList.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Histogram.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\LogFile.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\MasterFrames.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\MatchingStars.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\MedianFilterEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\MultiBitmapProcess.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Multitask.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\PixelTransform.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\RAWUtils.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\RegisterEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\RunningStackingEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Settings.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\StackedBitmap.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\StackingTasks.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Stars.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\TIFFUtil.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\Workspace.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\BtnST.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ControlPos.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\FolderDlg.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Gradient.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\gradientctrl.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\GradientCtrlImpl.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Label.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ListViewCtrlEx.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\memdc.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Registry.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\SmartPtr.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ToolTipButton.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\WndImage.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartAxis.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartAxisLabel.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartCtrl.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartGrid.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartLegend.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartLineSerie.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartObject.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartPointsSerie.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartSerie.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartSurfaceSerie.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ChartCtrl\ChartTitle.h">
+      <Filter>Tools\ChartCtrl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SMTP\Base64.h">
+      <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SMTP\PJNMD5.h">
+      <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SMTP\PJNNTLMAuth.h">
+      <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SMTP\PJNSMTP.h">
+      <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SMTP\SocMFC.h">
+      <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\DeepSkyStacker\res\4Corners.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\DeepSkyStackerLive.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Tools\hdrdown.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Tools\hdrup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DeepSkyStackerLive.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveCAT.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveCN.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveCZ.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveDE.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveES.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveFR.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveIT.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveNL.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLivePTB.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveRO.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveRU.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerLiveTR.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="res\DeepSkyStackerLive.manifest" />
+  </ItemGroup>
+</Project>

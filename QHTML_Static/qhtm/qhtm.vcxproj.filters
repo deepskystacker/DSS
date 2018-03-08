@@ -66,9 +66,6 @@
     <ClCompile Include="GradientFill.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HandleMouseWheelRegisteredMessage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HtmlAnchor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

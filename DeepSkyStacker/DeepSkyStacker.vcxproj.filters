@@ -1,0 +1,1003 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{83d82bb9-d759-464c-8289-f90d6ebcb999}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{31efdaf6-42a2-446c-9d18-4c12b9b8d5d3}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{5db9dc34-0594-47d8-8a76-0d16f3973b7d}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="Dialogs">
+      <UniqueIdentifier>{3923bea2-a160-4ba5-ad8d-a3250e91ccf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Stacking">
+      <UniqueIdentifier>{aa11af18-990a-46a6-bf5a-05b9f56a652c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Registering">
+      <UniqueIdentifier>{86046910-af16-44f4-9de6-d2bae595440b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Processing">
+      <UniqueIdentifier>{902f9ad9-2380-42fc-9a8c-db5ad8c038ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Settings">
+      <UniqueIdentifier>{b3fd7e64-4da0-4cee-9902-e351ec135e87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\ImageSinks">
+      <UniqueIdentifier>{1c172764-f817-483b-9fe6-5b07e4b4a8c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dialogs\Library">
+      <UniqueIdentifier>{21049e2e-dbf4-480e-8bd2-2ec4ce5984f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{6aebba41-4852-4f3b-bca2-bf409674cd6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Kernel">
+      <UniqueIdentifier>{5dd1951e-d858-4df9-92a8-647fe6af8ebe}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DeepSkyStacker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SetUILanguage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="About.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepStackerDlg.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplorerBar.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="FileProperty.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="PictureListCtrl.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="ProgressDlg.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="AlignmentParameters.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundLoading.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundOptions.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="BatchStacking.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="CheckAbove.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="CometStacking.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="DropFilesDlg.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="IntermediateFiles.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputTab.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="PostCalibration.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="RecommandedSettings.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultParameters.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="StackingDlg.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="StackingParameters.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="StackRecap.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="StackSettings.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="AskRegistering.cpp">
+      <Filter>Dialogs\Registering</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterSettings.cpp">
+      <Filter>Dialogs\Registering</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterSettings_Actions.cpp">
+      <Filter>Dialogs\Registering</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterSettings_Advanced.cpp">
+      <Filter>Dialogs\Registering</Filter>
+    </ClCompile>
+    <ClCompile Include="LuminanceTab.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessingDlg.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessSettingsSheet.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="RGBTab.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="SaturationTab.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="SavePicture.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsDlg.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="StarMaskDlg.cpp">
+      <Filter>Dialogs\Processing</Filter>
+    </ClCompile>
+    <ClCompile Include="FitsFilesTab.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="RawDDPSettings.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="RawFilesTab.cpp">
+      <Filter>Dialogs\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSinks.cpp">
+      <Filter>Dialogs\ImageSinks</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveEditChanges.cpp">
+      <Filter>Dialogs\ImageSinks</Filter>
+    </ClCompile>
+    <ClCompile Include="LibraryDlg.cpp">
+      <Filter>Dialogs\Library</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\BitmapSlider.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\BtnST.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ButtonToolbar.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\cdxCRot90DC.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\cgfiltyp.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\childprop.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ControlPos.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\CustomTabCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\FolderDlg.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\Gradient.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\GradientCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\GradientCtrlImpl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\Label.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\Registry.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\RegMFC.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\RichToolTipCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ScrollDialog.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\SplitterControl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ThemeUtil.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\ToolTipButton.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\WndImage.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="AHDDemosaicing.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundCalibration.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="BitmapExt.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="ChannelAlign.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="CosmeticEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="DarkFrame.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DCRaw\dcraw.c">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="DeBloom.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="DeepStack.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="EntropyInfo.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="Filters.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="FITSUtil.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="FlatFrame.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameInfo.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameList.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="Library.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="LogFile.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="MasterFrames.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="MatchingStars.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiBitmapProcess.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="Multitask.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="RAWUtils.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="RunningStackingEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="Settings.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="StackedBitmap.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="StackingEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="StackingTasks.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="StarMask.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="TIFFUtil.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="Workspace.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="Delaunay.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DeepSkyStacker.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerCAT.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerCN2.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerCZ.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerDE.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerEN.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerES.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerFR.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerIT.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerNL.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerPTB.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerRO.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerRU.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerTR.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SetUILanguage.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commonresource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DeepSkyStacker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourceCZ.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourceES.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourceFR.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourceIT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="About.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="DeepStackerDlg.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplorerBar.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="FileProperty.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="PictureListCtrl.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="ProgressDlg.h">
+      <Filter>Dialogs</Filter>
+    </ClInclude>
+    <ClInclude Include="AlignmentParameters.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundLoading.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundOptions.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="BatchStacking.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckAbove.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="CometStacking.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="DropFilesDlg.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="IntermediateFiles.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputTab.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="PostCalibration.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="RecommandedSettings.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultParameters.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="StackingDlg.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="StackingParameters.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="StackRecap.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="StackSettings.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="AskRegistering.h">
+      <Filter>Dialogs\Registering</Filter>
+    </ClInclude>
+    <ClInclude Include="RegisterSettings.h">
+      <Filter>Dialogs\Registering</Filter>
+    </ClInclude>
+    <ClInclude Include="RegisterSettings_Actions.h">
+      <Filter>Dialogs\Registering</Filter>
+    </ClInclude>
+    <ClInclude Include="RegisterSettings_Advanced.h">
+      <Filter>Dialogs\Registering</Filter>
+    </ClInclude>
+    <ClInclude Include="LuminanceTab.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessingDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessSettingsSheet.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="RGBTab.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="SaturationTab.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="SavePicture.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="StarMaskDlg.h">
+      <Filter>Dialogs\Processing</Filter>
+    </ClInclude>
+    <ClInclude Include="FitsFilesTab.h">
+      <Filter>Dialogs\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="RawDDPSettings.h">
+      <Filter>Dialogs\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="RawFilesTab.h">
+      <Filter>Dialogs\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageSinks.h">
+      <Filter>Dialogs\ImageSinks</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveEditChanges.h">
+      <Filter>Dialogs\ImageSinks</Filter>
+    </ClInclude>
+    <ClInclude Include="LibraryDlg.h">
+      <Filter>Dialogs\Library</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\BitmapSlider.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\BtnST.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ButtonToolbar.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\cdxCRot90DC.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\cdxCRotBevelLine.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\cgfiltyp.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\childprop.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ControlPos.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\CustomTabCtrl.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Delaunay\Delaunay.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\EasySize.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\FolderDlg.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Gradient.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\gradientctrl.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\GradientCtrlImpl.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Label.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ListViewCtrlEx.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\memdc.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Registry.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Schemadef.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ScrollDialog.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\SmartPtr.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\SplitterControl.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ThemeUtil.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Tmschema.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\ToolTipButton.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\WndImage.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="AHDDemosaicing.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundCalibration.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="BezierAdjust.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapExt.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="ChannelAlign.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Common.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="CosmeticEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DarkFrame.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DeBloom.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DeepStack.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DSSCommon.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DSSProgress.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DSSTools.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DSSVersion.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="EntropyInfo.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Filters.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="FITSUtil.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="FlatFrame.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameInfo.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameList.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Histogram.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Library.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="LogFile.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="MasterFrames.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchingStars.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="MedianFilterEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiBitmapProcess.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Multitask.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelTransform.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="RAWUtils.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="RegisterEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="RunningStackingEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Settings.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="StackedBitmap.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="StackingEngine.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="StackingTasks.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="StarMask.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Stars.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="TIFFUtil.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="Workspace.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\4Corners.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="app.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\asinh.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\Base_Down.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\Base_Hot.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\Base_Up.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonBase_down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonBase_hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonBase_mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonBase_up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonComet_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonComet_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonComet_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonComet_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Calibration_Linear.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Calibration_Rational.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Comet_Freeze.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Comet_Normal.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Comet_Trails.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\cuberoot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\custommode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\darkfram.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\darkframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="filelist.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\flatframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\GammaOff.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\GammaOn.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Tools\hdrdown.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Tools\hdrup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ImageList_CFA_CYMG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ImageList_CFA_RGB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ImageList_Color.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ImageList_GrayScale.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ImageList_Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\intersectionmode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\lightfra.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\lightframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\linear.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\linear_en.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\linear_fr.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\log.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\loglog.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\logsqrt.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\mosaicmode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\normalmode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\offsetframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="open.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="openfile.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Pattern_BGGR.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Pattern_CYGMCYMG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Pattern_GBRG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Pattern_GRBG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Pattern_RGGB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="redo.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="redo.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\RGBCalibration_Maximum.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\RGBCalibration_Middle.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\RGBCalibration_Minimum.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\RGBCalibration_None.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="settings.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\sqrt.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StarShape_Bell.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StarShape_Cone.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StarShape_Cubic.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StarShape_Quadratic.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StarShape_TruncatedBell.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StarShape_TruncatedCone.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="undo.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\brazil.png" />
+    <Image Include="res\Catalan.png" />
+    <Image Include="res\Czech.png" />
+    <Image Include="res\Dutch.png" />
+    <Image Include="res\German.png" />
+    <Image Include="res\Italian.png" />
+    <Image Include="res\logo.png" />
+    <Image Include="res\Portugal.png" />
+    <Image Include="res\Romanian.png" />
+    <Image Include="res\Russian.png" />
+    <Image Include="res\Spanish.png" />
+    <Image Include="res\Taiwan.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
+      <Filter>Tools</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\DeepSkyStacker.manifest" />
+  </ItemGroup>
+</Project>
