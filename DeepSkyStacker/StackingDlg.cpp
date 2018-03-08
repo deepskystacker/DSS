@@ -223,39 +223,41 @@ void CStackingDlg::UpdateSplitter()
 {
 	CRect				rcSplitter;
 	CRect				rcDialog;
-
-	m_Splitter.GetWindowRect(&rcSplitter);
-	ScreenToClient(&rcSplitter);
-	GetClientRect(&rcDialog);
-
-	// The list cannot be smaller than 120 pixels
-	// The image cannot be smaller than 200 pixels
-
-	int					nBaseY = (rcSplitter.top+rcSplitter.bottom)/2;
-	int					nMinY,
-						nMaxY;
-
-	if (nBaseY < 200)
+	if (m_Splitter.GetSafeHwnd())
 	{
-		// Move the splitter back to the minimum position
-		int				nDelta = 200-nBaseY;
+		m_Splitter.GetWindowRect(&rcSplitter);
+		ScreenToClient(&rcSplitter);
+		GetClientRect(&rcDialog);
 
-		CSplitterControl::ChangeHeight(&m_Picture, nDelta);
-		CSplitterControl::ChangeHeight(&m_Pictures, -nDelta, CW_BOTTOMALIGN);
-		CSplitterControl::ChangePos(&m_ListInfo, 0, nDelta);
-		CSplitterControl::ChangePos(&m_Splitter, 0, nDelta);
-		Invalidate();
-		UpdateWindow();
-		m_Splitter.Invalidate();
-		m_Picture.Invalidate();
-		m_Pictures.Invalidate();
-		m_ListInfo.Invalidate();
-	};
+		// The list cannot be smaller than 120 pixels
+		// The image cannot be smaller than 200 pixels
 
-	nMinY = min(200, nBaseY);
-	nMaxY = max(rcDialog.Height()-120, nBaseY);
+		int					nBaseY = (rcSplitter.top + rcSplitter.bottom) / 2;
+		int					nMinY,
+			nMaxY;
 
-	m_Splitter.SetRange(nMinY, nMaxY);
+		if (nBaseY < 200)
+		{
+			// Move the splitter back to the minimum position
+			int				nDelta = 200 - nBaseY;
+
+			CSplitterControl::ChangeHeight(&m_Picture, nDelta);
+			CSplitterControl::ChangeHeight(&m_Pictures, -nDelta, CW_BOTTOMALIGN);
+			CSplitterControl::ChangePos(&m_ListInfo, 0, nDelta);
+			CSplitterControl::ChangePos(&m_Splitter, 0, nDelta);
+			Invalidate();
+			UpdateWindow();
+			m_Splitter.Invalidate();
+			m_Picture.Invalidate();
+			m_Pictures.Invalidate();
+			m_ListInfo.Invalidate();
+		};
+
+		nMinY = min(200, nBaseY);
+		nMaxY = max(rcDialog.Height() - 120, nBaseY);
+
+		m_Splitter.SetRange(nMinY, nMaxY);
+	}
 };
 
 /* ------------------------------------------------------------------- */
