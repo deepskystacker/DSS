@@ -18,27 +18,27 @@ HCURSOR	CSelectRectSink::GetCursorFromMode(SELECTRECTMODE Mode)
 	switch (Mode)
 	{
 	case SRM_MOVE :
-		hResult = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEALL));
+		hResult = ::LoadCursor(NULL, IDC_SIZEALL);
 		break;
 
 	case SRM_MOVETOP :
 	case SRM_MOVEBOTTOM :
-		hResult = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENS));
+		hResult = ::LoadCursor(NULL, IDC_SIZENS);
 		break;
 
 	case SRM_MOVELEFT :
 	case SRM_MOVERIGHT :
-		hResult = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZEWE));
+		hResult = ::LoadCursor(NULL, IDC_SIZEWE);
 		break;
 
 	case SRM_MOVETOPLEFT :
 	case SRM_MOVEBOTTOMRIGHT :
-		hResult = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENWSE));
+		hResult = ::LoadCursor(NULL, IDC_SIZENWSE);
 		break;
 
 	case SRM_MOVETOPRIGHT :
 	case SRM_MOVEBOTTOMLEFT :
-		hResult = ::LoadCursor(NULL, MAKEINTRESOURCE(IDC_SIZENESW));
+		hResult = ::LoadCursor(NULL, IDC_SIZENESW);
 		break;
 	};
 

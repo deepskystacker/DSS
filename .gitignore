@@ -19,3 +19,6 @@
 *.log
 
 *.obj
+/DeepSkyStacker/.vs
+/.vs
+/DeepSkyStacker/x86/Debug/DSSLog.txt

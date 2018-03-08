@@ -924,7 +924,6 @@ END_MESSAGE_MAP()
 
 /*** Definition of "workhorse" class "CListBase" *****************************/
 
-UINT                    CListBase::m_winver        = 0; // Windows version
 CListBase::VISUAL_STYLE CListBase::m_visualStyle   = Unknown;  // visual style?
 const int               CListBase::m_iFirstColXOff = 2; // x-off of first col
 const int               CListBase::m_iNextColXOff  = 6; // x-off of other cols
@@ -934,12 +933,6 @@ const int               CListBase::m_iNextColXOff  = 6; // x-off of other cols
 /*** Constructor *************************************************************/
 CListBase::CListBase()
 {
-  // Build equivalent to deprecated global "_win_ver"
-  if (m_winver == 0)
-  {
-    WORD wVersion = LOWORD(GetVersion());
-    m_winver = MAKEWORD(HIBYTE(wVersion), LOBYTE(wVersion));
-  }
 
   if (m_visualStyle == Unknown)
   {
@@ -969,7 +962,6 @@ CListBase::CListBase()
     }
   }
 
-  m_winver               = 0;
   m_bMouseInClientArea   = false;
   m_bTopMost             = false;
   m_bFocusSet            = false;
@@ -985,8 +977,7 @@ CListBase::CListBase()
   m_bIconXOffCalculated  = false;
   m_dwExtendedStyle      = 0;
   m_iHotItem             = -1;
-  m_dwHotLite            =
-    m_winver <= 0x0400 ? RGB(0, 0, 128) : GetSysColor(COLOR_HOTLIGHT);
+  m_dwHotLite            = GetSysColor(COLOR_HOTLIGHT);
   m_hcursorCustom        = 0;
   m_hcursorArrow         = 0;
   m_hcursorHand          = 0;
@@ -1016,7 +1007,6 @@ CListBase::~CListBase()
   for (INT_PTR i = m_aColumnData.GetUpperBound(); i >= 0; --i)
     delete m_aColumnData[i];
 
-  if (m_winver <= 0x400 && m_hcursorHand) DestroyCursor(m_hcursorHand);
 }
 
 /*** Enable or disable coloring of sort column *******************************/
@@ -4361,13 +4351,7 @@ int CListBase::OrderToIndex(int nOrder)
 void CListBase::PrepareHotUnderlining()
 {
   if (!m_hcursorArrow) m_hcursorArrow = LoadCursor(0, IDC_ARROW);
-  if (!m_hcursorHand)
-    if (m_winver <= 0x0400)
-      // Under Windows 95/NT we must create our own cursor
-      // to indicate hot items
-      m_hcursorHand = LoadCursor(AfxGetResourceHandle(), _T("IDC_HAND"));
-    else
-      m_hcursorHand = LoadCursor(0, IDC_HAND);
+  if (!m_hcursorHand)  m_hcursorHand = LoadCursor(0, IDC_HAND);
 }
 
 /*** Allow other necessary subclassing to occur before the window is *********/

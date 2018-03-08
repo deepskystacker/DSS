@@ -528,7 +528,7 @@ BOOL CWndImage::CreateBufferBitmap()
 
 					// Check the cursor position against the toolbar position
 					CPoint			pt;
-					double			fTransparency = 0.50;
+					float			fTransparency = 0.50;
 
 					GetCursorPos(&pt);
 					ScreenToClient(&pt);
