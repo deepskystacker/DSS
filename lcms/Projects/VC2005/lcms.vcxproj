@@ -105,9 +105,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <PrecompiledHeaderOutputFile />
-      <AssemblerListingLocation>.\LibRelease/</AssemblerListingLocation>
-      <ObjectFileName>.\LibRelease/</ObjectFileName>
-      <ProgramDataBaseFileName>.\LibRelease/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>false</SuppressStartupBanner>
       <CompileAs>CompileAsCpp</CompileAs>
@@ -165,9 +162,6 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeaderOutputFile>.\LibDebug/lcms.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\LibDebug/</AssemblerListingLocation>
-      <ObjectFileName>.\LibDebug/</ObjectFileName>
-      <ProgramDataBaseFileName>.\LibDebug/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
