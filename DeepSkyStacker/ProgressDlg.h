@@ -42,7 +42,7 @@ public:
 public :
 	void PeekAndPump()
 	{
-		if (::GetFocus() != m_hWnd)
+		if (m_hWnd && ::GetFocus() != m_hWnd)
 			SetFocus();
 
 		MSG msg;
@@ -289,7 +289,8 @@ public :
 	virtual BOOL	Close()
 	{
 		m_dlg.PeekAndPump();
-		m_dlg.EndDialog(TRUE);
+		// Prevent failure if mdlg is no longer a valid window
+		if (NULL != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
 
 		CWnd *pMainWnd = AfxGetMainWnd();
 		if (pMainWnd)
