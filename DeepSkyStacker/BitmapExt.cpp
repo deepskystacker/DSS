@@ -327,10 +327,10 @@ BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 	CSmartPtr<C24BitColorBitmap>	pBitmap;
 	Bitmap	*						pSrcBitmap;
 
-	pSrcBitmap = new Bitmap(CComBSTR(szFileName));
+	pSrcBitmap = ::new Bitmap(CComBSTR(szFileName));
 	if (pSrcBitmap)
 	{
-		pBitmap.Attach(new C24BitColorBitmap());
+		pBitmap.Attach(::new C24BitColorBitmap());
 		TRACEDSS2("Creating 8 bit RGB memory bitmap %x (%s)\n", (LONG)pBitmap.m_p, szFileName);
 		if (pBitmap)
 		{
@@ -391,7 +391,7 @@ BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 			};
 		};
 
-		delete pSrcBitmap;
+		::delete pSrcBitmap;
 	};
 
 	return bResult;
@@ -510,12 +510,12 @@ BOOL	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	BOOL					bResult = FALSE;
 	Bitmap *				pBitmap;
 
-	pBitmap = new Bitmap(CComBSTR(szFileName));
+	pBitmap = ::new Bitmap(CComBSTR(szFileName));
 
 	if (pBitmap)
 	{
 		bResult = RetrieveEXIFInfo(pBitmap, BitmapInfo);
-		delete pBitmap;
+		::delete pBitmap;
 	};
 
 	return bResult;
@@ -528,7 +528,7 @@ BOOL	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	BOOL					bResult = FALSE;
 	Bitmap *				pBitmap;
 
-	pBitmap = new Bitmap(CComBSTR(szFileName));
+	pBitmap = ::new Bitmap(CComBSTR(szFileName));
 
 	if (pBitmap)
 	{
@@ -563,7 +563,7 @@ BOOL	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			};
 		};
 
-		delete pBitmap;
+		::delete pBitmap;
 	};
 
 	return bResult;
@@ -1034,24 +1034,24 @@ BOOL	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitma
 	{
 		if (bc.m_lBitsPerPixel == 8)
 		{
-			pBitmap.Attach(new C8BitGrayBitmap());
+			pBitmap.Attach(::new C8BitGrayBitmap());
 			TRACEDSS1("Creating 8 Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 16)
 		{
-			pBitmap.Attach(new C16BitGrayBitmap());
+			pBitmap.Attach(::new C16BitGrayBitmap());
 			TRACEDSS1("Creating 16 Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 32)
 		{
 			if (bc.m_bFloat)
 			{
-				pBitmap.Attach(new C32BitFloatGrayBitmap());
+				pBitmap.Attach(::new C32BitFloatGrayBitmap());
 				TRACEDSS1("Creating 32 float Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 			}
 			else
 			{
-				pBitmap.Attach(new C32BitGrayBitmap());
+				pBitmap.Attach(::new C32BitGrayBitmap());
 				TRACEDSS1("Creating 32 Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 			};
 		};
@@ -1060,24 +1060,24 @@ BOOL	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitma
 	{
 		if (bc.m_lBitsPerPixel == 8)
 		{
-			pBitmap.Attach(new C24BitColorBitmap());
+			pBitmap.Attach(::new C24BitColorBitmap());
 			TRACEDSS1("Creating 8 RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 16)
 		{
-			pBitmap.Attach(new C48BitColorBitmap());
+			pBitmap.Attach(::new C48BitColorBitmap());
 			TRACEDSS1("Creating 16 RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 32)
 		{
 			if (bc.m_bFloat)
 			{
-				pBitmap.Attach(new C96BitFloatColorBitmap());
+				pBitmap.Attach(::new C96BitFloatColorBitmap());
 				TRACEDSS1("Creating 32 float RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 			}
 			else
 			{
-				pBitmap.Attach(new C96BitColorBitmap());
+				pBitmap.Attach(::new C96BitColorBitmap());
 				TRACEDSS1("Creating 32 RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
 			};
 		};

@@ -32,7 +32,7 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 
 		GetShapeFunction(&pStarMaskFunction);
 
-		pOutBitmap.Attach(new C16BitGrayBitmap());
+		pOutBitmap.Attach(::new C16BitGrayBitmap());
 		if (pOutBitmap)
 		{
 			pOutBitmap->Init(pBitmap->Width(), pBitmap->Height());
@@ -97,7 +97,7 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 			*ppBitmap = dynamic_cast<CMemoryBitmap *>(p16Bitmap);
 
 			if (pStarMaskFunction)
-				delete pStarMaskFunction;
+				::delete pStarMaskFunction;
 			bResult = TRUE;
 		};
 	}
