@@ -640,7 +640,6 @@
     <ClInclude Include="FlatFrame.h" />
     <ClInclude Include="FrameInfo.h" />
     <ClInclude Include="FrameList.h" />
-    <ClInclude Include="gdiplus.h" />
     <ClInclude Include="Histogram.h" />
     <ClInclude Include="ImageSinks.h" />
     <ClInclude Include="IntermediateFiles.h" />
@@ -749,6 +748,8 @@
     <Image Include="res\GammaOff.bmp" />
     <Image Include="res\GammaOn.bmp" />
     <Image Include="res\German.png" />
+    <Image Include="res\hdrdown.bmp" />
+    <Image Include="res\hdrup.bmp" />
     <Image Include="res\icon1.ico" />
     <Image Include="res\ImageList_CFA_CYMG.bmp" />
     <Image Include="res\ImageList_CFA_RGB.bmp" />
@@ -790,6 +791,7 @@
     <Image Include="res\StarShape_TruncatedBell.bmp" />
     <Image Include="res\StarShape_TruncatedCone.bmp" />
     <Image Include="res\Taiwan.png" />
+    <Image Include="res\Turkish.png" />
     <Image Include="settings.ico" />
     <Image Include="undo.ico" />
   </ItemGroup>

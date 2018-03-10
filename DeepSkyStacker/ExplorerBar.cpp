@@ -145,8 +145,8 @@ void CExplorerBar::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 	Graphics 				graphics(pDC->GetSafeHdc());
 
 
-	COLORREF		crColor1 = RGB(222, 236, 252);
-	COLORREF		crColor2 = RGB(138, 147, 242);
+	COLORREF		crColor1 = RGB(90, 90, 90);
+	COLORREF		crColor2 = RGB(90, 90, 90);
 			
 	LinearGradientBrush		brush(PointF(rc.right, rc.top), 
 					PointF(rc.left, rc.bottom), 
@@ -162,8 +162,8 @@ void CExplorerBar::DrawGradientFrameRect(CDC * pDC, const CRect & rc, BOOL bActi
 {
 	CRect			rcTop;
 	CRect			rcBottom;
-	COLORREF		crColor1 = RGB(138, 185, 242);
-	COLORREF		crColor2 = RGB(224, 244, 252);
+	COLORREF		crColor1 = RGB(167, 211, 241);
+	COLORREF		crColor2 = RGB(167, 211, 241);
 	double			fAlpha = bShadow ? 0.3 : 1.0;
 
 	if (bShadow)

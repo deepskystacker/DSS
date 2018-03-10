@@ -730,9 +730,6 @@
     <ClInclude Include="Workspace.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="gdiplus.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\4Corners.bmp">
@@ -996,6 +993,13 @@
     <Image Include="res\Russian.png" />
     <Image Include="res\Spanish.png" />
     <Image Include="res\Taiwan.png" />
+    <Image Include="res\hdrup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\hdrdown.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Turkish.png" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h">

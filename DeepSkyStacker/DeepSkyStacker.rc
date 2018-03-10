@@ -7,19 +7,16 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
-
+#include "afxres.h"
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -27,58 +24,111 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 IDB_IMAGELIST_GRAYSCALE BITMAP                  "res\\ImageList_GrayScale.bmp"
+
 IDB_IMAGELIST_CFA_CYMG  BITMAP                  "res\\ImageList_CFA_CYMG.bmp"
+
 IDB_IMAGELIST_CFA_RGB   BITMAP                  "res\\ImageList_CFA_RGB.bmp"
+
 IDB_IMAGELIST_COLOR     BITMAP                  "res\\ImageList_Color.bmp"
+
 IDB_ASINH               BITMAP                  "res\\asinh.bmp"
+
 IDB_CUBEROOT            BITMAP                  "res\\cuberoot.bmp"
+
 IDB_LOG                 BITMAP                  "res\\log.bmp"
+
 IDB_LOGLOG              BITMAP                  "res\\loglog.bmp"
+
 IDB_LOGSQRT             BITMAP                  "res\\logsqrt.bmp"
+
 IDB_SQRT                BITMAP                  "res\\sqrt.bmp"
+
 IDB_LINEAR              BITMAP                  "res\\linear_en.bmp"
+
 IDB_HDRUP               BITMAP                  "res\\hdrup.bmp"
+
 IDB_HDRDOWN             BITMAP                  "res\\hdrdown.bmp"
+
 IDB_NORMALMODE          BITMAP                  "res\\normalmode.bmp"
+
 IDB_MOSAICMODE          BITMAP                  "res\\mosaicmode.bmp"
+
 IDB_PATTERN_RGGB        BITMAP                  "res\\Pattern_RGGB.bmp"
+
 IDB_PATTERN_BGGR        BITMAP                  "res\\Pattern_BGGR.bmp"
+
 IDB_PATTERN_GBRG        BITMAP                  "res\\Pattern_GBRG.bmp"
+
 IDB_PATTERN_GRBG        BITMAP                  "res\\Pattern_GRBG.bmp"
+
 IDB_PATTERN_CYGMCYMG    BITMAP                  "res\\Pattern_CYGMCYMG.bmp"
+
 IDB_IMAGELIST_MASK      BITMAP                  "res\\ImageList_Mask.bmp"
+
 IDB_CUSTOMMODE          BITMAP                  "res\\custommode.bmp"
+
 IDB_STARSHAPE_TRUNCATEDCONE BITMAP                  "res\\StarShape_TruncatedCone.bmp"
+
 IDB_STARSHAPE_BELL      BITMAP                  "res\\StarShape_Bell.bmp"
+
 IDB_STARSHAPE_CONE      BITMAP                  "res\\StarShape_Cone.bmp"
+
 IDB_STARSHAPE_CUBIC     BITMAP                  "res\\StarShape_Cubic.bmp"
+
 IDB_STARSHAPE_QUADRIC   BITMAP                  "res\\StarShape_Quadratic.bmp"
+
 IDB_STARSHAPE_TRUNCATEDBELL BITMAP                  "res\\StarShape_TruncatedBell.bmp"
+
 IDB_BUTTONBASE_UP       BITMAP                  "Buttons\\ButtonBase_up.bmp"
+
 IDB_BUTTONBASE_DOWN     BITMAP                  "Buttons\\ButtonBase_down.bmp"
+
 IDB_BUTTONBASE_HOT      BITMAP                  "Buttons\\ButtonBase_hot.bmp"
+
 IDB_BUTTONBASE_MASK     BITMAP                  "Buttons\\ButtonBase_mask.bmp"
+
 IDB_BUTTONSTAR_UP       BITMAP                  "Buttons\\ButtonStar_Up.bmp"
+
 IDB_BUTTONCOMET_DISABLED BITMAP                  "Buttons\\ButtonComet_Disabled.bmp"
+
 IDB_BUTTONCOMET_DOWN    BITMAP                  "Buttons\\ButtonComet_Down.bmp"
+
 IDB_BUTTONCOMET_HOT     BITMAP                  "Buttons\\ButtonComet_Hot.bmp"
+
 IDB_BUTTONCOMET_UP      BITMAP                  "Buttons\\ButtonComet_Up.bmp"
+
 IDB_BUTTONSAVE_DISABLED BITMAP                  "Buttons\\ButtonSave_Disabled.bmp"
+
 IDB_BUTTONSAVE_DOWN     BITMAP                  "Buttons\\ButtonSave_Down.bmp"
+
 IDB_BUTTONSAVE_HOT      BITMAP                  "Buttons\\ButtonSave_Hot.bmp"
+
 IDB_BUTTONSAVE_UP       BITMAP                  "Buttons\\ButtonSave_Up.bmp"
+
 IDB_BUTTONSELECT_DISABLED BITMAP                  "Buttons\\ButtonSelect_Disabled.bmp"
+
 IDB_BUTTONSELECT_DOWN   BITMAP                  "Buttons\\ButtonSelect_Down.bmp"
+
 IDB_BUTTONSELECT_HOT    BITMAP                  "Buttons\\ButtonSelect_Hot.bmp"
+
 IDB_BUTTONSELECT_UP     BITMAP                  "Buttons\\ButtonSelect_Up.bmp"
+
 IDB_BUTTONSTAR_DISABLED BITMAP                  "Buttons\\ButtonStar_Disabled.bmp"
+
 IDB_BUTTONSTAR_DOWN     BITMAP                  "Buttons\\ButtonStar_Down.bmp"
+
 IDB_BUTTONSTAR_HOT      BITMAP                  "Buttons\\ButtonStar_Hot.bmp"
+
 IDB_COMETTRAILS         BITMAP                  "res\\Comet_Trails.bmp"
+
 IDB_COMETFREEZE         BITMAP                  "res\\Comet_Freeze.bmp"
+
 IDB_COMETNORMAL         BITMAP                  "res\\Comet_Normal.bmp"
+
 IDB_4CORNERS            BITMAP                  "res\\4Corners.bmp"
+
 IDB_INTERSECTIONMODE    BITMAP                  "res\\intersectionmode.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -88,15 +138,25 @@ IDB_INTERSECTIONMODE    BITMAP                  "res\\intersectionmode.bmp"
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDI_APP                 ICON                    "app.ico"
+
 IDI_OPENFILE            ICON                    "openfile.ico"
+
 IDI_UNDO                ICON                    "undo.ico"
+
 IDI_REDO                ICON                    "redo.ico"
+
 IDI_SETTINGS            ICON                    "settings.ico"
+
 IDI_LIGHTFRAME          ICON                    "res\\lightframe.ico"
+
 IDI_DARKFRAME           ICON                    "res\\darkframe.ico"
+
 IDI_FLATFRAME           ICON                    "res\\flatframe.ico"
+
 IDI_OFFSETFRAME         ICON                    "res\\offsetframe.ico"
+
 IDI_APPFILELIST         ICON                    "filelist.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -104,18 +164,31 @@ IDI_APPFILELIST         ICON                    "filelist.ico"
 //
 
 LOGO.PNG                RCDATA                  "res\\logo.png"
+
 SPANISH.PNG             RCDATA                  "res\\Spanish.png"
+
 ITALIAN.PNG             RCDATA                  "res\\Italian.png"
+
 CZECH.PNG               RCDATA                  "res\\Czech.png"
+
 CATALAN.PNG             RCDATA                  "res\\Catalan.png"
+
 GERMAN.PNG              RCDATA                  "res\\German.png"
+
 DUTCH.PNG               RCDATA                  "res\\Dutch.png"
+
 TAIWAN.PNG              RCDATA                  "res\\Taiwan.png"
+
 PORTUGAL.PNG            RCDATA                  "res\\Portugal.png"
+
 BRAZIL.PNG              RCDATA                  "res\\Brazil.png"
+
 ROMANIAN.PNG            RCDATA                  "res\\Romanian.png"
+
 RUSSIAN.PNG             RCDATA                  "res\\Russian.png"
+
 TURKISH.PNG             RCDATA                  "res\\Turkish.png"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -213,8 +286,12 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
+    IDD_STACKING, DIALOG
+    BEGIN
+    END
+
     IDD_LIBRARY, DIALOG
     BEGIN
         HORZGUIDE, 54
@@ -222,7 +299,18 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-#endif    // English (U.S.) resources
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_STACKING AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -230,10 +318,8 @@ END
 // French (France) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
-#ifdef _WIN32
 LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -241,11 +327,17 @@ LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 //
 
 IDB_RGBCALIBRATION_NONE BITMAP                  "res\\RGBCalibration_None.bmp"
+
 IDB_CALIBRATION_LINEAR  BITMAP                  "res\\Calibration_Linear.bmp"
+
 IDB_CALIBRATION_RATIONAL BITMAP                  "res\\Calibration_Rational.bmp"
+
 IDB_RGBCALIBRATION_MAXIMUM BITMAP                  "res\\RGBCalibration_Maximum.bmp"
+
 IDB_RGBCALIBRATION_MIDDLE BITMAP                  "res\\RGBCalibration_Middle.bmp"
+
 IDB_RGBCALIBRATION_MINIMUM BITMAP                  "res\\RGBCalibration_Minimum.bmp"
+
 #endif    // French (France) resources
 /////////////////////////////////////////////////////////////////////////////
 
