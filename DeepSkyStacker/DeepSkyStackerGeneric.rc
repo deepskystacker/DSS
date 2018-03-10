@@ -1,25 +1,19 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
 
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
 
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENW)
 #ifdef _WIN32
 LANGUAGE 9, 12
