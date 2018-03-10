@@ -2303,7 +2303,12 @@ void CHTMLParse::OnGotOption( const CParameters &pList )
 	//	If there's no select then we create one
 	if( !m_pCurrentSelect )
 	{
-		CParameters pList;
+		// 
+		// The commented declaration below was hiding the function parameter pList resulting in
+		// waring C4457.  In this case I believe it was a mistake, so I've commented the line
+		// David C. Partridge 6 Mar 2018
+		//
+		// CParameters pList; Was raising warning C4457 declaration hide function parameter
 		OnGotSelect( pList );
 	}
 

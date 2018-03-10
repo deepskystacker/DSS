@@ -2793,7 +2793,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 			if (dwDrizzle > 1)
 			{
 				strText.Format(IDS_RECAP_DRIZZLE, dwDrizzle);
-				fprintf(hFile, "%s<br>\n", strText);
+				fprintf(hFile, "%s<br>\n", (LPCTSTR)strText);
 			};
 
 			// Comet
@@ -2816,7 +2816,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					strText.Format(IDS_RECAP_COMETSTACKING_BOTH);
 					break;
 				};
-				fprintf(hFile, "%s<br>\n", strText);;
+				fprintf(hFile, "%s<br>\n", (LPCTSTR)strText);;
 			};
 
 			// Post calibration settings

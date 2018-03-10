@@ -50,8 +50,8 @@ static char THIS_FILE[] = __FILE__;
 #include "atlconv.h"    // for Unicode conversion - requires #include <afxdisp.h> // MFC OLE automation classes
 
 #include <afxole.h> // for COleClientItem
-#define COMPILE_MULTIMON_STUBS	// for late-binding to multi-monitor functions
-#include <multimon.h> // for multi-monitor support
+// #define COMPILE_MULTIMON_STUBS	// for late-binding to multi-monitor functions
+// #include <multimon.h> // for multi-monitor support
 
 /////////////////////////////////////////////////////////////////////////////
 // CRichToolTipCtrl::CRichToolTipRichEditCtrl

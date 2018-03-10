@@ -82,13 +82,13 @@ public :
 	void	Free()
 	{
 		if (m_pUp)
-			delete m_pUp;
+			::delete m_pUp;
 		if (m_pDown)
-			delete m_pDown;
+			::delete m_pDown;
 		if (m_pHot)
-			delete m_pHot;
+			::delete m_pHot;
 		if (m_pDisabled)
-			delete m_pDisabled;
+			::delete m_pDisabled;
 		
 		m_pUp			= NULL;
 		m_pDown			= NULL;

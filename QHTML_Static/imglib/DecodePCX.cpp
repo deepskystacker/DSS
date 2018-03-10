@@ -311,6 +311,8 @@ bool PCXFileReader::Decode(CDataSourceABC &ds, CFrameArray &arrFrames, SIZE &siz
 		}
 		   // and set the palette
 		int num_colors = 1 << m_bits;
+#pragma warning ( push )
+#pragma warning( disable : 4456)
 		for (short i = 0; i < num_colors; i++)
 		{
 				pct->rgbRed   = m_palette[(i*3)];
@@ -319,6 +321,7 @@ bool PCXFileReader::Decode(CDataSourceABC &ds, CFrameArray &arrFrames, SIZE &siz
 				pct->rgbReserved = 0xFF;
 				pct++;
 		}
+#pragma warning ( pop )
 	}
 
 	if( pDibLoader )

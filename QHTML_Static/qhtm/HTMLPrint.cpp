@@ -105,22 +105,22 @@ BOOL WINAPI QHTM_PrintLayout( QHTMCONTEXT ctx, HDC hDC, LPCRECT pRect, LPINT nPa
 	CQHTMPrintContext** ppctx = g_mapPrintContext.Lookup( ctx );
 	if (ppctx)
 	{
-		CQHTMPrintContext & ctx = *(*ppctx);
-		ctx.m_rcLayout = *pRect;
-		ctx.m_rcLayout.Offset( -ctx.m_rcLayout.left, -ctx.m_rcLayout.top );
+		CQHTMPrintContext & printCtx = *(*ppctx);
+		printCtx.m_rcLayout = *pRect;
+		printCtx.m_rcLayout.Offset( -printCtx.m_rcLayout.left, -printCtx.m_rcLayout.top );
 
 		HDC screenDC = ::GetDC( NULL );
-		ctx.m_cxDeviceScaleNumer = ::GetDeviceCaps(hDC, LOGPIXELSX);
-		ctx.m_cxDeviceScaleDenom = ::GetDeviceCaps(screenDC, LOGPIXELSX);
-		ctx.m_cyDeviceScaleNumer = ::GetDeviceCaps(hDC, LOGPIXELSY);
-		ctx.m_cyDeviceScaleDenom = ::GetDeviceCaps(screenDC, LOGPIXELSY);
+		printCtx.m_cxDeviceScaleNumer = ::GetDeviceCaps(hDC, LOGPIXELSX);
+		printCtx.m_cxDeviceScaleDenom = ::GetDeviceCaps(screenDC, LOGPIXELSX);
+		printCtx.m_cyDeviceScaleNumer = ::GetDeviceCaps(hDC, LOGPIXELSY);
+		printCtx.m_cyDeviceScaleDenom = ::GetDeviceCaps(screenDC, LOGPIXELSY);
 		::ReleaseDC( NULL, screenDC );
 
 		GS::CDrawContext dc( NULL, hDC, true );
-		dc.SetScaling( ctx.m_cxDeviceScaleNumer, ctx.m_cxDeviceScaleDenom, ctx.m_cyDeviceScaleNumer, ctx.m_cyDeviceScaleDenom );
+		dc.SetScaling( printCtx.m_cxDeviceScaleNumer, printCtx.m_cxDeviceScaleDenom, printCtx.m_cyDeviceScaleNumer, printCtx.m_cyDeviceScaleDenom );
 
-		ctx.m_htmlSection.OnLayout( ctx.m_rcLayout,  dc );
-		ctx.m_nPages = *nPages = static_cast< UINT >( ctx.m_htmlSection.Paginate( ctx.m_rcLayout ) );
+		printCtx.m_htmlSection.OnLayout( printCtx.m_rcLayout,  dc );
+		printCtx.m_nPages = *nPages = static_cast< UINT >( printCtx.m_htmlSection.Paginate( printCtx.m_rcLayout ) );
 		return TRUE;
 	}
 	else
@@ -208,17 +208,17 @@ BOOL WINAPI QHTM_PrintPage( QHTMCONTEXT ctx, HDC hDC, UINT nPage, LPCRECT rDest)
 	CQHTMPrintContext** ppctx = g_mapPrintContext.Lookup( ctx );
 	if (ppctx)
 	{
-		CQHTMPrintContext & ctx = *(*ppctx);
+		CQHTMPrintContext & printCtx = *(*ppctx);
 
 		//	Validate page number
-		if( nPage >= ctx.m_nPages )
+		if( nPage >= printCtx.m_nPages )
 			return FALSE;
 
 		//	Prevent background painting.
-		//ctx.m_htmlSection.Transparent( true );
+		//printCtx.m_htmlSection.Transparent( true );
 
 		//	Get the page rect (clip rect)
-		WinHelper::CRect rcPage = ctx.m_htmlSection.GetPageRect( nPage );
+		WinHelper::CRect rcPage = printCtx.m_htmlSection.GetPageRect( nPage );
 
 		//	The dest rect maps to the rect rcPage. 
 		//	Ensure that the cliprect matches the minimum of rcPage, rcDest
@@ -235,7 +235,7 @@ BOOL WINAPI QHTM_PrintPage( QHTMCONTEXT ctx, HDC hDC, UINT nPage, LPCRECT rDest)
 		//	Scroll the document so that 0,0 points to the top left
 		//	of the clipRect
 		// Scroll the document...
-		ctx.m_htmlSection.SetPosAbsolute(rcPage.left, rcPage.top);
+		printCtx.m_htmlSection.SetPosAbsolute(rcPage.left, rcPage.top);
 
 		//	Handle the case where the destination is not top/left
 		POINT oldWindowOrg;
@@ -243,10 +243,10 @@ BOOL WINAPI QHTM_PrintPage( QHTMCONTEXT ctx, HDC hDC, UINT nPage, LPCRECT rDest)
 		rcClip.Offset(-rcClip.left, -rcClip.top);	// Move to 0,0
 
 		GS::CDrawContext dc( &rcClip, hDC, true );
-		dc.SetScaling( ctx.m_cxDeviceScaleNumer, ctx.m_cxDeviceScaleDenom, ctx.m_cyDeviceScaleNumer, ctx.m_cyDeviceScaleDenom );
+		dc.SetScaling( printCtx.m_cxDeviceScaleNumer, printCtx.m_cxDeviceScaleDenom, printCtx.m_cyDeviceScaleNumer, printCtx.m_cyDeviceScaleDenom );
 
 		//	Do the printing
-		ctx.m_htmlSection.OnDraw( dc );
+		printCtx.m_htmlSection.OnDraw( dc );
 
 		// Restore context
 		VAPI( ::SetWindowOrgEx( hDC, oldWindowOrg.x, oldWindowOrg.y, NULL ) );

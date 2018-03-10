@@ -19,16 +19,6 @@ Owner:	russf@gipsysoft.com
 #define WINDOW_DATA	0
 enum {knDeadWindow = 1};
 
-#if !defined (_WIN32_WCE)
-static UINT nMsgMouseWheel =
-   (((::GetVersion() & 0x80000000) && LOBYTE(LOWORD(::GetVersion()) == 4)) ||
-	 (!(::GetVersion() & 0x80000000) && LOBYTE(LOWORD(::GetVersion()) == 3)))
-	 ? ::RegisterWindowMessage(MSH_MOUSEWHEEL) : 0;
-
-extern LRESULT FASTCALL HandleMouseWheelRegisteredMessage( HWND hwnd, WPARAM wParam, LPARAM lParam );
-
-#endif	//	if !defined (_WIN32_WCE)
-
 //
 //	Some globals
 extern CSectionABC *g_pSectHighlight;
@@ -74,7 +64,7 @@ static bool IsbeforeInZorder( HWND hwndThis, HWND hwnd, UINT uDirection )
 
 LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	LPARAM lparam = GetWindowLong( hwnd, WINDOW_DATA );
+	LPARAM lparam = GetWindowLongPtr( hwnd, WINDOW_DATA );
 
 	if( lparam == knDeadWindow )
 	{
@@ -213,7 +203,11 @@ LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM w
 		if( pWnd == NULL )
 		{
 			pWnd = new CQHTMControlSection( hwnd );
-			SetWindowLong( hwnd, WINDOW_DATA, reinterpret_cast<long>( pWnd ) );
+#if defined(_WIN64)
+			SetWindowLongPtr( hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>( pWnd ) );
+#else
+			SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(pWnd));
+#endif
 			SetWindowLong( hwnd, GWL_STYLE, GetWindowLong( hwnd, GWL_STYLE ) | WS_VSCROLL | WS_HSCROLL );
 		}
 		return TRUE;
@@ -225,7 +219,7 @@ LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM w
 #ifdef UNDER_CE
 		pWnd = new CQHTMControlSection( hwnd );
 		SetWindowLong( hwnd, WINDOW_DATA, reinterpret_cast<long>( pWnd ) );
-		SetWindowLong( hwnd, GWL_STYLE, GetWindowLong( hwnd, GWL_STYLE ) | WS_VSCROLL | WS_HSCROLL );
+		SetWindowLong( hwnd, GWL_STYLE, GetWindowLong hwnd, GWL_STYLE ) | WS_VSCROLL | WS_HSCROLL );
 #endif	//	UNDER_CE
 
 
@@ -271,8 +265,8 @@ LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM w
 		
 
 	case WM_GETTEXTLENGTH:
-		if( GetWindowLong( hwnd, WINDOW_DATA ) == 0
-			|| GetWindowLong( hwnd, WINDOW_DATA ) == knDeadWindow )
+		if( GetWindowLongPtr( hwnd, WINDOW_DATA ) == 0
+			|| GetWindowLongPtr( hwnd, WINDOW_DATA ) == knDeadWindow )
 		{
 			return 0;
 		}
@@ -595,7 +589,12 @@ LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM w
 	case WM_DESTROY:
 		pWnd->OnDestroy();
 
-		SetWindowLong( hwnd, WINDOW_DATA, knDeadWindow );
+#if defined(_WIN64)
+		SetWindowLongPtr(hwnd, WINDOW_DATA, (LONG_PTR)(knDeadWindow));
+#else
+		SetWindowLong(hwnd, WINDOW_DATA, (LONG)(knDeadWindow));
+#endif
+
 		delete pWnd;
 		break;
 
@@ -751,12 +750,7 @@ LRESULT CALLBACK CQHTMControlSection::WndProc( HWND hwnd, UINT message, WPARAM w
 		return g_defaults.Set( (LPQHTM_DEFAULTS)lParam );
 
 	default:
-#if !defined (_WIN32_WCE)
-		if( message == nMsgMouseWheel && nMsgMouseWheel )
-		{
-			return HandleMouseWheelRegisteredMessage( hwnd, wParam, lParam );
-		}
-#endif	//	#if !defined (_WIN32_WCE)
+
 		return DefWindowProc( hwnd, message, wParam, lParam );
 	}
 	return 0;

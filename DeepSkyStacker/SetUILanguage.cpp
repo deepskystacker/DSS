@@ -1,49 +1,14 @@
 #include <stdafx.h>
 #include "SetUILanguage.h"
 #include "Registry.h"
+#include <VersionHelpers.h>
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsVista()
-{
-	BOOL					bResult = FALSE;
-	OSVERSIONINFO			VersionInfo;
-
-	SecureZeroMemory(&VersionInfo, sizeof(VersionInfo));
-	VersionInfo.dwOSVersionInfoSize = sizeof(VersionInfo);
-
-	if (GetVersionEx((OSVERSIONINFO*)&VersionInfo))
-	{
-		if (VersionInfo.dwMajorVersion>5)
-			bResult = TRUE;
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL	IsWin98()
-{
-	BOOL					bResult = FALSE;
-	OSVERSIONINFO			VersionInfo;
-
-	SecureZeroMemory(&VersionInfo, sizeof(VersionInfo));
-	VersionInfo.dwOSVersionInfoSize = sizeof(VersionInfo);
-
-	if (GetVersionEx((OSVERSIONINFO*)&VersionInfo))
-	{
-		if ((VersionInfo.dwMajorVersion==4) && (VersionInfo.dwMinorVersion==10))
-			bResult = TRUE;
-	};
-
-	return bResult;
-};
-/* ------------------------------------------------------------------- */
 
 void	SetUILanguage(LANGID LangID)
 {
-	if (IsVista())
+	if (IsWindowsVistaOrGreater())
 	{
 		// Vista specific
 		typedef LANGID (WINAPI * SetThreadUILanguageProc)(LANGID);

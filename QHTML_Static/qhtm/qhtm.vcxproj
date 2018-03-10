@@ -78,7 +78,7 @@
     <ProjectGuid>{4575815D-1EFF-4AFF-B21C-0707E3C51A8D}</ProjectGuid>
     <RootNamespace>qhtm</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'" Label="Configuration">
@@ -246,11 +246,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>15.0.27130.2010</_ProjectFileVersion>
+    <_ProjectFileVersion>15.0.27413.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>\PROJECTS\Solutions.uXp\bin\VC2008\$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <OutDir>.\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -258,8 +258,8 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>\Astro\Projects\QHTML_Static\bin\$(Configuration)\</OutDir>
-    <IntDir>$(Configuration)\</IntDir>
+    <OutDir>.\$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -714,7 +714,6 @@
     <ClCompile Include="GotoUrl.cpp" />
     <ClCompile Include="Gradient.cpp" />
     <ClCompile Include="GradientFill.cpp" />
-    <ClCompile Include="HandleMouseWheelRegisteredMessage.cpp" />
     <ClCompile Include="HtmlAnchor.cpp" />
     <ClCompile Include="htmlblockquote.cpp" />
     <ClCompile Include="HTMLBreak.cpp" />

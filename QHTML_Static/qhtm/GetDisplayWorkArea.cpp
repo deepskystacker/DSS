@@ -16,8 +16,6 @@ Purpose:	<Description of module>.
 
 #if !defined (_WIN32_WCE)
 
-#include <multimon.h>
-
 extern void GetDisplayWorkArea( HWND hwnd, RECT &rc );
 extern void GetDisplayWorkArea( POINT pt, RECT &rc );
 

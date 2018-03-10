@@ -31,7 +31,7 @@ static void ChangeMessageBoxToHTML( HWND hwnd )
 	UINT uID = 0;
 	while( hwndStatic )
 	{
-		uID = GetWindowLong( hwndStatic, GWL_ID );
+		uID = GetWindowLongPtr( hwndStatic, GWL_ID );
 		if( uID >= 0xffff )
 			break;
 		hwndStatic = GetWindow( hwndStatic, GW_HWNDNEXT );

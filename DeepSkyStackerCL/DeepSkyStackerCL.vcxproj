@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Debug|Win32">
+      <Configuration>Release Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release Debug|x64">
+      <Configuration>Release Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CB7B75F1-08F4-4C8D-A7EF-29CDCE9A67F1}</ProjectGuid>
+    <RootNamespace>DeepSkyStackerCL</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.27413.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
+    <OutDir>.\Release_Debug_Info\</OutDir>
+    <IntDir>.\Release_Debug_Info\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
+    <OutDir>$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>DSSBETA;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>..\ZLib\lib\Zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Full</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>..\ZLib\lib\Zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ObjectFileName>.\Release_Debug_Info/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release_Debug_Info/vc80.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>..\ZLib\lib\Zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release_Debug_Info/DeepSkyStackerCL.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences />
+      <EnableCOMDATFolding />
+      <LinkTimeCodeGeneration />
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>..\DeepSkyStacker;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ObjectFileName>.\Release_Debug_Info/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release_Debug_Info/vc80.pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>DSS_COMMANDLINE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>..\ZLib\lib\Zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release_Debug_Info/DeepSkyStackerCL.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences />
+      <EnableCOMDATFolding />
+      <LinkTimeCodeGeneration />
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\DCRaw\dcraw.c">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
+      </PrecompiledHeader>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">Level2</WarningLevel>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
+      </DebugInformationFormat>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
+      </PrecompiledHeader>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">Level2</WarningLevel>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
+      </DebugInformationFormat>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level2</WarningLevel>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </DebugInformationFormat>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeader>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level2</WarningLevel>
+      <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </DebugInformationFormat>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\ChannelAlign.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\DeBloom.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\EntropyInfo.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\Filters.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\FITSUtil.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\FlatFrame.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\FrameList.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\LogFile.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\MatchingStars.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\Multitask.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\RAWUtils.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\RegisterEngine.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\Settings.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\StackingEngine.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\StackingTasks.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\TIFFUtil.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\Workspace.cpp" />
+    <ClCompile Include="..\Tools\Registry.cpp" />
+    <ClCompile Include="..\Tools\RegMFC.cpp" />
+    <ClCompile Include="DeepSkyStackerCL.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\DeepSkyStacker\AHDDemosaicing.h" />
+    <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />
+    <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
+    <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />
+    <ClInclude Include="..\DeepSkyStacker\ChannelAlign.h" />
+    <ClInclude Include="..\DeepSkyStacker\Common.h" />
+    <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h" />
+    <ClInclude Include="..\DeepSkyStacker\DarkFrame.h" />
+    <ClInclude Include="..\DeepSkyStacker\DeBloom.h" />
+    <ClInclude Include="..\DeepSkyStacker\DSSCommon.h" />
+    <ClInclude Include="..\DeepSkyStacker\DSSProgress.h" />
+    <ClInclude Include="..\DeepSkyStacker\DSSTools.h" />
+    <ClInclude Include="..\DeepSkyStacker\EntropyInfo.h" />
+    <ClInclude Include="..\DeepSkyStacker\Filters.h" />
+    <ClInclude Include="..\DeepSkyStacker\FITSUtil.h" />
+    <ClInclude Include="..\DeepSkyStacker\FlatFrame.h" />
+    <ClInclude Include="..\DeepSkyStacker\FrameInfo.h" />
+    <ClInclude Include="..\DeepSkyStacker\FrameList.h" />
+    <ClInclude Include="..\DeepSkyStacker\Histogram.h" />
+    <ClInclude Include="..\DeepSkyStacker\LogFile.h" />
+    <ClInclude Include="..\DeepSkyStacker\MasterFrames.h" />
+    <ClInclude Include="..\DeepSkyStacker\MatchingStars.h" />
+    <ClInclude Include="..\DeepSkyStacker\MultiBitmapProcess.h" />
+    <ClInclude Include="..\DeepSkyStacker\Multitask.h" />
+    <ClInclude Include="..\DeepSkyStacker\PixelTransform.h" />
+    <ClInclude Include="..\DeepSkyStacker\RAWUtils.h" />
+    <ClInclude Include="..\DeepSkyStacker\RegisterEngine.h" />
+    <ClInclude Include="..\DeepSkyStacker\Settings.h" />
+    <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h" />
+    <ClInclude Include="..\DeepSkyStacker\StackingEngine.h" />
+    <ClInclude Include="..\DeepSkyStacker\StackingTasks.h" />
+    <ClInclude Include="..\DeepSkyStacker\TIFFUtil.h" />
+    <ClInclude Include="..\DeepSkyStacker\Workspace.h" />
+    <ClInclude Include="..\Tools\Registry.h" />
+    <ClInclude Include="..\Tools\SmartPtr.h" />
+    <ClInclude Include="..\Tools\StdString.h" />
+    <ClInclude Include="ProgressConsole.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStacker.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCAT.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCN2.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerCZ.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerDE.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerEN.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerES.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerFR.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerIT.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerNL.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerPTB.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerRO.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerRU.rc" />
+    <ResourceCompile Include="..\DeepSkyStacker\DeepSkyStackerTR.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CFitsIO\CFitsIO.vcxproj">
+      <Project>{1da78423-02ff-44b6-8f70-89a9c2794650}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\LibTiff\libtiffv8.vcxproj">
+      <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

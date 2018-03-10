@@ -105,19 +105,19 @@ CWndImage::~CWndImage()
 	SetImg((HBITMAP) 0);
 
 	if (m_pToolbarImage)
-		delete m_pToolbarImage;
+		::delete m_pToolbarImage;
 
 	if (m_pBaseImage)
-		delete m_pBaseImage;
+		::delete m_pBaseImage;
 
 	if (m_pOverlayImage)
-		delete m_pOverlayImage;
+		::delete m_pOverlayImage;
 
 	if (m_pZoomImage)
-		delete m_pZoomImage;
+		::delete m_pZoomImage;
 
 	if (m_pBufferImage)
-		delete m_pBufferImage;
+		::delete m_pBufferImage;
 }
 
 
@@ -156,7 +156,7 @@ static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect &
 		if (pInBitmap->GetWidth()!=rcOut.Width() ||
 			pInBitmap->GetHeight()!=rcOut.Height())
 		{
-			delete pInBitmap;
+			::delete pInBitmap;
 			pInBitmap = NULL;
 		};
 	};
@@ -185,17 +185,17 @@ static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect &
 			pGraphics->DrawImage(pBitmap, rcfDst, rcfSrc.X, rcfSrc.Y, rcfSrc.Width, rcfSrc.Height, UnitPixel, pAttr, NULL, NULL);
 
 		if (pAttr)
-			delete pAttr;
-		delete pGraphics;
+			::delete pAttr;
+		::delete pGraphics;
 	}
 	else
 	{
 		if (pOutBitmap)
-			delete pOutBitmap;
+			::delete pOutBitmap;
 		pOutBitmap = NULL;
 	};
 	if (pBitmap)
-		delete pBitmap;
+		::delete pBitmap;
 
 	return pOutBitmap;
 };
@@ -234,7 +234,7 @@ BOOL CWndImage::CreateToolbarBitmap()
 	if (m_pButtonToolbar && m_bInvalidateToolbarBitmap)
 	{
 		if (m_pToolbarImage)
-			delete m_pToolbarImage;
+			::delete m_pToolbarImage;
 		m_pToolbarImage = m_pButtonToolbar->GetImage();
 		m_bInvalidateToolbarBitmap = FALSE;
 		bResult = TRUE;
@@ -257,7 +257,7 @@ BOOL CWndImage::CreateZoomBitmap()
 			bNeedRefresh = TRUE;
 
 		if (m_pZoomImage)
-			delete m_pZoomImage;
+			::delete m_pZoomImage;
 		m_pZoomImage = NULL;
 
 		if ((m_zoomX < 3) && m_bmp.m_hObject)
@@ -378,7 +378,7 @@ BOOL CWndImage::Draw4Corners(Graphics * pGraphics)
 			pGraphics->DrawImage(pCorner, 0, 0);
 			pGraphics->DrawRectangle(&pen, 0, 0, lWidth, lHeight);
 
-			delete pCorner;
+			::delete pCorner;
 		};
 
 		// Top right corner
@@ -398,7 +398,7 @@ BOOL CWndImage::Draw4Corners(Graphics * pGraphics)
 			pGraphics->DrawImage(pCorner, rcClient.right-lWidth, 0);
 			pGraphics->DrawRectangle(&pen, rcClient.right-lWidth, 0, lWidth, lHeight);
 
-			delete pCorner;
+			::delete pCorner;
 		};
 
 		// bottom left corner
@@ -418,7 +418,7 @@ BOOL CWndImage::Draw4Corners(Graphics * pGraphics)
 			pGraphics->DrawImage(pCorner, 0, rcClient.bottom-lHeight);
 			pGraphics->DrawRectangle(&pen, 0, rcClient.bottom-lHeight, lWidth, lHeight);
 
-			delete pCorner;
+			::delete pCorner;
 		};
 
 		// bottom right corner
@@ -438,7 +438,7 @@ BOOL CWndImage::Draw4Corners(Graphics * pGraphics)
 			pGraphics->DrawImage(pCorner, rcClient.right-lWidth, rcClient.bottom-lHeight);
 			pGraphics->DrawRectangle(&pen, rcClient.right-lWidth, rcClient.bottom-lHeight, lWidth, lHeight);
 
-			delete pCorner;
+			::delete pCorner;
 		};
 
 		bResult = TRUE;
@@ -475,7 +475,7 @@ BOOL CWndImage::CreateBufferBitmap()
 			if ((m_pBufferImage->GetWidth() != rcClient.Width()) ||
 				(m_pBufferImage->GetHeight() != rcClient.Height()))
 			{
-				delete m_pBufferImage;
+				::delete m_pBufferImage;
 				m_pBufferImage = NULL;
 			};
 		};
@@ -486,7 +486,7 @@ BOOL CWndImage::CreateBufferBitmap()
 
 			if (m_pBufferImage->GetLastStatus()!=Ok)
 			{
-				delete m_pBufferImage;
+				::delete m_pBufferImage;
 				m_pBufferImage = NULL;
 			};
 		};
@@ -507,7 +507,7 @@ BOOL CWndImage::CreateBufferBitmap()
 				{
 					m_bInvalidateOverlayBitmap  = FALSE;
 					if (m_pOverlayImage)
-						delete m_pOverlayImage;
+						::delete m_pOverlayImage;
 					m_pOverlayImage = NULL;
 					if (m_pImageSink && m_bmp.m_hObject)
 						m_pOverlayImage = m_pImageSink->GetOverlayImage(rcClient);
@@ -528,7 +528,7 @@ BOOL CWndImage::CreateBufferBitmap()
 
 					// Check the cursor position against the toolbar position
 					CPoint			pt;
-					double			fTransparency = 0.50;
+					float			fTransparency = 0.50;
 
 					GetCursorPos(&pt);
 					ScreenToClient(&pt);
@@ -565,7 +565,7 @@ BOOL CWndImage::CreateBufferBitmap()
 							ptTooltip.x = rcToolbar.left - rcTooltip.Width();
 							ptTooltip.y = rcToolbar.top + rcTooltip.top;
 							graphics.DrawImage(pTooltipImage, ptTooltip.x, ptTooltip.y);
-							delete pTooltipImage;
+							::delete pTooltipImage;
 						};
 					};
 				};

@@ -8,6 +8,7 @@ Purpose:	Tool tips window
 ----------------------------------------------------------------------*/
 #include "stdafx.h"
 #include <guitools/guitools.h>
+#include <versionhelpers.h>
 #include "Defaults.h"
 #include "TipWindow.h"
 #include "utils.h"
@@ -33,23 +34,18 @@ BOOL CTipWindow::Register( HINSTANCE hInst )
 {
 	//	Needs an instance handle!
 	ASSERT( hInst );
-	WNDCLASS wc = { sizeof( WNDCLASS ) };
+	WNDCLASS wc = { 0 };
 	if( !GetClassInfo( hInst, QHTM_TIP_WINDOW_CLASS, &wc ) )
 	{
 
-		WNDCLASS wc = {0};
+		memset(&wc, 0, sizeof(WNDCLASS));
 		wc.style			= CS_BYTEALIGNCLIENT;
 
-		OSVERSIONINFO osvi;
-		osvi.dwOSVersionInfoSize = sizeof( osvi );
-		VAPI( GetVersionEx( &osvi ) );
-		if( osvi.dwPlatformId == VER_PLATFORM_WIN32_NT )
+		if(IsWindowsXPOrGreater())
 		{
-			if( osvi.dwMajorVersion > 5 || (osvi.dwMajorVersion == 5 && osvi.dwMinorVersion >= 1) ) 
-			{
-				wc.style |= 0x00020000;
-			}
+			wc.style |= CS_BYTEALIGNWINDOW;	// Use the correct named style not a *magic number*
 		}
+
 
 		wc.lpfnWndProc	= (WNDPROC)CTipWindow::WndProc;
 		wc.cbClsExtra		= 0;
@@ -70,7 +66,7 @@ enum {knDeadWindow = 1};
 
 LRESULT CALLBACK CTipWindow::WndProc( HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam )
 {
-	LPARAM lparam = GetWindowLong( hwnd, WINDOW_DATA );
+	LPARAM lparam = GetWindowLongPtr( hwnd, WINDOW_DATA );
 
 	if( lparam == knDeadWindow )
 	{
@@ -154,14 +150,22 @@ LRESULT CALLBACK CTipWindow::WndProc( HWND hwnd, UINT message, WPARAM wParam, LP
 
 	case WM_NCDESTROY:
 		pWnd->OnWindowDestroyed();
-		SetWindowLong( hwnd, WINDOW_DATA, knDeadWindow );
+#if defined(_WIN64)
+		SetWindowLongPtr(hwnd, WINDOW_DATA, (LONG_PTR)(knDeadWindow));
+#else
+		SetWindowLong(hwnd, WINDOW_DATA, (LONG)(knDeadWindow));
+#endif
 		break;
 
 	case WM_NCCREATE:
 		if( pWnd == NULL )
 		{
 			LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>( lParam );
-			SetWindowLong( hwnd, WINDOW_DATA, reinterpret_cast<long>( lpcs->lpCreateParams ) );
+#if defined(_WIN64)
+			SetWindowLongPtr(hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>(lpcs->lpCreateParams);
+#else
+			SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(lpcs->lpCreateParams));
+#endif
 		}
 		return TRUE;
 

@@ -171,7 +171,7 @@ void CQHTMControlSection::OnExecuteHyperlink( CHTMLSectionLink *pHtmlLink )
 		LRESULT lrFormat = NFR_UNICODE;
 #endif	//	UNDER_CE
 
-		NMQHTM nm = { { m_hwnd, GetWindowLong( m_hwnd, GWL_ID ), QHTMN_HYPERLINK } };
+		NMQHTM nm = { { m_hwnd,	(UINT_PTR)GetWindowLongPtr( m_hwnd, GWL_ID ), QHTMN_HYPERLINK } };
 		nm.resReturnValue = TRUE;
 
 

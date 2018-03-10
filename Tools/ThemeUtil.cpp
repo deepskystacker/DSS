@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "themeutil.h"
+#include <versionhelpers.h>
 
 CThemeUtil::CThemeUtil()
 {
@@ -34,11 +35,7 @@ void CThemeUtil::FreeLibrary()
 
 BOOL CThemeUtil::IsWinXP(void)
 {
-	OSVERSIONINFO osvi;
-	::ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
-	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
-	::GetVersionEx(&osvi);
-	return MAKELONG(osvi.dwMajorVersion,osvi.dwMinorVersion) >= MAKELONG(5,1);
+	return ::IsWindowsXPOrGreater();
 }
 
 BOOL CThemeUtil::OpenThemeData(HWND hWnd, LPCWSTR pszClassList)

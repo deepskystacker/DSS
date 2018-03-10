@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -9,12 +9,12 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release Debug Info|Win32">
-      <Configuration>Release Debug Info</Configuration>
+    <ProjectConfiguration Include="Release Debug|Win32">
+      <Configuration>Release Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release Debug Info|x64">
-      <Configuration>Release Debug Info</Configuration>
+    <ProjectConfiguration Include="Release Debug|x64">
+      <Configuration>Release Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
@@ -27,42 +27,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <SccProjectName />
-    <SccLocalPath />
+    <ProjectName>DeepSkyStacker</ProjectName>
+    <ProjectGuid>{90721C24-BC43-450A-ADED-3417280D075B}</ProjectGuid>
+    <RootNamespace>DeepSkyStacker</RootNamespace>
     <Keyword>MFCProj</Keyword>
-    <ProjectGuid>{BB0C439D-E5D0-4F4D-8EAA-21002CE38AAD}</ProjectGuid>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <UseOfAtl>Static</UseOfAtl>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -70,315 +60,393 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>.\$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>..\CFitsIO\$(PlatformTarget)\$(Configuration);..\libtiff\$(PlatformTarget)\$(Configuration);..\QHTML;..\ZLib\contrib\vstudio\vc14\x86\ZlibStatDebug;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <LibraryPath>..\CFitsIO\Debug;..\QHTML;..\ZLib\contrib\vstudio\vc14\x86\ZlibStatDebug;E:\DSSProjects\QHTML;$(LibraryPath)</LibraryPath>
+  <PropertyGroup>
+    <_ProjectFileVersion>15.0.27413.0</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>.\Release\</OutDir>
-    <IntDir>.\Release\</IntDir>
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
     <OutDir>.\DeepSkyStacker___Win32_Release_Debug_Info\</OutDir>
     <IntDir>.\DeepSkyStacker___Win32_Release_Debug_Info\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
+    <OutDir>$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>Disabled</Optimization>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>Level2</WarningLevel>
-      <MinimalRebuild>true</MinimalRebuild>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Program Files (x86)\Visual Leak Detector\include;..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\$(PlatformTarget)\$(Configuration)\DeepSkyStacker.pch</PrecompiledHeaderOutputFile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <ProgramDataBaseFileName>$(IntDir)$(TargetName).pdb</ProgramDataBaseFileName>
-    </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\Debug\DeepSkyStacker.tlb</TypeLibraryName>
-    </Midl>
-    <ResourceCompile>
-      <Culture>0x040c</Culture>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug\DeepSkyStacker.bsc</OutputFile>
-    </Bscmake>
-    <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>CFitsIO.lib;zlibstat.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;Htmlhelp.lib;qhtm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <LargeAddressAware>true</LargeAddressAware>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>Disabled</Optimization>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>Level2</WarningLevel>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
-      <BrowseInformation>true</BrowseInformation>
-      <PrecompiledHeaderOutputFile>.\Debug\DeepSkyStacker.pch</PrecompiledHeaderOutputFile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <ObjectFileName>.\Debug\</ObjectFileName>
-      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-    </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\Debug\DeepSkyStacker.tlb</TypeLibraryName>
-    </Midl>
-    <ResourceCompile>
-      <Culture>0x040c</Culture>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Debug\DeepSkyStacker.bsc</OutputFile>
-    </Bscmake>
-    <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <OutputFile>.\Debug\DeepSkyStacker.exe</OutputFile>
-      <AdditionalDependencies>CFitsIO.lib;zlibstat.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;Htmlhelp.lib;qhtm.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <LargeAddressAware>true</LargeAddressAware>
-    </Link>
-  </ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <TypeLibraryName>.\Release/DeepSkyStackerv8.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>Disabled</Optimization>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>Level3</WarningLevel>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\Release\DeepSkyStacker.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <ObjectFileName>.\Release\</ObjectFileName>
-      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>.\Release/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\Release\DeepSkyStacker.tlb</TypeLibraryName>
-    </Midl>
     <ResourceCompile>
-      <Culture>0x040c</Culture>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
     </ResourceCompile>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
+    <Link>
+      <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release/DeepSkyStacker.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>.\Release/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>true</RandomizedBaseAddress>
+      <DataExecutionPrevention>true</DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release\DeepSkyStacker.bsc</OutputFile>
+      <OutputFile>.\Release/DeepSkyStackerv8.bsc</OutputFile>
     </Bscmake>
-    <Link>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
-      <SubSystem>Windows</SubSystem>
-      <OutputFile>.\Release\DeepSkyStacker.exe</OutputFile>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Release/DeepSkyStackerv8.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
     <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>Disabled</Optimization>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>Level3</WarningLevel>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\Release\DeepSkyStacker.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <ObjectFileName>.\Release\</ObjectFileName>
-      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <PrecompiledHeaderOutputFile>.\Release/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\Release\DeepSkyStacker.tlb</TypeLibraryName>
-    </Midl>
     <ResourceCompile>
-      <Culture>0x040c</Culture>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
     </ResourceCompile>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\Release\DeepSkyStacker.bsc</OutputFile>
-    </Bscmake>
+    <ProjectReference>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+    </ProjectReference>
     <Link>
+      <AdditionalDependencies>htmlhelp.lib;..\ZLib\lib\Zlib.lib;..\QHTML\qhtm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release/DeepSkyStacker.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ProgramDatabaseFile>.\Release/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>.\Release\DeepSkyStacker.exe</OutputFile>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>Disabled</Optimization>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>Level3</WarningLevel>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\DeepSkyStacker___Win32_Release_Debug_Info\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.pch</PrecompiledHeaderOutputFile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <ObjectFileName>.\DeepSkyStacker___Win32_Release_Debug_Info\</ObjectFileName>
-      <ProgramDataBaseFileName>.\DeepSkyStacker___Win32_Release_Debug_Info\</ProgramDataBaseFileName>
-    </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.tlb</TypeLibraryName>
-    </Midl>
-    <ResourceCompile>
-      <Culture>0x040c</Culture>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.bsc</OutputFile>
+      <OutputFile>.\Release/DeepSkyStackerv8.bsc</OutputFile>
     </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
+    <Midl>
+      <TypeLibraryName>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;TRACEDSSON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\DeepSkyStacker___Win32_Release_Debug_Info/</AssemblerListingLocation>
+      <ObjectFileName>.\DeepSkyStacker___Win32_Release_Debug_Info/</ObjectFileName>
+      <ProgramDataBaseFileName>.\DeepSkyStacker___Win32_Release_Debug_Info/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
     <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStacker.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;TRACEDSSON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\DeepSkyStacker___x64_Release_Debug_Info/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\DeepSkyStacker___x64_Release_Debug_Info/</AssemblerListingLocation>
+      <ObjectFileName>.\DeepSkyStacker___x64_Release_Debug_Info/</ObjectFileName>
+      <ProgramDataBaseFileName>.\DeepSkyStacker___x64_Release_Debug_Info/</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\DeepSkyStacker___x64_Release_Debug_Info/DeepSkyStacker.exe</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.bsc</OutputFile>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <TypeLibraryName>.\Debug/DeepSkyStackerv8.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>"C:\Program Files (x86)\Visual Leak Detector\include";..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DSSBETA;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\Debug/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>vld.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;HtmlHelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.exe</OutputFile>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'">
-    <ClCompile>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <Optimization>Disabled</Optimization>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>Level3</WarningLevel>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AssemblerListingLocation>.\DeepSkyStacker___Win32_Release_Debug_Info\</AssemblerListingLocation>
-      <PrecompiledHeaderOutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.pch</PrecompiledHeaderOutputFile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <ObjectFileName>.\DeepSkyStacker___Win32_Release_Debug_Info\</ObjectFileName>
-      <ProgramDataBaseFileName>.\DeepSkyStacker___Win32_Release_Debug_Info\</ProgramDataBaseFileName>
-    </ClCompile>
-    <Midl>
-      <TypeLibraryName>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.tlb</TypeLibraryName>
-    </Midl>
-    <ResourceCompile>
-      <Culture>0x040c</Culture>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-    </ResourceCompile>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.bsc</OutputFile>
+      <OutputFile>.\Debug/DeepSkyStackerv8.bsc</OutputFile>
     </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+      <TypeLibraryName>.\Debug/DeepSkyStackerv8.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>.\Debug/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x040c</Culture>
+    </ResourceCompile>
     <Link>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Debug/DeepSkyStacker.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
-      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info\DeepSkyStacker.exe</OutputFile>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX64</TargetMachine>
     </Link>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug/DeepSkyStackerv8.bsc</OutputFile>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\DCRaw\dcraw.c">
-      <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DisableLanguageExtensions>
-      <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableLanguageExtensions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </PrecompiledHeader>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MaxSpeed</Optimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">MaxSpeed</Optimization>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
+      </PrecompiledHeader>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
+      </PrecompiledHeader>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Full</Optimization>
+      <EnableFiberSafeOptimizations Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EnableFiberSafeOptimizations>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Level2</WarningLevel>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
+      <EnableFiberSafeOptimizations Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnableFiberSafeOptimizations>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </PrecompiledHeader>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'">MaxSpeed</Optimization>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'">MaxSpeed</Optimization>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'">
-      </PrecompiledHeader>
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level2</WarningLevel>
     </ClCompile>
+    <ClCompile Include="..\Tools\BitmapSlider.cpp" />
     <ClCompile Include="..\Tools\BtnST.cpp" />
     <ClCompile Include="..\Tools\ButtonToolbar.cpp" />
     <ClCompile Include="..\Tools\cdxCRot90DC.cpp" />
@@ -432,6 +500,7 @@
     <ClCompile Include="FrameList.cpp" />
     <ClCompile Include="ImageSinks.cpp" />
     <ClCompile Include="IntermediateFiles.cpp" />
+    <ClCompile Include="Library.cpp" />
     <ClCompile Include="LibraryDlg.cpp" />
     <ClCompile Include="LogFile.cpp" />
     <ClCompile Include="LuminanceTab.cpp" />
@@ -455,6 +524,7 @@
     <ClCompile Include="RegisterSettings_Advanced.cpp" />
     <ClCompile Include="ResultParameters.cpp" />
     <ClCompile Include="RGBTab.cpp" />
+    <ClCompile Include="RunningStackingEngine.cpp" />
     <ClCompile Include="SaturationTab.cpp" />
     <ClCompile Include="SaveEditChanges.cpp" />
     <ClCompile Include="SavePicture.cpp" />
@@ -473,26 +543,42 @@
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|Win32'">stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release Debug Info|x64'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="TIFFUtil.cpp" />
     <ClCompile Include="Workspace.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DeepSkyStacker.rc" />
+    <ResourceCompile Include="DeepSkyStacker.rc">
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">0x0409</Culture>
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">0x0409</Culture>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerCAT.rc" />
+    <ResourceCompile Include="DeepSkyStackerCN2.rc" />
+    <ResourceCompile Include="DeepSkyStackerCZ.rc">
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">0x0405</Culture>
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Release|x64'">0x0405</Culture>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerDE.rc" />
     <ResourceCompile Include="DeepSkyStackerEN.rc" />
-    <ResourceCompile Include="DeepSkyStackerGeneric.rc" />
+    <ResourceCompile Include="DeepSkyStackerES.rc">
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">0x0c0a</Culture>
+      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">0x0c0a</Culture>
+    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerFR.rc" />
+    <ResourceCompile Include="DeepSkyStackerIT.rc" />
+    <ResourceCompile Include="DeepSkyStackerNL.rc" />
+    <ResourceCompile Include="DeepSkyStackerPTB.rc" />
+    <ResourceCompile Include="DeepSkyStackerRO.rc" />
+    <ResourceCompile Include="DeepSkyStackerRU.rc" />
+    <ResourceCompile Include="DeepSkyStackerTR.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Delaunay\Delaunay.h" />
+    <ClInclude Include="..\Tools\BitmapSlider.h" />
     <ClInclude Include="..\Tools\BtnST.h" />
     <ClInclude Include="..\Tools\ButtonToolbar.h" />
     <ClInclude Include="..\Tools\cdxCRot90DC.h" />
@@ -501,17 +587,22 @@
     <ClInclude Include="..\Tools\childprop.h" />
     <ClInclude Include="..\Tools\ControlPos.h" />
     <ClInclude Include="..\Tools\CustomTabCtrl.h" />
+    <ClInclude Include="..\Tools\EasySize.h" />
     <ClInclude Include="..\Tools\FolderDlg.h" />
     <ClInclude Include="..\Tools\Gradient.h" />
     <ClInclude Include="..\Tools\gradientctrl.h" />
     <ClInclude Include="..\Tools\GradientCtrlImpl.h" />
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
+    <ClInclude Include="..\Tools\memdc.h" />
     <ClInclude Include="..\Tools\Registry.h" />
-    <ClInclude Include="..\Tools\RichToolTipCtrl.h" />
+    <CustomBuild Include="..\Tools\RichToolTipCtrl.h" />
+    <ClInclude Include="..\Tools\Schemadef.h" />
     <ClInclude Include="..\Tools\ScrollDialog.h" />
+    <ClInclude Include="..\Tools\SmartPtr.h" />
     <ClInclude Include="..\Tools\SplitterControl.h" />
     <ClInclude Include="..\Tools\ThemeUtil.h" />
+    <ClInclude Include="..\Tools\Tmschema.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
     <ClInclude Include="About.h" />
@@ -527,14 +618,19 @@
     <ClInclude Include="ChannelAlign.h" />
     <ClInclude Include="CheckAbove.h" />
     <ClInclude Include="CometStacking.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="commonresource.h" />
     <ClInclude Include="CosmeticEngine.h" />
     <ClInclude Include="DarkFrame.h" />
     <ClInclude Include="DeBloom.h" />
     <ClInclude Include="DeepSkyStacker.h" />
     <ClInclude Include="DeepStack.h" />
     <ClInclude Include="DeepStackerDlg.h" />
-    <ClInclude Include="Delaunay.h" />
     <ClInclude Include="DropFilesDlg.h" />
+    <ClInclude Include="DSSCommon.h" />
+    <ClInclude Include="DSSProgress.h" />
+    <ClInclude Include="DSSTools.h" />
+    <ClInclude Include="DSSVersion.h" />
     <ClInclude Include="EntropyInfo.h" />
     <ClInclude Include="ExplorerBar.h" />
     <ClInclude Include="FileProperty.h" />
@@ -544,18 +640,22 @@
     <ClInclude Include="FlatFrame.h" />
     <ClInclude Include="FrameInfo.h" />
     <ClInclude Include="FrameList.h" />
+    <ClInclude Include="gdiplus.h" />
     <ClInclude Include="Histogram.h" />
     <ClInclude Include="ImageSinks.h" />
     <ClInclude Include="IntermediateFiles.h" />
+    <ClInclude Include="Library.h" />
     <ClInclude Include="LibraryDlg.h" />
     <ClInclude Include="LogFile.h" />
     <ClInclude Include="LuminanceTab.h" />
     <ClInclude Include="MasterFrames.h" />
     <ClInclude Include="MatchingStars.h" />
+    <ClInclude Include="MedianFilterEngine.h" />
     <ClInclude Include="MultiBitmapProcess.h" />
     <ClInclude Include="Multitask.h" />
     <ClInclude Include="OutputTab.h" />
     <ClInclude Include="PictureListCtrl.h" />
+    <ClInclude Include="PixelTransform.h" />
     <ClInclude Include="PostCalibration.h" />
     <ClInclude Include="ProcessingDlg.h" />
     <ClInclude Include="ProcessSettingsSheet.h" />
@@ -569,8 +669,13 @@
     <ClInclude Include="RegisterSettings_Actions.h" />
     <ClInclude Include="RegisterSettings_Advanced.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="resourceCZ.h" />
+    <ClInclude Include="resourceES.h" />
+    <ClInclude Include="resourceFR.h" />
+    <ClInclude Include="resourceIT.h" />
     <ClInclude Include="ResultParameters.h" />
     <ClInclude Include="RGBTab.h" />
+    <ClInclude Include="RunningStackingEngine.h" />
     <ClInclude Include="SaturationTab.h" />
     <ClInclude Include="SaveEditChanges.h" />
     <ClInclude Include="SavePicture.h" />
@@ -586,38 +691,159 @@
     <ClInclude Include="StackSettings.h" />
     <ClInclude Include="StarMask.h" />
     <ClInclude Include="StarMaskDlg.h" />
+    <ClInclude Include="Stars.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="TIFFUtil.h" />
     <ClInclude Include="Workspace.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\Tools\hdrdown.bmp" />
+    <Image Include="..\Tools\hdrup.bmp" />
     <Image Include="app.ico" />
     <Image Include="bitmap1.bmp" />
-    <Image Include="icon1.ico" />
+    <Image Include="Buttons\Base_Down.ico" />
+    <Image Include="Buttons\Base_Hot.ico" />
+    <Image Include="Buttons\Base_Up.ico" />
+    <Image Include="Buttons\ButtonBase_down.bmp" />
+    <Image Include="Buttons\ButtonBase_hot.bmp" />
+    <Image Include="Buttons\ButtonBase_mask.bmp" />
+    <Image Include="Buttons\ButtonBase_up.bmp" />
+    <Image Include="Buttons\ButtonComet_Disabled.bmp" />
+    <Image Include="Buttons\ButtonComet_Down.bmp" />
+    <Image Include="Buttons\ButtonComet_Hot.bmp" />
+    <Image Include="Buttons\ButtonComet_Up.bmp" />
+    <Image Include="Buttons\ButtonSave_Disabled.bmp" />
+    <Image Include="Buttons\ButtonSave_Down.bmp" />
+    <Image Include="Buttons\ButtonSave_Hot.bmp" />
+    <Image Include="Buttons\ButtonSave_Up.bmp" />
+    <Image Include="Buttons\ButtonSelect_Disabled.bmp" />
+    <Image Include="Buttons\ButtonSelect_Down.bmp" />
+    <Image Include="Buttons\ButtonSelect_Hot.bmp" />
+    <Image Include="Buttons\ButtonSelect_Up.bmp" />
+    <Image Include="Buttons\ButtonStar_Disabled.bmp" />
+    <Image Include="Buttons\ButtonStar_Down.bmp" />
+    <Image Include="Buttons\ButtonStar_Hot.bmp" />
+    <Image Include="Buttons\ButtonStar_Up.bmp" />
+    <Image Include="filelist.ico" />
     <Image Include="open.bmp" />
     <Image Include="openfile.ico" />
     <Image Include="redo.bmp" />
     <Image Include="redo.ico" />
+    <Image Include="res\4Corners.bmp" />
     <Image Include="res\asinh.bmp" />
+    <Image Include="res\bmp00001.bmp" />
+    <Image Include="res\brazil.png" />
+    <Image Include="res\Calibration_Linear.bmp" />
+    <Image Include="res\Calibration_Rational.bmp" />
+    <Image Include="res\Catalan.png" />
+    <Image Include="res\Comet_Freeze.bmp" />
+    <Image Include="res\Comet_Normal.bmp" />
+    <Image Include="res\Comet_Trails.bmp" />
     <Image Include="res\cuberoot.bmp" />
+    <Image Include="res\custommode.bmp" />
+    <Image Include="res\Czech.png" />
+    <Image Include="res\darkfram.ico" />
+    <Image Include="res\darkframe.ico" />
+    <Image Include="res\Dutch.png" />
+    <Image Include="res\flatframe.ico" />
+    <Image Include="res\GammaOff.bmp" />
+    <Image Include="res\GammaOn.bmp" />
+    <Image Include="res\German.png" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\ImageList_CFA_CYMG.bmp" />
+    <Image Include="res\ImageList_CFA_RGB.bmp" />
+    <Image Include="res\ImageList_Color.bmp" />
+    <Image Include="res\ImageList_GrayScale.bmp" />
+    <Image Include="res\ImageList_Mask.bmp" />
+    <Image Include="res\intersectionmode.bmp" />
+    <Image Include="res\Italian.png" />
+    <Image Include="res\lightfra.ico" />
+    <Image Include="res\lightframe.ico" />
     <Image Include="res\linear.bmp" />
+    <Image Include="res\linear_en.bmp" />
+    <Image Include="res\linear_fr.bmp" />
     <Image Include="res\log.bmp" />
     <Image Include="res\loglog.bmp" />
+    <Image Include="res\logo.png" />
     <Image Include="res\logsqrt.bmp" />
+    <Image Include="res\mosaicmode.bmp" />
+    <Image Include="res\normalmode.bmp" />
+    <Image Include="res\offsetframe.ico" />
+    <Image Include="res\Pattern_BGGR.bmp" />
+    <Image Include="res\Pattern_CYGMCYMG.bmp" />
+    <Image Include="res\Pattern_GBRG.bmp" />
+    <Image Include="res\Pattern_GRBG.bmp" />
+    <Image Include="res\Pattern_RGGB.bmp" />
+    <Image Include="res\Portugal.png" />
+    <Image Include="res\RGBCalibration_Maximum.bmp" />
+    <Image Include="res\RGBCalibration_Middle.bmp" />
+    <Image Include="res\RGBCalibration_Minimum.bmp" />
+    <Image Include="res\RGBCalibration_None.bmp" />
+    <Image Include="res\Romanian.png" />
+    <Image Include="res\Russian.png" />
+    <Image Include="res\Spanish.png" />
     <Image Include="res\sqrt.bmp" />
+    <Image Include="res\StarShape_Bell.bmp" />
+    <Image Include="res\StarShape_Cone.bmp" />
+    <Image Include="res\StarShape_Cubic.bmp" />
+    <Image Include="res\StarShape_Quadratic.bmp" />
+    <Image Include="res\StarShape_TruncatedBell.bmp" />
+    <Image Include="res\StarShape_TruncatedCone.bmp" />
+    <Image Include="res\Taiwan.png" />
     <Image Include="settings.ico" />
     <Image Include="undo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="res\DeepSkyStacker.manifest" />
+    <CustomBuild Include="res\DeepSkyStacker.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
-      <Project>{0cdbcc5c-1471-4a58-9f78-aae5e71bf558}</Project>
+    <ProjectReference Include="..\CFitsIO\CFitsIO.vcxproj">
+      <Project>{1da78423-02ff-44b6-8f70-89a9c2794650}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\LibTiff\libtiffv8.vcxproj">
+      <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\datasource\datasource.vcxproj">
+      <Project>{f601e087-97a7-40a5-9536-0cfcb66b33c2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\debughlp\DebugHlp.vcxproj">
+      <Project>{afe2867b-eabf-4820-9c05-0db3c4eb30a7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\guitools\guitools.vcxproj">
+      <Project>{39e3b29d-d9b3-4352-bb7e-ed135fc13e30}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\imglib\imglib.vcxproj">
+      <Project>{2fedb691-b909-4549-bb60-609ab6aa6bec}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\libjpg\libjpg.vcxproj">
+      <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\libpng\libpng.vcxproj">
+      <Project>{7e8cd41d-54a8-4245-8479-57608da9c565}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\qhtm\qhtm.vcxproj">
+      <Project>{4575815d-1eff-4aff-b21c-0707e3c51a8d}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\QHTML_Static\ZLib\ZLib.vcxproj">
+      <Project>{5da34bd2-1984-448a-a635-3e62b4714025}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="DeepSkyStacker.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

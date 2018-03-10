@@ -18,15 +18,6 @@ Purpose:	<Description of module>.
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-#if !defined (_WIN32_WCE)
-	static UINT nMsgMouseWheel =
-   (((::GetVersion() & 0x80000000) && LOBYTE(LOWORD(::GetVersion()) == 4)) ||
-	 (!(::GetVersion() & 0x80000000) && LOBYTE(LOWORD(::GetVersion()) == 3)))
-	 ? ::RegisterWindowMessage(MSH_MOUSEWHEEL) : 0;
-
-	extern LRESULT FASTCALL HandleMouseWheelRegisteredMessage( HWND hwnd, WPARAM wParam, LPARAM lParam );
-#endif
-
 using namespace GS;
 
 CGuiBaseWindowObject::CGuiBaseWindowObject( CGuiBaseObject * pgboParent, HWND hwnd )
@@ -271,12 +262,6 @@ LRESULT CGuiBaseWindowObject::OnWindowsMessage( UINT message, WPARAM wParam, LPA
 #endif	// !defined (_WIN32_WCE)
 
 	default:
-		#if !defined (_WIN32_WCE)
-			if( message == nMsgMouseWheel && nMsgMouseWheel )
-			{
-				return HandleMouseWheelRegisteredMessage( GetSafeHwnd(), wParam, lParam );
-			}
-		#endif	//	!defined (_WIN32_WCE)
 
 		return DefWindowProc( GetSafeHwnd(), message, wParam, lParam );
 	}
