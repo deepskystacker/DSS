@@ -90,8 +90,8 @@ void CMainBoard::DrawGradientRect(CDC * pDC, const CRect & rc, COLORREF crColor1
 	Graphics *		pGraphics;
 	Brush *			pBrush;
 	
-	pGraphics = ::new Graphics(pDC->GetSafeHdc());
-	pBrush = ::new LinearGradientBrush(PointF(rc.left, rc.top), 
+	pGraphics = new Graphics(pDC->GetSafeHdc());
+	pBrush = new LinearGradientBrush(PointF(rc.left, rc.top), 
 					PointF(rc.right, rc.bottom), 
 					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
@@ -112,8 +112,8 @@ void CMainBoard::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 	COLORREF		crColor2 = RGB(230, 230, 230);
 			
 	
-	pGraphics = ::new Graphics(pDC->GetSafeHdc());
-	pBrush = ::new LinearGradientBrush(PointF(rc.right, rc.top), 
+	pGraphics = new Graphics(pDC->GetSafeHdc());
+	pBrush = new LinearGradientBrush(PointF(rc.right, rc.top), 
 					PointF(rc.left, rc.bottom), 
 					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
 					Color(GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
@@ -160,13 +160,13 @@ void CMainBoard::DrawGradientFrameRect(CDC * pDC, LPCTSTR szTitle, const CRect &
 	Pen *			pPen;
 	GraphicsPath *	pPath;
 	
-	pGraphics = ::new Graphics(pDC->GetSafeHdc());
-	pBrush = ::new LinearGradientBrush(PointF(rc.left, rc.top), 
+	pGraphics = new Graphics(pDC->GetSafeHdc());
+	pBrush = new LinearGradientBrush(PointF(rc.left, rc.top), 
 					PointF(rc.right, rc.bottom), 
 					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 
-	pPath = ::new GraphicsPath(FillModeWinding);
+	pPath = new GraphicsPath(FillModeWinding);
 	CRect			rc1(rcTop.left, rcTop.top + 5, rcTop.right, rcTop.bottom), 
 					rc2(rcTop.left+5, rcTop.top, rcTop.right-5, rcTop.bottom),
 					rc3(rcTop.left, rcTop.top, rcTop.left+10, rcTop.top+10), 
@@ -182,7 +182,7 @@ void CMainBoard::DrawGradientFrameRect(CDC * pDC, LPCTSTR szTitle, const CRect &
 	pPath->AddRectangle(RectF(rcBottom.left, rcBottom.top, rcBottom.Width(), rcBottom.Height()));
 	pPath->Flatten();
 
-	pPen = ::new Pen(Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 1.0);
+	pPen = new Pen(Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 1.0);
 	pPath->Outline();
 	pGraphics->DrawPath(pPen, pPath);
 
@@ -219,9 +219,9 @@ void CMainBoard::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 	Pen *			pPen;
 	GraphicsPath *	pPath;
 	
-	pGraphics = ::new Graphics(pDC->GetSafeHdc());
+	pGraphics = new Graphics(pDC->GetSafeHdc());
 
-	pPath = ::new GraphicsPath(FillModeWinding);
+	pPath = new GraphicsPath(FillModeWinding);
 	CRect			rc1(rc.left+3, rc.top, rc.right-3, rc.bottom), 
 					rc2(rc.left, rc.top+3, rc.right, rc.bottom-3);
 	
@@ -233,7 +233,7 @@ void CMainBoard::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 	pPath->AddEllipse(RectF(rc.right-6, rc.bottom-6, 6, 6));
 	pPath->Flatten();
 
-	pPen = ::new Pen(Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 1.0);
+	pPen = new Pen(Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 1.0);
 	pPath->Outline();
 	pGraphics->DrawPath(pPen, pPath);
 
@@ -267,9 +267,9 @@ void CMainBoard::DrawTab(CDC * pDC, LPCTSTR szText, const CRect & rcTab, BOOL bA
 	GraphicsPath *	pPath;
 	Brush *			pBrush;
 	
-	pGraphics = ::new Graphics(pDC->GetSafeHdc());
+	pGraphics = new Graphics(pDC->GetSafeHdc());
 
-	pPath = ::new GraphicsPath(FillModeWinding);
+	pPath = new GraphicsPath(FillModeWinding);
 	CRect			rc1(rc.left+12, rc.top, rc.right-12, rc.bottom), 
 					rc2(rc.left, rc.top+12, rc.right, rc.bottom);
 	
@@ -279,12 +279,12 @@ void CMainBoard::DrawTab(CDC * pDC, LPCTSTR szText, const CRect & rcTab, BOOL bA
 	pPath->AddEllipse(RectF(rc.right-24, rc.top, 24, 24));
 	pPath->Flatten();
 
-	pBrush = ::new LinearGradientBrush(PointF(rc.right, rc.top), 
+	pBrush = new LinearGradientBrush(PointF(rc.right, rc.top), 
 					PointF(rc.right, rc.bottom), 
 					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
 					Color(GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 
-	pPen = ::new Pen(Color(255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 1.0);
+	pPen = new Pen(Color(255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 1.0);
 	pPath->Outline();
 	pGraphics->FillPath(pBrush, pPath);
 	pGraphics->DrawPath(pPen, pPath);
@@ -298,12 +298,12 @@ void CMainBoard::DrawTab(CDC * pDC, LPCTSTR szText, const CRect & rcTab, BOOL bA
 
 		if (bActive)
 		{
-			pFont = ::new Font(FontFamily::GenericSansSerif(), 9, FontStyleBold);
+			pFont = new Font(FontFamily::GenericSansSerif(), 9, FontStyleBold);
 			brush.SetColor(Color(255, 255, 255));
 		}
 		else
 		{
-			pFont = ::new Font(FontFamily::GenericSansSerif(), 9, FontStyleRegular);
+			pFont = new Font(FontFamily::GenericSansSerif(), 9, FontStyleRegular);
 		};
 
 		format.SetAlignment(StringAlignmentCenter);
@@ -344,15 +344,15 @@ void CMainBoard::DrawProgress(CDC * pDC)
 
 		fPosition = rcProgress.Width()*fPercent;
 		
-		pGraphics = ::new Graphics(pDC->GetSafeHdc());
-		pPen = ::new Pen(Color(255.0, 255.0, 255.0), 2.0);
+		pGraphics = new Graphics(pDC->GetSafeHdc());
+		pPen = new Pen(Color(255.0, 255.0, 255.0), 2.0);
 		
 		pGraphics->SetSmoothingMode(SmoothingModeHighQuality);
 
 
 		GraphicsPath *			pOutlinePath;
 
-		pOutlinePath = ::new GraphicsPath(FillModeWinding);
+		pOutlinePath = new GraphicsPath(FillModeWinding);
 		pOutlinePath->AddRectangle(RectF(rcProgress.left+5, rcProgress.top, rcProgress.Width()-10, rcProgress.Height()));
 		pOutlinePath->AddRectangle(RectF(rcProgress.left, rcProgress.top+5, rcProgress.Width(), rcProgress.Height()-10));
 		pOutlinePath->AddEllipse(RectF(rcProgress.left, rcProgress.top, 10, 10));
@@ -361,25 +361,25 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pOutlinePath->AddEllipse(RectF(rcProgress.right-10, rcProgress.bottom-10, 10, 10));
 		pOutlinePath->Outline(NULL, (REAL)0.01);
 
-		pBrush  = ::new SolidBrush(Color(255.0*0.7, 255.0, 255.0, 255.0));
+		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0, 255.0, 255.0));
 		pGraphics->FillPath(pBrush, pOutlinePath);
 		delete pBrush;
 
 		GraphicsPath *			pProgressPath;
 
-		pProgressPath = ::new GraphicsPath(FillModeWinding);
+		pProgressPath = new GraphicsPath(FillModeWinding);
 		pProgressPath->AddRectangle(RectF(rcProgress.left+5, rcProgress.top, fPosition-5, rcProgress.Height()));
 		pProgressPath->AddRectangle(RectF(rcProgress.left, rcProgress.top+5, fPosition, rcProgress.Height()-10));
 		pProgressPath->AddEllipse(RectF(rcProgress.left, rcProgress.top, 10, 10));
 		pProgressPath->AddEllipse(RectF(rcProgress.left, rcProgress.bottom-10, 10, 10));
 		pProgressPath->Outline(NULL, (REAL)0.01);
 
-		pBrush  = ::new SolidBrush(Color(255.0*0.7, 255.0, 255.0, 255.0));
+		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0, 255.0, 255.0));
 		pGraphics->FillPath(pBrush, pOutlinePath);
 		delete pBrush;
 
 
-		pBrush = ::new LinearGradientBrush(PointF(rcProgress.left, (rcProgress.top+rcProgress.bottom)/2.0), 
+		pBrush = new LinearGradientBrush(PointF(rcProgress.left, (rcProgress.top+rcProgress.bottom)/2.0), 
 			               PointF(rcProgress.left+fPosition, (rcProgress.top+rcProgress.bottom)/2.0), 
 						   Color(0.0, 128.0, 0.0), 
 						   Color(0.0, 255.0, 0.0));
@@ -396,7 +396,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 			PointF				pf((rcProgress.left+rcProgress.right)/2, (rcProgress.top+rcProgress.bottom)/2);
 			SolidBrush			brush(Color(0, 0, 0));
 
-			pFont = ::new Font(FontFamily::GenericSansSerif(), 9, FontStyleRegular);
+			pFont = new Font(FontFamily::GenericSansSerif(), 9, FontStyleRegular);
 			format.SetAlignment(StringAlignmentCenter);
 			format.SetLineAlignment(StringAlignmentCenter);
 
