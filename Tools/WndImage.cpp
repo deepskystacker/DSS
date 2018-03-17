@@ -147,7 +147,7 @@ using namespace Gdiplus;
 
 static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect & rcDst, BOOL bInterpolate, Bitmap * pInBitmap = NULL)
 {
-	Bitmap *		pBitmap = ::new Bitmap(hBitmap, NULL);
+	Bitmap *		pBitmap = new Bitmap(hBitmap, NULL);
 	Bitmap *		pOutBitmap;
 	
 	if (pInBitmap)
@@ -161,11 +161,11 @@ static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect &
 		};
 	};
 	if (!pInBitmap)
-		pOutBitmap = ::new Bitmap(rcOut.Width(), rcOut.Height(), PixelFormat24bppRGB);
+		pOutBitmap = new Bitmap(rcOut.Width(), rcOut.Height(), PixelFormat24bppRGB);
 	else
 		pOutBitmap = pInBitmap;
 
-	Graphics *		pGraphics = ::new Graphics(pOutBitmap);
+	Graphics *		pGraphics = new Graphics(pOutBitmap);
 
 	if (pBitmap && pGraphics && pOutBitmap)
 	{
@@ -482,7 +482,7 @@ BOOL CWndImage::CreateBufferBitmap()
 
 		if (!m_pBufferImage)
 		{
-			m_pBufferImage = ::new Bitmap(rcClient.Width(), rcClient.Height(), PixelFormat24bppRGB);
+			m_pBufferImage = new Bitmap(rcClient.Width(), rcClient.Height(), PixelFormat24bppRGB);
 
 			if (m_pBufferImage->GetLastStatus()!=Ok)
 			{

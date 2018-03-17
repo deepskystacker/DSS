@@ -1243,7 +1243,7 @@ void CProcessingDlg::ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogr
 
 	::FillRect(hMemDC, &rcClient, (HBRUSH)::GetStockObject(WHITE_BRUSH));
 
-	Graphics *			pGraphics = ::new Graphics(hMemDC);
+	Graphics *			pGraphics = new Graphics(hMemDC);
 	if (pGraphics)
 	{
 		pGraphics->SetSmoothingMode(SmoothingModeAntiAlias);
