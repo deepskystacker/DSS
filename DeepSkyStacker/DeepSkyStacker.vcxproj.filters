@@ -730,6 +730,9 @@
     <ClInclude Include="Workspace.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="DSSMemory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\4Corners.bmp">

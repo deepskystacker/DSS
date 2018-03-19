@@ -628,6 +628,7 @@
     <ClInclude Include="DeepStackerDlg.h" />
     <ClInclude Include="DropFilesDlg.h" />
     <ClInclude Include="DSSCommon.h" />
+    <ClInclude Include="DSSMemory.h" />
     <ClInclude Include="DSSProgress.h" />
     <ClInclude Include="DSSTools.h" />
     <ClInclude Include="DSSVersion.h" />
@@ -799,10 +800,6 @@
     <CustomBuild Include="res\DeepSkyStacker.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CFitsIO\CFitsIO.vcxproj">
-      <Project>{1da78423-02ff-44b6-8f70-89a9c2794650}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
     <ProjectReference Include="..\LibTiff\libtiffv8.vcxproj">
       <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
