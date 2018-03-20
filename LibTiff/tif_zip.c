@@ -48,7 +48,7 @@
  */
 #include "tif_predict.h"
 
-#define ZLIB_WINAPI
+// #define ZLIB_WINAPI
 #include "zlib.h"
 
 #include <stdio.h>
