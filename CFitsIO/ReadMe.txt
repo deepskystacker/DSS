@@ -1,12 +1,14 @@
-This directory contains static libraries for CFITSIO 3.430 which were built externally
-to the DSS project using CMake.
+This directory contains this file and a modified CMake config file for CFITSIO 3.430
 
-The libraries are in directories:
+The static libraries were built externally to the DSS project using CMake and placed
+in the following directories off the root of the project:
 
-Win32\DebugLibs
-Win32\ReleaseLibs
-Win64\DebugLibs
-Win64\ReleaseLibs
+libs\Win32\DebugLibs
+libs\Win32\ReleaseLibs
+libs\Win64\DebugLibs
+libs\Win64\ReleaseLibs
+
+where other external lib files will also be placed.
 
 Those directory names were chosen so that their content won't be ignored by git based
 on the contents of the .gitignore file which specifically excludes amongst many other
