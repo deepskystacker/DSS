@@ -10,7 +10,7 @@ Purpose:	Decode an MNG file into a frame array.
 ----------------------------------------------------------------------*/
 #include "stdafx.h"
 #include <datasource/DataSourceABC.h>
-#include <libpng\png.h>
+#include <png.h>
 #include "ImgLib.h"
 #include "ImgLibInt.h"
 #include "DibLoader.h"
