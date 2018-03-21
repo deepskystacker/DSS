@@ -65,7 +65,7 @@ StyleCopReport.xml
 *.meta
 *.obj
 *.pch
-*.pdb
+# *.pdb commented to allow pdb files for libs directory to be part of the git project
 *.pgc
 *.pgd
 *.rsp
