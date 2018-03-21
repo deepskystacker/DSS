@@ -6,6 +6,7 @@
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "..\CFitsio\fitsio.h"
+#pragma comment(lib, "cfitsio.lib")
 
 class CFITSHeader
 {
