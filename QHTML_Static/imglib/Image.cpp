@@ -10,7 +10,7 @@ Purpose:	An image, can consist of many frames.
 #include "ImgLib.h"
 #include "ImgLibInt.h"
 #include "Config.h"
-#include <ZLib\ZLib.h>
+#include <ZLib.h>
 #include <DataSource\DataSourceABC.h>
 #include "FrameData.h"
 

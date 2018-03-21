@@ -13,7 +13,7 @@ Purpose:	Decode an BMP file into a frame array.
 #include "ImgLibInt.h"
 #include "Config.h"
 #include "RIFFormat.h"
-#include <ZLib\ZLib.h>
+#include <ZLib.h>
 
 #ifdef IMGLIB_RIF
 
