@@ -182,6 +182,8 @@
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <LargeAddressAware>true</LargeAddressAware>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBCMT;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -804,9 +806,11 @@
     <ProjectReference Include="..\lcms\Projects\VC2005\lcms.vcxproj">
       <Project>{0f1d6674-d802-4ac0-a4c3-14fcb8ee8854}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\LibTiff\libtiffv8.vcxproj">
+    <ProjectReference Include="..\libjpg\libjpg.vcxproj">
+      <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
       <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\QHTML_Static\datasource\datasource.vcxproj">
       <Project>{f601e087-97a7-40a5-9536-0cfcb66b33c2}</Project>
@@ -822,10 +826,6 @@
     </ProjectReference>
     <ProjectReference Include="..\QHTML_Static\imglib\imglib.vcxproj">
       <Project>{2fedb691-b909-4549-bb60-609ab6aa6bec}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-    <ProjectReference Include="..\QHTML_Static\libjpg\libjpg.vcxproj">
-      <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\QHTML_Static\qhtm\qhtm.vcxproj">
