@@ -11,9 +11,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fax3sm_winnt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tif_aux.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -125,6 +122,12 @@
     <ClCompile Include="tif_zip.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="mkg3states.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_lzma.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Resource.h">
@@ -158,9 +161,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tiff2pdf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tiffcomp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tiffconf.h">
