@@ -645,8 +645,8 @@ class CInputFile : public CGenericFile
 public :
 	FILE *				m_hFile;
 	BYTE *				m_pBuffer;
-	LONG				m_lFileSize;
-	LONG				m_lCurrentPos;
+	size_t				m_lFileSize;
+	size_t				m_lCurrentPos;
 
 public :
 	CInputFile()
@@ -1116,7 +1116,7 @@ extern "C" int FPRINTF( FILE *stream, const char *format,...)
 	va_start(marker, format);
 
 	int						nResult;
-	COutputFile *			pOutputFile = GetOutputFile(stream);;
+	COutputFile *			pOutputFile = GetOutputFile(stream);
 
 	if (pOutputFile)
 	{

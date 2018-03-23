@@ -336,6 +336,9 @@
     <ClCompile Include="Delaunay.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="PCLTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
