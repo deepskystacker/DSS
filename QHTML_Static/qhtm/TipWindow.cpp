@@ -162,7 +162,7 @@ LRESULT CALLBACK CTipWindow::WndProc( HWND hwnd, UINT message, WPARAM wParam, LP
 		{
 			LPCREATESTRUCT lpcs = reinterpret_cast<LPCREATESTRUCT>( lParam );
 #if defined(_WIN64)
-			SetWindowLongPtr(hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>(lpcs->lpCreateParams);
+			SetWindowLongPtr(hwnd, WINDOW_DATA, reinterpret_cast<LONG_PTR>(lpcs->lpCreateParams));
 #else
 			SetWindowLong(hwnd, WINDOW_DATA, reinterpret_cast<LONG>(lpcs->lpCreateParams));
 #endif

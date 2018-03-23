@@ -699,10 +699,13 @@ bool CQHTMControlSection::GetBackgroundColours( HDC hdc, HBRUSH &hbr ) const
 		HWND hwndParent = ::GetParent( m_hwnd );
 		if( hwndParent )
 		{
-			BOOL bRetVal = static_cast<BOOL>( SendMessage( hwndParent, WM_CTLCOLORSTATIC, (WPARAM)hdc, (LPARAM)m_hwnd ) );
-			if( bRetVal )
+			//
+			// Original code was casting SendMessage result to a BOOL local var - really horrid and
+			// 
+			HBRUSH tempHBR = (HBRUSH)SendMessage( hwndParent, WM_CTLCOLORSTATIC, (WPARAM)hdc, (LPARAM)m_hwnd );
+			if( NULL != tempHBR )
 			{
-				hbr = (HBRUSH)bRetVal;
+				hbr = (HBRUSH)tempHBR;
 				bReturnValue = true;
 			}
 		}

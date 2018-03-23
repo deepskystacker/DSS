@@ -135,10 +135,12 @@ static LRESULT CALLBACK QHTM_PARENT_SubclassFunc( HWND hwnd, UINT msg, WPARAM wP
 
 			WinHelper::CRect rc;
 			GetClientRect( hwndListBox, rc );
-			const UINT uCX = (UINT)GetProp( hwnd, QHTM_LISTBOX_CX );
-			if( uCX != (UINT)rc.Width()  )
+#pragma warning(disable : 4312)
+			const HANDLE uCX = GetProp( hwnd, QHTM_LISTBOX_CX );
+			if( uCX != reinterpret_cast<HANDLE>(rc.Width()))
 			{
-				SetProp( hwnd, QHTM_LISTBOX_CX, (HANDLE)rc.Width() );
+				SetProp( hwnd, QHTM_LISTBOX_CX, reinterpret_cast<HANDLE>(rc.Width()) );
+#pragma warning(default : 4312)
 				bool bSomeChanged = true;
 
 				SendMessage( hwndListBox, WM_SETREDRAW, FALSE, 0 );

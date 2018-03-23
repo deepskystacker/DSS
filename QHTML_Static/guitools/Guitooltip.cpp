@@ -60,7 +60,7 @@ bool CGuiTooltip::AddTool( HWND hwnd, LPCTSTR pcszText )
 	ti.cbSize = sizeof(TOOLINFO);
 	ti.uFlags = TTF_IDISHWND | TTF_SUBCLASS;
 	ti.hwnd = m_hwnd;
-	ti.uId = (UINT) hwnd;
+	ti.uId = (UINT_PTR) hwnd;
 	if( GetClientRect( hwnd, &ti.rect ) )
 	{
 		ti.lpszText = const_cast<LPTSTR>( pcszText );
@@ -84,7 +84,7 @@ void CGuiTooltip::UpdateTipText( HWND hwnd, LPCTSTR pcszText )
 	TOOLINFO ti = {0};
 	ti.cbSize = sizeof(TOOLINFO);
 	ti.hwnd = m_hwnd;
-	ti.uId = (UINT) hwnd;
+	ti.uId = (UINT_PTR) hwnd;
 	ti.lpszText = const_cast<LPTSTR>( pcszText );
 	(void)::SendMessage( m_hwnd, TTM_UPDATETIPTEXT, 0, (LPARAM) (LPTOOLINFO) &ti);
 }

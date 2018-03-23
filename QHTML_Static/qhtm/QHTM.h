@@ -108,7 +108,11 @@ Purpose:	GipsySoft HTML control
 
 	//	Define a context type for printing. A context is used in a print procedure
 	//	to communicate with the app
-	typedef DWORD QHTMCONTEXT;
+#if defined(_WIN64)
+	typedef DWORD64 QHTMCONTEXT;
+#else
+typedef DWORD QHTMCONTEXT;
+#endif
 
 #ifdef __cplusplus
 

@@ -225,7 +225,7 @@ _tiffUnmapProc(thandle_t fd, void* base, toff_t size)
  * string, which forces the file to be opened unmapped.
  */
 TIFF*
-TIFFFdOpen(int ifd, const char* name, const char* mode)
+TIFFFdOpen(thandle_t ifd, const char* name, const char* mode)
 {
 	TIFF* tif;
 	int fSuppressMap;
@@ -239,7 +239,7 @@ TIFFFdOpen(int ifd, const char* name, const char* mode)
 			break;
 		}
 	}
-	tif = TIFFClientOpen(name, mode, (thandle_t)ifd, /* FIXME: WIN64 cast to pointer warning */
+	tif = TIFFClientOpen(name, mode, ifd, 
 			_tiffReadProc, _tiffWriteProc,
 			_tiffSeekProc, _tiffCloseProc, _tiffSizeProc,
 			fSuppressMap ? _tiffDummyMapProc : _tiffMapProc,
@@ -284,7 +284,7 @@ TIFFOpen(const char* name, const char* mode)
 		return ((TIFF *)0);
 	}
 
-	tif = TIFFFdOpen((int)fd, name, mode);   /* FIXME: WIN64 cast from pointer to int warning */
+	tif = TIFFFdOpen(fd, name, mode);   /* FIXME: WIN64 cast from pointer to int warning */
 	if(!tif)
 		CloseHandle(fd);
 	return tif;
@@ -339,7 +339,7 @@ TIFFOpenW(const wchar_t* name, const char* mode)
 				    NULL, NULL);
 	}
 
-	tif = TIFFFdOpen((int)fd,    /* FIXME: WIN64 cast from pointer to int warning */
+	tif = TIFFFdOpen(fd,    
 			 (mbname != NULL) ? mbname : "<unknown>", mode);
 	if(!tif)
 		CloseHandle(fd);

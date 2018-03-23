@@ -52,8 +52,10 @@ CHTMLEditSection::CHTMLEditSection( CHTMLSection *pSectParent, GS::FontDef &fdef
 		}
 
 		LPTSTR endptr;
-		UINT uID = pFormObject->m_strID.GetLength() ? _tcstol( pFormObject->m_strID, &endptr, 10 ) : 0;
-		m_hwnd = CreateWindowEx( WS_EX_STATICEDGE, _T("EDIT"), pFormObject->m_strValue,  dwStyle, 0, 0, 0, 0, pSectParent->GetHwnd(), (HMENU)uID, g_hQHTMInstance, NULL );
+		INT ID = pFormObject->m_strID.GetLength() ? _tcstol( pFormObject->m_strID, &endptr, 10 ) : 0;
+#pragma warning(disable : 4312)
+		m_hwnd = CreateWindowEx( WS_EX_STATICEDGE, _T("EDIT"), pFormObject->m_strValue,  dwStyle, 0, 0, 0, 0, pSectParent->GetHwnd(), (HMENU)ID, g_hQHTMInstance, NULL );
+#pragma warning(default : 4312)
 		ASSERT( m_hwnd );
 		if( pFormObject->m_bDisabled )
 		{

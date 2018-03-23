@@ -82,7 +82,7 @@ bool GotoURL( LPCTSTR url, int showcmd )
 	{
 		// If it failed, get the .htm regkey and lookup the program
 		HINSTANCE result = ShellExecute( NULL, _T("open"), url, NULL, NULL, showcmd );
-		if( (UINT)result > HINSTANCE_ERROR )
+		if( result > (HINSTANCE)HINSTANCE_ERROR )
 		{
 			bRetVal = true;
 		}

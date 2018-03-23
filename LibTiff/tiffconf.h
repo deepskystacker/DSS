@@ -34,8 +34,14 @@
 /* Unsigned size type */
 #define TIFF_SIZE_T unsigned int
 
-/* Signed size type */
-#define TIFF_SSIZE_T signed int
+/*
+ * Make sure to use 64 bit signed size on x64 Windows
+*/
+#if defined (_WIN64)
+#define TIFF_SSIZE_T signed long long
+#else
+#define TIFF_SSIZE_T signed long
+#endif
 
 /* Pointer difference type */
 #define TIFF_PTRDIFF_T ptrdiff_t
