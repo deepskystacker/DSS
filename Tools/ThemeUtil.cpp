@@ -46,7 +46,7 @@ BOOL CThemeUtil::OpenThemeData(HWND hWnd, LPCWSTR pszClassList)
 	(FARPROC&)pfnIsThemeActive=GetProcAddress(m_hUxThemeDll,"IsThemeActive");
 	if(pfnIsThemeActive && pfnIsThemeActive())
 	{
-		UINT (PASCAL* pfnOpenThemeData)(HWND hwnd, LPCWSTR pszClassList);
+		HANDLE (PASCAL* pfnOpenThemeData)(HWND hwnd, LPCWSTR pszClassList);
 		(FARPROC&)pfnOpenThemeData=GetProcAddress(m_hUxThemeDll,"OpenThemeData");
 		if(pfnOpenThemeData)
 			m_hTheme=pfnOpenThemeData(hWnd, pszClassList);
@@ -87,7 +87,7 @@ BOOL CThemeUtil::DrawThemePart(HDC hdc, int iPartId, int iStateId, const RECT *p
 {
 	if(m_hTheme==NULL)
 		return FALSE;
-	UINT (PASCAL* pfnDrawThemeBackground)(UINT hTheme, HDC hdc, int iPartId, int iStateId,
+	HANDLE (PASCAL* pfnDrawThemeBackground)(HANDLE hTheme, HDC hdc, int iPartId, int iStateId,
 										const RECT *pRect, const RECT* pClipRect);
 	(FARPROC&)pfnDrawThemeBackground=GetProcAddress(m_hUxThemeDll,"DrawThemeBackground");
 	if(pfnDrawThemeBackground)
@@ -102,7 +102,7 @@ BOOL CThemeUtil::GetThemeColor(int iPartId, int iStateId, int iPropId, const COL
 {
 	if(m_hTheme==NULL)
 		return FALSE;
-	UINT (PASCAL* pfnGetThemeColor)(UINT hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeColor)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
 										const COLORREF *pColor);
 	(FARPROC&)pfnGetThemeColor=GetProcAddress(m_hUxThemeDll,"GetThemeColor");
 	if(pfnGetThemeColor)
@@ -118,7 +118,7 @@ BOOL CThemeUtil::GetThemeEnumValue(int iPartId, int iStateId, int iPropId, const
 	if(m_hTheme==NULL)
 		return FALSE;
 
-	UINT (PASCAL* pfnGetThemeEnumValue)(UINT hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeEnumValue)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
 										const int *piVal);
 	(FARPROC&)pfnGetThemeEnumValue=GetProcAddress(m_hUxThemeDll,"GetThemeEnumValue");
 	if(pfnGetThemeEnumValue)
@@ -134,7 +134,7 @@ BOOL CThemeUtil::GetThemeInt(int iPartId, int iStateId, int iPropId, const int *
 	if(m_hTheme==NULL)
 		return FALSE;
 
-	UINT (PASCAL* pfnGetThemeInt)(UINT hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeInt)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
 										const int *piVal);
 	(FARPROC&)pfnGetThemeInt=GetProcAddress(m_hUxThemeDll,"GetThemeInt");
 	if(pfnGetThemeInt)
@@ -150,7 +150,7 @@ BOOL CThemeUtil::GetThemeMargins(int iPartId, int iStateId, int iPropId, const M
 	if(m_hTheme==NULL)
 		return FALSE;
 
-	UINT (PASCAL* pfnGetThemeMargins)(UINT hTheme, OPTIONAL HDC hdc, int iPartId, 
+	HANDLE (PASCAL* pfnGetThemeMargins)(HANDLE hTheme, OPTIONAL HDC hdc, int iPartId, 
 				int iStateId, int iPropId, OPTIONAL RECT *prc, const MY_MARGINS *pMargins);
 	(FARPROC&)pfnGetThemeMargins=GetProcAddress(m_hUxThemeDll,"GetThemeMargins");
 	if(pfnGetThemeMargins)
@@ -166,7 +166,7 @@ BOOL CThemeUtil::GetThemeFilename(int iPartId, int iStateId, int iPropId,
 {
 	if(m_hTheme==NULL)
 		return FALSE;
-	UINT (PASCAL* pfnGetThemeFilename)(UINT hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeFilename)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
 										OUT LPWSTR pszThemeFileName, int cchMaxBuffChars);
 	(FARPROC&)pfnGetThemeFilename=GetProcAddress(m_hUxThemeDll,"GetThemeFilename");
 	if(pfnGetThemeFilename)

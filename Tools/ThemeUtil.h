@@ -44,5 +44,5 @@ private:
 private:
 	HINSTANCE m_hUxThemeDll;
 	HINSTANCE m_hRcDll;
-	UINT m_hTheme;
+	HANDLE m_hTheme;
 };

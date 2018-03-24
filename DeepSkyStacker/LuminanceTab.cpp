@@ -78,15 +78,15 @@ BOOL CLuminanceTab::OnSetActive()
 		m_Undo.DrawTransparent(TRUE);
 		m_Redo.SetFlat(TRUE);
 		m_Undo.SetFlat(TRUE);
-		m_Redo.SetIcon(IDI_REDO, (INT)BTNST_AUTO_GRAY);
-		m_Undo.SetIcon(IDI_UNDO, (INT)BTNST_AUTO_GRAY);
+		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
 
 		m_Redo.SetTooltipText(IDS_REDOLASTSETTINGS);
 		m_Undo.SetTooltipText(IDS_UNDOLASTSETTINGS);
 
 		m_Settings.DrawTransparent(TRUE);
 		m_Settings.SetFlat(TRUE);
-		m_Settings.SetIcon(IDI_SETTINGS, (INT)BTNST_AUTO_GRAY);
+		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
 		m_bFirstActivation = FALSE;

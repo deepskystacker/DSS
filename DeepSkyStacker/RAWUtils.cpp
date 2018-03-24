@@ -733,9 +733,9 @@ public :
 		return result;
 	};
 
-	int		ftell()
+	long		ftell()
 	{
-		return m_lCurrentPos;
+		return (long)m_lCurrentPos;
 	};
 
 	int		fscanf(const char * Format, va_list marker)
@@ -1085,7 +1085,7 @@ BOOL CRawDecod::IsRawFile()
 
 inline COutputFile *	GetOutputFile(FILE * stream)
 {
-	if ((LONG)stream == (LONG)g_pOutputFile)
+	if ((LONG_PTR)stream == (LONG_PTR)g_pOutputFile)
 		return g_pOutputFile;
 	else
 		return NULL;
@@ -1095,7 +1095,7 @@ inline COutputFile *	GetOutputFile(FILE * stream)
 
 inline CInputFile *	GetInputFile(FILE * stream)
 {
-	if ((LONG)stream == (LONG)g_pInputFile)
+	if ((LONG_PTR)stream == (LONG_PTR)g_pInputFile)
 		return g_pInputFile;
 	else
 		return NULL;
@@ -1190,7 +1190,7 @@ extern "C" FILE * FOPEN( const char *filename, const char *mode )
 				if (pInputFile->Init())
 				{
 					if (g_Progress)
-						g_Progress->Start2(NULL, pInputFile->m_lFileSize);
+						g_Progress->Start2(NULL, (LONG)(pInputFile->m_lFileSize));
 
 					g_pInputFile = pInputFile;
 					return (FILE*)pInputFile;

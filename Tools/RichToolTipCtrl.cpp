@@ -131,7 +131,7 @@ int CRichToolTipCtrl::CRichToolTipRichEditCtrl::StreamTextIn(LPCTSTR lpszText)
 {
   EDITSTREAM es;
   _RichToolTipCtrlCookie data(lpszText);
-  es.dwCookie = (DWORD)&data;
+  es.dwCookie = (DWORD_PTR)&data;
   es.pfnCallback = RichTextCtrlCallbackIn;
   int n = StreamIn(SF_RTF, es);
   if (n <= 0)
