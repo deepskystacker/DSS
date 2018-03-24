@@ -58,8 +58,10 @@ CHTMLButtonSection::CHTMLButtonSection( CHTMLSection *pSectParent, GS::FontDef &
 		HWND hwndParent = pSectParent->GetHwnd();
 		ASSERT( hwndParent );
 		LPTSTR endptr;
-		UINT uID = pFormObject->m_strID.GetLength() ? _tcstol( pFormObject->m_strID, &endptr, 10 ) : 0;
-		m_hwnd = CreateWindow( _T("BUTTON"), pcszValue, dwStyle, 0, 0, 0, 0, hwndParent, (HMENU)uID, g_hQHTMInstance, NULL );
+		INT ID = pFormObject->m_strID.GetLength() ? _tcstol( pFormObject->m_strID, &endptr, 10 ) : 0;
+#pragma warning(disable : 4312)
+		m_hwnd = CreateWindow( _T("BUTTON"), pcszValue, dwStyle, 0, 0, 0, 0, hwndParent, (HMENU)ID, g_hQHTMInstance, NULL );
+#pragma warning(default : 4312)
 		ASSERT( m_hwnd );
 		if( m_pFormObject->m_bDisabled )
 		{

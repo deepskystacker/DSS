@@ -336,6 +336,9 @@
     <ClCompile Include="Delaunay.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="PCLTools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -729,6 +732,9 @@
     </ClInclude>
     <ClInclude Include="Workspace.h">
       <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DSSMemory.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1245,7 +1245,7 @@ void CPictureListCtrl::SortListQualityDesc()
 	m_bAscending = FALSE;
 	m_lSortColumn = COLUMN_SCORE;		/* Score column */
 
-	SortItems(PictureListCompareFunc, (DWORD)this);
+	SortItems(PictureListCompareFunc, (DWORD_PTR)this);
 };
 
 /* ------------------------------------------------------------------- */

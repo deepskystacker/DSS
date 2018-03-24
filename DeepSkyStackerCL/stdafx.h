@@ -9,6 +9,12 @@
 #include <tchar.h>
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
+
+//
+// Want to support windows 7 and up
+//
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+
 #include <windows.h>
 
 #include <vector>

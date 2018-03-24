@@ -1,4 +1,4 @@
-/* $Header: /cvs/maptools/cvsroot/libtiff/libtiff/tif_extension.c,v 1.4.2.1 2010-06-08 18:50:42 bfriesen Exp $ */
+/* $Header: /cvs/maptools/cvsroot/libtiff/libtiff/tif_extension.c,v 1.8 2015-12-06 11:13:43 erouault Exp $ */
 
 /*
  * Copyright (c) 1988-1997 Sam Leffler
@@ -41,13 +41,13 @@ int TIFFGetTagListCount( TIFF *tif )
     return td->td_customValueCount;
 }
 
-ttag_t TIFFGetTagListEntry( TIFF *tif, int tag_index )
+uint32 TIFFGetTagListEntry( TIFF *tif, int tag_index )
 
 {
     TIFFDirectory* td = &tif->tif_dir;
 
     if( tag_index < 0 || tag_index >= td->td_customValueCount )
-        return (ttag_t) -1;
+        return (uint32)(-1);
     else
         return td->td_customValues[tag_index].info->field_tag;
 }
@@ -66,13 +66,13 @@ TIFFTagMethods *TIFFAccessTagMethods( TIFF *tif )
 void *TIFFGetClientInfo( TIFF *tif, const char *name )
 
 {
-    TIFFClientInfoLink *link = tif->tif_clientinfo;
+    TIFFClientInfoLink *psLink = tif->tif_clientinfo;
 
-    while( link != NULL && strcmp(link->name,name) != 0 )
-        link = link->next;
+    while( psLink != NULL && strcmp(psLink->name,name) != 0 )
+        psLink = psLink->next;
 
-    if( link != NULL )
-        return link->data;
+    if( psLink != NULL )
+        return psLink->data;
     else
         return NULL;
 }
@@ -80,18 +80,18 @@ void *TIFFGetClientInfo( TIFF *tif, const char *name )
 void TIFFSetClientInfo( TIFF *tif, void *data, const char *name )
 
 {
-    TIFFClientInfoLink *link = tif->tif_clientinfo;
+    TIFFClientInfoLink *psLink = tif->tif_clientinfo;
 
     /*
     ** Do we have an existing link with this name?  If so, just
     ** set it.
     */
-    while( link != NULL && strcmp(link->name,name) != 0 )
-        link = link->next;
+    while( psLink != NULL && strcmp(psLink->name,name) != 0 )
+        psLink = psLink->next;
 
-    if( link != NULL )
+    if( psLink != NULL )
     {
-        link->data = data;
+        psLink->data = data;
         return;
     }
 
@@ -99,15 +99,15 @@ void TIFFSetClientInfo( TIFF *tif, void *data, const char *name )
     ** Create a new link.
     */
 
-    link = (TIFFClientInfoLink *) _TIFFmalloc(sizeof(TIFFClientInfoLink));
-    assert (link != NULL);
-    link->next = tif->tif_clientinfo;
-    link->name = (char *) _TIFFmalloc(strlen(name)+1);
-    assert (link->name != NULL);
-    strcpy(link->name, name);
-    link->data = data;
+    psLink = (TIFFClientInfoLink *) _TIFFmalloc(sizeof(TIFFClientInfoLink));
+    assert (psLink != NULL);
+    psLink->next = tif->tif_clientinfo;
+    psLink->name = (char *) _TIFFmalloc((tmsize_t)(strlen(name)+1));
+    assert (psLink->name != NULL);
+    strcpy(psLink->name, name);
+    psLink->data = data;
 
-    tif->tif_clientinfo = link;
+    tif->tif_clientinfo = psLink;
 }
 /*
  * Local Variables:

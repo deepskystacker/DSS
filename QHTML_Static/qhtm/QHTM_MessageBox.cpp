@@ -23,16 +23,17 @@ static void ChangeMessageBoxToHTML( HWND hwnd )
 	//
 	//	Find our static control
 	HWND hwndStatic = GetWindow( hwnd, GW_CHILD );
+	int ID = 0;
 	//
 	//	Bit dependent really, but we search for a control that has -1 as the ID, this seems to be the static control
 	//	with the text on it.
 	//	NOTE: If this proves troublesome then we could search for a STATIC with the correct styles (missing the static with
 	//	the icon).
-	UINT uID = 0;
+	
 	while( hwndStatic )
 	{
-		uID = GetWindowLongPtr( hwndStatic, GWL_ID );
-		if( uID >= 0xffff )
+		ID = GetDlgCtrlID(hwndStatic);
+		if( -1 == ID )
 			break;
 		hwndStatic = GetWindow( hwndStatic, GW_HWNDNEXT );
 	}
@@ -71,7 +72,9 @@ static void ChangeMessageBoxToHTML( HWND hwnd )
 		//
 		//	Now we have our window we need to change some sizes...
 
-		hwndStatic = CreateWindowEx( WS_EX_TRANSPARENT, QHTM_CLASSNAME, NULL, WS_CHILD | WS_VISIBLE, 0, 0, nMaxScreenWidth, nMaxScreenHeight, hwnd, (HMENU)uID, g_hInstance, NULL );
+#pragma warning(disable : 4312)
+		hwndStatic = CreateWindowEx( WS_EX_TRANSPARENT, QHTM_CLASSNAME, NULL, WS_CHILD | WS_VISIBLE, 0, 0, nMaxScreenWidth, nMaxScreenHeight, hwnd, (HMENU)ID, g_hInstance, NULL );
+#pragma warning(default : 4312)
 		SendMessage( hwndStatic, WM_SETFONT, (WPARAM)hfont, 0 );
 
 		QHTM_SetUseColorStatic( hwndStatic, TRUE );

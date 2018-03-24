@@ -9,8 +9,8 @@ Purpose:	Decode a JPEG file into a frame array.
 ----------------------------------------------------------------------*/
 #include "stdafx.h"
 #include <datasource/DataSourceABC.h>
-#include <libjpg\jpeglib.h>
-#include <libjpg\jerror.h>
+#include <jpeglib.h>
+#include <jerror.h>
 #include "ImgLibInt.h"
 #include "ImgLib.h"
 

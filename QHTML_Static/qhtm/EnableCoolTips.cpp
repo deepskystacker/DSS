@@ -21,7 +21,7 @@ Purpose:	Cool tips code.
 
 extern void GetDisplayWorkArea( HWND hwnd, RECT &rc );
 
-LRESULT FAR PASCAL SubClassFunc( HWND hwnd, WORD msg, WORD wParam, LONG lParam );
+LRESULT FAR PASCAL SubClassFunc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam );
 
 WNDPROC g_lpfnOldWndProc = NULL;
 
@@ -49,7 +49,7 @@ BOOL WINAPI QHTM_EnableCooltips()
 	HWND hwndTip = CreateTip();
 	if( hwndTip )
 	{
-		g_lpfnOldWndProc = (WNDPROC)SetClassLongPtr(hwndTip, GCLP_WNDPROC, (DWORD) SubClassFunc);
+		g_lpfnOldWndProc = (WNDPROC)SetClassLongPtr(hwndTip, (int)GCLP_WNDPROC, (LONG_PTR) SubClassFunc);
 		if( DestroyWindow( hwndTip ) )
 		{
 			bRetVal = TRUE;
@@ -68,7 +68,7 @@ void StopSubclassing()
 		HWND hwndTip = CreateTip();
 		if( hwndTip )
 		{
-			(void)SetClassLongPtr(hwndTip, GCLP_WNDPROC, (DWORD) g_lpfnOldWndProc);
+			(void)SetClassLongPtr(hwndTip, GCLP_WNDPROC, (LONG_PTR) g_lpfnOldWndProc);
 			VAPI( ::DestroyWindow( hwndTip ) );
 		}
 		g_lpfnOldWndProc = NULL;
@@ -96,7 +96,7 @@ private:
 };
 
 
-LRESULT FAR PASCAL SubClassFunc( HWND hwnd, WORD msg, WORD wParam, LONG lParam )
+LRESULT FAR PASCAL SubClassFunc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch( msg )
 	{

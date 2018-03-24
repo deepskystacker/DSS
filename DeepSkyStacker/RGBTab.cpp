@@ -101,8 +101,8 @@ BOOL CRGBTab::OnSetActive()
 		SetGreenAdjustMethod(HAT_LINEAR);
 		SetBlueAdjustMethod(HAT_LINEAR);
 
-		m_Redo.SetIcon(IDI_REDO, (INT)BTNST_AUTO_GRAY);
-		m_Undo.SetIcon(IDI_UNDO, (INT)BTNST_AUTO_GRAY);
+		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
 		m_Redo.SetFlat(TRUE);
 		m_Undo.SetFlat(TRUE);
 		m_Redo.DrawTransparent(TRUE);
@@ -113,7 +113,7 @@ BOOL CRGBTab::OnSetActive()
 
 		m_Settings.DrawTransparent(TRUE);
 		m_Settings.SetFlat(TRUE);
-		m_Settings.SetIcon(IDI_SETTINGS, (INT)BTNST_AUTO_GRAY);
+		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
 		m_bFirstActivation = FALSE;

@@ -2,18 +2,15 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{c1561449-2c96-41f5-b73a-0f2c7aa0aa93}</UniqueIdentifier>
+      <UniqueIdentifier>{86c026d7-fe72-4d29-9049-a9320b06174a}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{05439cb8-44b3-4b53-960b-2805e1500bc3}</UniqueIdentifier>
+      <UniqueIdentifier>{7a06b854-70e0-4964-acf5-c137bcde90cd}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="fax3sm_winnt.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tif_aux.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -47,13 +44,22 @@
     <ClCompile Include="tif_error.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tif_extension.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="tif_fax3.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_fax3sm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tif_flush.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tif_getimage.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_jbig.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tif_jpeg.c">
@@ -116,12 +122,30 @@
     <ClCompile Include="tif_zip.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="getopt.c">
+    <ClCompile Include="mkg3states.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_lzma.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="t4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tif_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tif_config.vc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tif_config.wince.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tif_dir.h">
@@ -136,13 +160,22 @@
     <ClInclude Include="tiff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tiffcomp.h">
+    <ClInclude Include="tiff2pdf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tiffconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tiffconf.vc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tiffconf.wince.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="tiffio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tiffio.hxx">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tiffiop.h">

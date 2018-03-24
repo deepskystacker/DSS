@@ -236,7 +236,7 @@ void CGradientCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 		if(m_Selected != -1) nmhdr.peg = m_Gradient.GetPeg(m_Selected);
 		else nmhdr.peg = m_Impl->m_Null;
 		nmhdr.index = m_Selected;
-		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 	}
 
 	SetFocus();
@@ -347,10 +347,10 @@ void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point)
 			if(m_Selected != -1) nmhdr.peg = peg;
 			else nmhdr.peg = m_Impl->m_Null;
 			nmhdr.index = m_Selected;
-			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 
 			nmhdr.nmhdr.code = GC_CHANGE;
-			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&(nmhdr.nmhdr)));
+			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&(nmhdr.nmhdr)));
 		}
 	}
 	
@@ -391,10 +391,10 @@ void CGradientCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 			if(m_Selected != -1) nmhdr.peg = m_Gradient.GetPeg(m_Selected);
 			else nmhdr.peg = m_Impl->m_Null;
 			nmhdr.index = m_Selected;
-			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 
 			nmhdr.nmhdr.code = GC_CHANGE;
-			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&(nmhdr.nmhdr)));
+			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&(nmhdr.nmhdr)));
 		}
 	}
 
@@ -537,7 +537,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			nmhdr.nmhdr.idFrom = GetDlgCtrlID();
 			nmhdr.peg = GetSelPeg();
 			nmhdr.index = m_Selected;
-			GetParent()->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+			GetParent()->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 		}
 
 		break;
@@ -554,7 +554,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			nmhdr.nmhdr.idFrom = GetDlgCtrlID();
 			nmhdr.position = peg.position;
 			nmhdr.colour = peg.colour;
-			GetParent()->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+			GetParent()->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 		}
 		break;
 	}
@@ -601,20 +601,20 @@ void CGradientCtrl::DeleteSelected(BOOL bUpdate)
 		if(m_Selected != -1) nmhdr.peg = peg;
 		else nmhdr.peg = m_Impl->m_Null;
 		nmhdr.index = oldsel;
-		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 		
 		nmhdr2 = nmhdr;
 		nmhdr2.nmhdr.code = GC_SELCHANGE;
 		if(m_Selected != -1) nmhdr2.peg = m_Gradient.GetPeg(m_Selected);
 		else nmhdr2.peg = m_Impl->m_Null;
 		nmhdr2.index = m_Selected;
-		pParent->SendMessage(WM_NOTIFY, nmhdr2.nmhdr.idFrom, (DWORD)(&nmhdr2));
+		pParent->SendMessage(WM_NOTIFY, nmhdr2.nmhdr.idFrom, (DWORD_PTR)(&nmhdr2));
 		
 		nmhdr3 = nmhdr2;
 		nmhdr3.nmhdr.code = GC_CHANGE;
 		nmhdr3.peg = m_Impl->m_Null;
 		nmhdr3.index = -1;
-		pParent->SendMessage(WM_NOTIFY, nmhdr3.nmhdr.idFrom, (DWORD)(&nmhdr3));
+		pParent->SendMessage(WM_NOTIFY, nmhdr3.nmhdr.idFrom, (DWORD_PTR)(&nmhdr3));
 	}
 }
 
@@ -738,7 +738,7 @@ void CGradientCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 			if(m_Selected != -1) nmhdr.peg = peg;
 			else nmhdr.peg = m_Impl->m_Null;
 			nmhdr.index = m_Selected;
-			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 		}
 		else
 		{
@@ -749,7 +749,7 @@ void CGradientCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 			nmhdr.nmhdr.idFrom = GetDlgCtrlID();
 			nmhdr.position = pos;
 			nmhdr.colour = m_Gradient.ColourFromPosition(pos);
-			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 		}
 	}
 
@@ -1000,10 +1000,10 @@ void CGradientCtrl::SendBasicNotification(UINT code, CPeg peg, int index)
 		nmhdr.nmhdr.idFrom = GetDlgCtrlID();
 		nmhdr.peg = peg;
 		nmhdr.index = index;
-		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&nmhdr));
+		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
 
 		nmhdr.nmhdr.code = GC_CHANGE;
-		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD)(&(nmhdr.nmhdr)));
+		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&(nmhdr.nmhdr)));
 	}
 }
 

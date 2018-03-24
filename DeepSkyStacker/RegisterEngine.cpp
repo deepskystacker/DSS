@@ -663,7 +663,7 @@ BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 		if (m_bComet)
 			fprintf(hFile, "Comet = %.2f, %.2f\n", m_fXComet, m_fYComet);
 		fprintf(hFile, "SkyBackground = %.4f\n", m_SkyBackground.m_fLight);
-		fprintf(hFile, "NrStars = %ld\n", m_vStars.size());
+		fprintf(hFile, "NrStars = %zu\n", m_vStars.size());
 		for (LONG i = 0; i<m_vStars.size();i++)
 		{
 			fprintf(hFile, "Star# = %ld\n", i);
