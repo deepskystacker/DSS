@@ -339,7 +339,8 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 {
 	BOOL			bResult = FALSE;
 
-	if (pTab->m_SigmaClipping.GetCheck())
+	if (NULL != pTab->m_SigmaClipping.GetSafeHwnd() &&
+		pTab->m_SigmaClipping.GetCheck())
 	{
 		CString		strKappa;
 		CString		strIteration;
@@ -358,7 +359,8 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 	else
 		bResult = TRUE;
 
-	if (pTab->m_DarkFactor.IsWindowVisible())
+	if (NULL != pTab->m_DarkFactor.GetSafeHwnd() && 
+		pTab->m_DarkFactor.IsWindowVisible())
 	{
 		CString		strFactor;
 		double		fFactor;

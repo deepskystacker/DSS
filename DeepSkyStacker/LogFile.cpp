@@ -96,7 +96,7 @@ static	void	GetLogFileName(CString & strLog)
 
 		GetModuleFileName(NULL, szModuleFileName, sizeof(szModuleFileName));
 		_splitpath(szModuleFileName, szDrive, szDir, NULL, NULL);
-		g_strLog.Format("%s%s/DSSLog.txt", szDrive, szDir);
+		g_strLog.Format("%s%sDSSLog.txt", szDrive, szDir);
 	};
 	strLog = g_strLog;
 };
