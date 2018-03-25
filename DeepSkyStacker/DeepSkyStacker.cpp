@@ -390,6 +390,9 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 	AddToLog("Shutting down GDI+ - ok\n");
 	#endif
 
+	AddToLog("Shutting down QHTM\n");
+	QHTM_Uninitialize();
+
 	OleUninitialize();
 
 	CloseHandle(hMutex);
