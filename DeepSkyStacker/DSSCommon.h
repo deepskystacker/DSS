@@ -74,8 +74,8 @@ typedef enum FITSFORMAT
 
 #include "DSSVersion.h"
 #define VERSION_DCRAW						"9.27 rev 1.477"
-#define VERSION_LIBTIFF						"3.9.4"
-#define VERSION_CFITSIO						"3.06"
+#define VERSION_LIBTIFF						"4.0.9"
+#define VERSION_CFITSIO						"3.43"
 
 #ifdef TRACEDSSON
 #define TRACEDSS0(x)						OutputDebugString(x)
