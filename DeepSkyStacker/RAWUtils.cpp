@@ -1115,7 +1115,7 @@ extern "C" int FPRINTF( FILE *stream, const char *format,...)
 	va_list					marker;
 	va_start(marker, format);
 
-	int						nResult;
+	int						nResult = 0;
 	COutputFile *			pOutputFile = GetOutputFile(stream);
 
 	if (pOutputFile)
