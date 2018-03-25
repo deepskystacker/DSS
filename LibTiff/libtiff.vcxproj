@@ -30,7 +30,7 @@
     <ProjectName>libtiff</ProjectName>
     <ProjectGuid>{D5FB2402-A821-4474-91E7-07F0DD5866F0}</ProjectGuid>
     <RootNamespace>libtiff</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

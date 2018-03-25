@@ -41,6 +41,7 @@
 #include <vector>
 
 #include "DSSCommon.h"
+#include "DSSMemory.h"
 
 //#define NOGDIPLUS
 //{{AFX_INSERT_LOCATION}}
