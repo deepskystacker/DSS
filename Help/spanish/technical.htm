@@ -1,0 +1,1211 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="es-ar">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta name="keywords" lang="en" content="Deep Sky Stacking Astrophotography Bayer matrix">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - Technical Info</title>
+<style>
+<!--
+ div.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	margin-left:0cm; margin-right:0cm; margin-top:0cm}
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+.style1 {background-color: #FFFF00}
+-->
+</style>
+
+
+			<script language='javascript' src='http://127.0.0.1:1025/js.cgi?pca&r=7376'></script>
+
+</head>
+
+<body>
+
+<p><b><span lang="es" style="font-size: 18.0pt; font-family: Arial">Detalles 
+Técnicos</span></b></p>
+<blockquote>
+
+<p><b><span style="font-family: Arial"><a href="#Registering">Registr<span lang="es">ando</span></a><br>
+<a href="#Alignment">Aline<span lang="es">ación</span></a><br>
+<a href="#FileGroups">Grup<span lang="es">os de archivos</span></a><br>
+<a href="#Stacking"><span lang="es">Apilando</span></a><br>
+<a href="#stackingmethods">M<span lang="es">é</span>tod<span lang="es">os de 
+Apilamiento</span></a><br>
+<a href="#Drizzle">Drizzle</a><br>
+<a href="#cometstacking">Apilado de Cometas</a><br>
+<a href="#rawdecod"><span lang="es">Proceso de desarrollo de imágenes R</span>AW</a></span></b></p>
+</blockquote>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="ES-ES" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="Registering"></a>Registr</span><span lang="es" style="font-size: 13.5pt; font-family: Arial; color: red">ando</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span><font size="2"><span lang="es" style="font-family: Arial">Detección de 
+estrellas</span></font><span lang="ES-ES" style="font-family: Arial"><br>
+</span></b><span lang="es" style="font-family: Arial"><font size="2">Para cada 
+imagen</font></span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> DeepSkyStacker detect</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">a</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span style="font-size: 10.0pt; font-family: Arial"><span lang="es-ar">autom</span></span><span lang="es-ar" style="font-size: 10.0pt; font-family: Arial">ática</span><span lang="es-ar" style="font-size: 10.0pt; font-family: Arial">mente</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+las estrellas</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Para 
+decirlo simple, cada estrella es un objeto redondo cuya luminancia</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">disminuye 
+regularmente en todas las direcciones.</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Una vez que 
+la estrella es detectada, su centro exacto es obtenido utilizando una curva 
+Gausiana en la luminancia</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial"><b><font size="2">Aplica<span lang="es">c</span>i<span lang="es">ó</span>n 
+<span lang="es">de</span> darks, flats <span lang="es">y</span> offsets
+<span lang="es">antes de registrar</span></font><br>
+</b><font size="2"><span lang="es">Si</span> <span lang="es">los </span>archivos de imagen dark, flat 
+<span lang="es">y</span>/<span lang="es">u</span> offset <span lang="es">
+son verificados, entonces son automáticamente aplicados antes del proceso del 
+registro.</span><br>
+<span lang="es">En caso que los </span><font face="Arial"> archivos de imagen </font>light <span lang="es">contengan 
+muchos </span>hot pixels <span lang="es">es altamente recomendable chequear los
+</span><font face="Arial"> archivos de imagen </font></font><font size="2">dark <span lang="es">para evitar detectar </span>e<span lang="es">strellas 
+que no son tales, lo que perturbaría notablemente el alineamiento</span>.</font></font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial"><b>
+<font size="2"><a name="hotpixels"></a><span lang="es">Detección a</span>utom<span lang="es">á</span>tic<span lang="es">a</span>
+<span lang="es">de </span>hot pixels</font><br>
+</b><font size="2">Op<span lang="es">c</span>ional<span lang="es">mente</span> DeepSkyStacker
+<span lang="es">intenta </span>detect<span lang="es">ar</span> hot pixels dur<span lang="es">a</span>n<span lang="es">te</span>
+<span lang="es">el proceso de registración para evitar la identificación falsa 
+de estrellas</span>.<br>
+<span lang="es">Puede notar que esta opción solamente funciona para trabajos con 
+imágenes monocromáticas o del tipo RAW en los modos de </span>&nbsp;interpola<span lang="es">c</span>i<span lang="es">ó</span>n&nbsp; <a href="#superpixel">Super-pixels</a>, <a href="#bayerdrizzle">
+Bayer.Drizzle</a>, bilinear <span lang="es">y</span> AHD.</font></font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><font face="Arial" size="2"><a name="detectionthreshold"></a>Ajust<span lang="es">ando 
+el umbral de detección de estrellas</span></font></b><font size="2" face="Arial"><b><br>
+</b><span lang="es">El umbral de detección de estrellas es por defecto del
+</span>10%  (<span lang="es">de la </span>m<span lang="es">á</span>xim<span lang="es">a</span> 
+luminanc<span lang="es">ia</span>).<br>
+<span lang="es">Puede modificar este umbral en la pestaña Avanzada</span>
+<span lang="es">del cuadro de diálogo Configuración del </span>Registr<span lang="es">o</span>. 
+<span lang="es">Si disminuye el umbral</span> DeepSkyStacker detect<span lang="es">ará</span>
+<span lang="es">estrellas más débiles</span>. 
+<span lang="es">De manera inversa, si incrementa el umbral, sólo las estrellas 
+más brillantes serán detectadas.</span><br>
+<br>
+<span lang="es">Para ayudarlo a encontrar el umbral más adecuado para sus </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">light 
+<span lang="es">puede evaluar el número de estrellas que serán detectadas.</span>
+<span lang="es">Para hacer esto</span>, DeepSkyStacker <span lang="es">el primer
+</span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen </font></font><font size="2" face="Arial">light <span lang="es">registrado y activa temporalmente la 
+detección de </span>hot pixel<span lang="es">s</span>.</font></p>
+<p align="justify"><font size="2" face="Arial"><span lang="es">Puede notar que 
+este número es sólo una sugerencia y el número real de estrellas detectadas 
+puede variar si tiene verificados </span></font><font face="Arial"><font size="2"><span lang="es"> </span>los archivos de imagen </font></font><font size="2" face="Arial">dark, 
+offset <span lang="es">y</span> flat.</font></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="1" noshade color="blue"></span>
+</div>
+<p align="justify"><b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+R</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">egistrando 
+resultados</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">El 
+registro de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">result</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s (</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">cantidad 
+de estrellas detectadas</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">,  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">su </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">posi</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">c</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">i</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ó</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">n,  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">y su </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">luminanc</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ia</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">) 
+ 
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">se 
+almacenan en un archivo de texto cuyo nombre es el nombre de la imagen, con la 
+extensión </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.Info.txt.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Debido a 
+esto no es necesario registrar nuevamente la imagen para futuros procesos de 
+apilado.</span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="1" noshade color="blue"></span>
+</div>
+<p align="justify"><b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+Registr</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ando</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+result</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ad</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s 
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">y</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+par</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">á</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">met</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ro</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s<br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">El 
+registro de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">result</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">es en extremo 
+dependiente de los parámetros seleccionados</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">(especial</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">mente</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">los</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span> <a href="userguide.htm#rawddp">
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">parámetros </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+d</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">el 
+desarrollo de r</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">aw</span></a><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">).<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Si estos 
+parámetros son modificados, se torna necesario registrar las imágenes 
+nuevamente.</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="1" noshade color="blue"></span>
+</div>
+<p align="justify"><span lang="es"><font size="2"><b>
+<span style="font-family: Arial">Apilar luego de registrar</span></b></font></span><b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+</span></b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+DeepSkyStacker </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">puede encadenar 
+los procesos de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+a</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">pilar y 
+registrar</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">Sólo tiene que dar 
+el porcentaje de imágenes que desea mantener al final del proceso de registro 
+para comenzar el proceso de apilado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">Solamente las 
+mejores imágenes serán utilizadas en el proceso de apilado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">
+Por lo tanto es posible </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+c</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">omenzar el 
+proceso completo para luego</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">irse a 
+dormir sabiendo que luego de una noche de buen sueño, será posible ver los 
+primeros resultados.</span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="ES-ES" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="Alignment"></a>Aline</span><span lang="es" style="font-size: 13.5pt; font-family: Arial; color: red">ación</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Evaluación 
+de desplazamientos y ángulos</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span></b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+Dur</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">a</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">n</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">te</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">el proceso 
+de alineación la mejor imagen</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+(</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">la que 
+tiene mejor puntuación</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">)</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">será 
+utilizada como </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen </font></font></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">de 
+referencia a menos que usted seleccione </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+&nbsp;</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">otro
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen d</font></font></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e 
+referencia utilizando el</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+</span> <a href="userguide.htm#contextmenu">
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">menú </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+context</span></a><a href="userguide.htm#contextmenu"><span lang="es" style="font-size: 10.0pt; font-family: Arial">ual</span></a><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Todos los 
+desplazamientos y ángulos de rotación se evalúan relativos a este </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen </font></font></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e 
+referencia</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+<br>
+</span><span lang="es"><font size="2"><span style="font-family: Arial">L</span></font></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">os 
+desplazamientos y ángulos de rotación son evaluados identificando patrones de 
+estrellas en los</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen</font></font>.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Para 
+decirlo simple, el </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+algoritm</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">o</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">busca los 
+triángulos más grandes</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">cuyas 
+distancias entre sus lados </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+(</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">y por lo 
+tanto los ángulos comprendidos entre estos lados</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">) </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">son más cercanas</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Con un 
+número suficiente de triángulos d</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">etect</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">a</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">d</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">os</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">entre
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+e</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">l </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen </font></font></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">de
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+referenc</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ia</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">y el </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen </font></font></span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+a alinear el desplazamiento y la rotación son evaluados y validados por medio del 
+método de los cuadrados mínimos</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+Dependi</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">endo 
+del número de estrellas, se utiliza una transformación bicuadrática o bilineal</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Para más 
+información acerca de los algoritmos que inspiraron el utilizado por</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+DeepSkyStacker </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">pueden consultar 
+los siguientes sitios</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">:</span><font size="2" face="Arial"><br>
+<a target="_blank" href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=1995PASP..107.1119V&db_key=AST&high=39463d35aa24090">
+FOCAS Automatic Catalog Matching Algorithms</a><br>
+<a target="_blank" href="http://lear.inrialpes.fr/pubs/2004/MR04/">Pattern 
+Matching with Differential Voting and Median Transformation Derivation</a></font></p>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="FileGroups"></a>Grup<span lang="es">os de archivo</span>s<br>
+</font></b><font size="2" face="Arial"><a name="filegroup"></a><span lang="es">
+Los Grupos de archivos</span> <span lang="es">pueden usarse para simplificar la 
+administración de múltiples noches de un mismo objeto agrupando lógicamente 
+archivos de cada sesión de imágenes</span>.<br>
+<b><span lang="es">Si</span> <span lang="es">utiliza sólo el</span> <i>Grup<span lang="es">o 
+Principal</span></i> DeepSkyStacker
+<span lang="es">trabaja de la misma manera que antes de la introducción de 
+Grupos de archivos</span>.</b><br>
+<br>
+<span lang="es">Hay dos clases de </span>Grup<span lang="es">o</span>s<span lang="es"> 
+de archivos</span>: <span lang="es">el </span>Grup<span lang="es">o Principal</span>
+<span lang="es">y todos los otros grupos</span>.</font></p>
+<ul>
+  <li>
+  <p align="justify"><font face="Arial"><font size="2"><span lang="es"> </span>Archivos de imagen </font></font><font size="2" face="Arial">Light <span lang="es">
+  del </span> <i>Grup<span lang="es">o Principal</span></i> 
+  <span lang="es">solo pueden asociarse con </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Dark, Flat <span lang="es">y</span> 
+  Offset/Bias <span lang="es">desde el </span> <i>Grup<span lang="es">o 
+  Principal</span></i>. <br>
+  <span lang="es">Este es el comportamiento de</span> DeepSkyStacker
+  <span lang="es">previo a la introducción de </span>Grup<span lang="es">o</span>s<span lang="es"> 
+  de archivos</span>.</font></li>
+  <li>
+  <p align="justify"><font face="Arial"><font size="2"><span lang="es"> </span>Archivos de imagen </font></font><font size="2" face="Arial">Dark, Flat <span lang="es">y</span> Offset/Bias 
+  <span lang="es">del </span>Grup<span lang="es">o Principal</span>
+  <span lang="es">pueden asociarse a </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Light <span lang="es">de 
+  cualquier grupo</span>.</font>  </li>
+  <li>
+  <p align="justify"><font face="Arial"><font size="2"> Archivos de imagen </font></font><font size="2" face="Arial">Dark, Flat <span lang="es">y
+  </span>Offset/Bias <span lang="es">de otros grupos pueden asociarse 
+  solo con </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2" face="Arial">Light d<span lang="es">el mismo grupo</span>.</font>  
+  </li>
+</ul>
+<p align="justify"><span lang="es"><font face="Arial" size="2">Usted puede crear 
+tantos </font></span><font size="2" face="Arial">Grup<span lang="es">os de 
+archivo</span>s <span lang="es">como desee, sabiendo que un archivo puede 
+pertenecer solo a un grupo de archivos.</span><br>
+<span lang="es">Al iniciar </span>DeepSkyStacker <span lang="es">solo el </span>Grup<span lang="es">o 
+Principal está disponible</span>. <span lang="es">Tan pronto como usted agregue 
+un archivo al último de los grupos disponibles, se creará una nueva pestaña para 
+un grupo vacío</span>.<br>
+<br>
+<b>E<span lang="es">jemplo</span>:<br>
+</b><span lang="es">Usted fotografía dos noches seguidas el mismo objeto</span>. <br>
+<span lang="es">Para cada noche tiene un conjunto de </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2" face="Arial">Light, Dark 
+<span lang="es">y </span>Flat <span lang="es">pero la temperatura no es 
+la misma en cada noche por lo que los </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2" face="Arial">Dark <span lang="es">no son 
+compatibles y la orientación es ligeramente diferente por lo que los </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2" face="Arial">Flat 
+<span lang="es">también son diferentes para cada noche</span>.<br>
+<br>
+<span lang="es">Para asociar cada </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen </font></font><font size="2" face="Arial">Light <span lang="es">con 
+adecuados </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Dark <span lang="es">y</span> Flat  <span lang="es">basta 
+con agrupar</span> <span lang="es">los </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Light+Dark+Flat 
+<span lang="es">de la primera noche en un </span>Grup<span lang="es">o de 
+archivos</span> <span lang="es">y los </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Light+Dark+Flat 
+<span lang="es">de la segunda noche en otro </span>Grup<span lang="es">o de 
+archivos</span>.<br>
+<span lang="es">Como los</span> </font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Offset/Bias <span lang="es">son los 
+mismos en cada noche</span> <span lang="es">deben ser colocados en el </span> <i>
+Grup<span lang="es">o Principal</span></i>.<br>
+<br>
+DeepSkyStacker <span lang="es">automáticamente asociará</span> <span lang="es">
+los</span> </font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Light <span lang="es">de la primera noche con los </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Dark 
+<span lang="es">y</span> Flat <span lang="es">de esa misma noche</span>
+<span lang="es">y los</span> </font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Light <span lang="es">de la segunda noche 
+con los </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Dark <span lang="es">y</span> Flat  <span lang="es">de la 
+segunda noche</span>.<br>
+<span lang="es">Los</span> </font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Offset/Bias <span lang="es">del </span>Grup<span lang="es">o 
+Principal</span> <span lang="es">serán asociados con los </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2" face="Arial">Light
+<span lang="es">de la primera </span> <b><span lang="es">y</span></b>
+<span lang="es">la segunda noche</span>.</font></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="ES-ES" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="Stacking"></a></span>
+<span lang="es" style="font-size: 13.5pt; font-family: Arial; color: red">
+Apilando</span><span lang="ES-ES" style="font-family: Arial"><br>
+<font size="2"><a name="backgroundcalibration"></a> </font>
+</span></b><font face="Arial"><b><font size="2">
+Calibra<span lang="es">ció</span>n<span lang="es"> 
+de fondo</span></font><br>
+</b><font size="2"><span lang="es">La </span>Calibration <span lang="es">de 
+fondo </span>consist<span lang="es">e en normalizar el valor de fondo para cada 
+imagen antes de apilarla</span>.<br>
+<span lang="es">El valor de fondo está definido como el valor medio de todos los 
+píxeles de la imagen</span>.<br>
+</font></font><font size="2" face="Arial"><span style="background-color: #FFFF00"><br>
+</span>Hay dos opciones disponibles. </font></p>
+<ul>
+  <li><font face="Arial" size="2">Con la opción de <b>Calibración de Fondo Por 
+  Canal</b> el fondo de cada canal es ajustado en forma separada para coincidir 
+  con el fondo de la imagen de referencia. </font></li>
+  <li><font face="Arial" size="2">Con la <b>Calibración de Canales RGB</b> los 
+  tres canales <font color="#FF0000">rojo</font>, <font color="#008000">verde</font> 
+  y <font color="#0000FF">azul</font> de cada archivo light son normalizados al 
+  mismo valor de fondo que corresponde al mínimo de los tres valores medios (uno 
+  por cada canal) calculado a partir de la imagen de referencia. <br>
+  Además de crear imágenes compatibles (amigables con el apilado) esta opción 
+  tambien crea un fondo gris neutral. El efecto secundario es que la saturación 
+  general de la imagen apilada es relativamente bajo (estilo escala de gris).
+  </font></li>
+</ul>
+<p></p>
+<p><font face="Arial" size="2">Es importante seleccionar una de estas opciones 
+cuando se utilizan los métodos Kappa-Sigma Clipping o el Kappa-Sigma Clipping 
+Median para asegurarse que las imágenes a ser apiladas tienen todas el mismo 
+valor de fondo. </font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial"><font size="2">
+<b><a name="flatcalibration"></a><span lang="es">C</span>alibra<span lang="es">ción</span>
+<span lang="es">automática de</span> archivos de imagen flat</b></font><b><br>
+</b><font size="2"><span lang="es">El objetivo de la </span>calibra<span lang="es">ción</span> 
+autom<span lang="es">á</span>tic<span lang="es">a</span> <span lang="es">de los
+</span><font face="Arial"> archivos de imagen </font>flat <span lang="es">es ecualizar las diferencias de luminosidad 
+entre los </span><font face="Arial"> archivos de imagen </font>flat  <span lang="es">antes de combinarlos en un </span>maestro flat.<br>
+<br>
+<span lang="es">El primer </span><font face="Arial"> archivo de imagen </font>flat <span lang="es">se utiliza como
+</span>referenc<span lang="es">ia</span>. <span lang="es">Los otros </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2">flat <span lang="es">se normalizan para equiparar el promedio de luminosidad y el 
+rango dinámico del primer </span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivo de imagen </font></font><font size="2">flat.</font></font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial"><font size="2">
+<b><a name="hotpixelsremoval"></a>Dete<span lang="es">cció</span>n<span lang="es"> 
+Automática y Remoción de</span>hot pixels</b></font><b><br>
+</b><font size="2"><span lang="es">El objetivo de la detección automática y 
+remoción de </span>hot pixels 
+<span lang="es">es reemplazar a éstos con un valor obtenido de los píxeles 
+vecinos</span>.<br>
+<br>
+<span lang="es">Primeramente los hot pixels son identificados analizando los</span></font><font face="Arial"><font size="2"><span lang="es"> </span>archivos de imagen </font></font><font size="2">dark (<span lang="es">o el </span></font><font face="Arial"><font size="2">archivo de imagen </font></font><font size="2">dark maestro <span lang="es">si se encuentra disponible</span>). <span lang="es">Cada píxel 
+cuyo valor es mayor que </span>[media] + 16 x [<span lang="es">desviación </span>standard] (sigma) <span lang="es">e</span>s <span lang="es">marcado como un </span>hot pixel.<br>
+<br>
+<span lang="es">Para todos esos píxeles, el valor en la imagen calibrada </span>(<span lang="es">luego 
+de la sustracción del </span>offset/bias<span lang="es"> y el </span>dark subtraction <span lang="es">y la división por el </span>flat) <span lang="es">e</span>s interpolad<span lang="es">o</span>
+<span lang="es">de los píxeles vecinos</span>.</font></font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial"><font size="2">
+<b><a name="badlinesdetection"></a>Detec<span lang="es">ció</span>n 
+<span lang="es">Automática y Remoción de malas</span></b></font><b><font size="2"><span lang="es">
+</span>column<span lang="es">a</span>s</font><br>
+</b><span lang="es"><font size="2">En algunos chips </font></span><font size="2">CCD
+<span lang="es">algunas columnas se encuentran estropeadas o saturadas por 
+completo debido a la aureola creada por los hot píxels.</span><br>
+<br>
+<span lang="es">La detección y remoción de las malas columnas se utiliza en 
+estos casos</span>.<br>
+<span lang="es">Se detectan automáticamente líneas de 1 píxel de ancho que están 
+saturadas o completamente estropeadas y se las considera como si fueran hot 
+pixels, interpolando el valor de los píxeles vecinos.</span></font></font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial"><font size="2">
+<b><a name="darkentropy"></a><span lang="es">Sustracción de</span> archivo de imagen Dark </b></font>
+<span lang="es"><font size="2"><b>basada en Entropía</b></font></span><b><br>
+</b><font size="2"><span lang="es">La sustracción de archivo de imagen D</span>ark<span lang="es"> puede optimizarse opcionalmente para que la entropía de la imagen 
+resultante</span> (</font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2">light  <span lang="es">menos</span> </font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2">dark) <span lang="es">sea minimizada aplicando un</span> coeficient<span lang="es">e 
+entre </span>0 <span lang="es">y</span> 1 <span lang="es">al </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2">dark.<br>
+<span lang="es">EL objetivo principal de esta optimización es posibilitar el uso 
+de </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2"><span lang="es">dark que no han sido tomados en condiciones óptimas (especialmente en 
+lo que concierne a temperaturas).</span><br>
+</font></font><font size="2" face="Arial"><br>
+<span lang="es">Para más información sobre este método puede consultarse el 
+siguiente documento</span>:<br>
+<a target="_blank" href="http://www.cs.ubc.ca/~heidrich/Papers/PICS.01.pdf">
+Entropy-Based Dark Frame Subtraction</a></font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b>
+<span lang="es" style="font-family: Arial">Proceso de apilado</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">El 
+proceso de apilado d</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">DeepSkyStacker </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">es clásico</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span>
+<b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Paso </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">1<br>
+</span></b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">Crea</span></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">c</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">i</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ó</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">n  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">de un </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">offset maestro </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">a partir de todos 
+los </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"> <font face="Arial"><font size="2"> archivos de imagen </font></font></font>offset  (</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">con 
+el método seleccionado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">).<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Si más de 
+un <font face="Arial"> <font face="Arial"><font size="2"> archivos de imagen </font></font></font></span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">offset </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">seleccionado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">,  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">un</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">archivo</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> offset maestro  </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s cread</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">o 
+como</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> MasterOffset_ISOxxx.tif (TIFF  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">8, 16 o 32 bit</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">s</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">)  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">en la carpeta del 
+primer</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> <font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font>offset.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Este 
+archivo puede ser usado como el único </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font>offset  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">en la siguiente 
+oportunidad</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span>
+<b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Paso</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> 
+2<br>
+</span></b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">Crea</span></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ción 
+del </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> dark maestro </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">a partir de todos 
+los </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"> <font face="Arial"><font size="2"> archivos de imagen </font></font></font>dark (</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">con 
+el método seleccionado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">).  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">El</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> offset maestro </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s 
+su</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">s</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">t</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">ra</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ído</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">de cada</span> <span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"> <font face="Arial"><font size="2"> archivo de imagen </font></font></font>dark.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Si más de 
+un </span><span lang="es"><font face="Arial"> <font face="Arial"><font size="2"> archivo de imagen </font></font></font><font size="2"><span style="font-family: Arial">dark</span></font></span> <span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">seleccionado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">,  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">un</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">archivo </span><span lang="es"><font size="2"><span style="font-family: Arial">
+dark maestro </span></font></span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s cread</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">o 
+como</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> MasterDark_ISOxxx_yyys.tif (TIFF  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">8, 16 o 32 bit</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">s</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">)  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">en la carpeta del 
+primer</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font><span lang="es" style="font-size: 10.0pt; font-family: Arial">dark</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Este 
+archivo puede ser usado como el único <font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font>dark </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">en la 
+siguiente oportunidad</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span>
+<b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Paso</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+3<br>
+</span></b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">Crea</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ción 
+del </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">flat</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">maestro a partir de todos 
+los <font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2"><span lang="es"></span></font></font>flat </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">(</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">con 
+el método seleccionado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">).  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">El</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> offset maestro</span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s 
+su</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">st</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">ra</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ído</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">de cada<font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2"><span lang="es"></span></font></font> </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">flat.   </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">El </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> flat maestro </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">calibrado 
+automáticamente</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Si más de 
+un </span><span lang="es"><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font><font size="2"><span style="font-family: Arial">flat </span></font></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">seleccionado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">,  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">un</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">archivo</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">flat</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> maestro </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s cread</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">o 
+como</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> MasterFlat_ISOxxx.tif (TIFF  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">8, 16 o 32 bit</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">s</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">)&nbsp; </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">en la carpeta del 
+primer</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font>flat</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Este 
+archivo puede ser usado como el único <font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font>flat</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">en la 
+siguiente oportunidad</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span>
+<b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Paso</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+4<br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Evaluación de 
+todos los desplazamientos y rotaciones para todos los <font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2"><span lang="es"></span></font></font></span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">light </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">que serán apilados</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span>
+<b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Paso</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> 
+5<br>
+</span></b><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">Crea</span></span><span lang="es" style="font-size: 10.0pt; font-family: Arial">c</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">i</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ó</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">n  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">de la imagen final 
+sumando todos los </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2"><span lang="es"></span></font></font>light  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">con el método 
+seleccionado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">. <br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">El </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> 
+offset maestro </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">y el
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">dark maestro </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">son 
+automáticamente </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+s</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ustraídos 
+de cada</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font>light  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">y el resultado es 
+dividido por el </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">flat maestro </span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+calibrado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">,  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">entonces, si se 
+encuentra la opción </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+h</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">abilitada, 
+los </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">hot 
+pixels detect</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">a</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">d</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">os</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">son removidos y el 
+valor es interpolado de los píxeles vecinos</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span>
+<b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Paso</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+6<br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Cuando </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<a style="color: blue; text-decoration: underline; text-underline: single" href="#bayerdrizzle">Bayer drizzle</a> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">tá 
+habilitado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">, </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">las tres </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">component</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+RGB</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">son normalizadas 
+para evitar falta de información.</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+</span>
+<b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Paso</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> 
+7<br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">La imagen 
+resultante es automáticamente guardada en un archivo </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">AutoSave.tif </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">que es creado en 
+la carpeta del primer </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font>light.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b>
+<span lang="EN-US" style="font-family: Arial; ">
+<a name="ChannelsAlignment"></a>
+</span><font face="Arial" size="4">Alineado de Canales RGB </font></b>
+<font face="Arial" size="2"><br>
+Cuando esta opción se encuentra habilitada el DeepSkyStacker intenta alinear los 
+tres canales para reducir el corrimiento de color entre los canales de la imagen 
+resultante. </font></p>
+<p align="justify"><font face="Arial" size="2">El efecto principal visible es 
+que las estrellas no estan mas rojas de un lado y azules del otro lado. <br>
+<br>
+Cada canal es registrado (las estrellas son detectadas) y la transformación es 
+calculada entre el mejor canal y los otro dos. <br>
+La transformación es luego aplicada a los dos canales lo que los alinea con el 
+mejor canal.</font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b>
+<span lang="ES-ES" style="font-family: Arial"><a name="reusemasters"></a></span><span lang="es" style="font-family: Arial">Uso a</span><span lang="ES-ES" style="font-family: Arial">utom</span><span lang="es" style="font-family: Arial">á</span><span lang="ES-ES" style="font-family: Arial">tic</span><span lang="es" style="font-family: Arial">o</span><span lang="ES-ES" style="font-family: Arial">
+</span><span lang="es" style="font-family: Arial">de </span>
+<span lang="ES-ES" style="font-family: Arial">archivos maestro</span><span lang="es" style="font-family: Arial"> 
+creados previamente</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span></b>
+<span lang="es" style="font-family: Arial"><font size="2">Los</font></span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> archivos maestro (dark, bias and flat)  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">existentes creados 
+de una lista de archivos son utilizados automáticamente cuando sea posible, si:</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+-  </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">La lista 
+de archivos utilizados para crearlos no ha cambiado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+-  </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">La 
+configuración utilizados para crearlos no ha cambiado</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+Esto incluye la combinación de métodos y parámetros, y la configuración de
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">RAW o FITS DDP</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">cuando archivos
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">RAW o FITS  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">se utilicen</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Un archivo 
+detexto conteniendo los parámetros y la lista de archivos usados para crear la 
+imagen maestra es guardado en la carpeta del archivo maestro </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">.</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">El archivo 
+será nombrado con la extensión</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> .Description.txt </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">luego del nombre 
+del archivo maestro </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Cuando la 
+descripción no coincide con la nueva configuración estos archivos son 
+re-creados.</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Esta 
+propiedad es invisible para los usuarios, que solamente verán un proceso más 
+veloz ya que no es necesario crear los </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+archivos maestro </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">nuevamente</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><font face="Arial"><a name="customrect"></a>Us<span lang="es">o 
+de un Rectángulo</span> </font></b><font face="Arial"><b><span lang="es">
+Personalizado</span><br>
+</b><font size="2"><span lang="es">Usted puede indicarle a </span>DeepSkyStacker
+<span lang="es">que utilice un Rectángulo Personalizado que defina la posición y 
+el tamaño de la imagen resultante</span>.<br>
+<br>
+<span lang="es">Primeramente</span>, <span lang="es">necesita previsualizar una 
+imagen</span> <span lang="es">cliqueando sobre ella en la lista</span>. 
+<span lang="es">Puede seleccionar cualquier </span>image<span lang="es">n</span>, 
+<span lang="es">pero como está definiendo el rectángulo que será visible en la 
+imagen final, debería seleccionar el </span></font><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font><font size="2"><span lang="es">light de referencia (aquel con mayor 
+score o el que haya decidido usar como </span></font><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivo de imagen </font></font><font size="2"><span lang="es"></span></font></font><font size="2"><span lang="es">light de referencia usando el</span></font></font><font size="2" face="Arial"> <a href="userguide.htm#contextmenu">
+<span lang="es">menú c</span>ontext<span lang="es">ual</span></a>).<br>
+<br>
+<span lang="es">Luego simplemente seleccione en la imagen el rectángulo que 
+desea usar como </span>Rect<span lang="es">á</span>ng<span lang="es">ulo 
+Personalizado</span>.<br>
+<span lang="es">Al iniciar el proceso de apilado,</span> <span lang="es">este 
+rectángulo será seleccionado por defecto como el modo de apilado</span>.<br>
+<br>
+<span lang="es">Esta opción puede ser realmente útil cuando se utiliza la </span> <a href="#Drizzle">
+D<span lang="es">opción D</span>rizzle</a><span lang="es"> que duplica o 
+triplica el tamaño de la imagen resultante y por lo tanto requiere mucha más 
+memoria y espacio en disco durante el proceso de apilado</span>.<br>
+<br>
+<span lang="es">De hecho</span>, <span lang="es">cuando se utiliza un </span>
+Rect<span lang="es">á</span>ng<span lang="es">ulo</span> <span lang="es">
+Personalizado</span>, DeepSkyStacker <span lang="es">usa únicamente la memoria y 
+espacio en disco necesarios para crear una imagen del tamaño del </span>Rect<span lang="es">á</span>ng<span lang="es">ulo</span>
+<span lang="es">Personalizado</span>.</font></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b><font face="Arial" color="#FF0000"><a name="stackingmethods"></a>M<span lang="es">é</span>tod<span lang="es">o</span>s<span lang="es"> 
+de Apilado</span></font><font face="Arial" size="2"><br>
+<span lang="es"><font color="#800000">Promedio</font></span><br>
+</font>
+</b><font face="Arial" size="2"><span lang="es">Este es el método más simple</span>. 
+<span lang="es">El píxel de valor medio de todos los de la pila es evaluado para 
+cada píxel</span>.<br>
+<br>
+<b><font color="#800000">Media</font><br>
+</b><span lang="es">Este es el método utilizado por defecto cuando se crean
+</span> dark, flat <span lang="es">y</span> 
+offset/bias maestros. <span lang="es">El valor medio de los píxeles de la pila es 
+evaluado para cada píxel</span>.<br>
+<br>
+<b><font color="#800000">M<span lang="es">á</span>xim<span lang="es">o</span></font><br>
+</b><span lang="es">Este es un método extremadamente simple que debe utilizarse 
+con sumo cuidado</span>. <span lang="es">El valor máximo de los píxeles de la 
+pila es evaluado para cada píxel</span>.<br>
+<span lang="es">Puede ser útil para encontrar errores en la pila, al mostrar 
+todos los defectos de las imágenes calibradas</span>.<br>
+<br>
+<b><font color="#800000"><span lang="es">Recorte de </span>Kappa-Sigma</font><br>
+</b>Este método se usa para rechazar repetidamente los p<span lang="es">í</span>xeles
+<span lang="es">desviados</span>.<span lang="es"> Se usan dos parámetros: el 
+número de iteraciones y el multiplicador utilizado en la desviación standar
+</span>(Kappa).<br>
+<span lang="es">Para cada iteración</span>, <span lang="es">son evaluadas la 
+media y la desviación standar </span>(Sigma) <span lang="es">de los píxeles de 
+la pila</span>.<br>
+<span lang="es">Se rechazan todos los píxeles cuya valor se encuentra más 
+distanciado de la media que el valor (</span>Kappa * 
+Sigma<span lang="es">)</span>.<br>
+<span lang="es">El medio de los píxeles restantes en la pila es evaluado para 
+cada píxel.</span></font></p>
+<p align="justify"><font face="Arial" size="2">
+<b><font color="#800000"><span lang="es">Recorte </span>Kappa-Sigma </font>
+<span lang="es"><font color="#800000">Mediano</font></span><br>
+</b><span lang="es">Este método es similar al método de Recorte de </span>Kappa-Sigma 
+<span lang="es">pero en lugar de descartar los valores de los píxeles</span>, 
+<span lang="es">éstos son reemplazados por los valores medios</span>.</font></p>
+<p align="justify"><font face="Arial" size="2"><font color="#800000"><b>
+<span lang="es">Promedio Ponderado auto-adaptativo</span></b></font><br>
+<span lang="es">Este promedio ponderado está adaptado del trabajo de </span>Stetson (<a href="http://archive.eso.org/archive/hst/wfpc2_asn/3sites/WFPC2_Newsletter.pdf"><span lang="es">v</span>e<span lang="es">r</span></a><a target="_blank" href="http://archive.eso.org/archive/hst/wfpc2_asn/3sites/WFPC2_Newsletter.pdf"> 
+Artificial Skepticism - Stetson 1989</a>).<br>
+<span lang="es">Este método evalúa un promedio robusto obtenido por ponderación 
+iterativa de cada píxel por la desviación de la media respecto de la desviación
+</span>standard.<br>
+<br>
+<font color="#800000"><b><span lang="es">Promedio Ponderado de Entropía </span>(Rang<span lang="es">o 
+Dinñamico Alto</span>)</b></font><br>
+<span lang="es">Este método está basado en el trabajo de </span>German, Jenkin and Lesperance (<a target="_blank" href="http://doi.ieeecomputersociety.org/10.1109/CRV.2005.38"><span lang="es">v</span>e<span lang="es">r</span> 
+Entropy-Based image merging - 2005</a>) <span lang="es">y es usado para apilar 
+la imagen mientras</span> <span lang="es">para cada píxel se mantiene su mejor 
+dinámica</span>.<br>
+<span lang="es">Es particularmente útil cuando se apilan imágenes tomadas con 
+diferentes tiempos de exposición y velocidades ISO</span>, <span lang="es">y 
+crea una imagen promediada con la mejor dinámica</span>. <span lang="es">En 
+otras palabras, previene de saturar </span>galaxi<span lang="es">a</span>s 
+<span lang="es">y centros de nebulosas</span>.<br>
+Not<span lang="es">a</span>: <span lang="es">Este método consume mucho tiempo de 
+proceso en la </span>CPU <span lang="es">y también mucha memoria</span>.</font></p>
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="Drizzle"></a>Drizzle</font></b><br>
+</span>
+<font face="Arial" size="2"><span lang="es">Se denomina </span>
+  <span lang="ES-ES">
+  Drizzle  </span>
+<span lang="es">a un método desarrollado por la </span>
+  <span lang="ES-ES">
+  NASA  </span>
+<span lang="es">para las observaciones de espacio profundo del </span>
+  <span lang="ES-ES">
+  T</span><span lang="es">elescopio espacial </span>
+  <span lang="ES-ES">
+  Hubble.<br>
+</span>
+<span lang="es">El algoritmo también es conocido como Reconstrucción Lineal 
+Variable de Píxeles</span><span lang="ES-ES">.<br>
+<br>
+</span>
+<span lang="es">Tiene un amplio campo de usos, lo que le permite ser utilizado 
+para mejorar la resolución de una pila de imágenes comparada con la resolución 
+de una única imagen preservando las características de la imagen (color, 
+brillo).</span></font></p>
+  <span lang="ES-ES">
+<table border="0" cellspacing="1" width="100%" id="AutoNumber4">
+  <tr>
+    <td width="40%" valign="top">
+    <p class="Standard">
+  <span lang="ES-ES">
+    <font face="Arial" size="2">B</span></span><span lang="es">á</span><span lang="ES-ES">sica</span><span lang="es">mente 
+  cada imagen es </span>
+  <span lang="ES-ES">
+    super  </span><span lang="es">muestreada antes de ser apilada</span><span lang="ES-ES">,  </span>
+  <span lang="es">ampliándola dos o tres veces </span>
+  <span lang="ES-ES">
+    (</span><span lang="es">puede usarse cualquier valor mayor que </span>
+  <span lang="ES-ES">
+    1  </span><span lang="es">pero</span><span lang="ES-ES">
+    
+    DeepSkyStacker </span><span lang="es">propone </span>
+  <span lang="ES-ES">
+    2 o 3  </span><span lang="es">como valores recomendados</span><span lang="ES-ES">),  </span>
+  <span lang="es">y luego proyectada a una grilla más fina</span><span lang="ES-ES">.<br>
+    <br>
+    </span><span lang="es">El resultado es que el tamaño de la imagen obtenida 
+  es el doble (o triple) y los objetos más pequeños que ocupaban apenas unas 
+  docenas de píxeles, ocuparán el doble o triple y entonces el post-proceso será 
+  más sencillo</span><span lang="ES-ES">.</span></font><span lang="ES-ES"><span lang="ES-ES"></td>
+    <td width="60%">
+    <p align="center">
+    <img border="0" src="../images/Drizzle.jpg" align="center" width="250" height="250"></td>
+  </tr>
+  </span>
+  </span>
+  <tr>
+    <td width="40%" valign="top">
+    <p class="Standard"><b><font face="Arial" size="2"><span lang="es">Qué (y 
+    cuando) es necesario usar la</span></font></b><font face="Arial" size="2"> 
+    <b><span lang="es">opción </span>
+  <span lang="ES-ES">
+    drizzle</span></b><span lang="ES-ES"><br>
+    B</span><span lang="es">á</span><span lang="ES-ES">sica</span><span lang="es">mente</span>
+  
+  
+    <span lang="es">solo necesita tener </span>
+  <span lang="ES-ES">
+    v</span><span lang="es">arias imágenes que no estén perfectamente alineadas
+    </span>
+  <span lang="ES-ES">
+    (</span><span lang="es">con una tendencia de unos pocos píxeles es 
+    suficiente</span><span lang="ES-ES">). <br>
+    </span>
+    <span lang="es">No tiene sentido utilizar este método si cuenta con escasos    </span>
+      </font><font face="Arial"> <font face="Arial"><font size="2"> archivos de imagen </font></font></font><font face="Arial" size="2"><span lang="ES-ES">light.<br>
+    <br>
+    </span>
+    <span lang="es">Este método es particularmente bueno para destacar 
+    resoluciones por lo que es muy útil cuando fotografía objetos pequeños con 
+    una distancia focal reducida</span><span lang="ES-ES">.<br>
+    <br>
+    </span>
+    <span lang="es">A la derecha se observa un ejemplo de </span>
+    <span lang="ES-ES">
+    M57  </span>
+    <span lang="es">casi sin procesar </span>
+    <span lang="ES-ES">
+    (</span><span lang="es">fotografiada utilizando </span>
+    <span lang="ES-ES">
+    10&quot;, F/D  
+    4.72 OTA  </span>
+    <span lang="es">con una cámara </span>
+    <span lang="ES-ES">
+    Canon DSLR).<br>
+    <br>
+    Usual</span><span lang="es">mente</span><span lang="ES-ES">
+    M57  </span>
+    <span lang="es">es muy pequeña</span><span lang="ES-ES">,  </span>
+    <span lang="es">pero usando un multiplicador de </span>
+    <span lang="ES-ES">
+    2x drizzle  </span>
+    <span lang="es">y alrededor de </span>
+    <span lang="ES-ES">
+    100 </span></font><font face="Arial"> <font face="Arial"><font size="2"> archivos de imagen </font></font></font><font face="Arial" size="2"><span lang="ES-ES">light </span>
+    <span lang="es">la imagen resultante es dos veces mayor y la resolución 
+    obtenida es mucho mejor</span><span lang="ES-ES">.<br>
+    <br>
+    </span>
+    <span lang="es">Coloque el mouse sobre el texto para ver</span><span lang="ES-ES"><br>
+&nbsp;&nbsp; <a onMouseOver="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Sin Drizzle - Ampliada 4 veces';" href="javascript:void(0);">
+    M57 </a></span>
+    <a onMouseOver="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Sin Drizzle - Ampliada 4 veces';" href="javascript:void(0);">
+    <span lang="es">sin procesar </span>
+  <span lang="ES-ES">
+    -  </span>
+    <span lang="es">Sin</span><span lang="ES-ES">
+    Drizzle (</span><span lang="es">ampliada</span><span lang="ES-ES">
+    4  </span>
+    <span lang="es">vec</span><span lang="ES-ES">es)</span></a><span lang="ES-ES"><span lang="ES-ES"><br>
+&nbsp;&nbsp; <a onMouseOver="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Drizzle de 2x - Ampliada 2 veces';" href="javascript:void(0);">
+    M57  </span>
+    </span>
+    <span lang="es">sin procesar </span>
+  <span lang="ES-ES">
+    -  Drizzle  </span>
+    <span lang="es">de 2x </span>
+  <span lang="ES-ES">
+    (</span></a><a onMouseOver="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - Drizzle de 2x - Ampliada 2 veces';" href="javascript:void(0);"><span lang="es">ampliada</span><span lang="ES-ES">
+    2 </span>
+    <span lang="es">vec</span><span lang="ES-ES">es)</span></a></font><span lang="ES-ES"><span lang="ES-ES"></td>
+    <td width="60%">
+    <p align="center">
+    <img id="DRIZZLE01" name="DRIZZLE01" border="0" src="../images/M57_NoDrizzle.jpg" width="411" height="353"><br>
+    <font face="Arial" size="2"><b id="DRIZZLELEGEND01" name="DRIZZLELEGEND01">M57 -  </span>
+    </span>
+    <span lang="es">Sin</span><span lang="ES-ES">
+    Drizzle</span></b></font><span lang="ES-ES"><span lang="ES-ES"><span lang="ES-ES"><span lang="ES-ES"></td>
+  </tr>
+</table>
+<p align="justify"><span lang="es"><b><font face="Arial" size="2">Efectos 
+colaterales de la aplicación del método</font></b></span><font face="Arial" size="2"><br>
+<span lang="es">El principal efecto colateral es que la cantidad de memoria y 
+espacio en disco necesarios para crear y procesar las imágenes se multiplica por 
+el cuadrado del factor multiplicador del proceso</span>. <span lang="es">Por 
+supuesto que </span>e<span lang="es">l tiempo necesario para crear estas 
+imágenes es mucho mayor.</span><br>
+<br>
+<span lang="es">Por ejemplo</span>, us<span lang="es">ando un</span> Drizzle
+<span lang="es">de </span>2x <span lang="es">con una imagen de </span>&nbsp;3000x2000 p<span lang="es">í</span>xel<span lang="es">es 
+se crearáuna imagen de </span>6000x4000 p<span lang="es">í</span>xel<span lang="es">es</span>, 
+<span lang="es">y necesitará 4 veces más memoria y espacio en disco</span>, 
+<span lang="es">y ocupará un tiempo de proceso mucho mayor</span>.<br>
+<br>
+<span lang="es">Cuando se utiliza un factor de </span>3x, <span lang="es">todo 
+será multiplicado por </span>&nbsp;9 (3 <span lang="es">al cuadrado</span>) 
+<span lang="es">y a menos que usted tenga un equipo muy potente y mucha memoria 
+y espacio en disco disponibles, </span>n<span lang="es">o deseará utilizar esta 
+opción con imágenes típicas de cámaras </span>DSLR.<br>
+<br>
+<span lang="es">Por lo tanto</span>, <span lang="es">en algunas imágenes 
+pequeñas </span>(<span lang="es">como las obtenidas con las </span>p<span lang="es">rimeras 
+cámaras </span>DSI <span lang="es">y</span> LPI), <span lang="es">puede ser 
+razonable utilizar un factor de </span>3x<span lang="es">para mejorar la 
+resolución</span>.<br>
+<br>
+<span lang="es">Una buena manera de limitar el incremento de memoria y espacio 
+en disco necesarios al utilizar esta opción, es usar el </span> <a href="#customrect">Rect<span lang="es">á</span>ng<span lang="es">ulo 
+Personalizado</span></a>.<br>
+<br>
+<b>Drizzle <span lang="es">y</span> Bayer Drizzle</b><br>
+<span lang="es">Aunque hay dos variantes del método </span>Drizzle, 
+<span lang="es">no se los recomienda usar juntos</span>.<br>
+DeepSkyStacker <span lang="es">usualmente le advertirá cuando usted esté a punto 
+de hacerlo</span>.</font></p>
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center">
+</span>
+<p align="justify"><span lang="ES-ES"><b><font face="Arial" size="4" color="#FF0000">
+<a name="cometstacking"></a>Apilado para Cometas</font></b><br>
+<font face="Arial" size="2">Los cometas son objetos de movimiento r&aacute;pido y cuando las im&aacute;genes de cometas son apiladas dos cosas pueden suceder:<br>
+- si el alineado entre las im&aacute;genes se lleva a cabo utilizando las estrellas, el cometa ser&aacute; borroso<br>
+- si el alineado entre las im&aacute;genes se lleva a cabo utilizando el cometa, las estrellas mostrar&aacute;n trazas.<br>
+<br>
+A partir de la versi&oacute;n 3.0, al DeepSkyStacker se le agregan dos opciones para apilados para cometas:<br>
+- Crear una imagen alineada respecto al cometa que tendr&aacute; trazas de estrellas<br>
+- Crear una imagen alineada en el cometa y en las estrellas que no tendr&aacute; trazas de estrellas.<br>
+<br>
+Este es un ejemplo de los distintos modos de apilado (desplace el cursor del mouse sobre el texto para ver el resultado)</font></span></p>
+<span lang="ES-ES"></span><span lang="ES-ES"><table border="0" cellspacing="1" width="100%" id="AutoNumber5">
+  <tr>
+    <td width="41%">
+<p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">
+<span style="background-color: #FFFF00"><br>
+</span>
+<b><a onMouseOver="document['COMETSTACK'].src='../images/FuzzyComet.jpg';" href="javascript:void(0);">
+Apilado estandar</a></b><br>
+La posici&oacute;n del cometa es ignorada.<br>
+El cometa se ve borroso y las estrellas no tienen trazas.</font></p>
+<p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">
+<b><a onMouseOver="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);">
+Apilado para Cometa : trazas de estrellas</a></b><br>
+Se utiliza la posici&oacute;n del cometa, la imagen es alineada en el cometa.<br>
+La posici&oacute;n de las estrellas es utilizada para compensar cualquier rotaci&oacute;n de campo.<br>
+<br>
+<b><a onMouseOver="document['COMETSTACK'].src='../images/StarFreeze.jpg';" href="javascript:void(0);">
+Apilado para cometa y estrellas : &quot;efecto congelado de estrellas&quot;</a></b><br>
+Se utiliza la posici&oacute;n del cometa.<br>
+Se crea una primera apilada para extraer el cometa respecto al fondo.<br>
+Luego una segunda apilada es creada para congelar las estrellas (el cometa es restado de cada archivo de imagen light calibrado y registrado antes de apilarlo).<br>
+Por &uacute;ltimo. la imagen final es obtenida insertando el cometa nuevamente en la imagen.</font></p>
+<p style="margin-left: 10; margin-right: 10">&nbsp;</p>
+    </td>
+    <td width="59%" align="center">
+    <span style="background-color: #FFFF00">
+    <img name = "COMETSTACK" id = "COMETSTACK" border="0" src="../images/FuzzyComet.jpg" width="472" height="366"></span></td>
+  </tr>
+</table>
+</span><p align="justify"><span lang="ES-ES"><font face="Arial" size="2">&nbsp;<br>
+Si Ud. planea alinear la imagen con las estrellas, no necesitara hacer lo que se describe en el siguiente p&aacute;rrafo debido a que es el comportamiento por defecto.<br>
+<br>
+</font><font face="Arial"><b><font size="2">Que necesita hacer <br>
+Paso 1: Registrar el centro del cometa</font><br>
+</b></font><font face="Arial" size="2">El DeepSkyStacker no puede detectar autom&aacute;ticamente el centro del cometa en los archivos de imagen light..<br>
+<br>
+Primero, debe indicar la posici&oacute;n del cometa <strong>en todos los archivos de imagen light</strong>. Esto se hace solo una vez.</font></span></p>
+<p align="justify"><span lang="ES-ES"><font face="Arial" size="2">Para llevarlo a cabo, solo seleccione de la lista un archivo de imagen light y utilizando el 
+<a href="userguide.htm#imagepreview">Modo de Edici&oacute;n para Cometas</a> indique el centro del cometa.<br>
+Si el centro del cometa es muy d&eacute;bil o demasiado brillante entonces puede forzar al  DeepSkyStacker a aceptar cualquier posici&oacute;n presionando la tecla Shift mientras posiciona el centro del cometa.<br>
+<br>
+Luego guarde el resultado pinchando en el bot&oacute;n Guardar Cambios en la barra de herramientas.<br>
+Si no lo hace el  DeepSkyStacker le preguntar&aacute; y tendr&aacute; la opci&oacute;n de guardar los cambios autom&aacute;ticamente.<br>
+<br>
+Una vez que  la posici&oacute;n del cometa fue indicada y guardada ver&aacute; una  +(C) agregada al conteo de estrellas en la columna #Estrellas de la lista.<br>
+<br>
+Deber&aacute; repetir la operaci&oacute;n para cada archivo de imagen light.</font></span></p>
+<table border="1" cellspacing="1" width="100%" id="AutoNumber6" cellpadding="10">
+  <tr>
+  <span lang="ES-ES">
+    <td width="100%" bgcolor="#FFFF99">
+    <p align="justify"><font face="Arial" size="2"><b>Pista:</b>
+    <br>
+    Si la fecha/hora de las imágenes es precisa (como cuando se usa una DSLR y 
+    algunas cámaras CCD) puede ordenar las imágenes por fecha y hora y ajustar 
+    la posición del cometa solo en el primer y último cuadro y el cuadro de 
+    referencia (el que posee el puntaje mayor en el caso que no lo haya forzado 
+    otro cuadro con el menu contextual). </font>
+    </p>
+    <p align="justify"><font face="Arial" size="2">El DeepSkyStacker entonces alineará 
+    automáticamente (luego de apilar) la posición del centro del cometa en todas 
+    las imágenes light en el periódo de tiempo en el cual el centro del cometa 
+    no esta indicado. </font></p>
+    <p align="justify"><font face="Arial" size="2">Para hacer esto utilizará el período de 
+    tiempo entre la primera imagen y cada imagen para interpolar la posición del 
+    cometa. </font></td>
+  </span>
+  </tr>
+</table>
+<p align="justify"><span lang="ES-ES"><font face="Arial" size="2"> <br>
+  </font><font face="Arial"><b><font size="2">Paso 2: Seleccionar el modo de apilado</font><br>
+  </b></font><font face="Arial" size="2">Esto se lleva a cabo en la 
+  <a href="userguide.htm#comettab">Pesta&ntilde;a Cometa</a> disponible en la ventana de par&aacute;metros de apilado.<br>
+  La pesta&ntilde;a  Cometa esta disponible solo si al menos dos archivos de imagen light (incluyendo el archivo de imagen light de referencia) tienen un cometa registrado.<br>
+  Desde esta pesta&ntilde;a puede seleccionar una de tres opciones para Apilado para Cometas disponibles.<br>
+  &nbsp;<br>
+  <b>Mezclando imagenes de Cometas y de no Cometas</b><br>
+  El DeepSkyStacker puede utilizar im&aacute;genes con un cometa registrado e im&aacute;genes sin un cometa registrado en la misma apilada.<br>
+  Esto puede resultar &uacute;til para lograr una mejor relaci&oacute;n se&ntilde;al ruido en la imagen resultante especialmente en detalles de fondo d&eacute;biles (por ejemplo un cometa pasando cerca de una galaxia o nebulosa).</font></span></p>
+<span lang="ES-ES"></span>
+<p align="justify"><span lang="ES-ES"><font face="Arial" size="2"><b>Que m&eacute;todos de apilado<br>
+</b>Si esta buscando lograr im&aacute;genes con trazas de estrellas, el mejor m&eacute;todo es promedio.<br>
+En todos los dem&aacute;s casos deberia utilizar el apilado Media con apiladas chicas y kappa sigma para apiladas grandes.</font></span></p>
+<span lang="ES-ES">
+</span>
+<p align="justify"><span lang="ES-ES"><font face="Arial" size="2"><b>Que resultados puede esperar</b><br>
+Obviamente el algoritmo mas demandante es el apilado de Cometa y Estrellas en que los da el efecto de congelamiento de estrellas.<br>
+Cometas de movimiento lento nos conducen a objetos de gran tama&ntilde;o dificiles de detectar o grandes estrellas y en este caso el proceso de extracci&oacute;n del cometa puede resultar menos que perfecto.<br>
+En todos los casos, si toma un conjunto de im&aacute;genes de la misma &aacute;rea sin el cometa (el d&iacute;a anterior o el posterior) mejorar&aacute; notablemente la calidad de la imagen final.</font></span></p>
+<span lang="ES-ES"></span>
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</span>
+</span>
+</span>
+<p align="justify"><b>
+<span lang="ES-ES" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="rawdecod"></a></span>
+<span lang="es" style="font-size: 13.5pt; font-family: Arial; color: red">
+Proceso de desarrollo de imágenes </span>
+<span lang="ES-ES" style="font-size: 13.5pt; font-family: Arial; color: red">
+RAW</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">
+Decodificación de archivos RAW</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Los 
+archivos </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+RAW </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">creados 
+por las cámaras </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">DSLRs </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">son decodificados 
+usando </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+<a href="http://www.cybercom.net/~dcoffin/dcraw/" target="_blank" style="color: blue; text-decoration: underline; text-underline: single">
+DCRAW</a> </span><span lang="es" style="font-size: 10.0pt; font-family: Arial">
+de</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> Dave Coffin.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">La lista de 
+cámaras</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> DSLRs </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">soportadas es 
+bastante amplia y es permanentemente actualizada por </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">Dave 
+Coffin. DeepSkyStacker </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">está siempre 
+usando la última versión disponible de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">DCRAW </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">y es </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">(</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">y 
+será</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">)  </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">actualizada 
+regularmente</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.</span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">Proceso de 
+desarrollo de archivos </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+RAW</span><span lang="ES-ES" style="font-family: Arial"><br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">Un 
+archivo es el equivalente digital de un negativo</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+Por lo tanto, cada archivo RAW necesita un proceso de desarrollo</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Hay dos 
+clases de archivos RAW: la que utiliza </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+u</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">na matriz 
+Bayer (la mayoría de los archivos)</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"> </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">y la que utiliza 
+NO </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">u</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">na 
+matriz Bayer </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">(</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">por 
+ejemplo las cámaras que cuentan con chips</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">Foveon).<br>
+<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">A lo largo 
+de la explicación solamente consideraré los archivos RAW creados por cámaras 
+basadas en matrices Bayer</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.</span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="ES-ES">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial">Matriz
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">Bayer<br>
+</span></b><span lang="es" style="font-size: 10.0pt; font-family: Arial">
+Primero, un pequeño recordatorio de que es una matriz Bayer.</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial"><br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Cuando 
+usted está usando una cámara DSLR de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+8 mega-p</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">í</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">xel</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s,</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+el chip</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+CMOS o CCD
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">es un chip 
+monocromático de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+8 mega-p</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">í</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">xel</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">sobre el 
+cual se adiciona una matriz </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+Bayer</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">, que 
+es de hecho un patrón de filtros</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+
+RGBG o CYMK
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">delante de 
+cada píxel </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+(</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">también 
+existen otros patrones</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">) <br>
+<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">En el caso 
+de los filtros </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+RGBG
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">
+la cuarta parte de los píxeles captura el color
+</span>
+<span style="color:red"><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+r</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">ojo</span></span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">,
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">otro cuarto 
+el color</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+</span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial; color: blue">azul</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">y la mitad 
+restante el color </span>
+<span lang="es" style="font-size: 10.0pt; font-family: Arial; color: green">
+verde</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Por lo 
+tanto su cámara </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+DSLR
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">de </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+8 mega-p</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">í</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">xel</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">está 
+produciendo imágenes </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+c</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">on </span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+2 millon</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s</span><span lang="es" style="font-size: 10.0pt; font-family: Arial"> 
+de</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">
+</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">
+p</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">í</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">xel</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">e</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">s, 
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">la misma 
+cantidad de píxeles azules, y cuatro millones de píxeles verdes</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.<br>
+<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Entonces, 
+como crean estas cámaras las imágenes de colores &quot;reales&quot;</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">?<br>
+</span><span lang="es" style="font-size: 10.0pt; font-family: Arial">Muy simple: 
+interpolando los colores primarios perdidos de los píxeles vecinos</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.
+</span></p>
+
+<hr color="#0000FF">
+<p><font size="2" face="Arial"><b><span lang="es">Reconstrucción del c</span>olor 
+<span lang="es">usando la matriz </span>Bayer<span lang="es"> </span>- <font color="#0000FF">
+Interpola<span lang="es">ción</span></font></b></font></p>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber1">
+  <tr>
+    <td width="51%">
+    <p class="Standard"><font size="2" face="Arial"><span lang="es">La primera 
+    manera de reconstruir los colores desde la matriz Bayer es interpolando l</span></font><span lang="es" style="font-size: 10.0pt; font-family: Arial">os 
+    colores primarios perdidos de los píxeles vecinos</span><span lang="ES-ES" style="font-size: 10.0pt; font-family: Arial">.</span></p>
+    <p class="Standard">
+    <font size="2" face="Arial"><span lang="es">Diferentes métodos de 
+    interpolación están disponibles (lineal, gradiente...), produciendo 
+    resultados distintos pero todos ellos degradan la calidad de la imagen 
+    final, debido a la suposición que hacen respecto de los colores faltantes</span>.</font><p class="Standard">
+    <font face="Arial" size="2"><span lang="es">Cuando cada imagen está 
+    ligeramente desenfocada por el proceso de interpolación</span>, 
+    <span lang="es">el apilamiento de varias imágenes produce la pérdida de 
+    detalles finos.</span><br>
+    <br>
+    <span lang="es">Si usted aún piensa usar el método de interpolación debe 
+    saber que el software que trae su cámara DSLR es probablemente la peor 
+    elección para preservar la calidad</span> <span lang="es">de fotografías 
+    astronómicas.</span><br>
+    <br>
+    <span lang="es">Si usara su cámara para transformar sus imágenes RAW a 
+    archivos TIFF de 16 bits, instantáneamente notará una mejora</span>
+    <span lang="es">utilizando </span>DeepSkyStacker.<br>
+&nbsp;</font></td>
+    <td width="51%">
+    <img border="0" src="../images/BayerInterpolation.jpg" width="375" height="285" align="right"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><font size="2" face="Arial"><b><a name="superpixel"></a>&nbsp;<span lang="es">R</span>econstruc<span lang="es">c</span>i<span lang="es">ón 
+de color</span> us<span lang="es">ando la matriz </span>Bayer - <font color="#0000FF">
+Super-p<span lang="es">í</span>xel<span lang="es">es</span></font></b></font></p>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber2">
+  <tr>
+    <td width="51%">
+    <p class="Standard"><font face="Arial" size="2"><span lang="es">Con</span> DCRaw
+    <span lang="es">es posible acceder a la matriz</span><span lang="es"> </span>Bayer
+    <span lang="es">antes de cualquier interpolación</span>. <span lang="es">
+    Debido a esto es posible usar otros métodos de reconstrucción de colores 
+    reales sin tener que estimar los colores primarios faltantes por medio de la 
+    interpolación</span>.</font></p>
+    <p class="Standard">
+    <span lang="es"><font face="Arial" size="2">El mátodo del</font></span><font size="2" face="Arial"> Super P<span lang="es">í</span>xel
+    <span lang="es">no interpola, sino que crea un </span>super p<span lang="es">í</span>xel
+    <span lang="es">para cada grupo de cuatro píxeles </span>&nbsp;(RGBG).</font></p>
+    <p class="Standard"><font size="2" face="Arial"><br>
+    <span lang="es">De hecho, cada grupo de de 4 píxeles contiene toda la 
+    información necesaria de los colores primarios y de la luminancia.</span></font><p class="Standard"><font size="2" face="Arial">
+    <span lang="es">Este método es muy sencillo y tiene la desventaja</span> (<span lang="es">o 
+    es una ventaja?</span>) <span lang="es">de dividir el tamaño de la imagen 
+    resultante por 4.</span><br>
+    <br>
+    <span lang="es">El método del </span>Super P<span lang="es">í</span>xel
+    <span lang="es">da muy buenos resultados cuando hay pocas imágenes </span>d<span lang="es">isponibles 
+    para el proceso de apilado</span>.</font></td>
+    <td width="49%">
+    <img border="0" src="../images/BayerSuperPixel.jpg" align="right" width="373" height="280"></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<hr color="#0000FF">
+<p><font size="2" face="Arial"><b><a name="bayerdrizzle"></a><span lang="es">R</span>econstruc<span lang="es">c</span>i<span lang="es">&oacute;n 
+de color</span> us<span lang="es">ando la matriz </span>Bayer - <font color="#0000FF">Bayer drizzle</font></b></font></p>
+
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber3">
+  <tr>
+    <td width="51%">
+    <p class="Standard"><span lang="es"><font face="Arial" size="2">El último 
+    método sugerido por </font></span><font size="2" face="Arial">Dave Coffin
+    <span lang="es">utiliza la propiedad del proceso de apilado para evaluar los 
+    valores verdaderos de </span>RGB <span lang="es">de cada píxel resultante 
+    usando la tendencia &quot;natural&quot; existente entre cada imagen</span>.<br>
+    <br>
+    <span lang="es">Cuando hay un número grande de imágenes disponibles, y con 
+    sus sub-píxeles alineados,</span> DeepSkyStacker <span lang="es">evalúa bit 
+    a bit </span>l<span lang="es">os valores verdaderos </span>d<span lang="es">e 
+    los colores primarios </span>p<span lang="es">ara cada píxel sin utilizar 
+    interpolación</span>.<br>
+&nbsp;<br>
+    <span lang="es">Luego del proceso de apilado se utiliza otro algoritmo para 
+    normalizar los valores RGB y prevenir falta de información</span>.<br>
+    <br>
+    <span lang="es">El método</span> Bayer Drizzle <span lang="es">da excelentes 
+    resultados cuando </span>h<span lang="es">ay disponible una gran cantidad de
+    </span></font><font face="Arial"><font size="2"><span lang="es"> </span></font><font face="Arial"><font size="2"> archivos de imagen </font></font><font size="2"><span lang="es"></span></font></font><font size="2" face="Arial">light  <span lang="es">y cuando la precisión del guiado es 
+    superior a 1 píxel </span>(<span lang="es">esto sucede la mayoría de las 
+    veces</span>).</font></td>
+    <td width="49%">
+    <img border="0" src="../images/BayerDrizzle.jpg" width="375" height="287" align="right"></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

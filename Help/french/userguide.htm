@@ -1,0 +1,937 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="fr">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - Guide d'Utilisation</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Guide d'utilisation<br>
+</font></b><font face="Arial">Le Guide d'Utilisation de la ligne de commande se 
+trouve <a href="commandline.htm">ici</a></font></p>
+<blockquote>
+
+<p><font face="Arial"><b><a href="#Introduction">Introduction</a><br>
+<a href="#QuickStart">Démarrage rapide</a><br>
+<a href="#RegisteringStackingTab">L'onglet Enregistrement/Empilement</a><br>
+<a href="#batchstacking">Empilement par lot</a><br>
+<a href="#processingtab">L'onglet Traitement</a><br>
+<a href="#creatingstarmask">Créer un masque d'étoiles</a><br>
+<a href="#imagelist">La liste des images</a><br>
+<a href="#imagepreview">La prévisualisation d'une image<font size="2"> (et 
+édition des étoiles et comète)</font></a><br>
+<a href="#rawddp">Paramètres de développement des fichiers RAW et FITS</a></b></font></p>
+</blockquote>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="Introduction"></a>Introduction</font></b><font face="Arial"><b><br>
+</b><font size="2">L'objectif de ce guide est d'expliquer les principes d'utilisation et de 
+fonctionnement de DeepSkyStacker.</font></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="89%" id="AutoNumber9">
+  <tr>
+    <td width="45%">
+    <p align="justify" class="Standard"><font face="Arial" size="2">L'interface utilisateur de DeepSkyStacker est 
+simple et intuitive et les principales fonctionnalités et commandes sont 
+    directement accessibles.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2"><br>
+L'interface utilisateur est composée de deux zones :<br>
+    A gauche les différents onglets qui donnent accès à toutes les 
+fonctionnalités<br>
+    A droite un écran qui dépend de l'onglet courant et qui permet de 
+configurer et visualiser.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Pour changer d'onglet il suffit de cliquer 
+    n'importe où dans l'onglet.</font></p>
+    <p>&nbsp;</p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber16" bgcolor="#EBE9ED">
+        <tr>
+          <td width="100%">
+          <p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">
+          Si vous débutez en astrophotographie et vous vous demandez ce que sont 
+          les darks, flats et offsets et comment les obtenir vous avez une 
+          petite explication <a href="faq.htm#lightdarkflatoffset">ici</a>.</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</td>
+    <td width="62%">
+    <img border="0" src="../images/french/MainScreen.jpg" alt="Ecran principal de DeepSkyStacker" align="right" width="434" height="371"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="QuickStart"></a>Démarrage rapide</font></b><font face="Arial"><b><br>
+</b>
+<font size="2">Vous sortez d'une longue nuit et vous avez transféré sur votre PC 
+l'ensemble des images capturées (images, dark, offset, flat).<br>
+<br>
+La première étape consiste à ajouter dans la liste les images correspondantes à 
+chaque type.<br>
+Pour ce faire vous utilisez les différentes commandes situées dans la zone de 
+gauche :<br>
+- ajout des images<br>
+- ajout des darks<br>
+- ajout des flats<br>
+- ajout des offsets</font></font></p>
+<p align="justify"><font face="Arial" size="2">Ensuite vous lancez l'enregistrement des images 
+et vous cochez la case &quot;Empiler après l'enregistrement&quot; après avoir 
+indiqué le pourcentage des images qui devront être conservées dans le processus 
+d'empilement après l'enregistrement.</font></p>
+<p align="justify"><font face="Arial" size="2">Si vous utilisez des
+<a href="technical.htm#rawdecod">fichiers RAW</a> (ce qui est fortement 
+conseillé) vous vérifiez les paramètres de développement RAW et vous lancez le 
+processus d'enregistrement. <br>
+Vous pouvez enfin aller vous coucher et à votre réveil vous pourrez visualiser 
+dans l'onglet Traitement le résultat de l'empilement.<br>
+Notez que même si votre PC plante après le processus d'empilement le résultat 
+est enregistré automatiquement dans un fichier spécial :
+<a href="faq.htm#autosave">AutoSave.tif</a>.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">
+<a name="RegisteringStackingTab"></a>L'onglet Enregistrement/Empilement<br>
+</font></b><font face="Arial" size="2">L'onglet Enregistrement/Empilement donne accès aux 
+fonctionnalités d'enregistrement et d'empilement.</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber8">
+  <tr>
+    <td width="60%"><p align="justify" class="Standard"><font face="Arial" size="2">Il permet d'ajouter les images de chaque type dans la liste, 
+    d'enregistrer la liste de tous les fichiers, de charger une ou plusieurs 
+    listes de fichiers enregistrées préalablement, de  prévisualiser les images, de sélectionner les images et de lancer les 
+    processus d'enregistrement et d'empilement.</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber17" bgcolor="#EBE9ED">
+        <tr>
+          <td width="100%">
+          <p style="margin-left: 10; margin-right: 10">
+          <font face="Arial" size="2">Il est possible d'ajouter des fichiers à 
+          la liste par simple glissé/déposé depuis l'explorateur de fichier.</font></p>
+          <p style="margin-left: 10; margin-right: 10">
+          <font face="Arial" size="2">Le type de fichier sera demandé 
+          préalablement à l'ajout dans la liste. </font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p align="justify" class="Standard"><font face="Arial" size="2"><br>
+La zone de droite est composé de la <a href="#imagelist">liste des images</a> et 
+de la zone de <a href="#imagepreview">prévisualisation des images</a>.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">En dessous de la liste des images se trouve 
+    une série d'onglet, chaque onglet correspondant à un groupe de fichiers. En 
+    cliquant sur un onglet les fichiers appartenant à ce groupe sont affichés 
+    dans la liste.<br>
+    Pour en savoir plus sur le fonctionnement des groupes de fichiers vous 
+    pouvez consulter les détails techniques <a href="technical.htm#filegroup">
+    ici</a>.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">En haut à droite se trouve un curseur qui 
+    permet de modifier le gamma de l'image prévisualisée et en particulier à 
+    l'éclaircir pour distinguer les objets faibles.<br>
+    Bien entendu aucune modification n'est apportée à l'image réelle, il s'agit 
+    juste d'un artifice de prévisualisation.<br>
+&nbsp;</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber14">
+        <tr>
+          <td width="100%" bgcolor="#EBE9ED">
+          <p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">
+          Il est possible de lancer automatiquement le processus d'empilement après le 
+processus d'enregistrement en précisant le pourcentage des images à conserver. 
+Les meilleurs images en fonction du
+<a title="Le score est la note de l'image calculée lors de l'enregistrement." href="faq.htm#score">
+score</a> obtenu lors de l'enregistrement seront alors empilées.</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</td>
+    <td width="42%">
+    <img border="0" src="../images/french/RegisteringStackingTab.jpg" alt="Onglet Enregistrement avec visualisation des étoiles enregistrées." width="324" height="345"></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2">
+<br>
+A noter en particulier que la fonctionnalité &quot;Calculs des décalages&quot; permet de 
+calculer sans procéder à l'empilement les différents décalages et angles de 
+rotation entre les images. Une fois calculé la liste des images est mise à jour 
+avec les valeurs de décalage dans les colonnes dX, dY et angle.<br>
+Il n'est pas nécessaire d'utiliser cette fonctionnalité avant de procéder à un 
+empilement, le calcul des décalages étant automatiquement effectué lorsque le 
+processus d'empilement est lancé.<br>
+<br>
+La fonctionnalité &quot;Cocher si supérieur à un seuil ...&quot; permet de cocher toutes les images 
+dont le
+<a title="Le score est la note de l'image calculée lors de l'enregistrement." href="faq.htm#score">
+score</a> est supérieur à une valeur donnée. </font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="94%" id="AutoNumber12">
+  <tr>
+    <td width="35%" valign="top">
+    <p align="justify" class="Standard"><font face="Arial" size="2">
+    <a name="stackingsteps"></a>Avant le démarrage du processus d'empilement un 
+    écran récapitule les différentes étapes du processus.<br>
+    <br>
+    En particulier les darks vont être associés automatiquement aux images en 
+    fonction de la sensibilité ISO et du temps de pose.<br>
+    De même, les flats et offset/bias seront associés en fonction de la 
+    sensibilité ISO.<br>
+    <br>
+    Dans tous les cas la meilleure correspondance possible va être proposée et 
+    un avertissement indiquera lorsque les sensibilités ISO et/ou temps de pose 
+    ne correspondent pas.<br>
+    &nbsp;</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber15" bgcolor="#EBE9ED">
+        <tr>
+          <td width="100%">
+          <p style="margin-left: 10; margin-right: 10" align="justify"><font face="Arial" size="2">
+          Il est possible de &quot;forcer&quot; temporairement les temps de pose et les 
+    sensibilité ISO des images en utilisant le <a href="#contextmenu">menu 
+    contextuel</a> des images.</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p align="justify" class="Standard"><font face="Arial" size="2">
+    <br>
+    Cet 
+    écran permet également de modifier la méthode d'empilement pour chaque type 
+    d'image, soit en cliquant directement sur le lien (en bleu) ou sur le bouton 
+    &quot;Paramètres d'empilement&quot;.<br>
+&nbsp;</font></p>
+    </td>
+    <td width="65%" align="center" valign="top">
+    <img border="0" src="../images/french/StackingSteps.jpg" alt="DeepSkyStacker - Récapitulation des étapes de l'empilement" width="537" height="437"><br>
+&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="35%" valign="top">
+    <p align="justify" class="Standard"><font face="Arial" size="2">Dans tous les cas le dialogue ci contre 
+    apparaît et permet de modifier  le répertoire dans lequel sont créés les 
+    fichiers temporaires nécessaires au processus d'empilement ainsi que les 
+    paramètres contrôlant le processus d'empilement.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Le premier onglet permet de contrôler le mode d'empilement 
+    dont l'utilisation d'un <a href="technical.htm#customrect">rectangle 
+    personnalisé</a>.<br>
+    <br>
+    Il faut noter que dans tous les cas les décalages sont calculés à partir de 
+    l'image de référence de la pile contrairement à une vraie mosaïque.</font><p align="justify" class="Standard">
+    <font face="Arial" size="2">C'est également sur cet onglet que vous pouvez 
+    choisir d'utiliser un mode d'empilement <a href="technical.htm#Drizzle">Drizzle</a>.</font><p>&nbsp;<div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber20" bgcolor="#FFFF00">
+        <tr>
+          <td width="100%">
+          <p align="justify" style="margin-left: 10; margin-right: 10">
+          <font face="Arial" size="2" color="#FF0000"><b>L'option Drizzle crée 
+          des images 4 ou 9 fois plus grandes.</b><br>
+          <br>
+          Pour des photos déjà importantes issues d'appareils photo numériques 
+          les images résultantes peuvent être très grandes et DeepSkyStacker 
+          peut avoir besoin de beaucoup de mémoire et de place disque pour les 
+          traiter.</font></td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      </center>
+    </div>
+    </td>
+    <td width="65%" align="center" valign="top">
+    <a name="stackingmode"></a>
+    <img border="0" src="../images/french/StackingMode.jpg" width="491" height="403"><p>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="35%" valign="top">
+    <p align="justify" class="Standard">
+    <font face="Arial" size="2">Les  onglets Image, Dark, Flat et Offset permettent de modifier les 
+    <a href="technical.htm#stackingmethods">méthodes</a> d'empilement associées à chaque 
+    type d'image et en particulier activer ou désactiver 
+    l'option de <a href="technical.htm#backgroundcalibration">calibration du 
+    fond</a> des canaux RVB pour les images ou <a href="technical.htm#hotpixelsremoval">la 
+    détection et la suppression des pixels chauds</a> et la
+    <a href="technical.htm#badlinesdetection">détection et la suppression des 
+    mauvaises colonnes</a> pour les darks.</font></td>
+    <td width="65%" align="center">
+    <img border="0" src="../images/french/StackingSettings.jpg" alt="DeepSkyStacker - Paramètres d'empilement" width="491" height="403"><p>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="35%" valign="top"><p align="justify" class="Standard">
+    <font face="Arial" size="2"><a name="stackingalignment"></a>L'onglet 
+    Alignement permet de configurer la méthode utilisée lors de l'alignement des 
+    images.</font><p align="justify" class="Standard">
+    <font face="Arial" size="2">Vous pouvez choisir entre bilinéaire, bicarrée 
+    et bicubique ou laisser DeepSkyStacker choisir la meilleure méthode en 
+    fonction du nombre d'étoiles disponibles.</font><p>&nbsp;</td>
+    <td width="65%" align="center">
+    <img border="0" src="../images/french/StackingAlignment.jpg" width="491" height="403"><p>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="35%" valign="top"><p align="justify" class="Standard">
+    <font face="Arial" size="2">Cet onglet permet de contrôler la création des 
+    fichiers intermédiaires. </font>
+    <p align="justify" class="Standard">
+    <font face="Arial" size="2">Deux options permettent de créer les fichiers 
+    contenant les images intermédiaires:<br>
+    La première permet de créer un fichier contenant l'image calibrée pour 
+    chaque image brute.<br>
+    <br>
+    La seconde option de cet onglet permet de créer 
+    un fichier contenant l'image calibrée et enregistrée pour chaque image 
+    brute.<br>
+    <br>
+    Les fichiers créés se trouvent au même endroit que l'image correspondante avec 
+    une extension .cal.tif ou .cal.fts pour les images calibrées et .reg.tif ou 
+    .reg.fts pour les images 
+    enregistrées et calibrées. <br>
+    Il s'agit toujours d'un fichier TIFF ou FITS non comprimé 
+    monochrome ou couleur, 8, 16 ou 32 bits en fonction des caractéristiques de 
+    l'image brute.</font><p style="margin-left: 4; margin-right: 4">
+    &nbsp;<div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber18">
+        <tr>
+          <td width="100%" bgcolor="#FFFF00">
+          <p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2" color="#FF0000">Si vous cochez une des ces options 
+    assurez vous que vous disposez de suffisamment d'espace libre sur votre 
+    disque dur pour accueillir tous les fichiers créés.</font></td>
+        </tr>
+      </table>
+      <p><br>
+&nbsp;</p>
+      </center>
+    </div>
+    </td>
+    <td width="65%" align="center" valign="top">
+    <img border="0" src="../images/french/StackingFiles.jpg" width="491" height="403"></td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard"><font face="Arial" size="2"><a name="cosmetictab"></a>
+    Cet onglet permet de contrôler la façon dont les images calibrées sont 
+    nettoyées avant l'empilement.</font></p>
+    <p class="Standard"><font face="Arial" size="2">L'objectif est de détecter 
+    et nettoyer les pixels chauds et froids résiduels après l'étape de 
+    calibration.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Attention, ces options 
+    peuvent sérieusement altérer les images et il faut donc les utiliser avec 
+    précautions.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Deux paramètres sont 
+    nécessaires pour définir le comportement du nettoyage cosmétique.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Le premier paramètre est la 
+    taille du filtre utilisé pour détecter et corriger les pixels chauds/froids.<br>
+    Plus le filtre est grand, plus le traitement est long et plus l'image est 
+    adoucie.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Le second paramètre est le 
+    seuil en dessous duquel aucune correction n'est effectuée (la veluer du 
+    pixel reste inchangé).<br>
+    Un seuil bas signifie que plus de correction sont faites.</font></p>
+    <p class="Standard"><font face="Arial" size="2">La dernière option peut être 
+    cochée pour créer un image qui montre pour chaque image quels sont les 
+    pixels nettoyés.<br>
+    Dans cette image les pixels chauds nettoyés sont blancs, les pixels frois 
+    nettoyés sont gris foncés et les pixels non modifiés sont gris clair.<br>
+    L'image créée porte le nom de l'image brute avec une extension .cosmetic.tif 
+    ou .cosmetic.fts en fonction de l'option sélectionnée dans l'onglet 
+    précédent.</font><p class="Standard">&nbsp;</td>
+    <td width="66%" align="center" valign="top">
+    <img border="0" src="../images/french/CosmeticTab.jpg" width="491" height="403"></td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard">
+    <font face="Arial" size="2"><a name="comettab"></a>L'onglet Comète est 
+    disponible dès que deux images brutes (y compris l'image de référence) ont 
+    une comète enregistrée.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Dans ce cas l'onglet Comète 
+    est utilisé pour choisir le mode d'empilement de la comète entre les trois modes 
+    disponibles.<br>
+    <br>
+    Voir le paragraphe sur l'<a href="technical.htm#cometstacking">empilement 
+    d'images de comète</a> dans les détails techniques pour des informations 
+    complémentaires sur l'empilement d'images de comète.</font></td>
+    <td width="66%" align="center" valign="top">
+    <img border="0" src="../images/french/CometTab.jpg" width="491" height="403"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">A l'issue du processus d'empilement, le résultat est enregistré dans un fichier 
+AutoSave.tif dans le répertoire de l'image de référence.<br>
+Si un fichier Autosave.tif existe déjà, un fichier Autosave001.tif (002, 003...) 
+est créé.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="batchstacking"></a>
+Empilement par lot<br>
+</font></b><font face="Arial" size="2">L'empilement par lot est utilisé pour 
+créer les images résultantes de plusieurs piles en une seule opération.</font></p>
+<table border="0" cellspacing="0" width="93%" id="AutoNumber23" cellpadding="0">
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard"><font face="Arial" size="2">Par exemple il peut être 
+    utilisé pour créer les images résultantes des couches rouge, verte, bleue et 
+    luminance sans qu'il soit nécessaire de charger les listes et lancer les 
+    traitements un par un.<br>
+    <br>
+    Bien entendu il peut être également utilisé pour créer l'image résultante à 
+    partir de n'importe quelle liste.<br>
+    <br>
+    Vous avez juste besoin d'ajouter des listes de fichiers préalablement&nbsp; 
+    créées à la liste.<br>
+    L'image résultante correspondant à chaque liste de fichier sera créée.</font></p>
+    <p class="Standard"><font face="Arial" size="2">A la fin du processus 
+    d'empilement le nom du fichier contenant l'image résultat remplace le nom de 
+    la liste de fichier correspondante.</font></p>
+    <p class="Standard"><u><b><font face="Arial" size="2">Notes:</font></b></u></p>
+    <ul>
+      <li>
+      <p class="Standard"><font face="Arial" size="2">Il n'est pas possible de 
+      définir un rectangle personnalisé pour l'empilement par lot. </font></li>
+    </ul>
+    </td>
+    <td width="56%">
+    <p align="center"><img border="0" src="../images/french/BatchStacking.jpg" width="396" height="323"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="processingtab"></a>L'onglet Traitement<br>
+</font></b><font face="Arial" size="2">L'onglet Traitement donne accès aux 
+fonctionnalités du traitement.</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="85%" id="AutoNumber5">
+  <tr>
+    <td width="58%">
+    <p align="justify" class="Standard"><font face="Arial" size="2">Je rappelle ici que DeepSkyStacker n'a pas pour vocation de permettre des 
+traitements complexes et avancés sur l'image. Cet onglet sert juste à permettre 
+une visualisation rapide du résultat de l'empilement.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Il contient une prévisualisation de l'histogramme RGB de l'image en cours de 
+traitement et un ensemble de trois onglets donnant accès aux différents réglages 
+d'ajustements :<br>
+- ajustement des niveaux RGB<br>
+- ajustement de la courbe de luminosité<br>
+- ajustement du niveau de saturation<br>
+<br>
+Les modifications des niveaux RGB et de la courbe de luminosité sont directement 
+visible sur l'histogramme.</font></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</td>
+    <td width="42%">
+    <img border="0" src="../images/french/ProcessingTab.jpg" alt="Onglet Traitement avec la prévisualisation, les differents onglets et l'histogramme RGB" width="326" height="368"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">
+<b>Ajustement des niveaux RGB</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="84%" id="AutoNumber2">
+  <tr>
+    <td width="69%">
+    <p align="justify" class="Standard"><font face="Arial" size="2">L'ajustement des niveaux RGB est 
+    contrôlé par&nbsp; :<br>
+    Le type d'ajustement modifiable en cliquant sur le nom de l'ajustement. Les 
+    types d'ajustement possible sont ; linéaire, racine carrée, racine cubique, 
+    logarithme, log(log), log(racine carrée) et asinh.<br>
+    <br>
+    Les bornes modifiables sur la barre correspondant à chaque canal (curseur de 
+    gauche pour le minimum et curseur de droite pour le maximum)<br>
+    <br>
+    Le décalage modifiable sur la barre correspondant à chaque canal (curseur du 
+    milieu)<br>
+    <br>
+    <br>
+    <br>
+    L'ajustement des niveaux RGB peut être effectué indépendamment sur chaque 
+    canal ou sur tous les canaux en même temps lorsque la case &quot;Ajustements 
+    liés&quot; est cochée.</font></td>
+    <td width="35%">
+    <img border="0" src="../images/french/RGBLevels.jpg" alt="Onglet de réglages des niveaux RGB" width="260" height="237"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">Le plus simple pour comprendre la signification 
+des différents paramètres est de les faire varier et de visualiser sur 
+l'histogramme les modifications apportées à chacun des canaux.<br>
+<br>
+<b>Ajustement de la courbe de luminosité</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="84%" id="AutoNumber3">
+  <tr>
+    <td width="66%">
+    <p align="justify" class="Standard"><font face="Arial" size="2">La courbe de luminosité est contrôlée par 6 paramètres.<br>
+- 2 pour le début de la courbe (la zone sombre).<br>
+- 2 pour le milieu de la courbe (la zone moyenne)<br>
+- 2 pour la fin de la courbe (la zone claire).<br>
+<br>
+Ces paramètres contrôle la façon dont une une courbe de Bézier est construite 
+pour transformer la luminance.<br>
+Pour faire simple, les paramètres sont l'angle de la courbe et la puissance en 
+chaque point.<br>
+<br>
+L'avantage de cette approche est qu'à partir d'un petit nombre de paramètre il 
+est possible d'une part d'obtenir des résultats immédiatement visibles et 
+d'autre part qu'il est possible de mémoriser et d'appliquer aisément les mêmes 
+paramètres sur une autre image.</font></td>
+    <td width="34%">
+    <img border="0" src="../images/french/Luminance.jpg" alt="Onglet de régale de la courbe d'ajustement de la luminance" width="260" height="237"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">Le plus simple pour comprendre la signification des différents paramètres est de 
+les faire varier et de visualiser sur l'histogramme les modifications apportées à 
+la courbe d'ajustement de la luminance (courbe noire).<br>
+<br>
+<b>Ajustement du niveau de saturation</b><br>
+Le niveau de saturation est juste un pourcentage d'accroissement ou de réduction 
+du niveau de la saturation.<br>
+<br>
+<b>L'histogramme RGB</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="85%" id="AutoNumber4">
+  <tr>
+    <td width="50%">
+    <p align="justify" class="Standard"><font face="Arial" size="2">L'histogramme RGB permet de visualiser pour chaque canal (R, G et B) la 
+répartition sur l'image des différents pixels rouges, verts et bleus.<br>
+Il montre également la courbe d'ajustement de la luminance.<br>
+    <br>
+    De plus, afin d'aider à l'équilibrage des différents canaux, il montre 
+    également la courbe de Gauss pour chacun des canaux.</font></td>
+    <td width="50%">
+    <img border="0" src="../images/Histogram.jpg" alt="Histogramme RGB" width="389" height="233"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">
+<b>Enregistrement/Chargement des paramètres d'ajustement</b><br>
+<b>Annuler/Ré appliquer les paramètres d'ajustement<br>
+</b>En bas de chacun des trois onglets se trouvent les boutons permettant :<br>
+- d'appliquer les dernières modifications à l'image<br>
+- d'annuler les dernières modifications appliquées<br>
+- de ré appliquer les dernières modification annuler<br>
+- de réinitialiser complètement les valeurs<br>
+- d'accéder à un dialogue permettant d'enregistrer/charger des configurations 
+d'ajustements nommées<br>
+<br>
+<b><br>
+Chargement d'une image<br>
+</b>DeepSkyStacker permet de charger des images au format DSImage (<a href="faq.htm#autosave">enregistrées 
+uniquement</a> à la fin du processus d'empilement), TIFF (8, 16 et 32 bits, 
+monochrome ou couleurs RGB) ou FITS (8, 16, 32 et 64 bits, monochrome ou 
+couleurs RGB).<br>
+Par défaut, à la fin du processus d'empilement l'image AutoSave.tif est 
+chargée.<br>
+<br>
+<br>
+<b>Enregistrement du résultat</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber7">
+  <tr>
+    <td width="56%">
+    <p align="justify" class="Standard"><font face="Arial" size="2">DeepSkyStacker permet 
+    d'enregistrer le résultat dans des fichiers TIFF ou FITS 16 ou 32 bits de deux façon 
+    :<br>
+    - soit en appliquant les ajustements<br>
+    - soit sans appliquer les ajustements (mais en les stockant quand même dans 
+    le cas du fichier TIFF pour pouvoir continuer le traitement lors du prochain 
+    chargement de l'image).<br>
+&nbsp;</font></td>
+    <td width="46%"><img border="0" src="../images/french/SaveOptions.jpg" width="355" height="78"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">Pour en savoir plus, voir la faq concernant le
+<a href="faq.htm#saveresult">mécanisme d'enregistrement</a>.</font></p>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="creatingstarmask"></a>Créer un masque d'étoile<br>
+</font></b><font face="Arial" size="2">L'utilisation d'un masque d'étoile est 
+souvent très utile lors des post-traitements pour appliquer des traitements 
+différents aux étoiles et au reste de l'image.<br>
+La fonctionnalité &quot;Créer un masque d'étoiles&quot; peut être utilisée pour créer 
+plusieurs type de masques qui peuvent ensuite être utilisés dans le logiciel que 
+vous utilisez pour les post-traitements (Photoshop, PixInsight, ...).<br>
+<br>
+<font color="#FF0000">DeepSkyStacker ne fait que créer des fichiers contenant 
+des masques d'étoiles. Il ne les utilisent pas lui même.</font><br>
+Vous pouvez voir cette fonctionnalité comme un outil dont l'objectif est de 
+permettre simplement et rapidement de créer des masques d'étoiles basés sur une 
+vraie détection des étoiles.</font></p>
+<table border="0" cellspacing="1" width="100%" id="AutoNumber21">
+  <tr>
+    <td width="44%" valign="top">
+    <p class="Standard"><b><font face="Arial" size="2">Qu'est ce qu'un masque 
+    d'étoiles </font></b><font face="Arial" size="2"><b>?</b><br>
+    Un masque d'étoile est une image en niveau de gris dans laquelle chaque 
+    étoile suffisamment brillante&nbsp; est remplacée par une zone ronde et 
+    blanche au centre et noire à l'extérieur et dont la variation de luminosité 
+    suit une courbe.<br>
+    <br>
+    Vous pouvez voir un exemple de masque d'étoile à droite.<br>
+    Passez la souris sur le texte pour voir <b><a onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Image';" href="javascript:void(0);">
+    l'image</a></b> ou <b><a onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Masque d\'étoile';" href="javascript:void(0);">
+    le masque d'étoile</a></b>.</font></td>
+    <td width="56%">
+    <p align="center">
+    <img border="0" id = "STARMASK01" name = "STARMASK01" src="../images/StarMask_Stars.jpg" align="center" width="279" height="291"><br>
+    <font face="Arial" size="2"><b name = "STARMASK01TEXT" id = "STARMASK01TEXT">Image</b></font></b></td>
+  </tr>
+  <tr>
+    <td width="44%" valign="top">
+    <p class="Standard"><font face="Arial" size="2"><b>Création d'un masque 
+    d'étoiles</b><br>
+    Pour créer un masque d'étoiles vous devez d'abord charger une image dans 
+    l'onglet traitement.<br>
+&nbsp;</font><p class="Standard"><font face="Arial" size="2">Ensuite il suffit 
+    de cliquer sur le menu &quot;Créer un masque d'étoiles...&quot; ce qui ouvre le 
+    dialogue ci-contre.</font><p class="Standard"><font face="Arial" size="2">
+    Celui-ci vous permet de changer la forme des étoiles dans le masque, le 
+    seuil de détection des étoiles ainsi que quelques autres paramètres.</font><p class="Standard">
+    <font face="Arial" size="2">Une fois les paramètres définit, après avoir 
+    cliqué sur le bouton OK DeepSkyStacker vous demandera dans quel fichier vous 
+    souhaitez enregistrer le masque d'étoile (ce peut être un fichier TIFF ou un 
+    fichier FITS).</font><p class="Standard">
+    <font face="Arial" size="2">L'image enregistrée est toujours une image en 
+    niveau de gris et en 16 bit. Elle n'est pas automatiquement chargée par 
+    DeepSkyStacker.</font><p class="Standard"><font face="Arial" size="2">Le 
+    masque d'étoile est toujours créé à partir de l'image telle que vous la 
+    voyez dans DeepSkyStacker, ce qui signifie avec les ajustements appliqués.</font></td>
+    <td width="56%">
+    <p align="center">
+    <img border="0" src="../images/french/CreateStarMask.jpg" width="407" height="401"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><font face="Arial" size="4" color="#FF0000"><b><a name="imagelist"></a>La 
+liste des images<br>
+</b></font><font face="Arial" size="2">La liste des images commune à l'enregistrement et 
+à l'empilement contient la liste de toutes les images utilisées 
+lors des différents processus.<br>
+Elle contient :<br>
+- Les images<br>
+- Les darks<br>
+- Les flats<br>
+- Les bias/offsets<br>
+<br>
+Seules les images cochées sont utilisées lors des processus d'enregistrement et 
+d'empilement.<br>
+<br>
+Les colonnes affichées sont les suivantes :</font></p>
+<table border="1" cellspacing="1" width="100%" id="AutoNumber1">
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Case à cocher</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Indique si l'image va être 
+    utilisée lors des différents processus</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Chemin</font></td>
+    <td width="83%"><font face="Arial" size="2">Nom du répertoire dans lequel se 
+    trouve l'image</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Fichier</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Nom du fichier</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Type</font></td>
+    <td width="83%"><font face="Arial" size="2">Type de l'image : <br>
+    Image pour les images<br>
+    Dark pour les darks<br>
+    Flat pour les flats<br>
+    Bias pour les offsets/bias</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Score</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Score des images obtenus après 
+    l'enregistrement.<br>
+    ou N/A pour les darks, flats et offsets.<br>
+    Lorsque le score est précédé de (*) cela signifie que vous avez choisi cette 
+    image comme image de départ de l'empilement à l'aide du
+    <a href="#contextmenu">menu contextuel</a>.</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">dX</font></td>
+    <td width="83%"><font face="Arial" size="2">Décalage en X (valeur en pixel) 
+    calculé pour l'empilement</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">dY</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Décalage en Y (valeur en pixel) 
+    calculé pour l'empilement</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Angle</font></td>
+    <td width="83%"><font face="Arial" size="2">Angle de rotation (valeur en °) 
+    calculé pour l'empilement</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Date/Heure</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Date et heure du fichier</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Tailles</font></td>
+    <td width="83%"><font face="Arial" size="2">Tailles en pixels de l'image 
+    (largeur x hauteur)</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">CFA</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Indique si l'image résulte d'un 
+    Color Filter Array (CFA) ce qui est le cas de toutes les images issues des 
+    fichiers RAW utilisant une <a href="technical.htm#rawdecod">matrice de Bayer</a>.</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Profondeur</font></td>
+    <td width="83%"><font face="Arial" size="2">Indique le type d'image (RGB ou 
+    monochrome) et le nombre de bits par canal.</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Infos</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Information complémentaire sur 
+    le type d'image (RAW avec le type d'appareil photo, TIFF ou Autres)</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">ISO</font></td>
+    <td width="83%"><font face="Arial" size="2">Sensibilité ISO de l'image
+    </font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Temps de pose</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Temps de pose de l'image</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">FWHM</font></td>
+    <td width="83%"><font face="Arial" size="2">FWHM : Full Width Half Maximum 
+    (largeur à la moitié du maximum). (en pixel)<br>
+    Il s'agit de la moyenne pour toutes les étoiles détectées. </font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">#Etoiles</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Nombre 
+    d'étoiles détectées.<br>
+    Lorsque la position d'une comète a été fixée +(C) est ajouté au nombre 
+    d'étoiles</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#FFFFFF"><font face="Arial" size="2">Fond du ciel</font></td>
+    <td width="83%" bgcolor="#FFFFFF"><font face="Arial" size="2">Valeur du fond 
+    du ciel pour les images enregistrées en %</font></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">Il est possible de trier la liste sur n'importe 
+quelle colonne en cliquant sur l'entête de la colonne (et en cliquant une 
+nouvelle fois pour inverser l'ordre de tri).<br>
+<br>
+La largeur et l'ordre des colonnes peuvent être modifiés. Ces informations sont 
+enregistrées après chaque utilisation de DeepSkyStacker et lors de la session suivante la largeur 
+et la position de chaque colonne sont restaurés.<br>
+<br>
+En sélectionnant une image dans la liste, celle-ci est visualisée dans la zone 
+de prévisualisation des images.<br>
+Si cette image correspond à un fichier RAW les paramètres de développement des 
+fichiers RAW sont utilisés dans le décodage de l'image.</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="93%" id="AutoNumber11">
+  <tr>
+    <td width="38%" valign="top">
+    <p align="justify" class="Standard"><font face="Arial" size="2">
+    <a name="contextmenu"></a>Il est possible de sélectionner 
+plusieurs fichiers dans la liste.  </font>
+    </p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Un menu contextuel (bouton droit de la souris) 
+permet de sélectionner une image comme l'image de référence de la pile, changer le type de chaque fichier (image, dark, flat ou offset/bias), 
+cocher/décocher les fichiers, les enlever de la liste et de visualiser, éditer 
+    les propriétés des fichiers, copier le contenu de la liste dans le presse-papier 
+    ou supprimer définitivement des fichiers du disque.</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber19">
+        <tr>
+          <td width="100%" bgcolor="#EBE9ED" bordercolor="#000000">
+          <p style="margin-left: 10; margin-right: 10">
+          <font face="Arial" size="2">Si vous choisissez une image de référence 
+          qui n'est pas cochée, les décalages seront calculés à partir de cette 
+          image de référence même si celle-ci n'est pas empilée.</font></td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+      </center>
+    </div>
+    </td>
+    <td width="62%" align="center">
+    <img border="0" src="../images/french/ContextMenu.jpg" alt="DeepSkyStacker - Menu contextuel" width="208" height="247"><br>
+&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="38%" valign="top">
+    <p align="justify" class="Standard"><font face="Arial" size="2">L'édition des propriétés permet en particulier de modifier le type de 
+    l'image et surtout de forcer temporairement (le temps de la session) la 
+    sensibilité ISO et le temps de pose d'une ou plusieurs images.<br>
+    <br>
+    Quand les sensibilités ISO et les temps de pose sont modifiés, aucune 
+    modification n'est apportée aux fichiers contenant les images. Les valeurs 
+    sont stockées en mémoire uniquement pour le temps de la session courante.</font></td>
+    <td width="62%" align="center">
+    <img border="0" src="../images/french/Properties.jpg" alt="DeepSkyStacker - Propriétés des fichiers" width="399" height="312"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="imagepreview"></a>La 
+prévisualisation d'une image<br>
+</font></b><font face="Arial" size="2">La zone de prévisualisation des images 
+permet simplement et rapidement de visualiser soit une image de la liste (onglet 
+Enregistrement et Empilement), soit l'image en cours de traitement (onglet 
+Traitement).<br>
+<br>
+Elle permet de zoomer en avant et en arrière avec la molette de la souris. C'est 
+le seul moyen pour se déplacer et zoomer.</font></p>
+<p><b><font face="Arial">Edition de la position des étoiles et de la comète</font></b></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="81%" id="AutoNumber6">
+  <tr>
+    <td width="38%" valign="top">
+    <font face="Arial" size="2">Quand une image brute est sélectionnée dans la 
+    liste il est possible :<br>
+    - d'éditer la position des étoiles<br>
+    - d'éditer la position de la comète<br>
+    - créer et modifier un <a href="technical.htm#customrect">rectangle 
+    personnalisé</a></font><p><font face="Arial" size="2">Vous pouvez 
+    sélectionner l'un des modes ci-dessus en utilisant la barre d'outils qui se 
+    trouve dans le coin en bas à droite de l'image.<br>
+    <br>
+    Le dernier bouton de la barre permet d'enregistrer les modifications 
+    apportées à la position des étoiles et de la comète.</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber22">
+        <tr>
+          <td width="100%" bgcolor="#FFFF00">
+          <p class="Standard"><font face="Arial" size="2" color="#FF0000"><b>
+          Note sur l'édition de la comète :</b><br>
+          Le centre de la comète peut ne pas être détecté automatiquement par DeepSkyStacker.<br>
+          Pour forcer la comète à une position donnée maintenez enfoncé la 
+          touche Majuscule pendant que vous positionnez le centre de la comète..</font></td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+      </center>
+    </div>
+    </td>
+    <td width="62%">
+    <p align="center">
+    <img border="0" src="../images/EditToolbar.jpg" width="279" height="265"></td>
+  </tr>
+  <tr>
+    <td width="53%">
+    <p align="justify" class="Standard"><font face="Arial" size="2">De plus dans le cas de l'onglet Traitement il est possible de sélectionner une 
+portion de l'image (par un rectangle).  </font>
+    </p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Ce rectangle est utilisé d'une part pour 
+appliquer les ajustements (niveaux RGB, luminosité, saturation) et d'autre part 
+optionnellement pour l'enregistrement.<br>
+&nbsp;</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Si aucun rectangle n'est défini, les ajustements sont appliqués sur la totalité 
+de l'image.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Dans tous les cas, lors de l'enregistrement 
+    de l'image sur le disque les ajustements sont appliqués sur la totalité de 
+    l'image enregistrée.</font></td>
+    <td width="62%">
+    <p align="center">
+    <img border="0" src="../images/PreviewRect.jpg" alt="Exemple d'utilisation du rectangle de sélection pour l'application des ajustements." width="203" height="230"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="rawddp"></a>
+Paramètres de développement des fichiers RAW et FITS<br>
+</font></b><font face="Arial" size="2">Le dialogue de configuration des 
+paramètres de développement des fichiers RAW permet d'accéder aux différents 
+paramètres régissant la façon dont un fichier RAW ou FITS va être développé pour donner 
+une image couleur.</font></p>
+
+<table border="0" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="82%" id="AutoNumber10">
+  <tr>
+    <td width="61%">
+    <p align="justify" class="Standard"><font face="Arial"><b>Fichiers RAW</b></font><font face="Arial" size="2"><br>
+    Les réglages disponibles 
+    concernent :<br>
+    - l'équilibrage des différents canaux RGB<br>
+    - la balance des blancs<br>
+    - le mode d'interpolation<br>
+    <br>
+    Ces réglages correspondent directement à ceux disponibles avec
+    <a target="_blank" href="http://www.cybercom.net/~dcoffin/dcraw/">DCRaw</a> 
+    de Dave Coffin. Pour avoir plus de détails vous pouvez consulter son site.<br>
+    <br>
+    Concernant l'équilibrage des différents canaux il est très important de 
+    rentrer les paramètres précis correspondant à votre appareil photo.<br>
+    <br>
+    Les valeurs pour les échelles <font color="#FF0000">Rouge</font> et échelle
+    <font color="#0000FF">Bleu</font> permettent de situer la valeur par rapport 
+    au <font color="#008000">Vert</font>.<br>
+    L'ajustement de la luminosité permet de jouer sur l'ensemble des trois 
+    canaux.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Concernant les modes 
+    d'interpolation et le fonctionnement particulier liés à l'optimisation de la 
+    matrice de Bayer, vous aurez plus de détails en consultant les
+    <a href="technical.htm#rawdecod">détails techniques</a>.</font></p>
+    <p>&nbsp;</td>
+    <td width="39%">
+    <img border="0" src="../images/french/rawddp.jpg" align="right" alt="Dialogue de configuration des paramètres de développement des fichiers RAW" width="443" height="549"></td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="0" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="82%" id="AutoNumber13">
+  <tr>
+    <td width="61%">
+    <p align="justify" class="Standard"><font face="Arial"><b>
+    <a name="fitssettings"></a>Fichiers FITS</b></font><font face="Arial" size="2"><br>
+    Le seul paramètre qui est utilisé pour tous les fichiers FITS dans cet 
+    onglet est l'ajustement de la luminosité.<br>
+    Il peut en particulier être utilisé pour transformer les images codés en 12 
+    bits en vrai 16 bits. Pour ce faire entrer la valeur 16 comme ajustement de 
+    luminosité.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Tous les 
+    autres réglages <b>ne concernent que</b> les fichiers FITS 16 bits monochrome issus 
+    d'un APN ou d'une caméra CCD couleur.<br>
+    <br>
+    La première étape consiste à sélectionner dans la liste l'APN ou la caméra 
+    CCD qui a servi à 
+    prendre les photos. Ceci permet en particulier de déterminer la matrice de 
+    bayer qui va être utilisée pour décoder les images et ainsi transformer des 
+    images monochrome en image couleur.<br>
+    <br>
+    Les réglages disponibles 
+    concernent :<br>
+    - l'équilibrage des différents canaux RGB<br>
+    - le mode d'interpolation<br>
+    <br>
+    Concernant l'équilibrage des différents canaux il est très important de 
+    rentrer les paramètres précis correspondant à votre appareil photo ou caméra 
+    CCD.<br>
+    <br>
+    Les valeurs pour les échelle <font color="#FF0000">Rouge</font> et échelle
+    <font color="#0000FF">Bleu</font> permettent de situer la valeur par rapport 
+    au <font color="#008000">Vert</font>.<br>
+    L'ajustement de la luminosité permet de jouer sur l'ensemble des trois 
+    canaux.</font></p>
+    <p align="justify" class="Standard"><font face="Arial" size="2">Concernant les modes 
+    d'interpolation et le fonctionnement particulier liés à l'optimisation de la 
+    matrice de Bayer, vous aurez plus de détails en consultant les
+    <a href="technical.htm#rawdecod">détails techniques</a>.</font></p>
+    <p>&nbsp;</td>
+    <td width="39%">
+    <img border="0" src="../images/french/fitsddp.jpg" align="right" alt="Dialogue de configuration des paramètres de développement des fichiers RAW" width="443" height="549"></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

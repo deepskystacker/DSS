@@ -1,0 +1,66 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - Command Line User's Manual</title>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Comet Stacking Options<br>
+</font></b><font face="Arial">Here is a brief summary of what you can expect from 
+the different stacking options applied to comet images.</font></p>
+
+<p><font face="Arial">This is the result of the three stacking methods that will 
+be available in the next release of DeepSkyStacker.</font></p>
+
+<p><font face="Arial">The results were obtained from a stack of 8 images of SWAN, 
+9 dark frames and 7 bias frame and most unfortunately not flat frames.</font></p>
+<hr color="#0000FF">
+<p><font size="2" face="Arial">Mouse over the text to see the different results</font></p>
+<table border="0" cellspacing="1" width="100%" id="AutoNumber2">
+  <tr>
+    <td width="41%">
+<p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2"><br>
+<b><a onmouseover="document['COMETSTACK'].src='../Gallery/CometStacks/FuzzyComet.jpg';" href="javascript:void(0);">
+Standard stacking</a></b><br>
+The comet position is ignored.<br>
+The comet is fuzzy and the stars have no trail.</font></p>
+<p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">
+<b><a onmouseover="document['COMETSTACK'].src='../Gallery/CometStacks/StarTrails.jpg';" href="javascript:void(0);">
+Comet stacking : star trails</a></b><br>
+The comet position is used, so that the image is aligned on the comet.<br>
+Star positions are used to compensate any field rotation.<br>
+<br>
+<b><a onmouseover="document['COMETSTACK'].src='../Gallery/CometStacks/StarFreeze.jpg';" href="javascript:void(0);">
+Comet and stars stacking : &quot;star freeze effect&quot;</a></b><br>
+The comet position is used.<br>
+A first stack is created to extract the comet from the background
+(special algorithm here).<br>
+Then a second stack is created to freeze the star (the comet is subtracted from 
+each calibrated and registered light frame before stacking it).<br>
+Last, the final image is obtained by inserting the comet back in the image.</font></p>
+<p style="margin-left: 10; margin-right: 10">&nbsp;</p>
+<p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">
+Although you will need to show DeepSkyStacker where the comet is in each light 
+frame (new user interface here), everything else is automatic.</font></p>
+    <p>&nbsp;</td>
+    <td width="59%" align="center">
+    <img name = "COMETSTACK" id = "COMETSTACK" border="0" src="../Gallery/CometStacks/FuzzyComet.jpg" width="472" height="366"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Call for images</font></b><font face="Arial"><b><br>
+</b><font size="2">This is only a very small stack and I really need other comet 
+images in order to test the process further.<br>
+If you have a medium to large (more than 10) set of RAW images (along with dark, 
+bias and flat frames) I would be really grateful if you can send them to me.<br>
+<br>
+Thanks in advance.</font></font></p>
+
+</body>
+
+</html>

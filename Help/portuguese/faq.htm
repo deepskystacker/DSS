@@ -1,0 +1,464 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker FAQ</title>
+<style>
+<!--
+ div.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	margin-left:0cm; margin-right:0cm; margin-top:0cm}
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><span lang="EN-GB" style="font-size: 18.0pt; font-family: Arial">
+Perguntas e Respostas Frequentes</span></b></p>
+<blockquote>
+
+<p><span lang="en-gb"><b><span style="font-family: Arial"><a href="#Install">
+Instalacao</a><br>
+<a href="#lightdarkflatoffset">Light, Dark, Flat, Bias... O que sao e como
+os criar ?</a><br>
+<a href="#FileAndList">Ficheiros e Lista de Ficheiros</a><br>
+<a href="#Registering">Registo</a><br>
+<a href="#Stacking">Integracao</a><br>
+<a href="#Processing">Processo</a><br>
+<a href="#Performances">Performances</a><br>
+<a href="#saveresult">Carregar/Guardar</a><br>
+</span></b></span><b>
+<span lang="EN-GB" style="font-family: Arial; ">
+<a href="#Misc">Miscellaneous</a></span></b></p>
+</blockquote>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Install"></a>Instacao</font><br>
+<font size="2">O ficheiro comprimido (zip) baixado esta corrompido.<br>
+</font></b><font size="2">Posso grantir que o ficheiro colocado no site oficial
+do DSS esta optimo. Certamente esta usando um acelarador de download.<br>
+Desactive-o e o download (baixar) saira bem.<br>
+</font><b>
+<font size="2"><br>
+Nao consigo instalar o DeepSkyStacker (mensagem de falta de DLL) ?<br>
+</font></b><font size="2">Se tem falta de DLL durante a instalacao do
+DeepSkyStacker e porque voce nao tem o Windows XP SP2.<br>
+Neste caso tera que previamente fazer o download e instala-los
+<a target="_blank" href="http://www.microsoft.com/downloads/details.aspx?FamilyID=889482FC-5F56-4A38-B838-DE776FD4138C&displaylang=en">
+Windows Installer 3.1</a>.</font></font></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><span lang="en-gb"><font size="4" color="#FF0000"><b>
+<span style="font-family: Arial"><a name="lightdarkflatoffset"></a>Light, Dark, 
+Flat, Bias... O que sao e como os criar ?</span></b></font></span><span lang="EN-GB" style="font-family: Arial"><b><br>
+</b><font size="2">(se esta maravilhado de como os ficheiros sao usados durante
+o processo de Calibracao de uma olhadela
+<a target="_self" href="theory.htm#CalibrationProcess">aqui</a>)<br>
+</font><b>
+<br>
+Light Frames<br>
+</b><font size="2">Sao todas as imagens-fotogramas que contem a informacao
+logaritmica astronomica: imagens de nebulosas, galaxias...etc<br>
+Em algumas partes do DSS os Light Frames foram designados por fotogramas de luz ( fotogramas de fotoes ).Sao estas imagens-fotogramas que vai integrar.<br>
+<br>
+</font><b>Dark Frames e Dark Flat Frames<br>
+</b><font size="2">Os Dark Frames sao usados para remover a corrente negra dos
+fotogramas (ou os flat frames para os Dark Flat frames).<br>
+Com DSLRs e cameras CCD, o CMOS ou CCD gera um sinal de corrente negra cuja intensidade
+depende do tempo de exposicao, temperatura e velocidade ISO (esta ultima, apenas nas DSLR).<br>
+Para remover a corrente negra dos fotogramas nada melhor que usar um fotograma
+(dark frame) que contenha apenas o sinal da corrente negra ( dark signal).<br>
+A melhor forma de criar um dark frame (fotograma escuro ) e fazer de 10 a 20 disparos no escuro
+com a objectiva coberta. Os dark frames devem ter o mesmo tempo de exposicao,temperatura
+e ISO ( de preferencia no fim da seccao fotografica ) das imagens-fotogramas dos objectos.<br>
+<br>
+</font><b>Bias Frames (aka Offset Frames)<br>
+</b><font size="2">Os Bias/Offset Frames sao usados para remover dos chips
+CCD ou CMOS artefactos de leitura da camera nos fotogramas.<br>
+Cada chip gera um aquecimento electronico
+dos componentes electronicos da camera ao ler a informacao do chip.
+Para criar um bias frame bastara tirar 10 a 20 fotogramas no escuro com as lentes cobertas
+com curtas exposicoes de 1/4000 ou 1/8000 segundos dependendo da camera.<br>
+<br>
+<br>
+</font><b>Flat Frames<br>
+</b><font size="2">Sao usados para corrigir a vinhetagem e desigualdades
+na distribuicao uniforme da luz provocados pelo pó e outros artefactos.
+Para realizar os flat frames ( fotogramas claros ) coloque uma folha branca na frente da sua
+objectiva, use uma lanterna exteriormente para incidir a luz na folha e com a
+camera adaptada ( simplesmente com objectiva ou adaptada no foco do OTA ) tire de
+10 a 20 fotogramas (fotografias).
+Estes fotogramas devem ter o mesmo ISO dos fotogramas dos objectos fotografados.
+<br>
+<br>
+</font></span></p>
+<p align="justify"><span lang="en-gb"><font size="2">
+<span style="font-family: Arial"><b>E possivel usar flats coloridos?</b><br>
+Sim, mas nao tem interesse pratico para a astrofotografia.<br>
+</span></font></span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><span lang="en-gb"><font size="4" color="#FF0000"><b>
+<span style="font-family: Arial"><a name="FileAndList"></a>Ficheiros e Lista de Ficheiros </span></b></font></span><br>
+<b><span lang="EN-GB" style="font-family: Arial">
+<font size="2"><a name="TIFFIssue"></a>DSS nao consegue ler meus ficheiros TIFF e/ou bloqueia
+quando tento ler ficheiros TIFF</font></span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial"><br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+DeepSkyStacker apenas suporta ficheiros TIFF nao comprimidos ou LZW e ZIP
+como ficheiros comprimidos.<br>
+De qualquer forma, os ficheiros TIFF tem muitas "variantes" e as vezes a descodificacao
+pode nao ser especificamente aquela dando um erro na descodificacao da informacao do EXIF do ficheiro.<br>
+E conviniente por isso saber o protocolo das cameras que a sua versao DSS suporta.
+Outra viabilidade passa por desactivar o EXIF decoding quando se esta a ler o ficheiro TIFF. Isto e feito
+adicionando a seguinte frase em baixo na chave registry <b>HKEY_CURRENT_USER\Software\DeepSkyStacker</b>:
+SkipTIFFExifInfo (DWORD) com o valor de 1.<br>
+<br>
+Se nao sabe como adicionar a chave do registry, faça o download ( baixe aqui ) deste
+<a href="../download/DSS_SkipTIFFExifInfo.reg">pequeno ficheiro</a> e clique duas vezes
+seguidas sobre ele. Este programa colocara a chave de registro por si.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify">
+<font size="2" face="Arial"><b>Os meus ficheiros Fits nao estao correctamente descodificados.<br>
+</b>Existem muitos tipos de formatos Fits..<br>
+Neste especifico caso envie-me um e-mail com o seu ficheiro
+indexado.</font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial" size="2"><b>Meu ficheiro Fits foi criado
+por uma DSLR e esta muito escuro e sem contraste.<br>
+</b>Os softwares que capturam as imagens das Dslrs guardam-nos como ficheiros FITS por vezes
+armazenam o ficheiro no formato de 16 bits mas apenas 12 bits na profundidade da imagem (o que designa
+a profundidade da maior partes  da imagens das Dslrs )).<br>
+Nestes casos os valore guardadaos deste ficheiros variam entre 0 e 4095 instead ou
+entre 0 e 65535 o que explica as imagens serem escuras.<br>
+Pode ajustar os paramentros em <a href="userguide.htm#rawddp">Aba dos ficheiros
+FITS</a> na janela de dialogo das configuraçoes do RAW/FITS DDPpara correcao desses ficheiros.<br>
+Multiplique o brilhos total dos seus ficheiros por 16 de forma a que o resultado final nao
+exceda o maximo valor de threshold. Se modificar o balanco dos brancos mudando os valores nas escalasao vermelho
+e/ou ao azul tome em atencao em multiplicar os valores por 16 por cada canal
+(brilho * escala por canal).</font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial" size="2"><b>Os meus ficheiros FITS foram feitos por uma DSLR e
+aparecem todos brancos apesar de eu ter selecionado o modelo da DSLR na Aba dos ficheiros FITS<br>
+</b>Deveria ter verificado a nao utilizacao do modo binning durante a captura.
+Neste casos o DSS nao pode usar o padrao do filtro Bayer na sua
+DSLR .Sera por isso que as suas imagens parecerao todas erradas ( sem resultados visiveis ).<br>
+A unica forma é desactivar o binning.</font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial" size="2"><b>Os meus FITS foram criados por uma camera CCD
+a cores e apenas vejo imagens a preto(black)&amp;e branco (white).<br>
+</b>Se os seus ficheiros FITS usam a matrix Bayer (como usam as DSLR), neste caso, para descodificar as cores
+correctamente o DeepSkyStacker tem que saber que tipo de  Bayer matrix esta a ser usada pela sua
+camera..<br>
+Pode usar a Aba dos FITS <a href="userguide.htm#rawddp"> configuraçoes dos RAW/FITS
+DDP</a> na caixa de dialogo que diz ao DeepSkyStacker que tipo de Bayer matrix tera que ser usada. Na
+maior parte da vezes bastara selecionar o tipo de camera CCD da lista.</font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font face="Arial"><font size="2"><b>O que é uma lista de ficheiros?</b></font><b><font size="2"><br>
+</font></b><font size="2">É um conjunto de informacoes em ficheiro de texto contendo
+nomes com, por cada ficheiro, tipo de (light, dark, flat, offset) e sua situacao
+(verificado ou nao verificados).<br>
+Note que quando uma lista de ficheiros e carregada, essa lista contem informacao
+nao perceptivel.<br>
+Isto acontece porque tem uma lista de ficheiros com os dark frames, e outra com
+flat frames, e uma terceira com  master offset e carregar toda estas operacoes
+num unico ficheiro, fica imperceptivel .<br>
+Toda a informacao sobre o formato de listas de ficheiros e explicada <a href="commandline.htm#filelistformat">
+aqui</a>.</font></font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><font face="Arial" size="2">Tenho imagens (ficheiros) do mesmo objecto
+tiradas em multiplas seccoes. Como devo agir com o DSS para associar correctamente o dark
+com os fotogramas da mesma noite  e por cada noite?</font></b><font size="2" face="Arial"><b><br>
+</b>A resposta a esta pergunta esta em <a href="technical.htm#filegroup">Grupos de
+Ficheiros</a>.</font></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="Registering"></a>Registo</span><span lang="EN-GB" style="font-family: Arial"><br>
+</span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Porquê
+criar registar ficheiros por cada imagem?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+Porque e uma forma de evitar o re-registamento.<br>
+mas tambem para evitar o novo carregamento de todas as imagens durante o registo e o
+processo de integracao.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Posso
+apagar os ficheiros de registo?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Sim.
+Serao de novo recreados se necessario.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Posso
+modificar o conteudo dos ficheiros de registo?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Sim,
+e nenhum aviso e necessario. <br>
+Nao dou garantias ao que possa acontecer ao conteudo, mas garanto que o
+conteudo sera descodificado.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<a name="score"></a>O que sao as
+contagens e o que elas querem dizer?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">As
+contagens sao quantificacoes da qualidade das imagens.<br>
+Tem-se em conta as esferas mais perfeitas das estrelas que sao contabilizadas e nao o numero
+de estrelas grandes encontradas.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Sera que a
+contagem e a medida de referencia para a qualidade absoluta das imagens?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Nao.
+A contagem e uma medida relativa para classificar por ordem imagens brutas
+de uma mesma area mantendo apenas as melhores imagens para integracao.<br>
+Se o
+<a style="color: blue; text-decoration: underline; text-underline: single" href="technical.htm#rawdecod">Processo de desenvolvimento das imagens RAW</a> foi modificado, tera que registar
+as imagens de novo e uma nova contagem sera calculada.</span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="Stacking"></a>Integracao</span><span lang="EN-GB" style="font-family: Arial"><br>
+</span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<a name="autosave"></a>O que e
+o ficheiro AutoSave.DSImage criado depois do processo de integracao?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">E
+a propriedade que o ficheiro tem de se criar automaticamente
+apos o processo de integracao e dai no resultante da imagem. O resultado e uma
+imagem a 32 bit (rational)/formatados por canal.<br>
+Como a unica forma de criara este ficheiro e fazer de novo um processo de integracao
+nao e possivel corrigir por cima.<br>
+Pode reabrir atraves da Aba do processamento.<br>
+Comecando com a versao 2.5.3 do ficheiro AutoSave.DSImage subtituindo por qualquer
+ficheiro AutoSave.tif com um ficheiro de 32 bit TIFF (Deflate compressed).<br>
+Imagens mais antigas de ficheiros .DSImage continuam a serem abertos por DeepSkyStacker.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b>
+<span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">O resultado da imagem
+mostra diferentes aparencias de estrelas por toda a imagem<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+Isto revela que o processo de alinhamento foi feito por falsas (hot pixels-
+pixels quentes) &quot;false&quot; estrelas.<br>
+A razao disto acontecer e que os pixels quentes entraram no processo de registo e
+consequentemente criaram as estrelas falsas.<br>
+Carregue os seus dark frames antes de iniciar o processo de
+registo.<br>
+Serao verificados todos os ficheiros dark, flat e offsets frames e serao aplicados por cada fotograma
+antes do processo de registo garantindo que nenhum pixel quente ou artefacto perturbara
+a deteccao natural e eficiente das estrelas . </span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b>
+<span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">O resultado da imagem
+mostra um grotesco corte na imagem no seu canto superior esquerdo<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+Este e o resultado de se registarem fotogramas usando o modo de Super-pixel
+e depois fazer a integracao noutro modo.<br>
+Quando se muda o modo de integracao e necessario efectuar de novo o registo
+dos fotogramas.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font size="2"><b><span style="font-family: Arial">Meus dark frames nao tem todos o mesmo
+tempo de exposicao e o DSS nao colocou todos no mesmo grupo</span></b><span style="font-size: 10.0pt; font-family: Arial">
+Se nao usa o modo automatico cada colocar cada fotograma e oferecida a possibilidade de as exposicoes serem diferenciadas
+em apenas em alguns segundos e no caso do DeepSkyStacker naos os agrupa
+para em conjunto formarem-criarem um master dark.<br>
+Pode forcar o tempo de exposicao por cad fotograma com os mesmos valores selecionando
+os fotogramas na lista usando o contexto de menu para editar
+<a href="userguide.htm#contextmenu">propriedades dos fotogramas</a>.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font size="2"><b><span style="font-family: Arial">O resultado das minhas imagens
+sao muito escuras. Isso e normal?<br>
+</span></b></font><span style="font-size: 10.0pt; font-family: Arial">As imagens
+RAW sao muito escuras e integrem-nas para criar no final uma imagem muito mais escura.<br>
+Para ver os detalhes numa imagem o histograma tem que ser esticado (stretched) ajustando
+os niveis RGB e a luminancia na <a href="userguide.htm#processingtab">
+Aba de Processamento</a>.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font size="2"><span style="font-family: Arial"><b>Como e que
+alinho, o resultado de 4 imagens integradas(vermelho,verde,azul e luminancia).</b>
+Para alinhar o resultado das imagens no mesmo fotograma de referencia apenas adicione
+o fotograma de referencia na lista even mesmo que nao seja do mesma integracao, forcando o
+DeepSkyStacker a usa-lo como fotograma de referencia (use o
+<a href="userguide.htm#contextmenu">contexto menu</a>) mas deixando-o por verificar. <br>
+Isto quer dizer que o DSS usa-o como fotograma de referencia, mas nao o adiciona no processo
+de integracao.</span></font></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="Processing"></a>Processando<br>
+</span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">O que e
+o ficheiro DSSSettings.DSSSettings criado na pasta do DeepSkyStacker.exe?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">O
+ficheiro DSSSettings.DSSSettings contem todas as configuracoes em ajustes que foram
+guardadas e carregadas desde a Aba de processamento.</span></p>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="Performances"></a>Performances<br>
+</font><font face="Arial" size="2">Como aumentar a velocidade de integracao</font></b><font size="2" face="Arial"><b>?<br>
+</b>Resposta rapida (processador mais rapido, e mais memoria ram), a melhor forma de aumentar
+a velocidade de processamento e nao usar os modos de interpolacao (<a href="technical.htm#bayerdrizzle">Bayer
+Drizzle e Super Pixel</a>) ou o bilinear ou/e o AHD que todos eles somente trabalham nos ficheiros RAW
+em apenas 16 bits monocromaticos em vez dos 3 canais RGB.<br>
+A descodificacao da imagem e rapida (rapida sem interpolacao), em que a memoria e dividida
+por 3 flat, dark e offset frames sao calculados e internamente guardados em apenas um
+em vez dos 3.<br>
+<br>
+Outra forma de ganhar velocidade no resultado da imagem e usar o
+<a href="technical.htm#customrect">Retangulo previamente defenido</a> que contem apenas
+a parte interessante da imagem.</font></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="saveresult"></a>Carregar/Guardar</span><span lang="EN-GB" style="font-family: Arial"><br>
+</span><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Onde
+sao guardadas as configuracoes dos ajustes dos pre-processamentos nos ficheiros TIFF?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Essas
+configuracoes sao armazenadas num separador(Aba) privado do TIFF. E uma caracteristica do formato
+do ficheiro TIFF.<br>
+Por outro lado se re-escrever (escrever por cima) do ficheiro com outro software sem ser o
+DeepSkyStacker, o separador privado e as configuracoes serao perdidas.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<b>Qual e a diferença entre aplicacao de configuracoes ajustadas e configuracoes
+inseridas nos ajustamentos em ficheiros TIFF?<br>
+</b>Quando as configuracoes estao inseridas nos ajustamentos dos ficheiros TIFF as imagens
+sao armazenadas sem modificacoes como resultado do processo de
+integracao. As configuracoes serao incluidas na proxima vez que correr o DSS ou se quiser continuar, do ponto onde parou da ultima vez.<br>
+<br>
+Quando as confuguracoes dos ajustes forem aplicadas nas imagens armazenadas em ficheiros TIFF verao
+o resultado da aplicacao das configuracoes na imagem resultantes do
+processo de integracao<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Photoshop 
+nao abre ficheiros TIFF a 32 bit (integer-integralmente) criados pelo DeepSkyStacker?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+Afirmativo, tem que o converter e guardar como ficheiro TIFF a 32 bit (rational) para os abrir
+mais tarde no Photoshop. <br>
+Softwares como o
+Pleiades’ PixInsight podem abrir ficheiros TIFF a 32 bit (integer) criados pelo
+DeepSkyStacker.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<b>O DeepSkyStacker usa o registo para armazenar as configuracoes?<br>
+</b>Afirmativo. DeepSkyStacker armazena todas as configuracoes associadas com o uso
+da sua base de dados de registo: ultimas pastas para cada tipo de ficheiro, ultimas
+configuracoes... <br>
+Tudo e armazenado em :  HKEY_CURRENT_USER\Software\DeepSkyStacker key.</span></p>
+<div class="MsoNormal" align="center" style="text-align:center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="font-size: 13.5pt; font-family: Arial; color: red">
+<a name="Misc"></a>Miscellaneous</span></b><span lang="EN-GB"><br>
+</span><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Vantagens
+do DeepSkyStacker?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+Dispende menos horas em processos rotineiros de que outros programas.<br>
+<br>
+Pode deixar o DSS devidamente configurado e deixar o processamento a decorrer
+e ir para a cama descansado que quando acordar o pre-processamento esta registado
+e integrado. Esta e a parte mais interessante.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Porque nao
+imagens planetarias?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Porquê?
+Porque nao tenho experiencia com imagens planetarias e nao saberia como comecar
+em todo o processo logaritmo do programa.<br>
+Talves um dia encontre interesse em faze-lo e criarei o PlanetaryStacker
+... mas nao contem com isso para muito cedo.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">E acerca do
+DeepSkyStacker versao 1.0?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+DeepSkyStacker 1.0 usei uma vez apenas com amigos. Esta versao
+nao foi vocacionada para o publico e mesmo que os motores ( engines = .exe)estejam ... falta-lhes muitas
+funcionalidades.<br>
+DeepSkyStacker versao 2.0, foi a primeira versao para o publico.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<b>Em que linguagem informatica foi criado o DeepSkyStacker?<br>
+</b>DeepSkyStacker esta criado em C++.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Como sao
+descodificados os ficheiros RAW?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Os
+ficheiros RAW sao descodificados usando o super
+<a href="http://www.cybercom.net/~dcoffin/dcraw/" target="_blank" style="color: blue; text-decoration: underline; text-underline: single">
+DCRAW</a> de Dave Coffin.<br>
+Aproveito a ocasiao,
+para lhe agradecer, ter-me sugerido o uso do algaritmo do
+<a style="color: blue; text-decoration: underline; text-underline: single" href="technical.htm#bayerdrizzle">Bayer Drizzle</a></span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">O
+formato da minha DSLR e suportado?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">A
+lista de todas as DSLRs que sao suportadas (presentemente mais de 300 Dslrs) aumenta de tres em tres
+meses. Dirija-se ao sitio
+<a href="http://www.cybercom.net/~dcoffin/dcraw/" target="_blank" style="color: blue; text-decoration: underline; text-underline: single">
+DCRAW</a> para saber se a sua camera faz parte do protocolo.<br>
+Se consta do protocolo de cameras suportadas ... entao tambem e
+suportada pelo DSS.</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<b>Como se leem e se reproduzem as imagens TIFF??<br>
+</b>Estes ficheiros sao lidos e reproduzidos usando uma das melhores base de dados: a libtiff library</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<b>Como sao lidos e reproduzidos os ficheiros FITS?<br>
+</b>Estes ficheiros sao lidos e reproduzidos por uma execlente base de dados: a CFitsIO library</span></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><font face="Arial" size="2">E possivel mudar a lingua do País
+usando o DeepSkyStacker?</font></b><font size="2" face="Arial"><b><br>
+</b>A lingua usada pelo DSS sao (France, Ingles, Espanhol,Checo, Italiano, Catalalao,
+Alemao e Portugues) e estao
+automaticamente inseridas no programa usando o seu sistema operativo.<br>
+Se forçar o uso de outra lingua tem de fazer as alteracoes a partir de About box.<br>
+DeepSkyStacker iniciar-se-a com a nova lingua correctamente
+configurada.</font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><font size="2" face="Arial"><b>Como e que o DeepSkyStacker verifica se uma nova versao
+esta disponivel?<br>
+</b>O DeepSkyStacker liga-se automaticamente ao seu
+website e verifica se existe alguma versao
+recente e disponivel.<br>
+</font></p>
+<hr color="#0000FF" size="1">
+<p align="justify"><b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">O
+DeepSkyStacker e um Open Source? E o codigo esta disponivel?<br>
+</span></b><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">Well 
+... nao e nao.</span></p>
+
+<hr color="#0000FF" size="1">
+<p align="justify"><span lang="EN-GB" style="font-size: 10.0pt; font-family: Arial">
+<b>Use o uninstaller do Add/Remove programas do painel de control
+do windowns, para remover o DSS.</span></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

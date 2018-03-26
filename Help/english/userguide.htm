@@ -1,0 +1,900 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - User's Manual</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">User's Manual<br>
+</font></b><font face="Arial">The command line User's Manual is available
+<a href="commandline.htm">here</a></font></p>
+<blockquote>
+
+<p><b><font face="Arial"><a href="#Introduction">Introduction</a><br>
+<a href="#QuickStart">Quick Start</a><br>
+<a href="#RegisteringStackingTab">Registering and Stacking Tab</a><br>
+<a href="#batchstacking">Batch Stacking</a><br>
+<a href="#processingtab">Processing Tab</a><br>
+<a href="#creatingstarmask">Create a Star Mask</a><br>
+<a href="#imagelist">The Picture List</a><br>
+<a href="#imagepreview">Picture Preview <font size="2">(Stars and Comet editing)</font></a><br>
+<a href="#rawddp">RAW and FITS DDP Settings</a></font></b></p>
+</blockquote>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="Introduction"></a>Introduction</font></b><font face="Arial"><b><br>
+</b><font size="2">The purpose of this short manual is to explain the features 
+and principles of DeepSkyStacker.</font></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="89%" id="AutoNumber9">
+  <tr>
+    <td width="45%">
+    <p class="Standard"><font face="Arial" size="2">The user interface of 
+    DeepSkyStacker is quite simple and intuitive and all the main features and 
+    commands are 
+    readily available.</font></p>
+    <p class="Standard"><font face="Arial" size="2"><br>
+    The user interface is divided into two areas:<br>
+    To the left a set of tabs gives access to all the commands and features.<br>
+    To the right a screen  depending of the current tab that is used to 
+    configure and view.</font></p>
+    <p class="Standard"><font face="Arial" size="2">To change the current tab you can click 
+    anywhere in the tab.</font></p>
+    <p>&nbsp;</p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber16">
+        <tr>
+          <td width="90%" bgcolor="#EBE9ED">
+    <p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">If 
+    you are a beginner in astrophotography and you are wondering what are light, 
+    dark, flat and bias frames and how to create them you have a short 
+    explanation <a href="faq.htm#lightdarkflatoffset">here</a>.</font></p>
+          </td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</td>
+    <td width="62%">
+    <img border="0" src="../images/english/MainScreen.jpg" alt="DeepSkyStacker's Main Screen" align="right" width="486" height="415"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="QuickStart"></a>Quick Start</font></b><font face="Arial"><b><br>
+</b>
+<font size="2">You are just out of a busy night and you just have downloaded all 
+your pictures (lights, darks, offsets and flats) to your PC.<br>
+<br>
+The first step is to add all the pictures (accordingly to their type) to the 
+list.<br>
+To do this you use the commands of the left area:<br>
+- add picture files<br>
+- add dark files<br>
+- add flat files<br>
+- add offset/bias files<br>
+- add dark flat files</font></font></p>
+<p align="justify"><font face="Arial" size="2">Then you just launch the registering process,  you check 
+the &quot;Stack after registering&quot; box after entering the percentage of pictures 
+that you wish to keep for the stacking process after the registering process.</font></p>
+<p align="justify"><font face="Arial" size="2">If you are using raw files (which is highly 
+recommended), you just check the Raw DDP settings and you start the registering 
+process. <br>
+You can now go to sleep knowing that after a good night you will view the first 
+results in the processing tab.<br>
+Note that even if your PC crashes after the stacking process, the result is 
+automatically saved in a special file: <a href="faq.htm#autosave">
+AutoSave.tif</a>.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">
+<a name="RegisteringStackingTab"></a>Registering and Stacking Tab<br>
+</font></b><font face="Arial" size="2">The Registering and Stacking Tab contains all the 
+commands and features pertaining to the registering and stacking processes.</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="89%" id="AutoNumber8">
+  <tr>
+    <td width="49%"><p class="Standard"><font face="Arial" size="2">From this tab, you can add 
+    frame of each type (light, dark, flat and 
+offset/bias) to the list, save and restore File Lists, preview images and start the 
+    registering or stacking process</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber17" bgcolor="#EBE9ED">
+        <tr>
+          <td width="100%">
+          <p style="margin-left: 10; margin-right: 10">
+      <font face="Arial" size="2">It is possible to add files to the list by 
+          simply dragging &amp; dropping them from the file explorer.</font></p>
+          <p style="margin-left: 10; margin-right: 10">
+          <font face="Arial" size="2">The files type will then be asked before 
+          the files are added to the list.</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p class="Standard"><font face="Arial" size="2"><br>
+    The right area contains the <a href="#imagelist">Pictures List</a> and the
+    <a href="#imagepreview">Picture Preview</a>.<br>
+    <br>
+    On the bottom of the picture list a line of tabs gives access to each file 
+    group. If you click on one group tab the files of the group are shown in the 
+    list.<br>
+    To know more about the file groups you can consult the technical details
+    <a href="technical.htm#filegroup">here</a>.</font></p>
+    <p class="Standard"><font face="Arial" size="2">To the top and the right a slider may be use 
+    to change the gamma of the previewed image which may be useful to view faint 
+    objects.<br>
+    Of course no modification is made to the real image as it is only a 
+    previewing trick.<br>
+&nbsp;</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber14" bgcolor="#EBE9ED">
+        <tr>
+          <td width="100%" bordercolor="#EBE9ED">
+          <p style="margin-left: 10; margin-right: 10">
+      <font face="Arial" size="2">It is possible to automatically launch the stacking process after the 
+    registering process by giving the percentage of light frames that will be kept. 
+    The best pictures, based on the
+    <a title="Le score est la note de l'image calculée lors de l'enregistrement." href="faq.htm#score">score</a> 
+          computed by the registering process, will then be stacked.</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    </td>
+    <td width="53%">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <img border="0" src="../images/english/RegisteringStackingTab.jpg" alt="Registering Tab with preview of the registered stars" width="447" height="476"></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2">
+<br>
+The &quot;Compute offsets&quot; feature may be used to compute the offsets and rotation 
+angles between the pictures without starting the stacking process. Once computed 
+the dX, dY and angle columns of the pictures list are populated with the 
+computed offsets and rotation angles.<br>
+<u>Note:</u> it is not necessary to compute the offsets manually prior to the 
+stacking process since the offsets and rotation angles are automatically 
+computed just before the stacking process anyway.<br>
+<br>
+The &quot;Check above a threshold...&quot; may be used to check all the pictures for which 
+the
+<a title="Le score est la note de l'image calculée lors de l'enregistrement." href="faq.htm#score">score</a> 
+is greater than or equal to the given threshold value. </font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="93%" id="AutoNumber12">
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard"><font face="Arial" size="2">
+    <a name="stackingsteps"></a>Before the stacking process a screen 
+    recapitulates the different steps.<br>
+    <br>
+    It is important to know that the light frames will be automatically 
+    associated with their dark frames using ISO speed and exposure time.<br>
+    Flat frames and Offset/Bias frames will be automatically associated 
+    regarding only the ISO speed.<br>
+    <br>
+    In each case the best matching frames will be proposed and a warning will be 
+    issued if ISO speed and/or exposure time are not matching.<br>
+&nbsp;</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber15" bgcolor="#EBE9ED">
+        <tr>
+          <td width="100%">
+          <p style="margin-left: 10; margin-right: 10" align="justify">
+      <font face="Arial" size="2">
+          It is possible to temporarily &quot;force&quot; the ISO speed and 
+    exposure time by using the <a href="#contextmenu">context menu</a> of the 
+     
+    files.</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p class="Standard"><font face="Arial" size="2">From this dialog you can also change the 
+    stacking methods for each type of picture by clicking directly on the link 
+    or on the &quot;Stacking Parameters&quot; button.</font></p>
+    </td>
+    <td width="66%" align="center">
+    &nbsp;
+    <img border="0" src="../images/english/StackingSteps.jpg" alt="DeepSkyStacker - Stacking steps" width="537" height="437"><p>&nbsp;&nbsp;&nbsp; </td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top"><p class="Standard"><font face="Arial" size="2">A new dialog is then opened, from which you 
+    can modify the folder into which are created the temporary files needed by 
+    the stacking process and all the settings controlling the stacking process.</font><p class="Standard">&nbsp;<p class="Standard"><font face="Arial" size="2">The first tab is used to set the stacking mode 
+    among which the possibility to use a <a href="technical.htm#customrect">
+    Custom Rectangle</a>.<br>
+    <br>
+    You should note that in all modes the offsets are computed from the 
+    reference frame, so it's not a true mosaic mode but a pseudo mosaic. </font>
+    <p class="Standard"><font face="Arial" size="2">This is also where you can 
+    choose the <a href="technical.htm#Drizzle">Drizzle</a> option 
+    when stacking.</font><p>&nbsp;<div align="center" style="width: 272; height: 147">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber20" bgcolor="#FFFF00">
+        <tr>
+          <td width="100%">
+          <p style="margin-left: 10; margin-right: 10" align="justify">
+          <font face="Arial" size="2" color="#FF0000"><b>The drizzle option 
+          creates image 4 or 9 times bigger.</b><br>
+          <br>
+          For already large DSLR images it can create very large images and 
+          DeepSkyStacker&nbsp; may need a lot of memory and disk space to 
+          process them.</font> </td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      </center>
+    </div>
+    </td>
+    <td width="66%" align="center" valign="top">
+    &nbsp;&nbsp;&nbsp;
+    <a name="stackingmode"></a>
+    <img border="0" src="../images/english/StackingMode.jpg" width="491" height="403"><p>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard"><font face="Arial" size="2">The other 
+    light, dark, flat and bias tabs are used to modify the <a href="technical.htm#stackingmethods">stacking method</a> for each type of 
+    frame,  and to 
+    activate the <a href="technical.htm#backgroundcalibration">background 
+    calibration</a> option for the light frames or the automatic
+    <a href="technical.htm#hotpixelsremoval">detection and removal of hot pixels</a> 
+    and <a href="technical.htm#badlinesdetection">bad columns detection and 
+    removal</a> 
+    for the dark frames.</font></td>
+    <td width="66%" align="center">
+    <img border="0" src="../images/english/StackingSettings.jpg" alt="DeepSkyStacker - Stacking Parameters" width="491" height="403"><p>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top"><p class="Standard">
+    <font face="Arial" size="2"><a name="stackingalignment"></a>The Alignment 
+    tab may be used to change the alignment method used to align light frames.</font><p class="Standard">
+    <font face="Arial" size="2">You can choose Bilinear, Bisquared or Bicubic 
+    transformation or you can DeepSkyStacker select the best transformation 
+    based on the number of available stars.</font><p>&nbsp;</td>
+    <td width="66%" align="center">
+    <img border="0" src="../images/english/StackingAlignment.jpg" width="491" height="403"><p>&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard"><font face="Arial" size="2">This tab is used to control the creation 
+    of intermediate files.<br>
+    <br>
+    Two options may be used to create files 
+    containing intermediate images:<br>
+    <br>
+    The first option may be use to create a file containing the calibrated image 
+    for each light frame.<br>
+    <br>
+    The second option may be used to create a file containing the calibrated and registered image for each 
+    light frame.<br>
+    <br>
+    <br>
+    <br>
+    The created files have the name and location of the matching light frame with 
+    a .cal.tif or .cal.fts extension for the calibrated images and .reg.tif or .reg.fts extension for 
+    the registered and calibrated images.<br>
+    <br>
+    The files are always  uncompressed TIFF or FITS files, monochrome or 
+    color, 8, 16 or 32 bit depending of the light frame bit depth.<br>
+&nbsp;</font><div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber18">
+        <tr>
+          <td width="100%" bgcolor="#FFFF99">
+          <p style="margin-left: 10; margin-right: 10" align="justify">
+    <font face="Arial" size="2" color="#FF0000">When you check one of these options be 
+    sure to have enough free hard disk space to host all the created files.</font></td>
+        </tr>
+      </table>
+      <p><br>
+&nbsp;</p>
+      </center>
+    </div>
+    </td>
+    <td width="66%" align="center" valign="top">
+    <img border="0" src="../images/english/StackingFiles.jpg" width="491" height="403"></td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard"><font face="Arial" size="2"><a name="cosmetictab"></a>This 
+    tab is to control the way the calibrated images are cleaned before stacking.</font></p>
+    <p class="Standard"><font face="Arial" size="2">The goal is to detect and 
+    clean remaining hot or cold pixels after calibration.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Checking these options may 
+    seriously alter the resulting image so use them with caution.</font></p>
+    <p class="Standard"><font face="Arial" size="2">Two parameters are needed to 
+    define the behavior of the cosmetic cleaning.</font></p>
+    <p class="Standard"><font face="Arial" size="2">The first parameter is the 
+    size of the filter used to detect and fix the hot/cold pixels. The larger 
+    the filter, the longer the processing time and the smoother the resulting 
+    image.</font></p>
+    <p class="Standard"><font face="Arial" size="2">The second parameter is the 
+    threshold under which no correction is done (the pixel value remain the 
+    same).<br>
+    A lower threshold means that more correction are done.</font></p>
+    <p class="Standard"><font face="Arial" size="2">The last option may be 
+    checked to create an image showing the cleaned pixels for each light frame.<br>
+    In this image, cleaned hot pixels are white, cleaned cold pixels are dark 
+    gray and all the other pixels are light gray.<br>
+    The created files have the name and location of the matching light frame 
+    with a .cosmetic.tif or .cosmetic.fts extension as defined in the previous 
+    tab. </font>
+    <p class="Standard"><font face="Arial" size="2"> <br>
+&nbsp;</font></td>
+    <td width="66%" align="center" valign="top">
+    <img border="0" src="../images/english/CosmeticTab.jpg" width="491" height="403"></td>
+  </tr>
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard">
+    <font face="Arial" size="2"><a name="comettab"></a>The Comet tab is 
+    available only when at least two light frames (including the reference light 
+    frame) have a comet registered.</font></p>
+    <p class="Standard"><font face="Arial" size="2">In this 
+    case the Comet tab is used to select the comet stacking mode between the 3 
+    available modes.<br>
+    <br>
+    See the <a href="technical.htm#cometstacking">Comet Stacking</a> topic in 
+    the Technical Details for information on how to use Comet Stacking.</font></td>
+    <td width="66%" align="center">
+    <img border="0" src="../images/english/CometTab.jpg" width="491" height="403"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2"> <br>
+After the stacking process, the resulting image is saved in the AutoSave.tif file 
+which is created in the folder of the reference light frame..<br>
+If an Autosave.tif file already exists in the folder, an Autosave001.tif (002, 
+003, ...) is created.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="batchstacking"></a>
+Batch Stacking<br>
+</font></b><font face="Arial" size="2">The Batch Stacking dialog is used to 
+create resulting images from more than one stack.</font></p>
+<table border="0" cellspacing="0" width="93%" id="AutoNumber23" cellpadding="0">
+  <tr>
+    <td width="34%" valign="top">
+    <p class="Standard"><font face="Arial" size="2">For example it may be used 
+    to create the resulting images from the red, green, blue and luminance 
+    images without the need to load each list then start manually the stacking 
+    process for each one.<br>
+    <br>
+    Of course it also may be used to stack any existing list.<br>
+    <br>
+    You just need to add the file lists previously created by the Save File List 
+    command to the list.<br>
+    Each File List that is checked will be processed.</font></p>
+    <p class="Standard"><font face="Arial" size="2">At the end of the stacking 
+    process, the output file name replaces the list name for each processed file 
+    list.</font></p>
+    <p class="Standard"><u><b><font face="Arial" size="2">Notes:</font></b></u></p>
+    <ul>
+      <li>
+      <p class="Standard"><font face="Arial" size="2">It is not possible to 
+      define a custom rectangle for batch stacking. </font></li>
+    </ul>
+    </td>
+    <td width="56%">
+    <p align="center"><img border="0" src="../images/english/BatchStacking.jpg" width="396" height="323"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="processingtab"></a>Processing Tab<br>
+</font></b><font face="Arial" size="2">The processing tab contains the commands 
+and features pertaining to  post processing.</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="85%" id="AutoNumber5">
+  <tr>
+    <td width="58%">
+    <p class="Standard"><font face="Arial" size="2">I would like to remind here that 
+    DeepSkyStacker only allows simple processing treatments of the resulting 
+    picture in order to quickly view the result of the stacking process.<br>
+    The heavy post processing should take place in another more specialized 
+    software.</font></p>
+    <p class="Standard"><font face="Arial" size="2">The processing tab contains a 
+    preview of the RGB histogram and three sub tabs which are used to adjust the 
+    following settings::<br>
+- RGB levels<br>
+- Luminance curve<br>
+- Saturation<br>
+<br>
+    RGB levels and luminance curve adjustments are directly visible on the RGB 
+    histogram.</font></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</td>
+    <td width="42%">
+    <img border="0" src="../images/english/ProcessingTab.jpg" alt="Processing Tab preview, with RGB histogram" width="351" height="431"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">
+<b>Adjusting the RGB Levels</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="84%" id="AutoNumber2">
+  <tr>
+    <td width="69%">
+    <p class="Standard"><font face="Arial" size="2">The RGB levels adjustments are 
+    controlled by:<br>
+    The kind a adjustment that you can modify by clicking on the adjustment 
+    name. The available adjustments are linear, square root, cubic root, 
+    logarithm, log(log), log(square root) and asinh..<br>
+    <br>
+    The modifiable limits for each channel (left cursor for the minimum, right 
+    cursor for the maximum).<br>
+    <br>
+    The modifiable offset for each channel (middle cursor).<br>
+    <br>
+    <br>
+    <br>
+    The RGB levels adjustment may be done independently for each channel or for 
+    all the channels at the same time when the &quot;Linked settings&quot; option is 
+    checked..</font></td>
+    <td width="35%">
+    <img border="0" src="../images/english/RGBLevels.jpg" alt="RGB levels adjustement tab" width="261" height="238"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">The simplest way to understand how the different 
+parameters are working is to change them and look at the result on the 
+histogram..<br>
+<br>
+<b>Adjusting the Luminance Curve</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="84%" id="AutoNumber3">
+  <tr>
+    <td width="66%">
+    <p class="Standard"><font face="Arial" size="2">The luminance curve is 
+    controlled by 6 parameters.<br>
+- 2 for the darkness area.<br>
+- 2 for the midtone area<br>
+- 2 for the highlight area.<br>
+<br>
+    These parameters are controlling a Bezier curve used to transform the 
+    luminance.<br>
+    Simply put the parameters are the angle and power of the curve for each 
+    point.<br>
+<br>
+    The advantage of using only 6 parameters is that on one hand it is possible 
+    to quickly view the result and on the other hand that it is possible to 
+    memorize the parameters to apply them on another picture.</font></td>
+    <td width="34%">
+    <img border="0" src="../images/english/Luminance.jpg" alt="Luminance curve adjustment tab" width="260" height="239"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">The simplest way to understand how the different 
+parameters are working is to change them and look at the resulting the luminance 
+adjustment curve (black curve) on the histogram.<br>
+<br>
+<b>Adjusting the Saturation</b><br>
+The saturation level adjustment is just a percentage of increasing or decreasing 
+the saturation level.<br>
+<br>
+<b>RGB Histogram</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="85%" id="AutoNumber4">
+  <tr>
+    <td width="50%">
+    <p class="Standard"><font face="Arial" size="2">The RGB histogram is used to 
+    visualize for each channel (R, G and B) the red, green and blue pixels 
+    distribution in the picture.<br>
+    The black curve is the luminance adjustment curve.<br>
+    <br>
+    Moreover, to help the equalization of the channels the Gaussian curve for 
+    each channel is drawn on top of the histogram.</font></td>
+    <td width="50%">
+    <img border="0" src="../images/Histogram.jpg" alt="RGB Histogram" width="389" height="233"></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2">
+<b>Saving/Loading adjustment parameters</b><br>
+<b>Undo/Redo adjustment parameters<br>
+</b>On the bottom of each tab a set of buttons is available:<br>
+- to apply the last modifications to the picture<br>
+- to undo the last applied modifications<br>
+- to redo the last undone modifications<br>
+- to reset all the values<br>
+- to access a dialog used to save/load a named set of parameters.<br>
+<br>
+<b><br>
+Loading a picture<br>
+</b>DeepSkyStacker can load DSImage images (<a href="faq.htm#autosave">created 
+only</a> after the stacking process), TIFF images (8, 16 and 32 bit, gray 
+levels or RGB) or FITS images (8, 16, 32 and 64 bit, gray 
+levels or RGB).<br>
+At the end of the stacking process the AutoSave.tif picture is automatically 
+loaded.<br>
+<br>
+<br>
+<b>Saving the resulting picture</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber7">
+  <tr>
+    <td width="56%">
+    <p class="Standard"><font face="Arial" size="2">DeepSkyStacker can save the 
+    resulting image as 16 or 32 bit TIFF or FITS&nbsp; files using two methods::<br>
+    - by applying the adjustments<br>
+    - by not applying the adjustments (but storing them in the case of the TIFF 
+    file in order to continue the post processing the next time the image is 
+    loaded by DeepSkyStacker).<br>
+&nbsp;</font></td>
+    <td width="46%"><img border="0" src="../images/english/SaveOptions.jpg" width="314" height="84"></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">For more information about the saving methods you 
+can read the <a href="faq.htm#saveresult">faq</a>.</font></p>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="creatingstarmask"></a>Create a Star Mask<br>
+</font></b><font face="Arial" size="2">Using a Star Mask is often very useful 
+during post-processing to use different processing techniques for the stars and 
+for the rest of the image.<br>
+The Create a Star Mask feature may be used to create a variety of star masks 
+that can be used later in any software you are using to post process (Photoshop, PixInsight, ...).<br>
+<br>
+<font color="#FF0000">DeepSkyStacker is only creating star mask files. 
+It is not using them in any way.</font><br>
+You can view this feature as a tool intended to provide quickly and simply a 
+star mask file based on real star detection.</font></p>
+<table border="0" cellspacing="1" width="100%" id="AutoNumber21">
+  <tr>
+    <td width="44%" valign="top">
+    <p class="Standard"><font face="Arial" size="2"><b>What is a star mask?</b><br>
+    A star mask is a synthetic grayscale image on which each bright enough star is 
+    replaced by a round white area which is fading to black following a curve.<br>
+    <br>
+    You can see an example of a star mask on the right.<br>
+    Mouse over the text to see <b><a onmouseover="document['STARMASK01'].src='../images/StarMask_Stars.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Field';" href="javascript:void(0);">
+    the image</a></b> or <b><a onmouseover="document['STARMASK01'].src='../images/StarMask_Mask.jpg';document.getElementById('STARMASK01TEXT').innerHTML='Star Mask';" href="javascript:void(0);">the star mask</a></b>.</font></td>
+    <td width="56%">
+    <p align="center">
+    <img border="0" id = "STARMASK01" name = "STARMASK01" src="../images/StarMask_Stars.jpg" align="center" width="279" height="291"><br>
+    <font face="Arial" size="2"><b id = "STARMASK01TEXT" name = "STARMASK01TEXT">Star Field</b></font></td>
+  </tr>
+  <tr>
+    <td width="44%" valign="top">
+    <p class="Standard"><font face="Arial" size="2"><b>Star Mask Creation</b><br>
+    To create a Star Mask you must load an image in the processing tab.<br>
+&nbsp;</font><p class="Standard"><font face="Arial" size="2">Then just click on 
+    the Create Star Mask... menu on the right and the dialog on the right will 
+    open.</font><p class="Standard"><font face="Arial" size="2">From there you 
+    can change the shape of the stars in the mask, the star detection threshold 
+    and a few other parameters.</font><p class="Standard">
+    <font face="Arial" size="2">Once you are done, just click on the OK button 
+    and you will be asked to select a file (either a TIFF or a FITS file) in 
+    which the star mask will be saved.</font><p class="Standard">
+    <font face="Arial" size="2">The saved file is always a grayscale 16 bit 
+    image. It is not automatically loaded by DeepSkyStacker.</font><p class="Standard">
+    <font face="Arial" size="2">The star mask is always created from the image 
+    as you see it in DeepSkyStacker which means with the current adjustments 
+    applied.</font></td>
+    <td width="56%">
+    <p align="center">
+    <img border="0" src="../images/english/CreateStarMask.jpg" width="407" height="401"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><font face="Arial" size="4" color="#FF0000"><b><a name="imagelist"></a>The 
+Picture List<br>
+</b></font><font face="Arial" size="2">The picture list, common to Registering 
+and Stacking processes contains all the pictures used by the registering and stacking 
+processes.<br>
+- Light frames<br>
+- Dark frames<br>
+- Flat frames<br>
+- bias/offsets frames<br>
+<br>
+Only the checked pictures are used by the registering and stacking processes.<br>
+<br>
+The list contains the following columns:</font></p>
+<table border="1" cellspacing="1" width="100%" id="AutoNumber1">
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Checkbox</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">checked if the picture should be 
+    used</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Path</font></td>
+    <td width="83%"><font face="Arial" size="2">Path to the picture file</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">File</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Name of the picture file</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Type</font></td>
+    <td width="83%"><font face="Arial" size="2">Picture type: <br>
+    Light<br>
+    Dark<br>
+    Flat<br>
+    Dark Flat<br>
+    Bias</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Score</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Picture score computed by the 
+    registering process or <br>
+    N/A for dark, flat and bias/offsets frames.<br>
+    When you have selected a frame as the reference frame using the
+    <a href="#contextmenu">context menu</a>, the score is preceded by (*).</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">dX</font></td>
+    <td width="83%"><font face="Arial" size="2">X offset (in pixels) computed 
+    for the stacking process</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">dY</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Y offset (in pixels) computed 
+    for the stacking process</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Angle</font></td>
+    <td width="83%"><font face="Arial" size="2">Rotation angle (in °) computed 
+    for the stacking process</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Date/Time</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Date and Time of the file</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Size</font></td>
+    <td width="83%"><font face="Arial" size="2">Size of the picture in pixel 
+    (Width x Height)</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">CFA</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Yes if the picture is resulting 
+    from a Color Filter Array (CFA) which is the case of all the RAW pictures 
+    using <a href="technical.htm#rawdecod">a Bayer matrix</a>.</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">Depth</font></td>
+    <td width="83%"><font face="Arial" size="2">Type (gray levels or RGB) and 
+    number of bits per channel of the picture.</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Infos</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Extra information about the 
+    picture (RAW with DSLR information, TIFF or Other)</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">ISO Speed</font></td>
+    <td width="83%"><font face="Arial" size="2">ISO Speed of the picture</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">Exposure</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Exposure time of the picture</font></td>
+  </tr>
+  <tr>
+    <td width="17%"><font face="Arial" size="2">FWHM</font></td>
+    <td width="83%"><font face="Arial" size="2">FWHM: Full Width Half Maximum 
+    value. (in pixel)<br>
+    This is the average for all the detected stars</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#EBE9ED"><font face="Arial" size="2">#Stars</font></td>
+    <td width="83%" bgcolor="#EBE9ED"><font face="Arial" size="2">Number of 
+    detected stars.<br>
+    When a comet position is set a +(C) is appended to the number of stars</font></td>
+  </tr>
+  <tr>
+    <td width="17%" bgcolor="#FFFFFF"><font face="Arial" size="2">Sky Background</font></td>
+    <td width="83%" bgcolor="#FFFFFF"><font face="Arial" size="2">Sky background 
+    value for registered image in %</font></td>
+  </tr>
+</table>
+<p><font face="Arial" size="2">You can sort the list on any column by clicking 
+on the column header (and by clicking again to reverse the sort order).<br>
+<br>
+You can change the columns order and each column width. Everything is saved after each use of DeepSkyStacker. The 
+column widths order will be 
+reloaded the next time DeepSkyStacker is used.<br>
+<br>
+You can preview a picture from the list by selecting it.<br>
+If the selected picture is a RAW file, the RAW DDP settings will be used to 
+decode the RAW file before previewing it.</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="94%" id="AutoNumber11">
+  <tr>
+    <td width="38%" valign="top">
+    <p class="Standard"><font face="Arial" size="2">
+    <a name="contextmenu"></a>You can select multiple files in the list.<br>
+    <br>
+    A context menu is available (mouse right button) to manually select the 
+    reference frame of the stack, change the file type, check or uncheck the 
+    files, remove the files from the picture list or view, edit the properties 
+    of the files copy the list content to the clipboard or definitively erase 
+    files from the disk.<br>
+&nbsp;</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber19">
+        <tr>
+          <td width="100%" bgcolor="#EBE9ED">
+          <p style="margin-left: 10; margin-right: 10" align="justify">
+          <font face="Arial" size="2">If you select a reference frame that is 
+          not checked, the offsets will be computed from this reference frame 
+          even if the reference frame will not be stacked.</font></td>
+        </tr>
+      </table>
+      </center>
+    </div>
+    <p>&nbsp;</td>
+    <td width="62%" align="center">
+    <img border="0" src="../images/english/ContextMenu.jpg" alt="DeepSkyStacker - Context menu" width="182" height="247"><br>
+&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="38%" valign="top">
+    <p class="Standard">
+    <font face="Arial" size="2">The properties dialog may be used to change the 
+    picture type, and temporarily (only for the current session) the ISO speed 
+    and exposure time of one or more pictures.<br>
+    <br>
+    When changing the ISO speed and exposure time, no change is made to the real 
+    files. The values are only stored in memory for the duration of the current session.</font></td>
+    <td width="62%" align="center">
+    <img border="0" src="../images/english/Properties.jpg" alt="DeepSkyStacker - File Properties" width="399" height="312"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="imagepreview"></a>
+Picture Preview<br>
+</font></b><font face="Arial" size="2">The picture preview is used to quickly 
+view a picture from the picture list (Registering and Stacking Tabs) or to view 
+the picture being processed (Processing Tab).<br>
+<br>
+You can zoom in and zoom out by pointing the mouse and using the wheel. This is 
+the only way to pan and to zoom.</font></p>
+<p><font face="Arial"><b>Star and Comet editing</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="78%" id="AutoNumber6">
+  <tr>
+    <td width="53%" valign="top">
+    <p class="Standard"><font face="Arial" size="2">When a light frame is 
+    selected in the registering and stacking tab it is possible:<br>
+    - to edit the star positions<br>
+    - to edit the comet position<br>
+    - to create and edit (move/resize) a <a href="technical.htm#customrect">
+    custom rectangle</a><br>
+    <br>
+    You can select one of the above mode in the toolbar in the bottom right 
+    corner of the image.</font></p>
+    <p class="Standard"><font face="Arial" size="2">The last item of the toolbar 
+    is used to save the changes.</font></p>
+    <div align="center">
+      <center>
+      <table border="1" cellspacing="1" width="90%" id="AutoNumber22">
+        <tr>
+          <td width="100%" bgcolor="#FFFF99">
+          <p class="Standard"><font face="Arial" size="2" color="#FF0000"><b>
+          Comet editing note:</b><br>
+          The comet center may not be automatically detected by DeepSkyStacker.<br>
+          To <b>force</b> the comet to a given&nbsp; position hold down the 
+          <b>Shift</b> key while positioning the comet center.</font></td>
+        </tr>
+      </table>
+      <p>&nbsp;</p>
+      </center>
+    </div>
+    </td>
+    <td width="47%">
+    <p align="center"><img border="0" src="../images/EditToolbar.jpg" width="279" height="265"></td>
+  </tr>
+  <tr>
+    <td width="53%">
+    <p class="Standard"><font face="Arial" size="2">When used from the processing 
+    tab, the picture preview may be used to select a part of the image by 
+    drawing a rectangle directly on the picture.  </font>
+    </p>
+    <p class="Standard"><font face="Arial" size="2">This rectangle is used on one hand to apply 
+    the adjustments only to this rectangle and on the other hand, optionally, to 
+    save only a part of the image.<br>
+&nbsp;</font></p>
+    <p class="Standard"><font face="Arial" size="2">If no rectangle is defined the adjustments 
+    are applied to the full image.</font></p>
+    <p class="Standard"><font face="Arial" size="2">In all the cases, when the 
+    image is saved 
+    to disk the adjustments are applied to the full image.</font><p>&nbsp;</td>
+    <td width="47%">
+    <p align="center">
+    <img border="0" src="../images/PreviewRect.jpg" alt="Selection rectangle used to process only a part of the picture" width="203" height="230"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="rawddp"></a>
+Raw and FITS DDP settings<br>
+</font></b><font face="Arial" size="2">The Raw DDP settings dialog gives access 
+to all the parameters used while developing a RAW file to transform it into a picture.</font></p>
+
+<table border="0" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="82%" id="AutoNumber10">
+  <tr>
+    <td width="61%" valign="top">
+    <p class="Standard"><font face="Arial"><b>RAW Files<br>
+    </b></font><font face="Arial" size="2"><br>
+    The parameters are:<br>
+    - balance of the RGB channels<br>
+    - white balance<br>
+    - interpolation mode<br>
+    <br>
+    These parameters are strictly those made available by
+    <a target="_blank" href="http://www.cybercom.net/~dcoffin/dcraw/">DCRaw</a> 
+    by Dave Coffin. For more information about how to use them you can consult 
+    his website.<br>
+    <br>
+    About the channels balance it is very important to enter the good values 
+    used by your DSLR.<br>
+    <br>
+    The values for the <font color="#FF0000">Red</font> and
+    <font color="#0000FF">Blue</font> scales are relative to the
+    <font color="#008000">Green</font>.<br>
+    The luminance adjustment applies to all three channels.</font></p>
+    <p class="Standard"><font face="Arial" size="2">
+    About the interpolation mode and the specific behavior of the Bayer matrix 
+    optimization, more information is available in the
+    <a href="technical.htm#rawdecod">technical details</a>.</font></p>
+    <p>&nbsp;</td>
+    <td width="39%">
+    <img border="0" src="../images/english/rawddp.jpg" align="right" alt="Raw DDP settings" width="443" height="549"></td>
+  </tr>
+</table>
+
+<p>&nbsp;</p>
+
+<table border="0" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="82%" id="AutoNumber13">
+  <tr>
+    <td width="61%" valign="top">
+    <p class="Standard"><b><font face="Arial"><a name="fitssettings"></a>FITS</font></b><font face="Arial"><b> 
+    Files<br>
+    </b></font><font face="Arial" size="2"><br>
+    The only setting in this tab used for all FITS files is the Brightness 
+    value.<br>
+    It may be used to scale up 12 bit images to 16 bits images (use a value of 
+    16 to do so).</font></p>
+    <p class="Standard"><font face="Arial" size="2">All the other settings are <b>only used</b> with 16 bit B&amp;W FITS files created by a DSLR 
+    or a color CCD camera.<br>
+    <br>
+    The first step is to select the DSLR or the CCD camera used to take the images from the list. 
+    This is necessary to use the correct Bayer Filter Pattern that will be used 
+    to decode the image transforming them from B&amp;W to color images.</font></p>
+    <p class="Standard"><font face="Arial" size="2">The parameters are:<br>
+    - balance of the RGB channels<br>
+    - interpolation mode<br>
+    <br>
+    About the channels balance it is  important to enter the  values 
+    used by your DSLR or CCD camera.<br>
+    <br>
+    The values for the <font color="#FF0000">Red</font> and
+    <font color="#0000FF">Blue</font> scales are relative to the
+    <font color="#008000">Green</font>.<br>
+    The luminance adjustment applies to all three channels.</font></p>
+    <p class="Standard"><font face="Arial" size="2">
+    About the interpolation mode and the specific behavior of the Bayer matrix 
+    optimization, more information is available in the
+    <a href="technical.htm#rawdecod">technical details</a>.</font></p>
+    <p>&nbsp;</td>
+    <td width="39%">
+    <img border="0" src="../images/english/fitsddp.jpg" align="right" alt="Raw DDP settings" width="443" height="549"></td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>
