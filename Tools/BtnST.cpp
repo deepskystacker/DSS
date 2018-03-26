@@ -1253,10 +1253,10 @@ DWORD CButtonST::SetIcon(int nIconIn, int nCxDesiredIn, int nCyDesiredIn, int nI
 	{
 		case NULL:
 			break;
-		case (int)BTNST_AUTO_GRAY:
+		case (int)(size_t)BTNST_AUTO_GRAY:
 			hIconOut = BTNST_AUTO_GRAY;
 			break;
-		case (int)BTNST_AUTO_DARKER:
+		case (int)(size_t)BTNST_AUTO_DARKER:
 			hIconOut = BTNST_AUTO_DARKER;
 			break;
 		default:
@@ -1343,12 +1343,12 @@ DWORD CButtonST::SetIcon(HICON hIconIn, HICON hIconOut)
 		// Icon when mouse outside button?
 		if (hIconOut)
 		{
-			switch ((int)hIconOut)
+			switch ((int)(size_t)hIconOut)
 			{
-				case (int)BTNST_AUTO_GRAY:
+				case (int)(size_t)BTNST_AUTO_GRAY:
 					hIconOut = CreateGrayscaleIcon(hIconIn);
 					break;
-				case (int)BTNST_AUTO_DARKER:
+				case (int)(size_t)BTNST_AUTO_DARKER:
 					hIconOut = CreateDarkerIcon(hIconIn);
 					break;
 			} // switch
@@ -1415,10 +1415,10 @@ DWORD CButtonST::SetBitmaps(int nBitmapIn, COLORREF crTransColorIn, int nBitmapO
 	{
 		case NULL:
 			break;
-		case (int)BTNST_AUTO_GRAY:
+		case (int)(size_t)BTNST_AUTO_GRAY:
 			hBitmapOut = (HBITMAP)BTNST_AUTO_GRAY;
 			break;
-		case (int)BTNST_AUTO_DARKER:
+		case (int)(size_t)BTNST_AUTO_DARKER:
 			hBitmapOut = (HBITMAP)BTNST_AUTO_DARKER;
 			break;
 		default:
@@ -1475,14 +1475,14 @@ DWORD CButtonST::SetBitmaps(HBITMAP hBitmapIn, COLORREF crTransColorIn, HBITMAP 
 		m_csBitmaps[0].dwHeight = (DWORD)csBitmapSize.bmHeight;
 
 		// Create grayscale/darker bitmap BEFORE mask (of hBitmapIn)
-		switch ((int)hBitmapOut)
+		switch ((int)(size_t)hBitmapOut)
 		{
-			case (int)BTNST_AUTO_GRAY:
+			case (int)(size_t)BTNST_AUTO_GRAY:
 				hBitmapOut = CreateGrayscaleBitmap(hBitmapIn, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight, crTransColorIn);
 				m_csBitmaps[1].hBitmap = hBitmapOut;
 				crTransColorOut = crTransColorIn;
 				break;
-			case (int)BTNST_AUTO_DARKER:
+			case (int)(size_t)BTNST_AUTO_DARKER:
 				hBitmapOut = CreateDarkerBitmap(hBitmapIn, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight, crTransColorIn);
 				m_csBitmaps[1].hBitmap = hBitmapOut;
 				crTransColorOut = crTransColorIn;
