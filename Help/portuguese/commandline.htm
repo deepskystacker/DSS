@@ -1,0 +1,227 @@
+<html>
+
+<head>
+<meta http-equiv="Conteudo-Linguagem" content="Pt-Br">
+<meta name="GERADOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Conteudo-Tipo" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - Manual do Usuario da Linha de Comandos</title>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Manual Comandos do Usuario<br>
+</font></b><font face="Arial">Esta disponivel o Manual de Comandos
+<a href="guiausuario.htm">aqui</a></font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Introducao</font></b><font face="Arial"><b><br>
+</b><font size="2">A versao da linha de comandos do DeepSkyStacker tenciona simplificar
+todo o processo em serie.<br>
+A versao da linha de comando do DeepSkyStacker partilha regista e integra
+o motor do DeepSkyStacker. Por outras palavras voce tera o mesmo resultado
+usando outros comandos linha ou apenas versao-stand usando o mouse com as janelas.</font></font></p>
+<p><font face="Arial" size="2">Na versao sao partilhadas as confuguracoes da
+versao Stand-Normal do DeepSkyStacker e linha de comandos do DeepSkyStacker incluindo
+configuracoes RAW,registando,integrando, na pasta ficheiros temporarios...</font></p>
+<p><font face="Arial" size="2">Isto quer dizer que antes de usar a versao da linha de comandos
+deve usar a versao Stand para configurar os seus valores pre-defenidos.
+para as suas configuracoes.<br>
+Nas versoes futuras sera possivel  ultrapassar esta situacao com um aplicativo nos parametros
+da linha de comandos.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Parametros linha de comandos</font></b><font face="Arial"><b><br>
+</b><font size="2">A versao da linha de comandos do DeepSkyStacker pede o
+uso do DeepSkyStacker.exe localizado na pasta do DeepSkyStacker onde foi
+instalado.</font></font></p>
+<p><font face="Arial" size="2">A linha de comandos tem este aspecto:</font></p>
+<p><b><font face="Courier New" size="2">DeepSkyStackerCL.exe [/r|R] [/S] [/SC] 
+[/SR] [/O:&lt;NomeFicheiroProducao&gt;] [/OFxxx] [/OCx] &lt;NomeListaFicheiros&gt;</font></b></p>
+<p><font face="Arial" size="2">Onde estao os parametros:</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1">
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/r<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Registar ficheiros de luz (apenas se
+    ainda nao estiverem registados)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/R<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Registar ficheiros de luz (mesmo que
+    tenham sido registados - equivalente a forcar registo nas opcoes)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/S<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Integrar fotogramas de luz<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%" valign="top"><font face="Arial" size="2">/SC</font></td>
+    <td width="73%"><font face="Arial" size="2">integrar fotogramas e por cada
+    fotograma de luz criar um ficheiro contendo a luz calibrada do
+    fotograma.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/SR</font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Integra fotogramas de luz e por cada
+    ficheiro de luz criado contera o registo e calibracao do fotograma de
+    luz.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/O:&lt;NomeFicheiroProducao&gt;</font><p>
+    <font face="Arial" size="2"><br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Opcao para nome de ficheiro de
+    producao (incluindo /S or /SC)<br>
+    Por automatismo o ficheiro producao se guarda em.tif e onde esta localizado
+    a pasta dos fotogramas de luz.<br>
+    Atencao. Os ficheiros de producao terao sempre a extencao TIFF mesmo que esteja
+    designado por outro nome.<br>
+    A pasta de qualquer ficheiro tem que existir.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OFxxx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Formato Ficheiro Producao .<br>
+    Valores possiveis sao:<br>
+    /OF16 or /OF16i : 16 bit integracao precisa<br>
+    /OF32 or /OF32i : 32 bit integracao precisa<br>
+    /OF32r : 32 bit precisao racional (este e valor normalizado)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OCx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Compressao Ficheiro Producao.<br>
+    Possiveis valores sao:<br>
+    /OC0 : sem compressao (este e valor normalizado)<br>
+    /OC1 : LZW compressao<br>
+    /OC2 : ZIP (esvaziar) compressao<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%" valign="top"><font face="Arial" size="2">/FITS</font></td>
+    <td width="73%"><font face="Arial" size="2">Guardar ficheiros compressao em formato
+    FITS (normal e TIFF)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">&lt;ListaNomeFicheiros&gt;<br>
+    <br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Caminho de lista completa ficheiros como seja
+    criar um ficheiro pela versao Stand-Normalizada do DeepSkyStacker<br>
+    (veja os detalhes de formato mencionados).<br>
+&nbsp;</font></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Examples</font></b><font face="Arial"><b><br>
+</b></font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R 
+c:\MyDSSLists\MinhaLista.txt</b><br>
+</font><font size="2" face="Arial">Registarei (mesmo que registado) todos
+os fotogramas de luz de </font><font face="Courier New" size="2">c:\MeuDSSLista\MinhaLista.txt
+lista ficheiros</font><font size="2" face="Arial">.<br>
+Se a lista de ficheiros contém offsets/bias, dark e fotogramas flats serao usados
+(e o Master sera criado) por processo de registo.<br>
+<br>
+</font><font face="Courier New" size="2"><b>DeepSkyStacker.exe /R /S
+c:\MyDSSLists\MyList.txt</b><br>
+</font><font size="2" face="Arial">Registarei (mesmo que registado) depois
+integro todos os frames de luz de </font><font face="Courier New" size="2">
+c:\MinhaDSSLista\MinhaLista.txt lista de ficheiros</font><font size="2" face="Arial">.<br>
+Se a lista de ficheiros contem offsets/bias, dark e fotogramas flat serao usados
+(e o Master sera criado) atravez do registo e processo de integracao.<br>
+O ficheiro de producao sera um TIFF a 32 bits automaticamente guardado e localizado
+na pasta onde se encontar o primeiro fotograma de luz da lista.</font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStacker.exe /r /SR
+c:\MyDSSLists\MyList.txt</b><br>
+</font><font size="2" face="Arial">Registarei (apenas, se nao tiver registado)
+depois integro todos os ficheiros de luz de </font><font face="Courier New" size="2">
+c:\MinhaDSSLista\MinhaLista.txt lista ficheiros</font><font size="2" face="Arial">.<br>
+Se a lista de ficheiros contiver offsets/bias, dark e fotogramas flat serao usados
+(e o Master sera criado) atravez do registo e o processo de integracao.<br>
+O ficheiro de producao sera criado com 32 bit em ficheiro TIFF guardado automaticamente.O ficheiro
+estara na pasta do primeiro fotograma de luz da lista.<br>
+Alem disso, por cada fotograma de luz integrado em TIFF ou FITS sera nomeado o fotograma de
+luz com a .reg.tif or .reg.fts extensoes serao criadas para conter o
+registo e calibracao do fotograma de luz. </font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /S /OF16i /OC2 /O:c:\MyDSSResults\Result.tif 
+c:\MyDSSLists\MyList.txt</b><br>
+</font><font size="2" face="Arial">Integrarei todos os fotogramas de luz de </font>
+<font face="Courier New" size="2">c:\MinhaDSSLista\MinhaLista.txt lisata ficheiros</font><font size="2" face="Arial">.<br>
+Se a lista ficheiros contem offsets/bias, dark e fotogramas flat serao usados
+(e o Master sera criado) atravez do processo de integracao.<br>
+O ficheiro de producao sera criado a 16 bit ZIP(VAZIO) nomeado ficheiro TIFF comprimido
+</font><font face="Courier New" size="2">c:\MyDSSResults\Result.tif</font><font size="2" face="Arial">.</font></p>
+<hr color="#0000FF">
+<p><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="filelistformat"></a>Formato Lista Ficheiros</font><br>
+</b><font size="2">A lista de ficheiros e um texto igual a este:</font></font></p>
+<p><font face="Arial" size="2">A primeira linha devera conter </font><b>
+<font size="2" face="Courier New" color="#0000FF">DSS file list</font></b><font face="Arial" size="2"><br>
+A segunda linha devera conter&nbsp; </font><b>
+<font face="Courier New" size="2" color="#0000FF">CHECKED</font></b><font color="#0000FF" face="Courier New" size="2">&lt;TAB&gt;<b>TYPE</b>&lt;TAB&gt;<b>FILE</b></font><font face="Arial" size="2"><br>
+Onde &lt;TAB&gt; e a tabulacao de caracteres (ASCII 09)<br>
+<br>
+As outras linhas terao as seguintes formas se estiverem discritas no ficheiro de
+entrada:<br>
+</font><b><font size="2" face="Courier New" color="#0000FF">[verificado]</b>&lt;TAB&gt;<b>[type]</b>&lt;TAB&gt;<b>[full
+path name]</b></font><font face="Arial" size="2"><br>
+<br>
+Onde </font><font color="#0000FF" face="Courier New" size="2"><b>[verificado]</b></font><font face="Arial" size="2">
+e </font><font color="#0000FF" face="Courier New" size="2"><b>1</b></font><font face="Arial" size="2">
+se o fotograma e verificado e </font>
+<font color="#0000FF" face="Courier New" size="2"><b>0</b></font><font face="Arial" size="2"> 
+se nao for verificado.<br>
+(fotogramas nao verificados serao ignorados pelo DeepSkyStackerCL)<br>
+Onde </font><b><font color="#0000FF" face="Courier New" size="2">[type]</font></b><font face="Arial" size="2">
+is </font><b><font size="2" face="Courier New" color="#0000FF">light</font></b><font face="Arial" size="2"> 
+para fotograma de luz (or </font><b>
+<font face="Courier New" size="2" color="#0000FF">reflight</font></b><font face="Arial" size="2"> 
+referencia de fotograma luz), </font><b><font size="2" face="Courier New" color="#0000FF">
+dark</font></b><font face="Arial" size="2"> or </font><b>
+<font face="Courier New" size="2" color="#0000FF">darkflat</font></b><font face="Arial" size="2"> for a dark frame, </font><b>
+<font size="2" face="Courier New" color="#0000FF">flat</font></b><font face="Arial" size="2"> 
+para fotograma flat e </font><b>
+<font size="2" face="Courier New" color="#0000FF">offset</font></b><font face="Arial" size="2"> 
+Onde </font><b><font size="2" face="Courier New" color="#0000FF">[full path
+name]</font></b><font face="Arial" size="2"> e o caminho completo para ficheiro.<br>
+<br>
+Se a linha mostra mudança de grupo it tera a seguinte forma:<br>
+</font><font face="Courier New" size="2" color="#0000FF"><b>#GROUPID#</b>&lt;Group 
+Number&gt;<br>
+</font><font face="Arial" size="2">Todos os ficheiros localizados depois
+da mudança de grupo e ate ao proximo grupo tem que ser um valor integrado positivo.<br>
+Quando nao ha grupo especificadosera posto no grupo principal (ID 0).<br>
+<br>
+Pode criar facilmente uma lista ficheiros desde DeepSkyStacker usando a  Lista Ficheiros
+Guardados... command.</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

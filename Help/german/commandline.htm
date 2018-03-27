@@ -1,0 +1,189 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="de">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - Command Line User's Manual</title>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Handbuch f&uuml;r die Kommandozeilen Version<br>
+</font></b><font face="Arial">Das Handbuch f&uuml;r die normale Programmversion finden Sie <a href="userguide.htm">hier</a></font></p>
+<hr color="#0000FF">
+<p><b><font color="#FF0000" size="4" face="Arial">Einleitung</font></b><font face="Arial"><b><br>
+</b><font size="2"> Die Kommandozeilen-Version von DeepSkyStacker dient der Vereinfachung der Batch-Verarbeitung. <br>
+Die Kommandozeilen-Version ist der eigentliche &quot;Motor&quot; des normalen  DeepSkyStacker Programms. Mit anderen Worten: Es ist v&ouml;llig egal, ob Sie die &quot;Normale&quot; oder die Kommandozeilen-Version bevorzugen, da die Ergebnisse absolut gleich sind.</font></font></p>
+<p><font face="Arial" size="2">Zur Zeit werden noch alle Einstellungen von beiden Versionen gemeinsam genutzt, inklusive der RAW 
+Einstellungen, Registrierungs- und Stacking-Einstellungen, die tempor&auml;ren Dateiordner...</font></p>
+<p><font face="Arial" size="2">Das bedeutet, dass Sie alle Werte in den dementsprechenden Einstellungen zuerst in der normalen DeepSkyStacker Version machen m&uuml;ssen, bevor Sie die Kommandozeilen-Version  benutzen k&ouml;nnen.<br>
+In zuk&uuml;nftigen Versionen wird es m&ouml;glich sein, einige Einstellungen direkt mit zus&auml;tzlichen Kommandozeilen-Parameter zu &uuml;berschreiben.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Kommandozeilen-Parameter</font></b><font face="Arial"><b><br>
+</b><font size="2">Sie starten die Kommandozeilen-Version mit dem Aufrufen der Datei <strong>DeepSkyStackerCL.exe</strong>, die Sie in dem Ordner finden, in den Sie DeepSkyStacker installiert haben.</font></font></p>
+<p><font face="Arial" size="2">Die Kommandozeile sollte wie folgt aussehen:</font></p>
+<p><b><font face="Courier New" size="2">DeepSkyStackerCL.exe [/r|R] [/S] [/SC] 
+[/SR] [/O:&lt;OutputFileName&gt;] [/OFxxx] [/OCx] &lt;ListFileName&gt;</font></b></p>
+<p><font face="Arial" size="2">Die Parameter sind:</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1">
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/r<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">registriere Lightframes (nur, wenn sie noch nicht registriert worden sind)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/R<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">registriere Lightframes (auch wenn sie bereits registriert sind - das entspricht der forcierten Registrierungs-Option)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/S<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">stacke Lightframes<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%" valign="top"><font face="Arial" size="2">/SC</font></td>
+    <td width="73%"><font face="Arial" size="2">stacke Lightframes und erstelle f&uuml;r jedes Lightframe eine Datei mit dem kalibrierten Lightframe.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/SR</font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">stacke Lightframes und erstelle f&uuml;r jedes Lightframe eine Datei mit dem registrierten und kalibrierten Lightframe.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/O:&lt;OutputFileName&gt;</font><p>
+    <font face="Arial" size="2"><br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Optional kann hier der Name des Ausgabeordners eingetragen werden (vorausgesetzt /S oder /SC ist eingestellt)<br>
+    Standardm&auml;&szlig;ig ist der Name des Ausgabeordners <strong>Autosave.tif</strong> und befindet sich im ersten Lightframe Ordner.<br>
+    Bitte beachten Sie, dass die Ausgabedatei immer eine TIFF-Datei ist, selbst wenn in der Erweiterung etwas Anderes steht.<br>
+    Der Ordner, den Sie hier angeben, muss existieren, da er nicht automatisch generiert wird.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OFxxx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Ausgabedatei-Format.<br>
+    M&ouml;gliche Werte sind:<br>
+    /OF16 oder /OF16i : 16 Bit  Ganzzahlen<br>
+    /OF32 oder /OF32i : 32 Bit Ganzzahlen<br>
+    /OF32r : 32 Bit Gleitkommazahlen (dies ist die Standardeinstellung)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OCx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Ausgabe-Komprimierung.<br>
+    M&ouml;gliche Werte sind:<br>
+    /OC0 : keine Komprimierung (dies ist die Standardeinstellung)<br>
+    /OC1 : LZW Komprimierung<br>
+    /OC2 : ZIP (Deflate) Komprimierung<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">&lt;ListFileName&gt;<br>
+    <br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">vollst&auml;ndiger Pfad zu einer Dateiliste, wie sie von DeepSkyStacker erstellt wird <br>
+    (Format Details siehe unten).<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/FITS</font></td>
+    <td width="73%"><font face="Arial" size="2">
+  <span lang="EN-GB" style="FONT-FAMILY: Arial">Option zum Speichern der Ausgabedatei im 
+    FITS-Format</span></font></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font color="#FF0000" size="4" face="Arial">Beispiele</font></b><font face="Arial"><b><br>
+</b></font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R 
+c:\MeineDSSListe\MeineListe.txt</b><br>
+</font><font size="2" face="Arial">Es werden alle Lightframes registriert (auch die bereits registrierten), die in folgender Dateiliste enthalten sind </font><font face="Courier New" size="2">c:\MeineDSSListe\MeineListe.txt</font><font size="2" face="Arial"><br>
+Wenn in der Liste auch Offset/Bias, Dark und Flatframes enthalten sind, werden sie nat&uuml;rlich beim Registrierungs-Prozess verwendet werden 
+(auch Masterframes werden erstellt).<br>
+<br>
+</font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R /S 
+c:</b><b>\MeineDSSListe\MeineListe.txt</b><br>
+</font><font size="2" face="Arial">Es werden alle Lightframes registriert (auch die bereits registrierten) und gestackt, die in folgender Dateiliste enthalten sind </font><font face="Courier New" size="2">c:\MeineDSSListe\MeineListe.txt</font><font size="2" face="Arial"><br>
+Wenn in der Liste auch Offset/Bias, Dark und Flatframes enthalten sind, werden sie  beim Registrierungs- und Stacking-Prozess verwendet werden (auch Masterframes werden erstellt).<br>
+Die Ausgabedatei wird eine 32 Bit Gleitkommazahlen TIFF-Datei mit dem Namen <strong>Autosave.tif</strong> sein. Sie wird im Ordner des ersten Lightframe in der Liste gespeichert.</font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /r /SR 
+c:</b><b>\MeineDSSListe\MeineListe.txt</b><br>
+</font><font size="2" face="Arial">Es werden alle Lightframes registriert (nur die noch nicht registrierten) und gestackt, die in folgender Dateiliste enthalten sind </font><font face="Courier New" size="2">c:\MeineDSSListe\MeineListe.txt</font><font size="2" face="Arial"></font><font size="2" face="Arial"><br>
+Wenn in der Liste auch Offset/Bias, Dark und Flatframes enthalten sind, werden sie  beim Registrierungs- und Stacking-Prozess verwendet werden (auch Masterframes werden erstellt).<br>
+Die Ausgabedatei wird eine 32 Bit Gleitkommazahlen TIFF-Datei mit dem Namen <strong>Autosave.tif</strong> sein. Sie wird im Ordner des ersten Lightframe in der Liste gespeichert.<br>
+Au&szlig;erdem wird f&uuml;r jedes stackbare Lightframe eine TIFF oder FITS-Datei mit dem Namen des Lightframes und der Endung .reg.tif oder .reg.fts erstellt, die ein registriertes und kalibriertes Lightframe enth&auml;lt.</font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /S /OF16i /OC2 /O:c:\MeineDSSResultate\Resultat.tif 
+c:\MeineDSSListe\MeineListe.txt</b><br>
+</font><font size="2" face="Arial">Es werden alle Lightframes  gestackt, die in folgender Dateiliste enthalten sind </font><font face="Courier New" size="2">c:\MeineDSSListe\MeineListe.txt</font><font size="2" face="Arial"><br>
+Wenn in der Liste auch Offset/Bias, Dark und Flatframes enthalten sind, werden sie  beim  Stacking-Prozess verwendet werden (auch Masterframes werden erstellt).<br>
+Die Ausgabedatei wird eine 16 Bit Ganzzahlen ZIP(DEFLATE) komprimierte TIFF Datei mit dem Namen </font><font face="Courier New" size="2">c:\MeineDSSResultate\Resulat.tif</font><font size="2" face="Arial"> sein. </font></p>
+<hr color="#0000FF">
+<p><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="filelistformat"></a>Dateilisten-Format</font><br>
+</b><font size="2">Eine Dateiliste ist eine Textdatei mit folgender Struktur:</font></font></p>
+<p><font face="Arial" size="2">Die erste Zeile mu&szlig;</font><b>
+<font size="2" face="Courier New" color="#0000FF">DSS file list </font></b><font face="Arial" size="2">enthalten<br>
+Die zweite Zeile mu&szlig;&nbsp; </font><font size="2">
+<font color="#0000FF" face="Courier New"><b>
+CHECKED</b>&lt;TAB&gt;<b>TYPE</b>&lt;TAB&gt;<b>FILE</b></font></font><font face="Arial" size="2"> enthalten  <br>
+Wobei&lt;TAB&gt; den Tabulator-Charakter bezeichnet (ASCII 09)<br>
+<br>
+Die anderen Zeilen m&uuml;ssen in der folgenden Form verfa&szlig;t werden, wenn sie einen Datei-Eintrag beschreiben:<br>
+</font><b><font size="2" face="Courier New" color="#0000FF">[ausgew&auml;hlt]</b>&lt;TAB&gt;<b>[Art]</b>&lt;TAB&gt;<b>[vollst&auml;ndiger Pfadname]</b></font><font face="Arial" size="2"><br>
+<br>
+Wenn </font><font color="#0000FF" face="Courier New" size="2"><b>[ausgew&auml;hlt]</b></font> 
+<font color="#0000FF" face="Courier New" size="2"><b>1</b></font><font face="Arial" size="2"> 
+ist, ist der Frame ausgew&auml;hlt und bei </font>
+<font color="#0000FF" face="Courier New" size="2"><b>0</b></font><font face="Arial" size="2"> 
+ist er nicht ausgew&auml;hlt.<br>
+(nicht ausgew&auml;hlte Frames werden bei  DeepSkyStackerCL ignoriert)<br>
+ In dem Feld </font><b><font color="#0000FF" face="Courier New" size="2">[Art]</font></b><font face="Arial" size="2"> 
+steht die Art des Frames. z.B. <strong><font color="#0000FF" face="Courier New">l</font></strong></font><b><font size="2" face="Courier New" color="#0000FF">ight</font></b><font face="Arial" size="2"> 
+f&uuml;r ein Lightframe (oder </font><b>
+<font face="Courier New" size="2" color="#0000FF">reflight</font></b><font face="Arial" size="2"> 
+f&uuml;r das Referenz-Lightframe), </font><b><font size="2" face="Courier New" color="#0000FF">
+dark</font></b><font face="Arial" size="2"> oder </font><b>
+<font face="Courier New" size="2" color="#0000FF">darkflat</font></b><font face="Arial" size="2"> f&uuml;r ein Darkframe, </font><b>
+<font size="2" face="Courier New" color="#0000FF">flat</font></b><font face="Arial" size="2"> 
+f&uuml;r ein Flatframe und </font><b>
+<font size="2" face="Courier New" color="#0000FF">offset</font></b><font face="Arial" size="2"> 
+f&uuml;r ein Offset/Bias Frame.<br> 
+In dem Eintrag 
+</font><b><font size="2" face="Courier New" color="#0000FF">[vollst&auml;ndiger Pfadname]</font></b><font face="Arial" size="2"> steht die komplette Pfadangabe der Datei.<br>
+<br>
+Wenn eine Zeile einen Gruppenwechsel beschreibt, mu&szlig; sie folgende Form haben:<br>
+</font><font face="Courier New" size="2" color="#0000FF"><b>#GROUPID#</b>&lt;Gruppen Nummer&gt;<br>
+</font><font face="Arial" size="2">Alle Dateien, die nach der Zeile folgen, beschreiben die Gruppe, die bis zur n&auml;chsten Gruppe in die angegebene Gruppe&lt;Gruppen Nummer&gt; verschoben wird. Die &lt;Gruppen Nummer&gt; mu&szlig; ein positiver, ganzzahliger Wert sein.<br>
+Wenn keine Gruppe angegeben ist, werden die Dateien der Haupt-Gruppe beigef&uuml;gt (ID 0).<br>
+<br>
+Sie k&ouml;nnen Dateilisten sehr einfach mit DeepSkyStacker erstellen, wenn Sie die Funktion &quot;Dateiliste speichern&quot; verwenden.</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

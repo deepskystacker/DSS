@@ -1,0 +1,307 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>The theory or How to create better images</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Conceito Teorico<br>
+</font><font face="Arial" size="4">como criar melhores imagens</font></b></p>
+<blockquote>
+  <p>
+  <b>
+  <font face="Arial"><a href="#WhyCombine">Porque integrar?</a><br>
+  <a href="#CombineHowMany">Quantos fotogramas sao precisos?</a><br>
+  <a href="#Calibration">Calibracao: como usar os fotogramas do dark,do flat e do bias</a></font></b><br>
+  <b><font face="Arial"><a href="#ISOSpeed">Qual velocidade ISO usar?</a></font></b><br>
+  <b><font face="Arial"><a href="#CalibrationProcess">O Processo de Calibracao</a></font></b></p>
+</blockquote>
+<hr color="#0000ff">
+<p class="Standard"><font face="Arial">Em baixo ira encontrar informacao
+importante, de qualquer das formas nada subtitui a experiencia pessoal.<br>
+Alguns especialistas decidiram criar um site e/ou uma revista dedicados a astrofotografia
+e que estao cheios de preciosismos, em muitos casos conhecimentos muito avancados.</font></p>
+<p class="Standard"><font face="Arial">Alguns dos topicos sao compreensiveis como sejam o
+ruido nas imagens, Drizzle, Guiagem, etc...</font></p>
+<a target="_blank" href="http://www.skyinsight.com/astrophoto/current.php?r=f28b8af9087c36d6142f168978df7fe8&s=m">	
+<img src = "http://www.skyinsight.com/images/astrophoto-banner-med-w.jpg" width="300" height="147"></a><a href = "http://www.skyinsight.net/astrophoto/download.php?r=f28b8af9087c36d6142f168978df7fe8&s=m">	</a>
+<p><font face="Arial">Nota: nao estou a escrever estes topicos para nenhuma puiblicacao
+que voce possa a encontrar.<br>
+Estou apenas a publicitar este meu programa que e bom livre e
+completo em informacao util.</font></p>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000"><a name="WhyCombine">
+</a></font><font color="#ff0000" size="4">Porque Integrar?</font><font size="2"><br>
+A resposta e simples: para aumentar o Sinal versus Racio de Ruido (SNR).</font><br>
+</b><font size="2">O resultado da imagem e mais luminosa? Nao.<br>
+O resultado da imagem e mais colorida? Nao.<br>
+<br>
+O segredo esta em integrar muitas imagens-fotogramas numa unica imagem-fotograma para aumentar a informacao-SNR.
+o resultado nao sera nem mais luminoso nem mais colorido mas contem
+menos ruido o que permitira o uso do stretch do histograma para melhoramentos,
+evidenciando os detalhes e a cor RGB.</font></font></p>
+<table id="AutoNumber1" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p style="margin-right: 10px" class="Standard"><font face="Arial" size="2">O exemplo do lado direito
+    mostra o resultado de uma integracao de 1, 2, 4, 16 e 32 imagens-fotogramas.<br>
+    <br>
+    Nao foi feita a calibracao e alguns pixels quentes sao visiveis em alguns casos (sem
+    dark e sem bias subtraido, e sem divisao do flat).<br>
+    <br>
+    Passe o rato-mouse por cima da foto e veja o resultado da integracao de &nbsp; <br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_1.jpg';;document.getElementById('LEGEND01').innerHTML='One Light Frame';" href="javascript:void(0);">
+    1 imagem</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_2.jpg';document.getElementById('LEGEND01').innerHTML='Stack of 2 light frames';" href="javascript:void(0);">
+    2 imagens</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_4.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 4 light frames';" href="javascript:void(0);">
+    4 imagens</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_16.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 16 light frames';" href="javascript:void(0);">
+    16 imagens</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_32.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 32 light frames';" href="javascript:void(0);">
+    32 imagens</a></b></font></p>
+    <p class="Standard"><font face="Arial" size="2">Como ve o resultado da imagem-fotograma nao e
+    aumento da luminosidade ou aumento da coloracao quando se integra fotogramas de luz ...
+    aumenta SIM a nebulosidade.</font></p>
+    <p>&nbsp;</td>
+    <td width="62%">
+    <p align="center">
+    <img id="STACKRESULT01" src="../images/Theory/Stack_2.jpg" border="0" name="STACKRESULT01" width="591" height="591"><br>
+    <font face="Arial" size="2"><b id="LEGEND01" name="LEGEND01">
+    Apenas uma imagem-fotografa</b></font></td>
+  </tr>
+</table>
+<hr color="#0000ff">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000"><a name="CombineHowMany"></a>
+Quantos fotogramas sao precisos</font></b><font face="Arial"><b><font color="#ff0000" size="4">?</font><font size="2"><br>
+Quanto mais fizer melhor sera porque o threshold sera mais eficiente.</font><br>
+</b><font size="2">O Sinal com o Racio de Ruido aumenta com a raiz quadrada
+do numero de fotogramas integrados, com o tempo de exposicao de cada imagem-fotograma.<br>
+Independentemente do metodo usado, esta e a VERDADE ( seja o metdo de proporcao, media, kappa-sigma
+, analise proporcional auto-adaptiva , ...) excepto na analise proprcional da entropia
+desde que seja avaliado o peso de cada pixel embora isso faca aumentar o sinal de ruido.</font></font><font face="Arial" size="2">.</font></p>
+<p align="justify"><font face="Arial" size="2">Isto quer dizer que tendo uma base SNR de 1, quando
+integra 10 imagens-fotogramas o SNR aumenta 3.16 (raiz quadrada de 10). Para 30 imagens
+e 5.47, para 50 imagens e 7.07, para 100 imagens e 10, para 300 imagens
+e 17.32.</font></p>
+<p align="justify"><font face="Arial" size="2">Como pode ver para um ganho racio 7 ratio
+sao precisos de 1 a 50, mas para 200 fotogramas sao necessarios acima de 100.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Se forem 100 x 1 minuto e
+10x10 minutos ... darao o mesmo resultado?</b><br>
+Teoricamente Sim, tomando em consideracao o SNR ... mas na pratica NAO, face ao resultado final.<br>
+A diferenca entre 10 minutos de exposicao e 1 minuto de exposicao esta em que o
+SNR em 10 minutos de exposicao e maior que 3.16 relativamente a 1 minuto de exposicao.</font></p>
+<p align="justify"><font face="Arial" size="2">Da-nos o mesmo SNR se integrarmos 10
+fotogramas de luz de 10 minutes ou 100 fotogramas de luz de 1 minuto. No entanto,nao tera
+o mesmo sinal (que e o que nos interessa). Para voce perceber, suponha que coloca apenas
+o signal de ganho de fotoes luminosos que capta em cada imagem-fotograma
+e deixa de lado o sinal de ruido inerente ao efeito termico do chip.Neste caso tinha optimas imagens.</font></p>
+<p align="justify"><font face="Arial" size="2">Imagine uma nebulosa longinqua e voce apanhou
+fotoes luminosos dela em cada 10 minutos. Se estiver a usar 10 minutos de exposicao, tera capturado
+fotoes para cada fotograma de luz e quando integrados
+o sinal sera ampliado. <br>
+Se estiver a usar 1 minuto de exposicao captara fotoes luminosos apenas para alguns
+dos seus fotogramas de luz.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Posso integrar duas ou mais imagens-fotogramas?<br>
+</b>Afirmativo, a regra do quadrado aplica-se tambem para pequenas integracoes.<br>
+<br>
+Quando integramos duas imagens-fotogramas o SNR aum enta pra  1.414 (raiz quadrada de 2).<br>
+Se as duas imagens-fotogramas tiverem o mesmo SNR ... entao é o mesmo que ter uma simples integracao.
+Isto nao quer dizer que a integracao nos da a mesma imagem, apenas que o
+SNR se manteve o mesmo.<br>
+<br>
+No entanto, se uma integracao contiver mais fotogramas de luz ( fotoes luminosos ) que as outras, o SNR de
+duas integracoes sera diferente e o  SNR sera mais baixo do que
+uma simples integracao contendo todos os fotogramas de luz ( fotoes luminosos ).<br>
+<br>
+Integrando o resultado de 10X1 minuto com um fotograma de 1 minuto
+de SNR e igual na integracao de 2 fotogramas de luz.
+Isto e o que acontece quando combinamos-integramos duas imagens-fotogramas de ruido adicionado em que
+a melhor imagem esta danificada e a pior esta a ser integrada.</font></p>
+<hr color="#0000ff" SIZE="1">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000"><a name="Calibration"></a>C</font><font face="Arial" color="#ff0000" size="4">alibracao:
+como usar os fotogramas do dark, flat e bias <br>
+</font></b><font face="Arial" size="2">A calibracao e um processo em que consiste
+na subtraccao do bias e sinal dark dividindo pelo sinal flat.<br>
+Nao explicarei aqui como se fazem os fotogramas de dark, bias e flat ( veja
+<a href="faq.htm#lightdarkflatoffset">aqui</a>) para melhor compreender como
+fazer uso deles na obtencao das melhores imagens possiveis.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Uma boa ideia</b><br>
+Todos dizem que temos que tirar fotogramas do dark, bias e flat para criar
+boas imagens, mas se o fizer da forma errada facilmente danificara
+bons ficheiros de luz, e ficara desapontado com os resultados.</font></p>
+<p align="justify"><font face="Arial" size="2">A boa novidade e que e facil obter
+bons resultados. Aqui se encontram as respostas e as formas de o fazer.<br>
+<br>
+<b>Os MAUS Conceitos mais usuais</b><br>
+E normal pensar-se que o numero de fotogramas de dark, bias e flat
+esta relacionado com o numero de fotogramas de luz ( fotoes luminosos ).<br>
+Muitos usam poucos (por vezes nem um) fotogramas de dark, bias e flat
+... porem podem obter muito melhores resultados usando um grande numero de fotogramas de dark,
+bias e flat com o mesmo numero de fotogramas de luz ( fotoes luminosos ).<br>
+<br>
+Seguindo a regra da raiz quadrada tera masters mais limpos e perfeitos usando
+um grande numero de fotogramas. Lembre-se que esta tentando tirar o dark
+e o sinal bias, e nao o ruido que vem por inerencia com os fotogramas. <br>
+<br>
+Por exemplo: quando subtrai o Master dark por cada fotograma esta
+adicionando ruido do fotograma do master dark ao fotograma em causa. O pequeno
+ruido do Master dark, sera adicionado ao fotograma em causa.
+O mesmo se passa com o  master bias e o master flat.<br>
+<br>
+Na verdade se usar um pequeno numero de fotogramas para a criacao de
+masters facilmente triplicara o ruido na clibracao do fotograma (bias e
+dark subtraidos e divididos pelo flat) comparando com o ruido,
+antes da calibracao. </font></p>
+<p align="justify"><font face="Arial" size="2">No final tera 9 vezes mais (3 ao quadrado) fotoes
+( fotogramas de luz ) aumentando o nivel de ruido para um nivel, para o qual podera usar um programa
+de limpeza de ruido.</font></p>
+<table id="AutoNumber2" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p class="Standard"><font face="Arial" size="2">O exemplo da imagem do lado direito mostra
+    o resultado da integracao de (passe com o rato-mouse por cima da imagem)<br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/NoCalibration.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (no calibration)';" href="javascript:void(0);">
+    32 fotogramas (sem calibracao)</a><br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration2.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (2 darks, 2 flats and 2 biases calibration)';" href="javascript:void(0);">
+    32 fotogramas (2 darks, 2 flats e 2 bias - todos  calibrados)</a><br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration20.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (20 darks, 20 flats and 20 biases calibration)';" href="javascript:void(0);">
+    32 fotogramase0 darks, 20 flats and 20 bias - todos calibrados)</a><br>
+    <br>
+    Como pode constactar o aumento do numero de fotogramas de dark, flat e bias
+    mudifica o resultado da imagem tornando os detalhes visiveis.</font></td>
+    <td width="50%">
+    <p align="center">
+    <img id="STACKRESULT02" src="../images/Theory/Calibration20.jpg" border="0" name="STACKRESULT02" width="591" height="591"><br>
+    <font face="Arial" size="2"><b id="LEGEND02" name="LEGEND02">Integrados 32 fotogramas (sem calibracao)</b></font></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2">Esta e a razao pela qual, voce deve usar o maior
+numero possivel de dark/bias/flat . Na pratica 20 fotogramas e o minimo se nao quiser adicionar muito ruido,
+mas muito melhor ficara, com 50 a 100 fotogramas que lhe fara realcar verdadeiramente os detalhes.<br>
+<br>
+<b>Um apontamento sobre os Pixels Quentes</b><br>
+Pixels quentes, sao pixels que tiveram um comportamento deficiente. Esses pixels, tem um sinal muito
+forte de tal maneira que conseguem ser visiveis apesar de se ter feito o dark a cada fotograma de fotoes. <br>
+<br>
+Claro que quando  se subtrai o fotograma dark aos fotoes da imagem, o resultado e a remocao dos pixels quentes
+o que pode dar a sensacao que o fotograma dark ( dark frame ) ter sido eficaz ... mas
+nao e bem assim. <br>
+Ao mesmo tempo que se subtrai duplica-se o ruido calibrado ( note-se CALIBRADO )
+dos fotoes luminosos.<font></p>
+
+<hr color="#0000ff" SIZE="1">
+
+<p align="justify"><font face="Arial" size="2"><a name="ISOSpeed"></a></font>
+<font face="Arial" color="#FF0000" size="4"><b>Que velocidade ISO usar?<br>
+</b></font><font face="Arial" size="2">Uma pergunta frequente e a resposta
+e simples: nao tem importancia...escolha voce.<br>
+<br>
+A verdade e que a velocidade ISO e uma funcionalidade das cameras DSLR. Por exemplo os chip ( ccd ou cmos )
+que equipam as cameras para astrofotografia (estas cameras nao usam velocidade ISO) tem
+os mesmos resultados.<br>
+O uso da velocidade ISO faz obter mais fotoes, amplificando-os o seu sinal,
+mas tambem, nao nos devemos esquecer, que amplifica tambem o sinal de ruido.</font></p>
+<p align="justify"><font face="Arial" size="2">A boa novidade esta em que voce nao necessita
+de alterar a velocidade de ISO para capturar um objecto longinquo. So precisara fazer
+longas exposicoes.<br>
+<br>
+Claro que na pratica e um pouco mais complicado obter resultados baseado no que disse no paragrafo de cima,
+alem do que a velocidade ISO varia um pouco de marca par marca.<br>
+Varia tambem das caracteristicas de cada sensor chip (leitura de ruido e
+ruido electronico) que nao e simples de avaliar, e ainda da concepçao electronica do circulo electronico de
+cada camera ( Dslr sao diferentes das cameras para astrofotografia ).<br>
+Christian Buil avaliou oa valores de velocidade ISO para algumas Canon DSLRs</font></p>
+<table border="1" cellspacing="1" width="43%" id="AutoNumber3">
+  <tr>
+    <td width="35%"><b><font face="Arial" size="2">DSLR</font></b></td>
+    <td width="65%"><b><font face="Arial" size="2">Recomendado (Optimo) Velocidade
+    ISO</font></b></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 10D&nbsp;&nbsp;&nbsp;
+    </font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">400&nbsp;&nbsp;&nbsp; 
+    (290)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 20D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1000)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 350D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">800&nbsp;&nbsp;&nbsp; 
+    (900)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 5D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1100)</font></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<hr color="#0000ff" SIZE="1">
+
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="CalibrationProcess"></a>O Processo de Calibracao</font></b><font face="Arial" color="#FF0000" size="4"><b><br>
+</b></font><font face="Arial" size="2">O processo de calibracao e como cada serie de ficheiros (fotogramas)
+de imagens, darks, flats,...)&nbsp; que nos parece um misterio
+mas que na realidade e bastante simples.<br>
+<br>
+Em baixo esta um grafico que nos mostra o processo de calibracao total, quando todos os ficheiros estao disponiveis :</font></p>
+
+<p align="left"><font face="Arial" size="4"><b>Processo de Calibracao total (todos
+os ficheiros disponiveis)</b></font><font face="Arial" size="2"><br>
+<br>
+<img border="0" src="../images/portuguese/Calibration_Full.jpg" width="918" height="456"></font></p>
+
+<p align="justify"><font face="Arial" size="2"><br>
+No entanto e o mais comum e o nao uso de ficheiros de calibracao dark, bias, flat, ... O grafico esta em baixo :</font></p>
+
+<p align="justify"><font face="Arial" size="4"><b>Processo de calibracao alternativo
+I (sem dark flat frames)</b></font><font face="Arial" size="2"><br>
+<br>
+<img border="0" src="../images/portuguese/Calibration_Alternate1.jpg" width="918" height="454"></font></p>
+
+<p align="justify"><font face="Arial" size="2">Ha quem use fazer a calibracao, mas sem bias.
+Veja o grafico em baixo:</font></p>
+
+<p align="justify"><font face="Arial" size="4"><b>Processo de calibracao alternativo
+II (sem bias frames)</b></font><font face="Arial" size="2"><br>
+<br>
+<img border="0" src="../images/portuguese/Calibration_Alternate2.jpg" width="918" height="454"></font></p>
+
+<p align="justify"><font face="Arial" size="2">Qualquer outro metodo para fazer calibracoes
+e considerado improprio. So tem estas 3 possibilidades.</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

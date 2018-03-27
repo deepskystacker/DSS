@@ -1,0 +1,305 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="fr-fr">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - User's Manual</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Guide d'Utilisation de DeepSkyStacker Live<br>
+&nbsp;</font></b></p>
+<blockquote>
+
+<p><b><font face="Arial"><a href="#Introduction">Introduction</a><br>
+<a href="#QuickStart"><span lang="fr">Démarrage rapide</span></a></font></b><br>
+<a href="#Settings"><span lang="fr"><b><font face="Arial">Paramètres</font></b></span></a><br>
+<b><font face="Arial"><a href="#Graphs">Graphiques</a></font></b><br>
+<b><font face="Arial"><a href="#Technical">Informations 
+Techniques</a></font></b></p>
+</blockquote>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="Introduction"></a>Introduction</font></b><font face="Arial"><b><br>
+<br>
+DeepSkyStacker Live<span lang="fr"> : c'est quoi </span>?<br>
+</b><font size="2">DeepSkyStacker Live <span lang="fr">est conçu pour être 
+utilisé sur le terrain pendant une session pour les tâches suivantes :</span> </font></font></p>
+<ul>
+  <li><font size="2" face="Arial"><span lang="fr">Aligner et empiler les images 
+  au fur et à mesure qu'elles sont capturées</span></font></li>
+  <li><font size="2" face="Arial"><span lang="fr">Calculer et montrer des 
+  statistiques sur les images</span> (FWHM, <span lang="fr">nombre d'étoiles 
+  détectées, décalage...)</span></font></li>
+  <li><font face="Arial" size="2"><span lang="fr">Montrer l'image résultant de 
+  l'empilement</span></font></li>
+  <li><font face="Arial" size="2"><span lang="fr">Prévenir lorsque certaines 
+  conditions sont détectées, par exemple si le décalage est supérieur à une 
+  valeur choisie par l'utilisateur.</span></font></li>
+</ul>
+<p><font size="2" face="Arial">DeepSkyStacker Live <span lang="fr">est 
+compatible avec toutes les caméras (APN, CCD) et avec tous les logiciels de 
+captures à partir du moment où les images capturées sont enregistrées dans un 
+répertoire et sont d'un</span> <span lang="fr">format reconnue (FITS, TIFF, JPEG 
+et images RAW de presque tous les APN)</span>.<br>
+<br>
+<span lang="fr"><b>Note :</b> </span>DeepSkyStacker Live <span lang="fr">ne 
+remplace pas </span>DeepSkyStacker.
+<br>
+<span lang="fr">Ils utilisent tous les deux le même moteur mais DeepSkyStacker 
+Live ne possède pas les fonctionnalités permettant de créer des images pouvant 
+être post traitées avec précision.</span><br>
+<span lang="fr">Par exemple DeepSkyStacker Live ne permet pas de calibrer les 
+images (soustraction des darks et offset/bias, division par un flat) ou 
+d'utiliser les méthodes d'empilement les plus avancées (kappa sigma ou moyenne 
+pondérée adaptative)</span>.<br>
+<br>
+<br>
+</font><font face="Arial"><b><span lang="fr">Interface Utilisateur de 
+DeepSkyStacker Live</span></b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="99%" id="AutoNumber9">
+  <tr>
+    <td width="45%">
+    <p class="Standard"><font face="Arial" size="2"><span lang="fr">Comme </span>DeepSkyStacker 
+    <span lang="fr">l'interface utilisateur de </span>DeepSkyStacker 
+    <span lang="fr">est simple et intuitive et toutes les fonctionnalités et 
+    commandes sont disponibles directement.</span></font></p>
+    <p class="Standard"><font face="Arial" size="2"><br>
+    <span lang="fr">En haut de l'écran trois boutons sont utilisés pour démarrer 
+    la surveillance, démarrer l'empilement et arrêter.</span>.<br>
+    <br>
+    <span lang="fr">La partie basse est utilisée pour surveiller l'avancement 
+    pendant la session de différentes manières :</span></font></p>
+    <ul>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">
+    <span lang="fr">L'image empilée</span></font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">
+    <span lang="fr">La dernière image</span></font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">
+    <span lang="fr">Des graphiques montrant diverses statistiques</span></font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">
+    <span lang="fr">La liste des images</span></font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">
+    <span lang="fr">Le journal</span></font></p>
+      </li>
+    </ul>
+    <p class="Standard"><font face="Arial" size="2"><span lang="fr">Le dernier 
+    onglet est utilisé pour fixer les paramètres permettant de contrôler le 
+    fonctionnement de DeepSkyStacker Live</span>.</font></p>
+    <p class="Standard">&nbsp;</p>
+    <p>&nbsp;</td>
+    <td width="62%" valign="top">
+    <img border="0" src="../images/french/Live_Main.jpg" alt="DeepSkyStacker's Main Screen" align="right" width="549" height="469"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="QuickStart"></a><span lang="fr">Démarrage Rapide</span></font></b><font face="Arial"><b><br>
+</b>
+<font size="2"><span lang="fr">Votre</span> <span lang="fr">portable est prêt 
+pour la session, le logiciel de capture CCD ou APN est lancé</span>.</font></font></p>
+<p align="justify">
+<font size="2" face="Arial"><span lang="fr">Démarrez </span>DeepSkyStacker Live, 
+<span lang="fr">cliquez sur le bouton Empiler et sélectionnez le répertoire à 
+surveiller. C'est tout !</span><br>
+<br>
+<span lang="fr">A partir de </span>c<span lang="fr">e moment toutes les images 
+créées dans le répertoire surveillé vont être enregistrées, alignées et empilées 
+sauf si elles correspondent à une des conditions que vous avez fixées dans 
+l'onglet Paramètres</span>.</font></p>
+<p align="justify"><font face="Arial" size="2"><span lang="fr">Bien entendu vous 
+pouvez changer les paramètres pendant que DeepSkyStacker Live surveille l'arrivée 
+de nouvelles images</span>.</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Settings"></a><span lang="fr">Paramètres</span></font><br>
+</b>
+<font size="2"><span lang="fr">Tout d'abord </span>DeepSkyStacker Live
+<span lang="fr">partage tous les paramètres concernant le décodage des images, 
+le seuil de détection des étoiles, les méthodes d'alignement et les options de 
+calibration du fond avec DeepSkyStacker. Pour changer ces valeurs vous devez 
+utiliser DeepSkyStacker</span>. <br>
+<span lang="fr">La seule différence concerne les décodages AHD et Bayer Drizzle 
+qui sont automatiquement transformés en Interpolation Bilinéaire</span>.<br>
+<br>
+<span lang="fr">L'onglet Paramètres est utilisé pour définir quand les nouvelles 
+images sont empilées, quand un avertissement </span>d<span lang="fr">oit être 
+envoyé et sous quelle forme.</span></font></font></p>
+<p align="center"><img border="0" src="../images/french/Live_Settings.jpg" width="687" height="566"></p>
+<p align="justify"><font face="Arial" size="2"><font color="#0000FF"><b>
+<span lang="fr">Options d'empilement</span></b></font><br>
+<b><span lang="fr">Ne pas commencer l'empilement tant que xxx images ne sont pas 
+disponibles</span><br>
+</b><span lang="fr">Cette option peut être utilisée pour attendre qu'un nombre 
+minimum d'images soit disponible avant de décider quelle image sera utilisée 
+comme image de référence</span>.<br>
+<span lang="fr">Quand le nombre minimum d'image est atteint DeepSkyStacker Live 
+utilise celle qui a le score le plus élevé comme image de référence</span>.<br>
+<span lang="fr">Cette option est particulièrement utile si vous prenez des poses 
+courtes et si vous n'êtes pas sur que toutes vos images sont assez bonnes</span>.</font></p>
+<p align="justify"><font face="Arial" size="2"><b><span lang="fr">Options 
+d'Avertissement/Non empilement</span><br>
+</b><span lang="fr">Ces options s'expliquent d'elles mêmes et peuvent être 
+utilisées pour définir diverses conditions pour lesquelles une image ne doit pas 
+être empilée et/ou pour laquelle un avertissement doit être envoyé</span>.<br>
+<span lang="fr">Il est possible de définir des conditions sur </span>:</font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">Le Score</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">Le Nombre d'étoiles détectées</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">La </span>FWHM (Full Width Half Maximum)</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">Le décalage </span>(dX
+<span lang="fr">ou</span> dY) </font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">L'angle de rotation</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<span lang="fr"><font face="Arial" size="2">Le fond du ciel</font></span></p>
+  </li>
+</ul>
+<p align="justify"><span lang="fr"><b>
+<font face="Arial" size="2" color="#0000FF">Avertissements</font></b></span><font face="Arial" size="2"><br>
+<span lang="fr">Quand une condition d'avertissement est détectée il est possible 
+de l'envoyer en utilisant 4 méthodes :</span></font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr"><b>Son </b></span>: <span lang="fr">
+le bip classique de l'ordinateur</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><b><span lang="fr">Clignotement </span></b>: DeepSkyStacker Live 
+<span lang="fr">clignote 4 fois</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr"><b>Créer un fichier d'avertissement 
+: </b>un fichier nommé DDSLiveWarning.txt contenant le message d'avertissement 
+est créé dans le répertoire de votre choix. Cela peut être un répertoire local 
+ou sur le réseau. Si le fichier existe déjà le nouveau message d'avertissement 
+est ajouté à la fin.</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr"><b>Envoyer un email : </b>un email 
+contenant le message d'avertissement est envoyée à l'adresse de votre choix.</span><br>
+<span lang="fr">Dans la dialogue de configuration de l'email vous pouvez choisir 
+de n'envoyer un email que pour le premier avertissement. Dans ce cas dès qu'un 
+email a été envoyé un bouton apparaîtra vous permettant de remettre à zéro le 
+compteur interne des emails envoyés.</span></font></p>
+  </li>
+</ul>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><font color="#0000FF"><b><span lang="fr">Création de 
+l'image empilée</span></b></font><br>
+<span lang="fr">L'image empilée est créée uniquement en mémoire et n'est pas 
+enregistrée par défaut</span>.<br>
+<span lang="fr">Cette option peut être utilisée pour créer un fichier contenant 
+l'image empilée à chaque fois que xxx images sont ajoutées à la pile</span>.<br>
+<br>
+<span lang="fr">L'image empilée est enregistrée dans un fichier appelé Autostack.tif 
+dans le répertoire de votre choix. Si le fichier existe déjà il est écrasé</span>.<br>
+<span lang="fr">Il s'agit toujours d'une image TIFF 16 bits et en fonction de la 
+nature des images capturées elle peut être </span>e<span lang="fr">n couleur ou 
+niveau de gris</span>.<br>
+&nbsp;</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Graphs"></a>Graphiques</font><br>
+</b>
+<font size="2"><span lang="fr">Pour chaque image </span>DeepSkyStacker Live 
+<span lang="fr">utilise les symboles suivants :</span></font></font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">Un cercle </span> <font color="#008000">
+<span lang="fr">vert</span></font> <span lang="fr">pour chaque image</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">Un cercle </span> <font color="#FF9900">orange</font>
+<span lang="fr">derrière le cercle vert : une condition d'avertissement est 
+rencontrée</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">Un triangle </span> <font color="#FF0000">
+<span lang="fr">rouge</span></font> <span lang="fr">par dessus le cercle vert : 
+une condition de non empilement est rencontrée</span></font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><span lang="fr">Un carré </span> <font color="#008080">
+<span lang="fr">vert</span></font> <span lang="fr">est utilisé sur les 
+graphiques dX/dY et Angle</span>s<span lang="fr"> pour représenter l'image de 
+référence</span></font></p>
+  </li>
+</ul>
+<p align="justify"><font face="Arial" size="2"><span lang="fr">A propos du 
+graphique dX/dY la <font color="#FF0000">ligne rouge</font> représente dX et la
+<font color="#0000FF">ligne bleue</font> représente dY</span>.</font></p>
+<p align="justify"><font face="Arial" size="2"><span lang="fr">Quand une image 
+n'est pas empilable elle n'apparaît pas dans les graphiques dX/dY et Angle</span>.</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Technical"></a>Informations 
+Techniques</font><br>
+</b>
+<font size="2">DeepSkyStacker Live <span lang="fr">utilise l'empilement par la 
+Moyenne (c'est la seule méthode possible lorsque le nombre d'images n'est pas 
+connu à l'avance)</span>.<br>
+<span lang="fr">Comme aucune calibration n'est possible une simple détection et 
+suppression des pixels chauds est utilisée sur les images entrantes avant de les 
+empiler</span>.<br>
+<span lang="fr">Vous pouvez voir les pixels chauds dans l'onglet Dernière Image 
+mais il devraient être supprimés dans l'onglet </span>I<span lang="fr">mage 
+Empilée</span>.<br>
+<br>
+<span lang="fr">Au contraire de DeepSkyStacker, DeepSkyStacker Live n'utilise 
+qu'un processeur pour toutes les tâches de fond (chargement, enregistrement, 
+empilement) même si plusieurs processeurs sont disponibles.</span></font></font></p>
+<hr color="#0000FF">
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

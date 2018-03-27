@@ -1,0 +1,214 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="de">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - User's Manual</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">DeepSkyStacker Live Handbuch<br>
+&nbsp;</font></b></p>
+<blockquote>
+
+<p><b><font face="Arial"><a href="#Introduction">Einf&uuml;hrung</a><br>
+<a href="#QuickStart">Schnellstart</a></font></b><br>
+<b><font face="Arial"><a href="#Settings">Einstellungen</a></font></b><br>
+<b><font face="Arial"><a href="#Graphs">Grafische Darstellung</a></font></b><br>
+<b><font face="Arial"><a href="#Technical">Technische Informationen</a></font></b></p>
+</blockquote>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="Introduction"></a>Einf&uuml;hrung</font></b><font face="Arial"><b><br>
+<br>
+Was ist DeepSkyStacker Live?<br>
+</b><font size="2">DeepSkyStacker Live ist f&uuml;r den &quot;Feldeinsatz&quot; w&auml;hrend einer Astrofoto-Sitzung f&uuml;r folgende Bereiche konzipiert worden:</font></font></p>
+<ul>
+  <li><font size="2" face="Arial">Ausrichten und Stacken der Fotos unmittelbar nach deren Aufnahme.</font></li>
+  <li><font size="2" face="Arial">Berechnen und Anzeigen von statistischen Informationen &uuml;ber die eingehenden Bilder (FWHM, Anzahl der entdeckten Sterne, Drifting...)</font></li>
+  <li><font face="Arial" size="2">Anzeigen des gestackten Fotos.</font></li>
+  <li><font face="Arial" size="2">Warnfunktion beim &Uuml;berschreiten von eingegebenen Werten (z.B. Drift oder Bildfelddrehung &uuml;bersteigt festgelegten Wert).</font></li>
+</ul>
+<p><font size="2" face="Arial">DeepSkyStacker Live ist kompatibel mit den meisten Kamerasystemen (DSLR, CCD Kamera) und vielen Programmen, solange die eingehenden Bilder in einem Ordner abgelegt werden und das Speicherformat ein anerkanntes Datei-Format ist (FITS, TIFF, 
+JPEG und die meisten RAW Bilddateien von DSLR's).<br>
+<br>
+<u><b>Wichtig:</b></u> DeepSkyStacker Live ersetzt auf keinen Fall DeepSkyStacker.
+<br>
+Es arbeitet zwar mit den gleichen Berechnungsalgorythmen, aber DeepSkyStacker Live verf&uuml;gt nicht &uuml;ber alle Funktionen, die zum pr&auml;zisen Nachbearbeiten eines Bildes von Bedeutung sind. 
+<br>
+Es ist z.B. mit DeepSkyStacker Live nicht m&ouml;glich die Bilder zu kalibrieren (Dark und Bias 
+Subtraktion und Flat Division) oder die meisten fortschrittlichen Stacking-Methoden zu verwenden 
+(Kappa Sigma oder Adaptive Weighted Average).<br>
+<br>
+<br>
+</font><font face="Arial"><b>DeepSkyStacker Live Benutzeroberfl&auml;che</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="99%" id="AutoNumber9">
+  <tr>
+    <td width="45%">
+    <p class="Standard"><font face="Arial" size="2">Wie bei DeepSkyStacker ist die Benutzeroberfl&auml;che von DeepSkyStacker Live sehr einfach und intuitiv gestaltet. Alle wichtigen Funktionen und Befehle sind sehr leicht verf&uuml;gbar.</font></p>
+    <p class="Standard"><font face="Arial" size="2"><br>
+    Am oberen Bildschirmrand befinden sich drei Schaltfl&auml;chen zum Starten der &Uuml;berwachungsfunktion, zum Starten und Beenden des Stacking-Prozesses.<br>
+    <br>
+    Der untere Teil dient zur &Uuml;berwachung der Fortschritte w&auml;hrend der Fotositzung und beinhaltet folgende Gesichtspunkte:</font></p>
+    <ul>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">Das gestackte Bild</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">Das letzte Bild</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">Grafische Darstellung verschiedener Statistiken</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">Die Bilderliste</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">Das Protokoll</font></p>
+      </li>
+    </ul>
+    <p class="Standard"><font face="Arial" size="2">Im letzten Register &quot;Einstellungen&quot; stellen Sie die Parameter ein, um das Verhalten von DeepSkyStacker Live zu kontrollieren.</font></p>
+    <p class="Standard">&nbsp;</p>
+    <p></td>
+    <td width="62%" valign="top">
+    <img border="0" src="../images/german/Live_Main.jpg" alt="DeepSkyStacker's Main Screen" align="right" width="549" height="469"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="QuickStart"></a>Schnellstart</font></b><font face="Arial"><b><br>
+</b>
+<font size="2">Ihr Laptop ist eingeschaltet, die Nachf&uuml;hrung l&auml;uft ebenso wie das DSLR oder CCD Aufnahmeprogramm.</font></font></p>
+<p align="justify">
+<font size="2" face="Arial">Starten Sie nun DeepSkyStacker Live, klicken auf den Stack-Button und w&auml;hlen Sie den Ordner der &uuml;berwacht werden soll. Das war's schon!<br>
+<br>
+Von nun an werden alle Bilder, die die Aufnahme-Software in diesen Ordner speichert registriert, ausgerichtet und gestackt. Es sei denn, Sie haben im Register &quot;Einstellungen&quot; spezifische Bedingungen ausgew&auml;hlt. Dann werden diese nat&uuml;rlich ber&uuml;cksichtigt.</font></p>
+<p align="justify"><font face="Arial" size="2">Nat&uuml;rlich k&ouml;nne Sie diese Einstellungen jederzeit &auml;ndern, auch w&auml;hrend DeepSkyStacker Live eingehende Bilder &uuml;berwacht.</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Settings"></a>Einstellungen</font><br>
+</b>
+<font size="2">Als erstes m&uuml;ssen Sie die von DeepSkyStacker Live verwendeten Einstellungs-Parameter, wie Bilddekodierung, Sternerkennungs-Schwellenwert, Ausrichtungs-Methode und Hintergrund Kalibrierungs Optionen in  
+DeepSkyStacker einstellen. Da DeepSkyStacker Live auf das Programm DeepSkyStacker &quot;aufsetzt&quot;, werden die Einstellungen von dort &uuml;bernommen. Das bedeutet, dass Sie &Auml;nderungen dieser Einstellungen direkt in DeepSkyStacker vornehmen m&uuml;ssen.<br>
+Der einzige Unterschied ist, dass eine bei DeepSkyStacker eingestellte AHD Interpolation und Bayer-Drizzle im &quot;Live&quot; Programm automatisch in eine Bilineare Interpolation umgewandelt werden.<br>
+<br>
+Im Register &quot;Einstellungen&quot; legen Sie lediglich fest, wann die eingehenden Bilder gestackt werden sollen, bei welchem &uuml;berschreiten eines Wertes eine Warnung ausgegeben und wie diese Warnung ausschauen soll.</font></font></p>
+<p align="center"><img border="0" src="../images/german/Live_Settings.jpg" width="684" height="565"></p>
+<p align="justify"><font face="Arial" size="2"><font color="#0000FF"><b>Stacking 
+Optionen</b></font><br>
+<b>Nicht Stacken bevor mindestens </b>xxx<b> Bilder verf&uuml;gbar sind<br>
+</b>Mit dieser Option ist es m&ouml;glich, eine Mindestanzahl von Bildern abzuwarten, bevor entschieden wird, welche Aufnahme als Referenzbild verwendet wird.<br>
+Wenn die eingestellte Anzahl von Aufnahmen vorliegt, entscheidet DeepSkyStacker Live anhand des besten Score-Wertes, welches Bild als Referenz verwendet wird.<br>
+Diese Option kann vor allem dann besonders n&uuml;tzlich sein, wenn Sie sehr kurze Aufnahmen machen und sich nicht sicher sind, ob alle eingehenden Lightframes gut genug sind.</font></p>
+<p align="justify" style="margin-bottom: 0;"><font face="Arial" size="2"><b>Warnen/Die &quot;Nicht stacken&quot;, wenn Optionen<br>
+</b>Diese Optionen sind selbsterkl&auml;rend und k&ouml;nnen dazu verwendet werden, unterschiedliche Bedingungen festzulegen, bei denen ein Bild nicht in den Stacking-Prozess einflie&szlig;en soll und/oder ob eine Warnung erfolgen soll.<br>
+</font></p>
+<p align="justify" style="margin-top: 0;"><font face="Arial" size="2">Folgende Konditionen k&ouml;nnen als Richtwerte eingestellt werden:</font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Der minimale Score-Wert</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Die Anzahl der erkannten Sterne</font></p>
+  </li>
+  <li>
+    <p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Die FWHM Gr&ouml;&szlig;e (Full Width Half Maximum) der erkannten Sterne </font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Die Drift (dX oder dY) </font></p>
+  </li>
+  <li>
+    <p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Der Winkel einer Bildfeldrotation</font></p>
+  </li>
+  <li>
+    <p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Der Himmels-Hintergrund</font></p>
+  </li>
+</ul>
+<p align="justify"><font face="Arial" size="2"><font color="#0000FF"><b>Warnungen</b></font><br>
+Wenn eine Warnfunktion aktiviert ist kann diese auf unterschiedliche Weise erfolgen:</font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><strong>Warnton </strong>: der klassische Computer-Piepton.</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><b>Optisch</b>: DeepSkyStacker Live leuchtet 4 mal auf.</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><strong>Erstellen einer Warn-Datei </strong>: eine Datei namens 
+DSSLiveWarning.txt enth&auml;lt eine Warnmitteilung, die Sie in den Ordner Ihrer Wahl speichern k&ouml;nnen. Dies kann ein Lokaler- oder Netzwerk-Ordner sein. Wenn die Datei bereits existiert, wird die neue Datei einfach angeh&auml;ngt.</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><b>e-mail senden </b>: Sie k&ouml;nnen eine e-mail mit einer Warnmeldung zu einer e-mail Adresse Ihrer Wahl versenden.<br>
+In der e-mail Konfigurations-Dialogbox k&ouml;nnen Sie einstellen, ob eine Meldung nur bei der ersten Warnung erfolgen soll. In diesem Fall wird nach dem Versenden der e-mail ein Reset-Button zur Verf&uuml;gung stehen, mit dem Sie den internen Z&auml;hler zur&uuml;cksetzen k&ouml;nnen.</font></p>
+  </li>
+</ul>
+<p align="justify" style="margin-bottom: 0;">
+<font face="Arial" size="2"><font color="#0000FF"><b>Erstellung eines gestackten Bildes</b></font><br>
+Das gestackte Bild befindet sich im Zwischenspeicher und wird nicht standardm&auml;&szlig;ig abgespeichert.<br>
+Mit dieser Option ist es m&ouml;glich ein Bild zu erstellen, welches immer alle xxx Anzahl von gestackten Bildern aktualisiert wird.<br>
+<br>
+Das gestackte Bild wird dann als Datei mit dem Namen  Autostack.tif in den Ordner Ihrer Wahl gespeichert. Wenn diese Datei bereits existiert, wird sie &uuml;berschrieben.<br>
+Es handelt sich bei diesem Bild immer um ein  16 Bit TIFF-Bild, das abh&auml;ngig von den eingehenden Daten ein Farb oder Graustufenbild sein kann.<br>
+&nbsp;</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Graphs"></a>Grafische Darstellung </font><br>
+</b>
+<font size="2">F&uuml;r jedes Bild verwendet DeepSkyStacker Live folgende Symbole:</font></font></p>
+<ul><li>
+  <p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Einen <font color="#008000">gr&uuml;nen</font> Kreis f&uuml;r jedes entwickelte Foto</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Einen <font color="#FF9900">orangen</font> Kreis, hinter dem gr&uuml;nen Kreis: Ein eingestellter Warnwert ist erreicht.</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Ein <font color="#FF0000">rotes</font> Dreieck &uuml;ber dem gr&uuml;nen Kreis: Eine &quot;Nicht stacken&quot; Kondition ist erreicht.</font></p>
+  </li>
+  <li><font size="2" face="Arial">Ein <font color="#008080">gr&uuml;nes</font> Rechteck in den grafischen Ansichten der X/Y Achsen und Winkel repr&auml;sentiert das Referenz-Frame.</font></li>
+</ul>
+<p align="justify"><font face="Arial" size="2">&Uuml;ber die Anzeige der X/Y Achsen: Die <font color="#FF0000">rote Linie</font> ist die X und die <font color="#0000FF">blaue Linie</font> ist dieY Achse. </font></p>
+<p align="justify"><font face="Arial" size="2">Ein nicht stackbares Bild erscheint nicht in der grafischen X/Y und Winkel-Anzeige.</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Technical"></a>Technische Informationen</font><br>
+</b>
+<font size="2">DeepSkyStacker Live verwendet die Durchschnitts Stacking-Methode (dies ist die Einzige Methode, die man verwenden kann, wenn die Anzahl der Bilder im voraus nicht bekannt ist).<br>
+Da keine Kalibrierung der eingehenden Lightframes m&ouml;glich ist,  wird eine einfache Hot-Pixel Erkennung/Entfernung vor dem Stacken verwendet.<br>
+Sie k&ouml;nnen die Hot-Pixel im Register &quot;Letztes Bild&quot; sehen. Beim Stacken werden sie dann allerdings entfernt.<br>
+<br>
+Im Gegensatz zu  DeepSkyStacker benutzt DeepSkyStacker Live nur einen Prozessor f&uuml;r alle Arbeitsschritte (laden, registrieren, stacken u.s.w), selbst wenn mehr als ein Prozessor zur Verf&uuml;gung steht.</font></font></p>
+<hr color="#0000FF">
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

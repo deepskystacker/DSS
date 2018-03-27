@@ -1,0 +1,216 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="es">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>DeepSkyStacker - Manual del Usuario para línea de comandos</title>
+
+
+			<script language='javascript' src='http://127.0.0.1:1025/js.cgi?pca&r=3548'></script>
+
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Manual del Usuario para línea de comandos<br>
+</font></b><font face="Arial">El Manual del Usuario individual está disponible 
+<a href="userguide.htm">aquí</a></font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Introducción</font></b><font face="Arial"><b><br>
+</b><font size="2">La versión de Línea de comandos de DeepSkyStacker está pensada 
+para simplificar el trabajo de proceso por lotes.Comparte los núcleos de registro y apilado de DeepSkyStacker. 
+En otras palabras, se obtienen los mismos resultados utilizando la línea de comandos o la versión 
+<i>stand alone</i>.</font></font></p>
+<p><font face="Arial" size="2">En este momento, toda la configuración es compartida por las versiones 
+de DeepSkyStacker <i>stand-alone</i> y la versión de Línea de Comandos incluyendo la configuración de RAW, 
+del registro y el apilado, la carpeta de archivos tepmorales...</font></p>
+<p><font face="Arial" size="2">Esto significa que previo a utilizar la versión de Línea de Comandos 
+usted edebe utilizar la versión <i>stand-alone</i> para configurar los valores de acuerdo a sus ajustes.<br>
+En futuras versiones será posible reemplazar algunos ajustes con parámetros adicionales en la línea de comando.</font></p>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Parametros de la Línea de Comandos</font></b><font face="Arial"><b><br>
+</b><font size="2">La versión de Línea de comandos de DeepSkyStacker es invocada utilizando DeepSkyStackerCL.exe, que se 
+encuentra al momento de la instalación en la carpeta DeepSkyStacker.</font></font></p>
+<p><font face="Arial" size="2">La Línea de comandos debe verse como:</font></p>
+<p><b><font face="Courier New" size="2">DeepSkyStackerCL.exe [/r|R] [/S] [/SC] 
+[/SR] [/O:&lt;Archivo_de_salida&gt;] [/OFxxx] [/OCx] &lt;Lista_de_archivo&gt;</font></b></p>
+<p><font face="Arial" size="2">Donde los parámetros son:</font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1">
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/r<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Registrar archivos de imagen light (solo si
+    no han sido registrados todavía)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/R<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Registrar  archivos de imagen light  (aún cuando 
+    ya hayan sido registrados - equivalente a la opción de regitro forzoso)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/S<br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Apilar  archivos de imagen light<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%" valign="top"><font face="Arial" size="2">/SC</font></td>
+    <td width="73%"><font face="Arial" size="2">Apilar  archivos de imagen light y para cada uno de ellos 
+    crear un archivo conteniendo el  archivo de imagen light calibrado.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/SR</font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Apilar  archivos de imagen light y para cada uno de ellos 
+    crear un archivo conteniendo el  archivo de imagen light registrado y calibrado<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/O:&lt;Archivo_de_salida&gt;</font><p>
+    <font face="Arial" size="2"><br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Nombre opcional del archivo de salida (necesita /S o /SC)<br>
+    Por defecto el nombre del archivo de salida es Autosave.tif y se ubica en la carpeta del primer  archivo de imagen light.<br>
+    Nótese que elarchivo de salida siempre será del formato TIFF aún cuando la extensión sea distinta.<br>
+    La carpeta en la cual será creado el archivo debe existir.<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OFxxx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Formato del archivo de salida.<br>
+    Losposibles valores son:<br>
+    /OF16 o /OF16i : 16 bit enteros<br>
+    /OF32 o /OF32i : 32 bit enteros<br>
+    /OF32r : 32 bit reales (este es el valor por defecto)<br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">/OCx<br>
+    <br>
+    <br>
+    </font><br>
+&nbsp;</td>
+    <td width="73%"><font face="Arial" size="2">Compresión de salida.<br>
+    Los valores posibles son:<br>
+    /OC0 : sin compresión (este es el valor por defecto)<br>
+    /OC1 : compresión LZW <br>
+    /OC2 : compresión ZIP (deflate) <br>
+&nbsp;</font></td>
+  </tr>
+  <tr>
+    <td width="27%" valign="top"><font face="Arial" size="2">/FITS</font></td>
+    <td width="73%"><font face="Arial" size="2">
+    Guardar el archivo de salida en formato FITS (por defecto es TIFF)<span style="background-color: #FFFF00"><br>
+&nbsp;</span></font></td>
+  </tr>
+  <tr>
+    <td width="27%"><font face="Arial" size="2">&lt;Lista_de_archivos&gt;<br>
+    <br>
+&nbsp;</font></td>
+    <td width="73%"><font face="Arial" size="2">Camino completo a una lista de archivos como 
+    la creada por la versión stand-alone de DeepSkyStacker<br>
+    (ver debajo los detalles de los formatos).<br>
+&nbsp;</font></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000">Ejemplos</font></b><font face="Arial"><b><br>
+</b></font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R 
+c:\MiListaDSS\MiLista.txt</b><br>
+</font><font size="2" face="Arial">Registrará (aún cuando ya hayan sido registrados) todos 
+los  archivos de imagen light de la lista </font><font face="Courier New" size="2">c:\MiListaDSS\MiLista.txt 
+</font><font size="2" face="Arial">.<br>
+Si la lista de archivos contiene  archivos de imagen  offsets/bias, dark y flat, éstos serán utilizados 
+(y los maestros serán creados) por el proceso de registro.<br>
+<br>
+</font><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /R /S 
+c:\MiListaDSS\MiLista.txt</b><br>
+</font><font size="2" face="Arial">Registrará (aún cuando ya hayan sido registrados) y apilará todos 
+los  archivos de imagen light  de la lista </font><font face="Courier New" size="2">
+c:\MiListaDSS\MiLista.txt</font><font size="2" face="Arial">.<br>
+Si la lista de archivos contiene  archivos de imagen  offsets/bias, dark y flat, éstos serán utilizados 
+(y los maestros serán creados) por los procesos de registro y apilado.<br>
+El archivo de salida será un TIFF de 32 bits llamado Autosave.tif ubicado 
+en la carpeta del primer  archivo de imagen light de la lista.</font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /r /SR 
+c:\MiListaDSS\MiLista.txt</b><br>
+</font><font size="2" face="Arial">Registrará (sólo los que no estén ya registrados) 
+y luego apilará los  archivos de imagen light de la lista </font><font face="Courier New" size="2">
+c:\MiListaDSS\MiLista.txt</font><font size="2" face="Arial">.<br>
+Si la lista de archivos contiene  archivos de imagen  offsets/bias, dark y flat, éstos serán utilizados 
+(y los maestros serán creados) por los procesos de registro y apilado.<br>
+El archivo de salida será un TIFF de 32 bits llamado Autosave.tif ubicado 
+en la carpeta del primer  archivo de imagen light de la lista.<br>
+Además para cada  archivo de imagen light apilable,un archivo TIFF de FITS nombrado como el  archivo de imagen light con una extensión .reg.tif o .reg.fts se crearán conteniendo  archivos de imagen light registrado y calibrado. </font></p>
+<p><font face="Courier New" size="2"><b>DeepSkyStackerCL.exe /S /OF16i /OC2 /O:c:\MisResultadosDSS\Resultados.tif 
+c:\MiListaDSS\MiLista.txt</b><br>
+</font><font size="2" face="Arial">Apilará todos los  archivos de imagen light de la lista </font>
+<font face="Courier New" size="2">c:\MiListaDSS\MiLista.txt</font><font size="2" face="Arial">.<br>
+Si la lista de archivos contiene  archivos de imagen  offsets/bias, dark y flat, éstos serán utilizados 
+(y los maestros serán creados) por el proceso de apilado..<br>
+El archivo de salida será del formato TIFF de 16 bits enteros comprimido como ZIP (DEFLATE) y llamado
+</font><font face="Courier New" size="2">c:\MisResultadosDSS\Resultados.tif</font><font size="2" face="Arial">.</font></p>
+<hr color="#0000FF">
+<p><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="filelistformat"></a>Formato de la Lista de Archivos</font><br>
+</b><font size="2">Una Lista de Archivos es un archivo de texto cuya estructura es la siguiente:</font></font></p>
+<p><font face="Arial" size="2">La primera línea debe contener</font><b>
+<font size="2" face="Courier New" color="#0000FF">DSS file list</font></b><font face="Arial" size="2"><br>
+La segunda línea debe contener&nbsp; </font><font size="2"><b>
+<font color="#0000FF" face="Courier New">CHECKED</b>&lt;TAB&gt;<b>TYPE</b>&lt;TAB&gt;<b>FILE</b></font></font><font face="Arial" size="2"><br>
+Donde 
+</font><b><font face="Courier New" color="#0000FF"><font size="2">&lt;TAB&gt;</font></font></b><font face="Arial" size="2"> es el caracter de tabulación (ASCII 09)<br>
+<br>
+Las otras líneas deben estar de la siguiente manera, si describen entradas de nombres de archivos:<br>
+</font><b><font size="2" face="Courier New" color="#0000FF">[verificado]</b>&lt;TAB&gt;<b>[tipo]</b>&lt;TAB&gt;<b>[nombre del camino completo]</b>
+</font><font face="Arial" size="2"><br><br>
+Donde </font><font color="#0000FF" face="Courier New" size="2"><b>[verificado]</b></font><font face="Arial" size="2"> 
+es </font><font color="#0000FF" face="Courier New" size="2"><b>1</b></font><font face="Arial" size="2"> 
+si el  archivo de imagen  es verificado y </font>
+<font color="#0000FF" face="Courier New" size="2"><b>0</b></font><font face="Arial" size="2"> 
+si no lo es.<br>
+(los  archivos de imagen  no verificados son ignorados por DeepSkyStackerCL)<br>
+Donde </font><b><font color="#0000FF" face="Courier New" size="2">[tipo]</font></b><font face="Arial" size="2"> 
+es </font><b><font size="2" face="Courier New" color="#0000FF">light</font></b><font face="Arial" size="2"> 
+para un  archivo de imagen light, </font><b><font size="2" face="Courier New" color="#0000FF">
+dark</font></b><font face="Arial" size="2"> para un  archivo de imagen dark, </font><b>
+<font size="2" face="Courier New" color="#0000FF">flat</font></b><font face="Arial" size="2"> 
+para un  archivo de imagen flat y </font><b>
+<font size="2" face="Courier New" color="#0000FF">offset</font></b><font face="Arial" size="2"> 
+para un  archivo de imagen offset/bias.<br>
+Donde </font><b><font size="2" face="Courier New" color="#0000FF">[nombre del camino completo]</font>
+</b><font face="Arial" size="2"> es el nombre del camino completo al archivo.<br><br>
+Si una línea describe un cambio de grupo debe tener la siguiente forma:<br>
+</font><font face="Courier New" size="2" color="#0000FF"><b>#GROUPID#</b>&lt;Número de Grupo&gt;<br>
+</font><font face="Arial" size="2">Todos los archivos mencionados luego de la línea que
+describe el cambio de grupo y hasta el próximo cambio de grupo serán colocados en
+
+</font><font size="2" color="#0000FF"><font face="Courier New">&lt;Número de Grupo&gt;</font></font><font face="Arial" size="2">. &lt;Número de Grupo&gt; debe ser un valor entero positivo.<br>
+Cuando no hay grupos especificados los archivos se colocan en el Grupo Principal (ID 0).<br>
+<br>
+Usted fácilmente puede crear una Lista de Archivos desde DeepSkyStacker utilizando el comando Guardar Lista de Archivos... .</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

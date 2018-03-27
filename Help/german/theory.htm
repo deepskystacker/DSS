@@ -1,0 +1,212 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="de">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>The theory or How to create better images</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Die Theorie<br>
+</font><font face="Arial" size="4">oder wie kann ich bessere Bilder erstellen</font></b></p>
+<blockquote>
+  <p>
+  <b>
+  <font face="Arial"><a href="#WhyCombine">Warum kombinieren?</a><br>
+  <a href="#CombineHowMany">Wieviele Aufnahmen?</a><br>
+  <a href="#Calibration">Kalibrierung: wozu braucht man Dark, Flat und Biasframes?</a></font></b><br>
+  <b><font face="Arial"><a href="#ISOSpeed">Welche ISO-Einstellung?</a></font></b></p>
+</blockquote>
+<hr color="#0000ff">
+<p class="Standard"><font face="Arial">Nachfolgend habe ich ein paar einfache Informationen f&uuml;r Sie zusammengestellt, die aber niemals Ihre eigenen Erfahrungen ersetzen k&ouml;nnen.<br>
+Einige Experten haben beschlossen ein freies Astrofotografie-Web-Magazin zu schaffen, das mit umfangreichem, oft schwer verdientem Wissen aufwartet.</font></p>
+<p class="Standard"><font face="Arial">In einigen vergangenen Themen wurde sehr viel &uuml;ber  &quot;Bilder-Rauschen, Drizzle Diskussion, Nachf&uuml;hrbilder&quot; und einiges mehr berichtet.</font></p>
+<a target="_blank" href="http://www.skyinsight.com/astrophoto/current.php?r=f28b8af9087c36d6142f168978df7fe8&s=m">	
+<img src = "http://www.skyinsight.com/images/astrophoto-banner-med-w.jpg" width="300" height="147"></a><a href = "http://www.skyinsight.net/astrophoto/download.php?r=f28b8af9087c36d6142f168978df7fe8&s=m">	</a>
+<p><font face="Arial">Hinweis</font><font face="Arial">: Ich bin in keiner Weise an diesem Magazin beteiligt oder an einer Anzeige, die sie in dem Magazin finden.<br>
+Ich platziere hier nur deren Banner der aktuellen Ausgabe, weil es eine wirklich gute Sache ist, voller n&uuml;tzlicher Informationen und, was ganz wichtig ist - absolut kostenlos! (Sprache ist allerdings Englisch) </font></p>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000"><a name="WhyCombine">
+</a></font><font color="#ff0000" size="4">Warum kombinieren?</font><font size="2"><br>
+Die Antwort ist ganz einfach: Es dient lediglich der Erh&ouml;hung des Signal-Rausch-Verh&auml;ltnisses (SNR =S</font></b><font size="2">ignal to<b> N</b>oise<b> R</b>atio</font><b>)<br>
+</b><font size="2">Wird das fertige Bild dadurch heller und leuchtender? Nein.<br>
+Wird das fertige Bild dadurch farbiger? Nein.<br>
+<br>
+Das Ziel der Kombination vieler Bilder (Stacken = Stapeln =&uuml;bereinander legen) ist wirklich nur die Erh&ouml;hung des SNR. Das fertige Bild ist dabei weder leuchtender oder farbiger, aber es enth&auml;lt viel weniger Rauschen als einzelne Aufnahmen. Sie k&ouml;nnen das Histogramm eines kombinierten Bildes einem gr&ouml;&szlig;eren Stretching unterziehen und haben damit viel mehr M&ouml;glichkeiten Details und Farben herauszukitzeln.</font></font></p>
+<table id="AutoNumber1" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p style="margin-right: 10px;" class="Standard"><font face="Arial" size="2">Das Beispiel auf der rechten Seite zeigt Ihnen das Resultat eines gestackten Bildes mit 1, 2, 4, 16 und 32 Bilder.<br>
+    <br>
+    Es wurde noch keine Kalibrierung vorgenommen und einige Hot-Pixel sind auch noch zu sehen (keine Dark und Bias Subtraktion, keine Flat Division).<br>
+    <br>
+    Fahren Sie einfach mit der Maus &uuml;ber den Text und schauen Sie sich das Ergebnis an.&nbsp; <br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_1.jpg';;document.getElementById('LEGEND01').innerHTML='einzelnes Lightframe';" href="javascript:void(0);">
+    1 Bild</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_2.jpg';document.getElementById('LEGEND01').innerHTML='Stack von 2 Lightframes';" href="javascript:void(0);">
+    2 Bilder</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_4.jpg';;document.getElementById('LEGEND01').innerHTML='Stack von 4 Lightframes';" href="javascript:void(0);">
+    4 Bilder</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_16.jpg';;document.getElementById('LEGEND01').innerHTML='Stack von 16 Lightframes';" href="javascript:void(0);">
+    16 Bilder </a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_32.jpg';;document.getElementById('LEGEND01').innerHTML='Stack von 32 Lightframes';" href="javascript:void(0);">
+    32 Bilder </a></b></font></p>
+    <p class="Standard" style="margin-bottom: 0;"><font face="Arial" size="2">Wie Sie sehen k&ouml;nnen, wird das fertige Bild weder heller noch farbiger, wenn Sie die Zahl der Lightframes erh&ouml;hen Aber es wird mit jeder Aufnahme, die hinzugef&uuml;gt wird immer &quot;glatter&quot;, also rausch&auml;rmer.</font></p>
+    </td>
+    <td width="62%">
+    <p align="center">
+    <img id="STACKRESULT01" src="../images/Theory/Stack_2.jpg" border="0" name="STACKRESULT01" width="591" height="591"><br>
+    <font face="Arial" size="2"><b id="LEGEND01" name="LEGEND01">
+    einzelnes Lightframe</b></font></td>
+  </tr>
+</table>
+<hr color="#0000ff">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000"><a name="CombineHowMany"></a>
+Wie viele Aufnahmen</font></b><font face="Arial"><b><font color="#ff0000" size="4">?</font><font size="2"><br>
+Je mehr, desto besser. Aber oberhalb eines Schwellenwertes ist es weniger effizient.</font><br>
+</b><font size="2">Das Signal-Rausch-Verh&auml;ltnis vergr&ouml;&szlig;ert sich mit der Quadratwurzel aus der Anzahl der kombinierten Aufnahmen, unabh&auml;ngig davon, wie lange die einzelnen Bilder belichtet wurden.<br>
+Dies gilt f&uuml;r alle Kombinations-Methoden (Durchschnitt, Median, Kappa-Sigma 
+Clipping, Auto-Adaptive weighted average, ...) au&szlig;er Entropy-Weighted-Average, da diese eine auf Entropie basierende Gewichtung jedes Pixel vornimmt und dies zu einer Erh&ouml;hung des Rauschens f&uuml;hrt, welches wiederum zu gro&szlig;er Entropie beitr&auml;gt...</font></font></p>
+<p align="justify"><font face="Arial" size="2">Dies bedeutet bei einem Basis SNR von 1, dass der SNR bei einer Kombination von 10 Bildern auf 3,16 ansteigt (3,16 ist die Quadratwurzel aus 10). Bei  30 Bildern betr&auml;gt er 5,47, f&uuml;r 50 Bilder 7,07, f&uuml;r 100 Bilder 10, f&uuml;r 300 Bilder 17,32 .....</font></p>
+<p align="justify"><font face="Arial" size="2">Wie Sie sehen k&ouml;nnen, brauchen Sie f&uuml;r einen SNR von 7 ca 50 Bilder. Um einen SNR von 14 zu erreichen, ben&ouml;tigen Sie schon 200 Aufnahmen.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>F&uuml;hren  100 x 1 Minute und 
+10x10 Minuten zu dem gleichen Resultat?</b><br>
+Ja, wenn man nur den SNR Wert zugrundelegt, aber definitiv nein, wenn man das Endresultat betrachtet.<br>
+Der Unterschied zwischen einer 10 Minuten Aufnahme und einer 1 Minuten Aufnahme ist der, dass der SNR in den 10 Minuten Aufnahmen 3,16 h&ouml;her ist als in der 1 Minuten Aufnahme.</font></p>
+<p align="justify"><font face="Arial" size="2">Sie erhalten zwar den gleichen SNR, wenn Sie 10 Lightframes von 10 Minuten, oder 100 Lightframes von 1 Minute kombinieren, allerdings werden Sie nicht das gleiche Signal des Objektes einfangen (den eigentlich interessanten Teil). Einfach ausgedr&uuml;ckt: Es wird nur dann ein ausreichendes Signal eingefangen, wenn die Belichtung lange genug dauert, um soviele Photonen des Objekts einzufangen, dass diese nicht im Rauschen untergehen.</font></p>
+<p align="justify"><font face="Arial" size="2">Zum Beispiel bekommen Sie bei einem lichtschwachen Nebel vielleicht alle 10 Minuten ein paar Photonen auf den Chip. Wenn Sie nun mit 10 Minuten Aufnahmen arbeiten, haben Sie auf jedem gerade gemachten Lightframe Photonen gesammelt. Wenn Sie nun diese Aufnahmen kombinieren wird das schwache Signal von jeder Aufnahme  sehr verst&auml;rkt werden. <br>
+Wenn Sie allerdings mit 1 Minuten Aufnahmen arbeiten, werden nicht auf allen Lightframes Photonen des Nebels vorhanden sein. Wenn Sie nun diese Aufnahmen sp&auml;ter kombinieren, wird das eigentliche Signal des Nebels als Rauschen interpretiert, da es ja nicht auf allen Lightframes vorhanden ist.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Kann ich zwei (oder mehr) fertige Bilder kombinieren?<br>
+</b>Nat&uuml;rlich, da auch hier die Quadratwurzel-Regel gilt. Das Bild erh&auml;lt dadurch einen minimalen Anstieg des SNR.<br>
+<br>
+Wenn Sie 2 Bilder kombinieren, wird sich der SNR um 1,414 erh&ouml;hen (Quadratwurzel aus 2).<br>
+Wenn beide Bilder den gleichen SNR haben, so ist dies so, als w&uuml;rden sie einen einzigen Stack machen. 
+Das bedeutet nicht, dass das Bild durch die Kombination das gleiche bleibt, aber es wird den gleichen SNR haben.<br>
+<br>
+Wann immer Sie einen Stack verwenden, der aus mehr Lightframes besteht als der andere, wird der SNR von beiden unterschiedlich sein. Wenn Sie das fertige Bild aus beiden Stacks nun kombinieren, wird der SNR schw&auml;cher ausfallen, als bei einem Stack der alle Lightframes enth&auml;lt.<br>
+<br>
+Das bedeutet, dass bei der Kombination aus dem fertigen Bild eines 10x1 Minute Stack mit einem einzelnen 1 Minuten Frame der SNR in etwa der gleiche sein wird, als bei einer Kombination von 2 Lightframes. 
+Das ist einfach auf die Tatsache zur&uuml;ckzuf&uuml;hren, dass das Rauschen beider Bilder addiert wird und das beste Bild dadurch von dem schlechteren regelrecht ruiniert wird.</font></p>
+<hr color="#0000ff" SIZE="1">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000"><a name="Calibration"></a>Kalibrierung</font><font face="Arial" color="#ff0000" size="4">: 
+Mit Hilfe von Dark-, Flat- und Biasframes<br>
+</font></b><font face="Arial" size="2">Unter der Kalibrierung versteht man den Prozess, Bias- und Dark-Signale zu subtrahieren und durch das Flat-Signal zu dividieren.<br>
+Ich m&ouml;chte Ihnen hier nicht erkl&auml;ren, wie man zu brauchbaren Dark-, Bias- und Flatframes kommt (siehe dazu <a href="faq.htm#lightdarkflatoffset">hier</a>), aber ich m&ouml;chte, dass Sie besser verstehen wie man sie einsetzt, um zu den bestm&ouml;glichen Bildern zu kommen.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Eine gute Idee</b><br>
+Jeder sagt Ihnen, dass sie unbedingt Dark-, Bias- und Flatframes machen m&uuml;ssen um  hervoragende Bilder zu erstellen. Aber, wenn Sie es auf die falsche Weise tun, k&ouml;nnen sie Ihr sch&ouml;nes Lightframe dadurch besch&auml;digen und sind von dem Endergebnis sehr entt&auml;uscht.</font></p>
+<p align="justify"><font face="Arial" size="2">Die gute Nachricht: Es ist wirklich sehr einfach gute Resultate zu erlangen. Hier nun also das Warum und Wie.<br>
+<br>
+<b>Ein h&auml;ufiges Missverst&auml;ndnis</b><br>
+Es ist leider ein sehr verbreiteter Irrtum, dass sich die Anzahl der Dark-, Bias- und Flatframes  in irgendeiner Weise an der Anzahl der Lightframes orientieren soll.<br>
+Viele Astrofotografen verwenden nur sehr wenige (im Extremfall nur ein einziges) Dark-, Bias- und Flatframes, wobei sie wesentlich bessere Ergebnisse mit einer h&ouml;heren Anzahl dieser Frames mit der gleichen Lightframe-Serie erziehlen k&ouml;nnten.<br>
+<br>
+Nach der Quadratwurzel-Regel wird man &quot;saubere&quot; Master-Frames (Dark-, Bias- Flatframes) nur mit einer gro&szlig;en Menge an Frames erreichen k&ouml;nnen. Denken Sie daran, dass Sie bei der Kalibrierung nur versuchen das Bias- und Dark-Signal zu entfernen und nicht das in den Lightframes vorhandene Rauschen.</font></p>
+<p align="justify"><font face="Arial" size="2">Im Gegenteil:  <br>
+  Wenn sie zum Beispiel ein Master-Dark von jedem Lightframe abziehen, addieren Sie das Rauschen des Master-Dark zu dem Rauschen des Lightframes hinzu. Je geringer nun das Rauschen des Master-Darks ist, umso geringer ist auch das Ansteigen des Rauschens im Lightframe.Dies gilt nat&uuml;rlich auch f&uuml;r das Master-Bias und Master-Flatframe.<br>
+  <br>
+  In der Tat k&ouml;nnen Sie, wenn Sie nur eine geringe Anzahl an Frames zur Erstellung der Masters verwenden, sehr leicht das Rauschen im kalibrierten Lightframe verdreifachen (Bias-, 
+    Dark-Subtraktion und Flat-Division), im Vergleich zum Rauschen des Lightframes vor der Kalibrierung. </font></p>
+<p align="justify"><font face="Arial" size="2">Stellen Sie sich vor, Sie m&uuml;ssten nun, um dieses Missverh&auml;ltnis auszugleichen, 9 x mehr (3x3 Quadrierung als Gegenpart zur Quadratwurzel) Lightframes verwenden, um auf den gleichen Rauschpegel zu kommen, als wenn Sie rauschfreie Masters verwendet h&auml;tten.</font></p>
+<table id="AutoNumber2" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p class="Standard"><font face="Arial" size="2">Das Beispielbild auf der rechten Seite zeigt das Ergebnis eines Stacks von... (Maus &uuml;ber die Links bewegen zeigt die angegebenen Bilder)<br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/NoCalibration.jpg';;document.getElementById('LEGEND02').innerHTML='Stack von 32 Lightframes (ohne Kalibrierung)';" href="javascript:void(0);">
+    32 Lightframes (ohne Kalibrierung)</a><br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration2.jpg';;document.getElementById('LEGEND02').innerHTML='Stack von 32 Lightframes (mit 2 Darks, 2 Flats und 2 Bias kalibriert)';" href="javascript:void(0);">
+    32 Lightframes (mit 2 Darks, 2 Flats und 2 Bias Kalibrierung)</a><br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration20.jpg';;document.getElementById('LEGEND02').innerHTML='Stack von 32 Lightframes (mit 20 Darks, 20 Flats und 20 Bias kalibriert)';" href="javascript:void(0);">
+    32 Lightframes (20 Darks, 20 Flats und 20 Bias Kalibrierung)</a><br>
+    <br>
+    Wie Sie sehen k&ouml;nnen f&uuml;hrt eine Erh&ouml;hung der Anzahl von Dark-, Flat- und Biasframes, zu einer Verbesserung des Endresultats. Es werden viel mehr Details sichtbar.</font></td>
+    <td width="50%">
+    <p align="center">
+    <img id="STACKRESULT02" src="../images/Theory/Calibration20.jpg" border="0" name="STACKRESULT02" width="591" height="591"><br>
+    <font face="Arial" size="2"><b id="LEGEND02" name="LEGEND02">Stack von 32 Lightframes (ohne Kalibrierung)</b></font></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2">Dies ist der Grund, warum Sie immer so viele Dark/Bias/Flatframes wie m&ouml;glich machen sollten. Auf der praktischen Seite w&uuml;rde ich versuchen wenigstens  20 Frames von jeder Sorte zur Erstellung der Masters zu verwenden, wenn Sie das Rauschen im fertigen Bild nicht zu sehr anheben wollen. Eine Verwendung von 50 bis 100 beschert Ihnen allerdings  wirklich gute und (meistens) rauschfreie Masters..<br>
+<br>
+<b>Ein kleiner Hinweis &uuml;ber die Hoot-Pixel</b><br>
+Hot-Pixel sind Pixel, die sich nicht normal verhalten. Sie zeigen immer ein hohes Signal, welches in jedem Dark- oder Lightframe sichtbar ist. <br>
+<br>
+Wenn Sie allerdings ein einzelnes Darkframe von einem Lightframe abziehen, entfernen Sie damit die Hot-Pixel wobei Ihnen dadurch der falsche Eindruck vermittelt wird, dass das Darkframe seine Arbeit getan hat.<br>
+Sie verdoppeln jedoch, gleichzeitig mit dem Subtrahieren des Darkframes das Rauschen des Lightframes und ruinieren es damit gr&uuml;ndlich.</font></p>
+
+<hr color="#0000ff" SIZE="1">
+
+<p align="justify"><font face="Arial" size="2"><a name="ISOSpeed"></a></font>
+<font face="Arial" color="#FF0000" size="4"><b>Welchen ISO Wert?<br>
+</b></font><font face="Arial" size="2">Diese Frage wird sehr oft gestellt und die Antwort ist  sehr einfach: Es ist egal...eigentlich.<br>
+<br>
+In der Tat ist  der ISO-Wert nur eine Einstellung in der DSLR, der CMOS oder CCD Chip  aber immer noch der gleiche (Sie tauschen ihn wohl kaum aus, wenn Sie die ISO Einstellung ve&auml;ndern, oder?), also ist das Ergebnis immer das selbe.<br>
+Mit einem h&ouml;heren ISO-Wert fangen Sie ja nicht mehr Photonen ein, sondern erh&ouml;hen nur deren Verst&auml;rkung (nat&uuml;rlich auch das Rauschen).</font></p>
+<p align="justify"><font face="Arial" size="2">Das hei&szlig;t, dass Sie nicht den ISO-Wert erh&ouml;hen m&uuml;ssen, um schw&auml;chere Signale einzufangen, sondern einfach versuchen sollten l&auml;nger zu belichten. Genau darin liegt oft das eigentliche Problem. Es ist nicht mit jedem Setup m&ouml;glich, sehr lange und pr&auml;zise nachzuf&uuml;hren. So wird man immer einen Kompromiss aus m&ouml;glichst langer Belichtung und immer noch genauer Nachf&uuml;hrung suchen. Der gew&auml;hlte ISO-Wert wird also eher davon abh&auml;ngen. <br>
+<br>
+Nat&uuml;rlich ist die ganze Sache etwas komplizierter, als es auf den ersten Blick erscheint, denn jede DSLR hat ihr eigenes Profil und ihre spezifische ISO-Einstellung, bei der optimale Ergebnise zu erwarten sind.<br>
+Es h&auml;ngt von den einzelnen, charakteristischen Merkmalen jedes Sensor-Chips ab (Ausleserauschen und elektronisches Rauschen) und ist nicht so einfach zu berechnen.<br>
+Christian Buil hat sich einmal die M&uuml;he gemacht und die Werte f&uuml;r einige DSLR's ermittelt.</font></p>
+<table border="1" cellspacing="1" width="43%" id="AutoNumber3">
+  <tr>
+    <td width="35%"><b><font face="Arial" size="2">DSLR</font></b></td>
+    <td width="65%"><b><font face="Arial" size="2">Empfohlener (Optimaler) ISO-Wert</font></b></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 10D&nbsp;&nbsp;&nbsp;
+    </font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">400&nbsp;&nbsp;&nbsp; 
+    (290)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 20D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1000)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 350D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">800&nbsp;&nbsp;&nbsp; 
+    (900)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 5D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1100)</font></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2"><br>
+<br>
+<br>
+<br>
+<br>
+<br>
+&nbsp;<br>
+<br>
+&nbsp;</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

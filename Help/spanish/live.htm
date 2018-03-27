@@ -1,0 +1,217 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="es-es">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Manual de Usuario de DeepSkyStacker Live</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Manual de Usuario de DeepSkyStacker Live<br>
+&nbsp;</font></b></p>
+<blockquote>
+
+<p><b><font face="Arial"><a href="#Introduction">Introducci&oacute;n</a><br>
+<a href="#QuickStart">Gu&iacute;a R&aacute;pida</a></font></b><br>
+<b><font face="Arial"><a href="#Settings">Configuraci&oacute;n</a></font></b><br>
+<b><font face="Arial"><a href="#Graphs">Gr&aacute;ficos</a></font></b><br>
+<b><font face="Arial"><a href="#Technical">Informaci&oacute;n T&eacute;cnica</a></font></b></p>
+</blockquote>
+<hr color="#0000FF">
+<p><b><font face="Arial" size="4" color="#FF0000"><a name="Introduction"></a>Introducci&oacute;n</font></b><font face="Arial"><b><br>
+<br>
+&iquest;Qu&eacute; es el  DeepSkyStacker Live?<br>
+</b><font size="2">DeepSkyStacker Live esta dise&ntilde;ado para ser utilizado en el campo durante la sesi&oacute;n de astrofotograf&iacute;a para las siguientes tareas: </font></font></p>
+<ul>
+  <li><font size="2" face="Arial">Alinear y apilar las im&aacute;genes a medida que son capturadas.</font></li>
+  <li><font size="2" face="Arial">C&aacute;lculo y visualizaci&oacute;n de estad&iacute;sticas de las im&aacute;genes que se van tomando (FWHM, cantidad de estrellas detectadas, deriva...)</font></li>
+  <li><font face="Arial" size="2">Mostrar la imagen apilada</font></li>
+  <li><font face="Arial" size="2">Emite alertas cuando se cumplen algunas condiciones como cuando la deriva es mayor a un valor pre-establecido</font></li>
+</ul>
+<p><font size="2" face="Arial">DeepSkyStacker Live es compatible con cualquier dispositivo de captura (DSLR, C&aacute;mara CCD) y cualquier otro software siempre que las im&aacute;genes capturadas sean creadas en una carpeta y sean de un formato de archivo reconocido (FITS, TIFF, 
+JPEG y la mayor&iacute;a de las im&aacute;genes  RAW de las c&aacute;maras DSLRs).<br>
+<br>
+<u><b>Comentario:</b></u> DeepSkyStacker Live no reemplaza al  DeepSkyStacker.
+<br>
+Ambos utilizan el mismo motor pero el DeepSkyStacker Live no tiene todas las caracter&iacute;sticas necesarias para crear im&aacute;genes que puedan ser procesadas posteriormente en forma precisa.. 
+<br>
+Por ejemplo no es posible calibrar las im&aacute;genes (substracci&oacute;n de im&aacute;genes dark y bias y divisi&oacute;n flat) o utilizar los m&eacute;todos de apilado m&aacute;s avanzados  
+(kappa sigma o adaptive weighted average) con DeepSkyStacker Live.<br>
+<br>
+<br>
+</font><font face="Arial"><b>Interfaz de Usuario de DeepSkyStacker Live</b></font></p>
+<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="99%" id="AutoNumber9">
+  <tr>
+    <td width="45%">
+    <p class="Standard"><font face="Arial" size="2">Tal como con el DeepSkyStacker la interface de usuario del  
+    DeepSkyStacker Live es por demas simple e intuitiva y todas las caracter&iacute;sticas principales y comandos estan disponibles f&aacute;cilmente.</font></p>
+    <p class="Standard"><font face="Arial" size="2"><br>
+    En la parte superior de la pantalla hay tres botones que se utilizan para comenzar a monitorear, comenzar a apilar y detenerse.<br>
+    <br>
+    La parte inferior es utilizada para monitorear el progreso durante la sesi&oacute;n de astrofotograf&iacute;a desde distintos puntos de vista:</font></p>
+    <ul>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">La imagen apilada</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">La &uacute;ltima imagen</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">Gr&aacute;ficos que muestran varias estad&iacute;sticas</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">La lista de im&aacute;genes.</font></p>
+      </li>
+      <li>
+    <p class="Standard" style="margin-top: 0; margin-bottom: 0"><font face="Arial" size="2">El log</font></p>
+      </li>
+    </ul>
+    <p class="Standard"><font face="Arial" size="2">La &uacute;ltima pesta&ntilde;a es utilizada para indicar los par&aacute;metros que controlan el comportamiento del DeepSkyStacker Live.</font></p>
+    <p class="Standard">&nbsp;</p>
+    <p></td>
+    <td width="62%" valign="top">
+    <img border="0" src="../images/spanish/Live_Main.jpg" alt="DeepSkyStacker's Main Screen" align="right" width="549" height="469"></td>
+  </tr>
+</table>
+<hr color="#0000FF">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="QuickStart"></a>Gu&iacute;a R&aacute;pida</font></b><font face="Arial"><b><br>
+</b>
+<font size="2">Su laptop esta preparada para la sesi&oacute;n de astrofotograf&iacute;a, el programa de captura de la CCD o 
+DSLR esta funcionando y operativo.</font></font></p>
+<p align="justify">
+<font size="2" face="Arial">Iniciamos el DeepSkyStacker Live, hacemos click sobre el bot&oacute;n Apilar, y seleccionamos la carpeta a monitorear. Eso es todo!<br>
+<br>
+De ahora en adelante todas las im&aacute;genes creadas en la carpeta monitoreada ser&aacute;n registradas, alineadas y apiladas salvo que cumplan alguna condici&oacute;n particular que Ud. haya indicado en la pesta&ntilde;a de Configuraci&oacute;n.</font></p>
+<p align="justify"><font face="Arial" size="2">Por supuesto Ud. puede cambiar la configuraci&oacute;n mientras que el  DeepSkyStacker Live esta monitoreando los archivos entrantes.</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Settings"></a>Configuraci&oacute;n</font><br>
+</b>
+<font size="2">Primero de todo, el DeepSkyStacker Live comparte </font><font face="Arial"><font size="2">con el 
+DeepSkyStacker</font></font> <font size="2">todos los ajustes concernientes a la decodificaci&oacute;n de im&aacute;genes, umbral de detecci&oacute;n de estrellas, m&eacute;todos de alineado y opciones de calibraci&oacute;n de fondo. Para cambiar estos valores Ud. debe usar el  DeepSkyStacker. <br>
+La &uacute;nica diferencia es que los m&eacute;todos  AHD y  Bayer Drizzle son autom&aacute;ticamente transformados a interpolaci&oacute;n bilinear.<br>
+<br>
+La pesta&ntilde;a de Configuraci&oacute;n se utiliza para definir cu&aacute;ndo ser&aacute;n apiladas las im&aacute;genes entrantes, cuando lanzar un alerta y c&oacute;mo se lanzan los alertas.</font></font></p>
+<p align="center"><img border="0" src="../images/spanish/Live_Settings.jpg" width="686" height="562"></p>
+<p align="justify"><font face="Arial" size="2"><font color="#0000FF"><b>Opciones de Apilado</b></font><br>
+<b>No apilar hasta tener disponibles al menos  </b>xxx<b> im&aacute;genes<br>
+</b>Esta opci&oacute;n puede ser utilizada para esperar por un n&uacute;mero m&iacute;nimo de im&aacute;genes antes de decidir cual de ellas ser&aacute; utilizada como imagen de referencia.<br>
+Cuando la cantidad m&iacute;nima de im&aacute;genes esta disponible el DeepSkyStacker Live utilizar&aacute; la que tiene mayor puntaje como imagen de referencia.<br>
+Esta opci&oacute;n es especialmente &uacute;til cuando esta tomando im&aacute;genes de exposici&oacute;n corta y no est&aacute; seguro que todas las im&aacute;genes light son lo suficientemente buenas.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Opciones de Alerta/No apilar<br>
+</b>Estas opciones se definen a si mismas y pueden ser utilizadas para indicar varias condiciones por las cuales una imagen no debe ser apilada y/o deba lanzarse un alerta.<br>
+Es posible indicar condiciones de acuerdo a:</font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">El puntaje</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">El n&uacute;mero de estrellas detectadas</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">El valor FWHM (Full Width Half Maximum)</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">La deriva (dX &oacute; dY) </font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">El &aacute;ngulo de rotaci&oacute;n</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<span lang="fr"><font face="Arial" size="2">El Fondo del Cielo</font></span></p>
+  </li>
+</ul>
+<p align="justify"><font face="Arial" size="2"><font color="#0000FF"><b>Alertas</b></font><br>
+Cuando se detecta una condici&oacute;n de alerta es posible ser notificado utilizando cuatro formas distintas:</font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><b>Sonido</b>: el beep cl&aacute;sico de la computadora</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><b>Titilar de la aplicaci&oacute;n</b>: El DeepSkyStacker Live titila 4 veces</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><b>Crear un archivo de alerta</b>: se crea un archivo llamado 
+DSSLiveWarning.txt que contiene un mensaje de alerta en la carpeta de su elecci&oacute;n. Puede ser una carpeta local o una carpeta de red. Si el archivo ya existe el nuevo alerta es agregado al archivo existente.</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><b>Enviar correo electr&oacute;nico</b>: se env&iacute;a un correo electr&oacute;nico conteniendo el mensaje de alerta a la direcci&oacute;n de mail de su elecci&oacute;n.<br>
+En la ventana de configuraci&oacute;n de correo electr&oacute;nico puede seleccionar enviar un mail solo por el primer alerta. En este caso tan r&aacute;pido como se envi&oacute; el correo electr&oacute;nico aparecer&aacute; un bot&oacute;n de reiniciar que le permitir&aacute; reiniciar el contador interno de correo electr&oacute;nico.</font></p>
+  </li>
+</ul>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2"><font color="#0000FF"><b>Creaci&oacute;n de la Imagen Apilada</b></font><br>
+La imagen apilada es creada solamente en la memoria y no es guardada por defecto.<br>
+Esta opci&oacute;n puede ser utilizada para crear un archivo conteniendo la imagen apilada por cada  
+xxx cantidad de im&aacute;genes agregadas a la apilada.<br>
+<br>
+La imagen apilada es guardada en un archivo llamado Autostack.tif en la carpeta de su elecci&oacute;n. Si el archivo ya existe ser&aacute; sobreescrito.<br>
+Siempre es una imagen TIFF de  16 bits y dependiendo de las im&aacute;genes entrantes puede ser en color o en escala de gris.<br>
+&nbsp;</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Graphs"></a>Gr&aacute;ficos</font><br>
+</b>
+<font size="2">Para cada imagen DeepSkyStacker Live utiliza los siguientes s&iacute;mbolos:</font></font></p>
+<ul>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Un c&iacute;rculo <font color="#008000">verde</font> para cada imagen procesada</font></p>
+  </li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Un c&iacute;rculo  <font color="#FF9900">naranja</font> detras del c&iacute;rculo verde: se cumple una condici&oacute;n de alerta</font></p>
+  </li>
+  <li><font face="Arial" size="2">Un <font color="#FF0000">tri&aacute;ngulo</font> por encima del c&iacute;rculo verde: se cumple una condici&oacute;n de No Apilar</font></li>
+  <li>
+<p align="justify" style="margin-top: 0; margin-bottom: 0">
+<font face="Arial" size="2">Un cuadrado  <font color="#008080">verde</font> es utilizado en los gr&aacute;ficos dX/dY y de Angulo para representar la imagen de referencia</font></p>
+  </li>
+</ul>
+<p align="justify"><font face="Arial" size="2">Respecto al gr&aacute;fico dX/dY:  la 
+<font color="#FF0000">l&iacute;nea roja</font> representa el valor dX y la 
+<font color="#0000FF">l&iacute;nea azul</font> representa los valores dY.</font></p>
+<p align="justify"><font face="Arial" size="2">Cuando una imagen no es apilable &eacute;sta no aparece en los gr&aacute;ficos de  dX/dY ni de Angulo.</font></p>
+<hr color="#0000FF">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000">
+<a name="Technical"></a>Informaci&oacute;n T&eacute;cnica</font><br>
+</b>
+<font size="2">DeepSkyStacker Live utiliza el m&eacute;todo de apilado de la Media (este es el &uacute;nico m&eacute;todo que puede ser utilizado cuando el n&uacute;mero de im&aacute;genes no es conocido de antemano).<br>
+Debido a que no es posible la calibraci&oacute;n se utiliza una detecci&oacute;n y  remoci&oacute;n de hot pixels simple en las im&aacute;genes entrantes antes de apilarlas.<br>
+Ud. puede ver los hot pixels en la pesta&ntilde;a de Ultima Imagen, pero estos deber&iacute;an ser removidos en la pesta&ntilde;a Imagen Apilada.<br>
+<br>
+A diferencia del  DeepSkyStacker, DeepSkyStacker Live utiliza un solo procesador para todas las tareas de segundo plano (carga, registrado, apilado) inclusive en el caso que haya disponible m&aacute;s de uno.</font></font></p>
+<hr color="#0000FF">
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>
