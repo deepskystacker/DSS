@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CProgressDlg, CDialog)
 	//{{AFX_MSG_MAP(CProgressDlg)
 	ON_BN_CLICKED(IDC_STOP, OnStop)
 	//}}AFX_MSG_MAP
+	ON_STN_CLICKED(IDC_TIMEREMAINING, &CProgressDlg::OnStnClickedTimeremaining)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -58,4 +59,10 @@ void CProgressDlg::OnStop()
 {
 	m_bCancelled	= TRUE;
 	m_Cancel.EnableWindow(FALSE);
+}
+
+
+void CProgressDlg::OnStnClickedTimeremaining()
+{
+	// TODO: Add your control notification handler code here
 }

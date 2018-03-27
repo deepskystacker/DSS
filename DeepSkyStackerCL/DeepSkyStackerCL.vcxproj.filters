@@ -278,4 +278,252 @@
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\DeepSkyStacker\res\ImageList_GrayScale.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\ImageList_CFA_CYMG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\ImageList_CFA_RGB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\ImageList_Color.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\asinh.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\cuberoot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\log.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\loglog.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\logsqrt.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\sqrt.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\linear_en.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\hdrup.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\hdrdown.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\normalmode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\mosaicmode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Pattern_RGGB.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Pattern_BGGR.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Pattern_GBRG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Pattern_GRBG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Pattern_CYGMCYMG.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\ImageList_Mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\custommode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\StarShape_TruncatedCone.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\StarShape_Bell.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\StarShape_Cone.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\StarShape_Cubic.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\StarShape_Quadratic.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\StarShape_TruncatedBell.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonBase_up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonBase_down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonBase_hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonBase_mask.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonStar_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonComet_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonComet_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonComet_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonComet_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSave_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSave_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSave_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSave_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSelect_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSelect_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSelect_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonSelect_Up.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonStar_Disabled.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonStar_Down.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\Buttons\ButtonStar_Hot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Comet_Trails.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Comet_Freeze.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Comet_Normal.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\4Corners.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\intersectionmode.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\app.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\openfile.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\undo.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\redo.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\settings.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\lightframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\darkframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\flatframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\offsetframe.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\filelist.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\logo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Spanish.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Italian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Czech.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Catalan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\German.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Dutch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Taiwan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Portugal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Brazil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Romanian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Russian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Turkish.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\RGBCalibration_None.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Calibration_Linear.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\Calibration_Rational.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\RGBCalibration_Maximum.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\RGBCalibration_Middle.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\DeepSkyStacker\res\RGBCalibration_Minimum.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>
