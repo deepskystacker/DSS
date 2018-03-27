@@ -19,6 +19,7 @@
 #include "SaveEditChanges.h"
 #include "AskRegistering.h"
 #include "BatchStacking.h"
+#include "DSSVersion.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -173,7 +174,20 @@ BOOL CStackingDlg::OnInitDialog()
 
 		if (CheckVersion(strVersion))
 		{
-			if (strVersion != VERSION_DEEPSKYSTACKER)
+			CString newMajorStr, newMinorStr, newSubStr;
+
+			int curPos = 0;
+
+			newMajorStr = strVersion.Tokenize(_T("."), curPos);
+			if (-1 != curPos) newMinorStr = strVersion.Tokenize(_T("."), curPos);
+			if (-1 != curPos) newSubStr   = strVersion.Tokenize(_T("."), curPos);
+
+			int newMajor = _ttoi(newMajorStr), newMinor = _ttoi(newMinorStr), newSub = _ttoi(newSubStr);
+
+			if ((newMajor > DSSVER_MAJOR) ||
+				(newMajor == DSSVER_MAJOR && newMinor > DSSVER_MINOR) ||
+				(newMajor == DSSVER_MAJOR && newMinor == DSSVER_MINOR && newSub > DSSVER_SUB)
+			   )
 			{
 				CString	strNewVersion;
 
