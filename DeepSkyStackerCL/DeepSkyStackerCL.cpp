@@ -81,7 +81,8 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 			}
 			else
 			{
-				printf("Cannot write to %s (not a valid filename)\n", g_strOutputFile);
+				CT2CA ascii(g_strOutputFile);  // Convert to local console codepage
+				printf("Cannot write to %s (not a valid filename)\n", ascii.m_psz);
 				bResult = FALSE;
 			};
 		}
@@ -104,7 +105,8 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 			}
 			else
 			{
-				printf("Unrecognized or unsupported bit format %s\n", strFormat);
+				CT2CA ascii(strFormat);
+				printf("Unrecognized or unsupported bit format %s\n", ascii.m_psz);
 				bResult = FALSE;
 			};
 		}
@@ -127,7 +129,8 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 			}
 			else
 			{
-				printf("Unrecognized or unsupported compression format %s\n", strCompression);
+				CT2CA ascii(strCompression);
+				printf("Unrecognized or unsupported compression format %s\n", ascii.m_psz);
 				bResult = FALSE;
 			};
 		}
