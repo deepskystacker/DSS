@@ -796,9 +796,6 @@
     <CustomBuild Include="res\DeepSkyStacker.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\lcms\Projects\VC2005\lcms.vcxproj">
-      <Project>{0f1d6674-d802-4ac0-a4c3-14fcb8ee8854}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\libjpg\libjpg.vcxproj">
       <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
     </ProjectReference>
