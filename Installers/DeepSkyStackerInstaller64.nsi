@@ -1,10 +1,17 @@
+##!include "MUI2.nsh"
 
-
+!define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
 
 !define DSS_PRODUCT        "DeepSkyStacker64"
+
 !define DSS_NAME           "Deep Sky Stacker (64 bit)"
 !define DSS_FILE           "DeepSkyStacker"
-!define DSS_UNINSTALL_FILE "DeepSkyStacker64Uninstaller"
+
+!define DSSCL_NAME         "Deep Sky Stacker Command Line (64 bit)"
+!define DSSCL_FILE         "DeepSkyStackerCL"
+
+!define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
+
 CRCCheck On
 
 
@@ -26,7 +33,7 @@ ShowInstDetails       nevershow
 ShowUninstDetails     nevershow
 
 Name                  "${DSS_NAME}"
-#Icon                  "${RSW_ICON}"
+Icon                  "${DSS_ICON}"
 
 
 
@@ -42,7 +49,7 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall previous version
+  # Automatically uninstall previous version
   
   Exec "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
@@ -50,7 +57,8 @@ Section
   # specify files to go in the output path
 
   File "..\x64\Release\${DSS_FILE}.exe"
-  
+  File "..\x64\Release\${DSSCL_FILE}.exe"
+
  
   # define uninstaller name
 
@@ -64,9 +72,10 @@ Section
   # create start-menu items
 
   CreateDirectory "$SMPROGRAMS\${DSS_PRODUCT}"
-  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_FILE}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
   CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_PRODUCT}.lnk" "$INSTDIR\${DSS_FILE}.exe" "" "$INSTDIR\${DSS_FILE}.exe" 0
  
+  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_FILE}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
+
   # write uninstall information to the registry
  
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}" "DisplayName" "${DSS_PRODUCT} (remove only)"
