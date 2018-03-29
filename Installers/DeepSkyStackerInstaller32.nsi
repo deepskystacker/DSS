@@ -2,6 +2,12 @@
 
 !define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
 
+!define DSS_HELP_FR        "..\Help\Aide DeepSkyStacker.chm"
+!define DSS_HELP_ES        "..\Help\Ayuda DeepSkyStacker.chm"
+!define DSS_HELP_EN        "..\Help\DeepSkyStacker Help.chm"
+!define DSS_HELP_DE        "..\Help\DeepSkyStacker Hilfe.chm"
+!define DSS_HELP_PT        "..\Help\DeepSkyStacker Ajuda.chm"
+
 
 !define DSS_PRODUCT        "DeepSkyStacker"
 
@@ -10,6 +16,7 @@
 
 !define DSSCL_NAME         "Deep Sky Stacker Command Line (32 bit)"
 !define DSSCL_FILE         "DeepSkyStackerCL"
+
 
 !define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
 
@@ -59,7 +66,11 @@ Section
 
   File "..\x86\Release\${DSS_FILE}.exe"
   File "..\x86\Release\${DSSCL_FILE}.exe"
-  
+  File "${DSS_HELP_FR}"
+  File "${DSS_HELP_ES}"
+  File "${DSS_HELP_EN}"
+  File "${DSS_HELP_DE}"
+  File "${DSS_HELP_PT}"
  
   # define uninstaller name
 
