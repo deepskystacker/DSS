@@ -72,6 +72,7 @@ END_EASYSIZE_MAP
 
 BOOL CBatchStacking::OnInitDialog()
 {
+	ZFUNCTRACE_RUNTIME();
 	CDialog::OnInitDialog();
 
     CRect			rcClient;
@@ -120,6 +121,7 @@ void CBatchStacking::OnSizing(UINT nSide, LPRECT lpRect)
 
 void CBatchStacking::OnBnClickedAddLists()
 {
+	ZFUNCTRACE_RUNTIME();
 	CRegistry			reg;
 	CString				strBaseDirectory;
 
@@ -217,6 +219,7 @@ void CBatchStacking::UpdateListBoxWidth()
 
 BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 	CWorkspace			workspace;
 	CAllStackingTasks	tasks;
@@ -304,6 +307,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 
 void CBatchStacking::OnOK() 
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bContinue  = TRUE;
 	LONG			lNrProcessedLists = 0;
 

@@ -64,6 +64,7 @@ void	CBackgroundCalibrationTask::AddToMainHistograms(const std::vector<LONG> & v
 
 BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	LONG				i, j;
@@ -123,6 +124,7 @@ BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 
 BOOL	CBackgroundCalibrationTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 	LONG				lHeight = m_pBitmap->Height();
 	LONG				i = 0;

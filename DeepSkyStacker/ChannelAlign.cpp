@@ -7,6 +7,7 @@
 
 void	CChannelAlign::CopyBitmap(CMemoryBitmap * pSrcBitmap, CMemoryBitmap * pTgtBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	PixelIterator				itSrc;
 	PixelIterator				itTgt;
 	LONG						lHeight = pSrcBitmap->Height(),
@@ -35,6 +36,7 @@ void	CChannelAlign::CopyBitmap(CMemoryBitmap * pSrcBitmap, CMemoryBitmap * pTgtB
 
 BOOL	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CPixelTransform & PixTransform, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
 	CSmartPtr<CMemoryBitmap>	pOutBitmap;
 	CString						strText;
@@ -103,6 +105,7 @@ BOOL	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 
 BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (!pBitmap->IsMonochrome())

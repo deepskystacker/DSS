@@ -89,6 +89,7 @@ public :
 
 	void	SplitValuePairs(VALUEPAIRSET & sValuePairs)
 	{
+		ZFUNCTRACE_RUNTIME();
 		LONG				lNrValues = 0;
 		LONG				lNrThreshold;
 		LONG				lNrAdded = 0;
@@ -135,6 +136,7 @@ H(X) = 1/2 (1+ log(2*PI*(sigma*sigma)))
 
 static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG				lSize = (LONG)sValuePairs.size();
 	double				fMinEntropy = -1.0;
 	double				fSelectedk	= 0.0;
@@ -195,11 +197,13 @@ static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 
 inline BOOL IsInStdDev(double fValue, double fMean, double fStdDev)
 {
+	ZFUNCTRACE_RUNTIME();
 	return (fValue >= fMean-2*fStdDev) && (fValue <= fMean+2*fStdDev);
 };
 
 static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG				lSize = (LONG)sValuePairs.size();
 	double				fMinRMS = -1.0;
 	double				fSelectedk	= 0.0;
@@ -288,6 +292,7 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 
 static void	RetrictValues(VALUEPAIRSET & sValuePairs)
 {
+	ZFUNCTRACE_RUNTIME();
 	VALUEPAIRITERATOR		it;
 	double					fSum = 0.0;
 	double					fPowSum = 0.0;
@@ -408,6 +413,7 @@ public :
 
 void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels)
 {
+	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELSET			sExcludedPixels;
 	LONG						i;
 
@@ -450,6 +456,7 @@ void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR 
 
 void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
 	LONG					i, j;
 	LONG					lWidth = pBitmap->RealWidth(),
@@ -997,6 +1004,7 @@ public :
 
 IMAGEREGION	GetPixelRegion(LONG lX, LONG lY, LONG lWidth, LONG lHeight)
 {
+	ZFUNCTRACE_RUNTIME();
 	IMAGEREGION				Result = IR_NONE;
 	LONG					lPosition;
 
@@ -1039,6 +1047,7 @@ IMAGEREGION	GetPixelRegion(LONG lX, LONG lY, LONG lWidth, LONG lHeight)
 
 void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXELVECTOR & vHotPixels)
 {
+	ZFUNCTRACE_RUNTIME();
 	CMedianImageFilter		Filter;
 	LONG					lWidth = pBitmap->RealWidth(),
 							lHeight = pBitmap->RealHeight();
@@ -1126,6 +1135,7 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 
 void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	CRect			rc;
 	LONG			lWidth	= pBitmap->RealWidth(),
 					lHeight = pBitmap->RealHeight();
@@ -1153,6 +1163,7 @@ void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap
 
 double	CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap * pBitmap, CRect & rc)
 {
+	ZFUNCTRACE_RUNTIME();
 	double				fResult = 0;
 	CRGBHistogram		RGBHistogram;
 	BOOL				bMonochrome = pBitmap->IsMonochrome();
@@ -1215,6 +1226,7 @@ double	CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap * pBitmap,
 
 void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bMonochrome = pBitmap->IsMonochrome();
 	BOOL				bCFA = pBitmap->IsCFA();
 	LONG				lWidth = pBitmap->RealWidth(),
@@ -1386,6 +1398,7 @@ void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBit
 
 void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	CString					strText;
 
 	if (!m_pAmpGlow)
@@ -1468,6 +1481,7 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 
 void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor)
 {
+	ZFUNCTRACE_RUNTIME();
 	
 	HOTPIXELVECTOR				vHotPixels;
 	LONG						i;
@@ -1586,6 +1600,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 
 void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bMonochrome = m_pMasterDark->IsMonochrome();
 	LONG				i, j;
 
@@ -1701,6 +1716,7 @@ public :
 
 	virtual BOOL	DoTask(HANDLE hEvent)
 	{
+		ZFUNCTRACE_RUNTIME();
 		BOOL				bResult = TRUE;
 
 		LONG				i, j;
@@ -1759,6 +1775,7 @@ public :
 
 	virtual BOOL	Process()
 	{
+		ZFUNCTRACE_RUNTIME();
 		BOOL				bResult = TRUE;
 		LONG				lHeight = m_pBitmap->RealHeight();
 		LONG				i = 0;
@@ -1797,6 +1814,7 @@ public :
 
 void	CDarkFrame::RemoveContiguousHotPixels(BOOL bCFA)
 {
+	ZFUNCTRACE_RUNTIME();
 	HOTPIXELVECTOR			vNewHotPixels;
 	LONG					lStep = bCFA ? 2 : 1;
 	LONG					lNrDiscarded = 0;
@@ -1837,6 +1855,7 @@ void	CDarkFrame::RemoveContiguousHotPixels(BOOL bCFA)
 
 void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	m_vHotPixels.clear();
 	if (m_pMasterDark)
 	{
@@ -1984,6 +2003,7 @@ void	CDarkFrame::GetValidNeighbors(LONG lX, LONG lY, HOTPIXELVECTOR & vPixels, L
 
 void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	if (pBitmap && m_vHotPixels.size())
 	{
 		LONG			i, j;
@@ -2060,6 +2080,7 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 
 BOOL	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	if (m_pMasterDark && m_pMasterDark->IsOk())

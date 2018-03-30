@@ -117,6 +117,7 @@ public :
 
 	virtual BOOL	DoTask(HANDLE hEvent)
 	{
+		ZFUNCTRACE_RUNTIME();
 		BOOL					bResult = TRUE;
 		LONG					i, j;
 		BOOL					bEnd = FALSE;
@@ -191,6 +192,7 @@ public :
 
 	virtual BOOL	Process()
 	{
+		ZFUNCTRACE_RUNTIME();
 		BOOL				bResult = TRUE;
 		LONG				lHeight = m_pBitmap->RealHeight();
 		LONG				i = 0;
@@ -322,6 +324,7 @@ public :
 
 	virtual BOOL	DoTask(HANDLE hEvent)
 	{
+		ZFUNCTRACE_RUNTIME();
 		BOOL					bResult = TRUE;
 		LONG					i, j;
 		BOOL					bEnd = FALSE;
@@ -369,6 +372,7 @@ public :
 
 	virtual BOOL	Process()
 	{
+		ZFUNCTRACE_RUNTIME();
 		BOOL				bResult = TRUE;
 		LONG				i = 0;
 		LONG				lStep;
@@ -406,6 +410,7 @@ public :
 
 void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double & fGray)
 {
+	ZFUNCTRACE_RUNTIME();
 	std::vector<double>			vGrays;
 	std::vector<double>			vAllGrays;
 	BAYERCOLOR					BayerColor = BAYER_UNKNOWN;
@@ -449,6 +454,7 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 
 void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double & fRed, double & fGreen, double & fBlue)
 {
+	ZFUNCTRACE_RUNTIME();
 	std::vector<double>			vReds;
 	std::vector<double>			vAllReds;
 	std::vector<double>			vGreens;
@@ -503,6 +509,7 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 
 void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, double & fGray)
 {
+	ZFUNCTRACE_RUNTIME();
 	double						fSumGrays = 0;
 	double						fSumAllGrays = 0;
 	BAYERCOLOR					BayerColor = BAYER_UNKNOWN;
@@ -557,6 +564,7 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 
 void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, double & fRed, double & fGreen, double & fBlue)
 {
+	ZFUNCTRACE_RUNTIME();
 	double						fSumReds = 0;
 	double						fSumAllReds = 0;
 	double						fSumGreens = 0;
@@ -617,6 +625,7 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 
 BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (ppDeltaBitmap)
@@ -730,6 +739,7 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 
 BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & pcs, CCosmeticStats & cs, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (pBitmap)

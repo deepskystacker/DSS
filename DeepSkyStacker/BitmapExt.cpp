@@ -24,6 +24,7 @@ using namespace Gdiplus;
 
 void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
 {
+	ZFUNCTRACE_RUNTIME();
 	double			Y, U, V;
 	double			R, G, B;
 
@@ -52,6 +53,7 @@ void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, 
 
 void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
 {
+	ZFUNCTRACE_RUNTIME();
 	fRed = fGreen = fBlue = 0;
 	// Basic formulae
 	// M = R + B
@@ -124,6 +126,7 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 
 int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 {
+	ZFUNCTRACE_RUNTIME();
    UINT  num = 0;          // number of image encoders
    UINT  size = 0;         // size of the image encoder array in bytes
 
@@ -157,6 +160,7 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 
 void CopyBitmapToClipboard(HBITMAP hBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	HDC					hScreenDC;
 	HDC					hSrcDC,
 						hTgtDC;
@@ -203,6 +207,7 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 
 BOOL	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
 	CSmartPtr<CMemoryBitmap>	pOutBitmap;
 
@@ -256,6 +261,7 @@ BOOL	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 
 BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
 	AllDepthBitmap.Clear();
 
@@ -323,6 +329,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 
 BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL							bResult = FALSE;
 	CSmartPtr<C24BitColorBitmap>	pBitmap;
 	Bitmap	*						pSrcBitmap;
@@ -401,6 +408,7 @@ BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 
 BOOL	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	if (pBitmap)
@@ -507,6 +515,7 @@ BOOL	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 BOOL	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	Bitmap *				pBitmap;
 
@@ -525,6 +534,7 @@ BOOL	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	Bitmap *				pBitmap;
 
@@ -573,6 +583,7 @@ BOOL	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	C32BitsBitmap::CopyToClipboard()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	DWORD			dwSize = 16+sizeof(BITMAPINFO)+m_dwByteWidth*m_lHeight;
 
@@ -628,6 +639,7 @@ BOOL	C32BitsBitmap::CopyToClipboard()
 
 BOOL	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	LONG			i, j;
 
@@ -700,6 +712,7 @@ BOOL	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 
 void CGammaTransformation::InitTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint)
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG				lBlackPoint = 65535.0*fBlackPoint,
 						lWhitePoint = 65535.0*fWhitePoint;
 
@@ -729,6 +742,7 @@ void CGammaTransformation::InitTransformation(double fBlackPoint, double fGrayPo
 
 void CGammaTransformation::InitTransformation(double fGamma)
 {
+	ZFUNCTRACE_RUNTIME();
 	double				fBlackPoint = 0.0,
 						fWhitePoint = 1.0,
 						fGrayPoint	= 0.5;
@@ -742,6 +756,7 @@ void CGammaTransformation::InitTransformation(double fGamma)
 template <class TType>
 BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> * pInBitmap, CGammaTransformation & gammatrans)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (pInBitmap && gammatrans.IsInitialized())
@@ -800,6 +815,7 @@ BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> *
 template <class TType>
 BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * pInBitmap, CGammaTransformation & gammatrans)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (pInBitmap && gammatrans.IsInitialized())
@@ -852,6 +868,7 @@ BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * 
 
 BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CMemoryBitmap * pInBitmap, CGammaTransformation & gammatrans)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	C24BitColorBitmap * p24BitColorBitmap = dynamic_cast<C24BitColorBitmap *>(pInBitmap);
 	C48BitColorBitmap * p48BitColorBitmap = dynamic_cast<C48BitColorBitmap *>(pInBitmap);
@@ -899,6 +916,7 @@ static		SYSTEMTIME						g_BitmapInfoTime;
 
 BOOL	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 #if DSSFILEDECODING==0
@@ -993,6 +1011,7 @@ BOOL	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	
 	if (ppBitmap)
@@ -1026,6 +1045,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 
 BOOL	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
 	CSmartPtr<CMemoryBitmap>	pBitmap;
 
@@ -1114,6 +1134,7 @@ private :
 public :
 	CSubtractTask()
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_fXShift = 0;
 		m_fYShift = 0;
 		m_bAddMode = FALSE;
@@ -1122,10 +1143,12 @@ public :
 
 	virtual ~CSubtractTask()
 	{
+		ZFUNCTRACE_RUNTIME();
 	};
 
 	void	Init(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_pProgress		= pProgress;
 		m_pTarget		= pTarget;
 		m_pSource		= pSource;
@@ -1145,22 +1168,26 @@ public :
 
 	void	SetShift(double fXShift, double fYShift)
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_fXShift	= fXShift;
 		m_fYShift	= fYShift;
 	};
 
 	void	SetAddMode(BOOL bSet)
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_bAddMode = bSet;
 	};
 
 	void	SetMinimumValue(double fValue)
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_fMinimum = fValue;
 	};
 
 	void	End()
 	{
+		ZFUNCTRACE_RUNTIME();
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1173,6 +1200,7 @@ public :
 
 BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG			i, j;
 	BOOL			bEnd = FALSE;
 	MSG				msg;
@@ -1283,6 +1311,7 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 
 BOOL CSubtractTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 	LONG			lHeight = m_pTarget->RealHeight();
 	LONG			lStep;
@@ -1331,6 +1360,7 @@ BOOL CSubtractTask::Process()
 
 BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	// Check that it is the same sizes
 	if (pTarget && pSource)
@@ -1354,6 +1384,7 @@ BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * p
 
 BOOL ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fXShift, double fYShift)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	// Check that it is the same sizes
 	if (pTarget && pSource)
@@ -1380,6 +1411,7 @@ BOOL ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProg
 
 BOOL Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	// Check that it is the same sizes
 	if (pTarget && pSource)
@@ -1455,6 +1487,7 @@ public :
 
 BOOL	CMultiplyTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG			i, j;
 	BOOL			bEnd = FALSE;
 	MSG				msg;
@@ -1511,6 +1544,7 @@ BOOL	CMultiplyTask::DoTask(HANDLE hEvent)
 
 BOOL CMultiplyTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 	LONG			lHeight = m_pTarget->RealHeight();
 	LONG			lStep;
@@ -1556,6 +1590,7 @@ BOOL CMultiplyTask::Process()
 
 BOOL Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	if (pTarget)
@@ -1575,6 +1610,7 @@ BOOL Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, d
 
 CFATYPE	GetCFAType(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	CFATYPE					Result = CFATYPE_NONE;
 
 	if (pBitmap)
@@ -1594,6 +1630,7 @@ CFATYPE	GetCFAType(CMemoryBitmap * pBitmap)
 
 BOOL	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	*ppOutBitmap = NULL;
