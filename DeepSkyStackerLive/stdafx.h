@@ -42,6 +42,7 @@
 
 #include "DSSCommon.h"
 #include "DSSMemory.h"
+#include "Ztrace.h"
 
 //#define NOGDIPLUS
 //{{AFX_INSERT_LOCATION}}
