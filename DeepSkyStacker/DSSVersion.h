@@ -4,19 +4,19 @@
 //#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 52
+#define DSSBETARELEASE 1
 #define DSSBETAEXPIREYEAR 2018
 #define DSSBETAEXPIREMONTH 12
 #endif
 
-#define DSSVER_MAJOR			3
-#define DSSVER_MINOR			3
-#define DSSVER_SUB				8
+#define DSSVER_MAJOR			4
+#define DSSVER_MINOR			1
+#define DSSVER_SUB				0
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
 #else
-#define DSSVER_BUILD			0
+#define DSSVER_BUILD			1
 #endif
 
 #define FB(arg)					#arg
@@ -40,7 +40,7 @@
 #define DSSVER_FILEVERSION		VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
-#define DSSVER_COPYRIGHT		"Copyright © Luc Coiffier 2006-2018"
+#define DSSVER_COPYRIGHT		"Copyright © Luc Coiffier, David C. Partridge, Tony Curtis 1997-2018"
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
 #define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker Live"

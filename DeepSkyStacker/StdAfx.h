@@ -42,6 +42,7 @@
 
 #include "DSSCommon.h"
 #include "DSSMemory.h"
+#include "Ztrace.h"
 
 extern CString INPUTFILE_FILTERS;
 extern CString OUTPUTFILE_FILTERS;

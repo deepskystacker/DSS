@@ -1484,6 +1484,7 @@ void CStackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
 
 void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bContinue = TRUE;
 	CDSSProgressDlg		dlg;
 	DWORD				dwStartTime = GetTickCount();
@@ -1499,9 +1500,9 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps.size() &&
 		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps[0].m_strFileName.GetLength())
 	{
-		CreateLogFile(tasks.m_vStacks[0].m_pLightTask->m_vBitmaps[0].m_strFileName);
-		AddTimeToLogFile();
-		AddToLogFile("Start stacking process\n");
+		// CreateLogFile(tasks.m_vStacks[0].m_pLightTask->m_vBitmaps[0].m_strFileName);
+		// AddTimeToLogFile();
+		ZTRACE_RUNTIME("Start stacking process");
 	};
 
 	{
@@ -1573,9 +1574,8 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 		};
 	};
 
-	AddToLogFile("------------------------------\nEnd of stacking process\n");
-	AddTimeToLogFile();
-	CloseLogFile();
+	ZTRACE_RUNTIME("------------------------------\nEnd of stacking process");
+
 	EndWaitCursor();
 };
 

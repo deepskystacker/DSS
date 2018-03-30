@@ -1,0 +1,6 @@
+# Microsoft Developer Studio Generated Dependency File, included by TestZPtr.mak
+
+.\TestZPtr.cpp : \
+	"..\ZDefs.h"\
+	"..\ZPtr.h"\
+	

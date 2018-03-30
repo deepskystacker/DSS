@@ -218,10 +218,10 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 
 void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	if (IsOk() && !m_bComputed)
 	{
-		AddTimeToLogFile();
-		AddToLogFile("Compute Flat normalization\n");
+		ZTRACE_RUNTIME("Compute Flat normalization");
 		CString			strStart2;
 		CString			strText;
 
@@ -325,19 +325,19 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 		if (m_pFlatFrame->IsMonochrome() && !bCFA)
 		{
 			m_FlatNormalization.SetParameters(fMeanGray);
-			AddToLogFile("Flat normalization: Mean = %.2f\n", fMeanGray/256.0);
+			ZTRACE_RUNTIME("Flat normalization: Mean = %.2f", fMeanGray/256.0);
 		}
 		else
 		{
 			if (lNrYellows)
 			{
 				m_FlatNormalization.SetParameters(fMeanCyan, fMeanMagenta, fMeanYellow, fMeanGreen2);
-				AddToLogFile("Flat normalization: Mean Cyan = %.2f - Magenta = %.2f - Yellow = %.2f - Green = %.2f\n", fMeanCyan/256.0, fMeanMagenta/256.0, fMeanYellow/256.0, fMeanGreen2/256.0);
+				ZTRACE_RUNTIME("Flat normalization: Mean Cyan = %.2f - Magenta = %.2f - Yellow = %.2f - Green = %.2f", fMeanCyan/256.0, fMeanMagenta/256.0, fMeanYellow/256.0, fMeanGreen2/256.0);
 			}
 			else
 			{
 				m_FlatNormalization.SetParameters(fMeanRed, fMeanGreen, fMeanBlue);
-				AddToLogFile("Flat normalization: Mean Red = %.2f - Green = %.2f - Blue = %.2f\n", fMeanRed/256.0, fMeanGreen/256.0, fMeanBlue/256.0);
+				ZTRACE_RUNTIME("Flat normalization: Mean Red = %.2f - Green = %.2f - Blue = %.2f", fMeanRed/256.0, fMeanGreen/256.0, fMeanBlue/256.0);
 			};
 			if (bCFA) // Call bCFA after to force UseGray
 				m_FlatNormalization.SetParameters(1.0);

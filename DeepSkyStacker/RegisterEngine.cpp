@@ -1480,6 +1480,7 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 
 BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = TRUE;
 	LONG					i, j;
 	CString					strText;
@@ -1524,7 +1525,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 				// Register this bitmap
 				CLightFrameInfo		lfi;
 
-				AddToLogFile("Register %s\n", (LPCTSTR)pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName);
+				ZTRACE_RUNTIME("Register %s", (LPCTSTR)pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName);
 
 				lfi.SetProgress(pProgress);
 				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName, FALSE, FALSE);

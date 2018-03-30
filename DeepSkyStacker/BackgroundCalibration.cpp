@@ -180,6 +180,7 @@ BOOL	CBackgroundCalibrationTask::Process()
 
 void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitmap, BOOL bFirst, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	CBackgroundCalibrationTask		task;
 
 	m_fSrcRedMax	= 0;
@@ -200,7 +201,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	std::vector<LONG>	vBlueHisto;
 
 	AddTimeToLogFile();
-	AddToLogFile("Compute Background Calibration\n");
+	ZTRACE_RUNTIME("Compute Background Calibration\n");
 
 
 
@@ -276,7 +277,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	};
 	m_fSrcBlueBk = (double)lIndice/m_fMultiplier;
 
-	AddToLogFile("Background Calibration: Median Red = %.2f - Green = %.2f - Blue = %.2f\n", m_fSrcRedBk/256.0, m_fSrcGreenBk/256.0, m_fSrcBlueBk/256.0);
+	ZTRACE_RUNTIME("Background Calibration: Median Red = %.2f - Green = %.2f - Blue = %.2f", m_fSrcRedBk/256.0, m_fSrcGreenBk/256.0, m_fSrcBlueBk/256.0);
 
 	if (bFirst)
 	{
@@ -314,7 +315,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 
 			//m_fTgtRedBk = m_fTgtGreenBk = m_fTgtBlueBk = fTgtBk;
 		};
-		AddToLogFile("Target Background : Red = %.2f - Green = %.2f - Blue = %.2f\n", m_fTgtRedBk/256.0, m_fTgtGreenBk/256.0, m_fTgtBlueBk/256.0);
+		ZTRACE_RUNTIME("Target Background : Red = %.2f - Green = %.2f - Blue = %.2f", m_fTgtRedBk/256.0, m_fTgtGreenBk/256.0, m_fTgtBlueBk/256.0);
 	};
 
 	m_riRed.Initialize(0, m_fSrcRedBk, m_fSrcRedMax, 0, m_fTgtRedBk, m_fSrcRedMax);

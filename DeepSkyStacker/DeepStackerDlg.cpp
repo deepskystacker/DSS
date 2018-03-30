@@ -245,9 +245,10 @@ void CDeepStackerDlg::ChangeTab(DWORD dwTabID)
 
 BOOL CDeepStackerDlg::OnInitDialog() 
 {
-	AddToLog("Initializing Main Dialog\n");
+	ZFUNCTRACE_RUNTIME();
+	ZTRACE_RUNTIME("Initializing Main Dialog");
 	CDialog::OnInitDialog();
-	AddToLog("Initializing Main Dialog - ok\n");
+	ZTRACE_RUNTIME("Initializing Main Dialog - ok");
 
 
 	CString			strMask;
@@ -264,31 +265,31 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	SetWindowText(strTitle);
 	m_strBaseTitle = strTitle;
 
-	AddToLog("Creating Left Panel\n");
+	ZTRACE_RUNTIME("Creating Left Panel");
 	m_ExplorerBar.Create(IDD_EXPLORERBAR, this);
-	AddToLog("Creating Left Panel - ok\n");
+	ZTRACE_RUNTIME("Creating Left Panel - ok");
 
 	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), TRUE);
 	m_dlgStacking.SetStartingFileList(m_strStartFileList);
-	AddToLog("Creating Stacking Panel\n");
+	ZTRACE_RUNTIME("Creating Stacking Panel");
 	m_dlgStacking.Create(IDD_STACKING, this);
-	AddToLog("Creating Stacking Panel - ok\n");
-	AddToLog("Creating Processing Panel\n");
+	ZTRACE_RUNTIME("Creating Stacking Panel - ok");
+	ZTRACE_RUNTIME("Creating Processing Panel");
 	m_dlgProcessing.Create(IDD_PROCESSING, this);
-	AddToLog("Creating Processing Panel - ok\n");
+	ZTRACE_RUNTIME("Creating Processing Panel - ok");
 	m_dlgLibrary.Create(IDD_LIBRARY, this);
 
-	AddToLog("Restoring Window Position\n");
+	ZTRACE_RUNTIME("Restoring Window Position");
 	RestoreWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_POSITION);
-	AddToLog("Restoring Window Position - ok\n");
+	ZTRACE_RUNTIME("Restoring Window Position - ok");
 
 	m_dwCurrentTab = IDD_REGISTERING;
-	AddToLog("Updating All Panels\n");
+	ZTRACE_RUNTIME("Updating All Panels");
 	UpdateTab();
-	AddToLog("Updating All Panels - ok\n");
-	AddToLog("Updating Sizes\n");
+	ZTRACE_RUNTIME("Updating All Panels - ok");
+	ZTRACE_RUNTIME("Updating Sizes");
 	UpdateSizes();
-	AddToLog("Updating Sizes - ok\n");
+	ZTRACE_RUNTIME("Updating Sizes - ok");
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

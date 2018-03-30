@@ -623,6 +623,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 
 void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
 	LONG					i, j, k;
 
@@ -632,8 +633,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 	fGreenFactor	= 1.0;
 	fBlueFactor		= 1.0;
 
-	AddTimeToLogFile();
-	AddToLogFile("Compute Dark coefficients\n");
+	ZTRACE_RUNTIME("Compute Dark coefficients");
 	if (pProgress)
 	{
 		CString		strText;
@@ -751,7 +751,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 
 		fRedFactor = fGreenFactor = fBlueFactor = ComputeMinimumEntropyFactor(sValuePairs);
 		//fRedFactor = fGreenFactor = fBlueFactor = ComputeMinimumRMSFactor(sValuePairs);
-		AddToLogFile("Monochrome coefficient: %.2f\n", fRedFactor);
+		ZTRACE_RUNTIME("Monochrome coefficient: %.2f", fRedFactor);
 	}
 	else if (pBitmap->IsMonochrome() && pBitmap->IsCFA())
 	{
@@ -854,7 +854,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		fBlueFactor		= ComputeMinimumEntropyFactor(sBlueValuePairs);
 		//fBlueFactor		= ComputeMinimumRMSFactor(sBlueValuePairs);
 
-		AddToLogFile("RGB coefficients: Red = %.2f - Green = %.2f - Blue = %.2f\n", fRedFactor, fGreenFactor, fBlueFactor);
+		ZTRACE_RUNTIME("RGB coefficients: Red = %.2f - Green = %.2f - Blue = %.2f", fRedFactor, fGreenFactor, fBlueFactor);
 	}
 	else
 	{
@@ -930,7 +930,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		fGreenFactor	= ComputeMinimumEntropyFactor(sGreenValuePairs);
 		fBlueFactor		= ComputeMinimumEntropyFactor(sBlueValuePairs);
 
-		AddToLogFile("RGB coefficients: Red = %.2f - Green = %.2f - Blue = %.2f\n", fRedFactor, fGreenFactor, fBlueFactor);
+		ZTRACE_RUNTIME("RGB coefficients: Red = %.2f - Green = %.2f - Blue = %.2f", fRedFactor, fGreenFactor, fBlueFactor);
 	};
 };
 

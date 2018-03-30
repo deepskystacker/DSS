@@ -1,0 +1,66 @@
+00000000 2018/03/28 20:46:51.229 043584 0000a128 1045480 +int __cdecl main(int,char *[])(testztrace.cpp:65)
+00000001 2018/03/28 20:46:51.234 043584 0000a128 1045496   >This is the first line,
+00000001 2018/03/28 20:46:51.234 043584 0000a128 1045496   >this is the second
+00000001 2018/03/28 20:46:51.234 043584 0000a128 1045496   >and this is the third
+00000002 2018/03/28 20:46:51.238 043584 0000a128 1045032   >Testing< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 68
+00000003 2018/03/28 20:46:51.242 043584 0000a128 1045032   >Windows NOTYET< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 69
+00000004 2018/03/28 20:46:51.246 043584 0000a128 1045032   >Windows NOP< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 70
+00000005 2018/03/28 20:46:51.252 043584 0000a128 1035352   +subr()(testztrace.cpp:93)
+00000006 2018/03/28 20:46:51.256 043584 0000a128 1035368     >Trace record from subr()
+00000007 2018/03/28 20:46:51.260 043584 0000a128 1035432   -subr()
+00000008 2018/03/28 20:46:51.265 043584 0000a128 1044600   >ZInvalidRequest exception thrown.
+00000008 2018/03/28 20:46:51.265 043584 0000a128 1044600   >   function: main
+00000008 2018/03/28 20:46:51.265 043584 0000a128 1044600   >   file: d:\projects\zclass\testztrace\testztrace.cpp
+00000008 2018/03/28 20:46:51.265 043584 0000a128 1044600   >   line: 74
+00000009 2018/03/28 20:46:51.364 043584 0000a128 1044600   >   Error Id is 1
+00000010 2018/03/28 20:46:51.369 043584 0000a128 1044600   >   Error Code group is Other Error Group
+00000011 2018/03/28 20:46:51.373 043584 0000a128 1044600   >   Exception text is:
+00000012 2018/03/28 20:46:51.378 043584 0000a128 1044600   >      The following expression must be true, but evaluated to false: 0 == 1
+2018/03/28 20:46:51.382 043584 0000a128 1045496   >Trace entry without the line number in the prefix
+  >Trace entry with no prefix
+00000015 043584 0000a128 1045496   >Trace entry without a timestamp in the prefix
+00000016 2018/03/28 20:46:51.396 043584 0000a128 1045560 -int __cdecl main(int,char *[])
+00000000 2018/03/29 02:31:44.333 042944 00005d54 1046536 +int __cdecl main(int,char *[])(testztrace.cpp:65)
+00000001 2018/03/29 02:31:44.342 042944 00005d54 1046552   >This is the first line,
+00000001 2018/03/29 02:31:44.342 042944 00005d54 1046552   >this is the second
+00000001 2018/03/29 02:31:44.342 042944 00005d54 1046552   >and this is the third
+00000002 2018/03/29 02:31:44.347 042944 00005d54 1046088   >Testing< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 68
+00000003 2018/03/29 02:31:44.352 042944 00005d54 1046088   >Windows NOTYET< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 69
+00000004 2018/03/29 02:31:44.358 042944 00005d54 1046088   >Windows NOP< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 70
+00000005 2018/03/29 02:31:44.510 042944 00005d54 1036408   +subr()(testztrace.cpp:93)
+00000006 2018/03/29 02:31:44.515 042944 00005d54 1036424     >Trace record from subr()
+00000007 2018/03/29 02:31:44.522 042944 00005d54 1036488   -subr()
+00000008 2018/03/29 02:31:44.527 042944 00005d54 1045656   >ZInvalidRequest exception thrown.
+00000008 2018/03/29 02:31:44.527 042944 00005d54 1045656   >   function: main
+00000008 2018/03/29 02:31:44.527 042944 00005d54 1045656   >   file: d:\projects\zclass\testztrace\testztrace.cpp
+00000008 2018/03/29 02:31:44.527 042944 00005d54 1045656   >   line: 74
+00000009 2018/03/29 02:31:44.532 042944 00005d54 1045656   >   Error Id is 1
+00000010 2018/03/29 02:31:44.537 042944 00005d54 1045656   >   Error Code group is Other Error Group
+00000011 2018/03/29 02:31:44.543 042944 00005d54 1045656   >   Exception text is:
+00000012 2018/03/29 02:31:44.549 042944 00005d54 1045656   >      The following expression must be true, but evaluated to false: 0 == 1
+2018/03/29 02:31:44.556 042944 00005d54 1046552   >Trace entry without the line number in the prefix
+  >Trace entry with no prefix
+00000015 042944 00005d54 1046552   >Trace entry without a timestamp in the prefix
+00000016 2018/03/29 02:31:45.600 042944 00005d54 1046616 -int __cdecl main(int,char *[])
+00000000 2018/03/29 09:40:38.929 036900 0000b124 1046200 +int __cdecl main(int,char *[])(testztrace.cpp:65)
+00000001 2018/03/29 09:40:38.938 036900 0000b124 1046216   >This is the first line,
+00000001 2018/03/29 09:40:38.938 036900 0000b124 1046216   >this is the second
+00000001 2018/03/29 09:40:38.938 036900 0000b124 1046216   >and this is the third
+00000002 2018/03/29 09:40:38.945 036900 0000b124 1045752   >Testing< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 68
+00000003 2018/03/29 09:40:38.952 036900 0000b124 1045752   >Windows NOTYET< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 69
+00000004 2018/03/29 09:40:38.957 036900 0000b124 1045752   >Windows NOP< file: d:\projects\zclass\testztrace\testztrace.cpp function: main line: 70
+00000005 2018/03/29 09:40:38.963 036900 0000b124 1036072   +subr()(testztrace.cpp:93)
+00000006 2018/03/29 09:40:38.968 036900 0000b124 1036088     >Trace record from subr()
+00000007 2018/03/29 09:40:38.974 036900 0000b124 1036152   -subr()
+00000008 2018/03/29 09:40:38.979 036900 0000b124 1045320   >ZInvalidRequest exception thrown.
+00000008 2018/03/29 09:40:38.979 036900 0000b124 1045320   >   function: main
+00000008 2018/03/29 09:40:38.979 036900 0000b124 1045320   >   file: d:\projects\zclass\testztrace\testztrace.cpp
+00000008 2018/03/29 09:40:38.979 036900 0000b124 1045320   >   line: 74
+00000009 2018/03/29 09:40:38.987 036900 0000b124 1045320   >   Error Id is 1
+00000010 2018/03/29 09:40:38.995 036900 0000b124 1045320   >   Error Code group is Other Error Group
+00000011 2018/03/29 09:40:39.002 036900 0000b124 1045320   >   Exception text is:
+00000012 2018/03/29 09:40:39.009 036900 0000b124 1045320   >      The following expression must be true, but evaluated to false: 0 == 1
+2018/03/29 09:40:39.016 036900 0000b124 1046216   >Trace entry without the line number in the prefix
+  >Trace entry with no prefix
+00000015 036900 0000b124 1046216   >Trace entry without a timestamp in the prefix
+00000016 2018/03/29 09:40:39.037 036900 0000b124 1046280 -int __cdecl main(int,char *[])

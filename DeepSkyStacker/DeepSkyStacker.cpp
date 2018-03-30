@@ -37,7 +37,7 @@ BOOL	IsExpired()
 /*
 #ifdef DSSBETA
 
-	AddToLog("Check beta expiration\n");
+	ZTRACE_RUNTIME("Check beta expiration\n");
 
 	SYSTEMTIME			SystemTime;
 	LONG				lMaxYear = DSSBETAEXPIREYEAR;
@@ -51,7 +51,7 @@ BOOL	IsExpired()
 		bResult = TRUE;
 	};
 
-	AddToLog("Check beta expiration - ok\n");
+	ZTRACE_RUNTIME("Check beta expiration - ok\n");
 
 #endif
 */
@@ -146,7 +146,7 @@ void	CheckRemainingTempFiles()
 	std::vector<CString>	vFiles;
 	__int64					ulTotalSize = 0;
 	
-	AddToLog("Check remaining temp files\n");
+	ZTRACE_RUNTIME("Check remaining temp files\n");
 
 	CAllStackingTasks::GetTemporaryFilesFolder(strFolder);
 	strFileMask = strFolder;
@@ -169,7 +169,7 @@ void	CheckRemainingTempFiles()
 
 		FindClose(hFindFiles);
 	};
-	AddToLog("Check remaining temp files - ok\n");
+	ZTRACE_RUNTIME("Check remaining temp files - ok\n");
 
 	if (vFiles.size())
 	{
@@ -177,7 +177,7 @@ void	CheckRemainingTempFiles()
 		CString			strSize;
 		int				nResult;
 
-		AddToLog("Remove remaining temp files\n");
+		ZTRACE_RUNTIME("Remove remaining temp files\n");
 
 		SpaceToString(ulTotalSize, strSize);
 
@@ -190,7 +190,7 @@ void	CheckRemainingTempFiles()
 				DeleteFile(vFiles[i]);
 		};
 
-		AddToLog("Remove remaining temp files - ok\n");
+		ZTRACE_RUNTIME("Remove remaining temp files - ok\n");
 	};
 
 
@@ -212,7 +212,7 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	SetRegistryKey("DeepSkyStacker");
 
 	
-	AddToLog("Reset dssfilelist extension association with DSS\n");
+	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS\n");
 
 	CGCFileTypeAccess	FTA;
 	TCHAR				szPath[_MAX_PATH];
@@ -243,15 +243,15 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 
 	// set the necessary registry entries	
 	FTA.RegSetAllInfo();
-	AddToLog("Reset dssfilelist extension association with DSS - ok\n");
+	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS - ok\n");
 
 
-	AddToLog("Initialized QHTM\n");
+	ZTRACE_RUNTIME("Initialized QHTM\n");
 	QHTM_Initialize( AfxGetInstanceHandle() );
-	AddToLog("Initialized QHTM - ok\n");
-	AddToLog("Initialized QHTM Cooltips\n");
+	ZTRACE_RUNTIME("Initialized QHTM - ok\n");
+	ZTRACE_RUNTIME("Initialized QHTM Cooltips\n");
 	QHTM_EnableCooltips();
-	AddToLog("Initialized QHTM Cooltips - ok\n");
+	ZTRACE_RUNTIME("Initialized QHTM Cooltips - ok\n");
 
 	return bResult;
 };
@@ -279,15 +279,15 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 	HANDLE			hMutex;
 	bool			bFirstInstance = true;
 
-	StartLog();
-	AddToLog("Checking Mutex\n");
+	ZFUNCTRACE_RUNTIME();
+	ZTRACE_RUNTIME("Checking Mutex");
 
 	hMutex = CreateMutex(NULL, TRUE, "DeepSkyStacker.Mutex.UniqueID.12354687");
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 		bFirstInstance = false;
-	AddToLog("Checking Mutex - ok\n");
+	ZTRACE_RUNTIME("Checking Mutex - ok");
 
-	AddToLog("AFXOleInit\n");
+	ZTRACE_RUNTIME("AFXOleInit");
 
 	if (!AfxOleInit())
 	{
@@ -297,13 +297,13 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 	}
 
 	OleInitialize(NULL);
-	AddToLog("OLE Initialize - ok\n");
+	ZTRACE_RUNTIME("OLE Initialize - ok");
 
-	AddToLog("Set UI Language\n");
+	ZTRACE_RUNTIME("Set UI Language");
 
 	SetUILanguage();
 
-	AddToLog("Set UI Language - ok\n");
+	ZTRACE_RUNTIME("Set UI Language - ok");
 
 	{
 		DWORD			dwShowRefStars = 0;
@@ -320,18 +320,18 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 	ULONG_PTR				gdiplusToken;
 	ULONG_PTR				gdiHookToken;
 
-	AddToLog("Initialize GDI+\n");
+	ZTRACE_RUNTIME("Initialize GDI+");
 
 	// Initialize GDI+.
 	gdiplusStartupInput.SuppressBackgroundThread = TRUE;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
 	gdiSO.NotificationHook(&gdiHookToken);
 
-	AddToLog("Initialize GDI+ - ok\n");
+	ZTRACE_RUNTIME("Initialize GDI+ - ok");
 
 	#endif
 
-	AddToLog("Initialize Application\n");
+	ZTRACE_RUNTIME("Initialize Application");
 
 	// initialize MFC and print and error on failure
 	if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0))
@@ -343,7 +343,7 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 	{
 		theApp.InitInstance();
 		
-		AddToLog("Initialize Application - ok\n");
+		ZTRACE_RUNTIME("Initialize Application - ok");
 
 		INPUTFILE_FILTERS.LoadString(IDS_FILTER_INPUT);
 		OUTPUTFILE_FILTERS.LoadString(IDS_FILTER_OUTPUT);
@@ -359,7 +359,7 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 			if (bFirstInstance)
 				CheckRemainingTempFiles();
 
-			AddToLog("Creating Main Window\n");
+			ZTRACE_RUNTIME("Creating Main Window");
 
 			CDeepStackerDlg		dlg;
 			CString				strStartFileList = lpCmdLine;
@@ -371,26 +371,26 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 			};
 
 			theApp.m_pMainDlg = &dlg;
-			AddToLog("Creating Main Window - ok\n");
+			ZTRACE_RUNTIME("Creating Main Window - ok");
 
-			AddToLog("Set Starting File List\n");
+			ZTRACE_RUNTIME("Set Starting File List");
 			dlg.SetStartingFileList(strStartFileList);
-			AddToLog("Set Starting File List - ok\n");
-			AddToLog("Going modal...\n");
+			ZTRACE_RUNTIME("Set Starting File List - ok");
+			ZTRACE_RUNTIME("Going modal...");
 			dlg.DoModal();
-			AddToLog("Ending modal...\n");
+			ZTRACE_RUNTIME("Ending modal...");
 		};
 	}
 
 	#ifndef NOGDIPLUS
 	// Shutdown GDI+
-	AddToLog("Shutting down GDI+\n");
+	ZTRACE_RUNTIME("Shutting down GDI+");
 	gdiSO.NotificationUnhook(gdiHookToken);
 	GdiplusShutdown(gdiplusToken);
-	AddToLog("Shutting down GDI+ - ok\n");
+	ZTRACE_RUNTIME("Shutting down GDI+ - ok");
 	#endif
 
-	AddToLog("Shutting down QHTM\n");
+	ZTRACE_RUNTIME("Shutting down QHTM");
 	QHTM_Uninitialize();
 
 	OleUninitialize();

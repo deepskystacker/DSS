@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -636,7 +634,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_REGISTERSETTINGS, DIALOG
     BEGIN
@@ -802,7 +800,7 @@ END
 // Menu
 //
 
-IDR_LISTCONTEXT MENU 
+IDR_LISTCONTEXT MENU
 BEGIN
     POPUP "List Context"
     BEGIN
@@ -827,7 +825,7 @@ BEGIN
     END
 END
 
-IDR_SAVECONTEXT MENU 
+IDR_SAVECONTEXT MENU
 BEGIN
     POPUP "SaveContext"
     BEGIN
@@ -837,7 +835,7 @@ BEGIN
     END
 END
 
-IDR_COSMETICMETHOD MENU 
+IDR_COSMETICMETHOD MENU
 BEGIN
     POPUP "Cosmetic Method"
     BEGIN
@@ -846,7 +844,7 @@ BEGIN
     END
 END
 
-IDR_FILELISTS MENU 
+IDR_FILELISTS MENU
 BEGIN
     POPUP "FileList"
     BEGIN
@@ -856,7 +854,7 @@ BEGIN
     END
 END
 
-IDR_CALIBRATION MENU 
+IDR_CALIBRATION MENU
 BEGIN
     POPUP "Calibration Menu"
     BEGIN
@@ -868,7 +866,7 @@ BEGIN
     END
 END
 
-IDR_SAVESETTINGS MENU 
+IDR_SAVESETTINGS MENU
 BEGIN
     POPUP "SaveSettings"
     BEGIN
@@ -880,7 +878,7 @@ BEGIN
     END
 END
 
-IDR_LOADSETTINGS MENU 
+IDR_LOADSETTINGS MENU
 BEGIN
     POPUP "LoadSettings"
     BEGIN
@@ -893,7 +891,7 @@ BEGIN
     END
 END
 
-IDR_EDITSETTINGS MENU 
+IDR_EDITSETTINGS MENU
 BEGIN
     POPUP "EditSettings"
     BEGIN
@@ -927,7 +925,7 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SHOWREGISTEREDSTARS "Show Registered Stars"
     IDS_HIDEREGISTEREDSTARS "Hide Registered Stars"
@@ -936,7 +934,7 @@ BEGIN
     IDS_MANAGESETTINGS      "Save, Load, Manage settings ..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_PATH         "Path"
     IDS_COLUMN_FILE         "File"
@@ -948,7 +946,7 @@ BEGIN
     IDS_COLUMN_DATETIME     "Date/Time"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_SIZES        "Size"
     IDS_COLUMN_CFA          "CFA"
@@ -960,7 +958,7 @@ BEGIN
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TYPE_LIGHT          "Light"
     IDS_TYPE_DARK           "Dark"
@@ -968,7 +966,7 @@ BEGIN
     IDS_TYPE_OFFSET         "Bias/Offset"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FORMAT_RGB          "RGB %ld bit/ch"
     IDS_FORMAT_GRAY         "Gray %ld bit"
@@ -980,7 +978,7 @@ BEGIN
     IDS_AND                 "and"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURE0           "Exposure: < 1 s "
     IDS_EXPOSURE1           "Exposure: %ld s "
@@ -995,7 +993,7 @@ BEGIN
     IDS_ESTIMATEDUNKNOWN    "Estimated remaining Time: Unknown"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS or DeepSkyStacker Image|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
     IDS_FILTER_INPUT        "Picture Files|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
@@ -1007,7 +1005,7 @@ BEGIN
     IDS_TITLE_OPENDARKFRAMES "Open Dark Frames..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MSG_SAVEMODIFICATIONS "Do you want to save the modifications?"
     IDS_MSG_NOPICTURETOSAVE "There is no picture to save."
@@ -1015,7 +1013,7 @@ BEGIN
                             "An image must be loaded to create a Star Mask."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECK_ALLOK         "darks, flats and offsets/bias checked."
     IDS_CHECK_DARKFLATOFFSET 
@@ -1028,7 +1026,7 @@ BEGIN
     IDS_CHECK_OFFSET        "Don't forget to add and check offset frames before stacking."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TT_REDADJUST        "Set Red Histogram Adjust Method"
     IDS_TT_GREENADJUST      "Set Green Histogram Adjust Method"
@@ -1037,7 +1035,7 @@ BEGIN
     IDS_TT_EMBEDDED         "This option save the unprocessed image but embed the processing settings\nUse it if you plan to do all the processing in another software or if you plan to re-open the picture with DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ASK_DELETESETTINGS  "Do you really want to remove the %s settings?"
     IDS_ASK_NODARK          "You have not checked dark frames.\n"
@@ -1046,7 +1044,7 @@ BEGIN
     IDS_ASK_CONTINUE        "\nDo you want to continue?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ERROR_NOTCOMPATIBLE "The checked pictures are not compatibles (width, height, number of colors, number of channels, only one master dark, offset and flat)."
     IDS_ERROR_NOTLIGHTCHECKED "You must check light frames to stack them."
@@ -1055,7 +1053,7 @@ BEGIN
                             "The Masters (dark, flat, offset) creation required %ld Kb.\nOnly %ld Kb are available on drive %s\nDo you want to proceed anyway?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CREATEMASTERDARK    "Create Master Dark Frame"
     IDS_CREATEMASTEROFFSET  "Create Master Offset Frame"
@@ -1063,7 +1061,7 @@ BEGIN
     IDS_ADDDARK             "Adding Dark frame %ld of %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SAVINGMASTEROFFSET  "Saving Master Offset"
     IDS_SAVINGMASTERDARK    "Saving Master Dark"
@@ -1075,7 +1073,7 @@ BEGIN
     IDS_SAVINGMASTERDARKFLAT "Saving Master Dark Flat"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REGISTERING         "Registering pictures"
     IDS_REGISTERINGPICTURE  "Registering %ld of %ld"
@@ -1095,7 +1093,7 @@ BEGIN
     IDS_COMPUTINGOFFSETS    "Computing offsets"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGSTACKINGINFO "Computing stacking info for %s"
     IDS_STACKING_COMPUTINGOFFSET "Stacking ... computing offsets"
@@ -1117,7 +1115,7 @@ BEGIN
     IDS_COMPUTINGMEDIANFLAT "Computing master flat (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADDSIMAGE         "Loading DSImage"
     IDS_LOADPICTURE         "Loading %s"
@@ -1137,7 +1135,7 @@ BEGIN
     IDS_LOADRGBFITS         "Loading FITS %ld bit/ch"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HAT_LINEAR          "Linear"
     IDS_HAT_CUBEROOT        "Cube Root"
@@ -1148,7 +1146,7 @@ BEGIN
     IDS_HAT_ASINH           "ASinH"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADRGBFLAT         "Loading %ld bit/ch %s flat frame\n%s"
     IDS_LOADGRAYFLAT        "Loading %ld bits gray %s flat frame\n%s"
@@ -1170,7 +1168,7 @@ BEGIN
     IDS_REMOVINGHOTPIXELS   "Detecting hot pixels"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TYPE_MASTERDARK     "Master Dark"
     IDS_TYPE_MASTEROFFSET   "Master Offset"
@@ -1179,7 +1177,7 @@ BEGIN
     IDS_TYPE_MASTERDARKFLAT "Master Dark Flat"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECKVERSION        "Do you want DeepSkyStacker to check if a newer version is available at startup?\n(You can enable or disable this option later from the About box)"
     IDS_VERSIONAVAILABLE    "DeepSkyStacker version %s is available for download."
@@ -1192,7 +1190,7 @@ BEGIN
                             "Only one frame (out of %ld) will be stacked.\n\nYou should check/change the star detection threshold to detect more stars\nand help DeepSkyStacker find a transformation between the reference frame and the others.\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURETIME1       "%ld s "
     IDS_EXPOSURETIME2       "%ld mn %ld s "
@@ -1200,7 +1198,7 @@ BEGIN
     IDS_NRPROCESSORS        "[%ld processors used]"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_STEP          "Stacking step %ld\n  ->%ld frames (ISO: %s) - total exposure: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (ISO: %s) exposure: %s\n"
@@ -1226,12 +1224,12 @@ BEGIN
                             "\t\tWarning: exposure time not matching with flat frames\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MULTIPLEFILESELECTED "%ld files selected"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_METHOD        "Method: "
     IDS_RECAP_AVERAGE       "Average"
@@ -1245,14 +1243,14 @@ BEGIN
     IDS_RECAP_ALIGNMENT     "Alignment method: "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_MEGABYTES     "%.1f Mb"
     IDS_RECAP_KILOBYTES     "%.1f Kb"
     IDS_RECAP_GIGABYTES     "%.1f Gb"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_WARNINGDISKSPACE 
                             "The process needs temporarily %s of free space on the %s drive.\nOnly %s are available on this drive."
@@ -1265,18 +1263,18 @@ BEGIN
                             "Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to hosts these files."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGMEDIANLIGHT "Computing Final Picture (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LISTINFO            "Light Frames:%ld      -      Dark Frames: %ld      -      Flat Frames:%ld      -   Dark Flat Frames: %d   -      Offset/Bias Frames: %ld"
     IDS_LISTINFO2           "Light Frames: %ld\nDark Frames: %ld\nFlat Frames: %ld\nDark Flat Frames: %ld\nOffset/Bias Frames: %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TOOLTIP_KAPPASIGMA  "The pixels outside the range:\n[Mean-[kappa]*[sigma], Mean+[kappa]*[sigma]]\nare iteratively removed.\n\nThe remaining pixels are averaged."
     IDS_TOOLTIP_AUTOADAPTIVE 
@@ -1289,7 +1287,7 @@ BEGIN
     IDS_TOOLTIP_SAVE        "Save changes\nSave all the changes (Stars and Comet) for the current image."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_GENERIC_RGGB        "Generic RGGB"
     IDS_GENERIC_BGGR        "Generic BGGR"
@@ -1298,13 +1296,13 @@ BEGIN
     IDS_GENERIC             "Generic"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MAINGROUP           "Main Group"
     IDS_GROUPIDMASK         "Group %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ALIGNMENT_AUTO      "Automatic\n\nThe alignment method is automatically selected depending on the number of available stars."
     IDS_ALIGNMENT_BILINEAR  "Bilinear Alignment\n\nThe Bilinear Alignment is used in all cases."
@@ -1312,7 +1310,7 @@ BEGIN
     IDS_ALIGNMENT_BICUBIC   "Bicubic Alignment\n\nThe Bicubic method is used when at least 40 stars are available, then the Bisquared method is used if 25 to 39 stars are available, then the Bilinear method is used when less than 25 stars are available."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ALIGN_AUTO          "Automatic"
     IDS_ALIGN_BILINEAR      "Bilinear"
@@ -1321,7 +1319,7 @@ BEGIN
     IDS_ALIGN_NONE          "No Alignment"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_HOTPIXELS     "Hot Pixels detection and removal: %s\n"
     IDS_RECAP_DETECTEDANDUSEDPROCESSORS "%ld detected and used processors "
@@ -1343,7 +1341,7 @@ BEGIN
     IDS_RECAP_COSMETICCOLD  "Cosmetic applied to cold pixels (Filter = %ld px, Detection Threshold = %.1f%%)\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DETECTINGHOTPIXELS1 "Detecting Hot Pixels (1/2)"
     IDS_DETECTINGHOTPIXELS2 "Detecting Hot Pixels (2/2)"
@@ -1363,19 +1361,19 @@ BEGIN
     IDS_MEDIANDARKFLATINFO  "Master Dark Flat created from %ld pictures (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HELPFILE            "DeepSkyStacker Help.chm"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADGRAYFITS        "Loading FITS %ld bit monochrome"
     IDS_SAVINGFITS          "Saving FITS %ld bit"
     IDS_STARMASKDESCRIPTION "Star Mask created by DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TITLE_OPENFLATFRAMES "Open Flat Frames..."
     IDS_TITLE_OPENBIASFRAMES "Open Bias Frames..."
@@ -1385,7 +1383,7 @@ BEGIN
     IDS_TITLE_SAVESETTINGS  "Save DeepSkyStacker Settings"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TIP_ADDSTAR         "Click to add this star"
     IDS_TIP_REMOVESTAR      "Click to remove this star"
@@ -1393,7 +1391,7 @@ BEGIN
     IDS_TIP_REMOVECOMET     "Click to remove the comet"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COSMETICSTATS       "Cosmetic\nDetected Hot Pixels: %ld (%.2f%%)\nDetected Cold Pixels: %ld (%.2f%%)\n"
     IDS_COMPUTINGCOSMETICSTATS "Computing Cosmetic"
@@ -1402,19 +1400,19 @@ BEGIN
     IDS_ALIGNINGCHANNEL     "Aligning Channel"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILELISTDESCRIPTION "DeepSkyStacker File List"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
                             "Per Channel Background Calibration: %s\n"
     IDS_RECAP_DARKMULTIPLICATIONFACTOR "Dark Multiplication Factor: %.2f\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_DISCLAIMER     "These are recommended settings.\nThey may not work in all the situations but they are often a good starting point."
     IDS_RECO_CLICKTOSET     "Click on the proposed link to change the setting accordingly"
@@ -1439,7 +1437,7 @@ BEGIN
                             "You are using a low star detection threshold"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_MODDEDDSLR_TEXT "Reset all white balance settings"
     IDS_RECO_MODDEDDSLR_REASON "If you are using a modded DSLR"
@@ -1464,9 +1462,9 @@ BEGIN
                             "You are stacking grayscale images and they may have slightly different background values"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_ABOUT_DSS           "DeepSkyStacker version %s\nCopyright © 1997-2014 Luc Coiffier"
+    IDS_ABOUT_DSS           "DeepSkyStacker version %s\nCopyright © 1997-2018 Luc Coiffier\nDavid C. Partridge and Tony Curtis"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
     IDS_ABOUT_DCRAW         "RAW files decoding by DCRAW (version %s)\nCopyright © 1997-2014 Dave Coffin"
     IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
@@ -1478,7 +1476,7 @@ BEGIN
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_LANG_SPANISH  "Spanish version: Ricardo Contreras and the team from"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
@@ -1496,14 +1494,14 @@ BEGIN
     IDS_ABOUT_LANG_CHINESET "Traditional Chinese version:"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_LIGHT_REASON   "You are stacking %ld light frame(s)"
     IDS_RECO_USEAUTOADAPTIVEAVERAGE 
                             "Use Auto Adaptive Weighted Average combination method"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_LANG_CHINESET_LINK "Wei-Hao Wang"
     IDS_ABOUT_LANG_PORTUGUESE "Portuguese version:"
@@ -1512,17 +1510,17 @@ BEGIN
     IDS_ABOUT_LANG_ROMANIAN_LINK "Emil Kolbert and Valentin Stoica"
     IDS_ABOUT_LANG_RUSSIAN  "Russian version:"
     IDS_ABOUT_LANG_RUSSIAN_LINK "Oleg Milantiev"
-	IDS_ABOUT_LANG_TURKISH  "Turkish version:"
-	IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
+    IDS_ABOUT_LANG_TURKISH  "Turkish version:"
+    IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SELECTOUTPUTFOLDER  "Select Output Folder"
     IDS_RECAP_STACKINGMODE_INTERSECTION "Intersection"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STACKINGMODE_NORMAL "The result of the stacking process is framed by the reference light frame."
     IDS_STACKINGMODE_MOSAIC "The result of the stacking process contains all the light frames of the stack."
@@ -1530,7 +1528,43 @@ BEGIN
                             "The result of the stacking process is framed by the intersection of all the frames."
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 

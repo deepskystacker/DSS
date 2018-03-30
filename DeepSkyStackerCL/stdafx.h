@@ -24,6 +24,7 @@
 #include <Common.h>
 #include <DSSCommon.h>
 #include <resource.h>
+#include <ztrace.h>
 
 #include <StdString.h>
 #define CString			CStdString

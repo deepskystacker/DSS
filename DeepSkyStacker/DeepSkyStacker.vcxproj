@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -152,7 +152,7 @@
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DSSBETA;WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -201,7 +201,7 @@
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DSSBETA;WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -337,7 +337,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>"C:\Program Files (x86)\Visual Leak Detector\include";..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"C:\Program Files (x86)\Visual Leak Detector\include";..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DSSBETA;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -379,7 +379,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DSSBETA;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -573,7 +573,6 @@
     <ResourceCompile Include="DeepSkyStackerTR.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Delaunay\Delaunay.h" />
     <ClInclude Include="..\Tools\BitmapSlider.h" />
     <ClInclude Include="..\Tools\BtnST.h" />
     <ClInclude Include="..\Tools\ButtonToolbar.h" />
@@ -622,6 +621,7 @@
     <ClInclude Include="DeepSkyStacker.h" />
     <ClInclude Include="DeepStack.h" />
     <ClInclude Include="DeepStackerDlg.h" />
+    <ClInclude Include="Delaunay.h" />
     <ClInclude Include="DropFilesDlg.h" />
     <ClInclude Include="DSSCommon.h" />
     <ClInclude Include="DSSMemory.h" />
@@ -646,10 +646,12 @@
     <ClInclude Include="LuminanceTab.h" />
     <ClInclude Include="MasterFrames.h" />
     <ClInclude Include="MatchingStars.h" />
+    <ClInclude Include="matrix.h" />
     <ClInclude Include="MedianFilterEngine.h" />
     <ClInclude Include="MultiBitmapProcess.h" />
     <ClInclude Include="Multitask.h" />
     <ClInclude Include="OutputTab.h" />
+    <ClInclude Include="PCLTools.h" />
     <ClInclude Include="PictureListCtrl.h" />
     <ClInclude Include="PixelTransform.h" />
     <ClInclude Include="PostCalibration.h" />
@@ -816,6 +818,9 @@
     </ProjectReference>
     <ProjectReference Include="..\QHTML_Static\qhtm\qhtm.vcxproj">
       <Project>{4575815d-1eff-4aff-b21c-0707e3c51a8d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
+      <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

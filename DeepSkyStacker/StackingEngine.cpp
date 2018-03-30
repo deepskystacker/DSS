@@ -26,6 +26,7 @@
 
 void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 {
+	ZFUNCTRACE_RUNTIME();
 	TCHAR				szDrive[_MAX_DRIVE];
 	TCHAR				szDir[_MAX_DIR];
 	TCHAR				szName[_MAX_FNAME];
@@ -127,6 +128,8 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 
 void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & strInfoFileName)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	TCHAR				szDrive[_MAX_DRIVE];
 	TCHAR				szDir[_MAX_DIR];
 	TCHAR				szName[_MAX_FNAME];
@@ -161,6 +164,8 @@ void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & s
 
 void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBilinearParameters & bp)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	CLightFrameStackingInfo			lfsi(szLightFrame);
 	LIGHTFRAMESTACKINGINFOITERATOR	it;
 	CString							strInfoFileName;
@@ -189,6 +194,7 @@ void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBiline
 
 BOOL	CLightFramesStackingInfo::GetParameters(LPCTSTR szLightFrame, CBilinearParameters & bp)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL							bResult = FALSE;
 	LIGHTFRAMESTACKINGINFOITERATOR	it;
 
@@ -214,6 +220,8 @@ BOOL	CLightFramesStackingInfo::GetParameters(LPCTSTR szLightFrame, CBilinearPara
 
 void	CLightFramesStackingInfo::Save()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	if (m_strReferenceFrame.GetLength() && m_strStackingFileInfo.GetLength())
 	{
 		FILE *				hFile;
@@ -254,6 +262,8 @@ void	CLightFramesStackingInfo::Save()
 
 void	RemoveStars(CMemoryBitmap * pBitmap,CPixelTransform & PixTransform, const STARVECTOR & vStars)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	if (pBitmap)
 	{
 		double				fWidth	= pBitmap->Width();
@@ -388,6 +398,8 @@ void	RemoveStars(CMemoryBitmap * pBitmap,CPixelTransform & PixTransform, const S
 
 TRANSFORMATIONTYPE CStackingEngine::GetTransformationType()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
 	DWORD					dwAlignmentTransformation = 2;			
 	CWorkspace				workspace;
@@ -420,6 +432,8 @@ TRANSFORMATIONTYPE CStackingEngine::GetTransformationType()
 
 BOOL	CStackingEngine::AddLightFramesToList(CAllStackingTasks & tasks)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	LONG				i, j;
 	BOOL				bReferenceFrameFound;
 
@@ -481,6 +495,8 @@ BOOL	CStackingEngine::AddLightFramesToList(CAllStackingTasks & tasks)
 
 BOOL CStackingEngine::ComputeLightFrameOffset(LONG lBitmapIndice, CMatchingStars & MatchingStars)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 	CBilinearParameters	BilinearParameters;
 
@@ -583,6 +599,8 @@ public :
 
 BOOL	CComputeOffsetTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL			bStop = FALSE;
 	CString			strText;
 
@@ -616,6 +634,8 @@ BOOL	CComputeOffsetTask::Process()
 
 BOOL	CComputeOffsetTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL			bResult = TRUE;
 	BOOL			bEnd = FALSE;
 	MSG				msg;
@@ -710,6 +730,8 @@ inline bool CompareLightFrameDate (const CLightFrameInfo * plfi1, const CLightFr
 
 BOOL	CStackingEngine::ComputeMissingCometPositions()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = TRUE;
 
 	if (m_lNrCometStackable>=2)
@@ -846,6 +868,8 @@ BOOL	CStackingEngine::ComputeMissingCometPositions()
 
 BOOL	CStackingEngine::ComputeOffsets()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 	LONG				i;
 	LONG				lTotalStacked = 1;
@@ -901,6 +925,8 @@ BOOL	CStackingEngine::ComputeOffsets()
 
 BOOL	CStackingEngine::IsLightFrameStackable(LPCTSTR szFile)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	for (LONG i = 0;i<m_vBitmaps.size() && !bResult;i++)
@@ -919,6 +945,8 @@ BOOL	CStackingEngine::IsLightFrameStackable(LPCTSTR szFile)
 
 BOOL	CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks & tasks)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 	LONG				i, j;
 
@@ -952,6 +980,8 @@ BOOL	CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks & tasks)
 
 void CStackingEngine::GetResultISOSpeed()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	m_lISOSpeed = m_vBitmaps[0].m_lISOSpeed;
 	for (LONG i = 1;i<m_vBitmaps.size();i++)
 	{
@@ -994,6 +1024,8 @@ inline void ExpandWithPoint(LONG & lLeft, LONG & lRight, LONG & lTop, LONG & lBo
 
 void CStackingEngine::ComputeLargestRectangle(CRect & rc)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	LONG				i;
 	BOOL				bFirst = TRUE;
 	LONG				lLeft = 0, 
@@ -1055,6 +1087,8 @@ void CStackingEngine::ComputeLargestRectangle(CRect & rc)
 
 bool CStackingEngine::ComputeSmallestRectangle(CRect & rc)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	bool				bResult = false;
 	LONG				i;
 	BOOL				bFirst = TRUE;
@@ -1112,6 +1146,8 @@ bool CStackingEngine::ComputeSmallestRectangle(CRect & rc)
 /* ------------------------------------------------------------------- */
 LONG CStackingEngine::FindBitmapIndice(LPCTSTR szFile)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	LONG				lResult = -1;
 	LONG				i;
 
@@ -1128,6 +1164,7 @@ LONG CStackingEngine::FindBitmapIndice(LPCTSTR szFile)
 
 BOOL CStackingEngine::ComputeBitmap()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	if (m_pMasterLight &&  m_pMasterLight->GetNrAddedBitmaps())
@@ -1148,8 +1185,7 @@ BOOL CStackingEngine::ComputeBitmap()
 			m_pProgress->SetJointProgress(TRUE);
 		};
 
-		AddTimeToLogFile();
-		AddToLogFile("Compute resulting bitmap\n");
+		ZTRACE_RUNTIME("Compute resulting bitmap");
 		if (m_vCometShifts.size())
 		{
 			std::vector<LONG>		vImageOrder;
@@ -1181,12 +1217,13 @@ BOOL CStackingEngine::ComputeBitmap()
 
 BOOL	CStackingEngine::AdjustEntropyCoverage()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_pEntropyCoverage)
 	{
-		AddTimeToLogFile();
-		AddToLogFile("Adjust Entropy Coverage\n");
+		ZTRACE_RUNTIME("Adjust Entropy Coverage");
 
 		LONG		i, j;
 		BOOL		bColor;
@@ -1240,12 +1277,13 @@ BOOL	CStackingEngine::AdjustEntropyCoverage()
 
 BOOL	CStackingEngine::AdjustBayerDrizzleCoverage()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (m_vPixelTransforms.size())
 	{
-		AddTimeToLogFile();
-		AddToLogFile("Adjust Bayer Drizzle Coverage\n");
+
+		ZTRACE_RUNTIME("Adjust Bayer Drizzle Coverage");
 
 		LONG		i, j, k, 
 					lNrBitmaps;
@@ -1419,6 +1457,8 @@ BOOL	CStackingEngine::AdjustBayerDrizzleCoverage()
 
 BOOL	CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_strCurrentLightFrame.GetLength() && pBitmap)
@@ -1465,6 +1505,8 @@ BOOL	CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBit
 
 BOOL	CStackingEngine::SaveCalibratedLightFrame(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_strCurrentLightFrame.GetLength() && pBitmap)
@@ -1538,6 +1580,8 @@ BOOL	CStackingEngine::SaveCalibratedLightFrame(CMemoryBitmap * pBitmap)
 
 BOOL	CStackingEngine::SaveDeltaImage(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_strCurrentLightFrame.GetLength() && pBitmap)
@@ -1579,6 +1623,8 @@ BOOL	CStackingEngine::SaveDeltaImage(CMemoryBitmap * pBitmap)
 
 BOOL CStackingEngine::SaveCometImage(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_strCurrentLightFrame.GetLength() && pBitmap)
@@ -1624,6 +1670,8 @@ BOOL CStackingEngine::SaveCometImage(CMemoryBitmap * pBitmap)
 
 BOOL CStackingEngine::SaveCometlessImage(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_strCurrentLightFrame.GetLength() && pBitmap)
@@ -1693,16 +1741,19 @@ public :
 public :
 	CStackTask()
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_hPixelEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
 	};
 
 	virtual ~CStackTask()
 	{
+		ZFUNCTRACE_RUNTIME();
 		CloseHandle(m_hPixelEvent);
 	};
 
 	void	Init(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_pBitmap	= pBitmap;
 		m_pProgress = pProgress;
 	};
@@ -1715,6 +1766,8 @@ public :
 
 BOOL	CStackTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL					bResult = TRUE;
 
 	LONG					i, j;
@@ -1840,6 +1893,8 @@ BOOL	CStackTask::DoTask(HANDLE hEvent)
 
 BOOL	CStackTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = TRUE;
 	LONG				lHeight = m_pBitmap->Height();
 	LONG				i = 0;
@@ -1879,6 +1934,8 @@ BOOL	CStackTask::Process()
 
 BOOL	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bool bColor, CMultiBitmap ** ppMultiBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL						bResult = FALSE;
 	CSmartPtr<CMultiBitmap>		pMultiBitmap;
 
@@ -1922,6 +1979,8 @@ BOOL	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bo
 
 BOOL	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform & PixTransform, double fExposure, BOOL bComet)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL						bResult = FALSE;
 	LONG						lWidth,
 								lHeight;
@@ -2183,6 +2242,7 @@ BOOL	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 
 BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	BOOL				bContinue = TRUE;
 
@@ -2364,8 +2424,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 
 							if (bStack)
 							{
-								AddTimeToLogFile();
-								AddToLogFile("Stack %s\n", (LPCTSTR)m_vBitmaps[lIndice].m_strFileName);
+								ZTRACE_RUNTIME("Stack %s", (LPCTSTR)m_vBitmaps[lIndice].m_strFileName);
 
 								if (m_pProgress)
 								{
@@ -2463,6 +2522,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 
 BOOL	CStackingEngine::StackLightFrames(CAllStackingTasks & tasks, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
 	BOOL						bContinue = TRUE;
 	CString						strText;
@@ -2583,6 +2643,7 @@ BOOL	CStackingEngine::StackLightFrames(CAllStackingTasks & tasks, CDSSProgress *
 
 BOOL CStackingEngine::ComputeOffsets(CAllStackingTasks & tasks, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	m_pProgress = pProgress;
@@ -2599,6 +2660,8 @@ BOOL CStackingEngine::ComputeOffsets(CAllStackingTasks & tasks, CDSSProgress * p
 
 bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR szFileList, bool bTIFF)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	bool				bResult;
 	// Retrieve the first light frame
 	COutputSettings		OutputSettings;
@@ -2704,6 +2767,8 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 
 void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutputFile)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	COutputSettings		OutputSettings;
 	CString				strOutputFile = szOutputFile;
 
