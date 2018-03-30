@@ -239,7 +239,6 @@ inline double			distance(double x1, double y1, double x2, double y2)
 
 static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CPointExt & pt, bool bNoBloom = false)
 {
-	ZFUNCTRACE_RUNTIME();
 	double				x0 = floor(pt.X-0.5), 
 						y0 = floor(pt.Y-0.5);
 
@@ -313,7 +312,6 @@ static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * p
 
 double	CDeBloom::ComputeStarGradient(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStarGradient & bsg, double fRadius)
 {
-	ZFUNCTRACE_RUNTIME();
 	CPointExt			ptNW,
 						ptSW,
 						ptNE,
@@ -449,7 +447,6 @@ inline double NormalizeAngle(double fAngle)
 
 void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs)
 {
-	ZFUNCTRACE_RUNTIME();
 	double				fMinimum = NOEDGEANGLE;
 	double				fdX = 0,
 						fdY = 0,
@@ -560,7 +557,6 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 
 void	CDeBloom::RefineStarCenter2(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs)
 {
-	ZFUNCTRACE_RUNTIME();
 	CBloomedStarGradient	bsg,
 							bsgn;
 
@@ -598,7 +594,6 @@ void	CDeBloom::RefineStarCenter2(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 
 void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs)
 {
-	ZFUNCTRACE_RUNTIME();
 	LONG				i;
 	double				//fAverageX = 0,
 						fdAverageY = 0;
@@ -787,7 +782,6 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 
 void	CDeBloom::MarkBloomBorder(CMemoryBitmap * pMask, LONG x, LONG y, std::vector<CPointExt> & vBorders)
 {
-	ZFUNCTRACE_RUNTIME();
 	double						fMask;
 
 	if (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight)
@@ -805,7 +799,6 @@ void	CDeBloom::MarkBloomBorder(CMemoryBitmap * pMask, LONG x, LONG y, std::vecto
 
 void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, LONG x, LONG y, std::vector<CPoint> & vBloomed)
 {
-	ZFUNCTRACE_RUNTIME();
 	if (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight)
 	{
 		bool					bBloomed = true;
@@ -840,7 +833,6 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, LONG x, LONG y, std::v
 
 void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, LONG x, LONG y)
 {
-	ZFUNCTRACE_RUNTIME();
 	bool						bEnd = false;
 	std::vector<CPoint>			vBloomed;
 	LONG						lLargestY = y;
@@ -1033,7 +1025,6 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 
 bool	CDeBloom::CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask)
 {
-	ZFUNCTRACE_RUNTIME();
 	CSmartPtr<C8BitGrayBitmap>		pMask;
 
 	*ppMask = NULL;
@@ -1088,7 +1079,6 @@ bool	CDeBloom::CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask)
 
 double	CDeBloom::ComputeValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, LONG x, LONG y, bool & bDone)
 {
-	ZFUNCTRACE_RUNTIME();
 	double						fResult = 255.0;
 	double						fSum = 0,
 								fWeight = 0;
@@ -1126,7 +1116,6 @@ double	CDeBloom::ComputeValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, 
 
 void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs)
 {
-	ZFUNCTRACE_RUNTIME();
 	double					fFactor1;
 
 	fFactor1 = 2.0*bs.m_fRadius*bs.m_fRadius;
@@ -1203,7 +1192,6 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 
 void    CDeBloom::SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 {
-	ZFUNCTRACE_RUNTIME();
 	std::vector<double>		vValues;
 
 	vValues.resize(8);
@@ -1240,7 +1228,6 @@ void    CDeBloom::SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * p
 
 double	CDeBloom::ComputeBackgroundValue(CMemoryBitmap * pBitmap)
 {
-	ZFUNCTRACE_RUNTIME();
 	double					fResult = 0.0;
 	CBackgroundCalibration	BackgroundCalibration;
 
@@ -1384,7 +1371,6 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 
 bool	CDeBloom::CreateBloomMask(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
-	ZFUNCTRACE_RUNTIME();
 	m_pProgress = pProgress;
 	m_pMask.Release();
 	return CreateMask(pBitmap, &m_pMask);
@@ -1394,7 +1380,6 @@ bool	CDeBloom::CreateBloomMask(CMemoryBitmap * pBitmap, CDSSProgress * pProgress
 
 void	CDeBloom::DeBloomImage(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
-	ZFUNCTRACE_RUNTIME();
 	m_pProgress = pProgress;
 	if (m_pMask)
 		DeBloom(pBitmap, m_pMask);

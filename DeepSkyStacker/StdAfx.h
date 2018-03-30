@@ -61,6 +61,5 @@ BOOL CheckVersion(CString & strVersion);
 #include "commonresource.h"
 #include <afxdlgs.h>
 #include "..\QHTML_Static\QHTM\QHTM.h"
-#include "LogFile.h"
 
 #endif // !defined(AFX_STDAFX_H__C280BBDC_7360_4663_B015_7C2BE32EF97A__INCLUDED_)

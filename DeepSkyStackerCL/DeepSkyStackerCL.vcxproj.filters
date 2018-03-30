@@ -78,9 +78,6 @@
     <ClCompile Include="..\DeepSkyStacker\FrameList.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\LogFile.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -189,9 +186,6 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\Histogram.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\LogFile.h">
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\MasterFrames.h">

@@ -45,6 +45,7 @@ void CMultiBitmap::DestroyTempFiles()
 
 void CMultiBitmap::InitParts()
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG				lNrLinesPerFile;
 	LONG				lNrLines;
 	LONG				lNrParts;
@@ -99,6 +100,7 @@ void CMultiBitmap::InitParts()
 
 BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	// Save the bitmap to the temporary file
@@ -200,6 +202,7 @@ public :
 
 BOOL	CCombineTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	LONG				i;
@@ -249,6 +252,7 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 
 BOOL	CCombineTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 	LONG			i = m_lStartRow;
 	LONG			lStep;
@@ -288,6 +292,7 @@ BOOL	CCombineTask::Process()
 
 static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap, CMemoryBitmap * pOutBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bColor = pBitmap->IsMonochrome();
 	LONG			lWidth = pBitmap->Width();
 	LONG			lHeight = pBitmap->Height();
@@ -379,6 +384,7 @@ void	CMultiBitmap::SmoothOut(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppOutBitm
 
 BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
 	LONG						lScanLineSize;
 	LONG						/*i, k, */l;

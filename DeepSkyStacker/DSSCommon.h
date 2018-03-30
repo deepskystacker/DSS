@@ -77,15 +77,6 @@ typedef enum FITSFORMAT
 #define VERSION_LIBTIFF						"4.0.9"
 #define VERSION_CFITSIO						"3.43"
 
-#ifdef TRACEDSSON
-#define TRACEDSS0(x)						OutputDebugString(x)
-#define TRACEDSS1(x, y)						{ CString strDebug;strDebug.Format(x, y);OutputDebugString(strDebug);}
-#define TRACEDSS2(x, y, z)					{ CString strDebug;strDebug.Format(x, y, z);OutputDebugString(strDebug);}
-#else // TRACEDSSON
-#define TRACEDSS0(x)						__noop
-#define TRACEDSS1(x, y)						__noop
-#define TRACEDSS2(x, y, z)					__noop
-#endif // TRACEDSSON
 #define NEWENGINE
 
 #ifndef PCL_PROJECT

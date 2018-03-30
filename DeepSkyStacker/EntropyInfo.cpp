@@ -6,6 +6,7 @@
 
 void CEntropyInfo::InitSquareEntropies()
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG						i, j;
 	LONG						lSquareSize;
 
@@ -60,6 +61,7 @@ void CEntropyInfo::InitSquareEntropies()
 
 void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy)
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG						i, j;
 	std::vector<WORD>			vRedHisto;
 	std::vector<WORD>			vGreenHisto;

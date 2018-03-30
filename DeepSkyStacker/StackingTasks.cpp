@@ -2,7 +2,6 @@
 #include "StackingTasks.h"
 #include "Registry.h"
 #include "TIFFUtil.h"
-#include "LogFile.h"
 #include <set>
 #include "Settings.h"
 

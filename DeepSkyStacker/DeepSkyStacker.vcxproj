@@ -497,7 +497,6 @@
     <ClCompile Include="IntermediateFiles.cpp" />
     <ClCompile Include="Library.cpp" />
     <ClCompile Include="LibraryDlg.cpp" />
-    <ClCompile Include="LogFile.cpp" />
     <ClCompile Include="LuminanceTab.cpp" />
     <ClCompile Include="MasterFrames.cpp" />
     <ClCompile Include="MatchingStars.cpp" />
@@ -642,7 +641,6 @@
     <ClInclude Include="IntermediateFiles.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="LibraryDlg.h" />
-    <ClInclude Include="LogFile.h" />
     <ClInclude Include="LuminanceTab.h" />
     <ClInclude Include="MasterFrames.h" />
     <ClInclude Include="MatchingStars.h" />

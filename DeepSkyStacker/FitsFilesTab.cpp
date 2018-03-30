@@ -18,6 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 static void	FillDSLRList(std::vector<CDSLR> & vDSLRs)
 {
+	ZFUNCTRACE_RUNTIME();
 	// Fill the four generic DSLR bayer pattern
 	CString				strValue;
 
@@ -434,6 +435,7 @@ void CFitsFilesTab::UpdateControls()
 
 void CFitsFilesTab::UpdateBayerPattern()
 {
+	ZFUNCTRACE_RUNTIME();
 	LONG			lIndice;
 
 	lIndice = m_DSLR.GetCurSel();

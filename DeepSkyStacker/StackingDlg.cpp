@@ -12,7 +12,6 @@
 #include "RegisterSettings.h"
 #include "StackRecap.h"
 #include "TIFFUtil.h"
-#include "LogFile.h"
 #include "RegisterEngine.h"
 #include "StackingEngine.h"
 #include "DropFilesDlg.h"
@@ -1500,8 +1499,6 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps.size() &&
 		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps[0].m_strFileName.GetLength())
 	{
-		// CreateLogFile(tasks.m_vStacks[0].m_pLightTask->m_vBitmaps[0].m_strFileName);
-		// AddTimeToLogFile();
 		ZTRACE_RUNTIME("Start stacking process");
 	};
 

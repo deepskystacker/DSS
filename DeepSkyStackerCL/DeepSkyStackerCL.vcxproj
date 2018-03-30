@@ -359,7 +359,6 @@
     <ClCompile Include="..\DeepSkyStacker\FlatFrame.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameList.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\LogFile.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MatchingStars.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp" />
@@ -404,7 +403,6 @@
     <ClInclude Include="..\DeepSkyStacker\FrameInfo.h" />
     <ClInclude Include="..\DeepSkyStacker\FrameList.h" />
     <ClInclude Include="..\DeepSkyStacker\Histogram.h" />
-    <ClInclude Include="..\DeepSkyStacker\LogFile.h" />
     <ClInclude Include="..\DeepSkyStacker\MasterFrames.h" />
     <ClInclude Include="..\DeepSkyStacker\MatchingStars.h" />
     <ClInclude Include="..\DeepSkyStacker\MultiBitmapProcess.h" />

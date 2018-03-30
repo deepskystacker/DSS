@@ -2,7 +2,6 @@
 #include "FlatFrame.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
-#include "LogFile.h"
 #include "Multitask.h"
 
 class CFlatDivideTask : public CMultitask
@@ -50,6 +49,7 @@ public :
 
 BOOL	CFlatDivideTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 
 	LONG			i, j;
@@ -106,6 +106,7 @@ BOOL	CFlatDivideTask::DoTask(HANDLE hEvent)
 
 BOOL	CFlatDivideTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 	LONG			lHeight = m_pTarget->RealHeight();
 	LONG			lStep;
@@ -152,6 +153,7 @@ BOOL	CFlatDivideTask::Process()
 
 BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	/*BOOL			bUseGray;
 	BOOL			bUseCFA;*/

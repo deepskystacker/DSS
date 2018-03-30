@@ -2,7 +2,6 @@
 #include "DSSTools.h"
 #include "BitmapExt.h"
 #include "BackgroundCalibration.h"
-#include "LogFile.h"
 #include "DSSProgress.h"
 #include "Multitask.h"
 
@@ -202,7 +201,6 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	std::vector<LONG>	vGreenHisto;
 	std::vector<LONG>	vBlueHisto;
 
-	AddTimeToLogFile();
 	ZTRACE_RUNTIME("Compute Background Calibration\n");
 
 

@@ -2,7 +2,6 @@
 #include "DarkFrame.h"
 #include "Registry.h"
 #include "DSSProgress.h"
-#include "LogFile.h"
 #include "Histogram.h"
 #include <set>
 #include <algorithm>

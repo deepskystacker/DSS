@@ -2,7 +2,6 @@
 #include "StackingEngine.h"
 #include "Registry.h"
 #include "MasterFrames.h"
-#include "LogFile.h"
 #include "MatchingStars.h"
 #include "PixelTransform.h"
 #include "EntropyInfo.h"

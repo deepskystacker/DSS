@@ -49,6 +49,7 @@ DWORD	WINAPI	BackgroundLoadingThreadProc(LPVOID lpParameter)
 
 void CBackgroundLoading::LoadCurrentImage()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL						bLoaded = FALSE;
 
 
@@ -91,6 +92,7 @@ void CBackgroundLoading::LoadCurrentImage()
 
 void CBackgroundLoading::BackgroundLoad()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bEnd = FALSE;
 	MSG					msg;
 
@@ -112,6 +114,7 @@ void CBackgroundLoading::BackgroundLoad()
 
 void CBackgroundLoading::LoadImageInBackground(LPCTSTR szImage)
 {
+	ZFUNCTRACE_RUNTIME();
 	if (!m_hThread)
 	{
 		// Create the thread
@@ -139,6 +142,7 @@ void CBackgroundLoading::LoadImageInBackground(LPCTSTR szImage)
 
 void CBackgroundLoading::CloseThread()
 {
+	ZFUNCTRACE_RUNTIME();
 	if (m_hThread)
 	{
 		PostThreadMessage(m_dwThreadID, WM_BL_ABORT, 0, 0);
@@ -158,6 +162,7 @@ void CBackgroundLoading::CloseThread()
 
 BOOL	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C32BitsBitmap ** pphBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	BOOL				bFound = FALSE;
 

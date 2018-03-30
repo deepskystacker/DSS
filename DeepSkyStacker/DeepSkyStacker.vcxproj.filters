@@ -288,9 +288,6 @@
     <ClCompile Include="Library.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="LogFile.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="MasterFrames.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -559,9 +556,6 @@
     <ClInclude Include="..\Tools\CustomTabCtrl.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Delaunay\Delaunay.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\EasySize.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -679,9 +673,6 @@
     <ClInclude Include="Library.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="LogFile.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
     <ClInclude Include="MasterFrames.h">
       <Filter>Kernel</Filter>
     </ClInclude>
@@ -734,6 +725,15 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="DSSMemory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Delaunay.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PCLTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

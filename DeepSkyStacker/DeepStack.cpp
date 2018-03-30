@@ -5,8 +5,6 @@
 #include <algorithm>
 #include "MatchingStars.h"
 
-#include "LogFile.h"
-
 #define _USE_MATH_DEFINES
 #include <cmath>
 
@@ -14,6 +12,7 @@
 
 void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 {
+	ZFUNCTRACE_RUNTIME();
 	double				fMax = 0;
 	LONG				i, j;
 
@@ -40,6 +39,7 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 
 void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHisto, const CRGBHistogramAdjust & HistogramAdjust)
 {
+	ZFUNCTRACE_RUNTIME();
 	tgtHisto.Clear();
 	BOOL				bMonochrome;
 
@@ -76,6 +76,7 @@ void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHi
 
 void CDeepStack::SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect)
 {
+	ZFUNCTRACE_RUNTIME();
 	m_StackedBitmap.SaveDSImage(szStackedInfoFile, pRect, m_pProgress);
 };
 
@@ -83,6 +84,7 @@ void CDeepStack::SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect)
 
 BOOL CDeepStack::LoadStackedInfo(LPCTSTR szStackedInfoFile)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult;
 	
 	bResult = m_StackedBitmap.Load(szStackedInfoFile, m_pProgress);

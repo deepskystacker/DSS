@@ -1447,12 +1447,12 @@ BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
 		if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
 		{
 			pBitmap.Attach(new C16BitGrayBitmap);	
-			TRACEDSS2("Creating 16 bit gray memory bitmap %x (%s)\n", (LONG)pBitmap.m_p, szFileName);
+			ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 		}
 		else
 		{
 			pBitmap.Attach(new C48BitColorBitmap);
-			TRACEDSS2("Creating 16 bit RGB memory bitmap %x (%s)\n", (LONG)pBitmap.m_p, szFileName);
+			ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 		};
 
 		bResult = dcr.LoadRawFile(pBitmap, pProgress);

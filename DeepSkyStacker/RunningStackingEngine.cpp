@@ -26,6 +26,7 @@ CRunningStackingEngine::~CRunningStackingEngine()
 
 void	CRunningStackingEngine::CreatePublicBitmap()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bMonochrome;
 	LONG					lWidth,
 							lHeight;
@@ -83,6 +84,7 @@ void	CRunningStackingEngine::CreatePublicBitmap()
 
 BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	LONG				lWidth,
 						lHeight;
@@ -205,6 +207,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 
 BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (m_lNrStacked)

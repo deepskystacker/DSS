@@ -311,6 +311,7 @@ void CFITSReader::ReadAllKeys()
 
 BOOL CFITSReader::Open()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	int					nStatus = 0;
 
@@ -495,6 +496,7 @@ BOOL CFITSReader::Open()
 
 BOOL CFITSReader::Read()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_fits)
@@ -826,6 +828,7 @@ BOOL CFITSReader::Read()
 
 BOOL CFITSReader::Close()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	int					nStatus = 0;
 
@@ -870,6 +873,7 @@ public :
 
 BOOL CFITSReadInMemoryBitmap::OnOpen()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_lNrChannels == 1)
@@ -877,24 +881,24 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		if (m_lBitsPerPixel == 8)
 		{
 			m_pBitmap.Attach(new C8BitGrayBitmap());
-			TRACEDSS1("Creating 8 Gray bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap %p", m_pBitmap.m_p);
 		}
 		else if (m_lBitsPerPixel == 16)
 		{
 			m_pBitmap.Attach(new C16BitGrayBitmap());
-			TRACEDSS1("Creating 16 Gray bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", m_pBitmap.m_p);
 		}
 		else if (m_lBitsPerPixel == 32)
 		{
 			if (m_bFloat)
 			{
 				m_pBitmap.Attach(new C32BitFloatGrayBitmap());
-				TRACEDSS1("Creating 32 float Gray bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap %p", m_pBitmap.m_p);
 			}
 			else
 			{
 				m_pBitmap.Attach(new C32BitGrayBitmap());
-				TRACEDSS1("Creating 32 Gray bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap %p", m_pBitmap.m_p);
 			};
 		};
 	}
@@ -903,24 +907,24 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		if (m_lBitsPerPixel == 8)
 		{
 			m_pBitmap.Attach(new C24BitColorBitmap());
-			TRACEDSS1("Creating 8 RGB bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap %p", m_pBitmap.m_p);
 		}
 		else if (m_lBitsPerPixel == 16)
 		{
 			m_pBitmap.Attach(new C48BitColorBitmap());
-			TRACEDSS1("Creating 16 RGB bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", m_pBitmap.m_p);
 		}
 		else if (m_lBitsPerPixel == 32)
 		{
 			if (m_bFloat)
 			{
 				m_pBitmap.Attach(new C96BitFloatColorBitmap());
-				TRACEDSS1("Creating 32 float RGB bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap %p", m_pBitmap.m_p);
 			}
 			else
 			{
 				m_pBitmap.Attach(new C96BitColorBitmap());
-				TRACEDSS1("Creating 32 RGB bit memory bitmap %x\n", (LONG)m_pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap %p", m_pBitmap.m_p);
 			};
 		};
 	};

@@ -58,6 +58,7 @@ static const CPoint	s_pntOne(1,1);
 
 bool cdxCRot90DC::Create(CDC & destDC, const CRect & rectDC, int iAngle, bool bCopy)
 {
+	ZFUNCTRACE_RUNTIME();
 	//
 	// check whether there's something to do
 	//
@@ -188,6 +189,7 @@ bool cdxCRot90DC::Create(CDC & destDC, const CRect & rectDC, int iAngle, bool bC
 
 bool cdxCRot90DC::Finish()
 {
+	ZFUNCTRACE_RUNTIME();
 	if(!m_pDC)
 		return false;			// no initial device context
 	if(m_bFinished)
@@ -243,6 +245,7 @@ void cdxCRot90DC::Destroy()
 
 void cdxCRot90DC::DrawControl(CRect rect, CString strText, HICON hIcon, UINT nDrawTextFlags, UINT nMyFlags, UINT nIconDist)
 {
+	ZFUNCTRACE_RUNTIME();
 	if(rect.IsRectEmpty())
 		return;
 

@@ -98,6 +98,7 @@ void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDIS
 
 void	CMatchingStars::ComputeTriangles(const POINTEXTVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles)
 {
+	ZFUNCTRACE_RUNTIME();
 	STARDISTVECTOR			vStarDist;
 	LONG					i, j, k;
 	STARDISTITERATOR		it;

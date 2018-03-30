@@ -33,6 +33,7 @@ BOOL	g_bShowRefStars = FALSE;
 
 BOOL	IsExpired()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 /*
 #ifdef DSSBETA
@@ -62,6 +63,7 @@ BOOL	IsExpired()
 
 BOOL CheckVersion(CString & strVersion)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL		bResult = FALSE;
 	
 	#ifndef DSSBETA
@@ -114,6 +116,7 @@ BOOL CheckVersion(CString & strVersion)
 
 void	AskForVersionChecking()
 {
+	ZFUNCTRACE_RUNTIME();
 	CRegistry			reg;
 	DWORD				bCheckVersion = 0;
 
@@ -139,6 +142,7 @@ void	AskForVersionChecking()
 
 void	CheckRemainingTempFiles()
 {
+	ZFUNCTRACE_RUNTIME();
 	CString					strFolder;
 	WIN32_FIND_DATA			FindData;
 	CString					strFileMask;
@@ -204,6 +208,7 @@ void	CheckRemainingTempFiles()
 
 BOOL CDeepSkyStackerApp::InitInstance( )
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult;
 
 	AfxInitRichEdit2();
@@ -275,11 +280,11 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 				   int nCmdShow          // show state of window
 				   )
 {
+	ZFUNCTRACE_RUNTIME();
 	int				nRetCode = 0;
 	HANDLE			hMutex;
 	bool			bFirstInstance = true;
 
-	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Checking Mutex");
 
 	hMutex = CreateMutex(NULL, TRUE, "DeepSkyStacker.Mutex.UniqueID.12354687");

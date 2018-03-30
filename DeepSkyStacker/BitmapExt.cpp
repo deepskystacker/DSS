@@ -24,7 +24,6 @@ using namespace Gdiplus;
 
 void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
 {
-	ZFUNCTRACE_RUNTIME();
 	double			Y, U, V;
 	double			R, G, B;
 
@@ -53,7 +52,6 @@ void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, 
 
 void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
 {
-	ZFUNCTRACE_RUNTIME();
 	fRed = fGreen = fBlue = 0;
 	// Basic formulae
 	// M = R + B
@@ -338,7 +336,7 @@ BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 	if (pSrcBitmap)
 	{
 		pBitmap.Attach(new C24BitColorBitmap());
-		TRACEDSS2("Creating 8 bit RGB memory bitmap %x (%s)\n", (LONG)pBitmap.m_p, szFileName);
+		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 		if (pBitmap)
 		{
 			LONG					lWidth  = pSrcBitmap->GetWidth();
@@ -1055,24 +1053,24 @@ BOOL	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitma
 		if (bc.m_lBitsPerPixel == 8)
 		{
 			pBitmap.Attach(new C8BitGrayBitmap());
-			TRACEDSS1("Creating 8 Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap %p", pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 16)
 		{
 			pBitmap.Attach(new C16BitGrayBitmap());
-			TRACEDSS1("Creating 16 Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 32)
 		{
 			if (bc.m_bFloat)
 			{
 				pBitmap.Attach(new C32BitFloatGrayBitmap());
-				TRACEDSS1("Creating 32 float Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap %p", pBitmap.m_p);
 			}
 			else
 			{
 				pBitmap.Attach(new C32BitGrayBitmap());
-				TRACEDSS1("Creating 32 Gray bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap %p", pBitmap.m_p);
 			};
 		};
 	}
@@ -1081,24 +1079,24 @@ BOOL	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitma
 		if (bc.m_lBitsPerPixel == 8)
 		{
 			pBitmap.Attach(new C24BitColorBitmap());
-			TRACEDSS1("Creating 8 RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap %p", pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 16)
 		{
 			pBitmap.Attach(new C48BitColorBitmap());
-			TRACEDSS1("Creating 16 RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", pBitmap.m_p);
 		}
 		else if (bc.m_lBitsPerPixel == 32)
 		{
 			if (bc.m_bFloat)
 			{
 				pBitmap.Attach(new C96BitFloatColorBitmap());
-				TRACEDSS1("Creating 32 float RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap %p", pBitmap.m_p);
 			}
 			else
 			{
 				pBitmap.Attach(new C96BitColorBitmap());
-				TRACEDSS1("Creating 32 RGB bit memory bitmap %x\n", (LONG)pBitmap.m_p);
+				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap %p", pBitmap.m_p);
 			};
 		};
 	};
@@ -1134,7 +1132,6 @@ private :
 public :
 	CSubtractTask()
 	{
-		ZFUNCTRACE_RUNTIME();
 		m_fXShift = 0;
 		m_fYShift = 0;
 		m_bAddMode = FALSE;
@@ -1143,12 +1140,10 @@ public :
 
 	virtual ~CSubtractTask()
 	{
-		ZFUNCTRACE_RUNTIME();
 	};
 
 	void	Init(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
 	{
-		ZFUNCTRACE_RUNTIME();
 		m_pProgress		= pProgress;
 		m_pTarget		= pTarget;
 		m_pSource		= pSource;
@@ -1168,26 +1163,22 @@ public :
 
 	void	SetShift(double fXShift, double fYShift)
 	{
-		ZFUNCTRACE_RUNTIME();
 		m_fXShift	= fXShift;
 		m_fYShift	= fYShift;
 	};
 
 	void	SetAddMode(BOOL bSet)
 	{
-		ZFUNCTRACE_RUNTIME();
 		m_bAddMode = bSet;
 	};
 
 	void	SetMinimumValue(double fValue)
 	{
-		ZFUNCTRACE_RUNTIME();
 		m_fMinimum = fValue;
 	};
 
 	void	End()
 	{
-		ZFUNCTRACE_RUNTIME();
 		if (m_pProgress)
 			m_pProgress->End2();
 	};

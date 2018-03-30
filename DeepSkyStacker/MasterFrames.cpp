@@ -1,13 +1,13 @@
 #include <stdafx.h>
 #include "MasterFrames.h"
 #include "DSSProgress.h"
-#include "LogFile.h"
 #include "DeBloom.h"
 
 /* ------------------------------------------------------------------- */
 
 BOOL CMasterFrames::LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	if (pStackingInfo->m_pOffsetTask)
@@ -41,6 +41,7 @@ BOOL CMasterFrames::LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pP
 
 void	CMasterFrames::ApplyMasterOffset(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	CString				strText;
 
 	if (m_pMasterOffset && m_pMasterOffset->IsOk())
@@ -58,6 +59,7 @@ void	CMasterFrames::ApplyMasterOffset(CMemoryBitmap * pBitmap, CDSSProgress * pP
 
 void	CMasterFrames::ApplyMasterDark(CMemoryBitmap * pBitmap, STARVECTOR * pStars, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	CString				strText;
 
 	if (m_MasterDark.IsOk())
@@ -68,6 +70,7 @@ void	CMasterFrames::ApplyMasterDark(CMemoryBitmap * pBitmap, STARVECTOR * pStars
 
 void	CMasterFrames::ApplyMasterFlat(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	CString				strText;
 
 	if (m_MasterFlat.IsOk())
@@ -86,6 +89,7 @@ void	CMasterFrames::ApplyMasterFlat(CMemoryBitmap * pBitmap, CDSSProgress * pPro
 
 void	CMasterFrames::ApplyHotPixelInterpolation(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	if (m_MasterDark.IsOk())
 		m_MasterDark.InterpolateHotPixels(pBitmap, pProgress);
 };
@@ -94,6 +98,7 @@ void	CMasterFrames::ApplyHotPixelInterpolation(CMemoryBitmap * pBitmap, CDSSProg
 
 void	CMasterFrames::ApplyAllMasters(CMemoryBitmap * pBitmap, STARVECTOR * pStars, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	CDeBloom			debloom;
 	bool				bDebloom = false;
 

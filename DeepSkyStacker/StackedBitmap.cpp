@@ -6,7 +6,6 @@
 #include <set>
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "LogFile.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>

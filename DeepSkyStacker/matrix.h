@@ -194,7 +194,7 @@ class matrix_error : public logic_error
 #define REPORT_ERROR(ErrormMsg)  throw matrix_error( ErrormMsg);
 inline void _matrix_error (const char* pErrMsg)
 {
-	TRACEDSS1("Matrix Error %s\n", pErrMsg);
+	ZTRACE_RUNTIME("Matrix Error %s", pErrMsg);
 //    cout << pErrMsg << endl;
 //    exit(1);
 }

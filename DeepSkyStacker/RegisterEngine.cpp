@@ -3,7 +3,6 @@
 #include "RegisterEngine.h"
 #include "Registry.h"
 #include "MasterFrames.h"
-#include "LogFile.h"
 #include "BackgroundCalibration.h"
 #include "PixelTransform.h"
 #include "TIFFUtil.h"
@@ -725,6 +724,7 @@ static BOOL GetNextValue(FILE * hFile, CString & strVariable, CString & strValue
 
 BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	FILE *				hFile;
 
@@ -946,6 +946,7 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 
 void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
 	LONG					lSubRectWidth,
 							lSubRectHeight;
@@ -1042,6 +1043,7 @@ public :
 
 BOOL	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	LONG				i, j;
@@ -1080,6 +1082,7 @@ BOOL	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 
 BOOL	CComputeLuminanceTask::Process()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 	LONG				lHeight = m_pBitmap->Height();
 	LONG				i = 0;
@@ -1117,6 +1120,7 @@ BOOL	CComputeLuminanceTask::Process()
 
 void	CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap * pBitmap, CGrayBitmap ** ppGrayBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	CSmartPtr<CGrayBitmap>		pGrayBitmap;
 
 	m_lWidth	= pBitmap->Width();
@@ -1135,7 +1139,7 @@ void	CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap * pBitmap, CGrayBitma
 	};
 
 	pGrayBitmap.Attach(new CGrayBitmap);
-	TRACEDSS1("Creating Gray memory bitmap %x (luminance)\n", (LONG)pGrayBitmap.m_p);
+	ZTRACE_RUNTIME("Creating Gray memory bitmap %p (luminance)", pGrayBitmap.m_p);
 	pGrayBitmap->Init(pBitmap->Width(), pBitmap->Height());
 
 	CComputeLuminanceTask		ComputeLuminanceTask;
@@ -1163,6 +1167,7 @@ void	CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap * pBitmap, CGrayBitma
 
 void	CLightFrameInfo::RegisterPicture(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	CSmartPtr<CGrayBitmap>		pGrayBitmap;
 
 	ComputeLuminanceBitmap(pBitmap, &pGrayBitmap);
@@ -1312,6 +1317,7 @@ void CLightFrameInfo::ComputeRedBlueShifting(CMemoryBitmap * pBitmap)
 
 void CLightFrameInfo::RegisterPicture()
 {
+	ZFUNCTRACE_RUNTIME();
 	CBitmapInfo			bmpInfo;
 	BOOL				bLoaded;
 
@@ -1347,6 +1353,7 @@ void CLightFrameInfo::RegisterPicture()
 
 void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, BOOL bRemoveHotPixels, BOOL bApplyMedianFilter, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	Reset();
 	m_strFileName		= szBitmap;
 	m_fMinLuminancy		= fMinLuminancy;
