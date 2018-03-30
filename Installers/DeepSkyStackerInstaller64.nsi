@@ -1,10 +1,24 @@
+##!include "MUI2.nsh"
 
+!define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
+
+!define DSS_HELP_FR        "..\Help\Aide DeepSkyStacker.chm"
+!define DSS_HELP_ES        "..\Help\Ayuda DeepSkyStacker.chm"
+!define DSS_HELP_EN        "..\Help\DeepSkyStacker Help.chm"
+!define DSS_HELP_DE        "..\Help\DeepSkyStacker Hilfe.chm"
+!define DSS_HELP_PT        "..\Help\DeepSkyStacker Ajuda.chm"
 
 
 !define DSS_PRODUCT        "DeepSkyStacker64"
+
 !define DSS_NAME           "Deep Sky Stacker (64 bit)"
 !define DSS_FILE           "DeepSkyStacker"
-!define DSS_UNINSTALL_FILE "DeepSkyStacker64Uninstaller"
+
+!define DSSCL_NAME         "Deep Sky Stacker Command Line (64 bit)"
+!define DSSCL_FILE         "DeepSkyStackerCL"
+
+!define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
+
 CRCCheck On
 
 
@@ -14,7 +28,7 @@ OutFile "DeepSkyStacker64Installer.exe"
  
 # set the install directory - the programs are 32 bit versions
 
-InstallDir "$PROGRAMFILES32\${DSS_PRODUCT}"
+InstallDir "$PROGRAMFILES64\${DSS_PRODUCT}"
 
 # 
 
@@ -26,7 +40,7 @@ ShowInstDetails       nevershow
 ShowUninstDetails     nevershow
 
 Name                  "${DSS_NAME}"
-#Icon                  "${RSW_ICON}"
+Icon                  "${DSS_ICON}"
 
 
 
@@ -42,7 +56,7 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall previous version
+  # Automatically uninstall previous version
   
   Exec "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
@@ -50,7 +64,13 @@ Section
   # specify files to go in the output path
 
   File "..\x64\Release\${DSS_FILE}.exe"
-  
+  File "..\x64\Release\${DSSCL_FILE}.exe"
+  File "${DSS_HELP_FR}"
+  File "${DSS_HELP_ES}"
+  File "${DSS_HELP_EN}"
+  File "${DSS_HELP_DE}"
+  File "${DSS_HELP_PT}"
+
  
   # define uninstaller name
 
@@ -64,9 +84,10 @@ Section
   # create start-menu items
 
   CreateDirectory "$SMPROGRAMS\${DSS_PRODUCT}"
-  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_FILE}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
   CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_PRODUCT}.lnk" "$INSTDIR\${DSS_FILE}.exe" "" "$INSTDIR\${DSS_FILE}.exe" 0
  
+  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_FILE}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
+
   # write uninstall information to the registry
  
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}" "DisplayName" "${DSS_PRODUCT} (remove only)"

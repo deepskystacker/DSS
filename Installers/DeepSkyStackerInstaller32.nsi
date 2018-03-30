@@ -1,10 +1,25 @@
+##!include "MUI2.nsh"
 
+!define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
+
+!define DSS_HELP_FR        "..\Help\Aide DeepSkyStacker.chm"
+!define DSS_HELP_ES        "..\Help\Ayuda DeepSkyStacker.chm"
+!define DSS_HELP_EN        "..\Help\DeepSkyStacker Help.chm"
+!define DSS_HELP_DE        "..\Help\DeepSkyStacker Hilfe.chm"
+!define DSS_HELP_PT        "..\Help\DeepSkyStacker Ajuda.chm"
 
 
 !define DSS_PRODUCT        "DeepSkyStacker"
+
 !define DSS_NAME           "Deep Sky Stacker (32 bit)"
 !define DSS_FILE           "DeepSkyStacker"
+
+!define DSSCL_NAME         "Deep Sky Stacker Command Line (32 bit)"
+!define DSSCL_FILE         "DeepSkyStackerCL"
+
+
 !define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
+
 CRCCheck On
 
 
@@ -16,7 +31,7 @@ OutFile "DeepSkyStackerInstaller.exe"
 
 InstallDir "$PROGRAMFILES32\${DSS_PRODUCT}"
 
-# 
+# ** (Do we need this?) **
 
 RequestExecutionLevel admin
 
@@ -26,7 +41,7 @@ ShowInstDetails       nevershow
 ShowUninstDetails     nevershow
 
 Name                  "${DSS_NAME}"
-#Icon                  "${RSW_ICON}"
+Icon                  "${DSS_ICON}"
 
 
 
@@ -36,7 +51,7 @@ Section
 
   # Modify UI behaviours
   
-  SetDetailsPrint     none
+  ##SetDetailsPrint     none
 
   # define output path
 
@@ -47,26 +62,33 @@ Section
   Exec "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
 
-  # specify files to go in the output path
+  # specify the files that go in the output path
 
   File "..\x86\Release\${DSS_FILE}.exe"
-  
+  File "..\x86\Release\${DSSCL_FILE}.exe"
+  File "${DSS_HELP_FR}"
+  File "${DSS_HELP_ES}"
+  File "${DSS_HELP_EN}"
+  File "${DSS_HELP_DE}"
+  File "${DSS_HELP_PT}"
  
   # define uninstaller name
 
   WriteUninstaller "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
   
 
-  # create desktop shortcut
+  # create desktop shortcut for the apps with UIs
 
   CreateShortCut "$DESKTOP\${DSS_PRODUCT}.lnk" "$INSTDIR\${DSS_FILE}.exe" ""
  
-  # create start-menu items
+  # create start-menu items 
+
 
   CreateDirectory "$SMPROGRAMS\${DSS_PRODUCT}"
+  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_PRODUCT}.lnk" "$INSTDIR\${DSS_FILE}.exe" "" "$INSTDIR\${DSS_FILE}.exe" 0 
+
   CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_FILE}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
-  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_PRODUCT}.lnk" "$INSTDIR\${DSS_FILE}.exe" "" "$INSTDIR\${DSS_FILE}.exe" 0
- 
+
   # write uninstall information to the registry
  
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}" "DisplayName" "${DSS_PRODUCT} (remove only)"
@@ -89,7 +111,7 @@ Section "Uninstall"
  
   # Modify UI behaviours
   
-  SetDetailsPrint     none
+  ##SetDetailsPrint     none
 
 
   # Always delete uninstaller first
@@ -99,8 +121,9 @@ Section "Uninstall"
   # now delete installed files
 
   Delete "$INSTDIR\${DSS_FILE}.exe"
+  Delete "$INSTDIR\${DSSCL_FILE}.exe"
  
-  # Delete Start Menu Shortcuts
+  # Delete Start Menu Shortcuts and installed files
    
   Delete "$DESKTOP\${DSS_PRODUCT}.lnk"
   Delete "$SMPROGRAMS\${DSS_PRODUCT}\*.*"
