@@ -34,7 +34,7 @@ to maintain a single distribution point for the source code.
 
 #include <openssl\ssl.h> //If you get a compilation error about this missing header file, then you need to download OpenSSL from http://www.openssl.org and build a Win32 version and incorporate it into your project
 #include <openssl\err.h> //If you get a compilation error about this missing header file, then you need to download OpenSSL from http://www.openssl.org and build a Win32 version and incorporate it into your project
-#include "SocMFC.h"
+#include <SocMFC.h>
 
 
 /////////////////////////////// Classes ///////////////////////////////////////
