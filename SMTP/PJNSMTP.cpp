@@ -1293,7 +1293,7 @@ INT_PTR CPJNSMTPMessage::GetNumberOfCustomHeaders() const
   return m_CustomHeaders.GetSize();
 }
 
-void CPJNSMTPMessage::RemoveCustomHeader(INT_PTR nIndex)
+void CPJNSMTPMessage::RemoveCustomHeader(int nIndex)
 {
   m_CustomHeaders.RemoveAt(nIndex);
 }

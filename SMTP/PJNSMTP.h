@@ -270,7 +270,7 @@ public:
 	INT_PTR              AddBodyPart(CPJNSMTPBodyPart& bodyPart);
 	void                 RemoveBodyPart(INT_PTR nIndex);
 	CPJNSMTPBodyPart*    GetBodyPart(INT_PTR nIndex);
-  INT_PTR              AddMultipleAttachments(const CString& sAttachments);
+  int              AddMultipleAttachments(const CString& sAttachments);
 
 //Misc methods
   virtual CStringA     GetHeader();
