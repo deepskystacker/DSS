@@ -111,9 +111,6 @@
     <ClCompile Include="..\DeepSkyStacker\FrameList.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\LogFile.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -222,6 +219,12 @@
     <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp">
       <Filter>Tools\SMTP</Filter>
     </ClCompile>
+    <ClCompile Include="..\SMTP\SocMFC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SMTP\PJNSMTP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
@@ -327,9 +330,6 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\Histogram.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\LogFile.h">
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\MasterFrames.h">

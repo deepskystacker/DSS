@@ -317,8 +317,8 @@ IDR_MAINFRAME           ICON                    "res\\DeepSkyStackerLive.ico"
 // Bitmap
 //
 
-IDB_HDRUP               BITMAP                  "\\Astro\\Projects\\Tools\\hdrup.bmp"
-IDB_HDRDOWN             BITMAP                  "\\Astro\\Projects\\Tools\\hdrdown.bmp"
+IDB_HDRUP               BITMAP                  "..\\Tools\\hdrup.bmp"
+IDB_HDRDOWN             BITMAP                  "..\\Tools\\hdrdown.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -637,7 +637,7 @@ LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 // Bitmap
 //
 
-IDB_4CORNERS            BITMAP                  "\\Astro\\Projects\\DeepSkyStacker\\res\\4Corners.bmp"
+IDB_4CORNERS            BITMAP                  "..\\DeepSkyStacker\\res\\4Corners.bmp"
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////

@@ -300,7 +300,7 @@ static void InitLabel(CLabel & label, BOOL bMain = FALSE)
 {
 	label.SetLink(TRUE, TRUE);
 	label.SetTransparent(TRUE);
-	label.SetLinkCursor(LoadCursor(NULL,MAKEINTRESOURCE(IDC_HAND)));
+	label.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
 	label.SetFont3D(FALSE);
 	//label.SetTextColor(RGB(255, 255, 255));
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));

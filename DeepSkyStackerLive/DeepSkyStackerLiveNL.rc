@@ -376,8 +376,8 @@ IDR_MAINFRAME           ICON                    "res\\DeepSkyStackerLive.ico"
 // Bitmap
 //
 
-IDB_HDRUP               BITMAP                  "\\Astro\\Projects\\Tools\\hdrup.bmp"
-IDB_HDRDOWN             BITMAP                  "\\Astro\\Projects\\Tools\\hdrdown.bmp"
+IDB_HDRUP               BITMAP                  "..\\Tools\\hdrup.bmp"
+IDB_HDRDOWN             BITMAP                  "..\\Tools\\hdrdown.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

@@ -103,7 +103,7 @@ void CChartSurfaceSerie::DrawAll(CDC* pDC)
 	//To have lines limited in the drawing rectangle :
 	pDC->IntersectClipRect(m_ObjectRect);
 
-	pDC->Polygon(pPoints,count+2);
+	pDC->Polygon(pPoints, (int)count+2);
 	pDC->SelectClipRgn(NULL);
 	pDC->SelectObject(pOldBrush);
 	DeleteObject(NewBrush);

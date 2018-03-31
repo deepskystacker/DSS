@@ -81,7 +81,7 @@ BOOL CImageViewTab::OnInitDialog()
 
 	m_CopyToClipboard.ShowWindow(SW_HIDE);
 	m_CopyToClipboard.SetTransparent(TRUE);
-	m_CopyToClipboard.SetLinkCursor(LoadCursor(NULL,MAKEINTRESOURCE(IDC_HAND)));
+	m_CopyToClipboard.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
 	m_CopyToClipboard.SetLink(TRUE, TRUE);
 	m_CopyToClipboard.SetTextColor(RGB(0, 0, 128));
 

@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Static</UseOfMfc>
+    <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -63,7 +63,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Static</UseOfMfc>
+    <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
@@ -107,7 +107,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <IncludePath>..\DeepSkyStacker\;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -121,7 +121,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
     <IncludePath>..\DeepSkyStacker\;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -145,7 +145,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DSSBETA;WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DSSBETA;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -177,8 +177,8 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -198,6 +198,7 @@
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
+      <AdditionalDependencies>htmlhelp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -212,9 +213,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\SMTP;..\ZClass\;..\tools\;..\LibTIFF\;..\CFitsIO\;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat />
@@ -226,8 +227,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;htmlhelp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>htmlhelp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences />
@@ -250,9 +250,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat />
@@ -264,8 +264,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;htmlhelp.lib;..\ZLib\lib\Zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <AdditionalDependencies>htmlhelp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences />
@@ -399,7 +398,6 @@
     <ClCompile Include="..\DeepSkyStacker\FlatFrame.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameList.cpp" />
-    <ClCompile Include="..\DeepSkyStacker\LogFile.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MatchingStars.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp" />
@@ -415,6 +413,8 @@
     <ClCompile Include="..\DeepSkyStacker\Workspace.cpp" />
     <ClCompile Include="..\SMTP\Base64.cpp" />
     <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp" />
+    <ClCompile Include="..\SMTP\PJNSMTP.cpp" />
+    <ClCompile Include="..\SMTP\SocMFC.cpp" />
     <ClCompile Include="..\Tools\BtnST.cpp" />
     <ClCompile Include="..\Tools\ControlPos.cpp" />
     <ClCompile Include="..\Tools\FolderDlg.cpp" />
@@ -493,7 +493,6 @@
     <ClInclude Include="..\DeepSkyStacker\FrameInfo.h" />
     <ClInclude Include="..\DeepSkyStacker\FrameList.h" />
     <ClInclude Include="..\DeepSkyStacker\Histogram.h" />
-    <ClInclude Include="..\DeepSkyStacker\LogFile.h" />
     <ClInclude Include="..\DeepSkyStacker\MasterFrames.h" />
     <ClInclude Include="..\DeepSkyStacker\MatchingStars.h" />
     <ClInclude Include="..\DeepSkyStacker\MedianFilterEngine.h" />
@@ -567,6 +566,12 @@
     <Manifest Include="res\DeepSkyStackerLive.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\libjpg\libjpg.vcxproj">
+      <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
+      <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
