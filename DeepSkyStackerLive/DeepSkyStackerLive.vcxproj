@@ -512,6 +512,8 @@
     <ClInclude Include="..\SMTP\Base64.h" />
     <ClInclude Include="..\SMTP\PJNMD5.h" />
     <ClInclude Include="..\SMTP\PJNNTLMAuth.h" />
+    <ClInclude Include="..\SMTP\PJNSMTP.h" />
+    <ClInclude Include="..\SMTP\SocMFC.h" />
     <ClInclude Include="..\Tools\BtnST.h" />
     <ClInclude Include="..\Tools\ControlPos.h" />
     <ClInclude Include="..\Tools\FolderDlg.h" />

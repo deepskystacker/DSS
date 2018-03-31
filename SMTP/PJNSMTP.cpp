@@ -3212,7 +3212,7 @@ void CPJNSMTPConnection::AuthPlain(LPCTSTR pszUsername, LPCTSTR pszPassword)
 
   //send password in plain
   CStringA sPwd;
-	sPwd.Format("%s\r\n", CT2A(pszPassword));
+	sPwd.Format("%s\r\n", LPCTSTR(pszPassword));
   try
   {
 	  _Send(sPwd.operator LPCSTR(), sPwd.GetLength());

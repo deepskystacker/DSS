@@ -219,11 +219,11 @@
     <ClCompile Include="..\SMTP\PJNNTLMAuth.cpp">
       <Filter>Tools\SMTP</Filter>
     </ClCompile>
-    <ClCompile Include="..\SMTP\SocMFC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\SMTP\PJNSMTP.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Tools\SMTP</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SMTP\SocMFC.cpp">
+      <Filter>Tools\SMTP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -456,6 +456,12 @@
       <Filter>Tools\SMTP</Filter>
     </ClInclude>
     <ClInclude Include="..\SMTP\PJNNTLMAuth.h">
+      <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SMTP\PJNSMTP.h">
+      <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\SMTP\SocMFC.h">
       <Filter>Tools\SMTP</Filter>
     </ClInclude>
   </ItemGroup>
