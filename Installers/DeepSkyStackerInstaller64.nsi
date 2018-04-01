@@ -63,7 +63,8 @@ Section
  
   # Uninstall previous version
   
-  Exec "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
+  ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" _?=$INSTDIR'
+  ######Exec "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
 
   # specify the files that go in the output path
