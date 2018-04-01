@@ -47,7 +47,7 @@ private :
 	{
 		BOOL			bResult = FALSE;
 
-		for (LONG i = pSerie->GetPointsCount()-1;i>=0 && !bResult;i--)
+		for (LONG i = (LONG)(pSerie->GetPointsCount())-1;i>=0 && !bResult;i--)
 		{
 			if (fX == pSerie->GetXPointValue(i) &&
 				fY == pSerie->GetYPointValue(i))
@@ -133,7 +133,7 @@ public :
 		BOOL				bFound = FALSE;
 		double				fY;
 
-		for (LONG i = m_pMain->GetPointsCount()-1;i>=0 && !bFound;i--)
+		for (LONG i = (LONG)(m_pMain->GetPointsCount())-1;i>=0 && !bFound;i--)
 		{
 			if (m_pMain->GetXPointValue(i) == fX)
 			{

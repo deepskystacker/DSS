@@ -839,7 +839,7 @@ void CLiveEngine::PostUpdatePending()
 	CSmartPtr<CLiveEngineMsg>	pMsg;
 
 	pMsg.Create();
-	pMsg->SetPending(m_qToRegister.size());
+	pMsg->SetPending((LONG)(m_qToRegister.size()));
 	PostOutMessage(pMsg);
 };
 

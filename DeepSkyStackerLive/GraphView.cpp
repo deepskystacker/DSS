@@ -276,7 +276,7 @@ void	CGraphViewTab::AddOffsetAngle(LPCTSTR szFileName, double fdX, double fdY, d
 {
 	BOOL				bFound = FALSE;
 
-	for (LONG i = m_vFiles.size()-1;i>=0 && !bFound;i--)
+	for (LONG i = (LONG)m_vFiles.size()-1;i>=0 && !bFound;i--)
 	{
 		if (!m_vFiles[i].CompareNoCase(szFileName))
 		{
@@ -294,7 +294,7 @@ void CGraphViewTab::SetPoint(LPCTSTR szFileName, POINTTYPE ptType, CHARTTYPE ctT
 {
 	BOOL				bFound = FALSE;
 
-	for (LONG i = m_vFiles.size()-1;i>=0 && !bFound;i--)
+	for (LONG i = (LONG)(m_vFiles.size())-1;i>=0 && !bFound;i--)
 	{
 		if (!m_vFiles[i].CompareNoCase(szFileName))
 		{
