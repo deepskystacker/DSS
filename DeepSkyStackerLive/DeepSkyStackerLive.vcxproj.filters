@@ -520,7 +520,4 @@
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="res\DeepSkyStackerLive.manifest" />
-  </ItemGroup>
 </Project>

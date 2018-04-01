@@ -2,20 +2,24 @@
 
 !define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
 
-!define DSS_HELP_FR        "..\Help\Aide DeepSkyStacker.chm"
-!define DSS_HELP_ES        "..\Help\Ayuda DeepSkyStacker.chm"
-!define DSS_HELP_EN        "..\Help\DeepSkyStacker Help.chm"
-!define DSS_HELP_DE        "..\Help\DeepSkyStacker Hilfe.chm"
-!define DSS_HELP_PT        "..\Help\DeepSkyStacker Ajuda.chm"
+!define DSS_HELP_FR        "Aide DeepSkyStacker.chm"
+!define DSS_HELP_ES        "Ayuda DeepSkyStacker.chm"
+!define DSS_HELP_EN        "DeepSkyStacker Help.chm"
+!define DSS_HELP_DE        "DeepSkyStacker Hilfe.chm"
+!define DSS_HELP_PT        "DeepSkyStacker Ajuda.chm"
 
 
 !define DSS_PRODUCT        "DeepSkyStacker64"
 
-!define DSS_NAME           "Deep Sky Stacker (64 bit)"
+!define DSS_NAME           "DeepSkyStacker (64 bit)"
 !define DSS_FILE           "DeepSkyStacker"
 
-!define DSSCL_NAME         "Deep Sky Stacker Command Line (64 bit)"
+!define DSSCL_NAME         "DeepSkyStacker Command Line (64 bit)"
 !define DSSCL_FILE         "DeepSkyStackerCL"
+
+!define DSSLIVE_NAME       "DeepSkyStacker Live (64 bit)"
+!define DSSLIVE_FILE       "DeepSkyStackerLive"
+
 
 !define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
 
@@ -26,11 +30,11 @@ CRCCheck On
 
 OutFile "DeepSkyStacker64Installer.exe"
  
-# set the install directory - the programs are 32 bit versions
+# set the install directory - the programs are 64 bit versions
 
 InstallDir "$PROGRAMFILES64\${DSS_PRODUCT}"
 
-# 
+# ** (Do we need this?) **
 
 RequestExecutionLevel admin
 
@@ -50,42 +54,45 @@ Section
 
   # Modify UI behaviours
   
-  SetDetailsPrint     none
+  ##SetDetailsPrint     none
 
   # define output path
 
   SetOutPath $INSTDIR
  
-  # Automatically uninstall previous version
+  # Uninstall previous version
   
   Exec "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
 
-  # specify files to go in the output path
+  # specify the files that go in the output path
 
   File "..\x64\Release\${DSS_FILE}.exe"
   File "..\x64\Release\${DSSCL_FILE}.exe"
-  File "${DSS_HELP_FR}"
-  File "${DSS_HELP_ES}"
-  File "${DSS_HELP_EN}"
-  File "${DSS_HELP_DE}"
-  File "${DSS_HELP_PT}"
-
+  File "..\x64\Release\${DSSLIVE_FILE}.exe"
+  File "..\Help\${DSS_HELP_FR}"
+  File "..\Help\${DSS_HELP_ES}"
+  File "..\Help\${DSS_HELP_EN}"
+  File "..\Help\${DSS_HELP_DE}"
+  File "..\Help\${DSS_HELP_PT}"
  
   # define uninstaller name
 
   WriteUninstaller "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
   
 
-  # create desktop shortcut
+  # create desktop shortcut for the apps with UIs
 
-  CreateShortCut "$DESKTOP\${DSS_PRODUCT}.lnk" "$INSTDIR\${DSS_FILE}.exe" ""
+  CreateShortCut "$DESKTOP\${DSS_NAME}.lnk" "$INSTDIR\${DSS_FILE}.exe" ""
+  CreateShortCut "$DESKTOP\${DSSLIVE_NAME}.lnk" "$INSTDIR\${DSSLIVE_FILE}.exe" ""
  
-  # create start-menu items
+  # create start-menu items 
+
 
   CreateDirectory "$SMPROGRAMS\${DSS_PRODUCT}"
-  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_PRODUCT}.lnk" "$INSTDIR\${DSS_FILE}.exe" "" "$INSTDIR\${DSS_FILE}.exe" 0
- 
+  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_NAME}.lnk" "$INSTDIR\${DSS_FILE}.exe" "" "$INSTDIR\${DSS_FILE}.exe" 0 
+  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSSLIVE_NAME}.lnk" "$INSTDIR\${DSSLIVE_FILE}.exe" "" "$INSTDIR\${DSSLIVE_FILE}.exe" 0 
+
   CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_FILE}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
 
   # write uninstall information to the registry
@@ -110,7 +117,7 @@ Section "Uninstall"
  
   # Modify UI behaviours
   
-  SetDetailsPrint     none
+  ##SetDetailsPrint     none
 
 
   # Always delete uninstaller first
@@ -120,14 +127,24 @@ Section "Uninstall"
   # now delete installed files
 
   Delete "$INSTDIR\${DSS_FILE}.exe"
+  Delete "$INSTDIR\${DSSCL_FILE}.exe"
+  Delete "$INSTDIR\${DSSLIVE_FILE}.exe"
+  Delete "$INSTDIR\${DSS_HELP_FR}"
+  Delete "$INSTDIR\${DSS_HELP_ES}"
+  Delete "$INSTDIR\${DSS_HELP_EN}"
+  Delete "$INSTDIR\${DSS_HELP_DE}"
+  Delete "$INSTDIR\${DSS_HELP_PT}"
  
-  # Delete Start Menu Shortcuts
+  RmDir  "$INSTDIR"
+ 
+  # Delete Start Menu Shortcuts and Desktop shortcuts
    
-  Delete "$DESKTOP\${DSS_PRODUCT}.lnk"
+  Delete "$DESKTOP\${DSS_NAME}.lnk"
+  Delete "$DESKTOP\${DSSLIVE_NAME}.lnk"
   Delete "$SMPROGRAMS\${DSS_PRODUCT}\*.*"
   RmDir  "$SMPROGRAMS\${DSS_PRODUCT}"
   
-  # Delete Uninstaller And Uninstall Registry Entries
+  # Delete Product And Uninstall Registry Entries
   
   DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\${DSS_PRODUCT}"
   DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}" 
