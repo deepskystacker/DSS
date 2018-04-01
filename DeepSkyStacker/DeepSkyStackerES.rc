@@ -213,9 +213,9 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUT_DSS           "DeepSkyStacker versión %s\nCopyright © 2006-2018 Luc Coiffier\nDavid C. Partridge and Tony Cook"
+    IDS_ABOUT_DSS           "DeepSkyStacker versión %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "Decodificación de archivos RAW con DCRAW (versión %s)\nCopyright © 1997-2014 Dave Coffin"
+    IDS_ABOUT_DCRAW         "Decodificación de archivos RAW con DCRAW (versión %s)\nCopyright © 1997-2016 Dave Coffin"
     IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
     IDS_ABOUT_TIFF          "Codificación y Decodificación de archivos TIFF con LibTIFF (versión %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"

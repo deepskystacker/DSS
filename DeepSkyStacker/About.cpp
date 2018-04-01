@@ -54,6 +54,8 @@ BOOL CAbout::OnInitDialog()
 
 	strText.Format(IDS_ABOUT_DSS, VERSION_DEEPSKYSTACKER);
 	strText.Replace("\n", "<BR>");
+	strText += _T("<BR>");
+	strText += DSSVER_COPYRIGHT;
 	strHTML += "<b>"+strText+"</b><br>";
 	strText.LoadString(IDS_ABOUT_DSS_LINK);
 	strMask.Format("<a href=\"%s\">%s</a><br><br>", (LPCTSTR)strText, (LPCTSTR)strText);
