@@ -1549,7 +1549,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_ABOUT_DSS           "DeepSkyStacker version %s\nCopyright © 1997-2014 Luc Coiffier\nDavid C. Partridge and Tony Curtis"
+    IDS_ABOUT_DSS           "DeepSkyStacker version %s\nCopyright © 2006-2014 Luc Coiffier\nDavid C. Partridge and Tony Cook"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
     IDS_ABOUT_DCRAW         "RAW-Dateien Dekodierung von DCRAW (Version %s)\nCopyright © 1997-2014 Dave Coffin"
     IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
