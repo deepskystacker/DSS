@@ -45,7 +45,7 @@ ShowUninstDetails     nevershow
 
 Name                  "${DSS_NAME}"
 Icon                  "${DSS_ICON}"
-
+UninstallIcon         "${DSS_ICON}"
 
 
 # default installer section start
@@ -134,6 +134,8 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSS_HELP_EN}"
   Delete "$INSTDIR\${DSS_HELP_DE}"
   Delete "$INSTDIR\${DSS_HELP_PT}"
+
+  RmDir  "$INSTDIR"
  
   # Delete Start Menu Shortcuts and Desktop shortcuts
    

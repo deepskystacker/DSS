@@ -45,6 +45,7 @@ ShowUninstDetails     nevershow
 
 Name                  "${DSS_NAME}"
 Icon                  "${DSS_ICON}"
+UninstallIcon         "${DSS_ICON}"
 
 
 
