@@ -199,6 +199,7 @@
       <DataExecutionPrevention />
       <TargetMachine>MachineX64</TargetMachine>
       <AdditionalDependencies>htmlhelp.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ShowProgress>LinkVerboseLib</ShowProgress>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -564,9 +565,6 @@
     <ResourceCompile Include="DeepSkyStackerLiveRO.rc" />
     <ResourceCompile Include="DeepSkyStackerLiveRU.rc" />
     <ResourceCompile Include="DeepSkyStackerLiveTR.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="res\DeepSkyStackerLive.manifest" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\libjpg\libjpg.vcxproj">
