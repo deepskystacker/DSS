@@ -8,6 +8,10 @@
 !define DSS_HELP_DE        "DeepSkyStacker Hilfe.chm"
 !define DSS_HELP_PT        "DeepSkyStacker Ajuda.chm"
 
+!define DSS_RUNTIME_MFC    "mfc140.dll"
+!define DSS_RUNTIME_CPP    "msvcp140.dll"
+!define DSS_RUNTIME_C      "vcruntime140.dll"
+
 
 !define DSS_PRODUCT        "DeepSkyStacker"
 
@@ -63,7 +67,6 @@ Section
   # Uninstall previous version
   
   ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" _?=$INSTDIR'
-  ####Exec "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
 
   # specify the files that go in the output path
@@ -76,6 +79,9 @@ Section
   File "..\Help\${DSS_HELP_EN}"
   File "..\Help\${DSS_HELP_DE}"
   File "..\Help\${DSS_HELP_PT}"
+  File "RunTime32\${DSS_RUNTIME_MFC}"
+  File "RunTime32\${DSS_RUNTIME_CPP}"
+  File "RunTime32\${DSS_RUNTIME_C}"
  
   # define uninstaller name
 
@@ -135,6 +141,9 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSS_HELP_EN}"
   Delete "$INSTDIR\${DSS_HELP_DE}"
   Delete "$INSTDIR\${DSS_HELP_PT}"
+  Delete "$INSTDIR\${DSS_RUNTIME_MFC}"
+  Delete "$INSTDIR\${DSS_RUNTIME_CPP}"
+  Delete "$INSTDIR\${DSS_RUNTIME_C}"
 
   RmDir  "$INSTDIR"
  
@@ -152,4 +161,3 @@ Section "Uninstall"
   
 
 SectionEnd
-
