@@ -101,6 +101,7 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 				   int nCmdShow          // show state of window
 				   )
 {
+	ZFUNCTRACE_RUNTIME();
 	int nRetCode = 0;
 
 	OleInitialize(NULL);
