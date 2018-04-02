@@ -68,7 +68,7 @@ Section
   # Uninstall the previous version (including a blind uninstall of legacy 3.3.2 based versions)
   
   ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" _?=$INSTDIR'
-  ExecWait '"MsiExec.exe /x {18435829-4CD1-9796-A62DBBAE2ED7} /quiet" _?=$INSTDIR'
+  ExecWait '"MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /quiet" _?=$INSTDIR'
 
   # specify the files that go in the output path
 
