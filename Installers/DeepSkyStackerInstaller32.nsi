@@ -71,10 +71,10 @@ Section
   # Uninstall the previous (4.x.x) version sliently (including blind uninstall attempts of legacy 3.3.2 based versions)
   
   ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" /S _?=$INSTDIR'
-  ExecWait 'MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /quiet' # en, es
-  ExecWait 'MsiExec.exe /x{DCEC4A35-DA2B-4CA6-89A3-206F9A568ACD} /quiet' # fr
-  ExecWait 'MsiExec.exe /x{350E3960-DE20-4FE6-9E6B-26B464AD27FD} /quiet' # de
-  ExecWait 'MsiExec.exe /x{497EAFB5-BF53-41E0-A397-33289E5B679D} /quiet' # pt
+  ExecWait 'MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /qn' # en, es
+  ExecWait 'MsiExec.exe /x{DCEC4A35-DA2B-4CA6-89A3-206F9A568ACD} /qn' # fr
+  ExecWait 'MsiExec.exe /x{350E3960-DE20-4FE6-9E6B-26B464AD27FD} /qn' # de
+  ExecWait 'MsiExec.exe /x{497EAFB5-BF53-41E0-A397-33289E5B679D} /qn' # pt
 
   # specify the files that go in the output path
 
