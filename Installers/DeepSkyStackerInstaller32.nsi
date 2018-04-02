@@ -14,6 +14,9 @@
 
 
 !define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
+!define DSS_VERSION        "4.1.0"                                  # For control panel
+!define DSS_VERSION_SUFFIX "beta 1"                                 # For control panel
+!define DSS_PUBLISHER      "Luc Coiffier"                           # For control panel
 
 !define DSS_NAME           "DeepSkyStacker (32 bit)"
 !define DSS_FILE           "DeepSkyStacker"
@@ -65,13 +68,13 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall the previous (4.x.x) version (including blind uninstall attempts of legacy 3.3.2 based versions)
+  # Uninstall the previous (4.x.x) version sliently (including blind uninstall attempts of legacy 3.3.2 based versions)
   
-  ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" _?=$INSTDIR'
-  ExecWait '"MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /quiet" _?=$INSTDIR' # en, es
-  ExecWait '"MsiExec.exe /x{DCEC4A35-DA2B-4CA6-89A3-206F9A568ACD} /quiet" _?=$INSTDIR' # fr
-  ExecWait '"MsiExec.exe /x{350E3960-DE20-4FE6-9E6B-26B464AD27FD} /quiet" _?=$INSTDIR' # de
-  ExecWait '"MsiExec.exe /x{497EAFB5-BF53-41E0-A397-33289E5B679D} /quiet" _?=$INSTDIR' # pt
+  ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" /S _?=$INSTDIR'
+  ExecWait 'MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /quiet' # en, es
+  ExecWait 'MsiExec.exe /x{DCEC4A35-DA2B-4CA6-89A3-206F9A568ACD} /quiet' # fr
+  ExecWait 'MsiExec.exe /x{350E3960-DE20-4FE6-9E6B-26B464AD27FD} /quiet' # de
+  ExecWait 'MsiExec.exe /x{497EAFB5-BF53-41E0-A397-33289E5B679D} /quiet' # pt
 
   # specify the files that go in the output path
 
@@ -108,7 +111,9 @@ Section
 
   # write uninstall information to the registry
  
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "DisplayName" "${DSS_PRODUCT}32 (remove only)"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "DisplayName"     "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (32 bit - remove only)"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "DisplayVersion"  "${DSS_VERSION}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "Publisher"       "${DSS_PUBLISHER}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "UninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
   # Create the uninstaller program

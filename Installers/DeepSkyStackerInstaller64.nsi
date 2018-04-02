@@ -13,7 +13,10 @@
 !define DSS_RUNTIME_C      "vcruntime140.dll"
 
 
-!define DSS_PRODUCT        "DeepSkyStacker"
+!define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
+!define DSS_VERSION        "4.1.0"                                  # For control panel
+!define DSS_VERSION_SUFFIX "beta 1"                                 # For control panel
+!define DSS_PUBLISHER      "Luc Coiffier"                           # For control panel
 
 !define DSS_NAME           "DeepSkyStacker (64 bit)"
 !define DSS_FILE           "DeepSkyStacker"
@@ -66,9 +69,9 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall previous version
+  # Uninstall previous version silently
   
-  ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" _?=$INSTDIR'
+  ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" /S _?=$INSTDIR'
 
 
   # specify the files that go in the output path
@@ -106,8 +109,10 @@ Section
 
   # write uninstall information to the registry
  
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}64\" "DisplayName" "${DSS_PRODUCT}64 (remove only)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}64\" "UninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}64" "DisplayName"     "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (64 bit - remove only)"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}64" "DisplayVersion"  "${DSS_VERSION}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}64" "Publisher"       "${DSS_PUBLISHER}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}64" "UninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
   # Create the uninstaller program
   
