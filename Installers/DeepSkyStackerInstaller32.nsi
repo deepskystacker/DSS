@@ -31,6 +31,9 @@
 !define DSS_UNINSTALL_NAME "DeepSkyStacker Uninstaller (32 bit)"
 !define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
 
+
+!define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32"
+
 CRCCheck On
 
 
@@ -111,12 +114,12 @@ Section
 
   # write uninstall information to the registry
  
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "Publisher"            "${DSS_PUBLISHER}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (32 bit - remove only)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "DisplayVersion"       "${DSS_VERSION}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "DisplayIcon"          "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "UninstallString"      "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "QuietUninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe /S"  
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "Publisher"            "${DSS_PUBLISHER}"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (32 bit - remove only)"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayVersion"       "${DSS_VERSION}"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayIcon"          "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "QuietUninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe /S"  
 
   # Create the uninstaller program
   
@@ -170,7 +173,7 @@ Section "Uninstall"
   
   # Delete Product And Uninstall Registry Entries
   
-  DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" 
+  DeleteRegKey HKEY_LOCAL_MACHINE "${DSS_REG_UNINSTALL_PATH}\" 
   
 
 SectionEnd
