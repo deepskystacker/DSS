@@ -13,7 +13,7 @@
 !define DSS_RUNTIME_C      "vcruntime140.dll"
 
 
-!define DSS_PRODUCT        "DeepSkyStacker"
+!define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
 
 !define DSS_NAME           "DeepSkyStacker (32 bit)"
 !define DSS_FILE           "DeepSkyStacker"
@@ -25,6 +25,7 @@
 !define DSSLIVE_FILE       "DeepSkyStackerLive"
 
 
+!define DSS_UNINSTALL_NAME "DeepSkyStacker Uninstaller (32 bit)"
 !define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
 
 CRCCheck On
@@ -64,10 +65,10 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall previous version
+  # Uninstall the previous version (including a blind uninstall of legacy 3.3.2 based versions)
   
   ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" _?=$INSTDIR'
-
+  ExecWait '"MsiExec.exe /x {18435829-4CD1-9796-A62DBBAE2ED7} /quiet" _?=$INSTDIR'
 
   # specify the files that go in the output path
 
@@ -90,22 +91,22 @@ Section
 
   # create desktop shortcut for the apps with UIs
 
-  CreateShortCut "$DESKTOP\${DSS_NAME}.lnk" "$INSTDIR\${DSS_FILE}.exe" ""
+  CreateShortCut "$DESKTOP\${DSS_NAME}.lnk"     "$INSTDIR\${DSS_FILE}.exe" ""
   CreateShortCut "$DESKTOP\${DSSLIVE_NAME}.lnk" "$INSTDIR\${DSSLIVE_FILE}.exe" ""
  
   # create start-menu items 
 
 
   CreateDirectory "$SMPROGRAMS\${DSS_PRODUCT}"
-  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_NAME}.lnk" "$INSTDIR\${DSS_FILE}.exe" "" "$INSTDIR\${DSS_FILE}.exe" 0 
+  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_NAME}.lnk"     "$INSTDIR\${DSS_FILE}.exe"     "" "$INSTDIR\${DSS_FILE}.exe" 0 
   CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSSLIVE_NAME}.lnk" "$INSTDIR\${DSSLIVE_FILE}.exe" "" "$INSTDIR\${DSSLIVE_FILE}.exe" 0 
 
-  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_FILE}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
+  CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_NAME}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
 
   # write uninstall information to the registry
  
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}" "DisplayName" "${DSS_PRODUCT} (remove only)"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}" "UninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "DisplayName" "${DSS_PRODUCT}32 (remove only)"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" "UninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
 
   # Create the uninstaller program
   
@@ -151,13 +152,15 @@ Section "Uninstall"
    
   Delete "$DESKTOP\${DSS_NAME}.lnk"
   Delete "$DESKTOP\${DSSLIVE_NAME}.lnk"
-  Delete "$SMPROGRAMS\${DSS_PRODUCT}\*.*"
+
+  Delete "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_NAME}.lnk"
+  Delete "$SMPROGRAMS\${DSS_PRODUCT}\${DSSLIVE_NAME}.lnk"
+  Delete "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_NAME}.lnk"
   RmDir  "$SMPROGRAMS\${DSS_PRODUCT}"
   
   # Delete Product And Uninstall Registry Entries
   
-  DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\${DSS_PRODUCT}"
-  DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}" 
+  DeleteRegKey HKEY_LOCAL_MACHINE "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32" 
   
 
 SectionEnd
