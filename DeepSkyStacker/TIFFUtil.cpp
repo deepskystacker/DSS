@@ -531,6 +531,7 @@ BOOL CTIFFWriter::Open()
 BOOL CTIFFWriter::Write()
 {
 	BOOL			bResult = FALSE;
+	bool			bError = false;
 
 
 	if (m_tiff)
@@ -546,7 +547,7 @@ BOOL CTIFFWriter::Write()
 			if (m_pProgress)
 				m_pProgress->Start2(NULL, h);
 
-			for (LONG j = 0;j<h;j++)
+			for (LONG j = 0;(j<h) && !bError;j++)
 			{
 				BYTE *  pBYTELine	= (BYTE *)pScanLine;
 				WORD *	pWORDLine	= (WORD *)pScanLine;
@@ -641,11 +642,16 @@ BOOL CTIFFWriter::Write()
 				nResult = TIFFWriteScanline(m_tiff, pScanLine, j, 0);
 				if (m_pProgress)
 					m_pProgress->Progress2(NULL, j+1);
+
+				if (!nResult)
+					bError = true;
 			};
 			free(pScanLine);
 			if (m_pProgress)
 				m_pProgress->End2();
 		};
+
+		bResult = (!bError) ? TRUE : FALSE;
 	};
 
 	return bResult;
