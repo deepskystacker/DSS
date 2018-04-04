@@ -536,7 +536,7 @@ BOOL CTIFFWriter::Write()
 
 	if (m_tiff)
 	{
-		LONG			lScanLineSize;
+		tmsize_t			lScanLineSize;
 		VOID *			pScanLine;
 
 		lScanLineSize = TIFFScanlineSize(m_tiff);
