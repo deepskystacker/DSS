@@ -499,6 +499,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 
 void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 {
+	ZFUNCTRACE_RUNTIME();
 	CDSSProgressDlg		dlg;
 	BOOL				bOk;
 

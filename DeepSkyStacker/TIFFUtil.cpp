@@ -443,6 +443,7 @@ void CTIFFWriter::SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CF
 
 BOOL CTIFFWriter::Open()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	Close();
@@ -530,24 +531,24 @@ BOOL CTIFFWriter::Open()
 
 BOOL CTIFFWriter::Write()
 {
-	BOOL			bResult = FALSE;
-	bool			bError = false;
+	ZFUNCTRACE_RUNTIME();
+	BOOL		bResult = FALSE;
+	bool		bError = false;
 
 
 	if (m_tiff)
 	{
-		tmsize_t			lScanLineSize;
+		tmsize_t		szScanLineSize;
 		VOID *			pScanLine;
 
-		lScanLineSize = TIFFScanlineSize(m_tiff);
-		pScanLine = (VOID *)malloc(lScanLineSize);
+		szScanLineSize = TIFFScanlineSize(m_tiff);
+		pScanLine = (VOID *)malloc(szScanLineSize);
 		if (pScanLine)
 		{
-			bResult = TRUE;
 			if (m_pProgress)
 				m_pProgress->Start2(NULL, h);
 
-			for (LONG j = 0;(j<h) && !bError;j++)
+			for (LONG j = 0;(j<h) && !bError; j++)
 			{
 				BYTE *  pBYTELine	= (BYTE *)pScanLine;
 				WORD *	pWORDLine	= (WORD *)pScanLine;
@@ -642,15 +643,17 @@ BOOL CTIFFWriter::Write()
 				nResult = TIFFWriteScanline(m_tiff, pScanLine, j, 0);
 				if (m_pProgress)
 					m_pProgress->Progress2(NULL, j+1);
-
-				if (!nResult)
+				if (-1 == nResult)
+				{
+					ZTRACE_RUNTIME("TIFFWriteScanLine failed");
 					bError = true;
+					break;
+				}
 			};
 			free(pScanLine);
 			if (m_pProgress)
 				m_pProgress->End2();
 		};
-
 		bResult = (!bError) ? TRUE : FALSE;
 	};
 
@@ -661,6 +664,7 @@ BOOL CTIFFWriter::Write()
 
 BOOL CTIFFWriter::Close()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 
 	if (m_tiff)
@@ -837,6 +841,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription, LONG lISOSpeed, double fExposure)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (pBitmap)
