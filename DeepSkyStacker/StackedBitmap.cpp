@@ -282,6 +282,7 @@ typedef struct tagHDSTACKEDBITMAPHEADER
 
 BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	FILE *			hFile;
 	CString			strText;
@@ -351,6 +352,7 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 
 void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	FILE *			hFile;
 	CString			strText;
 
@@ -493,6 +495,7 @@ typedef PIXELSET::iterator			PIXELITERATOR;
 
 HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 {
+	ZFUNCTRACE_RUNTIME();
 	if (Bitmap.IsEmpty())
 		Bitmap.Create(m_lWidth, m_lHeight);
 
@@ -586,6 +589,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	*ppBitmap = NULL;
 
 	CSmartPtr<CMemoryBitmap>	pBitmap;
@@ -686,6 +690,7 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 
 BOOL CStackedBitmap::Load(LPCTSTR szStackedFile, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	CBitmapInfo		bmpInfo;
 
 	if (GetPictureInfo(szStackedFile, bmpInfo) && bmpInfo.CanLoad())
@@ -854,6 +859,7 @@ public :
 
 BOOL CTIFFWriterStacker::OnOpen()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	LONG			lWidth,
 					lHeight;
@@ -920,6 +926,7 @@ BOOL CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGree
 
 BOOL CTIFFWriterStacker::OnClose()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 
 	return bResult;
@@ -930,6 +937,7 @@ BOOL CTIFFWriterStacker::OnClose()
 
 void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, BOOL bApplySettings, TIFFCOMPRESSION TiffComp)
 {
+	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
 	CString					strText;
 
@@ -959,6 +967,7 @@ void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 
 void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, BOOL bApplySettings, BOOL bFloat, TIFFCOMPRESSION TiffComp)
 {
+	ZFUNCTRACE_RUNTIME();
 	CTIFFWriterStacker		tiff(szBitmapFile, pRect, pProgress);
 	CString					strText;
 
@@ -1047,6 +1056,7 @@ public :
 
 BOOL CFITSWriterStacker::OnOpen()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	LONG			lWidth,
 					lHeight;
@@ -1112,6 +1122,7 @@ BOOL CFITSWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGree
 
 BOOL CFITSWriterStacker::OnClose()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 
 	return bResult;
@@ -1122,6 +1133,7 @@ BOOL CFITSWriterStacker::OnClose()
 
 void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, BOOL bApplySettings)
 {
+	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
 	CString					strText;
 
@@ -1151,6 +1163,7 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 
 void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSProgress * pProgress, BOOL bApplySettings, BOOL bFloat)
 {
+	ZFUNCTRACE_RUNTIME();
 	CFITSWriterStacker		fits(szBitmapFile, pRect, pProgress);
 	CString					strText;
 
@@ -1218,6 +1231,7 @@ public :
 
 BOOL CTIFFReadStacker::OnOpen()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_pProgress)
@@ -1259,6 +1273,7 @@ BOOL CTIFFReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, doub
 
 BOOL CTIFFReadStacker::OnClose()
 {
+	ZFUNCTRACE_RUNTIME();
 	return TRUE;
 };
 
@@ -1267,6 +1282,7 @@ BOOL CTIFFReadStacker::OnClose()
 
 BOOL CStackedBitmap::LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	CTIFFReadStacker	tiff(szStackedFile, pProgress);
 
@@ -1311,6 +1327,7 @@ public :
 
 BOOL CFITSReadStacker::OnOpen()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_pProgress)
@@ -1352,6 +1369,7 @@ BOOL CFITSReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, doub
 
 BOOL CFITSReadStacker::OnClose()
 {
+	ZFUNCTRACE_RUNTIME();
 	return TRUE;
 };
 
@@ -1359,6 +1377,7 @@ BOOL CFITSReadStacker::OnClose()
 
 BOOL CStackedBitmap::LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	CFITSReadStacker	fits(szStackedFile, pProgress);
 
