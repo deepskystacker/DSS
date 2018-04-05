@@ -2862,7 +2862,7 @@ public :
 			m_lX = x;
 			m_lY = y;
 			
-			LONG			lOffset = m_pBitmap->GetOffset(x, y);
+			size_t				lOffset = m_pBitmap->GetOffset(x, y);
 			m_pRedValue		= &(m_pBitmap->m_Red.m_vPixels[lOffset]);
 			m_pGreenValue	= &(m_pBitmap->m_Green.m_vPixels[lOffset]);
 			m_pBlueValue	= &(m_pBitmap->m_Blue.m_vPixels[lOffset]);
@@ -2973,14 +2973,14 @@ private :
 	{
 		return (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
 	};
-	LONG	GetOffset(LONG x, LONG y)
+	size_t	GetOffset(LONG x, LONG y)
 	{
 		if (IsXYOk(x, y))
 		{
 			if (m_bTopDown)
-				return m_lWidth * y + x;
+				return (size_t)m_lWidth * (size_t)y + (size_t)x;
 			else
-				return m_lWidth * (m_lHeight-1-y) + x;
+				return (size_t)m_lWidth * ((size_t)m_lHeight-1- (size_t)y) + (size_t)x;
 		}
 		else
 			return 0;
@@ -3112,7 +3112,7 @@ public :
 
 		if (IsXYOk(i, j))
 		{
-			LONG	lOffset = GetOffset(i, j);
+			size_t			lOffset = GetOffset(i, j);
 			m_Red.m_vPixels[lOffset]	= fRed * m_fMultiplier;
 			m_Green.m_vPixels[lOffset]	= fGreen * m_fMultiplier;
 			m_Blue.m_vPixels[lOffset]	= fBlue * m_fMultiplier;
@@ -3129,7 +3129,7 @@ public :
 
 		if (IsXYOk(i, j))
 		{
-			LONG	lOffset = GetOffset(i, j);
+			size_t			lOffset = GetOffset(i, j);
 			m_Red.m_vPixels[lOffset]	= fGray * m_fMultiplier;
 			m_Green.m_vPixels[lOffset]	= fGray * m_fMultiplier;
 			m_Blue.m_vPixels[lOffset]	= fGray * m_fMultiplier;
@@ -3147,7 +3147,7 @@ public :
 
 		if (IsXYOk(i, j))
 		{
-			LONG	lOffset = GetOffset(i, j);
+			size_t	lOffset = GetOffset(i, j);
 
 			fRed   = m_Red.m_vPixels[lOffset]/m_fMultiplier;
 			fGreen = m_Green.m_vPixels[lOffset]/m_fMultiplier;
@@ -3187,11 +3187,11 @@ public :
 		{
 			BYTE *		pTempScan = (BYTE *)pScanLine;
 
-			memcpy(pTempScan, &(m_Red.m_vPixels[j*m_lWidth]), sizeof(TType)*m_lWidth);
+			memcpy(pTempScan, &(m_Red.m_vPixels[(size_t)j*(size_t)m_lWidth]), sizeof(TType)*(size_t)m_lWidth);
 			pTempScan += sizeof(TType)*m_lWidth;
-			memcpy(pTempScan, &(m_Green.m_vPixels[j*m_lWidth]), sizeof(TType)*m_lWidth);
+			memcpy(pTempScan, &(m_Green.m_vPixels[(size_t)j*(size_t)m_lWidth]), sizeof(TType)*(size_t)m_lWidth);
 			pTempScan += sizeof(TType)*m_lWidth;
-			memcpy(pTempScan, &(m_Blue.m_vPixels[j*m_lWidth]), sizeof(TType)*m_lWidth);
+			memcpy(pTempScan, &(m_Blue.m_vPixels[(size_t)j*(size_t)m_lWidth]), sizeof(TType)*(size_t)m_lWidth);
 			bResult = TRUE;
 		};
 
@@ -3206,11 +3206,11 @@ public :
 		{
 			BYTE *		pTempScan = (BYTE *)pScanLine;
 
-			memcpy(&(m_Red.m_vPixels[j*m_lWidth]), pTempScan, sizeof(TType)*m_lWidth);
+			memcpy(&(m_Red.m_vPixels[(size_t)j*(size_t)m_lWidth]), pTempScan, sizeof(TType)*(size_t)m_lWidth);
 			pTempScan += sizeof(TType)*m_lWidth;
-			memcpy(&(m_Green.m_vPixels[j*m_lWidth]), pTempScan, sizeof(TType)*m_lWidth);
+			memcpy(&(m_Green.m_vPixels[(size_t)j*(size_t)m_lWidth]), pTempScan, sizeof(TType)*(size_t)m_lWidth);
 			pTempScan += sizeof(TType)*m_lWidth;
-			memcpy(&(m_Blue.m_vPixels[j*m_lWidth]), pTempScan, sizeof(TType)*m_lWidth);
+			memcpy(&(m_Blue.m_vPixels[(size_t)j*(size_t)m_lWidth]), pTempScan, sizeof(TType)*(size_t)m_lWidth);
 			bResult = TRUE;
 		};
 
