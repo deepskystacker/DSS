@@ -1404,7 +1404,7 @@ public :
 			m_lX = x;
 			m_lY = y;
 			
-			LONG			lOffset = m_pBitmap->GetOffset(x, y);
+			size_t			lOffset = m_pBitmap->GetOffset(x, y);
 			m_pValue		= &(m_pBitmap->m_vPixels[lOffset]);
 		};
 
@@ -1476,7 +1476,7 @@ public :
 		CDSSProgress *			m_pProgress;
 
 	public :
-		std::vector<LONG>		m_vHotOffsets;
+		std::vector<size_t>		m_vHotOffsets;
 
 	public :
 		CHotPixelTask()
@@ -1501,7 +1501,7 @@ public :
 			BOOL					bEnd = FALSE;
 			MSG						msg;
 			LONG					lWidth = m_pBitmap->Width();
-			std::vector<LONG>		vHotOffsets;
+			std::vector<size_t>		vHotOffsets;
 
 			// Create a message queue and signal the event
 			PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
@@ -1514,8 +1514,8 @@ public :
 					{
 						for (i = 2;i<lWidth-2;i++)
 						{
-							LONG				lOffset = m_pBitmap->GetOffset(i, j);
-							LONG				vOffsets[4];
+							size_t				lOffset = m_pBitmap->GetOffset(i, j);
+							size_t				vOffsets[4];
 
 							vOffsets[0] = m_pBitmap->GetOffset(i-1, j);
 							vOffsets[1] = m_pBitmap->GetOffset(i+1, j);
@@ -1611,7 +1611,7 @@ private :
 		m_vPixels.clear();
 		m_vPixels.resize(m_lWidth * m_lHeight);
 
-		return (m_vPixels.size() == m_lWidth * m_lHeight);
+		return ((size_t)m_vPixels.size() == (size_t)m_lWidth * (size_t)m_lHeight);
 	};
 
 	BOOL	IsXYOk(LONG x, LONG y)
@@ -1619,10 +1619,10 @@ private :
 		return (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
 	};
 
-	LONG	GetOffset(LONG x, LONG y)
+	size_t	GetOffset(LONG x, LONG y)
 	{
 		if (IsXYOk(x, y))
-			return m_lWidth * y + x;
+			return (size_t)m_lWidth * (size_t)y + (size_t)x;
 		else
 			return 0;
 	};
