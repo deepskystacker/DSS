@@ -113,9 +113,6 @@
     <ClCompile Include="tif_warning.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tif_win32.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tif_write.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -126,6 +123,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tif_lzma.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tif_unix.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
