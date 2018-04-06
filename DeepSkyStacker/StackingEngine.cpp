@@ -2291,23 +2291,16 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 			};
 		};
 		break;
-	case SM_INTERSECTION :
-		if (ComputeSmallestRectangle(m_rcResult))
-		{
-			m_rcResult.left		*= m_lPixelSizeMultiplier;
-			m_rcResult.right	*= m_lPixelSizeMultiplier;
-			m_rcResult.top		*= m_lPixelSizeMultiplier;
-			m_rcResult.bottom	*= m_lPixelSizeMultiplier;
-		}
-		else
+	case SM_INTERSECTION:
+		if (!ComputeSmallestRectangle(m_rcResult))
 		{
 			// Fall back to normal rectangle
-			LONG			lBitmapIndice = 0;
+			LONG            lBitmapIndice = 0;
 			if (m_vBitmaps[0].m_bDisabled)
 				lBitmapIndice = 1;
 
 			m_rcResult.left = m_rcResult.top = 0;
-			m_rcResult.right  = m_vBitmaps[lBitmapIndice].RenderedWidth() * m_lPixelSizeMultiplier;
+			m_rcResult.right = m_vBitmaps[lBitmapIndice].RenderedWidth() * m_lPixelSizeMultiplier;
 			m_rcResult.bottom = m_vBitmaps[lBitmapIndice].RenderedHeight() * m_lPixelSizeMultiplier;
 		};
 		break;
@@ -2330,6 +2323,9 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 		}
 		break;
 	};
+
+	ZTRACE_RUNTIME("Computed image rectangle m_rcResult left %ld, right %ld, top %ld, bottom %ld", \
+		m_rcResult.left, m_rcResult.right, m_rcResult.top, m_rcResult.bottom);
 
 	if (bContinue)
 	{
