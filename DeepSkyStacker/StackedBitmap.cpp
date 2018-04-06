@@ -495,7 +495,6 @@ typedef PIXELSET::iterator			PIXELITERATOR;
 
 HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 {
-	ZFUNCTRACE_RUNTIME();
 	if (Bitmap.IsEmpty())
 		Bitmap.Create(m_lWidth, m_lHeight);
 
