@@ -149,7 +149,7 @@ BOOL CProcessingDlg::OnInitDialog()
 	COLORREF		crGreens[3] = {RGB(0, 0, 0), RGB(0, 128, 0), RGB(0, 255, 0)};
 	COLORREF		crBlues[3] = {RGB(0, 0, 0), RGB(0, 0, 128), RGB(0, 0, 255)};
 
-	SetTimer(1, 300, NULL);
+	SetTimer(1, 100, NULL);
 
 	m_fGradientOffset = 0.0;
 	m_fGradientRange  = 65535.0;
@@ -395,7 +395,7 @@ void CProcessingDlg::OnSettings()
 		UpdateControls();
 		m_bDirty = TRUE;
 	};
-	SetTimer(1, 300, NULL);
+	SetTimer(1, 100, NULL);
 };
 
 /* ------------------------------------------------------------------- */
@@ -533,7 +533,7 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 		m_bDirty = FALSE;
 	};
 
-	SetTimer(1, 300, NULL);
+	SetTimer(1, 100, NULL);
 };
 
 /* ------------------------------------------------------------------- */
@@ -617,7 +617,7 @@ void CProcessingDlg::OnLoaddsi()
 			};
 		};	
 
-		SetTimer(1, 300, NULL);
+		SetTimer(1, 100, NULL);
 	};
 }
 
@@ -803,7 +803,7 @@ void CProcessingDlg::CreateStarMask()
 					WriteTIFF((LPCTSTR)strFileName, pStarMask, &dlg, strDescription);
 			};
 		};
-		SetTimer(1, 300, NULL);
+		SetTimer(1, 100, NULL);
 	}
 	else
 	{
