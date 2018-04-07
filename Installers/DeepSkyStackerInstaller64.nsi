@@ -15,7 +15,7 @@
 
 !define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
 !define DSS_VERSION        "4.1.0"                                  # For control panel
-!define DSS_VERSION_SUFFIX "beta 1"                                 # For control panel
+!define DSS_VERSION_SUFFIX ""                                       # For control panel (e.g. "beta 1") 
 !define DSS_PUBLISHER      "Luc Coiffier"                           # For control panel
 
 !define DSS_NAME           "DeepSkyStacker (64 bit)"
@@ -26,6 +26,8 @@
 
 !define DSSLIVE_NAME       "DeepSkyStacker Live (64 bit)"
 !define DSSLIVE_FILE       "DeepSkyStackerLive"
+
+!define DSS_README_FILE    "README.txt"
 
 
 !define DSS_UNINSTALL_NAME "DeepSkyStacker Uninstaller (64 bit)"
@@ -89,7 +91,8 @@ Section
   File "RunTime64\${DSS_RUNTIME_MFC}"
   File "RunTime64\${DSS_RUNTIME_CPP}"
   File "RunTime64\${DSS_RUNTIME_C}"
- 
+  File "${DSS_README_FILE}"
+
   # define uninstaller name
 
   WriteUninstaller "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
@@ -155,7 +158,8 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSS_RUNTIME_MFC}"
   Delete "$INSTDIR\${DSS_RUNTIME_CPP}"
   Delete "$INSTDIR\${DSS_RUNTIME_C}"
- 
+  Delete "$INSTDIR\${DSS_README_FILE}"
+
   RmDir  "$INSTDIR"
  
   # Delete Start Menu Shortcuts and Desktop shortcuts
