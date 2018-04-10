@@ -15,7 +15,7 @@
 
 !define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
 !define DSS_VERSION        "4.1.0"                                  # For control panel
-!define DSS_VERSION_SUFFIX ""                                       # For control panel (e.g. "beta 1") 
+!define DSS_VERSION_SUFFIX ""                                       # For control panel (e.g. "beta-1") 
 !define DSS_PUBLISHER      "Luc Coiffier"                           # For control panel
 
 !define DSS_NAME           "DeepSkyStacker (32 bit)"
@@ -27,7 +27,7 @@
 !define DSSLIVE_NAME       "DeepSkyStacker Live (32 bit)"
 !define DSSLIVE_FILE       "DeepSkyStackerLive"
 
-!define DSS_README_NAME    "README"
+!define DSS_README_NAME    "README (32 bit)"
 !define DSS_README_FILE    "README.txt"
 
 
@@ -42,7 +42,7 @@ CRCCheck On
 
 # define installer name
 
-OutFile "DeepSkyStackerInstaller.exe"
+OutFile "${DSS_PRODUCT}Installer-${DSS_VERSION}${DSS_VERSION_SUFFIX}.exe"
  
 # set the install directory - the programs are 32 bit versions
 
