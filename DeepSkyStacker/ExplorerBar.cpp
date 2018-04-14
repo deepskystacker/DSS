@@ -852,7 +852,7 @@ void CExplorerBar::LoadSettingFile()
 	DWORD						dwFilterIndex = 0;
 	CString						strBaseExtension;
 
-	TCHAR						szPath[_MAX_PATH];
+	TCHAR						szPath[1+_MAX_PATH];
 
 	SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
 
@@ -876,10 +876,10 @@ void CExplorerBar::LoadSettingFile()
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 	dlgOpen.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -932,12 +932,12 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		lStartID = ID_LOADSETTINGS_FIRSTMRU+1;
 		for (LONG i = 0;i<m_MRUSettings.m_vLists.size();i++)
 		{
-			TCHAR				szDrive[_MAX_DRIVE];
-			TCHAR				szDir[_MAX_DIR];
-			TCHAR				szName[_MAX_FNAME];
+			TCHAR				szDrive[1+_MAX_DRIVE];
+			TCHAR				szDir[1+_MAX_DIR];
+			TCHAR				szName[1+_MAX_FNAME];
 			CString				strItem;
 
-			_splitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, NULL);
+			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, NULL);
 			strItem = szName;
 
 			popup->InsertMenu(ID_LOADSETTINGS_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
@@ -958,7 +958,7 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		else if (nResult == ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS)
 		{
 			// Load the DSSLive setting file
-			TCHAR				szPath[_MAX_PATH];
+			TCHAR				szPath[1+_MAX_PATH];
 			CString				strPath;
 
 			SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
@@ -999,7 +999,7 @@ void CExplorerBar::SaveSettingFile()
 	CString						strTitle;
 	DWORD						dwFilterIndex = 0;
 
-	TCHAR						szPath[_MAX_PATH];
+	TCHAR						szPath[1+_MAX_PATH];
 
 	SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
 
@@ -1069,12 +1069,12 @@ void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		lStartID = ID_SAVESETTINGS_FIRSTMRU+1;
 		for (LONG i = 0;i<m_MRUSettings.m_vLists.size();i++)
 		{
-			TCHAR				szDrive[_MAX_DRIVE];
-			TCHAR				szDir[_MAX_DIR];
-			TCHAR				szName[_MAX_FNAME];
+			TCHAR				szDrive[1+_MAX_DRIVE];
+			TCHAR				szDir[1+_MAX_DIR];
+			TCHAR				szName[1+_MAX_FNAME];
 			CString				strItem;
 
-			_splitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, NULL);
+			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, NULL);
 			strItem = szName;
 
 			popup->InsertMenu(ID_SAVESETTINGS_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
@@ -1095,7 +1095,7 @@ void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		else if (nResult == ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS)
 		{
 			// Sace the DSSLive setting file
-			TCHAR				szPath[_MAX_PATH];
+			TCHAR				szPath[1+_MAX_PATH];
 			CString				strPath;
 
 			SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
@@ -1143,16 +1143,16 @@ void CExplorerBar::CallHelp()
 {
 	CString			strBase;
 	CString			strFile;
-	TCHAR			szFileName[_MAX_PATH];
-	TCHAR			szDrive[_MAX_DRIVE];
-	TCHAR			szDir[_MAX_DIR];
+	TCHAR			szFileName[1+_MAX_PATH];
+	TCHAR			szDrive[1+_MAX_DRIVE];
+	TCHAR			szDir[1+_MAX_DIR];
 	CString			strHelpFile;
 
 	strHelpFile.LoadString(IDS_HELPFILE);
 
-	GetModuleFileName(NULL, szFileName, sizeof(szFileName));
+	GetModuleFileName(NULL, szFileName, sizeof(szFileName)/sizeof(TCHAR));
 	strBase = szFileName;
-	_splitpath(strBase, szDrive, szDir, NULL, NULL);
+	_tsplitpath(strBase, szDrive, szDir, NULL, NULL);
 
 	strFile = szDrive;
 	strFile += szDir;

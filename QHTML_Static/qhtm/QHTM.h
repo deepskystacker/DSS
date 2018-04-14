@@ -111,7 +111,7 @@ Purpose:	GipsySoft HTML control
 #if defined(_WIN64)
 	typedef DWORD64 QHTMCONTEXT;
 #else
-typedef DWORD QHTMCONTEXT;
+	typedef DWORD QHTMCONTEXT;
 #endif
 
 #ifdef __cplusplus

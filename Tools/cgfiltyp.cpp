@@ -58,11 +58,11 @@ BOOL CGCFileTypeAccess::RegSetExtension(void)
 
 	CString csKey = "." + m_csExtension;
 
-	SetRegistryValue(HKEY_CLASSES_ROOT, csKey, "", m_csDocumentClassName);
+	SetRegistryValue(HKEY_CLASSES_ROOT, csKey, _T(""), m_csDocumentClassName);
 
 	if( !m_csShellOpenCommand.IsEmpty() ){
 		csKey += "\\shell\\open\\command";
-		SetRegistryValue(HKEY_CLASSES_ROOT, csKey, "", m_csShellOpenCommand);
+		SetRegistryValue(HKEY_CLASSES_ROOT, csKey, _T(""), m_csShellOpenCommand);
 	}
 
 	return TRUE;
@@ -78,20 +78,20 @@ BOOL CGCFileTypeAccess::RegSetDocumentType(void)
 
 	CString csKey = m_csDocumentClassName;
 
-	SetRegistryValue(HKEY_CLASSES_ROOT, csKey, "", m_csDocumentDescription);
+	SetRegistryValue(HKEY_CLASSES_ROOT, csKey, _T(""), m_csDocumentDescription);
 
 	// DefaultIcon
 	if( !m_csDocumentDefaultIcon.IsEmpty() ){
 		csKey  = m_csDocumentClassName;
 		csKey += "\\DefaultIcon";
-		SetRegistryValue(HKEY_CLASSES_ROOT, csKey, "", m_csDocumentDefaultIcon);
+		SetRegistryValue(HKEY_CLASSES_ROOT, csKey, _T(""), m_csDocumentDefaultIcon);
 	}
 
 	// shell\open\command
 	if( !m_csShellOpenCommand.IsEmpty() ){
 		csKey  = m_csDocumentClassName;
 		csKey += "\\shell\\open\\command";
-		SetRegistryValue(HKEY_CLASSES_ROOT, csKey, "", m_csShellOpenCommand);
+		SetRegistryValue(HKEY_CLASSES_ROOT, csKey, _T(""), m_csShellOpenCommand);
 	}
 
 	return TRUE;

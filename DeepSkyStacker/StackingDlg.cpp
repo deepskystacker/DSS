@@ -442,10 +442,10 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 	ulNeededSpace *= 1.10;
 
 	// Get available space from drive
-	TCHAR			szTempPath[_MAX_PATH];
+	TCHAR			szTempPath[1+_MAX_PATH];
 
 	szTempPath[0] = 0;
-	GetTempPath(sizeof(szTempPath), szTempPath);
+	GetTempPath(sizeof(szTempPath)/sizeof(szTempPath[0]), szTempPath);
 
 	ULARGE_INTEGER			ulFreeSpace;
 	ULARGE_INTEGER			ulTotal;
@@ -545,10 +545,10 @@ void CStackingDlg::OnAdddarks()
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 	dlgOpen.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer)/sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -561,13 +561,13 @@ void CStackingDlg::OnAdddarks()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFRAME, TRUE);
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -624,10 +624,10 @@ void CStackingDlg::OnAddDarkFlats()
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 	dlgOpen.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -640,13 +640,13 @@ void CStackingDlg::OnAddDarkFlats()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFLATFRAME, TRUE);
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -703,10 +703,10 @@ void CStackingDlg::OnAddFlats()
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 	dlgOpen.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -720,13 +720,13 @@ void CStackingDlg::OnAddFlats()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_FLATFRAME, TRUE);
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -783,10 +783,10 @@ void CStackingDlg::OnAddOffsets()
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 	dlgOpen.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -799,13 +799,13 @@ void CStackingDlg::OnAddOffsets()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_OFFSETFRAME, TRUE);
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -827,6 +827,7 @@ void CStackingDlg::OnAddOffsets()
 
 void CStackingDlg::OnAddpictures() 
 {
+	ZFUNCTRACE_RUNTIME();
 	CRegistry			reg;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
@@ -854,11 +855,12 @@ void CStackingDlg::OnAddpictures()
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 	dlgOpen.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
+	ZTRACE_RUNTIME("About to show file open dlg");
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
@@ -870,13 +872,13 @@ void CStackingDlg::OnAddpictures()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID());
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -926,7 +928,7 @@ void CStackingDlg::OpenFileList(LPCTSTR szFileList)
 	// Check that the file can be opened
 	FILE *					hFile;
 
-	hFile = fopen(strList, "rt");
+	hFile = _tfopen(strList, _T("rt"));
 	if  (hFile)
 	{
 		fclose(hFile);
@@ -972,13 +974,13 @@ void CStackingDlg::LoadList()
 			lStartID = ID_FILELIST_FIRSTMRU+1;
 			for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)
 			{
-				TCHAR				szDrive[_MAX_DRIVE];
-				TCHAR				szDir[_MAX_DIR];
-				TCHAR				szName[_MAX_FNAME];
+				TCHAR				szDrive[1+_MAX_DRIVE];
+				TCHAR				szDir[1+_MAX_DIR];
+				TCHAR				szName[1+_MAX_FNAME];
 				CString				strItem;
 
-				_splitpath((LPCTSTR)m_MRUList.m_vLists[i], szDrive, szDir, szName, NULL);
-				strItem.Format("%s%s%s", szDrive, szDir, szName);
+				_tsplitpath((LPCTSTR)m_MRUList.m_vLists[i], szDrive, szDir, szName, NULL);
+				strItem.Format(_T("%s%s%s"), szDrive, szDir, szName);
 
 				popup->InsertMenu(ID_FILELIST_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
 				lStartID++;

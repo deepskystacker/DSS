@@ -70,7 +70,7 @@ BOOL CTIFFReader::Open()
 	reg.LoadKey(REGENTRY_BASEKEY, _T("SkipTIFFExifInfo"), dwSkipExifInfo);
 
 	Close();
-	m_tiff = TIFFOpen(m_strFileName, "r");
+	m_tiff = TIFFOpen((LPCSTR)CT2CA(m_strFileName), "r");
 	if (m_tiff)
 	{
 		cfa = 0;
@@ -199,12 +199,12 @@ BOOL CTIFFReader::Open()
 
 			if (strDateTime.GetLength() >= 19)
 			{
-				m_DateTime.wYear  = atol(strDateTime.Left(4));
-				m_DateTime.wMonth = atol(strDateTime.Mid(5, 2));
-				m_DateTime.wDay   = atol(strDateTime.Mid(8, 2));
-				m_DateTime.wHour  = atol(strDateTime.Mid(11, 2));
-				m_DateTime.wMinute= atol(strDateTime.Mid(14, 2));
-				m_DateTime.wSecond= atol(strDateTime.Mid(17, 2));
+				m_DateTime.wYear  = _ttol(strDateTime.Left(4));
+				m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+				m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
+				m_DateTime.wHour  = _ttol(strDateTime.Mid(11, 2));
+				m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
+				m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
 			};
 		};
 
@@ -447,7 +447,7 @@ BOOL CTIFFWriter::Open()
 	BOOL			bResult = FALSE;
 
 	Close();
-	m_tiff = TIFFOpen(m_strFileName, "w");
+	m_tiff = TIFFOpen((LPCSTR)CT2CA(m_strFileName), "w");
 	if (m_tiff)
 	{
 		photo = PHOTOMETRIC_RGB;
@@ -475,24 +475,27 @@ BOOL CTIFFWriter::Open()
 				TIFFSetField(m_tiff, TIFFTAG_SMAXSAMPLEVALUE, samplemax);
 			};
 
-			CString			strSoftware;
+			CStringA			strSoftware;
 
 			strSoftware.LoadString(IDS_DEEPSKYSTACKER);
-			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, (LPCTSTR)strSoftware);
+			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, (LPCSTR)strSoftware);
 
 			if (m_strDescription.GetLength())
-				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, (LPCTSTR)m_strDescription);
+			{
+				CStringA temp = CT2CA(m_strDescription);
+				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, (LPCSTR)temp);
+			}
 
 			if (m_DateTime.wYear)
 			{
 				// Set the DATETIME TIFF tag
-				CString		strDateTime;
+				CStringA		strDateTime;
 
 				strDateTime.Format("%04d:%02d:%02d %02d:%02d:%02d", 
 								   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay, 
 								   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
-				TIFFSetField(m_tiff, TIFFTAG_DATETIME, (LPCTSTR)strDateTime);
+				TIFFSetField(m_tiff, TIFFTAG_DATETIME, (LPCSTR)strDateTime);
 			};
 
 			/* It is good to set resolutions too (but it is not nesessary) */
@@ -966,7 +969,7 @@ BOOL CTIFFReadInMemoryBitmap::OnOpen()
 
 		CString		strDescription;
 		if (strMakeModel.GetLength())
-			strDescription.Format("TIFF (%s)", (LPCTSTR)strMakeModel);
+			strDescription.Format(_T("TIFF (%s)"), (LPCTSTR)strMakeModel);
 		else
 			strDescription	= "TIFF";
 		m_pBitmap->SetDescription(strDescription);
@@ -1036,9 +1039,9 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		tiff.GetMakeModel(strMakeModel);
 
 		if (strMakeModel.GetLength())
-			BitmapInfo.m_strFileType.Format("TIFF (%s)", (LPCTSTR)strMakeModel);
+			BitmapInfo.m_strFileType.Format(_T("TIFF (%s)"), (LPCTSTR)strMakeModel);
 		else
-			BitmapInfo.m_strFileType	= "TIFF";
+			BitmapInfo.m_strFileType	= _T("TIFF");
 		BitmapInfo.m_lWidth			= tiff.Width();
 		BitmapInfo.m_lHeight		= tiff.Height();
 		BitmapInfo.m_lBitPerChannel = tiff.BitPerChannels();

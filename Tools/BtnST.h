@@ -251,7 +251,7 @@ private:
 	UINT		m_nTypeStyle;		// Button style
 	DWORD		m_dwToolTipStyle;	// Style of tooltip control
 
-	TCHAR		m_szURL[_MAX_PATH];	// URL to open when clicked
+	TCHAR		m_szURL[1+_MAX_PATH];	// URL to open when clicked
 
 #pragma pack(1)
 	typedef struct _STRUCT_ICONS
@@ -292,7 +292,7 @@ private:
 #pragma pack(1)
 	typedef struct _STRUCT_SOUND
 	{
-		TCHAR		szSound[_MAX_PATH];
+		TCHAR		szSound[1+_MAX_PATH];
 		LPCTSTR		lpszSound;
 		HMODULE		hMod;
 		DWORD		dwFlags;
