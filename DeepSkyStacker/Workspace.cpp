@@ -451,7 +451,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), "Bilinear"));
+	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), _T("Bilinear")));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), false));
@@ -462,7 +462,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), 1.0));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), ""));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("BayerPattern"), (DWORD)4));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "Bilinear"));
+	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), _T("Bilinear")));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), false));
 
 	std::sort(vSettings.begin(), vSettings.end());
