@@ -120,7 +120,7 @@ void CEmailSettings::OnBnClickedTest()
 		CPJNSMTPMessage m;
 		m.m_To.Add(CPJNSMTPAddress(strEmail));
 		m.m_From = CPJNSMTPAddress(strAccount);
-		m.m_sSubject = _T(strObject);
+		m.m_sSubject = strObject;
 		m.AddTextBody(strObject);
 		smtp.SendMessage(m);
 	}

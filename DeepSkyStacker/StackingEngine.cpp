@@ -2720,8 +2720,8 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 
 		strBasePath = strOutputFolder;
 		// Add trailing backslash
-		if (strBasePath.Right(1) != "\\" && strBasePath.Right(1) != "/")
-			strBasePath += "\\";
+		if (strBasePath.Right(1) != _T("\\") && strBasePath.Right(1) != _T("/"))
+			strBasePath += _T("\\");
 
 		if (bTIFF)
 		{

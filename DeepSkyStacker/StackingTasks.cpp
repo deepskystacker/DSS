@@ -1260,9 +1260,9 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 		m_vTasks.push_back(ti);
 	};
 
-	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.Left(4) == "JPEG"))
+	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.Left(4) == _T("JPEG")))
 		m_bUsingJPEG = TRUE;
-	if (!m_bUsingFITS && (FrameInfo.m_strInfos.Left(4) == "FITS"))
+	if (!m_bUsingFITS && (FrameInfo.m_strInfos.Left(4) == _T("FITS")))
 		m_bUsingFITS = TRUE;
 	if (!m_bCalibrating && !FrameInfo.IsLightFrame())
 		m_bCalibrating = TRUE;
@@ -1964,8 +1964,8 @@ void CAllStackingTasks::SetTemporaryFilesFolder(LPCTSTR szFolder)
 	CRegistry			reg;
 	CString				strFolder = szFolder;
 
-	if ((strFolder.Right(1) != "\\") && (strFolder.Right(1) != "/"))
-		strFolder+="\\";
+	if ((strFolder.Right(1) != _T("\\")) && (strFolder.Right(1) != _T("/")))
+		strFolder+=_T("\\");
 
 	reg.SaveKey(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("TemporaryFilesFolder"), strFolder);
 };

@@ -115,7 +115,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	CString			strTitle;
 
 	GetWindowText(strMask);
-	strTitle.Format(strMask, VERSION_DEEPSKYSTACKER);
+	strTitle.Format(strMask, _T(VERSION_DEEPSKYSTACKER));
 	SetWindowText(strTitle);
 
 	m_MainBoard.Create(IDD_MAINBOARD, this);
@@ -137,11 +137,11 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 
 		CRegistry	reg;
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, "Maximized", dwMaximized);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, "Top", strTop);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, "Left", strLeft);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, "Width", dwWidth);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, "Height", dwHeight);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Maximized"), dwMaximized);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Top"), strTop);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Left"), strLeft);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Width"), dwWidth);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Height"), dwHeight);
 
 		if (strTop.GetLength() && strLeft.GetLength() && dwWidth && dwHeight)
 		{
@@ -151,8 +151,8 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 			wp.length  = sizeof(wp);
 			wp.flags   = 0;
 			wp.showCmd = dwMaximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-			wp.rcNormalPosition.left   = atol(strLeft);
-			wp.rcNormalPosition.top    = atol(strTop);
+			wp.rcNormalPosition.left   = _tstol(strLeft);
+			wp.rcNormalPosition.top    = _tstol(strTop);
 			wp.rcNormalPosition.right  = wp.rcNormalPosition.left+dwWidth;
 			wp.rcNormalPosition.bottom = wp.rcNormalPosition.top+dwHeight;
 
@@ -166,7 +166,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	UpdateSizes();
 
 	m_Log.AddToLog(strTitle, TRUE, TRUE);
-	m_Log.AddToLog("\n");
+	m_Log.AddToLog(_T("\n"));
 
 	CString			strText;
 	strText.LoadString(IDS_LOG_STARTING);
@@ -220,17 +220,17 @@ void CDeepSkyStackerLiveDlg::OnClose( )
 
 		GetWindowPlacement(&wp);
 		dwMaximized = (wp.showCmd == SW_SHOWMAXIMIZED);
-		strLeft.Format("%ld", wp.rcNormalPosition.left);
-		strTop.Format("%ld", wp.rcNormalPosition.top);
+		strLeft.Format(_T("%ld"), wp.rcNormalPosition.left);
+		strTop.Format(_T("%ld"), wp.rcNormalPosition.top);
 
 		dwWidth  = wp.rcNormalPosition.right-wp.rcNormalPosition.left;
 		dwHeight = wp.rcNormalPosition.bottom-wp.rcNormalPosition.top;
 
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, "Maximized", dwMaximized);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, "Top", strTop);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, "Left", strLeft);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, "Width", dwWidth);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, "Height", dwHeight);
+		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Maximized"), dwMaximized);
+		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Top"), strTop);
+		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Left"), strLeft);
+		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Width"), dwWidth);
+		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Height"), dwHeight);
 	};
 
 
@@ -320,7 +320,7 @@ void CDeepSkyStackerLiveDlg::CallHelp()
 
 	GetModuleFileName(NULL, szFileName, sizeof(szFileName));
 	strBase = szFileName;
-	_splitpath(strBase, szDrive, szDir, NULL, NULL);
+	_tsplitpath(strBase, szDrive, szDir, NULL, NULL);
 
 	strFile = szDrive;
 	strFile += szDir;

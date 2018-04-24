@@ -328,7 +328,7 @@ private :
 				// Try to read the magic P5 or P6 number
 				if (lToRead >= 2)
 				{
-					CString		strMagic;
+					CStringA	strMagic;
 					// Read two characters
 
 					strMagic += (char)(*pRead);
@@ -1166,7 +1166,7 @@ extern "C" int FILENO( FILE *stream )
 
 extern "C" FILE * FOPEN( const char *filename, const char *mode )
 {
-	CString			strMode = mode;
+	CStringA			strMode = mode;
 
 	if (strMode == "wb")
 	{
@@ -1401,7 +1401,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
-	if ((strExt == ".TIF") || (strExt == ".TIFF"))
+	if ((strExt == _T(".TIF")) || (strExt == _T(".TIFF")))
 		bIsTiff = TRUE;
 
 	if (!bIsTiff)

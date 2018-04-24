@@ -41,12 +41,12 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 		TCHAR					szName[_MAX_FNAME];
 		TCHAR					szExt[_MAX_EXT];
 
-		_splitpath(szFileName, szDrive, szDir, szName, szExt);
+		_tsplitpath(szFileName, szDrive, szDir, szName, szExt);
 		CString					strSubFolder;
 		CString					strFileName;
 
-		strSubFolder.Format("%s%sNonStackable", szDrive, szDir);
-		strFileName.Format("%s%s", szName, szExt);
+		strSubFolder.Format(_T("%s%sNonStackable"), szDrive, szDir);
+		strFileName.Format(_T("%s%s"), szName, szExt);
 		// Create sub folder
 		BOOL					bResult;
 
@@ -58,7 +58,7 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 		{
 			CString					strNewFileName;
 
-			strNewFileName.Format("%s\\%s%s", strSubFolder, szName, szExt);
+			strNewFileName.Format(_T("%s\\%s%s"), strSubFolder, szName, szExt);
 			bResult = MoveFile(szFileName, strNewFileName);
 		};
 
@@ -315,8 +315,8 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 			TCHAR					szExt[_MAX_EXT];
 			CString					strName;
 
-			_splitpath(szFileName, NULL, NULL, szName, szExt);
-			strName.Format("%s%s", szName, szExt);
+			_tsplitpath(szFileName, NULL, NULL, szName, szExt);
+			strName.Format(_T("%s%s"), szName, szExt);
 			strText.Format(IDS_LOG_REGISTERRESULTS, (LPCTSTR)strName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality);
 			PostToLog(strText, TRUE);
 
@@ -374,14 +374,14 @@ void CLiveEngine::SaveStackedImage(CMemoryBitmap * pBitmap)
 		CString				strOutputFile;
 
 		m_LiveSettings.GetStackedOutputFolder(strFolder);
-		strOutputFile.Format("%s\\Autostack.tif", (LPCTSTR)strFolder);
+		strOutputFile.Format(_T("%s\\Autostack.tif"), (LPCTSTR)strFolder);
 
 		CString				strText;
 
 		strText.Format(IDS_SAVINGSTACKEDIMAGE, (LPCTSTR)strFolder);
 		this->Start2(strText, 0);
 
-		WriteTIFF(strOutputFile, pStackedImage, this, "Autostacked Image", 0, m_RunningStackingEngine.GetTotalExposure());
+		WriteTIFF(strOutputFile, pStackedImage, this, _T("Autostacked Image"), 0, m_RunningStackingEngine.GetTotalExposure());
 		this->End2();
 
 		PostStackedImageSaved();
@@ -1077,7 +1077,7 @@ void	CLiveEngine::Start(LPCTSTR szTitle, LONG lTotal1, BOOL bEnableCancel)
 	if (strText.GetLength())
 	{
 		m_strProgress1 = szTitle;
-		strText.Replace("\n", " ");
+		strText.Replace(_T("\n"), _T(" "));
 		strText += "\n";
 		PostToLog(strText, TRUE);
 	};
@@ -1108,7 +1108,7 @@ void	CLiveEngine::Start2(LPCTSTR szText, LONG lTotal2)
 	if (strText.GetLength())
 	{
 		m_strProgress2 = szText;
-		strText.Replace("\n", " ");
+		strText.Replace(_T("\n"), _T(" "));
 		strText += "\n";
 		PostToLog(strText, TRUE);
 	};

@@ -228,7 +228,7 @@ static BOOL	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
 	BOOL				bResult = FALSE;
 	CString				strLine = szLine;
 
-	if (strLine.Left(9) == "#GROUPID#")
+	if (strLine.Left(9) == _T("#GROUPID#"))
 	{
 		CString			strGroup;
 		LPCTSTR			szPos = szLine;

@@ -141,9 +141,9 @@ BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 			strFile.Format(_T("%s[%s]"), (LPCTSTR)(pTask->m_vBitmaps[i].m_strFileName), (LPCTSTR)pTask->m_vBitmaps[i].m_strDateTime);
 			m_vFiles.push_back(strFile);
 
-			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.Left(4) == "FITS"))
+			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.Left(4) == _T("FITS")))
 				bFITS = TRUE;
-			else if (!bRAW && (pTask->m_vBitmaps[i].m_strInfos.Left(3) == "RAW"))
+			else if (!bRAW && (pTask->m_vBitmaps[i].m_strInfos.Left(3) == _T("RAW")))
 				bRAW = TRUE;
 			lWidth  = pTask->m_vBitmaps[i].m_lWidth;
 			lHeight = pTask->m_vBitmaps[i].m_lHeight;

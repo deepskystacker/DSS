@@ -338,7 +338,7 @@ BOOL CFITSReader::Open()
 
 		bResult = ReadKey("SIMPLE", strSimple);
 		bResult = ReadKey("NAXIS", lNrAxis);
-		if ((strSimple == "T") && (lNrAxis >= 2 && lNrAxis <= 3))
+		if ((strSimple == _T("T")) && (lNrAxis >= 2 && lNrAxis <= 3))
 		{
 			CString				strComment;
 			ReadAllKeys();
@@ -385,7 +385,7 @@ BOOL CFITSReader::Open()
 
 			if (ReadKey("DSSCFATYPE", cfaType))
 				m_CFAType = (CFATYPE)cfaType;
-			else if (ReadKey("MOSAIC", strMosaic) && (strMake.Left(3) == "DSI"))
+			else if (ReadKey("MOSAIC", strMosaic) && (strMake.Left(3) == _T("DSI")))
 			{
 				m_bDSI = TRUE;
 				// Special case of DSI FITS files
