@@ -83,7 +83,7 @@ BOOL CheckVersion(CString & strVersion)
 			mysession.SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1);
 			mysession.SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1);
 
-			CStdioFile *remotefile = mysession.OpenURL("http://deepskystacker.free.fr/download/CurrentVersion.txt",1,INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_DONT_CACHE|INTERNET_FLAG_RELOAD);
+			CStdioFile *remotefile = mysession.OpenURL(_T("http://deepskystacker.free.fr/download/CurrentVersion.txt"),1,INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_DONT_CACHE|INTERNET_FLAG_RELOAD);
 
 			int numbytes;
 
@@ -93,7 +93,7 @@ BOOL CheckVersion(CString & strVersion)
 					strVersion += httpbuff[i];
 			};
 
-			if (strVersion.Find("DeepSkyStackerVersion=")==0)
+			if (strVersion.Find(_T("DeepSkyStackerVersion="))==0)
 			{
 				bResult = TRUE;
 				strVersion = strVersion.Right(strVersion.GetLength()-22);
