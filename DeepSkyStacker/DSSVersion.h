@@ -11,7 +11,7 @@
 
 #define DSSVER_MAJOR			4
 #define DSSVER_MINOR			1
-#define DSSVER_SUB				0
+#define DSSVER_SUB				1
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
