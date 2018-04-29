@@ -1,5 +1,3 @@
-
-
 Welcome to DeepSkyStacker 4.1.1
 
 We've fixed a number of problems since 4.1.0:
