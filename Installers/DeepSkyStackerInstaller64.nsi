@@ -14,7 +14,7 @@
 
 
 !define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
-!define DSS_VERSION        "4.1.0"                                  # For control panel
+!define DSS_VERSION        "4.1.1"                                  # For control panel
 !define DSS_VERSION_SUFFIX ""                                       # For control panel (e.g. "beta-1") 
 !define DSS_PUBLISHER      "Luc Coiffier"                           # For control panel
 
