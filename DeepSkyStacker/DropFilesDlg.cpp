@@ -103,10 +103,10 @@ BOOL CDropFilesDlg::OnInitDialog()
 		lNrFiles = DragQueryFile(m_hDropInfo, 0xFFFFFFFF, NULL, 0);
 		for (LONG i = 0;i<lNrFiles;i++)
 		{
-			TCHAR			szFile[_MAX_PATH];
+			TCHAR			szFile[1+_MAX_PATH];
 			CString			strFile;
 
-			DragQueryFile(m_hDropInfo, i, szFile, sizeof(szFile));
+			DragQueryFile(m_hDropInfo, i, szFile, sizeof(szFile)/sizeof(TCHAR));
 
 			// If it's a folder, get all the files in the folder
 			DWORD			dwAttributes;

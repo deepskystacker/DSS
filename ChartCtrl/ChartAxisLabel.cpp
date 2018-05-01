@@ -63,7 +63,7 @@ CSize CChartAxisLabel::GetSize(CDC *pDC) const
 	COLORREF OldColor = pDC->SetTextColor(m_ObjectColor);
 	CFont NewFont;
 	CFont* pOldFont;
-	NewFont.CreatePointFont(m_iFontSize,m_strFontName.c_str(),pDC);
+	NewFont.CreatePointFont(m_iFontSize,CA2CT(m_strFontName.c_str()),pDC);
 	pOldFont = pDC->SelectObject(&NewFont);
 
 	LabelSize = pDC->GetTextExtent(m_strLabelText.c_str());
@@ -93,7 +93,7 @@ void CChartAxisLabel::Draw(CDC *pDC)
 		return;
 
 	CFont NewFont;
-	NewFont.CreatePointFont(m_iFontSize,m_strFontName.c_str(),pDC);
+	NewFont.CreatePointFont(m_iFontSize,CA2CT(m_strFontName.c_str()),pDC);
 	CFont* pOldFont;
 
 	if (!m_bIsHorizontal)

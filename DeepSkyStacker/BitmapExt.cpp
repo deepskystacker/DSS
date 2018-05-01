@@ -491,12 +491,12 @@ BOOL	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 					// Parse the string : YYYY/MM/DD hh:mm:ss
 					//                    0123456789012345678
-					BitmapInfo.m_DateTime.wYear  = atol(strDateTime.Left(4));
-					BitmapInfo.m_DateTime.wMonth = atol(strDateTime.Mid(5, 2));
-					BitmapInfo.m_DateTime.wDay   = atol(strDateTime.Mid(8, 2));
-					BitmapInfo.m_DateTime.wHour	 = atol(strDateTime.Mid(11, 2));
-					BitmapInfo.m_DateTime.wMinute= atol(strDateTime.Mid(14, 2));
-					BitmapInfo.m_DateTime.wSecond= atol(strDateTime.Mid(17, 2));
+					BitmapInfo.m_DateTime.wYear  = _ttol(strDateTime.Left(4));
+					BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+					BitmapInfo.m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
+					BitmapInfo.m_DateTime.wHour	 = _ttol(strDateTime.Mid(11, 2));
+					BitmapInfo.m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
+					BitmapInfo.m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
 
 					bResult = TRUE;
 				};
@@ -993,7 +993,7 @@ BOOL	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			GetDateFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, NULL, szDate, sizeof(szDate));
 			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, NULL, szTime, sizeof(szTime));
 
-			BitmapInfo.m_strDateTime.Format("%s %s", szDate, szTime);
+			BitmapInfo.m_strDateTime.Format(_T("%s %s"), szDate, szTime);
 
 			if (!g_sBitmapInfoCache.size())
 				GetSystemTime(&g_BitmapInfoTime);

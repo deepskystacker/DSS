@@ -49,7 +49,7 @@ void CWorkspaceSetting::ReadFromRegistry()
 		case DST_DOUBLE :
 			strValue.Format("%.2f", m_fValue);
 			reg.LoadKey(m_strPath, m_strName, strValue);
-			m_fValue = atof(strValue);
+			m_fValue = _ttof(strValue);
 			break;
 		};
 		*/
@@ -78,7 +78,7 @@ void CWorkspaceSetting::SaveToRegistry() const
 		reg.SaveKey(m_strPath, m_strName, m_dwValue);
 		break;
 	case DST_DOUBLE :
-		strValue.Format("%.4f", m_fValue);
+		strValue.Format(_T("%.4f"), m_fValue);
 		reg.SaveKey(m_strPath, m_strName, strValue);
 		break;
 	};
@@ -150,19 +150,19 @@ void	CWorkspaceSetting::SetValue(LPCTSTR szValue)
 		m_strValue = strValue;
 		break;
 	case DST_BOOL : 
-		bValue = atol(szValue) ? true : false;
+		bValue = _ttol(szValue) ? true : false;
 		if (bValue != m_bValue)
 			m_bDirty = TRUE;
 		m_bValue = bValue;
 		break;
 	case DST_DWORD :
-		dwValue = atol(szValue);
+		dwValue = _ttol(szValue);
 		if (dwValue != m_dwValue)
 			m_bDirty = TRUE;
 		m_dwValue = dwValue;
 		break;
 	case DST_DOUBLE :
-		fValue = atof(szValue);
+		fValue = _ttof(szValue);
 		if (fValue != m_fValue)
 			m_bDirty = TRUE;
 		m_fValue = fValue;
@@ -220,7 +220,7 @@ void	CWorkspaceSetting::SetValue(DWORD dwNewValue)
 	switch (m_Type)
 	{
 	case DST_STRING :
-		strValue.Format("%ld", dwNewValue);
+		strValue.Format(_T("%ld"), dwNewValue);
 		if (strValue != m_strValue)
 			m_bDirty = TRUE;
 		m_strValue = strValue;
@@ -259,7 +259,7 @@ void	CWorkspaceSetting::SetValue(double fNewValue)
 	switch (m_Type)
 	{
 	case DST_STRING :
-		strValue.Format("%.4f", fNewValue);
+		strValue.Format(_T("%.4f"), fNewValue);
 		if (strValue != m_strValue)
 			m_bDirty = TRUE;
 		m_strValue = strValue;
@@ -298,10 +298,10 @@ void	CWorkspaceSetting::GetValue(CString & strValue) const
 		strValue = m_bValue ? "1" : "0";
 		break;
 	case DST_DWORD :
-		strValue.Format("%ld", m_dwValue);
+		strValue.Format(_T("%ld"), m_dwValue);
 		break;
 	case DST_DOUBLE :
-		strValue.Format("%.4f", m_fValue);
+		strValue.Format(_T("%.4f"), m_fValue);
 		break;
 	};
 };
@@ -313,7 +313,7 @@ void	CWorkspaceSetting::GetValue(bool & bValue) const
 	switch (m_Type)
 	{
 	case DST_STRING :
-		bValue = atol(m_strValue) ? true : false;
+		bValue = _ttol(m_strValue) ? true : false;
 		break;
 	case DST_BOOL : 
 		bValue = m_bValue;
@@ -334,7 +334,7 @@ void	CWorkspaceSetting::GetValue(DWORD & dwValue) const
 	switch (m_Type)
 	{
 	case DST_STRING :
-		dwValue = atol(m_strValue);
+		dwValue = _ttol(m_strValue);
 		break;
 	case DST_BOOL : 
 		dwValue = m_bValue ? 1 : 0;
@@ -356,7 +356,7 @@ void	CWorkspaceSetting::GetValue(double & fValue) const
 	switch (m_Type)
 	{
 	case DST_STRING :
-		fValue = atof(m_strValue);
+		fValue = _ttof(m_strValue);
 		break;
 	case DST_BOOL : 
 		fValue = m_bValue ? 1 : 0;
@@ -451,7 +451,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), false));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), "Bilinear"));
+	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), _T("Bilinear")));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), false));
@@ -462,7 +462,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), 1.0));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), ""));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("BayerPattern"), (DWORD)4));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "Bilinear"));
+	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), _T("Bilinear")));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), false));
 
 	std::sort(vSettings.begin(), vSettings.end());
@@ -533,10 +533,10 @@ void	CWorkspaceSettingsInternal::SaveToRegistry()
 
 void	CWorkspaceSettingsInternal::ReadFromFile(FILE * hFile)
 {
-	TCHAR				szString[1000];
+	CHAR				szString[1000];
 
 	while (fgets(szString, sizeof(szString), hFile))
-		ReadFromString(szString);
+		ReadFromString((LPCTSTR)CA2CTEX<sizeof(szString)>(szString));
 };
 
 /* ------------------------------------------------------------------- */
@@ -545,7 +545,7 @@ void	CWorkspaceSettingsInternal::ReadFromFile(LPCTSTR szFile)
 {
 	FILE *				hFile;
 
-	hFile = fopen(szFile, "rt");
+	hFile = _tfopen(szFile, _T("rt"));
 	if (hFile)
 	{
 		ReadFromFile(hFile);
@@ -567,7 +567,7 @@ void	CWorkspaceSettingsInternal::SaveToFile(FILE * hFile)
 		m_vSettings[i].GetName(strName);
 		m_vSettings[i].GetValue(strValue);
 
-		fprintf(hFile, "#WS#%s|%s=%s\n", (LPCTSTR)strPath, (LPCTSTR)strName, (LPCTSTR)strValue);
+		fprintf(hFile, "#WS#%s|%s=%s\n", (LPCSTR)CT2CA(strPath), (LPCSTR)CT2CA(strName), (LPCSTR)CT2CA(strValue));
 	};
 };
 
@@ -577,7 +577,7 @@ void	CWorkspaceSettingsInternal::SaveToFile(LPCTSTR szFile)
 {
 	FILE *				hFile;
 
-	hFile = fopen(szFile, "wt");
+	hFile = _tfopen(szFile, _T("wt"));
 	if (hFile)
 	{
 		SaveToFile(hFile);
@@ -593,9 +593,9 @@ BOOL	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 	CString				strString = szString;
 	CString				strPrefix;
 
-	strString.TrimRight("\n");
+	strString.TrimRight(_T("\n"));
 	strPrefix = strString.Left(4);
-	if (strPrefix == "#WS#")
+	if (strPrefix == _T("#WS#"))
 	{
 		// It seems that it is a workspace setting
 		// Decod the path, name and value

@@ -156,13 +156,13 @@ void CFileProperty::InitControls()
 	};
 
 	if (lISOSpeed)
-		strISOSpeed.Format("%ld", lISOSpeed);
+		strISOSpeed.Format(_T("%ld"), lISOSpeed);
 	m_ISOSpeed.SetWindowText(strISOSpeed);
 
 	if (fExposure>=1)
 	{
 		LONG			lExposure = fExposure;
-		strExposure.Format("%ld", lExposure);
+		strExposure.Format(_T("%ld"), lExposure);
 		m_Exposure.SetWindowText(strExposure);
 	};
 
@@ -217,7 +217,7 @@ void CFileProperty::UpdateControls()
 		m_ISOSpeed.GetWindowText(strISOSpeed);
 		if (strISOSpeed.GetLength())
 		{
-			LONG	lISOSpeed = atol(strISOSpeed);
+			LONG	lISOSpeed = _ttol(strISOSpeed);
 
 			if ((lISOSpeed < MINISOSPEED) || (lISOSpeed > MAXISOSPEED))
 				bOk = FALSE;
@@ -231,7 +231,7 @@ void CFileProperty::UpdateControls()
 		m_Exposure.GetWindowText(strExposure);
 		if (strExposure.GetLength())
 		{
-			LONG		lExposure = atol(strExposure);
+			LONG		lExposure = _ttol(strExposure);
 
 			if ((lExposure <MINEXPOSURE) || (lExposure > MAXEXPOSURE))
 				bOk = FALSE;
@@ -284,7 +284,7 @@ void CFileProperty::ApplyChanges()
 		m_ISOSpeed.GetWindowText(strISOSpeed);
 		if (strISOSpeed.GetLength())
 		{
-			LONG	lISOSpeed = atol(strISOSpeed);
+			LONG	lISOSpeed = _ttol(strISOSpeed);
 
 			if ((lISOSpeed >= MINISOSPEED) && (lISOSpeed <= MAXISOSPEED))
 			{
@@ -301,7 +301,7 @@ void CFileProperty::ApplyChanges()
 		m_Exposure.GetWindowText(strExposure);
 		if (strExposure.GetLength())
 		{
-			LONG		lExposure = atol(strExposure);
+			LONG		lExposure = _ttol(strExposure);
 
 			if ((lExposure >= MINEXPOSURE) && (lExposure <= MAXEXPOSURE))
 			{

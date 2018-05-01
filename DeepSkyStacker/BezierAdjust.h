@@ -138,13 +138,13 @@ private :
 		if (nPos >= 0)
 		{
 			nStart = nPos + strVariable.GetLength();
-			nEnd = strString.Find(";", nStart);
+			nEnd = strString.Find(_T(";"), nStart);
 			if (nEnd < 0)
-				nEnd = strString.Find("}", nStart);
+				nEnd = strString.Find(_T("}"), nStart);
 			if (nEnd > nStart)
 			{
 				strValue = strString.Mid(nStart, nEnd-nStart);
-				fValue = atof(strValue);
+				fValue = _ttof(strValue);
 			};
 		};
 
@@ -257,7 +257,7 @@ public :
 
 	void	ToText(CString & strParameters)
 	{
-		strParameters.Format("Bezier{DA=%.2f;DP=%.2f;MA=%.2f;MP=%.2f;HA=%.2f;HP=%.2f;SS=%.2f;}", 
+		strParameters.Format(_T("Bezier{DA=%.2f;DP=%.2f;MA=%.2f;MP=%.2f;HA=%.2f;HP=%.2f;SS=%.2f;}"), 
 							 m_fDarknessAngle, m_fDarknessPower, m_fMidtoneAngle, m_fMidtone,
 							 m_fHighlightAngle, m_fHighlightPower, m_fSaturationShift);
 	};
@@ -266,13 +266,13 @@ public :
 	{
 		CString			strParameters = szParameters;
 
-		m_fDarknessAngle	= ExtractValue(szParameters, "DA");
-		m_fDarknessPower	= ExtractValue(szParameters, "DP");
-		m_fMidtoneAngle		= ExtractValue(szParameters, "MA");
-		m_fMidtone			= ExtractValue(szParameters, "MP");
-		m_fHighlightAngle	= ExtractValue(szParameters, "HA");
-		m_fHighlightPower	= ExtractValue(szParameters, "HP");
-		m_fSaturationShift	= ExtractValue(szParameters, "SS");
+		m_fDarknessAngle	= ExtractValue(szParameters, _T("DA"));
+		m_fDarknessPower	= ExtractValue(szParameters, _T("DP"));
+		m_fMidtoneAngle		= ExtractValue(szParameters, _T("MA"));
+		m_fMidtone			= ExtractValue(szParameters, _T("MP"));
+		m_fHighlightAngle	= ExtractValue(szParameters, _T("HA"));
+		m_fHighlightPower	= ExtractValue(szParameters, _T("HP"));
+		m_fSaturationShift	= ExtractValue(szParameters, _T("SS"));
 	};
 };
 

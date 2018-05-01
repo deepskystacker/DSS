@@ -49,14 +49,14 @@ void CCheckAbove::OnOK()
 
 	m_Threshold.GetWindowText(strValue);
 
-	if (strValue.Find("%") > 0)
+	if (strValue.Find(_T("%")) > 0)
 	{
 		m_bPercent = TRUE;
 		strValue = strValue.Left(strValue.GetLength()-1);
-		m_fThreshold = atof(strValue);
+		m_fThreshold = _ttof(strValue);
 	}
 	else
-		m_fThreshold = atof(strValue);
+		m_fThreshold = _ttof(strValue);
 	
 	CDialog::OnOK();
 }

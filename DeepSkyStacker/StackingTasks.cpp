@@ -31,6 +31,8 @@ BOOL	AreExposureEquals(double fExposure1, double fExposure2)
 
 BOOL	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL			bResult = FALSE;
 
 	CBitmapInfo			bmpInfo;
@@ -134,6 +136,7 @@ public :
 
 	BOOL	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
 	{
+		ZFUNCTRACE_RUNTIME();
 		BOOL					bResult = FALSE;
 
 		*ppBitmap = NULL;
@@ -231,19 +234,20 @@ void	ClearTaskCache()
 
 BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (m_pOffsetTask && m_pOffsetTask->m_vBitmaps.size())
 	{
-		TCHAR			szDrive[_MAX_DRIVE];
-		TCHAR			szDir[_MAX_DIR];
+		TCHAR			szDrive[1+_MAX_DRIVE];
+		TCHAR			szDir[1+_MAX_DIR];
 		CString			strMasterOffset;
 		CString			strMasterOffsetInfo;
 
-		_splitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+		_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-		strMasterOffset.Format("%s%sMasterOffset_ISO%ld.tif", szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
-		strMasterOffsetInfo.Format("%s%sMasterOffset_ISO%ld.Description.txt", szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
+		strMasterOffset.Format(_T("%s%sMasterOffset_ISO%ld.tif"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
+		strMasterOffsetInfo.Format(_T("%s%sMasterOffset_ISO%ld.Description.txt"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
 
 		// Check that the Master Offset File is existing
 		COffsetSettings		bmpSettings;
@@ -267,6 +271,7 @@ BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 
 BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	if (!m_pOffsetTask->m_bDone)
@@ -340,16 +345,16 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 					pProgress->SetJointProgress(FALSE);
 				if (pOffsetBitmap)
 				{
-					TCHAR			szDrive[_MAX_DRIVE];
-					TCHAR			szDir[_MAX_DIR];
+					TCHAR			szDrive[1+_MAX_DRIVE];
+					TCHAR			szDir[1+_MAX_DIR];
 					CString			strInfo;
 
 					strInfo.Format(IDS_MEDIANOFFSETINFO, m_pOffsetTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_splitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-					strMasterOffset.Format("%s%sMasterOffset_ISO%ld.tif", szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
-					strMasterOffsetInfo.Format("%s%sMasterOffset_ISO%ld.Description.txt", szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
+					strMasterOffset.Format(_T("%s%sMasterOffset_ISO%ld.tif"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
+					strMasterOffsetInfo.Format(_T("%s%sMasterOffset_ISO%ld.Description.txt"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
 
 					strText.LoadString(IDS_SAVINGMASTEROFFSET);
 
@@ -381,22 +386,23 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 BOOL	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (m_pDarkTask && m_pDarkTask->m_vBitmaps.size())
 	{
 		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
 		{
-			TCHAR			szDrive[_MAX_DRIVE];
-			TCHAR			szDir[_MAX_DIR];
+			TCHAR			szDrive[1+_MAX_DRIVE];
+			TCHAR			szDir[1+_MAX_DIR];
 			CString			strMasterDark;
 			CString			strMasterDarkInfo;
 			LONG			lExposure = m_pDarkTask->m_fExposure;
 
-			_splitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+			_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-			strMasterDark.Format("%s%sMasterDark_ISO%ld_%lds.tif", szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
-			strMasterDarkInfo.Format("%s%sMasterDark_ISO%ld_%lds.Description.txt", szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
+			strMasterDark.Format(_T("%s%sMasterDark_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
+			strMasterDarkInfo.Format(_T("%s%sMasterDark_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings		bmpSettings;
@@ -422,6 +428,8 @@ BOOL	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 
 BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = TRUE;
 
 	if (!m_pDarkTask->m_bDone)
@@ -518,16 +526,17 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 					pProgress->SetJointProgress(FALSE);
 				if (pDarkBitmap)
 				{
-					TCHAR			szDrive[_MAX_DRIVE];
-					TCHAR			szDir[_MAX_DIR];
+					TCHAR			szDrive[1+_MAX_DRIVE];
+					TCHAR			szDir[1+_MAX_DIR];
 					CString			strInfo;
 					LONG			lExposure = m_pDarkTask->m_fExposure;
 
 					strInfo.Format(IDS_MEDIANDARKINFO, m_pDarkTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_splitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
-					strMasterDark.Format("%s%sMasterDark_ISO%ld_%lds.tif", szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
-					strMasterDarkInfo.Format("%s%sMasterDark_ISO%ld_%lds.Description.txt", szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
+					_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+
+					strMasterDark.Format(_T("%s%sMasterDark_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
+					strMasterDarkInfo.Format(_T("%s%sMasterDark_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
 					strText.LoadString(IDS_SAVINGMASTERDARK);
 
 					if (pProgress)
@@ -559,22 +568,24 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 BOOL	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_pDarkFlatTask && m_pDarkFlatTask->m_vBitmaps.size())
 	{
 		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
 		{
-			TCHAR			szDrive[_MAX_DRIVE];
-			TCHAR			szDir[_MAX_DIR];
+			TCHAR			szDrive[1+_MAX_DRIVE];
+			TCHAR			szDir[1+_MAX_DIR];
 			CString			strMasterDarkFlat;
 			CString			strMasterDarkFlatInfo;
 			LONG			lExposure = m_pDarkFlatTask->m_fExposure;
 
-			_splitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-			strMasterDarkFlat.Format("%s%sMasterDarkFlat_ISO%ld_%lds.tif", szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
-			strMasterDarkFlatInfo.Format("%s%sMasterDarkFlat_ISO%ld_%lds.Description.txt", szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
+			strMasterDarkFlat.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
+			strMasterDarkFlatInfo.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings		bmpSettings;
@@ -600,6 +611,8 @@ BOOL	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 
 BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = TRUE;
 
 	if (!m_pDarkFlatTask->m_bDone)
@@ -696,16 +709,17 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 					pProgress->SetJointProgress(FALSE);
 				if (pDarkFlatBitmap)
 				{
-					TCHAR			szDrive[_MAX_DRIVE];
-					TCHAR			szDir[_MAX_DIR];
+					TCHAR			szDrive[1+_MAX_DRIVE];
+					TCHAR			szDir[1+_MAX_DIR];
 					CString			strInfo;
 					LONG			lExposure = m_pDarkFlatTask->m_fExposure;
 
 					strInfo.Format(IDS_MEDIANDARKFLATINFO, m_pDarkFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_splitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
-					strMasterDarkFlat.Format("%s%sMasterDarkFlat_ISO%ld_%lds.tif", szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
-					strMasterDarkFlatInfo.Format("%s%sMasterDarkFlat_ISO%ld_%lds.Description.txt", szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
+					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+
+					strMasterDarkFlat.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
+					strMasterDarkFlatInfo.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
 					strText.LoadString(IDS_SAVINGMASTERDARKFLAT);
 
 					if (pProgress)
@@ -970,21 +984,23 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 
 BOOL	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = FALSE;
 
 	if (m_pFlatTask && m_pFlatTask->m_vBitmaps.size())
 	{
 		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
 		{
-			TCHAR			szDrive[_MAX_DRIVE];
-			TCHAR			szDir[_MAX_DIR];
+			TCHAR			szDrive[1+_MAX_DRIVE];
+			TCHAR			szDir[1+_MAX_DIR];
 			CString			strMasterFlat;
 			CString			strMasterFlatInfo;
 
-			_splitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+			_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-			strMasterFlat.Format("%s%sMasterFlat_ISO%ld.tif", szDrive, szDir, m_pFlatTask->m_lISOSpeed);
-			strMasterFlatInfo.Format("%s%sMasterFlat_ISO%ld.Description.txt", szDrive, szDir, m_pFlatTask->m_lISOSpeed);
+			strMasterFlat.Format(_T("%s%sMasterFlat_ISO%ld.tif"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
+			strMasterFlatInfo.Format(_T("%s%sMasterFlat_ISO%ld.Description.txt"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
 
 			// Check that the Master Offset File is existing
 			CFlatSettings		bmpSettings;
@@ -1011,6 +1027,8 @@ BOOL	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 
 BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = TRUE;
 
 	if (!m_pFlatTask->m_bDone)
@@ -1139,15 +1157,16 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 				if (pFlatBitmap)
 				{
-					TCHAR			szDrive[_MAX_DRIVE];
-					TCHAR			szDir[_MAX_DIR];
+					TCHAR			szDrive[1+_MAX_DRIVE];
+					TCHAR			szDir[1+_MAX_DIR];
 					CString			strInfo;
 
 					strInfo.Format(IDS_MEDIANFLATINFO, m_pFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_splitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
-					strMasterFlat.Format("%s%sMasterFlat_ISO%ld.tif", szDrive, szDir, m_pFlatTask->m_lISOSpeed);
-					strMasterFlatInfo.Format("%s%sMasterFlat_ISO%ld.Description.txt", szDrive, szDir, m_pFlatTask->m_lISOSpeed);
+					_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+
+					strMasterFlat.Format(_T("%s%sMasterFlat_ISO%ld.tif"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
+					strMasterFlatInfo.Format(_T("%s%sMasterFlat_ISO%ld.Description.txt"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
 					strText.LoadString(IDS_SAVINGMASTERFLAT);
 
 					if (pProgress)
@@ -1207,6 +1226,8 @@ inline BOOL	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGroupID)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL			bFound = FALSE;
 
 	for (LONG i = 0;i<m_vTasks.size() && !bFound;i++)
@@ -1239,9 +1260,9 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 		m_vTasks.push_back(ti);
 	};
 
-	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.Left(4) == "JPEG"))
+	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.Left(4) == _T("JPEG")))
 		m_bUsingJPEG = TRUE;
-	if (!m_bUsingFITS && (FrameInfo.m_strInfos.Left(4) == "FITS"))
+	if (!m_bUsingFITS && (FrameInfo.m_strInfos.Left(4) == _T("FITS")))
 		m_bUsingFITS = TRUE;
 	if (!m_bCalibrating && !FrameInfo.IsLightFrame())
 		m_bCalibrating = TRUE;
@@ -1281,6 +1302,8 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 
 CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, PICTURETYPE TaskType)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	CTaskInfo *			pResult = NULL;
 	LONG				j;
 	BOOL				bExposureFirst = (TaskType == PICTURETYPE_DARKFRAME);
@@ -1447,6 +1470,8 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 
 void CAllStackingTasks::ResolveTasks()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	m_vStacks.clear();
 	for (LONG i = 0;i<m_vTasks.size();i++)
 	{
@@ -1521,6 +1546,8 @@ LONG CAllStackingTasks::FindStackID(LPCTSTR szLightFrame)
 
 void CAllStackingTasks::UpdateTasksMethods()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	LONG						i;
 	CWorkspace					workspace;
 	MULTIBITMAPPROCESSMETHOD	LightMethod = MBP_AVERAGE;
@@ -1546,7 +1573,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Iteration"), lLightIteration);
 	strKappa ="2.0";
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Kappa"), strKappa);
-	fLightKappa = atof(strKappa);
+	fLightKappa = _ttof(strKappa);
 
 	dwMethod = 0;
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), dwMethod);
@@ -1555,7 +1582,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), lDarkIteration);
 	strKappa ="2.0";
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), strKappa);
-	fDarkKappa = atof(strKappa);
+	fDarkKappa = _ttof(strKappa);
 
 	dwMethod = 0;
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), dwMethod);
@@ -1564,7 +1591,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), lFlatIteration);
 	strKappa ="2.0";
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), strKappa);
-	fFlatKappa = atof(strKappa);
+	fFlatKappa = _ttof(strKappa);
 
 	dwMethod = 0;
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), dwMethod);
@@ -1573,7 +1600,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), lOffsetIteration);
 	strKappa ="2.0";
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), strKappa);
-	fOffsetKappa = atof(strKappa);
+	fOffsetKappa = _ttof(strKappa);
 
 	for (i = 0;i<m_vStacks.size();i++)
 	{
@@ -1736,12 +1763,12 @@ BOOL CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
 
 			if (!m_vTasks[i].m_vBitmaps[j].IsMasterFrame())
 			{
-				TCHAR			szDrive[_MAX_DRIVE];
-				TCHAR			szDir[_MAX_DIR];
+				TCHAR			szDrive[1+_MAX_DRIVE];
+				TCHAR			szDir[1+_MAX_DIR];
 				CString			strPath;
 
 				strFileName = m_vTasks[i].m_vBitmaps[j].m_strFileName;
-				_splitpath(strFileName, szDrive, szDir, NULL, NULL);
+				_tsplitpath(strFileName, szDrive, szDir, NULL, NULL);
 				strPath = szDrive;
 				strPath+= szDir;
 
@@ -1762,7 +1789,7 @@ BOOL CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
 		strFileName = (*it);
 		strFileName += "DSS260FTR.testfile.txt";
 
-		hFile = fopen(strFileName, "wt");
+		hFile = _tfopen(strFileName, _T("wt"));
 		if (hFile)
 		{
 			int			nResult;
@@ -1891,6 +1918,8 @@ __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 
 void CAllStackingTasks::GetTemporaryFilesFolder(CString & strFolder)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	CRegistry			reg;
 	CString				strTemp;
 
@@ -1904,7 +1933,7 @@ void CAllStackingTasks::GetTemporaryFilesFolder(CString & strFolder)
 		strFile = strTemp;
 		strFile += "Temp.txt";
 
-		hFile = fopen(strFile, "wb");
+		hFile = _tfopen(strFile, _T("wb"));
 		if (hFile)
 		{
 			fclose(hFile);
@@ -1916,10 +1945,9 @@ void CAllStackingTasks::GetTemporaryFilesFolder(CString & strFolder)
 
 	if (!strTemp.GetLength())
 	{
-		TCHAR			szTempPath[_MAX_PATH];
+		TCHAR			szTempPath[1+_MAX_PATH] = _T("");
 
-		szTempPath[0] = 0;
-		GetTempPath(sizeof(szTempPath), szTempPath);
+		GetTempPath(sizeof(szTempPath)/sizeof(TCHAR), szTempPath);
 
 		strTemp = szTempPath;
 	};
@@ -1931,11 +1959,13 @@ void CAllStackingTasks::GetTemporaryFilesFolder(CString & strFolder)
 
 void CAllStackingTasks::SetTemporaryFilesFolder(LPCTSTR szFolder)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	CRegistry			reg;
 	CString				strFolder = szFolder;
 
-	if ((strFolder.Right(1) != "\\") && (strFolder.Right(1) != "/"))
-		strFolder+="\\";
+	if ((strFolder.Right(1) != _T("\\")) && (strFolder.Right(1) != _T("/")))
+		strFolder+=_T("\\");
 
 	reg.SaveKey(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("TemporaryFilesFolder"), strFolder);
 };
@@ -2009,7 +2039,7 @@ double	CAllStackingTasks::GetDarkFactor()
 		CString			strFactor;
 		
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkFactor"), strFactor);
-		fResult = atof(strFactor);
+		fResult = _ttof(strFactor);
 	};
 
 	return fResult;

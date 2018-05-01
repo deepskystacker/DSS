@@ -61,7 +61,7 @@ CSize CChartLegend::GetSize(CDC* pDC) const
 
 	CFont* pOldFont;
 	CFont NewFont;
-	NewFont.CreatePointFont(m_iFontSize,m_strFontName.c_str(),pDC);
+	NewFont.CreatePointFont(m_iFontSize,CA2CT(m_strFontName.c_str()),pDC);
 	pOldFont = pDC->SelectObject(&NewFont);
 
 	int Height = 4;		//Upper space
@@ -148,7 +148,7 @@ void CChartLegend::Draw(CDC *pDC)
 	CPen* pOldPen;
 	CFont* pOldFont;
 	CFont NewFont;
-	NewFont.CreatePointFont(m_iFontSize,m_strFontName.c_str(),pDC);
+	NewFont.CreatePointFont(m_iFontSize,CA2CT(m_strFontName.c_str()),pDC);
 
 	//Fill back color
 	CBrush m_BrushBack;

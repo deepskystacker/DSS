@@ -168,7 +168,7 @@ BOOL CStackSettings::OnInitDialog()
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Iteration"), lIteration);
 		strKappa ="2.0";
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Kappa"), strKappa);
-		fKappa = atof(strKappa);
+		fKappa = _ttof(strKappa);
 		m_tabLightFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
 
 		if (!m_pStackingTasks ||
@@ -226,7 +226,7 @@ BOOL CStackSettings::OnInitDialog()
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), lIteration);
 		strKappa ="2.0";
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), strKappa);
-		fKappa = atof(strKappa);
+		fKappa = _ttof(strKappa);
 		m_tabDarkFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
 		m_tabDarkFrames.m_EntropyAverage.EnableWindow(FALSE);
 
@@ -264,7 +264,7 @@ BOOL CStackSettings::OnInitDialog()
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), lIteration);
 		strKappa ="2.0";
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), strKappa);
-		fKappa = atof(strKappa);
+		fKappa = _ttof(strKappa);
 		m_tabFlatFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
 		m_tabFlatFrames.m_EntropyAverage.EnableWindow(FALSE);
 	};
@@ -277,7 +277,7 @@ BOOL CStackSettings::OnInitDialog()
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), lIteration);
 		strKappa ="2.0";
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), strKappa);
-		fKappa = atof(strKappa);
+		fKappa = _ttof(strKappa);
 		m_tabOffsetFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
 		m_tabOffsetFrames.m_EntropyAverage.EnableWindow(FALSE);
 	};
@@ -350,8 +350,8 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 		pTab->m_Kappa.GetWindowText(strKappa);
 		pTab->m_Iteration.GetWindowText(strIteration);
 
-		fKappa = atof(strKappa);
-		lIteration = atol(strIteration);
+		fKappa = _ttof(strKappa);
+		lIteration = _ttol(strIteration);
 
 		if ((fKappa > 0) && (fKappa < 5) && (lIteration > 0) && (lIteration < 50))
 			bResult = TRUE;
@@ -366,7 +366,7 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 		double		fFactor;
 
 		pTab->m_DarkFactor.GetWindowText(strFactor);
-		fFactor = atof(strFactor);
+		fFactor = _ttof(strFactor);
 
 		if (fFactor<=0)
 			bResult = FALSE;
@@ -471,7 +471,7 @@ void CStackSettings::OnBnClickedOk()
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignChannels"), (DWORD)dwAlignChannels);
 
 		m_tabLightFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format("%.4f", fKappa);
+		strKappa.Format(_T("%.4f"), fKappa);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)dwMethod);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Iteration"), (DWORD)lIteration);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Kappa"), strKappa);
@@ -492,7 +492,7 @@ void CStackSettings::OnBnClickedOk()
 	if (m_bEnableDark || m_bEnableAll)
 	{
 		m_tabDarkFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format("%.4f", fKappa);
+		strKappa.Format(_T("%.4f"), fKappa);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), (DWORD)dwMethod);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), (DWORD)lIteration);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), strKappa);
@@ -525,7 +525,7 @@ void CStackSettings::OnBnClickedOk()
 	if (m_bEnableFlat || m_bEnableAll)
 	{
 		m_tabFlatFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format("%.4f", fKappa);
+		strKappa.Format(_T("%.4f"), fKappa);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), (DWORD)dwMethod);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), (DWORD)lIteration);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), strKappa);
@@ -534,7 +534,7 @@ void CStackSettings::OnBnClickedOk()
 	if (m_bEnableBias || m_bEnableAll)
 	{
 		m_tabOffsetFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format("%.4f", fKappa);
+		strKappa.Format(_T("%.4f"), fKappa);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), (DWORD)dwMethod);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), (DWORD)lIteration);
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), strKappa);

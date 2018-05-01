@@ -262,7 +262,7 @@ void CCustomTabCtrlItem::Draw(CDC& dc, CFont& font, BOOL fOnTop, BOOL fRTL)
 
 LOGFONT CCustomTabCtrl::lf_default = {12, 0, 0, 0, FW_NORMAL, 0, 0, 0,
 			DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS,
-			DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Microsoft Sans Serif"};
+			DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, _T("Microsoft Sans Serif")};
 
 BYTE CCustomTabCtrl::m_bBitsGlyphs[] = {
 										0xBD,0xFB,0xDF,0xBD,0x3C,0x00,

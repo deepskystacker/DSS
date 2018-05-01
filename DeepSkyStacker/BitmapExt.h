@@ -3435,7 +3435,7 @@ public :
 	{
 		strDescription = m_strFileType;
 		if (m_strModel.GetLength())
-			strDescription.Format("%s (%s)", (LPCTSTR)m_strFileType, (LPCTSTR)m_strModel);
+			strDescription.Format(_T("%s (%s)"), (LPCTSTR)m_strFileType, (LPCTSTR)m_strModel);
 	};
 
 	BOOL	IsInitialized()

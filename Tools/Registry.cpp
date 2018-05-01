@@ -785,7 +785,11 @@ void CRegVal :: SetValue( LPCTSTR pszValue_p, BOOL bExpanded_p ) {
 	m_dwType = bExpanded_p ? REG_EXPAND_SZ : REG_SZ ;
 	if( pszValue_p )
 		::CopyMemory(PVOID(m_pbyteData), pszValue_p, dwSize);
-	m_pbyteData[ dwSize ] = TEXT('\0') ;
+	//
+	// Following line only set one byte at the end of the buffer to \0
+	// which caused spurious values to be created when using Unicode.
+	//
+	// m_pbyteData[ dwSize ] = TEXT('\0') ; // Buffer now cleared properly in AllocateBuffer
 }
 
 
@@ -830,7 +834,11 @@ void CRegVal :: SetValue( const LPBYTE pBuffer_p, const DWORD nSize_p ) {
 BYTE * CRegVal :: AllocateDataBuffer( DWORD dwSize_p ) {
 	if( m_pbyteData )
 		HeapFree( m_hHeap, 0, m_pbyteData ) ;
-	m_pbyteData = (BYTE *) HeapAlloc( m_hHeap, 0, dwSize_p ) ;
+	//
+	// Change to clear the buffer to binary zero so it's terminated properly
+	// when we are using Unicode
+	//
+	m_pbyteData = (BYTE *) HeapAlloc( m_hHeap, HEAP_ZERO_MEMORY, dwSize_p ) ;
 	if( ! m_pbyteData ) {
 		TRACE0( "CRegVal::AllocateDataBuffer(): HeapAlloc() system call failed.\n" );
 	}

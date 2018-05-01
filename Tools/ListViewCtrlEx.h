@@ -195,7 +195,7 @@ class CListBase
   int                                m_iDownArrow;
   DWORD                              m_dwColSortColor;
   int                                m_iSortColumn;
-  int                                m_iFormatOfSubItem0;
+  int                                m_iForm_ttofSubItem0;
   BOOL                               m_bKeepLabelLeft;
   bool                               m_bLocked;
   bool                               m_bControl;
