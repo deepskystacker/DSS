@@ -323,6 +323,7 @@
     <ClCompile Include="..\Tools\cgfiltyp.cpp" />
     <ClCompile Include="..\Tools\childprop.cpp" />
     <ClCompile Include="..\Tools\ControlPos.cpp" />
+    <ClCompile Include="..\Tools\CtrlCache.cpp" />
     <ClCompile Include="..\Tools\CustomTabCtrl.cpp" />
     <ClCompile Include="..\Tools\FolderDlg.cpp" />
     <ClCompile Include="..\Tools\Gradient.cpp" />
@@ -446,6 +447,7 @@
     <ClInclude Include="..\Tools\cgfiltyp.h" />
     <ClInclude Include="..\Tools\childprop.h" />
     <ClInclude Include="..\Tools\ControlPos.h" />
+    <ClInclude Include="..\Tools\CtrlCache.h" />
     <ClInclude Include="..\Tools\CustomTabCtrl.h" />
     <ClInclude Include="..\Tools\EasySize.h" />
     <ClInclude Include="..\Tools\FolderDlg.h" />
