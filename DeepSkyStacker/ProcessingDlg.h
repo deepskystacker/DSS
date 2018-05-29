@@ -175,6 +175,22 @@ public :
 
 		return bResult;
 	};
+
+	float GetPercentageComplete() const
+	{
+		if (m_vProcessed.size() == 0)
+			return 100.0f;
+
+		float fPercentage = 0.0f;
+		const float fDelta = 100.0f / static_cast<float>(m_vProcessed.size());
+
+		// The iteration loop here could be corrupted by a call to Init() on a different thread.
+		// To make totally thread safe this should really have a mutex lock associated with it.
+		for (BOOL bState : m_vProcessed)
+			fPercentage += bState ? fDelta : 0.0f;
+
+		return fPercentage;
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -332,6 +348,7 @@ public:
 	//}}AFX_DATA
 	CWndImage			m_Picture;
 	CWndImage			m_OriginalHistogram;
+	CProgressCtrl		m_ProcessingProgress;
 
 	double				m_fGradientOffset;
 	double				m_fGradientRange;

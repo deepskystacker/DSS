@@ -46,6 +46,7 @@ void CProcessingDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CProcessingDlg)
 	DDX_Control(pDX, IDC_INFO, m_Info);
+	DDX_Control(pDX, IDC_PROCESSING_PROGRESS, m_ProcessingProgress);
 	DDX_Control(pDX, IDC_SETTINGS, m_SettingsRect);
 	DDX_Control(pDX, IDC_ORIGINAL_HISTOGRAM, m_OriginalHistogramStatic);
 	DDX_Control(pDX, IDC_PICTURE, m_PictureStatic);
@@ -139,6 +140,7 @@ BOOL CProcessingDlg::OnInitDialog()
 	m_ControlPos.AddControl(&m_Settings, CP_MOVE_VERTICAL);
 	m_ControlPos.AddControl(&m_OriginalHistogram, CP_MOVE_VERTICAL);
 	m_ControlPos.AddControl(&m_Info, CP_RESIZE_HORIZONTAL);
+	m_ControlPos.AddControl(&m_ProcessingProgress, CP_MOVE_VERTICAL | CP_RESIZE_HORIZONTAL);
 
 	m_Picture.EnableZoom(TRUE);
 	m_Picture.SetImageSink(&m_SelectRectSink);
@@ -189,6 +191,9 @@ BOOL CProcessingDlg::OnInitDialog()
 	m_tabRGB.m_BlueGradient.GetGradient().SetBackgroundColour(RGB(255, 255, 255));
 	m_tabRGB.m_BlueGradient.GetGradient().SetInterpolationMethod(CGradient::Linear);
 	m_tabRGB.SetBlueAdjustMethod(HAT_LINEAR);
+
+	m_ProcessingProgress.SetRange(0, 100);
+	m_ProcessingProgress.SetPos(100);
 
 	UpdateControls();
 
@@ -1442,6 +1447,8 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 			ShowOriginalHistogram(FALSE);
 			ResetSliders();
 		};
+		const unsigned int nProgress = static_cast<unsigned int>(m_ToProcess.GetPercentageComplete());
+		m_ProcessingProgress.SetPos(min(max(0, nProgress), 100));
 	};
 
 	CDialog::OnTimer(nIDEvent);
