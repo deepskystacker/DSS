@@ -119,6 +119,42 @@ set (
    SOURCE_FILES 
    
    DeepSkyStacker.cpp
+   DeepSkyStacker.h
+
+   DeepSkyStacker.rc
+   DeepSkyStackerCAT.rc
+   DeepSkyStackerCN2.rc
+   DeepSkyStackerCZ.rc
+   DeepSkyStackerDE.rc
+   DeepSkyStackerEN.rc
+   DeepSkyStackerES.rc
+   DeepSkyStackerFR.rc
+   DeepSkyStackerIT.rc
+   DeepSkyStackerNL.rc
+   DeepSkyStackerPTB.rc
+   DeepSkyStackerRO.rc
+   DeepSkyStackerRU.rc
+   DeepSkyStackerTR.rc
+   
+   PCLTools.cpp
+   PCLTools.h
+   SetUILanguage.cpp
+   SetUILanguage.h
+   StdAfx.cpp
+   StdAfx.h
+   )
+
+set (
+   HEADER_FILES 
+   
+   commonresource.h
+   DSSMemory.h
+   matrix.h 
+   Resource.h
+   resourceCZ.h
+   resourceES.h 
+   resourceFR.h 
+   resourceIT.h
    )
 
 set (
@@ -193,9 +229,65 @@ set (
    TIFFUtil.h 
    Workspace.cpp
    Workspace.h
-
    )
    
+set (
+   TOOLS_FILES
+   
+   ../Tools/BitmapSlider.cpp
+   ../Tools/BitmapSlider.h
+   ../Tools/BtnST.cpp
+   ../Tools/BtnST.h 
+   ../Tools/ButtonToolbar.cpp
+   ../Tools/ButtonToolbar.h 
+   ../Tools/cdxCRot90DC.cpp
+   ../Tools/cdxCRot90DC.h 
+   ../Tools/cdxCRotBevelLine.cpp
+   ../Tools/cdxCRotBevelLine.h 
+   ../Tools/cgfiltyp.cpp
+   ../Tools/cgfiltyp.h 
+   ../Tools/childprop.cpp
+   ../Tools/childprop.h 
+   ../Tools/ControlPos.cpp
+   ../Tools/ControlPos.h
+   ../Tools/CustomTabCtrl.cpp
+   ../Tools/CustomTabCtrl.h 
+   Delaunay.cpp
+   Delaunay.h 
+   ../Tools/EasySize.h 
+   ../Tools/FolderDlg.cpp 
+   ../Tools/FolderDlg.h
+   ../Tools/Gradient.cpp 
+   ../Tools/Gradient.h 
+   ../Tools/GradientCtrl.cpp 
+   ../Tools/GradientCtrl.h 
+   ../Tools/GradientCtrlImpl.cpp 
+   ../Tools/GradientCtrlImpl.h 
+   ../Tools/GradientCtrlImpl.cpp 
+   ../Tools/Label.cpp 
+   ../Tools/Label.h 
+   ../Tools/ListViewCtrlEx.cpp 
+   ../Tools/ListViewCtrlEx.h
+   ../Tools/memdc.h  
+   ../Tools/Registry.cpp 
+   ../Tools/Registry.h  
+   ../Tools/RegMFC.cpp  
+   ../Tools/RichToolTipCtrl.cpp  
+   ../Tools/RichToolTipCtrl.h   
+   ../Tools/Schemadef.h   
+   ../Tools/ScrollDialog.cpp  
+   ../Tools/ScrollDialog.h   
+   ../Tools/SmartPtr.h 
+   ../Tools/SplitterControl.cpp  
+   ../Tools/SplitterControl.h   
+   ../Tools/ThemeUtil.cpp  
+   ../Tools/ThemeUtil.h   
+   ../Tools/Tmschema.h   
+   ../Tools/ToolTipButton.cpp  
+   ../Tools/ToolTipButton.h   
+   ../Tools/WndImage.cpp  
+   ../Tools/WndImage.h   
+   )
 
 # define the IDE source file groupings
    
@@ -207,7 +299,9 @@ source_group ("Dialogs\\Registering"     FILES ${DIALOGS_REGISTERING_FILES})
 source_group ("Dialogs\\Settings"        FILES ${DIALOGS_SETTINGS_FILES})
 source_group ("Dialogs\\Stacking"        FILES ${DIALOGS_STACKING_FILES})
 source_group ("Source Files"             FILES ${SOURCE_FILES})
+source_group ("Header Files"             FILES ${HEADER_FILES})
 source_group ("Kernel"                   FILES ${KERNEL_FILES})
+source_group ("Tools"                    FILES ${TOOLS_FILES})
 
 
 # define the sources for the executable target
@@ -224,5 +318,7 @@ add_executable (
    ${DIALOGS_SETTINGS_FILES}
    ${DIALOGS_STACKING_FILES}
    ${SOURCE_FILES}
+   ${HEADER_FILES}
    ${KERNEL_FILES}
+   ${TOOLS_FILES}
    )
