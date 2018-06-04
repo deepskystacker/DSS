@@ -1,4 +1,4 @@
-# define source files in intended groupings
+# define source files in intended IDE groupings
 
 set (
    DIALOGS_FILES
@@ -15,7 +15,7 @@ set (
    PictureListCtrl.h
    ProgressDlg.cpp
    ProgressDlg.h
-   )
+)
    
 set (
    DIALOGS_IMAGESINKS_FILES
@@ -24,14 +24,14 @@ set (
    ImageSinks.h
    SaveEditChanges.cpp
    SaveEditChanges.h
-   )
+)
    
 set (
    DIALOGS_LIBRARY_FILES
    
    LibraryDlg.cpp
    LibraryDlg.h
-   )
+)
    
 set (
    DIALOGS_PROCESSING_FILES
@@ -52,7 +52,7 @@ set (
    SettingsDlg.h
    StarMaskDlg.cpp
    StarMaskDlg.h
-   )
+)
    
 set (
    DIALOGS_REGISTERING_FILES
@@ -65,7 +65,7 @@ set (
    RegisterSettings_Actions.h
    RegisterSettings_Advanced.cpp
    RegisterSettings_Advanced.h
-   )
+)
    
 set (
    DIALOGS_SETTINGS_FILES
@@ -76,7 +76,7 @@ set (
    RawDDPSettings.h
    RawFilesTab.cpp
    RawFilesTab.h
-   )
+)
    
 set (
    DIALOGS_STACKING_FILES
@@ -113,7 +113,7 @@ set (
    StackRecap.h
    StackSettings.cpp
    StackSettings.h
-   )
+)
    
 set (
    SOURCE_FILES 
@@ -142,7 +142,7 @@ set (
    SetUILanguage.h
    StdAfx.cpp
    StdAfx.h
-   )
+)
 
 set (
    HEADER_FILES 
@@ -155,7 +155,7 @@ set (
    resourceES.h 
    resourceFR.h 
    resourceIT.h
-   )
+)
 
 set (
    KERNEL_FILES
@@ -174,11 +174,12 @@ set (
    CosmeticEngine.h
    DarkFrame.cpp
    DarkFrame.h
-   ../DCRaw/dcraw.c
    DeBloom.cpp
    DeBloom.h 
    DeepStack.cpp
    DeepStack.h 
+   Delaunay.cpp
+   Delaunay.h 
    DSSCommon.h 
    DSSProgress.h
    DSSTools.h 
@@ -229,7 +230,9 @@ set (
    TIFFUtil.h 
    Workspace.cpp
    Workspace.h
-   )
+
+   ../DCRaw/dcraw.c
+)
    
 set (
    TOOLS_FILES
@@ -252,8 +255,6 @@ set (
    ../Tools/ControlPos.h
    ../Tools/CustomTabCtrl.cpp
    ../Tools/CustomTabCtrl.h 
-   Delaunay.cpp
-   Delaunay.h 
    ../Tools/EasySize.h 
    ../Tools/FolderDlg.cpp 
    ../Tools/FolderDlg.h
@@ -287,25 +288,142 @@ set (
    ../Tools/ToolTipButton.h   
    ../Tools/WndImage.cpp  
    ../Tools/WndImage.h   
-   )
+)
 
-# define the IDE source file groupings
+set (
+   RESOURCE_FILES
+
+   app.ico
+   filelist.ico
+   openfile.ico
+   redo.bmp
+   redo.ico
+   settings.ico
+   undo.ico
+
+   Buttons/Base_Down.ico
+   Buttons/Base_Hot.ico
+   Buttons/Base_Up.ico
    
-source_group ("Dialogs"                  FILES ${DIALOGS_FILES})
-source_group ("Dialogs\\ImageSinks"      FILES ${DIALOGS_IMAGESINKS_FILES})
-source_group ("Dialogs\\Library"         FILES ${DIALOGS_LIBRARY_FILES})
-source_group ("Dialogs\\Processing"      FILES ${DIALOGS_PROCESSING_FILES})
-source_group ("Dialogs\\Registering"     FILES ${DIALOGS_REGISTERING_FILES})
-source_group ("Dialogs\\Settings"        FILES ${DIALOGS_SETTINGS_FILES})
-source_group ("Dialogs\\Stacking"        FILES ${DIALOGS_STACKING_FILES})
-source_group ("Source Files"             FILES ${SOURCE_FILES})
-source_group ("Header Files"             FILES ${HEADER_FILES})
-source_group ("Kernel"                   FILES ${KERNEL_FILES})
-source_group ("Tools"                    FILES ${TOOLS_FILES})
+   Buttons/ButtonBase_down.bmp
+   Buttons/ButtonBase_hot.bmp
+   Buttons/ButtonBase_mask.bmp
+   Buttons/ButtonBase_up.bmp
 
+   Buttons/ButtonComet_Disabled.bmp
+   Buttons/ButtonComet_Down.bmp
+   Buttons/ButtonComet_Hot.bmp
+   Buttons/ButtonComet_Up.bmp
 
-# define the sources for the executable target
+   Buttons/ButtonSave_Disabled.bmp
+   Buttons/ButtonSave_Down.bmp
+   Buttons/ButtonSave_Hot.bmp
+   Buttons/ButtonSave_Up.bmp
 
+   Buttons/ButtonSelect_Disabled.bmp
+   Buttons/ButtonSelect_Down.bmp
+   Buttons/ButtonSelect_Hot.bmp
+   Buttons/ButtonSelect_Up.bmp
+
+   Buttons/ButtonStar_Disabled.bmp
+   Buttons/ButtonStar_Down.bmp
+   Buttons/ButtonStar_Hot.bmp
+   Buttons/ButtonStar_Up.bmp
+
+   res/4Corners.bmp
+   
+   res/Calibration_Linear.bmp
+   res/Calibration_Rational.bmp
+
+   res/Comet_Freeze.bmp
+   res/Comet_Normal.bmp
+   res/Comet_Trails.bmp
+
+   res/GammaOff.bmp
+   res/GammaOn.bmp
+
+   res/hdrdown.bmp
+   res/hdrup.bmp
+
+   res/ImageList_CFA_CYMG.bmp
+   res/ImageList_CFA_RGB.bmp
+   res/ImageList_Color.bmp
+   res/ImageList_GrayScale.bmp
+   res/ImageList_Mask.bmp
+
+   res/darkframe.ico
+   res/flatframe.ico
+   res/lightframe.ico
+   res/offsetframe.ico
+
+   res/asinh.bmp
+   res/cuberoot.bmp
+   res/linear.bmp
+   res/linear_en.bmp
+   res/linear_fr.bmp
+   res/log.bmp
+   res/loglog.bmp
+   res/logsqrt.bmp
+   res/sqrt.bmp
+
+   res/custommode.bmp
+   res/intersectionmode.bmp
+   res/mosaicmode.bmp
+   res/normalmode.bmp
+
+   res/Pattern_BGGR.bmp
+   res/Pattern_CYGMCYMG.bmp
+   res/Pattern_GBRG.bmp
+   res/Pattern_GRBG.bmp
+   res/Pattern_RGGB.bmp
+
+   res/RGBCalibration_Maximum.bmp
+   res/RGBCalibration_Middle.bmp
+   res/RGBCalibration_Minimum.bmp
+   res/RGBCalibration_None.bmp
+
+   res/StarShape_Bell.bmp
+   res/StarShape_Cone.bmp
+   res/StarShape_Cubic.bmp
+   res/StarShape_Quadratic.bmp
+   res/StarShape_TruncatedBell.bmp
+   res/StarShape_TruncatedCone.bmp
+
+   res/brazil.png
+   res/Catalan.png
+   res/Czech.png
+   res/Dutch.png
+   res/German.png
+   res/Italian.png
+   res/logo.png
+   res/Portugal.png
+   res/Romanian.png
+   res/Russian.png
+   res/Spanish.png
+   res/Taiwan.png
+   res/Turkish.png
+)
+   
+
+# define the Visual Studio IDE source file groupings
+   
+if (MSVC)
+   source_group ("Dialogs"                  FILES ${DIALOGS_FILES})
+   source_group ("Dialogs\\ImageSinks"      FILES ${DIALOGS_IMAGESINKS_FILES})
+   source_group ("Dialogs\\Library"         FILES ${DIALOGS_LIBRARY_FILES})
+   source_group ("Dialogs\\Processing"      FILES ${DIALOGS_PROCESSING_FILES})
+   source_group ("Dialogs\\Registering"     FILES ${DIALOGS_REGISTERING_FILES})
+   source_group ("Dialogs\\Settings"        FILES ${DIALOGS_SETTINGS_FILES})
+   source_group ("Dialogs\\Stacking"        FILES ${DIALOGS_STACKING_FILES})
+   source_group ("Source Files"             FILES ${SOURCE_FILES})
+   source_group ("Header Files"             FILES ${HEADER_FILES})
+   source_group ("Kernel"                   FILES ${KERNEL_FILES})
+   source_group ("Resource Files"           FILES ${RESOURCE_FILES})
+   source_group ("Tools"                    FILES ${TOOLS_FILES})
+endif (MSVC)
+
+# define the source files used for building the executable target
+# these will all appear in the IDE
 
 add_executable (
    DeepSkyStacker 
@@ -320,5 +438,62 @@ add_executable (
    ${SOURCE_FILES}
    ${HEADER_FILES}
    ${KERNEL_FILES}
+   ${RESOURCE_FILES}
    ${TOOLS_FILES}
-   )
+)
+
+# define the header file search paths
+
+target_include_directories (
+   DeepSkyStacker 
+   PRIVATE
+
+   .
+   ../Tools
+   ../CFitsIO
+   ../LibTIFF
+   ../ZClass
+)
+
+# Name the precompiled header and generator source files
+
+set_target_precompiled_header (
+   DeepSkyStacker 
+   
+   stdafx.h 
+   stdafx.cpp
+)
+
+# Exempt the files that don't reference the precompiled header
+
+set (
+   IGNORE_PCH_FILES
+
+   ../DCRaw/dcraw.c
+)
+
+ignore_precompiled_header (${IGNORE_PCH_FILES})
+
+
+# define preprocessor variables
+
+target_compile_definitions (
+   DeepSkyStacker 
+   PRIVATE 
+   
+   _AFXDLL 
+   _MBCS
+
+   WIN32
+   NDEBUG                      # this is build type specific - sort out later
+   _CRT_SECURE_NO_DEPRECATE
+   USE_LIBTIFF_STATIC
+)
+
+# suppress warnings on selected 3rd party sources
+
+update_source_files_compile_flags (
+   ../DCRaw/dcraw.c
+
+   "/wd4005 /wd4013 /wd4018 /wd4133 /wd4146 /wd4244 /wd4267 /wd4305 /wd4996"
+)
