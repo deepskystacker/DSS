@@ -12,13 +12,19 @@ set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
 set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
+
 # Choose if multiprocessor builds should be supported
 
-if (MSVC)
-   set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   /MP")
-   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-   message (STATUS "Added parallel build arguments to CMAKE_C_FLAGS: ${CMAKE_C_FLAGS}")
-   message (STATUS "Added parallel build arguments to CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+option (DSS_ENABLE_PARALLEL_BUILD "help string describing option" ON)
+
+if (DSS_ENABLE_PARALLEL_BUILD)
+   if (MSVC)
+      set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   /MP")
+      set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+      message (STATUS "Parallel multi-processor build generated")
+   endif ()
+else ()
+   message (STATUS "Non-parallel build generated")
 endif ()
 
 
