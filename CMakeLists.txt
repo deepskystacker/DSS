@@ -4,6 +4,14 @@ cmake_minimum_required (VERSION 3.10.0)
 
 project (DeepSkyStacker.cmake)
 
+# Load our custom cmake modules that we need for this build
+
+set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+include (precompiled_headers)     # functions for managing precompiled headers
+include (update_compile_flags)    # function for setting compiler options
+include (enable_parallel_builds)  # function for user settable parallel build option
+
 # Limit the allowed build configurations
 
 set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
@@ -12,71 +20,9 @@ set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
 set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
+# Let user choose if multiprocessor builds should be supported
 
-# Choose if multiprocessor builds should be supported
-
-option (DSS_ENABLE_PARALLEL_BUILD "help string describing option" ON)
-
-if (DSS_ENABLE_PARALLEL_BUILD)
-   if (MSVC)
-      set (CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   /MP")
-      set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
-      message (STATUS "Parallel multi-processor build generated")
-   endif ()
-else ()
-   message (STATUS "Non-parallel build generated")
-endif ()
-
-
-# Define support functions for file option
-
-   # Update Compiler Flag properties
-
-function (UPDATE_SOURCE_FILES_COMPILE_FLAGS SourceFiles CompileFlags)
-   foreach (filename ${SourceFiles})
-      get_source_file_property (OLD_FLAGS ${filename} COMPILE_FLAGS)
-
-      if (${OLD_FLAGS} STREQUAL "NOTFOUND")
-         set_source_files_properties (${filename} PROPERTIES COMPILE_FLAGS "${CompileFlags}")
-      else ()
-         set_source_files_properties (${filename} PROPERTIES COMPILE_FLAGS "${OLD_FLAGS} ${CompileFlags}")
-      endif ()
-   endforeach (filename)   
-endfunction (UPDATE_SOURCE_FILES_COMPILE_FLAGS)
-
-
-# Define support functions for precompiled headers
-
-   # set PCH for a VS project (Target)
-
-function (SET_TARGET_PRECOMPILED_HEADER Target PrecompiledHeader PrecompiledSource)
-   if (MSVC)
-      set_target_properties (
-         ${Target} 
-         PROPERTIES 
-        
-         COMPILE_FLAGS "/Yu${PrecompiledHeader}"
-      )
-      set_source_files_properties (
-         ${PrecompiledSource} 
-         PROPERTIES 
-        
-         COMPILE_FLAGS "/Yc${PrecompiledHeader}"
-      )
-   endif (MSVC)
-endfunction(SET_TARGET_PRECOMPILED_HEADER)
-
-   # ignore PCH for a specified list of files
-
-function (IGNORE_PRECOMPILED_HEADER SourceFiles)
-   if (MSVC)  
-      foreach (filename ${SourceFiles})
-         update_source_files_compile_flags (${filename} "/Y-")
-      endforeach (filename)
-   endif (MSVC)
-endfunction(IGNORE_PRECOMPILED_HEADER)
-
-
+add_option_for_parallel_build (DSS_ENABLE_PARALLEL_BUILD)
 
 
 # Generate the IDE file with following projects - each build definition is defined in the referenced

@@ -120,6 +120,12 @@ set (
    
    DeepSkyStacker.cpp
    DeepSkyStacker.h
+   PCLTools.cpp
+   PCLTools.h
+   SetUILanguage.cpp
+   SetUILanguage.h
+   StdAfx.cpp
+   StdAfx.h
 
    DeepSkyStacker.rc
    DeepSkyStackerCAT.rc
@@ -134,14 +140,7 @@ set (
    DeepSkyStackerPTB.rc
    DeepSkyStackerRO.rc
    DeepSkyStackerRU.rc
-   DeepSkyStackerTR.rc
-   
-   PCLTools.cpp
-   PCLTools.h
-   SetUILanguage.cpp
-   SetUILanguage.h
-   StdAfx.cpp
-   StdAfx.h
+   DeepSkyStackerTR.rc   
 )
 
 set (
