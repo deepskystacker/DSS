@@ -491,8 +491,10 @@ target_compile_definitions (
 
 # suppress warnings on selected 3rd party sources
 
-update_source_files_compile_flags (
-   ../DCRaw/dcraw.c
+if (MSVC)
+   update_source_files_compile_flags (
+      ../DCRaw/dcraw.c
 
-   "/wd4005 /wd4013 /wd4018 /wd4133 /wd4146 /wd4244 /wd4267 /wd4305 /wd4996"
-)
+      "/wd4005 /wd4013 /wd4018 /wd4133 /wd4146 /wd4244 /wd4267 /wd4305 /wd4996"
+   )
+endif (MSVC)
