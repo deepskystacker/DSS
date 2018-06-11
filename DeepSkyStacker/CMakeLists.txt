@@ -477,7 +477,8 @@ ignore_precompiled_header (${IGNORE_PCH_FILES})
 # define preprocessor variables
 
 target_compile_definitions (
-   DeepSkyStacker 
+   DeepSkyStacker
+   
    PRIVATE 
    
    _AFXDLL 
@@ -498,3 +499,14 @@ if (MSVC)
       "/wd4005 /wd4013 /wd4018 /wd4133 /wd4146 /wd4244 /wd4267 /wd4305 /wd4996"
    )
 endif (MSVC)
+
+# Declare the libraries that are linked with the target
+
+target_link_libraries ( 
+   DeepSkyStacker
+   
+   libjpg 
+   ${DSS_PREBUILT_LIBRARY_PATH}/cfitsio.lib
+   ${DSS_PREBUILT_LIBRARY_PATH}/libpng16.lib
+   ${DSS_PREBUILT_LIBRARY_PATH}/zlibstat.lib
+   )
