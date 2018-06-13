@@ -508,6 +508,8 @@ target_link_libraries (
    libjpg
    libtiff
    ZCLass
+   datasource
+   debughlp
    ${DSS_PREBUILT_LIBRARY_PATH}/cfitsio.lib
    ${DSS_PREBUILT_LIBRARY_PATH}/libpng16.lib
    ${DSS_PREBUILT_LIBRARY_PATH}/zlibstat.lib

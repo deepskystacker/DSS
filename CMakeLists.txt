@@ -36,9 +36,11 @@ add_option_for_parallel_build (DSS_ENABLE_PARALLEL_BUILD)
 # Generate the IDE file with following projects - each build definition is defined in the referenced
 # source file subdirectory
 
-add_subdirectory (libjpg             libjpg)
-add_subdirectory (libtiff            libtiff)
-add_subdirectory (ZCLass             ZCLass)
-add_subdirectory (DeepSkyStacker     DeepSkyStacker)
-add_subdirectory (DeepSkyStackerCL   DeepSkyStackerCL)
-add_subdirectory (DeepSkyStackerLive DeepSkyStackerLive)
+add_subdirectory (libjpg                  libjpg)
+add_subdirectory (libtiff                 libtiff)
+add_subdirectory (QHTML_static/datasource datasource)
+add_subdirectory (QHTML_static/debughlp   debughlp)
+add_subdirectory (ZCLass                  ZCLass)
+add_subdirectory (DeepSkyStacker          DeepSkyStacker)
+add_subdirectory (DeepSkyStackerCL        DeepSkyStackerCL)
+add_subdirectory (DeepSkyStackerLive      DeepSkyStackerLive)
