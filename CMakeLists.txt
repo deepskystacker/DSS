@@ -37,6 +37,8 @@ add_option_for_parallel_build (DSS_ENABLE_PARALLEL_BUILD)
 # source file subdirectory
 
 add_subdirectory (libjpg             libjpg)
+add_subdirectory (libtiff            libtiff)
+add_subdirectory (ZCLass             ZCLass)
 add_subdirectory (DeepSkyStacker     DeepSkyStacker)
 add_subdirectory (DeepSkyStackerCL   DeepSkyStackerCL)
 add_subdirectory (DeepSkyStackerLive DeepSkyStackerLive)

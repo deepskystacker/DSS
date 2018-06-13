@@ -23,6 +23,7 @@ set (
    jdapistd.c
    jdatadst.c
    jdatasrc.c
+   jdcoefct.c
    jdcolor.c
    jddctmgr.c
    jdhuff.c
@@ -86,6 +87,15 @@ add_library (
    ${SOURCE_FILES}
    ${HEADER_FILES}
 )
+
+# Organise the library in the IDE
+
+set_target_properties (
+   libjpg 
+
+   PROPERTIES
+
+   FOLDER "Libraries") 
 
 # define the header file search paths
 

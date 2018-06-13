@@ -505,7 +505,9 @@ endif (MSVC)
 target_link_libraries ( 
    DeepSkyStacker
    
-   libjpg 
+   libjpg
+   libtiff
+   ZCLass
    ${DSS_PREBUILT_LIBRARY_PATH}/cfitsio.lib
    ${DSS_PREBUILT_LIBRARY_PATH}/libpng16.lib
    ${DSS_PREBUILT_LIBRARY_PATH}/zlibstat.lib
