@@ -426,6 +426,8 @@ endif (MSVC)
 
 add_executable (
    DeepSkyStacker 
+
+   WIN32
    
    ${DIALOGS_FILES}
    ${DIALOGS_IMAGESINKS_FILES}
@@ -505,15 +507,16 @@ endif (MSVC)
 target_link_libraries ( 
    DeepSkyStacker
    
-   libjpg
-   libtiff
-   ZCLass
-   datasource
-   debughlp
-   guitools
-   imglib
-   htmlhelp.lib
-   ${DSS_PREBUILT_LIBRARY_PATH}/cfitsio.lib
-   ${DSS_PREBUILT_LIBRARY_PATH}/libpng16.lib
-   ${DSS_PREBUILT_LIBRARY_PATH}/zlibstat.lib
+   libjpg                                          # built by master script 
+   libtiff                                         # built by master script
+   ZCLass                                          # built by master script
+   datasource                                      # built by master script
+   debughlp                                        # built by master script
+   guitools                                        # built by master script
+   imglib                                          # built by master script
+   qhtm                                            # built by master script
+   htmlhelp.lib                                    # prebuilt in windows SDK
+   ${DSS_PREBUILT_LIBRARY_PATH}/cfitsio.lib        # prebuilt 3rd party 
+   ${DSS_PREBUILT_LIBRARY_PATH}/libpng16.lib       # prebuilt 3rd party
+   ${DSS_PREBUILT_LIBRARY_PATH}/zlibstat.lib       # prebuilt 3rd party
    )

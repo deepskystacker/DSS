@@ -11,6 +11,8 @@ set (
    DataSourceABC.h
    FileDataSource.cpp
    FileDataSource.h
+   ResourceDataSource.cpp
+   ResourceDataSource.h
 )
 
 set (

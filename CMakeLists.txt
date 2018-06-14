@@ -42,6 +42,7 @@ add_subdirectory (QHTML_static/datasource datasource)                # library
 add_subdirectory (QHTML_static/debughlp   debughlp)                  # library
 add_subdirectory (QHTML_static/guitools   guitools)                  # library
 add_subdirectory (QHTML_static/imglib     imglib)                    # library
+add_subdirectory (QHTML_static/qhtm       qhtm)                    # library
 add_subdirectory (ZCLass                  ZCLass)                    # library
 add_subdirectory (DeepSkyStacker          DeepSkyStacker)            # program
 add_subdirectory (DeepSkyStackerCL        DeepSkyStackerCL)          # program
