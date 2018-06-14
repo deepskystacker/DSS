@@ -510,6 +510,9 @@ target_link_libraries (
    ZCLass
    datasource
    debughlp
+   guitools
+   imglib
+   htmlhelp.lib
    ${DSS_PREBUILT_LIBRARY_PATH}/cfitsio.lib
    ${DSS_PREBUILT_LIBRARY_PATH}/libpng16.lib
    ${DSS_PREBUILT_LIBRARY_PATH}/zlibstat.lib

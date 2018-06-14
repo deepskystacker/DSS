@@ -1,8 +1,8 @@
 # Set the build configurations
 
-function (SET_BUILD_CONFIGURATIONS ConfigList)
+function (SET_IDE_BUILD_CONFIGURATIONS ConfigList)
    set (CMAKE_CONFIGURATION_TYPES ${ConfigList} CACHE STRING "" FORCE)
-endfunction (SET_BUILD_CONFIGURATIONS)
+endfunction (SET_IDE_BUILD_CONFIGURATIONS)
 
 # Allow source files to appear to be in (nested) subfolders
 
