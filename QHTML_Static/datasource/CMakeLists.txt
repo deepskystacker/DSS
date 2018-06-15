@@ -25,10 +25,8 @@ set (
 
 # define the Visual Studio IDE source file groupings
    
-if (MSVC)
-   source_group ("Source Files" FILES ${SOURCE_FILES})
-   source_group ("Header Files" FILES ${HEADER_FILES})
-endif (MSVC)
+source_group ("Source Files" FILES ${SOURCE_FILES})
+source_group ("Header Files" FILES ${HEADER_FILES})
 
 # define the source files used for building the library target
 # these will all appear in the IDE
@@ -86,13 +84,3 @@ set_target_precompiled_header (
    stdafx.h 
    stdafx.cpp
 )
-
-# suppress warnings on selected 3rd party sources
-
-##if (MSVC)
-##   update_source_files_compile_flags (
-##      tif_unix.c
-##
-##      "/wd4028 /wd4996"
-##   )
-##endif (MSVC)

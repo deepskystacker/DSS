@@ -33,6 +33,15 @@ enable_ide_source_file_folders ()
 
 add_option_for_parallel_build (DSS_ENABLE_PARALLEL_BUILD)
 
+# Set compiler and linker options common to all projects
+
+##add_compile_options ("/EHsc")
+##add_link_options ("/LTCG:incremental") # coming in cmake 3.12.x
+
+set (CMAKE_EXE_LINKER_FLAGS    "${CMAKE_EXE_LINKER_FLAGS} /LTCG")
+##set (CMAKE_STATIC_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /LTCG:incremental")
+
+
 # Generate the IDE file with following projects - each build definition is defined in the referenced
 # source file subdirectory
 
@@ -42,7 +51,7 @@ add_subdirectory (QHTML_static/datasource datasource)                # library
 add_subdirectory (QHTML_static/debughlp   debughlp)                  # library
 add_subdirectory (QHTML_static/guitools   guitools)                  # library
 add_subdirectory (QHTML_static/imglib     imglib)                    # library
-add_subdirectory (QHTML_static/qhtm       qhtm)                    # library
+add_subdirectory (QHTML_static/qhtm       qhtm)                      # library
 add_subdirectory (ZCLass                  ZCLass)                    # library
 add_subdirectory (DeepSkyStacker          DeepSkyStacker)            # program
 add_subdirectory (DeepSkyStackerCL        DeepSkyStackerCL)          # program

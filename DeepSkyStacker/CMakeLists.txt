@@ -406,20 +406,18 @@ set (
 
 # define the Visual Studio IDE source file groupings
    
-if (MSVC)
-   source_group ("Dialogs"                  FILES ${DIALOGS_FILES})
-   source_group ("Dialogs\\ImageSinks"      FILES ${DIALOGS_IMAGESINKS_FILES})
-   source_group ("Dialogs\\Library"         FILES ${DIALOGS_LIBRARY_FILES})
-   source_group ("Dialogs\\Processing"      FILES ${DIALOGS_PROCESSING_FILES})
-   source_group ("Dialogs\\Registering"     FILES ${DIALOGS_REGISTERING_FILES})
-   source_group ("Dialogs\\Settings"        FILES ${DIALOGS_SETTINGS_FILES})
-   source_group ("Dialogs\\Stacking"        FILES ${DIALOGS_STACKING_FILES})
-   source_group ("Source Files"             FILES ${SOURCE_FILES})
-   source_group ("Header Files"             FILES ${HEADER_FILES})
-   source_group ("Kernel"                   FILES ${KERNEL_FILES})
-   source_group ("Resource Files"           FILES ${RESOURCE_FILES})
-   source_group ("Tools"                    FILES ${TOOLS_FILES})
-endif (MSVC)
+source_group ("Dialogs"                  FILES ${DIALOGS_FILES})
+source_group ("Dialogs\\ImageSinks"      FILES ${DIALOGS_IMAGESINKS_FILES})
+source_group ("Dialogs\\Library"         FILES ${DIALOGS_LIBRARY_FILES})
+source_group ("Dialogs\\Processing"      FILES ${DIALOGS_PROCESSING_FILES})
+source_group ("Dialogs\\Registering"     FILES ${DIALOGS_REGISTERING_FILES})
+source_group ("Dialogs\\Settings"        FILES ${DIALOGS_SETTINGS_FILES})
+source_group ("Dialogs\\Stacking"        FILES ${DIALOGS_STACKING_FILES})
+source_group ("Source Files"             FILES ${SOURCE_FILES})
+source_group ("Header Files"             FILES ${HEADER_FILES})
+source_group ("Kernel"                   FILES ${KERNEL_FILES})
+source_group ("Resource Files"           FILES ${RESOURCE_FILES})
+source_group ("Tools"                    FILES ${TOOLS_FILES})
 
 # define the source files used for building the executable target
 # these will all appear in the IDE
@@ -484,7 +482,7 @@ target_compile_definitions (
    PRIVATE 
    
    _AFXDLL 
-   _MBCS
+##   _MBCS
 
    WIN32
    NDEBUG                      # this is build type specific - sort out later
