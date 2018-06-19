@@ -55,8 +55,8 @@ add_compile_options ("/D _WINDOWS")                              # Identifies ta
 add_compile_options ("$<$<CONFIG:Debug>:/D _DEBUG>")             # Select debug config specific conditional code
 add_compile_options ("$<$<CONFIG:Release>:/D NDEBUG>")           # Select release config specific conditional code
 add_compile_options ("$<$<CONFIG:RelWithDebugInfo>:/D NDEBUG>")  # Select release config specific conditional code
-#add_compile_options ("/D _UNICODE")                              # Select unicode specific conditional code
-#add_compile_options ("/D UNICODE")                               # Select unicode specific conditional code
+add_compile_options ("/D _UNICODE")                              # Select unicode specific conditional code
+add_compile_options ("/D UNICODE")                               # Select unicode specific conditional code
 
                                                                  # The function add_link_options is coming in cmake 3.12.x ... meantime use our custom function ...
 update_link_flags ("/LTCG")                                      # Perform whole program optimisation at link time (Link Time Code Generation)
