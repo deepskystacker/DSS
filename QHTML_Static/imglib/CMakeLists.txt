@@ -85,6 +85,8 @@ target_compile_definitions (
    
    _CRT_SECURE_NO_WARNINGS
    _LIB
+   _UNICODE
+   UNICODE
 )
 
 # Name the precompiled header and generator source files

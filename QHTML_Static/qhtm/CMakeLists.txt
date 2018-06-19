@@ -255,6 +255,9 @@ target_compile_definitions (
    _LIB
    QHTM_LINK_STATIC_LIBS
    QHTM_BUILDLIB
+   _UNICODE
+   UNICODE
+
 )
 
 # Name the precompiled header and generator source files

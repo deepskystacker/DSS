@@ -252,6 +252,8 @@ set (
    ../Tools/childprop.h 
    ../Tools/ControlPos.cpp
    ../Tools/ControlPos.h
+   ../Tools/CtrlCache.cpp
+   ../Tools/CtrlCache.h
    ../Tools/CustomTabCtrl.cpp
    ../Tools/CustomTabCtrl.h 
    ../Tools/EasySize.h 
@@ -483,9 +485,10 @@ target_compile_definitions (
    PRIVATE 
    
    _AFXDLL 
-
    _CRT_SECURE_NO_DEPRECATE
    USE_LIBTIFF_STATIC
+   _UNICODE
+   UNICODE
 )
 
 # suppress warnings on selected 3rd party sources

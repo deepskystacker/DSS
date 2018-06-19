@@ -49,23 +49,20 @@ enable_ide_source_file_folders ()
 
 # Set compiler and linker options common to all projects
 
-add_compile_options ("/EHsc")                                    # Exception handling is synchronous (/EHa has time/space and changed behavour of catch () consequences)
-add_compile_options ("/D WIN32")                                 # Select Windows specific conditional code
-add_compile_options ("/D _WINDOWS")                              # Identifies target platform is Windows
-add_compile_options ("$<$<CONFIG:Debug>:/D _DEBUG>")             # Select debug config specific conditional code
-add_compile_options ("$<$<CONFIG:Release>:/D NDEBUG>")           # Select release config specific conditional code
-add_compile_options ("$<$<CONFIG:RelWithDebugInfo>:/D NDEBUG>")  # Select release config specific conditional code
-add_compile_options ("/D _UNICODE")                              # Select unicode specific conditional code
-add_compile_options ("/D UNICODE")                               # Select unicode specific conditional code
+update_compile_flags ("/EHsc")                        # Exception handling is synchronous (/EHa has time/space and changed behavour of catch () consequences)
+update_compile_flags ("/D WIN32")                     # Select Windows specific conditional code
+update_compile_flags ("/D _WINDOWS")                  # Identifies target platform is Windows
+update_debug_compile_flags ("/D _DEBUG")              # Select debug config specific conditional code
+update_release_compile_flags ("/D NDEBUG")            # Select release config specific conditional code
+update_relwithdebuginfo_compile_flags ("/D NDEBUG")   # Select release config specific conditional code
 
-                                                                 # The function add_link_options is coming in cmake 3.12.x ... meantime use our custom function ...
-update_link_flags ("/LTCG")                                      # Perform whole program optimisation at link time (Link Time Code Generation)
-update_link_flags ("/OPT:REF")                                   # Have the linker remove unreferenced code
-update_link_flags ("/OPT:ICF")                                   # Have the linker remove redundant (duplicate) data sections (COMDAT)
+update_release_link_flags ("/LTCG")                   # Perform whole program optimisation at link time (Link Time Code Generation)
+update_release_link_flags ("/OPT:REF")                # Have the linker remove unreferenced code
+update_release_link_flags ("/OPT:ICF")                # Have the linker remove redundant (duplicate) data sections (COMDAT)
 
 if (DSS_32_BIT)
-   update_link_flags ("/LARGEADDRESSAWARE")                      # Maximise the address space for 32 bit builds
-   update_link_flags ("/SAFESEH")                                # Security feature for 32 bit builds - stops 'evil' exception handler injection attacks
+   update_link_flags ("/LARGEADDRESSAWARE")           # Maximise the address space for 32 bit builds
+   update_link_flags ("/SAFESEH")                     # Security feature for 32 bit builds - stops 'evil' exception handler injection attacks
 endif ()
 
 if (DSS_64_BIT)

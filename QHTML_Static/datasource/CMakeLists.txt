@@ -70,6 +70,8 @@ target_compile_definitions (
    _LIB
    USE_LIBTIFF_STATIC
    ZLIB_WINAPI
+   _UNICODE
+   UNICODE
 )
 
 # Name the precompiled header and generator source files
