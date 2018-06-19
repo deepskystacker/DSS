@@ -1184,13 +1184,13 @@ private :
 
 		if (strParameters.GetLength())
 		{
-			nPos = strParameters.Find(",");
+			nPos = strParameters.Find(_T(","));
 			if (nPos>=0)
 				strValue = strParameters.Left(nPos);
 			else
 				strValue = strParameters;
 
-			fValue = atof((LPCTSTR)strValue);
+			fValue = _ttof((LPCTSTR)strValue);	// Change _ttof to _ttof for Unicode
 			strParameters = strParameters.Right(max(0, strParameters.GetLength()-strValue.GetLength()-1));
 			bResult = TRUE;
 		};
@@ -1232,21 +1232,21 @@ public :
 	{
 		if (Type == TT_NONE)
 		{
-			strText.Format("None(%.20g,%.20g)", fXWidth, fYWidth);
+			strText.Format(_T("None(%.20g,%.20g)"), fXWidth, fYWidth);
 		}
 		else if (Type == TT_BICUBIC)
 		{
 			CString			strText1;
 
 
-			strText1.Format("Bicubic(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,", 
+			strText1.Format(_T("Bicubic(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"), 
 										a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
 			strText = strText1;
 
-			strText1.Format("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,", 
+			strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"), 
 										b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15);
 			strText += strText1;
-			strText1.Format("%.20g,%.20g)", 
+			strText1.Format(_T("%.20g,%.20g)"), 
 										fXWidth, fYWidth);
 			strText += strText1;
 		}
@@ -1254,18 +1254,18 @@ public :
 		{
 			CString			strText1;
 
-			strText1.Format("Bisquared(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,", 
+			strText1.Format(_T("Bisquared(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"), 
 										a0, a1, a2, a3, a4, a5, a6, a7, a8);
 			strText = strText1;
 
-			strText1.Format("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)", 
+			strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"), 
 										b0, b1, b2, b3, b4, b5, b6, b7, b8,
 										fXWidth, fYWidth);
 			strText += strText1;
 		}
 		else
 		{
-			strText.Format("Bilinear(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)", 
+			strText.Format(_T("Bilinear(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"), 
 										a0, a1, a2, a3, 
 										b0, b1, b2, b3,
 										fXWidth, fYWidth);
@@ -1279,8 +1279,8 @@ public :
 		int				nPos1,
 						nPos2;
 
-		nPos1 = strText.Find("(");
-		nPos2 = strText.Find(")");
+		nPos1 = strText.Find(_T("("));
+		nPos2 = strText.Find(_T(")"));
 		if (nPos1>=0 && nPos2>nPos1)
 		{
 			CString		strType;
@@ -1288,14 +1288,14 @@ public :
 
 			strType			= strText.Left(nPos1);
 			strParameters	= strText.Mid(nPos1+1, nPos2-nPos1-1);
-			if (!strType.CompareNoCase("None"))
+			if (!strType.CompareNoCase(_T("None")))
 			{
 				Clear();
 				Type = TT_NONE;
 				bResult = GetNextParameter(strParameters, fXWidth) &&
 						  GetNextParameter(strParameters, fYWidth);
 			}
-			else if (!strType.CompareNoCase("Bilinear"))
+			else if (!strType.CompareNoCase(_T("Bilinear")))
 			{
 				Type = TT_BILINEAR;
 				bResult = GetNextParameter(strParameters, a0) &&
@@ -1309,7 +1309,7 @@ public :
 						  GetNextParameter(strParameters, fXWidth) &&
 						  GetNextParameter(strParameters, fYWidth);
 			}
-			else if (!strType.CompareNoCase("Bisquared"))
+			else if (!strType.CompareNoCase(_T("Bisquared")))
 			{
 				Type = TT_BISQUARED;
 				bResult = GetNextParameter(strParameters, a0) &&
@@ -1333,7 +1333,7 @@ public :
 						  GetNextParameter(strParameters, fXWidth) &&
 						  GetNextParameter(strParameters, fYWidth);
 			}
-			else if (!strType.CompareNoCase("Bicubic"))
+			else if (!strType.CompareNoCase(_T("Bicubic")))
 			{
 				Type = TT_BICUBIC;
 				bResult = GetNextParameter(strParameters, a0) &&

@@ -152,8 +152,8 @@ BOOL CGraphViewTab::OnInitDialog()
 	m_csAngle.Init(m_Graph, RGB(0, 255, 0));
 	m_csSkyBackground.Init(m_Graph, RGB(0, 0, 128));
 
-	m_csdX.SetName("dX");
-	m_csdY.SetName("dY");
+	m_csdX.SetName(_T("dX"));
+	m_csdY.SetName(_T("dY"));
 
 	m_Graph.GetBottomAxis()->SetAutomatic(true);
 	m_Graph.GetLeftAxis()->SetAutomatic(true);

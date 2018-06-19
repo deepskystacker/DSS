@@ -53,7 +53,7 @@ BOOL CRegisterSettings_Advanced::OnSetActive()
 
 		m_NrStars.GetWindowText(m_strMask);
 
-		m_NrStars.SetWindowText("");
+		m_NrStars.SetWindowText(_T(""));
 	};
 
 	m_bFirstActivation = FALSE;
@@ -71,7 +71,7 @@ void	CRegisterSettings_Advanced::UpdateSliderText()
 	CString				strText;
 
 	lPos = m_PercentSlider.GetPos();
-	strText.Format("%ld %%", lPos);
+	strText.Format(_T("%ld %%"), lPos);
 	m_PercentText.SetWindowText(strText);
 };
 
@@ -95,12 +95,12 @@ void CRegisterSettings_Advanced::OnComputeStars()
 	lPos = m_PercentSlider.GetPos();
 
 	// Register the image with hot pixel detection and not flat/dark...
-	TCHAR						szFileName[_MAX_FNAME];
-	TCHAR						szExt[_MAX_EXT];
+	TCHAR						szFileName[1+_MAX_FNAME];
+	TCHAR						szExt[1+_MAX_EXT];
 	CString						strFileName;
 
-	_splitpath(m_strFirstLightFrame, NULL, NULL, szFileName, szExt);
-	strFileName.Format("%s%s", szFileName, szExt);
+	_tsplitpath(m_strFirstLightFrame, NULL, NULL, szFileName, szExt);
+	strFileName.Format(_T("%s%s"), szFileName, szExt);
 	strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)strFileName);
 	dlg.Start(strText, 0);
 	dlg.SetJointProgress(TRUE);

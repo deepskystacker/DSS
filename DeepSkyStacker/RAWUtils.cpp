@@ -328,7 +328,7 @@ private :
 				// Try to read the magic P5 or P6 number
 				if (lToRead >= 2)
 				{
-					CString		strMagic;
+					CStringA	strMagic;
 					// Read two characters
 
 					strMagic += (char)(*pRead);
@@ -372,7 +372,7 @@ private :
 						m_dwBufferReadPos+=strWidth.GetLength();
 						pRead += strWidth.GetLength();
 						bEnd = FALSE;
-						m_lWidth = atol(strWidth);
+						m_lWidth = _ttol(strWidth);
 					};
 				}
 				break;
@@ -396,7 +396,7 @@ private :
 						m_dwBufferReadPos+=strHeight.GetLength();
 						pRead += strHeight.GetLength();
 						bEnd = FALSE;
-						m_lHeight = atol(strHeight);
+						m_lHeight = _ttol(strHeight);
 					};
 				}
 				break;
@@ -420,7 +420,7 @@ private :
 						m_dwBufferReadPos+=strMaxColor.GetLength();
 						pRead += strMaxColor.GetLength();
 						bEnd = FALSE;
-						m_lMaxColors = atol(strMaxColor);
+						m_lMaxColors = _ttol(strMaxColor);
 
 						if (m_lMaxColors > 255)
 							m_lBytePerChannel = 2;
@@ -611,7 +611,7 @@ public :
 	int	Printf(const char *format, va_list va)
 	{
 		int				nResult;
-		CString			strText;
+		CStringA			strText;
 
 		strText.FormatV(format, va);
 		nResult = strText.GetLength();
@@ -637,7 +637,7 @@ public :
 /* ------------------------------------------------------------------- */
 
 //static CString			g_strInputFileName;
-static Thread char				g_szInputFileName[_MAX_PATH];					
+static Thread char				g_szInputFileName[1+_MAX_PATH];					
 static Thread CDSSProgress *	g_Progress;
 
 class CInputFile : public CGenericFile
@@ -742,7 +742,7 @@ public :
 	{
 		int				result;
 		BYTE *			pSrcBuff = m_pBuffer;
-		CString			str;
+		CStringA		str;
 
 		pSrcBuff += m_lCurrentPos;
 		result = sscanf((const char*)pSrcBuff, Format, marker);
@@ -878,6 +878,7 @@ public :
 
 BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, BOOL bThumb)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL		bResult = TRUE;
 
 	if (IsRawFile())
@@ -909,7 +910,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		char *		argv[maxargs];
 
 		
-		argv[0] = _T("MyProgram.exe");
+		argv[0] = "MyProgram.exe";
 		argc++;
 
 		{
@@ -931,7 +932,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			if (bValue)
 			{
 				// Automatic WB
-				argv[argc] = _T("-a");
+				argv[argc] = "-a";
 				argc++;
 			};
 
@@ -940,27 +941,27 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			if (bValue)
 			{
 				// Camera WB (is possible)
-				argv[argc] = _T("-w");
+				argv[argc] = "-w";
 				argc++;
 			};
 
 			if (!m_bColorRAW)
 			{
 				// Document mode
-				argv[argc] = _T("-d");
+				argv[argc] = "-d";
 				argc++;
 			};
 		};
 		
 		// No pixel resize
-		argv[argc] = _T("-j");
+		argv[argc] = "-j";
 		argc++;
 
 		// No flip
-		argv[argc] = _T("-t");
+		argv[argc] = "-t";
 		argc++;
 
-		argv[argc] = _T("0");
+		argv[argc] = "0";
 		argc++;
 
 		// Output color space : raw-> sRGB (default)
@@ -974,20 +975,20 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		if (bBlackPointTo0)
 		{
 			// Set black point to 0
-			argv[argc] = _T("-k");
+			argv[argc] = "-k";
 			argc++;
-			argv[argc] = _T("0");
+			argv[argc] = "0";
 			argc++;
 		};
 
 		// Output is 16 bits
-		argv[argc] = _T("-4");
+		argv[argc] = "-4";
 		argc++;
 
-		lstrcpy(g_szInputFileName, (LPCTSTR)m_strFileName);
+		strcpy(g_szInputFileName, (LPCSTR)CT2CA(m_strFileName, CP_UTF8));
 		g_Progress		   = pProgress;
 
-		argv[argc] = m_strFileName.GetBuffer(_MAX_PATH);
+		argv[argc] = g_szInputFileName;
 		argc++;
 
 		COutputFile *		pOutputFile;
@@ -1019,13 +1020,15 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 BOOL CRawDecod::IsRawFile()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL		bResult = FALSE;
 	int			argc = 3;
 	char *		argv[10];
 
-	argv[0] = _T("MyProgram.exe");
-	argv[1] = _T("-i");
-	argv[2] = m_strFileName.GetBuffer(_MAX_PATH);
+	argv[0] = "MyProgram.exe";
+	argv[1] = "-i";
+	CStringA asciiFileName = (LPSTR)CT2A(m_strFileName, CP_UTF8);
+	argv[2] = asciiFileName.GetBuffer(_MAX_PATH);
 
 	g_szInputFileName[0] = 0;
 	g_Progress		= NULL;
@@ -1163,7 +1166,7 @@ extern "C" int FILENO( FILE *stream )
 
 extern "C" FILE * FOPEN( const char *filename, const char *mode )
 {
-	CString			strMode = mode;
+	CStringA			strMode = mode;
 
 	if (strMode == "wb")
 	{
@@ -1177,7 +1180,7 @@ extern "C" FILE * FOPEN( const char *filename, const char *mode )
 	else if (strMode == "rb")
 	{
 		// Create a CInputFile objet if the filename matches
-		CString				strFileName  = filename;
+		CStringA			strFileName  = filename;
 		if (!strFileName.CompareNoCase(g_szInputFileName))
 		{
 			CInputFile *	pInputFile;
@@ -1390,15 +1393,15 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	BOOL			bResult = FALSE;
 	BOOL			bIsTiff = FALSE;
-	TCHAR			szExt[_MAX_EXT];
+	TCHAR			szExt[1+_MAX_EXT];
 	CString			strExt;
 
 	// Check the extension - a tiff of tif file is not to be
 	// considered as a RAW file
-	_splitpath(szFileName, NULL, NULL, NULL, szExt);
+	_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
-	if ((strExt == ".TIF") || (strExt == ".TIFF"))
+	if ((strExt == _T(".TIF")) || (strExt == _T(".TIFF")))
 		bIsTiff = TRUE;
 
 	if (!bIsTiff)

@@ -80,7 +80,7 @@ void CChartTitle::Draw(CDC *pDC)
 	CPen* pOldPen;
 	CFont* pOldFont;
 	CFont NewFont;
-	NewFont.CreatePointFont(m_iFontSize,m_strFontName.c_str(),pDC);
+	NewFont.CreatePointFont(m_iFontSize, CA2CT(m_strFontName.c_str()), pDC);
 
 	COLORREF OldColor = pDC->SetTextColor(m_ObjectColor);
 	pOldFont = pDC->SelectObject(&NewFont);
@@ -131,7 +131,7 @@ CSize CChartTitle::GetSize(CDC *pDC)
 
 	CFont* pOldFont;
 	CFont NewFont;
-	NewFont.CreatePointFont(m_iFontSize,m_strFontName.c_str(),pDC);
+	NewFont.CreatePointFont(m_iFontSize, CA2CT(m_strFontName.c_str()), pDC);
 	pOldFont = pDC->SelectObject(&NewFont);
 
 	for (size_t i=0;i<TitleCount;i++)

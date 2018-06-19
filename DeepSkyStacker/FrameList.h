@@ -174,14 +174,14 @@ public :
 		if (IsLightFrame())
 		{
 			// Remove the Info.txt file if it exists
-			TCHAR				szDrive[_MAX_DRIVE];
-			TCHAR				szDir[_MAX_DIR];
-			TCHAR				szFile[_MAX_FNAME];
-			TCHAR				szExt[_MAX_EXT];
-			TCHAR				szInfoName[_MAX_PATH];
+			TCHAR				szDrive[1+_MAX_DRIVE];
+			TCHAR				szDir[1+_MAX_DIR];
+			TCHAR				szFile[1+_MAX_FNAME];
+			TCHAR				szExt[1+_MAX_EXT];
+			TCHAR				szInfoName[1+_MAX_PATH];
 
-			_splitpath(m_strFileName, szDrive, szDir, szFile, szExt);
-			_makepath(szInfoName, szDrive, szDir, szFile, _T(".Info.txt"));
+			_tsplitpath(m_strFileName, szDrive, szDir, szFile, szExt);
+			_tmakepath(szInfoName, szDrive, szDir, szFile, _T(".Info.txt"));
 
 			DeleteFile(szInfoName);
 		};

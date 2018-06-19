@@ -95,9 +95,9 @@ BOOL	IsExpired()
 
 /* ------------------------------------------------------------------- */
 
-int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
+int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 				   HINSTANCE hPrevInstance,  // handle to previous instance
-				   LPSTR lpCmdLine,      // pointer to command line
+				   LPTSTR lpCmdLine,      // pointer to command line
 				   int nCmdShow          // show state of window
 				   )
 {

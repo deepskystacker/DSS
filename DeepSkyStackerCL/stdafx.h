@@ -20,6 +20,7 @@
 #include <vector>
 #include <math.h>
 #include <atlbase.h>
+#include <atlstr.h>
 
 #include <Common.h>
 #include <DSSCommon.h>

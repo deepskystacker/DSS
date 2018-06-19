@@ -44,135 +44,135 @@ BOOL CAbout::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	CString				strHTML;
-	CString				strText;
-	CString				strMask;
+	CString 				strHTML;
+	CString 				strText;
+	CString 				strMask;
 
-	strHTML.Format("<body link=#0000ff></body>");
+	strHTML.Format(_T("<body link=#0000ff></body>"));
 
-	strHTML += "<img valign=top align=right src=\"RES:LOGO.PNG\">";
+	strHTML += _T("<img valign=top align=right src=\"RES:LOGO.PNG\">");
 
 	strText.Format(IDS_ABOUT_DSS, VERSION_DEEPSKYSTACKER);
-	strText.Replace("\n", "<BR>");
+	strText.Replace(_T("\n"), _T("<BR>"));
 	strText += _T("<BR>");
-	strText += DSSVER_COPYRIGHT;
-	strHTML += "<b>"+strText+"</b><br>";
+	strText += _T(DSSVER_COPYRIGHT);
+	strHTML += _T("<b>")+strText+_T("</b><br>");
 	strText.LoadString(IDS_ABOUT_DSS_LINK);
-	strMask.Format("<a href=\"%s\">%s</a><br><br>", (LPCTSTR)strText, (LPCTSTR)strText);
+	strMask.Format(_T("<a href=\"%s\">%s</a><br><br>"), (LPCTSTR)strText, (LPCTSTR)strText);
 	strHTML += strMask;
 
 
 	strText.Format(IDS_ABOUT_DCRAW, VERSION_DCRAW);
-	strText.Replace("\n", "<BR>");
-	strHTML += strText+"<br>";
+	strText.Replace(_T("\n"), _T("<BR>"));
+	strHTML += strText+_T("<br>");
 	strText.LoadString(IDS_ABOUT_DCRAW_LINK);
-	strMask.Format("<a href=\"%s\">%s</a><br><br>", (LPCTSTR)strText, (LPCTSTR)strText);
+	strMask.Format(_T("<a href=\"%s\">%s</a><br><br>"), (LPCTSTR)strText, (LPCTSTR)strText);
 	strHTML += strMask;
 
 	strText.Format(IDS_ABOUT_TIFF, VERSION_LIBTIFF);
-	strText.Replace("\n", "<BR>");
-	strHTML += strText+"<br>";
+	strText.Replace(_T("\n"), _T("<BR>"));
+	strHTML += strText+_T("<br>");
 	strText.LoadString(IDS_ABOUT_TIFF_LINK);
-	strMask.Format("<a href=\"%s\">%s</a><br><br>", (LPCTSTR)strText, (LPCTSTR)strText);
+	strMask.Format(_T("<a href=\"%s\">%s</a><br><br>"), (LPCTSTR)strText, (LPCTSTR)strText);
 	strHTML += strMask;
 
 	strText.Format(IDS_ABOUT_FITS, VERSION_CFITSIO);
-	strText.Replace("\n", "<BR>");
-	strHTML += strText+"<br>";
+	strText.Replace(_T("\n"), _T("<BR>"));
+	strHTML += strText+_T("<br>");
 	strText.LoadString(IDS_ABOUT_FITS_LINK);
-	strMask.Format("<a href=\"%s\">%s</a><br><br>", (LPCTSTR)strText, (LPCTSTR)strText);
+	strMask.Format(_T("<a href=\"%s\">%s</a><br><br>"), (LPCTSTR)strText, (LPCTSTR)strText);
 	strHTML += strMask;
 
 	strText.Format(IDS_ABOUT_QHTM);
-	strText.Replace("\n", "<BR>");
-	strHTML += strText+"<br>";
+	strText.Replace(_T("\n"), _T("<BR>"));
+	strHTML += strText+_T("<br>");
 	strText.LoadString(IDS_ABOUT_QHTM_LINK);
-	strMask.Format("<a href=\"%s\">%s</a>", (LPCTSTR)strText, (LPCTSTR)strText);
+	strMask.Format(_T("<a href=\"%s\">%s</a>"), (LPCTSTR)strText, (LPCTSTR)strText);
 	strHTML += strMask;
 
 	m_Credits.SetWindowText(strHTML);
 
-	strHTML.Format("<body link=#0000ff></body>");
-	strHTML += "<img valign=center src=\"RES:SPANISH.PNG\">&nbsp;&nbsp;";
+	strHTML.Format(_T("<body link=#0000ff></body>"));
+	strHTML += _T("<img valign=center src=\"RES:SPANISH.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_SPANISH);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_SPANISH_LINK);
-	strMask.Format("<a href=\"http://espacioprofundo.com.ar/\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://espacioprofundo.com.ar/\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:CZECH.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:CZECH.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_CZECH);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_CZECH_LINK);
-	strMask.Format("<a href=\"mailto:lukavsky.premysl@tiscali.cz\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"mailto:lukavsky.premysl@tiscali.cz\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:ITALIAN.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:ITALIAN.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_ITALIAN);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_ITALIAN_LINK);
-	strMask.Format("<a href=\"http://www.astrofilipc.it\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://www.astrofilipc.it\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:CATALAN.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:CATALAN.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_CATALAN);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_CATALAN_LINK);
-	strMask.Format("<a href=\"http://astrosurf.com/pruneda/\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://astrosurf.com/pruneda/\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:GERMAN.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:GERMAN.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_GERMAN);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_GERMAN_LINK);
-	strMask.Format("<a href=\"mailto:kasakow@arcor.de\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"mailto:kasakow@arcor.de\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:DUTCH.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:DUTCH.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_DUTCH);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_DUTCH_LINK1);
-	strMask.Format("<a href=\"http://www.geocities.com/me_gielis/\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + " ";
+	strMask.Format(_T("<a href=\"http://www.geocities.com/me_gielis/\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T(" ");
 	strText.LoadString(IDS_AND);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_DUTCH_LINK2);
-	strHTML += strText + "<br>";
+	strHTML += strText + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:TAIWAN.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:TAIWAN.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_CHINESET);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_CHINESET_LINK);
-	strMask.Format("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:PORTUGAL.PNG\">&nbsp;<img valign=center src=\"RES:BRAZIL.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:PORTUGAL.PNG\">&nbsp;<img valign=center src=\"RES:BRAZIL.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_PORTUGUESE);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_PORTUGUESE_LINK);
-	strMask.Format("<a href=\"http://www.astrofotografia.biz\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://www.astrofotografia.biz\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:ROMANIAN.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:ROMANIAN.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_ROMANIAN);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_ROMANIAN_LINK);
-	strMask.Format("<a href=\"http://www.astronomy.ro\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://www.astronomy.ro\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:RUSSIAN.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:RUSSIAN.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_RUSSIAN);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_RUSSIAN_LINK);
-	strMask.Format("<a href=\"http://oleg.milantiev.com\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://oleg.milantiev.com\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
-	strHTML += "<img valign=center src=\"RES:TURKISH.PNG\">&nbsp;&nbsp;";
+	strHTML += _T("<img valign=center src=\"RES:TURKISH.PNG\">&nbsp;&nbsp;");
 	strText.LoadString(IDS_ABOUT_LANG_TURKISH);
-	strHTML += strText + " ";
+	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_TURKISH_LINK);
-	strMask.Format("<a href=\"http://www.physics.metu.edu.tr\">%s</a>", (LPCTSTR)strText);
-	strHTML += strMask + "<br>";
+	strMask.Format(_T("<a href=\"http://www.physics.metu.edu.tr\">%s</a>"), (LPCTSTR)strText);
+	strHTML += strMask + _T("<br>");
 
 	m_LanguageCredits.SetWindowText(strHTML);
 
@@ -186,31 +186,31 @@ BOOL CAbout::OnInitDialog()
 	CString				strLanguage;
 	reg.LoadKey(REGENTRY_BASEKEY, _T("Language"), strLanguage);
 
-	if (!strLanguage.CompareNoCase("FR"))
+	if (!strLanguage.CompareNoCase(_T("FR")))
 		m_Language.SetCurSel(2);
-	else if (!strLanguage.CompareNoCase("EN"))
+	else if (!strLanguage.CompareNoCase(_T("EN")))
 		m_Language.SetCurSel(1);
-	else if (!strLanguage.CompareNoCase("ES"))
+	else if (!strLanguage.CompareNoCase(_T("ES")))
 		m_Language.SetCurSel(3);
-	else if (!strLanguage.CompareNoCase("CZ"))
+	else if (!strLanguage.CompareNoCase(_T("CZ")))
 		m_Language.SetCurSel(5);
-	else if (!strLanguage.CompareNoCase("IT"))
+	else if (!strLanguage.CompareNoCase(_T("IT")))
 		m_Language.SetCurSel(4);
-	else if (!strLanguage.CompareNoCase("CAT"))
+	else if (!strLanguage.CompareNoCase(_T("CAT")))
 		m_Language.SetCurSel(6);
-	else if (!strLanguage.CompareNoCase("DE"))
+	else if (!strLanguage.CompareNoCase(_T("DE")))
 		m_Language.SetCurSel(7);
-	else if (!strLanguage.CompareNoCase("NL"))
+	else if (!strLanguage.CompareNoCase(_T("NL")))
 		m_Language.SetCurSel(8);
-	else if (!strLanguage.CompareNoCase("CN"))
+	else if (!strLanguage.CompareNoCase(_T("CN")))
 		m_Language.SetCurSel(9);
-	else if (!strLanguage.CompareNoCase("PTB"))
+	else if (!strLanguage.CompareNoCase(_T("PTB")))
 		m_Language.SetCurSel(10);
-	else if (!strLanguage.CompareNoCase("RO"))
+	else if (!strLanguage.CompareNoCase(_T("RO")))
 		m_Language.SetCurSel(11);
-	else if (!strLanguage.CompareNoCase("RU"))
+	else if (!strLanguage.CompareNoCase(_T("RU")))
 		m_Language.SetCurSel(12);
-	else if (!strLanguage.CompareNoCase("TR"))
+	else if (!strLanguage.CompareNoCase(_T("TR")))
 		m_Language.SetCurSel(13);
 	else
 		m_Language.SetCurSel(0);

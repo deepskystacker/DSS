@@ -52,20 +52,20 @@ static CImage * LoadFromResource( HINSTANCE hInstance, LPCTSTR pcszResourceName 
 		memset(szImage, 0, sizeof(szImage));
 		memset(szResourceName, 0, sizeof(szResourceName));
 		_tcsncpy(szImage, szOpen+1, (szClose-szOpen-1));
-		lImage = atol(szImage);
+		lImage = _tstol(szImage);
 		_tcsncpy(szResourceName, pcszResourceName, (szOpen-pcszResourceName));
 		szResource = szResourceName;
 		if (szSharp)
 		{
 			szResource++;
-			lNumeral = atol(szResource);
+			lNumeral = _tstol(szResource);
 			szResource = MAKEINTRESOURCE(lNumeral);
 		};
 	}
 	else if (szSharp)
 	{
 		szResource++;
-		lNumeral = atol(szResource);
+		lNumeral = _tstol(szResource);
 		szResource = MAKEINTRESOURCE(lNumeral);
 	};
 

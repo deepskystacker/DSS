@@ -157,7 +157,7 @@ void CPictureListCtrl::Initialize()
 	ColorSortColumn(TRUE);
 
 	SetExtendedStyle(LVS_EX_CHECKBOXES | LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
-	InsertColumn(0, "", LVCFMT_LEFT, 46);
+	InsertColumn(0, _T(""), LVCFMT_LEFT, 46);
 	CString				strColumn;
 
 	strColumn.LoadString(IDS_COLUMN_PATH);
@@ -189,10 +189,10 @@ void CPictureListCtrl::Initialize()
 	strColumn.LoadString(IDS_COLUMN_EXPOSURE);
 	InsertColumn(COLUMN_EXPOSURE, strColumn, LVCFMT_RIGHT, 50);
 
-	InsertColumn(COLUMN_FWHM, "FWHM", LVCFMT_RIGHT, 50);
+	InsertColumn(COLUMN_FWHM, _T("FWHM"), LVCFMT_RIGHT, 50);
 
 	if (!lVersion)
-		RestoreState("PictureList", "Settings");
+		RestoreState(_T("PictureList"), _T("Settings"));
 
 	strColumn.LoadString(IDS_COLUMN_STARS);
 	InsertColumn(COLUMN_STARS, strColumn, LVCFMT_RIGHT, 50);
@@ -226,7 +226,7 @@ void CPictureListCtrl::Initialize()
 	};
 
 	if (lVersion == LISTVERSION)
-		RestoreState("PictureList", "Settings");
+		RestoreState(_T("PictureList"), _T("Settings"));
 
 	SetColumnWidth(COLUMN_CHECKED, 85);
 
@@ -248,7 +248,7 @@ void CPictureListCtrl::Initialize()
 
 BOOL CPictureListCtrl::SaveState()
 {
-	CListCtrlEx::SaveState("PictureList", "Settings");
+	CListCtrlEx::SaveState(_T("PictureList"), _T("Settings"));
 	SetListVersion();
 	return TRUE;
 };
@@ -512,10 +512,10 @@ void CPictureListCtrl::RefreshList()
 void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType, BOOL bCheck, int nItem)
 {
 	CString				strFile = szFile;
-	TCHAR				szDrive[_MAX_DRIVE];
-	TCHAR				szDir[_MAX_DIR];
-	TCHAR				szFileName[_MAX_FNAME];
-	TCHAR				szExt[_MAX_EXT];
+	TCHAR				szDrive[1+_MAX_DRIVE];
+	TCHAR				szDir[1+_MAX_DIR];
+	TCHAR				szFileName[1+_MAX_FNAME];
+	TCHAR				szExt[1+_MAX_EXT];
 	LONG				lIndice = -1;
 	BOOL				bFound = FALSE;
 	BOOL				bAdd = FALSE,
@@ -570,7 +570,7 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID dwJob
 			{
 				lb.m_strType.LoadString(IDS_TYPE_LIGHT);
 			};
-			_splitpath(strFile, szDrive, szDir, szFileName, szExt);
+			_tsplitpath(strFile, szDrive, szDir, szFileName, szExt);
 
 			if (bAdd)
 			{
@@ -621,7 +621,7 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID dwJob
 				CString				strDepth;
 				CString				strInfos;
 
-				strSizes.Format("%ld x %ld", lb.m_lWidth, lb.m_lHeight);
+				strSizes.Format(_T("%ld x %ld"), lb.m_lWidth, lb.m_lHeight);
 				lb.m_strSizes = strSizes;
 
 				if (lb.m_lNrChannels == 3)
@@ -809,21 +809,21 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 				if (m_vFiles[lIndice].m_bRegistered)
 				{
 					if (m_vFiles[lIndice].m_bUseAsStarting)
-						strValue.Format("(*) %.2f", m_vFiles[lIndice].m_fOverallQuality);
+						strValue.Format(_T("(*) %.2f"), m_vFiles[lIndice].m_fOverallQuality);
 					else
-						strValue.Format("%.2f", m_vFiles[lIndice].m_fOverallQuality);
+						strValue.Format(_T("%.2f"), m_vFiles[lIndice].m_fOverallQuality);
 				}
 				else
-					strValue = "NC";
+					strValue = _T("NC");
 			};
 			break;
 		case COLUMN_FWHM :
 			if (m_vFiles[lIndice].m_PictureType != PICTURETYPE_LIGHTFRAME)
-				strValue = "N/A";
+				strValue = _T("N/A");
 			else
 			{
 				if (m_vFiles[lIndice].m_bRegistered)
-					strValue.Format("%.2f", m_vFiles[lIndice].m_fFWHM);
+					strValue.Format(_T("%.2f"), m_vFiles[lIndice].m_fFWHM);
 				else
 					strValue = "NC";
 			};
@@ -836,56 +836,56 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 				if (m_vFiles[lIndice].m_bRegistered)
 				{
 					if (m_vFiles[lIndice].m_bComet)
-						strValue.Format("%ld+(C)", m_vFiles[lIndice].m_lNrStars);
+						strValue.Format(_T("%ld+(C)"), m_vFiles[lIndice].m_lNrStars);
 					else
-						strValue.Format("%ld", m_vFiles[lIndice].m_lNrStars);
+						strValue.Format(_T("%ld"), m_vFiles[lIndice].m_lNrStars);
 				}
 				else
-					strValue = "NC";
+					strValue = _T("NC");
 			};
 			break;
 		case COLUMN_DX :
 			if (m_vFiles[lIndice].m_PictureType != PICTURETYPE_LIGHTFRAME)
-				strValue = "N/A";
+				strValue = _T("N/A");
 			else
 			{
 				if (m_vFiles[lIndice].m_bDeltaComputed)
-					strValue.Format("%.2f", m_vFiles[lIndice].m_dX);
+					strValue.Format(_T("%.2f"), m_vFiles[lIndice].m_dX);
 				else
-					strValue = "NC";
+					strValue = _T("NC");
 			};
 			break;
 		case COLUMN_DY :
 			if (m_vFiles[lIndice].m_PictureType != PICTURETYPE_LIGHTFRAME)
-				strValue = "N/A";
+				strValue = _T("N/A");
 			else
 			{
 				if (m_vFiles[lIndice].m_bDeltaComputed)
-					strValue.Format("%.2f", m_vFiles[lIndice].m_dY);
+					strValue.Format(_T("%.2f"), m_vFiles[lIndice].m_dY);
 				else
-					strValue = "NC";
+					strValue = _T("NC");
 			};
 			break;
 		case COLUMN_ANGLE :
 			if (m_vFiles[lIndice].m_PictureType != PICTURETYPE_LIGHTFRAME)
-				strValue = "N/A";
+				strValue = _T("N/A");
 			else
 			{
 				if (m_vFiles[lIndice].m_bDeltaComputed)
-					strValue.Format("%.2f °", m_vFiles[lIndice].m_fAngle*180.0/M_PI);
+					strValue.Format(_T("%.2f °"), m_vFiles[lIndice].m_fAngle*180.0/M_PI);
 				else
-					strValue = "NC";
+					strValue = _T("NC");
 			};
 			break;
 		case COLUMN_SKYBACKGROUND :
 			if (m_vFiles[lIndice].m_PictureType != PICTURETYPE_LIGHTFRAME)
-				strValue = "N/A";
+				strValue = _T("N/A");
 			else
 			{
 				if (m_vFiles[lIndice].m_SkyBackground.m_fLight)
-					strValue.Format("%.2f %%", m_vFiles[lIndice].m_SkyBackground.m_fLight*100.0);
+					strValue.Format(_T("%.2f %%"), m_vFiles[lIndice].m_SkyBackground.m_fLight*100.0);
 				else
-					strValue = "NC";
+					strValue = _T("NC");
 			};
 			break;
 		case COLUMN_FILETIME :
@@ -1058,7 +1058,7 @@ void CPictureListCtrl::CopyToClipboard()
 		if (j)
 			strClipboard += "\t";
 		hdrItem.mask = HDI_TEXT;
-		hdrItem.cchTextMax = sizeof(szItem);
+		hdrItem.cchTextMax = sizeof(szItem)/sizeof(TCHAR);
 		hdrItem.pszText    = szItem;
 		GetHeaderCtrl()->GetItem(j, &hdrItem);
 		strItem = szItem;
@@ -1830,11 +1830,11 @@ void CPictureListCtrl::SaveList(CMRUList & MRUList, CString & strFileList)
 
 			strFile = dlgSave.GetNextPathName(pos);
 
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -1878,10 +1878,10 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -1894,9 +1894,9 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 
@@ -1904,7 +1904,7 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 			strFileList = strFile;
 			MRUList.Add((LPCTSTR)strFile);
 
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;

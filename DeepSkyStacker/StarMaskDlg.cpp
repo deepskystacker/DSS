@@ -226,10 +226,10 @@ BOOL CStarMaskDlg::AskOutputFile()
 
 	// Get Base directory from base output file
 	CString					strBaseDirectory;
-	TCHAR					szDrive[_MAX_DRIVE];
-	TCHAR					szDir[_MAX_DIR];
+	TCHAR					szDrive[1+_MAX_DRIVE];
+	TCHAR					szDir[1+_MAX_DIR];
 
-	_splitpath(m_strOutputFile, szDrive, szDir, NULL, NULL);
+	_tsplitpath(m_strOutputFile, szDrive, szDir, NULL, NULL);
 	strBaseDirectory = szDrive;
 	strBaseDirectory += szDir;
 
@@ -239,12 +239,12 @@ BOOL CStarMaskDlg::AskOutputFile()
 	TCHAR				szBigBuffer[20000];
 	
 	if (dwFileType==2)
-		lstrcpy(szBigBuffer, "StarMask.fits");
+		lstrcpy(szBigBuffer, _T("StarMask.fits"));
 	else
-		lstrcpy(szBigBuffer, "StarMask.tif");
+		lstrcpy(szBigBuffer, _T("StarMask.tif"));
 
 	dlgSave.GetOFN().lpstrFile = szBigBuffer;
-	dlgSave.GetOFN().nMaxFile  = sizeof(szBigBuffer);
+	dlgSave.GetOFN().nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 	dlgSave.GetOFN().lpstrTitle = strTitle.GetBuffer(200);
 	dlgSave.GetOFN().nFilterIndex = dwFileType;
 
