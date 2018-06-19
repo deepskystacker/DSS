@@ -483,7 +483,6 @@ target_compile_definitions (
    PRIVATE 
    
    _AFXDLL 
-##   _MBCS
 
    _CRT_SECURE_NO_DEPRECATE
    USE_LIBTIFF_STATIC
