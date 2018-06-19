@@ -12,3 +12,9 @@ function (UPDATE_SOURCE_FILES_COMPILE_FLAGS SourceFiles CompileFlags)
       endif ()
    endforeach (filename)   
 endfunction (UPDATE_SOURCE_FILES_COMPILE_FLAGS)
+
+# This function appends the given link flags to all subsequent targets
+
+function (UPDATE_LINK_FLAGS LinkFlags)
+   set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${LinkFlags}" PARENT_SCOPE)
+endfunction (UPDATE_LINK_FLAGS)

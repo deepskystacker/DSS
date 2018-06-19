@@ -65,14 +65,10 @@ target_compile_definitions (
    
    PRIVATE 
    
-   WIN32
-   NDEBUG
+   _CRT_SECURE_NO_WARNINGS
+   _LIB
    USE_LIBTIFF_STATIC
    ZLIB_WINAPI
-   _CRT_SECURE_NO_WARNINGS
-   
-##   _UNICODE
-##   UNICODE
 )
 
 # Name the precompiled header and generator source files
@@ -83,13 +79,3 @@ set_target_precompiled_header (
    StdAfx.h 
    StdAfx.cpp
 )
-
-# suppress warnings on selected 3rd party sources
-
-##if (MSVC)
-##   update_source_files_compile_flags (
-##      tif_unix.c
-##
-##      "/wd4028 /wd4996"
-##   )
-##endif (MSVC)

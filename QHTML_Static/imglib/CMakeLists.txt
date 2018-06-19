@@ -83,12 +83,8 @@ target_compile_definitions (
    
    PRIVATE 
    
-   WIN32
-   NDEBUG
    _CRT_SECURE_NO_WARNINGS
-   
-##   _UNICODE
-##   UNICODE
+   _LIB
 )
 
 # Name the precompiled header and generator source files

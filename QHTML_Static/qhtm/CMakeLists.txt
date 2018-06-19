@@ -251,18 +251,10 @@ target_compile_definitions (
    
    PRIVATE 
    
-   WIN32
-   NDEBUG
    _CRT_SECURE_NO_WARNINGS
-
-   _AFXDLL
-   _USRDLL
-   _WINDOWS
+   _LIB
    QHTM_LINK_STATIC_LIBS
    QHTM_BUILDLIB
-   
-##   _UNICODE
-##   UNICODE
 )
 
 # Name the precompiled header and generator source files

@@ -65,11 +65,6 @@ target_compile_definitions (
    
    PRIVATE 
    
-   WIN32
-   NDEBUG
    _LIB
    _CRT_SECURE_NO_WARNINGS
-   
-##   _UNICODE
-##   UNICODE
 )

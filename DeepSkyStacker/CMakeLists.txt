@@ -445,6 +445,7 @@ add_executable (
 
 target_include_directories (
    DeepSkyStacker 
+
    PRIVATE
 
    .
@@ -484,8 +485,6 @@ target_compile_definitions (
    _AFXDLL 
 ##   _MBCS
 
-   WIN32
-   NDEBUG                      # this is build type specific - sort out later
    _CRT_SECURE_NO_DEPRECATE
    USE_LIBTIFF_STATIC
 )

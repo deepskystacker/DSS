@@ -108,14 +108,10 @@ target_compile_definitions (
    
    PRIVATE 
    
-   WIN32
-   NDEBUG
+   _CRT_SECURE_NO_WARNINGS
+   _LIB
    USE_LIBTIFF_STATIC
    ZLIB_WINAPI
-   _CRT_SECURE_NO_WARNINGS
-   
-##   _UNICODE
-##   UNICODE
 )
 
 # suppress warnings on selected 3rd party sources
