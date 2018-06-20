@@ -1,5 +1,5 @@
 
-# This function appends the given compile flags to a list of source files
+# This function appends the given compile flags to a list of specific source files
 
 function (UPDATE_SOURCE_FILES_COMPILE_FLAGS SourceFiles CompileFlags)
    foreach (filename ${SourceFiles})
@@ -25,21 +25,21 @@ endfunction (UPDATE_COMPILE_FLAGS)
 
   # Just release config
   
-function (UPDATE_RELEASE_COMPILE_FLAGS CompileFlags)
+function (UPDATE_COMPILE_FLAGS_RELEASE CompileFlags)
    add_compile_options ("$<$<CONFIG:RELEASE>:${CompileFlags}>")
-endfunction (UPDATE_RELEASE_COMPILE_FLAGS)
+endfunction (UPDATE_COMPILE_FLAGS_RELEASE)
 
   # Just relwithdebuginfo config
   
-function (UPDATE_RELWITHDEBUGINFO_COMPILE_FLAGS CompileFlags)
+function (UPDATE_COMPILE_FLAGS_RELWITHDEBUGINFO CompileFlags)
    add_compile_options ("$<$<CONFIG:RELWITHDEBUGINFO>:${CompileFlags}>")
-endfunction (UPDATE_RELWITHDEBUGINFO_COMPILE_FLAGS)
+endfunction (UPDATE_COMPILE_FLAGS_RELWITHDEBUGINFO)
 
   # Just debug config
 
-function (UPDATE_DEBUG_COMPILE_FLAGS LinkFlags)
+function (UPDATE_COMPILE_FLAGS_DEBUG LinkFlags)
    add_compile_options ("$<$<CONFIG:DEBUG>:${CompileFlags}>")
-endfunction (UPDATE_DEBUG_COMPILE_FLAGS)
+endfunction (UPDATE_COMPILE_FLAGS_DEBUG)
 
 
 
@@ -54,18 +54,18 @@ endfunction (UPDATE_LINK_FLAGS)
 
   # Just release config
   
-function (UPDATE_RELEASE_LINK_FLAGS LinkFlags)
+function (UPDATE_LINK_FLAGS_RELEASE LinkFlags)
    set (CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} ${LinkFlags}" PARENT_SCOPE)
-endfunction (UPDATE_RELEASE_LINK_FLAGS)
+endfunction (UPDATE_LINK_FLAGS_RELEASE)
 
   # Just relwithdebuginfo config
   
-function (UPDATE_RELWITHDEBUGINFO_LINK_FLAGS LinkFlags)
+function (UPDATE_LINK_FLAGS_RELWITHDEBUGINFO LinkFlags)
    set (CMAKE_EXE_LINKER_FLAGS_RELWITHDEBUGINFO "${CMAKE_EXE_LINKER_FLAGS_RELWITHDEBUGINFO} ${LinkFlags}" PARENT_SCOPE)
-endfunction (UPDATE_RELWITHDEBUGINFO_LINK_FLAGS)
+endfunction (UPDATE_LINK_FLAGS_RELWITHDEBUGINFO)
 
   # Just debug config
 
-function (UPDATE_DEBUG_LINK_FLAGS LinkFlags)
+function (UPDATE_LINK_FLAGS_DEBUG LinkFlags)
    set (CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} ${LinkFlags}" PARENT_SCOPE)
-endfunction (UPDATE_DEBUG_LINK_FLAGS)
+endfunction (UPDATE_LINK_FLAGS_DEBUG)

@@ -52,13 +52,18 @@ enable_ide_source_file_folders ()
 update_compile_flags ("/EHsc")                        # Exception handling is synchronous (/EHa has time/space and changed behavour of catch () consequences)
 update_compile_flags ("/D WIN32")                     # Select Windows specific conditional code
 update_compile_flags ("/D _WINDOWS")                  # Identifies target platform is Windows
-update_debug_compile_flags ("/D _DEBUG")              # Select debug config specific conditional code
-update_release_compile_flags ("/D NDEBUG")            # Select release config specific conditional code
-update_relwithdebuginfo_compile_flags ("/D NDEBUG")   # Select release config specific conditional code
+update_compile_flags_debug ("/D _DEBUG")              # Select debug config specific conditional code
+update_compile_flags_release ("/D NDEBUG")            # Select release config specific conditional code
+update_compile_flags_relwithdebuginfo ("/D NDEBUG")   # Select release config specific conditional code
 
-update_release_link_flags ("/LTCG")                   # Perform whole program optimisation at link time (Link Time Code Generation)
-update_release_link_flags ("/OPT:REF")                # Have the linker remove unreferenced code
-update_release_link_flags ("/OPT:ICF")                # Have the linker remove redundant (duplicate) data sections (COMDAT)
+update_link_flags_release ("/LTCG")                   # Perform whole program optimisation at link time (Link Time Code Generation)
+update_link_flags_release ("/OPT:REF")                # Have the linker remove unreferenced code
+update_link_flags_release ("/OPT:ICF")                # Have the linker remove redundant (duplicate) data sections (COMDAT)
+
+update_link_flags_debug ("/NODEFAULTLIB:MSVCRT")      # One of the prebuilt libraries was asked to link to another C runtime lib config
+
+#update_link_flags ("/verbose:lib")                   # Optional diagnostics to list used libraries
+#update_link_flags ("/verbose")                       # Optional diagnostics for the whole link process 
 
 if (DSS_32_BIT)
    update_link_flags ("/LARGEADDRESSAWARE")           # Maximise the address space for 32 bit builds
