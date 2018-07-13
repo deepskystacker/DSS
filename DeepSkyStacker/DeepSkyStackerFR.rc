@@ -1425,7 +1425,7 @@ BEGIN
                             "Image enregistrée avec les ajustements inclus."
     IDS_LOADRGBTIFF         "Chargement d'un fichier TIFF %ld bits/ch"
     IDS_LOADGRAYTIFF        "Chargement d'un fichier TIFF %ld bits monochrome"
-    IDS_DEEPSKYSTACKER      "DeepSkyStacker 3.2"
+    IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
     IDS_SAVINGINTERMEDIATE  "Enregistrement de l'image enregistrée et calibrée dans %s"
     IDS_SAVINGFINAL         "Enregistrement de l'image finale dans %s"
     IDS_SAVINGCALIBRATED    "Enregistrement de l'image calibrée dans %s"

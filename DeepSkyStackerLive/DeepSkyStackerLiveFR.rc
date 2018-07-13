@@ -530,7 +530,7 @@ BEGIN
     IDS_SAVEWITHSETTINGSEMBEDDED "Image enregistrée avec les ajustements inclus."
     IDS_LOADRGBTIFF         "Chargement d'un fichier TIFF %ld bits/ch"
     IDS_LOADGRAYTIFF        "Chargement d'un fichier TIFF %ld bits monochrome"
-    IDS_DEEPSKYSTACKER      "DeepSkyStacker 3.0"
+    IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
     IDS_SAVINGINTERMEDIATE  "Enregistrement de l'image enregistrée et calibrée dans %s"
     IDS_SAVINGCALIBRATED    "Enregistrement de l'image calibrée dans %s"
     IDS_LOADRGBFITS         "Chargement d'un fichier FITS %ld bits/ch"

@@ -531,7 +531,7 @@ BEGIN
     IDS_SAVEWITHSETTINGSEMBEDDED "Afbeelding bewaard met ingebedde instellingen."
     IDS_LOADRGBTIFF         "Laden TIFF %ld bit/kan"
     IDS_LOADGRAYTIFF        "Laden TIFF %ld bit zwart-wit"
-    IDS_DEEPSKYSTACKER      "DeepSkyStacker 3.0"
+    IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
     IDS_SAVINGINTERMEDIATE  "Bewaren Geregistreerde en Gecalibreerde afbeelding naar %s"
     IDS_SAVINGCALIBRATED    "Bewaren Gecalibreerde afbeelding naar %s"
     IDS_LOADRGBFITS         "Laden FITS %ld bit/kan"
