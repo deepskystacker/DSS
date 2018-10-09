@@ -19,7 +19,7 @@ public :
 	void	AddRef()
 	{
 		#if defined(_WINDOWS_)
-		m_lRefCount = InterlockedIncrement(&m_lRefCount);
+		InterlockedIncrement(&m_lRefCount);
 		#else
 		m_lRefCount++;
 		#endif
