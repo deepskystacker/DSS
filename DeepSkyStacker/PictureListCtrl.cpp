@@ -106,6 +106,7 @@ BEGIN_MESSAGE_MAP(CPictureListCtrl, CListCtrlEx)
 	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, OnItemChanged)
 	ON_NOTIFY_REFLECT(LVN_GETDISPINFO, OnGetdispinfo)
 	ON_NOTIFY_REFLECT(LVN_KEYDOWN, OnKeydownList)
+	ON_WM_KEYDOWN()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
 	ON_MESSAGE(WM_LISTITEMCHANGED, OnListItemChanged)
@@ -751,6 +752,22 @@ void CPictureListCtrl::OnKeydownList(NMHDR* pNMHDR, LRESULT* pResult)
 
     *pResult = 0;
 };
+
+void CPictureListCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	CListCtrlEx::OnKeyDown(nChar, nRepCnt, nFlags);
+
+	//If user press space, toggle flag on selected item
+	if (nChar == VK_SPACE)
+	{
+		//Toggle if some item is selected
+		if (GetSelectionMark() != -1)
+		{
+			ToggleCheckBox(GetSelectionMark());
+			m_bDirty = TRUE;
+		};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
