@@ -416,6 +416,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TaskPool.cpp" />
     <ClCompile Include="TIFFUtil.cpp" />
     <ClCompile Include="Workspace.cpp" />
   </ItemGroup>
@@ -557,6 +558,7 @@
     <ClInclude Include="StarMaskDlg.h" />
     <ClInclude Include="Stars.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="TaskPool.h" />
     <ClInclude Include="TIFFUtil.h" />
     <ClInclude Include="Workspace.h" />
   </ItemGroup>

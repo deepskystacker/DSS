@@ -306,6 +306,7 @@
     <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />
     <ClCompile Include="..\DeepSkyStacker\StackedBitmap.cpp" />
     <ClCompile Include="..\DeepSkyStacker\StackingTasks.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\TaskPool.cpp" />
     <ClCompile Include="..\DeepSkyStacker\TIFFUtil.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Workspace.cpp" />
     <ClCompile Include="..\SMTP\Base64.cpp" />
@@ -398,6 +399,7 @@
     <ClInclude Include="..\DeepSkyStacker\StackedBitmap.h" />
     <ClInclude Include="..\DeepSkyStacker\StackingTasks.h" />
     <ClInclude Include="..\DeepSkyStacker\Stars.h" />
+    <ClInclude Include="..\DeepSkyStacker\TaskPool.h" />
     <ClInclude Include="..\DeepSkyStacker\TIFFUtil.h" />
     <ClInclude Include="..\DeepSkyStacker\Workspace.h" />
     <ClInclude Include="..\SMTP\Base64.h" />

@@ -339,6 +339,9 @@
     <ClCompile Include="..\Tools\CtrlCache.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="TaskPool.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -741,6 +744,9 @@
     </ClInclude>
     <ClInclude Include="..\Tools\CtrlCache.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskPool.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
