@@ -198,7 +198,7 @@ private :
 	BOOL	AdjustEntropyCoverage();
 	BOOL	AdjustBayerDrizzleCoverage();
 	BOOL	SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBitmap);
-	BOOL	SaveCalibratedLightFrame(CMemoryBitmap * pBitmap);
+	BOOL	SaveCalibratedLightFrame(CMemoryBitmap * pBitmap) const;
 	BOOL	SaveDeltaImage(CMemoryBitmap * pBitmap);
 	BOOL	SaveCometImage(CMemoryBitmap * pBitmap);
 	BOOL	SaveCometlessImage(CMemoryBitmap * pBitmap);

@@ -114,6 +114,9 @@
     <ClCompile Include="..\DeepSkyStacker\TaskPool.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\RegisterEngine-Parallel.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProgressConsole.h">

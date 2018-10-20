@@ -345,8 +345,13 @@ int _tmain(int argc, _TCHAR* argv[])
 		{
 			// Register checked light frames
 			CRegisterEngine	RegisterEngine;
+			if (0)
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, g_bForceRegister, &progress);
+			else if (0)
+				bContinue = RegisterEngine.RegisterLightFrames2(tasks, g_bForceRegister, &progress);
+			else
+				bContinue = RegisterEngine.RegisterLightFramesParallel(tasks, g_bForceRegister, &progress);
 
-			bContinue = RegisterEngine.RegisterLightFrames(tasks, g_bForceRegister, &progress);
 		};
 		if (g_bStacking && bContinue)
 		{

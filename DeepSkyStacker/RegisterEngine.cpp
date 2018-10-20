@@ -1409,7 +1409,7 @@ void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, BOOL bProcessIfNecessary, BOOL
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile)
+BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile) const
 {
 	BOOL				bResult = FALSE;
 

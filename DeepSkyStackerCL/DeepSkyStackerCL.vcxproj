@@ -249,6 +249,7 @@
     <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Multitask.cpp" />
     <ClCompile Include="..\DeepSkyStacker\RAWUtils.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\RegisterEngine-Parallel.cpp" />
     <ClCompile Include="..\DeepSkyStacker\RegisterEngine.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Settings.cpp" />
     <ClCompile Include="..\DeepSkyStacker\SetUILanguage.cpp" />

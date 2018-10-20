@@ -1504,7 +1504,7 @@ BOOL	CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBit
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingEngine::SaveCalibratedLightFrame(CMemoryBitmap * pBitmap)
+BOOL	CStackingEngine::SaveCalibratedLightFrame(CMemoryBitmap * pBitmap) const
 {
 	ZFUNCTRACE_RUNTIME();
 

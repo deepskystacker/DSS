@@ -418,7 +418,8 @@ public :
 typedef std::vector<CLightFrameInfo>	LIGHTFRAMEINFOVECTOR;
 
 /* ------------------------------------------------------------------- */
-
+class CMasterFrames;
+struct LoadFrameToRegisterData;
 class CRegisterEngine
 {
 private :
@@ -427,7 +428,10 @@ private :
 	BOOL						m_bSaveCalibratedDebayered;
 
 private :
-	BOOL	SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile);
+	BOOL	SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile) const;
+	
+
+
 
 public :
 	CRegisterEngine()
@@ -442,6 +446,18 @@ public :
 	};
 
 	BOOL	RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForceRegister, CDSSProgress * pProgress);
+
+
+
+	// Breaking dependencies
+	// still linear processing
+	BOOL	RegisterOneFrame(BOOL bForce, CDSSProgress * pProgress, CStackingInfo * pStackingInfo, CMasterFrames&	MasterFrames, LONG	lNrRegistered, const CFrameInfo& frameInfo) const;
+	BOOL	RegisterLightFrames2(CAllStackingTasks & tasks, BOOL bForceRegister, CDSSProgress * pProgress);
+
+	// Additions for parallel processing
+	BOOL	RegisterLightFramesParallel(CAllStackingTasks & tasks, BOOL bForceRegister, CDSSProgress * pProgress);
+	static void RegisterOneFrameProcessPart(LoadFrameToRegisterData&data);
+	static void RegisterOneFrameLoadPart(LoadFrameToRegisterData&data);
 };
 
 /* ------------------------------------------------------------------- */
