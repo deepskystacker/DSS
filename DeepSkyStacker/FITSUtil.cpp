@@ -252,7 +252,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, LONG & lValue)
 BOOL CFITSReader::ReadKey(LPSTR szKey, CString & strValue)
 {
 	BOOL				bResult = FALSE;
-	TCHAR				szValue[2000];
+	CHAR				szValue[2000];
 	int					nStatus = 0;
 
 	if (m_fits)
@@ -1202,7 +1202,7 @@ void	CFITSWriter::WriteAllKeys()
 		for (LONG i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
 			CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
-			TCHAR			szValue[FLEN_VALUE];
+			CHAR			szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
 			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(ei.m_strName, CP_UTF8), szValue, NULL, &nStatus);
