@@ -42,10 +42,6 @@ public:
 public :
 	void PeekAndPump()
 	{
-		// The Stop button (mostly) ignores mouse clicks if the focus is constantly stealed here.
-		//if (m_hWnd && ::GetFocus() != m_hWnd)
-		//	SetFocus();
-
 		MSG msg;
 		while (!m_bCancelled && ::PeekMessage(&msg, NULL,0,0,PM_NOREMOVE)) 
 		{
