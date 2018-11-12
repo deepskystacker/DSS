@@ -3327,8 +3327,9 @@ void CListBase::OnKeyDown(UINT nChar)
           m_pListCtrl->SetCheck(m_pListCtrl->GetNextSelectedItem(pos),
                                 bChecked);
       }
-      else
-        m_pListCtrl->Default();
+
+      // Still have to forward the event to the default window procedure.
+      m_pListCtrl->Default();
       break;
     }
 
