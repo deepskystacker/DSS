@@ -228,7 +228,6 @@ protected:
 	afx_msg void OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnLButtonDown( UINT, CPoint );
 	afx_msg void OnRButtonDown( UINT, CPoint );
 	afx_msg void OnKeydownList(NMHDR* pNMHDR, LRESULT* pResult);
