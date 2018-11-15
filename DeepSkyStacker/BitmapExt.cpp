@@ -329,78 +329,93 @@ BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL							bResult = FALSE;
-	CSmartPtr<C24BitColorBitmap>	pBitmap;
 	Bitmap	*						pSrcBitmap;
+    BitmapData 						bitmapData;
 
 	pSrcBitmap = new Bitmap(CComBSTR(szFileName));
 	if (pSrcBitmap)
 	{
-		pBitmap.Attach(new C24BitColorBitmap());
-		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-		if (pBitmap)
-		{
-			LONG					lWidth  = pSrcBitmap->GetWidth();
-			LONG					lHeight = pSrcBitmap->GetHeight();
-			Rect					rc(0, 0, lWidth-1, lHeight-1);
-			BitmapData 				bitmapData;
-			
-			if (pProgress)
-				pProgress->Start2(NULL, lHeight);
-			pBitmap->Init(lWidth, lHeight);
-
-			if (pSrcBitmap->LockBits(&rc, ImageLockModeRead, PixelFormat24bppRGB, &bitmapData) == Ok)
-			{
-				BYTE *				pBasePixels = (BYTE*)bitmapData.Scan0;
-
-				BYTE *				pRedPixel	= pBitmap->GetRedPixel(0, 0);
-				BYTE *				pGreenPixel = pBitmap->GetGreenPixel(0, 0);
-				BYTE *				pBluePixel	= pBitmap->GetBluePixel(0, 0);
-
-				for (LONG j = 0;j<lHeight;j++)
-				{
-					BYTE *			pPixel = pBasePixels;
-
-					for (LONG i = 0;i<lWidth;i++)
-					{
-						*pBluePixel = *pPixel;
-						pPixel++;
-						*pGreenPixel = *pPixel;
-						pPixel++;
-						*pRedPixel = *pPixel;
-						pPixel++;
-
-						pRedPixel++;
-						pGreenPixel++;
-						pBluePixel++;
-					};
-					if (pProgress)
-						pProgress->Progress2(NULL, j+1);
-					pBasePixels += labs(bitmapData.Stride);
-				};
-
-				if (pProgress)
-					pProgress->End2();
-
-				pSrcBitmap->UnlockBits(&bitmapData);
-
-				C24BitColorBitmap *	p24Bitmap;
-
-				pBitmap.CopyTo(&p24Bitmap);
-				*ppBitmap = dynamic_cast<CMemoryBitmap *>(p24Bitmap);
-
-				CBitmapInfo				bmpInfo;
-				if (RetrieveEXIFInfo(szFileName, bmpInfo))
-					pBitmap->m_DateTime = bmpInfo.m_DateTime;
-
-				bResult = TRUE;
-			};
-		};
+        PixelFormat pixformat = pSrcBitmap->GetPixelFormat();
+        if (pixelFormat == PixelFormat16bppGrayScale)
+        {
+            if (pSrcBitmap->LockBits(&rc, ImageLockModeRead, PixelFormat16bppGrayScale, &bitmapData) == Ok)
+                bResult = LoadOtherPicture<C16BitGrayBitmap>(&bitmapData, ppBitmap, pProgress);
+            else
+                bResult = FALSE;
+        } 
+        else if (pixelFormat == PixelFormat24bppRGB ||
+                pixelFormat == PixelFormat32bppARGB ||
+                pixelFormat == PixelFormat32bppPARGB ||
+                pixelFormat == PixelFormat32bppRGB)
+        {
+            if (pSrcBitmap->LockBits(&rc, ImageLockModeRead, PixelFormat24bppRGB, &bitmapData) == Ok)
+                bResult = LoadOtherPicture<C24BitColorBitmap>(&bitmapData, ppBitmap, pProgress);
+            else
+                bResult = FALSE;
+        }
+        else if (pixelFormat == PixelFormat48bppRGB ||
+                pixelFormat == PixelFormat64bppARGB ||
+                pixelFormat == PixelFormat64bppPARGB)
+        {
+            if (pSrcBitmap->LockBits(&rc, ImageLockModeRead, PixelFormat48bppRGB, &bitmapData) == Ok)
+                bResult = LoadOtherPicture<C48BitColorBitmap>(&bitmapData, ppBitmap, pProgress);
+            else
+                bResult = FALSE;
+        }
+        else
+        {
+            bResult = FALSE;
+        } 
 
 		delete pSrcBitmap;
 	};
 
 	return bResult;
 };
+
+template<class CXBitYBitmap>
+BOOL    LoadOtherPicture(BitmapData * pBitmapData, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+{
+	CSmartPtr<CXBitYBitmap>	pBitmap;
+
+    pBitmap.Attach(new CXbitYBitmap());
+    ZTRACE_RUNTIME("Creating %d bit %s memory bitmap %p (%s)", pBitmap->BitPerSample(), (pBitmap->IsMonochrome() ? "Mono" : "RGB"), pBitmap.m_p, szFileName);
+    if (pBitmap)
+    {
+        LONG					lWidth  = pBitmapData->Width;
+        LONG					lHeight = pBitmapData->Height;
+        Rect					rc(0, 0, lWidth-1, lHeight-1);
+
+        if (pProgress)
+            pProgress->Start2(NULL, lHeight);
+
+        pBitmap->Init(lWidth, lHeight);
+
+        void *				pBasePixels = (BYTE*)pBitmapData.Scan0;
+        
+        for (LONG i = 0; i < lHeight; i++)
+        {
+            pBitmap->SetScanLine(i, pBasePixels);
+            pBasePixels += pBitmapData->Stride;
+
+            if (pProgress)
+                pProgress->Progress2(NULL, j+1);
+        }
+
+        pSrcBitmap->UnlockBits(&bitmapData);
+
+        CXbitYBitmap *	pOutputBitmap;
+
+        pBitmap.CopyTo(&pOutputBitmap);
+        *ppBitmap = dynamic_cast<CMemoryBitmap *>(pOutputBitmap);
+
+        CBitmapInfo				bmpInfo;
+        if (RetrieveEXIFInfo(szFileName, bmpInfo))
+            pBitmap->m_DateTime = bmpInfo.m_DateTime;
+
+        bResult = TRUE;
+    };
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -541,6 +556,7 @@ BOOL	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	if (pBitmap)
 	{
 		GUID				rawformat;
+        PixelFormat         pixformat = pBitmap->GetPixelFormat();
 
 		if ((pBitmap->GetType() == ImageTypeBitmap) &&
 			(pBitmap->GetRawFormat(&rawformat) == Ok))
@@ -556,6 +572,34 @@ BOOL	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 				BitmapInfo.m_strFileType	= "PNG";
 			else 
 				bResult = FALSE;
+            
+            if (bResult)
+            {
+                if (pixelFormat == PixelFormat16bppGrayScale)
+                {
+                    BitmapInfo.m_lBitPerChannel = 16;
+                    BitmapInfo.m_lNrChannels = 1;
+                } 
+                else if (pixelFormat == PixelFormat24bppRGB ||
+                        pixelFormat == PixelFormat32bppARGB ||
+                        pixelFormat == PixelFormat32bppPARGB ||
+                        pixelFormat == PixelFormat32bppRGB)
+                {
+                    BitmapInfo.m_lBitPerChannel = 8;
+                    BitmapInfo.m_lNrChannels = 3;
+                }
+                else if (pixelFormat == PixelFormat48bppRGB ||
+                        pixelFormat == PixelFormat64bppARGB ||
+                        pixelFormat == PixelFormat64bppPARGB)
+                {
+                    BitmapInfo.m_lBitPerChannel = 16;
+                    BitmapInfo.m_lNrChannels = 3;
+                }
+                else
+                {
+                    bResult = FALSE;
+                }
+            }
 
 			RetrieveEXIFInfo(pBitmap, BitmapInfo);
 
@@ -565,8 +609,6 @@ BOOL	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 				BitmapInfo.m_CFAType		= CFATYPE_NONE;
 				BitmapInfo.m_lWidth			= pBitmap->GetWidth();
 				BitmapInfo.m_lHeight		= pBitmap->GetHeight();
-				BitmapInfo.m_lBitPerChannel	= 8;
-				BitmapInfo.m_lNrChannels	= 3;
 				BitmapInfo.m_bCanLoad		= TRUE;
 			};
 		};
