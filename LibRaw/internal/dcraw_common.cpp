@@ -15978,6 +15978,7 @@ void CLASS jpeg_thumb()
 }
 #endif
 
+#define FORCC for (c=0; c < colors && c < 4; c++)
 void CLASS write_ppm_tiff()
 {
   struct tiff_hdr th;

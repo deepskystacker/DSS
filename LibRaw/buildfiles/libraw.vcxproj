@@ -247,6 +247,7 @@
     <ClInclude Include="..\libraw\libraw_const.h" />
     <ClInclude Include="..\libraw\libraw_datastream.h" />
     <ClInclude Include="..\libraw\libraw_internal.h" />
+    <ClInclude Include="..\libraw\libraw_types.h" />
     <ClInclude Include="..\libraw\libraw_version.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

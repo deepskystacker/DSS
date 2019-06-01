@@ -58,5 +58,8 @@
     <ClInclude Include="..\internal\var_defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\libraw\libraw_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

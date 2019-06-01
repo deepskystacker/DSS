@@ -244,6 +244,11 @@
   <ItemGroup>
     <ClCompile Include="..\samples\dcraw_emu.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libraw.vcxproj">
+      <Project>{767e57ed-6d37-32a1-b51e-c39e7c1cd02a}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -392,24 +392,6 @@
     <ClCompile Include="..\ChartCtrl\ChartSerie.cpp" />
     <ClCompile Include="..\ChartCtrl\ChartSurfaceSerie.cpp" />
     <ClCompile Include="..\ChartCtrl\ChartTitle.cpp" />
-    <ClCompile Include="..\DCRaw\dcraw.c">
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">Sync</ExceptionHandling>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">NotUsing</PrecompiledHeader>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">Sync</ExceptionHandling>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
-      </PrecompiledHeader>
-      <EnableFiberSafeOptimizations Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EnableFiberSafeOptimizations>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <EnableFiberSafeOptimizations Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnableFiberSafeOptimizations>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{A8F4069D-F6D1-4A9A-A4E5-9A22B411D691}"
 EndProject
@@ -52,7 +52,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libtiff", "LibTiff\libtiff.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZCLass", "ZCLass\ZCLass.vcxproj", "{1747F255-9CB9-472B-8FEE-9E0BBFBAD49D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libraw", "LibRaw-0.18.8\buildfiles\libraw.vcxproj", "{767E57ED-6D37-32A1-B51E-C39E7C1CD02A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libraw", "LibRaw\buildfiles\libraw.vcxproj", "{767E57ED-6D37-32A1-B51E-C39E7C1CD02A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
