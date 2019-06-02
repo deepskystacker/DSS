@@ -775,7 +775,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// apply a linear stretch such that the brightest pixels are set to
 				// 65535.
 				//
-				unsigned int dark = O.user_black > 0 ? O.user_black : C.black;
+				unsigned int dark = O.user_black >= 0 ? O.user_black : C.black;
 				ZTRACE_RUNTIME("Subtracting black level of %d from raw_image data.", dark);
 				unsigned short maxval = 0;
 				buffer = &RAW(S.top_margin, S.left_margin);	// Point to first element of true image
