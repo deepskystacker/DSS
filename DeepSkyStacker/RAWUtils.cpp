@@ -400,6 +400,7 @@ public:
 
 	int	Start()
 	{
+		ZFUNCTRACE_RUNTIME();
 		//
 		// Do initialisation not done by ctor
 		//
@@ -504,7 +505,6 @@ Thread DSSLibRaw	rawProcessor;
 /* ------------------------------------------------------------------- */
 
 //static CString			g_strInputFileName;
-static Thread char				g_szInputFileName[_MAX_PATH];					
 static Thread CDSSProgress *	g_Progress;
 
 
@@ -527,6 +527,7 @@ private :
 public :
 	CRawDecod(LPCTSTR szFile)
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_strFileName = szFile;
 		m_bColorRAW	  = FALSE;
 		m_CFAType	  = CFATYPE_NONE;
@@ -535,6 +536,7 @@ public :
 
 	virtual ~CRawDecod() 
 	{
+		ZFUNCTRACE_RUNTIME();
 		rawProcessor.recycle();
 	};
 
@@ -636,6 +638,7 @@ public :
 
 BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, BOOL bThumb)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL		bResult = TRUE;
 	BitMapFiller *		pFiller = NULL;
 	int			ret = 0;
@@ -696,14 +699,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				O.use_camera_wb = 1;
 			};
 
-#if (0)
-			if (!m_bColorRAW)
-			{
-				// Document mode (i.e. don't demosaic the image in libraw).
-				O.no_interpolation = 1;
-			};
-#endif
-
 			// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
 			O.use_fuji_rotate = 0;
 
@@ -728,7 +723,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
 			O.output_bps = 16;
 
-			lstrcpy(g_szInputFileName, (LPCTSTR)m_strFileName);
 			g_Progress = pProgress;
 
 			if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
@@ -738,46 +732,30 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			}
 			if (!bResult) break;
 
-#if(0)
-			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
-			{
-				ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName, libraw_strerror(ret));
-				if (LIBRAW_FATAL_ERROR(ret))
-					bResult = FALSE;
-			}
-			if (!bResult) break;
-
-
-#define IMAGE(row,col) \
-	rawProcessor.imgdata.image[(row)*S.raw_width+(col)]
-			void * imgptr = IMAGE(S.top_margin, S.left_margin);
-#endif
-			
+			// 
+			// Create the class that populates the bitmap
+			//
 			pFiller = new BitMapFiller(pBitmap, pProgress);
 			pFiller->SetWhiteBalance(fRedScale, fGreenScale, fBlueScale);
 			// Get the Colour Filter Array type and set into the bitmap filler
 			m_CFAType = GetCurrentCFAType();
 			pFiller->SetCFAType(m_CFAType);
 
-#if(0)
-			// Set up the intercept code to write the image data to our bitmap instead of 
-			// to an external file, and invoke the overridden dcraw_ppm_tiff_writer()
-			rawProcessor.setBitMapFiller(pFiller);
-			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_ppm_tiff_writer("")))
-			{
-				bResult = FALSE;
-				ZTRACE_RUNTIME("Cannot write image data to bitmap %s", libraw_strerror(ret));
-			}
-#endif
-
 #define RAW(row,col) \
 	RawData.raw_image[(row)*S.raw_width+(col)]
 
+			//
+			// Get our endian-ness so we can swap bytes if needed (alway on Windows).
+			//
 			BOOL littleEndian = htons(0x55aa) != 0x55aa;
+
 			if (!m_bColorRAW)
 			{
-				// This is a regular RAW file, so we should have the "raw" 16-bit greyscale
-				// pixel array hung off RawData.raw_image.
+				//
+				// This is a regular RAW file using a Bayer matrix so we should have the 
+				// "raw" 16-bit greyscale pixel array hung off RawData.raw_image.
+				//
+				ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
 				ZASSERT(NULL != RawData.raw_image);
 
 				pFiller->setGrey(TRUE);
@@ -814,7 +792,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 						else
 						{
 							val = 0;
-
 						}
 						RAW(row + S.top_margin, col + S.left_margin) = val;
 						maxval = val > maxval ? val : maxval;
@@ -852,17 +829,38 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					pFiller->Write(buffer, sizeof(ushort), S.width);
 				}
 			}
+#undef RAW
 			else
 			{
-				// This is a "full colour" RAW file, so we should have an RGB pixel array
-				// hung off RawData.color3_image
-				ZASSERT(NULL != RawData.color3_image);
+				//
+				// This is a "full colour" RAW file, so we can use full libraw
+				// processing and capture the PPM file output.
+				//
+				if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
+				{
+					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName, libraw_strerror(ret));
+					if (LIBRAW_FATAL_ERROR(ret))
+						bResult = FALSE;
+				}
+				if (!bResult) break;
+
+				//
+				// Now capture the output using our over-ridden methods
+				//
+				// Set up the intercept code to write the image data to our bitmap instead of 
+				// to an external file, and invoke the overridden dcraw_ppm_tiff_writer()
+				//
+				rawProcessor.setBitMapFiller(pFiller);
+				if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_ppm_tiff_writer("")))
+				{
+					bResult = FALSE;
+					ZTRACE_RUNTIME("Cannot write image data to bitmap %s", libraw_strerror(ret));
+				}
 			}
 
 		} while (0);
 #undef RAW
 
-		g_szInputFileName[0] = 0;
 		g_Progress = NULL;
 
 	};
@@ -878,6 +876,8 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 BOOL CRawDecod::IsRawFile()
 {
+	ZFUNCTRACE_RUNTIME();
+
 	BOOL		bResult = TRUE;
 	int			ret = 0;
 	
@@ -933,6 +933,7 @@ BOOL CRawDecod::IsRawFile()
 
 BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	CRawDecod		dcr(szFileName);
 
@@ -948,6 +949,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 
 BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	BOOL			bIsTiff = FALSE;
 	TCHAR			szExt[_MAX_EXT];
@@ -994,6 +996,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	CRawDecod		dcr(szFileName);
 
@@ -1071,6 +1074,7 @@ BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
 
 int DSSLibRaw::dcraw_ppm_tiff_writer(const char *filename)
 {
+	ZFUNCTRACE_RUNTIME();
 	CHECK_ORDER_LOW(LIBRAW_PROGRESS_LOAD_RAW);
 
 	if (!imgdata.image)
@@ -1098,6 +1102,7 @@ int DSSLibRaw::dcraw_ppm_tiff_writer(const char *filename)
 
 void DSSLibRaw::write_ppm_tiff()
 {
+	ZFUNCTRACE_RUNTIME();
 	uchar *ppm;
 	ushort *ppm2;
 	int c, row, col, soff, rstep, cstep;
