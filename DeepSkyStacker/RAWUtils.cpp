@@ -799,10 +799,13 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				}
 
 				//
-				// Now apply a linear stretch to the raw data
+				// Now apply a linear stretch to the raw data, scale to the "saturation" level
+				// not to the value of the pixel with the greatest value (which may be higher
+				// than the saturation level).
 				// 
-				float scale = 65535.0 / maxval;
+				float scale = 65535.0 / C.maximum;
 				ZTRACE_RUNTIME("Maximum value pixel has value %d", maxval);
+				ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
 				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale value %f", scale);
 				for (row = 0; row < S.height; row++)
 				{
