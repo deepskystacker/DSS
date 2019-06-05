@@ -1,4 +1,7 @@
-##!include "MUI2.nsh"
+!verbose 4
+
+!define PRODUCT_NAME       "DeepSkyStacker"
+!define NAMESUFFIX         " (64 bit)"
 
 !define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
 
@@ -12,55 +15,55 @@
 !define DSS_RUNTIME_CPP    "msvcp140.dll"
 !define DSS_RUNTIME_C      "vcruntime140.dll"
 
+!define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
+!define DSS_VERSION        "4.2.0"                                  # For control panel
+!define DSS_VERSION_SUFFIX "Beta 1"                                 # For control panel (e.g. "beta 1")
+!define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
-!define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
-!define DSS_VERSION        "4.1.0"                                  # For control panel
-!define DSS_VERSION_SUFFIX ""                                       # For control panel (e.g. "beta 1") 
-!define DSS_PUBLISHER      "Luc Coiffier"                           # For control panel
-
-!define DSS_NAME           "DeepSkyStacker (64 bit)"
+!define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
 !define DSS_FILE           "DeepSkyStacker"
 
-!define DSSCL_NAME         "DeepSkyStacker Command Line (64 bit)"
+!define DSSCL_NAME         "DeepSkyStacker Command Line${NAMESUFFIX}"
 !define DSSCL_FILE         "DeepSkyStackerCL"
 
-!define DSSLIVE_NAME       "DeepSkyStacker Live (64 bit)"
+!define DSSLIVE_NAME       "DeepSkyStacker Live${NAMESUFFIX}"
 !define DSSLIVE_FILE       "DeepSkyStackerLive"
 
 !define DSS_README_NAME    "README"
 !define DSS_README_FILE    "README.txt"
 
 
-!define DSS_UNINSTALL_NAME "DeepSkyStacker Uninstaller (64 bit)"
-!define DSS_UNINSTALL_FILE "DeepSkyStacker64Uninstaller"
+!define DSS_UNINSTALL_NAME "DeepSkyStacker${NAMESUFFIX} Uninstaller"
+!define DSS_UNINSTALL_FILE "DSS64-Remove"
 
-!define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}64"
+!define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}64"
 
 CRCCheck On
 
 
 # define installer name
 
-OutFile "DeepSkyStacker64Installer.exe"
+OutFile "DSS64-Setup.exe"
  
+; Take the highest execution level available
+; This means that if it's possible to, we become an administrator
+RequestExecutionLevel Admin
+
 # set the install directory - the programs are 64 bit versions
 
 InstallDir "$PROGRAMFILES64\${DSS_PRODUCT}"
 
-# ** (Do we need this?) **
-
-RequestExecutionLevel admin
 
 # Enable/disable UI features we do/dont want
 
-ShowInstDetails       nevershow
-ShowUninstDetails     nevershow
+ShowInstDetails       show
+ShowUninstDetails     show
 
 Name                  "${DSS_NAME}"
 Icon                  "${DSS_ICON}"
 UninstallIcon         "${DSS_ICON}"
 
-
+var PreviousUninstaller
 
 # default installer section start
 
@@ -68,15 +71,16 @@ Section
 
   # Modify UI behaviours
   
-  ##SetDetailsPrint     none
+  SetDetailsPrint     both
 
   # define output path
 
   SetOutPath $INSTDIR
  
   # Uninstall previous version silently
+  ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "QuietUninstallString"
   
-  ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" /S _?=$INSTDIR'
+  ExecWait '"$PreviousUninstaller" _?=$INSTDIR'
 
 
   # specify the files that go in the output path
@@ -117,7 +121,7 @@ Section
   # write uninstall information to the registry
  
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "Publisher"            "${DSS_PUBLISHER}"
-  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (64 bit - remove only)"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (remove only)"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayVersion"       "${DSS_VERSION}"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayIcon"          "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
@@ -140,7 +144,7 @@ Section "Uninstall"
  
   # Modify UI behaviours
   
-  ##SetDetailsPrint     none
+  SetDetailsPrint     textonly
 
 
   # Always delete uninstaller first
