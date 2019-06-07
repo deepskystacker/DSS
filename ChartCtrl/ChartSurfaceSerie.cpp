@@ -113,12 +113,17 @@ void CChartSurfaceSerie::DrawAll(CDC* pDC)
 
 int CChartSurfaceSerie::DrawLegend(CDC* pDC, CPoint UpperLeft, int BitmapWidth) const
 {
-	if (m_strSerieName== _T(""))
+	if (m_strSerieName== "")
 		return 0;
 
 	//Draw Text
 	int TextHeigh = pDC->GetTextExtent(m_strSerieName.c_str()).cy;
-	pDC->ExtTextOut(UpperLeft.x+BitmapWidth+6,UpperLeft.y+1,ETO_CLIPPED,NULL,m_strSerieName.c_str(),NULL);
+	pDC->ExtTextOut(UpperLeft.x+BitmapWidth+6,
+					UpperLeft.y+1,
+					ETO_CLIPPED,
+					NULL,
+					m_strSerieName.c_str(),
+					NULL);
 
 	// Draw the bitmap
 	CBrush NewBrush;

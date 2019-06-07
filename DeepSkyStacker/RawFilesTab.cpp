@@ -143,17 +143,17 @@ void CRawFilesTab::UpdateControls()
 	double				fValue;
 
 	m_Brightness.GetWindowText(strValue);
-	fValue = atof(strValue);
+	fValue = _ttof(strValue);
 	if (fValue <= 0)
 		bOk = FALSE;
 
 	m_RedScale.GetWindowText(strValue);
-	fValue = atof(strValue);
+	fValue = _ttof(strValue);
 	if (fValue <= 0)
 		bOk = FALSE;
 
 	m_BlueScale.GetWindowText(strValue);
-	fValue = atof(strValue);
+	fValue = _ttof(strValue);
 	if (fValue <= 0)
 		bOk = FALSE;
 

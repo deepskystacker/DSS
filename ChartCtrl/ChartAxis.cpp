@@ -99,7 +99,7 @@ int CChartAxis::ClipMargin(CRect ControlRect,CRect& MarginRect,CDC* pDC)
 	CSize LabelSize = m_pAxisLabel->GetSize(pDC);
 	CFont* pOldFont;
 	CFont NewFont;
-	NewFont.CreatePointFont(m_nFontSize,m_strFontName.c_str(),pDC);
+	NewFont.CreatePointFont(m_nFontSize,CA2CT(m_strFontName.c_str()),pDC);
 	pOldFont = pDC->SelectObject(&NewFont);
 
 	CString Buffer;
@@ -336,7 +336,7 @@ void CChartAxis::Draw(CDC *pDC)
 	m_pAxisLabel->SetPosition(XPos,YPos,pDC);
 	m_pAxisLabel->Draw(pDC);
 
-	NewFont.CreatePointFont(m_nFontSize,m_strFontName.c_str(),pDC) ;
+	NewFont.CreatePointFont(m_nFontSize,CA2CT(m_strFontName.c_str()),pDC) ;
 	pOldPen = pDC->SelectObject(&SolidPen);
 	pOldFont = pDC->SelectObject(&NewFont);
 	OldTextColor = pDC->SetTextColor(m_TextColor);

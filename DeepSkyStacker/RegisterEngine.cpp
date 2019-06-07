@@ -649,7 +649,7 @@ BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 	BOOL				bResult = FALSE;
 	FILE *				hFile;
 
-	hFile = fopen(szInfoFileName, _T("wt+"));
+	hFile = _tfopen(szInfoFileName, _T("wt+"));
 	if (hFile)
 	{
 		fprintf(hFile, "OverallQuality = %.2f\n", m_fOverallQuality);
@@ -689,7 +689,7 @@ BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 static BOOL GetNextValue(FILE * hFile, CString & strVariable, CString & strValue)
 {
 	BOOL				bResult = FALSE;
-	TCHAR				szText[2000];
+	CHAR				szText[2000];
 	CString				strText;
 	int					nPos;
 
@@ -697,8 +697,8 @@ static BOOL GetNextValue(FILE * hFile, CString & strVariable, CString & strValue
 	strValue.Empty();
 	if (fgets(szText, sizeof(szText), hFile))
 	{
-		strText = szText;
-		nPos = strText.Find("=", 0); // Search = sign
+		strText = CA2CTEX<sizeof(szText)>(szText, CP_UTF8);
+		nPos = strText.Find(_T("="), 0); // Search = sign
 		if (nPos >= 0)
 		{
 			strVariable = strText.Left(nPos-1);
@@ -729,7 +729,7 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 	FILE *				hFile;
 
 	// Try to open the file as a text file
-	hFile = fopen(szInfoFileName, _T("rt"));
+	hFile = _tfopen(szInfoFileName, _T("rt"));
 	if (hFile)
 	{
 		CString			strVariable;
@@ -744,7 +744,7 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		{
 			GetNextValue(hFile, strVariable, strValue);
 			if (!strVariable.CompareNoCase(_T("OverallQuality")))
-				m_fOverallQuality = atof(strValue);
+				m_fOverallQuality = _ttof(strValue);
 			if (!strVariable.CompareNoCase(_T("Comet")))
 			{
 				// Parse value (X, Y)
@@ -756,33 +756,33 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 				strX = strValue.Left(nPos);
 				strX.TrimLeft();
 				strX.TrimRight();
-				m_fXComet = atof(strX);
+				m_fXComet = _ttof(strX);
 
 				strValue = strValue.Right(strValue.GetLength()-nPos-1);
 				// Get Y
 				strY = strValue;
 				strY.TrimLeft();
 				strY.TrimRight();
-				m_fYComet = atof(strY);
+				m_fYComet = _ttof(strY);
 				m_bComet = TRUE;
 			}
 			/*else if (!strVariable.CompareNoCase(_T("Width")))
-				m_lWidth = atol(strValue);
+				m_lWidth = _ttol(strValue);
 			else if (!strVariable.CompareNoCase(_T("Height")))
-				m_lHeight = atol(strValue);
+				m_lHeight = _ttol(strValue);
 			else if (!strVariable.CompareNoCase(_T("RedXShift")))
-				m_fRedXShift = atof(strValue);
+				m_fRedXShift = _ttof(strValue);
 			else if (!strVariable.CompareNoCase(_T("RedYShift")))
-				m_fRedYShift = atof(strValue);
+				m_fRedYShift = _ttof(strValue);
 			else if (!strVariable.CompareNoCase(_T("BlueXShift")))
-				m_fBlueXShift = atof(strValue);
+				m_fBlueXShift = _ttof(strValue);
 			else if (!strVariable.CompareNoCase(_T("BlueYShift")))
-				m_fBlueYShift = atof(strValue);*/
-			else if (!strVariable.CompareNoCase("SkyBackground"))
-				m_SkyBackground.m_fLight = atof(strValue);
+				m_fBlueYShift = _ttof(strValue);*/
+			else if (!strVariable.CompareNoCase(_T("SkyBackground")))
+				m_SkyBackground.m_fLight = _ttof(strValue);
 			else if (!strVariable.CompareNoCase(_T("NrStars")))
 			{
-				lNrStars = atol(strValue);
+				lNrStars = _ttol(strValue);
 				bEnd = TRUE;
 			};
 		};
@@ -802,11 +802,11 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 			{
 				GetNextValue(hFile, strVariable, strValue);
 				if (!strVariable.CompareNoCase(_T("Intensity")))
-					ms.m_fIntensity = atof(strValue);
+					ms.m_fIntensity = _ttof(strValue);
 				else if (!strVariable.CompareNoCase(_T("Quality")))
-					ms.m_fQuality = atof(strValue);
+					ms.m_fQuality = _ttof(strValue);
 				else if (!strVariable.CompareNoCase(_T("MeanRadius")))
-					ms.m_fMeanRadius = atof(strValue);
+					ms.m_fMeanRadius = _ttof(strValue);
 				else if (!strVariable.CompareNoCase(_T("Rect")))
 				{
 					// Parse value (left, top, right, bottom)
@@ -818,27 +818,27 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.left = atol(strCoord);
+					ms.m_rcStar.left = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Top
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.top = atol(strCoord);
+					ms.m_rcStar.top = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Right
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.right = atol(strCoord);
+					ms.m_rcStar.right = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Bottom
 					strCoord = strValue;
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.bottom = atol(strCoord);
+					ms.m_rcStar.bottom = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 				}
 				else if (!strVariable.CompareNoCase(_T("Axises")))
@@ -852,34 +852,34 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strParams = strValue.Left(nPos);
 					strParams.TrimLeft();
 					strParams.TrimRight();
-					ms.m_fMajorAxisAngle = atof(strParams);
+					ms.m_fMajorAxisAngle = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Large Major
 					nPos = strValue.Find(_T(","));
 					strParams = strValue.Left(nPos);
 					strParams.TrimLeft();
 					strParams.TrimRight();
-					ms.m_fLargeMajorAxis = atof(strParams);
+					ms.m_fLargeMajorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Small Major 
 					nPos = strValue.Find(_T(","));
 					strParams = strValue.Left(nPos);
 					strParams.TrimLeft();
 					strParams.TrimRight();
-					ms.m_fSmallMajorAxis = atof(strParams);
+					ms.m_fSmallMajorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Large Minor Axis
 					nPos = strValue.Find(_T(","));
 					strParams = strValue.Left(nPos);
 					strParams.TrimLeft();
 					strParams.TrimRight();
-					ms.m_fLargeMinorAxis = atof(strParams);
+					ms.m_fLargeMinorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Small Minor Axis
 					strParams = strValue;
 					strParams.TrimLeft();
 					strParams.TrimRight();
-					ms.m_fSmallMinorAxis = atof(strParams);
+					ms.m_fSmallMinorAxis = _ttof(strParams);
 				}
 				else if (!strVariable.CompareNoCase(_T("Center")))
 				{
@@ -892,19 +892,19 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strX = strValue.Left(nPos);
 					strX.TrimLeft();
 					strX.TrimRight();
-					ms.m_fX = atof(strX);
+					ms.m_fX = _ttof(strX);
 
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// Get Y
 					strY = strValue;
 					strY.TrimLeft();
 					strY.TrimRight();
-					ms.m_fY = atof(strY);
+					ms.m_fY = _ttof(strY);
 				}
 				else
 				{
 					bEnd = !strValue.GetLength();
-					bNextStar = !strVariable.CompareNoCase("Star#") || bEnd;
+					bNextStar = !strVariable.CompareNoCase(_T("Star#")) || bEnd;
 				};
 			};
 
@@ -1385,17 +1385,17 @@ void CLightFrameInfo::SaveRegisteringInfo()
 
 void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, BOOL bProcessIfNecessary, BOOL bForceRegister)
 {
-	TCHAR				szDrive[_MAX_DRIVE];
-	TCHAR				szDir[_MAX_DIR];
-	TCHAR				szFile[_MAX_FNAME];
-	TCHAR				szExt[_MAX_EXT];
-	TCHAR				szInfoName[_MAX_PATH];
+	TCHAR				szDrive[1+_MAX_DRIVE];
+	TCHAR				szDir[1+_MAX_DIR];
+	TCHAR				szFile[1+_MAX_FNAME];
+	TCHAR				szExt[1+_MAX_EXT];
+	TCHAR				szInfoName[1+_MAX_PATH];
 
 	Reset();
 	m_bInfoOk = FALSE;
 	m_strFileName = szBitmap;
-	_splitpath(m_strFileName, szDrive, szDir, szFile, szExt);
-	_makepath(szInfoName, szDrive, szDir, szFile, _T(".Info.txt"));
+	_tsplitpath(m_strFileName, szDrive, szDir, szFile, szExt);
+	_tmakepath(szInfoName, szDrive, szDir, szFile, _T(".Info.txt"));
 
 	m_strInfoFileName = szInfoName;
 
@@ -1415,18 +1415,18 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 
 	if (lfi.m_strFileName.GetLength() && pBitmap)
 	{
-		TCHAR			szDrive[_MAX_DRIVE];
-		TCHAR			szDir[_MAX_DIR];
-		TCHAR			szName[_MAX_FNAME];
+		TCHAR			szDrive[1+_MAX_DRIVE];
+		TCHAR			szDir[1+_MAX_DIR];
+		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_splitpath(lfi.m_strFileName, szDrive, szDir, szName, NULL);
+		_tsplitpath(lfi.m_strFileName, szDrive, szDir, szName, NULL);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
 		strOutputFile += szName;
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			strOutputFile += ".cal.tif";
+			strOutputFile += _T(".cal.tif");
 		else
 		{
 			CString			strExt;
@@ -1469,9 +1469,9 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 		};
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pOutBitmap, pProgress, "Calibrated light frame", lfi.m_lISOSpeed, lfi.m_fExposure);
+			bResult = WriteTIFF(strOutputFile, pOutBitmap, pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_fExposure);
 		else
-			bResult = WriteFITS(strOutputFile, pOutBitmap, pProgress, "Calibrated light frame", lfi.m_lISOSpeed, lfi.m_fExposure);
+			bResult = WriteFITS(strOutputFile, pOutBitmap, pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_fExposure);
 
 		if ((CFATransform == CFAT_SUPERPIXEL) && pCFABitmapInfo)
 			pCFABitmapInfo->UseSuperPixels(TRUE);
@@ -1583,12 +1583,12 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 							if (strCalibratedFile.GetLength())
 							{
 								CString				strInfoFileName;
-								TCHAR				szDrive[_MAX_DRIVE];
-								TCHAR				szDir[_MAX_DIR];
-								TCHAR				szFile[_MAX_FNAME];
+								TCHAR				szDrive[1+_MAX_DRIVE];
+								TCHAR				szDir[1+_MAX_DIR];
+								TCHAR				szFile[1+_MAX_FNAME];
 
-								_splitpath(strCalibratedFile, szDrive, szDir, szFile, NULL);
-								strInfoFileName.Format("%s%s%s%s", szDrive, szDir, szFile, _T(".Info.txt"));
+								_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, NULL);
+								strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
 								lfi.CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
 							};
 						};

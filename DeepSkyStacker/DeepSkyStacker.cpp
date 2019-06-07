@@ -83,7 +83,7 @@ BOOL CheckVersion(CString & strVersion)
 			mysession.SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1);
 			mysession.SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1);
 
-			CStdioFile *remotefile = mysession.OpenURL("http://deepskystacker.free.fr/download/CurrentVersion.txt",1,INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_DONT_CACHE|INTERNET_FLAG_RELOAD);
+			CStdioFile *remotefile = mysession.OpenURL(_T("http://deepskystacker.free.fr/download/CurrentVersion.txt"),1,INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_DONT_CACHE|INTERNET_FLAG_RELOAD);
 
 			int numbytes;
 
@@ -93,7 +93,7 @@ BOOL CheckVersion(CString & strVersion)
 					strVersion += httpbuff[i];
 			};
 
-			if (strVersion.Find("DeepSkyStackerVersion=")==0)
+			if (strVersion.Find(_T("DeepSkyStackerVersion="))==0)
 			{
 				bResult = TRUE;
 				strVersion = strVersion.Right(strVersion.GetLength()-22);
@@ -214,26 +214,26 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	AfxInitRichEdit2();
 
 	bResult = CWinApp::InitInstance();
-	SetRegistryKey("DeepSkyStacker");
+	SetRegistryKey(_T("DeepSkyStacker"));
 
 	
 	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS\n");
 
 	CGCFileTypeAccess	FTA;
-	TCHAR				szPath[_MAX_PATH];
+	TCHAR				szPath[1+_MAX_PATH];
 	CString				strPath;
 	CString				strTemp;
 	
-	::GetModuleFileName(NULL, szPath, sizeof(szPath));
+	::GetModuleFileName(NULL, szPath, sizeof(szPath)/sizeof(TCHAR));
 	strPath = szPath;
 
-	FTA.SetExtension("dssfilelist");
+	FTA.SetExtension(_T("dssfilelist"));
 
 	strTemp = strPath;
-	strTemp += " \"%1\"";
+	strTemp += _T(" \"%1\"");
 	FTA.SetShellOpenCommand(strTemp);
 	FTA.SetDocumentShellOpenCommand(strTemp);
-	FTA.SetDocumentClassName("DeepSkyStacker.FileList");
+	FTA.SetDocumentClassName(_T("DeepSkyStacker.FileList"));
 		
 	CString				strFileListDescription;
 
@@ -274,9 +274,9 @@ using namespace std;
 
 /* ------------------------------------------------------------------- */
 
-int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
+int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 				   HINSTANCE hPrevInstance,  // handle to previous instance
-				   LPSTR lpCmdLine,      // pointer to command line
+				   LPTSTR lpCmdLine,      // pointer to command line
 				   int nCmdShow          // show state of window
 				   )
 {
@@ -287,7 +287,7 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 
 	ZTRACE_RUNTIME("Checking Mutex");
 
-	hMutex = CreateMutex(NULL, TRUE, "DeepSkyStacker.Mutex.UniqueID.12354687");
+	hMutex = CreateMutex(NULL, TRUE, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 		bFirstInstance = false;
 	ZTRACE_RUNTIME("Checking Mutex - ok");
@@ -371,8 +371,8 @@ int WINAPI WinMain(HINSTANCE hInstance,  // handle to current instance
 
 			if (strStartFileList.GetLength())
 			{
-				strStartFileList.TrimLeft("\"");
-				strStartFileList.TrimRight("\"");
+				strStartFileList.TrimLeft(_T("\""));
+				strStartFileList.TrimRight(_T("\""));
 			};
 
 			theApp.m_pMainDlg = &dlg;

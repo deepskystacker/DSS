@@ -57,8 +57,8 @@ BOOL CLibraryDlg::OnInitDialog()
 	m_HeaderHTML.SetToolTips(FALSE);
 	m_LibraryHTML.SetToolTips(FALSE);
 
-	m_HeaderHTML.SetWindowText("<b><font size='6' color='#6699FF'>Library</font><font size='5' color='#0000FF'><br>Use&nbsp;&nbsp;&nbsp; Manage</font></b>");
-	m_LibraryHTML.SetWindowText("Library Content");
+	m_HeaderHTML.SetWindowText(_T("<b><font size='6' color='#6699FF'>Library</font><font size='5' color='#0000FF'><br>Use&nbsp;&nbsp;&nbsp; Manage</font></b>"));
+	m_LibraryHTML.SetWindowText(_T("Library Content"));
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -83,7 +83,7 @@ void CLibraryDlg::OnQHTMHyperlink(NMHDR*nmh, LRESULT*)
 		pnm->resReturnValue = FALSE;
 /*		LONG				lLinkID;
 
-		lLinkID = atol(pnm->pcszLinkText);
+		lLinkID = _ttol(pnm->pcszLinkText);
 		CallStackingParameters(lLinkID);*/
 	}
 }

@@ -110,7 +110,7 @@ public :
 	void	SetName(LPCTSTR szName)
 	{
 		if (m_pMain)
-			m_pMain->SetName(szName);
+			m_pMain->SetName((LPCSTR)CT2CA(szName));
 	};
 
 	void	SetVisible(bool bShow)

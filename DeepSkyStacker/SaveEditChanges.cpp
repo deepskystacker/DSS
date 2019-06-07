@@ -152,7 +152,7 @@ void	SetSaveEditMode(SAVEEDITCHANGESMODE Mode)
 	CRegistry			reg;
 	LONG				lValue = Mode;
 
-	reg.SaveKey(REGENTRY_BASEKEY_EDITSTARS, "AutoSave", lValue);
+	reg.SaveKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), lValue);
 };
 
 /* ------------------------------------------------------------------- */
@@ -162,7 +162,7 @@ SAVEEDITCHANGESMODE	GetSaveEditMode()
 	CRegistry			reg;
 	DWORD				dwValue = 0;
 
-	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, "AutoSave", dwValue);
+	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), dwValue);
 
 	return (SAVEEDITCHANGESMODE)dwValue;
 };
@@ -174,7 +174,7 @@ LONG	AskSaveEditChangesMode()
 	CRegistry			reg;
 	DWORD				dwValue = 0;
 
-	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, "AutoSave", dwValue);
+	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), dwValue);
 
 	if (dwValue == SECM_SAVEDONTASK)
 		return IDYES;

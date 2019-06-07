@@ -231,7 +231,7 @@ inline void	ExposureToString(double fExposure, CString & strText)
 inline void	ISOToString(LONG lISOSpeed, CString & strText)
 {
 	if (lISOSpeed)
-		strText.Format("%ld", lISOSpeed);
+		strText.Format(_T("%ld"), lISOSpeed);
 	else
 		strText = "-";
 };

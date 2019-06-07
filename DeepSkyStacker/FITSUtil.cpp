@@ -114,7 +114,7 @@ BOOL	IsFITSRawBayer()
 
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), strInterpolation);
 
-	return !strInterpolation.CompareNoCase("RawBayer");
+	return !strInterpolation.CompareNoCase(_T("RawBayer"));
 };
 
 /* ------------------------------------------------------------------- */
@@ -126,7 +126,7 @@ BOOL	IsFITSSuperPixels()
 
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), strInterpolation);
 
-	return !strInterpolation.CompareNoCase("SuperPixels");
+	return !strInterpolation.CompareNoCase(_T("SuperPixels"));
 };
 
 /* ------------------------------------------------------------------- */
@@ -138,7 +138,7 @@ BOOL	IsFITSBilinear()
 
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), strInterpolation);
 
-	return !strInterpolation.CompareNoCase("Bilinear");
+	return !strInterpolation.CompareNoCase(_T("Bilinear"));
 };
 
 /* ------------------------------------------------------------------- */
@@ -150,7 +150,7 @@ BOOL	IsFITSAHD()
 
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), strInterpolation);
 
-	return !strInterpolation.CompareNoCase("AHD");
+	return !strInterpolation.CompareNoCase(_T("AHD"));
 };
 
 /* ------------------------------------------------------------------- */
@@ -279,16 +279,16 @@ void CFITSReader::ReadAllKeys()
 		CRegistry			reg;
 		CString				strPropagated;
 
-		if (!reg.LoadKey(REGENTRY_BASEKEY_FITSSETTINGS, "Propagated", strPropagated))
+		if (!reg.LoadKey(REGENTRY_BASEKEY_FITSSETTINGS, _T("Propagated"), strPropagated))
 			strPropagated = "[CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
 		
 
 		fits_get_hdrspace(m_fits, &nKeywords, NULL, &nStatus);
 		for (LONG i = 1;i<=nKeywords;i++)
 		{
-			TCHAR			szKeyName[FLEN_CARD];
-			TCHAR			szValue[FLEN_VALUE];
-			TCHAR			szComment[FLEN_COMMENT];
+			CHAR			szKeyName[FLEN_CARD];
+			CHAR			szValue[FLEN_VALUE];
+			CHAR			szComment[FLEN_COMMENT];
 			int				nKeyClass;
 
 			fits_read_keyn(m_fits, i, szKeyName, szValue, szComment, &nStatus);
@@ -297,11 +297,14 @@ void CFITSReader::ReadAllKeys()
 			{
 				bool		bPropagate = false;
 				CString		strKeyName;
-				strKeyName.Format("[%s]", szKeyName);
+				strKeyName.Format(_T("[%s]"), (LPCTSTR)CA2CT(szKeyName));
 
 				if (strPropagated.Find(strKeyName) != -1)
 					bPropagate = true;
-				m_ExtraInfo.AddInfo(szKeyName, szValue, szComment, bPropagate);
+				m_ExtraInfo.AddInfo(
+					(LPCTSTR)CA2CT(szKeyName),
+					(LPCTSTR)CA2CT(szValue),
+					(LPCTSTR)CA2CT(szComment), bPropagate);
 			};
 		};
 	};
@@ -316,7 +319,7 @@ BOOL CFITSReader::Open()
 	int					nStatus = 0;
 
 	Close();
-	fits_open_diskfile(&m_fits, m_strFileName, READONLY, &nStatus);
+	fits_open_diskfile(&m_fits, (LPCSTR)CT2CA(m_strFileName, CP_UTF8), READONLY, &nStatus);
 	if (!nStatus && m_fits)
 	{
 		// File ok - move to the first image HDU
@@ -335,7 +338,7 @@ BOOL CFITSReader::Open()
 
 		bResult = ReadKey("SIMPLE", strSimple);
 		bResult = ReadKey("NAXIS", lNrAxis);
-		if ((strSimple == "T") && (lNrAxis >= 2 && lNrAxis <= 3))
+		if ((strSimple == _T("T")) && (lNrAxis >= 2 && lNrAxis <= 3))
 		{
 			CString				strComment;
 			ReadAllKeys();
@@ -347,8 +350,8 @@ BOOL CFITSReader::Open()
 
 			if (bResult && strComment.GetLength())
 			{
-				if ((strComment.Find("in seconds")<0) &&
-					((strComment.Find("ms")>0) || (fExposureTime>3600)))
+				if ((strComment.Find(_T("in seconds"))<0) &&
+					((strComment.Find(_T("ms"))>0) || (fExposureTime>3600)))
 				{
 					// Exposure time is most certainly in ms
 					fExposureTime /= 1000.0;
@@ -358,11 +361,11 @@ BOOL CFITSReader::Open()
 			bResult = ReadKey("ISOSPEED", strISOSpeed);
 			if (bResult)
 			{
-				if (strISOSpeed.Find("ISO", 0) == 0)
+				if (strISOSpeed.Find(_T("ISO"), 0) == 0)
 				{
 					strISOSpeed = strISOSpeed.Right(strISOSpeed.GetLength()-3);
 					strISOSpeed.Trim();
-					lISOSpeed = atol(strISOSpeed);
+					lISOSpeed = _ttol(strISOSpeed);
 				};
 			};
 
@@ -382,7 +385,7 @@ BOOL CFITSReader::Open()
 
 			if (ReadKey("DSSCFATYPE", cfaType))
 				m_CFAType = (CFATYPE)cfaType;
-			else if (ReadKey("MOSAIC", strMosaic) && (strMake.Left(3) == "DSI"))
+			else if (ReadKey("MOSAIC", strMosaic) && (strMake.Left(3) == _T("DSI")))
 			{
 				m_bDSI = TRUE;
 				// Special case of DSI FITS files
@@ -402,32 +405,32 @@ BOOL CFITSReader::Open()
 
 				if (strDateTime.GetLength() >= 19)
 				{
-					m_DateTime.wYear  = atol(strDateTime.Left(4));
-					m_DateTime.wMonth = atol(strDateTime.Mid(5, 2));
-					m_DateTime.wDay   = atol(strDateTime.Mid(8, 2));
-					m_DateTime.wHour  = atol(strDateTime.Mid(11, 2));
-					m_DateTime.wMinute= atol(strDateTime.Mid(14, 2));
-					m_DateTime.wSecond= atol(strDateTime.Mid(17, 2));
+					m_DateTime.wYear  = _ttol(strDateTime.Left(4));
+					m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+					m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
+					m_DateTime.wHour  = _ttol(strDateTime.Mid(11, 2));
+					m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
+					m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
 				}
 				else if ((strDateTime.GetLength() == 8) && ReadKey("TIME-OBS", strTime))
 				{
 					// Decode dd/mm/yy
 					//        01234567
-					m_DateTime.wYear  = atol(strDateTime.Mid(6, 2));
+					m_DateTime.wYear  = _ttol(strDateTime.Mid(6, 2));
 					if (m_DateTime.wYear < 70)
 						m_DateTime.wYear += 2000;
 					else
 						m_DateTime.wYear += 1900;
-					m_DateTime.wMonth = atol(strDateTime.Mid(3, 2));
-					m_DateTime.wDay   = atol(strDateTime.Mid(0, 2));
+					m_DateTime.wMonth = _ttol(strDateTime.Mid(3, 2));
+					m_DateTime.wDay   = _ttol(strDateTime.Mid(0, 2));
 
 					if (strTime.GetLength() >= 8)
 					{
 						// Decode hh:mm:ss.xxx
 						//        01234567
-						m_DateTime.wHour   = atol(strTime.Mid(0, 2));
-						m_DateTime.wMinute = atol(strTime.Mid(3, 2));
-						m_DateTime.wSecond = atol(strTime.Mid(6, 2));
+						m_DateTime.wHour   = _ttol(strTime.Mid(0, 2));
+						m_DateTime.wMinute = _ttol(strTime.Mid(3, 2));
+						m_DateTime.wSecond = _ttol(strTime.Mid(6, 2));
 					};
 				};
 			};
@@ -978,9 +981,9 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		CString			strDescription;
 
 		if (m_strMake.GetLength())
-			strDescription.Format("FITS (%s)", (LPCTSTR)m_strMake);
+			strDescription.Format(_T("FITS (%s)"), (LPCTSTR)m_strMake);
 		else
-			strDescription	= "FITS";
+			strDescription	= _T("FITS");
 		m_pBitmap->SetDescription(strDescription);
 	};
 
@@ -1072,25 +1075,25 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 	// Exclude JPEG, PNG or TIFF format
 	{
-		TCHAR				szExt[_MAX_EXT];
+		TCHAR				szExt[1+_MAX_EXT];
 		CString				strExt;
 
-		_splitpath(szFileName, NULL, NULL, NULL, szExt);
+		_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
 		strExt = szExt;
 
-		if (!strExt.CompareNoCase(".JPG") || 
-			!strExt.CompareNoCase(".JPEG") ||
-			!strExt.CompareNoCase(".PNG") ||
-			!strExt.CompareNoCase(".TIF") ||
-			!strExt.CompareNoCase(".TIFF"))
+		if (!strExt.CompareNoCase(_T(".JPG")) || 
+			!strExt.CompareNoCase(_T(".JPEG")) ||
+			!strExt.CompareNoCase(_T(".PNG")) ||
+			!strExt.CompareNoCase(_T(".TIF")) ||
+			!strExt.CompareNoCase(_T(".TIFF")))
 			bContinue = FALSE;
 	}
 	if (bContinue && fits.Open())
 	{
 		if (fits.m_strMake.GetLength())
-			BitmapInfo.m_strFileType.Format("FITS (%s)", (LPCTSTR)fits.m_strMake);
+			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), (LPCTSTR)fits.m_strMake);
 		else
-			BitmapInfo.m_strFileType	= "FITS";
+			BitmapInfo.m_strFileType	= _T("FITS");
 		BitmapInfo.m_strFileName	= szFileName;
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
@@ -1175,7 +1178,7 @@ void	CFITSWriter::WriteAllKeys()
 	{
 		CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
 
-		if (ei.m_strName.CompareNoCase("DATE-OBS"))
+		if (ei.m_strName.CompareNoCase(_T("DATE-OBS")))
 			bFound = TRUE;
 	};
 
@@ -1184,11 +1187,11 @@ void	CFITSWriter::WriteAllKeys()
 		// Add DATE-OBS to the list
 		CString			strDateTime;
 
-		strDateTime.Format("%04d-%02d-%02dT%02d:%02d:%02d", 
+		strDateTime.Format(_T("%04d-%02d-%02dT%02d:%02d:%02d"), 
 						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay, 
 						   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
-		m_ExtraInfo.AddInfo("DATE-OBS", strDateTime);
+		m_ExtraInfo.AddInfo(_T("DATE-OBS"), strDateTime);
 	};
 
 	if (m_fits && m_ExtraInfo.m_vExtras.size())
@@ -1202,20 +1205,20 @@ void	CFITSWriter::WriteAllKeys()
 			TCHAR			szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
-			fits_read_key(m_fits, TSTRING, ei.m_strName.GetBuffer(), szValue, NULL, &nStatus);
+			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(ei.m_strName, CP_UTF8), szValue, NULL, &nStatus);
 			if (nStatus)
 			{
 				nStatus = 0;
-				TCHAR		szCard[FLEN_CARD];
+				CHAR		szCard[FLEN_CARD];
 				int			nType;
 				CString		strTemplate;
 
 				if (ei.m_strComment.GetLength())
-					strTemplate.Format("%s = %s / %s", ei.m_strName, ei.m_strValue, ei.m_strComment);
+					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
 				else
-					strTemplate.Format("%s = %s", ei.m_strName, ei.m_strValue, ei.m_strComment);
+					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
 
-				fits_parse_template(strTemplate.GetBuffer(), szCard, &nType, &nStatus); 
+				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus); 
 				fits_write_record(m_fits, szCard, &nStatus);
 			};
 		};
@@ -1283,7 +1286,7 @@ BOOL CFITSWriter::Open()
 	int				nStatus = 0;
 
 	DeleteFile((LPCTSTR)strFileName);
-	fits_create_diskfile(&m_fits, (LPCTSTR)strFileName, &nStatus);
+	fits_create_diskfile(&m_fits, (LPCSTR)CT2A(strFileName, CP_UTF8), &nStatus);
 	if (m_fits && !nStatus)
 	{
 		bResult = OnOpen();
@@ -1801,15 +1804,15 @@ BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress
 
 void	GetFITSExtension(LPCTSTR szFileName, CString & strExtension)
 {
-	TCHAR			szExt[_MAX_EXT];
+	TCHAR			szExt[1+_MAX_EXT];
 	CString			strExt;
 
-	_splitpath(szFileName, NULL, NULL, NULL, szExt);
+	_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
 
 	strExt = szExt;
-	if (!strExt.CompareNoCase(".FITS"))
+	if (!strExt.CompareNoCase(_T(".FITS")))
 		strExtension = strExt;
-	else if (!strExt.CompareNoCase(".FIT"))
+	else if (!strExt.CompareNoCase(_T(".FIT")))
 		strExtension = strExt;
 	else
 		strExtension = ".fts";

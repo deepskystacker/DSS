@@ -53,7 +53,7 @@ CFolderDlg::CFolderDlg(BOOL HideNewFolderButton, const CString& InitialFolder, C
 		TCHAR szDir[MAX_PATH];
 
 		// use current folder
-		if (GetCurrentDirectory(sizeof(szDir) / sizeof(TCHAR), szDir))
+		if (GetCurrentDirectory(sizeof(szDir) / sizeof(szDir[0]), szDir))
 		{
 			m_initialFolder = szDir;
 		}
@@ -99,7 +99,7 @@ int CFolderDlg::DoModal()
 		// so applications can call its methods to manage memory.
 		if (CoGetMalloc(1, &pMalloc) == S_OK)
 		{
-			char buffer[MAX_PATH];
+			_TCHAR buffer[MAX_PATH];
 
 			// initialize the BROWSEINFO struct
 			BROWSEINFO bi;
@@ -195,7 +195,7 @@ INT CALLBACK CFolderDlg::BrowseCallbackProc(HWND hwnd, UINT uMsg, LPARAM lp, LPA
 			{
 				// WParam is TRUE since you are passing a path
 				// it would be FALSE if you were passing a pidl
-				SendMessage(hwnd, BFFM_SETSELECTION, TRUE, (LPARAM)(LPCSTR)m_initialFolder);
+				SendMessage(hwnd, BFFM_SETSELECTION, TRUE, (LPARAM)(LPCTSTR)m_initialFolder);
 			}
 
 			break;

@@ -128,7 +128,7 @@ void CBatchStacking::OnBnClickedAddLists()
 	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
 
 	CFileDialog			dlgOpen(TRUE, 
-								".txt",
+								_T(".txt"),
 								NULL,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 								OUTPUTLIST_FILTERS,
@@ -137,10 +137,10 @@ void CBatchStacking::OnBnClickedAddLists()
 	if (strBaseDirectory.GetLength())
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -153,9 +153,9 @@ void CBatchStacking::OnBnClickedAddLists()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 
@@ -168,7 +168,7 @@ void CBatchStacking::OnBnClickedAddLists()
 				m_Lists.SetCheck(nIndex, TRUE);
 			};
 
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 		};
@@ -257,8 +257,8 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 				CString				strFileName;
 				CString				strText;
 
-				TCHAR				szFileName[_MAX_FNAME];
-				_splitpath(szList, NULL, NULL, szFileName, NULL);
+				TCHAR				szFileName[1+_MAX_FNAME];
+				_tsplitpath(szList, NULL, NULL, szFileName, NULL);
 
 				strFileName = szFileName;
 
@@ -326,7 +326,7 @@ void CBatchStacking::OnOK()
 			{
 				CString			strText;
 
-				strText.Format("->%s", (LPCTSTR)strOutputFile);
+				strText.Format(_T("->%s"), (LPCTSTR)strOutputFile);
 				m_Lists.InsertString(i, strText);
 				m_Lists.SetCheck(i, FALSE);
 				m_Lists.Enable(i, FALSE);

@@ -32,7 +32,7 @@ const DWORD			WM_INITNEWPICTURE = WM_USER+1;
 
 
 CProcessingDlg::CProcessingDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CProcessingDlg::IDD, pParent), m_Settings("")
+	: CDialog(CProcessingDlg::IDD, pParent), m_Settings(_T(""))
 {
 	//{{AFX_DATA_INIT(CProcessingDlg)
 	//}}AFX_DATA_INIT
@@ -46,6 +46,7 @@ void CProcessingDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CProcessingDlg)
 	DDX_Control(pDX, IDC_INFO, m_Info);
+	DDX_Control(pDX, IDC_PROCESSING_PROGRESS, m_ProcessingProgress);
 	DDX_Control(pDX, IDC_SETTINGS, m_SettingsRect);
 	DDX_Control(pDX, IDC_ORIGINAL_HISTOGRAM, m_OriginalHistogramStatic);
 	DDX_Control(pDX, IDC_PICTURE, m_PictureStatic);
@@ -139,6 +140,7 @@ BOOL CProcessingDlg::OnInitDialog()
 	m_ControlPos.AddControl(&m_Settings, CP_MOVE_VERTICAL);
 	m_ControlPos.AddControl(&m_OriginalHistogram, CP_MOVE_VERTICAL);
 	m_ControlPos.AddControl(&m_Info, CP_RESIZE_HORIZONTAL);
+	m_ControlPos.AddControl(&m_ProcessingProgress, CP_MOVE_VERTICAL | CP_RESIZE_HORIZONTAL);
 
 	m_Picture.EnableZoom(TRUE);
 	m_Picture.SetImageSink(&m_SelectRectSink);
@@ -189,6 +191,9 @@ BOOL CProcessingDlg::OnInitDialog()
 	m_tabRGB.m_BlueGradient.GetGradient().SetBackgroundColour(RGB(255, 255, 255));
 	m_tabRGB.m_BlueGradient.GetGradient().SetInterpolationMethod(CGradient::Linear);
 	m_tabRGB.SetBlueAdjustMethod(HAT_LINEAR);
+
+	m_ProcessingProgress.SetRange(0, 100);
+	m_ProcessingProgress.SetPos(100);
 
 	UpdateControls();
 
@@ -430,7 +435,7 @@ void CProcessingDlg::UpdateInfos()
 
 		if (lISOSpeed)
 		{
-			strISO.Format("%ld ISO - ", lISOSpeed);
+			strISO.Format(_T("%ld ISO - "), lISOSpeed);
 		};
 
 		if (lTotalTime)
@@ -460,7 +465,7 @@ void CProcessingDlg::UpdateInfos()
 			strFrames.Format(IDS_NRFRAMES, lNrFrames);
 		};
 
-		strText.Format("%s\n%s%s%s", m_strCurrentFile, strISO, strTime, strFrames);
+		strText.Format(_T("%s\n%s%s%s"), m_strCurrentFile, strISO, strTime, strFrames);
 	}
 	else
 		strText = m_strCurrentFile;
@@ -551,12 +556,12 @@ void CProcessingDlg::OnLoaddsi()
 
 		strFilter.LoadString(IDS_FILTER_DSIIMAGETIFF);
 		CFileDialog			dlgOpen(TRUE, 
-									".DSImage",
+									_T(".DSImage"),
 									NULL,
 									OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 									strFilter,
 									this);
-		TCHAR				szBigBuffer[20000] = "";
+		TCHAR				szBigBuffer[20000] = _T("");
 		CDSSProgressDlg		dlg;
 
 		if (strBaseDirectory.GetLength())
@@ -565,7 +570,7 @@ void CProcessingDlg::OnLoaddsi()
 		KillTimer(1);
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 		if (dlgOpen.DoModal() == IDOK)
 		{
@@ -588,10 +593,10 @@ void CProcessingDlg::OnLoaddsi()
 			{
 				m_strCurrentFile = strFile;
 
-				TCHAR		szDir[_MAX_DIR];
-				TCHAR		szDrive[_MAX_DRIVE];
+				TCHAR		szDir[1+_MAX_DIR];
+				TCHAR		szDrive[1+_MAX_DRIVE];
 
-				_splitpath(strFile, szDrive, szDir, NULL, NULL);
+				_tsplitpath(strFile, szDrive, szDir, NULL, NULL);
 				strBaseDirectory = szDrive;
 				strBaseDirectory += szDir;
 
@@ -662,21 +667,21 @@ void CProcessingDlg::SaveDSImage()
 		strBaseExtension = _T(".DSImage");
 
 	CFileDialog			dlgOpen(FALSE, 
-								".DSImage",
+								_T(".DSImage"),
 								NULL,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								"DeepSkyStacker Image (.DSImage)|*.DSImage||",
+								_T("DeepSkyStacker Image (.DSImage)|*.DSImage||"),
 								this);
 
 	if (strBaseDirectory.GetLength())
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
 	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
-	TCHAR				szBigBuffer[20000] = "";
+	TCHAR				szBigBuffer[20000] = _T("");
 	CDSSProgressDlg		dlg;
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -698,11 +703,11 @@ void CProcessingDlg::SaveDSImage()
 				GetDeepStack(this).SaveStackedInfo(strFile);
 			GetDeepStack(this).SetProgress(NULL);
 
-			TCHAR		szDir[_MAX_DIR];
-			TCHAR		szDrive[_MAX_DRIVE];
-			TCHAR		szExt[_MAX_EXT];
+			TCHAR		szDir[1+_MAX_DIR];
+			TCHAR		szDrive[1+_MAX_DRIVE];
+			TCHAR		szExt[1+_MAX_EXT];
 
-			_splitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -836,7 +841,7 @@ BOOL CProcessingDlg::SavePictureToFile()
 			strBaseExtension = _T(".tif");
 
 		CSavePicture				dlgOpen(FALSE, 
-									".TIF",
+									_T(".TIF"),
 									NULL,
 									OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 									OUTPUTFILE_FILTERS,
@@ -853,11 +858,11 @@ BOOL CProcessingDlg::SavePictureToFile()
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
 		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
-		TCHAR				szBigBuffer[20000] = "";
+		TCHAR				szBigBuffer[20000] = _T("");
 		CDSSProgressDlg		dlg;
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer);
+		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 		if (dlgOpen.DoModal() == IDOK)
 		{
@@ -894,11 +899,11 @@ BOOL CProcessingDlg::SavePictureToFile()
 				else if (dlgOpen.m_ofn.nFilterIndex == 6)
 					GetDeepStack(this).GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, TRUE);
 
-				TCHAR		szDir[_MAX_DIR];
-				TCHAR		szDrive[_MAX_DRIVE];
-				TCHAR		szExt[_MAX_EXT];
+				TCHAR		szDir[1+_MAX_DIR];
+				TCHAR		szDrive[1+_MAX_DRIVE];
+				TCHAR		szExt[1+_MAX_EXT];
 
-				_splitpath(strFile, szDrive, szDir, NULL, szExt);
+				_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
 				strBaseDirectory = szDrive;
 				strBaseDirectory += szDir;
 				strBaseExtension = szExt;
@@ -1442,6 +1447,8 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 			ShowOriginalHistogram(FALSE);
 			ResetSliders();
 		};
+		const unsigned int nProgress = static_cast<unsigned int>(m_ToProcess.GetPercentageComplete());
+		m_ProcessingProgress.SetPos(min(max(0, nProgress), 100));
 	};
 
 	CDialog::OnTimer(nIDEvent);

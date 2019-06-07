@@ -147,7 +147,7 @@ inline	void	SetEditValue(CEdit & edit, double fValue)
 {
 	CString			strFormat;
 
-	strFormat.Format("%.1f", fValue);
+	strFormat.Format(_T("%.1f"), fValue);
 	edit.SetWindowText(strFormat);
 };
 
@@ -155,7 +155,7 @@ inline	void	SetEditValue(CEdit & edit, DWORD dwValue)
 {
 	CString			strFormat;
 
-	strFormat.Format("%ld", dwValue);
+	strFormat.Format(_T("%ld"), dwValue);
 	edit.SetWindowText(strFormat);
 };
 
@@ -164,7 +164,7 @@ inline	double	GetEditDoubleValue(CEdit & edit)
 	CString			strValue;
 
 	edit.GetWindowText(strValue);
-	return atof(strValue);
+	return _tstof(strValue);
 };
 
 inline	DWORD	GetEditDWORDValue(CEdit & edit)
@@ -172,7 +172,7 @@ inline	DWORD	GetEditDWORDValue(CEdit & edit)
 	CString			strValue;
 
 	edit.GetWindowText(strValue);
-	return atol(strValue);
+	return _tstol(strValue);
 };
 
 void CSettingsTab::UpdateFromRegistry()

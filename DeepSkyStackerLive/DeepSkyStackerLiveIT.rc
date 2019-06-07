@@ -559,7 +559,7 @@ BEGIN
     IDS_SAVEWITHSETTINGSEMBEDDED "Immagine salvata con i settaggi inclusi."
     IDS_LOADRGBTIFF         "Caricamento TIFF %ld bit/can"
     IDS_LOADGRAYTIFF        "Caricamento TIFF %ld bit monocromatica"
-    IDS_DEEPSKYSTACKER      "DeepSkyStacker 3.0"
+    IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
     IDS_SAVINGINTERMEDIATE  "Salvataggio immagine combinata e calibrata in %s"
     IDS_SAVINGCALIBRATED    "Salvataggio immagine calibrata in %s"
     IDS_LOADRGBFITS         "Caricamento FITS %ld bit/can"

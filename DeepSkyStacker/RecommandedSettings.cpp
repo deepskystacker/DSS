@@ -125,7 +125,8 @@ void CRecommendedSettings::ClearText()
 	CString					strText;
 	COLORREF				crColor = ::GetSysColor(COLOR_WINDOW);
 
-	strText.Format("<body link=#0000ff bgcolor=#%02x%02x%02x></body>", GetRValue(crColor), GetGValue(crColor), GetBValue(crColor));
+	strText.Format(_T("<body link=#0000ff bgcolor=#%02x%02x%02x></body>"),
+		GetRValue(crColor), GetGValue(crColor), GetBValue(crColor));
 	m_vRecommendations.clear();
 	m_RecommendedSettingsHTML.SetWindowText(strText);
 };
@@ -137,24 +138,24 @@ void CRecommendedSettings::InsertHeader()
 	CString					strText;
 	CString					strHTML;
 
-	strHTML = "<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>";
-	strHTML += "<td>";
+	strHTML = _T("<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>");
+	strHTML += _T("<td>");
 
 	strText.LoadString(IDS_RECO_DISCLAIMER);
-	strText.Replace("\n", "<BR>");
+	strText.Replace(_T("\n"), _T("<BR>"));
 	strHTML += strText;
-	strHTML += "<BR><BR>";
+	strHTML += _T("<BR><BR>");
 	strText.LoadString(IDS_RECO_CLICKTOSET);
-	strText.Replace("\n", "<BR>");
+	strText.Replace(_T("\n"), _T("<BR>"));
 	strHTML += strText;
-	strHTML += "<BR>";
+	strHTML += _T("<BR>");
 	strText.LoadString(IDS_RECO_ALREADYSET);
-	strText.Replace("\n", "<BR>");
+	strText.Replace(_T("\n"), _T("<BR>"));
 
-	strHTML += "<font color=\"86, 170, 86\">";
+	strHTML += _T("<font color=\"86, 170, 86\">");
 	strHTML += strText;;
-	strHTML += "</font>";
-	strHTML += "</td></tr></table><BR>";
+	strHTML += _T("</font>");
+	strHTML += _T("</td></tr></table><BR>");
 
 	m_RecommendedSettingsHTML.AddHTML(strHTML, FALSE);
 };
@@ -166,24 +167,25 @@ void CRecommendedSettings::InsertText(LPCTSTR szText, COLORREF crColor, BOOL bBo
 	CString					strText;
 	CString					strInputText = szText;
 
-	strInputText.Replace("\n", "<BR>");
+	strInputText.Replace(_T("\n"), _T("<BR>"));
 	if (lLinkID)
 	{
-		strText.Format("<a href = \"%ld\">%s</a>", lLinkID, (LPCTSTR)strInputText);
+		strText.Format(_T("<a href = \"%ld\">%s</a>"), lLinkID, (LPCTSTR)strInputText);
 		strInputText = strText;
 	};
 	if (bBold)
 	{
-		strText.Format("<b>%s</b>", (LPCTSTR)strInputText);
+		strText.Format(_T("<b>%s</b>"), (LPCTSTR)strInputText);
 		strInputText = strText;
 	};
 	if (bItalic)
 	{
-		strText.Format("<i>%s</i>", (LPCTSTR)strInputText);
+		strText.Format(_T("<i>%s</i>"), (LPCTSTR)strInputText);
 		strInputText = strText;
 	};
 	{
-		strText.Format("<font color = #%02x%02x%02x>%s</font>", GetRValue(crColor),GetGValue(crColor),GetBValue(crColor),(LPCTSTR)strInputText);
+		strText.Format(_T("<font color = #%02x%02x%02x>%s</font>"),
+			GetRValue(crColor),GetGValue(crColor),GetBValue(crColor),(LPCTSTR)strInputText);
 		strInputText = strText;
 	};
 
@@ -200,7 +202,7 @@ static void AddRAWNarrowBandRecommendation(RECOMMANDATIONVECTOR & vRecommendatio
 	CString						strText;
 
 	strText.LoadString(IDS_RECO_RAWNARROWBAND_REASON);
-	strText.Replace(" Ha", " H<font face='Symbol'>a</font>");
+	strText.Replace(_T(" Ha"), _T(" H<font face='Symbol'>a</font>"));
 
 	rec.SetText(strText);
 	ri.SetRecommendation(IDS_RECO_RAWNARROWBAND_TEXT);
@@ -230,7 +232,7 @@ static void AddNarrowBandPerChannelBackgroundCalibration(RECOMMANDATIONVECTOR & 
 	CString						strText;
 
 	strText.LoadString(IDS_RECO_RAWNARROWBAND_REASON);
-	strText.Replace(" Ha", " H<font face='Symbol'>a</font>");
+	strText.Replace(_T(" Ha"), _T(" H<font face='Symbol'>a</font>"));
 
 	rec.SetText(strText);
 	ri.SetRecommendation(IDS_RECO_USEPERCHANNEL);
@@ -673,7 +675,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 		LONG					lLastLinkID = 0;
 		CString					strOr;
 
-		strOr.LoadStringA(IDS_OR);
+		strOr.LoadString(IDS_OR);
 
 		for (LONG i = 0;i<m_vRecommendations.size();i++)
 		{
@@ -681,7 +683,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 			BOOL				bDifferent = FALSE;
 
 			if (m_vRecommendations[i].IsBreakBefore())
-				InsertText("<hr>");
+				InsertText(_T("<hr>"));
 			for (LONG j = 0;j<m_vRecommendations[i].m_vRecommendations.size() && !bDifferent;j++)
 			{
 				bDifferent = m_vRecommendations[i].m_vRecommendations[j].IsDifferent();
@@ -698,7 +700,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 				crColor = RGB(128, 128, 128);
 
 			InsertText(m_vRecommendations[i].m_strText, crColor);
-			InsertText("\n");
+			InsertText(_T("\n"));
 
 			for (LONG j = 0;j<m_vRecommendations[i].m_vRecommendations.size();j++)
 			{
@@ -710,11 +712,11 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 
 				if (j)
 				{
-					InsertText("    ");
+					InsertText(_T("    "));
 					InsertText(strOr+"\n", RGB(0, 0, 0), FALSE, TRUE);
 				};
 
-				InsertText("->  ");
+				InsertText(_T("->  "));
 				if (bAlreadySet)
 				{
 					InsertText(ri.m_strRecommendation, RGB(86, 170, 86));
@@ -727,7 +729,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 				};
 				ri.m_lLinkID = lLinkID;
 			};
-			InsertText("\n\n");
+			InsertText(_T("\n\n"));
 		};
 	}
 	else
@@ -777,7 +779,7 @@ void CRecommendedSettings::OnQHTMHyperlink(NMHDR*nmh, LRESULT*)
 		pnm->resReturnValue = FALSE;
 		LONG				lLinkID;
 
-		lLinkID = atol(pnm->pcszLinkText);
+		lLinkID = _ttol(pnm->pcszLinkText);
 		SetSetting(lLinkID);
 	}
 }

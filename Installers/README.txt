@@ -1,4 +1,13 @@
+Welcome to DeepSkyStacker 4.1.1
 
+We've fixed a number of problems since 4.1.0:
+
+
+    The 32 bit version has been changed to build the zlib code without the optimising "asm" option to fix a crashing problem ("asm" is not officially supported in zlib and has not been maintained)
+
+    The 64 bit version has been changed to build the zlib code without the optimising "asm" option as a precaution (the 64 bit version wasnt crashing as far as we know but as the "asm" option isn't officially supported we have elected not to use it)
+
+*****
 
 Welcome to DeepSkyStacker 4.1.0
 

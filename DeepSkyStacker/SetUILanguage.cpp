@@ -20,7 +20,10 @@ void	SetUILanguage(LANGID LangID)
 //		const UINT MUI_LANGUAGE_NAME	= 0x8; // Use ISO language (culture) name convention
 //		const UINT MUI_THREAD_LANGUAGES = 0x40; // GetThreadPreferredUILanguages merges in thread preferred languages
 
-		SetThreadPreferredUILanguages = (SetThreadPreferredUILanguagesProc)GetProcAddress(GetModuleHandle("kernel32.dll"), "SetThreadPreferredUILanguages");
+		SetThreadPreferredUILanguages = 
+			(SetThreadPreferredUILanguagesProc)GetProcAddress(
+				GetModuleHandle(_T("kernel32.dll")),
+				"SetThreadPreferredUILanguages");
 		if (SetThreadPreferredUILanguages)
 		{
 			// Set the preferred languages
@@ -157,7 +160,9 @@ void	SetUILanguage(LANGID LangID)
 
 			SetThreadPreferredUILanguages(MUI_LANGUAGE_NAME/* | MUI_THREAD_LANGUAGES*/, szPrefLanguages, &lNumLang);
 		};
-		SetThreadUILanguage = (SetThreadUILanguageProc)GetProcAddress(GetModuleHandle("kernel32.dll"), "SetThreadUILanguage");
+		SetThreadUILanguage = (SetThreadUILanguageProc)GetProcAddress(
+			GetModuleHandle(_T("kernel32.dll")),
+			"SetThreadUILanguage");
 		if (SetThreadUILanguage)
 			SetThreadUILanguage(LangID);
 	}
@@ -196,31 +201,31 @@ void	SetUILanguage()
 	reg.LoadKey(REGENTRY_BASEKEY, _T("Language"), strLanguage);
 	if (strLanguage.GetLength())
 	{
-		if (!strLanguage.CompareNoCase("FR"))
+		if (!strLanguage.CompareNoCase(_T("FR")))
 			DSSLanguage = DSSL_FRENCH;
-		else if (!strLanguage.CompareNoCase("EN"))
+		else if (!strLanguage.CompareNoCase(_T("EN")))
 			DSSLanguage = DSSL_ENGLISH;
-		else if (!strLanguage.CompareNoCase("ES"))
+		else if (!strLanguage.CompareNoCase(_T("ES")))
 			DSSLanguage = DSSL_SPANISH;
-		else if (!strLanguage.CompareNoCase("CZ"))
+		else if (!strLanguage.CompareNoCase(_T("CZ")))
 			DSSLanguage = DSSL_CZECH;
-		else if (!strLanguage.CompareNoCase("IT"))
+		else if (!strLanguage.CompareNoCase(_T("IT")))
 			DSSLanguage = DSSL_ITALIAN;
-		else if (!strLanguage.CompareNoCase("CAT"))
+		else if (!strLanguage.CompareNoCase(_T("CAT")))
 			DSSLanguage = DSSL_CATALAN;
-		else if (!strLanguage.CompareNoCase("DE"))
+		else if (!strLanguage.CompareNoCase(_T("DE")))
 			DSSLanguage = DSSL_GERMAN;
-		else if (!strLanguage.CompareNoCase("NL"))
+		else if (!strLanguage.CompareNoCase(_T("NL")))
 			DSSLanguage = DSSL_DUTCH;
-		else if (!strLanguage.CompareNoCase("CN"))
+		else if (!strLanguage.CompareNoCase(_T("CN")))
 			DSSLanguage = DSSL_CHINESE;
-		else if (!strLanguage.CompareNoCase("PTB"))
+		else if (!strLanguage.CompareNoCase(_T("PTB")))
 			DSSLanguage = DSSL_PORTUGUESE;
-		else if (!strLanguage.CompareNoCase("RO"))
+		else if (!strLanguage.CompareNoCase(_T("RO")))
 			DSSLanguage = DSSL_ROMANIAN;
-		else if (!strLanguage.CompareNoCase("RU"))
+		else if (!strLanguage.CompareNoCase(_T("RU")))
 			DSSLanguage = DSSL_RUSSIAN;
-		else if (!strLanguage.CompareNoCase("TR"))
+		else if (!strLanguage.CompareNoCase(_T("TR")))
 			DSSLanguage = DSSL_TURKISH;
 	};
 

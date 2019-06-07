@@ -1212,7 +1212,7 @@ BEGIN
     IDS_SAVEWITHSETTINGSEMBEDDED "Bild mit den eingebetteten Einstellungen speichern."
     IDS_LOADRGBTIFF         "%ld Bit/K TIFF laden"
     IDS_LOADGRAYTIFF        "%ld Bit Schwarz-Weiss TIFF laden"
-    IDS_DEEPSKYSTACKER      "DeepSkyStacker 3.0"
+    IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
     IDS_SAVINGINTERMEDIATE  "Registriertes und kalibriertes Bild speichern in %s"
     IDS_SAVINGFINAL         "Fertiges Bild speichern in %s"
     IDS_SAVINGCALIBRATED    "Kalibriertes Bild speichern in %s"

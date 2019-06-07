@@ -56,13 +56,13 @@ public :
 		CString			strLine = szLine;
 		int				nPos;
 
-		nPos = strLine.Find("=");
+		nPos = strLine.Find(_T("="));
 		if (nPos >= 0)
 		{
 			m_strVariable = strLine.Left(nPos);
 			m_strValue    = strLine.Right(strLine.GetLength()-nPos-1);
 			m_strVariable.Trim();
-			m_strValue.TrimRight("\n");
+			m_strValue.TrimRight(_T("\n"));
 			m_strValue.Trim();
 			bResult = TRUE;
 		};
@@ -73,10 +73,10 @@ public :
 	BOOL	Read(FILE * hFile)
 	{
 		BOOL			bResult = FALSE;
-		TCHAR			szBuffer[2000];
+		CHAR			szBuffer[2000];
 
 		if (fgets(szBuffer, sizeof(szBuffer), hFile))
-			bResult = Read(szBuffer);
+			bResult = Read((LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer));
 
 		return bResult;
 	};
@@ -85,7 +85,7 @@ public :
 	{
 		BOOL		bResult = TRUE;
 
-		fprintf(hFile, "%s=%s\n", (LPCTSTR)m_strVariable, (LPCTSTR)m_strValue);
+		fprintf(hFile, "%s=%s\n", (LPCSTR)CT2CA(m_strVariable), (LPCSTR)CT2CA(m_strValue));
 
 		return bResult;
 	};
@@ -117,7 +117,7 @@ protected :
 		CSetting		s;
 
 		if (szPrefix)
-			s.m_strVariable.Format("%s.%s", szPrefix, szVariable);
+			s.m_strVariable.Format(_T("%s.%s"), szPrefix, szVariable);
 		else
 			s.m_strVariable = szVariable;
 		s.m_strValue	= strValue;
@@ -132,7 +132,7 @@ protected :
 		CSetting		s;
 
 		s.m_strVariable = szVariable;
-		s.m_strValue.Format("%ld", lValue);
+		s.m_strValue.Format(_T("%ld"), lValue);
 
 		if (m_sSettings.find(s) == m_sSettings.end())
 			m_sSettings.insert(s);
@@ -157,30 +157,30 @@ protected :
 		// Retrieve the date and time of creation and append it to the file name
 		if (GetPictureInfo(szFileName, bmpInfo))
 		{
-			strValue.Format("%s[%s]", szFileName, (LPCTSTR)bmpInfo.m_strDateTime);
+			strValue.Format(_T("%s[%s]"), szFileName, (LPCTSTR)bmpInfo.m_strDateTime);
 			AddVariable(szVariable, (LPCTSTR)strValue);
 		};
 	};
 
 	void	AddRAWSettings()
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), "1.0", "Raw");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), "1.0", "Raw");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), "1.0", "Raw");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), "0", "Raw");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), "0", "Raw");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), "0", "Raw");
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), _T("1.0"), _T("Raw"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), _T("1.0"), _T("Raw"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), _T("1.0"), _T("Raw"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), _T("0"), _T("Raw"));
 	};
 
 	void	AddFITSSettings()
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), "0", "Fits");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), "1.0", "Fits");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), "1.0", "Fits");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), "1.0", "Fits");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), "", "Fits");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("BayerPattern"), "4", "Fits");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), "0", "Fits");
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), _T("0"), _T("Fits"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), _T("1.0"), _T("Fits"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), _T("1.0"), _T("Fits"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), _T("1.0"), _T("Fits"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), _T(""), _T("Fits"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("BayerPattern"), _T("4"), _T("Fits"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), _T("0"), _T("Fits"));
 	};
 
 public :
@@ -211,15 +211,15 @@ public :
 
 	virtual void	ReadFromRegistry() 
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), "0");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), "5");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), "2.0");
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), _T("0"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), _T("5"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), _T("2.0"));
 	};
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
 		if (pTask && pTask->m_strOutputFile.GetLength())
-			AddFileVariable("MasterOffset", pTask->m_strOutputFile);
+			AddFileVariable(_T("MasterOffset"), pTask->m_strOutputFile);
 	};
 };
 
@@ -233,20 +233,20 @@ public :
 
 	virtual void	ReadFromRegistry() 
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), "0");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), "5");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), "2.0");
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), _T("0"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), _T("5"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), _T("2.0"));
 	};
 
 	void	SetMasterOffset(CTaskInfo * pTask)
 	{
 		if (pTask && pTask->m_strOutputFile.GetLength())
-			AddFileVariable("MasterOffset", pTask->m_strOutputFile);
+			AddFileVariable(_T("MasterOffset"), pTask->m_strOutputFile);
 	};
 	void	SetMasterDarkFlat(CTaskInfo * pTask)
 	{
 		if (pTask && pTask->m_strOutputFile.GetLength())
-			AddFileVariable("MasterDarkFlat", pTask->m_strOutputFile);
+			AddFileVariable(_T("MasterDarkFlat"), pTask->m_strOutputFile);
 	};
 };
 
@@ -260,9 +260,9 @@ public :
 
 	virtual void	ReadFromRegistry() 
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), "0");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), "5");
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), "2.0");
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), _T("0"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), _T("5"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), _T("2.0"));
 	};
 };
 

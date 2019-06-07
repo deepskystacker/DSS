@@ -1178,7 +1178,7 @@ BEGIN
     IDS_SAVEWITHSETTINGSEMBEDDED "Imagine salvata cu setarile incluse"
     IDS_LOADRGBTIFF         "Incarc TIFF %ld biti/canal"
     IDS_LOADGRAYTIFF        "Incarc TIFF %ld bit monocrom"
-    IDS_DEEPSKYSTACKER      "DeepSkyStacker 3.2"
+    IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
     IDS_SAVINGINTERMEDIATE  "Salvez imaginea inregistrata si calibrata in %s"
     IDS_SAVINGFINAL         "Salveaza imagine finala in %s"
     IDS_SAVINGCALIBRATED    "Salvez Imaginea calibrata in %s"
