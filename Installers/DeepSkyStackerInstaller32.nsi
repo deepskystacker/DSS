@@ -1,4 +1,8 @@
 ##!include "MUI2.nsh"
+!verbose 4
+
+!define PRODUCT_NAME       "DeepSkyStacker"
+!define NAMESUFFIX         " (32 bit)"
 
 !define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
 
@@ -12,69 +16,72 @@
 !define DSS_RUNTIME_CPP    "msvcp140.dll"
 !define DSS_RUNTIME_C      "vcruntime140.dll"
 
+!define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
+!define DSS_VERSION        "4.2.0"                                  # For control panel
+!define DSS_VERSION_SUFFIX "Beta 1"                                 # For control panel (e.g. "beta 1")
+!define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
-!define DSS_PRODUCT        "DeepSkyStacker"                         # For start menu
-!define DSS_VERSION        "4.1.0"                                  # For control panel
-!define DSS_VERSION_SUFFIX ""                                       # For control panel (e.g. "beta-1") 
-!define DSS_PUBLISHER      "Luc Coiffier"                           # For control panel
-
-!define DSS_NAME           "DeepSkyStacker (32 bit)"
+!define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
 !define DSS_FILE           "DeepSkyStacker"
 
-!define DSSCL_NAME         "DeepSkyStacker Command Line (32 bit)"
+!define DSSCL_NAME         "DeepSkyStacker Command Line${NAMESUFFIX}"
 !define DSSCL_FILE         "DeepSkyStackerCL"
 
-!define DSSLIVE_NAME       "DeepSkyStacker Live (32 bit)"
+!define DSSLIVE_NAME       "DeepSkyStacker Live${NAMESUFFIX}"
 !define DSSLIVE_FILE       "DeepSkyStackerLive"
 
-!define DSS_README_NAME    "README (32 bit)"
+!define DSS_README_NAME    "README"
 !define DSS_README_FILE    "README.txt"
 
 
-!define DSS_UNINSTALL_NAME "DeepSkyStacker Uninstaller (32 bit)"
-!define DSS_UNINSTALL_FILE "DeepSkyStackerUninstaller"
+!define DSS_UNINSTALL_NAME "DeepSkyStacker${NAMESUFFIX} Uninstaller"
+!define DSS_UNINSTALL_FILE "DSS32-Remove"
 
-
-!define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${DSS_PRODUCT}32"
+!define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}32"
 
 CRCCheck On
 
 
 # define installer name
 
-OutFile "${DSS_PRODUCT}Installer-${DSS_VERSION}${DSS_VERSION_SUFFIX}.exe"
+OutFile "DSS32-Setup.exe"
  
+RequestExecutionLevel Admin
+
 # set the install directory - the programs are 32 bit versions
 
 InstallDir "$PROGRAMFILES32\${DSS_PRODUCT}"
 
-# ** (Do we need this?) **
-
-RequestExecutionLevel admin
-
 # Enable/disable UI features we do/dont want
 
-ShowInstDetails       nevershow
-ShowUninstDetails     nevershow
+ShowInstDetails       show
+ShowUninstDetails     show
 
 Name                  "${DSS_NAME}"
 Icon                  "${DSS_ICON}"
 UninstallIcon         "${DSS_ICON}"
 
+var PreviousUninstaller
 
 # default installer section start
 
 Section
 
+  # Want to use "all users" area of StartMenu/Programs
+  SetShellVarContext	all
+  
   # Modify UI behaviours
   
-  ##SetDetailsPrint     none
+  SetDetailsPrint     both
 
   # define output path
 
   SetOutPath $INSTDIR
  
-  # Uninstall the previous (4.x.x) version silently (including blind uninstall attempts of legacy 3.3.2 based versions)
+  # Uninstall previous version silently (including blind uninstall attempts of legacy 3.3.2 based versions)
+  ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "QuietUninstallString"
+
+  ExecWait '"$PreviousUninstaller" _?=$INSTDIR'
   
   ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" /S _?=$INSTDIR'
   ExecWait 'MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /qn' # en, es
@@ -141,9 +148,12 @@ SectionEnd
 
 Section "Uninstall"
  
+  # Want to use "all users" area of StartMenu/Programs
+  SetShellVarContext	all
+  
   # Modify UI behaviours
   
-  ##SetDetailsPrint     none
+  SetDetailsPrint     textonly
 
 
   # Always delete uninstaller first

@@ -258,9 +258,6 @@
     <ClCompile Include="DarkFrame.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DCRaw\dcraw.c">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="DeBloom.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
