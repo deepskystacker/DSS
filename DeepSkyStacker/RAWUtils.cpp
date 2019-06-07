@@ -10,6 +10,7 @@
 #include "Multitask.h"
 #include "Workspace.h"
 #include "zexcept.h"
+#include "zptr.h"
 
 #include "libraw/libraw.h"
 
@@ -467,7 +468,12 @@ public:
 		pDSSBitMapFiller = pFiller;
 	};
 
+
 	int			dcraw_ppm_tiff_writer(const char *filename);
+	inline unsigned		get_fuji_layout()
+	{
+		return libraw_internal_data.unpacker_data.fuji_layout;
+	};
 
 protected:
 	void        write_ppm_tiff();
@@ -500,7 +506,6 @@ Thread DSSLibRaw	rawProcessor;
 
 #define RawData	rawProcessor.imgdata.rawdata
 #define IOParams	rawProcessor.imgdata.rawdata.ioparams
-
 
 /* ------------------------------------------------------------------- */
 
@@ -742,28 +747,98 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			pFiller->SetCFAType(m_CFAType);
 
 #define RAW(row,col) \
-	RawData.raw_image[(row)*S.raw_width+(col)]
+	raw_image[(row)*S.width+(col)]
 
 			//
-			// Get our endian-ness so we can swap bytes if needed (alway on Windows).
+			// Get our endian-ness so we can swap bytes if needed (always on Windows).
 			//
 			BOOL littleEndian = htons(0x55aa) != 0x55aa;
 
+
+			unsigned short *raw_image = NULL;
+			void * buffer = NULL;		// Used for debugging only (memory window)
+
 			if (!m_bColorRAW)
 			{
-				//
-				// This is a regular RAW file using a Bayer matrix so we should have the 
-				// "raw" 16-bit greyscale pixel array hung off RawData.raw_image.
-				//
 				ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
-				ZASSERT(NULL != RawData.raw_image);
+				//
+				// Set up a temporary image array of unsigned short that will be:
+				// 
+				// 1) Filled in from the Fujitsu Super-CCD image array in
+				//    Rawdata.raw_image, or
+				//
+				// 2) will be copied from the image portion of Rawdata.raw_image
+				//    excluding the frame (Top margin, Left Margin).
+				// 
+				unsigned short *raw_image = 
+					(unsigned short *)calloc(S.height*S.width, sizeof(unsigned short));
+				ZASSERT(NULL != raw_image);
 
+				int fuji_width = rawProcessor.is_fuji_rotated();
+				unsigned fuji_layout = rawProcessor.get_fuji_layout();
+				buffer = raw_image;		// only for memory window debugging
+
+				if (fuji_width)   // Are we processing a Fuji Super-CCD image?
+				{
+					ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
+
+					unsigned r, c;
+					int row, col;
+					for (row = 0; row < S.raw_height - S.top_margin * 2; row++)
+					{
+						for (col = 0; col < fuji_width << !fuji_layout; col++)
+						{
+							if (fuji_layout)
+							{
+								r = fuji_width - 1 - col + (row >> 1);
+								c = col + ((row + 1) >> 1);
+							}
+							else
+							{
+								r = fuji_width - 1 + row - (col >> 1);
+								c = row + ((col + 1) >> 1);
+							}
+							if (r < S.height && c < S.width)
+								RAW(r, c) 
+								= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+						}
+					}
+
+				}
+				else
+				{
+					ZTRACE_RUNTIME("Extracting real image data (excluding the frame) from RawData.raw_image");
+
+					//
+					// This is a regular RAW file so no Fuji Super-CCD stuff 
+					//
+					// Just copy the "real image" portion of the data excluding 
+					// the frame
+					//
+					int row, col;
+					for (row = 0; row < S.height; row++)
+						for (col = 0; col < S.width; col++)
+							RAW(row, col)
+							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+
+				}
+				//
+				// Now process the data that raw_image points to which is either
+				//
+				// 1) The output of post processing the Fuji Super-CCD raw,
+				//    stored in the USHORT array hung off image, or
+				//
+				// 2) Normal common or garden raw Bayer matrix data that's pointed
+				//    to by RawData.raw_image
+				//
+				// Either way we should now be processing a regular greyscale 16-bit
+				// pixel array which has an associated Bayer Matrix
+				//
 				pFiller->setGrey(TRUE);
 				pFiller->setWidth(S.width);
 				pFiller->setHeight(S.height);
 				pFiller->setMaxColors((1 << 16) - 1);
 
-				void * buffer = NULL;		// Used for debugging only (memory window)
 				int	row = 0, col = 0;		// iterators
 
 				//
@@ -778,13 +853,12 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				unsigned int dark = O.user_black >= 0 ? O.user_black : C.black;
 				ZTRACE_RUNTIME("Subtracting black level of %d from raw_image data.", dark);
 				unsigned short maxval = 0;
-				buffer = &RAW(S.top_margin, S.left_margin);	// Point to first element of true image
 				for (row = 0; row < S.height; row++)
 				{
 					for (col = 0; col < S.width; col++)
 					{
 						register unsigned short val =
-							RAW(row + S.top_margin, col + S.left_margin);
+							RAW(row, col);
 						if (val > dark)
 						{
 							val -= dark;
@@ -793,7 +867,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 						{
 							val = 0;
 						}
-						RAW(row + S.top_margin, col + S.left_margin) = val;
+						RAW(row, col) = val;
 						maxval = val > maxval ? val : maxval;
 					}
 				}
@@ -812,24 +886,24 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					for (col = 0; col < S.width; col++)
 					{
 						register float val = scale *
-							(float)(RAW(row + S.top_margin, col + S.left_margin));
+							(float)(RAW(row, col));
+						RAW(row, col) = max(0, min(int(val), 65535));
 
-						RAW(row + S.top_margin, col + S.left_margin) = max(0, min(int(val), 65535));
 					}
-				}
 
-				// Convert raw data to big-endian 
-				if (littleEndian)
-					_swab(
-						(char*)(RawData.raw_image),
-						(char*)(RawData.raw_image),
-						S.raw_height*S.raw_pitch);		// Use number of rows times row width in BYTES!!
-					
-				for (int row = 0; row < S.height; row++)
-				{
-					buffer = &RAW(row+S.top_margin, S.left_margin);
-					// Write raw pixel data into our private bitmap format
-					pFiller->Write(buffer, sizeof(ushort), S.width);
+					// Convert raw data to big-endian 
+					if (littleEndian)
+						_swab(
+						(char*)(raw_image),
+							(char*)(raw_image),
+							S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
+
+					for (row = 0; row < S.height; row++)
+					{
+						buffer = &RAW(row, 0);
+						// Write raw pixel data into our private bitmap format
+						pFiller->Write(buffer, sizeof(unsigned short), S.width);
+					}
 				}
 			}
 #undef RAW
@@ -861,8 +935,14 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				}
 			}
 
+			//
+			// If we allocated memory for an image, release it.
+			if (raw_image)
+			{
+				free(raw_image); raw_image = NULL;
+			}
+
 		} while (0);
-#undef RAW
 
 		g_Progress = NULL;
 
