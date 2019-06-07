@@ -1,3 +1,4 @@
+##!include "MUI2.nsh"
 !verbose 4
 
 !define PRODUCT_NAME       "DeepSkyStacker"
@@ -45,14 +46,11 @@ CRCCheck On
 
 OutFile "DSS64-Setup.exe"
  
-; Take the highest execution level available
-; This means that if it's possible to, we become an administrator
 RequestExecutionLevel Admin
 
 # set the install directory - the programs are 64 bit versions
 
 InstallDir "$PROGRAMFILES64\${DSS_PRODUCT}"
-
 
 # Enable/disable UI features we do/dont want
 
@@ -69,6 +67,9 @@ var PreviousUninstaller
 
 Section
 
+  # Want to use "all users" area of StartMenu/Programs
+  SetShellVarContext	all
+  
   # Modify UI behaviours
   
   SetDetailsPrint     both
@@ -121,7 +122,7 @@ Section
   # write uninstall information to the registry
  
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "Publisher"            "${DSS_PUBLISHER}"
-  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (remove only)"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (64 bit - remove only)"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayVersion"       "${DSS_VERSION}"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayIcon"          "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
@@ -142,6 +143,9 @@ SectionEnd
 
 Section "Uninstall"
  
+  # Want to use "all users" area of StartMenu/Programs
+  SetShellVarContext	all
+  
   # Modify UI behaviours
   
   SetDetailsPrint     textonly

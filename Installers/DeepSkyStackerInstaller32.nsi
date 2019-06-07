@@ -3,6 +3,7 @@
 
 !define PRODUCT_NAME       "DeepSkyStacker"
 !define NAMESUFFIX         " (32 bit)"
+
 !define DSS_ICON           "..\DeepSkyStacker\Icon\DSS.ico"
 
 !define DSS_HELP_FR        "Aide DeepSkyStacker.chm"
@@ -14,7 +15,6 @@
 !define DSS_RUNTIME_MFC    "mfc140.dll"
 !define DSS_RUNTIME_CPP    "msvcp140.dll"
 !define DSS_RUNTIME_C      "vcruntime140.dll"
-
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
 !define DSS_VERSION        "4.2.0"                                  # For control panel
@@ -46,13 +46,11 @@ CRCCheck On
 
 OutFile "DSS32-Setup.exe"
  
+RequestExecutionLevel Admin
+
 # set the install directory - the programs are 32 bit versions
 
 InstallDir "$PROGRAMFILES32\${DSS_PRODUCT}"
-
-# ** (Do we need this?) **
-
-RequestExecutionLevel admin
 
 # Enable/disable UI features we do/dont want
 
@@ -69,6 +67,9 @@ var PreviousUninstaller
 
 Section
 
+  # Want to use "all users" area of StartMenu/Programs
+  SetShellVarContext	all
+  
   # Modify UI behaviours
   
   SetDetailsPrint     both
@@ -77,8 +78,7 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall the previous (4.x.x) version silently (including blind uninstall attempts of legacy 3.3.2 based versions)
-  # Uninstall previous version silently
+  # Uninstall previous version silently (including blind uninstall attempts of legacy 3.3.2 based versions)
   ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "QuietUninstallString"
 
   ExecWait '"$PreviousUninstaller" _?=$INSTDIR'
@@ -148,9 +148,12 @@ SectionEnd
 
 Section "Uninstall"
  
+  # Want to use "all users" area of StartMenu/Programs
+  SetShellVarContext	all
+  
   # Modify UI behaviours
   
-  ##SetDetailsPrint     none
+  SetDetailsPrint     textonly
 
 
   # Always delete uninstaller first
