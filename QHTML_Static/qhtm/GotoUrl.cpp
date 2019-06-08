@@ -28,6 +28,7 @@ static LONG GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata)
     return retval;
 }
 
+#ifdef DSS_USE_DEFAULT_BROWSER
 static LONG GetRegSubKey(HKEY key, LPCTSTR subkey, LPTSTR retdata)
 {
 	HKEY hkey;
@@ -47,6 +48,7 @@ static LONG GetRegSubKey(HKEY key, LPCTSTR subkey, LPTSTR retdata)
 
 	return retval;
 }
+#endif  //  #ifdef DSS_USE_DEFAULT_BROWSER
 #endif	//	#if !defined (_WIN32_WCE)
 
 extern bool striremove( LPTSTR pszString, LPCTSTR pcszSub );
