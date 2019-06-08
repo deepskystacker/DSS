@@ -736,9 +736,6 @@
     <ClInclude Include="PCLTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\CtrlCache.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\4Corners.bmp">

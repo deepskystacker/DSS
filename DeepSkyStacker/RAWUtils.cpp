@@ -488,30 +488,10 @@ private:
 Thread DSSLibRaw	rawProcessor;
 
 
-#define P1		rawProcessor.imgdata.idata
-#define P2		rawProcessor.imgdata.other
-
-#define mnLens rawProcessor.imgdata.lens.makernotes
-#define exifLens rawProcessor.imgdata.lens
-#define ShootingInfo rawProcessor.imgdata.shootinginfo
-
-#define S		rawProcessor.imgdata.sizes
-#define O		rawProcessor.imgdata.params
-#define C		rawProcessor.imgdata.color
-#define T		rawProcessor.imgdata.thumbnail
-
-#define Canon	rawProcessor.imgdata.makernotes.canon
-#define Fuji	rawProcessor.imgdata.makernotes.fuji
-#define Oly		rawProcessor.imgdata.makernotes.olympus
-
-#define RawData	rawProcessor.imgdata.rawdata
-#define IOParams	rawProcessor.imgdata.rawdata.ioparams
-
 /* ------------------------------------------------------------------- */
 
 //static CString			g_strInputFileName;
 static Thread CDSSProgress *	g_Progress;
-
 
 /* ------------------------------------------------------------------- */
 
@@ -578,6 +558,25 @@ public :
 	{
 		return m_bColorRAW;
 	};
+
+#define P1		rawProcessor.imgdata.idata
+#define P2		rawProcessor.imgdata.other
+
+#define mnLens rawProcessor.imgdata.lens.makernotes
+#define exifLens rawProcessor.imgdata.lens
+#define ShootingInfo rawProcessor.imgdata.shootinginfo
+
+#define S		rawProcessor.imgdata.sizes
+#define O		rawProcessor.imgdata.params
+#define C		rawProcessor.imgdata.color
+#define T		rawProcessor.imgdata.thumbnail
+
+#define Canon	rawProcessor.imgdata.makernotes.canon
+#define Fuji	rawProcessor.imgdata.makernotes.fuji
+#define Oly		rawProcessor.imgdata.makernotes.olympus
+
+#define RawData	rawProcessor.imgdata.rawdata
+#define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 	CFATYPE	GetCFAType()
 	{
@@ -692,7 +691,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
 			if (bValue)
 			{
-				// Automatic WB using avarage of all pixels
+				// Automatic WB using average of all pixels
 				O.use_auto_wb = 1;
 			};
 
@@ -754,7 +753,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			//
 			BOOL littleEndian = htons(0x55aa) != 0x55aa;
 
-
 			unsigned short *raw_image = NULL;
 			void * buffer = NULL;		// Used for debugging only (memory window)
 
@@ -815,13 +813,14 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					// Just copy the "real image" portion of the data excluding 
 					// the frame
 					//
+					buffer = raw_image;
 					int row, col;
 					for (row = 0; row < S.height; row++)
 						for (col = 0; col < S.width; col++)
 							RAW(row, col)
 							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
-
 				}
+			
 				//
 				// Now process the data that raw_image points to which is either
 				//
@@ -853,6 +852,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				unsigned int dark = O.user_black >= 0 ? O.user_black : C.black;
 				ZTRACE_RUNTIME("Subtracting black level of %d from raw_image data.", dark);
 				unsigned short maxval = 0;
+
 				for (row = 0; row < S.height; row++)
 				{
 					for (col = 0; col < S.width; col++)
@@ -873,40 +873,79 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				}
 
 				//
+				// The image data needs to be scaled to the "white balance co-efficients"
+				// Currently do not handle "Auto White Balance"
+				//
+				float pre_mul[4];
+
+				if (1 == O.use_camera_wb && -1 != C.cam_mul[0])
+				{
+					ZTRACE_RUNTIME("Using Camera White Balance (as shot).");
+					memcpy(pre_mul, C.cam_mul, sizeof pre_mul);
+				}
+				else
+				{
+					ZTRACE_RUNTIME("Using Daylight White Balance.");
+					memcpy(pre_mul, C.pre_mul, sizeof pre_mul);
+				}
+				ZTRACE_RUNTIME("White balance co-efficients being used are %f, %f, %f, %f",
+					pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
+
+				//
 				// Now apply a linear stretch to the raw data, scale to the "saturation" level
 				// not to the value of the pixel with the greatest value (which may be higher
 				// than the saturation level).
 				// 
-				float scale = 65535.0 / C.maximum;
+
+				unsigned maximum = C.maximum - dark;
+				double dmin, dmax; int c = 0;
+
+				for (dmin = DBL_MAX, dmax = c = 0; c < 4; c++)
+				{
+					if (dmin > pre_mul[c])
+						dmin = pre_mul[c];
+					if (dmax < pre_mul[c])
+						dmax = pre_mul[c];
+				}
+
+				float scale_mul[4];
+
+				for (c = 0; c < 4; c++) scale_mul[c] = (pre_mul[c] /= dmax) * 65535.0 / maximum;
+				if (0 == scale_mul[3]) scale_mul[3] = scale_mul[1];
+
 				ZTRACE_RUNTIME("Maximum value pixel has value %d", maxval);
 				ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
-				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale value %f", scale);
+				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
+					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
+
+				register int colour = 0;
 				for (row = 0; row < S.height; row++)
 				{
 					for (col = 0; col < S.width; col++)
 					{
-						register float val = scale *
+						// What colour will this pixel become
+						colour = rawProcessor.COLOR(row, col);
+
+						register float val = scale_mul[colour] *
 							(float)(RAW(row, col));
 						RAW(row, col) = max(0, min(int(val), 65535));
-
-					}
-
-					// Convert raw data to big-endian 
-					if (littleEndian)
-						_swab(
-						(char*)(raw_image),
-							(char*)(raw_image),
-							S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
-
-					for (row = 0; row < S.height; row++)
-					{
-						buffer = &RAW(row, 0);
-						// Write raw pixel data into our private bitmap format
-						pFiller->Write(buffer, sizeof(unsigned short), S.width);
 					}
 				}
+
+				// Convert raw data to big-endian 
+				if (littleEndian)
+					_swab(
+						(char*)(raw_image),
+						(char*)(raw_image),
+						S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
+
+				for (row = 0; row < S.height; row++)
+				{
+					buffer = &RAW(row, 0);
+					// Write raw pixel data into our private bitmap format
+					pFiller->Write(buffer, sizeof(unsigned short), S.width);
+				}
 			}
-#undef RAW
 			else
 			{
 				//
@@ -921,6 +960,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				}
 				if (!bResult) break;
 
+				ZTRACE_RUNTIME("Processing full colour Foveon raw image data");
 				//
 				// Now capture the output using our over-ridden methods
 				//
@@ -934,7 +974,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					ZTRACE_RUNTIME("Cannot write image data to bitmap %s", libraw_strerror(ret));
 				}
 			}
-
+#undef RAW
 			//
 			// If we allocated memory for an image, release it.
 			if (raw_image)

@@ -433,6 +433,7 @@
     <ClCompile Include="..\Tools\cgfiltyp.cpp" />
     <ClCompile Include="..\Tools\childprop.cpp" />
     <ClCompile Include="..\Tools\ControlPos.cpp" />
+    <ClCompile Include="..\Tools\CtrlCache.cpp" />
     <ClCompile Include="..\Tools\CustomTabCtrl.cpp" />
     <ClCompile Include="..\Tools\FolderDlg.cpp" />
     <ClCompile Include="..\Tools\Gradient.cpp" />
