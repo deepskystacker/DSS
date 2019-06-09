@@ -98,7 +98,7 @@ BOOL IsRawBayer()
 		bResult = g_RawSettingsStack.back().m_bRawBayer;
 	else
 		bResult = IsRegistryRawBayer();
-	
+
 	return bResult;
 };
 
@@ -519,7 +519,7 @@ public :
 		m_DateTime.wYear = 0;
 	};
 
-	virtual ~CRawDecod() 
+	virtual ~CRawDecod()
 	{
 		ZFUNCTRACE_RUNTIME();
 		rawProcessor.recycle();
@@ -671,7 +671,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		//BOOL		bAHD;
 		DWORD		bBlackPointTo0 = 0;
 		DWORD		bValue;
-		
+
 		do	// Do once!
 		{
 			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), fBrightness);
@@ -719,7 +719,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
 			if (bBlackPointTo0)
 			{
-				// Set black point to 0 
+				// Set black point to 0
 				O.user_black = 0;
 			};
 
@@ -736,7 +736,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			}
 			if (!bResult) break;
 
-			// 
+			//
 			// Create the class that populates the bitmap
 			//
 			pFiller = new BitMapFiller(pBitmap, pProgress);
@@ -761,14 +761,14 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
 				//
 				// Set up a temporary image array of unsigned short that will be:
-				// 
+				//
 				// 1) Filled in from the Fujitsu Super-CCD image array in
 				//    Rawdata.raw_image, or
 				//
 				// 2) will be copied from the image portion of Rawdata.raw_image
 				//    excluding the frame (Top margin, Left Margin).
-				// 
-				unsigned short *raw_image = 
+				//
+				unsigned short *raw_image =
 					(unsigned short *)calloc(S.height*S.width, sizeof(unsigned short));
 				ZASSERT(NULL != raw_image);
 
@@ -797,7 +797,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 								c = row + ((col + 1) >> 1);
 							}
 							if (r < S.height && c < S.width)
-								RAW(r, c) 
+								RAW(r, c)
 								= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
 						}
 					}
@@ -808,9 +808,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					ZTRACE_RUNTIME("Extracting real image data (excluding the frame) from RawData.raw_image");
 
 					//
-					// This is a regular RAW file so no Fuji Super-CCD stuff 
+					// This is a regular RAW file so no Fuji Super-CCD stuff
 					//
-					// Just copy the "real image" portion of the data excluding 
+					// Just copy the "real image" portion of the data excluding
 					// the frame
 					//
 					buffer = raw_image;
@@ -820,7 +820,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 							RAW(row, col)
 							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
 				}
-			
+
 				//
 				// Now process the data that raw_image points to which is either
 				//
@@ -845,7 +845,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// been set then use that, otherwise just use the black level from the
 				// image.  Note that we only do this on real image data, not the frame
 				//
-				// While doing so collect the largest value in the image data so we can 
+				// While doing so collect the largest value in the image data so we can
 				// apply a linear stretch such that the brightest pixels are set to
 				// 65535.
 				//
@@ -895,7 +895,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// Now apply a linear stretch to the raw data, scale to the "saturation" level
 				// not to the value of the pixel with the greatest value (which may be higher
 				// than the saturation level).
-				// 
+				//
 
 				unsigned maximum = C.maximum - dark;
 				double dmin, dmax; int c = 0;
@@ -932,7 +932,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					}
 				}
 
-				// Convert raw data to big-endian 
+				// Convert raw data to big-endian
 				if (littleEndian)
 					_swab(
 						(char*)(raw_image),
@@ -964,7 +964,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				//
 				// Now capture the output using our over-ridden methods
 				//
-				// Set up the intercept code to write the image data to our bitmap instead of 
+				// Set up the intercept code to write the image data to our bitmap instead of
 				// to an external file, and invoke the overridden dcraw_ppm_tiff_writer()
 				//
 				rawProcessor.setBitMapFiller(pFiller);
@@ -1003,7 +1003,7 @@ BOOL CRawDecod::IsRawFile()
 
 	BOOL		bResult = TRUE;
 	int			ret = 0;
-	
+
 	if ((ret = rawProcessor.open_file(m_strFileName)) != LIBRAW_SUCCESS)
 	{
 		bResult = FALSE;
@@ -1132,7 +1132,7 @@ BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
 
 		if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
 		{
-			pBitmap.Attach(new C16BitGrayBitmap);	
+			pBitmap.Attach(new C16BitGrayBitmap);
 			ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 		}
 		else
@@ -1291,7 +1291,7 @@ void DSSLibRaw::write_ppm_tiff()
 
 			//
 			// Instead of writing the bitmap data to an output file
-			// send it to our Bitmap loader class 
+			// send it to our Bitmap loader class
 			//
 			pDSSBitMapFiller->Write(ppm, colors*output_bps / 8, width);
 	}
