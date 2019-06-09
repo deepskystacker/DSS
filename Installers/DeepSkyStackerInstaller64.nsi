@@ -1,6 +1,10 @@
 ##!include "MUI2.nsh"
 !verbose 4
 
+!include "MUI.nsh"
+
+!define MUI_HEADERIMAGE
+
 !define PRODUCT_NAME       "DeepSkyStacker"
 !define NAMESUFFIX         " (64 bit)"
 
@@ -32,6 +36,7 @@
 
 !define DSS_README_NAME    "README"
 !define DSS_README_FILE    "README.txt"
+!define DSS_EULA		   "../LICENSE"
 
 
 !define DSS_UNINSTALL_NAME "DeepSkyStacker${NAMESUFFIX} Uninstaller"
@@ -40,7 +45,7 @@
 !define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}64"
 
 CRCCheck On
-
+SetCompressor /SOLID lzma
 
 # define installer name
 
@@ -63,6 +68,12 @@ UninstallIcon         "${DSS_ICON}"
 
 var PreviousUninstaller
 
+# Add EULA and custom installation pages.
+!insertmacro MUI_PAGE_LICENSE "${DSS_EULA}"
+!insertmacro MUI_PAGE_DIRECTORY
+!insertmacro MUI_PAGE_INSTFILES
+!insertmacro MUI_LANGUAGE "English"
+
 # default installer section start
 
 Section
@@ -70,10 +81,6 @@ Section
   # Want to use "all users" area of StartMenu/Programs
   SetShellVarContext	all
   
-  # Modify UI behaviours
-  
-  SetDetailsPrint     both
-
   # define output path
 
   SetOutPath $INSTDIR
@@ -146,11 +153,6 @@ Section "Uninstall"
   # Want to use "all users" area of StartMenu/Programs
   SetShellVarContext	all
   
-  # Modify UI behaviours
-  
-  SetDetailsPrint     textonly
-
-
   # Always delete uninstaller first
 
   Delete "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 
