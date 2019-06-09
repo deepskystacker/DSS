@@ -2,7 +2,7 @@ Welcome to DeepSkyStacker 4.2.0 Beta 2
 
 The main change in this release is to use libraw instead of dcraw to capture images from RAW image files.   The resulting images imported into DeepSkyStacker should be very much the same (if not 100% identical) to the results obtained using DeepSkyStacker 4.1.1 with one exception:  At present the "Use Auto White Balance" option will actually process using "Daylight White Balance".
 
-We've also fixed a number of problems we've found or have been reported to us since 4.1.1
+We've also fixed a number of problems and made some other enhancements since 4.1.1
 
 1. BSD 3 clause license file added.
 
@@ -11,6 +11,8 @@ We've also fixed a number of problems we've found or have been reported to us si
 3. The "Stop" button on the progress dialogs should now actually work!
 
 4. The space key can now be used to check/uncheck images in the picture list.
+
+5. The user's default browser will be used instead of IE to open URLs.
 
 Welcome to DeepSkyStacker 4.1.1
 
