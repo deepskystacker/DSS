@@ -891,6 +891,8 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				ZTRACE_RUNTIME("White balance co-efficients being used are %f, %f, %f, %f",
 					pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
 
+				if (0 == pre_mul[3]) pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
+
 				//
 				// Now apply a linear stretch to the raw data, scale to the "saturation" level
 				// not to the value of the pixel with the greatest value (which may be higher
@@ -910,8 +912,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 				float scale_mul[4];
 
-				for (c = 0; c < 4; c++) scale_mul[c] = (pre_mul[c] /= dmax) * 65535.0 / maximum;
-				if (0 == scale_mul[3]) scale_mul[3] = scale_mul[1];
+				for (c = 0; c < 4; c++)	scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / maximum);
 
 				ZTRACE_RUNTIME("Maximum value pixel has value %d", maxval);
 				ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
