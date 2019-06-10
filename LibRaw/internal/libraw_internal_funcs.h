@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * File: libraw_internal_funcs.h
- * Copyright 2008-2017 LibRaw LLC (info@libraw.org)
+ * Copyright 2008-2018 LibRaw LLC (info@libraw.org)
  * Created: Sat Mar  14, 2008
 
 LibRaw is free software; you can redistribute it and/or modify
@@ -30,12 +30,12 @@ it under the terms of the one of two licenses as you choose:
 /* inline functions */
     ushort      sget2 (uchar *s);
     ushort      sget2Rev(uchar *s);
-    void	setCanonBodyFeatures (unsigned id);
-    void 	processCanonCameraInfo (unsigned id, uchar *CameraInfo, unsigned maxlen);
+    unsigned setCanonBodyFeatures (unsigned id);
+    void 	processCanonCameraInfo (unsigned id, uchar *CameraInfo, unsigned maxlen, unsigned type);
     void	Canon_CameraSettings();
     void	Canon_WBpresets (int skip1, int skip2);
     void	Canon_WBCTpresets (short WBCTversion);
-    void      parseCanonMakernotes (unsigned tag, unsigned type, unsigned len);
+    void	parseCanonMakernotes (unsigned tag, unsigned type, unsigned len);
     void	processNikonLensData (uchar *LensData, unsigned len);
     void	setOlympusBodyFeatures (unsigned long long id);
     void	setPhaseOneFeatures (unsigned id);
@@ -45,9 +45,27 @@ it under the terms of the one of two licenses as you choose:
     void	setSonyBodyFeatures (unsigned id);
     void	parseSonyLensType2 (uchar a, uchar b);
     void 	parseSonyLensFeatures (uchar a, uchar b);
-    void	process_Sony_0x9050 (uchar * buf, unsigned id);
-    void	process_Sony_0x940c (uchar * buf);
-    void      parseFujiMakernotes (unsigned tag, unsigned type);
+    void	process_Sony_0x0116 (uchar * buf, ushort, unsigned id);
+    void	process_Sony_0x2010 (uchar * buf, ushort);
+    void	process_Sony_0x9050 (uchar * buf, ushort, unsigned id);
+    void	process_Sony_0x9400 (uchar * buf, ushort, unsigned id);
+    void	process_Sony_0x9402 (uchar * buf, ushort);
+    void	process_Sony_0x9403 (uchar * buf, ushort);
+    void	process_Sony_0x9406 (uchar * buf, ushort);
+    void	process_Sony_0x940c (uchar * buf, ushort);
+    void	process_Sony_0x940e (uchar * buf, ushort, unsigned id);
+    void	parseSonyMakernotes (unsigned tag, unsigned type, unsigned len, unsigned dng_writer,
+                               uchar *&table_buf_0x0116, ushort &table_buf_0x0116_len,
+                               uchar *&table_buf_0x2010, ushort &table_buf_0x2010_len,
+                               uchar *&table_buf_0x9050, ushort &table_buf_0x9050_len,
+                               uchar *&table_buf_0x9400, ushort &table_buf_0x9400_len,
+                               uchar *&table_buf_0x9402, ushort &table_buf_0x9402_len,
+                               uchar *&table_buf_0x9403, ushort &table_buf_0x9403_len,
+                               uchar *&table_buf_0x9406, ushort &table_buf_0x9406_len,
+                               uchar *&table_buf_0x940c, ushort &table_buf_0x940c_len,
+                               uchar *&table_buf_0x940e, ushort &table_buf_0x940e_len);
+
+    void	parseFujiMakernotes (unsigned tag, unsigned type);
 
     ushort      get2();
     unsigned    sget4 (uchar *s);
@@ -150,8 +168,9 @@ void        crw_init_tables (unsigned table, ushort *huff[2]);
     void        android_loose_load_raw();
     void        android_tight_load_raw();
     void        canon_rmf_load_raw();
-    unsigned    pana_bits (int nbits);
+    unsigned    pana_data (int nb, unsigned *bytes);
     void        panasonic_load_raw();
+    void        panasonic_16x10_load_raw();
     void        olympus_load_raw();
     void        olympus_cseries_load_raw();
     void        minolta_rd175_load_raw();
@@ -189,29 +208,13 @@ void        crw_init_tables (unsigned table, ushort *huff[2]);
     void        sony_load_raw();
     void        sony_arw_load_raw();
     void        sony_arw2_load_raw();
+    void        sony_arq_load_raw();
     void        samsung_load_raw();
     void        samsung2_load_raw();
     void        samsung3_load_raw();
     void        parse_minolta (int base);
 
 // Foveon/Sigma
-#ifdef LIBRAW_DEMOSAIC_PACK_GPL2
-    void        foveon_sd_load_raw();
-    void        foveon_dp_load_raw();
-    void        foveon_huff (ushort *huff);
-    void        foveon_load_camf();
-
-    const char* foveon_camf_param (const char *block, const char *param);
-    void *      foveon_camf_matrix (unsigned dim[3], const char *name);
-    int         foveon_fixed (void *ptr, int size, const char *name);
-    float       foveon_avg (short *pix, int range[2], float cfilt);
-    short *     foveon_make_curve (double max, double mul, double filt);
-    void        foveon_make_curves(short **curvep, float dq[3], float div[3], float filt);
-    int         foveon_apply_curve (short *curve, int i);
-    void        foveon_interpolate();
-    char *      foveon_gets (int offset, char *str, int len);
-    void        parse_foveon();
-#endif
 // We always have x3f code compiled in!
     void        parse_x3f();
     void        x3f_load_raw();
@@ -231,7 +234,7 @@ void        crw_init_tables (unsigned table, ushort *huff[2]);
 		void        parse_makernote_0xc634(int base, int uptag, unsigned dng_writer);
     void        parse_exif (int base);
     void        linear_table (unsigned len);
-    void		Kodak_WB_0x08tags(int wb, unsigned type);
+    void        Kodak_WB_0x08tags(int wb, unsigned type);
     void        parse_kodak_ifd (int base);
     int         parse_tiff_ifd (int base);
     int         parse_tiff (int base);
@@ -253,7 +256,7 @@ void        crw_init_tables (unsigned table, ushort *huff[2]);
     void        tiff_set(struct tiff_hdr *th, ushort *ntag,ushort tag, ushort type, int count, int val);
     void        tiff_head (struct tiff_hdr *th, int full);
 
-// splitted AHD code
+// split AHD code
 #define TS 512
     void        ahd_interpolate_green_h_and_v(int top, int left, ushort (*out_rgb)[TS][TS][3]);
     void ahd_interpolate_r_and_b_in_rgb_and_convert_to_cielab(int top, int left, ushort (*inout_rgb)[TS][3], short (*out_lab)[TS][3]);
@@ -262,17 +265,16 @@ void        crw_init_tables (unsigned table, ushort *huff[2]);
     void ahd_interpolate_combine_homogeneous_pixels(int top, int left, ushort (*rgb)[TS][TS][3], char (*homogeneity_map)[TS][2]);
 
 #undef TS
+	void init_fuji_compr(struct fuji_compressed_params* info);
+	void init_fuji_block(struct fuji_compressed_block* info, const struct fuji_compressed_params *params, INT64 raw_offset, unsigned dsize);
+	void copy_line_to_xtrans(struct fuji_compressed_block* info, int cur_line, int cur_block, int cur_block_width);
+	void copy_line_to_bayer(struct fuji_compressed_block* info, int cur_line, int cur_block, int cur_block_width);
+	void xtrans_decode_block(struct fuji_compressed_block* info, const struct fuji_compressed_params *params, int cur_line);
+	void fuji_bayer_decode_block(struct fuji_compressed_block* info, const struct fuji_compressed_params *params, int cur_line);
+	void fuji_compressed_load_raw();
+	void fuji_14bit_load_raw();
+	void parse_fuji_compressed_header();
 
-	void parse_xtrans_header();
-	void xtrans_compressed_load_raw();
-	void init_xtrans(struct xtrans_params* info);
-	void init_xtrans_block(struct xtrans_block* info, const struct xtrans_params *params, INT64 raw_offset, unsigned dsize);
-	void copy_line_to_xtrans(struct xtrans_block* info, int cur_line, int cur_block, int cur_block_width);
-	void xtrans_decode_block(struct xtrans_block* info, const struct xtrans_params * params, int cur_line);
-
-// LibRaw demosaic packs  functions
-// AMaZe
-    int         LinEqSolve(int,  float*, float*, float*);
 // DCB
     void        dcb_pp();
     void        dcb_copy_to_buffer(float (*image2)[3]);
@@ -294,11 +296,6 @@ void        crw_init_tables (unsigned table, ushort *huff[2]);
     void 	dcb_color3(float (*image3)[3]);
     void 	dcb_decide(float (*image2)[3], float (*image3)[3]);
     void 	dcb_nyquist();
-// VCD/modified dcraw
-    void        refinement();
-    void        ahd_partial_interpolate(int threshold_value);
-    void        es_median_filter();
-    void        median_filter_new();
 #endif
 
 #endif

@@ -3,14 +3,6 @@ all: library samples
 # OpenMP support
 #OPENMP_CFLAGS=-fopenmp
 
-# Demosaic Pack GPL2:
-#CFLAGS_DP2=-I../LibRaw-demosaic-pack-GPL2
-#CFLAGS2=-DLIBRAW_DEMOSAIC_PACK_GPL2
-
-# Demosaic Pack GPL3:
-#CFLAGS_DP3=-I../LibRaw-demosaic-pack-GPL3
-#CFLAGS3=-DLIBRAW_DEMOSAIC_PACK_GPL3
-
 # Jasper support for RedCine
 #CFLAGS+=-DUSE_JASPER -I/usr/local/include
 #LDADD+=-L/usr/local/lib -ljasper
@@ -93,7 +85,7 @@ object/demosaic_packs.o: internal/demosaic_packs.cpp
 object/dcraw_fileio.o: internal/dcraw_fileio.cpp
 	g++ -c ${LCMS_DEF} ${CFLAGS} -o object/dcraw_fileio.o internal/dcraw_fileio.cpp
 
-object/libraw_cxx.o: src/libraw_cxx.cpp src/libraw_xtrans_compressed.cpp
+object/libraw_cxx.o: src/libraw_cxx.cpp src/libraw_fuji_compressed.cpp
 	g++ -c ${LCMS_DEF} ${CFLAGS} -o object/libraw_cxx.o src/libraw_cxx.cpp
 
 object/libraw_datastream.o: src/libraw_datastream.cpp

@@ -1,61 +1,257 @@
-2018-02-23  Alex Tutubalin <lexa@lexa.ru>
+2018-12-24  Alex Tutubalin <lexa@lexa.ru>
+ * Fixed possible buffer overrun at Fuji makernotes parser
+ * Fixed possible write to NULL pointer at raw2image/raw2image_ex calls.
+   Details:
+    a) Three different CVE numbers was assigned for single problem:
+      CVE-2018-20363, CVE-2018-20364, CVE-2018-20365
+    b) The POCs exploits inconsistency in Sinar-4Shot files handling.
+     LibRaw 0.19 does not support this files format, so it is not
+     subject of exactly same problem
+    c) However, additional checks for bayer raw data presence are 
+     backported from LibRaw-master (development) branch.
+
+ * LibRaw 0.19.2
+ 
+2018-11-22  Alex Tutubalin <lexa@lexa.ru>
+ * Finally: got Sinar 4shot sample, works fine now
+ * OpenMP critical sections for malloc/free; extra #ifdefs removed; bin/dcraw_dist could be built again using Makefile.devel
+ * additional checks in parse_phase_one()
+ * more checks on file offsets/tag len in parse_minolta
+ * more checks in parse_ciff
+ * Mempool check reworked
+ * Old Leaf (16bit/3color/TIFF) support
+ * Fix cameraWB->autoWB fallback
+ * Polaroid x530 channel swap; get metadata pointer for Foveon files
+ * Fixed Secunia Advisory SA86384
+   - possible infinite loop in unpacked_load_raw()
+   - possible infinite loop in parse_rollei()
+   - possible infinite loop in parse_sinar_ia()
+  Credits: Laurent Delosieres, Secunia Research at Flexera
+
+ * LibRaw 0.19.1-Release
+
+2018-06-28  Alex Tutubalin <lexa@lexa.ru>
+ * changed wrong fix for Canon D30 white balance
+ * fixed possible stack overrun while reading zero-sized strings
+ * fixed possible integer overflow
+ * LibRaw 0.19.0-Release
+
+2018-06-11  Alex Tutubalin <lexa@lexa.ru>
+ * Sony uncompressed/untiled DNGs: do not set bits-per-sample to 14 bit
+ * Do not change tiff_bps for DNG files
+ * Another possible stack overflow in kodak radc reader
+ * Secunia Advisory SA83507, credits Kasper Leigh Haabb,
+   Secunia Research at Flexera"
+   - parse_qt: possible integer overflow
+   - reject broken/crafted NOKIARAW files
+ * LibRaw 0.19-Beta6
+
+2018-05-10  Alex Tutubalin <lexa@lexa.ru>
+ * Put rogue printf's behind #ifdef DCRAW_VERBOSE
+ * Exceptions was not caught in x3f_new_from_file resulting in x3f handle leak
+ * packed_load_raw(): EOF check on each row
+ * define LIBRAW_USE_CALLOC_INSTEAD_OF_MALLOC to use ::calloc instead of 
+   ::malloc in LibRaw_mem_mgr malloc calls; 
+   Note: realloc is not changed, so only partial fix
+ * Fixed possible div by zero in EOS D30 WB data parse
+ * U-suffix for filter-var manipulation consts
+ * restored static specifier for utf2char() lost in previous bugfix
+ * Fixed stack overrun in kodak_radc_load_raw
+ * Secunia Advisory SA83050: possible infinite loop in parse_minolta()
+ * LibRaw 0.19-Beta5
+
+2018-05-03  Alex Tutubalin <lexa@lexa.ru>
+ * CVE-2018-10529 fixed: out of bounds read in X3F parser
+ * CVE-2018-10528 fixed: possible stack overrun in X3F parser
+ * LibRaw 0.19-Beta4
+
+2018-04-24 Alex Tutubalin <lexa@lexa.ru>
+ * LibRaw 0.19-Beta3
+ * fixed lot of bugs reported by ImageMagic/oss-fuzz
+ * fixed several bugs reported by Secunia team (adv 81800,
+   Credit: Laurent Delosieres, Secunia Research at Flexera)
+ 
+2018-03-22 Alex Tutubalin <lexa@lexa.ru>
+ * LibRaw 0.19-Beta2
+ * Better handling of broken JPEG thumbnails
+ * Panasonic GH5S/G9-hires decoder, thanks to Alexey Danilchenko
+   Note: ABI has changed due to this patch, so shlib version increased
+ * Fujifilm X-A5/A20 metadata parsing fix
+ * New error code LIBRAW_TOO_BIG: image data size excess LIBRAW_MAX_ALLOC_MB
+ * winsock2 included before windows.h to make MinGW happy
+ 
+2018-02-23 Alex Tutubalin <lexa@lexa.ru>
+
+ * LibRaw 0.19-Beta1
+
+ * 84 cameras added compared to 0.18 (1014 total):
+    Apple 
+	iPhone 8(*), iPhone 8 plus, iPhone X
+    BlackMagic 
+	URSA Mini 4k, URSA Mini 4.6k, URSA Mini Pro 4.6k
+    Canon CHDK hack
+	 PowerShot A410, A540, D10, ELPH 130 IS, ELPH 160 IS, SD750,
+	    SX100 IS,SX130 IS, SX160 IS, SX510 HS, SX10 IS, IXUS 900Ti
+    Canon 
+	PowerShot G1 X Mark III, G9 X Mark II, EOS 6D Mark II, EOS 77D,
+ 	EOS 200D, EOS 800D, EOS M6, EOS M100
+    Casio EX-ZR4100/5100
+    DJI 
+	Phantom4 Pro/Pro+, Zenmuse X5, Zenmuse X5R
+    FujiFilm 
+	S6500fd, GFX 50S, X100f, X-A3, X-A5, X-A10, X-A20, X-E3, X-H1, X-T20
+    GITUP GIT2P
+    Hasselblad 
+	H6D-100c, A6D-100c
+    Huawei 
+	P9 (EVA-L09/AL00), Honor6a, Honor9, Mate10 (BLA-L29)
+    Leica 
+	CL, M10, TL2
+    LG 
+	V20 (F800K), VS995,
+    Nikon 
+	D850, D5600, D7500, Coolpix B700
+    Olympus 
+	E-PL9, E-M10 Mark III, TG-5
+    OnePlus 
+	One, A3303, A5000
+    Panasonic 
+	DMC-FZ45, DMC-FZ72, DC-FZ80/82, DC-G9 (std. res mode only), DC-GF10/GF90,
+  	DC-GH5, DC-GX9, DC-GX800/850/GF9, DMC-LX1, DC-ZS70 (DC-TZ90/91/92, DC-T93),
+	DC-TZ100/101/ZS100, DC-TZ200/ZS200
+    PARROT
+	Bebop 2, Bebop Drone
+    Pentax KP
+    PhaseOne IQ3 100MP Trichromatic
+    Samsung 
+	Galaxy Nexus, Galaxy S3, S6 (SM-G920F), S7, S7 Edge, S8 (SM-G950U),
+    Sony 
+	A7R III, A9, DSC-RX0, DSC-RX10IV
+    Yi M1
+    YUNEEC 
+	CGO3, CGO3P
+    Xiaoyi YIAC3 (YI 4k)
+
+  Note(*): for mobile phones with DNG format recording, only really tested cameras
+  are added to supported camera list. Really LibRaw should support any correct DNG.
+
+ * No more built-in support for LibRaw demosaic packs (GPL2/GPL3).
+   We're unable to support this (very old code), so we'll be happy to transfer this
+   code to some maintainer who wish to work with it.
+   
+   In LibRaw 0.19 we provide extension API: user-settable callbacks to be called in 
+   code points where demosaic pack code was called.
+
+   -  int callbacks.pre_identify_cb(void *) => to be called in LibRaw::open_datastream
+       before call to (standard) identify() function. If this call returns 1, this means
+       that RAW file is identified and all metadata fields are set, so no need to run
+       standard identify code.
+   - void callbacks.post_identify_cb(void*) => called just after identify(), but before 
+       any cleanup code;
+   - dcraw_process() callbacks are called before dcraw_process phases (name speaks for itself):
+       	pre_subtractblack_cb, pre_scalecolors_cb, pre_preinterpolate_cb, pre_interpolate_cb,
+	interpolate_bayer_cb, interpolate_xtrans_cb, post_interpolate_cb, pre_converttorgb_cb, 
+	post_converttorgb_cb
+
+   All these new callbacks are called with (this) as the only arg.
+   To continue LibRaw-demosaic-pack-GPLx support one need to subclass LibRaw, set needed
+   callbacks in (e.g.) constructor code, than these callbacks to be called
+
+ * Better DNG parser:
+    - support for DefaultCrop Origin/Size tags (add LIBRAW_PROCESSING_USE_DNG_DEFAULT_CROP to raw_processing_options to enable)
+    - better parsing for nested DNG tags (use tag from RAW IFD, fallback to IFD0 if no tag in current IFD)
+    - DNG PreviewColorspace extracted into dng_levels.preview_colorspace
+
+ * Metadata extraction:
+  - Better extraction of camera measured balance (LIBRAW_WBI_Auto and WBI_Measured), 
+    this not the same as 'as shot' if some preset/manual tune is used.
+  - Extraction of camera custom balances (LIBRAW_WBI_CustomN)
+  - Nikon data compression tag extracted into  makernotes.nikon.NEFCompression 
+  - Hasselblad BaseISO and Gain extracted into makernotes.hasselblad
+  - Canon multishot params extracted into makernotes.canon.multishot
+  - lot of other vendor-specific makernotes data (see data structures definitions for details).
+
+ * New LibRaw::open_bayer call allows to pass sensor dump w/o metadata directly to LibRaw:
+     virtual int open_bayer(unsigned char *data, unsigned datalen,
+	  ushort _raw_width, ushort _raw_height, ushort _left_margin, ushort _top_margin,
+	  ushort _right_margin, ushort _bottom_margin,
+	  unsigned char procflags, unsigned char bayer_pattern, unsigned unused_bits, unsigned otherflags,
+	  unsigned black_level);
+    Parameters:
+     data, datalen - buffer passed
+     width/height/margins - speaks for itself
+     procflags:
+     for 10-bit format:
+      1: "4 pixels in 5 bytes" packing is used
+      0: "6 pixels in 8 bytes" packing is used
+     for 16-bit format:
+      1: Big-endian data
+    bayer_pattern: one of LIBRAW_OPENBAYER_RGGB,LIBRAW_OPENBAYER_BGGR,
+                          LIBRAW_OPENBAYER_GRBG,LIBRAW_OPENBAYER_GBRG
+    unused_bits: count of upper zero bits
+    otherflags:
+      Bit 1 - filter (average neighbors) for pixels with values of zero
+      Bits 2-4 - the orientation of the image (0=do not rotate, 3=180, 5=90CCW, 6=90CW)
+    black_level: file black level (it also may be specified via imgdata.params)
+
+    see samples/openbayer_sample.cpp for usage sample (note, this sample is 'sample only', suited for
+    Kodak KAI-0340 sensor, you'll need change open_bayer() params for your data).
+
+ * Color data added/updated/fixed for many cameras
+
+ * Correct data maximum for Fuji X-* cameras
+
+ * Thumbnail processing:
+   - JPEG thumbnails: if compiled with libjpeg, color count is extracted into imgdata.thumbnail.tcolors
+   - PPM (bitmap) thumbnails: color count is set according to thumbnail IFD tag
+   - PPM16 thumbnails: if LIBRAW_PROCESSING_USE_PPM16_THUMBS set in raw_processing_options, than thumbnail will be extracted
+     as is, not converted to 8 bit. thumbnail.tformat is set to LIBRAW_THUMBNAIL_BITMAP16 in this case.
+     Untested, because it is hard to find RAWs with 16-bit bitmaps.
+
+== Compatibility fixes
+
+ * struct tiff_tag renamed to libraw_tiff_tag
+ * pow64f renamed to libraw_pow64f
+
+== Bugs fixed:
+
+ * COLOR(r,c) works correctly on X-Trans files
+
+== Security fixes:
 Secunia #81000: 
 Credit: Laurent Delosieres, Secunia Research at Flexera
  * leaf_hdr_load_raw: check for image pointer for demosaiced raw
  * NOKIARAW parser: check image dimensions readed from file
  * quicktake_100_load_raw: check width/height limits
- * LibRaw 0.18.8
 
-2018-01-29  Alex Tutubalin <lexa@lexa.ru>
- * Checks for width+left_margin/height+top_margin not larger than 64k
- * LIBRAW_MAX_ALLOC_MB define limits maximum image/raw_image allocation
-   (default is 2048 so 2Gb per array)
- * LibRaw::read_shorts item count is now unsigned
-
-2018-01-19  Alex Tutubalin <lexa@lexa.ru>
-Secunia #79000: 
+Secunia #79000:
 Credit: Laurent Delosieres, Secunia Research at Flexera
  * All legacy (RGB raw) image loaders checks for imgdata.image is not NULL
  * kodak_radc_load_raw: check image size before processing
  * legacy memory allocator: allocate max(widh,raw_width)*max(height,raw_height)
- * LibRaw 0.18.7
 
-
-2017-12-06  Alex Tutubalin <lexa@lexa.ru>
 Secunia #76000:
  * Fixed fuji_width handling if file is neither fuji nor DNG
  * Fixed xtrans interpolate for broken xtrans pattern
  * Fixed panasonic decoder
  * LibRaw 0.18.6
 
-2017-09-22  Alex Tutubalin <lexa@lexa.ru>
- * Fixed possible out of bound access in Kodak 6500 loader
- * LibRaw 0.18.5
-
-2017-09-12  Alex Tutubalin <lexa@lexa.ru>
+Other fixes:
+ * Checks for width+left_margin/height+top_margin not larger than 64k
+ * LIBRAW_MAX_ALLOC_MB define limits maximum image/raw_image allocation
+   (default is 2048 so 2Gb per array)
+ * LibRaw::read_shorts item count is now unsigned
+ * Fixed possible out of bound access in Kodak 65000 loader
  * CVE-2017-14348: Fix for possible heap overrun in Canon makernotes parser
    Credit: Henri Salo from Nixu Corporation
- * LibRaw 0.18.4
-
-2017-09-09  Alex Tutubalin <lexa@lexa.ru>
  * Fix for CVE-2017-13735
  * CVE-2017-14265: Additional check for X-Trans CFA pattern data
- * LibRaw 0.18.3
-
-2017-03-08  Alex Tutubalin <lexa@lexa.ru>
  * Fixed several errors (Secunia advisory SA75000)
  * ACES colorspace output option included in dcraw_emu help page
  * Avoided possible 32-bit overflows in Sony metadata parser
- * Phase One flat field code called even for half-s
- * LibRaw 0.18.2
+ * Phase One flat field code called even for half-size
 
-2017-02-12  Alex Tutubalin <lexa@lexa.ru>
- * Camera Support: Sigma Quatto H
- * Fixed bug in FujiExpoMidPointShift parser
- * Fixed wrong black level in Sony A350
- * Added standard integer types for VisualStudio 2008 and earlier
- * LibRaw 0.18.1
- 
+
 2016-12-27  Alex Tutubalin <lexa@lexa.ru>
  * Licensing changes:
     - there is no 'LibRaw Software License 27032010' licensing anymore (and all signed
