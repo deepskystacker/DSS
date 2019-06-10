@@ -2,6 +2,7 @@
 !verbose 4
 
 !include "MUI.nsh"
+!include "MUI_EXTRAPAGES.nsh"
 
 !define MUI_HEADERIMAGE
 
@@ -70,6 +71,7 @@ var PreviousUninstaller
 
 # Add EULA and custom installation pages.
 !insertmacro MUI_PAGE_LICENSE "${DSS_EULA}"
+!insertmacro MUI_PAGE_README  "${DSS_README_FILE}"
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_LANGUAGE "English"
