@@ -788,7 +788,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					int row, col;
 					for (row = 0; row < S.raw_height - S.top_margin * 2; row++)
 					{
-						for (col = 0; col < fuji_width << !fuji_layout; col++)
+						for (col = 0; col < fuji_width << int(!fuji_layout); col++)
 						{
 							if (fuji_layout)
 							{

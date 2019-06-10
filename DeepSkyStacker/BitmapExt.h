@@ -249,7 +249,7 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
     }
 };
 
-inline double GetIntensity(COLORREF crColor)
+inline double GetIntensity(const COLORREF crColor)
 {
 	double	H, S, L;
 
@@ -258,7 +258,7 @@ inline double GetIntensity(COLORREF crColor)
 	return L;
 };
 
-inline double GetIntensity(COLORREF16 crColor)
+inline double GetIntensity(const COLORREF16 & crColor)
 {
 	double	H, S, L;
 
@@ -744,34 +744,19 @@ public :
 	virtual BOOL	GetScanLine(LONG j, void * pScanLine) = 0;
 	virtual BOOL	SetScanLine(LONG j, void * pScanLine) = 0;
 
-	virtual COLORREF GetPixel(LONG i, LONG j)
-	{
-		COLORREF	crResult;
-		double		fRed, fGreen, fBlue;
-
-		GetPixel(i, j, fRed, fGreen, fBlue);
-		crResult = RGB(fRed, fGreen, fBlue);
-
-		return crResult;
-	};
-
-	virtual COLORREF16 GetPixel16(LONG i, LONG j)
+	virtual BOOL	GetPixel16(LONG i, LONG j, COLORREF16 & crResult)
 	{
 		// Use get pixel
-		COLORREF16		crResult;
-		double			fRed, fGreen, fBlue;
-		
-
-		GetPixel(i, j, fRed, fGreen, fBlue);
+		double fRed, fGreen, fBlue;
+		BOOL fResult = GetPixel(i, j, fRed, fGreen, fBlue);
 
 		crResult.red = (WORD)(fRed * 256.0);
 		crResult.green = (WORD)(fGreen * 256.0);
 		crResult.blue = (WORD)(fBlue * 256.0);
-
-		return crResult;
+		return fResult;
 	};
 
-	virtual BOOL	SetPixel16(LONG i, LONG j, COLORREF16 crColor)
+	virtual BOOL	SetPixel16(LONG i, LONG j, const COLORREF16 & crColor)
 	{
 		return SetPixel(i, j, (double)crColor.red/256.0, (double)crColor.green/256.0, (double)crColor.blue/256.0);
 	};
@@ -1632,7 +1617,7 @@ private :
 		return TRUE;
 	};
 
-	TType	GetPrimary(LONG x, LONG y, COLORREF16 crColor)
+	TType	GetPrimary(LONG x, LONG y, const COLORREF16 & crColor)
 	{
 		switch (::GetBayerColor(x, y, m_CFAType))
 		{
@@ -2523,7 +2508,7 @@ public :
 		};
 	};
 
-	virtual BOOL	SetPixel16(LONG i, LONG j, COLORREF16 crColor16)
+	virtual BOOL	SetPixel16(LONG i, LONG j, const COLORREF16 &crColor16)
 	{
 		COLORREF			crColor;
 

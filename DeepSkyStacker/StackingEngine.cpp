@@ -1804,9 +1804,9 @@ BOOL	CStackTask::DoTask(HANDLE hEvent)
 									fBlueEntropy = 1.0;
 
 					if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
-						crColor = m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy);
+						m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
 					else
-						crColor = m_pBitmap->GetPixel16(i, j);
+						m_pBitmap->GetPixel16(i, j, crColor);
 
 					Red		= crColor.red;
 					Green	= crColor.green;
