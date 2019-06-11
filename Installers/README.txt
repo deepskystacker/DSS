@@ -1,18 +1,26 @@
 Welcome to DeepSkyStacker 4.2.0 Beta 2
 
-The main change in this release is to use libraw instead of dcraw to capture images from RAW image files.   The resulting images imported into DeepSkyStacker should be very much the same (if not 100% identical) to the results obtained using DeepSkyStacker 4.1.1 with one exception:  At present the "Use Auto White Balance" option will actually process using "Daylight White Balance".
+The main change in this release is to use LibRaw version 19.2 instead of dcraw to capture images from RAW image files.
+This should provide support for many recent cameras which wasn't possbile using dcraw.
+The resulting images should be very much the same (if not 100% identical) to the results obtained using DeepSkyStacker 4.1.1.
+There is one exception:  If you select "Use Auto White Balance", the image actually be processed using "Daylight White Balance".
+We may provide an update to support "Auto White Balance" in the future.
 
 We've also fixed a number of problems and made some other enhancements since 4.1.1
 
-1. BSD 3 clause license file added.
+1. Support for images from cameras that use the Fujitsu X-Trans sensor.
+   The image is converted to a 3 colour RGB image and interpolated using Frank Markesteijn's algorithm using LibRaw::Process() .
+   The image is then imported as if it were a Foveon colour image.
 
-2. A fix was made to correct crashes caused by a thread-unsafe assignment in the smart pointer code.
+2. BSD 3 clause license file added.
 
-3. The "Stop" button on the progress dialogs should now actually work!
+3. A fix was made to correct crashes caused by a thread-unsafe assignment in the smart pointer code.
 
-4. The space key can now be used to check/uncheck images in the picture list.
+4. The "Stop" button on the progress dialogs should now actually work!
 
-5. The user's default browser will be used instead of IE to open URLs.
+5. The space key can now be used to check/uncheck images in the picture list.
+
+6. The user's default browser will be used instead of IE to open URLs.
 
 Welcome to DeepSkyStacker 4.1.1
 
