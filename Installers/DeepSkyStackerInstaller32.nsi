@@ -87,12 +87,12 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall previous version silently (including blind uninstall attempts of legacy 3.3.2 based versions)
-  ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "QuietUninstallString"
+  # Uninstall previous version silently 
+  ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "UninstallString"
 
-  ExecWait '"$PreviousUninstaller" _?=$INSTDIR'
+  ExecWait '"$PreviousUninstaller" /S _?=$INSTDIR'
   
-  ExecWait '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" /S _?=$INSTDIR'
+  # Attempt to do blind uninstalls of legacy 3.3.2 based versions
   ExecWait 'MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /qn' # en, es
   ExecWait 'MsiExec.exe /x{DCEC4A35-DA2B-4CA6-89A3-206F9A568ACD} /qn' # fr
   ExecWait 'MsiExec.exe /x{350E3960-DE20-4FE6-9E6B-26B464AD27FD} /qn' # de
@@ -140,7 +140,7 @@ Section
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayVersion"       "${DSS_VERSION}"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayIcon"          "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
-  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "QuietUninstallString" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe /S"  
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "QuietUninstallString" "$\"$INSTDIR\${DSS_UNINSTALL_FILE}.exe$\" /S"
 
   # Create the uninstaller program
   

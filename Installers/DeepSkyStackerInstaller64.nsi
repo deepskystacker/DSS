@@ -88,9 +88,9 @@ Section
   SetOutPath $INSTDIR
  
   # Uninstall previous version silently
-  ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "QuietUninstallString"
+  ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "UninstallString"
   
-  ExecWait '"$PreviousUninstaller" _?=$INSTDIR'
+  ExecWait '"$PreviousUninstaller" /S _?=$INSTDIR'
 
 
   # specify the files that go in the output path
