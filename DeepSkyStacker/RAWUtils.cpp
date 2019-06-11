@@ -961,7 +961,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				}
 				if (!bResult) break;
 
-				ZTRACE_RUNTIME("Processing full colour Foveon raw image data");
+				ZTRACE_RUNTIME("Processing Foveon or Fuji X-Trans raw image data");
 				//
 				// Now capture the output using our over-ridden methods
 				//
@@ -1044,6 +1044,18 @@ BOOL CRawDecod::IsRawFile()
 		};
 
 		m_bColorRAW	= P1.is_foveon || !(P1.filters);
+		if (1 == P1.filters || 9 == P1.filters)
+		{
+			//
+			// This is somewhat of a lie as the only the Foveon sensors
+			// create full color raw files.  However by telling this lie
+			// we can use libraw to decode and interpolate Fujitsu X-Trans
+			// and Leaf Catchlight images
+			//
+			if (1 == P1.filters) ZTRACE_RUNTIME("Image is from a Leaf Catchlight");
+			else ZTRACE_RUNTIME("Image is from a Fujitsu X-Trans Sensor");
+			m_bColorRAW = TRUE;
+		}
 		m_CFAType	= GetCurrentCFAType();
 	};
 
