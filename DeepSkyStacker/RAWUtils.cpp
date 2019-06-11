@@ -726,6 +726,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			// Output is 16 bits (equivalent of dcraw flag -4)
 			O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
 			O.output_bps = 16;
+			
+			// Set output quality 3 
+			O.user_qual = 3;
 
 			g_Progress = pProgress;
 
