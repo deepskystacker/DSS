@@ -76,6 +76,12 @@ var PreviousUninstaller
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_LANGUAGE "English"
 
+${ReadmeLanguage} "${LANG_ENGLISH}" \
+          "Build Details" \
+          "Deep Sky Stacker Change List" \
+          "About $(^name):" \
+          "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
+
 # default installer section start
 
 Section
