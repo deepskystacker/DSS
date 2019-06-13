@@ -842,12 +842,12 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 				//
 				// Do dark subtraction on the image.   If a user defined black level has
-				// been set then use that, otherwise just use the black level from the
-				// image.  Note that we only do this on real image data, not the frame
+				// been set (it will be zero) then use that, otherwise just use the black
+				// level for the camera.
 				//
-				// While doing so collect the largest value in the image data so we can
-				// apply a linear stretch such that the brightest pixels are set to
-				// 65535.
+				// Note that this is only done this on real image data, not the frame
+				//
+				// While doing so collect the largest value in the image data.
 				//
 				unsigned int dark = O.user_black >= 0 ? O.user_black : C.black;
 				ZTRACE_RUNTIME("Subtracting black level of %d from raw_image data.", dark);
@@ -859,13 +859,17 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					{
 						register unsigned short val =
 							RAW(row, col);
-						if (val > dark)
+						if (0 != dark)
 						{
-							val -= dark;
-						}
-						else
-						{
-							val = 0;
+							if (val > dark)
+							{
+								val -= dark;
+							}
+							else
+							{
+								val = 0;
+							}
+
 						}
 						RAW(row, col) = val;
 						maxval = val > maxval ? val : maxval;
