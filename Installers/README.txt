@@ -1,14 +1,17 @@
 Welcome to DeepSkyStacker 4.2.0 Beta 2
 
 The main change in this release is to use LibRaw version 19.2 instead of dcraw to capture images from RAW image files.
-This should provide support for many recent cameras which wasn't possbile using dcraw.
+This should provide support for many recent cameras which wasn't possible using dcraw.
 The resulting images should be very much the same (if not 100% identical) to the results obtained using DeepSkyStacker 4.1.1.
-There is one exception:  If you select "Use Auto White Balance", the image actually be processed using "Daylight White Balance".
+
+There is one exception:
+
+If you select "Use Auto White Balance", the image will actually be processed using "Daylight White Balance".
 We may provide an update to support "Auto White Balance" in the future.
 
 We've also fixed a number of problems and made some other enhancements since 4.1.1
 
-1. Support for images from cameras that use the Fujitsu X-Trans sensor.
+1. Support for images from cameras that use the Fujitsu X-Trans sensor (new in 4.2.0 Beta 2).
    The image is converted to a 3 colour RGB image and interpolated using Frank Markesteijn's algorithm using LibRaw::Process() .
    The image is then imported as if it were a Foveon colour image.
 
