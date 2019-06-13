@@ -1,8 +1,11 @@
 ##!include "MUI2.nsh"
 !verbose 4
+SetCompressor /SOLID lzma
 
 !include "MUI.nsh"
 !include "MUI_EXTRAPAGES.nsh"
+!include "PathRemove.nsh"
+!include "FileFunc.nsh"
 
 !define MUI_HEADERIMAGE
 
@@ -46,7 +49,6 @@
 !define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}32"
 
 CRCCheck On
-SetCompressor /SOLID lzma
 
 # define installer name
 
@@ -76,9 +78,12 @@ var PreviousUninstaller
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_LANGUAGE "English"
 
+# Add Path extraction macro
+#!insertmacro PathRemoveArgsAndQuotes
+
 ${ReadmeLanguage} "${LANG_ENGLISH}" \
-          "Build Details" \
-          "Deep Sky Stacker Change List" \
+          "DeepSkyStacker 4.2.0 Beta 2 Readme.txt" \
+          "Details about the new release of DeepSkyStacker" \
           "About $(^name):" \
           "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
 
@@ -95,8 +100,27 @@ Section
  
   # Uninstall previous version silently 
   ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "UninstallString"
-
-  ExecWait '"$PreviousUninstaller" /S _?=$INSTDIR'
+  ${If} $PreviousUninstaller != ""
+        #
+        # If the Uninstall string is malformed (executable name isn't double quoted)
+        # we need to wrap it in double quotes
+        #
+        StrCpy $0 $PreviousUninstaller 1
+        ${If} '"' != $0
+              StrCpy $PreviousUninstaller '"$PreviousUninstaller"'
+        ${Endif}
+        
+        #
+        # Now strip out the directory name to feed to _? parameter
+        #
+        ${PathRemoveArgsAndQuotes} $0 $PreviousUninstaller
+        ${GetParent} $0 $R0
+        
+        #
+        # Finally uninstall the previous version silently
+        #
+        ExecWait '$PreviousUninstaller /S _?=$R0'
+  ${EndIf}
   
   # Attempt to do blind uninstalls of legacy 3.3.2 based versions
   ExecWait 'MsiExec.exe /x{18435829-4E75-4CD1-9796-A62DBBAE2ED7} /qn' # en, es
@@ -145,8 +169,8 @@ Section
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (32 bit - remove only)"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayVersion"       "${DSS_VERSION}"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayIcon"          "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
-  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
-  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "QuietUninstallString" "$\"$INSTDIR\${DSS_UNINSTALL_FILE}.exe$\" /S"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe"'
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "QuietUninstallString" '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe" /S'
 
   # Create the uninstaller program
   
