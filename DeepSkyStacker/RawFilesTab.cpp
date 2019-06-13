@@ -94,6 +94,7 @@ BOOL CRawFilesTab::OnSetActive()
 		//Version 4.2.0 doesn't support Auto WB 
 		// 
 		bValue = FALSE;
+		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
 		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
 		m_AutoWB.SetCheck(bValue);
 		m_AutoWB.EnableWindow(FALSE);
