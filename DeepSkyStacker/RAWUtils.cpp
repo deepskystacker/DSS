@@ -829,10 +829,10 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// Now process the data that raw_image points to which is either
 				//
 				// 1) The output of post processing the Fuji Super-CCD raw,
-				//    stored in the USHORT array hung off image, or
+				//    stored in the USHORT array hung off raw_image, or
 				//
-				// 2) Normal common or garden raw Bayer matrix data that's pointed
-				//    to by RawData.raw_image
+				// 2) Normal common or garden raw Bayer matrix data that's been
+				//    copied from RawData.raw_image to raw_image (less the frame)
 				//
 				// Either way we should now be processing a regular greyscale 16-bit
 				// pixel array which has an associated Bayer Matrix
