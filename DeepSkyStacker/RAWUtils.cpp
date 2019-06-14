@@ -687,8 +687,12 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			//bBilinear	 = !bSuperPixels && !bRawBayer && IsRawBilinear();
 			//bAHD		 = !bSuperPixels && !bRawBayer && IsRawAHD();
 
+			//
+			// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
+			// 
 			bValue = FALSE;
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
+			workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
+			// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
 			if (bValue)
 			{
 				// Automatic WB using average of all pixels
