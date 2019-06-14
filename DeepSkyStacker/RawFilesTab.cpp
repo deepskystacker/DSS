@@ -91,7 +91,7 @@ BOOL CRawFilesTab::OnSetActive()
 		m_BlueScale.SetWindowText(strValue);
 
 		//
-		//Version 4.2.0 doesn't support Auto WB 
+		// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
 		// 
 		bValue = FALSE;
 		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
