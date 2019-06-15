@@ -25,7 +25,7 @@
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
 !define DSS_VERSION        "4.2.0"                                  # For control panel
-!define DSS_VERSION_SUFFIX "Beta 2"                                 # For control panel (e.g. "beta 1")
+!define DSS_VERSION_SUFFIX "Beta 3"                                 # For control panel (e.g. "beta 1")
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
@@ -43,7 +43,7 @@
 
 
 !define DSS_UNINSTALL_NAME "DeepSkyStacker${NAMESUFFIX} Uninstaller"
-!define DSS_UNINSTALL_FILE "DSS64-Remove"
+!define DSS_UNINSTALL_FILE "DSS-Remove64"
 
 !define DSS_REG_UNINSTALL_PATH "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}64"
 
@@ -52,7 +52,7 @@ SetCompressor /SOLID lzma
 
 # define installer name
 
-OutFile "DSS64-Setup.exe"
+OutFile "DSS-Setup64.exe"
  
 RequestExecutionLevel Admin
 

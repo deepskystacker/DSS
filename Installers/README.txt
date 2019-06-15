@@ -8,7 +8,7 @@ There is one exception:
 
 The "Use Auto White Balance" white balance button is disabled for this release.
 You can either accept the default which is "Daylight White Balance", or select "Use Camera White Balance".
-If you select the latter, and camera is set to "Auto White Balance", then the camera calculated White Balance co-efficients will be used.
+If you select the latter, and camera was set to "Auto White Balance" when the images were taken, then the camera calculated "Auto White Balance" co-efficients will be used.
 We may provide an update to support doing our own "Auto White Balance" in the future.
 
 We've also fixed a number of problems and made some other enhancements since 4.1.1
