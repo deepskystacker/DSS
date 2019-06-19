@@ -650,6 +650,7 @@ BOOL	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 		{
 			if (pBitmap->IsMonochrome() && pBitmap->IsCFA())
 			{
+				ZTRACE_RUNTIME("Slow Bitmap Copy");
 				// Slow Method
 				for (j = 0;j<m_lHeight;j++)
 				{
@@ -673,6 +674,7 @@ BOOL	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 			}
 			else
 			{
+				ZTRACE_RUNTIME("Fast Bitmap Copy");
 				// Fast Method
 				PixelIterator			it;
 
