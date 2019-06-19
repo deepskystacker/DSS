@@ -106,13 +106,12 @@ public :
 		InitSquareEntropies();
 	};
 
-	COLORREF16	GetPixel(LONG x, LONG y, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy)
+	void	GetPixel(LONG x, LONG y, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy, COLORREF16 & crResult)
 	{
-		COLORREF16		crResult;
 		LONG			lSquareX,
 						lSquareY;
 
-		crResult = m_pBitmap->GetPixel16(x, y);
+		m_pBitmap->GetPixel16(x, y, crResult);
 
 		lSquareX = x / (m_lWindowSize * 2 + 1);
 		lSquareY = y / (m_lWindowSize * 2 + 1);
@@ -170,8 +169,6 @@ public :
 		fRedEntropy		/= fTotalWeight;
 		fGreenEntropy	/= fTotalWeight;
 		fBlueEntropy	/= fTotalWeight;
-
-		return crResult;
 	};
 };
 
