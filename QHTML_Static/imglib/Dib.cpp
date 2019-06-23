@@ -6,6 +6,7 @@ Owner:	russf@gipsysoft.com
 Purpose:	Device indepenedent bitmap.
 ----------------------------------------------------------------------*/
 #include "stdafx.h"
+#pragma warning (disable : 4702)
 #include "CompatibleDC.h"
 #include "DIB.h"
 
