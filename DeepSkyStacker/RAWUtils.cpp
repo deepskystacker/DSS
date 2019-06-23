@@ -785,7 +785,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				{
 					ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
 #if defined(_OPENMP)
-#pragma omp parallel for default(shared)
+#pragma omp parallel for shared(raw_image, rawProcessor)
 #endif
 					for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
 					{
