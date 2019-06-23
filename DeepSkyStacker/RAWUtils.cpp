@@ -485,7 +485,8 @@ private:
 
 #define Thread   __declspec( thread )
 
-Thread DSSLibRaw	rawProcessor;
+// Thread DSSLibRaw	rawProcessor;
+DSSLibRaw rawProcessor;
 
 
 /* ------------------------------------------------------------------- */
@@ -783,13 +784,15 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				if (fuji_width)   // Are we processing a Fuji Super-CCD image?
 				{
 					ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
-
-					unsigned r, c;
-					int row, col;
-					for (row = 0; row < S.raw_height - S.top_margin * 2; row++)
+#if defined(_OPENMP)
+#pragma omp parallel for default(shared)
+#endif
+					for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
 					{
-						for (col = 0; col < fuji_width << int(!fuji_layout); col++)
+						for (int col = 0; col < fuji_width << int(!fuji_layout); col++)
 						{
+							unsigned r, c;
+
 							if (fuji_layout)
 							{
 								r = fuji_width - 1 - col + (row >> 1);
@@ -805,7 +808,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 								= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
 						}
 					}
-
 				}
 				else
 				{
@@ -818,11 +820,17 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					// the frame
 					//
 					buffer = raw_image;
-					int row, col;
-					for (row = 0; row < S.height; row++)
-						for (col = 0; col < S.width; col++)
+#if defined(_OPENMP)
+#pragma omp parallel for shared(raw_image, rawProcessor)
+#endif
+					for (int row = 0; row < S.height; row++)
+					{
+						for (int col = 0; col < S.width; col++)
+						{
 							RAW(row, col)
-							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+								= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+						}
+					}
 				}
 
 				//
@@ -928,6 +936,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
 				register int colour = 0;
+#if defined(_OPENMP)
+#pragma omp parallel for shared(raw_image, rawProcessor)
+#endif
 				for (row = 0; row < S.height; row++)
 				{
 					for (col = 0; col < S.width; col++)
