@@ -864,7 +864,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				unsigned int dark = O.user_black >= 0 ? O.user_black : C.black;
 				ZTRACE_RUNTIME("Subtracting black level of %d from raw_image data.", dark);
 				unsigned short maxval = 0;
-
+				
 				for (row = 0; row < S.height; row++)
 				{
 					for (col = 0; col < S.width; col++)
@@ -881,9 +881,8 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 							{
 								val = 0;
 							}
-
+							RAW(row, col) = val;
 						}
-						RAW(row, col) = val;
 						maxval = val > maxval ? val : maxval;
 					}
 				}
