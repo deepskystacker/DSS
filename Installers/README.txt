@@ -15,7 +15,7 @@ We've also fixed a number of problems and made some other enhancements since 4.1
 
 1. Support for images from cameras that use the Fujitsu X-Trans sensor (new in 4.2.0 Beta 2).
    The image is converted to a 3 colour RGB image and interpolated using Frank Markesteijn's algorithm using LibRaw::Process().
-   Please note that the interpolation is quite slow (about 40 seconds per image on my Core i& laptop).
+   Please note that the interpolation is quite slow (about 40 seconds per image on my Core i7 laptop).
    The image is then imported as if it were a Foveon colour image.
 
 2. BSD 3 clause license file added.
