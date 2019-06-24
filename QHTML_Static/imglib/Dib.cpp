@@ -6,7 +6,6 @@ Owner:	russf@gipsysoft.com
 Purpose:	Device indepenedent bitmap.
 ----------------------------------------------------------------------*/
 #include "stdafx.h"
-#pragma warning (disable : 4702)
 #include "CompatibleDC.h"
 #include "DIB.h"
 
@@ -119,10 +118,11 @@ void CDib::Initialise()
 
 	m_arrLine.SetSize( m_nHeight );
 
-	for( size_t i= m_nHeight - 1; i >=  0; i--)
-	{
-		m_arrLine[i] = m_pBits + i * m_nWidth;
-	}
+	if (m_nHeight > 0)	// Adding this prevents compiler generating infinite loop
+		for( size_t i= m_nHeight - 1; i >=  0; i--)
+		{
+			m_arrLine[i] = m_pBits + i * m_nWidth;
+		}
 }
 
 
