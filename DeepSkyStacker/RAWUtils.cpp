@@ -855,7 +855,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// been set (it will be zero) then use that, otherwise just use the black
 				// level for the camera.
 				//
-				// Note that this is only done this on real image data, not the frame
+				// Note that this is only done on real image data, not the frame
 				//
 				// While doing so collect the largest value in the image data.
 				//
