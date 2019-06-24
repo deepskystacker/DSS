@@ -850,8 +850,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				pFiller->setHeight(S.height);
 				pFiller->setMaxColors((1 << 16) - 1);
 
-				int	row = 0, col = 0;		// iterators
-
 				//
 				// Do dark subtraction on the image.   If a user defined black level has
 				// been set (it will be zero) then use that, otherwise just use the black
@@ -864,13 +862,17 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				unsigned int dark = O.user_black >= 0 ? O.user_black : C.black;
 				ZTRACE_RUNTIME("Subtracting black level of %d from raw_image data.", dark);
 				unsigned short maxval = 0;
-				
-				for (row = 0; row < S.height; row++)
+				register unsigned short val = 0;
+
+#if defined(_OPENMP)
+#pragma omp parallel for shared(raw_image, rawProcessor)
+#endif
+				for (int row = 0; row < S.height; row++)
 				{
-					for (col = 0; col < S.width; col++)
+					for (int col = 0; col < S.width; col++)
 					{
-						register unsigned short val =
-							RAW(row, col);
+						
+						val = RAW(row, col);
 						if (0 != dark)
 						{
 							if (val > dark)
@@ -883,6 +885,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 							}
 							RAW(row, col) = val;
 						}
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
 						maxval = val > maxval ? val : maxval;
 					}
 				}
@@ -935,12 +940,13 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
 				register int colour = 0;
+
 #if defined(_OPENMP)
 #pragma omp parallel for shared(raw_image, rawProcessor)
 #endif
-				for (row = 0; row < S.height; row++)
+				for (int row = 0; row < S.height; row++)
 				{
-					for (col = 0; col < S.width; col++)
+					for (int col = 0; col < S.width; col++)
 					{
 						// What colour will this pixel become
 						colour = rawProcessor.COLOR(row, col);
@@ -958,7 +964,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 						(char*)(raw_image),
 						S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
 
-				for (row = 0; row < S.height; row++)
+				for (int row = 0; row < S.height; row++)
 				{
 					buffer = &RAW(row, 0);
 					// Write raw pixel data into our private bitmap format
