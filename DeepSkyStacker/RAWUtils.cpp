@@ -475,6 +475,9 @@ public:
 		return libraw_internal_data.unpacker_data.fuji_layout;
 	};
 
+	void adjust_bl() { this->LibRaw::adjust_bl(); }
+	virtual int is_phaseone_compressed() { return this->LibRaw::is_phaseone_compressed(); }
+
 protected:
 	void        write_ppm_tiff();
 
@@ -851,6 +854,17 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				pFiller->setMaxColors((1 << 16) - 1);
 
 				//
+				// Before doing dark subtraction, normalise C.black / C.cblack[]
+				//
+				ZTRACE_RUNTIME("Before adjust_bl() C.black = %d.", C.black);
+				ZTRACE_RUNTIME("First 10 C.cblack elements\n%d, %d, %d, %d\n%d, %d\n%d, %d, %d, %d",
+					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
+					C.cblack[4], C.cblack[5],
+					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
+				rawProcessor.adjust_bl();
+
+				//
+				//
 				// Do dark subtraction on the image.   If a user defined black level has
 				// been set (it will be zero) then use that, otherwise just use the black
 				// level for the camera.
@@ -859,37 +873,77 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				//
 				// While doing so collect the largest value in the image data.
 				//
-				unsigned int dark = O.user_black >= 0 ? O.user_black : C.black;
-				ZTRACE_RUNTIME("Subtracting black level of %d from raw_image data.", dark);
-				unsigned short maxval = 0;
-				register unsigned short val = 0;
+				ZTRACE_RUNTIME("Subtracting black level of C.black = %d from raw_image data.", C.black);
+				ZTRACE_RUNTIME("First 10 C.cblack elements\n%d, %d, %d, %d\n%d, %d\n%d, %d, %d, %d",
+					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
+					C.cblack[4], C.cblack[5],
+					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
 
-#if defined(_OPENMP)
-#pragma omp parallel for shared(raw_image, rawProcessor)
-#endif
-				for (int row = 0; row < S.height; row++)
+				if (!rawProcessor.is_phaseone_compressed() &&
+					(C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
 				{
-					for (int col = 0; col < S.width; col++)
+					int cblk[4], i;
+					for (i = 0; i < 4; i++)
+						cblk[i] = C.cblack[i];
+
+					int size = S.height * S.width;
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define LIM(x, min, max) MAX(min, MIN(x, max))
+#define CLIP(x) LIM(x, 0, 65535)
+					int dmax = 0;
+					register int val = 0;
+					if (C.cblack[4] && C.cblack[5])
 					{
-						
-						val = RAW(row, col);
-						if (0 != dark)
+#if defined(_OPENMP)
+#pragma omp parallel for shared(cblk, raw_image, rawProcessor)
+#endif
+						for (i = 0; i < size; i++)
 						{
-							if (val > dark)
-							{
-								val -= dark;
-							}
-							else
-							{
-								val = 0;
-							}
-							RAW(row, col) = val;
-						}
+							val = raw_image[i];
+							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
+							val -= cblk[i & 3];
+							raw_image[i] = CLIP(val);
 #if defined(_OPENMP)
 #pragma omp critical
 #endif
-						maxval = val > maxval ? val : maxval;
+							dmax = val > dmax ? val : dmax;
+						}
 					}
+					else
+					{
+#if defined(_OPENMP)
+#pragma omp parallel for shared(cblk, raw_image, rawProcessor)
+#endif
+						for (i = 0; i < size; i++)
+						{
+							val = raw_image[i];
+							val -= cblk[i & 3];
+							raw_image[i] = CLIP(val);
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+							dmax = val > dmax ? val : dmax;
+						}
+					}
+					C.data_maximum = dmax & 0xffff;
+#undef MIN
+#undef MAX
+#undef LIM
+#undef CLIP
+					C.maximum -= C.black;
+					memset(&C.cblack, 0, sizeof(C.cblack)); // Yeah, we used cblack[6+] values too!
+					C.black = 0;
+				}
+				else
+				{
+					// Nothing to Do, maximum is already calculated, black level is 0, so no change
+					// only calculate channel maximum;
+					int dmax = 0;
+					for (int i = 0; i < S.height * S.width; i++)
+						if (dmax < raw_image[i])
+							dmax = raw_image[i];
+					C.data_maximum = dmax;
 				}
 
 				//
@@ -919,7 +973,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// than the saturation level).
 				//
 
-				unsigned maximum = C.maximum - dark;
 				double dmin, dmax; int c = 0;
 
 				for (dmin = DBL_MAX, dmax = c = 0; c < 4; c++)
@@ -932,9 +985,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 				float scale_mul[4];
 
-				for (c = 0; c < 4; c++)	scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / maximum);
+				for (c = 0; c < 4; c++)	scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
 
-				ZTRACE_RUNTIME("Maximum value pixel has value %d", maxval);
+				ZTRACE_RUNTIME("Maximum value pixel has value %d", C.data_maximum);
 				ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
 				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
 					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
@@ -1334,4 +1387,3 @@ void DSSLibRaw::write_ppm_tiff()
 	}
 	free(ppm);
 }
-
