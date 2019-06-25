@@ -857,13 +857,18 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// Before doing dark subtraction, normalise C.black / C.cblack[]
 				//
 				ZTRACE_RUNTIME("Before adjust_bl() C.black = %d.", C.black);
-				ZTRACE_RUNTIME("First 10 C.cblack elements\n%d, %d, %d, %d\n%d, %d\n%d, %d, %d, %d",
+				ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
 					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
 					C.cblack[4], C.cblack[5],
 					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
 				rawProcessor.adjust_bl();
 
 				//
+				// This code is based on code from LibRaw Version 19.2, specifically method:
+				//
+				//   int LibRaw::subtract_black_internal()
+				//
+				// found at line 4532 in source file libraw_cxx.cpp 
 				//
 				// Do dark subtraction on the image.   If a user defined black level has
 				// been set (it will be zero) then use that, otherwise just use the black
@@ -874,7 +879,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// While doing so collect the largest value in the image data.
 				//
 				ZTRACE_RUNTIME("Subtracting black level of C.black = %d from raw_image data.", C.black);
-				ZTRACE_RUNTIME("First 10 C.cblack elements\n%d, %d, %d, %d\n%d, %d\n%d, %d, %d, %d",
+				ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
 					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
 					C.cblack[4], C.cblack[5],
 					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
