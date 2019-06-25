@@ -14,6 +14,18 @@
 
 #include "libraw/libraw.h"
 
+LARGE_INTEGER start;
+void timerstart(void) { QueryPerformanceCounter(&start); }
+float timerend()
+{
+	LARGE_INTEGER unit, end;
+	QueryPerformanceCounter(&end);
+	QueryPerformanceFrequency(&unit);
+	float msec = (float)(end.QuadPart - start.QuadPart);
+	msec /= (float)unit.QuadPart / 1000.0f;
+	return msec;
+}
+
 class CRAWSettings
 {
 public :
@@ -737,6 +749,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			
 			g_Progress = pProgress;
 
+			ZTRACE_RUNTIME("Calling LibRaw::unpack()");
 			if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
 			{
 				bResult = FALSE;
@@ -768,6 +781,10 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			{
 				ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
 				//
+				// The initial openmp changes were made by David Partridge, but it was
+				// Vitali Pelenjow who made it work without the critical sections
+				// killing the performance.
+				//
 				// Set up a temporary image array of unsigned short that will be:
 				//
 				// 1) Filled in from the Fujitsu Super-CCD image array in
@@ -788,7 +805,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				{
 					ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
 #if defined(_OPENMP)
-#pragma omp parallel for shared(raw_image, rawProcessor)
+#pragma omp parallel for default(none)
 #endif
 					for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
 					{
@@ -824,7 +841,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					//
 					buffer = raw_image;
 #if defined(_OPENMP)
-#pragma omp parallel for shared(raw_image, rawProcessor)
+#pragma omp parallel for default(none)
 #endif
 					for (int row = 0; row < S.height; row++)
 					{
@@ -852,7 +869,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				pFiller->setWidth(S.width);
 				pFiller->setHeight(S.height);
 				pFiller->setMaxColors((1 << 16) - 1);
-
+				
 				//
 				// Before doing dark subtraction, normalise C.black / C.cblack[]
 				//
@@ -896,40 +913,52 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define LIM(x, min, max) MAX(min, MIN(x, max))
 #define CLIP(x) LIM(x, 0, 65535)
-					int dmax = 0;
-					register int val = 0;
+					int dmax = 0;	// Maximum value of pixels in entire image.
+					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
 					if (C.cblack[4] && C.cblack[5])
 					{
 #if defined(_OPENMP)
-#pragma omp parallel for shared(cblk, raw_image, rawProcessor)
-#endif
-						for (i = 0; i < size; i++)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
 						{
-							val = raw_image[i];
-							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
-							val -= cblk[i & 3];
-							raw_image[i] = CLIP(val);
+#pragma omp for
+#endif
+							for (i = 0; i < size; i++)
+							{
+								int val = raw_image[i];
+								val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
+								val -= cblk[i & 3];
+								raw_image[i] = CLIP(val);
+								lmax = val > lmax ? val : lmax;
+							}
 #if defined(_OPENMP)
 #pragma omp critical
 #endif
-							dmax = val > dmax ? val : dmax;
+							dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
 						}
+#endif
 					}
 					else
 					{
 #if defined(_OPENMP)
-#pragma omp parallel for shared(cblk, raw_image, rawProcessor)
-#endif
-						for (i = 0; i < size; i++)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
 						{
-							val = raw_image[i];
-							val -= cblk[i & 3];
-							raw_image[i] = CLIP(val);
+#pragma omp for
+#endif
+							for (i = 0; i < size; i++)
+							{
+								int val = raw_image[i];
+								val -= cblk[i & 3];
+								raw_image[i] = CLIP(val);
+								lmax = val > lmax ? val : lmax;
+							}
 #if defined(_OPENMP)
 #pragma omp critical
 #endif
-							dmax = val > dmax ? val : dmax;
+							dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
 						}
+#endif
 					}
 					C.data_maximum = dmax & 0xffff;
 #undef MIN
@@ -944,10 +973,24 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				{
 					// Nothing to Do, maximum is already calculated, black level is 0, so no change
 					// only calculate channel maximum;
-					int dmax = 0;
-					for (int i = 0; i < S.height * S.width; i++)
-						if (dmax < raw_image[i])
-							dmax = raw_image[i];
+					int dmax = 0;	// Maximum value of pixels in entire image.
+					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+					{
+#pragma omp for
+#endif
+						for (int i = 0; i < S.height * S.width; i++)
+							if (lmax < raw_image[i])
+								lmax = raw_image[i];
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
+					}
+#endif
+
 					C.data_maximum = dmax;
 				}
 
@@ -997,17 +1040,15 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
 					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
-				register int colour = 0;
-
 #if defined(_OPENMP)
-#pragma omp parallel for shared(raw_image, rawProcessor)
+#pragma omp parallel for default(none)
 #endif
 				for (int row = 0; row < S.height; row++)
 				{
 					for (int col = 0; col < S.width; col++)
 					{
 						// What colour will this pixel become
-						colour = rawProcessor.COLOR(row, col);
+						int colour = rawProcessor.COLOR(row, col);
 
 						register float val = scale_mul[colour] *
 							(float)(RAW(row, col));
