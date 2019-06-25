@@ -1058,10 +1058,18 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 				// Convert raw data to big-endian
 				if (littleEndian)
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+					for (int i = 0; i < S.height * S.width; i++)
+					{
+						raw_image[i] = _byteswap_ushort(raw_image[i]);
+					}
+#else
 					_swab(
 						(char*)(raw_image),
 						(char*)(raw_image),
 						S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
+#endif
 
 				for (int row = 0; row < S.height; row++)
 				{
