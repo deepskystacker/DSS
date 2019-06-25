@@ -1,7 +1,10 @@
-Welcome to DeepSkyStacker 4.2.0 Beta 3
+Welcome to DeepSkyStacker 4.2.0 Beta 4
 
 The main change in this release is to use LibRaw version 19.2 instead of dcraw to capture images from RAW image files.
 This should provide support for many recent cameras which wasn't possible using dcraw.
+
+The code that processes the raw data returned by LibRaw has had some extra performance squeezed out if it by using OpenMP to parallelise the code (new in 4.2.0 Beta 4).
+
 The resulting images should be very much the same (if not 100% identical) to the results obtained using DeepSkyStacker 4.1.1.
 
 There is one exception:
