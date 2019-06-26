@@ -23,10 +23,11 @@ SetCompressor /SOLID lzma
 !define DSS_RUNTIME_MFC    "mfc140.dll"
 !define DSS_RUNTIME_CPP    "msvcp140.dll"
 !define DSS_RUNTIME_C      "vcruntime140.dll"
+!define DSS_RUNTIME_OMP    "vcomp140.dll"
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
 !define DSS_VERSION        "4.2.0"                                  # For control panel
-!define DSS_VERSION_SUFFIX "Beta 3"                                 # For control panel (e.g. "beta 1")
+!define DSS_VERSION_SUFFIX "Beta 4"                                 # For control panel (e.g. "beta 1")
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
@@ -141,6 +142,7 @@ Section
   File "RunTime32\${DSS_RUNTIME_MFC}"
   File "RunTime32\${DSS_RUNTIME_CPP}"
   File "RunTime32\${DSS_RUNTIME_C}"
+  File "RunTime32\${DSS_RUNTIME_OMP}"
   File "${DSS_README_FILE}"
  
   # define uninstaller name
