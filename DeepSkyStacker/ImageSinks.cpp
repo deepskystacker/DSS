@@ -497,7 +497,7 @@ Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 				PointF			pt(rcScreen.left, rcScreen.top);
 				StringFormat	format;
 
-				strText.Format("%ldx%ld", m_rcSelect.Width(), m_rcSelect.Height());
+				strText.Format(_T("%ldx%ld"), m_rcSelect.Width(), m_rcSelect.Height());
 
 				format.SetAlignment(StringAlignmentNear);
 				format.SetLineAlignment(StringAlignmentFar);
@@ -591,12 +591,12 @@ void	CEditStarsSink::SaveRegisterSettings()
 		m_vStars = vStars;
 		std::sort(m_vStars.begin(), m_vStars.end());
 
-		TCHAR				szDrive[_MAX_DRIVE];
-		TCHAR				szDir[_MAX_DIR];
-		TCHAR				szFile[_MAX_FNAME];
+		TCHAR				szDrive[1+_MAX_DRIVE];
+		TCHAR				szDir[1+_MAX_DIR];
+		TCHAR				szFile[1+_MAX_FNAME];
 		CString				strInfoFileName;
 
-		_splitpath(m_strFileName, szDrive, szDir, szFile, NULL);
+		_tsplitpath(m_strFileName, szDrive, szDir, szFile, NULL);
 		strInfoFileName = szDrive;
 		strInfoFileName += szDir;
 		strInfoFileName += szFile;

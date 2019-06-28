@@ -12,18 +12,18 @@ void	CMRUList::InitFromRegistry()
 	DWORD				dwNrValues = 0;
 
 	m_vLists.clear();
-	reg.LoadKey(m_strBasePath, "NrMRU", dwNrValues);
+	reg.LoadKey(m_strBasePath, _T("NrMRU"), dwNrValues);
 	for (LONG i = 0;i<dwNrValues;i++)
 	{
 		CString			strKey;
 		CString			strValue;
 
-		strKey.Format("MRU%ld", i);
+		strKey.Format(_T("MRU%ld"), i);
 		reg.LoadKey(m_strBasePath, (LPCTSTR)strKey, strValue);
 
 		FILE *			hFile;
 
-		hFile = fopen((LPCTSTR)strValue, "rt");
+		hFile = _tfopen((LPCTSTR)strValue, _T("rt"));
 		if (hFile)
 		{
 			m_vLists.push_back(strValue);
@@ -41,12 +41,12 @@ void	CMRUList::SaveToRegistry()
 	// Clear all the entries first
 	reg.DeleteKey(m_strBasePath);
 
-	reg.SaveKey(m_strBasePath, "NrMRU", (DWORD)m_vLists.size());
+	reg.SaveKey(m_strBasePath, _T("NrMRU"), (DWORD)m_vLists.size());
 	for (LONG i = 0;i<m_vLists.size();i++)
 	{
 		CString			strKey;
 
-		strKey.Format("MRU%ld", i);
+		strKey.Format(_T("MRU%ld"), i);
 		reg.SaveKey(m_strBasePath, (LPCTSTR)strKey, (LPCTSTR)m_vLists[i]);
 	};
 };
@@ -95,7 +95,7 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 {
 	FILE *						hFile;
 
-	hFile = fopen(szFile, "wt");
+	hFile = _tfopen(szFile, _T("wt"));
 	if (hFile)
 	{
 		fprintf(hFile, "DSS file list\n");
@@ -117,7 +117,10 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 				strGUID = szGUID;
 				StringFromCLSID(m_Jobs.m_vJobs[j].m_RefID, &szRefGUID);
 				strRefGUID = szRefGUID;
-				fprintf(hFile, "#JOBID#%s#%s#%s\n", (LPCTSTR)strGUID, (LPCTSTR)m_Jobs.m_vJobs[j].m_strName, (LPCTSTR)strRefGUID);
+				fprintf(hFile, "#JOBID#%s#%s#%s\n", 
+					(LPCSTR)CT2CA(strGUID,CP_UTF8), 
+					(LPCSTR)CT2CA(m_Jobs.m_vJobs[j].m_strName, CP_UTF8), 
+					(LPCSTR)CT2CA(strRefGUID, CP_UTF8));
 			};
 			for (LONG i = 0;i<m_vFiles.size();i++)
 			{
@@ -150,7 +153,9 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 					else if (m_vFiles[lItem].IsFlatFrame())
 						strType = "flat";
 
-					fprintf(hFile, "%ld\t%s\t%s\n", lChecked, (LPCTSTR)strType, (LPCTSTR)m_vFiles[lItem].m_strFileName);
+					fprintf(hFile, "%ld\t%s\t%s\n", lChecked, 
+						(LPCSTR)CT2CA(strType, CP_UTF8), 
+						(LPCSTR)CT2CA(m_vFiles[lItem].m_strFileName, CP_UTF8));
 				};
 			};
 		};
@@ -206,7 +211,7 @@ static BOOL ParseLine(LPCTSTR szLine, LONG & lChecked, CString & strType, CStrin
 
 		strChecked = strLine.Left(lTab1);
 
-		lChecked = atol(strChecked);
+		lChecked = _ttol(strChecked);
 		strType = strLine.Mid(lTab1+1, lTab2-lTab1-1);
 		strFile = strLine.Mid(lTab2+1, lEnd-lTab2-1);
 
@@ -223,7 +228,7 @@ static BOOL	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
 	BOOL				bResult = FALSE;
 	CString				strLine = szLine;
 
-	if (strLine.Left(9) == "#GROUPID#")
+	if (strLine.Left(9) == _T("#GROUPID#"))
 	{
 		CString			strGroup;
 		LPCTSTR			szPos = szLine;
@@ -234,7 +239,7 @@ static BOOL	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
 			strGroup += *szPos;
 			szPos++;
 		};
-		dwGroupID = atol(strGroup);
+		dwGroupID = _ttol(strGroup);
 		bResult = TRUE;
 	};
 
@@ -250,18 +255,18 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 	GUID				dwJobID = MAINJOBID;
 
 	SetCursor(::LoadCursor(NULL, IDC_WAIT));
-	hFile = fopen(szFileList, "rt");
+	hFile = _tfopen(szFileList, _T("rt"));
 	if (hFile)
 	{
-		TCHAR			szBuffer[2000];
+		CHAR			szBuffer[2000];
 		CString			strValue;
 		BOOL			bContinue = FALSE;
 
 		// Read scan line
 		if (fgets(szBuffer, sizeof(szBuffer), hFile))
 		{
-			strValue = szBuffer;
-			if (!strValue.CompareNoCase("DSS file list\n"))
+			strValue = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer, CP_UTF8);
+			if (!strValue.CompareNoCase(_T("DSS file list\n")))
 				bContinue = TRUE;
 		}
 
@@ -270,8 +275,8 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 			bContinue = FALSE;
 			if (fgets(szBuffer, sizeof(szBuffer), hFile))
 			{
-				strValue = szBuffer;
-				if (!strValue.CompareNoCase("CHECKED\tTYPE\tFILE\n"))
+				strValue = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer, CP_UTF8);
+				if (!strValue.CompareNoCase(_T("CHECKED\tTYPE\tFILE\n")))
 					bContinue = TRUE;
 			}
 		};
@@ -280,36 +285,38 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 		{
 			// Read the file info
 			CWorkspace			workspace;
-			TCHAR				szLine[10000];
+			CHAR				szLine[10000];
 
 			while (fgets(szLine, sizeof(szLine), hFile))
 			{
 				LONG			lChecked;
 				CString			strType;
 				CString			strFile;
+				CString			strLine((LPCTSTR)CA2CTEX<sizeof(szLine)>(szLine, CP_UTF8));
+
 				BOOL			bUseAsStarting = FALSE;
 
-				if (workspace.ReadFromString(szLine))
+				if (workspace.ReadFromString(strLine))
 				{
 				}
-				else if (IsChangeGroupLine(szLine, dwGroupID))
+				else if (IsChangeGroupLine(strLine, dwGroupID))
 				{
 				}
-				else if (ParseLine(szLine, lChecked, strType, strFile))
+				else if (ParseLine(strLine, lChecked, strType, strFile))
 				{
 					PICTURETYPE		Type = PICTURETYPE_UNKNOWN;
 
-					if (!strType.CompareNoCase("light"))
+					if (!strType.CompareNoCase(_T("light")))
 						Type = PICTURETYPE_LIGHTFRAME;
-					else if (!strType.CompareNoCase("dark"))
+					else if (!strType.CompareNoCase(_T("dark")))
 						Type = PICTURETYPE_DARKFRAME;
-					else if (!strType.CompareNoCase("darkflat"))
+					else if (!strType.CompareNoCase(_T("darkflat")))
 						Type = PICTURETYPE_DARKFLATFRAME;
-					else if (!strType.CompareNoCase("flat"))
+					else if (!strType.CompareNoCase(_T("flat")))
 						Type = PICTURETYPE_FLATFRAME;
-					else if (!strType.CompareNoCase("offset"))
+					else if (!strType.CompareNoCase(_T("offset")))
 						Type = PICTURETYPE_OFFSETFRAME;
-					else if (!strType.CompareNoCase("reflight"))
+					else if (!strType.CompareNoCase(_T("reflight")))
 					{
 						Type = PICTURETYPE_REFLIGHTFRAME;
 						bUseAsStarting = TRUE;
@@ -320,7 +327,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 						// Check that the file exists
 						FILE *		hTemp;
 
-						hTemp = fopen(strFile, "rb");
+						hTemp = _tfopen(strFile, _T("rb"));
 						if (hTemp)
 						{
 							fclose(hTemp);

@@ -172,7 +172,7 @@ BOOL CRegisterSettings::OnInitDialog()
 		}
 		else
 		{
-			strValue.LoadStringA(IDS_CHECK_ALLOK);
+			strValue.LoadString(IDS_CHECK_ALLOK);
 			m_tabActions.m_StackWarning.SetBkColor(RGB(229, 255, 193), RGB(21, 223, 33), CLabel::Gradient);
 			m_tabActions.m_StackWarning.SetText(strValue);
 		};
@@ -203,7 +203,7 @@ void CRegisterSettings::OnOK()
 		dwHotPixels = m_tabActions.m_HotPixels.GetCheck();
 		workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectHotPixels"), dwHotPixels);
 
-		m_fPercentStack = atof(strText);
+		m_fPercentStack = _ttof(strText);
 	};
 
 	m_dwDetectionThreshold = m_tabAdvanced.m_PercentSlider.GetPos();

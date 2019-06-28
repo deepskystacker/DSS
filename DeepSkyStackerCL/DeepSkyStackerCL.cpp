@@ -43,37 +43,37 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 	bResult = (vCommandLine.size() >= 2);
 	for (i = 0;i<vCommandLine.size() && bResult;i++)
 	{
-		if (!vCommandLine[i].CompareNoCase("/s"))
+		if (!vCommandLine[i].CompareNoCase(_T("/s")))
 		{
 			g_bStacking = TRUE;
 		}
-		else if (!vCommandLine[i].CompareNoCase("/SR"))
+		else if (!vCommandLine[i].CompareNoCase(_T("/SR")))
 		{
 			g_bStacking = TRUE;
 			g_bSaveIntermediate = TRUE;
 		}
-		else if (!vCommandLine[i].CompareNoCase("/SC"))
+		else if (!vCommandLine[i].CompareNoCase(_T("/SC")))
 		{
 			g_bStacking = TRUE;
 			g_bSaveCalibrated = TRUE;
 		}
-		else if (!vCommandLine[i].CompareNoCase("/FITS"))
+		else if (!vCommandLine[i].CompareNoCase(_T("/FITS")))
 		{
 			g_bFITSOutput = TRUE;
 		}
-		else if (!vCommandLine[i].CompareNoCase("/r"))
+		else if (!vCommandLine[i].CompareNoCase(_T("/r")))
 		{
 			g_bRegistering = TRUE;
-			if (!vCommandLine[i].Compare("/R"))
+			if (!vCommandLine[i].Compare(_T("/R")))
 				g_bForceRegister = TRUE;
 		}
-		else if (!vCommandLine[i].Left(3).CompareNoCase("/O:"))
+		else if (!vCommandLine[i].Left(3).CompareNoCase(_T("/O:")))
 		{
 			// Check output file name
 			g_strOutputFile = vCommandLine[i].Right(vCommandLine[i].GetLength()-3);
 			FILE *			hFile;
 
-			hFile = fopen(g_strOutputFile, "wb");
+			hFile = _tfopen(g_strOutputFile, _T("wb"));
 			if (hFile)
 			{
 				fclose(hFile);
@@ -81,56 +81,53 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 			}
 			else
 			{
-				CT2CA ascii(g_strOutputFile);  // Convert to local console codepage
-				printf("Cannot write to %s (not a valid filename)\n", ascii.m_psz);
+				_tprintf(_T("Cannot write to %s (not a valid filename)\n"), (LPCTSTR)g_strOutputFile);
 				bResult = FALSE;
 			};
 		}
-		else if (!vCommandLine[i].Left(3).CompareNoCase("/OF"))
+		else if (!vCommandLine[i].Left(3).CompareNoCase(_T("/OF")))
 		{
 			CString			strFormat;
 
 			strFormat = vCommandLine[i].Right(vCommandLine[i].GetLength()-3);
-			if ((strFormat == "16") || (strFormat == "16i"))
+			if ((strFormat == _T("16")) || (strFormat == _T("16i")))
 			{
 				g_TIFFFormat = TF_16BITRGB;
 			}
-			else if ((strFormat == "32") || (strFormat == "32i"))
+			else if ((strFormat == _T("32")) || (strFormat == _T("32i")))
 			{
 				g_TIFFFormat = TF_32BITRGB;
 			}
-			else if (strFormat == "32r")
+			else if (strFormat == _T("32r"))
 			{
 				g_TIFFFormat = TF_32BITRGBFLOAT;
 			}
 			else
 			{
-				CT2CA ascii(strFormat);
-				printf("Unrecognized or unsupported bit format %s\n", ascii.m_psz);
+				_tprintf(_T("Unrecognized or unsupported bit format %s\n"), (LPCTSTR)strFormat);
 				bResult = FALSE;
 			};
 		}
-		else if (!vCommandLine[i].Left(3).CompareNoCase("/OC"))
+		else if (!vCommandLine[i].Left(3).CompareNoCase(_T("/OC")))
 		{
 			CString			strCompression;
 
 			strCompression = vCommandLine[i].Right(vCommandLine[i].GetLength()-3);
-			if (strCompression == "0")
+			if (strCompression == _T("0"))
 			{
 				g_TIFFCompression = TC_NONE;
 			}
-			else if (strCompression == "1")
+			else if (strCompression == _T("1"))
 			{
 				g_TIFFCompression = TC_LZW;
 			}
-			else if (strCompression == "2")
+			else if (strCompression == _T("2"))
 			{
 				g_TIFFCompression = TC_DEFLATE;
 			}
 			else
 			{
-				CT2CA ascii(strCompression);
-				printf("Unrecognized or unsupported compression format %s\n", ascii.m_psz);
+				_tprintf(_T("Unrecognized or unsupported compression format %s\n"), (LPCTSTR)strCompression);
 				bResult = FALSE;
 			};
 		}
@@ -139,7 +136,7 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 			// Check that it is a file
 			FILE *			hFile;
 
-			hFile = fopen(vCommandLine[i], "rt");
+			hFile = _tfopen(vCommandLine[i], _T("rt"));
 			if (hFile)
 			{
 				g_strListFile = vCommandLine[i];
@@ -187,7 +184,7 @@ void ComputeStacks(CFrameList & FrameList, CAllStackingTasks & tasks)
 				TCHAR			szDrive[_MAX_DRIVE];
 				TCHAR			szDir[_MAX_DIR];
 
-				_splitpath(strPath, szDrive, szDir, NULL, NULL);
+				_tsplitpath(strPath, szDrive, szDir, NULL, NULL);
 				strPath = szDrive;
 				strPath += szDir;
 				if (g_bFITSOutput)
@@ -280,39 +277,39 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	std::vector<CString>	vCommandLine;
 
-	printf("DeepSkyStacker %s Command Line\n\n", VERSION_DEEPSKYSTACKER);
+	_tprintf(_T("DeepSkyStacker %s Command Line\n\n"), _T(VERSION_DEEPSKYSTACKER));
 	
-	// Decod command line
+	// Decode command line
 	if (!DecodeCommandLine(argc, argv))
 	{
-		printf("Syntax is DeepSkyStackerCL [/r|R] [/s] [/O:<>] [/OFxx] [/OCx] [/FITS] <ListFileName>\n");
-		printf(" /r	     - Register frames (only the ones not already registered)\n");
-		printf(" /R      - Register frames (even the ones already registered)\n");
-		printf(" /S      - Stack frames\n");
-		printf(" /SR     - Save each registered and calibrated light frame in\n");
-		printf("           a TIFF files (implies /S)\n");
-		printf(" /SC     - Save each calibrated light frame in\n");
-		printf("           a TIFF files (implies /S)\n");
-		printf(" /O:<outputfilename> - Output file name (full path)\n");
-		printf("           Default is Autosave.tif in the folder of the first light frame\n");
-		printf("           (implies /S or /SC)\n");
-		printf(" /OFxxx  - Output format (16 or 32 bits depth)\n");
-		printf("           16 or 16i: 16 bits integer\n");
-		printf("           32 or 32i: 32 bits integer\n");
-		printf("           32r: 32 bits rational (default)\n");
-		printf(" /OCx    - Output file compression\n");
-		printf("           0: no compression (default)\n");
-		printf("           1: LZW compression\n");
-		printf("           2: ZIP (Deflate) compression\n");
-		printf(" /FITS     Output file format is FITS (default is TIFF)\n");
-		printf("<ListFileName> is the name of a file list saved by DeepSkyStacker\n\n");
-		printf("Exemples:\n");
-		printf("DeepSkyStackerCL /r c:\\MyLists\\SampleList.txt\n");
-		printf("  will register all the checked light frames of the list\n\n");
-		printf("DeepSkyStackerCL /r /s /OF16i c:\\MyLists\\SampleList.txt\n");
-		printf("  will register then stack all the checked light frames of the list\n");
-		printf("  and save the result in a 16 bits integer TIFF file named\n");
-		printf("  autosave.tif in the folder of the first light frame\n\n");
+		_tprintf(_T("Syntax is DeepSkyStackerCL [/r|R] [/s] [/O:<>] [/OFxx] [/OCx] [/FITS] <ListFileName>\n"));
+		_tprintf(_T(" /r	     - Register frames (only the ones not already registered)\n"));
+		_tprintf(_T(" /R      - Register frames (even the ones already registered)\n"));
+		_tprintf(_T(" /S      - Stack frames\n"));
+		_tprintf(_T(" /SR     - Save each registered and calibrated light frame in\n"));
+		_tprintf(_T("           a TIFF files (implies /S)\n"));
+		_tprintf(_T(" /SC     - Save each calibrated light frame in\n"));
+		_tprintf(_T("           a TIFF files (implies /S)\n"));
+		_tprintf(_T(" /O:<outputfilename> - Output file name (full path)\n"));
+		_tprintf(_T("           Default is Autosave.tif in the folder of the first light frame\n"));
+		_tprintf(_T("           (implies /S or /SC)\n"));
+		_tprintf(_T(" /OFxxx  - Output format (16 or 32 bits depth)\n"));
+		_tprintf(_T("           16 or 16i: 16 bits integer\n"));
+		_tprintf(_T("           32 or 32i: 32 bits integer\n"));
+		_tprintf(_T("           32r: 32 bits rational (default)\n"));
+		_tprintf(_T(" /OCx    - Output file compression\n"));
+		_tprintf(_T("           0: no compression (default)\n"));
+		_tprintf(_T("           1: LZW compression\n"));
+		_tprintf(_T("           2: ZIP (Deflate) compression\n"));
+		_tprintf(_T(" /FITS     Output file format is FITS (default is TIFF)\n"));
+		_tprintf(_T("<ListFileName> is the name of a file list saved by DeepSkyStacker\n\n"));
+		_tprintf(_T("Exemples:\n"));
+		_tprintf(_T("DeepSkyStackerCL /r c:\\MyLists\\SampleList.txt\n"));
+		_tprintf(_T("  will register all the checked light frames of the list\n\n"));
+		_tprintf(_T("DeepSkyStackerCL /r /s /OF16i c:\\MyLists\\SampleList.txt\n"));
+		_tprintf(_T("  will register then stack all the checked light frames of the list\n"));
+		_tprintf(_T("  and save the result in a 16 bits integer TIFF file named\n"));
+		_tprintf(_T("  autosave.tif in the folder of the first light frame\n\n"));
 	}
 	else
 	{
@@ -321,19 +318,19 @@ int _tmain(int argc, _TCHAR* argv[])
 		BOOL					bContinue = TRUE;
 
 		if (g_bRegistering && g_bStacking)
-			printf("Registering and stacking %s list\n", (LPCTSTR)g_strListFile);
+			_tprintf(_T("Registering and stacking %s list\n"), (LPCTSTR)g_strListFile);
 		else if (g_bRegistering)
-			printf("Registering %s list\n", (LPCTSTR)g_strListFile);
+			_tprintf(_T("Registering %s list\n"), (LPCTSTR)g_strListFile);
 		else
-			printf("Stacking %s list\n", (LPCTSTR)g_strListFile);
+			_tprintf(_T("Stacking %s list\n"), (LPCTSTR)g_strListFile);
 
 		if (g_bRegistering)
 		{
-			printf("Register again already registered light frames: ");
+			_tprintf(_T("Register again already registered light frames: "));
 			if (g_bForceRegister)
-				printf(" yes\n");
+				_tprintf(_T(" yes\n"));
 			else
-				printf(" no\n");
+				_tprintf(_T(" no\n"));
 		};
 
 		FrameList.LoadFilesFromList(g_strListFile);

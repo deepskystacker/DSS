@@ -176,7 +176,7 @@ bool CChartCtrl::RegisterWindowClass()
 	WNDCLASS wndcls;
     HINSTANCE hInst = AfxGetInstanceHandle();
 
-    if (!(::GetClassInfo(hInst, CHARTCTRL_CLASSNAME, &wndcls)))
+    if (!(::GetClassInfo(hInst, _T(CHARTCTRL_CLASSNAME), &wndcls)))
     {
 		memset(&wndcls, 0, sizeof(WNDCLASS));   
 
@@ -189,7 +189,7 @@ bool CChartCtrl::RegisterWindowClass()
 		wndcls.style			= CS_GLOBALCLASS; // To be modified
 		wndcls.cbClsExtra		= 0;
 		wndcls.cbWndExtra		= 0;
-		wndcls.lpszClassName    = CHARTCTRL_CLASSNAME;
+		wndcls.lpszClassName    = _T(CHARTCTRL_CLASSNAME);
 
         if (!RegisterClass(&wndcls))
         {
@@ -204,7 +204,7 @@ bool CChartCtrl::RegisterWindowClass()
 
 int CChartCtrl::Create(CWnd *pParentWnd, const RECT &rect, UINT nID, DWORD dwStyle)
 {
-	int Result = CWnd::Create(CHARTCTRL_CLASSNAME, "", dwStyle, rect, pParentWnd, nID);
+	int Result = CWnd::Create(_T(CHARTCTRL_CLASSNAME), _T(""), dwStyle, rect, pParentWnd, nID);
 	
 	if (Result)
 		RefreshCtrl();

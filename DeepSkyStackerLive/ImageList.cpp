@@ -72,7 +72,7 @@ void CImageListTab::InitList()
 
 	m_ImageList.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
 
-	m_ImageList.InsertColumn(COLUMN_STACKED, "", LVCFMT_LEFT, 50);
+	m_ImageList.InsertColumn(COLUMN_STACKED, _T(""), LVCFMT_LEFT, 50);
 
 	strColumn.LoadString(IDS_COLUMN_FILE);
 	m_ImageList.InsertColumn(COLUMN_FILE, strColumn, LVCFMT_LEFT, 200);
@@ -82,7 +82,7 @@ void CImageListTab::InitList()
 	m_ImageList.InsertColumn(COLUMN_SCORE, strColumn, LVCFMT_RIGHT, 80);
 	strColumn.LoadString(IDS_COLUMN_STARS);
 	m_ImageList.InsertColumn(COLUMN_STARS, strColumn, LVCFMT_RIGHT, 50);
-	m_ImageList.InsertColumn(COLUMN_FWHM, "FWHM", LVCFMT_RIGHT, 50);
+	m_ImageList.InsertColumn(COLUMN_FWHM, _T("FWHM"), LVCFMT_RIGHT, 50);
 	strColumn.LoadString(IDS_COLUMN_DX);
 	m_ImageList.InsertColumn(COLUMN_DX, strColumn, LVCFMT_RIGHT, 60);
 	strColumn.LoadString(IDS_COLUMN_DY);
@@ -104,7 +104,7 @@ void CImageListTab::InitList()
 	strColumn.LoadString(IDS_COLUMN_SKYBACKGROUND);
 	m_ImageList.InsertColumn(COLUMN_SKYBACKGROUND, strColumn, LVCFMT_RIGHT, 50);
 
-	m_ImageList.RestoreState("LivePictureList", "Settings");
+	m_ImageList.RestoreState(_T("LivePictureList"), _T("Settings"));
 };
 
 /* ------------------------------------------------------------------- */
@@ -124,7 +124,7 @@ BOOL CImageListTab::OnInitDialog()
 
 BOOL CImageListTab::Close()
 {
-	m_ImageList.SaveState("LivePictureList", "Settings");
+	m_ImageList.SaveState(_T("LivePictureList"), _T("Settings"));
 
 	return TRUE;
 };
@@ -147,17 +147,17 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		TCHAR				szName[_MAX_FNAME];
 		TCHAR				szExt[_MAX_EXT];
 
-		_splitpath(szImage, NULL, NULL, szName, szExt);
-		strImage.Format("%s%s", szName, szExt);
+		_tsplitpath(szImage, NULL, NULL, szName, szExt);
+		strImage.Format(_T("%s%s"), szName, szExt);
 
-		nItem = m_ImageList.InsertItem(m_ImageList.GetItemCount(), "");
+		nItem = m_ImageList.InsertItem(m_ImageList.GetItemCount(), _T(""));
 		m_ImageList.SetItemText(nItem, COLUMN_FILE, (LPCTSTR)strImage);
 
 		CString				strSizes;
 		CString				strDepth;
 		CString				strInfos;
 
-		strSizes.Format("%ld x %ld", bmpInfo.m_lWidth, bmpInfo.m_lHeight);
+		strSizes.Format(_T("%ld x %ld"), bmpInfo.m_lWidth, bmpInfo.m_lHeight);
 		m_ImageList.SetItemText(nItem, COLUMN_SIZES, (LPCTSTR)strSizes);
 
 		if (lfi.m_lNrChannels == 3)
@@ -174,18 +174,18 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		ExposureToString(bmpInfo.m_fExposure, strText);
 		m_ImageList.SetItemText(nItem, COLUMN_EXPOSURE, (LPCTSTR)strText);
 
-		strText.Format("%ld", lfi.m_vStars.size());
+		strText.Format(_T("%ld"), lfi.m_vStars.size());
 		m_ImageList.SetItemText(nItem, COLUMN_STARS, (LPCTSTR)strText);
 
-		strText.Format("%.2f", lfi.m_fOverallQuality);
+		strText.Format(_T("%.2f"), lfi.m_fOverallQuality);
 		m_ImageList.SetItemText(nItem, COLUMN_SCORE, (LPCTSTR)strText);
 
-		strText.Format("%.2f", lfi.m_fFWHM);
+		strText.Format(_T("%.2f"), lfi.m_fFWHM);
 		m_ImageList.SetItemText(nItem, COLUMN_FWHM, (LPCTSTR)strText);
 
 		m_ImageList.SetItemText(nItem, COLUMN_FILETIME, bmpInfo.m_strDateTime);
 
-		strText.Format("%.2f %%", lfi.m_SkyBackground.m_fLight*100.0);
+		strText.Format(_T("%.2f %%"), lfi.m_SkyBackground.m_fLight*100.0);
 		m_ImageList.SetItemText(nItem, COLUMN_SKYBACKGROUND, (LPCTSTR)strText);
 
 		strText = bmpInfo.m_strFileType;
@@ -212,8 +212,8 @@ void	CImageListTab::ChangeImageStatus(LPCTSTR szImage, IMAGESTATUS status)
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_splitpath(szImage, NULL, NULL, szName, szExt);
-	strImage.Format("%s%s", szName, szExt);
+	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list
 	BOOL				bFound = FALSE;
@@ -259,8 +259,8 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_splitpath(szImage, NULL, NULL, szName, szExt);
-	strImage.Format("%s%s", szName, szExt);
+	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list
 	BOOL				bFound = FALSE;
@@ -275,11 +275,11 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 		if (!strTemp.CompareNoCase(strImage))
 		{
 			bFound = TRUE;
-			strValue.Format("%.2f", fdX);
+			strValue.Format(_T("%.2f"), fdX);
 			m_ImageList.SetItemText(i, COLUMN_DX, strValue);
-			strValue.Format("%.2f", fdY);
+			strValue.Format(_T("%.2f"), fdY);
 			m_ImageList.SetItemText(i, COLUMN_DY, strValue);
-			strValue.Format("%.2f °", fAngle);
+			strValue.Format(_T("%.2f °"), fAngle);
 			m_ImageList.SetItemText(i, COLUMN_ANGLE, strValue);
 		};
 	};

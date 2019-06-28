@@ -16,13 +16,13 @@ static char THIS_FILE[] = __FILE__;
 static BOOL	GetDefaultSettingsFileName(CString & strFile)
 {
 	CString			strBase;
-	TCHAR			szFileName[_MAX_PATH];
-	TCHAR			szDrive[_MAX_DRIVE];
-	TCHAR			szDir[_MAX_DIR];
+	TCHAR			szFileName[1+_MAX_PATH];
+	TCHAR			szDrive[1+_MAX_DRIVE];
+	TCHAR			szDir[1+_MAX_DIR];
 
 	GetModuleFileName(NULL, szFileName, sizeof(szFileName));
 	strBase = szFileName;
-	_splitpath(strBase, szDrive, szDir, NULL, NULL);
+	_tsplitpath(strBase, szDrive, szDir, NULL, NULL);
 
 	strFile = szDrive;
 	strFile += szDir;
@@ -59,7 +59,7 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 	if (!strFile.GetLength())
 		GetDefaultSettingsFileName(strFile);
 
-	hFile = fopen(strFile, "rb");
+	hFile = _tfopen(strFile, _T("rb"));
 	if (hFile)
 	{
 		HDSETTINGSHEADER		Header;
@@ -101,7 +101,7 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 	if (!strFile.GetLength())
 		GetDefaultSettingsFileName(strFile);
 
-	hFile = fopen(strFile, "wb");
+	hFile = _tfopen(strFile, _T("wb"));
 	if (hFile)
 	{
 		m_lSettings.sort();
@@ -261,7 +261,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	this->DragAcceptFiles(TRUE);		
 
 	GetWindowText(strMask);
-	strTitle.Format(strMask, VERSION_DEEPSKYSTACKER);
+	strTitle.Format(strMask, _T(VERSION_DEEPSKYSTACKER));
 	SetWindowText(strTitle);
 	m_strBaseTitle = strTitle;
 
@@ -302,14 +302,14 @@ void CDeepStackerDlg::SetCurrentFileInTitle(LPCTSTR szFile)
 	CString					strFileName = szFile;
 	if (strFileName.GetLength())
 	{
-		TCHAR				szFileName[_MAX_FNAME];
-		TCHAR				szExt[_MAX_EXT];
+		TCHAR				szFileName[1+_MAX_FNAME];
+		TCHAR				szExt[1+_MAX_EXT];
 
-		_splitpath(szFile, NULL, NULL, szFileName, szExt);
+		_tsplitpath(szFile, NULL, NULL, szFileName, szExt);
 
 		CString				strTitle;
 
-		strTitle.Format("%s - %s%s", (LPCTSTR)m_strBaseTitle, szFileName, szExt);
+		strTitle.Format(_T("%s - %s%s"), (LPCTSTR)m_strBaseTitle, szFileName, szExt);
 		SetWindowText(strTitle);
 	}
 	else
@@ -404,17 +404,17 @@ void	SaveWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath)
 
 	pWnd->GetWindowPlacement(&wp);
 	dwMaximized = (wp.showCmd == SW_SHOWMAXIMIZED);
-	strLeft.Format("%ld", wp.rcNormalPosition.left);
-	strTop.Format("%ld", wp.rcNormalPosition.top);
+	strLeft.Format(_T("%ld"), wp.rcNormalPosition.left);
+	strTop.Format(_T("%ld"), wp.rcNormalPosition.top);
 
 	dwWidth  = wp.rcNormalPosition.right-wp.rcNormalPosition.left;
 	dwHeight = wp.rcNormalPosition.bottom-wp.rcNormalPosition.top;
 
-	reg.SaveKey(szRegistryPath, "Maximized", dwMaximized);
-	reg.SaveKey(szRegistryPath, "Top", strTop);
-	reg.SaveKey(szRegistryPath, "Left", strLeft);
-	reg.SaveKey(szRegistryPath, "Width", dwWidth);
-	reg.SaveKey(szRegistryPath, "Height", dwHeight);
+	reg.SaveKey(szRegistryPath, _T("Maximized"), dwMaximized);
+	reg.SaveKey(szRegistryPath, _T("Top"), strTop);
+	reg.SaveKey(szRegistryPath, _T("Left"), strLeft);
+	reg.SaveKey(szRegistryPath, _T("Width"), dwWidth);
+	reg.SaveKey(szRegistryPath, _T("Height"), dwHeight);
 };
 
 /* ------------------------------------------------------------------- */
@@ -429,11 +429,11 @@ void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter)
 
 	CRegistry	reg;
 
-	reg.LoadKey(szRegistryPath, "Maximized", dwMaximized);
-	reg.LoadKey(szRegistryPath, "Top", strTop);
-	reg.LoadKey(szRegistryPath, "Left", strLeft);
-	reg.LoadKey(szRegistryPath, "Width", dwWidth);
-	reg.LoadKey(szRegistryPath, "Height", dwHeight);
+	reg.LoadKey(szRegistryPath, _T("Maximized"), dwMaximized);
+	reg.LoadKey(szRegistryPath, _T("Top"), strTop);
+	reg.LoadKey(szRegistryPath, _T("Left"), strLeft);
+	reg.LoadKey(szRegistryPath, _T("Width"), dwWidth);
+	reg.LoadKey(szRegistryPath, _T("Height"), dwHeight);
 
 	if (strTop.GetLength() && strLeft.GetLength() && dwWidth && dwHeight)
 	{
@@ -443,8 +443,8 @@ void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter)
 		wp.length  = sizeof(wp);
 		wp.flags   = 0;
 		wp.showCmd = dwMaximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-		wp.rcNormalPosition.left   = atol(strLeft);
-		wp.rcNormalPosition.top    = atol(strTop);
+		wp.rcNormalPosition.left   = _ttol(strLeft);
+		wp.rcNormalPosition.top    = _ttol(strTop);
 		wp.rcNormalPosition.right  = wp.rcNormalPosition.left+dwWidth;
 		wp.rcNormalPosition.bottom = wp.rcNormalPosition.top+dwHeight;
 

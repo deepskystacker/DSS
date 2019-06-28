@@ -531,6 +531,7 @@
 #define IDC_HEADER                      1259
 #define IDC_CUSTOM2                     1260
 #define IDC_LIBRARY                     1260
+#define IDC_PROCESSING_PROGRESS         1261
 #define IDS_COMPUTINGMEDIANLIGHT        1300
 #define IDS_LISTINFO                    1400
 #define IDS_LISTINFO2                   1401
@@ -659,9 +660,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        218
+#define _APS_NEXT_RESOURCE_VALUE        219
 #define _APS_NEXT_COMMAND_VALUE         40045
-#define _APS_NEXT_CONTROL_VALUE         1261
+#define _APS_NEXT_CONTROL_VALUE         1262
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -55,7 +55,7 @@ BOOL	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
 
 	m_sSettings.clear();
 	m_vFiles.clear();
-	hFile = fopen(szFile, "rt");
+	hFile = _tfopen(szFile, _T("rt"));
 	if (hFile)
 	{
 		// First read the settings
@@ -65,13 +65,13 @@ BOOL	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
 			m_sSettings.insert(s);
 
 		// Then read the file list
-		TCHAR			szBuffer[2000];
+		CHAR			szBuffer[2000];
 
 		while (fgets(szBuffer, sizeof(szBuffer), hFile))
 		{
-			CString		strFileName = szBuffer;
+			CString		strFileName = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer);
 
-			strFileName.TrimRight("\n");
+			strFileName.TrimRight(_T("\n"));
 			m_vFiles.push_back(strFileName);
 		};
 
@@ -90,7 +90,7 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 {
 	FILE *				hFile;
 
-	hFile = fopen(szFile, "wt");
+	hFile = _tfopen(szFile, _T("wt"));
 	if (hFile)
 	{
 		// First write the settings
@@ -105,7 +105,7 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 		// Then write the file list
 		fprintf(hFile, "----FileList----\n");
 		for (LONG i = 0;i<m_vFiles.size();i++)
-			fprintf(hFile, "%s\n", (LPCTSTR)m_vFiles[i]);
+			fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vFiles[i]));
 
 		fclose(hFile);
 	};
@@ -138,12 +138,12 @@ BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 		{
 			CString			strFile;
 
-			strFile.Format("%s[%s]", (LPCTSTR)(pTask->m_vBitmaps[i].m_strFileName), (LPCTSTR)pTask->m_vBitmaps[i].m_strDateTime);
+			strFile.Format(_T("%s[%s]"), (LPCTSTR)(pTask->m_vBitmaps[i].m_strFileName), (LPCTSTR)pTask->m_vBitmaps[i].m_strDateTime);
 			m_vFiles.push_back(strFile);
 
-			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.Left(4) == "FITS"))
+			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.Left(4) == _T("FITS")))
 				bFITS = TRUE;
-			else if (!bRAW && (pTask->m_vBitmaps[i].m_strInfos.Left(3) == "RAW"))
+			else if (!bRAW && (pTask->m_vBitmaps[i].m_strInfos.Left(3) == _T("RAW")))
 				bRAW = TRUE;
 			lWidth  = pTask->m_vBitmaps[i].m_lWidth;
 			lHeight = pTask->m_vBitmaps[i].m_lHeight;
@@ -159,11 +159,11 @@ BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 		if (!bmpInfo.m_bMaster)
 			bResult = FALSE;
 
-		AddFileVariable("Bitmap.FileName", szFile);
-		AddVariable("Bitmap.Width", lWidth);
-		AddVariable("Bitmap.Height", lHeight);
-		AddVariable("Bitmap.BitPerChannels", lBitPerChannels);
-		AddVariable("Bitmap.NrChannels", lNrChannels);
+		AddFileVariable(_T("Bitmap.FileName"), szFile);
+		AddVariable(_T("Bitmap.Width"), lWidth);
+		AddVariable(_T("Bitmap.Height"), lHeight);
+		AddVariable(_T("Bitmap.BitPerChannels"), lBitPerChannels);
+		AddVariable(_T("Bitmap.NrChannels"), lNrChannels);
 
 		if (bFITS)
 			AddFITSSettings();

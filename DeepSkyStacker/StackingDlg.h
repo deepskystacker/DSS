@@ -7,7 +7,7 @@
 // StackingDlg.h : header file
 //
 
-#include <ControlPos.h>
+#include <CtrlCache.h>
 #include <WndImage.h>
 #include <BtnST.h>
 #include "PictureListCtrl.h"
@@ -31,7 +31,6 @@ class CStackingDlg : public CDialog,
 					 public CButtonToolbarSink
 {
 private :
-	CControlPos				m_ControlPos;
 	CSplitterControl		m_Splitter;
 	CString					m_strShowFile;
 	CButtonToolbar			m_ButtonToolbar;
@@ -43,6 +42,13 @@ private :
 	CLoadedImage			m_LoadedImage;
 	CGammaTransformation	m_GammaTransformation;
 	CString					m_strCurrentFileList;
+
+	// These values dictate how resizing should work.
+	static const int sm_nMinListWidth = 500;
+	static const int sm_nMinListHeight = 120;
+	static const int sm_nMinImageHeight = 200;
+	
+	CCtrlCache m_cCtrlCache;
 
 // Construction
 public:
@@ -122,7 +128,7 @@ private :
 
 	void		UpdateGroupTabs();
 	BOOL		CheckEditChanges();
-	void		UpdateSplitter();
+	void		UpdateLayout();
 	
 // Overrides
 	// ClassWizard generated virtual function overrides

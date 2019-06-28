@@ -1,3 +1,0 @@
-LIBRARY        load_apn
-EXPORTS        
-    load_cfa

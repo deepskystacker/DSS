@@ -24,7 +24,7 @@ private :
 private :
 	void	AnsiToOEM(CString & str)
 	{
-		TCHAR			szOut[2000];
+		CHAR			szOut[2000];
 
 		::CharToOem((LPCTSTR)str, szOut);
 		str = szOut;
@@ -34,11 +34,11 @@ private :
 	{
 		CString			strOut = szText;
 
-		AnsiToOEM(strOut);
+		// AnsiToOEM(strOut);
 
 		if (strOut.GetLength() && m_strLastOut.CompareNoCase(strOut))
 		{
-			printf("%s\n", (LPCTSTR)strOut);
+			_tprintf(_T("%s\n"), (LPCTSTR)strOut);
 			m_strLastOut = strOut;
 		};
 	};

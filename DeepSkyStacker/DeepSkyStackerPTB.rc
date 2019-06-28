@@ -1183,7 +1183,7 @@ BEGIN
     IDS_SAVEWITHSETTINGSEMBEDDED "Foto guardada - com configuracoes defenidas."
     IDS_LOADRGBTIFF         "Carregando TIFF %ld bit/ch"
     IDS_LOADGRAYTIFF        "Carregando TIFF %ld bit monocromtico"
-    IDS_DEEPSKYSTACKER      "DeepSkyStacker 3.2"
+    IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
     IDS_SAVINGINTERMEDIATE  "Guardando imagem Registada e Calibrada em %s"
     IDS_SAVINGFINAL         "Guardando imagem final em %s"
     IDS_SAVINGCALIBRATED    "Guardando imagem calibrada em %s"

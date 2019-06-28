@@ -129,23 +129,23 @@ BOOL CStackingParameters::OnSetActive()
 		CString			strText;
 
 		strText.LoadString(IDS_TOOLTIP_KAPPASIGMA);
-		strText.Replace("\n", "<br>");
-		strText.Replace("[sigma]", "<font face='Symbol'>s</font>");
-		strText.Replace("[kappa]", "<font face='Symbol'>k</font>");
+		strText.Replace(_T("\n"), _T("<br>"));
+		strText.Replace(_T("[sigma]"), _T("<font face='Symbol'>s</font>"));
+		strText.Replace(_T("[kappa]"), _T("<font face='Symbol'>k</font>"));
 		m_Tooltips.AddTool(GetDlgItem(IDC_SIGMACLIPPING), strText);
 		m_Tooltips.AddTool(GetDlgItem(IDC_KAPPA), strText);
 		m_Tooltips.AddTool(GetDlgItem(IDC_STATICKAPPA), strText);
 
 		strText.LoadString(IDS_TOOLTIP_MEDIANKAPPASIGMA);
-		strText.Replace("\n", "<br>");
-		strText.Replace("[sigma]", "<font face='Symbol'>s</font>");
-		strText.Replace("[kappa]", "<font face='Symbol'>k</font>");
+		strText.Replace(_T("\n"), _T("<br>"));
+		strText.Replace(_T("[sigma]"), _T("<font face='Symbol'>s</font>"));
+		strText.Replace(_T("[kappa]"), _T("<font face='Symbol'>k</font>"));
 		m_Tooltips.AddTool(GetDlgItem(IDC_MEDIANSIGMACLIPPING), strText);
 
 		strText.LoadString(IDS_TOOLTIP_AUTOADAPTIVE);
-		strText.Replace("\n", "<br>");
-		strText.Replace("[sigma]", "<font face='Symbol'>s</font>");
-		strText.Replace("[kappa]", "<font face='Symbol'>k</font>");
+		strText.Replace(_T("\n"), _T("<br>"));
+		strText.Replace(_T("[sigma]"), _T("<font face='Symbol'>s</font>"));
+		strText.Replace(_T("[kappa]"), _T("<font face='Symbol'>k</font>"));
 		m_Tooltips.AddTool(GetDlgItem(IDC_AUTOADAPTIVEAVERAGE), strText);
 
 		m_Tooltips.Activate(TRUE);
@@ -191,10 +191,10 @@ void CStackingParameters::SetControls(MULTIBITMAPPROCESSMETHOD Method, double fK
 
 	CString			strValue;
 
-	strValue.Format("%.2f", fKappa);
+	strValue.Format(_T("%.2f"), fKappa);
 	m_Kappa.SetWindowText(strValue);
 
-	strValue.Format("%ld", lIteration);
+	strValue.Format(_T("%ld"), lIteration);
 	m_Iteration.SetWindowText(strValue);
 };
 
@@ -220,10 +220,10 @@ void CStackingParameters::GetControls(MULTIBITMAPPROCESSMETHOD & Method, double 
 	CString			strValue;
 
 	m_Kappa.GetWindowText(strValue);
-	fKappa = atof(strValue);
+	fKappa = _ttof(strValue);
 
 	m_Iteration.GetWindowText(strValue);
-	lIteration = atol(strValue);
+	lIteration = _ttol(strValue);
 };
 
 /* ------------------------------------------------------------------- */

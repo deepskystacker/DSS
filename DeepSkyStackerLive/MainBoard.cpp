@@ -891,17 +891,17 @@ BOOL	CMainBoard::IsMonitoredFolderOk()
 	CString					strFolder;
 	CRegistry				reg;
 
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, "MonitoredFolder", strFolder);
+	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
 	if (strFolder.GetLength())
 	{
 		// Check that the folder exists
 		CString			strFile;
 
-		strFile.Format("%s/testfolder.dsslive.txt", (LPCTSTR)strFolder);
+		strFile.Format(_T("%s/testfolder.dsslive.txt"), (LPCTSTR)strFolder);
 		FILE *			hFile;
 
-		hFile = fopen(strFile, "wt");
+		hFile = _tfopen(strFile, _T("wt"));
 		if (hFile)
 		{
 			fclose(hFile);
@@ -948,7 +948,7 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 
 			CRegistry			reg;
 
-			reg.SaveKey(REGENTRY_BASEKEY_LIVE, "MonitoredFolder", strFolder);
+			reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 			bResult = TRUE;
 		};	};
 
@@ -977,7 +977,7 @@ BOOL CMainBoard::OnInitDialog()
 
 	if (IsMonitoredFolderOk())
 	{
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, "MonitoredFolder", strFolder);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 		m_MonitoredFolder.SetWindowText(strFolder);
 	};
 
@@ -1015,14 +1015,14 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 	CString					strExcluded;
 
 	vFiles.clear();
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, "MonitoredFolder", strFolder);
-	if (!reg.LoadKey(REGENTRY_BASEKEY_LIVE, "Excluded", strExcluded))
-		strExcluded = ".TMP;.BAK;.TEMP;.TXT";
+	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
+	if (!reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Excluded"), strExcluded))
+		strExcluded = _T(".TMP;.BAK;.TEMP;.TXT");
 	strExcluded.MakeUpper();
 
-	strFolder += "\\";
+	strFolder += _T("\\");
 	strFileMask = strFolder;
-	strFileMask += "*.*";
+	strFileMask += _T("*.*");
 
 	hFindFiles = FindFirstFile(strFileMask, &FindData);
 	if (hFindFiles != INVALID_HANDLE_VALUE)
@@ -1038,7 +1038,7 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 			TCHAR			szExt[_MAX_EXT];
 			CString			strExt;
 
-			_splitpath(strFile, NULL, NULL, NULL, szExt);
+			_tsplitpath(strFile, NULL, NULL, NULL, szExt);
 			strExt = szExt;
 			strExt.MakeUpper();
 			if (strExt.GetLength() && (strExcluded.Find(strExt, 0) == -1))
@@ -1089,7 +1089,7 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 			// Use and alternate method
 			DWORD			dwPollingTime = 10;
 
-			reg.LoadKey(REGENTRY_BASEKEY_LIVE, "PollingTime", dwPollingTime);
+			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
 
 			SetTimer(1, dwPollingTime*1000, NULL);
 		};
@@ -1192,7 +1192,7 @@ void CMainBoard::OnMonitor()
 		CString					strFolder;
 		std::vector<CString>	vNewFiles;
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, "MonitoredFolder", strFolder);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
 		m_vAllFiles.clear();
 		GetNewFilesInMonitoredFolder(vNewFiles);
@@ -1235,7 +1235,7 @@ void CMainBoard::OnMonitor()
 			// Use and alternate method
 			DWORD			dwPollingTime = 10;
 
-			reg.LoadKey(REGENTRY_BASEKEY_LIVE, "PollingTime", dwPollingTime);
+			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
 
 			SetTimer(1, dwPollingTime*1000, NULL);
 		};
@@ -1274,7 +1274,7 @@ void CMainBoard::OnStop()
 		CString				strFolder;
 		CString				strText;
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, "MonitoredFolder", strFolder);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
 		strText.Format(IDS_LOG_STOPMONITORING, (LPCTSTR)strFolder);
 		AddToLog(strText, TRUE, TRUE, FALSE, RGB(128, 0, 0));
@@ -1295,7 +1295,7 @@ void CMainBoard::OnStack()
 		CString				strFolder;
 		CString				strText;
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, "MonitoredFolder", strFolder);
+		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
 		if (m_bStacking)
 			strText.Format(IDS_LOG_STARTSTACKING, (LPCTSTR)strFolder);
@@ -1504,13 +1504,13 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 
 						m_LiveSettings.GetWarning_FileFolder(strFolder);
 
-						strFile.Format("%s\\DSSLiveWarning.txt", (LPCTSTR)strFolder);
+						strFile.Format(_T("%s\\DSSLiveWarning.txt"), (LPCTSTR)strFolder);
 						FILE *				hFile;
 
-						hFile = fopen(strFile, "at");
+						hFile = _tfopen(strFile, _T("at"));
 						if (hFile)
 						{
-							fprintf(hFile, "%s\n", (LPCSTR)strWarning);
+							fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strWarning));
 							fclose(hFile);
 						};
 					};
@@ -1540,7 +1540,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 								CPJNSMTPMessage m;
 								m.m_To.Add(CPJNSMTPAddress(strEmail));
 								m.m_From = CPJNSMTPAddress(strAccount);
-								m.m_sSubject = _T(strObject);
+								m.m_sSubject = strObject;
 								m.AddTextBody(strWarning);
 								smtp.SendMessage(m);
 

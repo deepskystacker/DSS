@@ -13,10 +13,10 @@ public:
 
 	void	SetBaseFileName(LPCTSTR szOutputFile)
 	{
-		TCHAR				szDrive[_MAX_DRIVE];
-		TCHAR				szDir[_MAX_DIR];
+		TCHAR				szDrive[1+_MAX_DRIVE];
+		TCHAR				szDir[1+_MAX_DIR];
 
-		_splitpath(szOutputFile, szDrive, szDir, NULL, NULL);
+		_tsplitpath(szOutputFile, szDrive, szDir, NULL, NULL);
 
 		m_strOutputFile = szDrive;
 		m_strOutputFile += szDir;

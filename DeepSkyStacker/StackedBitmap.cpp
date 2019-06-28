@@ -286,12 +286,13 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 	BOOL			bResult = FALSE;
 	FILE *			hFile;
 	CString			strText;
+	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8); // Stacked fileid in ASCII
 
 	strText.LoadString(IDS_LOADDSIMAGE);
 	if (pProgress)
 		pProgress->Start(strText, 0, FALSE);
 
-	hFile = fopen(szStackedFile, "rb");
+	hFile = _tfopen(szStackedFile, _T("rb"));
 	if (hFile)
 	{
 		HDSTACKEDBITMAPHEADER	Header;
@@ -335,12 +336,18 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 		}
 		else
 		{
-			printf("Wrong header in %s\n", szStackedFile);
+
+			printf("Wrong header in %s\n", strFile);
+			ZTRACE_RUNTIME("Wrong header in %s", strFile);
 		};
 		fclose(hFile);
 	}
 	else
-		printf("Cannot open %s\n", szStackedFile);
+	{
+		printf("Cannot open %s\n", strFile);
+		ZTRACE_RUNTIME("Cannot open%s", strFile);
+	}
+
 
 	if (pProgress)
 		pProgress->Close();
@@ -355,9 +362,11 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 	ZFUNCTRACE_RUNTIME();
 	FILE *			hFile;
 	CString			strText;
+	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8);  // in UTF-8
 
-	printf("Saving Stacked Bitmap in %s\n", szStackedFile);
-	hFile = fopen(szStackedFile, "wb");
+	printf("Saving Stacked Bitmap in %s\n", strFile);
+	ZTRACE_RUNTIME("Saving Stacked Bitmap in %s", strFile);
+	hFile = _tfopen(szStackedFile, _T("wb"));
 	if (hFile)
 	{
 		HDSTACKEDBITMAPHEADER	Header;
@@ -441,7 +450,8 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 	}
 	else
 	{
-		printf("Error creating file !\n");
+		printf("Error creating file %s!\n", strFile);
+		ZTRACE_RUNTIME("Error creating file %s!", strFile);
 	};
 };
 
@@ -789,9 +799,11 @@ void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, BOOL bApplySett
 		CString				strHistoParameters;
 
 		m_BezierAdjust.ToText(strBezierParameters);
-		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS, (LPCTSTR)strBezierParameters);
+		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_BEZIERSETTINGS,
+			(LPCSTR)CT2A(strBezierParameters));
 		m_HistoAdjust.ToText(strHistoParameters);
-		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS, (LPCTSTR)strHistoParameters);
+		TIFFSetField(tiffWriter->m_tiff, TIFFTAG_DSS_ADJUSTSETTINGS,
+			(LPCSTR)CT2A(strHistoParameters));
 	};
 };
 

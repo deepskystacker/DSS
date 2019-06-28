@@ -173,13 +173,13 @@ private :
 		if (nPos >= 0)
 		{
 			nStart = nPos + strVariable.GetLength();
-			nEnd = strString.Find(";", nStart);
+			nEnd = strString.Find(_T(";"), nStart);
 			if (nEnd < 0)
-				nEnd = strString.Find("}", nStart);
+				nEnd = strString.Find(_T("}"), nStart);
 			if (nEnd > nStart)
 			{
 				strValue = strString.Mid(nStart, nEnd-nStart);
-				fValue = atof(strValue);
+				fValue = _ttof(strValue);
 			};
 		};
 
@@ -302,23 +302,23 @@ public :
 
 	void	ToText(CString & strParameters) const
 	{
-		strParameters.Format("Min=%2.f;Max=%.2f;Shift=%.2f;MinOrg=%.2f;MaxOrg=%2.f;MinUsed=%.2f;MaxUsed=%.2f;HAT=%ld;",
+		strParameters.Format(_T("Min=%2.f;Max=%.2f;Shift=%.2f;MinOrg=%.2f;MaxOrg=%2.f;MinUsed=%.2f;MaxUsed=%.2f;HAT=%ld;"),
 							m_fMin, m_fMax, m_fShift, m_fOrgMin, m_fOrgMax, m_fUsedMin, m_fUsedMax, (WORD)m_HAT);
 	};
 
 	void	FromText(LPCTSTR szParameters)
 	{
-		m_fMin = ExtractValue(szParameters, "Min");
-		m_fMax = ExtractValue(szParameters, "Max");
-		m_fShift = ExtractValue(szParameters, "Shift");
-		m_fOrgMin = ExtractValue(szParameters, "MinOrg");
-		m_fOrgMax = ExtractValue(szParameters, "MaxOrg");
-		m_fUsedMin = ExtractValue(szParameters, "MinUsed");
-		m_fUsedMax = ExtractValue(szParameters, "MaxUsed");
+		m_fMin = ExtractValue(szParameters, _T("Min"));
+		m_fMax = ExtractValue(szParameters, _T("Max"));
+		m_fShift = ExtractValue(szParameters, _T("Shift"));
+		m_fOrgMin = ExtractValue(szParameters, _T("MinOrg"));
+		m_fOrgMax = ExtractValue(szParameters, _T("MaxOrg"));
+		m_fUsedMin = ExtractValue(szParameters, _T("MinUsed"));
+		m_fUsedMax = ExtractValue(szParameters, _T("MaxUsed"));
 
 		LONG				lValue;
 
-		lValue = ExtractValue(szParameters, "HAT");
+		lValue = ExtractValue(szParameters, _T("HAT"));
 		m_HAT = (HISTOADJUSTTYPE)lValue;
 	};
 };
@@ -352,7 +352,7 @@ private :
 		if (nPos >= 0)
 		{
 			nStart = nPos + strSub.GetLength();
-			nEnd = strParameters.Find("}", nStart);
+			nEnd = strParameters.Find(_T("}"), nStart);
 			if (nEnd > nStart)
 			{
 				strSubParameters = strParameters.Mid(nStart, nEnd-nStart);
@@ -425,7 +425,7 @@ public :
 		m_GreenAdjust.ToText(strGreenParameters);
 		m_BlueAdjust.ToText(strBlueParameters);
 
-		strParameters.Format("RedAdjust{%s}GreenAdjust{%s}BlueAdjust{%s}", 
+		strParameters.Format(_T("RedAdjust{%s}GreenAdjust{%s}BlueAdjust{%s}"), 
 					strRedParameters, 
 					strGreenParameters, 
 					strBlueParameters);

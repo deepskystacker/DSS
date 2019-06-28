@@ -1623,7 +1623,7 @@ void CListBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
         if (!bFullRowSelected)
         {
           int nFormat = nIndex == 0 && nColumn == 0 || !m_bKeepLabelLeft ?
-                        m_iFormatOfSubItem0 : lvc.fmt & LVCFMT_JUSTIFYMASK;
+                        m_iForm_ttofSubItem0 : lvc.fmt & LVCFMT_JUSTIFYMASK;
 
           switch (nFormat)
           {
@@ -2150,7 +2150,7 @@ void CListBase::InvalidateNonItemArea()
 /*** justified or centerd first column                             ***********/
 void CListBase::JustifyFirstColumn(int nFormat)
 {
-  m_iFormatOfSubItem0 = nFormat;
+  m_iForm_ttofSubItem0 = nFormat;
 
   if (m_pListCtrl->GetStyle() & LVS_OWNERDRAWFIXED ||
       m_dwExtendedStyle       & LVS_EX_FULLROWSELECT)
@@ -3327,8 +3327,9 @@ void CListBase::OnKeyDown(UINT nChar)
           m_pListCtrl->SetCheck(m_pListCtrl->GetNextSelectedItem(pos),
                                 bChecked);
       }
-      else
-        m_pListCtrl->Default();
+
+      // Still have to forward the event to the default window procedure.
+      m_pListCtrl->Default();
       break;
     }
 

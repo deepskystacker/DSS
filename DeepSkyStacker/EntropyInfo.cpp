@@ -77,13 +77,12 @@ void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMa
 	vGreenHisto.resize((LONG)MAXWORD+1);
 	vBlueHisto.resize((LONG)MAXWORD+1);
 
+	COLORREF16		crColor;
 	for (i = lMinX;i<=lMaxX;i++)
 	{
 		for (j = lMinY;j<=lMaxY;j++)
 		{
-			COLORREF16		crColor;
-
-			crColor = m_pBitmap->GetPixel16(i, j);
+			m_pBitmap->GetPixel16(i, j, crColor);
 			vRedHisto[crColor.red]++;
 			vGreenHisto[crColor.green]++;
 			vBlueHisto[crColor.blue]++;
@@ -97,7 +96,8 @@ void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMa
 			double			qRed,
 							qBlue,
 							qGreen;
-			COLORREF16 &	crColor = m_pBitmap->GetPixel16(i, j);
+
+			m_pBitmap->GetPixel16(i, j, crColor);
 
 			qRed	= (double)vRedHisto[crColor.red]/(double)lNrPixels;
 			qGreen	= (double)vGreenHisto[crColor.green]/(double)lNrPixels;

@@ -129,7 +129,7 @@ CSize CChartLineSerie::GetLegendSize() const
 
 int CChartLineSerie::DrawLegend(CDC *pDC, CPoint UpperLeft, int BitmapWidth) const
 {
-	if (m_strSerieName== _T(""))
+	if (m_strSerieName== "")
 		return 0;
 
 	//Draw Text

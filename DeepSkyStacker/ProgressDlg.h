@@ -42,9 +42,6 @@ public:
 public :
 	void PeekAndPump()
 	{
-		if (m_hWnd && ::GetFocus() != m_hWnd)
-			SetFocus();
-
 		MSG msg;
 		while (!m_bCancelled && ::PeekMessage(&msg, NULL,0,0,PM_NOREMOVE)) 
 		{
@@ -171,6 +168,9 @@ public :
 		m_dlg.m_Progress1.SetRange32(0, lTotal1);
 		m_dlg.m_Progress2.ShowWindow(SW_HIDE);
 		m_dlg.m_Text2.ShowWindow(SW_HIDE);
+
+		/* Make sure that the progress dialog receives keyboard input events. */
+		m_dlg.SetFocus();
 
 		m_dlg.PeekAndPump();
 	};

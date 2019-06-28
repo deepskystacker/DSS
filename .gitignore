@@ -318,3 +318,6 @@ ASALocalRun/
 
 # MSBuild Binary and Structured Log
 *.binlog
+
+# Line Endings Unifier VS plugin
+*.leu

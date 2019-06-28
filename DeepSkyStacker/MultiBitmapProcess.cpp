@@ -11,11 +11,11 @@
 
 static void GetTempFileName(CString & strFile)
 {
-	TCHAR			szTempFileName[_MAX_PATH];
+	TCHAR			szTempFileName[1+_MAX_PATH];
 	CString			strFolder;
 
 	CAllStackingTasks::GetTemporaryFilesFolder(strFolder);
-	GetTempFileName(strFolder, "DSS", 0, szTempFileName);
+	GetTempFileName(strFolder, _T("DSS"), 0, szTempFileName);
 
 	strFile = szTempFileName;
 };
@@ -130,7 +130,7 @@ BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 		{
 			FILE *				hFile;
 
-			hFile = fopen(m_vFiles[k].m_strFile, "a+b");
+			hFile = _tfopen(m_vFiles[k].m_strFile, _T("a+b"));
 			if (hFile)
 			{
 				bResult = TRUE;
@@ -435,7 +435,7 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 				pBuffer = (void *)malloc(lFileSize);
 				lBufferSize = lFileSize;
 			};
-			hFile = fopen(m_vFiles[l].m_strFile, "rb");
+			hFile = _tfopen(m_vFiles[l].m_strFile, _T("rb"));
 			if (hFile)
 			{
 				bResult = (fread(pBuffer, 1, lFileSize, hFile) == lFileSize);
