@@ -1181,7 +1181,7 @@ BOOL CStackingEngine::ComputeBitmap()
 
 			strText.Format(IDS_COMPUTINGMEDIANLIGHT, (LPCTSTR)strMethod);
 
-			m_pProgress->Start(strText, 1, FALSE);
+			m_pProgress->Start(strText, 1, TRUE);
 			m_pProgress->Progress1(strText, 0);
 			m_pProgress->SetJointProgress(TRUE);
 		};
