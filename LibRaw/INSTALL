@@ -1,0 +1,43 @@
+
+=========  Installing LibRaw ========
+
+I. Installation steps
+
+1. Unpack the distribution file:
+
+ $  tar xzvf LibRaw-0.xx.yy.tar.gz
+
+2. Go to LibRaw folder and run ./configure and make:
+
+ $ cd LibRaw-0.xx.yy
+ $ ./configure  [...optional args...]
+ $ make
+
+3. install by run make install as root:
+ 
+ $ sudo make install  
+
+
+II. ./configure options
+
+--enable-openmp
+--disable-openmp
+
+  Enable/disable OpenMP support if compiler supports it.
+  OpenMP is enabled by default.
+
+
+--enable-lcms
+--disable-lcms
+
+  Enable/disable LCMS color engine support. If enabled, ./configure will try to 
+  find lcms library.  Both LCMS-1.x and LCMS-2.x are supported
+  LCMS support is enabled by default
+
+
+--enable-examples
+--disable-examples
+
+  Enables/disables examples compilation and installation. Enabled by default
+
+

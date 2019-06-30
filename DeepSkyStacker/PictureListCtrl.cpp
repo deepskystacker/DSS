@@ -304,7 +304,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 0;
 			break;
 		case COLUMN_SCORE :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;
@@ -314,7 +316,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 1;
 			break;
 		case COLUMN_DX :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;
@@ -324,7 +328,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 1;
 			break;
 		case COLUMN_DY :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;
@@ -334,7 +340,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 1;
 			break;
 		case COLUMN_ANGLE :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;

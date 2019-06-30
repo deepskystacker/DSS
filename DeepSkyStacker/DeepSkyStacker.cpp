@@ -35,7 +35,6 @@ BOOL	IsExpired()
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
-/*
 #ifdef DSSBETA
 
 	ZTRACE_RUNTIME("Check beta expiration\n");
@@ -55,7 +54,6 @@ BOOL	IsExpired()
 	ZTRACE_RUNTIME("Check beta expiration - ok\n");
 
 #endif
-*/
 	return bResult;
 };
 

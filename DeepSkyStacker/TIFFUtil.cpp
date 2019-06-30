@@ -475,9 +475,12 @@ BOOL CTIFFWriter::Open()
 				TIFFSetField(m_tiff, TIFFTAG_SMAXSAMPLEVALUE, samplemax);
 			};
 
-			CStringA			strSoftware;
+			//
+			// Set Software name in the same way we do elsewhere.
+			//
+			CStringA			strSoftware = "DeepSkyStacker ";
+			strSoftware += VERSION_DEEPSKYSTACKER;
 
-			strSoftware.LoadString(IDS_DEEPSKYSTACKER);
 			TIFFSetField(m_tiff, TIFFTAG_SOFTWARE, (LPCSTR)strSoftware);
 
 			if (m_strDescription.GetLength())
