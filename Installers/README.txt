@@ -8,7 +8,7 @@ my initial attempt at using OpenMP to parallelise the code and made it perform a
 
 The resulting images should be very much the same (if not 100% identical) to the results obtained using DeepSkyStacker 4.1.1.
 
-There is one thing that is incompatible with DeepSkySTacker 4.1.1:
+There is one thing that is incompatible with DeepSkyStacker 4.1.1:
 
 The "Use Auto White Balance" white balance button is disabled for this release.
 
