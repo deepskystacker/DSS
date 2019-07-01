@@ -296,7 +296,8 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 			LONG			lNrOffsets = 0;
 
 			strText.LoadString(IDS_CREATEMASTEROFFSET);
-
+			ZTRACE_RUNTIME(CT2CA(strText));
+			
 			if (pProgress)
 				pProgress->Start(strText, (LONG)m_pOffsetTask->m_vBitmaps.size(), TRUE);
 
@@ -306,6 +307,7 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 				lNrOffsets++;
 				strText.Format(IDS_ADDOFFSET, lNrOffsets, m_pOffsetTask->m_vBitmaps.size());
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 					pProgress->Progress1(strText, lNrOffsets);
@@ -333,6 +335,7 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 				FormatFromMethod(strMethod, m_pOffsetTask->m_Method, m_pOffsetTask->m_fKappa, m_pOffsetTask->m_lNrIterations);
 				strText.Format(IDS_COMPUTINGMEDIANOFFSET, (LPCTSTR)strMethod);
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 				{
@@ -357,6 +360,7 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 					strMasterOffsetInfo.Format(_T("%s%sMasterOffset_ISO%ld.Description.txt"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
 
 					strText.LoadString(IDS_SAVINGMASTEROFFSET);
+					ZTRACE_RUNTIME(CT2CA(strText));
 
 					if (pProgress)
 					{
@@ -455,6 +459,8 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 			CSmartPtr<CMemoryBitmap>	pMasterOffset;
 
 			strText.LoadString(IDS_CREATEMASTERDARK);
+			ZTRACE_RUNTIME(CT2CA(strText));
+
 			if (pProgress)
 				pProgress->Start(strText, (LONG)m_pDarkTask->m_vBitmaps.size(), TRUE);
 
@@ -469,6 +475,7 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 				lNrDarks++;
 				strText.Format(IDS_ADDDARK, lNrDarks, m_pDarkTask->m_vBitmaps.size());
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 					pProgress->Progress1(strText, lNrDarks);
@@ -488,6 +495,7 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 							pProgress->GetStart2Text(strStart2);
 							strText.LoadString(IDS_SUBSTRACTINGOFFSET);
+							ZTRACE_RUNTIME(CT2CA(strText));
 							pProgress->Start2(strText, 0);
 						};
 						Subtract(pBitmap, pMasterOffset, pProgress);
@@ -513,6 +521,7 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 				FormatFromMethod(strMethod, m_pDarkTask->m_Method, m_pDarkTask->m_fKappa, m_pDarkTask->m_lNrIterations);
 				strText.Format(IDS_COMPUTINGMEDIANDARK, (LPCTSTR)strMethod);
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 				{
@@ -538,6 +547,7 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 					strMasterDark.Format(_T("%s%sMasterDark_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
 					strMasterDarkInfo.Format(_T("%s%sMasterDark_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
 					strText.LoadString(IDS_SAVINGMASTERDARK);
+					ZTRACE_RUNTIME(CT2CA(strText));
 
 					if (pProgress)
 					{
@@ -638,6 +648,8 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 			CSmartPtr<CMemoryBitmap>	pMasterOffset;
 
 			strText.LoadString(IDS_CREATEMASTERDARKFLAT);
+			ZTRACE_RUNTIME(CT2CA(strText));
+
 			if (pProgress)
 				pProgress->Start(strText, (LONG)m_pDarkFlatTask->m_vBitmaps.size(), TRUE);
 
@@ -652,6 +664,7 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 				lNrDarks++;
 				strText.Format(IDS_ADDDARKFLAT, lNrDarks, m_pDarkFlatTask->m_vBitmaps.size());
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 					pProgress->Progress1(strText, lNrDarks);
@@ -671,6 +684,8 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 							pProgress->GetStart2Text(strStart2);
 							strText.LoadString(IDS_SUBSTRACTINGOFFSET);
+							ZTRACE_RUNTIME(CT2CA(strText));
+
 							pProgress->Start2(strText, 0);
 						};
 						Subtract(pBitmap, pMasterOffset, pProgress);
@@ -696,6 +711,7 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 				FormatFromMethod(strMethod, m_pDarkFlatTask->m_Method, m_pDarkFlatTask->m_fKappa, m_pDarkFlatTask->m_lNrIterations);
 				strText.Format(IDS_COMPUTINGMEDIANDARKFLAT, (LPCTSTR)strMethod);
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 				{
@@ -721,6 +737,7 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 					strMasterDarkFlat.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
 					strMasterDarkFlatInfo.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
 					strText.LoadString(IDS_SAVINGMASTERDARKFLAT);
+					ZTRACE_RUNTIME(CT2CA(strText));
 
 					if (pProgress)
 					{
@@ -883,6 +900,8 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap * pBitmap, CDSS
 
 		pProgress->GetStart2Text(strStart2);
 		strText.LoadString(IDS_COMPUTINGFLATCALIBRATION);
+		ZTRACE_RUNTIME(CT2CA(strText));
+
 		pProgress->Start2(strText, 0);
 		pProgress->Start2(NULL, pBitmap->RealWidth());
 	};
@@ -933,6 +952,8 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 
 		pProgress->GetStart2Text(strStart2);
 		strText.LoadString(IDS_APPLYINGFLATCALIBRATION);
+		ZTRACE_RUNTIME(CT2CA(strText));
+
 		pProgress->Start2(strText, 0);
 		pProgress->Start2(NULL, pBitmap->RealWidth());
 	};
@@ -1056,6 +1077,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 			CFlatCalibrationParameters	fcpBase;
 
 			strText.LoadString(IDS_CREATEMASTERFLAT);
+			ZTRACE_RUNTIME(CT2CA(strText));
 
 			if (pProgress)
 				pProgress->Start(strText, (LONG)m_pFlatTask->m_vBitmaps.size(), TRUE);
@@ -1072,6 +1094,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 				lNrFlats++;
 				strText.Format(IDS_ADDFLAT, lNrFlats, m_pFlatTask->m_vBitmaps.size());
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 					pProgress->Progress1(strText, lNrFlats);
@@ -1085,13 +1108,15 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 					// Subtract the offset frame from the dark frame
 					if (pMasterOffset && !pBitmap->IsMaster())
 					{
+						CString			strText;
 						CString			strStart2;
+
+						strText.LoadString(IDS_SUBSTRACTINGOFFSET);
+						ZTRACE_RUNTIME(CT2CA(strText));
+
 						if (pProgress)
 						{
-							CString			strText;
-
 							pProgress->GetStart2Text(strStart2);
-							strText.LoadString(IDS_SUBSTRACTINGOFFSET);
 							pProgress->Start2(strText, 0);
 						};
 						Subtract(pBitmap, pMasterOffset, pProgress);
@@ -1101,13 +1126,15 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 					if (pMasterDarkFlat && !pBitmap->IsMaster())
 					{
+						CString			strText; 
 						CString			strStart2;
+
+						strText.LoadString(IDS_SUBSTRACTINGDARK);
+						ZTRACE_RUNTIME(CT2CA(strText));
+
 						if (pProgress)
 						{
-							CString			strText;
-
 							pProgress->GetStart2Text(strStart2);
-							strText.LoadString(IDS_SUBSTRACTINGDARK);
 							pProgress->Start2(strText, 0);
 						};
 						Subtract(pBitmap, pMasterDarkFlat, pProgress);
@@ -1144,6 +1171,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 				FormatFromMethod(strMethod, m_pFlatTask->m_Method, m_pFlatTask->m_fKappa, m_pFlatTask->m_lNrIterations);
 				strText.Format(IDS_COMPUTINGMEDIANFLAT, (LPCTSTR)strMethod);
+				ZTRACE_RUNTIME(CT2CA(strText));
 
 				if (pProgress)
 				{
@@ -1168,6 +1196,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 					strMasterFlat.Format(_T("%s%sMasterFlat_ISO%ld.tif"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
 					strMasterFlatInfo.Format(_T("%s%sMasterFlat_ISO%ld.Description.txt"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
 					strText.LoadString(IDS_SAVINGMASTERFLAT);
+					ZTRACE_RUNTIME(CT2CA(strText));
 
 					if (pProgress)
 					{
