@@ -52,7 +52,6 @@ BOOL	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 	if (pProgress)
 	{
 		strText.LoadString(IDS_ALIGNINGCHANNEL);
-		pProgress->Start(strText, 0);
 		pProgress->Start2(strText, lHeight);
 	};
 
@@ -122,6 +121,12 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 			pGreen	= pColorBitmap->GetGreen();
 			pBlue	= pColorBitmap->GetBlue();
 
+			if (pProgress)
+			{
+				pProgress->Start(NULL, 3, FALSE);
+				pProgress->Progress1(NULL, 0);
+			}
+
 			// Register each channels
 			CLightFrameInfo		lfiRed;
 			CLightFrameInfo		lfiGreen;
@@ -132,8 +137,14 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 			lfiBlue.SetProgress(pProgress);
 
 			lfiRed.RegisterPicture(pRed);
+			if (pProgress)
+				pProgress->Progress1(NULL, 1);
 			lfiGreen.RegisterPicture(pGreen);
+			if (pProgress)
+				pProgress->Progress1(NULL, 2);
 			lfiBlue.RegisterPicture(pBlue);
+			if (pProgress)
+				pProgress->Progress1(NULL, 3);
 
 			// Get the best one to align the others
 			double				fMaxScore;
@@ -222,11 +233,21 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 				bResult = TRUE;
 				CPixelTransform				PixTransform;
 
+				if (pProgress)
+				{
+					pProgress->Start(NULL, 2, FALSE);
+					pProgress->Progress1(NULL, 0);
+				}
+
 				PixTransform.m_BilinearParameters = pSecond->m_BilinearParameters;
 				AlignChannel(pSecondBitmap, &pOutSecondBitmap, PixTransform, pProgress);
+				if (pProgress)
+					pProgress->Progress1(NULL, 1);
 
 				PixTransform.m_BilinearParameters = pThird->m_BilinearParameters;
 				AlignChannel(pThirdBitmap, &pOutThirdBitmap, PixTransform, pProgress);
+				if (pProgress)
+					pProgress->Progress1(NULL, 2);
 			};
 
 			// Dump the resulting modified channels in the image
