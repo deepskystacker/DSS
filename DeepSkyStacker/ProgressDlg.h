@@ -92,6 +92,7 @@ private :
 	LONG				m_lLastTotal1,
 						m_lLastTotal2;
 	BOOL				m_bFirstProgress;
+	BOOL				m_bEnableCancel;
 
 private :
 	void				CreateProgressDialog()
@@ -115,7 +116,11 @@ private :
 	};
 
 public :
-	CDSSProgressDlg() {};
+	CDSSProgressDlg()
+		:
+		m_bEnableCancel(FALSE)
+	{
+	};
 	virtual ~CDSSProgressDlg() 
 	{
 		Close();
@@ -162,6 +167,7 @@ public :
 		m_dwStartTime = GetTickCount();
 		m_dwLastTime  = m_dwStartTime;
 		m_bFirstProgress = TRUE;
+		m_bEnableCancel = bEnableCancel;
 		m_dlg.m_Cancel.EnableWindow(bEnableCancel);
 		if (strTitle.GetLength())
 			m_dlg.SetWindowText(strTitle);
@@ -251,7 +257,7 @@ public :
 
 		if (m_bJointProgress)
 		{
-			Start(NULL, lTotal2, FALSE);
+			Start(NULL, lTotal2, m_bEnableCancel);
 			if (strText.GetLength())
 				m_dlg.m_Text1.SetWindowText(szText);
 		};

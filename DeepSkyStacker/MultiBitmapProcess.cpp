@@ -219,13 +219,13 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
-			for (i = msg.wParam;i<msg.wParam+msg.lParam;i++)
+			for (i = msg.wParam;i<msg.wParam+msg.lParam && !bEnd;i++)
 			{
 				void *				pScanLine;
 
 				vScanLines.resize(0);
 
-				for (LONG k = 0;k<lNrBitmaps;k++)
+				for (LONG k = 0;k<lNrBitmaps && !bEnd;k++)
 				{
 					LONG			lOffset;
 
@@ -234,9 +234,12 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 					pScanLine = (void*)(((BYTE*)m_pBuffer)+lOffset);
 
 					vScanLines.push_back(pScanLine);
+					if (m_pProgress)
+						bEnd = m_pProgress->IsCanceled();
 				};
 
-				m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
+				if (!bEnd)
+					m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
 			};
 
 			SetEvent(hEvent);
@@ -264,7 +267,7 @@ BOOL	CCombineTask::Process()
 	lRemaining	= m_lEndRow-m_lStartRow+1;
 
 	bResult = TRUE;
-	while (i<=m_lEndRow)
+	while (i<=m_lEndRow && bResult)
 	{
 		DWORD			dwThreadId;
 		LONG			lAdd = min(lStep, lRemaining);
@@ -277,7 +280,10 @@ BOOL	CCombineTask::Process()
 		lRemaining	-= lAdd;
 		
 		if (m_pProgress)
+		{
 			m_pProgress->Progress2(NULL, i);
+			bResult = !m_pProgress->IsCanceled();
+		}
 	};
 
 	CloseAllThreads();
@@ -454,7 +460,10 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 			};
 
 			if (pProgress)
+			{
 				pProgress->End2();
+				bResult = !pProgress->IsCanceled();
+			}
 		};
 
 		if (pBuffer)

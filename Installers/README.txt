@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 4.2.0 Beta 4
+Welcome to DeepSkyStacker 4.2.0 Beta 5
 
 The main change in this release is to use LibRaw version 19.2 instead of dcraw to capture images from RAW image files.
 This should provide support for many recent cameras which wasn't possible using dcraw.
@@ -8,7 +8,7 @@ my initial attempt at using OpenMP to parallelise the code and made it perform a
 
 The resulting images should be very much the same (if not 100% identical) to the results obtained using DeepSkyStacker 4.1.1.
 
-There is one thing that is incompatible with DeepSkySTacker 4.1.1:
+There is one thing that is incompatible with DeepSkyStacker 4.1.1:
 
 The "Use Auto White Balance" white balance button is disabled for this release.
 
@@ -34,6 +34,8 @@ We've also fixed a number of problems and made some other enhancements since 4.1
 5. The space key can now be used to check/uncheck images in the picture list.
 
 6. The user's default browser will be used instead of IE to open URLs.
+
+7. Miscellaneous code cleanups and performance improvements including Median-Kappa-Sigma processing.
 
 Welcome to DeepSkyStacker 4.1.1
 
