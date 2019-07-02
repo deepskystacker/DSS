@@ -123,6 +123,7 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 
 			if (pProgress)
 			{
+				// We will advance the progress1 bar for each channel (3 of them)
 				pProgress->Start(NULL, 3, FALSE);
 				pProgress->Progress1(NULL, 0);
 			}
@@ -235,6 +236,7 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 
 				if (pProgress)
 				{
+					// Advance the progress1 bar for each alignment step (2 of them)
 					pProgress->Start(NULL, 2, FALSE);
 					pProgress->Progress1(NULL, 0);
 				}
