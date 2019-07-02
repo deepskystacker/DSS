@@ -1009,12 +1009,14 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 	BOOL			bEnd = FALSE;
 	std::vector<T>	vAuxValues = vValues;
 
+	std::vector<T>	vTempValues;
+	vTempValues.reserve(vAuxValues.size());
+
 	for (LONG i = 0;i<lIteration && !bEnd;i++)
 	{
 		double			fAverage;
 		double			fSigma;
 		T				fMedian;
-		std::vector<T>	vTempValues;
 
 		fMedian = Median(vAuxValues);
 		fSigma = Sigma2(vAuxValues, fAverage);
@@ -1030,6 +1032,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 		bEnd = !vTempValues.size();
 		vAuxValues = vTempValues;
+		vTempValues.clear();
 	};
 
 	Result = Average(vAuxValues);
