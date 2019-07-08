@@ -870,6 +870,10 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				pFiller->setHeight(S.height);
 				pFiller->setMaxColors((1 << 16) - 1);
 				
+				// Report User Black Point over-ride
+				if (0 == O.user_black)
+					ZTRACE_RUNTIME("User set Black Point to 0");
+
 				//
 				// Before doing dark subtraction, normalise C.black / C.cblack[]
 				//

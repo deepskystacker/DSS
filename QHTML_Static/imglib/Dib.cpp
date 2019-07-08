@@ -118,11 +118,10 @@ void CDib::Initialise()
 
 	m_arrLine.SetSize( m_nHeight );
 
-	if (m_nHeight > 0)	// Adding this prevents compiler generating infinite loop
-		for( size_t i= m_nHeight - 1; i >=  0; i--)
-		{
-			m_arrLine[i] = m_pBits + i * m_nWidth;
-		}
+	for( int i= m_nHeight - 1; i >=  0; i--)
+	{
+		m_arrLine[i] = m_pBits + i * m_nWidth;
+	}
 }
 
 
