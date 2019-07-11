@@ -251,20 +251,18 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
 
 inline double GetIntensity(const COLORREF crColor)
 {
-	double	H, S, L;
+	const unsigned char red = GetRValue(crColor);
+	const unsigned char green = GetGValue(crColor);
+	const unsigned char blue = GetBValue(crColor);
 
-	ToHSL(GetRValue(crColor), GetGValue(crColor), GetBValue(crColor), H, S, L);
-
-	return L;
+	double maxval = max(red, max(green, blue));
+	return (maxval / 510.0);
 };
 
 inline double GetIntensity(const COLORREF16 & crColor)
 {
-	double	H, S, L;
-
-	ToHSL(crColor.red/256.0, crColor.green/256.0, crColor.blue/256.0, H, S, L);
-
-	return L;
+	double maxval = max(crColor.red, max(crColor.green, crColor.blue));
+	return ( (maxval/ 256.0) / 510.0);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1251,6 +1249,8 @@ protected :
 		TTypeOutput *				pCurrentValue;
 		std::vector<TType>			vValues;
 		std::vector<TType>			vAuxValues;
+		std::vector<TType>			vWorkingBuffer1;
+		std::vector<TType>			vWorkingBuffer2;
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -1259,6 +1259,8 @@ protected :
 
 		vValues.reserve(vScanLines.size());
 		vAuxValues.reserve(vScanLines.size());
+		vWorkingBuffer1.reserve(vScanLines.size());
+		vWorkingBuffer2.reserve(vScanLines.size());
 
 		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
 		{
@@ -1314,7 +1316,7 @@ protected :
 			else if (m_Method == MBP_SIGMACLIP)
 				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations);
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
-				*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations);
+				*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
 			else if (m_Method == MBP_AUTOADAPTIVE)
 				*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations);
 
@@ -2595,6 +2597,8 @@ protected :
 		std::vector<TType>			vAuxRedValues;
 		std::vector<TType>			vAuxGreenValues;
 		std::vector<TType>			vAuxBlueValues;
+		std::vector<TType>			vWorkingBuffer1;
+		std::vector<TType>			vWorkingBuffer2;
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -2610,6 +2614,8 @@ protected :
 		vAuxRedValues.reserve(vScanLines.size());
 		vAuxGreenValues.reserve(vScanLines.size());
 		vAuxBlueValues.reserve(vScanLines.size());
+		vWorkingBuffer1.reserve(vScanLines.size());
+		vWorkingBuffer2.reserve(vScanLines.size());
 
 		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
 		{
@@ -2722,9 +2728,9 @@ protected :
 			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
 			{
-				*pRedCurrentValue	= MedianKappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations);
-				*pGreenCurrentValue = MedianKappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations);
-				*pBlueCurrentValue	= MedianKappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations);
+				*pRedCurrentValue	= MedianKappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
+				*pGreenCurrentValue = MedianKappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
+				*pBlueCurrentValue	= MedianKappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
 			}
 			else if (m_Method == MBP_AUTOADAPTIVE)
 			{
