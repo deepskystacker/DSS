@@ -1,4 +1,4 @@
-Welcome to DeepSkyStacker 4.2.0 Beta 5
+Welcome to DeepSkyStacker 4.2.0
 
 The main change in this release is to use LibRaw version 19.2 instead of dcraw to capture images from RAW image files.
 This should provide support for many recent cameras which wasn't possible using dcraw.
@@ -10,13 +10,9 @@ The resulting images should be very much the same (if not 100% identical) to the
 
 There is one thing that is incompatible with DeepSkyStacker 4.1.1:
 
-The "Use Auto White Balance" white balance button is disabled for this release.
+The "Use Auto White Balance" white balance button has been disabled.
 
-You can either accept the default which is "Daylight White Balance", or select "Use Camera White Balance".
-If you select the latter, and camera was set to "Auto White Balance" when the images were taken, then the
-camera calculated "Auto White Balance" co-efficients will be used.
-
-We may provide an update to support doing our own "Auto White Balance" in the future.
+You can either accept the default which is "Daylight White Balance", or select "Use Camera White Balance".   If you select the latter, and camera was set to "Auto White Balance" when the images were taken, then the camera calculated "Auto White Balance" co-efficients will be used.   We don't recommend the use of Auto WB as each frame gets its own unique white balance which can prevent calibration frames such as flats and darks from working correctly.
 
 We've also fixed a number of problems and made some other enhancements since 4.1.1
 
