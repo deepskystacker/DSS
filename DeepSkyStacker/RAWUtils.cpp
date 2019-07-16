@@ -774,7 +774,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			//
 			BOOL littleEndian = htons(0x55aa) != 0x55aa;
 
-			unsigned short *raw_image = NULL;
+			unsigned short *raw_image = nullptr;
 			void * buffer = NULL;		// Used for debugging only (memory window)
 
 			if (!m_bColorRAW)
@@ -793,9 +793,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				// 2) will be copied from the image portion of Rawdata.raw_image
 				//    excluding the frame (Top margin, Left Margin).
 				//
-				unsigned short *raw_image =
+				raw_image =
 					(unsigned short *)calloc(S.height*S.width, sizeof(unsigned short));
-				ZASSERT(NULL != raw_image);
+				ZASSERT(nullptr != raw_image);
 
 				int fuji_width = rawProcessor.is_fuji_rotated();
 				unsigned fuji_layout = rawProcessor.get_fuji_layout();
@@ -1113,9 +1113,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 #undef RAW
 			//
 			// If we allocated memory for an image, release it.
-			if (raw_image)
+			if (nullptr != raw_image)
 			{
-				free(raw_image); raw_image = NULL;
+				free(raw_image); raw_image = nullptr;
 			}
 
 		} while (0);
