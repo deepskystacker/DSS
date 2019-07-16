@@ -283,6 +283,15 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	HANDLE			hMutex;
 	bool			bFirstInstance = true;
 
+#ifndef NDEBUG
+	// Ask the CRT to generate a memory leak report after we exit the application ...
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+	_CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
+	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
+	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
+#endif
+
 	ZTRACE_RUNTIME("Checking Mutex");
 
 	hMutex = CreateMutex(NULL, TRUE, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));

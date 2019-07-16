@@ -35,6 +35,11 @@
 
 #include <atlbase.h>
 
+#include <stdlib.h>
+#ifndef NDEBUG
+#include <crtdbg.h>
+#endif
+
 #include <windows.h>
 
 #include <iostream>
