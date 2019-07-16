@@ -1003,39 +1003,49 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration)
+double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
 {
 	double			Result = 0;
 	BOOL			bEnd = FALSE;
-	std::vector<T>	vAuxValues = vValues;
+	
+	// Set up the working buffers - we can flip between them to prevent
+	// needless copying of vectors.
+	vWorkingBuffer1.clear();
+	vWorkingBuffer2.clear();
 
-	std::vector<T>	vTempValues;
-	vTempValues.reserve(vAuxValues.size());
+	std::vector<T>& vecCurrentPass = vWorkingBuffer1;
+	std::vector<T>& vecTempBuffer = vWorkingBuffer2;
 
+	// Initial copy into the working set to start us off.
+	vWorkingBuffer1 = vValues;
 	for (LONG i = 0;i<lIteration && !bEnd;i++)
 	{
 		double			fAverage;
 		double			fSigma;
 		T				fMedian;
 
-		fMedian = Median(vAuxValues);
-		fSigma = Sigma2(vAuxValues, fAverage);
+		fMedian = Median(vecCurrentPass);
+		fSigma = Sigma2(vecCurrentPass, fAverage);
 
-		for (LONG j = 0;j<vAuxValues.size();j++)
+		// Go through and populate the temp buffer according to the values.
+		vecTempBuffer.clear();
+		for (LONG j = 0;j< vecCurrentPass.size();j++)
 		{
-			if (((double)vAuxValues[j]>= (fAverage - fKappa*fSigma)) &&
-				((double)vAuxValues[j]<= (fAverage + fKappa*fSigma)))
-				vTempValues.push_back(vAuxValues[j]);
+			if (((double)vecCurrentPass[j]>= (fAverage - fKappa*fSigma)) &&
+				((double)vecCurrentPass[j]<= (fAverage + fKappa*fSigma)))
+				vecTempBuffer.push_back(vecCurrentPass[j]);
 			else
-				vTempValues.push_back(fMedian);
-		};
+				vecTempBuffer.push_back(fMedian);
+		}
 
-		bEnd = !vTempValues.size();
-		vAuxValues = vTempValues;
-		vTempValues.clear();
-	};
+		// Swap temp and working buffers for next pass.
+		std::vector<T>& vecTmp = vecCurrentPass;
+		vecCurrentPass = vecTempBuffer;
+		vecTempBuffer = vecTmp;
+	}
 
-	Result = Average(vAuxValues);
+	// The final pass will now be in the current buffer (because of the swap at the end of the loop).
+	Result = Average(vecCurrentPass);
 
 	return Result;
 };
