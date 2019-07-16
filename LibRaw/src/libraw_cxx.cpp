@@ -193,7 +193,7 @@ unsigned LibRaw::parse_custom_cameras(unsigned limit, libraw_custom_camera_t tab
       break;
     if (strlen(list[i]) < 10)
       continue;
-    char *string = (char *)malloc(strlen(list[i]) + 1);
+    char *string = (char *)Malloc(strlen(list[i]) + 1);
     strcpy(string, list[i]);
     char *start = string;
     memset(&table[index], 0, sizeof(table[0]));
@@ -257,7 +257,7 @@ unsigned LibRaw::parse_custom_cameras(unsigned limit, libraw_custom_camera_t tab
       }
       start = end;
     }
-    free(string);
+    Free(string);
     if (table[index].t_make[0])
       index++;
   }
@@ -385,7 +385,7 @@ static CameraMetaDataLR *make_camera_metadata()
     {
       len += strlen(_rawspeed_data_xml[i]);
     }
-  char *rawspeed_xml = (char *)calloc(len + 1, sizeof(_rawspeed_data_xml[0][0]));
+  char *rawspeed_xml = (char *)Calloc(len + 1, sizeof(_rawspeed_data_xml[0][0]));
   if (!rawspeed_xml)
     return NULL;
   int offt = 0;
@@ -408,7 +408,7 @@ static CameraMetaDataLR *make_camera_metadata()
   {
     // Mask all exceptions
   }
-  free(rawspeed_xml);
+  Free(rawspeed_xml);
   return ret;
 }
 
@@ -533,29 +533,29 @@ LibRaw::~LibRaw()
 #endif
 }
 
-void *LibRaw::malloc(size_t t)
+void *LibRaw::Malloc(size_t t)
 {
-  void *p = memmgr.malloc(t);
+  void *p = memmgr.Malloc(t);
   if (!p)
     throw LIBRAW_EXCEPTION_ALLOC;
   return p;
 }
-void *LibRaw::realloc(void *q, size_t t)
+void *LibRaw::Realloc(void *q, size_t t)
 {
-  void *p = memmgr.realloc(q, t);
+  void *p = memmgr.Realloc(q, t);
   if (!p)
     throw LIBRAW_EXCEPTION_ALLOC;
   return p;
 }
 
-void *LibRaw::calloc(size_t n, size_t t)
+void *LibRaw::Calloc(size_t n, size_t t)
 {
-  void *p = memmgr.calloc(n, t);
+  void *p = memmgr.Calloc(n, t);
   if (!p)
     throw LIBRAW_EXCEPTION_ALLOC;
   return p;
 }
-void LibRaw::free(void *p) { memmgr.free(p); }
+void LibRaw::Free(void *p) { memmgr.Free(p); }
 
 void LibRaw::recycle_datastream()
 {
@@ -577,7 +577,7 @@ void LibRaw::recycle()
   {                                                                                                                    \
     if (a)                                                                                                             \
     {                                                                                                                  \
-      free(a);                                                                                                         \
+      Free(a);                                                                                                         \
       a = NULL;                                                                                                        \
     }                                                                                                                  \
   } while (0)
@@ -1490,7 +1490,7 @@ void LibRaw::deflate_dng_load_raw()
 
   if (ifd->sample_format == 3)
   { // Floating point data
-    float_raw_image = (float *)calloc(tileCnt * libraw_internal_data.unpacker_data.tile_length *
+    float_raw_image = (float *)Calloc(tileCnt * libraw_internal_data.unpacker_data.tile_length *
                                           libraw_internal_data.unpacker_data.tile_width * ifd->samples,
                                       sizeof(float));
     // imgdata.color.maximum = 65535;
@@ -1520,11 +1520,11 @@ void LibRaw::deflate_dng_load_raw()
     if (tileCnt < 1 || tileCnt > 1000000)
       throw LIBRAW_EXCEPTION_DECODE_RAW;
 
-    size_t *tOffsets = (size_t *)malloc(tileCnt * sizeof(size_t));
+    size_t *tOffsets = (size_t *)Malloc(tileCnt * sizeof(size_t));
     for (int t = 0; t < tileCnt; ++t)
       tOffsets[t] = get4();
 
-    size_t *tBytes = (size_t *)malloc(tileCnt * sizeof(size_t));
+    size_t *tBytes = (size_t *)Malloc(tileCnt * sizeof(size_t));
     unsigned long maxBytesInTile = 0;
     if (tileCnt == 1)
       tBytes[0] = maxBytesInTile = ifd->bytes;
@@ -1543,8 +1543,8 @@ void LibRaw::deflate_dng_load_raw()
     unsigned tileBytes = tilePixels * pixelSize;
     unsigned tileRowBytes = libraw_internal_data.unpacker_data.tile_width * pixelSize;
 
-    unsigned char *cBuffer = (unsigned char *)malloc(maxBytesInTile);
-    unsigned char *uBuffer = (unsigned char *)malloc(tileBytes + tileRowBytes); // extra row for decoding
+    unsigned char *cBuffer = (unsigned char *)Malloc(maxBytesInTile);
+    unsigned char *uBuffer = (unsigned char *)Malloc(tileBytes + tileRowBytes); // extra row for decoding
 
     for (size_t y = 0, t = 0; y < imgdata.sizes.raw_height; y += libraw_internal_data.unpacker_data.tile_length)
     {
@@ -1556,10 +1556,10 @@ void LibRaw::deflate_dng_load_raw()
         int err = uncompress(uBuffer + tileRowBytes, &dstLen, cBuffer, tBytes[t]);
         if (err != Z_OK)
         {
-          free(tOffsets);
-          free(tBytes);
-          free(cBuffer);
-          free(uBuffer);
+          Free(tOffsets);
+          Free(tBytes);
+          Free(cBuffer);
+          Free(uBuffer);
           throw LIBRAW_EXCEPTION_DECODE_RAW;
           return;
         }
@@ -1588,10 +1588,10 @@ void LibRaw::deflate_dng_load_raw()
         }
       }
     }
-    free(tOffsets);
-    free(tBytes);
-    free(cBuffer);
-    free(uBuffer);
+    Free(tOffsets);
+    Free(tBytes);
+    Free(cBuffer);
+    Free(uBuffer);
   }
   imgdata.color.fmaximum = max;
 
@@ -1660,7 +1660,7 @@ void LibRaw::convertFloatToInt(float dmin /* =4096.f */, float dmax /* =32767.f 
   else
     return;
 
-  ushort *raw_alloc = (ushort *)malloc(imgdata.sizes.raw_height * imgdata.sizes.raw_width *
+  ushort *raw_alloc = (ushort *)Malloc(imgdata.sizes.raw_height * imgdata.sizes.raw_width *
                                        libraw_internal_data.unpacker_data.tiff_samples * sizeof(ushort));
   float tmax = MAX(imgdata.color.maximum, 1);
   float datamax = imgdata.color.fmaximum;
@@ -1703,7 +1703,7 @@ void LibRaw::convertFloatToInt(float dmin /* =4096.f */, float dmax /* =32767.f 
     imgdata.rawdata.raw_alloc = imgdata.rawdata.color4_image = (ushort(*)[4])raw_alloc;
     imgdata.rawdata.sizes.raw_pitch = imgdata.sizes.raw_pitch = imgdata.sizes.raw_width * 8;
   }
-  free(data); // remove old allocation
+  Free(data); // remove old allocation
   imgdata.rawdata.float_image = 0;
   imgdata.rawdata.float3_image = 0;
   imgdata.rawdata.float4_image = 0;
@@ -1732,9 +1732,9 @@ void LibRaw::sony_arq_load_raw()
 
 void LibRaw::pentax_4shot_load_raw()
 {
-  ushort *plane = (ushort *)malloc(imgdata.sizes.raw_width * imgdata.sizes.raw_height * sizeof(ushort));
+  ushort *plane = (ushort *)Malloc(imgdata.sizes.raw_width * imgdata.sizes.raw_height * sizeof(ushort));
   int alloc_sz = imgdata.sizes.raw_width * (imgdata.sizes.raw_height + 16) * 4 * sizeof(ushort);
-  ushort(*result)[4] = (ushort(*)[4])malloc(alloc_sz);
+  ushort(*result)[4] = (ushort(*)[4])Malloc(alloc_sz);
   struct movement_t
   {
     int row, col;
@@ -1786,7 +1786,7 @@ void LibRaw::pentax_4shot_load_raw()
   imgdata.sizes.raw_pitch = imgdata.sizes.raw_width * 8;
   imgdata.idata.filters = 0;
   imgdata.rawdata.raw_alloc = imgdata.rawdata.color4_image = result;
-  free(plane);
+  Free(plane);
   imgdata.rawdata.raw_image = 0;
 }
 
@@ -1848,7 +1848,7 @@ void LibRaw::fuji_14bit_load_raw()
 {
   const unsigned linelen = S.raw_width * 7 / 4;
   const unsigned pitch = S.raw_pitch ? S.raw_pitch / 2 : S.raw_width;
-  unsigned char *buf = (unsigned char *)malloc(linelen);
+  unsigned char *buf = (unsigned char *)Malloc(linelen);
   merror(buf, "fuji_14bit_load_raw()");
 
   for (int row = 0; row < S.raw_height; row++)
@@ -1865,7 +1865,7 @@ void LibRaw::fuji_14bit_load_raw()
       for (int sp = 0, dp = 0; dp < pitch - 15 && sp < linelen - 27 && sp < bytesread - 27; sp += 28, dp += 16)
         unpack28bytesto16x16ns(buf + sp, dest + dp);
   }
-  free(buf);
+  Free(buf);
 }
 
 void LibRaw::nikon_load_striped_packed_raw()
@@ -2330,8 +2330,8 @@ int LibRaw::open_datastream(LibRaw_abstract_datastream *stream)
     if (C.profile_length)
     {
       if (C.profile)
-        free(C.profile);
-      C.profile = malloc(C.profile_length);
+        Free(C.profile);
+      C.profile = Malloc(C.profile_length);
       merror(C.profile, "LibRaw::open_file()");
       ID.input->seek(ID.profile_offset, SEEK_SET);
       ID.input->read(C.profile, C.profile_length, 1);
@@ -2456,7 +2456,7 @@ int LibRaw::try_rawspeed()
     //                printf("Using rawspeed\n");
     ID.input->seek(0, SEEK_SET);
     INT64 _rawspeed_buffer_sz = ID.input->size() + 32;
-    _rawspeed_buffer = malloc(_rawspeed_buffer_sz);
+    _rawspeed_buffer = Malloc(_rawspeed_buffer_sz);
     if (!_rawspeed_buffer)
       throw LIBRAW_EXCEPTION_ALLOC;
     ID.input->read(_rawspeed_buffer, _rawspeed_buffer_sz, 1);
@@ -2520,7 +2520,7 @@ int LibRaw::try_rawspeed()
       // C.maximum = r->whitePoint;
       fix_after_rawspeed(r->blackLevel);
     }
-    free(_rawspeed_buffer);
+    Free(_rawspeed_buffer);
     _rawspeed_buffer = 0;
     imgdata.process_warnings |= LIBRAW_WARN_RAWSPEED_PROCESSED;
   }
@@ -2529,7 +2529,7 @@ int LibRaw::try_rawspeed()
     imgdata.process_warnings |= LIBRAW_WARN_RAWSPEED_PROBLEM;
     if (_rawspeed_buffer)
     {
-      free(_rawspeed_buffer);
+      Free(_rawspeed_buffer);
       _rawspeed_buffer = 0;
     }
     const char *p = RDE.what();
@@ -2543,7 +2543,7 @@ int LibRaw::try_rawspeed()
     imgdata.process_warnings |= LIBRAW_WARN_RAWSPEED_PROBLEM;
     if (_rawspeed_buffer)
     {
-      free(_rawspeed_buffer);
+      Free(_rawspeed_buffer);
       _rawspeed_buffer = 0;
     }
     ret = LIBRAW_UNSPECIFIED_ERROR;
@@ -2635,9 +2635,9 @@ int LibRaw::try_dngsdk()
 
     int pixels = stage2->Bounds().H() * stage2->Bounds().W() * pplanes;
     if (ptype == ttByte)
-      imgdata.rawdata.raw_alloc = malloc(pixels * TagTypeSize(ttShort));
+      imgdata.rawdata.raw_alloc = Malloc(pixels * TagTypeSize(ttShort));
     else
-      imgdata.rawdata.raw_alloc = malloc(pixels * TagTypeSize(ptype));
+      imgdata.rawdata.raw_alloc = Malloc(pixels * TagTypeSize(ptype));
 
     if (ptype == ttShort && !is_curve_linear())
     {
@@ -2730,17 +2730,17 @@ int LibRaw::unpack(void)
     // already allocated ?
     if (imgdata.image)
     {
-      free(imgdata.image);
+      Free(imgdata.image);
       imgdata.image = 0;
     }
     if (imgdata.rawdata.raw_alloc)
     {
-      free(imgdata.rawdata.raw_alloc);
+      Free(imgdata.rawdata.raw_alloc);
       imgdata.rawdata.raw_alloc = 0;
     }
     if (libraw_internal_data.unpacker_data.meta_length)
     {
-      libraw_internal_data.internal_data.meta_data = (char *)malloc(libraw_internal_data.unpacker_data.meta_length);
+      libraw_internal_data.internal_data.meta_data = (char *)Malloc(libraw_internal_data.unpacker_data.meta_length);
       merror(libraw_internal_data.internal_data.meta_data, "LibRaw::unpack()");
     }
 
@@ -2847,7 +2847,7 @@ int LibRaw::unpack(void)
 			  if (INT64(rwidth) * INT64(rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]) >
 				  INT64(LIBRAW_MAX_ALLOC_MB) * INT64(1024 * 1024))
 				  throw LIBRAW_EXCEPTION_TOOBIG;
-			  imgdata.rawdata.raw_alloc = malloc(rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]));
+			  imgdata.rawdata.raw_alloc = Malloc(rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]));
 			  imgdata.rawdata.raw_image = (ushort *)imgdata.rawdata.raw_alloc;
 			  if (!S.raw_pitch)
 				  S.raw_pitch = S.raw_width * 2; // Bayer case, not set before
@@ -2859,7 +2859,7 @@ int LibRaw::unpack(void)
 				  throw LIBRAW_EXCEPTION_TOOBIG;
 			  S.raw_pitch = S.raw_width * 8;
 			  imgdata.rawdata.raw_alloc = 0;
-			  imgdata.image = (ushort(*)[4])calloc(
+			  imgdata.image = (ushort(*)[4])Calloc(
 				  unsigned(MAX(S.width, S.raw_width)) * unsigned(MAX(S.height, S.raw_height)+8), sizeof(*imgdata.image));
 		  }
 	  }
@@ -2869,7 +2869,7 @@ int LibRaw::unpack(void)
             LIBRAW_MAX_ALLOC_MB * INT64(1024 * 1024))
           throw LIBRAW_EXCEPTION_TOOBIG;
 
-        imgdata.rawdata.raw_alloc = malloc(rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]) * 3);
+        imgdata.rawdata.raw_alloc = Malloc(rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]) * 3);
         imgdata.rawdata.color3_image = (ushort(*)[3])imgdata.rawdata.raw_alloc;
         if (!S.raw_pitch)
           S.raw_pitch = S.raw_width * 6;
@@ -2879,7 +2879,7 @@ int LibRaw::unpack(void)
         if (INT64(rwidth) * INT64(rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]) >
             LIBRAW_MAX_ALLOC_MB * INT64(1024 * 1024))
           throw LIBRAW_EXCEPTION_TOOBIG;
-        imgdata.rawdata.raw_alloc = malloc(rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]));
+        imgdata.rawdata.raw_alloc = Malloc(rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]));
         imgdata.rawdata.raw_image = (ushort *)imgdata.rawdata.raw_alloc;
         if (!S.raw_pitch)
           S.raw_pitch = S.raw_width * 2; // Bayer case, not set before
@@ -2906,7 +2906,7 @@ int LibRaw::unpack(void)
           throw LIBRAW_EXCEPTION_TOOBIG;
 
         imgdata.rawdata.raw_alloc = 0;
-        imgdata.image = (ushort(*)[4])calloc(
+        imgdata.image = (ushort(*)[4])Calloc(
             unsigned(MAX(S.width, S.raw_width)) * unsigned(MAX(S.height, S.raw_height)+8), sizeof(*imgdata.image));
         if (!(decoder_info.decoder_flags & LIBRAW_DECODER_ADOBECOPYPIXEL))
         {
@@ -3003,19 +3003,19 @@ void LibRaw::unpacked_load_raw_fuji_f700s20()
     libraw_internal_data.internal_data.input->seek(-row_size, SEEK_CUR);
     base_offset = row_size; // in bytes
   }
-  unsigned char *buffer = (unsigned char *)malloc(row_size * 2);
+  unsigned char *buffer = (unsigned char *)Malloc(row_size * 2);
   for (int row = 0; row < imgdata.sizes.raw_height; row++)
   {
     read_shorts((ushort *)buffer, imgdata.sizes.raw_width * 2);
     memmove(&imgdata.rawdata.raw_image[row * imgdata.sizes.raw_pitch / 2], buffer + base_offset, row_size);
   }
-  free(buffer);
+  Free(buffer);
 }
 
 void LibRaw::nikon_load_sraw()
 {
   // We're already seeked to data!
-  unsigned char *rd = (unsigned char *)malloc(3 * (imgdata.sizes.raw_width + 2));
+  unsigned char *rd = (unsigned char *)Malloc(3 * (imgdata.sizes.raw_width + 2));
   if (!rd)
     throw LIBRAW_EXCEPTION_ALLOC;
   try
@@ -3043,10 +3043,10 @@ void LibRaw::nikon_load_sraw()
   }
   catch (...)
   {
-    free(rd);
+    Free(rd);
     throw;
   }
-  free(rd);
+  Free(rd);
   C.maximum = 0xfff; // 12 bit?
   if (imgdata.params.raw_processing_options & LIBRAW_PROCESSING_SRAW_NO_INTERPOLATE)
   {
@@ -3112,7 +3112,7 @@ void LibRaw::free_image(void)
 {
   if (imgdata.image)
   {
-    free(imgdata.image);
+    Free(imgdata.image);
     imgdata.image = 0;
     imgdata.progress_flags = LIBRAW_PROGRESS_START | LIBRAW_PROGRESS_OPEN | LIBRAW_PROGRESS_IDENTIFY |
                              LIBRAW_PROGRESS_SIZE_ADJUST | LIBRAW_PROGRESS_LOAD_RAW;
@@ -3180,14 +3180,14 @@ int LibRaw::raw2image(void)
       }
     }
 
-    // free and re-allocate image bitmap
+    // Free and re-allocate image bitmap
     if (imgdata.image)
     {
-      imgdata.image = (ushort(*)[4])realloc(imgdata.image, S.iheight * S.iwidth * sizeof(*imgdata.image));
+      imgdata.image = (ushort(*)[4])Realloc(imgdata.image, S.iheight * S.iwidth * sizeof(*imgdata.image));
       memset(imgdata.image, 0, S.iheight * S.iwidth * sizeof(*imgdata.image));
     }
     else
-      imgdata.image = (ushort(*)[4])calloc(S.iheight * S.iwidth, sizeof(*imgdata.image));
+      imgdata.image = (ushort(*)[4])Calloc(S.iheight * S.iwidth, sizeof(*imgdata.image));
 
     merror(imgdata.image, "raw2image()");
 
@@ -3291,12 +3291,12 @@ int LibRaw::raw2image(void)
 void LibRaw::phase_one_allocate_tempbuffer()
 {
   // Allocate temp raw_image buffer
-  imgdata.rawdata.raw_image = (ushort *)malloc(S.raw_pitch * S.raw_height);
+  imgdata.rawdata.raw_image = (ushort *)Malloc(S.raw_pitch * S.raw_height);
   merror(imgdata.rawdata.raw_image, "phase_one_prepare_to_correct()");
 }
 void LibRaw::phase_one_free_tempbuffer()
 {
-  free(imgdata.rawdata.raw_image);
+  Free(imgdata.rawdata.raw_image);
   imgdata.rawdata.raw_image = (ushort *)imgdata.rawdata.raw_alloc;
 }
 
@@ -3545,11 +3545,11 @@ int LibRaw::raw2image_ex(int do_subtract_black)
 
     if (imgdata.image)
     {
-      imgdata.image = (ushort(*)[4])realloc(imgdata.image, alloc_sz * sizeof(*imgdata.image));
+      imgdata.image = (ushort(*)[4])Realloc(imgdata.image, alloc_sz * sizeof(*imgdata.image));
       memset(imgdata.image, 0, alloc_sz * sizeof(*imgdata.image));
     }
     else
-      imgdata.image = (ushort(*)[4])calloc(alloc_sz, sizeof(*imgdata.image));
+      imgdata.image = (ushort(*)[4])Calloc(alloc_sz, sizeof(*imgdata.image));
     merror(imgdata.image, "raw2image_ex()");
 
     libraw_decoder_info_t decoder_info;
@@ -3948,7 +3948,7 @@ int LibRaw::dcraw_ppm_tiff_writer(const char *filename)
     if (!libraw_internal_data.output_data.histogram)
     {
       libraw_internal_data.output_data.histogram =
-          (int(*)[LIBRAW_HISTOGRAM_SIZE])malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
+          (int(*)[LIBRAW_HISTOGRAM_SIZE])Malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
       merror(libraw_internal_data.output_data.histogram, "LibRaw::dcraw_ppm_tiff_writer()");
     }
     libraw_internal_data.internal_data.output = f;
@@ -3994,7 +3994,7 @@ void LibRaw::kodak_thumb_loader()
     S.width += S.width & 1;
   }
 
-  imgdata.image = (ushort(*)[4])calloc(S.iheight * S.iwidth, sizeof(*imgdata.image));
+  imgdata.image = (ushort(*)[4])Calloc(S.iheight * S.iwidth, sizeof(*imgdata.image));
   merror(imgdata.image, "LibRaw::kodak_thumb_loader()");
 
   ID.input->seek(ID.toffset, SEEK_SET);
@@ -4005,7 +4005,7 @@ void LibRaw::kodak_thumb_loader()
   }
   catch (...)
   {
-    free(imgdata.image);
+    Free(imgdata.image);
     imgdata.image = s_image;
 
     T.twidth = 0;
@@ -4067,7 +4067,7 @@ void LibRaw::kodak_thumb_loader()
   ushort *img;
   int row, col;
 
-  int(*t_hist)[LIBRAW_HISTOGRAM_SIZE] = (int(*)[LIBRAW_HISTOGRAM_SIZE])calloc(sizeof(*t_hist), 4);
+  int(*t_hist)[LIBRAW_HISTOGRAM_SIZE] = (int(*)[LIBRAW_HISTOGRAM_SIZE])Calloc(sizeof(*t_hist), 4);
   merror(t_hist, "LibRaw::kodak_thumb_loader()");
 
   float out[3], out_cam[3][4] = {{2.81761312, -1.98369181, 0.166078627, 0},
@@ -4096,7 +4096,7 @@ void LibRaw::kodak_thumb_loader()
   libraw_internal_data.output_data.histogram = t_hist;
 
   // make curve output curve!
-  ushort(*t_curve) = (ushort *)calloc(sizeof(C.curve), 1);
+  ushort(*t_curve) = (ushort *)Calloc(sizeof(C.curve), 1);
   merror(t_curve, "LibRaw::kodak_thumb_loader()");
   memmove(t_curve, C.curve, sizeof(C.curve));
   memset(C.curve, 0, sizeof(C.curve));
@@ -4119,7 +4119,7 @@ void LibRaw::kodak_thumb_loader()
   }
 
   libraw_internal_data.output_data.histogram = save_hist;
-  free(t_hist);
+  Free(t_hist);
 
   // from write_ppm_tiff - copy pixels into bitmap
 
@@ -4133,8 +4133,8 @@ void LibRaw::kodak_thumb_loader()
     SWAP(S.height, S.width);
 
   if (T.thumb)
-    free(T.thumb);
-  T.thumb = (char *)calloc(S.width * S.height, P1.colors);
+    Free(T.thumb);
+  T.thumb = (char *)Calloc(S.width * S.height, P1.colors);
   merror(T.thumb, "LibRaw::kodak_thumb_loader()");
   T.tlength = S.width * S.height * P1.colors;
 
@@ -4154,10 +4154,10 @@ void LibRaw::kodak_thumb_loader()
   }
 
   memmove(C.curve, t_curve, sizeof(C.curve));
-  free(t_curve);
+  Free(t_curve);
 
   // restore variables
-  free(imgdata.image);
+  Free(imgdata.image);
   imgdata.image = s_image;
 
   if (imgdata.params.raw_processing_options & LIBRAW_PROCESSING_NO_ROTATE_FOR_KODAK_THUMBNAILS)
@@ -4281,8 +4281,8 @@ int LibRaw::unpack_thumb(void)
       if (write_thumb == &LibRaw::jpeg_thumb)
       {
         if (T.thumb)
-          free(T.thumb);
-        T.thumb = (char *)malloc(T.tlength);
+          Free(T.thumb);
+        T.thumb = (char *)Malloc(T.tlength);
         merror(T.thumb, "jpeg_thumb()");
         ID.input->read(T.thumb, 1, T.tlength);
         unsigned char *tthumb = (unsigned char *)T.thumb;
@@ -4352,8 +4352,8 @@ int LibRaw::unpack_thumb(void)
             }
             T.tlength = total_size;
             if (T.thumb)
-              free(T.thumb);
-            T.thumb = (char *)malloc(T.tlength);
+              Free(T.thumb);
+            T.thumb = (char *)Malloc(T.tlength);
             merror(T.thumb, "ppm_thumb()");
 
             char *dest = T.thumb;
@@ -4382,9 +4382,9 @@ int LibRaw::unpack_thumb(void)
         if (!T.tlength)
           T.tlength = t_length;
         if (T.thumb)
-          free(T.thumb);
+          Free(T.thumb);
 
-        T.thumb = (char *)malloc(T.tlength);
+        T.thumb = (char *)Malloc(T.tlength);
         if (!T.tcolors)
           T.tcolors = t_colors;
         merror(T.thumb, "ppm_thumb()");
@@ -4404,13 +4404,13 @@ int LibRaw::unpack_thumb(void)
         int i_length = T.twidth * T.theight * t_colors * 2;
         if (!T.tlength)
           T.tlength = o_length;
-        ushort *t_thumb = (ushort *)calloc(i_length, 1);
+        ushort *t_thumb = (ushort *)Calloc(i_length, 1);
         ID.input->read(t_thumb, 1, i_length);
         if ((libraw_internal_data.unpacker_data.order == 0x4949) == (ntohs(0x1234) == 0x1234))
           swab((char *)t_thumb, (char *)t_thumb, i_length);
 
         if (T.thumb)
-          free(T.thumb);
+          Free(T.thumb);
         if ((imgdata.params.raw_processing_options & LIBRAW_PROCESSING_USE_PPM16_THUMBS))
         {
           T.thumb = (char *)t_thumb;
@@ -4418,11 +4418,11 @@ int LibRaw::unpack_thumb(void)
         }
         else
         {
-          T.thumb = (char *)malloc(o_length);
+          T.thumb = (char *)Malloc(o_length);
           merror(T.thumb, "ppm_thumb()");
           for (int i = 0; i < o_length; i++)
             T.thumb[i] = t_thumb[i] >> 8;
-          free(t_thumb);
+          Free(t_thumb);
           T.tformat = LIBRAW_THUMBNAIL_BITMAP;
         }
         SET_PROC_FLAG(LIBRAW_PROGRESS_THUMB_LOAD);
@@ -4616,7 +4616,7 @@ void LibRaw::exp_bef(float shift, float smooth)
   if (smooth > 1.0)
     smooth = 1.0;
 
-  unsigned short *lut = (ushort *)malloc((TBLN + 1) * sizeof(unsigned short));
+  unsigned short *lut = (ushort *)Malloc((TBLN + 1) * sizeof(unsigned short));
 
   if (shift <= 1.0)
   {
@@ -4660,7 +4660,7 @@ void LibRaw::exp_bef(float shift, float smooth)
     C.data_maximum = lut[C.data_maximum];
   if (C.maximum <= TBLN)
     C.maximum = lut[C.maximum];
-  free(lut);
+  Free(lut);
 }
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -5012,7 +5012,7 @@ int LibRaw::dcraw_process(void)
     if (!libraw_internal_data.output_data.histogram)
     {
       libraw_internal_data.output_data.histogram =
-          (int(*)[LIBRAW_HISTOGRAM_SIZE])malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
+          (int(*)[LIBRAW_HISTOGRAM_SIZE])Malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
       merror(libraw_internal_data.output_data.histogram, "LibRaw::dcraw_process()");
     }
 #ifndef NO_LCMS
@@ -6397,7 +6397,7 @@ void LibRaw::x3f_thumb_loader()
     imgdata.thumbnail.tcolors = 3;
     if (imgdata.thumbnail.tformat == LIBRAW_THUMBNAIL_JPEG)
     {
-      imgdata.thumbnail.thumb = (char *)malloc(ID->data_size);
+      imgdata.thumbnail.thumb = (char *)Malloc(ID->data_size);
       merror(imgdata.thumbnail.thumb, "LibRaw::x3f_thumb_loader()");
       memmove(imgdata.thumbnail.thumb, ID->data, ID->data_size);
       imgdata.thumbnail.tlength = ID->data_size;
@@ -6405,7 +6405,7 @@ void LibRaw::x3f_thumb_loader()
     else if (imgdata.thumbnail.tformat == LIBRAW_THUMBNAIL_BITMAP)
     {
       imgdata.thumbnail.tlength = ID->columns * ID->rows * 3;
-      imgdata.thumbnail.thumb = (char *)malloc(ID->columns * ID->rows * 3);
+      imgdata.thumbnail.thumb = (char *)Malloc(ID->columns * ID->rows * 3);
       merror(imgdata.thumbnail.thumb, "LibRaw::x3f_thumb_loader()");
       char *src0 = (char *)ID->data;
       for (int row = 0; row < ID->rows; row++)
@@ -6634,7 +6634,7 @@ void LibRaw::x3f_load_raw()
 
     size_t datasize = S.raw_height * S.raw_width * 3 * sizeof(unsigned short);
     S.raw_pitch = S.raw_width * 3 * sizeof(unsigned short);
-    if (!(imgdata.rawdata.raw_alloc = malloc(datasize)))
+    if (!(imgdata.rawdata.raw_alloc = Malloc(datasize)))
       throw LIBRAW_EXCEPTION_ALLOC;
 
     imgdata.rawdata.color3_image = (ushort(*)[3])imgdata.rawdata.raw_alloc;

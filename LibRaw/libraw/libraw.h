@@ -273,10 +273,10 @@ protected:
   }
 
   void adjust_bl();
-  void *malloc(size_t t);
-  void *calloc(size_t n, size_t t);
-  void *realloc(void *p, size_t s);
-  void free(void *p);
+  void *Malloc(size_t t);
+  void *Calloc(size_t n, size_t t);
+  void *Realloc(void *p, size_t s);
+  void Free(void *p);
   void merror(void *ptr, const char *where);
   void derror();
 
