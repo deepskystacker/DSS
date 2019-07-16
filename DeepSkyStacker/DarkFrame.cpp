@@ -1003,7 +1003,6 @@ public :
 
 IMAGEREGION	GetPixelRegion(LONG lX, LONG lY, LONG lWidth, LONG lHeight)
 {
-	ZFUNCTRACE_RUNTIME();
 	IMAGEREGION				Result = IR_NONE;
 	LONG					lPosition;
 
