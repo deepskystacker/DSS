@@ -249,20 +249,24 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
     }
 };
 
-inline double GetIntensity(const COLORREF crColor)
+inline double GetLuminance(const COLORREF crColor)
 {
 	const unsigned char red = GetRValue(crColor);
 	const unsigned char green = GetGValue(crColor);
 	const unsigned char blue = GetBValue(crColor);
 
-	double maxval = max(red, max(green, blue));
-	return (maxval / 510.0);
+	const double minval = min(red, min(green, blue));
+	const double maxval = max(red, max(green, blue));
+	const double msum = maxval + minval;
+	return (msum / 510.0);
 };
 
-inline double GetIntensity(const COLORREF16 & crColor)
+inline double GetLuminance(const COLORREF16 & crColor)
 {
-	double maxval = max(crColor.red, max(crColor.green, crColor.blue));
-	return ( (maxval/ 256.0) / 510.0);
+	const double minval = min(crColor.red, min(crColor.green, crColor.blue));
+	const double maxval = max(crColor.red, max(crColor.green, crColor.blue));
+	const double msum = maxval + minval;
+	return ((msum / 256.0) / 510.0);
 };
 
 /* ------------------------------------------------------------------- */
