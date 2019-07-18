@@ -41,7 +41,7 @@ public:
     cleanup();
     ::free(mems);
   }
-  void *Malloc(size_t sz)
+  void *malloc(size_t sz)
   {
 #ifdef LIBRAW_USE_CALLOC_INSTEAD_OF_MALLOC
     void *ptr = ::calloc(sz + extra_bytes,1);
@@ -51,20 +51,20 @@ public:
     mem_ptr(ptr);
     return ptr;
   }
-  void *Calloc(size_t n, size_t sz)
+  void *calloc(size_t n, size_t sz)
   {
     void *ptr = ::calloc(n + (extra_bytes + sz - 1) / (sz ? sz : 1), sz);
     mem_ptr(ptr);
     return ptr;
   }
-  void *Realloc(void *ptr, size_t newsz)
+  void *realloc(void *ptr, size_t newsz)
   {
     void *ret = ::realloc(ptr, newsz + extra_bytes);
     forget_ptr(ptr);
     mem_ptr(ret);
     return ret;
   }
-  void Free(void *ptr)
+  void free(void *ptr)
   {
     forget_ptr(ptr);
     ::free(ptr);

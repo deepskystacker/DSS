@@ -159,7 +159,7 @@ void CLASS subtract(const char *fname)
     fclose(fp);
     return;
   }
-  pixel = (ushort *)Calloc(width, sizeof *pixel);
+  pixel = (ushort *)calloc(width, sizeof *pixel);
   merror(pixel, "subtract()");
   for (row = 0; row < height; row++)
   {
@@ -167,7 +167,7 @@ void CLASS subtract(const char *fname)
     for (col = 0; col < width; col++)
       BAYER(row, col) = MAX(BAYER(row, col) - ntohs(pixel[col]), 0);
   }
-  Free(pixel);
+  free(pixel);
   fclose(fp);
   memset(cblack, 0, sizeof cblack);
   black = 0;
@@ -189,12 +189,12 @@ void CLASS apply_profile(const char *input, const char *output)
   else if (profile_length)
   {
 #ifndef LIBRAW_LIBRARY_BUILD
-    prof = (char *)Malloc(profile_length);
+    prof = (char *)malloc(profile_length);
     merror(prof, "apply_profile()");
     fseek(ifp, profile_offset, SEEK_SET);
     fread(prof, 1, profile_length, ifp);
     hInProfile = cmsOpenProfileFromMem(prof, profile_length);
-    Free(prof);
+    free(prof);
 #else
     hInProfile = cmsOpenProfileFromMem(imgdata.color.profile, profile_length);
 #endif
@@ -221,13 +221,13 @@ void CLASS apply_profile(const char *input, const char *output)
   {
     fread(&size, 4, 1, fp);
     fseek(fp, 0, SEEK_SET);
-    oprof = (unsigned *)Malloc(size = ntohl(size));
+    oprof = (unsigned *)malloc(size = ntohl(size));
     merror(oprof, "apply_profile()");
     fread(oprof, 1, size, fp);
     fclose(fp);
     if (!(hOutProfile = cmsOpenProfileFromMem(oprof, size)))
     {
-      Free(oprof);
+      free(oprof);
       oprof = 0;
     }
   }

@@ -336,7 +336,7 @@ void CLASS cubic_spline(const int *x_, const int *y_, const int len)
   float **A, *b, *c, *d, *x, *y;
   int i, j;
 
-  A = (float **)Calloc(((2 * len + 4) * sizeof **A + sizeof *A), 2 * len);
+  A = (float **)calloc(((2 * len + 4) * sizeof **A + sizeof *A), 2 * len);
   if (!A)
     return;
   A[0] = (float *)(A + 2 * len);
@@ -391,7 +391,7 @@ void CLASS cubic_spline(const int *x_, const int *y_, const int len)
     }
     curve[i] = y_out < 0.0 ? 0 : (y_out >= 1.0 ? 65535 : (ushort)(y_out * 65535.0 + 0.5));
   }
-  Free(A);
+  free(A);
 }
 
 void CLASS canon_600_fixed_wb(int temp)
@@ -686,7 +686,7 @@ ushort *CLASS make_decoder_ref(const uchar **source)
   count = (*source += 16) - 17;
   for (max = 16; max && !count[max]; max--)
     ;
-  huff = (ushort *)Calloc(1 + (1 << max), sizeof *huff);
+  huff = (ushort *)calloc(1 + (1 << max), sizeof *huff);
   merror(huff, "make_decoder()");
   huff[0] = max;
   for (h = len = 1; len <= max; len++)
@@ -845,11 +845,11 @@ void CLASS canon_load_raw()
   }
   catch (...)
   {
-    FORC(2) Free(huff[c]);
+    FORC(2) free(huff[c]);
     throw;
   }
 #endif
-  FORC(2) Free(huff[c]);
+  FORC(2) free(huff[c]);
 }
 
 int CLASS ljpeg_start(struct jhead *jh, int info_only)
@@ -919,7 +919,7 @@ int CLASS ljpeg_start(struct jhead *jh, int info_only)
     FORC(4) jh->huff[2 + c] = jh->huff[1];
     FORC(jh->sraw) jh->huff[1 + c] = jh->huff[0];
   }
-  jh->row = (ushort *)Calloc(jh->wide * jh->clrs, 4);
+  jh->row = (ushort *)calloc(jh->wide * jh->clrs, 4);
   merror(jh->row, "ljpeg_start()");
   return zero_after_ff = 1;
 }
@@ -927,8 +927,8 @@ int CLASS ljpeg_start(struct jhead *jh, int info_only)
 void CLASS ljpeg_end(struct jhead *jh)
 {
   int c;
-  FORC4 if (jh->free[c]) Free(jh->free[c]);
-  Free(jh->row);
+  FORC4 if (jh->free[c]) free(jh->free[c]);
+  free(jh->row);
 }
 
 int CLASS ljpeg_diff(ushort *huff)
@@ -1411,7 +1411,7 @@ void CLASS packed_dng_load_raw()
   ushort *pixel, *rp;
   int row, col;
 
-  pixel = (ushort *)Calloc(raw_width, tiff_samples * sizeof *pixel);
+  pixel = (ushort *)calloc(raw_width, tiff_samples * sizeof *pixel);
   merror(pixel, "packed_dng_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   try
@@ -1437,11 +1437,11 @@ void CLASS packed_dng_load_raw()
   }
   catch (...)
   {
-    Free(pixel);
+    free(pixel);
     throw;
   }
 #endif
-  Free(pixel);
+  free(pixel);
 }
 
 void CLASS pentax_load_raw()
@@ -1495,7 +1495,7 @@ void CLASS nikon_coolscan_load_raw()
   else
     gamma_curve(1.0 / imgdata.params.coolscan_nef_gamma, 0., 1, 65535);
   fseek(ifp, data_offset, SEEK_SET);
-  unsigned char *buf = (unsigned char *)Malloc(bufsize);
+  unsigned char *buf = (unsigned char *)malloc(bufsize);
   unsigned short *ubuf = (unsigned short *)buf;
   for (int row = 0; row < raw_height; row++)
   {
@@ -1518,7 +1518,7 @@ void CLASS nikon_coolscan_load_raw()
         ip[col][3] = 0;
       }
   }
-  Free(buf);
+  free(buf);
 }
 #endif
 
@@ -1580,7 +1580,7 @@ void CLASS nikon_load_raw()
 #endif
       if (split && row == split)
       {
-        Free(huff);
+        free(huff);
         huff = make_decoder(nikon_tree[tree + 1]);
         max += (min = 16) << 1;
       }
@@ -1605,11 +1605,11 @@ void CLASS nikon_load_raw()
   }
   catch (...)
   {
-    Free(huff);
+    free(huff);
     throw;
   }
 #endif
-  Free(huff);
+  free(huff);
 }
 
 void CLASS nikon_yuv_load_raw()
@@ -1721,12 +1721,12 @@ void CLASS ppm_thumb()
 {
   char *thumb;
   thumb_length = thumb_width * thumb_height * 3;
-  thumb = (char *)Malloc(thumb_length);
+  thumb = (char *)malloc(thumb_length);
   merror(thumb, "ppm_thumb()");
   fprintf(ofp, "P6\n%d %d\n255\n", thumb_width, thumb_height);
   fread(thumb, 1, thumb_length, ifp);
   fwrite(thumb, 1, thumb_length, ofp);
-  Free(thumb);
+  free(thumb);
 }
 
 void CLASS ppm16_thumb()
@@ -1734,14 +1734,14 @@ void CLASS ppm16_thumb()
   int i;
   char *thumb;
   thumb_length = thumb_width * thumb_height * 3;
-  thumb = (char *)Calloc(thumb_length, 2);
+  thumb = (char *)calloc(thumb_length, 2);
   merror(thumb, "ppm16_thumb()");
   read_shorts((ushort *)thumb, thumb_length);
   for (i = 0; i < thumb_length; i++)
     thumb[i] = ((ushort *)thumb)[i] >> 8;
   fprintf(ofp, "P6\n%d %d\n255\n", thumb_width, thumb_height);
   fwrite(thumb, 1, thumb_length, ofp);
-  Free(thumb);
+  free(thumb);
 }
 
 void CLASS layer_thumb()
@@ -1751,13 +1751,13 @@ void CLASS layer_thumb()
 
   colors = thumb_misc >> 5 & 7;
   thumb_length = thumb_width * thumb_height;
-  thumb = (char *)Calloc(colors, thumb_length);
+  thumb = (char *)calloc(colors, thumb_length);
   merror(thumb, "layer_thumb()");
   fprintf(ofp, "P%d\n%d %d\n255\n", 5 + (colors >> 1), thumb_width, thumb_height);
   fread(thumb, thumb_length, colors, ifp);
   for (i = 0; i < thumb_length; i++)
     FORCC putc(thumb[i + thumb_length * (map[thumb_misc >> 8][c] - '0')], ofp);
-  Free(thumb);
+  free(thumb);
 }
 
 void CLASS rollei_thumb()
@@ -1766,7 +1766,7 @@ void CLASS rollei_thumb()
   ushort *thumb;
 
   thumb_length = thumb_width * thumb_height;
-  thumb = (ushort *)Calloc(thumb_length, 2);
+  thumb = (ushort *)calloc(thumb_length, 2);
   merror(thumb, "rollei_thumb()");
   fprintf(ofp, "P6\n%d %d\n255\n", thumb_width, thumb_height);
   read_shorts(thumb, thumb_length);
@@ -1776,7 +1776,7 @@ void CLASS rollei_thumb()
     putc(thumb[i] >> 5 << 2, ofp);
     putc(thumb[i] >> 11 << 3, ofp);
   }
-  Free(thumb);
+  free(thumb);
 }
 
 void CLASS rollei_load_raw()
@@ -1828,7 +1828,7 @@ void CLASS phase_one_flat_field(int is_float, int nc)
     return;
   wide = head[2] / head[4] + (head[2] % head[4] != 0);
   high = head[3] / head[5] + (head[3] % head[5] != 0);
-  mrow = (float *)Calloc(nc * wide, sizeof *mrow);
+  mrow = (float *)calloc(nc * wide, sizeof *mrow);
   merror(mrow, "phase_one_flat_field()");
   for (y = 0; y < high; y++)
   {
@@ -1874,7 +1874,7 @@ void CLASS phase_one_flat_field(int is_float, int nc)
           mrow[c * wide + x] += mrow[(c + 1) * wide + x];
     }
   }
-  Free(mrow);
+  free(mrow);
 }
 
 int CLASS phase_one_correct()
@@ -2135,7 +2135,7 @@ int CLASS phase_one_correct()
       fseek(ifp, off_412, SEEK_SET);
       for (i = 0; i < 9; i++)
         head[i] = get4() & 0x7fff;
-      yval[0] = (float *)Calloc(head[1] * head[3] + head[2] * head[4], 6);
+      yval[0] = (float *)calloc(head[1] * head[3] + head[2] * head[4], 6);
       merror(yval[0], "phase_one_correct()");
       yval[1] = (float *)(yval[0] + head[1] * head[3]);
       xval[0] = (ushort *)(yval[1] + head[2] * head[4]);
@@ -2169,14 +2169,14 @@ int CLASS phase_one_correct()
           RAW(row, col) = LIM(i, 0, 65535);
         }
       }
-      Free(yval[0]);
+      free(yval[0]);
     }
 #ifdef LIBRAW_LIBRARY_BUILD
   }
   catch (...)
   {
     if (yval[0])
-      Free(yval[0]);
+      free(yval[0]);
     return LIBRAW_CANCELLED_BY_CALLBACK;
   }
 #endif
@@ -2195,9 +2195,9 @@ void CLASS phase_one_load_raw()
 #ifdef LIBRAW_LIBRARY_BUILD
   if (ph1.black_col || ph1.black_row)
   {
-    imgdata.rawdata.ph1_cblack = (short(*)[2])Calloc(raw_height * 2, sizeof(ushort));
+    imgdata.rawdata.ph1_cblack = (short(*)[2])calloc(raw_height * 2, sizeof(ushort));
     merror(imgdata.rawdata.ph1_cblack, "phase_one_load_raw()");
-    imgdata.rawdata.ph1_rblack = (short(*)[2])Calloc(raw_width * 2, sizeof(ushort));
+    imgdata.rawdata.ph1_rblack = (short(*)[2])calloc(raw_width * 2, sizeof(ushort));
     merror(imgdata.rawdata.ph1_rblack, "phase_one_load_raw()");
     if (ph1.black_col)
     {
@@ -2270,7 +2270,7 @@ void CLASS phase_one_load_raw_c()
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
 #endif
 
-  pixel = (ushort *)Calloc(raw_width * 3 + raw_height * 4, 2);
+  pixel = (ushort *)calloc(raw_width * 3 + raw_height * 4, 2);
   merror(pixel, "phase_one_load_raw_c()");
   offset = (int *)(pixel + raw_width);
   fseek(ifp, strip_offset, SEEK_SET);
@@ -2289,10 +2289,10 @@ void CLASS phase_one_load_raw_c()
   // Copy data to internal copy (ever if not read)
   if (ph1.black_col || ph1.black_row)
   {
-    imgdata.rawdata.ph1_cblack = (short(*)[2])Calloc(raw_height * 2, sizeof(ushort));
+    imgdata.rawdata.ph1_cblack = (short(*)[2])calloc(raw_height * 2, sizeof(ushort));
     merror(imgdata.rawdata.ph1_cblack, "phase_one_load_raw_c()");
     memmove(imgdata.rawdata.ph1_cblack, (ushort *)c_black[0], raw_height * 2 * sizeof(ushort));
-    imgdata.rawdata.ph1_rblack = (short(*)[2])Calloc(raw_width * 2, sizeof(ushort));
+    imgdata.rawdata.ph1_rblack = (short(*)[2])calloc(raw_width * 2, sizeof(ushort));
     merror(imgdata.rawdata.ph1_rblack, "phase_one_load_raw_c()");
     memmove(imgdata.rawdata.ph1_rblack, (ushort *)r_black[0], raw_width * 2 * sizeof(ushort));
   }
@@ -2354,11 +2354,11 @@ void CLASS phase_one_load_raw_c()
   }
   catch (...)
   {
-    Free(pixel);
+    free(pixel);
     throw;
   }
 #endif
-  Free(pixel);
+  free(pixel);
   maximum = 0xfffc - ph1.t_black;
 }
 
@@ -2377,7 +2377,7 @@ void CLASS hasselblad_load_raw()
   try
   {
 #endif
-    back[4] = (int *)Calloc(raw_width, 3 * sizeof **back);
+    back[4] = (int *)calloc(raw_width, 3 * sizeof **back);
     merror(back[4], "hasselblad_load_raw()");
     FORC3 back[c] = back[4] + c * raw_width;
     cblack[6] >>= sh = tiff_samples > 1;
@@ -2438,12 +2438,12 @@ void CLASS hasselblad_load_raw()
   }
   catch (...)
   {
-    Free(back[4]);
+    free(back[4]);
     ljpeg_end(&jh);
     throw;
   }
 #endif
-  Free(back[4]);
+  free(back[4]);
   ljpeg_end(&jh);
   if (image)
     mix_green = 1;
@@ -2460,7 +2460,7 @@ void CLASS leaf_hdr_load_raw()
     if(!image)
       throw LIBRAW_EXCEPTION_IO_CORRUPT;
 #endif
-    pixel = (ushort *)Calloc(raw_width, sizeof *pixel);
+    pixel = (ushort *)calloc(raw_width, sizeof *pixel);
     merror(pixel, "leaf_hdr_load_raw()");
   }
 #ifdef LIBRAW_LIBRARY_BUILD
@@ -2492,7 +2492,7 @@ void CLASS leaf_hdr_load_raw()
   catch (...)
   {
     if (!filters)
-      Free(pixel);
+      free(pixel);
     throw;
   }
 #endif
@@ -2500,7 +2500,7 @@ void CLASS leaf_hdr_load_raw()
   {
     maximum = 0xffff;
     raw_color = 1;
-    Free(pixel);
+    free(pixel);
   }
 }
 
@@ -2559,7 +2559,7 @@ void CLASS sinar_4shot_load_raw()
   if (!image)
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
 #endif
-  pixel = (ushort *)Calloc(raw_width, sizeof *pixel);
+  pixel = (ushort *)calloc(raw_width, sizeof *pixel);
   merror(pixel, "sinar_4shot_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   try
@@ -2589,11 +2589,11 @@ void CLASS sinar_4shot_load_raw()
   }
   catch (...)
   {
-    Free(pixel);
+    free(pixel);
     throw;
   }
 #endif
-  Free(pixel);
+  free(pixel);
   mix_green = 1;
 }
 
@@ -2606,7 +2606,7 @@ void CLASS imacon_full_load_raw()
   int row, col;
 
 #ifdef LIBRAW_LIBRARY_BUILD
-  unsigned short *buf = (unsigned short *)Malloc(width * 3 * sizeof(unsigned short));
+  unsigned short *buf = (unsigned short *)malloc(width * 3 * sizeof(unsigned short));
   merror(buf, "imacon_full_load_raw");
 #endif
 
@@ -2629,7 +2629,7 @@ void CLASS imacon_full_load_raw()
 #endif
   }
 #ifdef LIBRAW_LIBRARY_BUILD
-  Free(buf);
+  free(buf);
 #endif
 }
 
@@ -2732,7 +2732,7 @@ void CLASS broadcom_load_raw()
   int rev, row, col, c;
 
   rev = 3 * (order == 0x4949);
-  data = (uchar *)Malloc(raw_stride * 2);
+  data = (uchar *)malloc(raw_stride * 2);
   merror(data, "broadcom_load_raw()");
 
   for (row = 0; row < raw_height; row++)
@@ -2743,7 +2743,7 @@ void CLASS broadcom_load_raw()
     for (dp = data, col = 0; col < raw_width; dp += 5, col += 4)
       FORC4 RAW(row, col + c) = (dp[c] << 2) | (dp[4] >> (c << 1) & 3);
   }
-  Free(data);
+  free(data);
 }
 #endif
 
@@ -2755,7 +2755,7 @@ void CLASS nokia_load_raw()
 
   rev = 3 * (order == 0x4949);
   dwide = (raw_width * 5 + 1) / 4;
-  data = (uchar *)Malloc(dwide * 2);
+  data = (uchar *)malloc(dwide * 2);
   merror(data, "nokia_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   try
@@ -2776,11 +2776,11 @@ void CLASS nokia_load_raw()
   }
   catch (...)
   {
-    Free(data);
+    free(data);
     throw;
   }
 #endif
-  Free(data);
+  free(data);
   maximum = 0x3ff;
   if (strncmp(make, "OmniVision", 10))
     return;
@@ -2800,7 +2800,7 @@ void CLASS android_tight_load_raw()
   int bwide, row, col, c;
 
   bwide = -(-5 * raw_width >> 5) << 3;
-  data = (uchar *)Malloc(bwide);
+  data = (uchar *)malloc(bwide);
   merror(data, "android_tight_load_raw()");
   for (row = 0; row < raw_height; row++)
   {
@@ -2809,7 +2809,7 @@ void CLASS android_tight_load_raw()
     for (dp = data, col = 0; col < raw_width; dp += 5, col += 4)
       FORC4 RAW(row, col + c) = (dp[c] << 2) | (dp[4] >> (c << 1) & 3);
   }
-  Free(data);
+  free(data);
 }
 
 void CLASS android_loose_load_raw()
@@ -2819,7 +2819,7 @@ void CLASS android_loose_load_raw()
   UINT64 bitbuf = 0;
 
   bwide = (raw_width + 5) / 6 << 3;
-  data = (uchar *)Malloc(bwide);
+  data = (uchar *)malloc(bwide);
   merror(data, "android_loose_load_raw()");
   for (row = 0; row < raw_height; row++)
   {
@@ -2831,7 +2831,7 @@ void CLASS android_loose_load_raw()
       FORC(6) RAW(row, col + c) = (bitbuf >> c * 10) & 0x3ff;
     }
   }
-  Free(data);
+  free(data);
 }
 
 void CLASS canon_rmf_load_raw()
@@ -2839,7 +2839,7 @@ void CLASS canon_rmf_load_raw()
   int row, col, bits, orow, ocol, c;
 
 #ifdef LIBRAW_LIBRARY_BUILD
-  int *words = (int *)Malloc(sizeof(int) * (raw_width / 3 + 1));
+  int *words = (int *)malloc(sizeof(int) * (raw_width / 3 + 1));
   merror(words, "canon_rmf_load_raw");
 #endif
   for (row = 0; row < raw_height; row++)
@@ -2881,7 +2881,7 @@ void CLASS canon_rmf_load_raw()
 #endif
   }
 #ifdef LIBRAW_LIBRARY_BUILD
-  Free(words);
+  free(words);
 #endif
   maximum = curve[0x3ff];
 }
@@ -3423,9 +3423,9 @@ void CLASS kodak_jpeg_load_raw()
   cinfo.err = jpeg_std_error(&jerr.pub);
   jerr.pub.error_exit = jpegErrorExit;
 
-  unsigned char *jpg_buf = (unsigned char *)Malloc(data_size);
+  unsigned char *jpg_buf = (unsigned char *)malloc(data_size);
   merror(jpg_buf, "kodak_jpeg_load_raw");
-  unsigned char *pixel_buf = (unsigned char *)Malloc(width * 3);
+  unsigned char *pixel_buf = (unsigned char *)malloc(width * 3);
   jpeg_create_decompress(&cinfo);
   merror(pixel_buf, "kodak_jpeg_load_raw");
 
@@ -3466,14 +3466,14 @@ void CLASS kodak_jpeg_load_raw()
   {
     jpeg_finish_decompress(&cinfo);
     jpeg_destroy_decompress(&cinfo);
-    Free(jpg_buf);
-    Free(pixel_buf);
+    free(jpg_buf);
+    free(pixel_buf);
     throw;
   }
   jpeg_finish_decompress(&cinfo);
   jpeg_destroy_decompress(&cinfo);
-  Free(jpg_buf);
-  Free(pixel_buf);
+  free(jpg_buf);
+  free(pixel_buf);
   maximum = 0xff << 1;
 }
 #endif
@@ -3612,7 +3612,7 @@ void CLASS eight_bit_load_raw()
   uchar *pixel;
   unsigned row, col;
 
-  pixel = (uchar *)Calloc(raw_width, sizeof *pixel);
+  pixel = (uchar *)calloc(raw_width, sizeof *pixel);
   merror(pixel, "eight_bit_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   try
@@ -3632,11 +3632,11 @@ void CLASS eight_bit_load_raw()
   }
   catch (...)
   {
-    Free(pixel);
+    free(pixel);
     throw;
   }
 #endif
-  Free(pixel);
+  free(pixel);
   maximum = curve[0xff];
 }
 
@@ -3649,7 +3649,7 @@ void CLASS kodak_c330_load_raw()
   uchar *pixel;
   int row, col, y, cb, cr, rgb[3], c;
 
-  pixel = (uchar *)Calloc(raw_width, 2 * sizeof *pixel);
+  pixel = (uchar *)calloc(raw_width, 2 * sizeof *pixel);
   merror(pixel, "kodak_c330_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   try
@@ -3679,11 +3679,11 @@ void CLASS kodak_c330_load_raw()
   }
   catch (...)
   {
-    Free(pixel);
+    free(pixel);
     throw;
   }
 #endif
-  Free(pixel);
+  free(pixel);
   maximum = curve[0xff];
 }
 
@@ -3696,7 +3696,7 @@ void CLASS kodak_c603_load_raw()
   uchar *pixel;
   int row, col, y, cb, cr, rgb[3], c;
 
-  pixel = (uchar *)Calloc(raw_width, 3 * sizeof *pixel);
+  pixel = (uchar *)calloc(raw_width, 3 * sizeof *pixel);
   merror(pixel, "kodak_c603_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   try
@@ -3725,11 +3725,11 @@ void CLASS kodak_c603_load_raw()
   }
   catch (...)
   {
-    Free(pixel);
+    free(pixel);
     throw;
   }
 #endif
-  Free(pixel);
+  free(pixel);
   maximum = curve[0xff];
 }
 
@@ -3744,7 +3744,7 @@ void CLASS kodak_262_load_raw()
 
   FORC(2) huff[c] = make_decoder(kodak_tree[c]);
   ns = (raw_height + 63) >> 5;
-  pixel = (uchar *)Malloc(raw_width * 32 + ns * 4);
+  pixel = (uchar *)malloc(raw_width * 32 + ns * 4);
   merror(pixel, "kodak_262_load_raw()");
   strip = (int *)(pixel + raw_width * 32);
   order = 0x4d4d;
@@ -3789,12 +3789,12 @@ void CLASS kodak_262_load_raw()
   }
   catch (...)
   {
-    Free(pixel);
+    free(pixel);
     throw;
   }
 #endif
-  Free(pixel);
-  FORC(2) Free(huff[c]);
+  free(pixel);
+  FORC(2) free(huff[c]);
 }
 
 int CLASS kodak_65000_decode(short *out, int bsize)
@@ -4061,7 +4061,7 @@ void CLASS sony_arw2_load_raw()
   ushort pix[16];
   int row, col, val, max, min, imax, imin, sh, bit, i;
 
-  data = (uchar *)Malloc(raw_width + 1);
+  data = (uchar *)malloc(raw_width + 1);
   merror(data, "sony_arw2_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   try
@@ -4183,13 +4183,13 @@ void CLASS sony_arw2_load_raw()
   }
   catch (...)
   {
-    Free(data);
+    free(data);
     throw;
   }
   if (imgdata.params.raw_processing_options & LIBRAW_PROCESSING_SONYARW2_DELTATOVALUE)
     maximum = 10000;
 #endif
-  Free(data);
+  free(data);
 }
 
 void CLASS samsung_load_raw()
@@ -4527,7 +4527,7 @@ void CLASS redcine_load_raw()
 #endif
   jmat = jas_matrix_create(height / 2, width / 2);
   merror(jmat, "redcine_load_raw()");
-  img = (ushort *)Calloc((height + 2), (width + 2) * 2);
+  img = (ushort *)calloc((height + 2), (width + 2) * 2);
   merror(img, "redcine_load_raw()");
 #ifdef LIBRAW_LIBRARY_BUILD
   bool fastexitflag = false;
@@ -4582,7 +4582,7 @@ void CLASS redcine_load_raw()
     fastexitflag = true;
   }
 #endif
-  Free(img);
+  free(img);
   jas_matrix_destroy(jmat);
   jas_image_destroy(jimg);
   jas_stream_close(in);
@@ -4967,7 +4967,7 @@ void CLASS wavelet_denoise()
   black <<= scale;
   FORC4 cblack[c] <<= scale;
   if ((size = iheight * iwidth) < 0x15550000)
-    fimg = (float *)Malloc((size * 3 + iheight + iwidth) * sizeof *fimg);
+    fimg = (float *)malloc((size * 3 + iheight + iwidth) * sizeof *fimg);
   merror(fimg, "wavelet_denoise()");
   temp = fimg + size * 3;
   if ((nc = colors) == 3 && filters)
@@ -5045,7 +5045,7 @@ void CLASS wavelet_denoise()
       }
     }
   }
-  Free(fimg);
+  free(fimg);
 }
 #else /* LIBRAW_USE_OPENMP and LIBRAW_LIBRARY_BUILD */
 void CLASS wavelet_denoise()
@@ -5066,15 +5066,15 @@ void CLASS wavelet_denoise()
   black <<= scale;
   FORC4 cblack[c] <<= scale;
   if ((size = iheight * iwidth) < 0x15550000)
-    fimg = (float *)Malloc((size * 3 + iheight + iwidth) * sizeof *fimg);
+    fimg = (float *)malloc((size * 3 + iheight + iwidth) * sizeof *fimg);
   merror(fimg, "wavelet_denoise()");
   temp = fimg + size * 3;
   if ((nc = colors) == 3 && filters)
     nc++;
 #pragma omp parallel default(shared) private(i, col, row, thold, lev, lpass, hpass, temp, c) firstprivate(scale, size)
   {
-#pragma omp critical  /* LibRaw's Malloc is not local thread-safe */
-    temp = (float *)Malloc((iheight + iwidth) * sizeof *fimg);
+#pragma omp critical  /* LibRaw's malloc is not local thread-safe */
+    temp = (float *)malloc((iheight + iwidth) * sizeof *fimg);
     FORC(nc)
     { /* denoise R,G1,B,G3 individually */
 #pragma omp for
@@ -5118,7 +5118,7 @@ void CLASS wavelet_denoise()
         image[i][c] = CLIP(SQR(fimg[i] + fimg[lpass + i]) / 0x10000);
     }
 #pragma omp critical
-    Free(temp);
+    free(temp);
   } /* end omp parallel */
   /* the following loops are hard to parallize, no idea yes,
    * problem is wlast which is carrying dependency
@@ -5160,7 +5160,7 @@ void CLASS wavelet_denoise()
       }
     }
   }
-  Free(fimg);
+  free(fimg);
 }
 
 #endif
@@ -5186,7 +5186,7 @@ void CLASS green_matching()
   if (FC(oj, oi) != 3)
     oj--;
 
-  img = (ushort(*)[4])Calloc(height * width, sizeof *image);
+  img = (ushort(*)[4])calloc(height * width, sizeof *image);
   merror(img, "green_matching()");
   memcpy(img, image, height * width * sizeof *image);
 
@@ -5217,7 +5217,7 @@ void CLASS green_matching()
         image[j * width + i][3] = f > 0xffff ? 0xffff : f;
       }
     }
-  Free(img);
+  free(img);
 }
 
 void CLASS scale_colors()
@@ -5367,7 +5367,7 @@ void CLASS scale_colors()
     {
       if (aber[c] == 1)
         continue;
-      img = (ushort *)Malloc(size * sizeof *img);
+      img = (ushort *)malloc(size * sizeof *img);
       merror(img, "scale_colors()");
       for (i = 0; i < size; i++)
         img[i] = image[i][c];
@@ -5388,7 +5388,7 @@ void CLASS scale_colors()
               (pix[0] * (1 - fc) + pix[1] * fc) * (1 - fr) + (pix[iwidth] * (1 - fc) + pix[iwidth + 1] * fc) * fr;
         }
       }
-      Free(img);
+      free(img);
     }
   }
 #ifdef LIBRAW_LIBRARY_BUILD
@@ -5427,7 +5427,7 @@ void CLASS pre_interpolate()
     }
     else
     {
-      img = (ushort(*)[4])Calloc(height, width * sizeof *img);
+      img = (ushort(*)[4])calloc(height, width * sizeof *img);
       merror(img, "pre_interpolate()");
       for (row = 0; row < height; row++)
         for (col = 0; col < width; col++)
@@ -5435,7 +5435,7 @@ void CLASS pre_interpolate()
           c = fcol(row, col);
           img[row * width + col][c] = image[(row >> 1) * iwidth + (col >> 1)][c];
         }
-      Free(image);
+      free(image);
       image = img;
       shrink = 0;
     }
@@ -5601,7 +5601,7 @@ void CLASS vng_interpolate()
     prow = pcol = 16;
   if (filters == 9)
     prow = pcol = 6;
-  ip = (int *)Calloc(prow * pcol, 1280);
+  ip = (int *)calloc(prow * pcol, 1280);
   merror(ip, "vng_interpolate()");
   for (row = 0; row < prow; row++) /* Precalculate for VNG */
     for (col = 0; col < pcol; col++)
@@ -5642,7 +5642,7 @@ void CLASS vng_interpolate()
           *ip++ = 0;
       }
     }
-  brow[4] = (ushort(*)[4])Calloc(width * 3, sizeof **brow);
+  brow[4] = (ushort(*)[4])calloc(width * 3, sizeof **brow);
   merror(brow[4], "vng_interpolate()");
   for (row = 0; row < 3; row++)
     brow[row] = brow[4] + row * width;
@@ -5712,8 +5712,8 @@ void CLASS vng_interpolate()
   }
   memcpy(image[(row - 2) * width + 2], brow[0] + 2, (width - 4) * sizeof *image);
   memcpy(image[(row - 1) * width + 2], brow[1] + 2, (width - 4) * sizeof *image);
-  Free(brow[4]);
-  Free(code[0][0]);
+  free(brow[4]);
+  free(code[0][0]);
 }
 
 /*
@@ -5885,7 +5885,7 @@ void CLASS xtrans_interpolate(int passes)
 #endif
   cielab(0, 0);
   ndir = 4 << (passes > 1);
-  buffer = (char *)Malloc(TS * TS * (ndir * 11 + 6));
+  buffer = (char *)malloc(TS * TS * (ndir * 11 + 6));
   merror(buffer, "xtrans_interpolate()");
   rgb = (ushort(*)[TS][TS][3])buffer;
   lab = (short(*)[TS][3])(buffer + TS * TS * (ndir * 6));
@@ -6160,7 +6160,7 @@ void CLASS xtrans_interpolate(int passes)
           FORC3 image[(row + top) * width + col + left][c] = avg[c] / avg[3];
         }
     }
-  Free(buffer);
+  free(buffer);
   border_interpolate(8);
 }
 #undef fcol
@@ -6392,7 +6392,7 @@ void CLASS ahd_interpolate()
 #ifdef LIBRAW_USE_OPENMP
 #pragma omp critical
 #endif
-    buffer = (char *)Malloc(26 * TS * TS); /* 1664 kB */
+    buffer = (char *)malloc(26 * TS * TS); /* 1664 kB */
     merror(buffer, "ahd_interpolate()");
     rgb = (ushort(*)[TS][TS][3])buffer;
     lab = (short(*)[TS][TS][3])(buffer + 12 * TS * TS);
@@ -6424,7 +6424,7 @@ void CLASS ahd_interpolate()
 #ifdef LIBRAW_USE_OPENMP
 #pragma omp critical
 #endif
-    Free(buffer);
+    free(buffer);
   }
   if (terminate_flag)
     throw LIBRAW_EXCEPTION_CANCELLED_BY_CALLBACK;
@@ -6447,7 +6447,7 @@ void CLASS ahd_interpolate()
 
   cielab(0, 0);
   border_interpolate(5);
-  buffer = (char *)Malloc(26 * TS * TS);
+  buffer = (char *)malloc(26 * TS * TS);
   merror(buffer, "ahd_interpolate()");
   rgb = (ushort(*)[TS][TS][3])buffer;
   lab = (short(*)[TS][TS][3])(buffer + 12 * TS * TS);
@@ -6538,7 +6538,7 @@ void CLASS ahd_interpolate()
         }
       }
     }
-  Free(buffer);
+  free(buffer);
 }
 #endif
 #undef TS
@@ -6648,7 +6648,7 @@ void CLASS recover_highlights()
       kc = c;
   high = height / SCALE;
   wide = width / SCALE;
-  map = (float *)Calloc(high, wide * sizeof *map);
+  map = (float *)calloc(high, wide * sizeof *map);
   merror(map, "recover_highlights()");
   FORCC if (c != kc)
   {
@@ -6723,7 +6723,7 @@ void CLASS recover_highlights()
           }
       }
   }
-  Free(map);
+  free(map);
 }
 #undef SCALE
 
@@ -7882,7 +7882,7 @@ void CLASS PentaxLensInfo(unsigned id, unsigned len) // tag 0x0207
 {
   ushort iLensData = 0;
   uchar *table_buf;
-  table_buf = (uchar *)Malloc(MAX(len, 128));
+  table_buf = (uchar *)malloc(MAX(len, 128));
   fread(table_buf, len, 1, ifp);
   if ((id < 0x12b9c) || (((id == 0x12b9c) ||  // K100D
                           (id == 0x12b9d) ||  // K110D
@@ -7966,7 +7966,7 @@ void CLASS PentaxLensInfo(unsigned id, unsigned len) // tag 0x0207
           libraw_powf64l(2.0f, (float)((table_buf[iLensData + 15] & 0x7f) - 1) / 32.0f);
     }
   }
-  Free(table_buf);
+  free(table_buf);
   return;
 }
 
@@ -8864,63 +8864,63 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
     if (table_buf_0x0116_len)
     {
       process_Sony_0x0116(table_buf_0x0116, table_buf_0x0116_len, unique_id);
-      Free(table_buf_0x0116);
+      free(table_buf_0x0116);
       table_buf_0x0116_len = 0;
     }
 
     if (table_buf_0x2010_len)
     {
       process_Sony_0x2010(table_buf_0x2010, table_buf_0x2010_len);
-      Free(table_buf_0x2010);
+      free(table_buf_0x2010);
       table_buf_0x2010_len = 0;
     }
 
     if (table_buf_0x9050_len)
     {
       process_Sony_0x9050(table_buf_0x9050, table_buf_0x9050_len, unique_id);
-      Free(table_buf_0x9050);
+      free(table_buf_0x9050);
       table_buf_0x9050_len = 0;
     }
 
     if (table_buf_0x9400_len)
     {
       process_Sony_0x9400(table_buf_0x9400, table_buf_0x9400_len, unique_id);
-      Free(table_buf_0x9400);
+      free(table_buf_0x9400);
       table_buf_0x9400_len = 0;
     }
 
     if (table_buf_0x9402_len)
     {
       process_Sony_0x9402(table_buf_0x9402, table_buf_0x9402_len);
-      Free(table_buf_0x9402);
+      free(table_buf_0x9402);
       table_buf_0x9402_len = 0;
     }
 
     if (table_buf_0x9403_len)
     {
       process_Sony_0x9403(table_buf_0x9403, table_buf_0x9403_len);
-      Free(table_buf_0x9403);
+      free(table_buf_0x9403);
       table_buf_0x9403_len = 0;
     }
 
     if (table_buf_0x9406_len)
     {
       process_Sony_0x9406(table_buf_0x9406, table_buf_0x9406_len);
-      Free(table_buf_0x9406);
+      free(table_buf_0x9406);
       table_buf_0x9406_len = 0;
     }
 
     if (table_buf_0x940c_len)
     {
       process_Sony_0x940c(table_buf_0x940c, table_buf_0x940c_len);
-      Free(table_buf_0x940c);
+      free(table_buf_0x940c);
       table_buf_0x940c_len = 0;
     }
 
     if (table_buf_0x940e_len)
     {
       process_Sony_0x940e(table_buf_0x940e, table_buf_0x940e_len, unique_id);
-      Free(table_buf_0x940e);
+      free(table_buf_0x940e);
       table_buf_0x940e_len = 0;
     }
   }
@@ -8936,7 +8936,7 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
                              // NEX3, NEX5, NEX5C, NEXC3, VG10E
             (len == 15360)))
   {
-    table_buf = (uchar *)Malloc(len);
+    table_buf = (uchar *)malloc(len);
     fread(table_buf, len, 1, ifp);
     if (memcmp(table_buf, "\xff\xff\xff\xff\xff\xff\xff\xff", 8) &&
         memcmp(table_buf, "\x00\x00\x00\x00\x00\x00\x00\x00", 8))
@@ -8984,7 +8984,7 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
         }
       }
     }
-    Free(table_buf);
+    free(table_buf);
   }
 
   else if ((!dng_writer) && (tag == 0x0020) && // WBInfoA100, needs 0xb028 processing
@@ -9006,7 +9006,7 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
 
   else if (tag == 0x0114 && len < 256000) // CameraSettings
   {
-    table_buf = (uchar *)Malloc(len);
+    table_buf = (uchar *)malloc(len);
     fread(table_buf, len, 1, ifp);
     switch (len)
     {
@@ -9038,13 +9038,13 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
       }
       break;
     }
-    Free(table_buf);
+    free(table_buf);
   }
 
   else if ((tag == 0x3000) && (len < 256000))
   {
     uchar *table_buf_0x3000;
-    table_buf_0x3000 = (uchar *)Malloc(len);
+    table_buf_0x3000 = (uchar *)malloc(len);
     fread(table_buf_0x3000, len, 1, ifp);
     for (int i = 0; i < 20; i++)
       imgdata.makernotes.sony.SonyDateTime[i] = table_buf_0x3000[6 + i];
@@ -9052,26 +9052,26 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
 
   else if (tag == 0x0116 && len < 256000)
   {
-    table_buf_0x0116 = (uchar *)Malloc(len);
+    table_buf_0x0116 = (uchar *)malloc(len);
     table_buf_0x0116_len = len;
     fread(table_buf_0x0116, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x0116(table_buf_0x0116, table_buf_0x0116_len, imgdata.lens.makernotes.CamID);
-      Free(table_buf_0x0116);
+      free(table_buf_0x0116);
       table_buf_0x0116_len = 0;
     }
   }
 
   else if (tag == 0x2010 && len < 256000)
   {
-    table_buf_0x2010 = (uchar *)Malloc(len);
+    table_buf_0x2010 = (uchar *)malloc(len);
     table_buf_0x2010_len = len;
     fread(table_buf_0x2010, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x2010(table_buf_0x2010, table_buf_0x2010_len);
-      Free(table_buf_0x2010);
+      free(table_buf_0x2010);
       table_buf_0x2010_len = 0;
     }
   }
@@ -9095,53 +9095,53 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
 
   else if (tag == 0x9050 && len < 256000) // little endian
   {
-    table_buf_0x9050 = (uchar *)Malloc(len);
+    table_buf_0x9050 = (uchar *)malloc(len);
     table_buf_0x9050_len = len;
     fread(table_buf_0x9050, len, 1, ifp);
 
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x9050(table_buf_0x9050, table_buf_0x9050_len, imgdata.lens.makernotes.CamID);
-      Free(table_buf_0x9050);
+      free(table_buf_0x9050);
       table_buf_0x9050_len = 0;
     }
   }
 
   else if (tag == 0x9400 && len < 256000)
   {
-    table_buf_0x9400 = (uchar *)Malloc(len);
+    table_buf_0x9400 = (uchar *)malloc(len);
     table_buf_0x9400_len = len;
     fread(table_buf_0x9400, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x9400(table_buf_0x9400, table_buf_0x9400_len, unique_id);
-      Free(table_buf_0x9400);
+      free(table_buf_0x9400);
       table_buf_0x9400_len = 0;
     }
   }
 
   else if (tag == 0x9402 && len < 256000)
   {
-    table_buf_0x9402 = (uchar *)Malloc(len);
+    table_buf_0x9402 = (uchar *)malloc(len);
     table_buf_0x9402_len = len;
     fread(table_buf_0x9402, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x9402(table_buf_0x9402, table_buf_0x9402_len);
-      Free(table_buf_0x9402);
+      free(table_buf_0x9402);
       table_buf_0x9402_len = 0;
     }
   }
 
   else if (tag == 0x9403 && len < 256000)
   {
-    table_buf_0x9403 = (uchar *)Malloc(len);
+    table_buf_0x9403 = (uchar *)malloc(len);
     table_buf_0x9403_len = len;
     fread(table_buf_0x9403, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x9403(table_buf_0x9403, table_buf_0x9403_len);
-      Free(table_buf_0x9403);
+      free(table_buf_0x9403);
       table_buf_0x9403_len = 0;
     }
   }
@@ -9149,7 +9149,7 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
   else if ((tag == 0x9405) && (len < 256000) && (len > 0x64))
   {
     uchar *table_buf_0x9405;
-    table_buf_0x9405 = (uchar *)Malloc(len);
+    table_buf_0x9405 = (uchar *)malloc(len);
     fread(table_buf_0x9405, len, 1, ifp);
     uchar bufx = table_buf_0x9405[0x0];
     if (imgdata.other.real_ISO < 0.1f)
@@ -9163,44 +9163,44 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
         imgdata.other.real_ISO = 100.0f * libraw_powf64l(2.0f, (16 - ((float)sget2(s)) / 256.0f));
       }
     }
-    Free(table_buf_0x9405);
+    free(table_buf_0x9405);
   }
 
   else if (tag == 0x9406 && len < 256000)
   {
-    table_buf_0x9406 = (uchar *)Malloc(len);
+    table_buf_0x9406 = (uchar *)malloc(len);
     table_buf_0x9406_len = len;
     fread(table_buf_0x9406, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x9406(table_buf_0x9406, table_buf_0x9406_len);
-      Free(table_buf_0x9406);
+      free(table_buf_0x9406);
       table_buf_0x9406_len = 0;
     }
   }
 
   else if (tag == 0x940c && len < 256000)
   {
-    table_buf_0x940c = (uchar *)Malloc(len);
+    table_buf_0x940c = (uchar *)malloc(len);
     table_buf_0x940c_len = len;
     fread(table_buf_0x940c, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x940c(table_buf_0x940c, table_buf_0x940c_len);
-      Free(table_buf_0x940c);
+      free(table_buf_0x940c);
       table_buf_0x940c_len = 0;
     }
   }
 
   else if (tag == 0x940e && len < 256000)
   {
-    table_buf_0x940e = (uchar *)Malloc(len);
+    table_buf_0x940e = (uchar *)malloc(len);
     table_buf_0x940e_len = len;
     fread(table_buf_0x940e, len, 1, ifp);
     if (imgdata.lens.makernotes.CamID)
     {
       process_Sony_0x940e(table_buf_0x940e, table_buf_0x940e_len, imgdata.lens.makernotes.CamID);
-      Free(table_buf_0x940e);
+      free(table_buf_0x940e);
       table_buf_0x940e_len = 0;
     }
   }
@@ -9229,7 +9229,7 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
 
   else if (tag == 0xb02a && len < 256000) // Sony LensSpec
   {
-    table_buf = (uchar *)Malloc(len);
+    table_buf = (uchar *)malloc(len);
     fread(table_buf, len, 1, ifp);
     if ((!dng_writer) ||
         (saneSonyCameraInfo(table_buf[1], table_buf[2], table_buf[3], table_buf[4], table_buf[5], table_buf[6])))
@@ -9244,7 +9244,7 @@ void CLASS parseSonyMakernotes(unsigned tag, unsigned type, unsigned len, unsign
         imgdata.lens.makernotes.MaxAp4MaxFocal = bcd2dec(table_buf[6]) / 10.0f;
       parseSonyLensFeatures(table_buf[0], table_buf[7]);
     }
-    Free(table_buf);
+    free(table_buf);
   }
 
   else if ((tag == 0xb02b) && !imgdata.sizes.raw_crop.cwidth && (len == 2))
@@ -9369,12 +9369,12 @@ void CLASS parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
       {
         if (type != 4)
         {
-          CanonCameraInfo = (uchar *)Malloc(MAX(16, len));
+          CanonCameraInfo = (uchar *)malloc(MAX(16, len));
           fread(CanonCameraInfo, len, 1, ifp);
         }
         else
         {
-          CanonCameraInfo = (uchar *)Malloc(MAX(16, len * 4));
+          CanonCameraInfo = (uchar *)malloc(MAX(16, len * 4));
           fread(CanonCameraInfo, len, 4, ifp);
         }
         lenCanonCameraInfo = len;
@@ -9388,7 +9388,7 @@ void CLASS parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
         if (lenCanonCameraInfo)
         {
           processCanonCameraInfo(unique_id, CanonCameraInfo, lenCanonCameraInfo, typeCanonCameraInfo);
-          Free(CanonCameraInfo);
+          free(CanonCameraInfo);
           CanonCameraInfo = 0;
           lenCanonCameraInfo = 0;
         }
@@ -9563,12 +9563,12 @@ void CLASS parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
         }
         if (lenNikonLensData)
         {
-          table_buf = (uchar *)Malloc(lenNikonLensData);
+          table_buf = (uchar *)malloc(lenNikonLensData);
           fread(table_buf, lenNikonLensData, 1, ifp);
           if ((NikonLensDataVersion < 201) && lenNikonLensData)
           {
             processNikonLensData(table_buf, lenNikonLensData);
-            Free(table_buf);
+            free(table_buf);
             lenNikonLensData = 0;
           }
         }
@@ -9593,7 +9593,7 @@ void CLASS parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
             table_buf[i] ^= (cj += ci * ck++);
           processNikonLensData(table_buf, lenNikonLensData);
           lenNikonLensData = 0;
-          Free(table_buf);
+          free(table_buf);
         }
       }
       else if (tag == 0x00a8) // contains flash data
@@ -10280,12 +10280,12 @@ void CLASS parse_makernote(int base, int uptag)
       {
         if (type != 4)
         {
-          CanonCameraInfo = (uchar *)Malloc(MAX(16, len));
+          CanonCameraInfo = (uchar *)malloc(MAX(16, len));
           fread(CanonCameraInfo, len, 1, ifp);
         }
         else
         {
-          CanonCameraInfo = (uchar *)Malloc(MAX(16, len * 4));
+          CanonCameraInfo = (uchar *)malloc(MAX(16, len * 4));
           fread(CanonCameraInfo, len, 4, ifp);
         }
         lenCanonCameraInfo = len;
@@ -10299,7 +10299,7 @@ void CLASS parse_makernote(int base, int uptag)
         if (lenCanonCameraInfo)
         {
           processCanonCameraInfo(unique_id, CanonCameraInfo, lenCanonCameraInfo, typeCanonCameraInfo);
-          Free(CanonCameraInfo);
+          free(CanonCameraInfo);
           CanonCameraInfo = 0;
           lenCanonCameraInfo = 0;
         }
@@ -10556,12 +10556,12 @@ void CLASS parse_makernote(int base, int uptag)
         }
         if (lenNikonLensData > 0)
         {
-          table_buf = (uchar *)Malloc(lenNikonLensData);
+          table_buf = (uchar *)malloc(lenNikonLensData);
           fread(table_buf, lenNikonLensData, 1, ifp);
           if ((NikonLensDataVersion < 201) && lenNikonLensData)
           {
             processNikonLensData(table_buf, lenNikonLensData);
-            Free(table_buf);
+            free(table_buf);
             lenNikonLensData = 0;
           }
         }
@@ -11406,7 +11406,7 @@ void CLASS parse_makernote(int base, int uptag)
           table_buf[i] ^= (cj += ci * ck++);
         processNikonLensData(table_buf, lenNikonLensData);
         lenNikonLensData = 0;
-        Free(table_buf);
+        free(table_buf);
       }
       if (ver97 == 601) // Coolpix A
       {
@@ -12918,7 +12918,7 @@ int CLASS parse_tiff_ifd(int base)
       if (len > 1 && len < 16384)
       {
         off_t sav = ftell(ifp);
-        tiff_ifd[ifd].strip_offsets = (int *)Calloc(len, sizeof(int));
+        tiff_ifd[ifd].strip_offsets = (int *)calloc(len, sizeof(int));
         tiff_ifd[ifd].strip_offsets_count = len;
         for (int i = 0; i < len; i++)
           tiff_ifd[ifd].strip_offsets[i] = get4() + base;
@@ -12963,7 +12963,7 @@ int CLASS parse_tiff_ifd(int base)
       if (len > 1 && len < 16384)
       {
         off_t sav = ftell(ifp);
-        tiff_ifd[ifd].strip_byte_counts = (int *)Calloc(len, sizeof(int));
+        tiff_ifd[ifd].strip_byte_counts = (int *)calloc(len, sizeof(int));
         tiff_ifd[ifd].strip_byte_counts_count = len;
         for (int i = 0; i < len; i++)
           tiff_ifd[ifd].strip_byte_counts[i] = get4();
@@ -13063,7 +13063,7 @@ int CLASS parse_tiff_ifd(int base)
     case 700:
       if ((type == 1 || type == 2 || type == 6 || type == 7) && len > 1 && len < 5100000)
       {
-        xmpdata = (char *)Malloc(xmplen = len + 1);
+        xmpdata = (char *)malloc(xmplen = len + 1);
         fread(xmpdata, len, 1, ifp);
         xmpdata[len] = 0;
       }
@@ -13362,19 +13362,19 @@ int CLASS parse_tiff_ifd(int base)
       break;
     case 50454: /* Sinar tag */
     case 50455:
-      if (len < 1 || len > 2560000 || !(cbuf = (char *)Malloc(len)))
+      if (len < 1 || len > 2560000 || !(cbuf = (char *)malloc(len)))
         break;
 #ifndef LIBRAW_LIBRARY_BUILD
       fread(cbuf, 1, len, ifp);
 #else
       if (fread(cbuf, 1, len, ifp) != len)
-        throw LIBRAW_EXCEPTION_IO_CORRUPT; // cbuf to be Free'ed in recycle
+        throw LIBRAW_EXCEPTION_IO_CORRUPT; // cbuf to be free'ed in recycle
 #endif
       cbuf[len - 1] = 0;
       for (cp = cbuf - 1; cp && cp < cbuf + len; cp = strchr(cp, '\n'))
         if (!strncmp(++cp, "Neutral ", 8))
           sscanf(cp + 8, "%f %f %f", cam_mul, cam_mul + 1, cam_mul + 2);
-      Free(cbuf);
+      free(cbuf);
       break;
     case 50458:
       if (!make[0])
@@ -13490,7 +13490,7 @@ int CLASS parse_tiff_ifd(int base)
               (libraw_internal_data.unpacker_data.lenRAFData < 10240000))
           {
             INT64 f_save = ftell(ifp);
-            ushort *rafdata = (ushort *)Malloc(sizeof(ushort) * libraw_internal_data.unpacker_data.lenRAFData);
+            ushort *rafdata = (ushort *)malloc(sizeof(ushort) * libraw_internal_data.unpacker_data.lenRAFData);
             fseek(ifp, libraw_internal_data.unpacker_data.posRAFData, SEEK_SET);
             fread(rafdata, sizeof(ushort), libraw_internal_data.unpacker_data.lenRAFData, ifp);
             fseek(ifp, f_save, SEEK_SET);
@@ -13527,7 +13527,7 @@ int CLASS parse_tiff_ifd(int base)
                     imgdata.color.WBCT_Coeffs[iCCT][3] = rafdata[iCCT * 3 + 2 + fj];
                   }
                 }
-                Free(rafdata);
+                free(rafdata);
                 break;
               }
             }
@@ -13830,7 +13830,7 @@ int CLASS parse_tiff_ifd(int base)
                 fseek(ifp, save, SEEK_SET);
               }
 
-              if (SR2SubIFDLength && (SR2SubIFDLength < 10240000) && (buf_SR2 = (unsigned *)Malloc(SR2SubIFDLength+1024))) // 1024b for safety
+              if (SR2SubIFDLength && (SR2SubIFDLength < 10240000) && (buf_SR2 = (unsigned *)malloc(SR2SubIFDLength+1024))) // 1024b for safety
               {
                 fseek(ifp, SR2SubIFDOffset + base, SEEK_SET);
                 fread(buf_SR2, SR2SubIFDLength, 1, ifp);
@@ -13950,7 +13950,7 @@ int CLASS parse_tiff_ifd(int base)
                   }
                 }
 
-                Free(buf_SR2);
+                free(buf_SR2);
               }
 
             } /* SR2 processed */
@@ -14022,7 +14022,7 @@ int CLASS parse_tiff_ifd(int base)
     }
     fseek(ifp, save, SEEK_SET);
   }
-  if (sony_length && sony_length < 10240000 && (buf = (unsigned *)Malloc(sony_length)))
+  if (sony_length && sony_length < 10240000 && (buf = (unsigned *)malloc(sony_length)))
   {
     fseek(ifp, sony_offset, SEEK_SET);
     fread(buf, sony_length, 1, ifp);
@@ -14044,7 +14044,7 @@ int CLASS parse_tiff_ifd(int base)
       ifp->tempbuffer_close();
     }
 #endif
-    Free(buf);
+    free(buf);
   }
   for (i = 0; i < colors; i++)
     FORCC cc[i][c] *= ab[i];
@@ -14551,7 +14551,7 @@ void CLASS parse_external_jpeg()
   file++;
   if (!ext || strlen(ext) != 4 || ext - file != 8)
     return;
-  jname = (char *)Malloc(strlen(ifname) + 1);
+  jname = (char *)malloc(strlen(ifname) + 1);
   merror(jname, "parse_external_jpeg()");
   strcpy(jname, ifname);
   jfile = file - ifname + jname;
@@ -14613,7 +14613,7 @@ void CLASS parse_external_jpeg()
     fprintf(stderr, _("Failed to read metadata from %s\n"), jname);
 #endif
   }
-  Free(jname);
+  free(jname);
 #ifndef LIBRAW_LIBRARY_BUILD
   ifp = save;
 #endif
@@ -19888,7 +19888,7 @@ void CLASS convert_to_rgb()
 #endif
   if (!raw_color)
   {
-    oprof = (unsigned *)Calloc(phead[0], 1);
+    oprof = (unsigned *)calloc(phead[0], 1);
     merror(oprof, "convert_to_rgb()");
     memcpy(oprof, phead, sizeof phead);
     if (output_color == 5)
@@ -19980,7 +19980,7 @@ void CLASS fuji_rotate()
   step = sqrt(0.5);
   wide = fuji_width / step;
   high = (height - fuji_width) / step;
-  img = (ushort(*)[4])Calloc(high, wide * sizeof *img);
+  img = (ushort(*)[4])calloc(high, wide * sizeof *img);
   merror(img, "fuji_rotate()");
 
 #ifdef LIBRAW_LIBRARY_BUILD
@@ -20002,7 +20002,7 @@ void CLASS fuji_rotate()
                                    (pix[width][i] * (1 - fc) + pix[width + 1][i] * fc) * fr;
     }
 
-  Free(image);
+  free(image);
   width = wide;
   height = high;
   image = img;
@@ -20030,7 +20030,7 @@ void CLASS stretch()
   if (pixel_aspect < 1)
   {
     newdim = height / pixel_aspect + 0.5;
-    img = (ushort(*)[4])Calloc(width, newdim * sizeof *img);
+    img = (ushort(*)[4])calloc(width, newdim * sizeof *img);
     merror(img, "stretch()");
     for (rc = row = 0; row < newdim; row++, rc += pixel_aspect)
     {
@@ -20046,7 +20046,7 @@ void CLASS stretch()
   else
   {
     newdim = width * pixel_aspect + 0.5;
-    img = (ushort(*)[4])Calloc(height, newdim * sizeof *img);
+    img = (ushort(*)[4])calloc(height, newdim * sizeof *img);
     merror(img, "stretch()");
     for (rc = col = 0; col < newdim; col++, rc += 1 / pixel_aspect)
     {
@@ -20059,7 +20059,7 @@ void CLASS stretch()
     }
     width = newdim;
   }
-  Free(image);
+  free(image);
   image = img;
 #ifdef LIBRAW_LIBRARY_BUILD
   RUN_CALLBACK(LIBRAW_PROGRESS_STRETCH, 1, 2);
@@ -20203,11 +20203,11 @@ void CLASS jpeg_thumb()
 {
   char *thumb;
 
-  thumb = (char *)Malloc(thumb_length);
+  thumb = (char *)malloc(thumb_length);
   merror(thumb, "jpeg_thumb()");
   fread(thumb, 1, thumb_length, ifp);
   jpeg_thumb_writer(ofp, thumb, thumb_length);
-  Free(thumb);
+  free(thumb);
 }
 #else
 void CLASS jpeg_thumb()
@@ -20216,7 +20216,7 @@ void CLASS jpeg_thumb()
   ushort exif[5];
   struct tiff_hdr th;
 
-  thumb = (char *)Malloc(thumb_length);
+  thumb = (char *)malloc(thumb_length);
   merror(thumb, "jpeg_thumb()");
   fread(thumb, 1, thumb_length, ifp);
   fputc(0xff, ofp);
@@ -20230,7 +20230,7 @@ void CLASS jpeg_thumb()
     fwrite(&th, 1, sizeof th, ofp);
   }
   fwrite(thumb + 2, 1, thumb_length - 2, ofp);
-  Free(thumb);
+  free(thumb);
 }
 #endif
 
@@ -20263,7 +20263,7 @@ void CLASS write_ppm_tiff()
   iwidth = width;
   if (flip & 4)
     SWAP(height, width);
-  ppm = (uchar *)Calloc(width, colors * output_bps / 8);
+  ppm = (uchar *)calloc(width, colors * output_bps / 8);
   ppm2 = (ushort *)ppm;
   merror(ppm, "write_ppm_tiff()");
   if (output_tiff)
@@ -20292,5 +20292,5 @@ void CLASS write_ppm_tiff()
       swab((char *)ppm2, (char *)ppm2, width * colors * 2);
     fwrite(ppm, colors * output_bps / 8, width, ofp);
   }
-  Free(ppm);
+  free(ppm);
 }
