@@ -100,7 +100,7 @@
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\LibRaw\;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>C:\Program Files (x86)\Visual Leak Detector\include;..\LibRaw\;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -108,7 +108,7 @@
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
-    <IncludePath>..\LibRaw\;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <IncludePath>C:\Program Files (x86)\Visual Leak Detector\include;..\LibRaw\;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
     <OutDir>.\DeepSkyStacker___Win32_Release_Debug_Info\</OutDir>
@@ -371,13 +371,14 @@
       <DataExecutionPrevention>true</DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
       <LargeAddressAware>true</LargeAddressAware>
-      <AdditionalDependencies>htmlhelp.lib;cfitsio.lib;libpng16.lib;zlibstat.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>htmlhelp.lib;cfitsio.lib;zlibstat.lib;libpng16.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ShowProgress>NotSet</ShowProgress>
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>
       </ImageHasSafeExceptionHandlers>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Visual Leak Detector\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -428,6 +429,7 @@
       </ImageHasSafeExceptionHandlers>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
