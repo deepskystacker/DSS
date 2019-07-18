@@ -202,7 +202,7 @@ public :
 
 BOOL	CCombineTask::DoTask(HANDLE hEvent)
 {
-	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = TRUE;
 
 	LONG				i;
