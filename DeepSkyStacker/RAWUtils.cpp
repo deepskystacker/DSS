@@ -543,12 +543,6 @@ public :
 
 			strText.Format(_T("Cannot open %s: %s"), m_strFileName, libraw_strerror(ret));
 
-#if defined(_CONSOLE)			// Need this for DeepSkyStackerCL
-			std::cerr << strText << '\n';
-#else
-			AfxMessageBox(strText, MB_OK | MB_ICONSTOP);
-#endif
-
 			throw std::runtime_error(strText);
 		}
 
