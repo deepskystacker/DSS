@@ -6,6 +6,8 @@
 #include "RAWUtils.h"
 #include <set>
 #include <list>
+#include <iostream>
+#include <stdexcept>
 #include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
@@ -533,6 +535,17 @@ public :
 		m_bColorRAW	  = FALSE;
 		m_CFAType	  = CFATYPE_NONE;
 		m_DateTime.wYear = 0;
+
+		int ret = 0;
+		if ((ret = rawProcessor.open_file(m_strFileName)) != LIBRAW_SUCCESS)
+		{
+			CString			strText;
+
+			strText.Format(_T("Cannot open %s: %s"), m_strFileName, libraw_strerror(ret));
+
+			throw std::runtime_error(strText);
+		}
+
 	};
 
 	virtual ~CRawDecod()
@@ -663,387 +676,181 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	BitMapFiller *		pFiller = NULL;
 	int			ret = 0;
 
-	if (IsRawFile())
+
+	pBitmap->Init(m_lWidth, m_lHeight);
+	pBitmap->SetISOSpeed(m_lISOSpeed);
+	pBitmap->SetExposure(m_fExposureTime);
+	pBitmap->m_DateTime = m_DateTime;
+	CString			strDescription;
+	GetModel(strDescription);
+	pBitmap->SetDescription(strDescription);
+
+	const		int maxargs = 50;
+	CWorkspace	workspace;
+	CString		strInterpolation;
+	double		fBrightness = 1.0;
+	double		fRedScale = 1.0;
+	double		fBlueScale = 1.0;
+	double		fGreenScale = 1.0;
+
+	//DWORD		bSuperPixels;
+	//DWORD		bRawBayer;
+	//BOOL		bBilinear;
+	//BOOL		bAHD;
+	DWORD		bBlackPointTo0 = 0;
+	DWORD		bValue;
+
+	do	// Do once!
 	{
-		pBitmap->Init(m_lWidth, m_lHeight);
-		pBitmap->SetISOSpeed(m_lISOSpeed);
-		pBitmap->SetExposure(m_fExposureTime);
-		pBitmap->m_DateTime = m_DateTime;
-		CString			strDescription;
-		GetModel(strDescription);
-		pBitmap->SetDescription(strDescription);
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), fBrightness);
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), fRedScale);
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), fBlueScale);
 
-		const		int maxargs = 50;
-		CWorkspace	workspace;
-		CString		strInterpolation;
-		double		fBrightness = 1.0;
-		double		fRedScale = 1.0;
-		double		fBlueScale = 1.0;
-		double		fGreenScale = 1.0;
+		fGreenScale = fBrightness;
+		fRedScale *= fBrightness;
+		fBlueScale *= fBrightness;
 
-		//DWORD		bSuperPixels;
-		//DWORD		bRawBayer;
-		//BOOL		bBilinear;
-		//BOOL		bAHD;
-		DWORD		bBlackPointTo0 = 0;
-		DWORD		bValue;
-
-		do	// Do once!
+		//bSuperPixels = IsSuperPixels();
+		//bRawBayer    = IsRawBayer();
+		//bBilinear	 = !bSuperPixels && !bRawBayer && IsRawBilinear();
+		//bAHD		 = !bSuperPixels && !bRawBayer && IsRawAHD();
+		//
+		// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
+		// 
+		bValue = FALSE;
+		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
+		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
+		if (bValue)
 		{
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), fBrightness);
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), fRedScale);
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), fBlueScale);
+			// Automatic WB using average of all pixels
+			O.use_auto_wb = 1;
+		};
 
-			fGreenScale = fBrightness;
-			fRedScale *= fBrightness;
-			fBlueScale *= fBrightness;
+		bValue = FALSE;
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
+		if (bValue)
+		{
+			// Camera WB (if possible)
+			O.use_camera_wb = 1;
+		};
+		
+		// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
+		O.use_fuji_rotate = 0;
 
-			//bSuperPixels = IsSuperPixels();
-			//bRawBayer    = IsRawBayer();
-			//bBilinear	 = !bSuperPixels && !bRawBayer && IsRawBilinear();
-			//bAHD		 = !bSuperPixels && !bRawBayer && IsRawAHD();
+		// Don't flip the image (equivalent to dcraw -t 0)
+		O.user_flip = 0;
 
-			//
-			// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
-			// 
-			bValue = FALSE;
-			workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
-			// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
-			if (bValue)
-			{
-				// Automatic WB using average of all pixels
-				O.use_auto_wb = 1;
-			};
+		// Output color space : raw-> sRGB (default)
+		/*
+		argv[argc] = _T("-o");
+		argc++;
+		argv[argc] = _T("0");
+		argc++;*/
 
-			bValue = FALSE;
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
-			if (bValue)
-			{
-				// Camera WB (if possible)
-				O.use_camera_wb = 1;
-			};
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
+		if (bBlackPointTo0)
+		{
+			// Set black point to 0
+			O.user_black = 0;
+		};
 
-			// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
-			O.use_fuji_rotate = 0;
-
-			// Don't flip the image (equivalent to dcraw -t 0)
-			O.user_flip = 0;
-
-			// Output color space : raw-> sRGB (default)
-			/*
-			argv[argc] = _T("-o");
-			argc++;
-			argv[argc] = _T("0");
-			argc++;*/
-
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
-			if (bBlackPointTo0)
-			{
-				// Set black point to 0
-				O.user_black = 0;
-			};
-
-			// Output is 16 bits (equivalent of dcraw flag -4)
-			O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
-			O.output_bps = 16;
+		// Output is 16 bits (equivalent of dcraw flag -4)
+		O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
+		O.output_bps = 16;
 			
-			g_Progress = pProgress;
+		g_Progress = pProgress;
+		
+		ZTRACE_RUNTIME("Calling LibRaw::unpack()");
+		if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
+		{
+			bResult = FALSE;
+			ZTRACE_RUNTIME("Cannot unpack %s: %s", m_strFileName, libraw_strerror(ret));
+		}
+		if (!bResult) break;
 
-			ZTRACE_RUNTIME("Calling LibRaw::unpack()");
-			if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
-			{
-				bResult = FALSE;
-				ZTRACE_RUNTIME("Cannot unpack %s: %s", m_strFileName, libraw_strerror(ret));
-			}
-			if (!bResult) break;
-
-			//
-			// Create the class that populates the bitmap
-			//
-			pFiller = new BitMapFiller(pBitmap, pProgress);
-			pFiller->SetWhiteBalance(fRedScale, fGreenScale, fBlueScale);
-			// Get the Colour Filter Array type and set into the bitmap filler
-			m_CFAType = GetCurrentCFAType();
-			pFiller->SetCFAType(m_CFAType);
-
+		//
+		// Create the class that populates the bitmap
+		//
+		pFiller = new BitMapFiller(pBitmap, pProgress);
+		pFiller->SetWhiteBalance(fRedScale, fGreenScale, fBlueScale);
+		// Get the Colour Filter Array type and set into the bitmap filler
+		m_CFAType = GetCurrentCFAType();
+		pFiller->SetCFAType(m_CFAType);
+		
 #define RAW(row,col) \
 	raw_image[(row)*S.width+(col)]
 
-			//
-			// Get our endian-ness so we can swap bytes if needed (always on Windows).
-			//
-			BOOL littleEndian = htons(0x55aa) != 0x55aa;
+		//
+		// Get our endian-ness so we can swap bytes if needed (always on Windows).
+		//
+		BOOL littleEndian = htons(0x55aa) != 0x55aa;
 
-			unsigned short *raw_image = NULL;
-			void * buffer = NULL;		// Used for debugging only (memory window)
+		unsigned short *raw_image = nullptr;
+		void * buffer = NULL;		// Used for debugging only (memory window)
 
-			if (!m_bColorRAW)
+		if (!m_bColorRAW)
+		{
+			ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
+			//
+			// The initial openmp changes were made by David Partridge, but it was
+			// Vitali Pelenjow who made it work without the critical sections
+			// killing the performance.
+			//
+			// Set up a temporary image array of unsigned short that will be:
+			//
+			// 1) Filled in from the Fujitsu Super-CCD image array in
+			//    Rawdata.raw_image, or
+			//
+			// 2) will be copied from the image portion of Rawdata.raw_image
+			//    excluding the frame (Top margin, Left Margin).
+			//
+			raw_image =
+				(unsigned short *)calloc(S.height*S.width, sizeof(unsigned short));
+			ZASSERT(nullptr != raw_image);
+
+			int fuji_width = rawProcessor.is_fuji_rotated();
+			unsigned fuji_layout = rawProcessor.get_fuji_layout();
+			buffer = raw_image;		// only for memory window debugging
+
+			if (fuji_width)   // Are we processing a Fuji Super-CCD image?
 			{
-				ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
-				//
-				// The initial openmp changes were made by David Partridge, but it was
-				// Vitali Pelenjow who made it work without the critical sections
-				// killing the performance.
-				//
-				// Set up a temporary image array of unsigned short that will be:
-				//
-				// 1) Filled in from the Fujitsu Super-CCD image array in
-				//    Rawdata.raw_image, or
-				//
-				// 2) will be copied from the image portion of Rawdata.raw_image
-				//    excluding the frame (Top margin, Left Margin).
-				//
-				unsigned short *raw_image =
-					(unsigned short *)calloc(S.height*S.width, sizeof(unsigned short));
-				ZASSERT(NULL != raw_image);
-
-				int fuji_width = rawProcessor.is_fuji_rotated();
-				unsigned fuji_layout = rawProcessor.get_fuji_layout();
-				buffer = raw_image;		// only for memory window debugging
-
-				if (fuji_width)   // Are we processing a Fuji Super-CCD image?
-				{
-					ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
+				ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
-					for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
+				for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
+				{
+					for (int col = 0; col < fuji_width << int(!fuji_layout); col++)
 					{
-						for (int col = 0; col < fuji_width << int(!fuji_layout); col++)
+						unsigned r, c;
+
+						if (fuji_layout)
 						{
-							unsigned r, c;
-
-							if (fuji_layout)
-							{
-								r = fuji_width - 1 - col + (row >> 1);
-								c = col + ((row + 1) >> 1);
-							}
-							else
-							{
-								r = fuji_width - 1 + row - (col >> 1);
-								c = row + ((col + 1) >> 1);
-							}
-							if (r < S.height && c < S.width)
-								RAW(r, c)
-								= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+							r = fuji_width - 1 - col + (row >> 1);
+							c = col + ((row + 1) >> 1);
 						}
-					}
-				}
-				else
-				{
-					ZTRACE_RUNTIME("Extracting real image data (excluding the frame) from RawData.raw_image");
-
-					//
-					// This is a regular RAW file so no Fuji Super-CCD stuff
-					//
-					// Just copy the "real image" portion of the data excluding
-					// the frame
-					//
-					buffer = raw_image;
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
-					for (int row = 0; row < S.height; row++)
-					{
-						for (int col = 0; col < S.width; col++)
+						else
 						{
-							RAW(row, col)
-								= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+							r = fuji_width - 1 + row - (col >> 1);
+							c = row + ((col + 1) >> 1);
 						}
+						if (r < S.height && c < S.width)
+							RAW(r, c)
+							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
 					}
 				}
+			}
+			else
+			{
+				ZTRACE_RUNTIME("Extracting real image data (excluding the frame) from RawData.raw_image");
 
 				//
-				// Now process the data that raw_image points to which is either
+				// This is a regular RAW file so no Fuji Super-CCD stuff
 				//
-				// 1) The output of post processing the Fuji Super-CCD raw,
-				//    stored in the USHORT array hung off raw_image, or
+				// Just copy the "real image" portion of the data excluding
+				// the frame
 				//
-				// 2) Normal common or garden raw Bayer matrix data that's been
-				//    copied from RawData.raw_image to raw_image (less the frame)
-				//
-				// Either way we should now be processing a regular greyscale 16-bit
-				// pixel array which has an associated Bayer Matrix
-				//
-				pFiller->setGrey(TRUE);
-				pFiller->setWidth(S.width);
-				pFiller->setHeight(S.height);
-				pFiller->setMaxColors((1 << 16) - 1);
-				
-				// Report User Black Point over-ride
-				if (0 == O.user_black)
-					ZTRACE_RUNTIME("User set Black Point to 0");
-
-				//
-				// Before doing dark subtraction, normalise C.black / C.cblack[]
-				//
-				ZTRACE_RUNTIME("Before adjust_bl() C.black = %d.", C.black);
-				ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
-					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
-					C.cblack[4], C.cblack[5],
-					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
-				rawProcessor.adjust_bl();
-
-				//
-				// This code is based on code from LibRaw Version 19.2, specifically method:
-				//
-				//   int LibRaw::subtract_black_internal()
-				//
-				// found at line 4532 in source file libraw_cxx.cpp 
-				//
-				// Do dark subtraction on the image.   If a user defined black level has
-				// been set (it will be zero) then use that, otherwise just use the black
-				// level for the camera.
-				//
-				// Note that this is only done on real image data, not the frame
-				//
-				// While doing so collect the largest value in the image data.
-				//
-				ZTRACE_RUNTIME("Subtracting black level of C.black = %d from raw_image data.", C.black);
-				ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
-					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
-					C.cblack[4], C.cblack[5],
-					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
-
-				if (!rawProcessor.is_phaseone_compressed() &&
-					(C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
-				{
-					int cblk[4], i;
-					for (i = 0; i < 4; i++)
-						cblk[i] = C.cblack[i];
-
-					int size = S.height * S.width;
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#define LIM(x, min, max) MAX(min, MIN(x, max))
-#define CLIP(x) LIM(x, 0, 65535)
-					int dmax = 0;	// Maximum value of pixels in entire image.
-					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
-					if (C.cblack[4] && C.cblack[5])
-					{
-#if defined(_OPENMP)
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
-						{
-#pragma omp for
-#endif
-							for (i = 0; i < size; i++)
-							{
-								int val = raw_image[i];
-								val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
-								val -= cblk[i & 3];
-								raw_image[i] = CLIP(val);
-								lmax = val > lmax ? val : lmax;
-							}
-#if defined(_OPENMP)
-#pragma omp critical
-#endif
-							dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
-#if defined(_OPENMP)
-						}
-#endif
-					}
-					else
-					{
-#if defined(_OPENMP)
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
-						{
-#pragma omp for
-#endif
-							for (i = 0; i < size; i++)
-							{
-								int val = raw_image[i];
-								val -= cblk[i & 3];
-								raw_image[i] = CLIP(val);
-								lmax = val > lmax ? val : lmax;
-							}
-#if defined(_OPENMP)
-#pragma omp critical
-#endif
-							dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
-#if defined(_OPENMP)
-						}
-#endif
-					}
-					C.data_maximum = dmax & 0xffff;
-#undef MIN
-#undef MAX
-#undef LIM
-#undef CLIP
-					C.maximum -= C.black;
-					memset(&C.cblack, 0, sizeof(C.cblack)); // Yeah, we used cblack[6+] values too!
-					C.black = 0;
-				}
-				else
-				{
-					// Nothing to Do, maximum is already calculated, black level is 0, so no change
-					// only calculate channel maximum;
-					int dmax = 0;	// Maximum value of pixels in entire image.
-					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
-#if defined(_OPENMP)
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
-					{
-#pragma omp for
-#endif
-						for (int i = 0; i < S.height * S.width; i++)
-							if (lmax < raw_image[i])
-								lmax = raw_image[i];
-#if defined(_OPENMP)
-#pragma omp critical
-#endif
-						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
-#if defined(_OPENMP)
-					}
-#endif
-
-					C.data_maximum = dmax;
-				}
-
-				//
-				// The image data needs to be scaled to the "white balance co-efficients"
-				// Currently do not handle "Auto White Balance"
-				//
-				float pre_mul[4];
-
-				if (1 == O.use_camera_wb && -1 != C.cam_mul[0])
-				{
-					ZTRACE_RUNTIME("Using Camera White Balance (as shot).");
-					memcpy(pre_mul, C.cam_mul, sizeof pre_mul);
-				}
-				else
-				{
-					ZTRACE_RUNTIME("Using Daylight White Balance.");
-					memcpy(pre_mul, C.pre_mul, sizeof pre_mul);
-				}
-				ZTRACE_RUNTIME("White balance co-efficients being used are %f, %f, %f, %f",
-					pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
-
-				if (0 == pre_mul[3]) pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
-
-				//
-				// Now apply a linear stretch to the raw data, scale to the "saturation" level
-				// not to the value of the pixel with the greatest value (which may be higher
-				// than the saturation level).
-				//
-
-				double dmin, dmax; int c = 0;
-
-				for (dmin = DBL_MAX, dmax = c = 0; c < 4; c++)
-				{
-					if (dmin > pre_mul[c])
-						dmin = pre_mul[c];
-					if (dmax < pre_mul[c])
-						dmax = pre_mul[c];
-				}
-
-				float scale_mul[4];
-
-				for (c = 0; c < 4; c++)	scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
-
-				ZTRACE_RUNTIME("Maximum value pixel has value %d", C.data_maximum);
-				ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
-				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
-					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
-
+				buffer = raw_image;
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
@@ -1051,78 +858,280 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				{
 					for (int col = 0; col < S.width; col++)
 					{
-						// What colour will this pixel become
-						int colour = rawProcessor.COLOR(row, col);
-
-						register float val = scale_mul[colour] *
-							(float)(RAW(row, col));
-						RAW(row, col) = max(0, min(int(val), 65535));
+						RAW(row, col)
+							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
 					}
 				}
+			}
 
-				// Convert raw data to big-endian
-				if (littleEndian)
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-					for (int i = 0; i < S.height * S.width; i++)
-					{
-						raw_image[i] = _byteswap_ushort(raw_image[i]);
-					}
-#else
-					_swab(
-						(char*)(raw_image),
-						(char*)(raw_image),
-						S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
-#endif
+			//
+			// Now process the data that raw_image points to which is either
+			//
+			// 1) The output of post processing the Fuji Super-CCD raw,
+			//    stored in the USHORT array hung off raw_image, or
+			//
+			// 2) Normal common or garden raw Bayer matrix data that's been
+			//    copied from RawData.raw_image to raw_image (less the frame)
+			//
+			// Either way we should now be processing a regular greyscale 16-bit
+			// pixel array which has an associated Bayer Matrix
+			//
+			pFiller->setGrey(TRUE);
+			pFiller->setWidth(S.width);
+			pFiller->setHeight(S.height);
+			pFiller->setMaxColors((1 << 16) - 1);
+			
+			// Report User Black Point over-ride
+			if (0 == O.user_black)
+				ZTRACE_RUNTIME("User set Black Point to 0");
 
-				for (int row = 0; row < S.height; row++)
+			//
+			// Before doing dark subtraction, normalise C.black / C.cblack[]
+			//
+			ZTRACE_RUNTIME("Before adjust_bl() C.black = %d.", C.black);
+			ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
+				C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
+				C.cblack[4], C.cblack[5],
+				C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
+			rawProcessor.adjust_bl();
+
+			//
+			// This code is based on code from LibRaw Version 19.2, specifically method:
+			//
+			//   int LibRaw::subtract_black_internal()
+			//
+			// found at line 4532 in source file libraw_cxx.cpp 
+			//
+			// Do dark subtraction on the image.   If a user defined black level has
+			// been set (it will be zero) then use that, otherwise just use the black
+			// level for the camera.
+			//
+			// Note that this is only done on real image data, not the frame
+			//
+			// While doing so collect the largest value in the image data.
+			//
+			ZTRACE_RUNTIME("Subtracting black level of C.black = %d from raw_image data.", C.black);
+			ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
+				C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
+				C.cblack[4], C.cblack[5],
+				C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
+
+			if (!rawProcessor.is_phaseone_compressed() &&
+				(C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
+			{
+				int cblk[4], i;
+				for (i = 0; i < 4; i++)
+					cblk[i] = C.cblack[i];
+
+				int size = S.height * S.width;
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define LIM(x, min, max) MAX(min, MIN(x, max))
+#define CLIP(x) LIM(x, 0, 65535)
+				int dmax = 0;	// Maximum value of pixels in entire image.
+				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
+				if (C.cblack[4] && C.cblack[5])
 				{
-					buffer = &RAW(row, 0);
-					// Write raw pixel data into our private bitmap format
-					pFiller->Write(buffer, sizeof(unsigned short), S.width);
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+					{
+#pragma omp for
+#endif
+						for (i = 0; i < size; i++)
+						{
+							int val = raw_image[i];
+							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
+							val -= cblk[i & 3];
+							raw_image[i] = CLIP(val);
+							lmax = val > lmax ? val : lmax;
+						}
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
+					}
+#endif
 				}
+				else
+				{
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+					{
+#pragma omp for
+#endif
+						for (i = 0; i < size; i++)
+						{
+							int val = raw_image[i];
+							val -= cblk[i & 3];
+							raw_image[i] = CLIP(val);
+							lmax = val > lmax ? val : lmax;
+						}
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
+					}
+#endif
+				}
+				C.data_maximum = dmax & 0xffff;
+#undef MIN
+#undef MAX
+#undef LIM
+#undef CLIP
+				C.maximum -= C.black;
+				memset(&C.cblack, 0, sizeof(C.cblack)); // Yeah, we used cblack[6+] values too!
+				C.black = 0;
 			}
 			else
 			{
-				//
-				// This is a "full colour" RAW file, so we can use full libraw
-				// processing and capture the PPM file output.
-				//
-				if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
+				// Nothing to Do, maximum is already calculated, black level is 0, so no change
+				// only calculate channel maximum;
+				int dmax = 0;	// Maximum value of pixels in entire image.
+				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
 				{
-					ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName, libraw_strerror(ret));
-					if (LIBRAW_FATAL_ERROR(ret))
-						bResult = FALSE;
+#pragma omp for
+#endif
+					for (int i = 0; i < S.height * S.width; i++)
+						if (lmax < raw_image[i])
+							lmax = raw_image[i];
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+					dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
 				}
-				if (!bResult) break;
+#endif
 
-				ZTRACE_RUNTIME("Processing Foveon or Fuji X-Trans raw image data");
-				//
-				// Now capture the output using our over-ridden methods
-				//
-				// Set up the intercept code to write the image data to our bitmap instead of
-				// to an external file, and invoke the overridden dcraw_ppm_tiff_writer()
-				//
-				rawProcessor.setBitMapFiller(pFiller);
-				if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_ppm_tiff_writer("")))
-				{
-					bResult = FALSE;
-					ZTRACE_RUNTIME("Cannot write image data to bitmap %s", libraw_strerror(ret));
-				}
+				C.data_maximum = dmax;
 			}
-#undef RAW
+
 			//
-			// If we allocated memory for an image, release it.
-			if (raw_image)
+			// The image data needs to be scaled to the "white balance co-efficients"
+			// Currently do not handle "Auto White Balance"
+			//
+			float pre_mul[4];
+
+			if (1 == O.use_camera_wb && -1 != C.cam_mul[0])
 			{
-				free(raw_image); raw_image = NULL;
+				ZTRACE_RUNTIME("Using Camera White Balance (as shot).");
+				memcpy(pre_mul, C.cam_mul, sizeof pre_mul);
+			}
+			else
+			{
+				ZTRACE_RUNTIME("Using Daylight White Balance.");
+				memcpy(pre_mul, C.pre_mul, sizeof pre_mul);
+			}
+			ZTRACE_RUNTIME("White balance co-efficients being used are %f, %f, %f, %f",
+				pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
+
+			if (0 == pre_mul[3]) pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
+
+			//
+			// Now apply a linear stretch to the raw data, scale to the "saturation" level
+			// not to the value of the pixel with the greatest value (which may be higher
+			// than the saturation level).
+			//
+
+			double dmin, dmax; int c = 0;
+
+			for (dmin = DBL_MAX, dmax = c = 0; c < 4; c++)
+			{
+				if (dmin > pre_mul[c])
+					dmin = pre_mul[c];
+				if (dmax < pre_mul[c])
+					dmax = pre_mul[c];
 			}
 
-		} while (0);
+			float scale_mul[4];
 
-		g_Progress = NULL;
+			for (c = 0; c < 4; c++)	scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
 
-	};
+			ZTRACE_RUNTIME("Maximum value pixel has value %d", C.data_maximum);
+			ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
+			ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
+				scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
+
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+			for (int row = 0; row < S.height; row++)
+			{
+				for (int col = 0; col < S.width; col++)
+				{
+					// What colour will this pixel become
+					int colour = rawProcessor.COLOR(row, col);
+
+					register float val = scale_mul[colour] *
+						(float)(RAW(row, col));
+					RAW(row, col) = max(0, min(int(val), 65535));
+				}
+			}
+
+			// Convert raw data to big-endian
+			if (littleEndian)
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+				for (int i = 0; i < S.height * S.width; i++)
+				{
+					raw_image[i] = _byteswap_ushort(raw_image[i]);
+				}
+#else
+				_swab(
+					(char*)(raw_image),
+					(char*)(raw_image),
+					S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
+#endif
+
+			for (int row = 0; row < S.height; row++)
+			{
+				buffer = &RAW(row, 0);
+				// Write raw pixel data into our private bitmap format
+				pFiller->Write(buffer, sizeof(unsigned short), S.width);
+			}
+		}
+		else
+		{
+			//
+			// This is a "full colour" RAW file, so we can use full libraw
+			// processing and capture the PPM file output.
+			//
+			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
+			{
+				ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName, libraw_strerror(ret));
+				if (LIBRAW_FATAL_ERROR(ret))
+					bResult = FALSE;
+			}
+			if (!bResult) break;
+
+			ZTRACE_RUNTIME("Processing Foveon or Fuji X-Trans raw image data");
+			//
+			// Now capture the output using our over-ridden methods
+			//
+			// Set up the intercept code to write the image data to our bitmap instead of
+			// to an external file, and invoke the overridden dcraw_ppm_tiff_writer()
+			//
+			rawProcessor.setBitMapFiller(pFiller);
+			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_ppm_tiff_writer("")))
+			{
+				bResult = FALSE;
+				ZTRACE_RUNTIME("Cannot write image data to bitmap %s", libraw_strerror(ret));
+			}
+		}
+#undef RAW
+		//
+		// If we allocated memory for an image, release it.
+		if (nullptr != raw_image)
+		{
+			free(raw_image); raw_image = nullptr;
+		}
+
+	} while (0);
+
+	g_Progress = NULL;
 
 	if (pFiller)
 		delete pFiller;
@@ -1139,12 +1148,6 @@ BOOL CRawDecod::IsRawFile()
 
 	BOOL		bResult = TRUE;
 	int			ret = 0;
-
-	if ((ret = rawProcessor.open_file(m_strFileName)) != LIBRAW_SUCCESS)
-	{
-		bResult = FALSE;
-		ZTRACE_RUNTIME("Cannot open %s: %s", m_strFileName, libraw_strerror(ret));
-	}
 
 	if (bResult)
 	{
@@ -1206,13 +1209,22 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
-	CRawDecod		dcr(szFileName);
 
-	bResult = dcr.IsRawFile();
+	try
+	{
+		CRawDecod		dcr(szFileName);
 
-	if (bResult)
-		dcr.GetModel(strModel);
+		bResult = dcr.IsRawFile();
 
+		if (bResult)
+			dcr.GetModel(strModel);
+
+	}
+	catch (std::exception& e)
+	{
+		e;
+		bResult = FALSE;
+	}
 	return bResult;
 };
 
@@ -1234,7 +1246,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	if ((strExt == ".TIF") || (strExt == ".TIFF"))
 		bIsTiff = TRUE;
 
-	if (!bIsTiff)
+	if (!bIsTiff) try
 	{
 		CRawDecod		dcr(szFileName);
 
@@ -1258,7 +1270,12 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
 			BitmapInfo.m_DateTime		 = dcr.GetDateTime();
 		};
-	};
+	}
+	catch (std::exception& e)
+	{
+		e;
+		bResult = FALSE;
+	}
 
 	return bResult;
 };
@@ -1269,47 +1286,56 @@ BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
-	CRawDecod		dcr(szFileName);
 
-	if (dcr.IsRawFile() && ppBitmap)
+	try
 	{
-		BOOL						bColorRAW;
-		CSmartPtr<CMemoryBitmap>	pBitmap;
+		CRawDecod		dcr(szFileName);
 
-		bColorRAW = dcr.IsColorRAW();
-
-		if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
+		if (dcr.IsRawFile() && ppBitmap)
 		{
-			pBitmap.Attach(new C16BitGrayBitmap);
-			ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-		}
-		else
-		{
-			pBitmap.Attach(new C48BitColorBitmap);
-			ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-		};
+			BOOL						bColorRAW;
+			CSmartPtr<CMemoryBitmap>	pBitmap;
 
-		bResult = dcr.LoadRawFile(pBitmap, pProgress);
+			bColorRAW = dcr.IsColorRAW();
 
-		if (bResult)
-		{
-			C16BitGrayBitmap *	pGrayBitmap;
-
-			pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pBitmap.m_p);
-			if (pGrayBitmap)
+			if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
 			{
-				if (IsSuperPixels())
-					pGrayBitmap->UseSuperPixels(TRUE);
-				else if (IsRawBayer())
-					pGrayBitmap->UseRawBayer(TRUE);
-				else if (IsRawBilinear())
-					pGrayBitmap->UseBilinear(TRUE);
-				else if (IsRawAHD())
-					pGrayBitmap->UseAHD(TRUE);
+				pBitmap.Attach(new C16BitGrayBitmap);
+				ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
+			}
+			else
+			{
+				pBitmap.Attach(new C48BitColorBitmap);
+				ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 			};
-			pBitmap.CopyTo(ppBitmap);
+
+			bResult = dcr.LoadRawFile(pBitmap, pProgress);
+
+			if (bResult)
+			{
+				C16BitGrayBitmap *	pGrayBitmap;
+
+				pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pBitmap.m_p);
+				if (pGrayBitmap)
+				{
+					if (IsSuperPixels())
+						pGrayBitmap->UseSuperPixels(TRUE);
+					else if (IsRawBayer())
+						pGrayBitmap->UseRawBayer(TRUE);
+					else if (IsRawBilinear())
+						pGrayBitmap->UseBilinear(TRUE);
+					else if (IsRawAHD())
+						pGrayBitmap->UseAHD(TRUE);
+				};
+				pBitmap.CopyTo(ppBitmap);
+			};
 		};
-	};
+	}
+	catch (std::exception& e)
+	{
+		e;
+		bResult = FALSE;
+	}
 
 	return bResult;
 };

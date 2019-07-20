@@ -1947,7 +1947,6 @@ __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 
 void CAllStackingTasks::GetTemporaryFilesFolder(CString & strFolder)
 {
-	ZFUNCTRACE_RUNTIME();
 
 	CRegistry			reg;
 	CString				strTemp;

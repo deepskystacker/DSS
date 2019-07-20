@@ -309,7 +309,7 @@ private:
     base_mat *_m;
 
     void clone ();
-    void realloc (size_t row, size_t col);
+    void reallocate (size_t row, size_t col);
     int pivot (size_t row);
 };
 
@@ -362,7 +362,7 @@ matrixT::operator = (const matrixT& m) _NO_THROW
 
 //  reallocation method
 MAT_TEMPLATE inline void 
-matrixT::realloc (size_t row, size_t col)
+matrixT::reallocate (size_t row, size_t col)
 {
    if (row == _m->RowSiz && col == _m->ColSiz)
    {
@@ -394,7 +394,7 @@ matrixT::SetSize (size_t row, size_t col) _NO_THROW
    size_t oldCol = _m->Col;
 
    if (row != _m->RowSiz || col != _m->ColSiz)
-      realloc( row, col);
+      reallocate( row, col);
 
    for (i=oldRow; i < row; i++)
       for (j=0; j < col; j++)
@@ -770,7 +770,7 @@ MAT_TEMPLATE inline void
 matrixT::Null (const size_t& row, const size_t& col) _NO_THROW
 {
     if (row != _m->Row || col != _m->Col)
-	realloc( row,col);
+	reallocate( row,col);
 
     if (_m->Refcnt > 1) 
 	clone();
@@ -797,7 +797,7 @@ MAT_TEMPLATE inline void
 matrixT::Unit (const size_t& row) _NO_THROW
 {
     if (row != _m->Row || row != _m->Col)
-	realloc( row, row);
+	reallocate( row, row);
 	
     if (_m->Refcnt > 1) 
 	clone();

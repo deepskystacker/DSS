@@ -1065,7 +1065,7 @@ BOOL	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 					COLORREF16			crColor;
 
 					m_pBitmap->GetPixel16(i, j, crColor);
-					m_pGrayBitmap->SetPixel(i, j, GetIntensity(crColor));
+					m_pGrayBitmap->SetPixel(i, j, GetLuminance(crColor));
 				};
 			};
 

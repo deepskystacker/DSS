@@ -22,7 +22,7 @@
 
 // Visual Leak Detector
 //
-// #include <vld.h>
+#include <vld.h>
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
@@ -34,6 +34,11 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <atlbase.h>
+
+#include <stdlib.h>
+#ifndef NDEBUG
+#include <crtdbg.h>
+#endif
 
 #include <windows.h>
 

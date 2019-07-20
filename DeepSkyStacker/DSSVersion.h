@@ -4,14 +4,14 @@
 // #define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 5
+#define DSSBETARELEASE 1
 #define DSSBETAEXPIREYEAR 2019
 #define DSSBETAEXPIREMONTH 9
 #endif
 
 #define DSSVER_MAJOR			4
 #define DSSVER_MINOR			2
-#define DSSVER_SUB				0
+#define DSSVER_SUB				1
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE

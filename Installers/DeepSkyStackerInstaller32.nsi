@@ -26,8 +26,8 @@ SetCompressor /SOLID lzma
 !define DSS_RUNTIME_OMP    "vcomp140.dll"
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
-!define DSS_VERSION        "4.2.0"                                  # For control panel
-!define DSS_VERSION_SUFFIX "Beta 5"                                 # For control panel (e.g. "beta 1")
+!define DSS_VERSION        "4.2.1"                                  # For control panel
+!define DSS_VERSION_SUFFIX "Beta 1"                                 # For control panel (e.g. "beta 1")
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
@@ -83,7 +83,7 @@ var PreviousUninstaller
 #!insertmacro PathRemoveArgsAndQuotes
 
 ${ReadmeLanguage} "${LANG_ENGLISH}" \
-          "DeepSkyStacker 4.2.0 Beta 2 Readme.txt" \
+          "DeepSkyStacker ${DSS_VERSION} ${DSS_VERSION_SUFFIX} Readme.txt" \
           "Details about the new release of DeepSkyStacker" \
           "About $(^name):" \
           "$\n  Click on scrollbar arrows or press Page Down to review the entire text."

@@ -1,3 +1,11 @@
+Welcome to DeepSkyStacker 4.2.1
+
+The main changes from 4.2.0 are:
+
+1. Fixed a memory leak in the new code that uses LibRaw.
+
+2. Further performance enhancements to Median-Kappa-Sigma processing (20% faster than 4.2.0).
+
 Welcome to DeepSkyStacker 4.2.0
 
 The main change in this release is to use LibRaw version 19.2 instead of dcraw to capture images from RAW image files.
