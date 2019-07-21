@@ -67,7 +67,7 @@ BOOL CheckVersion(CString & strVersion)
 	#ifndef DSSBETA
 	CRegistry			reg;
 	DWORD				bCheckVersion = 0;
-	CStdioFile			remotefile = nullptr;
+	CStdioFile			*remotefile = nullptr;
 
 	reg.LoadKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
 	if (bCheckVersion == 2)
