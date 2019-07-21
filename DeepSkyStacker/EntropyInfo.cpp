@@ -7,7 +7,6 @@
 void CEntropyInfo::InitSquareEntropies()
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG						i, j;
 	LONG						lSquareSize;
 
 	lSquareSize = m_lWindowSize * 2 + 1;
@@ -26,7 +25,7 @@ void CEntropyInfo::InitSquareEntropies()
 	if (m_pProgress)
 		m_pProgress->Start2(NULL, m_lNrSquaresX);
 
-	for (i = 0;i<m_lNrSquaresX;i++)
+	for (long i = 0;i<m_lNrSquaresX;i++)
 	{
 		LONG			lMinX, 
 						lMaxX;
@@ -34,7 +33,10 @@ void CEntropyInfo::InitSquareEntropies()
 		lMinX = i * lSquareSize;
 		lMaxX = min((i+1) * lSquareSize -1, m_pBitmap->Width()-1);
 
-		for (j = 0;j<m_lNrSquaresY;j++)
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+		for (long j = 0;j<m_lNrSquaresY;j++)
 		{
 			LONG		lMinY,
 						lMaxY;
@@ -61,7 +63,6 @@ void CEntropyInfo::InitSquareEntropies()
 
 void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy)
 {
-	ZFUNCTRACE_RUNTIME();
 	LONG						i, j;
 	std::vector<WORD>			vRedHisto;
 	std::vector<WORD>			vGreenHisto;
