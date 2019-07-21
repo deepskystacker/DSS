@@ -67,6 +67,7 @@ BOOL CheckVersion(CString & strVersion)
 	#ifndef DSSBETA
 	CRegistry			reg;
 	DWORD				bCheckVersion = 0;
+	CStdioFile			remotefile = nullptr;
 
 	reg.LoadKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
 	if (bCheckVersion == 2)
@@ -81,7 +82,7 @@ BOOL CheckVersion(CString & strVersion)
 			mysession.SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1);
 			mysession.SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1);
 
-			CStdioFile *remotefile = mysession.OpenURL(_T("http://deepskystacker.free.fr/download/CurrentVersion.txt"),1,INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_DONT_CACHE|INTERNET_FLAG_RELOAD);
+			remotefile = mysession.OpenURL(_T("http://deepskystacker.free.fr/download/CurrentVersion.txt"),1,INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_DONT_CACHE|INTERNET_FLAG_RELOAD);
 
 			int numbytes;
 
@@ -105,6 +106,7 @@ BOOL CheckVersion(CString & strVersion)
 		}
 		END_CATCH_ALL;
 	};
+	delete remotefile;
 	#endif
 
 	return bResult;
