@@ -527,11 +527,8 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 		PIXELITERATOR	it;*/
 
 		float *				pBaseRedPixel;
-		float *				pBaseGreenPixel = NULL;
-		float *				pBaseBluePixel  = NULL;
-		float *				pRedPixel;
-		float *				pGreenPixel;
-		float *				pBluePixel;
+		float *				pBaseGreenPixel = nullptr;
+		float *				pBaseBluePixel  = nullptr;
 
 		pBaseRedPixel	= &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
 		if (!m_bMonochrome)
@@ -540,14 +537,26 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 			pBaseBluePixel	= &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
 		};
 
+#if defined (_OPENMP)
+#pragma omp parallel for default(none)
+#endif
 		for (LONG j = lYMin;j<lYMax;j++)
 		{
 			LPBYTE			lpOut = Bitmap.GetPixelBase(lXMin, j);
 			LPRGBQUAD &		lpOutPixel = (LPRGBQUAD &)lpOut;
+			float *			pRedPixel = nullptr;;
+			float *			pGreenPixel = nullptr;
+			float *			pBluePixel = nullptr;
 
-			pRedPixel	= pBaseRedPixel;
-			pGreenPixel = pBaseGreenPixel;
-			pBluePixel	= pBaseBluePixel;
+			//
+			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
+			//
+			pRedPixel	= pBaseRedPixel + (m_lWidth * (j - lYMin));
+			if (!m_bMonochrome)
+			{
+				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
+				pBluePixel  = pBaseBluePixel + (m_lWidth * (j - lYMin));
+			};
 			for (LONG i = lXMin;i<lXMax;i++)
 			{
 				COLORREF		crColor;
@@ -576,12 +585,6 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 					pBluePixel++;
 				};
 				lpOut += 4;
-			};
-			pBaseRedPixel	+= m_lWidth;
-			if (!m_bMonochrome)
-			{
-				pBaseGreenPixel += m_lWidth;
-				pBaseBluePixel  += m_lWidth;
 			};
 		};
 
@@ -628,11 +631,8 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 					lYMax = m_lHeight;
 
 		float *				pBaseRedPixel;
-		float *				pBaseGreenPixel = NULL;
-		float *				pBaseBluePixel  = NULL;
-		float *				pRedPixel;
-		float *				pGreenPixel;
-		float *				pBluePixel;
+		float *				pBaseGreenPixel = nullptr;
+		float *				pBaseBluePixel  = nullptr;
 
 		if (pProgress)
 		{
@@ -651,9 +651,19 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 
 		for (LONG j = lYMin;j<lYMax;j++)
 		{
-			pRedPixel	= pBaseRedPixel;
-			pGreenPixel = pBaseGreenPixel;
-			pBluePixel	= pBaseBluePixel;
+			float * pRedPixel = nullptr;
+			float * pGreenPixel = nullptr;
+			float * pBluePixel = nullptr;
+
+			//
+			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
+			//
+			pRedPixel = pBaseRedPixel + (m_lWidth * (j - lYMin));
+			if (!m_bMonochrome)
+			{
+				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
+				pBluePixel = pBaseBluePixel + (m_lWidth * (j - lYMin));
+			};
 			for (LONG i = lXMin;i<lXMax;i++)
 			{
 				COLORREF		crColor;
@@ -676,12 +686,6 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 					pGreenPixel++;
 					pBluePixel++;
 				};
-			};
-			pBaseRedPixel	+= m_lWidth;
-			if (!m_bMonochrome)
-			{
-				pBaseGreenPixel += m_lWidth;
-				pBaseBluePixel  += m_lWidth;
 			};
 
 			if (pProgress)
