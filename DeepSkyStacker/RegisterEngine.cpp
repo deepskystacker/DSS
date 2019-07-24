@@ -12,6 +12,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include <omp.h>
+
 const LONG				STARMAXSIZE = 50;
 
 /* ------------------------------------------------------------------- */
@@ -462,7 +464,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 						if (bNew)
 						{
 							// Search around the point until intensity is divided by 2
-							// 20 pixels radius max search
+							// STARMAXSIZE pixels radius max search
 							vPixels.resize(0);
 							vPixels.push_back(CPixelDirection(0, -1));
 							vPixels.push_back(CPixelDirection(1, 0));
@@ -974,25 +976,30 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 
 	m_vStars.clear();
 	m_sStars.clear();
+
 	for (j = STARMAXSIZE;j<Bitmap.Height()-STARMAXSIZE;j+=lSubRectHeight/2)
 	{
-		for (i = STARMAXSIZE;i<Bitmap.Width()-STARMAXSIZE;i+=lSubRectWidth/2)
+		for (i = STARMAXSIZE; i < Bitmap.Width() - STARMAXSIZE; i += lSubRectWidth / 2)
 		{
 			CRect			rcSubRect;
 
-			rcSubRect.left = i;	rcSubRect.right  = min(Bitmap.Width()-STARMAXSIZE, i + lSubRectWidth);
-			rcSubRect.top = j;	rcSubRect.bottom = min(Bitmap.Height()-STARMAXSIZE, j + lSubRectHeight);
+			rcSubRect.left = i;	rcSubRect.right = min(Bitmap.Width() - STARMAXSIZE, i + lSubRectWidth);
+			rcSubRect.top = j;	rcSubRect.bottom = min(Bitmap.Height() - STARMAXSIZE, j + lSubRectHeight);
 
 			RegisterSubRect(&Bitmap, rcSubRect);
 
-			lProgress++;
 			if (m_pProgress)
 			{
 				CString			strText;
 
-				strText.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, m_vStars.size());
-				m_pProgress->Progress2(strText, lProgress);
+				++lProgress;
+				if (0 == lProgress % 25)
+				{
+					strText.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, m_vStars.size());
+					m_pProgress->Progress2(strText, lProgress);
+				}
 			};
+
 		};
 	};
 	m_sStars.clear();
