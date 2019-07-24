@@ -8,7 +8,7 @@ The main changes since 4.2.1 are
 
 3. OpenMP speedup of Star Mask image reading code
 
-4. OpenMP speedup of final image display.
+4. Huge speedup of final image display by using larger rectangles and OpenMP speedup bitmap extraction.
 
 5. Speed up star registration by updating progress indicator once every 25 iterations instead of each iteration.
  
