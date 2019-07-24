@@ -1,3 +1,17 @@
+Welcome to DeepSkyStacker 4.2.2
+
+The main changes since 4.2.1 are
+
+1. Changes to star registration code to detect larger stars than before.
+
+2. Allow larger star sizes to the specified in the Star Mask creation dialogue.before 
+
+3. OpenMP speedup of Star Mask image reading code
+
+4. OpenMP speedup of final image display.
+
+5. Speed up star registration by updating progress indicator once every 25 iterations instead of each iteration.
+ 
 Welcome to DeepSkyStacker 4.2.1
 
 The main changes from 4.2.0 are:
@@ -5,6 +19,8 @@ The main changes from 4.2.0 are:
 1. Fixed a memory leak in the new code that uses LibRaw.
 
 2. Further performance enhancements to Median-Kappa-Sigma processing (20% faster than 4.2.0).
+
+3. Entropy calculation for Entropy Weighted Average now computed in parallel.
 
 Welcome to DeepSkyStacker 4.2.0
 
