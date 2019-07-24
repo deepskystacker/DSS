@@ -10,6 +10,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#include <omp.h>
+
 /* ------------------------------------------------------------------- */
 
 CStackedBitmap::CStackedBitmap() 
@@ -625,31 +627,35 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 
 	if (pBitmap)
 	{
-		LONG		lXMin = 0, 
-					lYMin = 0, 
-					lXMax = m_lWidth, 
-					lYMax = m_lHeight;
+		LONG		lXMin = 0,
+			lYMin = 0,
+			lXMax = m_lWidth,
+			lYMax = m_lHeight;
 
 		float *				pBaseRedPixel;
 		float *				pBaseGreenPixel = nullptr;
-		float *				pBaseBluePixel  = nullptr;
+		float *				pBaseBluePixel = nullptr;
+		int					iProgress = 0;
 
 		if (pProgress)
 		{
 			CString			strText;
 
 			strText.LoadString(IDS_PROCESSINGIMAGE);
-			pProgress->Start2(strText, lYMax-lYMin);
+			pProgress->Start2(strText, lYMax - lYMin);
 		};
 
-		pBaseRedPixel	= &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
+		pBaseRedPixel = &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
 		if (!m_bMonochrome)
 		{
 			pBaseGreenPixel = &(m_vGreenPlane[m_lWidth * lYMin + lXMin]);
-			pBaseBluePixel	= &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
+			pBaseBluePixel = &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
 		};
 
-		for (LONG j = lYMin;j<lYMax;j++)
+#if defined (_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+		for (LONG j = lYMin; j < lYMax; j++)
 		{
 			float * pRedPixel = nullptr;
 			float * pGreenPixel = nullptr;
@@ -664,7 +670,7 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
 				pBluePixel = pBaseBluePixel + (m_lWidth * (j - lYMin));
 			};
-			for (LONG i = lXMin;i<lXMax;i++)
+			for (LONG i = lXMin; i < lXMax; i++)
 			{
 				COLORREF		crColor;
 
@@ -687,9 +693,16 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 					pBluePixel++;
 				};
 			};
-
+#if defined (_OPENMP)
+			if (pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+			{
+				iProgress += omp_get_num_threads();
+				pProgress->Progress2(NULL, iProgress);
+			}
+#else
 			if (pProgress)
-				pProgress->Progress2(NULL, j-lYMin+1);
+				pProgress->Progress2(NULL, ++iProgress);
+#endif
 		};
 
 		if (pProgress)
