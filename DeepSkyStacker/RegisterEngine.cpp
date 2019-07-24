@@ -12,7 +12,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-const LONG				STARMAXSIZE = 20;
+const LONG				STARMAXSIZE = 50;
 
 /* ------------------------------------------------------------------- */
 
