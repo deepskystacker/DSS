@@ -1,16 +1,18 @@
 Welcome to DeepSkyStacker 4.2.2
 
-The main changes since 4.2.1 are
+This release is all about performance, though other areas have been enhanced as well.  The main changes since 4.2.1 are:
 
-1. Changes to star registration code to detect larger stars than before.
+1. Changes to star registration code to detect larger stars than before.   This was needed to accomodate higher resolution sensors.
 
-2. Allow larger star sizes to the specified in the Star Mask creation dialogue.before 
+2. Allow larger star sizes to the specified in the Star Mask creation dialogue.
 
 3. OpenMP speedup of Star Mask image reading code
 
-4. Huge speedup of final image display by using larger rectangles and OpenMP speedup bitmap extraction.
+4. Huge speedup of final image display by using larger rectangles and OpenMP speedup of the bitmap extraction code.
 
 5. Speed up star registration by updating progress indicator once every 25 iterations instead of each iteration.
+
+6. KappaSigmaClip processing of final image now about 50 times faster.
  
 Welcome to DeepSkyStacker 4.2.1
 

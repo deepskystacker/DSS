@@ -1318,7 +1318,10 @@ protected :
 			else if (m_Method == MBP_MAXIMUM)
 				*pCurrentValue = Maximum(vValues);
 			else if (m_Method == MBP_SIGMACLIP)
+			{
+				// Note that first parameter is modified by KappSigmaClip
 				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations);
+			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
 				*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
 			else if (m_Method == MBP_AUTOADAPTIVE)
@@ -2726,6 +2729,7 @@ protected :
 			}
 			else if (m_Method == MBP_SIGMACLIP)
 			{
+				// Note that first parameter is modified by KappSigmaClip
 				*pRedCurrentValue	= KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations);
 				*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations);
 				*pBlueCurrentValue	= KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations);

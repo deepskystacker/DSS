@@ -1543,6 +1543,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			};
 			std::sort(vRatios.begin(), vRatios.end());
 
+			// Note that first parameter is modified by KappSigmaClip
 			fRedFactor = KappaSigmaClip(vRatios, 2.0, 5);
 			fGreenFactor = fBlueFactor = fRedFactor;
 		}
@@ -1583,6 +1584,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			std::sort(vGreenRatios.begin(), vGreenRatios.end());
 			std::sort(vBlueRatios.begin(), vBlueRatios.end());
 
+			// Note that first parameter is modified by KappSigmaClip
 			fRedFactor = KappaSigmaClip(vRedRatios, 2.0, 5);
 			fGreenFactor = KappaSigmaClip(vGreenRatios, 2.0, 5);
 			fBlueFactor = KappaSigmaClip(vBlueRatios, 2.0, 5);

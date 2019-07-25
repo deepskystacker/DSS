@@ -751,6 +751,7 @@ double Homogenize3(std::vector<T> & vValues, LONG lNrSubStacks)
 		vSubStack.clear();
 		for (LONG i = j;i<lNrValues;i+=lNrSubStacks)
 			vSubStack.push_back(vValues[i]);
+		// Note that first parameter to KappaSigmaClip() is modified by KappSigmaClip
 		vStackValues.push_back(KappaSigmaClip(vSubStack, 1.5, 3));
 	};
 
@@ -935,16 +936,15 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration)
+double	KappaSigmaClip(std::vector<T> & vValues, double fKappa, LONG lIteration)
 {
 	double			Result = 0;
 	BOOL			bEnd = FALSE;
-	std::vector<T>	vAuxValues = vValues;
 	CDynamicStats	DynStats;
 
-	std::sort(vAuxValues.begin(), vAuxValues.end());
+	std::sort(vValues.begin(), vValues.end());
 	
-	FillDynamicStat(vAuxValues, DynStats);
+	FillDynamicStat(vValues, DynStats);
 
 	for (LONG i = 0;i<lIteration && !bEnd;i++)
 	{
@@ -955,47 +955,47 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 		double			fMin,
 						fMax;
 
-		fSigma	 = DynStats.Sigma(); //Sigma2(vAuxValues, fAverage);
+		fSigma	 = DynStats.Sigma(); //Sigma2(vValues, fAverage);
 		fAverage = DynStats.Average();
 
 
 		fMin = fAverage - fKappa * fSigma;
 		fMax = fAverage + fKappa * fSigma;
 
-		while (j<vAuxValues.size() && vAuxValues[j]<fMin)
+		while (j<vValues.size() && vValues[j]<fMin)
 		{
-			DynStats.RemoveValue(vAuxValues[j]);
+			DynStats.RemoveValue(vValues[j]);
 			j++;
 		};
-		while (j<vAuxValues.size() && vAuxValues[j]<=fMax)
+		while (j<vValues.size() && vValues[j]<=fMax)
 		{
-			vAuxValues[lCurrentIndice] = vAuxValues[j];
+			vValues[lCurrentIndice] = vValues[j];
 			lCurrentIndice++;
 			j++;
 		};
 
-		while (j<vAuxValues.size())
+		while (j<vValues.size())
 		{
-			DynStats.RemoveValue(vAuxValues[j]);
+			DynStats.RemoveValue(vValues[j]);
 			j++;
 		};
 
-/*		for (LONG j = 0;j<vAuxValues.size();j++)
+/*		for (LONG j = 0;j<vValues.size();j++)
 		{
-			if (((double)vAuxValues[j]>= (fAverage - fKappa*fSigma)) &&
-				((double)vAuxValues[j]<= (fAverage + fKappa*fSigma)))
-				vTempValues.push_back(vAuxValues[j]);
+			if (((double)vValues[j]>= (fAverage - fKappa*fSigma)) &&
+				((double)vValues[j]<= (fAverage + fKappa*fSigma)))
+				vTempValues.push_back(vValues[j]);
 			else
-				DynStats.RemoveValue(vAuxValues[j]);
+				DynStats.RemoveValue(vValues[j]);
 		};*/
 
-		bEnd = !lCurrentIndice || (lCurrentIndice == vAuxValues.size());
-		vAuxValues.resize(lCurrentIndice);
-		//bEnd = !vTempValues.size() || (vAuxValues.size() == vTempValues.size());
-		//vAuxValues = vTempValues;
+		bEnd = !lCurrentIndice || (lCurrentIndice == vValues.size());
+		vValues.resize(lCurrentIndice);
+		//bEnd = !vTempValues.size() || (vValues.size() == vTempValues.size());
+		//vValues = vTempValues;
 	};
 
-	Result = DynStats.Average();//Average(vAuxValues);
+	Result = DynStats.Average();//Average(vValues);
 
 	return Result;
 };
