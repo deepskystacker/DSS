@@ -1255,8 +1255,8 @@ protected :
 		std::vector<TType>			vAuxValues;
 		std::vector<TType>			vWorkingBuffer1;
 		std::vector<TType>			vWorkingBuffer2;
-		std::vector<double>			vdWork1;
-		std::vector<double>			vdWork2;
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -2610,8 +2610,8 @@ protected :
 		std::vector<TType>			vAuxBlueValues;
 		std::vector<TType>			vWorkingBuffer1;
 		std::vector<TType>			vWorkingBuffer2;
-		std::vector<double>			vdWork1;
-		std::vector<double>			vdWork2;
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
