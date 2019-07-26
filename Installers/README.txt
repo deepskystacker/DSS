@@ -4,7 +4,7 @@ This release is all about performance, though other areas have been enhanced as 
 
 1. Changes to star registration code to detect larger stars than before.   This was needed to accomodate higher resolution sensors.
 
-2. Allow larger star sizes to the specified in the Star Mask creation dialogue.
+2. Allow larger star sizes to the specified in the Star Mask creation dialogue.   This was needed to accomodate higher resolution sensors.
 
 3. OpenMP speedup of Star Mask image reading code
 
@@ -12,7 +12,9 @@ This release is all about performance, though other areas have been enhanced as 
 
 5. Speed up star registration by updating progress indicator once every 25 iterations instead of each iteration.
 
-6. KappaSigmaClip processing of final image now about 50 times faster.
+6. Computing Final Picture using Kappa-Sigma Clip processing is now about 50 times faster!
+
+7. Computing Final Picture using Auto Adaptive Weighted Average is now about 43 times faster!
  
 Welcome to DeepSkyStacker 4.2.1
 

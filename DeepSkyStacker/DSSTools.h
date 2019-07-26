@@ -1053,7 +1053,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterations)
+double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterations, std::vector<double> & vAuxValues, std::vector<double> & vWeights)
 {
 	double				fResult = 0;
 
@@ -1066,8 +1066,6 @@ double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterati
 
 		if (fMaximum>0)
 		{
-			std::vector<double>		vAuxValues;
-			std::vector<double>		vWeights;
 			LONG					i;
 			BOOL					bEnd = FALSE;
 
