@@ -1091,7 +1091,9 @@ double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterati
 				{
 					for (LONG j = 0;j<vAuxValues.size();j++)
 					{
-						vWeights[j]		= fSigma/fabs(vAuxValues[j]-fAverage);
+						double r = fabs(vAuxValues[j] - fAverage);
+
+						vWeights[j] = (1 / fSigma2) * (1 / (1 + pow((r / fSigma), 2)));
 						vAuxValues[j]	= vValues[j] * vWeights[j];
 					};
 				}
