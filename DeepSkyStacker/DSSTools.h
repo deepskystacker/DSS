@@ -1055,31 +1055,31 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 template <class T> inline
 double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterations, std::vector<double> & vAuxValues, std::vector<double> & vWeights)
 {
-	double				fResult = 0;
+	double			fResult = 0;
+	size_t			i, size = vValues.size();
 
-	if (vValues.size()>2)
+	if (size>2)
 	{
-		double					fMaximum = vValues[0];
+		double		fMaximum = vValues[0];
 
-		for (LONG i = 1;i<vValues.size();i++)
+		for (i = 1; i < size; i++)
 			fMaximum = max(fMaximum, vValues[i]);
 
-		if (fMaximum>0)
+		if (fMaximum > 0)
 		{
-			LONG					i;
-			BOOL					bEnd = FALSE;
+			BOOL	bEnd = FALSE;
 
-			vAuxValues.resize(vValues.size());
-			vWeights.resize(vValues.size());
+			vAuxValues.resize(size);
+			vWeights.resize(size);
 
-			for (LONG i = 0; i < vValues.size(); i++)
+			for (i = 0; i < size; i++)
+			{
 				vAuxValues[i] = (double)vValues[i];
-
-			for (i = 0;i<vAuxValues.size();i++)
 				vWeights[i] = 1.0;
-			
+			}
+
 			// Compute the weights
-			for (i = 0;i<lIterations && !bEnd;i++)
+			for (i = 0; i < lIterations && !bEnd; i++)
 			{
 				double			fAverage;
 				double			fSigma;
@@ -1089,29 +1089,39 @@ double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterati
 				fSigma2 = pow(fSigma, 2);
 				if (fSigma2 > 0)
 				{
-					for (LONG j = 0;j<vAuxValues.size();j++)
+					for (size_t j = 0; j < size; j++)
 					{
 						double r = fabs(vAuxValues[j] - fAverage);
 
 						vWeights[j] = (1 / fSigma2) * (1 / (1 + pow((r / fSigma), 2)));
-						vAuxValues[j]	= vValues[j] * vWeights[j];
 					};
+					//
+					// Normalise the weights and apply them
+					//
+					double maxWeight = *std::max_element(vWeights.begin(), vWeights.end());
+					for (size_t j = 0; j < size; j++)
+					{
+						vWeights[j] = vWeights[j] / maxWeight;
+						vAuxValues[j] = vValues[j] * vWeights[j];
+					};
+
 				}
 				else 
 					bEnd = true;
 			};
 
-			// Compute the averaged sum
-			double				fTotalWeight = 0.0;
-
-			for (i = 0;i<vValues.size();i++)
+			//
+			// If things went well (bEnd is false), vAuxValues should contain the weighted values
+			// from which we compute the average.
+			// 
+			// If things went badly we just compute the average of the un-weighted input data.
+			// 
+			if (!bEnd)
+				fResult = Average(vAuxValues);
+			else
 			{
-				fResult += vValues[i] * vWeights[i];
-				fTotalWeight += vWeights[i];
-			};
-
-			if (fTotalWeight)
-				fResult /= fTotalWeight;
+				fResult = Average(vValues);
+			}
 		};
 	}
 	else
