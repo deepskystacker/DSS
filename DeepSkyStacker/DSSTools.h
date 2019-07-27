@@ -1072,8 +1072,8 @@ double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterati
 			vAuxValues.resize(vValues.size());
 			vWeights.resize(vValues.size());
 
-			for (LONG i = 0;i<vValues.size();i++)
-				vAuxValues[i] = (double)vValues[i]/fMaximum;
+			for (LONG i = 0; i < vValues.size(); i++)
+				vAuxValues[i] = (double)vValues[i];
 
 			for (i = 0;i<vAuxValues.size();i++)
 				vWeights[i] = 1.0;
