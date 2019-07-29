@@ -2,19 +2,23 @@ Welcome to DeepSkyStacker 4.2.2
 
 This release is all about performance, though other areas have been enhanced as well.  The main changes since 4.2.1 are:
 
-1. Changes to star registration code to detect larger stars than before.   This was needed to accomodate higher resolution sensors.
+1. Changes to star registration code to detect larger stars than before.   Star radius of up to 50 pixels is now valid (it was 20 pixels).  This was needed to accomodate higher resolution sensors.
 
-2. Allow larger star sizes to the specified in the Star Mask creation dialogue.   This was needed to accomodate higher resolution sensors.
+2. Allow larger star sizes to the specified in the Star Mask creation dialogue.   Star diameter of up to 100 pixels is now allowed.   This was needed to accomodate higher resolution sensors.
 
-3. OpenMP speedup of Star Mask image reading code
+3. OpenMP speedup of Star Mask image reading code.
 
-4. Huge speedup of final image display by using larger rectangles and OpenMP speedup of the bitmap extraction code.
+4. Huge speedup of final image display by using much larger rectangles and OpenMP speedup of the bitmap extraction code.
 
 5. Speed up star registration by updating progress indicator once every 25 iterations instead of each iteration.
 
 6. Computing Final Picture using Kappa-Sigma Clip processing is now about 50 times faster!
 
 7. Computing Final Picture using Auto Adaptive Weighted Average is now about 43 times faster!
+
+8. Auto-Adaptive Weighted Average now re-written completely.  It should no longer produce whited out images or other strange results. Thanks to Michael A. Covington and Simon C. Smith for their immense help in locating references and getting this working.
+
+9. Update LibRaw to 0.19.3.
  
 Welcome to DeepSkyStacker 4.2.1
 
