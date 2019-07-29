@@ -1136,7 +1136,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 				// Escape clause for small sigma - where all input data
 				// are the same or darn nearly so.
 				//
-				if (fSigma <= SMALL) break;
+				if (0 == nIteration && fSigma <= SMALL) break;
 
 				//
 				// Calculate the weights
