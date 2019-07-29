@@ -1105,9 +1105,9 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 	const double	SMALL = 5.0;
 
 	//
-	// Probably not too bright an idea to do weighted average on a sample size less than 5
+	// Probably not too bright an idea to do weighted average on a sample size less than 3
 	//
-	if (nElements > 4)
+	if (nElements > 2)
 	{
 		double		fMaximum = vValues[0];
 
@@ -1136,7 +1136,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 				// Escape clause for small sigma - where all input data
 				// are the same or darn nearly so.
 				//
-				if (0 == nIteration && fSigma <= SMALL) break;
+				if (0 == nIteration && fSigma <= SMALL) return runningAverage;
 
 				//
 				// Calculate the weights
@@ -1159,16 +1159,10 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 			}
 
 			//
-			// If things went well (sigma not stupidly small), then the result is in 
+			// If we didn't already return because of small sigma, then the result is in 
 			// variable runningAverage
 			// 
-			// If all the elements were the same (or very nearly so) then sigma will be
-			// very small so just return the regular average.
-			// 
-			if (fSigma > SMALL)
-				fResult = runningAverage;
-			else
-				fResult = Average(vValues);
+			fResult = runningAverage;
 		};
 	}
 	else
