@@ -1323,13 +1323,12 @@ protected :
 				*pCurrentValue = Maximum(vValues);
 			else if (m_Method == MBP_SIGMACLIP)
 			{
-				// Note that first parameter is modified by KappSigmaClip
-				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations);
+				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
 			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
 				*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
 			else if (m_Method == MBP_AUTOADAPTIVE)
-				*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations, vdWork1, vdWork2);
+				*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations, vdWork1);
 
 			//if (m_bHomogenization)
 			//	*pCurrentValue = fHomogenization*(double)(*pCurrentValue);
@@ -2651,11 +2650,11 @@ protected :
 				if (*pRedValue || m_vImageOrder.size())	// Remove 0
 					vRedValues.push_back(*pRedValue);
 				if (*pGreenValue || m_vImageOrder.size())	// Remove 0
-					vGreenValues.push_back(*pGreenValue);
+				  	vGreenValues.push_back(*pGreenValue);
 				if (*pBlueValue || m_vImageOrder.size())	// Remove 0
 					vBlueValues.push_back(*pBlueValue);
 			};
-
+						
 			if (m_bHomogenization)
 			{
 			//	if ((i==843) && (lLine==934))
@@ -2737,10 +2736,9 @@ protected :
 			}
 			else if (m_Method == MBP_SIGMACLIP)
 			{
-				// Note that first parameter is modified by KappSigmaClip
-				*pRedCurrentValue	= KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations);
-				*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations);
-				*pBlueCurrentValue	= KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations);
+				*pRedCurrentValue	= KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+				*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+				*pBlueCurrentValue	= KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
 			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
 			{
@@ -2750,9 +2748,9 @@ protected :
 			}
 			else if (m_Method == MBP_AUTOADAPTIVE)
 			{
-				*pRedCurrentValue	= AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations, vdWork1, vdWork2);
-				*pGreenCurrentValue = AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations, vdWork1, vdWork2);
-				*pBlueCurrentValue	= AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations, vdWork1, vdWork2);
+				*pRedCurrentValue	= AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations, vdWork1);
+				*pGreenCurrentValue = AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations, vdWork1);
+				*pBlueCurrentValue	= AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations, vdWork1);
 			};
 
 			pRedCurrentValue++;

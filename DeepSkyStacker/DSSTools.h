@@ -1,7 +1,9 @@
 #ifndef __DSSTOOLS_H__
 #define __DSSTOOLS_H__
 
+
 #include <algorithm>
+#include <numeric>
 #include <float.h>
 #include <math.h>
 
@@ -433,15 +435,7 @@ T	Maximum(const std::vector<T> & vValues)
 template <class T> inline
 double	Average(const std::vector<T> & vValues)
 {
-	double			fResult = 0.0;
-
-	// Compute the average
-	for (LONG i = 0;i<vValues.size();i++)
-		fResult += vValues[i];
-
-	if (vValues.size())
-		fResult = fResult / vValues.size();
-
+	double fResult = std::accumulate(vValues.begin(), vValues.end(), 0.0) / vValues.size();
 	return fResult;
 };
 
@@ -457,7 +451,7 @@ double	Sigma2(const std::vector<T> & vValues, double & fAverage)
 	fAverage = Average(vValues);
 
 	for (LONG i = 0;i<vValues.size();i++)
-		fSquareDiff += pow((double)vValues[i] - fAverage, 2);
+		fSquareDiff += (((double)vValues[i] - fAverage) * ((double)vValues[i] - fAverage));
 	if (vValues.size())
 		fResult = sqrt(fSquareDiff/vValues.size());
 
@@ -473,6 +467,15 @@ double	Sigma(const std::vector<T> & vValues)
 
 	return Sigma2(vValues, fAverage);
 };
+
+template <typename T>
+double CalculateSigmaFromAverage(const std::vector<T> & vValues, const double targetAverage)
+{
+	double squareDiff = 0.0;
+	for (size_t i = 0; i < vValues.size(); i++)
+		squareDiff += (vValues[i] - targetAverage) * (vValues[i] - targetAverage);
+	return sqrt(squareDiff / vValues.size());
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -740,19 +743,21 @@ double Homogenize3(std::vector<T> & vValues, LONG lNrSubStacks)
 {
 	double						fResult = 1.0;
 	std::vector<double>			vStackValues;
+	std::vector<T>				vWork;
 	std::vector<T>				vSubStack;
 	LONG						lNrValues = vValues.size();
 
 	vStackValues.reserve(lNrSubStacks);
 	vSubStack.reserve(lNrValues/lNrSubStacks+1);
+	vWork.reserve(lNrValues / lNrSubStacks + 1);
 
 	for (LONG j = 0;j<lNrSubStacks;j++)
 	{
 		vSubStack.clear();
 		for (LONG i = j;i<lNrValues;i+=lNrSubStacks)
 			vSubStack.push_back(vValues[i]);
-		// Note that first parameter to KappaSigmaClip() is modified by KappSigmaClip
-		vStackValues.push_back(KappaSigmaClip(vSubStack, 1.5, 3));
+
+		vStackValues.push_back(KappaSigmaClip(vSubStack, 1.5, 3, vWork));
 	};
 
 	fResult = Median(vStackValues);
@@ -936,15 +941,20 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	KappaSigmaClip(std::vector<T> & vValues, double fKappa, LONG lIteration)
+double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T> & vAuxValues)
 {
 	double			Result = 0;
 	BOOL			bEnd = FALSE;
 	CDynamicStats	DynStats;
 
-	std::sort(vValues.begin(), vValues.end());
+	//
+	// Copy the data
+	// 
+	vAuxValues = vValues;
+
+	std::sort(vAuxValues.begin(), vAuxValues.end());
 	
-	FillDynamicStat(vValues, DynStats);
+	FillDynamicStat(vAuxValues, DynStats);
 
 	for (LONG i = 0;i<lIteration && !bEnd;i++)
 	{
@@ -955,47 +965,47 @@ double	KappaSigmaClip(std::vector<T> & vValues, double fKappa, LONG lIteration)
 		double			fMin,
 						fMax;
 
-		fSigma	 = DynStats.Sigma(); //Sigma2(vValues, fAverage);
+		fSigma	 = DynStats.Sigma(); //Sigma2(vAuxValues, fAverage);
 		fAverage = DynStats.Average();
 
 
 		fMin = fAverage - fKappa * fSigma;
 		fMax = fAverage + fKappa * fSigma;
 
-		while (j<vValues.size() && vValues[j]<fMin)
+		while (j<vAuxValues.size() && vAuxValues[j]<fMin)
 		{
-			DynStats.RemoveValue(vValues[j]);
+			DynStats.RemoveValue(vAuxValues[j]);
 			j++;
 		};
-		while (j<vValues.size() && vValues[j]<=fMax)
+		while (j<vAuxValues.size() && vAuxValues[j]<=fMax)
 		{
-			vValues[lCurrentIndice] = vValues[j];
+			vAuxValues[lCurrentIndice] = vAuxValues[j];
 			lCurrentIndice++;
 			j++;
 		};
 
-		while (j<vValues.size())
+		while (j<vAuxValues.size())
 		{
-			DynStats.RemoveValue(vValues[j]);
+			DynStats.RemoveValue(vAuxValues[j]);
 			j++;
 		};
 
-/*		for (LONG j = 0;j<vValues.size();j++)
+/*		for (LONG j = 0;j<vAuxValues.size();j++)
 		{
-			if (((double)vValues[j]>= (fAverage - fKappa*fSigma)) &&
-				((double)vValues[j]<= (fAverage + fKappa*fSigma)))
-				vTempValues.push_back(vValues[j]);
+			if (((double)vAuxValues[j]>= (fAverage - fKappa*fSigma)) &&
+				((double)vAuxValues[j]<= (fAverage + fKappa*fSigma)))
+				vTempValues.push_back(vAuxValues[j]);
 			else
-				DynStats.RemoveValue(vValues[j]);
+				DynStats.RemoveValue(vAuxValues[j]);
 		};*/
 
-		bEnd = !lCurrentIndice || (lCurrentIndice == vValues.size());
-		vValues.resize(lCurrentIndice);
-		//bEnd = !vTempValues.size() || (vValues.size() == vTempValues.size());
-		//vValues = vTempValues;
+		bEnd = !lCurrentIndice || (lCurrentIndice == vAuxValues.size());
+		vAuxValues.resize(lCurrentIndice);
+		//bEnd = !vTempValues.size() || (vAuxValues.size() == vTempValues.size());
+		//vAuxValues = vTempValues;
 	};
 
-	Result = DynStats.Average();//Average(vValues);
+	Result = DynStats.Average();//Average(vAuxValues);
 
 	return Result;
 };
@@ -1052,76 +1062,113 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 /* ------------------------------------------------------------------- */
 
-template <class T> inline
-double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterations, std::vector<double> & vAuxValues, std::vector<double> & vWeights)
+template <typename T>
+double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterations, std::vector<double> & vWeights)
 {
-	double			fResult = 0;
-	size_t			i, size = vValues.size();
+	// Computes the auto-adaptive weighted average of a set of numbers
+	// (intended to be the values of the same pixel in different stacked images).
+	//
+	// Based on pp. 44-51 of:
+	//
+	// Peter B. Stetson (1989)
+	//	"The Techniques of Least Squares and Stellar Photometry with CCDs"
+	//
+	// Which was presented at: 
+	//	V Escola Avançada de Astrofísica,
+	//	Aguas de São Pedro, Brazil
+	//
+	// and is archived online at:
+	//	https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html
+	//	(section "Non-Gaussian Error Distributions")
+	//
+	// This was further interpreted (maybe changed) by an anonymous author at
+	// https://archive.stsci.edu/hst/wfpc2/pipeline.html
+	// (this author puts in a 1/sigma2 term that is constant and should have
+	// no effect on normalized weights; Stetson's sigma is the sigma of the data
+	// whereas the second author's sigma2 is "derived from read noise and gain").
+	//
+	// I am indebted to Michael A. Covington and Simon C. Smith for their 
+	// immense help in getting this working.  Much of the code is adapted from
+	// Simon's code simply because it was C++ whereas Michael's written in C#
+	//
+	// Regardless any faults are my own!
+	// David C. Partridge
+	// 29 July 2019
+	//
 
-	if (size>2)
+	double			fResult = 0;
+	size_t			i = 0;
+	size_t			nElements = vValues.size();
+
+	// If the standard deviation is less than (say) five there's not much point iterating
+	// the auto-adaptive average calculation, in that case just return a regular average.
+	const double	SMALL = 5.0;
+
+	//
+	// Probably not too bright an idea to do weighted average on a sample size less than 5
+	//
+	if (nElements > 4)
 	{
 		double		fMaximum = vValues[0];
 
-		for (i = 1; i < size; i++)
-			fMaximum = max(fMaximum, vValues[i]);
+		for (i = 1; i < nElements; i++)
+			fMaximum = max(fMaximum, (double)vValues[i]);
 
 		if (fMaximum > 0)
 		{
-			BOOL	bEnd = FALSE;
+			vWeights.resize(nElements);
 
-			vAuxValues.resize(size);
-			vWeights.resize(size);
+			// Start with the mean value of the set.
+			double runningAverage = Average(vValues);
+			double fSigma = 0.0;
 
-			for (i = 0; i < size; i++)
+			// Calculate weights for the values, but re-iterate with the
+			// new "weighted" average each time. This should converge on
+			// a single value over time. Rumour has it that 5 will do :)
+			for (int nIteration = 0; nIteration < (int)lIterations; nIteration++)
 			{
-				vAuxValues[i] = (double)vValues[i];
-				vWeights[i] = 1.0;
-			}
+				//
+				// Calculate the standard deviation from the current running average.
+				//
+				fSigma = CalculateSigmaFromAverage(vValues, runningAverage);
 
-			// Compute the weights
-			for (i = 0; i < lIterations && !bEnd; i++)
-			{
-				double			fAverage;
-				double			fSigma;
-				double			fSigma2;
+				//
+				// Escape clause for small sigma - where all input data
+				// are the same or darn nearly so.
+				//
+				if (fSigma <= SMALL) break;
 
-				fSigma = Sigma2(vAuxValues, fAverage);
-				fSigma2 = pow(fSigma, 2);
-				if (fSigma2 > 0)
+				//
+				// Calculate the weights
+				//
+				for (size_t j = 0; j != nElements; j++)
 				{
-					for (size_t j = 0; j < size; j++)
-					{
-						double r = fabs(vAuxValues[j] - fAverage);
-
-						vWeights[j] = (1 / fSigma2) * (1 / (1 + pow((r / fSigma), 2)));
-					};
+					const double r = fabs(vValues[j] - runningAverage);
 					//
-					// Normalise the weights and apply them
+					// The 1/sigma^2 term is ignored as it will be constant
+					// for all weights.
 					//
-					double maxWeight = *std::max_element(vWeights.begin(), vWeights.end());
-					for (size_t j = 0; j < size; j++)
-					{
-						vWeights[j] = vWeights[j] / maxWeight;
-						vAuxValues[j] = vValues[j] * vWeights[j];
-					};
-
+					vWeights[j] = 1 / (1 + ((r / fSigma) * (r / fSigma)));
 				}
-				else 
-					bEnd = true;
-			};
+				const double weightTotal = std::accumulate(vWeights.begin(), vWeights.end(), 0.0);
+
+				// Calculate the new running average.
+				runningAverage = 0.0;
+				for (size_t nIndex = 0; nIndex < nElements; nIndex++)
+					runningAverage += (vValues[nIndex] * vWeights[nIndex]) / weightTotal;
+			}
 
 			//
-			// If things went well (bEnd is false), vAuxValues should contain the weighted values
-			// from which we compute the average.
+			// If things went well (sigma not stupidly small), then the result is in 
+			// variable runningAverage
 			// 
-			// If things went badly we just compute the average of the un-weighted input data.
+			// If all the elements were the same (or very nearly so) then sigma will be
+			// very small so just return the regular average.
 			// 
-			if (!bEnd)
-				fResult = Average(vAuxValues);
+			if (fSigma > SMALL)
+				fResult = runningAverage;
 			else
-			{
 				fResult = Average(vValues);
-			}
 		};
 	}
 	else
