@@ -1,5 +1,5 @@
 /* 
-  Copyright 2008-2018 LibRaw LLC (info@libraw.org)
+  Copyright 2008-2019 LibRaw LLC (info@libraw.org)
 
 LibRaw is free software; you can redistribute it and/or modify
 it under the terms of the one of two licenses as you choose:
@@ -9293,6 +9293,8 @@ void CLASS parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
   short morder, sorder = order;
   char buf[10];
   INT64 fsize = ifp->size();
+  if(metadata_blocks++ > LIBRAW_MAX_METADATA_BLOCKS)
+    throw LIBRAW_EXCEPTION_IO_CORRUPT;
 
   fread(buf, 1, 10, ifp);
 
@@ -10129,6 +10131,8 @@ void CLASS parse_makernote(int base, int uptag)
   ushort table_buf_0x940e_len = 0;
 
   INT64 fsize = ifp->size();
+  if(metadata_blocks++ > LIBRAW_MAX_METADATA_BLOCKS)
+    throw LIBRAW_EXCEPTION_IO_CORRUPT;
 #endif
   /*
      The MakerNote might have its own TIFF header (possibly with
@@ -10318,6 +10322,7 @@ void CLASS parse_makernote(int base, int uptag)
         char yy[2], mm[3], dd[3], ystr[16], ynum[16];
         int year, nwords, ynum_len;
         unsigned c;
+        memset(FujiSerial,0,sizeof(imgdata.shootinginfo.InternalBodySerial));
         stmread(FujiSerial, len, ifp);
         nwords = getwords(FujiSerial, words, 4, sizeof(imgdata.shootinginfo.InternalBodySerial));
         for (int i = 0; i < nwords; i++)
@@ -13382,6 +13387,10 @@ int CLASS parse_tiff_ifd(int base)
       break;
     case 50459: /* Hasselblad tag */
 #ifdef LIBRAW_LIBRARY_BUILD
+    if(!libraw_internal_data.unpacker_data.hasselblad_parser_flag)
+#endif
+    {
+#ifdef LIBRAW_LIBRARY_BUILD
       libraw_internal_data.unpacker_data.hasselblad_parser_flag = 1;
 #endif
       i = order;
@@ -13394,6 +13403,7 @@ int CLASS parse_tiff_ifd(int base)
       tiff_nifds = c;
       order = i;
       break;
+    }
     case 50706: /* DNGVersion */
       FORC4 dng_version = (dng_version << 8) + fgetc(ifp);
       if (!make[0])
@@ -14656,6 +14666,8 @@ void CLASS parse_ciff(int offset, int length, int depth)
   ushort key[] = {0x410, 0x45f3};
 #ifdef LIBRAW_LIBRARY_BUILD
   INT64 fsize = ifp->size();
+  if(metadata_blocks++ > LIBRAW_MAX_METADATA_BLOCKS)
+    throw LIBRAW_EXCEPTION_IO_CORRUPT;
 #endif
 
   fseek(ifp, offset + length - 4, SEEK_SET);
@@ -17375,6 +17387,7 @@ void CLASS initdata()
   mix_green = profile_length = data_error = zero_is_bad = 0;
   pixel_aspect = is_raw = raw_color = 1;
   tile_width = tile_length = 0;
+  metadata_blocks = 0;
 }
 
 #endif
@@ -17737,6 +17750,7 @@ void CLASS identify()
   mix_green = profile_length = data_error = zero_is_bad = 0;
   pixel_aspect = is_raw = raw_color = 1;
   tile_width = tile_length = 0;
+  metadata_blocks = 0;
 
   for (i = 0; i < 4; i++)
   {
@@ -18997,9 +19011,14 @@ void CLASS identify()
   {
     if (!load_raw)
       load_raw = &CLASS unpacked_load_raw;
-    if (is_raw > 1 && !shot_select && !half_size)
+    if (is_raw > 1 && !shot_select)
       filters = 0;
     maximum = 0x3fff;
+  }
+  else if(load_raw == &LibRaw::sinar_4shot_load_raw)
+  {
+    if (is_raw > 1 && !shot_select)
+      filters = 0;
   }
   else if (!strncmp(make, "Leaf", 4))
   {

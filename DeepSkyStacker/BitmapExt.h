@@ -1255,6 +1255,8 @@ protected :
 		std::vector<TType>			vAuxValues;
 		std::vector<TType>			vWorkingBuffer1;
 		std::vector<TType>			vWorkingBuffer2;
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -1265,6 +1267,8 @@ protected :
 		vAuxValues.reserve(vScanLines.size());
 		vWorkingBuffer1.reserve(vScanLines.size());
 		vWorkingBuffer2.reserve(vScanLines.size());
+		vdWork1.reserve(vScanLines.size());
+		vdWork2.reserve(vScanLines.size());
 
 		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
 		{
@@ -1318,11 +1322,13 @@ protected :
 			else if (m_Method == MBP_MAXIMUM)
 				*pCurrentValue = Maximum(vValues);
 			else if (m_Method == MBP_SIGMACLIP)
-				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations);
+			{
+				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
 				*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
 			else if (m_Method == MBP_AUTOADAPTIVE)
-				*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations);
+				*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations, vdWork1);
 
 			//if (m_bHomogenization)
 			//	*pCurrentValue = fHomogenization*(double)(*pCurrentValue);
@@ -2603,6 +2609,8 @@ protected :
 		std::vector<TType>			vAuxBlueValues;
 		std::vector<TType>			vWorkingBuffer1;
 		std::vector<TType>			vWorkingBuffer2;
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -2620,6 +2628,8 @@ protected :
 		vAuxBlueValues.reserve(vScanLines.size());
 		vWorkingBuffer1.reserve(vScanLines.size());
 		vWorkingBuffer2.reserve(vScanLines.size());
+		vdWork1.reserve(vScanLines.size());
+		vdWork2.reserve(vScanLines.size());
 
 		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
 		{
@@ -2640,11 +2650,11 @@ protected :
 				if (*pRedValue || m_vImageOrder.size())	// Remove 0
 					vRedValues.push_back(*pRedValue);
 				if (*pGreenValue || m_vImageOrder.size())	// Remove 0
-					vGreenValues.push_back(*pGreenValue);
+				  	vGreenValues.push_back(*pGreenValue);
 				if (*pBlueValue || m_vImageOrder.size())	// Remove 0
 					vBlueValues.push_back(*pBlueValue);
 			};
-
+						
 			if (m_bHomogenization)
 			{
 			//	if ((i==843) && (lLine==934))
@@ -2726,9 +2736,9 @@ protected :
 			}
 			else if (m_Method == MBP_SIGMACLIP)
 			{
-				*pRedCurrentValue	= KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations);
-				*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations);
-				*pBlueCurrentValue	= KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations);
+				*pRedCurrentValue	= KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+				*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+				*pBlueCurrentValue	= KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
 			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
 			{
@@ -2738,9 +2748,9 @@ protected :
 			}
 			else if (m_Method == MBP_AUTOADAPTIVE)
 			{
-				*pRedCurrentValue	= AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations);
-				*pGreenCurrentValue = AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations);
-				*pBlueCurrentValue	= AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations);
+				*pRedCurrentValue	= AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations, vdWork1);
+				*pGreenCurrentValue = AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations, vdWork1);
+				*pBlueCurrentValue	= AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations, vdWork1);
 			};
 
 			pRedCurrentValue++;

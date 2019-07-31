@@ -10,6 +10,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#include <omp.h>
+
 /* ------------------------------------------------------------------- */
 
 CStackedBitmap::CStackedBitmap() 
@@ -527,11 +529,8 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 		PIXELITERATOR	it;*/
 
 		float *				pBaseRedPixel;
-		float *				pBaseGreenPixel = NULL;
-		float *				pBaseBluePixel  = NULL;
-		float *				pRedPixel;
-		float *				pGreenPixel;
-		float *				pBluePixel;
+		float *				pBaseGreenPixel = nullptr;
+		float *				pBaseBluePixel  = nullptr;
 
 		pBaseRedPixel	= &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
 		if (!m_bMonochrome)
@@ -540,14 +539,26 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 			pBaseBluePixel	= &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
 		};
 
+#if defined (_OPENMP)
+#pragma omp parallel for default(none)
+#endif
 		for (LONG j = lYMin;j<lYMax;j++)
 		{
 			LPBYTE			lpOut = Bitmap.GetPixelBase(lXMin, j);
 			LPRGBQUAD &		lpOutPixel = (LPRGBQUAD &)lpOut;
+			float *			pRedPixel = nullptr;;
+			float *			pGreenPixel = nullptr;
+			float *			pBluePixel = nullptr;
 
-			pRedPixel	= pBaseRedPixel;
-			pGreenPixel = pBaseGreenPixel;
-			pBluePixel	= pBaseBluePixel;
+			//
+			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
+			//
+			pRedPixel	= pBaseRedPixel + (m_lWidth * (j - lYMin));
+			if (!m_bMonochrome)
+			{
+				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
+				pBluePixel  = pBaseBluePixel + (m_lWidth * (j - lYMin));
+			};
 			for (LONG i = lXMin;i<lXMax;i++)
 			{
 				COLORREF		crColor;
@@ -576,12 +587,6 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 					pBluePixel++;
 				};
 				lpOut += 4;
-			};
-			pBaseRedPixel	+= m_lWidth;
-			if (!m_bMonochrome)
-			{
-				pBaseGreenPixel += m_lWidth;
-				pBaseBluePixel  += m_lWidth;
 			};
 		};
 
@@ -622,39 +627,50 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 
 	if (pBitmap)
 	{
-		LONG		lXMin = 0, 
-					lYMin = 0, 
-					lXMax = m_lWidth, 
-					lYMax = m_lHeight;
+		LONG		lXMin = 0,
+			lYMin = 0,
+			lXMax = m_lWidth,
+			lYMax = m_lHeight;
 
 		float *				pBaseRedPixel;
-		float *				pBaseGreenPixel = NULL;
-		float *				pBaseBluePixel  = NULL;
-		float *				pRedPixel;
-		float *				pGreenPixel;
-		float *				pBluePixel;
+		float *				pBaseGreenPixel = nullptr;
+		float *				pBaseBluePixel = nullptr;
+		int					iProgress = 0;
 
 		if (pProgress)
 		{
 			CString			strText;
 
 			strText.LoadString(IDS_PROCESSINGIMAGE);
-			pProgress->Start2(strText, lYMax-lYMin);
+			pProgress->Start2(strText, lYMax - lYMin);
 		};
 
-		pBaseRedPixel	= &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
+		pBaseRedPixel = &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
 		if (!m_bMonochrome)
 		{
 			pBaseGreenPixel = &(m_vGreenPlane[m_lWidth * lYMin + lXMin]);
-			pBaseBluePixel	= &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
+			pBaseBluePixel = &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
 		};
 
-		for (LONG j = lYMin;j<lYMax;j++)
+#if defined (_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+		for (LONG j = lYMin; j < lYMax; j++)
 		{
-			pRedPixel	= pBaseRedPixel;
-			pGreenPixel = pBaseGreenPixel;
-			pBluePixel	= pBaseBluePixel;
-			for (LONG i = lXMin;i<lXMax;i++)
+			float * pRedPixel = nullptr;
+			float * pGreenPixel = nullptr;
+			float * pBluePixel = nullptr;
+
+			//
+			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
+			//
+			pRedPixel = pBaseRedPixel + (m_lWidth * (j - lYMin));
+			if (!m_bMonochrome)
+			{
+				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
+				pBluePixel = pBaseBluePixel + (m_lWidth * (j - lYMin));
+			};
+			for (LONG i = lXMin; i < lXMax; i++)
 			{
 				COLORREF		crColor;
 
@@ -677,15 +693,16 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 					pBluePixel++;
 				};
 			};
-			pBaseRedPixel	+= m_lWidth;
-			if (!m_bMonochrome)
+#if defined (_OPENMP)
+			if (pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
-				pBaseGreenPixel += m_lWidth;
-				pBaseBluePixel  += m_lWidth;
-			};
-
+				iProgress += omp_get_num_threads();
+				pProgress->Progress2(NULL, iProgress);
+			}
+#else
 			if (pProgress)
-				pProgress->Progress2(NULL, j-lYMin+1);
+				pProgress->Progress2(NULL, ++iProgress);
+#endif
 		};
 
 		if (pProgress)

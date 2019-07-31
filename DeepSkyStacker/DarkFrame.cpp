@@ -1542,8 +1542,10 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 				};
 			};
 			std::sort(vRatios.begin(), vRatios.end());
+			std::vector<double> vWork;
+			vWork.reserve(vRatios.size());
 
-			fRedFactor = KappaSigmaClip(vRatios, 2.0, 5);
+			fRedFactor = KappaSigmaClip(vRatios, 2.0, 5, vWork);
 			fGreenFactor = fBlueFactor = fRedFactor;
 		}
 		else if (pBitmap->IsMonochrome() && pBitmap->IsCFA())
@@ -1551,6 +1553,9 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			std::vector<double>		vRedRatios;
 			std::vector<double>		vGreenRatios;
 			std::vector<double>		vBlueRatios;
+			std::vector<double>		vWork;
+
+			vWork.reserve(vHotPixels.size());
 
 			for (i = 0;i<vHotPixels.size();i++)
 			{
@@ -1583,9 +1588,9 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			std::sort(vGreenRatios.begin(), vGreenRatios.end());
 			std::sort(vBlueRatios.begin(), vBlueRatios.end());
 
-			fRedFactor = KappaSigmaClip(vRedRatios, 2.0, 5);
-			fGreenFactor = KappaSigmaClip(vGreenRatios, 2.0, 5);
-			fBlueFactor = KappaSigmaClip(vBlueRatios, 2.0, 5);
+			fRedFactor = KappaSigmaClip(vRedRatios, 2.0, 5, vWork);
+			fGreenFactor = KappaSigmaClip(vGreenRatios, 2.0, 5, vWork);
+			fBlueFactor = KappaSigmaClip(vBlueRatios, 2.0, 5, vWork);
 		}
 		else
 		{

@@ -12,7 +12,7 @@
 #include "Multitask.h"
 #include "Workspace.h"
 #include "zexcept.h"
-#include "zptr.h"
+#include "ztrace.h"
 
 #include "libraw/libraw.h"
 
