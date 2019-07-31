@@ -17,7 +17,7 @@ LONG	CMultitask::GetNrProcessors(BOOL bReal)
 	GetSystemInfo(&SysInfo);
 	lResult		= SysInfo.dwNumberOfProcessors;
 	if (!bReal && dwMaxProcessors)
-		lResult = min(dwMaxProcessors, lResult);
+		lResult = min(static_cast<long>(dwMaxProcessors), lResult);
 
 	return lResult;
 };

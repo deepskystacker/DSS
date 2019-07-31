@@ -42,6 +42,10 @@
 
 #include <windows.h>
 
+#include <algorithm>
+using std::min;
+using std::max;
+
 #include <iostream>
 #include <vector>
 

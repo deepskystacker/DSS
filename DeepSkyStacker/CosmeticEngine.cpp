@@ -201,7 +201,7 @@ public :
 
 		if (m_pProgress)
 			m_pProgress->SetNrUsedProcessors(GetNrThreads());
-		lStep		= max(1, lHeight/50);
+		lStep		= max(1L, lHeight/50);
 		lRemaining	= lHeight;
 		bResult = TRUE;
 		while (i<lHeight)
@@ -380,7 +380,7 @@ public :
 
 		if (m_pProgress)
 			m_pProgress->SetNrUsedProcessors(GetNrThreads());
-		lStep		= max(1, m_lHeight/50);
+		lStep		= max(1L, m_lHeight/50);
 		lRemaining	= m_lHeight;
 		bResult = TRUE;
 		while (i<m_lHeight)
@@ -420,9 +420,9 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 
 	vGrays.reserve((lFilterSize+1)*2);
 	vAllGrays.reserve((lFilterSize+1)*2);
-	for (LONG i = max(0, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
+	for (LONG i = max(0L, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
 	{
-		for (LONG j = max(0, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
+		for (LONG j = max(0L, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
 		{
 			// Check that this is a normal pixel
 			BOOL				bAdd = TRUE;
@@ -469,9 +469,9 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 	vAllGreens.reserve((lFilterSize+1)*2);
 	vBlues.reserve((lFilterSize+1)*2);
 	vAllBlues.reserve((lFilterSize+1)*2);
-	for (LONG i = max(0, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
+	for (LONG i = max(0L, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
 	{
-		for (LONG j = max(0, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
+		for (LONG j = max(0L, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
 		{
 			double					fRed, fGreen, fBlue;
 			double					fDelta;
@@ -521,9 +521,9 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 	if (m_CFAType != CFATYPE_NONE)
 		BayerColor = GetBayerColor(x, y, m_CFAType);
 
-	for (LONG i = max(0, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
+	for (LONG i = max(0L, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
 	{
-		for (LONG j = max(0, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
+		for (LONG j = max(0L, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
 		{
 			// Check that this is a normal pixel
 			BOOL				bAdd = TRUE;
@@ -576,9 +576,9 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 	LONG						lNrGrays = 0,
 								lNrAllGrays = 0;
 
-	for (LONG i = max(0, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
+	for (LONG i = max(0L, x-lFilterSize);i<=min(m_lWidth-1, x+lFilterSize);i++)
 	{
-		for (LONG j = max(0, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
+		for (LONG j = max(0L, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
 		{
 			// Check that this is a normal pixel
 			double					fRed, fGreen, fBlue;

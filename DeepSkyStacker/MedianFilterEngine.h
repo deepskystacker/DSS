@@ -74,9 +74,9 @@ public :
 												lYMin, lYMax;
 								BAYERCOLOR		BayerColor = GetBayerColor(i, j, CFAType);
 
-								lXMin = max(0, i-lFilterSize);
+								lXMin = max(0L, i-lFilterSize);
 								lXMax = min(i+lFilterSize, lWidth-1);
-								lYMin = max(0, j-lFilterSize);
+								lYMin = max(0L, j-lFilterSize);
 								lYMax = min(j+lFilterSize, lHeight-1);
 
 								// Fill the array with the values
@@ -117,9 +117,9 @@ public :
 								LONG			lXMin, lXMax,
 												lYMin, lYMax;
 
-								lXMin = max(0, i-lFilterSize);
+								lXMin = max(0L, i-lFilterSize);
 								lXMax = min(i+lFilterSize, lWidth-1);
-								lYMin = max(0, j-lFilterSize);
+								lYMin = max(0L, j-lFilterSize);
 								lYMax = min(j+lFilterSize, lHeight-1);
 
 								vValues.resize((lXMax-lXMin+1)*(lYMax-lYMin+1));
@@ -162,7 +162,7 @@ public :
 
 			if (m_pProgress)
 				m_pProgress->SetNrUsedProcessors(GetNrThreads());
-			lStep		= max(1, lHeight/50);
+			lStep		= max(1L, lHeight/50);
 			lRemaining	= lHeight;
 			bResult = TRUE;
 			while (i<lHeight)

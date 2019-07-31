@@ -361,7 +361,7 @@ public :
 					{
 						vPixels[k].m_fRadius = r;
 						vPixels[k].m_Ok--;
-						fMaxRadius = max(fMaxRadius, r);
+						fMaxRadius = max(fMaxRadius, static_cast<double>(r));
 					}
 					else if (vPixels[k].m_fIntensity > fIntensity)
 						bBrighterPixel = TRUE;
@@ -399,7 +399,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 			if (!m_fBackground)
 			{
 				fGray *= 256.0;
-				fGray = min(fGray, MAXWORD);
+				fGray = min(fGray, static_cast<double>(MAXWORD));
 
 				vHistogram[fGray]++;
 			};
@@ -569,13 +569,13 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 								for (k = 0;k<8;k++)
 								{
 									if (vPixels[k].m_lXDir<0)
-										lLeftRadius = max(lLeftRadius, vPixels[k].m_fRadius);
+										lLeftRadius = max(lLeftRadius, static_cast<long>(vPixels[k].m_fRadius));
 									else if (vPixels[k].m_lXDir>0)
-										lRightRadius = max(lRightRadius, vPixels[k].m_fRadius);
+										lRightRadius = max(lRightRadius, static_cast<long>(vPixels[k].m_fRadius));
 									if (vPixels[k].m_lYDir<0)
-										lTopRadius = max(lTopRadius, vPixels[k].m_fRadius);
+										lTopRadius = max(lTopRadius, static_cast<long>(vPixels[k].m_fRadius));
 									else if (vPixels[k].m_lYDir>0)
-										lBottomRadius = max(lBottomRadius, vPixels[k].m_fRadius);
+										lBottomRadius = max(lBottomRadius, static_cast<long>(vPixels[k].m_fRadius));
 								};
 
 								rcStar.left   = ptTest.x - lLeftRadius;
@@ -1098,7 +1098,7 @@ BOOL	CComputeLuminanceTask::Process()
 
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1, lHeight/50);
+	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
 	bResult = TRUE;
 	while (i<lHeight)

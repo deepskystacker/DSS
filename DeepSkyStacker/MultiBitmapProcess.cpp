@@ -263,7 +263,7 @@ BOOL	CCombineTask::Process()
 
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1, (m_lEndRow-m_lStartRow+1)/50);
+	lStep		= max(1L, (m_lEndRow-m_lStartRow+1)/50);
 	lRemaining	= m_lEndRow-m_lStartRow+1;
 
 	bResult = TRUE;
@@ -308,9 +308,9 @@ static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMem
 		double		fRed = 0, fGreen = 0, fBlue = 0;
 		double		fWRed = 0, fWGreen = 0, fWBlue = 0;
 
-		for (LONG i = max(0, x-5);i<=min(lWidth-1, x+5);i++)
+		for (LONG i = max(0L, x-5);i<=min(lWidth-1, x+5);i++)
 		{
-			for (LONG j = max(0, y-5);j<=min(lHeight-1, y+5);j++)
+			for (LONG j = max(0L, y-5);j<=min(lHeight-1, y+5);j++)
 			{
 				double		fRed1, fGreen1, fBlue1;
 				double		fWRed1, fWGreen1, fWBlue1;
@@ -339,9 +339,9 @@ static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMem
 		double		fGray = 0;
 		double		fWGray = 0;
 
-		for (LONG i = max(0, x-5);i<=min(lWidth-1, x+5);i++)
+		for (LONG i = max(0L, x-5);i<=min(lWidth-1, x+5);i++)
 		{
-			for (LONG j = max(0, y-5);j<=min(lHeight-1, y+5);j++)
+			for (LONG j = max(0L, y-5);j<=min(lHeight-1, y+5);j++)
 			{
 				double		fGray1;
 				double		fWGray1;

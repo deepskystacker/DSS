@@ -193,7 +193,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 
 		std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
 
-		for (LONG i = 0;i<min(vStarsOrg.size(), 100);i++)
+		for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<size_t>(100));i++)
 			m_MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 	};
 
@@ -218,7 +218,7 @@ BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 
 		std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
 
-		for (LONG i = 0;i<min(vStarsDst.size(), 100);i++)
+		for (LONG i = 0;i<min(vStarsDst.size(), static_cast<size_t>(100));i++)
 			m_MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 
 		m_MatchingStars.SetSizes(lfi.RenderedWidth(), lfi.RenderedHeight());

@@ -1452,7 +1452,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 			ShowOriginalHistogram(FALSE);
 			ResetSliders();
 		};
-		const unsigned int nProgress = static_cast<unsigned int>(m_ToProcess.GetPercentageComplete());
+		const int nProgress = static_cast<int>(m_ToProcess.GetPercentageComplete());
 		m_ProcessingProgress.SetPos(min(max(0, nProgress), 100));
 	};
 

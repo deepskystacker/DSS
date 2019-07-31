@@ -16,6 +16,10 @@
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
+#include <algorithm>
+using std::min;
+using std::max;
+
 //
 // Want to support windows 7 and up
 //

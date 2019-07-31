@@ -1028,9 +1028,9 @@ inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGr
 	fGreen = -0.28607719 * fR +	1.706598409	* fG + 0.24881043 * fB;
 	fBlue  = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
 
-	fRed = max(0, min (255.0, fRed));
-	fGreen = max(0, min (255.0, fRed));
-	fBlue = max(0, min (255.0, fRed));
+	fRed = max(0.0, min (255.0, fRed));
+	fGreen = max(0.0, min (255.0, fRed));
+	fBlue = max(0.0, min (255.0, fRed));
 };
 
 inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
@@ -1046,9 +1046,9 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 	// R = (M+Y-C)/2
 	// G = (Y+C-M)/2
 	// B = (M+C-Y)/2
-	fRed   = max(0, fMagenta+fYellow-fCyan)/2.0;
-	fGreen = max(0, fYellow+fCyan-fMagenta)/2.0;
-	fBlue  = max(0 ,fMagenta+fCyan-fYellow)/2.0;
+	fRed   = max(0.0, fMagenta+fYellow-fCyan)/2.0;
+	fGreen = max(0.0, fYellow+fCyan-fMagenta)/2.0;
+	fBlue  = max(0.0 ,fMagenta+fCyan-fYellow)/2.0;
 
 /*	if (fGreen2)
 	{
@@ -1065,24 +1065,24 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 	// R = Y - G
 	// B = C - G
 	fGreen += fGreen2;
-	fRed   += max(0, fYellow-fGreen2);
-	fBlue  += max(0, fCyan-fGreen2);
+	fRed   += max(0.0, fYellow-fGreen2);
+	fBlue  += max(0.0, fCyan-fGreen2);
 
 	// RGB from CMG
 	// G = G
 	// B = C - G
 	// R = M - B = M - C + G
 //	fGreen += fGreen2;
-	fBlue  += max(0, fCyan-fGreen2);
-	fRed   += max(0, fMagenta - fCyan + fGreen2);
+	fBlue  += max(0.0, fCyan-fGreen2);
+	fRed   += max(0.0, fMagenta - fCyan + fGreen2);
 
 	// RGB from YMG
 	// G = G
 	// R = Y - G
 	// B = M - R = M - Y + G
 //	fGreen += fGreen2;
-	fRed   += max(0, fYellow - fGreen2);
-	fBlue  += max(0, fMagenta - fYellow + fGreen2);
+	fRed   += max(0.0, fYellow - fGreen2);
+	fBlue  += max(0.0, fMagenta - fYellow + fGreen2);
 
 	// Average the results
 	fRed /= 4.0;
@@ -1560,7 +1560,7 @@ public :
 
 			if (m_pProgress)
 				m_pProgress->SetNrUsedProcessors(GetNrThreads());
-			lStep		= max(1, lHeight/50);
+			lStep		= max(1L, lHeight/50);
 			lRemaining	= lHeight;
 			bResult = TRUE;
 			while (i<lHeight)
@@ -1831,18 +1831,18 @@ private :
 		lNrValues[0] = lNrValues[1] = lNrValues[2] = lNrValues[3] = 0;
 		pfValues[0]  = pfValues[1]  = pfValues[2]  = pfValues[3]  = 0;
 		
-		for (LONG i = max(0, x-1);i<=min(m_lWidth-1, x+1);i++)
-			for (LONG j = max(0, y-1);j<=min(m_lHeight-1, y+1);j++)
+		for (LONG i = max(0L, x-1);i<=min(m_lWidth-1, x+1);i++)
+			for (LONG j = max(0L, y-1);j<=min(m_lHeight-1, y+1);j++)
 			{
 				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType));
 				pfValues[lIndice]  += m_vPixels[GetOffset(i, j)];
 				lNrValues[lIndice] ++;
 			};
 
-		pfValues[0] /= max(1, lNrValues[0]);
-		pfValues[1] /= max(1, lNrValues[1]);
-		pfValues[2] /= max(1, lNrValues[2]);
-		pfValues[3] /= max(1, lNrValues[3]);
+		pfValues[0] /= max(1L, lNrValues[0]);
+		pfValues[1] /= max(1L, lNrValues[1]);
+		pfValues[2] /= max(1L, lNrValues[2]);
+		pfValues[3] /= max(1L, lNrValues[3]);
 
 /*
 		// It's used only for CYMG - so cut it down to the basic

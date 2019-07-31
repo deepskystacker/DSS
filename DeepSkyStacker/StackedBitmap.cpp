@@ -383,9 +383,9 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 
 		if (pRect)
 		{
-			pRect->left		= max(0, pRect->left);
+			pRect->left		= max(0L, pRect->left);
 			pRect->right	= min(m_lWidth, pRect->right);
-			pRect->top		= max(0, pRect->top);
+			pRect->top		= max(0L, pRect->top);
 			pRect->bottom	= min(m_lHeight, pRect->bottom);
 
 			lWidth			= (pRect->right-pRect->left);
@@ -519,8 +519,8 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 		if (pRect)
 		{
-			lXMin	= max(0, pRect->left);
-			lYMin	= max(0, pRect->top);
+			lXMin	= max(0L, pRect->left);
+			lYMin	= max(0L, pRect->top);
 			lXMax	= min(m_lWidth, pRect->right);
 			lYMax	= min(m_lHeight, pRect->bottom);
 		};
@@ -903,9 +903,9 @@ BOOL CTIFFWriterStacker::OnOpen()
 		}
 		else
 		{
-			m_lprc->left	= max(0, m_lprc->left);
+			m_lprc->left	= max(0L, m_lprc->left);
 			m_lprc->right	= min(lWidth, m_lprc->right);
-			m_lprc->top		= max(0, m_lprc->top);
+			m_lprc->top		= max(0L, m_lprc->top);
 			m_lprc->bottom	= min(lHeight, m_lprc->bottom);
 
 			lWidth			= (m_lprc->right-m_lprc->left);
@@ -1100,9 +1100,9 @@ BOOL CFITSWriterStacker::OnOpen()
 		}
 		else
 		{
-			m_lprc->left	= max(0, m_lprc->left);
+			m_lprc->left	= max(0L, m_lprc->left);
 			m_lprc->right	= min(lWidth, m_lprc->right);
-			m_lprc->top		= max(0, m_lprc->top);
+			m_lprc->top		= max(0L, m_lprc->top);
 			m_lprc->bottom	= min(lHeight, m_lprc->bottom);
 
 			lWidth			= (m_lprc->right-m_lprc->left);

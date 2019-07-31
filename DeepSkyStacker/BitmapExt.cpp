@@ -44,9 +44,9 @@ void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, 
 //	fGreen = (Y-0.39465*U-0.5806*V)*255.0;
 //	fBlue  = (Y+2.03211*U)*255.0;
 
-	fRed = max(0, min (255.0, fRed));
-	fGreen = max(0, min (255.0, fGreen));
-	fBlue = max(0, min (255.0, fBlue));
+	fRed = max(0.0, min (255.0, fRed));
+	fGreen = max(0.0, min (255.0, fGreen));
+	fBlue = max(0.0, min (255.0, fBlue));
 };
 
 
@@ -63,9 +63,9 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	// R = (M+Y-C)/2
 	// G = (Y+C-M)/2
 	// B = (M+C-Y)/2
-	fRed   = max(0, fMagenta+fYellow-fCyan)/2.0;
-	fGreen = max(0, fYellow+fCyan-fMagenta)/2.0;
-	fBlue  = max(0 ,fMagenta+fCyan-fYellow)/2.0;
+	fRed   = max(0.0, fMagenta+fYellow-fCyan)/2.0;
+	fGreen = max(0.0, fYellow+fCyan-fMagenta)/2.0;
+	fBlue  = max(0.0 ,fMagenta+fCyan-fYellow)/2.0;
 
 /*	if (fGreen2)
 	{
@@ -114,9 +114,9 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	fGreen	= -0.409754*R + 1.31042 *G  - 0.523692*B;
 	fBlue	= 0.110277*R  - 0.339351*G + 2.45812*B;
 
-	fRed = max(0, min (255.0, fRed));
-	fGreen = max(0, min (255.0, fGreen));
-	fBlue = max(0, min (255.0, fBlue));
+	fRed = max(0.0, min (255.0, fRed));
+	fGreen = max(0.0, min (255.0, fGreen));
+	fBlue = max(0.0, min (255.0, fBlue));
 };
 
 
@@ -663,9 +663,9 @@ BOOL	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 						double			fRed, fGreen, fBlue;
 						pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
-						lpOutPixel->rgbRed		= min(max(0, fRed), 255.0);
-						lpOutPixel->rgbGreen	= min(max(0, fGreen), 255.0);
-						lpOutPixel->rgbBlue		= min(max(0, fBlue), 255.0);
+						lpOutPixel->rgbRed		= min(max(0.0, fRed), 255.0);
+						lpOutPixel->rgbGreen	= min(max(0.0, fGreen), 255.0);
+						lpOutPixel->rgbBlue		= min(max(0.0, fBlue), 255.0);
 						lpOutPixel->rgbReserved	= 0;
 
 						lpOut += 4;
@@ -691,9 +691,9 @@ BOOL	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 						double			fRed, fGreen, fBlue;
 						it->GetPixel(fRed, fGreen, fBlue);
 
-						lpOutPixel->rgbRed		= min(max(0, fRed), 255.0);
-						lpOutPixel->rgbGreen	= min(max(0, fGreen), 255.0);
-						lpOutPixel->rgbBlue		= min(max(0, fBlue), 255.0);
+						lpOutPixel->rgbRed		= min(max(0.0, fRed), 255.0);
+						lpOutPixel->rgbGreen	= min(max(0.0, fGreen), 255.0);
+						lpOutPixel->rgbBlue		= min(max(0.0, fBlue), 255.0);
 						lpOutPixel->rgbReserved	= 0;
 
 						lpOut += 4;
@@ -1258,7 +1258,7 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 						PixelItTgt->GetPixel(fTgtGray);
 						PixelItSrc->GetPixel(fSrcGray);
 						if (m_bAddMode)
-							fTgtGray = min(max(0, fTgtGray+fSrcGray * m_fGrayFactor), 256.0);
+							fTgtGray = min(max(0.0, fTgtGray+fSrcGray * m_fGrayFactor), 256.0);
 						else
 							fTgtGray = max(m_fMinimum, fTgtGray-fSrcGray * m_fGrayFactor);
 						PixelItTgt->SetPixel(fTgtGray);
@@ -1272,9 +1272,9 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 						PixelItSrc->GetPixel(fSrcRed, fSrcGreen, fSrcBlue);
 						if (m_bAddMode)
 						{
-							fTgtRed		= min(max(0, fTgtRed + fSrcRed * m_fRedFactor), 256.0);
-							fTgtGreen	= min(max(0, fTgtGreen + fSrcGreen * m_fGreenFactor), 256.0);
-							fTgtBlue	= min(max(0, fTgtBlue + fSrcBlue * m_fBlueFactor), 256.0);
+							fTgtRed		= min(max(0.0, fTgtRed + fSrcRed * m_fRedFactor), 256.0);
+							fTgtGreen	= min(max(0.0, fTgtGreen + fSrcGreen * m_fGreenFactor), 256.0);
+							fTgtBlue	= min(max(0.0, fTgtBlue + fSrcBlue * m_fBlueFactor), 256.0);
 						}
 						else
 						{
@@ -1321,7 +1321,7 @@ BOOL CSubtractTask::Process()
 	};
 
 	bResult = TRUE;
-	lStep = max(1, lHeight/50);
+	lStep = max(1L, lHeight/50);
 	lRemaining = lHeight;
 
 	while (i<lHeight)
@@ -1507,7 +1507,7 @@ BOOL	CMultiplyTask::DoTask(HANDLE hEvent)
 						double			fTgtGray;
 
 						PixelItTgt->GetPixel(fTgtGray);
-						fTgtGray = min(256.0, max(0, fTgtGray * m_fGrayFactor));
+						fTgtGray = min(256.0, max(0.0, fTgtGray * m_fGrayFactor));
 						PixelItTgt->SetPixel(fTgtGray);
 					}
 					else
@@ -1515,9 +1515,9 @@ BOOL	CMultiplyTask::DoTask(HANDLE hEvent)
 						double			fTgtRed, fTgtGreen, fTgtBlue;
 
 						PixelItTgt->GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-						fTgtRed		= min(256.0, max(0, fTgtRed * m_fRedFactor));
-						fTgtGreen	= min(256.0, max(0, fTgtGreen * m_fGreenFactor));
-						fTgtBlue	= min(256.0, max(0, fTgtBlue * m_fBlueFactor));
+						fTgtRed		= min(256.0, max(0.0, fTgtRed * m_fRedFactor));
+						fTgtGreen	= min(256.0, max(0.0, fTgtGreen * m_fGreenFactor));
+						fTgtBlue	= min(256.0, max(0.0, fTgtBlue * m_fBlueFactor));
 						PixelItTgt->SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
 					};
 
@@ -1551,7 +1551,7 @@ BOOL CMultiplyTask::Process()
 	};
 
 	bResult = TRUE;
-	lStep = max(1, lHeight/50);
+	lStep = max(1L, lHeight/50);
 	lRemaining = lHeight;
 
 	while (i<lHeight)

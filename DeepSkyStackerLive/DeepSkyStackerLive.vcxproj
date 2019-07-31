@@ -137,7 +137,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBRAW_NODLL;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -181,7 +181,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBRAW_NODLL;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -227,7 +227,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\SMTP;..\ZClass\;..\tools\;..\LibTIFF\;..\CFitsIO\;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBRAW_NODLL;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -272,7 +272,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions> LIBRAW_NODLL;WIN32;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>

@@ -201,7 +201,7 @@ private:
 	{
 		double		fResult = (double)fColor * fAdjust;
 
-		fColor = min(MAXWORD - 1, fResult);
+		fColor = min(static_cast<double>(MAXWORD - 1), fResult);
 	};
 
 	void	AddToBuffer(const void * buffer, DWORD lSize)
@@ -924,10 +924,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					cblk[i] = C.cblack[i];
 
 				int size = S.height * S.width;
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#define LIM(x, min, max) MAX(min, MIN(x, max))
-#define CLIP(x) LIM(x, 0, 65535)
 				int dmax = 0;	// Maximum value of pixels in entire image.
 				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
 				if (C.cblack[4] && C.cblack[5])
@@ -942,7 +938,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 							int val = raw_image[i];
 							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
 							val -= cblk[i & 3];
-							raw_image[i] = CLIP(val);
+							raw_image[i] = max(0, min(val, 65535)); 
 							lmax = val > lmax ? val : lmax;
 						}
 #if defined(_OPENMP)
@@ -964,7 +960,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 						{
 							int val = raw_image[i];
 							val -= cblk[i & 3];
-							raw_image[i] = CLIP(val);
+							raw_image[i] = max(0, min(val, 65535)); ;
 							lmax = val > lmax ? val : lmax;
 						}
 #if defined(_OPENMP)
@@ -976,10 +972,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 #endif
 				}
 				C.data_maximum = dmax & 0xffff;
-#undef MIN
-#undef MAX
-#undef LIM
-#undef CLIP
 				C.maximum -= C.black;
 				memset(&C.cblack, 0, sizeof(C.cblack)); // Yeah, we used cblack[6+] values too!
 				C.black = 0;
