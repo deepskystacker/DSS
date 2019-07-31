@@ -1,7 +1,7 @@
 #ifndef __DSSVERSION_H_
 #define __DSSVERSION_H_
 
-#define DSSBETA
+// #define DSSBETA
 
 #ifdef DSSBETA
 #define DSSBETARELEASE 1
