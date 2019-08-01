@@ -1,13 +1,14 @@
 #include <stdafx.h>
 #include "EntropyInfo.h"
 #include "DSSProgress.h"
+#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 
 void CEntropyInfo::InitSquareEntropies()
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG						lSquareSize;
+	LONG		lSquareSize;
 
 	lSquareSize = m_lWindowSize * 2 + 1;
 
@@ -33,9 +34,6 @@ void CEntropyInfo::InitSquareEntropies()
 		lMinX = i * lSquareSize;
 		lMaxX = min((i+1) * lSquareSize -1, m_pBitmap->Width()-1);
 
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
 		for (long j = 0;j<m_lNrSquaresY;j++)
 		{
 			LONG		lMinY,
@@ -55,8 +53,11 @@ void CEntropyInfo::InitSquareEntropies()
 		};
 
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i+1);
+			m_pProgress->Progress2(NULL, 1+i);
 	};
+	if (m_pProgress)
+		m_pProgress->End2();
+
 };
 
 /* ------------------------------------------------------------------- */
