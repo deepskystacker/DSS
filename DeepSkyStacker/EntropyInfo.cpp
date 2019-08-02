@@ -53,7 +53,8 @@ void CEntropyInfo::InitSquareEntropies()
 		};
 
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, 1+i);
+			if (0 == i%m_lWindowSize)
+				m_pProgress->Progress2(NULL, 1+i);
 	};
 	if (m_pProgress)
 		m_pProgress->End2();
