@@ -19,6 +19,10 @@ This release is all about performance, though other areas have been enhanced as 
 8. Auto-Adaptive Weighted Average now re-written completely.  It should no longer produce whited out images or other strange results. Thanks to Michael A. Covington and Simon C. Smith for their immense help in locating references and getting this working.
 
 9. Update LibRaw to 0.19.3.
+
+10. Reverted Entropy calculation code in CEntropyInfo::InitSquareEntropies() to NOT compute in parallel - some called code wasn't thread safe.
+
+11. Entropy Weighted Average complete stack of 50 lights is now about 20 times faster on my laptop, down from 4hrs 22min to 12min 55 sec.
  
 Welcome to DeepSkyStacker 4.2.1
 

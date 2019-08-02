@@ -3,6 +3,7 @@
 
 #include "DSSTools.h"
 #include "BitmapExt.h"
+#include "zexcept.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -52,8 +53,6 @@ public :
 	};
 };
 
-typedef std::vector<CEntropySquare>	ENTROPYSQUAREVECTOR;
-
 class CEntropyInfo
 {
 private :
@@ -76,16 +75,12 @@ private :
 		ptCenter.Y = lY * (m_lWindowSize * 2 + 1) + m_lWindowSize;
 	};
 
-	void	AddSquare(ENTROPYSQUAREVECTOR & vSquares, LONG lX, LONG lY)
+	void	AddSquare(CEntropySquare &Square, LONG lX, LONG lY)
 	{
-		CEntropySquare			es;
-
-		GetSquareCenter(lX, lY, es.m_ptCenter);
-		es.m_fRedEntropy	= m_vRedEntropies[lX + lY * m_lNrSquaresX];
-		es.m_fGreenEntropy	= m_vGreenEntropies[lX + lY * m_lNrSquaresX];
-		es.m_fBlueEntropy	= m_vBlueEntropies[lX + lY * m_lNrSquaresX];
-
-		vSquares.push_back(es);
+		GetSquareCenter(lX, lY, Square.m_ptCenter);
+		Square.m_fRedEntropy	= m_vRedEntropies[lX + lY * m_lNrSquaresX];
+		Square.m_fGreenEntropy	= m_vGreenEntropies[lX + lY * m_lNrSquaresX];
+		Square.m_fBlueEntropy	= m_vBlueEntropies[lX + lY * m_lNrSquaresX];
 	};
 
 public :
@@ -117,30 +112,31 @@ public :
 		lSquareY = y / (m_lWindowSize * 2 + 1);
 
 		CPointExt			ptCenter;
-		ENTROPYSQUAREVECTOR	vSquares;
+		CEntropySquare		Squares[3];
+		size_t				sizeSquares = 0;
 
 		GetSquareCenter(lSquareX, lSquareY, ptCenter);
-		AddSquare(vSquares, lSquareX, lSquareY);
+		AddSquare(Squares[sizeSquares++], lSquareX, lSquareY);
 		if (ptCenter.X > x)
 		{
 			if (lSquareX > 0)
-				AddSquare(vSquares, lSquareX-1, lSquareY); 
+				AddSquare(Squares[sizeSquares++], lSquareX-1, lSquareY);
 		}
 		else if (ptCenter.X < x)
 		{
 			if (lSquareX < m_lNrSquaresX - 1)
-				AddSquare(vSquares, lSquareX+1, lSquareY);
+				AddSquare(Squares[sizeSquares++], lSquareX+1, lSquareY);
 		};
 
 		if (ptCenter.Y > y)
 		{
 			if (lSquareY > 0)
-				AddSquare(vSquares, lSquareX, lSquareY-1);
+				AddSquare(Squares[sizeSquares++], lSquareX, lSquareY-1);
 		}
 		else if (ptCenter.Y < y)
 		{
 			if (lSquareY < m_lNrSquaresY - 1)
-				AddSquare(vSquares, lSquareX, lSquareY+1);
+				AddSquare(Squares[sizeSquares++], lSquareX, lSquareY+1);
 		};
 
 		// Compute the gradient entropy from the nearby squares
@@ -150,18 +146,18 @@ public :
 		CPointExt			ptPixel(x, y);
 		double				fTotalWeight = 0.0;
 
-		for (LONG i = 0;i<vSquares.size();i++)
+		for (size_t i = 0; i < sizeSquares; i++)
 		{
 			double		fDistance;
 			double		fWeight = 1.0;
 
-			fDistance = Distance(ptPixel, vSquares[i].m_ptCenter);
+			fDistance = Distance(ptPixel, Squares[i].m_ptCenter);
 			if (fDistance > 0)
 				fWeight = 1.0/fDistance;
 
-			fRedEntropy		+= fWeight * vSquares[i].m_fRedEntropy;
-			fGreenEntropy	+= fWeight * vSquares[i].m_fGreenEntropy;
-			fBlueEntropy	+= fWeight * vSquares[i].m_fBlueEntropy;
+			fRedEntropy		+= fWeight * Squares[i].m_fRedEntropy;
+			fGreenEntropy	+= fWeight * Squares[i].m_fGreenEntropy;
+			fBlueEntropy	+= fWeight * Squares[i].m_fBlueEntropy;
 
 			fTotalWeight += fWeight;
 		};
