@@ -720,19 +720,12 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		bValue = FALSE;
 		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
 		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
-		if (bValue)
-		{
-			// Automatic WB using average of all pixels
-			O.use_auto_wb = 1;
-		};
+		O.use_auto_wb = bValue ? 1 : 0;
 
+		// Camera WB (if possible)
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
-		if (bValue)
-		{
-			// Camera WB (if possible)
-			O.use_camera_wb = 1;
-		};
+		O.use_camera_wb = bValue ? 1 : 0;
 		
 		// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
 		O.use_fuji_rotate = 0;
@@ -747,12 +740,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		argv[argc] = _T("0");
 		argc++;*/
 
+		// Set black point according to workspace settings.
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
-		if (bBlackPointTo0)
-		{
-			// Set black point to 0
-			O.user_black = 0;
-		};
+		O.user_black = bBlackPointTo0 ? 0 : -1;
 
 		// Output is 16 bits (equivalent of dcraw flag -4)
 		O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
