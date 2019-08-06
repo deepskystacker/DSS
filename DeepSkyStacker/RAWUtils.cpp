@@ -814,7 +814,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		argc++;*/
 
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
-		if (bBlackPointTo0)
 		O.user_black = bBlackPointTo0 ? 0 : -1;
 
 		// Output is 16 bits (equivalent of dcraw flag -4)
