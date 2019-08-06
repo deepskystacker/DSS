@@ -7,8 +7,7 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include "afxres.h"
-
+#include "afxres.h"
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -1526,6 +1525,11 @@ BEGIN
     IDS_STACKINGMODE_MOSAIC "The result of the stacking process contains all the light frames of the stack."
     IDS_STACKINGMODE_INTERSECTION 
                             "The result of the stacking process is framed by the intersection of all the frames."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw doesn't support your %s camera"
 END
 
 #endif    // English (United States) resources

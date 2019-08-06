@@ -7,7 +7,9 @@
 #include <set>
 #include <list>
 #include <iostream>
+#include <map>
 #include <stdexcept>
+#include <utility>
 #include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
@@ -563,6 +565,8 @@ public :
 		return TRUE;
 	};
 
+	void checkCameraSupport(const CString& strModel);
+
 	LONG	GetISOSpeed()
 	{
 		return m_lISOSpeed;
@@ -667,6 +671,73 @@ public :
 	};
 };
 
+void CRawDecod::checkCameraSupport(const CString& strModel)
+{
+	bool result = false;
+	const char * camera = static_cast<LPCSTR>(strModel);
+
+	static std::set<std::string> checkedCameras;
+	
+	//
+	// If we've already checked this camera type, then just bail out so
+	// no complaints about unsupported cameras are only issued once.
+	//
+	auto it = checkedCameras.find(camera);
+
+	if (it != checkedCameras.end() )
+	{
+		return;
+	}
+
+	static std::vector<std::string> supportedCameras;
+
+	if (0 == supportedCameras.size())
+	{
+		const char **cameraList = rawProcessor.cameraList();
+		size_t count = rawProcessor.cameraCount();
+		supportedCameras.reserve(count);
+
+		//
+		// Copy LibRaw's supported camera list
+		//
+		for (size_t i = 0; i != count; ++i)
+		{
+			if (nullptr != cameraList[i])
+			{
+				supportedCameras.push_back(cameraList[i]);
+			}
+		}
+		// 
+		// sort the names using std::sort
+		sort(supportedCameras.begin(), supportedCameras.end());
+	}
+
+	//
+	// The camera type hasn't already been checked, so search the LibRaw supported camera list
+	//
+	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera);
+
+	//
+	// Now we know whether this camera is supported or not, remember we've seen it before
+	//
+	checkedCameras.insert(camera);
+
+	//
+	// If the camera isn't supported complain, but only once 
+	//
+	if (false == result)
+	{
+		CString errorMessage;
+		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, camera);
+#if defined(_CONSOLE)
+		cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+#endif
+	}
+
+	return;
+};
 /* ------------------------------------------------------------------- */
 
 BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, BOOL bThumb)
@@ -681,8 +752,11 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	pBitmap->SetISOSpeed(m_lISOSpeed);
 	pBitmap->SetExposure(m_fExposureTime);
 	pBitmap->m_DateTime = m_DateTime;
+
 	CString			strDescription;
 	GetModel(strDescription);
+	checkCameraSupport(strDescription);
+		
 	pBitmap->SetDescription(strDescription);
 
 	const		int maxargs = 50;
@@ -720,12 +794,19 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		bValue = FALSE;
 		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
 		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
-		O.use_auto_wb = bValue ? 1 : 0;
+		if (bValue)
+		{
+			// Automatic WB using average of all pixels
+			O.use_auto_wb = 1;
+		};
 
-		// Camera WB (if possible)
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
-		O.use_camera_wb = bValue ? 1 : 0;
+		if (bValue)
+		{
+			// Camera WB (if possible)
+			O.use_camera_wb = 1;
+		};
 		
 		// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
 		O.use_fuji_rotate = 0;
@@ -740,9 +821,12 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		argv[argc] = _T("0");
 		argc++;*/
 
-		// Set black point according to workspace settings.
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
-		O.user_black = bBlackPointTo0 ? 0 : -1;
+		if (bBlackPointTo0)
+		{
+			// Set black point to 0
+			O.user_black = 0;
+		};
 
 		// Output is 16 bits (equivalent of dcraw flag -4)
 		O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;

@@ -242,6 +242,7 @@
 #define IDS_RECAP_KILOBYTES             4201
 #define IDS_RECAP_GIGABYTES             4202
 #define IDS_RECAP_WARNINGDISKSPACE      4250
+#define IDS_CAMERA_NOT_SUPPORTED        8001
 #define IDS_HELPFILE                    20000
 #define IDS_SELECTMONITOREDFOLDER       42000
 #define IDS_LOG_NEWFILESFOUND           42001
