@@ -730,7 +730,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		CString errorMessage;
 		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, camera);
 #if defined(_CONSOLE)
-		cerr << errorMessage;
+		std::cerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
 #endif
