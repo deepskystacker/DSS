@@ -1189,7 +1189,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS of DeepSkyStacker Afbeelding| *.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Alle Bestanden|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Afbeelding Bestanden|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts|Windows Bitmap (.bmp)|*.bmp|JPEG or PNG Bestanden|*.jpg;*.jpeg;*.png|TIFF Bestanden (.tif)|*.tif;*.tiff|RAW Bestanden|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Bestanden|*.fits;*.fit;*.fts||"
+    IDS_FILTER_INPUT        "Afbeelding Bestanden|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmap (.bmp)|*.bmp|JPEG or PNG Bestanden|*.jpg;*.jpeg;*.png|TIFF Bestanden (.tif)|*.tif;*.tiff|RAW Bestanden|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Bestanden|*.fits;*.fit;*.fts||"
     IDS_FILTER_OUTPUT       "TIFF Afbeelding (16 bit/kan)|*.TIF|TIFF Afbeelding (32 bit/kan - integer)|*.TIF|TIFF Afbeelding (32 bit/kan - rationeel)|*.TIF|FITS Afbeelding (16 bit/kan)|*.FTS|FITS Afbeelding (32 bit/kan - integer)|*.FTS|FITS Afbeelding (32 bit/kan -rationeel)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Bestand Lijst (*.txt)|*.txt|Bestand Lijst (*.dssfilelist)|*.dssfilelist|Alle Bestanden|*.*||"
     IDS_FILTER_MASK         "TIFF Afbeelding|*.tif;*.tiff|FITS Afbeelding|*.fits;*.fts;*.fit||"
