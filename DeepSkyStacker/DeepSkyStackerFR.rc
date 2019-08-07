@@ -1716,6 +1716,12 @@ BEGIN
                             "Facteur de multiplication du dark : %.2f\n"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Désolé, LibRaw ne prend pas en charge votre caméra %s"
+END
+
+
 #endif    // French (France) resources
 /////////////////////////////////////////////////////////////////////////////
 

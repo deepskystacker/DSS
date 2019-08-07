@@ -1586,6 +1586,12 @@ BEGIN
                             "Verwenden Sie die Auto Adaptive Weighted Average-Kombinations Methode"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Es tut uns leid aber LibRaw unterstützt das Kameramodell %s nicht"
+END
+
+
 
 #endif
 
