@@ -724,7 +724,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		size_t szrhs = strlen(pcrhs);
 		// choose the shorter length
 		len = (len > szrhs) ? szrhs : len;
-		int result = strncmp(pcrhs, pclhs, len);
+		int result = _strnicmp(pcrhs, pclhs, len);
 		return (result < 0) ? true : false;
 	}
 		);
