@@ -1047,7 +1047,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS sau imagine DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Toate fisierele|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Fisiere imagine|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts|Windows Bitmaps (.bmp)|*.bmp|JPEG sau PNG Files|*.jpg;*.jpeg;*.png|Fisiere TIFF (.tif)|*.tif;*.tiff|Fisiere RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Fisiere FITS|*.fits;*.fit;*.fts||"
+    IDS_FILTER_INPUT        "Fisiere imagine|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|JPEG sau PNG Files|*.jpg;*.jpeg;*.png|Fisiere TIFF (.tif)|*.tif;*.tiff|Fisiere RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Fisiere FITS|*.fits;*.fit;*.fts|Toate fisierele|*.*||"
     IDS_FILTER_OUTPUT       "Imagine TIFF (16 bit/ch)|*.TIF|Imagine TIFF (32 bit/ch - integer)|*.TIF|Imagine TIFF (32 bit/ch - rational)|*.TIF| Imagine FITS (16 bit/ch)|*.FTS|Imagine FTS (32 bit/ch - integer)|*.FTS| Imagine FTS|FITS (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Lista fisiere  (*.txt)|*.txt|Lista fisiere (*.dssfilelist)|*.dssfilelist|Toate fisierele|*.*||"
     IDS_FILTER_MASK         "Imagine TIFF |*.tif;*.tiff|Imagine FITS |*.fits;*.fts;*.fit||"
