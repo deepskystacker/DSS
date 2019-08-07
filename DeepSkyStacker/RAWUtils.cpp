@@ -680,7 +680,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	
 	//
 	// If we've already checked this camera type, then just bail out so
-	// no complaints about unsupported cameras are only issued once.
+	// complaints about unsupported cameras are only issued once.
 	//
 	auto it = checkedCameras.find(camera);
 
