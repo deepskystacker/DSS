@@ -715,7 +715,19 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	//
 	// The camera type hasn't already been checked, so search the LibRaw supported camera list
 	//
-	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera);
+	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
+		[](const std::string &rhs, const std::string &lhs)
+	{
+		const char* pcrhs = rhs.c_str();
+		const char* pclhs = lhs.c_str();
+		size_t len = strlen(pclhs);
+		size_t szrhs = strlen(pcrhs);
+		// choose the shorter length
+		len = (len > szrhs) ? szrhs : len;
+		int result = strncmp(pcrhs, pclhs, len);
+		return (result < 0) ? true : false;
+	}
+		);
 
 	//
 	// Now we know whether this camera is supported or not, remember we've seen it before
@@ -756,6 +768,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	CString			strDescription;
 	GetModel(strDescription);
 	checkCameraSupport(strDescription);
+
 		
 	pBitmap->SetDescription(strDescription);
 
