@@ -66,9 +66,11 @@ InstallDir "$PROGRAMFILES32\${DSS_PRODUCT}"
 ShowInstDetails       show
 ShowUninstDetails     show
 
-Name                  "${DSS_NAME}"
-Icon                  "${DSS_ICON}"
-UninstallIcon         "${DSS_ICON}"
+Name			"${DSS_NAME}"
+Icon			"${DSS_ICON}"
+UninstallIcon		"${DSS_ICON}"
+!define MUI_ICON	"${DSS_ICON}"
+!define MUI_UNICON 	"${DSS_ICON}"
 
 var PreviousUninstaller
 
