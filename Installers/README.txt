@@ -23,6 +23,12 @@ This release is all about performance, though other areas have been enhanced as 
 10. Reverted Entropy calculation code in CEntropyInfo::InitSquareEntropies() to NOT compute in parallel - some called code wasn't thread safe.
 
 11. Entropy Weighted Average complete stack of 50 lights is now about 20 times faster on my laptop, down from 4hrs 22min to 12min 55 sec.
+
+12. Bug fix - changing "Set the black point to 0" or "Use Camera White Balance" after an image was loaded didn't change the rendering.
+
+13. When loading raw files, check that the camera is listed in the LibRaw supported camera list.  Issue a warning if not.
+
+14. User request to change the file open dialog to default to *all* supported image types including raw files.
  
 Welcome to DeepSkyStacker 4.2.1
 
