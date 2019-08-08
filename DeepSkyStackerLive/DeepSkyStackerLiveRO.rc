@@ -573,6 +573,10 @@ BEGIN
     IDS_HELPFILE            "DeepSkyStacker Help.chm"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw ondersteund uw %s camera niet"
+END
 
 #endif
 

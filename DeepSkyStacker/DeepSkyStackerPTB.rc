@@ -1584,6 +1584,12 @@ BEGIN
                             "Resultado processo dos fotogramas integrados por interseccao de todos fotogramas."
 END
 
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw doesn't support your %s camera"
+END
+
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // TEXTINCLUDE

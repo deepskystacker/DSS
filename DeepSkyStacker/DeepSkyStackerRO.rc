@@ -1580,5 +1580,11 @@ BEGIN
 END
 
 
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw doesn't support your %s camera"
+END
+
+
 #endif
 

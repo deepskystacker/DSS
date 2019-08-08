@@ -677,6 +677,12 @@ BEGIN
     IDS_HELPFILE            "Aide DeepSkyStacker.chm"
 END
 
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Désolé, LibRaw ne prend pas en charge votre caméra %s"
+END
+
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 

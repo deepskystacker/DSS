@@ -12,15 +12,6 @@
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
-/////////////////////////////////////////////////////////////////////////////
-// French (France) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
-#ifdef _WIN32
-LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
-#pragma code_page(1252)
-#endif //_WIN32
-
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -36,7 +27,6 @@ END
 
 #endif    // French (France) resources
 /////////////////////////////////////////////////////////////////////////////
-
 
 /////////////////////////////////////////////////////////////////////////////
 // Italian (Italy) resources
@@ -1679,6 +1669,12 @@ BEGIN
     IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
                             "Calibrazione sfondo per canale: %s\n"
     IDS_RECAP_DARKMULTIPLICATIONFACTOR "Fattore di moltiplicazione del dark: %.2f\n"
+END
+
+
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw doesn't support your %s camera"
 END
 
 #endif    // Italian (Italy) resources
