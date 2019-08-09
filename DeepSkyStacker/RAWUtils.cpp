@@ -716,15 +716,15 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	// The camera type hasn't already been checked, so search the LibRaw supported camera list
 	//
 	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
-		[](const std::string &rhs, const std::string &lhs)
+		[](const std::string &lhs, const std::string &rhs)
 	{
-		const char* pcrhs = rhs.c_str();
 		const char* pclhs = lhs.c_str();
+		const char* pcrhs = rhs.c_str();
 		size_t len = strlen(pclhs);
 		size_t szrhs = strlen(pcrhs);
 		// choose the shorter length
 		len = (len > szrhs) ? szrhs : len;
-		int result = _strnicmp(pcrhs, pclhs, len);
+		int result = _strnicmp(pclhs, pcrhs, len);
 		return (result < 0) ? true : false;
 	}
 		);
