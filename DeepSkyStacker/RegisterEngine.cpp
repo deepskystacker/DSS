@@ -91,6 +91,8 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 			// Compute luminance at fX, fY
 			PIXELDISPATCHVECTOR		vPixels;
 
+			vPixels.reserve(10);
+
 			ComputePixelDispatch(CPointExt(fX, fY), vPixels);
 
 			for (LONG k = 0;k<vPixels.size();k++)
