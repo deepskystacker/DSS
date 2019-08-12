@@ -1,23 +1,18 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
-
-#define APSTUDIO_READONLY_SYMBOLS
-/////////////////////////////////////////////////////////////////////////////
-//
-// Generated from the TEXTINCLUDE 2 resource.
-//
 #include "afxres.h"
 /////////////////////////////////////////////////////////////////////////////
-#undef APSTUDIO_READONLY_SYMBOLS
+// Romanian (Romania) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ROM)
-#ifdef _WIN32
-LANGUAGE 24, 1
+LANGUAGE LANG_ROMANIAN, SUBLANG_DEFAULT
 #pragma code_page(1250)
-#endif //_WIN32
 
-
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
 
 IDD_PROPERTIES DIALOGEX 0, 0, 262, 172
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
@@ -52,20 +47,15 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stackez"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "Mediana",IDC_MEDIAN,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,7,42,39,10
-    CONTROL         "Taiere Kappa-Sigma",IDC_SIGMACLIPPING,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,62,83,10
-    CONTROL         "Taiere mediana Kappa-Sigma",IDC_MEDIANSIGMACLIPPING,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,80,107,10
+    CONTROL         "Mediana",IDC_MEDIAN,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,42,39,10
+    CONTROL         "Taiere Kappa-Sigma",IDC_SIGMACLIPPING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,62,83,10
+    CONTROL         "Taiere mediana Kappa-Sigma",IDC_MEDIANSIGMACLIPPING,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,80,107,10
     CONTROL         "Medie ponderata auto adaptiva",IDC_AUTOADAPTIVEAVERAGE,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,98,
-                    124,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,98,124,10
     CONTROL         "Entropie medie ponderata\n(High Dynamic Range)",IDC_ENTROPYAVERAGE,
-                    "Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP | 
-                    WS_TABSTOP,140,17,161,17
-    CONTROL         "Maxim",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,140,42,45,10
+                    "Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP | WS_TABSTOP,140,17,161,17
+    CONTROL         "Maxim",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,140,42,45,10
     GROUPBOX        "",IDC_KAPPAFRAME,140,56,161,57
     LTEXT           "Kappa:",IDC_STATICKAPPA,145,70,24,8
     EDITTEXT        IDC_KAPPA,216,67,40,14,ES_RIGHT,WS_EX_RIGHT
@@ -73,24 +63,15 @@ BEGIN
     LTEXT           "Numar iteratii:",IDC_STATICITERATION,145,96,69,8
     EDITTEXT        IDC_ITERATION,216,93,40,14,ES_RIGHT | ES_NUMBER,WS_EX_RIGHT
     LTEXT           "Mod stackare",IDC_TITLE,7,7,294,8
-    CONTROL         "Medie",IDC_AVERAGE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,7,20,43,10
-    CONTROL         "Optimizare dark",IDC_DARKOPTIMIZATION,"Button",BS_AUTOCHECKBOX | 
-                    NOT WS_VISIBLE | WS_TABSTOP,7,133,72,10
-    CONTROL         "Detectie si eliminare pixeli hot",IDC_HOTPIXELS,"Button",
-                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,119,127,
-                    10
+    CONTROL         "Medie",IDC_AVERAGE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,20,43,10
+    CONTROL         "Optimizare dark",IDC_DARKOPTIMIZATION,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,133,72,10
+    CONTROL         "Detectie si eliminare pixeli hot",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,119,127,10
     CONTROL         "Detectie si eliminare coloane defecte",IDC_BADCOLUMNREMOVAL,
-                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,
-                    119,161,10
-    CONTROL         "Factor multiplicare dark:",IDC_USEDARKFACTOR,"Button",BS_AUTOCHECKBOX | 
-                    NOT WS_VISIBLE | WS_TABSTOP,140,133,93,10
-    EDITTEXT        IDC_DARKMULTIPLICATIONFACTOR,235,133,31,8,ES_RIGHT | ES_AUTOHSCROLL | 
-                    NOT WS_VISIBLE | NOT WS_BORDER
-    CONTROL         "Debloom",IDC_DEBLOOM,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | 
-                    WS_TABSTOP,140,133,43,10
-    LTEXT           "Fara calibrare fundal",IDC_BACKGROUNDCALIBRATION,8,133,
-                    129,8,NOT WS_VISIBLE | NOT WS_GROUP
+                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,119,161,10
+    CONTROL         "Factor multiplicare dark:",IDC_USEDARKFACTOR,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,133,93,10
+    EDITTEXT        IDC_DARKMULTIPLICATIONFACTOR,235,133,31,8,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_VISIBLE | NOT WS_BORDER
+    CONTROL         "Debloom",IDC_DEBLOOM,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,133,43,10
+    LTEXT           "Fara calibrare fundal",IDC_BACKGROUNDCALIBRATION,8,133,129,8,NOT WS_VISIBLE | NOT WS_GROUP
     PUSHBUTTON      "Setari...",IDC_DEBLOOMSETTINGS,184,130,50,14,NOT WS_VISIBLE
 END
 
@@ -116,44 +97,31 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Rezultat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "Mod standard",IDC_NORMALRESULT,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,12,65,10
-    CONTROL         "Mod ""Mozaic""",IDC_MOSAICRESULT,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,35,62,10
-    CONTROL         "Mod intersectie",IDC_INTERSECTIONMODE,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,58,76,10
+    CONTROL         "Mod standard",IDC_NORMALRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,12,65,10
+    CONTROL         "Mod ""Mozaic""",IDC_MOSAICRESULT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,35,62,10
+    CONTROL         "Mod intersectie",IDC_INTERSECTIONMODE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,58,76,10
     LTEXT           "",IDC_MODE_TEXT,165,114,139,26
-    CONTROL         "",IDC_MODEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,166,
-                    7,135,106
-    CONTROL         "Activeaza 2x Drizzle",IDC_ENABLE2XDRIZZLE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,7,109,77,10
-    CONTROL         "Activeaza 3x Drizzle",IDC_ENABLE3XDRIZZLE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,86,109,77,10
-    CONTROL         "Dreptunghi definit",IDC_CUSTOMRECTANGLE,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,81,74,10
+    CONTROL         "",IDC_MODEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,166,7,135,106
+    CONTROL         "Activeaza 2x Drizzle",IDC_ENABLE2XDRIZZLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,109,77,10
+    CONTROL         "Activeaza 3x Drizzle",IDC_ENABLE3XDRIZZLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,86,109,77,10
+    CONTROL         "Dreptunghi definit",IDC_CUSTOMRECTANGLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,81,74,10
     CONTROL         "Aliniaza canalele RGB in imaginea finala",IDC_ALIGNCHANNELS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,125,137,10
 END
 
-
 IDD_SAVEPICTURE DIALOGEX 0, 0, 273, 101
-STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Compresie",IDC_STATIC,7,7,259,25
-    CONTROL         "Fara",IDC_COMPRESSION_NONE,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,13,17,33,10
-    CONTROL         "ZIP (Deflate)",IDC_COMPRESSION_ZIP,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,69,17,57,10
-    CONTROL         "LZW  (Deprecated)",IDC_COMPRESSION_LZW,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,147,17,75,10
+    CONTROL         "Fara",IDC_COMPRESSION_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,17,33,10
+    CONTROL         "ZIP (Deflate)",IDC_COMPRESSION_ZIP,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,69,17,57,10
+    CONTROL         "LZW  (Deprecated)",IDC_COMPRESSION_LZW,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,147,17,75,10
     GROUPBOX        "Optiuni",IDC_STATIC,7,37,259,55
-    CONTROL         "Aplica ajustarile la imaginea salvata",IDC_APPLIED,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,50,139,10
-    CONTROL         "Include ajustarile in imaginea salvata dar nu le aplica",
-                    IDC_EMBEDDED,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,
-                    13,64,213,10
+    CONTROL         "Aplica ajustarile la imaginea salvata",IDC_APPLIED,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,50,139,10
+    CONTROL         "Include ajustarile in imaginea salvata dar nu le aplica",IDC_EMBEDDED,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,64,213,10
     CONTROL         "Creaza o imagine din dreptunghiul selectat",IDC_USERECT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,80,159,10
 END
@@ -162,62 +130,41 @@ IDD_EXPLORERBAR DIALOGEX 0, 0, 166, 451
 STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "",IDC_STACKING_RECT,7,7,14,237,NOT WS_VISIBLE | WS_DISABLED,
-                    WS_EX_TRANSPARENT | WS_EX_STATICEDGE
-    LTEXT           "",IDC_PROCESSING_RECT,7,253,14,69,NOT WS_VISIBLE | WS_DISABLED,
-                    WS_EX_TRANSPARENT | WS_EX_STATICEDGE
+    LTEXT           "",IDC_STACKING_RECT,7,7,14,237,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
+    LTEXT           "",IDC_PROCESSING_RECT,7,253,14,69,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
     LTEXT           "Inregistrare si stackare",IDC_STACKING_TITLE,9,9,111,8
     LTEXT           "Procesare",IDC_PROCESSING_TITLE,9,255,121,8
-    LTEXT           "Setari Raw/FITS DDP...",IDC_OPTIONS_RAWDDPSETTINGS,33,359,
-                    118,8
-    LTEXT           "Inregistreaza imaginile selectate...",IDC_REGISTERING_REGISTERCHECKED,
-                    14,181,123,8
-    LTEXT           "Deschide fisiere imagine...",IDC_STACKING_OPENFILES,14,
-                    25,104,8
+    LTEXT           "Setari Raw/FITS DDP...",IDC_OPTIONS_RAWDDPSETTINGS,33,359,118,8
+    LTEXT           "Inregistreaza imaginile selectate...",IDC_REGISTERING_REGISTERCHECKED,14,181,123,8
+    LTEXT           "Deschide fisiere imagine...",IDC_STACKING_OPENFILES,14,25,104,8
     LTEXT           "Fisiere dark...",IDC_STACKING_OPENDARKS,33,37,45,8
     LTEXT           "Goleste lista",IDC_STACKING_CLEARLIST,14,117,39,8
     LTEXT           "Selecteaza toate",IDC_STACKING_CHECKALL,14,135,54,8
-    LTEXT           "Stabiliti o limita...",IDC_STACKING_CHECKABOVE,14,147,88,
-                    8
+    LTEXT           "Stabiliti o limita...",IDC_STACKING_CHECKABOVE,14,147,88,8
     LTEXT           "Deselectati totul",IDC_STACKING_UNCHECKALL,14,161,52,8
-    LTEXT           "Stackati imaginile selectate...",IDC_STACKING_STACKCHECKED,
-                    14,216,115,8
-    LTEXT           "Deschide fisiere imagine...",IDC_PROCESSING_OPENFILE,14,
-                    269,84,8
-    LTEXT           "Copiaza imaginea curenta in clipboard",IDC_PROCESSING_COPYTOCLIPBOARD,
-                    14,282,120,8
-    LTEXT           "Salveaza imaginea in fisierul...",IDC_PROCESSING_SAVEFILE,
-                    14,307,97,8
-    LTEXT           "",IDC_OPTIONS_RECT,7,330,14,116,NOT WS_VISIBLE | WS_DISABLED,
-                    WS_EX_TRANSPARENT | WS_EX_STATICEDGE
+    LTEXT           "Stackati imaginile selectate...",IDC_STACKING_STACKCHECKED,14,216,115,8
+    LTEXT           "Deschide fisiere imagine...",IDC_PROCESSING_OPENFILE,14,269,84,8
+    LTEXT           "Copiaza imaginea curenta in clipboard",IDC_PROCESSING_COPYTOCLIPBOARD,14,282,120,8
+    LTEXT           "Salveaza imaginea in fisierul...",IDC_PROCESSING_SAVEFILE,14,307,97,8
+    LTEXT           "",IDC_OPTIONS_RECT,7,330,14,116,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
     LTEXT           "Optiuni",IDC_OPTIONS_TITLE,9,333,121,8
-    LTEXT           "Calculeaza off-set-ul...",IDC_STACKING_COMPUTEOFFSETS,14,
-                    199,74,8
+    LTEXT           "Calculeaza off-set-ul...",IDC_STACKING_COMPUTEOFFSETS,14,199,74,8
     LTEXT           "Fisiere Flat...",IDC_STACKING_OPENFLATS,33,48,43,8
-    LTEXT           "Fisiere offset/bias...",IDC_STACKING_OPENOFFSETS,33,71,
-                    65,8
+    LTEXT           "Fisiere offset/bias...",IDC_STACKING_OPENOFFSETS,33,71,65,8
     LTEXT           "Despre DeepSkyStacker...",IDC_ABOUT,15,415,110,8
-    LTEXT           "Deschide o lista de fisiere...",IDC_STACKING_LOADLIST,14,
-                    86,89,8
-    LTEXT           "Salveaza lista de fisiere...",IDC_STACKING_SAVELIST,14,
-                    97,83,8
-    LTEXT           "",IDC_STACKING_SUBRECT1,13,20,14,107,NOT WS_VISIBLE | WS_DISABLED,
-                    WS_EX_TRANSPARENT | WS_EX_STATICEDGE
-    LTEXT           "",IDC_STACKING_SUBRECT2,14,132,14,39,NOT WS_VISIBLE | WS_DISABLED,
-                    WS_EX_TRANSPARENT | WS_EX_STATICEDGE
-    LTEXT           "",IDC_STACKING_SUBRECT3,14,176,14,63,NOT WS_VISIBLE | WS_DISABLED,
-                    WS_EX_TRANSPARENT | WS_EX_STATICEDGE
+    LTEXT           "Deschide o lista de fisiere...",IDC_STACKING_LOADLIST,14,86,89,8
+    LTEXT           "Salveaza lista de fisiere...",IDC_STACKING_SAVELIST,14,97,83,8
+    LTEXT           "",IDC_STACKING_SUBRECT1,13,20,14,107,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
+    LTEXT           "",IDC_STACKING_SUBRECT2,14,132,14,39,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
+    LTEXT           "",IDC_STACKING_SUBRECT3,14,176,14,63,NOT WS_VISIBLE | WS_DISABLED,WS_EX_TRANSPARENT | WS_EX_STATICEDGE
     LTEXT           "Ajutor DeepSkyStacker...",IDC_CONTEXTHELP,14,430,110,8
-    LTEXT           "Creeaza un Star Mask...",IDC_PROCESSING_CREATESTARMASK,
-                    14,294,78,8
+    LTEXT           "Creeaza un Star Mask...",IDC_PROCESSING_CREATESTARMASK,14,294,78,8
     LTEXT           "Serie stackare...",IDC_STACKING_BATCHSTACK,14,228,55,8
-    LTEXT           "fisiere dark flat...",IDC_STACKING_OPENDARKFLATS,33,59,
-                    56,8
+    LTEXT           "fisiere dark flat...",IDC_STACKING_OPENDARKFLATS,33,59,56,8
     LTEXT           "Setari...",IDC_OPTIONS_SETTINGS,18,346,110,8
     LTEXT           "Incarca...",IDC_OPTIONS_LOADSETTINGS,33,371,114,8
     LTEXT           "Salveaza...",IDC_OPTIONS_SAVESETTINGS,33,384,111,8
-    LTEXT           "Recomandat...",IDC_OPTIONS_RECOMMANDEDSETTINGS,33,397,104,
-                    8
+    LTEXT           "Recomandat...",IDC_OPTIONS_RECOMMANDEDSETTINGS,33,397,104,8
 END
 
 IDD_RGB DIALOGEX 0, 0, 164, 126
@@ -225,16 +172,12 @@ STYLE DS_SETFONT | WS_POPUP | WS_CAPTION
 CAPTION "Nivele RGB/K"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x1
 BEGIN
-    CONTROL         "Gradient",IDC_REDGRADIENT,"MFCGradientCtrl",WS_TABSTOP,
-                    16,3,148,30,WS_EX_CLIENTEDGE
-    CONTROL         "Gradient",IDC_GREENGRADIENT,"MFCGradientCtrl",WS_TABSTOP,
-                    16,35,148,30,WS_EX_CLIENTEDGE
-    CONTROL         "Gradient",IDC_BLUEGRADIENT,"MFCGradientCtrl",WS_TABSTOP,
-                    16,67,148,30,WS_EX_CLIENTEDGE
+    CONTROL         "Gradient",IDC_REDGRADIENT,"MFCGradientCtrl",WS_TABSTOP,16,3,148,30,WS_EX_CLIENTEDGE
+    CONTROL         "Gradient",IDC_GREENGRADIENT,"MFCGradientCtrl",WS_TABSTOP,16,35,148,30,WS_EX_CLIENTEDGE
+    CONTROL         "Gradient",IDC_BLUEGRADIENT,"MFCGradientCtrl",WS_TABSTOP,16,67,148,30,WS_EX_CLIENTEDGE
     PUSHBUTTON      "Reseteaza",IDC_RESET,116,112,48,14
     PUSHBUTTON      "Aplica",IDC_PROCESS,0,112,48,14
-    CONTROL         "Setari interconectate",IDC_LINK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,3,100,80,10
+    CONTROL         "Setari interconectate",IDC_LINK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,3,100,80,10
     PUSHBUTTON      "",IDC_UNDO,57,112,16,12
     PUSHBUTTON      "",IDC_REDO,95,112,16,12
     PUSHBUTTON      "",IDC_SETTINGS,76,112,16,12
@@ -251,18 +194,12 @@ BEGIN
     CTEXT           "Ton negru",IDC_TEXT_DARKNESS,0,3,163,8
     CTEXT           "Ton luminos",IDC_TEXT_HIGHLIGHT,0,72,163,8
     CTEXT           "Ton mediu",IDC_TEXT_MIDTONE,0,38,163,8
-    CONTROL         "Slider1",IDC_DARKANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
-                    WS_TABSTOP,38,14,125,9
-    CONTROL         "Slider1",IDC_DARKPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
-                    WS_TABSTOP,38,27,125,9
-    CONTROL         "Slider1",IDC_MIDTONE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
-                    WS_TABSTOP,38,60,125,9
-    CONTROL         "Slider1",IDC_MIDANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
-                    WS_TABSTOP,38,47,125,9
-    CONTROL         "Slider1",IDC_HIGHANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
-                    WS_TABSTOP,38,84,125,9
-    CONTROL         "Slider1",IDC_HIGHPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
-                    WS_TABSTOP,38,97,125,9
+    CONTROL         "Slider1",IDC_DARKANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,14,125,9
+    CONTROL         "Slider1",IDC_DARKPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,27,125,9
+    CONTROL         "Slider1",IDC_MIDTONE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,60,125,9
+    CONTROL         "Slider1",IDC_MIDANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,47,125,9
+    CONTROL         "Slider1",IDC_HIGHANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,84,125,9
+    CONTROL         "Slider1",IDC_HIGHPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,97,125,9
     PUSHBUTTON      "Aplica",IDC_PROCESS,0,112,48,14
     PUSHBUTTON      "Reseteaza",IDC_RESET,116,112,48,14
     PUSHBUTTON      "",IDC_UNDO,57,112,16,12,BS_ICON
@@ -283,8 +220,7 @@ BEGIN
     DEFPUSHBUTTON   "Adauga",IDC_ADD,172,7,50,14
     DEFPUSHBUTTON   "Incarca",IDC_LOAD,172,122,50,14
     EDITTEXT        IDC_SETTINGSNAME,7,7,153,14,ES_AUTOHSCROLL
-    LISTBOX         IDC_SETTINGSLIST,7,26,153,129,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
-                    WS_TABSTOP
+    LISTBOX         IDC_SETTINGSLIST,7,26,153,129,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_SATURATION DIALOGEX 0, 0, 164, 126
@@ -293,8 +229,7 @@ CAPTION "Saturatie"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CTEXT           "Shift saturatie",IDC_TEXT_SATURATION,0,3,163,8
-    CONTROL         "Slider1",IDC_SATURATION,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
-                    WS_TABSTOP,38,22,125,9
+    CONTROL         "Slider1",IDC_SATURATION,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | WS_TABSTOP,38,22,125,9
     PUSHBUTTON      "Aplica",IDC_PROCESS,0,112,48,14
     PUSHBUTTON      "Reseteaza",IDC_RESET,116,112,48,14
     PUSHBUTTON      "",IDC_UNDO,57,112,16,12,BS_ICON
@@ -311,10 +246,8 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,175,157,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,175,137,50,14
     LTEXT           "",IDC_SHEETRECT,7,8,218,123,SS_SUNKEN | NOT WS_VISIBLE
-    PUSHBUTTON      "Parametrii stackare...",IDC_STACKINGPARAMETERS,7,157,105,
-                    14
-    PUSHBUTTON      "Setari recomandate...",IDC_RECOMMANDEDSETTINGS,7,137,105,
-                    14
+    PUSHBUTTON      "Parametrii stackare...",IDC_STACKINGPARAMETERS,7,157,105,14
+    PUSHBUTTON      "Setari recomandate...",IDC_RECOMMANDEDSETTINGS,7,137,105,14
 END
 
 IDD_CHECKABOVE DIALOGEX 0, 0, 151, 57
@@ -345,19 +278,15 @@ CAPTION "Despre DeepSkyStacker"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,240,315,50,14
-    CONTROL         "Verifica la pornire daca este disponibila o versiune mai noua",
-                    IDC_CHECKVERSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,
-                    319,202,10
+    CONTROL         "Verifica la pornire daca este disponibila o versiune mai noua",IDC_CHECKVERSION,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,319,202,10
     GROUPBOX        "Limba",IDC_STATIC,7,180,283,129
-    COMBOBOX        IDC_LANGUAGE,158,189,126,115,CBS_DROPDOWNLIST | WS_VSCROLL | 
-                    WS_TABSTOP
-    LTEXT           "Foloseste urmatoarea limba la repornire",IDC_STATIC,15,
-                    191,138,8
-    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",
-                    IDC_CREDITS,"QHTM_Window_Class_001",WS_TABSTOP,7,4,283,170
-    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",
-                    IDC_LANGCREDITS,"QHTM_Window_Class_001",WS_TABSTOP,11,205,
-                    274,99
+    COMBOBOX        IDC_LANGUAGE,158,189,126,115,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Foloseste urmatoarea limba la repornire",IDC_STATIC,15,191,138,8
+    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",IDC_CREDITS,
+                    "QHTM_Window_Class_001",WS_TABSTOP,7,4,283,170
+    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",IDC_LANGCREDITS,
+                    "QHTM_Window_Class_001",WS_TABSTOP,11,205,274,99
 END
 
 IDD_STACKRECAP DIALOGEX 0, 0, 354, 249
@@ -367,13 +296,10 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,294,228,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,294,209,50,14
-    PUSHBUTTON      "Parametrii stackare...",IDC_STACKINGPARAMETERS,7,228,105,
-                    14
-    PUSHBUTTON      "Setari recomandate...",IDC_RECOMMANDEDSETTINGS,7,210,105,
-                    14
-    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",
-                    IDC_RECAPHTML,"QHTM_Window_Class_001",WS_TABSTOP,7,4,337,
-                    200
+    PUSHBUTTON      "Parametrii stackare...",IDC_STACKINGPARAMETERS,7,228,105,14
+    PUSHBUTTON      "Setari recomandate...",IDC_RECOMMANDEDSETTINGS,7,210,105,14
+    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",IDC_RECAPHTML,
+                    "QHTM_Window_Class_001",WS_TABSTOP,7,4,337,200
 END
 
 IDD_REGISTERSETTINGS_BASIC DIALOGEX 0, 0, 209, 111
@@ -383,16 +309,13 @@ FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CONTROL         "Inregistreaza imaginile deja inregistrate",IDC_FORCEREGISTER,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,7,139,10
-    CONTROL         "Detectie automata a pixelilor hot",IDC_HOTPIXELS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,13,23,118,10
+    CONTROL         "Detectie automata a pixelilor hot",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,23,118,10
     GROUPBOX        "",IDC_STATIC,7,41,195,64
-    CONTROL         "Stackeaza dupa inregistrare",IDC_STACK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,13,40,102,10
+    CONTROL         "Stackeaza dupa inregistrare",IDC_STACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,40,102,10
     LTEXT           "Selecteaza cele mai bune ",IDC_STATIC,14,58,82,8
     EDITTEXT        IDC_PERCENT,94,55,20,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "% din imagini si stackeaza.",IDC_STATIC,117,58,86,8
-    CTEXT           "Nu uitati sa adaugati cadre Dark\nin tab stackare.",IDC_STACKWARNING,
-                    13,80,182,19,SS_SUNKEN
+    CTEXT           "Nu uitati sa adaugati cadre Dark\nin tab stackare.",IDC_STACKWARNING,13,80,182,19,SS_SUNKEN
 END
 
 IDD_REGISTERSETTINGS_ADVANCED DIALOGEX 0, 0, 209, 111
@@ -400,10 +323,8 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Avansat"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CONTROL         "",IDC_LUMINANCETHRESHOLD,"msctls_trackbar32",TBS_BOTH | 
-                    TBS_NOTICKS | WS_TABSTOP,38,17,136,15
-    PUSHBUTTON      "Calculez numarul de stele detectate",IDC_COMPUTEDETECTEDSTARS,
-                    37,48,137,14
+    CONTROL         "",IDC_LUMINANCETHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,38,17,136,15
+    PUSHBUTTON      "Calculez numarul de stele detectate",IDC_COMPUTEDETECTEDSTARS,37,48,137,14
     CTEXT           "%ld stele",IDC_NRSTARS,38,68,136,8
     RTEXT           "10%",IDC_LUMINANCETHRESHOLDTEXT,13,21,25,8
     GROUPBOX        "Nivel detectie stele",-1,7,3,195,102
@@ -424,28 +345,20 @@ BEGIN
     LTEXT           "Valoare albastru",IDC_STATIC,15,53,52,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "White Balance",IDC_STATIC,140,7,131,64
-    CONTROL         "Foloseste Auto White Balance",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP | BS_MULTILINE,149,21,113,17
-    CONTROL         "Foloseste White Balance camera",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP | BS_MULTILINE,149,43,109,16
-    CONTROL         "Interpolare biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,15,91,79,10
-    CONTROL         "Interpolare omogenitate adaptiva directata",IDC_AHD,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10
-    LTEXT           "Aceasta optiune foloseste matricea Bayer pentru a creea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultata este redusa la jumatate.",
-                    IDC_STATIC,23,193,229,27
-    LTEXT           "Aceasta optiune utilizeaza matricea Bayer asa cum este ea. Nu se face nici o interpolare si fiecarui pixel  se acorda componenta primara din matrice.",
-                    IDC_STATIC,23,149,236,25
-    CONTROL         "Foloseste algoritmul de drizzle Bayer (fara interpoare, fara debayerizare)",
-                    IDC_RAWBAYER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,
-                    15,135,247,10
-    CONTROL         "Creeaza super pixeli din matricea bruta Bayer (fara interpolare)",
-                    IDC_SUPERPIXELS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,15,179,225,10
-    GROUPBOX        "Transformare folosind matricea Bayer",IDC_STATIC,7,76,263,
-                    150
-    CONTROL         "Seteaza valoarea de negru la 0",IDC_BLACKPOINTTO0,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,236,113,10
+    CONTROL         "Foloseste Auto White Balance",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,113,17
+    CONTROL         "Foloseste White Balance camera",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,109,16
+    CONTROL         "Interpolare biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
+    CONTROL         "Interpolare omogenitate adaptiva directata",IDC_AHD,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10
+    LTEXT           "Aceasta optiune foloseste matricea Bayer pentru a creea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultata este redusa la jumatate.",IDC_STATIC,23,193,229,27
+    LTEXT           "Aceasta optiune utilizeaza matricea Bayer asa cum este ea. Nu se face nici o interpolare si fiecarui pixel  se acorda componenta primara din matrice.",IDC_STATIC,23,149,236,25
+    CONTROL         "Foloseste algoritmul de drizzle Bayer (fara interpoare, fara debayerizare)",IDC_RAWBAYER,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,135,247,10
+    CONTROL         "Creeaza super pixeli din matricea bruta Bayer (fara interpolare)",IDC_SUPERPIXELS,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,179,225,10
+    GROUPBOX        "Transformare folosind matricea Bayer",IDC_STATIC,7,76,263,150
+    CONTROL         "Seteaza valoarea de negru la 0",IDC_BLACKPOINTTO0,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,236,113,10
 END
 
 IDD_FITSSETTINGS_TAB DIALOGEX 0, 0, 278, 270
@@ -453,9 +366,8 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMEN
 CAPTION "Fisiere FITS"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CONTROL         "Fisierele FITS de 16 bit sunt fisiere RAW create cu un DSLR\nsau cu o camera CCD color",
-                    IDC_FITSISRAW,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | 
-                    WS_TABSTOP,6,8,264,23
+    CONTROL         "Fisierele FITS de 16 bit sunt fisiere RAW create cu un DSLR\nsau cu o camera CCD color",IDC_FITSISRAW,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,6,8,264,23
     LTEXT           "Camera:",IDC_TEXT1,13,37,27,8
     COMBOBOX        IDC_DSLR,42,34,228,241,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     GROUPBOX        "Ajustari culori",IDC_STATIC,6,52,128,64
@@ -466,27 +378,19 @@ BEGIN
     LTEXT           "Valoare albastru",IDC_TEXT4,14,98,52,8
     EDITTEXT        IDC_BLUESCALE,72,95,40,14,ES_RIGHT | ES_AUTOHSCROLL
     LTEXT           "Filtru model Bayer utilizat",IDC_TEXT5,143,56,98,8
-    CONTROL         "",IDC_BAYERPATTERN,"Static",SS_BITMAP | SS_CENTERIMAGE,
-                    144,66,126,50
-    CONTROL         "Interpolare biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,13,131,79,10
-    CONTROL         "Interpolare omogenitate adaptiva directata",IDC_AHD,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,147,178,10
-    CONTROL         "Foloseste algoritmul de drizzle Bayer (fara interpoare, fara debayerizare)",
-                    IDC_RAWBAYER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,
-                    13,161,247,10
-    LTEXT           "Aceasta optiune utilizeaza matricea Bayer asa cum este ea. Nu se face nici o interpolare si fiecarui pixel  se acorda componenta primara din matrice.",
-                    IDC_TEXT7,33,172,231,25
-    CONTROL         "Creeaza super pixeli din matricea bruta Bayer (fara interpolare)",
-                    IDC_SUPERPIXELS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,13,200,233,10
-    LTEXT           "Aceasta optiune foloseste matricea Bayer pentru a creea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultata este redusa la jumatate.",
-                    IDC_TEXT6,33,212,221,24
-    GROUPBOX        "Transformare folosind matricea Bayer",IDC_STATIC,6,119,
-                    264,123
-    CONTROL         "Forteaza utilizarea valorilor fara semn (pozitive) atunci cand valorile cu semn sunt salvate",
-                    IDC_FORCEUNSIGNED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP | 
-                    BS_MULTILINE,6,249,256,16
+    CONTROL         "",IDC_BAYERPATTERN,"Static",SS_BITMAP | SS_CENTERIMAGE,144,66,126,50
+    CONTROL         "Interpolare biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,131,79,10
+    CONTROL         "Interpolare omogenitate adaptiva directata",IDC_AHD,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,147,178,10
+    CONTROL         "Foloseste algoritmul de drizzle Bayer (fara interpoare, fara debayerizare)",IDC_RAWBAYER,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,161,247,10
+    LTEXT           "Aceasta optiune utilizeaza matricea Bayer asa cum este ea. Nu se face nici o interpolare si fiecarui pixel  se acorda componenta primara din matrice.",IDC_TEXT7,33,172,231,25
+    CONTROL         "Creeaza super pixeli din matricea bruta Bayer (fara interpolare)",IDC_SUPERPIXELS,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,200,233,10
+    LTEXT           "Aceasta optiune foloseste matricea Bayer pentru a creea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultata este redusa la jumatate.",IDC_TEXT6,33,212,221,24
+    GROUPBOX        "Transformare folosind matricea Bayer",IDC_STATIC,6,119,264,123
+    CONTROL         "Forteaza utilizarea valorilor fara semn (pozitive) atunci cand valorile cu semn sunt salvate",IDC_FORCEUNSIGNED,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,6,249,256,16
 END
 
 IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
@@ -494,19 +398,13 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Aliniere"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    LTEXT           "Transformare folosita in decursul alinierii",IDC_TITLE,
-                    7,7,294,8
-    CONTROL         "Automata",IDC_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,9,22,48,10
-    CONTROL         "Biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,9,46,39,10
-    CONTROL         "Bipatrata",IDC_BISQUARED,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,9,70,47,10
-    CONTROL         "Bicubica",IDC_BICUBIC,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,9,94,38,10
+    LTEXT           "Transformare folosita in decursul alinierii",IDC_TITLE,7,7,294,8
+    CONTROL         "Automata",IDC_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,22,48,10
+    CONTROL         "Biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,46,39,10
+    CONTROL         "Bipatrata",IDC_BISQUARED,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,70,47,10
+    CONTROL         "Bicubica",IDC_BICUBIC,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,94,38,10
     LTEXT           "",IDC_ALIGNMENTTEXT,156,22,145,94
-    CONTROL         "Fara aliniere",IDC_NOALIGNMENT,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,9,118,58,10
+    CONTROL         "Fara aliniere",IDC_NOALIGNMENT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,118,58,10
 END
 
 IDD_DROPFILES DIALOGEX 0, 0, 186, 124
@@ -517,16 +415,11 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,75,103,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,129,103,50,14
     LTEXT           "Adauga %ld fisiere ca",IDC_DROPFILESTEXT,7,7,172,8
-    CONTROL         "Cadre Light",IDC_LIGHTFRAMES,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,22,57,10
-    CONTROL         "Cadre Dark",IDC_DARKFRAMES,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,37,56,10
-    CONTROL         "Cadre Flat",IDC_FLATFRAMES,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,52,53,10
-    CONTROL         "Cadre Offset/Bias",IDC_BIASFRAMES,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,82,77,10
-    CONTROL         "Cadre Dark Flat",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,67,70,10
+    CONTROL         "Cadre Light",IDC_LIGHTFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,22,57,10
+    CONTROL         "Cadre Dark",IDC_DARKFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,37,56,10
+    CONTROL         "Cadre Flat",IDC_FLATFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,52,53,10
+    CONTROL         "Cadre Offset/Bias",IDC_BIASFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,82,77,10
+    CONTROL         "Cadre Dark Flat",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,67,70,10
 END
 
 IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
@@ -536,21 +429,15 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Setari creare fisiere intermediare",IDC_TITLE,7,7,294,8
     CONTROL         "Creaza un fisier calibrat pentru fiecare cadru light",IDC_SAVECALIBRATED,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,17,
-                    19,169,18
-    CONTROL         "Creaza un fisier inregistrare/calibrare pentru fiecare cadru light",
-                    IDC_CREATEINTERMEDIATE,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | 
-                    WS_TABSTOP,17,50,284,18
-    GROUPBOX        "Formatul fisierelor imagine intermediara si finala",IDC_STATIC,
-                    7,73,294,47
-    CONTROL         "Fisiere TIFF",IDC_SAVEASTIFF,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,17,86,277,10
-    CONTROL         "Fisiere FITS",IDC_SAVEASFITS,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,17,103,275,10
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,17,19,169,18
+    CONTROL         "Creaza un fisier inregistrare/calibrare pentru fiecare cadru light",IDC_CREATEINTERMEDIATE,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,17,50,284,18
+    GROUPBOX        "Formatul fisierelor imagine intermediara si finala",IDC_STATIC,7,73,294,47
+    CONTROL         "Fisiere TIFF",IDC_SAVEASTIFF,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,86,277,10
+    CONTROL         "Fisiere FITS",IDC_SAVEASFITS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,103,275,10
     LTEXT           "",IDC_SAVEASEXPLANATION,17,125,284,18
-    CONTROL         "Salveaza o imagine debayerizata la procesarea fiserelor RAW",
-                    IDC_SAVEDEBAYERED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    27,36,209,10
+    CONTROL         "Salveaza o imagine debayerizata la procesarea fiserelor RAW",IDC_SAVEDEBAYERED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,27,36,209,10
 END
 
 IDD_STARMASK DIALOGEX 0, 0, 267, 227
@@ -563,14 +450,10 @@ BEGIN
     LTEXT           "Nivel detectie stele",IDC_STATIC,16,86,78,8
     LTEXT           "Dimesiune minima a stelei",IDC_STATIC,16,118,80,8
     LTEXT           "Dimensiune maxima a stelei",IDC_STATIC,16,132,87,8
-    CONTROL         "Detectie pixeli hot",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,16,98,107,10
-    CONTROL         "",IDC_STARTHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,160,84,98,10
-    CONTROL         "",IDC_MINSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,160,116,98,10
-    CONTROL         "",IDC_MAXSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,160,132,98,10
+    CONTROL         "Detectie pixeli hot",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,98,107,10
+    CONTROL         "",IDC_STARTHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,84,98,10
+    CONTROL         "",IDC_MINSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,116,98,10
+    CONTROL         "",IDC_MAXSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,132,98,10
     LTEXT           "%ld%%",IDC_STARTHRESHOLDTEXT,123,86,28,8
     LTEXT           "%ld pixeli",IDC_MINSIZETEXT,123,118,34,8
     LTEXT           "%ld pixeli",IDC_MAXSIZETEXT,123,132,34,8
@@ -578,17 +461,13 @@ BEGIN
     GROUPBOX        "Mareste/micsoreaza",IDC_STATIC,7,156,249,44
     LTEXT           "Procent din dimensiunea stelei",IDC_STATIC,16,170,96,8
     LTEXT           "pixeli",IDC_STATIC,16,183,19,8
-    CONTROL         "",IDC_PERCENT,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,160,170,98,10
-    CONTROL         "",IDC_PIXELS,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,160,183,98,10
+    CONTROL         "",IDC_PERCENT,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,170,98,10
+    CONTROL         "",IDC_PIXELS,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,160,183,98,10
     LTEXT           "%ld %%",IDC_PERCENTTEXT,122,170,30,8
     LTEXT           "%ld pixel(i)",IDC_PIXELSTEXT,122,183,39,8
-    CONTROL         "",IDC_STARSHAPEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,
-                    160,7,98,63
+    CONTROL         "",IDC_STARSHAPEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,160,7,98,63
     LTEXT           "Forma stelelor in masca",IDC_STATIC,16,7,98,8
-    COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | 
-                    WS_TABSTOP
+    COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
@@ -597,20 +476,13 @@ CAPTION "Cometa"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Parametrii stackare cometa",IDC_TITLE,7,7,294,8
-    CONTROL         "Stackare Standard",IDC_STANDARDSTACKING,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,22,74,10
-    CONTROL         "Stackare Cometa",IDC_COMETSTACKING,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,7,63,67,10
-    CONTROL         "Stackare Stele + Cometa",IDC_ADVANCEDSTACKING,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,104,93,10
-    LTEXT           "Pozitia cometei va fi ignorata.\nCometa va fi neclara.",
-                    IDC_STATIC,17,34,123,27
-    LTEXT           "Este utilizata pozitia cometei.\nAspectul cometei si stelelor va fi sharp. Durata procesului este dubla.",
-                    IDC_STATIC,17,116,123,27
-    LTEXT           "Este utilizata pozitia cometei.\nCometa va fi reprezentata sharp iar stelele vor fi alungite.",
-                    IDC_STATIC,17,74,123,27
-    CONTROL         "",IDC_COMETSAMPLE,"Static",SS_BITMAP | SS_CENTERIMAGE,150,
-                    19,151,124
+    CONTROL         "Stackare Standard",IDC_STANDARDSTACKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,22,74,10
+    CONTROL         "Stackare Cometa",IDC_COMETSTACKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,63,67,10
+    CONTROL         "Stackare Stele + Cometa",IDC_ADVANCEDSTACKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,104,93,10
+    LTEXT           "Pozitia cometei va fi ignorata.\nCometa va fi neclara.",IDC_STATIC,17,34,123,27
+    LTEXT           "Este utilizata pozitia cometei.\nAspectul cometei si stelelor va fi sharp. Durata procesului este dubla.",IDC_STATIC,17,116,123,27
+    LTEXT           "Este utilizata pozitia cometei.\nCometa va fi reprezentata sharp iar stelele vor fi alungite.",IDC_STATIC,17,74,123,27
+    CONTROL         "",IDC_COMETSAMPLE,"Static",SS_BITMAP | SS_CENTERIMAGE,150,19,151,124
 END
 
 IDD_SAVEEDITCHANGES DIALOGEX 0, 0, 236, 139
@@ -621,17 +493,13 @@ BEGIN
     DEFPUSHBUTTON   "Da",IDYES,7,118,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,179,118,50,14
     PUSHBUTTON      "Nu",IDNO,64,118,50,14
-    CTEXT           "Ati facut modificari (pozitie stele sau cometa)\n\nVreti sa le salvati?",
-                    IDC_STATIC,7,7,222,31
+    CTEXT           "Ati facut modificari (pozitie stele sau cometa)\n\nVreti sa le salvati?",IDC_STATIC,7,7,222,31
     GROUPBOX        "Data viitoare...",IDC_STATIC,7,37,222,75
-    CONTROL         "Salveaza fara a intreba",IDC_SAVEWITHOUTASKING,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,51,87,10
-    CONTROL         "Nu salva fara a intreba",IDC_DONTSAVEWITHOUTASKING,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,67,98,10
-    CONTROL         "Intreaba din nou",IDC_ASKAGAIN,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,15,83,66,10
-    LTEXT           "Puteti accesa aceste optiuni prin click dreapta pe butonul Salvare",
-                    IDC_STATIC,15,101,210,8
+    CONTROL         "Salveaza fara a intreba",IDC_SAVEWITHOUTASKING,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,51,87,10
+    CONTROL         "Nu salva fara a intreba",IDC_DONTSAVEWITHOUTASKING,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,67,98,10
+    CONTROL         "Intreaba din nou",IDC_ASKAGAIN,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,83,66,10
+    LTEXT           "Puteti accesa aceste optiuni prin click dreapta pe butonul Salvare",IDC_STATIC,15,101,210,8
 END
 
 IDD_ASKREGISTERING DIALOGEX 0, 0, 213, 121
@@ -641,17 +509,13 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,99,100,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,156,100,50,14
-    CTEXT           "Cadrul light nu este inregistrat\n(stelele nu au fost detectate).\n\nVreti sa...",
-                    IDC_STATIC,7,5,199,33
+    CTEXT           "Cadrul light nu este inregistrat\n(stelele nu au fost detectate).\n\nVreti sa...",IDC_STATIC,7,5,199,33
     CONTROL         "pentru a inregistra acest cadru light",IDC_REGISTERONE,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,44,
-                    127,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,44,127,10
     CONTROL         "pentru a inregistra toate cadrele light",IDC_REGISTERALL,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,61,
-                    132,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,61,132,10
     CONTROL         "pentru a continua fara inregistrarea cadrului light",IDC_CONTINUE,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,79,
-                    169,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,79,169,10
 END
 
 IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
@@ -663,36 +527,29 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,7,22,294,44
     LTEXT           "Marime filtru",IDC_STATIC,17,36,44,8
     RTEXT           "%ld px",IDC_HOTFILTERSTATIC,102,36,33,8
-    CONTROL         "",IDC_HOTFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,135,35,157,10
+    CONTROL         "",IDC_HOTFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,35,157,10
     LTEXT           "Nivel detectie",IDC_STATIC,17,53,71,8
     RTEXT           "%.1f%%",IDC_HOTDETECTIONSTATIC,102,53,33,8
-    CONTROL         "",IDC_HOTDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,135,52,157,10
+    CONTROL         "",IDC_HOTDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,52,157,10
     GROUPBOX        "",IDC_STATIC,7,71,294,44
     CONTROL         "Detectia si eliminarea pixelilor cold ramasi",IDC_DETECTCLEANCOLD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,71,143,10
     LTEXT           "Marime filtru",IDC_STATIC,17,85,46,8
     RTEXT           "%ld px",IDC_COLDFILTERSTATIC,102,85,33,8
-    CONTROL         "",IDC_COLDFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,135,84,157,10
+    CONTROL         "",IDC_COLDFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,84,157,10
     LTEXT           "Nivel detectie",IDC_STATIC,17,102,73,8
     RTEXT           "%.1f%%",IDC_COLDDETECTIONSTATIC,102,102,33,8
-    CONTROL         "",IDC_COLDDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
-                    WS_TABSTOP,135,101,157,10
+    CONTROL         "",IDC_COLDDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,135,101,157,10
     CONTROL         "Detectia si eliminarea pixelilor hot ramasi",IDC_DETECTCLEANHOT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,22,141,10
-    CONTROL         "Salveaza o imagine indicand pixelii indepartati pentru fiecare cadru light",
-                    IDC_SAVEDELTAIMAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    11,133,240,10
+    CONTROL         "Salveaza o imagine indicand pixelii indepartati pentru fiecare cadru light",IDC_SAVEDELTAIMAGE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,133,240,10
     LTEXT           "Efect slab",IDC_WEAK1,135,45,40,8
     LTEXT           "Puternic",IDC_STRONG1,264,45,28,8
     LTEXT           "Efect slab",IDC_WEAK2,135,94,40,8
     LTEXT           "Puternic",IDC_STRONG2,265,94,27,8
-    LTEXT           "Testeaza pe primul cadru...",IDC_TESTCOSMETIC,212,120,88,
-                    8
-    LTEXT           "Inlocuieste valoarea pixelului cu",IDC_REPLACETEXT,11,120,
-                    101,8
+    LTEXT           "Testeaza pe primul cadru...",IDC_TESTCOSMETIC,212,120,88,8
+    LTEXT           "Inlocuieste valoarea pixelului cu",IDC_REPLACETEXT,11,120,101,8
     LTEXT           "Mediana",IDC_REPLACEMETHOD,117,120,69,8
 END
 
@@ -703,12 +560,9 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,146,158,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,203,158,50,14
-    LTEXT           "Acest dialog este utilizat pentru pornirea procesului de stackare folosind lista de imagini existente\nAdaugati liste de fisiere dorite pentru stackare si apasati OK pentru a porni procesul de stackare.",
-                    IDC_STATIC,7,7,246,36
+    LTEXT           "Acest dialog este utilizat pentru pornirea procesului de stackare folosind lista de imagini existente\nAdaugati liste de fisiere dorite pentru stackare si apasati OK pentru a porni procesul de stackare.",IDC_STATIC,7,7,246,36
     PUSHBUTTON      "Adauga lista fisiere...",IDC_ADDLISTS,5,46,112,14
-    LISTBOX         IDC_FILELISTS,7,66,246,85,LBS_SORT | LBS_OWNERDRAWFIXED | 
-                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
-                    WS_TABSTOP
+    LISTBOX         IDC_FILELISTS,7,66,246,85,LBS_SORT | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
     PUSHBUTTON      "Goleste lista",IDC_CLEARLIST,203,46,50,14
 END
 
@@ -720,23 +574,15 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,118,178,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,174,178,50,14
     GROUPBOX        "Metoda calibrare",IDC_STATIC,7,7,217,82
-    CONTROL         "Linear",IDC_LINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,15,30,35,10
-    CONTROL         "Rational",IDC_RATIONAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,15,50,42,10
+    CONTROL         "Linear",IDC_LINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,30,35,10
+    CONTROL         "Rational",IDC_RATIONAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,50,42,10
     GROUPBOX        "Metoda calibrare fundal RGB",IDC_STATIC,7,93,217,80
-    CONTROL         "Fara",IDC_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,15,112,33,10
-    CONTROL         "Minim",IDC_MINIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,15,126,43,10
-    CONTROL         "Mediu",IDC_MIDDLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,15,140,36,10
-    CONTROL         "Maxim",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,15,154,45,10
-    CONTROL         "",IDC_RGBCALIBRATIONPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,
-                    75,105,143,64
-    CONTROL         "",IDC_CALIBRATIONPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,
-                    75,18,143,64
+    CONTROL         "Fara",IDC_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,33,10
+    CONTROL         "Minim",IDC_MINIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,126,43,10
+    CONTROL         "Mediu",IDC_MIDDLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,140,36,10
+    CONTROL         "Maxim",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,154,45,10
+    CONTROL         "",IDC_RGBCALIBRATIONPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,75,105,143,64
+    CONTROL         "",IDC_CALIBRATIONPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,75,18,143,64
 END
 
 IDD_RECOMMENDEDSETTINGS DIALOGEX 0, 0, 338, 225
@@ -746,11 +592,9 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,216,204,50,14
     PUSHBUTTON      "Intrerupe",IDCANCEL,276,204,50,14
-    CONTROL         "Afiseaza toate recomandarile",IDC_SHOWALL,"Button",BS_AUTOCHECKBOX | 
-                    NOT WS_VISIBLE | WS_TABSTOP,8,206,106,10
-    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",
-                    IDC_RECOMMANDEDSETTINGSHTML,"QHTM_Window_Class_001",WS_TABSTOP,
-                    7,7,324,192
+    CONTROL         "Afiseaza toate recomandarile",IDC_SHOWALL,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,8,206,106,10
+    CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",IDC_RECOMMANDEDSETTINGSHTML,
+                    "QHTM_Window_Class_001",WS_TABSTOP,7,7,324,192
 END
 
 IDD_OUTPUT DIALOGEX 0, 0, 308, 150
@@ -759,62 +603,60 @@ CAPTION "Output"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Setari Fisiere Output",IDC_TITLE,7,7,294,8
-    CONTROL         "Creaza fisier Output",IDC_CREATEOUTPUT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,17,20,81,10
-    CONTROL         "Creaza fisier HTML de descriere",IDC_CREATEHTML,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,17,34,121,10
+    CONTROL         "Creaza fisier Output",IDC_CREATEOUTPUT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,20,81,10
+    CONTROL         "Creaza fisier HTML de descriere",IDC_CREATEHTML,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,34,121,10
     GROUPBOX        "Nume fisier output",IDC_STATIC,7,46,294,41
-    CONTROL         "Autosave.tif/fits",IDC_AUTOSAVE,"Button",BS_AUTORADIOBUTTON,
-                    17,58,69,10
-    CONTROL         "<nume lista fisier>.tif/fits",IDC_FILELIST,"Button",BS_AUTORADIOBUTTON,
-                    153,58,95,10
-    CONTROL         "Adauga un numar pentru a evita suprascrierea fisierelor (001,002,...)",
-                    IDC_APPENDNUMBER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,
-                    73,236,10
+    CONTROL         "Autosave.tif/fits",IDC_AUTOSAVE,"Button",BS_AUTORADIOBUTTON,17,58,69,10
+    CONTROL         "<nume lista fisier>.tif/fits",IDC_FILELIST,"Button",BS_AUTORADIOBUTTON,153,58,95,10
+    CONTROL         "Adauga un numar pentru a evita suprascrierea fisierelor (001,002,...)",IDC_APPENDNUMBER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,73,236,10
     GROUPBOX        "Locatie Output",IDC_STATIC,7,89,294,56
-    CONTROL         "Creeaza fisierul Output in directorul cadrului de referinta",
-                    IDC_USEREFERENCEFRAMEFOLDER,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,17,103,193,10
-    CONTROL         "Creeaza fisierul Output in directorul listei de fisiere",
-                    IDC_USEFILELISTFOLDER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,17,117,173,10
-    CONTROL         "Creeaza fisierul Output in",IDC_USEANOTHERFOLDER,"Button",
-                    BS_AUTORADIOBUTTON,17,132,94,10
+    CONTROL         "Creeaza fisierul Output in directorul cadrului de referinta",IDC_USEREFERENCEFRAMEFOLDER,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,103,193,10
+    CONTROL         "Creeaza fisierul Output in directorul listei de fisiere",IDC_USEFILELISTFOLDER,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,117,173,10
+    CONTROL         "Creeaza fisierul Output in",IDC_USEANOTHERFOLDER,"Button",BS_AUTORADIOBUTTON,17,132,94,10
     LTEXT           "<Director salvare>",IDC_OUTPUTFOLDER,117,132,184,8,WS_TABSTOP
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
 
 IDD_PROPERTIES DLGINIT
 BEGIN
     IDC_TYPE, 0x403, 6, 0
-0x694c, 0x6867, 0x0074,  
+0x694c, 0x6867, 0x0074, 
     IDC_TYPE, 0x403, 5, 0
 0x6144, 0x6b72, "\000" 
     IDC_TYPE, 0x403, 5, 0
 0x6c46, 0x7461, "\000" 
     IDC_TYPE, 0x403, 10, 0
-0x6144, 0x6b72, 0x4620, 0x616c, 0x0074,  
+0x6144, 0x6b72, 0x4620, 0x616c, 0x0074, 
     IDC_TYPE, 0x403, 12, 0
-0x664f, 0x7366, 0x7465, 0x622f, 0x6169, 0x0073,  
+0x664f, 0x7366, 0x7465, 0x622f, 0x6169, 0x0073, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3031, 0x0030,  
+0x3031, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3231, 0x0035,  
+0x3231, 0x0035, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3631, 0x0030,  
+0x3631, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3032, 0x0030,  
+0x3032, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3532, 0x0030,  
+0x3532, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3233, 0x0030,  
+0x3233, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3034, 0x0030,  
+0x3034, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3035, 0x0030,  
+0x3035, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3436, 0x0030,  
+0x3436, 0x0030, 
     IDC_ISOSPEED, 0x403, 4, 0
-0x3038, 0x0030,  
+0x3038, 0x0030, 
     IDC_ISOSPEED, 0x403, 5, 0
 0x3031, 0x3030, "\000" 
     IDC_ISOSPEED, 0x403, 5, 0
@@ -831,13 +673,14 @@ BEGIN
     IDC_STARSHAPE, 0x403, 7, 0
 0x6c43, 0x706f, 0x746f, "\000" 
     IDC_STARSHAPE, 0x403, 18, 0
-0x7254, 0x6e75, 0x6863, 0x2069, 0x6564, 0x6320, 0x6f6c, 0x6f70, 0x0074,  
+0x7254, 0x6e75, 0x6863, 0x2069, 0x6564, 0x6320, 0x6f6c, 0x6f70, 0x0074, 
+
     IDC_STARSHAPE, 0x403, 4, 0
-0x6f43, 0x006e,  
+0x6f43, 0x006e, 
     IDC_STARSHAPE, 0x403, 15, 0
 0x7254, 0x6e75, 0x6863, 0x2069, 0x6564, 0x6320, 0x6e6f, "\000" 
     IDC_STARSHAPE, 0x403, 6, 0
-0x7543, 0x6962, 0x0063,  
+0x7543, 0x6962, 0x0063, 
     IDC_STARSHAPE, 0x403, 9, 0
 0x6150, 0x7274, 0x7461, 0x6369, "\000" 
     0
@@ -848,7 +691,7 @@ BEGIN
     IDC_LANGUAGE, 0x403, 9, 0
 0x6d49, 0x6c70, 0x6369, 0x7469, "\000" 
     IDC_LANGUAGE, 0x403, 8, 0
-0x6e45, 0x6c67, 0x7a65, 0x0061,  
+0x6e45, 0x6c67, 0x7a65, 0x0061, 
     IDC_LANGUAGE, 0x403, 9, 0
 0x7246, 0x6e61, 0x6563, 0x617a, "\000" 
     IDC_LANGUAGE, 0x403, 9, 0
@@ -860,89 +703,96 @@ BEGIN
     IDC_LANGUAGE, 0x403, 9, 0
 0x6143, 0x6174, 0x616c, 0x616e, "\000" 
     IDC_LANGUAGE, 0x403, 8, 0
-0x6547, 0x6d72, 0x6e61, 0x0061,  
+0x6547, 0x6d72, 0x6e61, 0x0061, 
     IDC_LANGUAGE, 0x403, 9, 0
 0x6c4f, 0x6e61, 0x6564, 0x617a, "\000" 
     IDC_LANGUAGE, 0x403, 21, 0
-0x6843, 0x6e69, 0x7a65, 0x2061, 0x7274, 0x6461, 0x7469, 0x6f69, 0x616e, 0x616c, "\000" 
+0x6843, 0x6e69, 0x7a65, 0x2061, 0x7274, 0x6461, 0x7469, 0x6f69, 0x616e, 
+0x616c, "\000" 
     IDC_LANGUAGE, 0x403, 11, 0
 0x6f50, 0x7472, 0x6775, 0x6568, 0x617a, "\000" 
     IDC_LANGUAGE, 0x403, 7, 0
 0x6f52, 0x616d, 0x616e, "\000" 
     IDC_LANGUAGE, 0x403, 4, 0
-0x7552, 0x0073,  
+0x7552, 0x0073, 
     IDC_LANGUAGE, 0x403, 5, 0
 0x7554, 0x6372, "\000" 
     0
 END
 
-IDR_LISTCONTEXT MENU 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_LISTCONTEXT MENU
 BEGIN
     POPUP "Lista context"
     BEGIN
-        MENUITEM "Foloseste ca si cadru de referinta",      IDM_USEASSTARTING
+        MENUITEM "Foloseste ca si cadru de referinta", IDM_USEASSTARTING
         MENUITEM SEPARATOR
-        MENUITEM "Selecteaza",                       IDM_CHECK
-        MENUITEM "Deselecteaza",                     IDM_UNCHECK
+        MENUITEM "Selecteaza",                  IDM_CHECK
+        MENUITEM "Deselecteaza",                IDM_UNCHECK
         MENUITEM SEPARATOR
-        MENUITEM "Seteaza ca si cadru Light",       IDM_CHANGETOFRAME
-        MENUITEM "Seteaza ca si cadru Dark",        IDM_CHANGETODARK
-        MENUITEM "Seteaza ca si cadru Dark Flat",   IDM_CHANGETODARKFLAT
-        MENUITEM "Seteaza ca si cadru Flat",        IDM_CHANGETOFLAT
+        MENUITEM "Seteaza ca si cadru Light",   IDM_CHANGETOFRAME
+        MENUITEM "Seteaza ca si cadru Dark",    IDM_CHANGETODARK
+        MENUITEM "Seteaza ca si cadru Dark Flat", IDM_CHANGETODARKFLAT
+        MENUITEM "Seteaza ca si cadru Flat",    IDM_CHANGETOFLAT
         MENUITEM "Seteaza ca si cadru Offset/Bias", IDM_CHANGETOOFFSET
         MENUITEM SEPARATOR
         MENUITEM "Sterge din lista",            IDM_REMOVEFROMLIST
         MENUITEM SEPARATOR
-        MENUITEM "Proprietati...",               IDM_PROPERTIES
+        MENUITEM "Proprietati...",              IDM_PROPERTIES
         MENUITEM SEPARATOR
-        MENUITEM "Copiaza in clipboard",           IDM_COPYTOCLIPBOARD
+        MENUITEM "Copiaza in clipboard",        IDM_COPYTOCLIPBOARD
         MENUITEM SEPARATOR
-        MENUITEM "Sterge de pe disc...",          IDM_ERASEFROMDISK
+        MENUITEM "Sterge de pe disc...",        IDM_ERASEFROMDISK
     END
 END
 
-IDR_SAVECONTEXT MENU 
+IDR_SAVECONTEXT MENU
 BEGIN
     POPUP "Context Salvare"
     BEGIN
-        MENUITEM "Salveaza fara a intreba",         ID_SAVECONTEXT_SAVEWITHOUTASKING
-        MENUITEM "Nu salva fara a intreba",   ID_SAVECONTEXT_DONTSAVEWITHOUTASKING
-        MENUITEM "Intreaba intotdeauna",                  ID_SAVECONTEXT_ASKALWAYS
+        MENUITEM "Salveaza fara a intreba",     ID_SAVECONTEXT_SAVEWITHOUTASKING
+        MENUITEM "Nu salva fara a intreba",     ID_SAVECONTEXT_DONTSAVEWITHOUTASKING
+        MENUITEM "Intreaba intotdeauna",        ID_SAVECONTEXT_ASKALWAYS
     END
 END
 
-IDR_COSMETICMETHOD MENU 
+IDR_COSMETICMETHOD MENU
 BEGIN
     POPUP "Metoda cosmetica"
     BEGIN
-        MENUITEM "mediana",                  ID_COSMETICMETHOD_MEDIAN
-        MENUITEM "filtrul gaussian",         ID_COSMETICMETHOD_GAUSSIAN
+        MENUITEM "mediana",                     ID_COSMETICMETHOD_MEDIAN
+        MENUITEM "filtrul gaussian",            ID_COSMETICMETHOD_GAUSSIAN
     END
 END
 
-IDR_FILELISTS MENU 
+IDR_FILELISTS MENU
 BEGIN
     POPUP "ListaFisier"
     BEGIN
         MENUITEM "[First MRU]",                 ID_FILELIST_FIRSTMRU
         MENUITEM SEPARATOR
-        MENUITEM "Descghide o alta lista de fisiere...",   ID_FILELIST_OPENANOTHERFILELIST
+        MENUITEM "Descghide o alta lista de fisiere...", ID_FILELIST_OPENANOTHERFILELIST
     END
 END
 
-IDR_CALIBRATION MENU 
+IDR_CALIBRATION MENU
 BEGIN
     POPUP "Meniu Calibrare"
     BEGIN
-        MENUITEM "Fara calibrare fundal",   ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION
-        MENUITEM "Calibrare Fundal per Canal", ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION
+        MENUITEM "Fara calibrare fundal",       ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION
+        MENUITEM "Calibrare Fundal per Canal",  ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION
         MENUITEM "Calibrare Fundal Canale RGB", ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION
         MENUITEM SEPARATOR
         MENUITEM "Optiuni...",                  ID_CALIBRATIONMENU_OPTIONS
     END
 END
 
-IDR_SAVESETTINGS MENU 
+IDR_SAVESETTINGS MENU
 BEGIN
     POPUP "SalveazaSetarile"
     BEGIN
@@ -950,33 +800,39 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Salveaza ca Setari DeepSkyStacker Live", ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS
         MENUITEM SEPARATOR
-        MENUITEM "Salveaza ca...",                  ID_SAVESETTINGS_SAVEAS
+        MENUITEM "Salveaza ca...",              ID_SAVESETTINGS_SAVEAS
     END
 END
 
-IDR_LOADSETTINGS MENU 
+IDR_LOADSETTINGS MENU
 BEGIN
     POPUP "IncarcaSetari"
     BEGIN
         MENUITEM "[First MRU]",                 ID_LOADSETTINGS_FIRSTMRU
         MENUITEM SEPARATOR
-        MENUITEM "Restaureaza Setarile Implicite",    ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS
+        MENUITEM "Restaureaza Setarile Implicite", ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS
         MENUITEM "Incarca Setarile DeepSkyStacker Live", ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS
         MENUITEM SEPARATOR
-        MENUITEM "Incarca...",                     ID_LOADSETTINGS_LOAD
+        MENUITEM "Incarca...",                  ID_LOADSETTINGS_LOAD
     END
 END
 
-IDR_EDITSETTINGS MENU 
+IDR_EDITSETTINGS MENU
 BEGIN
     POPUP "EditeazaSetari"
     BEGIN
-        MENUITEM "Setari Inregistrare...",        ID_EDITSETTINGS_REGISTERSETTINGS
-        MENUITEM "Setari Stackare...",        ID_EDITSETTINGS_STACKINGSETTINGS
+        MENUITEM "Setari Inregistrare...",      ID_EDITSETTINGS_REGISTERSETTINGS
+        MENUITEM "Setari Stackare...",          ID_EDITSETTINGS_STACKINGSETTINGS
     END
 END
 
-STRINGTABLE 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
 BEGIN
     IDS_SHOWREGISTEREDSTARS "Afiseaza stelele inregistrate"
     IDS_HIDEREGISTEREDSTARS "Ascunde stelele inregistrate"
@@ -985,7 +841,7 @@ BEGIN
     IDS_MANAGESETTINGS      "Management setari Incarcare, Salvare"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_PATH         "Cale"
     IDS_COLUMN_FILE         "Fisier"
@@ -997,7 +853,7 @@ BEGIN
     IDS_COLUMN_DATETIME     "Data/Ora"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_SIZES        "Dimensiune"
     IDS_COLUMN_CFA          "CFA"
@@ -1009,7 +865,7 @@ BEGIN
     IDS_COLUMN_SKYBACKGROUND "Fundal cer"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TYPE_LIGHT          "Light"
     IDS_TYPE_DARK           "Dark"
@@ -1017,7 +873,7 @@ BEGIN
     IDS_TYPE_OFFSET         "Bias/Offset"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FORMAT_RGB          "RGB %ld biti/canal"
     IDS_FORMAT_GRAY         "A-N %ld biti"
@@ -1029,7 +885,7 @@ BEGIN
     IDS_AND                 "si"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURE0           "Expunere: < 1 sec "
     IDS_EXPOSURE1           "Expunere: %ld sec "
@@ -1044,7 +900,7 @@ BEGIN
     IDS_ESTIMATEDUNKNOWN    "Timp ramas estimat: necunoscut"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS sau imagine DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
     IDS_FILTER_INPUT        "Fisiere imagine|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|JPEG sau PNG Files|*.jpg;*.jpeg;*.png|Fisiere TIFF (.tif)|*.tif;*.tiff|Fisiere RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Fisiere FITS|*.fits;*.fit;*.fts|Toate fisierele|*.*||"
@@ -1056,7 +912,7 @@ BEGIN
     IDS_TITLE_OPENDARKFRAMES "Deschide cadre Dark..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MSG_SAVEMODIFICATIONS "Vreti sa salvati modificarile?"
     IDS_MSG_NOPICTURETOSAVE "Nici o imagine de salvat"
@@ -1064,7 +920,7 @@ BEGIN
                             "O imagine trebuie incarcata pentru a creea un Star mask."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECK_ALLOK         "darks, flats si offset/bias selectate."
     IDS_CHECK_DARKFLATOFFSET 
@@ -1077,7 +933,7 @@ BEGIN
     IDS_CHECK_OFFSET        "Nu uitati sa adaugati si sa selectati cadre offset inainte de stackare."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TT_REDADJUST        "Seteaza metoda reglaj histograma rosu"
     IDS_TT_GREENADJUST      "Seteaza metoda reglaj histograma verde"
@@ -1086,7 +942,7 @@ BEGIN
     IDS_TT_EMBEDDED         "Aceasta optiune salveaza imaginea neprelucrata dar include setarile de prelucrare\nUtilizati-o daca doriti sa faceti toata procesarea in alt software sau daca doriti sa redeschideti imaginea cu DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ASK_DELETESETTINGS  "Chiar doriti sa eliminati setarile %s?"
     IDS_ASK_NODARK          "Nu ati selectat cadre Dark.\n"
@@ -1095,16 +951,18 @@ BEGIN
     IDS_ASK_CONTINUE        "\nDori sa continuati?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ERROR_NOTCOMPATIBLE "Imaginile selectate nu sunt compatibile (latime, lungime, numar culor, numar canale, doar un cadru Master, Offset si Flat)."
-    IDS_ERROR_NOTLIGHTCHECKED "Trebuie sa selectati cadre Light pentru a le stacka."
-    IDS_ERROR_NOTLIGHTCHECKED2 "Trebuie sa selectati cadre Light pentru a le inregistra."
+    IDS_ERROR_NOTLIGHTCHECKED 
+                            "Trebuie sa selectati cadre Light pentru a le stacka."
+    IDS_ERROR_NOTLIGHTCHECKED2 
+                            "Trebuie sa selectati cadre Light pentru a le inregistra."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "Crearea masterurilor (Dark, Flat, offset) necesita %ld Kb.\nSunt disponibili doar %ld Kb pe discul %s\nDoriti sa continuati?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CREATEMASTERDARK    "Creez cadrul Master Dark"
     IDS_CREATEMASTEROFFSET  "Creez cadrul Master offset"
@@ -1112,7 +970,7 @@ BEGIN
     IDS_ADDDARK             "Aplic cadrul Dark %ld din %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SAVINGMASTEROFFSET  "Salvez Maser Offset"
     IDS_SAVINGMASTERDARK    "Salvez Master Dark"
@@ -1124,7 +982,7 @@ BEGIN
     IDS_SAVINGMASTERDARKFLAT "Salvez Master Dark Flat"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REGISTERING         "Inregistrez imagini"
     IDS_REGISTERINGPICTURE  "Inregistrez %ld din %ld"
@@ -1144,7 +1002,7 @@ BEGIN
     IDS_COMPUTINGOFFSETS    "Calculez offsetul"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGSTACKINGINFO "Calculez informatia stackare pentru %s"
     IDS_STACKING_COMPUTINGOFFSET "Stackez...calculez off-set-urile"
@@ -1166,7 +1024,7 @@ BEGIN
     IDS_COMPUTINGMEDIANFLAT "Calculez master flat (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADDSIMAGE         "Incarc DSImage"
     IDS_LOADPICTURE         "Incarc %s"
@@ -1186,7 +1044,7 @@ BEGIN
     IDS_LOADRGBFITS         "Incarc FITS %ld biti/canal"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HAT_LINEAR          "Linear"
     IDS_HAT_CUBEROOT        "Radacina cubica"
@@ -1197,7 +1055,7 @@ BEGIN
     IDS_HAT_ASINH           "ASinH"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADRGBFLAT         "Incarc %ld biti/canal %s cadru flat\n%s"
     IDS_LOADGRAYFLAT        "Incarc %ld biti gri %s cadru flat\n%s"
@@ -1212,14 +1070,12 @@ BEGIN
     IDS_NORMALIZINGMASTERFLAT "Calibrez Master Flat"
     IDS_COMPUTINGMINLUMINANCE "Calcul automat luminanta minima"
     IDS_COMPUTINGENTROPY    "Calculez entropia"
-    IDS_COMPUTINGBACKGROUNDCALIBRATION 
-                            "Calculez parametrii calibrare fundal"
-    IDS_COMPUTINGDARKOPTIMIZATIONFACTOR 
-                            "Calculez parametrii optimizare dark"
+    IDS_COMPUTINGBACKGROUNDCALIBRATION "Calculez parametrii calibrare fundal"
+    IDS_COMPUTINGDARKOPTIMIZATIONFACTOR "Calculez parametrii optimizare dark"
     IDS_REMOVINGHOTPIXELS   "Detectez pixelii hot"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TYPE_MASTERDARK     "Master Dark"
     IDS_TYPE_MASTEROFFSET   "Master Offset"
@@ -1228,7 +1084,7 @@ BEGIN
     IDS_TYPE_MASTERDARKFLAT "Master Dark Flat"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECKVERSION        "La pornire doriti ca DeepSkyStacker sa verifice daca exista o versiune noua?\n(Puteti activa sau dezactiva aceasta optiune din meniul Despre)"
     IDS_VERSIONAVAILABLE    "DeepSkyStacker versiunea %s este disponibila pentru download."
@@ -1241,7 +1097,7 @@ BEGIN
                             "Doar un singur cadru (din %ld) va fi stackat.\n\nVerificati sau modificati valoarea pragului limita de detectie a stelelor pentru a detecta mai multe stele\nastfel incat DeepSkyStacker sa poata detecta o transformare intre cadrul de referinta si celelate cadre.\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURETIME1       "%ld sec "
     IDS_EXPOSURETIME2       "%ld min %ld sec "
@@ -1249,7 +1105,7 @@ BEGIN
     IDS_NRPROCESSORS        "[%ld procesoare utilizate]"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_STEP          "Pasi stackare %ld\n  ->%ld cadre (ISO: %s) - expunere totala: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld cadre  (ISO: %s) expunere: %s\n"
@@ -1265,8 +1121,7 @@ BEGIN
                             "\nTimpul total estimat de expunere: %s\n(timpul total de expunere este calculat considerand ca toate cadrele Light selectate se vor pastra pentru procesul de stackare)\n"
     IDS_RECAP_WARNINGBAYERDRIZZLE 
                             "Atentie: Optiunea Drizzle Bayer selectata in setarile RAW DDP poate duce la rezultate ciudate cu o alta metoda decat cea medie."
-    IDS_RECAP_BACKGROUNDCALIBRATION 
-                            "Calibrare fundal canale RGB: %s\n"
+    IDS_RECAP_BACKGROUNDCALIBRATION "Calibrare fundal canale RGB: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optimizare Dark: %s\n"
     IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld cadre (ISO : %s) expunere: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
@@ -1275,12 +1130,12 @@ BEGIN
                             "\t\tAtentie: timpul de expunere nu corespunde cu cadrele Flat\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MULTIPLEFILESELECTED "%ld fisiere selectate"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_METHOD        "Metoda: "
     IDS_RECAP_AVERAGE       "Medie"
@@ -1294,14 +1149,14 @@ BEGIN
     IDS_RECAP_ALIGNMENT     "Metoda aliniament: "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_MEGABYTES     "%.1f Mb"
     IDS_RECAP_KILOBYTES     "%.1f Kb"
     IDS_RECAP_GIGABYTES     "%.1f Gb"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_WARNINGDISKSPACE 
                             "Procesul necesita %s de spatiu liber pe disc %s.\nDoar %s sunt disponibili pe acest disc."
@@ -1314,18 +1169,18 @@ BEGIN
                             "Atentie: optiunea de salvare a imaginilor inregistrate si calibrate este activata. Verificati daca aveti suficient spatiu pe disc pentru a pastra aceste fisiere."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGMEDIANLIGHT "Calculez imaginea finala (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LISTINFO            "Cadre Light:%ld      -      Cadre Dark : %ld      -      Cadre Flat:%ld      -   Cadre Dark Flat: %d   -      Cadre Offset/Bias: %ld"
     IDS_LISTINFO2           "Cadre Light: %ld\nCadre Dark: %ld\nCadre Flat: %ld\nCadre Dark Flat: %ld\nCadre Offset/Bias: %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TOOLTIP_KAPPASIGMA  "Pixelii in afara intervalului:\n[Mean-[kappa]*[sigma], Mean+[kappa]*[sigma]]\nsunt indepartati in mod iterativ.\n\nPixelii ramasi sunt mediati."
     IDS_TOOLTIP_AUTOADAPTIVE 
@@ -1338,7 +1193,7 @@ BEGIN
     IDS_TOOLTIP_SAVE        "Salveaza modificarile\nSalveaza toate modificarile (Stele si Cometa) pentru imaginea curenta."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_GENERIC_RGGB        "Generic RGGB"
     IDS_GENERIC_BGGR        "Generic BGGR"
@@ -1347,13 +1202,13 @@ BEGIN
     IDS_GENERIC             "Generic"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MAINGROUP           "Grup principal"
     IDS_GROUPIDMASK         "Grup %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ALIGNMENT_AUTO      "Automata\n\nMetoda de aliniament este selectata automat in functie de numarul de stele disponibile."
     IDS_ALIGNMENT_BILINEAR  "Aliniament bilinar\n\nAliniamentul biliniar este folosit in toate cazurile."
@@ -1361,7 +1216,7 @@ BEGIN
     IDS_ALIGNMENT_BICUBIC   "Aliniamentul bicubic\n\nMetoda bicubica este utilizata cand sunt disponibile cel putin 40 stele, daca sunt disponibile 25 pana la 39 stele este utilizata metoda bipatrata, sau metoda biliniara daca numarul de stele disponibile este mai mic de 25."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ALIGN_AUTO          "Automata"
     IDS_ALIGN_BILINEAR      "Biliniara"
@@ -1370,10 +1225,11 @@ BEGIN
     IDS_ALIGN_NONE          "Fara aliniere"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_HOTPIXELS     "Detectie si indepartare Pixeli hot: %s\n"
-    IDS_RECAP_DETECTEDANDUSEDPROCESSORS "Procesoare detectate si utilizate %ld "
+    IDS_RECAP_DETECTEDANDUSEDPROCESSORS 
+                            "Procesoare detectate si utilizate %ld "
     IDS_RECAP_DETECTEDNOTUSEDPROCESSORS 
                             "Procesoare detectate %ld - doar unul folosit"
     IDS_RECAP_DRIZZLE       "Drizzle activat x%ld"
@@ -1385,14 +1241,15 @@ BEGIN
     IDS_RECAP_STACKINGMODE_MOSAIC "Mosaic"
     IDS_RECAP_STACKINGMODE_CUSTOM "Dreptunghi definit"
     IDS_RECAP_COMETSTACKING "Procesare Cometa: "
-    IDS_RECAP_COMETSTACKING_NONE "Aliniaza pe Stele (fara procesare specificata)"
+    IDS_RECAP_COMETSTACKING_NONE 
+                            "Aliniaza pe Stele (fara procesare specificata)"
     IDS_RECAP_COMETSTACKING_COMET "Aliniaza pe cometa"
     IDS_RECAP_COMETSTACKING_BOTH "Aliniaza pe stele si cometa"
     IDS_RECAP_COSMETICHOT   "Efect cosmetic aplicat asupra pixelilor hot (Filtru = %ld px, Prag Detectie  = %.1f%%)\n"
     IDS_RECAP_COSMETICCOLD  "Efect cosmetic aplicat asupra pixelilor cold (Filtru = %ld px, Prag Detectie  = %.1f%%)\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DETECTINGHOTPIXELS1 "Detectez pixeli hot (1/2)"
     IDS_DETECTINGHOTPIXELS2 "Detectez pixeli hot (2/2)"
@@ -1412,19 +1269,19 @@ BEGIN
     IDS_MEDIANDARKFLATINFO  "Master Dark Flat creat utilizand %ld imagini (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HELPFILE            "DeepSkyStacker Help.chm"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADGRAYFITS        "Incarc  FITS %ld biti monocrom"
     IDS_SAVINGFITS          "Salvez FITS %ld biti"
     IDS_STARMASKDESCRIPTION "Star Mask creat de DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TITLE_OPENFLATFRAMES "Deschide cadre Flat..."
     IDS_TITLE_OPENBIASFRAMES "Deschide cadre Bias..."
@@ -1434,7 +1291,7 @@ BEGIN
     IDS_TITLE_SAVESETTINGS  "Salveaza setarile DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TIP_ADDSTAR         "Clic pentru a adauga aceasta stea"
     IDS_TIP_REMOVESTAR      "Clic pentru a sterge aceasta stea"
@@ -1442,7 +1299,7 @@ BEGIN
     IDS_TIP_REMOVECOMET     "Clic pentru a sterge cometa"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COSMETICSTATS       "Cosmetic\nPixeli Hot detectati: %ld (%.2f%%)\nPixeli Cold detectati: %ld (%.2f%%)\n"
     IDS_COMPUTINGCOSMETICSTATS "Calculez efecte cosmetice"
@@ -1451,19 +1308,19 @@ BEGIN
     IDS_ALIGNINGCHANNEL     "Aliniez canalul"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILELISTDESCRIPTION "Lista fisiere DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
                             "Calibrare fundal pe canal: %s\n"
     IDS_RECAP_DARKMULTIPLICATIONFACTOR "Factor multiplicare Dark: %.2f\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_DISCLAIMER     "Aceastea sunt setarile recomandate.\nEste posibil sa nu fie corecte in toate situatiile dar sunt un bun punct de pornire."
     IDS_RECO_CLICKTOSET     "Clic pe link-ul propus pentru a modifica setarile"
@@ -1488,13 +1345,12 @@ BEGIN
                             "Folositi un prag scazut de detectie a stelelor"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_MODDEDDSLR_TEXT "Reseteaza toate setarile de white balance"
     IDS_RECO_MODDEDDSLR_REASON "Daca folositi un DSLR modificat"
     IDS_RECO_USEAVERAGECOMBINE "Utilizeaza metoda combinatiei medii"
-    IDS_RECO_COMETSTARTRAILS_REASON 
-                            "Creati o imagine cometa cu dare de stele"
+    IDS_RECO_COMETSTARTRAILS_REASON "Creati o imagine cometa cu dare de stele"
     IDS_RECO_USESIGMACLIPPING "Utilizeaza metoda combinatei Sigma-Clipping"
     IDS_RECO_COMETSTARSMANY_REASON 
                             "Creati o imagine tip cometa aliniata pe stele si cometa folosind %ld cadre light"
@@ -1513,7 +1369,7 @@ BEGIN
                             "Stackati imagini A/N si pot sa aiba valori diferite ale nivelului de fundal"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
@@ -1527,7 +1383,7 @@ BEGIN
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_LANG_SPANISH  "Versiune spaniola: Ricardo Contreras si echipa"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
@@ -1545,14 +1401,14 @@ BEGIN
     IDS_ABOUT_LANG_CHINESET "Versiunea Chineza Traditionala:"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_LIGHT_REASON   "Stackati %ld cadruri light."
     IDS_RECO_USEAUTOADAPTIVEAVERAGE 
                             "Utilizati metoda combinatiei medie ponderate auto adaptiva"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_LANG_CHINESET_LINK "Wei-Hao Wang"
     IDS_ABOUT_LANG_PORTUGUESE "Versiunea portugheza:"
@@ -1561,17 +1417,17 @@ BEGIN
     IDS_ABOUT_LANG_ROMANIAN_LINK "Emil Kolbert si Valentin Stoica"
     IDS_ABOUT_LANG_RUSSIAN  "Versiunea rusa:"
     IDS_ABOUT_LANG_RUSSIAN_LINK "Oleg Milantiev"
-	IDS_ABOUT_LANG_TURKISH  "Turcã Versiune:"
-	IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
+    IDS_ABOUT_LANG_TURKISH  "Turcã Versiune:"
+    IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SELECTOUTPUTFOLDER  "Selecteaza director output"
     IDS_RECAP_STACKINGMODE_INTERSECTION "Intersectie"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STACKINGMODE_NORMAL "Rezultatul stackarii este incadrat de cadrul de referinta light."
     IDS_STACKINGMODE_MOSAIC "Rezultatul stackarii contine toate cadrele light din lista"
@@ -1579,12 +1435,58 @@ BEGIN
                             "Rezultatul procesului de stackare este incadrat prin intersectia tuturor cadrurilor."
 END
 
-
 STRINGTABLE
 BEGIN
-    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw doesn't support your %s camera"
+    IDS_CAMERA_NOT_SUPPORTED "Ne pare rãu, LibRaw nu acceptã camera %s"
 END
 
+#endif    // Romanian (Romania) resources
+/////////////////////////////////////////////////////////////////////////////
 
-#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 

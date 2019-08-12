@@ -1,36 +1,21 @@
 // Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
-
-#define APSTUDIO_READONLY_SYMBOLS
-/////////////////////////////////////////////////////////////////////////////
-//
-// Generated from the TEXTINCLUDE 2 resource.
-//
 #include "afxres.h"
-
 /////////////////////////////////////////////////////////////////////////////
-#undef APSTUDIO_READONLY_SYMBOLS
-
-/////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// Portuguese (Brazil) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PTB)
-#ifdef _WIN32
-LANGUAGE 22, 1
+LANGUAGE LANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Dialog
 //
 
-
-
 IDD_DEEPSKYSTACKERLIVE DIALOGEX 0, 0, 602, 458
-STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | 
-    WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
 EXSTYLE WS_EX_CLIENTEDGE | WS_EX_CONTROLPARENT | WS_EX_APPWINDOW
 CAPTION "DeepSkyStacker Live %s"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x1
@@ -39,38 +24,29 @@ BEGIN
 END
 
 IDD_MAINBOARDMINI DIALOGEX 0, 0, 466, 38
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CTEXT           "Imagem Integrada",IDC_STACKEDIMAGE,3,28,76,10,NOT WS_VISIBLE | 
-                    WS_BORDER
-    CTEXT           "Ultima Imagem",IDC_LASTIMAGE,79,28,76,10,NOT WS_VISIBLE | 
-                    WS_BORDER
+    CTEXT           "Imagem Integrada",IDC_STACKEDIMAGE,3,28,76,10,NOT WS_VISIBLE | WS_BORDER
+    CTEXT           "Ultima Imagem",IDC_LASTIMAGE,79,28,76,10,NOT WS_VISIBLE | WS_BORDER
     CTEXT           "Graficos",IDC_GRAPHS,155,28,76,10,NOT WS_VISIBLE | WS_BORDER
     LTEXT           "",IDC_MONITORINGRECT,3,4,456,24,NOT WS_VISIBLE | WS_BORDER
-    CTEXT           "Lista de Fotos",IDC_IMAGELIST,231,28,76,10,NOT WS_VISIBLE | 
-                    WS_BORDER
+    CTEXT           "Lista de Fotos",IDC_IMAGELIST,231,28,76,10,NOT WS_VISIBLE | WS_BORDER
     CTEXT           "Log",IDC_LOGLIST,307,28,76,10,NOT WS_VISIBLE | WS_BORDER
     PUSHBUTTON      "Monitor",IDC_MONITOR,6,6,19,18,BS_MULTILINE | NOT WS_VISIBLE
     PUSHBUTTON      "Integrar",IDC_STACK,28,6,18,18,BS_MULTILINE | NOT WS_VISIBLE
     PUSHBUTTON      "Parar",IDC_STOP,49,6,18,18,BS_MULTILINE | NOT WS_VISIBLE
-    CTEXT           "Configuracoes",IDC_WARNINGS,383,28,76,10,NOT WS_VISIBLE | 
-                    WS_BORDER
+    CTEXT           "Configuracoes",IDC_WARNINGS,383,28,76,10,NOT WS_VISIBLE | WS_BORDER
     LTEXT           "",IDC_PROGRESS,75,7,347,8,NOT WS_VISIBLE | WS_BORDER
-    LTEXT           "Falta %ld - Registo %ld - Integrados %ld - Tempo Total de integrao: %s",
-                    IDC_STATS,78,15,344,8,NOT WS_VISIBLE
+    LTEXT           "Falta %ld - Registo %ld - Integrados %ld - Tempo Total de integrao: %s",IDC_STATS,78,15,344,8,NOT WS_VISIBLE
     PUSHBUTTON      "Reduzir",IDC_REDUCE,436,6,19,18,BS_MULTILINE | NOT WS_VISIBLE
 END
 
 IDD_LOG DIALOGEX 0, 0, 336, 166
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_LOG,"RichEdit20A",ES_MULTILINE | ES_AUTOHSCROLL | 
-                    ES_READONLY | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,
-                    0,0,335,166
+    CONTROL         "",IDC_LOG,"RichEdit20A",ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,0,335,166
 END
 
 IDD_IMAGEVIEW DIALOGEX 0, 0, 335, 166
@@ -79,136 +55,91 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "",IDC_BACKGROUND,2,3,169,24
     LTEXT           "Estatico",IDC_FILENAME,6,4,195,8,SS_ENDELLIPSIS
-    LTEXT           "Copia imagem para clipboard",IDC_COPYTOCLIPBOARD,6,16,160,
-                    8
+    LTEXT           "Copia imagem para clipboard",IDC_COPYTOCLIPBOARD,6,16,160,8
     LTEXT           "",IDC_PICTURE,0,29,335,137,WS_BORDER
-    CONTROL         "Gradiente",IDC_GAMMA,"MFCGradientCtrl",WS_TABSTOP,206,2,
-                    127,26
+    CONTROL         "Gradiente",IDC_GAMMA,"MFCGradientCtrl",WS_TABSTOP,206,2,127,26
     PUSHBUTTON      "",IDC_4CORNERS,175,3,29,22
 END
 
 IDD_IMAGELIST DIALOGEX 0, 0, 336, 166
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_IMAGELIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | 
-                    WS_BORDER | WS_TABSTOP,0,0,335,166
+    CONTROL         "",IDC_IMAGELIST,"SysListView32",LVS_REPORT | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,0,0,335,166
 END
 
 IDD_GRAPHS DIALOGEX 0, 0, 336, 166
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_GRAPH,"ChartCtrl",WS_TABSTOP,1,16,335,150
-    CONTROL         "Contagem",IDC_SCORE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,2,3,45,10
-    CONTROL         "FWHM",IDC_FWHM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,49,3,37,10
-    CONTROL         "#Estrelas",IDC_STARS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,90,3,43,10
-    CONTROL         "dx/dy",IDC_OFFSET,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,141,3,35,10
-    CONTROL         "Angulo",IDC_ANGLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
-                    WS_TABSTOP,180,3,35,10
-    CONTROL         "Sky Background",IDC_SKYBACKGROUND,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,220,3,67,10
+    CONTROL         "Contagem",IDC_SCORE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,2,3,45,10
+    CONTROL         "FWHM",IDC_FWHM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,49,3,37,10
+    CONTROL         "#Estrelas",IDC_STARS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,90,3,43,10
+    CONTROL         "dx/dy",IDC_OFFSET,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,141,3,35,10
+    CONTROL         "Angulo",IDC_ANGLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,180,3,35,10
+    CONTROL         "Sky Background",IDC_SKYBACKGROUND,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,220,3,67,10
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 393, 333
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Integrando",IDC_STACKING,7,8,306,182
-    CONTROL         "Nao integrar pelo menos",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,16,21,91,10
+    CONTROL         "Nao integrar pelo menos",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,21,91,10
     LTEXT           "Cuidado   Nao integrar se ...",IDC_STATIC,11,38,95,8
-    CONTROL         "",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,49,16,10
-    CONTROL         "...contagem ate",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,43,49,65,10
-    EDITTEXT        IDC_SCORE,110,50,44,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
-    CONTROL         "",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,66,16,10
-    CONTROL         "...contagem de estrelas ate",IDC_DONTSTACK_STARS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,43,66,102,10
-    EDITTEXT        IDC_STARCOUNT,148,66,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
-                    NOT WS_BORDER,WS_EX_RIGHT
-    CONTROL         "",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,
-                    98,16,10
-    CONTROL         "...FWHM ate",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,43,98,54,10
-    EDITTEXT        IDC_FWHM,100,98,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
+    CONTROL         "",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,49,16,10
+    CONTROL         "...contagem ate",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,49,65,10
+    EDITTEXT        IDC_SCORE,110,50,44,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,66,16,10
+    CONTROL         "...contagem de estrelas ate",IDC_DONTSTACK_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,66,102,10
+    EDITTEXT        IDC_STARCOUNT,148,66,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,98,16,10
+    CONTROL         "...FWHM ate",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,98,54,10
+    EDITTEXT        IDC_FWHM,100,98,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
     LTEXT           "Pixels",IDC_STATIC,131,99,19,8
-    CONTROL         "",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,115,16,10
-    CONTROL         "...dx or dy ate",IDC_DONTSTACK_OFFSET,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,43,115,60,10
-    EDITTEXT        IDC_OFFSET,105,115,31,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
+    CONTROL         "",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,115,16,10
+    CONTROL         "...dx or dy ate",IDC_DONTSTACK_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,115,60,10
+    EDITTEXT        IDC_OFFSET,105,115,31,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
     LTEXT           "Pixels",IDC_STATIC,139,116,19,8
-    CONTROL         "",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,133,16,10
-    CONTROL         "...Angulo ate",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,43,133,55,10
-    EDITTEXT        IDC_ANGLE,100,133,25,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
+    CONTROL         "",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,133,16,10
+    CONTROL         "...Angulo ate",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,133,55,10
+    EDITTEXT        IDC_ANGLE,100,133,25,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
     LTEXT           "°",IDC_STATIC,128,134,8,8
     GROUPBOX        "Avisos",IDC_WARNINGS,7,179,306,41
-    CONTROL         "Som",IDC_WARN_SOUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    16,192,36,10
-    CONTROL         "Aplicacao de flash",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,16,207,70,10
-    CONTROL         "Enviar e-mail para",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,88,192,70,10
-    CONTROL         "Criar um aviso no ficheiro ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,88,207,95,10
+    CONTROL         "Som",IDC_WARN_SOUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,192,36,10
+    CONTROL         "Aplicacao de flash",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,207,70,10
+    CONTROL         "Enviar e-mail para",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,192,70,10
+    CONTROL         "Criar um aviso no ficheiro ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,88,207,95,10
     GROUPBOX        "Opcoes",IDC_OPTIONS,7,227,306,47
     CONTROL         "Guardar imagem integrada num ficheiro",IDC_SAVESTACKEDIMAGE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,138,10
-    EDITTEXT        IDC_IMAGECOUNT,155,240,22,10,ES_RIGHT | ES_AUTOHSCROLL | 
-                    ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    EDITTEXT        IDC_IMAGECOUNT,155,240,22,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
     LTEXT           "imagem(s)",IDC_STATIC,184,241,33,8
     LTEXT           "Pasta da Producao:",IDC_STATIC,27,257,63,8
-    LTEXT           "<Clique aqui para selecionar a pasta producao>",IDC_STACKEDOUTPUTFOLDER,
-                    95,257,210,8
-    PUSHBUTTON      "Aplicar as modificacoes",IDC_APPLYCHANGES,319,10,69,20,
-                    BS_MULTILINE
-    PUSHBUTTON      "Cancelar as modificaes",IDC_CANCELCHANGES,319,37,70,21,
-                    BS_MULTILINE
-    EDITTEXT        IDC_MINIMAGES,108,21,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
-                    NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "<Clique aqui para selecionar a pasta producao>",IDC_STACKEDOUTPUTFOLDER,95,257,210,8
+    PUSHBUTTON      "Aplicar as modificacoes",IDC_APPLYCHANGES,319,10,69,20,BS_MULTILINE
+    PUSHBUTTON      "Cancelar as modificaes",IDC_CANCELCHANGES,319,37,70,21,BS_MULTILINE
+    EDITTEXT        IDC_MINIMAGES,108,21,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
     LTEXT           "imagens estao disponiveis",IDC_STATIC,138,22,83,8
-    LTEXT           "<Clique Aqui para selecionar a pasta>",IDC_WARNINGFILEFOLDER,
-                    185,207,120,8
-    LTEXT           "<Clique aqui para colocar um e-mail>",IDC_EMAIL,164,193,
-                    141,8
+    LTEXT           "<Clique Aqui para selecionar a pasta>",IDC_WARNINGFILEFOLDER,185,207,120,8
+    LTEXT           "<Clique aqui para colocar um e-mail>",IDC_EMAIL,164,193,141,8
     PUSHBUTTON      "Apagar o e-mail",IDC_RESETEMAILCOUNT,319,190,69,14,NOT WS_VISIBLE
     GROUPBOX        "Filtros",IDC_FILTERS,7,278,306,50
     LTEXT           "Processar apenas...",IDC_STATIC,16,288,65,8
-    CONTROL         "Imagens RAW  (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,16,299,143,10
-    CONTROL         "Imagens FITS",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,16,313,57,10
-    CONTROL         "Imagens TIFF",IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,164,299,57,10
+    CONTROL         "Imagens RAW  (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,299,143,10
+    CONTROL         "Imagens FITS",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,313,57,10
+    CONTROL         "Imagens TIFF",IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,299,57,10
     CONTROL         "Outras imagens (JPEG, BMP, GIF...)",IDC_PROCESS_OTHERS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,164,313,128,10
-    CONTROL         "Mover ficheiros nao integrados para sub-pasta de ' NonStackable'",
-                    IDC_MOVENONSTACKABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    16,154,229,10
-    LTEXT           "(a sub-pasta de ' NonStackable' sera criada se necessario)",
-                    IDC_STATIC,26,165,191,8
-    CONTROL         "",IDC_WARN_SKYBACKGROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,82,16,10
+    CONTROL         "Mover ficheiros nao integrados para sub-pasta de ' NonStackable'",IDC_MOVENONSTACKABLE,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,154,229,10
+    LTEXT           "(a sub-pasta de ' NonStackable' sera criada se necessario)",IDC_STATIC,26,165,191,8
+    CONTROL         "",IDC_WARN_SKYBACKGROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,82,16,10
     CONTROL         "...Sky Background e maior do que",IDC_DONTSTACK_SKYBACKGROUND,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,82,121,10
-    EDITTEXT        IDC_MAX_SKYBACKGROUND,165,82,27,10,ES_RIGHT | ES_AUTOHSCROLL | 
-                    NOT WS_BORDER,WS_EX_RIGHT
+    EDITTEXT        IDC_MAX_SKYBACKGROUND,165,82,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
     LTEXT           "%",IDC_STATIC,194,82,8,8
 END
 
@@ -219,18 +150,15 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Ao reiniciar quer que",IDC_STATIC,7,7,106,8
     CONTROL         "Criar uma nova imagem integrada vazia",IDC_CREATENEWSTACKEDIMAGE,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,24,
-                    139,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,24,139,10
     LTEXT           "ou",IDC_STATIC,35,34,8,8
     CONTROL         "Iniciar do fluxo de imagens integradas",IDC_STARTFROMCURRENTSTACKEDIMAGE,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,44,
-                    157,10
-    CONTROL         "Deixar as imagens pendentes",IDC_DROPPENDINGIMAGES,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,69,127,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,44,157,10
+    CONTROL         "Deixar as imagens pendentes",IDC_DROPPENDINGIMAGES,
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,69,127,10
     LTEXT           "ou",IDC_STATIC,34,81,8,8
     CONTROL         "Usar e processar as imagens pendentes",IDC_USEPENDINGIMAGES,
-                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,91,
-                    140,10
+                    "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,23,91,140,10
     DEFPUSHBUTTON   "OK",IDOK,101,116,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,160,116,50,14
 END
@@ -258,30 +186,22 @@ BEGIN
 END
 
 IDD_MAINBOARD DIALOGEX 0, 0, 466, 87
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CTEXT           "Imagem Integrada",IDC_STACKEDIMAGE,3,71,76,16,NOT WS_VISIBLE | 
-                    WS_BORDER
-    CTEXT           "Ultima Imagem",IDC_LASTIMAGE,79,71,76,16,NOT WS_VISIBLE | 
-                    WS_BORDER
+    CTEXT           "Imagem Integrada",IDC_STACKEDIMAGE,3,71,76,16,NOT WS_VISIBLE | WS_BORDER
+    CTEXT           "Ultima Imagem",IDC_LASTIMAGE,79,71,76,16,NOT WS_VISIBLE | WS_BORDER
     CTEXT           "Graficos",IDC_GRAPHS,155,71,76,16,NOT WS_VISIBLE | WS_BORDER
-    LTEXT           "Monotorizando",IDC_MONITORINGRECT,3,4,456,60,NOT WS_VISIBLE | 
-                    WS_BORDER
-    CTEXT           "Lista de Fotos",IDC_IMAGELIST,231,71,76,16,NOT WS_VISIBLE | 
-                    WS_BORDER
+    LTEXT           "Monotorizando",IDC_MONITORINGRECT,3,4,456,60,NOT WS_VISIBLE | WS_BORDER
+    CTEXT           "Lista de Fotos",IDC_IMAGELIST,231,71,76,16,NOT WS_VISIBLE | WS_BORDER
     CTEXT           "Log",IDC_LOGLIST,307,71,76,16,NOT WS_VISIBLE | WS_BORDER
-    LTEXT           "<Clique aqui para selecionar a Pasta do Monitor>",IDC_MONITOREDFOLDER,
-                    83,7,343,8,SS_PATHELLIPSIS
+    LTEXT           "<Clique aqui para selecionar a Pasta do Monitor>",IDC_MONITOREDFOLDER,83,7,343,8,SS_PATHELLIPSIS
     PUSHBUTTON      "Monitor",IDC_MONITOR,21,22,35,32,BS_MULTILINE | NOT WS_VISIBLE
     PUSHBUTTON      "Integrar",IDC_STACK,72,22,35,32,BS_MULTILINE | NOT WS_VISIBLE
     PUSHBUTTON      "Parar",IDC_STOP,123,22,35,32,BS_MULTILINE | NOT WS_VISIBLE
-    CTEXT           "Configuracoes",IDC_WARNINGS,383,71,76,16,NOT WS_VISIBLE | 
-                    WS_BORDER
+    CTEXT           "Configuracoes",IDC_WARNINGS,383,71,76,16,NOT WS_VISIBLE | WS_BORDER
     LTEXT           "Estatico",IDC_PROGRESS,166,24,286,22,NOT WS_VISIBLE | WS_BORDER
-    LTEXT           "Falta %ld - Registo %ld - Integrados %ld - Tempo Total de integrao: %s",
-                    IDC_STATS,168,54,284,8,NOT WS_VISIBLE
+    LTEXT           "Falta %ld - Registo %ld - Integrados %ld - Tempo Total de integrao: %s",IDC_STATS,168,54,284,8,NOT WS_VISIBLE
 END
 
 
@@ -291,7 +211,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_DEEPSKYSTACKERLIVE, DIALOG
     BEGIN
@@ -379,20 +299,23 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\DeepSkyStackerLive.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
 IDB_HDRUP               BITMAP                  "..\\Tools\\hdrup.bmp"
+
 IDB_HDRDOWN             BITMAP                  "..\\Tools\\hdrdown.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SELECTMONITOREDFOLDER "Selecione a pasta monitorizada"
     IDS_LOG_NEWFILESFOUND   "%ld novo ficheiro(s) encontrado\n"
@@ -413,7 +336,7 @@ BEGIN
     IDS_LOG_STARTING_3      "3 Passo\nPara iniciar a integrar as imagens clique no botao Stack\nAqui todas as entradas (primeiro registadas) serao integradas. \n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_AVERAGE       "Proporcao"
     IDS_RECAP_MEDIAN        "Media"
@@ -425,7 +348,7 @@ BEGIN
                             "Media Kappa-Sigma (Kappa = %.2f, Iteraces = %ld)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURE0           "Exposicao: <1 s "
     IDS_EXPOSURE1           "Exposicao: %ld s "
@@ -433,14 +356,14 @@ BEGIN
     IDS_EXPOSURE3           "Exposicao: %ld hr %ld mn %ld s "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_MEGABYTES     "%.1f Mb"
     IDS_RECAP_KILOBYTES     "%.1f Kb"
     IDS_RECAP_GIGABYTES     "%.1f Gb"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REGISTERING         "Registando as fotos"
     IDS_REGISTERINGPICTURE  "Registando %ld on %ld"
@@ -460,12 +383,14 @@ BEGIN
     IDS_COMPUTINGOFFSETS    "Avaliacao offsets"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DETECTINGHOTPIXELS1 "Detectando Pixels Quentes (1/2)"
     IDS_DETECTINGHOTPIXELS2 "Detectando Pixels Quentes (2/2)"
-    IDS_COMPUTINGFLATCALIBRATION "Avaliacao e Calibracao dos Parametros do Flat"
-    IDS_APPLYINGFLATCALIBRATION "Aplicando a Calibracao dos Parametros do Flat"
+    IDS_COMPUTINGFLATCALIBRATION 
+                            "Avaliacao e Calibracao dos Parametros do Flat"
+    IDS_APPLYINGFLATCALIBRATION 
+                            "Aplicando a Calibracao dos Parametros do Flat"
     IDS_AHDDEMOSAICING      "Interpolando - Homogeniedade Directa e Adaptada (HDA)"
     IDS_PROCESSINGIMAGE     "Processando Imagem..."
     IDS_APPLYINGCOSMETIC_HOT "Aplicando cosmetica - Pixels Quentes"
@@ -478,13 +403,13 @@ BEGIN
     IDS_MEDIANDARKFLATINFO  "Master Dark Flat criado a partir de %ld fotos (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADGRAYFITS        "Calculando FITS %ld bit monocromatico"
     IDS_SAVINGFITS          "Guardando FITS %ld bit"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADRGBFLAT         "Carregando %ld bit/ch %s flat frame\n%s"
     IDS_LOADGRAYFLAT        "Carregando %ld bits gray %s flat frame\n%s"
@@ -506,7 +431,7 @@ BEGIN
     IDS_REMOVINGHOTPIXELS   "Detectando Pixels Quentes"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGSTACKINGINFO "Informacao-Integracao do PC para %s"
     IDS_STACKING            "Integrando"
@@ -527,7 +452,7 @@ BEGIN
     IDS_COMPUTINGMEDIANFLAT "Avaliacao master flat (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADDSIMAGE         "Carregando DSImage"
     IDS_LOADPICTURE         "Carregando %s"
@@ -536,7 +461,8 @@ BEGIN
     IDS_SAVINGTIFF          "Guardando TIFF %ld bit"
     IDS_SAVINGPICTURE       "Guardando %s"
     IDS_SAVEWITHSETTINGSAPPLIED "Foto guardada - aplicadas configuracoes."
-    IDS_SAVEWITHSETTINGSEMBEDDED "Foto guardada - com configuracoes defenidas."
+    IDS_SAVEWITHSETTINGSEMBEDDED 
+                            "Foto guardada - com configuracoes defenidas."
     IDS_LOADRGBTIFF         "Carregando TIFF %ld bit/ch"
     IDS_LOADGRAYTIFF        "Carregando TIFF %ld bit monocromtico"
     IDS_DEEPSKYSTACKER      "DeepSkyStacker 4.1.1"
@@ -545,17 +471,17 @@ BEGIN
     IDS_LOADRGBFITS         "Carregando FITS %ld bit/ch"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGCOSMETICSTATS "Avaliacao de niveis de cosmetica"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGMEDIANLIGHT "Avaliacao Final da foto (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CREATEMASTERDARK    "Criar Master Dark Frame"
     IDS_CREATEMASTEROFFSET  "Criar Master Offset Frame"
@@ -563,7 +489,7 @@ BEGIN
     IDS_ADDDARK             "Adicionando Dark frame %ld on %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SAVINGMASTEROFFSET  "Guardando Master Offset"
     IDS_SAVINGMASTERDARK    "Guardando Master Dark"
@@ -576,7 +502,7 @@ BEGIN
     IDS_ADDOFFSET2          "Adicionando Offset frame %ld on %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FORMAT_RGB          "RGB %ld bit/ch"
     IDS_FORMAT_GRAY         "Gray %ld bit"
@@ -586,14 +512,14 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURETIME1       "%ld s "
     IDS_EXPOSURETIME2       "%ld mn %ld s "
     IDS_EXPOSURETIME3       "%ld hr %ld mn %ld s "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_PATH         "Atalho"
     IDS_COLUMN_FILE         "Ficheiro"
@@ -605,7 +531,7 @@ BEGIN
     IDS_COLUMN_DATETIME     "Data/Tempo"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_SIZES        "Tamanho"
     IDS_COLUMN_CFA          "CFA"
@@ -617,7 +543,7 @@ BEGIN
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HAT_LINEAR          "Linear"
     IDS_HAT_CUBEROOT        "Cube Root"
@@ -628,18 +554,18 @@ BEGIN
     IDS_HAT_ASINH           "ASinH"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_WARNINGDISKSPACE 
                             "Preciso temporariamente %s de espaco no(a) %s drive.\nApenas %s esta disponivel nesta drive."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_WANTTOCONTINUE      "\nQuer realmente que continue?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_STARTING_4      "Pode fazer pausa/comeco iniciando processo integracao clicando botao Stack. \n"
     IDS_LOG_STARTING_5      "Para parar de monotorizar e integrar clique no butao stop. \n\n"
@@ -660,7 +586,7 @@ BEGIN
     IDS_LOG_WARNING         "Aviso: Imagem %s -> %s\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SELECTWARNINGFOLDER "Selecione Aviso Pasta do Ficheiro"
     IDS_SELECTSTACKEDFOLDER "Selecione Imagem integrada na Pasta Producao"
@@ -681,24 +607,26 @@ BEGIN
     IDS_NOSTACK_SKYBACKGROUND "Sky Background (%2.f%%) e maior que %2.f%%"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HELPFILE            "DeepSkyStacker Ajuda.chm"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw ondersteund uw %s camera niet"
+    IDS_CAMERA_NOT_SUPPORTED "Desculpe, LibRaw não suporta % modelo de câmera"
 END
 
-#endif    // English (U.S.) resources
+#endif    // Portuguese (Brazil) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
 /////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
+// English (United Kingdom) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -706,6 +634,36 @@ END
 // TEXTINCLUDE
 //
 
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
 #endif    // APSTUDIO_INVOKED
 
+#endif    // English (United Kingdom) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
 
