@@ -16,7 +16,7 @@ This release is all about performance, though other areas have been enhanced as 
 
 7. Computing Final Picture using Auto Adaptive Weighted Average is now about 43 times faster!
 
-8. Auto-Adaptive Weighted Average now re-written completely.  It should no longer produce whited out images or other strange results. Thanks to Michael A. Covington and Simon C. Smith for their immense help in locating references and getting this working.  Thanks are also due to Dr. Peter B. Stetson who very kindly provided a web link to his original lecture note, emailed a PDF copy of his original paper, and provided helpful guidance.
+8. Auto-Adaptive Weighted Average now re-written completely.  It should no longer produce whited out images or other strange results. Thanks to Michael A. Covington and Simon C. Smith for their immense help in locating references and getting this working.  Thanks are also due to Dr. Peter B. Stetson who very kindly provided a web link to his original lecture notes, emailed a PDF copy of his original paper, and provided helpful guidance.
 
 9. Update LibRaw to 0.19.3.
 
