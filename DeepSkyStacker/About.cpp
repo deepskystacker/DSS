@@ -118,7 +118,7 @@ BOOL CAbout::OnInitDialog()
 	strText.LoadString(IDS_ABOUT_LANG_CATALAN);
 	strHTML += strText + _T(" ");
 	strText.LoadString(IDS_ABOUT_LANG_CATALAN_LINK);
-	strMask.Format(_T("<a href=\"http://astrosurf.com/pruneda/\">%s</a>"), (LPCTSTR)strText);
+	strMask.Format(_T("<a href=\"mailto:astroemporda@gmail.com\">%s</a>"), (LPCTSTR)strText);
 	strHTML += strMask + _T("<br>");
 
 	strHTML += _T("<img valign=center src=\"RES:GERMAN.PNG\">&nbsp;&nbsp;");
