@@ -292,12 +292,13 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 				CSmartPtr<C48BitColorBitmap>	pColorBitmap;
 				LONG							lWidth = pBitmap->Width(),
 												lHeight = pBitmap->Height();
-				PixelIterator					it;
 
 				pColorBitmap.Create();
 				pColorBitmap->Init(lWidth, lHeight);
-				pColorBitmap->GetIterator(&it);
 
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
 				for (LONG j = 0;j<lHeight;j++)
 				{
 					for (LONG i = 0;i<lWidth;i++)
@@ -305,8 +306,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 						double			fRed, fGreen, fBlue;
 
 						pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-						it->SetPixel(fRed, fGreen, fBlue);
-						(*it)++;
+						pColorBitmap->SetPixel(i, j, fRed, fGreen, fBlue);
 					};
 				};
 
