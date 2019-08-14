@@ -30,7 +30,9 @@ This release is all about performance, though other areas have been enhanced as 
 
 14. User request to change the file open dialog to default to *all* supported image types including raw files.
 
-15. Three times performance improvement in star registration. 
+15. Three times performance improvement in star registration.
+
+16. As requested by Ray Butler, use relative paths in saved file lists while continuing to accept older file lists using absolute paths.
  
 Welcome to DeepSkyStacker 4.2.1
 
