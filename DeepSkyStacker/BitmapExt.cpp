@@ -762,37 +762,37 @@ BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> *
 	if (pInBitmap && gammatrans.IsInitialized())
 	{
 		BOOL			bContinue;
-		LONG			lWidth = pInBitmap->Width(),
+		LONG const		lWidth = pInBitmap->Width(),
 						lHeight = pInBitmap->Height();
-		double			fMultiplier;
 
 		if (pOutBitmap->IsEmpty())
 		{
 			// Create the Bitmap
-			pOutBitmap->Init(pInBitmap->Width(), pInBitmap->Height());
+			pOutBitmap->Init(lWidth, lHeight);
 		};
 
 		// Check that the output bitmap size is matching the input bitmap
-		bContinue = (pOutBitmap->Width() == pInBitmap->Width()) &&
-				    (pOutBitmap->Height() == pInBitmap->Height());
+		bContinue = (pOutBitmap->Width() == lWidth) &&
+				    (pOutBitmap->Height() == lHeight);
 
 		if (bContinue)
 		{
-			// Init iterators
-			TType *			pRed  = pInBitmap->GetRedPixel(0, 0);
-			TType *			pGreen= pInBitmap->GetGreenPixel(0, 0);
-			TType *			pBlue = pInBitmap->GetBluePixel(0, 0);
-			LPBYTE			pOut;
-			LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
-
-			fMultiplier = pInBitmap->GetMultiplier()/256.0;
+			double const fMultiplier = pInBitmap->GetMultiplier()/256.0;
 			
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
 			for (LONG j =  0;j<lHeight;j++)
 			{
-				pOut = pOutBitmap->GetPixelBase(0, j);
+				// Init iterators
+				TType *			pRed = pInBitmap->GetRedPixel(0, j);
+				TType *			pGreen = pInBitmap->GetGreenPixel(0, j);
+				TType *			pBlue = pInBitmap->GetBluePixel(0, j);
+
+				LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
+				LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
 				for (LONG i = 0;i<lWidth;i++)
 				{
-
 					pOutPixel->rgbRed   = gammatrans.m_vTransformation[*pRed/fMultiplier];
 					pOutPixel->rgbGreen = gammatrans.m_vTransformation[*pGreen/fMultiplier];
 					pOutPixel->rgbBlue  = gammatrans.m_vTransformation[*pBlue/fMultiplier];
@@ -821,32 +821,33 @@ BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * 
 	if (pInBitmap && gammatrans.IsInitialized())
 	{
 		BOOL			bContinue;
-		LONG			lWidth = pInBitmap->Width(),
+		LONG const		lWidth = pInBitmap->Width(),
 						lHeight = pInBitmap->Height();
-		double			fMultiplier;
 
 		if (pOutBitmap->IsEmpty())
 		{
 			// Create the Bitmap
-			pOutBitmap->Init(pInBitmap->Width(), pInBitmap->Height());
+			pOutBitmap->Init(lWidth, lHeight);
 		};
 
 		// Check that the output bitmap size is matching the input bitmap
-		bContinue = (pOutBitmap->Width() == pInBitmap->Width()) &&
-				    (pOutBitmap->Height() == pInBitmap->Height());
+		bContinue = (pOutBitmap->Width() == lWidth) &&
+				    (pOutBitmap->Height() == lHeight);
 
 		if (bContinue)
 		{
-			// Init iterators
-			TType *			pGray  = pInBitmap->GetGrayPixel(0, 0);
-			LPBYTE			pOut;
-			LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
+			double const fMultiplier = pInBitmap->GetMultiplier()/256.0;
 
-			fMultiplier = pInBitmap->GetMultiplier()/256.0;
-
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
 			for (LONG j =  0;j<lHeight;j++)
 			{
-				pOut = pOutBitmap->GetPixelBase(0, j);
+				// Init iterators
+				TType *			pGray = pInBitmap->GetGrayPixel(0, j);
+
+				LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
+				LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
 				for (LONG i = 0;i<lWidth;i++)
 				{
 
