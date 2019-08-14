@@ -249,24 +249,26 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
     }
 };
 
+/* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF crColor)
 {
-	const unsigned char red = GetRValue(crColor);
-	const unsigned char green = GetGValue(crColor);
-	const unsigned char blue = GetBValue(crColor);
+	const unsigned red = GetRValue(crColor);
+	const unsigned green = GetGValue(crColor);
+	const unsigned blue = GetBValue(crColor);
 
-	const double minval = min(red, min(green, blue));
-	const double maxval = max(red, max(green, blue));
-	const double msum = maxval + minval;
-	return (msum / 510.0);
+	const unsigned minval = min(red, min(green, blue));
+	const unsigned maxval = max(red, max(green, blue));
+	const unsigned msum = maxval + minval;
+	return ((double)msum / 510.0);
 };
 
+/* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF16 & crColor)
 {
-	const double minval = min(crColor.red, min(crColor.green, crColor.blue));
-	const double maxval = max(crColor.red, max(crColor.green, crColor.blue));
-	const double msum = maxval + minval;
-	return ((msum / 256.0) / 510.0);
+	const unsigned minval = min(crColor.red, min(crColor.green, crColor.blue));
+	const unsigned maxval = max(crColor.red, max(crColor.green, crColor.blue));
+	const unsigned msum = maxval + minval;
+	return (((double)msum / 256.0) / 510.0);
 };
 
 /* ------------------------------------------------------------------- */
