@@ -523,6 +523,7 @@ private :
 	CString			m_strMake;
 	LONG			m_lISOSpeed;
 	double			m_fExposureTime;
+	double			m_fAperture;
 	LONG			m_lHeight,
 					m_lWidth;
 	BOOL			m_bColorRAW;
@@ -575,6 +576,11 @@ public :
 	double	GetExposureTime()
 	{
 		return m_fExposureTime;
+	};
+
+	double	getAperture()
+	{
+		return m_fAperture;
 	};
 
 	LONG	Width()
@@ -763,12 +769,20 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	pBitmap->Init(m_lWidth, m_lHeight);
 	pBitmap->SetISOSpeed(m_lISOSpeed);
 	pBitmap->SetExposure(m_fExposureTime);
+	pBitmap->SetAperture(m_fAperture);
 	pBitmap->m_DateTime = m_DateTime;
 
 	CString			strDescription;
 	GetModel(strDescription);
-	checkCameraSupport(strDescription);
 
+	//
+	// If it's a DNG file, we don't need to check for camera support, but if
+	// we're processing a true raw file then check that the camera is supported.
+	// 
+	if (0 == P1.dng_version)
+	{
+		checkCameraSupport(strDescription);
+	};
 		
 	pBitmap->SetDescription(strDescription);
 
@@ -1229,6 +1243,11 @@ BOOL CRawDecod::IsRawFile()
 		else
 			m_fExposureTime = 0;
 
+		if (_finite(P2.aperture))
+			m_fAperture = P2.aperture;
+		else
+			m_fAperture = 0.0;
+
 		// Retrieve the Date/Time
 		memset(&m_DateTime, 0, sizeof(m_DateTime));
 		tm *		pdatetime;
@@ -1335,6 +1354,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			dcr.GetModel(BitmapInfo.m_strModel);
 			BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
 			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
+			BitmapInfo.m_fAperture       = dcr.getAperture();
 			BitmapInfo.m_DateTime		 = dcr.GetDateTime();
 		};
 	}

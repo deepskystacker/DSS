@@ -38,6 +38,7 @@ protected :
 	double				samplemin,
 						samplemax;
 	float				exposureTime;
+	float				aperture;
 	short				isospeed;
 	LONG				nrframes;
 	SYSTEMTIME			m_DateTime;
@@ -53,6 +54,7 @@ public :
 		samplemax = 1.0;
 		samplemin = 0.0;
 		exposureTime = 0.0;
+		aperture = 0.0;
 		isospeed = 0;
 		cfatype  = 0;
 		cfa      = 0;
@@ -105,6 +107,16 @@ public :
 	void	SetExposureTime(double fExposureTime)
 	{
 		exposureTime = fExposureTime;
+	};
+
+	double	GetAperture()
+	{
+		return aperture;
+	};
+
+	void	SetAperture(double fAperture)
+	{
+		aperture = fAperture;
 	};
 
 	void	SetNrFrames(LONG lNrFrames)

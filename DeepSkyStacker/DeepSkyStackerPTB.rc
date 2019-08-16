@@ -863,6 +863,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Informacoes"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Exposicao"
+	IDS_COLUMN_APERTURE		"Abertura"
     IDS_COLUMN_STARS        "#Estrelas"
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
 END

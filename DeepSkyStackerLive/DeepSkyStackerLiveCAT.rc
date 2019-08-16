@@ -605,6 +605,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Infos"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Exposició"
+	IDS_COLUMN_APERTURE		"Obertura"
     IDS_COLUMN_STARS        "# Estrelles"
     IDS_COLUMN_SKYBACKGROUND "Fons de cel"
 END

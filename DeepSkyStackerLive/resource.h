@@ -35,6 +35,7 @@
 #define IDS_COLUMN_EXPOSURE             213
 #define IDS_COLUMN_STARS                214
 #define IDS_COLUMN_SKYBACKGROUND        215
+#define IDS_COLUMN_APERTURE				216
 #define IDS_FORMAT_RGB                  400
 #define IDS_FORMAT_GRAY                 401
 #define IDS_YES                         402

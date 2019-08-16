@@ -170,6 +170,8 @@ BOOL CTIFFReader::Open()
 				{
 					if (!TIFFGetField(m_tiff, EXIFTAG_EXPOSURETIME, &exposureTime)) 
 						exposureTime = 0.0;
+					if (!TIFFGetField(m_tiff, EXIFTAG_FNUMBER, &aperture))
+						exposureTime = 0.0;
 					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &isospeed))
 						isospeed = 0;
 				};
@@ -182,6 +184,7 @@ BOOL CTIFFReader::Open()
 			if (RetrieveEXIFInfo(m_strFileName, BitmapInfo))
 			{
 				exposureTime = BitmapInfo.m_fExposure;
+				aperture	 = BitmapInfo.m_fAperture;
 				isospeed	 = BitmapInfo.m_lISOSpeed;
 				m_DateTime	 = BitmapInfo.m_DateTime;
 			};
@@ -773,6 +776,8 @@ BOOL CTIFFWriteFromMemoryBitmap::OnOpen()
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
 		if (!exposureTime)
 			exposureTime = m_pMemoryBitmap->GetExposure();
+		if (!aperture)
+			aperture = m_pMemoryBitmap->GetAperture();
 		if (!nrframes)
 			nrframes = m_pMemoryBitmap->GetNrFrames();
 		m_DateTime = m_pMemoryBitmap->m_DateTime;
@@ -832,6 +837,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			tiff.SetExposureTime(fExposure);
 		else
 			tiff.SetExposureTime(pBitmap->GetExposure());
+		tiff.SetAperture(pBitmap->GetAperture());
 		tiff.SetNrFrames(pBitmap->GetNrFrames());
 		if (tiff.Open())
 		{
@@ -968,6 +974,7 @@ BOOL CTIFFReadInMemoryBitmap::OnOpen()
 		m_pBitmap->SetMaster(master);
 		m_pBitmap->SetISOSpeed(isospeed);
 		m_pBitmap->SetExposure(exposureTime);
+		m_pBitmap->SetAperture(aperture);
 		m_pBitmap->m_DateTime = m_DateTime;
 
 		CString		strDescription;
@@ -1055,6 +1062,7 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_bCanLoad		= TRUE;
 		BitmapInfo.m_lISOSpeed		= tiff.GetISOSpeed();
 		BitmapInfo.m_fExposure		= tiff.GetExposureTime();
+		BitmapInfo.m_fAperture		= tiff.GetAperture();
 		BitmapInfo.m_DateTime		= tiff.GetDateTime();
 		bResult = tiff.Close();
 	};

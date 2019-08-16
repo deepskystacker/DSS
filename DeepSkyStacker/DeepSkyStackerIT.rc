@@ -8,7 +8,8 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "resource.h"
-#include "afxres.h"
+#include "afxres.h"
+
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -1032,6 +1033,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Info"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Esposizione"
+	IDS_COLUMN_APERTURE		"Apertura"
     IDS_COLUMN_STARS        "#Stelle"
     IDS_COLUMN_SKYBACKGROUND "Fondo Cielo"
 END
@@ -1535,7 +1537,8 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
+
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 

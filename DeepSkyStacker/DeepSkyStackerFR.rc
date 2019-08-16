@@ -1248,6 +1248,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Infos"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Temps de pose"
+	IDS_COLUMN_APERTURE		"Ouverture"
     IDS_COLUMN_STARS        "#Etoiles"
     IDS_COLUMN_SKYBACKGROUND "Fond du ciel"
 END

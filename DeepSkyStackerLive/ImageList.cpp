@@ -10,19 +10,20 @@
 const DWORD		COLUMN_STACKED	= 0;
 const DWORD 	COLUMN_FILE		= 1;
 const DWORD		COLUMN_EXPOSURE = 2;
-const DWORD 	COLUMN_SCORE	= 3;
-const DWORD		COLUMN_STARS	= 4;
-const DWORD		COLUMN_FWHM		= 5;
-const DWORD 	COLUMN_DX		= 6;
-const DWORD 	COLUMN_DY		= 7;
-const DWORD 	COLUMN_ANGLE	= 8;
-const DWORD		COLUMN_FILETIME = 9;
-const DWORD		COLUMN_SIZES	= 10;
-const DWORD		COLUMN_CFA		= 11;
-const DWORD		COLUMN_DEPTH	= 12;
-const DWORD		COLUMN_INFO		= 13;
-const DWORD		COLUMN_ISO		= 14;
-const DWORD		COLUMN_SKYBACKGROUND = 15;
+const DWORD     COLUMN_APERTURE = 3;
+const DWORD 	COLUMN_SCORE	= 4;
+const DWORD		COLUMN_STARS	= 5;
+const DWORD		COLUMN_FWHM		= 6;
+const DWORD 	COLUMN_DX		= 7;
+const DWORD 	COLUMN_DY		= 8;
+const DWORD 	COLUMN_ANGLE	= 9;
+const DWORD		COLUMN_FILETIME = 10;
+const DWORD		COLUMN_SIZES	= 11;
+const DWORD		COLUMN_CFA		= 12;
+const DWORD		COLUMN_DEPTH	= 13;
+const DWORD		COLUMN_INFO		= 14;
+const DWORD		COLUMN_ISO		= 15;
+const DWORD		COLUMN_SKYBACKGROUND = 16;
 
 
 /* ------------------------------------------------------------------- */
@@ -78,6 +79,8 @@ void CImageListTab::InitList()
 	m_ImageList.InsertColumn(COLUMN_FILE, strColumn, LVCFMT_LEFT, 200);
 	strColumn.LoadString(IDS_COLUMN_EXPOSURE);
 	m_ImageList.InsertColumn(COLUMN_EXPOSURE, strColumn, LVCFMT_RIGHT, 50);
+	strColumn.LoadString(IDS_COLUMN_APERTURE);
+	m_ImageList.InsertColumn(COLUMN_APERTURE, strColumn, LVCFMT_RIGHT, 50);
 	strColumn.LoadString(IDS_COLUMN_SCORE);
 	m_ImageList.InsertColumn(COLUMN_SCORE, strColumn, LVCFMT_RIGHT, 80);
 	strColumn.LoadString(IDS_COLUMN_STARS);
@@ -173,6 +176,9 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 
 		ExposureToString(bmpInfo.m_fExposure, strText);
 		m_ImageList.SetItemText(nItem, COLUMN_EXPOSURE, (LPCTSTR)strText);
+
+		strText.Format("%.1f", bmpInfo.m_fAperture);
+		m_ImageList.SetItemText(nItem, COLUMN_APERTURE, (LPCTSTR)strText);
 
 		strText.Format(_T("%ld"), lfi.m_vStars.size());
 		m_ImageList.SetItemText(nItem, COLUMN_STARS, (LPCTSTR)strText);

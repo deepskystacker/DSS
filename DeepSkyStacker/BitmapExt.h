@@ -659,6 +659,7 @@ protected :
 	BOOL				m_bMaster;
 	BOOL				m_bCFA;
 	double				m_fExposure;
+	double				m_fAperture;
 	LONG				m_lISOSpeed;
 	LONG				m_lNrFrames;
 	CString				m_strDescription;
@@ -671,6 +672,7 @@ protected :
 		m_bMaster			= mb.m_bMaster;
 		m_bCFA				= mb.m_bCFA;
 		m_fExposure			= mb.m_fExposure;
+		m_fAperture			= mb.m_fAperture;
 		m_lISOSpeed			= mb.m_lISOSpeed;
 		m_lNrFrames			= mb.m_lNrFrames;
 		m_strDescription	= mb.m_strDescription;
@@ -683,7 +685,8 @@ public :
 		m_bMaster  = FALSE;
 		m_bTopDown = FALSE;
 		m_bCFA	   = FALSE;
-		m_fExposure = 0;
+		m_fExposure = 0.0;
+		m_fAperture = 0.0;
 		m_lISOSpeed = 0;
 		m_lNrFrames = 0;
 		m_DateTime.wYear = 0;
@@ -701,6 +704,16 @@ public :
 	virtual void	SetExposure(double fExposure)
 	{
 		m_fExposure = fExposure;
+	};
+
+	virtual double	GetAperture()
+	{
+		return m_fAperture;
+	};
+
+	virtual void SetAperture(double fAperture)
+	{
+		m_fAperture = fAperture;
 	};
 
 	virtual LONG	GetISOSpeed()
@@ -3344,6 +3357,7 @@ public :
 	CString				m_strModel;
 	LONG				m_lISOSpeed;
 	double				m_fExposure;
+	double				m_fAperture;
 	LONG				m_lWidth;
 	LONG				m_lHeight;
 	LONG				m_lBitPerChannel;
@@ -3366,6 +3380,7 @@ private :
 		m_strModel		=bi.m_strModel		;
 		m_lISOSpeed		=bi.m_lISOSpeed		;
 		m_fExposure		=bi.m_fExposure		;
+		m_fAperture     =bi.m_fAperture;
 		m_lWidth		=bi.m_lWidth		;
 		m_lHeight		=bi.m_lHeight		;
 		m_lBitPerChannel=bi.m_lBitPerChannel;
@@ -3393,7 +3408,8 @@ public :
 		m_bMaster		 = FALSE;
 		m_bFloat		 = FALSE;
 		m_lISOSpeed		 = 0;
-		m_fExposure		 = 0;
+		m_fExposure		 = 0.0;
+		m_fAperture		 = 0.0;
 		m_bFITS16bit	 = FALSE;
 		m_DateTime.wYear = 0;
 	};

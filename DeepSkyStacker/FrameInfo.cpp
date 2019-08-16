@@ -58,6 +58,7 @@ BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 
 		m_lISOSpeed			= bmpInfo.m_lISOSpeed;
 		m_fExposure			= bmpInfo.m_fExposure;
+		m_fAperture = bmpInfo.m_fAperture;
 
 		m_bMaster			= bmpInfo.IsMaster();
 

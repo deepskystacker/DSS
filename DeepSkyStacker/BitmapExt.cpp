@@ -441,6 +441,36 @@ BOOL	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 			free(propertyItem);
 		};
+
+		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifFNumber);
+		if (dwPropertySize)
+		{
+			// PropertyTagTypeRational
+			PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
+
+			if (pBitmap->GetPropertyItem(PropertyTagExifFNumber, dwPropertySize, propertyItem) == Ok)
+			{
+				if (propertyItem->type == PropertyTagTypeRational)
+				{
+					DWORD *			pValues = (DWORD*)propertyItem->value;
+					DWORD			dwNumerator,
+						dwDenominator;
+
+					dwNumerator = *pValues;
+					pValues++;
+					dwDenominator = *pValues;
+
+					if (dwDenominator)
+					{
+						BitmapInfo.m_fAperture = (double)dwNumerator / (double)dwDenominator;
+						bResult = TRUE;
+					};
+				};
+			};
+
+			free(propertyItem);
+		};
+
 		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifISOSpeed);
 		if (dwPropertySize)
 		{

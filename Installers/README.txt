@@ -33,6 +33,12 @@ This release is all about performance, though other areas have been enhanced as 
 15. Three times performance improvement in star registration.
 
 16. As requested by Ray Butler, use relative paths in saved file lists while continuing to accept older file lists using absolute paths.
+
+17. Miscellanous other performance tweaks.
+
+18. Display lens aperture information in the image lists for DeepSkyStacker and DeepSkyStackerLive.
+
+19. Don't check for LibRaw camera support if processing DNG file.
  
 Welcome to DeepSkyStacker 4.2.1
 
