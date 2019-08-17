@@ -410,7 +410,6 @@ public :
 
 void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double & fGray)
 {
-	ZFUNCTRACE_RUNTIME();
 	std::vector<double>			vGrays;
 	std::vector<double>			vAllGrays;
 	BAYERCOLOR					BayerColor = BAYER_UNKNOWN;
@@ -454,7 +453,6 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 
 void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double & fRed, double & fGreen, double & fBlue)
 {
-	ZFUNCTRACE_RUNTIME();
 	std::vector<double>			vReds;
 	std::vector<double>			vAllReds;
 	std::vector<double>			vGreens;
@@ -509,7 +507,6 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 
 void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, double & fGray)
 {
-	ZFUNCTRACE_RUNTIME();
 	double						fSumGrays = 0;
 	double						fSumAllGrays = 0;
 	BAYERCOLOR					BayerColor = BAYER_UNKNOWN;
@@ -537,7 +534,6 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 				double					fDistance2 = pow((double)(i-x)/lFilterSize, 2)+pow((double)(j-y)/lFilterSize, 2);
 				double					fWeight = exp(-fDistance2/2);
 
-				fWeight = 
 				m_pOrgBitmap->GetPixel(i, j, fGray);
 				m_pDelta->GetPixel(i, j, fDelta);
 
@@ -564,7 +560,6 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 
 void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, double & fRed, double & fGreen, double & fBlue)
 {
-	ZFUNCTRACE_RUNTIME();
 	double						fSumReds = 0;
 	double						fSumAllReds = 0;
 	double						fSumGreens = 0;
@@ -586,7 +581,6 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 			double					fDistance2 = pow((double)(i-x)/lFilterSize, 2)+pow((double)(j-y)/lFilterSize, 2);
 			double					fWeight = exp(-fDistance2/2);
 
-			fWeight = 
 			m_pOrgBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 			m_pDelta->GetPixel(i, j, fDelta);
 
