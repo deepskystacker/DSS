@@ -73,6 +73,10 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	LONG						lMaxHalfRadiusAngle = 0.0;
 	LONG						lAngle;
 
+	// Preallocate the vector for the inner loop.
+	PIXELDISPATCHVECTOR		vPixels;
+	vPixels.reserve(10);
+
 	for (lAngle = 0;lAngle<360;lAngle+=10)
 	{
 		CStarAxisInfo			ai;
@@ -89,10 +93,7 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 			double		fLuminance = 0;
 
 			// Compute luminance at fX, fY
-			PIXELDISPATCHVECTOR		vPixels;
-
-			vPixels.reserve(10);
-
+			vPixels.resize(0);
 			ComputePixelDispatch(CPointExt(fX, fY), vPixels);
 
 			for (LONG k = 0;k<vPixels.size();k++)
