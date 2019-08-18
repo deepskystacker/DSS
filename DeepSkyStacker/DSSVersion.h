@@ -40,8 +40,8 @@
 #define DSSVER_FILEVERSION		VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
-constexpr auto DSSVER_COPYRIGHT = "Copyright © 2006-2019, Luc Coiffier; \
-	Copyright © 2018-2019, David C. Partridge, Tony Cook, Mat Draper, Simon C.Smith, Vitali Pelenjow";
+#define DSSVER_COPYRIGHT "Copyright © 2006-2019 Luc Coiffier;\n\
+	Copyright © 2018-2019 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow";
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
 #define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker Live"

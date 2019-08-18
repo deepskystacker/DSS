@@ -53,14 +53,13 @@ BOOL CAbout::OnInitDialog()
 	strHTML += _T("<img valign=top align=right src=\"RES:LOGO.PNG\">");
 
 	strText.Format(IDS_ABOUT_DSS, CString(VERSION_DEEPSKYSTACKER));
-	strText.Replace(_T("\n"), _T("<BR>"));
 	strText += _T("<BR>");
 	strText += _T(DSSVER_COPYRIGHT);
+	strText.Replace(_T("\n"), _T("<BR>"));
 	strHTML += _T("<b>")+strText+_T("</b><br>");
 	strText.LoadString(IDS_ABOUT_DSS_LINK);
 	strMask.Format(_T("<a href=\"%s\">%s</a><br><br>"), (LPCTSTR)strText, (LPCTSTR)strText);
 	strHTML += strMask;
-
 
 	strText.Format(IDS_ABOUT_DCRAW, _T(VERSION_DCRAW));
 	strText.Replace(_T("\n"), _T("<BR>"));
