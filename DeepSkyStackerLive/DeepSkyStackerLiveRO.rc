@@ -452,7 +452,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Informatii"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Expunere"
-	IDS_COLUMN_APERTURE		"Diafragma"	
+	IDS_COLUMN_APERTURE		"Deschidere"	
     IDS_COLUMN_STARS        "#Stele"
     IDS_COLUMN_SKYBACKGROUND "Fundal cer"
 END
