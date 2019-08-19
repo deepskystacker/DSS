@@ -1,17 +1,17 @@
 #ifndef __DSSVERSION_H_
 #define __DSSVERSION_H_
 
-//#define DSSBETA
+#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 3
+#define DSSBETARELEASE 1
 #define DSSBETAEXPIREYEAR 2019
-#define DSSBETAEXPIREMONTH 9
+#define DSSBETAEXPIREMONTH 12
 #endif
 
 #define DSSVER_MAJOR			4
 #define DSSVER_MINOR			2
-#define DSSVER_SUB				2
+#define DSSVER_SUB				3
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
