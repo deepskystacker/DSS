@@ -34,7 +34,7 @@ This release is all about performance, though other areas have been enhanced as 
 
 16. As requested by Ray Butler, use relative paths in saved file lists while continuing to accept older file lists using absolute paths.
 
-17. Miscellanous other performance tweaks.
+17. Miscellaneous other performance tweaks.
 
 18. Display lens aperture information in the image lists for DeepSkyStacker and DeepSkyStackerLive.
 
