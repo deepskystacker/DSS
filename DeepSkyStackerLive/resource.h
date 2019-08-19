@@ -35,6 +35,7 @@
 #define IDS_COLUMN_EXPOSURE             213
 #define IDS_COLUMN_STARS                214
 #define IDS_COLUMN_SKYBACKGROUND        215
+#define IDS_COLUMN_APERTURE				216
 #define IDS_FORMAT_RGB                  400
 #define IDS_FORMAT_GRAY                 401
 #define IDS_YES                         402
@@ -242,6 +243,7 @@
 #define IDS_RECAP_KILOBYTES             4201
 #define IDS_RECAP_GIGABYTES             4202
 #define IDS_RECAP_WARNINGDISKSPACE      4250
+#define IDS_CAMERA_NOT_SUPPORTED        8001
 #define IDS_HELPFILE                    20000
 #define IDS_SELECTMONITOREDFOLDER       42000
 #define IDS_LOG_NEWFILESFOUND           42001

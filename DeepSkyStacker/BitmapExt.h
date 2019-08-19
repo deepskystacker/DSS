@@ -249,24 +249,26 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
     }
 };
 
+/* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF crColor)
 {
-	const unsigned char red = GetRValue(crColor);
-	const unsigned char green = GetGValue(crColor);
-	const unsigned char blue = GetBValue(crColor);
+	const unsigned red = GetRValue(crColor);
+	const unsigned green = GetGValue(crColor);
+	const unsigned blue = GetBValue(crColor);
 
-	const double minval = min(red, min(green, blue));
-	const double maxval = max(red, max(green, blue));
-	const double msum = maxval + minval;
-	return (msum / 510.0);
+	const unsigned minval = min(red, min(green, blue));
+	const unsigned maxval = max(red, max(green, blue));
+	const unsigned msum = maxval + minval;
+	return ((double)msum / 510.0);
 };
 
+/* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF16 & crColor)
 {
-	const double minval = min(crColor.red, min(crColor.green, crColor.blue));
-	const double maxval = max(crColor.red, max(crColor.green, crColor.blue));
-	const double msum = maxval + minval;
-	return ((msum / 256.0) / 510.0);
+	const unsigned minval = min(crColor.red, min(crColor.green, crColor.blue));
+	const unsigned maxval = max(crColor.red, max(crColor.green, crColor.blue));
+	const unsigned msum = maxval + minval;
+	return (((double)msum / 256.0) / 510.0);
 };
 
 /* ------------------------------------------------------------------- */
@@ -657,6 +659,7 @@ protected :
 	BOOL				m_bMaster;
 	BOOL				m_bCFA;
 	double				m_fExposure;
+	double				m_fAperture;
 	LONG				m_lISOSpeed;
 	LONG				m_lNrFrames;
 	CString				m_strDescription;
@@ -669,6 +672,7 @@ protected :
 		m_bMaster			= mb.m_bMaster;
 		m_bCFA				= mb.m_bCFA;
 		m_fExposure			= mb.m_fExposure;
+		m_fAperture			= mb.m_fAperture;
 		m_lISOSpeed			= mb.m_lISOSpeed;
 		m_lNrFrames			= mb.m_lNrFrames;
 		m_strDescription	= mb.m_strDescription;
@@ -681,7 +685,8 @@ public :
 		m_bMaster  = FALSE;
 		m_bTopDown = FALSE;
 		m_bCFA	   = FALSE;
-		m_fExposure = 0;
+		m_fExposure = 0.0;
+		m_fAperture = 0.0;
 		m_lISOSpeed = 0;
 		m_lNrFrames = 0;
 		m_DateTime.wYear = 0;
@@ -699,6 +704,16 @@ public :
 	virtual void	SetExposure(double fExposure)
 	{
 		m_fExposure = fExposure;
+	};
+
+	virtual double	GetAperture()
+	{
+		return m_fAperture;
+	};
+
+	virtual void SetAperture(double fAperture)
+	{
+		m_fAperture = fAperture;
 	};
 
 	virtual LONG	GetISOSpeed()
@@ -1028,9 +1043,9 @@ inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGr
 	fGreen = -0.28607719 * fR +	1.706598409	* fG + 0.24881043 * fB;
 	fBlue  = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
 
-	fRed = max(0, min (255.0, fRed));
-	fGreen = max(0, min (255.0, fRed));
-	fBlue = max(0, min (255.0, fRed));
+	fRed = max(0.0, min (255.0, fRed));
+	fGreen = max(0.0, min (255.0, fRed));
+	fBlue = max(0.0, min (255.0, fRed));
 };
 
 inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
@@ -1046,9 +1061,9 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 	// R = (M+Y-C)/2
 	// G = (Y+C-M)/2
 	// B = (M+C-Y)/2
-	fRed   = max(0, fMagenta+fYellow-fCyan)/2.0;
-	fGreen = max(0, fYellow+fCyan-fMagenta)/2.0;
-	fBlue  = max(0 ,fMagenta+fCyan-fYellow)/2.0;
+	fRed   = max(0.0, fMagenta+fYellow-fCyan)/2.0;
+	fGreen = max(0.0, fYellow+fCyan-fMagenta)/2.0;
+	fBlue  = max(0.0 ,fMagenta+fCyan-fYellow)/2.0;
 
 /*	if (fGreen2)
 	{
@@ -1065,24 +1080,24 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 	// R = Y - G
 	// B = C - G
 	fGreen += fGreen2;
-	fRed   += max(0, fYellow-fGreen2);
-	fBlue  += max(0, fCyan-fGreen2);
+	fRed   += max(0.0, fYellow-fGreen2);
+	fBlue  += max(0.0, fCyan-fGreen2);
 
 	// RGB from CMG
 	// G = G
 	// B = C - G
 	// R = M - B = M - C + G
 //	fGreen += fGreen2;
-	fBlue  += max(0, fCyan-fGreen2);
-	fRed   += max(0, fMagenta - fCyan + fGreen2);
+	fBlue  += max(0.0, fCyan-fGreen2);
+	fRed   += max(0.0, fMagenta - fCyan + fGreen2);
 
 	// RGB from YMG
 	// G = G
 	// R = Y - G
 	// B = M - R = M - Y + G
 //	fGreen += fGreen2;
-	fRed   += max(0, fYellow - fGreen2);
-	fBlue  += max(0, fMagenta - fYellow + fGreen2);
+	fRed   += max(0.0, fYellow - fGreen2);
+	fBlue  += max(0.0, fMagenta - fYellow + fGreen2);
 
 	// Average the results
 	fRed /= 4.0;
@@ -1560,7 +1575,7 @@ public :
 
 			if (m_pProgress)
 				m_pProgress->SetNrUsedProcessors(GetNrThreads());
-			lStep		= max(1, lHeight/50);
+			lStep		= max(1L, lHeight/50);
 			lRemaining	= lHeight;
 			bResult = TRUE;
 			while (i<lHeight)
@@ -1831,18 +1846,18 @@ private :
 		lNrValues[0] = lNrValues[1] = lNrValues[2] = lNrValues[3] = 0;
 		pfValues[0]  = pfValues[1]  = pfValues[2]  = pfValues[3]  = 0;
 		
-		for (LONG i = max(0, x-1);i<=min(m_lWidth-1, x+1);i++)
-			for (LONG j = max(0, y-1);j<=min(m_lHeight-1, y+1);j++)
+		for (LONG i = max(0L, x-1);i<=min(m_lWidth-1, x+1);i++)
+			for (LONG j = max(0L, y-1);j<=min(m_lHeight-1, y+1);j++)
 			{
 				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType));
 				pfValues[lIndice]  += m_vPixels[GetOffset(i, j)];
 				lNrValues[lIndice] ++;
 			};
 
-		pfValues[0] /= max(1, lNrValues[0]);
-		pfValues[1] /= max(1, lNrValues[1]);
-		pfValues[2] /= max(1, lNrValues[2]);
-		pfValues[3] /= max(1, lNrValues[3]);
+		pfValues[0] /= max(1L, lNrValues[0]);
+		pfValues[1] /= max(1L, lNrValues[1]);
+		pfValues[2] /= max(1L, lNrValues[2]);
+		pfValues[3] /= max(1L, lNrValues[3]);
 
 /*
 		// It's used only for CYMG - so cut it down to the basic
@@ -3342,6 +3357,7 @@ public :
 	CString				m_strModel;
 	LONG				m_lISOSpeed;
 	double				m_fExposure;
+	double				m_fAperture;
 	LONG				m_lWidth;
 	LONG				m_lHeight;
 	LONG				m_lBitPerChannel;
@@ -3364,6 +3380,7 @@ private :
 		m_strModel		=bi.m_strModel		;
 		m_lISOSpeed		=bi.m_lISOSpeed		;
 		m_fExposure		=bi.m_fExposure		;
+		m_fAperture     =bi.m_fAperture;
 		m_lWidth		=bi.m_lWidth		;
 		m_lHeight		=bi.m_lHeight		;
 		m_lBitPerChannel=bi.m_lBitPerChannel;
@@ -3391,7 +3408,8 @@ public :
 		m_bMaster		 = FALSE;
 		m_bFloat		 = FALSE;
 		m_lISOSpeed		 = 0;
-		m_fExposure		 = 0;
+		m_fExposure		 = 0.0;
+		m_fAperture		 = 0.0;
 		m_bFITS16bit	 = FALSE;
 		m_DateTime.wYear = 0;
 	};

@@ -98,9 +98,9 @@ BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 					fGreen *= fMultiplier * 256.0;
 					fBlue  *= fMultiplier * 256.0;
 
-					crColor.red = min(fRed, MAXWORD);
-					crColor.blue = min(fBlue, MAXWORD);
-					crColor.green = min(fGreen, MAXWORD);
+					crColor.red = min(fRed, static_cast<double>(MAXWORD));
+					crColor.blue = min(fBlue, static_cast<double>(MAXWORD));
+					crColor.green = min(fGreen, static_cast<double>(MAXWORD));
 					
 					vRedHisto[crColor.red]++;
 					vGreenHisto[crColor.green]++;
@@ -132,7 +132,7 @@ BOOL	CBackgroundCalibrationTask::Process()
 
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1, lHeight/50);
+	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
 	bResult = TRUE;
 	while (i<lHeight)

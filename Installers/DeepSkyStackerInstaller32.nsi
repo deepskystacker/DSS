@@ -27,7 +27,7 @@ SetCompressor /SOLID lzma
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
 !define DSS_VERSION        "4.2.2"                                  # For control panel
-!define DSS_VERSION_SUFFIX "Beta 1"                                 # For control panel (e.g. "beta 1")
+!define DSS_VERSION_SUFFIX ""                                # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
@@ -66,9 +66,11 @@ InstallDir "$PROGRAMFILES32\${DSS_PRODUCT}"
 ShowInstDetails       show
 ShowUninstDetails     show
 
-Name                  "${DSS_NAME}"
-Icon                  "${DSS_ICON}"
-UninstallIcon         "${DSS_ICON}"
+Name			"${DSS_NAME}"
+Icon			"${DSS_ICON}"
+UninstallIcon		"${DSS_ICON}"
+!define MUI_ICON	"${DSS_ICON}"
+!define MUI_UNICON 	"${DSS_ICON}"
 
 var PreviousUninstaller
 
@@ -79,11 +81,8 @@ var PreviousUninstaller
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_LANGUAGE "English"
 
-# Add Path extraction macro
-#!insertmacro PathRemoveArgsAndQuotes
-
 ${ReadmeLanguage} "${LANG_ENGLISH}" \
-          "DeepSkyStacker ${DSS_VERSION} ${DSS_VERSION_SUFFIX} Readme.txt" \
+          "DeepSkyStacker ${DSS_VERSION}${DSS_VERSION_SUFFIX} Readme.txt" \
           "Details about the new release of DeepSkyStacker" \
           "About $(^name):" \
           "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
@@ -99,7 +98,7 @@ Section
 
   SetOutPath $INSTDIR
  
-  # Uninstall previous version silently 
+  # Uninstall previous version silently
   ReadRegStr $PreviousUninstaller HKLM ${DSS_REG_UNINSTALL_PATH} "UninstallString"
   ${If} $PreviousUninstaller != ""
         #
@@ -110,13 +109,13 @@ Section
         ${If} '"' != $0
               StrCpy $PreviousUninstaller '"$PreviousUninstaller"'
         ${Endif}
-        
+       
         #
         # Now strip out the directory name to feed to _? parameter
         #
         ${PathRemoveArgsAndQuotes} $0 $PreviousUninstaller
         ${GetParent} $0 $R0
-        
+     
         #
         # Finally uninstall the previous version silently
         #
@@ -144,7 +143,7 @@ Section
   File "RunTime32\${DSS_RUNTIME_C}"
   File "RunTime32\${DSS_RUNTIME_OMP}"
   File "${DSS_README_FILE}"
- 
+
   # define uninstaller name
 
   WriteUninstaller "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
@@ -168,7 +167,7 @@ Section
   # write uninstall information to the registry
  
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "Publisher"            "${DSS_PUBLISHER}"
-  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (32 bit - remove only)"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION}${DSS_VERSION_SUFFIX} (32 bit - remove only)"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayVersion"       "${DSS_VERSION}"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayIcon"          "$INSTDIR\${DSS_FILE}.exe"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe"'
@@ -217,7 +216,7 @@ Section "Uninstall"
    
   Delete "$DESKTOP\${DSS_NAME}.lnk"
   Delete "$DESKTOP\${DSSLIVE_NAME}.lnk"
-
+  
   Delete "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_NAME}.lnk"
   Delete "$SMPROGRAMS\${DSS_PRODUCT}\${DSSLIVE_NAME}.lnk"
   Delete "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_NAME}.lnk"

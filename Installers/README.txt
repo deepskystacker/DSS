@@ -16,9 +16,29 @@ This release is all about performance, though other areas have been enhanced as 
 
 7. Computing Final Picture using Auto Adaptive Weighted Average is now about 43 times faster!
 
-8. Auto-Adaptive Weighted Average now re-written completely.  It should no longer produce whited out images or other strange results. Thanks to Michael A. Covington and Simon C. Smith for their immense help in locating references and getting this working.
+8. Auto-Adaptive Weighted Average now re-written completely.  It should no longer produce whited out images or other strange results. Thanks to Michael A. Covington and Simon C. Smith for their immense help in locating references and getting this working.  Thanks are also due to Dr. Peter B. Stetson who very kindly provided a web link to his original lecture notes, emailed a PDF copy of his original paper, and provided helpful guidance.
 
 9. Update LibRaw to 0.19.3.
+
+10. Reverted Entropy calculation code in CEntropyInfo::InitSquareEntropies() to NOT compute in parallel - some called code wasn't thread safe.
+
+11. Entropy Weighted Average complete stack of 50 lights is now about 20 times faster on my laptop, down from 4hrs 22min to 12min 55 sec.
+
+12. Bug fix - changing "Set the black point to 0" or "Use Camera White Balance" after an image was loaded didn't change the rendering.
+
+13. When loading raw files, check that the camera is listed in the LibRaw supported camera list.  Issue a warning if not.
+
+14. User request to change the file open dialog to default to *all* supported image types including raw files.
+
+15. Three times performance improvement in star registration.
+
+16. As requested by Ray Butler, use relative paths in saved file lists while continuing to accept older file lists using absolute paths.
+
+17. Miscellaneous other performance tweaks.
+
+18. Display lens aperture information in the image lists for DeepSkyStacker and DeepSkyStackerLive.
+
+19. Don't check for LibRaw camera support if processing DNG file.
  
 Welcome to DeepSkyStacker 4.2.1
 

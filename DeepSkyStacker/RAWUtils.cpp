@@ -7,7 +7,9 @@
 #include <set>
 #include <list>
 #include <iostream>
+#include <map>
 #include <stdexcept>
+#include <utility>
 #include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
@@ -201,7 +203,7 @@ private:
 	{
 		double		fResult = (double)fColor * fAdjust;
 
-		fColor = min(MAXWORD - 1, fResult);
+		fColor = min(static_cast<double>(MAXWORD - 1), fResult);
 	};
 
 	void	AddToBuffer(const void * buffer, DWORD lSize)
@@ -521,6 +523,7 @@ private :
 	CString			m_strMake;
 	LONG			m_lISOSpeed;
 	double			m_fExposureTime;
+	double			m_fAperture;
 	LONG			m_lHeight,
 					m_lWidth;
 	BOOL			m_bColorRAW;
@@ -563,6 +566,8 @@ public :
 		return TRUE;
 	};
 
+	void checkCameraSupport(const CString& strModel);
+
 	LONG	GetISOSpeed()
 	{
 		return m_lISOSpeed;
@@ -571,6 +576,11 @@ public :
 	double	GetExposureTime()
 	{
 		return m_fExposureTime;
+	};
+
+	double	getAperture()
+	{
+		return m_fAperture;
 	};
 
 	LONG	Width()
@@ -667,6 +677,85 @@ public :
 	};
 };
 
+void CRawDecod::checkCameraSupport(const CString& strModel)
+{
+	bool result = false;
+	const char * camera = static_cast<LPCSTR>(strModel);
+
+	static std::set<std::string> checkedCameras;
+	
+	//
+	// If we've already checked this camera type, then just bail out so
+	// complaints about unsupported cameras are only issued once.
+	//
+	auto it = checkedCameras.find(camera);
+
+	if (it != checkedCameras.end() )
+	{
+		return;
+	}
+
+	static std::vector<std::string> supportedCameras;
+
+	if (0 == supportedCameras.size())
+	{
+		const char **cameraList = rawProcessor.cameraList();
+		size_t count = rawProcessor.cameraCount();
+		supportedCameras.reserve(count);
+
+		//
+		// Copy LibRaw's supported camera list
+		//
+		for (size_t i = 0; i != count; ++i)
+		{
+			if (nullptr != cameraList[i])
+			{
+				supportedCameras.push_back(cameraList[i]);
+			}
+		}
+		// 
+		// sort the names using std::sort
+		sort(supportedCameras.begin(), supportedCameras.end());
+	}
+
+	//
+	// The camera type hasn't already been checked, so search the LibRaw supported camera list
+	//
+	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
+		[](const std::string &lhs, const std::string &rhs)
+	{
+		const char* pclhs = lhs.c_str();
+		const char* pcrhs = rhs.c_str();
+		size_t len = strlen(pclhs);
+		size_t szrhs = strlen(pcrhs);
+		// choose the shorter length
+		len = (len > szrhs) ? szrhs : len;
+		int result = _strnicmp(pclhs, pcrhs, len);
+		return (result < 0) ? true : false;
+	}
+		);
+
+	//
+	// Now we know whether this camera is supported or not, remember we've seen it before
+	//
+	checkedCameras.insert(camera);
+
+	//
+	// If the camera isn't supported complain, but only once 
+	//
+	if (false == result)
+	{
+		CString errorMessage;
+		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, camera);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+#endif
+	}
+
+	return;
+};
 /* ------------------------------------------------------------------- */
 
 BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, BOOL bThumb)
@@ -680,9 +769,21 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	pBitmap->Init(m_lWidth, m_lHeight);
 	pBitmap->SetISOSpeed(m_lISOSpeed);
 	pBitmap->SetExposure(m_fExposureTime);
+	pBitmap->SetAperture(m_fAperture);
 	pBitmap->m_DateTime = m_DateTime;
+
 	CString			strDescription;
 	GetModel(strDescription);
+
+	//
+	// If it's a DNG file, we don't need to check for camera support, but if
+	// we're processing a true raw file then check that the camera is supported.
+	// 
+	if (0 == P1.dng_version)
+	{
+		checkCameraSupport(strDescription);
+	};
+		
 	pBitmap->SetDescription(strDescription);
 
 	const		int maxargs = 50;
@@ -720,19 +821,11 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		bValue = FALSE;
 		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
 		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
-		if (bValue)
-		{
-			// Automatic WB using average of all pixels
-			O.use_auto_wb = 1;
-		};
+		O.use_auto_wb = bValue ? 1 : 0;
 
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
-		if (bValue)
-		{
-			// Camera WB (if possible)
-			O.use_camera_wb = 1;
-		};
+		O.use_camera_wb = bValue ? 1 : 0;
 		
 		// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
 		O.use_fuji_rotate = 0;
@@ -748,11 +841,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		argc++;*/
 
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
-		if (bBlackPointTo0)
-		{
-			// Set black point to 0
-			O.user_black = 0;
-		};
+		O.user_black = bBlackPointTo0 ? 0 : -1;
 
 		// Output is 16 bits (equivalent of dcraw flag -4)
 		O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
@@ -924,10 +1013,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					cblk[i] = C.cblack[i];
 
 				int size = S.height * S.width;
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
-#define LIM(x, min, max) MAX(min, MIN(x, max))
-#define CLIP(x) LIM(x, 0, 65535)
 				int dmax = 0;	// Maximum value of pixels in entire image.
 				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
 				if (C.cblack[4] && C.cblack[5])
@@ -942,7 +1027,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 							int val = raw_image[i];
 							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
 							val -= cblk[i & 3];
-							raw_image[i] = CLIP(val);
+							raw_image[i] = max(0, min(val, 65535)); 
 							lmax = val > lmax ? val : lmax;
 						}
 #if defined(_OPENMP)
@@ -964,7 +1049,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 						{
 							int val = raw_image[i];
 							val -= cblk[i & 3];
-							raw_image[i] = CLIP(val);
+							raw_image[i] = max(0, min(val, 65535)); ;
 							lmax = val > lmax ? val : lmax;
 						}
 #if defined(_OPENMP)
@@ -976,10 +1061,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 #endif
 				}
 				C.data_maximum = dmax & 0xffff;
-#undef MIN
-#undef MAX
-#undef LIM
-#undef CLIP
 				C.maximum -= C.black;
 				memset(&C.cblack, 0, sizeof(C.cblack)); // Yeah, we used cblack[6+] values too!
 				C.black = 0;
@@ -1162,6 +1243,11 @@ BOOL CRawDecod::IsRawFile()
 		else
 			m_fExposureTime = 0;
 
+		if (_finite(P2.aperture))
+			m_fAperture = P2.aperture;
+		else
+			m_fAperture = 0.0;
+
 		// Retrieve the Date/Time
 		memset(&m_DateTime, 0, sizeof(m_DateTime));
 		tm *		pdatetime;
@@ -1268,6 +1354,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			dcr.GetModel(BitmapInfo.m_strModel);
 			BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
 			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
+			BitmapInfo.m_fAperture       = dcr.getAperture();
 			BitmapInfo.m_DateTime		 = dcr.GetDateTime();
 		};
 	}

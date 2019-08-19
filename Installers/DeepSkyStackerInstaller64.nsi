@@ -1,5 +1,6 @@
 ##!include "MUI2.nsh"
 !verbose 4
+SetCompressor /SOLID lzma
 
 !include "MUI.nsh"
 !include "MUI_EXTRAPAGES.nsh"
@@ -26,7 +27,7 @@
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
 !define DSS_VERSION        "4.2.2"                                  # For control panel
-!define DSS_VERSION_SUFFIX "Beta 1"                                 # For control panel (e.g. "beta 1")
+!define DSS_VERSION_SUFFIX ""                                # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
@@ -66,9 +67,11 @@ InstallDir "$PROGRAMFILES64\${DSS_PRODUCT}"
 ShowInstDetails       show
 ShowUninstDetails     show
 
-Name                  "${DSS_NAME}"
-Icon                  "${DSS_ICON}"
-UninstallIcon         "${DSS_ICON}"
+Name			"${DSS_NAME}"
+Icon			"${DSS_ICON}"
+UninstallIcon		"${DSS_ICON}"
+!define MUI_ICON	"${DSS_ICON}"
+!define MUI_UNICON 	"${DSS_ICON}"
 
 var PreviousUninstaller
 
@@ -80,7 +83,7 @@ var PreviousUninstaller
 !insertmacro MUI_LANGUAGE "English"
 
 ${ReadmeLanguage} "${LANG_ENGLISH}" \
-          "DeepSkyStacker ${DSS_VERSION} ${DSS_VERSION_SUFFIX} Readme.txt" \
+          "DeepSkyStacker ${DSS_VERSION}${DSS_VERSION_SUFFIX} Readme.txt" \
           "Details about the new release of DeepSkyStacker" \
           "About $(^name):" \
           "$\n  Click on scrollbar arrows or press Page Down to review the entire text."
@@ -134,7 +137,7 @@ Section
   File "RunTime64\${DSS_RUNTIME_C}"
   File "RunTime64\${DSS_RUNTIME_OMP}"
   File "${DSS_README_FILE}"
-
+ 
   # define uninstaller name
 
   WriteUninstaller "$INSTDIR\${DSS_UNINSTALL_FILE}.exe"
@@ -158,7 +161,7 @@ Section
   # write uninstall information to the registry
  
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "Publisher"            "${DSS_PUBLISHER}"
-  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION} ${DSS_VERSION_SUFFIX} (64 bit - remove only)"
+  WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayName"          "${DSS_PRODUCT} ${DSS_VERSION}${DSS_VERSION_SUFFIX} (64 bit - remove only)"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayVersion"       "${DSS_VERSION}"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "DisplayIcon"          "$INSTDIR\${DSS_FILE}.exe"
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "UninstallString"      '"$INSTDIR\${DSS_UNINSTALL_FILE}.exe"'

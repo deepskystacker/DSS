@@ -168,6 +168,7 @@ public :
 	PICTURETYPE					m_TaskType;
 	LONG						m_lISOSpeed;
 	double						m_fExposure;
+	double						m_fAperture;
 	BOOL						m_bUnmodified;
 	BOOL						m_bDone;
 	CString						m_strOutputFile;
@@ -185,6 +186,7 @@ private :
 		m_TaskType		= ti.m_TaskType;
 		m_lISOSpeed		= ti.m_lISOSpeed;
 		m_fExposure		= ti.m_fExposure;
+		m_fAperture     = ti.m_fAperture;
 		m_vBitmaps		= ti.m_vBitmaps;
 		m_bDone			= ti.m_bDone;
 		m_bUnmodified	= ti.m_bUnmodified;
@@ -202,6 +204,7 @@ public :
 		m_dwGroupID = 0;
 		m_lISOSpeed = 0;
 		m_fExposure = 0.0;
+		m_fAperture = 0.0;
 		m_bDone	    = FALSE;
 		m_Method	= MBP_MEDIAN;
 		m_fKappa	= 2.0;

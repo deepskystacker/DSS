@@ -607,8 +607,8 @@ BOOL CFITSReader::Read()
 									}
 									else
 									{
-										fMin = min(fMin, fValue);
-										fMax = max(fMax, fValue);
+										fMin = min(fMin, static_cast<double>(fValue));
+										fMax = max(fMax, static_cast<double>(fValue));
 									};
 								};
 								pValue++;
@@ -633,7 +633,7 @@ BOOL CFITSReader::Read()
 				}
 				if (m_bDSI && (fMax>1))
 				{
-					fMin = min(0, fMin);
+					fMin = min(0.0, fMin);
 					fMax = max(fMax, 65535.0);
 				};
 			}

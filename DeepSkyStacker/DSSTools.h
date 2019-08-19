@@ -582,7 +582,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 		}
 		else
 		{
-			vVariations.push_back((double)(vValues[i]-vValues[i-1])/(double)max(1, vValues[i-1])*sqrt(vValues[i]/fMaximum));
+			vVariations.push_back((double)(vValues[i]-vValues[i-1])/(double)max(static_cast<T>(1), vValues[i-1])*sqrt(vValues[i]/fMaximum));
 			vAbsVariations.push_back((double)(vValues[i]-vValues[i-1])/fMaximum);
 		};
 		fTotalVariation += fabs(vAbsVariations[i]);
@@ -731,7 +731,7 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 		vValues.resize(1);		vValues[0] = fMinimum;
 	};
 
-	fResult = min(1.0, max(0, (1.05 - fAverageVariation*10)));
+	fResult = min(1.0, max(0.0, (1.05 - fAverageVariation*10)));
 
 	return fResult;
 };

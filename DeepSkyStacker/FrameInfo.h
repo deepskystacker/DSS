@@ -12,6 +12,7 @@ public :
 						m_lHeight;
 	LONG				m_lISOSpeed;
 	double				m_fExposure;
+	double				m_fAperture;
 	PICTURETYPE			m_PictureType;
 	LONG				m_lBitPerChannels;
 	LONG				m_lNrChannels;
@@ -35,6 +36,7 @@ protected :
 		m_strFileName	  = cfi.m_strFileName;
 		m_lISOSpeed		  = cfi.m_lISOSpeed;
 		m_fExposure		  = cfi.m_fExposure;
+		m_fAperture = cfi.m_fAperture;
 		m_PictureType	  = cfi.m_PictureType;
 		m_CFAType		  = cfi.m_CFAType;
 		m_lBitPerChannels = cfi.m_lBitPerChannels;
@@ -53,6 +55,7 @@ protected :
 	{
 		m_lISOSpeed		  = 0;
 		m_fExposure		  = 0.0;
+		m_fAperture = 0.0;
 		m_PictureType     = PICTURETYPE_LIGHTFRAME;
 		m_CFAType		  = CFATYPE_NONE;
 		m_lNrChannels	  = 3;

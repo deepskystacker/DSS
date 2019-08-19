@@ -63,9 +63,9 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 						fRadius += m_fPixelIncrease;
 					
 					pStarMaskFunction->SetRadius(fRadius);
-					for (double i = max(0, fXCenter - 3*fRadius);i<=min(fXCenter + 3*fRadius, fWidth-1);i++)
+					for (double i = max(0.0, fXCenter - 3*fRadius);i<=min(fXCenter + 3*fRadius, fWidth-1);i++)
 					{
-						for (double j = max(0, fYCenter - 3*fRadius);j<=min(fYCenter + 3*fRadius, fHeight-1);j++)
+						for (double j = max(0.0, fYCenter - 3*fRadius);j<=min(fYCenter + 3*fRadius, fHeight-1);j++)
 						{
 							// Compute the distance to the center
 							double		fDistance;

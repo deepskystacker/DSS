@@ -13,13 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -224,7 +222,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_DEEPSKYSTACKERLIVE, DIALOG
     BEGIN
@@ -312,20 +310,23 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\DeepSkyStackerLive.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
 IDB_HDRUP               BITMAP                  "..\\Tools\\hdrup.bmp"
+
 IDB_HDRDOWN             BITMAP                  "..\\Tools\\hdrdown.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SELECTMONITOREDFOLDER "Select the monitored folder"
     IDS_LOG_NEWFILESFOUND   "%ld new file(s) found\n"
@@ -346,7 +347,7 @@ BEGIN
     IDS_LOG_STARTING_3      "Step 3\nTo start stacking the images click on the Stack button\nAt this point all the incoming (and previously registered) images will be stacked.\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_AVERAGE       "Average"
     IDS_RECAP_MEDIAN        "Median"
@@ -358,7 +359,7 @@ BEGIN
                             "Median Kappa-Sigma (Kappa = %.2f, Iterations = %ld)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURE0           "Exposure: < 1 s "
     IDS_EXPOSURE1           "Exposure: %ld s "
@@ -366,14 +367,14 @@ BEGIN
     IDS_EXPOSURE3           "Exposure: %ld hr %ld mn %ld s "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_MEGABYTES     "%.1f Mb"
     IDS_RECAP_KILOBYTES     "%.1f Kb"
     IDS_RECAP_GIGABYTES     "%.1f Gb"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REGISTERING         "Registering pictures"
     IDS_REGISTERINGPICTURE  "Registering %ld on %ld"
@@ -393,7 +394,7 @@ BEGIN
     IDS_COMPUTINGOFFSETS    "Computing offsets"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DETECTINGHOTPIXELS1 "Detecting Hot Pixels (1/2)"
     IDS_DETECTINGHOTPIXELS2 "Detecting Hot Pixels (2/2)"
@@ -411,13 +412,13 @@ BEGIN
     IDS_MEDIANDARKFLATINFO  "Master Dark Flat created from %ld pictures (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADGRAYFITS        "Loading FITS %ld bit monochrome"
     IDS_SAVINGFITS          "Saving FITS %ld bit"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADRGBFLAT         "Loading %ld bit/ch %s flat frame\n%s"
     IDS_LOADGRAYFLAT        "Loading %ld bits gray %s flat frame\n%s"
@@ -439,7 +440,7 @@ BEGIN
     IDS_REMOVINGHOTPIXELS   "Detecting hot pixels"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGSTACKINGINFO "Computing stacking info for %s"
     IDS_STACKING            "Stacking"
@@ -460,7 +461,7 @@ BEGIN
     IDS_COMPUTINGMEDIANFLAT "Computing master flat (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADDSIMAGE         "Loading DSImage"
     IDS_LOADPICTURE         "Loading %s"
@@ -478,17 +479,17 @@ BEGIN
     IDS_LOADRGBFITS         "Loading FITS %ld bit/ch"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGCOSMETICSTATS "Computing Cosmetic"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGMEDIANLIGHT "Computing Final Picture (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CREATEMASTERDARK    "Create Master Dark Frame"
     IDS_CREATEMASTEROFFSET  "Create Master Offset Frame"
@@ -496,7 +497,7 @@ BEGIN
     IDS_ADDDARK             "Adding Dark frame %ld on %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SAVINGMASTEROFFSET  "Saving Master Offset"
     IDS_SAVINGMASTERDARK    "Saving Master Dark"
@@ -509,7 +510,7 @@ BEGIN
     IDS_ADDOFFSET2          "Adding Offset frame %ld on %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FORMAT_RGB          "RGB %ld bit/ch"
     IDS_FORMAT_GRAY         "Gray %ld bit"
@@ -519,14 +520,14 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURETIME1       "%ld s "
     IDS_EXPOSURETIME2       "%ld mn %ld s "
     IDS_EXPOSURETIME3       "%ld hr %ld mn %ld s "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_PATH         "Path"
     IDS_COLUMN_FILE         "File"
@@ -538,7 +539,7 @@ BEGIN
     IDS_COLUMN_DATETIME     "Date/Time"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_SIZES        "Size"
     IDS_COLUMN_CFA          "CFA"
@@ -546,11 +547,12 @@ BEGIN
     IDS_COLUMN_INFOS        "Infos"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Exposure"
+	IDS_COLUMN_APERTURE		"Aperture"
     IDS_COLUMN_STARS        "#Stars"
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HAT_LINEAR          "Linear"
     IDS_HAT_CUBEROOT        "Cube Root"
@@ -561,18 +563,18 @@ BEGIN
     IDS_HAT_ASINH           "ASinH"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_WARNINGDISKSPACE 
                             "The process needs temporarily %s of free space on the %s drive.\nOnly %s are available on this drive."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_WANTTOCONTINUE      "\nDo you really want to continue?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOG_STARTING_4      "You can pause/start again the stacking process by clicking on the Stack button.\n"
     IDS_LOG_STARTING_5      "To stop the monitoring and stacking click on the Stop button.\n\n"
@@ -593,7 +595,7 @@ BEGIN
     IDS_LOG_WARNING         "Warning: Image %s -> %s\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SELECTWARNINGFOLDER "Select Warning File Folder"
     IDS_SELECTSTACKEDFOLDER "Select Stacked Image Output Folder"
@@ -614,12 +616,17 @@ BEGIN
     IDS_NOSTACK_SKYBACKGROUND "Sky Background (%2.f%%) is greater than %2.f%%"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HELPFILE            "DeepSkyStacker Help.chm"
 END
 
-#endif    // English (U.S.) resources
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw doesn't support your %s camera"
+END
+
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -627,10 +634,8 @@ END
 // French (France) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
-#ifdef _WIN32
 LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -638,6 +643,7 @@ LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 //
 
 IDB_4CORNERS            BITMAP                  "..\\DeepSkyStacker\\res\\4Corners.bmp"
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////

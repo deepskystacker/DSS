@@ -869,7 +869,7 @@ public :
 private :
 	void	AdjustValue(double & fValue)
 	{
-		fValue = min(max(0, fValue), 255.0);
+		fValue = min(max(0.0, fValue), 255.0);
 	};
 
 public :
@@ -1204,7 +1204,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterFlat, 0);
 					};
-					WriteTIFF(strMasterFlat, pFlatBitmap, pProgress, strInfo, m_pFlatTask->m_lISOSpeed, m_pFlatTask->m_fExposure);
+					WriteTIFF(strMasterFlat, pFlatBitmap, pProgress, strInfo, m_pFlatTask->m_lISOSpeed, m_pFlatTask->m_fExposure, m_pFlatTask->m_fAperture);
 
 					m_pFlatTask->m_strOutputFile = strMasterFlat;
 					m_pFlatTask->m_bDone = TRUE;
@@ -1282,6 +1282,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 		ti.m_dwTaskID  = (LONG)m_vTasks.size()+1;
 		ti.m_dwGroupID = dwGroupID;
 		ti.m_fExposure = FrameInfo.m_fExposure;
+		ti.m_fAperture = FrameInfo.m_fAperture;
 		ti.m_lISOSpeed = FrameInfo.m_lISOSpeed;
 		ti.m_TaskType  = FrameInfo.m_PictureType;
 		ti.m_vBitmaps.push_back(FrameInfo);
@@ -1890,16 +1891,16 @@ __int64	CAllStackingTasks::ComputeNecessaryDiskSpace(CRect & rcOutput)
 				m_vStacks[i].m_pLightTask->m_Method = MBP_AVERAGE;
 
 			if (m_vStacks[i].m_pOffsetTask)
-				ulOffsetSpace = max(ulOffsetSpace, ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size());
+				ulOffsetSpace = max(ulOffsetSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkTask)
-				ulDarkSpace = max(ulDarkSpace, ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size());	
+				ulDarkSpace = max(ulDarkSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkFlatTask)
-				ulDarkFlatSpace = max(ulDarkFlatSpace, ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size());	
+				ulDarkFlatSpace = max(ulDarkFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pFlatTask)
-				ulFlatSpace = max(ulFlatSpace, ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size());	
+				ulFlatSpace = max(ulFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
 		};
 	};
 

@@ -138,10 +138,10 @@ void	CSelectRectSink::UpdateSelectRect()
 	switch (m_Mode)
 	{
 	case SRM_CREATE	:
-		m_rcSelect.left  = max(min(m_fXStart, m_fXEnd), 0);
-		m_rcSelect.right = min(max(m_fXStart, m_fXEnd), m_pImage->GetImgSizeX());
-		m_rcSelect.top   = max(min(m_fYStart, m_fYEnd), 0);
-		m_rcSelect.bottom= min(max(m_fYStart, m_fYEnd), m_pImage->GetImgSizeY());
+		m_rcSelect.left  = max(min(m_fXStart, m_fXEnd), 0.0);
+		m_rcSelect.right = min(max(m_fXStart, m_fXEnd), static_cast<double>(m_pImage->GetImgSizeX()));
+		m_rcSelect.top   = max(min(m_fYStart, m_fYEnd), 0.0);
+		m_rcSelect.bottom= min(max(m_fYStart, m_fYEnd), static_cast<double>(m_pImage->GetImgSizeY()));
 		break;
 	case SRM_MOVE :
 		if (fDeltaX<0) // Move to the left - check left first
@@ -175,76 +175,76 @@ void	CSelectRectSink::UpdateSelectRect()
 		if (fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = m_rcSelect.Height()-1;
 		m_rcSelect.top += fDeltaY;
-		m_rcSelect.top = max(0, m_rcSelect.top);
+		m_rcSelect.top = max(0L, m_rcSelect.top);
 		break;
 	case SRM_MOVEBOTTOM	:
 		// Only fDeltaY is used
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = min(m_pImage->GetImgSizeY(), m_rcSelect.bottom);
+		m_rcSelect.bottom = min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	case SRM_MOVELEFT :
 		// Only fDeltaX is used
 		if (fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = m_rcSelect.Width()-1;
 		m_rcSelect.left += fDeltaX;
-		m_rcSelect.left = max(0, m_rcSelect.left);
+		m_rcSelect.left = max(0L, m_rcSelect.left);
 		break;
 	case SRM_MOVERIGHT :
 		// Only fDeltaX is used
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = min(m_pImage->GetImgSizeX(), m_rcSelect.right);
+		m_rcSelect.right = min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		break;
 	case SRM_MOVETOPLEFT :
 		// Only fDeltaY is used
 		if (fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = m_rcSelect.Height()-1;
 		m_rcSelect.top += fDeltaY;
-		m_rcSelect.top = max(0, m_rcSelect.top);
+		m_rcSelect.top = max(0L, m_rcSelect.top);
 		// Only fDeltaX is used
 		if (fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = m_rcSelect.Width()-1;
 		m_rcSelect.left += fDeltaX;
-		m_rcSelect.left = max(0, m_rcSelect.left);
+		m_rcSelect.left = max(0L, m_rcSelect.left);
 		break;
 	case SRM_MOVETOPRIGHT :
 		// Only fDeltaY is used
 		if (fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = m_rcSelect.Height()-1;
 		m_rcSelect.top += fDeltaY;
-		m_rcSelect.top = max(0, m_rcSelect.top);
+		m_rcSelect.top = max(0L, m_rcSelect.top);
 		// Only fDeltaX is used
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = min(m_pImage->GetImgSizeX(), m_rcSelect.right);
+		m_rcSelect.right = min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		break;
 	case SRM_MOVEBOTTOMLEFT :
 		// Only fDeltaX is used
 		if (fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = m_rcSelect.Width()-1;
 		m_rcSelect.left += fDeltaX;
-		m_rcSelect.left = max(0, m_rcSelect.left);
+		m_rcSelect.left = max(0L, m_rcSelect.left);
 		// Only fDeltaY is used
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = min(m_pImage->GetImgSizeY(), m_rcSelect.bottom);
+		m_rcSelect.bottom = min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	case SRM_MOVEBOTTOMRIGHT :
 		// Only fDeltaX is used
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = min(m_pImage->GetImgSizeX(), m_rcSelect.right);
+		m_rcSelect.right = min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		// Only fDeltaY is used
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = min(m_pImage->GetImgSizeY(), m_rcSelect.bottom);
+		m_rcSelect.bottom = min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	};
 
@@ -1382,13 +1382,13 @@ inline Color SolveColor(double fValue, double fMean, double fStdDev)
 		green = 255;
 	else if (fValue<0)
 	{
-		red   = max(0, 255.0-max(0, 3.0-fabs(fValue))*255.0/3.0);
-		green = max(0, max(0, 3.0-fabs(fValue))*255.0/3.0);
+		red   = max(0.0, 255.0-max(0.0, 3.0-fabs(fValue))*255.0/3.0);
+		green = max(0.0, max(0.0, 3.0-fabs(fValue))*255.0/3.0);
 	}
 	else
 	{
-		blue  = max(0, 255.0-max(0, 3.0-fabs(fValue))*255.0/3.0);
-		green = max(0, max(0, 3.0-fabs(fValue))*255.0/3.0);
+		blue  = max(0.0, 255.0-max(0.0, 3.0-fabs(fValue))*255.0/3.0);
+		green = max(0.0, max(0.0, 3.0-fabs(fValue))*255.0/3.0);
 	};
 
 	return Color(0.3*255, red, green, blue);
