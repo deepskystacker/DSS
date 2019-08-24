@@ -543,11 +543,11 @@ BOOL CStackingEngine::ComputeLightFrameOffset(LONG lBitmapIndice, CMatchingStars
 
 			fXRatio = (double)m_vBitmaps[lBitmapIndice].RenderedWidth()/(double)m_vBitmaps[0].RenderedWidth();
 			fYRatio = (double)m_vBitmaps[lBitmapIndice].RenderedHeight()/(double)m_vBitmaps[0].RenderedHeight();
-			for (i = 0; i<min(vStarsOrg.size(), static_cast<size_t>(100)); i++)
+			for (i = 0; i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
 				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX*fXRatio, vStarsOrg[i].m_fY*fYRatio);
 		};
 		MatchingStars.ClearTarget();
-		for (i = 0; i<min(vStarsDst.size(), static_cast<size_t>(100)); i++)
+		for (i = 0; i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100)); i++)
 			MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 
 		MatchingStars.SetSizes(m_vBitmaps[lBitmapIndice].RenderedWidth(), m_vBitmaps[lBitmapIndice].RenderedHeight());
