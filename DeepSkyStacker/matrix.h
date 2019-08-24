@@ -146,10 +146,10 @@ typedef int bool;
 #  define _THROW_MATRIX_ERROR     throw (matrix_error)
 #endif
 
-#ifndef __MINMAX_DEFINED
-#  define max(a,b)    (((a) > (b)) ? (a) : (b))
-#  define min(a,b)    (((a) < (b)) ? (a) : (b))
-#endif
+//#ifndef __MINMAX_DEFINED
+//#  define max(a,b)    (((a) > (b)) ? (a) : (b))
+//#  define min(a,b)    (((a) < (b)) ? (a) : (b))
+//#endif
 
 #if defined(_MSC_VER)
 #undef _MSC_EXTENSIONS      // To include overloaded abs function definitions!
