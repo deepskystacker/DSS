@@ -996,6 +996,23 @@ void CStackingEngine::GetResultISOSpeed()
 
 /* ------------------------------------------------------------------- */
 
+void CStackingEngine::GetResultGain()
+{
+	ZFUNCTRACE_RUNTIME();
+
+	m_lGain = m_vBitmaps[0].m_lGain;
+	for (LONG i = 1;i<m_vBitmaps.size();i++)
+	{
+		if (!m_vBitmaps[i].m_bDisabled)
+		{
+			if (m_lGain != m_vBitmaps[i].m_lGain)
+				m_lGain = -1;
+		};
+	};
+};
+
+/* ------------------------------------------------------------------- */
+
 void	CStackingEngine::GetResultDateTime()
 {
 	m_DateTime = m_vBitmaps[0].m_DateTime;
@@ -1492,9 +1509,9 @@ BOOL	CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBit
 			m_pProgress->Start2(strText, 0);
 		};
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_fExposure);
+			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile, pBitmap, m_pProgress, _T("Registered and Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 		if (m_pProgress)
 			m_pProgress->End2();
 	};
@@ -1564,9 +1581,9 @@ BOOL	CStackingEngine::SaveCalibratedLightFrame(CMemoryBitmap * pBitmap)
 				pCFABitmapInfo->UseBilinear(TRUE);
 		};
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pOutBitmap, m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_fExposure);
+			bResult = WriteTIFF(strOutputFile, pOutBitmap, m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure, m_pLightTask->m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pOutBitmap, m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_fExposure);
+			bResult = WriteFITS(strOutputFile, pOutBitmap, m_pProgress, _T("Calibrated light frame"), m_pLightTask->m_lISOSpeed, m_pLightTask->m_lGain, m_pLightTask->m_fExposure);
 
 		if ((CFATransform == CFAT_SUPERPIXEL) && pCFABitmapInfo)
 			pCFABitmapInfo->UseSuperPixels(TRUE);
@@ -2097,6 +2114,7 @@ BOOL	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			{
 				StackTask.m_pTempBitmap->Init(m_rcResult.Width(), m_rcResult.Height());
 				StackTask.m_pTempBitmap->SetISOSpeed(pBitmap->GetISOSpeed());
+				StackTask.m_pTempBitmap->SetGain(pBitmap->GetGain());
 				StackTask.m_pTempBitmap->SetExposure(pBitmap->GetExposure());
 				StackTask.m_pTempBitmap->SetNrFrames(pBitmap->GetNrFrames());
 			};
@@ -2145,10 +2163,10 @@ BOOL	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			else if (m_pComet && bComet)
 			{
 				// Subtract the comet from the light frame
-				//WriteTIFF("E:\\BeforeCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress);
-				//WriteTIFF("E:\\SubtractedComet.tiff", m_pComet, m_pProgress);
+				//WriteTIFF("E:\\BeforeCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, NULL);
+				//WriteTIFF("E:\\SubtractedComet.tiff", m_pComet, m_pProgress, NULL);
 				ShiftAndSubtract(StackTask.m_pTempBitmap, m_pComet, m_pProgress, -PixTransform.m_fXCometShift, -PixTransform.m_fYCometShift);
-				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress);
+				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, NULL);
 			};
 
 			if (m_pLightTask->m_Method == MBP_FASTAVERAGE)
@@ -2249,6 +2267,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 
 	m_lNrStacked = 0;
 	GetResultISOSpeed();
+	GetResultGain();
 	GetResultDateTime();
 	GetResultExtraInfo();
 
@@ -2497,6 +2516,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 			{
 				m_pOutput->SetExposure(m_fTotalExposure);
 				m_pOutput->SetISOSpeed(m_lISOSpeed);
+				m_pOutput->SetGain(m_lGain);
 				m_pOutput->SetNrFrames(m_lNrStacked);
 				m_pOutput->m_DateTime = m_DateTime;
 				m_pOutput->m_ExtraInfo = m_ExtraInfo;
@@ -2761,6 +2781,20 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 };
 
 /* ------------------------------------------------------------------- */
+static void GetISOGainStrings(CTaskInfo *pTask, CString const &strISO, CString const &strGain,
+	CString const **ppstrISOGainText, CString *strISOGainValue)
+{
+	if (pTask->HasISOSpeed())
+	{
+		ISOToString(pTask->m_lISOSpeed, *strISOGainValue);
+		*ppstrISOGainText = &strISO;
+	}
+	else
+	{
+		GainToString(pTask->m_lGain, *strISOGainValue);
+		*ppstrISOGainText = &strGain;
+	}
+}
 
 void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutputFile)
 {
@@ -2907,12 +2941,18 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 			CString				strDarkOptimization;
 			CString				strDarkFactor;
 			CString				strExposure;
-			CString				strISO;
+			CString				strISOGainValue;
+			CString	const		*pstrISOGainText;
+			CString				strISOText;
+			CString				strGainText;
 			CString				strHotPixels;
 			CString				strYesNo;
 			BACKGROUNDCALIBRATIONMODE	CalibrationMode;
 
 			CalibrationMode = tasks.GetBackgroundCalibrationMode();
+
+			strISOText.LoadString(IDS_ISO);
+			strGainText.LoadString(IDS_GAIN);
 
 			strYesNo.LoadString((CalibrationMode == BCM_RGB) ? IDS_YES : IDS_NO);
 			strBackgroundCalibration.Format(IDS_RECAP_BACKGROUNDCALIBRATION, strYesNo);
@@ -2935,9 +2975,9 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					lTotalExposure += lTaskExposure;
 
 					ExposureToString(lTaskExposure, strExposure);
-					ISOToString(si.m_pLightTask->m_lISOSpeed, strISO);
+					GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-					strText.Format(IDS_RECAP_STEP, i+1, si.m_pLightTask->m_vBitmaps.size(), strISO);
+					strText.Format(IDS_RECAP_STEP, i+1, si.m_pLightTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue);
 					fprintf(hFile, "<a href=\"#Task%ld\">%s</a>", i, (LPCSTR)CT2CA(strText, CP_UTF8));
 					fprintf(hFile, (LPCSTR)CT2CA(strExposure, CP_UTF8));
 					fprintf(hFile, "<br>");
@@ -2971,9 +3011,9 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					if (si.m_pOffsetTask)
 					{
 						ExposureToString(si.m_pOffsetTask->m_fExposure, strExposure);
-						ISOToString(si.m_pOffsetTask->m_lISOSpeed, strISO);
+						GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-						strText.Format(IDS_RECAP_OFFSET, si.m_pOffsetTask->m_vBitmaps.size(), strISO, strExposure);
+						strText.Format(IDS_RECAP_OFFSET, si.m_pOffsetTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 						fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
 
 						if (si.m_pOffsetTask->m_vBitmaps.size()>1)
@@ -2988,10 +3028,21 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						else
 							fprintf(hFile, "<br>");
 
-						if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						if (si.m_pOffsetTask->HasISOSpeed())
 						{
-							strText.Format(IDS_RECAP_ISOWARNING);
-							fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+							{
+								strText.Format(IDS_RECAP_ISOWARNING);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							};
+						}
+						else
+						{
+							if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
+							{
+								strText.Format(IDS_RECAP_GAINWARNING);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							};
 						};
 						fprintf(hFile, "</ul>");
 					}
@@ -3003,9 +3054,9 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					if (si.m_pDarkTask)
 					{
 						ExposureToString(si.m_pDarkTask->m_fExposure, strExposure);
-						ISOToString(si.m_pDarkTask->m_lISOSpeed, strISO);
+						GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-						strText.Format(IDS_RECAP_DARK, si.m_pDarkTask->m_vBitmaps.size(), strISO, strExposure);
+						strText.Format(IDS_RECAP_DARK, si.m_pDarkTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 						fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
 
 						if (si.m_pDarkTask->m_vBitmaps.size()>1)
@@ -3027,11 +3078,23 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							fprintf(hFile, "<br>");
 						};
 
-						if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						if (si.m_pDarkTask->HasISOSpeed())
 						{
-							strText.Format(IDS_RECAP_ISOWARNING);
-							fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
-							fprintf(hFile, "<br>");
+							if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+							{
+								strText.Format(IDS_RECAP_ISOWARNING);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+								fprintf(hFile, "<br>");
+							};
+						}
+						else
+						{
+							if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
+							{
+								strText.Format(IDS_RECAP_GAINWARNING);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+								fprintf(hFile, "<br>");
+							};
 						};
 						if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
 						{
@@ -3049,9 +3112,9 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					if (si.m_pDarkFlatTask && si.m_pFlatTask)
 					{
 						ExposureToString(si.m_pDarkFlatTask->m_fExposure, strExposure);
-						ISOToString(si.m_pDarkFlatTask->m_lISOSpeed, strISO);
+						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-						strText.Format(IDS_RECAP_DARKFLAT, si.m_pDarkFlatTask->m_vBitmaps.size(), strISO, strExposure);
+						strText.Format(IDS_RECAP_DARKFLAT, si.m_pDarkFlatTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 						fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
 
 						if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
@@ -3066,10 +3129,21 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						else
 							fprintf(hFile, "<br>");
 
-						if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
+						if (si.m_pDarkFlatTask->HasISOSpeed())
 						{
-							strText.Format(IDS_RECAP_ISOWARNINGDARKFLAT);
-							fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
+							{
+								strText.Format(IDS_RECAP_ISOWARNINGDARKFLAT);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							};
+						}
+						else
+						{
+							if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
+							{
+								strText.Format(IDS_RECAP_GAINWARNINGDARKFLAT);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							};
 						};
 						if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
 						{
@@ -3081,9 +3155,9 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					if (si.m_pFlatTask)
 					{
 						ExposureToString(si.m_pFlatTask->m_fExposure, strExposure);
-						ISOToString(si.m_pFlatTask->m_lISOSpeed, strISO);
+						GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-						strText.Format(IDS_RECAP_FLAT, si.m_pFlatTask->m_vBitmaps.size(), strISO, strExposure);
+						strText.Format(IDS_RECAP_FLAT, si.m_pFlatTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 						fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
 						if (si.m_pFlatTask->m_vBitmaps.size()>1)
 						{
@@ -3095,10 +3169,21 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							fprintf(hFile, "</ul>");
 						};
 
-						if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						if (si.m_pFlatTask->HasISOSpeed())
 						{
-							strText.Format(IDS_RECAP_ISOWARNING);
-							fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+							{
+								strText.Format(IDS_RECAP_ISOWARNING);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							};
+						}
+						else
+						{
+							if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
+							{
+								strText.Format(IDS_RECAP_GAINWARNING);
+								fprintf(hFile, (LPCSTR)CT2CA(strText, CP_UTF8));
+							};
 						};
 						fprintf(hFile, "</ul>");
 					}

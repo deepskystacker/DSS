@@ -22,7 +22,7 @@ const DWORD		COLUMN_SIZES	= 11;
 const DWORD		COLUMN_CFA		= 12;
 const DWORD		COLUMN_DEPTH	= 13;
 const DWORD		COLUMN_INFO		= 14;
-const DWORD		COLUMN_ISO		= 15;
+const DWORD		COLUMN_ISO_GAIN		= 15;
 const DWORD		COLUMN_SKYBACKGROUND = 16;
 
 
@@ -102,8 +102,8 @@ void CImageListTab::InitList()
 	m_ImageList.InsertColumn(COLUMN_DEPTH, strColumn, LVCFMT_LEFT, 50);
 	strColumn.LoadString(IDS_COLUMN_INFOS);
 	m_ImageList.InsertColumn(COLUMN_INFO, strColumn, LVCFMT_LEFT, 50);
-	strColumn.LoadString(IDS_COLUMN_ISO);
-	m_ImageList.InsertColumn(COLUMN_ISO, strColumn, LVCFMT_RIGHT, 50);
+	strColumn.LoadString(IDS_COLUMN_ISO_GAIN);
+	m_ImageList.InsertColumn(COLUMN_ISO_GAIN, strColumn, LVCFMT_RIGHT, 50);
 	strColumn.LoadString(IDS_COLUMN_SKYBACKGROUND);
 	m_ImageList.InsertColumn(COLUMN_SKYBACKGROUND, strColumn, LVCFMT_RIGHT, 50);
 
@@ -171,8 +171,13 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 
 		CString				strText;
 
-		ISOToString(bmpInfo.m_lISOSpeed, strText);
-		m_ImageList.SetItemText(nItem, COLUMN_ISO, (LPCTSTR)strText);
+		if (bmpInfo.m_lISOSpeed)
+			ISOToString(bmpInfo.m_lISOSpeed, strText);
+		else if (bmpInfo.m_lISOSpeed)
+			GainToString(bmpInfo.m_lGain, strText);
+		else
+			ISOToString(0, strText);
+		m_ImageList.SetItemText(nItem, COLUMN_ISO_GAIN, (LPCTSTR)strText);
 
 		ExposureToString(bmpInfo.m_fExposure, strText);
 		m_ImageList.SetItemText(nItem, COLUMN_EXPOSURE, (LPCTSTR)strText);

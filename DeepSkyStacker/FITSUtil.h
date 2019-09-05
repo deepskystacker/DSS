@@ -17,6 +17,7 @@ public :
 	LONG				m_lNrChannels;
 	double				m_fExposureTime;
 	LONG				m_lISOSpeed;
+	LONG				m_lGain;
 	BOOL				m_bFloat;
 	BOOL				m_bSigned;
 	CString				m_strMake;
@@ -80,6 +81,11 @@ public :
 	LONG	GetISOSpeed()
 	{
 		return m_lISOSpeed;
+	};
+
+	LONG	GetGain()
+	{
+		return m_lGain;
 	};
 
 	SYSTEMTIME	GetDateTime()
@@ -195,8 +201,12 @@ public :
 CFATYPE GetFITSCFATYPE();
 BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat = FF_UNKNOWN, LPCTSTR szDescription = NULL, LONG lISOSpeed = 0, double fExposure = 0.0);
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription = NULL, LONG lISOSpeed = 0, double fExposure = 0.0);
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure);
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescriptionL,
+			LONG lISOSpeed, LONG lGain, double fExposure);
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
 
 BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);

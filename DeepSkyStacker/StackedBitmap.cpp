@@ -22,6 +22,7 @@ CStackedBitmap::CStackedBitmap()
 	m_lOutputWidth	= 0;
 	m_lOutputHeight = 0;
 	m_lISOSpeed		= 0;
+	m_lGain		= -1;
 	m_lTotalTime	= 0;
 	m_bMonochrome   = FALSE;
 	DSSTIFFInitialize();
@@ -275,7 +276,8 @@ typedef struct tagHDSTACKEDBITMAPHEADER
 	DWORD			dwFlags;		// Flags
 	LONG			lTotalTime;		// Total Time
 	WORD			lISOSpeed;		// ISO Speed of each frame
-	char			Reserved[26];	// Reserved (set to 0)
+	SHORT			lGain;		// Camera gain of each frame
+	char			Reserved[24];	// Reserved (set to 0)
 }HDSTACKEDBITMAPHEADER;
 
 #pragma pack(pop, HDSTACKEDBITMAP)
@@ -315,6 +317,7 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 			m_lNrBitmaps= Header.lNrBitmaps;
 			m_lTotalTime= Header.lTotalTime;
 			m_lISOSpeed = Header.lISOSpeed;
+			m_lGain     = Header.lGain;
 
 			Allocate(Header.lWidth, Header.lHeight, FALSE);
 
@@ -419,6 +422,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 		Header.lNrBitmaps	= m_lNrBitmaps;
 		Header.lTotalTime	= m_lTotalTime;
 		Header.lISOSpeed	= m_lISOSpeed;
+		Header.lGain		= m_lGain;
 
 		fwrite(&Header, sizeof(Header), 1, hFile);
 
@@ -745,6 +749,7 @@ void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 	{
 		// Read specific fields (if present)
 		m_lISOSpeed = tiffReader->GetISOSpeed();
+		m_lGain = tiffReader->GetGain();
 		m_lTotalTime = tiffReader->GetExposureTime();
 
 		if (TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_NRFRAMES, &nrbitmaps))
@@ -794,6 +799,7 @@ void CStackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 	{
 		// Read specific fields (if present)
 		m_lISOSpeed  = fitsReader->m_lISOSpeed;
+		m_lGain      = fitsReader->m_lGain;
 		m_lTotalTime = fitsReader->m_fExposureTime;
 		m_lNrBitmaps = 1;
 		
@@ -1025,6 +1031,7 @@ void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	tiff.SetDescription(strText);
 	tiff.SetExposureTime(m_lTotalTime);
 	tiff.SetISOSpeed(m_lISOSpeed);
+	tiff.SetGain(m_lGain);
 
 	if (tiff.Open())
 	{
@@ -1180,6 +1187,7 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	fits.SetDescription(strText);
 	fits.m_fExposureTime	= m_lTotalTime;
 	fits.m_lISOSpeed		= m_lISOSpeed;
+	fits.m_lGain		= m_lGain;
 	if (fits.Open())
 	{
 		fits.Write();
@@ -1221,6 +1229,7 @@ void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	fits.SetDescription(strText);
 	fits.m_fExposureTime	= m_lTotalTime;
 	fits.m_lISOSpeed		= m_lISOSpeed;
+	fits.m_lGain		= m_lGain;
 
 	if (fits.Open())
 	{

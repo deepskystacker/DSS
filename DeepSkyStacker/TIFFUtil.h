@@ -19,6 +19,7 @@ const LONG	TIFFTAG_DSS_MASTER			= (TIFFTAG_DSS_BASE + 7);
 const LONG	TIFFTAG_DSS_TOTALEXPOSURE	= (TIFFTAG_DSS_BASE + 8);
 const LONG	TIFFTAG_DSS_CFATYPE			= (TIFFTAG_DSS_BASE + 9);
 const LONG  TIFFTAG_DSS_APERTURE        = (TIFFTAG_DSS_BASE + 10);
+const LONG	TIFFTAG_DSS_GAIN			= (TIFFTAG_DSS_BASE + 11);
 
 void DSSTIFFInitialize();
 
@@ -41,6 +42,7 @@ protected :
 	float				exposureTime;
 	float				aperture;
 	short				isospeed;
+	short				gain;
 	LONG				nrframes;
 	SYSTEMTIME			m_DateTime;
 
@@ -57,6 +59,7 @@ public :
 		exposureTime = 0.0;
 		aperture = 0.0;
 		isospeed = 0;
+		gain = -1;
 		cfatype  = 0;
 		cfa      = 0;
 		nrframes = 0;
@@ -98,6 +101,16 @@ public :
 	void	SetISOSpeed(LONG lISOSpeed)
 	{
 		isospeed = lISOSpeed;
+	};
+
+	LONG	GetGain()
+	{
+		return gain;
+	};
+
+	void	SetGain(LONG lGain)
+	{
+		gain = lGain;
 	};
 
 	double	GetExposureTime()
@@ -269,10 +282,14 @@ public :
 
 BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription = NULL,
-			LONG lISOSpeed = 0, double fExposure = 0.0, double fAperture = 0.0);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription = NULL,
-			LONG lISOSpeed = 0, double fExposure = 0.0, double fAperture = 0.0);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
+			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
+			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
 
 BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 BOOL	LoadTIFFPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);

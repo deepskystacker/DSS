@@ -859,7 +859,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Adancime"
     IDS_COLUMN_INFOS        "Informatii"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Expunere"
 	IDS_COLUMN_APERTURE		"Deschidere"
     IDS_COLUMN_STARS        "#Stele"
@@ -884,6 +884,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld sec"
     IDS_OR                  "sau"
     IDS_AND                 "si"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -1108,15 +1110,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Pasi stackare %ld\n  ->%ld cadre (ISO: %s) - expunere totala: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld cadre  (ISO: %s) expunere: %s\n"
+    IDS_RECAP_STEP          "Pasi stackare %ld\n  ->%ld cadre (%s: %s) - expunere totala: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld cadre  (%s: %s) expunere: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAtentie: Sensibilitatea ISO nu corespunde cu cadrele Light\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain not matching with light frames\n"
     IDS_RECAP_NOOFFSET      "\t-> Lipsa Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld cadre (ISO : %s) expunere: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld cadre (%s : %s) expunere: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAtentie: timpul de expunere nu corespunde cu cadrele Light\n"
     IDS_RECAP_NODARK        "\t-> Lipsa Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld cadre (ISO: %s) expunere: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld cadre (%s: %s) expunere: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Lipsa Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nTimpul total estimat de expunere: %s\n(timpul total de expunere este calculat considerand ca toate cadrele Light selectate se vor pastra pentru procesul de stackare)\n"
@@ -1124,9 +1127,11 @@ BEGIN
                             "Atentie: Optiunea Drizzle Bayer selectata in setarile RAW DDP poate duce la rezultate ciudate cu o alta metoda decat cea medie."
     IDS_RECAP_BACKGROUNDCALIBRATION "Calibrare fundal canale RGB: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optimizare Dark: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld cadre (ISO : %s) expunere: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld cadre (%s : %s) expunere: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAtentie: Sensibilitatea ISO nu corespunde cu cadrele Flat\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Gain not matching with flat frames\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAtentie: timpul de expunere nu corespunde cu cadrele Flat\n"
 END

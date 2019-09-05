@@ -167,6 +167,7 @@ public :
 	DWORD						m_dwGroupID;
 	PICTURETYPE					m_TaskType;
 	LONG						m_lISOSpeed;
+	LONG						m_lGain;
 	double						m_fExposure;
 	double						m_fAperture;
 	BOOL						m_bUnmodified;
@@ -185,6 +186,7 @@ private :
 		m_dwGroupID		= ti.m_dwGroupID;
 		m_TaskType		= ti.m_TaskType;
 		m_lISOSpeed		= ti.m_lISOSpeed;
+		m_lGain			= ti.m_lGain;
 		m_fExposure		= ti.m_fExposure;
 		m_fAperture     = ti.m_fAperture;
 		m_vBitmaps		= ti.m_vBitmaps;
@@ -203,6 +205,7 @@ public :
 		m_dwTaskID  = 0;
 		m_dwGroupID = 0;
 		m_lISOSpeed = 0;
+		m_lGain     = -1;
 		m_fExposure = 0.0;
 		m_fAperture = 0.0;
 		m_bDone	    = FALSE;
@@ -267,6 +270,12 @@ public :
 		};
 
 		return bResult;
+	};
+
+	BOOL 	HasISOSpeed() const
+	{
+		// Has valid ISOSpeed value or no valid Gain value.
+		return m_lISOSpeed != 0 || m_lGain < 0;
 	};
 };
 

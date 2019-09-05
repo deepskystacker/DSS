@@ -1145,7 +1145,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Diepte"
     IDS_COLUMN_INFOS        "Info"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Belichting"
 	IDS_COLUMN_APERTURE		"Diafragma"
     IDS_COLUMN_STARS        "#Sterren"
@@ -1170,6 +1170,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "of"
     IDS_AND                 "en"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -1394,15 +1396,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Stapel stap %ld\n  ->%ld platen (ISO: %s) - totale belichting: "
-    IDS_RECAP_OFFSET        "\t-> Compensatie: %ld platen (ISO: %s) belichting: %s\n"
+    IDS_RECAP_STEP          "Stapel stap %ld\n  ->%ld platen (%s: %s) - totale belichting: "
+    IDS_RECAP_OFFSET        "\t-> Compensatie: %ld platen (%s: %s) belichting: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tWaarschuwing: ISO snelheid komt niet overeen met licht platen\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain not matching with light frames\n"
     IDS_RECAP_NOOFFSET      "\t-> Geen Compensatie\n"
-    IDS_RECAP_DARK          "\t-> Donkere: %ld platen (ISO: %s) belichting: %s\n"
+    IDS_RECAP_DARK          "\t-> Donkere: %ld platen (%s: %s) belichting: %s\n"
     IDS_RECAP_EXPOSUREWARNING
                             "\t\tWaarschuwing: belichting tijd komt niet overeen met licht platen\n"
     IDS_RECAP_NODARK        "\t-> Geen Donker\n"
-    IDS_RECAP_FLAT          "\t-> Platte: %ld platen (ISO: %s) belichting: %s\n"
+    IDS_RECAP_FLAT          "\t-> Platte: %ld platen (%s: %s) belichting: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Geen Plat\n"
     IDS_RECAP_TOTALEXPOSURETIME
                             "\nGeschatte Totale belichting tijd: %s\n(de totale belichting tijd is berekend rekeninghoudend dat alle aangevinkte licht platen worden behouden voor het stapel proces)\n"
@@ -1411,9 +1414,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION
                             "Achtergrond Calibratie RGB Kanalen: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Donker optimalisatie: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Donkere Platte: %ld platen (ISO: %s) belichting: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Donkere Platte: %ld platen (%s: %s) belichting: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT
                             "\t\tWaarschuwing: ISO snelheid komt niet overeen met platte platen\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Gain not matching with flat frames\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT
                             "\t\tWaarschuwing: belichting tijd komt niet overeen met platte platen\n"
 END

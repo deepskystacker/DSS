@@ -861,7 +861,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profundidade"
     IDS_COLUMN_INFOS        "Informacoes"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposicao"
 	IDS_COLUMN_APERTURE		"Abertura"
     IDS_COLUMN_STARS        "#Estrelas"
@@ -886,6 +886,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "ou"
     IDS_AND                 "e"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -1113,15 +1115,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Etapas de Integracao %ld\n  ->%ld fotogramas (ISO: %s) - exposicao total: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld fotogramas (ISO: %s) exposicao: %s\n"
+    IDS_RECAP_STEP          "Etapas de Integracao %ld\n  ->%ld fotogramas (%s: %s) - exposicao total: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld fotogramas (%s: %s) exposicao: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAviso: Velocidade ISO nao combina com fotogramas-luz \n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain not matching with light frames\n"
     IDS_RECAP_NOOFFSET      "\t-> Sem Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld fotogramas (ISO : %s) exposicao: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld fotogramas (%s : %s) exposicao: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAviso: tempo-exposicao nao corresponde com fotogramas- luz \n"
     IDS_RECAP_NODARK        "\t-> Sem Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld fotogramas (ISO: %s) exposicao: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld fotogramas (%s: %s) exposicao: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Sem Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nTempo Estimado d exposicao-Total: %s\n (O pc considera o tempo total de exposicao todos os fotogramas- luz verificados e mantidos no processo de integracao)\n"
@@ -1130,9 +1133,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "Calibracao do Background nos Canais RGB: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optmizacao do Dark: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld fotogramas (ISO : %s) exposicao: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld fotogramas (%s : %s) exposicao: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAviso: Velocidade ISO nao corresponde-fotogramas flat\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Gain not matching with flat frames\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAviso: Tempo-exposicao nao corresponde c/ fotogramas flat\n"
 END

@@ -1037,7 +1037,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Tiefe"
     IDS_COLUMN_INFOS        "Infos"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Belichtung"
 	IDS_COLUMN_APERTURE		"Blende"
     IDS_COLUMN_STARS        "#Sterne"
@@ -1062,6 +1062,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "oder"
     IDS_AND                 "und"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE 
@@ -1286,15 +1288,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RECAP_STEP          "Stacking Schritt %ld\n  ->%ld Bilder (ISO: %s) - Gesamtbelichtung: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld Bilder (ISO: %s) Belichtungszeit: %s\n"
+    IDS_RECAP_STEP          "Stacking Schritt %ld\n  ->%ld Bilder (%s: %s) - Gesamtbelichtung: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld Bilder (%s: %s) Belichtungszeit: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAchtung: ISO Wert passt nicht zum Lightframe\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain not matching with light frames\n"
     IDS_RECAP_NOOFFSET      "\t-> Kein Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld Bilder (ISO : %s) Belichtungszeit: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld Bilder (%s : %s) Belichtungszeit: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAchtung: Belichtungszeit passt nicht zum Lightframe\n"
     IDS_RECAP_NODARK        "\t-> Kein Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld Bilder (ISO: %s) Belichtungszeit: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld Bilder (%s: %s) Belichtungszeit: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Kein Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nGeschätzte Gesamt-Belichtungszeit: %s\n(Bei der berechneten Gesamt-Belichtungszeit wird davon ausgegangen, dass alle abgehakten Lightframes für den Stacking-Prozess verwendet werden)\n"
@@ -1303,9 +1306,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "RGB-Kanäle Hintergrund Kalibrierung: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Dark Optimierung: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld Bilder (ISO : %s) Belichtungszeit: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld Bilder (%s : %s) Belichtungszeit: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAchtung: ISO Wert passt nicht zum Flatframe\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Gain not matching with flat frames\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAchtung: Belichtungszeit passt nicht zum Flatframe\n"
 END

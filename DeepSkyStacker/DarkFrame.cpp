@@ -1414,7 +1414,7 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 		};
 
 		Filter.ApplyFilter(m_pMasterDark, &m_pAmpGlow, pProgress);
-		//WriteTIFF("E:\\AmpGlow.tif", m_pAmpGlow, pProgress);
+		//WriteTIFF("E:\\AmpGlow.tif", m_pAmpGlow, pProgress, NULL);
 
 		m_pDarkCurrent.Attach(m_pMasterDark->Clone());
 		// Then subtract this median from the master dark
@@ -1422,7 +1422,7 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 
 		::Subtract(m_pDarkCurrent, m_pAmpGlow, pProgress);
 
-		//WriteTIFF("E:\\DarkCurrent.tif", m_pDarkCurrent, pProgress);
+		//WriteTIFF("E:\\DarkCurrent.tif", m_pDarkCurrent, pProgress, NULL);
 
 		// Compute the parameters from the ampglow and the dark current
 
