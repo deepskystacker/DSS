@@ -164,17 +164,34 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 						strType = "flat";
 
 					//
-					// Convert m_strFileName to a relative path
+					// Check if this file is on the same drive as the file-list file
+					// if not we can't use relative paths and will need to save the 
+					// absolute path the the file-list
 					//
-					PathRelativePathTo(szRelPath,
-						(LPCTSTR)strBaseDirectory,
-						FILE_ATTRIBUTE_DIRECTORY,
-						(LPCTSTR)(m_vFiles[lItem].m_strFileName),
-						FILE_ATTRIBUTE_NORMAL);
+					TCHAR		szItemDrive[1 + _MAX_DRIVE];
+					_tsplitpath(m_vFiles[lItem].m_strFileName, szItemDrive, nullptr, nullptr, nullptr);
 
-					fprintf(hFile, "%ld\t%s\t%s\n", lChecked, 
-						(LPCSTR)CT2CA(strType, CP_UTF8), 
-						(LPCSTR)CT2CA(szRelPath, CP_UTF8));
+					if (!_tcscmp(szDrive, szItemDrive))
+					{
+						//
+						// Convert m_strFileName to a relative path
+						//
+						PathRelativePathTo(szRelPath,
+							(LPCTSTR)strBaseDirectory,
+							FILE_ATTRIBUTE_DIRECTORY,
+							(LPCTSTR)(m_vFiles[lItem].m_strFileName),
+							FILE_ATTRIBUTE_NORMAL);
+
+						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
+							(LPCSTR)CT2CA(strType, CP_UTF8),
+							(LPCSTR)CT2CA(szRelPath, CP_UTF8));
+					}
+					else
+					{
+						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
+							(LPCSTR)CT2CA(strType, CP_UTF8),
+							(LPCSTR)CT2CA(m_vFiles[lItem].m_strFileName, CP_UTF8));
+					}
 				};
 			};
 		};
