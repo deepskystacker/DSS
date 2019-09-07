@@ -906,7 +906,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS sau imagine DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Fisiere imagine|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|JPEG sau PNG Files|*.jpg;*.jpeg;*.png|Fisiere TIFF (.tif)|*.tif;*.tiff|Fisiere RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Fisiere FITS|*.fits;*.fit;*.fts|Toate fisierele|*.*||"
+    IDS_FILTER_INPUT        "Fisiere imagine|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG sau PNG Files|*.jpg;*.jpeg;*.png|Fisiere TIFF (.tif)|*.tif;*.tiff|Fisiere RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Fisiere FITS|*.fits;*.fit;*.fts|Toate fisierele|*.*||"
     IDS_FILTER_OUTPUT       "Imagine TIFF (16 bit/ch)|*.TIF|Imagine TIFF (32 bit/ch - integer)|*.TIF|Imagine TIFF (32 bit/ch - rational)|*.TIF| Imagine FITS (16 bit/ch)|*.FTS|Imagine FTS (32 bit/ch - integer)|*.FTS| Imagine FTS|FITS (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Lista fisiere  (*.txt)|*.txt|Lista fisiere (*.dssfilelist)|*.dssfilelist|Toate fisierele|*.*||"
     IDS_FILTER_MASK         "Imagine TIFF |*.tif;*.tiff|Imagine FITS |*.fits;*.fts;*.fit||"
@@ -1379,8 +1379,8 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "Decodare fisire RAW de DCRAW (versiune %s)\nCopyright © 1997-2016 Dave Coffin"
-    IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
+    IDS_ABOUT_DCRAW         "Decodare fisire RAW de LibRaw (versiune %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "Codare/decodare fisiere TIFF de LibTIFF (versiune %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "Decodare FITS de CFitsIO (versiune %s)\nCopyright NASA"

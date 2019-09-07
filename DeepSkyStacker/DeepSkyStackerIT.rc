@@ -969,8 +969,8 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker versione %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW decodificati da DCRAW (version %s)\nCopyright © 1997-2016 Dave Coffin"
-    IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
+    IDS_ABOUT_DCRAW         "RAW decodificati da LibRaw (version %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "De/codifica TIFF da LibTIFF (version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "Decodifica FITS da CFitsIO (versione %s)\nCopyright NASA"
@@ -1078,7 +1078,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS o Immagine DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Immagini|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Immagini|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "Immagine TIFF (16 bit/can)|*.TIF|Immagine TIFF (32 bit/can - interi)|*.TIF|Immagine TIFF (32 bit/can - razionale)|*.TIF|Immagine FITS (16 bit/can)|*.FTS|Immagine FITS (32 bit/can - interi)|*.FTS|Immagine FITS (32 bit/can -razionale)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Lista di file (*.txt)|*.txt|Lista di File (*.dssfilelist)|*.dssfilelist|Tutti i Files|*.*||"
     IDS_FILTER_MASK         "Immagine TIFF|*.tif;*.tiff|Immagine FITS|*.fits;*.fts;*.fit||"
