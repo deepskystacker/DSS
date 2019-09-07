@@ -1493,7 +1493,7 @@ BEGIN
     IDS_RECAP_STEP          "Apilado Paso %ld\n  ->%ld frames (%s: %s) - exposición total: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (%s: %s) exposición: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tPrecaución: la sensibilidad ISO no coincide con la de los light frames\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain not matching with light frames\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Sin Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld frames (%s : %s) exposición: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1512,7 +1512,7 @@ BEGIN
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tPrecaución: La sensibilidad ISO no coincide con la de los flat frames\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Gain not matching with flat frames\n"
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tPrecaución: el tiempo de exposición no coincide con el de los flat frames\n"
 END

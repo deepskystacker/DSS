@@ -1287,7 +1287,7 @@ BEGIN
     IDS_RECAP_STEP          "Passo combinazione %ld\n  ->%ld immagini (%s: %s) - esposizione totale: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld immagini (%s: %s) esposizione: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAttenzione: velocità ISO non congruente con le immagini\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain not matching with light frames\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Nessun Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld immagini (%s : %s) esposizione: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1306,7 +1306,7 @@ BEGIN
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAttenzione: velocità ISO non congruente con i flat\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Gain not matching with flat frames\n"
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAttenzione: tempo di posa non congruente con i flat\n"
 END

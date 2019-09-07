@@ -1291,7 +1291,7 @@ BEGIN
     IDS_RECAP_STEP          "Stacking Schritt %ld\n  ->%ld Bilder (%s: %s) - Gesamtbelichtung: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld Bilder (%s: %s) Belichtungszeit: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAchtung: ISO Wert passt nicht zum Lightframe\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain not matching with light frames\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Kein Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld Bilder (%s : %s) Belichtungszeit: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1310,7 +1310,7 @@ BEGIN
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAchtung: ISO Wert passt nicht zum Flatframe\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Gain not matching with flat frames\n"
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAchtung: Belichtungszeit passt nicht zum Flatframe\n"
 END
