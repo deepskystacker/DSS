@@ -41,8 +41,8 @@ protected :
 						samplemax;
 	float				exposureTime;
 	float				aperture;
-	short				isospeed;
-	short				gain;
+	LONG				isospeed;
+	LONG				gain;
 	LONG				nrframes;
 	SYSTEMTIME			m_DateTime;
 

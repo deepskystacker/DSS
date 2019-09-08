@@ -182,10 +182,11 @@ BOOL CTIFFReader::Open()
 						exposureTime = 0.0;
 					if (!TIFFGetField(m_tiff, EXIFTAG_FNUMBER, &aperture))
 						aperture = 0.0;
-					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &isospeed))
+					// EXIFTAG_ISOSPEEDRATINGS is a int16u according to the EXIF spec
+					isospeed = 0;
+					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, (short *)&isospeed))
 						isospeed = 0;
-					if (!TIFFGetField(m_tiff, EXIFTAG_GAINCONTROL, &gain))
-						gain = -1;
+					// EXIFTAG_GAINCONTROL does not represent a gain value, so ignore it.
 				};
 			};
 		}

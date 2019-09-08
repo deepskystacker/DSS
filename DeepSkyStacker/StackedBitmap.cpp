@@ -276,8 +276,8 @@ typedef struct tagHDSTACKEDBITMAPHEADER
 	DWORD			dwFlags;		// Flags
 	LONG			lTotalTime;		// Total Time
 	WORD			lISOSpeed;		// ISO Speed of each frame
-	SHORT			lGain;		// Camera gain of each frame
-	char			Reserved[24];	// Reserved (set to 0)
+	LONG			lGain;		// Camera gain of each frame
+	LONG			Reserved[22];	// Reserved (set to 0)
 }HDSTACKEDBITMAPHEADER;
 
 #pragma pack(pop, HDSTACKEDBITMAP)
