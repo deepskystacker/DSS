@@ -285,9 +285,9 @@ public :
 		m_lGain = lGain;
 	};
 
-	SHORT	GetGain()
+	LONG	GetGain()
 	{
-		return (SHORT)m_lGain;
+		return m_lGain;
 	};
 
 	LONG	GetTotalTime()
