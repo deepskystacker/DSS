@@ -1505,7 +1505,7 @@ BEGIN
     IDS_RECAP_STEP          "Etape d'empilement %ld\n  ->%ld images (%s: %s) - temps de pose total : "
     IDS_RECAP_OFFSET        "\t-> Offset : %ld images (%s: %s) temps de pose : %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAttention : la sensibilité ISO ne correspond pas à celle des images\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
+    IDS_RECAP_GAINWARNING   "\t\tAttention : le gain n'est pas le même que celui de la prise de vue\n"
     IDS_RECAP_NOOFFSET      "\t-> Pas d'offset/bias\n"
     IDS_RECAP_DARK          "\t-> Dark : %ld images (%s : %s) temps de pose : %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1524,7 +1524,7 @@ BEGIN
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAttention : la sensibilité ISO ne correspond pas à celle des flats\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
+                            "\t\tAttention : le gain des Darks Flats n'est pas le même que celui des Flats\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAttention : le temps de pose ne correspond pas à celui des flats\n"
 END

@@ -1113,7 +1113,7 @@ BEGIN
     IDS_RECAP_STEP          "Pasi stackare %ld\n  ->%ld cadre (%s: %s) - expunere totala: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld cadre  (%s: %s) expunere: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAtentie: Sensibilitatea ISO nu corespunde cu cadrele Light\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
+    IDS_RECAP_GAINWARNING   "\t\tAtentie: Gain-ul nu corespunde cu gain-ul cadrelor Light\n"
     IDS_RECAP_NOOFFSET      "\t-> Lipsa Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld cadre (%s : %s) expunere: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1131,7 +1131,7 @@ BEGIN
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAtentie: Sensibilitatea ISO nu corespunde cu cadrele Flat\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
+                            "\t\Atentie: Gain-ul cadrelor Dark Flat nu corespunde cu gain-ul cadrelor Flat\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAtentie: timpul de expunere nu corespunde cu cadrele Flat\n"
 END

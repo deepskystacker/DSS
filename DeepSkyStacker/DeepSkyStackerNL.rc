@@ -1399,7 +1399,7 @@ BEGIN
     IDS_RECAP_STEP          "Stapel stap %ld\n  ->%ld platen (%s: %s) - totale belichting: "
     IDS_RECAP_OFFSET        "\t-> Compensatie: %ld platen (%s: %s) belichting: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tWaarschuwing: ISO snelheid komt niet overeen met licht platen\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
+    IDS_RECAP_GAINWARNING   "\t\tWaarschuwing: Gain komt niet overeen met Light foto gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Geen Compensatie\n"
     IDS_RECAP_DARK          "\t-> Donkere: %ld platen (%s: %s) belichting: %s\n"
     IDS_RECAP_EXPOSUREWARNING
@@ -1418,7 +1418,7 @@ BEGIN
     IDS_RECAP_ISOWARNINGDARKFLAT
                             "\t\tWaarschuwing: ISO snelheid komt niet overeen met platte platen\n"
     IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
+                            "\t\tWaarschuwing: Donker Flat foto gain komt niet overeen met Flat foto gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT
                             "\t\tWaarschuwing: belichting tijd komt niet overeen met platte platen\n"
 END
