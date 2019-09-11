@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // Change the list version each time a new column is added
-const DWORD		LISTVERSION	    = 1;
+const DWORD		LISTVERSION	    = 2;
 
 const DWORD		COLUMN_CHECKED	= 0;
 const DWORD 	COLUMN_PATH		= 1;
@@ -35,9 +35,10 @@ const DWORD		COLUMN_DEPTH	= 11;
 const DWORD		COLUMN_INFO		= 12;
 const DWORD		COLUMN_ISO		= 13;
 const DWORD		COLUMN_EXPOSURE = 14;
-const DWORD		COLUMN_FWHM		= 15;
-const DWORD		COLUMN_STARS	= 16;
-const DWORD		COLUMN_SKYBACKGROUND = 17;
+const DWORD		COLUMN_APERTURE = 15;
+const DWORD		COLUMN_FWHM		= 16;
+const DWORD		COLUMN_STARS	= 17;
+const DWORD		COLUMN_SKYBACKGROUND = 18;
 
 #define M_PI			3.141592654
 
@@ -188,6 +189,8 @@ void CPictureListCtrl::Initialize()
 	InsertColumn(COLUMN_ISO, strColumn, LVCFMT_RIGHT, 50);
 	strColumn.LoadString(IDS_COLUMN_EXPOSURE);
 	InsertColumn(COLUMN_EXPOSURE, strColumn, LVCFMT_RIGHT, 50);
+	strColumn.LoadString(IDS_COLUMN_APERTURE);
+	InsertColumn(COLUMN_APERTURE, strColumn, LVCFMT_RIGHT, 50);
 
 	InsertColumn(COLUMN_FWHM, _T("FWHM"), LVCFMT_RIGHT, 50);
 
@@ -304,7 +307,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 0;
 			break;
 		case COLUMN_SCORE :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;
@@ -314,7 +319,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 1;
 			break;
 		case COLUMN_DX :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;
@@ -324,7 +331,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 1;
 			break;
 		case COLUMN_DY :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;
@@ -334,7 +343,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 				lResult = 1;
 			break;
 		case COLUMN_ANGLE :
-			if (!m_vFiles[lItem1].IsLightFrame())
+			if (!m_vFiles[lItem1].IsLightFrame() && !m_vFiles[lItem2].IsLightFrame())
+				lResult = 0;
+			else if (!m_vFiles[lItem1].IsLightFrame())
 				lResult = -1;
 			else if (!m_vFiles[lItem2].IsLightFrame())
 				lResult = 1;
@@ -354,6 +365,12 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 			break;
 		case COLUMN_EXPOSURE :
 			if (m_vFiles[lItem1].m_fExposure< m_vFiles[lItem2].m_fExposure)
+				lResult = -1;
+			else
+				lResult = 1;
+			break;
+		case COLUMN_APERTURE :
+			if (m_vFiles[lItem1].m_fAperture < m_vFiles[lItem2].m_fAperture)
 				lResult = -1;
 			else
 				lResult = 1;
@@ -908,6 +925,9 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 			break;
 		case COLUMN_EXPOSURE :
 			ExposureToString(m_vFiles[lIndice].m_fExposure, strValue);
+			break;
+		case COLUMN_APERTURE :
+			strValue.Format("%.1f", m_vFiles[lIndice].m_fAperture);
 			break;
 		};
 

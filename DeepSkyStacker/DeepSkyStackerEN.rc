@@ -245,7 +245,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,205,151,50,14
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -278,14 +278,14 @@ BEGIN
     PUSHBUTTON      "Settings...",IDC_DEBLOOMSETTINGS,184,130,50,14,NOT WS_VISIBLE
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking Parameters"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,266,191,50,14
-    LTEXT           "Static",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Temporary Files Folder:",IDC_STATIC,11,177,76,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Static",IDC_TEMPFOLDER,89,177,208,8,SS_PATHELLIPSIS
@@ -295,7 +295,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,115,10
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Result"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -402,7 +402,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,255,217,10
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Alignment"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -431,7 +431,7 @@ BEGIN
     CONTROL         "Dark Flat Frames",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,67,70,10
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Intermediate Files"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -479,7 +479,7 @@ BEGIN
     COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Comet"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -526,7 +526,7 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,79,163,10
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cosmetic"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -605,7 +605,7 @@ BEGIN
                     "QHTM_Window_Class_001",WS_TABSTOP,7,7,324,192
 END
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Output"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -664,6 +664,10 @@ BEGIN
         HORZGUIDE, 209
         HORZGUIDE, 223
         HORZGUIDE, 242
+    END
+
+    IDD_STACKSETTINGS, DIALOG
+    BEGIN
     END
 
     IDD_BACKGROUNDOPTIONS, DIALOG
@@ -922,6 +926,17 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_STACKSETTINGS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
@@ -956,6 +971,7 @@ BEGIN
     IDS_COLUMN_EXPOSURE     "Exposure"
     IDS_COLUMN_STARS        "#Stars"
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
+    IDS_COLUMN_APERTURE     "Aperture"
 END
 
 STRINGTABLE
@@ -996,7 +1012,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS or DeepSkyStacker Image|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Picture Files|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Picture Files|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "TIFF Image (16 bit/ch)|*.TIF|TIFF Image (32 bit/ch - integer)|*.TIF|TIFF Image (32 bit/ch - rational)|*.TIF|FITS Image (16 bit/ch)|*.FTS|FITS Image (32 bit/ch - integer)|*.FTS|FITS Image (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "File List (*.txt)|*.txt|File List (*.dssfilelist)|*.dssfilelist|All Files|*.*||"
     IDS_FILTER_MASK         "TIFF Image|*.tif;*.tiff|FITS Image|*.fits;*.fts;*.fit||"
@@ -1466,9 +1482,9 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW files decoding by DCRAW (version %s)\nCopyright © 1997-2016 Dave Coffin"
-    IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
-    IDS_ABOUT_TIFF          "TIFF files encoding/decoding by LibTIFF (version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
+    IDS_ABOUT_DCRAW         "RAW file decoding by LibRaw (version %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
+    IDS_ABOUT_TIFF          "TIFF file encoding/decoding by LibTIFF (version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "FITS decoding by CFitsIO (version %s)\nCopyright NASA"
     IDS_ABOUT_FITS_LINK     "http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html"
@@ -1526,6 +1542,11 @@ BEGIN
     IDS_STACKINGMODE_MOSAIC "The result of the stacking process contains all the light frames of the stack."
     IDS_STACKINGMODE_INTERSECTION 
                             "The result of the stacking process is framed by the intersection of all the frames."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw doesn't support your %s camera"
 END
 
 #endif    // English (United States) resources

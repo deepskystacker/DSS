@@ -27,22 +27,22 @@ LANGUAGE 19, 1
 
 
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_STACKINGMODE_NORMAL "Het resultaat van het stapelproces is gekaderd door de referentie licht afbeelding."
     IDS_STACKINGMODE_MOSAIC "Het resultaat van het stapel proces bevat alle licht platen uit de stapel."
-    IDS_STACKINGMODE_INTERSECTION 
+    IDS_STACKINGMODE_INTERSECTION
                             "Het resultaat van het stapel proces is gekaderd door de snijding van alle afbeeldingen."
 END
 
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Uitvoer"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Uitvoer Bestands-instelling",IDC_TITLE,7,7,294,8
-    CONTROL         "Maak Uitvoer bestand",IDC_CREATEOUTPUT,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Maak Uitvoer bestand",IDC_CREATEOUTPUT,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,17,20,83,10
     CONTROL         "Maak HTML beschrijving bestand",IDC_CREATEHTML,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,17,34,117,10
@@ -56,7 +56,7 @@ BEGIN
                     73,235,10
     GROUPBOX        "Uitvoer Lokatie",IDC_STATIC,7,89,294,56
     CONTROL         "Maak Uitvoer bestand in de map van de referentie afbeelding",
-                    IDC_USEREFERENCEFRAMEFOLDER,"Button",BS_AUTORADIOBUTTON | 
+                    IDC_USEREFERENCEFRAMEFOLDER,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,17,103,209,10
     CONTROL         "Maak Uitvoer bestand in de map van de bestand lijst",IDC_USEFILELISTFOLDER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,117,
@@ -66,7 +66,7 @@ BEGIN
     LTEXT           "<Uitvoer Map>",IDC_OUTPUTFOLDER,113,133,189,9,WS_TABSTOP
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_LANG_CHINESET_LINK "Wei-Hao Wang"
     IDS_ABOUT_LANG_PORTUGUESE "Portugeese versie:"
@@ -79,7 +79,7 @@ BEGIN
 	IDS_ABOUT_LANG_TURKISH_LINK "Rasid Tugral"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SELECTOUTPUTFOLDER  "Selekteer Uitvoer Map"
     IDS_RECAP_STACKINGMODE_INTERSECTION "Doorsnijding"
@@ -87,30 +87,30 @@ END
 
 
 IDD_SAVEPICTURE DIALOGEX 0, 0, 273, 101
-STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS | 
+STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_CLIPSIBLINGS |
     WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     GROUPBOX        "Compressie",IDC_STATIC,7,7,259,25
-    CONTROL         "Geen",IDC_COMPRESSION_NONE,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Geen",IDC_COMPRESSION_NONE,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,13,17,33,10
-    CONTROL         "ZIP (Vermindering)",IDC_COMPRESSION_ZIP,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "ZIP (Vermindering)",IDC_COMPRESSION_ZIP,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,69,17,72,10
-    CONTROL         "LZW (Ouderwets)",IDC_COMPRESSION_LZW,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "LZW (Ouderwets)",IDC_COMPRESSION_LZW,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,147,17,75,10
     GROUPBOX        "Opties",IDC_STATIC,7,34,259,58
     CONTROL         "Pas de veranderingen toe op de bewaarde afbeelding",IDC_APPLIED,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,46,
                     185,10
     CONTROL         "Voeg de veranderingen toe aan de bewaarde afbeelding maar pas ze niet toe",
-                    IDC_EMBEDDED,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP | 
+                    IDC_EMBEDDED,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP |
                     BS_MULTILINE,13,61,245,17
     CONTROL         "Maak een afbeelding van de geselecteerde rechthoek",IDC_USERECT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,80,184,10
 END
 
 IDD_EXPLORERBAR DIALOGEX 0, 0, 166, 451
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS |
     WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
@@ -185,7 +185,7 @@ BEGIN
                     16,67,148,30,WS_EX_CLIENTEDGE
     PUSHBUTTON      "Reset",IDC_RESET,116,112,48,14
     PUSHBUTTON      "Toepassen",IDC_PROCESS,0,112,48,14
-    CONTROL         "Gekoppelde instellingen",IDC_LINK,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Gekoppelde instellingen",IDC_LINK,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,3,100,87,10
     PUSHBUTTON      "",IDC_UNDO,57,112,16,12
     PUSHBUTTON      "",IDC_REDO,95,112,16,12
@@ -203,17 +203,17 @@ BEGIN
     CTEXT           "Zwart gebied",IDC_TEXT_DARKNESS,0,3,163,8
     CTEXT           "Hoge lichten",IDC_TEXT_HIGHLIGHT,0,72,163,8
     CTEXT           "Midden gebied",IDC_TEXT_MIDTONE,0,38,163,8
-    CONTROL         "Slider1",IDC_DARKANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
+    CONTROL         "Slider1",IDC_DARKANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS |
                     WS_TABSTOP,38,14,125,9
-    CONTROL         "Slider1",IDC_DARKPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
+    CONTROL         "Slider1",IDC_DARKPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS |
                     WS_TABSTOP,38,27,125,9
-    CONTROL         "Slider1",IDC_MIDTONE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
+    CONTROL         "Slider1",IDC_MIDTONE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS |
                     WS_TABSTOP,38,60,125,9
-    CONTROL         "Slider1",IDC_MIDANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
+    CONTROL         "Slider1",IDC_MIDANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS |
                     WS_TABSTOP,38,47,125,9
-    CONTROL         "Slider1",IDC_HIGHANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
+    CONTROL         "Slider1",IDC_HIGHANGLE,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS |
                     WS_TABSTOP,38,84,125,9
-    CONTROL         "Slider1",IDC_HIGHPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
+    CONTROL         "Slider1",IDC_HIGHPOWER,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS |
                     WS_TABSTOP,38,97,125,9
     PUSHBUTTON      "Toepassen",IDC_PROCESS,0,112,48,14
     PUSHBUTTON      "Reset",IDC_RESET,116,112,48,14
@@ -235,7 +235,7 @@ BEGIN
     DEFPUSHBUTTON   "Toevoegen",IDC_ADD,172,7,50,14
     DEFPUSHBUTTON   "Laad",IDC_LOAD,172,122,50,14
     EDITTEXT        IDC_SETTINGSNAME,7,7,153,14,ES_AUTOHSCROLL
-    LISTBOX         IDC_SETTINGSLIST,7,26,153,129,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+    LISTBOX         IDC_SETTINGSLIST,7,26,153,129,LBS_NOINTEGRALHEIGHT | WS_VSCROLL |
                     WS_TABSTOP
 END
 
@@ -245,7 +245,7 @@ CAPTION "Absorptie"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CTEXT           "Absorptie verschuiving",IDC_TEXT_SATURATION,0,3,163,8
-    CONTROL         "Slider1",IDC_SATURATION,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS | 
+    CONTROL         "Slider1",IDC_SATURATION,"msctls_trackbar32",TBS_TOP | TBS_NOTICKS |
                     WS_TABSTOP,38,22,125,9
     PUSHBUTTON      "Toepassen",IDC_PROCESS,0,112,48,14
     PUSHBUTTON      "Reset",IDC_RESET,116,112,48,14
@@ -301,7 +301,7 @@ BEGIN
                     IDC_CHECKVERSION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,
                     319,226,10
     GROUPBOX        "Taal",IDC_STATIC,7,187,283,119
-    COMBOBOX        IDC_LANGUAGE,177,198,107,115,CBS_DROPDOWNLIST | WS_VSCROLL | 
+    COMBOBOX        IDC_LANGUAGE,177,198,107,115,CBS_DROPDOWNLIST | WS_VSCROLL |
                     WS_TABSTOP
     LTEXT           "Gebruik bij de volgende keer opstarten deze taal",IDC_STATIC,
                     15,200,155,8
@@ -356,14 +356,14 @@ BEGIN
     PUSHBUTTON      "Annuleer",IDCANCEL,205,151,50,14
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stapelen"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "Rechtlijnig",IDC_MEDIAN,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Rechtlijnig",IDC_MEDIAN,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,7,42,45,10
-    CONTROL         "Kappa-Sigma afbreken",IDC_SIGMACLIPPING,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Kappa-Sigma afbreken",IDC_SIGMACLIPPING,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,62,85,10
     CONTROL         "Rechtlijnig Kappa-Sigma afbreken",IDC_MEDIANSIGMACLIPPING,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,80,
@@ -372,9 +372,9 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP | BS_MULTILINE,
                     7,98,124,17
     CONTROL         "Afnemend Gewogen Gemiddelde\n(Hoog Dynamisch Bereik)",IDC_ENTROPYAVERAGE,
-                    "Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP | 
+                    "Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP |
                     WS_TABSTOP,140,17,161,17
-    CONTROL         "Maximum",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Maximum",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,140,42,45,10
     GROUPBOX        "",IDC_KAPPAFRAME,140,56,161,57
     LTEXT           "Kappa:",IDC_STATICKAPPA,145,70,24,8
@@ -383,9 +383,9 @@ BEGIN
     LTEXT           "Aantal herhalingen:",IDC_STATICITERATION,145,96,69,8
     EDITTEXT        IDC_ITERATION,216,93,40,14,ES_RIGHT | ES_NUMBER,WS_EX_RIGHT
     LTEXT           "Stapel modus",IDC_TITLE,7,7,294,8
-    CONTROL         "Gemiddelde",IDC_AVERAGE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Gemiddelde",IDC_AVERAGE,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,7,20,49,10
-    CONTROL         "Donker Optimalisatie",IDC_DARKOPTIMIZATION,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Donker Optimalisatie",IDC_DARKOPTIMIZATION,"Button",BS_AUTOCHECKBOX |
                     NOT WS_VISIBLE | WS_TABSTOP,7,133,78,10
     CONTROL         "Hete Pixels detectie en verwijdering",IDC_HOTPIXELS,"Button",
                     BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,119,127,
@@ -396,23 +396,23 @@ BEGIN
     CONTROL         "Donker Vermenigvuldigings Factor:",IDC_USEDARKFACTOR,"Button",
                     BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,140,133,123,
                     10
-    EDITTEXT        IDC_DARKMULTIPLICATIONFACTOR,266,133,31,8,ES_RIGHT | ES_AUTOHSCROLL | 
+    EDITTEXT        IDC_DARKMULTIPLICATIONFACTOR,266,133,31,8,ES_RIGHT | ES_AUTOHSCROLL |
                     NOT WS_VISIBLE | NOT WS_BORDER
-    CONTROL         "Aberratie correctie",IDC_DEBLOOM,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Aberratie correctie",IDC_DEBLOOM,"Button",BS_AUTOCHECKBOX |
                     NOT WS_VISIBLE | WS_TABSTOP,140,133,73,10
     LTEXT           "Geen Achtergrond Calibratie",IDC_BACKGROUNDCALIBRATION,
                     8,133,129,8,NOT WS_VISIBLE | NOT WS_GROUP
     PUSHBUTTON      "Instellingen...",IDC_DEBLOOMSETTINGS,184,130,50,14,NOT WS_VISIBLE
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stapel Paramaters"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Annuleer",IDCANCEL,266,191,50,14
-    LTEXT           "Static",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Tijdelijke Bestands Map:",IDC_STATIC,11,177,77,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Static",IDC_TEMPFOLDER,94,178,203,9,SS_PATHELLIPSIS
@@ -422,25 +422,25 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,127,10
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Resultaat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "Standaard Modus",IDC_NORMALRESULT,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Standaard Modus",IDC_NORMALRESULT,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,12,69,10
-    CONTROL         """Mozaïek"" Modus",IDC_MOSAICRESULT,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         """Mozaïek"" Modus",IDC_MOSAICRESULT,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,35,66,10
-    CONTROL         "Snijdings Mode",IDC_INTERSECTIONMODE,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Snijdings Mode",IDC_INTERSECTIONMODE,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,58,76,10
     LTEXT           "",IDC_MODE_TEXT,165,114,139,26
     CONTROL         "",IDC_MODEPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,166,
                     7,135,106
-    CONTROL         "2x Drizzle Aanzetten",IDC_ENABLE2XDRIZZLE,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "2x Drizzle Aanzetten",IDC_ENABLE2XDRIZZLE,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,3,109,79,10
-    CONTROL         "3x Drizzle Aanzetten",IDC_ENABLE3XDRIZZLE,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "3x Drizzle Aanzetten",IDC_ENABLE3XDRIZZLE,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,85,109,79,10
-    CONTROL         "Rechthoek op maat",IDC_CUSTOMRECTANGLE,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Rechthoek op maat",IDC_CUSTOMRECTANGLE,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,81,75,10
     CONTROL         "Lijn RGB Kanalen in definitive afbeelding uit",IDC_ALIGNCHANNELS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,3,125,150,10
@@ -456,7 +456,7 @@ BEGIN
     CONTROL         "Automatische detectie van hete pixels",IDC_HOTPIXELS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,13,23,135,10
     GROUPBOX        "",IDC_STATIC,7,41,195,64
-    CONTROL         "Stapel na registratie",IDC_STACK,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Stapel na registratie",IDC_STACK,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,13,40,85,10
     LTEXT           "Selecteer de beste ",IDC_STATIC,14,58,60,8
     EDITTEXT        IDC_PERCENT,76,55,20,14,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER
@@ -470,7 +470,7 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ge-avanceerd"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
-    CONTROL         "",IDC_LUMINANCETHRESHOLD,"msctls_trackbar32",TBS_BOTH | 
+    CONTROL         "",IDC_LUMINANCETHRESHOLD,"msctls_trackbar32",TBS_BOTH |
                     TBS_NOTICKS | WS_TABSTOP,38,17,136,15
     PUSHBUTTON      "Bereken het aantal gedetecteerde sterren",IDC_COMPUTEDETECTEDSTARS,
                     36,48,138,14
@@ -478,7 +478,7 @@ BEGIN
     RTEXT           "10%",IDC_LUMINANCETHRESHOLDTEXT,13,21,25,8
     GROUPBOX        "Ster detectie drempel",-1,7,3,195,102
     CONTROL         "Reduceer de ruis door een Rechtlijnig Filter te gebruiken",
-                    IDC_MEDIANFILTER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP | 
+                    IDC_MEDIANFILTER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP |
                     BS_MULTILINE,16,83,173,17
 END
 
@@ -495,11 +495,11 @@ BEGIN
     LTEXT           "Blauwe schaal",IDC_STATIC,15,53,46,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Wit Balans",IDC_STATIC,140,7,131,64
-    CONTROL         "Gebruik Auto Wit Balans",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Gebruik Auto Wit Balans",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,149,24,94,10
-    CONTROL         "Gebruik Camera Wit Balans",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Gebruik Camera Wit Balans",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,149,43,103,10
-    CONTROL         "Bi-lineair Interpolatie",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Bi-lineair Interpolatie",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Geleide Aanpassende Homogeniteit (AHD) Interpolatie",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,
@@ -512,7 +512,7 @@ BEGIN
                     IDC_RAWBAYER,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,
                     15,135,239,10
     CONTROL         "Maak super-pixels van de ruwe Bayer matrix (geen interpolatie)",
-                    IDC_SUPERPIXELS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    IDC_SUPERPIXELS,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,15,179,216,10
     GROUPBOX        "Bayer Matrix Verplaatsing",IDC_STATIC,7,76,263,150
     CONTROL         "Geef zwarte punten waarde 0",IDC_BLACKPOINTTO0,"Button",
@@ -525,7 +525,7 @@ CAPTION "FITS Bestanden"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
 BEGIN
     CONTROL         "Zwart-wit 16-bit FITS Bestanden zijn RAW bestanden gemaakt met een DSLR\nof een kleuren CCD camera",
-                    IDC_FITSISRAW,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | 
+                    IDC_FITSISRAW,"Button",BS_AUTOCHECKBOX | BS_MULTILINE |
                     WS_TABSTOP,6,8,264,23
     LTEXT           "Camera:",IDC_TEXT1,13,37,27,8
     COMBOBOX        IDC_DSLR,42,34,228,241,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
@@ -539,7 +539,7 @@ BEGIN
     LTEXT           "Bayer Filter Patroon gebruikt",IDC_TEXT5,143,56,92,8
     CONTROL         "",IDC_BAYERPATTERN,"Static",SS_BITMAP | SS_CENTERIMAGE,
                     144,66,126,50
-    CONTROL         "Bi-lineair Interpolatie",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Bi-lineair Interpolatie",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,13,131,79,10
     CONTROL         "Geleide Aanpassende Homogeniteit (AHD) Interpolatie",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,13,147,
@@ -550,33 +550,33 @@ BEGIN
     LTEXT           "Deze optie gebruikt de Bayer matrix. Geen interpolatie wordt toegepast en iedere pixel krijgt alleen de primaire onderdelen van de matrix.",
                     IDC_TEXT7,33,176,221,25
     CONTROL         "Maak super-pixels van de ruwe Bayer matrix (geen interpolatie)",
-                    IDC_SUPERPIXELS,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+                    IDC_SUPERPIXELS,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,13,200,216,10
     LTEXT           "Deze optie gebruikt de Bayer matrix om een super-pixel te maken van iedere groep van 4 pixels (RGBG). De afmeting van de resulterende afbeelding is daardoor gedeeld door twee.",
                     IDC_TEXT6,33,212,221,24
     GROUPBOX        "Bayer Matrix Verplaatsing",IDC_STATIC,6,119,264,126
     CONTROL         "Forceer het gebruik van niet getekende waarden waar getekende waarden bewaard worden",
-                    IDC_FORCEUNSIGNED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP | 
+                    IDC_FORCEUNSIGNED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP |
                     BS_MULTILINE,6,248,261,18
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Uitlijning"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Verplaatsing tijdens uitlijnen gebruikt",IDC_TITLE,7,7,
                     294,8
-    CONTROL         "Automatisch",IDC_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Automatisch",IDC_AUTO,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,9,22,52,10
-    CONTROL         "Bi-lineair",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Bi-lineair",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,9,46,39,10
-    CONTROL         "Bi-oppervlak",IDC_BISQUARED,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Bi-oppervlak",IDC_BISQUARED,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,9,70,52,10
-    CONTROL         "Bi-kubus",IDC_BICUBIC,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Bi-kubus",IDC_BICUBIC,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,9,94,39,10
     LTEXT           "",IDC_ALIGNMENTTEXT,156,22,145,94
-    CONTROL         "Geen Uitlijning",IDC_NOALIGNMENT,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Geen Uitlijning",IDC_NOALIGNMENT,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,9,118,58,10
 END
 
@@ -589,19 +589,19 @@ BEGIN
     PUSHBUTTON      "Annuleer",IDCANCEL,129,103,50,14
     LTEXT           "Voeg %ld bestand(en) toe als",IDC_DROPFILESTEXT,7,7,172,
                     8
-    CONTROL         "Licht Platen",IDC_LIGHTFRAMES,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Licht Platen",IDC_LIGHTFRAMES,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,22,57,10
-    CONTROL         "Donkere Platen",IDC_DARKFRAMES,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Donkere Platen",IDC_DARKFRAMES,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,37,61,10
-    CONTROL         "Platte Platen",IDC_FLATFRAMES,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Platte Platen",IDC_FLATFRAMES,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,52,53,10
     CONTROL         "Compensatie/Verstoring Platen",IDC_BIASFRAMES,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,82,111,10
-    CONTROL         "Donkere Platte Platen",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Donkere Platte Platen",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,67,82,10
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tussentijdse Bestanden"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -612,7 +612,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,17,
                     19,240,18
     CONTROL         "Maak een registratie/calibratie bestand voor elke licht plaat",
-                    IDC_CREATEINTERMEDIATE,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | 
+                    IDC_CREATEINTERMEDIATE,"Button",BS_AUTOCHECKBOX | BS_MULTILINE |
                     WS_TABSTOP,17,56,284,14
     GROUPBOX        "Indeling Tussentijds Bestand",IDC_STATIC,7,73,294,47
     CONTROL         "Bewaar Tussentijdse Bestanden als TIFF bestand",IDC_SAVEASTIFF,
@@ -623,7 +623,7 @@ BEGIN
                     275,10
     LTEXT           "",IDC_SAVEASEXPLANATION,17,125,284,18
     CONTROL         "Bewaar een gedebayerizeerde afbeelding wanneer RAW afbeelding worden verwerkt",
-                    IDC_SAVEDEBAYERED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP | 
+                    IDC_SAVEDEBAYERED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP |
                     BS_MULTILINE,27,37,237,17
 END
 
@@ -637,13 +637,13 @@ BEGIN
     LTEXT           "Ster detectie drempel",IDC_STATIC,16,86,78,8
     LTEXT           "Minimum Afmeting van een Ster",IDC_STATIC,16,118,101,8
     LTEXT           "Maximum Afmating van een Ster",IDC_STATIC,16,132,103,8
-    CONTROL         "Hete Pixels detectie",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Hete Pixels detectie",IDC_HOTPIXELS,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,16,98,107,10
-    CONTROL         "",IDC_STARTHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_STARTHRESHOLD,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,160,84,98,10
-    CONTROL         "",IDC_MINSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_MINSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,160,116,98,10
-    CONTROL         "",IDC_MAXSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_MAXSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,160,132,98,10
     LTEXT           "%ld%%",IDC_STARTHRESHOLDTEXT,123,86,28,8
     LTEXT           "%ld pixels",IDC_MINSIZETEXT,123,118,34,8
@@ -652,9 +652,9 @@ BEGIN
     GROUPBOX        "Vergroting/Krimpen",IDC_STATIC,7,156,249,44
     LTEXT           "Percentage van de ster grootte",IDC_STATIC,16,170,101,8
     LTEXT           "Pixels",IDC_STATIC,16,183,19,8
-    CONTROL         "",IDC_PERCENT,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_PERCENT,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,160,170,98,10
-    CONTROL         "",IDC_PIXELS,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_PIXELS,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,160,183,98,10
     LTEXT           "%ld %%",IDC_PERCENTTEXT,122,170,30,8
     LTEXT           "%ld pixel(s)",IDC_PIXELSTEXT,122,183,39,8
@@ -662,19 +662,19 @@ BEGIN
                     160,7,98,63
     LTEXT           "Vorm van de sterren in het masker",IDC_STATIC,16,7,110,
                     8
-    COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | 
+    COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL |
                     WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Komeet"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     LTEXT           "Komeet stapel parameters",IDC_TITLE,7,7,294,8
-    CONTROL         "Normaal Stapelen",IDC_STANDARDSTACKING,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Normaal Stapelen",IDC_STANDARDSTACKING,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,22,74,10
-    CONTROL         "Komeet Stapelen",IDC_COMETSTACKING,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Komeet Stapelen",IDC_COMETSTACKING,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,7,63,67,10
     CONTROL         "Sterren + Komeet Stapelen",IDC_ADVANCEDSTACKING,"Button",
                     BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,104,100,10
@@ -704,7 +704,7 @@ BEGIN
     CONTROL         "Niet bewaren zonder te vragen",IDC_DONTSAVEWITHOUTASKING,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,64,
                     113,10
-    CONTROL         "Vraag nog een keer",IDC_ASKAGAIN,"Button",BS_AUTORADIOBUTTON | 
+    CONTROL         "Vraag nog een keer",IDC_ASKAGAIN,"Button",BS_AUTORADIOBUTTON |
                     WS_GROUP | WS_TABSTOP,15,80,75,10
     LTEXT           "U kan deze opties benaderen door rechts te klikken op de Bewaar knop",
                     IDC_STATIC,17,94,202,16
@@ -729,7 +729,7 @@ BEGIN
                     19,79,185,10
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cosmetisch"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -739,22 +739,22 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,7,22,294,44
     LTEXT           "Filter Grootte",IDC_STATIC,17,36,43,8
     RTEXT           "%ld px",IDC_HOTFILTERSTATIC,102,36,33,8
-    CONTROL         "",IDC_HOTFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_HOTFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,135,35,157,10
     LTEXT           "Detectie Drempel",IDC_STATIC,17,53,65,8
     RTEXT           "%.1f%%",IDC_HOTDETECTIONSTATIC,102,53,33,8
-    CONTROL         "",IDC_HOTDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_HOTDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,135,52,157,10
     GROUPBOX        "",IDC_STATIC,7,71,294,44
     CONTROL         "Detecteer en maak overgebleven Koude Pixels schoon",IDC_DETECTCLEANCOLD,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,71,186,10
     LTEXT           "Filter Grootte",IDC_STATIC,17,85,43,8
     RTEXT           "%ld px",IDC_COLDFILTERSTATIC,102,85,33,8
-    CONTROL         "",IDC_COLDFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_COLDFILTER,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,135,84,157,10
     LTEXT           "Detectie Drempel",IDC_STATIC,17,102,65,8
     RTEXT           "%.1f%%",IDC_COLDDETECTIONSTATIC,102,102,33,8
-    CONTROL         "",IDC_COLDDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | 
+    CONTROL         "",IDC_COLDDETECTION,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS |
                     WS_TABSTOP,135,101,157,10
     CONTROL         "Detecteer en maak overgebleven Hete Pixels schoon",IDC_DETECTCLEANHOT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,22,181,10
@@ -781,8 +781,8 @@ BEGIN
     LTEXT           "Dit dialoog wordt gebruikt om het stapel proces van bestaande afbeelding lijsten te starten\nVoeg de bestand lijsten die u wilt stapelen toe en klik OK om het stapel proces te starten.",
                     IDC_STATIC,7,7,246,36
     PUSHBUTTON      "Bestandslijsten toevoegen...",IDC_ADDLISTS,5,46,112,14
-    LISTBOX         IDC_FILELISTS,7,66,246,85,LBS_SORT | LBS_OWNERDRAWFIXED | 
-                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+    LISTBOX         IDC_FILELISTS,7,66,246,85,LBS_SORT | LBS_OWNERDRAWFIXED |
+                    LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL |
                     WS_TABSTOP
     PUSHBUTTON      "Lijst Leegmaken",IDC_CLEARLIST,194,46,59,14
 END
@@ -795,19 +795,19 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,118,178,50,14
     PUSHBUTTON      "Annuleer",IDCANCEL,174,178,50,14
     GROUPBOX        "Calibratie Methode",IDC_STATIC,7,7,217,82
-    CONTROL         "Lineair",IDC_LINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Lineair",IDC_LINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,15,30,35,10
-    CONTROL         "Rationeel",IDC_RATIONAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Rationeel",IDC_RATIONAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,15,50,43,10
     GROUPBOX        "RGB Achtergrond Calibratie Methode",IDC_STATIC,7,93,217,
                     80
-    CONTROL         "Geen",IDC_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Geen",IDC_NONE,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,15,112,33,10
-    CONTROL         "Minimum",IDC_MINIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Minimum",IDC_MINIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,15,126,43,10
-    CONTROL         "Midden",IDC_MIDDLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Midden",IDC_MIDDLE,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,15,140,36,10
-    CONTROL         "Maximum",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | 
+    CONTROL         "Maximum",IDC_MAXIMUM,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
                     WS_TABSTOP,15,154,45,10
     CONTROL         "",IDC_RGBCALIBRATIONPREVIEW,"Static",SS_BITMAP | SS_CENTERIMAGE,
                     75,105,143,64
@@ -822,7 +822,7 @@ FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,221,204,50,14
     PUSHBUTTON      "Annuleer",IDCANCEL,280,204,50,14
-    CONTROL         "Laat alle aanbevelingen zien",IDC_SHOWALL,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Laat alle aanbevelingen zien",IDC_SHOWALL,"Button",BS_AUTOCHECKBOX |
                     NOT WS_VISIBLE | WS_TABSTOP,8,206,103,10
     CONTROL         "<a href=""http://deepskystacker.free.fr"">DeepSkyStacker Web Site</a>",
                     IDC_RECOMMANDEDSETTINGSHTML,"QHTM_Window_Class_001",WS_TABSTOP,
@@ -836,7 +836,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_REGISTERSETTINGS, DIALOG
     BEGIN
@@ -897,93 +897,93 @@ END
 IDD_PROPERTIES DLGINIT
 BEGIN
     IDC_TYPE, 0x403, 6, 0
-0x694c, 0x6863, 0x0074,  
+0x694c, 0x6863, 0x0074,
     IDC_TYPE, 0x403, 7, 0
-0x6f44, 0x6b6e, 0x7265, "\000" 
+0x6f44, 0x6b6e, 0x7265, "\000"
     IDC_TYPE, 0x403, 5, 0
-0x6c50, 0x7461, "\000" 
+0x6c50, 0x7461, "\000"
     IDC_TYPE, 0x403, 12, 0
-0x6f44, 0x6b6e, 0x7265, 0x5020, 0x616c, 0x0074,  
+0x6f44, 0x6b6e, 0x7265, 0x5020, 0x616c, 0x0074,
     IDC_TYPE, 0x403, 17, 0
-0x6f43, 0x706d, 0x2f2e, 0x6576, 0x7372, 0x6f74, 0x6972, 0x676e, "\000" 
+0x6f43, 0x706d, 0x2f2e, 0x6576, 0x7372, 0x6f74, 0x6972, 0x676e, "\000"
     IDC_ISOSPEED, 0x403, 4, 0
-0x3031, 0x0030,  
+0x3031, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3231, 0x0035,  
+0x3231, 0x0035,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3631, 0x0030,  
+0x3631, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3032, 0x0030,  
+0x3032, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3532, 0x0030,  
+0x3532, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3233, 0x0030,  
+0x3233, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3034, 0x0030,  
+0x3034, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3035, 0x0030,  
+0x3035, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3436, 0x0030,  
+0x3436, 0x0030,
     IDC_ISOSPEED, 0x403, 4, 0
-0x3038, 0x0030,  
+0x3038, 0x0030,
     IDC_ISOSPEED, 0x403, 5, 0
-0x3031, 0x3030, "\000" 
+0x3031, 0x3030, "\000"
     IDC_ISOSPEED, 0x403, 5, 0
-0x3231, 0x3035, "\000" 
+0x3231, 0x3035, "\000"
     IDC_ISOSPEED, 0x403, 5, 0
-0x3631, 0x3030, "\000" 
+0x3631, 0x3030, "\000"
     IDC_ISOSPEED, 0x403, 5, 0
-0x3233, 0x3030, "\000" 
+0x3233, 0x3030, "\000"
     0
 END
 
 IDD_STARMASK DLGINIT
 BEGIN
     IDC_STARSHAPE, 0x403, 4, 0
-0x6542, 0x006c,  
+0x6542, 0x006c,
     IDC_STARSHAPE, 0x403, 15, 0
-0x6641, 0x6567, 0x6c70, 0x7461, 0x6574, 0x4220, 0x6c65, "\000" 
+0x6641, 0x6567, 0x6c70, 0x7461, 0x6574, 0x4220, 0x6c65, "\000"
     IDC_STARSHAPE, 0x403, 6, 0
-0x654b, 0x6567, 0x006c,  
+0x654b, 0x6567, 0x006c,
     IDC_STARSHAPE, 0x403, 17, 0
-0x6641, 0x6567, 0x6c70, 0x7461, 0x6574, 0x4b20, 0x6765, 0x6c65, "\000" 
+0x6641, 0x6567, 0x6c70, 0x7461, 0x6574, 0x4b20, 0x6765, 0x6c65, "\000"
     IDC_STARSHAPE, 0x403, 9, 0
-0x6956, 0x7265, 0x616b, 0x746e, "\000" 
+0x6956, 0x7265, 0x616b, 0x746e, "\000"
     IDC_STARSHAPE, 0x403, 12, 0
-0x774b, 0x6461, 0x6172, 0x6974, 0x6373, 0x0068,  
+0x774b, 0x6461, 0x6172, 0x6974, 0x6373, 0x0068,
     0
 END
 
 IDD_ABOUT DLGINIT
 BEGIN
     IDC_LANGUAGE, 0x403, 10, 0
-0x7453, 0x6e61, 0x6164, 0x7261, 0x0064,  
+0x7453, 0x6e61, 0x6164, 0x7261, 0x0064,
     IDC_LANGUAGE, 0x403, 8, 0
-0x6e45, 0x6c67, 0x7369, 0x0068,  
+0x6e45, 0x6c67, 0x7369, 0x0068,
     IDC_LANGUAGE, 0x403, 9, 0
-0x7246, 0x6e61, 0x61e7, 0x7369, "\000" 
+0x7246, 0x6e61, 0x61e7, 0x7369, "\000"
     IDC_LANGUAGE, 0x403, 8, 0
-0x7345, 0x6170, 0x6ff1, 0x006c,  
+0x7345, 0x6170, 0x6ff1, 0x006c,
     IDC_LANGUAGE, 0x403, 9, 0
-0x7449, 0x6c61, 0x6169, 0x6f6e, "\000" 
+0x7449, 0x6c61, 0x6169, 0x6f6e, "\000"
     IDC_LANGUAGE, 0x403, 6, 0
-0x6543, 0x6b73, 0x0079,  
+0x6543, 0x6b73, 0x0079,
     IDC_LANGUAGE, 0x403, 7, 0
-0x6143, 0x6174, 0xe06c, "\000" 
+0x6143, 0x6174, 0xe06c, "\000"
     IDC_LANGUAGE, 0x403, 8, 0
-0x6544, 0x7475, 0x6373, 0x0068,  
+0x6544, 0x7475, 0x6373, 0x0068,
     IDC_LANGUAGE, 0x403, 11, 0
-0x654e, 0x6564, 0x6c72, 0x6e61, 0x7364, "\000" 
+0x654e, 0x6564, 0x6c72, 0x6e61, 0x7364, "\000"
     IDC_LANGUAGE, 0x403, 21, 0
-0x7254, 0x6461, 0x7469, 0x6f69, 0x656e, 0x6c65, 0x4320, 0x6968, 0x656e, 0x7365, "\000" 
+0x7254, 0x6461, 0x7469, 0x6f69, 0x656e, 0x6c65, 0x4320, 0x6968, 0x656e, 0x7365, "\000"
     IDC_LANGUAGE, 0x403, 10, 0
-0x6f50, 0x7472, 0x6775, 0x6565, 0x0073,  
+0x6f50, 0x7472, 0x6775, 0x6565, 0x0073,
     IDC_LANGUAGE, 0x403, 9, 0
-0x6f52, 0x6d65, 0x6565, 0x736e, "\000" 
+0x6f52, 0x6d65, 0x6565, 0x736e, "\000"
     IDC_LANGUAGE, 0x403, 9, 0
-0x7552, 0x7373, 0x7369, 0x6863, "\000" 
+0x7552, 0x7373, 0x7369, 0x6863, "\000"
     IDC_LANGUAGE, 0x403, 6, 0
-0x7554, 0x6b72, 0x0073,  
+0x7554, 0x6b72, 0x0073,
     0
 END
 
@@ -993,7 +993,7 @@ END
 // Menu
 //
 
-IDR_LISTCONTEXT MENU 
+IDR_LISTCONTEXT MENU
 BEGIN
     POPUP "Inhoud Opgave"
     BEGIN
@@ -1018,7 +1018,7 @@ BEGIN
     END
 END
 
-IDR_SAVECONTEXT MENU 
+IDR_SAVECONTEXT MENU
 BEGIN
     POPUP "Bewaar Inhoud"
     BEGIN
@@ -1028,7 +1028,7 @@ BEGIN
     END
 END
 
-IDR_COSMETICMETHOD MENU 
+IDR_COSMETICMETHOD MENU
 BEGIN
     POPUP "Cosmetische Methode"
     BEGIN
@@ -1037,7 +1037,7 @@ BEGIN
     END
 END
 
-IDR_FILELISTS MENU 
+IDR_FILELISTS MENU
 BEGIN
     POPUP "BestandsLijst"
     BEGIN
@@ -1047,7 +1047,7 @@ BEGIN
     END
 END
 
-IDR_CALIBRATION MENU 
+IDR_CALIBRATION MENU
 BEGIN
     POPUP "Calibratie Menu"
     BEGIN
@@ -1059,7 +1059,7 @@ BEGIN
     END
 END
 
-IDR_SAVESETTINGS MENU 
+IDR_SAVESETTINGS MENU
 BEGIN
     POPUP "BewaarInstellingen"
     BEGIN
@@ -1071,7 +1071,7 @@ BEGIN
     END
 END
 
-IDR_LOADSETTINGS MENU 
+IDR_LOADSETTINGS MENU
 BEGIN
     POPUP "LaadInstellingen"
     BEGIN
@@ -1084,7 +1084,7 @@ BEGIN
     END
 END
 
-IDR_EDITSETTINGS MENU 
+IDR_EDITSETTINGS MENU
 BEGIN
     POPUP "BewerkInstellingen"
     BEGIN
@@ -1100,12 +1100,12 @@ END
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE 
+1 TEXTINCLUDE
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE 
+2 TEXTINCLUDE
 BEGIN
     "#include ""afxres.h""\r\0"
 END
@@ -1118,7 +1118,7 @@ END
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SHOWREGISTEREDSTARS "Laat Geregistreerde Sterren zien"
     IDS_HIDEREGISTEREDSTARS "Verstop Geregistreerde Sterren"
@@ -1127,7 +1127,7 @@ BEGIN
     IDS_MANAGESETTINGS      "Bewaar, Laad, Beheer instellingen ..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_PATH         "Pad"
     IDS_COLUMN_FILE         "Bestand"
@@ -1139,7 +1139,7 @@ BEGIN
     IDS_COLUMN_DATETIME     "Datum/Tijd"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COLUMN_SIZES        "Grootte"
     IDS_COLUMN_CFA          "CFA"
@@ -1147,11 +1147,12 @@ BEGIN
     IDS_COLUMN_INFOS        "Info"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Belichting"
+	IDS_COLUMN_APERTURE		"Diafragma"
     IDS_COLUMN_STARS        "#Sterren"
     IDS_COLUMN_SKYBACKGROUND "Hemel Achtergrond"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TYPE_LIGHT          "Licht"
     IDS_TYPE_DARK           "Donker"
@@ -1159,7 +1160,7 @@ BEGIN
     IDS_TYPE_OFFSET         "Verstoring/Comp."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FORMAT_RGB          "RGB %ld bit/kan"
     IDS_FORMAT_GRAY         "Grijs %ld bit"
@@ -1171,7 +1172,7 @@ BEGIN
     IDS_AND                 "en"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURE0           "Belichting: < 1 s "
     IDS_EXPOSURE1           "Belichting: %ld s "
@@ -1186,10 +1187,10 @@ BEGIN
     IDS_ESTIMATEDUNKNOWN    "Geschatte resterende tijd: Onbekend"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS of DeepSkyStacker Afbeelding| *.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Afbeelding Bestanden|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts|Windows Bitmap (.bmp)|*.bmp|JPEG or PNG Bestanden|*.jpg;*.jpeg;*.png|TIFF Bestanden (.tif)|*.tif;*.tiff|RAW Bestanden|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Bestanden|*.fits;*.fit;*.fts|Alle Bestanden|*.*||"
+    IDS_FILTER_INPUT        "Afbeelding Bestanden|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmap (.bmp)|*.bmp|JPEG or PNG Bestanden|*.jpg;*.jpeg;*.png|TIFF Bestanden (.tif)|*.tif;*.tiff|RAW Bestanden|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Bestanden|*.fits;*.fit;*.fts||"
     IDS_FILTER_OUTPUT       "TIFF Afbeelding (16 bit/kan)|*.TIF|TIFF Afbeelding (32 bit/kan - integer)|*.TIF|TIFF Afbeelding (32 bit/kan - rationeel)|*.TIF|FITS Afbeelding (16 bit/kan)|*.FTS|FITS Afbeelding (32 bit/kan - integer)|*.FTS|FITS Afbeelding (32 bit/kan -rationeel)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Bestand Lijst (*.txt)|*.txt|Bestand Lijst (*.dssfilelist)|*.dssfilelist|Alle Bestanden|*.*||"
     IDS_FILTER_MASK         "TIFF Afbeelding|*.tif;*.tiff|FITS Afbeelding|*.fits;*.fts;*.fit||"
@@ -1198,18 +1199,18 @@ BEGIN
     IDS_TITLE_OPENDARKFRAMES "Open Donkere Platen..."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MSG_SAVEMODIFICATIONS "Wilt u de veranderingen bewaren?"
     IDS_MSG_NOPICTURETOSAVE "Er is geen afbeelding om te bewaren."
-    IDS_MSG_NOPICTUREFORSTARMASK 
+    IDS_MSG_NOPICTUREFORSTARMASK
                             "Een afbeelding moet geladen zijn om een SterMasker te maken."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECK_ALLOK         "donkere, platte en compensatie/verstoring aangevinkt."
-    IDS_CHECK_DARKFLATOFFSET 
+    IDS_CHECK_DARKFLATOFFSET
                             "Vergeet niet om donkere, platte en compensatie platen toe te voegen en aan te vinken voor stapelen."
     IDS_CHECK_DARKFLAT      "Vergeet niet om donkere en platte platen toe te voegen en aan te vinken voor stapelen."
     IDS_CHECK_DARKOFFSET    "Vergeet niet om donkere en compensatie platen toe te voegen en aan te vinken voor stapelen."
@@ -1219,7 +1220,7 @@ BEGIN
     IDS_CHECK_OFFSET        "Vergeet niet om compensatie platen toe te voegen en aan te vinken voor stapelen."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TT_REDADJUST        "Gebruik Rood Histogram Aanpassing Methode"
     IDS_TT_GREENADJUST      "Gebruik Groen Histogram Aanpassing Methode"
@@ -1228,7 +1229,7 @@ BEGIN
     IDS_TT_EMBEDDED         "Deze optie bewaard de onbewerkte afbeelding maar sluit de bewerkingsinstellig in\nGebruik dit als u van plan bent on in andere software te bewerken of om de afbeelding te her-openen met DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ASK_DELETESETTINGS  "Wilt u werkelijk de %s instellingen verwijderen?"
     IDS_ASK_NODARK          "U heeft geen donkere platen aangevinkt.\n"
@@ -1237,16 +1238,16 @@ BEGIN
     IDS_ASK_CONTINUE        "\nWilt u verder?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ERROR_NOTCOMPATIBLE "De gevinkte afbeeldingen zijn onderling niet gelijk (breedte, hoogte, kleur-indeling, aantal kanalen, alleen n hoofd donker, compensatie of plat)."
     IDS_ERROR_NOTLIGHTCHECKED "U moet licht platen aanvinken om te stapelen."
     IDS_ERROR_NOTLIGHTCHECKED2 "U moet licht platen aanvinken om te registreren."
-    IDS_ERROR_NOTENOUGHFREESPACE 
+    IDS_ERROR_NOTENOUGHFREESPACE
                             "Het maken van de Hoofd (donker, plat, compensatie) heeft %ld Kb nodig.\nEr is %ld Kb beschikbaar op schijf %s\nWilt u toch doorgaan?"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CREATEMASTERDARK    "Maken Hoofd Donker Plaat"
     IDS_CREATEMASTEROFFSET  "Maken Hoofd Compensatie Plaat"
@@ -1254,7 +1255,7 @@ BEGIN
     IDS_ADDDARK             "Toevoegen Donker plaat %ld aan %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_SAVINGMASTEROFFSET  "Bewaren Hoofd Compensatie"
     IDS_SAVINGMASTERDARK    "Bewaren Hoofd Donker"
@@ -1266,7 +1267,7 @@ BEGIN
     IDS_SAVINGMASTERDARKFLAT "Bewaren Hoofd Donker Plat"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_REGISTERING         "Registratie afbeeldingen"
     IDS_REGISTERINGPICTURE  "Registreren %ld op %ld"
@@ -1286,7 +1287,7 @@ BEGIN
     IDS_COMPUTINGOFFSETS    "Berekenen van de compensatie"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGSTACKINGINFO "Berekenen stapel info voor %s"
     IDS_STACKING_COMPUTINGOFFSET "Stapelen ... berekenen compensatie"
@@ -1296,10 +1297,10 @@ BEGIN
     IDS_LOADGRAYLIGHT       "Laden %ld bits grijs %s licht plaat\n%s"
     IDS_STACKRGBLIGHT       "Stapelen %ld bit/kan %s licht plaat\n%s"
     IDS_STACKGRAYLIGHT      "Stapelen %ld bits grijs %s licht plaat\n%s"
-    IDS_STACKING_COMPUTINGADJUSTMENT 
+    IDS_STACKING_COMPUTINGADJUSTMENT
                             "Stapelen - Aanpassen Bayer - Bereken aanpassing"
     IDS_COMPUTINGADJUSTMENT "Bereken aanpassing %ld van %ld"
-    IDS_STACKING_APPLYINGADJUSTMENT 
+    IDS_STACKING_APPLYINGADJUSTMENT
                             "Stapelen - Aanpassen Bayer - Aanpassing toepassen"
     IDS_STACKING_COMPUTEMAXADJUSTMENT "Bereken maximale aanpassing"
     IDS_STACKING_APPLYADJUSTMENT "Aanpassing uitvoeren"
@@ -1308,7 +1309,7 @@ BEGIN
     IDS_COMPUTINGMEDIANFLAT "Bereken hoofd plat (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADDSIMAGE         "Laden DS Afbeelding"
     IDS_LOADPICTURE         "Laden %s"
@@ -1328,7 +1329,7 @@ BEGIN
     IDS_LOADRGBFITS         "Laden FITS %ld bit/kan"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HAT_LINEAR          "Lineair"
     IDS_HAT_CUBEROOT        "Derde Machts Wortel"
@@ -1339,7 +1340,7 @@ BEGIN
     IDS_HAT_ASINH           "OSinH"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADRGBFLAT         "Laden %ld bit/kan %s platte plaat\n%s"
     IDS_LOADGRAYFLAT        "Laden %ld bits grijs %s platte plaat\n%s"
@@ -1354,14 +1355,14 @@ BEGIN
     IDS_NORMALIZINGMASTERFLAT "Kalibreren Hoofd Plat"
     IDS_COMPUTINGMINLUMINANCE "Automatisch berekenen minimum helderheid"
     IDS_COMPUTINGENTROPY    "Berekenen Entropie"
-    IDS_COMPUTINGBACKGROUNDCALIBRATION 
+    IDS_COMPUTINGBACKGROUNDCALIBRATION
                             "Berekenen Achtergrond Calibratie parameters"
-    IDS_COMPUTINGDARKOPTIMIZATIONFACTOR 
+    IDS_COMPUTINGDARKOPTIMIZATIONFACTOR
                             "Berekenen Donker Optimatisatie parameters"
     IDS_REMOVINGHOTPIXELS   "Detectie hete pixels"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TYPE_MASTERDARK     "Hoofd Donker"
     IDS_TYPE_MASTEROFFSET   "Hoofd Compensatie"
@@ -1370,7 +1371,7 @@ BEGIN
     IDS_TYPE_MASTERDARKFLAT "Hoofd Donkere Plat"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_CHECKVERSION        "Wilt u dat DeepSkyStacker bij het opstarten controleerd of er een nieuwe versie beschikbaar is?\n(U kan deze optie later aan of uit zetten in het ""Over DeepSkyStacker"" venster)"
     IDS_VERSIONAVAILABLE    "DeepSkyStacker versie %s is beschikbaar om te downloaden."
@@ -1379,11 +1380,11 @@ BEGIN
     IDS_WANTTOCONTINUE      "\nWilt u echt doorgaan?"
     IDS_WARNINGREADONLY     "De volgende map(pen) zijn alleen-lezen:\n%s\nDeepSkyStacker moet bestanden aanmaken in deze map(pen) gedurende de bewerking."
     IDS_WARNING_SAVECHANGES "U heeft een aantal veranderingen gemaakt in de %s bestand lijst en/of de instellingen.\n\nWilt u deze veranderingen bewaren?"
-    IDS_WARNING_ONLYONEFRAME 
+    IDS_WARNING_ONLYONEFRAME
                             "Maar één afbeelding (van de %ld) wordt gestapeld.\n\nU kunt de ster detectie drempel kunnen controleren/veranderen om meer sterren te\ndetecteren en om DeepSkyStacker te helpen een transformatie te vinden tussen de\nreferentie afbeelding en de anderen.\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_EXPOSURETIME1       "%ld s "
     IDS_EXPOSURETIME2       "Belichting: %ld mn %ld s "
@@ -1391,38 +1392,38 @@ BEGIN
     IDS_NRPROCESSORS        "[%ld processoren gebruikt]"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_STEP          "Stapel stap %ld\n  ->%ld platen (ISO: %s) - totale belichting: "
     IDS_RECAP_OFFSET        "\t-> Compensatie: %ld platen (ISO: %s) belichting: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tWaarschuwing: ISO snelheid komt niet overeen met licht platen\n"
     IDS_RECAP_NOOFFSET      "\t-> Geen Compensatie\n"
     IDS_RECAP_DARK          "\t-> Donkere: %ld platen (ISO: %s) belichting: %s\n"
-    IDS_RECAP_EXPOSUREWARNING 
+    IDS_RECAP_EXPOSUREWARNING
                             "\t\tWaarschuwing: belichting tijd komt niet overeen met licht platen\n"
     IDS_RECAP_NODARK        "\t-> Geen Donker\n"
     IDS_RECAP_FLAT          "\t-> Platte: %ld platen (ISO: %s) belichting: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Geen Plat\n"
-    IDS_RECAP_TOTALEXPOSURETIME 
+    IDS_RECAP_TOTALEXPOSURETIME
                             "\nGeschatte Totale belichting tijd: %s\n(de totale belichting tijd is berekend rekeninghoudend dat alle aangevinkte licht platen worden behouden voor het stapel proces)\n"
-    IDS_RECAP_WARNINGBAYERDRIZZLE 
+    IDS_RECAP_WARNINGBAYERDRIZZLE
                             "Waarschuwing: De Bayer Drizzle optie is geselecteerd in de RAW DDP en kan leiden tot vreemde resultaten met een methode anders dan gemidddeld."
-    IDS_RECAP_BACKGROUNDCALIBRATION 
+    IDS_RECAP_BACKGROUNDCALIBRATION
                             "Achtergrond Calibratie RGB Kanalen: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Donker optimalisatie: %s\n"
     IDS_RECAP_DARKFLAT      "\t-> Donkere Platte: %ld platen (ISO: %s) belichting: %s\n"
-    IDS_RECAP_ISOWARNINGDARKFLAT 
+    IDS_RECAP_ISOWARNINGDARKFLAT
                             "\t\tWaarschuwing: ISO snelheid komt niet overeen met platte platen\n"
-    IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
+    IDS_RECAP_EXPOSUREWARNINGDARKFLAT
                             "\t\tWaarschuwing: belichting tijd komt niet overeen met platte platen\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MULTIPLEFILESELECTED "%ld bestanden geselecteerd"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_METHOD        "Methode: "
     IDS_RECAP_AVERAGE       "Gemiddelde"
@@ -1431,48 +1432,48 @@ BEGIN
     IDS_RECAP_KAPPASIGMA    "Kappa-Sigma (Kappa = %.2f, Herhaling = %ld)"
     IDS_RECAP_AUTOADAPTIVE  "Automatisch Aangepaste Gewogen Gemiddelde (Herhaling = %ld)"
     IDS_RECAP_ENTROPYAVERAGE "Afnemend Gewogen Gemiddelde"
-    IDS_RECAP_MEDIANSIGMACLIP 
+    IDS_RECAP_MEDIANSIGMACLIP
                             "Rechtlijnig Kappa-Sigma (Kappa = %.2f, Herhaling = %ld)"
     IDS_RECAP_ALIGNMENT     "Uitlijning methode: "
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_MEGABYTES     "%.1f Mb"
     IDS_RECAP_KILOBYTES     "%.1f Kb"
     IDS_RECAP_GIGABYTES     "%.1f Gb"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_RECAP_WARNINGDISKSPACE 
+    IDS_RECAP_WARNINGDISKSPACE
                             "Het proces heeft tijdelijk %s aan vrije ruimte nodig op de %s schijf.\nEr is %s beschikbaar op deze schijf."
     IDS_RECAP_INFODISKSPACE "Het proces zal tijdelijk %s op de %s schijf gebruiken (%s vrij)."
-    IDS_RECAP_SELECTTEMPFOLDER 
+    IDS_RECAP_SELECTTEMPFOLDER
                             "Selecteer a.u.b. de map die alle tijdelijke bestanden bevattten."
     IDS_RECAP_MOSAIC        "Mozaïek modus: "
     IDS_RECAP_MOSAICWARNING "Let op: de benodigde schijfruimte wordt berekend met behulp van de referentie plaat. Afhankelijk van de grootte van de resulterende afbeelding is er misschien meer ruimte nodig."
-    IDS_RECAP_WARNINGINTERMEDIATESAVE 
+    IDS_RECAP_WARNINGINTERMEDIATESAVE
                             "Waarschuwing: de optie om geregistreerde en gecalibreerde afbeeldingen te bewaren is geselecteerd. Let op dat u genoeg schijfruimte over heeft om de bestanden te bewaren."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COMPUTINGMEDIANLIGHT "Berekenen Definitieve Afbeelding (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LISTINFO            "Licht Platen:%ld      -      Donker Platen: %ld      -      Platte Platen:%ld      -   Donkere Platte Platen: %ld   -      Compensatie/Verstoring Platen: %ld"
     IDS_LISTINFO2           "Licht Platen: %ld\nDonker Platen: %ld\nPlatte Platen:%ld\nDonkere Platte Platen: %ld\nCompensatie/Verstoring Platen: %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TOOLTIP_KAPPASIGMA  "De pixels buiten de drempel:\n[Gemiddelde-[kappa]*[sigma] , Gemiddelde+[kappa]*[sigma] ]\nzijn herhaaldelijk verwijderd.\n\nDe overblijvende pixels zijn gemiddeld."
-    IDS_TOOLTIP_AUTOADAPTIVE 
+    IDS_TOOLTIP_AUTOADAPTIVE
                             "Het <b>gewogen gemiddelde</b> is bereikt door\nhet herhaaldelijk wegen van elke pixel\nuit de deviatie van het gemiddelde\nin vergelijking tot de standaard deviatie ( [sigma] )."
-    IDS_TOOLTIP_MEDIANKAPPASIGMA 
+    IDS_TOOLTIP_MEDIANKAPPASIGMA
                             "De pixels buiten de drempel:\n[Gemiddelde-[kappa]*[sigma] , Gemiddelde+[kappa]*[sigma] ]\nzijn herhaaldelijk vervangen door de gemiddelde waarde.\n\nDe pixels zijn daarna gemiddeld."
     IDS_TOOLTIP_SELECTRECT  "Rechthoek Mode op maat gemaakt\nDeze mode kan gebruikt worden om een op maat\ngemaakte rechthoek te maken en veranderen."
     IDS_TOOLTIP_STAR        "Bewerk Sterren Mode\nDeze mode kan gebruikt worden om sterren\ntoe te voegen of te verwijderen in de afbeelding."
@@ -1480,7 +1481,7 @@ BEGIN
     IDS_TOOLTIP_SAVE        "Bewaar veranderingen\nBewaar alle veranderingen (Sterren en Komeet) voor de huidige afbeelding."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_GENERIC_RGGB        "Algemeen RGGB"
     IDS_GENERIC_BGGR        "Algemeen BGGR"
@@ -1489,13 +1490,13 @@ BEGIN
     IDS_GENERIC             "Algemeen"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_MAINGROUP           "Hoofd groep"
     IDS_GROUPIDMASK         "Groep %ld"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ALIGNMENT_AUTO      "Automatisch\n\nDe uitlijnmethode wordt automatisch geselecteerd afhankeijk van het aantal beschikbare sterren."
     IDS_ALIGNMENT_BILINEAR  "Bi-lineair Uitlijnen\n\nHet Bi-lineair Uitlijnen wordt gebruikt in alle gevallen."
@@ -1503,7 +1504,7 @@ BEGIN
     IDS_ALIGNMENT_BICUBIC   "Bi-kubus Uitlijning\n\nDe Bi-kubus methode wordt gebruikt wanneer er minimaal 40 sterren beschikbaar zijn, de Bi-oppervlakte methode wordt gebruikt als er 25 tot 39 sterren beschikbaar zijn, en de Bi-lineair methode wordt gebruikt als er minder dan 25 sterren beschikbaar zijn."
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ALIGN_AUTO          "Automatisch"
     IDS_ALIGN_BILINEAR      "Bi-lineair"
@@ -1512,14 +1513,14 @@ BEGIN
     IDS_ALIGN_NONE          "Geen Uitlijning"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECAP_HOTPIXELS     "Hete Pixel detectie en verwijdering: %s\n"
     IDS_RECAP_DETECTEDANDUSEDPROCESSORS "%ld gevonden en gebruikte processoren "
-    IDS_RECAP_DETECTEDNOTUSEDPROCESSORS 
+    IDS_RECAP_DETECTEDNOTUSEDPROCESSORS
                             "%ld gevonden processoren - n gebruikt"
     IDS_RECAP_DRIZZLE       "Drizzle x%ld ingeschakeld"
-    IDS_RECAP_WARNINGDRIZZLE 
+    IDS_RECAP_WARNINGDRIZZLE
                             "De geselcteerde drizzle optie komt niet overeen met de Bayer Drizzle modus."
     IDS_RECAP_WARNINGJPEG   "Waarschuwing: U gebruikt donkere, platte of compensatie platen samen met JPEG bestanden.\nOmdat de compressie niet constant is zal de calibratie niet werken met JPEG bestanden."
     IDS_RECAP_STACKINGMODE  "Stapel modus: "
@@ -1534,7 +1535,7 @@ BEGIN
     IDS_RECAP_COSMETICCOLD  "Cosmetica op koude pixels wordt toegepast (Filter = %ld px, Detectie Drempel = %.1f%%)\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_DETECTINGHOTPIXELS1 "Detecteren Hete Pixels (1/2)"
     IDS_DETECTINGHOTPIXELS2 "Detecteren Hete Pixels (2/2)"
@@ -1554,19 +1555,19 @@ BEGIN
     IDS_MEDIANDARKFLATINFO  "Hoofd Donkere Platte gemaakt van %ld afbeeldingen (%s)"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_HELPFILE            "DeepSkyStacker Help.chm"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_LOADGRAYFITS        "Laden FITS %ld bit zwart-wit"
     IDS_SAVINGFITS          "Bewaren FITS %ld bit"
     IDS_STARMASKDESCRIPTION "Ster Masker gemaakt door DeepSkyStacker"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TITLE_OPENFLATFRAMES "Open Platte Platen..."
     IDS_TITLE_OPENBIASFRAMES "Open Comp. Platen..."
@@ -1576,7 +1577,7 @@ BEGIN
     IDS_TITLE_SAVESETTINGS  "Bewaar DeepSkyStacker Instellingen"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_TIP_ADDSTAR         "Klik om deze ster toe te voegen"
     IDS_TIP_REMOVESTAR      "Klik om deze ster te verwijderen"
@@ -1584,7 +1585,7 @@ BEGIN
     IDS_TIP_REMOVECOMET     "Klik om de komeet te verwijderen"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_COSMETICSTATS       "Cosmetisch\nGedetecteerde Hete Pixels: %ld (%.2f%%)\nGedetecteerde Koude Pixels: %ld (%.2f%%)\n"
     IDS_COMPUTINGCOSMETICSTATS "Berekenen Cosmetica"
@@ -1593,74 +1594,74 @@ BEGIN
     IDS_ALIGNINGCHANNEL     "Uitlijnen Kanaal"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_FILELISTDESCRIPTION "DeepSkyStacker Bestand Lijst"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
-    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
+    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION
                             "Per Kanaal Achtergrond Calibratie: %s\n"
     IDS_RECAP_DARKMULTIPLICATIONFACTOR "Donker Vermenigvuldigings Factor: %.2f\n"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_DISCLAIMER     "Dit zijn aanbevolen instellingen.\nDeze instellingen zijn een uitgangs punt om te beginnen maar kunnen niet altijd werken."
     IDS_RECO_CLICKTOSET     "Klik op de voorgestelde link om de instelling te veranderen"
     IDS_RECO_ALREADYSET     "Instellingen die al gemaakt zijn worden in het groen afgedrukt"
     IDS_RECO_PREREQUISITES  "U moet eerst afbeeldingen toevoegen en aanvinken in de lijst."
     IDS_RECO_RAWNARROWBAND_TEXT "Gebruik super-pixel modus"
-    IDS_RECO_RAWNARROWBAND_REASON 
+    IDS_RECO_RAWNARROWBAND_REASON
                             "Als u smal band afbeeldingen verwerkt (voornamelijk Ha)"
     IDS_RECO_RAWHIGHSNR_TEXT "Gebruik AHD debayerisatie"
-    IDS_RECO_RAWHIGHSNR_REASON 
+    IDS_RECO_RAWHIGHSNR_REASON
                             "U verwerkt lange belichting en mogelijk goede SNR afbeeldingen"
     IDS_RECO_RAWLOWSNR_TEXT "Gebruik Bi-lineair debayerisatie"
-    IDS_RECO_RAWLOWSNR_REASON 
+    IDS_RECO_RAWLOWSNR_REASON
                             "U verwerkt korte belichting en mogelijk lage SNR afbeeldingen"
     IDS_RECO_RAWSETBP_TEXT  "Maak het zwarte punt 0 om het calibreren te verbeteren"
     IDS_RECO_RAWSETBP_REASON "U gebruikt compensatie platen"
     IDS_RECO_RAWCLEARBP_TEXT "Zet het zwarte punt niet op 0"
     IDS_RECO_RAWCLEARBP_REASON "U gebruikt platte platen zonder compensatie platen"
-    IDS_RECO_MEDIANFILTER_TEXT 
+    IDS_RECO_MEDIANFILTER_TEXT
                             "Gebruik een Rechtlijning Filter voor het registreren van de afbeeldingen om de ruis te reduceren en om de ster detectie te bevorderen"
-    IDS_RECO_MEDIANFILTER_REASON 
+    IDS_RECO_MEDIANFILTER_REASON
                             "U gebruikt een lage ster detectie drempel"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_MODDEDDSLR_TEXT "Herstel alle wit balans instellingen"
     IDS_RECO_MODDEDDSLR_REASON "Als u een gemodificeerde DSLR gebruikt"
     IDS_RECO_USEAVERAGECOMBINE "Gebruik Gemiddelde combinatie methode"
-    IDS_RECO_COMETSTARTRAILS_REASON 
+    IDS_RECO_COMETSTARTRAILS_REASON
                             "U probeert een komeet afbeelding te maken met ster sporen"
     IDS_RECO_USESIGMACLIPPING "Gebruik Sigma-Afbreek combinatie methode"
-    IDS_RECO_COMETSTARSMANY_REASON 
+    IDS_RECO_COMETSTARSMANY_REASON
                             "U probeert een komeet afbeelding te maken uitgelijnd  op de sterren en de komeet uit %ld licht afbeelding(en)"
     IDS_RECO_USEMEDIAN      "Gebruik Rechtlijnige combinatie methode"
     IDS_RECO_DARK_REASON    "U maakt een hoofd donker uit %ld donker afbeelding(en)"
     IDS_RECO_USESIGMAMEDIAN "Gebruik Sigma-Afbreek Rechtlijnige combinatie methode"
     IDS_RECO_BIAS_REASON    "U maakt een hoofd verstoring uit %ld verstoring afbeelding(en)"
     IDS_RECO_FLAT_REASON    "U maakt een hoofd plat uit %ld platte afbeelding(en)"
-    IDS_RECO_PERCHANNELCALIBRATION_REASON 
+    IDS_RECO_PERCHANNELCALIBRATION_REASON
                             "Als de resulterende afbeeldingen te grijs lijken"
     IDS_RECO_USEPERCHANNEL  "Gebruik Per Kanaal achtergrond calibratie"
-    IDS_RECO_RGBCALIBRATION_REASON 
+    IDS_RECO_RGBCALIBRATION_REASON
                             "Als de kleur balans in de resulterende afbeeldingen te moeilijk bewerken is in nabewerking"
     IDS_RECO_USERGBCALIBRATION "Gebruik RGB achtergrond calibratie"
-    IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON 
+    IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON
                             "U stapelt grijstint afbeeldingen deze kunnen een klein verschil hebben in achtergrond waarden"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker versie %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW bestanden gedecodeerd met DCRAW (versie %s)\nCopyright © 1997-2016 Dave Coffin"
-    IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
+    IDS_ABOUT_DCRAW         "RAW bestanden gedecodeerd met LibRaw (versie %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "TIFF bestanden codering/decodering door LibTIFF (versie %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "FITS decodering door CFitsIO (versie %s)\nCopyright NASA"
@@ -1669,7 +1670,7 @@ BEGIN
     IDS_ABOUT_QHTM_LINK     "http://www.gipsysoft.com"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUT_LANG_SPANISH  "Spanish versie: Ricardo Contreras en het team uit"
     IDS_ABOUT_LANG_SPANISH_LINK "Espacio Profundo"
@@ -1687,12 +1688,18 @@ BEGIN
     IDS_ABOUT_LANG_CHINESET "Traditioneel Chinees versie:"
 END
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_RECO_LIGHT_REASON   "U stapelt %ld licht afbeelding(en)"
-    IDS_RECO_USEAUTOADAPTIVEAVERAGE 
+    IDS_RECO_USEAUTOADAPTIVEAVERAGE
                             "Gebruik Automatisch Aangepaste Gewogen Gemiddelde combinatie methode"
 END
+
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw ondersteund uw %s camera niet"
+END
+
 
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////

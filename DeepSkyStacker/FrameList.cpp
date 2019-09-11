@@ -2,6 +2,7 @@
 #include "FrameList.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
+#include <direct.h>
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -98,6 +99,15 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 	hFile = _tfopen(szFile, _T("wt"));
 	if (hFile)
 	{
+		CString		strBaseDirectory;
+		TCHAR		szDir[1 + _MAX_DIR];
+		TCHAR		szDrive[1 + _MAX_DRIVE];
+		TCHAR		szRelPath[1 + MAX_PATH];
+
+		_tsplitpath(szFile, szDrive, szDir, nullptr, nullptr);
+		strBaseDirectory = szDrive;
+		strBaseDirectory += szDir;
+
 		fprintf(hFile, "DSS file list\n");
 		fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
 		for (LONG j = 0;j<m_Jobs.m_vJobs.size();j++)
@@ -153,9 +163,35 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 					else if (m_vFiles[lItem].IsFlatFrame())
 						strType = "flat";
 
-					fprintf(hFile, "%ld\t%s\t%s\n", lChecked, 
-						(LPCSTR)CT2CA(strType, CP_UTF8), 
-						(LPCSTR)CT2CA(m_vFiles[lItem].m_strFileName, CP_UTF8));
+					//
+					// Check if this file is on the same drive as the file-list file
+					// if not we can't use relative paths and will need to save the 
+					// absolute path the the file-list
+					//
+					TCHAR		szItemDrive[1 + _MAX_DRIVE];
+					_tsplitpath(m_vFiles[lItem].m_strFileName, szItemDrive, nullptr, nullptr, nullptr);
+
+					if (!_tcscmp(szDrive, szItemDrive))
+					{
+						//
+						// Convert m_strFileName to a relative path
+						//
+						PathRelativePathTo(szRelPath,
+							(LPCTSTR)strBaseDirectory,
+							FILE_ATTRIBUTE_DIRECTORY,
+							(LPCTSTR)(m_vFiles[lItem].m_strFileName),
+							FILE_ATTRIBUTE_NORMAL);
+
+						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
+							(LPCSTR)CT2CA(strType, CP_UTF8),
+							(LPCSTR)CT2CA(szRelPath, CP_UTF8));
+					}
+					else
+					{
+						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
+							(LPCSTR)CT2CA(strType, CP_UTF8),
+							(LPCSTR)CT2CA(m_vFiles[lItem].m_strFileName, CP_UTF8));
+					}
 				};
 			};
 		};
@@ -262,6 +298,23 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 		CString			strValue;
 		BOOL			bContinue = FALSE;
 
+		CString		strBaseDirectory;
+		TCHAR		szDir[1 + _MAX_DIR];
+		TCHAR		szDrive[1 + _MAX_DRIVE];
+		LPTSTR		szOldCWD;
+
+		//
+		// Extract the directory where the file list is stored.
+		_tsplitpath(szFileList, szDrive, szDir, nullptr, nullptr);
+		strBaseDirectory = szDrive;
+		strBaseDirectory += szDir;
+
+		//
+		// Remember current directory and switch to directory containing filelist
+		//
+		szOldCWD = _tgetcwd(nullptr, 0);
+		SetCurrentDirectory(strBaseDirectory);
+
 		// Read scan line
 		if (fgets(szBuffer, sizeof(szBuffer), hFile))
 		{
@@ -324,20 +377,33 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 					if (Type != PICTURETYPE_UNKNOWN)
 					{
+						long	length = 0;
+						TCHAR*	pszAbsoluteFile = nullptr;
+
+						//
+						// Convert relative path to absolute path.
+						//
+						length = GetFullPathName(static_cast<LPCTSTR>(strFile), 0L, nullptr, nullptr);
+						pszAbsoluteFile = new TCHAR[length];
+
+						length = GetFullPathName(static_cast<LPCTSTR>(strFile), length, pszAbsoluteFile, nullptr);
+						if (0 == length) ZTRACE_RUNTIME("GetFullPathName for %s failed", 
+							(LPCSTR)CT2CA(strFile, CP_UTF8));
+
 						// Check that the file exists
 						FILE *		hTemp;
 
-						hTemp = _tfopen(strFile, _T("rb"));
+						hTemp = _tfopen(pszAbsoluteFile, _T("rb"));
 						if (hTemp)
 						{
 							fclose(hTemp);
 
 							CListBitmap			lb;
 
-							if (lb.InitFromFile(strFile, Type))
+							if (lb.InitFromFile(pszAbsoluteFile, Type))
 							{
 								lb.m_dwGroupID = dwGroupID;
-								if (!AddFile(strFile, dwGroupID, dwJobID, Type, lChecked))
+								if (!AddFile(pszAbsoluteFile, dwGroupID, dwJobID, Type, lChecked))
 								{
 									// Add to the list
 									lb.m_bChecked = lChecked;
@@ -346,7 +412,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 										lb.m_bUseAsStarting = bUseAsStarting;
 										CLightFrameInfo			bmpInfo;
 
-										bmpInfo.SetBitmap(strFile, FALSE);
+										bmpInfo.SetBitmap(pszAbsoluteFile, FALSE);
 										if (bmpInfo.m_bInfoOk)
 										{
 											lb.m_bRegistered = TRUE;
@@ -361,6 +427,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 								};
 							};
 						};
+						delete [] pszAbsoluteFile;
 					};
 				};
 			};
@@ -370,6 +437,14 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 
 		fclose(hFile);
+		if (nullptr != szOldCWD)
+		{
+			//
+			// Restore working directory to status quo ante
+			//
+			SetCurrentDirectory(szOldCWD);
+			free(szOldCWD);
+		}
 	};
 	m_bDirty = FALSE;
 	SetCursor(::LoadCursor(NULL, IDC_ARROW));

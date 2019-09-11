@@ -73,7 +73,7 @@ typedef enum FITSFORMAT
 #pragma warning( disable : 4018 )
 
 #include "DSSVersion.h"
-#define VERSION_DCRAW						"9.27 rev 1.477"
+#define VERSION_DCRAW						"0.19.3"
 #define VERSION_LIBTIFF						"4.0.9"
 #define VERSION_CFITSIO						"3.43"
 

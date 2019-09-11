@@ -501,13 +501,13 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 		ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
 
 		if (tasks.m_vStacks[i].m_pOffsetTask)
-			ulOffsetSpace = max(ulOffsetSpace, ulSpace * tasks.m_vStacks[i].m_pOffsetTask->m_vBitmaps.size());
+			ulOffsetSpace = max(ulOffsetSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
 
 		if (tasks.m_vStacks[i].m_pDarkTask)
-			ulDarkSpace = max(ulDarkSpace, ulSpace * tasks.m_vStacks[i].m_pDarkTask->m_vBitmaps.size());	
+			ulDarkSpace = max(ulDarkSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
 
 		if (tasks.m_vStacks[i].m_pFlatTask)
-			ulFlatSpace = max(ulFlatSpace, ulSpace * tasks.m_vStacks[i].m_pFlatTask->m_vBitmaps.size());	
+			ulFlatSpace = max(ulFlatSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
 	};
 
 	ulNeededSpace = max(ulFlatSpace, max(ulOffsetSpace, ulDarkSpace));

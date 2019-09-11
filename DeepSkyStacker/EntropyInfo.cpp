@@ -1,14 +1,14 @@
 #include <stdafx.h>
 #include "EntropyInfo.h"
 #include "DSSProgress.h"
+#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 
 void CEntropyInfo::InitSquareEntropies()
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG						i, j;
-	LONG						lSquareSize;
+	LONG		lSquareSize;
 
 	lSquareSize = m_lWindowSize * 2 + 1;
 
@@ -26,7 +26,7 @@ void CEntropyInfo::InitSquareEntropies()
 	if (m_pProgress)
 		m_pProgress->Start2(NULL, m_lNrSquaresX);
 
-	for (i = 0;i<m_lNrSquaresX;i++)
+	for (long i = 0;i<m_lNrSquaresX;i++)
 	{
 		LONG			lMinX, 
 						lMaxX;
@@ -34,7 +34,7 @@ void CEntropyInfo::InitSquareEntropies()
 		lMinX = i * lSquareSize;
 		lMaxX = min((i+1) * lSquareSize -1, m_pBitmap->Width()-1);
 
-		for (j = 0;j<m_lNrSquaresY;j++)
+		for (long j = 0;j<m_lNrSquaresY;j++)
 		{
 			LONG		lMinY,
 						lMaxY;
@@ -53,15 +53,18 @@ void CEntropyInfo::InitSquareEntropies()
 		};
 
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i+1);
+			if (0 == i%m_lWindowSize)
+				m_pProgress->Progress2(NULL, 1+i);
 	};
+	if (m_pProgress)
+		m_pProgress->End2();
+
 };
 
 /* ------------------------------------------------------------------- */
 
 void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy)
 {
-	ZFUNCTRACE_RUNTIME();
 	LONG						i, j;
 	std::vector<WORD>			vRedHisto;
 	std::vector<WORD>			vGreenHisto;
@@ -77,13 +80,12 @@ void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMa
 	vGreenHisto.resize((LONG)MAXWORD+1);
 	vBlueHisto.resize((LONG)MAXWORD+1);
 
+	COLORREF16		crColor;
 	for (i = lMinX;i<=lMaxX;i++)
 	{
 		for (j = lMinY;j<=lMaxY;j++)
 		{
-			COLORREF16		crColor;
-
-			crColor = m_pBitmap->GetPixel16(i, j);
+			m_pBitmap->GetPixel16(i, j, crColor);
 			vRedHisto[crColor.red]++;
 			vGreenHisto[crColor.green]++;
 			vBlueHisto[crColor.blue]++;
@@ -97,7 +99,8 @@ void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMa
 			double			qRed,
 							qBlue,
 							qGreen;
-			COLORREF16 &	crColor = m_pBitmap->GetPixel16(i, j);
+
+			m_pBitmap->GetPixel16(i, j, crColor);
 
 			qRed	= (double)vRedHisto[crColor.red]/(double)lNrPixels;
 			qGreen	= (double)vGreenHisto[crColor.green]/(double)lNrPixels;

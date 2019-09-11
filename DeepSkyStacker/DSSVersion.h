@@ -1,17 +1,17 @@
 #ifndef __DSSVERSION_H_
 #define __DSSVERSION_H_
 
-//#define DSSBETA
+#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 2
-#define DSSBETAEXPIREYEAR 2018
-#define DSSBETAEXPIREMONTH 06
+#define DSSBETARELEASE 1
+#define DSSBETAEXPIREYEAR 2019
+#define DSSBETAEXPIREMONTH 12
 #endif
 
 #define DSSVER_MAJOR			4
-#define DSSVER_MINOR			1
-#define DSSVER_SUB				1
+#define DSSVER_MINOR			2
+#define DSSVER_SUB				3
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
@@ -22,7 +22,7 @@
 #define FB(arg)					#arg
 
 #ifdef DSSBETA
-#define VERSTRING(M, m, s, b)	FB(M)"."FB(m)"."FB(s)" beta "FB(b)
+#define VERSTRING(M, m, s, b)	FB(M)"."FB(m)"."FB(s)" Beta "FB(b)
 #define VERSION_DEEPSKYSTACKER	VERSTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #else
 #define VERSTRING(M, m, s)		FB(M)"."FB(m)"."FB(s)
@@ -40,7 +40,8 @@
 #define DSSVER_FILEVERSION		VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
-#define DSSVER_COPYRIGHT		"Copyright © Luc Coiffier, David C. Partridge, Tony Cook 2006-2018"
+#define DSSVER_COPYRIGHT "Copyright © 2006-2019 Luc Coiffier;\n\
+	Copyright © 2018-2019 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow";
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
 #define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker Live"

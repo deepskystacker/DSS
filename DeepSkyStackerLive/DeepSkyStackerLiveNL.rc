@@ -605,6 +605,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Info"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Belichting"
+	IDS_COLUMN_APERTURE		"Diafragma"
     IDS_COLUMN_STARS        "#Sterren"
     IDS_COLUMN_SKYBACKGROUND "Hemel Achtergrond"
 END
@@ -676,6 +677,11 @@ END
 STRINGTABLE 
 BEGIN
     IDS_HELPFILE            "DeepSkyStacker Help.chm"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw ondersteund uw %s camera niet"
 END
 
 #endif    // English (U.S.) resources

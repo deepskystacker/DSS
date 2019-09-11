@@ -249,22 +249,26 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
     }
 };
 
-inline double GetIntensity(COLORREF crColor)
+/* Return the HSL luminance value. */
+inline double GetLuminance(const COLORREF crColor)
 {
-	double	H, S, L;
+	const unsigned red = GetRValue(crColor);
+	const unsigned green = GetGValue(crColor);
+	const unsigned blue = GetBValue(crColor);
 
-	ToHSL(GetRValue(crColor), GetGValue(crColor), GetBValue(crColor), H, S, L);
-
-	return L;
+	const unsigned minval = min(red, min(green, blue));
+	const unsigned maxval = max(red, max(green, blue));
+	const unsigned msum = maxval + minval;
+	return ((double)msum / 510.0);
 };
 
-inline double GetIntensity(COLORREF16 crColor)
+/* Return the HSL luminance value. */
+inline double GetLuminance(const COLORREF16 & crColor)
 {
-	double	H, S, L;
-
-	ToHSL(crColor.red/256.0, crColor.green/256.0, crColor.blue/256.0, H, S, L);
-
-	return L;
+	const unsigned minval = min(crColor.red, min(crColor.green, crColor.blue));
+	const unsigned maxval = max(crColor.red, max(crColor.green, crColor.blue));
+	const unsigned msum = maxval + minval;
+	return (((double)msum / 256.0) / 510.0);
 };
 
 /* ------------------------------------------------------------------- */
@@ -655,6 +659,7 @@ protected :
 	BOOL				m_bMaster;
 	BOOL				m_bCFA;
 	double				m_fExposure;
+	double				m_fAperture;
 	LONG				m_lISOSpeed;
 	LONG				m_lNrFrames;
 	CString				m_strDescription;
@@ -667,6 +672,7 @@ protected :
 		m_bMaster			= mb.m_bMaster;
 		m_bCFA				= mb.m_bCFA;
 		m_fExposure			= mb.m_fExposure;
+		m_fAperture			= mb.m_fAperture;
 		m_lISOSpeed			= mb.m_lISOSpeed;
 		m_lNrFrames			= mb.m_lNrFrames;
 		m_strDescription	= mb.m_strDescription;
@@ -679,7 +685,8 @@ public :
 		m_bMaster  = FALSE;
 		m_bTopDown = FALSE;
 		m_bCFA	   = FALSE;
-		m_fExposure = 0;
+		m_fExposure = 0.0;
+		m_fAperture = 0.0;
 		m_lISOSpeed = 0;
 		m_lNrFrames = 0;
 		m_DateTime.wYear = 0;
@@ -697,6 +704,16 @@ public :
 	virtual void	SetExposure(double fExposure)
 	{
 		m_fExposure = fExposure;
+	};
+
+	virtual double	GetAperture()
+	{
+		return m_fAperture;
+	};
+
+	virtual void SetAperture(double fAperture)
+	{
+		m_fAperture = fAperture;
 	};
 
 	virtual LONG	GetISOSpeed()
@@ -744,34 +761,19 @@ public :
 	virtual BOOL	GetScanLine(LONG j, void * pScanLine) = 0;
 	virtual BOOL	SetScanLine(LONG j, void * pScanLine) = 0;
 
-	virtual COLORREF GetPixel(LONG i, LONG j)
-	{
-		COLORREF	crResult;
-		double		fRed, fGreen, fBlue;
-
-		GetPixel(i, j, fRed, fGreen, fBlue);
-		crResult = RGB(fRed, fGreen, fBlue);
-
-		return crResult;
-	};
-
-	virtual COLORREF16 GetPixel16(LONG i, LONG j)
+	virtual BOOL	GetPixel16(LONG i, LONG j, COLORREF16 & crResult)
 	{
 		// Use get pixel
-		COLORREF16		crResult;
-		double			fRed, fGreen, fBlue;
-		
-
-		GetPixel(i, j, fRed, fGreen, fBlue);
+		double fRed, fGreen, fBlue;
+		BOOL fResult = GetPixel(i, j, fRed, fGreen, fBlue);
 
 		crResult.red = (WORD)(fRed * 256.0);
 		crResult.green = (WORD)(fGreen * 256.0);
 		crResult.blue = (WORD)(fBlue * 256.0);
-
-		return crResult;
+		return fResult;
 	};
 
-	virtual BOOL	SetPixel16(LONG i, LONG j, COLORREF16 crColor)
+	virtual BOOL	SetPixel16(LONG i, LONG j, const COLORREF16 & crColor)
 	{
 		return SetPixel(i, j, (double)crColor.red/256.0, (double)crColor.green/256.0, (double)crColor.blue/256.0);
 	};
@@ -1041,9 +1043,9 @@ inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGr
 	fGreen = -0.28607719 * fR +	1.706598409	* fG + 0.24881043 * fB;
 	fBlue  = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
 
-	fRed = max(0, min (255.0, fRed));
-	fGreen = max(0, min (255.0, fRed));
-	fBlue = max(0, min (255.0, fRed));
+	fRed = max(0.0, min (255.0, fRed));
+	fGreen = max(0.0, min (255.0, fRed));
+	fBlue = max(0.0, min (255.0, fRed));
 };
 
 inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
@@ -1059,9 +1061,9 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 	// R = (M+Y-C)/2
 	// G = (Y+C-M)/2
 	// B = (M+C-Y)/2
-	fRed   = max(0, fMagenta+fYellow-fCyan)/2.0;
-	fGreen = max(0, fYellow+fCyan-fMagenta)/2.0;
-	fBlue  = max(0 ,fMagenta+fCyan-fYellow)/2.0;
+	fRed   = max(0.0, fMagenta+fYellow-fCyan)/2.0;
+	fGreen = max(0.0, fYellow+fCyan-fMagenta)/2.0;
+	fBlue  = max(0.0 ,fMagenta+fCyan-fYellow)/2.0;
 
 /*	if (fGreen2)
 	{
@@ -1078,24 +1080,24 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 	// R = Y - G
 	// B = C - G
 	fGreen += fGreen2;
-	fRed   += max(0, fYellow-fGreen2);
-	fBlue  += max(0, fCyan-fGreen2);
+	fRed   += max(0.0, fYellow-fGreen2);
+	fBlue  += max(0.0, fCyan-fGreen2);
 
 	// RGB from CMG
 	// G = G
 	// B = C - G
 	// R = M - B = M - C + G
 //	fGreen += fGreen2;
-	fBlue  += max(0, fCyan-fGreen2);
-	fRed   += max(0, fMagenta - fCyan + fGreen2);
+	fBlue  += max(0.0, fCyan-fGreen2);
+	fRed   += max(0.0, fMagenta - fCyan + fGreen2);
 
 	// RGB from YMG
 	// G = G
 	// R = Y - G
 	// B = M - R = M - Y + G
 //	fGreen += fGreen2;
-	fRed   += max(0, fYellow - fGreen2);
-	fBlue  += max(0, fMagenta - fYellow + fGreen2);
+	fRed   += max(0.0, fYellow - fGreen2);
+	fBlue  += max(0.0, fMagenta - fYellow + fGreen2);
 
 	// Average the results
 	fRed /= 4.0;
@@ -1266,6 +1268,10 @@ protected :
 		TTypeOutput *				pCurrentValue;
 		std::vector<TType>			vValues;
 		std::vector<TType>			vAuxValues;
+		std::vector<TType>			vWorkingBuffer1;
+		std::vector<TType>			vWorkingBuffer2;
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -1274,6 +1280,10 @@ protected :
 
 		vValues.reserve(vScanLines.size());
 		vAuxValues.reserve(vScanLines.size());
+		vWorkingBuffer1.reserve(vScanLines.size());
+		vWorkingBuffer2.reserve(vScanLines.size());
+		vdWork1.reserve(vScanLines.size());
+		vdWork2.reserve(vScanLines.size());
 
 		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
 		{
@@ -1327,11 +1337,13 @@ protected :
 			else if (m_Method == MBP_MAXIMUM)
 				*pCurrentValue = Maximum(vValues);
 			else if (m_Method == MBP_SIGMACLIP)
-				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations);
+			{
+				*pCurrentValue = KappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
-				*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations);
+				*pCurrentValue = MedianKappaSigmaClip(vValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
 			else if (m_Method == MBP_AUTOADAPTIVE)
-				*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations);
+				*pCurrentValue = AutoAdaptiveWeightedAverage(vValues, m_lNrIterations, vdWork1);
 
 			//if (m_bHomogenization)
 			//	*pCurrentValue = fHomogenization*(double)(*pCurrentValue);
@@ -1563,7 +1575,7 @@ public :
 
 			if (m_pProgress)
 				m_pProgress->SetNrUsedProcessors(GetNrThreads());
-			lStep		= max(1, lHeight/50);
+			lStep		= max(1L, lHeight/50);
 			lRemaining	= lHeight;
 			bResult = TRUE;
 			while (i<lHeight)
@@ -1632,7 +1644,7 @@ private :
 		return TRUE;
 	};
 
-	TType	GetPrimary(LONG x, LONG y, COLORREF16 crColor)
+	TType	GetPrimary(LONG x, LONG y, const COLORREF16 & crColor)
 	{
 		switch (::GetBayerColor(x, y, m_CFAType))
 		{
@@ -1834,18 +1846,18 @@ private :
 		lNrValues[0] = lNrValues[1] = lNrValues[2] = lNrValues[3] = 0;
 		pfValues[0]  = pfValues[1]  = pfValues[2]  = pfValues[3]  = 0;
 		
-		for (LONG i = max(0, x-1);i<=min(m_lWidth-1, x+1);i++)
-			for (LONG j = max(0, y-1);j<=min(m_lHeight-1, y+1);j++)
+		for (LONG i = max(0L, x-1);i<=min(m_lWidth-1, x+1);i++)
+			for (LONG j = max(0L, y-1);j<=min(m_lHeight-1, y+1);j++)
 			{
 				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType));
 				pfValues[lIndice]  += m_vPixels[GetOffset(i, j)];
 				lNrValues[lIndice] ++;
 			};
 
-		pfValues[0] /= max(1, lNrValues[0]);
-		pfValues[1] /= max(1, lNrValues[1]);
-		pfValues[2] /= max(1, lNrValues[2]);
-		pfValues[3] /= max(1, lNrValues[3]);
+		pfValues[0] /= max(1L, lNrValues[0]);
+		pfValues[1] /= max(1L, lNrValues[1]);
+		pfValues[2] /= max(1L, lNrValues[2]);
+		pfValues[3] /= max(1L, lNrValues[3]);
 
 /*
 		// It's used only for CYMG - so cut it down to the basic
@@ -2523,7 +2535,7 @@ public :
 		};
 	};
 
-	virtual BOOL	SetPixel16(LONG i, LONG j, COLORREF16 crColor16)
+	virtual BOOL	SetPixel16(LONG i, LONG j, const COLORREF16 &crColor16)
 	{
 		COLORREF			crColor;
 
@@ -2610,6 +2622,10 @@ protected :
 		std::vector<TType>			vAuxRedValues;
 		std::vector<TType>			vAuxGreenValues;
 		std::vector<TType>			vAuxBlueValues;
+		std::vector<TType>			vWorkingBuffer1;
+		std::vector<TType>			vWorkingBuffer2;
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -2625,6 +2641,10 @@ protected :
 		vAuxRedValues.reserve(vScanLines.size());
 		vAuxGreenValues.reserve(vScanLines.size());
 		vAuxBlueValues.reserve(vScanLines.size());
+		vWorkingBuffer1.reserve(vScanLines.size());
+		vWorkingBuffer2.reserve(vScanLines.size());
+		vdWork1.reserve(vScanLines.size());
+		vdWork2.reserve(vScanLines.size());
 
 		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
 		{
@@ -2645,11 +2665,11 @@ protected :
 				if (*pRedValue || m_vImageOrder.size())	// Remove 0
 					vRedValues.push_back(*pRedValue);
 				if (*pGreenValue || m_vImageOrder.size())	// Remove 0
-					vGreenValues.push_back(*pGreenValue);
+				  	vGreenValues.push_back(*pGreenValue);
 				if (*pBlueValue || m_vImageOrder.size())	// Remove 0
 					vBlueValues.push_back(*pBlueValue);
 			};
-
+						
 			if (m_bHomogenization)
 			{
 			//	if ((i==843) && (lLine==934))
@@ -2731,21 +2751,21 @@ protected :
 			}
 			else if (m_Method == MBP_SIGMACLIP)
 			{
-				*pRedCurrentValue	= KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations);
-				*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations);
-				*pBlueCurrentValue	= KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations);
+				*pRedCurrentValue	= KappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+				*pGreenCurrentValue = KappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
+				*pBlueCurrentValue	= KappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1);
 			}
 			else if (m_Method == MBP_MEDIANSIGMACLIP)
 			{
-				*pRedCurrentValue	= MedianKappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations);
-				*pGreenCurrentValue = MedianKappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations);
-				*pBlueCurrentValue	= MedianKappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations);
+				*pRedCurrentValue	= MedianKappaSigmaClip(vRedValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
+				*pGreenCurrentValue = MedianKappaSigmaClip(vGreenValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
+				*pBlueCurrentValue	= MedianKappaSigmaClip(vBlueValues, m_fKappa, m_lNrIterations, vWorkingBuffer1, vWorkingBuffer2);
 			}
 			else if (m_Method == MBP_AUTOADAPTIVE)
 			{
-				*pRedCurrentValue	= AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations);
-				*pGreenCurrentValue = AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations);
-				*pBlueCurrentValue	= AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations);
+				*pRedCurrentValue	= AutoAdaptiveWeightedAverage(vRedValues, m_lNrIterations, vdWork1);
+				*pGreenCurrentValue = AutoAdaptiveWeightedAverage(vGreenValues, m_lNrIterations, vdWork1);
+				*pBlueCurrentValue	= AutoAdaptiveWeightedAverage(vBlueValues, m_lNrIterations, vdWork1);
 			};
 
 			pRedCurrentValue++;
@@ -3337,6 +3357,7 @@ public :
 	CString				m_strModel;
 	LONG				m_lISOSpeed;
 	double				m_fExposure;
+	double				m_fAperture;
 	LONG				m_lWidth;
 	LONG				m_lHeight;
 	LONG				m_lBitPerChannel;
@@ -3359,6 +3380,7 @@ private :
 		m_strModel		=bi.m_strModel		;
 		m_lISOSpeed		=bi.m_lISOSpeed		;
 		m_fExposure		=bi.m_fExposure		;
+		m_fAperture     =bi.m_fAperture;
 		m_lWidth		=bi.m_lWidth		;
 		m_lHeight		=bi.m_lHeight		;
 		m_lBitPerChannel=bi.m_lBitPerChannel;
@@ -3386,7 +3408,8 @@ public :
 		m_bMaster		 = FALSE;
 		m_bFloat		 = FALSE;
 		m_lISOSpeed		 = 0;
-		m_fExposure		 = 0;
+		m_fExposure		 = 0.0;
+		m_fAperture		 = 0.0;
 		m_bFITS16bit	 = FALSE;
 		m_DateTime.wYear = 0;
 	};

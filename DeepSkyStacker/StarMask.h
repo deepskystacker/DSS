@@ -97,7 +97,7 @@ public :
 
 	virtual double	Compute(double fValue)
 	{
-		return max(0, 1-fValue/3.0/m_fRadius);	
+		return max(0.0, 1-fValue/3.0/m_fRadius);	
 	};
 };
 
@@ -119,7 +119,7 @@ public :
 
 	virtual double	Compute(double fValue)
 	{
-		return max(0, 1.5-fValue*1.5/3.0/m_fRadius);	
+		return max(0.0, 1.5-fValue*1.5/3.0/m_fRadius);	
 	};
 };
 
@@ -142,7 +142,7 @@ public :
 	virtual double	Compute(double fValue)
 	{
 		fValue /= 3.0*m_fRadius;
-		return max(0, 1.0-fValue*fValue*fValue);	
+		return max(0.0, 1.0-fValue*fValue*fValue);	
 	};
 };
 
@@ -165,7 +165,7 @@ public :
 	virtual double	Compute(double fValue)
 	{
 		fValue /= 3.0*m_fRadius;
-		return max(0, 1.0-fValue*fValue*fValue*fValue);	
+		return max(0.0, 1.0-fValue*fValue*fValue*fValue);	
 	};
 };
 

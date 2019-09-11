@@ -98,11 +98,11 @@ bool	CDeBloom::IsLeftEdge(CMemoryBitmap * pBitmap, LONG x, LONG y)
 {
 	double			fGray[5];
 
-	pBitmap->GetPixel(max(0, x-0), y, fGray[0]); // Current Pixel
-	pBitmap->GetPixel(max(0, x-1), y, fGray[1]); // 
-	pBitmap->GetPixel(max(0, x-2), y, fGray[2]);
-	pBitmap->GetPixel(max(0, x-3), y, fGray[3]);
-	pBitmap->GetPixel(max(0, x-4), y, fGray[4]);
+	pBitmap->GetPixel(max(0L, x-0), y, fGray[0]); // Current Pixel
+	pBitmap->GetPixel(max(0L, x-1), y, fGray[1]); // 
+	pBitmap->GetPixel(max(0L, x-2), y, fGray[2]);
+	pBitmap->GetPixel(max(0L, x-3), y, fGray[3]);
+	pBitmap->GetPixel(max(0L, x-4), y, fGray[4]);
 
 	for (LONG i = 0;i<5;i++)
 		fGray[i] = (fGray[i]-m_fBackground)/(256.0-m_fBackground)*256.0;
@@ -134,11 +134,11 @@ bool	CDeBloom::IsTopEdge(CMemoryBitmap * pBitmap, LONG x, LONG y)
 {
 	double			fGray[5];
 
-	pBitmap->GetPixel(x, max(0, y-0), fGray[0]); // Current Pixel
-	pBitmap->GetPixel(x, max(0, y-1), fGray[1]); // Current Pixel
-	pBitmap->GetPixel(x, max(0, y-2), fGray[2]); // Current Pixel
-	pBitmap->GetPixel(x, max(0, y-3), fGray[3]); // Current Pixel
-	pBitmap->GetPixel(x, max(0, y-4), fGray[4]); // Current Pixel
+	pBitmap->GetPixel(x, max(0L, y-0), fGray[0]); // Current Pixel
+	pBitmap->GetPixel(x, max(0L, y-1), fGray[1]); // Current Pixel
+	pBitmap->GetPixel(x, max(0L, y-2), fGray[2]); // Current Pixel
+	pBitmap->GetPixel(x, max(0L, y-3), fGray[3]); // Current Pixel
+	pBitmap->GetPixel(x, max(0L, y-4), fGray[4]); // Current Pixel
 
 	for (LONG i = 0;i<5;i++)
 		fGray[i] = (fGray[i]-m_fBackground)/(256.0-m_fBackground)*256.0;
@@ -465,7 +465,7 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 						bRightBloomed = false;
 	bool				bBloomCross = false;
 
-	for (LONG i = floor(fX+0.5);i>=max(0, floor(fX+0.5-bs.m_fRadius*2.0)) && !bLeftBloomed;i--)
+	for (LONG i = floor(fX+0.5);i>=max(0.0, floor(fX+0.5-bs.m_fRadius*2.0)) && !bLeftBloomed;i--)
 	{
 		double			fMask;
 
@@ -477,7 +477,7 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 	};
 
 	bBloomCross = false;
-	for (LONG i = floor(fX+0.5);i<=min(m_lWidth-1, floor(fX+0.5+bs.m_fRadius*2.0)) && !bRightBloomed;i++)
+	for (LONG i = floor(fX+0.5);i<=min(static_cast<double>(m_lWidth-1), floor(fX+0.5+bs.m_fRadius*2.0)) && !bRightBloomed;i++)
 	{
 		double			fMask;
 
@@ -610,7 +610,7 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	LONG				lNrColumns = 0;
 	std::vector<double>	vYCenters;
 
-	for (i = max(0, fX-fRadius-0.5);i<=min(m_lWidth-1, fX+fRadius+0.5);i++)
+	for (i = max(0.0, fX-fRadius-0.5);i<=min(static_cast<double>(m_lWidth-1), fX+fRadius+0.5);i++)
 	{
 		bool			bBloomed = false;
 		double			fLocalMaximum = -1.0;
@@ -1084,9 +1084,9 @@ double	CDeBloom::ComputeValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, 
 								fWeight = 0;
 	bDone = false;
 
-	for (LONG i = max(0, x-5);i<=min(m_lWidth-1, x+5);i++)
+	for (LONG i = max(0L, x-5);i<=min(m_lWidth-1, x+5);i++)
 	{
-		for (LONG j = max(0, y-3);j<=min(m_lHeight-1, y+3);j++)
+		for (LONG j = max(0L, y-3);j<=min(m_lHeight-1, y+3);j++)
 		{
 			double				fValue,
 								fMask;

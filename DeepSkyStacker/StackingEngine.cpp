@@ -280,9 +280,9 @@ void	RemoveStars(CMemoryBitmap * pBitmap,CPixelTransform & PixTransform, const S
 
 			ptCenter = PixTransform.Transform(ptCenter);
 
-			for (double i = max(0, ptCenter.X - 2.0*fRadius);i<=min(ptCenter.X + 2.0*fRadius, fWidth-1);i++)
+			for (double i = max(0.0, ptCenter.X - 2.0*fRadius);i<=min(ptCenter.X + 2.0*fRadius, fWidth-1);i++)
 			{
-				for (double j = max(0, ptCenter.Y - 2.0*fRadius);j<=min(ptCenter.Y + 2.0*fRadius, fHeight-1);j++)
+				for (double j = max(0.0, ptCenter.Y - 2.0*fRadius);j<=min(ptCenter.Y + 2.0*fRadius, fHeight-1);j++)
 				{
 					// Compute the distance to the center
 					double		fDistance;
@@ -543,11 +543,11 @@ BOOL CStackingEngine::ComputeLightFrameOffset(LONG lBitmapIndice, CMatchingStars
 
 			fXRatio = (double)m_vBitmaps[lBitmapIndice].RenderedWidth()/(double)m_vBitmaps[0].RenderedWidth();
 			fYRatio = (double)m_vBitmaps[lBitmapIndice].RenderedHeight()/(double)m_vBitmaps[0].RenderedHeight();
-			for (i = 0;i<min(vStarsOrg.size(), 100);i++)
+			for (i = 0; i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
 				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX*fXRatio, vStarsOrg[i].m_fY*fYRatio);
 		};
 		MatchingStars.ClearTarget();
-		for (i = 0;i<min(vStarsDst.size(), 100);i++)
+		for (i = 0; i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100)); i++)
 			MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 
 		MatchingStars.SetSizes(m_vBitmaps[lBitmapIndice].RenderedWidth(), m_vBitmaps[lBitmapIndice].RenderedHeight());
@@ -886,7 +886,7 @@ BOOL	CStackingEngine::ComputeOffsets()
 		if (m_vBitmaps[0].m_bDisabled)
 			m_lNrStackable = 0;
 		else
-			m_lNrStackable = min((LONG)m_vBitmaps.size(), 1);
+			m_lNrStackable = min((LONG)m_vBitmaps.size(), 1L);
 		m_lNrCometStackable = 0;
 		strText.LoadString(IDS_COMPUTINGOFFSETS);
 
@@ -1017,10 +1017,10 @@ void	CStackingEngine::GetResultExtraInfo()
 
 inline void ExpandWithPoint(LONG & lLeft, LONG & lRight, LONG & lTop, LONG & lBottom, const CPointExt & pt)
 {
-	lLeft	= min(lLeft, pt.X);
-	lRight	= max(lRight, pt.X);
-	lTop	= min(lTop, pt.Y);
-	lBottom = max(lBottom, pt.Y);
+	lLeft	= min(lLeft, static_cast<long>(pt.X));
+	lRight	= max(lRight, static_cast<long>(pt.X));
+	lTop	= min(lTop, static_cast<long>(pt.Y));
+	lBottom = max(lBottom, static_cast<long>(pt.Y));
 };
 
 void CStackingEngine::ComputeLargestRectangle(CRect & rc)
@@ -1124,10 +1124,10 @@ bool CStackingEngine::ComputeSmallestRectangle(CRect & rc)
 			}
 			else
 			{
-				lLeft = max(max(lLeft, pt1.X), pt2.X);
-				lRight = min(min(lRight, pt4.X), pt3.X);
-				lTop = max(max(lTop, pt1.Y), pt3.Y);
-				lBottom = min(min(lBottom, pt4.Y), pt2.Y);
+				lLeft = max(max(lLeft, static_cast<long>(pt1.X)), static_cast<long>(pt2.X));
+				lRight = min(min(lRight, static_cast<long>(pt4.X)), static_cast<long>(pt3.X));
+				lTop = max(max(lTop, static_cast<long>(pt1.Y)), static_cast<long>(pt3.Y));
+				lBottom = min(min(lBottom, static_cast<long>(pt4.Y)), static_cast<long>(pt2.Y));
 			};
 		};
 	};
@@ -1181,7 +1181,7 @@ BOOL CStackingEngine::ComputeBitmap()
 
 			strText.Format(IDS_COMPUTINGMEDIANLIGHT, (LPCTSTR)strMethod);
 
-			m_pProgress->Start(strText, 1, FALSE);
+			m_pProgress->Start(strText, 1, TRUE);
 			m_pProgress->Progress1(strText, 0);
 			m_pProgress->SetJointProgress(TRUE);
 		};
@@ -1804,9 +1804,9 @@ BOOL	CStackTask::DoTask(HANDLE hEvent)
 									fBlueEntropy = 1.0;
 
 					if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
-						crColor = m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy);
+						m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
 					else
-						crColor = m_pBitmap->GetPixel16(i, j);
+						m_pBitmap->GetPixel16(i, j, crColor);
 
 					Red		= crColor.red;
 					Green	= crColor.green;
@@ -1905,7 +1905,7 @@ BOOL	CStackTask::Process()
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 
-	lStep		= max(1, lHeight/50);
+	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
 	bResult = TRUE;
 	while (i<lHeight)

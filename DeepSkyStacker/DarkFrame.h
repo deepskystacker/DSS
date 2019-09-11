@@ -188,15 +188,15 @@ private :
 
 	void	GetRectAroundPoint(LONG lWidth, LONG lHeight, LONG lSize, const CHotPixel & px, CRect & rc)
 	{
-		rc.left		= max(0, px.m_lX-lSize);
+		rc.left		= max(0L, px.m_lX-lSize);
 		rc.right	= min(lWidth-1, px.m_lX+lSize);
-		rc.top		= max(0, px.m_lY-lSize);
+		rc.top		= max(0L, px.m_lY-lSize);
 		rc.bottom	= min(lHeight-1, px.m_lY+lSize);
 	};
 
 	void	GetBorderRects(LONG lWidth, LONG lHeight, std::vector<CRect> & vRects)
 	{
-		LONG		lSize = min(50, min(lWidth/10, lHeight/10))/2;
+		LONG		lSize = min(50L, min(lWidth/10, lHeight/10))/2;
 
 		CRect		rc;
 

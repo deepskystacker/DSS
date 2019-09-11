@@ -479,7 +479,9 @@ LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 {
 	ShowOriginalHistogram(FALSE);
 	ResetSliders();
-	m_ToProcess.Init(GetDeepStack(this).GetWidth(), GetDeepStack(this).GetHeight(), 500);
+
+	int height = GetDeepStack(this).GetHeight();
+	m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height / 3);
 
 	m_lProcessParams.clear();
 	m_Picture.SetImg((HBITMAP)NULL);
@@ -529,7 +531,9 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 
 		ShowOriginalHistogram(FALSE);
 		ResetSliders();
-		m_ToProcess.Init(GetDeepStack(this).GetWidth(), GetDeepStack(this).GetHeight(), 500);
+
+		int height = GetDeepStack(this).GetHeight();
+		m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height / 3);
 
 		m_lProcessParams.clear();
 		m_Picture.SetImg((HBITMAP)NULL);
@@ -612,7 +616,8 @@ void CProcessingDlg::OnLoaddsi()
 
 				ShowOriginalHistogram(FALSE);
 				// ResetSliders();
-				m_ToProcess.Init(GetDeepStack(this).GetWidth(), GetDeepStack(this).GetHeight(), 500);
+				int height = GetDeepStack(this).GetHeight();
+				m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height/3);
 
 				m_lProcessParams.clear();
 				m_Picture.SetImg((HBITMAP)NULL);
@@ -1447,7 +1452,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 			ShowOriginalHistogram(FALSE);
 			ResetSliders();
 		};
-		const unsigned int nProgress = static_cast<unsigned int>(m_ToProcess.GetPercentageComplete());
+		const int nProgress = static_cast<int>(m_ToProcess.GetPercentageComplete());
 		m_ProcessingProgress.SetPos(min(max(0, nProgress), 100));
 	};
 

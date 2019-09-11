@@ -252,7 +252,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, LONG & lValue)
 BOOL CFITSReader::ReadKey(LPSTR szKey, CString & strValue)
 {
 	BOOL				bResult = FALSE;
-	TCHAR				szValue[2000];
+	CHAR				szValue[2000];
 	int					nStatus = 0;
 
 	if (m_fits)
@@ -607,8 +607,8 @@ BOOL CFITSReader::Read()
 									}
 									else
 									{
-										fMin = min(fMin, fValue);
-										fMax = max(fMax, fValue);
+										fMin = min(fMin, static_cast<double>(fValue));
+										fMax = max(fMax, static_cast<double>(fValue));
 									};
 								};
 								pValue++;
@@ -633,7 +633,7 @@ BOOL CFITSReader::Read()
 				}
 				if (m_bDSI && (fMax>1))
 				{
-					fMin = min(0, fMin);
+					fMin = min(0.0, fMin);
 					fMax = max(fMax, 65535.0);
 				};
 			}
@@ -1202,7 +1202,7 @@ void	CFITSWriter::WriteAllKeys()
 		for (LONG i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
 			CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
-			TCHAR			szValue[FLEN_VALUE];
+			CHAR			szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
 			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(ei.m_strName, CP_UTF8), szValue, NULL, &nStatus);

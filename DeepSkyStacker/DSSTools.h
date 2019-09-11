@@ -1,7 +1,9 @@
 #ifndef __DSSTOOLS_H__
 #define __DSSTOOLS_H__
 
+
 #include <algorithm>
+#include <numeric>
 #include <float.h>
 #include <math.h>
 
@@ -433,15 +435,7 @@ T	Maximum(const std::vector<T> & vValues)
 template <class T> inline
 double	Average(const std::vector<T> & vValues)
 {
-	double			fResult = 0.0;
-
-	// Compute the average
-	for (LONG i = 0;i<vValues.size();i++)
-		fResult += vValues[i];
-
-	if (vValues.size())
-		fResult = fResult / vValues.size();
-
+	double fResult = std::accumulate(vValues.begin(), vValues.end(), 0.0) / vValues.size();
 	return fResult;
 };
 
@@ -457,7 +451,7 @@ double	Sigma2(const std::vector<T> & vValues, double & fAverage)
 	fAverage = Average(vValues);
 
 	for (LONG i = 0;i<vValues.size();i++)
-		fSquareDiff += pow((double)vValues[i] - fAverage, 2);
+		fSquareDiff += (((double)vValues[i] - fAverage) * ((double)vValues[i] - fAverage));
 	if (vValues.size())
 		fResult = sqrt(fSquareDiff/vValues.size());
 
@@ -473,6 +467,15 @@ double	Sigma(const std::vector<T> & vValues)
 
 	return Sigma2(vValues, fAverage);
 };
+
+template <typename T>
+double CalculateSigmaFromAverage(const std::vector<T> & vValues, const double targetAverage)
+{
+	double squareDiff = 0.0;
+	for (size_t i = 0; i < vValues.size(); i++)
+		squareDiff += (vValues[i] - targetAverage) * (vValues[i] - targetAverage);
+	return sqrt(squareDiff / vValues.size());
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -579,7 +582,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 		}
 		else
 		{
-			vVariations.push_back((double)(vValues[i]-vValues[i-1])/(double)max(1, vValues[i-1])*sqrt(vValues[i]/fMaximum));
+			vVariations.push_back((double)(vValues[i]-vValues[i-1])/(double)max(static_cast<T>(1), vValues[i-1])*sqrt(vValues[i]/fMaximum));
 			vAbsVariations.push_back((double)(vValues[i]-vValues[i-1])/fMaximum);
 		};
 		fTotalVariation += fabs(vAbsVariations[i]);
@@ -728,7 +731,7 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 		vValues.resize(1);		vValues[0] = fMinimum;
 	};
 
-	fResult = min(1.0, max(0, (1.05 - fAverageVariation*10)));
+	fResult = min(1.0, max(0.0, (1.05 - fAverageVariation*10)));
 
 	return fResult;
 };
@@ -740,18 +743,21 @@ double Homogenize3(std::vector<T> & vValues, LONG lNrSubStacks)
 {
 	double						fResult = 1.0;
 	std::vector<double>			vStackValues;
+	std::vector<T>				vWork;
 	std::vector<T>				vSubStack;
 	LONG						lNrValues = vValues.size();
 
 	vStackValues.reserve(lNrSubStacks);
 	vSubStack.reserve(lNrValues/lNrSubStacks+1);
+	vWork.reserve(lNrValues / lNrSubStacks + 1);
 
 	for (LONG j = 0;j<lNrSubStacks;j++)
 	{
 		vSubStack.clear();
 		for (LONG i = j;i<lNrValues;i+=lNrSubStacks)
 			vSubStack.push_back(vValues[i]);
-		vStackValues.push_back(KappaSigmaClip(vSubStack, 1.5, 3));
+
+		vStackValues.push_back(KappaSigmaClip(vSubStack, 1.5, 3, vWork));
 	};
 
 	fResult = Median(vStackValues);
@@ -935,12 +941,16 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration)
+double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T> & vAuxValues)
 {
 	double			Result = 0;
 	BOOL			bEnd = FALSE;
-	std::vector<T>	vAuxValues = vValues;
 	CDynamicStats	DynStats;
+
+	//
+	// Copy the data
+	// 
+	vAuxValues = vValues;
 
 	std::sort(vAuxValues.begin(), vAuxValues.end());
 	
@@ -1003,102 +1013,156 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration)
+double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
 {
 	double			Result = 0;
 	BOOL			bEnd = FALSE;
-	std::vector<T>	vAuxValues = vValues;
+	
+	// Set up the working buffers - we can flip between them to prevent
+	// needless copying of vectors.
+	vWorkingBuffer1.clear();
+	vWorkingBuffer2.clear();
 
+	std::vector<T>& vecCurrentPass = vWorkingBuffer1;
+	std::vector<T>& vecTempBuffer = vWorkingBuffer2;
+
+	// Initial copy into the working set to start us off.
+	vWorkingBuffer1 = vValues;
 	for (LONG i = 0;i<lIteration && !bEnd;i++)
 	{
 		double			fAverage;
 		double			fSigma;
 		T				fMedian;
-		std::vector<T>	vTempValues;
 
-		fMedian = Median(vAuxValues);
-		fSigma = Sigma2(vAuxValues, fAverage);
+		fMedian = Median(vecCurrentPass);
+		fSigma = Sigma2(vecCurrentPass, fAverage);
 
-		for (LONG j = 0;j<vAuxValues.size();j++)
+		// Go through and populate the temp buffer according to the values.
+		vecTempBuffer.clear();
+		for (LONG j = 0;j< vecCurrentPass.size();j++)
 		{
-			if (((double)vAuxValues[j]>= (fAverage - fKappa*fSigma)) &&
-				((double)vAuxValues[j]<= (fAverage + fKappa*fSigma)))
-				vTempValues.push_back(vAuxValues[j]);
+			if (((double)vecCurrentPass[j]>= (fAverage - fKappa*fSigma)) &&
+				((double)vecCurrentPass[j]<= (fAverage + fKappa*fSigma)))
+				vecTempBuffer.push_back(vecCurrentPass[j]);
 			else
-				vTempValues.push_back(fMedian);
-		};
+				vecTempBuffer.push_back(fMedian);
+		}
 
-		bEnd = !vTempValues.size();
-		vAuxValues = vTempValues;
-	};
+		// Swap temp and working buffers for next pass.
+		std::vector<T>& vecTmp = vecCurrentPass;
+		vecCurrentPass = vecTempBuffer;
+		vecTempBuffer = vecTmp;
+	}
 
-	Result = Average(vAuxValues);
+	// The final pass will now be in the current buffer (because of the swap at the end of the loop).
+	Result = Average(vecCurrentPass);
 
 	return Result;
 };
 
 /* ------------------------------------------------------------------- */
 
-template <class T> inline
-double	AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, LONG lIterations)
+template <typename T>
+double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterations, std::vector<double> & vWeights)
 {
-	double				fResult = 0;
+	// Computes the auto-adaptive weighted average of a set of numbers
+	// (intended to be the values of the same pixel in different stacked images).
+	//
+	// Based on pp. 44-51 of:
+	//
+	// Peter B. Stetson (1989)
+	//	"The Techniques of Least Squares and Stellar Photometry with CCDs"
+	//
+	// Which was presented at: 
+	//	V Escola Avançada de Astrofísica,
+	//	Aguas de São Pedro, Brazil
+	//
+	// and is archived online at:
+	//	https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html
+	//	(section "Non-Gaussian Error Distributions")
+	//
+	// This was further interpreted (maybe changed) by an anonymous author at
+	// https://archive.stsci.edu/hst/wfpc2/pipeline.html
+	// (this author puts in a 1/sigma2 term that is constant and should have
+	// no effect on normalized weights; Stetson's sigma is the sigma of the data
+	// whereas the second author's sigma2 is "derived from read noise and gain").
+	//
+	// I am indebted to Michael A. Covington and Simon C. Smith for their 
+	// immense help in getting this working.  Much of the code is adapted from
+	// Simon's code simply because it was C++ whereas Michael's written in C#
+	//
+	// Regardless any faults are my own!
+	// David C. Partridge
+	// 29 July 2019
+	//
 
-	if (vValues.size()>2)
+	double			fResult = 0;
+	size_t			i = 0;
+	size_t			nElements = vValues.size();
+
+	// If the standard deviation is less than (say) five there's not much point iterating
+	// the auto-adaptive average calculation, in that case just return a regular average.
+	const double	SMALL = 5.0;
+
+	//
+	// Probably not too bright an idea to do weighted average on a sample size less than 3
+	//
+	if (nElements > 2)
 	{
-		double					fMaximum = vValues[0];
+		double		fMaximum = vValues[0];
 
-		for (LONG i = 1;i<vValues.size();i++)
-			fMaximum = max(fMaximum, vValues[i]);
+		for (i = 1; i < nElements; i++)
+			fMaximum = max(fMaximum, (double)vValues[i]);
 
-		if (fMaximum>0)
+		if (fMaximum > 0)
 		{
-			std::vector<double>		vAuxValues;
-			std::vector<double>		vWeights;
-			LONG					i;
-			BOOL					bEnd = FALSE;
+			vWeights.resize(nElements);
 
-			vAuxValues.resize(vValues.size());
-			vWeights.resize(vValues.size());
+			// Start with the mean value of the set.
+			double runningAverage = Average(vValues);
+			double fSigma = 0.0;
 
-			for (LONG i = 0;i<vValues.size();i++)
-				vAuxValues[i] = (double)vValues[i]/fMaximum;
-
-			for (i = 0;i<vAuxValues.size();i++)
-				vWeights[i] = 1.0;
-			
-			// Compute the weights
-			for (i = 0;i<lIterations && !bEnd;i++)
+			// Calculate weights for the values, but re-iterate with the
+			// new "weighted" average each time. This should converge on
+			// a single value over time. Rumour has it that 5 will do :)
+			for (int nIteration = 0; nIteration < (int)lIterations; nIteration++)
 			{
-				double			fAverage;
-				double			fSigma;
-				double			fSigma2;
+				//
+				// Calculate the standard deviation from the current running average.
+				//
+				fSigma = CalculateSigmaFromAverage(vValues, runningAverage);
 
-				fSigma = Sigma2(vAuxValues, fAverage);
-				fSigma2 = pow(fSigma, 2);
-				if (fSigma2 > 0)
+				//
+				// Escape clause for small sigma - where all input data
+				// are the same or darn nearly so.
+				//
+				if (0 == nIteration && fSigma <= SMALL) return runningAverage;
+
+				//
+				// Calculate the weights
+				//
+				for (size_t j = 0; j != nElements; j++)
 				{
-					for (LONG j = 0;j<vAuxValues.size();j++)
-					{
-						vWeights[j]		= fSigma/fabs(vAuxValues[j]-fAverage);
-						vAuxValues[j]	= vValues[j] * vWeights[j];
-					};
+					const double r = fabs(vValues[j] - runningAverage);
+					//
+					// The 1/sigma^2 term is ignored as it will be constant
+					// for all weights.
+					//
+					vWeights[j] = 1 / (1 + ((r / fSigma) * (r / fSigma)));
 				}
-				else 
-					bEnd = true;
-			};
+				const double weightTotal = std::accumulate(vWeights.begin(), vWeights.end(), 0.0);
 
-			// Compute the averaged sum
-			double				fTotalWeight = 0.0;
+				// Calculate the new running average.
+				runningAverage = 0.0;
+				for (size_t nIndex = 0; nIndex < nElements; nIndex++)
+					runningAverage += (vValues[nIndex] * vWeights[nIndex]) / weightTotal;
+			}
 
-			for (i = 0;i<vValues.size();i++)
-			{
-				fResult += vValues[i] * vWeights[i];
-				fTotalWeight += vWeights[i];
-			};
-
-			if (fTotalWeight)
-				fResult /= fTotalWeight;
+			//
+			// If we didn't already return because of small sigma, then the result is in 
+			// variable runningAverage
+			// 
+			fResult = runningAverage;
 		};
 	}
 	else

@@ -102,7 +102,7 @@ void CRegisterSettings_Advanced::OnComputeStars()
 	_tsplitpath(m_strFirstLightFrame, NULL, NULL, szFileName, szExt);
 	strFileName.Format(_T("%s%s"), szFileName, szExt);
 	strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)strFileName);
-	dlg.Start(strText, 0);
+	dlg.Start(strText, 0, FALSE);
 	dlg.SetJointProgress(TRUE);
 	fi.RegisterPicture(m_strFirstLightFrame, (double)lPos/100.0, TRUE, m_MedianFilter.GetCheck(), &dlg);
 	dlg.SetJointProgress(FALSE);

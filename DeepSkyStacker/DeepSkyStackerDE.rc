@@ -25,7 +25,7 @@ BEGIN
 END
 
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ausgabe"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -345,7 +345,7 @@ BEGIN
     PUSHBUTTON      "Abbrechen",IDCANCEL,205,151,50,14
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -394,14 +394,14 @@ BEGIN
     PUSHBUTTON      "Einstellungen...",IDC_DEBLOOMSETTINGS,184,130,53,14,NOT WS_VISIBLE
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking Parameter"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,266,191,50,14
-    LTEXT           "Statik",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Statik",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Temporärer Dateiordner:",IDC_STATIC,11,177,80,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Statik",IDC_TEMPFOLDER,97,178,200,9,SS_PATHELLIPSIS
@@ -411,7 +411,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,153,10
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ergebnis"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -550,7 +550,7 @@ BEGIN
                     BS_MULTILINE,6,251,262,17
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ausrichtung"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -590,7 +590,7 @@ BEGIN
                     WS_GROUP | WS_TABSTOP,7,67,70,10
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Zwischenbilder"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -655,7 +655,7 @@ BEGIN
                     WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Komet"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -717,7 +717,7 @@ BEGIN
                     164,10
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Kosmetik"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -1039,6 +1039,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Infos"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Belichtung"
+	IDS_COLUMN_APERTURE		"Blende"
     IDS_COLUMN_STARS        "#Sterne"
     IDS_COLUMN_SKYBACKGROUND "Himmels-Hintergrund"
 END
@@ -1081,7 +1082,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS oder DeepSkyStacker Image|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Bild Dateien|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts|Windows Bitmaps (.bmp)|*.bmp|JPEG oder PNG Dateien|*.jpg;*.jpeg;*.png|TIFF Dateien (.tif)|*.tif;*.tiff|RAW Dateien|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Dateien|*.fits;*.fit;*.fts|Alle Dateien|*.*||"
+    IDS_FILTER_INPUT        "Bild Dateien|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG oder PNG Dateien|*.jpg;*.jpeg;*.png|TIFF Dateien (.tif)|*.tif;*.tiff|RAW Dateien|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Dateien|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "TIFF Bild (16 Bit/K)|*.TIF|TIFF Bild (32 Bit/K - integer)|*.TIF|TIFF Bild (32 Bit/K - rational)|*.TIF|FITS Bild (16 Bit/K)|*.FTS|FITS Bild (32 Bit/K - integer)|*.FTS|FITS Bild (32 Bit/K -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Datei Liste (*.txt)|*.txt|Datei Liste (*.dssfilelist)|*.dssfilelist|Alle Dateien|*.*||"
     IDS_FILTER_MASK         "TIFF Bild|*.tif;*.tiff|FITS Bild|*.fits;*.fts;*.fit||"
@@ -1551,8 +1552,8 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW-Dateien Dekodierung von DCRAW (Version %s)\nCopyright © 1997-2016 Dave Coffin"
-    IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
+    IDS_ABOUT_DCRAW         "RAW-Dateien Dekodierung von LibRaw (Version %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "TIFF Dateien Kodierung/Dekodierung von LibTIFF (Version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "FITS Dekodierung von CFitsIO (Version %s)\nCopyright NASA"
@@ -1585,6 +1586,12 @@ BEGIN
     IDS_RECO_USEAUTOADAPTIVEAVERAGE 
                             "Verwenden Sie die Auto Adaptive Weighted Average-Kombinations Methode"
 END
+
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Es tut uns leid aber LibRaw unterstützt das Kameramodell %s nicht"
+END
+
 
 
 #endif

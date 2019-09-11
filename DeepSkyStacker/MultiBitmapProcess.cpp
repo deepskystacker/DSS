@@ -202,7 +202,7 @@ public :
 
 BOOL	CCombineTask::DoTask(HANDLE hEvent)
 {
-	ZFUNCTRACE_RUNTIME();
+
 	BOOL				bResult = TRUE;
 
 	LONG				i;
@@ -219,13 +219,13 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
-			for (i = msg.wParam;i<msg.wParam+msg.lParam;i++)
+			for (i = msg.wParam;i<msg.wParam+msg.lParam && !bEnd;i++)
 			{
 				void *				pScanLine;
 
 				vScanLines.resize(0);
 
-				for (LONG k = 0;k<lNrBitmaps;k++)
+				for (LONG k = 0;k<lNrBitmaps && !bEnd;k++)
 				{
 					LONG			lOffset;
 
@@ -234,9 +234,12 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 					pScanLine = (void*)(((BYTE*)m_pBuffer)+lOffset);
 
 					vScanLines.push_back(pScanLine);
+					if (m_pProgress)
+						bEnd = m_pProgress->IsCanceled();
 				};
 
-				m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
+				if (!bEnd)
+					m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
 			};
 
 			SetEvent(hEvent);
@@ -260,11 +263,11 @@ BOOL	CCombineTask::Process()
 
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1, (m_lEndRow-m_lStartRow+1)/50);
+	lStep		= max(1L, (m_lEndRow-m_lStartRow+1)/50);
 	lRemaining	= m_lEndRow-m_lStartRow+1;
 
 	bResult = TRUE;
-	while (i<=m_lEndRow)
+	while (i<=m_lEndRow && bResult)
 	{
 		DWORD			dwThreadId;
 		LONG			lAdd = min(lStep, lRemaining);
@@ -277,7 +280,10 @@ BOOL	CCombineTask::Process()
 		lRemaining	-= lAdd;
 		
 		if (m_pProgress)
+		{
 			m_pProgress->Progress2(NULL, i);
+			bResult = !m_pProgress->IsCanceled();
+		}
 	};
 
 	CloseAllThreads();
@@ -302,9 +308,9 @@ static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMem
 		double		fRed = 0, fGreen = 0, fBlue = 0;
 		double		fWRed = 0, fWGreen = 0, fWBlue = 0;
 
-		for (LONG i = max(0, x-5);i<=min(lWidth-1, x+5);i++)
+		for (LONG i = max(0L, x-5);i<=min(lWidth-1, x+5);i++)
 		{
-			for (LONG j = max(0, y-5);j<=min(lHeight-1, y+5);j++)
+			for (LONG j = max(0L, y-5);j<=min(lHeight-1, y+5);j++)
 			{
 				double		fRed1, fGreen1, fBlue1;
 				double		fWRed1, fWGreen1, fWBlue1;
@@ -333,9 +339,9 @@ static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMem
 		double		fGray = 0;
 		double		fWGray = 0;
 
-		for (LONG i = max(0, x-5);i<=min(lWidth-1, x+5);i++)
+		for (LONG i = max(0L, x-5);i<=min(lWidth-1, x+5);i++)
 		{
-			for (LONG j = max(0, y-5);j<=min(lHeight-1, y+5);j++)
+			for (LONG j = max(0L, y-5);j<=min(lHeight-1, y+5);j++)
 			{
 				double		fGray1;
 				double		fWGray1;
@@ -454,7 +460,10 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 			};
 
 			if (pProgress)
+			{
 				pProgress->End2();
+				bResult = !pProgress->IsCanceled();
+			}
 		};
 
 		if (pBuffer)

@@ -108,7 +108,7 @@ void CDib::Initialise()
 //
 //	Initialise various attributes of the DIB,mostly for performance reasons.
 //	
-//	Sets the elements of the line array to posize_t to the start of each line in the
+//	Sets the elements of the line array to point to the start of each line in the
 //	DIB data.
 {
 	m_nHeight = m_bi.bmiHeader.biHeight;
@@ -118,7 +118,17 @@ void CDib::Initialise()
 
 	m_arrLine.SetSize( m_nHeight );
 
-	for( size_t i= m_nHeight - 1; i >=  0; i--)
+	//
+	// The following loop used to read:
+	//	 for (size_t i = m_nHeight - 1; i >=  0; i--)
+	//
+	// Unfortunately VS2017 15.9.3 compiled that as an infinite loop (arguably correctly)
+	// which caused lots of C4072 "Code unreachable" warnings!
+	//
+	// I've now changed the code to iterate m_arrline in more normal way which should
+	// prevent any further problems.
+	//
+	for (size_t i = 0; i < m_nHeight; i++)
 	{
 		m_arrLine[i] = m_pBits + i * m_nWidth;
 	}

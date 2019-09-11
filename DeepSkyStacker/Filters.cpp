@@ -94,9 +94,9 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bC
 			if (bComputeThresholds)
 			{
 				if (fPosition>0)
-					vHotPixels[min(fPosition*1000, 1000)]++;
+					vHotPixels[min(fPosition*1000, 1000.0)]++;
 				else if (fPosition<0)
-					vColdPixels[min(-fPosition*1000, 1000)]++;
+					vColdPixels[min(-fPosition*1000, 1000.0)]++;
 			}
 			else
 			{
@@ -256,9 +256,9 @@ void	CMedianImageFilter::ComputeMedianAt(LONG x, LONG y, double & fGrayValue, BA
 	m_vGrayPixelValues.resize(0);
 	if (m_bCFA && BayerColor != BAYER_UNKNOWN)
 	{
-		for (LONG i = max(0, x-2*m_lFilterSize);i<min(m_lWidth-1, x+2*m_lFilterSize);i++)
+		for (LONG i = max(0L, x-2*m_lFilterSize);i<min(m_lWidth-1, x+2*m_lFilterSize);i++)
 		{
-			for (LONG j = max(0, y-2*m_lFilterSize);j<min(m_lHeight-1, y+2*m_lFilterSize);j++)
+			for (LONG j = max(0L, y-2*m_lFilterSize);j<min(m_lHeight-1, y+2*m_lFilterSize);j++)
 			{
 				if (m_pInBitmap->GetBayerColor(i, j) == BayerColor)
 				{
@@ -273,9 +273,9 @@ void	CMedianImageFilter::ComputeMedianAt(LONG x, LONG y, double & fGrayValue, BA
 	}
 	else
 	{
-		for (LONG i = max(0, x-m_lFilterSize);i<min(m_lWidth-1, x+m_lFilterSize);i++)
+		for (LONG i = max(0L, x-m_lFilterSize);i<min(m_lWidth-1, x+m_lFilterSize);i++)
 		{
-			for (LONG j = max(0, y-m_lFilterSize);j<min(m_lHeight-1, y+m_lFilterSize);j++)
+			for (LONG j = max(0L, y-m_lFilterSize);j<min(m_lHeight-1, y+m_lFilterSize);j++)
 			{
 				double			fGray;
 
@@ -295,9 +295,9 @@ void	CMedianImageFilter::ComputeMedianAt(LONG x, LONG y, double & fRedValue, dou
 	m_vGreenPixelValues.resize(0);
 	m_vBluePixelValues.resize(0);
 
-	for (LONG i = max(0, x-m_lFilterSize);i<min(m_lWidth-1, x+m_lFilterSize);i++)
+	for (LONG i = max(0L, x-m_lFilterSize);i<min(m_lWidth-1, x+m_lFilterSize);i++)
 	{
-		for (LONG j = max(0, y-m_lFilterSize);j<min(m_lHeight-1, y+m_lFilterSize);j++)
+		for (LONG j = max(0L, y-m_lFilterSize);j<min(m_lHeight-1, y+m_lFilterSize);j++)
 		{
 			double				fRed, fGreen, fBlue;
 

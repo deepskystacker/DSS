@@ -119,7 +119,7 @@ BOOL	CFlatDivideTask::Process()
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	};
 
-	lStep		= max(1, lHeight/50);
+	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
 
 	bResult = TRUE;

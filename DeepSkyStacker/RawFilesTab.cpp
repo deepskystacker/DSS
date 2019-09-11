@@ -90,9 +90,14 @@ BOOL CRawFilesTab::OnSetActive()
 			strValue = _T("1.0");
 		m_BlueScale.SetWindowText(strValue);
 
+		//
+		// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
+		// 
 		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
+		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
+		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
 		m_AutoWB.SetCheck(bValue);
+		m_AutoWB.EnableWindow(FALSE);
 
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);

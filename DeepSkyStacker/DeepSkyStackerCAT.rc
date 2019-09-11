@@ -10,40 +10,9 @@
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
-/////////////////////////////////////////////////////////////////////////////
-// French (France) resources
-
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
-#ifdef _WIN32
-LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
-#pragma code_page(1252)
-#endif //_WIN32
-
-#ifdef APSTUDIO_INVOKED
-/////////////////////////////////////////////////////////////////////////////
-//
-// TEXTINCLUDE
-//
-
-1 TEXTINCLUDE 
-BEGIN
-    "resourceES.h\0"
-END
-
-3 TEXTINCLUDE 
-BEGIN
-    "\r\0"
-END
-
-#endif    // APSTUDIO_INVOKED
-
-#endif    // French (France) resources
-/////////////////////////////////////////////////////////////////////////////
-
-
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CAT)
 #ifdef _WIN32
-LANGUAGE 3, 1
+LANGUAGE LANG_CATALAN, SUBLANG_DEFAULT
 #pragma code_page(1252)
 #endif //_WIN32
 
@@ -58,7 +27,7 @@ BEGIN
 END
 
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Sortida"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -211,8 +180,8 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker versió %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "Decodificació d'arxius RAW amb DCRAW (versió %s)\nCopyright © 1997-2016 Dave Coffin"
-    IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
+    IDS_ABOUT_DCRAW         "Decodificació d'arxius RAW amb LibRaw (versió %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "Codificació i Decodificació d'arcxius TIFF amb LibTIFF (versió %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "Decodificació d'arxius FITS amb CFitsIO (versió %s)\nCopyright NASA"
@@ -308,7 +277,7 @@ BEGIN
                     274,86
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Alineació"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -619,7 +588,7 @@ BEGIN
                     IDC_STACKWARNING,13,80,182,19,SS_SUNKEN
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Resultat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -719,7 +688,7 @@ BEGIN
                     WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cometa"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -741,7 +710,7 @@ BEGIN
                     19,151,124
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Arxius Intermedis"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -767,7 +736,7 @@ BEGIN
                     27,36,202,10
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Apilant"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -832,14 +801,14 @@ BEGIN
                     200
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Paràmetres d'apilat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Acceptar",IDOK,266,207,50,14
     PUSHBUTTON      "Cancel·lar",IDCANCEL,266,191,50,14
-    LTEXT           "Static",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Carpeta d'Arxius Temporals:",IDC_STATIC,11,178,109,9
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Static",IDC_TEMPFOLDER,105,178,192,9,SS_PATHELLIPSIS
@@ -928,7 +897,7 @@ BEGIN
                     IDC_STATIC,15,94,210,17
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cosmètica"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -1163,6 +1132,7 @@ BEGIN
     IDS_COLUMN_INFOS        "Infos"
     IDS_COLUMN_ISO          "ISO"
     IDS_COLUMN_EXPOSURE     "Exposició"
+	IDS_COLUMN_APERTURE		"Obertura"
     IDS_COLUMN_STARS        "# Estrelles"
     IDS_COLUMN_SKYBACKGROUND "Fons de cel"
 END
@@ -1205,7 +1175,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS o Imatge DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Arxius d'Imatge|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts| Bitmaps de Windows (.bmp)|*.bmp| Arxiu JPEG o PNG|*.jpg;*.jpeg;*.png|Arxiu TIFF (.tif)|*.tif;*.tiff|Arxiu RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Arxiu FITS|*.fits;*.fit;*.fts|Tots Els Arxius|*.*||"
+    IDS_FILTER_INPUT        "Arxius d'Imatge|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Bitmaps de Windows (.bmp)|*.bmp| Arxiu JPEG o PNG|*.jpg;*.jpeg;*.png|Arxiu TIFF (.tif)|*.tif;*.tiff|Arxiu RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Arxiu FITS|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "Imatge TIFF (16 bit/ch)|*.TIF|Imatge TIFF (32 bit/ch - integer)|*.TIF|Imatge TIFF (32 bit/ch - rational)|*.TIF|Imatge FITS (16 bit/ch)|*.FTS|Imatge FITS (32 bit/ch - integer)|*.FTS|Imatge FITS (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Llista d'Arxius (*.txt)|*.txt|Llista d'Arxius (*.dssfilelist)|*.dssfilelist|Tots Els Arxius|*.*||"
     IDS_FILTER_MASK         "Imatge TIFF|*.tif;*.tiff|Imatge FITS|*.fits;*.fts;*.fit||"
@@ -1621,6 +1591,11 @@ BEGIN
     IDS_RECAP_DARKMULTIPLICATIONFACTOR "Factor de multiplicació del Dark: %.2f\n"
 END
 
+
+STRINGTABLE
+BEGIN
+    IDS_CAMERA_NOT_SUPPORTED "Ho sentim, LibRaw no funciona amb la teva càmera %s"
+END
 
 #endif
 

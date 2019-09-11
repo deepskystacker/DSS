@@ -258,9 +258,6 @@
     <ClCompile Include="DarkFrame.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DCRaw\dcraw.c">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="DeBloom.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -738,9 +735,6 @@
     </ClInclude>
     <ClInclude Include="PCLTools.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\CtrlCache.h">
-      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -87,9 +87,6 @@
     <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DCRaw\dcraw.c">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\DeBloom.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -519,5 +516,8 @@
     <ResourceCompile Include="DeepSkyStackerLiveTR.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource." />
   </ItemGroup>
 </Project>

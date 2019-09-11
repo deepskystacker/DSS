@@ -6,10 +6,29 @@
 #include "RAWUtils.h"
 #include <set>
 #include <list>
+#include <iostream>
+#include <map>
+#include <stdexcept>
+#include <utility>
 #include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
+#include "zexcept.h"
+#include "ztrace.h"
 
+#include "libraw/libraw.h"
+
+LARGE_INTEGER start;
+void timerstart(void) { QueryPerformanceCounter(&start); }
+float timerend()
+{
+	LARGE_INTEGER unit, end;
+	QueryPerformanceCounter(&end);
+	QueryPerformanceFrequency(&unit);
+	float msec = (float)(end.QuadPart - start.QuadPart);
+	msec /= (float)unit.QuadPart / 1000.0f;
+	return msec;
+}
 
 class CRAWSettings
 {
@@ -95,7 +114,7 @@ BOOL IsRawBayer()
 		bResult = g_RawSettingsStack.back().m_bRawBayer;
 	else
 		bResult = IsRegistryRawBayer();
-	
+
 	return bResult;
 };
 
@@ -154,100 +173,10 @@ void	PopRAWSettings()
 #include <share.h>
 #include <typeinfo.h>
 
-#define Thread   __declspec( thread )
-
-extern "C" Thread char make[64];
-extern "C" Thread char model[64];
-extern "C" Thread unsigned short int iheight;
-extern "C" Thread unsigned short int iwidth;
-extern "C" Thread float iso_speed;
-extern "C" Thread unsigned int is_foveon;
-extern "C" Thread float shutter;
-extern "C" Thread unsigned filters;
-extern "C" Thread unsigned mix_green;
-extern "C" Thread time_t timestamp;
-extern "C" Thread int  colors;
-
-extern "C" int DCRawmain(int argc, char* argv[], FILE * pfout);
-extern "C" void InitGlobalVariables();
-
-CFATYPE GetCurrentCFAType()
+class BitMapFiller
 {
-	if (colors==4 && mix_green==0)
-	{	// CYMG Bayer pattern
-		switch (filters)
-		{
-		case 0xb4b4b4b4 :
-			return CFATYPE_GMYC;
-			break;
-		case 0xe1e4e1e4 :
-			return CFATYPE_GMCYMGCY;
-			break;
-		case 0x1e4e1e4e :
-			return CFATYPE_CYGMCYMG;
-			break;
-		};
 
-	}
-	else
-	{	// RGB Bayer Pattern
-		switch (filters)
-		{
-		case 0x1e1e1e1e :
-		case 0x16161616 :
-			return CFATYPE_BGGR;
-			break;
-		case 0xe1e1e1e1 :
-		case 0x61616161 :
-			return CFATYPE_GRBG;
-			break;
-		case 0x4b4b4b4b :
-		case 0x49494949 :
-			return CFATYPE_GBRG;
-			break;
-		case 0xb4b4b4b4 :
-		case 0x94949494 :
-			return CFATYPE_RGGB;
-			break;
-		default :
-			return CFATYPE_NONE;
-		};
-	}
-
-	return CFATYPE_NONE;
-};
-
-/* ------------------------------------------------------------------- */
-
-typedef std::set<LONG>					REDIRECTEDFILES;
-typedef REDIRECTEDFILES::iterator		REDIRECTEDFILESIT;
-
-//CComAutoCriticalSection	g_CriticalSection;				
-//REDIRECTEDFILES			g_mRedirectedFiles;
-
-/* ------------------------------------------------------------------- */
-
-class CGenericFile
-{
-public :
-	CGenericFile() {};
-
-	virtual ~CGenericFile() {};
-};
-
-class COutputFile : public CGenericFile
-{
-	typedef enum ReadStep
-	{
-		RS_INIT			= 0,
-		RS_WIDTH		= 1,
-		RS_HEIGHT		= 2,
-		RS_MAXCOLOR		= 3,
-		RS_BEFOREROWS	= 4,
-		RS_ROWS			= 5
-	}ReadStep;
-
-private :
+private:
 	CDSSProgress *			m_pProgress;
 	BOOL					m_bStarted;
 	CFATYPE					m_CFAType;
@@ -256,7 +185,6 @@ private :
 	PixelIterator			m_PixelIt;
 	DWORD					m_dwCurrentX,
 							m_dwCurrentY;
-	ReadStep				m_Step;
 	BYTE *					m_pBuffer;
 	DWORD					m_dwBufferSize;
 	DWORD					m_dwBufferReadPos;
@@ -264,277 +192,159 @@ private :
 	LONG					m_lWidth,
 							m_lHeight,
 							m_lMaxColors;
-	BOOL					m_lBytePerChannel;
-	BOOL					m_bGray;
+	LONG					m_lBytePerChannel;
+	BOOL					m_bGrey;
 	double					m_fRedScale,
 							m_fGreenScale,
 							m_fBlueScale;
 
-private :
+private:
 	void	AdjustColor(double & fColor, double fAdjust)
 	{
 		double		fResult = (double)fColor * fAdjust;
 
-		fColor = min(MAXWORD-1, fResult);			
+		fColor = min(static_cast<double>(MAXWORD - 1), fResult);
 	};
 
 	void	AddToBuffer(const void * buffer, DWORD lSize)
 	{
 		if (!m_bStarted)
 			Start();
+		ZASSERTSTATE(0 != m_lWidth);
+		ZASSERTSTATE(0 != m_lHeight);
+		ZASSERTSTATE(0 != m_lMaxColors);
+
+		if (m_lMaxColors > 255)
+			m_lBytePerChannel = 2;
+		else
+			m_lBytePerChannel = 1;
+
+		//
+		// Now process the bitmap
+		//
 		if (!m_pBuffer)
 		{
 			// Alloc the buffer
 			m_dwBufferSize = 2 * lSize;
 			m_pBuffer = (BYTE*)malloc(m_dwBufferSize);
-			m_dwBufferReadPos  = 0;
+			m_dwBufferReadPos = 0;
 			m_dwBufferWritePos = 0;
 		};
 		if (lSize > m_dwBufferSize - m_dwBufferWritePos)
 		{
 			// realloc the buffer
-			m_pBuffer = (BYTE*)realloc(m_pBuffer, lSize + m_dwBufferWritePos*2);
-			m_dwBufferSize = lSize + m_dwBufferWritePos*2;
+			m_pBuffer = (BYTE*)realloc(m_pBuffer, lSize + m_dwBufferWritePos * 2);
+			m_dwBufferSize = lSize + m_dwBufferWritePos * 2;
 		};
 
 		BYTE *				pWrite = m_pBuffer;
-		BYTE *				pRead  = m_pBuffer;
+		BYTE *				pRead = m_pBuffer;
 		LONG				lToRead;
 		BOOL				bEnd = FALSE;
-		
+
 		pWrite += m_dwBufferWritePos;
-		pRead  += m_dwBufferReadPos;
+		pRead += m_dwBufferReadPos;
 		memcpy(m_pBuffer, buffer, lSize);
 		m_dwBufferWritePos += lSize;
 
 		while (!bEnd)
 		{
 			bEnd = TRUE;
-			// Jump whitespace, CR, LF and TAB characters
 			lToRead = m_dwBufferWritePos - m_dwBufferReadPos;
-			if (m_Step < RS_BEFOREROWS)
+			// Read pixels
 			{
-				while ((lToRead >= 1) && 
-					   (strchr(" \n\t\r", *pRead) != NULL))
+				if (m_bGrey)
 				{
-					lToRead--;
-					m_dwBufferReadPos++;
-					pRead++;
-				};
-			};
-			switch (m_Step)
-			{
-			case RS_INIT :
-				// Try to read the magic P5 or P6 number
-				if (lToRead >= 2)
-				{
-					CStringA	strMagic;
-					// Read two characters
-
-					strMagic += (char)(*pRead);
-					strMagic += (char)(*(pRead+1));
-
-					if (strMagic == "P6")
+					if (lToRead >= m_lBytePerChannel)
 					{
-						m_Step = RS_WIDTH;
-						m_dwBufferReadPos+=2;
-						pRead	+= 2;
-						bEnd	= FALSE;
-						m_bGray = FALSE;
-					}
-					else if (strMagic == "P5")
-					{
-						m_Step = RS_WIDTH;
-						m_dwBufferReadPos+=2;
-						pRead	+= 2;
-						bEnd	= FALSE;
-						m_bGray = TRUE;
-					};
-				};
-				break;
-			case RS_WIDTH :
-				// Try to find the next white space
-				{
-					BYTE *		pTemp = pRead;
-					LONG		lTemp = lToRead;
-					CString		strWidth;
-
-					while (lTemp >= 1 && !strchr(" \n\t\r", *pTemp))
-					{
-						strWidth += (char)(*pTemp);
-						lTemp--;
-						pTemp++;
-					};
-
-					if (strchr(" \n\t\r", *pTemp))
-					{
-						m_Step = RS_HEIGHT;
-						m_dwBufferReadPos+=strWidth.GetLength();
-						pRead += strWidth.GetLength();
-						bEnd = FALSE;
-						m_lWidth = _ttol(strWidth);
-					};
-				}
-				break;
-			case RS_HEIGHT :
-				// Try to find the next white space
-				{
-					BYTE *		pTemp = pRead;
-					LONG		lTemp = lToRead;
-					CString		strHeight;
-
-					while (lTemp >= 1 && !strchr(" \n\t\r", *pTemp))
-					{
-						strHeight += (char)(*pTemp);
-						lTemp--;
-						pTemp++;
-					};
-
-					if (strchr(" \n\t\r", *pTemp))
-					{
-						m_Step = RS_MAXCOLOR;
-						m_dwBufferReadPos+=strHeight.GetLength();
-						pRead += strHeight.GetLength();
-						bEnd = FALSE;
-						m_lHeight = _ttol(strHeight);
-					};
-				}
-				break;
-			case RS_MAXCOLOR :
-				// Try to find the next white space
-				{
-					BYTE *		pTemp = pRead;
-					LONG		lTemp = lToRead;
-					CString		strMaxColor;
-
-					while (lTemp >= 1 && !strchr(" \n\t\r", *pTemp))
-					{
-						strMaxColor += (char)(*pTemp);
-						lTemp--;
-						pTemp++;
-					};
-
-					if (strchr(" \n\t\r", *pTemp))
-					{
-						m_Step = RS_BEFOREROWS;
-						m_dwBufferReadPos+=strMaxColor.GetLength();
-						pRead += strMaxColor.GetLength();
-						bEnd = FALSE;
-						m_lMaxColors = _ttol(strMaxColor);
-
-						if (m_lMaxColors > 255)
-							m_lBytePerChannel = 2;
+						// Read gray
+						double		fGrey;
+						if (m_lBytePerChannel == 2)
+						{
+							fGrey = ((*(pRead + 0)) << 8) + (*(pRead + 1));
+							m_dwBufferReadPos += 2;
+							pRead += 2;
+						}
 						else
-							m_lBytePerChannel = 1;
+						{
+							fGrey = ((*(pRead + 0)) << 8);
+							m_dwBufferReadPos++;
+							pRead++;
+						};
+
+						if (m_dwCurrentX >= m_lWidth)
+						{
+							m_dwCurrentY++;
+							m_dwCurrentX = 0;
+							m_PixelIt->Reset(0, m_dwCurrentY);
+							m_dwPos = m_dwCurrentY + 1;
+						};
+
+						switch (GetBayerColor(m_dwCurrentX, m_dwCurrentY, m_CFAType))
+						{
+						case BAYER_RED:
+							AdjustColor(fGrey, m_fRedScale);
+							break;
+						case BAYER_GREEN:
+							AdjustColor(fGrey, m_fGreenScale);
+							break;
+						case BAYER_BLUE:
+							AdjustColor(fGrey, m_fBlueScale);
+							break;
+						};
+
+						m_PixelIt->SetPixel((double)fGrey / 256.0);
+						(*m_PixelIt)++;
+						m_dwCurrentX++;
+
+						bEnd = FALSE;
 					};
 				}
-				break;
-			case RS_BEFOREROWS :
-				if (lToRead >= 1)
+				else
 				{
-					// Jump a single character
-					m_Step = RS_ROWS;
-					pRead++;
-					m_dwBufferReadPos ++;
-					bEnd = FALSE;
+					if (lToRead >= m_lBytePerChannel * 3)
+					{
+						// Read RGB
+						double				fRed, fGreen, fBlue;
+
+						if (m_lBytePerChannel == 2)
+						{
+							fRed = ((*(pRead + 0)) << 8) + (*(pRead + 1));
+							fGreen = ((*(pRead + 2)) << 8) + (*(pRead + 3));
+							fBlue = ((*(pRead + 4)) << 8) + (*(pRead + 5));
+							m_dwBufferReadPos += 6;
+							pRead += 6;
+						}
+						else
+						{
+							fRed = ((*(pRead + 0)) << 8);
+							fGreen = ((*(pRead + 1)) << 8);
+							fBlue = ((*(pRead + 2)) << 8);
+							m_dwBufferReadPos += 3;
+							pRead += 3;
+						};
+
+						if (m_dwCurrentX >= m_lWidth)
+						{
+							m_dwCurrentY++;
+							m_dwCurrentX = 0;
+							m_PixelIt->Reset(0, m_dwCurrentY);
+							m_dwPos = m_dwCurrentY + 1;
+						};
+
+						AdjustColor(fRed, m_fRedScale);
+						AdjustColor(fGreen, m_fGreenScale);
+						AdjustColor(fBlue, m_fBlueScale);
+
+						m_PixelIt->SetPixel(fRed / 256.0, fGreen / 256.0, fBlue / 256.0);
+						m_dwCurrentX++;
+						(*m_PixelIt)++;
+
+						bEnd = FALSE;
+					};
 				};
-				break;
-			case RS_ROWS :
-				// Read pixels
-				{
-					if (m_bGray)
-					{
-						if (lToRead >= m_lBytePerChannel)
-						{
-							// Read gray
-							double		fGray;
-							if (m_lBytePerChannel == 2)
-							{
-								fGray = ((*(pRead+0)) << 8) + (*(pRead+1));
-								m_dwBufferReadPos += 2;
-								pRead += 2;
-							}
-							else
-							{
-								fGray = ((*(pRead+0)) << 8);
-								m_dwBufferReadPos++;
-								pRead++;
-							};
+			}
 
-							if (m_dwCurrentX >= m_lWidth)
-							{
-								m_dwCurrentY ++;
-								m_dwCurrentX = 0;
-								m_PixelIt->Reset(0, m_dwCurrentY);
-								m_dwPos = m_dwCurrentY+1;
-							};
-							
-							switch (GetBayerColor(m_dwCurrentX, m_dwCurrentY, m_CFAType))
-							{
-							case BAYER_RED :
-								AdjustColor(fGray, m_fRedScale);
-								break;
-							case BAYER_GREEN :
-								AdjustColor(fGray, m_fGreenScale);
-								break;
-							case BAYER_BLUE :
-								AdjustColor(fGray, m_fBlueScale);
-								break;
-							};
-
-							m_PixelIt->SetPixel((double)fGray/256.0);
-							(*m_PixelIt)++;
-							m_dwCurrentX++;
-
-							bEnd = FALSE;
-						};
-					}
-					else
-					{
-						if (lToRead >= m_lBytePerChannel * 3)
-						{
-							// Read RGB
-							double				fRed, fGreen, fBlue;
-
-							if (m_lBytePerChannel == 2)
-							{
-								fRed		= ((*(pRead+0)) << 8) + (*(pRead+1));
-								fGreen		= ((*(pRead+2)) << 8) + (*(pRead+3));
-								fBlue		= ((*(pRead+4)) << 8) + (*(pRead+5));
-								m_dwBufferReadPos += 6;
-								pRead += 6;
-							}
-							else
-							{
-								fRed		= ((*(pRead+0)) << 8);
-								fGreen		= ((*(pRead+1)) << 8);
-								fBlue		= ((*(pRead+2)) << 8);
-								m_dwBufferReadPos += 3;
-								pRead += 3;
-							};
-
-							if (m_dwCurrentX >= m_lWidth)
-							{
-								m_dwCurrentY ++;
-								m_dwCurrentX = 0;
-								m_PixelIt->Reset(0, m_dwCurrentY);
-								m_dwPos = m_dwCurrentY+1;
-							};
-
-							AdjustColor(fRed, m_fRedScale);
-							AdjustColor(fGreen, m_fGreenScale);
-							AdjustColor(fBlue, m_fBlueScale);
-
-							m_PixelIt->SetPixel(fRed/256.0, fGreen/256.0, fBlue/256.0);
-							m_dwCurrentX++;
-							(*m_PixelIt)++;
-
-							bEnd = FALSE;
-						};
-					};
-				}
-				break;
-			};
 		};
 
 		// Adjust Buffer
@@ -551,19 +361,23 @@ private :
 	};
 private:
 
-public :
-	COutputFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress) 
+public:
+
+	BitMapFiller(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 	{
-		m_pBitmap	= pBitmap;
+		m_pBitmap = pBitmap;
 		m_pProgress = pProgress;
-		m_bStarted  = FALSE;
+		m_bStarted = FALSE;
 		m_fRedScale = 1.0;
 		m_fGreenScale = 1.0;
-		m_fBlueScale  = 1.0;
-		m_CFAType	= CFATYPE_NONE;
+		m_fBlueScale = 1.0;
+		m_lBytePerChannel = 2;				// Never going to handle 8 bit data !!
+		m_lHeight = 0;
+		m_lWidth = 0;
+		m_CFAType = CFATYPE_NONE;
 	};
 
-	virtual ~COutputFile() 
+	virtual ~BitMapFiller()
 	{
 		if (m_pBuffer)
 			free(m_pBuffer);
@@ -571,9 +385,9 @@ public :
 
 	void	SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale)
 	{
-		m_fRedScale		= fRedScale;
-		m_fGreenScale	= fGreenScale;
-		m_fBlueScale	= fBlueScale;
+		m_fRedScale = fRedScale;
+		m_fGreenScale = fGreenScale;
+		m_fBlueScale = fBlueScale;
 	};
 
 	void	SetCFAType(CFATYPE CFAType)
@@ -581,29 +395,55 @@ public :
 		m_CFAType = CFAType;
 	};
 
+	void	setGrey(BOOL grey)
+	{
+		m_bGrey = grey;
+	};
+
+	void	setWidth(LONG width)
+	{
+		m_lWidth = width;
+	};
+
+	void	setHeight(LONG height)
+	{
+		m_lHeight = height;
+	};
+
+	void	setMaxColors(LONG maxcolors)
+	{
+		m_lMaxColors = maxcolors;
+	};
+
 	int	Start()
 	{
-		m_bStarted   = TRUE;
-		m_Step       = RS_INIT;
-		m_pBuffer	 = NULL;
+		ZFUNCTRACE_RUNTIME();
+		//
+		// Do initialisation not done by ctor
+		//
+		m_bStarted = TRUE;
+		m_pBuffer = NULL;
 		m_dwBufferSize = 0;
-		m_dwBufferReadPos  = 0;
+		m_dwBufferReadPos = 0;
 		m_dwBufferWritePos = 0;
-		m_dwPos		 = 0;
+		m_dwPos = 0;
 		m_dwCurrentX = 0;
 		m_dwCurrentY = 0;
-		m_lWidth	 = 0;
-		m_lHeight	 = 0;
-		if (m_CFAType == CFATYPE_NONE)
-			m_CFAType	 = GetCurrentCFAType();
 
+		//
+		// If the bitmap is a 16-bit grayscale bitmap, then set the CFA type
+		//
 		C16BitGrayBitmap *			pGray16Bitmap = dynamic_cast<C16BitGrayBitmap *>(m_pBitmap);
 		if (pGray16Bitmap)
 			pGray16Bitmap->SetCFAType(m_CFAType);
+		//
+		// Initialise the progress dialog
+		//
 		if (m_pProgress)
 			m_pProgress->Start2(NULL, m_pBitmap->Height());
 
 		m_pBitmap->GetIterator(&m_PixelIt);
+
 
 		return 0;
 	};
@@ -611,11 +451,11 @@ public :
 	int	Printf(const char *format, va_list va)
 	{
 		int				nResult;
-		CStringA			strText;
+		CString			strText;
 
 		strText.FormatV(format, va);
 		nResult = strText.GetLength();
-		
+
 		AddToBuffer(strText.GetBuffer(10000), nResult);
 
 		if (m_pProgress)
@@ -624,7 +464,7 @@ public :
 		return nResult;
 	};
 
-	size_t Write (const void *buffer, size_t size, size_t count)
+	size_t Write(const void *buffer, size_t size, size_t count)
 	{
 		AddToBuffer(buffer, (DWORD)size*(DWORD)count);
 		if (m_pProgress)
@@ -634,171 +474,44 @@ public :
 	};
 };
 
+class DSSLibRaw : public LibRaw
+{
+public:
+	DSSLibRaw() {};
+	virtual ~DSSLibRaw() {};
+	void setBitMapFiller(BitMapFiller * pFiller)
+	{
+		pDSSBitMapFiller = pFiller;
+	};
+
+
+	int			dcraw_ppm_tiff_writer(const char *filename);
+	inline unsigned		get_fuji_layout()
+	{
+		return libraw_internal_data.unpacker_data.fuji_layout;
+	};
+
+	void adjust_bl() { this->LibRaw::adjust_bl(); }
+	virtual int is_phaseone_compressed() { return this->LibRaw::is_phaseone_compressed(); }
+
+protected:
+	void        write_ppm_tiff();
+
+private:
+	BitMapFiller * pDSSBitMapFiller = NULL;
+
+};
+
+#define Thread   __declspec( thread )
+
+// Thread DSSLibRaw	rawProcessor;
+DSSLibRaw rawProcessor;
+
+
 /* ------------------------------------------------------------------- */
 
 //static CString			g_strInputFileName;
-static Thread char				g_szInputFileName[1+_MAX_PATH];					
 static Thread CDSSProgress *	g_Progress;
-
-class CInputFile : public CGenericFile
-{
-public :
-	FILE *				m_hFile;
-	BYTE *				m_pBuffer;
-	size_t				m_lFileSize;
-	size_t				m_lCurrentPos;
-
-public :
-	CInputFile()
-	{
-		m_hFile		= NULL;
-		m_pBuffer	= NULL;
-	};
-
-	virtual ~CInputFile()
-	{
-		if (m_hFile)
-			fclose(m_hFile);
-		if (m_pBuffer)
-			free(m_pBuffer);
-	};
-
-	void	UpdatePos()
-	{
-		if (g_Progress)
-			g_Progress->Progress2(NULL, ftell());
-	};
-
-	size_t	fread(void * pDstBuff, size_t ElementSize, size_t Count)
-	{
-		size_t			result = 0;
-
-		if (m_lCurrentPos + ElementSize * Count <= m_lFileSize)
-		{
-			BYTE *			pSrcBuff = m_pBuffer;
-
-			pSrcBuff += m_lCurrentPos;
-			memcpy(pDstBuff, pSrcBuff, ElementSize * Count);
-			m_lCurrentPos += ElementSize * (DWORD)Count;
-
-			result = Count;
-		}
-
-		return result;
-	};
-
-	int		fgetc()
-	{
-		int				result = 0;
-
-		if (m_lCurrentPos < m_lFileSize)
-		{
-			BYTE *			pSrcBuff = m_pBuffer;
-
-			pSrcBuff += m_lCurrentPos;
-
-			result = *pSrcBuff;
-			m_lCurrentPos++;
-		};
-
-		return result;
-	};
-
-	int		fseek(long offset, int Origin)
-	{
-		int				result = 0;
-
-		if (Origin == SEEK_SET)
-		{
-			if (offset >= 0 && offset < m_lFileSize)
-				m_lCurrentPos = offset;
-			else
-				result = -1;
-		}
-		else if (Origin == SEEK_CUR)
-		{
-			if ((m_lCurrentPos + offset >= 0) && (m_lCurrentPos + offset < m_lFileSize))
-				m_lCurrentPos += offset;
-			else
-				result = -1;
-		}
-		else
-		{
-			if ((offset <= 0) && (-offset < m_lFileSize))
-				m_lCurrentPos = m_lFileSize+offset;
-			else
-				result = -1;
-		};
-
-		return result;
-	};
-
-	long		ftell()
-	{
-		return (long)m_lCurrentPos;
-	};
-
-	int		fscanf(const char * Format, va_list marker)
-	{
-		int				result;
-		BYTE *			pSrcBuff = m_pBuffer;
-		CStringA		str;
-
-		pSrcBuff += m_lCurrentPos;
-		result = sscanf((const char*)pSrcBuff, Format, marker);
-
-		str.Format(Format, marker);
-		m_lCurrentPos += str.GetLength();
-
-		return result;
-	};
-
-	char *	fgets(char * Buff, int MaxCount)
-	{
-		BYTE *			pSrcBuff = m_pBuffer;
-
-		pSrcBuff += m_lCurrentPos;
-		strncpy(Buff, (const char *)pSrcBuff, MaxCount);
-
-		m_lCurrentPos += min(MaxCount, (DWORD)strlen(Buff));
-
-		return Buff;
-	};
-
-	BOOL	Init()
-	{
-		BOOL			bResult = FALSE;
-
-		if (m_hFile)
-		{
-			::fseek(m_hFile, 0, SEEK_END);
-			m_lFileSize = ::ftell(m_hFile);
-
-			m_pBuffer = (BYTE*)malloc(m_lFileSize);
-			if (m_pBuffer)
-			{
-				::fseek(m_hFile, 0, SEEK_SET);
-				bResult = ::fread(m_pBuffer, m_lFileSize, 1, m_hFile) == 1; 
-				m_lCurrentPos = 0;
-				::fclose(m_hFile);
-				m_hFile = NULL;
-			};
-		};
-
-		if (!bResult && m_pBuffer)
-		{
-			free(m_pBuffer);
-			m_pBuffer = NULL;
-		};
-
-		return bResult;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-Thread		CInputFile *		g_pInputFile = NULL;
-Thread		COutputFile *		g_pOutputFile = NULL;
 
 /* ------------------------------------------------------------------- */
 
@@ -810,6 +523,7 @@ private :
 	CString			m_strMake;
 	LONG			m_lISOSpeed;
 	double			m_fExposureTime;
+	double			m_fAperture;
 	LONG			m_lHeight,
 					m_lWidth;
 	BOOL			m_bColorRAW;
@@ -819,14 +533,28 @@ private :
 public :
 	CRawDecod(LPCTSTR szFile)
 	{
+		ZFUNCTRACE_RUNTIME();
 		m_strFileName = szFile;
 		m_bColorRAW	  = FALSE;
 		m_CFAType	  = CFATYPE_NONE;
 		m_DateTime.wYear = 0;
+
+		int ret = 0;
+		if ((ret = rawProcessor.open_file(m_strFileName)) != LIBRAW_SUCCESS)
+		{
+			CString			strText;
+
+			strText.Format(_T("Cannot open %s: %s"), m_strFileName, libraw_strerror(ret));
+
+			throw std::runtime_error(strText);
+		}
+
 	};
 
-	virtual ~CRawDecod() 
+	virtual ~CRawDecod()
 	{
+		ZFUNCTRACE_RUNTIME();
+		rawProcessor.recycle();
 	};
 
 	BOOL	IsRawFile();
@@ -838,6 +566,8 @@ public :
 		return TRUE;
 	};
 
+	void checkCameraSupport(const CString& strModel);
+
 	LONG	GetISOSpeed()
 	{
 		return m_lISOSpeed;
@@ -846,6 +576,11 @@ public :
 	double	GetExposureTime()
 	{
 		return m_fExposureTime;
+	};
+
+	double	getAperture()
+	{
+		return m_fAperture;
 	};
 
 	LONG	Width()
@@ -863,10 +598,78 @@ public :
 		return m_bColorRAW;
 	};
 
+#define P1		rawProcessor.imgdata.idata
+#define P2		rawProcessor.imgdata.other
+
+#define mnLens rawProcessor.imgdata.lens.makernotes
+#define exifLens rawProcessor.imgdata.lens
+#define ShootingInfo rawProcessor.imgdata.shootinginfo
+
+#define S		rawProcessor.imgdata.sizes
+#define O		rawProcessor.imgdata.params
+#define C		rawProcessor.imgdata.color
+#define T		rawProcessor.imgdata.thumbnail
+
+#define Canon	rawProcessor.imgdata.makernotes.canon
+#define Fuji	rawProcessor.imgdata.makernotes.fuji
+#define Oly		rawProcessor.imgdata.makernotes.olympus
+
+#define RawData	rawProcessor.imgdata.rawdata
+#define IOParams	rawProcessor.imgdata.rawdata.ioparams
+
 	CFATYPE	GetCFAType()
 	{
 		return m_CFAType;
 	};
+
+	CFATYPE GetCurrentCFAType()
+	{
+		if (P1.colors == 4 && IOParams.mix_green == 0)
+		{	// CYMG Bayer pattern
+			switch (P1.filters)
+			{
+			case 0xb4b4b4b4:
+				return CFATYPE_GMYC;
+				break;
+			case 0xe1e4e1e4:
+				return CFATYPE_GMCYMGCY;
+				break;
+			case 0x1e4e1e4e:
+				return CFATYPE_CYGMCYMG;
+				break;
+			};
+
+		}
+		else
+		{	// RGB Bayer Pattern
+			switch (P1.filters)
+			{
+			case 0x1e1e1e1e:
+			case 0x16161616:
+				return CFATYPE_BGGR;
+				break;
+			case 0xe1e1e1e1:
+			case 0x61616161:
+				return CFATYPE_GRBG;
+				break;
+			case 0x4b4b4b4b:
+			case 0x49494949:
+				return CFATYPE_GBRG;
+				break;
+			case 0xb4b4b4b4:
+			case 0x94949494:
+				return CFATYPE_RGGB;
+				break;
+			default:
+				return CFATYPE_NONE;
+			};
+		}
+
+		return CFATYPE_NONE;
+	};
+
+	/* ------------------------------------------------------------------- */
+
 
 	SYSTEMTIME GetDateTime()
 	{
@@ -874,95 +677,161 @@ public :
 	};
 };
 
+void CRawDecod::checkCameraSupport(const CString& strModel)
+{
+	bool result = false;
+	const char * camera = static_cast<LPCSTR>(strModel);
+
+	static std::set<std::string> checkedCameras;
+	
+	//
+	// If we've already checked this camera type, then just bail out so
+	// complaints about unsupported cameras are only issued once.
+	//
+	auto it = checkedCameras.find(camera);
+
+	if (it != checkedCameras.end() )
+	{
+		return;
+	}
+
+	static std::vector<std::string> supportedCameras;
+
+	if (0 == supportedCameras.size())
+	{
+		const char **cameraList = rawProcessor.cameraList();
+		size_t count = rawProcessor.cameraCount();
+		supportedCameras.reserve(count);
+
+		//
+		// Copy LibRaw's supported camera list
+		//
+		for (size_t i = 0; i != count; ++i)
+		{
+			if (nullptr != cameraList[i])
+			{
+				supportedCameras.push_back(cameraList[i]);
+			}
+		}
+		// 
+		// sort the names using std::sort
+		sort(supportedCameras.begin(), supportedCameras.end());
+	}
+
+	//
+	// The camera type hasn't already been checked, so search the LibRaw supported camera list
+	//
+	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
+		[](const std::string &lhs, const std::string &rhs)
+	{
+		const char* pclhs = lhs.c_str();
+		const char* pcrhs = rhs.c_str();
+		size_t len = strlen(pclhs);
+		size_t szrhs = strlen(pcrhs);
+		// choose the shorter length
+		len = (len > szrhs) ? szrhs : len;
+		int result = _strnicmp(pclhs, pcrhs, len);
+		return (result < 0) ? true : false;
+	}
+		);
+
+	//
+	// Now we know whether this camera is supported or not, remember we've seen it before
+	//
+	checkedCameras.insert(camera);
+
+	//
+	// If the camera isn't supported complain, but only once 
+	//
+	if (false == result)
+	{
+		CString errorMessage;
+		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, camera);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+#endif
+	}
+
+	return;
+};
 /* ------------------------------------------------------------------- */
 
 BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, BOOL bThumb)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL		bResult = TRUE;
+	BitMapFiller *		pFiller = NULL;
+	int			ret = 0;
 
-	if (IsRawFile())
+
+	pBitmap->Init(m_lWidth, m_lHeight);
+	pBitmap->SetISOSpeed(m_lISOSpeed);
+	pBitmap->SetExposure(m_fExposureTime);
+	pBitmap->SetAperture(m_fAperture);
+	pBitmap->m_DateTime = m_DateTime;
+
+	CString			strDescription;
+	GetModel(strDescription);
+
+	//
+	// If it's a DNG file, we don't need to check for camera support, but if
+	// we're processing a true raw file then check that the camera is supported.
+	// 
+	if (0 == P1.dng_version)
 	{
-		pBitmap->Init(m_lWidth, m_lHeight);
-		pBitmap->SetISOSpeed(m_lISOSpeed);
-		pBitmap->SetExposure(m_fExposureTime);
-		pBitmap->m_DateTime = m_DateTime;
-		CString			strDescription;
-		GetModel(strDescription);
-		pBitmap->SetDescription(strDescription);
-
-		const		int maxargs = 50;
-		CWorkspace	workspace;
-		CString		strInterpolation;
-		double		fBrightness = 1.0;
-		double		fRedScale = 1.0;
-		double		fBlueScale = 1.0;
-		double		fGreenScale = 1.0;
-
-		//DWORD		bSuperPixels;
-		//DWORD		bRawBayer;
-		//BOOL		bBilinear;
-		//BOOL		bAHD;
-		DWORD		bBlackPointTo0 = 0;
-		DWORD		bValue;
+		checkCameraSupport(strDescription);
+	};
 		
-		int			argc = 0;
-		char *		argv[maxargs];
+	pBitmap->SetDescription(strDescription);
 
+	const		int maxargs = 50;
+	CWorkspace	workspace;
+	CString		strInterpolation;
+	double		fBrightness = 1.0;
+	double		fRedScale = 1.0;
+	double		fBlueScale = 1.0;
+	double		fGreenScale = 1.0;
+
+	//DWORD		bSuperPixels;
+	//DWORD		bRawBayer;
+	//BOOL		bBilinear;
+	//BOOL		bAHD;
+	DWORD		bBlackPointTo0 = 0;
+	DWORD		bValue;
+
+	do	// Do once!
+	{
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), fBrightness);
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), fRedScale);
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), fBlueScale);
+
+		fGreenScale = fBrightness;
+		fRedScale *= fBrightness;
+		fBlueScale *= fBrightness;
+
+		//bSuperPixels = IsSuperPixels();
+		//bRawBayer    = IsRawBayer();
+		//bBilinear	 = !bSuperPixels && !bRawBayer && IsRawBilinear();
+		//bAHD		 = !bSuperPixels && !bRawBayer && IsRawAHD();
+		//
+		// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
+		// 
+		bValue = FALSE;
+		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
+		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
+		O.use_auto_wb = bValue ? 1 : 0;
+
+		bValue = FALSE;
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
+		O.use_camera_wb = bValue ? 1 : 0;
 		
-		argv[0] = "MyProgram.exe";
-		argc++;
+		// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
+		O.use_fuji_rotate = 0;
 
-		{
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), fBrightness);
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), fRedScale);
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), fBlueScale);
-
-			fGreenScale = fBrightness;
-			fRedScale   *= fBrightness;
-			fBlueScale  *= fBrightness;
-
-			//bSuperPixels = IsSuperPixels();
-			//bRawBayer    = IsRawBayer();
-			//bBilinear	 = !bSuperPixels && !bRawBayer && IsRawBilinear();
-			//bAHD		 = !bSuperPixels && !bRawBayer && IsRawAHD();
-
-			bValue = FALSE;
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
-			if (bValue)
-			{
-				// Automatic WB
-				argv[argc] = "-a";
-				argc++;
-			};
-
-			bValue = FALSE;
-			workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
-			if (bValue)
-			{
-				// Camera WB (is possible)
-				argv[argc] = "-w";
-				argc++;
-			};
-
-			if (!m_bColorRAW)
-			{
-				// Document mode
-				argv[argc] = "-d";
-				argc++;
-			};
-		};
-		
-		// No pixel resize
-		argv[argc] = "-j";
-		argc++;
-
-		// No flip
-		argv[argc] = "-t";
-		argc++;
-
-		argv[argc] = "0";
-		argc++;
+		// Don't flip the image (equivalent to dcraw -t 0)
+		O.user_flip = 0;
 
 		// Output color space : raw-> sRGB (default)
 		/*
@@ -972,46 +841,382 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		argc++;*/
 
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
-		if (bBlackPointTo0)
+		O.user_black = bBlackPointTo0 ? 0 : -1;
+
+		// Output is 16 bits (equivalent of dcraw flag -4)
+		O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
+		O.output_bps = 16;
+			
+		g_Progress = pProgress;
+		
+		ZTRACE_RUNTIME("Calling LibRaw::unpack()");
+		if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
 		{
-			// Set black point to 0
-			argv[argc] = "-k";
-			argc++;
-			argv[argc] = "0";
-			argc++;
-		};
+			bResult = FALSE;
+			ZTRACE_RUNTIME("Cannot unpack %s: %s", m_strFileName, libraw_strerror(ret));
+		}
+		if (!bResult) break;
 
-		// Output is 16 bits
-		argv[argc] = "-4";
-		argc++;
+		//
+		// Create the class that populates the bitmap
+		//
+		pFiller = new BitMapFiller(pBitmap, pProgress);
+		pFiller->SetWhiteBalance(fRedScale, fGreenScale, fBlueScale);
+		// Get the Colour Filter Array type and set into the bitmap filler
+		m_CFAType = GetCurrentCFAType();
+		pFiller->SetCFAType(m_CFAType);
+		
+#define RAW(row,col) \
+	raw_image[(row)*S.width+(col)]
 
-		strcpy(g_szInputFileName, (LPCSTR)CT2CA(m_strFileName, CP_UTF8));
-		g_Progress		   = pProgress;
+		//
+		// Get our endian-ness so we can swap bytes if needed (always on Windows).
+		//
+		BOOL littleEndian = htons(0x55aa) != 0x55aa;
 
-		argv[argc] = g_szInputFileName;
-		argc++;
+		unsigned short *raw_image = nullptr;
+		void * buffer = NULL;		// Used for debugging only (memory window)
 
-		COutputFile *		pOutputFile;
+		if (!m_bColorRAW)
+		{
+			ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
+			//
+			// The initial openmp changes were made by David Partridge, but it was
+			// Vitali Pelenjow who made it work without the critical sections
+			// killing the performance.
+			//
+			// Set up a temporary image array of unsigned short that will be:
+			//
+			// 1) Filled in from the Fujitsu Super-CCD image array in
+			//    Rawdata.raw_image, or
+			//
+			// 2) will be copied from the image portion of Rawdata.raw_image
+			//    excluding the frame (Top margin, Left Margin).
+			//
+			raw_image =
+				(unsigned short *)calloc(S.height*S.width, sizeof(unsigned short));
+			ZASSERT(nullptr != raw_image);
 
-		pOutputFile = new COutputFile(pBitmap, pProgress);
-		pOutputFile->SetWhiteBalance(fRedScale, fGreenScale, fBlueScale);
-		pOutputFile->SetCFAType(m_CFAType);
+			int fuji_width = rawProcessor.is_fuji_rotated();
+			unsigned fuji_layout = rawProcessor.get_fuji_layout();
+			buffer = raw_image;		// only for memory window debugging
 
-		g_pOutputFile = pOutputFile;
+			if (fuji_width)   // Are we processing a Fuji Super-CCD image?
+			{
+				ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+				for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
+				{
+					for (int col = 0; col < fuji_width << int(!fuji_layout); col++)
+					{
+						unsigned r, c;
 
-		InitGlobalVariables();
-		bResult = !DCRawmain(argc, argv, (FILE*)(pOutputFile));
+						if (fuji_layout)
+						{
+							r = fuji_width - 1 - col + (row >> 1);
+							c = col + ((row + 1) >> 1);
+						}
+						else
+						{
+							r = fuji_width - 1 + row - (col >> 1);
+							c = row + ((col + 1) >> 1);
+						}
+						if (r < S.height && c < S.width)
+							RAW(r, c)
+							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+					}
+				}
+			}
+			else
+			{
+				ZTRACE_RUNTIME("Extracting real image data (excluding the frame) from RawData.raw_image");
 
-		g_szInputFileName[0] = 0;
-		g_Progress = NULL;
+				//
+				// This is a regular RAW file so no Fuji Super-CCD stuff
+				//
+				// Just copy the "real image" portion of the data excluding
+				// the frame
+				//
+				buffer = raw_image;
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+				for (int row = 0; row < S.height; row++)
+				{
+					for (int col = 0; col < S.width; col++)
+					{
+						RAW(row, col)
+							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+					}
+				}
+			}
 
-		if (g_pOutputFile)
-			delete g_pOutputFile;
-		g_pOutputFile = NULL;
-		if (g_pInputFile)
-			delete g_pInputFile;
-		g_pInputFile = NULL;
-	};
+			//
+			// Now process the data that raw_image points to which is either
+			//
+			// 1) The output of post processing the Fuji Super-CCD raw,
+			//    stored in the USHORT array hung off raw_image, or
+			//
+			// 2) Normal common or garden raw Bayer matrix data that's been
+			//    copied from RawData.raw_image to raw_image (less the frame)
+			//
+			// Either way we should now be processing a regular greyscale 16-bit
+			// pixel array which has an associated Bayer Matrix
+			//
+			pFiller->setGrey(TRUE);
+			pFiller->setWidth(S.width);
+			pFiller->setHeight(S.height);
+			pFiller->setMaxColors((1 << 16) - 1);
+			
+			// Report User Black Point over-ride
+			if (0 == O.user_black)
+				ZTRACE_RUNTIME("User set Black Point to 0");
+
+			//
+			// Before doing dark subtraction, normalise C.black / C.cblack[]
+			//
+			ZTRACE_RUNTIME("Before adjust_bl() C.black = %d.", C.black);
+			ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
+				C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
+				C.cblack[4], C.cblack[5],
+				C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
+			rawProcessor.adjust_bl();
+
+			//
+			// This code is based on code from LibRaw Version 19.2, specifically method:
+			//
+			//   int LibRaw::subtract_black_internal()
+			//
+			// found at line 4532 in source file libraw_cxx.cpp 
+			//
+			// Do dark subtraction on the image.   If a user defined black level has
+			// been set (it will be zero) then use that, otherwise just use the black
+			// level for the camera.
+			//
+			// Note that this is only done on real image data, not the frame
+			//
+			// While doing so collect the largest value in the image data.
+			//
+			ZTRACE_RUNTIME("Subtracting black level of C.black = %d from raw_image data.", C.black);
+			ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
+				C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
+				C.cblack[4], C.cblack[5],
+				C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
+
+			if (!rawProcessor.is_phaseone_compressed() &&
+				(C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
+			{
+				int cblk[4], i;
+				for (i = 0; i < 4; i++)
+					cblk[i] = C.cblack[i];
+
+				int size = S.height * S.width;
+				int dmax = 0;	// Maximum value of pixels in entire image.
+				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
+				if (C.cblack[4] && C.cblack[5])
+				{
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+					{
+#pragma omp for
+#endif
+						for (i = 0; i < size; i++)
+						{
+							int val = raw_image[i];
+							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
+							val -= cblk[i & 3];
+							raw_image[i] = max(0, min(val, 65535)); 
+							lmax = val > lmax ? val : lmax;
+						}
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
+					}
+#endif
+				}
+				else
+				{
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+					{
+#pragma omp for
+#endif
+						for (i = 0; i < size; i++)
+						{
+							int val = raw_image[i];
+							val -= cblk[i & 3];
+							raw_image[i] = max(0, min(val, 65535)); ;
+							lmax = val > lmax ? val : lmax;
+						}
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
+					}
+#endif
+				}
+				C.data_maximum = dmax & 0xffff;
+				C.maximum -= C.black;
+				memset(&C.cblack, 0, sizeof(C.cblack)); // Yeah, we used cblack[6+] values too!
+				C.black = 0;
+			}
+			else
+			{
+				// Nothing to Do, maximum is already calculated, black level is 0, so no change
+				// only calculate channel maximum;
+				int dmax = 0;	// Maximum value of pixels in entire image.
+				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+				{
+#pragma omp for
+#endif
+					for (int i = 0; i < S.height * S.width; i++)
+						if (lmax < raw_image[i])
+							lmax = raw_image[i];
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+					dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+#if defined(_OPENMP)
+				}
+#endif
+
+				C.data_maximum = dmax;
+			}
+
+			//
+			// The image data needs to be scaled to the "white balance co-efficients"
+			// Currently do not handle "Auto White Balance"
+			//
+			float pre_mul[4];
+
+			if (1 == O.use_camera_wb && -1 != C.cam_mul[0])
+			{
+				ZTRACE_RUNTIME("Using Camera White Balance (as shot).");
+				memcpy(pre_mul, C.cam_mul, sizeof pre_mul);
+			}
+			else
+			{
+				ZTRACE_RUNTIME("Using Daylight White Balance.");
+				memcpy(pre_mul, C.pre_mul, sizeof pre_mul);
+			}
+			ZTRACE_RUNTIME("White balance co-efficients being used are %f, %f, %f, %f",
+				pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
+
+			if (0 == pre_mul[3]) pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
+
+			//
+			// Now apply a linear stretch to the raw data, scale to the "saturation" level
+			// not to the value of the pixel with the greatest value (which may be higher
+			// than the saturation level).
+			//
+
+			double dmin, dmax; int c = 0;
+
+			for (dmin = DBL_MAX, dmax = c = 0; c < 4; c++)
+			{
+				if (dmin > pre_mul[c])
+					dmin = pre_mul[c];
+				if (dmax < pre_mul[c])
+					dmax = pre_mul[c];
+			}
+
+			float scale_mul[4];
+
+			for (c = 0; c < 4; c++)	scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
+
+			ZTRACE_RUNTIME("Maximum value pixel has value %d", C.data_maximum);
+			ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
+			ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
+				scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
+
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+			for (int row = 0; row < S.height; row++)
+			{
+				for (int col = 0; col < S.width; col++)
+				{
+					// What colour will this pixel become
+					int colour = rawProcessor.COLOR(row, col);
+
+					register float val = scale_mul[colour] *
+						(float)(RAW(row, col));
+					RAW(row, col) = max(0, min(int(val), 65535));
+				}
+			}
+
+			// Convert raw data to big-endian
+			if (littleEndian)
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+				for (int i = 0; i < S.height * S.width; i++)
+				{
+					raw_image[i] = _byteswap_ushort(raw_image[i]);
+				}
+#else
+				_swab(
+					(char*)(raw_image),
+					(char*)(raw_image),
+					S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
+#endif
+
+			for (int row = 0; row < S.height; row++)
+			{
+				buffer = &RAW(row, 0);
+				// Write raw pixel data into our private bitmap format
+				pFiller->Write(buffer, sizeof(unsigned short), S.width);
+			}
+		}
+		else
+		{
+			//
+			// This is a "full colour" RAW file, so we can use full libraw
+			// processing and capture the PPM file output.
+			//
+			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_process()))
+			{
+				ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName, libraw_strerror(ret));
+				if (LIBRAW_FATAL_ERROR(ret))
+					bResult = FALSE;
+			}
+			if (!bResult) break;
+
+			ZTRACE_RUNTIME("Processing Foveon or Fuji X-Trans raw image data");
+			//
+			// Now capture the output using our over-ridden methods
+			//
+			// Set up the intercept code to write the image data to our bitmap instead of
+			// to an external file, and invoke the overridden dcraw_ppm_tiff_writer()
+			//
+			rawProcessor.setBitMapFiller(pFiller);
+			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_ppm_tiff_writer("")))
+			{
+				bResult = FALSE;
+				ZTRACE_RUNTIME("Cannot write image data to bitmap %s", libraw_strerror(ret));
+			}
+		}
+#undef RAW
+		//
+		// If we allocated memory for an image, release it.
+		if (nullptr != raw_image)
+		{
+			free(raw_image); raw_image = nullptr;
+		}
+
+	} while (0);
+
+	g_Progress = NULL;
+
+	if (pFiller)
+		delete pFiller;
+	pFiller = NULL;
 
 	return bResult;
 };
@@ -1021,43 +1226,35 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 BOOL CRawDecod::IsRawFile()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL		bResult = FALSE;
-	int			argc = 3;
-	char *		argv[10];
 
-	argv[0] = "MyProgram.exe";
-	argv[1] = "-i";
-	CStringA asciiFileName = (LPSTR)CT2A(m_strFileName, CP_UTF8);
-	argv[2] = asciiFileName.GetBuffer(_MAX_PATH);
-
-	g_szInputFileName[0] = 0;
-	g_Progress		= NULL;
-	g_pInputFile	= NULL;
-	g_pOutputFile	= NULL;
-
-	InitGlobalVariables();
-	bResult = !DCRawmain(argc, argv, stdout);
+	BOOL		bResult = TRUE;
+	int			ret = 0;
 
 	if (bResult)
 	{
-		m_strMake	= make;
-		m_strModel	= model;
-		m_lHeight	= iheight;
-		m_lWidth	= iwidth;
+		m_strMake	= P1.make;
+		m_strModel	= P1.model;
+		m_lHeight	= S.iheight;
+		m_lWidth	= S.iwidth;
 
-		m_lISOSpeed = iso_speed;
-		if (_finite(shutter))
-			m_fExposureTime = shutter;
+		m_lISOSpeed = P2.iso_speed;
+		if (_finite(P2.shutter))
+			m_fExposureTime = P2.shutter;
 		else
 			m_fExposureTime = 0;
+
+		if (_finite(P2.aperture))
+			m_fAperture = P2.aperture;
+		else
+			m_fAperture = 0.0;
 
 		// Retrieve the Date/Time
 		memset(&m_DateTime, 0, sizeof(m_DateTime));
 		tm *		pdatetime;
 
-		if (timestamp)
+		if (P2.timestamp)
 		{
-			pdatetime = localtime(&timestamp);
+			pdatetime = localtime(&(P2.timestamp));
 			if (pdatetime)
 			{
 				m_DateTime.wDayOfWeek = pdatetime->tm_wday;
@@ -1070,320 +1267,50 @@ BOOL CRawDecod::IsRawFile()
 			};
 		};
 
-		m_bColorRAW	= is_foveon || !filters;
+		m_bColorRAW	= P1.is_foveon || !(P1.filters);
+		if (1 == P1.filters || 9 == P1.filters)
+		{
+			//
+			// This is somewhat of a lie as the only the Foveon sensors
+			// create full color raw files.  However by telling this lie
+			// we can use libraw to decode and interpolate Fujitsu X-Trans
+			// and Leaf Catchlight images
+			//
+			if (1 == P1.filters) ZTRACE_RUNTIME("Image is from a Leaf Catchlight");
+			else ZTRACE_RUNTIME("Image is from a Fujitsu X-Trans Sensor");
+			m_bColorRAW = TRUE;
+		}
 		m_CFAType	= GetCurrentCFAType();
 	};
-
-	if (g_pInputFile)
-		delete g_pInputFile;
-	g_pInputFile = NULL;
-	if (g_pOutputFile)
-		delete g_pOutputFile;
-	g_pOutputFile = NULL;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-inline COutputFile *	GetOutputFile(FILE * stream)
-{
-	if ((LONG_PTR)stream == (LONG_PTR)g_pOutputFile)
-		return g_pOutputFile;
-	else
-		return NULL;
-};
-
-/* ------------------------------------------------------------------- */
-
-inline CInputFile *	GetInputFile(FILE * stream)
-{
-	if ((LONG_PTR)stream == (LONG_PTR)g_pInputFile)
-		return g_pInputFile;
-	else
-		return NULL;
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" int PRINTF( const char *format,...)
-{
-	return 0;
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" int FPRINTF( FILE *stream, const char *format,...)
-{
-	va_list					marker;
-	va_start(marker, format);
-
-	int						nResult = 0;
-	COutputFile *			pOutputFile = GetOutputFile(stream);
-
-	if (pOutputFile)
-	{
-		nResult = pOutputFile->Printf(format, marker);
-	}
-	else if ((stream != stdout) && (stream != stderr))
-		nResult = vfprintf(stream, format, marker);
-
-	va_end(marker);
-
-	return nResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" size_t FWRITE( const void *buffer, size_t size, size_t count, FILE *stream )
-{
-	COutputFile *			pOutputFile = GetOutputFile(stream);;
-
-	if (pOutputFile)
-	{
-		return pOutputFile->Write(buffer, size, count);
-	}
-	else
-		return fwrite(buffer, size, count, stream);
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" int FILENO( FILE *stream )
-{
-	COutputFile *			pOutputFile = GetOutputFile(stream);;
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pOutputFile || pInputFile)
-	{
-		return 120;
-	}
-	else
-		return _fileno(stream);
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" FILE * FOPEN( const char *filename, const char *mode )
-{
-	CStringA			strMode = mode;
-
-	if (strMode == "wb")
-	{
-		// Create a COutputFile object
-		//COutputFile *		pOutputFile;
-
-		//pOutputFile = new COutputFile();
-
-		return (FILE*)NULL; //(pOutputFile);
-	}
-	else if (strMode == "rb")
-	{
-		// Create a CInputFile objet if the filename matches
-		CStringA			strFileName  = filename;
-		if (!strFileName.CompareNoCase(g_szInputFileName))
-		{
-			CInputFile *	pInputFile;
-
-			pInputFile = new CInputFile;
-			pInputFile->m_hFile = fopen(filename, mode);
-
-			if (pInputFile->m_hFile)
-			{
-				if (pInputFile->Init())
-				{
-					if (g_Progress)
-						g_Progress->Start2(NULL, (LONG)(pInputFile->m_lFileSize));
-
-					g_pInputFile = pInputFile;
-					return (FILE*)pInputFile;
-				}
-				else
-					return NULL;
-			}
-			else
-			{
-				delete pInputFile;
-				return NULL;
-			};
-		}
-		else
-			return fopen(filename, mode);
-	}
-	else
-		return fopen(filename, mode);
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" int FCLOSE( FILE *stream )
-{
-	COutputFile *			pOutputFile = GetOutputFile(stream);;
-	CInputFile *			pInputFile = GetInputFile(stream);;
-
-	if (pOutputFile)
-	{
-		g_pOutputFile = NULL;
-		delete pOutputFile;
-		return 0;
-	}
-	else if (pInputFile)
-	{
-		if (g_Progress)
-			g_Progress->End2();
-		g_Progress = NULL;
-
-		g_pInputFile = NULL;
-		delete pInputFile;
-		return 0;
-	}
-	else
-		return fclose(stream);
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" size_t FREAD( void *buffer, size_t size, size_t count, FILE *stream )
-{
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pInputFile)
-	{
-		size_t			result;
-
-		result = pInputFile->fread(buffer, size, count);
-
-		pInputFile->UpdatePos();
-		return result;
-	}
-	else
-		return fread(buffer, size, count, stream);
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" int FGETC( FILE *stream )
-{
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pInputFile)
-	{
-		int				result;
-
-		result = pInputFile->fgetc();
-		pInputFile->UpdatePos();
-
-		return result;
-	}
-	else
-		return fgetc(stream);
-}
-
-/* ------------------------------------------------------------------- */
-
-extern "C" int FSEEK( FILE *stream, long offset, int origin )
-{
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pInputFile)
-	{
-		int				result;
-
-		result = pInputFile->fseek(offset, origin);
-
-		return result;
-	}
-	else
-		return fseek(stream, offset, origin);
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" long FTELL( FILE *stream )
-{
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pInputFile)
-	{
-		long			result;
-
-		result = pInputFile->ftell();
-
-		return result;
-	}
-	else
-		return ftell(stream);
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" int FSCANF( FILE *stream, const char *format, ...)
-{
-	va_list					marker;
-	va_start(marker, format);
-
-	int						nResult;
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pInputFile)
-	{
-		nResult = pInputFile->fscanf(format, marker);
-		pInputFile->UpdatePos();
-	}
-	else
-		nResult = fscanf(stream, format, marker);
-
-	va_end(marker);
-
-	return nResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-extern "C" char *FGETS( char *string, int n, FILE *stream )
-{
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pInputFile)
-	{
-		char *				result;
-
-		result = pInputFile->fgets(string, n);
-		pInputFile->UpdatePos();
-		return result;
-	}
-	else
-		return fgets(string, n, stream);
-};
-
-extern "C" int GETC(FILE * stream)
-{
-	CInputFile *			pInputFile = GetInputFile(stream);
-
-	if (pInputFile)
-	{
-		int				result;
-
-		result = pInputFile->fgetc();
-		pInputFile->UpdatePos();
-		return result;
-	}
-	else
-		return getc(stream);
-};
 
 /* ------------------------------------------------------------------- */
 
 BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
-	CRawDecod		dcr(szFileName);
 
-	bResult = dcr.IsRawFile();
+	try
+	{
+		CRawDecod		dcr(szFileName);
 
-	if (bResult)
-		dcr.GetModel(strModel);
+		bResult = dcr.IsRawFile();
 
+		if (bResult)
+			dcr.GetModel(strModel);
+
+	}
+	catch (std::exception& e)
+	{
+		e;
+		bResult = FALSE;
+	}
 	return bResult;
 };
 
@@ -1391,20 +1318,21 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 
 BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	BOOL			bIsTiff = FALSE;
-	TCHAR			szExt[1+_MAX_EXT];
+	TCHAR			szExt[_MAX_EXT];
 	CString			strExt;
 
 	// Check the extension - a tiff of tif file is not to be
 	// considered as a RAW file
-	_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
+	_splitpath(szFileName, NULL, NULL, NULL, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
-	if ((strExt == _T(".TIF")) || (strExt == _T(".TIFF")))
+	if ((strExt == ".TIF") || (strExt == ".TIFF"))
 		bIsTiff = TRUE;
 
-	if (!bIsTiff)
+	if (!bIsTiff) try
 	{
 		CRawDecod		dcr(szFileName);
 
@@ -1426,9 +1354,15 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			dcr.GetModel(BitmapInfo.m_strModel);
 			BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
 			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
+			BitmapInfo.m_fAperture       = dcr.getAperture();
 			BitmapInfo.m_DateTime		 = dcr.GetDateTime();
 		};
-	};
+	}
+	catch (std::exception& e)
+	{
+		e;
+		bResult = FALSE;
+	}
 
 	return bResult;
 };
@@ -1437,48 +1371,190 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
-	CRawDecod		dcr(szFileName);
 
-	if (dcr.IsRawFile() && ppBitmap)
+	try
 	{
-		BOOL						bColorRAW;
-		CSmartPtr<CMemoryBitmap>	pBitmap;
+		CRawDecod		dcr(szFileName);
 
-		bColorRAW = dcr.IsColorRAW();
-
-		if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
+		if (dcr.IsRawFile() && ppBitmap)
 		{
-			pBitmap.Attach(new C16BitGrayBitmap);	
-			ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-		}
-		else
-		{
-			pBitmap.Attach(new C48BitColorBitmap);
-			ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-		};
+			BOOL						bColorRAW;
+			CSmartPtr<CMemoryBitmap>	pBitmap;
 
-		bResult = dcr.LoadRawFile(pBitmap, pProgress);
+			bColorRAW = dcr.IsColorRAW();
 
-		if (bResult)
-		{
-			C16BitGrayBitmap *	pGrayBitmap;
-
-			pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pBitmap.m_p);
-			if (pGrayBitmap)
+			if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
 			{
-				if (IsSuperPixels())
-					pGrayBitmap->UseSuperPixels(TRUE);
-				else if (IsRawBayer())
-					pGrayBitmap->UseRawBayer(TRUE);
-				else if (IsRawBilinear())
-					pGrayBitmap->UseBilinear(TRUE);
-				else if (IsRawAHD())
-					pGrayBitmap->UseAHD(TRUE);
+				pBitmap.Attach(new C16BitGrayBitmap);
+				ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
+			}
+			else
+			{
+				pBitmap.Attach(new C48BitColorBitmap);
+				ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 			};
-			pBitmap.CopyTo(ppBitmap);
+
+			bResult = dcr.LoadRawFile(pBitmap, pProgress);
+
+			if (bResult)
+			{
+				C16BitGrayBitmap *	pGrayBitmap;
+
+				pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pBitmap.m_p);
+				if (pGrayBitmap)
+				{
+					if (IsSuperPixels())
+						pGrayBitmap->UseSuperPixels(TRUE);
+					else if (IsRawBayer())
+						pGrayBitmap->UseRawBayer(TRUE);
+					else if (IsRawBilinear())
+						pGrayBitmap->UseBilinear(TRUE);
+					else if (IsRawAHD())
+						pGrayBitmap->UseAHD(TRUE);
+				};
+				pBitmap.CopyTo(ppBitmap);
+			};
 		};
-	};
+	}
+	catch (std::exception& e)
+	{
+		e;
+		bResult = FALSE;
+	}
 
 	return bResult;
 };
+
+#define EXCEPTION_HANDLER(e) do{                        \
+    /* fprintf(stderr,"Exception %d caught\n",e);*/     \
+    switch(e)                                           \
+      {                                                 \
+      case LIBRAW_EXCEPTION_ALLOC:                      \
+        recycle();                                      \
+        return LIBRAW_UNSUFFICIENT_MEMORY;              \
+      case LIBRAW_EXCEPTION_DECODE_RAW:                 \
+      case LIBRAW_EXCEPTION_DECODE_JPEG:                \
+        recycle();                                      \
+        return LIBRAW_DATA_ERROR;                       \
+      case LIBRAW_EXCEPTION_DECODE_JPEG2000:            \
+        recycle();                                      \
+        return LIBRAW_DATA_ERROR;                       \
+      case LIBRAW_EXCEPTION_IO_EOF:                     \
+      case LIBRAW_EXCEPTION_IO_CORRUPT:                 \
+        recycle();                                      \
+        return LIBRAW_IO_ERROR;                                 \
+      case LIBRAW_EXCEPTION_CANCELLED_BY_CALLBACK:              \
+        recycle();                                              \
+        return LIBRAW_CANCELLED_BY_CALLBACK;                    \
+      case LIBRAW_EXCEPTION_BAD_CROP:                           \
+        recycle();                                              \
+        return LIBRAW_BAD_CROP;                                 \
+      default:                                                  \
+        return LIBRAW_UNSPECIFIED_ERROR;                        \
+      }                                                         \
+  }while(0)
+
+int DSSLibRaw::dcraw_ppm_tiff_writer(const char *filename)
+{
+	ZFUNCTRACE_RUNTIME();
+	CHECK_ORDER_LOW(LIBRAW_PROGRESS_LOAD_RAW);
+
+	if (!imgdata.image)
+		return LIBRAW_OUT_OF_ORDER_CALL;
+
+	try {
+		if (!libraw_internal_data.output_data.histogram)
+		{
+			libraw_internal_data.output_data.histogram =
+				(int(*)[LIBRAW_HISTOGRAM_SIZE]) malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
+			merror(libraw_internal_data.output_data.histogram, "LibRaw::dcraw_ppm_tiff_writer()");
+		}
+		write_ppm_tiff();
+		SET_PROC_FLAG(LIBRAW_PROGRESS_FLIP);
+		return 0;
+	}
+	catch (LibRaw_exceptions err) {
+		EXCEPTION_HANDLER(err);
+	}
+}
+
+#include "internal/var_defines.h"
+#define FORCC for (c=0; c < colors && c < 4; c++)
+#define SWAP(a,b) { a=a+b; b=a-b; a=a-b; }
+
+void DSSLibRaw::write_ppm_tiff()
+{
+	ZFUNCTRACE_RUNTIME();
+	uchar *ppm;
+	ushort *ppm2;
+	int c, row, col, soff, rstep, cstep;
+	int perc, val, total, t_white = 0x2000;
+
+#ifdef LIBRAW_LIBRARY_BUILD
+	perc = width * height * auto_bright_thr;
+#else
+	perc = width * height * 0.01;		/* 99th percentile white level */
+#endif
+	if (fuji_width) perc /= 2;
+	if (!((highlight & ~2) || no_auto_bright))
+		for (t_white = c = 0; c < colors; c++) {
+			for (val = 0x2000, total = 0; --val > 32; )
+				if ((total += histogram[c][val]) > perc) break;
+			if (t_white < val) t_white = val;
+		}
+	gamma_curve(gamm[0], gamm[1], 2, (t_white << 3) / bright);
+	iheight = height;
+	iwidth = width;
+	if (flip & 4) SWAP(height, width);
+	ppm = (uchar *)calloc(width, colors*output_bps / 8);
+	ppm2 = (ushort *)ppm;
+	merror(ppm, "write_ppm_tiff()");
+
+	//
+	// Neither need nor want to write TIFF/PPM headers
+	//
+#if (0)
+	if (output_tiff) {
+		tiff_head(&th, 1);
+		fwrite(&th, sizeof th, 1, ofp);
+		if (oprof)
+			fwrite(oprof, ntohl(oprof[0]), 1, ofp);
+	}
+	else if (colors > 3)
+		fprintf(ofp,
+			"P7\nWIDTH %d\nHEIGHT %d\nDEPTH %d\nMAXVAL %d\nTUPLTYPE %s\nENDHDR\n",
+			width, height, colors, (1 << output_bps) - 1, cdesc);
+	else
+		fprintf(ofp, "P%d\n%d %d\n%d\n",
+			colors / 2 + 5, width, height, (1 << output_bps) - 1);
+#endif
+	//
+	// Populate some Bitmap loader variables with data that would
+	// have been written to the PGM/PPM header
+	//
+	pDSSBitMapFiller->setGrey(1 == colors);
+	pDSSBitMapFiller->setWidth(width);
+	pDSSBitMapFiller->setHeight(height);
+	pDSSBitMapFiller->setMaxColors((1 << output_bps) - 1);
+
+	soff = flip_index(0, 0);
+	cstep = flip_index(0, 1) - soff;
+	rstep = flip_index(1, 0) - flip_index(0, width);
+	for (row = 0; row < height; row++, soff += rstep) {
+		for (col = 0; col < width; col++, soff += cstep)
+			if (output_bps == 8)
+				FORCC ppm[col*colors + c] = curve[image[soff][c]] >> 8;
+			else FORCC ppm2[col*colors + c] = curve[image[soff][c]];
+			if (output_bps == 16 && !output_tiff && htons(0x55aa) != 0x55aa)
+				_swab((char*)ppm2, (char*)ppm2, width*colors * 2);
+
+			//
+			// Instead of writing the bitmap data to an output file
+			// send it to our Bitmap loader class
+			//
+			pDSSBitMapFiller->Write(ppm, colors*output_bps / 8, width);
+	}
+	free(ppm);
+}

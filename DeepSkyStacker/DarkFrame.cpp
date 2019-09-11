@@ -383,7 +383,7 @@ public :
 	{
 		LONG		lSize = min(lWidth, lHeight);
 
-		lSize = min(100, lSize/10);
+		lSize = min(100L, lSize/10);
 		m_lNrPixels = 0;
 
 		for (LONG i = lSize;i<lWidth-2*lSize;i+=lSize)
@@ -571,15 +571,15 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 
 		for (it = sRedValuePairs.begin();it != sRedValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				RedStats.AddValue(max(0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				RedStats.AddValue(max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		for (it = sGreenValuePairs.begin();it != sGreenValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				GreenStats.AddValue(max(0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				GreenStats.AddValue(max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		for (it = sBlueValuePairs.begin();it != sBlueValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				BlueStats.AddValue(max(0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				BlueStats.AddValue(max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		double					fSigmaRed	= RedStats.Sigma(),
 								fSigmaGreen = GreenStats.Sigma(),
@@ -1003,11 +1003,10 @@ public :
 
 IMAGEREGION	GetPixelRegion(LONG lX, LONG lY, LONG lWidth, LONG lHeight)
 {
-	ZFUNCTRACE_RUNTIME();
 	IMAGEREGION				Result = IR_NONE;
 	LONG					lPosition;
 
-	lPosition = (10*max(1, min(3, lX*3/lWidth+1))+max(1, min(3, lY*3/lHeight+1)));
+	lPosition = (10*max(1L, min(3L, lX*3/lWidth+1))+max(1L, min(3L, lY*3/lHeight+1)));
 	switch (lPosition)
 	{
 	case 11 :
@@ -1543,8 +1542,10 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 				};
 			};
 			std::sort(vRatios.begin(), vRatios.end());
+			std::vector<double> vWork;
+			vWork.reserve(vRatios.size());
 
-			fRedFactor = KappaSigmaClip(vRatios, 2.0, 5);
+			fRedFactor = KappaSigmaClip(vRatios, 2.0, 5, vWork);
 			fGreenFactor = fBlueFactor = fRedFactor;
 		}
 		else if (pBitmap->IsMonochrome() && pBitmap->IsCFA())
@@ -1552,6 +1553,9 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			std::vector<double>		vRedRatios;
 			std::vector<double>		vGreenRatios;
 			std::vector<double>		vBlueRatios;
+			std::vector<double>		vWork;
+
+			vWork.reserve(vHotPixels.size());
 
 			for (i = 0;i<vHotPixels.size();i++)
 			{
@@ -1584,9 +1588,9 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			std::sort(vGreenRatios.begin(), vGreenRatios.end());
 			std::sort(vBlueRatios.begin(), vBlueRatios.end());
 
-			fRedFactor = KappaSigmaClip(vRedRatios, 2.0, 5);
-			fGreenFactor = KappaSigmaClip(vGreenRatios, 2.0, 5);
-			fBlueFactor = KappaSigmaClip(vBlueRatios, 2.0, 5);
+			fRedFactor = KappaSigmaClip(vRedRatios, 2.0, 5, vWork);
+			fGreenFactor = KappaSigmaClip(vGreenRatios, 2.0, 5, vWork);
+			fBlueFactor = KappaSigmaClip(vBlueRatios, 2.0, 5, vWork);
 		}
 		else
 		{
@@ -1783,7 +1787,7 @@ public :
 
 		if (m_pProgress)
 			m_pProgress->SetNrUsedProcessors(GetNrThreads());
-		lStep		= max(1, lHeight/50);
+		lStep		= max(1L, lHeight/50);
 		lRemaining	= lHeight;
 		bResult = TRUE;
 		while (i<lHeight)
@@ -1974,9 +1978,9 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 void	CDarkFrame::GetValidNeighbors(LONG lX, LONG lY, HOTPIXELVECTOR & vPixels, LONG lRadius, BAYERCOLOR BayerColor)
 {
 	vPixels.clear();
-	for (LONG i = max(0, lX-lRadius);i<=min(m_pMasterDark->RealWidth()-1,lX+lRadius);i++)
+	for (LONG i = max(0L, lX-lRadius);i<=min(m_pMasterDark->RealWidth()-1,lX+lRadius);i++)
 	{
-		for (LONG j = max(0, lY-lRadius);j<=min(m_pMasterDark->RealHeight()-1, lY+lRadius);j++)
+		for (LONG j = max(0L, lY-lRadius);j<=min(m_pMasterDark->RealHeight()-1, lY+lRadius);j++)
 		{
 			if ((i != lX) || (j != lY))
 			{
