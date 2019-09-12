@@ -2,7 +2,7 @@
 #include "TIFFUtil.h"
 #include "Registry.h"
 
-#define NRCUSTOMTIFFTAGS		11
+#define NRCUSTOMTIFFTAGS		12
 
 static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] = 
 {
@@ -14,6 +14,8 @@ static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
       FALSE,	FALSE,	"DSSTotalExposure" },
     { TIFFTAG_DSS_ISO,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
       FALSE,	FALSE,	"DSSISO" },
+    { TIFFTAG_DSS_GAIN,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
+      FALSE,	FALSE,	"DSSGain" },
     { TIFFTAG_DSS_SETTINGSAPPLIED,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
       FALSE,	FALSE,	"DSSSettingsApplied" },
     { TIFFTAG_DSS_BEZIERSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
@@ -82,6 +84,7 @@ BOOL CTIFFReader::Open()
 		samplemax = 1.0;
 		exposureTime = 0.0;
 		isospeed = 0;
+		gain = -1;
 		cfatype = CFATYPE_NONE;
 
 		TIFFGetField(m_tiff,TIFFTAG_IMAGEWIDTH, &w);
@@ -115,6 +118,8 @@ BOOL CTIFFReader::Open()
 
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_ISO, &isospeed))
 			isospeed = 0;
+		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_GAIN, &gain))
+			gain = -1;
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_APERTURE, &aperture))
 			aperture = 0.0;
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSURE, &exposureTime))
@@ -177,8 +182,11 @@ BOOL CTIFFReader::Open()
 						exposureTime = 0.0;
 					if (!TIFFGetField(m_tiff, EXIFTAG_FNUMBER, &aperture))
 						aperture = 0.0;
-					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &isospeed))
+					// EXIFTAG_ISOSPEEDRATINGS is a int16u according to the EXIF spec
+					isospeed = 0;
+					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, (short *)&isospeed))
 						isospeed = 0;
+					// EXIFTAG_GAINCONTROL does not represent a gain value, so ignore it.
 				};
 			};
 		}
@@ -191,6 +199,7 @@ BOOL CTIFFReader::Open()
 				exposureTime = BitmapInfo.m_fExposure;
 				aperture	 = BitmapInfo.m_fAperture;
 				isospeed	 = BitmapInfo.m_lISOSpeed;
+				gain		 = BitmapInfo.m_lGain;
 				m_DateTime	 = BitmapInfo.m_DateTime;
 			};
 		};
@@ -527,6 +536,9 @@ BOOL CTIFFWriter::Open()
 			if (isospeed)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_ISO, isospeed);
 
+			if (gain >= 0)
+				TIFFSetField(m_tiff, TIFFTAG_DSS_GAIN, gain);
+
 			if (exposureTime)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSURE, exposureTime);
 
@@ -784,6 +796,8 @@ BOOL CTIFFWriteFromMemoryBitmap::OnOpen()
 		SetFormat(lWidth, lHeight, m_Format, CFAType, bMaster);
 		if (!isospeed)
 			isospeed = m_pMemoryBitmap->GetISOSpeed();
+		if (gain < 0)
+			gain = m_pMemoryBitmap->GetGain();
 		if (!exposureTime)
 			exposureTime = m_pMemoryBitmap->GetExposure();
 		if (!aperture)
@@ -830,7 +844,7 @@ BOOL CTIFFWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 
 BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
-			LONG lISOSpeed, double fExposure, double fAperture)
+			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture)
 {
 	BOOL				bResult = FALSE;
 
@@ -844,6 +858,10 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			tiff.SetISOSpeed(lISOSpeed);
 		else
 			tiff.SetISOSpeed(pBitmap->GetISOSpeed());
+		if (lGain >= 0)
+			tiff.SetGain(lGain);
+		else
+			tiff.SetGain(pBitmap->GetGain());
 		if (fExposure)
 			tiff.SetExposureTime(fExposure);
 		else
@@ -865,8 +883,16 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+{
+	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription,
+			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
+};
+
+/* ------------------------------------------------------------------- */
+
 BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
-			LONG lISOSpeed, double fExposure, double fAperture)
+			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
@@ -879,6 +905,8 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			tiff.SetDescription(szDescription);
 		if (lISOSpeed)
 			tiff.SetISOSpeed(lISOSpeed);
+		if (lGain >= 0)
+			tiff.SetGain(lGain);
 		if (fExposure)
 			tiff.SetExposureTime(fExposure);
 		if (fAperture)
@@ -892,6 +920,14 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 	};
 
 	return bResult;
+};
+
+/* ------------------------------------------------------------------- */
+
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
+{
+	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription,
+			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 };
 
 /* ------------------------------------------------------------------- */
@@ -990,6 +1026,7 @@ BOOL CTIFFReadInMemoryBitmap::OnOpen()
 		};
 		m_pBitmap->SetMaster(master);
 		m_pBitmap->SetISOSpeed(isospeed);
+		m_pBitmap->SetGain(gain);
 		m_pBitmap->SetExposure(exposureTime);
 		m_pBitmap->SetAperture(aperture);
 		m_pBitmap->m_DateTime = m_DateTime;
@@ -1078,6 +1115,7 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_bMaster		= tiff.IsMaster();
 		BitmapInfo.m_bCanLoad		= TRUE;
 		BitmapInfo.m_lISOSpeed		= tiff.GetISOSpeed();
+		BitmapInfo.m_lGain		= tiff.GetGain();
 		BitmapInfo.m_fExposure		= tiff.GetExposureTime();
 		BitmapInfo.m_fAperture		= tiff.GetAperture();
 		BitmapInfo.m_DateTime		= tiff.GetDateTime();

@@ -31,7 +31,7 @@
 #define IDS_COLUMN_CFA                  209
 #define IDS_COLUMN_DEPTH                210
 #define IDS_COLUMN_INFOS                211
-#define IDS_COLUMN_ISO                  212
+#define IDS_COLUMN_ISO_GAIN             212
 #define IDS_COLUMN_EXPOSURE             213
 #define IDS_COLUMN_STARS                214
 #define IDS_COLUMN_SKYBACKGROUND        215

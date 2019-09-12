@@ -1238,7 +1238,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profundidad"
     IDS_COLUMN_INFOS        "Infos"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposición"
 	IDS_COLUMN_APERTURE		"Apertura"
     IDS_COLUMN_STARS        "#Estrellas"
@@ -1263,6 +1263,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "o"
     IDS_AND                 "y"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -1488,15 +1490,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Apilado Paso %ld\n  ->%ld frames (ISO: %s) - exposición total: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (ISO: %s) exposición: %s\n"
+    IDS_RECAP_STEP          "Apilado Paso %ld\n  ->%ld frames (%s: %s) - exposición total: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (%s: %s) exposición: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tPrecaución: la sensibilidad ISO no coincide con la de los light frames\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Sin Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld frames (ISO : %s) exposición: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld frames (%s : %s) exposición: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tPrecaución: el tiempo de exposición no coincide con el de los light frames\n"
     IDS_RECAP_NODARK        "\t-> Sin Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (ISO: %s) exposición: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (%s: %s) exposición: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Sin Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nTiempo de Exposición Total estimado: %s\n(el total de tiempo de exposición es calculado teniendo en cuenta que todos los light frames seleccionados son utilizados en el proceso de apilado)\n"
@@ -1505,9 +1508,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "Calibración de Fondo de Canales RGB: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optimización de Darks: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (ISO : %s) exposición: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (%s : %s) exposición: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tPrecaución: La sensibilidad ISO no coincide con la de los flat frames\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tPrecaución: el tiempo de exposición no coincide con el de los flat frames\n"
 END

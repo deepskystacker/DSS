@@ -450,7 +450,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Adancime"
     IDS_COLUMN_INFOS        "Informatii"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Expunere"
 	IDS_COLUMN_APERTURE		"Deschidere"	
     IDS_COLUMN_STARS        "#Stele"

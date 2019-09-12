@@ -535,7 +535,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profondità"
     IDS_COLUMN_INFOS        "Info"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Esposizione"
 	IDS_COLUMN_APERTURE		"Apertura"
     IDS_COLUMN_STARS        "#Stelle"

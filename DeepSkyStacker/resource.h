@@ -129,7 +129,7 @@
 #define IDS_COLUMN_INFOS                211
 #define IDD_POSTCALIBRATION1            211
 #define IDD_OUTPUT                      211
-#define IDS_COLUMN_ISO                  212
+#define IDS_COLUMN_ISO_GAIN             212
 #define IDR_SAVESETTINGS                212
 #define IDS_COLUMN_EXPOSURE             213
 #define IDR_LOADSETTINGS                213
@@ -154,6 +154,8 @@
 #define IDS_EXPOSUREFORMAT_INF          405
 #define IDS_OR                          406
 #define IDS_AND                         407
+#define IDS_ISO                         408
+#define IDS_GAIN                        409
 #define IDS_EXPOSURE0                   500
 #define IDS_EXPOSURE1                   501
 #define IDS_EXPOSURE2                   502
@@ -654,6 +656,8 @@
 #define IDS_RECAP_EXPOSUREWARNINGDARKFLAT 4015
 #define IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 4016
 #define IDS_RECAP_DARKMULTIPLICATIONFACTOR 4017
+#define IDS_RECAP_GAINWARNING           4018
+#define IDS_RECAP_GAINWARNINGDARKFLAT   4019
 #define IDS_RECAP_METHOD                4049
 #define IDS_RECAP_AVERAGE               4050
 #define IDS_RECAP_MEDIAN                4051

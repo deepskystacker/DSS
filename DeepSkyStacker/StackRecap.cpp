@@ -153,6 +153,20 @@ void	CStackRecap::InsertHTML(CString & strHTML, LPCTSTR szText, COLORREF crColor
 };
 
 /* ------------------------------------------------------------------- */
+static void GetISOGainStrings(CTaskInfo *pTask, CString const &strISO, CString const &strGain,
+	CString const **ppstrISOGainText, CString *strISOGainValue)
+{
+	if (pTask->HasISOSpeed())
+	{
+		ISOToString(pTask->m_lISOSpeed, *strISOGainValue);
+		*ppstrISOGainText = &strISO;
+	}
+	else
+	{
+		GainToString(pTask->m_lGain, *strISOGainValue);
+		*ppstrISOGainText = &strGain;
+	}
+}
 
 void CStackRecap::FillWithAllTasksHTML()
 {
@@ -165,7 +179,10 @@ void CStackRecap::FillWithAllTasksHTML()
 
 		CString				strText;
 		CString				strExposure;
-		CString				strISO;
+		CString				strISOGainValue;
+		CString	const		*pstrISOGainText;
+		CString				strISOText;
+		CString				strGainText;
 		LONG				i, j;
 		LONG				lTotalExposure = 0;
 		__int64				ulNeededSpace;
@@ -196,6 +213,9 @@ void CStackRecap::FillWithAllTasksHTML()
 
 		CalibrationMode = m_pStackingTasks->GetBackgroundCalibrationMode();
 		
+		strISOText.LoadString(IDS_ISO);
+		strGainText.LoadString(IDS_GAIN);
+
 		strYesNo.LoadString((CalibrationMode == BCM_RGB) ? IDS_YES : IDS_NO);
 		strBackgroundCalibration.Format(IDS_RECAP_BACKGROUNDCALIBRATION, strYesNo);
 
@@ -377,9 +397,9 @@ void CStackRecap::FillWithAllTasksHTML()
 				lTotalExposure += lTaskExposure;
 
 				ExposureToString(lTaskExposure, strExposure);
-				ISOToString(si.m_pLightTask->m_lISOSpeed, strISO);
+				GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-				strText.Format(IDS_RECAP_STEP, i+1, si.m_pLightTask->m_vBitmaps.size(), strISO);
+				strText.Format(IDS_RECAP_STEP, i+1, si.m_pLightTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue);
 				InsertHTML(strHTML, strText, RGB(0, 0, 0), TRUE);
 				InsertHTML(strHTML, strExposure, RGB(0, 128, 0), TRUE);
 				InsertHTML(strHTML, _T("\n"));
@@ -412,9 +432,9 @@ void CStackRecap::FillWithAllTasksHTML()
 				if (si.m_pOffsetTask)
 				{
 					ExposureToString(si.m_pOffsetTask->m_fExposure, strExposure);
-					ISOToString(si.m_pOffsetTask->m_lISOSpeed, strISO);
+					GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-					strText.Format(IDS_RECAP_OFFSET, si.m_pOffsetTask->m_vBitmaps.size(), strISO, strExposure);
+					strText.Format(IDS_RECAP_OFFSET, si.m_pOffsetTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 					InsertHTML(strHTML, strText);
 
 					if (si.m_pOffsetTask->m_vBitmaps.size()>1)
@@ -427,10 +447,21 @@ void CStackRecap::FillWithAllTasksHTML()
 						InsertHTML(strHTML, _T("</ul>"));
 					};
 
-					if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+					if (si.m_pOffsetTask->HasISOSpeed())
 					{
-						strText.Format(IDS_RECAP_ISOWARNING);
-						InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						{
+							strText.Format(IDS_RECAP_ISOWARNING);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						};
+					}
+					else
+					{
+						if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
+						{
+							strText.Format(IDS_RECAP_GAINWARNING);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						};
 					};
 				}
 				else
@@ -441,9 +472,9 @@ void CStackRecap::FillWithAllTasksHTML()
 				if (si.m_pDarkTask)
 				{
 					ExposureToString(si.m_pDarkTask->m_fExposure, strExposure);
-					ISOToString(si.m_pDarkTask->m_lISOSpeed, strISO);
+					GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-					strText.Format(IDS_RECAP_DARK, si.m_pDarkTask->m_vBitmaps.size(), strISO, strExposure);
+					strText.Format(IDS_RECAP_DARK, si.m_pDarkTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 					InsertHTML(strHTML, strText);
 
 					if (si.m_pDarkTask->m_vBitmaps.size()>1)
@@ -465,11 +496,23 @@ void CStackRecap::FillWithAllTasksHTML()
 						InsertHTML(strHTML, _T("\n"));
 					};
 
-					if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+					if (si.m_pDarkTask->HasISOSpeed())
 					{
-						strText.Format(IDS_RECAP_ISOWARNING);
-						InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
-						InsertHTML(strHTML, _T("\n"));
+						if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						{
+							strText.Format(IDS_RECAP_ISOWARNING);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, _T("\n"));
+						};
+					}
+					else
+					{
+						if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
+						{
+							strText.Format(IDS_RECAP_GAINWARNING);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, _T("\n"));
+						};
 					};
 					if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
 					{
@@ -487,9 +530,9 @@ void CStackRecap::FillWithAllTasksHTML()
 				if (si.m_pDarkFlatTask && si.m_pFlatTask)
 				{
 					ExposureToString(si.m_pDarkFlatTask->m_fExposure, strExposure);
-					ISOToString(si.m_pDarkFlatTask->m_lISOSpeed, strISO);
+					GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-					strText.Format(IDS_RECAP_DARKFLAT, si.m_pDarkFlatTask->m_vBitmaps.size(), strISO, strExposure);
+					strText.Format(IDS_RECAP_DARKFLAT, si.m_pDarkFlatTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 					InsertHTML(strHTML, strText);
 
 					if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
@@ -502,10 +545,21 @@ void CStackRecap::FillWithAllTasksHTML()
 						InsertHTML(strHTML, _T("</ul>"));
 					};
 
-					if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
+					if (si.m_pDarkFlatTask->HasISOSpeed())
 					{
-						strText.Format(IDS_RECAP_ISOWARNINGDARKFLAT);
-						InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
+						{
+							strText.Format(IDS_RECAP_ISOWARNINGDARKFLAT);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						};
+					}
+					else
+					{
+						if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
+						{
+							strText.Format(IDS_RECAP_GAINWARNINGDARKFLAT);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						};
 					};
 					if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
 					{
@@ -516,9 +570,9 @@ void CStackRecap::FillWithAllTasksHTML()
 				if (si.m_pFlatTask)
 				{
 					ExposureToString(si.m_pFlatTask->m_fExposure, strExposure);
-					ISOToString(si.m_pFlatTask->m_lISOSpeed, strISO);
+					GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
-					strText.Format(IDS_RECAP_FLAT, si.m_pFlatTask->m_vBitmaps.size(), strISO, strExposure);
+					strText.Format(IDS_RECAP_FLAT, si.m_pFlatTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
 					InsertHTML(strHTML, strText);
 					if (si.m_pFlatTask->m_vBitmaps.size()>1)
 					{
@@ -530,10 +584,21 @@ void CStackRecap::FillWithAllTasksHTML()
 						InsertHTML(strHTML, _T("</ul>"));
 					};
 
-					if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+					if (si.m_pFlatTask->HasISOSpeed())
 					{
-						strText.Format(IDS_RECAP_ISOWARNING);
-						InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
+						{
+							strText.Format(IDS_RECAP_ISOWARNING);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						};
+					}
+					else
+					{
+						if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
+						{
+							strText.Format(IDS_RECAP_GAINWARNING);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						};
 					};
 				}
 				else

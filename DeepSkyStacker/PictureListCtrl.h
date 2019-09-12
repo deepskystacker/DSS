@@ -102,7 +102,7 @@ public:
 	BOOL	GetSelectedFileName(CString & strFileName);
 	BOOL	GetItemFileName(int nItem, CString & strFileName);
 	BOOL	GetFirstCheckedLightFrame(CString & strFileName);
-	BOOL	GetItemISOSpeedAndExposure(int nItem, LONG & lISOSpeed, double & fExposure);
+	BOOL	GetItemISOSpeedGainAndExposure(int nItem, LONG & lISOSpeed, LONG & lGain, double & fExposure);
 	void	UpdateOffset(LPCTSTR szFileName, double fdX, double fdY, double fAngle, const CBilinearParameters & Transformation, const VOTINGPAIRVECTOR & vVotedPairs);
 	void	ClearOffset(LPCTSTR szFileName);
 	int		FindIndice(LPCTSTR szFileName);

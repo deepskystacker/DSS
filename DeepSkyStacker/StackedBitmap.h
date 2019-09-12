@@ -154,6 +154,7 @@ private :
 	CPixelVector				m_vGreenPlane;
 	CPixelVector				m_vBluePlane;
 	LONG						m_lISOSpeed;
+	LONG						m_lGain;
 	LONG						m_lTotalTime;
 	BOOL						m_bMonochrome;
 
@@ -279,6 +280,16 @@ public :
 		return (WORD)m_lISOSpeed;
 	};
 
+	void	SetGain(LONG lGain)
+	{
+		m_lGain = lGain;
+	};
+
+	LONG	GetGain()
+	{
+		return m_lGain;
+	};
+
 	LONG	GetTotalTime()
 	{
 		return m_lTotalTime;
@@ -312,6 +323,7 @@ public :
 		m_vBluePlane.clear();
 		m_lTotalTime = 0;
 		m_lISOSpeed  = 0;
+		m_lGain  = -1;
 	};
 
 	LONG	GetWidth()
