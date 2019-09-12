@@ -306,6 +306,7 @@ inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method,
 	strText = "";
 	switch (Method)
 	{
+	case MBP_FASTAVERAGE :
 	case MBP_AVERAGE :
 		strText.Format(IDS_RECAP_AVERAGE);
 		break;
