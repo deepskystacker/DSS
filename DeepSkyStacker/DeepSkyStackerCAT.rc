@@ -515,7 +515,7 @@ BEGIN
     LTEXT           "Escala de Blau",IDC_STATIC,15,53,54,8
     EDITTEXT        IDC_BLUESCALE,74,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balanç de Blancs",IDC_STATIC,140,7,131,64
-    CONTROL         "Sense processament del saldo de blancs",IDC_NOWB,"Button",
+    CONTROL         "Sense processament del Balanç de Blancs",IDC_NOWB,"Button",
 						BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,112,17
     CONTROL         "Utilitzar Balanç de Blancs de la Càmera",IDC_CAMERAWB,"Button",
 						BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,117,19
