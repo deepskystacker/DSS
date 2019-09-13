@@ -306,6 +306,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 			lfi.RegisterPicture(adb.m_pBitmap);
 			lfi.SaveRegisteringInfo();
 			lfi.m_lISOSpeed = bmpInfo.m_lISOSpeed;
+			lfi.m_lGain = bmpInfo.m_lGain;
 			lfi.m_fExposure = bmpInfo.m_fExposure;
 			End2();
 			PostFileRegistered(szFileName);
@@ -381,7 +382,7 @@ void CLiveEngine::SaveStackedImage(CMemoryBitmap * pBitmap)
 		strText.Format(IDS_SAVINGSTACKEDIMAGE, (LPCTSTR)strFolder);
 		this->Start2(strText, 0);
 
-		WriteTIFF(strOutputFile, pStackedImage, this, _T("Autostacked Image"), 0, m_RunningStackingEngine.GetTotalExposure());
+		WriteTIFF(strOutputFile, pStackedImage, this, _T("Autostacked Image"), 0, -1, m_RunningStackingEngine.GetTotalExposure(), 0.0);
 		this->End2();
 
 		PostStackedImageSaved();

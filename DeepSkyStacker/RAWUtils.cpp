@@ -194,9 +194,6 @@ private:
 							m_lMaxColors;
 	LONG					m_lBytePerChannel;
 	BOOL					m_bGrey;
-	double					m_fRedScale,
-							m_fGreenScale,
-							m_fBlueScale;
 
 private:
 	void	AdjustColor(double & fColor, double fAdjust)
@@ -280,19 +277,6 @@ private:
 							m_dwPos = m_dwCurrentY + 1;
 						};
 
-						switch (GetBayerColor(m_dwCurrentX, m_dwCurrentY, m_CFAType))
-						{
-						case BAYER_RED:
-							AdjustColor(fGrey, m_fRedScale);
-							break;
-						case BAYER_GREEN:
-							AdjustColor(fGrey, m_fGreenScale);
-							break;
-						case BAYER_BLUE:
-							AdjustColor(fGrey, m_fBlueScale);
-							break;
-						};
-
 						m_PixelIt->SetPixel((double)fGrey / 256.0);
 						(*m_PixelIt)++;
 						m_dwCurrentX++;
@@ -332,10 +316,6 @@ private:
 							m_dwPos = m_dwCurrentY + 1;
 						};
 
-						AdjustColor(fRed, m_fRedScale);
-						AdjustColor(fGreen, m_fGreenScale);
-						AdjustColor(fBlue, m_fBlueScale);
-
 						m_PixelIt->SetPixel(fRed / 256.0, fGreen / 256.0, fBlue / 256.0);
 						m_dwCurrentX++;
 						(*m_PixelIt)++;
@@ -368,9 +348,6 @@ public:
 		m_pBitmap = pBitmap;
 		m_pProgress = pProgress;
 		m_bStarted = FALSE;
-		m_fRedScale = 1.0;
-		m_fGreenScale = 1.0;
-		m_fBlueScale = 1.0;
 		m_lBytePerChannel = 2;				// Never going to handle 8 bit data !!
 		m_lHeight = 0;
 		m_lWidth = 0;
@@ -381,13 +358,6 @@ public:
 	{
 		if (m_pBuffer)
 			free(m_pBuffer);
-	};
-
-	void	SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale)
-	{
-		m_fRedScale = fRedScale;
-		m_fGreenScale = fGreenScale;
-		m_fBlueScale = fBlueScale;
 	};
 
 	void	SetCFAType(CFATYPE CFAType)
@@ -815,15 +785,27 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		//bRawBayer    = IsRawBayer();
 		//bBilinear	 = !bSuperPixels && !bRawBayer && IsRawBilinear();
 		//bAHD		 = !bSuperPixels && !bRawBayer && IsRawAHD();
-		//
-		// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
-		// 
-		bValue = FALSE;
-		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
-		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
-		O.use_auto_wb = bValue ? 1 : 0;
 
-		bValue = FALSE;
+		// No Auto White Balance
+		O.use_auto_wb = false;
+
+		//
+		// Do we disable all White Balance processing?
+		// 
+		bValue = false;
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), bValue);
+		if (bValue)
+		{
+			// Yes, so set the user white balance multipliers to 1.0
+			O.user_mul[0] = O.user_mul[1] = O.user_mul[2] = O.user_mul[3] = 1.0;
+		}
+		else
+		{
+			// No, so set the user white balance multipliers to -1
+			O.user_mul[0] = O.user_mul[1] = O.user_mul[2] = O.user_mul[3] = 0.0;
+		}
+
+		bValue = false;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
 		O.use_camera_wb = bValue ? 1 : 0;
 		
@@ -861,7 +843,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		// Create the class that populates the bitmap
 		//
 		pFiller = new BitMapFiller(pBitmap, pProgress);
-		pFiller->SetWhiteBalance(fRedScale, fGreenScale, fBlueScale);
 		// Get the Colour Filter Array type and set into the bitmap filler
 		m_CFAType = GetCurrentCFAType();
 		pFiller->SetCFAType(m_CFAType);
@@ -1094,14 +1075,18 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			// The image data needs to be scaled to the "white balance co-efficients"
 			// Currently do not handle "Auto White Balance"
 			//
-			float pre_mul[4];
-
-			if (1 == O.use_camera_wb && -1 != C.cam_mul[0])
+			float pre_mul[4] = {0.0, 0.0, 0.0, 0.0 };
+			if (1.0 == O.user_mul[0])
+			{
+				ZTRACE_RUNTIME("No White Balance processing.");
+				memcpy(pre_mul, O.user_mul, sizeof pre_mul);
+			}
+			else if (1 == O.use_camera_wb && -1 != C.cam_mul[0])
 			{
 				ZTRACE_RUNTIME("Using Camera White Balance (as shot).");
 				memcpy(pre_mul, C.cam_mul, sizeof pre_mul);
 			}
-			else
+			else 
 			{
 				ZTRACE_RUNTIME("Using Daylight White Balance.");
 				memcpy(pre_mul, C.pre_mul, sizeof pre_mul);
@@ -1110,6 +1095,17 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
 
 			if (0 == pre_mul[3]) pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
+
+			if (1.0 != fRedScale || 1.0 != fGreenScale || 1.0 != fBlueScale)
+			{
+				ZTRACE_RUNTIME("Applying scaling factors RedScale %f, GreenScale %f, BlueScale %f", fRedScale, fGreenScale, fBlueScale);
+				pre_mul[0] *= fRedScale;
+				pre_mul[1] *= fGreenScale;
+				pre_mul[2] *= fBlueScale;
+				pre_mul[3] *= fGreenScale;
+				ZTRACE_RUNTIME("Scaled White balance co-efficients are %f, %f, %f, %f",
+					pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
+			}
 
 			//
 			// Now apply a linear stretch to the raw data, scale to the "saturation" level

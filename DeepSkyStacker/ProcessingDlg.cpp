@@ -417,6 +417,7 @@ void CProcessingDlg::OnSize(UINT nType, int cx, int cy)
 void CProcessingDlg::UpdateInfos()
 {
 	LONG		lISOSpeed;
+	LONG		lGain;
 	LONG		lTotalTime;
 	LONG		lNrFrames;
 	CString		strText;
@@ -424,18 +425,25 @@ void CProcessingDlg::UpdateInfos()
 	strText.LoadString(IDS_NOINFO);
 
 	lISOSpeed	= GetDeepStack(this).GetStackedBitmap().GetISOSpeed();
+	lGain		= GetDeepStack(this).GetStackedBitmap().GetGain();
 	lTotalTime	= GetDeepStack(this).GetStackedBitmap().GetTotalTime();
 	lNrFrames	= GetDeepStack(this).GetStackedBitmap().GetNrStackedFrames();
 
-	if (lISOSpeed || lTotalTime || lNrFrames)
+	if (lISOSpeed || lGain >= 0 || lTotalTime || lNrFrames)
 	{
 		CString		strISO;
+		CString		strGain;
 		CString		strTime;
 		CString		strFrames;
 
 		if (lISOSpeed)
 		{
 			strISO.Format(_T("%ld ISO - "), lISOSpeed);
+		};
+
+		if (lGain >= 0)
+		{
+			strGain.Format(_T("%ld Gain - "), lGain);
 		};
 
 		if (lTotalTime)
@@ -465,7 +473,7 @@ void CProcessingDlg::UpdateInfos()
 			strFrames.Format(IDS_NRFRAMES, lNrFrames);
 		};
 
-		strText.Format(_T("%s\n%s%s%s"), m_strCurrentFile, strISO, strTime, strFrames);
+		strText.Format(_T("%s\n%s%s%s%s"), m_strCurrentFile, strISO, strGain, strTime, strFrames);
 	}
 	else
 		strText = m_strCurrentFile;

@@ -432,7 +432,7 @@ BEGIN
     LTEXT           "Blu",IDC_STATIC,15,53,52,8
     EDITTEXT        IDC_BLUESCALE,71,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Bilanciamento del bianco",IDC_STATIC,140,7,131,64
-    CONTROL         "Automatico",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,24,94,10
+    CONTROL         "Nessun bilanciamento del bianco",IDC_NOWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,24,94,10
     CONTROL         "Interno alla Macchina",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,43,103,10
     CONTROL         "Interpolazione bilineare",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,133,10
     CONTROL         "Interpolazione adattiva diretta dall'omogeneità (AHD)",IDC_AHD,
@@ -1031,7 +1031,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profondità"
     IDS_COLUMN_INFOS        "Info"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Esposizione"
 	IDS_COLUMN_APERTURE		"Apertura"
     IDS_COLUMN_STARS        "#Stelle"
@@ -1056,6 +1056,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "oppure"
     IDS_AND                 "e"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -1282,15 +1284,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Passo combinazione %ld\n  ->%ld immagini (ISO: %s) - esposizione totale: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld immagini (ISO: %s) esposizione: %s\n"
+    IDS_RECAP_STEP          "Passo combinazione %ld\n  ->%ld immagini (%s: %s) - esposizione totale: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld immagini (%s: %s) esposizione: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAttenzione: velocità ISO non congruente con le immagini\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Nessun Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld immagini (ISO : %s) esposizione: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld immagini (%s : %s) esposizione: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAttenzione: tempo di posa non congruente con le immagini\n"
     IDS_RECAP_NODARK        "\t-> Nessun Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld immagini (ISO: %s) esposizione: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld immagini (%s: %s) esposizione: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Nessun Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nTempo stimato di posa totale: %s\n(tempo stimato considerando che tutte le immagini vengano tenute ed utilizzate nella combinazione)\n"
@@ -1299,9 +1302,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "Calibrazione dei canali RGB dello sfondo: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Ottimizzazione Dark: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld immagini (ISO : %s) esposizione: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld immagini (%s : %s) esposizione: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAttenzione: velocità ISO non congruente con i flat\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAttenzione: tempo di posa non congruente con i flat\n"
 END

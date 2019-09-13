@@ -345,7 +345,7 @@ BEGIN
     LTEXT           "Valoare albastru",IDC_STATIC,15,53,52,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "White Balance",IDC_STATIC,140,7,131,64
-    CONTROL         "Foloseste Auto White Balance",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,113,17
+    CONTROL         "Fara procesare White Balance",IDC_NOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,113,17
     CONTROL         "Foloseste White Balance camera",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,109,16
     CONTROL         "Interpolare biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Interpolare omogenitate adaptiva directata",IDC_AHD,
@@ -859,7 +859,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Adancime"
     IDS_COLUMN_INFOS        "Informatii"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Expunere"
 	IDS_COLUMN_APERTURE		"Deschidere"
     IDS_COLUMN_STARS        "#Stele"
@@ -884,6 +884,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld sec"
     IDS_OR                  "sau"
     IDS_AND                 "si"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -1108,15 +1110,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Pasi stackare %ld\n  ->%ld cadre (ISO: %s) - expunere totala: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld cadre  (ISO: %s) expunere: %s\n"
+    IDS_RECAP_STEP          "Pasi stackare %ld\n  ->%ld cadre (%s: %s) - expunere totala: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld cadre  (%s: %s) expunere: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAtentie: Sensibilitatea ISO nu corespunde cu cadrele Light\n"
+    IDS_RECAP_GAINWARNING   "\t\tAtentie: Gain-ul nu corespunde cu gain-ul cadrelor Light\n"
     IDS_RECAP_NOOFFSET      "\t-> Lipsa Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld cadre (ISO : %s) expunere: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld cadre (%s : %s) expunere: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAtentie: timpul de expunere nu corespunde cu cadrele Light\n"
     IDS_RECAP_NODARK        "\t-> Lipsa Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld cadre (ISO: %s) expunere: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld cadre (%s: %s) expunere: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Lipsa Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nTimpul total estimat de expunere: %s\n(timpul total de expunere este calculat considerand ca toate cadrele Light selectate se vor pastra pentru procesul de stackare)\n"
@@ -1124,9 +1127,11 @@ BEGIN
                             "Atentie: Optiunea Drizzle Bayer selectata in setarile RAW DDP poate duce la rezultate ciudate cu o alta metoda decat cea medie."
     IDS_RECAP_BACKGROUNDCALIBRATION "Calibrare fundal canale RGB: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optimizare Dark: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld cadre (ISO : %s) expunere: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld cadre (%s : %s) expunere: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAtentie: Sensibilitatea ISO nu corespunde cu cadrele Flat\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\Atentie: Gain-ul cadrelor Dark Flat nu corespunde cu gain-ul cadrelor Flat\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAtentie: timpul de expunere nu corespunde cu cadrele Flat\n"
 END

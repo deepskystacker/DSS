@@ -230,7 +230,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				break;
 			};
 
-			WriteFITS(g_strOutputFile, pBitmap, &progress, fitsformat);
+			WriteFITS(g_strOutputFile, pBitmap, &progress, fitsformat, NULL);
 		}
 		else
 		{
@@ -250,7 +250,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				};
 			};
 
-			WriteTIFF(g_strOutputFile, pBitmap, &progress, g_TIFFFormat, g_TIFFCompression);
+			WriteTIFF(g_strOutputFile, pBitmap, &progress, g_TIFFFormat, g_TIFFCompression, NULL);
 		};
 	};
 };

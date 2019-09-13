@@ -13,6 +13,7 @@ CFITSHeader::CFITSHeader()
 	m_bFloat = FALSE;
 	m_fExposureTime = 0;
 	m_lISOSpeed     = 0;
+	m_lGain         = -1;
 	m_CFAType		= CFATYPE_NONE;
 	m_bByteSwap		= FALSE;
 	m_bSigned		= FALSE;
@@ -333,6 +334,7 @@ BOOL CFITSReader::Open()
 		CString			strMake;
 		CString			strISOSpeed;
 		LONG			lISOSpeed = 0;
+		LONG			lGain = -1;
 		LONG			cfaType;
 		m_bDSI = FALSE;
 
@@ -368,6 +370,8 @@ BOOL CFITSReader::Open()
 					lISOSpeed = _ttol(strISOSpeed);
 				};
 			};
+
+			bResult = ReadKey("GAIN", lGain);
 
 			bResult = ReadKey("NAXIS1", lWidth);
 			bResult = ReadKey("NAXIS2", lHeight);
@@ -443,6 +447,7 @@ BOOL CFITSReader::Open()
 				m_fExposureTime = fExposureTime;
 				m_strMake	= strMake;
 				m_lISOSpeed = lISOSpeed;
+				m_lGain     = lGain;
 				m_bSigned = FALSE;
 				switch (lBitFormat)
 				{
@@ -976,6 +981,8 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap->SetExposure(m_fExposureTime);
 		if (m_lISOSpeed)
 			m_pBitmap->SetISOSpeed(m_lISOSpeed);
+		if (m_lGain >= 0)
+			m_pBitmap->SetGain(m_lGain);
 		m_pBitmap->m_DateTime = m_DateTime;
 
 		CString			strDescription;
@@ -1103,6 +1110,7 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_CFAType		= fits.GetCFAType();
 		BitmapInfo.m_bMaster		= fits.IsMaster();
 		BitmapInfo.m_lISOSpeed		= fits.GetISOSpeed();
+		BitmapInfo.m_lGain		= fits.GetGain();
 		BitmapInfo.m_bCanLoad		= TRUE;
 		BitmapInfo.m_fExposure		= fits.GetExposureTime();
 		BitmapInfo.m_bFITS16bit	    = (fits.NrChannels() == 1) &&
@@ -1324,6 +1332,8 @@ BOOL CFITSWriter::Open()
 
 				if (m_lISOSpeed)
 					bResult = bResult && WriteKey("ISOSPEED", m_lISOSpeed);
+				if (m_lGain >= 0)
+					bResult = bResult && WriteKey("GAIN", m_lGain);
 				if (m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
@@ -1666,6 +1676,8 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 		SetFormat(lWidth, lHeight, m_Format, m_CFAType);
 		if (!m_lISOSpeed)
 			m_lISOSpeed = m_pMemoryBitmap->GetISOSpeed();
+		if (m_lGain < 0)
+			m_lGain = m_pMemoryBitmap->GetGain();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
 		bResult = TRUE;
@@ -1705,7 +1717,8 @@ BOOL CFITSWriteFromMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription, LONG lISOSpeed, double fExposure)
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure)
 {
 	BOOL					bResult = FALSE;
 
@@ -1719,6 +1732,8 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
+		if (lGain >= 0)
+			fits.m_lGain = lGain;
 		if (fExposure)
 			fits.m_fExposureTime = fExposure;
 		fits.SetFormat(FITSFormat);
@@ -1732,9 +1747,19 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 	return bResult;
 };
 
+
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription, LONG lISOSpeed, double fExposure)
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription,
+			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+};
+
+/* ------------------------------------------------------------------- */
+
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure)
 {
 	BOOL					bResult = FALSE;
 
@@ -1748,6 +1773,8 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
+		if (lGain >= 0)
+			fits.m_lGain = lGain;
 		if (fExposure)
 			fits.m_fExposureTime = fExposure;
 		if (fits.Open())
@@ -1758,6 +1785,14 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 	};
 
 	return bResult;
+};
+
+/* ------------------------------------------------------------------- */
+
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, szDescription,
+			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 };
 
 /* ------------------------------------------------------------------- */

@@ -602,7 +602,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Tiefe"
     IDS_COLUMN_INFOS        "Infos"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Belichtung"
 	IDS_COLUMN_APERTURE		"Blende"
     IDS_COLUMN_STARS        "#Sterne"

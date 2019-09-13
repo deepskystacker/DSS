@@ -1068,8 +1068,8 @@ bool	CDeBloom::CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask)
 	};
 
 #ifdef DEBUGDEBLOOM
-	WriteTIFF("E:\\BloomMask.tif", pMask, NULL);
-	WriteTIFF("E:\\BloomImage.tif", pBitmap, NULL);
+	WriteTIFF("E:\\BloomMask.tif", pMask, NULL, NULL);
+	WriteTIFF("E:\\BloomImage.tif", pBitmap, NULL, NULL);
 #endif
 
 	return m_vBloomedStars.size()>0;
@@ -1353,7 +1353,7 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 		m_pProgress->End2();
 
 #ifdef DEBUGDEBLOOM
-	WriteTIFF("E:\\BloomImage_Step1.tif", pBitmap, NULL);
+	WriteTIFF("E:\\BloomImage_Step1.tif", pBitmap, NULL, NULL);
 #endif
 
 	for (LONG i = 0;i<m_vBloomedStars.size();i++)
@@ -1363,7 +1363,7 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 
 	SmoothMaskBorders(pBitmap, pMask);
 #ifdef DEBUGDEBLOOM
-	WriteTIFF("E:\\BloomImage_Step2.tif", pBitmap, NULL);
+	WriteTIFF("E:\\BloomImage_Step2.tif", pBitmap, NULL, NULL);
 #endif
 };
 

@@ -33,7 +33,7 @@ const DWORD		COLUMN_SIZES	= 9;
 const DWORD		COLUMN_CFA		= 10;
 const DWORD		COLUMN_DEPTH	= 11;
 const DWORD		COLUMN_INFO		= 12;
-const DWORD		COLUMN_ISO		= 13;
+const DWORD		COLUMN_ISO_GAIN	= 13;
 const DWORD		COLUMN_EXPOSURE = 14;
 const DWORD		COLUMN_APERTURE = 15;
 const DWORD		COLUMN_FWHM		= 16;
@@ -185,8 +185,8 @@ void CPictureListCtrl::Initialize()
 	InsertColumn(COLUMN_DEPTH, strColumn, LVCFMT_LEFT, 50);
 	strColumn.LoadString(IDS_COLUMN_INFOS);
 	InsertColumn(COLUMN_INFO, strColumn, LVCFMT_LEFT, 50);
-	strColumn.LoadString(IDS_COLUMN_ISO);
-	InsertColumn(COLUMN_ISO, strColumn, LVCFMT_RIGHT, 50);
+	strColumn.LoadString(IDS_COLUMN_ISO_GAIN);
+	InsertColumn(COLUMN_ISO_GAIN, strColumn, LVCFMT_RIGHT, 50);
 	strColumn.LoadString(IDS_COLUMN_EXPOSURE);
 	InsertColumn(COLUMN_EXPOSURE, strColumn, LVCFMT_RIGHT, 50);
 	strColumn.LoadString(IDS_COLUMN_APERTURE);
@@ -358,12 +358,30 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 		case COLUMN_FILETIME :
 			lResult = CompareDate(m_vFiles[lItem1].m_DateTime, m_vFiles[lItem2].m_DateTime);
 			break;
-		case COLUMN_ISO :
-			if (m_vFiles[lItem1].m_lISOSpeed < m_vFiles[lItem2].m_lISOSpeed)
+		case COLUMN_ISO_GAIN :
+		{
+			// Compare ISOSpeed, or if ISOSpeed does not exists, then compare gain.
+			LONG val1 = 0;
+			LONG val2 = 0;
+			if (m_vFiles[lItem1].m_lISOSpeed)
+			{
+				val1 = m_vFiles[lItem1].m_lISOSpeed;
+				val2 = m_vFiles[lItem2].m_lISOSpeed;
+			}
+			else if (m_vFiles[lItem1].m_lGain >= 0)
+			{
+				val1 = m_vFiles[lItem1].m_lGain;
+				val2 = m_vFiles[lItem2].m_lGain;
+			}
+
+			if (val1 == val2)
+				lResult = 0;
+			else if (val1 < val2)
 				lResult = -1;
 			else
 				lResult = 1;
 			break;
+		};
 		case COLUMN_EXPOSURE :
 			if (m_vFiles[lItem1].m_fExposure< m_vFiles[lItem2].m_fExposure)
 				lResult = -1;
@@ -652,8 +670,9 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID dwJob
 
 				if (!bAdd)
 				{
-					// Keep ISO Speed and Exposure time as set by the user
+					// Keep ISO Speed, Gain and Exposure time as set by the user
 					lb.m_lISOSpeed = m_vFiles[lIndice].m_lISOSpeed;
+					lb.m_lGain = m_vFiles[lIndice].m_lGain;
 					lb.m_fExposure = m_vFiles[lIndice].m_fExposure;
 				};
 
@@ -921,9 +940,17 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 		case COLUMN_INFO :
 			strValue = m_vFiles[lIndice].m_strInfos;
 			break;
-		case COLUMN_ISO	:
-			ISOToString(m_vFiles[lIndice].m_lISOSpeed, strValue);
+		case COLUMN_ISO_GAIN :
+		{
+			// ISO value, of if ISO is not available then the Gain value
+			if (m_vFiles[lIndice].m_lISOSpeed)
+				ISOToString(m_vFiles[lIndice].m_lISOSpeed, strValue);
+			else if (m_vFiles[lIndice].m_lGain >= 0)
+				GainToString(m_vFiles[lIndice].m_lGain, strValue);
+			else
+				ISOToString(0, strValue);
 			break;
+		};
 		case COLUMN_EXPOSURE :
 			ExposureToString(m_vFiles[lIndice].m_fExposure, strValue);
 			break;
@@ -1298,7 +1325,7 @@ BOOL CPictureListCtrl::GetSelectedFileName(CString & strFileName)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CPictureListCtrl::GetItemISOSpeedAndExposure(int nItem, LONG & lISOSpeed, double & fExposure)
+BOOL CPictureListCtrl::GetItemISOSpeedGainAndExposure(int nItem, LONG & lISOSpeed, LONG & lGain, double & fExposure)
 {
 	BOOL			bResult = TRUE;
 	LONG			lItem;
@@ -1306,6 +1333,7 @@ BOOL CPictureListCtrl::GetItemISOSpeedAndExposure(int nItem, LONG & lISOSpeed, d
 	lItem = m_vVisibles[nItem];
 
 	lISOSpeed = m_vFiles[lItem].m_lISOSpeed;
+	lGain     = m_vFiles[lItem].m_lGain;
 	fExposure = m_vFiles[lItem].m_fExposure;
 	
 	return bResult;

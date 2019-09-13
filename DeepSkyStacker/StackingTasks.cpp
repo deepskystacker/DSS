@@ -230,6 +230,34 @@ void	ClearTaskCache()
 };
 
 /* ------------------------------------------------------------------- */
+
+static void BuildMasterFileNames(CTaskInfo *pTaskInfo, TCHAR const *pszType, BOOL bExposure, TCHAR const *pszDrive, TCHAR const *pszDir,
+	CString *pstrMasterFile, CString *pstrMasterInfoFile)
+{
+	TCHAR const *pszISOGain = pTaskInfo->HasISOSpeed() ? _T("ISO") : _T("Gain");
+	LONG const lISOGain = pTaskInfo->HasISOSpeed() ? pTaskInfo->m_lISOSpeed : pTaskInfo->m_lGain;
+
+	CString strFileName;
+	if (bExposure)
+		strFileName.Format(_T("%s%s%s_%s%ld_%lds"),
+			pszDrive, pszDir, pszType, pszISOGain, lISOGain, (LONG)pTaskInfo->m_fExposure);
+	else
+		strFileName.Format(_T("%s%s%s_%s%ld"),
+			pszDrive, pszDir, pszType, pszISOGain, lISOGain);
+
+	pstrMasterFile->Format(_T("%s.tif"), strFileName);
+	pstrMasterInfoFile->Format(_T("%s.Description.txt"), strFileName);
+};
+
+/* ------------------------------------------------------------------- */
+
+static void WriteMasterTIFF(LPCTSTR szMasterFileName, CMemoryBitmap * pMasterBitmap, CDSSProgress * pProgress,
+			LPCTSTR szDescription, CTaskInfo *pTaskInfo)
+{
+    WriteTIFF(szMasterFileName, pMasterBitmap, pProgress, szDescription,
+		pTaskInfo->m_lISOSpeed, pTaskInfo->m_lGain, pTaskInfo->m_fExposure, pTaskInfo->m_fAperture);
+};
+
 /* ------------------------------------------------------------------- */
 
 BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
@@ -246,8 +274,8 @@ BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 
 		_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-		strMasterOffset.Format(_T("%s%sMasterOffset_ISO%ld.tif"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
-		strMasterOffsetInfo.Format(_T("%s%sMasterOffset_ISO%ld.Description.txt"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
+		BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */ false, szDrive, szDir,
+			&strMasterOffset, &strMasterOffsetInfo);
 
 		// Check that the Master Offset File is existing
 		COffsetSettings		bmpSettings;
@@ -356,8 +384,8 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-					strMasterOffset.Format(_T("%s%sMasterOffset_ISO%ld.tif"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
-					strMasterOffsetInfo.Format(_T("%s%sMasterOffset_ISO%ld.Description.txt"), szDrive, szDir, m_pOffsetTask->m_lISOSpeed);
+					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */ false, szDrive, szDir,
+						&strMasterOffset, &strMasterOffsetInfo);
 
 					strText.LoadString(IDS_SAVINGMASTEROFFSET);
 					ZTRACE_RUNTIME(CT2CA(strText));
@@ -368,7 +396,7 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterOffset, 0);
 					};
-					WriteTIFF(strMasterOffset, pOffsetBitmap, pProgress, strInfo, m_pOffsetTask->m_lISOSpeed, m_pOffsetTask->m_fExposure);
+					WriteMasterTIFF(strMasterOffset, pOffsetBitmap, pProgress, strInfo, m_pOffsetTask);
 
 					m_pOffsetTask->m_strOutputFile = strMasterOffset;
 					m_pOffsetTask->m_bDone = TRUE;
@@ -405,8 +433,8 @@ BOOL	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 
 			_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-			strMasterDark.Format(_T("%s%sMasterDark_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
-			strMasterDarkInfo.Format(_T("%s%sMasterDark_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
+			BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
+				&strMasterDark, &strMasterDarkInfo);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings		bmpSettings;
@@ -544,8 +572,8 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 					_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-					strMasterDark.Format(_T("%s%sMasterDark_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
-					strMasterDarkInfo.Format(_T("%s%sMasterDark_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkTask->m_lISOSpeed, lExposure);
+					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
+						&strMasterDark, &strMasterDarkInfo);
 					strText.LoadString(IDS_SAVINGMASTERDARK);
 					ZTRACE_RUNTIME(CT2CA(strText));
 
@@ -555,7 +583,7 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterDark, 0);
 					};
-					WriteTIFF(strMasterDark, pDarkBitmap, pProgress, strInfo, m_pDarkTask->m_lISOSpeed, m_pDarkTask->m_fExposure);
+					WriteMasterTIFF(strMasterDark, pDarkBitmap, pProgress, strInfo, m_pDarkTask);
 
 					m_pDarkTask->m_strOutputFile = strMasterDark;
 					m_pDarkTask->m_bDone = TRUE;
@@ -594,8 +622,8 @@ BOOL	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 
 			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-			strMasterDarkFlat.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
-			strMasterDarkFlatInfo.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
+			BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
+				&strMasterDarkFlat, &strMasterDarkFlatInfo);
 
 			// Check that the Master Offset File is existing
 			CDarkSettings		bmpSettings;
@@ -734,8 +762,8 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-					strMasterDarkFlat.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.tif"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
-					strMasterDarkFlatInfo.Format(_T("%s%sMasterDarkFlat_ISO%ld_%lds.Description.txt"), szDrive, szDir, m_pDarkFlatTask->m_lISOSpeed, lExposure);
+					BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
+						&strMasterDarkFlat, &strMasterDarkFlatInfo);
 					strText.LoadString(IDS_SAVINGMASTERDARKFLAT);
 					ZTRACE_RUNTIME(CT2CA(strText));
 
@@ -745,7 +773,7 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterDarkFlat, 0);
 					};
-					WriteTIFF(strMasterDarkFlat, pDarkFlatBitmap, pProgress, strInfo, m_pDarkFlatTask->m_lISOSpeed, m_pDarkFlatTask->m_fExposure);
+					WriteMasterTIFF(strMasterDarkFlat, pDarkFlatBitmap, pProgress, strInfo, m_pDarkFlatTask);
 
 					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat;
 					m_pDarkFlatTask->m_bDone = TRUE;
@@ -1020,8 +1048,8 @@ BOOL	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 
 			_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-			strMasterFlat.Format(_T("%s%sMasterFlat_ISO%ld.tif"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
-			strMasterFlatInfo.Format(_T("%s%sMasterFlat_ISO%ld.Description.txt"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
+			BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
+				&strMasterFlat, &strMasterFlatInfo);
 
 			// Check that the Master Offset File is existing
 			CFlatSettings		bmpSettings;
@@ -1193,8 +1221,8 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 					_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
 
-					strMasterFlat.Format(_T("%s%sMasterFlat_ISO%ld.tif"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
-					strMasterFlatInfo.Format(_T("%s%sMasterFlat_ISO%ld.Description.txt"), szDrive, szDir, m_pFlatTask->m_lISOSpeed);
+					BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
+						&strMasterFlat, &strMasterFlatInfo);
 					strText.LoadString(IDS_SAVINGMASTERFLAT);
 					ZTRACE_RUNTIME(CT2CA(strText));
 
@@ -1204,7 +1232,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterFlat, 0);
 					};
-					WriteTIFF(strMasterFlat, pFlatBitmap, pProgress, strInfo, m_pFlatTask->m_lISOSpeed, m_pFlatTask->m_fExposure, m_pFlatTask->m_fAperture);
+					WriteMasterTIFF(strMasterFlat, pFlatBitmap, pProgress, strInfo, m_pFlatTask);
 
 					m_pFlatTask->m_strOutputFile = strMasterFlat;
 					m_pFlatTask->m_bDone = TRUE;
@@ -1264,8 +1292,8 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 		if ((m_vTasks[i].m_TaskType == FrameInfo.m_PictureType) &&
 			(m_vTasks[i].m_dwGroupID == dwGroupID))
 		{
-			// Check ISO and exposure time
-			if ((m_vTasks[i].m_lISOSpeed == FrameInfo.m_lISOSpeed) &&
+			// Check ISO, gain and exposure time
+			if ((m_vTasks[i].HasISOSpeed() ? (m_vTasks[i].m_lISOSpeed == FrameInfo.m_lISOSpeed) : (m_vTasks[i].m_lGain == FrameInfo.m_lGain)) &&
 				AreExposureEquals(m_vTasks[i].m_fExposure,FrameInfo.m_fExposure))
 			{
 				bFound = TRUE;
@@ -1284,6 +1312,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 		ti.m_fExposure = FrameInfo.m_fExposure;
 		ti.m_fAperture = FrameInfo.m_fAperture;
 		ti.m_lISOSpeed = FrameInfo.m_lISOSpeed;
+		ti.m_lGain     = FrameInfo.m_lGain;
 		ti.m_TaskType  = FrameInfo.m_PictureType;
 		ti.m_vBitmaps.push_back(FrameInfo);
 
@@ -1341,14 +1370,14 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 	if (bExposureFirst)
 	{
 		// Try to find in same group or in the common group if it's impossible
-		// Try same ISO and same exposure
+		// Try same ISO (gain) and same exposure
 		for (j = 0;j<m_vTasks.size();j++)
 		{
 			if (m_vTasks[j].m_TaskType == TaskType)
 			{
 				if (IsTaskGroupOk(BaseTask, pResult, &m_vTasks[j]))
 				{
-					if ((BaseTask.m_lISOSpeed == m_vTasks[j].m_lISOSpeed) &&
+					if ((BaseTask.HasISOSpeed() ? (BaseTask.m_lISOSpeed == m_vTasks[j].m_lISOSpeed) : (BaseTask.m_lGain == m_vTasks[j].m_lGain)) &&
 						AreExposureEquals(BaseTask.m_fExposure, m_vTasks[j].m_fExposure))
 					{
 						if (pResult)
@@ -1366,14 +1395,14 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 		if (!pResult)
 		{
 			// Try to find in same group or in the common group if it's impossible
-			// Try same ISO and closest exposure
+			// Try same ISO (gain) and closest exposure
 			for (j = 0;j<m_vTasks.size();j++)
 			{
 				if (m_vTasks[j].m_TaskType == TaskType)
 				{
 					if (IsTaskGroupOk(BaseTask, pResult, &m_vTasks[j]))
 					{
-						if (BaseTask.m_lISOSpeed == m_vTasks[j].m_lISOSpeed)
+						if (BaseTask.HasISOSpeed() ? (BaseTask.m_lISOSpeed == m_vTasks[j].m_lISOSpeed) : (BaseTask.m_lGain == m_vTasks[j].m_lGain))
 						{
 							if (pResult)
 							{
@@ -1421,14 +1450,14 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 	}
 	else
 	{
-		// Try same ISO
+		// Try same ISO (gain)
 		for (j = 0;j<m_vTasks.size();j++)
 		{
 			if (m_vTasks[j].m_TaskType == TaskType)
 			{
 				if (IsTaskGroupOk(BaseTask, pResult, &m_vTasks[j]))
 				{
-					if (BaseTask.m_lISOSpeed == m_vTasks[j].m_lISOSpeed)
+					if (BaseTask.HasISOSpeed() ? (BaseTask.m_lISOSpeed == m_vTasks[j].m_lISOSpeed) : (BaseTask.m_lGain == m_vTasks[j].m_lGain))
 					{
 						if (pResult)
 						{
@@ -1444,27 +1473,48 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 
 		if (!pResult)
 		{
-			// Try closest ISO
+			// Try closest ISO (gain)
 			for (j = 0;j<m_vTasks.size();j++)
 			{
 				if (m_vTasks[j].m_TaskType == TaskType)
 				{
 					if (IsTaskGroupOk(BaseTask, pResult, &m_vTasks[j]))
 					{
-						if (m_vTasks[j].m_lISOSpeed)
+						if (BaseTask.HasISOSpeed())
 						{
-							if (pResult)
+							if (m_vTasks[j].m_lISOSpeed)
 							{
-								if (labs(pResult->m_lISOSpeed-BaseTask.m_lISOSpeed) > labs(m_vTasks[j].m_lISOSpeed-BaseTask.m_lISOSpeed))
-									pResult = &m_vTasks[j];
-								else if (labs(pResult->m_lISOSpeed-BaseTask.m_lISOSpeed) == labs(m_vTasks[j].m_lISOSpeed-BaseTask.m_lISOSpeed))
+								if (pResult)
 								{
-									if (pResult->m_vBitmaps.size() < m_vTasks[j].m_vBitmaps.size())
+									if (labs(pResult->m_lISOSpeed - BaseTask.m_lISOSpeed) > labs(m_vTasks[j].m_lISOSpeed - BaseTask.m_lISOSpeed))
 										pResult = &m_vTasks[j];
-								};
-							}
-							else
-								pResult = &m_vTasks[j];
+									else if (labs(pResult->m_lISOSpeed - BaseTask.m_lISOSpeed) == labs(m_vTasks[j].m_lISOSpeed - BaseTask.m_lISOSpeed))
+									{
+										if (pResult->m_vBitmaps.size() < m_vTasks[j].m_vBitmaps.size())
+											pResult = &m_vTasks[j];
+									};
+								}
+								else
+									pResult = &m_vTasks[j];
+							};
+						}
+						else
+						{
+							if (m_vTasks[j].m_lGain >= 0)
+							{
+								if (pResult)
+								{
+									if (labs(pResult->m_lGain - BaseTask.m_lGain) > labs(m_vTasks[j].m_lGain - BaseTask.m_lGain))
+										pResult = &m_vTasks[j];
+									else if (labs(pResult->m_lGain - BaseTask.m_lGain) == labs(m_vTasks[j].m_lGain - BaseTask.m_lGain))
+									{
+										if (pResult->m_vBitmaps.size() < m_vTasks[j].m_vBitmaps.size())
+											pResult = &m_vTasks[j];
+									};
+								}
+								else
+									pResult = &m_vTasks[j];
+							};
 						};
 					};
 				};
@@ -1473,7 +1523,7 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 
 		if (!pResult)
 		{
-			// Get any ISO
+			// Get any ISO (gain)
 			for (j = 0;j<m_vTasks.size();j++)
 			{
 				if (m_vTasks[j].m_TaskType == TaskType)
@@ -1511,26 +1561,27 @@ void CAllStackingTasks::ResolveTasks()
 			CStackingInfo		si;
 
 			si.m_pLightTask = &(m_vTasks[i]);
+
 			// Try to find the best offset task for this task 
-			// same ISO if possible 
-			// else the closest ISO, else 0
+			// same ISO (gain) if possible 
+			// else the closest ISO (gain), else 0
 			// (tie breaker is number of frames in the offset task)
 			si.m_pOffsetTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_OFFSETFRAME);
 
 			// Try to find the best dark task for this task
-			// same ISO and exposure, else same ISO and closest exposure
-			// else no ISO and closest exposure
+			// same ISO (gain) and exposure, else same ISO (gain) and closest exposure
+			// else no ISO (gain) and closest exposure
 			// (tie breaker is number of frames in the dark task)
 			si.m_pDarkTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_DARKFRAME);
 
 			// Try to find the best dark flat task for this task
-			// same ISO and exposure, else same ISO and closest exposure
-			// else no ISO and closest exposure
+			// same ISO (gain) and exposure, else same ISO (gain) and closest exposure
+			// else no ISO (gain) and closest exposure
 			// (tie breaker is number of frames in the dark task)
 			si.m_pDarkFlatTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_DARKFLATFRAME);
 
 			// Try to find the best flat task for this task
-			// same ISO if possible, else the closest ISO, else 0
+			// same ISO (gain) if possible, else the closest ISO (gain), else 0
 			// (tie breaker is number of frames in the flat task)
 			si.m_pFlatTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_FLATFRAME);
 

@@ -167,7 +167,7 @@ protected :
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), _T("1.0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), _T("1.0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), _T("0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), _T("0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), _T("0"), _T("Raw"));
 	};

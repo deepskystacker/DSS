@@ -40,7 +40,7 @@ void CRawFilesTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BRIGHTNESS, m_Brightness);
 	DDX_Control(pDX, IDC_BLUESCALE, m_BlueScale);
 	DDX_Control(pDX, IDC_BILINEAR, m_Bilinear);
-	DDX_Control(pDX, IDC_AUTOWB, m_AutoWB);
+	DDX_Control(pDX, IDC_NOWB, m_NoWB);
 	DDX_Control(pDX, IDC_AHD, m_AHD);
 	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_SUPERPIXELS, m_SuperPixels);
@@ -56,6 +56,8 @@ BEGIN_MESSAGE_MAP(CRawFilesTab, CPropertyPage)
 	ON_EN_CHANGE(IDC_REDSCALE, OnChangeRedscale)
 	ON_BN_CLICKED(IDC_BILINEAR, OnBilinear)
 	ON_BN_CLICKED(IDC_AHD, OnAhd)
+	ON_BN_CLICKED(IDC_NOWB, OnNoWB)
+	ON_BN_CLICKED(IDC_CAMERAWB, OnCameraWB)
 	ON_BN_CLICKED(IDC_SUPERPIXELS, &OnBnClickedSuperpixels)
 	ON_BN_CLICKED(IDC_RAWBAYER, &OnBnClickedRawbayer)
 	//}}AFX_MSG_MAP
@@ -91,14 +93,12 @@ BOOL CRawFilesTab::OnSetActive()
 		m_BlueScale.SetWindowText(strValue);
 
 		//
-		// Version 4.2.0 doesn't support Auto WB so disable it until we have code for it
+		// Replace Auto WB processing with NO WB processing
 		// 
 		bValue = FALSE;
-		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
-		// workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), bValue);
-		m_AutoWB.SetCheck(bValue);
-		m_AutoWB.EnableWindow(FALSE);
-
+		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), bValue);
+		m_NoWB.SetCheck(bValue);
+		
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
 		m_CameraWB.SetCheck(bValue);
@@ -188,6 +188,29 @@ void CRawFilesTab::OnChangeRedscale()
 
 /* ------------------------------------------------------------------- */
 
+void CRawFilesTab::OnNoWB()
+{
+	bool value = m_NoWB.GetCheck();
+	if (value)
+	{
+		m_CameraWB.SetCheck(false);
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
+void CRawFilesTab::OnCameraWB()
+{
+	bool value = m_CameraWB.GetCheck();
+	if (value)
+	{
+		m_NoWB.SetCheck(false);
+	}
+}
+
+/* ------------------------------------------------------------------- */
+
+
 void CRawFilesTab::OnBilinear() 
 {
 	m_AHD.SetCheck(FALSE);
@@ -238,7 +261,7 @@ void CRawFilesTab::SaveValues()
 	m_BlueScale.GetWindowText(strValue);
 	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), strValue);
 
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), m_AutoWB.GetCheck() ? true : false);
+	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), m_NoWB.GetCheck() ? true : false);
 
 	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), m_CameraWB.GetCheck() ? true : false);
 

@@ -1607,16 +1607,16 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 				if (iff==IFF_TIFF)
 				{
 					if (pBitmap->IsMonochrome())
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE);
+						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, NULL);
 					else
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE);
+						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, NULL);
 				}
 				else
 				{
 					if (pBitmap->IsMonochrome())
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT);
+						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, NULL);
 					else
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT);
+						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, NULL);
 				};
 
 				dlg.End2();

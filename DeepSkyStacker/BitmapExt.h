@@ -306,6 +306,7 @@ inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method,
 	strText = "";
 	switch (Method)
 	{
+	case MBP_FASTAVERAGE :
 	case MBP_AVERAGE :
 		strText.Format(IDS_RECAP_AVERAGE);
 		break;
@@ -661,6 +662,7 @@ protected :
 	double				m_fExposure;
 	double				m_fAperture;
 	LONG				m_lISOSpeed;
+	LONG				m_lGain;
 	LONG				m_lNrFrames;
 	CString				m_strDescription;
 
@@ -674,6 +676,7 @@ protected :
 		m_fExposure			= mb.m_fExposure;
 		m_fAperture			= mb.m_fAperture;
 		m_lISOSpeed			= mb.m_lISOSpeed;
+		m_lGain				= mb.m_lGain;
 		m_lNrFrames			= mb.m_lNrFrames;
 		m_strDescription	= mb.m_strDescription;
 		m_DateTime			= mb.m_DateTime;
@@ -688,6 +691,7 @@ public :
 		m_fExposure = 0.0;
 		m_fAperture = 0.0;
 		m_lISOSpeed = 0;
+		m_lGain     = -1;
 		m_lNrFrames = 0;
 		m_DateTime.wYear = 0;
 	};
@@ -724,6 +728,16 @@ public :
 	virtual void	SetISOSpeed(LONG lISOSpeed)
 	{
 		m_lISOSpeed = lISOSpeed;
+	};
+
+	virtual LONG	GetGain()
+	{
+		return m_lGain;
+	};
+
+	virtual void	SetGain(LONG lGain)
+	{
+		m_lGain = lGain;
 	};
 
 	virtual LONG	GetNrFrames()
@@ -3356,6 +3370,7 @@ public :
 	CString				m_strFileType;
 	CString				m_strModel;
 	LONG				m_lISOSpeed;
+	LONG				m_lGain;
 	double				m_fExposure;
 	double				m_fAperture;
 	LONG				m_lWidth;
@@ -3379,6 +3394,7 @@ private :
 		m_strFileType	=bi.m_strFileType	;
 		m_strModel		=bi.m_strModel		;
 		m_lISOSpeed		=bi.m_lISOSpeed		;
+		m_lGain			=bi.m_lGain		;
 		m_fExposure		=bi.m_fExposure		;
 		m_fAperture     =bi.m_fAperture;
 		m_lWidth		=bi.m_lWidth		;
@@ -3408,6 +3424,7 @@ public :
 		m_bMaster		 = FALSE;
 		m_bFloat		 = FALSE;
 		m_lISOSpeed		 = 0;
+		m_lGain			 = -1;
 		m_fExposure		 = 0.0;
 		m_fAperture		 = 0.0;
 		m_bFITS16bit	 = FALSE;
