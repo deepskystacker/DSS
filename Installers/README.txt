@@ -1,3 +1,25 @@
+Welcome to DeepSkyStacker 4.2.3
+
+The main changes in this release are:
+
+1. The stacking settings dialog width has been increased to reduce or eliminate the need to scroll the tabs.
+
+2. Add .rw2 to list of RAW file extensions.
+
+3. Change the colour scheme for DeepSkyStacker Live to make it more "night vision" friendly.
+
+4. Recognise and use GAIN values in FITS file from CMOS/CCD cameras in a manner similar to how ISO is handled for matching darks, lights etc..   Please note this is not the same as EGAIN (e-/ADU).  It refers to the camera's scaling of EGAIN.
+
+5. Update help files and add a new Dutch version of the help.
+
+6. Provide the option to perform NO White Balance processing at all (requested by Ivo Jager for StarTools).
+
+7. Apply White Balance scaling factors from the RAW/DDP settings dialogue before we scale the image data rather than after.  This should prevent the scaling from causing burn-out images which it could do previously.
+
+8. Fix for issue #43 - the stacking method "Average" wasn't always reported in the recap html file.
+
+
+
 Welcome to DeepSkyStacker 4.2.2
 
 This release is all about performance, though other areas have been enhanced as well.  The main changes since 4.2.1 are:
