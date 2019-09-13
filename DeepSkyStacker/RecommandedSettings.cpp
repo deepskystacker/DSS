@@ -359,7 +359,7 @@ static void AddModdedDSLR(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFITS)
 	}
 	else
 	{
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
+		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), false);
 		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false);
 		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), 1.0);
 		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), 1.0);

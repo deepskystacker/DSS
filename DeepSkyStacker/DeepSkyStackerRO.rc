@@ -345,7 +345,7 @@ BEGIN
     LTEXT           "Valoare albastru",IDC_STATIC,15,53,52,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "White Balance",IDC_STATIC,140,7,131,64
-    CONTROL         "Foloseste Auto White Balance",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,113,17
+    CONTROL         "Fara procesare White Balance",IDC_NOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,113,17
     CONTROL         "Foloseste White Balance camera",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,109,16
     CONTROL         "Interpolare biliniara",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Interpolare omogenitate adaptiva directata",IDC_AHD,

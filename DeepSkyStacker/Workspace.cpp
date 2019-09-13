@@ -448,7 +448,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), 1.0));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), 1.0));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false));
+	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), _T("Bilinear")));

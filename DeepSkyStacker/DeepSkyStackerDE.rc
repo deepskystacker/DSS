@@ -485,10 +485,10 @@ BEGIN
     LTEXT           "Blau-Scala",IDC_STATIC,15,53,34,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Weiﬂabgleich",IDC_STATIC,140,7,131,64
-    CONTROL         "Automatischen Weiﬂabgleich verwenden",IDC_AUTOWB,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,22,113,16
+    CONTROL         "Keine Weiﬂabgleichverarbeitung",IDC_NOWB,"Button",
+						BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,22,113,16
     CONTROL         "Weiﬂabgleich der Kamera verwenden",IDC_CAMERAWB,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,44,115,17
+						BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,44,115,17
     CONTROL         "Bilineare Interpolation",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,15,91,83,10
     CONTROL         "Adaptive Homogeneity-Directed Interpolation (AHD)",IDC_AHD,

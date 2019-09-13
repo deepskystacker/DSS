@@ -303,10 +303,10 @@ BEGIN
     LTEXT           "Escala de Azul",IDC_STATIC,15,53,54,8
     EDITTEXT        IDC_BLUESCALE,69,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balance de Blancos",IDC_STATIC,140,7,131,64
-    CONTROL         "Utilizar Balance de Blancos Automático",IDC_AUTOWB,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,112,17
+    CONTROL         "Sin procesamiento de balance de blancos",IDC_NOWB,
+                    "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,112,17
     CONTROL         "Utilizar Balance de Blancos de la Cámara",IDC_CAMERAWB,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,117,19
+                    "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,117,19
     CONTROL         "Interpolación Bilineal",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,251,10
     CONTROL         "Interpolación Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,251,10

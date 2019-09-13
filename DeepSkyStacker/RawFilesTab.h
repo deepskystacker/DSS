@@ -25,7 +25,7 @@ public:
 	CEdit	m_Brightness;
 	CEdit	m_BlueScale;
 	CButton	m_Bilinear;
-	CButton	m_AutoWB;
+	CButton	m_NoWB;
 	CButton	m_AHD;
 	CButton m_SuperPixels;
 	CButton m_RawBayer;
@@ -54,6 +54,8 @@ protected:
 	afx_msg void OnChangeBluescale();
 	afx_msg void OnChangeBrightness();
 	afx_msg void OnChangeRedscale();
+	afx_msg void OnNoWB();
+	afx_msg void OnCameraWB(); 
 	afx_msg void OnBilinear();
 	afx_msg void OnAhd();
 	afx_msg void OnBnClickedSuperpixels();

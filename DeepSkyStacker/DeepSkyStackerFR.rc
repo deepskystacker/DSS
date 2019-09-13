@@ -415,10 +415,10 @@ BEGIN
     LTEXT           "Echelle Bleu",IDC_STATIC,15,53,40,8
     EDITTEXT        IDC_BLUESCALE,73,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balance des blancs",IDC_STATIC,140,7,131,64
-    CONTROL         "Utiliser la balance des blancs automatique",IDC_AUTOWB,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,116,17
+    CONTROL         "Pas de traitement de la balance des blancs",IDC_NOWB,
+                    "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,116,17
     CONTROL         "Utiliser la balance des blancs de l'appareil photo",IDC_CAMERAWB,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,45,119,18
+                    "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,45,119,18
     CONTROL         "Interpolation Bilinéaire",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,85,10
     CONTROL         "Interpolation Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10

@@ -345,7 +345,7 @@ BEGIN
     LTEXT           "Escala de azuis",IDC_STATIC,15,53,48,8
     EDITTEXT        IDC_BLUESCALE,83,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balanco de brancos",IDC_STATIC,140,7,131,64
-    CONTROL         "Usar balanco brancos automatico",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,22,113,17
+    CONTROL         "Sem processamento de balanço de branco",IDC_NOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,22,113,17
     CONTROL         "Usar balanco brancos da camera",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,113,17
     CONTROL         "Interpolacao bilinear",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Homogenuidade Adaptada-Directamente - Interpolacao (AHD)",IDC_AHD,

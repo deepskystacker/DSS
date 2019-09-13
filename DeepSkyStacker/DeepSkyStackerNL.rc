@@ -495,7 +495,7 @@ BEGIN
     LTEXT           "Blauwe schaal",IDC_STATIC,15,53,46,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Wit Balans",IDC_STATIC,140,7,131,64
-    CONTROL         "Gebruik Auto Wit Balans",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX |
+    CONTROL         "Geen witbalansverwerkings",IDC_NOWB,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,149,24,94,10
     CONTROL         "Gebruik Camera Wit Balans",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX |
                     WS_TABSTOP,149,43,103,10
@@ -1562,7 +1562,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_HELPFILE            "DeepSkyStacker Help.chm"
+    IDS_HELPFILE            "DeepSkyStacker Hulp.chm"
 END
 
 STRINGTABLE

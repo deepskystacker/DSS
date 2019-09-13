@@ -342,7 +342,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,88,179,10
 END
 
-IDD_RAWSETTINGS_TAB DIALOGEX 0, 0, 278, 270
+IDD_RAWSETTINGS_TAB DIALOGEX 0, 0, 301, 270
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "RAW Files"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
@@ -354,9 +354,11 @@ BEGIN
     EDITTEXT        IDC_REDSCALE,63,34,40,14,ES_RIGHT | ES_AUTOHSCROLL
     LTEXT           "Blue scale",IDC_STATIC,15,53,34,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
-    GROUPBOX        "White Balance",IDC_STATIC,140,7,131,64
-    CONTROL         "Use Auto White Balance",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,24,94,10
-    CONTROL         "Use Camera White Balance",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,43,103,10
+    GROUPBOX        "White Balance",IDC_STATIC,141,7,127,64
+    CONTROL         "No White Balance Processing",IDC_NOWB,"Button",
+						BS_AUTOCHECKBOX | WS_TABSTOP,149,24,110,10
+    CONTROL         "Use Camera White Balance",IDC_CAMERAWB,"Button",
+						BS_AUTOCHECKBOX | WS_TABSTOP,149,43,103,10
     CONTROL         "Bilinear Interpolation",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Adaptive Homogeneity-Directed (AHD) Interpolation",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10
@@ -644,6 +646,10 @@ BEGIN
         BOTTOMMARGIN, 171
     END
 
+    IDD_RAWSETTINGS, DIALOG
+    BEGIN
+    END
+
     IDD_ABOUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -668,6 +674,11 @@ BEGIN
 
     IDD_STACKSETTINGS, DIALOG
     BEGIN
+    END
+
+    IDD_RAWSETTINGS_TAB, DIALOG
+    BEGIN
+        RIGHTMARGIN, 276
     END
 
     IDD_BACKGROUNDOPTIONS, DIALOG
@@ -930,6 +941,11 @@ END
 //
 
 IDD_STACKSETTINGS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_RAWSETTINGS_TAB AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
@@ -1221,7 +1237,6 @@ BEGIN
     IDS_RECAP_STEP          "Stacking step %ld\n  ->%ld frames (%s: %s) - total exposure: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (%s: %s) exposure: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tWarning: ISO speed not matching with light frames\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> No Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld frames (%s : %s) exposure: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1239,10 +1254,18 @@ BEGIN
     IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (%s : %s) exposure: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tWarning: ISO speed not matching with flat frames\n"
-    IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tWarning: exposure time not matching with flat frames\n"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
+                            "Per Channel Background Calibration: %s\n"
+    IDS_RECAP_DARKMULTIPLICATIONFACTOR "Dark Multiplication Factor: %.2f\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
 END
 
 STRINGTABLE
@@ -1424,13 +1447,6 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILELISTDESCRIPTION "DeepSkyStacker File List"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
-                            "Per Channel Background Calibration: %s\n"
-    IDS_RECAP_DARKMULTIPLICATIONFACTOR "Dark Multiplication Factor: %.2f\n"
 END
 
 STRINGTABLE

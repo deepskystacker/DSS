@@ -432,7 +432,7 @@ BEGIN
     LTEXT           "Blu",IDC_STATIC,15,53,52,8
     EDITTEXT        IDC_BLUESCALE,71,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Bilanciamento del bianco",IDC_STATIC,140,7,131,64
-    CONTROL         "Automatico",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,24,94,10
+    CONTROL         "Nessun bilanciamento del bianco",IDC_NOWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,24,94,10
     CONTROL         "Interno alla Macchina",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,43,103,10
     CONTROL         "Interpolazione bilineare",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,133,10
     CONTROL         "Interpolazione adattiva diretta dall'omogeneità (AHD)",IDC_AHD,

@@ -233,7 +233,7 @@
 #define IDC_THRESHOLD                   1056
 #define IDC_STACK                       1057
 #define IDC_PERCENT                     1058
-#define IDC_AUTOWB                      1061
+#define IDC_NOWB                        1061
 #define IDC_CAMERAWB                    1062
 #define IDC_BILINEAR                    1064
 #define IDC_VNG                         1065
