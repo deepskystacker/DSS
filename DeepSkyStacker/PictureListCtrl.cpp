@@ -217,6 +217,7 @@ void CPictureListCtrl::Initialize()
 			{
 				vColumns.insert(it, COLUMN_STARS);
 				bFound = TRUE;
+				break; // Without this you will get an exception in the next for loop check.
 			};
 		};
 		if (bFound)

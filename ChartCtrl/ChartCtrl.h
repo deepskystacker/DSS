@@ -78,7 +78,7 @@ public:
 	void RefreshCtrl();
 	int Create(CWnd* pParentWnd, const RECT& rect, UINT nID, DWORD dwStyle=WS_VISIBLE);
 	
-    CChartCtrl();	
+    CChartCtrl(bool bDarkMode = false);	
     virtual ~CChartCtrl();
 
 	// Generated message map functions
@@ -104,6 +104,7 @@ private:
 	COLORREF BackColor;	
 	COLORREF m_BorderColor;
 	UINT EdgeType;		
+	bool m_bDarkMode;
 
 	CRect m_PlottingRect;	// Zone in wich the series will be plotted
 

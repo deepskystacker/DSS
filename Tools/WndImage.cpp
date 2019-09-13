@@ -59,7 +59,8 @@ static HBITMAP	GetSubImage(HBITMAP hBitmap, CRect & rcSource)
 //  CTor / DTor
 // ------------------------------------------------------------------
 
-CWndImage::CWndImage()
+CWndImage::CWndImage(bool bDarkMode /*=false*/) :
+	m_bDarkMode(bDarkMode)
 {
 	m_shared = false;
 	m_bmpSize = CSize(0,0);
@@ -145,7 +146,7 @@ END_MESSAGE_MAP()
 #include <gdiplus.h>
 using namespace Gdiplus;
 
-static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect & rcDst, BOOL bInterpolate, Bitmap * pInBitmap = NULL)
+static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect & rcDst, BOOL bInterpolate, Bitmap * pInBitmap = NULL, bool bDarkMode=false)
 {
 	Bitmap *		pBitmap = new Bitmap(hBitmap, NULL);
 	Bitmap *		pOutBitmap;
@@ -173,7 +174,7 @@ static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect &
 		RectF				rcfDst(rcDst.left, rcDst.top, rcDst.Width(), rcDst.Height());
 		ImageAttributes *	pAttr = NULL;
 
-		SolidBrush			brush(Color(200, 200, 200));
+		SolidBrush			brush(bDarkMode ? Color(80, 80, 80) : Color(200, 200, 200));
 
 		pGraphics->FillRectangle(&brush, 0, 0, rcOut.Width(), rcOut.Height());
 
@@ -217,7 +218,7 @@ BOOL CWndImage::CreateInternalBitmap()
 		CRect & src = m_srcRect;
 		CRect & dst = m_dstRect;
 
-		m_pBaseImage  = ::GetBitmap(r, (HBITMAP)m_bmp.GetSafeHandle(), src, dst, (m_zoomX < 1), m_pBaseImage);
+		m_pBaseImage  = ::GetBitmap(r, (HBITMAP)m_bmp.GetSafeHandle(), src, dst, (m_zoomX < 1), m_pBaseImage, m_bDarkMode);
 		bResult = TRUE;
 	};
 	m_bInvalidateInternalBitmap = FALSE;

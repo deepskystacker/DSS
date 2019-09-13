@@ -187,8 +187,9 @@ private :
 
 	std::vector<CString>	m_vFiles;
 
+	bool m_bDarkMode;
 public:
-	CGraphViewTab(CWnd* pParent = NULL);   // standard constructor
+	CGraphViewTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
 	virtual ~CGraphViewTab();
 
 	//void	CallHelp();
@@ -210,6 +211,8 @@ protected :
 	afx_msg void OnOffset();
 	afx_msg void OnAngle();
 	afx_msg void OnSkyBackground();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
 private :
 	void ChangeVisibleGraph();

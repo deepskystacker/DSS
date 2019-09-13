@@ -67,7 +67,7 @@ class CWndImage : public CWnd
 {
   public:
 	virtual    ~CWndImage();
-	            CWndImage();
+	            CWndImage(bool bDarkMode = false);
 
     BOOL        Create(RECT const & r, CWnd * parent, UINT id, 
                        DWORD dwStyle = WS_CHILD | WS_VISIBLE);
@@ -161,6 +161,8 @@ class CWndImage : public CWnd
 	CSize       m_bmpSize;          // size of the bitmap
     bool        m_shared;           // the bitmap is shared (don't delete upon destruction/replacement)
 	bool		m_4Corners;			// The 4 corners and the center are shown
+
+	bool		m_bDarkMode;
 	
 	// Selection rectangle
 	/*

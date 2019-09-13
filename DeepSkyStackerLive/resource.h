@@ -1,4 +1,4 @@
-//{{NO_DEPENDENCIES}}
+﻿//{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by DeepSkyStackerLive.rc
 //
@@ -35,7 +35,7 @@
 #define IDS_COLUMN_EXPOSURE             213
 #define IDS_COLUMN_STARS                214
 #define IDS_COLUMN_SKYBACKGROUND        215
-#define IDS_COLUMN_APERTURE				216
+#define IDS_COLUMN_APERTURE             216
 #define IDS_FORMAT_RGB                  400
 #define IDS_FORMAT_GRAY                 401
 #define IDS_YES                         402
@@ -297,7 +297,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        137
+#define _APS_NEXT_RESOURCE_VALUE        139
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1067
 #define _APS_NEXT_SYMED_VALUE           101
