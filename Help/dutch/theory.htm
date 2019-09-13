@@ -1,0 +1,311 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+<title>How to create better images</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">The Theory<br>
+</font><font face="Arial" size="4">or How to create better images</font></b></p>
+<blockquote>
+  <p>
+  <b>
+  <font face="Arial"><A href="#WhyCombine">Why combine?</a><br>
+  <A href="#CombineHowMany">How many frames?</a><br>
+  <A href="#Calibration">Calibration: how to use dark, flat and bias frames</a></font></b><br>
+  <b><font face="Arial"><A href="#ISOSpeed">Which ISO speed?</a></font></b><br>
+  <b><font face="Arial"><A href="#CalibrationProcess">The Calibration Process</a></font></b></p>
+</blockquote>
+<hr color="#0000ff">
+<p class="Standard"><font face="Arial">Below you will find some simple 
+information, however nothing can replace experience.<br>
+Some experts have decided to create an astrophotography dedicated free web 
+magazine which is full of precious, often hard earned knowledge.</font></p>
+<p class="Standard"><font face="Arial">Some past topics include Understanding 
+noise in images, Drizzle discussion, Guiding imaging and much more.</font></p>
+<a target="_blank" href="http://www.skyinsight.net/astrophoto/current.php">	
+<img src = "http://www.skyinsight.net//images/banner2.jpg" width="300" height="147" style="HEIGHT: 155px; WIDTH: 458px" alt=""></a>	</a>
+<p><font face="Arial">Note: I am in no way related to this magazine or any 
+advertisement that you may find in it.<br>
+I am only putting this banner because the current issue is always free and full 
+of useful information.</font></p>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#ff0000"><a name="WhyCombine">
+</a></font><font color="#ff0000" size="4">Why combine?</font><font size="2"><br>
+The answer is simple: only to increase the Signal to Noise Ratio (SNR).</font><br>
+</b><font size="2">Is the resulting image more luminous? No.<br>
+Is the resulting image more colorful? No.<br>
+<br>
+The goal of combing many images into one is only to increase the SNR. The 
+resulting images are neither more luminous or more colorful but they contain 
+much less noise which will let you stretch the histogram a lot more which will 
+give you more freedom to bring back colors and details.</font></font></p>
+<table id="AutoNumber1" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p style="MARGIN-RIGHT: 10px" class="Standard"><font face="Arial" size="2">The example on the 
+    right shows the resulting image from a stack of 1, 2, 4, 16 and 32 images.<br>
+    <br>
+    No calibration was done and some hot pixels are visible in some cases (no 
+    dark and bias subtraction, no flat division).<br>
+    <br>
+    Mouse over the text to see the result of the stack for&nbsp; <br>
+    <b>&nbsp;&nbsp;
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_1.jpg';;document.getElementById('LEGEND01').innerHTML='One Light Frame';" href="javascript:void(0);">
+    1 image</a></b><br>
+    <b>&nbsp;&nbsp;
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_2.jpg';document.getElementById('LEGEND01').innerHTML='Stack of 2 light frames';" href="javascript:void(0);">
+    2 images</a></b><br>
+    <b>&nbsp;&nbsp;
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_4.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 4 light frames';" href="javascript:void(0);">
+    4 images</a></b><br>
+    <b>&nbsp;&nbsp;
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_16.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 16 light frames';" href="javascript:void(0);">
+    16 images</a></b><br>
+    <b>&nbsp;&nbsp;
+    <A onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_32.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 32 light frames';" href="javascript:void(0);">
+    32 images</a></b></font></p>
+    <p class="Standard"><font face="Arial" size="2">You can see that the resulting image is not 
+    lighter or more colorful when the number of stacked light frames is 
+    increasing but is much smoother.</font></p>
+    <p>&nbsp;</p></td>
+    <td width="62%">
+    <p align="center">
+    <IMG id=STACKRESULT01 border=0 name=STACKRESULT01 src="../images/Theory/Stack_2.jpg" width=591 height=591><br>
+    <font face="Arial" size="2"><b id="LEGEND01" name="LEGEND01">
+    One Light Frame</b></font></p></td>
+  </tr>
+</table>
+<hr color="#0000ff">
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000"><a name="CombineHowMany"></a>
+How many frames</font></b><font face="Arial"><b><font color="#ff0000" size="4">?</font><font size="2"><br>
+The more, the better but above some threshold it is less efficient.</font><br>
+</b><font size="2">The signal to noise ration in increasing with the square root 
+of the number of combined frames regardless of the exposure time of each frame.<br>
+This is true with all the combining methods (average, median, kappa-sigma 
+clipping, auto-adaptive weighted average, ...) except entropy weighted average 
+since this one in using the entropy to weight each pixel and thus is increasing 
+the noise that is a big entropy contributor.</font></font><font face="Arial" size="2">.</font></p>
+<p align="justify"><font face="Arial" size="2">This means that if your base SNR is 1, when you 
+combine 10 images the SNR increases by 3.16 (square root of 10). For 30 images 
+it is 5.47, for 50 images it is 7.07, for 100 images it is 10, for 300 images it 
+is 17.32.</font></p>
+<p align="justify"><font face="Arial" size="2">As you can see to gain a 7 ratio 50 frames are 
+needed between 1 and 50, but 200 frames are needed above 100.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Are 100 x 1 minute and 
+10x10 minutes giving the same result?</b><br>
+Yes when considering the SNR but definitely No when considering the final result.<br>
+the difference between a 10 minutes exposure and a 1 minute exposure is that the 
+SNR in the 10 minutes exposure is 3.16 higher than in 1 minute exposure.</font></p>
+<p align="justify"><font face="Arial" size="2">Thus you will get the same SNR if you combine 10 
+light frames of 10 minutes or 100 light frames of 1 minute. However you will 
+probably not have the same signal (the interesting part). Simply put you will 
+only get a signal if your exposure is long enough to catch some photons on most 
+of the light frames so that the signal is not considered as noise.</font></p>
+<p align="justify"><font face="Arial" size="2">For example for a very faint nebula you might get 
+a few photons every 10 minutes. If you are using 10 minutes exposures, you will 
+have captured photons on each of your light frames and when combined the signal 
+will be strong. <br>
+If you are using 1 minute exposures you will capture photons only for some of 
+your light frames and when combined the photons will be considered as noise 
+since they are not in most of the light frames.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Can I combine two (or more) resulting images?<br>
+</b>Absolutely, the square root rule applies with a small twist.<br>
+<br>
+When combining two images the SNR increases by 1.414 (square root of 2).<br>
+If both images have the same SNR then this is the same as doing a single stack. 
+That does not mean that the combination is giving the same image, just that the 
+SNR will be the same.<br>
+<br>
+However if one stack contains more light frames than the other, the SNR of the 
+two stacks will be different and the SNR of the combination will be lower than 
+the SNR of a single stack containing all the light frames.<br>
+<br>
+Thus by combining the result of a 10x1 minute stack with a single 1 minute frame 
+the SNR is roughly the same as the one obtained by combining 2 light frames. 
+This is due to the fact that when combining two images the noise is additive and 
+the best image is damaged by the worse image in the process.</font></p>
+<hr color="#0000ff" SIZE="1">
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000"><a name="Calibration"></a>C</font><font face="Arial" color="#ff0000" size="4">alibration: 
+how to use dark, flat and bias frames<br>
+</font></b><font face="Arial" size="2">The calibration is the process consisting 
+in subtracting the bias and dark signals and dividing by the flat signal.<br>
+The goal here is not to explain how to take dark, bias and flat frames (see
+<A href="faq.htm#lightdarkflatoffset">here</a>) but to better understand how to 
+use them to get the best possible images.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>A good idea</b><br>
+Everybody is saying that you must take dark, bias and flat frames to create 
+great images, but if you are doing it the wrong way you can easily damage your 
+nice light frames ending up with very disappointing results.</font></p>
+<p align="justify"><font face="Arial" size="2">The good news is that it is really easy to get 
+nice results. Here is why and how.<br>
+<br>
+<b>A common misconception</b><br>
+It is a common misconception to think that the number of dark, bias and flat 
+frames is related to the number of light frames.<br>
+A lot of people are using very few (sometimes even only one) dark, bias and flat 
+frames while they could get much better results by using a large number of dark, 
+bias and flat frames with the same set of light frames.<br>
+<br>
+Following the square root rule you will have much cleaner masters if you use a 
+lot of frames to create them. Remember that you are trying to remove the dark 
+and bias signals, not the noise that is coming with it. <br>
+<br>
+For example when you subtract the master dark from each light frame you are 
+adding the noise of the master dark to the noise of the light frame. The smaller 
+the noise of the master dark, the less noise you will add to the light frame. 
+This is also true for the master bias and the master flat.<br>
+<br>
+In fact by using only a very small number of frames for the creation of the 
+masters you can easily triple the noise of the calibrated light frame (bias and 
+dark subtracted and flat divided) compared to the noise of the light frame 
+before calibration. </font></p>
+<p align="justify"><font face="Arial" size="2">You will then need 9 times (3 squared) more light 
+frames to bring back the noise to the level you could have had by using noise 
+free masters.</font></p>
+<table id="AutoNumber2" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p class="Standard"><font face="Arial" size="2">The example on the 
+    right shows the result of a stack of (mouse over the text to see the image)<br>
+    <br>
+    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/NoCalibration.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (no calibration)';" href="javascript:void(0);">
+    32 light frames (no calibration)</a><br>
+    <br>
+    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration2.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (2 darks, 2 flats and 2 biases calibration)';" href="javascript:void(0);">
+    32 light frames (2 darks, 2 flats and 2 biases calibration)</a><br>
+    <br>
+    <A onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration20.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (20 darks, 20 flats and 20 biases calibration)';" href="javascript:void(0);">
+    32 light frames (20 darks, 20 flats and 20 biases calibration)</a><br>
+    <br>
+    As you can see increasing the number of dark, flat and bias frames is 
+    enhancing the resulting image making details more visible.</font></p></td>
+    <td width="50%">
+    <p align="center">
+    <IMG id=STACKRESULT02 border=0 name=STACKRESULT02 src="../images/Theory/Calibration20.jpg" width=591 height=591><br>
+    <font face="Arial" size="2"><b id="LEGEND02" name="LEGEND02">Stack of 32 light frames (no calibration)</b></font></p></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2">This is the reason why you should use as many 
+dark/bias/flat frames as possible. On the practical side, 20 frames is a minimum 
+if you want to not add too much noise, and 50 to 100 will give you really nice 
+and (almost) noise free masters..<br>
+<br>
+<b>A side note about hot pixels</b><br>
+Hot pixels are pixels that are not behaving normally. They are a very strong 
+signal that is visible in each dark and each light frame. <br>
+<br>
+Of course when you subtract one dark frame to one light frame you will remove 
+the hot pixels which may give the false impression that the dark subtraction did 
+its job. <br>
+However, at the same time the subtraction doubled the noise of the calibrated 
+light frame and ruined it thoroughly.</font></p>
+
+<hr color="#0000ff" SIZE="1">
+
+<p align="justify"><font face="Arial" size="2"><a name="ISOSpeed"></a></font>
+<font face="Arial" color="#ff0000" size="4"><b>Which ISO speed?<br>
+</b></font><font face="Arial" size="2">The question is common enough and the 
+answer is simple: it doesn't matter...sort of.<br>
+<br>
+In fact the ISO speed is just a setting of any DSLR, but since the CMOS or CCD 
+chip is the same (you don't change it when changing the ISO speed, do you?) then 
+the results are really the same.<br>
+This is not because you are using a higher ISO speed that you get more photons, 
+it's just that the signal is more amplified (noise and all).</font></p>
+<p align="justify"><font face="Arial" size="2">The good news is that you don't 
+need to change the ISO speed to try to capture a fainter target. You just need 
+to take longer exposures.<br>
+<br>
+Of course it's a little more complicated than that since there is a good ISO 
+speed for each DSLR.<br>
+However it depends on the characteristics of each sensor chip (readout noise and 
+electronic noise) and is not simple to compute.<br>
+Christian Buil has computed the values for a few Canon DSLRs</font></p>
+<table border="1" cellspacing="1" width="43%" id="AutoNumber3">
+  <tr>
+    <td width="35%"><b><font face="Arial" size="2">DSLR</font></b></td>
+    <td width="65%"><b><font face="Arial" size="2">Recommended (Optimal) ISO 
+    Speed</font></b></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 10D&nbsp;&nbsp;&nbsp;
+    </font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">400&nbsp;&nbsp;&nbsp; 
+    (290)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 20D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1000)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 350D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">800&nbsp;&nbsp;&nbsp; 
+    (900)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 5D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1100)</font></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<hr color="#0000ff" SIZE="1">
+
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000">
+<a name="CalibrationProcess"></a>The Calibration Process</font></b><font face="Arial" color="#ff0000" size="4"><b><br>
+</b></font><font face="Arial" size="2">The calibration process and how each set 
+of files (lights, darks, flats,...)&nbsp; is used is often perceived as a 
+mystery but is in fact quite simple.<br>
+<br>
+Below is the full calibration process when all the files are available:</font></p>
+
+<p align="left"><font face="Arial" size="4"><b>Full Calibration Process (all 
+files available)</b></font><font face="Arial" size="2"><br>
+<br>
+<IMG border=0 src="../images/english/Calibration_Full.jpg" width=918 height=456></font></p>
+
+<p align="justify"><font face="Arial" size="2"><br>
+However it is common and perfectly possible to properly calibrate without using 
+dark flat frames. The calibration process in this case is described below:</font></p>
+
+<p align="justify"><font face="Arial" size="4"><b>Alternate Calibration Process 
+I (no dark flat frames)</b></font><font face="Arial" size="2"><br>
+<br>
+<IMG border=0 src="../images/english/Calibration_Alternate1.jpg" width=918 height=454></font></p>
+
+<p align="justify"><font face="Arial" size="2">On the other hand if you are 
+using dark flat frames you can also perfectly calibrate without using bias 
+frames. Here's the process in that case:</font></p>
+
+<p align="justify"><font face="Arial" size="4"><b>Alternate Calibration Process 
+II (no bias frames)</b></font><font face="Arial" size="2"><br>
+<br>
+<IMG border=0 src="../images/english/Calibration_Alternate2.jpg" width=918 height=454></font></p>
+
+<p align="justify"><font face="Arial" size="2">Any other combination leads to 
+improper calibration so you should stick with one of these 3 possibilities.</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

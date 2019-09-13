@@ -1,0 +1,512 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+<title>FAQ</title>
+<style>
+<!--
+ div.MsoNormal
+	{mso-style-parent:"";
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";
+	margin-left:0cm; margin-right:0cm; margin-top:0cm}
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><span lang="EN-GB" style="FONT-SIZE: 18pt; FONT-FAMILY: Arial">
+Frequently Asked Questions</span></b></p>
+<blockquote>
+
+<p><span lang="en-gb"><b><span style="FONT-FAMILY: Arial"><A href="#Install">
+Install</A><br>
+<A href="#lightdarkflatoffset">Light, Dark, Flat, Bias... What are they and how 
+to create them?</A><br>
+<A href="#FileAndList">Files and File Lists</A><br>
+<A href="#Registering">Registering</A><br>
+<A href="#Stacking">Stacking</A><br>
+<A href="#Processing">Processing</A><br>
+<A href="#Performances">Performances</A><br>
+<A href="#saveresult">Load/Save</A><br>
+</span></b></span><b>
+<span lang="EN-GB" style="FONT-FAMILY: Arial" >
+<A href="#Misc">Miscellaneous</A></span></b></p>
+</blockquote>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#ff0000">
+<a name="Install"></a>Install</font><br>
+<font size="2">The downloaded setup files&nbsp;are corrupt.<br>
+</font></b><font size="2">       The executable files on github are 
+definitely OK.&nbsp; It's possible that&nbsp;you are using a download accelerator.<br>
+If so, I suggest you deactivate it, and&nbsp;download the file again and all should be ok.<br>
+</font><b>
+<font size="2"><br>
+When I try to run&nbsp;DeepSkyStacker after I have 
+installed it I get a message: "This program can't start because api-ms-win-crt-runtime-l1-1-0.dll is missing".<br>
+</font></b><font size="2">Your need to 
+install that DLL file which you can download from: <A 
+href="https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows">https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows</A>&nbsp;<BR>you 
+will need to download the version specific to your version 
+of&nbsp;</font></font><font face="Arial"><font size="2">Windows.</font></font>
+  <span lang="EN-GB"></p>
+<p align="justify">
+  <hr size="2" width="100%" noshade color="blue" align="center">
+
+<P></P></SPAN>
+<p align="justify"><span lang="en-gb"><font size="4" color="#ff0000"><b>
+<span style="FONT-FAMILY: Arial"><a name="lightdarkflatoffset"></a>Light, Dark, 
+Flat, Bias... What are they and how to create them?</span></b></font></span><span lang="EN-GB" style="FONT-FAMILY: Arial"><b><br>
+</b><font size="2">(if you are wondering how all the files are used during the 
+calibration process you can have a look
+<A href="theory.htm#CalibrationProcess" target=_self>here</A>)<br>
+</font><b>
+<br>
+Light Frames<br>
+</b><font size="2">The Light Frames are the images that contains the real 
+information: images of galaxies, nebula...<br>
+This is what you want to stack.<br>
+<br>
+</font><b>Dark Frames and Dark Flat Frames<br>
+</b><font size="2">The Dark Frames are used to remove the dark signal from the 
+light frames (or the flat frames for the Dark Flat frames).<br>
+With DSLRs and CCD Camera, the CMOS or CCD is generating a dark signal depending 
+of the exposure time, temperature and ISO speed (DSLR only).<br>
+To remove the dark signal from the light frames you use a dark frame that 
+contains only the dark signal.<br>
+<br>
+The best way to create the dark frames is to shoot pictures in the dark (hence 
+the name) by covering the lens.<br>
+The dark frames must be created with the exposure time, temperature and ISO 
+speed of the light frames (resp. flat frames).<br>
+Since the temperature is important try to shoot dark frames at the end or during 
+your imaging session.<br>
+<br>
+Take a few of them (between 10 and 20 is usually enough). DeepSkyStacker will 
+combine them automatically to create and use a clean master dark or master dark 
+flat.<br>
+<br>
+</font><b>Bias Frames (aka Offset Frames)<br>
+</b><font size="2">The Bias/Offset Frames are used to remove the CCD or CMOS 
+chip readout signal from the light frames.<br>
+Each CCD or CMOS chip is generating a readout signal which is a signal created 
+by the electronic just by reading the content of the chip.<br>
+<br>
+It's very easy to create bias/offset frames: just take the shortest possible 
+exposure (it may be 1/4000s or 1/8000s depending on your camera) in the dark by 
+covering the lens.<br>
+The bias frames must be create with the ISO speed of the light frames. The 
+temperature is not important.<br>
+<br>
+Take a few of them (between 10 and 20 is usually enough). DeepSkyStacker will 
+combine them automatically to create and use a clean master bias/offset frame<br>
+<br>
+</font><b>Flat Frames<br>
+</b><font size="2">The Flat Frames are used to correct the vignetting and uneven 
+field illumination created by dust or smudges in your optical train.<br>
+<br>
+To create good flat frames it is very important to <u><b>not</b></u> remove your 
+camera from your telescope before taking them (including not changing the 
+focus).<br>
+You can use a lot of different methods (including using a flatbox) but I found 
+that the simplest way is to put a white T shirt in front of your telescope and&nbsp; 
+smooth out the folds. Then shoot something luminous (a flash, a bright white 
+light, the sky at dawn...) and let the camera decide of the exposure time (Av 
+mode), <br>
+<br>
+The flat frames should be created with the ISO speed of the light frames. The 
+temperature is not important.<br>
+<br>
+Take a few of them (between 10 and 20 is usually enough). DeepSkyStacker will 
+combine them automatically to create and use a clean master flat frame.</font></span></p>
+<p align="justify"><span lang="en-gb"><font size="2">
+<span style="FONT-FAMILY: Arial"><b>Is it possible to use colored flat frames?</b><br>
+The short answer is yes.<br>
+The overall tint of your flat frames is not really important because 
+DeepSkyStacker is processing each channel separately and is applying the flat 
+frames to each channel accordingly.<br>
+Of course if your flat frames are fully red only the red channel of your light 
+frames will be properly calibrated but otherwise as long as as the peak in each 
+channel is between 1/3 and 2/3 of the maximum you should have no problem using 
+slightly colored flat frames.</span></font></span></p>
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><span lang="en-gb"><font size="4" color="#ff0000"><b>
+<span style="FONT-FAMILY: Arial"><a name="FileAndList"></a>Files and File Lists</span></b></font></span><br>
+<b><span lang="EN-GB" style="FONT-FAMILY: Arial">
+<font size="2"><a name="TIFFIssue"></a>DSS can't read my TIFF files and/or crash 
+when trying to read TIFF files</font></span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+DeepSkyStacker is only supporting uncompressed TIFF files or LZW and ZIP 
+(Deflate) compressed files.<br>
+However, TIFF files come in many flavours and sometimes the decoding may go 
+wrong especially while decoding EXIF information.<br>
+It is possible to disable EXIF decoding when reading TIFF files by adding the 
+following registry key under <b>HKEY_CURRENT_USER\Software\DeepSkyStacker</b>: 
+SkipTIFFExifInfo (DWORD) with a value of 1.<br>
+<br>
+If you don't know how to add the registry key, you can download this
+<A href="../download/DSS_SkipTIFFExifInfo.reg">small file</A> and double-click 
+on it. It will add the registry key for you.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify">
+<font size="2" face="Arial"><b>My FITS files are not correctly decoded.<br>
+</b>There is a lot a FITS file format out there..<br>
+If your FITS file is not correctly decoded please send me an email with the FITS 
+file attached.</font></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font face="Arial" size="2"><b>My FITS Files were created from 
+a DSLR and are very dark and without any contrast.<br>
+</b>Software capturing DSLR output and storing them as FITS files sometimes use 
+the 16 bit file format to store only 12 bit depth images (which is the original 
+depth of most DSLR's RAW files).<br>
+In this case the values stored in the files are between 0 and 4095 instead of 
+between 0 and 65535 which explains why the images are very dark.<br>
+You can adjust the parameters in the <A href="userguide.htm#rawddp">FITS Files 
+tab</A> in the RAW/FITS DDP settings dialog to correctly see these files.<br>
+Simply put you can multiply the total brightness by up to 16 without exceeding 
+the maximum threshold. If you modify the white balance by changing the red 
+and/or blue scales take care not to go over that 16 multiplier for each channel 
+(brightness * channel scale).</font></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font face="Arial" size="2"><b>My FITS Files were created from a DSLR and 
+appear all wrong while I have selected the correct DSLR in the FITS File tab<br>
+</b>You should check that no binning was used by the software making the 
+captures. In this case DSS can not use the standard Bayer Filter Pattern of your 
+DSLR and this is probably why your images appear all wrong.<br>
+The only way is to deactivate binning.</font></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font face="Arial" size="2"><b>My FITS files were create by a color CCD 
+camera and I see only B&amp;W images.<br>
+</b>Your FITS files are using a bayer matrix (like a DSLR). To decode the colors 
+correctly DeepSkyStacker must know which kind of Bayer matrix is used by your 
+camera..<br>
+You can use the FITS tab of the <A href="userguide.htm#rawddp">RAW/FITS DDP 
+settings</A> dialog to tell DeepSkyStacker which Bayer matrix must be used. Most 
+of the time you will just have to select your CCD camera from the list.</font></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font face="Arial"><font size="2"><b>What is a File List?</b></font><b><font size="2"><br>
+</font></b><font size="2">A File List is just a plain text file containing file 
+names with, for each file, its type (light, dark, flat, offset) and its status 
+(checked or unchecked).<br>
+You should note that when a File List is loaded the list containing all the 
+files is not cleared.<br>
+Thus it is possible to have a File List with all the dark frames, another with 
+the flat frames, a third with the master offset and to load all the File Lists 
+in one operation.<br>
+The File List format is fully explained <A href="commandline.htm#filelistformat">
+here</A>.</font></font></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><font face="Arial" size="2">I have files of the same object taken in 
+multiple imaging sessions. How do I tell DSS to associate correctly the dark 
+with the light frames of the same night for each night?</font></b><font size="2" face="Arial"><b><br>
+</b>The answer to this question is to use <A href="technical.htm#filegroup">File 
+Groups</A>.</font></p>
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="Registering"></a>Registering</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why 
+create a registering file for each picture?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+Because it is simpler and it avoids re-registering.<br>
+This is also a way to avoid loading all the pictures during the registering and 
+stacking processes.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Can I 
+delete the registering file?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Yes. 
+It will be recreated if necessary.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Can I 
+modify the content of the registering file?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Yes, 
+even if it is neither advised nor necessary. <br>
+I cannot guarantee that the content will not evolve, but I guarantee that the 
+current content will always be decoded.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<a name="score"></a>What is 
+the score, and what is its meaning?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
+score is a measure of the picture quality.<br>
+To put it simply, the higher the score, the more round and not too big stars 
+were found.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Is the 
+score a measure of the absolute quality of a picture?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">No. 
+The score is a relative measure that is only used to sort the pictures of 
+roughly the same area in order to keep only the best pictures for stacking.<br>
+If  the
+<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="technical.htm#rawdecod">raw development process settings</A> are modified you must register the pictures 
+again and a new score will be computed.</span></p>
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="Stacking"></a>Stacking</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<a name="autosave"></a>What is 
+the AutoSave.DSImage file created after each stacking process?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
+AutoSave.DSImage file is a proprietary file which is created automatically at 
+the end of each stacking process and that holds the resulting picture. It is a 
+32 bit (rational)/channel format.<br>
+Since the only way to create this file is to do a new stacking process it is not 
+possible to overwrite it by mistake.<br>
+It can be reopen in the processing tab.<br>
+Starting with the 2.5.3 release the AutoSave.DSImage file is replaced by an 
+AutoSave.tif file which is a 32 bit rational TIFF file (Deflate compressed).<br>
+Older .DSImage files can still be opened by DeepSkyStacker.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b>
+<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The resulting 
+image shows multiple sets of stars on all the picture<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+Multiple sets of stars is a sure sign that the alignment process is relying on 
+"false" stars.<br>
+The main reason is that hot pixels are perturbing the registering process and 
+thus are creating false stars.<br>
+You can try to automatically detect hot pixels (see Registering Options) or, 
+much better, load and check your dark frames before starting the registering 
+process.<br>
+All checked dark, flat and offsets frames will be applied to each light frame 
+before the registering process guaranteeing that no hot pixels or artefact will 
+perturb the star detection which will be much better and accurate. </span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b>
+<span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The resulting 
+image shows a heavily cropped image in the upper left corner<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+This is the result of registering the light frames using the super pixel mode 
+and stacking them in another mode.<br>
+When changing from or to the super pixel mode it is necessary to register the 
+light frames again.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font size="2"><b><span style="FONT-FAMILY: Arial">My dark frames have not 
+all the same exposure time and DeepSkyStacker does not group them together.</span></b></font><b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><br>
+</span></b><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">If you don't use 
+an automatic way to take each frame it is often possible that the exposure times 
+are different by a few seconds and in this case DeepSkyStacker does not group 
+them together to create master dark.<br>
+You can force the exposure time for each frame to the same value by selecting 
+the frames in the list an by using the context menu to edit the
+<A href="userguide.htm#contextmenu">properties of the frames</A>.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font size="2"><b><span style="FONT-FAMILY: Arial">My resulting image is very 
+dark. Is it normal?<br>
+</span></b></font><span style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">RAW images 
+are very dark and stacking them create a very dark resulting image.<br>
+To view the details in the image the histogram must be stretched by adjusting 
+the RGB levels and the luminance in the <A href="userguide.htm#processingtab">
+Processing Tab</A>.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font size="2"><span style="FONT-FAMILY: Arial"><b>How do I 
+align the resulting images of 4 stacks (red, green, blue and luminance)?<br>
+</b>To align the resulting images on the same reference frame just add the 
+reference frame to the list even if it is not from the same stack, force 
+DeepSkyStacker to use it as the reference frame (using the
+<A href="userguide.htm#contextmenu">context menu</A>) but left it unchecked. <br>
+This tells DeepSkyStacker to use it as the reference frame but to not add it to 
+the stack.</span></font></p>
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="Processing"></a>Processing<br>
+</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">What is 
+the DSSSettings.DSSSettings file created in the DeepSkyStacker.exe folder?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
+DSSSettings.DSSSettings file contains all the adjustment settings that can be 
+saved and loaded from the processing tab.</span></p>
+<hr color="#0000ff">
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000">
+<a name="Performances"></a>Performance<br>
+</font><font face="Arial" size="2">How to speed up stacking</font></b><font size="2" face="Arial"><b>?<br>
+</b>Besides the obvious answers (faster processor, more memory), the best way to 
+speed up processing is to use the non interpolation modes (<A href="technical.htm#bayerdrizzle">Bayer 
+Drizzle and Super Pixel</A>) or the bilinear and AHD interpolations which are all working only on the raw files with only 
+one monochrome 16 bits channel instead of 3 RGB channels.<br>
+The picture decoding is faster (fast or no interpolation), the required memory is 
+divided by 3 and flat, dark and offset frames are computed and internally stored with only 
+one plane instead of 3.<br>
+<br>
+Another way to get the resulting image faster is to use a
+<A href="technical.htm#customrect">Custom Rectangle</A> which contains only the 
+interesting part of the image.</font></p>
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="saveresult"></a>Load/Save</span><span lang="EN-GB" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Where 
+are saved the post-processing adjustments settings in the TIFF files?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
+settings are stored as private TIFF tags. It is a documented feature of the TIFF 
+file format.<br>
+On the other hand if you overwrite the file with software other than 
+DeepSkyStacker, the private tags will be removed and the settings will be lost.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<b>What is the difference between applied adjustment settings and embedded 
+adjustments settings in the TIFF file?<br>
+</b>When the adjustment settings are embedded the picture stored in the TIFF 
+file is the picture without any modification as it results from the stacking 
+process. The settings are included so that the next times you open the TIFF file 
+in DeepSkyStacker you can continue to work from where you stopped.<br>
+This option is useful if you want to continue to post-processing later using 
+DeepSkyStacker or if you want to do all the post-processing with another 
+software.<br>
+<br>
+When the adjustment settings are applied, the picture stored in the TIFF file is 
+the one resulting from applying the settings to the picture resulting from the 
+stacking process. It is the picture as you see it in the processing tab.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Photoshop 
+can not open the 32 bit (integer) TIFF files created by DeepSkyStacker?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+Right, You must save the file in 32 bit (rational) TIFF file format to open them 
+later in Photoshop. <br>
+Software like 
+Pleiades’ PixInsight can open 32 bit (integer) TIFF files created by 
+DeepSkyStacker.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<b>Does DeepSkyStacker use the registry to store settings?<br>
+</b>Yes. DeepSkyStacker is storing all the settings associated with the user in 
+the registry database: last folders for each kind of file, last dialog 
+settings... <br>
+Everything is stored in the HKEY_CURRENT_USER\Software\DeepSkyStacker key.</span></p>
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
+  <span lang="EN-GB">
+  <hr size="2" width="100%" noshade color="blue" align="center"></span>
+</div>
+<p align="justify"><b>
+<span lang="EN-GB" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="Misc"></a>Miscellaneous</span></b><span lang="EN-GB"><br>
+</span><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why 
+DeepSkyStacker?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+Simply because spending countless hours repeating the same tasks other and other 
+for each new set of pictures has stopped appealing to me.<br>
+Every owner of a DSLR will understand what I am talking about: TIFF transform 
+(or CFA for the bravest), registering, stacking...<br>
+<br>
+After testing a lot of memory hungry software I decided to write the software 
+that will solve my problem: getting a whole set of pictures (sometimes several 
+hundreds) and doing all the process automatically so that I can go to sleep 
+knowing that the following morning I can start the post-processing which is the 
+fun part.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why not 
+planetary pictures?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Why? 
+Because I don't do planetary so I have no experience and I wouldn't know where 
+to begin.<br>
+Maybe one day I will find an interest in it and I will write a PlanetaryStacker 
+... but don't count on it anytime soon.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">And 
+DeepSkyStacker 1.0?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+DeepSkyStacker 1.0 was only used by me and some close friends. It was not 
+intended to go public and even if the engine was already there a lot a features 
+were missing.<br>
+DeepSkyStacker 2.0 is the first public release.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<b>In what language  DeepSkyStacker is coded?<br>
+</b>DeepSkyStacker is coded in C++.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">How are Camara&nbsp;RAW files decoded?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The 
+RAW files are decoded using <A href="https://www.libraw.org/" >LibRaw</A> 
+  &nbsp;Copyright ©&nbsp;2008-2019 LibRaw LLC, which is the successor to the superb DCRAW 
+decoder written by Dave Coffin.<br>
+Thanks
+are due to  Dave Coffin for suggesting to Luc Coiffier&nbsp;the
+<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="technical.htm#bayerdrizzle">Bayer Drizzle</A> algorithm.</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Is my 
+DSLR file format supported?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">The list of all 
+the DSLRs supported (presently more than 300) is increasing all the time. Go to 
+the <A href="https://www.libraw.org/" >LibRaw</A> website to know if your DSLR is supported.<br>
+DeepSkyStacker will warn you if your DSLR 
+is not supported in the current release.<BR><BR>
+               
+  </span>
+<hr color="#0000ff" size="1">
+
+<P></P>
+<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<b>How are read and written the TIFF pictures?<br>
+</b>The TIFF files are read and written using the most excellent libtiff library</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<b>How are read  and written the FITS files?<br>
+</b>The FITS files are read  using the most excellent CFitsIO library</span></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><font face="Arial" size="2">Is it possible to change the 
+language used by DeepSkyStacker?</font></b><font size="2" face="Arial"><b><br>
+</b>The language used by DeepSkyStacker (French, English, Spanish, Czech, Italian, Catalan, 
+German or Dutch) is 
+automatically set from the language used in the Operating System.<br>
+If you want to force another language you can change it from the About box.<br>
+DeepSkyStacker must be started again for the new language setting to be 
+effective.</font></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><font size="2" face="Arial"><b>How DeepSkyStacker checks that a new version 
+is available?<br>
+</b>To check that a new version is available DeepSkyStacker connects to the 
+website at startup and compare the currently used version with the downloadable 
+version.<br>
+DeepSkyStacker does not send any personal information to the website or 
+anywhere else during this process. It just downloads a very small file 
+containing the necessary information.</font></p>
+<hr color="#0000ff" size="1">
+<p align="justify"><b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Is 
+DeepSkyStacker Open Source? Is the source code available?<br>
+</span></b><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Yes, 
+DeepSkyStacker has been Open Source since 2018.&nbsp; The&nbsp;<A 
+href="https://github.com/deepskystacker/DSS">DeepSkyStacker Project</A> 
+is stored on github.</span>
+
+<hr color="#0000ff" size="1">
+
+<P></P>
+<p align="justify"><span lang="EN-GB" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+<b>How do I uninstall DeepSkyStacker?<br>
+</b>Simply use the uninstaller from the Add/Remove programs in the control 
+panel.</span></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

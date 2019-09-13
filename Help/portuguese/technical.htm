@@ -5,8 +5,8 @@
 <meta name="GENERATOR" content="Microsoft FrontPage 5.0">
 <meta name="ProgId" content="FrontPage.Editor.Document">
 <meta name="keywords" lang="en" content="Deep Sky Stacking Astrophotography Bayer matrix">
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-<title>DeepSkyStacker - Technical Info</title>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1252">
+<title>Detalhes Tecnicos</title>
 <style>
 <!--
  div.MsoNormal
@@ -22,114 +22,171 @@
 
 <body>
 
-<p><b><span lang="EN-US" style="font-size: 18.0pt; font-family: Arial">Detalhes
+<p><b><span lang="EN-US" style="FONT-SIZE: 18pt; FONT-FAMILY: Arial">Detalhes
 Tecnicos</span></b></p>
 <blockquote>
 
-<p><b><span style="font-family: Arial"><a href="#Registering">Registo</a><br>
-<a href="#Alignment">Alinhamento</a><br>
-<a href="#FileGroups">Grupos de Ficheiros</a><br>
-<a href="#Stacking">Integracao-Empilhamento</a><br>
-<a href="#stackingmethods">Metodos de Integracao</a><br>
-<a href="#Drizzle">Drizzle</a><br>
-<a href="#cometstacking">Integracao de Cometas</a><br>
-<a href="#rawdecod">Processo de desenvolvimento de imagens RAW</a></span></b></p>
+<p><b><span style="FONT-FAMILY: Arial"><A href="#Registering">Registo</A><br>
+<A href="#Alignment">Alinhamento</A><br>
+<A href="#FileGroups">Grupos de Ficheiros</A><br>
+<A href="#Stacking">Integracao-Empilhamento</A><br>
+<A href="#stackingmethods">Metodos de Integracao</A><br>
+<A href="#Drizzle">Drizzle</A><br>
+<A href="#cometstacking">Integracao de Cometas</A><br>
+<A href="#rawdecod">Processo de desenvolvimento de imagens RAW</A></span></b></p>
 </blockquote>
-<div class="MsoNormal" align="center" style="text-align:center">
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
-<span lang="EN-US" style="font-size: 13.5pt; font-family: Arial; color: red">
-<a name="Registering"></a>Registo</span><span lang="EN-US" style="font-family: Arial"><br>
-</span><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Deteccao
-de estrelas</span><span lang="EN-US" style="font-family: Arial"><br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">O
+<span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="Registering"></a>Registo</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Deteccao
+de estrelas</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">O
 DeepSkyStacker detecta automaticamente as estrelas em cada fotografia.<br>
 O DSS procura arredondar potualmente as estrelas atraves da luminancia
 disfarcando o que puder no arrastamento de algumas estrelas.<br>
 Assim que a estela e detectada e utilizada a curva de Gaussian
 para valores de luminancia.</span></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><b><font size="2">A aplicacao dos darks, flats e offsets
 e feita antes do registo</font><br>
 </b><font size="2">Se o fotogramas dark, flat e/ou offset forem verificados
 automaticamente, serao aplicados antes do processo do registo.<br>
 É altamente recomendaddo serem verificados (os fotogramas) por ordem, pelos dark frames para deteccao de falsas estrelas
 que e altamente perturbador no alinhamento dos fotogramas.</font></font></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><b>
 <font size="2"><a name="hotpixels"></a>Deteccao Automatica dos Pixels Quentes</font><br>
 </b><font size="2">Por opcao, DeepSkyStacker tenta detectar pixels quentes durante
 o processo de registo evitando a deteccao de falsas estrelas.<br>
 Esta opcao so funciona com imagens monochromaticas
-e imagens RAW <a href="#superpixel">Super-pixels</a>, <a href="#bayerdrizzle">
-Bayer.Drizzle</a>, bilinear e AHD modos de interpolacao.</font></font></p>
-<hr color="#0000FF" size="1">
+e imagens RAW <A href="#superpixel">Super-pixels</A>, <A href="#bayerdrizzle">
+Bayer.Drizzle</A>, bilinear e AHD modos de interpolacao.</font></font></p>
+<hr color="#0000ff" size="1">
 <p align="justify"><b><font face="Arial" size="2"><a name="detectionthreshold"></a>Ajustando a
 deteccao de threshold nas estrelas</font></b><font size="2" face="Arial"><b><br>
-</b>A deteccao de threshold na estrela e 10% por inerencia-defeito (10% de maxima
-luminancia).<br>
-Podera mudificar este threshold na opcao Avançada ( Aba ) na caixa de ddetectara estrelas mais distantes.
-por outro lado, se aumentar o valor do threshold apenas as maiores estrelas serao
-detectadas.<br>
-<br>
-Para ajuda-lo a encontar o melhor threshold para os seus fotogramas pode constactar no programa
-o numero de estrelas que serao detectadas. Para o fazer, o DeepSkyStacker usa a
-primeira verificacao dos fotogramas activando temporariamente a deteccao dos pixels quentes.</font></p>
-<p align="justify"><font size="2" face="Arial">Devera ter em atencao que este numero um indicativo
-do numero real de estrelas detectadas que podera variar se verificar os fotogramas do dark,
-do offset e do flat.</font></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+</b>
+              
+           A deteccao de
+threshold na estrela e 10% por inerencia-defeito (10% de maxima luminancia).</font></p>
+<p align="justify"><font size="2" face="Arial">
+<TABLE style="BORDER-COLLAPSE: collapse" borderColor=#c0c0c0 cellSpacing=0 cellPadding=5 width="100%" border=1>
+  <TBODY >
+  <TR >
+<TD width="63%"><FONT size=2>
+You 
+      can modify this threshold in the Advanced tab of the "Register checked 
+      pictures/Register Settings" dialog, or by selecting Settings.../Register 
+      Settings.</FONT>
+<font size=2 face=Arial >
+<p align=justify><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial"><EM><STRONG > 
+   Reducing</STRONG></EM> 
+      the Star Detection Threshold will result in DeepSkyStacker finding<EM 
+      ><STRONG>
+more</STRONG>
+</EM> 
+      (fainter) stars, on the other hand if you&nbsp;<EM 
+      >
+               
+              
+  <STRONG 
+      >  increase</STRONG>
+            
+</EM>&nbsp;the threshold, then only 
+      brighter stars will be detected&nbsp;and so this&nbsp;will<EM>
+             
+<STRONG>
+reduce</STRONG></EM> the 
+      number found.
+<BR>
+           
+<BR>
+Setting the 
+      threshold so low that many hundreds of star are found will be 
+      counter-productive as there will be much more data to process for star 
+      registration and if&nbsp;too many stars are detected there is a greater 
+      chance of mis-registration.&nbsp;&nbsp; You should probably&nbsp;aim for 
+      over 20-25 stars and no more than a couple of hundred or so.
+</span></p>
+           
+         <p align=justify>
+              
+                  
+       <span lang=EN-US 
+      style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+If you 
+      have set the detection threshold low and DeepSkyStacker is still not 
+      finding enough stars because the image is underexposed, you can increase 
+      the image brightness by using the "Brightness" adjustment in the Raw/FITS 
+      DDP Settings.</span></p>
+            <p align=justify>
+<span lang=EN-US 
+      style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
+If your 
+      images are noisy (as a result (e.g.) of Light Pollution) you may need 
+      to&nbsp;enable the "Reduce the noise by using a Median Filter" 
+      option.</span></p><p align=justify >To help you finding the best 
+      threshold for your light frames you can compute the number of stars that 
+      will be detected. To do this, DeepSkyStacker&nbsp;uses the first checked 
+      light frame and&nbsp;temporarily activates hot pixel detection.</font></p><p align=justify>
+<font size=2 face=Arial>
+You should note that this number is only a&nbsp;guide 
+      and that the real number of detected stars may vary if you have checked 
+      
+dark, offset and flat frames.</font></p></TD><TD>&nbsp;<IMG alt="" 
+      src="../images/portuguese/Register_Settings.jpg"></TD></TR></TBODY></TABLE></FONT>
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
-</div>
-<p align="justify"><b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">
+<P></P>
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 Registando os resultados<br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">O
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">O
 registo dos resultados (numero de estrelas detectadas, posicao, luminancia de cada estrela)
 sao salvos num ficheiro de texto com o nome do ficheiro do ficheiro da fotografia com a extencao
 .Info.txt.<br>
 Nos futuros processos de Integracao, estes ajustes de registo
 no processo sao desnecessarios.</span></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
 </div>
-<p align="justify"><b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 Registo de resultados e Parametros<br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">O
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">O
 registo dos resultados esta muito dependente das atribuicoes dos parametros (especialmente
  
-the <a href="userguide.htm#rawddp">nos paramentos de desenvolvimento Raw</a>).<br>
+the <A href="userguide.htm#rawddp">nos paramentos de desenvolvimento Raw</A>).<br>
 Se esses parametros forem modificados e necessario registar de novo as fotos.
 </span></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="1" noshade color="blue"></span>
 </div>
-<p align="justify"><b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Integrar
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Integrar
 depois de registar<br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 DeepSkyStacker pode criar uma corrente dos processos de registo e integracao. Apenas tem que dar
 uma percentagem de fotos que deseja manter ate ao fim do
 processo do registo para se dar inicio ao processo de integracao. Somente as melhores fotografias
 serao usadas no processo de integracao.<br>
 Estas funcionalidades permitem a realizacao de todo o processo podendo ir dormir sabendo que
 quando levantar podera ver os primeiros resultados.</span></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
-<span lang="EN-US" style="font-size: 13.5pt; font-family: Arial; color: red">
-<a name="Alignment"></a>Alinhamento</span><span lang="EN-US" style="font-family: Arial"><br>
-</span><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Offsets 
-e analise computacional angular</span><span lang="EN-US" style="font-family: Arial"><br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">
+<span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="Alignment"></a>Alinhamento</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Offsets 
+e analise computacional angular</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 Durante o processo de alinhamento as melhores fotos (as fotos com as melhores contagens de estrelas)
 sao usadas como fotogramas de referencia a nao ser que escolha um fotograma como referencia
-usando o <a href="userguide.htm#contextmenu">contexto do menu</a>.<br>
+usando o <A href="userguide.htm#contextmenu">contexto do menu</A>.<br>
 Todos os  offsets e angulos de rotacao sao analizados relativamente ao fotograma de
 referencia.<br>
 <br>
@@ -144,7 +201,7 @@ Dependendo do numero de estrelas a raiz quadrada da transformacao bilinear e usa
 <br>
 Podera consultar o seguinte sitio que me serviu de inspiracao para realizar o
 DeepSkyStacker:</span><font size="2" face="Arial"><br>
-<a target="_blank" href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=1995PASP..107.1119V&db_key=AST&high=39463d35aa24090">
+<a target="_blank" href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=1995PASP..107.1119V&amp;db_key=AST&amp;high=39463d35aa24090">
 FOCAS Automatic Catalog Matching Algorithms</a><br>
 <a target="_blank" href="http://lear.inrialpes.fr/pubs/2004/MR04/">Pattern 
 Matching with Differential Voting and Median Transformation Derivation</a></font></p>
@@ -155,8 +212,8 @@ e todos os outros fotogramas para que nao seja necessario re-introduzi-los de no
 se a informacao de registo nao tenha sido modificada.<br>
 A informacao e guardada com o nome do ficheiro, logo apos o fotograma de referencia (e na mesma
 pasta) com <i>.stackinfo.txt</i> como extensao do ficheiro.</font></p>
-<hr color="#0000FF">
-<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<hr color="#0000ff">
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000">
 <a name="FileGroups"></a>Grupos de Ficheiros<br>
 </font></b><font size="2" face="Arial"><a name="filegroup"></a>Grupos de ficheiros
 podem ser usados em multiplas noites para simplificar o processo relativo ao mesmo objecto nos ficheiros e respectiva pasta
@@ -171,13 +228,13 @@ Existem dois tipo sde grupos de ficheiros: o Grupo Principal e todos os outros g
   associado aos ficheiros Dark, Flat e Offset/Bias do <i>Grupo
   Principal</i>. <br>
   Estes sao os procedimentos do DeepSkyStacker na apresentacao do Grupo
-  Principal ( apresentacao da tela principal ).</font></li>
+  Principal ( apresentacao da tela principal ).</font></p>
   <li>
   <p align="justify"><font size="2" face="Arial">Dark, Flat ed Offset/Bias Frames do
-  Grupo Principal estao associados aos fotogramas de qualquer pasta.</font></li>
+  Grupo Principal estao associados aos fotogramas de qualquer pasta.</font></p>
   <li>
   <p align="justify"><font size="2" face="Arial">Fotogramas do Dark, Flat  Offset/Bias de outras
-  pastas podem estar associadas apenas com os fotogramas da mesma pasta.</font></li>
+  pastas podem estar associadas apenas com os fotogramas da mesma pasta.</font></p></li>
 </ul>
 <p align="justify"><font size="2" face="Arial">Pode criar o numero de ficheiros de grupo que quiser
 sabendo que cada ficheiro pertencera apenas a um grupo de ficheiros.<br>
@@ -202,13 +259,13 @@ com os Darks e Flat dessa noite, fazendo o mesmo com  os fotogramas
 e darks e flats da segunda noite. <br>
 O Offset/Bias do grupo principal serao associados aos fotogramas
 da primeira  <b>e</b> segunda noite.</font></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
 <p align="justify"><b>
-<span lang="EN-US" style="font-size: 13.5pt; font-family: Arial; color: red">
-<a name="Stacking"></a>Integracao ( empilhamento )</span><span lang="EN-US" style="font-family: Arial"><br>
+<span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="Stacking"></a>Integracao ( empilhamento )</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
 <font size="2"><a name="backgroundcalibration"></a>Calibracao </font>
 </span></b><font face="Arial"><b><font size="2">do background(tela de fundo negra do Pc)</font><br>
 </b><font size="2">Esta calibracao consiste na harmonizacao
@@ -221,11 +278,10 @@ de todos os fotogramas.</font></font></p>
 <p align="justify"><font face="Arial" size="2"> 1 - <b>Por Calibracao
 de Canal do Background</b> nesta opcao cada canal e ajustado separadamente
 para combinar com o background, criando um fotograma de referencia .</font></p>
-  </li>
   <li>
 <p align="justify"><font face="Arial" size="2"> 2 - <b>Calibracao de
-canais RGB</b> vermelho<font color="#FF0000"></font>,
-<font color="#008000">verde</font> e <font color="#0000FF">azul</font>
+canais RGB</b> vermelho<font color="#ff0000"></font>,
+<font color="#008000">verde</font> e <font color="#0000ff">azul</font>
 Cada fotograma e harmonizado com os valores do background em tres
 medianas (uma por cada canal) tomando em consideracao os valores
 do fotograma de referencia. Em cima criam-se imagens compativeis(stacking wise) esta
@@ -233,7 +289,7 @@ opcao tambem permite criar um background de cinzentos neutrais.</font></p>
   </li>
 </ul>
 <p align="justify"><font face="Arial" size="2"></font></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="flatcalibration"></a>Calibracao Automatica de Flat frames</b></font><b><br>
 </b><font size="2">Esta calibracao de flat frames corresponde a
@@ -243,7 +299,7 @@ como o master flat.<br>
 O primeiro fotograma do flat e usado como referencia. Os outros fotogramas sao
 harmonizados combinando os niveis de luminosidade e os limites dinamicos do primeiro
 fotograma do flat.</font></font></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="hotpixelsremoval"></a>Deteccao Automatica e Remocao dos pixels quentes</b></font><b><br>
 </b><font size="2">Traduz-se na subtituicao dos
@@ -252,7 +308,7 @@ pixels quentes com valores de pixels proximos que estoa bons.<br>
 <br>
 <br>
 </font></font></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="badlinesdetection"></a>Deteccao automatica e remocao </b></font><b>
 <font size="2">de artefactos</font><br>
@@ -260,7 +316,7 @@ pixels quentes com valores de pixels proximos que estoa bons.<br>
 <br>
 <br>
 Serao copiadas colunas verticais e colunas horizontais de pixels bons nas proximidades, para sobrepor na area em causa</font></font></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><font face="Arial"><font size="2">
 <b><a name="darkentropy"></a>Entropia baseada na subtraccao do Dark frame</b></font><b><br>
 </b><font size="2">Por opcao a subtraccao do dark frame pode ser optimizada no resultado
@@ -269,13 +325,13 @@ aplicando um coeficiente entre 0 e 1 no dark frame.<br>
 <br>
 </font></font><font size="2" face="Arial"><br>
 Se quiser saber mais sobre este assunto consulte o documento:<br>
-<a target="_blank" href="http://www.cs.ubc.ca/~heidrich/Papers/PICS.01.pdf">
-Entropy-Based Dark Frame Subtraction</a></font></p>
-<hr color="#0000FF" size="1">
+<A href="https://www.cs.ubc.ca/labs/imager/tr/2001/goesele2001a/goesele.2001a.pdff" target=_blank>
+Entropy-Based Dark Frame Subtraction</A></font></p>
+<hr color="#0000ff" size="1">
 <p align="justify"><b>
-<span lang="EN-US" style="font-family: Arial">Processo de
+<span lang="EN-US" style="FONT-FAMILY: Arial">Processo de
 Integracao<br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">O
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">O
 DeepSkyStacker tem o processo de integracao classico.<br>
 <b>1 - Passo<br>
 </b>Criacao do master offset atraves de todos os offset frames (pelo
@@ -321,17 +377,17 @@ semelhantes nas proximidades.<br>
 <br>
 <b>6   -   Passo<br>
 </b>Quando o
-<a style="color: blue; text-decoration: underline; text-underline: single" href="#bayerdrizzle">Bayer drizzle</a> esta activo, os canais RGB ficam normalizados
+<A style="TEXT-DECORATION: underline; COLOR: blue; text-underline: single" href="#bayerdrizzle">Bayer drizzle</A> esta activo, os canais RGB ficam normalizados
 evitando falta de informacao.<br>
 <br>
 <b>7   -   Passo<br>
 </b>A fotografia final e automaticamente guardada no ficheiro AutoSave.tif
 que e criado na pasta do primeiro fotograma.</span></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><b>
-<span lang="EN-US" style="font-family: Arial"><a name="ChannelsAlignment"></a>
+<span lang="EN-US" style="FONT-FAMILY: Arial"><a name="ChannelsAlignment"></a>
 Alinhamento do canais RGB<br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Quando
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Quando
 esta opcao esta activa o DeepSkyStacker tenta fazer o alinhamento dos tres canais (RGB) para
 reduzir os efeitos das falsas cores entre os canais, no resultado final da imagem.<br>
 Isto traduz-se na fotografia nao mostrar as estrelas mais vermelhas de um lado e mais
@@ -341,11 +397,11 @@ Cada canal e registado (as estrelas sao detectadas) e a transformacao (feita pel
 e entre o melhor e os outros dois.<br>
 Esta transformacao e agora aplicada aos outros dois canais que sao alinhados com
 o melhor canal.</span></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><b>
-<span lang="EN-US" style="font-family: Arial"><a name="reusemasters"></a>
+<span lang="EN-US" style="FONT-FAMILY: Arial"><a name="reusemasters"></a>
 Uso previo automatico para criar master files<br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">A
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">A
 existencia de um master file-fotograma mestre (dark, bias, flat e dark flat) criado da lista de ficheiros
 sao automaticamente usados sempre e quando for possivel e durante :<br>
 - A lista de ficheiros usados que os criaram, nao tenha sido modificada.<br>
@@ -362,7 +418,7 @@ automaticamente criado de novo .<br>
 <br>
 Esta caracteristica e invisivel para o utilizador que apenas ve o rapido processamento dos dados
 nao sendo necessario a criacao de um novo ficheiro master.</span></p>
-<hr color="#0000FF" size="1">
+<hr color="#0000ff" size="1">
 <p align="justify"><b><font face="Arial"><a name="customrect"></a>Usando um rectangulo
 previamente defenido</font></b><font face="Arial"><b><br>
 </b><font size="2">Voce pode optar por usar um redimencionamento no DeepSkyStacker
@@ -370,24 +426,24 @@ defenindo o tamanho da fotografia no processo final da imagem.<br>
 <br>
 Primeiro, clique na imagem (na pasta onde estao. Covem ser a 1ª imagem como referencia) para ver o tamanho dela . Depois
 selecione a area rectangular na imagem. Esta atitude vai defenir-se como padrao para
-todas as outras imagens-fotogramas. Para o fazer entre em <a href="userguide.htm#contextmenu">contexto do menu</a>.<br>
+todas as outras imagens-fotogramas. Para o fazer entre em <A href="userguide.htm#contextmenu">contexto do menu</A>.<br>
 <br>
 Agora, selecione a area rectangular na imagem que voce vai usar como area rectangular
 modelo.<br>
 Quando se iniciar o processo de integracao, o rectangulo que voce criou sera
 adoptado no processo de integracao.<br>
 <br>
-Esta opcao podera ser de grande ajuda e utilitariaquando usada com  <a href="#Drizzle">
-a opcao Drizzle </a> que duplica ou triplica ( o Drizzle ) o resultado da imagem e
+Esta opcao podera ser de grande ajuda e utilitariaquando usada com  <A href="#Drizzle">
+a opcao Drizzle </A> que duplica ou triplica ( o Drizzle ) o resultado da imagem e
 alem disso exige muito mais memória e espaco em disco durante o processo de integracao.<br>
 <br>
 De facto, quando padronizamos  o retangulo para dimensoes inferiores, da estipulada de origem,
 o DeepSkyStacker apenas usará a memoria e o espaço em disco necessarios como suficientes paras as operacoes.</font></font></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
-<p align="justify"><b><font face="Arial" color="#FF0000"><a name="stackingmethods"></a>Metodos de Integracao</font><font face="Arial" size="2"><br>
+<p align="justify"><b><font face="Arial" color="#ff0000"><a name="stackingmethods"></a>Metodos de Integracao</font><font face="Arial" size="2"><br>
 <font color="#800000">Proporcao</font><br>
 </font>
 </b><font face="Arial" size="2">Este e um metodo simples. A media de todos os pixels e
@@ -417,8 +473,9 @@ que e multiplicativo (Kappa).<br>
 rejeitar os valores dos pixels, subtituo-os por uma media de valores.</font></p>
 <p align="justify"><font face="Arial" size="2"><font color="#800000"><b>Avaliacao auto adaptativa
 da proporcao</b></font><br>
-Esta avaliacao da proporcao e adaptada do trabalho de Stetson (<a href="http://archive.eso.org/archive/hst/wfpc2_asn/3sites/WFPC2_Newsletter.pdf">see</a><a target="_blank" href="http://archive.eso.org/archive/hst/wfpc2_asn/3sites/WFPC2_Newsletter.pdf">
-Artificial Skepticism - Stetson 1989</a>).<br>
+Esta avaliacao da proporcao e adaptada do trabalho de Dr. 
+Peter B. Stetson (see&nbsp;<A href="https://ned.ipac.caltech.edu/level5/Stetson/Stetson_contents.html" > The Techniques of Least Squares and Stellar Photometry 
+with CCDs</A>&nbsp;- Peter B. Stetson 1989).<br><br>
 Este metodo calcula a consistente proporcao obtida por iteractividade analisada de cada
 pixel desde o desvio do padrao comparativamente ao desvio stand criado.<br>
 <br>
@@ -432,7 +489,7 @@ logaritmica. Usando este conhecimento, evita-se queimar o centro das nebulosas e
 Nota: este metodo exige uma intensa aplicaçao da memoria e do processador do CPU.</font></p>
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center">
-<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000">
 <a name="Drizzle"></a>Drizzle</font></b><br>
 <font face="Arial" size="2">Drizzle e um metodo desenvolvido pela NASA para o
 Hubble Space Telescope.<br>
@@ -452,10 +509,10 @@ preservando as suas caracteristicas (cor, brilho).</font></p>
     valor), projectando finalmente a imagem numa fina grelha de pixeis.<br>
     <br>
     O resultado final e uma imagem com o dobro ou triplo relativamente ao tamanho original da imagem
-    e o objecto em si ocupara apenas algumas dezenas de pixels.</font></span></td>
+    e o objecto em si ocupara apenas algumas dezenas de pixels.</font></span></p></td>
     <td width="60%">
     <p align="center">
-    <img border="0" src="../images/Drizzle.jpg" align="center" width="250" height="250"></td>
+    <IMG border=0 src="../images/Drizzle.jpg" width=250 align=center height=250></p></td>
   </tr>
   <tr>
     <td width="40%" valign="top">
@@ -470,7 +527,7 @@ preservando as suas caracteristicas (cor, brilho).</font></p>
     Drizzling e particularmente bom para alteracoes de resolucao. Resumindo, e
     muito util com pequenas distancias focais em pequenos objectos.<br>
     <br>
-    Na direita encontra-se um objecto ainda nao processado M57 (usado um telescopio de 10&quot;, F/D
+    Na direita encontra-se um objecto ainda nao processado M57 (usado um telescopio de 10", F/D
     4.72 OTA com a Canon DSLR).<br>
     <br>
     Normalmente a M57 e muito pequena, mas usando o metodo drizzle 2x e cerca de 100
@@ -478,14 +535,14 @@ preservando as suas caracteristicas (cor, brilho).</font></p>
     melhor.<br>
     <br>
     Passe o rato-mouse por cima para ver<br>
-&nbsp;&nbsp; <a onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - No Drizzle - Enlarged 4 times';" href="javascript:void(0);">
-nao processada M57 - Sem Drizzle (enlarged 4 times)</a><br>
-&nbsp;&nbsp; <a onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - 2x Drizzle - Enlarged 2 times';" href="javascript:void(0);">
-nao processada M57 - Com 2x Drizzle (enlarged 2 times)</a></span></font></td>
+&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_NoDrizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - No Drizzle - Enlarged 4 times';" href="javascript:void(0);">
+nao processada M57 - Sem Drizzle (enlarged 4 times)</A><br>
+&nbsp;&nbsp; <A onmouseover="document['DRIZZLE01'].src='../images/M57_Drizzle.jpg';;document.getElementById('DRIZZLELEGEND01').innerHTML='M57 - 2x Drizzle - Enlarged 2 times';" href="javascript:void(0);">
+nao processada M57 - Com 2x Drizzle (enlarged 2 times)</A></span></font></p></td>
     <td width="60%">
     <p align="center">
-    <img id="DRIZZLE01" name="DRIZZLE01" border="0" src="../images/M57_NoDrizzle.jpg" width="411" height="353"><br>
-    <font face="Arial" size="2"><b id="DRIZZLELEGEND01" name="DRIZZLELEGEND01">M57 - No Drizzle</b></font></td>
+    <IMG id=DRIZZLE01 border=0 name=DRIZZLE01 src="../images/M57_NoDrizzle.jpg" width=411 height=353><br>
+    <font face="Arial" size="2"><b id="DRIZZLELEGEND01" name="DRIZZLELEGEND01">M57 - No Drizzle</b></font></p></td>
   </tr>
 </table>
 <p align="justify"><font face="Arial" size="2"><b>Como e feito o drizzling </b><br>
@@ -506,13 +563,13 @@ cameras), pode fazer algum sentido usar a opcao de 3x Drizzle para alterar a
 resolucao.<br>
 <br>
 Uma forma para limitar o aumento da memoria e espaco em disco para usar a opcao
-Drizzle e usar <a href="#customrect">o rectangulo personalizado</a>.<br>
+Drizzle e usar <A href="#customrect">o rectangulo personalizado</A>.<br>
 <br>
 <b>Drizzle e Bayer Drizzle</b><br>
 Embora haja quem use as duas funcionalidades no metodo Drizzle a verdade e que nao e
 recomendavel o seu uso. O DSS emite um aviso se tentar esta dupla funcionalidade.</font></p>
   <hr size="2" width="100%" noshade color="blue" align="center">
-<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<p align="justify"><b><font face="Arial" size="4" color="#ff0000">
 <a name="cometstacking"></a>Integracao de Cometas</font></b><br>
 <font face="Arial" size="2">Os cometas sao objectos que se movem rapidamente e quando
 as imagens sao integradas em conjunto duas coisas podem acontecer:<br>
@@ -531,31 +588,34 @@ para ver os resultados)</font></p>
 <table border="0" cellspacing="1" width="100%" id="AutoNumber2">
   <tr>
     <td width="41%">
-<p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2"><br>
-<b><a onmouseover="document['COMETSTACK'].src='../images/FuzzyComet.jpg';" href="javascript:void(0);">
-Integraccao normal-stand</a></b><br>
+<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
+     ><font face="Arial" size="2"><br>
+<b><A onmouseover="document['COMETSTACK'].src='../images/FuzzyComet.jpg';" href="javascript:void(0);">
+Integraccao normal-stand</A></b><br>
 A posicao do cometa e ignorada.<br>
 O cometa esta fosco e as estrelas nao tem arrastamento (rasto).</font></p>
-<p style="margin-left: 10; margin-right: 10"><font face="Arial" size="2">
-<b><a onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);">
-Integracao do Cometa : rasto das estrelas</a></b><br>
+<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
+     ><font face="Arial" size="2">
+<b><A onmouseover="document['COMETSTACK'].src='../images/StarTrails.jpg';" href="javascript:void(0);">
+Integracao do Cometa : rasto das estrelas</A></b><br>
 Usada a posicao do cometa,a imagem esta alinhada com o cometa.<br>
 A posicao das estrelas sao usadas para compensar qualquer rotacao do movimento de campo.<br>
 <br>
-<b><a onmouseover="document['COMETSTACK'].src='../images/StarFreeze.jpg';" href="javascript:void(0);">
-Integracao de Cometas e estrelas : &quot;Captacao das primeiras estrelas.Parando-as&quot;</a></b><br>
+<b><A onmouseover="document['COMETSTACK'].src='../images/StarFreeze.jpg';" href="javascript:void(0);">
+Integracao de Cometas e estrelas : "Captacao das primeiras estrelas.Parando-as"</A></b><br>
 Usada a posicao do Cometa.<br>
 A primeira integracao e criada para extrair o cometa do background.<br>
 A segunda integracao e criada para "parar-freeze" as estrelas (o cometa e subtraido de
 fotograma registado e calibrado antes de ser integrado).<br>
 No final a imagem obtida inserindo o cometa emcima da imagem com as estrelas pontuais e sem arrastamento.</font></p>
-<p style="margin-left: 10; margin-right: 10">&nbsp;</p>
+<p style="MARGIN-LEFT: 10px; MARGIN-RIGHT: 10px" 
+     >&nbsp;</p>
     </td>
     <td width="59%" align="center">
-    <img name = "COMETSTACK" id = "COMETSTACK" border="0" src="../images/FuzzyComet.jpg" width="472" height="366"></td>
+    <IMG id = COMETSTACK border = 0 name=COMETSTACK src="../images/FuzzyComet.jpg" width=472 height=366></td>
   </tr>
 </table>
-<p align="justify"><font face="Arial" size="2">&nbsp;<br>
+<p align="justify"><font face="Arial" size="2"><br>
 <br>
 <br>
 </font><font face="Arial"><b><font size="2">O que e necessario fazer <br>
@@ -566,7 +626,7 @@ a deteccao do centro do cometa nos fotogramas.<br>
 Referencie a posicao do cometa <b>em todos os fotogramas</b>. So
 se faz uma vez.</font></p>
 <p align="justify"><font face="Arial" size="2">Para o fazer, selecione o fotograma na lista e use o
-<a href="userguide.htm#imagepreview">Modo de Edicao do Cometa</a> coloque o cometa no centro.<br>
+<A href="userguide.htm#imagepreview">Modo de Edicao do Cometa</A> coloque o cometa no centro.<br>
 Se o centro do cometa esta muito longinquo ou demasiado brilhante pode forçar o DeepSkyStacker para
 aceitar qualquer posiçao pressionando a tecla ( do teclado ) Shift posicionando
 o centro do cometa.<br>
@@ -582,7 +642,7 @@ Tem de repetir a operacao por cada imagem-fotograma. </font></p>
 <table border="1" cellspacing="1" width="100%" id="AutoNumber6" cellpadding="10">
   <tr>
   <span>
-    <td width="100%" bgcolor="#FFFF99"><font face="Arial" size="2">
+    <td width="100%" bgcolor="#ffff99"><font face="Arial" size="2">
   <span lang="EN-US">
     <b>Dica<br>
     </b> Se o tempo/data das imagens-fotogramas esta correcto ( como e utilizado nas
@@ -597,7 +657,7 @@ Tem de repetir a operacao por cada imagem-fotograma. </font></p>
 </table>
 <p align="justify"><font face="Arial" size="2">&nbsp;</font><font face="Arial"><b><font size="2">2 - Passo: Selecionar o modo de Integracao</font><br>
 </b></font><font face="Arial" size="2">Isto e feito na opcao da Aba
-<a href="userguide.htm#comettab">Cometa Aba</a> disponivel nos parametros da caixa
+<A href="userguide.htm#comettab">Cometa Aba</A> disponivel nos parametros da caixa
 de integracao.<br>
 Esta Aba estara disponivel se tiver no minimo duas imagens-fotogramas (incluindo o
 fotograma de referencia) tenham sido registadas no cometa.<br>
@@ -623,24 +683,21 @@ Em todos os casos, se fizer uma serie de imagens da mesma area sem o cometa
 (dia apos dia) melhorara subtancialmente a qualidade final da imagem.</font></p>
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 <p align="justify"><b>
-<span lang="EN-US" style="font-size: 13.5pt; font-family: Arial; color: red">
-<a name="rawdecod"></a>Processo de desenvolvimento das imagens RAW</span><span lang="EN-US" style="font-family: Arial"><br>
-</span><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Ficheiros
-RAW descodificados</span><span lang="EN-US" style="font-family: Arial"><br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Os
-ficheiros RAW criados pelas DSLRs sao descodificados usando
-<a href="http://www.cybercom.net/~dcoffin/dcraw/" target="_blank" style="color: blue; text-decoration: underline; text-underline: single">
-DCRAW</a> do Dave Coffin.<br>
-Esta lista tem o protocolo com a maior parte das DSLRs e esta constantemente a ser actualizada por Dave
-Coffin. DeepSkyStacker tambem usa a ultima versao do DCRAW e faz
-actualizacoes regulares .</span></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+<span lang="EN-US" style="FONT-SIZE: 13.5pt; FONT-FAMILY: Arial; COLOR: red">
+<a name="rawdecod"></a>Processo de desenvolvimento das imagens RAW</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Ficheiros
+RAW descodificados</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Os ficheiros 
+RAW criados pelas DSLRs sao descodificados usando&nbsp;<A href="https://www.libraw.org/" >LibRaw</A>&nbsp;Copyright ©&nbsp;2008-2019 LibRaw LLC, 
+which is based on the original DCRaw by Dave Coffin. <br>
+            DeepSkyStacker uses the latest version of LibRaw
+available at the time&nbsp;it was&nbsp;released, and will warn you if your
+camera isn't supported.</span>
   <span lang="EN-US">
-  <hr size="2" width="100%" noshade color="blue" align="center"></span>
-</div>
-<p align="justify"><b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Processo de desenvolvimento
-de ficheiros RAW</span><span lang="EN-US" style="font-family: Arial"><br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">O
+  <hr size="2" width="100%" noshade color="blue" align="center"></span></p>
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Processo de desenvolvimento
+de ficheiros RAW</span><span lang="EN-US" style="FONT-FAMILY: Arial"><br>
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">O
 ficheiro e equivalente a um negativo digital. Assim, cada ficheiro Raw precisa de
 um processo de desenvolvimento de modificacao de natureza e estrutura.<br>
 Existem dois tipos de ficheiros RAW: os que sao usados pela Bayer matrix (a maior parte)
@@ -648,33 +705,33 @@ e os que nao sao usados pela  Bayer matrix (por exemplo: os que usam a Foveon ch
 <br>
 Nas explicacoes seguintes eu considewrei os ficheiros raw criados created pela
 Bayer matrix baseados nas DSLR.</span></p>
-<div class="MsoNormal" align="center" style="text-align:center">
+<div class="MsoNormal" align="center" style="TEXT-ALIGN: center">
   <span lang="EN-US">
   <hr size="2" width="100%" noshade color="blue" align="center"></span>
 </div>
-<p align="justify"><b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">Bayer 
+<p align="justify"><b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">Bayer 
 Matrix<br>
-</span></b><span lang="EN-US" style="font-size: 10.0pt; font-family: Arial">
+</span></b><span lang="EN-US" style="FONT-SIZE: 10pt; FONT-FAMILY: Arial">
 O que e a Bayer matrix ?<br>
 Quando se usa 8 mega-pixels na DSLR, o chip CMOS ou CCD os valores sao a preto
 e branco ( estes valores em raw tem o codigo RGB implicito ) nos 8 mega-pixels que serao submetidos na Bayer matrix
 que transformara esses valores em padroes de filtros RGBG ou CYMK mediante cada pixel.<br>
 <br>
 No caso dos filtros RGBG  um quarto (1/4pixels) dos pixels serao capturados
-<span style="color:red">vermelho</span>, mais 1/4 <span style="color:blue">azul</span>
-e ficam faltando metade(1/2) <span style="color:green">verde</span>.<br>
+<span style="COLOR: red">vermelho</span>, mais 1/4 <span style="COLOR: blue">azul</span>
+e ficam faltando metade(1/2) <span style="COLOR: green">verde</span>.<br>
 Assim os 8 mega-pixels da DSLR produzem imagens com 2 milhoes de pixels vermelhos, a
 mesma quantidade de pixels azuis e 4 milhoes de pixels verdes.<br>
 <br>
-Como as Dslr criam as verdadeiras &quot;true&quot; cores das imagens ?<br>
+Como as Dslr criam as verdadeiras "true" cores das imagens ?<br>
 Interpolando os RBG de uns pixels para os outros e na falta das cores primarias copiando os valores dos pixels proximos.
 </span></p>
 
-<hr color="#0000FF">
-<p><font size="2" face="Arial"><b>Reconstrucao da cor usando a Bayer matrix - <font color="#0000FF">
+<hr color="#0000ff">
+<p><font size="2" face="Arial"><b>Reconstrucao da cor usando a Bayer matrix - <font color="#0000ff">
 Interpolacao</font></b></font></p>
 
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber1">
+<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber1">
   <tr>
     <td width="51%">
     <p class="Standard"><font size="2" face="Arial">A primeira forma de reconstruir as cores
@@ -695,16 +752,16 @@ Interpolacao</font></b></font></p>
     <br>
     Se quiser transformar os seus ficheiros RAW para ficheiros TIFF de 16 bit
     facilmente o fara usando o DeepSkyStacker.<br>
-&nbsp;</font></td>
+&nbsp;</font></p></td>
     <td width="51%">
-    <img border="0" src="../images/BayerInterpolation.jpg" width="375" height="285" align="right"></td>
+    <IMG border=0 src="../images/BayerInterpolation.jpg" width=375 align=right height=285></td>
   </tr>
 </table>
-<hr color="#0000FF">
-<p><font size="2" face="Arial"><b><a name="superpixel"></a>Reconstrucao da cor usando a Bayer matrix - <font color="#0000FF">
+<hr color="#0000ff">
+<p><font size="2" face="Arial"><b><a name="superpixel"></a>Reconstrucao da cor usando a Bayer matrix - <font color="#0000ff">
  O Super-pixel</font></b></font></p>
 
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber2">
+<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber2">
   <tr>
     <td width="51%">
     <p class="Standard"><font face="Arial" size="2">With DCRaw e possivel ter acesso
@@ -721,23 +778,23 @@ Interpolacao</font></b></font></p>
     o tamanho do resultado da imagem por 4.<br>
     <br>
     O metodo do Superpixel da muito bons resultados quando apenas algumas imagens
-   estao disponiveis para o processo de integracao.</font></td>
+   estao disponiveis para o processo de integracao.</font></p></td>
     <td width="49%">
-    <img border="0" src="../images/BayerSuperPixel.jpg" align="right" width="373" height="280"></td>
+    <IMG border=0 src="../images/BayerSuperPixel.jpg" width=373 align=right height=280></td>
   </tr>
 </table>
 <p>&nbsp;</p>
 
-<hr color="#0000FF">
+<hr color="#0000ff">
 <p><font size="2" face="Arial"><b><a name="bayerdrizzle"></a>Reconstrucao da cor
-usando o Bayer matrix - <font color="#0000FF">Bayer drizzle</font></b></font></p>
+usando o Bayer matrix - <font color="#0000ff">Bayer drizzle</font></b></font></p>
 
-<table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="87%" id="AutoNumber3">
+<table border="0" cellpadding="0" cellspacing="0" style="BORDER-COLLAPSE: collapse" bordercolor="#111111" width="87%" id="AutoNumber3">
   <tr>
     <td width="51%">
     <p class="Standard"><font size="2" face="Arial">Este ultimo metodo sugerido
     por Dave Coffin usa a propriedade do processo de integracao para
-    avaliar os verdadeiros valores do pixel RGB induvidualmente, resultado do uso &quot;natural&quot;
+    avaliar os verdadeiros valores do pixel RGB induvidualmente, resultado do uso "natural"
     da derivada existente entre cada pixel.<br>
     <br>
     Quando um grande numero de imagens-fotogramas estao disponiveis e com os seus sub-pixels
@@ -749,9 +806,9 @@ usando o Bayer matrix - <font color="#0000FF">Bayer drizzle</font></b></font></p
     <br>
     O metodo do Bayer Drizzle da-nos excelentes resultados quando usado com um grande numero disponiveis de
     imagens-fotogramas e com uma guiagem precisa, nao oscilando para mais de um
-    pixel (o que e o normal dos casos).</font></td>
+    pixel (o que e o normal dos casos).</font></p></td>
     <td width="49%">
-    <img border="0" src="../images/BayerDrizzle.jpg" width="375" height="287" align="right"></td>
+    <IMG border=0 src="../images/BayerDrizzle.jpg" width=375 align=right height=287></td>
   </tr>
 </table>
 <p>&nbsp;</p>
