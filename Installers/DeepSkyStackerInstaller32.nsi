@@ -19,6 +19,7 @@ SetCompressor /SOLID lzma
 !define DSS_HELP_EN        "DeepSkyStacker Help.chm"
 !define DSS_HELP_DE        "DeepSkyStacker Hilfe.chm"
 !define DSS_HELP_PT        "DeepSkyStacker Ajuda.chm"
+!define DSS_HELP_NL        "DeepSkyStacker Hulp.chm"
 
 !define DSS_RUNTIME_MFC    "mfc140.dll"
 !define DSS_RUNTIME_CPP    "msvcp140.dll"
@@ -26,8 +27,8 @@ SetCompressor /SOLID lzma
 !define DSS_RUNTIME_OMP    "vcomp140.dll"
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
-!define DSS_VERSION        "4.2.2"                                  # For control panel
-!define DSS_VERSION_SUFFIX ""                                # For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION        "4.2.3"                                  # For control panel
+!define DSS_VERSION_SUFFIX " Beta 1"                                # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
@@ -138,6 +139,7 @@ Section
   File "..\Help\${DSS_HELP_EN}"
   File "..\Help\${DSS_HELP_DE}"
   File "..\Help\${DSS_HELP_PT}"
+  File "..\Help\${DSS_HELP_NL}"
   File "RunTime32\${DSS_RUNTIME_MFC}"
   File "RunTime32\${DSS_RUNTIME_CPP}"
   File "RunTime32\${DSS_RUNTIME_C}"
@@ -205,6 +207,7 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSS_HELP_EN}"
   Delete "$INSTDIR\${DSS_HELP_DE}"
   Delete "$INSTDIR\${DSS_HELP_PT}"
+  Delete "$INSTDIR\${DSS_HELP_NL}"
   Delete "$INSTDIR\${DSS_RUNTIME_MFC}"
   Delete "$INSTDIR\${DSS_RUNTIME_CPP}"
   Delete "$INSTDIR\${DSS_RUNTIME_C}"
