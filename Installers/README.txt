@@ -16,7 +16,7 @@ The main changes in this release are:
 
 7. Apply White Balance scaling factors from the RAW/DDP settings dialogue before we scale the image data rather than after.  This should prevent the scaling from causing burn-out images which it could do previously.
 
-8. Fix for issue #43 - the stacking method "Average" wasn't always reported in the recap html file.
+8. Fix for issue #42 - the stacking method "Average" wasn't always reported in the recap html file.
 
 
 
