@@ -11,8 +11,9 @@
 
 IMPLEMENT_DYNAMIC(CLogTab, CDialog)
 
-CLogTab::CLogTab(CWnd* pParent /*=NULL*/)
-	: CDialog(CLogTab::IDD, pParent)
+CLogTab::CLogTab(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+	: CDialog(CLogTab::IDD, pParent),
+	m_bDarkMode(bDarkMode)
 {
 }
 
@@ -34,7 +35,6 @@ void CLogTab::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CLogTab, CDialog)
 	ON_WM_SIZE()
-
 END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
@@ -55,6 +55,9 @@ BOOL CLogTab::OnInitDialog()
 	m_Log.SetWordWrapMode(WBF_WORDWRAP);
 
 	m_ControlPos.AddControl(IDC_LOG, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
+
+	if(m_bDarkMode)
+		m_Log.SetBackgroundColor(false, COLORREF(RGB(80, 80, 80)));
 
 	return TRUE;  
 }
@@ -104,6 +107,3 @@ void CLogTab::AddToLog(LPCTSTR szText, BOOL bAddDateTime, BOOL bBold, BOOL bItal
 	m_Log.SetSelectionCharFormat(cf);
 	m_Log.ReplaceSel(szText);
 };
-
-/* ------------------------------------------------------------------- */
-

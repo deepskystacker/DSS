@@ -67,6 +67,13 @@ void CImageListTab::OnSize(UINT nType, int cx, int cy)
 
 /* ------------------------------------------------------------------- */
 
+void CImageListTab::SetToDarkMode()
+{
+	m_ImageList.SetBkColor(COLORREF(RGB(80, 80, 80)));
+}
+
+/* ------------------------------------------------------------------- */
+
 void CImageListTab::InitList()
 {
 	CString				strColumn;

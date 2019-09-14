@@ -16,13 +16,32 @@
 
 const	DWORD			WM_FOLDERCHANGE	= WM_USER+100;
 
+#define TEXT_DARK RGB(200, 200, 200)
+#define TEXT_NORMAL RGB(255, 255, 255)
+#define GDI_TEXT_COLOUR m_bDarkMode ? Color(0xff000000 | TEXT_DARK) : Color(0xff000000 | TEXT_NORMAL)
+#define TEXT_COLOUR m_bDarkMode ? TEXT_DARK : TEXT_NORMAL
+
+#define LOG_GREEN_TEXT_DARK RGB(0, 64, 0)
+#define LOG_GREEN_TEXT_NORMAL RGB(0, 128, 0)
+#define LOG_GREEN_TEXT m_bDarkMode ? LOG_GREEN_TEXT_DARK : LOG_GREEN_TEXT_NORMAL
+
+#define LOG_RED_TEXT_DARK RGB(64, 0, 0)
+#define LOG_RED_TEXT_NORMAL RGB(128, 0, 0)
+#define LOG_RED_TEXT m_bDarkMode ? LOG_RED_TEXT_DARK : LOG_RED_TEXT_NORMAL
+
+#define LOG_YELLOW_TEXT_DARK RGB(110, 110, 0)
+#define LOG_YELLOW_TEXT_NORMAL RGB(128, 128, 0)
+#define LOG_YELLOW_TEXT m_bDarkMode ? LOG_YELLOW_TEXT_DARK : LOG_YELLOW_TEXT_NORMAL
+
+
 /* ------------------------------------------------------------------- */
 // CMainBoard dialog
 
 IMPLEMENT_DYNAMIC(CMainBoard, CDialog)
 
-CMainBoard::CMainBoard(CWnd* pParent /*=NULL*/)
-	: CDialog(CMainBoard::IDD, pParent)
+CMainBoard::CMainBoard(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+	: CDialog(CMainBoard::IDD, pParent),
+	m_bDarkMode(bDarkMode)
 {
 	m_ulSHRegister = 0;
 	m_bProgressing = FALSE;
@@ -101,6 +120,7 @@ void CMainBoard::DrawGradientRect(CDC * pDC, const CRect & rc, COLORREF crColor1
 	#endif // NOGDIPLUS
 };
 
+// Draws the background grad behind the top buttons and tabs.
 void CMainBoard::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 {
 //	DrawGradientRect(pDC, rc, RGB(224, 244, 252), RGB(138, 185, 242));
@@ -108,9 +128,8 @@ void CMainBoard::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 	#ifndef NOGDIPLUS
 	Graphics *		pGraphics;
 	Brush *			pBrush;
-	COLORREF		crColor1 = RGB(70, 70, 70);
-	COLORREF		crColor2 = RGB(230, 230, 230);
-			
+	COLORREF		crColor1 = m_bDarkMode ? RGB(10, 10, 10) : RGB(70, 70, 70);
+	COLORREF		crColor2 = m_bDarkMode ? RGB(80, 80, 80) : RGB(230, 230, 230);
 	
 	pGraphics = new Graphics(pDC->GetSafeHdc());
 	pBrush = new LinearGradientBrush(PointF(rc.right, rc.top), 
@@ -128,19 +147,19 @@ void CMainBoard::DrawGradientFrameRect(CDC * pDC, LPCTSTR szTitle, const CRect &
 {
 	CRect			rcTop;
 	CRect			rcBottom;
-	COLORREF		crColor1 = RGB(65, 153, 247);
-	COLORREF		crColor2 = RGB(129, 13, 201);
+	COLORREF		crColor1 = m_bDarkMode ? RGB(22, 51, 82) : RGB(65, 153, 247);
+	COLORREF		crColor2 = m_bDarkMode ? RGB(43, 4, 67) : RGB(129, 13, 201);
 	double			fAlpha = bShadow ? 0.8 : 1.0;
 
 	if (bShadow)
 	{
-		crColor1 = RGB(127, 127, 127);
-		crColor2 = RGB(127, 127, 127);
+		crColor1 = m_bDarkMode ? RGB(22, 51, 82) : RGB(127, 127, 127);
+		crColor2 = m_bDarkMode ? RGB(22, 51, 82) : RGB(127, 127, 127);
 	}
 	else if (!bActive)
 	{
-		crColor1 = RGB(65, 153, 247);
-		crColor2 = RGB(129, 13, 201);
+		crColor1 = m_bDarkMode ? RGB(22, 51, 82) : RGB(65, 153, 247);
+		crColor2 = m_bDarkMode ? RGB(22, 51, 82) : RGB(129, 13, 201);
 	};
 
 	rcTop = rc;
@@ -196,7 +215,7 @@ void CMainBoard::DrawGradientFrameRect(CDC * pDC, LPCTSTR szTitle, const CRect &
 		StringFormat		format;
 		PointF				pf(rc.left+6, rc.top+2);
 		CString				strText = szTitle;
-		SolidBrush			brush(Color(255, 255, 255));
+		SolidBrush			brush(GDI_TEXT_COLOUR);
 
 		format.SetAlignment(StringAlignmentNear);
 		format.SetLineAlignment(StringAlignmentNear);
@@ -245,14 +264,14 @@ void CMainBoard::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 
 void CMainBoard::DrawTab(CDC * pDC, LPCTSTR szText, const CRect & rcTab, BOOL bActive)
 {
-	COLORREF		crColor1 = RGB(200, 200, 200);
-	COLORREF		crColor2 = RGB(255, 255, 255);
+	COLORREF		crColor1 = m_bDarkMode ? RGB(60, 60, 60) : RGB(200, 200, 200);
+	COLORREF		crColor2 = m_bDarkMode ? RGB(80, 80, 80) : RGB(255, 255, 255);
 	CRect			rc = rcTab;
 
 	if (bActive)
 	{
-		crColor1 = RGB(65, 153, 247);
-		crColor2 = RGB(129, 13, 201);
+		crColor1 = m_bDarkMode ? RGB(125, 125, 125) : RGB(65, 153, 247);
+		crColor2 = m_bDarkMode ? RGB(80, 80, 80) : RGB(129, 13, 201);
 	};
 
 	rc.left	 += 3;
@@ -299,7 +318,7 @@ void CMainBoard::DrawTab(CDC * pDC, LPCTSTR szText, const CRect & rcTab, BOOL bA
 		if (bActive)
 		{
 			pFont = new Font(FontFamily::GenericSansSerif(), 9, FontStyleBold);
-			brush.SetColor(Color(255, 255, 255));
+			brush.SetColor(GDI_TEXT_COLOUR);
 		}
 		else
 		{
@@ -323,6 +342,8 @@ void CMainBoard::DrawTab(CDC * pDC, LPCTSTR szText, const CRect & rcTab, BOOL bA
 
 void CMainBoard::DrawProgress(CDC * pDC)
 {
+	const int nScale = (m_bDarkMode ? 2 : 1);
+
 	if (m_bProgressing)
 	{
 		CRect					rcProgress;
@@ -345,7 +366,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		fPosition = rcProgress.Width()*fPercent;
 		
 		pGraphics = new Graphics(pDC->GetSafeHdc());
-		pPen = new Pen(Color(255.0, 255.0, 255.0), 2.0);
+		pPen = new Pen(Color(255.0 / nScale, 255.0 / nScale, 255.0 / nScale), 2.0);
 		
 		pGraphics->SetSmoothingMode(SmoothingModeHighQuality);
 
@@ -361,7 +382,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pOutlinePath->AddEllipse(RectF(rcProgress.right-10, rcProgress.bottom-10, 10, 10));
 		pOutlinePath->Outline(NULL, (REAL)0.01);
 
-		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0, 255.0, 255.0));
+		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0 / nScale, 255.0 / nScale, 255.0 / nScale));
 		pGraphics->FillPath(pBrush, pOutlinePath);
 		delete pBrush;
 
@@ -374,15 +395,15 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pProgressPath->AddEllipse(RectF(rcProgress.left, rcProgress.bottom-10, 10, 10));
 		pProgressPath->Outline(NULL, (REAL)0.01);
 
-		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0, 255.0, 255.0));
+		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0 / nScale, 255.0 / nScale, 255.0 / nScale));
 		pGraphics->FillPath(pBrush, pOutlinePath);
 		delete pBrush;
 
 
 		pBrush = new LinearGradientBrush(PointF(rcProgress.left, (rcProgress.top+rcProgress.bottom)/2.0), 
 			               PointF(rcProgress.left+fPosition, (rcProgress.top+rcProgress.bottom)/2.0), 
-						   Color(0.0, 128.0, 0.0), 
-						   Color(0.0, 255.0, 0.0));
+						   Color(0.0, 128.0 / nScale, 0.0),
+						   Color(0.0, 255.0 / nScale, 0.0));
 		pGraphics->FillPath(pBrush, pProgressPath);
 		delete pBrush;
 
@@ -426,7 +447,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		Font 				font(FontFamily::GenericSansSerif(), 8, FontStyleRegular);
 		StringFormat		format;
 		PointF				pf(rcStats.left, rcStats.top);
-		SolidBrush			brush(Color(255, 255, 255));
+		SolidBrush			brush(Color(255 / nScale, 255 / nScale, 255 / nScale));
 
 		format.SetAlignment(StringAlignmentNear);
 		format.SetLineAlignment(StringAlignmentNear);
@@ -473,17 +494,18 @@ void	CMainBoard::DrawMonitorButton(CDC * pDC)
 		Color			colors[4];
 		INT				nColors = 4;
 
-		colors[0].SetValue(Color::MakeARGB(255*0.8, 0, 255, 0));
-		colors[1].SetValue(Color::MakeARGB(255*0.9, 255, 255, 255));
-		colors[2].SetValue(Color::MakeARGB(255*0.8, 0, 255, 0));
-		colors[3].SetValue(Color::MakeARGB(255*0.9, 255, 255, 255));
+		const int nShade = m_bDarkMode ? 128 : 255;
+		colors[0].SetValue(Color::MakeARGB(255*0.8, 0, nShade, 0));
+		colors[1].SetValue(Color::MakeARGB(255*0.9, nShade, nShade, nShade));
+		colors[2].SetValue(Color::MakeARGB(255*0.8, 0, nShade, 0));
+		colors[3].SetValue(Color::MakeARGB(255*0.9, nShade, nShade, nShade));
 		PathGradientBrush	brush(&path);
-		brush.SetCenterColor(Color(255*0.80, 255, 255, 255));
+		brush.SetCenterColor(Color(255*0.80, nShade, nShade, nShade));
 		brush.SetSurroundColors(colors, &nColors);
 
 		graphics.FillPath(&brush, &path);
 
-		pen.SetColor(Color(0, 255.0, 0));
+		pen.SetColor(Color(0, nShade, 0));
 		pen.SetWidth((float)1.7);
 		graphics.DrawPath(&pen, &path);
 	}
@@ -492,8 +514,8 @@ void	CMainBoard::DrawMonitorButton(CDC * pDC)
 		// Blue inside triangle
 
 		// With white translucent background
-		Pen					pen(Color(0, 220, 255), 2.0);
-		SolidBrush			brush(Color(255*0.8, 255.0, 255.0, 255.0));
+		Pen					pen(m_bDarkMode ? Color(0, 73, 85) : Color(0, 220, 255), 2.0);
+		SolidBrush			brush(m_bDarkMode ? Color(255*0.8, 80.0, 80.0, 80.0) : Color(255 * 0.8, 255.0, 255.0, 255.0));
 
 		graphics.FillPath(&brush, &path);
 		graphics.DrawPath(&pen, &path);
@@ -503,7 +525,7 @@ void	CMainBoard::DrawMonitorButton(CDC * pDC)
 		Font 				font(FontFamily::GenericSansSerif(), 8, FontStyleRegular);
 		StringFormat		format;
 		PointF				pf((rcButton.left+rcButton.right)/2, rcButton.bottom);
-		SolidBrush			brush(Color(255, 255, 255));
+		SolidBrush			brush(GDI_TEXT_COLOUR);
 
 		format.SetAlignment(StringAlignmentCenter);
 		format.SetLineAlignment(StringAlignmentNear);
@@ -545,14 +567,15 @@ void	CMainBoard::DrawStackButton(CDC * pDC)
 		Color			colors[1];
 		INT				nColors = 1;
 
-		colors[0].SetValue(Color::MakeARGB(255*0.8, 255, 0, 0));
+		const int nShade = m_bDarkMode ? 128 : 255;
+		colors[0].SetValue(Color::MakeARGB(255*0.8, nShade, 0, 0));
 		PathGradientBrush	brush(&path);
-		brush.SetCenterColor(Color(255*0.80, 255, 240, 240));
+		brush.SetCenterColor(Color(255*0.80, nShade, nShade, nShade));
 		brush.SetSurroundColors(colors, &nColors);
 
 		graphics.FillPath(&brush, &path);
 
-		pen.SetColor(Color(255.0, 0.0, 0));
+		pen.SetColor(Color(nShade, 0.0, 0));
 		pen.SetWidth((float)1.7);
 		graphics.DrawPath(&pen, &path);
 	}
@@ -564,11 +587,11 @@ void	CMainBoard::DrawStackButton(CDC * pDC)
 		Color			colors[1];
 		INT				nColors = 1;
 
-		colors[0].SetValue(Color::MakeARGB(255*0.8, 255, 255, 255));
+		colors[0].SetValue(m_bDarkMode ? Color::MakeARGB(255*0.8, 20, 20, 20) : Color::MakeARGB(255 * 0.8, 255, 255, 255));
 
-		Pen					pen(Color(0, 220, 255), 2.0);
+		Pen					pen(m_bDarkMode ? Color(0, 73, 85) : Color(0, 220, 255), 2.0);
 		PathGradientBrush	brush(&path);
-		brush.SetCenterColor(Color(255*0.7, 255.0, 255.0, 255.0));
+		brush.SetCenterColor(m_bDarkMode ? Color(255*0.7, 80.0, 80.0, 80.0) : Color(255 * 0.7, 255.0, 255.0, 255.0));
 		brush.SetSurroundColors(colors, &nColors);
 
 		graphics.FillPath(&brush, &path);
@@ -579,7 +602,7 @@ void	CMainBoard::DrawStackButton(CDC * pDC)
 		Font 				font(FontFamily::GenericSansSerif(), 8, FontStyleRegular);
 		StringFormat		format;
 		PointF				pf((rcButton.left+rcButton.right)/2, rcButton.bottom);
-		SolidBrush			brush(Color(255, 255, 255));
+		SolidBrush			brush(GDI_TEXT_COLOUR);
 
 		format.SetAlignment(StringAlignmentCenter);
 		format.SetLineAlignment(StringAlignmentNear);
@@ -621,14 +644,15 @@ void	CMainBoard::DrawStopButton(CDC * pDC)
 		Color			colors[1];
 		INT				nColors = 1;
 
-		colors[0].SetValue(Color::MakeARGB(255*0.8, 255, 0, 0));
+		const int nShade = m_bDarkMode ? 128 : 255;
+		colors[0].SetValue(Color::MakeARGB(255*0.8, nShade, 0, 0));
 		PathGradientBrush	brush(&path);
-		brush.SetCenterColor(Color(255*0.80, 255, 240, 240));
+		brush.SetCenterColor(Color(255*0.80, nShade, nShade, nShade));
 		brush.SetSurroundColors(colors, &nColors);
 
 		graphics.FillPath(&brush, &path);
 
-		pen.SetColor(Color(255.0, 0.0, 0));
+		pen.SetColor(Color(nShade, 0.0, 0));
 		pen.SetWidth((float)1.7);
 		graphics.DrawPath(&pen, &path);
 	}
@@ -640,11 +664,11 @@ void	CMainBoard::DrawStopButton(CDC * pDC)
 		Color			colors[1];
 		INT				nColors = 1;
 
-		colors[0].SetValue(Color::MakeARGB(255*0.8, 255, 255, 255));
+		colors[0].SetValue(m_bDarkMode ? Color::MakeARGB(255*0.8, 80, 80, 80) : Color::MakeARGB(255 * 0.8, 255, 255, 255));
 
-		Pen					pen(Color(0, 220, 255), 2.0);
+		Pen					pen(m_bDarkMode ? Color(0, 73, 85) : Color(0, 220, 255), 2.0);
 		PathGradientBrush	brush(&path);
-		brush.SetCenterColor(Color(255*0.7, 255.0, 255.0, 255.0));
+		brush.SetCenterColor(m_bDarkMode ? Color(255*0.7, 80, 80, 80) : Color(255 * 0.7, 255, 255, 255));
 		brush.SetSurroundColors(colors, &nColors);
 
 		graphics.FillPath(&brush, &path);
@@ -655,7 +679,7 @@ void	CMainBoard::DrawStopButton(CDC * pDC)
 		Font 				font(FontFamily::GenericSansSerif(), 8, FontStyleRegular);
 		StringFormat		format;
 		PointF				pf((rcButton.left+rcButton.right)/2, rcButton.bottom);
-		SolidBrush			brush(Color(255, 255, 255));
+		SolidBrush			brush(GDI_TEXT_COLOUR);
 
 		format.SetAlignment(StringAlignmentCenter);
 		format.SetLineAlignment(StringAlignmentNear);
@@ -745,13 +769,13 @@ BOOL CMainBoard::OnEraseBkgnd(CDC* pDC)
 
 /* ------------------------------------------------------------------- */
 
-static void InitLabel(CLabel & label, BOOL bMain = FALSE)
+static void InitLabel(CLabel & label, BOOL bMain = FALSE, bool bDarkMode = false)
 {
 	label.SetLink(TRUE, TRUE);
 	label.SetTransparent(TRUE);
 	label.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
 	label.SetFont3D(FALSE);
-	label.SetTextColor(RGB(255, 255, 255));
+	label.SetTextColor(bDarkMode ? TEXT_DARK : TEXT_NORMAL);
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));
 
 	if (bMain)
@@ -981,7 +1005,7 @@ BOOL CMainBoard::OnInitDialog()
 		m_MonitoredFolder.SetWindowText(strFolder);
 	};
 
-	InitLabel(m_MonitoredFolder);
+	InitLabel(m_MonitoredFolder, FALSE, true);
 
 	m_ControlPos.SetParent(this);
 	m_ControlPos.AddControl(IDC_MONITORINGRECT, CP_RESIZE_HORIZONTAL);
@@ -1145,11 +1169,11 @@ LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)
 		std::sort(m_vAllFiles.begin(), m_vAllFiles.end());
 
 		strNewFiles.Format(IDS_LOG_NEWFILESFOUND, vNewFiles.size());
-		AddToLog(strNewFiles, TRUE, FALSE, FALSE, RGB(0, 128, 0));
+		AddToLog(strNewFiles, TRUE, FALSE, FALSE, LOG_GREEN_TEXT);
 		for (LONG i = 0;i<vNewFiles.size();i++)
 		{
 			strNewFiles.Format(IDS_LOG_NEWFILE, (LPCTSTR)vNewFiles[i]);
-			AddToLog(strNewFiles, FALSE, FALSE, FALSE, RGB(0, 128, 0));
+			AddToLog(strNewFiles, FALSE, FALSE, FALSE, LOG_GREEN_TEXT);
 			m_LiveEngine.AddFileToProcess(vNewFiles[i]);
 		};
 	};
@@ -1245,14 +1269,14 @@ void CMainBoard::OnMonitor()
 			CString			strText;
 
 			strText.Format(IDS_LOG_STARTMONITORING, (LPCTSTR)strFolder);
-			AddToLog(strText, TRUE, TRUE, FALSE, RGB(0, 127, 0));
+			AddToLog(strText, TRUE, TRUE, FALSE, LOG_GREEN_TEXT);
 		}
 		/*else
 		{
 			CString			strText;
 
 			strText.Format(IDS_LOG_ERRORSTARTMONITORING, (LPCTSTR)strFolder);
-			AddToLog(strText, TRUE, TRUE, FALSE, RGB(0, 127, 0));
+			AddToLog(strText, TRUE, TRUE, FALSE, LOG_GREEN_TEXT);
 		};*/
 
 		if (bUseExisting)
@@ -1277,7 +1301,7 @@ void CMainBoard::OnStop()
 		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
 		strText.Format(IDS_LOG_STOPMONITORING, (LPCTSTR)strFolder);
-		AddToLog(strText, TRUE, TRUE, FALSE, RGB(128, 0, 0));
+		AddToLog(strText, TRUE, TRUE, FALSE, LOG_RED_TEXT);
 
 		if (m_ulSHRegister)
 			SHChangeNotifyDeregister(m_ulSHRegister);
@@ -1301,7 +1325,7 @@ void CMainBoard::OnStack()
 			strText.Format(IDS_LOG_STARTSTACKING, (LPCTSTR)strFolder);
 		else
 			strText.Format(IDS_LOG_STOPSTACKING, (LPCTSTR)strFolder);
-		AddToLog(strText, TRUE, TRUE, FALSE, RGB(128, 128, 0));
+		AddToLog(strText, TRUE, TRUE, FALSE, LOG_YELLOW_TEXT);
 
 	};
 	m_LiveEngine.EnableRegistering(m_bMonitoring);

@@ -53,10 +53,10 @@ BEGIN
 END
 
 IDD_LOG DIALOGEX 0, 0, 336, 166
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_LOG,"RichEdit20A",ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,0,335,166
+    CONTROL         "",IDC_LOG,"RichEdit20A",ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_HSCROLL,0,0,335,166
 END
 
 IDD_IMAGEVIEW DIALOGEX 0, 0, 335, 166
@@ -323,6 +323,17 @@ IDB_HDRDOWN             BITMAP                  "..\\Tools\\hdrdown.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_LOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
@@ -547,9 +558,9 @@ BEGIN
     IDS_COLUMN_INFOS        "Infos"
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposure"
-	IDS_COLUMN_APERTURE		"Aperture"
     IDS_COLUMN_STARS        "#Stars"
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
+    IDS_COLUMN_APERTURE     "Aperture"
 END
 
 STRINGTABLE

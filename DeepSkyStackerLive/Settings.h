@@ -27,7 +27,7 @@ private :
 	BOOL				m_bDirty;
 
 public:
-	CSettingsTab(CWnd* pParent = NULL);   // standard constructor
+	CSettingsTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
 	virtual ~CSettingsTab();
 
 
@@ -52,6 +52,9 @@ protected :
 	afx_msg void OnWarningFileFolder( NMHDR * pNotifyStruct, LRESULT * result );
 	afx_msg void OnStackedOutputFolder( NMHDR * pNotifyStruct, LRESULT * result );
 	afx_msg void OnEmailAddress( NMHDR * pNotifyStruct, LRESULT * result );
+	
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
 private :
 	void	UpdateFromRegistry();
@@ -105,6 +108,8 @@ private :
 	CButton				m_Process_FITS;
 	CButton				m_Process_TIFF;
 	CButton				m_Process_Others;
+
+	BOOL m_bDarkMode;
 
 public :
 	BOOL	Close();

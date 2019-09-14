@@ -58,7 +58,8 @@ COLORREF pSeriesColorTable[] = { RGB(255,0,0), RGB(0,150,0), RGB(0,0,255), RGB(2
 /////////////////////////////////////////////////////////////////////////////
 // CChartCtrl
 
-CChartCtrl::CChartCtrl()
+CChartCtrl::CChartCtrl(bool bDarkMode /*=false*/) :
+	m_bDarkMode(bDarkMode)
 {
 	RegisterWindowClass();
 
