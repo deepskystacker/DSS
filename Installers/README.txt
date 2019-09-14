@@ -12,13 +12,9 @@ The main changes in this release are:
 
 5. Update help files and add a new Dutch version of the help.
 
-6. Provide the option to perform NO White Balance processing at all (requested by Ivo Jager for StarTools).
+6. Issue #83: Provide the option to perform NO White Balance processing at all (requested by Ivo Jager for StarTools).
 
-7. Apply White Balance scaling factors from the RAW/DDP settings dialogue before we scale the image data rather than after.  This should prevent the scaling from causing burn-out images which it could do previously.
-
-8. Fix for issue #42 - the stacking method "Average" wasn't always reported in the recap html file.
-
-
+7. Fix for issue #42 - the stacking method "Average" wasn't always reported in the recap html file.
 
 Welcome to DeepSkyStacker 4.2.2
 
