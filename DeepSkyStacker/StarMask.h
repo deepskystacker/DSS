@@ -25,6 +25,8 @@ public :
 	{
 	};
 
+    virtual ~CStarMaskFunction() { }
+
 	virtual void	SetRadius(double fRadius)
 	{
 		m_fRadius = fRadius;

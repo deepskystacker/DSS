@@ -2840,7 +2840,7 @@ public:
 
 	}
 
-	~CColorBitmap()
+	virtual ~CColorBitmap()
 	{
 
 	}

@@ -26,7 +26,7 @@ class CListBase
 {
   public:
    CListBase();
-  ~CListBase();
+   virtual ~CListBase();
 
   void         ColorSortColumn(BOOL bEnable = TRUE, int nSortColumn = 0);
   virtual void DrawSmallIcon  (CDC* pDC, LVITEM* pItem, LPRECT pRect);
