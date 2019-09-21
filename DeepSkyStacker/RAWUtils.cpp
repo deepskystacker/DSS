@@ -37,14 +37,14 @@ public :
 	BOOL		m_bSuperPixel;
 
 private :
-	void	CopyFrom(const CRAWSettings & rs)
+	void	CopyFrom(const CRAWSettings & rs) noexcept
 	{
 		m_bRawBayer = rs.m_bRawBayer;
 		m_bSuperPixel = rs.m_bSuperPixel;
 	};
 
 public :
-	CRAWSettings()
+	CRAWSettings() noexcept
 	{
 		m_bRawBayer		= FALSE;
 		m_bSuperPixel	= FALSE;
@@ -199,9 +199,9 @@ private:
 							m_fBlueScale;
 
 private:
-	void	AdjustColor(double & fColor, double fAdjust)
+	void	AdjustColor(double & fColor, double fAdjust) noexcept
 	{
-		double		fResult = (double)fColor * fAdjust;
+		const double	fResult = fColor * fAdjust;
 
 		fColor = min(static_cast<double>(MAXWORD - 1), fResult);
 	};
@@ -383,34 +383,34 @@ public:
 			free(m_pBuffer);
 	};
 
-	void	SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale)
+	void	SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale) noexcept
 	{
 		m_fRedScale = fRedScale;
 		m_fGreenScale = fGreenScale;
 		m_fBlueScale = fBlueScale;
 	};
 
-	void	SetCFAType(CFATYPE CFAType)
+	void	SetCFAType(CFATYPE CFAType) noexcept
 	{
 		m_CFAType = CFAType;
 	};
 
-	void	setGrey(BOOL grey)
+	void	setGrey(BOOL grey) noexcept
 	{
 		m_bGrey = grey;
 	};
 
-	void	setWidth(LONG width)
+	void	setWidth(LONG width) noexcept
 	{
 		m_lWidth = width;
 	};
 
-	void	setHeight(LONG height)
+	void	setHeight(LONG height) noexcept
 	{
 		m_lHeight = height;
 	};
 
-	void	setMaxColors(LONG maxcolors)
+	void	setMaxColors(LONG maxcolors) noexcept
 	{
 		m_lMaxColors = maxcolors;
 	};
@@ -422,7 +422,7 @@ public:
 		// Do initialisation not done by ctor
 		//
 		m_bStarted = TRUE;
-		m_pBuffer = NULL;
+		m_pBuffer = nullptr;
 		m_dwBufferSize = 0;
 		m_dwBufferReadPos = 0;
 		m_dwBufferWritePos = 0;
@@ -440,7 +440,7 @@ public:
 		// Initialise the progress dialog
 		//
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, m_pBitmap->Height());
+			m_pProgress->Start2(nullptr, m_pBitmap->Height());
 
 		m_pBitmap->GetIterator(&m_PixelIt);
 
@@ -459,16 +459,16 @@ public:
 		AddToBuffer(strText.GetBuffer(10000), nResult);
 
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, m_dwPos);
+			m_pProgress->Progress2(nullptr, m_dwPos);
 
 		return nResult;
 	};
 
 	size_t Write(const void *buffer, size_t size, size_t count)
 	{
-		AddToBuffer(buffer, (DWORD)size*(DWORD)count);
+		AddToBuffer(buffer, static_cast<DWORD>(size*count));
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, m_dwPos);
+			m_pProgress->Progress2(nullptr, m_dwPos);
 
 		return count;
 	};
@@ -477,28 +477,28 @@ public:
 class DSSLibRaw : public LibRaw
 {
 public:
-	DSSLibRaw() {};
-	virtual ~DSSLibRaw() {};
-	void setBitMapFiller(BitMapFiller * pFiller)
+	DSSLibRaw() noexcept {};
+	~DSSLibRaw() {};
+	void setBitMapFiller(BitMapFiller * pFiller) noexcept
 	{
 		pDSSBitMapFiller = pFiller;
 	};
 
 
 	int			dcraw_ppm_tiff_writer(const char *filename);
-	inline unsigned		get_fuji_layout()
+	inline unsigned		get_fuji_layout() noexcept
 	{
 		return libraw_internal_data.unpacker_data.fuji_layout;
 	};
 
-	void adjust_bl() { this->LibRaw::adjust_bl(); }
-	virtual int is_phaseone_compressed() { return this->LibRaw::is_phaseone_compressed(); }
+	void adjust_bl() noexcept { this->LibRaw::adjust_bl(); }
+	virtual int is_phaseone_compressed() noexcept { return this->LibRaw::is_phaseone_compressed(); }
 
 protected:
 	void        write_ppm_tiff();
 
 private:
-	BitMapFiller * pDSSBitMapFiller = NULL;
+	BitMapFiller * pDSSBitMapFiller = nullptr;
 
 };
 
@@ -538,6 +538,7 @@ public :
 		m_bColorRAW	  = FALSE;
 		m_CFAType	  = CFATYPE_NONE;
 		m_DateTime.wYear = 0;
+		m_lHeight = m_lWidth = 0;
 
 		int ret = 0;
 		if ((ret = rawProcessor.open_file(m_strFileName)) != LIBRAW_SUCCESS)
@@ -568,32 +569,32 @@ public :
 
 	void checkCameraSupport(const CString& strModel);
 
-	LONG	GetISOSpeed()
+	LONG	GetISOSpeed() noexcept
 	{
 		return m_lISOSpeed;
 	};
 
-	double	GetExposureTime()
+	double	GetExposureTime() noexcept
 	{
 		return m_fExposureTime;
 	};
 
-	double	getAperture()
+	double	getAperture() noexcept
 	{
 		return m_fAperture;
 	};
 
-	LONG	Width()
+	LONG	Width() noexcept
 	{
 		return m_lWidth;
 	};
 
-	LONG	Height()
+	LONG	Height() noexcept
 	{
 		return m_lHeight;
 	};
 
-	BOOL	IsColorRAW()
+	BOOL	IsColorRAW() noexcept
 	{
 		return m_bColorRAW;
 	};
@@ -722,15 +723,15 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	// The camera type hasn't already been checked, so search the LibRaw supported camera list
 	//
 	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
-		[](const std::string &lhs, const std::string &rhs)
+		[](const std::string &lhs, const std::string &rhs) noexcept
 	{
 		const char* pclhs = lhs.c_str();
 		const char* pcrhs = rhs.c_str();
 		size_t len = strlen(pclhs);
-		size_t szrhs = strlen(pcrhs);
+		const size_t szrhs = strlen(pcrhs);
 		// choose the shorter length
 		len = (len > szrhs) ? szrhs : len;
-		int result = _strnicmp(pclhs, pcrhs, len);
+		const int result = _strnicmp(pclhs, pcrhs, len);
 		return (result < 0) ? true : false;
 	}
 		);
@@ -762,7 +763,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL		bResult = TRUE;
-	BitMapFiller *		pFiller = NULL;
+	BitMapFiller *		pFiller = nullptr;
 	int			ret = 0;
 
 
@@ -799,7 +800,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	//BOOL		bBilinear;
 	//BOOL		bAHD;
 	DWORD		bBlackPointTo0 = 0;
-	DWORD		bValue;
+	DWORD		bValue = 0;
 
 	do	// Do once!
 	{
@@ -884,10 +885,10 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		//
 		// Get our endian-ness so we can swap bytes if needed (always on Windows).
 		//
-		BOOL littleEndian = htons(0x55aa) != 0x55aa;
+		const bool littleEndian = htons(0x55aa) != 0x55aa;
 
 		unsigned short *raw_image = nullptr;
-		void * buffer = NULL;		// Used for debugging only (memory window)
+		void * buffer = nullptr;		// Used for debugging only (memory window)
 
 		if (!m_bColorRAW)
 		{
@@ -906,11 +907,11 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			//    excluding the frame (Top margin, Left Margin).
 			//
 			raw_image =
-				(unsigned short *)calloc(S.height*S.width, sizeof(unsigned short));
+				(unsigned short *)calloc(static_cast<size_t>(S.height)*static_cast<size_t>(S.width), sizeof(unsigned short));
 			ZASSERT(nullptr != raw_image);
 
-			int fuji_width = rawProcessor.is_fuji_rotated();
-			unsigned fuji_layout = rawProcessor.get_fuji_layout();
+			const int fuji_width = rawProcessor.is_fuji_rotated();
+			const unsigned fuji_layout = rawProcessor.get_fuji_layout();
 			buffer = raw_image;		// only for memory window debugging
 
 			if (fuji_width)   // Are we processing a Fuji Super-CCD image?
@@ -1024,7 +1025,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				for (i = 0; i < 4; i++)
 					cblk[i] = C.cblack[i];
 
-				int size = S.height * S.width;
+				const int size = S.height * S.width;
 				int dmax = 0;	// Maximum value of pixels in entire image.
 				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
 				if (C.cblack[4] && C.cblack[5])
@@ -1160,9 +1161,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				for (int col = 0; col < S.width; col++)
 				{
 					// What colour will this pixel become
-					int colour = rawProcessor.COLOR(row, col);
+					const int colour = rawProcessor.COLOR(row, col);
 
-					register float val = scale_mul[colour] *
+					const register float val = scale_mul[colour] *
 						(float)(RAW(row, col));
 					RAW(row, col) = max(0, min(int(val), 65535));
 				}
