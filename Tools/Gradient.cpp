@@ -37,9 +37,9 @@ CGradient::CGradient()
 
 CGradient::CGradient(CGradient const& src)
 {
-	m_StartPeg.colour = m_StartPeg.colour;
-	m_EndPeg.colour = m_EndPeg.colour;
-	m_Background.colour = m_Background.colour;
+	m_StartPeg.colour = src.m_StartPeg.colour;
+	m_EndPeg.colour = src.m_EndPeg.colour;
+	m_Background.colour = src.m_Background.colour;
 	m_InterpolationMethod = src.m_InterpolationMethod;
 	m_UseBackground = src.m_UseBackground;
 	m_Quantization = src.m_Quantization;
@@ -56,9 +56,9 @@ CGradient& CGradient::operator =(CGradient const& src)
 {
 	pegs = src.pegs;
 
-	m_StartPeg.colour = m_StartPeg.colour;
-	m_EndPeg.colour = m_EndPeg.colour;
-	m_Background.colour = m_Background.colour;
+	m_StartPeg.colour = src.m_StartPeg.colour;
+	m_EndPeg.colour = src.m_EndPeg.colour;
+	m_Background.colour = src.m_Background.colour;
 	m_InterpolationMethod = src.m_InterpolationMethod;
 	m_UseBackground = src.m_UseBackground;
 	m_Quantization = src.m_Quantization;
