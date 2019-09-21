@@ -504,7 +504,7 @@ Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 
 				graphics.DrawString(CComBSTR(strText), -1, &font, pt, &format, &brush);
 
-				if (rcScreen.Width() > 10 && rcScreen.Width() > 10)
+				if (rcScreen.Width() > 10 && rcScreen.Height() > 10)
 				{
 					// Draw a small cross in the center
 					Pen			pen(Color(255, 0, 0), 1.0);
