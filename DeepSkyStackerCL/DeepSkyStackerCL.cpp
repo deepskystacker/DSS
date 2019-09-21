@@ -36,7 +36,7 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 
 	for (i = 1;i<argc;i++)
 	{
-		vCommandLine.push_back(CString(argv[i]));
+		vCommandLine.emplace_back(argv[i]);
 	};
 
 	// At least 2 arguments (registering and/or stacking + filename)

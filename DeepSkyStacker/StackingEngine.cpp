@@ -2481,7 +2481,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 									m_lNrStacked++;
 
 									if (m_bCreateCometImage)
-										m_vCometShifts.push_back(CImageCometShift((LONG)m_vCometShifts.size(), PixTransform.m_fXCometShift, PixTransform.m_fYCometShift));
+										m_vCometShifts.emplace_back((LONG)m_vCometShifts.size(), PixTransform.m_fXCometShift, PixTransform.m_fYCometShift);
 
 									if (m_pProgress)
 									{

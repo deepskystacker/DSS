@@ -102,7 +102,7 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bC
 			{
 				if ((fPosition>m_fHotThreshold) || // Hot pixel
 					(-fPosition>m_fColdThreshold)) // Cold pixel
-					m_vExcludedPixels.push_back(CExcludedPixel(i, j));
+					m_vExcludedPixels.emplace_back(i, j);
 			};
 		};
 	};

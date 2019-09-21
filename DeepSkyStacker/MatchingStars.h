@@ -372,12 +372,12 @@ public :
 
 	void	AddReferenceStar(double fX, double fY)
 	{
-		m_vRefStars.push_back(CPointExt(fX, fY));
+		m_vRefStars.emplace_back(fX, fY);
 	};
 
 	void	AddTargetedStar(double fX, double fY)
 	{
-		m_vTgtStars.push_back(CPointExt(fX, fY));
+		m_vTgtStars.emplace_back(fX, fY);
 	};
 
 	BOOL	IsReferenceSet()

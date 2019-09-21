@@ -469,14 +469,14 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 							// Search around the point until intensity is divided by 2
 							// STARMAXSIZE pixels radius max search
 							vPixels.resize(0);
-							vPixels.push_back(CPixelDirection(0, -1));
-							vPixels.push_back(CPixelDirection(1, 0));
-							vPixels.push_back(CPixelDirection(0, 1));
-							vPixels.push_back(CPixelDirection(-1, 0));
-							vPixels.push_back(CPixelDirection(1, -1));
-							vPixels.push_back(CPixelDirection(1, 1));
-							vPixels.push_back(CPixelDirection(-1, 1));
-							vPixels.push_back(CPixelDirection(-1, -1));
+							vPixels.emplace_back(0, -1);
+							vPixels.emplace_back(1, 0);
+							vPixels.emplace_back(0, 1);
+							vPixels.emplace_back(-1, 0);
+							vPixels.emplace_back(1, -1);
+							vPixels.emplace_back(1, 1);
+							vPixels.emplace_back(-1, 1);
+							vPixels.emplace_back(-1, -1);
 
 							BOOL			bBrighterPixel = FALSE;
 							BOOL			bMainOk = TRUE;

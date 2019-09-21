@@ -804,14 +804,14 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, LONG x, LONG y, std::v
 		bool					bBloomed = true;
 		std::vector<CPointExt>	vTests;
 
-		vTests.push_back(CPointExt(x-1, y-1));
-		vTests.push_back(CPointExt(x-1, y-0));
-		vTests.push_back(CPointExt(x-1, y+1));
-		vTests.push_back(CPointExt(x-0, y-1));
-		vTests.push_back(CPointExt(x-0, y+1));
-		vTests.push_back(CPointExt(x+1, y-1));
-		vTests.push_back(CPointExt(x+1, y-0));
-		vTests.push_back(CPointExt(x+1, y+1));
+		vTests.emplace_back(x-1, y-1);
+		vTests.emplace_back(x-1, y-0);
+		vTests.emplace_back(x-1, y+1);
+		vTests.emplace_back(x-0, y-1);
+		vTests.emplace_back(x-0, y+1);
+		vTests.emplace_back(x+1, y-1);
+		vTests.emplace_back(x+1, y-0);
+		vTests.emplace_back(x+1, y+1);
 
 		for (LONG i = 0;i<vTests.size() && bBloomed;i++)
 		{
@@ -824,7 +824,7 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, LONG x, LONG y, std::v
 		if (bBloomed)
 		{
 			pMask->SetPixel(x, y, 255.0);
-			vBloomed.push_back(CPoint(x, y));
+			vBloomed.emplace_back(x, y);
 		};
 	};
 };
@@ -941,7 +941,7 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 			for (LONG i = lMinX;i<=lMaxX;i++)
 			{
 				pMask->SetPixel(i, j, 255.0);
-				vBloomed.push_back(CPoint(i, j));
+				vBloomed.emplace_back(i, j);
 			};
 
 			// Try to expand one pixel to the bottom
@@ -954,7 +954,7 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 					if (IsBottomEdge(pBitmap, i, j))
 					{
 						pMask->SetPixel(i, j+1, 255.0);
-						vBloomed.push_back(CPoint(i, j+1));
+						vBloomed.emplace_back(i, j+1);
 						bExtraHeight=true;
 					};
 				};
@@ -978,7 +978,7 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 		if (IsTopEdge(pBitmap, x, lTopY))
 		{
 			pMask->SetPixel(x, lTopY-1, 255.0);
-			vBloomed.push_back(CPoint(x, lTopY-1));
+			vBloomed.emplace_back(x, lTopY-1);
 			lBloomHeight++;
 			lTopY--;
 		};
@@ -1291,12 +1291,12 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 				if (bDone)
 				{
 					pBitmap->SetPixel(i, j, fValue);
-					vProcessed.push_back(CPoint(i, j));
+					vProcessed.emplace_back(i, j);
 				}
 				else
 				{
 					// the coordinates so that they can be processed later on
-					vUnprocessed.push_back(CPoint(i, j));
+					vUnprocessed.emplace_back(i, j);
 				};
 			};
 		};

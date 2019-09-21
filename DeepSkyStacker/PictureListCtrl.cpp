@@ -1058,7 +1058,7 @@ void CPictureListCtrl::CheckBest(double fPercent)
 	{
 		if (!m_vFiles[i].m_bRemoved &&
 			m_vFiles[i].IsLightFrame())
-			vLightFrames.push_back(CScoredLightFrame(i, m_vFiles[i].m_fOverallQuality));
+			vLightFrames.emplace_back(i, m_vFiles[i].m_fOverallQuality);
 	};
 
 	lLast = (LONG)(fPercent * vLightFrames.size()/100.0);

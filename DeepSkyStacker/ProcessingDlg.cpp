@@ -1060,9 +1060,9 @@ void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGr
 	std::vector<CColorOrder>	vColors;
 	LONG						lLastHeight = 0;
 
-	vColors.push_back(CColorOrder(RGB(255,0,0), lNrReds));
-	vColors.push_back(CColorOrder(RGB(0,255,0), lNrGreens));
-	vColors.push_back(CColorOrder(RGB(0,0,255), lNrBlues));
+	vColors.emplace_back(RGB(255,0,0), lNrReds);
+	vColors.emplace_back(RGB(0,255,0), lNrGreens);
+	vColors.emplace_back(RGB(0,0,255), lNrBlues);
 
 	std::sort(vColors.begin(), vColors.end());
 
@@ -1133,7 +1133,7 @@ void CProcessingDlg::DrawBezierCurve(Graphics * pGraphics, LONG lWidth, LONG lHe
 		j = BezierAdjust.GetValue(i);
 		pt.x = i * lWidth;
 		pt.y = lHeight - j * lHeight;
-		vPoints.push_back(PointF(pt.x, pt.y));
+		vPoints.emplace_back(pt.x, pt.y);
 	};
 
 	pGraphics->DrawLines(&BlackPen, &vPoints[0], (LONG)vPoints.size());
@@ -1207,19 +1207,19 @@ void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histo
 
 			fY = exp(-(fX - fAverage[0])*(fX - fAverage[0])/(fStdDev[0]*fStdDev[0]*2))*lWidth/lNrValues;
 			fY = lHeight - fY*lHeight;
-			vReds.push_back(PointF(fX, fY));
+			vReds.emplace_back(fX, fY);
 
 			bShow = bShow && (fX < 1000 && fY < 1000);
 
 			fY = exp(-(fX - fAverage[1])*(fX - fAverage[1])/(fStdDev[1]*fStdDev[1]*2))*lWidth/lNrValues;
 			fY = lHeight - fY*lHeight;
-			vGreens.push_back(PointF(fX, fY));
+			vGreens.emplace_back(fX, fY);
 
 			bShow = bShow && (fX < 1000 && fY < 1000);
 
 			fY = exp(-(fX - fAverage[2])*(fX - fAverage[2])/(fStdDev[2]*fStdDev[2]*2))*lWidth/lNrValues;
 			fY = lHeight - fY*lHeight;
-			vBlues.push_back(PointF(fX, fY));
+			vBlues.emplace_back(fX, fY);
 
 			bShow = bShow && (fX < 1000 && fY < 1000);
 		};

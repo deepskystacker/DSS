@@ -86,7 +86,7 @@ void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDIS
 			fDistance = Distance(pt1, pt2);
 			fMaxDistance = max(fDistance, fMaxDistance);
 
-			vStarDist.push_back(CStarDist(i, j, fDistance));
+			vStarDist.emplace_back(i, j, fDistance);
 		};
 	};
 

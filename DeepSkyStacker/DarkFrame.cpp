@@ -1072,7 +1072,7 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 
 				Filter.ComputeMedianAt(X, Y, fMedian, BayerColor);
 				pBitmap->GetPixel(X, Y, fHot);
-				vHots.push_back(CHotCheckPixel(fHot, fMedian, Region));
+				vHots.emplace_back(fHot, fMedian, Region);
 			}
 			else
 			{
@@ -1082,7 +1082,7 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 				Filter.ComputeMedianAt(X, Y, fMedian);
 				pBitmap->GetPixel(X, Y, fHot);
 
-				vHots.push_back(CHotCheckPixel(fHot, fMedian, Region));
+				vHots.emplace_back(fHot, fMedian, Region);
 			};
 		}
 		else
@@ -1093,8 +1093,7 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 			Filter.ComputeMedianAt(X, Y, fMedianRed, fMedianGreen, fMedianBlue);
 			pBitmap->GetPixel(X, Y, fHotRed, fHotGreen, fHotBlue);
 
-			vHots.push_back(CHotCheckPixel((fHotRed+fHotGreen+fHotBlue)/3.0,
-										   (fMedianRed+fMedianGreen+fMedianBlue)/3.0, Region));
+			vHots.emplace_back((fHotRed+fHotGreen+fHotBlue)/3.0, (fMedianRed+fMedianGreen+fMedianBlue)/3.0, Region);
 		};
 	};
 
