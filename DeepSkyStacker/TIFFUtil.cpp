@@ -1,6 +1,7 @@
 #include <stdafx.h>
 #include "TIFFUtil.h"
 #include "Registry.h"
+#include "zlib.h"
 
 #define NRCUSTOMTIFFTAGS		12
 
@@ -547,6 +548,8 @@ BOOL CTIFFWriter::Open()
 
 			if (nrframes)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_NRFRAMES, nrframes);
+
+            TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED); // TODO: make it configurable?
 		}
 		else
 		{
@@ -912,6 +915,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 		if (fAperture)
 			tiff.SetAperture(fAperture);
 		tiff.SetFormatAndCompression(TIFFFormat, TIFFCompression);
+
 		if (tiff.Open())
 		{
 			bResult = tiff.Write();
