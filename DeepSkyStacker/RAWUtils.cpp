@@ -444,7 +444,6 @@ public:
 
 		m_pBitmap->GetIterator(&m_PixelIt);
 
-
 		return 0;
 	};
 
@@ -484,7 +483,6 @@ public:
 		pDSSBitMapFiller = pFiller;
 	};
 
-
 	int			dcraw_ppm_tiff_writer(const char *filename);
 	inline unsigned		get_fuji_layout() noexcept
 	{
@@ -507,7 +505,6 @@ private:
 // Thread DSSLibRaw	rawProcessor;
 DSSLibRaw rawProcessor;
 
-
 /* ------------------------------------------------------------------- */
 
 //static CString			g_strInputFileName;
@@ -529,9 +526,29 @@ private :
 	BOOL			m_bColorRAW;
 	CFATYPE			m_CFAType;
 	SYSTEMTIME		m_DateTime;
+    bool            m_isRawFile;
+
+#define P1		rawProcessor.imgdata.idata
+#define P2		rawProcessor.imgdata.other
+
+#define mnLens rawProcessor.imgdata.lens.makernotes
+#define exifLens rawProcessor.imgdata.lens
+#define ShootingInfo rawProcessor.imgdata.shootinginfo
+
+#define S		rawProcessor.imgdata.sizes
+#define O		rawProcessor.imgdata.params
+#define C		rawProcessor.imgdata.color
+#define T		rawProcessor.imgdata.thumbnail
+
+#define Canon	rawProcessor.imgdata.makernotes.canon
+#define Fuji	rawProcessor.imgdata.makernotes.fuji
+#define Oly		rawProcessor.imgdata.makernotes.olympus
+
+#define RawData	rawProcessor.imgdata.rawdata
+#define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 public :
-	CRawDecod(LPCTSTR szFile)
+	CRawDecod(LPCTSTR szFile) noexcept
 	{
 		ZFUNCTRACE_RUNTIME();
 		m_strFileName = szFile;
@@ -540,16 +557,60 @@ public :
 		m_DateTime.wYear = 0;
 		m_lHeight = m_lWidth = 0;
 
-		int ret = 0;
-		if ((ret = rawProcessor.open_file(m_strFileName)) != LIBRAW_SUCCESS)
-		{
-			CString			strText;
+        m_isRawFile = rawProcessor.open_file(m_strFileName) == LIBRAW_SUCCESS;
 
-			strText.Format(_T("Cannot open %s: %s"), m_strFileName, libraw_strerror(ret));
+        if (m_isRawFile)
+        {
+            m_strMake = P1.make;
+            m_strModel = P1.model;
+            m_lHeight = S.iheight;
+            m_lWidth = S.iwidth;
 
-			throw std::runtime_error(strText);
-		}
+            m_lISOSpeed = P2.iso_speed;
+            if (_finite(P2.shutter))
+                m_fExposureTime = P2.shutter;
+            else
+                m_fExposureTime = 0;
 
+            if (_finite(P2.aperture))
+                m_fAperture = P2.aperture;
+            else
+                m_fAperture = 0.0;
+
+            // Retrieve the Date/Time
+            memset(&m_DateTime, 0, sizeof(m_DateTime));
+            tm *		pdatetime;
+
+            if (P2.timestamp)
+            {
+                pdatetime = localtime(&(P2.timestamp));
+                if (pdatetime)
+                {
+                    m_DateTime.wDayOfWeek = pdatetime->tm_wday;
+                    m_DateTime.wDay = pdatetime->tm_mday;
+                    m_DateTime.wMonth = pdatetime->tm_mon + 1;
+                    m_DateTime.wYear = pdatetime->tm_year + 1900;
+                    m_DateTime.wHour = pdatetime->tm_hour;
+                    m_DateTime.wMinute = pdatetime->tm_min;
+                    m_DateTime.wSecond = pdatetime->tm_sec;
+                };
+            };
+
+            m_bColorRAW = P1.is_foveon || !(P1.filters);
+            if (1 == P1.filters || 9 == P1.filters)
+            {
+                //
+                // This is somewhat of a lie as the only the Foveon sensors
+                // create full color raw files.  However by telling this lie
+                // we can use libraw to decode and interpolate Fujitsu X-Trans
+                // and Leaf Catchlight images
+                //
+                if (1 == P1.filters) ZTRACE_RUNTIME("Image is from a Leaf Catchlight");
+                else ZTRACE_RUNTIME("Image is from a Fujitsu X-Trans Sensor");
+                m_bColorRAW = TRUE;
+            }
+            m_CFAType = GetCurrentCFAType();
+        };
 	};
 
 	virtual ~CRawDecod()
@@ -558,7 +619,7 @@ public :
 		rawProcessor.recycle();
 	};
 
-	BOOL	IsRawFile();
+	BOOL	IsRawFile() const;
 	BOOL	LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = NULL, BOOL bThumb = FALSE);
 
 	BOOL	GetModel(CString & strModel)
@@ -598,25 +659,6 @@ public :
 	{
 		return m_bColorRAW;
 	};
-
-#define P1		rawProcessor.imgdata.idata
-#define P2		rawProcessor.imgdata.other
-
-#define mnLens rawProcessor.imgdata.lens.makernotes
-#define exifLens rawProcessor.imgdata.lens
-#define ShootingInfo rawProcessor.imgdata.shootinginfo
-
-#define S		rawProcessor.imgdata.sizes
-#define O		rawProcessor.imgdata.params
-#define C		rawProcessor.imgdata.color
-#define T		rawProcessor.imgdata.thumbnail
-
-#define Canon	rawProcessor.imgdata.makernotes.canon
-#define Fuji	rawProcessor.imgdata.makernotes.fuji
-#define Oly		rawProcessor.imgdata.makernotes.olympus
-
-#define RawData	rawProcessor.imgdata.rawdata
-#define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 	CFATYPE	GetCFAType()
 	{
@@ -670,7 +712,6 @@ public :
 	};
 
 	/* ------------------------------------------------------------------- */
-
 
 	SYSTEMTIME GetDateTime()
 	{
@@ -765,7 +806,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	BOOL		bResult = TRUE;
 	BitMapFiller *		pFiller = nullptr;
 	int			ret = 0;
-
 
 	pBitmap->Init(m_lWidth, m_lHeight);
 	pBitmap->SetISOSpeed(m_lISOSpeed);
@@ -1240,71 +1280,14 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 /* ------------------------------------------------------------------- */
 
-BOOL CRawDecod::IsRawFile()
+BOOL CRawDecod::IsRawFile() const
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL		bResult = TRUE;
-	int			ret = 0;
-
-	if (bResult)
-	{
-		m_strMake	= P1.make;
-		m_strModel	= P1.model;
-		m_lHeight	= S.iheight;
-		m_lWidth	= S.iwidth;
-
-		m_lISOSpeed = P2.iso_speed;
-		if (_finite(P2.shutter))
-			m_fExposureTime = P2.shutter;
-		else
-			m_fExposureTime = 0;
-
-		if (_finite(P2.aperture))
-			m_fAperture = P2.aperture;
-		else
-			m_fAperture = 0.0;
-
-		// Retrieve the Date/Time
-		memset(&m_DateTime, 0, sizeof(m_DateTime));
-		tm *		pdatetime;
-
-		if (P2.timestamp)
-		{
-			pdatetime = localtime(&(P2.timestamp));
-			if (pdatetime)
-			{
-				m_DateTime.wDayOfWeek = pdatetime->tm_wday;
-				m_DateTime.wDay = pdatetime->tm_mday;
-				m_DateTime.wMonth = pdatetime->tm_mon+1;
-				m_DateTime.wYear  = pdatetime->tm_year+1900;
-				m_DateTime.wHour  = pdatetime->tm_hour;
-				m_DateTime.wMinute= pdatetime->tm_min;
-				m_DateTime.wSecond= pdatetime->tm_sec;
-			};
-		};
-
-		m_bColorRAW	= P1.is_foveon || !(P1.filters);
-		if (1 == P1.filters || 9 == P1.filters)
-		{
-			//
-			// This is somewhat of a lie as the only the Foveon sensors
-			// create full color raw files.  However by telling this lie
-			// we can use libraw to decode and interpolate Fujitsu X-Trans
-			// and Leaf Catchlight images
-			//
-			if (1 == P1.filters) ZTRACE_RUNTIME("Image is from a Leaf Catchlight");
-			else ZTRACE_RUNTIME("Image is from a Fujitsu X-Trans Sensor");
-			m_bColorRAW = TRUE;
-		}
-		m_CFAType	= GetCurrentCFAType();
-	};
-
-	return bResult;
+    return m_isRawFile;
 };
 
 /* ------------------------------------------------------------------- */
-
 
 /* ------------------------------------------------------------------- */
 
@@ -1313,21 +1296,13 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
-	try
-	{
-		CRawDecod		dcr(szFileName);
+    CRawDecod		dcr(szFileName);
 
-		bResult = dcr.IsRawFile();
+    bResult = dcr.IsRawFile();
 
-		if (bResult)
-			dcr.GetModel(strModel);
+    if (bResult)
+        dcr.GetModel(strModel);
 
-	}
-	catch (std::exception& e)
-	{
-		e;
-		bResult = FALSE;
-	}
 	return bResult;
 };
 
@@ -1349,7 +1324,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	if ((strExt == ".TIF") || (strExt == ".TIFF"))
 		bIsTiff = TRUE;
 
-	if (!bIsTiff) try
+	if (!bIsTiff)
 	{
 		CRawDecod		dcr(szFileName);
 
@@ -1375,11 +1350,6 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			BitmapInfo.m_DateTime		 = dcr.GetDateTime();
 		};
 	}
-	catch (std::exception& e)
-	{
-		e;
-		bResult = FALSE;
-	}
 
 	return bResult;
 };
@@ -1391,55 +1361,47 @@ BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
-	try
-	{
-		CRawDecod		dcr(szFileName);
+	CRawDecod		dcr(szFileName);
 
-		if (dcr.IsRawFile() && ppBitmap)
-		{
-			BOOL						bColorRAW;
-			CSmartPtr<CMemoryBitmap>	pBitmap;
+    if (dcr.IsRawFile() && ppBitmap)
+    {
+        BOOL						bColorRAW;
+        CSmartPtr<CMemoryBitmap>	pBitmap;
 
-			bColorRAW = dcr.IsColorRAW();
+        bColorRAW = dcr.IsColorRAW();
 
-			if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
-			{
-				pBitmap.Attach(new C16BitGrayBitmap);
-				ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-			}
-			else
-			{
-				pBitmap.Attach(new C48BitColorBitmap);
-				ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-			};
+        if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
+        {
+            pBitmap.Attach(new C16BitGrayBitmap);
+            ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
+        }
+        else
+        {
+            pBitmap.Attach(new C48BitColorBitmap);
+            ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
+        };
 
-			bResult = dcr.LoadRawFile(pBitmap, pProgress);
+        bResult = dcr.LoadRawFile(pBitmap, pProgress);
 
-			if (bResult)
-			{
-				C16BitGrayBitmap *	pGrayBitmap;
+        if (bResult)
+        {
+            C16BitGrayBitmap *	pGrayBitmap;
 
-				pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pBitmap.m_p);
-				if (pGrayBitmap)
-				{
-					if (IsSuperPixels())
-						pGrayBitmap->UseSuperPixels(TRUE);
-					else if (IsRawBayer())
-						pGrayBitmap->UseRawBayer(TRUE);
-					else if (IsRawBilinear())
-						pGrayBitmap->UseBilinear(TRUE);
-					else if (IsRawAHD())
-						pGrayBitmap->UseAHD(TRUE);
-				};
-				pBitmap.CopyTo(ppBitmap);
-			};
-		};
-	}
-	catch (std::exception& e)
-	{
-		e;
-		bResult = FALSE;
-	}
+            pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pBitmap.m_p);
+            if (pGrayBitmap)
+            {
+                if (IsSuperPixels())
+                    pGrayBitmap->UseSuperPixels(TRUE);
+                else if (IsRawBayer())
+                    pGrayBitmap->UseRawBayer(TRUE);
+                else if (IsRawBilinear())
+                    pGrayBitmap->UseBilinear(TRUE);
+                else if (IsRawAHD())
+                    pGrayBitmap->UseAHD(TRUE);
+            };
+            pBitmap.CopyTo(ppBitmap);
+        };
+    }
 
 	return bResult;
 };
