@@ -265,6 +265,7 @@ void CPostCalibration::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 
 void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 {
+	ZFUNCTRACE_RUNTIME();
 	// Load the reference light frame
 	if (m_pStackingTasks)
 	{
@@ -358,6 +359,7 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 
 void CPostCalibration::OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result )
 {
+	ZFUNCTRACE_RUNTIME();
 	CPoint				pt;
 	CMenu				menu;
 	CMenu *				popup;
