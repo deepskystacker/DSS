@@ -610,7 +610,6 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 	ClearText();
 	if (m_pStackingTasks && m_pStackingTasks->GetNrLightFrames())
 	{
-		CString					strText;
 		LONG					lPosition;
 
 		InsertHeader();

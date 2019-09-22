@@ -152,7 +152,6 @@ public :
 	CString					m_strFileName;
 	CDSSProgress *			m_pProgress;
 	CString					m_strDescription;
-	FITSFORMAT				m_Format;
 
 private :
 	BOOL	WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);

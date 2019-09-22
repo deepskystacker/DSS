@@ -1059,7 +1059,6 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 	BOOL					bResult = FALSE;
 	LONG					i = 0,
 							j = 0;
-	BOOL					bEnd = FALSE;
 
 	// Compute patterns
 	if (!m_vRefStarDistances.size())
@@ -1089,7 +1088,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 	InitVotingGrid(vVotingPairs);
 	i = j = 0;
 
-	while (i<m_vTgtStarDistances.size() && j<m_vRefStarDistances.size() && !bEnd)
+	while (i<m_vTgtStarDistances.size() && j<m_vRefStarDistances.size())
 	{
 		if (fabs(m_vTgtStarDistances[m_vTgtStarIndices[i]].m_fDistance-m_vRefStarDistances[m_vRefStarIndices[j]].m_fDistance) <= MAXSTARDISTANCEDELTA)
 		{

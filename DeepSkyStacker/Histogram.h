@@ -437,10 +437,6 @@ public :
 
 	void	FromText(LPCTSTR szParameters)
 	{
-		CString				strRedParameters;
-		CString				strGreenParameters;
-		CString				strBlueParameters;
-
 		ExtractParameters(szParameters, "RedAdjust", m_RedAdjust);
 		ExtractParameters(szParameters, "GreenAdjust", m_GreenAdjust);
 		ExtractParameters(szParameters, "BlueAdjust", m_BlueAdjust);

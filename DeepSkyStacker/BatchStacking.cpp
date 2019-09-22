@@ -145,8 +145,6 @@ void CBatchStacking::OnBnClickedAddLists()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -202,7 +200,6 @@ void CBatchStacking::UpdateListBoxWidth()
 
 	for (LONG i = 0;i<m_Lists.GetCount();i++)
 	{
-		CRect			rcItem;
 		CString			strText;
 
 		m_Lists.GetText(i, strText);

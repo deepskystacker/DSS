@@ -36,9 +36,6 @@ BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 	*/
 
 	CBitmapInfo			bmpInfo;
-	CString				strSizes;
-	CString				strDepth;
-	CString				strInfos;
 
 	bResult = GetPictureInfo(szFile ,bmpInfo);
 

@@ -165,7 +165,6 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 
 		CString				strSizes;
 		CString				strDepth;
-		CString				strInfos;
 
 		strSizes.Format(_T("%ld x %ld"), bmpInfo.m_lWidth, bmpInfo.m_lHeight);
 		m_ImageList.SetItemText(nItem, COLUMN_SIZES, (LPCTSTR)strSizes);

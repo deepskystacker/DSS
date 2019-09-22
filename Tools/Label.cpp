@@ -386,8 +386,6 @@ void CLabel::Draw(CDC * pDC)
 				rc.OffsetRect(1,1);
 
 			pDCMem->DrawText(strText,rc,dwFlags);
-			m_3dType;
-
 		}
 	}
 

@@ -557,9 +557,8 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 	};
 
 	fRatio = 1.0;
-	BOOL					bOk = FALSE;
 
-	while ((fRatio>0.1) && !bOk)
+	while (fRatio>0.1)
 	{
 		VALUEPAIRITERATOR		it;
 		CDynamicStats			RedStats,
@@ -593,8 +592,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 		fRatio -= 0.1;
 	};
 
-	if (!bOk)
-		fRatio = 0.1;
+    fRatio = 0.1;
 
 	if (pProgress)
 		pProgress->End2();
@@ -1135,7 +1133,6 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	CRect			rc;
 	LONG			lWidth	= pBitmap->RealWidth(),
 					lHeight = pBitmap->RealHeight();
 	double			m_fMedianColdest = -1;

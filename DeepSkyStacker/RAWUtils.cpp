@@ -841,7 +841,6 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 	const		int maxargs = 50;
 	CWorkspace	workspace;
-	CString		strInterpolation;
 	double		fBrightness = 1.0;
 	double		fRedScale = 1.0;
 	double		fBlueScale = 1.0;

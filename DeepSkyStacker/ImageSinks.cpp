@@ -723,7 +723,6 @@ BOOL	CEditStarsSink::Image_OnMouseLeave()
 BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 {
 	BOOL			bResult = FALSE;
-	CPoint			point(lX, lY);
 
 	{
 		if (m_Action != ESA_NONE)

@@ -625,8 +625,6 @@ void CStackingDlg::OnAdddarks()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -704,8 +702,6 @@ void CStackingDlg::OnAddDarkFlats()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -783,8 +779,6 @@ void CStackingDlg::OnAddFlats()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 
@@ -863,8 +857,6 @@ void CStackingDlg::OnAddOffsets()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -936,8 +928,6 @@ void CStackingDlg::OnAddpictures()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -1852,7 +1842,6 @@ BOOL CStackingDlg::SaveOnClose()
 void CStackingDlg::RegisterCheckedImage()
 {
 	CDSSProgressDlg			dlg;
-	CString					strText;
 	CRegisterSettings		dlgSettings;
 	BOOL					bContinue = TRUE;
 

@@ -297,7 +297,7 @@ public :
 			PROCESSPARAMITERATOR	it;
 			LONG					lIndice = m_lCurrent+1;
 
-			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--);
+			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--)
 				m_lParams.erase(it, m_lParams.end());
 		}
 		else if (m_lCurrent == -1)

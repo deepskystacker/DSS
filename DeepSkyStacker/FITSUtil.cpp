@@ -1233,7 +1233,7 @@ void	CFITSWriter::WriteAllKeys()
 				if (ei.m_strComment.GetLength())
 					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
 				else
-					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
+					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue);
 
 				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);

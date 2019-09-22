@@ -1006,7 +1006,6 @@ BOOL	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		{
 			TCHAR			szTime[200];
 			TCHAR			szDate[200];
-			CString			strDateTime;
 
 			if (!BitmapInfo.m_DateTime.wYear)
 			{

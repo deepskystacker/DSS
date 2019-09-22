@@ -655,7 +655,6 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const
 			{
 				CString				strSizes;
 				CString				strDepth;
-				CString				strInfos;
 
 				strSizes.Format(_T("%ld x %ld"), lb.m_lWidth, lb.m_lHeight);
 				lb.m_strSizes = strSizes;
@@ -1184,8 +1183,6 @@ void CPictureListCtrl::OnRButtonDown( UINT nFlags, CPoint pt)
 	popup->CheckMenuItem(IDM_USEASSTARTING, MF_BYCOMMAND | (bStartingChecked ? MF_CHECKED : MF_UNCHECKED));
 	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y, this, nullptr);
 
-	std::vector<int>	vToRemove;
-	std::vector<int>	vToRefresh;
 	BOOL				bContinue = TRUE;
 
 	if (nResult == IDM_ERASEFROMDISK)
@@ -1210,12 +1207,7 @@ void CPictureListCtrl::OnRButtonDown( UINT nFlags, CPoint pt)
 
 	if (nResult == IDM_COPYTOCLIPBOARD)
 	{
-		switch (nResult)
-		{
-			case IDM_COPYTOCLIPBOARD :
-				CopyToClipboard();
-				break;
-		};
+        CopyToClipboard();
 	}
 	else if (bContinue)
 	{
@@ -1935,8 +1927,6 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();

@@ -145,7 +145,6 @@ void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & s
 	SYSTEMTIME		SystemTime;
 	TCHAR			szTime[200];
 	TCHAR			szDate[200];
-	CString			strDateTime;
 
 	if (GetFileCreationDateTime((LPCTSTR)strInfoFileName, FileTime))
 	{
@@ -2410,8 +2409,6 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 					lIndice = FindBitmapIndice(pStackingInfo->m_pLightTask->m_vBitmaps[i].m_strFileName);
 					if (lIndice >= 0)
 					{
-						CString				strModel;
-
 						if (!m_vBitmaps[lIndice].m_bDisabled)
 						{
 							BOOL			bComet = m_vBitmaps[lIndice].m_bComet;

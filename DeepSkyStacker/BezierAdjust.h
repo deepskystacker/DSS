@@ -264,8 +264,6 @@ public :
 
 	void	FromText(LPCTSTR szParameters)
 	{
-		CString			strParameters = szParameters;
-
 		m_fDarknessAngle	= ExtractValue(szParameters, _T("DA"));
 		m_fDarknessPower	= ExtractValue(szParameters, _T("DP"));
 		m_fMidtoneAngle		= ExtractValue(szParameters, _T("MA"));

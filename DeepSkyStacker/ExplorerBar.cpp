@@ -886,8 +886,6 @@ void CExplorerBar::LoadSettingFile()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		pos = dlgOpen.GetStartPosition();
 		while (pos)

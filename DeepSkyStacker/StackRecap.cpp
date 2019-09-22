@@ -190,8 +190,6 @@ void CStackRecap::FillWithAllTasksHTML()
 		CString				strDrive;
 		CString				strFreeSpace;
 		CString				strNeededSpace;
-		CString				strDrizzle;
-		CString				strDrizzleWarning;
 		STACKINGMODE		ResultMode;
 		BOOL				bSaveIntermediates;
 

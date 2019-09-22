@@ -489,11 +489,6 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 				pBitmap.CopyTo(ppBitmap);
 		};
 	};
-	if (pBuffer)
-	{
-		free(pBuffer);
-		pBuffer = nullptr;
-	};
 
 	DestroyTempFiles();
 

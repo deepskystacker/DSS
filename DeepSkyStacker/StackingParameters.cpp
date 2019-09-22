@@ -406,7 +406,6 @@ void CStackingParameters::OnBackgroundCalibration( NMHDR * pNotifyStruct, LRESUL
 	popup = menu.GetSubMenu(0);
 
 	CRect				rc;
-	CString				strText;
 
 	m_BackgroundCalibration.GetWindowRect(&rc);
 	pt.x = rc.left;

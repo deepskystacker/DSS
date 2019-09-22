@@ -916,7 +916,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 			}
 
 			// Now analyze the distribution for its homogeneity
-			std::vector<double>		vAuxValues;
+			//std::vector<double>		vAuxValues;
 			fMax = vValues[vValues.size()-1];
 
 			if (fMax>fMin)
@@ -1015,7 +1015,6 @@ template <class T> inline
 double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
 {
 	double			Result = 0;
-	BOOL			bEnd = FALSE;
 
 	// Set up the working buffers - we can flip between them to prevent
 	// needless copying of vectors.
@@ -1027,7 +1026,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 	// Initial copy into the working set to start us off.
 	vWorkingBuffer1 = vValues;
-	for (LONG i = 0;i<lIteration && !bEnd;i++)
+	for (LONG i = 0;i<lIteration;i++)
 	{
 		double			fAverage;
 		double			fSigma;

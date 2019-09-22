@@ -95,8 +95,6 @@ void CGradientCtrlImpl::DrawGradient(CDC *dc)
 	int l = (vertical ? clientrect.bottom : clientrect.right) - 10;
 
 	RGBTRIPLE *pal = new RGBTRIPLE[l], *entry;
-	ASSERT(pal);
-	if(!pal) return;
 
 	if(vertical)
 		membmp.CreateCompatibleBitmap(dc, 1, clientrect.bottom-10);
