@@ -12,6 +12,7 @@
 #include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
+#include <zexcept.h>
 
 #include <GdiPlus.h>
 using namespace Gdiplus;
@@ -261,64 +262,118 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
-	AllDepthBitmap.Clear();
 
-	if (LoadPicture(szFileName, &(AllDepthBitmap.m_pBitmap), pProgress))
+	try
 	{
-		C16BitGrayBitmap *			pGrayBitmap;
-		CSmartPtr<CMemoryBitmap>	pBitmap = AllDepthBitmap.m_pBitmap;
-		CCFABitmapInfo *			pCFABitmapInfo;
+		AllDepthBitmap.Clear();
 
-		pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(AllDepthBitmap.m_pBitmap.m_p);
-		pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pBitmap.m_p);
-		if (pBitmap->IsCFA())
+		if (LoadPicture(szFileName, &(AllDepthBitmap.m_pBitmap), pProgress))
 		{
-			if (AllDepthBitmap.m_bDontUseAHD && 
-				(pCFABitmapInfo->GetCFATransformation() == CFAT_AHD))
-				pCFABitmapInfo->UseBilinear(TRUE);
+			C16BitGrayBitmap *			pGrayBitmap;
+			CSmartPtr<CMemoryBitmap>	pBitmap = AllDepthBitmap.m_pBitmap;
+			CCFABitmapInfo *			pCFABitmapInfo;
 
-			if (pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
+			pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(AllDepthBitmap.m_pBitmap.m_p);
+			pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pBitmap.m_p);
+			if (pBitmap->IsCFA())
 			{
-				// AHD Demosaicing of the image
-				CSmartPtr<CMemoryBitmap>		pColorBitmap;
+				if (AllDepthBitmap.m_bDontUseAHD &&
+					(pCFABitmapInfo->GetCFATransformation() == CFAT_AHD))
+					pCFABitmapInfo->UseBilinear(TRUE);
 
-				AHDDemosaicing(pGrayBitmap, &pColorBitmap, NULL);
+				if (pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
+				{
+					// AHD Demosaicing of the image
+					CSmartPtr<CMemoryBitmap>		pColorBitmap;
 
-				AllDepthBitmap.m_pBitmap = pColorBitmap;
-			}
-			else 
-			{
-				// Transform the gray scale image to color image
-				CSmartPtr<C48BitColorBitmap>	pColorBitmap;
-				LONG							lWidth = pBitmap->Width(),
-												lHeight = pBitmap->Height();
+					AHDDemosaicing(pGrayBitmap, &pColorBitmap, NULL);
 
-				pColorBitmap.Create();
-				pColorBitmap->Init(lWidth, lHeight);
+					AllDepthBitmap.m_pBitmap = pColorBitmap;
+				}
+				else
+				{
+					// Transform the gray scale image to color image
+					CSmartPtr<C48BitColorBitmap>	pColorBitmap;
+					LONG							lWidth = pBitmap->Width(),
+						lHeight = pBitmap->Height();
+
+					pColorBitmap.Create();
+					pColorBitmap->Init(lWidth, lHeight);
 
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
-				for (LONG j = 0;j<lHeight;j++)
-				{
-					for (LONG i = 0;i<lWidth;i++)
+					for (LONG j = 0; j < lHeight; j++)
 					{
-						double			fRed, fGreen, fBlue;
+						for (LONG i = 0; i < lWidth; i++)
+						{
+							double			fRed, fGreen, fBlue;
 
-						pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-						pColorBitmap->SetPixel(i, j, fRed, fGreen, fBlue);
+							pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
+							pColorBitmap->SetPixel(i, j, fRed, fGreen, fBlue);
+						};
 					};
+
+					AllDepthBitmap.m_pBitmap = pColorBitmap;
 				};
-
-				AllDepthBitmap.m_pBitmap = pColorBitmap;
 			};
+
+			AllDepthBitmap.m_pWndBitmap.Create();
+			AllDepthBitmap.m_pWndBitmap->InitFrom(AllDepthBitmap.m_pBitmap);
+
+			bResult = TRUE;
 		};
+	}
+	catch (std::exception & e)
+	{
+		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
+	catch (CException & e)
+	{
+		e.ReportError();
+		e.Delete();
+		exit(1);
+	}
+	catch (ZException & ze)
+	{
+		CString errorMessage;
+		CString name(CA2CT(ze.name()));
+		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(ze.text(0)));
 
-		AllDepthBitmap.m_pWndBitmap.Create();
-		AllDepthBitmap.m_pWndBitmap->InitFrom(AllDepthBitmap.m_pBitmap);
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			ze.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
+	catch (...)
+	{
+		CString errorMessage(_T("Unknown exception caught"));
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
 
-		bResult = TRUE;
-	};
+
 
 	return bResult;
 };
