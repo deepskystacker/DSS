@@ -226,14 +226,29 @@ private:
 		{
 			// Alloc the buffer
 			m_dwBufferSize = 2 * lSize;
+			ZTRACE_RUNTIME("Allocating image buffer of %d bytes", m_dwBufferSize);
 			m_pBuffer = (BYTE*)malloc(m_dwBufferSize);
+			if (nullptr == m_pBuffer)
+			{
+				ZOutOfMemory e("Could not allocate storage for image buffer");
+				ZTHROW(e);
+			}
+
 			m_dwBufferReadPos = 0;
 			m_dwBufferWritePos = 0;
 		};
 		if (lSize > m_dwBufferSize - m_dwBufferWritePos)
 		{
 			// realloc the buffer
-			m_pBuffer = (BYTE*)realloc(m_pBuffer, lSize + m_dwBufferWritePos * 2);
+			ZTRACE_RUNTIME("Re-allocating image buffer to %d bytes", lSize + m_dwBufferWritePos * 2);
+			BYTE* temp = (BYTE*)realloc(m_pBuffer, lSize + m_dwBufferWritePos * 2);
+			if (nullptr == temp)
+			{
+				ZOutOfMemory e("Could not re-allocate storage for image buffer");
+				ZTHROW(e);
+			}
+
+			m_pBuffer = temp;
 			m_dwBufferSize = lSize + m_dwBufferWritePos * 2;
 		};
 
@@ -908,7 +923,11 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			//
 			raw_image =
 				(unsigned short *)calloc(static_cast<size_t>(S.height)*static_cast<size_t>(S.width), sizeof(unsigned short));
-			ZASSERT(nullptr != raw_image);
+			if (nullptr == raw_image)
+			{
+				ZOutOfMemory e("Could not allocate storage for RAW image");
+				ZTHROW(e);
+			}
 
 			const int fuji_width = rawProcessor.is_fuji_rotated();
 			const unsigned fuji_layout = rawProcessor.get_fuji_layout();
@@ -1247,58 +1266,55 @@ BOOL CRawDecod::IsRawFile()
 	BOOL		bResult = TRUE;
 	int			ret = 0;
 
-	if (bResult)
+	m_strMake	= P1.make;
+	m_strModel	= P1.model;
+	m_lHeight	= S.iheight;
+	m_lWidth	= S.iwidth;
+
+	m_lISOSpeed = P2.iso_speed;
+	if (_finite(P2.shutter))
+		m_fExposureTime = P2.shutter;
+	else
+		m_fExposureTime = 0;
+
+	if (_finite(P2.aperture))
+		m_fAperture = P2.aperture;
+	else
+		m_fAperture = 0.0;
+
+	// Retrieve the Date/Time
+	memset(&m_DateTime, 0, sizeof(m_DateTime));
+	tm *		pdatetime;
+
+	if (P2.timestamp)
 	{
-		m_strMake	= P1.make;
-		m_strModel	= P1.model;
-		m_lHeight	= S.iheight;
-		m_lWidth	= S.iwidth;
-
-		m_lISOSpeed = P2.iso_speed;
-		if (_finite(P2.shutter))
-			m_fExposureTime = P2.shutter;
-		else
-			m_fExposureTime = 0;
-
-		if (_finite(P2.aperture))
-			m_fAperture = P2.aperture;
-		else
-			m_fAperture = 0.0;
-
-		// Retrieve the Date/Time
-		memset(&m_DateTime, 0, sizeof(m_DateTime));
-		tm *		pdatetime;
-
-		if (P2.timestamp)
+		pdatetime = localtime(&(P2.timestamp));
+		if (pdatetime)
 		{
-			pdatetime = localtime(&(P2.timestamp));
-			if (pdatetime)
-			{
-				m_DateTime.wDayOfWeek = pdatetime->tm_wday;
-				m_DateTime.wDay = pdatetime->tm_mday;
-				m_DateTime.wMonth = pdatetime->tm_mon+1;
-				m_DateTime.wYear  = pdatetime->tm_year+1900;
-				m_DateTime.wHour  = pdatetime->tm_hour;
-				m_DateTime.wMinute= pdatetime->tm_min;
-				m_DateTime.wSecond= pdatetime->tm_sec;
-			};
+			m_DateTime.wDayOfWeek = pdatetime->tm_wday;
+			m_DateTime.wDay = pdatetime->tm_mday;
+			m_DateTime.wMonth = pdatetime->tm_mon+1;
+			m_DateTime.wYear  = pdatetime->tm_year+1900;
+			m_DateTime.wHour  = pdatetime->tm_hour;
+			m_DateTime.wMinute= pdatetime->tm_min;
+			m_DateTime.wSecond= pdatetime->tm_sec;
 		};
-
-		m_bColorRAW	= P1.is_foveon || !(P1.filters);
-		if (1 == P1.filters || 9 == P1.filters)
-		{
-			//
-			// This is somewhat of a lie as the only the Foveon sensors
-			// create full color raw files.  However by telling this lie
-			// we can use libraw to decode and interpolate Fujitsu X-Trans
-			// and Leaf Catchlight images
-			//
-			if (1 == P1.filters) ZTRACE_RUNTIME("Image is from a Leaf Catchlight");
-			else ZTRACE_RUNTIME("Image is from a Fujitsu X-Trans Sensor");
-			m_bColorRAW = TRUE;
-		}
-		m_CFAType	= GetCurrentCFAType();
 	};
+
+	m_bColorRAW	= P1.is_foveon || !(P1.filters);
+	if (1 == P1.filters || 9 == P1.filters)
+	{
+		//
+		// This is somewhat of a lie as the only the Foveon sensors
+		// create full color raw files.  However by telling this lie
+		// we can use libraw to decode and interpolate Fujitsu X-Trans
+		// and Leaf Catchlight images
+		//
+		if (1 == P1.filters) ZTRACE_RUNTIME("Image is from a Leaf Catchlight");
+		else ZTRACE_RUNTIME("Image is from a Fujitsu X-Trans Sensor");
+		m_bColorRAW = TRUE;
+	}
+	m_CFAType	= GetCurrentCFAType();
 
 	return bResult;
 };
