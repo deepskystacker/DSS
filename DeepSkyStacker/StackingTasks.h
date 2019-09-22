@@ -155,6 +155,12 @@ public:
 	{
 		CopyFrom(right);
 	};
+
+    COutputSettings& operator=(COutputSettings const& other)
+    {
+        CopyFrom(other);
+        return *this;
+    }
 };
 
 

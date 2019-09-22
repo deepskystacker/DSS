@@ -489,6 +489,8 @@ public :
 		CopyFrom(px);
 	};
 
+    CPixel& operator=(CPixel const& other) = delete;
+
 	~CPixel() {};
 
 	bool operator < (const CPixel & px) const

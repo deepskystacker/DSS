@@ -174,6 +174,11 @@ public :
 		return (*this);
 	};
 
+    CWorkspaceSettingsInternal(CWorkspaceSettingsInternal const& other)
+    {
+        CopyFrom(other);
+    }
+
 	void	InitFrom(const CWorkspaceSettingsInternal & ws)
 	{
 		CopyFrom(ws);

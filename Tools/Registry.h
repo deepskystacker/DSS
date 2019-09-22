@@ -73,6 +73,8 @@ class CRegistry {
 		CRegistry( const CRegistry & ) ;
 		virtual ~CRegistry() ;
 
+        CRegistry& operator=(CRegistry const& other) = delete;
+
 	public:		// attributes
 		// GetKey() returns the current HKEY
 		HKEY		GetKey() const ;
