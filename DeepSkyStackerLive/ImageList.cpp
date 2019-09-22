@@ -180,7 +180,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 
 		if (bmpInfo.m_lISOSpeed)
 			ISOToString(bmpInfo.m_lISOSpeed, strText);
-		else if (bmpInfo.m_lISOSpeed)
+		else if (bmpInfo.m_lGain)
 			GainToString(bmpInfo.m_lGain, strText);
 		else
 			ISOToString(0, strText);
