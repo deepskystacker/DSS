@@ -5,6 +5,7 @@
 #include "StackingTasks.h"
 #include "DSSProgress.h"
 #include <algorithm>
+#include <iostream>
 #include "Multitask.h"
 
 /* ------------------------------------------------------------------- */
@@ -260,12 +261,14 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 #endif
 		exit(1);
 	}
+#ifndef _CONSOLE
 	catch (CException & e)
 	{
 		e.ReportError();
 		e.Delete();
 		exit(1);
 	}
+#endif
 	catch (ZException & ze)
 	{
 		CString errorMessage;

@@ -12,6 +12,7 @@
 #include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
+#include <iostream>
 #include <zexcept.h>
 
 #include <GdiPlus.h>
@@ -334,12 +335,14 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 #endif
 		exit(1);
 	}
+#ifndef _CONSOLE
 	catch (CException & e)
 	{
 		e.ReportError();
 		e.Delete();
 		exit(1);
 	}
+#endif
 	catch (ZException & ze)
 	{
 		CString errorMessage;
