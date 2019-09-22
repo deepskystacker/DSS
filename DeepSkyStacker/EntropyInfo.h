@@ -27,6 +27,9 @@ private :
 public :
 	CEntropySquare()
 	{
+        m_fRedEntropy = 0;
+        m_fGreenEntropy = 0;
+        m_fBlueEntropy = 0;
 	};
 
 	CEntropySquare(const CPointExt & pt, double fRedEntropy, double fGreenEntropy, double fBlueEntropy)
@@ -84,10 +87,14 @@ private :
 	};
 
 public :
-	CEntropyInfo()
-	{
-		m_pProgress = nullptr;
-	};
+    CEntropyInfo()
+    {
+	m_pProgress = nullptr;
+        m_lWindowSize = 0;
+        m_lNrPixels = 0;
+        m_lNrSquaresX = 0;
+        m_lNrSquaresY = 0;
+    }
 
 	virtual ~CEntropyInfo()
 	{

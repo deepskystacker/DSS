@@ -67,7 +67,12 @@ public :
 	double									fMultiplier;
 
 public :
-	CAHDTask() {};
+	CAHDTask()
+    {
+        lWidth = 0;
+        lHeight = 0;
+        fMultiplier = 0;
+    }
 
 	virtual ~CAHDTask() {};
 
@@ -217,7 +222,8 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 		for (wx = x;wx<lWidth && wx <x+AHDWS;wx++)
 		{
 			BAYERCOLOR			BayerColor;
-			double				fVGreen, fHGreen;
+            double				fVGreen = 0;
+            double              fHGreen = 0;
 
 			BayerColor = pGrayBitmap->GetBayerColor(wx, wy);
 			switch (BayerColor)
@@ -1105,7 +1111,8 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 					for (wx = x;wx<lWidth && wx <x+AHDWS;wx++)
 					{
 						BAYERCOLOR			BayerColor;
-						double				fVGreen, fHGreen;
+                        double				fVGreen = 0;
+                        double              fHGreen = 0;
 
 						BayerColor = pGrayBitmap->GetBayerColor(wx, wy);
 						switch (BayerColor)

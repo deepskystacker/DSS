@@ -22,7 +22,9 @@ public :
 public :
 	CBackgroundCalibrationTask()
 	{
-	};
+        m_pProgress = nullptr;
+        m_pBackgroundCalibration = nullptr;
+	}
 
 	virtual ~CBackgroundCalibrationTask()
 	{
@@ -134,7 +136,7 @@ BOOL	CBackgroundCalibrationTask::Process()
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
-	bResult = TRUE;
+
 	while (i<lHeight)
 	{
 		LONG			lAdd = min(lStep, lRemaining);

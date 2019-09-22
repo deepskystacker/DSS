@@ -35,6 +35,7 @@ private :
 public :
 	CFilterMatrix()
 	{
+        m_lSize = 0;
 	};
 
 	CFilterMatrix(const CFilterMatrix & fm)
@@ -85,6 +86,8 @@ public :
 		m_bMonochrome	= FALSE;
 		m_bCFA			= FALSE;
 		m_lFilterSize	= 1;
+        m_lWidth        = 0;
+        m_lHeight       = 0;
 	};
 
 	virtual ~CMedianImageFilter()
@@ -197,6 +200,7 @@ public :
 	{
 		m_fAngle = 0;
 		m_lSize  = 1;
+        m_bMonochrome = FALSE;
 	};
 	~CDirectionalImageFilter() {};
 

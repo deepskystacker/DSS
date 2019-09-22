@@ -97,6 +97,9 @@ public :
 		m_rcToProcess.right = 0;
 		m_rcToProcess.bottom = 0;
 		m_rcToProcess.SetRectEmpty();
+        m_lWidth = 0;
+        m_lHeight = 0;
+        m_lSize = 0;
 	};
 	virtual ~CProcessRect() {};
 

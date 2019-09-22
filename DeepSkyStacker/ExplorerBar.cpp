@@ -23,6 +23,8 @@ CExplorerBar::CExplorerBar(CWnd* pParent /*=nullptr*/)
 {
 	m_MRUSettings.SetBasePath(REGENTRY_BASEKEY_SETTINGFILES);
 	m_bHorz = FALSE;
+    m_dwCurrentTabID = 0;
+    m_nScrollPos = 0;
 }
 
 /* ------------------------------------------------------------------- */

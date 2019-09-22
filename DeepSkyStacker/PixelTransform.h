@@ -41,6 +41,7 @@ public :
 		m_fXShift = m_fYShift = 0;
 		m_fXCometShift = m_fYCometShift = 0;
 		m_lPixelSizeMultiplier = 1;
+        m_bUseCometShift = FALSE;
 	};
 
 	void	SetShift(double fXShift, double fYShift)

@@ -12,7 +12,7 @@ CBackgroundLoading::CBackgroundLoading()
 	m_hThread		= nullptr;
 	m_dwThreadID	= 0;
 	m_hEvent		= nullptr;
-
+    m_hWnd          = NULL;
 };
 
 /* ------------------------------------------------------------------- */

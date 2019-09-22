@@ -19,6 +19,7 @@ CStackingParameters::CStackingParameters()
 	: CChildPropertyPage(CStackingParameters::IDD)
 {
 	m_bFirstActivation = TRUE;
+    m_BackgroundCalibrationMode = BACKGROUNDCALIBRATIONMODE(0);
 }
 
 /* ------------------------------------------------------------------- */

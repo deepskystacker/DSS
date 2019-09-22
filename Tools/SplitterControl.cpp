@@ -25,6 +25,11 @@ CSplitterControl::CSplitterControl()
 
 	// Min and Max range of the splitter.
 	m_nMin = m_nMax = -1;
+
+    m_nType = 0;
+    m_nX = 0;
+    m_nY = 0;
+    m_nSavePos = 0;
 }
 
 CSplitterControl::~CSplitterControl()

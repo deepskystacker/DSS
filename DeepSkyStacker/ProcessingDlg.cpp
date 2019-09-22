@@ -37,6 +37,8 @@ CProcessingDlg::CProcessingDlg(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(CProcessingDlg)
 	//}}AFX_DATA_INIT
 	m_bDirty		 = FALSE;
+    m_fGradientOffset = 0;
+    m_fGradientRange = 0;
 }
 
 /* ------------------------------------------------------------------- */
@@ -1030,7 +1032,11 @@ private :
 	};
 
 public :
-	CColorOrder() {};
+	CColorOrder()
+    {
+        m_crColor = 0;
+        m_lSize = 0;
+    }
 	CColorOrder(COLORREF crColor, LONG lSize)
 	{
 		m_crColor	= crColor;
@@ -1552,11 +1558,7 @@ void CProcessingDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 BOOL CProcessingDlg::SaveOnClose()
 {
-	BOOL			bResult = TRUE;
-
-	bResult = AskToSave();
-
-	return bResult;
+	return AskToSave();
 };
 
 /* ------------------------------------------------------------------- */

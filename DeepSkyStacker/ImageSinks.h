@@ -43,6 +43,10 @@ public :
 		m_bInSelecting	= FALSE;
 		m_Mode			= SRM_NONE;
 		m_bShowDrizzle	= FALSE;
+        m_fXStart       = 0;
+        m_fYStart       = 0;
+        m_fXEnd         = 0;
+        m_fYEnd         = 0;
 	};
 	virtual ~CSelectRectSink() {};
 
@@ -260,6 +264,11 @@ public :
 		m_fScore		= 0;
 		m_lNrStars		= 0;
 		m_fBackground	= 0;
+        m_fXComet       = 0;
+        m_fYComet       = 0;
+        m_fFWHM         = 0;
+        m_lRemovedIndice = 0;
+        m_bRemoveComet = false;
 	};
 	virtual ~CEditStarsSink() {};
 

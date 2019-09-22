@@ -64,6 +64,15 @@ public :
 		cfa      = 0;
 		nrframes = 0;
 		m_DateTime.wYear = 0;
+        w = 0;
+        h = 0;
+        spp = 0;
+        bpp = 0;
+        photo = 0;
+        compression = 0;
+        planarconfig = 0;
+        sampleformat = 0;
+        master = 0;
 	};
 	virtual ~CTIFFHeader() {};
 

@@ -92,6 +92,10 @@ private :
 		m_liRed			= bc.m_liRed;
 		m_liBlue		= bc.m_liBlue;
 		m_liGreen		= bc.m_liGreen;
+
+        m_fTgtRedBk     = bc.m_fTgtRedBk;
+        m_fTgtGreenBk   = bc.m_fTgtGreenBk;
+        m_fTgtBlueBk    = bc.m_fTgtBlueBk;
 	};
 
 public :

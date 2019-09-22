@@ -14,9 +14,13 @@ private :
 	BOOL						m_bUseCFA;
 
 public :
-	CFlatDivideTask()
-	{
-	};
+    CFlatDivideTask()
+    {
+        m_pProgress = nullptr;
+        m_pFlatFrame = nullptr;
+        m_bUseGray = false;
+        m_bUseCFA = false;
+    }
 
 	virtual ~CFlatDivideTask()
 	{

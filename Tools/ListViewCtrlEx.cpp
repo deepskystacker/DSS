@@ -933,6 +933,7 @@ const int               CListBase::m_iNextColXOff  = 6; // x-off of other cols
 /*** Constructor *************************************************************/
 CListBase::CListBase()
 {
+    m_pfnLVCompare = nullptr;
 
   if (m_visualStyle == Unknown)
   {
@@ -995,6 +996,11 @@ CListBase::CListBase()
   m_fCurrentFlags        = 0;
   m_iCurrentItem         = -1;
   m_iCurrentSubItem      = -1;
+  m_iUpArrow             = 0;
+  m_iDownArrow           = 0;
+  m_dwColSortColor       = 0;
+  m_iForm_ttofSubItem0   = 0;
+  m_lParamSort           = 0;
 }
 
 /*** Destructor **************************************************************/

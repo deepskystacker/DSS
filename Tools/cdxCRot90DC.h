@@ -89,12 +89,44 @@ private:
 	CFont		*m_pOldFont;
 	CBitmap	*m_pOldBitmap;
 
+    void Init()
+    {
+        m_pDC = nullptr;
+        m_Angle = a0;
+        m_bFinished = false;
+        m_iOldBkColor = 0;
+        m_iOldBkMode = 0;
+        m_iOldTextColor = 0;
+        m_pOldBitmap = nullptr;
+        m_pOldFont = nullptr;
+    }
+
 public:
-	cdxCRot90DC() : m_pDC(nullptr), m_bFinished(true) {}
-	cdxCRot90DC(CDC & destDC, const CRect & rectDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { Create(destDC,rectDC,iAngle,bCopy); }
-	cdxCRot90DC(CDC *pDC, const CRect & rectDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { Create(pDC,rectDC,iAngle,bCopy); }
-	cdxCRot90DC(CDC & destDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { VERIFY( Create(destDC,iAngle,bCopy) ); }
-	cdxCRot90DC(CDC *pDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { VERIFY( Create(pDC,iAngle,bCopy) ); }
+    cdxCRot90DC()
+    {
+        Init();
+    }
+    
+	cdxCRot90DC(CDC & destDC, const CRect & rectDC, int iAngle, bool bCopy = false)
+    {
+        Init();
+        Create(destDC,rectDC,iAngle,bCopy);
+    }
+	cdxCRot90DC(CDC *pDC, const CRect & rectDC, int iAngle, bool bCopy = false)
+    {
+        Init();
+        Create(pDC,rectDC,iAngle,bCopy);
+    }
+	cdxCRot90DC(CDC & destDC, int iAngle, bool bCopy = false)
+    {
+        Init();
+        VERIFY( Create(destDC,iAngle,bCopy) );
+    }
+	cdxCRot90DC(CDC *pDC, int iAngle, bool bCopy = false)
+    {
+        Init();
+        VERIFY( Create(pDC,iAngle,bCopy) );
+    }
 	virtual ~cdxCRot90DC() { if(!m_bFinished) Finish(); Destroy(); }
 
 	//

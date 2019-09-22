@@ -116,11 +116,19 @@ private :
 	};
 
 public :
-	CDSSProgressDlg()
-		:
-		m_bEnableCancel(FALSE)
-	{
-	};
+    CDSSProgressDlg()
+    {
+        m_bEnableCancel = false;
+        m_lTotal1 = 0;
+        m_lTotal2 = 0;
+        m_dwStartTime = 0;
+        m_dwLastTime = 0;
+        m_lLastTotal1 = 0;
+        m_lLastTotal2 = 0;
+        m_bFirstProgress = false;
+        m_bEnableCancel = false;
+    }
+
 	virtual ~CDSSProgressDlg()
 	{
 		Close();

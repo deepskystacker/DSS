@@ -127,6 +127,8 @@ public :
 	{
 		a = b = 0;
 		c = 1;
+        fMin = 0;
+        fMax = 0;
 	};
 
 	CRationalInterpolation(const CRationalInterpolation & ri)

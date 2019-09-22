@@ -36,6 +36,21 @@ CBitmapSlider::CBitmapSlider()
 	m_bEnable = TRUE;
 
 	m_nThumbBgX = m_nThumbBgY = -1;
+
+    m_nWidth = 0;
+    m_nHeight = 0;
+    m_nMouseOffset = 0;
+    m_bChannelActive = FALSE;
+    m_bThumbActive = FALSE;
+    m_bTransparentChannel = FALSE;
+    m_bTransparentThumb = FALSE;
+    m_bThumb = FALSE;
+    m_bChannel = FALSE;
+    m_bLButtonDown = FALSE;
+    m_bFocus = FALSE;
+    m_bFocusRect = FALSE;
+    m_bDrawFocusRect = FALSE;
+    m_bEnable = FALSE;
 }
 
 CBitmapSlider::~CBitmapSlider()

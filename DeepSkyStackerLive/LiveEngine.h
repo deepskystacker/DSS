@@ -107,12 +107,29 @@ private :
 	LONG						m_lNrPending;
 
 public :
-	CLiveEngineMsg()
-	{
-		m_Msg = LEM_NONE;
-		m_lMax = 0;
-		m_lProgress = 0;
-	};
+    CLiveEngineMsg()
+    {
+        m_Msg = LEM_NONE;
+        m_lMax = 0;
+        m_lProgress = 0;
+        m_Msg = LIVEENGINEMSG(0);
+        m_lMax = 0;
+        m_lProgress = 0;
+        m_bLogDateTime = false;
+        m_bLogBold = false;
+        m_bLogItalic = false;
+        m_crLogColor = 0;
+        m_lProgressAchieved = 0;
+        m_lProgressTotal = 0;
+        m_lNrStacked = 0;
+        m_fExposure = 0;
+        m_ImageStatus = IMAGESTATUS(0);
+        m_fdX = 0;
+        m_fdY = 0;
+        m_fAngle = 0;
+        m_ImageInfo = STACKIMAGEINFO(0);
+        m_lNrPending = 0;
+    }
 
 	~CLiveEngineMsg()
 	{

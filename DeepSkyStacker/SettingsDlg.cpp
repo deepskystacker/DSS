@@ -21,6 +21,7 @@ CSettingsDlg::CSettingsDlg(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(CSettingsDlg)
 	//}}AFX_DATA_INIT
 	m_bLoadSettings = FALSE;
+    m_pSettings = NULL;
 }
 
 

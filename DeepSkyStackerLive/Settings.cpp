@@ -16,7 +16,8 @@ IMPLEMENT_DYNAMIC(CSettingsTab, CDialog)
 
 CSettingsTab::CSettingsTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CSettingsTab::IDD, pParent),
-	m_bDarkMode(bDarkMode)
+	m_bDarkMode(bDarkMode),
+    m_bDirty(false)
 {
 }
 

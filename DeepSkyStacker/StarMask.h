@@ -23,6 +23,7 @@ protected :
 public :
 	CStarMaskFunction()
 	{
+        m_fRadius = 0;
 	};
 
     virtual ~CStarMaskFunction() { }
@@ -45,6 +46,8 @@ protected :
 public :
 	CStarMaskFunction_Bell()
 	{
+        fFactor1 = 0;
+        fFactor2 = 0;
 	};
 
 	virtual void	SetRadius(double fRadius)

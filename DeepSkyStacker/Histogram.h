@@ -191,6 +191,10 @@ public :
 	{
 		m_HAT = HAT_LOGSQUAREROOT;
 		SetOrgValues(0.0, 65535.0);
+
+        m_fMin = 0;
+        m_fMax = 0;
+        m_fShift = 0;
 	};
 
 	virtual ~CHistogramAdjust() {};
@@ -469,6 +473,8 @@ public :
 		m_fMax		= 0;
 		m_fMin		= -1;
 		m_bInitOk	= FALSE;
+        m_fAbsMax   = 0;
+        m_fStep     = 0;
 	};
 
 	virtual ~CHistogram() {};

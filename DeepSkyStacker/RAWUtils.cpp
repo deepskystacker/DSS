@@ -363,19 +363,28 @@ private:
 
 public:
 
-	BitMapFiller(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
-	{
-		m_pBitmap = pBitmap;
-		m_pProgress = pProgress;
-		m_bStarted = FALSE;
-		m_fRedScale = 1.0;
-		m_fGreenScale = 1.0;
-		m_fBlueScale = 1.0;
-		m_lBytePerChannel = 2;				// Never going to handle 8 bit data !!
-		m_lHeight = 0;
-		m_lWidth = 0;
-		m_CFAType = CFATYPE_NONE;
-	};
+    BitMapFiller(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+    {
+        m_pBitmap = pBitmap;
+        m_pProgress = pProgress;
+        m_bStarted = FALSE;
+        m_fRedScale = 1.0;
+        m_fGreenScale = 1.0;
+        m_fBlueScale = 1.0;
+        m_lBytePerChannel = 2;				// Never going to handle 8 bit data !!
+        m_lHeight = 0;
+        m_lWidth = 0;
+        m_CFAType = CFATYPE_NONE;
+        m_dwPos = 0;
+        m_dwCurrentX = 0;
+        m_dwCurrentY = 0;
+        m_pBuffer = nullptr;
+        m_dwBufferSize = 0;
+        m_dwBufferReadPos = 0;
+        m_dwBufferWritePos = 0;
+        m_lMaxColors = 0;
+        m_bGrey = false;
+    }
 
 	virtual ~BitMapFiller()
 	{
@@ -548,14 +557,18 @@ private :
 #define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 public :
-	CRawDecod(LPCTSTR szFile) noexcept
-	{
-		ZFUNCTRACE_RUNTIME();
-		m_strFileName = szFile;
-		m_bColorRAW	  = FALSE;
-		m_CFAType	  = CFATYPE_NONE;
-		m_DateTime.wYear = 0;
-		m_lHeight = m_lWidth = 0;
+    CRawDecod(LPCTSTR szFile) noexcept
+    {
+        ZFUNCTRACE_RUNTIME();
+        m_strFileName = szFile;
+        m_bColorRAW = FALSE;
+        m_CFAType = CFATYPE_NONE;
+        m_DateTime.wYear = 0;
+        m_lISOSpeed = 0;
+        m_fExposureTime = 0;
+        m_fAperture = 0;
+        m_lHeight = 0;
+        m_lWidth = 0;
 
         m_isRawFile = rawProcessor.open_file(m_strFileName) == LIBRAW_SUCCESS;
 
@@ -595,7 +608,6 @@ public :
                     m_DateTime.wSecond = pdatetime->tm_sec;
                 };
             };
-
             m_bColorRAW = P1.is_foveon || !(P1.filters);
             if (1 == P1.filters || 9 == P1.filters)
             {
@@ -611,7 +623,7 @@ public :
             }
             m_CFAType = GetCurrentCFAType();
         };
-	};
+    }
 
 	virtual ~CRawDecod()
 	{

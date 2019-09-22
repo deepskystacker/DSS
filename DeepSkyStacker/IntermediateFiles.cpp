@@ -19,6 +19,10 @@ CIntermediateFiles::CIntermediateFiles()
 {
 	m_bFirstActivation = TRUE;
 	m_bRegisteringOnly = FALSE;
+    m_bCreateIntermediates = false;
+    m_bSaveCalibrated = false;
+    m_bSaveDebayered = false;
+    m_lSaveFormat = INTERMEDIATEFILEFORMAT(0);
 }
 
 /* ------------------------------------------------------------------- */

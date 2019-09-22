@@ -24,6 +24,7 @@ CAskRegistering::CAskRegistering(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(CAskRegistering)
 	//}}AFX_DATA_INIT
 
+    m_Result = ASKREGISTERINGANSWER(0);
 }
 
 /* ------------------------------------------------------------------- */

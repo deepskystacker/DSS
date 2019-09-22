@@ -53,7 +53,7 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bC
 	{
 		for (LONG i = 1;i<lWidth-1;i++)
 		{
-			double				fPosition;
+			double				fPosition = 0;
 			if (bMonochrome)
 			{
 				double			fGray;

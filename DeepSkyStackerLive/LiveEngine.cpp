@@ -857,6 +857,10 @@ CLiveEngine::CLiveEngine()
 	m_bReferenceFrameSet = FALSE;
 	m_lNrUnsavedImages   = 0;
 	m_LiveSettings.LoadFromRegistry();
+    m_lTotal1 = 0;
+    m_lTotal2 = 0;
+    m_lAchieved1 = 0;
+    m_lAchieved2 = 0;
 };
 
 /* ------------------------------------------------------------------- */

@@ -269,7 +269,9 @@ BOOL CTIFFReader::Read()
 				nResult = TIFFReadScanline(m_tiff, pScanLine, j);
 				for (LONG i = 0;i<w && bResult;i++)
 				{
-					double		fRed, fGreen, fBlue;
+                    double fRed = 0;
+                    double fGreen = 0;
+                    double fBlue = 0;
 
 					if (spp == 1)
 					{

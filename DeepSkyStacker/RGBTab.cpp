@@ -26,6 +26,9 @@ CRGBTab::CRGBTab() : CChildPropertyPage(CRGBTab::IDD)
 	//}}AFX_DATA_INIT
 	m_psp.dwFlags |= PSP_PREMATURE;
 	m_bFirstActivation = TRUE;
+    m_RedAdjustMethod = HISTOADJUSTTYPE(0);
+    m_GreenAdjustMethod = HISTOADJUSTTYPE(0);
+    m_BlueAdjustMethod = HISTOADJUSTTYPE(0);
 }
 
 CRGBTab::~CRGBTab()

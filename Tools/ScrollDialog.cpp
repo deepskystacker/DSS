@@ -50,7 +50,12 @@ CScrollDialog::CScrollDialog(UINT nIDD, CWnd* pParent /*=nullptr*/)
     m_bInitialized = FALSE;
 	m_bVert = TRUE;
 	m_bHorz = TRUE;
-
+    m_nHorzInc = 0;
+    m_nHscrollMax = 0;
+    m_nHscrollPos = 0;
+    m_nVertInc = 0;
+    m_nVscrollMax = 0;
+    m_nVscrollPos = 0;
 }
 
 

@@ -126,6 +126,7 @@ public :
 		m_fRedRatio   = 1.0;
 		m_fBlueRatio  = 1.0;
 		m_bDSI		  = FALSE;
+        m_fBrightnessRatio = 0;
 	};
 
 	virtual ~CFITSReader()

@@ -21,6 +21,8 @@ CResultParameters::CResultParameters()
 	m_ResultMode = SM_NORMAL;
 	m_lDrizzle = 1;
 	m_bAlignChannels = FALSE;
+    m_bEnableCustom = FALSE;
+    m_bUseCustom = FALSE;
 }
 
 /* ------------------------------------------------------------------- */

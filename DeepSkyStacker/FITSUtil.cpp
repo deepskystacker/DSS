@@ -19,6 +19,10 @@ CFITSHeader::CFITSHeader()
 	m_bSigned		= FALSE;
 	m_DateTime.wYear= 0;
 	g_FITSCritical.Lock();
+    m_lWidth = 0;
+    m_lHeight = 0;
+    m_lBitsPerPixel = 0;
+    m_lNrChannels = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -671,7 +675,9 @@ BOOL CFITSReader::Read()
 
 					for (i = 0;i<m_lWidth && bResult && !nStatus;i++)
 					{
-						double		fRed, fGreen, fBlue;
+                        double fRed = 0;
+                        double fGreen = 0;
+                        double fBlue = 0;
 
 						if (m_lBitsPerPixel == 8)
 						{
@@ -762,7 +768,10 @@ BOOL CFITSReader::Read()
 
 					for (i = 0;i<m_lWidth && bResult && !nStatus;i++)
 					{
-						double		fRed, fGreen, fBlue;
+                        double fRed = 0;
+                        double fGreen = 0;
+                        double fBlue = 0;
+
 						if (m_lBitsPerPixel == 8)
 						{
 							fRed	= *(pBYTELineRed);
@@ -1389,7 +1398,7 @@ BOOL CFITSWriter::Write()
 		if (pScanLine || (pScanLineRed && pScanLineGreen && pScanLineBlue))
 		{
 			bResult = TRUE;
-			int			datatype;
+			int			datatype = 0;
 			int			nStatus = 0;
 
 			switch (m_lBitsPerPixel)

@@ -172,6 +172,9 @@ protected :
 		m_fBackground = 0.0;
 
 		m_SkyBackground.Reset();
+
+        m_fOverallQuality = 0;
+        m_fFWHM = 0;
 	};
 
 	BOOL	FindStarShape(CMemoryBitmap * pBitmap, CStar & star);
@@ -322,6 +325,8 @@ public :
 
 	CLightFrameInfo(const CFrameInfo & cbi)
 	{
+        Reset();
+
 		CFrameInfo::CopyFrom(cbi);
 	};
 

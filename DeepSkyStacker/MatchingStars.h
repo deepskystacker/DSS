@@ -27,9 +27,14 @@ private :
 	};
 
 public :
-	CStarTriangle()
-	{
-	};
+    CStarTriangle()
+    {
+        m_fX = 0;
+        m_fY = 0;
+        m_Star1 = 0;
+        m_Star2 = 0;
+        m_Star3 = 0;
+    }
 
 	CStarTriangle(BYTE Star1, BYTE Star2, BYTE Star3, float fX, float fY)
 	{

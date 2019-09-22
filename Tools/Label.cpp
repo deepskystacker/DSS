@@ -141,6 +141,7 @@ CLabel::CLabel()
 	m_fillmode =		Normal;
 	m_cr3DHiliteColor =	RGB(255,255,255);
 	m_bHover =			FALSE;
+    m_3dType =          Type3D(0);
 
 	m_hwndBrush = ::CreateSolidBrush(GetSysColor(COLOR_3DFACE));
 }

@@ -87,7 +87,10 @@ private :
 public :
 	CDarkMultiplier()
 	{
-	};
+        m_fMax = 0;
+        m_fMin = 0;
+        m_fMultiplier = 0;
+    };
 
 	virtual ~CDarkMultiplier()
 	{
@@ -157,7 +160,7 @@ public :
 	double						m_fGrayValue;
 
 public :
-	CDarkFrameHotParameters() {};
+	CDarkFrameHotParameters() : m_fGrayValue(0) {};
 	virtual ~CDarkFrameHotParameters() {};
 
 	void	ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXELVECTOR & vHotPixels);
@@ -226,7 +229,12 @@ private :
 	double	ComputeMedianValueInRect(CMemoryBitmap * pBitmap, CRect & rc);
 
 public :
-	CDarkAmpGlowParameters() {};
+	CDarkAmpGlowParameters()
+    {
+        m_fMedianHotest = 0;
+        m_fGrayValue = 0;
+        m_lColdestIndice = 0;
+    }
 	CDarkAmpGlowParameters(const CDarkAmpGlowParameters & dagp)
 	{
 		CopyFrom(dagp);

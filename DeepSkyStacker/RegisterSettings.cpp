@@ -39,6 +39,8 @@ CRegisterSettings::CRegisterSettings(CWnd* pParent /*=nullptr*/)
 	m_pStackingTasks = nullptr;
 	m_bForceRegister = FALSE;
 	m_bSettingsOnly	 = FALSE;
+    m_dwDetectionThreshold = 0;
+    m_bMedianFilter = FALSE;
 }
 
 /* ------------------------------------------------------------------- */

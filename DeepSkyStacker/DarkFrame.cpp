@@ -343,6 +343,8 @@ private :
 public :
 	CSubSquare()
 	{
+        m_fMean = 0;
+        m_fStdDev = 0;
 	};
 
 	CSubSquare(const CSubSquare & sq)
@@ -1704,7 +1706,11 @@ public :
 	CDSSProgress *				m_pProgress;
 
 public :
-	CFindHotPixelTask1() {}
+	CFindHotPixelTask1()
+    {
+        m_bMonochrome = false;
+        m_pProgress = nullptr;
+    }
 	virtual ~CFindHotPixelTask1() {};
 
 	void	Init(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
@@ -1788,7 +1794,7 @@ public :
 			m_pProgress->SetNrUsedProcessors(GetNrThreads());
 		lStep		= max(1L, lHeight/50);
 		lRemaining	= lHeight;
-		bResult = TRUE;
+
 		while (i<lHeight)
 		{
 			LONG			lAdd = min(lStep, lRemaining);

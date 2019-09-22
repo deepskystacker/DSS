@@ -27,6 +27,7 @@ private:
 public:
 	CLibraryEntry()
 	{
+        m_fTemperature = 0;
 	};
 
 	CLibraryEntry(PICTURETYPE Type, const std::vector<CString> & vFiles, double fTemp=LIBTEMP_UNKNOWN)

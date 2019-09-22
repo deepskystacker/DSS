@@ -21,7 +21,9 @@ IMPLEMENT_DYNAMIC(CFileProperty, CDialog)
 CFileProperty::CFileProperty(CWnd* pParent /*=nullptr*/)
 	: CDialog(CFileProperty::IDD, pParent)
 {
-
+    m_bChangeType = false;
+    m_bChangeISOSpeed = false;
+    m_bChangeExposure = false;
 }
 
 /* ------------------------------------------------------------------- */

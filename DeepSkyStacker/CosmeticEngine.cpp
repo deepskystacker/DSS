@@ -81,6 +81,9 @@ public :
 	{
 		m_bSimulate		= FALSE;
 		m_bInitDelta	= FALSE;
+        m_bHot          = false;
+        m_fThreshold    = 0;
+        m_pProgress     = nullptr;
 	};
 
 	virtual ~CDetectCosmeticTask()
@@ -203,7 +206,7 @@ public :
 			m_pProgress->SetNrUsedProcessors(GetNrThreads());
 		lStep		= max(1L, lHeight/50);
 		lRemaining	= lHeight;
-		bResult = TRUE;
+
 		while (i<lHeight)
 		{
 			LONG			lAdd = min(lStep, lRemaining);
@@ -290,9 +293,17 @@ private :
 	};
 
 public :
-	CCleanCosmeticTask()
-	{
-	};
+    CCleanCosmeticTask()
+    {
+        m_pProgress = nullptr;
+        m_lWidth = 0;
+        m_lHeight = 0;
+        m_bMonochrome = false;
+        m_bCFA = false;
+        m_CFAType = CFATYPE_NONE;
+        m_lColdFilterSize = 0;
+        m_lHotFilterSize = 0;
+    }
 
 	virtual ~CCleanCosmeticTask()
 	{
@@ -381,7 +392,7 @@ public :
 			m_pProgress->SetNrUsedProcessors(GetNrThreads());
 		lStep		= max(1L, m_lHeight/50);
 		lRemaining	= m_lHeight;
-		bResult = TRUE;
+
 		while (i<m_lHeight)
 		{
 			LONG			lAdd = min(lStep, lRemaining);

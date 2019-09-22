@@ -68,6 +68,8 @@ protected :
 		m_bSuperPixel	  = FALSE;
 		m_DateTime.wYear  = 0;
 		m_ExtraInfo.Clear();
+        m_lWidth = 0;
+        m_lHeight = 0;
 	};
 
 public :

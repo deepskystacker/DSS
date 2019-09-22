@@ -580,6 +580,8 @@ private :
 public :
 	CComputeOffsetTask()
 	{
+        m_pStackingEngine = nullptr;
+        m_lLast = 0;
 	};
 
 	virtual ~CComputeOffsetTask()
@@ -1924,7 +1926,7 @@ BOOL	CStackTask::Process()
 
 	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
-	bResult = TRUE;
+
 	while (i<lHeight)
 	{
 		LONG			lAdd = min(lStep, lRemaining);

@@ -164,7 +164,7 @@ public :
 				m_pProgress->SetNrUsedProcessors(GetNrThreads());
 			lStep		= max(1L, lHeight/50);
 			lRemaining	= lHeight;
-			bResult = TRUE;
+
 			while (i<lHeight)
 			{
 				LONG			lAdd = min(lStep, lRemaining);
@@ -191,7 +191,12 @@ public :
 	friend CFilterTask<TType>;
 
 public :
-	CInternalMedianFilterEngineT() {};
+	CInternalMedianFilterEngineT()
+    {
+        m_lWidth = 0;
+        m_lHeight = 0;
+        m_lFilterSize = 0;
+    };
 	virtual ~CInternalMedianFilterEngineT() {};
 
 	BOOL	ApplyFilter(CDSSProgress * pProgress);

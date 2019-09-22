@@ -36,6 +36,9 @@ private :
 public :
 	CStarAxisInfo()
 	{
+        m_lAngle = 0;
+        m_fRadius = 0;
+        m_fSum = 0;
 	};
 
 	CStarAxisInfo(const CStarAxisInfo & ai)
@@ -331,6 +334,8 @@ public :
 		bBrighterPixel = FALSE;
 		bMainOk		   = TRUE;
 		fMaxRadius	   = 0;
+        m_fBackground  = 0;
+        fIntensity     = 0;
 	};
 	BOOL	FillPixelDirection(double fX, double fY, CGrayBitmap & Bitmap, std::vector<CPixelDirection> & vPixels)
 	{
@@ -1032,6 +1037,7 @@ public :
 public :
 	CComputeLuminanceTask()
 	{
+        m_pProgress = nullptr;
 	};
 
 	virtual ~CComputeLuminanceTask()
@@ -1103,7 +1109,7 @@ BOOL	CComputeLuminanceTask::Process()
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
-	bResult = TRUE;
+
 	while (i<lHeight)
 	{
 		LONG			lAdd = min(lStep, lRemaining);

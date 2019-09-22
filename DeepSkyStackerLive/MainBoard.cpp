@@ -53,6 +53,8 @@ CMainBoard::CMainBoard(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	m_lNrStacked	= 0;
 	m_fTotalExposureTime = 0;
 	m_lNrEmails		= 0;
+    m_lProgressAchieved = 0;
+    m_lProgressTotal = 0;
 
 	m_LiveSettings.LoadFromRegistry();
 }

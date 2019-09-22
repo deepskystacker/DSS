@@ -58,9 +58,15 @@ private :
 	};
 
 public :
-	CChartSeries()
-	{
-	};
+    CChartSeries()
+    {
+        m_pChart = nullptr;
+        m_pMain = nullptr;;
+        m_pReference = nullptr;;
+        m_pOk = nullptr;;
+        m_pWrong = nullptr;;
+        m_pWarning = nullptr;;
+    }
 
 	~CChartSeries()
 	{

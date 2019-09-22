@@ -44,7 +44,7 @@ protected :
 	CWndImage *			m_pImage;
 
 public :
-	CWndImageSink() {};
+	CWndImageSink() : m_pImage(nullptr) {};
 	virtual ~CWndImageSink() {};
 
 	void	SetImage(CWndImage * pImage)

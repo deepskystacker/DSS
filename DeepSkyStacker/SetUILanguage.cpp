@@ -67,6 +67,7 @@ void	SetUILanguage(LANGID LangID)
 					szLang5 = szCzech;
 					break;
 				case LANG_ENGLISH :
+                default:
 					szLang1 = szEnglish;
 					szLang2 = szFrench;
 					szLang3 = szSpanish;

@@ -864,6 +864,7 @@ public :
 		m_TiffFormat	 = TF_16BITRGB;
 		m_lXStart = 0;
 		m_lYStart = 0;
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CTIFFWriterStacker()
@@ -1063,6 +1064,7 @@ public :
 		m_FitsFormat	 = FF_16BITRGB;
 		m_lXStart = 0;
 		m_lYStart = 0;
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CFITSWriterStacker()
@@ -1252,6 +1254,7 @@ public :
 	CTIFFReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress)
 		: CTIFFReader(szFileName, pProgress)
 	{
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CTIFFReadStacker() {};
@@ -1348,6 +1351,7 @@ public :
 	CFITSReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress)
 		: CFITSReader(szFileName, pProgress)
 	{
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CFITSReadStacker() {};

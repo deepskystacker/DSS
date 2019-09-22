@@ -28,6 +28,8 @@ public :
 		m_strFile	= szFile;
 		m_lStartRow = lStartRow;
 		m_lEndRow	= lEndRow;
+        m_lWidth = 0;
+        m_lNrBitmaps = 0;
 	};
 
 	CBitmapPart(const CBitmapPart & bp)

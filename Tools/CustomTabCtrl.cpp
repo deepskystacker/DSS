@@ -18,7 +18,8 @@ CCustomTabCtrlItem::CCustomTabCtrlItem(CString sText,LPARAM lParam) :
 			m_bShape(TAB_SHAPE1),
 			m_fSelected(FALSE),
 			m_fHighlighted(FALSE),
-			m_fHighlightChanged(FALSE)
+			m_fHighlightChanged(FALSE),
+            m_crColor(0)
 {
 }
 
@@ -1184,13 +1185,13 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 
 		{
 			// left spin background
-			int nBkType;
+			int nBkType = 0;
 			if(!tm.GetThemeEnumValue(SPNP_DOWNHORZ,0,TMT_BGTYPE,&nBkType))
 				AfxThrowUserException();
 			if(nBkType!=BT_IMAGEFILE)
 				AfxThrowUserException();
 
-			int nImageCount;
+			int nImageCount = 0;
 			if(!tm.GetThemeInt(SPNP_DOWNHORZ,0,TMT_IMAGECOUNT,&nImageCount))
 				AfxThrowUserException();
 			if(nImageCount!=4)
@@ -1203,7 +1204,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			if(!m_hBmpBkLeftSpin)
 				AfxThrowUserException();
 
-			int nLeftImageLayout;
+			int nLeftImageLayout = 0;
 			if(!tm.GetThemeEnumValue(SPNP_DOWNHORZ,0,TMT_IMAGELAYOUT,&nLeftImageLayout))
 				AfxThrowUserException();
 			if(nLeftImageLayout==IL_VERTICAL)
@@ -1216,13 +1217,13 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		}
 		{
 			// right spin background
-			int nBkType;
+			int nBkType = 0;
 			if(!tm.GetThemeEnumValue(SPNP_UPHORZ,0,TMT_BGTYPE,&nBkType))
 				AfxThrowUserException();
 			if(nBkType!=BT_IMAGEFILE)
 				AfxThrowUserException();
 
-			int nImageCount;
+			int nImageCount = 0;
 			if(!tm.GetThemeInt(SPNP_UPHORZ,0,TMT_IMAGECOUNT,&nImageCount))
 				AfxThrowUserException();
 			if(nImageCount!=4)
@@ -1236,7 +1237,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			if(!m_hBmpBkRightSpin)
 				AfxThrowUserException();
 
-			int nRightImageLayout;
+			int nRightImageLayout = 0;
 			if(!tm.GetThemeEnumValue(SPNP_UPHORZ,0,TMT_IMAGELAYOUT,&nRightImageLayout))
 				AfxThrowUserException();
 			if(nRightImageLayout==IL_VERTICAL)
@@ -1249,7 +1250,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 		}
 		{
 			// glyph color
-			int nGlyphType;
+			int nGlyphType = 0;
 			if(!tm.GetThemeEnumValue(SPNP_DOWNHORZ,0,TMT_GLYPHTYPE,&nGlyphType))
 				AfxThrowUserException();
 

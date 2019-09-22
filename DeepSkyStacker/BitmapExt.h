@@ -56,6 +56,9 @@ public :
 	CExtraInfo()
 	{
 		m_bPropagate = false;
+        m_Type = EIT_UNKNOWN;
+        m_lValue = 0;
+        m_fValue = 0;
 	};
 	CExtraInfo(const CExtraInfo & ei)
 	{
@@ -357,6 +360,8 @@ public :
 		m_strFile	= szFile;
 		m_lStartRow = lStartRow;
 		m_lEndRow	= lEndRow;
+        m_lWidth    = 0;
+        m_lNrBitmaps = 0;
 	};
 
 	CBitmapPartFile(const CBitmapPartFile & bp)
@@ -413,6 +418,9 @@ public :
 		m_lNrAddedBitmaps = 0;
 		m_bHomogenization = FALSE;
 		m_fMaxWeight	  = 0;
+        m_Method = MULTIBITMAPPROCESSMETHOD(0);
+        m_fKappa = 0.0f;
+        m_lNrIterations = 0;
 	};
 
 	virtual ~CMultiBitmap()
@@ -592,7 +600,14 @@ private :
 	};
 
 public :
-	CBitmapCharacteristics() {};
+    CBitmapCharacteristics()
+    {
+        m_lNrChannels = 0;
+        m_lBitsPerPixel = 0;
+        m_bFloat = false;
+        m_dwWidth = 0,
+        m_dwHeight = 0;
+    }
 	~CBitmapCharacteristics() {};
 
 	CBitmapCharacteristics(const CBitmapCharacteristics & bc)
@@ -1406,18 +1421,18 @@ public :
 	{
 	private :
 		CSmartPtr<CGrayBitmapT<TType> >		m_pBitmap;
-		LONG								m_lX,
-											m_lY;
 		TType *								m_pValue;
 		double								m_fMultiplier;
 		LONG								m_lWidth,
 											m_lHeight;
 
 	public :
-		CGrayPixelIterator()
+		CGrayPixelIterator() : CPixelIterator()
 		{
 			m_pValue = 0;
 			m_fMultiplier = 1.0;
+            m_lWidth = 0;
+            m_lHeight = 0;
 		};
 
 		~CGrayPixelIterator() {};
@@ -1588,7 +1603,7 @@ public :
 				m_pProgress->SetNrUsedProcessors(GetNrThreads());
 			lStep		= max(1L, lHeight/50);
 			lRemaining	= lHeight;
-			bResult = TRUE;
+
 			while (i<lHeight)
 			{
 				LONG			lAdd = min(lStep, lRemaining);
@@ -2395,6 +2410,7 @@ public :
 		m_lWidth	= 0;
 		m_lHeight	= 0;
 		m_pLine		= nullptr;
+        m_dwByteWidth = 0;
 	};
 
 	virtual ~C32BitsBitmap()
@@ -2878,6 +2894,8 @@ public :
 			m_pGreenValue = 0;
 			m_pBlueValue = 0;
 			m_fMultiplier = 1.0;
+            m_lWidth = 0;
+            m_lHeight = 0;
 		};
 
 		~CColorPixelIterator() {};
@@ -3402,23 +3420,28 @@ private :
 		m_ExtraInfo		=bi.m_ExtraInfo		;
 	};
 
+    void Init()
+    {
+        m_lWidth = 0;
+        m_lHeight = 0;
+        m_lBitPerChannel = 0;
+        m_lNrChannels = 0;
+        m_bCanLoad = FALSE;
+        m_CFAType = CFATYPE_NONE;
+        m_bMaster = FALSE;
+        m_bFloat = FALSE;
+        m_lISOSpeed = 0;
+        m_lGain = -1;
+        m_fExposure = 0.0;
+        m_fAperture = 0.0;
+        m_bFITS16bit = FALSE;
+        m_DateTime.wYear = 0;
+    }
+
 public :
 	CBitmapInfo()
 	{
-		m_lWidth		 = 0;
-		m_lHeight		 = 0;
-		m_lBitPerChannel = 0;
-		m_lNrChannels	 = 0;
-		m_bCanLoad		 = FALSE;
-		m_CFAType		 = CFATYPE_NONE;
-		m_bMaster		 = FALSE;
-		m_bFloat		 = FALSE;
-		m_lISOSpeed		 = 0;
-		m_lGain			 = -1;
-		m_fExposure		 = 0.0;
-		m_fAperture		 = 0.0;
-		m_bFITS16bit	 = FALSE;
-		m_DateTime.wYear = 0;
+        Init();
 	};
 
 	CBitmapInfo(const CBitmapInfo & bi)
@@ -3428,6 +3451,8 @@ public :
 
 	CBitmapInfo(LPCTSTR szFileName)
 	{
+        Init();
+
 		m_strFileName = szFileName;
 	};
 
@@ -3526,7 +3551,7 @@ private :
 	};
 
 public :
-	CAllDepthBitmap() {};
+    CAllDepthBitmap() : m_bDontUseAHD(false) {};
 	~CAllDepthBitmap() {};
 	CAllDepthBitmap(const CAllDepthBitmap & adb)
 	{

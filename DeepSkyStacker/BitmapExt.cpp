@@ -1163,13 +1163,19 @@ private :
 	double						m_fMinimum;
 
 public :
-	CSubtractTask()
-	{
-		m_fXShift = 0;
-		m_fYShift = 0;
-		m_bAddMode = FALSE;
-		m_fMinimum = 0;
-	};
+    CSubtractTask()
+    {
+        m_fXShift = 0;
+        m_fYShift = 0;
+        m_bAddMode = FALSE;
+        m_fMinimum = 0;
+        m_fRedFactor = 0;
+        m_fGreenFactor = 0;
+        m_fBlueFactor = 0;
+        m_fGrayFactor = 0;
+        m_bMonochrome = false;
+        m_pProgress = nullptr;
+    }
 
 	virtual ~CSubtractTask()
 	{
@@ -1473,6 +1479,12 @@ private :
 public :
 	CMultiplyTask()
 	{
+        m_fRedFactor = 0;
+        m_fGreenFactor = 0;
+        m_fBlueFactor = 0;
+        m_fGrayFactor = 0;
+        m_bMonochrome = false;
+        m_pProgress = nullptr;
 	};
 
 	virtual ~CMultiplyTask()

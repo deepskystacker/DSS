@@ -174,9 +174,15 @@ private :
 	CSmartPtr<CMemoryBitmap>	m_pHomBitmap;
 
 public :
-	CCombineTask()
-	{
-	};
+    CCombineTask()
+    {
+        m_lStartRow = 0;
+        m_lEndRow = 0;
+        m_lScanLineSize = 0;
+        m_pProgress = nullptr;
+        m_pMultiBitmap = nullptr;
+        m_pBuffer = nullptr;
+    }
 
 	virtual ~CCombineTask()
 	{
@@ -266,7 +272,6 @@ BOOL	CCombineTask::Process()
 	lStep		= max(1L, (m_lEndRow-m_lStartRow+1)/50);
 	lRemaining	= m_lEndRow-m_lStartRow+1;
 
-	bResult = TRUE;
 	while (i<=m_lEndRow && bResult)
 	{
 		DWORD			dwThreadId;

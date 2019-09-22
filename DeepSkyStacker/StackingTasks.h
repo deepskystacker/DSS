@@ -219,6 +219,7 @@ public :
 		m_fKappa	= 2.0;
 		m_lNrIterations = 5;
 		m_bUnmodified = FALSE;
+        m_TaskType = PICTURETYPE(0);
 	};
 
 	CTaskInfo(const CTaskInfo & ti)
@@ -408,6 +409,10 @@ private :
 		m_lNrDarkFlatFrames	= tasks.m_lNrDarkFlatFrames;
 		m_lNrFlatFrames		= tasks.m_lNrFlatFrames;
 		m_fMaxExposureTime	= tasks.m_fMaxExposureTime;
+
+        m_bDarkUsed         = tasks.m_bDarkUsed;
+        m_bBiasUsed         = tasks.m_bBiasUsed;
+        m_bFlatUsed         = tasks.m_bFlatUsed;
 	};
 
 public :

@@ -21,6 +21,7 @@ CPostCalibration::CPostCalibration()
 	: CChildPropertyPage(CPostCalibration::IDD)
 {
 	m_bFirstActivation = TRUE;
+    m_pStackingTasks = NULL;
 }
 
 /* ------------------------------------------------------------------- */
