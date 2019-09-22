@@ -208,7 +208,7 @@ public :
 
 BOOL	CCombineTask::DoTask(HANDLE hEvent)
 {
-
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = TRUE;
 
 	LONG				i;
@@ -221,39 +221,89 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 	// Create a message queue and signal the event
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
+	try
 	{
-		if (msg.message == WM_MT_PROCESS)
+		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
-			for (i = msg.wParam;i<msg.wParam+msg.lParam && !bEnd;i++)
+			if (msg.message == WM_MT_PROCESS)
 			{
-				void *				pScanLine;
-
-				vScanLines.resize(0);
-
-				for (LONG k = 0;k<lNrBitmaps && !bEnd;k++)
+				for (i = msg.wParam; i < msg.wParam + msg.lParam && !bEnd; i++)
 				{
-					LONG			lOffset;
+					void *				pScanLine;
 
-					lOffset = k * (m_lEndRow - m_lStartRow+1) * m_lScanLineSize
-							  + (i - m_lStartRow) * m_lScanLineSize;
-					pScanLine = (void*)(((BYTE*)m_pBuffer)+lOffset);
+					vScanLines.resize(0);
 
-					vScanLines.push_back(pScanLine);
-					if (m_pProgress)
-						bEnd = m_pProgress->IsCanceled();
+					for (LONG k = 0; k < lNrBitmaps && !bEnd; k++)
+					{
+						LONG			lOffset;
+
+						lOffset = k * (m_lEndRow - m_lStartRow + 1) * m_lScanLineSize
+							+ (i - m_lStartRow) * m_lScanLineSize;
+						pScanLine = (void*)(((BYTE*)m_pBuffer) + lOffset);
+
+						vScanLines.push_back(pScanLine);
+						if (m_pProgress)
+							bEnd = m_pProgress->IsCanceled();
+					};
+
+					if (!bEnd)
+						m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
 				};
 
-				if (!bEnd)
-					m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
-			};
+				SetEvent(hEvent);
+			}
+			else if (msg.message == WM_MT_STOP)
+				bEnd = TRUE;
+		};
+	}
+	catch (std::exception & e)
+	{
+		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
+	catch (CException & e)
+	{
+		e.ReportError();
+		e.Delete();
+		exit(1);
+	}
+	catch (ZException & ze)
+	{
+		CString errorMessage;
+		CString name(CA2CT(ze.name()));
+		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(ze.text(0)));
 
-			SetEvent(hEvent);
-		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = TRUE;
-	};
-
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			ze.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
+	catch (...)
+	{
+		CString errorMessage(_T("Unknown exception caught"));
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
 	return TRUE;
 };
 
