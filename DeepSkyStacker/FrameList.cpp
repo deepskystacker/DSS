@@ -452,7 +452,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 /* ------------------------------------------------------------------- */
 
-void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID dwJobID)
+void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
 {
 	LONG				lNrComets = 0;
 	BOOL				bReferenceFrameHasComet = FALSE;

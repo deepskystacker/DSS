@@ -47,7 +47,7 @@ Image *	CStackedSink::GetOverlayImage(CRect & rcClient)
 
 /* ------------------------------------------------------------------- */
 
-void	CStackedSink::SetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+void	CStackedSink::SetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 {
 	m_pt1 = pt1;
 	m_pt2 = pt2;

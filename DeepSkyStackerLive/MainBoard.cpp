@@ -1233,7 +1233,7 @@ void CMainBoard::OnMonitor()
 			};
 		}
 		else
-			m_vAllFiles = vNewFiles;
+			m_vAllFiles = std::move(vNewFiles);
 
 		hResult = SHGetDesktopFolder(&pIShellFolder);
 		if (hResult != S_OK)

@@ -666,7 +666,7 @@ operator ~ (const matrixT& m) _NO_THROW
 
 // unary inversion operator
 MAT_TEMPLATE inline matrixT
-operator ! (const matrixT m) _THROW_MATRIX_ERROR
+operator ! (const matrixT& m) _THROW_MATRIX_ERROR
 {
    matrixT temp = m;
    return temp.Inv();

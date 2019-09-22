@@ -988,7 +988,7 @@ BOOL CGradientCtrl::GetPegSide(BOOL rightup) const
 void CGradientCtrl::SetTooltipFormat(CString format) {m_ToolTipFormat = format;}
 CString CGradientCtrl::GetTooltipFormat() const {return m_ToolTipFormat;}
 
-void CGradientCtrl::SendBasicNotification(UINT code, CPeg peg, int index)
+void CGradientCtrl::SendBasicNotification(UINT code, CPeg const& peg, int index)
 {
 	//----- Send parent messages -----//
 	CWnd *pParent = GetParent();

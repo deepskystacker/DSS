@@ -39,10 +39,10 @@ class CChartTitle : public CChartObject
 public:
 	size_t GetStringCount() const;
 	std::string GetString(size_t Index) const;
-	void AddString(std::string NewString);
+	void AddString(std::string const& NewString);
 	void RemoveAll();
 
-	void SetFont(int iPointSize,std::string strFaceName)
+	void SetFont(int iPointSize, std::string const& strFaceName)
 	{
 		m_iFontSize = iPointSize;
 		m_strFontName = strFaceName;

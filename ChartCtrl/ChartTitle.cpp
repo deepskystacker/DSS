@@ -47,7 +47,7 @@ CChartTitle::~CChartTitle()
 
 }
 
-void CChartTitle::AddString(std::string NewString)
+void CChartTitle::AddString(std::string const& NewString)
 {
 	m_StringArray.push_back(NewString);
 }

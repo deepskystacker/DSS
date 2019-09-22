@@ -35,7 +35,7 @@ protected:
 
 	void GetPegRect(int index, CRect *rect, bool right);
 
-	void ParseToolTipLine(CString &tiptext, CPeg peg);
+	void ParseToolTipLine(CString &tiptext, CPeg const& peg);
 	void ShowTooltip(CPoint point, CString text);
 	CString ExtractLine(CString source, int line);
 	void SetTooltipText(CString text);

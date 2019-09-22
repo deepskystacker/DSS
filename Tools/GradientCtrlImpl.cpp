@@ -466,10 +466,10 @@ CString CGradientCtrlImpl::ExtractLine(CString source, int line)
 	textline = source;
 	CString op = textline.Mid(start, end-start);
 
-	return textline.Mid(start, end-start);
+	return op;
 }
 
-void CGradientCtrlImpl::ParseToolTipLine(CString &tiptext, CPeg peg)
+void CGradientCtrlImpl::ParseToolTipLine(CString &tiptext, CPeg const& peg)
 {
 	CString str;
 

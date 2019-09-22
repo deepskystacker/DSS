@@ -70,7 +70,7 @@ protected :
 public :
 	void	SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName);
 	void	OnStackedImageSaved();
-	void	OnSetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4);
+	void	OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4);
 
 };
 

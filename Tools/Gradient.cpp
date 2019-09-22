@@ -35,7 +35,7 @@ CGradient::CGradient()
 	m_Quantization = -1;
 }
 
-CGradient::CGradient(CGradient &src)
+CGradient::CGradient(CGradient const& src)
 {
 	m_StartPeg.colour = m_StartPeg.colour;
 	m_EndPeg.colour = m_EndPeg.colour;
@@ -52,7 +52,7 @@ CGradient::~CGradient()
 	pegs.clear();
 }
 
-CGradient& CGradient::operator =(CGradient &src)
+CGradient& CGradient::operator =(CGradient const& src)
 {
 	pegs = src.pegs;
 
@@ -85,7 +85,7 @@ int CGradient::AddPeg(COLORREF crColour, float fPosition, LONG newid)
 	return IndexFromId(peg.GetID());
 }
 
-int CGradient::AddPeg(CPeg peg)
+int CGradient::AddPeg(CPeg const& peg)
 {
 	return AddPeg(peg.colour, peg.position);
 }

@@ -198,7 +198,7 @@ public :
 		m_fAngle	= fAngle;
 	};
 
-	void	SetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+	void	SetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 	{
 		m_Msg = LEM_SETFOOTPRINT;
 		m_ptFootprint[0] = pt1;

@@ -304,7 +304,7 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				bResult = TRUE;
 			};
 		}
-		catch(math::matrix_error)
+		catch(math::matrix_error const&)
 		{
 			bResult = FALSE;
 		};
@@ -377,7 +377,7 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				bResult = TRUE;
 			};
 		}
-		catch(math::matrix_error)
+		catch(math::matrix_error const&)
 		{
 			bResult = FALSE;
 		};
@@ -431,7 +431,7 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				bResult = TRUE;
 			};
 		}
-		catch(math::matrix_error)
+		catch(math::matrix_error const&)
 		{
 			bResult = FALSE;
 		};

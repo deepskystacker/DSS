@@ -545,7 +545,7 @@ void CPictureListCtrl::RefreshList()
 
 /* ------------------------------------------------------------------- */
 
-void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType, BOOL bCheck, int nItem)
+void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType, BOOL bCheck, int nItem)
 {
 	CString				strFile = szFile;
 	TCHAR				szDrive[1+_MAX_DRIVE];

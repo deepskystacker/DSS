@@ -138,7 +138,7 @@ BOOL CDropFilesDlg::OnInitDialog()
 
 		DragFinish(m_hDropInfo);
 		if (!m_vFiles.size())
-			m_vFiles = vMasters;
+			m_vFiles = std::move(vMasters);
 		lNrFiles = (LONG)m_vFiles.size();
 	};
 

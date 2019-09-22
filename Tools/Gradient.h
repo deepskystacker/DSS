@@ -69,10 +69,10 @@ class CGradient : public CObject
 {
 public:
 	CGradient();
-	CGradient(CGradient &gradient);
+	CGradient(CGradient const& gradient);
 	virtual ~CGradient();
 
-	CGradient& operator =(CGradient &src);
+	CGradient& operator =(CGradient const& src);
 
 	DECLARE_SERIAL(CGradient)
 
@@ -84,7 +84,7 @@ public:
 	int SetPeg(int iIndex, CPeg peg);
 	int	SetPeg(int iIndex, COLORREF crColour);
 	int AddPeg(COLORREF crColour, float fPosition, LONG newid = -1);
-	int AddPeg(CPeg peg);
+	int AddPeg(CPeg const& peg);
 	void RemovePeg(int iIndex);
 	int IndexFromPos(float pos);
 

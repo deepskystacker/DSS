@@ -245,7 +245,7 @@ inline	void	UpdateImageOffsetsInList(LPCTSTR szImage, double fdX, double fdY, do
 
 /* ------------------------------------------------------------------- */
 
-inline void		SetFootprintInStackedImage(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+inline void		SetFootprintInStackedImage(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 

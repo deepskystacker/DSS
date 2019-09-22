@@ -326,7 +326,7 @@ void CImageViewTab::OnCopyToClipboard(NMHDR* pNMHDR, LRESULT* pResult)
 
 /* ------------------------------------------------------------------- */
 
-void CImageViewTab::OnSetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+void CImageViewTab::OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 {
 	m_StackedSink.SetFootprint(pt1, pt2, pt3, pt4);
 	m_Picture.Invalidate();

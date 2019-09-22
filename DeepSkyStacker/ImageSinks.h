@@ -273,7 +273,7 @@ public :
 			ComputeBackgroundValue();
 	};
 
-	void	SetRefStars(STARVECTOR & Stars)
+	void	SetRefStars(STARVECTOR const& Stars)
 	{
 		if (g_bShowRefStars)
 		{

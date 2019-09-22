@@ -303,7 +303,7 @@ public :
 		return lIndice>=0 ? m_vJobs[lIndice] : m_NullJob;
 	};
 
-	CJob & GetJob(GUID dwID)
+	CJob & GetJob(GUID const& dwID)
 	{
 		LONG			lIndice = -1;
 
@@ -316,7 +316,7 @@ public :
 		return lIndice>=0 ? m_vJobs[lIndice] : m_NullJob;
 	};
 
-	BOOL	RemoveJob(GUID dwID)
+	BOOL	RemoveJob(GUID const& dwID)
 	{
 		LONG			lIndice = -1;
 		for (LONG i = 0;i<m_vJobs.size() && lIndice<0;i++)
@@ -374,7 +374,7 @@ public :
 		return FALSE;
 	};
 
-	void	FillTasks(CAllStackingTasks & tasks, GUID dwJobID = MAINJOBID);
+	void	FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID = MAINJOBID);
 	BOOL	GetReferenceFrame(CString & strReferenceFrame);
 	LONG	GetNrUnregisteredCheckedLightFrames(LONG lGroupID = -1);
 
