@@ -63,7 +63,7 @@ END_EASYSIZE_MAP
 
 /* ------------------------------------------------------------------- */
 
-BOOL CRecommendedSettings::OnInitDialog() 
+BOOL CRecommendedSettings::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -71,7 +71,7 @@ BOOL CRecommendedSettings::OnInitDialog()
 
     CRect			rcClient;
     GetClientRect(&rcClient);
-    
+
     CRect			rcGrip;
 
 
@@ -105,7 +105,7 @@ BOOL CRecommendedSettings::OnInitDialog()
 void CRecommendedSettings::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	
+
 	UPDATE_EASYSIZE;
 };
 

@@ -1,14 +1,14 @@
 // =======================================================
-// 
+//
 //                    CWndImage.cpp
 //             WndImage class implementation
-// 
+//
 //           Copyright (C) 2000 Peter Hauptmann
 //
-//  Can be used and distributed freely 
+//  Can be used and distributed freely
 //          as long as the source copyright stays intact
-// 
-//  updated version can be found under 
+//
+//  updated version can be found under
 //          http://buerger.metropolis.de/bitbucket/
 //
 // -------------------------------------------------------
@@ -150,7 +150,7 @@ static Bitmap * GetBitmap(CRect & rcOut, HBITMAP hBitmap, CRect & rcSrc, CRect &
 {
 	Bitmap *		pBitmap = new Bitmap(hBitmap, NULL);
 	Bitmap *		pOutBitmap;
-	
+
 	if (pInBitmap)
 	{
 		// Check the size of the bitmap and if it's the same keep it
@@ -231,7 +231,7 @@ BOOL CWndImage::CreateInternalBitmap()
 BOOL CWndImage::CreateToolbarBitmap()
 {
 	BOOL			bResult = FALSE;
-	
+
 	if (m_pButtonToolbar && m_bInvalidateToolbarBitmap)
 	{
 		if (m_pToolbarImage)
@@ -584,7 +584,7 @@ BOOL CWndImage::OnEraseBkgnd(CDC* pDC)
 {
 	CRect			r;
 	CreateBufferBitmap();
-	
+
 	GetClientRect(&r);
 
 	if (m_pBufferImage && m_pBufferImage->GetLastStatus()==Ok)
@@ -600,14 +600,14 @@ BOOL CWndImage::OnEraseBkgnd(CDC* pDC)
 
 /* ------------------------------------------------------------------- */
 
-void CWndImage::OnPaint() 
+void CWndImage::OnPaint()
 {
 	DWORD style = GetStyle();
 	if (!(style & WS_VISIBLE)) return;
 
 	CRect			r;
 	CreateBufferBitmap();
-	
+
 	GetClientRect(&r);
 
 	CPaintDC dc(this);
@@ -659,7 +659,7 @@ BOOL CWndImage::CreateFromStatic(CWnd * sc)
 	CreateEx(exstyle, NULL, s,  style, r, dlg, dlgID);
 	SetFocus();
 
-	if (bmp) 
+	if (bmp)
 	{
 		SetImg(bmp, false);
 		SetBltMode(bltFitXY);
@@ -678,20 +678,20 @@ void CWndImage::SetImg(HBITMAP bmp, bool shared)
 	{
 		HGDIOBJ prev = m_bmp.Detach();
 
-		if (prev && !m_shared) 
+		if (prev && !m_shared)
 			DeleteObject(prev);
 
 		m_bmp.Attach(bmp);
 		m_shared = shared;
 
-		if (bmp != 0) 
+		if (bmp != 0)
 		{
 			BITMAP bmp;
 			m_bmp.GetBitmap(&bmp);
 			m_bmpSize.cx = bmp.bmWidth;
 			m_bmpSize.cy = bmp.bmHeight;
 		}
-		else 
+		else
 			m_bmpSize = CSize(0,0);
 
 		SetSourceRect();      // use entire new image
@@ -713,7 +713,7 @@ void CWndImage::SetImg(CBitmap * bmp)
 
 bool CWndImage::SetImg(LPCTSTR resID, HINSTANCE instance)
 {
-	if (!instance) 
+	if (!instance)
 		instance = AfxGetResourceHandle();
 
 	HBITMAP bmp = ::LoadBitmap(instance, resID);
@@ -793,7 +793,7 @@ void CWndImage::SetSourceRect()
 
 void CWndImage::Recalc(bool invalidate)
 {
-	if (!::IsWindow(m_hWnd)) 
+	if (!::IsWindow(m_hWnd))
 		return;
 
 	CRect & src = m_srcRect;
@@ -803,12 +803,12 @@ void CWndImage::Recalc(bool invalidate)
 	GetClientRect(&r);
 	CSize wndSize = r.Size();
 
-	if (wndSize.cx == 0 || wndSize.cy == 0 || src.IsRectEmpty()) 
+	if (wndSize.cx == 0 || wndSize.cy == 0 || src.IsRectEmpty())
 		dst.SetRectEmpty();
-	else 
+	else
 	{
 		dst.left = dst.top = 0;
-		switch (m_bltMode) 
+		switch (m_bltMode)
 		{
 		default           :
 		case bltNormal    :  dst.right = src.Width(); dst.bottom = src.Height(); break;
@@ -825,12 +825,12 @@ void CWndImage::Recalc(bool invalidate)
 			double zoomX = ((double) wndSize.cx) / src.Width();
 			double zoomY = ((double) wndSize.cy) / src.Height();
 
-			if (m_bltMode == bltFitX) 
+			if (m_bltMode == bltFitX)
 				zoom = zoomX;
-			else if (m_bltMode == bltFitY) 
+			else if (m_bltMode == bltFitY)
 				zoom = zoomY;
 			else    // for stretchXY take smaller, for stretchSm take larger:
-				zoom = ((m_bltMode == bltFitXY) ^ (zoomX > zoomY)) ? zoomX : zoomY;  
+				zoom = ((m_bltMode == bltFitXY) ^ (zoomX > zoomY)) ? zoomX : zoomY;
 
 			m_zoomX = m_zoomY = zoom;       // so user can query these values
 
@@ -842,38 +842,38 @@ void CWndImage::Recalc(bool invalidate)
 
 		}
 
-		switch (m_alignX) 
+		switch (m_alignX)
 		{
-		case bltCenter :  
-			m_origin.x = (wndSize.cx-dst.Width()) / 2; 
+		case bltCenter :
+			m_origin.x = (wndSize.cx-dst.Width()) / 2;
 			break;
-		case bltRight  :  
-			m_origin.x =  wndSize.cx-dst.Width();      
+		case bltRight  :
+			m_origin.x =  wndSize.cx-dst.Width();
 			break;
-		case bltLeft   :  
-			m_origin.x =  0;      
+		case bltLeft   :
+			m_origin.x =  0;
 			break;
 		}
 		dst.left += m_origin.x;
 		dst.right += m_origin.x;
 
-		switch (m_alignY) 
+		switch (m_alignY)
 		{
-		case bltCenter :  
-			m_origin.y = (wndSize.cy-dst.Height()) / 2; 
+		case bltCenter :
+			m_origin.y = (wndSize.cy-dst.Height()) / 2;
 			break;
-		case bltRight  :  
-			m_origin.y =  wndSize.cy-dst.Height();      
+		case bltRight  :
+			m_origin.y =  wndSize.cy-dst.Height();
 			break;
-		case bltTop    :  
-			m_origin.y = 0; 
+		case bltTop    :
+			m_origin.y = 0;
 			break;
 		}
 		dst.top += m_origin.y;
 		dst.bottom += m_origin.y;
 	}
 
-	if (m_bltMode == bltTile) 
+	if (m_bltMode == bltTile)
 	{
 		dst.SetRect(0,0, wndSize.cx, wndSize.cy);
 	}
@@ -888,7 +888,7 @@ void CWndImage::Recalc(bool invalidate)
 
 // ------------------------------------------------------------------
 
-void CWndImage::OnSize(UINT nType, int cx, int cy) 
+void CWndImage::OnSize(UINT nType, int cx, int cy)
 {
 	CWnd::OnSize(nType, cx, cy);
 	Recalc();
@@ -919,7 +919,7 @@ void CWndImage::SetOrigin(int origX, int origY)
 
 void CWndImage::SetOriginX(int origX)
 {
-	m_origin.x = origX; 
+	m_origin.x = origX;
 	m_alignX = bltCustom;
 	Recalc();
 }
@@ -939,7 +939,7 @@ void CWndImage::SetOriginY(int origY)
 HBITMAP CWndImage::GetBitmap(bool detach)
 {
 	HBITMAP ret = (HBITMAP) m_bmp.m_hObject;
-	if (detach) 
+	if (detach)
 	{
 		m_shared = true;
 		//SetImg((HBITMAP)0);
@@ -951,7 +951,7 @@ HBITMAP CWndImage::GetBitmap(bool detach)
 //  SetbackBrush
 // ------------------------------------------------------------------
 
-void CWndImage::OnLButtonDown(UINT nFlags, CPoint point) 
+void CWndImage::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	BOOL				bPass = TRUE;
 
@@ -985,7 +985,7 @@ void CWndImage::OnLButtonDown(UINT nFlags, CPoint point)
 
 // ------------------------------------------------------------------
 
-void CWndImage::OnLButtonUp(UINT nFlags, CPoint point) 
+void CWndImage::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	BOOL				bPass = TRUE;
 
@@ -1019,7 +1019,7 @@ void CWndImage::OnLButtonUp(UINT nFlags, CPoint point)
 
 // ------------------------------------------------------------------
 
-void CWndImage::OnMouseMove(UINT nFlags, CPoint point) 
+void CWndImage::OnMouseMove(UINT nFlags, CPoint point)
 {
 	BOOL				bPass = TRUE;
 	CWnd *				pFocus = GetFocus();
@@ -1068,7 +1068,7 @@ void CWndImage::OnMouseMove(UINT nFlags, CPoint point)
 
 // ------------------------------------------------------------------
 
-void CWndImage::OnRButtonDown(UINT nFlags, CPoint point) 
+void CWndImage::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	BOOL				bPass = TRUE;
 
@@ -1103,7 +1103,7 @@ void CWndImage::RefreshZoom()
 		CRect				rcClient;
 
 		GetClientRect(&rcClient);
-		
+
 		pdc= GetDC();
 		{
 			Graphics	graphics(pdc->GetSafeHdc());
@@ -1153,7 +1153,7 @@ void CWndImage::RefreshToolbar()
 		CRect				rcToolbar;
 
 		GetToolbarRect(rcToolbar);
-		
+
 		pdc= GetDC();
 		{
 			Graphics	graphics(pdc->GetSafeHdc());
@@ -1279,7 +1279,7 @@ void CWndImage::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 // ------------------------------------------------------------------
 
-BOOL CWndImage::PreTranslateMessage(MSG* pMsg) 
+BOOL CWndImage::PreTranslateMessage(MSG* pMsg)
 {
 	if (pMsg->message == WM_KEYDOWN)
 	{
@@ -1290,14 +1290,14 @@ BOOL CWndImage::PreTranslateMessage(MSG* pMsg)
 
 // ------------------------------------------------------------------
 
-void CWndImage::OnSetFocus(CWnd* pOldWnd) 
+void CWndImage::OnSetFocus(CWnd* pOldWnd)
 {
 	CWnd::OnSetFocus(pOldWnd);
 }
 
 // ------------------------------------------------------------------
 
-BOOL CWndImage::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) 
+BOOL CWndImage::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// Zoom in/out
 	ScreenToClient(&pt);

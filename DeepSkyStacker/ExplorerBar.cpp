@@ -128,11 +128,11 @@ void CExplorerBar::DrawGradientRect(CDC * pDC, const CRect & rc, COLORREF crColo
 	// Use GDI+
 	#ifndef NOGDIPLUS
 	Graphics 				graphics(pDC->GetSafeHdc());
-	LinearGradientBrush		brush(PointF(rc.left, rc.top), 
-					PointF(rc.right, rc.bottom), 
-					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	LinearGradientBrush		brush(PointF(rc.left, rc.top),
+					PointF(rc.right, rc.bottom),
+					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
-	
+
 	graphics.FillRectangle(&brush, RectF(rc.left, rc.top, rc.Width(), rc.Height()));
 	#endif // NOGDIPLUS
 };
@@ -147,12 +147,12 @@ void CExplorerBar::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 
 	COLORREF		crColor1 = RGB(90, 90, 90);
 	COLORREF		crColor2 = RGB(90, 90, 90);
-			
-	LinearGradientBrush		brush(PointF(rc.right, rc.top), 
-					PointF(rc.left, rc.bottom), 
-					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+
+	LinearGradientBrush		brush(PointF(rc.right, rc.top),
+					PointF(rc.left, rc.bottom),
+					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
-	
+
 	graphics.FillRectangle(&brush, RectF(rc.left, rc.top, rc.Width(), rc.Height()));
 
 	#endif // NOGDIPLUS
@@ -190,18 +190,18 @@ void CExplorerBar::DrawGradientFrameRect(CDC * pDC, const CRect & rc, BOOL bActi
 
 	#ifndef NOGDIPLUS
 	Graphics 				graphics(pDC->GetSafeHdc());
-	LinearGradientBrush		brush(PointF(rc.left, rc.top), 
-					PointF(rc.right, rc.bottom), 
-					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	LinearGradientBrush		brush(PointF(rc.left, rc.top),
+					PointF(rc.right, rc.bottom),
+					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 
 	GraphicsPath 	path(FillModeWinding);
-	
-	CRect			rc1(rcTop.left, rcTop.top + 5, rcTop.right, rcTop.bottom), 
+
+	CRect			rc1(rcTop.left, rcTop.top + 5, rcTop.right, rcTop.bottom),
 					rc2(rcTop.left+5, rcTop.top, rcTop.right-5, rcTop.bottom),
-					rc3(rcTop.left, rcTop.top, rcTop.left+10, rcTop.top+10), 
+					rc3(rcTop.left, rcTop.top, rcTop.left+10, rcTop.top+10),
 					rc4(rcTop.right-10, rcTop.top, rcTop.right, rcTop.top+10);
-	
+
 	path.AddRectangle(RectF(rc1.left, rc1.top, rc1.Width(), rc1.Height()));
 	path.AddRectangle(RectF(rc2.left, rc2.top, rc2.Width(), rc2.Height()));
 	path.AddEllipse(RectF(rc3.left, rc3.top, rc3.Width(), rc3.Height()));
@@ -230,10 +230,10 @@ void CExplorerBar::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 	Graphics 		graphics(pDC->GetSafeHdc());
 
 	GraphicsPath 	path(FillModeWinding);
-	
-	CRect			rc1(rc.left+3, rc.top, rc.right-3, rc.bottom), 
+
+	CRect			rc1(rc.left+3, rc.top, rc.right-3, rc.bottom),
 					rc2(rc.left, rc.top+3, rc.right, rc.bottom-3);
-	
+
 	path.AddRectangle(RectF(rc1.left, rc1.top, rc1.Width(), rc1.Height()));
 	path.AddRectangle(RectF(rc2.left, rc2.top, rc2.Width(), rc2.Height()));
 	path.AddEllipse(RectF(rc.left, rc.top, 6, 6));
@@ -266,7 +266,7 @@ BOOL CExplorerBar::OnEraseBkgnd(CDC* pDC)
 			      (rc != m_rcBackground) ||
 				  (GetScrollPos(SB_VERT) != m_nScrollPos);
 	};
-	
+
 
 	if (bRedraw)
 	{
@@ -430,7 +430,7 @@ void CExplorerBar::OnLButtonDown( UINT nFlags, CPoint pt)
 
 /* ------------------------------------------------------------------- */
 
-void CExplorerBar::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CExplorerBar::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	CScrollDialog::OnVScroll(nSBCode, nPos, pScrollBar);
 	InvalidateRect(NULL);
@@ -505,7 +505,7 @@ BOOL CExplorerBar::OnInitDialog()
 
 	m_MRUSettings.InitFromRegistry();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -865,7 +865,7 @@ void CExplorerBar::LoadSettingFile()
 	strBaseExtension = _T(".dsssettings");
 	strTitle.LoadString(IDS_TITLE_LOADSETTINGS);
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
 								NULL,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -901,7 +901,7 @@ void CExplorerBar::LoadSettingFile()
 			m_MRUSettings.Add(strFile);
 			m_MRUSettings.SaveToRegistry();
 		};
-	};	
+	};
 };
 
 /* ------------------------------------------------------------------- */
@@ -1012,7 +1012,7 @@ void CExplorerBar::SaveSettingFile()
 	strBaseExtension = _T(".dsssettings");
 	strTitle.LoadString(IDS_TITLE_SAVESETTINGS);
 
-	CFileDialog					dlgSave(FALSE, 
+	CFileDialog					dlgSave(FALSE,
 								strBaseExtension,
 								NULL,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_DONTADDTORECENT,

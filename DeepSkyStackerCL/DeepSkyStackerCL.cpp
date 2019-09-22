@@ -268,7 +268,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	GdiplusStartupOutput	gdiSO;
 	ULONG_PTR				gdiplusToken;
 	ULONG_PTR				gdiHookToken;
-  
+
 	// Initialize GDI+.
 	gdiplusStartupInput.SuppressBackgroundThread = TRUE;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
@@ -278,7 +278,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::vector<CString>	vCommandLine;
 
 	_tprintf(_T("DeepSkyStacker %s Command Line\n\n"), _T(VERSION_DEEPSKYSTACKER));
-	
+
 	// Decode command line
 	if (!DecodeCommandLine(argc, argv))
 	{

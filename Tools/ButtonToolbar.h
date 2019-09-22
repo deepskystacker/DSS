@@ -27,7 +27,7 @@ class CMaskedButton
 public :
 	DWORD				m_dwID;
 	MASKEDBUTTONTYPE	m_Type;
-	MASKEDBUTTONSTATUS	m_Status;	
+	MASKEDBUTTONSTATUS	m_Status;
 	Bitmap *			m_pUp;
 	Bitmap *			m_pDown;
 	Bitmap *			m_pHot;
@@ -52,7 +52,7 @@ private :
 	};
 
 public :
-	CMaskedButton(DWORD dwID = 0) 
+	CMaskedButton(DWORD dwID = 0)
 	{
 		m_dwID			= dwID;
 		m_Status		= MBS_UP;
@@ -75,7 +75,7 @@ public :
 		return (*this);
 	};
 
-	virtual ~CMaskedButton() 
+	virtual ~CMaskedButton()
 	{
 	};
 
@@ -89,7 +89,7 @@ public :
 			delete m_pHot;
 		if (m_pDisabled)
 			delete m_pDisabled;
-		
+
 		m_pUp			= NULL;
 		m_pDown			= NULL;
 		m_pHot			= NULL;
@@ -210,7 +210,7 @@ protected :
 	};
 
 public :
-	CButtonToolbar() 
+	CButtonToolbar()
 	{
 		m_bTop			= FALSE;
 		m_bMouseIn		= FALSE;
@@ -218,7 +218,7 @@ public :
 		m_pSink			= NULL;
 	};
 
-	virtual ~CButtonToolbar() 
+	virtual ~CButtonToolbar()
 	{
 		for (LONG i = 0;i<m_vButtons.size();i++)
 			m_vButtons[i].Free();

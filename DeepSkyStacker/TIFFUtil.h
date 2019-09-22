@@ -27,9 +27,9 @@ class CTIFFHeader
 {
 protected :
 	int					w, h;
-    uint16				spp, 
-						bpp, 
-						photo, 
+    uint16				spp,
+						bpp,
+						photo,
 						compression,
 						planarconfig,
 						sampleformat;
@@ -47,7 +47,7 @@ protected :
 	SYSTEMTIME			m_DateTime;
 
 public :
-	CTIFFHeader() 
+	CTIFFHeader()
 	{
 		TIFFSetWarningHandler(NULL);
 		TIFFSetWarningHandlerExt(NULL);
@@ -202,7 +202,7 @@ public :
 		m_pProgress   = pProgress;
 	};
 
-	virtual ~CTIFFReader() 
+	virtual ~CTIFFReader()
 	{
 		Close();
 	};
@@ -253,7 +253,7 @@ public :
 		m_Format	  = TF_UNKNOWN;
 	};
 
-	virtual ~CTIFFWriter() 
+	virtual ~CTIFFWriter()
 	{
 		Close();
 	};

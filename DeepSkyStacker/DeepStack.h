@@ -29,7 +29,7 @@ private :
 	CDSSProgress *			m_pProgress;
 
 public :
-	CDeepStack() 
+	CDeepStack()
 	{
 		m_bNewStackedBitmap = FALSE;
 		m_pProgress			= NULL;

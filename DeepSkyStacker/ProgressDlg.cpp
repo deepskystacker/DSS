@@ -49,13 +49,13 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CProgressDlg message handlers
 
-void CProgressDlg::OnCancel() 
+void CProgressDlg::OnCancel()
 {
 	m_bCancelled	= TRUE;
 	//CDialog::OnCancel();
 }
 
-void CProgressDlg::OnStop() 
+void CProgressDlg::OnStop()
 {
 	m_bCancelled	= TRUE;
 	m_Cancel.EnableWindow(FALSE);

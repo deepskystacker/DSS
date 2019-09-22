@@ -34,7 +34,7 @@
  *    mailto:hans.buehler@student.hu-berlin.de
  */
 
-class cdxCRot90DC : public CDC  
+class cdxCRot90DC : public CDC
 {
 	DECLARE_DYNAMIC(cdxCRot90DC);
 

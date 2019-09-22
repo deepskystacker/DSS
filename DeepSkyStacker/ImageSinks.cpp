@@ -53,7 +53,7 @@ SELECTRECTMODE	CSelectRectSink::GetModeFromPosition(LONG lX, LONG lY)
 	CRect			rcScreen;
 
 	// Transform the select rectangle coordinates to
-	// 
+	//
 	rcScreen = m_rcSelect;
 	m_pImage->BitmapToScreen(rcScreen);
 
@@ -67,28 +67,28 @@ SELECTRECTMODE	CSelectRectSink::GetModeFromPosition(LONG lX, LONG lY)
 		if (rcScreen.PtInRect(CPoint(lX, lY)))
 			Result = SRM_MOVE;
 
-		// Top 
+		// Top
 		rcCorner.left = rcScreen.left;		rcCorner.right  = rcScreen.right;
 		rcCorner.top  = rcScreen.top-1;		rcCorner.bottom = rcScreen.top+1;
 
 		if (rcCorner.PtInRect(CPoint(lX, lY)))
 			Result = SRM_MOVETOP;
 
-		// Bottom 
+		// Bottom
 		rcCorner.left = rcScreen.left;		rcCorner.right  = rcScreen.right;
 		rcCorner.top  = rcScreen.bottom-1;	rcCorner.bottom = rcScreen.bottom+1;
 
 		if (rcCorner.PtInRect(CPoint(lX, lY)))
 			Result = SRM_MOVEBOTTOM;
 
-		// Left 
+		// Left
 		rcCorner.left = rcScreen.left-1;	rcCorner.right  = rcScreen.left+1;
 		rcCorner.top  = rcScreen.top;		rcCorner.bottom = rcScreen.bottom;
 
 		if (rcCorner.PtInRect(CPoint(lX, lY)))
 			Result = SRM_MOVELEFT;
 
-		// Right 
+		// Right
 		rcCorner.left = rcScreen.right-1;	rcCorner.right  = rcScreen.right+1;
 		rcCorner.top  = rcScreen.top;		rcCorner.bottom = rcScreen.bottom;
 
@@ -347,8 +347,8 @@ void CSelectRectSink::GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDriz
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY) 
-{ 
+BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
+{
 	BOOL			bResult = FALSE;
 
 	if (m_bInSelecting)
@@ -379,8 +379,8 @@ BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY) 
-{ 
+BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
+{
 	BOOL			bResult = FALSE;
 
 	// Start drawing the rectangle
@@ -390,7 +390,7 @@ BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 	m_fXStart = lX;	m_fYStart = lY;
 	m_pImage->ScreenToBitmap(m_fXStart, m_fYStart);
-	
+
 	m_fXEnd = m_fXStart ;	m_fYEnd = m_fYStart;
 	m_rcStart = m_rcSelect;
 	UpdateSelectRect();
@@ -402,8 +402,8 @@ BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY) 
-{ 
+BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
+{
 	BOOL			bResult = FALSE;
 
 	if (m_bInSelecting)
@@ -419,13 +419,13 @@ BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
 		bResult = TRUE;
 	};
 
-	return bResult; 
+	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient) 
-{ 
+Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
+{
 	Image *				pResult = NULL;
 	HDC					hDC = GetDC(NULL);
 
@@ -438,7 +438,7 @@ Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 		CRect			rcScreen;
 
 		// Transform the select rectangle coordinates to
-		// 
+		//
 		if (!m_rcSelect.IsRectEmpty())
 		{
 			CRect		rc2xDrizzle;
@@ -519,7 +519,7 @@ Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 
 	ReleaseDC(NULL, hDC);
 
-	return pResult; 
+	return pResult;
 };
 
 /* ------------------------------------------------------------------- */
@@ -528,7 +528,7 @@ Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 void	CEditStarsSink::SetLightFrame(LPCTSTR szFileName)
 {
 	CLightFrameInfo		bmpInfo;
-	
+
 	m_QualityGrid.Clear();
 	bmpInfo.SetBitmap(szFileName, FALSE);
 	if (bmpInfo.m_bInfoOk)
@@ -849,9 +849,9 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 			{
 				// Draw the triangle
 				PointF		pt[3];
-				
-				pt[0] = tr.pt1, 
-				pt[1] = tr.pt2, 
+
+				pt[0] = tr.pt1,
+				pt[1] = tr.pt2,
 				pt[2] = tr.pt3;
 
 				m_pImage->BitmapToScreen(pt[0]);
@@ -1078,7 +1078,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 				fNearestOldStarDistance = 50;
 				lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, m_vStars, bInOldStar, fNearestOldStarDistance);
-				
+
 				m_lRemovedIndice = -1;
 				m_bRemoveComet	 = FALSE;
 				if (m_bCometMode)
@@ -1089,10 +1089,10 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						if (m_bComet)
 						{
 							// Check for comet removal
-							if ((lNearestNewStar>=0) && 
+							if ((lNearestNewStar>=0) &&
 								vStars[lNearestNewStar].IsInRadius(m_fXComet-rcCheck.left, m_fYComet-rcCheck.top))
 								bRemoveComet = TRUE;
-							else if ((lNearestOldStar>0) && 
+							else if ((lNearestOldStar>0) &&
   								     m_vStars[lNearestOldStar].IsInRadius(m_fXComet, m_fYComet))
 								bRemoveComet = TRUE;
 							if (bRemoveComet)
@@ -1311,7 +1311,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 					CPointExt		ptScreen = m_ptCursor;
 
 					m_pImage->BitmapToScreen(ptScreen.X, ptScreen.Y);
-					
+
 					if ((ptScreen.X >= rcClient.right-150) &&
 						(ptScreen.Y <= 150))
 					{
@@ -1345,7 +1345,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 					format.SetAlignment(StringAlignmentNear);
 					format.SetLineAlignment(StringAlignmentNear);
 
-					strText.Format(IDS_LIGHTFRAMEINFO, m_lNrStars, m_fScore, m_fFWHM);				
+					strText.Format(IDS_LIGHTFRAMEINFO, m_lNrStars, m_fScore, m_fFWHM);
 					if (m_bComet)
 					{
 						CString			strComet;

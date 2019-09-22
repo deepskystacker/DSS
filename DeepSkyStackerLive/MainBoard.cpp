@@ -33,7 +33,6 @@ const	DWORD			WM_FOLDERCHANGE	= WM_USER+100;
 #define LOG_YELLOW_TEXT_NORMAL RGB(128, 128, 0)
 #define LOG_YELLOW_TEXT m_bDarkMode ? LOG_YELLOW_TEXT_DARK : LOG_YELLOW_TEXT_NORMAL
 
-
 /* ------------------------------------------------------------------- */
 // CMainBoard dialog
 
@@ -108,11 +107,11 @@ void CMainBoard::DrawGradientRect(CDC * pDC, const CRect & rc, COLORREF crColor1
 	#ifndef NOGDIPLUS
 	Graphics *		pGraphics;
 	Brush *			pBrush;
-	
+
 	pGraphics = new Graphics(pDC->GetSafeHdc());
-	pBrush = new LinearGradientBrush(PointF(rc.left, rc.top), 
-					PointF(rc.right, rc.bottom), 
-					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	pBrush = new LinearGradientBrush(PointF(rc.left, rc.top),
+					PointF(rc.right, rc.bottom),
+					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 	pGraphics->FillRectangle(pBrush, RectF(rc.left, rc.top, rc.Width(), rc.Height()));
 	delete pBrush;
@@ -130,11 +129,11 @@ void CMainBoard::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 	Brush *			pBrush;
 	COLORREF		crColor1 = m_bDarkMode ? RGB(10, 10, 10) : RGB(70, 70, 70);
 	COLORREF		crColor2 = m_bDarkMode ? RGB(80, 80, 80) : RGB(230, 230, 230);
-	
+
 	pGraphics = new Graphics(pDC->GetSafeHdc());
-	pBrush = new LinearGradientBrush(PointF(rc.right, rc.top), 
-					PointF(rc.left, rc.bottom), 
-					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	pBrush = new LinearGradientBrush(PointF(rc.right, rc.top),
+					PointF(rc.left, rc.bottom),
+					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 	pGraphics->FillRectangle(pBrush, RectF(rc.left, rc.top, rc.Width(), rc.Height()));
 
@@ -178,19 +177,19 @@ void CMainBoard::DrawGradientFrameRect(CDC * pDC, LPCTSTR szTitle, const CRect &
 	Brush *			pBrush;
 	Pen *			pPen;
 	GraphicsPath *	pPath;
-	
+
 	pGraphics = new Graphics(pDC->GetSafeHdc());
-	pBrush = new LinearGradientBrush(PointF(rc.left, rc.top), 
-					PointF(rc.right, rc.bottom), 
-					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	pBrush = new LinearGradientBrush(PointF(rc.left, rc.top),
+					PointF(rc.right, rc.bottom),
+					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 
 	pPath = new GraphicsPath(FillModeWinding);
-	CRect			rc1(rcTop.left, rcTop.top + 5, rcTop.right, rcTop.bottom), 
+	CRect			rc1(rcTop.left, rcTop.top + 5, rcTop.right, rcTop.bottom),
 					rc2(rcTop.left+5, rcTop.top, rcTop.right-5, rcTop.bottom),
-					rc3(rcTop.left, rcTop.top, rcTop.left+10, rcTop.top+10), 
+					rc3(rcTop.left, rcTop.top, rcTop.left+10, rcTop.top+10),
 					rc4(rcTop.right-10, rcTop.top, rcTop.right, rcTop.top+10);
-	
+
 	pPath->AddRectangle(RectF(rc1.left, rc1.top, rc1.Width(), rc1.Height()));
 	pPath->AddRectangle(RectF(rc2.left, rc2.top, rc2.Width(), rc2.Height()));
 	pPath->AddEllipse(RectF(rc3.left, rc3.top, rc3.Width(), rc3.Height()));
@@ -237,13 +236,13 @@ void CMainBoard::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 	Graphics *		pGraphics;
 	Pen *			pPen;
 	GraphicsPath *	pPath;
-	
+
 	pGraphics = new Graphics(pDC->GetSafeHdc());
 
 	pPath = new GraphicsPath(FillModeWinding);
-	CRect			rc1(rc.left+3, rc.top, rc.right-3, rc.bottom), 
+	CRect			rc1(rc.left+3, rc.top, rc.right-3, rc.bottom),
 					rc2(rc.left, rc.top+3, rc.right, rc.bottom-3);
-	
+
 	pPath->AddRectangle(RectF(rc1.left, rc1.top, rc1.Width(), rc1.Height()));
 	pPath->AddRectangle(RectF(rc2.left, rc2.top, rc2.Width(), rc2.Height()));
 	pPath->AddEllipse(RectF(rc.left, rc.top, 6, 6));
@@ -285,22 +284,22 @@ void CMainBoard::DrawTab(CDC * pDC, LPCTSTR szText, const CRect & rcTab, BOOL bA
 	Pen *			pPen;
 	GraphicsPath *	pPath;
 	Brush *			pBrush;
-	
+
 	pGraphics = new Graphics(pDC->GetSafeHdc());
 
 	pPath = new GraphicsPath(FillModeWinding);
-	CRect			rc1(rc.left+12, rc.top, rc.right-12, rc.bottom), 
+	CRect			rc1(rc.left+12, rc.top, rc.right-12, rc.bottom),
 					rc2(rc.left, rc.top+12, rc.right, rc.bottom);
-	
+
 	pPath->AddRectangle(RectF(rc1.left, rc1.top, rc1.Width(), rc1.Height()));
 	pPath->AddRectangle(RectF(rc2.left, rc2.top, rc2.Width(), rc2.Height()));
 	pPath->AddEllipse(RectF(rc.left, rc.top, 24, 24));
 	pPath->AddEllipse(RectF(rc.right-24, rc.top, 24, 24));
 	pPath->Flatten();
 
-	pBrush = new LinearGradientBrush(PointF(rc.right, rc.top), 
-					PointF(rc.right, rc.bottom), 
-					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	pBrush = new LinearGradientBrush(PointF(rc.right, rc.top),
+					PointF(rc.right, rc.bottom),
+					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 
 	pPen = new Pen(Color(255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 1.0);
@@ -364,12 +363,11 @@ void CMainBoard::DrawProgress(CDC * pDC)
 			fPercent = (double)m_lProgressAchieved/(double)m_lProgressTotal;
 
 		fPosition = rcProgress.Width()*fPercent;
-		
+
 		pGraphics = new Graphics(pDC->GetSafeHdc());
 		pPen = new Pen(Color(255.0 / nScale, 255.0 / nScale, 255.0 / nScale), 2.0);
-		
-		pGraphics->SetSmoothingMode(SmoothingModeHighQuality);
 
+		pGraphics->SetSmoothingMode(SmoothingModeHighQuality);
 
 		GraphicsPath *			pOutlinePath;
 
@@ -399,9 +397,8 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pGraphics->FillPath(pBrush, pOutlinePath);
 		delete pBrush;
 
-
-		pBrush = new LinearGradientBrush(PointF(rcProgress.left, (rcProgress.top+rcProgress.bottom)/2.0), 
-			               PointF(rcProgress.left+fPosition, (rcProgress.top+rcProgress.bottom)/2.0), 
+		pBrush = new LinearGradientBrush(PointF(rcProgress.left, (rcProgress.top+rcProgress.bottom)/2.0),
+			               PointF(rcProgress.left+fPosition, (rcProgress.top+rcProgress.bottom)/2.0),
 						   Color(0.0, 128.0 / nScale, 0.0),
 						   Color(0.0, 255.0 / nScale, 0.0));
 		pGraphics->FillPath(pBrush, pProgressPath);
@@ -956,7 +953,7 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 	{
 		CString					strFolder;
 		CString					strTitle;
-		
+
 		m_MonitoredFolder.GetWindowText(strFolder);
 
 		CFolderDlg				dlg(FALSE, strFolder, this);
@@ -975,7 +972,6 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 			reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 			bResult = TRUE;
 		};	};
-
 
 	return bResult;
 };
@@ -1013,7 +1009,7 @@ BOOL CMainBoard::OnInitDialog()
 	m_ControlPos.AddControl(IDC_MONITOREDFOLDER, CP_RESIZE_HORIZONTAL);
 	m_ControlPos.AddControl(IDC_STATS, CP_RESIZE_HORIZONTAL);
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -1095,7 +1091,7 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 					}
 					else
 					{
-						// Remove the file from the all files list and 
+						// Remove the file from the all files list and
 						// put the timer to try again in 10 seconds
 						vDelayedFiles.push_back(strFile);
 					};
@@ -1124,10 +1120,10 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 // The lParam value contains the event SHCNE_xxxx
 // The wParam value supplies the SHNOTIFYSTRUCT
 
-typedef struct 
+typedef struct
 {
-    DWORD dwItem1;    // dwItem1 contains the previous PIDL or name of the folder. 
-    DWORD dwItem2;    // dwItem2 contains the new PIDL or name of the folder. 
+    DWORD dwItem1;    // dwItem1 contains the previous PIDL or name of the folder.
+    DWORD dwItem2;    // dwItem2 contains the new PIDL or name of the folder.
 } SHNOTIFYSTRUCT;
 
 LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)

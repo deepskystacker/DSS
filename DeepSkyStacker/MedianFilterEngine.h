@@ -14,7 +14,7 @@ public :
 	CFATYPE						m_CFAType;
 	LONG						m_lFilterSize;
 
-	template <typename TType> 
+	template <typename TType>
 	class CFilterTask : public CMultitask
 	{
 	private :
@@ -169,7 +169,7 @@ public :
 			{
 				LONG			lAdd = min(lStep, lRemaining);
 				DWORD			dwThreadId;
-				
+
 				dwThreadId = GetAvailableThreadId();
 				PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 

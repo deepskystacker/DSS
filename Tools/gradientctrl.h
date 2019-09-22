@@ -44,7 +44,7 @@ class CGradientCtrl : public CWnd
 public:
 	CGradientCtrl();
 	BOOL Create(const RECT& rect, CWnd* pParentWnd, UINT nID);
-	
+
 	enum Orientation
 	{
 		ForceHorizontal,

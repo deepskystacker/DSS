@@ -46,7 +46,7 @@ static void	GetFilesInFolder(LPCTSTR szFolder, std::vector<CString>	& vFiles)
 	WIN32_FIND_DATA			FindData;
 	CString					strFileMask;
 	HANDLE					hFindFiles;
-	
+
 	strFileMask = strFolder;
 	strFileMask += "\\*.*";
 
@@ -110,7 +110,7 @@ BOOL CDropFilesDlg::OnInitDialog()
 
 			// If it's a folder, get all the files in the folder
 			DWORD			dwAttributes;
-			
+
 			dwAttributes = GetFileAttributes(szFile);
 
 			if (dwAttributes & FILE_ATTRIBUTE_DIRECTORY)

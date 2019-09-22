@@ -82,7 +82,7 @@ private :
 	BOOL					m_bLoaded;
 
 public :
-	CDSSSettings() 
+	CDSSSettings()
 	{
 		m_bLoaded = FALSE;
 	};
@@ -108,7 +108,7 @@ public :
 		{
 			DSSSETTINGITERATOR	it;
 
-			it = m_lSettings.begin(); 
+			it = m_lSettings.begin();
 			while (lIndice)
 			{
 				it++;
@@ -136,7 +136,7 @@ public :
 		{
 			DSSSETTINGITERATOR	it;
 
-			it = m_lSettings.begin(); 
+			it = m_lSettings.begin();
 			while (lIndice)
 			{
 				it++;

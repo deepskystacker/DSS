@@ -96,7 +96,7 @@ static void	GetMethodText(COSMETICREPLACE cr, CString & strText)
 
 	menu.LoadMenu(IDR_COSMETICMETHOD);
 	popup = menu.GetSubMenu(0);
-	
+
 	if (cr == CR_GAUSSIAN)
 		popup->GetMenuString(ID_COSMETICMETHOD_GAUSSIAN, strText, MF_BYCOMMAND);
 	else
@@ -110,7 +110,7 @@ void CPostCalibration::UpdateControls()
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
 	BOOL				bEnableHot  = m_DetectCleanHot.GetCheck(),
 						bEnableCold = m_DetectCleanCold.GetCheck();
-	
+
 	m_HotFilterText.EnableWindow(bEnableHot);
 	m_HotFilter.EnableWindow(bEnableHot);
 	m_HotDetectionText.EnableWindow(bEnableHot);
@@ -348,7 +348,7 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 					};
 
 					dlg.End2();
-				};			
+				};
 			};
 		};
 	};
@@ -365,7 +365,7 @@ void CPostCalibration::OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result
 
 	menu.LoadMenu(IDR_COSMETICMETHOD);
 	popup = menu.GetSubMenu(0);
-	
+
 	CRect				rc;
 	CString				strText;
 

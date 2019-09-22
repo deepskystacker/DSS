@@ -42,7 +42,7 @@ Image *	CStackedSink::GetOverlayImage(CRect & rcClient)
 		};
 	};
 
-	return pResult; 
+	return pResult;
 };
 
 /* ------------------------------------------------------------------- */

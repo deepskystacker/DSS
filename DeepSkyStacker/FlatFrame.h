@@ -111,7 +111,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-class CFlatFrame 
+class CFlatFrame
 {
 public :
 	CSmartPtr<CMemoryBitmap>	m_pFlatFrame;

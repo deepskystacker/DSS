@@ -14,7 +14,7 @@ inline double	GetMedianPosition(std::vector<double> & vValues, double fValue)
 
 	if (fdValue>0)
 	{
-		fResult = fdValue/fValue;	
+		fResult = fdValue/fValue;
 	}
 	else if (fdValue<0)
 	{
@@ -112,7 +112,7 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bC
 		LONG	lNrPixels = lWidth*lHeight;
 		LONG	lNrRejectedHotPixels = lNrPixels * m_fRejectHotThreshold;
 		LONG	lNrRejectedColdPixels = lNrPixels * m_fRejectColdThreshold;
-		
+
 		LONG	lThreshold;
 
 		lThreshold = 1000;
@@ -413,11 +413,11 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 					std::vector<double>		vRedValues;
 					std::vector<double>		vGreenValues;
 					std::vector<double>		vBlueValues;
-					double					fRed, 
-											fGreen, 
+					double					fRed,
+											fGreen,
 											fBlue,
-											fRedMedian, 
-											fGreenMedian, 
+											fRedMedian,
+											fGreenMedian,
 											fBlueMedian;
 
 					m_pInBitmap->GetPixel(i, j, fRed, fGreen, fBlue);

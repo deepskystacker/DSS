@@ -208,7 +208,7 @@ public :
 		{
 			LONG			lAdd = min(lStep, lRemaining);
 			DWORD			dwThreadId;
-			
+
 			dwThreadId = GetAvailableThreadId();
 			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
@@ -244,7 +244,6 @@ private :
 	CFATYPE						m_CFAType;
 	LONG						m_lColdFilterSize,
 								m_lHotFilterSize;
-
 
 private :
 	BOOL	IsOkValue(double fDelta)
@@ -387,7 +386,7 @@ public :
 		{
 			LONG			lAdd = min(lStep, lRemaining);
 			DWORD			dwThreadId;
-			
+
 			dwThreadId = GetAvailableThreadId();
 			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
@@ -459,7 +458,6 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 	std::vector<double>			vAllGreens;
 	std::vector<double>			vBlues;
 	std::vector<double>			vAllBlues;
-
 
 	vReds.reserve((lFilterSize+1)*2);
 	vAllReds.reserve((lFilterSize+1)*2);
@@ -637,7 +635,7 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 
 			pDelta.Attach(new C8BitGrayBitmap);
 			pDelta->Init(pBitmap->RealWidth(), pBitmap->RealHeight());
-			
+
 			if (pcs.m_bHot)
 			{
 				strCorrection.LoadString(IDS_APPLYINGCOSMETIC_HOT);

@@ -29,7 +29,7 @@ public :
 	BOOL	GetStackedImage(CMemoryBitmap ** ppBitmap)
 	{
 		BOOL			bResult = FALSE;
-		
+
 		if (ppBitmap)
 			*ppBitmap = NULL;
 

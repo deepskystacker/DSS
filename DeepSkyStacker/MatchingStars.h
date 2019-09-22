@@ -13,7 +13,7 @@ public :
 	float			m_fX,
 					m_fY;
 	BYTE			m_Star1,
-					m_Star2, 
+					m_Star2,
 					m_Star3;
 
 private :
@@ -175,7 +175,7 @@ public :
 			return true;
 		else if (m_Star1 > sd.m_Star1)
 			return false;
-		else 
+		else
 			return (m_Star2 < sd.m_Star2);
 	};
 };

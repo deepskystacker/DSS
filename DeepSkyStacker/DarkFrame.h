@@ -53,7 +53,7 @@ public :
 			return true;
 		else if (m_lX > hp.m_lX)
 			return false;
-		else 
+		else
 			return (m_lY < hp.m_lY);
 	};
 
@@ -140,7 +140,7 @@ public :
 			return true;
 		else if (X > ep.X)
 			return false;
-		else 
+		else
 			return (Y < ep.Y);
 	};
 };
@@ -227,7 +227,7 @@ private :
 
 public :
 	CDarkAmpGlowParameters() {};
-	CDarkAmpGlowParameters(const CDarkAmpGlowParameters & dagp) 
+	CDarkAmpGlowParameters(const CDarkAmpGlowParameters & dagp)
 	{
 		CopyFrom(dagp);
 	};

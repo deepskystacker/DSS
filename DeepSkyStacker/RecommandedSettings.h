@@ -15,7 +15,7 @@ public :
 	WORKSPACESETTINGVECTOR				m_vSettings;
 	LONG								m_lLinkID;
 	CString								m_strRecommendation;
-	
+
 
 private:
 	void	CopyFrom(const CRecommendationItem & right)
@@ -56,8 +56,8 @@ public:
 	{
 		bool					bResult = false;
 		CWorkspace				workspace;
-		
-		// Check that the current values are (or not)  
+
+		// Check that the current values are (or not)
 		for (LONG i = 0;i<m_vSettings.size() && !bResult;i++)
 		{
 			CString				strValue;

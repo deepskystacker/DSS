@@ -8,7 +8,7 @@
 
 static	CComAutoCriticalSection			g_FITSCritical;
 
-CFITSHeader::CFITSHeader() 
+CFITSHeader::CFITSHeader()
 {
 	m_bFloat = FALSE;
 	m_fExposureTime = 0;
@@ -37,7 +37,7 @@ inline void ByteSwap(DWORD & InValue)
 				bLowHighByte,
 				bHighLowByte,
 				bHighHighByte;*/
-				
+
 
 	wLow = LOWORD(InValue);
 	/*bLowLowByte = LOBYTE(wLow);
@@ -54,9 +54,9 @@ inline void ByteSwap(DWORD & InValue)
 
 /*	DWORD		OutValue;
 
-	OutValue = ((Value & 0xFF) << 24) | 
-			   ((Value & 0xFF00) << 8) | 
-			   ((Value & 0xFF0000) >> 8) | 
+	OutValue = ((Value & 0xFF) << 24) |
+			   ((Value & 0xFF00) << 8) |
+			   ((Value & 0xFF0000) >> 8) |
 			   ((Value & 0xFF000000) >> 24);
 
 	Value = OutValue;*/
@@ -174,7 +174,7 @@ void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), fGreen);
 	if (fGreen<=0)
 		fGreen = 1.0;
-	
+
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), fRed);
 	fRed *= fGreen;
 	if (fRed <= 0)
@@ -209,7 +209,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, double & fValue, CString & strComment)
 	{
 		CHAR			szComment[500];
 
-		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);		
+		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);
 		if (!nStatus)
 		{
 			bResult = TRUE;
@@ -227,7 +227,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, double & fValue)
 
 	if (m_fits)
 	{
-		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, NULL, &nStatus);		
+		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, NULL, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -242,7 +242,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, LONG & lValue)
 
 	if (m_fits)
 	{
-		fits_read_key(m_fits, TLONG, szKey, &lValue, NULL, &nStatus);		
+		fits_read_key(m_fits, TLONG, szKey, &lValue, NULL, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -282,7 +282,7 @@ void CFITSReader::ReadAllKeys()
 
 		if (!reg.LoadKey(REGENTRY_BASEKEY_FITSSETTINGS, _T("Propagated"), strPropagated))
 			strPropagated = "[CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
-		
+
 
 		fits_get_hdrspace(m_fits, &nKeywords, NULL, &nStatus);
 		for (LONG i = 1;i<=nKeywords;i++)
@@ -622,7 +622,7 @@ BOOL CFITSReader::Read()
 					};
 				};
 				free(pBuffer);
-				
+
 				double		fZero,
 							fScale;
 
@@ -661,7 +661,7 @@ BOOL CFITSReader::Read()
 					DWORD * pDWORDLine				= (DWORD *)pScanLine;
 					LONG *	pLONGLine				= (LONG *)pScanLine;
 					float *	pFLOATLine				= (float *)pScanLine;
-					
+
 					pfPixel[0] = 1;
 					pfPixel[1] = j+1;
 					pfPixel[2] = 1;
@@ -810,7 +810,7 @@ BOOL CFITSReader::Read()
 
 						bResult = OnRead(i, j, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
 
-					};				
+					};
 					if (m_pProgress)
 						m_pProgress->Progress2(NULL, j+1);
 				};
@@ -944,8 +944,8 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		if ((m_CFAType != CFATYPE_NONE) && (m_lNrChannels != 1))// || (m_lBitsPerPixel != 16)))
 			m_CFAType = CFATYPE_NONE;
 
-		if (IsFITSisRaw() && 
-			(m_lNrChannels == 1) && 
+		if (IsFITSisRaw() &&
+			(m_lNrChannels == 1) &&
 			((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
 			m_CFAType = GetFITSCFATYPE();
 
@@ -1088,7 +1088,7 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
 		strExt = szExt;
 
-		if (!strExt.CompareNoCase(_T(".JPG")) || 
+		if (!strExt.CompareNoCase(_T(".JPG")) ||
 			!strExt.CompareNoCase(_T(".JPEG")) ||
 			!strExt.CompareNoCase(_T(".PNG")) ||
 			!strExt.CompareNoCase(_T(".TIF")) ||
@@ -1133,7 +1133,7 @@ BOOL	CFITSWriter::WriteKey(LPSTR szKey, double fValue, LPSTR szComment)
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);		
+		fits_write_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -1150,7 +1150,7 @@ BOOL	CFITSWriter::WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment)
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TLONG, szKey, &lValue, szComment, &nStatus);		
+		fits_write_key(m_fits, TLONG, szKey, &lValue, szComment, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -1195,8 +1195,8 @@ void	CFITSWriter::WriteAllKeys()
 		// Add DATE-OBS to the list
 		CString			strDateTime;
 
-		strDateTime.Format(_T("%04d-%02d-%02dT%02d:%02d:%02d"), 
-						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay, 
+		strDateTime.Format(_T("%04d-%02d-%02dT%02d:%02d:%02d"),
+						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
 						   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
 		m_ExtraInfo.AddInfo(_T("DATE-OBS"), strDateTime);
@@ -1226,7 +1226,7 @@ void	CFITSWriter::WriteAllKeys()
 				else
 					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
 
-				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus); 
+				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);
 			};
 		};
@@ -1536,7 +1536,7 @@ BOOL CFITSWriter::Write()
 								pDWORDLineGreen ++;
 								pDWORDLineBlue ++;
 							};
-						};					
+						};
 					};
 
 					pfPixel[0] = 1;
@@ -1625,7 +1625,7 @@ FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap
 	C48BitColorBitmap *			p48Color = dynamic_cast<C48BitColorBitmap *>(pBitmap);
 	C96BitColorBitmap *			p96Color = dynamic_cast<C96BitColorBitmap *>(pBitmap);
 	C96BitFloatColorBitmap*		p96FloatColor = dynamic_cast<C96BitFloatColorBitmap*>(pBitmap);
-	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);	
+	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);
 	C16BitGrayBitmap *				p16Gray = dynamic_cast<C16BitGrayBitmap *>(pBitmap);
 	C32BitGrayBitmap *				p32Gray = dynamic_cast<C32BitGrayBitmap *>(pBitmap);
 	C32BitFloatGrayBitmap *			p32FloatGray = dynamic_cast<C32BitFloatGrayBitmap *>(pBitmap);
@@ -1646,7 +1646,7 @@ FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap
 		Result = FF_32BITGRAY;
 	else if (p32FloatGray)
 		Result = FF_32BITGRAYFLOAT;
-	
+
 	return Result;
 };
 
@@ -1667,7 +1667,7 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 	m_CFAType = CFATYPE_NONE;
 	if (::IsCFA(m_pMemoryBitmap))
 		m_CFAType = ::GetCFAType(m_pMemoryBitmap);
-	
+
 	if (m_Format == TF_UNKNOWN)
 		m_Format = GetBestFITSFormat(m_pMemoryBitmap);
 

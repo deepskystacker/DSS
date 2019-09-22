@@ -128,7 +128,7 @@ BOOL CImageViewTab::OnInitDialog()
 		strText.LoadString(IDS_NOIMAGELOADED);
 	m_FileName.SetText(strText);
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -146,7 +146,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 	if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
 		(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
 	{
-		// Adjust 
+		// Adjust
 		CGradient &			Gradient = m_Gamma.GetGradient();
 		fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
 		fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;

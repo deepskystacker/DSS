@@ -22,7 +22,7 @@ class CChildPropertyPage : public CPropertyPage
 
 public:
 	CChildPropertyPage() : CPropertyPage() {}
-	CChildPropertyPage(UINT nIDPage, UINT nIDCaption = 0, UINT nSelectedPage = 0, UINT nIDGroup = 0); 
+	CChildPropertyPage(UINT nIDPage, UINT nIDCaption = 0, UINT nSelectedPage = 0, UINT nIDGroup = 0);
 	~CChildPropertyPage();
 
 	void AddPage(CPropertyPage* pPage) { m_arrPages.Add(pPage); }

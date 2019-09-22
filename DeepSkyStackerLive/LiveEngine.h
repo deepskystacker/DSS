@@ -105,7 +105,7 @@ private :
 
 	STACKIMAGEINFO				m_ImageInfo;
 	LONG						m_lNrPending;
-	
+
 public :
 	CLiveEngineMsg()
 	{
@@ -468,14 +468,14 @@ private :
 	DWORD						m_dwThreadID;
 	HANDLE						m_hEvent;
 	CLiveSettings				m_LiveSettings;
-	std::deque<CString>			m_qToRegister;	
-	std::deque<CLightFrameInfo>	m_qToStack;	
+	std::deque<CString>			m_qToRegister;
+	std::deque<CLightFrameInfo>	m_qToStack;
 	BOOL						m_bStackingOn;
 	BOOL						m_bRegisteringOn;
 	BOOL						m_bReferenceFrameSet;
 	CRunningStackingEngine		m_RunningStackingEngine;
 	LONG						m_lNrUnsavedImages;
-	
+
 private :
 	void	StartEngine();
 	void	CloseEngine();
@@ -516,7 +516,7 @@ public :
 
 	BOOL	IsFileAvailable(LPCTSTR szFileName);
 
-	BOOL	GetMessage(CLiveEngineMsg ** ppMsg);	
+	BOOL	GetMessage(CLiveEngineMsg ** ppMsg);
 	void	AddFileToProcess(LPCTSTR szFile);
 
 	void	UpdateSettings();

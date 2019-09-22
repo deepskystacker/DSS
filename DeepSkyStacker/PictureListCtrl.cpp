@@ -429,7 +429,7 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 
 static	CPictureListCtrl *		g_pCompareList = NULL;
 
-bool CompareVisibleItems(LONG lItem1, LONG lItem2) 
+bool CompareVisibleItems(LONG lItem1, LONG lItem2)
 {
 	if (g_pCompareList)
 		return g_pCompareList->CompareItems(lItem1, lItem2) < 0;
@@ -736,7 +736,7 @@ LRESULT CPictureListCtrl::OnListItemChanged(WPARAM, LPARAM)
 
 /* ------------------------------------------------------------------- */
 
-void CPictureListCtrl::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPictureListCtrl::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
@@ -750,7 +750,7 @@ void CPictureListCtrl::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 
 /* ------------------------------------------------------------------- */
 
-void CPictureListCtrl::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPictureListCtrl::OnItemChanged(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
@@ -990,7 +990,7 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 			nImage += 10;
 		else if (m_vFiles[lIndice].m_lNrChannels==3)
 			nImage += 15;
-		
+
 		pItem->iImage = nImage;
 
         //To enable check box, we have to enable state mask...
@@ -1129,7 +1129,7 @@ void CPictureListCtrl::CopyToClipboard()
 	if (strClipboard.GetLength())
 	{
 		::OpenClipboard(NULL);
-		
+
 		HGLOBAL				hMem;
 		LPVOID				lpMem;
 
@@ -1224,7 +1224,7 @@ void CPictureListCtrl::OnRButtonDown( UINT nFlags, CPoint pt)
 		{
 			int			nItem;
 			LONG		lIndice;
-			
+
 			nItem = GetNextSelectedItem(pos);
 			lIndice = m_vVisibles[nItem];
 
@@ -1310,7 +1310,7 @@ BOOL CPictureListCtrl::GetSelectedFileName(CString & strFileName)
 		{
 			int			nItem;
 			LONG		lIndice;
-			
+
 			nItem = GetNextSelectedItem(pos);
 			lIndice = m_vVisibles[nItem];
 
@@ -1319,7 +1319,7 @@ BOOL CPictureListCtrl::GetSelectedFileName(CString & strFileName)
 			bResult = TRUE;
 		};
 	};
-	
+
 	return bResult;
 };
 
@@ -1335,7 +1335,7 @@ BOOL CPictureListCtrl::GetItemISOSpeedGainAndExposure(int nItem, LONG & lISOSpee
 	lISOSpeed = m_vFiles[lItem].m_lISOSpeed;
 	lGain     = m_vFiles[lItem].m_lGain;
 	fExposure = m_vFiles[lItem].m_fExposure;
-	
+
 	return bResult;
 };
 
@@ -1349,7 +1349,7 @@ BOOL CPictureListCtrl::GetItemFileName(int nItem, CString & strFileName)
 	lItem = m_vVisibles[nItem];
 
 	strFileName = m_vFiles[lItem].m_strFileName;
-	
+
 	return bResult;
 };
 
@@ -1361,7 +1361,7 @@ BOOL CPictureListCtrl::GetFirstCheckedLightFrame(CString & strFileName)
 
 	for (LONG i = 0;i<m_vFiles.size() && !bResult;i++)
 	{
-		if (!m_vFiles[i].m_bRemoved && 
+		if (!m_vFiles[i].m_bRemoved &&
 			m_vFiles[i].IsLightFrame() &&
 			m_vFiles[i].m_bChecked)
 		{
@@ -1398,7 +1398,7 @@ int	CPictureListCtrl::FindIndice(LPCTSTR szFileName)
 
 	for (LONG i = 0;(i<m_vFiles.size()) && (nResult == -1);i++)
 	{
-		if (!m_vFiles[i].m_bRemoved && 
+		if (!m_vFiles[i].m_bRemoved &&
 			!strFileName.CompareNoCase(m_vFiles[i].m_strFileName))
 			nResult = i;
 	};
@@ -1670,7 +1670,7 @@ LONG CPictureListCtrl::GetNrCheckedFrames(LONG lGroupID)
 	for (LONG i = 0;i<m_vFiles.size();i++)
 	{
 		if (!m_vFiles[i].m_bRemoved &&
-			m_vFiles[i].IsLightFrame() && 
+			m_vFiles[i].IsLightFrame() &&
 			m_vFiles[i].m_bChecked)
 		{
 			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_dwGroupID))
@@ -1689,8 +1689,8 @@ LONG CPictureListCtrl::GetNrCheckedDarks(LONG lGroupID)
 
 	for (LONG i = 0;i<m_vFiles.size();i++)
 	{
-		if (!m_vFiles[i].m_bRemoved && 
-			m_vFiles[i].IsDarkFrame() && 
+		if (!m_vFiles[i].m_bRemoved &&
+			m_vFiles[i].IsDarkFrame() &&
 			m_vFiles[i].m_bChecked)
 		{
 			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_dwGroupID))
@@ -1710,7 +1710,7 @@ LONG CPictureListCtrl::GetNrCheckedFlats(LONG lGroupID)
 	for (LONG i = 0;i<m_vFiles.size();i++)
 	{
 		if (!m_vFiles[i].m_bRemoved &&
-			m_vFiles[i].IsFlatFrame() && 
+			m_vFiles[i].IsFlatFrame() &&
 			m_vFiles[i].m_bChecked)
 		{
 			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_dwGroupID))
@@ -1731,7 +1731,7 @@ LONG CPictureListCtrl::GetNrCheckedDarkFlats(LONG lGroupID)
 	for (LONG i = 0;i<m_vFiles.size();i++)
 	{
 		if (!m_vFiles[i].m_bRemoved &&
-			m_vFiles[i].IsDarkFlatFrame() && 
+			m_vFiles[i].IsDarkFlatFrame() &&
 			m_vFiles[i].m_bChecked)
 		{
 			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_dwGroupID))
@@ -1751,8 +1751,8 @@ LONG CPictureListCtrl::GetNrCheckedOffsets(LONG lGroupID)
 
 	for (LONG i = 0;i<m_vFiles.size();i++)
 	{
-		if (!m_vFiles[i].m_bRemoved && 
-			m_vFiles[i].IsOffsetFrame() && 
+		if (!m_vFiles[i].m_bRemoved &&
+			m_vFiles[i].IsOffsetFrame() &&
 			m_vFiles[i].m_bChecked)
 		{
 			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_dwGroupID))
@@ -1857,7 +1857,7 @@ void CPictureListCtrl::SaveList(CMRUList & MRUList, CString & strFileList)
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".dssfilelist");
 
-	CFileDialog					dlgSave(FALSE, 
+	CFileDialog					dlgSave(FALSE,
 								strBaseExtension,
 								(LPCTSTR)strFileList,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -1916,7 +1916,7 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".dssfilelist");
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
 								NULL,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -1966,7 +1966,7 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("ListIndex"), dwFilterIndex);
 		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("ListExtension"), strBaseExtension);
-	};	
+	};
 }
 
 /* ------------------------------------------------------------------- */

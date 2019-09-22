@@ -1,15 +1,15 @@
 //------------------------------------------------------------------------------
 // ControlPos.h
-// 
-//	CControlPos 
-//	Position controls on a form's resize 
-// 
+//
+//	CControlPos
+//	Position controls on a form's resize
+//
 //		Copyright (c) 2000 Paul Wendt
-// 
+//
 //		VERSION#	DATE			NAME	DESCRIPTION OF CHANGE
 //		--------	----------	----	---------------------
 //		1.01  	07/11/2000	PRW	Original creation.
-// 
+//
 #ifndef CONTROLPOS_H_
 #define CONTROLPOS_H_
 
@@ -53,8 +53,8 @@ protected:
 	virtual void UpdateParentSize(void);
 
 private:
-	CWnd*  m_pParent;		
-	int    m_nOldParentWidth;			
+	CWnd*  m_pParent;
+	int    m_nOldParentWidth;
 	int    m_nOldParentHeight;
 	int    m_nOriginalParentWidth;
 	int    m_nOriginalParentHeight;

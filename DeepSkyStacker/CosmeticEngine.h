@@ -18,14 +18,14 @@ private :
 		m_lNrDetectedColdPixels = cs.m_lNrDetectedColdPixels;
 	};
 public :
-	CCosmeticStats() 
+	CCosmeticStats()
 	{
 		m_lNrTotalPixels = 0;
 		m_lNrDetectedHotPixels = 0;
 		m_lNrDetectedColdPixels = 0;
 	};
 
-	CCosmeticStats(const CCosmeticStats & cs) 
+	CCosmeticStats(const CCosmeticStats & cs)
 	{
 		CopyFrom(cs);
 	};

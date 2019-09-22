@@ -81,7 +81,7 @@ BOOL CGradientCtrl::RegisterWindowClass()
 /////////////////////////////////////////////////////////////////////////////
 // CGradientCtrl message handlers
 
-BOOL CGradientCtrl::Create(const RECT& rect, CWnd* pParentWnd, UINT nID) 
+BOOL CGradientCtrl::Create(const RECT& rect, CWnd* pParentWnd, UINT nID)
 {
 	return CWnd::CreateEx(WS_EX_CLIENTEDGE, GRADIENTCTRL_CLASSNAME, _T(""),
 		0x50010000, rect, pParentWnd, nID);
@@ -96,12 +96,12 @@ void CGradientCtrl::OnPaint()
 	//----- Refresh -----//
 	if(m_Selected > m_Gradient.GetPegCount())
 		m_Selected = NONE;
-	
+
 	if(m_bShowToolTip)
 		m_Impl->SynchronizeTooltips();
 }
 
-BOOL CGradientCtrl::OnEraseBkgnd(CDC* pDC) 
+BOOL CGradientCtrl::OnEraseBkgnd(CDC* pDC)
 {
 	CRgn pegrgn, clientrgn, gradientrgn, erasergn;
 	CRect clientrect;
@@ -111,7 +111,7 @@ BOOL CGradientCtrl::OnEraseBkgnd(CDC* pDC)
 	//----- The area of the window -----//
 	GetClientRect(&clientrect);
 	clientrgn.CreateRectRgn(0, 0, clientrect.right, clientrect.bottom);
-	
+
 	//----- The area of the gradient -----//
 	if(m_Impl->IsVertical())
 		gradientrgn.CreateRectRgn(leftdown ? 23 : 4, 4, m_Impl->GetDrawWidth() - (rightup ? 23 : 3), clientrect.bottom-4);
@@ -126,7 +126,7 @@ BOOL CGradientCtrl::OnEraseBkgnd(CDC* pDC)
 	erasergn.CreateRectRgn(0, 0, 0, 0); // Create a dummy rgn
 	erasergn.CombineRgn(&clientrgn, &pegrgn, RGN_DIFF);
 	erasergn.CombineRgn(&erasergn, &gradientrgn, RGN_DIFF);
-	
+
 	//----- Fill the result in -----//
 	CBrush background(m_crBackground);
 	pDC->FillRgn(&erasergn, &background);
@@ -134,13 +134,13 @@ BOOL CGradientCtrl::OnEraseBkgnd(CDC* pDC)
 	return 1;
 }
 
-void CGradientCtrl::PreSubclassWindow() 
+void CGradientCtrl::PreSubclassWindow()
 {
 	CWnd::PreSubclassWindow();
 
 }
 
-void CGradientCtrl::OnLButtonDown(UINT nFlags, CPoint point) 
+void CGradientCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	CClientDC dc(this);
 	CRect clientrect, pegrect;
@@ -191,7 +191,7 @@ void CGradientCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 			SetSelIndex(STARTPEG);
 			nowselected = true;
 		}
-		
+
 		m_Impl->GetPegRect(ENDPEG, &pegrect, true);
 		if(pegrect.PtInRect(point))
 		{
@@ -208,7 +208,7 @@ void CGradientCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 			SetSelIndex(STARTPEG);
 			nowselected = true;
 		}
-		
+
 		m_Impl->GetPegRect(ENDPEG, &pegrect, false);
 		if(pegrect.PtInRect(point))
 		{
@@ -223,13 +223,13 @@ void CGradientCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 		m_Selected = NONE;
 		m_LastPos = -1;
 	}
-	
+
 	CWnd *pParent = GetParent();
 
 	if (pParent)
 	{
 		PegNMHDR nmhdr;
-			
+
 		nmhdr.nmhdr.code = GC_SELCHANGE;
 		nmhdr.nmhdr.hwndFrom = GetSafeHwnd();
 		nmhdr.nmhdr.idFrom = GetDlgCtrlID();
@@ -244,7 +244,7 @@ void CGradientCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnLButtonDown(nFlags, point);
 }
 
-void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point) 
+void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if(nFlags & MK_LBUTTON && m_Selected > -1)
 	{
@@ -254,7 +254,7 @@ void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point)
 		CString tiptext;
 		bool vertical = m_Impl->IsVertical();
 		int selpegpos;
-		
+
 		//----- Prepare -----//
 		CClientDC dc(this);
 		float pos;
@@ -281,38 +281,38 @@ void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point)
 
 		//----- Get the orginal erase area -----//
 		GetPegRgn(&oldrgn);
-		
+
 		//----- Continue -----//
 		CPeg peg = m_Gradient.GetPeg(m_Selected);
 		pos = m_Impl->PosFromPoint(selpegpos);
 		//"The id of the selection may change"//
 		m_Selected = m_Gradient.SetPeg(m_Selected, peg.colour, pos);
-		
+
 		//----- Draw the peg -----//
 		m_Impl->DrawPegs(&dc);
 		m_Impl->DrawEndPegs(&dc);
 		m_Impl->DrawSelPeg(&dc, m_Selected);
 		m_Impl->DrawGradient(&dc);
 		GetPegRgn(&newrgn);
-			
+
 		erasergn.CreateRectRgn(0,0,0,0); //Dummy rgn
 		erasergn.CombineRgn(&oldrgn, &newrgn, RGN_DIFF);
-		
+
 		dc.FillRgn(&erasergn, &brush);
 
 		m_LastPos = selpegpos;
-		
+
 		//----- Free up stuff -----//
 		oldrgn.DeleteObject();
 		newrgn.DeleteObject();
 		erasergn.DeleteObject();
-		
+
 		//----- Show tooltip -----//
 		if(m_bShowToolTip)
 		{
 			tiptext = m_Impl->ExtractLine(m_ToolTipFormat, 0);
 			m_Impl->ParseToolTipLine(tiptext, peg);
-			
+
 			if(m_Impl->m_wndToolTip == NULL)
 			{
 				if(m_Impl->IsVertical())
@@ -327,9 +327,9 @@ void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point)
 					tippoint.y = clientrect.bottom - m_Impl->GetDrawWidth() - m_Impl->GetPegIndent(GetSelIndex())*11 - 7;
 					tippoint.x = point.x - 8;
 				}
-				
+
 				ClientToScreen(&tippoint);
-				
+
 				m_Impl->ShowTooltip(tippoint, tiptext);
 			}
 			else
@@ -353,11 +353,11 @@ void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point)
 			pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&(nmhdr.nmhdr)));
 		}
 	}
-	
+
 	CWnd::OnMouseMove(nFlags, point);
 }
 
-void CGradientCtrl::OnLButtonUp(UINT nFlags, CPoint point) 
+void CGradientCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if(m_Selected >= -4 && m_Selected != -1)
 	{
@@ -380,7 +380,7 @@ void CGradientCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 		m_Impl->DrawSelPeg(&dc, m_Selected);
 
 		m_Impl->DestroyTooltip();
-		
+
 		CWnd *pParent = GetParent();
 		if (pParent)
 		{
@@ -403,7 +403,7 @@ void CGradientCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
-void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	switch(nChar)
 	{
@@ -430,7 +430,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 					m_Selected = ENDPEG;
 				else m_Selected++;
 			}
-			
+
 			m_Impl->DrawSelPeg(&dc, m_Selected);
 		}
 		break;
@@ -444,7 +444,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			//Make sure that the position does not stray bellow zero
 			selpeg.position = (selpeg.position <= 1.0f) ?  selpeg.position : 1.0f;
 			MoveSelected(selpeg.position, true);
-			
+
 			//Send parent messages
 			SendBasicNotification(GC_PEGMOVED, selpeg, m_Selected);
 		}
@@ -459,7 +459,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			//Make sure that the position does not stray above 1
 			selpeg.position = (selpeg.position <= 1.0f) ?  selpeg.position : 1.0f;
 			MoveSelected(selpeg.position, true);
-			
+
 			//Send parent messages
 			SendBasicNotification(GC_PEGMOVED, selpeg, m_Selected);
 		}
@@ -508,7 +508,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			//Send parent messages
 			SendBasicNotification(GC_PEGMOVED, selpeg, m_Selected);
 		}
-		
+
 		break;
 
 	case VK_NEXT:
@@ -519,7 +519,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			//Make sure that the position does not stray above 1
 			selpeg.position = (selpeg.position <= 1.0f) ?  selpeg.position : 1.0f;
 			MoveSelected(selpeg.position, true);
-			
+
 			//Send parent messages
 			SendBasicNotification(GC_PEGMOVED, selpeg, m_Selected);
 		}
@@ -531,7 +531,7 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 			&& m_Selected != -1)
 		{
 			PegNMHDR nmhdr;
-			
+
 			nmhdr.nmhdr.code = GC_EDITPEG;
 			nmhdr.nmhdr.hwndFrom = GetSafeHwnd();
 			nmhdr.nmhdr.idFrom = GetDlgCtrlID();
@@ -558,16 +558,16 @@ void CGradientCtrl::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 		break;
 	}
-	
+
 	CWnd::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void CGradientCtrl::DeleteSelected(BOOL bUpdate) 
+void CGradientCtrl::DeleteSelected(BOOL bUpdate)
 {
 	CPeg peg;
 	int oldsel;
 	float oldpos;
-	
+
 	if(m_Selected == NONE)
 		return;
 	if(m_Selected <= -4)
@@ -578,7 +578,7 @@ void CGradientCtrl::DeleteSelected(BOOL bUpdate)
 	oldsel = m_Selected;
 	peg = m_Gradient.GetPeg(m_Selected);
 	oldpos = peg.position;
-	
+
 	m_Gradient.RemovePeg(m_Selected);
 
 	//Select the previous peg
@@ -588,11 +588,11 @@ void CGradientCtrl::DeleteSelected(BOOL bUpdate)
 
 	if(bUpdate)
 		Invalidate();
-	
+
 	CWnd *pParent = GetParent();
 
 	if (pParent)
-	{	
+	{
 		PegNMHDR nmhdr, nmhdr2, nmhdr3;
 
 		nmhdr.nmhdr.hwndFrom = GetSafeHwnd();
@@ -602,14 +602,14 @@ void CGradientCtrl::DeleteSelected(BOOL bUpdate)
 		else nmhdr.peg = m_Impl->m_Null;
 		nmhdr.index = oldsel;
 		pParent->SendMessage(WM_NOTIFY, nmhdr.nmhdr.idFrom, (DWORD_PTR)(&nmhdr));
-		
+
 		nmhdr2 = nmhdr;
 		nmhdr2.nmhdr.code = GC_SELCHANGE;
 		if(m_Selected != -1) nmhdr2.peg = m_Gradient.GetPeg(m_Selected);
 		else nmhdr2.peg = m_Impl->m_Null;
 		nmhdr2.index = m_Selected;
 		pParent->SendMessage(WM_NOTIFY, nmhdr2.nmhdr.idFrom, (DWORD_PTR)(&nmhdr2));
-		
+
 		nmhdr3 = nmhdr2;
 		nmhdr3.nmhdr.code = GC_CHANGE;
 		nmhdr3.peg = m_Impl->m_Null;
@@ -641,7 +641,7 @@ int CGradientCtrl::MoveSelected(float newpos, BOOL bUpdate)
 	m_Selected = m_Gradient.SetPeg(m_Selected, peg.colour, newpos);
 
 	if(bUpdate) Invalidate();
-	
+
 	return m_Selected;
 }
 
@@ -656,11 +656,11 @@ COLORREF CGradientCtrl::SetColourSelected(COLORREF crNewColour, BOOL bUpdate)
 	m_Gradient.SetPeg(m_Selected, crNewColour, peg.position);
 
 	if(bUpdate) Invalidate();
-	
+
 	return peg.colour;
 }
 
-void CGradientCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void CGradientCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	CWnd *pParent = GetParent();
 	float pos;
@@ -669,7 +669,7 @@ void CGradientCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	CClientDC dc(this);
 	BOOL edit = FALSE;
 	int drawwidth = m_Impl->GetDrawWidth();
-	
+
 	if(m_Impl->IsVertical())
 		pos = m_Impl->PosFromPoint(point.y);
 	else
@@ -679,7 +679,7 @@ void CGradientCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	for(int i = 0; i < m_Gradient.GetPegCount(); i++)
 	{
 		peg = m_Gradient.GetPeg(i);
-		
+
 		if(m_Impl->m_LeftDownSide)
 		{
 			m_Impl->GetPegRect(i, &pegrect, false);
@@ -719,19 +719,19 @@ void CGradientCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 	pegrect.left = drawwidth+8, pegrect.top = clientrect.bottom-11;
 	pegrect.right = drawwidth+15, pegrect.bottom = clientrect.bottom-4;
 	if(pegrect.PtInRect(point))
-	{	
+	{
 		m_Impl->DrawSelPeg(&dc, m_Selected); //Erase the last m_Selected peg
-		m_Selected = ENDPEG;		
+		m_Selected = ENDPEG;
 		m_Impl->DrawSelPeg(&dc, m_Selected);
 		edit = true;
 	}
-	
+
 	if (pParent)
 	{
 		if(edit)
 		{
 			PegNMHDR nmhdr;
-			
+
 			nmhdr.nmhdr.code = GC_EDITPEG;
 			nmhdr.nmhdr.hwndFrom = GetSafeHwnd();
 			nmhdr.nmhdr.idFrom = GetDlgCtrlID();
@@ -777,7 +777,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 	ASSERT(points);
 	int *polycounts = new int[pegcount*colcount + 2*colcount];
 	ASSERT(polycounts);
-	
+
 	GetClientRect(&clientrect);
 
 	//----- End pegs -----//
@@ -813,21 +813,21 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 			points[j].x = 8,	points[j].y = 4;
 			j++;
 			points[j].x = 8,	points[j].y = 11;
-			j++;			
+			j++;
 			points[j].x = 15,	points[j].y = 11;
-			j++;			
+			j++;
 			points[j].x = 15,	points[j].y = 4;
-			j++;			
-			
+			j++;
+
 			polycounts[j/4]=4;
 			points[j].x = 8,	points[j].y = clientrect.bottom-4;
-			j++;	
+			j++;
 			points[j].x = 8,	points[j].y = clientrect.bottom-11;
-			j++;	
+			j++;
 			points[j].x = 15,	points[j].y = clientrect.bottom-11;
-			j++;			
+			j++;
 			points[j].x = 15,	points[j].y = clientrect.bottom-4;
-			j++;			
+			j++;
 		}
 	}
 	else
@@ -843,7 +843,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 			j++;
 			points[j].x = 4,	points[j].y = clientrect.bottom-drawwidth+15;
 			j++;
-		
+
 			polycounts[j/4]=4;
 			points[j].x = clientrect.right-4,	points[j].y = clientrect.bottom-drawwidth+8;
 			j++;
@@ -854,7 +854,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 			points[j].x = clientrect.right-4,	points[j].y = clientrect.bottom-drawwidth+15;
 			j++;
 		}
-		
+
 		if(m_Impl->m_LeftDownSide)
 		{
 			polycounts[j/4]=4;
@@ -866,7 +866,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 			j++;
 			points[j].x = 4,	points[j].y = clientrect.bottom-15;
 			j++;
-			
+
 			polycounts[j/4]=4;
 			points[j].x = clientrect.right-4,	points[j].y = clientrect.bottom-8;
 			j++;
@@ -887,7 +887,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 		if(vertical)
 		{
 			pegpoint.y = m_Impl->PointFromPos(m_Gradient.GetPeg(i).position);
-			
+
 			if(m_Impl->m_LeftDownSide)
 			{
 				pegpoint.x = 23 - m_Impl->GetPegIndent(i)*11;
@@ -923,7 +923,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 			if(m_Impl->m_LeftDownSide)
 			{
 				pegpoint.y = clientrect.bottom - 23 + m_Impl->GetPegIndent(i)*11;
-				
+
 				points[j*3+8*colcount].x = pegpoint.x+1;
 				points[j*3+8*colcount].y = pegpoint.y-1;
 				points[j*3+8*colcount+1].x = pegpoint.x-4;
@@ -937,7 +937,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 			if(m_Impl->m_RightUpSide)
 			{
 				pegpoint.y = clientrect.bottom - m_Impl->GetPegIndent(i)*11 - drawwidth + 22;
-				
+
 				points[j*3+8*colcount].x = pegpoint.x+1;
 				points[j*3+8*colcount].y = pegpoint.y+1;
 				points[j*3+8*colcount+1].x = pegpoint.x-4;
@@ -957,7 +957,7 @@ void CGradientCtrl::GetPegRgn(CRgn *rgn)
 	delete[] polycounts;
 }
 
-BOOL CGradientCtrl::PreTranslateMessage(MSG* pMsg) 
+BOOL CGradientCtrl::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_Impl->m_ToolTipCtrl.m_hWnd)
 		m_Impl->m_ToolTipCtrl.RelayEvent(pMsg);
@@ -980,7 +980,7 @@ void CGradientCtrl::SetPegSide(BOOL setrightup, BOOL enable)
 	else m_Impl->m_LeftDownSide = enable;
 }
 
-BOOL CGradientCtrl::GetPegSide(BOOL rightup) const 
+BOOL CGradientCtrl::GetPegSide(BOOL rightup) const
 {
 	return rightup?m_Impl->m_RightUpSide:m_Impl->m_LeftDownSide;
 }
@@ -1017,12 +1017,12 @@ const CPeg CGradientCtrl::GetSelPeg() const
 	return m_Impl->m_Null;
 }
 
-UINT CGradientCtrl::OnGetDlgCode() 
+UINT CGradientCtrl::OnGetDlgCode()
 {
 	return DLGC_WANTALLKEYS;
 }
 
-void CGradientCtrl::OnKillFocus(CWnd* pNewWnd) 
+void CGradientCtrl::OnKillFocus(CWnd* pNewWnd)
 {
 	CWnd::OnKillFocus(pNewWnd);
 }

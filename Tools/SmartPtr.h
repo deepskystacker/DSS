@@ -134,7 +134,7 @@ public :
 		return m_p;
 	};
 
-	operator T*() const 
+	operator T*() const
 	{
 		return m_p;
 	}

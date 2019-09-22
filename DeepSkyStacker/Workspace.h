@@ -162,7 +162,7 @@ protected :
 	void	Init();
 
 public :
-	CWorkspaceSettingsInternal() 
+	CWorkspaceSettingsInternal()
 	{
 		Init();
 	};

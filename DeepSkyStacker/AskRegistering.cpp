@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CAskRegistering message handlers
 
-BOOL CAskRegistering::OnInitDialog() 
+BOOL CAskRegistering::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -65,14 +65,14 @@ BOOL CAskRegistering::OnInitDialog()
 
 /* ------------------------------------------------------------------- */
 
-void CAskRegistering::OnOK() 
+void CAskRegistering::OnOK()
 {
 	CDialog::OnOK();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CAskRegistering::OnRegisterOne() 
+void CAskRegistering::OnRegisterOne()
 {
 	if (m_RegisterOne.GetCheck())
 	{
@@ -84,7 +84,7 @@ void CAskRegistering::OnRegisterOne()
 
 /* ------------------------------------------------------------------- */
 
-void CAskRegistering::OnRegisterAll() 
+void CAskRegistering::OnRegisterAll()
 {
 	if (m_RegisterAll.GetCheck())
 	{
@@ -96,7 +96,7 @@ void CAskRegistering::OnRegisterAll()
 
 /* ------------------------------------------------------------------- */
 
-void CAskRegistering::OnRegisterNone() 
+void CAskRegistering::OnRegisterNone()
 {
 	if (m_RegisterNone.GetCheck())
 	{

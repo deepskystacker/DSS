@@ -80,7 +80,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CProcessingDlg message handlers
 
-BOOL CProcessingDlg::OnInitDialog() 
+BOOL CProcessingDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -326,7 +326,7 @@ void CProcessingDlg::UpdateControlsFromParams()
 	fRange  = fAbsMax-fAbsMin;
 	if (fRange * 1.10 <= 65535.0)
 		fRange *= 1.10;
-	
+
 	fOffset = (fAbsMin+fAbsMax - fRange)/2.0;
 	if (fOffset < 0)
 		fOffset = 0.0;
@@ -386,7 +386,7 @@ void CProcessingDlg::OnSettings()
 {
 	CSettingsDlg			dlg;
 	CDSSSettings &			Settings = GetDSSSettings(this);
-	
+
 	KillTimer(1);
 	dlg.SetDSSSettings(&Settings, m_ProcessParams);
 	dlg.DoModal();
@@ -405,10 +405,10 @@ void CProcessingDlg::OnSettings()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnSize(UINT nType, int cx, int cy) 
+void CProcessingDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	
+
 	m_ControlPos.MoveControls();
 }
 
@@ -421,7 +421,7 @@ void CProcessingDlg::UpdateInfos()
 	LONG		lTotalTime;
 	LONG		lNrFrames;
 	CString		strText;
-	
+
 	strText.LoadString(IDS_NOINFO);
 
 	lISOSpeed	= GetDeepStack(this).GetStackedBitmap().GetISOSpeed();
@@ -502,7 +502,7 @@ LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	CDialog::OnShowWindow(bShow, nStatus);
 
@@ -534,7 +534,7 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 		BeginWaitCursor();
 		GetDeepStack(this).GetStackedBitmap().GetBezierAdjust(m_ProcessParams.m_BezierAdjust);
 		GetDeepStack(this).GetStackedBitmap().GetHistogramAdjust(m_ProcessParams.m_HistoAdjust);
-		
+
 		UpdateControlsFromParams();
 
 		ShowOriginalHistogram(FALSE);
@@ -555,7 +555,7 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnLoaddsi() 
+void CProcessingDlg::OnLoaddsi()
 {
 	if (AskToSave())
 	{
@@ -567,7 +567,7 @@ void CProcessingDlg::OnLoaddsi()
 		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("SaveDSIFolder"), strBaseDirectory);
 
 		strFilter.LoadString(IDS_FILTER_DSIIMAGETIFF);
-		CFileDialog			dlgOpen(TRUE, 
+		CFileDialog			dlgOpen(TRUE,
 									_T(".DSImage"),
 									NULL,
 									OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
@@ -619,7 +619,7 @@ void CProcessingDlg::OnLoaddsi()
 				BeginWaitCursor();
 				GetDeepStack(this).GetStackedBitmap().GetBezierAdjust(m_ProcessParams.m_BezierAdjust);
 				GetDeepStack(this).GetStackedBitmap().GetHistogramAdjust(m_ProcessParams.m_HistoAdjust);
-				
+
 				UpdateControlsFromParams();
 
 				ShowOriginalHistogram(FALSE);
@@ -633,7 +633,7 @@ void CProcessingDlg::OnLoaddsi()
 				EndWaitCursor();
 				m_bDirty = FALSE;
 			};
-		};	
+		};
 
 		SetTimer(1, 100, NULL);
 	};
@@ -648,7 +648,7 @@ BOOL CProcessingDlg::AskToSave()
 	if (m_bDirty)
 	{
 		int				nResult;
-		
+
 		nResult = AfxMessageBox(IDS_MSG_SAVEMODIFICATIONS, MB_YESNOCANCEL | MB_ICONQUESTION);
 		if (nResult == IDCANCEL)
 			bResult = FALSE;
@@ -679,7 +679,7 @@ void CProcessingDlg::SaveDSImage()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".DSImage");
 
-	CFileDialog			dlgOpen(FALSE, 
+	CFileDialog			dlgOpen(FALSE,
 								_T(".DSImage"),
 								NULL,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST,
@@ -732,7 +732,7 @@ void CProcessingDlg::SaveDSImage()
 
 			EndWaitCursor();
 		};
-	};	
+	};
 };
 
 /* ------------------------------------------------------------------- */
@@ -825,7 +825,7 @@ void CProcessingDlg::CreateStarMask()
 	}
 	else
 	{
-		AfxMessageBox(IDS_MSG_NOPICTUREFORSTARMASK, MB_OK | MB_ICONSTOP);	
+		AfxMessageBox(IDS_MSG_NOPICTUREFORSTARMASK, MB_OK | MB_ICONSTOP);
 	};
 };
 
@@ -853,7 +853,7 @@ BOOL CProcessingDlg::SavePictureToFile()
 		if (!strBaseExtension.GetLength())
 			strBaseExtension = _T(".tif");
 
-		CSavePicture				dlgOpen(FALSE, 
+		CSavePicture				dlgOpen(FALSE,
 									_T(".TIF"),
 									NULL,
 									OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -939,7 +939,7 @@ BOOL CProcessingDlg::SavePictureToFile()
 	}
 	else
 	{
-		AfxMessageBox(IDS_MSG_NOPICTURETOSAVE, MB_OK | MB_ICONSTOP);	
+		AfxMessageBox(IDS_MSG_NOPICTURETOSAVE, MB_OK | MB_ICONSTOP);
 	};
 
 	return bResult;
@@ -947,9 +947,9 @@ BOOL CProcessingDlg::SavePictureToFile()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnProcess() 
+void CProcessingDlg::OnProcess()
 {
-	ProcessAndShow(TRUE);	
+	ProcessAndShow(TRUE);
 }
 
 /* ------------------------------------------------------------------- */
@@ -1031,7 +1031,7 @@ private :
 
 public :
 	CColorOrder() {};
-	CColorOrder(COLORREF crColor, LONG lSize) 
+	CColorOrder(COLORREF crColor, LONG lSize)
 	{
 		m_crColor	= crColor;
 		m_lSize		= lSize;
@@ -1063,7 +1063,7 @@ void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGr
 	vColors.push_back(CColorOrder(RGB(255,0,0), lNrReds));
 	vColors.push_back(CColorOrder(RGB(0,255,0), lNrGreens));
 	vColors.push_back(CColorOrder(RGB(0,0,255), lNrBlues));
-	
+
 	std::sort(vColors.begin(), vColors.end());
 
 	for (LONG i = 0;i<vColors.size();i++)
@@ -1077,7 +1077,7 @@ void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGr
 			fRed   = GetRValue(vColors[i].m_crColor);
 			fGreen = GetGValue(vColors[i].m_crColor);
 			fBlue  = GetBValue(vColors[i].m_crColor);
-			
+
 			for (LONG j = i+1;j<vColors.size();j++)
 			{
 				fRed   += GetRValue(vColors[j].m_crColor);
@@ -1111,7 +1111,7 @@ void CProcessingDlg::DrawBezierCurve(Graphics * pGraphics, LONG lWidth, LONG lHe
 {
 	CBezierAdjust		BezierAdjust;
 	POINT				pt;
-	
+
 	BezierAdjust.m_fMidtone			= m_tabLuminance.m_MidTone.GetPos()/10.0;
 	BezierAdjust.m_fMidtoneAngle	= m_tabLuminance.m_MidAngle.GetPos();
 	BezierAdjust.m_fDarknessAngle	= m_tabLuminance.m_DarkAngle.GetPos();
@@ -1152,7 +1152,7 @@ void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histo
 	LONG				i;
 
 	lNrValues = Histogram.GetRedHistogram().GetNrValues();
-	
+
 	if (lNrValues)
 	{
 		for (i = 0;i<lNrValues;i++)
@@ -1201,7 +1201,7 @@ void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histo
 
 		for (i = 0;i<lNrValues;i++)
 		{
-			double		fX, 
+			double		fX,
 						fY;
 			fX = i;
 
@@ -1368,7 +1368,7 @@ void CProcessingDlg::UpdateHistogramAdjust()
 	fRange  = fAbsMax-fAbsMin;
 	if (fRange * 1.10 <= 65535.0)
 		fRange *= 1.10;
-	
+
 	fOffset = (fAbsMin+fAbsMax - fRange)/2.0;
 	if (fOffset < 0)
 		fOffset = 0.0;
@@ -1419,7 +1419,7 @@ void CProcessingDlg::ShowOriginalHistogram(BOOL bLog)
 	double				fMinBlue = m_fGradientOffset+BlueGradient.GetPeg(BlueGradient.IndexFromId(0)).position * m_fGradientRange,
 						fShiftBlue = (BlueGradient.GetPeg(BlueGradient.IndexFromId(1)).position - 0.5)* 2.0,
 						fMaxBlue = m_fGradientOffset+BlueGradient.GetPeg(BlueGradient.IndexFromId(2)).position * m_fGradientRange;
-	
+
 
 	HistoAdjust.GetRedAdjust().SetAdjustMethod(m_tabRGB.GetRedAdjustMethod());
 	HistoAdjust.GetRedAdjust().SetNewValues(fMinRed, fMaxRed, fShiftRed);
@@ -1435,7 +1435,7 @@ void CProcessingDlg::ShowOriginalHistogram(BOOL bLog)
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnTimer(UINT_PTR nIDEvent) 
+void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 {
 	CRect			rcCell;
 
@@ -1469,7 +1469,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnReset() 
+void CProcessingDlg::OnReset()
 {
 	m_bDirty = TRUE;
 	ResetSliders();
@@ -1541,7 +1541,7 @@ void CProcessingDlg::UpdateBezierCurve()
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CProcessingDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	m_bDirty = TRUE;
 	ShowOriginalHistogram();
@@ -1555,7 +1555,7 @@ BOOL CProcessingDlg::SaveOnClose()
 	BOOL			bResult = TRUE;
 
 	bResult = AskToSave();
-	
+
 	return bResult;
 };
 

@@ -12,9 +12,9 @@
 
 // CCustomTabCtrlItem
 
-CCustomTabCtrlItem::CCustomTabCtrlItem(CString sText,LPARAM lParam) : 
-			m_sText(sText), 
-			m_lParam(lParam),	
+CCustomTabCtrlItem::CCustomTabCtrlItem(CString sText,LPARAM lParam) :
+			m_sText(sText),
+			m_lParam(lParam),
 			m_bShape(TAB_SHAPE1),
 			m_fSelected(FALSE),
 			m_fHighlighted(FALSE),
@@ -197,9 +197,9 @@ void CCustomTabCtrlItem::Draw(CDC& dc, CFont& font, BOOL fOnTop, BOOL fRTL)
 	CPoint pts[4];
 	CRect rc = m_rect;
 	GetDrawPoints(rc, pts, fOnTop);
-	
+
 	// Paint item background
-	dc.FillRgn(&m_rgn, &brush);	
+	dc.FillRgn(&m_rgn, &brush);
 
 	CPen* pOldPen = dc.SelectObject(&blackPen);
 
@@ -211,7 +211,7 @@ void CCustomTabCtrlItem::Draw(CDC& dc, CFont& font, BOOL fOnTop, BOOL fRTL)
 		{
 			dc.MoveTo(pts[0]);
 			dc.LineTo(pts[1]);
-		
+
 			if(!m_fSelected)
 			{
 				dc.SelectObject(&shadowPen);
@@ -225,10 +225,10 @@ void CCustomTabCtrlItem::Draw(CDC& dc, CFont& font, BOOL fOnTop, BOOL fRTL)
 		{
 			dc.MoveTo(pts[0]);
 			dc.LineTo(pts[1]);
-			
+
 			dc.SelectObject(&shadowPen);
 			dc.LineTo(pts[2]);
-			
+
 			if(!m_fSelected)
 			{
 				dc.MoveTo(pts[2].x-1,pts[2].y);
@@ -247,7 +247,7 @@ void CCustomTabCtrlItem::Draw(CDC& dc, CFont& font, BOOL fOnTop, BOOL fRTL)
 			CFont* pOldFont = dc.SelectObject(&font);
 			if(fRTL)
 				dc.DrawText(m_sText, &rc, DT_CENTER|DT_VCENTER|DT_SINGLELINE|DT_RTLREADING);
-			else 
+			else
 				dc.DrawText(m_sText, &rc, DT_CENTER|DT_VCENTER|DT_SINGLELINE);
 			dc.SelectObject(pOldFont);
 			dc.SetTextColor(fgOldColor);
@@ -413,7 +413,7 @@ void CCustomTabCtrl::OnPaint()
 		nBtns += 2;
 	if(m_nFirstState)
 		nBtns += 2;
-	
+
 
 	// clear background
 	dcMem.FillSolidRect(&rCl,GetSysColor(COLOR_BTNFACE));
@@ -427,18 +427,18 @@ void CCustomTabCtrl::OnPaint()
 		rAll.SetRect(0,0,nBtns*nA+3,rCl.Height()-1);
 	else
 		rAll.SetRect(0,1,nBtns*nA+3,rCl.Height());
-	
+
 	if(nBtns==0)
 		rAll.SetRectEmpty();
 	int nCloseOffset = 0;
-	
+
 	if(fAfter)
 	{
 		nCloseOffset = rCl.Width()-rAll.Width();
 		rAll.OffsetRect(nCloseOffset,0);
 	}
 
-		// draw tab items visible and not selected	
+		// draw tab items visible and not selected
 	for(int i=0; i<m_aItems.GetSize(); i++)
 	{
 		if(m_aItems[i]->m_bShape && !m_aItems[i]->m_fSelected)
@@ -450,7 +450,7 @@ void CCustomTabCtrl::OnPaint()
 		}
 	}
 
-	// draw selected tab item	
+	// draw selected tab item
 	if(m_nItemSelected!=-1 && m_aItems[m_nItemSelected]->m_bShape)
 		m_aItems[m_nItemSelected]->Draw(dcMem,m_FontSelected,GetStyle()&CTCS_TOP,fRTL);
 
@@ -556,7 +556,7 @@ void CCustomTabCtrl::OnPaint()
 				DrawGlyph(dcMem,ptFirst,2,m_nFirstState-1);
 			else
 				DrawGlyph(dcMem,ptFirst,0,m_nFirstState-1);
-				
+
 			CPoint ptLast(rLast.left+(rLast.Width()-8)/2,rLast.top+(rLast.Height()-7)/2);
 			if(fRTL && m_hBmpBkLeftSpin)
 				DrawBk(dcMem,rLast,m_hBmpBkLeftSpin,m_fIsLeftImageHorLayout,m_mrgnLeft,m_nLastState-1);
@@ -621,25 +621,25 @@ void CCustomTabCtrl::OnPaint()
 		{
 			if(m_nItemSelected==-1)
 			{
-				pts[0] = CPoint(0,rCl.bottom-2); 
-				pts[1] = CPoint(0,rCl.bottom-2); 
-				pts[2] = CPoint(0,rCl.bottom-2); 
+				pts[0] = CPoint(0,rCl.bottom-2);
+				pts[1] = CPoint(0,rCl.bottom-2);
+				pts[2] = CPoint(0,rCl.bottom-2);
 				pts[3] = CPoint(rCl.right-nOffsetX,rCl.bottom-2);
 			}
 			else
 			{
 				if(m_aItems[m_nItemSelected]->m_bShape)
 				{
-					pts[0] = CPoint(0,rCl.bottom-2); 
-					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,rCl.bottom-2); 
-					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,rCl.bottom-2); 
+					pts[0] = CPoint(0,rCl.bottom-2);
+					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,rCl.bottom-2);
+					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,rCl.bottom-2);
 					pts[3] = CPoint(rCl.right-nOffsetX,rCl.bottom-2);
 				}
 				else
 				{
-					pts[0] = CPoint(0,rCl.bottom-2); 
-					pts[1] = CPoint(0,rCl.bottom-2); 
-					pts[2] = CPoint(0,rCl.bottom-2); 
+					pts[0] = CPoint(0,rCl.bottom-2);
+					pts[1] = CPoint(0,rCl.bottom-2);
+					pts[2] = CPoint(0,rCl.bottom-2);
 					pts[3] = CPoint(rCl.right-nOffsetX,rCl.bottom-2);
 				}
 			}
@@ -648,25 +648,25 @@ void CCustomTabCtrl::OnPaint()
 		{
 			if(m_nItemSelected==-1)
 			{
-				pts[0] = CPoint(0,1); 
-				pts[1] = CPoint(0,1); 
-				pts[2] = CPoint(0,1); 
+				pts[0] = CPoint(0,1);
+				pts[1] = CPoint(0,1);
+				pts[2] = CPoint(0,1);
 				pts[3] = CPoint(rCl.right-nOffsetX,1);
 			}
 			else
 			{
 				if(m_aItems[m_nItemSelected]->m_bShape)
 				{
-					pts[0] = CPoint(0,1); 
-					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,1); 
-					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,1); 
+					pts[0] = CPoint(0,1);
+					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,1);
+					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,1);
 					pts[3] = CPoint(rCl.right-nOffsetX,1);
 				}
 				else
 				{
-					pts[0] = CPoint(0,1); 
-					pts[1] = CPoint(0,1); 
-					pts[2] = CPoint(0,1); 
+					pts[0] = CPoint(0,1);
+					pts[1] = CPoint(0,1);
+					pts[2] = CPoint(0,1);
 					pts[3] = CPoint(rCl.right-nOffsetX,1);
 				}
 			}
@@ -678,25 +678,25 @@ void CCustomTabCtrl::OnPaint()
 		{
 			if(m_nItemSelected==-1)
 			{
-				pts[0] = CPoint(nOffsetX,rCl.bottom-2); 
-				pts[1] = CPoint(nOffsetX,rCl.bottom-2); 
-				pts[2] = CPoint(nOffsetX,rCl.bottom-2); 
+				pts[0] = CPoint(nOffsetX,rCl.bottom-2);
+				pts[1] = CPoint(nOffsetX,rCl.bottom-2);
+				pts[2] = CPoint(nOffsetX,rCl.bottom-2);
 				pts[3] = CPoint(rCl.right,rCl.bottom-2);
 			}
 			else
 			{
 				if(m_aItems[m_nItemSelected]->m_bShape)
 				{
-					pts[0] = CPoint(nOffsetX,rCl.bottom-2); 
-					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,rCl.bottom-2); 
-					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,rCl.bottom-2); 
+					pts[0] = CPoint(nOffsetX,rCl.bottom-2);
+					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,rCl.bottom-2);
+					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,rCl.bottom-2);
 					pts[3] = CPoint(rCl.right,rCl.bottom-2);
 				}
 				else
 				{
-					pts[0] = CPoint(nOffsetX,rCl.bottom-2); 
-					pts[1] = CPoint(nOffsetX,rCl.bottom-2); 
-					pts[2] = CPoint(nOffsetX,rCl.bottom-2); 
+					pts[0] = CPoint(nOffsetX,rCl.bottom-2);
+					pts[1] = CPoint(nOffsetX,rCl.bottom-2);
+					pts[2] = CPoint(nOffsetX,rCl.bottom-2);
 					pts[3] = CPoint(rCl.right,rCl.bottom-2);
 				}
 			}
@@ -705,38 +705,38 @@ void CCustomTabCtrl::OnPaint()
 		{
 			if(m_nItemSelected==-1)
 			{
-				pts[0] = CPoint(nOffsetX,1); 
-				pts[1] = CPoint(nOffsetX,1); 
-				pts[2] = CPoint(nOffsetX,1); 
+				pts[0] = CPoint(nOffsetX,1);
+				pts[1] = CPoint(nOffsetX,1);
+				pts[2] = CPoint(nOffsetX,1);
 				pts[3] = CPoint(rCl.right,1);
 			}
 			else
 			{
 				if(m_aItems[m_nItemSelected]->m_bShape)
 				{
-					pts[0] = CPoint(nOffsetX,1); 
-					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,1); 
-					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,1); 
+					pts[0] = CPoint(nOffsetX,1);
+					pts[1] = CPoint(m_aItems[m_nItemSelected]->m_rect.left,1);
+					pts[2] = CPoint(m_aItems[m_nItemSelected]->m_rect.right,1);
 					pts[3] = CPoint(rCl.right,1);
 				}
 				else
 				{
-					pts[0] = CPoint(nOffsetX,1); 
-					pts[1] = CPoint(nOffsetX,1); 
-					pts[2] = CPoint(nOffsetX,1); 
+					pts[0] = CPoint(nOffsetX,1);
+					pts[1] = CPoint(nOffsetX,1);
+					pts[2] = CPoint(nOffsetX,1);
 					pts[3] = CPoint(rCl.right,1);
 				}
 			}
 		}
 	}
-		
+
 	CPen* pOldPen = dcMem.SelectObject(&blackPen);
 	dcMem.MoveTo(pts[0]);
 	dcMem.LineTo(pts[1]);
 	dcMem.MoveTo(pts[2]);
 	dcMem.LineTo(pts[3]);
 	dcMem.SelectObject(pOldPen);
-	
+
 	if(m_nButtonIDDown>=0 && (GetCursor()==m_hCursorMove || GetCursor()==m_hCursorCopy))
 	{
 		// Draw drag destination marker
@@ -787,7 +787,7 @@ void CCustomTabCtrl::OnPaint()
 	dcMem.SelectObject(pOldBmp);
 }
 
-void CCustomTabCtrl::OnSize(UINT nType, int cx, int cy) 
+void CCustomTabCtrl::OnSize(UINT nType, int cx, int cy)
 {
 	CWnd::OnSize(nType, cx, cy);
 	if(cx && cy)
@@ -849,7 +849,7 @@ void CCustomTabCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnLButtonDown(nFlags,point);
 }
 
-void CCustomTabCtrl::OnLButtonDblClk(UINT nFlags, CPoint point) 
+void CCustomTabCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
 	int nHTRet = ProcessLButtonDown(HitTest(point),nFlags,point);
 	if(nHTRet>=0)
@@ -921,7 +921,7 @@ int CCustomTabCtrl::ProcessLButtonDown(int nHitTest, UINT nFlags, CPoint point)
 	default:
 		{
 			DWORD dwStyle = GetStyle();
-			if(((dwStyle&CTCS_DRAGMOVE) && !(nFlags&MK_CONTROL) && m_hCursorMove) || 
+			if(((dwStyle&CTCS_DRAGMOVE) && !(nFlags&MK_CONTROL) && m_hCursorMove) ||
 				((dwStyle&CTCS_DRAGCOPY) && (nFlags&MK_CONTROL) && m_hCursorCopy))
 			{
 				m_nButtonIDDown = nHitTest;
@@ -1012,7 +1012,7 @@ void CCustomTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	_TrackMouseEvent(&trackmouseevent);
 
 	int nHitTest = HitTest(point);
-	
+
 	if(m_nFirstState)
 	{
 		if(nHitTest==CTCHT_ONFIRSTBUTTON)
@@ -1100,7 +1100,7 @@ void CCustomTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		if(m_nItemDragDest>=m_aItems.GetSize())
 			m_nItemDragDest = m_aItems.GetSize()-1;
-		
+
 		int x1 = m_aItems[m_nItemDragDest]->m_rectText.left - rCl.Height()/4;
 		int x2 = m_aItems[m_nItemDragDest]->m_rectText.right + rCl.Height()/4;
 		if(x>=rCl.right)
@@ -1125,14 +1125,14 @@ void CCustomTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			if(m_nItemDragDest>0)
 				m_nItemDragDest--;
-			
+
 			RecalcLayout(RECALC_ITEM_SELECTED,m_nItemDragDest);
 			Invalidate(FALSE);
 		}
 	}
 }
 
-LRESULT CCustomTabCtrl::OnMouseLeave(WPARAM /*wParam*/, LPARAM /*lParam*/) 
+LRESULT CCustomTabCtrl::OnMouseLeave(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	if(m_nFirstState || m_nPrevState || m_nCloseState)
 	{
@@ -1154,7 +1154,7 @@ LRESULT CCustomTabCtrl::OnMouseLeave(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	return 0;
 }
 
-void CCustomTabCtrl::OnUpdateEdit() 
+void CCustomTabCtrl::OnUpdateEdit()
 {
 	if(m_ctrlEdit.m_hWnd)
 	{
@@ -1164,7 +1164,7 @@ void CCustomTabCtrl::OnUpdateEdit()
 	}
 }
 
-LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/) 
+LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	::DeleteObject(m_hBmpBkLeftSpin);
 	m_hBmpBkLeftSpin = NULL;
@@ -1210,7 +1210,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 				m_fIsLeftImageHorLayout = FALSE;
 			else
 				m_fIsLeftImageHorLayout = TRUE;
-			
+
 			if(!tm.GetThemeMargins(SPNP_DOWNHORZ,0,TMT_SIZINGMARGINS,&m_mrgnLeft))
 				AfxThrowUserException();
 		}
@@ -1231,11 +1231,11 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			WCHAR szSpinBkRightBitmapFilename[MAX_PATH];
 			if(!tm.GetThemeFilename(SPNP_UPHORZ,0,TMT_IMAGEFILE,szSpinBkRightBitmapFilename,MAX_PATH))
 				AfxThrowUserException();
-			
+
 			m_hBmpBkRightSpin = tm.LoadBitmap(szSpinBkRightBitmapFilename);
 			if(!m_hBmpBkRightSpin)
 				AfxThrowUserException();
-	
+
 			int nRightImageLayout;
 			if(!tm.GetThemeEnumValue(SPNP_UPHORZ,0,TMT_IMAGELAYOUT,&nRightImageLayout))
 				AfxThrowUserException();
@@ -1252,7 +1252,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 			int nGlyphType;
 			if(!tm.GetThemeEnumValue(SPNP_DOWNHORZ,0,TMT_GLYPHTYPE,&nGlyphType))
 				AfxThrowUserException();
-			
+
 			if(nGlyphType==GT_IMAGEGLYPH)
 			{
 				COLORREF rgbTransGlyph = RGB(255,0,255);
@@ -1379,7 +1379,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 				if(!tm.GetThemeColor(SPNP_UPHORZ,UPHZS_HOT,TMT_GLYPHTEXTCOLOR,&m_rgbGlyph[1]))
 					AfxThrowUserException();
 				if(!tm.GetThemeColor(SPNP_UPHORZ,UPHZS_PRESSED,TMT_GLYPHTEXTCOLOR,&m_rgbGlyph[2]))
-					AfxThrowUserException();	
+					AfxThrowUserException();
 			}
 			else
 				AfxThrowUserException();
@@ -1401,7 +1401,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	return 0;
 }
 
-void CCustomTabCtrl::OnTimer(UINT_PTR nIDEvent) 
+void CCustomTabCtrl::OnTimer(UINT_PTR nIDEvent)
 {
 	CWnd::OnTimer(nIDEvent);
 	if(nIDEvent==1)
@@ -1531,7 +1531,7 @@ int CCustomTabCtrl::InsertItem(int nItem, CString sText, LPARAM lParam)
 		}
 		m_ctrlToolTip.DelTool(this,nItem+1);
 	}
-	
+
 	RecalcLayout(RECALC_RESIZED,m_nItemSelected);
 	Invalidate(FALSE);
 
@@ -1557,7 +1557,7 @@ int CCustomTabCtrl::MoveItem(int nItemSrc, int nItemDst, BOOL fMouseSel)
 	};
 
 	CCustomTabCtrlItem *pItem = m_aItems[nItemSrc];
-	
+
 	// remove item from old place
 	CString sOldTooltip;
 	if(m_ctrlToolTip.m_hWnd)
@@ -1603,7 +1603,7 @@ int CCustomTabCtrl::MoveItem(int nItemSrc, int nItemDst, BOOL fMouseSel)
 		m_ctrlToolTip.DelTool(this,nItemDst+1);
 		m_ctrlToolTip.AddTool(this,sOldTooltip,CRect(0,0,0,0),nItemDst+1);
 	}
-	
+
 	m_nItemSelected = nItemDst;
 
 	RecalcLayout(RECALC_ITEM_SELECTED,m_nItemSelected);
@@ -1632,7 +1632,7 @@ int CCustomTabCtrl::CopyItem(int nItemSrc, int nItemDst, BOOL fMouseSel)
 		int n = m_aItems[nItemSrc]->m_sText.GetLength();
 		if(n>=4)
 		{
-			if(m_aItems[nItemSrc]->m_sText[n-1]==_T(')') && 
+			if(m_aItems[nItemSrc]->m_sText[n-1]==_T(')') &&
 				m_aItems[nItemSrc]->m_sText[n-2]>_T('1') &&
 				m_aItems[nItemSrc]->m_sText[n-2]<=_T('9') &&
 				m_aItems[nItemSrc]->m_sText[n-3]==_T('('))
@@ -1640,7 +1640,7 @@ int CCustomTabCtrl::CopyItem(int nItemSrc, int nItemDst, BOOL fMouseSel)
 				n = m_aItems[nItemSrc]->m_sText.GetLength()-3;
 				bAppendFlag = FALSE;
 			}
-			else if(m_aItems[nItemSrc]->m_sText[n-1]==_T(')') && 
+			else if(m_aItems[nItemSrc]->m_sText[n-1]==_T(')') &&
 					m_aItems[nItemSrc]->m_sText[n-2]>=_T('0') &&
 					m_aItems[nItemSrc]->m_sText[n-2]<=_T('9') &&
 					m_aItems[nItemSrc]->m_sText[n-3]>=_T('1') &&
@@ -1724,10 +1724,10 @@ int CCustomTabCtrl::DeleteItem(int nItem)
 		if(m_nItemSelected==m_aItems.GetSize()-1) // last item
 		{
 			m_nItemSelected--;
-			m_aItems[m_nItemSelected]->m_fSelected = TRUE;	
+			m_aItems[m_nItemSelected]->m_fSelected = TRUE;
 		}
 		else
-			m_aItems[m_nItemSelected+1]->m_fSelected = TRUE;	
+			m_aItems[m_nItemSelected+1]->m_fSelected = TRUE;
 	}
 	else if(m_nItemSelected>nItem)
 		m_nItemSelected--;
@@ -1759,7 +1759,7 @@ void CCustomTabCtrl::DeleteAllItems()
 	m_aItems.RemoveAll();
 
 	m_nItemSelected = -1;
-		
+
 	RecalcLayout(RECALC_RESIZED,m_nItemSelected);
 	Invalidate(FALSE);
 }
@@ -1784,7 +1784,7 @@ int CCustomTabCtrl::HighlightItem(int nItem, BOOL fHighlight)
 	}
 	if(fHighlight==m_aItems[nItem]->m_fHighlighted || nItem==m_nItemSelected)
 		return CTCERR_NOERROR;
-	
+
 	m_aItems[nItem]->m_fHighlighted = fHighlight;
 	return CTCERR_NOERROR;
 }
@@ -1927,10 +1927,10 @@ int	CCustomTabCtrl::HitTest(CPoint pt)
 
 	if(m_nPrevState && rPrev.PtInRect(pt))
 		return CTCHT_ONPREVBUTTON;
-	
+
 	if(m_nNextState && rNext.PtInRect(pt))
 		return CTCHT_ONNEXTBUTTON;
-	
+
 	if(nBtns>=4 && m_nLastState && rLast.PtInRect(pt))
 		return CTCHT_ONLASTBUTTON;
 
@@ -1991,7 +1991,7 @@ int CCustomTabCtrl::SetCurSel(int nItem, BOOL fMouseSel, BOOL fCtrlPressed)
 		m_aItems[m_nItemSelected]->m_fSelected = FALSE;
 
 	m_nItemSelected = nItem;
-	
+
 	if(m_nItemSelected!=-1)
 		m_aItems[m_nItemSelected]->m_fSelected = TRUE;
 
@@ -2041,7 +2041,7 @@ void CCustomTabCtrl::RecalcLayout(int nRecalcType, int nItem)
 		RecalcOffset(nBnWidth);
 		if(nRecalcType==RECALC_EDIT_RESIZED)
 			RecalcEditResized(0,nItem);
-		
+
 		if(m_ctrlToolTip.m_hWnd)
 		{
 			m_ctrlToolTip.SetToolRect(this,(UINT)CTCID_FIRSTBUTTON,CRect(0,0,0,0));
@@ -2069,7 +2069,7 @@ void CCustomTabCtrl::RecalcLayout(int nRecalcType, int nItem)
 		}
 		return;
 	}
-	
+
 	if(m_nPrevState==BNST_INVISIBLE)
 	{
 		m_nPrevState = BNST_NORMAL;
@@ -2090,7 +2090,7 @@ void CCustomTabCtrl::RecalcLayout(int nRecalcType, int nItem)
 		m_nFirstState = BNST_INVISIBLE;
 		m_nLastState = BNST_INVISIBLE;
 	}
-	
+
 	if(m_ctrlToolTip.m_hWnd)
 	{
 		if(GetStyle()&CTCS_BUTTONSAFTER)
@@ -2176,11 +2176,11 @@ void CCustomTabCtrl::RecalcLayout(int nRecalcType, int nItem)
 			}
 		}
 	}
-	
+
 	if(m_aItems.GetSize()==0)
 		return;
-	
-	nBnWidth = nBtns*nA+3;	
+
+	nBnWidth = nBtns*nA+3;
 	if(GetStyle()&CTCS_BUTTONSAFTER)
 		rCl.right -= nBnWidth;
 	switch(nRecalcType)
@@ -2197,7 +2197,7 @@ void CCustomTabCtrl::RecalcLayout(int nRecalcType, int nItem)
 		}
 		break;
 	case RECALC_PREV_PRESSED:
-		{	
+		{
 			RecalcOffset(nBnWidth);
 			if(m_nItemNdxOffset>0)
 			{
@@ -2208,7 +2208,7 @@ void CCustomTabCtrl::RecalcLayout(int nRecalcType, int nItem)
 		}
 		break;
 	case RECALC_NEXT_PRESSED:
-		{	
+		{
 			RecalcOffset(nBnWidth);
 			if(m_aItems[m_aItems.GetSize()-1]->m_rect.right>rCl.Width() && m_nItemNdxOffset!=m_aItems.GetSize()-1)
 			{
@@ -2229,9 +2229,9 @@ void CCustomTabCtrl::RecalcLayout(int nRecalcType, int nItem)
 			}
 			else
 			{
-				while(m_nItemNdxOffset<nItem && 
-						m_aItems[nItem]->m_bShape==TAB_SHAPE4 && 
-						m_aItems[nItem]->m_rect.right>rCl.Width() && 
+				while(m_nItemNdxOffset<nItem &&
+						m_aItems[nItem]->m_bShape==TAB_SHAPE4 &&
+						m_aItems[nItem]->m_rect.right>rCl.Width() &&
 						m_aItems[nItem]->m_rect.left>((GetStyle()&CTCS_BUTTONSAFTER)?0:nBnWidth))
 				{
 					m_nItemNdxOffset++;
@@ -2318,7 +2318,7 @@ void CCustomTabCtrl::RecalcEditResized(int nOffset, int nItem)
 			}
 			return;
 		}
-	} 
+	}
 	while(1);
 }
 
@@ -2328,7 +2328,7 @@ void CCustomTabCtrl::RecalcOffset(int nOffset)
 	GetClientRect(&rCl);
 	if(IsVertical())
 		rCl.SetRect(0,0,rCl.Height(),rCl.Width());
-	
+
 	int rightAdjusment = 0;
 	if(GetStyle()&CTCS_BUTTONSAFTER)
 	{
@@ -2396,7 +2396,7 @@ int CCustomTabCtrl::RecalcRectangles()
 		rCl.SetRect(0,0,rCl.Height(),rCl.Width());
 	BOOL fTop = GetStyle()&CTCS_TOP;
 	int nWidth = 0;
-	
+
 	{
 		// calculate width
 
@@ -2454,7 +2454,7 @@ int CCustomTabCtrl::RecalcRectangles()
 					m_aItems[i]->m_rect = CRect(0,1,w+rCl.Height()+4,rCl.Height()-1);
 					m_aItems[i]->m_rectText = CRect(rCl.Height()/2,1,w+rCl.Height()/2+4,rCl.Height()-1);
 				}
-				
+
 				m_aItems[i]->m_rect += CPoint(nOffset,0);
 				m_aItems[i]->m_rectText += CPoint(nOffset,0);
 
@@ -2472,7 +2472,7 @@ int CCustomTabCtrl::RecalcRectangles()
 
 BOOL CCustomTabCtrl::PreTranslateMessage(MSG* pMsg)
 {
-	if(GetStyle()&CTCS_TOOLTIPS && m_ctrlToolTip.m_hWnd && 
+	if(GetStyle()&CTCS_TOOLTIPS && m_ctrlToolTip.m_hWnd &&
 		(pMsg->message==WM_LBUTTONDOWN || pMsg->message==WM_LBUTTONUP || pMsg->message==WM_MOUSEMOVE))
 			m_ctrlToolTip.RelayEvent(pMsg);
 
@@ -2498,7 +2498,7 @@ void CCustomTabCtrl::DrawBk(CDC& dc, CRect& r, HBITMAP hBmp, BOOL fIsImageHorLay
 				nImageNdx*bm.bmWidth/4,
 				0,
 				SRCCOPY);
-		
+
 		// right-top
 		dc.BitBlt(r.right-mrgn.cxRightWidth,
 				r.top,
@@ -2601,7 +2601,7 @@ void CCustomTabCtrl::DrawBk(CDC& dc, CRect& r, HBITMAP hBmp, BOOL fIsImageHorLay
 				0,
 				nImageNdx*bm.bmHeight/4,
 				SRCCOPY);
-		
+
 		// right-top
 		dc.BitBlt(r.right-mrgn.cxRightWidth,
 				r.top,
@@ -2611,7 +2611,7 @@ void CCustomTabCtrl::DrawBk(CDC& dc, CRect& r, HBITMAP hBmp, BOOL fIsImageHorLay
 				bm.bmWidth-mrgn.cxRightWidth,
 				nImageNdx*bm.bmHeight/4,
 				SRCCOPY);
-		
+
 		// left-bottom
 		dc.BitBlt(r.left,
 				r.bottom-mrgn.cyBottomHeight,
@@ -2706,7 +2706,7 @@ void CCustomTabCtrl::DrawGlyph(CDC& dc, CPoint& pt, int nImageNdx, int nColorNdx
 
 	CBitmap bmpGlyphColor;
 	bmpGlyphColor.CreateCompatibleBitmap(&dc,8,7);
-	
+
 	CBitmap* pOldBmpGlyphColor = dcMem.SelectObject(&bmpGlyphColor);
 
 	COLORREF rgbOldTextGlyph =  dcMem.SetTextColor(m_rgbGlyph[nColorNdx]);
@@ -2756,7 +2756,7 @@ BOOL CCustomTabCtrl::ModifyStyleEx(DWORD dwRemove, DWORD dwAdd, UINT nFlags)
 	return TRUE;
 }
 
-void CCustomTabCtrl::PreSubclassWindow() 
+void CCustomTabCtrl::PreSubclassWindow()
 {
 	OnThemeChanged(0,0);
 	CWnd::ModifyStyle(0,WS_CLIPCHILDREN);
@@ -2780,7 +2780,7 @@ void CCustomTabCtrl::OnRButtonDown(UINT nFlags, CPoint point)
 	CWnd::OnRButtonDown(nFlags, point);
 }
 
-void CCustomTabCtrl::OnRButtonDblClk(UINT nFlags, CPoint point) 
+void CCustomTabCtrl::OnRButtonDblClk(UINT nFlags, CPoint point)
 {
 	NotifyParent(CTCN_RDBLCLK,HitTest(point),point);
 	CWnd::OnRButtonDblClk(nFlags, point);
@@ -2828,12 +2828,12 @@ int CCustomTabCtrl::EditLabel(int nItem, BOOL fMouseSel)
 			m_ctrlEdit.SetSel(0,-1);
 			if(fMouseSel)
 				ReleaseCapture();
-			for (;;) 
+			for (;;)
 			{
 				MSG msg;
 				::GetMessage(&msg, NULL, 0, 0);
 
-				switch (msg.message) 
+				switch (msg.message)
 				{
 				case WM_SYSKEYDOWN:
 					{

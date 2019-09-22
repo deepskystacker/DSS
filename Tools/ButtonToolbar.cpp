@@ -177,7 +177,7 @@ Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 			path.SetFillMode(FillModeWinding);
 			path.AddRectangle(RectF(10*10, 0, lWidth-20*10, lHeight));
 			path.AddRectangle(RectF(0, 10*10, lWidth, lHeight-20*10));
-			
+
 			path.AddEllipse(0, 0, 20*10, 20*10);
 			path.AddEllipse(lWidth-20*10, 0, 20*10, 20*10);
 			path.AddEllipse(0, lHeight-20*10, 20*10, 20*10);
@@ -212,7 +212,7 @@ Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -221,7 +221,7 @@ BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseMove(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnMouseMove(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -268,7 +268,7 @@ BOOL	CButtonToolbar::OnMouseMove(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseLeave() 
+BOOL	CButtonToolbar::OnMouseLeave()
 {
 	BOOL				bResult = FALSE;
 
@@ -285,7 +285,7 @@ BOOL	CButtonToolbar::OnMouseLeave()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 	BOOL				bFound = FALSE;
@@ -316,7 +316,7 @@ BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -327,7 +327,7 @@ BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnRButtonDown(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnRButtonDown(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 	LONG				lIndice;

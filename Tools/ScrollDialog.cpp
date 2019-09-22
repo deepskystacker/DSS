@@ -11,7 +11,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-// The following definitions specify how many points 
+// The following definitions specify how many points
 // are scrolled at each press of the scrollbar arrows
 #define HORZ_PTS 8
 #define VERT_PTS 4
@@ -28,7 +28,7 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CGripper message handlers
-UINT CGripper::OnNcHitTest(CPoint point) 
+UINT CGripper::OnNcHitTest(CPoint point)
 {
 	UINT ht = CScrollBar::OnNcHitTest(point);
 	if(ht==HTCLIENT)
@@ -74,7 +74,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CScrollDialog message handlers
 
-BOOL CScrollDialog::OnInitDialog() 
+BOOL CScrollDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -92,10 +92,10 @@ BOOL CScrollDialog::OnInitDialog()
     initRect.left = initRect.right - GetSystemMetrics(SM_CXHSCROLL);
     initRect.top  = initRect.bottom - GetSystemMetrics(SM_CYVSCROLL);
 
-    DWORD dwStyle = WS_CHILD | 
-                    SBS_SIZEBOX | 
-                    SBS_SIZEBOXBOTTOMRIGHTALIGN | 
-                    SBS_SIZEGRIP | 
+    DWORD dwStyle = WS_CHILD |
+                    SBS_SIZEBOX |
+                    SBS_SIZEBOXBOTTOMRIGHTALIGN |
+                    SBS_SIZEGRIP |
                     WS_VISIBLE;
 
     m_Grip.Create(dwStyle,initRect, this, AFX_IDW_SIZE_BOX);
@@ -161,7 +161,7 @@ void CScrollDialog::SetupScrollbars()
     if (!bMaximized)
     {
         CWnd *resizeWnd = GetDlgItem(AFX_IDW_SIZE_BOX);
-	    if (resizeWnd) 
+	    if (resizeWnd)
         {
 	        CRect rect, rect2;
 	        resizeWnd->GetWindowRect(&rect);
@@ -173,7 +173,7 @@ void CScrollDialog::SetupScrollbars()
     }
 }
 
-void CScrollDialog::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CScrollDialog::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Handle vertical scrollbar messages
     // These can be tweaked to better fit the implementation
@@ -203,7 +203,7 @@ void CScrollDialog::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
-void CScrollDialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CScrollDialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // Handle horizontal scrollbar messages
     // These can be tweaked to better fit the implementation
@@ -230,11 +230,11 @@ void CScrollDialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
         ScrollWindow(iMove, 0, NULL, NULL);
         SetScrollPos(SB_HORZ, m_nHscrollPos, TRUE);
     }
-	
+
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-void CScrollDialog::OnSize(UINT nType, int cx, int cy) 
+void CScrollDialog::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
     if (m_bInitialized)

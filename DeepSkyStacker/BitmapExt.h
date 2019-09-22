@@ -53,11 +53,11 @@ private :
 	};
 
 public :
-	CExtraInfo() 
+	CExtraInfo()
 	{
 		m_bPropagate = false;
 	};
-	CExtraInfo(const CExtraInfo & ei) 
+	CExtraInfo(const CExtraInfo & ei)
 	{
 		CopyFrom(ei);
 	};
@@ -186,64 +186,64 @@ inline void ToHSL(double Red, double Green, double Blue, double & H, double & S,
     double maxval = max(Red, max(Green, Blue));
     double mdiff  = maxval - minval;
     double msum   = maxval + minval;
-   
+
     L = msum / 510.0f;
 
-    if (maxval == minval) 
+    if (maxval == minval)
     {
       S = 0.0f;
-      H = 0.0f; 
-    }   
-    else 
-    { 
-      double rnorm = (maxval - Red  ) / mdiff;      
+      H = 0.0f;
+    }
+    else
+    {
+      double rnorm = (maxval - Red  ) / mdiff;
       double gnorm = (maxval - Green) / mdiff;
-      double bnorm = (maxval - Blue ) / mdiff;   
+      double bnorm = (maxval - Blue ) / mdiff;
 
       S = (L <= 0.5f) ? (mdiff / msum) : (mdiff / (510.0f - msum));
 
       if (Red   == maxval) H = 60.0f * (6.0f + bnorm - gnorm);
       if (Green == maxval) H = 60.0f * (2.0f + rnorm - bnorm);
       if (Blue  == maxval) H = 60.0f * (4.0f + gnorm - rnorm);
-      if (H > 360.0f) 
+      if (H > 360.0f)
 		  H = H - 360.0f;
     }
 };
 
 inline double ToRGB1(float rm1, float rm2, float rh)
 {
-  if (rh > 360.0f) 
+  if (rh > 360.0f)
 	  rh -= 360.0f;
-  else if (rh <   0.0f) 
+  else if (rh <   0.0f)
 	  rh += 360.0f;
- 
-  if      (rh <  60.0f) 
-	  rm1 = rm1 + (rm2 - rm1) * rh / 60.0f;   
-  else if (rh < 180.0f) 
+
+  if      (rh <  60.0f)
+	  rm1 = rm1 + (rm2 - rm1) * rh / 60.0f;
+  else if (rh < 180.0f)
 	  rm1 = rm2;
-  else if (rh < 240.0f) 
-	  rm1 = rm1 + (rm2 - rm1) * (240.0f - rh) / 60.0f;      
-                   
+  else if (rh < 240.0f)
+	  rm1 = rm1 + (rm2 - rm1) * (240.0f - rh) / 60.0f;
+
   return (rm1 * 255.0);
 }
 
 inline void ToRGB(double H, double S, double L, double & Red, double & Green, double & Blue)
 {
-    if (S == 0.0) 
+    if (S == 0.0)
     {
       Red = Green = Blue = L * 255.0;
     }
     else
     {
       double rm1, rm2;
-         
-      if (L <= 0.5f) 
-		  rm2 = (double)(L + L * S);  
-      else                     
-		  rm2 = (double)(L + S - L * S);
-      rm1 = (double)(2.0f * L - rm2);   
 
-      Red   = ToRGB1(rm1, rm2, (double)(H + 120.0f));   
+      if (L <= 0.5f)
+		  rm2 = (double)(L + L * S);
+      else
+		  rm2 = (double)(L + S - L * S);
+      rm1 = (double)(2.0f * L - rm2);
+
+      Red   = ToRGB1(rm1, rm2, (double)(H + 120.0f));
       Green = ToRGB1(rm1, rm2, (double)H);
       Blue  = ToRGB1(rm1, rm2, (double)(H - 120.0f));
     }
@@ -474,7 +474,7 @@ typedef enum
 	BAYER_GREEN2	= 0xB,
 	BAYER_MAGENTA	= 0xC,
 	BAYER_YELLOW	= 0xD,
-	BAYER_NRCOLORS  = 0xD+1 
+	BAYER_NRCOLORS  = 0xD+1
 }BAYERCOLOR;
 
 inline LONG	CMYGZeroIndex(BAYERCOLOR Color)
@@ -485,7 +485,7 @@ inline LONG	CMYGZeroIndex(BAYERCOLOR Color)
 typedef enum CFATYPE
 {
 	CFATYPE_NONE		= 0,
-	CFATYPE_BGGR		= 1,	
+	CFATYPE_BGGR		= 1,
 	CFATYPE_GRBG		= 2,
 	CFATYPE_GBRG		= 3,
 	CFATYPE_RGGB		= 4,
@@ -497,21 +497,21 @@ typedef enum CFATYPE
 	CFATYPE_CMYG		= 0xACDB,
 	CFATYPE_CYMG		= 0xADCB,
 	CFATYPE_CYGM		= 0xADBC,
-						  
+
 	CFATYPE_GCMY		= 0xBACD,
 	CFATYPE_GCYM		= 0xBADC,
 	CFATYPE_GMCY		= 0xBCAD,
 	CFATYPE_GMYC		= 0xBCDA,
 	CFATYPE_GYCM		= 0xBDAC,
 	CFATYPE_GYMC		= 0xBDCA,
-						  
+
 	CFATYPE_MCGY		= 0xCABD,
 	CFATYPE_MCYG		= 0xCADB,
 	CFATYPE_MGYC		= 0xCBDA,
 	CFATYPE_MGCY		= 0xCBAD,
 	CFATYPE_MYGC		= 0xCDBA,
 	CFATYPE_MYCG		= 0xCDAB,
-						  
+
 	CFATYPE_YCGM		= 0xDABC,
 	CFATYPE_YCMG		= 0xDACB,
 	CFATYPE_YGMC		= 0xDBCA,
@@ -528,7 +528,6 @@ typedef enum CFATYPE
 	CFATYPE_GMCYGMYC = 0xBCADBCDA,
 	CFATYPE_MGCYMGYC = 0xCBADCBDA,
 	CFATYPE_GMYCGMCY = 0xBCDABCAD,
-
 
 	CFATYPE_GMCYMGCY = 0xBCADCBAD,
 	CFATYPE_MGYCGMYC = 0xCBDABCDA,
@@ -560,7 +559,7 @@ protected :
 	CDSSProgress *			m_pProgress;
 
 public :
-	CMedianFilterEngine() 
+	CMedianFilterEngine()
 	{
 		m_lFilterSize = 1;
 		m_pProgress   = NULL;
@@ -612,7 +611,7 @@ BOOL	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitma
 
 /* ------------------------------------------------------------------- */
 
-class CMemoryBitmap : public CRefCount 
+class CMemoryBitmap : public CRefCount
 {
 public :
 	class CPixelIterator : public CRefCount
@@ -621,7 +620,7 @@ public :
 		LONG								m_lX,
 											m_lY;
 	public :
-		CPixelIterator() 
+		CPixelIterator()
 		{
 			m_lX = -1;
 			m_lY = -1;
@@ -683,7 +682,7 @@ protected :
 	};
 
 public :
-	CMemoryBitmap() 
+	CMemoryBitmap()
 	{
 		m_bMaster  = FALSE;
 		m_bTopDown = FALSE;
@@ -695,7 +694,7 @@ public :
 		m_lNrFrames = 0;
 		m_DateTime.wYear = 0;
 	};
-	virtual ~CMemoryBitmap() 
+	virtual ~CMemoryBitmap()
 	{
 		ZTRACE_RUNTIME("Destroying memory bitmap %p", this);
 	};
@@ -868,7 +867,7 @@ BOOL Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, d
 
 template <typename TType> class CGrayBitmapT;
 
-template <typename TType> 
+template <typename TType>
 class CGrayMedianFilterEngineT : public CMedianFilterEngine
 {
 private :
@@ -1044,7 +1043,6 @@ inline BOOL IsBayerRedColumn(LONG x, CFATYPE CFAType)
 
 void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue);
 
-
 inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
 {
 	double			fR, fG, fB;
@@ -1069,7 +1067,6 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 	// M = R + B
 	// Y = R + G
 	// C = B + G
-
 
 	// RGB from CYM
 	// R = (M+Y-C)/2
@@ -1284,8 +1281,8 @@ protected :
 		std::vector<TType>			vAuxValues;
 		std::vector<TType>			vWorkingBuffer1;
 		std::vector<TType>			vWorkingBuffer2;
-		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
-		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -1429,7 +1426,7 @@ public :
 		{
 			m_lX = x;
 			m_lY = y;
-			
+
 			size_t			lOffset = m_pBitmap->GetOffset(x, y);
 			m_pValue		= &(m_pBitmap->m_vPixels[lOffset]);
 		};
@@ -1461,7 +1458,7 @@ public :
 
 		virtual void	SetPixel(double fRed, double fGreen, double fBlue)
 		{
-			
+
 		};
 
 		virtual void	SetPixel(double fGray)
@@ -1596,7 +1593,7 @@ public :
 			{
 				LONG			lAdd = min(lStep, lRemaining);
 				DWORD			dwThreadId;
-				
+
 				dwThreadId = GetAvailableThreadId();
 				PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
@@ -1856,10 +1853,10 @@ private :
 	{
 		LONG			lIndice;
 		LONG			lNrValues[4];
-		
+
 		lNrValues[0] = lNrValues[1] = lNrValues[2] = lNrValues[3] = 0;
 		pfValues[0]  = pfValues[1]  = pfValues[2]  = pfValues[3]  = 0;
-		
+
 		for (LONG i = max(0L, x-1);i<=min(m_lWidth-1, x+1);i++)
 			for (LONG j = max(0L, y-1);j<=min(m_lHeight-1, y+1);j++)
 			{
@@ -1876,15 +1873,13 @@ private :
 /*
 		// It's used only for CYMG - so cut it down to the basic
 
-		
-
 		if (x==m_lWidth-1)
 			x = m_lWidth-2;
 		if (y==m_lHeight-1)
 			y = m_lHeight-2;
 
 		pfValues[0]  = pfValues[1]  = pfValues[2]  = pfValues[3]  = 0;
-		
+
 		for (LONG i = x;i<=x+1;i++)
 			for (LONG j = y;j<=y+1;j++)
 				pfValues[CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType))]  = m_vPixels[GetOffset(i, j)];*/
@@ -1954,7 +1949,6 @@ public :
 		return pResult;
 	};
 
-
 	virtual BAYERCOLOR GetBayerColor(LONG x, LONG y)
 	{
 		return ::GetBayerColor(x, y, m_CFAType);
@@ -1997,7 +1991,7 @@ public :
 	};
 
 	virtual BOOL	SetValue(LONG i, LONG j, double fGray)
-	{ 
+	{
 		BOOL		bResult = TRUE;
 
 		if (IsXYOk(i, j))
@@ -2005,11 +1999,11 @@ public :
 		else
 			bResult = FALSE;
 
-		return bResult; 
+		return bResult;
 	};
 
 	virtual BOOL	GetValue(LONG i, LONG j, double & fGray)
-	{ 
+	{
 		BOOL		bResult = TRUE;
 
 		if (IsXYOk(i, j))
@@ -2017,7 +2011,7 @@ public :
 		else
 			bResult = FALSE;
 
-		return bResult; 
+		return bResult;
 	};
 
 	virtual BOOL	SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)
@@ -2063,7 +2057,7 @@ public :
 			{
 				TType *			pValue = &(m_vPixels[GetOffset(i*2, j*2)]);
 
-				bResult = TRUE; 
+				bResult = TRUE;
 				switch (m_CFAType)
 				{
 				case CFATYPE_GRBG :
@@ -2094,7 +2088,7 @@ public :
 			ASSERT(m_bWord);
 			if (IsXYOk(i, j))
 			{
-				bResult = TRUE; 
+				bResult = TRUE;
 				TType *		pValue = &(m_vPixels[GetOffset(i, j)]);
 
 				switch (::GetBayerColor(i, j, m_CFAType))
@@ -2124,10 +2118,10 @@ public :
 
 					InterpolateAll(fValue , i, j);
 
-					CYMGToRGB(fValue[CMYGZeroIndex(BAYER_CYAN)]/m_fMultiplier, 
-							  fValue[CMYGZeroIndex(BAYER_YELLOW)]/m_fMultiplier, 
-							  fValue[CMYGZeroIndex(BAYER_MAGENTA)]/m_fMultiplier, 
-							  fValue[CMYGZeroIndex(BAYER_GREEN2)]/m_fMultiplier, 
+					CYMGToRGB(fValue[CMYGZeroIndex(BAYER_CYAN)]/m_fMultiplier,
+							  fValue[CMYGZeroIndex(BAYER_YELLOW)]/m_fMultiplier,
+							  fValue[CMYGZeroIndex(BAYER_MAGENTA)]/m_fMultiplier,
+							  fValue[CMYGZeroIndex(BAYER_GREEN2)]/m_fMultiplier,
 							  fRed, fGreen, fBlue);
 				}
 				else
@@ -2159,11 +2153,11 @@ public :
 		}
 		else if (IsXYOk(i, j))
 		{
-			bResult = TRUE; 
+			bResult = TRUE;
 			fRed = fBlue = fGreen = m_vPixels[GetOffset(i, j)]/m_fMultiplier;
 		};
 
-		return bResult;	
+		return bResult;
 	};
 
 	virtual BOOL	GetPixel(LONG i, LONG j, double & fGray)
@@ -2217,7 +2211,7 @@ public :
 		return pResult;
 	};
 
-	virtual void RemoveHotPixels(CDSSProgress * pProgress = NULL) 
+	virtual void RemoveHotPixels(CDSSProgress * pProgress = NULL)
 	{
 		/*LONG					i, j;
 		std::vector<LONG>		vHotOffsets;*/
@@ -2280,7 +2274,6 @@ public :
 		CSmartPtr<CPixelIterator>	pResult;
 		CGrayPixelIterator<TType> *	pIterator = new CGrayPixelIterator<TType>;
 
-
 		pResult.Attach(pIterator);
 		pIterator->Init(x, y, this);
 
@@ -2341,7 +2334,7 @@ private :
 	HBITMAP				m_hBitmap;
 
 public :
-	CWindowsBitmap() 
+	CWindowsBitmap()
 	{
 		m_hBitmap = NULL;
 	};
@@ -2394,9 +2387,8 @@ private :
 		}
 	};
 
-
 public :
-	C32BitsBitmap() 
+	C32BitsBitmap()
 	{
 		m_hBitmap	= NULL;
 		m_lpBits	= NULL;
@@ -2404,7 +2396,6 @@ public :
 		m_lHeight	= 0;
 		m_pLine		= NULL;
 	};
-
 
 	virtual ~C32BitsBitmap()
 	{
@@ -2444,7 +2435,7 @@ public :
         BITMAPINFO		bmpInfo;
         VOID *			pBits;
 
-        memset(&bmpInfo, 0, sizeof(bmpInfo)); 
+        memset(&bmpInfo, 0, sizeof(bmpInfo));
         bmpInfo.bmiHeader.biSize = sizeof(bmpInfo.bmiHeader);
         bmpInfo.bmiHeader.biWidth = lWidth;
         bmpInfo.bmiHeader.biHeight= lHeight;
@@ -2539,7 +2530,7 @@ public :
 		{
 			LPBYTE		pPixel = m_pLine[y] + ((x * 32) >> 3);
 			RGBQUAD		rgbq;
-			
+
 			rgbq.rgbRed			= GetRValue(crColor);
 			rgbq.rgbGreen		= GetGValue(crColor);
 			rgbq.rgbBlue		= GetBValue(crColor);
@@ -2638,8 +2629,8 @@ protected :
 		std::vector<TType>			vAuxBlueValues;
 		std::vector<TType>			vWorkingBuffer1;
 		std::vector<TType>			vWorkingBuffer2;
-		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage 
-		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage 
+		std::vector<double>			vdWork1;			// Used for AutoAdaptiveWeightedAverage
+		std::vector<double>			vdWork2;			// Used for AutoAdaptiveWeightedAverage
 		double						fMaximum = pBitmap->GetMaximumValue();
 
 		lWidth = pBitmap->RealWidth();
@@ -2683,7 +2674,7 @@ protected :
 				if (*pBlueValue || m_vImageOrder.size())	// Remove 0
 					vBlueValues.push_back(*pBlueValue);
 			};
-						
+
 			if (m_bHomogenization)
 			{
 			//	if ((i==843) && (lLine==934))
@@ -2815,12 +2806,12 @@ public :
 	{
 		return sizeof(TType);
 	};
-	
+
 };
 
 /* ------------------------------------------------------------------- */
 
-template <typename TType> 
+template <typename TType>
 class CColorMedianFilterEngineT : public CMedianFilterEngine
 {
 private :
@@ -2843,15 +2834,15 @@ public :
 class CColorBitmap
 {
 public:
-	
+
 	CColorBitmap()
 	{
-		
+
 	}
 
 	~CColorBitmap()
 	{
-		
+
 	}
 
 	virtual CMemoryBitmap *	GetRed() = 0;
@@ -2868,7 +2859,7 @@ class CColorBitmapT : public CMemoryBitmap,
 	friend CColorPixelIterator<TType>;
 
 public :
-	template <typename TType> 
+	template <typename TType>
 	class CColorPixelIterator : public CPixelIterator
 	{
 	private :
@@ -2895,7 +2886,7 @@ public :
 		{
 			m_lX = x;
 			m_lY = y;
-			
+
 			size_t				lOffset = m_pBitmap->GetOffset(x, y);
 			m_pRedValue		= &(m_pBitmap->m_Red.m_vPixels[lOffset]);
 			m_pGreenValue	= &(m_pBitmap->m_Green.m_vPixels[lOffset]);
@@ -2928,9 +2919,9 @@ public :
 			{
 				double		H, S, L;
 
-				ToHSL((double)(*m_pRedValue)/m_fMultiplier, 
-					  (double)(*m_pGreenValue)/m_fMultiplier, 
-					  (double)(*m_pBlueValue)/m_fMultiplier, 
+				ToHSL((double)(*m_pRedValue)/m_fMultiplier,
+					  (double)(*m_pGreenValue)/m_fMultiplier,
+					  (double)(*m_pBlueValue)/m_fMultiplier,
 					  H, S, L);
 				fGray = L * 255.0;
 			}
@@ -3021,7 +3012,7 @@ private :
 	};
 
 public :
-	CColorBitmapT() 
+	CColorBitmapT()
 	{
 		m_lWidth   = 0;
 		m_lHeight  = 0;
@@ -3109,7 +3100,7 @@ public :
 	};
 
 	virtual BOOL	SetValue(LONG i, LONG j, double fRed, double fGreen, double fBlue)
-	{ 
+	{
 		BOOL		bResult = TRUE;
 
 		if (IsXYOk(i, j))
@@ -3121,11 +3112,11 @@ public :
 		else
 			bResult = FALSE;
 
-		return bResult; 
+		return bResult;
 	};
 
 	virtual BOOL	GetValue(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
-	{ 
+	{
 		BOOL		bResult = TRUE;
 
 		if (IsXYOk(i, j))
@@ -3137,7 +3128,7 @@ public :
 		else
 			bResult = FALSE;
 
-		return bResult; 
+		return bResult;
 	};
 
 	virtual BOOL	SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)
@@ -3211,7 +3202,6 @@ public :
 
 		return bResult;
 	};
-
 
 	virtual BOOL	GetScanLine(LONG j, void * pScanLine)
 	{
@@ -3333,7 +3323,7 @@ public :
 		return m_fMultiplier*256.0;
 	};
 
-	virtual void RemoveHotPixels(CDSSProgress * pProgress = NULL) 
+	virtual void RemoveHotPixels(CDSSProgress * pProgress = NULL)
 	{
 		m_Red.RemoveHotPixels(pProgress);
 		m_Green.RemoveHotPixels(pProgress);

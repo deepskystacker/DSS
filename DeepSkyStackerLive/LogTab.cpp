@@ -59,7 +59,7 @@ BOOL CLogTab::OnInitDialog()
 	if(m_bDarkMode)
 		m_Log.SetBackgroundColor(false, COLORREF(RGB(80, 80, 80)));
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -101,7 +101,7 @@ void CLogTab::AddToLog(LPCTSTR szText, BOOL bAddDateTime, BOOL bBold, BOOL bItal
 	if (bBold)
 		cf.dwEffects |= CFE_BOLD;
 	if (bItalic)
-		cf.dwEffects |= CFE_ITALIC;	
+		cf.dwEffects |= CFE_ITALIC;
 
 	m_Log.SetSel(m_Log.GetTextLength(), -1);
 	m_Log.SetSelectionCharFormat(cf);

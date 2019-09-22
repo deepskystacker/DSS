@@ -55,7 +55,7 @@ private :
 	CString				m_strObject;
 
 public :
-	CLiveSettings() 
+	CLiveSettings()
 	{
 		m_dwStackingFlags = 0;
 		m_dwWarningFlags  = 0;

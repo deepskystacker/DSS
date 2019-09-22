@@ -67,7 +67,6 @@ public :
 		return m_CFAType;
 	};
 
-
 	BOOL	IsMaster()
 	{
 		return FALSE;
@@ -129,7 +128,7 @@ public :
 		m_bDSI		  = FALSE;
 	};
 
-	virtual ~CFITSReader() 
+	virtual ~CFITSReader()
 	{
 		Close();
 	};
@@ -172,7 +171,7 @@ public :
 		m_Format	  = FF_UNKNOWN;
 	};
 
-	virtual ~CFITSWriter() 
+	virtual ~CFITSWriter()
 	{
 		Close();
 	};

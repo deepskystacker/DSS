@@ -72,7 +72,7 @@ bool cdxCRot90DC::Create(CDC & destDC, const CRect & rectDC, int iAngle, bool bC
 		m_rectMine.SetRectEmpty();
 		return false;
 	}
-	
+
 	CRect	rectClip;
 	destDC.GetClipBox(rectClip);
 
@@ -87,7 +87,7 @@ bool cdxCRot90DC::Create(CDC & destDC, const CRect & rectDC, int iAngle, bool bC
 
 	//
 	// calc new stuff
-	// 
+	//
 
 	m_pDC					=	&destDC;
 	m_Angle				=	mkAngle(iAngle);;
@@ -240,7 +240,7 @@ void cdxCRot90DC::Destroy()
  * nMyFlags			-	DrawControlFlags:
  *								DRC_NO_ICON_ROTATION	don't rotate icon itself.
  *								DRC_DISABLED show disabled state
- *	nIconDist		-	distance between icon and text	
+ *	nIconDist		-	distance between icon and text
  */
 
 void cdxCRot90DC::DrawControl(CRect rect, CString strText, HICON hIcon, UINT nDrawTextFlags, UINT nMyFlags, UINT nIconDist)
@@ -271,8 +271,8 @@ void cdxCRot90DC::DrawControl(CRect rect, CString strText, HICON hIcon, UINT nDr
 
 		switch(nDrawTextFlags & DRAWTEXT_HPOS)
 		{
-			case	DT_LEFT	:	
-				
+			case	DT_LEFT	:
+
 				// text is left-bound, we'll draw our icon right there
 				pntIcon.x		=	rect.left;
 				rect.left	+=	sz.cx + nIconDist;
@@ -315,7 +315,7 @@ void cdxCRot90DC::DrawControl(CRect rect, CString strText, HICON hIcon, UINT nDr
 
 		if(bDoHpos)
 			switch(nDrawTextFlags & DRAWTEXT_VPOS)
-			{	
+			{
 				case	DT_TOP	:
 
 					pntIcon.y	=	rect.top;
@@ -391,7 +391,7 @@ void cdxCRot90DC::DrawControl(CRect rect, CString strText, HICON hIcon, UINT nDr
 		{
 			SetTextColor(::GetSysColor(COLOR_3DHILIGHT));
 			DrawText(strText,rect + rotate(s_pntOne),nDrawTextFlags);
-			SetTextColor(::GetSysColor(COLOR_3DSHADOW));			
+			SetTextColor(::GetSysColor(COLOR_3DSHADOW));
 		}
 		DrawText(strText,rect,nDrawTextFlags);
 

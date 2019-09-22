@@ -127,7 +127,7 @@ BOOL	CFlatDivideTask::Process()
 	{
 		LONG			lAdd = min(lStep, lRemaining);
 		DWORD			dwThreadId;
-		
+
 		dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
@@ -161,7 +161,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 	// Check that it is the same sizes
 	if (pTarget && m_pFlatFrame)
 	{
-		if ((pTarget->RealWidth() == m_pFlatFrame->RealWidth()) && 
+		if ((pTarget->RealWidth() == m_pFlatFrame->RealWidth()) &&
 			(pTarget->RealHeight() == m_pFlatFrame->RealHeight()))
 		{
 			CFlatDivideTask			DivideTask;
@@ -310,7 +310,7 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 				else
 				{
 					m_pFlatFrame->GetPixel(i, j, fRed, fGreen, fBlue);
-					
+
 					fMeanRed   = (fMeanRed*lNrReds+fRed)/(lNrReds+1);
 					fMeanGreen = (fMeanGreen*lNrGreens+fGreen)/(lNrGreens+1);
 					fMeanBlue  = (fMeanBlue*lNrBlues+fBlue)/(lNrBlues+1);

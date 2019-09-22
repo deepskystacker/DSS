@@ -14,14 +14,14 @@
 class CPeg
 {
 public:
-	CPeg() 
+	CPeg()
 	{
 		id = uniqueID;
 		uniqueID++;
 		colour = 0x00000000;
 		position = 0.0f;
 	};
-	CPeg(UINT newid) 
+	CPeg(UINT newid)
 	{
 		id = newid;
 		if (newid >= uniqueID)
@@ -29,17 +29,17 @@ public:
 		colour = 0x00000000;
 		position = 0.0f;
 	};
-	CPeg(const CPeg &src) 
+	CPeg(const CPeg &src)
 	{
 		colour = src.colour;
 		position = src.position;
 		id = src.id;
 	};
-	CPeg& operator = (const CPeg &src) 
+	CPeg& operator = (const CPeg &src)
 	{
 		colour = src.colour;
 		position = src.position;
-		id = src.id; 
+		id = src.id;
 		return *this;
 	};
 
@@ -65,7 +65,7 @@ protected:
 
 typedef COLORREF (__cdecl* InterpolateFn)(COLORREF first, COLORREF second, float position, float start, float end);
 
-class CGradient : public CObject  
+class CGradient : public CObject
 {
 public:
 	CGradient();
@@ -73,7 +73,7 @@ public:
 	virtual ~CGradient();
 
 	CGradient& operator =(CGradient &src);
-	
+
 	DECLARE_SERIAL(CGradient)
 
 //----- Attributes -----//
@@ -120,16 +120,16 @@ public:
 	void MakePalette(CPalette *lpPalette);
 	void Make8BitPalette(RGBTRIPLE *lpPal);
 	void MakeEntries(RGBTRIPLE *lpPal, int iEntryCount);
-	
+
 	COLORREF ColourFromPosition(float pos);
-	
+
 	void Serialize(CArchive &ar);
 	int IndexFromId(UINT id);
 
 //----- Internals -----//
 protected:
 	void SortPegs();
-	
+
 	//----- Interpolation routines -----//
 	static COLORREF InterpolateLinear(COLORREF first, COLORREF second,
 		float position, float start, float end);
@@ -151,7 +151,7 @@ protected:
 		float position, float start, float end);
 	static COLORREF InterpolateReverse(COLORREF first, COLORREF second,
 		float position, float start, float end);
-private:	
+private:
 	void InsertSort(int lb, int ub);
 	int Partition(int lb, int ub);
 	void QuickSort(int lb, int ub);
@@ -161,8 +161,8 @@ protected:
 	POSITION GetNextPeg(POSITION current);
 
 	std::vector<CPeg>		pegs;
-	CPeg					m_StartPeg, 
-							m_EndPeg, 
+	CPeg					m_StartPeg,
+							m_EndPeg,
 							m_Background;
 	BOOL m_UseBackground;
 	int m_Quantization;

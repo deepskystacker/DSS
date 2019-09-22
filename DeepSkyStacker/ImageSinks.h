@@ -37,7 +37,7 @@ private :
 	void			GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDrizzle);
 
 public :
-	CSelectRectSink() 
+	CSelectRectSink()
 	{
 		m_rcSelect.SetRectEmpty();
 		m_bInSelecting	= FALSE;
@@ -182,7 +182,7 @@ private :
 	BOOL	IsRefStarVoted(LONG lStar)
 	{
 		BOOL			bResult = FALSE;
-		
+
 		if (g_bShowRefStars)
 		{
 			if (m_vVotedPairs.size())
@@ -250,7 +250,7 @@ private :
 
 	void	DrawQualityGrid(Graphics * pGraphics, CRect & rcClient);
 public :
-	CEditStarsSink() 
+	CEditStarsSink()
 	{
 		m_Action		= ESA_NONE;
 		m_bDirty		= FALSE;

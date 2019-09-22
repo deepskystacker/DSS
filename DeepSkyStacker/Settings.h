@@ -195,7 +195,7 @@ public :
 	BOOL	ReadFromFile(LPCTSTR szFile);
 	BOOL	InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile);
 	void	WriteToFile(LPCTSTR szFile);
-	
+
 	virtual void	ReadFromRegistry() {};
 
 	bool operator == (const CGlobalSettings & gs) const;
@@ -209,7 +209,7 @@ public :
 	CDarkSettings() {}
 	virtual ~CDarkSettings() {};
 
-	virtual void	ReadFromRegistry() 
+	virtual void	ReadFromRegistry()
 	{
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), _T("0"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), _T("5"));
@@ -231,7 +231,7 @@ public :
 	CFlatSettings() {}
 	virtual ~CFlatSettings() {};
 
-	virtual void	ReadFromRegistry() 
+	virtual void	ReadFromRegistry()
 	{
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), _T("0"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), _T("5"));
@@ -258,7 +258,7 @@ public :
 	COffsetSettings() {}
 	virtual ~COffsetSettings() {};
 
-	virtual void	ReadFromRegistry() 
+	virtual void	ReadFromRegistry()
 	{
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), _T("0"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), _T("5"));

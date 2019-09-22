@@ -91,7 +91,7 @@ void CSettingsDlg::UpdateControls()
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsDlg::OnAdd() 
+void CSettingsDlg::OnAdd()
 {
 	CString				strText;
 
@@ -101,12 +101,12 @@ void CSettingsDlg::OnAdd()
 	m_pSettings->Add(m_CurrentSetting);
 	m_List.AddString(strText);
 
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsDlg::OnDelete() 
+void CSettingsDlg::OnDelete()
 {
 	LONG				lCurSel;
 
@@ -126,12 +126,12 @@ void CSettingsDlg::OnDelete()
 		};
 	};
 
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsDlg::OnLoad() 
+void CSettingsDlg::OnLoad()
 {
 	LONG				lCurSel;
 
@@ -147,28 +147,28 @@ void CSettingsDlg::OnLoad()
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsDlg::OnSelchangeSettingslist() 
+void CSettingsDlg::OnSelchangeSettingslist()
 {
 	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsDlg::OnDblclkSettingslist() 
+void CSettingsDlg::OnDblclkSettingslist()
 {
-	OnLoad();	
+	OnLoad();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsDlg::OnChangeSettingsname() 
+void CSettingsDlg::OnChangeSettingsname()
 {
 	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-BOOL CSettingsDlg::OnInitDialog() 
+BOOL CSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -189,14 +189,14 @@ BOOL CSettingsDlg::OnInitDialog()
 	};
 
 	UpdateControls();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSettingsDlg::OnOK() 
+void CSettingsDlg::OnOK()
 {
 	if (m_pSettings)
 		m_pSettings->Save();

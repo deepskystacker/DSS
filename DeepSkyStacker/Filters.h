@@ -141,7 +141,7 @@ private :
 	void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap * pOutBitmap, CDSSProgress * pProgress = NULL);
 
 public :
-	CExtendedMedianImageFilter() 
+	CExtendedMedianImageFilter()
 	{
 		m_bFilterHot		 = TRUE;
 		m_bFilterCold		 = TRUE;
@@ -193,7 +193,7 @@ private :
 	void	InitFilterMatrix(CFilterMatrix & fm);
 
 public :
-	CDirectionalImageFilter() 
+	CDirectionalImageFilter()
 	{
 		m_fAngle = 0;
 		m_lSize  = 1;

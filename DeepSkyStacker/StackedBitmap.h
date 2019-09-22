@@ -29,13 +29,13 @@ private :
 	};
 
 public :
-	CPixelInfo() 
+	CPixelInfo()
 	{
 		m_fSumValue = 0.0;
 	};
 	virtual ~CPixelInfo() {};
 
-	CPixelInfo(const CPixelInfo & cpi) 
+	CPixelInfo(const CPixelInfo & cpi)
 	{
 		CopyFrom(cpi);
 	};
@@ -84,7 +84,7 @@ private :
 	std::vector<PIXELINFOVECTOR>	m_vBlocks;
 
 public :
-	CPixelVector() 
+	CPixelVector()
 	{
 		m_lSize		= 0;
 		m_lNrBlocks = 0;
@@ -190,7 +190,7 @@ public :
 
 		m_lWidth  = lWidth;
 		m_lHeight = lHeight;
-		
+
 		m_bMonochrome = bMonochrome;
 		lSize = m_lWidth * m_lHeight;
 		m_vRedPlane.clear();
@@ -207,8 +207,8 @@ public :
 		if (m_bMonochrome)
 			return (m_vRedPlane.size() == lSize);
 		else
-			return (m_vRedPlane.size() == lSize) && 
-				   (m_vGreenPlane.size() == lSize) && 
+			return (m_vRedPlane.size() == lSize) &&
+				   (m_vGreenPlane.size() == lSize) &&
 				   (m_vBluePlane.size() == lSize);
 	};
 

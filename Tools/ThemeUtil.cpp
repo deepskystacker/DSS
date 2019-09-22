@@ -40,7 +40,7 @@ BOOL CThemeUtil::IsWinXP(void)
 
 BOOL CThemeUtil::OpenThemeData(HWND hWnd, LPCWSTR pszClassList)
 {
-	if(m_hUxThemeDll==NULL || hWnd==NULL || m_hTheme) 
+	if(m_hUxThemeDll==NULL || hWnd==NULL || m_hTheme)
 		return FALSE;
 	UINT (PASCAL* pfnIsThemeActive)();	// IsThemeActive
 	(FARPROC&)pfnIsThemeActive=GetProcAddress(m_hUxThemeDll,"IsThemeActive");
@@ -55,11 +55,11 @@ BOOL CThemeUtil::OpenThemeData(HWND hWnd, LPCWSTR pszClassList)
 			WCHAR szThemeFileName[MAX_PATH];
 			WCHAR szColorBuff[MAX_PATH];
 			WCHAR szSizeBuff[MAX_PATH];
-			
+
 			if(GetCurrentThemeName(szThemeFileName,MAX_PATH,szColorBuff,MAX_PATH,szSizeBuff,MAX_PATH))
 			{
 				if((m_hRcDll = LoadLibrary(CString(szThemeFileName))))
-					return TRUE;				
+					return TRUE;
 			}
 			CloseThemeData();
 			return FALSE;
@@ -102,7 +102,7 @@ BOOL CThemeUtil::GetThemeColor(int iPartId, int iStateId, int iPropId, const COL
 {
 	if(m_hTheme==NULL)
 		return FALSE;
-	HANDLE (PASCAL* pfnGetThemeColor)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeColor)(HANDLE hTheme, int iPartId, int iStateId, int iPropId,
 										const COLORREF *pColor);
 	(FARPROC&)pfnGetThemeColor=GetProcAddress(m_hUxThemeDll,"GetThemeColor");
 	if(pfnGetThemeColor)
@@ -118,7 +118,7 @@ BOOL CThemeUtil::GetThemeEnumValue(int iPartId, int iStateId, int iPropId, const
 	if(m_hTheme==NULL)
 		return FALSE;
 
-	HANDLE (PASCAL* pfnGetThemeEnumValue)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeEnumValue)(HANDLE hTheme, int iPartId, int iStateId, int iPropId,
 										const int *piVal);
 	(FARPROC&)pfnGetThemeEnumValue=GetProcAddress(m_hUxThemeDll,"GetThemeEnumValue");
 	if(pfnGetThemeEnumValue)
@@ -134,7 +134,7 @@ BOOL CThemeUtil::GetThemeInt(int iPartId, int iStateId, int iPropId, const int *
 	if(m_hTheme==NULL)
 		return FALSE;
 
-	HANDLE (PASCAL* pfnGetThemeInt)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeInt)(HANDLE hTheme, int iPartId, int iStateId, int iPropId,
 										const int *piVal);
 	(FARPROC&)pfnGetThemeInt=GetProcAddress(m_hUxThemeDll,"GetThemeInt");
 	if(pfnGetThemeInt)
@@ -150,7 +150,7 @@ BOOL CThemeUtil::GetThemeMargins(int iPartId, int iStateId, int iPropId, const M
 	if(m_hTheme==NULL)
 		return FALSE;
 
-	HANDLE (PASCAL* pfnGetThemeMargins)(HANDLE hTheme, OPTIONAL HDC hdc, int iPartId, 
+	HANDLE (PASCAL* pfnGetThemeMargins)(HANDLE hTheme, OPTIONAL HDC hdc, int iPartId,
 				int iStateId, int iPropId, OPTIONAL RECT *prc, const MY_MARGINS *pMargins);
 	(FARPROC&)pfnGetThemeMargins=GetProcAddress(m_hUxThemeDll,"GetThemeMargins");
 	if(pfnGetThemeMargins)
@@ -161,12 +161,12 @@ BOOL CThemeUtil::GetThemeMargins(int iPartId, int iStateId, int iPropId, const M
 	return FALSE;
 }
 
-BOOL CThemeUtil::GetThemeFilename(int iPartId, int iStateId, int iPropId, 
+BOOL CThemeUtil::GetThemeFilename(int iPartId, int iStateId, int iPropId,
 								  OUT LPWSTR pszThemeFileName, int cchMaxBuffChars)
 {
 	if(m_hTheme==NULL)
 		return FALSE;
-	HANDLE (PASCAL* pfnGetThemeFilename)(HANDLE hTheme, int iPartId, int iStateId, int iPropId, 
+	HANDLE (PASCAL* pfnGetThemeFilename)(HANDLE hTheme, int iPartId, int iStateId, int iPropId,
 										OUT LPWSTR pszThemeFileName, int cchMaxBuffChars);
 	(FARPROC&)pfnGetThemeFilename=GetProcAddress(m_hUxThemeDll,"GetThemeFilename");
 	if(pfnGetThemeFilename)
@@ -177,17 +177,17 @@ BOOL CThemeUtil::GetThemeFilename(int iPartId, int iStateId, int iPropId,
 	return FALSE;
 }
 
-BOOL CThemeUtil::GetCurrentThemeName(OUT LPWSTR pszThemeFileName, int cchMaxNameChars, 
+BOOL CThemeUtil::GetCurrentThemeName(OUT LPWSTR pszThemeFileName, int cchMaxNameChars,
 							OUT OPTIONAL LPWSTR pszColorBuff, int cchMaxColorChars,
 							OUT OPTIONAL LPWSTR pszSizeBuff, int cchMaxSizeChars)
 {
 	if(m_hUxThemeDll==NULL)
 		return FALSE;
-	UINT (PASCAL* pfnGetCurrentThemeName)(OUT LPWSTR pszThemeFileName, 
-										int cchMaxNameChars, 
-										OUT OPTIONAL LPWSTR pszColorBuff, 
+	UINT (PASCAL* pfnGetCurrentThemeName)(OUT LPWSTR pszThemeFileName,
+										int cchMaxNameChars,
+										OUT OPTIONAL LPWSTR pszColorBuff,
 										int cchMaxColorChars,
-										OUT OPTIONAL LPWSTR pszSizeBuff, 
+										OUT OPTIONAL LPWSTR pszSizeBuff,
 										int cchMaxSizeChars);
 	(FARPROC&)pfnGetCurrentThemeName=GetProcAddress(m_hUxThemeDll,"GetCurrentThemeName");
 	if(pfnGetCurrentThemeName)

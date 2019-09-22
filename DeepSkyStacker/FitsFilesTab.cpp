@@ -34,20 +34,20 @@ static void	FillDSLRList(std::vector<CDSLR> & vDSLRs)
 	strValue.LoadString(IDS_GENERIC);
 	vDSLRs.push_back(CDSLR(strValue+" CYMG (01)",CFATYPE_CYGMCYMG));
 	vDSLRs.push_back(CDSLR(strValue+" CYMG (02)",CFATYPE_GMCYMGCY));
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (03)",CFATYPE_CYMGCYGM));	
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (03)",CFATYPE_CYMGCYGM));
 	vDSLRs.push_back(CDSLR(strValue+" CYMG (04)",CFATYPE_MGCYGMCY));	//*
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (05)",CFATYPE_GMYCGMCY));	
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (05)",CFATYPE_GMYCGMCY));
 	vDSLRs.push_back(CDSLR(strValue+" CYMG (06)",CFATYPE_YCGMCYGM));	//*
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (07)",CFATYPE_GMCYGMYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (08)",CFATYPE_CYGMYCGM));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (09)",CFATYPE_YCGMYCMG));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (10)",CFATYPE_GMYCMGYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (11)",CFATYPE_YCMGYCGM));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (12)",CFATYPE_MGYCGMYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (13)",CFATYPE_MGYCMGCY));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (14)",CFATYPE_YCMGCYMG));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (15)",CFATYPE_MGCYMGYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (16)",CFATYPE_CYMGYCMG));	
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (07)",CFATYPE_GMCYGMYC));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (08)",CFATYPE_CYGMYCGM));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (09)",CFATYPE_YCGMYCMG));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (10)",CFATYPE_GMYCMGYC));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (11)",CFATYPE_YCMGYCGM));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (12)",CFATYPE_MGYCGMYC));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (13)",CFATYPE_MGYCMGCY));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (14)",CFATYPE_YCMGCYMG));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (15)",CFATYPE_MGCYMGYC));
+	vDSLRs.push_back(CDSLR(strValue+" CYMG (16)",CFATYPE_CYMGYCMG));
 
 	vDSLRs.push_back(CDSLR(_T("AVT F-145C"),CFATYPE_RGGB));
 	vDSLRs.push_back(CDSLR(_T("AVT F-201C"),CFATYPE_RGGB));
@@ -379,7 +379,7 @@ void CFitsFilesTab::UpdateControls()
 	if (lIndice >= 0 && lIndice < m_vDSLRs.size())
 	{
 		BOOL		bCYMG;
-		
+
 		bCYMG = ::IsCYMGType(m_vDSLRs[lIndice].m_CFAType);
 
 		m_Brightness.EnableWindow(!bCYMG);
@@ -466,7 +466,7 @@ void CFitsFilesTab::UpdateBayerPattern()
 /////////////////////////////////////////////////////////////////////////////
 // CFitsFilesTab message handlers
 
-BOOL CFitsFilesTab::OnSetActive() 
+BOOL CFitsFilesTab::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
@@ -487,7 +487,7 @@ BOOL CFitsFilesTab::OnSetActive()
 		if (!strValue.GetLength())
 			strValue = _T("1.0");
 		m_Brightness.SetWindowText(strValue);
-		
+
 		strValue.Empty();
 		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), strValue);
 		if (!strValue.GetLength())
@@ -553,7 +553,7 @@ void CFitsFilesTab::SaveValues()
 
 		m_Brightness.GetWindowText(strValue);
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), strValue);
-		
+
 		m_RedScale.GetWindowText(strValue);
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), strValue);
 
@@ -589,28 +589,28 @@ void CFitsFilesTab::SaveValues()
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnChangeBluescale() 
+void CFitsFilesTab::OnChangeBluescale()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnChangeBrightness() 
+void CFitsFilesTab::OnChangeBrightness()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnChangeRedscale() 
+void CFitsFilesTab::OnChangeRedscale()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnBilinear() 
+void CFitsFilesTab::OnBilinear()
 {
 	m_RawBayer.SetCheck(FALSE);
 	m_SuperPixels.SetCheck(FALSE);

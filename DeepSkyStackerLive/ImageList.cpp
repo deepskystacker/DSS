@@ -127,7 +127,7 @@ BOOL CImageListTab::OnInitDialog()
 	m_ControlPos.AddControl(IDC_IMAGELIST, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
 	InitList();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */

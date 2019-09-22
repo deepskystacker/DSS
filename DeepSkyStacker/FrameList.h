@@ -8,7 +8,7 @@
 #include "MatchingStars.h"
 
 // {89AEE9BB-89E3-47ef-BEB5-A0819D957C77}
-const GUID MAINJOBID = 
+const GUID MAINJOBID =
 { 0x89aee9bb, 0x89e3, 0x47ef, { 0xbe, 0xb5, 0xa0, 0x81, 0x9d, 0x95, 0x7c, 0x77 } };
 
 #include "StackingTasks.h"
@@ -32,7 +32,7 @@ private :
 	};
 
 public :
-	CMRUList(LPCTSTR szBasePath = NULL) 
+	CMRUList(LPCTSTR szBasePath = NULL)
 	{
 		if (szBasePath)
 			m_strBasePath = szBasePath;
@@ -46,7 +46,7 @@ public :
 		m_strBasePath = szBasePath;
 	};
 
-	CMRUList(const CMRUList & ml) 
+	CMRUList(const CMRUList & ml)
 	{
 		CopyFrom(ml);
 	};
@@ -209,7 +209,7 @@ private :
 	};
 
 public :
-	CJob() 
+	CJob()
 	{
 		m_strName.Empty();
 		m_ID	= GUID_NULL;

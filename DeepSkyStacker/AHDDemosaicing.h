@@ -134,7 +134,7 @@ inline BOOL	CAHDTask<TType>::Process()
 		for (x= 0;x<lWidth;x+=AHDWS-4)
 		{
 			DWORD			dwThreadId;
-			
+
 			dwThreadId = GetAvailableThreadId();
 			PostThreadMessage(dwThreadId, WM_MT_PROCESS, x, y);
 
@@ -153,7 +153,6 @@ inline BOOL	CAHDTask<TType>::Process()
 
 	return bResult;
 };
-
 
 /* ------------------------------------------------------------------- */
 
@@ -247,9 +246,9 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 						{
 							if (fHGreen > g1 || fHGreen < g3)
 								fHGreen = (fabs(v0-v4) < fabs(v0-v2)) ? g1 + (v0-v4)/2.0 : g3 + (v0-v2)/2.0;
-							if  (fHGreen > g1) 
+							if  (fHGreen > g1)
 								fHGreen = g1;
-							else if (fHGreen < g3) 
+							else if (fHGreen < g3)
 								fHGreen = g3;
 						}
 						else
@@ -257,9 +256,9 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 							if (fHGreen < g1 || fHGreen > g3)
 								fHGreen = (fabs(v0-v4) < fabs(v0-v2)) ? g1 + (v0-v4)/2.0 : g3 + (v0-v2)/2.0;
 //								fHGreen = (fabs(v2-v0) - fabs(v2-v4)) ? g1 + (v0-v4)/2.0 : g3 + (v0-v2)/2.0;
-							if (fHGreen < g1) 
+							if (fHGreen < g1)
 								fHGreen = g1;
-							else if (fHGreen > g3) 
+							else if (fHGreen > g3)
 								fHGreen = g3;
 						}
 					};
@@ -280,9 +279,9 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 						{
 							if (fVGreen > g1 || fVGreen < g3)
 								fVGreen = (fabs(v0-v1) < fabs(v0-v3)) ?	g1 + (v0-v1/*+1*/)/2.0 : g3 + (v0-v3/*+1*/)/2.0;
-							if (fVGreen > g1) 
+							if (fVGreen > g1)
 								fVGreen = g1;
-							else if (fVGreen < g3) 
+							else if (fVGreen < g3)
 								fVGreen = g3;
 						}
 						else
@@ -290,9 +289,9 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 							if (fVGreen < g1 || fVGreen > g3)
 								fVGreen = (fabs(v0-v1) < fabs(v0-v3)) ?	g1 + (v0-v1/*+1*/)/2.0 : g3 + (v0-v3/*+1*/)/2.0;
 //								fVGreen = (fabs(v0-v1) - fabs(v0-v3)) ?	g1 + (v0-v1/*+1*/)/2.0 : g3 + (v0-v3/*+1*/)/2.0;
-							if (fVGreen < g1) 
+							if (fVGreen < g1)
 								fVGreen = g1;
-							else if (fVGreen > g3) 
+							else if (fVGreen > g3)
 								fVGreen = g3;
 						}
 					};
@@ -405,9 +404,9 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 			case BAYER_GREEN :
 				{
 					//  G B G B G    G R G R G
-					//  R G R G R    B G B G B   
-					//  G B[G]B G    G R[G]R G   
-					//  R G R G R    B G B G B   
+					//  R G R G R    B G B G B
+					//  G B[G]B G    G R[G]R G
+					//  R G R G R    B G B G B
 					//  G B G B G    G R G R G
 					double		g, v1, v2, valV, valH;
 
@@ -436,7 +435,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 						valH = (v1+v2)/2.0 + (2.0*g - g1 - g2)/4.0;
 						valH = Median(v1, v2, valH);
 					};
-					
+
 					if (bBlueLine)
 					{
 						*pVBluePixel = ClampPixel(valV*fMultiplier);
@@ -447,7 +446,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 						*pVRedPixel = ClampPixel(valV*fMultiplier);
 						*pHRedPixel = ClampPixel(valH*fMultiplier);
 					};
-					
+
 					// interpolating vertically
 					//   v1
 					//  [v]
@@ -556,10 +555,10 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 
 	// Build homogeneity maps from the CIELab images
 	double								lDiffH[4],
-										lDiffV[4], 
-										abDiffH[4], 
-										abDiffV[4], 
-										lEpsilon, 
+										lDiffV[4],
+										abDiffH[4],
+										abDiffV[4],
+										lEpsilon,
 										abEpsilon;
 	const int							dir[4] = {-1, 1, -AHDWS, AHDWS};
 
@@ -626,7 +625,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 			abEpsilon = min(max(abDiffH[0], abDiffH[1]), max(abDiffV[2], abDiffV[3]));
 
 			// iterate over neighbors
-			for(i=0; i<4; ++i) 
+			for(i=0; i<4; ++i)
 			{
 				if ((lDiffH[i] <= lEpsilon) && (abDiffH[i] <= abEpsilon))
 					(*pHHomoPixel)++;
@@ -635,8 +634,8 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 			}
 
 			pHHomoPixel++;		pVHomoPixel++;
-			pHLPixel++;			pHaPixel++;		pHbPixel++;		
-			pVLPixel++;			pVaPixel++;		pVbPixel++;		
+			pHLPixel++;			pHaPixel++;		pHbPixel++;
+			pVLPixel++;			pVaPixel++;		pVbPixel++;
 		};
 	};
 
@@ -680,7 +679,6 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 			hmH = *(pHHomoPixel) + (*(pHHomoPixel-1)) + (*(pHHomoPixel+1)) +
 				  (*(pHHomoPixel-AHDWS)) + (*(pHHomoPixel-AHDWS-1)) + (*(pHHomoPixel-AHDWS+1)) +
 				  (*(pHHomoPixel+AHDWS)) + (*(pHHomoPixel+AHDWS-1)) + (*(pHHomoPixel+AHDWS+1));
-
 
 			if (hmV > hmH)
 			{
@@ -755,7 +753,7 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 	TType *							pOutputGreenPixel2;
 	TType *							pOutputBluePixel1;
 	TType *							pOutputBluePixel2;
-	LONG							x1 = 0, 
+	LONG							x1 = 0,
 									x2 = lWidth-1;
 	BOOL							bBlueLine;
 
@@ -1136,18 +1134,18 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 									{
 										if (fHGreen > g1 || fHGreen < g3)
 											fHGreen = (fabs(v0-v4) < fabs(v0-v2)) ? g1 + (v0-v4)/2.0 : g3 + (v0-v2)/2.0;
-										if  (fHGreen > g1) 
+										if  (fHGreen > g1)
 											fHGreen = g1;
-										else if (fHGreen < g3) 
+										else if (fHGreen < g3)
 											fHGreen = g3;
 									}
 									else
 									{
 										if (fHGreen < g1 || fHGreen > g3)
 											fHGreen = (fabs(v2-v0) - fabs(v2-v4)) ? g1 + (v0-v4)/2.0 : g3 + (v0-v2)/2.0;
-										if (fHGreen < g1) 
+										if (fHGreen < g1)
 											fHGreen = g1;
-										else if (fHGreen > g3) 
+										else if (fHGreen > g3)
 											fHGreen = g3;
 									}
 								};
@@ -1168,18 +1166,18 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 									{
 										if (fVGreen > g1 || fVGreen < g3)
 											fVGreen = (fabs(v0-v1) < fabs(v0-v3)) ?	g1 + (v0-v1/*+1*/)/2.0 : g3 + (v0-v3/*+1*/)/2.0;
-										if (fVGreen > g1) 
+										if (fVGreen > g1)
 											fVGreen = g1;
-										else if (fVGreen < g3) 
+										else if (fVGreen < g3)
 											fVGreen = g3;
 									}
 									else
 									{
 										if (fVGreen < g1 || fVGreen > g3)
 											fVGreen = (fabs(v0-v1) - fabs(v0-v3)) ?	g1 + (v0-v1/*+1*/)/2.0 : g3 + (v0-v3/*+1*/)/2.0;
-										if (fVGreen < g1) 
+										if (fVGreen < g1)
 											fVGreen = g1;
-										else if (fVGreen > g3) 
+										else if (fVGreen > g3)
 											fVGreen = g3;
 									}
 								};
@@ -1292,9 +1290,9 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 						case BAYER_GREEN :
 							{
 								//  G B G B G    G R G R G
-								//  R G R G R    B G B G B   
-								//  G B[G]B G    G R[G]R G   
-								//  R G R G R    B G B G B   
+								//  R G R G R    B G B G B
+								//  G B[G]B G    G R[G]R G
+								//  R G R G R    B G B G B
 								//  G B G B G    G R G R G
 								double		g, v1, v2, valV, valH;
 
@@ -1335,7 +1333,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 											valH = v2;
 									};
 								};
-								
+
 								if (bBlueLine)
 								{
 									*pVBluePixel = ClampPixel(valV*fMultiplier);
@@ -1346,7 +1344,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 									*pVRedPixel = ClampPixel(valV*fMultiplier);
 									*pHRedPixel = ClampPixel(valH*fMultiplier);
 								};
-								
+
 								// interpolating vertically
 								//   v1
 								//  [v]
@@ -1468,10 +1466,10 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 
 				// Build homogeneity maps from the CIELab images
 				double								lDiffH[4],
-													lDiffV[4], 
-													abDiffH[4], 
-													abDiffV[4], 
-													lEpsilon, 
+													lDiffV[4],
+													abDiffH[4],
+													abDiffV[4],
+													lEpsilon,
 													abEpsilon;
 				const int							dir[4] = {-1, 1, -AHDWS, AHDWS};
 
@@ -1521,7 +1519,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 						abEpsilon = min(max(abDiffH[0], abDiffH[1]), max(abDiffV[2], abDiffV[3]));
 
 						// iterate over neighbors
-						for(i=0; i<4; ++i) 
+						for(i=0; i<4; ++i)
 						{
 							if ((lDiffH[i] <= lEpsilon) && (abDiffH[i] <= abEpsilon))
 								(*pHHomoPixel)++;
@@ -1530,8 +1528,8 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 						}
 
 						pHHomoPixel++;		pVHomoPixel++;
-						pHLPixel++;			pHaPixel++;		pHbPixel++;		
-						pVLPixel++;			pVaPixel++;		pVbPixel++;		
+						pHLPixel++;			pHaPixel++;		pHbPixel++;
+						pVLPixel++;			pVaPixel++;		pVbPixel++;
 					};
 				};
 
@@ -1576,7 +1574,6 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 							  (*(pHHomoPixel-AHDWS)) + (*(pHHomoPixel-AHDWS-1)) + (*(pHHomoPixel-AHDWS+1)) +
 							  (*(pHHomoPixel+AHDWS)) + (*(pHHomoPixel+AHDWS-1)) + (*(pHHomoPixel+AHDWS+1));
 
-
 						if (hmV > hmH)
 						{
 							*pOutputRedPixel	= *pVRedPixel;
@@ -1619,7 +1616,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 			TType *							pOutputGreenPixel2;
 			TType *							pOutputBluePixel1;
 			TType *							pOutputBluePixel2;
-			LONG							x1 = 0, 
+			LONG							x1 = 0,
 											x2 = lWidth-1;
 			BOOL							bBlueLine;
 

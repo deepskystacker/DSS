@@ -160,11 +160,11 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 						CPixelDispatch &		Pixel = vPixels[k];
 
 						// For each plane adjust the values
-						if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth && 
+						if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth &&
 							Pixel.m_lY >= 0 && Pixel.m_lY < lHeight)
 						{
-							double		fPreviousRed, 
-										fPreviousGreen, 
+							double		fPreviousRed,
+										fPreviousGreen,
 										fPreviousBlue;
 
 							m_pStackedBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
@@ -185,7 +185,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 		m_lNrStacked++;
 		m_fTotalExposure += lfi.m_fExposure;
 		bResult = TRUE;
-	};	
+	};
 
 	if (bResult && !m_MatchingStars.IsReferenceSet())
 	{

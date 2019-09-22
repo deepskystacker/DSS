@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CCheckAbove message handlers
 
-void CCheckAbove::OnOK() 
+void CCheckAbove::OnOK()
 {
 	CString			strValue;
 
@@ -57,6 +57,6 @@ void CCheckAbove::OnOK()
 	}
 	else
 		m_fThreshold = _ttof(strValue);
-	
+
 	CDialog::OnOK();
 }

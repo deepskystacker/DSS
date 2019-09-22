@@ -214,7 +214,7 @@ BOOL CAbout::OnInitDialog()
 	else
 		m_Language.SetCurSel(0);
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */

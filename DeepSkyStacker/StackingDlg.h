@@ -47,7 +47,7 @@ private :
 	static const int sm_nMinListWidth = 500;
 	static const int sm_nMinListHeight = 120;
 	static const int sm_nMinImageHeight = 200;
-	
+
 	CCtrlCache m_cCtrlCache;
 
 // Construction
@@ -129,7 +129,7 @@ private :
 	void		UpdateGroupTabs();
 	BOOL		CheckEditChanges();
 	void		UpdateLayout();
-	
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CStackingDlg)

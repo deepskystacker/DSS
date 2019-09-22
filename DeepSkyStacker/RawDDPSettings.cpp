@@ -49,7 +49,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CRawDDPSettings message handlers
 
-BOOL CRawDDPSettings::OnInitDialog() 
+BOOL CRawDDPSettings::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -88,7 +88,7 @@ void CRawDDPSettings::UpdateControls()
 
 /* ------------------------------------------------------------------- */
 
-void CRawDDPSettings::OnOK() 
+void CRawDDPSettings::OnOK()
 {
 	m_tabRAWFiles.SaveValues();
 	m_tabFITSFiles.SaveValues();

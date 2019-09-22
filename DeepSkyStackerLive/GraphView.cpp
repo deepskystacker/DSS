@@ -181,7 +181,7 @@ BOOL CGraphViewTab::OnInitDialog()
 
 	ChangeVisibleGraph();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */

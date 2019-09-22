@@ -350,7 +350,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 		else
 		{
 			strText.Format(IDS_LOG_ERRORLOADINGFILE, szFileName);
-			PostToLog(strText, TRUE, TRUE, FALSE, RGB(255, 0, 0)); 
+			PostToLog(strText, TRUE, TRUE, FALSE, RGB(255, 0, 0));
 			MoveImage(szFileName);
 		};
 	};
@@ -417,8 +417,8 @@ void CLiveEngine::PostStackedImage()
 	CSmartPtr<CLiveEngineMsg>	pMsg;
 
 	pMsg.Create();
-	pMsg->SetStackedImage(pStackedImage, pWndImage, 
-						  m_RunningStackingEngine.GetNrStackedImages(), 
+	pMsg->SetStackedImage(pStackedImage, pWndImage,
+						  m_RunningStackingEngine.GetNrStackedImages(),
 						  m_RunningStackingEngine.GetTotalExposure());
 	PostOutMessage(pMsg);
 

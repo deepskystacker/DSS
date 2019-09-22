@@ -103,9 +103,9 @@ public :
 	CPointExt			ptStar;
 	double				fdX,
 						fdY;
-	double				fNW, 
-						fSW, 
-						fNE, 
+	double				fNW,
+						fSW,
+						fNE,
 						fSE;
 	double				fGradient;
 	double				fPercentGradient;
@@ -117,9 +117,9 @@ private:
 		ptStar	= right.ptStar	;
 		fdX		= right.fdX		;
 		fdY		= right.fdY		;
-		fNW		= right.fNW		; 
-		fSW		= right.fSW		; 
-		fNE		= right.fNE		; 
+		fNW		= right.fNW		;
+		fSW		= right.fSW		;
+		fNE		= right.fNE		;
 		fSE		= right.fSE		;
 		fGradient = right.fGradient;
 		fPercentGradient = right.fPercentGradient;
@@ -185,7 +185,7 @@ private :
 	void	RefineStarCenter2(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
 
 public :
-	CDeBloom() 
+	CDeBloom()
 	{
 		m_fBloomThreshold = 0.85;
 		m_fBackground = 0;

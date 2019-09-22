@@ -684,7 +684,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	const char * camera = static_cast<LPCSTR>(strModel);
 
 	static std::set<std::string> checkedCameras;
-	
+
 	//
 	// If we've already checked this camera type, then just bail out so
 	// complaints about unsupported cameras are only issued once.
@@ -714,7 +714,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 				supportedCameras.push_back(cameraList[i]);
 			}
 		}
-		// 
+		//
 		// sort the names using std::sort
 		sort(supportedCameras.begin(), supportedCameras.end());
 	}
@@ -742,7 +742,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	checkedCameras.insert(camera);
 
 	//
-	// If the camera isn't supported complain, but only once 
+	// If the camera isn't supported complain, but only once
 	//
 	if (false == result)
 	{
@@ -779,12 +779,12 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 	//
 	// If it's a DNG file, we don't need to check for camera support, but if
 	// we're processing a true raw file then check that the camera is supported.
-	// 
+	//
 	if (0 == P1.dng_version)
 	{
 		checkCameraSupport(strDescription);
 	};
-		
+
 	pBitmap->SetDescription(strDescription);
 
 	const		int maxargs = 50;
@@ -822,7 +822,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 		//
 		// Do we disable all White Balance processing?
-		// 
+		//
 		bValue = false;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), bValue);
 		if (bValue)
@@ -839,7 +839,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		bValue = false;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
 		O.use_camera_wb = bValue ? 1 : 0;
-		
+
 		// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
 		O.use_fuji_rotate = 0;
 
@@ -859,9 +859,9 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		// Output is 16 bits (equivalent of dcraw flag -4)
 		O.gamm[0] = O.gamm[1] = O.no_auto_bright = 1;
 		O.output_bps = 16;
-			
+
 		g_Progress = pProgress;
-		
+
 		ZTRACE_RUNTIME("Calling LibRaw::unpack()");
 		if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
 		{
@@ -878,7 +878,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		// Get the Colour Filter Array type and set into the bitmap filler
 		m_CFAType = GetCurrentCFAType();
 		pFiller->SetCFAType(m_CFAType);
-		
+
 #define RAW(row,col) \
 	raw_image[(row)*S.width+(col)]
 
@@ -982,7 +982,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			pFiller->setWidth(S.width);
 			pFiller->setHeight(S.height);
 			pFiller->setMaxColors((1 << 16) - 1);
-			
+
 			// Report User Black Point over-ride
 			if (0 == O.user_black)
 				ZTRACE_RUNTIME("User set Black Point to 0");
@@ -1002,7 +1002,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			//
 			//   int LibRaw::subtract_black_internal()
 			//
-			// found at line 4532 in source file libraw_cxx.cpp 
+			// found at line 4532 in source file libraw_cxx.cpp
 			//
 			// Do dark subtraction on the image.   If a user defined black level has
 			// been set (it will be zero) then use that, otherwise just use the black
@@ -1040,7 +1040,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 							int val = raw_image[i];
 							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
 							val -= cblk[i & 3];
-							raw_image[i] = max(0, min(val, 65535)); 
+							raw_image[i] = max(0, min(val, 65535));
 							lmax = val > lmax ? val : lmax;
 						}
 #if defined(_OPENMP)
@@ -1118,7 +1118,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 				ZTRACE_RUNTIME("Using Camera White Balance (as shot).");
 				memcpy(pre_mul, C.cam_mul, sizeof pre_mul);
 			}
-			else 
+			else
 			{
 				ZTRACE_RUNTIME("Using Daylight White Balance.");
 				memcpy(pre_mul, C.pre_mul, sizeof pre_mul);

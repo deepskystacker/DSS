@@ -21,7 +21,7 @@ private :
 	};
 
 public :
-	CBezierCurvePoint(double nx = 0, double ny = 0) 
+	CBezierCurvePoint(double nx = 0, double ny = 0)
 	{
 		x = nx;
 		y = ny;
@@ -84,7 +84,7 @@ private :
 
 			pt.x = (double)x1*pow((1-t), 3) + 3*vx1*pow((1-t), 2)*t + 3*vx2*(1-t)*t*t + x2*t*t*t;
 			pt.y = (double)y1*pow((1-t), 3) + 3*vy1*pow((1-t), 2)*t + 3*vy2*(1-t)*t*t + y2*t*t*t;
-			
+
 			m_vPoints.push_back(pt);
 		};
 	};
@@ -97,7 +97,7 @@ private :
 		m_vPoints.clear();
 
 		// Set the first 4 control points of the bezier curve
-		pt1.x = 0;			
+		pt1.x = 0;
 		pt1.y = 0;
 		pt2.x = lSize * cos(m_fDarknessAngle * PI /180.0) * m_fDarknessPower * m_fMidtone / 100.0 / 100.0;
 		pt2.y = sin(m_fDarknessAngle * PI /180.0) * lSize * m_fDarknessPower * m_fMidtone /100.0 / 100.0;
@@ -152,7 +152,7 @@ private :
 	};
 
 public :
-	CBezierAdjust() 
+	CBezierAdjust()
 	{
 		Reset();
 	};
@@ -257,7 +257,7 @@ public :
 
 	void	ToText(CString & strParameters)
 	{
-		strParameters.Format(_T("Bezier{DA=%.2f;DP=%.2f;MA=%.2f;MP=%.2f;HA=%.2f;HP=%.2f;SS=%.2f;}"), 
+		strParameters.Format(_T("Bezier{DA=%.2f;DP=%.2f;MA=%.2f;MP=%.2f;HA=%.2f;HP=%.2f;SS=%.2f;}"),
 							 m_fDarknessAngle, m_fDarknessPower, m_fMidtoneAngle, m_fMidtone,
 							 m_fHighlightAngle, m_fHighlightPower, m_fSaturationShift);
 	};

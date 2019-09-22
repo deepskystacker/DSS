@@ -66,7 +66,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CRegisterSettings message handlers
 
-BOOL CRegisterSettings::OnInitDialog() 
+BOOL CRegisterSettings::OnInitDialog()
 {
 	CWorkspace			workspace;
 	CString				strValue;
@@ -177,14 +177,14 @@ BOOL CRegisterSettings::OnInitDialog()
 			m_tabActions.m_StackWarning.SetText(strValue);
 		};
 	};
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings::OnOK() 
+void CRegisterSettings::OnOK()
 {
 	CString				strText;
 	CWorkspace			workspace;
@@ -211,7 +211,7 @@ void CRegisterSettings::OnOK()
 
 	m_bMedianFilter = m_tabAdvanced.m_MedianFilter.GetCheck();
 	workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), m_bMedianFilter);
-	
+
 	workspace.SaveToRegistry();
 
 	CDialog::OnOK();
@@ -219,16 +219,16 @@ void CRegisterSettings::OnOK()
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings::OnRawddpsettings() 
+void CRegisterSettings::OnRawddpsettings()
 {
 	CRawDDPSettings			dlg;
-	
+
 	dlg.DoModal();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings::OnStackingParameters() 
+void CRegisterSettings::OnStackingParameters()
 {
 	CStackSettings			dlg;
 	CRect					rcCustom;

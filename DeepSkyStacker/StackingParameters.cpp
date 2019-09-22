@@ -81,7 +81,7 @@ END_MESSAGE_MAP()
 void CStackingParameters::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	
+
 	if (m_WeightedAverage.GetCheck())
 	{
 		m_Kappa.EnableWindow(FALSE);
@@ -403,7 +403,7 @@ void CStackingParameters::OnBackgroundCalibration( NMHDR * pNotifyStruct, LRESUL
 
 	menu.LoadMenu(IDR_CALIBRATION);
 	popup = menu.GetSubMenu(0);
-	
+
 	CRect				rc;
 	CString				strText;
 

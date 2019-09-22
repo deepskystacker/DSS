@@ -67,7 +67,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CRawFilesTab message handlers
 
-BOOL CRawFilesTab::OnSetActive() 
+BOOL CRawFilesTab::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
@@ -79,7 +79,7 @@ BOOL CRawFilesTab::OnSetActive()
 		if (!strValue.GetLength())
 			strValue = _T("1.0");
 		m_Brightness.SetWindowText(strValue);
-		
+
 		strValue.Empty();
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), strValue);
 		if (!strValue.GetLength())
@@ -94,11 +94,11 @@ BOOL CRawFilesTab::OnSetActive()
 
 		//
 		// Replace Auto WB processing with NO WB processing
-		// 
+		//
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), bValue);
 		m_NoWB.SetCheck(bValue);
-		
+
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
 		m_CameraWB.SetCheck(bValue);
@@ -167,23 +167,23 @@ void CRawFilesTab::UpdateControls()
 
 /* ------------------------------------------------------------------- */
 
-void CRawFilesTab::OnChangeBluescale() 
+void CRawFilesTab::OnChangeBluescale()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRawFilesTab::OnChangeBrightness() 
+void CRawFilesTab::OnChangeBrightness()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRawFilesTab::OnChangeRedscale() 
+void CRawFilesTab::OnChangeRedscale()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
@@ -211,7 +211,7 @@ void CRawFilesTab::OnCameraWB()
 /* ------------------------------------------------------------------- */
 
 
-void CRawFilesTab::OnBilinear() 
+void CRawFilesTab::OnBilinear()
 {
 	m_AHD.SetCheck(FALSE);
 	m_RawBayer.SetCheck(FALSE);
@@ -220,7 +220,7 @@ void CRawFilesTab::OnBilinear()
 
 /* ------------------------------------------------------------------- */
 
-void CRawFilesTab::OnAhd() 
+void CRawFilesTab::OnAhd()
 {
 	m_Bilinear.SetCheck(FALSE);
 	m_RawBayer.SetCheck(FALSE);
@@ -248,13 +248,13 @@ void CRawFilesTab::OnBnClickedRawbayer()
 
 void CRawFilesTab::SaveValues()
 {
-	// Save settings to registry	
+	// Save settings to registry
 	CWorkspace			workspace;
 	CString				strValue;
 
 	m_Brightness.GetWindowText(strValue);
 	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), strValue);
-	
+
 	m_RedScale.GetWindowText(strValue);
 	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), strValue);
 

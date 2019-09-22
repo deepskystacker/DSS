@@ -17,7 +17,7 @@ private :
 private :
 
 public :
-	CStackedSink() 
+	CStackedSink()
 	{
 		m_pt1 = m_pt2 = m_pt3 = m_pt4;
 	};

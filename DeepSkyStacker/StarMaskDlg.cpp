@@ -151,7 +151,7 @@ void CStarMaskDlg::UpdateTexts()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStarMaskDlg::OnInitDialog() 
+BOOL CStarMaskDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -199,7 +199,7 @@ BOOL CStarMaskDlg::OnInitDialog()
 
 	UpdateTexts();
 	UpdateStarShapePreview();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -216,8 +216,8 @@ BOOL CStarMaskDlg::AskOutputFile()
 	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("FileType"), dwFileType);
 
 	strTitle.LoadString(IDS_TITLE_MASK);
-	
-	CSaveMaskDlg			dlgSave(FALSE, 
+
+	CSaveMaskDlg			dlgSave(FALSE,
 								NULL,
 								NULL,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -237,7 +237,7 @@ BOOL CStarMaskDlg::AskOutputFile()
 		dlgSave.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
 
 	TCHAR				szBigBuffer[20000];
-	
+
 	if (dwFileType==2)
 		lstrcpy(szBigBuffer, _T("StarMask.fits"));
 	else
@@ -276,7 +276,7 @@ void CStarMaskDlg::OnStarShapeChange( )
 
 /* ------------------------------------------------------------------- */
 
-void CStarMaskDlg::OnOK() 
+void CStarMaskDlg::OnOK()
 {
 	if (AskOutputFile())
 	{
@@ -316,7 +316,7 @@ void CStarMaskDlg::OnOK()
 
 /* ------------------------------------------------------------------- */
 
-void CStarMaskDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CStarMaskDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	UpdateTexts();
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);

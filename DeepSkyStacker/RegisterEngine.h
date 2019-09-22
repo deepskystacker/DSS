@@ -311,7 +311,7 @@ private :
 	};
 
 public :
-	CLightFrameInfo() 
+	CLightFrameInfo()
 	{
 		Reset();
 	};
@@ -357,7 +357,7 @@ public :
 			return false;
 		else if (m_fOverallQuality > cbi.m_fOverallQuality)
 			return true;
-		else 
+		else
 			return false;
 	};
 

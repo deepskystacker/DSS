@@ -76,7 +76,7 @@ BOOL	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 					CPixelDispatch &		Pixel = vPixels[k];
 
 					// For each plane adjust the values
-					if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth && 
+					if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth &&
 						Pixel.m_lY >= 0 && Pixel.m_lY < lHeight)
 					{
 						double		fPreviousGray;

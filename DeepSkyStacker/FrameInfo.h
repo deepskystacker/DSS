@@ -71,7 +71,7 @@ protected :
 	};
 
 public :
-	CFrameInfo() 
+	CFrameInfo()
 	{
 		Reset();
 	};
@@ -130,8 +130,8 @@ public :
 	{
 		BOOL			bResult;
 
-		bResult = (m_lWidth == lWidth) && 
-				  (m_lHeight == lHeight) && 
+		bResult = (m_lWidth == lWidth) &&
+				  (m_lHeight == lHeight) &&
 				  (m_lBitPerChannels == lBitPerChannels);
 
 		if (bResult)

@@ -66,7 +66,7 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 		LONG					i;
 
 		fread(&Header, sizeof(Header), 1, hFile);
-		if ((Header.dwMagic == HDSSETTINGS_MAGIC) && 
+		if ((Header.dwMagic == HDSSETTINGS_MAGIC) &&
 			(Header.dwHeaderSize == sizeof(Header)))
 		{
 			m_lSettings.clear();
@@ -84,7 +84,7 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 
 		fclose(hFile);
 	};
-	
+
 	m_bLoaded = TRUE;
 
 	return bResult;
@@ -213,7 +213,7 @@ void CDeepStackerDlg::UpdateSizes()
 		rcExplorerBar = rcDlg;
 		rcDlg.left += 220;
 		rcExplorerBar.right = rcDlg.left;
-		
+
 		if (m_dlgStacking.m_hWnd)
 			m_dlgStacking.MoveWindow(&rcDlg);
 		if (m_dlgProcessing.m_hWnd)
@@ -243,7 +243,7 @@ void CDeepStackerDlg::ChangeTab(DWORD dwTabID)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CDeepStackerDlg::OnInitDialog() 
+BOOL CDeepStackerDlg::OnInitDialog()
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Initializing Main Dialog");
@@ -258,7 +258,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	// The call to CWnd::DragAcceptFiles() was moved here from DeepSkyStacker.cpp because it can only be called once
 	// the HWND for the dialog is valid (not NULL).  This is only true once CDialog::OnInitDialog() above has been called.
 	//
-	this->DragAcceptFiles(TRUE);		
+	this->DragAcceptFiles(TRUE);
 
 	GetWindowText(strMask);
 	strTitle.Format(strMask, _T(VERSION_DEEPSKYSTACKER));
@@ -332,7 +332,7 @@ void CDeepStackerDlg::OnDropFiles(HDROP hDropInfo)
 
 /* ------------------------------------------------------------------- */
 
-void CDeepStackerDlg::OnSize(UINT nType, int cx, int cy) 
+void CDeepStackerDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 

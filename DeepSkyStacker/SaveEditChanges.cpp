@@ -52,12 +52,12 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CSaveEditChanges message handlers
 
-BOOL CSaveEditChanges::OnInitDialog() 
+BOOL CSaveEditChanges::OnInitDialog()
 {
 	CRegistry			reg;
 
 	CDialog::OnInitDialog();
-	
+
 	switch (GetSaveEditMode())
 	{
 	case SECM_SAVEDONTASK :
@@ -91,7 +91,7 @@ void CSaveEditChanges::SaveSettings()
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnYes() 
+void CSaveEditChanges::OnYes()
 {
 	SaveSettings();
 	EndDialog(IDYES);
@@ -99,7 +99,7 @@ void CSaveEditChanges::OnYes()
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnNo() 
+void CSaveEditChanges::OnNo()
 {
 	SaveSettings();
 	EndDialog(IDNO);
@@ -107,14 +107,14 @@ void CSaveEditChanges::OnNo()
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnCancel() 
+void CSaveEditChanges::OnCancel()
 {
 	CDialog::OnCancel();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnAskAlways() 
+void CSaveEditChanges::OnAskAlways()
 {
 	if (m_AskAlways.GetCheck())
 	{
@@ -125,7 +125,7 @@ void CSaveEditChanges::OnAskAlways()
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnSaveDontAsk() 
+void CSaveEditChanges::OnSaveDontAsk()
 {
 	if (m_SaveDontAsk.GetCheck())
 	{
@@ -136,7 +136,7 @@ void CSaveEditChanges::OnSaveDontAsk()
 
 /* ------------------------------------------------------------------- */
 
-void CSaveEditChanges::OnDontSaveDontAsk() 
+void CSaveEditChanges::OnDontSaveDontAsk()
 {
 	if (m_DontSaveDontAsk.GetCheck())
 	{

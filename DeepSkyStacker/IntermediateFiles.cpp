@@ -56,7 +56,7 @@ void CIntermediateFiles::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
 	BOOL				bEnable;
-	
+
 	bEnable = m_SaveCalibrated.GetCheck() || m_CreateIntermediates.GetCheck();
 
 	m_SaveAsTIFF.EnableWindow(TRUE);

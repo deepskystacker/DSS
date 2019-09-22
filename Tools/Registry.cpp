@@ -25,7 +25,7 @@
 //		thanks to Pieter E. Roos (Pieter.E.Roos@siemenscom.com)
 //
 // Modifications since revision 3:
-//	o	Some minor bug fixes for UNICODE use in several 
+//	o	Some minor bug fixes for UNICODE use in several
 //		CRegVal::SetValue() methods.
 //
 // Modifications since revision 2:
@@ -205,7 +205,7 @@ BOOL CRegistry ::	RegistryTreeWalk( LPCTSTR pszSubKey_p, UINT uFlags_p ) {
 							KEY_READ,		// requesting read access
 							&hSubKey		// address of key to be returned
 						) ;
-		
+
 		if( lRet != ERROR_SUCCESS ) {
 			TRACE0( "CRegistry::RegistryTreeWalk(): initial RegOpenKeyEx() failed.\n" ) ;
 			return FALSE ;
@@ -384,7 +384,7 @@ BOOL CRegistry ::	LoadKey(
 						KEY_READ,		// requesting read access
 						&hSubKey		// address of key to be returned
 					) ;
-	
+
 	if( lRet != ERROR_SUCCESS ) {
 		TRACE0( "CRegistry::LoadKey(): RegOpenKeyEx() failed.\n" ) ;
 		return FALSE ;
@@ -394,12 +394,12 @@ BOOL CRegistry ::	LoadKey(
 	DWORD dwType ;
 
 	lRet =	RegQueryValueEx(
-					hSubKey,			// handle of key to query 
-					pszValueName_p,		// address of name of value to query 
-					0,					// reserved 
-					&dwType,			// address of buffer for value type 
-					0,					// address of data buffer 
-					&dwMaxValueData 	// address of data buffer size 
+					hSubKey,			// handle of key to query
+					pszValueName_p,		// address of name of value to query
+					0,					// reserved
+					&dwType,			// address of buffer for value type
+					0,					// address of data buffer
+					&dwMaxValueData 	// address of data buffer size
 			);
 
 	if( lRet != ERROR_SUCCESS ) {
@@ -407,16 +407,16 @@ BOOL CRegistry ::	LoadKey(
 		RegCloseKey( hSubKey ) ;
 		return FALSE ;
 	}
-	
+
 	BYTE * pbyteData = rData_p.AllocateDataBuffer( dwMaxValueData ) ;
-	
+
 	lRet =	RegQueryValueEx(
-					hSubKey,			// handle of key to query 
-					pszValueName_p,		// address of name of value to query 
-					0,					// reserved 
-					&dwType,			// address of buffer for value type 
-					pbyteData,			// address of data buffer 
-					&dwMaxValueData 	// address of data buffer size 
+					hSubKey,			// handle of key to query
+					pszValueName_p,		// address of name of value to query
+					0,					// reserved
+					&dwType,			// address of buffer for value type
+					pbyteData,			// address of data buffer
+					&dwMaxValueData 	// address of data buffer size
 			);
 
 	if( lRet != ERROR_SUCCESS ) {
@@ -450,22 +450,22 @@ BOOL CRegistry ::	SaveKey(
 	DWORD dwDisposition ;
 
 	LONG lRet =	RegCreateKeyEx(
-					hKey_p,					// handle of an open key 
-					pszSubKey_p,			// address of subkey name 
-					0,						// reserved 
-					0,						// address of class string 
-					REG_OPTION_NON_VOLATILE,// special options flag 
-					KEY_WRITE,				// desired security access 
-					0,						// address of key security structure 
-					& hSubKey,				// address of buffer for opened handle  
-					& dwDisposition 		// address of disposition value buffer 
+					hKey_p,					// handle of an open key
+					pszSubKey_p,			// address of subkey name
+					0,						// reserved
+					0,						// address of class string
+					REG_OPTION_NON_VOLATILE,// special options flag
+					KEY_WRITE,				// desired security access
+					0,						// address of key security structure
+					& hSubKey,				// address of buffer for opened handle
+					& dwDisposition 		// address of disposition value buffer
 				) ;
 
 	if( lRet != ERROR_SUCCESS ) {
 		TRACE0( "CRegistry::SaveKey(): RegCreateKeyEx() failed.\n" ) ;
 		return FALSE ;
 	}
-	
+
 	TRACE1( "CRegistry::SaveKey(): Disposition is %hs\n",
 		dwDisposition == REG_CREATED_NEW_KEY
 		? "REG_CREATED_NEW_KEY"
@@ -510,7 +510,7 @@ BOOL CRegistry ::	DeleteKey(
 						KEY_WRITE | KEY_READ,	// requesting access
 						&hSubKey		// address of key to be returned
 					) ;
-	
+
 	if( lRet != ERROR_SUCCESS ) {
 		TRACE0( "CRegistry::DeleteKey(): RegOpenKeyEx() failed\n" ) ;
 		return FALSE ;
@@ -585,7 +585,7 @@ BOOL CRegistry ::	DeleteKey(
 				delete [] pszKeyName ;
 			}
 		} while( dwSubKeyCnt > 0 ) ;
-		
+
 		RegCloseKey( hSubKey ) ;
 
 		lRet = RegDeleteKey( hKey_p, pszSubKey_p ) ;
@@ -621,12 +621,12 @@ BOOL CRegistry ::	HasEntries(
 						KEY_READ,		// requesting read access
 						&hSubKey		// address of key to be returned
 					) ;
-	
+
 	if( lRet != ERROR_SUCCESS ) {
 		TRACE0( "CRegistry::HasEntries(): RegOpenKeyEx() failed\n" ) ;
 		return FALSE ;
 	}
-	
+
 	DWORD dwSubKeyCnt ;
 	DWORD dwValueCnt ;
 	lRet =	RegQueryInfoKey(
@@ -643,9 +643,9 @@ BOOL CRegistry ::	HasEntries(
 				0,					// security descriptor
 				0					// last write time
 			) ;
-	
+
 	RegCloseKey( hSubKey ) ;
-	
+
 	if( lRet != ERROR_SUCCESS ) {
 		TRACE0( "CRegistry::HasEntries(): RegQueryInfoKey() failed.\n" ) ;
 		return FALSE ;
@@ -728,7 +728,7 @@ BOOL CRegVal :: GetValue( DWORD & rNum_p ) const {
 		TRACE0("CRegVal::GetValue(DWORD&): wrong type.\n");
 		return FALSE ;
 	}
-	
+
 	rNum_p = *((DWORD *) m_pbyteData) ;
 
 	return TRUE ;
@@ -746,7 +746,7 @@ BOOL CRegVal :: GetValue( LPCTSTR & rpString_p ) const {
 		TRACE0("CRegVal::GetValue(const char * &): wrong type.\n");
 		return FALSE ;
 	}
-	
+
 	rpString_p = LPCTSTR(m_pbyteData);
 
 	return TRUE ;
@@ -764,7 +764,7 @@ BOOL CRegVal :: GetValue( LPBYTE & rpbyteBuffer_p, DWORD dwBufferSize_p ) const 
 		TRACE0("CRegVal::GetValue(BYTE * &, DWORD): wrong type or size.\n");
 		return FALSE ;
 	}
-	
+
 	for( register DWORD i = 0 ; i < m_dwDataSize ; ++i )
 		rpbyteBuffer_p[i] = m_pbyteData[i] ;
 

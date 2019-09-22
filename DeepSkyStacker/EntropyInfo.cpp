@@ -28,7 +28,7 @@ void CEntropyInfo::InitSquareEntropies()
 
 	for (long i = 0;i<m_lNrSquaresX;i++)
 	{
-		LONG			lMinX, 
+		LONG			lMinX,
 						lMaxX;
 
 		lMinX = i * lSquareSize;

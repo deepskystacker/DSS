@@ -6,14 +6,14 @@
 // Author:	Paul S. Vickery
 // E-mail:	developer@vickeryhome.freeserve.co.uk
 //
-// Class to provide a means of using rich text in a tool-tip, without using 
+// Class to provide a means of using rich text in a tool-tip, without using
 // the newer styles only available in later systems. Based on CToolTipCtrl.
 //
 // You are free to use or modify this code, with no restrictions, other than
 // you continue to acknowledge me as the original author in this source code,
 // or any code derived from it.
 //
-// If you use this code, or use it as a base for your own code, it would be 
+// If you use this code, or use it as a base for your own code, it would be
 // nice to hear from you simply so I know it's not been a waste of time!
 //
 // Copyright (c) 2005 Paul S. Vickery
@@ -26,11 +26,11 @@
 // - Added static method for escaping plain text to make it RTF safe
 // - Modified the positioning to work on multi-monitor systems
 // - Removed dependency on RichToolTipCtrlDemo.h
-// 
+//
 // Version 1.0 - 14-Mar-2005
 // =========================
 // Initial version
-// 
+//
 ////////////////////////////////////////////////////////////////////////////
 // PLEASE LEAVE THIS HEADER INTACT
 ////////////////////////////////////////////////////////////////////////////
@@ -191,7 +191,7 @@ END_MESSAGE_MAP()
 /*static*/
 CString CRichToolTipCtrl::MakeTextRTFSafe(LPCTSTR lpszText)
 {
-  // modify the specified text to make it safe for use in a rich-edit 
+  // modify the specified text to make it safe for use in a rich-edit
   // control, by escaping special RTF characters '\', '{' and '}'
   CString sRTF;
   if (lpszText != NULL)
@@ -200,7 +200,7 @@ CString CRichToolTipCtrl::MakeTextRTFSafe(LPCTSTR lpszText)
     {
       if (*lpszText == _T('\\') || *lpszText == _T('{') || *lpszText == _T('}'))
 	sRTF += _T('\\');
-      else if (*lpszText == _T('\r') && *(lpszText+1) == _T('\n') || 
+      else if (*lpszText == _T('\r') && *(lpszText+1) == _T('\n') ||
 	      (*lpszText == _T('\n') && *(lpszText+1) == _T('\r')))
       {
 	sRTF += _T("{\\par}");
@@ -219,12 +219,12 @@ CString CRichToolTipCtrl::MakeTextRTFSafe(LPCTSTR lpszText)
 /////////////////////////////////////////////////////////////////////////////
 // CRichToolTipCtrl message handlers
 
-int CRichToolTipCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CRichToolTipCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
   if (CToolTipCtrl::OnCreate(lpCreateStruct) == -1)
     return -1;
 
-  // set the max width to half of the screen width, and 
+  // set the max width to half of the screen width, and
   // force the ability to use CRLFs to make multi-line tips
   SetMaxTipWidth(::GetSystemMetrics(SM_CXSCREEN) / 2);
 
@@ -237,7 +237,7 @@ int CRichToolTipCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
   return 0;
 }
 
-BOOL CRichToolTipCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+BOOL CRichToolTipCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
   NMHDR* pnmhdr = (NMHDR*)lParam;
   if (pnmhdr != NULL)
@@ -252,7 +252,7 @@ BOOL CRichToolTipCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
   return CToolTipCtrl::OnNotify(wParam, lParam, pResult);
 }
 
-// this code gets the minimium size for a rich edit control, and is 
+// this code gets the minimium size for a rich edit control, and is
 // taken from http://www.codeproject.com/richedit/richeditsize.asp
 CSize CRichToolTipCtrl::CalculateMinimiumRichEditSize()
 {
@@ -360,8 +360,8 @@ void CRichToolTipCtrl::OnShow(NMHDR* pNMHDR, LRESULT* pResult)
   // it just creeps over the right-hand edge
   // the best we can do to see if it has any right or centre text
   // is to see if the RTF contains "\qr" or "\qc" tags, and add a bit on
-  // (we don't cater for text having "\qr" or "\qc" somewhere in it; 
-  // in this case we add on the extra anyway. If we cared we could look for 
+  // (we don't cater for text having "\qr" or "\qc" somewhere in it;
+  // in this case we add on the extra anyway. If we cared we could look for
   // a "\qr" which is not really a "\\qr", but that could be quite expensive)
   int nPos = sText.Find(_T("\\q"));
   if (nPos >= 0 && (sText[nPos + 2] == _T('r') || sText[nPos + 2] == _T('c')))

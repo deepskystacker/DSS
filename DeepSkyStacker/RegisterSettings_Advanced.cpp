@@ -75,7 +75,7 @@ void	CRegisterSettings_Advanced::UpdateSliderText()
 	m_PercentText.SetWindowText(strText);
 };
 
-void CRegisterSettings_Advanced::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CRegisterSettings_Advanced::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	UpdateSliderText();
 
@@ -84,7 +84,7 @@ void CRegisterSettings_Advanced::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* 
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings_Advanced::OnComputeStars() 
+void CRegisterSettings_Advanced::OnComputeStars()
 {
 	// Retrieve the first checked light frame of the list
 	CDSSProgressDlg				dlg;

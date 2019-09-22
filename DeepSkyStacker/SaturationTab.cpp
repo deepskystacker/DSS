@@ -65,42 +65,42 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CSaturationTab message handlers
 
-void CSaturationTab::OnProcess() 
+void CSaturationTab::OnProcess()
 {
 	GetParentProcessingDlg(this)->OnProcess();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSaturationTab::OnRedo() 
+void CSaturationTab::OnRedo()
 {
 	GetParentProcessingDlg(this)->OnRedo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSaturationTab::OnReset() 
+void CSaturationTab::OnReset()
 {
 	GetParentProcessingDlg(this)->OnReset();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSaturationTab::OnSettings() 
+void CSaturationTab::OnSettings()
 {
 	GetParentProcessingDlg(this)->OnSettings();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CSaturationTab::OnUndo() 
+void CSaturationTab::OnUndo()
 {
 	GetParentProcessingDlg(this)->OnUndo();
 }
 
 /* ------------------------------------------------------------------- */
 
-BOOL CSaturationTab::OnSetActive() 
+BOOL CSaturationTab::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
@@ -125,7 +125,7 @@ BOOL CSaturationTab::OnSetActive()
 
 		m_bFirstActivation = FALSE;
 	};
-	
+
 	return CChildPropertyPage::OnSetActive();
 }
 
@@ -145,7 +145,7 @@ void CSaturationTab::UpdateTexts()
 /* ------------------------------------------------------------------- */
 
 
-void CSaturationTab::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CSaturationTab::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 //	GetParentProcessingDlg(this)->OnHScroll(nSBCode, nPos, pScrollBar);
 	UpdateTexts();

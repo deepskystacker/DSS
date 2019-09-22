@@ -101,7 +101,7 @@ BOOL CSavePicture::OnInitDialog()
 	EnableToolTips();
 	EnableTrackingToolTips();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */

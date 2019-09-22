@@ -46,7 +46,7 @@ private :
 	};
 
 public :
-	CStar() 
+	CStar()
 	{
 		m_fX	   = 0;
 		m_fY	   = 0;
@@ -140,7 +140,7 @@ inline bool CompareStarLuminancy (const CStar & ms1, const CStar  & ms2)
 		return true;
 	else if (ms1.m_fIntensity < ms2.m_fIntensity)
 		return false;
-	else 
+	else
 		return (ms1.m_fMeanRadius > ms2.m_fMeanRadius);
 };
 

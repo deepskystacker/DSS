@@ -1,7 +1,6 @@
 #if !defined(_REGISTRY_H__)
 #define _REGISTRY_H__
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Copyright (C) 1997 by Joerg Koenig
 // All rights reserved
@@ -34,7 +33,6 @@
 //	override the "OnValueHit()" and/or the "OnKeyHit()" virtual member functions
 //	(see below).
 // -----------------------------------------------------------------------------
-
 
 #ifdef _EXPLICIT
 	#pragma message (__FILE__ ": Redefining macro _EXPLICIT")
@@ -257,7 +255,6 @@ class CRegistry {
 		virtual BOOL	OnKeyHit( LPCTSTR Key, USHORT Depth ) ;
 #endif	// _REG_NO_TREEWALK
 
-
 	public:		// static members ...
 		// same as above, but at static scope for lower-level usage.
 		static BOOL		LoadKey(
@@ -298,11 +295,6 @@ class CRegistry {
 #endif	// _REG_NO_TREEWALK
 };
 
-
-
-
-
-
 class CRegVal {
 	friend class CRegistry ;
 
@@ -334,11 +326,11 @@ class CRegVal {
 		// It is much safer to call one of the "GetValue()" methods below !
 		LPBYTE			GetRawData() { return m_pbyteData; }
 		const LPBYTE	GetRawData() const { return m_pbyteData; }
-		
+
 		// the following GetValue()-functions return FALSE, if the type
 		// of the registry value doesn't match. In such a case
 		// the data (the parameter refers to) stays undefined.
-		
+
 		// this function can be used with the following types:
 		//		REG_SZ				zero-sized unicode string
 		//		REG_EXPAND_SZ		same as REG_SZ (with environ. references)
@@ -382,12 +374,12 @@ class CRegVal {
 
 		// use this function to set a numeric value
 		void		SetValue( DWORD Value ) ;
-		
+
 		// use the following function to set up a string value. if that string
 		// contains references to the environment (such as "%PATH%") then you
 		// should set <Expand> to TRUE.
 		void		SetValue( LPCTSTR Value, BOOL Expand = FALSE ) ;
-		
+
 		// use the following function to set up a multiple string (i.e. string
 		// array)
 		void		SetValue( LPCTSTR Array [], const DWORD Size ) ;
@@ -395,7 +387,7 @@ class CRegVal {
 #ifdef _AFXDLL
 		void		SetValue( const CStringArray & );
 #endif
-		
+
 		// the following function allows you to set up binary data of any
 		// type and size.
 		void		SetValue( const LPBYTE Data, const DWORD Size ) ;
@@ -420,6 +412,5 @@ class CRegVal {
 		BYTE *		AllocateDataBuffer( DWORD ) ;
 		void		FreeDataBuffer() ;
 } ;
-
 
 #endif // !defined(_REGISTRY_H__)

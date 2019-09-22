@@ -127,9 +127,9 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 				strGUID = szGUID;
 				StringFromCLSID(m_Jobs.m_vJobs[j].m_RefID, &szRefGUID);
 				strRefGUID = szRefGUID;
-				fprintf(hFile, "#JOBID#%s#%s#%s\n", 
-					(LPCSTR)CT2CA(strGUID,CP_UTF8), 
-					(LPCSTR)CT2CA(m_Jobs.m_vJobs[j].m_strName, CP_UTF8), 
+				fprintf(hFile, "#JOBID#%s#%s#%s\n",
+					(LPCSTR)CT2CA(strGUID,CP_UTF8),
+					(LPCSTR)CT2CA(m_Jobs.m_vJobs[j].m_strName, CP_UTF8),
 					(LPCSTR)CT2CA(strRefGUID, CP_UTF8));
 			};
 			for (LONG i = 0;i<m_vFiles.size();i++)
@@ -165,7 +165,7 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 
 					//
 					// Check if this file is on the same drive as the file-list file
-					// if not we can't use relative paths and will need to save the 
+					// if not we can't use relative paths and will need to save the
 					// absolute path the the file-list
 					//
 					TCHAR		szItemDrive[1 + _MAX_DRIVE];
@@ -387,7 +387,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 						pszAbsoluteFile = new TCHAR[length];
 
 						length = GetFullPathName(static_cast<LPCTSTR>(strFile), length, pszAbsoluteFile, nullptr);
-						if (0 == length) ZTRACE_RUNTIME("GetFullPathName for %s failed", 
+						if (0 == length) ZTRACE_RUNTIME("GetFullPathName for %s failed",
 							(LPCSTR)CT2CA(strFile, CP_UTF8));
 
 						// Check that the file exists

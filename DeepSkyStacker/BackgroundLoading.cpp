@@ -17,7 +17,7 @@ CBackgroundLoading::CBackgroundLoading()
 
 /* ------------------------------------------------------------------- */
 
-CBackgroundLoading::~CBackgroundLoading() 
+CBackgroundLoading::~CBackgroundLoading()
 {
 	CloseThread();
 	ClearList();
@@ -82,7 +82,7 @@ void CBackgroundLoading::LoadCurrentImage()
 	};
 	if (bLoaded)
 	{
-		// Post a message to the window to advise that the image is 
+		// Post a message to the window to advise that the image is
 		// loaded
 		PostMessage(m_hWnd, WM_BACKGROUNDIMAGELOADED, 0, 0);
 	};
@@ -202,7 +202,7 @@ BOOL	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C
 		bResult = FALSE;
 	};
 	m_CriticalSection.Unlock();
-	
+
 	return bResult;
 };
 

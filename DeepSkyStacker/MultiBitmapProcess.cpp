@@ -271,14 +271,14 @@ BOOL	CCombineTask::Process()
 	{
 		DWORD			dwThreadId;
 		LONG			lAdd = min(lStep, lRemaining);
-		
+
 		dwThreadId = GetAvailableThreadId();
 
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
 		i			+= lAdd;
 		lRemaining	-= lAdd;
-		
+
 		if (m_pProgress)
 		{
 			m_pProgress->Progress2(NULL, i);
@@ -453,7 +453,7 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 			{
 				CCombineTask		CombineTask;
 
-				CombineTask.Init(m_vFiles[l].m_lStartRow, m_vFiles[l].m_lEndRow, lScanLineSize, 
+				CombineTask.Init(m_vFiles[l].m_lStartRow, m_vFiles[l].m_lEndRow, lScanLineSize,
 								 pBuffer, pProgress, this, pBitmap);
 				CombineTask.StartThreads();
 				CombineTask.Process();
@@ -476,7 +476,7 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 		{
 			if (m_pHomBitmap)
 			{
-				// At this point the m_pHomBitmap might be used to smooth out any remaining 
+				// At this point the m_pHomBitmap might be used to smooth out any remaining
 				// star trails with a large filter
 				SmoothOut(pBitmap, ppBitmap);
 			}

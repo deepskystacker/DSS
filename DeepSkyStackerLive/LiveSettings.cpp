@@ -32,8 +32,8 @@ void	CLiveSettings::LoadFromRegistry()
 
 	if (!m_strSMTP.GetLength() && !m_strAccount.GetLength())
 	{
-		reg.LoadKey(_T("Software\\Microsoft\\Internet Account Manager\\Accounts\\00000001"), _T("SMTP Server"), m_strSMTP); 
-		reg.LoadKey(_T("Software\\Microsoft\\Internet Account Manager\\Accounts\\00000001"), _T("SMTP Email Address"), m_strAccount); 
+		reg.LoadKey(_T("Software\\Microsoft\\Internet Account Manager\\Accounts\\00000001"), _T("SMTP Server"), m_strSMTP);
+		reg.LoadKey(_T("Software\\Microsoft\\Internet Account Manager\\Accounts\\00000001"), _T("SMTP Email Address"), m_strAccount);
 	};
 };
 

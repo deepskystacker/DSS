@@ -58,7 +58,7 @@ public :
 			return true;
 		else if (m_wDarkValue < vp.m_wDarkValue)
 			return false;
-		else 
+		else
 			return (m_wLightValue > vp.m_wLightValue);
 	};
 };
@@ -275,7 +275,7 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 		fRMS = fRMS*fSum;
 
 		vValues.push_back(fRMS);
-		vEntropies.push_back(1.0/2.0*(1.0+log(2*M_PI*fVariance))); 
+		vEntropies.push_back(1.0/2.0*(1.0+log(2*M_PI*fVariance)));
 
 		if ((fRMS < fMinRMS) || fSelectedk == 0)
 		{
@@ -490,7 +490,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 					if (it != sRedValuePairs.end())
 						(const_cast<CValuePair&>(*it)).m_lCount++; //MATD
 						//(*it).m_lCount++;
-					else 
+					else
 						sRedValuePairs.insert(vp);
 					break;
 				case BAYER_GREEN :
@@ -498,7 +498,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 					if (it != sGreenValuePairs.end())
 						(const_cast<CValuePair&>(*it)).m_lCount++;//MATD
 						//(*it).m_lCount++;
-					else 
+					else
 						sGreenValuePairs.insert(vp);
 					break;
 				case BAYER_BLUE :
@@ -506,7 +506,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 					if (it != sBlueValuePairs.end())
 						(const_cast<CValuePair&>(*it)).m_lCount++;//MATD - and more below
 						//(*it).m_lCount++;
-					else 
+					else
 						sBlueValuePairs.insert(vp);
 					break;
 				};
@@ -517,7 +517,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 			pProgress->Progress2(NULL, j+1);
 	};
 
-	// Remove the hot pixels 
+	// Remove the hot pixels
 	for (i = 0;i<m_vHotPixels.size();i++)
 	{
 		VALUEPAIRITERATOR		it;
@@ -729,7 +729,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 				if (it != sValuePairs.end())
 					(const_cast<CValuePair&>(*it)).m_lCount++;
 					//(*it).m_lCount++;
-				else 
+				else
 					sValuePairs.insert(CValuePair(fLight*256.0, fDark * 256.0));
 			};
 		};
@@ -786,7 +786,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						if (it != sRedValuePairs.end())
 							(const_cast<CValuePair&>(*it)).m_lCount++;
 							//(*it).m_lCount++;
-						else 
+						else
 							sRedValuePairs.insert(vp);
 						break;
 					case BAYER_GREEN :
@@ -794,7 +794,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						if (it != sGreenValuePairs.end())
 							(const_cast<CValuePair&>(*it)).m_lCount++;
 							//(*it).m_lCount++;
-						else 
+						else
 							sGreenValuePairs.insert(vp);
 						break;
 					case BAYER_BLUE :
@@ -802,7 +802,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						if (it != sBlueValuePairs.end())
 							(const_cast<CValuePair&>(*it)).m_lCount++;
 							//(*it).m_lCount++;
-						else 
+						else
 							sBlueValuePairs.insert(vp);
 						break;
 					};
@@ -883,21 +883,21 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 				if (it != sRedValuePairs.end())
 					(const_cast<CValuePair&>(*it)).m_lCount++;
 					//(*it).m_lCount++;
-				else 
+				else
 					sRedValuePairs.insert(CValuePair(fRedLight*256.0, fRedDark * 256.0));
 
 				it = sGreenValuePairs.find(CValuePair(fGreenLight*256.0, fGreenDark * 256.0));
 				if (it != sGreenValuePairs.end())
 					(const_cast<CValuePair&>(*it)).m_lCount++;
 					//(*it).m_lCount++;
-				else 
+				else
 					sGreenValuePairs.insert(CValuePair(fGreenLight*256.0, fGreenDark * 256.0));
 
 				it = sBlueValuePairs.find(CValuePair(fBlueLight*256.0, fBlueDark * 256.0));
 				if (it != sBlueValuePairs.end())
 					(const_cast<CValuePair&>(*it)).m_lCount++;
 					//(*it).m_lCount++;
-				else 
+				else
 					sBlueValuePairs.insert(CValuePair(fBlueLight*256.0, fBlueDark * 256.0));
 			};
 		};
@@ -973,7 +973,7 @@ private :
 	};
 
 public :
-	CHotCheckPixel(double fHot, double fMedian, IMAGEREGION Region) 
+	CHotCheckPixel(double fHot, double fMedian, IMAGEREGION Region)
 	{
 		m_fHot		= fHot;
 		m_fMedian	= fMedian;
@@ -1093,7 +1093,7 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 			Filter.ComputeMedianAt(X, Y, fMedianRed, fMedianGreen, fMedianBlue);
 			pBitmap->GetPixel(X, Y, fHotRed, fHotGreen, fHotBlue);
 
-			vHots.push_back(CHotCheckPixel((fHotRed+fHotGreen+fHotBlue)/3.0, 
+			vHots.push_back(CHotCheckPixel((fHotRed+fHotGreen+fHotBlue)/3.0,
 										   (fMedianRed+fMedianGreen+fMedianBlue)/3.0, Region));
 		};
 	};
@@ -1480,7 +1480,7 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor)
 {
 	ZFUNCTRACE_RUNTIME();
-	
+
 	HOTPIXELVECTOR				vHotPixels;
 	LONG						i;
 
@@ -1713,7 +1713,7 @@ public :
 		m_pBitmap				 = pBitmap;
 		m_pProgress				 = pProgress;
 		m_bMonochrome			 = pBitmap->IsMonochrome();
-		
+
 		m_RGBHistogram.SetSize(256.0, (LONG)65535);
 	};
 
@@ -1794,7 +1794,7 @@ public :
 		{
 			LONG			lAdd = min(lStep, lRemaining);
 			DWORD			dwThreadId;
-			
+
 			dwThreadId = GetAvailableThreadId();
 			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
@@ -1929,9 +1929,9 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 		{
 			for (i = 0;i<lWidth;i++)
 			{
-				double			fGray, 
-								fRed, 
-								fGreen, 
+				double			fGray,
+								fRed,
+								fGreen,
 								fBlue;
 				BOOL			bHot = FALSE;
 
@@ -1945,8 +1945,8 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 				{
 					PixelIt->GetPixel(fRed, fGreen, fBlue);
 					//m_pMasterDark->GetPixel(i, j, fRed, fGreen, fBlue);
-					bHot =	(fRed > fRedThreshold) || 
-							(fGreen> fGreenThreshold) || 
+					bHot =	(fRed > fRedThreshold) ||
+							(fGreen> fGreenThreshold) ||
 							(fBlue > fBlueThreshold);
 				};
 				if (bHot)
@@ -1995,7 +1995,7 @@ void	CDarkFrame::GetValidNeighbors(LONG lX, LONG lY, HOTPIXELVECTOR & vPixels, L
 				if ((BayerColor != BAYER_UNKNOWN) && (m_pMasterDark->GetBayerColor(i, j) != BayerColor))
 					bAdd = FALSE;
 
-				if (bAdd)	
+				if (bAdd)
 					vPixels.push_back(hp);
 			};
 		};
@@ -2131,7 +2131,7 @@ BOOL	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 			::Subtract(pTarget, m_pDarkCurrent, pProgress, fHotDark, fHotDark, fHotDark);
 
 			// Now check that if modified dark current is removed from
-			// the target - there is no more negative pixels  
+			// the target - there is no more negative pixels
 			/*pDarkCurrent.Attach(m_pDarkCurrent->Clone());
 			Multiply(pDarkCurrent, fHotDark, fHotDark, fHotDark, pProgress);
 

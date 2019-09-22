@@ -47,7 +47,7 @@ public :
 	{
 	};
 
-	const CStarAxisInfo & operator = (const CStarAxisInfo & ai) 
+	const CStarAxisInfo & operator = (const CStarAxisInfo & ai)
 	{
 		CopyFrom(ai);
 		return *this;
@@ -326,7 +326,7 @@ public :
 	double			fIntensity;
 
 public :
-	CPixelDirections() 
+	CPixelDirections()
 	{
 		bBrighterPixel = FALSE;
 		bMainOk		   = TRUE;
@@ -523,7 +523,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 								};
 							};
 
-							// Check the roundness of the wanabee star 
+							// Check the roundness of the wanabee star
 							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2))
 							{
 								// Radiuses should be within fDeltaRadius pixels of each others
@@ -534,7 +534,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 								LONG			k1, k2;
 								double			fMeanRadius1 = 0.0,
 												fMeanRadius2 = 0.0;
-								
+
 								for (k1 = 0;(k1 <4) && bWanabeeStarOk;k1++)
 								{
 									for (k2 = 0;(k2 < 4) && bWanabeeStarOk;k2++)
@@ -676,7 +676,7 @@ BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 			fprintf(hFile, "MeanRadius = %.2f\n",  m_vStars[i].m_fMeanRadius);
 			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n", m_vStars[i].m_rcStar.left, m_vStars[i].m_rcStar.top, m_vStars[i].m_rcStar.right, m_vStars[i].m_rcStar.bottom);
 			fprintf(hFile, "Center = %.2f, %.2f\n", m_vStars[i].m_fX, m_vStars[i].m_fY);
-			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle, 
+			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle,
 																	  m_vStars[i].m_fLargeMajorAxis,
 																	  m_vStars[i].m_fSmallMajorAxis,
 																	  m_vStars[i].m_fLargeMinorAxis,
@@ -741,7 +741,7 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		CString			strValue;
 		LONG			lNrStars = 0;
 		BOOL			bEnd = FALSE;
-		
+
 		m_bComet = FALSE;
 
 		// Read overall quality
@@ -866,7 +866,7 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strParams.TrimRight();
 					ms.m_fLargeMajorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Small Major 
+					// get Small Major
 					nPos = strValue.Find(_T(","));
 					strParams = strValue.Left(nPos);
 					strParams.TrimLeft();
@@ -1108,7 +1108,7 @@ BOOL	CComputeLuminanceTask::Process()
 	{
 		LONG			lAdd = min(lStep, lRemaining);
 		DWORD			dwThreadId;
-		
+
 		dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
@@ -1547,7 +1547,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 				lfi.SetProgress(pProgress);
 				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName, FALSE, FALSE);
 				lNrRegistered++;
-				
+
 				if (pProgress)
 				{
 					strText.Format(IDS_REGISTERINGPICTURE, lNrRegistered, lTotalRegistered);
@@ -1608,7 +1608,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 							pProgress->End2();
 							bResult = !pProgress->IsCanceled();
 						};
-					};			
+					};
 				};
 			};
 		};

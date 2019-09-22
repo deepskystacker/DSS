@@ -81,7 +81,7 @@ private :
 	};
 
 public :
-	CPostCalibrationSettings() 
+	CPostCalibrationSettings()
 	{
 		m_bHot			= FALSE;
 		m_lHotFilter	= 1;
@@ -225,7 +225,7 @@ public :
 		CopyFrom(ti);
 		return (*this);
 	};
-	
+
 	virtual ~CTaskInfo()
 	{
 	};
@@ -577,7 +577,7 @@ public :
 	{
 		if (m_bUseCustomRectangle)
 			return SM_CUSTOM;
-		else 
+		else
 			return GetResultMode();
 	};
 
@@ -587,8 +587,8 @@ public :
 	BOOL	DoDarkFlatTasks(CDSSProgress * pProgress);
 	BOOL	DoAllPreTasks(CDSSProgress * pProgress)
 	{
-		return DoOffsetTasks(pProgress) && 
-			   DoDarkTasks(pProgress) && 
+		return DoOffsetTasks(pProgress) &&
+			   DoDarkTasks(pProgress) &&
 			   DoDarkFlatTasks(pProgress) &&
 			   DoFlatTasks(pProgress);
 	};

@@ -59,7 +59,7 @@ END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CFileProperty::OnInitDialog() 
+BOOL CFileProperty::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 

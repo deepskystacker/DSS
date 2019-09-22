@@ -45,10 +45,10 @@ END_MESSAGE_MAP()
 /* ------------------------------------------------------------------- */
 // CLibraryDlg message handlers
 
-BOOL CLibraryDlg::OnInitDialog() 
+BOOL CLibraryDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	m_ControlPos.SetParent(this);
 
 	m_ControlPos.AddControl(IDC_HEADER, CP_RESIZE_HORIZONTAL);
@@ -66,10 +66,10 @@ BOOL CLibraryDlg::OnInitDialog()
 
 /* ------------------------------------------------------------------- */
 
-void CLibraryDlg::OnSize(UINT nType, int cx, int cy) 
+void CLibraryDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	
+
 	m_ControlPos.MoveControls();
 }
 

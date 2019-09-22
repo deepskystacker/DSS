@@ -383,7 +383,7 @@ BOOL CSettingsTab::OnInitDialog()
 	UpdateFromRegistry();
 	UpdateControls();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -426,7 +426,7 @@ void CSettingsTab::OnWarningFileFolder( NMHDR * pNotifyStruct, LRESULT * result 
 	BOOL					bResult = FALSE;
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	strFolder = m_strWarnFileFolder;
 
 	CFolderDlg				dlg(FALSE, strFolder, this);
@@ -452,7 +452,7 @@ void CSettingsTab::OnStackedOutputFolder( NMHDR * pNotifyStruct, LRESULT * resul
 	BOOL					bResult = FALSE;
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	strFolder = m_strStackedOutputFolder;
 
 	CFolderDlg				dlg(FALSE, strFolder, this);

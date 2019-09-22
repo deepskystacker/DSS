@@ -77,7 +77,7 @@ BOOL CBatchStacking::OnInitDialog()
 
     CRect			rcClient;
     GetClientRect(&rcClient);
-    
+
     CRect			rcGrip;
 
 
@@ -104,7 +104,7 @@ BOOL CBatchStacking::OnInitDialog()
 void CBatchStacking::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	
+
 	UPDATE_EASYSIZE;
 };
 
@@ -127,7 +127,7 @@ void CBatchStacking::OnBnClickedAddLists()
 
 	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								_T(".txt"),
 								NULL,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -175,7 +175,7 @@ void CBatchStacking::OnBnClickedAddLists()
 		EndWaitCursor();
 
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
-	};	
+	};
 	UpdateListBoxWidth();
 };
 
@@ -305,7 +305,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 
 /* ------------------------------------------------------------------- */
 
-void CBatchStacking::OnOK() 
+void CBatchStacking::OnOK()
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bContinue  = TRUE;

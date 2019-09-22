@@ -43,7 +43,7 @@ public :
 	void PeekAndPump()
 	{
 		MSG msg;
-		while (!m_bCancelled && ::PeekMessage(&msg, NULL,0,0,PM_NOREMOVE)) 
+		while (!m_bCancelled && ::PeekMessage(&msg, NULL,0,0,PM_NOREMOVE))
 		{
 /*
 			if (bCancelOnESCkey && (msg.message == WM_CHAR) && (msg.wParam == VK_ESCAPE))
@@ -57,12 +57,12 @@ public :
 				if (rect.PtInRect(msg.pt))
 					OnCancel();
 			}*/
-  
-			if (!AfxGetApp()->PumpMessage()) 
+
+			if (!AfxGetApp()->PumpMessage())
 			{
 				::PostQuitMessage(0);
 				return;
-			} 
+			}
 		}
 	}
 
@@ -111,7 +111,7 @@ private :
 
 			// Re-enable this window
 			m_dlg.EnableWindow(TRUE);
-			m_dlg.ShowWindow(SW_SHOW);		
+			m_dlg.ShowWindow(SW_SHOW);
 		};
 	};
 
@@ -121,12 +121,12 @@ public :
 		m_bEnableCancel(FALSE)
 	{
 	};
-	virtual ~CDSSProgressDlg() 
+	virtual ~CDSSProgressDlg()
 	{
 		Close();
 	};
 
-	virtual void	SetNrUsedProcessors(LONG lNrProcessors=1) 
+	virtual void	SetNrUsedProcessors(LONG lNrProcessors=1)
 	{
 		if (m_dlg.m_hWnd)
 		{
@@ -230,7 +230,7 @@ public :
 			m_dlg.PeekAndPump();
 		};
 	};
-	
+
 	virtual void	Start2(LPCTSTR szText, LONG lTotal2)
 	{
 		CString			strText = szText;
@@ -307,12 +307,12 @@ public :
 		return TRUE;
 	};
 
-	virtual BOOL	Warning(LPCTSTR szText) 
-	{ 
+	virtual BOOL	Warning(LPCTSTR szText)
+	{
 		int				nResult;
 
 		nResult = AfxMessageBox(szText, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING);
-		return (nResult == IDYES); 
+		return (nResult == IDYES);
 	}
 
 };

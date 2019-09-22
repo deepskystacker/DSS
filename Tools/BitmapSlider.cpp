@@ -62,15 +62,15 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CBitmapSlider message handlers
 
-BOOL CBitmapSlider::OnEraseBkgnd(CDC* pDC) 
-{	
+BOOL CBitmapSlider::OnEraseBkgnd(CDC* pDC)
+{
 	// Do not erase background for the transparency effect
 	return TRUE;
 }
 
 // Draw channel and thumb
 //
-void CBitmapSlider::OnPaint() 
+void CBitmapSlider::OnPaint()
 {
 	CPaintDC dcOrigin(this);
 
@@ -118,7 +118,7 @@ void CBitmapSlider::OnPaint()
 				// Right side
 				DrawBitmap( &dc, Pos2Pixel(m_nPos), 0,
 					m_nWidth - Pos2Pixel(m_nPos), m_nHeight,
-					&dcMem, Pos2Pixel(m_nPos), 0, 
+					&dcMem, Pos2Pixel(m_nPos), 0,
 					&m_bmChannelActiveMask, m_bTransparentChannel );
 
 				dcMem.SelectObject( &m_bmChannelActive );
@@ -383,7 +383,7 @@ BOOL CBitmapSlider::SetBitmapChannel(
 		m_bmChannelMask.DeleteObject();
 		m_bmChannelActive.DeleteObject();
 		m_bmChannelActiveMask.DeleteObject();
-	
+
 		return TRUE;
 	}
 
@@ -419,7 +419,7 @@ BOOL CBitmapSlider::SetBitmapChannel(
 			PrepareMask( &m_bmChannelActive, &m_bmChannelActiveMask,
 				clrpTransColor, iTransPixelX, iTransPixelY );
 		}
-		
+
 		m_bChannelActive = TRUE;
 
 	// There is no bitmap for active state.
@@ -528,7 +528,7 @@ BOOL CBitmapSlider::SetBitmapThumb(
 			PrepareMask( &m_bmThumbActive, &m_bmThumbActiveMask,
 				clrpTransColor, iTransPixelX, iTransPixelY );
 		}
-		
+
 		m_bThumbActive = TRUE;
 
 	// There is no bitmap for active state.
@@ -574,7 +574,7 @@ BOOL CBitmapSlider::SetBitmapThumb(
 //
 // Dragging is started
 //
-void CBitmapSlider::OnLButtonDown(UINT nFlags, CPoint point) 
+void CBitmapSlider::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if( !m_bEnable )
 		return;
@@ -612,7 +612,7 @@ void CBitmapSlider::OnLButtonDown(UINT nFlags, CPoint point)
 //
 // During dragging
 //
-void CBitmapSlider::OnMouseMove(UINT nFlags, CPoint point) 
+void CBitmapSlider::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if( !m_bLButtonDown || !m_bEnable )
 		return;
@@ -658,7 +658,7 @@ void CBitmapSlider::OnMouseMove(UINT nFlags, CPoint point)
 //
 // Dragging is finished
 //
-void CBitmapSlider::OnLButtonUp(UINT nFlags, CPoint point) 
+void CBitmapSlider::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	if( !m_bEnable )
 		return;
@@ -895,19 +895,19 @@ void CBitmapSlider::DrawTransparentBitmap(
 
 // To get keyboard input
 //
-UINT CBitmapSlider::OnGetDlgCode() 
+UINT CBitmapSlider::OnGetDlgCode()
 {
 	if( GetKeyState(VK_TAB) >= 0 ) {
 
 		return  DLGC_WANTALLKEYS;
 	}
-	
+
 	return CStatic::OnGetDlgCode();
 }
 
 // Handling keyboard input
 //
-void CBitmapSlider::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CBitmapSlider::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	if( !m_bEnable )
 		return;
@@ -957,7 +957,7 @@ void CBitmapSlider::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		CStatic::OnKeyDown(nChar, nRepCnt, nFlags);
 		return;
 	}
-	
+
 	::PostMessage(
 		GetParent()->GetSafeHwnd(),	WM_BITMAPSLIDER_MOVED,
 		GetDlgCtrlID(), m_nPos );
@@ -967,7 +967,7 @@ void CBitmapSlider::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 
 // Control looses its focus
 //
-void CBitmapSlider::OnKillFocus(CWnd* pNewWnd) 
+void CBitmapSlider::OnKillFocus(CWnd* pNewWnd)
 {
 	CStatic::OnKillFocus(pNewWnd);
 
@@ -977,7 +977,7 @@ void CBitmapSlider::OnKillFocus(CWnd* pNewWnd)
 
 // This control gains its focus
 //
-void CBitmapSlider::OnSetFocus(CWnd* pOldWnd) 
+void CBitmapSlider::OnSetFocus(CWnd* pOldWnd)
 {
 	CStatic::OnSetFocus(pOldWnd);
 
@@ -987,10 +987,10 @@ void CBitmapSlider::OnSetFocus(CWnd* pOldWnd)
 
 // Release resources
 //
-void CBitmapSlider::OnDestroy() 
+void CBitmapSlider::OnDestroy()
 {
 	CStatic::OnDestroy();
-	
+
 	m_bmThumb.DeleteObject();
 	m_bmThumbMask.DeleteObject();
 

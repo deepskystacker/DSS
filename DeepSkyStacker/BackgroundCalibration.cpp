@@ -101,7 +101,7 @@ BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 					crColor.red = min(fRed, static_cast<double>(MAXWORD));
 					crColor.blue = min(fBlue, static_cast<double>(MAXWORD));
 					crColor.green = min(fGreen, static_cast<double>(MAXWORD));
-					
+
 					vRedHisto[crColor.red]++;
 					vGreenHisto[crColor.green]++;
 					vBlueHisto[crColor.blue]++;
@@ -139,7 +139,7 @@ BOOL	CBackgroundCalibrationTask::Process()
 	{
 		LONG			lAdd = min(lStep, lRemaining);
 		DWORD			dwThreadId;
-		
+
 		dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
@@ -227,7 +227,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 			crColor.red = min(fRed, MAXWORD);
 			crColor.blue = min(fBlue, MAXWORD);
 			crColor.green = min(fGreen, MAXWORD);
-			
+
 			//crColor = pBitmap->GetPixel16(i, j);
 
 			vRedHisto[crColor.red]++;
@@ -290,7 +290,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 		else if (m_BackgroundCalibrationMode == BCM_RGB)
 		{
 			double			fTgtBk;
-			
+
 			if (m_RGBBackgroundMethod == RBCM_MAXIMUM)
 				fTgtBk = max(m_fSrcRedBk, max(m_fSrcGreenBk, m_fSrcBlueBk));
 			else if (m_RGBBackgroundMethod == RBCM_MINIMUM)

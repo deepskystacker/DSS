@@ -5,7 +5,7 @@
 *	Author: Nguyen Huy Hung, Vietnamese student.
 *	Date:	May 29th 2002.
 *	Note: You can use it for any purposes. Feel free
-*			to change, modify, but please do not 
+*			to change, modify, but please do not
 *			remove this.
 *	No warranty of any risks.
 *	(:-)
@@ -47,7 +47,7 @@ protected:
 	int			m_nType;
 	int			m_nX, m_nY;
 	int			m_nMin, m_nMax;
-	int			m_nSavePos;		// Save point on the lbutton down 
+	int			m_nSavePos;		// Save point on the lbutton down
 								// message
 // Operations
 public:

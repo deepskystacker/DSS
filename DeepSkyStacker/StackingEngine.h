@@ -25,7 +25,7 @@ private :
 	};
 
 public :
-	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0) 
+	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0)
 	{
 		m_lImageIndex	= lIndex;
 		m_fXShift		= fXShift;

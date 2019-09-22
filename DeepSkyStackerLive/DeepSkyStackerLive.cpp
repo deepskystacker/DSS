@@ -82,7 +82,7 @@ BOOL	IsExpired()
 	LONG				lMaxMonth = DSSBETAEXPIREMONTH;
 
 	GetSystemTime(&SystemTime);
-	if ((SystemTime.wYear>lMaxYear) || 
+	if ((SystemTime.wYear>lMaxYear) ||
 		((SystemTime.wYear==lMaxYear) && (SystemTime.wMonth>lMaxMonth)))
 	{
 		AfxMessageBox("This beta version has expired\nYou can probably get another one or download the final release from the web site.", MB_OK | MB_ICONSTOP);
@@ -113,7 +113,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	GdiplusStartupOutput	gdiSO;
 	ULONG_PTR				gdiplusToken;
 	ULONG_PTR				gdiHookToken;
-  
+
 	// Initialize GDI+.
 	gdiplusStartupInput.SuppressBackgroundThread = TRUE;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
