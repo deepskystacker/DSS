@@ -2,6 +2,7 @@
 #define _BITMAPEXT_H__
 
 #include "Multitask.h"
+#include <zexcept.h>
 
 #ifndef DSSFILEDECODING
 #define DSSFILEDECODING 1
@@ -1290,6 +1291,11 @@ protected :
 
 		lWidth = pBitmap->RealWidth();
 		pOutputScanLine = (TTypeOutput *)malloc(lWidth * sizeof(TTypeOutput));
+		if (nullptr == pOutputScanLine)
+		{
+			ZOutOfMemory e("Could not allocate storage for output scanline");
+			ZTHROW(e);
+		}
 		pCurrentValue = pOutputScanLine;
 
 		vValues.reserve(vScanLines.size());
@@ -1409,8 +1415,6 @@ public :
 	{
 	private :
 		CSmartPtr<CGrayBitmapT<TType> >		m_pBitmap;
-		LONG								m_lX,
-											m_lY;
 		TType *								m_pValue;
 		double								m_fMultiplier;
 		LONG								m_lWidth,
@@ -2384,6 +2388,11 @@ private :
 			free(m_pLine);
 
 		m_pLine = (LPBYTE *)malloc(m_lHeight * sizeof(LPBYTE));
+		if (nullptr == m_pLine)
+		{
+			ZOutOfMemory e("Could not allocate storage for scanline pointers");
+			ZTHROW(e);
+		}
 
 		m_dwByteWidth   = (((m_lWidth * 32 + 31) & ~31) >> 3);
 		LONG			y = m_lHeight - 1;
@@ -2644,6 +2653,11 @@ protected :
 
 		lWidth = pBitmap->RealWidth();
 		pOutputScanLine = (TTypeOutput *)malloc(lWidth * 3 * sizeof(TTypeOutput));
+		if (nullptr == pOutputScanLine)
+		{
+			ZOutOfMemory e("Could not allocate storage for output scanline");
+			ZTHROW(e);
+		}
 
 		pRedCurrentValue   = pOutputScanLine;
 		pGreenCurrentValue = pRedCurrentValue + lWidth;
