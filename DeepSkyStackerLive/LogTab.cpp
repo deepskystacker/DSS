@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(CLogTab, CDialog)
 
-CLogTab::CLogTab(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+CLogTab::CLogTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CLogTab::IDD, pParent),
 	m_bDarkMode(bDarkMode)
 {
@@ -76,8 +76,8 @@ void CLogTab::AddToLog(LPCTSTR szText, BOOL bAddDateTime, BOOL bBold, BOOL bItal
 		TCHAR			szDate[1000];
 
 		GetLocalTime(&SystemTime);
-		GetTimeFormat(GetThreadLocale(), 0, &SystemTime, NULL, szTime, sizeof(szTime));
-		GetDateFormat(GetThreadLocale(), DATE_SHORTDATE, &SystemTime, NULL, szDate, sizeof(szDate));
+		GetTimeFormat(GetThreadLocale(), 0, &SystemTime, nullptr, szTime, sizeof(szTime));
+		GetDateFormat(GetThreadLocale(), DATE_SHORTDATE, &SystemTime, nullptr, szDate, sizeof(szDate));
 
 		strTime = szDate;
 		strTime += "  ";

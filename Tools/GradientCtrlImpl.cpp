@@ -32,7 +32,7 @@ const TCHAR floatbtag[] = _T("&FLOATB");
 CGradientCtrlImpl::CGradientCtrlImpl(CGradientCtrl *owner)
 {
 	m_Owner = owner;
-	m_wndToolTip = NULL;
+	m_wndToolTip = nullptr;
 	m_RectCount = 0;
 	m_RightUpSide = true;
 	m_LeftDownSide = false;
@@ -647,19 +647,19 @@ void CGradientCtrlImpl::ShowTooltip(CPoint point, CString text)
 		return;
 
 	// CREATE A TOOLTIP WINDOW
-	if(m_wndToolTip == NULL)
+	if(m_wndToolTip == nullptr)
 	{
 		m_wndToolTip = CreateWindowEx(WS_EX_TOPMOST,
-			TOOLTIPS_CLASS, NULL, TTS_NOPREFIX | TTS_ALWAYSTIP,
+			TOOLTIPS_CLASS, nullptr, TTS_NOPREFIX | TTS_ALWAYSTIP,
 			CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-			NULL, NULL, NULL, NULL);
+			nullptr, nullptr, nullptr, nullptr);
 
 
 		// INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE
 		m_ToolInfo.cbSize = sizeof(TOOLINFO);
 		m_ToolInfo.uFlags = TTF_TRACK;
-		m_ToolInfo.hwnd = NULL;
-		m_ToolInfo.hinst = NULL;
+		m_ToolInfo.hwnd = nullptr;
+		m_ToolInfo.hinst = nullptr;
 		m_ToolInfo.uId = uid;
 		m_ToolInfo.lpszText = (LPTSTR)(LPCTSTR) text;
 		// ToolTip control will cover the whole window
@@ -678,13 +678,13 @@ void CGradientCtrlImpl::ShowTooltip(CPoint point, CString text)
 
 /*void CGradientCtrlImpl::HideTooltip()
 {
-	if(m_wndToolTip != NULL)
+	if(m_wndToolTip != nullptr)
 	::SendMessage (m_wndToolTip, TTM_TRACKACTIVATE, false, (LPARAM) (LPTOOLINFO) &m_ToolInfo);
 }*/
 
 /*void CGradientCtrlImpl::MoveTooltip(CPoint point)
 {
-	if(m_wndToolTip != NULL)
+	if(m_wndToolTip != nullptr)
 	{
 		::SendMessage(m_wndToolTip, TTM_TRACKPOSITION, 0, (LPARAM)(DWORD) MAKELONG(point.x, point.y));
 	}
@@ -692,7 +692,7 @@ void CGradientCtrlImpl::ShowTooltip(CPoint point, CString text)
 
 void CGradientCtrlImpl::SetTooltipText(CString text)
 {
-	if(m_wndToolTip != NULL)
+	if(m_wndToolTip != nullptr)
 	{
 		m_ToolInfo.lpszText = (LPTSTR)(LPCTSTR) text;
 		::SendMessage(m_wndToolTip, TTM_SETTOOLINFO, 0, (LPARAM)(LPTOOLINFO) &m_ToolInfo);
@@ -702,7 +702,7 @@ void CGradientCtrlImpl::SetTooltipText(CString text)
 void CGradientCtrlImpl::DestroyTooltip()
 {
 	::DestroyWindow(m_wndToolTip);
-	m_wndToolTip = NULL;
+	m_wndToolTip = nullptr;
 }
 
 bool CGradientCtrlImpl::IsVertical()

@@ -80,9 +80,9 @@ BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 	vBlueHisto.resize((LONG)MAXWORD+1);
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -146,7 +146,7 @@ BOOL	CBackgroundCalibrationTask::Process()
 		i			+=lAdd;
 		lRemaining	-= lAdd;
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -189,7 +189,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	m_fSrcBlueMax	= 0;
 
 	if (pProgress)
-		pProgress->Start2(NULL, pBitmap->Height());
+		pProgress->Start2(nullptr, pBitmap->Height());
 
 	task.Init(this, pBitmap, pProgress);
 	task.StartThreads();
@@ -210,7 +210,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	vBlueHisto.resize((LONG)MAXWORD+1);
 
 	if (pProgress)
-		pProgress->Start2(NULL, pBitmap->Height());
+		pProgress->Start2(nullptr, pBitmap->Height());
 
 	for (j = 0;j<pBitmap->Height();j++)
 	{
@@ -239,7 +239,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 		};
 
 		if (pProgress)
-			pProgress->Progress2(NULL, j+1);
+			pProgress->Progress2(nullptr, j+1);
 	};
 */
 	// Find median value in each histogram

@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 // CBackgroundOptions dialog
 
 
-CBackgroundOptions::CBackgroundOptions(CWnd* pParent /*=NULL*/)
+CBackgroundOptions::CBackgroundOptions(CWnd* pParent /*=nullptr*/)
 	: CDialog(CBackgroundOptions::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CBackgroundOptions)

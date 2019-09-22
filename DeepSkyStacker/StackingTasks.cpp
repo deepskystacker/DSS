@@ -139,7 +139,7 @@ public :
 		ZFUNCTRACE_RUNTIME();
 		BOOL					bResult = FALSE;
 
-		*ppBitmap = NULL;
+		*ppBitmap = nullptr;
 		if (pTaskInfo && pTaskInfo->m_strOutputFile.GetLength())
 		{
 			switch (pTaskInfo->m_TaskType)
@@ -272,7 +272,7 @@ BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 		CString			strMasterOffset;
 		CString			strMasterOffsetInfo;
 
-		_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+		_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 		BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */ false, szDrive, szDir,
 			&strMasterOffset, &strMasterOffsetInfo);
@@ -382,7 +382,7 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 					strInfo.Format(IDS_MEDIANOFFSETINFO, m_pOffsetTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */ false, szDrive, szDir,
 						&strMasterOffset, &strMasterOffsetInfo);
@@ -431,7 +431,7 @@ BOOL	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 			CString			strMasterDarkInfo;
 			LONG			lExposure = m_pDarkTask->m_fExposure;
 
-			_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+			_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 			BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
 				&strMasterDark, &strMasterDarkInfo);
@@ -570,7 +570,7 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 					strInfo.Format(IDS_MEDIANDARKINFO, m_pDarkTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+					_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
 						&strMasterDark, &strMasterDarkInfo);
@@ -620,7 +620,7 @@ BOOL	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 			CString			strMasterDarkFlatInfo;
 			LONG			lExposure = m_pDarkFlatTask->m_fExposure;
 
-			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 			BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
 				&strMasterDarkFlat, &strMasterDarkFlatInfo);
@@ -760,7 +760,7 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 					strInfo.Format(IDS_MEDIANDARKFLATINFO, m_pDarkFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
 						&strMasterDarkFlat, &strMasterDarkFlatInfo);
@@ -931,7 +931,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap * pBitmap, CDSS
 		ZTRACE_RUNTIME(CT2CA(strText));
 
 		pProgress->Start2(strText, 0);
-		pProgress->Start2(NULL, pBitmap->RealWidth());
+		pProgress->Start2(nullptr, pBitmap->RealWidth());
 	};
 
 	for (LONG i = 0;i<pBitmap->RealWidth();i++)
@@ -957,7 +957,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap * pBitmap, CDSS
 		};
 
 		if (pProgress)
-			pProgress->Progress2(NULL, i+1);
+			pProgress->Progress2(nullptr, i+1);
 	};
 
 	if (pProgress)
@@ -983,7 +983,7 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 		ZTRACE_RUNTIME(CT2CA(strText));
 
 		pProgress->Start2(strText, 0);
-		pProgress->Start2(NULL, pBitmap->RealWidth());
+		pProgress->Start2(nullptr, pBitmap->RealWidth());
 	};
 
 	for (LONG i = 0;i<pBitmap->RealWidth();i++)
@@ -1019,7 +1019,7 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 		};
 
 		if (pProgress)
-			pProgress->Progress2(NULL, i+1);
+			pProgress->Progress2(nullptr, i+1);
 	};
 
 	if (pProgress)
@@ -1046,7 +1046,7 @@ BOOL	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 			CString			strMasterFlat;
 			CString			strMasterFlatInfo;
 
-			_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+			_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 			BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
 				&strMasterFlat, &strMasterFlatInfo);
@@ -1219,7 +1219,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 					strInfo.Format(IDS_MEDIANFLATINFO, m_pFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+					_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
 						&strMasterFlat, &strMasterFlatInfo);
@@ -1363,7 +1363,7 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 {
 	ZFUNCTRACE_RUNTIME();
 
-	CTaskInfo *			pResult = NULL;
+	CTaskInfo *			pResult = nullptr;
 	LONG				j;
 	BOOL				bExposureFirst = (TaskType == PICTURETYPE_DARKFRAME);
 
@@ -1849,7 +1849,7 @@ BOOL CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
 				CString			strPath;
 
 				strFileName = m_vTasks[i].m_vBitmaps[j].m_strFileName;
-				_tsplitpath(strFileName, szDrive, szDir, NULL, NULL);
+				_tsplitpath(strFileName, szDrive, szDir, nullptr, nullptr);
 				strPath = szDrive;
 				strPath+= szDir;
 

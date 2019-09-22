@@ -31,7 +31,7 @@ const DWORD			WM_INITNEWPICTURE = WM_USER+1;
 // CProcessingDlg dialog
 
 
-CProcessingDlg::CProcessingDlg(CWnd* pParent /*=NULL*/)
+CProcessingDlg::CProcessingDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CProcessingDlg::IDD, pParent), m_Settings(_T(""))
 {
 	//{{AFX_DATA_INIT(CProcessingDlg)
@@ -151,7 +151,7 @@ BOOL CProcessingDlg::OnInitDialog()
 	COLORREF		crGreens[3] = {RGB(0, 0, 0), RGB(0, 128, 0), RGB(0, 255, 0)};
 	COLORREF		crBlues[3] = {RGB(0, 0, 0), RGB(0, 0, 128), RGB(0, 0, 255)};
 
-	SetTimer(1, 100, NULL);
+	SetTimer(1, 100, nullptr);
 
 	m_fGradientOffset = 0.0;
 	m_fGradientRange  = 65535.0;
@@ -400,7 +400,7 @@ void CProcessingDlg::OnSettings()
 		UpdateControls();
 		m_bDirty = TRUE;
 	};
-	SetTimer(1, 100, NULL);
+	SetTimer(1, 100, nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -492,7 +492,7 @@ LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 	m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height / 3);
 
 	m_lProcessParams.clear();
-	m_Picture.SetImg((HBITMAP)NULL);
+	m_Picture.SetImg((HBITMAP)nullptr);
 	ProcessAndShow(TRUE);
 
 	UpdateInfos();
@@ -522,7 +522,7 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 	GetDeepStack(this).Clear();
 	GetDeepStack(this).SetProgress(&dlg);
 	bOk = GetDeepStack(this).LoadStackedInfo(szFileName);
-	GetDeepStack(this).SetProgress(NULL);
+	GetDeepStack(this).SetProgress(nullptr);
 	EndWaitCursor();
 
 	if (bOk)
@@ -544,13 +544,13 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 		m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height / 3);
 
 		m_lProcessParams.clear();
-		m_Picture.SetImg((HBITMAP)NULL);
+		m_Picture.SetImg((HBITMAP)nullptr);
 		ProcessAndShow(TRUE);
 		EndWaitCursor();
 		m_bDirty = FALSE;
 	};
 
-	SetTimer(1, 100, NULL);
+	SetTimer(1, 100, nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -569,7 +569,7 @@ void CProcessingDlg::OnLoaddsi()
 		strFilter.LoadString(IDS_FILTER_DSIIMAGETIFF);
 		CFileDialog			dlgOpen(TRUE,
 									_T(".DSImage"),
-									NULL,
+									nullptr,
 									OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 									strFilter,
 									this);
@@ -597,7 +597,7 @@ void CProcessingDlg::OnLoaddsi()
 				GetDeepStack(this).Clear();
 				GetDeepStack(this).SetProgress(&dlg);
 				bOk = GetDeepStack(this).LoadStackedInfo(strFile);
-				GetDeepStack(this).SetProgress(NULL);
+				GetDeepStack(this).SetProgress(nullptr);
 				EndWaitCursor();
 			};
 
@@ -608,7 +608,7 @@ void CProcessingDlg::OnLoaddsi()
 				TCHAR		szDir[1+_MAX_DIR];
 				TCHAR		szDrive[1+_MAX_DRIVE];
 
-				_tsplitpath(strFile, szDrive, szDir, NULL, NULL);
+				_tsplitpath(strFile, szDrive, szDir, nullptr, nullptr);
 				strBaseDirectory = szDrive;
 				strBaseDirectory += szDir;
 
@@ -628,14 +628,14 @@ void CProcessingDlg::OnLoaddsi()
 				m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height/3);
 
 				m_lProcessParams.clear();
-				m_Picture.SetImg((HBITMAP)NULL);
+				m_Picture.SetImg((HBITMAP)nullptr);
 				ProcessAndShow(TRUE);
 				EndWaitCursor();
 				m_bDirty = FALSE;
 			};
 		};
 
-		SetTimer(1, 100, NULL);
+		SetTimer(1, 100, nullptr);
 	};
 }
 
@@ -681,7 +681,7 @@ void CProcessingDlg::SaveDSImage()
 
 	CFileDialog			dlgOpen(FALSE,
 								_T(".DSImage"),
-								NULL,
+								nullptr,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								_T("DeepSkyStacker Image (.DSImage)|*.DSImage||"),
 								this);
@@ -714,13 +714,13 @@ void CProcessingDlg::SaveDSImage()
 				GetDeepStack(this).SaveStackedInfo(strFile, &rcSelect);
 			else
 				GetDeepStack(this).SaveStackedInfo(strFile);
-			GetDeepStack(this).SetProgress(NULL);
+			GetDeepStack(this).SetProgress(nullptr);
 
 			TCHAR		szDir[1+_MAX_DIR];
 			TCHAR		szDrive[1+_MAX_DRIVE];
 			TCHAR		szExt[1+_MAX_EXT];
 
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -821,7 +821,7 @@ void CProcessingDlg::CreateStarMask()
 					WriteTIFF((LPCTSTR)strFileName, pStarMask, &dlg, strDescription);
 			};
 		};
-		SetTimer(1, 100, NULL);
+		SetTimer(1, 100, nullptr);
 	}
 	else
 	{
@@ -855,7 +855,7 @@ BOOL CProcessingDlg::SavePictureToFile()
 
 		CSavePicture				dlgOpen(FALSE,
 									_T(".TIF"),
-									NULL,
+									nullptr,
 									OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 									OUTPUTFILE_FILTERS,
 									this);
@@ -885,7 +885,7 @@ BOOL CProcessingDlg::SavePictureToFile()
 			if (pos)
 			{
 				CString			strFile;
-				LPRECT			lpRect = NULL;
+				LPRECT			lpRect = nullptr;
 				BOOL			bApply;
 				BOOL			bUseRect;
 				TIFFCOMPRESSION	Compression;
@@ -916,7 +916,7 @@ BOOL CProcessingDlg::SavePictureToFile()
 				TCHAR		szDrive[1+_MAX_DRIVE];
 				TCHAR		szExt[1+_MAX_EXT];
 
-				_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+				_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 				strBaseDirectory = szDrive;
 				strBaseDirectory += szDir;
 				strBaseExtension = szExt;
@@ -1056,7 +1056,7 @@ public :
 
 void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGreens, LONG lNrBlues, LONG X, LONG lHeight)
 {
-	HPEN						hOldPen	= NULL;
+	HPEN						hOldPen	= nullptr;
 	std::vector<CColorOrder>	vColors;
 	LONG						lLastHeight = 0;
 
@@ -1095,7 +1095,7 @@ void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGr
 
 			hPen = ::CreatePen(PS_SOLID, 1, RGB(fRed/lNrColors, fGreen/lNrColors, fBlue/lNrColors));
 			hOldPen = (HPEN)::SelectObject(hDC, hPen);
-			::MoveToEx(hDC, X, lHeight-lLastHeight, NULL);
+			::MoveToEx(hDC, X, lHeight-lLastHeight, nullptr);
 			::LineTo(hDC, X, lHeight-vColors[i].m_lSize);
 			::SelectObject(hDC, hOldPen);
 			::DeleteObject(hPen);*/
@@ -1254,7 +1254,7 @@ void CProcessingDlg::ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogr
 
 	wndImage.GetClientRect(&rcClient);
 
-	hScreenDC = ::GetDC(NULL);
+	hScreenDC = ::GetDC(nullptr);
 	hMemDC = ::CreateCompatibleDC(hScreenDC);
 	hBitmap = ::CreateCompatibleBitmap(hScreenDC, rcClient.Width(), rcClient.Height());
 
@@ -1321,7 +1321,7 @@ void CProcessingDlg::ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogr
 	};
 
 	::DeleteDC(hMemDC);
-	::ReleaseDC(NULL, hScreenDC);
+	::ReleaseDC(nullptr, hScreenDC);
 
 	wndImage.SetImg(hBitmap);
 };
@@ -1441,7 +1441,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 
 	if (m_ToProcess.GetNextUnProcessedRect(rcCell))
 	{
-		HBITMAP			hBitmap = NULL;
+		HBITMAP			hBitmap = nullptr;
 		BOOL			bInitialized = TRUE;
 
 		hBitmap = m_Picture.GetBitmap();

@@ -19,7 +19,7 @@ IMPLEMENT_DYNAMIC(CStackSettings, CDialog)
 
 /* ------------------------------------------------------------------- */
 
-CStackSettings::CStackSettings(CWnd* pParent /*=NULL*/)
+CStackSettings::CStackSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackSettings::IDD, pParent)
 {
 	m_lStartingTab			= 0;
@@ -27,7 +27,7 @@ CStackSettings::CStackSettings(CWnd* pParent /*=NULL*/)
 	m_bUseCustomRectangle	= FALSE;
 	m_bEnableCustomRectangle= FALSE;
 	m_bEnableCometStacking	= FALSE;
-	m_pStackingTasks		= NULL;
+	m_pStackingTasks		= nullptr;
 
 	m_bEnableDark			= TRUE;
 	m_bEnableFlat			= TRUE;
@@ -339,7 +339,7 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 {
 	BOOL			bResult = FALSE;
 
-	if (NULL != pTab->m_SigmaClipping.GetSafeHwnd() &&
+	if (nullptr != pTab->m_SigmaClipping.GetSafeHwnd() &&
 		pTab->m_SigmaClipping.GetCheck())
 	{
 		CString		strKappa;
@@ -359,7 +359,7 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 	else
 		bResult = TRUE;
 
-	if (NULL != pTab->m_DarkFactor.GetSafeHwnd() &&
+	if (nullptr != pTab->m_DarkFactor.GetSafeHwnd() &&
 		pTab->m_DarkFactor.IsWindowVisible())
 	{
 		CString		strFactor;

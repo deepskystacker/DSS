@@ -19,7 +19,7 @@ private :
 	bool				m_bDarkMode;
 
 public:
-	CLogTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CLogTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CLogTab();
 
 	//void	CallHelp();

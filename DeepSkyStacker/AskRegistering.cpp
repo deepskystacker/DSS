@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 // CAskRegistering dialog
 
 
-CAskRegistering::CAskRegistering(CWnd* pParent /*=NULL*/)
+CAskRegistering::CAskRegistering(CWnd* pParent /*=nullptr*/)
 	: CDialog(CAskRegistering::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CAskRegistering)

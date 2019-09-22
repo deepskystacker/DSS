@@ -123,7 +123,7 @@ inline BOOL	CAHDTask<TType>::Process()
 
 	if (pProgress)
 	{
-		pProgress->Start2(NULL, lNrWindows);
+		pProgress->Start2(nullptr, lNrWindows);
 		pProgress->SetNrUsedProcessors(GetNrThreads());
 	};
 
@@ -140,7 +140,7 @@ inline BOOL	CAHDTask<TType>::Process()
 
 			lNrWindows++;
 			if (pProgress)
-				pProgress->Progress2(NULL, lNrWindows);
+				pProgress->Progress2(nullptr, lNrWindows);
 		};
 	};
 
@@ -720,9 +720,9 @@ inline BOOL	CAHDTask<TType>::DoTask(HANDLE hEvent)
 	if (var.Init())
 	{
 		// Create a message queue and signal the event
-		PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
 			if (msg.message == WM_MT_PROCESS)
 			{
@@ -1039,7 +1039,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 		lNrWindows = lNrWindowsWidth * lNrWindowsHeight;
 
 		if (pProgress)
-			pProgress->Start2(NULL, lNrWindows);
+			pProgress->Start2(nullptr, lNrWindows);
 
 		lNrWindows = 0;
 
@@ -1602,7 +1602,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 
 				lNrWindows++;
 				if (pProgress)
-					pProgress->Progress2(NULL, lNrWindows);
+					pProgress->Progress2(nullptr, lNrWindows);
 			};
 		};
 

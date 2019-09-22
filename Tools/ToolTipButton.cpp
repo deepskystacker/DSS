@@ -36,7 +36,7 @@ void CToolTipButton::SetToolTipText(LPCTSTR szText, BOOL bActivate)
 {
 	m_strTooltip = szText;
 
-	// We cannot accept NULL pointer
+	// We cannot accept nullptr pointer
 	// Initialize ToolTip
 	InitToolTip();
 
@@ -55,7 +55,7 @@ void CToolTipButton::SetToolTipText(LPCTSTR szText, BOOL bActivate)
 
 void CToolTipButton::InitToolTip()
 {
-	if (m_ToolTip.m_hWnd == NULL)
+	if (m_ToolTip.m_hWnd == nullptr)
 	{
 		// Create ToolTip control
 		m_ToolTip.Create(this);

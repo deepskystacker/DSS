@@ -14,7 +14,7 @@ public :
 	CImageFilter() {};
 	virtual ~CImageFilter() {};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = NULL) = 0;
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr) = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -118,7 +118,7 @@ public :
 		};
 	};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = NULL);
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -138,7 +138,7 @@ private :
 
 private :
 	void	AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bComputeThresholds);
-	void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap * pOutBitmap, CDSSProgress * pProgress = NULL);
+	void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap * pOutBitmap, CDSSProgress * pProgress = nullptr);
 
 public :
 	CExtendedMedianImageFilter()
@@ -174,7 +174,7 @@ public :
 		m_bUseRejectThreshold  = FALSE;
 	};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress = NULL);
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -206,7 +206,7 @@ public :
 		m_lSize  = lSize;
 	};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = NULL);
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */

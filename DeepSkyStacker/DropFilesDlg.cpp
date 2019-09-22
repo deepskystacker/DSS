@@ -12,10 +12,10 @@
 
 IMPLEMENT_DYNAMIC(CDropFilesDlg, CDialog)
 
-CDropFilesDlg::CDropFilesDlg(CWnd* pParent /*=NULL*/)
+CDropFilesDlg::CDropFilesDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDropFilesDlg::IDD, pParent)
 {
-	m_hDropInfo = NULL;
+	m_hDropInfo = nullptr;
 	m_DropType  = PICTURETYPE_UNKNOWN;
 }
 
@@ -100,7 +100,7 @@ BOOL CDropFilesDlg::OnInitDialog()
 
 	if (m_hDropInfo)
 	{
-		lNrFiles = DragQueryFile(m_hDropInfo, 0xFFFFFFFF, NULL, 0);
+		lNrFiles = DragQueryFile(m_hDropInfo, 0xFFFFFFFF, nullptr, 0);
 		for (LONG i = 0;i<lNrFiles;i++)
 		{
 			TCHAR			szFile[1+_MAX_PATH];

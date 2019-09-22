@@ -53,9 +53,9 @@ public :
 			vValues.reserve((m_pEngine->m_lFilterSize*2+1)*(m_pEngine->m_lFilterSize*2+1));
 
 			// Create a message queue and signal the event
-			PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+			PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 			SetEvent(hEvent);
-			while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+			while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 			{
 				if (msg.message == WM_MT_PROCESS)
 				{
@@ -176,7 +176,7 @@ public :
 				i			+=lAdd;
 				lRemaining	-= lAdd;
 				if (m_pProgress)
-					m_pProgress->Progress2(NULL, i);
+					m_pProgress->Progress2(nullptr, i);
 			};
 
 			CloseAllThreads();
@@ -205,7 +205,7 @@ inline BOOL CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 	BOOL					bResult = TRUE;
 
 	if (pProgress)
-		pProgress->Start2(NULL, m_lHeight);
+		pProgress->Start2(nullptr, m_lHeight);
 
 	CFilterTask<TType>		FilterTask;
 
@@ -222,7 +222,7 @@ inline BOOL CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 	vValues.reserve((m_lFilterSize*2+1)*(m_lFilterSize*2+1));
 
 	if (pProgress)
-		pProgress->Start2(NULL, m_lHeight);
+		pProgress->Start2(nullptr, m_lHeight);
 
 	if (m_CFAType != CFATYPE_NONE)
 	{
@@ -266,7 +266,7 @@ inline BOOL CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 			};
 
 			if (pProgress)
-				pProgress->Progress2(NULL, j+1);
+				pProgress->Progress2(nullptr, j+1);
 		};
 	}
 	else
@@ -306,7 +306,7 @@ inline BOOL CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 			};
 
 			if (pProgress)
-				pProgress->Progress2(NULL, j+1);
+				pProgress->Progress2(nullptr, j+1);
 		};
 	};
 

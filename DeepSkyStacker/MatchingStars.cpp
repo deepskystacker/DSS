@@ -1047,7 +1047,7 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 const double			MAXSTARDISTANCEDELTA = 2.0;
 
 CComAutoCriticalSection	g_StarDistSection;
-STARDISTVECTOR *		g_pvDists = NULL;
+STARDISTVECTOR *		g_pvDists = nullptr;
 
 inline bool CompareStarDistances (LONG lDist1, LONG lDist2)
 {
@@ -1080,7 +1080,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 	g_pvDists = &m_vTgtStarDistances;
 	std::sort(m_vTgtStarIndices.begin(), m_vTgtStarIndices.end(), CompareStarDistances);
 
-	g_pvDists = NULL;
+	g_pvDists = nullptr;
 	g_StarDistSection.Unlock();
 
 	VOTINGPAIRVECTOR			vVotingPairs,

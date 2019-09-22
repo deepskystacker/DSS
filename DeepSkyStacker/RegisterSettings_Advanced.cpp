@@ -99,7 +99,7 @@ void CRegisterSettings_Advanced::OnComputeStars()
 	TCHAR						szExt[1+_MAX_EXT];
 	CString						strFileName;
 
-	_tsplitpath(m_strFirstLightFrame, NULL, NULL, szFileName, szExt);
+	_tsplitpath(m_strFirstLightFrame, nullptr, nullptr, szFileName, szExt);
 	strFileName.Format(_T("%s%s"), szFileName, szExt);
 	strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)strFileName);
 	dlg.Start(strText, 0, FALSE);

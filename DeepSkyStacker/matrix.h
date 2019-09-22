@@ -371,7 +371,7 @@ matrixT::reallocate (size_t row, size_t col)
       return;
    }
 
-   base_mat *m1 = new base_mat( row, col, NULL);
+   base_mat *m1 = new base_mat( row, col, nullptr);
    size_t colSize = min(_m->Col,col) * sizeof(T);
    size_t minRow = min(_m->Row,row);
 

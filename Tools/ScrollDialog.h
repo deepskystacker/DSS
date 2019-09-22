@@ -35,7 +35,7 @@ class CScrollDialog : public CDialog
 
 // Construction
 public:
-	CScrollDialog(UINT nIDD, CWnd* pParent = NULL);   // standard constructor
+	CScrollDialog(UINT nIDD, CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CScrollDialog)

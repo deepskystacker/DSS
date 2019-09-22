@@ -1062,9 +1062,9 @@ BOOL	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 	LONG				lWidth = m_pBitmap->Width();
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -1115,7 +1115,7 @@ BOOL	CComputeLuminanceTask::Process()
 		i			+=lAdd;
 		lRemaining	-= lAdd;
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -1374,7 +1374,7 @@ void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, BO
 
 	RegisterPicture();
 
-	m_pProgress = NULL;
+	m_pProgress = nullptr;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1430,7 +1430,7 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(lfi.m_strFileName, szDrive, szDir, szName, NULL);
+		_tsplitpath(lfi.m_strFileName, szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1506,7 +1506,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 
 	for (i = 0;i<tasks.m_vStacks.size();i++)
 	{
-		CStackingInfo *		pStackingInfo = NULL;
+		CStackingInfo *		pStackingInfo = nullptr;
 
 		if (tasks.m_vStacks[i].m_pLightTask)
 			pStackingInfo = &(tasks.m_vStacks[i]);
@@ -1526,7 +1526,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 
 	for (i = 0;i<tasks.m_vStacks.size() && bResult;i++)
 	{
-		CStackingInfo *		pStackingInfo = NULL;
+		CStackingInfo *		pStackingInfo = nullptr;
 
 		if (tasks.m_vStacks[i].m_pLightTask)
 			pStackingInfo = &(tasks.m_vStacks[i]);
@@ -1576,7 +1576,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 						if (::LoadPicture(lfi.m_strFileName, &pBitmap, pProgress))
 						{
 							// Apply offset, dark and flat to lightframe
-							MasterFrames.ApplyAllMasters(pBitmap, NULL, pProgress);
+							MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
 
 							CString				strCalibratedFile;
 
@@ -1597,7 +1597,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 								TCHAR				szDir[1+_MAX_DIR];
 								TCHAR				szFile[1+_MAX_FNAME];
 
-								_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, NULL);
+								_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
 								strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
 								lfi.CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
 							};

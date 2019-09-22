@@ -18,7 +18,7 @@ IMPLEMENT_DYNAMIC(CFileProperty, CDialog)
 
 /* ------------------------------------------------------------------- */
 
-CFileProperty::CFileProperty(CWnd* pParent /*=NULL*/)
+CFileProperty::CFileProperty(CWnd* pParent /*=nullptr*/)
 	: CDialog(CFileProperty::IDD, pParent)
 {
 

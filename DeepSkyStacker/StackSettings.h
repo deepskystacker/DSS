@@ -56,7 +56,7 @@ private :
 	CAllStackingTasks *		m_pStackingTasks;
 
 public:
-	CStackSettings(CWnd* pParent = NULL);   // standard constructor
+	CStackSettings(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CStackSettings();
 
 	void		UpdateControls();

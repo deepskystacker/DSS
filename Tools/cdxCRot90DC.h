@@ -90,18 +90,18 @@ private:
 	CBitmap	*m_pOldBitmap;
 
 public:
-	cdxCRot90DC() : m_pDC(NULL), m_bFinished(true) {}
-	cdxCRot90DC(CDC & destDC, const CRect & rectDC, int iAngle, bool bCopy = false) : m_pDC(NULL), m_bFinished(true) { Create(destDC,rectDC,iAngle,bCopy); }
-	cdxCRot90DC(CDC *pDC, const CRect & rectDC, int iAngle, bool bCopy = false) : m_pDC(NULL), m_bFinished(true) { Create(pDC,rectDC,iAngle,bCopy); }
-	cdxCRot90DC(CDC & destDC, int iAngle, bool bCopy = false) : m_pDC(NULL), m_bFinished(true) { VERIFY( Create(destDC,iAngle,bCopy) ); }
-	cdxCRot90DC(CDC *pDC, int iAngle, bool bCopy = false) : m_pDC(NULL), m_bFinished(true) { VERIFY( Create(pDC,iAngle,bCopy) ); }
+	cdxCRot90DC() : m_pDC(nullptr), m_bFinished(true) {}
+	cdxCRot90DC(CDC & destDC, const CRect & rectDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { Create(destDC,rectDC,iAngle,bCopy); }
+	cdxCRot90DC(CDC *pDC, const CRect & rectDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { Create(pDC,rectDC,iAngle,bCopy); }
+	cdxCRot90DC(CDC & destDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { VERIFY( Create(destDC,iAngle,bCopy) ); }
+	cdxCRot90DC(CDC *pDC, int iAngle, bool bCopy = false) : m_pDC(nullptr), m_bFinished(true) { VERIFY( Create(pDC,iAngle,bCopy) ); }
 	virtual ~cdxCRot90DC() { if(!m_bFinished) Finish(); Destroy(); }
 
 	//
 	// create & destroy
 	//
 
-	bool IsCreated() const { return m_pDC != NULL; }
+	bool IsCreated() const { return m_pDC != nullptr; }
 	const CRect & GetRotRect() const { return m_rectMine; }
 
 	bool Create(CDC & destDC, const CRect & rectDC, int iAngle, bool bCopy = false);
@@ -141,7 +141,7 @@ public:
 	// some operators to use this DC as a pointer
 	//
 
-	operator cdxCRot90DC * () { return m_pDC ? this : NULL; }
+	operator cdxCRot90DC * () { return m_pDC ? this : nullptr; }
 	operator const CRect & () const { return GetRotRect(); }
 	cdxCRot90DC *operator->() { ASSERT(IsCreated()); return this; }
 	const cdxCRot90DC *operator->() const { ASSERT(IsCreated()); return this; }
@@ -178,9 +178,9 @@ public:
 	//
 
 	void DrawControl(CString strText, HICON hIcon, UINT nDrawTextFlags = DT_CENTER|DT_VCENTER, UINT nMyFlags = 0, UINT nIconDist = 2) { DrawControl(m_rectMine,strText,hIcon,nDrawTextFlags,nMyFlags,nIconDist); }
-	void DrawControl(CString strText, UINT nDrawTextFlags = DT_CENTER|DT_VCENTER, UINT nMyFlags = 0, UINT nIconDist = 2)  { DrawControl(m_rectMine,strText,NULL,nDrawTextFlags,nMyFlags,nIconDist); }
+	void DrawControl(CString strText, UINT nDrawTextFlags = DT_CENTER|DT_VCENTER, UINT nMyFlags = 0, UINT nIconDist = 2)  { DrawControl(m_rectMine,strText,nullptr,nDrawTextFlags,nMyFlags,nIconDist); }
 	void DrawControl(CRect rect, CString strText, HICON hIcon, UINT nDrawTextFlags = DT_CENTER|DT_VCENTER, UINT nMyFlags = 0, UINT nIconDist = 2);
-	void DrawControl(CRect rect, CString strText, UINT nDrawTextFlags = DT_CENTER|DT_VCENTER, UINT nMyFlags = 0, UINT nIconDist = 2) { DrawControl(rect,strText,NULL,nDrawTextFlags,nMyFlags,nIconDist); }
+	void DrawControl(CRect rect, CString strText, UINT nDrawTextFlags = DT_CENTER|DT_VCENTER, UINT nMyFlags = 0, UINT nIconDist = 2) { DrawControl(rect,strText,nullptr,nDrawTextFlags,nMyFlags,nIconDist); }
 	static CSize GetBitmapSize(HBITMAP hbmp);
 	static CSize GetIconSize(HICON hIcon);
 
@@ -383,7 +383,7 @@ inline void cdxCRot90DC::CopyRotTo(const CRect & rectRotDC)
 						rectRotDC.top,
 						rectRotDC.Width(),
 						rectRotDC.Height(),
-						NULL,
+						nullptr,
 						0,
 						0);
 	}
@@ -421,7 +421,7 @@ inline void cdxCRot90DC::CopyFrom(const CRect & rectDC)
 					rectDC.top,
 					rectDC.Width(),
 					rectDC.Height(),
-					NULL,
+					nullptr,
 					0,
 					0);
 	}

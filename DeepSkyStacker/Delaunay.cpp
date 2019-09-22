@@ -184,8 +184,8 @@ public:
 protected:
 	void HandleEdge(const vertex * p0, const vertex * p1) const
 	{
-		const vertex * pVertex0(NULL);
-		const vertex * pVertex1(NULL);
+		const vertex * pVertex0(nullptr);
+		const vertex * pVertex1(nullptr);
 
 		// Create a normalized edge, in which the smallest vertex comes first.
 		if (* p0 < * p1)
@@ -301,8 +301,8 @@ void Delaunay::TrianglesToEdges(const triangleSet& triangles, edgeSet& edges)
 
 void Delaunay::HandleEdge(const vertex * p0, const vertex * p1, edgeSet& edges)
 {
-	const vertex * pV0(NULL);
-	const vertex * pV1(NULL);
+	const vertex * pV0(nullptr);
+	const vertex * pV1(nullptr);
 
 	if (* p0 < * p1)
 	{

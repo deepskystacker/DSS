@@ -15,10 +15,10 @@
 
 /* ------------------------------------------------------------------- */
 
-CEmailSettings::CEmailSettings(CWnd* pParent /*=NULL*/)
+CEmailSettings::CEmailSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CEmailSettings::IDD, pParent)
 {
-	m_pLiveSettings = NULL;
+	m_pLiveSettings = nullptr;
 }
 
 /* ------------------------------------------------------------------- */

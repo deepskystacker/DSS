@@ -620,7 +620,7 @@ public :
 	};
 
 	BOOL	IsRawFile() const;
-	BOOL	LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = NULL, BOOL bThumb = FALSE);
+	BOOL	LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = nullptr, BOOL bThumb = FALSE);
 
 	BOOL	GetModel(CString & strModel)
 	{
@@ -1269,11 +1269,11 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 	} while (0);
 
-	g_Progress = NULL;
+	g_Progress = nullptr;
 
 	if (pFiller)
 		delete pFiller;
-	pFiller = NULL;
+	pFiller = nullptr;
 
 	return bResult;
 };
@@ -1318,7 +1318,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 	// Check the extension - a tiff of tif file is not to be
 	// considered as a RAW file
-	_splitpath(szFileName, NULL, NULL, NULL, szExt);
+	_splitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
 	if ((strExt == ".TIF") || (strExt == ".TIFF"))

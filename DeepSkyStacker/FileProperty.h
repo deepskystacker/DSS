@@ -25,7 +25,7 @@ private :
 
 
 public:
-	CFileProperty(CWnd* pParent = NULL);   // standard constructor
+	CFileProperty(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CFileProperty();
 
 	void	AddBitmap(CListBitmap * pBitmap)

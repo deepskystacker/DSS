@@ -86,14 +86,14 @@ private :
 public :
 	CEntropyInfo()
 	{
-		m_pProgress = NULL;
+		m_pProgress = nullptr;
 	};
 
 	virtual ~CEntropyInfo()
 	{
 	};
 
-	void	Init(CMemoryBitmap * pBitmap, LONG lWindowSize = 10, CDSSProgress * pProgress = NULL)
+	void	Init(CMemoryBitmap * pBitmap, LONG lWindowSize = 10, CDSSProgress * pProgress = nullptr)
 	{
 		m_pBitmap.Attach(pBitmap);
 		m_lWindowSize = lWindowSize;

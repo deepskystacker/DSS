@@ -54,11 +54,11 @@ public:
 	int SetPageSize( int nSize );
 
 	BOOL SetBitmapChannel(
-		UINT nChannelID, UINT nActiveID=NULL, BOOL bTransparent=FALSE,
+		UINT nChannelID, UINT nActiveID=0, BOOL bTransparent=FALSE,
 		COLORREF clrpTransColor=0xFF000000, int iTransPixelX=0, int iTransPixelY=0 );
 
 	BOOL SetBitmapThumb(
-		UINT nThumbID, UINT nActiveID=NULL, BOOL bTransparent=FALSE,
+		UINT nThumbID, UINT nActiveID=0, BOOL bTransparent=FALSE,
 		COLORREF clrpTransColor=0xFF000000, int iTransPixelX=0, int iTransPixelY=0 );
 
 	void SetMargin( int nLeft, int nTop, int nRight, int nBottom );
@@ -86,7 +86,7 @@ protected:
 	void DrawBitmap(
 		CDC* pDC, int xStart, int yStart, int wWidth, int wHeight,
 		CDC* pTmpDC, int xSource, int ySource,
-		CBitmap *bmMask = NULL, BOOL bTransparent = FALSE );
+		CBitmap *bmMask = nullptr, BOOL bTransparent = FALSE );
 
 
 	void DrawTransparentBitmap(

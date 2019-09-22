@@ -41,17 +41,17 @@ private:
 	BOOL		m_bMemDC;		// TRUE if CDC really is a Memory DC.
 public:
 
-	CMemDC(CDC* pDC, const CRect* pRect = NULL, BOOL bBg = FALSE) : CDC()
+	CMemDC(CDC* pDC, const CRect* pRect = nullptr, BOOL bBg = FALSE) : CDC()
 	{
-		ASSERT(pDC != NULL);
+		ASSERT(pDC != nullptr);
 
 		// Some initialization
 		m_pDC = pDC;
-		m_oldBitmap = NULL;
+		m_oldBitmap = nullptr;
 		m_bMemDC = !pDC->IsPrinting();
 
 		// Get the rectangle to draw
-		if (pRect == NULL) {
+		if (pRect == nullptr) {
 			pDC->GetClipBox(&m_rect);
 		} else {
 			m_rect = *pRect;
@@ -100,7 +100,7 @@ public:
 			// All we need to do is replace the DC with an illegal value,
 			// this keeps us from accidently deleting the handles associated with
 			// the CDC that was passed to the constructor.
-			m_hDC = m_hAttribDC = NULL;
+			m_hDC = m_hAttribDC = nullptr;
 		}
 	}
 

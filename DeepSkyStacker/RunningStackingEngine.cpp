@@ -177,7 +177,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 				};
 			};
 			if (pProgress)
-				pProgress->Progress2(NULL, j+1);
+				pProgress->Progress2(nullptr, j+1);
 		};
 
 		if (pProgress)

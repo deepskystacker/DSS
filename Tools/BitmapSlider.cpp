@@ -443,7 +443,7 @@ BOOL CBitmapSlider::SetBitmapChannel(
 	}
 
 	// Change size of control as same as the bitmap.
-	SetWindowPos(NULL, 0, 0, m_nWidth, m_nHeight, SWP_NOZORDER | SWP_NOMOVE);
+	SetWindowPos(nullptr, 0, 0, m_nWidth, m_nHeight, SWP_NOZORDER | SWP_NOMOVE);
 
 	GetClientRect( &m_rect );
 
@@ -784,7 +784,7 @@ void CBitmapSlider::DrawBitmap(
 // "Drawing Transparent Bitmap with ease with on the fly masks in MFC"
 // By Raja Segar
 //
-// I changed default clrpTransColor value from NULL(black) to 0xFF000000(not RGB color)
+// I changed default clrpTransColor value from nullptr(black) to 0xFF000000(not RGB color)
 //
 void CBitmapSlider::PrepareMask(
 	CBitmap *pBmpSource, CBitmap *pBmpMask,
@@ -797,7 +797,7 @@ void CBitmapSlider::PrepareMask(
 
 	// Create the mask bitmap
 	pBmpMask->DeleteObject();
-	pBmpMask->CreateBitmap( bm.bmWidth, bm.bmHeight, 1, 1, NULL);
+	pBmpMask->CreateBitmap( bm.bmWidth, bm.bmHeight, 1, 1, nullptr);
 
 	// We will need two DCs to work with. One to hold the Image
 	// (the source), and one to hold the mask (destination).
@@ -808,8 +808,8 @@ void CBitmapSlider::PrepareMask(
 
 	CDC hdcSrc, hdcDst;
 
-	hdcSrc.CreateCompatibleDC(NULL);
-	hdcDst.CreateCompatibleDC(NULL);
+	hdcSrc.CreateCompatibleDC(nullptr);
+	hdcDst.CreateCompatibleDC(nullptr);
 
 	// Load the bitmaps into memory DC
 	CBitmap* hbmSrcT = (CBitmap*) hdcSrc.SelectObject(pBmpSource);
@@ -876,7 +876,7 @@ void CBitmapSlider::DrawTransparentBitmap(
 	// surrounding area untouched.
 
 	CDC hdcMem;
-	hdcMem.CreateCompatibleDC(NULL);
+	hdcMem.CreateCompatibleDC(nullptr);
 
 	CBitmap* hbmT = hdcMem.SelectObject(bmMask);
 

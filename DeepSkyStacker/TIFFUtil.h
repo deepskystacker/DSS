@@ -49,10 +49,10 @@ protected :
 public :
 	CTIFFHeader()
 	{
-		TIFFSetWarningHandler(NULL);
-		TIFFSetWarningHandlerExt(NULL);
-		TIFFSetErrorHandler(NULL);
-		TIFFSetErrorHandlerExt(NULL);
+		TIFFSetWarningHandler(nullptr);
+		TIFFSetWarningHandlerExt(nullptr);
+		TIFFSetErrorHandler(nullptr);
+		TIFFSetErrorHandlerExt(nullptr);
 		DSSTIFFInitialize();
 		samplemax = 1.0;
 		samplemin = 0.0;
@@ -197,7 +197,7 @@ public :
 public :
 	CTIFFReader(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_tiff		  = NULL;
+		m_tiff		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 	};
@@ -246,7 +246,7 @@ protected :
 public :
 	CTIFFWriter(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_tiff		  = NULL;
+		m_tiff		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 		compression   = COMPRESSION_NONE;

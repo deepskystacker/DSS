@@ -31,7 +31,7 @@ public :
 		m_bUseGray = m_pFlatFrame->m_FlatNormalization.UseGray();
 		m_bUseCFA  = m_pFlatFrame->IsCFA();
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, m_pTarget->RealWidth());
+			m_pProgress->Start2(nullptr, m_pTarget->RealWidth());
 
 	};
 
@@ -58,9 +58,9 @@ BOOL	CFlatDivideTask::DoTask(HANDLE hEvent)
 	LONG			lWidth = m_pTarget->RealWidth();
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -115,7 +115,7 @@ BOOL	CFlatDivideTask::Process()
 
 	if (m_pProgress)
 	{
-		m_pProgress->Start2(NULL, lHeight);
+		m_pProgress->Start2(nullptr, lHeight);
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	};
 
@@ -135,7 +135,7 @@ BOOL	CFlatDivideTask::Process()
 		lRemaining	-= lAdd;
 
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -174,7 +174,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 			bUseGray = m_FlatNormalization.UseGray();
 			bUseCFA     = IsCFA();
 			if (pProgress)
-				pProgress->Start2(NULL, pTarget->RealWidth());
+				pProgress->Start2(nullptr, pTarget->RealWidth());
 			bResult = TRUE;
 			for (LONG i = 0;i<pTarget->RealWidth();i++)
 			{
@@ -206,7 +206,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 				};
 
 				if (pProgress)
-					pProgress->Progress2(NULL, i+1);
+					pProgress->Progress2(nullptr, i+1);
 			};
 			if (pProgress)
 				pProgress->End2();*/
@@ -321,7 +321,7 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 			};
 
 			if (pProgress)
-				pProgress->Progress2(NULL, j+1);
+				pProgress->Progress2(nullptr, j+1);
 		};
 
 		if (m_pFlatFrame->IsMonochrome() && !bCFA)

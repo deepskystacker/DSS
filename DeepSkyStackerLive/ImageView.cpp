@@ -12,7 +12,7 @@
 
 IMPLEMENT_DYNAMIC(CImageViewTab, CDialog)
 
-CImageViewTab::CImageViewTab(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+CImageViewTab::CImageViewTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CImageViewTab::IDD, pParent),
 	m_bDarkMode(bDarkMode),
 	m_Picture(bDarkMode)
@@ -88,7 +88,7 @@ BOOL CImageViewTab::OnInitDialog()
 
 	m_CopyToClipboard.ShowWindow(SW_HIDE);
 	m_CopyToClipboard.SetTransparent(TRUE);
-	m_CopyToClipboard.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
+	m_CopyToClipboard.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
 	m_CopyToClipboard.SetLink(TRUE, TRUE);
 	m_CopyToClipboard.SetTextColor(m_bDarkMode ? RGB(0, 0, 64) : RGB(0, 0, 128));
 
@@ -200,7 +200,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
-			m_Gamma.InvalidateRect(NULL);
+			m_Gamma.InvalidateRect(nullptr);
 		};
 	};
 
@@ -260,7 +260,7 @@ void CImageViewTab::SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap
 		else
 			strText.LoadString(IDS_NOSTACKEDIMAGE);
 		m_StackedSink.ClearFootprint();
-		m_Picture.SetImg((HBITMAP)NULL);
+		m_Picture.SetImg((HBITMAP)nullptr);
 		m_FileName.SetText(strText);
 		m_pWndImage.Release();
 		m_pBitmap.Release();

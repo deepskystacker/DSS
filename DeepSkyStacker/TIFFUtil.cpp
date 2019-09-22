@@ -34,7 +34,7 @@ static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
 
 };
 
-static TIFFExtendProc	g_TIFFParentExtender = NULL;
+static TIFFExtendProc	g_TIFFParentExtender = nullptr;
 static bool				g_TIFFInitialized = false;
 
 /* ------------------------------------------------------------------- */
@@ -109,8 +109,8 @@ BOOL CTIFFReader::Open()
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_MASTER, &master))
 			master = 0;
 
-		char *				szMake = NULL;
-		char *				szModel = NULL;
+		char *				szMake = nullptr;
+		char *				szModel = nullptr;
 
 		if (TIFFGetField(m_tiff, TIFFTAG_MODEL, &szModel))
 			strMakeModel = szModel;
@@ -231,7 +231,7 @@ BOOL CTIFFReader::Open()
 		if (!bResult)
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -250,7 +250,7 @@ BOOL CTIFFReader::Read()
 		VOID *			pScanLine;
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, h);
+			m_pProgress->Start2(nullptr, h);
 
 		lScanLineSize = TIFFScanlineSize(m_tiff);
 		pScanLine = (VOID *)malloc(lScanLineSize);
@@ -361,7 +361,7 @@ BOOL CTIFFReader::Read()
 					bResult = OnRead(i, j, fRed, fGreen, fBlue);
 
 					if (m_pProgress)
-						m_pProgress->Progress2(NULL, j+1);
+						m_pProgress->Progress2(nullptr, j+1);
 				};
 			};
 			free(pScanLine);
@@ -384,7 +384,7 @@ BOOL CTIFFReader::Close()
 		if (bResult)
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -554,7 +554,7 @@ BOOL CTIFFWriter::Open()
 		else
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -580,7 +580,7 @@ BOOL CTIFFWriter::Write()
 		if (pScanLine)
 		{
 			if (m_pProgress)
-				m_pProgress->Start2(NULL, h);
+				m_pProgress->Start2(nullptr, h);
 
 			for (LONG j = 0;(j<h) && !bError; j++)
 			{
@@ -676,7 +676,7 @@ BOOL CTIFFWriter::Write()
 
 				nResult = TIFFWriteScanline(m_tiff, pScanLine, j, 0);
 				if (m_pProgress)
-					m_pProgress->Progress2(NULL, j+1);
+					m_pProgress->Progress2(nullptr, j+1);
 				if (-1 == nResult)
 				{
 					ZTRACE_RUNTIME("TIFFWriteScanLine failed");
@@ -707,7 +707,7 @@ BOOL CTIFFWriter::Close()
 		if (bResult)
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -1097,7 +1097,7 @@ BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	BOOL					bResult = FALSE;
-	CTIFFReader				tiff(szFileName, NULL);
+	CTIFFReader				tiff(szFileName, nullptr);
 
 	if (tiff.Open())
 	{

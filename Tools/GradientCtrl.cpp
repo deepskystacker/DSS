@@ -62,10 +62,10 @@ BOOL CGradientCtrl::RegisterWindowClass()
         wndcls.lpfnWndProc      = ::DefWindowProc;
         wndcls.cbClsExtra       = wndcls.cbWndExtra = 0;
         wndcls.hInstance        = hInst;
-        wndcls.hIcon            = NULL;
+        wndcls.hIcon            = nullptr;
         wndcls.hCursor          = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
         wndcls.hbrBackground    = background;
-        wndcls.lpszMenuName     = NULL;
+        wndcls.lpszMenuName     = nullptr;
         wndcls.lpszClassName    = GRADIENTCTRL_CLASSNAME;
 
         if (!AfxRegisterClass(&wndcls))
@@ -313,7 +313,7 @@ void CGradientCtrl::OnMouseMove(UINT nFlags, CPoint point)
 			tiptext = m_Impl->ExtractLine(m_ToolTipFormat, 0);
 			m_Impl->ParseToolTipLine(tiptext, peg);
 
-			if(m_Impl->m_wndToolTip == NULL)
+			if(m_Impl->m_wndToolTip == nullptr)
 			{
 				if(m_Impl->IsVertical())
 				{
@@ -968,7 +968,7 @@ BOOL CGradientCtrl::PreTranslateMessage(MSG* pMsg)
 void CGradientCtrl::ShowTooltips(BOOL bShow)
 {
 	m_bShowToolTip = bShow;
-	if(m_Impl->m_ToolTipCtrl.GetSafeHwnd() != NULL)
+	if(m_Impl->m_ToolTipCtrl.GetSafeHwnd() != nullptr)
 		m_Impl->m_ToolTipCtrl.Activate(bShow);
 	if(m_bShowToolTip)
 		m_Impl->SynchronizeTooltips();
@@ -1013,7 +1013,7 @@ const CPeg CGradientCtrl::GetSelPeg() const
 		return m_Impl->m_Null;
 	else if(m_Selected >= -3 && m_Selected < m_Gradient.GetPegCount())
 		return m_Gradient.GetPeg(m_Selected);
-	else ASSERT(NULL); //Some kind of stupid selection error?
+	else ASSERT(nullptr); //Some kind of stupid selection error?
 	return m_Impl->m_Null;
 }
 

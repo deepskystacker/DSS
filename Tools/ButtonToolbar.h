@@ -57,10 +57,10 @@ public :
 		m_dwID			= dwID;
 		m_Status		= MBS_UP;
 		m_Type			= MBT_BUTTON;
-		m_pUp			= NULL;
-		m_pDown			= NULL;
-		m_pHot			= NULL;
-		m_pDisabled		= NULL;
+		m_pUp			= nullptr;
+		m_pDown			= nullptr;
+		m_pHot			= nullptr;
+		m_pDisabled		= nullptr;
 		m_bShowTooltip  = FALSE;
 	};
 
@@ -90,10 +90,10 @@ public :
 		if (m_pDisabled)
 			delete m_pDisabled;
 
-		m_pUp			= NULL;
-		m_pDown			= NULL;
-		m_pHot			= NULL;
-		m_pDisabled		= NULL;
+		m_pUp			= nullptr;
+		m_pDown			= nullptr;
+		m_pHot			= nullptr;
+		m_pDisabled		= nullptr;
 	};
 
 	void	Init(UINT nBitmapUp, UINT nBitmapDown, UINT nBitmapHot, UINT nBitmapDisabled, UINT nBitmapMask);
@@ -215,7 +215,7 @@ public :
 		m_bTop			= FALSE;
 		m_bMouseIn		= FALSE;
 		m_bButtonDown	= FALSE;
-		m_pSink			= NULL;
+		m_pSink			= nullptr;
 	};
 
 	virtual ~CButtonToolbar()
@@ -239,7 +239,7 @@ public :
 		return !m_rcToolbar.IsRectEmpty();
 	};
 
-	void			AddCheck(DWORD dwID, UINT nBitmapUp, UINT nBitmapDown, UINT nBitmapHot, UINT nBitmapDisabled, UINT nBitmapMask, LPCTSTR szTooltip = NULL)
+	void			AddCheck(DWORD dwID, UINT nBitmapUp, UINT nBitmapDown, UINT nBitmapHot, UINT nBitmapDisabled, UINT nBitmapMask, LPCTSTR szTooltip = nullptr)
 	{
 		CMaskedButton			mb(dwID);
 
@@ -251,7 +251,7 @@ public :
 
 		UpdateRect();
 	};
-	void			AddButton(DWORD dwID, UINT nBitmapUp, UINT nBitmapDown, UINT nBitmapHot, UINT nBitmapDisabled, UINT nBitmapMask, LPCTSTR szTooltip = NULL)
+	void			AddButton(DWORD dwID, UINT nBitmapUp, UINT nBitmapDown, UINT nBitmapHot, UINT nBitmapDisabled, UINT nBitmapMask, LPCTSTR szTooltip = nullptr)
 	{
 		CMaskedButton			mb(dwID);
 

@@ -2753,7 +2753,7 @@ BOOL CListBase::OnGetdispinfo(NMHDR* pNMHDR)
   LVITEM* pLVItem       = &reinterpret_cast<NMLVDISPINFO*>(pNMHDR)->item;
   bool    bNotifyParent = true;
 
-  LVITEM* pLVItemStored = NULL;
+  LVITEM* pLVItemStored = nullptr;
 
   int iOrigSubItem  = pLVItem->iSubItem;
   pLVItem->iSubItem = GetLogicalIndex(iOrigSubItem);

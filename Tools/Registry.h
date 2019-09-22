@@ -87,7 +87,7 @@ class CRegistry {
 		// "Connect()" connects the registry object with either
 		// the local or a remote computer. A connection to the
 		// local computer will be forced by setting the <Remote>
-		// parameter to NULL.
+		// parameter to nullptr.
 		// if the function fails (i.e. returns FALSE), then
 		// the previously connected HKEY will be restored, so
 		// there is no need to reset it (via the SetKey() member
@@ -186,7 +186,7 @@ class CRegistry {
 #endif
 
 		// "DeleteKey()" deletes the given Key in the registry. If
-		// <ValName> is equal to NULL, then the complete key will
+		// <ValName> is equal to nullptr, then the complete key will
 		// be removed (with all of its subkeys).
 		// Otherwise only the given <ValName> of that
 		// <SubKey> is affected.
@@ -210,7 +210,7 @@ class CRegistry {
 #ifndef _REG_NO_TREEWALK
 		// The "RegistryTreeWalk()" function walks through the registry
 		// beginning at the current key and the given <SubKey>. if
-		// <SubKey> is NULL, then the walk begins at root level.
+		// <SubKey> is nullptr, then the walk begins at root level.
 		// For every value the function "OnValueHit()" will be called.
 		// Note that OnValueHit() and OnKeyHit() are dummies by default
 		// (don't made it pure, because usage of the RegistryTreeWalk()
@@ -218,7 +218,7 @@ class CRegistry {
 		// You have to derive your own class and to override
 		// these handler function(s), if you want to use the
 		// "RegistryTreeWalk()" function!
-		// NOTE: If you specify a <SubKey> other than NULL, the "OnKeyHit()"
+		// NOTE: If you specify a <SubKey> other than nullptr, the "OnKeyHit()"
 		// notification-handler for this initial key will NOT be called !
 		// "RegistryTreeWalk()" returns TRUE on success or FALSE on failure
 		// (i.e. failure on accessing the registry (watch your DEBUG-Window

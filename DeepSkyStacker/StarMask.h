@@ -253,8 +253,8 @@ public :
 		m_bRemoveHotPixels = bHotPixels;
 	};
 
-	BOOL	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = NULL);
-	BOOL	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = NULL);
+	BOOL	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	BOOL	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 #endif // __STARMASK_H__

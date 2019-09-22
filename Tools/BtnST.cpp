@@ -73,24 +73,24 @@ CButtonST::CButtonST()
 	SetDefaultColors(FALSE);
 
 	// No tooltip created
-	m_ToolTip.m_hWnd = NULL;
+	m_ToolTip.m_hWnd = nullptr;
 	m_dwToolTipStyle = 0;
 
 	// Do not draw as a transparent button
 	m_bDrawTransparent = FALSE;
-	m_pbmpOldBk = NULL;
+	m_pbmpOldBk = nullptr;
 
 	// No URL defined
-	SetURL(NULL);
+	SetURL(nullptr);
 
 	// No cursor defined
-	m_hCursor = NULL;
+	m_hCursor = nullptr;
 
 	// No associated menu
 #ifndef	BTNST_USE_BCMENU
-	m_hMenu = NULL;
+	m_hMenu = nullptr;
 #endif
-	m_hParentWndMenu = NULL;
+	m_hParentWndMenu = nullptr;
 	m_bMenuDisplayed = FALSE;
 
 	m_bShowDisabledBitmap = TRUE;
@@ -222,7 +222,7 @@ UINT CButtonST::OnGetDlgCode()
 
 void CButtonST::OnMove( int, int )
 {
-	InvalidateRect(NULL, TRUE);
+	InvalidateRect(nullptr, TRUE);
 };
 
 BOOL CButtonST::PreTranslateMessage(MSG* pMsg)
@@ -361,7 +361,7 @@ void CButtonST::OnCancelMode()
 BOOL CButtonST::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	// If a cursor was specified then use it!
-	if (m_hCursor != NULL)
+	if (m_hCursor != nullptr)
 	{
 		::SetCursor(m_hCursor);
 		return TRUE;
@@ -385,7 +385,7 @@ void CButtonST::CancelHover()
 
 void CButtonST::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CWnd*				wndUnderMouse = NULL;
+	CWnd*				wndUnderMouse = nullptr;
 	CWnd*				wndActive = this;
 	TRACKMOUSEEVENT		csTME;
 
@@ -464,18 +464,18 @@ BOOL CButtonST::OnClicked()
 #ifdef	BTNST_USE_BCMENU
 			BCMenu* psub = (BCMenu*)m_menuPopup.GetSubMenu(0);
 			if (m_csCallbacks.hWnd)	::SendMessage(m_csCallbacks.hWnd, m_csCallbacks.nMessage, (WPARAM)psub, m_csCallbacks.lParam);
-			DWORD dwRetValue = psub->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, rWnd.left, rWnd.bottom, this, NULL);
+			DWORD dwRetValue = psub->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, rWnd.left, rWnd.bottom, this, nullptr);
 #else
 			HMENU hSubMenu = ::GetSubMenu(m_hMenu, 0);
 			if (m_csCallbacks.hWnd)	::SendMessage(m_csCallbacks.hWnd, m_csCallbacks.nMessage, (WPARAM)hSubMenu, m_csCallbacks.lParam);
-			DWORD dwRetValue = ::TrackPopupMenuEx(hSubMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, rWnd.left, rWnd.bottom, m_hParentWndMenu, NULL);
+			DWORD dwRetValue = ::TrackPopupMenuEx(hSubMenu, TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RIGHTBUTTON | TPM_NONOTIFY | TPM_RETURNCMD, rWnd.left, rWnd.bottom, m_hParentWndMenu, nullptr);
 #endif
 
 			m_bMenuDisplayed = FALSE;
 			Invalidate();
 
 			if (dwRetValue)
-				::PostMessage(m_hParentWndMenu, WM_COMMAND, MAKEWPARAM(dwRetValue, 0), (LPARAM)NULL);
+				::PostMessage(m_hParentWndMenu, WM_COMMAND, MAKEWPARAM(dwRetValue, 0), (LPARAM)nullptr);
 		} // if
 		else
 		{
@@ -586,7 +586,7 @@ void CButtonST::PaintBk(CDC* pDC)
 	GetWindowRect(rect1);
 	GetParent()->ScreenToClient(rect1);
 
-	if (m_dcBk.m_hDC == NULL)
+	if (m_dcBk.m_hDC == nullptr)
 	{
 		m_dcBk.CreateCompatibleDC(&clDC);
 		m_bmpBk.CreateCompatibleBitmap(&clDC, rect.Width(), rect.Height());
@@ -599,19 +599,19 @@ void CButtonST::PaintBk(CDC* pDC)
 
 HBITMAP CButtonST::CreateBitmapMask(HBITMAP hSourceBitmap, DWORD dwWidth, DWORD dwHeight, COLORREF crTransColor)
 {
-	HBITMAP		hMask		= NULL;
-	HDC			hdcSrc		= NULL;
-	HDC			hdcDest		= NULL;
-	HBITMAP		hbmSrcT		= NULL;
-	HBITMAP		hbmDestT	= NULL;
+	HBITMAP		hMask		= nullptr;
+	HDC			hdcSrc		= nullptr;
+	HDC			hdcDest		= nullptr;
+	HBITMAP		hbmSrcT		= nullptr;
+	HBITMAP		hbmDestT	= nullptr;
 	COLORREF	crSaveBk;
 	COLORREF	crSaveDestText;
 
-	hMask = ::CreateBitmap(dwWidth, dwHeight, 1, 1, NULL);
-	if (hMask == NULL)	return NULL;
+	hMask = ::CreateBitmap(dwWidth, dwHeight, 1, 1, nullptr);
+	if (hMask == nullptr)	return nullptr;
 
-	hdcSrc	= ::CreateCompatibleDC(NULL);
-	hdcDest	= ::CreateCompatibleDC(NULL);
+	hdcSrc	= ::CreateCompatibleDC(nullptr);
+	hdcDest	= ::CreateCompatibleDC(nullptr);
 
 	hbmSrcT = (HBITMAP)::SelectObject(hdcSrc, hSourceBitmap);
 	hbmDestT = (HBITMAP)::SelectObject(hdcDest, hMask);
@@ -729,7 +729,7 @@ void CButtonST::DrawTheIcon(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpCap
 	if ((m_bIsCheckBox && bIsPressed) || (!m_bIsCheckBox && (bIsPressed || m_bMouseOnButton)))
 		byIndex = 0;
 	else
-		byIndex = (m_csIcons[1].hIcon == NULL ? 0 : 1);
+		byIndex = (m_csIcons[1].hIcon == nullptr ? 0 : 1);
 
 	CRect	rImage;
 	PrepareImageRect(bHasTitle, rpItem, rpCaption, bIsPressed, m_csIcons[byIndex].dwWidth, m_csIcons[byIndex].dwHeight, &rImage);
@@ -739,15 +739,15 @@ void CButtonST::DrawTheIcon(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpCap
 					rImage.Size(),
 					m_csIcons[byIndex].hIcon,
 					(bIsDisabled ? DSS_DISABLED : DSS_NORMAL),
-					(CBrush*)NULL);
+					(CBrush*)nullptr);
 } // End of DrawTheIcon
 
 void CButtonST::DrawTheBitmap(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpCaption, BOOL bIsPressed, BOOL bIsDisabled)
 {
-	HDC			hdcBmpMem	= NULL;
-	HBITMAP		hbmOldBmp	= NULL;
-	HDC			hdcMem		= NULL;
-	HBITMAP		hbmT		= NULL;
+	HDC			hdcBmpMem	= nullptr;
+	HBITMAP		hbmOldBmp	= nullptr;
+	HDC			hdcMem		= nullptr;
+	HBITMAP		hbmT		= nullptr;
 
 	BYTE		byIndex		= 0;
 
@@ -755,7 +755,7 @@ void CButtonST::DrawTheBitmap(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpC
 	if ((m_bIsCheckBox && bIsPressed) || (!m_bIsCheckBox && (bIsPressed || m_bMouseOnButton)))
 		byIndex = 0;
 	else
-		byIndex = (m_csBitmaps[1].hBitmap == NULL ? 0 : 1);
+		byIndex = (m_csBitmaps[1].hBitmap == nullptr ? 0 : 1);
 
 	CRect	rImage;
 	PrepareImageRect(bHasTitle, rpItem, rpCaption, bIsPressed, m_csBitmaps[byIndex].dwWidth, m_csBitmaps[byIndex].dwHeight, &rImage);
@@ -764,14 +764,14 @@ void CButtonST::DrawTheBitmap(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpC
 
 	hbmOldBmp = (HBITMAP)::SelectObject(hdcBmpMem, m_csBitmaps[byIndex].hBitmap);
 
-	hdcMem = ::CreateCompatibleDC(NULL);
+	hdcMem = ::CreateCompatibleDC(nullptr);
 
 	hbmT = (HBITMAP)::SelectObject(hdcMem, m_csBitmaps[byIndex].hMask);
 
 	if (bIsDisabled && m_bShowDisabledBitmap)
 	{
-		HDC		hDC = NULL;
-		HBITMAP	hBitmap = NULL;
+		HDC		hDC = nullptr;
+		HBITMAP	hBitmap = nullptr;
 
 		hDC = ::CreateCompatibleDC(pDC->m_hDC);
 		hBitmap = ::CreateCompatibleBitmap(pDC->m_hDC, m_csBitmaps[byIndex].dwWidth, m_csBitmaps[byIndex].dwHeight);
@@ -836,7 +836,7 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* rpItem, CRect* rpC
 	pDC->SetBkMode(TRANSPARENT);
 	/*
 	pDC->DrawState(rCaption->TopLeft(), rCaption->Size(), (LPCTSTR)sTitle, (bIsDisabled ? DSS_DISABLED : DSS_NORMAL),
-					TRUE, 0, (CBrush*)NULL);
+					TRUE, 0, (CBrush*)nullptr);
 	*/
 	if (m_bIsDisabled)
 	{
@@ -887,28 +887,28 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* rpItem, CRect* rpC
 // Return value:
 //		If the function succeeds, the return value is the handle to the newly created
 //		grayscale bitmap.
-//		If the function fails, the return value is NULL.
+//		If the function fails, the return value is nullptr.
 //
 HBITMAP CButtonST::CreateGrayscaleBitmap(HBITMAP hBitmap, DWORD dwWidth, DWORD dwHeight, COLORREF crTrans)
 {
-	HBITMAP		hGrayBitmap = NULL;
-	HDC			hMainDC = NULL, hMemDC1 = NULL, hMemDC2 = NULL;
-	HBITMAP		hOldBmp1 = NULL, hOldBmp2 = NULL;
+	HBITMAP		hGrayBitmap = nullptr;
+	HDC			hMainDC = nullptr, hMemDC1 = nullptr, hMemDC2 = nullptr;
+	HBITMAP		hOldBmp1 = nullptr, hOldBmp2 = nullptr;
 
-	hMainDC = ::GetDC(NULL);
-	if (hMainDC == NULL)	return NULL;
+	hMainDC = ::GetDC(nullptr);
+	if (hMainDC == nullptr)	return nullptr;
 	hMemDC1 = ::CreateCompatibleDC(hMainDC);
-	if (hMemDC1 == NULL)
+	if (hMemDC1 == nullptr)
 	{
-		::ReleaseDC(NULL, hMainDC);
-		return NULL;
+		::ReleaseDC(nullptr, hMainDC);
+		return nullptr;
 	} // if
 	hMemDC2 = ::CreateCompatibleDC(hMainDC);
-	if (hMemDC2 == NULL)
+	if (hMemDC2 == nullptr)
 	{
 		::DeleteDC(hMemDC1);
-		::ReleaseDC(NULL, hMainDC);
-		return NULL;
+		::ReleaseDC(nullptr, hMainDC);
+		return nullptr;
 	} // if
 
 	hGrayBitmap = ::CreateCompatibleBitmap(hMainDC, dwWidth, dwHeight);
@@ -943,7 +943,7 @@ HBITMAP CButtonST::CreateGrayscaleBitmap(HBITMAP hBitmap, DWORD dwWidth, DWORD d
 
 	::DeleteDC(hMemDC1);
 	::DeleteDC(hMemDC2);
-	::ReleaseDC(NULL, hMainDC);
+	::ReleaseDC(nullptr, hMainDC);
 
 	return hGrayBitmap;
 } // End of CreateGrayscaleBitmap
@@ -964,28 +964,28 @@ HBITMAP CButtonST::CreateGrayscaleBitmap(HBITMAP hBitmap, DWORD dwWidth, DWORD d
 // Return value:
 //		If the function succeeds, the return value is the handle to the newly created
 //		darker bitmap.
-//		If the function fails, the return value is NULL.
+//		If the function fails, the return value is nullptr.
 //
 HBITMAP CButtonST::CreateDarkerBitmap(HBITMAP hBitmap, DWORD dwWidth, DWORD dwHeight, COLORREF crTrans)
 {
-	HBITMAP		hGrayBitmap = NULL;
-	HDC			hMainDC = NULL, hMemDC1 = NULL, hMemDC2 = NULL;
-	HBITMAP		hOldBmp1 = NULL, hOldBmp2 = NULL;
+	HBITMAP		hGrayBitmap = nullptr;
+	HDC			hMainDC = nullptr, hMemDC1 = nullptr, hMemDC2 = nullptr;
+	HBITMAP		hOldBmp1 = nullptr, hOldBmp2 = nullptr;
 
-	hMainDC = ::GetDC(NULL);
-	if (hMainDC == NULL)	return NULL;
+	hMainDC = ::GetDC(nullptr);
+	if (hMainDC == nullptr)	return nullptr;
 	hMemDC1 = ::CreateCompatibleDC(hMainDC);
-	if (hMemDC1 == NULL)
+	if (hMemDC1 == nullptr)
 	{
-		::ReleaseDC(NULL, hMainDC);
-		return NULL;
+		::ReleaseDC(nullptr, hMainDC);
+		return nullptr;
 	} // if
 	hMemDC2 = ::CreateCompatibleDC(hMainDC);
-	if (hMemDC2 == NULL)
+	if (hMemDC2 == nullptr)
 	{
 		::DeleteDC(hMemDC1);
-		::ReleaseDC(NULL, hMainDC);
-		return NULL;
+		::ReleaseDC(nullptr, hMainDC);
+		return nullptr;
 	} // if
 
 	hGrayBitmap = ::CreateCompatibleBitmap(hMainDC, dwWidth, dwHeight);
@@ -1018,7 +1018,7 @@ HBITMAP CButtonST::CreateDarkerBitmap(HBITMAP hBitmap, DWORD dwWidth, DWORD dwHe
 
 	::DeleteDC(hMemDC1);
 	::DeleteDC(hMemDC2);
-	::ReleaseDC(NULL, hMainDC);
+	::ReleaseDC(nullptr, hMainDC);
 
 	return hGrayBitmap;
 } // End of CreateDarkerBitmap
@@ -1033,7 +1033,7 @@ HBITMAP CButtonST::CreateDarkerBitmap(HBITMAP hBitmap, DWORD dwWidth, DWORD dwHe
 // Return value:
 //		If the function succeeds, the return value is the handle to the newly created
 //		grayscale icon.
-//		If the function fails, the return value is NULL.
+//		If the function fails, the return value is nullptr.
 //
 // Updates:
 //		26/Nov/2002	Restored 1 BitBlt operation
@@ -1042,27 +1042,27 @@ HBITMAP CButtonST::CreateDarkerBitmap(HBITMAP hBitmap, DWORD dwWidth, DWORD dwHe
 //
 HICON CButtonST::CreateGrayscaleIcon(HICON hIcon)
 {
-	HICON		hGrayIcon = NULL;
-	HDC			hMainDC = NULL, hMemDC1 = NULL, hMemDC2 = NULL;
+	HICON		hGrayIcon = nullptr;
+	HDC			hMainDC = nullptr, hMemDC1 = nullptr, hMemDC2 = nullptr;
 	BITMAP		bmp;
-	HBITMAP		hOldBmp1 = NULL, hOldBmp2 = NULL;
+	HBITMAP		hOldBmp1 = nullptr, hOldBmp2 = nullptr;
 	ICONINFO	csII, csGrayII;
 	BOOL		bRetValue = FALSE;
 
 	bRetValue = ::GetIconInfo(hIcon, &csII);
-	if (bRetValue == FALSE)	return NULL;
+	if (bRetValue == FALSE)	return nullptr;
 
-	hMainDC = ::GetDC(NULL);
+	hMainDC = ::GetDC(nullptr);
 	hMemDC1 = ::CreateCompatibleDC(hMainDC);
 	hMemDC2 = ::CreateCompatibleDC(hMainDC);
-	if (hMainDC == NULL || hMemDC1 == NULL || hMemDC2 == NULL)	return NULL;
+	if (hMainDC == nullptr || hMemDC1 == nullptr || hMemDC2 == nullptr)	return nullptr;
 
 	if (::GetObject(csII.hbmColor, sizeof(BITMAP), &bmp))
 	{
 		DWORD	dwWidth = csII.xHotspot*2;
 		DWORD	dwHeight = csII.yHotspot*2;
 
-		csGrayII.hbmColor = ::CreateBitmap(dwWidth, dwHeight, bmp.bmPlanes, bmp.bmBitsPixel, NULL);
+		csGrayII.hbmColor = ::CreateBitmap(dwWidth, dwHeight, bmp.bmPlanes, bmp.bmBitsPixel, nullptr);
 		if (csGrayII.hbmColor)
 		{
 			hOldBmp1 = (HBITMAP)::SelectObject(hMemDC1, csII.hbmColor);
@@ -1105,7 +1105,7 @@ HICON CButtonST::CreateGrayscaleIcon(HICON hIcon)
 	::DeleteObject(csII.hbmMask);
 	::DeleteDC(hMemDC1);
 	::DeleteDC(hMemDC2);
-	::ReleaseDC(NULL, hMainDC);
+	::ReleaseDC(nullptr, hMainDC);
 
 	return hGrayIcon;
 } // End of CreateGrayscaleIcon
@@ -1120,31 +1120,31 @@ HICON CButtonST::CreateGrayscaleIcon(HICON hIcon)
 // Return value:
 //		If the function succeeds, the return value is the handle to the newly created
 //		darker icon.
-//		If the function fails, the return value is NULL.
+//		If the function fails, the return value is nullptr.
 //
 HICON CButtonST::CreateDarkerIcon(HICON hIcon)
 {
-	HICON		hGrayIcon = NULL;
-	HDC			hMainDC = NULL, hMemDC1 = NULL, hMemDC2 = NULL;
+	HICON		hGrayIcon = nullptr;
+	HDC			hMainDC = nullptr, hMemDC1 = nullptr, hMemDC2 = nullptr;
 	BITMAP		bmp;
-	HBITMAP		hOldBmp1 = NULL, hOldBmp2 = NULL;
+	HBITMAP		hOldBmp1 = nullptr, hOldBmp2 = nullptr;
 	ICONINFO	csII, csGrayII;
 	BOOL		bRetValue = FALSE;
 
 	bRetValue = ::GetIconInfo(hIcon, &csII);
-	if (bRetValue == FALSE)	return NULL;
+	if (bRetValue == FALSE)	return nullptr;
 
-	hMainDC = ::GetDC(NULL);
+	hMainDC = ::GetDC(nullptr);
 	hMemDC1 = ::CreateCompatibleDC(hMainDC);
 	hMemDC2 = ::CreateCompatibleDC(hMainDC);
-	if (hMainDC == NULL || hMemDC1 == NULL || hMemDC2 == NULL)	return NULL;
+	if (hMainDC == nullptr || hMemDC1 == nullptr || hMemDC2 == nullptr)	return nullptr;
 
 	if (::GetObject(csII.hbmColor, sizeof(BITMAP), &bmp))
 	{
 		DWORD	dwWidth = csII.xHotspot*2;
 		DWORD	dwHeight = csII.yHotspot*2;
 
-		csGrayII.hbmColor = ::CreateBitmap(dwWidth, dwHeight, bmp.bmPlanes, bmp.bmBitsPixel, NULL);
+		csGrayII.hbmColor = ::CreateBitmap(dwWidth, dwHeight, bmp.bmPlanes, bmp.bmBitsPixel, nullptr);
 		if (csGrayII.hbmColor)
 		{
 			hOldBmp1 = (HBITMAP)::SelectObject(hMemDC1, csII.hbmColor);
@@ -1185,7 +1185,7 @@ HICON CButtonST::CreateDarkerIcon(HICON hIcon)
 	::DeleteObject(csII.hbmMask);
 	::DeleteDC(hMemDC1);
 	::DeleteDC(hMemDC2);
-	::ReleaseDC(NULL, hMainDC);
+	::ReleaseDC(nullptr, hMainDC);
 
 	return hGrayIcon;
 } // End of CreateDarkerIcon
@@ -1213,14 +1213,14 @@ COLORREF CButtonST::DarkenColor(COLORREF crColor, double dFactor)
 // Parameters:
 //		[IN]	nIconIn
 //				ID number of the icon resource to show when the mouse is over the button.
-//				Pass NULL to remove any icon from the button.
+//				Pass nullptr to remove any icon from the button.
 //		[IN]	nCxDesiredIn
 //				Specifies the width, in pixels, of the icon to load.
 //		[IN]	nCyDesiredIn
 //				Specifies the height, in pixels, of the icon to load.
 //		[IN]	nIconOut
 //				ID number of the icon resource to show when the mouse is outside the button.
-//				Can be NULL.
+//				Can be nullptr.
 //				If this parameter is the special value BTNST_AUTO_GRAY (cast to int) the second
 //				icon will be automatically created starting from nIconIn and converted to grayscale.
 //				If this parameter is the special value BTNST_AUTO_DARKER (cast to int) the second
@@ -1238,9 +1238,9 @@ COLORREF CButtonST::DarkenColor(COLORREF crColor, double dFactor)
 //
 DWORD CButtonST::SetIcon(int nIconIn, int nCxDesiredIn, int nCyDesiredIn, int nIconOut, int nCxDesiredOut, int nCyDesiredOut)
 {
-	HICON		hIconIn			= NULL;
-	HICON		hIconOut		= NULL;
-	HINSTANCE	hInstResource	= NULL;
+	HICON		hIconIn			= nullptr;
+	HICON		hIconOut		= nullptr;
+	HINSTANCE	hInstResource	= nullptr;
 
 	// Find correct resource handle
 	hInstResource = AfxFindResourceHandle(MAKEINTRESOURCE(nIconIn), RT_GROUP_ICON);
@@ -1251,7 +1251,7 @@ DWORD CButtonST::SetIcon(int nIconIn, int nCxDesiredIn, int nCyDesiredIn, int nI
   	// Set icon when the mouse is OUT the button
 	switch (nIconOut)
 	{
-		case NULL:
+		case 0:
 			break;
 		case (int)(size_t)BTNST_AUTO_GRAY:
 			hIconOut = BTNST_AUTO_GRAY;
@@ -1273,10 +1273,10 @@ DWORD CButtonST::SetIcon(int nIconIn, int nCxDesiredIn, int nCyDesiredIn, int nI
 // Parameters:
 //		[IN]	nIconIn
 //				ID number of the icon resource to show when the mouse is over the button.
-//				Pass NULL to remove any icon from the button.
+//				Pass nullptr to remove any icon from the button.
 //		[IN]	nIconOut
 //				ID number of the icon resource to show when the mouse is outside the button.
-//				Can be NULL.
+//				Can be nullptr.
 //				If this parameter is the special value BTNST_AUTO_GRAY (cast to int) the second
 //				icon will be automatically created starting from nIconIn and converted to grayscale.
 //				If this parameter is the special value BTNST_AUTO_DARKER (cast to int) the second
@@ -1299,10 +1299,10 @@ DWORD CButtonST::SetIcon(int nIconIn, int nIconOut)
 // Parameters:
 //		[IN]	hIconIn
 //				Handle fo the icon to show when the mouse is over the button.
-//				Pass NULL to remove any icon from the button.
+//				Pass nullptr to remove any icon from the button.
 //		[IN]	hIconOut
 //				Handle to the icon to show when the mouse is outside the button.
-//				Can be NULL.
+//				Can be nullptr.
 //				If this parameter is the special value BTNST_AUTO_GRAY the second
 //				icon will be automatically created starting from hIconIn and converted to grayscale.
 //				If this parameter is the special value BTNST_AUTO_DARKER the second
@@ -1381,12 +1381,12 @@ DWORD CButtonST::SetIcon(HICON hIconIn, HICON hIconOut)
 // Parameters:
 //		[IN]	nBitmapIn
 //				ID number of the bitmap resource to show when the mouse is over the button.
-//				Pass NULL to remove any bitmap from the button.
+//				Pass nullptr to remove any bitmap from the button.
 //		[IN]	crTransColorIn
 //				Color (inside nBitmapIn) to be used as transparent color.
 //		[IN]	nBitmapOut
 //				ID number of the bitmap resource to show when the mouse is outside the button.
-//				Can be NULL.
+//				Can be nullptr.
 //		[IN]	crTransColorOut
 //				Color (inside nBitmapOut) to be used as transparent color.
 //
@@ -1400,9 +1400,9 @@ DWORD CButtonST::SetIcon(HICON hIconIn, HICON hIconOut)
 //
 DWORD CButtonST::SetBitmaps(int nBitmapIn, COLORREF crTransColorIn, int nBitmapOut, COLORREF crTransColorOut)
 {
-	HBITMAP		hBitmapIn		= NULL;
-	HBITMAP		hBitmapOut		= NULL;
-	HINSTANCE	hInstResource	= NULL;
+	HBITMAP		hBitmapIn		= nullptr;
+	HBITMAP		hBitmapOut		= nullptr;
+	HINSTANCE	hInstResource	= nullptr;
 
 	// Find correct resource handle
 	hInstResource = AfxFindResourceHandle(MAKEINTRESOURCE(nBitmapIn), RT_BITMAP);
@@ -1413,7 +1413,7 @@ DWORD CButtonST::SetBitmaps(int nBitmapIn, COLORREF crTransColorIn, int nBitmapO
 	// Load bitmap Out
 	switch (nBitmapOut)
 	{
-		case NULL:
+		case 0:
 			break;
 		case (int)(size_t)BTNST_AUTO_GRAY:
 			hBitmapOut = (HBITMAP)BTNST_AUTO_GRAY;
@@ -1435,12 +1435,12 @@ DWORD CButtonST::SetBitmaps(int nBitmapIn, COLORREF crTransColorIn, int nBitmapO
 // Parameters:
 //		[IN]	hBitmapIn
 //				Handle fo the bitmap to show when the mouse is over the button.
-//				Pass NULL to remove any bitmap from the button.
+//				Pass nullptr to remove any bitmap from the button.
 //		[IN]	crTransColorIn
 //				Color (inside hBitmapIn) to be used as transparent color.
 //		[IN]	hBitmapOut
 //				Handle to the bitmap to show when the mouse is outside the button.
-//				Can be NULL.
+//				Can be nullptr.
 //		[IN]	crTransColorOut
 //				Color (inside hBitmapOut) to be used as transparent color.
 //
@@ -1491,7 +1491,7 @@ DWORD CButtonST::SetBitmaps(HBITMAP hBitmapIn, COLORREF crTransColorIn, HBITMAP 
 
 		// Create mask for bitmap In
 		m_csBitmaps[0].hMask = CreateBitmapMask(hBitmapIn, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight, crTransColorIn);
-		if (m_csBitmaps[0].hMask == NULL)
+		if (m_csBitmaps[0].hMask == nullptr)
 		{
 			FreeResources();
 			return BTNST_FAILEDMASK;
@@ -1513,7 +1513,7 @@ DWORD CButtonST::SetBitmaps(HBITMAP hBitmapIn, COLORREF crTransColorIn, HBITMAP 
 
 			// Create mask for bitmap Out
 			m_csBitmaps[1].hMask = CreateBitmapMask(hBitmapOut, m_csBitmaps[1].dwWidth, m_csBitmaps[1].dwHeight, crTransColorOut);
-			if (m_csBitmaps[1].hMask == NULL)
+			if (m_csBitmaps[1].hMask == nullptr)
 			{
 				FreeResources();
 				return BTNST_FAILEDMASK;
@@ -1835,7 +1835,7 @@ DWORD CButtonST::SetAlwaysTrack(BOOL bAlwaysTrack)
 // Parameters:
 //		[IN]	nCursorId
 //				ID number of the cursor resource.
-//				Pass NULL to remove a previously loaded cursor.
+//				Pass nullptr to remove a previously loaded cursor.
 //		[IN]	bRepaint
 //				If TRUE the control will be repainted.
 //
@@ -1847,12 +1847,12 @@ DWORD CButtonST::SetAlwaysTrack(BOOL bAlwaysTrack)
 //
 DWORD CButtonST::SetBtnCursor(int nCursorId, BOOL bRepaint)
 {
-	HINSTANCE	hInstResource = NULL;
+	HINSTANCE	hInstResource = nullptr;
 	// Destroy any previous cursor
 	if (m_hCursor)
 	{
 		::DestroyCursor(m_hCursor);
-		m_hCursor = NULL;
+		m_hCursor = nullptr;
 	} // if
 
 	// Load cursor
@@ -1864,7 +1864,7 @@ DWORD CButtonST::SetBtnCursor(int nCursorId, BOOL bRepaint)
 		// Repaint the button
 		if (bRepaint) Invalidate();
 		// If something wrong
-		if (m_hCursor == NULL) return BTNST_INVALIDRESOURCE;
+		if (m_hCursor == nullptr) return BTNST_INVALIDRESOURCE;
 	} // if
 
 	return BTNST_OK;
@@ -1915,7 +1915,7 @@ DWORD CButtonST::DrawFlatFocus(BOOL bDrawFlatFocus, BOOL bRepaint)
 
 void CButtonST::InitToolTip()
 {
-	if (m_ToolTip.m_hWnd == NULL)
+	if (m_ToolTip.m_hWnd == nullptr)
 	{
 		// Create ToolTip control
 		m_ToolTip.Create(this, m_dwToolTipStyle);
@@ -1955,8 +1955,8 @@ void CButtonST::SetTooltipText(int nText, BOOL bActivate)
 //
 void CButtonST::SetTooltipText(LPCTSTR lpszText, BOOL bActivate)
 {
-	// We cannot accept NULL pointer
-	if (lpszText == NULL) return;
+	// We cannot accept nullptr pointer
+	if (lpszText == nullptr) return;
 
 	// Initialize ToolTip
 	InitToolTip();
@@ -2031,7 +2031,7 @@ void CButtonST::DrawTransparent(BOOL bRepaint)
 	m_bDrawTransparent = TRUE;
 
 	// Restore old bitmap (if any)
-	if (m_dcBk.m_hDC != NULL && m_pbmpOldBk != NULL)
+	if (m_dcBk.m_hDC != nullptr && m_pbmpOldBk != nullptr)
 	{
 		m_dcBk.SelectObject(m_pbmpOldBk);
 	} // if
@@ -2048,7 +2048,7 @@ DWORD CButtonST::SetBk(CDC* pDC)
 	if (m_bDrawTransparent && pDC)
 	{
 		// Restore old bitmap (if any)
-		if (m_dcBk.m_hDC != NULL && m_pbmpOldBk != NULL)
+		if (m_dcBk.m_hDC != nullptr && m_pbmpOldBk != nullptr)
 		{
 			m_dcBk.SelectObject(m_pbmpOldBk);
 		} // if
@@ -2080,7 +2080,7 @@ DWORD CButtonST::SetBk(CDC* pDC)
 // Parameters:
 //		[IN]	lpszURL
 //				Pointer to a null-terminated string that contains the URL.
-//				Pass NULL to removed any previously specified URL.
+//				Pass nullptr to removed any previously specified URL.
 //
 // Return value:
 //		BTNST_OK
@@ -2106,7 +2106,7 @@ DWORD CButtonST::SetURL(LPCTSTR lpszURL)
 // Parameters:
 //		[IN]	nMenu
 //				ID number of the menu resource.
-//				Pass NULL to remove any menu from the button.
+//				Pass nullptr to remove any menu from the button.
 //		[IN]	hParentWnd
 //				Handle to the window that owns the menu.
 //				This window receives all messages from the menu.
@@ -2122,14 +2122,14 @@ DWORD CButtonST::SetURL(LPCTSTR lpszURL)
 #ifndef	BTNST_USE_BCMENU
 DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint)
 {
-	HINSTANCE	hInstResource	= NULL;
+	HINSTANCE	hInstResource	= nullptr;
 
 	// Destroy any previous menu
 	if (m_hMenu)
 	{
 		::DestroyMenu(m_hMenu);
-		m_hMenu = NULL;
-		m_hParentWndMenu = NULL;
+		m_hMenu = nullptr;
+		m_hParentWndMenu = nullptr;
 		m_bMenuDisplayed = FALSE;
 	} // if
 
@@ -2142,7 +2142,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint)
 		m_hMenu = ::LoadMenu(hInstResource, MAKEINTRESOURCE(nMenu));
 		m_hParentWndMenu = hParentWnd;
 		// If something wrong
-		if (m_hMenu == NULL) return BTNST_INVALIDRESOURCE;
+		if (m_hMenu == nullptr) return BTNST_INVALIDRESOURCE;
 	} // if
 
 	// Repaint the button
@@ -2159,7 +2159,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint)
 // Parameters:
 //		[IN]	nMenu
 //				ID number of the menu resource.
-//				Pass NULL to remove any menu from the button.
+//				Pass nullptr to remove any menu from the button.
 //		[IN]	hParentWnd
 //				Handle to the window that owns the menu.
 //				This window receives all messages from the menu.
@@ -2192,7 +2192,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle, UINT nTo
 	if (m_menuPopup.m_hMenu)
 	{
 		m_menuPopup.DestroyMenu();
-		m_hParentWndMenu = NULL;
+		m_hParentWndMenu = nullptr;
 		m_bMenuDisplayed = FALSE;
 	} // if
 
@@ -2236,7 +2236,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle, UINT nTo
 // Parameters:
 //		[IN]	hWnd
 //				Handle of the window that will receive the callback message.
-//				Pass NULL to remove any previously specified callback message.
+//				Pass nullptr to remove any previously specified callback message.
 //		[IN]	nMessage
 //				Callback message to send to window.
 //		[IN]	lParam
@@ -2274,7 +2274,7 @@ void CButtonST::SizeToContent()
 	{
 		m_ptImageOrg.x = 0;
 		m_ptImageOrg.y = 0;
-	    SetWindowPos(	NULL, -1, -1, m_csIcons[0].dwWidth, m_csIcons[0].dwHeight,
+	    SetWindowPos(	nullptr, -1, -1, m_csIcons[0].dwWidth, m_csIcons[0].dwHeight,
 						SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
 	} // if
 	else
@@ -2282,7 +2282,7 @@ void CButtonST::SizeToContent()
 	{
 		m_ptImageOrg.x = 0;
 		m_ptImageOrg.y = 0;
-	    SetWindowPos(	NULL, -1, -1, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight,
+	    SetWindowPos(	nullptr, -1, -1, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight,
 						SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
 	} // if
 } // End of SizeToContent
@@ -2292,12 +2292,12 @@ void CButtonST::SizeToContent()
 // Parameters:
 //		[IN]	lpszSound
 //				A string that specifies the sound to play.
-//				If hMod is NULL this string is interpreted as a filename, else it
+//				If hMod is nullptr this string is interpreted as a filename, else it
 //				is interpreted as a resource identifier.
-//				Pass NULL to remove any previously specified sound.
+//				Pass nullptr to remove any previously specified sound.
 //		[IN]	hMod
 //				Handle to the executable file that contains the resource to be loaded.
-//				This parameter must be NULL unless lpszSound specifies a resource identifier.
+//				This parameter must be nullptr unless lpszSound specifies a resource identifier.
 //		[IN]	bPlayOnClick
 //				TRUE if the sound must be played when the button is clicked.
 //				FALSE if the sound must be played when the mouse is moved over the button.

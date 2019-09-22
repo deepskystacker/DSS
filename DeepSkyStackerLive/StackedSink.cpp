@@ -11,13 +11,13 @@
 
 Image *	CStackedSink::GetOverlayImage(CRect & rcClient)
 {
-	Image *				pResult = NULL;
-	HDC					hDC = GetDC(NULL);
+	Image *				pResult = nullptr;
+	HDC					hDC = GetDC(nullptr);
 
 	//pResult = new Bitmap(rcClient.Width(), rcClient.Height(), PixelFormat32bppARGB);
 	if (m_pt1!=m_pt2)
 	{
-		pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, NULL);
+		pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, nullptr);
 
 		if (pResult)
 		{

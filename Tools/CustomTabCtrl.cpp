@@ -285,10 +285,10 @@ CCustomTabCtrl::CCustomTabCtrl() :
 			m_nItemSelected(-1),
 			m_nItemNdxOffset(0),
 			m_dwLastRepeatTime(0),
-			m_hBmpBkLeftSpin(NULL),
-			m_hBmpBkRightSpin(NULL),
-			m_hCursorMove(NULL),
-			m_hCursorCopy(NULL),
+			m_hBmpBkLeftSpin(nullptr),
+			m_hBmpBkRightSpin(nullptr),
+			m_hCursorMove(nullptr),
+			m_hCursorCopy(nullptr),
 			m_nItemDragDest(0)
 {
 	RegisterWindowClass();
@@ -309,10 +309,10 @@ BOOL CCustomTabCtrl::RegisterWindowClass()
         wndcls.lpfnWndProc      = ::DefWindowProc;
         wndcls.cbClsExtra       = wndcls.cbWndExtra = 0;
         wndcls.hInstance        = hInst;
-        wndcls.hIcon            = NULL;
+        wndcls.hIcon            = nullptr;
         wndcls.hCursor          = AfxGetApp()->LoadStandardCursor(IDC_ARROW);
         wndcls.hbrBackground    = (HBRUSH) (COLOR_3DFACE + 1);
-        wndcls.lpszMenuName     = NULL;
+        wndcls.lpszMenuName     = nullptr;
         wndcls.lpszClassName    = CustomTabCtrl_CLASSNAME;
 
         if (!AfxRegisterClass(&wndcls))
@@ -332,13 +332,13 @@ CCustomTabCtrl::~CCustomTabCtrl()
 	m_aItems.RemoveAll();
 
 	::DeleteObject(m_hBmpBkLeftSpin);
-	m_hBmpBkLeftSpin = NULL;
+	m_hBmpBkLeftSpin = nullptr;
 	::DeleteObject(m_hBmpBkRightSpin);
-	m_hBmpBkRightSpin = NULL;
+	m_hBmpBkRightSpin = nullptr;
 	::DestroyCursor(m_hCursorMove);
-	m_hCursorMove = NULL;
+	m_hCursorMove = nullptr;
 	::DestroyCursor(m_hCursorCopy);
-	m_hCursorCopy = NULL;
+	m_hCursorCopy = nullptr;
 }
 
 BEGIN_MESSAGE_MAP(CCustomTabCtrl, CWnd)
@@ -394,7 +394,7 @@ void CCustomTabCtrl::OnPaint()
 
 	CDC dcMem;
 	CBitmap bmpMem;
-	CBitmap* pOldBmp=NULL;
+	CBitmap* pOldBmp=nullptr;
 
 	if(dcMem.CreateCompatibleDC(&dc))
 	{
@@ -769,7 +769,7 @@ void CCustomTabCtrl::OnPaint()
 			pts[1].y = 0;
 			pts[2].x = rCl.Height()-1;
 			pts[2].y = rCl.Width();
-			::PlgBlt(dc.m_hDC,pts,dcMem.m_hDC,-1,0,rCl.Width(),rCl.Height(),NULL,0,0);
+			::PlgBlt(dc.m_hDC,pts,dcMem.m_hDC,-1,0,rCl.Width(),rCl.Height(),nullptr,0,0);
 		}
 		else
 		{
@@ -779,7 +779,7 @@ void CCustomTabCtrl::OnPaint()
 			pts[1].y = 0;
 			pts[2].x = rCl.Height();
 			pts[2].y = rCl.Width();
-			::PlgBlt(dc.m_hDC,pts,dcMem.m_hDC,0,0,rCl.Width(),rCl.Height(),NULL,0,0);
+			::PlgBlt(dc.m_hDC,pts,dcMem.m_hDC,0,0,rCl.Width(),rCl.Height(),nullptr,0,0);
 		}
 	}
 	else
@@ -877,7 +877,7 @@ int CCustomTabCtrl::ProcessLButtonDown(int nHitTest, UINT nFlags, CPoint point)
 			RecalcLayout(RECALC_FIRST_PRESSED,m_nItemSelected);
 			Invalidate(FALSE);
 			m_dwLastRepeatTime = ::GetTickCount();
-			SetTimer(1,100,NULL);
+			SetTimer(1,100,nullptr);
 		}
 		break;
 	case CTCHT_ONPREVBUTTON:
@@ -887,7 +887,7 @@ int CCustomTabCtrl::ProcessLButtonDown(int nHitTest, UINT nFlags, CPoint point)
 			RecalcLayout(RECALC_PREV_PRESSED,m_nItemSelected);
 			Invalidate(FALSE);
 			m_dwLastRepeatTime = ::GetTickCount();
-			SetTimer(1,100,NULL);
+			SetTimer(1,100,nullptr);
 		}
 		break;
 	case CTCHT_ONNEXTBUTTON:
@@ -897,7 +897,7 @@ int CCustomTabCtrl::ProcessLButtonDown(int nHitTest, UINT nFlags, CPoint point)
 			RecalcLayout(RECALC_NEXT_PRESSED,m_nItemSelected);
 			Invalidate(FALSE);
 			m_dwLastRepeatTime = ::GetTickCount();
-			SetTimer(1,100,NULL);
+			SetTimer(1,100,nullptr);
 		}
 		break;
 	case CTCHT_ONLASTBUTTON:
@@ -907,7 +907,7 @@ int CCustomTabCtrl::ProcessLButtonDown(int nHitTest, UINT nFlags, CPoint point)
 			RecalcLayout(RECALC_LAST_PRESSED,m_nItemSelected);
 			Invalidate(FALSE);
 			m_dwLastRepeatTime = ::GetTickCount();
-			SetTimer(1,100,NULL);
+			SetTimer(1,100,nullptr);
 		}
 		break;
 	case CTCHT_ONCLOSEBUTTON:
@@ -926,7 +926,7 @@ int CCustomTabCtrl::ProcessLButtonDown(int nHitTest, UINT nFlags, CPoint point)
 			{
 				m_nButtonIDDown = nHitTest;
 				m_nItemDragDest = CTCID_NOBUTTON;
-				SetTimer(2,300,NULL);
+				SetTimer(2,300,nullptr);
 			}
 			else
 				m_nButtonIDDown = CTCID_NOBUTTON;
@@ -1167,14 +1167,14 @@ void CCustomTabCtrl::OnUpdateEdit()
 LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
 	::DeleteObject(m_hBmpBkLeftSpin);
-	m_hBmpBkLeftSpin = NULL;
+	m_hBmpBkLeftSpin = nullptr;
 	::DeleteObject(m_hBmpBkRightSpin);
-	m_hBmpBkRightSpin = NULL;
+	m_hBmpBkRightSpin = nullptr;
 
-	HBITMAP hBmpGlyph = NULL;
+	HBITMAP hBmpGlyph = nullptr;
 	CDC dcGlyph;
-	dcGlyph.CreateCompatibleDC(NULL);
-	CBitmap* pOldBmpGlyph = NULL;
+	dcGlyph.CreateCompatibleDC(nullptr);
+	CBitmap* pOldBmpGlyph = nullptr;
 
 	try
 	{
@@ -1266,7 +1266,7 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 					AfxThrowUserException();
 
 				CBitmap* pBmp = CBitmap::FromHandle(hBmpGlyph);
-				if(pBmp==NULL)
+				if(pBmp==nullptr)
 					AfxThrowUserException();
 				pOldBmpGlyph = dcGlyph.SelectObject(pBmp);
 				BITMAP bm;
@@ -1368,9 +1368,9 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 					}
 				}
 				dcGlyph.SelectObject(pOldBmpGlyph);
-				pOldBmpGlyph = NULL;
+				pOldBmpGlyph = nullptr;
 				::DeleteObject(hBmpGlyph);
-				hBmpGlyph = NULL;
+				hBmpGlyph = nullptr;
 			}
 			else if(nGlyphType==GT_FONTGLYPH)
 			{
@@ -1390,13 +1390,13 @@ LRESULT CCustomTabCtrl::OnThemeChanged(WPARAM /*wParam*/, LPARAM /*lParam*/)
 	{
 		e->Delete();
 		::DeleteObject(m_hBmpBkLeftSpin);
-		m_hBmpBkLeftSpin = NULL;
+		m_hBmpBkLeftSpin = nullptr;
 		::DeleteObject(m_hBmpBkRightSpin);
-		m_hBmpBkRightSpin = NULL;
+		m_hBmpBkRightSpin = nullptr;
 		if(pOldBmpGlyph)
 			dcGlyph.SelectObject(pOldBmpGlyph);
 		::DeleteObject(hBmpGlyph);
-		hBmpGlyph = NULL;
+		hBmpGlyph = nullptr;
 	}
 	return 0;
 }
@@ -1448,7 +1448,7 @@ void CCustomTabCtrl::OnTimer(UINT_PTR nIDEvent)
 		{
 			if(m_nItemDragDest==CTCID_NOBUTTON)
 				m_nItemDragDest = m_nButtonIDDown;
-			SetTimer(2,10,NULL);
+			SetTimer(2,10,nullptr);
 			DWORD dwStyle = GetStyle();
 			if((dwStyle&CTCS_DRAGCOPY) && (GetKeyState(VK_CONTROL)&0x8000))
 				SetCursor(m_hCursorCopy);
@@ -1469,13 +1469,13 @@ void CCustomTabCtrl::SetControlFont(const LOGFONT& lf, BOOL fRedraw)
 	if(m_Font.m_hObject)
 	{
 		DeleteObject(m_Font);
-		m_Font.m_hObject = NULL;
+		m_Font.m_hObject = nullptr;
 	}
 
 	if(m_FontSelected.m_hObject)
 	{
 		DeleteObject(m_FontSelected);
-		m_FontSelected.m_hObject = NULL;
+		m_FontSelected.m_hObject = nullptr;
 	}
 
 	if(!m_Font.CreateFontIndirect(&lf))
@@ -1503,7 +1503,7 @@ int CCustomTabCtrl::InsertItem(int nItem, CString sText, LPARAM lParam)
 		return CTCERR_TEXTTOOLONG;
 
 	CCustomTabCtrlItem* pItem = new CCustomTabCtrlItem(sText,lParam);
-	if(pItem==NULL)
+	if(pItem==nullptr)
 		return CTCERR_OUTOFMEMORY;
 
 	try
@@ -1813,7 +1813,7 @@ int CCustomTabCtrl::SetItemTooltipText(int nItem, CString sText)
 		return CTCERR_NOTOOLTIPSSTYLE;
 	if(nItem>=CTCID_CLOSEBUTTON && nItem<m_aItems.GetSize())
 	{
-		if(m_ctrlToolTip.m_hWnd==NULL)
+		if(m_ctrlToolTip.m_hWnd==nullptr)
 		{
 			if(!m_ctrlToolTip.Create(this))
 				return CTCERR_CREATETOOLTIPFAILED;
@@ -2767,9 +2767,9 @@ void CCustomTabCtrl::PreSubclassWindow()
 void CCustomTabCtrl::SetDragCursors(HCURSOR hCursorMove, HCURSOR hCursorCopy)
 {
 	::DestroyCursor(m_hCursorMove);
-	m_hCursorMove = NULL;
+	m_hCursorMove = nullptr;
 	::DestroyCursor(m_hCursorCopy);
-	m_hCursorCopy = NULL;
+	m_hCursorCopy = nullptr;
 	m_hCursorMove = CopyCursor(hCursorMove);
 	m_hCursorCopy = CopyCursor(hCursorCopy);
 }
@@ -2831,7 +2831,7 @@ int CCustomTabCtrl::EditLabel(int nItem, BOOL fMouseSel)
 			for (;;)
 			{
 				MSG msg;
-				::GetMessage(&msg, NULL, 0, 0);
+				::GetMessage(&msg, nullptr, 0, 0);
 
 				switch (msg.message)
 				{

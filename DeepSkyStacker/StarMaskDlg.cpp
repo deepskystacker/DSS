@@ -16,11 +16,11 @@ class CSaveMaskDlg : public CFileDialog
 
 public :
 	CSaveMaskDlg(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs
-		LPCTSTR lpszDefExt = NULL,
-		LPCTSTR lpszFileName = NULL,
+		LPCTSTR lpszDefExt = nullptr,
+		LPCTSTR lpszFileName = nullptr,
 		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		LPCTSTR lpszFilter = NULL,
-		CWnd* pParentWnd = NULL):CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd)
+		LPCTSTR lpszFilter = nullptr,
+		CWnd* pParentWnd = nullptr):CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd)
 	{
 	};
 	virtual ~CSaveMaskDlg()
@@ -51,7 +51,7 @@ IMPLEMENT_DYNAMIC(CStarMaskDlg, CDialog)
 
 /* ------------------------------------------------------------------- */
 
-CStarMaskDlg::CStarMaskDlg(CWnd* pParent /*=NULL*/)
+CStarMaskDlg::CStarMaskDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStarMaskDlg::IDD, pParent)
 {
 	m_bOutputFITS = FALSE;
@@ -218,8 +218,8 @@ BOOL CStarMaskDlg::AskOutputFile()
 	strTitle.LoadString(IDS_TITLE_MASK);
 
 	CSaveMaskDlg			dlgSave(FALSE,
-								NULL,
-								NULL,
+								nullptr,
+								nullptr,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 								STARMASKFILE_FILTERS,
 								this);
@@ -229,7 +229,7 @@ BOOL CStarMaskDlg::AskOutputFile()
 	TCHAR					szDrive[1+_MAX_DRIVE];
 	TCHAR					szDir[1+_MAX_DIR];
 
-	_tsplitpath(m_strOutputFile, szDrive, szDir, NULL, NULL);
+	_tsplitpath(m_strOutputFile, szDrive, szDir, nullptr, nullptr);
 	strBaseDirectory = szDrive;
 	strBaseDirectory += szDir;
 

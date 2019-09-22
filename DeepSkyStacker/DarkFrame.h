@@ -293,7 +293,7 @@ protected :
 	void	FindBadVerticalLines(CDSSProgress * pProgress);
 
 public :
-	CDarkFrame(CMemoryBitmap * pMasterDark = NULL)
+	CDarkFrame(CMemoryBitmap * pMasterDark = nullptr)
 	{
 		Reset();
 		m_pMasterDark = pMasterDark;
@@ -309,13 +309,13 @@ public :
 		m_pMasterDark = pMasterDark;
 	};
 
-	BOOL	Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress = NULL);
+	BOOL	Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
 
-	void	InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = NULL);
+	void	InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = nullptr);
 
 	BOOL	IsOk()
 	{
-		return (m_pMasterDark != NULL);
+		return (m_pMasterDark != nullptr);
 	};
 };
 

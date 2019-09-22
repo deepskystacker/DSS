@@ -21,7 +21,7 @@ private :
 
 // Construction
 public:
-	CSettingsDlg(CWnd* pParent = NULL);   // standard constructor
+	CSettingsDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CSettingsDlg)

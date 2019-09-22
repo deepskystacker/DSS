@@ -27,7 +27,7 @@
 //	Return:
 //		none
 //
-CControlPos::CControlPos(CWnd* pParent /* = NULL */)
+CControlPos::CControlPos(CWnd* pParent /* = nullptr */)
 {
 	m_pParent = pParent;
 	UpdateParentSize();

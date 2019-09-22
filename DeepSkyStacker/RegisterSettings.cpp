@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // CRegisterSettings dialog
 
 
-CRegisterSettings::CRegisterSettings(CWnd* pParent /*=NULL*/)
+CRegisterSettings::CRegisterSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CRegisterSettings::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CRegisterSettings)
@@ -36,7 +36,7 @@ CRegisterSettings::CRegisterSettings(CWnd* pParent /*=NULL*/)
 	m_bNoDark = FALSE;
 	m_bNoFlat = FALSE;
 	m_bNoOffset = FALSE;
-	m_pStackingTasks = NULL;
+	m_pStackingTasks = nullptr;
 	m_bForceRegister = FALSE;
 	m_bSettingsOnly	 = FALSE;
 }

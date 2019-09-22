@@ -1027,7 +1027,7 @@ bool	CDeBloom::CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask)
 {
 	CSmartPtr<C8BitGrayBitmap>		pMask;
 
-	*ppMask = NULL;
+	*ppMask = nullptr;
 	if (pBitmap && pBitmap->IsMonochrome() && !pBitmap->IsCFA())
 	{
 		m_lWidth  = pBitmap->Width();
@@ -1039,7 +1039,7 @@ bool	CDeBloom::CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask)
 		m_fBackground = ComputeBackgroundValue(pBitmap);
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, m_lHeight);
+			m_pProgress->Start2(nullptr, m_lHeight);
 
 		// Start at the bottom
 		for (LONG j = m_lHeight-1;j>=0;j--)
@@ -1058,7 +1058,7 @@ bool	CDeBloom::CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask)
 				};
 			};
 			if (m_pProgress)
-				m_pProgress->Progress2(NULL, j+1);
+				m_pProgress->Progress2(nullptr, j+1);
 		};
 
 		if (m_pProgress)
@@ -1068,8 +1068,8 @@ bool	CDeBloom::CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask)
 	};
 
 #ifdef DEBUGDEBLOOM
-	WriteTIFF("E:\\BloomMask.tif", pMask, NULL, NULL);
-	WriteTIFF("E:\\BloomImage.tif", pBitmap, NULL, NULL);
+	WriteTIFF("E:\\BloomMask.tif", pMask, nullptr, nullptr);
+	WriteTIFF("E:\\BloomImage.tif", pBitmap, nullptr, nullptr);
 #endif
 
 	return m_vBloomedStars.size()>0;
@@ -1255,12 +1255,12 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 		//filter.ApplyFilter(pBitmap, &pFiltered, m_pProgress);
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, (LONG)m_vBloomedStars.size());
+			m_pProgress->Start2(nullptr, (LONG)m_vBloomedStars.size());
 
 		for (LONG i = 0;i<m_vBloomedStars.size();i++)
 		{
 			if (m_pProgress)
-				m_pProgress->Progress2(NULL, i+1);
+				m_pProgress->Progress2(nullptr, i+1);
 			ComputeStarCenter(pBitmap, pMask, m_vBloomedStars[i]);
 		};
 
@@ -1269,7 +1269,7 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 	};
 
 	if (m_pProgress)
-		m_pProgress->Start2(NULL, m_lWidth);
+		m_pProgress->Start2(nullptr, m_lWidth);
 
 	std::vector<CPoint>			vUnprocessed;
 	std::vector<CPoint>			vProcessed;
@@ -1301,7 +1301,7 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 			};
 		};
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i+1);
+			m_pProgress->Progress2(nullptr, i+1);
 	};
 
 	// Process recursively unprocessed
@@ -1353,7 +1353,7 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 		m_pProgress->End2();
 
 #ifdef DEBUGDEBLOOM
-	WriteTIFF("E:\\BloomImage_Step1.tif", pBitmap, NULL, NULL);
+	WriteTIFF("E:\\BloomImage_Step1.tif", pBitmap, nullptr, nullptr);
 #endif
 
 	for (LONG i = 0;i<m_vBloomedStars.size();i++)
@@ -1363,7 +1363,7 @@ void	CDeBloom::DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 
 	SmoothMaskBorders(pBitmap, pMask);
 #ifdef DEBUGDEBLOOM
-	WriteTIFF("E:\\BloomImage_Step2.tif", pBitmap, NULL, NULL);
+	WriteTIFF("E:\\BloomImage_Step2.tif", pBitmap, nullptr, nullptr);
 #endif
 };
 

@@ -16,7 +16,7 @@ class CProgressDlg : public CDialog
 {
 // Construction
 public:
-	CProgressDlg(CWnd* pParent = NULL);   // standard constructor
+	CProgressDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CProgressDlg)
@@ -43,7 +43,7 @@ public :
 	void PeekAndPump()
 	{
 		MSG msg;
-		while (!m_bCancelled && ::PeekMessage(&msg, NULL,0,0,PM_NOREMOVE))
+		while (!m_bCancelled && ::PeekMessage(&msg, nullptr,0,0,PM_NOREMOVE))
 		{
 /*
 			if (bCancelOnESCkey && (msg.message == WM_CHAR) && (msg.wParam == VK_ESCAPE))
@@ -257,7 +257,7 @@ public :
 
 		if (m_bJointProgress)
 		{
-			Start(NULL, lTotal2, m_bEnableCancel);
+			Start(nullptr, lTotal2, m_bEnableCancel);
 			if (strText.GetLength())
 				m_dlg.m_Text1.SetWindowText(szText);
 		};
@@ -298,7 +298,7 @@ public :
 	{
 		m_dlg.PeekAndPump();
 		// Prevent failure if mdlg is no longer a valid window
-		if (NULL != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
+		if (nullptr != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
 
 		CWnd *pMainWnd = AfxGetMainWnd();
 		if (pMainWnd)

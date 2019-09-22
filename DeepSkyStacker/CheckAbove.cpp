@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 // CCheckAbove dialog
 
 
-CCheckAbove::CCheckAbove(CWnd* pParent /*=NULL*/)
+CCheckAbove::CCheckAbove(CWnd* pParent /*=nullptr*/)
 	: CDialog(CCheckAbove::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CCheckAbove)

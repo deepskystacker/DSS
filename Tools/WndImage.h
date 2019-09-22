@@ -58,7 +58,7 @@ public :
 	virtual BOOL	Image_OnLButtonUp(LONG lX, LONG lY) { return FALSE; };
 	virtual BOOL	Image_OnRButtonDown(LONG lX, LONG lY) { return FALSE; };
 
-	virtual Image *	GetOverlayImage(CRect & rcClient) { return NULL; };
+	virtual Image *	GetOverlayImage(CRect & rcClient) { return nullptr; };
 };
 
 // ------------------------------------------------------------------
@@ -123,7 +123,7 @@ class CWndImage : public CWnd
 	void	SetImageSink(CWndImageSink * pImageSink)
 	{
 		if (m_pImageSink)
-			m_pImageSink->SetImage(NULL);
+			m_pImageSink->SetImage(nullptr);
 		m_pImageSink = pImageSink;
 		if (m_pImageSink)
 			m_pImageSink->SetImage(this);

@@ -52,7 +52,7 @@ private :
 
 // Construction
 public:
-	CStackingDlg(CWnd* pParent = NULL);   // standard constructor
+	CStackingDlg(CWnd* pParent = nullptr);   // standard constructor
 
 	BOOL	SaveOnClose();
 

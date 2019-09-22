@@ -9,9 +9,9 @@ const DWORD				WM_BL_STOP		= WM_USER+3;
 
 CBackgroundLoading::CBackgroundLoading()
 {
-	m_hThread		= NULL;
+	m_hThread		= nullptr;
 	m_dwThreadID	= 0;
-	m_hEvent		= NULL;
+	m_hEvent		= nullptr;
 
 };
 
@@ -96,9 +96,9 @@ void CBackgroundLoading::BackgroundLoad()
 	BOOL				bEnd = FALSE;
 	MSG					msg;
 
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(m_hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_BL_LOAD)
 		{
@@ -118,10 +118,10 @@ void CBackgroundLoading::LoadImageInBackground(LPCTSTR szImage)
 	if (!m_hThread)
 	{
 		// Create the thread
-		m_hEvent	= CreateEvent(NULL, TRUE, FALSE, NULL);
+		m_hEvent	= CreateEvent(nullptr, TRUE, FALSE, nullptr);
 		if (m_hEvent)
 		{
-			m_hThread = CreateThread(NULL, 0, BackgroundLoadingThreadProc, (LPVOID)this, CREATE_SUSPENDED, &m_dwThreadID);
+			m_hThread = CreateThread(nullptr, 0, BackgroundLoadingThreadProc, (LPVOID)this, CREATE_SUSPENDED, &m_dwThreadID);
 			if (m_hThread)
 			{
 				SetThreadPriority(m_hThread, THREAD_PRIORITY_BELOW_NORMAL);
@@ -153,8 +153,8 @@ void CBackgroundLoading::CloseThread()
 
 		CloseHandle(m_hThread);
 		CloseHandle(m_hEvent);
-		m_hThread = NULL;
-		m_hEvent  = NULL;
+		m_hThread = nullptr;
+		m_hEvent  = nullptr;
 	};
 };
 
@@ -168,9 +168,9 @@ BOOL	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C
 
 	// Check if the image is in the list first
 	if (ppBitmap)
-		*ppBitmap = NULL;
+		*ppBitmap = nullptr;
 	if (pphBitmap)
-		*pphBitmap = NULL;
+		*pphBitmap = nullptr;
 	m_CriticalSection.Lock();
 	for (LONG i = 0;i<m_vLoadedImages.size();i++)
 	{

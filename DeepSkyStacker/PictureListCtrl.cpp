@@ -89,7 +89,7 @@ CPictureListCtrl::CPictureListCtrl()
 {
 	m_lSortColumn		= -1;
 	m_bAscending		= FALSE;
-	m_pProgress			= NULL;
+	m_pProgress			= nullptr;
 	m_dwCurrentGroupID	= 0;
 	m_bRefreshNeeded	= FALSE;
 
@@ -427,7 +427,7 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 
 /* ------------------------------------------------------------------- */
 
-static	CPictureListCtrl *		g_pCompareList = NULL;
+static	CPictureListCtrl *		g_pCompareList = nullptr;
 
 bool CompareVisibleItems(LONG lItem1, LONG lItem2)
 {
@@ -506,7 +506,7 @@ void CPictureListCtrl::RefreshList()
 		// Sort the list of visible items
 		g_pCompareList = this;
 		std::sort(m_vVisibles.begin(), m_vVisibles.end(), CompareVisibleItems);
-		g_pCompareList = NULL;
+		g_pCompareList = nullptr;
 	};
 
 	SetItemCount(lItemCount);
@@ -1128,7 +1128,7 @@ void CPictureListCtrl::CopyToClipboard()
 
 	if (strClipboard.GetLength())
 	{
-		::OpenClipboard(NULL);
+		::OpenClipboard(nullptr);
 
 		HGLOBAL				hMem;
 		LPVOID				lpMem;
@@ -1182,7 +1182,7 @@ void CPictureListCtrl::OnRButtonDown( UINT nFlags, CPoint pt)
 
 	popup->EnableMenuItem(IDM_USEASSTARTING, MF_BYCOMMAND | (bEnableUseAsStarting ? MF_ENABLED : (MF_DISABLED | MF_GRAYED)));
 	popup->CheckMenuItem(IDM_USEASSTARTING, MF_BYCOMMAND | (bStartingChecked ? MF_CHECKED : MF_UNCHECKED));
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y, this, NULL);
+	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y, this, nullptr);
 
 	std::vector<int>	vToRemove;
 	std::vector<int>	vToRefresh;
@@ -1883,7 +1883,7 @@ void CPictureListCtrl::SaveList(CMRUList & MRUList, CString & strFileList)
 			TCHAR		szDrive[1+_MAX_DRIVE];
 			TCHAR		szExt[1+_MAX_EXT];
 
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -1918,7 +1918,7 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 
 	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 								OUTPUTLIST_FILTERS,
 								this);
@@ -1953,7 +1953,7 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 			strFileList = strFile;
 			MRUList.Add((LPCTSTR)strFile);
 
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;

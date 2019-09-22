@@ -12,7 +12,7 @@ IMPLEMENT_DYNAMIC(CLibraryDlg, CDialog)
 
 /* ------------------------------------------------------------------- */
 
-CLibraryDlg::CLibraryDlg(CWnd* pParent /*=NULL*/)
+CLibraryDlg::CLibraryDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CLibraryDlg::IDD, pParent)
 {
 

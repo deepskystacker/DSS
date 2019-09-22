@@ -231,7 +231,7 @@
 //
 //	  1999-DEC-22 - Thanks to Greg Pickles for helping me identify a problem
 //					with my implementation of CStdString::FormatV in which
-//					resulting string might not be properly NULL terminated.
+//					resulting string might not be properly nullptr terminated.
 //
 //	  1999-DEC-06 - Chris Conti pointed yet another basic_string<> assignment
 //					bug that MS has not fixed.  CStdString did nothing to fix
@@ -1850,10 +1850,10 @@ inline int ssicoll(const CT* sz1, int nLen1, const CT* sz2, int nLen2)
 //
 //		"Character" is expressed in terms of the destination string, not
 //		the source.  If no 'nMax' argument is supplied, then the number of
-//		characters copied will be sslen(pSrc).  A NULL terminator will
+//		characters copied will be sslen(pSrc).  A nullptr terminator will
 //		also be added so pDst must actually be big enough to hold nMax+1
 //		characters.  The return value is the number of characters copied,
-//		not including the NULL terminator.
+//		not including the nullptr terminator.
 //
 // PARAMETERS:
 //		pSrc - the string to be copied FROM.  May be a char based string, an
@@ -2089,7 +2089,7 @@ public:
 		bool bLoaded = false;
 
 #if defined(SS_WIN32) && !defined(SS_ANSI)
-		if ( ( pT != NULL ) && SS_IS_INTRESOURCE(pT) )
+		if ( ( pT != nullptr ) && SS_IS_INTRESOURCE(pT) )
 		{
 			UINT nId = LOWORD(reinterpret_cast<unsigned long>(pT));
 			if ( !LoadString(nId) )
@@ -2250,7 +2250,7 @@ public:
 		MYTYPE& assign(const MYTYPE& str, MYSIZE nStart, MYSIZE nChars)
 		{
 			// This overload of basic_string::assign is supposed to assign up to
-			// <nChars> or the NULL terminator, whichever comes first.  Since we
+			// <nChars> or the nullptr terminator, whichever comes first.  Since we
 			// are about to call a less forgiving overload (in which <nChars>
 			// must be a valid length), we must adjust the length here to a safe
 			// value.  Thanks to Ullrich Pollähne for catching this bug
@@ -2271,7 +2271,7 @@ public:
 		MYTYPE& assign(const MYBASE& str, MYSIZE nStart, MYSIZE nChars)
 		{
 			// This overload of basic_string::assign is supposed to assign up to
-			// <nChars> or the NULL terminator, whichever comes first.  Since we
+			// <nChars> or the nullptr terminator, whichever comes first.  Since we
 			// are about to call a less forgiving overload (in which <nChars>
 			// must be a valid length), we must adjust the length here to a safe
 			// value. Thanks to Ullrich Pollähne for catching this bug
@@ -2499,7 +2499,7 @@ public:
 
 #ifndef SS_ANSI
 
-	bool Load(UINT nId, HMODULE hModule=NULL)
+	bool Load(UINT nId, HMODULE hModule=nullptr)
 	{
 		bool bLoaded		= false;	// set to true of we succeed.
 
@@ -2510,9 +2510,9 @@ public:
 		// land, you ought to be using CString for resources anyway since
 		// it walks the resource chain for you.
 
-		HMODULE hModuleOld = NULL;
+		HMODULE hModuleOld = nullptr;
 
-		if ( NULL != hModule )
+		if ( nullptr != hModule )
 		{
 			hModuleOld = AfxGetResourceHandle();
 			AfxSetResourceHandle(hModule);
@@ -2525,7 +2525,7 @@ public:
 
 		// ...and if we set the resource handle, restore it.
 
-		if ( NULL != hModuleOld )
+		if ( nullptr != hModuleOld )
 			AfxSetResourceHandle(hModule);
 
 		if ( bLoaded )
@@ -2535,7 +2535,7 @@ public:
 
 		// Get the resource name and module handle
 
-		if ( NULL == hModule )
+		if ( nullptr == hModule )
 			hModule			= GetResourceHandle();
 
 		PCTSTR szName		= MAKEINTRESOURCE((nId>>4)+1); // lifted
@@ -2545,7 +2545,7 @@ public:
 
 		HRSRC hrsrc			= ::FindResource(hModule, szName, RT_STRING);
 
-		if ( NULL == hrsrc )
+		if ( nullptr == hrsrc )
 		{
 			TRACE(_T("Cannot find resource %d: 0x%X"), nId, ::GetLastError());
 		}
@@ -3246,7 +3246,7 @@ public:
 
 	#else
 
-		CT* pBuf			= NULL;
+		CT* pBuf			= nullptr;
 		int nChars			= 1;
 		int nUsed			= 0;
 		size_type nActual	= 0;
@@ -3260,7 +3260,7 @@ public:
 			pBuf			= reinterpret_cast<CT*>(_alloca(sizeof(CT)*nChars));
 			nUsed			= ssnprintf(pBuf, nChars-1, szFormat, argList);
 
-			// Ensure proper NULL termination.
+			// Ensure proper nullptr termination.
 
 			nActual			= nUsed == -1 ? nChars-1 : SSMIN(nUsed, nChars-1);
 			pBuf[nActual]= '\0';
@@ -4148,7 +4148,7 @@ private:
 
 #ifndef SS_ANSI
 	// SSResourceHandle: our MFC-like resource handle
-	static HMODULE g_hModuleSS	= NULL;
+	static HMODULE g_hModuleSS	= nullptr;
 
 	inline HMODULE& SSResourceHandle()
 	{
@@ -4282,8 +4282,8 @@ inline CStdStringW WUFormatW(PCWSTR szwFormat, ...)
 	{
 		CHAR szBuf[512];
 
-		if ( 0 != ::FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwError,
-								   dwLangId, szBuf, 511, NULL) )
+		if ( 0 != ::FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, dwError,
+								   dwLangId, szBuf, 511, nullptr) )
 			return WUFormatA("%s (0x%X)", szBuf, dwError);
 		else
  			return WUFormatA("Unknown error (0x%X)", dwError);
@@ -4292,8 +4292,8 @@ inline CStdStringW WUFormatW(PCWSTR szwFormat, ...)
 	{
 		WCHAR szBuf[512];
 
-		if ( 0 != ::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwError,
-								   dwLangId, szBuf, 511, NULL) )
+		if ( 0 != ::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, dwError,
+								   dwLangId, szBuf, 511, nullptr) )
 			return WUFormatW(L"%s (0x%X)", szBuf, dwError);
 		else
  			return WUFormatW(L"Unknown error (0x%X)", dwError);

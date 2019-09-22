@@ -37,7 +37,7 @@ private :
 	bool						m_bDarkMode;
 
 public:
-	CImageViewTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CImageViewTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CImageViewTab();
 
 	void	SetStackedImage(BOOL bStackedImage)

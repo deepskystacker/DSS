@@ -14,7 +14,7 @@
 
 IMPLEMENT_DYNAMIC(CSettingsTab, CDialog)
 
-CSettingsTab::CSettingsTab(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+CSettingsTab::CSettingsTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CSettingsTab::IDD, pParent),
 	m_bDarkMode(bDarkMode)
 {
@@ -344,7 +344,7 @@ static void InitLabel(CLabel & label, BOOL bMain = FALSE)
 {
 	label.SetLink(TRUE, TRUE);
 	label.SetTransparent(TRUE);
-	label.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
+	label.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
 	label.SetFont3D(FALSE);
 	//label.SetTextColor(RGB(255, 255, 255));
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));

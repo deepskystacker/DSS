@@ -91,7 +91,7 @@ protected:
 // stop if source is empty, or when end of string reached
 DWORD _RichToolTipCtrlCookie::Read(LPSTR lpszBuffer, DWORD dwCount)
 {
-  if (lpszBuffer == NULL)
+  if (lpszBuffer == nullptr)
     return -1;
 
   // have we already had it all?
@@ -121,7 +121,7 @@ static DWORD CALLBACK RichTextCtrlCallbackIn(DWORD_PTR dwCookie, LPBYTE pbBuff, 
 {
   // the cookie is a pointer to the text data struct
   _RichToolTipCtrlCookie* pBuf = (_RichToolTipCtrlCookie*)dwCookie;
-  if (pBuf == NULL)
+  if (pBuf == nullptr)
     return 1;
   *pcb = pBuf->Read((LPSTR)pbBuff, cb);
   return 0;
@@ -158,9 +158,9 @@ STDMETHODIMP CRichToolTipCtrl::XRichEditOleCallback::GetNewStorage(LPSTORAGE* pp
 	item.GetItemStorageFlat();
 	*ppstg = item.m_lpStorage;
 	HRESULT hRes = E_OUTOFMEMORY;
-	if (item.m_lpStorage != NULL)
+	if (item.m_lpStorage != nullptr)
 	{
-		item.m_lpStorage = NULL;
+		item.m_lpStorage = nullptr;
 		hRes = S_OK;
 	}
 	return hRes;
@@ -194,7 +194,7 @@ CString CRichToolTipCtrl::MakeTextRTFSafe(LPCTSTR lpszText)
   // modify the specified text to make it safe for use in a rich-edit
   // control, by escaping special RTF characters '\', '{' and '}'
   CString sRTF;
-  if (lpszText != NULL)
+  if (lpszText != nullptr)
   {
     while (*lpszText != '\0')
     {
@@ -240,7 +240,7 @@ int CRichToolTipCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 BOOL CRichToolTipCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
   NMHDR* pnmhdr = (NMHDR*)lParam;
-  if (pnmhdr != NULL)
+  if (pnmhdr != nullptr)
   {
     if (pnmhdr->code == EN_REQUESTRESIZE)
     {
@@ -384,7 +384,7 @@ void CRichToolTipCtrl::OnShow(NMHDR* pNMHDR, LRESULT* pResult)
   if (! rcDesktop.PtInRect(ptCursor))
   {
     HMONITOR hMonitor = MonitorFromPoint(ptCursor, MONITOR_DEFAULTTONEAREST);
-    if (hMonitor != NULL)
+    if (hMonitor != nullptr)
     {
       MONITORINFO mi;
       mi.cbSize = sizeof(MONITORINFO);
@@ -450,7 +450,7 @@ void CRichToolTipCtrl::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
       fr.rc = rc; // in twips
       fr.rcPage = fr.rc;
       m_edit.FormatRange(&fr, TRUE);
-      m_edit.FormatRange(NULL, FALSE);	// get the control to free its cached info
+      m_edit.FormatRange(nullptr, FALSE);	// get the control to free its cached info
       *pResult = CDRF_SKIPDEFAULT;  // we don't want the default drawing
     }
     break;

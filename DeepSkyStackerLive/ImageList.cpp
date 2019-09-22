@@ -31,7 +31,7 @@ const DWORD		COLUMN_SKYBACKGROUND = 16;
 
 IMPLEMENT_DYNAMIC(CImageListTab, CDialog)
 
-CImageListTab::CImageListTab(CWnd* pParent /*=NULL*/)
+CImageListTab::CImageListTab(CWnd* pParent /*=nullptr*/)
 	: CDialog(CImageListTab::IDD, pParent)
 {
 }
@@ -157,7 +157,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		TCHAR				szName[_MAX_FNAME];
 		TCHAR				szExt[_MAX_EXT];
 
-		_tsplitpath(szImage, NULL, NULL, szName, szExt);
+		_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 		strImage.Format(_T("%s%s"), szName, szExt);
 
 		nItem = m_ImageList.InsertItem(m_ImageList.GetItemCount(), _T(""));
@@ -230,7 +230,7 @@ void	CImageListTab::ChangeImageStatus(LPCTSTR szImage, IMAGESTATUS status)
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list
@@ -277,7 +277,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list

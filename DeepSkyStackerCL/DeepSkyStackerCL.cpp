@@ -184,7 +184,7 @@ void ComputeStacks(CFrameList & FrameList, CAllStackingTasks & tasks)
 				TCHAR			szDrive[_MAX_DRIVE];
 				TCHAR			szDir[_MAX_DIR];
 
-				_tsplitpath(strPath, szDrive, szDir, NULL, NULL);
+				_tsplitpath(strPath, szDrive, szDir, nullptr, nullptr);
 				strPath = szDrive;
 				strPath += szDir;
 				if (g_bFITSOutput)
@@ -230,7 +230,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				break;
 			};
 
-			WriteFITS(g_strOutputFile, pBitmap, &progress, fitsformat, NULL);
+			WriteFITS(g_strOutputFile, pBitmap, &progress, fitsformat, nullptr);
 		}
 		else
 		{
@@ -250,7 +250,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				};
 			};
 
-			WriteTIFF(g_strOutputFile, pBitmap, &progress, g_TIFFFormat, g_TIFFCompression, NULL);
+			WriteTIFF(g_strOutputFile, pBitmap, &progress, g_TIFFFormat, g_TIFFCompression, nullptr);
 		};
 	};
 };
@@ -259,7 +259,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	OleInitialize(NULL);
+	OleInitialize(nullptr);
 
 	SetUILanguage();
 

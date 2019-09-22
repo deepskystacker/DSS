@@ -290,7 +290,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 	DWORD				dwGroupID = 0;
 	GUID				dwJobID = MAINJOBID;
 
-	SetCursor(::LoadCursor(NULL, IDC_WAIT));
+	SetCursor(::LoadCursor(nullptr, IDC_WAIT));
 	hFile = _tfopen(szFileList, _T("rt"));
 	if (hFile)
 	{
@@ -447,7 +447,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 		}
 	};
 	m_bDirty = FALSE;
-	SetCursor(::LoadCursor(NULL, IDC_ARROW));
+	SetCursor(::LoadCursor(nullptr, IDC_ARROW));
 };
 
 /* ------------------------------------------------------------------- */

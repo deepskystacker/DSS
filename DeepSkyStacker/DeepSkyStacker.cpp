@@ -224,7 +224,7 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	CString				strPath;
 	CString				strTemp;
 
-	::GetModuleFileName(NULL, szPath, sizeof(szPath)/sizeof(TCHAR));
+	::GetModuleFileName(nullptr, szPath, sizeof(szPath)/sizeof(TCHAR));
 	strPath = szPath;
 
 	FTA.SetExtension(_T("dssfilelist"));
@@ -287,7 +287,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 
 	ZTRACE_RUNTIME("Checking Mutex");
 
-	hMutex = CreateMutex(NULL, TRUE, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));
+	hMutex = CreateMutex(nullptr, TRUE, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 		bFirstInstance = false;
 	ZTRACE_RUNTIME("Checking Mutex - ok");
@@ -301,7 +301,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 		return nRetCode;
 	}
 
-	OleInitialize(NULL);
+	OleInitialize(nullptr);
 	ZTRACE_RUNTIME("OLE Initialize - ok");
 
 	ZTRACE_RUNTIME("Set UI Language");
@@ -339,7 +339,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	ZTRACE_RUNTIME("Initialize Application");
 
 	// initialize MFC and print and error on failure
-	if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0))
+	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
 	{
 		cerr << _T("Fatal Error: MFC initialization failed") << endl;
 		nRetCode = 1;

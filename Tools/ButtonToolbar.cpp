@@ -9,8 +9,8 @@ Bitmap *	GetBitmapFromIcon(int nBitmap, int nMask)
 	HBITMAP				hBitmap = LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(nBitmap));
 	HBITMAP				hMask   = LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(nMask));
 	Bitmap	*			pResult;
-	Bitmap				bmp(hBitmap, NULL);
-	Bitmap				bmpMask(hMask, NULL);
+	Bitmap				bmp(hBitmap, nullptr);
+	Bitmap				bmpMask(hMask, nullptr);
 
 	pResult = bmp.Clone(0, 0, BUTTONTOOLBARSIZE, BUTTONTOOLBARSIZE, PixelFormat32bppARGB);
 	for (LONG i = 0;i<bmp.GetWidth();i++)
@@ -45,7 +45,7 @@ void	CMaskedButton::Init(UINT nBitmapUp, UINT nBitmapDown, UINT nBitmapHot, UINT
 
 void CButtonToolbar::ComputeTooltipSize(LPCTSTR szTooltip, CRect & rcTooltip)
 {
-	HDC					hDC = GetDC(NULL);
+	HDC					hDC = GetDC(nullptr);
 	Graphics			graphics(hDC);
 	Font				font(FontFamily::GenericSansSerif(), 10, FontStyleRegular);
 	StringFormat		format;
@@ -56,7 +56,7 @@ void CButtonToolbar::ComputeTooltipSize(LPCTSTR szTooltip, CRect & rcTooltip)
 
 	graphics.MeasureString(CComBSTR(szTooltip), -1, &font, PointF(0, 0), &format, &rcFBound);
 
-	ReleaseDC(NULL, hDC);
+	ReleaseDC(nullptr, hDC);
 
 	rcTooltip.left  = rcFBound.X;
 	rcTooltip.right = rcFBound.X+rcFBound.Width;
@@ -155,7 +155,7 @@ Image*	CButtonToolbar::GetImage()
 
 Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 {
-	Image *				pResult = NULL;
+	Image *				pResult = nullptr;
 	CString				strTooltip;
 
 	if (GetTooltipRect(rcTooltip, strTooltip))
@@ -183,7 +183,7 @@ Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 			path.AddEllipse(0, lHeight-20*10, 20*10, 20*10);
 			path.AddEllipse(lWidth-20*10, lHeight-20*10, 20*10, 20*10);
 			//path.Flatten();
-			path.Outline(NULL, (REAL)0.01);
+			path.Outline(nullptr, (REAL)0.01);
 
 			Matrix				matrix;
 

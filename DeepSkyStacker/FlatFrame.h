@@ -144,8 +144,8 @@ public :
 		m_pFlatFrame.Release();
 	};
 
-	void	ComputeFlatNormalization(CDSSProgress * pProgress = NULL);
-	BOOL	ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress = NULL);
+	void	ComputeFlatNormalization(CDSSProgress * pProgress = nullptr);
+	BOOL	ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */

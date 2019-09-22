@@ -218,7 +218,7 @@ class CRecommendedSettings : public CDialog
 	DECLARE_EASYSIZE
 
 public:
-	CRecommendedSettings(CWnd* pParent = NULL);   // standard constructor
+	CRecommendedSettings(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CRecommendedSettings();
 
 	void		SetStackingTasks(CAllStackingTasks * pStackingTasks)

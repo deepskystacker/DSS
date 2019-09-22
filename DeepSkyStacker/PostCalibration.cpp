@@ -329,7 +329,7 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 					if (::LoadPicture(strFileName, &pBitmap, &dlg))
 					{
 						// Apply offset, dark and flat to lightframe
-						MasterFrames.ApplyAllMasters(pBitmap, NULL, &dlg);
+						MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);
 
 						// Then simulate the cosmetic on this image
 						CCosmeticStats			Stats;
@@ -378,7 +378,7 @@ void CPostCalibration::OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result
 	else
 		popup->CheckMenuItem(ID_COSMETICMETHOD_GAUSSIAN, MF_BYCOMMAND | MF_CHECKED);
 
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);
+	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
 
 	if (nResult == ID_COSMETICMETHOD_MEDIAN)
 	{

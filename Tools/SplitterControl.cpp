@@ -15,8 +15,8 @@ static char THIS_FILE[] = __FILE__;
 
 // hCursor1 is for vertiacal one
 // and hCursor2 is for horizontal one
-static HCURSOR SplitterControl_hCursor1 = NULL;
-static HCURSOR SplitterControl_hCursor2 = NULL;
+static HCURSOR SplitterControl_hCursor1 = nullptr;
+static HCURSOR SplitterControl_hCursor2 = nullptr;
 
 CSplitterControl::CSplitterControl()
 {
@@ -133,7 +133,7 @@ void CSplitterControl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (m_bIsPressed)
 	{
-		CWindowDC dc(NULL);
+		CWindowDC dc(nullptr);
 		DrawLine(&dc, m_nX, m_nY);
 
 		CPoint pt = point;
@@ -190,7 +190,7 @@ void CSplitterControl::OnLButtonDown(UINT nFlags, CPoint point)
 	else
 		m_nSavePos = m_nY;
 
-	CWindowDC dc(NULL);
+	CWindowDC dc(nullptr);
 	DrawLine(&dc, m_nX, m_nY);
 }
 
@@ -199,7 +199,7 @@ void CSplitterControl::OnLButtonUp(UINT nFlags, CPoint point)
 	if (m_bIsPressed)
 	{
 		ClientToScreen(&point);
-		CWindowDC dc(NULL);
+		CWindowDC dc(nullptr);
 
 		DrawLine(&dc, m_nX, m_nY);
 		CPoint pt(m_nX, m_nY);

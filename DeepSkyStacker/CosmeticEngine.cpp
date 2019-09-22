@@ -129,9 +129,9 @@ public :
 								lNrColdPixels = 0;
 
 		// Create a message queue and signal the event
-		PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
 			if (msg.message == WM_MT_PROCESS)
 			{
@@ -215,7 +215,7 @@ public :
 			i			+=lAdd;
 			lRemaining	-= lAdd;
 			if (m_pProgress)
-				m_pProgress->Progress2(NULL, i);
+				m_pProgress->Progress2(nullptr, i);
 		};
 
 		CloseAllThreads();
@@ -332,9 +332,9 @@ public :
 		BOOL					bCFA = m_pOutBitmap->IsCFA();
 
 		// Create a message queue and signal the event
-		PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
 			if (msg.message == WM_MT_PROCESS)
 			{
@@ -393,7 +393,7 @@ public :
 			i			+=lAdd;
 			lRemaining	-= lAdd;
 			if (m_pProgress)
-				m_pProgress->Progress2(NULL, i);
+				m_pProgress->Progress2(nullptr, i);
 		};
 
 		CloseAllThreads();
@@ -621,7 +621,7 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 	BOOL				bResult = FALSE;
 
 	if (ppDeltaBitmap)
-		*ppDeltaBitmap = NULL;
+		*ppDeltaBitmap = nullptr;
 	if (pBitmap)
 	{
 		if (pcs.m_bHot || pcs.m_bCold)
@@ -706,7 +706,7 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 				pCloneBitmap.Attach(pBitmap->Clone());
 
 				if (pProgress)
-					pProgress->Start2(NULL, lHeight);
+					pProgress->Start2(nullptr, lHeight);
 
 				CosmeticTask.Init(pBitmap, pCloneBitmap, pDelta, pcs, pProgress);
 				CosmeticTask.StartThreads();
@@ -762,7 +762,7 @@ BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 				CDetectCosmeticTask		CosmeticTask;
 
 				CosmeticTask.SetSimulate(TRUE);
-				CosmeticTask.Init(pBitmap, pMedian, NULL, TRUE, pcs.m_fHotDetection/100.0, pProgress);
+				CosmeticTask.Init(pBitmap, pMedian, nullptr, TRUE, pcs.m_fHotDetection/100.0, pProgress);
 				CosmeticTask.StartThreads();
 				CosmeticTask.Process();
 
@@ -795,7 +795,7 @@ BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 				CDetectCosmeticTask		CosmeticTask;
 
 				CosmeticTask.SetSimulate(TRUE);
-				CosmeticTask.Init(pBitmap, pMedian, NULL, FALSE, pcs.m_fColdDetection/100.0, pProgress);
+				CosmeticTask.Init(pBitmap, pMedian, nullptr, FALSE, pcs.m_fColdDetection/100.0, pProgress);
 				CosmeticTask.StartThreads();
 				CosmeticTask.Process();
 

@@ -30,7 +30,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 	TCHAR				szDir[1+_MAX_DIR];
 	TCHAR				szName[1+_MAX_FNAME];
 
-	_tsplitpath(szReferenceFrame, szDrive, szDir, szName, NULL);
+	_tsplitpath(szReferenceFrame, szDrive, szDir, szName, nullptr);
 
 	m_strReferenceFrame = szReferenceFrame;
 	m_strStackingFileInfo.Format(_T("%s%s%s.stackinfo.txt"), szDrive, szDir, szName);
@@ -135,7 +135,7 @@ void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & s
 	TCHAR				szDir[1+_MAX_DIR];
 	TCHAR				szName[1+_MAX_FNAME];
 
-	_tsplitpath(szLightFrame, szDrive, szDir, szName, NULL);
+	_tsplitpath(szLightFrame, szDrive, szDir, szName, nullptr);
 
 	strInfoFileName.Empty();
 	strInfoFileName.Format(_T("%s%s%s.Info.txt"), szDrive, szDir, szName);
@@ -150,10 +150,10 @@ void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & s
 	if (GetFileCreationDateTime((LPCTSTR)strInfoFileName, FileTime))
 	{
 		FileTimeToSystemTime(&FileTime, &SystemTime);
-		SystemTimeToTzSpecificLocalTime(NULL, &SystemTime, &SystemTime);
+		SystemTimeToTzSpecificLocalTime(nullptr, &SystemTime, &SystemTime);
 
-		GetDateFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, NULL, szDate, sizeof(szDate));
-		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, NULL, szTime, sizeof(szTime));
+		GetDateFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szDate, sizeof(szDate));
+		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szTime, sizeof(szTime));
 
 		strInfoFileName.Format(_T("%s%s%s.Info.txt [%s %s]"), szDrive, szDir, szName, szDate, szTime);
 	}
@@ -645,9 +645,9 @@ BOOL	CComputeOffsetTask::DoTask(HANDLE hEvent)
 		CMatchingStars  MatchingStars;
 
 		// Create a message queue and signal the event
-		PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
 			if (msg.message == WM_MT_PROCESS)
 			{
@@ -755,8 +755,8 @@ BOOL	CStackingEngine::ComputeMissingCometPositions()
 		{
 			//if (!vpLightFrames[i]->m_bComet)
 			{
-				CLightFrameInfo *				pPreviousComet = NULL;
-				CLightFrameInfo *				pNextComet = NULL;
+				CLightFrameInfo *				pPreviousComet = nullptr;
+				CLightFrameInfo *				pNextComet = nullptr;
 				LONG							lPreviousIndex,
 												lNextIndex;
 
@@ -1379,7 +1379,7 @@ BOOL	CStackingEngine::AdjustBayerDrizzleCoverage()
 					};
 				};
 				if (m_pProgress)
-					m_pProgress->Progress2(NULL, lProgress);
+					m_pProgress->Progress2(nullptr, lProgress);
 			};
 
 			if (m_pProgress)
@@ -1417,13 +1417,13 @@ BOOL	CStackingEngine::AdjustBayerDrizzleCoverage()
 			};
 
 			if (m_pProgress)
-				m_pProgress->Progress2(NULL, lProgress);
+				m_pProgress->Progress2(nullptr, lProgress);
 		};
 
 		if (m_pProgress)
 		{
 			m_pProgress->End2();
-			m_pProgress->Progress1(NULL, 1);
+			m_pProgress->Progress1(nullptr, 1);
 		};
 
 		lProgress = 0;
@@ -1460,7 +1460,7 @@ BOOL	CStackingEngine::AdjustBayerDrizzleCoverage()
 			};
 
 			if (m_pProgress)
-				m_pProgress->Progress2(NULL, lProgress);
+				m_pProgress->Progress2(nullptr, lProgress);
 		};
 
 		if (m_pProgress)
@@ -1486,7 +1486,7 @@ BOOL	CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBit
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, NULL);
+		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1534,7 +1534,7 @@ BOOL	CStackingEngine::SaveCalibratedLightFrame(CMemoryBitmap * pBitmap)
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, NULL);
+		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1609,7 +1609,7 @@ BOOL	CStackingEngine::SaveDeltaImage(CMemoryBitmap * pBitmap)
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, NULL);
+		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1625,7 +1625,7 @@ BOOL	CStackingEngine::SaveDeltaImage(CMemoryBitmap * pBitmap)
 		};
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, 0);
+			m_pProgress->Start2(nullptr, 0);
 		if (m_IntermediateFileFormat == IFF_TIFF)
 			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
 		else
@@ -1652,7 +1652,7 @@ BOOL CStackingEngine::SaveCometImage(CMemoryBitmap * pBitmap)
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, NULL);
+		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1699,7 +1699,7 @@ BOOL CStackingEngine::SaveCometlessImage(CMemoryBitmap * pBitmap)
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, NULL);
+		_tsplitpath(m_strCurrentLightFrame, szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1760,7 +1760,7 @@ public :
 	CStackTask()
 	{
 		ZFUNCTRACE_RUNTIME();
-		m_hPixelEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+		m_hPixelEvent = CreateEvent(nullptr, TRUE, FALSE, nullptr);
 	};
 
 	virtual ~CStackTask()
@@ -1797,9 +1797,9 @@ BOOL	CStackTask::DoTask(HANDLE hEvent)
 	vPixels.reserve(16);
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -1936,7 +1936,7 @@ BOOL	CStackTask::Process()
 		i			+=lAdd;
 		lRemaining	-= lAdd;
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -2163,10 +2163,10 @@ BOOL	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			else if (m_pComet && bComet)
 			{
 				// Subtract the comet from the light frame
-				//WriteTIFF("E:\\BeforeCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, NULL);
-				//WriteTIFF("E:\\SubtractedComet.tiff", m_pComet, m_pProgress, NULL);
+				//WriteTIFF("E:\\BeforeCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
+				//WriteTIFF("E:\\SubtractedComet.tiff", m_pComet, m_pProgress, nullptr);
 				ShiftAndSubtract(StackTask.m_pTempBitmap, m_pComet, m_pProgress, -PixTransform.m_fXCometShift, -PixTransform.m_fYCometShift);
-				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, NULL);
+				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
 			};
 
 			if (m_pLightTask->m_Method == MBP_FASTAVERAGE)
@@ -2272,7 +2272,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 	GetResultExtraInfo();
 
 	if (ppBitmap)
-		*ppBitmap = NULL;
+		*ppBitmap = nullptr;
 
 	m_vCometShifts.clear();
 	switch (tasks.GetStackingMode())
@@ -2363,7 +2363,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 		while (!bEnd)
 		{
 			bEnd = TRUE;
-			CStackingInfo *		pStackingInfo = NULL;
+			CStackingInfo *		pStackingInfo = nullptr;
 
 			for (i = 0;i<tasks.m_vStacks.size() && bEnd;i++)
 			{
@@ -2525,7 +2525,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 			bResult = m_pOutput.CopyTo(ppBitmap);
 		};
 
-		m_pLightTask = NULL;
+		m_pLightTask = nullptr;
 	};
 
 	// Clear everything
@@ -2648,7 +2648,7 @@ BOOL	CStackingEngine::StackLightFrames(CAllStackingTasks & tasks, CDSSProgress *
 				pBitmap.CopyTo(ppBitmap);
 		};
 
-		m_pProgress = NULL;
+		m_pProgress = nullptr;
 		m_pEntropyCoverage.Release();
 		m_pComet.Release();
 	};
@@ -2668,7 +2668,7 @@ BOOL CStackingEngine::ComputeOffsets(CAllStackingTasks & tasks, CDSSProgress * p
 	AddLightFramesToList(tasks);
 	ComputeOffsets();
 
-	m_pProgress = NULL;
+	m_pProgress = nullptr;
 
 	return bResult;
 };
@@ -2698,7 +2698,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 	if (m_vBitmaps.size())
 	{
 		// Use the folder of the first light frame
-		_tsplitpath(m_vBitmaps[0].m_strFileName, szDrive, szDir, NULL, NULL);
+		_tsplitpath(m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 		strOutputFolder = szDrive;
 		strOutputFolder += szDir;
@@ -2711,7 +2711,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 
 	if (OutputSettings.m_bFileListFolder && strFileList.GetLength())
 	{
-		_tsplitpath(strFileList, szDrive, szDir, NULL, NULL);
+		_tsplitpath(strFileList, szDrive, szDir, nullptr, nullptr);
 
 		strOutputFolder = szDrive;
 		strOutputFolder += szDir;
@@ -2725,7 +2725,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 			strBaseName = _T("Autosave");
 		else
 		{
-			_tsplitpath(szFileList, NULL, NULL, szName, NULL);
+			_tsplitpath(szFileList, nullptr, nullptr, szName, nullptr);
 			strBaseName = szName;
 			if (!strBaseName.GetLength())
 				strBaseName = _T("Autosave");
@@ -2811,7 +2811,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 		TCHAR			szDir[1+_MAX_DIR];
 		TCHAR			szName[1+_MAX_FNAME];
 
-		_tsplitpath(szOutputFile, szDrive, szDir, szName, NULL);
+		_tsplitpath(szOutputFile, szDrive, szDir, szName, nullptr);
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
 		strOutputFile += szName;
@@ -2823,7 +2823,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 		{
 			CString			strText;
 
-			_tsplitpath(strOutputFile, NULL, NULL, szName, NULL);
+			_tsplitpath(strOutputFile, nullptr, nullptr, szName, nullptr);
 
 			fprintf(hFile, "<html>\n");
 

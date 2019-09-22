@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 // CSettingsDlg dialog
 
 
-CSettingsDlg::CSettingsDlg(CWnd* pParent /*=NULL*/)
+CSettingsDlg::CSettingsDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CSettingsDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CSettingsDlg)

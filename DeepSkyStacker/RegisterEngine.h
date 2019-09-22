@@ -297,7 +297,7 @@ private :
 		m_fYOffset = 0;
 		m_fAngle   = 0;
 		m_bDisabled= FALSE;
-		m_pProgress= NULL;
+		m_pProgress= nullptr;
 		m_bStartingFrame  = FALSE;
 		m_vVotedPairs.clear();
 
@@ -362,7 +362,7 @@ public :
 	};
 
 	void	RegisterPicture(CMemoryBitmap * pBitmap);
-	void	RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, BOOL bRemoveHotPixels = TRUE, BOOL bApplyMedianFilter = FALSE, CDSSProgress * pProgress = NULL);
+	void	RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, BOOL bRemoveHotPixels = TRUE, BOOL bApplyMedianFilter = FALSE, CDSSProgress * pProgress = nullptr);
 	void	SaveRegisteringInfo();
 
 private :

@@ -40,7 +40,7 @@ const		DWORD					IDC_EDIT_SAVE   = 4;
 // CStackingDlg dialog
 
 
-CStackingDlg::CStackingDlg(CWnd* pParent /*=NULL*/)
+CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackingDlg::IDD, pParent),
 	m_cCtrlCache(this)
 {
@@ -206,7 +206,7 @@ BOOL CStackingDlg::OnInitDialog()
 /*
 	m_ShowHideJobs.SetLink(TRUE, TRUE);
 	m_ShowHideJobs.SetTransparent(TRUE);
-	m_ShowHideJobs.SetLinkCursor(LoadCursor(NULL,MAKEINTRESOURCE(IDC_HAND)));
+	m_ShowHideJobs.SetLinkCursor(LoadCursor(nullptr,MAKEINTRESOURCE(IDC_HAND)));
 	m_ShowHideJobs.SetFont3D(FALSE);
 	m_ShowHideJobs.SetTextColor(RGB(0, 0, 192));
 	m_ShowHideJobs.SetWindowText("Show/Hide Jobs");
@@ -457,7 +457,7 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
-			m_Gamma.InvalidateRect(NULL);
+			m_Gamma.InvalidateRect(nullptr);
 		};
 	};
 
@@ -607,7 +607,7 @@ void CStackingDlg::OnAdddarks()
 
 	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -639,7 +639,7 @@ void CStackingDlg::OnAdddarks()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -686,7 +686,7 @@ void CStackingDlg::OnAddDarkFlats()
 
 	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -718,7 +718,7 @@ void CStackingDlg::OnAddDarkFlats()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFLATFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -765,7 +765,7 @@ void CStackingDlg::OnAddFlats()
 
 	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -798,7 +798,7 @@ void CStackingDlg::OnAddFlats()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_FLATFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -845,7 +845,7 @@ void CStackingDlg::OnAddOffsets()
 
 	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -877,7 +877,7 @@ void CStackingDlg::OnAddOffsets()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_OFFSETFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -917,7 +917,7 @@ void CStackingDlg::OnAddpictures()
 
 	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -950,7 +950,7 @@ void CStackingDlg::OnAddpictures()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID());
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -1004,7 +1004,7 @@ void CStackingDlg::OpenFileList(LPCTSTR szFileList)
 	if  (hFile)
 	{
 		fclose(hFile);
-		SetCursor(::LoadCursor(NULL, IDC_WAIT));
+		SetCursor(::LoadCursor(nullptr, IDC_WAIT));
 		m_Pictures.LoadFilesFromList(strList);
 		m_Pictures.RefreshList();
 		m_MRUList.Add(strList);
@@ -1012,7 +1012,7 @@ void CStackingDlg::OpenFileList(LPCTSTR szFileList)
 		UpdateListInfo();
 		m_strCurrentFileList = szFileList;
 		SetCurrentFileInTitle(m_strCurrentFileList);
-		SetCursor(::LoadCursor(NULL, IDC_ARROW));
+		SetCursor(::LoadCursor(nullptr, IDC_ARROW));
 	};
 };
 
@@ -1051,7 +1051,7 @@ void CStackingDlg::LoadList()
 				TCHAR				szName[1+_MAX_FNAME];
 				CString				strItem;
 
-				_tsplitpath((LPCTSTR)m_MRUList.m_vLists[i], szDrive, szDir, szName, NULL);
+				_tsplitpath((LPCTSTR)m_MRUList.m_vLists[i], szDrive, szDir, szName, nullptr);
 				strItem.Format(_T("%s%s%s"), szDrive, szDir, szName);
 
 				popup->InsertMenu(ID_FILELIST_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
@@ -1060,7 +1060,7 @@ void CStackingDlg::LoadList()
 
 			popup->DeleteMenu(ID_FILELIST_FIRSTMRU, MF_BYCOMMAND);
 
-			nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);;
+			nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 			if (nResult == ID_FILELIST_OPENANOTHERFILELIST)
 				bOpenAnother = TRUE;
@@ -1116,7 +1116,7 @@ CWndImageSink *	CStackingDlg::GetCurrentSink()
 	else if (m_ButtonToolbar.IsChecked(IDC_EDIT_SELECT))
 		return &m_SelectRectSink;
 
-	return NULL;
+	return nullptr;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1229,7 +1229,7 @@ void CStackingDlg::ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonTo
 			popup->CheckMenuItem(ID_SAVECONTEXT_ASKALWAYS, MF_BYCOMMAND | MF_CHECKED);
 			break;
 		};
-		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y, this, NULL);
+		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y, this, nullptr);
 
 		if (nResult == ID_SAVECONTEXT_SAVEWITHOUTASKING)
 			SetSaveEditMode(SECM_SAVEDONTASK);
@@ -1361,9 +1361,9 @@ LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
 		}
 		else
 		{
-			m_Picture.SetImageSink(NULL);
-			m_Picture.SetButtonToolbar(NULL);
-			m_EditStarSink.SetBitmap(NULL);
+			m_Picture.SetImageSink(nullptr);
+			m_Picture.SetButtonToolbar(nullptr);
+			m_EditStarSink.SetBitmap(nullptr);
 		};
 		m_Picture.SetBltMode(CWndImage::bltFitXY);
 		m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
@@ -1383,17 +1383,17 @@ LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
 		strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strShowFile);
 		m_Infos.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
 		m_Infos.SetText(strText);
-		m_Picture.SetImageSink(NULL);
-		m_Picture.SetButtonToolbar(NULL);
-		m_EditStarSink.SetBitmap(NULL);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(nullptr);
 	}
 	else
 	{
 		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 		m_Infos.SetText("");
-		m_Picture.SetImageSink(NULL);
-		m_Picture.SetButtonToolbar(NULL);
-		m_EditStarSink.SetBitmap(NULL);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(nullptr);
 	};
 	return 1;
 };
@@ -1481,7 +1481,7 @@ LRESULT CStackingDlg::OnSelectItem(WPARAM, LPARAM)
 {
 	LRESULT				lResult;
 
-	OnClickPictures(NULL, &lResult);
+	OnClickPictures(nullptr, &lResult);
 
 	return 0;
 };
@@ -1607,16 +1607,16 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 				if (iff==IFF_TIFF)
 				{
 					if (pBitmap->IsMonochrome())
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, NULL);
+						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
 					else
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, NULL);
+						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
 				}
 				else
 				{
 					if (pBitmap->IsMonochrome())
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, NULL);
+						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, nullptr);
 					else
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, NULL);
+						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, nullptr);
 				};
 
 				dlg.End2();
@@ -1770,10 +1770,10 @@ void CStackingDlg::ClearList()
 	if (CheckEditChanges() && CheckWorkspaceChanges())
 	{
 		m_Pictures.Clear();
-		m_Picture.SetImg((CBitmap*)NULL);
-		m_Picture.SetImageSink(NULL);
-		m_Picture.SetButtonToolbar(NULL);
-		m_EditStarSink.SetBitmap(NULL);
+		m_Picture.SetImg((CBitmap*)nullptr);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(nullptr);
 		m_strShowFile.Empty();
 		m_Infos.SetText(m_strShowFile);
 		m_BackgroundLoading.ClearList();

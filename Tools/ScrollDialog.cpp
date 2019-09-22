@@ -41,7 +41,7 @@ UINT CGripper::OnNcHitTest(CPoint point)
 /////////////////////////////////////////////////////////////////////////////
 // CScrollDialog dialog
 
-CScrollDialog::CScrollDialog(UINT nIDD, CWnd* pParent /*=NULL*/)
+CScrollDialog::CScrollDialog(UINT nIDD, CWnd* pParent /*=nullptr*/)
 	: CDialog(nIDD, pParent)
 {
 	//{{AFX_DATA_INIT(CScrollDialog)
@@ -113,8 +113,8 @@ BOOL CScrollDialog::OnInitDialog()
 void CScrollDialog::ResetScrollbars()
 {
     // Reset our window scrolling information
-    ScrollWindow(m_nHscrollPos*HORZ_PTS, 0, NULL, NULL);
-    ScrollWindow(0, m_nVscrollPos*VERT_PTS, NULL, NULL);
+    ScrollWindow(m_nHscrollPos*HORZ_PTS, 0, nullptr, nullptr);
+    ScrollWindow(0, m_nVscrollPos*VERT_PTS, nullptr, nullptr);
     m_nHscrollPos = 0;
     m_nVscrollPos = 0;
     SetScrollPos(SB_HORZ, m_nHscrollPos, TRUE);
@@ -196,7 +196,7 @@ void CScrollDialog::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     {
         m_nVscrollPos += nInc;
         int iMove = -VERT_PTS * nInc;
-        ScrollWindow(0, iMove, NULL, NULL);
+        ScrollWindow(0, iMove, nullptr, nullptr);
         SetScrollPos(SB_VERT, m_nVscrollPos, TRUE);
     }
 
@@ -227,7 +227,7 @@ void CScrollDialog::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     {
         m_nHscrollPos += nInc;
         int iMove = -HORZ_PTS * nInc;
-        ScrollWindow(iMove, 0, NULL, NULL);
+        ScrollWindow(iMove, 0, nullptr, nullptr);
         SetScrollPos(SB_HORZ, m_nHscrollPos, TRUE);
     }
 

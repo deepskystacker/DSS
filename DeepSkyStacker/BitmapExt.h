@@ -88,7 +88,7 @@ public :
 		m_vExtras.push_back(ei);
 	};
 
-	void	AddInfo(LPCTSTR szName, LPCTSTR szValue, LPCTSTR szComment = NULL, bool bPropagate = false)
+	void	AddInfo(LPCTSTR szName, LPCTSTR szValue, LPCTSTR szComment = nullptr, bool bPropagate = false)
 	{
 		CExtraInfo		ei;
 
@@ -99,7 +99,7 @@ public :
 		ei.m_bPropagate = bPropagate;
 		m_vExtras.push_back(ei);
 	};
-	void	AddInfo(LPCTSTR szName, LONG lValue, LPCTSTR szComment = NULL, bool bPropagate = false)
+	void	AddInfo(LPCTSTR szName, LONG lValue, LPCTSTR szComment = nullptr, bool bPropagate = false)
 	{
 		CExtraInfo		ei;
 
@@ -110,7 +110,7 @@ public :
 		ei.m_bPropagate = bPropagate;
 		m_vExtras.push_back(ei);
 	};
-	void	AddInfo(LPCTSTR szName, double fValue, LPCTSTR szComment = NULL, bool bPropagate = false)
+	void	AddInfo(LPCTSTR szName, double fValue, LPCTSTR szComment = nullptr, bool bPropagate = false)
 	{
 		CExtraInfo		ei;
 
@@ -444,8 +444,8 @@ public :
 		m_vImageOrder = vImageOrder;
 	};
 
-	virtual BOOL	AddBitmap(CMemoryBitmap * pMemoryBitmap, CDSSProgress * pProgress = NULL);
-	virtual BOOL	GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = NULL);
+	virtual BOOL	AddBitmap(CMemoryBitmap * pMemoryBitmap, CDSSProgress * pProgress = nullptr);
+	virtual BOOL	GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 	virtual LONG	GetNrChannels() = 0;
 	virtual LONG	GetNrBytesPerChannel() = 0;
 
@@ -562,7 +562,7 @@ public :
 	CMedianFilterEngine()
 	{
 		m_lFilterSize = 1;
-		m_pProgress   = NULL;
+		m_pProgress   = nullptr;
 	};
 
 	virtual ~CMedianFilterEngine() {};
@@ -846,7 +846,7 @@ public :
 
 	virtual CMultiBitmap * CreateEmptyMultiBitmap() = 0;
 	virtual void	AverageBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress) {};
-	virtual void	RemoveHotPixels(CDSSProgress * pProgress = NULL) {};
+	virtual void	RemoveHotPixels(CDSSProgress * pProgress = nullptr) {};
 	virtual void	GetMedianFilterEngine(CMedianFilterEngine ** pMedianFilterEngine)  = 0;
 
 	virtual void	GetIterator(CPixelIterator ** ppIterator, LONG x = 0, LONG y = 0) = 0;
@@ -858,10 +858,10 @@ typedef CSmartPtr<CMemoryBitmap::CPixelIterator>	PixelIterator;
 
 /* ------------------------------------------------------------------- */
 
-BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = NULL, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
-BOOL Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = NULL);
-BOOL ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = NULL, double fXShift = 0, double fYShift = 0);
-BOOL Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress = NULL);
+BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
+BOOL Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr);
+BOOL ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fXShift = 0, double fYShift = 0);
+BOOL Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 
@@ -1483,7 +1483,7 @@ public :
 					// End of iteration
 					m_lX = -1;
 					m_lY = -1;
-					m_pValue = NULL;
+					m_pValue = nullptr;
 				};
 				if (m_pValue)
 					m_pValue++;
@@ -1527,9 +1527,9 @@ public :
 			std::vector<size_t>		vHotOffsets;
 
 			// Create a message queue and signal the event
-			PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+			PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 			SetEvent(hEvent);
-			while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+			while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 			{
 				if (msg.message == WM_MT_PROCESS)
 				{
@@ -1600,7 +1600,7 @@ public :
 				i			+=lAdd;
 				lRemaining	-= lAdd;
 				if (m_pProgress)
-					m_pProgress->Progress2(NULL, i);
+					m_pProgress->Progress2(nullptr, i);
 			};
 
 			CloseAllThreads();
@@ -1691,7 +1691,7 @@ private :
 		return 0;
 	};
 
-	double	InterpolateGreen(LONG x, LONG y, TType * pValue = NULL)
+	double	InterpolateGreen(LONG x, LONG y, TType * pValue = nullptr)
 	{
 		double		fResult = 0.0;
 		LONG		lNrValues = 0;
@@ -1723,7 +1723,7 @@ private :
 		return fResult/lNrValues;
 	};
 
-	double	InterpolateBlue(LONG x, LONG y, TType * pValue = NULL)
+	double	InterpolateBlue(LONG x, LONG y, TType * pValue = nullptr)
 	{
 		double		fResult = 0.0;
 		LONG		lNrValues = 0;
@@ -1786,7 +1786,7 @@ private :
 		return fResult/lNrValues;
 	};
 
-	double	InterpolateRed(LONG x, LONG y, TType * pValue = NULL)
+	double	InterpolateRed(LONG x, LONG y, TType * pValue = nullptr)
 	{
 		double		fResult = 0.0;
 		LONG		lNrValues = 0;
@@ -2211,7 +2211,7 @@ public :
 		return pResult;
 	};
 
-	virtual void RemoveHotPixels(CDSSProgress * pProgress = NULL)
+	virtual void RemoveHotPixels(CDSSProgress * pProgress = nullptr)
 	{
 		/*LONG					i, j;
 		std::vector<LONG>		vHotOffsets;*/
@@ -2260,7 +2260,7 @@ public :
 			};
 
 			if (pProgress)
-				pProgress->Progress2(NULL, i+1);
+				pProgress->Progress2(nullptr, i+1);
 		};*/
 
 		for (LONG i = 0;i<HotPixelTask.m_vHotOffsets.size();i++)
@@ -2336,7 +2336,7 @@ private :
 public :
 	CWindowsBitmap()
 	{
-		m_hBitmap = NULL;
+		m_hBitmap = nullptr;
 	};
 
 	~CWindowsBitmap()
@@ -2390,11 +2390,11 @@ private :
 public :
 	C32BitsBitmap()
 	{
-		m_hBitmap	= NULL;
-		m_lpBits	= NULL;
+		m_hBitmap	= nullptr;
+		m_lpBits	= nullptr;
 		m_lWidth	= 0;
 		m_lHeight	= 0;
-		m_pLine		= NULL;
+		m_pLine		= nullptr;
 	};
 
 	virtual ~C32BitsBitmap()
@@ -2449,9 +2449,9 @@ public :
         bmpInfo.bmiHeader.biClrImportant = 0;
 
 		HDC				hDC;
-		hDC = GetDC(NULL);
-        hBitmap = CreateDIBSection(hDC, &bmpInfo, 0, &pBits, NULL, 0);
-		ReleaseDC(NULL, hDC);
+		hDC = GetDC(nullptr);
+        hBitmap = CreateDIBSection(hDC, &bmpInfo, 0, &pBits, nullptr, 0);
+		ReleaseDC(nullptr, hDC);
 
 		if (hBitmap)
 		{
@@ -2470,7 +2470,7 @@ public :
 
 	BOOL	IsEmpty()
 	{
-		return (m_hBitmap == NULL);
+		return (m_hBitmap == nullptr);
 	};
 
 	HBITMAP GetHBITMAP()
@@ -2484,18 +2484,18 @@ public :
 		{
 			DeleteObject(m_hBitmap);
 		};
-		m_hBitmap	= NULL;
-		m_lpBits	= NULL;
+		m_hBitmap	= nullptr;
+		m_lpBits	= nullptr;
 		if (m_pLine)
 			free(m_pLine);
-		m_pLine = NULL;
+		m_pLine = nullptr;
 	};
 
 	HBITMAP	Detach()
 	{
 		HBITMAP		hResult = m_hBitmap;
 
-		m_hBitmap = NULL;
+		m_hBitmap = nullptr;
 		Free();
 
 		return hResult;
@@ -2965,7 +2965,7 @@ public :
 					// End of iteration
 					m_lX = -1;
 					m_lY = -1;
-					m_pRedValue = m_pGreenValue = m_pBlueValue = NULL;
+					m_pRedValue = m_pGreenValue = m_pBlueValue = nullptr;
 				};
 				if (m_pRedValue)
 					m_pRedValue++;
@@ -3323,7 +3323,7 @@ public :
 		return m_fMultiplier*256.0;
 	};
 
-	virtual void RemoveHotPixels(CDSSProgress * pProgress = NULL)
+	virtual void RemoveHotPixels(CDSSProgress * pProgress = nullptr)
 	{
 		m_Red.RemoveHotPixels(pProgress);
 		m_Green.RemoveHotPixels(pProgress);
@@ -3554,8 +3554,8 @@ public :
 void	CopyBitmapToClipboard(HBITMAP hBitmap);
 
 BOOL	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-//HBITMAP LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap = NULL);
-BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress = NULL);
+//HBITMAP LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap = nullptr);
+BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress = nullptr);
 BOOL	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress);
 
 #endif // DSSFILEDECODING
@@ -3563,7 +3563,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 
 BOOL	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 
-BOOL	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress = NULL);
+BOOL	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 

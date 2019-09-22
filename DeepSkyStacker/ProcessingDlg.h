@@ -334,7 +334,7 @@ private :
 
 // Construction
 public:
-	CProcessingDlg(CWnd* pParent = NULL);   // standard constructor
+	CProcessingDlg(CWnd* pParent = nullptr);   // standard constructor
 
 	BOOL	SaveOnClose();
 

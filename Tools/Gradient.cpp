@@ -222,7 +222,7 @@ void CGradient::MakeEntries(RGBTRIPLE *lpPal, int iEntryCount)
 	ASSERT(iEntryCount < 65535);
 
 	InterpolateFn Interpolate = GetInterpolationProc();
-	ASSERT(Interpolate != NULL);
+	ASSERT(Interpolate != nullptr);
 
 	if(pegs.size() > 0)
 	{
@@ -620,7 +620,7 @@ COLORREF CGradient::ColourFromPosition(float pos)
 		return m_Background.colour;
 
 	InterpolateFn Interpolate = GetInterpolationProc();
-	ASSERT(Interpolate != NULL);
+	ASSERT(Interpolate != nullptr);
 
 	if(m_Quantization != -1)
 		pos = ((float)(int)(pos*m_Quantization))/m_Quantization + 0.5f / m_Quantization;

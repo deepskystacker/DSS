@@ -27,7 +27,7 @@ private :
 	BOOL				m_bDirty;
 
 public:
-	CSettingsTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CSettingsTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CSettingsTab();
 
 

@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(CBatchStacking, CDialog)
 
 
-CBatchStacking::CBatchStacking(CWnd* pParent /*=NULL*/)
+CBatchStacking::CBatchStacking(CWnd* pParent /*=nullptr*/)
 	: CDialog(CBatchStacking::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CBatchStacking)
@@ -129,7 +129,7 @@ void CBatchStacking::OnBnClickedAddLists()
 
 	CFileDialog			dlgOpen(TRUE,
 								_T(".txt"),
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 								OUTPUTLIST_FILTERS,
 								this);
@@ -168,7 +168,7 @@ void CBatchStacking::OnBnClickedAddLists()
 				m_Lists.SetCheck(nIndex, TRUE);
 			};
 
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 		};
@@ -258,7 +258,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 				CString				strText;
 
 				TCHAR				szFileName[1+_MAX_FNAME];
-				_tsplitpath(szList, NULL, NULL, szFileName, NULL);
+				_tsplitpath(szList, nullptr, nullptr, szFileName, nullptr);
 
 				strFileName = szFileName;
 
@@ -276,16 +276,16 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 					if (iff==IFF_TIFF)
 					{
 						if (pBitmap->IsMonochrome())
-							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, NULL);
+							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
 						else
-							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, NULL);
+							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
 					}
 					else
 					{
 						if (pBitmap->IsMonochrome())
-							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, NULL);
+							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, nullptr);
 						else
-							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, NULL);
+							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, nullptr);
 					};
 
 					dlg.End2();

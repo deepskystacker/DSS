@@ -19,7 +19,7 @@ class CRegisterSettings : public CDialog
 {
 // Construction
 public:
-	CRegisterSettings(CWnd* pParent = NULL);   // standard constructor
+	CRegisterSettings(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CRegisterSettings)

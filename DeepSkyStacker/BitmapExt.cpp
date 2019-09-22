@@ -128,14 +128,14 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
    UINT  num = 0;          // number of image encoders
    UINT  size = 0;         // size of the image encoder array in bytes
 
-   ImageCodecInfo* pImageCodecInfo = NULL;
+   ImageCodecInfo* pImageCodecInfo = nullptr;
 
    GetImageEncodersSize(&num, &size);
    if(size == 0)
       return -1;  // Failure
 
    pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
-   if(pImageCodecInfo == NULL)
+   if(pImageCodecInfo == nullptr)
       return -1;  // Failure
 
    GetImageEncoders(num, size, pImageCodecInfo);
@@ -169,7 +169,7 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 
 	GetObject(hBitmap, sizeof(BITMAP), &bmpInfo);
 
-	hScreenDC = GetDC(NULL);
+	hScreenDC = GetDC(nullptr);
 	hSrcDC = CreateCompatibleDC(hScreenDC);
 	hTgtDC = CreateCompatibleDC(hScreenDC);
 
@@ -189,11 +189,11 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 
 	DeleteDC(hSrcDC);
 	DeleteDC(hTgtDC);
-	ReleaseDC(NULL, hScreenDC);
+	ReleaseDC(nullptr, hScreenDC);
 
 	if (hTgtBmp)
 	{
-		OpenClipboard(NULL);
+		OpenClipboard(nullptr);
 		EmptyClipboard();
 		SetClipboardData(CF_BITMAP, hTgtBmp);
 		CloseClipboard();
@@ -209,7 +209,7 @@ BOOL	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 	BOOL						bResult = FALSE;
 	CSmartPtr<CMemoryBitmap>	pOutBitmap;
 
-	*ppOutBitmap = NULL;
+	*ppOutBitmap = nullptr;
 	if (pInBitmap && pInBitmap->IsCFA())
 	{
 		C16BitGrayBitmap *			pGrayBitmap;
@@ -282,7 +282,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 				// AHD Demosaicing of the image
 				CSmartPtr<CMemoryBitmap>		pColorBitmap;
 
-				AHDDemosaicing(pGrayBitmap, &pColorBitmap, NULL);
+				AHDDemosaicing(pGrayBitmap, &pColorBitmap, nullptr);
 
 				AllDepthBitmap.m_pBitmap = pColorBitmap;
 			}
@@ -345,7 +345,7 @@ BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 			BitmapData 				bitmapData;
 
 			if (pProgress)
-				pProgress->Start2(NULL, lHeight);
+				pProgress->Start2(nullptr, lHeight);
 			pBitmap->Init(lWidth, lHeight);
 
 			if (pSrcBitmap->LockBits(&rc, ImageLockModeRead, PixelFormat24bppRGB, &bitmapData) == Ok)
@@ -374,7 +374,7 @@ BOOL	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 						pBluePixel++;
 					};
 					if (pProgress)
-						pProgress->Progress2(NULL, j+1);
+						pProgress->Progress2(nullptr, j+1);
 					pBasePixels += labs(bitmapData.Stride);
 				};
 
@@ -646,7 +646,7 @@ BOOL	C32BitsBitmap::CopyToClipboard()
 
 			GlobalUnlock(hGlobal);
 
-			if (OpenClipboard(NULL/*AfxGetMainWnd()->GetSafeHwnd()*/))
+			if (OpenClipboard(nullptr/*AfxGetMainWnd()->GetSafeHwnd()*/))
 			{
 				EmptyClipboard();
 				if (!SetClipboardData(CF_DIB, hGlobal))
@@ -1016,15 +1016,15 @@ BOOL	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 				GetFileCreationDateTime(szFileName, FileTime);
 				FileTimeToSystemTime(&FileTime, &SystemTime);
-				SystemTimeToTzSpecificLocalTime(NULL, &SystemTime, &SystemTime);
+				SystemTimeToTzSpecificLocalTime(nullptr, &SystemTime, &SystemTime);
 				BitmapInfo.m_DateTime = SystemTime;
 
 			};
 
 			GetSystemTime(&BitmapInfo.m_InfoTime);
 
-			GetDateFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, NULL, szDate, sizeof(szDate));
-			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, NULL, szTime, sizeof(szTime));
+			GetDateFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szDate, sizeof(szDate));
+			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szTime, sizeof(szTime));
 
 			BitmapInfo.m_strDateTime.Format(_T("%s %s"), szDate, szTime);
 
@@ -1049,7 +1049,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 	{
 		CBitmapInfo					BitmapInfo;
 		CSmartPtr<CMemoryBitmap>	pBitmap;
-		*ppBitmap = NULL;
+		*ppBitmap = nullptr;
 
 #if DSSFILEDECODING==0
 		if (IsPCLPicture(szFileName, BitmapInfo))
@@ -1191,7 +1191,7 @@ public :
 			m_fGrayFactor = max(fRedFactor, max(fGreenFactor, fBlueFactor));
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, pTarget->RealWidth());
+			m_pProgress->Start2(nullptr, pTarget->RealWidth());
 	};
 
 	void	SetShift(double fXShift, double fYShift)
@@ -1244,9 +1244,9 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 	};
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -1347,7 +1347,7 @@ BOOL CSubtractTask::Process()
 
 	if (m_pProgress)
 	{
-		m_pProgress->Start2(NULL, lHeight);
+		m_pProgress->Start2(nullptr, lHeight);
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	};
 
@@ -1367,7 +1367,7 @@ BOOL CSubtractTask::Process()
 		lRemaining	-= lAdd;
 
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -1494,7 +1494,7 @@ public :
 			m_fGrayFactor = max(fRedFactor, max(fGreenFactor, fBlueFactor));
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, pTarget->RealWidth());
+			m_pProgress->Start2(nullptr, pTarget->RealWidth());
 	};
 
 	void	End()
@@ -1522,9 +1522,9 @@ BOOL	CMultiplyTask::DoTask(HANDLE hEvent)
 	m_pTarget->GetIterator(&PixelItTgt);
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -1577,7 +1577,7 @@ BOOL CMultiplyTask::Process()
 
 	if (m_pProgress)
 	{
-		m_pProgress->Start2(NULL, lHeight);
+		m_pProgress->Start2(nullptr, lHeight);
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	};
 
@@ -1597,7 +1597,7 @@ BOOL CMultiplyTask::Process()
 		lRemaining	-= lAdd;
 
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -1657,7 +1657,7 @@ BOOL	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, L
 	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
-	*ppOutBitmap = NULL;
+	*ppOutBitmap = nullptr;
 	if (pInBitmap)
 	{
 		CSmartPtr<CMedianFilterEngine>	pMedianFilterEngine;

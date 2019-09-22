@@ -264,7 +264,7 @@ public :
 		{
 			CSmartPtr<CMemoryBitmap>	pBitmap;
 
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 			if (m_pMaster && m_pMaster->GetNrBitmaps() > 1)
 			{
 				bResult = m_pMaster->GetResult(&pBitmap, pProgress);
@@ -320,11 +320,11 @@ private :
 public :
 	CStackingInfo()
 	{
-		m_pOffsetTask	= NULL;
-		m_pDarkTask		= NULL;
-		m_pFlatTask		= NULL;
-		m_pLightTask	= NULL;
-		m_pDarkFlatTask	= NULL;
+		m_pOffsetTask	= nullptr;
+		m_pDarkTask		= nullptr;
+		m_pFlatTask		= nullptr;
+		m_pLightTask	= nullptr;
+		m_pDarkFlatTask	= nullptr;
 	};
 
 	CStackingInfo(const CStackingInfo & si)

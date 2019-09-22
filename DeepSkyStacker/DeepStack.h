@@ -32,7 +32,7 @@ public :
 	CDeepStack()
 	{
 		m_bNewStackedBitmap = FALSE;
-		m_pProgress			= NULL;
+		m_pProgress			= nullptr;
 	};
 	virtual ~CDeepStack() {};
 
@@ -74,7 +74,7 @@ public :
 		return bResult;
 	};
 
-	void	SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect = NULL);
+	void	SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect = nullptr);
 	BOOL	LoadStackedInfo(LPCTSTR szStackedInfoFile);
 
 	HBITMAP PartialProcess(RECT rcProcess, const CBezierAdjust & BezierAdjust, const CRGBHistogramAdjust & HistogramAdjust)

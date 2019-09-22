@@ -104,7 +104,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	ZFUNCTRACE_RUNTIME();
 	int nRetCode = 0;
 
-	OleInitialize(NULL);
+	OleInitialize(nullptr);
 
 	SetUILanguage();
 
@@ -121,7 +121,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	#endif
 
 	// initialize MFC and print and error on failure
-	if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0))
+	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
 	{
 		cerr << _T("Fatal Error: MFC initialization failed") << endl;
 		nRetCode = 1;

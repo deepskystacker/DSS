@@ -38,7 +38,7 @@ const	DWORD			WM_FOLDERCHANGE	= WM_USER+100;
 
 IMPLEMENT_DYNAMIC(CMainBoard, CDialog)
 
-CMainBoard::CMainBoard(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+CMainBoard::CMainBoard(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CMainBoard::IDD, pParent),
 	m_bDarkMode(bDarkMode)
 {
@@ -378,7 +378,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pOutlinePath->AddEllipse(RectF(rcProgress.right-10, rcProgress.top, 10, 10));
 		pOutlinePath->AddEllipse(RectF(rcProgress.left, rcProgress.bottom-10, 10, 10));
 		pOutlinePath->AddEllipse(RectF(rcProgress.right-10, rcProgress.bottom-10, 10, 10));
-		pOutlinePath->Outline(NULL, (REAL)0.01);
+		pOutlinePath->Outline(nullptr, (REAL)0.01);
 
 		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0 / nScale, 255.0 / nScale, 255.0 / nScale));
 		pGraphics->FillPath(pBrush, pOutlinePath);
@@ -391,7 +391,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pProgressPath->AddRectangle(RectF(rcProgress.left, rcProgress.top+5, fPosition, rcProgress.Height()-10));
 		pProgressPath->AddEllipse(RectF(rcProgress.left, rcProgress.top, 10, 10));
 		pProgressPath->AddEllipse(RectF(rcProgress.left, rcProgress.bottom-10, 10, 10));
-		pProgressPath->Outline(NULL, (REAL)0.01);
+		pProgressPath->Outline(nullptr, (REAL)0.01);
 
 		pBrush  = new SolidBrush(Color(255.0*0.7, 255.0 / nScale, 255.0 / nScale, 255.0 / nScale));
 		pGraphics->FillPath(pBrush, pOutlinePath);
@@ -770,7 +770,7 @@ static void InitLabel(CLabel & label, BOOL bMain = FALSE, bool bDarkMode = false
 {
 	label.SetLink(TRUE, TRUE);
 	label.SetTransparent(TRUE);
-	label.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
+	label.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
 	label.SetFont3D(FALSE);
 	label.SetTextColor(bDarkMode ? TEXT_DARK : TEXT_NORMAL);
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));
@@ -965,7 +965,7 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 		{
 			strFolder = dlg.GetFolderName();
 			m_MonitoredFolder.SetWindowText(strFolder);
-			InvalidateRect(NULL);
+			InvalidateRect(nullptr);
 
 			CRegistry			reg;
 
@@ -1019,7 +1019,7 @@ void CMainBoard::OnSize(UINT nType, int cx, int cy)
 	CDialog::OnSize(nType, cx, cy);
 
 	m_ControlPos.MoveControls();
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 }
 
 /* ------------------------------------------------------------------- */
@@ -1058,7 +1058,7 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 			TCHAR			szExt[_MAX_EXT];
 			CString			strExt;
 
-			_tsplitpath(strFile, NULL, NULL, NULL, szExt);
+			_tsplitpath(strFile, nullptr, nullptr, nullptr, szExt);
 			strExt = szExt;
 			strExt.MakeUpper();
 			if (strExt.GetLength() && (strExcluded.Find(strExt, 0) == -1))
@@ -1111,7 +1111,7 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 
 			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
 
-			SetTimer(1, dwPollingTime*1000, NULL);
+			SetTimer(1, dwPollingTime*1000, nullptr);
 		};
 	};
 };
@@ -1242,7 +1242,7 @@ void CMainBoard::OnMonitor()
 		if (hResult != S_OK)
 			throw(hResult);
 
-		hResult = pIShellFolder->ParseDisplayName(NULL, pIBindCtx, CComBSTR(strFolder), NULL, &ppidl, NULL);
+		hResult = pIShellFolder->ParseDisplayName(nullptr, pIBindCtx, CComBSTR(strFolder), nullptr, &ppidl, nullptr);
 		if (hResult != S_OK)
 			throw(hResult);
 
@@ -1257,7 +1257,7 @@ void CMainBoard::OnMonitor()
 
 			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
 
-			SetTimer(1, dwPollingTime*1000, NULL);
+			SetTimer(1, dwPollingTime*1000, nullptr);
 		};
 
 		//if (m_ulSHRegister)

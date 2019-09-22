@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 // CProgressDlg dialog
 
 
-CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
+CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CProgressDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CProgressDlg)

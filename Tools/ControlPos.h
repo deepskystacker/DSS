@@ -26,7 +26,7 @@
 class CControlPos
 {
 public:
-	CControlPos(CWnd* pParent = NULL);
+	CControlPos(CWnd* pParent = nullptr);
 	virtual ~CControlPos();
 
 public:

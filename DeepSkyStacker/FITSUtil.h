@@ -119,7 +119,7 @@ private :
 public :
 	CFITSReader(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_fits		  = NULL;
+		m_fits		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 		m_fGreenRatio = 1.0;
@@ -154,9 +154,9 @@ public :
 	FITSFORMAT				m_Format;
 
 private :
-	BOOL	WriteKey(LPSTR szKey, double fValue, LPSTR szComment = NULL);
-	BOOL	WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment = NULL);
-	BOOL	WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = NULL);
+	BOOL	WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);
+	BOOL	WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment = nullptr);
+	BOOL	WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = nullptr);
 	void	WriteAllKeys();
 
 protected :
@@ -165,7 +165,7 @@ protected :
 public :
 	CFITSWriter(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_fits		  = NULL;
+		m_fits		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 		m_Format	  = FF_UNKNOWN;

@@ -341,9 +341,9 @@ public :
 		BOOL			bResult = FALSE;
 
 		if (ppBitmap)
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 		if (ppWndBitmap)
-			*ppWndBitmap = NULL;
+			*ppWndBitmap = nullptr;
 
 		if (m_Msg == LEM_FILELOADED)
 		{
@@ -361,9 +361,9 @@ public :
 		BOOL			bResult = FALSE;
 
 		if (ppBitmap)
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 		if (ppWndBitmap)
-			*ppWndBitmap = NULL;
+			*ppWndBitmap = nullptr;
 
 		if (m_Msg == LEM_SETSTACKEDIMAGE)
 		{
@@ -490,7 +490,7 @@ private :
 	void	PostChangeImageStatus(LPCTSTR szFileName, IMAGESTATUS status);
 	void	PostChangeImageInfo(LPCTSTR szFileName, STACKIMAGEINFO info);
 	void	PostUpdateImageOffsets(LPCTSTR szFileName, double fdX, double fdY, double fAngle);
-	void	SaveStackedImage(CMemoryBitmap * pBitmap = NULL);
+	void	SaveStackedImage(CMemoryBitmap * pBitmap = nullptr);
 	void	PostFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4);
 	void	PostStackedImage();
 	void	PostStackedImageSaved();

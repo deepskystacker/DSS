@@ -32,7 +32,7 @@ private :
 	};
 
 public :
-	CMRUList(LPCTSTR szBasePath = NULL)
+	CMRUList(LPCTSTR szBasePath = nullptr)
 	{
 		if (szBasePath)
 			m_strBasePath = szBasePath;
@@ -337,7 +337,7 @@ public :
 
 	void	AddMainJob()
 	{
-		AddJob(NULL, MAINJOBID);
+		AddJob(nullptr, MAINJOBID);
 	};
 };
 

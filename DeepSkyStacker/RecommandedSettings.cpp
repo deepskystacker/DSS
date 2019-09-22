@@ -15,10 +15,10 @@
 
 IMPLEMENT_DYNAMIC(CRecommendedSettings, CDialog)
 
-CRecommendedSettings::CRecommendedSettings(CWnd* pParent /*=NULL*/)
+CRecommendedSettings::CRecommendedSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CRecommendedSettings::IDD, pParent)
 {
-	m_pStackingTasks = NULL;
+	m_pStackingTasks = nullptr;
 }
 
 /* ------------------------------------------------------------------- */

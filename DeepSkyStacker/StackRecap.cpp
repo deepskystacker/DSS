@@ -18,10 +18,10 @@
 
 IMPLEMENT_DYNAMIC(CStackRecap, CDialog)
 
-CStackRecap::CStackRecap(CWnd* pParent /*=NULL*/)
+CStackRecap::CStackRecap(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackRecap::IDD, pParent)
 {
-	m_pStackingTasks = NULL;
+	m_pStackingTasks = nullptr;
 }
 
 /* ------------------------------------------------------------------- */

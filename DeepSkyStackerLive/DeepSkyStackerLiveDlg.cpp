@@ -15,7 +15,7 @@
 
 /* ------------------------------------------------------------------- */
 
-CDeepSkyStackerLiveDlg::CDeepSkyStackerLiveDlg(CWnd* pParent /*=NULL*/)
+CDeepSkyStackerLiveDlg::CDeepSkyStackerLiveDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepSkyStackerLiveDlg::IDD, pParent),
 	m_StackedImage(nullptr, true),
 	m_LastImage(nullptr, true),
@@ -64,7 +64,7 @@ void CDeepSkyStackerLiveDlg::UpdateTab()
 	m_ImageList.ShowWindow((m_CurrentTab == DLT_IMAGELIST) ? SW_SHOW : SW_HIDE);
 	m_Graphs.ShowWindow((m_CurrentTab == DLT_GRAPHS) ? SW_SHOW : SW_HIDE);
 	m_Settings.ShowWindow((m_CurrentTab == DLT_SETTINGS) ? SW_SHOW : SW_HIDE);
-	m_MainBoard.InvalidateRect(NULL);
+	m_MainBoard.InvalidateRect(nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -86,7 +86,7 @@ void CDeepSkyStackerLiveDlg::UpdateSizes()
 		rcMainBoard = rcDlg;
 		rcDlg.top += rcTemp.Height();
 		rcMainBoard.bottom = rcDlg.top;
-		
+
 		m_MainBoard.MoveWindow(&rcMainBoard);
 
 		if (m_Log.m_hWnd)
@@ -195,7 +195,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 		TCHAR				szPath[_MAX_PATH];
 		CString				strPath;
 
-		SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
+		SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
 
 		strPath = szPath;
 		strPath += "\\DeepSkyStacker\\DSSLive.settings";
@@ -273,7 +273,7 @@ void CDeepSkyStackerLiveDlg::OnPaint()
 
 /* ------------------------------------------------------------------- */
 
-void CDeepSkyStackerLiveDlg::OnSize(UINT nType, int cx, int cy) 
+void CDeepSkyStackerLiveDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 
@@ -325,15 +325,15 @@ void CDeepSkyStackerLiveDlg::CallHelp()
 
 	strHelpFile.LoadString(IDS_HELPFILE);
 
-	GetModuleFileName(NULL, szFileName, sizeof(szFileName));
+	GetModuleFileName(nullptr, szFileName, sizeof(szFileName));
 	strBase = szFileName;
-	_tsplitpath(strBase, szDrive, szDir, NULL, NULL);
+	_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
 
 	strFile = szDrive;
 	strFile += szDir;
 	strFile += strHelpFile;
 
-	::HtmlHelp(::GetDesktopWindow(), strFile, HH_DISPLAY_TOPIC, NULL);
+	::HtmlHelp(::GetDesktopWindow(), strFile, HH_DISPLAY_TOPIC, 0);
 };
 
 /* ------------------------------------------------------------------- */

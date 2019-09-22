@@ -28,7 +28,7 @@ class CDeepSkyStackerLiveDlg : public CDialog
 {
 // Construction
 public:
-	CDeepSkyStackerLiveDlg(CWnd* pParent = NULL);	// standard constructor
+	CDeepSkyStackerLiveDlg(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 	enum { IDD = IDD_DEEPSKYSTACKERLIVE_DIALOG };
@@ -104,7 +104,7 @@ protected:
 	afx_msg BOOL	OnEraseBkgnd(CDC * pDC);
 	afx_msg void	OnClose( );
 	afx_msg	LRESULT OnHTMLHelp(WPARAM, LPARAM);
-	
+
 	void			OnHelp();
 	void			CallHelp();
 
@@ -147,7 +147,7 @@ inline	void	AddToLog(LPCTSTR szString, BOOL bAddDateTime = FALSE, BOOL bBold = F
 
 /* ------------------------------------------------------------------- */
 
-inline	void	SetLastImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName = NULL)
+inline	void	SetLastImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName = nullptr)
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 
@@ -169,7 +169,7 @@ inline	void	SetStackedImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap)
 	{
 		CDeepSkyStackerLiveDlg *	pDlg = dynamic_cast<CDeepSkyStackerLiveDlg *>(pWnd);
 		if (pDlg)
-			pDlg->GetStackedImageTab().SetImage(pBitmap, pWndBitmap, NULL);
+			pDlg->GetStackedImageTab().SetImage(pBitmap, pWndBitmap, nullptr);
 	};
 };
 

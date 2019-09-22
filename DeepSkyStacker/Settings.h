@@ -104,7 +104,7 @@ protected :
 	std::vector<CString>	m_vFiles;
 
 protected :
-	BOOL	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szVariable, LPCTSTR szDefault, LPCTSTR szPrefix = NULL)
+	BOOL	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szVariable, LPCTSTR szDefault, LPCTSTR szPrefix = nullptr)
 	{
 		CWorkspace		workspace;
 		CString			strValue;

@@ -322,13 +322,13 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 			Allocate(Header.lWidth, Header.lHeight, FALSE);
 
 			if (pProgress)
-				pProgress->Start(NULL, m_lWidth * m_lHeight, FALSE);
+				pProgress->Start(nullptr, m_lWidth * m_lHeight, FALSE);
 
 			for (LONG i = 0;i<m_vRedPlane.size();i++)
 			{
 				lProgress++;
 				if (pProgress)
-					pProgress->Progress1(NULL, lProgress);
+					pProgress->Progress1(nullptr, lProgress);
 
 				fread(&m_vRedPlane[i], sizeof(float), 1, hFile);
 				fread(&m_vGreenPlane[i], sizeof(float), 1, hFile);
@@ -446,7 +446,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 			};
 
 			if (pProgress)
-				pProgress->Progress1(NULL, lProgress);
+				pProgress->Progress1(nullptr, lProgress);
 		};
 
 		fclose(hFile);
@@ -610,7 +610,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	*ppBitmap = NULL;
+	*ppBitmap = nullptr;
 
 	CSmartPtr<CMemoryBitmap>	pBitmap;
 
@@ -703,11 +703,11 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 			if (pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
 				iProgress += omp_get_num_threads();
-				pProgress->Progress2(NULL, iProgress);
+				pProgress->Progress2(nullptr, iProgress);
 			}
 #else
 			if (pProgress)
-				pProgress->Progress2(NULL, ++iProgress);
+				pProgress->Progress2(nullptr, ++iProgress);
 #endif
 		};
 
@@ -769,8 +769,8 @@ void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 		}
 		else
 		{
-			char *				szBezierParameters = NULL;
-			char *				szAdjustParameters = NULL;
+			char *				szBezierParameters = nullptr;
+			char *				szAdjustParameters = nullptr;
 			CString				strBezierParameters;
 			CString				strAdjustParameters;
 

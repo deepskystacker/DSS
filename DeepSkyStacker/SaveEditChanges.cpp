@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 // CSaveEditChanges dialog
 
 
-CSaveEditChanges::CSaveEditChanges(CWnd* pParent /*=NULL*/)
+CSaveEditChanges::CSaveEditChanges(CWnd* pParent /*=nullptr*/)
 	: CDialog(CSaveEditChanges::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CSaveEditChanges)

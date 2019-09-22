@@ -41,7 +41,7 @@ public:
 	cdxCRotBevelLine() : m_bSunken(true) {}
 	virtual ~cdxCRotBevelLine() {}
 
-	BOOL Create(const RECT& rect, CWnd* pParentWnd) { return CStatic::Create(NULL,WS_CHILD|WS_VISIBLE,rect,pParentWnd); }
+	BOOL Create(const RECT& rect, CWnd* pParentWnd) { return CStatic::Create(nullptr,WS_CHILD|WS_VISIBLE,rect,pParentWnd); }
 
 	// Overrides
 	// ClassWizard generated virtual function overrides

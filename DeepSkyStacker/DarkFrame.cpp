@@ -466,7 +466,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 	VALUEPAIRSET			sBlueValuePairs;
 
 	if (pProgress)
-		pProgress->Start2(NULL, lHeight);
+		pProgress->Start2(nullptr, lHeight);
 
 
 	for (j = 0;j<pBitmap->RealHeight();j++)
@@ -514,7 +514,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 		};
 
 		if (pProgress)
-			pProgress->Progress2(NULL, j+1);
+			pProgress->Progress2(nullptr, j+1);
 	};
 
 	// Remove the hot pixels
@@ -657,7 +657,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 	SubSquares.Init(pBitmap->RealWidth(), pBitmap->RealHeight());
 
 	if (pProgress)
-		pProgress->Start2(NULL, SubSquares.GetNrPixels());
+		pProgress->Start2(nullptr, SubSquares.GetNrPixels());
 
 	for (k = 0;k<SubSquares.m_vSubSquares.size();k++)
 	{
@@ -704,7 +704,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		};
 
 		if (pProgress)
-			pProgress->Progress2(NULL, lNrPixels);
+			pProgress->Progress2(nullptr, lNrPixels);
 	};
 
 	SubSquare = SubSquares.m_vSubSquares[lBestSquare];
@@ -1413,7 +1413,7 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 		};
 
 		Filter.ApplyFilter(m_pMasterDark, &m_pAmpGlow, pProgress);
-		//WriteTIFF("E:\\AmpGlow.tif", m_pAmpGlow, pProgress, NULL);
+		//WriteTIFF("E:\\AmpGlow.tif", m_pAmpGlow, pProgress, nullptr);
 
 		m_pDarkCurrent.Attach(m_pMasterDark->Clone());
 		// Then subtract this median from the master dark
@@ -1421,7 +1421,7 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 
 		::Subtract(m_pDarkCurrent, m_pAmpGlow, pProgress);
 
-		//WriteTIFF("E:\\DarkCurrent.tif", m_pDarkCurrent, pProgress, NULL);
+		//WriteTIFF("E:\\DarkCurrent.tif", m_pDarkCurrent, pProgress, nullptr);
 
 		// Compute the parameters from the ampglow and the dark current
 
@@ -1734,9 +1734,9 @@ public :
 		m_pBitmap->GetIterator(&PixelIt);
 
 		// Create a message queue and signal the event
-		PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
 			if (msg.message == WM_MT_PROCESS)
 			{
@@ -1800,7 +1800,7 @@ public :
 			i			+=lAdd;
 			lRemaining	-= lAdd;
 			if (m_pProgress)
-				m_pProgress->Progress2(NULL, i);
+				m_pProgress->Progress2(nullptr, i);
 		};
 
 		CloseAllThreads();
@@ -1899,7 +1899,7 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 				};
 			};
 			if (pProgress)
-				pProgress->Progress2(NULL, j+1);
+				pProgress->Progress2(nullptr, j+1);
 		};*/
 
 		if (pProgress)
@@ -1959,7 +1959,7 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 				(*PixelIt)++;
 			};
 			if (pProgress)
-				pProgress->Progress2(NULL, j+1);
+				pProgress->Progress2(nullptr, j+1);
 		};
 
 		if (pProgress)

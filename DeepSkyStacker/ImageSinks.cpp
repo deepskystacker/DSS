@@ -13,32 +13,32 @@
 
 HCURSOR	CSelectRectSink::GetCursorFromMode(SELECTRECTMODE Mode)
 {
-	HCURSOR			hResult = NULL;
+	HCURSOR			hResult = nullptr;
 
 	switch (Mode)
 	{
 	case SRM_MOVE :
-		hResult = ::LoadCursor(NULL, IDC_SIZEALL);
+		hResult = ::LoadCursor(nullptr, IDC_SIZEALL);
 		break;
 
 	case SRM_MOVETOP :
 	case SRM_MOVEBOTTOM :
-		hResult = ::LoadCursor(NULL, IDC_SIZENS);
+		hResult = ::LoadCursor(nullptr, IDC_SIZENS);
 		break;
 
 	case SRM_MOVELEFT :
 	case SRM_MOVERIGHT :
-		hResult = ::LoadCursor(NULL, IDC_SIZEWE);
+		hResult = ::LoadCursor(nullptr, IDC_SIZEWE);
 		break;
 
 	case SRM_MOVETOPLEFT :
 	case SRM_MOVEBOTTOMRIGHT :
-		hResult = ::LoadCursor(NULL, IDC_SIZENWSE);
+		hResult = ::LoadCursor(nullptr, IDC_SIZENWSE);
 		break;
 
 	case SRM_MOVETOPRIGHT :
 	case SRM_MOVEBOTTOMLEFT :
-		hResult = ::LoadCursor(NULL, IDC_SIZENESW);
+		hResult = ::LoadCursor(nullptr, IDC_SIZENESW);
 		break;
 	};
 
@@ -426,11 +426,11 @@ BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
 
 Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 {
-	Image *				pResult = NULL;
-	HDC					hDC = GetDC(NULL);
+	Image *				pResult = nullptr;
+	HDC					hDC = GetDC(nullptr);
 
 	//pResult = new Bitmap(rcClient.Width(), rcClient.Height(), PixelFormat32bppARGB);
-	pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, NULL);
+	pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, nullptr);
 
 	if (pResult)
 	{
@@ -517,7 +517,7 @@ Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 		};
 	};
 
-	ReleaseDC(NULL, hDC);
+	ReleaseDC(nullptr, hDC);
 
 	return pResult;
 };
@@ -562,7 +562,7 @@ void	CEditStarsSink::ComputeBackgroundValue()
 		BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 		BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
 		BackgroundCalibration.SetMultiplier(1.0);
-		BackgroundCalibration.ComputeBackgroundCalibration(m_pBitmap, TRUE, NULL);
+		BackgroundCalibration.ComputeBackgroundCalibration(m_pBitmap, TRUE, nullptr);
 		fResult = BackgroundCalibration.m_fTgtRedBk/256.0/256.0;
 
 		m_fBackground = fResult;
@@ -596,7 +596,7 @@ void	CEditStarsSink::SaveRegisterSettings()
 		TCHAR				szFile[1+_MAX_FNAME];
 		CString				strInfoFileName;
 
-		_tsplitpath(m_strFileName, szDrive, szDir, szFile, NULL);
+		_tsplitpath(m_strFileName, szDrive, szDir, szFile, nullptr);
 		strInfoFileName = szDrive;
 		strInfoFileName += szDir;
 		strInfoFileName += szFile;
@@ -887,13 +887,13 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 
 Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 {
-	Image *				pResult = NULL;
+	Image *				pResult = nullptr;
 
 	//if (m_vStars.size())
 	{
-		HDC				hDC = GetDC(NULL);
+		HDC				hDC = GetDC(nullptr);
 
-		pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, NULL);
+		pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, nullptr);
 
 		if (pResult)
 		{
@@ -1360,7 +1360,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				};
 			};
 		};
-		ReleaseDC(NULL, hDC);
+		ReleaseDC(nullptr, hDC);
 	};
 
 	return pResult;

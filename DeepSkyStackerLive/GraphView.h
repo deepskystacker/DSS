@@ -189,7 +189,7 @@ private :
 
 	bool m_bDarkMode;
 public:
-	CGraphViewTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CGraphViewTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CGraphViewTab();
 
 	//void	CallHelp();

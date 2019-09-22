@@ -8,7 +8,7 @@ class CStarMaskDlg : public CDialog
 	DECLARE_DYNAMIC(CStarMaskDlg)
 
 public:
-	CStarMaskDlg(CWnd* pParent = NULL);   // standard constructor
+	CStarMaskDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CStarMaskDlg();
 
 	void	SetBaseFileName(LPCTSTR szOutputFile)
@@ -16,7 +16,7 @@ public:
 		TCHAR				szDrive[1+_MAX_DRIVE];
 		TCHAR				szDir[1+_MAX_DIR];
 
-		_tsplitpath(szOutputFile, szDrive, szDir, NULL, NULL);
+		_tsplitpath(szOutputFile, szDrive, szDir, nullptr, nullptr);
 
 		m_strOutputFile = szDrive;
 		m_strOutputFile += szDir;

@@ -297,7 +297,7 @@ void CRGBTab::OnRedHat()
 
 	PopulateHistoAdjustMenu(menu);
 
-	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), NULL);
+	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), nullptr);
 	if (nAction > 0)
 	{
 		HISTOADJUSTTYPE		hat = (HISTOADJUSTTYPE)nAction;
@@ -324,7 +324,7 @@ void CRGBTab::OnGreenHat()
 
 	PopulateHistoAdjustMenu(menu);
 
-	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), NULL);
+	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), nullptr);
 	if (nAction > 0)
 	{
 		HISTOADJUSTTYPE		hat = (HISTOADJUSTTYPE)nAction;
@@ -351,7 +351,7 @@ void CRGBTab::OnBlueHat()
 
 	PopulateHistoAdjustMenu(menu);
 
-	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), NULL);
+	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), nullptr);
 	if (nAction > 0)
 	{
 		HISTOADJUSTTYPE		hat = (HISTOADJUSTTYPE)nAction;

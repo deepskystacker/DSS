@@ -17,7 +17,7 @@ class CMainBoard : public CDialog
 	DECLARE_DYNAMIC(CMainBoard)
 
 public:
-	CMainBoard(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CMainBoard(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CMainBoard();
 
 	//void	CallHelp();

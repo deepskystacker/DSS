@@ -31,7 +31,7 @@ public :
 		BOOL			bResult = FALSE;
 
 		if (ppBitmap)
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 
 		if (ppBitmap && m_pPublicBitmap)
 			bResult = m_pPublicBitmap.CopyTo(ppBitmap);

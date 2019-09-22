@@ -86,7 +86,7 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 				};
 
 				if (pProgress)
-					pProgress->Progress2(NULL, k+1);
+					pProgress->Progress2(nullptr, k+1);
 			};
 
 			if (pProgress)

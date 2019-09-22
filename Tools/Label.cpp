@@ -123,7 +123,7 @@ CLabel::CLabel()
 	m_crText = GetSysColor(COLOR_WINDOWTEXT);
 
 // 1.1
-	m_hBackBrush = NULL;
+	m_hBackBrush = nullptr;
 
 	m_crHiColor =		0;
 	m_crLoColor	=		0;
@@ -132,7 +132,7 @@ CLabel::CLabel()
 	m_bState =			FALSE;
 	m_bTransparent =	FALSE;
 	m_Link =			LinkNone;
-	m_hCursor =			NULL;
+	m_hCursor =			nullptr;
 	m_Type =			None;
 	m_bFont3d =			FALSE;
 	m_bNotifyParent =	FALSE;
@@ -254,7 +254,7 @@ void CLabel::Draw(CDC * pDC)
 	// Set up for double buffering...
 	//
 	CDC* pDCMem;
-	CBitmap*	pOldBitmap = NULL;
+	CBitmap*	pOldBitmap = nullptr;
 
 	if (!m_bTransparent)
 	{
@@ -280,7 +280,7 @@ void CLabel::Draw(CDC * pDC)
 		{
 			CBrush br;
 
-			if (m_hBackBrush != NULL)
+			if (m_hBackBrush != nullptr)
 				br.Attach(m_hBackBrush);
 			else
 				br.Attach(m_hwndBrush);
@@ -367,9 +367,9 @@ void CLabel::Draw(CDC * pDC)
 
 		CPoint pt;
 		GetViewportOrgEx (pDCMem->m_hDC,&pt) ;
-		SetViewportOrgEx (pDCMem->m_hDC,rc.Width() / 2, rc.Height() / 2, NULL) ;
+		SetViewportOrgEx (pDCMem->m_hDC,rc.Width() / 2, rc.Height() / 2, nullptr) ;
 		pDCMem->TextOut (0, 0, strText) ;
-		SetViewportOrgEx (pDCMem->m_hDC,pt.x / 2, pt.y / 2, NULL) ;
+		SetViewportOrgEx (pDCMem->m_hDC,pt.x / 2, pt.y / 2, nullptr) ;
 		pDCMem->SetTextAlign (nAlign);
 	}
 	else
@@ -525,7 +525,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 		GetWindowText(strLink);
 		if (m_Link == HyperLink)
 		{
-			ShellExecute(NULL,_T("open"),m_sLink.IsEmpty() ? strLink : m_sLink,NULL,NULL,SW_SHOWNORMAL);
+			ShellExecute(nullptr,_T("open"),m_sLink.IsEmpty() ? strLink : m_sLink,nullptr,nullptr,SW_SHOWNORMAL);
 		}
 		if (m_Link == MailLink)
 		{
@@ -533,7 +533,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 				strLink = "mailto:" + strLink;
 			else
 				strLink = m_sLink;
-			ShellExecute( NULL, NULL,  strLink,  NULL, NULL, SW_SHOWNORMAL );
+			ShellExecute( nullptr, nullptr,  strLink,  nullptr, nullptr, SW_SHOWNORMAL );
 		}
 	}
 	else
@@ -889,7 +889,7 @@ CLabel& CLabel::FlashText(BOOL bActivate)
 
 		m_bTimer = TRUE;
 
-		SetTimer(1,500,NULL);
+		SetTimer(1,500,nullptr);
 
 		m_Type = Text;
 	}
@@ -928,7 +928,7 @@ CLabel& CLabel::FlashBackground(BOOL bActivate)
 		m_bState = FALSE;
 
 		m_bTimer = TRUE;
-		SetTimer(1,500,NULL);
+		SetTimer(1,500,nullptr);
 
 		m_Type = Background;
 	}
@@ -1149,7 +1149,7 @@ CLabel& CLabel::SetText3DHiliteColor(COLORREF cr3DHiliteColor)
 //
 // Name                     Date        Version Comments
 // NT ALMOND				15092000    1.5     Origin
-// NT ALMOND				02072002    1.6     Fix crash when GetFont returns NULL
+// NT ALMOND				02072002    1.6     Fix crash when GetFont returns nullptr
 //////////////////////////////////////////////////////////////////////////
 void CLabel::PreSubclassWindow()
 {
@@ -1157,7 +1157,7 @@ void CLabel::PreSubclassWindow()
 	CStatic::PreSubclassWindow();
 
 	CFont* cf = GetFont();
-	if(cf !=NULL)
+	if(cf !=nullptr)
 	{
 		cf->GetObject(sizeof(m_lf),&m_lf);
 	}
@@ -1306,13 +1306,13 @@ BOOL CLabel::OnEraseBkgnd(CDC* pDC)
 void CLabel::OnSize(UINT nType, int cx, int cy)
 {
 	CStatic::OnSize(nType, cx, cy);
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 };
 
 void CLabel::OnMove(int x, int y)
 {
 	CStatic::OnMove(x, y);
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 };
 
 //////////////////////////////////////////////////////////////////////////

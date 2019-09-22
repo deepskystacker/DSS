@@ -379,7 +379,7 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 	CSmartPtr<CMemoryBitmap>		pOutBitmap;
 
 	if (ppOutBitmap)
-		*ppOutBitmap = NULL;
+		*ppOutBitmap = nullptr;
 
 	if (pInBitmap)
 	{
@@ -390,7 +390,7 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 		pOutBitmap.Attach(pInBitmap->Clone());
 
 		if (pProgress)
-			pProgress->Start2(NULL, lWidth);
+			pProgress->Start2(nullptr, lWidth);
 
 		for (LONG i  =0;i<lWidth;i++)
 		{
@@ -436,7 +436,7 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 				};
 			};
 			if (pProgress)
-				pProgress->Progress2(NULL, i+1);
+				pProgress->Progress2(nullptr, i+1);
 		};
 
 		if (pProgress)

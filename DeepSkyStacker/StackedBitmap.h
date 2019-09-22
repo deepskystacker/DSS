@@ -162,9 +162,9 @@ private :
 	CRGBHistogramAdjust 		m_HistoAdjust;
 
 private :
-	BOOL	LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
-	BOOL	LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
-	BOOL	LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
+	BOOL	LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	BOOL	LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	BOOL	LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
 
 	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, BOOL bApplySettings);
 
@@ -300,16 +300,16 @@ public :
 		return m_lNrBitmaps;
 	};
 
-	BOOL	Load(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
-	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL);
-	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE);
-	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE);
+	BOOL	Load(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr);
+	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE);
+	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE);
 #if !defined(PCL_PROJECT) && !defined(_CONSOLE)
-	HBITMAP	GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect = NULL);
+	HBITMAP	GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect = nullptr);
 #endif
-	BOOL	GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = NULL);
+	BOOL	GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 
 	void	Clear()
 	{
