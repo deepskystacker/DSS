@@ -10,7 +10,7 @@ class CAbout : public CDialog
 	DECLARE_DYNAMIC(CAbout)
 
 public:
-	CAbout(CWnd* pParent = NULL);   // standard constructor
+	CAbout(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CAbout();
 
 // Dialog Data

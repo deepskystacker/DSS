@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(CAbout, CDialog)
 
-CAbout::CAbout(CWnd* pParent /*=NULL*/)
+CAbout::CAbout(CWnd* pParent /*=nullptr*/)
 	: CDialog(CAbout::IDD, pParent)
 {
 
@@ -214,7 +214,7 @@ BOOL CAbout::OnInitDialog()
 	else
 		m_Language.SetCurSel(0);
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */

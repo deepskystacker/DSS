@@ -38,7 +38,7 @@ private :
 	};
 
 public :
-	CValuedRect() 
+	CValuedRect()
 	{
 		m_fScore = 0.0;
 	};
@@ -89,7 +89,7 @@ private :
 	};
 
 public :
-	CProcessRect() 
+	CProcessRect()
 	{
 		m_bToProcess = FALSE;
 		m_rcToProcess.left = 0;
@@ -97,6 +97,9 @@ public :
 		m_rcToProcess.right = 0;
 		m_rcToProcess.bottom = 0;
 		m_rcToProcess.SetRectEmpty();
+        m_lWidth = 0;
+        m_lHeight = 0;
+        m_lSize = 0;
 	};
 	virtual ~CProcessRect() {};
 
@@ -116,11 +119,11 @@ public :
 			{
 				CValuedRect	rcCell;
 
-				rcCell.m_rc.left = i;	
+				rcCell.m_rc.left = i;
 				rcCell.m_rc.right = min(i+m_lSize, m_lWidth);
 				rcCell.m_rc.top = j;
 				rcCell.m_rc.bottom = min(j+m_lSize, m_lHeight);
-				
+
 				rcCell.m_fScore = fabs(((i+m_lSize/2.0) - m_lWidth/2.0)/(double)m_lWidth) + fabs(((j + m_lSize/2) - m_lHeight/2.0)/(double)m_lHeight);
 
 				m_vRects.push_back(rcCell);
@@ -212,12 +215,12 @@ public :
 	virtual ~CProcessParamsList()
 	{
 	};
-	
+
 	LONG size()
 	{
 		return (LONG)m_lParams.size();
 	};
-	
+
 	LONG current()
 	{
 		return m_lCurrent;
@@ -232,7 +235,7 @@ public :
 	BOOL	MoveForward()
 	{
 		BOOL			bResult = FALSE;
-		
+
 		if (m_lCurrent+1<size())
 		{
 			m_lCurrent++;
@@ -256,7 +259,7 @@ public :
 	{
 		return (m_lCurrent-1>=0);
 	};
-	
+
 	BOOL IsForwardAvailable()
 	{
 		return (m_lCurrent+1<size());
@@ -274,7 +277,7 @@ public :
 
 		if (!(lIndice >= 0) && (lIndice < size()))
 			return FALSE;
-		
+
 		for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--);
 		if (it != m_lParams.end())
 		{
@@ -284,7 +287,7 @@ public :
 
 		return bResult;
 	};
-	
+
 	BOOL	AddParams(const CDSSSetting & pp)
 	{
 		BOOL						bResult = FALSE;
@@ -293,13 +296,13 @@ public :
 		{
 			PROCESSPARAMITERATOR	it;
 			LONG					lIndice = m_lCurrent+1;
-			
-			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--);
+
+			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--)
 				m_lParams.erase(it, m_lParams.end());
 		}
 		else if (m_lCurrent == -1)
 			m_lParams.clear();
-		
+
 		m_lParams.push_back(pp);
 
 		m_lCurrent = size()-1;
@@ -329,12 +332,12 @@ private :
 	CSaturationTab			m_tabSaturation;
 	CProcessParamsList		m_lProcessParams;
 	BOOL					m_bDirty;
-	
+
 	CSelectRectSink			m_SelectRectSink;
 
 // Construction
 public:
-	CProcessingDlg(CWnd* pParent = NULL);   // standard constructor
+	CProcessingDlg(CWnd* pParent = nullptr);   // standard constructor
 
 	BOOL	SaveOnClose();
 
@@ -375,7 +378,7 @@ private :
 
 	void	UpdateHistogramAdjust();
 	void	DrawBezierCurve(Graphics * pGraphics, LONG lWidth, LONG lHeight);
-	
+
 	void	UpdateControls();
 	void	UpdateControlsFromParams();
 	void	UpdateMonochromeControls();

@@ -45,7 +45,7 @@ BOOL	IsExpired()
 	LONG				lMaxMonth = DSSBETAEXPIREMONTH;
 
 	GetSystemTime(&SystemTime);
-	if ((SystemTime.wYear>lMaxYear) || 
+	if ((SystemTime.wYear>lMaxYear) ||
 		((SystemTime.wYear==lMaxYear) && (SystemTime.wMonth>lMaxMonth)))
 	{
 		AfxMessageBox("This beta version has expired\nYou can probably get another one or download the final release from the web site.", MB_OK | MB_ICONSTOP);
@@ -64,7 +64,7 @@ BOOL CheckVersion(CString & strVersion)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL		bResult = FALSE;
-	
+
 	#ifndef DSSBETA
 	CRegistry			reg;
 	DWORD				bCheckVersion = 0;
@@ -150,7 +150,7 @@ void	CheckRemainingTempFiles()
 	HANDLE					hFindFiles;
 	std::vector<CString>	vFiles;
 	__int64					ulTotalSize = 0;
-	
+
 	ZTRACE_RUNTIME("Check remaining temp files\n");
 
 	CAllStackingTasks::GetTemporaryFilesFolder(strFolder);
@@ -217,15 +217,15 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	bResult = CWinApp::InitInstance();
 	SetRegistryKey(_T("DeepSkyStacker"));
 
-	
+
 	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS\n");
 
 	CGCFileTypeAccess	FTA;
 	TCHAR				szPath[1+_MAX_PATH];
 	CString				strPath;
 	CString				strTemp;
-	
-	::GetModuleFileName(NULL, szPath, sizeof(szPath)/sizeof(TCHAR));
+
+	::GetModuleFileName(nullptr, szPath, sizeof(szPath)/sizeof(TCHAR));
 	strPath = szPath;
 
 	FTA.SetExtension(_T("dssfilelist"));
@@ -235,7 +235,7 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	FTA.SetShellOpenCommand(strTemp);
 	FTA.SetDocumentShellOpenCommand(strTemp);
 	FTA.SetDocumentClassName(_T("DeepSkyStacker.FileList"));
-		
+
 	CString				strFileListDescription;
 
 	strFileListDescription.LoadString(IDS_FILELISTDESCRIPTION);
@@ -247,7 +247,7 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	strTemp += ",1";
 	FTA.SetDocumentDefaultIcon(strTemp);
 
-	// set the necessary registry entries	
+	// set the necessary registry entries
 	FTA.RegSetAllInfo();
 	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS - ok\n");
 
@@ -288,7 +288,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 
 	ZTRACE_RUNTIME("Checking Mutex");
 
-	hMutex = CreateMutex(NULL, TRUE, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));
+	hMutex = CreateMutex(nullptr, TRUE, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 		bFirstInstance = false;
 	ZTRACE_RUNTIME("Checking Mutex - ok");
@@ -302,7 +302,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 		return nRetCode;
 	}
 
-	OleInitialize(NULL);
+	OleInitialize(nullptr);
 	ZTRACE_RUNTIME("OLE Initialize - ok");
 
 	ZTRACE_RUNTIME("Set UI Language");
@@ -340,7 +340,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	ZTRACE_RUNTIME("Initialize Application");
 
 	// initialize MFC and print and error on failure
-	if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0))
+	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
 	{
 		cerr << _T("Fatal Error: MFC initialization failed") << endl;
 		nRetCode = 1;
@@ -348,7 +348,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	else
 	{
 		theApp.InitInstance();
-		
+
 		ZTRACE_RUNTIME("Initialize Application - ok");
 
 		INPUTFILE_FILTERS.LoadString(IDS_FILTER_INPUT);

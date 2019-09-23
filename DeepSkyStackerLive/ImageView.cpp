@@ -12,7 +12,7 @@
 
 IMPLEMENT_DYNAMIC(CImageViewTab, CDialog)
 
-CImageViewTab::CImageViewTab(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+CImageViewTab::CImageViewTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CImageViewTab::IDD, pParent),
 	m_bDarkMode(bDarkMode),
 	m_Picture(bDarkMode)
@@ -88,7 +88,7 @@ BOOL CImageViewTab::OnInitDialog()
 
 	m_CopyToClipboard.ShowWindow(SW_HIDE);
 	m_CopyToClipboard.SetTransparent(TRUE);
-	m_CopyToClipboard.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
+	m_CopyToClipboard.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
 	m_CopyToClipboard.SetLink(TRUE, TRUE);
 	m_CopyToClipboard.SetTextColor(m_bDarkMode ? RGB(0, 0, 64) : RGB(0, 0, 128));
 
@@ -128,7 +128,7 @@ BOOL CImageViewTab::OnInitDialog()
 		strText.LoadString(IDS_NOIMAGELOADED);
 	m_FileName.SetText(strText);
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -146,7 +146,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 	if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
 		(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
 	{
-		// Adjust 
+		// Adjust
 		CGradient &			Gradient = m_Gamma.GetGradient();
 		fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
 		fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
@@ -200,7 +200,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
-			m_Gamma.InvalidateRect(NULL);
+			m_Gamma.InvalidateRect(nullptr);
 		};
 	};
 
@@ -260,7 +260,7 @@ void CImageViewTab::SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap
 		else
 			strText.LoadString(IDS_NOSTACKEDIMAGE);
 		m_StackedSink.ClearFootprint();
-		m_Picture.SetImg((HBITMAP)NULL);
+		m_Picture.SetImg((HBITMAP)nullptr);
 		m_FileName.SetText(strText);
 		m_pWndImage.Release();
 		m_pBitmap.Release();
@@ -326,7 +326,7 @@ void CImageViewTab::OnCopyToClipboard(NMHDR* pNMHDR, LRESULT* pResult)
 
 /* ------------------------------------------------------------------- */
 
-void CImageViewTab::OnSetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+void CImageViewTab::OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 {
 	m_StackedSink.SetFootprint(pt1, pt2, pt3, pt4);
 	m_Picture.Invalidate();

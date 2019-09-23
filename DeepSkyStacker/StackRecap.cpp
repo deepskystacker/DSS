@@ -18,10 +18,10 @@
 
 IMPLEMENT_DYNAMIC(CStackRecap, CDialog)
 
-CStackRecap::CStackRecap(CWnd* pParent /*=NULL*/)
+CStackRecap::CStackRecap(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackRecap::IDD, pParent)
 {
-	m_pStackingTasks = NULL;
+	m_pStackingTasks = nullptr;
 }
 
 /* ------------------------------------------------------------------- */
@@ -65,13 +65,13 @@ END_EASYSIZE_MAP
 
 #define GRIPPIE_SQUARE_SIZE 15
 
-BOOL CStackRecap::OnInitDialog() 
+BOOL CStackRecap::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
     CRect			rcClient;
     GetClientRect(&rcClient);
-    
+
     CRect			rcGrip;
     rcGrip.right	= rcClient.right;
     rcGrip.bottom	= rcClient.bottom;
@@ -96,7 +96,7 @@ BOOL CStackRecap::OnInitDialog()
 void CStackRecap::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	
+
 	UPDATE_EASYSIZE;
 };
 
@@ -190,8 +190,6 @@ void CStackRecap::FillWithAllTasksHTML()
 		CString				strDrive;
 		CString				strFreeSpace;
 		CString				strNeededSpace;
-		CString				strDrizzle;
-		CString				strDrizzleWarning;
 		STACKINGMODE		ResultMode;
 		BOOL				bSaveIntermediates;
 
@@ -212,7 +210,7 @@ void CStackRecap::FillWithAllTasksHTML()
 		BACKGROUNDCALIBRATIONMODE	CalibrationMode;
 
 		CalibrationMode = m_pStackingTasks->GetBackgroundCalibrationMode();
-		
+
 		strISOText.LoadString(IDS_ISO);
 		strGainText.LoadString(IDS_GAIN);
 
@@ -416,7 +414,7 @@ void CStackRecap::FillWithAllTasksHTML()
 					InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_LIGHT);
 					InsertHTML(strHTML, _T("</ul>"));
 
-					if ((si.m_pLightTask->m_Method != MBP_AVERAGE) && 
+					if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
 						(IsRawBayer() || IsFITSRawBayer()))
 					{
 						InsertHTML(strHTML, _T("\n"));

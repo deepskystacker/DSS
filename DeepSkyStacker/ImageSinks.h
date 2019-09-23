@@ -37,12 +37,16 @@ private :
 	void			GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDrizzle);
 
 public :
-	CSelectRectSink() 
+	CSelectRectSink()
 	{
 		m_rcSelect.SetRectEmpty();
 		m_bInSelecting	= FALSE;
 		m_Mode			= SRM_NONE;
 		m_bShowDrizzle	= FALSE;
+        m_fXStart       = 0;
+        m_fYStart       = 0;
+        m_fXEnd         = 0;
+        m_fYEnd         = 0;
 	};
 	virtual ~CSelectRectSink() {};
 
@@ -182,7 +186,7 @@ private :
 	BOOL	IsRefStarVoted(LONG lStar)
 	{
 		BOOL			bResult = FALSE;
-		
+
 		if (g_bShowRefStars)
 		{
 			if (m_vVotedPairs.size())
@@ -250,7 +254,7 @@ private :
 
 	void	DrawQualityGrid(Graphics * pGraphics, CRect & rcClient);
 public :
-	CEditStarsSink() 
+	CEditStarsSink()
 	{
 		m_Action		= ESA_NONE;
 		m_bDirty		= FALSE;
@@ -260,6 +264,11 @@ public :
 		m_fScore		= 0;
 		m_lNrStars		= 0;
 		m_fBackground	= 0;
+        m_fXComet       = 0;
+        m_fYComet       = 0;
+        m_fFWHM         = 0;
+        m_lRemovedIndice = 0;
+        m_bRemoveComet = false;
 	};
 	virtual ~CEditStarsSink() {};
 
@@ -273,7 +282,7 @@ public :
 			ComputeBackgroundValue();
 	};
 
-	void	SetRefStars(STARVECTOR & Stars)
+	void	SetRefStars(STARVECTOR const& Stars)
 	{
 		if (g_bShowRefStars)
 		{

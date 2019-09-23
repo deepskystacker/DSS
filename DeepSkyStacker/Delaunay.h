@@ -1,5 +1,5 @@
 /********************************************************************************
-	Copyright (C) 2004-2005 Sjaak Priester	
+	Copyright (C) 2004-2005 Sjaak Priester
 
 	This is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ using namespace Gdiplus;
 
 // I designed this with GDI+ in mind. However, this particular code doesn't
 // use GDI+ at all, only some of it's variable types.
-// These definitions are substitutes for those of GDI+. 
+// These definitions are substitutes for those of GDI+.
 typedef float REAL;
 struct PointF
 {
@@ -83,7 +83,7 @@ public:
 	{
 		return m_Pnt.X == v.m_Pnt.X && m_Pnt.Y == v.m_Pnt.Y;
 	}
-	
+
 	REAL GetX()	const	{ return m_Pnt.X; }
 	REAL GetY() const	{ return m_Pnt.Y; }
 
@@ -130,7 +130,7 @@ public:
 		m_Center	= tri.m_Center;
 		m_R			= tri.m_R;
 		m_R2		= tri.m_R2;
-		for (int i = 0; i < 3; i++) 
+		for (int i = 0; i < 3; i++)
 			m_Vertices[i] = tri.m_Vertices[i];
 
 		return (*this);
@@ -166,12 +166,12 @@ public:
 
 		// First check boundary box.
 //		REAL x = itVertex->GetPoint().X;
-//				
+//
 //		if (x > (m_Center.X + m_R)) return false;
 //		if (x < (m_Center.X - m_R)) return false;
 //
 //		REAL y = itVertex->GetPoint().Y;
-//				
+//
 //		if (y > (m_Center.Y + m_R)) return false;
 //		if (y < (m_Center.Y - m_R)) return false;
 

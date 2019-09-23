@@ -22,7 +22,9 @@ public :
 public :
 	CBackgroundCalibrationTask()
 	{
-	};
+        m_pProgress = nullptr;
+        m_pBackgroundCalibration = nullptr;
+	}
 
 	virtual ~CBackgroundCalibrationTask()
 	{
@@ -80,9 +82,9 @@ BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 	vBlueHisto.resize((LONG)MAXWORD+1);
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -101,7 +103,7 @@ BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 					crColor.red = min(fRed, static_cast<double>(MAXWORD));
 					crColor.blue = min(fBlue, static_cast<double>(MAXWORD));
 					crColor.green = min(fGreen, static_cast<double>(MAXWORD));
-					
+
 					vRedHisto[crColor.red]++;
 					vGreenHisto[crColor.green]++;
 					vBlueHisto[crColor.blue]++;
@@ -134,19 +136,19 @@ BOOL	CBackgroundCalibrationTask::Process()
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
-	bResult = TRUE;
+
 	while (i<lHeight)
 	{
 		LONG			lAdd = min(lStep, lRemaining);
 		DWORD			dwThreadId;
-		
+
 		dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
 		i			+=lAdd;
 		lRemaining	-= lAdd;
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -189,7 +191,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	m_fSrcBlueMax	= 0;
 
 	if (pProgress)
-		pProgress->Start2(NULL, pBitmap->Height());
+		pProgress->Start2(nullptr, pBitmap->Height());
 
 	task.Init(this, pBitmap, pProgress);
 	task.StartThreads();
@@ -210,7 +212,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	vBlueHisto.resize((LONG)MAXWORD+1);
 
 	if (pProgress)
-		pProgress->Start2(NULL, pBitmap->Height());
+		pProgress->Start2(nullptr, pBitmap->Height());
 
 	for (j = 0;j<pBitmap->Height();j++)
 	{
@@ -227,7 +229,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 			crColor.red = min(fRed, MAXWORD);
 			crColor.blue = min(fBlue, MAXWORD);
 			crColor.green = min(fGreen, MAXWORD);
-			
+
 			//crColor = pBitmap->GetPixel16(i, j);
 
 			vRedHisto[crColor.red]++;
@@ -239,7 +241,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 		};
 
 		if (pProgress)
-			pProgress->Progress2(NULL, j+1);
+			pProgress->Progress2(nullptr, j+1);
 	};
 */
 	// Find median value in each histogram
@@ -290,7 +292,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 		else if (m_BackgroundCalibrationMode == BCM_RGB)
 		{
 			double			fTgtBk;
-			
+
 			if (m_RGBBackgroundMethod == RBCM_MAXIMUM)
 				fTgtBk = max(m_fSrcRedBk, max(m_fSrcGreenBk, m_fSrcBlueBk));
 			else if (m_RGBBackgroundMethod == RBCM_MINIMUM)

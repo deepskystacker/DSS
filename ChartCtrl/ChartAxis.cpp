@@ -244,7 +244,7 @@ void CChartAxis::SetTickIncrement(bool bAuto, double Increment)
 	m_pParent->RefreshCtrl();
 }
 
-void CChartAxis::SetAxisSize(CRect ControlRect,CRect MarginRect)
+void CChartAxis::SetAxisSize(CRect const& ControlRect, CRect const& MarginRect)
 {
 	if (m_bIsHorizontal)
 	{

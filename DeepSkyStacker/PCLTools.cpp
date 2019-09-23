@@ -68,12 +68,12 @@ BOOL	LoadPCLPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
 	filename = szFileName;
 
 	pcl::ImageWindow		PCLWindow( filename);
- 
+
 	if ( PCLWindow.IsNull() )
 	{
 		CString		strError;
 
-		strError.Format("Unable to load image file: %s", szFileName); 
+		strError.Format("Unable to load image file: %s", szFileName);
 		throw pcl::Error( (LPCTSTR)strError);
 	}
 	else
@@ -86,7 +86,7 @@ BOOL	LoadPCLPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
 		int							height = PCLImage.AnyImage()->Height();
 		int							numberOfChannels = PCLImage.AnyImage()->IsColor() ? 3 : 1;
 		int							nBitPerChannel;
-		bool						bFloat; 
+		bool						bFloat;
 
 		PCLWindow.GetSampleFormat(nBitPerChannel, bFloat);
 
@@ -174,13 +174,13 @@ void CreatePCLImageWindow( const pcl::Generic2DImage<P> & image, const pcl::Stri
    // Tricky but efficient: the core application understands this and prepares
    // to build an actual image in subsequent steps.
 	pcl::ImageWindow w( 1, 1, 1, P::BitsPerSample(), P::IsFloatSample(), false, true, id );
- 
+
    if ( w.IsNull() )
 	   throw pcl::Error( "Unable to create image window: " + id );
- 
+
    image.ResetSelections(); // in case we have made partial selections before
    reinterpret_cast<pcl::Generic2DImage<P>*>( w.MainView().GetImage().AnyImage() )->Assign( image );
- 
+
    w.Show();
    w.ZoomToFit( false ); // leave'em laughing :-)
 }

@@ -212,7 +212,7 @@ void COutputTab::OnOutputFolder( NMHDR * pNotifyStruct, LRESULT * result )
 {
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	m_OutputFolder.GetWindowText(strFolder);
 
 	CFolderDlg				dlg(FALSE, strFolder, this);

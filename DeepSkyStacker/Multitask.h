@@ -35,8 +35,8 @@ public :
 
 	HANDLE	GetThreadEvent(DWORD dwThreadId)
 	{
-		HANDLE			hResult = NULL;
-		
+		HANDLE			hResult = nullptr;
+
 		for (LONG i = 0;(i<m_vThreadIds.size()) && !hResult;i++)
 		{
 			if (dwThreadId == m_vThreadIds[i])

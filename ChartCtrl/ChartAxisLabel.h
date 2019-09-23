@@ -37,10 +37,10 @@ class CChartAxisLabel : public CChartObject
 	friend CChartAxis;
 
 public:
-	void SetText(std::string NewText)  { m_strLabelText = NewText; }
+	void SetText(std::string const& NewText)  { m_strLabelText = NewText; }
 	std::string GetText() const        { return m_strLabelText;    }
 
-	void SetFont(int nPointSize,std::string strFaceName)
+	void SetFont(int nPointSize, std::string const& strFaceName)
 	{
 		m_iFontSize = nPointSize;
 		m_strFontName = strFaceName;

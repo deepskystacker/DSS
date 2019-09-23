@@ -82,7 +82,7 @@ private :
 	BOOL					m_bLoaded;
 
 public :
-	CDSSSettings() 
+	CDSSSettings()
 	{
 		m_bLoaded = FALSE;
 	};
@@ -92,8 +92,8 @@ public :
 	{
 		return m_bLoaded;
 	};
-	BOOL	Load(LPCTSTR szFile = NULL);
-	BOOL	Save(LPCTSTR szFile = NULL);
+	BOOL	Load(LPCTSTR szFile = nullptr);
+	BOOL	Save(LPCTSTR szFile = nullptr);
 
 	LONG	Count()
 	{
@@ -108,7 +108,7 @@ public :
 		{
 			DSSSETTINGITERATOR	it;
 
-			it = m_lSettings.begin(); 
+			it = m_lSettings.begin();
 			while (lIndice)
 			{
 				it++;
@@ -136,7 +136,7 @@ public :
 		{
 			DSSSETTINGITERATOR	it;
 
-			it = m_lSettings.begin(); 
+			it = m_lSettings.begin();
 			while (lIndice)
 			{
 				it++;
@@ -176,7 +176,7 @@ private :
 
 // Construction
 public:
-	CDeepStackerDlg(CWnd* pParent = NULL);   // standard constructor
+	CDeepStackerDlg(CWnd* pParent = nullptr);   // standard constructor
 	void	ChangeTab(DWORD dwTabID);
 	DWORD	GetCurrentTab()
 	{
@@ -322,7 +322,7 @@ inline CProcessingDlg & GetProcessingDlg(CWnd * pDialog)
 
 inline void	SetCurrentFileInTitle(LPCTSTR szFileName)
 {
-	CDeepStackerDlg *		pDlg = GetDeepStackerDlg(NULL);
+	CDeepStackerDlg *		pDlg = GetDeepStackerDlg(nullptr);
 
 	if (pDlg)
 		pDlg->SetCurrentFileInTitle(szFileName);

@@ -25,7 +25,7 @@ private :
 	};
 
 public :
-	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0) 
+	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0)
 	{
 		m_lImageIndex	= lIndex;
 		m_fXShift		= fXShift;
@@ -74,7 +74,7 @@ private :
 		m_BilinearParameters = lfsi.m_BilinearParameters;
 	};
 public :
-	CLightFrameStackingInfo(LPCTSTR szFileName = NULL)
+	CLightFrameStackingInfo(LPCTSTR szFileName = nullptr)
 	{
 		m_strFileName = szFileName;
 	};
@@ -214,7 +214,7 @@ public :
 		m_lISOSpeed				= 0;
 		m_lGain				= -1;
 		m_DateTime.wYear		= 0;
-		m_pLightTask			= NULL;
+		m_pLightTask			= nullptr;
 		m_lNrStacked			= 0;
 		m_fTotalExposure		= 0;
 		m_fKeptPercentage		= 100.0;

@@ -2,7 +2,7 @@
 // Matrix TCL Lite v1.13
 // Copyright (c) 1997-2002 Techsoft Pvt. Ltd. (See License.Txt file.)
 //
-// Matrix.h: Matrix C++ template class include file 
+// Matrix.h: Matrix C++ template class include file
 // Web: http://www.techsoftpl.com/matrix/
 // Email: matrix@techsoftpl.com
 //
@@ -20,12 +20,12 @@
 // defined any specialization of this template here, so all the instances
 // of matrix will be created implicitly by the compiler. The data types
 // tested with this class are float, double, long double, complex<float>,
-// complex<double> and complex<long double>. Note that this class is not 
+// complex<double> and complex<long double>. Note that this class is not
 // optimized for performance.
 //
 // Since implementation of exception, namespace and template are still
-// not standardized among the various (mainly old) compilers, you may 
-// encounter compilation error with some compilers. In that case remove 
+// not standardized among the various (mainly old) compilers, you may
+// encounter compilation error with some compilers. In that case remove
 // any of the above three features by defining the following macros:
 //
 //  _NO_NAMESPACE:  Define this macro to remove namespace support.
@@ -156,9 +156,9 @@ typedef int bool;
 #endif
 
 /*
-#if ( defined(__BORLANDC__) || _MSC_VER ) && !defined( __GNUG__ ) 
-inline float abs (float v) { return (float)fabs( v); } 
-inline double abs (double v) { return fabs( v); } 
+#if ( defined(__BORLANDC__) || _MSC_VER ) && !defined( __GNUG__ )
+inline float abs (float v) { return (float)fabs( v); }
+inline double abs (double v) { return fabs( v); }
 inline long double abs (long double v) { return fabsl( v); }
 #endif
 */
@@ -266,7 +266,7 @@ public:
    T Cond () _NO_THROW;
 
    // Type of matrices
-   bool IsSquare () _NO_THROW { return (_m->Row == _m->Col); } 
+   bool IsSquare () _NO_THROW { return (_m->Row == _m->Col); }
    bool IsSingular () _NO_THROW;
    bool IsDiagonal () _NO_THROW;
    bool IsScalar () _NO_THROW;
@@ -314,7 +314,7 @@ private:
 };
 
 #if defined(_MSC_VER) && _MSC_VER <= 1020
-#  undef  _NO_THROW               // MSVC++ 4.0/4.2 does not support 
+#  undef  _NO_THROW               // MSVC++ 4.0/4.2 does not support
 #  undef  _THROW_MATRIX_ERROR     // exception specification in definition
 #  define _NO_THROW
 #  define _THROW_MATRIX_ERROR
@@ -361,7 +361,7 @@ matrixT::operator = (const matrixT& m) _NO_THROW
 }
 
 //  reallocation method
-MAT_TEMPLATE inline void 
+MAT_TEMPLATE inline void
 matrixT::reallocate (size_t row, size_t col)
 {
    if (row == _m->RowSiz && col == _m->ColSiz)
@@ -371,14 +371,14 @@ matrixT::reallocate (size_t row, size_t col)
       return;
    }
 
-   base_mat *m1 = new base_mat( row, col, NULL);
+   base_mat *m1 = new base_mat( row, col, nullptr);
    size_t colSize = min(_m->Col,col) * sizeof(T);
    size_t minRow = min(_m->Row,row);
 
    for (size_t i=0; i < minRow; i++)
       memcpy( m1->Val[i], _m->Val[i], colSize);
 
-   if (--_m->Refcnt == 0) 
+   if (--_m->Refcnt == 0)
        delete _m;
    _m = m1;
 
@@ -400,7 +400,7 @@ matrixT::SetSize (size_t row, size_t col) _NO_THROW
       for (j=0; j < col; j++)
 	 _m->Val[i][j] = T(0);
 
-   for (i=0; i < row; i++)                      
+   for (i=0; i < row; i++)
       for (j=oldCol; j < col; j++)
 	 _m->Val[i][j] = T(0);
 
@@ -666,7 +666,7 @@ operator ~ (const matrixT& m) _NO_THROW
 
 // unary inversion operator
 MAT_TEMPLATE inline matrixT
-operator ! (const matrixT m) _THROW_MATRIX_ERROR
+operator ! (const matrixT& m) _THROW_MATRIX_ERROR
 {
    matrixT temp = m;
    return temp.Inv();
@@ -772,7 +772,7 @@ matrixT::Null (const size_t& row, const size_t& col) _NO_THROW
     if (row != _m->Row || col != _m->Col)
 	reallocate( row,col);
 
-    if (_m->Refcnt > 1) 
+    if (_m->Refcnt > 1)
 	clone();
 
     for (size_t i=0; i < _m->Row; i++)
@@ -785,7 +785,7 @@ matrixT::Null (const size_t& row, const size_t& col) _NO_THROW
 MAT_TEMPLATE inline void
 matrixT::Null() _NO_THROW
 {
-    if (_m->Refcnt > 1) clone();   
+    if (_m->Refcnt > 1) clone();
     for (size_t i=0; i < _m->Row; i++)
 	for (size_t j=0; j < _m->Col; j++)
 		_m->Val[i][j] = T(0);
@@ -798,8 +798,8 @@ matrixT::Unit (const size_t& row) _NO_THROW
 {
     if (row != _m->Row || row != _m->Col)
 	reallocate( row, row);
-	
-    if (_m->Refcnt > 1) 
+
+    if (_m->Refcnt > 1)
 	clone();
 
     for (size_t i=0; i < _m->Row; i++)
@@ -812,7 +812,7 @@ matrixT::Unit (const size_t& row) _NO_THROW
 MAT_TEMPLATE inline void
 matrixT::Unit () _NO_THROW
 {
-    if (_m->Refcnt > 1) clone();   
+    if (_m->Refcnt > 1) clone();
     size_t row = min(_m->Row,_m->Col);
     _m->Row = _m->Col = row;
 
@@ -857,7 +857,7 @@ matrixT::Det () const _THROW_MATRIX_ERROR
 
    if (_m->Row != _m->Col)
       REPORT_ERROR( "matrixT::Det(): Determinant a non-square matrix!");
-   
+
    matrixT temp(*this);
    if (temp._m->Refcnt > 1) temp.clone();
 
@@ -1018,7 +1018,7 @@ matrixT::IsSymmetric () _NO_THROW
 	    return false;
    return true;
 }
-	   
+
 // Determine if the matrix is skew-symmetric
 MAT_TEMPLATE inline bool
 matrixT::IsSkewSymmetric () _NO_THROW
@@ -1031,7 +1031,7 @@ matrixT::IsSkewSymmetric () _NO_THROW
 	    return false;
    return true;
 }
-   
+
 // Determine if the matrix is upper triangular
 MAT_TEMPLATE inline bool
 matrixT::IsUpperTriangular () _NO_THROW
@@ -1061,7 +1061,7 @@ matrixT::IsLowerTriangular () _NO_THROW
 }
 
 #ifndef _NO_NAMESPACE
-} 
+}
 #endif
 
 #endif //__STD_MATRIX_H

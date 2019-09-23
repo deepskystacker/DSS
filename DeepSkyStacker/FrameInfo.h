@@ -68,10 +68,12 @@ protected :
 		m_bSuperPixel	  = FALSE;
 		m_DateTime.wYear  = 0;
 		m_ExtraInfo.Clear();
+        m_lWidth = 0;
+        m_lHeight = 0;
 	};
 
 public :
-	CFrameInfo() 
+	CFrameInfo()
 	{
 		Reset();
 	};
@@ -130,8 +132,8 @@ public :
 	{
 		BOOL			bResult;
 
-		bResult = (m_lWidth == lWidth) && 
-				  (m_lHeight == lHeight) && 
+		bResult = (m_lWidth == lWidth) &&
+				  (m_lHeight == lHeight) &&
 				  (m_lBitPerChannels == lBitPerChannels);
 
 		if (bResult)

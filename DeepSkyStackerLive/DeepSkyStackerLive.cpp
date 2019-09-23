@@ -82,7 +82,7 @@ BOOL	IsExpired()
 	LONG				lMaxMonth = DSSBETAEXPIREMONTH;
 
 	GetSystemTime(&SystemTime);
-	if ((SystemTime.wYear>lMaxYear) || 
+	if ((SystemTime.wYear>lMaxYear) ||
 		((SystemTime.wYear==lMaxYear) && (SystemTime.wMonth>lMaxMonth)))
 	{
 		AfxMessageBox("This beta version has expired\nYou can probably get another one or download the final release from the web site.", MB_OK | MB_ICONSTOP);
@@ -104,7 +104,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	ZFUNCTRACE_RUNTIME();
 	int nRetCode = 0;
 
-	OleInitialize(NULL);
+	OleInitialize(nullptr);
 
 	SetUILanguage();
 
@@ -113,7 +113,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	GdiplusStartupOutput	gdiSO;
 	ULONG_PTR				gdiplusToken;
 	ULONG_PTR				gdiHookToken;
-  
+
 	// Initialize GDI+.
 	gdiplusStartupInput.SuppressBackgroundThread = TRUE;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
@@ -121,7 +121,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	#endif
 
 	// initialize MFC and print and error on failure
-	if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0))
+	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
 	{
 		cerr << _T("Fatal Error: MFC initialization failed") << endl;
 		nRetCode = 1;

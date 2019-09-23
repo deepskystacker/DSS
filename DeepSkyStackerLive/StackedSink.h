@@ -17,7 +17,7 @@ private :
 private :
 
 public :
-	CStackedSink() 
+	CStackedSink()
 	{
 		m_pt1 = m_pt2 = m_pt3 = m_pt4;
 	};
@@ -25,7 +25,7 @@ public :
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 
-	void			SetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4);
+	void			SetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4);
 	void			ClearFootprint();
 };
 

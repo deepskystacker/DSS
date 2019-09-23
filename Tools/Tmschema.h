@@ -1,9 +1,9 @@
 //-----------------------------------------------------------------
 //   TmSchema.h - Theme Manager schema (properties, parts, etc)
 //-----------------------------------------------------------------
-//   Note: this file is normally #include-ed twice a single .cpp 
-//         file.  The 2nd time, SCHEME_STRINGS should be defined.  
-//         This allows the enums and strings to be kept in a 
+//   Note: this file is normally #include-ed twice a single .cpp
+//         file.  The 2nd time, SCHEME_STRINGS should be defined.
+//         This allows the enums and strings to be kept in a
 //         single logical table and ensure they stay in sync with
 //         each other.
 //-----------------------------------------------------------------
@@ -15,7 +15,7 @@
 //-----------------------------------------------------------------
 #include "SchemaDef.h"
 //-----------------------------------------------------------------
-#define THEMEMGR_VERSION 1  // increment if order of props changes or 
+#define THEMEMGR_VERSION 1  // increment if order of props changes or
                             // any props are deleted (will prevent loading
                             // of controlsets that use older version
 //-----------------------------------------------------------------
@@ -134,7 +134,7 @@ END_TM_ENUM()
 */
 //-----------------------------------------------------------------
 //    PROPERTIES - used by uxtheme rendering and controls
-//      
+//
 //    these cannot be renumbered (part of uxtheme API)
 //-----------------------------------------------------------------
 BEGIN_TM_PROPS()
@@ -291,7 +291,7 @@ BEGIN_TM_PROPS()
     TM_PROP(2207, TMT, GLYPHONLY,         BOOL)   // only draw glyph (not background)
     TM_PROP(2208, TMT, ALWAYSSHOWSIZINGBAR, BOOL)
     TM_PROP(2209, TMT, MIRRORIMAGE,         BOOL) // default=TRUE means image gets mirrored in RTL (Mirror) windows
-    TM_PROP(2210, TMT, UNIFORMSIZING,       BOOL) // if TRUE, height & width must be uniformly sized 
+    TM_PROP(2210, TMT, UNIFORMSIZING,       BOOL) // if TRUE, height & width must be uniformly sized
     TM_PROP(2211, TMT, INTEGRALSIZING,      BOOL) // for TRUESIZE and Border sizing; if TRUE, factor must be integer
     TM_PROP(2212, TMT, SOURCEGROW,          BOOL) // if TRUE, will scale up src image when needed
     TM_PROP(2213, TMT, SOURCESHRINK,        BOOL) // if TRUE, will scale down src image when needed
@@ -358,8 +358,8 @@ BEGIN_TM_PROPS()
     TM_PROP(3603, TMT, CAPTIONMARGINS,    MARGINS)    // margins that define where caption text can be placed
 
     //---- rendering COLOR properties ----
-    TM_PROP(3801, TMT, BORDERCOLOR,      COLOR)       // color of borders for BorderFill 
-    TM_PROP(3802, TMT, FILLCOLOR,        COLOR)       // color of bg fill 
+    TM_PROP(3801, TMT, BORDERCOLOR,      COLOR)       // color of borders for BorderFill
+    TM_PROP(3802, TMT, FILLCOLOR,        COLOR)       // color of bg fill
     TM_PROP(3803, TMT, TEXTCOLOR,        COLOR)       // color text is drawn in
     TM_PROP(3804, TMT, EDGELIGHTCOLOR,     COLOR)     // edge color
     TM_PROP(3805, TMT, EDGEHIGHLIGHTCOLOR, COLOR)     // edge color
@@ -398,7 +398,7 @@ BEGIN_TM_PROPS()
     TM_PROP(4013, TMT, IMAGESELECTTYPE,       ENUM)   // controls when to select from IMAGEFILE1...IMAGEFILE5
     TM_PROP(4014, TMT, GLYPHFONTSIZINGTYPE,   ENUM)   // controls when to select a bigger/small glyph font size
     TM_PROP(4015, TMT, TRUESIZESCALINGTYPE,   ENUM)   // controls how TrueSize image is scaled
-    
+
     //---- custom properties (used only by controls/shell) ----
     TM_PROP(5001, TMT, USERPICTURE,           BOOL)
     TM_PROP(5002, TMT, DEFAULTPANESIZE,       RECT)
@@ -437,7 +437,7 @@ BEGIN_TM_CLASS_PARTS(WINDOW)
     TM_PART(22, WP, MDIRESTOREBUTTON)
     TM_PART(23, WP, HELPBUTTON)
     TM_PART(24, WP, MDIHELPBUTTON)
-    //---- scrollbars 
+    //---- scrollbars
     TM_PART(25, WP, HORZSCROLL)
     TM_PART(26, WP, HORZTHUMB)
     TM_PART(27, WP, VERTSCROLL)
@@ -465,7 +465,7 @@ BEGIN_TM_PART_STATES(CAPTION)
     TM_STATE(2, CS, INACTIVE)
     TM_STATE(3, CS, DISABLED)
 END_TM_PART_STATES()
-    
+
 BEGIN_TM_PART_STATES(MAXCAPTION)
     TM_STATE(1, MXCS, ACTIVE)
     TM_STATE(2, MXCS, INACTIVE)

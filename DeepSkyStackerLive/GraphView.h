@@ -58,9 +58,15 @@ private :
 	};
 
 public :
-	CChartSeries()
-	{
-	};
+    CChartSeries()
+    {
+        m_pChart = nullptr;
+        m_pMain = nullptr;;
+        m_pReference = nullptr;;
+        m_pOk = nullptr;;
+        m_pWrong = nullptr;;
+        m_pWarning = nullptr;;
+    }
 
 	~CChartSeries()
 	{
@@ -189,7 +195,7 @@ private :
 
 	bool m_bDarkMode;
 public:
-	CGraphViewTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CGraphViewTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CGraphViewTab();
 
 	//void	CallHelp();

@@ -81,7 +81,7 @@ private :
 	};
 
 public :
-	CPostCalibrationSettings() 
+	CPostCalibrationSettings()
 	{
 		m_bHot			= FALSE;
 		m_lHotFilter	= 1;
@@ -155,6 +155,12 @@ public:
 	{
 		CopyFrom(right);
 	};
+
+    COutputSettings& operator=(COutputSettings const& other)
+    {
+        CopyFrom(other);
+        return *this;
+    }
 };
 
 
@@ -213,6 +219,7 @@ public :
 		m_fKappa	= 2.0;
 		m_lNrIterations = 5;
 		m_bUnmodified = FALSE;
+        m_TaskType = PICTURETYPE(0);
 	};
 
 	CTaskInfo(const CTaskInfo & ti)
@@ -225,7 +232,7 @@ public :
 		CopyFrom(ti);
 		return (*this);
 	};
-	
+
 	virtual ~CTaskInfo()
 	{
 	};
@@ -258,7 +265,7 @@ public :
 		{
 			CSmartPtr<CMemoryBitmap>	pBitmap;
 
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 			if (m_pMaster && m_pMaster->GetNrBitmaps() > 1)
 			{
 				bResult = m_pMaster->GetResult(&pBitmap, pProgress);
@@ -314,11 +321,11 @@ private :
 public :
 	CStackingInfo()
 	{
-		m_pOffsetTask	= NULL;
-		m_pDarkTask		= NULL;
-		m_pFlatTask		= NULL;
-		m_pLightTask	= NULL;
-		m_pDarkFlatTask	= NULL;
+		m_pOffsetTask	= nullptr;
+		m_pDarkTask		= nullptr;
+		m_pFlatTask		= nullptr;
+		m_pLightTask	= nullptr;
+		m_pDarkFlatTask	= nullptr;
 	};
 
 	CStackingInfo(const CStackingInfo & si)
@@ -402,6 +409,10 @@ private :
 		m_lNrDarkFlatFrames	= tasks.m_lNrDarkFlatFrames;
 		m_lNrFlatFrames		= tasks.m_lNrFlatFrames;
 		m_fMaxExposureTime	= tasks.m_fMaxExposureTime;
+
+        m_bDarkUsed         = tasks.m_bDarkUsed;
+        m_bBiasUsed         = tasks.m_bBiasUsed;
+        m_bFlatUsed         = tasks.m_bFlatUsed;
 	};
 
 public :
@@ -577,7 +588,7 @@ public :
 	{
 		if (m_bUseCustomRectangle)
 			return SM_CUSTOM;
-		else 
+		else
 			return GetResultMode();
 	};
 
@@ -587,8 +598,8 @@ public :
 	BOOL	DoDarkFlatTasks(CDSSProgress * pProgress);
 	BOOL	DoAllPreTasks(CDSSProgress * pProgress)
 	{
-		return DoOffsetTasks(pProgress) && 
-			   DoDarkTasks(pProgress) && 
+		return DoOffsetTasks(pProgress) &&
+			   DoDarkTasks(pProgress) &&
 			   DoDarkFlatTasks(pProgress) &&
 			   DoFlatTasks(pProgress);
 	};

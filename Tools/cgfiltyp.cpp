@@ -28,7 +28,7 @@ CGCFileTypeAccess::CGCFileTypeAccess()
 {
 }
 
-// virtual 
+// virtual
 CGCFileTypeAccess::~CGCFileTypeAccess()
 {
 }
@@ -104,7 +104,7 @@ BOOL CGCFileTypeAccess::RegSetCLSID(void)
 	return TRUE;
 }
 
-// 
+//
 // virtual
 BOOL CGCFileTypeAccess::RegSetShellInfo(void)
 {
@@ -236,7 +236,7 @@ void CGCFileTypeAccess::GetDocumentShellOpenCommand(
 	csDocumentShellOpenCommand = m_csDocumentShellOpenCommand;
 }
 
-// virtual 
+// virtual
 void CGCFileTypeAccess::ClearAllData(void)
 {
 	m_csExtension.Empty();
@@ -263,7 +263,7 @@ BOOL CGCFileTypeAccess::SetRegistryValue(
 	LPCTSTR szData
 ){
 	// validate input
-	if( !hOpenKey || !szKey || !szKey[0] || 
+	if( !hOpenKey || !szKey || !szKey[0] ||
 		!szValue || !szData ){
 		::SetLastError(E_INVALIDARG);
 		return FALSE;
@@ -274,7 +274,7 @@ BOOL CGCFileTypeAccess::SetRegistryValue(
 	DWORD	dwReserved = 0;
 	HKEY  	hTempKey = (HKEY)0;
 
-	// length specifier is in bytes, and some TCHAR 
+	// length specifier is in bytes, and some TCHAR
 	// are more than 1 byte each
 	DWORD	dwBufferLength = lstrlen(szData) * sizeof(TCHAR);
 
@@ -284,11 +284,11 @@ BOOL CGCFileTypeAccess::SetRegistryValue(
 	if( ERROR_SUCCESS == ::RegCreateKeyEx(hOpenKey, szKey, dwReserved,
 		(LPTSTR)0, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, 0,
 		&hTempKey, &dwDisposition) ){
-		
-		// dwBufferLength must include size of terminating nul 
+
+		// dwBufferLength must include size of terminating nul
 		// character when using REG_SZ with RegSetValueEx function
 		dwBufferLength += sizeof(TCHAR);
-		
+
 		if( ERROR_SUCCESS == ::RegSetValueEx(hTempKey, (LPTSTR)szValue,
 			dwReserved, REG_SZ, (LPBYTE)szData, dwBufferLength) ){
 			bRetVal = TRUE;

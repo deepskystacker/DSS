@@ -13,7 +13,7 @@
 
 class CGradientCtrl;
 
-class CGradientCtrlImpl  
+class CGradientCtrlImpl
 {
 public:
 	CGradientCtrlImpl(CGradientCtrl *owner);
@@ -27,15 +27,15 @@ protected:
 	void DrawSelPeg(CDC *dc, CPoint point, int direction);
 	void DrawPeg(CDC *dc, CPoint point, COLORREF colour, int direction);
 	void DrawEndPegs(CDC *dc);
-	
+
 	int PointFromPos(float pos);
 	float PosFromPoint(int point);
 	int GetPegIndent(int index);
 	int PtInPeg(CPoint point);
 
 	void GetPegRect(int index, CRect *rect, bool right);
-	
-	void ParseToolTipLine(CString &tiptext, CPeg peg);
+
+	void ParseToolTipLine(CString &tiptext, CPeg const& peg);
 	void ShowTooltip(CPoint point, CString text);
 	CString ExtractLine(CString source, int line);
 	void SetTooltipText(CString text);

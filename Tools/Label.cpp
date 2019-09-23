@@ -28,13 +28,13 @@ END_MESSAGE_MAP()
 // CLabel Version 1.2
 //
 // From now on I'll try to keep a log of fixes and enhancements...
-// 
+//
 // The new feature were added due to the response of people.
 // All I ask is to all you programmers out there, is if you add, fix or
 // enhance this code, sent me a copy and I'll send the copy on to www.codeproject.com
 //
 // Happy Software Engineer :)
-// 
+//
 // New features include:
 //
 // A. Support for 3D Fonts
@@ -55,7 +55,7 @@ END_MESSAGE_MAP()
 // CLabel Version 1.3
 //
 // A. Added SS_LEFTNOWORDWRAP to include wordwrap
-// B. Fix repainting problem 
+// B. Fix repainting problem
 // C. Fix SetBkColor
 // D. Added SS_CENTER
 
@@ -63,13 +63,13 @@ END_MESSAGE_MAP()
 // Marius						- Added styling problem.
 // Azing Vondeling & Broker		- Spotting painting Problem.
 // Mel Stober					- Back Color & SS_CENTER
-// 
+//
 /////////////////////////////////////////////////////////////////////////////
 // CLabel Version 1.4
 //
 // A. Fix to transparency mode
 // B. Added new SetText3DHiliteColor to change the 3D Font face color - default is white.
-// 
+//
 // Thanks to:
 // michael.groeger				- Spotting Transparency with other controls bug.
 //
@@ -85,13 +85,13 @@ END_MESSAGE_MAP()
 // F. Inclusion of SS_OWNERDRAW via control creation and subclassing
 // G. Modification to Text aligmnent code
 // H. New background gradient fill function
-// 
+//
 // Thanks to:
-// Steve Kowald				- Using null handles 
+// Steve Kowald				- Using null handles
 // Alan Chan				- Supporting International Windows
 // Dieter Fauth				- Request for default Dialog font
 // Herb Illfelder			- Text Alignment code
-// 
+//
 /////////////////////////////////////////////////////////////////////////////
 // CLabel Version 1.6
 // Jeroen Roosendaal		- SetFont suggestion
@@ -100,19 +100,18 @@ END_MESSAGE_MAP()
 // Jignesh I. Patel			- Added expanded tabs feature
 // Jim Farmelant 			- Fix SetText crash
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 // Function:		CLabel::CLabel
 //
 // Description:		Default contructor
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -124,8 +123,7 @@ CLabel::CLabel()
 	m_crText = GetSysColor(COLOR_WINDOWTEXT);
 
 // 1.1
-	m_hBackBrush = NULL;
-
+	m_hBackBrush = nullptr;
 
 	m_crHiColor =		0;
 	m_crLoColor	=		0;
@@ -134,7 +132,7 @@ CLabel::CLabel()
 	m_bState =			FALSE;
 	m_bTransparent =	FALSE;
 	m_Link =			LinkNone;
-	m_hCursor =			NULL;
+	m_hCursor =			nullptr;
 	m_Type =			None;
 	m_bFont3d =			FALSE;
 	m_bNotifyParent =	FALSE;
@@ -143,7 +141,8 @@ CLabel::CLabel()
 	m_fillmode =		Normal;
 	m_cr3DHiliteColor =	RGB(255,255,255);
 	m_bHover =			FALSE;
-	
+    m_3dType =          Type3D(0);
+
 	m_hwndBrush = ::CreateSolidBrush(GetSysColor(COLOR_3DFACE));
 }
 
@@ -151,14 +150,14 @@ CLabel::CLabel()
 //
 // Function:		CLabel::~CLabel
 //
-// Description:		
+// Description:
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -174,7 +173,7 @@ CLabel::~CLabel()
 	// Stop Checking complaining
 	if (m_hBackBrush)
 		::DeleteObject(m_hBackBrush);
-	
+
 }
 
 void CLabel::UpdateSurface()
@@ -195,12 +194,12 @@ void CLabel::UpdateSurface()
 //
 // Description:		Helper function to build font after it was changed
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
+//
+// RETURNS:
 //
 // NOTES:			PROTECTED
-// 
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -221,15 +220,15 @@ void CLabel::ReconstructFont()
 //
 // Description:		Handles all the drawing code for the label
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
+//
+// RETURNS:
 //
 // NOTES:			Called by Windows... not by USER
 //					Probably needs tiding up a some point.
 //					Different states will require this code to be reworked.
 //
-// 
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -251,13 +250,12 @@ void CLabel::Draw(CDC * pDC)
 	GetWindowText(strText);
 	CBitmap bmp;
 
-
 	///////////////////////////////////////////////////////
 	//
 	// Set up for double buffering...
 	//
 	CDC* pDCMem;
-	CBitmap*	pOldBitmap = NULL;
+	CBitmap*	pOldBitmap = nullptr;
 
 	if (!m_bTransparent)
 	{
@@ -273,10 +271,8 @@ void CLabel::Draw(CDC * pDC)
 
 	UINT nMode = pDCMem->SetBkMode(TRANSPARENT);
 
-
 	COLORREF crText = pDCMem->SetTextColor(m_crText);
 	CFont *pOldFont = pDCMem->SelectObject(&m_font);
-
 
 	// Fill in backgound if not transparent
 	if (!m_bTransparent)
@@ -284,12 +280,12 @@ void CLabel::Draw(CDC * pDC)
 		if (m_fillmode == Normal)
 		{
 			CBrush br;
-			
-			if (m_hBackBrush != NULL)
+
+			if (m_hBackBrush != nullptr)
 				br.Attach(m_hBackBrush);
 			else
 				br.Attach(m_hwndBrush);
-					
+
 			pDCMem->FillRect(rc,&br);
 
 			br.Detach();
@@ -300,7 +296,6 @@ void CLabel::Draw(CDC * pDC)
 		}
 
 	}
-	
 
 	// If the text is flashing turn the text color on
 	// then to the color of the window background.
@@ -312,34 +307,32 @@ void CLabel::Draw(CDC * pDC)
 	if (m_hBackBrush)
 		::GetObject(m_hBackBrush,sizeof(lb),&lb);
 
-
 	// Something to do with flashing
 	if (!m_bState && m_Type == Text)
 		pDCMem->SetTextColor(lb.lbColor);
 
 	DWORD style = GetStyle();
-	
+
 	switch (style & SS_TYPEMASK)
 	{
-		case SS_RIGHT: 
-			dwFlags = DT_RIGHT | DT_WORDBREAK; 
-			break; 
-		
-		case SS_CENTER: 
+		case SS_RIGHT:
+			dwFlags = DT_RIGHT | DT_WORDBREAK;
+			break;
+
+		case SS_CENTER:
 			dwFlags = SS_CENTER | DT_WORDBREAK;
 			break;
 
-		case SS_LEFTNOWORDWRAP: 
-			dwFlags = DT_LEFT; 
+		case SS_LEFTNOWORDWRAP:
+			dwFlags = DT_LEFT;
 			break;
 
 		default: // treat other types as left
-			case SS_LEFT: 
-				dwFlags = DT_LEFT | DT_WORDBREAK; 
+			case SS_LEFT:
+				dwFlags = DT_LEFT | DT_WORDBREAK;
 				break;
-	}	
+	}
 
-		
 	// Added to expand tabs...
 	if(strText.Find(_T('\t')) != -1)
 		dwFlags |= DT_EXPANDTABS;
@@ -350,13 +343,13 @@ void CLabel::Draw(CDC * pDC)
 	{
 		dwFlags = DT_CENTER;
 
-		// Apply 
+		// Apply
 		if (strText.Find(_T("\r\n")) == -1)
 		{
 			dwFlags |= DT_VCENTER;
 
 			// And because DT_VCENTER only works with single lines
-			dwFlags |= DT_SINGLELINE; 
+			dwFlags |= DT_SINGLELINE;
 		}
 
 	}
@@ -364,7 +357,7 @@ void CLabel::Draw(CDC * pDC)
 	//
 	// 3333   DDDDD
 	//     3  D    D
-	//   33   D     D    E F X 
+	//   33   D     D    E F X
 	//     3  D    D
 	// 3333   DDDDD
 	//
@@ -375,9 +368,9 @@ void CLabel::Draw(CDC * pDC)
 
 		CPoint pt;
 		GetViewportOrgEx (pDCMem->m_hDC,&pt) ;
-		SetViewportOrgEx (pDCMem->m_hDC,rc.Width() / 2, rc.Height() / 2, NULL) ;
+		SetViewportOrgEx (pDCMem->m_hDC,rc.Width() / 2, rc.Height() / 2, nullptr) ;
 		pDCMem->TextOut (0, 0, strText) ;
-		SetViewportOrgEx (pDCMem->m_hDC,pt.x / 2, pt.y / 2, NULL) ;
+		SetViewportOrgEx (pDCMem->m_hDC,pt.x / 2, pt.y / 2, nullptr) ;
 		pDCMem->SetTextAlign (nAlign);
 	}
 	else
@@ -393,8 +386,6 @@ void CLabel::Draw(CDC * pDC)
 				rc.OffsetRect(1,1);
 
 			pDCMem->DrawText(strText,rc,dwFlags);
-			m_3dType;
-
 		}
 	}
 
@@ -406,13 +397,13 @@ void CLabel::Draw(CDC * pDC)
 	if (!m_bTransparent)
 	{
 		pDC->BitBlt(0,0,rc.Width(),rc.Height(),pDCMem,0,0,SRCCOPY);
-		// continue DC restore 
+		// continue DC restore
 		pDCMem->SelectObject ( pOldBitmap ) ;
 		delete pDCMem;
 	}
 };
 
-void CLabel::OnPaint() 
+void CLabel::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	Draw(&dc);
@@ -451,24 +442,24 @@ void CLabel::OnMouseMove(UINT nFlags, CPoint pt)
 // Description:		Used in conjunction with 'FLASH' functions
 //
 // INPUTS:          Windows API
-// 
+//
 // RETURNS:         Windows API
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
 // NT ALMOND				26/08/98    1.0     Origin
 //
 //////////////////////////////////////////////////////////////////////////
-void CLabel::OnTimer(UINT_PTR nIDEvent) 
+void CLabel::OnTimer(UINT_PTR nIDEvent)
 {
 
 	m_bState = !m_bState;
 
 	UpdateSurface();
-	
+
 	CStatic::OnTimer(nIDEvent);
 }
 
@@ -479,18 +470,18 @@ void CLabel::OnTimer(UINT_PTR nIDEvent)
 // Description:		Used in conjunction with 'LINK' function
 //
 // INPUTS:          Windows API
-// 
+//
 // RETURNS:         Windows API
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
 // NT ALMOND				26/08/98    1.0     Origin
 //
 //////////////////////////////////////////////////////////////////////////
-BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) 
+BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 
 	if (m_hCursor)
@@ -509,18 +500,18 @@ BOOL CLabel::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 // Description:		Called when a link is click on
 //
 // INPUTS:          Windows API
-// 
+//
 // RETURNS:         Windows API
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
 // NT ALMOND				26/08/98    1.0     Origin
 // NT ALMOND				02072002    1.6     Added Mail support
 //////////////////////////////////////////////////////////////////////////
-void CLabel::OnLButtonDown(UINT nFlags, CPoint point) 
+void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	ReleaseCapture();
 	SetFontUnderline(FALSE);
@@ -533,7 +524,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 		GetWindowText(strLink);
 		if (m_Link == HyperLink)
 		{
-			ShellExecute(NULL,_T("open"),m_sLink.IsEmpty() ? strLink : m_sLink,NULL,NULL,SW_SHOWNORMAL);
+			ShellExecute(nullptr,_T("open"),m_sLink.IsEmpty() ? strLink : m_sLink,nullptr,nullptr,SW_SHOWNORMAL);
 		}
 		if (m_Link == MailLink)
 		{
@@ -541,7 +532,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 				strLink = "mailto:" + strLink;
 			else
 				strLink = m_sLink;
-			ShellExecute( NULL, NULL,  strLink,  NULL, NULL, SW_SHOWNORMAL );
+			ShellExecute( nullptr, nullptr,  strLink,  nullptr, nullptr, SW_SHOWNORMAL );
 		}
 	}
 	else
@@ -556,7 +547,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 		nm.code = NM_LINKCLICK;
 		GetParent()->SendMessage(WM_NOTIFY,nm.idFrom,(LPARAM) &nm);
 	}
-		
+
 	CStatic::OnLButtonDown(nFlags, point);
 }
 
@@ -573,11 +564,11 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 // Description:		Short cut to set window text - caption - label
 //
 // INPUTS:          Text to use
-// 
+//
 // RETURNS:         Reference to this
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -586,7 +577,7 @@ void CLabel::OnLButtonDown(UINT nFlags, CPoint point)
 //////////////////////////////////////////////////////////////////////////
 CLabel& CLabel::SetText(const CString& strText)
 {
-	if(IsWindow(this->GetSafeHwnd())) 
+	if(IsWindow(this->GetSafeHwnd()))
 	{
 		SetWindowText(strText);
 		UpdateSurface();
@@ -599,14 +590,14 @@ CLabel& CLabel::SetText(const CString& strText)
 //
 // Function:		CLabel::SetTextColor
 //
-// Description:		Sets the text color 
+// Description:		Sets the text color
 //
 // INPUTS:          True or false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -617,7 +608,7 @@ CLabel& CLabel::SetTextColor(COLORREF crText)
 {
 
 	m_crText = crText;
-	
+
 	UpdateSurface();
 	return *this;
 }
@@ -626,14 +617,14 @@ CLabel& CLabel::SetTextColor(COLORREF crText)
 //
 // Function:		CLabel::SetFontBold
 //
-// Description:		Sets the font ot bold 
+// Description:		Sets the font ot bold
 //
 // INPUTS:          True or false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -641,15 +632,13 @@ CLabel& CLabel::SetTextColor(COLORREF crText)
 //
 //////////////////////////////////////////////////////////////////////////
 CLabel& CLabel::SetFontBold(BOOL bBold)
-{	
+{
 
 	m_lf.lfWeight = bBold ? FW_BOLD : FW_NORMAL;
 	ReconstructFont();
 	UpdateSurface();
 	return *this;
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -658,11 +647,11 @@ CLabel& CLabel::SetFontBold(BOOL bBold)
 // Description:		Sets font underline attribue
 //
 // INPUTS:          True of false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -670,7 +659,7 @@ CLabel& CLabel::SetFontBold(BOOL bBold)
 //
 //////////////////////////////////////////////////////////////////////////
 CLabel& CLabel::SetFontUnderline(BOOL bSet)
-{	
+{
 	m_lf.lfUnderline = bSet;
 	ReconstructFont();
 	UpdateSurface();
@@ -685,11 +674,11 @@ CLabel& CLabel::SetFontUnderline(BOOL bSet)
 // Description:		Sets font italic attribute
 //
 // INPUTS:          True of false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -703,7 +692,7 @@ CLabel& CLabel::SetFontItalic(BOOL bSet)
 	ReconstructFont();
 	UpdateSurface();
 
-	return *this;	
+	return *this;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -713,11 +702,11 @@ CLabel& CLabel::SetFontItalic(BOOL bSet)
 // Description:		Sets sunken effect on border
 //
 // INPUTS:          True of false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -731,8 +720,8 @@ CLabel& CLabel::SetSunken(BOOL bSet)
 		ModifyStyleEx(WS_EX_STATICEDGE,0,SWP_DRAWFRAME);
 	else
 		ModifyStyleEx(0,WS_EX_STATICEDGE,SWP_DRAWFRAME);
-		
-	return *this;	
+
+	return *this;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -742,11 +731,11 @@ CLabel& CLabel::SetSunken(BOOL bSet)
 // Description:		Toggles the border on/off
 //
 // INPUTS:          True of false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -760,8 +749,8 @@ CLabel& CLabel::SetBorder(BOOL bSet)
 		ModifyStyle(WS_BORDER,0,SWP_DRAWFRAME);
 	else
 		ModifyStyle(0,WS_BORDER,SWP_DRAWFRAME);
-		
-	return *this;	
+
+	return *this;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -771,11 +760,11 @@ CLabel& CLabel::SetBorder(BOOL bSet)
 // Description:		Sets the font size
 //
 // INPUTS:          True of false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -802,7 +791,6 @@ CLabel& CLabel::SetFontSize(int nSize)
 	return *this;
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 // Function:		CLabel::SetBkColor
@@ -810,11 +798,11 @@ CLabel& CLabel::SetFontSize(int nSize)
 // Description:		Sets background color
 //
 // INPUTS:          Colorref of background color
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -832,7 +820,6 @@ CLabel& CLabel::SetBkColor(COLORREF crBkgnd, COLORREF crBkgndHigh , BackFillMode
 	if (m_hBackBrush)
 		::DeleteObject(m_hBackBrush);
 
-	
 	if (m_fillmode == Normal)
 		m_hBackBrush = ::CreateSolidBrush(crBkgnd);
 
@@ -848,11 +835,11 @@ CLabel& CLabel::SetBkColor(COLORREF crBkgnd, COLORREF crBkgndHigh , BackFillMode
 // Description:		Sets the fonts face name
 //
 // INPUTS:          String containing font name
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -860,7 +847,7 @@ CLabel& CLabel::SetBkColor(COLORREF crBkgnd, COLORREF crBkgndHigh , BackFillMode
 // NT ALMOND				15092000	1.5		Support internation windows
 //////////////////////////////////////////////////////////////////////////
 CLabel& CLabel::SetFontName(const CString& strFont, BYTE byCharSet /* Default = ANSI_CHARSET */)
-{	
+{
 
 	m_lf.lfCharSet = byCharSet;
 
@@ -878,11 +865,11 @@ CLabel& CLabel::SetFontName(const CString& strFont, BYTE byCharSet /* Default = 
 // Description:		As the function states
 //
 // INPUTS:          True or false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -898,10 +885,10 @@ CLabel& CLabel::FlashText(BOOL bActivate)
 	if (bActivate)
 	{
 		m_bState = FALSE;
-		
+
 		m_bTimer = TRUE;
-		
-		SetTimer(1,500,NULL);
+
+		SetTimer(1,500,nullptr);
 
 		m_Type = Text;
 	}
@@ -918,11 +905,11 @@ CLabel& CLabel::FlashText(BOOL bActivate)
 // Description:		As the function states
 //
 // INPUTS:          True or false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -940,14 +927,13 @@ CLabel& CLabel::FlashBackground(BOOL bActivate)
 		m_bState = FALSE;
 
 		m_bTimer = TRUE;
-		SetTimer(1,500,NULL);
+		SetTimer(1,500,nullptr);
 
 		m_Type = Background;
 	}
 
 	return *this;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -956,11 +942,11 @@ CLabel& CLabel::FlashBackground(BOOL bActivate)
 // Description:		Indicates the string is a link
 //
 // INPUTS:          True or false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -984,8 +970,6 @@ CLabel& CLabel::SetLink(BOOL bLink,BOOL bNotifyParent)
 	else
 		ModifyStyle(SS_NOTIFY,0);
 
-  
-
 	return *this;
 }
 
@@ -996,11 +980,11 @@ CLabel& CLabel::SetLink(BOOL bLink,BOOL bNotifyParent)
 // Description:		Sets the internet browers link
 //
 // INPUTS:          Handle of cursor
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1022,11 +1006,11 @@ CLabel& CLabel::SetLinkCursor(HCURSOR hCursor)
 // Description:		Sets the Label window to be transpaent
 //
 // INPUTS:          True or false
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1051,11 +1035,11 @@ CLabel& CLabel::SetTransparent(BOOL bSet)
 // Description:		Sets the 3D attribute of the font.
 //
 // INPUTS:          True or false, Raised or Sunken
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1069,21 +1053,19 @@ CLabel& CLabel::SetFont3D(BOOL bSet,Type3D type)
 	m_3dType = type;
 	UpdateSurface();
 
-
 	return *this;
 }
 
-void CLabel::OnSysColorChange() 
+void CLabel::OnSysColorChange()
 {
 
 	if (m_hwndBrush)
 		::DeleteObject(m_hwndBrush);
 
 	m_hwndBrush = ::CreateSolidBrush(GetSysColor(COLOR_3DFACE));
-	
+
 	UpdateSurface();
 
-		
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -1093,11 +1075,11 @@ void CLabel::OnSysColorChange()
 // Description:		Sets the rotation angle for the current font.
 //
 // INPUTS:          Angle in Degress
-// 
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1113,14 +1095,13 @@ CLabel& CLabel::SetRotationAngle(UINT nAngle,BOOL bRotation)
 	//
 	// Font rotation _ONLY_ works with TrueType fonts...
 	//
-	// 
+	//
 	m_lf.lfEscapement = m_lf.lfOrientation = (nAngle * 10);
 	m_bRotation = bRotation;
-	
-	ReconstructFont();
-	
-	UpdateSurface();
 
+	ReconstructFont();
+
+	UpdateSurface();
 
 	return *this;
 }
@@ -1131,12 +1112,12 @@ CLabel& CLabel::SetRotationAngle(UINT nAngle,BOOL bRotation)
 //
 // Description:		Sets the 3D font hilite color
 //
-// INPUTS:          Color 
-// 
+// INPUTS:          Color
+//
 // RETURNS:         Reference to 'this' object
 //
-// NOTES:			
-// 
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1148,10 +1129,8 @@ CLabel& CLabel::SetText3DHiliteColor(COLORREF cr3DHiliteColor)
 	m_cr3DHiliteColor = cr3DHiliteColor;
 	UpdateSurface();
 
-
 	return *this;
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -1159,25 +1138,25 @@ CLabel& CLabel::SetText3DHiliteColor(COLORREF cr3DHiliteColor)
 //
 // Description:		Assigns default dialog font
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
 // NT ALMOND				15092000    1.5     Origin
-// NT ALMOND				02072002    1.6     Fix crash when GetFont returns NULL
+// NT ALMOND				02072002    1.6     Fix crash when GetFont returns nullptr
 //////////////////////////////////////////////////////////////////////////
-void CLabel::PreSubclassWindow() 
+void CLabel::PreSubclassWindow()
 {
 
 	CStatic::PreSubclassWindow();
 
 	CFont* cf = GetFont();
-	if(cf !=NULL)
+	if(cf !=nullptr)
 	{
 		cf->GetObject(sizeof(m_lf),&m_lf);
 	}
@@ -1187,28 +1166,28 @@ void CLabel::PreSubclassWindow()
 	}
 
 	ReconstructFont();
-	
+
 }
 
 //////////////////////////////////////////////////////////////////////////
 //
 // Function:		CLabel::PreCreateWindow
 //
-// Description:		
+// Description:
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
 // NT ALMOND				15092000    1.5     Origin
 //////////////////////////////////////////////////////////////////////////
-BOOL CLabel::PreCreateWindow(CREATESTRUCT& cs) 
-{	
+BOOL CLabel::PreCreateWindow(CREATESTRUCT& cs)
+{
 	return CStatic::PreCreateWindow(cs);
 }
 
@@ -1218,12 +1197,12 @@ BOOL CLabel::PreCreateWindow(CREATESTRUCT& cs)
 //
 // Description:		Internal help function to gradient fill background
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1276,7 +1255,7 @@ void CLabel::DrawGradientFill(CDC* pDC, CRect* pRect, COLORREF crStart, COLORREF
 			nRight = nLeft + nCX;
 
 		cr = RGB(nR / 256, nG / 256, nB / 256);
-		
+
 		{
 			CBrush br(cr);
 			CBrush* pbrOld = pDC->SelectObject(&br);
@@ -1290,19 +1269,18 @@ void CLabel::DrawGradientFill(CDC* pDC, CRect* pRect, COLORREF crStart, COLORREF
 	}
 }
 
-
 //////////////////////////////////////////////////////////////////////////
 //
 // Function:		CLabel::SetFont
 //
 // Description:		Sets font with LOGFONT structure
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1317,25 +1295,24 @@ CLabel& CLabel::SetFont(LOGFONT lf)
 
 }
 
-BOOL CLabel::OnEraseBkgnd(CDC* pDC) 
+BOOL CLabel::OnEraseBkgnd(CDC* pDC)
 {
 	// TODO: Add your message handler code here and/or call default
-	
+
 	return TRUE;
 }
 
 void CLabel::OnSize(UINT nType, int cx, int cy)
 {
 	CStatic::OnSize(nType, cx, cy);
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 };
 
 void CLabel::OnMove(int x, int y)
 {
 	CStatic::OnMove(x, y);
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 };
-
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -1343,12 +1320,12 @@ void CLabel::OnMove(int x, int y)
 //
 // Description:		Sets the label so it becomes Mail enabled
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments
@@ -1360,7 +1337,6 @@ CLabel& CLabel::SetMailLink(BOOL bEnable, BOOL bNotifyParent)
 		m_Link = MailLink;
 	else
 		m_Link = LinkNone;
-
 
 	m_bNotifyParent = bNotifyParent;
 
@@ -1378,12 +1354,12 @@ CLabel& CLabel::SetMailLink(BOOL bEnable, BOOL bNotifyParent)
 //
 // Description:		Sets the label so it becomes hyperlink enabled
 //
-// INPUTS:          
-// 
-// RETURNS:         
+// INPUTS:
 //
-// NOTES:			
-// 
+// RETURNS:
+//
+// NOTES:
+//
 // MODIFICATIONS:
 //
 // Name                     Date        Version Comments

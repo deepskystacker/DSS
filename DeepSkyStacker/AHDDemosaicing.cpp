@@ -12,7 +12,7 @@ static	std::vector<float>		g_vLUT;
 
 /* ------------------------------------------------------------------- */
 
-CRGBToLab::CRGBToLab() 
+CRGBToLab::CRGBToLab()
 {
 	if (!g_vLUT.size())
 	{

@@ -1,14 +1,14 @@
 // =======================================================
-// 
+//
 //                      CWndImage.h
 //              WndImage class declarations
-// 
+//
 //           Copyright (C) 2000 Peter Hauptmann
 //
-//  Can be used and distributed freely 
+//  Can be used and distributed freely
 //          as long as the source copyright stays intact
-// 
-//  updated version can be found under 
+//
+//  updated version can be found under
 //          http://buerger.metropolis.de/bitbucket/
 //
 // -------------------------------------------------------
@@ -44,7 +44,7 @@ protected :
 	CWndImage *			m_pImage;
 
 public :
-	CWndImageSink() {};
+	CWndImageSink() : m_pImage(nullptr) {};
 	virtual ~CWndImageSink() {};
 
 	void	SetImage(CWndImage * pImage)
@@ -58,7 +58,7 @@ public :
 	virtual BOOL	Image_OnLButtonUp(LONG lX, LONG lY) { return FALSE; };
 	virtual BOOL	Image_OnRButtonDown(LONG lX, LONG lY) { return FALSE; };
 
-	virtual Image *	GetOverlayImage(CRect & rcClient) { return NULL; };
+	virtual Image *	GetOverlayImage(CRect & rcClient) { return nullptr; };
 };
 
 // ------------------------------------------------------------------
@@ -69,17 +69,17 @@ class CWndImage : public CWnd
 	virtual    ~CWndImage();
 	            CWndImage(bool bDarkMode = false);
 
-    BOOL        Create(RECT const & r, CWnd * parent, UINT id, 
+    BOOL        Create(RECT const & r, CWnd * parent, UINT id,
                        DWORD dwStyle = WS_CHILD | WS_VISIBLE);
 
 	BOOL        CreateFromStatic(CWnd * st);
 
-    void        SetBltMode(int mode);  
+    void        SetBltMode(int mode);
     void        SetAlign(int alignX, int alignY); // pass zero to keep value
-    void        SetSourceRect(RECT const & r);  
+    void        SetSourceRect(RECT const & r);
     void        SetSourceRect();                        // use entire image
 
-    void        SetZoom(double zoomX, double zoomY);        
+    void        SetZoom(double zoomX, double zoomY);
     void        SetZoom(double zoom);                       // zoomx=zoomy
 
     void        SetOrigin(int origX, int origY);
@@ -123,7 +123,7 @@ class CWndImage : public CWnd
 	void	SetImageSink(CWndImageSink * pImageSink)
 	{
 		if (m_pImageSink)
-			m_pImageSink->SetImage(NULL);
+			m_pImageSink->SetImage(nullptr);
 		m_pImageSink = pImageSink;
 		if (m_pImageSink)
 			m_pImageSink->SetImage(this);
@@ -163,7 +163,7 @@ class CWndImage : public CWnd
 	bool		m_4Corners;			// The 4 corners and the center are shown
 
 	bool		m_bDarkMode;
-	
+
 	// Selection rectangle
 	/*
 	BOOL		m_bAllowSelection;
@@ -201,7 +201,7 @@ class CWndImage : public CWnd
 	BOOL				m_bCaptured;
 	BOOL				m_bInvalidateOverlayBitmap;
 	Image *				m_pOverlayImage;
-	
+
 	BOOL				m_bInvalidateZoomBitmap;
 	Image *				m_pZoomImage;
 
@@ -213,7 +213,7 @@ class CWndImage : public CWnd
 	BOOL				m_bOnToolbar;
 
   public:
-    enum __bltmodes 
+    enum __bltmodes
     {
       bltCustom     =       1,      // custom source, zoom
       bltNormal     =       2,      // left upper corner
@@ -221,14 +221,14 @@ class CWndImage : public CWnd
       bltFitX       =       4,      // stretch to fit X coordinate
       bltFitY       =       5,      // stretch to fit Y cooddinate
       bltFitXY      =       6,      // stretch to fit, but keep aspect ratio
-      bltFitSm      =       7,      // stretch to fit smaller (larger clipped, keeps a/r)    
+      bltFitSm      =       7,      // stretch to fit smaller (larger clipped, keeps a/r)
       bltTile       =       8,      // blit tiled (origin included)
       blt_MaxMode   =       8,      // blit tiled (origin included)
 
       bltNoModify   =       0,      // pass a 0 param to not modify current setting
 //      bltCustom     =       1,      // custom alignment
       bltLeft       =       2,      // align to left/top
-      bltTop        =       2,      
+      bltTop        =       2,
       bltCenter     =       3,      // align to center
       bltRight      =       4,      // align to right / bottom
       bltBottom     =       4,
@@ -242,7 +242,7 @@ class CWndImage : public CWnd
 
 protected:
 	//{{AFX_MSG(CWndImage)
-	 
+
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
  	afx_msg void OnPaint();
 	afx_msg void OnSize(UINT nType, int cx, int cy);

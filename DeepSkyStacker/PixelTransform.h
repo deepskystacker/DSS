@@ -41,6 +41,7 @@ public :
 		m_fXShift = m_fYShift = 0;
 		m_fXCometShift = m_fYCometShift = 0;
 		m_lPixelSizeMultiplier = 1;
+        m_bUseCometShift = FALSE;
 	};
 
 	void	SetShift(double fXShift, double fYShift)
@@ -159,27 +160,27 @@ inline void ComputePixelDispatch(const CPointExt & pt, PIXELDISPATCHVECTOR & vPi
 	if ((pt.X == lX) && (pt.Y == lY))
 	{
 		// Only one pixel with all the luminosity
-		vPixels.push_back(CPixelDispatch(lX, lY, 1.0));
+		vPixels.emplace_back(lX, lY, 1.0);
 	}
 	else if (pt.X == lX)
 	{
 		// 2 pixels
-		vPixels.push_back(CPixelDispatch(lX, lY, 1.0 - fRemainY));
-		vPixels.push_back(CPixelDispatch(lX, lY+1, fRemainY));
+		vPixels.emplace_back(lX, lY, 1.0 - fRemainY);
+		vPixels.emplace_back(lX, lY+1, fRemainY);
 	}
 	else if (pt.Y == lY)
 	{
 		// 2 pixels
-		vPixels.push_back(CPixelDispatch(lX, lY, 1.0 - fRemainX));
-		vPixels.push_back(CPixelDispatch(lX+1, lY, fRemainX));
+		vPixels.emplace_back(lX, lY, 1.0 - fRemainX);
+		vPixels.emplace_back(lX+1, lY, fRemainX);
 	}
 	else
 	{
 		// 4 pixels
-		vPixels.push_back(CPixelDispatch(lX, lY, (1.0 - fRemainX)*(1.0-fRemainY)));
-		vPixels.push_back(CPixelDispatch(lX+1, lY, fRemainX * (1.0 - fRemainY)));
-		vPixels.push_back(CPixelDispatch(lX, lY+1, (1.0 - fRemainX)*fRemainY));
-		vPixels.push_back(CPixelDispatch(lX+1, lY+1, fRemainX*fRemainY));
+		vPixels.emplace_back(lX, lY, (1.0 - fRemainX)*(1.0-fRemainY));
+		vPixels.emplace_back(lX+1, lY, fRemainX * (1.0 - fRemainY));
+		vPixels.emplace_back(lX, lY+1, (1.0 - fRemainX)*fRemainY);
+		vPixels.emplace_back(lX+1, lY+1, fRemainX*fRemainY);
 	};
 };
 

@@ -48,7 +48,7 @@ public:
 // Operations
 public:
 	void	Initialize();
-	void	AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE, int nItem = -1);
+	void	AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE, int nItem = -1);
 	virtual BOOL AddFile(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE)
 	{
 		AddFileToList(szFile, dwGroupID, dwJobID, PictureType, bCheck);
@@ -65,7 +65,7 @@ public:
 		};
 	};
 
-	void	SetCurrentJobID(GUID dwJobID)
+	void	SetCurrentJobID(GUID const& dwJobID)
 	{
 		if (m_dwCurrentJobID != dwJobID)
 		{

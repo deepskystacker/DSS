@@ -50,7 +50,7 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 		// Create sub folder
 		BOOL					bResult;
 
-		bResult = CreateDirectory(strSubFolder, NULL);
+		bResult = CreateDirectory(strSubFolder, nullptr);
 		if (!bResult)
 			bResult = (GetLastError() == ERROR_ALREADY_EXISTS);
 
@@ -255,7 +255,7 @@ BOOL CLiveEngine::IsFileAvailable(LPCTSTR szFileName)
 	BOOL						bResult = FALSE;
 	HANDLE						hFile;
 
-	hFile = CreateFile(szFileName, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+	hFile = CreateFile(szFileName, GENERIC_READ, 0, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 	if (hFile)
 	{
 		bResult = TRUE;
@@ -316,7 +316,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 			TCHAR					szExt[_MAX_EXT];
 			CString					strName;
 
-			_tsplitpath(szFileName, NULL, NULL, szName, szExt);
+			_tsplitpath(szFileName, nullptr, nullptr, szName, szExt);
 			strName.Format(_T("%s%s"), szName, szExt);
 			strText.Format(IDS_LOG_REGISTERRESULTS, (LPCTSTR)strName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality);
 			PostToLog(strText, TRUE);
@@ -350,7 +350,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 		else
 		{
 			strText.Format(IDS_LOG_ERRORLOADINGFILE, szFileName);
-			PostToLog(strText, TRUE, TRUE, FALSE, RGB(255, 0, 0)); 
+			PostToLog(strText, TRUE, TRUE, FALSE, RGB(255, 0, 0));
 			MoveImage(szFileName);
 		};
 	};
@@ -417,8 +417,8 @@ void CLiveEngine::PostStackedImage()
 	CSmartPtr<CLiveEngineMsg>	pMsg;
 
 	pMsg.Create();
-	pMsg->SetStackedImage(pStackedImage, pWndImage, 
-						  m_RunningStackingEngine.GetNrStackedImages(), 
+	pMsg->SetStackedImage(pStackedImage, pWndImage,
+						  m_RunningStackingEngine.GetNrStackedImages(),
 						  m_RunningStackingEngine.GetTotalExposure());
 	PostOutMessage(pMsg);
 
@@ -587,9 +587,9 @@ void CLiveEngine::LiveEngine()
 	BOOL				bEnd = FALSE;
 	MSG					msg;
 
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(m_hEvent);
-	while (!bEnd && ::GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && ::GetMessage(&msg, nullptr, 0, 0))
 	{
 		// Check for settings update
 		if (msg.message == WM_LE_MESSAGE)
@@ -650,7 +650,7 @@ void CLiveEngine::LiveEngine()
 				};
 			};
 
-			while (!bEnd && !::PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE) && ProcessNext());
+			while (!bEnd && !::PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE) && ProcessNext());
 			SetEvent(m_hEvent);
 		};
 	};
@@ -663,10 +663,10 @@ void CLiveEngine::StartEngine()
 	if (!m_hThread)
 	{
 		// Create the thread
-		m_hEvent	= CreateEvent(NULL, TRUE, FALSE, NULL);
+		m_hEvent	= CreateEvent(nullptr, TRUE, FALSE, nullptr);
 		if (m_hEvent)
 		{
-			m_hThread = CreateThread(NULL, 0, LiveEngineThreadProc, (LPVOID)this, CREATE_SUSPENDED, &m_dwThreadID);
+			m_hThread = CreateThread(nullptr, 0, LiveEngineThreadProc, (LPVOID)this, CREATE_SUSPENDED, &m_dwThreadID);
 			if (m_hThread)
 			{
 				SetThreadPriority(m_hThread, THREAD_PRIORITY_BELOW_NORMAL);
@@ -702,8 +702,8 @@ void CLiveEngine::CloseEngine()
 
 		CloseHandle(m_hThread);
 		CloseHandle(m_hEvent);
-		m_hThread = NULL;
-		m_hEvent  = NULL;
+		m_hThread = nullptr;
+		m_hEvent  = nullptr;
 	};
 };
 
@@ -714,7 +714,7 @@ BOOL CLiveEngine::GetMessage(CLiveEngineMsg ** ppMsg, LIVEENGINEMSGLIST & msglis
 	BOOL			bResult = FALSE;
 
 	if (ppMsg)
-		*ppMsg = NULL;
+		*ppMsg = nullptr;
 
 	m_CriticalSection.Lock();
 	if (msglist.size())
@@ -848,15 +848,19 @@ void CLiveEngine::PostUpdatePending()
 
 CLiveEngine::CLiveEngine()
 {
-	m_hWndOut			= NULL;
-	m_hThread			= NULL;
-	m_dwThreadID		= NULL;
-	m_hEvent			= NULL;
+	m_hWndOut			= nullptr;
+	m_hThread			= nullptr;
+	m_dwThreadID		= 0;
+	m_hEvent			= nullptr;
 	m_bStackingOn		= FALSE;
 	m_bRegisteringOn	= TRUE;
 	m_bReferenceFrameSet = FALSE;
 	m_lNrUnsavedImages   = 0;
 	m_LiveSettings.LoadFromRegistry();
+    m_lTotal1 = 0;
+    m_lTotal2 = 0;
+    m_lAchieved1 = 0;
+    m_lAchieved2 = 0;
 };
 
 /* ------------------------------------------------------------------- */

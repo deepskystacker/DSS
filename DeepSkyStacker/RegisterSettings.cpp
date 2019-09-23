@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 // CRegisterSettings dialog
 
 
-CRegisterSettings::CRegisterSettings(CWnd* pParent /*=NULL*/)
+CRegisterSettings::CRegisterSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CRegisterSettings::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CRegisterSettings)
@@ -36,9 +36,11 @@ CRegisterSettings::CRegisterSettings(CWnd* pParent /*=NULL*/)
 	m_bNoDark = FALSE;
 	m_bNoFlat = FALSE;
 	m_bNoOffset = FALSE;
-	m_pStackingTasks = NULL;
+	m_pStackingTasks = nullptr;
 	m_bForceRegister = FALSE;
 	m_bSettingsOnly	 = FALSE;
+    m_dwDetectionThreshold = 0;
+    m_bMedianFilter = FALSE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -66,7 +68,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CRegisterSettings message handlers
 
-BOOL CRegisterSettings::OnInitDialog() 
+BOOL CRegisterSettings::OnInitDialog()
 {
 	CWorkspace			workspace;
 	CString				strValue;
@@ -177,14 +179,14 @@ BOOL CRegisterSettings::OnInitDialog()
 			m_tabActions.m_StackWarning.SetText(strValue);
 		};
 	};
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings::OnOK() 
+void CRegisterSettings::OnOK()
 {
 	CString				strText;
 	CWorkspace			workspace;
@@ -211,7 +213,7 @@ void CRegisterSettings::OnOK()
 
 	m_bMedianFilter = m_tabAdvanced.m_MedianFilter.GetCheck();
 	workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), m_bMedianFilter);
-	
+
 	workspace.SaveToRegistry();
 
 	CDialog::OnOK();
@@ -219,16 +221,16 @@ void CRegisterSettings::OnOK()
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings::OnRawddpsettings() 
+void CRegisterSettings::OnRawddpsettings()
 {
 	CRawDDPSettings			dlg;
-	
+
 	dlg.DoModal();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings::OnStackingParameters() 
+void CRegisterSettings::OnStackingParameters()
 {
 	CStackSettings			dlg;
 	CRect					rcCustom;

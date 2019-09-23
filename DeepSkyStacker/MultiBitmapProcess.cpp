@@ -115,7 +115,7 @@ BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 
 	{
 		// Save the bitmap to the file
-		void *				pScanLine = NULL;
+		void *				pScanLine = nullptr;
 		LONG				lScanLineSize;
 
 		lScanLineSize = (pBitmap->BitPerSample() * (pBitmap->IsMonochrome() ? 1 : 3) * m_lWidth/8);
@@ -125,7 +125,7 @@ BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 		if (pScanLine)
 			bResult = TRUE;
 		if (pProgress)
-			pProgress->Start2(NULL, m_lHeight);
+			pProgress->Start2(nullptr, m_lHeight);
 
 		for (LONG k = 0;k<m_vFiles.size() && bResult;k++)
 		{
@@ -143,7 +143,7 @@ BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 				bResult = (fwrite(pScanLine, lScanLineSize, 1, hFile) == 1);
 
 				if (pProgress)
-					pProgress->Progress2(NULL, j+1);
+					pProgress->Progress2(nullptr, j+1);
 			};
 			if (hFile)
 				fclose(hFile);
@@ -175,15 +175,21 @@ private :
 	CSmartPtr<CMemoryBitmap>	m_pHomBitmap;
 
 public :
-	CCombineTask()
-	{
-	};
+    CCombineTask()
+    {
+        m_lStartRow = 0;
+        m_lEndRow = 0;
+        m_lScanLineSize = 0;
+        m_pProgress = nullptr;
+        m_pMultiBitmap = nullptr;
+        m_pBuffer = nullptr;
+    }
 
 	virtual ~CCombineTask()
 	{
 	};
 
-	void	Init(LONG lStartRow, LONG lEndRow, LONG lScanLineSize, void * pBuffer, CDSSProgress * pProgress, CMultiBitmap * pMultiBitmap, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap = NULL)
+	void	Init(LONG lStartRow, LONG lEndRow, LONG lScanLineSize, void * pBuffer, CDSSProgress * pProgress, CMultiBitmap * pMultiBitmap, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap = nullptr)
 	{
 		m_lStartRow		= lStartRow;
 		m_lEndRow		= lEndRow;
@@ -214,11 +220,11 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 
 	vScanLines.reserve(lNrBitmaps);
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
 	try
 	{
-		while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
 			if (msg.message == WM_MT_PROCESS)
 			{
@@ -319,22 +325,21 @@ BOOL	CCombineTask::Process()
 	lStep		= max(1L, (m_lEndRow-m_lStartRow+1)/50);
 	lRemaining	= m_lEndRow-m_lStartRow+1;
 
-	bResult = TRUE;
 	while (i<=m_lEndRow && bResult)
 	{
 		DWORD			dwThreadId;
 		LONG			lAdd = min(lStep, lRemaining);
-		
+
 		dwThreadId = GetAvailableThreadId();
 
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
 		i			+= lAdd;
 		lRemaining	-= lAdd;
-		
+
 		if (m_pProgress)
 		{
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 			bResult = !m_pProgress->IsCanceled();
 		}
 	};
@@ -449,11 +454,11 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 	LONG						/*i, k, */l;
 	CSmartPtr<CMemoryBitmap>	pBitmap;
 	LONG						lBufferSize = 0;
-	void *						pBuffer = NULL;
+	void *						pBuffer = nullptr;
 
 	if (m_bInitDone && m_vFiles.size())
 	{
-		*ppBitmap = NULL;
+		*ppBitmap = nullptr;
 		bResult = FALSE;
 
 		CreateOutputMemoryBitmap(&pBitmap);
@@ -473,7 +478,7 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 		};
 
 		if (pProgress && bResult)
-			pProgress->Start2(NULL, m_lHeight);
+			pProgress->Start2(nullptr, m_lHeight);
 
 		lScanLineSize = (GetNrBytesPerChannel() * GetNrChannels() * m_lWidth);
 
@@ -506,7 +511,7 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 			{
 				CCombineTask		CombineTask;
 
-				CombineTask.Init(m_vFiles[l].m_lStartRow, m_vFiles[l].m_lEndRow, lScanLineSize, 
+				CombineTask.Init(m_vFiles[l].m_lStartRow, m_vFiles[l].m_lEndRow, lScanLineSize,
 								 pBuffer, pProgress, this, pBitmap);
 				CombineTask.StartThreads();
 				CombineTask.Process();
@@ -522,25 +527,20 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 		if (pBuffer)
 		{
 			free(pBuffer);
-			pBuffer = NULL;
+			pBuffer = nullptr;
 		};
 
 		if (bResult)
 		{
 			if (m_pHomBitmap)
 			{
-				// At this point the m_pHomBitmap might be used to smooth out any remaining 
+				// At this point the m_pHomBitmap might be used to smooth out any remaining
 				// star trails with a large filter
 				SmoothOut(pBitmap, ppBitmap);
 			}
 			else
 				pBitmap.CopyTo(ppBitmap);
 		};
-	};
-	if (pBuffer)
-	{
-		free(pBuffer);
-		pBuffer = NULL;
 	};
 
 	DestroyTempFiles();

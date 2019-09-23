@@ -44,13 +44,13 @@ private :
 	};
 
 public :
-	CProgressConsole() 
+	CProgressConsole()
 	{
 		m_bTitleDone	  = FALSE;
 		m_bStartTextDone  = FALSE;
 		m_bStart2TextDone = FALSE;
 	};
-	virtual ~CProgressConsole() 
+	virtual ~CProgressConsole()
 	{
 		Close();
 	};
@@ -103,7 +103,7 @@ public :
 			m_bFirstProgress = FALSE;
 			m_lLastTotal1 = lAchieved1;
 			m_dwLastTime  = dwCurrentTime;
-			
+
 			double			fAchieved  =0.0;
 			if (m_lTotal1)
 				fAchieved = (double)lAchieved1/(double)m_lTotal1 * 100.0;
@@ -118,7 +118,7 @@ public :
 			printf("%.1f %%   \r", fAchieved);
 		};
 	};
-	
+
 	virtual void	Start2(LPCTSTR szText, LONG lTotal2)
 	{
 		CString			strText = szText;

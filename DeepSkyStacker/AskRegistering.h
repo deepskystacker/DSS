@@ -13,7 +13,7 @@ class CAskRegistering : public CDialog
 {
 // Construction
 public:
-	CAskRegistering(CWnd* pParent = NULL);   // standard constructor
+	CAskRegistering(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CAskRegistering)

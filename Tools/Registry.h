@@ -1,7 +1,6 @@
 #if !defined(_REGISTRY_H__)
 #define _REGISTRY_H__
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Copyright (C) 1997 by Joerg Koenig
 // All rights reserved
@@ -34,7 +33,6 @@
 //	override the "OnValueHit()" and/or the "OnKeyHit()" virtual member functions
 //	(see below).
 // -----------------------------------------------------------------------------
-
 
 #ifdef _EXPLICIT
 	#pragma message (__FILE__ ": Redefining macro _EXPLICIT")
@@ -75,6 +73,8 @@ class CRegistry {
 		CRegistry( const CRegistry & ) ;
 		virtual ~CRegistry() ;
 
+        CRegistry& operator=(CRegistry const& other) = delete;
+
 	public:		// attributes
 		// GetKey() returns the current HKEY
 		HKEY		GetKey() const ;
@@ -87,7 +87,7 @@ class CRegistry {
 		// "Connect()" connects the registry object with either
 		// the local or a remote computer. A connection to the
 		// local computer will be forced by setting the <Remote>
-		// parameter to NULL.
+		// parameter to nullptr.
 		// if the function fails (i.e. returns FALSE), then
 		// the previously connected HKEY will be restored, so
 		// there is no need to reset it (via the SetKey() member
@@ -186,7 +186,7 @@ class CRegistry {
 #endif
 
 		// "DeleteKey()" deletes the given Key in the registry. If
-		// <ValName> is equal to NULL, then the complete key will
+		// <ValName> is equal to nullptr, then the complete key will
 		// be removed (with all of its subkeys).
 		// Otherwise only the given <ValName> of that
 		// <SubKey> is affected.
@@ -210,7 +210,7 @@ class CRegistry {
 #ifndef _REG_NO_TREEWALK
 		// The "RegistryTreeWalk()" function walks through the registry
 		// beginning at the current key and the given <SubKey>. if
-		// <SubKey> is NULL, then the walk begins at root level.
+		// <SubKey> is nullptr, then the walk begins at root level.
 		// For every value the function "OnValueHit()" will be called.
 		// Note that OnValueHit() and OnKeyHit() are dummies by default
 		// (don't made it pure, because usage of the RegistryTreeWalk()
@@ -218,7 +218,7 @@ class CRegistry {
 		// You have to derive your own class and to override
 		// these handler function(s), if you want to use the
 		// "RegistryTreeWalk()" function!
-		// NOTE: If you specify a <SubKey> other than NULL, the "OnKeyHit()"
+		// NOTE: If you specify a <SubKey> other than nullptr, the "OnKeyHit()"
 		// notification-handler for this initial key will NOT be called !
 		// "RegistryTreeWalk()" returns TRUE on success or FALSE on failure
 		// (i.e. failure on accessing the registry (watch your DEBUG-Window
@@ -256,7 +256,6 @@ class CRegistry {
 		// NOTE that the default-implementation returns always FALSE !
 		virtual BOOL	OnKeyHit( LPCTSTR Key, USHORT Depth ) ;
 #endif	// _REG_NO_TREEWALK
-
 
 	public:		// static members ...
 		// same as above, but at static scope for lower-level usage.
@@ -298,11 +297,6 @@ class CRegistry {
 #endif	// _REG_NO_TREEWALK
 };
 
-
-
-
-
-
 class CRegVal {
 	friend class CRegistry ;
 
@@ -334,11 +328,11 @@ class CRegVal {
 		// It is much safer to call one of the "GetValue()" methods below !
 		LPBYTE			GetRawData() { return m_pbyteData; }
 		const LPBYTE	GetRawData() const { return m_pbyteData; }
-		
+
 		// the following GetValue()-functions return FALSE, if the type
 		// of the registry value doesn't match. In such a case
 		// the data (the parameter refers to) stays undefined.
-		
+
 		// this function can be used with the following types:
 		//		REG_SZ				zero-sized unicode string
 		//		REG_EXPAND_SZ		same as REG_SZ (with environ. references)
@@ -382,12 +376,12 @@ class CRegVal {
 
 		// use this function to set a numeric value
 		void		SetValue( DWORD Value ) ;
-		
+
 		// use the following function to set up a string value. if that string
 		// contains references to the environment (such as "%PATH%") then you
 		// should set <Expand> to TRUE.
 		void		SetValue( LPCTSTR Value, BOOL Expand = FALSE ) ;
-		
+
 		// use the following function to set up a multiple string (i.e. string
 		// array)
 		void		SetValue( LPCTSTR Array [], const DWORD Size ) ;
@@ -395,7 +389,7 @@ class CRegVal {
 #ifdef _AFXDLL
 		void		SetValue( const CStringArray & );
 #endif
-		
+
 		// the following function allows you to set up binary data of any
 		// type and size.
 		void		SetValue( const LPBYTE Data, const DWORD Size ) ;
@@ -420,6 +414,5 @@ class CRegVal {
 		BYTE *		AllocateDataBuffer( DWORD ) ;
 		void		FreeDataBuffer() ;
 } ;
-
 
 #endif // !defined(_REGISTRY_H__)

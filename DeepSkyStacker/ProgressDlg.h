@@ -16,7 +16,7 @@ class CProgressDlg : public CDialog
 {
 // Construction
 public:
-	CProgressDlg(CWnd* pParent = NULL);   // standard constructor
+	CProgressDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CProgressDlg)
@@ -43,7 +43,7 @@ public :
 	void PeekAndPump()
 	{
 		MSG msg;
-		while (!m_bCancelled && ::PeekMessage(&msg, NULL,0,0,PM_NOREMOVE)) 
+		while (!m_bCancelled && ::PeekMessage(&msg, nullptr,0,0,PM_NOREMOVE))
 		{
 /*
 			if (bCancelOnESCkey && (msg.message == WM_CHAR) && (msg.wParam == VK_ESCAPE))
@@ -57,12 +57,12 @@ public :
 				if (rect.PtInRect(msg.pt))
 					OnCancel();
 			}*/
-  
-			if (!AfxGetApp()->PumpMessage()) 
+
+			if (!AfxGetApp()->PumpMessage())
 			{
 				::PostQuitMessage(0);
 				return;
-			} 
+			}
 		}
 	}
 
@@ -111,22 +111,30 @@ private :
 
 			// Re-enable this window
 			m_dlg.EnableWindow(TRUE);
-			m_dlg.ShowWindow(SW_SHOW);		
+			m_dlg.ShowWindow(SW_SHOW);
 		};
 	};
 
 public :
-	CDSSProgressDlg()
-		:
-		m_bEnableCancel(FALSE)
-	{
-	};
-	virtual ~CDSSProgressDlg() 
+    CDSSProgressDlg()
+    {
+        m_bEnableCancel = false;
+        m_lTotal1 = 0;
+        m_lTotal2 = 0;
+        m_dwStartTime = 0;
+        m_dwLastTime = 0;
+        m_lLastTotal1 = 0;
+        m_lLastTotal2 = 0;
+        m_bFirstProgress = false;
+        m_bEnableCancel = false;
+    }
+
+	virtual ~CDSSProgressDlg()
 	{
 		Close();
 	};
 
-	virtual void	SetNrUsedProcessors(LONG lNrProcessors=1) 
+	virtual void	SetNrUsedProcessors(LONG lNrProcessors=1)
 	{
 		if (m_dlg.m_hWnd)
 		{
@@ -230,7 +238,7 @@ public :
 			m_dlg.PeekAndPump();
 		};
 	};
-	
+
 	virtual void	Start2(LPCTSTR szText, LONG lTotal2)
 	{
 		CString			strText = szText;
@@ -257,7 +265,7 @@ public :
 
 		if (m_bJointProgress)
 		{
-			Start(NULL, lTotal2, m_bEnableCancel);
+			Start(nullptr, lTotal2, m_bEnableCancel);
 			if (strText.GetLength())
 				m_dlg.m_Text1.SetWindowText(szText);
 		};
@@ -298,7 +306,7 @@ public :
 	{
 		m_dlg.PeekAndPump();
 		// Prevent failure if mdlg is no longer a valid window
-		if (NULL != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
+		if (nullptr != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
 
 		CWnd *pMainWnd = AfxGetMainWnd();
 		if (pMainWnd)
@@ -307,12 +315,12 @@ public :
 		return TRUE;
 	};
 
-	virtual BOOL	Warning(LPCTSTR szText) 
-	{ 
+	virtual BOOL	Warning(LPCTSTR szText)
+	{
 		int				nResult;
 
 		nResult = AfxMessageBox(szText, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING);
-		return (nResult == IDYES); 
+		return (nResult == IDYES);
 	}
 
 };

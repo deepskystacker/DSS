@@ -4,7 +4,7 @@
 class CSaveEditChanges : public CDialog
 {
 public:
-	CSaveEditChanges(CWnd* pParent = NULL);   // standard constructor
+	CSaveEditChanges(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CSaveEditChanges)

@@ -19,6 +19,7 @@ CStackingParameters::CStackingParameters()
 	: CChildPropertyPage(CStackingParameters::IDD)
 {
 	m_bFirstActivation = TRUE;
+    m_BackgroundCalibrationMode = BACKGROUNDCALIBRATIONMODE(0);
 }
 
 /* ------------------------------------------------------------------- */
@@ -81,7 +82,7 @@ END_MESSAGE_MAP()
 void CStackingParameters::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	
+
 	if (m_WeightedAverage.GetCheck())
 	{
 		m_Kappa.EnableWindow(FALSE);
@@ -403,9 +404,8 @@ void CStackingParameters::OnBackgroundCalibration( NMHDR * pNotifyStruct, LRESUL
 
 	menu.LoadMenu(IDR_CALIBRATION);
 	popup = menu.GetSubMenu(0);
-	
+
 	CRect				rc;
-	CString				strText;
 
 	m_BackgroundCalibration.GetWindowRect(&rc);
 	pt.x = rc.left;
@@ -418,7 +418,7 @@ void CStackingParameters::OnBackgroundCalibration( NMHDR * pNotifyStruct, LRESUL
 	else
 		popup->CheckMenuItem(ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION, MF_BYCOMMAND | MF_CHECKED);
 
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);
+	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
 
 	switch (nResult)
 	{

@@ -22,7 +22,7 @@ private :
 	CListCtrlEx			m_ImageList;
 
 public:
-	CImageListTab(CWnd* pParent = NULL);   // standard constructor
+	CImageListTab(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CImageListTab();
 
 

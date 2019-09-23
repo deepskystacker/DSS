@@ -1,7 +1,7 @@
 /******************************************************************************
 
 $Author$
-  
+
 $Modtime$
 $Revision$
 
@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(CListCtrlEx, CListCtrl)
 /*** Protected member functions **********************************************/
 
 /*** A column header has been clicked ****************************************/
-BOOL CListCtrlEx::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult) 
+BOOL CListCtrlEx::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 {
   return CListBase::OnColumnclick(pNMHDR, pResult);
 }
@@ -38,13 +38,13 @@ BOOL CListCtrlEx::OnCommand(WPARAM wParam, LPARAM)
 }
 
 /*** The user has right clicked the mouse ************************************/
-void CListCtrlEx::OnContextMenu(CWnd* pWnd, CPoint point) 
+void CListCtrlEx::OnContextMenu(CWnd* pWnd, CPoint point)
 {
   CListBase::OnContextMenu(pWnd, point);
 }
 
 /*** A list view (sub)item will be drawn *************************************/
-void CListCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult) 
+void CListCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
   CListBase::OnCustomDraw(pNMHDR, pResult);
 }
@@ -68,13 +68,13 @@ LRESULT CListCtrlEx::OnDeleteItem(WPARAM wParam, LPARAM)
 }
 
 /*** The list view control will be destroyed *********************************/
-void CListCtrlEx::OnDestroy() 
+void CListCtrlEx::OnDestroy()
 {
 	CListBase::OnDestroy();
 }
 
 /*** The background will be erased *******************************************/
-BOOL CListCtrlEx::OnEraseBkgnd(CDC* pDC) 
+BOOL CListCtrlEx::OnEraseBkgnd(CDC* pDC)
 {
   return CListBase::OnEraseBkgnd(pDC);
 }
@@ -165,37 +165,37 @@ LRESULT CListCtrlEx::OnInsertItem(WPARAM, LPARAM lParam)
 }
 
 /*** A key has been pressed  *************************************************/
-void CListCtrlEx::OnKeyDown(UINT nChar, UINT, UINT) 
+void CListCtrlEx::OnKeyDown(UINT nChar, UINT, UINT)
 {
   CListBase::OnKeyDown(nChar);
 }
 
 /*** A key has been released *************************************************/
-void CListCtrlEx::OnKeyUp(UINT nChar, UINT, UINT) 
+void CListCtrlEx::OnKeyUp(UINT nChar, UINT, UINT)
 {
   CListBase::OnKeyUp(nChar);
 }
 
 /*** List control loses input focus ******************************************/
-void CListCtrlEx::OnKillFocus(CWnd*) 
+void CListCtrlEx::OnKillFocus(CWnd*)
 {
   CListBase::OnKillFocus();
 }
 
 /*** The user double-clicks the left mouse button ****************************/
-void CListCtrlEx::OnLButtonDblClk(UINT, CPoint point) 
+void CListCtrlEx::OnLButtonDblClk(UINT, CPoint point)
 {
   CListBase::OnLButtonDblClk(point);
 }
 
 /*** The user presses the left mouse button **********************************/
-void CListCtrlEx::OnLButtonDown(UINT, CPoint point) 
+void CListCtrlEx::OnLButtonDown(UINT, CPoint point)
 {
   CListBase::OnLButtonDown(point);
 }
 
 /*** The user releases the left mouse button *********************************/
-void CListCtrlEx::OnLButtonUp(UINT, CPoint) 
+void CListCtrlEx::OnLButtonUp(UINT, CPoint)
 {
   CListBase::OnLButtonUp();
 }
@@ -207,7 +207,7 @@ LRESULT CListCtrlEx::OnMouseLeave(WPARAM, LPARAM)
 }
 
 /*** The mouse has been moved ************************************************/
-void CListCtrlEx::OnMouseMove(UINT, CPoint point) 
+void CListCtrlEx::OnMouseMove(UINT, CPoint point)
 {
 	CListBase::OnMouseMove(point);
 }
@@ -262,7 +262,7 @@ LRESULT CListCtrlEx::OnSetExtendedStyle(WPARAM wParam, LPARAM lParam)
 }
 
 /*** List control gains input focus ******************************************/
-void CListCtrlEx::OnSetFocus(CWnd*) 
+void CListCtrlEx::OnSetFocus(CWnd*)
 {
   CListBase::OnSetFocus();
 }
@@ -361,7 +361,7 @@ IMPLEMENT_DYNCREATE(CListViewEx, CListView)
 /*** Protected member functions **********************************************/
 
 /*** A column header has been clicked ****************************************/
-BOOL CListViewEx::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult) 
+BOOL CListViewEx::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 {
   return CListBase::OnColumnclick(pNMHDR, pResult);
 }
@@ -373,13 +373,13 @@ BOOL CListViewEx::OnCommand(WPARAM wParam, LPARAM)
 }
 
 /*** The user has right clicked the mouse ************************************/
-void CListViewEx::OnContextMenu(CWnd* pWnd, CPoint point) 
+void CListViewEx::OnContextMenu(CWnd* pWnd, CPoint point)
 {
   CListBase::OnContextMenu(pWnd, point);
 }
 
 /*** A list view (sub)item will be drawn *************************************/
-void CListViewEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult) 
+void CListViewEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
   CListBase::OnCustomDraw(pNMHDR, pResult);
 }
@@ -403,13 +403,13 @@ LRESULT CListViewEx::OnDeleteItem(WPARAM wParam, LPARAM)
 }
 
 /*** The list view control will be destroyed *********************************/
-void CListViewEx::OnDestroy() 
+void CListViewEx::OnDestroy()
 {
 	CListBase::OnDestroy();
 }
 
 /*** The background will be erased *******************************************/
-BOOL CListViewEx::OnEraseBkgnd(CDC* pDC) 
+BOOL CListViewEx::OnEraseBkgnd(CDC* pDC)
 {
   return CListBase::OnEraseBkgnd(pDC);
 }
@@ -508,38 +508,38 @@ LRESULT CListViewEx::OnInsertItem(WPARAM, LPARAM lParam)
 }
 
 /*** A key has been pressed  *************************************************/
-void CListViewEx::OnKeyDown(UINT nChar, UINT, UINT) 
+void CListViewEx::OnKeyDown(UINT nChar, UINT, UINT)
 {
   CListBase::OnKeyDown(nChar);
 }
 
 /*** A key has been released *************************************************/
-void CListViewEx::OnKeyUp(UINT nChar, UINT, UINT) 
+void CListViewEx::OnKeyUp(UINT nChar, UINT, UINT)
 {
   CListBase::OnKeyUp(nChar);
 }
 
 /*** List control loses input focus ******************************************/
-void CListViewEx::OnKillFocus(CWnd*) 
+void CListViewEx::OnKillFocus(CWnd*)
 {
   CListBase::OnKillFocus();
 }
 
 /*** The user double-clicks the left mouse button ****************************/
-void CListViewEx::OnLButtonDblClk(UINT, CPoint point) 
+void CListViewEx::OnLButtonDblClk(UINT, CPoint point)
 {
   CListBase::OnLButtonDblClk(point);
 }
 
 /*** The user presses the left mouse button **********************************/
-void CListViewEx::OnLButtonDown(UINT, CPoint point) 
+void CListViewEx::OnLButtonDown(UINT, CPoint point)
 {
   CListBase::OnLButtonDown(point);
 }
 
 
 /*** The user releases the left mouse button *********************************/
-void CListViewEx::OnLButtonUp(UINT, CPoint) 
+void CListViewEx::OnLButtonUp(UINT, CPoint)
 {
   CListBase::OnLButtonUp();
 }
@@ -551,7 +551,7 @@ LRESULT CListViewEx::OnMouseLeave(WPARAM, LPARAM)
 }
 
 /*** The mouse has been moved ************************************************/
-void CListViewEx::OnMouseMove(UINT, CPoint point) 
+void CListViewEx::OnMouseMove(UINT, CPoint point)
 {
 	CListBase::OnMouseMove(point);
 }
@@ -606,7 +606,7 @@ LRESULT CListViewEx::OnSetExtendedStyle(WPARAM wParam, LPARAM lParam)
 }
 
 /*** List control gains input focus ******************************************/
-void CListViewEx::OnSetFocus(CWnd*) 
+void CListViewEx::OnSetFocus(CWnd*)
 {
   CListBase::OnSetFocus();
 }
@@ -718,12 +718,12 @@ LRESULT CListCtrlHelper::DefWindowProc(UINT message, WPARAM wParam,
   return __super::DefWindowProc(message, wParam, lParam);
 }
 
-void CListCtrlHelper::OnDestroy() 
+void CListCtrlHelper::OnDestroy()
 {
 	__super::OnDestroy();
 }
 
-void CListCtrlHelper::OnMouseMove(UINT nFlags, CPoint point) 
+void CListCtrlHelper::OnMouseMove(UINT nFlags, CPoint point)
 {
 	__super::OnMouseMove(nFlags, point);
 }
@@ -807,7 +807,7 @@ BOOL CLabelTipCtrl::Create(CWnd* pParentWnd)
 /*** Protected member functions **********************************************/
 
 /*** Called after each timer interval ****************************************/
-void CLabelTipCtrl::OnTimer(UINT_PTR nIDEvent) 
+void CLabelTipCtrl::OnTimer(UINT_PTR nIDEvent)
 {
 	Update();     // Don't autopop unfolded label!
 
@@ -815,7 +815,7 @@ void CLabelTipCtrl::OnTimer(UINT_PTR nIDEvent)
 }
 
 /*** Called when the size, position, or Z-order is about to change ***********/
-void CLabelTipCtrl::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos) 
+void CLabelTipCtrl::OnWindowPosChanging(WINDOWPOS FAR* lpwndpos)
 {
 #ifndef NDEBUG
   struct
@@ -933,6 +933,7 @@ const int               CListBase::m_iNextColXOff  = 6; // x-off of other cols
 /*** Constructor *************************************************************/
 CListBase::CListBase()
 {
+    m_pfnLVCompare = nullptr;
 
   if (m_visualStyle == Unknown)
   {
@@ -940,7 +941,7 @@ CListBase::CListBase()
 
     HINSTANCE hinstDll;
     hinstDll = LoadLibrary(_T("COMCTL32.DLL"));
-	
+
     if (hinstDll)
     {
       DLLGETVERSIONPROC pDllGetVersion =
@@ -957,7 +958,7 @@ CListBase::CListBase()
         if (SUCCEEDED((*pDllGetVersion)(&dvi)) && dvi.dwMajorVersion >= 6)
           m_visualStyle = Present;
       }
-      
+
       FreeLibrary(hinstDll);
     }
   }
@@ -995,6 +996,11 @@ CListBase::CListBase()
   m_fCurrentFlags        = 0;
   m_iCurrentItem         = -1;
   m_iCurrentSubItem      = -1;
+  m_iUpArrow             = 0;
+  m_iDownArrow           = 0;
+  m_dwColSortColor       = 0;
+  m_iForm_ttofSubItem0   = 0;
+  m_lParamSort           = 0;
 }
 
 /*** Destructor **************************************************************/
@@ -1217,7 +1223,7 @@ POSITION CListBase::GetFirstCheckedItemPosition() const
 int CListBase::GetNextCheckedItem(POSITION& pos) const
 {
   ASSERT(pos);
-  
+
   int nOldPos    = static_cast<int>(reinterpret_cast<INT_PTR>(pos));
   int nItemCount = m_pListCtrl->GetItemCount();
 
@@ -1231,7 +1237,7 @@ int CListBase::GetNextCheckedItem(POSITION& pos) const
 
   return nOldPos - 1;
 }
-  
+
 /*** Get attributes of this list view control ********************************/
 BOOL CListBase::GetState(LPBYTE* ppState, LPUINT pnStateLen) const
 {
@@ -1282,7 +1288,7 @@ BOOL CListBase::IsSubItemWidthSufficient(int nItem, int nSubItem,
            m_pListCtrl->GetStringWidth(pszText) +
            (nSubItem               == 0 && !m_bKeepLabelLeft ||
             IndexToOrder(nSubItem) == 0 &&  m_bKeepLabelLeft ?
-            m_iFirstColXOff : m_iNextColXOff) + 
+            m_iFirstColXOff : m_iNextColXOff) +
            (nSubItem == 0 && (!m_bKeepLabelLeft || IndexToOrder(0) == 0) ?
            m_iFirstColXOff : m_iNextColXOff) <= rc.Width() : FALSE;
   else
@@ -1447,7 +1453,7 @@ int CALLBACK CListBase::CompareFunc(LPARAM lParam1, LPARAM lParam2,
 
   return pThis->m_pfnLVCompare(reinterpret_cast<ITEM_DATA*>(lParam1)->m_lParam,
                                reinterpret_cast<ITEM_DATA*>(lParam2)->m_lParam,
-                               pThis->m_lParamSort);                 
+                               pThis->m_lParamSort);
 }
 
 /*** Create image list with sort icons ***************************************/
@@ -1584,7 +1590,7 @@ void CListBase::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
         pDC->SelectObject(pfontPrev);
         delete pfontHotUnderlined;
         bHotUnderlining = false;
-      }      
+      }
       rcText        = rcSubItem;
       rcText.left  += m_iNextColXOff;
       rcText.right -= m_iNextColXOff;
@@ -1876,10 +1882,10 @@ bool CListBase::GetLabelRect(int nItem, int nSubItem, LPRECT pRect)
       m_pListCtrl->GetStringWidth(m_pListCtrl->GetItemText(nItem, nSubItem)) +
       (nSubItem               == 0 && !m_bKeepLabelLeft ||
        IndexToOrder(nSubItem) == 0 &&  m_bKeepLabelLeft ?
-       m_iFirstColXOff : m_iNextColXOff) + 
+       m_iFirstColXOff : m_iNextColXOff) +
       (nSubItem == 0 && (!m_bKeepLabelLeft || IndexToOrder(0) == 0) ?
        m_iFirstColXOff : m_iNextColXOff);
-                         
+
     if (nWidth < rcLabel.Width())
       switch (m_aColumnData[nSubItem]->m_pLVColumn->fmt & LVCFMT_JUSTIFYMASK)
       {
@@ -2174,7 +2180,7 @@ void CListBase::JustifyFirstColumn(int nFormat)
 }
 
 /*** A column header has been clicked ****************************************/
-BOOL CListBase::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult) 
+BOOL CListBase::OnColumnclick(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLISTVIEW* pNMListView    = reinterpret_cast<NMLISTVIEW*>(pNMHDR);
   int         iAbsSortColumn = abs(m_iSortColumn);
@@ -2237,7 +2243,7 @@ void CListBase::OnContextMenu(CWnd* pWnd, CPoint point)
 }
 
 /*** A list view (sub)item will be drawn *************************************/
-void CListBase::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult) 
+void CListBase::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
   ASSERT(m_pListCtrl->GetHeaderCtrl());
 
@@ -2557,7 +2563,7 @@ void CListBase::OnDestroy()
 }
 
 /*** The background will be erased *******************************************/
-BOOL CListBase::OnEraseBkgnd(CDC* pDC) 
+BOOL CListBase::OnEraseBkgnd(CDC* pDC)
 {
   if (m_bColorSortColumn && m_iSortColumn != 0)
   {
@@ -2753,7 +2759,7 @@ BOOL CListBase::OnGetdispinfo(NMHDR* pNMHDR)
   LVITEM* pLVItem       = &reinterpret_cast<NMLVDISPINFO*>(pNMHDR)->item;
   bool    bNotifyParent = true;
 
-  LVITEM* pLVItemStored = NULL;
+  LVITEM* pLVItemStored = nullptr;
 
   int iOrigSubItem  = pLVItem->iSubItem;
   pLVItem->iSubItem = GetLogicalIndex(iOrigSubItem);
@@ -2780,7 +2786,7 @@ BOOL CListBase::OnGetdispinfo(NMHDR* pNMHDR)
 
 	if (pwndParent)
 	{
-	  if (pLVItemStored) 
+	  if (pLVItemStored)
 		  pLVItem->lParam = pLVItemStored->lParam;
 	  pwndParent->SendMessage(WM_NOTIFY, m_pListCtrl->GetDlgCtrlID(),
 							  reinterpret_cast<LPARAM>(pNMHDR));
@@ -3275,7 +3281,7 @@ LRESULT CListBase::OnInsertItem(LPARAM lParam)
       pLVItemSrc->pszText != LPSTR_TEXTCALLBACK &&
       !(m_pListCtrl->GetStyle() & (LVS_SORTASCENDING | LVS_SORTDESCENDING)))
     pLVItem->pszText = LPSTR_TEXTCALLBACK;
-  
+
   LRESULT lResult =
     m_pListCtrl->DefWindowProc(LVM_INSERTITEM, 0,
                                reinterpret_cast<LPARAM>(pLVItem));
@@ -3308,7 +3314,7 @@ LRESULT CListBase::OnInsertItem(LPARAM lParam)
 }
 
 /*** A key has been pressed  *************************************************/
-void CListBase::OnKeyDown(UINT nChar) 
+void CListBase::OnKeyDown(UINT nChar)
 {
   switch (nChar)
   {
@@ -3410,15 +3416,15 @@ void CListBase::OnKeyDown(UINT nChar)
 }
 
 /*** A key has been released *************************************************/
-void CListBase::OnKeyUp(UINT nChar) 
+void CListBase::OnKeyUp(UINT nChar)
 {
 	if (nChar == VK_CONTROL) m_bControl = false;
-  m_pListCtrl->Default();  
+  m_pListCtrl->Default();
 
 }
 
 /*** List control loses input focus ******************************************/
-void CListBase::OnKillFocus() 
+void CListBase::OnKillFocus()
 {
   m_pListCtrl->Default();
 
@@ -3434,7 +3440,7 @@ void CListBase::OnKillFocus()
 }
 
 /*** The user double-clicks the left mouse button ****************************/
-void CListBase::OnLButtonDblClk(CPoint point) 
+void CListBase::OnLButtonDblClk(CPoint point)
 {
   UINT flags;
   int  nItem = m_pListCtrl->HitTest(point, &flags);
@@ -3457,7 +3463,7 @@ void CListBase::OnLButtonDblClk(CPoint point)
 }
 
 /*** The user presses the left mouse button **********************************/
-void CListBase::OnLButtonDown(CPoint point) 
+void CListBase::OnLButtonDown(CPoint point)
 {
   if (m_hcursorCustom) SetCursor(m_hcursorCustom);
 
@@ -3709,7 +3715,7 @@ BOOL CListBase::OnMouseWheel(CPoint point)
 }
 
 /*** Divider in header control has been doubleclicked or dragged *************/
-BOOL CListBase::OnNotify(LPARAM lParam) 
+BOOL CListBase::OnNotify(LPARAM lParam)
 {
   BOOL         bRet     = FALSE;
   LPNMHDR      pNMHdr   = reinterpret_cast<LPNMHDR>(lParam);
@@ -4053,14 +4059,14 @@ LRESULT CListBase::OnSetExtendedStyle(WPARAM wParam, LPARAM lParam)
     }
     else
       m_hcursorCustom = 0;
-  
+
   m_pListCtrl->DefWindowProc(LVM_SETEXTENDEDLISTVIEWSTYLE, 0, dwExtendedStyle);
 
   return dwResult;
 }
 
 /*** List control gains input focus ******************************************/
-void CListBase::OnSetFocus() 
+void CListBase::OnSetFocus()
 {
   m_pListCtrl->Default();
 
@@ -4155,7 +4161,7 @@ LRESULT CListBase::OnSetItem(LPARAM lParam)
 
       LVITEM* pLVItemDst;
       bool    bInsertItem;
-      
+
       if (pItemData->m_apLVItem.GetSize() > nColumn)
       {
         pLVItemDst  = pItemData->m_apLVItem[nColumn];
@@ -4250,7 +4256,7 @@ LRESULT CListBase::OnSetItemText(WPARAM wParam, LPARAM lParam)
       ITEM_DATA* pItemData  = reinterpret_cast<ITEM_DATA*>(lvItem.lParam);
       LVITEM*    pLVItemDst;
       bool       bInsertItem;
-      
+
       if (pItemData->m_apLVItem.GetSize() > lvItemSrc.iSubItem)
       {
         pLVItemDst  = pItemData->m_apLVItem[lvItemSrc.iSubItem];
@@ -4318,7 +4324,7 @@ LRESULT CListBase::OnSortItems(WPARAM wParam, LPARAM lParam)
 }
 
 /*** System colors have been changed *****************************************/
-void CListBase::OnSysColorChange() 
+void CListBase::OnSysColorChange()
 {
   ASSERT(m_pListCtrl->GetHeaderCtrl());
 

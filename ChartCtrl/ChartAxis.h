@@ -82,7 +82,7 @@ public:
 	void	 SetTextColor(COLORREF NewColor)  { m_TextColor = NewColor; }
 	COLORREF GetTextColor() const			  { return m_TextColor;		}
 
-	void SetFont(int nPointSize,std::string  strFaceName)
+	void SetFont(int nPointSize, std::string const& strFaceName)
 	{
 		m_nFontSize = nPointSize;
 		m_strFontName = strFaceName;
@@ -120,7 +120,7 @@ private:
 	void RefreshAutoAxis();
 	void FormatValue(char* outBuffer, int precision, double value, double prevValue, bool havePrevValue) const;
 
-	void SetAxisSize(CRect ControlRect,CRect MarginRect);
+	void SetAxisSize(CRect const& ControlRect, CRect const& MarginRect);
 	int ClipMargin(CRect ControlRect,CRect& MarginRect,CDC* pDC);	// Allows to calculate the margin required to displayys ticks and text
 
 	long GetTickScreenPos(int TickIndex) const;

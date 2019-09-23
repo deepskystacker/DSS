@@ -29,13 +29,13 @@ private :
 	};
 
 public :
-	CPixelInfo() 
+	CPixelInfo()
 	{
 		m_fSumValue = 0.0;
 	};
 	virtual ~CPixelInfo() {};
 
-	CPixelInfo(const CPixelInfo & cpi) 
+	CPixelInfo(const CPixelInfo & cpi)
 	{
 		CopyFrom(cpi);
 	};
@@ -84,7 +84,7 @@ private :
 	std::vector<PIXELINFOVECTOR>	m_vBlocks;
 
 public :
-	CPixelVector() 
+	CPixelVector()
 	{
 		m_lSize		= 0;
 		m_lNrBlocks = 0;
@@ -162,9 +162,9 @@ private :
 	CRGBHistogramAdjust 		m_HistoAdjust;
 
 private :
-	BOOL	LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
-	BOOL	LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
-	BOOL	LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
+	BOOL	LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	BOOL	LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	BOOL	LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
 
 	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, BOOL bApplySettings);
 
@@ -190,7 +190,7 @@ public :
 
 		m_lWidth  = lWidth;
 		m_lHeight = lHeight;
-		
+
 		m_bMonochrome = bMonochrome;
 		lSize = m_lWidth * m_lHeight;
 		m_vRedPlane.clear();
@@ -207,8 +207,8 @@ public :
 		if (m_bMonochrome)
 			return (m_vRedPlane.size() == lSize);
 		else
-			return (m_vRedPlane.size() == lSize) && 
-				   (m_vGreenPlane.size() == lSize) && 
+			return (m_vRedPlane.size() == lSize) &&
+				   (m_vGreenPlane.size() == lSize) &&
 				   (m_vBluePlane.size() == lSize);
 	};
 
@@ -300,16 +300,16 @@ public :
 		return m_lNrBitmaps;
 	};
 
-	BOOL	Load(LPCTSTR szStackedFile, CDSSProgress * pProgress = NULL);
-	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL);
-	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE);
-	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = NULL, CDSSProgress * pProgress = NULL, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE);
+	BOOL	Load(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr);
+	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE);
+	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE);
 #if !defined(PCL_PROJECT) && !defined(_CONSOLE)
-	HBITMAP	GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect = NULL);
+	HBITMAP	GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect = nullptr);
 #endif
-	BOOL	GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = NULL);
+	BOOL	GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 
 	void	Clear()
 	{

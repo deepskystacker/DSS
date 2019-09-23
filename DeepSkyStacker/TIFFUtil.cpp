@@ -1,10 +1,11 @@
 #include <stdafx.h>
 #include "TIFFUtil.h"
 #include "Registry.h"
+#include "zlib.h"
 
 #define NRCUSTOMTIFFTAGS		12
 
-static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] = 
+static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
 {
     { TIFFTAG_DSS_NRFRAMES,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
       FALSE,	FALSE,	"DSSNumberOfFrames" },
@@ -33,7 +34,7 @@ static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
 
 };
 
-static TIFFExtendProc	g_TIFFParentExtender = NULL;
+static TIFFExtendProc	g_TIFFParentExtender = nullptr;
 static bool				g_TIFFInitialized = false;
 
 /* ------------------------------------------------------------------- */
@@ -48,7 +49,7 @@ static void DSSTIFFDefaultDirectory(TIFF *tif)
      * allow it to set up the rest of its own methods.
      */
 
-    if (g_TIFFParentExtender) 
+    if (g_TIFFParentExtender)
         (*g_TIFFParentExtender)(tif);
 }
 
@@ -108,8 +109,8 @@ BOOL CTIFFReader::Open()
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_MASTER, &master))
 			master = 0;
 
-		char *				szMake = NULL;
-		char *				szModel = NULL;
+		char *				szMake = nullptr;
+		char *				szModel = nullptr;
 
 		if (TIFFGetField(m_tiff, TIFFTAG_MODEL, &szModel))
 			strMakeModel = szModel;
@@ -135,7 +136,7 @@ BOOL CTIFFReader::Open()
 		// No compression or LZW compression or ZIP (deflate) compression
 		// sample per pixel 1 (gray levels) or 3 (rgb)
 		if ((planarconfig == PLANARCONFIG_CONTIG) &&
-			((compression == COMPRESSION_NONE) || 
+			((compression == COMPRESSION_NONE) ||
 			 (compression == COMPRESSION_LZW) ||
 			 (compression == COMPRESSION_DEFLATE) ||
 			 (compression == COMPRESSION_ADOBE_DEFLATE))&&
@@ -178,7 +179,7 @@ BOOL CTIFFReader::Open()
 			{
 				if (TIFFReadEXIFDirectory(m_tiff, ExifID))
 				{
-					if (!TIFFGetField(m_tiff, EXIFTAG_EXPOSURETIME, &exposureTime)) 
+					if (!TIFFGetField(m_tiff, EXIFTAG_EXPOSURETIME, &exposureTime))
 						exposureTime = 0.0;
 					if (!TIFFGetField(m_tiff, EXIFTAG_FNUMBER, &aperture))
 						aperture = 0.0;
@@ -230,7 +231,7 @@ BOOL CTIFFReader::Open()
 		if (!bResult)
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -249,7 +250,7 @@ BOOL CTIFFReader::Read()
 		VOID *			pScanLine;
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, h);
+			m_pProgress->Start2(nullptr, h);
 
 		lScanLineSize = TIFFScanlineSize(m_tiff);
 		pScanLine = (VOID *)malloc(lScanLineSize);
@@ -268,7 +269,9 @@ BOOL CTIFFReader::Read()
 				nResult = TIFFReadScanline(m_tiff, pScanLine, j);
 				for (LONG i = 0;i<w && bResult;i++)
 				{
-					double		fRed, fGreen, fBlue;
+                    double fRed = 0;
+                    double fGreen = 0;
+                    double fBlue = 0;
 
 					if (spp == 1)
 					{
@@ -360,7 +363,7 @@ BOOL CTIFFReader::Read()
 					bResult = OnRead(i, j, fRed, fGreen, fBlue);
 
 					if (m_pProgress)
-						m_pProgress->Progress2(NULL, j+1);
+						m_pProgress->Progress2(nullptr, j+1);
 				};
 			};
 			free(pScanLine);
@@ -383,7 +386,7 @@ BOOL CTIFFReader::Close()
 		if (bResult)
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -511,8 +514,8 @@ BOOL CTIFFWriter::Open()
 				// Set the DATETIME TIFF tag
 				CStringA		strDateTime;
 
-				strDateTime.Format("%04d:%02d:%02d %02d:%02d:%02d", 
-								   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay, 
+				strDateTime.Format("%04d:%02d:%02d %02d:%02d:%02d",
+								   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
 								   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
 				TIFFSetField(m_tiff, TIFFTAG_DATETIME, (LPCSTR)strDateTime);
@@ -523,7 +526,7 @@ BOOL CTIFFWriter::Open()
 						yres = 100;
 			TIFFSetField(m_tiff, TIFFTAG_XRESOLUTION, xres);
 			TIFFSetField(m_tiff, TIFFTAG_YRESOLUTION, yres);
-			TIFFSetField(m_tiff, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);		
+			TIFFSetField(m_tiff, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
 
 			if (cfa)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_CFA, cfa);
@@ -531,7 +534,7 @@ BOOL CTIFFWriter::Open()
 				TIFFSetField(m_tiff, TIFFTAG_DSS_CFATYPE, cfatype);
 
 			if (master)
-				TIFFSetField(m_tiff, TIFFTAG_DSS_MASTER, master);		
+				TIFFSetField(m_tiff, TIFFTAG_DSS_MASTER, master);
 
 			if (isospeed)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_ISO, isospeed);
@@ -547,11 +550,13 @@ BOOL CTIFFWriter::Open()
 
 			if (nrframes)
 				TIFFSetField(m_tiff, TIFFTAG_DSS_NRFRAMES, nrframes);
+
+            TIFFSetField(m_tiff, TIFFTAG_ZIPQUALITY, Z_BEST_SPEED); // TODO: make it configurable?
 		}
 		else
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -577,7 +582,7 @@ BOOL CTIFFWriter::Write()
 		if (pScanLine)
 		{
 			if (m_pProgress)
-				m_pProgress->Start2(NULL, h);
+				m_pProgress->Start2(nullptr, h);
 
 			for (LONG j = 0;(j<h) && !bError; j++)
 			{
@@ -670,10 +675,10 @@ BOOL CTIFFWriter::Write()
 
 				};
 				int			nResult;
-				
+
 				nResult = TIFFWriteScanline(m_tiff, pScanLine, j, 0);
 				if (m_pProgress)
-					m_pProgress->Progress2(NULL, j+1);
+					m_pProgress->Progress2(nullptr, j+1);
 				if (-1 == nResult)
 				{
 					ZTRACE_RUNTIME("TIFFWriteScanLine failed");
@@ -704,7 +709,7 @@ BOOL CTIFFWriter::Close()
 		if (bResult)
 		{
 			TIFFClose(m_tiff);
-			m_tiff = NULL;
+			m_tiff = nullptr;
 		};
 	};
 
@@ -747,7 +752,7 @@ TIFFFORMAT	CTIFFWriteFromMemoryBitmap::GetBestTiffFormat(CMemoryBitmap * pBitmap
 	C48BitColorBitmap *			p48Color = dynamic_cast<C48BitColorBitmap *>(pBitmap);
 	C96BitColorBitmap *			p96Color = dynamic_cast<C96BitColorBitmap *>(pBitmap);
 	C96BitFloatColorBitmap*		p96FloatColor = dynamic_cast<C96BitFloatColorBitmap*>(pBitmap);
-	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);	
+	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);
 	C16BitGrayBitmap *				p16Gray = dynamic_cast<C16BitGrayBitmap *>(pBitmap);
 	C32BitGrayBitmap *				p32Gray = dynamic_cast<C32BitGrayBitmap *>(pBitmap);
 	C32BitFloatGrayBitmap *			p32FloatGray = dynamic_cast<C32BitFloatGrayBitmap *>(pBitmap);
@@ -768,7 +773,7 @@ TIFFFORMAT	CTIFFWriteFromMemoryBitmap::GetBestTiffFormat(CMemoryBitmap * pBitmap
 		Result = TF_32BITGRAY;
 	else if (p32FloatGray)
 		Result = TF_32BITGRAYFLOAT;
-	
+
 	return Result;
 };
 
@@ -787,7 +792,7 @@ BOOL CTIFFWriteFromMemoryBitmap::OnOpen()
 	if (::IsCFA(m_pMemoryBitmap))
 		CFAType = ::GetCFAType(m_pMemoryBitmap);
 	bMaster = m_pMemoryBitmap->IsMaster();
-	
+
 	if (m_Format == TF_UNKNOWN)
 		m_Format = GetBestTiffFormat(m_pMemoryBitmap);
 
@@ -912,6 +917,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 		if (fAperture)
 			tiff.SetAperture(fAperture);
 		tiff.SetFormatAndCompression(TIFFFormat, TIFFCompression);
+
 		if (tiff.Open())
 		{
 			bResult = tiff.Write();
@@ -1093,7 +1099,7 @@ BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	BOOL					bResult = FALSE;
-	CTIFFReader				tiff(szFileName, NULL);
+	CTIFFReader				tiff(szFileName, nullptr);
 
 	if (tiff.Open())
 	{

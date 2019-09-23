@@ -20,7 +20,7 @@ void	SetUILanguage(LANGID LangID)
 //		const UINT MUI_LANGUAGE_NAME	= 0x8; // Use ISO language (culture) name convention
 //		const UINT MUI_THREAD_LANGUAGES = 0x40; // GetThreadPreferredUILanguages merges in thread preferred languages
 
-		SetThreadPreferredUILanguages = 
+		SetThreadPreferredUILanguages =
 			(SetThreadPreferredUILanguagesProc)GetProcAddress(
 				GetModuleHandle(_T("kernel32.dll")),
 				"SetThreadPreferredUILanguages");
@@ -67,6 +67,7 @@ void	SetUILanguage(LANGID LangID)
 					szLang5 = szCzech;
 					break;
 				case LANG_ENGLISH :
+                default:
 					szLang1 = szEnglish;
 					szLang2 = szFrench;
 					szLang3 = szSpanish;
@@ -233,7 +234,7 @@ void	SetUILanguage()
 	{
 		// Get the main current language and adapth it
 		LANGID			LangID;
-		
+
 		LangID = GetUserDefaultLangID();
 		//LangID = LANGIDFROMLCID(GetThreadLocale());
 		switch (PRIMARYLANGID(LangID))
@@ -289,7 +290,7 @@ void	SetUILanguage()
 		SetUILanguage(MAKELANGID(LANG_SPANISH,SUBLANG_SPANISH_MODERN));
 		break;
 	case DSSL_ITALIAN:
-		SetUILanguage(MAKELANGID(LANG_ITALIAN,SUBLANG_DEFAULT)); 
+		SetUILanguage(MAKELANGID(LANG_ITALIAN,SUBLANG_DEFAULT));
 		break;
 	case DSSL_ENGLISH :
 		SetUILanguage(MAKELANGID(LANG_ENGLISH,SUBLANG_ENGLISH_US));

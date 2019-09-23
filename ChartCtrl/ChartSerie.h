@@ -60,7 +60,7 @@ public:
 	bool GetSerieYMinMax(double& Min, double& Max)  const;
 	bool GetSerieXMinMax(double& Min, double& Max)  const;
 
-	void		SetName(std::string NewName) { m_strSerieName = NewName; }
+	void		SetName(std::string const& NewName) { m_strSerieName = NewName; }
 	std::string GetName() const              { return m_strSerieName; }
 
 	void ValueToScreen(double XValue, double YValue, CPoint& ScreenPoint)  const;

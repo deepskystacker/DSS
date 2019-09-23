@@ -16,11 +16,11 @@ class CSaveMaskDlg : public CFileDialog
 
 public :
 	CSaveMaskDlg(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs
-		LPCTSTR lpszDefExt = NULL,
-		LPCTSTR lpszFileName = NULL,
+		LPCTSTR lpszDefExt = nullptr,
+		LPCTSTR lpszFileName = nullptr,
 		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-		LPCTSTR lpszFilter = NULL,
-		CWnd* pParentWnd = NULL):CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd)
+		LPCTSTR lpszFilter = nullptr,
+		CWnd* pParentWnd = nullptr):CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd)
 	{
 	};
 	virtual ~CSaveMaskDlg()
@@ -51,7 +51,7 @@ IMPLEMENT_DYNAMIC(CStarMaskDlg, CDialog)
 
 /* ------------------------------------------------------------------- */
 
-CStarMaskDlg::CStarMaskDlg(CWnd* pParent /*=NULL*/)
+CStarMaskDlg::CStarMaskDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStarMaskDlg::IDD, pParent)
 {
 	m_bOutputFITS = FALSE;
@@ -151,7 +151,7 @@ void CStarMaskDlg::UpdateTexts()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStarMaskDlg::OnInitDialog() 
+BOOL CStarMaskDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -199,7 +199,7 @@ BOOL CStarMaskDlg::OnInitDialog()
 
 	UpdateTexts();
 	UpdateStarShapePreview();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -216,10 +216,10 @@ BOOL CStarMaskDlg::AskOutputFile()
 	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("FileType"), dwFileType);
 
 	strTitle.LoadString(IDS_TITLE_MASK);
-	
-	CSaveMaskDlg			dlgSave(FALSE, 
-								NULL,
-								NULL,
+
+	CSaveMaskDlg			dlgSave(FALSE,
+								nullptr,
+								nullptr,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 								STARMASKFILE_FILTERS,
 								this);
@@ -229,7 +229,7 @@ BOOL CStarMaskDlg::AskOutputFile()
 	TCHAR					szDrive[1+_MAX_DRIVE];
 	TCHAR					szDir[1+_MAX_DIR];
 
-	_tsplitpath(m_strOutputFile, szDrive, szDir, NULL, NULL);
+	_tsplitpath(m_strOutputFile, szDrive, szDir, nullptr, nullptr);
 	strBaseDirectory = szDrive;
 	strBaseDirectory += szDir;
 
@@ -237,7 +237,7 @@ BOOL CStarMaskDlg::AskOutputFile()
 		dlgSave.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
 
 	TCHAR				szBigBuffer[20000];
-	
+
 	if (dwFileType==2)
 		lstrcpy(szBigBuffer, _T("StarMask.fits"));
 	else
@@ -276,7 +276,7 @@ void CStarMaskDlg::OnStarShapeChange( )
 
 /* ------------------------------------------------------------------- */
 
-void CStarMaskDlg::OnOK() 
+void CStarMaskDlg::OnOK()
 {
 	if (AskOutputFile())
 	{
@@ -316,7 +316,7 @@ void CStarMaskDlg::OnOK()
 
 /* ------------------------------------------------------------------- */
 
-void CStarMaskDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CStarMaskDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	UpdateTexts();
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);

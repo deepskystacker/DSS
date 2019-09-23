@@ -47,7 +47,7 @@ public :
 public :
 	CSmartPtr()
 	{
-		m_p = NULL;
+		m_p = nullptr;
 	};
 
 	CSmartPtr(T * p)
@@ -78,7 +78,7 @@ public :
 	{
 		if (m_p)
 			m_p->Release();
-		m_p = NULL;
+		m_p = nullptr;
 		Attach(new T);
 	};
 
@@ -103,7 +103,7 @@ public :
 		T *		pTemp = m_p;
 		if (pTemp)
 		{
-			m_p = NULL;
+			m_p = nullptr;
 			pTemp->Release();
 		};
 	};
@@ -124,7 +124,7 @@ public :
 		{
 			// To avoid memory leak
 			m_p->Release();
-			m_p = NULL;
+			m_p = nullptr;
 		};
 		return &m_p;
 	};
@@ -134,7 +134,7 @@ public :
 		return m_p;
 	};
 
-	operator T*() const 
+	operator T*() const
 	{
 		return m_p;
 	}

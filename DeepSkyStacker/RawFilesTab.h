@@ -55,7 +55,7 @@ protected:
 	afx_msg void OnChangeBrightness();
 	afx_msg void OnChangeRedscale();
 	afx_msg void OnNoWB();
-	afx_msg void OnCameraWB(); 
+	afx_msg void OnCameraWB();
 	afx_msg void OnBilinear();
 	afx_msg void OnAhd();
 	afx_msg void OnBnClickedSuperpixels();

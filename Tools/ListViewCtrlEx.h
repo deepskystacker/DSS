@@ -1,7 +1,7 @@
 /******************************************************************************
 
 $Author$
-  
+
 $Modtime$
 $Revision$
 
@@ -26,7 +26,7 @@ class CListBase
 {
   public:
    CListBase();
-  ~CListBase();
+   virtual ~CListBase();
 
   void         ColorSortColumn(BOOL bEnable = TRUE, int nSortColumn = 0);
   virtual void DrawSmallIcon  (CDC* pDC, LVITEM* pItem, LPRECT pRect);
@@ -132,7 +132,7 @@ class CListBase
   LRESULT             OnDeleteItem         (WPARAM wParam);
 	void                OnDestroy            ();
 	BOOL                OnEraseBkgnd         (CDC* pDC);
-  LRESULT             OnFindItem           (WPARAM wParam, LPARAM lParam);  
+  LRESULT             OnFindItem           (WPARAM wParam, LPARAM lParam);
   LRESULT             OnGetColumn          (WPARAM wParam, LPARAM lParam);
   LRESULT             OnGetColumnWidth     (WPARAM wParam);
   LRESULT             OnGetColumnOrderArray(WPARAM wParam, LPARAM lParam);
@@ -258,7 +258,7 @@ class CListCtrlEx: public CListCtrl, public CListBase
   afx_msg LRESULT OnDeleteItem         (WPARAM wParam, LPARAM);
 	afx_msg void    OnDestroy            ();
 	afx_msg BOOL    OnEraseBkgnd         (CDC* pDC);
-  afx_msg LRESULT OnFindItem           (WPARAM wParam, LPARAM lParam);  
+  afx_msg LRESULT OnFindItem           (WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnGetColumn          (WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnGetColumnOrderArray(WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnGetColumnWidth     (WPARAM wParam, LPARAM);
@@ -333,7 +333,7 @@ class CListViewEx: public CListView, public CListBase
   afx_msg LRESULT OnDeleteItem         (WPARAM wParam, LPARAM);
 	afx_msg void    OnDestroy            ();
 	afx_msg BOOL    OnEraseBkgnd         (CDC* pDC);
-  afx_msg LRESULT OnFindItem           (WPARAM wParam, LPARAM lParam);  
+  afx_msg LRESULT OnFindItem           (WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnGetColumn          (WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnGetColumnOrderArray(WPARAM wParam, LPARAM lParam);
   afx_msg LRESULT OnGetColumnWidth     (WPARAM wParam, LPARAM);

@@ -33,7 +33,7 @@ public:
 	CButtonST	m_Undo;
 	CButtonST	m_Redo;
 	CSliderCtrl	m_Saturation;
-	CLabel		m_ST_Saturation;	
+	CLabel		m_ST_Saturation;
 	CLabel		m_SaturationTitle;
 	//}}AFX_DATA
 

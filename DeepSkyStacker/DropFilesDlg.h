@@ -8,7 +8,7 @@ class CDropFilesDlg : public CDialog
 	DECLARE_DYNAMIC(CDropFilesDlg)
 
 public:
-	CDropFilesDlg(CWnd* pParent = NULL);   // standard constructor
+	CDropFilesDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CDropFilesDlg();
 
 	void	SetDropInfo(HDROP hDropInfo)

@@ -44,7 +44,7 @@ class CGradientCtrl : public CWnd
 public:
 	CGradientCtrl();
 	BOOL Create(const RECT& rect, CWnd* pParentWnd, UINT nID);
-	
+
 	enum Orientation
 	{
 		ForceHorizontal,
@@ -60,7 +60,7 @@ public:
 	int		SetSelIndex(int iSel);
 	const CPeg GetSelPeg() const;
 	CGradient& GetGradient() {return m_Gradient;};
-	void	SetGradient(CGradient src) {m_Gradient = src;};
+	void	SetGradient(CGradient const& src) {m_Gradient = src;}
 	void	ShowTooltips(BOOL bShow = true);
 	Orientation GetOrientation() const {return m_Orientation;};
 	void	SetOrientation(Orientation orientation) {m_Orientation = orientation;};
@@ -84,7 +84,7 @@ public:
 protected:
 	BOOL RegisterWindowClass();
 	void GetPegRgn(CRgn *rgn);
-	void SendBasicNotification(UINT code, CPeg peg, int index);
+	void SendBasicNotification(UINT code, CPeg const& peg, int index);
 
 	CGradient	m_Gradient;
 	int			m_Width;

@@ -14,7 +14,7 @@ public :
 	CImageFilter() {};
 	virtual ~CImageFilter() {};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = NULL) = 0;
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr) = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -35,6 +35,7 @@ private :
 public :
 	CFilterMatrix()
 	{
+        m_lSize = 0;
 	};
 
 	CFilterMatrix(const CFilterMatrix & fm)
@@ -85,6 +86,8 @@ public :
 		m_bMonochrome	= FALSE;
 		m_bCFA			= FALSE;
 		m_lFilterSize	= 1;
+        m_lWidth        = 0;
+        m_lHeight       = 0;
 	};
 
 	virtual ~CMedianImageFilter()
@@ -118,7 +121,7 @@ public :
 		};
 	};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = NULL);
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -138,10 +141,10 @@ private :
 
 private :
 	void	AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bComputeThresholds);
-	void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap * pOutBitmap, CDSSProgress * pProgress = NULL);
+	void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap * pOutBitmap, CDSSProgress * pProgress = nullptr);
 
 public :
-	CExtendedMedianImageFilter() 
+	CExtendedMedianImageFilter()
 	{
 		m_bFilterHot		 = TRUE;
 		m_bFilterCold		 = TRUE;
@@ -174,7 +177,7 @@ public :
 		m_bUseRejectThreshold  = FALSE;
 	};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress = NULL);
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -193,10 +196,11 @@ private :
 	void	InitFilterMatrix(CFilterMatrix & fm);
 
 public :
-	CDirectionalImageFilter() 
+	CDirectionalImageFilter()
 	{
 		m_fAngle = 0;
 		m_lSize  = 1;
+        m_bMonochrome = FALSE;
 	};
 	~CDirectionalImageFilter() {};
 
@@ -206,7 +210,7 @@ public :
 		m_lSize  = lSize;
 	};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = NULL);
+	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */

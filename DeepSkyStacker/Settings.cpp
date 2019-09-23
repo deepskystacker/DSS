@@ -117,7 +117,7 @@ BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 {
 	BOOL				bResult = FALSE;
 	CBitmapInfo			bmpInfo;
-	
+
 	m_sSettings.clear();
 	m_vFiles.clear();
 	if (pTask && GetPictureInfo(szFile, bmpInfo))

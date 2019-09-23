@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "Workspace.h"
 
-
 #define _NO_EXCEPTION
 //#define _NO_TEMPLATE
 //#include <stdexcept>
@@ -17,7 +16,7 @@ const LONG		MINPAIRSTOBICUBIC	= 40;
 static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 {
 	TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
-	DWORD					dwAlignmentTransformation = 2;			
+	DWORD					dwAlignmentTransformation = 2;
 	CWorkspace				workspace;
 
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignmentTransformation"), dwAlignmentTransformation);
@@ -45,7 +44,7 @@ static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 			TTResult = TT_BISQUARED;
 		else if (dwAlignmentTransformation >= 2)
 			TTResult = TT_BILINEAR;
-		else 
+		else
 			TTResult = TT_LINEAR;
 
 	};
@@ -57,7 +56,7 @@ static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 
 static BOOL AreCornersLocked()
 {
-	DWORD					dwLockCorners = 1;			
+	DWORD					dwLockCorners = 1;
 	CWorkspace				workspace;
 
 	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("LockCorners"), dwLockCorners);
@@ -70,7 +69,7 @@ static BOOL AreCornersLocked()
 void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDISTVECTOR & vStarDist)
 {
 	LONG				i, j;
-	
+
 	double				fMaxDistance = 0;
 
 	vStarDist.reserve(vStars.size() * (vStars.size()-1)/2);
@@ -87,7 +86,7 @@ void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDIS
 			fDistance = Distance(pt1, pt2);
 			fMaxDistance = max(fDistance, fMaxDistance);
 
-			vStarDist.push_back(CStarDist(i, j, fDistance));
+			vStarDist.emplace_back(i, j, fDistance);
 		};
 	};
 
@@ -218,7 +217,7 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 	if (TType == TT_BICUBIC)
 	{
-		DMATRIX				M((LONG)vVotingPairs.size(), 16);	
+		DMATRIX				M((LONG)vVotingPairs.size(), 16);
 		DMATRIX				X((LONG)vVotingPairs.size(), 1);
 		DMATRIX				Y((LONG)vVotingPairs.size(), 1);
 
@@ -268,51 +267,51 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				DMATRIX				B = !TM * MT * Y;
 
 				BilinearParameters.Type = TType;
-				BilinearParameters.a0 = A(0, 0);	
-				BilinearParameters.a1 = A(1, 0);	
-				BilinearParameters.a2 = A(2, 0);	
-				BilinearParameters.a3 = A(3, 0);	
-				BilinearParameters.a4 = A(4, 0);	
-				BilinearParameters.a5 = A(5, 0);	
-				BilinearParameters.a6 = A(6, 0);	
-				BilinearParameters.a7 = A(7, 0);	
-				BilinearParameters.a8 = A(8, 0);	
-				BilinearParameters.a9 = A(9, 0);	
-				BilinearParameters.a10 = A(10, 0);	
-				BilinearParameters.a11 = A(11, 0);	
-				BilinearParameters.a12 = A(12, 0);	
-				BilinearParameters.a13 = A(13, 0);	
-				BilinearParameters.a14 = A(14, 0);	
-				BilinearParameters.a15 = A(15, 0);	
+				BilinearParameters.a0 = A(0, 0);
+				BilinearParameters.a1 = A(1, 0);
+				BilinearParameters.a2 = A(2, 0);
+				BilinearParameters.a3 = A(3, 0);
+				BilinearParameters.a4 = A(4, 0);
+				BilinearParameters.a5 = A(5, 0);
+				BilinearParameters.a6 = A(6, 0);
+				BilinearParameters.a7 = A(7, 0);
+				BilinearParameters.a8 = A(8, 0);
+				BilinearParameters.a9 = A(9, 0);
+				BilinearParameters.a10 = A(10, 0);
+				BilinearParameters.a11 = A(11, 0);
+				BilinearParameters.a12 = A(12, 0);
+				BilinearParameters.a13 = A(13, 0);
+				BilinearParameters.a14 = A(14, 0);
+				BilinearParameters.a15 = A(15, 0);
 
-				BilinearParameters.b0 = B(0, 0);	
-				BilinearParameters.b1 = B(1, 0);	
-				BilinearParameters.b2 = B(2, 0);	
-				BilinearParameters.b3 = B(3, 0);	
-				BilinearParameters.b4 = B(4, 0);	
-				BilinearParameters.b5 = B(5, 0);	
-				BilinearParameters.b6 = B(6, 0);	
-				BilinearParameters.b7 = B(7, 0);	
-				BilinearParameters.b8 = B(8, 0);	
-				BilinearParameters.b9 = B(9, 0);	
-				BilinearParameters.b10 = B(10, 0);	
-				BilinearParameters.b11 = B(11, 0);	
-				BilinearParameters.b12 = B(12, 0);	
-				BilinearParameters.b13 = B(13, 0);	
-				BilinearParameters.b14 = B(14, 0);	
-				BilinearParameters.b15 = B(15, 0);	
+				BilinearParameters.b0 = B(0, 0);
+				BilinearParameters.b1 = B(1, 0);
+				BilinearParameters.b2 = B(2, 0);
+				BilinearParameters.b3 = B(3, 0);
+				BilinearParameters.b4 = B(4, 0);
+				BilinearParameters.b5 = B(5, 0);
+				BilinearParameters.b6 = B(6, 0);
+				BilinearParameters.b7 = B(7, 0);
+				BilinearParameters.b8 = B(8, 0);
+				BilinearParameters.b9 = B(9, 0);
+				BilinearParameters.b10 = B(10, 0);
+				BilinearParameters.b11 = B(11, 0);
+				BilinearParameters.b12 = B(12, 0);
+				BilinearParameters.b13 = B(13, 0);
+				BilinearParameters.b14 = B(14, 0);
+				BilinearParameters.b15 = B(15, 0);
 
 				bResult = TRUE;
 			};
 		}
-		catch(math::matrix_error)
+		catch(math::matrix_error const&)
 		{
 			bResult = FALSE;
-		};	
+		};
 	}
 	else if (TType == TT_BISQUARED)
 	{
-		DMATRIX				M(vVotingPairs.size(), 9);	
+		DMATRIX				M(vVotingPairs.size(), 9);
 		DMATRIX				X(vVotingPairs.size(), 1);
 		DMATRIX				Y(vVotingPairs.size(), 1);
 
@@ -355,37 +354,37 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				DMATRIX				B = !TM * MT * Y;
 
 				BilinearParameters.Type = TType;
-				BilinearParameters.a0 = A(0, 0);	
-				BilinearParameters.a1 = A(1, 0);	
-				BilinearParameters.a2 = A(2, 0);	
-				BilinearParameters.a3 = A(3, 0);	
-				BilinearParameters.a4 = A(4, 0);	
-				BilinearParameters.a5 = A(5, 0);	
-				BilinearParameters.a6 = A(6, 0);	
-				BilinearParameters.a7 = A(7, 0);	
-				BilinearParameters.a8 = A(8, 0);	
+				BilinearParameters.a0 = A(0, 0);
+				BilinearParameters.a1 = A(1, 0);
+				BilinearParameters.a2 = A(2, 0);
+				BilinearParameters.a3 = A(3, 0);
+				BilinearParameters.a4 = A(4, 0);
+				BilinearParameters.a5 = A(5, 0);
+				BilinearParameters.a6 = A(6, 0);
+				BilinearParameters.a7 = A(7, 0);
+				BilinearParameters.a8 = A(8, 0);
 
-				BilinearParameters.b0 = B(0, 0);	
-				BilinearParameters.b1 = B(1, 0);	
-				BilinearParameters.b2 = B(2, 0);	
-				BilinearParameters.b3 = B(3, 0);	
-				BilinearParameters.b4 = B(4, 0);	
-				BilinearParameters.b5 = B(5, 0);	
-				BilinearParameters.b6 = B(6, 0);	
-				BilinearParameters.b7 = B(7, 0);	
-				BilinearParameters.b8 = B(8, 0);	
+				BilinearParameters.b0 = B(0, 0);
+				BilinearParameters.b1 = B(1, 0);
+				BilinearParameters.b2 = B(2, 0);
+				BilinearParameters.b3 = B(3, 0);
+				BilinearParameters.b4 = B(4, 0);
+				BilinearParameters.b5 = B(5, 0);
+				BilinearParameters.b6 = B(6, 0);
+				BilinearParameters.b7 = B(7, 0);
+				BilinearParameters.b8 = B(8, 0);
 
 				bResult = TRUE;
 			};
 		}
-		catch(math::matrix_error)
+		catch(math::matrix_error const&)
 		{
 			bResult = FALSE;
-		};	
+		};
 	}
 	else
 	{
-		DMATRIX				M(vVotingPairs.size(), 4);	
+		DMATRIX				M(vVotingPairs.size(), 4);
 		DMATRIX				X(vVotingPairs.size(), 1);
 		DMATRIX				Y(vVotingPairs.size(), 1);
 
@@ -420,19 +419,19 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				DMATRIX				A = !TM * MT * X;
 				DMATRIX				B = !TM * MT * Y;
 
-				BilinearParameters.a0 = A(0, 0);	
-				BilinearParameters.a1 = A(1, 0);	
-				BilinearParameters.a2 = A(2, 0);	
-				BilinearParameters.a3 = A(3, 0);	
-				BilinearParameters.b0 = B(0, 0);	
-				BilinearParameters.b1 = B(1, 0);	
-				BilinearParameters.b2 = B(2, 0);	
-				BilinearParameters.b3 = B(3, 0);	
+				BilinearParameters.a0 = A(0, 0);
+				BilinearParameters.a1 = A(1, 0);
+				BilinearParameters.a2 = A(2, 0);
+				BilinearParameters.a3 = A(3, 0);
+				BilinearParameters.b0 = B(0, 0);
+				BilinearParameters.b1 = B(1, 0);
+				BilinearParameters.b2 = B(2, 0);
+				BilinearParameters.b3 = B(3, 0);
 
 				bResult = TRUE;
 			};
 		}
-		catch(math::matrix_error)
+		catch(math::matrix_error const&)
 		{
 			bResult = FALSE;
 		};
@@ -493,7 +492,6 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 		lNrExtraPairs = 4;
 
 	vPairs = vVotingPairs;
-
 
 	while (!bEnd && !bResult)
 	{
@@ -807,7 +805,6 @@ BOOL CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 	else
 		bResult = ComputeCoordinatesTransformation(vPairs, BilinearParameters, TType);
 
-
 	if (bResult)
 		m_vVotedPairs = vPairs;
 
@@ -1050,20 +1047,18 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 const double			MAXSTARDISTANCEDELTA = 2.0;
 
 CComAutoCriticalSection	g_StarDistSection;
-STARDISTVECTOR *		g_pvDists = NULL;
+STARDISTVECTOR *		g_pvDists = nullptr;
 
 inline bool CompareStarDistances (LONG lDist1, LONG lDist2)
 {
 	return (*g_pvDists)[lDist1].m_fDistance > (*g_pvDists)[lDist2].m_fDistance;
 };
 
-
 BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters)
 {
 	BOOL					bResult = FALSE;
-	LONG					i = 0, 
+	LONG					i = 0,
 							j = 0;
-	BOOL					bEnd = FALSE;
 
 	// Compute patterns
 	if (!m_vRefStarDistances.size())
@@ -1084,7 +1079,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 	g_pvDists = &m_vTgtStarDistances;
 	std::sort(m_vTgtStarIndices.begin(), m_vTgtStarIndices.end(), CompareStarDistances);
 
-	g_pvDists = NULL;
+	g_pvDists = nullptr;
 	g_StarDistSection.Unlock();
 
 	VOTINGPAIRVECTOR			vVotingPairs,
@@ -1093,7 +1088,7 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 	InitVotingGrid(vVotingPairs);
 	i = j = 0;
 
-	while (i<m_vTgtStarDistances.size() && j<m_vRefStarDistances.size() && !bEnd)
+	while (i<m_vTgtStarDistances.size() && j<m_vRefStarDistances.size())
 	{
 		if (fabs(m_vTgtStarDistances[m_vTgtStarIndices[i]].m_fDistance-m_vRefStarDistances[m_vRefStarIndices[j]].m_fDistance) <= MAXSTARDISTANCEDELTA)
 		{
@@ -1117,7 +1112,6 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 			lTgtStar1 = m_vTgtStarDistances[m_vTgtStarIndices[i]].m_Star1;
 			lTgtStar2 = m_vTgtStarDistances[m_vTgtStarIndices[i]].m_Star2;
 
-			
 			for (LONG lTgtStar3 = 0;lTgtStar3 < m_vTgtStars.size();lTgtStar3++)
 			{
 				if ((lTgtStar3 != lTgtStar1) && (lTgtStar3 != lTgtStar2))

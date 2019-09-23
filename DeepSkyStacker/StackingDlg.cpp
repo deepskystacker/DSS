@@ -40,7 +40,7 @@ const		DWORD					IDC_EDIT_SAVE   = 4;
 // CStackingDlg dialog
 
 
-CStackingDlg::CStackingDlg(CWnd* pParent /*=NULL*/)
+CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackingDlg::IDD, pParent),
 	m_cCtrlCache(this)
 {
@@ -81,8 +81,8 @@ BEGIN_MESSAGE_MAP(CStackingDlg, CDialog)
 	ON_NOTIFY(GC_PEGMOVE, IDC_GAMMA, OnChangeGamma)
 	ON_NOTIFY(GC_PEGMOVED, IDC_GAMMA, OnChangeGamma)
 	ON_MESSAGE(WM_BACKGROUNDIMAGELOADED, OnBackgroundImageLoaded)
-	ON_NOTIFY(CTCN_SELCHANGE, IDC_GROUPTAB, OnSelChangeGroup)	
-	ON_NOTIFY(CTCN_SELCHANGE, IDC_JOBTAB, OnSelChangeJob)	
+	ON_NOTIFY(CTCN_SELCHANGE, IDC_GROUPTAB, OnSelChangeGroup)
+	ON_NOTIFY(CTCN_SELCHANGE, IDC_JOBTAB, OnSelChangeJob)
 	ON_NOTIFY(NM_LINKCLICK, IDC_SHOWHIDEJOBS, OnShowHideJobs)
 	ON_NOTIFY(SPN_SIZED, IDC_SPLITTER, OnSplitter)
 //}}AFX_MSG_MAP
@@ -93,10 +93,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CStackingDlg message handlers
 
-BOOL CStackingDlg::OnInitDialog() 
+BOOL CStackingDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 	m_ListInfo.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 	m_Picture.CreateFromStatic(&m_PictureStatic);
@@ -199,14 +199,14 @@ BOOL CStackingDlg::OnInitDialog()
 
 	{
 		m_GroupTab.ModifyStyle(0, CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
-		
+
 		UpdateGroupTabs();
 	};
 
 /*
 	m_ShowHideJobs.SetLink(TRUE, TRUE);
 	m_ShowHideJobs.SetTransparent(TRUE);
-	m_ShowHideJobs.SetLinkCursor(LoadCursor(NULL,MAKEINTRESOURCE(IDC_HAND)));
+	m_ShowHideJobs.SetLinkCursor(LoadCursor(nullptr,MAKEINTRESOURCE(IDC_HAND)));
 	m_ShowHideJobs.SetFont3D(FALSE);
 	m_ShowHideJobs.SetTextColor(RGB(0, 0, 192));
 	m_ShowHideJobs.SetWindowText("Show/Hide Jobs");
@@ -243,33 +243,33 @@ void CStackingDlg::UpdateLayout()
 	GetClientRect(rcCurrentDlgSize);
 
 	// Cache the controls that we can scale to make things fit.
-	// Work out vertical space change.	
+	// Work out vertical space change.
 	int nCtrlHeightSum = 0;
 	const int nTopSpacing = min(m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y, (min(m_cCtrlCache.GetCtrlOffset(IDC_GAMMA).y, m_cCtrlCache.GetCtrlOffset(IDC_4CORNERS).y)));
 	nCtrlHeightSum += nTopSpacing;
 	nCtrlHeightSum += max(m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height(), (max(m_cCtrlCache.GetCtrlSize(IDC_GAMMA).Height(), m_cCtrlCache.GetCtrlSize(IDC_4CORNERS).Height())));
-	
+
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y - nCtrlHeightSum;
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height();
-	
+
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_SPLITTER).y - nCtrlHeightSum;
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height();
-	
+
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y - nCtrlHeightSum;
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height();
-	
+
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURES).y - nCtrlHeightSum;
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height();
-	
+
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_GROUPTAB).y - nCtrlHeightSum;
 	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height();
-	
+
 	nCtrlHeightSum += nTopSpacing;
 
 	// Preferentially scale the picture first, then the list afterwards (if possible)
 	int nDiffPictureY = rcCurrentDlgSize.Height() - nCtrlHeightSum;
 	int nDiffListY = 0;
-		
+
 	// Handle if there isn't enough space to handle the picture resizing alone.
 	if (m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() + nDiffPictureY <= sm_nMinImageHeight)
 	{
@@ -294,7 +294,7 @@ void CStackingDlg::UpdateLayout()
 				nDiffListY = -nMaxMovement;
 		}
 	}
-		
+
 	// Perform the resizing and moving of the controls.
 	if (nDiffPictureY != 0)
 	{
@@ -403,7 +403,7 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 	if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
 		(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
 	{
-		// Adjust 
+		// Adjust
 		CGradient &			Gradient = m_Gamma.GetGradient();
 		fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
 		fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
@@ -457,7 +457,7 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
-			m_Gamma.InvalidateRect(NULL);
+			m_Gamma.InvalidateRect(nullptr);
 		};
 	};
 
@@ -497,7 +497,7 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 		lHeight		= tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lHeight;
 		lNrChannels = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
 		lNrBytesPerChannel = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitPerChannels/8;
-		
+
 		ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
 
 		if (tasks.m_vStacks[i].m_pOffsetTask)
@@ -536,7 +536,7 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 
 		strDrive = szTempPath;
 		strDrive = strDrive.Left(2);
-		
+
 		CString			strMessage;
 
 		strMessage.Format(IDS_ERROR_NOTENOUGHFREESPACE, lNeededSpace, lFreeSpace, strDrive);
@@ -580,7 +580,7 @@ BOOL CStackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnAdddarks() 
+void CStackingDlg::OnAdddarks()
 {
 	CRegistry			reg;
 	CString				strBaseDirectory;
@@ -605,9 +605,9 @@ void CStackingDlg::OnAdddarks()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -625,8 +625,6 @@ void CStackingDlg::OnAdddarks()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -639,7 +637,7 @@ void CStackingDlg::OnAdddarks()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -653,13 +651,13 @@ void CStackingDlg::OnAdddarks()
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkIndex"), dwFilterIndex);
 
 		UpdateGroupTabs();
-	};	
+	};
 	UpdateListInfo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnAddDarkFlats() 
+void CStackingDlg::OnAddDarkFlats()
 {
 	CRegistry			reg;
 	CString				strBaseDirectory;
@@ -684,9 +682,9 @@ void CStackingDlg::OnAddDarkFlats()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -704,8 +702,6 @@ void CStackingDlg::OnAddDarkFlats()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -718,7 +714,7 @@ void CStackingDlg::OnAddDarkFlats()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFLATFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -732,13 +728,13 @@ void CStackingDlg::OnAddDarkFlats()
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFlatIndex"), dwFilterIndex);
 
 		UpdateGroupTabs();
-	};	
+	};
 	UpdateListInfo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnAddFlats() 
+void CStackingDlg::OnAddFlats()
 {
 	CRegistry			reg;
 	CString				strBaseDirectory;
@@ -763,9 +759,9 @@ void CStackingDlg::OnAddFlats()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -783,8 +779,6 @@ void CStackingDlg::OnAddFlats()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 
@@ -798,7 +792,7 @@ void CStackingDlg::OnAddFlats()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_FLATFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -812,13 +806,13 @@ void CStackingDlg::OnAddFlats()
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddFlatIndex"), dwFilterIndex);
 
 		UpdateGroupTabs();
-	};	
+	};
 	UpdateListInfo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnAddOffsets() 
+void CStackingDlg::OnAddOffsets()
 {
 	CRegistry			reg;
 	CString				strBaseDirectory;
@@ -843,9 +837,9 @@ void CStackingDlg::OnAddOffsets()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -863,8 +857,6 @@ void CStackingDlg::OnAddOffsets()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -877,7 +869,7 @@ void CStackingDlg::OnAddOffsets()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_OFFSETFRAME, TRUE);
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -891,13 +883,13 @@ void CStackingDlg::OnAddOffsets()
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddOffsetIndex"), dwFilterIndex);
 
 		UpdateGroupTabs();
-	};	
+	};
 	UpdateListInfo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnAddpictures() 
+void CStackingDlg::OnAddpictures()
 {
 	ZFUNCTRACE_RUNTIME();
 	CRegistry			reg;
@@ -915,9 +907,9 @@ void CStackingDlg::OnAddpictures()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
 								INPUTFILE_FILTERS,
 								this);
@@ -936,8 +928,6 @@ void CStackingDlg::OnAddpictures()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -950,7 +940,7 @@ void CStackingDlg::OnAddpictures()
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID());
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 			strBaseExtension = szExt;
@@ -964,7 +954,7 @@ void CStackingDlg::OnAddpictures()
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureIndex"), dwFilterIndex);
 
 		UpdateGroupTabs();
-	};	
+	};
 	UpdateListInfo();
 }
 
@@ -1004,7 +994,7 @@ void CStackingDlg::OpenFileList(LPCTSTR szFileList)
 	if  (hFile)
 	{
 		fclose(hFile);
-		SetCursor(::LoadCursor(NULL, IDC_WAIT));
+		SetCursor(::LoadCursor(nullptr, IDC_WAIT));
 		m_Pictures.LoadFilesFromList(strList);
 		m_Pictures.RefreshList();
 		m_MRUList.Add(strList);
@@ -1012,7 +1002,7 @@ void CStackingDlg::OpenFileList(LPCTSTR szFileList)
 		UpdateListInfo();
 		m_strCurrentFileList = szFileList;
 		SetCurrentFileInTitle(m_strCurrentFileList);
-		SetCursor(::LoadCursor(NULL, IDC_ARROW));
+		SetCursor(::LoadCursor(nullptr, IDC_ARROW));
 	};
 };
 
@@ -1051,7 +1041,7 @@ void CStackingDlg::LoadList()
 				TCHAR				szName[1+_MAX_FNAME];
 				CString				strItem;
 
-				_tsplitpath((LPCTSTR)m_MRUList.m_vLists[i], szDrive, szDir, szName, NULL);
+				_tsplitpath((LPCTSTR)m_MRUList.m_vLists[i], szDrive, szDir, szName, nullptr);
 				strItem.Format(_T("%s%s%s"), szDrive, szDir, szName);
 
 				popup->InsertMenu(ID_FILELIST_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
@@ -1060,7 +1050,7 @@ void CStackingDlg::LoadList()
 
 			popup->DeleteMenu(ID_FILELIST_FIRSTMRU, MF_BYCOMMAND);
 
-			nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);;
+			nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 			if (nResult == ID_FILELIST_OPENANOTHERFILELIST)
 				bOpenAnother = TRUE;
@@ -1098,7 +1088,7 @@ void CStackingDlg::SaveList()
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult) 
+void CStackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	// Here check if the new image is dirty
 	if (m_EditStarSink.IsDirty())
@@ -1116,7 +1106,7 @@ CWndImageSink *	CStackingDlg::GetCurrentSink()
 	else if (m_ButtonToolbar.IsChecked(IDC_EDIT_SELECT))
 		return &m_SelectRectSink;
 
-	return NULL;
+	return nullptr;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1229,7 +1219,7 @@ void CStackingDlg::ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonTo
 			popup->CheckMenuItem(ID_SAVECONTEXT_ASKALWAYS, MF_BYCOMMAND | MF_CHECKED);
 			break;
 		};
-		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y, this, NULL);
+		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD | TPM_RIGHTBUTTON, pt.x, pt.y, this, nullptr);
 
 		if (nResult == ID_SAVECONTEXT_SAVEWITHOUTASKING)
 			SetSaveEditMode(SECM_SAVEDONTASK);
@@ -1246,10 +1236,10 @@ void	CStackingDlg::UpdateListInfo()
 {
 	CString					strText;
 
-	strText.Format(IDS_LISTINFO, 
-						m_Pictures.GetNrCheckedFrames(), 
-						m_Pictures.GetNrCheckedDarks(), 
-						m_Pictures.GetNrCheckedFlats(), 
+	strText.Format(IDS_LISTINFO,
+						m_Pictures.GetNrCheckedFrames(),
+						m_Pictures.GetNrCheckedDarks(),
+						m_Pictures.GetNrCheckedFlats(),
 						m_Pictures.GetNrCheckedDarkFlats(),
 						m_Pictures.GetNrCheckedOffsets());
 
@@ -1295,7 +1285,7 @@ BOOL CStackingDlg::CheckWorkspaceChanges()
 					m_Pictures.SaveList(m_MRUList, m_strCurrentFileList);
 				SetCurrentFileInTitle(m_strCurrentFileList);
 			};
-			
+
 			bResult = (nResult != IDCANCEL);
 		}
 		else
@@ -1361,9 +1351,9 @@ LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
 		}
 		else
 		{
-			m_Picture.SetImageSink(NULL);
-			m_Picture.SetButtonToolbar(NULL);
-			m_EditStarSink.SetBitmap(NULL);
+			m_Picture.SetImageSink(nullptr);
+			m_Picture.SetButtonToolbar(nullptr);
+			m_EditStarSink.SetBitmap(nullptr);
 		};
 		m_Picture.SetBltMode(CWndImage::bltFitXY);
 		m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
@@ -1383,24 +1373,24 @@ LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
 		strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strShowFile);
 		m_Infos.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
 		m_Infos.SetText(strText);
-		m_Picture.SetImageSink(NULL);
-		m_Picture.SetButtonToolbar(NULL);
-		m_EditStarSink.SetBitmap(NULL);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(nullptr);
 	}
 	else
 	{
 		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 		m_Infos.SetText("");
-		m_Picture.SetImageSink(NULL);
-		m_Picture.SetButtonToolbar(NULL);
-		m_EditStarSink.SetBitmap(NULL);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(nullptr);
 	};
 	return 1;
 };
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult) 
+void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	CString				strFileName;
 
@@ -1481,14 +1471,14 @@ LRESULT CStackingDlg::OnSelectItem(WPARAM, LPARAM)
 {
 	LRESULT				lResult;
 
-	OnClickPictures(NULL, &lResult);
+	OnClickPictures(nullptr, &lResult);
 
 	return 0;
 };
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnSize(UINT nType, int cx, int cy) 
+void CStackingDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 	if (!(cx == 0 && cy == 0))
@@ -1500,7 +1490,7 @@ void CStackingDlg::OnSize(UINT nType, int cx, int cy)
 void CStackingDlg::OnSplitter(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	SPC_NMHDR* pHdr = reinterpret_cast<SPC_NMHDR*>(pNMHDR);
-	
+
 	CSplitterControl::ChangeHeight(&m_Picture, pHdr->delta);
 	CSplitterControl::ChangeHeight(&m_Pictures, -pHdr->delta, CW_BOTTOMALIGN);
 	CSplitterControl::ChangePos(&m_ListInfo, 0, pHdr->delta);
@@ -1568,7 +1558,7 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 		tasks.ResolveTasks();
 	};
 	if (tasks.m_vStacks.size() &&
-		tasks.m_vStacks[0].m_pLightTask && 
+		tasks.m_vStacks[0].m_pLightTask &&
 		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps.size() &&
 		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps[0].m_strFileName.GetLength())
 	{
@@ -1607,16 +1597,16 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 				if (iff==IFF_TIFF)
 				{
 					if (pBitmap->IsMonochrome())
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, NULL);
+						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
 					else
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, NULL);
+						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
 				}
 				else
 				{
 					if (pBitmap->IsMonochrome())
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, NULL);
+						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, nullptr);
 					else
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, NULL);
+						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, nullptr);
 				};
 
 				dlg.End2();
@@ -1726,7 +1716,7 @@ void CStackingDlg::BatchStack()
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::CheckAbove() 
+void CStackingDlg::CheckAbove()
 {
 	if (CheckEditChanges())
 	{
@@ -1770,10 +1760,10 @@ void CStackingDlg::ClearList()
 	if (CheckEditChanges() && CheckWorkspaceChanges())
 	{
 		m_Pictures.Clear();
-		m_Picture.SetImg((CBitmap*)NULL);
-		m_Picture.SetImageSink(NULL);
-		m_Picture.SetButtonToolbar(NULL);
-		m_EditStarSink.SetBitmap(NULL);
+		m_Picture.SetImg((CBitmap*)nullptr);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(nullptr);
 		m_strShowFile.Empty();
 		m_Infos.SetText(m_strShowFile);
 		m_BackgroundLoading.ClearList();
@@ -1795,7 +1785,7 @@ void CStackingDlg::CheckBests(double fPercent)
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::ComputeOffsets() 
+void CStackingDlg::ComputeOffsets()
 {
 
 	if (CheckEditChanges() && (m_Pictures.GetNrCheckedFrames() > 0))
@@ -1852,7 +1842,6 @@ BOOL CStackingDlg::SaveOnClose()
 void CStackingDlg::RegisterCheckedImage()
 {
 	CDSSProgressDlg			dlg;
-	CString					strText;
 	CRegisterSettings		dlgSettings;
 	BOOL					bContinue = TRUE;
 
@@ -1920,8 +1909,8 @@ void CStackingDlg::RegisterCheckedImage()
 
 					m_Pictures.UpdateCheckedItemScores();
 					// Update the current image score if necessary
-					if (m_strShowFile.GetLength() 
-						&& m_Pictures.IsLightFrame(m_strShowFile) 
+					if (m_strShowFile.GetLength()
+						&& m_Pictures.IsLightFrame(m_strShowFile)
 						&& m_Pictures.IsChecked(m_strShowFile))
 					{
 						// Update the registering info

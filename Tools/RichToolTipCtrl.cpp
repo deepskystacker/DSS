@@ -6,14 +6,14 @@
 // Author:	Paul S. Vickery
 // E-mail:	developer@vickeryhome.freeserve.co.uk
 //
-// Class to provide a means of using rich text in a tool-tip, without using 
+// Class to provide a means of using rich text in a tool-tip, without using
 // the newer styles only available in later systems. Based on CToolTipCtrl.
 //
 // You are free to use or modify this code, with no restrictions, other than
 // you continue to acknowledge me as the original author in this source code,
 // or any code derived from it.
 //
-// If you use this code, or use it as a base for your own code, it would be 
+// If you use this code, or use it as a base for your own code, it would be
 // nice to hear from you simply so I know it's not been a waste of time!
 //
 // Copyright (c) 2005 Paul S. Vickery
@@ -26,11 +26,11 @@
 // - Added static method for escaping plain text to make it RTF safe
 // - Modified the positioning to work on multi-monitor systems
 // - Removed dependency on RichToolTipCtrlDemo.h
-// 
+//
 // Version 1.0 - 14-Mar-2005
 // =========================
 // Initial version
-// 
+//
 ////////////////////////////////////////////////////////////////////////////
 // PLEASE LEAVE THIS HEADER INTACT
 ////////////////////////////////////////////////////////////////////////////
@@ -91,7 +91,7 @@ protected:
 // stop if source is empty, or when end of string reached
 DWORD _RichToolTipCtrlCookie::Read(LPSTR lpszBuffer, DWORD dwCount)
 {
-  if (lpszBuffer == NULL)
+  if (lpszBuffer == nullptr)
     return -1;
 
   // have we already had it all?
@@ -121,7 +121,7 @@ static DWORD CALLBACK RichTextCtrlCallbackIn(DWORD_PTR dwCookie, LPBYTE pbBuff, 
 {
   // the cookie is a pointer to the text data struct
   _RichToolTipCtrlCookie* pBuf = (_RichToolTipCtrlCookie*)dwCookie;
-  if (pBuf == NULL)
+  if (pBuf == nullptr)
     return 1;
   *pcb = pBuf->Read((LPSTR)pbBuff, cb);
   return 0;
@@ -158,9 +158,9 @@ STDMETHODIMP CRichToolTipCtrl::XRichEditOleCallback::GetNewStorage(LPSTORAGE* pp
 	item.GetItemStorageFlat();
 	*ppstg = item.m_lpStorage;
 	HRESULT hRes = E_OUTOFMEMORY;
-	if (item.m_lpStorage != NULL)
+	if (item.m_lpStorage != nullptr)
 	{
-		item.m_lpStorage = NULL;
+		item.m_lpStorage = nullptr;
 		hRes = S_OK;
 	}
 	return hRes;
@@ -191,16 +191,16 @@ END_MESSAGE_MAP()
 /*static*/
 CString CRichToolTipCtrl::MakeTextRTFSafe(LPCTSTR lpszText)
 {
-  // modify the specified text to make it safe for use in a rich-edit 
+  // modify the specified text to make it safe for use in a rich-edit
   // control, by escaping special RTF characters '\', '{' and '}'
   CString sRTF;
-  if (lpszText != NULL)
+  if (lpszText != nullptr)
   {
     while (*lpszText != '\0')
     {
       if (*lpszText == _T('\\') || *lpszText == _T('{') || *lpszText == _T('}'))
 	sRTF += _T('\\');
-      else if (*lpszText == _T('\r') && *(lpszText+1) == _T('\n') || 
+      else if (*lpszText == _T('\r') && *(lpszText+1) == _T('\n') ||
 	      (*lpszText == _T('\n') && *(lpszText+1) == _T('\r')))
       {
 	sRTF += _T("{\\par}");
@@ -219,12 +219,12 @@ CString CRichToolTipCtrl::MakeTextRTFSafe(LPCTSTR lpszText)
 /////////////////////////////////////////////////////////////////////////////
 // CRichToolTipCtrl message handlers
 
-int CRichToolTipCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct) 
+int CRichToolTipCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
   if (CToolTipCtrl::OnCreate(lpCreateStruct) == -1)
     return -1;
 
-  // set the max width to half of the screen width, and 
+  // set the max width to half of the screen width, and
   // force the ability to use CRLFs to make multi-line tips
   SetMaxTipWidth(::GetSystemMetrics(SM_CXSCREEN) / 2);
 
@@ -237,10 +237,10 @@ int CRichToolTipCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
   return 0;
 }
 
-BOOL CRichToolTipCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+BOOL CRichToolTipCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
   NMHDR* pnmhdr = (NMHDR*)lParam;
-  if (pnmhdr != NULL)
+  if (pnmhdr != nullptr)
   {
     if (pnmhdr->code == EN_REQUESTRESIZE)
     {
@@ -252,7 +252,7 @@ BOOL CRichToolTipCtrl::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
   return CToolTipCtrl::OnNotify(wParam, lParam, pResult);
 }
 
-// this code gets the minimium size for a rich edit control, and is 
+// this code gets the minimium size for a rich edit control, and is
 // taken from http://www.codeproject.com/richedit/richeditsize.asp
 CSize CRichToolTipCtrl::CalculateMinimiumRichEditSize()
 {
@@ -360,8 +360,8 @@ void CRichToolTipCtrl::OnShow(NMHDR* pNMHDR, LRESULT* pResult)
   // it just creeps over the right-hand edge
   // the best we can do to see if it has any right or centre text
   // is to see if the RTF contains "\qr" or "\qc" tags, and add a bit on
-  // (we don't cater for text having "\qr" or "\qc" somewhere in it; 
-  // in this case we add on the extra anyway. If we cared we could look for 
+  // (we don't cater for text having "\qr" or "\qc" somewhere in it;
+  // in this case we add on the extra anyway. If we cared we could look for
   // a "\qr" which is not really a "\\qr", but that could be quite expensive)
   int nPos = sText.Find(_T("\\q"));
   if (nPos >= 0 && (sText[nPos + 2] == _T('r') || sText[nPos + 2] == _T('c')))
@@ -384,7 +384,7 @@ void CRichToolTipCtrl::OnShow(NMHDR* pNMHDR, LRESULT* pResult)
   if (! rcDesktop.PtInRect(ptCursor))
   {
     HMONITOR hMonitor = MonitorFromPoint(ptCursor, MONITOR_DEFAULTTONEAREST);
-    if (hMonitor != NULL)
+    if (hMonitor != nullptr)
     {
       MONITORINFO mi;
       mi.cbSize = sizeof(MONITORINFO);
@@ -450,7 +450,7 @@ void CRichToolTipCtrl::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
       fr.rc = rc; // in twips
       fr.rcPage = fr.rc;
       m_edit.FormatRange(&fr, TRUE);
-      m_edit.FormatRange(NULL, FALSE);	// get the control to free its cached info
+      m_edit.FormatRange(nullptr, FALSE);	// get the control to free its cached info
       *pResult = CDRF_SKIPDEFAULT;  // we don't want the default drawing
     }
     break;

@@ -12,10 +12,10 @@
 
 IMPLEMENT_DYNAMIC(CDropFilesDlg, CDialog)
 
-CDropFilesDlg::CDropFilesDlg(CWnd* pParent /*=NULL*/)
+CDropFilesDlg::CDropFilesDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDropFilesDlg::IDD, pParent)
 {
-	m_hDropInfo = NULL;
+	m_hDropInfo = nullptr;
 	m_DropType  = PICTURETYPE_UNKNOWN;
 }
 
@@ -46,7 +46,7 @@ static void	GetFilesInFolder(LPCTSTR szFolder, std::vector<CString>	& vFiles)
 	WIN32_FIND_DATA			FindData;
 	CString					strFileMask;
 	HANDLE					hFindFiles;
-	
+
 	strFileMask = strFolder;
 	strFileMask += "\\*.*";
 
@@ -100,7 +100,7 @@ BOOL CDropFilesDlg::OnInitDialog()
 
 	if (m_hDropInfo)
 	{
-		lNrFiles = DragQueryFile(m_hDropInfo, 0xFFFFFFFF, NULL, 0);
+		lNrFiles = DragQueryFile(m_hDropInfo, 0xFFFFFFFF, nullptr, 0);
 		for (LONG i = 0;i<lNrFiles;i++)
 		{
 			TCHAR			szFile[1+_MAX_PATH];
@@ -110,7 +110,7 @@ BOOL CDropFilesDlg::OnInitDialog()
 
 			// If it's a folder, get all the files in the folder
 			DWORD			dwAttributes;
-			
+
 			dwAttributes = GetFileAttributes(szFile);
 
 			if (dwAttributes & FILE_ATTRIBUTE_DIRECTORY)
@@ -138,7 +138,7 @@ BOOL CDropFilesDlg::OnInitDialog()
 
 		DragFinish(m_hDropInfo);
 		if (!m_vFiles.size())
-			m_vFiles = vMasters;
+			m_vFiles = std::move(vMasters);
 		lNrFiles = (LONG)m_vFiles.size();
 	};
 

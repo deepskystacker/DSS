@@ -36,6 +36,9 @@ private :
 public :
 	CStarAxisInfo()
 	{
+        m_lAngle = 0;
+        m_fRadius = 0;
+        m_fSum = 0;
 	};
 
 	CStarAxisInfo(const CStarAxisInfo & ai)
@@ -47,7 +50,7 @@ public :
 	{
 	};
 
-	const CStarAxisInfo & operator = (const CStarAxisInfo & ai) 
+	const CStarAxisInfo & operator = (const CStarAxisInfo & ai)
 	{
 		CopyFrom(ai);
 		return *this;
@@ -326,11 +329,13 @@ public :
 	double			fIntensity;
 
 public :
-	CPixelDirections() 
+	CPixelDirections()
 	{
 		bBrighterPixel = FALSE;
 		bMainOk		   = TRUE;
 		fMaxRadius	   = 0;
+        m_fBackground  = 0;
+        fIntensity     = 0;
 	};
 	BOOL	FillPixelDirection(double fX, double fY, CGrayBitmap & Bitmap, std::vector<CPixelDirection> & vPixels)
 	{
@@ -469,14 +474,14 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 							// Search around the point until intensity is divided by 2
 							// STARMAXSIZE pixels radius max search
 							vPixels.resize(0);
-							vPixels.push_back(CPixelDirection(0, -1));
-							vPixels.push_back(CPixelDirection(1, 0));
-							vPixels.push_back(CPixelDirection(0, 1));
-							vPixels.push_back(CPixelDirection(-1, 0));
-							vPixels.push_back(CPixelDirection(1, -1));
-							vPixels.push_back(CPixelDirection(1, 1));
-							vPixels.push_back(CPixelDirection(-1, 1));
-							vPixels.push_back(CPixelDirection(-1, -1));
+							vPixels.emplace_back(0, -1);
+							vPixels.emplace_back(1, 0);
+							vPixels.emplace_back(0, 1);
+							vPixels.emplace_back(-1, 0);
+							vPixels.emplace_back(1, -1);
+							vPixels.emplace_back(1, 1);
+							vPixels.emplace_back(-1, 1);
+							vPixels.emplace_back(-1, -1);
 
 							BOOL			bBrighterPixel = FALSE;
 							BOOL			bMainOk = TRUE;
@@ -523,7 +528,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 								};
 							};
 
-							// Check the roundness of the wanabee star 
+							// Check the roundness of the wanabee star
 							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2))
 							{
 								// Radiuses should be within fDeltaRadius pixels of each others
@@ -534,7 +539,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 								LONG			k1, k2;
 								double			fMeanRadius1 = 0.0,
 												fMeanRadius2 = 0.0;
-								
+
 								for (k1 = 0;(k1 <4) && bWanabeeStarOk;k1++)
 								{
 									for (k2 = 0;(k2 < 4) && bWanabeeStarOk;k2++)
@@ -676,7 +681,7 @@ BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 			fprintf(hFile, "MeanRadius = %.2f\n",  m_vStars[i].m_fMeanRadius);
 			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n", m_vStars[i].m_rcStar.left, m_vStars[i].m_rcStar.top, m_vStars[i].m_rcStar.right, m_vStars[i].m_rcStar.bottom);
 			fprintf(hFile, "Center = %.2f, %.2f\n", m_vStars[i].m_fX, m_vStars[i].m_fY);
-			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle, 
+			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle,
 																	  m_vStars[i].m_fLargeMajorAxis,
 																	  m_vStars[i].m_fSmallMajorAxis,
 																	  m_vStars[i].m_fLargeMinorAxis,
@@ -741,7 +746,7 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		CString			strValue;
 		LONG			lNrStars = 0;
 		BOOL			bEnd = FALSE;
-		
+
 		m_bComet = FALSE;
 
 		// Read overall quality
@@ -866,7 +871,7 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strParams.TrimRight();
 					ms.m_fLargeMajorAxis = _ttof(strParams);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
-					// get Small Major 
+					// get Small Major
 					nPos = strValue.Find(_T(","));
 					strParams = strValue.Left(nPos);
 					strParams.TrimLeft();
@@ -1032,6 +1037,7 @@ public :
 public :
 	CComputeLuminanceTask()
 	{
+        m_pProgress = nullptr;
 	};
 
 	virtual ~CComputeLuminanceTask()
@@ -1062,9 +1068,9 @@ BOOL	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 	LONG				lWidth = m_pBitmap->Width();
 
 	// Create a message queue and signal the event
-	PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE);
+	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, NULL, 0, 0))
+	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
@@ -1103,19 +1109,19 @@ BOOL	CComputeLuminanceTask::Process()
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
-	bResult = TRUE;
+
 	while (i<lHeight)
 	{
 		LONG			lAdd = min(lStep, lRemaining);
 		DWORD			dwThreadId;
-		
+
 		dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
 		i			+=lAdd;
 		lRemaining	-= lAdd;
 		if (m_pProgress)
-			m_pProgress->Progress2(NULL, i);
+			m_pProgress->Progress2(nullptr, i);
 	};
 
 	CloseAllThreads();
@@ -1374,7 +1380,7 @@ void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, BO
 
 	RegisterPicture();
 
-	m_pProgress = NULL;
+	m_pProgress = nullptr;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1430,7 +1436,7 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(lfi.m_strFileName, szDrive, szDir, szName, NULL);
+		_tsplitpath(lfi.m_strFileName, szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1506,7 +1512,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 
 	for (i = 0;i<tasks.m_vStacks.size();i++)
 	{
-		CStackingInfo *		pStackingInfo = NULL;
+		CStackingInfo *		pStackingInfo = nullptr;
 
 		if (tasks.m_vStacks[i].m_pLightTask)
 			pStackingInfo = &(tasks.m_vStacks[i]);
@@ -1526,7 +1532,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 
 	for (i = 0;i<tasks.m_vStacks.size() && bResult;i++)
 	{
-		CStackingInfo *		pStackingInfo = NULL;
+		CStackingInfo *		pStackingInfo = nullptr;
 
 		if (tasks.m_vStacks[i].m_pLightTask)
 			pStackingInfo = &(tasks.m_vStacks[i]);
@@ -1547,7 +1553,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 				lfi.SetProgress(pProgress);
 				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName, FALSE, FALSE);
 				lNrRegistered++;
-				
+
 				if (pProgress)
 				{
 					strText.Format(IDS_REGISTERINGPICTURE, lNrRegistered, lTotalRegistered);
@@ -1576,7 +1582,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 						if (::LoadPicture(lfi.m_strFileName, &pBitmap, pProgress))
 						{
 							// Apply offset, dark and flat to lightframe
-							MasterFrames.ApplyAllMasters(pBitmap, NULL, pProgress);
+							MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
 
 							CString				strCalibratedFile;
 
@@ -1597,7 +1603,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 								TCHAR				szDir[1+_MAX_DIR];
 								TCHAR				szFile[1+_MAX_FNAME];
 
-								_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, NULL);
+								_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
 								strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
 								lfi.CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
 							};
@@ -1608,7 +1614,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 							pProgress->End2();
 							bResult = !pProgress->IsCanceled();
 						};
-					};			
+					};
 				};
 			};
 		};

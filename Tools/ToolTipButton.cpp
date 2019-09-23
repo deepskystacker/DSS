@@ -36,14 +36,14 @@ void CToolTipButton::SetToolTipText(LPCTSTR szText, BOOL bActivate)
 {
 	m_strTooltip = szText;
 
-	// We cannot accept NULL pointer
+	// We cannot accept nullptr pointer
 	// Initialize ToolTip
 	InitToolTip();
 
 	// If there is no tooltip defined then add it
 	if (m_ToolTip.GetToolCount() == 0)
 	{
-		CRect rectBtn; 
+		CRect rectBtn;
 		GetClientRect(rectBtn);
 		m_ToolTip.AddTool(this, (LPCTSTR)m_strTooltip, rectBtn, 1);
 	}
@@ -55,7 +55,7 @@ void CToolTipButton::SetToolTipText(LPCTSTR szText, BOOL bActivate)
 
 void CToolTipButton::InitToolTip()
 {
-	if (m_ToolTip.m_hWnd == NULL)
+	if (m_ToolTip.m_hWnd == nullptr)
 	{
 		// Create ToolTip control
 		m_ToolTip.Create(this);
@@ -65,11 +65,11 @@ void CToolTipButton::InitToolTip()
 } // End of InitToolTip
 
 
-BOOL CToolTipButton::PreTranslateMessage(MSG* pMsg) 
+BOOL CToolTipButton::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
 	InitToolTip();
-	m_ToolTip.RelayEvent(pMsg);		
+	m_ToolTip.RelayEvent(pMsg);
 	return baseCToolTipButton::PreTranslateMessage(pMsg);
 }
 

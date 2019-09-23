@@ -26,6 +26,9 @@ CRGBTab::CRGBTab() : CChildPropertyPage(CRGBTab::IDD)
 	//}}AFX_DATA_INIT
 	m_psp.dwFlags |= PSP_PREMATURE;
 	m_bFirstActivation = TRUE;
+    m_RedAdjustMethod = HISTOADJUSTTYPE(0);
+    m_GreenAdjustMethod = HISTOADJUSTTYPE(0);
+    m_BlueAdjustMethod = HISTOADJUSTTYPE(0);
 }
 
 CRGBTab::~CRGBTab()
@@ -77,7 +80,7 @@ END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CRGBTab::OnSetActive() 
+BOOL CRGBTab::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
@@ -124,7 +127,7 @@ BOOL CRGBTab::OnSetActive()
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnReset() 
+void CRGBTab::OnReset()
 {
 	GetParentProcessingDlg(this)->OnReset();
 }
@@ -231,28 +234,28 @@ void CRGBTab::OnNotifyBluePegMoved(NMHDR * pNotifyStruct, LRESULT *result)
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnProcess() 
+void CRGBTab::OnProcess()
 {
 	GetParentProcessingDlg(this)->OnProcess();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnUndo() 
+void CRGBTab::OnUndo()
 {
 	GetParentProcessingDlg(this)->OnUndo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnRedo() 
+void CRGBTab::OnRedo()
 {
 	GetParentProcessingDlg(this)->OnRedo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnSettings() 
+void CRGBTab::OnSettings()
 {
 	GetParentProcessingDlg(this)->OnSettings();
 }
@@ -287,17 +290,17 @@ static void PopulateHistoAdjustMenu(CMenu & menu)
 	menu.AppendMenu(MF_STRING, HAT_ASINH, strText);
 };
 
-void CRGBTab::OnRedHat() 
+void CRGBTab::OnRedHat()
 {
 	CMenu				menu;
 	CRect				rcButton;
 	int					nAction;
 
 	m_RedHAT.GetWindowRect(&rcButton);
-	
+
 	PopulateHistoAdjustMenu(menu);
 
-	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), NULL);
+	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), nullptr);
 	if (nAction > 0)
 	{
 		HISTOADJUSTTYPE		hat = (HISTOADJUSTTYPE)nAction;
@@ -314,17 +317,17 @@ void CRGBTab::OnRedHat()
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnGreenHat() 
+void CRGBTab::OnGreenHat()
 {
 	CMenu				menu;
 	CRect				rcButton;
 	int					nAction;
 
 	m_GreenHAT.GetWindowRect(&rcButton);
-	
+
 	PopulateHistoAdjustMenu(menu);
 
-	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), NULL);
+	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), nullptr);
 	if (nAction > 0)
 	{
 		HISTOADJUSTTYPE		hat = (HISTOADJUSTTYPE)nAction;
@@ -341,21 +344,21 @@ void CRGBTab::OnGreenHat()
 
 /* ------------------------------------------------------------------- */
 
-void CRGBTab::OnBlueHat() 
+void CRGBTab::OnBlueHat()
 {
 	CMenu				menu;
 	CRect				rcButton;
 	int					nAction;
 
 	m_BlueHAT.GetWindowRect(&rcButton);
-	
+
 	PopulateHistoAdjustMenu(menu);
 
-	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), NULL);
+	nAction = TrackPopupMenuEx(menu.GetSafeHmenu(), TPM_RETURNCMD | TPM_NONOTIFY | TPM_LEFTALIGN, rcButton.right, rcButton.top, GetSafeHwnd(), nullptr);
 	if (nAction > 0)
 	{
 		HISTOADJUSTTYPE		hat = (HISTOADJUSTTYPE)nAction;
-		
+
 		SetBlueAdjustMethod(hat);
 		if (m_LinkSettings.GetCheck())
 		{

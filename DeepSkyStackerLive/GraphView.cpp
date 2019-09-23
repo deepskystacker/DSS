@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(CGraphViewTab, CDialog)
 
-CGraphViewTab::CGraphViewTab(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+CGraphViewTab::CGraphViewTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CGraphViewTab::IDD, pParent),
 	m_bDarkMode(bDarkMode),
 	m_Graph(bDarkMode)
@@ -181,7 +181,7 @@ BOOL CGraphViewTab::OnInitDialog()
 
 	ChangeVisibleGraph();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */

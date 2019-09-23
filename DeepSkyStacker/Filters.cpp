@@ -14,7 +14,7 @@ inline double	GetMedianPosition(std::vector<double> & vValues, double fValue)
 
 	if (fdValue>0)
 	{
-		fResult = fdValue/fValue;	
+		fResult = fdValue/fValue;
 	}
 	else if (fdValue<0)
 	{
@@ -53,7 +53,7 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bC
 	{
 		for (LONG i = 1;i<lWidth-1;i++)
 		{
-			double				fPosition;
+			double				fPosition = 0;
 			if (bMonochrome)
 			{
 				double			fGray;
@@ -102,7 +102,7 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bC
 			{
 				if ((fPosition>m_fHotThreshold) || // Hot pixel
 					(-fPosition>m_fColdThreshold)) // Cold pixel
-					m_vExcludedPixels.push_back(CExcludedPixel(i, j));
+					m_vExcludedPixels.emplace_back(i, j);
 			};
 		};
 	};
@@ -112,7 +112,7 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bC
 		LONG	lNrPixels = lWidth*lHeight;
 		LONG	lNrRejectedHotPixels = lNrPixels * m_fRejectHotThreshold;
 		LONG	lNrRejectedColdPixels = lNrPixels * m_fRejectColdThreshold;
-		
+
 		LONG	lThreshold;
 
 		lThreshold = 1000;
@@ -379,7 +379,7 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 	CSmartPtr<CMemoryBitmap>		pOutBitmap;
 
 	if (ppOutBitmap)
-		*ppOutBitmap = NULL;
+		*ppOutBitmap = nullptr;
 
 	if (pInBitmap)
 	{
@@ -390,7 +390,7 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 		pOutBitmap.Attach(pInBitmap->Clone());
 
 		if (pProgress)
-			pProgress->Start2(NULL, lWidth);
+			pProgress->Start2(nullptr, lWidth);
 
 		for (LONG i  =0;i<lWidth;i++)
 		{
@@ -413,11 +413,11 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 					std::vector<double>		vRedValues;
 					std::vector<double>		vGreenValues;
 					std::vector<double>		vBlueValues;
-					double					fRed, 
-											fGreen, 
+					double					fRed,
+											fGreen,
 											fBlue,
-											fRedMedian, 
-											fGreenMedian, 
+											fRedMedian,
+											fGreenMedian,
 											fBlueMedian;
 
 					m_pInBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
@@ -436,7 +436,7 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 				};
 			};
 			if (pProgress)
-				pProgress->Progress2(NULL, i+1);
+				pProgress->Progress2(nullptr, i+1);
 		};
 
 		if (pProgress)

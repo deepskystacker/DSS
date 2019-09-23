@@ -13,15 +13,15 @@ private :
 	void	CopyBitmap(CMemoryBitmap * pSrcBitmap, CMemoryBitmap * pTgtBitmap);
 
 public:
-	
+
 	CChannelAlign()
 	{
-		
+
 	}
 
 	~CChannelAlign()
 	{
-		
+
 	}
 
 	BOOL	AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);

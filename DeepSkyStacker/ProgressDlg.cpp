@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 // CProgressDlg dialog
 
 
-CProgressDlg::CProgressDlg(CWnd* pParent /*=NULL*/)
+CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CProgressDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CProgressDlg)
@@ -49,13 +49,13 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CProgressDlg message handlers
 
-void CProgressDlg::OnCancel() 
+void CProgressDlg::OnCancel()
 {
 	m_bCancelled	= TRUE;
 	//CDialog::OnCancel();
 }
 
-void CProgressDlg::OnStop() 
+void CProgressDlg::OnStop()
 {
 	m_bCancelled	= TRUE;
 	m_Cancel.EnableWindow(FALSE);

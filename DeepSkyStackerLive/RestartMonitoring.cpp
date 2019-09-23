@@ -14,9 +14,11 @@
 
 /* ------------------------------------------------------------------- */
 
-CRestartMonitoring::CRestartMonitoring(CWnd* pParent /*=NULL*/)
+CRestartMonitoring::CRestartMonitoring(CWnd* pParent /*=nullptr*/)
 	: CDialog(CRestartMonitoring::IDD, pParent)
 {
+    m_bClearStacked = false;
+    m_bDropPending = false;
 }
 
 /* ------------------------------------------------------------------- */

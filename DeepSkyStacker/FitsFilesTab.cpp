@@ -23,270 +23,270 @@ static void	FillDSLRList(std::vector<CDSLR> & vDSLRs)
 	CString				strValue;
 
 	strValue.LoadString(IDS_GENERIC_RGGB);
-	vDSLRs.push_back(CDSLR(strValue, CFATYPE_RGGB));
+	vDSLRs.emplace_back(strValue, CFATYPE_RGGB);
 	strValue.LoadString(IDS_GENERIC_BGGR);
-	vDSLRs.push_back(CDSLR(strValue, CFATYPE_BGGR));
+	vDSLRs.emplace_back(strValue, CFATYPE_BGGR);
 	strValue.LoadString(IDS_GENERIC_GBRG);
-	vDSLRs.push_back(CDSLR(strValue, CFATYPE_GBRG));
+	vDSLRs.emplace_back(strValue, CFATYPE_GBRG);
 	strValue.LoadString(IDS_GENERIC_GRBG);
-	vDSLRs.push_back(CDSLR(strValue, CFATYPE_GRBG));
+	vDSLRs.emplace_back(strValue, CFATYPE_GRBG);
 
 	strValue.LoadString(IDS_GENERIC);
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (01)",CFATYPE_CYGMCYMG));
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (02)",CFATYPE_GMCYMGCY));
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (03)",CFATYPE_CYMGCYGM));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (04)",CFATYPE_MGCYGMCY));	//*
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (05)",CFATYPE_GMYCGMCY));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (06)",CFATYPE_YCGMCYGM));	//*
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (07)",CFATYPE_GMCYGMYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (08)",CFATYPE_CYGMYCGM));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (09)",CFATYPE_YCGMYCMG));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (10)",CFATYPE_GMYCMGYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (11)",CFATYPE_YCMGYCGM));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (12)",CFATYPE_MGYCGMYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (13)",CFATYPE_MGYCMGCY));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (14)",CFATYPE_YCMGCYMG));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (15)",CFATYPE_MGCYMGYC));	
-	vDSLRs.push_back(CDSLR(strValue+" CYMG (16)",CFATYPE_CYMGYCMG));	
+	vDSLRs.emplace_back(strValue+" CYMG (01)",CFATYPE_CYGMCYMG);
+	vDSLRs.emplace_back(strValue+" CYMG (02)",CFATYPE_GMCYMGCY);
+	vDSLRs.emplace_back(strValue+" CYMG (03)",CFATYPE_CYMGCYGM);
+	vDSLRs.emplace_back(strValue+" CYMG (04)",CFATYPE_MGCYGMCY);	//*
+	vDSLRs.emplace_back(strValue+" CYMG (05)",CFATYPE_GMYCGMCY);
+	vDSLRs.emplace_back(strValue+" CYMG (06)",CFATYPE_YCGMCYGM);	//*
+	vDSLRs.emplace_back(strValue+" CYMG (07)",CFATYPE_GMCYGMYC);
+	vDSLRs.emplace_back(strValue+" CYMG (08)",CFATYPE_CYGMYCGM);
+	vDSLRs.emplace_back(strValue+" CYMG (09)",CFATYPE_YCGMYCMG);
+	vDSLRs.emplace_back(strValue+" CYMG (10)",CFATYPE_GMYCMGYC);
+	vDSLRs.emplace_back(strValue+" CYMG (11)",CFATYPE_YCMGYCGM);
+	vDSLRs.emplace_back(strValue+" CYMG (12)",CFATYPE_MGYCGMYC);
+	vDSLRs.emplace_back(strValue+" CYMG (13)",CFATYPE_MGYCMGCY);
+	vDSLRs.emplace_back(strValue+" CYMG (14)",CFATYPE_YCMGCYMG);
+	vDSLRs.emplace_back(strValue+" CYMG (15)",CFATYPE_MGCYMGYC);
+	vDSLRs.emplace_back(strValue+" CYMG (16)",CFATYPE_CYMGYCMG);
 
-	vDSLRs.push_back(CDSLR(_T("AVT F-145C"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("AVT F-201C"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("AVT F-510C"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("AVT F-810C"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO EX-P505"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO EX-P600"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO EX-P700"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO EX-S100"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO EX-Z50"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO EX-Z55"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO QV-2000UX"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO QV-3*00EX"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO QV-4000"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO QV-5700"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("CASIO QV-R51"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 10D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 20D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 300D DIGITAL"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 30D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 350D DIGITAL"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 40D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 400D DIGITAL"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 50D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 5D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS 5D Mk II"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS D2000C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS D30"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS D60"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS DIGITAL REBEL"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS DIGITAL REBEL XT"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS DIGITAL REBEL XTi"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS Kiss Digital"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS Kiss Digital N"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS-1D"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS-1D Mark II"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS-1D Mark II N"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS-1DS"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Canon EOS-1Ds Mark II"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot G2"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot G3"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot G5"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot G6"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot Pro1"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot S30"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot S40"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot S45"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot S50"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot S60"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Canon PowerShot S70"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Contax N Digital"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Creative PC-CAM 600"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("EPSON R-D1"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("EPSON R-D1s"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix E550"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix E900"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix F700"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix F710"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S20Pro"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S2Pro"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S3Pro"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S5000"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S5100"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S5200"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S5600"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S7000"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("FUJIFILM FinePix S9500"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Foculus 531C"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("ISG 2020x1520"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Imacon Ixpress 16-Mp"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Imacon Ixpress 22-Mp"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Imacon Ixpress 22-Mp"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Imacon Ixpress 39-Mp"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("KODAK DCS420"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("KODAK DCS460"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("KODAK EOSDCS1"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("KODAK EOSDCS3B"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("KODAK NC2000F"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("KODAK NC2000G"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("KODAK P850 ZOOM"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("KODAK P880 ZOOM"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Kodak DC120"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DC40"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DC50"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS Pro 14N"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS Pro 14n"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS Pro 14nx"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS Pro SLR/c"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS Pro SLR/n"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS315C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS330C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS520C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS560C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS620C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS620X"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS660C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS720X"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak DCS760C"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak KAI-0340"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Kodak ProBack"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Kodak ProBack645"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Konica KD-400Z"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Konica KD-510Z"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("LEICA D-LUX2"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("LEICA DIGILUX 2"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Leaf Aptus 17"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Leaf Aptus 22"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Aptus 65"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Aptus 75"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Aptus 75"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Leaf CMost"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Cantare"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 11"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 11"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 11"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 11"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 17"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 22"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 22"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 22"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 6"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Leaf Valeo 6"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Leica Camera AG R8 - Digital Back DMR DNG"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Logitech Fotoman Pixtura"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Meade DSI Color"),CFATYPE_CYGMCYMG));
-	vDSLRs.push_back(CDSLR(_T("Micron 2010"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("MINOLTA ALPHA-7 DIGITAL"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("MINOLTA DYNAX 5D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("MINOLTA DYNAX 7D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("MINOLTA DiMAGE A200"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("MINOLTA DiMAGE G400"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("MINOLTA DiMAGE G530"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE 5"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE 7"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE 7Hi"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE A1"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE A2"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE G500"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE G600"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE Z2 DNG"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Minolta DiMAGE Z2"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Minolta RD175"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("NIKON D1"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON D100"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("NIKON D1H"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON D1X"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON D200"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("NIKON D2H"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("NIKON D2Hs"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("NIKON D2X"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("NIKON D2Xs"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("NIKON D50"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON D70"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON D70s"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON D80"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("NIKON E2100"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("NIKON E3700"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("NIKON E4300"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON E5400"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON E8400"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON E8700"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("NIKON E8800"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Nucore BMQ"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Nucore BMQ"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Nucore RAW"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS C5050Z"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS C5060WZ"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS C7070WZ"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS C70Z,C7000Z"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS C740UZ"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS C770UZ"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS C8080WZ"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS E-1"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS E-10"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS E-20,E-20N,E-20P"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS E-300"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS E-330"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS E-400"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS E-500"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS SP350"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Orion StarShoot Deep-Space"),CFATYPE_CYGMCYMG));
-	vDSLRs.push_back(CDSLR(_T("PENTAX *ist D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX *ist DL"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX *ist DS"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX K100D DNG"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX K100D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX K10D"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX Optio 33WR"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("PENTAX Optio S"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX Optio S4"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("PENTAX Optio S4i"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Panasonic DMC-FZ30"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Panasonic DMC-FZ50"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Panasonic DMC-FZ50"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Panasonic DMC-LC1"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Panasonic DMC-LX1"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Panasonic DMC-LX2"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("Panasonic DMC-LX2"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One H 10"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One H 20"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One H 25"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One LightPhase"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One P 20"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One P 25"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One P 30"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Phase One P 45"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Pixelink A782"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("QHY8 CCD Camera"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("RICOH GR Digital DNG"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Rollei d530flex"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("RoverShot 3320AF"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("SAMSUNG GX-1S"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SAMSUNG Pro 815 DNG"),CFATYPE_GBRG));
-	vDSLRs.push_back(CDSLR(_T("SBIG ST-2000XCM"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("SBIG ST-2001XCM"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("SI0 SI1 DNG"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("SI0 SI1 DNG"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("SI0 SI1 DNG"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SMaL v6 1288x1024"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SMaL v6 643x482"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SMaL v9 1284x864"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SMaL v9 1288x864"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SMaL v9 1632x1220"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SMaL v9 2032x1520"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SMaL v9 816x612"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SONY DSC-R1"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("SONY DSC-V3"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("SONY DSLR-A100"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("ST Micro STV680 VGA"),CFATYPE_BGGR));
-	vDSLRs.push_back(CDSLR(_T("Sarnoff 4096x5440"),CFATYPE_RGGB));
-	vDSLRs.push_back(CDSLR(_T("Sinar 3072x2048"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Sinar 4080x4080"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Sinar 4080x5440"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Sinar Sinarback 54 M, Hasselblad"),CFATYPE_GRBG));
-	vDSLRs.push_back(CDSLR(_T("Sony XCD-SX910CR"),CFATYPE_GBRG));
+	vDSLRs.emplace_back(_T("AVT F-145C"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("AVT F-201C"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("AVT F-510C"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("AVT F-810C"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO EX-P505"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO EX-P600"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO EX-P700"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO EX-S100"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO EX-Z50"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO EX-Z55"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO QV-2000UX"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO QV-3*00EX"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO QV-4000"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO QV-5700"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("CASIO QV-R51"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 10D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 20D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 300D DIGITAL"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 30D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 350D DIGITAL"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 40D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 400D DIGITAL"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 50D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 5D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS 5D Mk II"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS D2000C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Canon EOS D30"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS D60"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS DIGITAL REBEL"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS DIGITAL REBEL XT"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS DIGITAL REBEL XTi"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS Kiss Digital"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS Kiss Digital N"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS-1D"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Canon EOS-1D Mark II"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS-1D Mark II N"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon EOS-1DS"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Canon EOS-1Ds Mark II"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot G2"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot G3"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot G5"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot G6"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot Pro1"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot S30"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot S40"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot S45"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot S50"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot S60"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Canon PowerShot S70"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Contax N Digital"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Creative PC-CAM 600"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("EPSON R-D1"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("EPSON R-D1s"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix E550"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix E900"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix F700"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix F710"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S20Pro"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S2Pro"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S3Pro"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S5000"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S5100"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S5200"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S5600"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S7000"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("FUJIFILM FinePix S9500"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Foculus 531C"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("ISG 2020x1520"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Imacon Ixpress 16-Mp"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Imacon Ixpress 22-Mp"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Imacon Ixpress 22-Mp"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Imacon Ixpress 39-Mp"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("KODAK DCS420"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("KODAK DCS460"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("KODAK EOSDCS1"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("KODAK EOSDCS3B"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("KODAK NC2000F"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("KODAK NC2000G"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("KODAK P850 ZOOM"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("KODAK P880 ZOOM"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Kodak DC120"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DC40"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DC50"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS Pro 14N"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS Pro 14n"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS Pro 14nx"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS Pro SLR/c"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS Pro SLR/n"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS315C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS330C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS520C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS560C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS620C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS620X"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS660C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS720X"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak DCS760C"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak KAI-0340"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Kodak ProBack"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Kodak ProBack645"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Konica KD-400Z"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Konica KD-510Z"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("LEICA D-LUX2"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("LEICA DIGILUX 2"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Leaf Aptus 17"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Leaf Aptus 22"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Leaf Aptus 65"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Leaf Aptus 75"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Leaf Aptus 75"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Leaf CMost"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Leaf Cantare"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Leaf Valeo 11"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Leaf Valeo 11"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Leaf Valeo 11"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Leaf Valeo 11"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Leaf Valeo 17"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Leaf Valeo 22"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Leaf Valeo 22"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Leaf Valeo 22"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Leaf Valeo 6"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Leaf Valeo 6"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Leica Camera AG R8 - Digital Back DMR DNG"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Logitech Fotoman Pixtura"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Meade DSI Color"),CFATYPE_CYGMCYMG);
+	vDSLRs.emplace_back(_T("Micron 2010"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("MINOLTA ALPHA-7 DIGITAL"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("MINOLTA DYNAX 5D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("MINOLTA DYNAX 7D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("MINOLTA DiMAGE A200"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("MINOLTA DiMAGE G400"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("MINOLTA DiMAGE G530"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE 5"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE 7"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE 7Hi"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE A1"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE A2"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE G500"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE G600"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE Z2 DNG"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Minolta DiMAGE Z2"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Minolta RD175"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("NIKON D1"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON D100"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("NIKON D1H"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON D1X"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON D200"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("NIKON D2H"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("NIKON D2Hs"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("NIKON D2X"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("NIKON D2Xs"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("NIKON D50"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON D70"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON D70s"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON D80"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("NIKON E2100"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("NIKON E3700"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("NIKON E4300"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON E5400"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON E8400"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON E8700"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("NIKON E8800"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Nucore BMQ"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Nucore BMQ"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Nucore RAW"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("OLYMPUS C5050Z"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("OLYMPUS C5060WZ"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS C7070WZ"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS C70Z,C7000Z"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS C740UZ"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS C770UZ"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("OLYMPUS C8080WZ"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("OLYMPUS E-1"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("OLYMPUS E-10"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS E-20,E-20N,E-20P"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS E-300"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS E-330"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS E-400"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("OLYMPUS E-500"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS SP350"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("OLYMPUS SP500UZ"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Orion StarShoot Deep-Space"),CFATYPE_CYGMCYMG);
+	vDSLRs.emplace_back(_T("PENTAX *ist D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX *ist DL"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX *ist DS"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX K100D DNG"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX K100D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX K10D"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX Optio 33WR"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("PENTAX Optio S"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX Optio S4"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("PENTAX Optio S4i"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Panasonic DMC-FZ30"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Panasonic DMC-FZ50"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Panasonic DMC-FZ50"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Panasonic DMC-LC1"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Panasonic DMC-LX1"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Panasonic DMC-LX2"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("Panasonic DMC-LX2"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One H 10"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One H 20"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One H 25"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One LightPhase"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One P 20"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One P 25"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One P 30"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Phase One P 45"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Pixelink A782"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("QHY8 CCD Camera"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("RICOH GR Digital DNG"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Rollei d530flex"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("RoverShot 3320AF"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("SAMSUNG GX-1S"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SAMSUNG Pro 815 DNG"),CFATYPE_GBRG);
+	vDSLRs.emplace_back(_T("SBIG ST-2000XCM"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("SBIG ST-2001XCM"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("SI0 SI1 DNG"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("SI0 SI1 DNG"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("SI0 SI1 DNG"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SMaL v6 1288x1024"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SMaL v6 643x482"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SMaL v9 1284x864"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SMaL v9 1288x864"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SMaL v9 1632x1220"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SMaL v9 2032x1520"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SMaL v9 816x612"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SONY DSC-R1"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("SONY DSC-V3"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("SONY DSLR-A100"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("ST Micro STV680 VGA"),CFATYPE_BGGR);
+	vDSLRs.emplace_back(_T("Sarnoff 4096x5440"),CFATYPE_RGGB);
+	vDSLRs.emplace_back(_T("Sinar 3072x2048"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Sinar 4080x4080"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Sinar 4080x5440"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Sinar Sinarback 54 M, Hasselblad"),CFATYPE_GRBG);
+	vDSLRs.emplace_back(_T("Sony XCD-SX910CR"),CFATYPE_GBRG);
 };
 
 /* ------------------------------------------------------------------- */
@@ -379,7 +379,7 @@ void CFitsFilesTab::UpdateControls()
 	if (lIndice >= 0 && lIndice < m_vDSLRs.size())
 	{
 		BOOL		bCYMG;
-		
+
 		bCYMG = ::IsCYMGType(m_vDSLRs[lIndice].m_CFAType);
 
 		m_Brightness.EnableWindow(!bCYMG);
@@ -466,7 +466,7 @@ void CFitsFilesTab::UpdateBayerPattern()
 /////////////////////////////////////////////////////////////////////////////
 // CFitsFilesTab message handlers
 
-BOOL CFitsFilesTab::OnSetActive() 
+BOOL CFitsFilesTab::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
@@ -487,7 +487,7 @@ BOOL CFitsFilesTab::OnSetActive()
 		if (!strValue.GetLength())
 			strValue = _T("1.0");
 		m_Brightness.SetWindowText(strValue);
-		
+
 		strValue.Empty();
 		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), strValue);
 		if (!strValue.GetLength())
@@ -553,7 +553,7 @@ void CFitsFilesTab::SaveValues()
 
 		m_Brightness.GetWindowText(strValue);
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), strValue);
-		
+
 		m_RedScale.GetWindowText(strValue);
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), strValue);
 
@@ -589,28 +589,28 @@ void CFitsFilesTab::SaveValues()
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnChangeBluescale() 
+void CFitsFilesTab::OnChangeBluescale()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnChangeBrightness() 
+void CFitsFilesTab::OnChangeBrightness()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnChangeRedscale() 
+void CFitsFilesTab::OnChangeRedscale()
 {
-	UpdateControls();	
+	UpdateControls();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CFitsFilesTab::OnBilinear() 
+void CFitsFilesTab::OnBilinear()
 {
 	m_RawBayer.SetCheck(FALSE);
 	m_SuperPixels.SetCheck(FALSE);

@@ -13,7 +13,7 @@ public :
 	float			m_fX,
 					m_fY;
 	BYTE			m_Star1,
-					m_Star2, 
+					m_Star2,
 					m_Star3;
 
 private :
@@ -27,9 +27,14 @@ private :
 	};
 
 public :
-	CStarTriangle()
-	{
-	};
+    CStarTriangle()
+    {
+        m_fX = 0;
+        m_fY = 0;
+        m_Star1 = 0;
+        m_Star2 = 0;
+        m_Star3 = 0;
+    }
 
 	CStarTriangle(BYTE Star1, BYTE Star2, BYTE Star3, float fX, float fY)
 	{
@@ -175,7 +180,7 @@ public :
 			return true;
 		else if (m_Star1 > sd.m_Star1)
 			return false;
-		else 
+		else
 			return (m_Star2 < sd.m_Star2);
 	};
 };
@@ -372,12 +377,12 @@ public :
 
 	void	AddReferenceStar(double fX, double fY)
 	{
-		m_vRefStars.push_back(CPointExt(fX, fY));
+		m_vRefStars.emplace_back(fX, fY);
 	};
 
 	void	AddTargetedStar(double fX, double fY)
 	{
-		m_vTgtStars.push_back(CPointExt(fX, fY));
+		m_vTgtStars.emplace_back(fX, fY);
 	};
 
 	BOOL	IsReferenceSet()

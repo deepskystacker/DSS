@@ -57,7 +57,7 @@ BOOL CRegisterSettings_Actions::OnSetActive()
 
 /* ------------------------------------------------------------------- */
 
-void CRegisterSettings_Actions::OnStack() 
+void CRegisterSettings_Actions::OnStack()
 {
 	m_Percent.EnableWindow(m_Stack.GetCheck());
 }

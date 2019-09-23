@@ -56,7 +56,7 @@ END_MESSAGE_MAP()
 void CAlignmentParameters::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	
+
 	if (m_Automatic.GetCheck())
 		m_Alignment = 0;
 	else if (m_Bilinear.GetCheck())

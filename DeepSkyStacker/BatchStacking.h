@@ -15,7 +15,7 @@ private :
 
 // Construction
 public:
-	CBatchStacking(CWnd* pParent = NULL);   // standard constructor
+	CBatchStacking(CWnd* pParent = nullptr);   // standard constructor
 	void	SetMRUList(const CMRUList & MRUList)
 	{
 		m_MRUList = MRUList;

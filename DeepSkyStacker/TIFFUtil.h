@@ -27,9 +27,9 @@ class CTIFFHeader
 {
 protected :
 	int					w, h;
-    uint16				spp, 
-						bpp, 
-						photo, 
+    uint16				spp,
+						bpp,
+						photo,
 						compression,
 						planarconfig,
 						sampleformat;
@@ -47,12 +47,12 @@ protected :
 	SYSTEMTIME			m_DateTime;
 
 public :
-	CTIFFHeader() 
+	CTIFFHeader()
 	{
-		TIFFSetWarningHandler(NULL);
-		TIFFSetWarningHandlerExt(NULL);
-		TIFFSetErrorHandler(NULL);
-		TIFFSetErrorHandlerExt(NULL);
+		TIFFSetWarningHandler(nullptr);
+		TIFFSetWarningHandlerExt(nullptr);
+		TIFFSetErrorHandler(nullptr);
+		TIFFSetErrorHandlerExt(nullptr);
 		DSSTIFFInitialize();
 		samplemax = 1.0;
 		samplemin = 0.0;
@@ -64,6 +64,15 @@ public :
 		cfa      = 0;
 		nrframes = 0;
 		m_DateTime.wYear = 0;
+        w = 0;
+        h = 0;
+        spp = 0;
+        bpp = 0;
+        photo = 0;
+        compression = 0;
+        planarconfig = 0;
+        sampleformat = 0;
+        master = 0;
 	};
 	virtual ~CTIFFHeader() {};
 
@@ -197,12 +206,12 @@ public :
 public :
 	CTIFFReader(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_tiff		  = NULL;
+		m_tiff		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 	};
 
-	virtual ~CTIFFReader() 
+	virtual ~CTIFFReader()
 	{
 		Close();
 	};
@@ -246,14 +255,14 @@ protected :
 public :
 	CTIFFWriter(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_tiff		  = NULL;
+		m_tiff		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 		compression   = COMPRESSION_NONE;
 		m_Format	  = TF_UNKNOWN;
 	};
 
-	virtual ~CTIFFWriter() 
+	virtual ~CTIFFWriter()
 	{
 		Close();
 	};

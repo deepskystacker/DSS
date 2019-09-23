@@ -85,7 +85,7 @@ public:
 
 
 protected:
-    void SetRect(CRect NewTect)  { m_ObjectRect = NewTect; }
+    void SetRect(CRect const& NewTect)  { m_ObjectRect = NewTect; }
     
 	CRect		m_ObjectRect;		// Size of the object
 	COLORREF	m_ObjectColor;		// Color of the objet

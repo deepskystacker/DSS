@@ -23,7 +23,7 @@ END_MESSAGE_MAP()
 CChildPropertyPage::CChildPropertyPage(UINT nIDPage, UINT nIDCaption, UINT nSelectedPage, UINT nIDGroup) :
 	m_nSelectedPage(nSelectedPage),
 	m_nIDGroup(nIDGroup),
-	CPropertyPage(nIDPage, nIDCaption) 
+	CPropertyPage(nIDPage, nIDCaption)
 {
 
 }
@@ -51,7 +51,7 @@ BOOL CChildPropertyPage::OnInitDialog()
 {
     CPropertyPage::OnInitDialog();
 
-	if (GetPageCount() > 0) 
+	if (GetPageCount() > 0)
 	{
 		for (int i=0; i<m_arrPages.GetSize(); i++)
 		{

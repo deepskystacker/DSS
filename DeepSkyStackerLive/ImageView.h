@@ -37,7 +37,7 @@ private :
 	bool						m_bDarkMode;
 
 public:
-	CImageViewTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CImageViewTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CImageViewTab();
 
 	void	SetStackedImage(BOOL bStackedImage)
@@ -70,7 +70,7 @@ protected :
 public :
 	void	SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName);
 	void	OnStackedImageSaved();
-	void	OnSetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4);
+	void	OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4);
 
 };
 

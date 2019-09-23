@@ -31,7 +31,7 @@ const DWORD		COLUMN_SKYBACKGROUND = 16;
 
 IMPLEMENT_DYNAMIC(CImageListTab, CDialog)
 
-CImageListTab::CImageListTab(CWnd* pParent /*=NULL*/)
+CImageListTab::CImageListTab(CWnd* pParent /*=nullptr*/)
 	: CDialog(CImageListTab::IDD, pParent)
 {
 }
@@ -127,7 +127,7 @@ BOOL CImageListTab::OnInitDialog()
 	m_ControlPos.AddControl(IDC_IMAGELIST, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
 	InitList();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -157,7 +157,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		TCHAR				szName[_MAX_FNAME];
 		TCHAR				szExt[_MAX_EXT];
 
-		_tsplitpath(szImage, NULL, NULL, szName, szExt);
+		_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 		strImage.Format(_T("%s%s"), szName, szExt);
 
 		nItem = m_ImageList.InsertItem(m_ImageList.GetItemCount(), _T(""));
@@ -165,7 +165,6 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 
 		CString				strSizes;
 		CString				strDepth;
-		CString				strInfos;
 
 		strSizes.Format(_T("%ld x %ld"), bmpInfo.m_lWidth, bmpInfo.m_lHeight);
 		m_ImageList.SetItemText(nItem, COLUMN_SIZES, (LPCTSTR)strSizes);
@@ -230,7 +229,7 @@ void	CImageListTab::ChangeImageStatus(LPCTSTR szImage, IMAGESTATUS status)
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list
@@ -277,7 +276,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list

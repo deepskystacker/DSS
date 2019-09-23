@@ -19,12 +19,12 @@ typedef struct tagPOINT {
    LONG y;
 } POINT;
 
-typedef struct tagRECT { 
-  LONG left; 
-  LONG top; 
-  LONG right; 
-  LONG bottom; 
-} RECT, *PRECT, *LPRECT; 
+typedef struct tagRECT {
+  LONG left;
+  LONG top;
+  LONG right;
+  LONG bottom;
+} RECT, *PRECT, *LPRECT;
 
 typedef const RECT *		LPCRECT;
 
@@ -103,7 +103,7 @@ public :
 		right	= max(l, r);
 		bottom	= max(t, b);
 	};
-	
+
 	CRect(const CRect & rc)
 	{
 		left	= rc.left;
@@ -168,9 +168,9 @@ public :
 
 		if (pRect1 && pRect2)
 		{
-			if (! (pRect2->left   > pRect1->right || 
-				   pRect2->right  < pRect1->left || 
-				   pRect2->top    > pRect1->bottom || 
+			if (! (pRect2->left   > pRect1->right ||
+				   pRect2->right  < pRect1->left ||
+				   pRect2->top    > pRect1->bottom ||
 				   pRect2->bottom < pRect1->top ))
 			{
 				left	= max(pRect1->left, pRect2->left);

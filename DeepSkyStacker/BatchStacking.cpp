@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 IMPLEMENT_DYNAMIC(CBatchStacking, CDialog)
 
 
-CBatchStacking::CBatchStacking(CWnd* pParent /*=NULL*/)
+CBatchStacking::CBatchStacking(CWnd* pParent /*=nullptr*/)
 	: CDialog(CBatchStacking::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CBatchStacking)
@@ -77,7 +77,7 @@ BOOL CBatchStacking::OnInitDialog()
 
     CRect			rcClient;
     GetClientRect(&rcClient);
-    
+
     CRect			rcGrip;
 
 
@@ -104,7 +104,7 @@ BOOL CBatchStacking::OnInitDialog()
 void CBatchStacking::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	
+
 	UPDATE_EASYSIZE;
 };
 
@@ -127,9 +127,9 @@ void CBatchStacking::OnBnClickedAddLists()
 
 	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								_T(".txt"),
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 								OUTPUTLIST_FILTERS,
 								this);
@@ -145,8 +145,6 @@ void CBatchStacking::OnBnClickedAddLists()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		BeginWaitCursor();
 		pos = dlgOpen.GetStartPosition();
@@ -168,14 +166,14 @@ void CBatchStacking::OnBnClickedAddLists()
 				m_Lists.SetCheck(nIndex, TRUE);
 			};
 
-			_tsplitpath(strFile, szDrive, szDir, NULL, szExt);
+			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
 		};
 		EndWaitCursor();
 
 		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
-	};	
+	};
 	UpdateListBoxWidth();
 };
 
@@ -202,7 +200,6 @@ void CBatchStacking::UpdateListBoxWidth()
 
 	for (LONG i = 0;i<m_Lists.GetCount();i++)
 	{
-		CRect			rcItem;
 		CString			strText;
 
 		m_Lists.GetText(i, strText);
@@ -258,7 +255,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 				CString				strText;
 
 				TCHAR				szFileName[1+_MAX_FNAME];
-				_tsplitpath(szList, NULL, NULL, szFileName, NULL);
+				_tsplitpath(szList, nullptr, nullptr, szFileName, nullptr);
 
 				strFileName = szFileName;
 
@@ -276,16 +273,16 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 					if (iff==IFF_TIFF)
 					{
 						if (pBitmap->IsMonochrome())
-							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, NULL);
+							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
 						else
-							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, NULL);
+							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
 					}
 					else
 					{
 						if (pBitmap->IsMonochrome())
-							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, NULL);
+							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, nullptr);
 						else
-							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, NULL);
+							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, nullptr);
 					};
 
 					dlg.End2();
@@ -305,7 +302,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 
 /* ------------------------------------------------------------------- */
 
-void CBatchStacking::OnOK() 
+void CBatchStacking::OnOK()
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bContinue  = TRUE;

@@ -32,9 +32,9 @@ public:
 	BOOL GetThemeInt(int iPartId, int iStateId, int iPropId, const int *piVal);
 	BOOL GetThemeMargins(int iPartId, int iStateId, int iPropId, const MY_MARGINS *pMargins);
 	BOOL GetThemeEnumValue(int iPartId, int iStateId, int iPropId, const int *piVal);
-	BOOL GetThemeFilename(int iPartId, int iStateId, int iPropId, 
+	BOOL GetThemeFilename(int iPartId, int iStateId, int iPropId,
 							OUT LPWSTR pszThemeFileName, int cchMaxBuffChars);
-	BOOL GetCurrentThemeName(OUT LPWSTR pszThemeFileName, int cchMaxNameChars, 
+	BOOL GetCurrentThemeName(OUT LPWSTR pszThemeFileName, int cchMaxNameChars,
 							OUT OPTIONAL LPWSTR pszColorBuff, int cchMaxColorChars,
 							OUT OPTIONAL LPWSTR pszSizeBuff, int cchMaxSizeChars);
 	HBITMAP LoadBitmap(LPWSTR pszBitmapName);

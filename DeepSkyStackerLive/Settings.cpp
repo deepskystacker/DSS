@@ -14,9 +14,10 @@
 
 IMPLEMENT_DYNAMIC(CSettingsTab, CDialog)
 
-CSettingsTab::CSettingsTab(CWnd* pParent /*=NULL*/, bool bDarkMode /*=false*/)
+CSettingsTab::CSettingsTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
 	: CDialog(CSettingsTab::IDD, pParent),
-	m_bDarkMode(bDarkMode)
+	m_bDarkMode(bDarkMode),
+    m_bDirty(false)
 {
 }
 
@@ -344,7 +345,7 @@ static void InitLabel(CLabel & label, BOOL bMain = FALSE)
 {
 	label.SetLink(TRUE, TRUE);
 	label.SetTransparent(TRUE);
-	label.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
+	label.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
 	label.SetFont3D(FALSE);
 	//label.SetTextColor(RGB(255, 255, 255));
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));
@@ -383,7 +384,7 @@ BOOL CSettingsTab::OnInitDialog()
 	UpdateFromRegistry();
 	UpdateControls();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -426,7 +427,7 @@ void CSettingsTab::OnWarningFileFolder( NMHDR * pNotifyStruct, LRESULT * result 
 	BOOL					bResult = FALSE;
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	strFolder = m_strWarnFileFolder;
 
 	CFolderDlg				dlg(FALSE, strFolder, this);
@@ -452,7 +453,7 @@ void CSettingsTab::OnStackedOutputFolder( NMHDR * pNotifyStruct, LRESULT * resul
 	BOOL					bResult = FALSE;
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	strFolder = m_strStackedOutputFolder;
 
 	CFolderDlg				dlg(FALSE, strFolder, this);

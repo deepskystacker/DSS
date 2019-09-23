@@ -27,7 +27,7 @@ private :
 	BOOL				m_bDirty;
 
 public:
-	CSettingsTab(CWnd* pParent = NULL, bool bDarkMode = false);   // standard constructor
+	CSettingsTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CSettingsTab();
 
 
@@ -52,7 +52,7 @@ protected :
 	afx_msg void OnWarningFileFolder( NMHDR * pNotifyStruct, LRESULT * result );
 	afx_msg void OnStackedOutputFolder( NMHDR * pNotifyStruct, LRESULT * result );
 	afx_msg void OnEmailAddress( NMHDR * pNotifyStruct, LRESULT * result );
-	
+
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
