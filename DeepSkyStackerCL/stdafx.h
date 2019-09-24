@@ -38,3 +38,5 @@ using std::max;
 #define TRACE1(x, y)
 
 // TODO: reference additional headers your program requires here
+
+#include "BitmapExt.h"

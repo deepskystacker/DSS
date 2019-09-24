@@ -55,4 +55,6 @@ using std::max;
 #include "resource.h"
 #include <afxdlgs.h>
 
+#include "BitmapExt.h"
+
 #endif // !defined(AFX_STDAFX_H_)
