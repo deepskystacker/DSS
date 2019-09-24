@@ -395,28 +395,47 @@ inline double Median(double v1, double v2, double v3)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	Median(std::vector<T> & vValues)
+double Median(std::vector<T> & values)
 {
-	if (!vValues.size())
-		return 0;
-	else
-	{
-		std::sort(vValues.begin(), vValues.end());
-		if ((vValues.size() % 2) == 1)
-		{
-			LONG			lIndice;
+    if (values.empty())
+        return 0;
 
-			lIndice = (LONG)vValues.size()/2;
-			return vValues[lIndice];
-		}
-		else
-		{
-			LONG			lIndice;
-			lIndice = (LONG)vValues.size()/2;
-			return ((double)vValues[lIndice]+(double)vValues[lIndice-1])/2.0;
-		};
-	};
-};
+    auto size = values.size();
+
+    // benchmarked: at around 40 elements, partial sort stars becoming faster
+    // O(N) or O(2*N) for even count vs O(N*log(N))
+    if (size > 40)
+    {
+        auto n = size / 2;
+        std::nth_element(values.begin(), values.begin() + n, values.end());
+        double median = values[n];
+
+        if (size & 1) // odd
+        {
+            return median;
+        }
+        else // even
+        {
+            auto max = std::max_element(values.begin(), values.begin() + n);
+
+            return (*max + median) / 2;
+        }
+    }
+    else // fallback to classic sort
+    {
+        auto n = size / 2;
+        std::sort(values.begin(), values.end());
+
+        if (size & 1) // odd
+        {
+            return values[n];
+        }
+        else // even
+        {
+            return (values[n] + values[n - 1]) / 2;
+        }
+    }
+}
 
 /* ------------------------------------------------------------------- */
 

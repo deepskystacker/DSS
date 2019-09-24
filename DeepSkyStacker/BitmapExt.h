@@ -3139,9 +3139,11 @@ public :
 
 		if (IsXYOk(i, j))
 		{
-			m_Red.m_vPixels[GetOffset(i, j)]	= fRed;
-			m_Green.m_vPixels[GetOffset(i, j)]	= fGreen;
-			m_Blue.m_vPixels[GetOffset(i, j)]	= fBlue;
+            size_t			lOffset = GetOffset(i, j);
+
+			m_Red.m_vPixels[lOffset]	= fRed;
+			m_Green.m_vPixels[lOffset]	= fGreen;
+			m_Blue.m_vPixels[lOffset]	= fBlue;
 		}
 		else
 			bResult = FALSE;
@@ -3155,9 +3157,11 @@ public :
 
 		if (IsXYOk(i, j))
 		{
-			fRed   = m_Red.m_vPixels[GetOffset(i, j)];
-			fGreen = m_Green.m_vPixels[GetOffset(i, j)];
-			fBlue  = m_Blue.m_vPixels[GetOffset(i, j)];
+            size_t			lOffset = GetOffset(i, j);
+
+			fRed   = m_Red.m_vPixels[lOffset];
+			fGreen = m_Green.m_vPixels[lOffset];
+			fBlue  = m_Blue.m_vPixels[lOffset];
 		}
 		else
 			bResult = FALSE;

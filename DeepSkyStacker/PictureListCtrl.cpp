@@ -775,14 +775,37 @@ void CPictureListCtrl::OnKeydownList(NMHDR* pNMHDR, LRESULT* pResult)
     LV_KEYDOWN* pLVKeyDown = (LV_KEYDOWN*)pNMHDR;
 
     //If user press space, toggle flag on selected item
-    if( pLVKeyDown->wVKey == VK_SPACE )
+    switch (pLVKeyDown->wVKey)
     {
-        //Toggle if some item is selected
-        if(GetSelectionMark() != -1)
-		{
-            ToggleCheckBox( GetSelectionMark() );
-			m_bDirty = TRUE;
-		};
+        case VK_SPACE:
+        {
+            //Toggle if some item is selected
+            if (GetSelectionMark() != -1)
+            {
+                ToggleCheckBox(GetSelectionMark());
+                m_bDirty = TRUE;
+            }
+            break;
+        }
+        case VK_DELETE:
+        {
+            POSITION pos = GetFirstSelectedItemPosition();
+
+            if (pos)
+            {
+                while (pos)
+                {
+                    int nItem = GetNextSelectedItem(pos);
+                    LONG lIndice = m_vVisibles[nItem];
+
+                    m_vFiles[lIndice].m_bRemoved = TRUE;
+                    m_bDirty = TRUE;
+                }
+
+                RefreshList();
+            }
+            break;
+        }
     }
 
     *pResult = 0;

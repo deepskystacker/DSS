@@ -3339,6 +3339,20 @@ void CListBase::OnKeyDown(UINT nChar)
       break;
     }
 
+    case 'A':
+    {
+        if (GetKeyState(VK_CONTROL) & 0x8000)
+        {
+            for (int i = 0; i < m_pListCtrl->GetItemCount(); ++i)
+            {
+                m_pListCtrl->SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+            }
+        }
+        else
+            m_pListCtrl->Default();
+        break;
+    }
+
     // Numpad-Plus
     case VK_ADD:
       // Ctrl-Numpad-Plus --> set optimum width for all columns
