@@ -770,7 +770,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	if (0 == supportedCameras.size())
 	{
 		const char **cameraList = rawProcessor.cameraList();
-		size_t count = rawProcessor.cameraCount();
+		const size_t count = rawProcessor.cameraCount();
 		supportedCameras.reserve(count);
 
 		//
