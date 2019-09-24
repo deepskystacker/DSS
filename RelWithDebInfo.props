@@ -6,6 +6,7 @@
   <ItemDefinitionGroup>
     <Link>
       <LinkTimeCodeGeneration>UseFastLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
     </Link>
     <ClCompile>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
@@ -24,6 +25,8 @@
     </ClCompile>
     <ClCompile>
       <WholeProgramOptimization>false</WholeProgramOptimization>
+      <WarningLevel>Level3</WarningLevel>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup />
