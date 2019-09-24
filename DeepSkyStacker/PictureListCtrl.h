@@ -180,6 +180,8 @@ public:
 
 	void	CopyToClipboard();
 
+    void	ChangePictureType(int nItem, PICTURETYPE PictureType);
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CPictureListCtrl)
@@ -188,7 +190,7 @@ public:
 // Implementation
 private :
 	//void	UpdateOffset(int nItem);
-	void	ChangePictureType(int nItem, PICTURETYPE PictureType);
+
 
 	void	PostItemChanged()
 	{

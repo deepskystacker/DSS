@@ -1183,6 +1183,8 @@ void CPictureListCtrl::OnRButtonDown( UINT nFlags, CPoint pt)
 	menu.LoadMenu(IDR_LISTCONTEXT);
 	popup = menu.GetSubMenu(0);
 
+    dlgProperties.SetImageList(this);
+
 	pos = GetFirstSelectedItemPosition();
 	if (pos)
 	{
@@ -1287,7 +1289,7 @@ void CPictureListCtrl::OnRButtonDown( UINT nFlags, CPoint pt)
 				m_bDirty = TRUE;
 				break;
 			case IDM_PROPERTIES :
-				dlgProperties.AddBitmap(&(m_vFiles[lIndice]));
+				dlgProperties.AddBitmap(lIndice, &m_vFiles[lIndice]);
 				break;
 			};
 		};
