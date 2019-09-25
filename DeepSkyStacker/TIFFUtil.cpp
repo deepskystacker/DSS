@@ -2,6 +2,7 @@
 #include "TIFFUtil.h"
 #include "Registry.h"
 #include "zlib.h"
+#include "Utils.h"
 
 #define NRCUSTOMTIFFTAGS		12
 
@@ -76,7 +77,7 @@ BOOL CTIFFReader::Open()
 	reg.LoadKey(REGENTRY_BASEKEY, _T("SkipTIFFExifInfo"), dwSkipExifInfo);
 
 	Close();
-	m_tiff = TIFFOpen((LPCSTR)CT2CA(m_strFileName), "r");
+	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "r");
 	if (m_tiff)
 	{
 		cfa = 0;
@@ -467,7 +468,7 @@ BOOL CTIFFWriter::Open()
 	BOOL			bResult = FALSE;
 
 	Close();
-	m_tiff = TIFFOpen((LPCSTR)CT2CA(m_strFileName), "w");
+	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "w");
 	if (m_tiff)
 	{
 		photo = PHOTOMETRIC_RGB;

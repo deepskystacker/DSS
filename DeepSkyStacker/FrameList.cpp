@@ -3,6 +3,7 @@
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include <direct.h>
+#include "Utils.h"
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -128,9 +129,9 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 				StringFromCLSID(m_Jobs.m_vJobs[j].m_RefID, &szRefGUID);
 				strRefGUID = szRefGUID;
 				fprintf(hFile, "#JOBID#%s#%s#%s\n",
-					(LPCSTR)CT2CA(strGUID,CP_UTF8),
-					(LPCSTR)CT2CA(m_Jobs.m_vJobs[j].m_strName, CP_UTF8),
-					(LPCSTR)CT2CA(strRefGUID, CP_UTF8));
+                    CStringToChar(strGUID),
+                    CStringToChar(m_Jobs.m_vJobs[j].m_strName),
+                    CStringToChar(strRefGUID));
 			};
 			for (LONG i = 0;i<m_vFiles.size();i++)
 			{
@@ -183,14 +184,14 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 							FILE_ATTRIBUTE_NORMAL);
 
 						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
-							(LPCSTR)CT2CA(strType, CP_UTF8),
-							(LPCSTR)CT2CA(szRelPath, CP_UTF8));
+                            CStringToChar(strType),
+                            CStringToChar(szRelPath));
 					}
 					else
 					{
 						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
-							(LPCSTR)CT2CA(strType, CP_UTF8),
-							(LPCSTR)CT2CA(m_vFiles[lItem].m_strFileName, CP_UTF8));
+                            CStringToChar(strType),
+                            CStringToChar(m_vFiles[lItem].m_strFileName));
 					}
 				};
 			};
@@ -387,8 +388,8 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 						pszAbsoluteFile = new TCHAR[length];
 
 						length = GetFullPathName(static_cast<LPCTSTR>(strFile), length, pszAbsoluteFile, nullptr);
-						if (0 == length) ZTRACE_RUNTIME("GetFullPathName for %s failed",
-							(LPCSTR)CT2CA(strFile, CP_UTF8));
+						if (0 == length)
+                            ZTRACE_RUNTIME("GetFullPathName for %s failed", CStringToChar(strFile));
 
 						// Check that the file exists
 						FILE *		hTemp;

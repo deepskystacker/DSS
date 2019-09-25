@@ -105,7 +105,7 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 		// Then write the file list
 		fprintf(hFile, "----FileList----\n");
 		for (LONG i = 0;i<m_vFiles.size();i++)
-			fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vFiles[i]));
+			fprintf(hFile, "%s\n", CStringToChar(m_vFiles[i]));
 
 		fclose(hFile);
 	};
