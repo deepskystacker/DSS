@@ -41,6 +41,7 @@
 #endif
 
 #include <windows.h>
+#include <commctrl.h>
 
 #include <algorithm>
 using std::min;
