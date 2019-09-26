@@ -134,7 +134,11 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 
 
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CDeepStackerDlg::IDD, pParent)
+	: CDialog(CDeepStackerDlg::IDD, pParent),
+	m_dlgStacking(this),
+	m_dlgProcessing(this),
+	m_dlgLibrary(this),
+	m_ExplorerBar(this)
 {
 	//{{AFX_DATA_INIT(CDeepStackerDlg)
 		// NOTE: the ClassWizard will add member initialization here
