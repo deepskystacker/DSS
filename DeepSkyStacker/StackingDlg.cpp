@@ -1610,8 +1610,9 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 				};
 
 				dlg.End2();
+                dlg.Close();
+
 				GetProcessingDlg(this).LoadFile(strFileName);
-				dlg.Close();
 
 				// Change tab to processing
 				CDeepStackerDlg *	pDlg = GetDeepStackerDlg(this);
