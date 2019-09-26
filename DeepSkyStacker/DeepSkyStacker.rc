@@ -240,8 +240,8 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     CTEXT           "",IDC_PROCESS_TEXT1,7,7,323,24
     CTEXT           "",IDC_PROCESS_TEXT2,7,34,323,24
-    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER,26,66,286,9
-    CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",WS_BORDER,26,79,286,9
+    CONTROL         "Progress1",IDC_PROGRESS1,"msctls_progress32",WS_BORDER|PBS_SMOOTH,26,66,286,9
+    CONTROL         "Progress1",IDC_PROGRESS2,"msctls_progress32",WS_BORDER|PBS_SMOOTH,26,79,286,9
     PUSHBUTTON      "Stop",IDC_STOP,281,96,50,14
     LTEXT           "",IDC_TIMEREMAINING,14,96,137,8
     LTEXT           "",IDC_NRPROCESSORS,154,96,124,8

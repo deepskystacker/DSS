@@ -2,6 +2,7 @@
 
 // CFileProperty dialog
 #include "PictureListCtrl.h"
+#include <unordered_map>
 
 class CFileProperty : public CDialog
 {
@@ -18,7 +19,8 @@ private :
 	CEdit				m_Exposure;
 	CButton				m_OK;
 
-	LISTPBITMAPVECTOR	m_vpBitmaps;
+    CPictureListCtrl*   m_imageList;
+	std::unordered_map<int, CListBitmap*> m_bitmaps;
 	BOOL				m_bChangeType;
 	BOOL				m_bChangeISOSpeed;
 	BOOL				m_bChangeExposure;
@@ -28,10 +30,15 @@ public:
 	CFileProperty(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CFileProperty();
 
-	void	AddBitmap(CListBitmap * pBitmap)
+	void AddBitmap(int itemId, CListBitmap* bitmap)
 	{
-		m_vpBitmaps.push_back(pBitmap);
+        m_bitmaps[itemId] = bitmap;
 	};
+
+    void SetImageList(CPictureListCtrl* imagelist)
+    {
+        m_imageList = imagelist;
+    }
 
 // Dialog Data
 	enum { IDD = IDD_PROPERTIES };

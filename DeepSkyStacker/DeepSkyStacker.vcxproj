@@ -661,6 +661,7 @@
     <ClInclude Include="..\Tools\ThemeUtil.h" />
     <ClInclude Include="..\Tools\Tmschema.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
+    <ClInclude Include="..\Tools\Utils.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
     <ClInclude Include="About.h" />
     <ClInclude Include="AHDDemosaicing.h" />

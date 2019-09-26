@@ -14,6 +14,7 @@
 #include "Workspace.h"
 #include <iostream>
 #include <zexcept.h>
+#include "Utils.h"
 
 #include <GdiPlus.h>
 using namespace Gdiplus;
@@ -327,7 +328,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 	}
 	catch (std::exception & e)
 	{
-		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
+		CString errorMessage(CharToCString(e.what()));
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
 #else
@@ -346,10 +347,10 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 	catch (ZException & ze)
 	{
 		CString errorMessage;
-		CString name(CA2CT(ze.name()));
-		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(ze.text(0)));
+		CString name(CharToCString(ze.name()));
+		CString fileName(CharToCString(ze.locationAtIndex(0)->fileName()));
+		CString functionName(CharToCString(ze.locationAtIndex(0)->functionName()));
+		CString text(CharToCString(ze.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),

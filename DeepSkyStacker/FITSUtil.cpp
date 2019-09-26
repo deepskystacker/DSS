@@ -3,6 +3,7 @@
 #include <float.h>
 #include "Registry.h"
 #include "Workspace.h"
+#include "Utils.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -302,14 +303,14 @@ void CFITSReader::ReadAllKeys()
 			{
 				bool		bPropagate = false;
 				CString		strKeyName;
-				strKeyName.Format(_T("[%s]"), (LPCTSTR)CA2CT(szKeyName));
+				strKeyName.Format(_T("[%s]"), (LPCTSTR)CharToCString(szKeyName));
 
 				if (strPropagated.Find(strKeyName) != -1)
 					bPropagate = true;
 				m_ExtraInfo.AddInfo(
-					(LPCTSTR)CA2CT(szKeyName),
-					(LPCTSTR)CA2CT(szValue),
-					(LPCTSTR)CA2CT(szComment), bPropagate);
+					(LPCTSTR)CharToCString(szKeyName),
+					(LPCTSTR)CharToCString(szValue),
+					(LPCTSTR)CharToCString(szComment), bPropagate);
 			};
 		};
 	};
@@ -324,7 +325,7 @@ BOOL CFITSReader::Open()
 	int					nStatus = 0;
 
 	Close();
-	fits_open_diskfile(&m_fits, (LPCSTR)CT2CA(m_strFileName, CP_UTF8), READONLY, &nStatus);
+	fits_open_diskfile(&m_fits, CStringToChar(m_strFileName), READONLY, &nStatus);
 	if (!nStatus && m_fits)
 	{
 		// File ok - move to the first image HDU

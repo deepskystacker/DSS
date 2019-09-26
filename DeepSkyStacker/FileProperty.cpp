@@ -24,6 +24,7 @@ CFileProperty::CFileProperty(CWnd* pParent /*=nullptr*/)
     m_bChangeType = false;
     m_bChangeISOSpeed = false;
     m_bChangeExposure = false;
+    m_imageList = nullptr;
 }
 
 /* ------------------------------------------------------------------- */
@@ -87,42 +88,42 @@ void CFileProperty::InitControls()
 	CString				strExposure;
 	PICTURETYPE			PictureType = PICTURETYPE_UNKNOWN;
 
-	for (LONG i = 0;i<m_vpBitmaps.size();i++)
+	for (auto const& pair : m_bitmaps)
 	{
-		if (m_vpBitmaps[i])
+		if (CListBitmap* bitmap = pair.second)
 		{
 			if (bFirst)
 			{
-				strFileName = m_vpBitmaps[i]->m_strFileName;
-				PictureType = m_vpBitmaps[i]->m_PictureType;
-				strDateTime = m_vpBitmaps[i]->m_strDateTime;
-				strSizes    = m_vpBitmaps[i]->m_strSizes;
-				strDepth    = m_vpBitmaps[i]->m_strDepth;
-				strInfo		= m_vpBitmaps[i]->m_strInfos;
-				strCFA		= m_vpBitmaps[i]->m_strCFA;
-				lISOSpeed	= m_vpBitmaps[i]->m_lISOSpeed;
-				fExposure	= m_vpBitmaps[i]->m_fExposure;
+				strFileName = bitmap->m_strFileName;
+				PictureType = bitmap->m_PictureType;
+				strDateTime = bitmap->m_strDateTime;
+				strSizes    = bitmap->m_strSizes;
+				strDepth    = bitmap->m_strDepth;
+				strInfo		= bitmap->m_strInfos;
+				strCFA		= bitmap->m_strCFA;
+				lISOSpeed	= bitmap->m_lISOSpeed;
+				fExposure	= bitmap->m_fExposure;
 				bFirst = FALSE;
 			}
 			else
 			{
-				if (strFileName != m_vpBitmaps[i]->m_strFileName)
-					strFileName.Format(IDS_MULTIPLEFILESELECTED, m_vpBitmaps.size());
-				if (PictureType != m_vpBitmaps[i]->m_PictureType)
+				if (strFileName != bitmap->m_strFileName)
+					strFileName.Format(IDS_MULTIPLEFILESELECTED, m_bitmaps.size());
+				if (PictureType != bitmap->m_PictureType)
 					PictureType = PICTURETYPE_UNKNOWN;
-				if (strDateTime != m_vpBitmaps[i]->m_strDateTime)
+				if (strDateTime != bitmap->m_strDateTime)
 					strDateTime = "-";
-				if (strSizes != m_vpBitmaps[i]->m_strSizes)
+				if (strSizes != bitmap->m_strSizes)
 					strSizes = "-";
-				if (strDepth != m_vpBitmaps[i]->m_strDepth)
+				if (strDepth != bitmap->m_strDepth)
 					strDepth = "-";
-				if (strInfo != m_vpBitmaps[i]->m_strInfos)
+				if (strInfo != bitmap->m_strInfos)
 					strInfo = "-";
-				if (strCFA != m_vpBitmaps[i]->m_strCFA)
+				if (strCFA != bitmap->m_strCFA)
 					strCFA = "-";
-				if (lISOSpeed != m_vpBitmaps[i]->m_lISOSpeed)
+				if (lISOSpeed != bitmap->m_lISOSpeed)
 					lISOSpeed = 0;
-				if (fExposure != m_vpBitmaps[i]->m_fExposure)
+				if (fExposure != bitmap->m_fExposure)
 					fExposure = 0;
 			};
 		};
@@ -247,11 +248,9 @@ void CFileProperty::UpdateControls()
 
 void CFileProperty::ApplyChanges()
 {
-	LONG				i = 0;
-
 	if (m_bChangeType)
 	{
-		PICTURETYPE			PictureType = PICTURETYPE_UNKNOWN;
+		PICTURETYPE PictureType = PICTURETYPE_UNKNOWN;
 
 		switch (m_Type.GetCurSel())
 		{
@@ -274,8 +273,8 @@ void CFileProperty::ApplyChanges()
 
 		if (PictureType != PICTURETYPE_UNKNOWN)
 		{
-			for (i = 0;i<m_vpBitmaps.size();i++)
-				m_vpBitmaps[i]->m_PictureType = PictureType;
+            for (auto const& pair : m_bitmaps)
+                m_imageList->ChangePictureType(pair.first, PictureType);
 		};
 	};
 
@@ -290,8 +289,8 @@ void CFileProperty::ApplyChanges()
 
 			if ((lISOSpeed >= MINISOSPEED) && (lISOSpeed <= MAXISOSPEED))
 			{
-				for (i = 0;i<m_vpBitmaps.size();i++)
-					m_vpBitmaps[i]->m_lISOSpeed = lISOSpeed;
+                for (auto const& pair : m_bitmaps)
+                    pair.second->m_lISOSpeed = lISOSpeed;
 			};
 		};
 	};
@@ -307,8 +306,8 @@ void CFileProperty::ApplyChanges()
 
 			if ((lExposure >= MINEXPOSURE) && (lExposure <= MAXEXPOSURE))
 			{
-				for (i = 0;i<m_vpBitmaps.size();i++)
-					m_vpBitmaps[i]->m_fExposure = lExposure;
+                for (auto const& pair : m_bitmaps)
+                    pair.second->m_fExposure = lExposure;
 			};
 		};
 	};

@@ -161,6 +161,13 @@ public :
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
 
+enum DeepStackerDlgMessages
+{
+    WM_PROGRESS_INIT = WM_USER + 10000,
+    WM_PROGRESS_UPDATE,
+    WM_PROGRESS_STOP,
+};
+
 class CDeepStackerDlg : public CDialog
 {
 private :
@@ -174,6 +181,8 @@ private :
 	DWORD					m_dwCurrentTab;
 	CString					m_strStartFileList;
 	CString					m_strBaseTitle;
+    ITaskbarList3*          m_taskbarList;
+    bool                    m_progress;
 
 // Construction
 public:
@@ -272,6 +281,10 @@ private :
 	afx_msg	void OnHelp();
 
 	afx_msg void OnDropFiles(HDROP hDropInfo);
+    afx_msg LRESULT OnTaskbarButtonCreated(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnProgressInit(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnProgressUpdate(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnProgressStop(WPARAM wParam, LPARAM lParam);
 };
 
 /* ------------------------------------------------------------------- */

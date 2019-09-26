@@ -210,6 +210,8 @@ public :
 			m_dwLastTime  = dwCurrentTime;
 			m_dlg.m_Progress1.SetPos(lAchieved1);
 
+            GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_UPDATE, lAchieved1, m_lTotal1);
+
 			if (m_lTotal1 > 1 && lAchieved1 > 1)
 			{
 				DWORD			dwRemainingTime;

@@ -395,7 +395,7 @@ inline double Median(double v1, double v2, double v3)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double Median(std::vector<T> & values)
+double Median(std::vector<T>& values)
 {
     if (values.empty())
         return 0;
@@ -440,61 +440,61 @@ double Median(std::vector<T> & values)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-T	Maximum(const std::vector<T> & vValues)
+T Maximum(const std::vector<T>& values)
 {
-	T			Result = 0;
+    if (values.empty())
+        return 0;
 
-	for (LONG i = 0;i<vValues.size();i++)
-		Result = max(Result, vValues[i]);
-
-	return Result;
+	return *std::max_element(values.begin(), values.end());
 };
 
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	Average(const std::vector<T> & vValues)
+double Average(const std::vector<T>& values)
 {
-	double fResult = std::accumulate(vValues.begin(), vValues.end(), 0.0) / vValues.size();
-	return fResult;
+    return std::accumulate(values.begin(), values.end(), 0.0) / values.size();
 };
 
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	Sigma2(const std::vector<T> & vValues, double & fAverage)
+double Sigma2(const std::vector<T>& values, double& average)
 {
-	double			fResult = 0.0;
-	double			fSquareDiff = 0.0;
+	double result = 0.0;
+	double squareDiff = 0.0;
 
 	// Compute the average
-	fAverage = Average(vValues);
+	average = Average(values);
 
-	for (LONG i = 0;i<vValues.size();i++)
-		fSquareDiff += (((double)vValues[i] - fAverage) * ((double)vValues[i] - fAverage));
-	if (vValues.size())
-		fResult = sqrt(fSquareDiff/vValues.size());
+    for (double val : values)
+        squareDiff += std::pow(val - average, 2);
 
-	return fResult;
+    if (values.size())
+        result = sqrt(squareDiff / values.size());
+
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	Sigma(const std::vector<T> & vValues)
+double Sigma(const std::vector<T>& values)
 {
-	double			fAverage;
+	double average;
 
-	return Sigma2(vValues, fAverage);
+	return Sigma2(values, average);
 };
 
 template <typename T>
-double CalculateSigmaFromAverage(const std::vector<T> & vValues, const double targetAverage)
+double CalculateSigmaFromAverage(const std::vector<T>& values, const double targetAverage)
 {
 	double squareDiff = 0.0;
-	for (size_t i = 0; i < vValues.size(); i++)
-		squareDiff += (vValues[i] - targetAverage) * (vValues[i] - targetAverage);
-	return sqrt(squareDiff / vValues.size());
+
+    for (double val : values)
+        squareDiff += std::pow(val - targetAverage, 2);
+
+	return sqrt(squareDiff / values.size());
 }
 
 /* ------------------------------------------------------------------- */
@@ -694,26 +694,21 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-T	Minimum(std::vector<T> & vValues, BOOL bRemoveZero)
+T Minimum(std::vector<T>& values, BOOL ignoreZeros)
 {
-	T				Result = 0;
-	BOOL			bSet = FALSE;
+    T result = 0;
 
-	for (LONG i = 0;i<vValues.size();i++)
-	{
-		if (vValues[i] || !bRemoveZero)
-		{
-			if (bSet)
-				Result = min(Result, vValues[i]);
-			else
-			{
-				Result = vValues[i];
-				bSet = TRUE;
-			};
-		};
-	};
+    if (!values.empty())
+    {
+        if (values.front() || !ignoreZeros)
+            result = values.front();
+    }
 
-	return Result;
+    for (T const& val : values)
+        if (val || !ignoreZeros)
+            result = min(result, val);
+
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
