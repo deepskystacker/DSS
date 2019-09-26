@@ -14,6 +14,12 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CProgressDlg dialog
 
+BOOL CProgressDlg::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+	SetWindowPos(&this->wndTop, 0, 0, 0, 0, SWP_NOSIZE);
+	return true;
+}
 
 CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CProgressDlg::IDD, pParent)

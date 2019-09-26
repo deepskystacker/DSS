@@ -71,6 +71,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CProgressDlg)
+	virtual BOOL OnInitDialog();
 	virtual void OnCancel();
 	afx_msg void OnStop();
 	//}}AFX_MSG
@@ -93,21 +94,26 @@ private :
 						m_lLastTotal2;
 	BOOL				m_bFirstProgress;
 	BOOL				m_bEnableCancel;
+	CDeepStackerDlg *   m_pDeepStackerDlg;
 
 private :
 	void				CreateProgressDialog()
 	{
+
 		if (!m_dlg.m_hWnd)
 		{
 			CWnd *pMainWnd = AfxGetMainWnd();
+
 			m_dlg.Create(IDD_PROGRESS);
 
-			// Disable main window
+			// Centre on main window
 			if (pMainWnd)
-			{
 				m_dlg.CenterWindow(pMainWnd);
-				pMainWnd->EnableWindow(FALSE);
-			};
+
+			// Disable child dialogs of DeepSkyStackerDlg
+
+			if (m_pDeepStackerDlg)
+				m_pDeepStackerDlg->disableSubDialogs();
 
 			// Re-enable this window
 			m_dlg.EnableWindow(TRUE);
@@ -116,7 +122,8 @@ private :
 	};
 
 public :
-    CDSSProgressDlg()
+    CDSSProgressDlg(CWnd* pParent = nullptr) :
+		m_dlg(pParent)
     {
         m_bEnableCancel = false;
         m_lTotal1 = 0;
@@ -126,7 +133,7 @@ public :
         m_lLastTotal1 = 0;
         m_lLastTotal2 = 0;
         m_bFirstProgress = false;
-        m_bEnableCancel = false;
+		m_pDeepStackerDlg = GetDeepStackerDlg(nullptr);
     }
 
 	virtual ~CDSSProgressDlg()
@@ -310,9 +317,8 @@ public :
 		// Prevent failure if mdlg is no longer a valid window
 		if (nullptr != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
 
-		CWnd *pMainWnd = AfxGetMainWnd();
-		if (pMainWnd)
-			pMainWnd->EnableWindow(TRUE);
+		if (m_pDeepStackerDlg)
+			m_pDeepStackerDlg->enableSubDialogs();
 
 		return TRUE;
 	};

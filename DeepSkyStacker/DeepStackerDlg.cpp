@@ -135,7 +135,11 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage("TaskbarButtonCreated");
 
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CDeepStackerDlg::IDD, pParent)
+	: CDialog(CDeepStackerDlg::IDD, pParent),
+	m_dlgStacking(this),
+	m_dlgProcessing(this),
+	m_dlgLibrary(this),
+	m_ExplorerBar(this)
 {
 	//{{AFX_DATA_INIT(CDeepStackerDlg)
 		// NOTE: the ClassWizard will add member initialization here

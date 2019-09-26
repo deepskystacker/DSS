@@ -198,6 +198,21 @@ public:
 		m_strStartFileList = szStartFileList;
 	};
 
+	void disableSubDialogs()
+	{
+		m_dlgStacking.EnableWindow(false);
+		m_dlgProcessing.EnableWindow(false);
+		m_dlgLibrary.EnableWindow(false);
+		m_ExplorerBar.EnableWindow(false);
+	};
+
+	void enableSubDialogs()
+	{
+		m_dlgStacking.EnableWindow(true);
+		m_dlgProcessing.EnableWindow(true);
+		m_dlgLibrary.EnableWindow(true);
+		m_ExplorerBar.EnableWindow(true);
+	};
 
 // Dialog Data
 	//{{AFX_DATA(CDeepStackerDlg)
