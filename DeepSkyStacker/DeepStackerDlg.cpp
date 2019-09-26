@@ -132,6 +132,7 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
 
+UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage("TaskbarButtonCreated");
 
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepStackerDlg::IDD, pParent)
@@ -140,6 +141,8 @@ CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	m_dwCurrentTab = 0;
+    m_taskbarList = nullptr;
+    m_progress = false;
 }
 
 /* ------------------------------------------------------------------- */
@@ -163,6 +166,10 @@ BEGIN_MESSAGE_MAP(CDeepStackerDlg, CDialog)
 	ON_BN_CLICKED(IDCANCEL, &CDeepStackerDlg::OnBnClickedCancel)
 	ON_WM_DROPFILES()
 	ON_WM_ERASEBKGND()
+    ON_REGISTERED_MESSAGE(WM_TASKBAR_BUTTON_CREATED, &CDeepStackerDlg::OnTaskbarButtonCreated)
+    ON_MESSAGE(WM_PROGRESS_INIT, &CDeepStackerDlg::OnProgressInit)
+    ON_MESSAGE(WM_PROGRESS_UPDATE, &CDeepStackerDlg::OnProgressUpdate)
+    ON_MESSAGE(WM_PROGRESS_STOP, &CDeepStackerDlg::OnProgressStop)
 END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
@@ -329,6 +336,47 @@ void CDeepStackerDlg::OnDropFiles(HDROP hDropInfo)
 		m_dlgStacking.DropFiles(hDropInfo);
 	};
 };
+
+LRESULT CDeepStackerDlg::OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+    HRESULT hr = ::CoCreateInstance(CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast<void**>(&m_taskbarList));
+
+    if (FAILED(hr))
+        return 0;
+
+    hr = m_taskbarList->HrInit();
+
+    m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+
+    return 0;
+}
+
+LRESULT CDeepStackerDlg::OnProgressInit(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+    m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+
+    m_progress = true;
+
+    return 0;
+}
+
+LRESULT CDeepStackerDlg::OnProgressUpdate(WPARAM wParam, LPARAM lParam)
+{
+    // do not update if progress wasn't started manually
+    if (m_progress)
+        m_taskbarList->SetProgressValue(m_hWnd, wParam, lParam);
+
+    return 0;
+}
+
+LRESULT CDeepStackerDlg::OnProgressStop(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+    m_taskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+
+    m_progress = false;
+
+    return 0;
+}
 
 /* ------------------------------------------------------------------- */
 

@@ -1685,6 +1685,8 @@ void CStackingDlg::StackCheckedImage()
 				bContinue = ShowRecap(tasks);
 			if (bContinue)
 			{
+                GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+
 				m_BackgroundLoading.ClearList();
 				if (m_Pictures.GetNrUnregisteredCheckedLightFrames())
 				{
@@ -1697,8 +1699,10 @@ void CStackingDlg::StackCheckedImage()
 					dlg.Close();
 				};
 
-				if (bContinue)
-					DoStacking(tasks);
+                if (bContinue)
+                    DoStacking(tasks);
+
+                GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
 			};
 		};
 	};
@@ -1900,6 +1904,8 @@ void CStackingDlg::RegisterCheckedImage()
 
 				if (bContinue)
 				{
+                    GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+
 					CRegisterEngine	RegisterEngine;
 
 					m_BackgroundLoading.ClearList();
@@ -1926,6 +1932,8 @@ void CStackingDlg::RegisterCheckedImage()
 					DoStacking(tasks, fPercent);
 					dwEndTime = GetTickCount();
 				};
+
+                GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
 			};
 		};
 	}
