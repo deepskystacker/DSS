@@ -201,8 +201,8 @@ public:
 	{
 		m_dlgStacking.EnableWindow(true);
 		m_dlgProcessing.EnableWindow(true);
-		m_dlgLibrary.EnableWindow(false);
-		m_ExplorerBar.EnableWindow(false);
+		m_dlgLibrary.EnableWindow(true);
+		m_ExplorerBar.EnableWindow(true);
 	};
 
 // Dialog Data
