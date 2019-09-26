@@ -133,10 +133,7 @@ public :
         m_lLastTotal1 = 0;
         m_lLastTotal2 = 0;
         m_bFirstProgress = false;
-        m_bEnableCancel = false;
 		m_pDeepStackerDlg = GetDeepStackerDlg(nullptr);
-
-
     }
 
 	virtual ~CDSSProgressDlg()
