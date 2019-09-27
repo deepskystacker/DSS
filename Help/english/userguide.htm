@@ -845,32 +845,59 @@ to all the parameters used while developing a RAW file to transform it into a pi
     <td width="61%" valign="top">
     <p class="Standard"><font face="Arial"><b>RAW Files<br>
     </b></font><font face="Arial" size="2"><br>
-         The parameters are:</font></p><font face="Arial" size="2">
+         The parameters are:</font></p>
       <UL>
         <LI>
-    <div class="Standard">Balance of the RGB 
-        channels</div>
+    <div class="Standard"><FONT size=2 face=Arial>Balance 
+        of the RGB channels</FONT>    
+        </div>
         <LI>
-    <div class="Standard">White balance</div>
+    <div class="Standard"><FONT size=2 face=Arial>White 
+        balance</FONT> </div>
         <LI>
-    <div class="Standard">Interpolation mode</div></LI></UL>
-    <p class="Standard">The Color Adjustment is applied 
-      after the White Balance adjustments for Daylight White Balance (the 
-      default) or Camara White Balance (if selected).&nbsp;&nbsp; The white 
-      balance adjustment values are extracted from the RAW files by&nbsp;<A 
-      href="https://www.libraw.org/">LibRaw</A>&nbsp;Copyright ©&nbsp;2008-2019 
-      LibRaw LLC.&nbsp; LibRaw is&nbsp;based upon the original DCRaw decoder for 
-      RAW files written by Dave Coffin.&nbsp; Use Auto White Balance is no 
-      longer supported.<BR>
-    <br>
-    The values for the <font color="#ff0000">Red</font> and
-    <font color="#0000ff">Blue</font> scales are relative to the
-    <font color="#008000">Green</font>.<br>
-    The luminance adjustment applies to all three channels.</font></P>
-    <p class="Standard"><font face="Arial" size="2">
+    <div class="Standard"><FONT size=2 face=Arial>Interpolation mode</FONT> </div></LI></UL>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Color Adjustment is applied after White Balance processing has been 
+      performed and the 12 or 14 bit values extracted from the RAW file have 
+      been scaled to 16 bit values(0-65535).<SPAN 
+      style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>If you use these 
+      adjustments, as you increase the values beyond the default value of 1.0, 
+      more and more pixels will become saturated.<?xml:namespace prefix = "o" ns 
+      = "urn:schemas-microsoft-com:office:office" 
+/><o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>The brightness (or luminance) adjustment applies equally to all 
+      three channels.<SPAN style="mso-spacerun: yes">&nbsp; </SPAN>The values 
+      for the <FONT color=#ff0000>Red</FONT> and <FONT color=#0000ff>Blue</FONT> 
+      scale factors are relative to the <FONT color=#008000>Green</FONT> channel 
+      whose scale factor is the brightness value.<o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>By default DeepSkyStacker will use Daylight White Balance, unless 
+      either "No White Balance Processing" or "Use Camera White Balance" is 
+      selected.<SPAN style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>If you select 
+      "No White Balance Processing", then no white balance scaling is performed 
+      at all, which is desirable if you are using software such as StarTools to 
+      post process your stacked images.<SPAN 
+      style="mso-spacerun: yes">&nbsp;&nbsp; </SPAN>In most other cases we 
+      recommend that you use Daylight White Balance (neither check box 
+      selected).<o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>The option to choose Use Auto White Balance is no longer supported 
+      because it resulted in each frame getting its own unique white balance 
+      which messed up dark and flat frame processing.<SPAN 
+      style="mso-spacerun: yes">&nbsp; </SPAN>However, if you really want to use 
+      Auto White Balance, set your camera to Auto White Balance and select "Use 
+      Camera White Balance"<o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT size=2 face=Arial>The white balance adjustment values are extracted from the RAW 
+      files by LibRaw Copyright © 2008-2019 LibRaw LLC.<SPAN 
+      style="mso-spacerun: yes">&nbsp; </SPAN>LibRaw is based upon the original 
+      DCRaw decoder for RAW files written by Dave Coffin.</FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT size=2 face=Arial></FONT>&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt">
+           <font face="Arial" size="2">
     More information about the interpolation mode and the specific behavior of the 
     Bayer matrix optimization, is available in the
-    <A href="technical.htm#rawdecod">technical details</A>.</font></p>
+    <A href="technical.htm#rawdecod">technical details</A>.</font></P>
     <p>&nbsp;</p></td>
     <td width="39%">
     <IMG border=0 alt="Raw DDP settings" src  ="../images/english/rawddp.jpg" width=443 align=right height=549 ></td>

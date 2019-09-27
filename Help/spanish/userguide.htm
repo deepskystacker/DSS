@@ -617,7 +617,7 @@ Ud. puede agrandarla y achicarla apuntando con el cursor y moviendo la rueda del
         select extra stars or deselect the ones DeepSkyStacker detected by left 
         clicking with the mouse.<FONT size=3 face="Times New Roman"> 
         </FONT>
-                         </font></DIV></LI>
+                         </font></DIV>
         <LI>
     <div class="Standard"><font face="Arial" size="2">
                      editar la posición del cometa</font></div>
@@ -679,24 +679,42 @@ Ajustes Raw y FITS DDP<br>
     <div class="Standard">balance de blanco</div>
         <LI>
     <div class="Standard">modo de 
-      interpolación</div></LI></UL>
-    <p class="Standard"><SPAN 
-      style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri","sans-serif"; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-GB; mso-fareast-language: EN-US; mso-bidi-language: AR-SA'>***TRANSLATE***</SPAN>The Color Adjustment is applied 
-      after the White Balance adjustments for Daylight White Balance (the 
-      default) or Camara White Balance (if selected).</p>
-    <p class="Standard"><SPAN 
-      style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri","sans-serif"; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-GB; mso-fareast-language: EN-US; mso-bidi-language: AR-SA'>***TRANSLATE***</SPAN>The white balance adjustment values 
-      are extracted from the RAW files by&nbsp;<A href="https://www.libraw.org/" >LibRaw</A>&nbsp;Copyright ©&nbsp;2008-2019 LibRaw 
-      LLC.&nbsp; LibRaw is&nbsp;based upon the original DCRaw decoder for RAW 
-      files written by Dave Coffin.&nbsp; Use Auto White Balance is no longer 
-      supported.<br>
-    <br>
-    Los valores de escala de <font color="#ff0000">Rojo</font> y    <font color="#0000ff">Azul</font> son relativos al 
-    <font color="#008000">Verde</font>.<br>
-    El ajuste de luminancia aplica a los tres canales..</font></P>
-    <p class="Standard"><font face="Arial" size="2">
-    Respecto al modo de interpolación y el comportamiento específico de la optimización de la Matriz Bayer, hay mas información disponible en los 
-    <A href="technical.htm#rawdecod">detalles técnicos</A>.</font></p>
+      interpolación</div></LI></UL><SPAN 
+      style='FONT-SIZE: 11pt; FONT-FAMILY: "Calibri","sans-serif"; mso-ascii-theme-font: minor-latin; mso-fareast-font-family: Calibri; mso-fareast-theme-font: minor-latin; mso-hansi-theme-font: minor-latin; mso-bidi-font-family: "Times New Roman"; mso-bidi-theme-font: minor-bidi; mso-ansi-language: EN-GB; mso-fareast-language: EN-US; mso-bidi-language: AR-SA'>
+      <P class=MsoNormal style="MARGIN: 0cm 0cm 0pt"> 
+        <FONT size=2 face=Arial>El ajuste de color se aplica después de que se haya 
+      realizado el procesado el balance de blancos&nbsp; y los valores de 12 o 
+      14 bits extraídos del archivo RAW han sido escalados a valores de 16 bits 
+      (0-65535). Si usas estos ajustes, a medida que aumenta los valores más 
+      allá del valor predeterminado de 1.0, más y más píxeles se 
+      saturarán.<BR><BR>El ajuste de brillo (o luminancia) se aplica por igual a 
+      los tres canales. Los valores para los factores de escala <FONT color=#ff0000>rojo</FONT> y <FONT color=#0000ff>azul</FONT> son relativos 
+      al canal <FONT color=#008000>verde</FONT> cuyo factor de escala es el 
+      valor de brillo.<BR>&nbsp;<BR>Por defecto, DeepSkyStacker usará el balance 
+      de blancos&nbsp; "luz de día", a menos que sea seleccionado "Sin 
+      procesamiento de balance de blancos" o "Usar balance de blancos de la 
+      cámara". Si se selecciona "Sin procesamiento de balance de blancos", 
+      entonces no se realizará el escalamiento de balance de blancos en 
+      absoluto, lo cual es deseable si se está utilizando software como 
+      StarTools para procesar las imágenes apiladas. En la mayoría de los demás 
+      casos, recomendamos que se use Balance de blancos "Luz de día" (ninguna 
+      casilla de verificación seleccionada).<BR>&nbsp;<BR>La opción de elegir 
+      "Usar balance de blancos automático" ya no es soportada porque da como 
+      resultado que cada cuadro tuviera su propio balance blanco y estropeartía 
+      el procesamiento de los cuadros oscuros y planos. Sin embargo, si 
+      realmente desea usar el balance de blancos automático, configure su cámara 
+      en Auto Balance de blancos y seleccione "Usar balance de blancos de la 
+      cámara".<BR><BR>Los valores de ajuste del balance de blancos se extraen de 
+      los archivos RAW por LibRaw Copyright © 2008-2019 LibRaw LLC. LibRaw se 
+      basa en el Decodificador DCRaw original para archivos RAW escritos por 
+      Dave Coffin.<BR><BR>Más información sobre el modo de interpolación y el 
+      específico comportamiento de la optimización de la matriz de Bayer, está 
+      disponible en los </FONT>
+                          
+    <A href="technical.htm#rawdecod"><FONT size=2 face=Arial>detalles técnicos</FONT> </A><FONT size=2 face=Arial>.</FONT>         
+                 
+          <o:p></o:p></P></SPAN>
+            </font>
     <p></p></td>
     <td width="39%">
     <IMG border=0 alt="Raw DDP settings" src  ="../images/spanish/rawddp.jpg" width=443 align=right height=549 ></td>
