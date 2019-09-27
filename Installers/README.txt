@@ -16,6 +16,20 @@ The main changes in this release are:
 
 7. Fix for issue #42 - the stacking method "Average" wasn't always reported in the recap html file.
 
+8. Common control library 6 now used so some cosmetic changes such as filled progress bars.
+
+9. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
+
+10. Update the DeepSkyStacker taskbar icon with a progress bar that matches the main progress bar.
+
+11. Saving of final TIFF file is now faster.
+
+12. Ctrl-A will select all images in the file list (not the same as "Check All").
+
+13. Del key will delete an image from the file list so you don't need right click and select "Remove from list"
+
+14. Bug fix - if you change the type of an image from the file list "Properties" dialogue, the icon was changed, but the text wasn't.
+
 Welcome to DeepSkyStacker 4.2.2
 
 This release is all about performance, though other areas have been enhanced as well.  The main changes since 4.2.1 are:
