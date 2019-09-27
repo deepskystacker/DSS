@@ -176,7 +176,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
@@ -213,7 +213,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_DEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
@@ -249,7 +249,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>..\SMTP;..\ZClass\;..\tools\;..\LibTIFF\;..\CFitsIO\;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -282,7 +282,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>..\SMTP;..\ZClass\;..\tools\;..\LibTIFF\;..\CFitsIO\;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <FunctionLevelLinking>false</FunctionLevelLinking>
@@ -316,7 +316,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <BufferSecurityCheck>false</BufferSecurityCheck>
@@ -347,7 +347,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;;NDEBUG;_CRT_SECURE_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <OmitFramePointers>false</OmitFramePointers>
