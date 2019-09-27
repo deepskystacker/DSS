@@ -2089,6 +2089,8 @@ public:
 		bool bLoaded = false;
 
 #if defined(SS_WIN32) && !defined(SS_ANSI)
+#pragma warning(push)
+#pragma warning(disable: 4302 4311)
 		if ( ( pT != nullptr ) && SS_IS_INTRESOURCE(pT) )
 		{
 			UINT nId = LOWORD(reinterpret_cast<unsigned long>(pT));
@@ -2098,6 +2100,7 @@ public:
 			}
 			bLoaded = true;
 		}
+#pragma warning(pop)
 #endif
 
 		return bLoaded;
