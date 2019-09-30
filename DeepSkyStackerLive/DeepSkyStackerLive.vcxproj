@@ -42,20 +42,20 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -68,20 +68,20 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v141_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -125,38 +125,32 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
-    <IncludePath>..\DeepSkyStacker\;..\LibRaw;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
-    <IncludePath>..\DeepSkyStacker\;..\libraw;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
-    <IncludePath>..\DeepSkyStacker\;..\LibRaw;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\$(Platform)\ReleaseLibs;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
-    <IncludePath>..\DeepSkyStacker\;..\LibRaw;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\libs\$(Platform)\ReleaseLibs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
-    <IncludePath>..\DeepSkyStacker\;..\LibRaw;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\ReleaseLibs;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64</LibraryPath>
-    <IncludePath>..\DeepSkyStacker\;..\LibRaw;..\CFitsIO\;..\zlib\;..\lpng1634\;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <LibraryPath>..\libs\Win64\ReleaseLibs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
     <OutDir>.\ReleaseDebugInfo\</OutDir>
@@ -175,7 +169,7 @@
       <ValidateAllParameters>false</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -212,7 +206,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_DEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -248,7 +242,7 @@
       <ValidateAllParameters>false</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\SMTP;..\ZClass\;..\tools\;..\LibTIFF\;..\CFitsIO\;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
@@ -281,7 +275,7 @@
       <ValidateAllParameters>false</ValidateAllParameters>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\SMTP;..\ZClass\;..\tools\;..\LibTIFF\;..\CFitsIO\;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
@@ -315,7 +309,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
@@ -346,7 +340,7 @@
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\SMTP;..\ZClass;..\tools;..\LibTIFF;..\Libraw;..\CFitsIO;..\DeepSkyStacker;..\ChartCtrl;..\zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NDEBUG;NOMINMAX;LIBRAW_NODLL;WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_WINSOCK_DEPRECATED_NO_WARNINGS;USE_LIBTIFF_STATIC;CPJNSMTP_NOSSL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>

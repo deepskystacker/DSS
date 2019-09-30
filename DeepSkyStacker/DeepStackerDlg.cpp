@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
+#include "DSS-versionhelpers.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -343,41 +344,53 @@ void CDeepStackerDlg::OnDropFiles(HDROP hDropInfo)
 
 LRESULT CDeepStackerDlg::OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    HRESULT hr = ::CoCreateInstance(CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast<void**>(&m_taskbarList));
+	if (IsWindows7OrGreater())
+	{
+		HRESULT hr = ::CoCreateInstance(CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast<void**>(&m_taskbarList));
 
-    if (FAILED(hr))
-        return 0;
+		if (FAILED(hr))
+			return 0;
 
-    hr = m_taskbarList->HrInit();
+		hr = m_taskbarList->HrInit();
 
-    m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
-
+		m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+	}
     return 0;
 }
 
 LRESULT CDeepStackerDlg::OnProgressInit(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+	if (IsWindows7OrGreater())
+	{
+		m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
 
-    m_progress = true;
+		m_progress = true;
+	}
+
 
     return 0;
 }
 
 LRESULT CDeepStackerDlg::OnProgressUpdate(WPARAM wParam, LPARAM lParam)
 {
-    // do not update if progress wasn't started manually
-    if (m_progress)
-        m_taskbarList->SetProgressValue(m_hWnd, wParam, lParam);
+	if (IsWindows7OrGreater())
+	{
+		// do not update if progress wasn't started manually
+		if (m_progress)
+			m_taskbarList->SetProgressValue(m_hWnd, wParam, lParam);
+	}
 
     return 0;
 }
 
 LRESULT CDeepStackerDlg::OnProgressStop(WPARAM /*wParam*/, LPARAM /*lParam*/)
 {
-    m_taskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+	if (IsWindows7OrGreater())
+	{
+		m_taskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
 
-    m_progress = false;
+		m_progress = false;
+	}
 
     return 0;
 }

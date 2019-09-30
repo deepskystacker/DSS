@@ -32,7 +32,7 @@ Purpose:	Debugging helpers
 #define DEBUGHLP_H	1
 
 #ifndef _WINDOWS_
-	#include <Windows.h>
+	#include <windows.h>
 #endif	//	_WINDOWS_
 
 #ifndef _INC_TCHAR

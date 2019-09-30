@@ -1,7 +1,7 @@
 #include <stdafx.h>
 #include "SetUILanguage.h"
 #include "Registry.h"
-#include <VersionHelpers.h>
+#include "DSS-VersionHelpers.h"
 
 /* ------------------------------------------------------------------- */
 

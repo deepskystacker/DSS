@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "themeutil.h"
-#include <versionhelpers.h>
+#include <DSS-versionhelpers.h>
 
 CThemeUtil::CThemeUtil()
 {
