@@ -680,22 +680,43 @@ Raw und FITS DDP-Einstellungen<br>
           Weißabgleich</font></div>
         <LI>
     <div class="Standard"><font face="Arial" size="2">
-          Interpolations-Modus</font></div></LI></UL><font face="Arial" size="2">
-    <p class=Standard align=justify>
-       
-             Die Farbeinstellungen werden nach 
-      den Weißabgleich-Einstellungen für Tageslicht&nbsp;(Standard) oder Kamera (wenn ausgewählt).</p>
-    <p class="Standard" align=justify>  Die 
-      Werte für den Weißabgleich werden aus den RAW-files durch&nbsp;<A href="https://www.libraw.org/" >LibRaw</A>&nbsp;Copyright 
-      ©&nbsp;2008-2019 LibRaw LLC.&nbsp; LibRaw basiert auf den original DCRaw 
-      decoder für RAW files geschrieben von Dave Coffin. Der automatische 
-      Weißabgleich wird nicht länger unterstützt.<BR>
-    <br>
-    Die Werte für die <font color="#ff0000">Rot</font> und
-    <font color="#0000ff">Blau</font> Skalen, verstehen sich relativ zu <font color="#008000">Grün</font>.<br>
-    Der Luminanzwert (Helligkeit) betrifft alle drei Kanäle.</font></P>
-    <p class="Standard"><font face="Arial" size="2">
-    Über die richtige Auswahl der Bayer-Matrix-Umwandlung und das spezifische Verhalten der verschiedenen Bayer-Matrix-Optimierungen können Sie in den <A href="technical.htm#rawdecod">Technischen Details</A> mehr Info erhalten.</font></p>
+          Interpolations-Modus</font></div></LI></UL> 
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Die Farbanpassung wird nach dem Weißabgleichs-Prozess und nachdem 
+      die 12 oder 14 bit Werte aus den RAWs in 16 bit Werte<BR>(0-65535) 
+      gewandelt wurden angewendet.&nbsp;&nbsp;</FONT></FONT><FONT face=Arial><FONT size=2>Wenn Sie diese Werte über den Standardwert von 1.0 
+      erhöhen hat das zur Folge dass mehr und mehr Pixel gesättigt 
+      werden.<?xml:namespace prefix = "o" ns = 
+      "urn:schemas-microsoft-com:office:office" /><o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Die Helligkeit (oder Luminanz) Einstellung beeinflusst alle 3 
+      Kanäle gleichermaßen. Die Änderung der Werte für <FONT color=#ff0000>rot</FONT> und <FONT color=#0000ff>blau</FONT> passiert 
+      relativ zum <FONT color=#008000>grünen</FONT> Kanal dessen Werte die 
+      Helligkeit bestimmen.<o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Standardmäßig verwendet DeepSkyStacker Tageslicht-Weißabgleich 
+      außer wenn entweder "Keine Weißabgleichverarbeitung" oder "Weißabgleich 
+      der Kamera verwenden" ausgewählt ist. Wenn Sie "Keine 
+      Weißabgleichverarbeitung" auswählen wird gar kein Weißabgleich angewendet 
+      was wünschenswert ist wenn Sie für die Nachbearbeitung der gestackten 
+      Bilder eine Software wie StarTools verwenden. In den meisten anderen 
+      Fällen raten wir zur Verwendung von Tageslicht-Weißabgleich (keine der 
+      Möglichkeiten ausgewählt).<o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Die Option "automatischer Weißabgleich" wird nicht länger 
+      unterstützt da es dazu führt dass jedes frame seinen individuellen 
+      Weißabgleich erhält was das verrechnen mit darks und flats durcheinander 
+      bringt. Wenn Sie trotzdem den automatischen Weißabgleich verwenden wollen 
+      wählen Sie an Ihrer Kamera den automatischen Weißabgleich und verwenden 
+      "Weißabgleich der Kamera verwenden".<o:p></o:p></FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Die Werte für den Weißabgleich werden aus den RAW-Files mittels 
+      LibRaw (Copyright © 2008-2019 LibRaw LLC) gewonnen. LibRaw basiert auf dem 
+      originalen DCRaw-Decoder für RAW-Files geschrieben von Dave Coffin. 
+      </FONT></FONT></P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt">&nbsp;</P>
+      <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt">
+          <font face="Arial" size="2">
+    Über die richtige Auswahl der Bayer-Matrix-Umwandlung und das spezifische Verhalten der verschiedenen Bayer-Matrix-Optimierungen können Sie in den <A href="technical.htm#rawdecod">Technischen Details</A> mehr Info erhalten.</font></P>
     <p></p></td>
     <td width="39%">
     <IMG border=0 alt="Raw DDP settings" src  ="../images/german/rawddp.jpg" width=443 align=right height=549 ></td>
