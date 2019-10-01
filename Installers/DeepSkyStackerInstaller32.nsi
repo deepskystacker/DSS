@@ -26,6 +26,7 @@ SetCompressor /SOLID lzma
 !define DSS_RUNTIME_C      "vcruntime140.dll"
 !define DSS_RUNTIME_OMP    "vcomp140.dll"
 !define DSS_RUNTIME_UCRT   "ucrtbase.dll"
+!define DSS_RUNTIME_MSVC   "msvcrt.dll"
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
 !define DSS_VERSION        "4.2.3"                                  # For control panel
@@ -146,6 +147,7 @@ Section
   File "RunTime32\${DSS_RUNTIME_C}"
   File "RunTime32\${DSS_RUNTIME_OMP}"
   File "RunTime32\${DSS_RUNTIME_UCRT}"
+  File "RunTime32\${DSS_RUNTIME_MSVC}"
   File "${DSS_README_FILE}"
 
   # define uninstaller name
@@ -213,6 +215,9 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSS_RUNTIME_MFC}"
   Delete "$INSTDIR\${DSS_RUNTIME_CPP}"
   Delete "$INSTDIR\${DSS_RUNTIME_C}"
+  Delete "$INSTDIR\${DSS_RUNTIME_OMP}"
+  Delete "$INSTDIR\${DSS_RUNTIME_UCRT}"
+  Delete "$INSTDIR\${DSS_RUNTIME_MSVC}"
   Delete "$INSTDIR\${DSS_README_FILE}"
 
   RmDir  "$INSTDIR"
