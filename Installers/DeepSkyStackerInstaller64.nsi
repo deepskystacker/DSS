@@ -205,6 +205,7 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSS_RUNTIME_MFC}"
   Delete "$INSTDIR\${DSS_RUNTIME_CPP}"
   Delete "$INSTDIR\${DSS_RUNTIME_C}"
+  Delete "$INSTDIR\${DSS_RUNTIME_OMP}"
   Delete "$INSTDIR\${DSS_README_FILE}"
 
   RmDir  "$INSTDIR"
