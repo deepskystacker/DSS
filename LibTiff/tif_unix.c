@@ -55,8 +55,8 @@
 
 #include "tiffiop.h"
 
-
-#define TIFF_IO_MAX 2147483647U
+//#define TIFF_IO_MAX 2147483647U
+#define TIFF_IO_MAX USHRT_MAX
 
 
 typedef union fd_as_handle_union
@@ -88,8 +88,11 @@ _tiffReadProc(thandle_t fd, void* buf, tmsize_t size)
                 if (count <= 0)
                         break;
         }
-        if (count < 0)
-                return (tmsize_t)-1;
+		if (count < 0)
+		{
+			fprintf(stderr, "read() failed with errno %d\n", *_errno());
+			return (tmsize_t)-1;
+		}
         return (tmsize_t) bytes_read;
 }
 
@@ -116,8 +119,11 @@ _tiffWriteProc(thandle_t fd, void* buf, tmsize_t size)
                 if (count <= 0)
                         break;
         }
-        if (count < 0)
-                return (tmsize_t)-1;
+		if (count < 0)
+		{
+			fprintf(stderr, "write() failed with errno %d\n", *_errno());
+			return (tmsize_t)-1;
+		}
         return (tmsize_t) bytes_written;
 	/* return ((tmsize_t) write(fdh.fd, buf, bytes_total)); */
 }
