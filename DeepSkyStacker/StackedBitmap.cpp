@@ -870,6 +870,7 @@ public :
 
 	virtual ~CTIFFWriterStacker()
 	{
+		OnClose();
 	};
 
 	void	SetStackedBitmap(CStackedBitmap * pStackedBitmap)
@@ -996,7 +997,6 @@ void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	if (tiff.Open())
 	{
 		tiff.Write();
-		tiff.Close();
 	};
 };
 
@@ -1040,7 +1040,6 @@ void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	if (tiff.Open())
 	{
 		tiff.Write();
-		tiff.Close();
 	};
 };
 

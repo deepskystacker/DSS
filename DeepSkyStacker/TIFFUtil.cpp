@@ -70,6 +70,7 @@ void DSSTIFFInitialize()
 
 BOOL CTIFFReader::Open()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	CRegistry		reg;
 	DWORD			dwSkipExifInfo = 1;
@@ -243,6 +244,7 @@ BOOL CTIFFReader::Open()
 
 BOOL CTIFFReader::Read()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_tiff)
@@ -254,6 +256,9 @@ BOOL CTIFFReader::Read()
 			m_pProgress->Start2(nullptr, h);
 
 		lScanLineSize = TIFFScanlineSize(m_tiff);
+		ZTRACE_DEVELOP("TIFF Scan Line Size %d", lScanLineSize);
+		ZTRACE_DEVELOP("TIFF spp=%d, bpp=%d, w=%d, h=%d", spp, bpp, w, h);
+
 		pScanLine = (VOID *)malloc(lScanLineSize);
 		if (pScanLine)
 		{
@@ -268,6 +273,12 @@ BOOL CTIFFReader::Read()
 				int			nResult;
 
 				nResult = TIFFReadScanline(m_tiff, pScanLine, j);
+				if (1 != nResult)
+				{
+					ZTRACE_RUNTIME("TIFFReadScanLine returned an error");
+					bResult = false;
+				}
+
 				for (LONG i = 0;i<w && bResult;i++)
 				{
                     double fRed = 0;
@@ -380,6 +391,7 @@ BOOL CTIFFReader::Read()
 
 BOOL CTIFFReader::Close()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 	if (m_tiff)
 	{
@@ -585,7 +597,7 @@ BOOL CTIFFWriter::Write()
 			if (m_pProgress)
 				m_pProgress->Start2(nullptr, h);
 
-			for (LONG j = 0;(j<h) && !bError; j++)
+			for (LONG j = 0; j < h; j++)
 			{
 				BYTE *  pBYTELine	= (BYTE *)pScanLine;
 				WORD *	pWORDLine	= (WORD *)pScanLine;
@@ -852,6 +864,7 @@ BOOL CTIFFWriteFromMemoryBitmap::OnClose()
 BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (pBitmap)
@@ -953,7 +966,7 @@ public :
 		m_ppBitmap = ppBitmap;
 	};
 
-	virtual ~CTIFFReadInMemoryBitmap() {};
+	virtual ~CTIFFReadInMemoryBitmap() { OnClose(); };
 
 	virtual BOOL	OnOpen();
 	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
@@ -1065,6 +1078,7 @@ BOOL CTIFFReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 
 BOOL CTIFFReadInMemoryBitmap::OnClose()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_pBitmap)
@@ -1080,6 +1094,7 @@ BOOL CTIFFReadInMemoryBitmap::OnClose()
 
 BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	CTIFFReadInMemoryBitmap	tiff(szFileName, ppBitmap, pProgress);
 
@@ -1088,8 +1103,8 @@ BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 		bResult = tiff.Open();
 		if (bResult)
 			bResult = tiff.Read();
-		if (bResult)
-			bResult = tiff.Close();
+		//if (bResult)
+		//	bResult = tiff.Close();
 	};
 
 	return bResult;
@@ -1099,6 +1114,7 @@ BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 
 BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	CTIFFReader				tiff(szFileName, nullptr);
 
@@ -1126,7 +1142,7 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_fExposure		= tiff.GetExposureTime();
 		BitmapInfo.m_fAperture		= tiff.GetAperture();
 		BitmapInfo.m_DateTime		= tiff.GetDateTime();
-		bResult = tiff.Close();
+		bResult = true; // tiff.Close();
 	};
 
 	return bResult;
@@ -1136,6 +1152,7 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	return GetTIFFInfo(szFileName, BitmapInfo);
 };
 
@@ -1143,6 +1160,7 @@ BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	LoadTIFFPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	CBitmapInfo			BitmapInfo;
 
