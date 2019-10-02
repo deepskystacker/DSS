@@ -17,7 +17,9 @@ void	SetUILanguage(LANGID LangID)
 		SetThreadUILanguageProc				SetThreadUILanguage;
 		SetThreadPreferredUILanguagesProc	SetThreadPreferredUILanguages;
 
-//		const UINT MUI_LANGUAGE_NAME	= 0x8; // Use ISO language (culture) name convention
+#ifndef MUI_LANGUAGE_NAME
+		const UINT MUI_LANGUAGE_NAME	= 0x8; // Use ISO language (culture) name convention
+#endif
 //		const UINT MUI_THREAD_LANGUAGES = 0x40; // GetThreadPreferredUILanguages merges in thread preferred languages
 
 		SetThreadPreferredUILanguages =
