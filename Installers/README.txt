@@ -2,33 +2,35 @@ Welcome to DeepSkyStacker 4.2.3
 
 The main changes in this release are:
 
-1. The stacking settings dialog width has been increased to reduce or eliminate the need to scroll the tabs.
+1. The 32 bit version will now run on Windows XP SP3.  It is likely that the next release of DeepSkyStacker will not do so.
 
-2. Add .rw2 to list of RAW file extensions.
+2. The stacking settings dialog width has been increased to reduce or eliminate the need to scroll the tabs.
 
-3. Change the colour scheme for DeepSkyStacker Live to make it more "night vision" friendly.
+3. Add .rw2 to list of RAW file extensions.
 
-4. Recognise and use GAIN values in FITS file from CMOS/CCD cameras in a manner similar to how ISO is handled for matching darks, lights etc..   Please note this is not the same as EGAIN (e-/ADU).  It refers to the camera's scaling of EGAIN.
+4. Change the colour scheme for DeepSkyStacker Live to make it more "night vision" friendly.
 
-5. Update help files and add a new Dutch version of the help.
+5. Recognise and use GAIN values in FITS file from CMOS/CCD cameras in a manner similar to how ISO is handled for matching darks, lights etc..   Please note this is not the same as EGAIN (e-/ADU).  It refers to the camera's scaling of EGAIN.
 
-6. Issue #83: Provide the option to perform NO White Balance processing at all (requested by Ivo Jager for StarTools).
+6. Update help files and add a new Dutch version of the help.
 
-7. Fix for issue #42 - the stacking method "Average" wasn't always reported in the recap html file.
+7. Issue #83: Provide the option to perform NO White Balance processing at all (requested by Ivo Jager for StarTools).
 
-8. Common control library 6 now used so some cosmetic changes such as filled progress bars.
+8. Fix for issue #42 - the stacking method "Average" wasn't always reported in the recap html file.
 
-9. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
+9. Common control library 6 now used so some cosmetic changes such as filled progress bars.
 
-10. Update the DeepSkyStacker taskbar icon with a progress bar that matches the main progress bar.
+19. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
 
-11. Saving of final TIFF file is now faster.
+11. Update the DeepSkyStacker taskbar icon with a progress bar that matches the main progress bar.
 
-12. Ctrl-A will select all images in the file list (not the same as "Check All").
+12. Saving of final TIFF file is now faster, and a number of other performance enhancements have been made.
 
-13. Del key will delete an image from the file list so you don't need right click and select "Remove from list"
+13. Ctrl-A will select all images in the file list (not the same as "Check All").
 
-14. Bug fix - if you change the type of an image from the file list "Properties" dialogue, the icon was changed, but the text wasn't.
+14. Del key will delete an image from the file list so you don't need right click and select "Remove from list"
+
+15. Bug fix - if you change the type of an image from the file list "Properties" dialogue, the icon was changed, but the text wasn't.
 
 Welcome to DeepSkyStacker 4.2.2
 
