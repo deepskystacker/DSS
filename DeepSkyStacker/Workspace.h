@@ -48,6 +48,7 @@ public :
 	{
         Initialize();
 
+        m_Type      = DST_DWORD;
 		m_strPath	= szPath;
 		m_strName	= szName;
 	};
@@ -56,6 +57,7 @@ public :
 	{
         Initialize();
 
+        m_Type      = DST_STRING;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_strValue	= szDefValue;
@@ -65,6 +67,7 @@ public :
 	{
         Initialize();
 
+        m_Type      = DST_DWORD;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_dwValue   = dwValue;
@@ -74,6 +77,7 @@ public :
 	{
         Initialize();
 
+        m_Type      = DST_BOOL;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_bValue	= bValue;
@@ -83,6 +87,7 @@ public :
 	{
         Initialize();
 
+        m_Type      = DST_DOUBLE;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_fValue	= fValue;
