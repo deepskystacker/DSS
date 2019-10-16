@@ -1,5 +1,14 @@
 Welcome to DeepSkyStacker 4.2.3
 
+************** IF YOU INSTALLED 4.2.3 BETA 1 **************
+  When you next use DeepSkyStacker, please restore all
+  settings to the default using:  
+
+	Settings/Load/Restore Defaults
+
+  before you run your stack.
+*******************************************************
+
 The main changes in this release are:
 
 1. The 32 bit version will now run on Windows XP SP3.  It is likely that the next release of DeepSkyStacker will not do so.
@@ -12,7 +21,7 @@ The main changes in this release are:
 
 5. Recognise and use GAIN values in FITS file from CMOS/CCD cameras in a manner similar to how ISO is handled for matching darks, lights etc..   Please note this is not the same as EGAIN (e-/ADU).  It refers to the camera's scaling of EGAIN.
 
-6. Update help files and add a new Dutch version of the help.
+6. Update help files and add a new Dutch version of the help.  My thanks to Eelko Gielis, Estela Nunez, Giovanni Benintende, Guenter Heberger, Josee Mozart Fusco, Luc Coiffier, Mickle Timofeyev for their immense help with all the translation work needed for this release.
 
 7. Issue #83: Provide the option to perform NO White Balance processing at all (requested by Ivo Jager for StarTools).
 
