@@ -856,9 +856,6 @@
     <Image Include="undo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="res\DeepSkyStacker.manifest" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\libjpg\libjpg.vcxproj">
       <Project>{a2f500c6-6903-4c2d-906d-ce86b99ba50d}</Project>
     </ProjectReference>

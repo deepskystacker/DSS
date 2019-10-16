@@ -1023,6 +1023,5 @@
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
       <Filter>Tools</Filter>
     </CustomBuild>
-    <CustomBuild Include="res\DeepSkyStacker.manifest" />
   </ItemGroup>
 </Project>
