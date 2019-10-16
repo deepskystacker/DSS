@@ -55,19 +55,7 @@
 
 #include "tiffiop.h"
 
-#ifdef __WIN32__
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-BOOL IsWindowsXP()
-{
-	DWORD version = GetVersion();
-	DWORD major = (DWORD)(LOBYTE(LOWORD(version)));
-	DWORD minor = (DWORD)(HIBYTE(LOWORD(version)));
-	return ((major == 5) && (minor >= 1)); // 5.1 is WIN Xp  5.2 is XP x64
-};
-#endif   
-
-#define TIFF_IO_MAX 2147483647U
+#define TIFF_IO_MAX 16777216UL
 
 typedef union fd_as_handle_union
 {
@@ -87,12 +75,9 @@ _tiffReadProc(thandle_t fd, void* buf, tmsize_t size)
 		errno=EINVAL;
 		return (tmsize_t) -1;
 	}
-#ifdef __WIN32__
-	unsigned long limit = TIFF_IO_MAX;
-	if (IsWindowsXP()) limit = USHRT_MAX;
-#else
+
 	const unsigned long limit = TIFF_IO_MAX;
-#endif
+
 	fdh.h = fd;
         for (bytes_read=0; bytes_read < bytes_total; bytes_read+=count)
         {
@@ -124,12 +109,8 @@ _tiffWriteProc(thandle_t fd, void* buf, tmsize_t size)
 		errno=EINVAL;
 		return (tmsize_t) -1;
 	}
-#ifdef __WIN32__
-	unsigned long limit = TIFF_IO_MAX;
-	if (IsWindowsXP()) limit = USHRT_MAX;
-#else
+
 	const unsigned long limit = TIFF_IO_MAX;
-#endif
 
 	fdh.h = fd;
         for (bytes_written=0; bytes_written < bytes_total; bytes_written+=count)
