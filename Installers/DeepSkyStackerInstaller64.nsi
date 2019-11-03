@@ -1,5 +1,9 @@
 ##!include "MUI2.nsh"
 !verbose 4
+
+# Want to display Unicode readme
+Unicode True
+
 SetCompressor /SOLID lzma
 
 !include "MUI.nsh"
