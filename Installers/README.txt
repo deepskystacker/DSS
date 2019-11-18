@@ -41,6 +41,8 @@ The main changes in this release are:
 
 15. Bug fix - if you change the type of an image from the file list "Properties" dialogue, the icon was changed, but the text wasn't.
 
+16. Bug fix - Settings were handled incorrectly in 4.2.3 Beta 1 
+
 Welcome to DeepSkyStacker 4.2.2
 
 This release is all about performance, though other areas have been enhanced as well.  The main changes since 4.2.1 are:
