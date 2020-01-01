@@ -16,7 +16,7 @@ class CProgressDlg : public CDialog
 {
 // Construction
 public:
-	CProgressDlg(CWnd* pParent = NULL);   // standard constructor
+	CProgressDlg(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CProgressDlg)
@@ -43,7 +43,7 @@ public :
 	void PeekAndPump()
 	{
 		MSG msg;
-		while (!m_bCancelled && ::PeekMessage(&msg, NULL,0,0,PM_NOREMOVE)) 
+		while (!m_bCancelled && ::PeekMessage(&msg, nullptr,0,0,PM_NOREMOVE))
 		{
 /*
 			if (bCancelOnESCkey && (msg.message == WM_CHAR) && (msg.wParam == VK_ESCAPE))
@@ -57,12 +57,12 @@ public :
 				if (rect.PtInRect(msg.pt))
 					OnCancel();
 			}*/
-  
-			if (!AfxGetApp()->PumpMessage()) 
+
+			if (!AfxGetApp()->PumpMessage())
 			{
 				::PostQuitMessage(0);
 				return;
-			} 
+			}
 		}
 	}
 
@@ -71,6 +71,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CProgressDlg)
+	virtual BOOL OnInitDialog();
 	virtual void OnCancel();
 	afx_msg void OnStop();
 	//}}AFX_MSG
@@ -93,40 +94,54 @@ private :
 						m_lLastTotal2;
 	BOOL				m_bFirstProgress;
 	BOOL				m_bEnableCancel;
+	CDeepStackerDlg *   m_pDeepStackerDlg;
 
 private :
 	void				CreateProgressDialog()
 	{
+
 		if (!m_dlg.m_hWnd)
 		{
 			CWnd *pMainWnd = AfxGetMainWnd();
+
 			m_dlg.Create(IDD_PROGRESS);
 
-			// Disable main window
+			// Centre on main window
 			if (pMainWnd)
-			{
 				m_dlg.CenterWindow(pMainWnd);
-				pMainWnd->EnableWindow(FALSE);
-			};
+
+			// Disable child dialogs of DeepSkyStackerDlg
+
+			if (m_pDeepStackerDlg)
+				m_pDeepStackerDlg->disableSubDialogs();
 
 			// Re-enable this window
 			m_dlg.EnableWindow(TRUE);
-			m_dlg.ShowWindow(SW_SHOW);		
+			m_dlg.ShowWindow(SW_SHOW);
 		};
 	};
 
 public :
-	CDSSProgressDlg()
-		:
-		m_bEnableCancel(FALSE)
-	{
-	};
-	virtual ~CDSSProgressDlg() 
+    CDSSProgressDlg(CWnd* pParent = nullptr) :
+		m_dlg(pParent)
+    {
+        m_bEnableCancel = false;
+        m_lTotal1 = 0;
+        m_lTotal2 = 0;
+        m_dwStartTime = 0;
+        m_dwLastTime = 0;
+        m_lLastTotal1 = 0;
+        m_lLastTotal2 = 0;
+        m_bFirstProgress = false;
+		m_pDeepStackerDlg = GetDeepStackerDlg(nullptr);
+    }
+
+	virtual ~CDSSProgressDlg()
 	{
 		Close();
 	};
 
-	virtual void	SetNrUsedProcessors(LONG lNrProcessors=1) 
+	virtual void	SetNrUsedProcessors(LONG lNrProcessors=1)
 	{
 		if (m_dlg.m_hWnd)
 		{
@@ -195,6 +210,8 @@ public :
 			m_dwLastTime  = dwCurrentTime;
 			m_dlg.m_Progress1.SetPos(lAchieved1);
 
+            GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_UPDATE, lAchieved1, m_lTotal1);
+
 			if (m_lTotal1 > 1 && lAchieved1 > 1)
 			{
 				DWORD			dwRemainingTime;
@@ -230,7 +247,7 @@ public :
 			m_dlg.PeekAndPump();
 		};
 	};
-	
+
 	virtual void	Start2(LPCTSTR szText, LONG lTotal2)
 	{
 		CString			strText = szText;
@@ -257,7 +274,7 @@ public :
 
 		if (m_bJointProgress)
 		{
-			Start(NULL, lTotal2, m_bEnableCancel);
+			Start(nullptr, lTotal2, m_bEnableCancel);
 			if (strText.GetLength())
 				m_dlg.m_Text1.SetWindowText(szText);
 		};
@@ -298,21 +315,20 @@ public :
 	{
 		m_dlg.PeekAndPump();
 		// Prevent failure if mdlg is no longer a valid window
-		if (NULL != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
+		if (nullptr != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
 
-		CWnd *pMainWnd = AfxGetMainWnd();
-		if (pMainWnd)
-			pMainWnd->EnableWindow(TRUE);
+		if (m_pDeepStackerDlg)
+			m_pDeepStackerDlg->enableSubDialogs();
 
 		return TRUE;
 	};
 
-	virtual BOOL	Warning(LPCTSTR szText) 
-	{ 
+	virtual BOOL	Warning(LPCTSTR szText)
+	{
 		int				nResult;
 
 		nResult = AfxMessageBox(szText, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING);
-		return (nResult == IDYES); 
+		return (nResult == IDYES);
 	}
 
 };

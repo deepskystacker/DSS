@@ -22,12 +22,14 @@ private :
 	CListCtrlEx			m_ImageList;
 
 public:
-	CImageListTab(CWnd* pParent = NULL);   // standard constructor
+	CImageListTab(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CImageListTab();
 
 
 // Dialog Data
 	enum { IDD = IDD_IMAGELIST };
+
+	void SetToDarkMode();
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

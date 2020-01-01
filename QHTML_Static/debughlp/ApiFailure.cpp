@@ -9,7 +9,7 @@ use of this software.
 
 Permission is granted to anyone to use this software for any purpose, including
 commercial applications, and to alter it and redistribute it freely, subject
-to the following restrictions: 
+to the following restrictions:
 
 1) This source code may not be distributed as part of a commercial library
    without written permission from the author

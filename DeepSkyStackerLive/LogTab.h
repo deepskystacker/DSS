@@ -16,9 +16,10 @@ class CLogTab : public CDialog
 private :
 	CControlPos			m_ControlPos;
 	CRichEditCtrl		m_Log;
+	bool				m_bDarkMode;
 
 public:
-	CLogTab(CWnd* pParent = NULL);   // standard constructor
+	CLogTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CLogTab();
 
 	//void	CallHelp();

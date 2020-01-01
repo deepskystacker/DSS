@@ -234,7 +234,7 @@ BEGIN
     PUSHBUTTON      "Cancelar",IDCANCEL,205,151,50,14
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Integrando"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -268,14 +268,14 @@ BEGIN
     PUSHBUTTON      "Configuracoes...",IDC_DEBLOOMSETTINGS,184,130,57,14,NOT WS_VISIBLE
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Parametros de Integracao"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Cancelar",IDCANCEL,266,191,50,14
-    LTEXT           "Estatico",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Estatico",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Pasta de Ficheiros Temporarios",IDC_STATIC,11,177,99,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Estatico",IDC_TEMPFOLDER,119,177,178,8,SS_PATHELLIPSIS
@@ -285,7 +285,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,122,10
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Resultado"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -345,7 +345,7 @@ BEGIN
     LTEXT           "Escala de azuis",IDC_STATIC,15,53,48,8
     EDITTEXT        IDC_BLUESCALE,83,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balanco de brancos",IDC_STATIC,140,7,131,64
-    CONTROL         "Usar balanco brancos automatico",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,22,113,17
+    CONTROL         "Sem processamento de balanço de branco",IDC_NOWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,22,113,17
     CONTROL         "Usar balanco brancos da camera",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,113,17
     CONTROL         "Interpolacao bilinear",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Homogenuidade Adaptada-Directamente - Interpolacao (AHD)",IDC_AHD,
@@ -393,7 +393,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,255,247,10
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Alinhamento"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -422,7 +422,7 @@ BEGIN
     CONTROL         "Fotograma Dark Flat",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,67,78,10
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ficheiros Intermedios"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -470,7 +470,7 @@ BEGIN
     COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cometa"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -518,7 +518,7 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,79,163,10
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cosmetica"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -597,7 +597,7 @@ BEGIN
                     "QHTM_Window_Class_001",WS_TABSTOP,7,7,324,192
 END
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Producao"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -861,7 +861,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profundidade"
     IDS_COLUMN_INFOS        "Informacoes"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposicao"
 	IDS_COLUMN_APERTURE		"Abertura"
     IDS_COLUMN_STARS        "#Estrelas"
@@ -886,6 +886,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "ou"
     IDS_AND                 "e"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -906,7 +908,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS or DeepSkyStacker Image|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Ficheiros Fotograficos|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Ficheiros Fotograficos|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "TIFF Imagem (16 bit/ch)|*.TIF|TIFF Imagem (32 bit/ch - integer)|*.TIF|TIFF Imagem (32 bit/ch - rational)|*.TIF|FITS Imagem (16 bit/ch)|*.FTS|FITS Imagem (32 bit/ch - integer)|*.FTS|FITS Imagem (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Lista de Ficheiros (*.txt)|*.txt|Lista de Ficheiros (*.dssfilelist)|*.dssfilelist|Todos Ficheiros|*.*||"
     IDS_FILTER_MASK         "TIFF Imagem|*.tif;*.tiff|FITS Imagem|*.fits;*.fts;*.fit||"
@@ -1113,15 +1115,16 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Etapas de Integracao %ld\n  ->%ld fotogramas (ISO: %s) - exposicao total: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld fotogramas (ISO: %s) exposicao: %s\n"
+    IDS_RECAP_STEP          "Etapas de Integracao %ld\n  ->%ld fotogramas (%s: %s) - exposicao total: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld fotogramas (%s: %s) exposicao: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAviso: Velocidade ISO nao combina com fotogramas-luz \n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Sem Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld fotogramas (ISO : %s) exposicao: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld fotogramas (%s : %s) exposicao: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAviso: tempo-exposicao nao corresponde com fotogramas- luz \n"
     IDS_RECAP_NODARK        "\t-> Sem Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld fotogramas (ISO: %s) exposicao: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld fotogramas (%s: %s) exposicao: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Sem Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nTempo Estimado d exposicao-Total: %s\n (O pc considera o tempo total de exposicao todos os fotogramas- luz verificados e mantidos no processo de integracao)\n"
@@ -1130,9 +1133,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "Calibracao do Background nos Canais RGB: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optmizacao do Dark: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld fotogramas (ISO : %s) exposicao: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld fotogramas (%s : %s) exposicao: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAviso: Velocidade ISO nao corresponde-fotogramas flat\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAviso: Tempo-exposicao nao corresponde c/ fotogramas flat\n"
 END
@@ -1384,8 +1389,8 @@ STRINGTABLE
 BEGIN
     IDS_ABOUT_DSS           "DeepSkyStacker version %s"
     IDS_ABOUT_DSS_LINK      "http://deepskystacker.free.fr"
-    IDS_ABOUT_DCRAW         "RAW files decoding by DCRAW (version %s)\nCopyright © 1997-2016 Dave Coffin"
-    IDS_ABOUT_DCRAW_LINK    "http://www.cybercom.net/~dcoffin/dcraw/"
+    IDS_ABOUT_DCRAW         "RAW files decoding by LibRaw (version %s)\nCopyright © 1997-2019 LibRaw LLC"
+    IDS_ABOUT_DCRAW_LINK    "http://libraw.org/"
     IDS_ABOUT_TIFF          "TIFF files encoding/decoding by LibTIFF (version %s)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc."
     IDS_ABOUT_TIFF_LINK     "http://www.remotesensing.org/libtiff/"
     IDS_ABOUT_FITS          "FITS decoding by CFitsIO (version %s)\nCopyright NASA"

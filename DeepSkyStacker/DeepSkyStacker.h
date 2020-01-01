@@ -14,6 +14,8 @@ public :
 public :
 	CDeepSkyStackerApp()
 	{
+        m_pMainDlg = nullptr;
+
 		EnableHtmlHelp();
 	};
 

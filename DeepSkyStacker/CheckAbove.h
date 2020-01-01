@@ -18,7 +18,7 @@ private :
 
 // Construction
 public:
-	CCheckAbove(CWnd* pParent = NULL);   // standard constructor
+	CCheckAbove(CWnd* pParent = nullptr);   // standard constructor
 	double		GetThreshold()
 	{
 		return m_fThreshold;

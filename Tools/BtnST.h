@@ -125,7 +125,7 @@ public:
 	DWORD SetCheck(int nCheck, BOOL bRepaint = TRUE);
 	int GetCheck();
 
-	DWORD SetURL(LPCTSTR lpszURL = NULL);
+	DWORD SetURL(LPCTSTR lpszURL = nullptr);
 	void DrawTransparent(BOOL bRepaint = FALSE);
 	DWORD SetBk(CDC* pDC);
 
@@ -137,7 +137,7 @@ public:
 	void ActivateTooltip(BOOL bEnable = TRUE);
 	DWORD EnableBalloonTooltip();
 
-	DWORD SetBtnCursor(int nCursorId = NULL, BOOL bRepaint = TRUE);
+	DWORD SetBtnCursor(int nCursorId = 0, BOOL bRepaint = TRUE);
 
 	DWORD SetFlat(BOOL bFlat = TRUE, BOOL bRepaint = TRUE);
 	DWORD SetAlign(BYTE byAlign, BOOL bRepaint = TRUE);
@@ -146,24 +146,24 @@ public:
 	DWORD DrawBorder(BOOL bDrawBorder = TRUE, BOOL bRepaint = TRUE);
 	DWORD DrawFlatFocus(BOOL bDrawFlatFocus, BOOL bRepaint = TRUE);
 
-	DWORD SetIcon(int nIconIn, int nCxDesiredIn, int nCyDesiredIn, int nIconOut = NULL, int nCxDesiredOut = 0, int nCyDesiredOut = 0);
-	DWORD SetIcon(int nIconIn, int nIconOut = NULL);
-	DWORD SetIcon(HICON hIconIn, HICON hIconOut = NULL);
+	DWORD SetIcon(int nIconIn, int nCxDesiredIn, int nCyDesiredIn, int nIconOut = 0, int nCxDesiredOut = 0, int nCyDesiredOut = 0);
+	DWORD SetIcon(int nIconIn, int nIconOut = 0);
+	DWORD SetIcon(HICON hIconIn, HICON hIconOut = nullptr);
 
-	DWORD SetBitmaps(int nBitmapIn, COLORREF crTransColorIn, int nBitmapOut = NULL, COLORREF crTransColorOut = 0);
-	DWORD SetBitmaps(HBITMAP hBitmapIn, COLORREF crTransColorIn, HBITMAP hBitmapOut = NULL, COLORREF crTransColorOut = 0);
+	DWORD SetBitmaps(int nBitmapIn, COLORREF crTransColorIn, int nBitmapOut = 0, COLORREF crTransColorOut = 0);
+	DWORD SetBitmaps(HBITMAP hBitmapIn, COLORREF crTransColorIn, HBITMAP hBitmapOut = nullptr, COLORREF crTransColorOut = 0);
 
 	void SizeToContent();
 
 #ifdef	BTNST_USE_BCMENU
-	DWORD SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle = TRUE, UINT nToolbarID = NULL, CSize sizeToolbarIcon = CSize(16, 16), COLORREF crToolbarBk = RGB(255, 0, 255), BOOL bRepaint = TRUE);
+	DWORD SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle = TRUE, UINT nToolbarID = nullptr, CSize sizeToolbarIcon = CSize(16, 16), COLORREF crToolbarBk = RGB(255, 0, 255), BOOL bRepaint = TRUE);
 #else
 	DWORD SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint = TRUE);
 #endif
 	DWORD SetMenuCallback(HWND hWnd, UINT nMessage, LPARAM lParam = 0);
 
 #ifdef	BTNST_USE_SOUND
-	DWORD SetSound(LPCTSTR lpszSound, HMODULE hMod = NULL, BOOL bPlayOnClick = FALSE, BOOL bPlayAsync = TRUE);
+	DWORD SetSound(LPCTSTR lpszSound, HMODULE hMod = nullptr, BOOL bPlayOnClick = FALSE, BOOL bPlayAsync = TRUE);
 #endif
 
 	static short GetVersionI()		{return 39;}

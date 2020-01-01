@@ -1,7 +1,6 @@
 #ifndef __DSSTOOLS_H__
 #define __DSSTOOLS_H__
 
-
 #include <algorithm>
 #include <numeric>
 #include <float.h>
@@ -128,6 +127,8 @@ public :
 	{
 		a = b = 0;
 		c = 1;
+        fMin = 0;
+        fMax = 0;
 	};
 
 	CRationalInterpolation(const CRationalInterpolation & ri)
@@ -157,7 +158,7 @@ public :
 
 		if (t1)
 			b = t2/t1;
-		else 
+		else
 			b = 0;
 		if (t3)
 			c = ((x0-x1)-b*(x0*y0 - x1*y1))/t3;
@@ -228,7 +229,7 @@ public :
 		CopyFrom(pt);
 		return (*this);
 	};
-	
+
 	void	Offset(const CPointExt & pt)
 	{
 		X -= pt.X;
@@ -309,7 +310,7 @@ public :
 					m_fMax;
 
 public :
-	CDynamicStats() 
+	CDynamicStats()
 	{
 		m_lNrValues = 0;
 		m_fSum		= 0;
@@ -375,17 +376,17 @@ inline double Median(double v1, double v2, double v3)
 {
   if (v1 > v2)
   {
-    if (v3 > v1) 
+    if (v3 > v1)
 		return v1;
-    else if (v3 < v2) 
+    else if (v3 < v2)
 		return v2;
     return v3;
   }
   else
   {
-    if (v3 < v1) 
+    if (v3 < v1)
 		return v1;
-    else if (v3 > v2) 
+    else if (v3 > v2)
 		return v2;
     return v3;
   }
@@ -394,87 +395,106 @@ inline double Median(double v1, double v2, double v3)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	Median(std::vector<T> & vValues)
+double Median(std::vector<T>& values)
 {
-	if (!vValues.size())
-		return 0;
-	else
-	{
-		std::sort(vValues.begin(), vValues.end());
-		if ((vValues.size() % 2) == 1)
-		{
-			LONG			lIndice;
+    if (values.empty())
+        return 0;
 
-			lIndice = (LONG)vValues.size()/2;
-			return vValues[lIndice];
-		}
-		else
-		{
-			LONG			lIndice;
-			lIndice = (LONG)vValues.size()/2;
-			return ((double)vValues[lIndice]+(double)vValues[lIndice-1])/2.0;
-		};
-	};
+    auto size = values.size();
+
+    // benchmarked: at around 40 elements, partial sort stars becoming faster
+    // O(N) or O(2*N) for even count vs O(N*log(N))
+    if (size > 40)
+    {
+        auto n = size / 2;
+        std::nth_element(values.begin(), values.begin() + n, values.end());
+        double median = values[n];
+
+        if (size & 1) // odd
+        {
+            return median;
+        }
+        else // even
+        {
+            auto max = std::max_element(values.begin(), values.begin() + n);
+
+            return (*max + median) / 2;
+        }
+    }
+    else // fallback to classic sort
+    {
+        auto n = size / 2;
+        std::sort(values.begin(), values.end());
+
+        if (size & 1) // odd
+        {
+            return values[n];
+        }
+        else // even
+        {
+            return (values[n] + values[n - 1]) / 2;
+        }
+    }
+}
+
+/* ------------------------------------------------------------------- */
+
+template <class T> inline
+T Maximum(const std::vector<T>& values)
+{
+    if (values.empty())
+        return 0;
+
+	return *std::max_element(values.begin(), values.end());
 };
 
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-T	Maximum(const std::vector<T> & vValues)
+double Average(const std::vector<T>& values)
 {
-	T			Result = 0;
-
-	for (LONG i = 0;i<vValues.size();i++)
-		Result = max(Result, vValues[i]);
-
-	return Result;
+    return std::accumulate(values.begin(), values.end(), 0.0) / values.size();
 };
 
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	Average(const std::vector<T> & vValues)
+double Sigma2(const std::vector<T>& values, double& average)
 {
-	double fResult = std::accumulate(vValues.begin(), vValues.end(), 0.0) / vValues.size();
-	return fResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-template <class T> inline
-double	Sigma2(const std::vector<T> & vValues, double & fAverage)
-{
-	double			fResult = 0.0;
-	double			fSquareDiff = 0.0;
+	double result = 0.0;
+	double squareDiff = 0.0;
 
 	// Compute the average
-	fAverage = Average(vValues);
+	average = Average(values);
 
-	for (LONG i = 0;i<vValues.size();i++)
-		fSquareDiff += (((double)vValues[i] - fAverage) * ((double)vValues[i] - fAverage));
-	if (vValues.size())
-		fResult = sqrt(fSquareDiff/vValues.size());
+    for (double val : values)
+        squareDiff += std::pow(val - average, 2);
 
-	return fResult;
+    if (values.size())
+        result = sqrt(squareDiff / values.size());
+
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	Sigma(const std::vector<T> & vValues)
+double Sigma(const std::vector<T>& values)
 {
-	double			fAverage;
+	double average;
 
-	return Sigma2(vValues, fAverage);
+	return Sigma2(values, average);
 };
 
 template <typename T>
-double CalculateSigmaFromAverage(const std::vector<T> & vValues, const double targetAverage)
+double CalculateSigmaFromAverage(const std::vector<T>& values, const double targetAverage)
 {
 	double squareDiff = 0.0;
-	for (size_t i = 0; i < vValues.size(); i++)
-		squareDiff += (vValues[i] - targetAverage) * (vValues[i] - targetAverage);
-	return sqrt(squareDiff / vValues.size());
+
+    for (double val : values)
+        squareDiff += std::pow(val - targetAverage, 2);
+
+	return sqrt(squareDiff / values.size());
 }
 
 /* ------------------------------------------------------------------- */
@@ -508,7 +528,7 @@ private :
 	};
 
 public :
-	CFlatPart()	
+	CFlatPart()
 	{
 		m_lStart = -1;
 		m_lEnd	 = -1;
@@ -665,7 +685,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 			if (vFlatParts[i].m_fAverage > fAverage)
 			{
 				// Remove this one
-				vFlatParts[i].m_lEnd = vFlatParts[i].m_lStart-1; 
+				vFlatParts[i].m_lEnd = vFlatParts[i].m_lStart-1;
 			};
 		};
 	};
@@ -674,26 +694,21 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-T	Minimum(std::vector<T> & vValues, BOOL bRemoveZero)
+T Minimum(std::vector<T>& values, BOOL ignoreZeros)
 {
-	T				Result = 0;
-	BOOL			bSet = FALSE;
+    T result = 0;
 
-	for (LONG i = 0;i<vValues.size();i++)
-	{
-		if (vValues[i] || !bRemoveZero)
-		{
-			if (bSet)
-				Result = min(Result, vValues[i]);
-			else
-			{
-				Result = vValues[i];
-				bSet = TRUE;
-			};
-		};
-	};
+    if (!values.empty())
+    {
+        if (values.front() || !ignoreZeros)
+            result = values.front();
+    }
 
-	return Result;
+    for (T const& val : values)
+        if (val || !ignoreZeros)
+            result = min(result, val);
+
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
@@ -879,7 +894,6 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 			double			fSteep = (fMax-fMin)/vValues.size();
 			double			fMaxDistance = 0;
 			LONG			lIndice1;
-							
 
 			for (i = 0;i<vValues.size();i++)
 			{
@@ -895,7 +909,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 			if (fMaxDistance<0.2)
 				lIndice1 = -1;
 
-			// Compute the second indice based on the variation 
+			// Compute the second indice based on the variation
 			// between the minimum and the current value
 			LONG			lIndice2 = -1;
 			for (i = 0;i<vValues.size() && (lIndice2<0);i++)
@@ -910,13 +924,13 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 			if (lIndice1>=0 || lIndice2>=0)
 			{
 				// Cut at this position
-				LONG		lIndice = min(lIndice1==-1 ? 10000 : lIndice1, 
+				LONG		lIndice = min(lIndice1==-1 ? 10000 : lIndice1,
 										  lIndice2==-1 ? 10000 : lIndice2);
 				vValues.resize(lIndice+1);
 			}
 
 			// Now analyze the distribution for its homogeneity
-			std::vector<double>		vAuxValues;
+			//std::vector<double>		vAuxValues;
 			fMax = vValues[vValues.size()-1];
 
 			if (fMax>fMin)
@@ -928,7 +942,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 
 				double		fSigma,
 							fAverage;
-				
+
 				fSigma = Sigma2(vValues, fAverage);
 
 				if (fSigma/fAverage>0.15) // Discard the whole set
@@ -949,11 +963,11 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 
 	//
 	// Copy the data
-	// 
+	//
 	vAuxValues = vValues;
 
 	std::sort(vAuxValues.begin(), vAuxValues.end());
-	
+
 	FillDynamicStat(vAuxValues, DynStats);
 
 	for (LONG i = 0;i<lIteration && !bEnd;i++)
@@ -967,7 +981,6 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 
 		fSigma	 = DynStats.Sigma(); //Sigma2(vAuxValues, fAverage);
 		fAverage = DynStats.Average();
-
 
 		fMin = fAverage - fKappa * fSigma;
 		fMax = fAverage + fKappa * fSigma;
@@ -1016,8 +1029,7 @@ template <class T> inline
 double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
 {
 	double			Result = 0;
-	BOOL			bEnd = FALSE;
-	
+
 	// Set up the working buffers - we can flip between them to prevent
 	// needless copying of vectors.
 	vWorkingBuffer1.clear();
@@ -1028,7 +1040,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 	// Initial copy into the working set to start us off.
 	vWorkingBuffer1 = vValues;
-	for (LONG i = 0;i<lIteration && !bEnd;i++)
+	for (LONG i = 0;i<lIteration;i++)
 	{
 		double			fAverage;
 		double			fSigma;
@@ -1073,7 +1085,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 	// Peter B. Stetson (1989)
 	//	"The Techniques of Least Squares and Stellar Photometry with CCDs"
 	//
-	// Which was presented at: 
+	// Which was presented at:
 	//	V Escola Avançada de Astrofísica,
 	//	Aguas de São Pedro, Brazil
 	//
@@ -1087,7 +1099,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 	// no effect on normalized weights; Stetson's sigma is the sigma of the data
 	// whereas the second author's sigma2 is "derived from read noise and gain").
 	//
-	// I am indebted to Michael A. Covington and Simon C. Smith for their 
+	// I am indebted to Michael A. Covington and Simon C. Smith for their
 	// immense help in getting this working.  Much of the code is adapted from
 	// Simon's code simply because it was C++ whereas Michael's written in C#
 	//
@@ -1159,9 +1171,9 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 			}
 
 			//
-			// If we didn't already return because of small sigma, then the result is in 
+			// If we didn't already return because of small sigma, then the result is in
 			// variable runningAverage
-			// 
+			//
 			fResult = runningAverage;
 		};
 	}
@@ -1173,7 +1185,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 
 /* ------------------------------------------------------------------- */
 
-typedef enum TRANSFORMATIONTYPE 
+typedef enum TRANSFORMATIONTYPE
 {
 	TT_LINEAR		= 0,
 	TT_BILINEAR		= 1,
@@ -1258,7 +1270,7 @@ private :
 			strParameters = strParameters.Right(max(0, strParameters.GetLength()-strValue.GetLength()-1));
 			bResult = TRUE;
 		};
-		
+
 		return bResult;
 	};
 
@@ -1302,15 +1314,14 @@ public :
 		{
 			CString			strText1;
 
-
-			strText1.Format(_T("Bicubic(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"), 
+			strText1.Format(_T("Bicubic(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"),
 										a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15);
 			strText = strText1;
 
-			strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"), 
+			strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"),
 										b0, b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12, b13, b14, b15);
 			strText += strText1;
-			strText1.Format(_T("%.20g,%.20g)"), 
+			strText1.Format(_T("%.20g,%.20g)"),
 										fXWidth, fYWidth);
 			strText += strText1;
 		}
@@ -1318,19 +1329,19 @@ public :
 		{
 			CString			strText1;
 
-			strText1.Format(_T("Bisquared(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"), 
+			strText1.Format(_T("Bisquared(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,"),
 										a0, a1, a2, a3, a4, a5, a6, a7, a8);
 			strText = strText1;
 
-			strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"), 
+			strText1.Format(_T("%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"),
 										b0, b1, b2, b3, b4, b5, b6, b7, b8,
 										fXWidth, fYWidth);
 			strText += strText1;
 		}
 		else
 		{
-			strText.Format(_T("Bilinear(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"), 
-										a0, a1, a2, a3, 
+			strText.Format(_T("Bilinear(%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g,%.20g)"),
+										a0, a1, a2, a3,
 										b0, b1, b2, b3,
 										fXWidth, fYWidth);
 		};
@@ -1363,12 +1374,12 @@ public :
 			{
 				Type = TT_BILINEAR;
 				bResult = GetNextParameter(strParameters, a0) &&
-						  GetNextParameter(strParameters, a1) &&	
-						  GetNextParameter(strParameters, a2) &&	
-						  GetNextParameter(strParameters, a3) &&	
-						  GetNextParameter(strParameters, b0) &&	
-						  GetNextParameter(strParameters, b1) &&	
-						  GetNextParameter(strParameters, b2) &&	
+						  GetNextParameter(strParameters, a1) &&
+						  GetNextParameter(strParameters, a2) &&
+						  GetNextParameter(strParameters, a3) &&
+						  GetNextParameter(strParameters, b0) &&
+						  GetNextParameter(strParameters, b1) &&
+						  GetNextParameter(strParameters, b2) &&
 						  GetNextParameter(strParameters, b3) &&
 						  GetNextParameter(strParameters, fXWidth) &&
 						  GetNextParameter(strParameters, fYWidth);
@@ -1377,22 +1388,22 @@ public :
 			{
 				Type = TT_BISQUARED;
 				bResult = GetNextParameter(strParameters, a0) &&
-						  GetNextParameter(strParameters, a1) &&	
-						  GetNextParameter(strParameters, a2) &&	
-						  GetNextParameter(strParameters, a3) &&	
-						  GetNextParameter(strParameters, a4) &&	
-						  GetNextParameter(strParameters, a5) &&	
-						  GetNextParameter(strParameters, a6) &&	
-						  GetNextParameter(strParameters, a7) &&	
-						  GetNextParameter(strParameters, a8) &&	
-						  GetNextParameter(strParameters, b0) &&	
-						  GetNextParameter(strParameters, b1) &&	
-						  GetNextParameter(strParameters, b2) &&	
-						  GetNextParameter(strParameters, b3) &&	
-						  GetNextParameter(strParameters, b4) &&	
-						  GetNextParameter(strParameters, b5) &&	
-						  GetNextParameter(strParameters, b6) &&	
-						  GetNextParameter(strParameters, b7) &&	
+						  GetNextParameter(strParameters, a1) &&
+						  GetNextParameter(strParameters, a2) &&
+						  GetNextParameter(strParameters, a3) &&
+						  GetNextParameter(strParameters, a4) &&
+						  GetNextParameter(strParameters, a5) &&
+						  GetNextParameter(strParameters, a6) &&
+						  GetNextParameter(strParameters, a7) &&
+						  GetNextParameter(strParameters, a8) &&
+						  GetNextParameter(strParameters, b0) &&
+						  GetNextParameter(strParameters, b1) &&
+						  GetNextParameter(strParameters, b2) &&
+						  GetNextParameter(strParameters, b3) &&
+						  GetNextParameter(strParameters, b4) &&
+						  GetNextParameter(strParameters, b5) &&
+						  GetNextParameter(strParameters, b6) &&
+						  GetNextParameter(strParameters, b7) &&
 						  GetNextParameter(strParameters, b8) &&
 						  GetNextParameter(strParameters, fXWidth) &&
 						  GetNextParameter(strParameters, fYWidth);
@@ -1401,39 +1412,39 @@ public :
 			{
 				Type = TT_BICUBIC;
 				bResult = GetNextParameter(strParameters, a0) &&
-						  GetNextParameter(strParameters, a1) &&	
-						  GetNextParameter(strParameters, a2) &&	
-						  GetNextParameter(strParameters, a3) &&	
-						  GetNextParameter(strParameters, a4) &&	
-						  GetNextParameter(strParameters, a5) &&	
-						  GetNextParameter(strParameters, a6) &&	
-						  GetNextParameter(strParameters, a7) &&	
-						  GetNextParameter(strParameters, a8) &&	
-						  GetNextParameter(strParameters, a9) &&	
-						  GetNextParameter(strParameters, a10) &&	
-						  GetNextParameter(strParameters, a11) &&	
-						  GetNextParameter(strParameters, a12) &&	
-						  GetNextParameter(strParameters, a13) &&	
-						  GetNextParameter(strParameters, a14) &&	
-						  GetNextParameter(strParameters, a15) &&	
-						  GetNextParameter(strParameters, b0) &&	
-						  GetNextParameter(strParameters, b1) &&	
-						  GetNextParameter(strParameters, b2) &&	
-						  GetNextParameter(strParameters, b3) &&	
-						  GetNextParameter(strParameters, b4) &&	
-						  GetNextParameter(strParameters, b5) &&	
-						  GetNextParameter(strParameters, b6) &&	
-						  GetNextParameter(strParameters, b7) &&	
-						  GetNextParameter(strParameters, b8) &&	
-						  GetNextParameter(strParameters, b9) &&	
-						  GetNextParameter(strParameters, b10) &&	
-						  GetNextParameter(strParameters, b11) &&	
-						  GetNextParameter(strParameters, b12) &&	
-						  GetNextParameter(strParameters, b13) &&	
-						  GetNextParameter(strParameters, b14) &&	
+						  GetNextParameter(strParameters, a1) &&
+						  GetNextParameter(strParameters, a2) &&
+						  GetNextParameter(strParameters, a3) &&
+						  GetNextParameter(strParameters, a4) &&
+						  GetNextParameter(strParameters, a5) &&
+						  GetNextParameter(strParameters, a6) &&
+						  GetNextParameter(strParameters, a7) &&
+						  GetNextParameter(strParameters, a8) &&
+						  GetNextParameter(strParameters, a9) &&
+						  GetNextParameter(strParameters, a10) &&
+						  GetNextParameter(strParameters, a11) &&
+						  GetNextParameter(strParameters, a12) &&
+						  GetNextParameter(strParameters, a13) &&
+						  GetNextParameter(strParameters, a14) &&
+						  GetNextParameter(strParameters, a15) &&
+						  GetNextParameter(strParameters, b0) &&
+						  GetNextParameter(strParameters, b1) &&
+						  GetNextParameter(strParameters, b2) &&
+						  GetNextParameter(strParameters, b3) &&
+						  GetNextParameter(strParameters, b4) &&
+						  GetNextParameter(strParameters, b5) &&
+						  GetNextParameter(strParameters, b6) &&
+						  GetNextParameter(strParameters, b7) &&
+						  GetNextParameter(strParameters, b8) &&
+						  GetNextParameter(strParameters, b9) &&
+						  GetNextParameter(strParameters, b10) &&
+						  GetNextParameter(strParameters, b11) &&
+						  GetNextParameter(strParameters, b12) &&
+						  GetNextParameter(strParameters, b13) &&
+						  GetNextParameter(strParameters, b14) &&
 						  GetNextParameter(strParameters, b15) &&
 						  GetNextParameter(strParameters, fXWidth) &&
-						  GetNextParameter(strParameters, fYWidth);			
+						  GetNextParameter(strParameters, fYWidth);
 			};
 		};
 
@@ -1453,10 +1464,10 @@ public :
 			double			Y2 = Y * Y;
 			double			Y3 = Y * Y * Y;
 
-			ptResult.X = a0 + a1 * X + a2 * Y + a3 * X * Y 
+			ptResult.X = a0 + a1 * X + a2 * Y + a3 * X * Y
 						+ a4 * X2 + a5 * Y2 + a6 * X2 * Y + a7 * X * Y2 + a8 * X2 * Y2
 						+ a9 * X3 + a10 * Y3 + a11 * X3 * Y + a12 * X * Y3 + a13 * X3 * Y2 + a14 * X2 * Y3 + a15 * X3 * Y3;
-			ptResult.Y = b0 + b1 * X + b2 * Y + b3 * X * Y 
+			ptResult.Y = b0 + b1 * X + b2 * Y + b3 * X * Y
 						+ b4 * X2 + b5 * Y2 + b6 * X2 * Y + b7 * X * Y2 + b8 * X2 * Y2
 						+ b9 * X3 + b10 * Y3 + b11 * X3 * Y + b12 * X * Y3 + b13 * X3 * Y2 + b14 * X2 * Y3 + b15 * X3 * Y3;
 		}
@@ -1467,9 +1478,9 @@ public :
 			double			Y = pt.Y/fYWidth;
 			double			Y2 = Y * Y;
 
-			ptResult.X = a0 + a1 * X + a2 * Y + a3 * X * Y 
+			ptResult.X = a0 + a1 * X + a2 * Y + a3 * X * Y
 						+ a4 * X2 + a5 * Y2 + a6 * X2 * Y + a7 * X * Y2 + a8 * X2 * Y2;
-			ptResult.Y = b0 + b1 * X + b2 * Y + b3 * X * Y 
+			ptResult.Y = b0 + b1 * X + b2 * Y + b3 * X * Y
 						+ b4 * X2 + b5 * Y2 + b6 * X2 * Y + b7 * X * Y2 + b8 * X2 * Y2;
 		}
 		else

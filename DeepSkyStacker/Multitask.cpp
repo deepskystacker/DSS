@@ -75,7 +75,7 @@ DWORD	WINAPI	StartThreadProc(LPVOID lpParameter)
 
 HANDLE	CMultitask::GetAvailableThread()
 {
-	HANDLE				hResult = NULL;
+	HANDLE				hResult = nullptr;
 	DWORD				dwResult;
 
 	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), FALSE, INFINITE);
@@ -94,7 +94,7 @@ HANDLE	CMultitask::GetAvailableThread()
 
 DWORD	CMultitask::GetAvailableThreadId()
 {
-	DWORD				hResult = NULL;
+	DWORD				hResult = 0;
 	DWORD				dwResult;
 
 	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), FALSE, INFINITE);
@@ -126,11 +126,11 @@ void	CMultitask::StartThreads(LONG lNrThreads)
 		HANDLE			hEvent;
 		HANDLE			hThread;
 
-		hEvent	= CreateEvent(NULL, TRUE, FALSE, NULL);
+		hEvent	= CreateEvent(nullptr, TRUE, FALSE, nullptr);
 		if (hEvent)
 		{
 			m_vEvents.push_back(hEvent);
-			hThread = CreateThread(NULL, 0, StartThreadProc, (LPVOID)this, CREATE_SUSPENDED, &dwThreadID);
+			hThread = CreateThread(nullptr, 0, StartThreadProc, (LPVOID)this, CREATE_SUSPENDED, &dwThreadID);
 			if (hThread)
 			{
 				m_vThreads.push_back(hThread);

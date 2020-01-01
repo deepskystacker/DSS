@@ -105,7 +105,7 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 		// Then write the file list
 		fprintf(hFile, "----FileList----\n");
 		for (LONG i = 0;i<m_vFiles.size();i++)
-			fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vFiles[i]));
+			fprintf(hFile, "%s\n", CStringToChar(m_vFiles[i]));
 
 		fclose(hFile);
 	};
@@ -117,7 +117,7 @@ BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 {
 	BOOL				bResult = FALSE;
 	CBitmapInfo			bmpInfo;
-	
+
 	m_sSettings.clear();
 	m_vFiles.clear();
 	if (pTask && GetPictureInfo(szFile, bmpInfo))

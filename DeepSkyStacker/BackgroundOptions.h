@@ -20,7 +20,7 @@ private :
 
 // Construction
 public:
-	CBackgroundOptions(CWnd* pParent = NULL);   // standard constructor
+	CBackgroundOptions(CWnd* pParent = nullptr);   // standard constructor
 
 	void	SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode)
 	{

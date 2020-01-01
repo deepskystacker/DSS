@@ -4,6 +4,7 @@
 #include <Registry.h>
 #include <set>
 #include "Workspace.h"
+#include "Utils.h"
 
 class CSetting
 {
@@ -85,7 +86,7 @@ public :
 	{
 		BOOL		bResult = TRUE;
 
-		fprintf(hFile, "%s=%s\n", (LPCSTR)CT2CA(m_strVariable), (LPCSTR)CT2CA(m_strValue));
+		fprintf(hFile, "%s=%s\n", CStringToChar(m_strVariable), CStringToChar(m_strValue));
 
 		return bResult;
 	};
@@ -104,7 +105,7 @@ protected :
 	std::vector<CString>	m_vFiles;
 
 protected :
-	BOOL	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szVariable, LPCTSTR szDefault, LPCTSTR szPrefix = NULL)
+	BOOL	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szVariable, LPCTSTR szDefault, LPCTSTR szPrefix = nullptr)
 	{
 		CWorkspace		workspace;
 		CString			strValue;
@@ -167,7 +168,7 @@ protected :
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), _T("1.0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), _T("1.0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), _T("0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), _T("0"), _T("Raw"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), _T("0"), _T("Raw"));
 	};
@@ -195,7 +196,7 @@ public :
 	BOOL	ReadFromFile(LPCTSTR szFile);
 	BOOL	InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile);
 	void	WriteToFile(LPCTSTR szFile);
-	
+
 	virtual void	ReadFromRegistry() {};
 
 	bool operator == (const CGlobalSettings & gs) const;
@@ -209,7 +210,7 @@ public :
 	CDarkSettings() {}
 	virtual ~CDarkSettings() {};
 
-	virtual void	ReadFromRegistry() 
+	virtual void	ReadFromRegistry()
 	{
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), _T("0"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), _T("5"));
@@ -231,7 +232,7 @@ public :
 	CFlatSettings() {}
 	virtual ~CFlatSettings() {};
 
-	virtual void	ReadFromRegistry() 
+	virtual void	ReadFromRegistry()
 	{
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), _T("0"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), _T("5"));
@@ -258,7 +259,7 @@ public :
 	COffsetSettings() {}
 	virtual ~COffsetSettings() {};
 
-	virtual void	ReadFromRegistry() 
+	virtual void	ReadFromRegistry()
 	{
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), _T("0"));
 		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), _T("5"));

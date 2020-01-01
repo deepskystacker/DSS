@@ -55,13 +55,13 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 
 				if (2*fRadius>=m_fMinSize && 2*fRadius<=m_fMaxSize)
 				{
-					double		fFactor1 = 1.0/exp(-0.5); 
+					double		fFactor1 = 1.0/exp(-0.5);
 					double		fFactor2 = 2*fRadius*fRadius;
 
 					fRadius *= m_fPercentIncrease;
 					if (m_fPixelIncrease)
 						fRadius += m_fPixelIncrease;
-					
+
 					pStarMaskFunction->SetRadius(fRadius);
 					for (double i = max(0.0, fXCenter - 3*fRadius);i<=min(fXCenter + 3*fRadius, fWidth-1);i++)
 					{
@@ -75,7 +75,7 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 							double		fOldPixelValue;
 
 							fDistance = sqrt(fXDistance * fXDistance + fYDistance * fYDistance);
-							
+
 							fPixelValue = pStarMaskFunction->Compute(fDistance);
 
 							pOutBitmap->GetPixel(i+0.5, j+0.5, fOldPixelValue);
@@ -86,7 +86,7 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 				};
 
 				if (pProgress)
-					pProgress->Progress2(NULL, k+1);
+					pProgress->Progress2(nullptr, k+1);
 			};
 
 			if (pProgress)

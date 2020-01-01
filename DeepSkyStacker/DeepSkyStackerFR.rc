@@ -27,7 +27,7 @@ LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 // Dialog
 //
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Sortie"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -303,14 +303,14 @@ BEGIN
     PUSHBUTTON      "Annuler",IDCANCEL,205,151,50,14
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Paramètres d'empilement"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Annuler",IDCANCEL,266,191,50,14
-    LTEXT           "Static",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Répertoire des fichiers temporaires :",IDC_STATIC,11,177,118,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Static",IDC_TEMPFOLDER,133,177,164,8,SS_PATHELLIPSIS
@@ -320,7 +320,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,165,10
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Empilement"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -354,7 +354,7 @@ BEGIN
     PUSHBUTTON      "Paramètres...",IDC_DEBLOOMSETTINGS,184,130,50,14,NOT WS_VISIBLE
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Résultat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -415,10 +415,10 @@ BEGIN
     LTEXT           "Echelle Bleu",IDC_STATIC,15,53,40,8
     EDITTEXT        IDC_BLUESCALE,73,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balance des blancs",IDC_STATIC,140,7,131,64
-    CONTROL         "Utiliser la balance des blancs automatique",IDC_AUTOWB,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,116,17
+    CONTROL         "Pas de traitement de la balance des blancs",IDC_NOWB,
+                    "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,116,17
     CONTROL         "Utiliser la balance des blancs de l'appareil photo",IDC_CAMERAWB,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,45,119,18
+                    "Button", BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,45,119,18
     CONTROL         "Interpolation Bilinéaire",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,85,10
     CONTROL         "Interpolation Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10
@@ -464,7 +464,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,6,250,263,17
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Alignement"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -493,7 +493,7 @@ BEGIN
     CONTROL         "Images Dark Flat",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,67,70,10
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Comète"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -539,7 +539,7 @@ BEGIN
     COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Fichiers intermédiaires"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -589,7 +589,7 @@ BEGIN
     CONTROL         "Continuer sans enregistrer l'image",IDC_CONTINUE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,79,163,10
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cosmetique"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
@@ -1246,7 +1246,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profondeur"
     IDS_COLUMN_INFOS        "Infos"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Temps de pose"
 	IDS_COLUMN_APERTURE		"Ouverture"
     IDS_COLUMN_STARS        "#Etoiles"
@@ -1271,6 +1271,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "ou"
     IDS_AND                 "et"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE 
@@ -1291,7 +1293,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS ou image DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fit;*.fts;*.fits||"
-    IDS_FILTER_INPUT        "Fichiers Image|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|Fichiers JPEG ou PNG|*.jpg;*.jpeg;*.png|Fichiers TIFF (.tif)|*.tif;*.tiff|Fichiers RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Fichiers FITS|*.fit;*.fits;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Fichiers Image|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|Fichiers JPEG ou PNG|*.jpg;*.jpeg;*.png|Fichiers TIFF (.tif)|*.tif;*.tiff|Fichiers RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Fichiers FITS|*.fit;*.fits;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "Image TIFF (16 bit/ch)|*.TIF|Image TIFF (32 bit/ch - entier)|*.TIF|Image TIFF (32 bit/ch - réel)|*.TIF|Image FITS (16 bit/ch)|*.FTS|Image FITS (32 bit/ch - entier)|*.FTS|Image FITS (32 bit/ch - réel)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Liste de fichier (*.txt)|*.txt|Liste de fichier (*.dssfilelist)|*.dssfilelist|Tous les fichiers|*.*||"
     IDS_FILTER_MASK         "Image TIFF|*.tif;*.tiff|Image FITS|*.fits;*.fts;*.fit||"
@@ -1500,15 +1502,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RECAP_STEP          "Etape d'empilement %ld\n  ->%ld images (ISO: %s) - temps de pose total : "
-    IDS_RECAP_OFFSET        "\t-> Offset : %ld images (ISO: %s) temps de pose : %s\n"
+    IDS_RECAP_STEP          "Etape d'empilement %ld\n  ->%ld images (%s: %s) - temps de pose total : "
+    IDS_RECAP_OFFSET        "\t-> Offset : %ld images (%s: %s) temps de pose : %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAttention : la sensibilité ISO ne correspond pas à celle des images\n"
+    IDS_RECAP_GAINWARNING   "\t\tAttention : le gain n'est pas le même que celui de la prise de vue\n"
     IDS_RECAP_NOOFFSET      "\t-> Pas d'offset/bias\n"
-    IDS_RECAP_DARK          "\t-> Dark : %ld images (ISO : %s) temps de pose : %s\n"
+    IDS_RECAP_DARK          "\t-> Dark : %ld images (%s : %s) temps de pose : %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAttention : le temps de pose ne correspond pas à celui des images\n"
     IDS_RECAP_NODARK        "\t-> Pas de dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat : %ld images (ISO: %s) temps de pose : %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat : %ld images (%s: %s) temps de pose : %s\n"
     IDS_RECAP_NOFLAT        "\t-> Pas de flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nTemps de pose total estimé : %s\n(le temps de pose total est calculé en considérant que toutes les images cochées seront utilisées lors de l'empilement)"
@@ -1517,9 +1520,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "Calibration du fond des canaux RVB : %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optimisation du dark : %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat : %ld images (ISO : %s) temps de pose : %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat : %ld images (%s : %s) temps de pose : %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAttention : la sensibilité ISO ne correspond pas à celle des flats\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tAttention : le gain des Darks Flats n'est pas le même que celui des Flats\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAttention : le temps de pose ne correspond pas à celui des flats\n"
 END

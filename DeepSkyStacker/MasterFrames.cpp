@@ -30,7 +30,7 @@ BOOL CMasterFrames::LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pP
 	if (pStackingInfo->m_pFlatTask)
 	{
 		bResult = bResult && GetTaskResult(pStackingInfo->m_pFlatTask, pProgress, &m_MasterFlat.m_pFlatFrame);
-		if (bResult) 
+		if (bResult)
 			m_MasterFlat.ComputeFlatNormalization(pProgress);
 	};
 
@@ -60,7 +60,6 @@ void	CMasterFrames::ApplyMasterOffset(CMemoryBitmap * pBitmap, CDSSProgress * pP
 void	CMasterFrames::ApplyMasterDark(CMemoryBitmap * pBitmap, STARVECTOR * pStars, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CString				strText;
 
 	if (m_MasterDark.IsOk())
 		m_MasterDark.Subtract(pBitmap, pProgress);

@@ -35,11 +35,11 @@ CGradient::CGradient()
 	m_Quantization = -1;
 }
 
-CGradient::CGradient(CGradient &src)
+CGradient::CGradient(CGradient const& src)
 {
-	m_StartPeg.colour = m_StartPeg.colour;
-	m_EndPeg.colour = m_EndPeg.colour;
-	m_Background.colour = m_Background.colour;
+	m_StartPeg.colour = src.m_StartPeg.colour;
+	m_EndPeg.colour = src.m_EndPeg.colour;
+	m_Background.colour = src.m_Background.colour;
 	m_InterpolationMethod = src.m_InterpolationMethod;
 	m_UseBackground = src.m_UseBackground;
 	m_Quantization = src.m_Quantization;
@@ -49,16 +49,16 @@ CGradient::CGradient(CGradient &src)
 
 CGradient::~CGradient()
 {
-	pegs.clear();	
+	pegs.clear();
 }
 
-CGradient& CGradient::operator =(CGradient &src)
+CGradient& CGradient::operator =(CGradient const& src)
 {
 	pegs = src.pegs;
 
-	m_StartPeg.colour = m_StartPeg.colour;
-	m_EndPeg.colour = m_EndPeg.colour;
-	m_Background.colour = m_Background.colour;
+	m_StartPeg.colour = src.m_StartPeg.colour;
+	m_EndPeg.colour = src.m_EndPeg.colour;
+	m_Background.colour = src.m_Background.colour;
 	m_InterpolationMethod = src.m_InterpolationMethod;
 	m_UseBackground = src.m_UseBackground;
 	m_Quantization = src.m_Quantization;
@@ -67,12 +67,12 @@ CGradient& CGradient::operator =(CGradient &src)
 }
 
 int CGradient::AddPeg(COLORREF crColour, float fPosition, LONG newid)
-{	
+{
 	CPeg peg;
 
-	if(fPosition < 0) 
+	if(fPosition < 0)
 		fPosition = 0;
-	else if(fPosition > 1) 
+	else if(fPosition > 1)
 		fPosition = 1;
 
 	peg.colour = crColour;
@@ -85,7 +85,7 @@ int CGradient::AddPeg(COLORREF crColour, float fPosition, LONG newid)
 	return IndexFromId(peg.GetID());
 }
 
-int CGradient::AddPeg(CPeg peg)
+int CGradient::AddPeg(CPeg const& peg)
 {
 	return AddPeg(peg.colour, peg.position);
 }
@@ -99,7 +99,7 @@ const CPeg CGradient::GetPeg(int iIndex) const
 {
 	ASSERT(iIndex > -4 && iIndex != -1 && iIndex < GetPegCount());
 		//You must pass a valid peg index or STARTPEG, ENDPEG, or BACKGROUND!
-	
+
 	if(iIndex >= 0)
 	{
 		const CPeg peg(pegs[iIndex]);
@@ -109,7 +109,7 @@ const CPeg CGradient::GetPeg(int iIndex) const
 		return m_StartPeg;
 	else if(iIndex == ENDPEG)
 		return m_EndPeg;
-	else 
+	else
 		return m_Background;
 }
 
@@ -119,10 +119,10 @@ int CGradient::SetPeg(int iIndex, COLORREF crColour, float fPosition)
 
 	ASSERT(iIndex > -4 && iIndex != -1 && iIndex < GetPegCount());
 		//You must pass a valid peg index or STARTPEG, ENDPEG, or BACKGROUND!
-	
+
 	if(fPosition < 0) fPosition = 0;
 	else if(fPosition > 1) fPosition = 1;
-	
+
 	if(iIndex == STARTPEG)
 		m_StartPeg.colour = crColour;
 	else if(iIndex == ENDPEG)
@@ -154,17 +154,16 @@ int	CGradient::SetPeg(int iIndex, COLORREF crColour)
 	return SetPeg(iIndex, crColour, peg.position);
 };
 
-
 int CGradient::SetPeg(int iIndex, CPeg peg)
 {
 	UINT tempid;
 
 	ASSERT(iIndex > -4 && iIndex != -1 && iIndex < GetPegCount());
 		//You must pass a valid peg index or STARTPEG, ENDPEG, or BACKGROUND!
-	
+
 	if(peg.position < 0.0f) peg.position = 0.0f;
 	else if(peg.position > 1.0f) peg.position = 1.0f;
-	
+
 	if(iIndex == STARTPEG)
 		m_StartPeg.colour = peg.colour;
 	else if(iIndex == ENDPEG)
@@ -223,7 +222,7 @@ void CGradient::MakeEntries(RGBTRIPLE *lpPal, int iEntryCount)
 	ASSERT(iEntryCount < 65535);
 
 	InterpolateFn Interpolate = GetInterpolationProc();
-	ASSERT(Interpolate != NULL);
+	ASSERT(Interpolate != nullptr);
 
 	if(pegs.size() > 0)
 	{
@@ -236,10 +235,10 @@ void CGradient::MakeEntries(RGBTRIPLE *lpPal, int iEntryCount)
 		for(int i = 0; i < iEntryCount; i++)
 		{
 			if(m_Quantization == -1)
-				pos = (float)i/iEntryCount;	
+				pos = (float)i/iEntryCount;
 			else
 				pos = ((float)(int)(((float)i/iEntryCount)*m_Quantization))/m_Quantization + 0.5f / m_Quantization;
-			
+
 			if(pos <= firstpegpos)
 			{
 				colour = Interpolate(m_StartPeg.colour, pegs[0].colour, pos, 0, firstpegpos);
@@ -273,10 +272,10 @@ void CGradient::MakeEntries(RGBTRIPLE *lpPal, int iEntryCount)
 		for(int i = 0; i < iEntryCount; i++)
 		{
 			if(m_Quantization == -1)
-				pos = (float)i/iEntryCount;	
+				pos = (float)i/iEntryCount;
 			else
 				pos = ((float)(int)(((float)i/iEntryCount)*m_Quantization))/m_Quantization + 0.5f / m_Quantization;
-			
+
 			colour = Interpolate(m_StartPeg.colour, m_EndPeg.colour, pos, 0, 1);
 			lpPal[i].rgbtRed = GetRValue(colour);
 			lpPal[i].rgbtGreen = GetGValue(colour);
@@ -337,7 +336,7 @@ COLORREF CGradient::InterpolateCosine(COLORREF first, COLORREF second, float pos
 {
 	float theta = (position-start)/(end-start) * 3.1415927f;
 	float f = (1 - cosf(theta)) * .5f;
-	
+
 	return RGB((BYTE)(((float)GetRValue(first))*(1-f) + ((float)GetRValue(second))*f),
 		(BYTE)(((float)GetGValue(first))*(1-f) + ((float)GetGValue(second))*f),
 		(BYTE)(((float)GetBValue(first))*(1-f) + ((float)GetBValue(second))*f));
@@ -361,7 +360,6 @@ void RGB_to_HSL	(float r, float g, float b, float *h, float *s, float *l)
 			(2.0f - v - m) ;
     } else
 	return;
-
 
     r2 = (v - r) / vm;
     g2 = (v - g) / vm;
@@ -393,7 +391,7 @@ void HSL_to_RGB(float h, float sl, float l, float *r, float *g, float *b)
 		m = l + l - v;
 		sv = (v - m ) / v;
 		h *= 6.0f;
-		sextant = (int)h;	
+		sextant = (int)h;
 		fract = h - sextant;
 		vsf = v * sv * fract;
 		mid1 = m + vsf;
@@ -470,7 +468,7 @@ COLORREF CGradient::InterpolateHSLLongest(COLORREF first, COLORREF second, float
 	if(((eh-sh)-floor(eh-sh) < 0.5f)?(eh < sh):(eh >= sh)) h = (eh*(position - start) + sh*(end-position))/(end-start);
 	else h = ((eh+(sh>eh?1.0f:-1.0f))*(position - start) + sh*(end-position))/(end-start);
 	//TRACE3("sh: %f eh: %f h: %f\n", sh, eh, h);
-	
+
 	h = h - floorf(h);
 
 	s = ((es*(position - start) + ss*(end-position))/(end-start));
@@ -479,7 +477,7 @@ COLORREF CGradient::InterpolateHSLLongest(COLORREF first, COLORREF second, float
 	HSL_to_RGB(h, s, l, &r, &g, &b);
 	return RGB((BYTE)(r*255.0f), (BYTE)(g*255.0f), (BYTE)(b*255.0f));
 }
- 
+
 COLORREF CGradient::InterpolateHSLShortest(COLORREF first, COLORREF second, float position, float start, float end)
 {
 	float sh = 0, ss = 0, sl = 0, eh = 0, es = 0, el = 0, h = 0, s = 0, l = 0, r = 0, g = 0, b = 0;
@@ -495,7 +493,7 @@ COLORREF CGradient::InterpolateHSLShortest(COLORREF first, COLORREF second, floa
 	if(((eh-sh)-floor(eh-sh) > 0.5f)?(eh < sh):(eh >= sh)) h = (eh*(position - start) + sh*(end-position))/(end-start);
 	else h = ((eh+(sh>eh?1.0f:-1.0f))*(position - start) + sh*(end-position))/(end-start);
 	//TRACE3("sh: %f eh: %f h: %f\n", sh, eh, h);
-	
+
 	h = h - floorf(h);
 
 	s = ((es*(position - start) + ss*(end-position))/(end-start));
@@ -527,7 +525,6 @@ int CGradient::IndexFromId(UINT id)
 			return i;
 	return -1;
 }
-
 
 //----- Fast sorting alogarithm functions -----//
 int CGradient::Partition(int lb, int ub)
@@ -564,7 +561,6 @@ int CGradient::Partition(int lb, int ub)
     return j;
 }
 
-
 void CGradient::QuickSort(int lb, int ub)
 {
     int m;
@@ -600,7 +596,7 @@ void CGradient::QuickSort(int lb, int ub)
 void CGradient::InsertSort(int lb, int ub)
 {
     CPeg temppeg;
-    
+
     for (int i = lb + 1; i <= ub; i++)
 	{
 		int			j;
@@ -622,10 +618,10 @@ COLORREF CGradient::ColourFromPosition(float pos)
 
 	if(pos == 0 && m_UseBackground)
 		return m_Background.colour;
-	
+
 	InterpolateFn Interpolate = GetInterpolationProc();
-	ASSERT(Interpolate != NULL);
-	
+	ASSERT(Interpolate != nullptr);
+
 	if(m_Quantization != -1)
 		pos = ((float)(int)(pos*m_Quantization))/m_Quantization + 0.5f / m_Quantization;
 
@@ -684,7 +680,7 @@ void CGradient::Serialize(CArchive &ar)
 		ar << (unsigned int)m_UseBackground;
 		ar << m_Quantization;
 		ar << (unsigned int)m_InterpolationMethod;
-		
+
 		ar << pegs.size();
 
 		for(int i = 0; i < pegs.size(); i++)

@@ -21,6 +21,8 @@ CResultParameters::CResultParameters()
 	m_ResultMode = SM_NORMAL;
 	m_lDrizzle = 1;
 	m_bAlignChannels = FALSE;
+    m_bEnableCustom = FALSE;
+    m_bUseCustom = FALSE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -63,7 +65,7 @@ void CResultParameters::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
 	CString				strText;
-	
+
 	if (m_bUseCustom)
 	{
 		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_CUSTOMMODE)));

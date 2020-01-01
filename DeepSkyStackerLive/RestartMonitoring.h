@@ -5,7 +5,7 @@ class CRestartMonitoring : public CDialog
 {
 // Construction
 public:
-	CRestartMonitoring(CWnd* pParent = NULL);	// standard constructor
+	CRestartMonitoring(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 	enum { IDD = IDD_RESTARTMONITORING };

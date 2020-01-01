@@ -8,6 +8,7 @@
 //
 
 #include "DeepStack.h"
+#include "DeepSkyStacker.h"
 #include <list>
 
 class CDSSSetting
@@ -82,7 +83,7 @@ private :
 	BOOL					m_bLoaded;
 
 public :
-	CDSSSettings() 
+	CDSSSettings()
 	{
 		m_bLoaded = FALSE;
 	};
@@ -92,8 +93,8 @@ public :
 	{
 		return m_bLoaded;
 	};
-	BOOL	Load(LPCTSTR szFile = NULL);
-	BOOL	Save(LPCTSTR szFile = NULL);
+	BOOL	Load(LPCTSTR szFile = nullptr);
+	BOOL	Save(LPCTSTR szFile = nullptr);
 
 	LONG	Count()
 	{
@@ -108,7 +109,7 @@ public :
 		{
 			DSSSETTINGITERATOR	it;
 
-			it = m_lSettings.begin(); 
+			it = m_lSettings.begin();
 			while (lIndice)
 			{
 				it++;
@@ -136,7 +137,7 @@ public :
 		{
 			DSSSETTINGITERATOR	it;
 
-			it = m_lSettings.begin(); 
+			it = m_lSettings.begin();
 			while (lIndice)
 			{
 				it++;
@@ -160,6 +161,13 @@ public :
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
 
+enum DeepStackerDlgMessages
+{
+    WM_PROGRESS_INIT = WM_USER + 10000,
+    WM_PROGRESS_UPDATE,
+    WM_PROGRESS_STOP,
+};
+
 class CDeepStackerDlg : public CDialog
 {
 private :
@@ -173,10 +181,12 @@ private :
 	DWORD					m_dwCurrentTab;
 	CString					m_strStartFileList;
 	CString					m_strBaseTitle;
+    ITaskbarList3*          m_taskbarList;
+    bool                    m_progress;
 
 // Construction
 public:
-	CDeepStackerDlg(CWnd* pParent = NULL);   // standard constructor
+	CDeepStackerDlg(CWnd* pParent = nullptr);   // standard constructor
 	void	ChangeTab(DWORD dwTabID);
 	DWORD	GetCurrentTab()
 	{
@@ -188,6 +198,21 @@ public:
 		m_strStartFileList = szStartFileList;
 	};
 
+	void disableSubDialogs()
+	{
+		m_dlgStacking.EnableWindow(false);
+		m_dlgProcessing.EnableWindow(false);
+		m_dlgLibrary.EnableWindow(false);
+		m_ExplorerBar.EnableWindow(false);
+	};
+
+	void enableSubDialogs()
+	{
+		m_dlgStacking.EnableWindow(true);
+		m_dlgProcessing.EnableWindow(true);
+		m_dlgLibrary.EnableWindow(true);
+		m_ExplorerBar.EnableWindow(true);
+	};
 
 // Dialog Data
 	//{{AFX_DATA(CDeepStackerDlg)
@@ -256,6 +281,10 @@ private :
 	afx_msg	void OnHelp();
 
 	afx_msg void OnDropFiles(HDROP hDropInfo);
+    afx_msg LRESULT OnTaskbarButtonCreated(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnProgressInit(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnProgressUpdate(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnProgressStop(WPARAM wParam, LPARAM lParam);
 };
 
 /* ------------------------------------------------------------------- */
@@ -322,7 +351,7 @@ inline CProcessingDlg & GetProcessingDlg(CWnd * pDialog)
 
 inline void	SetCurrentFileInTitle(LPCTSTR szFileName)
 {
-	CDeepStackerDlg *		pDlg = GetDeepStackerDlg(NULL);
+	CDeepStackerDlg *		pDlg = GetDeepStackerDlg(nullptr);
 
 	if (pDlg)
 		pDlg->SetCurrentFileInTitle(szFileName);

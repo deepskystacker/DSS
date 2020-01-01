@@ -15,10 +15,10 @@
 
 IMPLEMENT_DYNAMIC(CRecommendedSettings, CDialog)
 
-CRecommendedSettings::CRecommendedSettings(CWnd* pParent /*=NULL*/)
+CRecommendedSettings::CRecommendedSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CRecommendedSettings::IDD, pParent)
 {
-	m_pStackingTasks = NULL;
+	m_pStackingTasks = nullptr;
 }
 
 /* ------------------------------------------------------------------- */
@@ -63,7 +63,7 @@ END_EASYSIZE_MAP
 
 /* ------------------------------------------------------------------- */
 
-BOOL CRecommendedSettings::OnInitDialog() 
+BOOL CRecommendedSettings::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -71,7 +71,7 @@ BOOL CRecommendedSettings::OnInitDialog()
 
     CRect			rcClient;
     GetClientRect(&rcClient);
-    
+
     CRect			rcGrip;
 
 
@@ -105,7 +105,7 @@ BOOL CRecommendedSettings::OnInitDialog()
 void CRecommendedSettings::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
-	
+
 	UPDATE_EASYSIZE;
 };
 
@@ -359,7 +359,7 @@ static void AddModdedDSLR(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFITS)
 	}
 	else
 	{
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false);
+		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), false);
 		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false);
 		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), 1.0);
 		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), 1.0);
@@ -610,7 +610,6 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 	ClearText();
 	if (m_pStackingTasks && m_pStackingTasks->GetNrLightFrames())
 	{
-		CString					strText;
 		LONG					lPosition;
 
 		InsertHeader();

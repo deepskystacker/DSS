@@ -105,14 +105,31 @@ private :
 
 	STACKIMAGEINFO				m_ImageInfo;
 	LONG						m_lNrPending;
-	
+
 public :
-	CLiveEngineMsg()
-	{
-		m_Msg = LEM_NONE;
-		m_lMax = 0;
-		m_lProgress = 0;
-	};
+    CLiveEngineMsg()
+    {
+        m_Msg = LEM_NONE;
+        m_lMax = 0;
+        m_lProgress = 0;
+        m_Msg = LIVEENGINEMSG(0);
+        m_lMax = 0;
+        m_lProgress = 0;
+        m_bLogDateTime = false;
+        m_bLogBold = false;
+        m_bLogItalic = false;
+        m_crLogColor = 0;
+        m_lProgressAchieved = 0;
+        m_lProgressTotal = 0;
+        m_lNrStacked = 0;
+        m_fExposure = 0;
+        m_ImageStatus = IMAGESTATUS(0);
+        m_fdX = 0;
+        m_fdY = 0;
+        m_fAngle = 0;
+        m_ImageInfo = STACKIMAGEINFO(0);
+        m_lNrPending = 0;
+    }
 
 	~CLiveEngineMsg()
 	{
@@ -198,7 +215,7 @@ public :
 		m_fAngle	= fAngle;
 	};
 
-	void	SetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+	void	SetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 	{
 		m_Msg = LEM_SETFOOTPRINT;
 		m_ptFootprint[0] = pt1;
@@ -341,9 +358,9 @@ public :
 		BOOL			bResult = FALSE;
 
 		if (ppBitmap)
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 		if (ppWndBitmap)
-			*ppWndBitmap = NULL;
+			*ppWndBitmap = nullptr;
 
 		if (m_Msg == LEM_FILELOADED)
 		{
@@ -361,9 +378,9 @@ public :
 		BOOL			bResult = FALSE;
 
 		if (ppBitmap)
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 		if (ppWndBitmap)
-			*ppWndBitmap = NULL;
+			*ppWndBitmap = nullptr;
 
 		if (m_Msg == LEM_SETSTACKEDIMAGE)
 		{
@@ -468,14 +485,14 @@ private :
 	DWORD						m_dwThreadID;
 	HANDLE						m_hEvent;
 	CLiveSettings				m_LiveSettings;
-	std::deque<CString>			m_qToRegister;	
-	std::deque<CLightFrameInfo>	m_qToStack;	
+	std::deque<CString>			m_qToRegister;
+	std::deque<CLightFrameInfo>	m_qToStack;
 	BOOL						m_bStackingOn;
 	BOOL						m_bRegisteringOn;
 	BOOL						m_bReferenceFrameSet;
 	CRunningStackingEngine		m_RunningStackingEngine;
 	LONG						m_lNrUnsavedImages;
-	
+
 private :
 	void	StartEngine();
 	void	CloseEngine();
@@ -490,7 +507,7 @@ private :
 	void	PostChangeImageStatus(LPCTSTR szFileName, IMAGESTATUS status);
 	void	PostChangeImageInfo(LPCTSTR szFileName, STACKIMAGEINFO info);
 	void	PostUpdateImageOffsets(LPCTSTR szFileName, double fdX, double fdY, double fAngle);
-	void	SaveStackedImage(CMemoryBitmap * pBitmap = NULL);
+	void	SaveStackedImage(CMemoryBitmap * pBitmap = nullptr);
 	void	PostFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4);
 	void	PostStackedImage();
 	void	PostStackedImageSaved();
@@ -516,7 +533,7 @@ public :
 
 	BOOL	IsFileAvailable(LPCTSTR szFileName);
 
-	BOOL	GetMessage(CLiveEngineMsg ** ppMsg);	
+	BOOL	GetMessage(CLiveEngineMsg ** ppMsg);
 	void	AddFileToProcess(LPCTSTR szFile);
 
 	void	UpdateSettings();

@@ -245,7 +245,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,205,151,50,14
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -278,14 +278,14 @@ BEGIN
     PUSHBUTTON      "Settings...",IDC_DEBLOOMSETTINGS,184,130,50,14,NOT WS_VISIBLE
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking Parameters"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,266,191,50,14
-    LTEXT           "Static",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Temporary Files Folder:",IDC_STATIC,11,177,76,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Static",IDC_TEMPFOLDER,89,177,208,8,SS_PATHELLIPSIS
@@ -295,7 +295,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,115,10
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Result"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -342,7 +342,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,88,179,10
 END
 
-IDD_RAWSETTINGS_TAB DIALOGEX 0, 0, 278, 270
+IDD_RAWSETTINGS_TAB DIALOGEX 0, 0, 301, 270
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "RAW Files"
 FONT 8, "MS Shell Dlg 2", 0, 0, 0x0
@@ -354,9 +354,11 @@ BEGIN
     EDITTEXT        IDC_REDSCALE,63,34,40,14,ES_RIGHT | ES_AUTOHSCROLL
     LTEXT           "Blue scale",IDC_STATIC,15,53,34,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
-    GROUPBOX        "White Balance",IDC_STATIC,140,7,131,64
-    CONTROL         "Use Auto White Balance",IDC_AUTOWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,24,94,10
-    CONTROL         "Use Camera White Balance",IDC_CAMERAWB,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,149,43,103,10
+    GROUPBOX        "White Balance",IDC_STATIC,141,7,127,64
+    CONTROL         "No White Balance Processing",IDC_NOWB,"Button",
+						BS_AUTOCHECKBOX | WS_TABSTOP,149,24,110,10
+    CONTROL         "Use Camera White Balance",IDC_CAMERAWB,"Button",
+						BS_AUTOCHECKBOX | WS_TABSTOP,149,43,103,10
     CONTROL         "Bilinear Interpolation",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,79,10
     CONTROL         "Adaptive Homogeneity-Directed (AHD) Interpolation",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10
@@ -402,7 +404,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,255,217,10
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Alignment"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -431,7 +433,7 @@ BEGIN
     CONTROL         "Dark Flat Frames",IDC_DARKFLATFRAMES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,7,67,70,10
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Intermediate Files"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -479,7 +481,7 @@ BEGIN
     COMBOBOX        IDC_STARSHAPE,16,21,133,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Comet"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -526,7 +528,7 @@ BEGIN
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,79,163,10
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cosmetic"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -605,7 +607,7 @@ BEGIN
                     "QHTM_Window_Class_001",WS_TABSTOP,7,7,324,192
 END
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Output"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -644,6 +646,10 @@ BEGIN
         BOTTOMMARGIN, 171
     END
 
+    IDD_RAWSETTINGS, DIALOG
+    BEGIN
+    END
+
     IDD_ABOUT, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -664,6 +670,15 @@ BEGIN
         HORZGUIDE, 209
         HORZGUIDE, 223
         HORZGUIDE, 242
+    END
+
+    IDD_STACKSETTINGS, DIALOG
+    BEGIN
+    END
+
+    IDD_RAWSETTINGS_TAB, DIALOG
+    BEGIN
+        RIGHTMARGIN, 276
     END
 
     IDD_BACKGROUNDOPTIONS, DIALOG
@@ -922,6 +937,22 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_STACKSETTINGS AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_RAWSETTINGS_TAB AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
@@ -952,11 +983,11 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Depth"
     IDS_COLUMN_INFOS        "Infos"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposure"
-	IDS_COLUMN_APERTURE		"Aperture"
     IDS_COLUMN_STARS        "#Stars"
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
+    IDS_COLUMN_APERTURE     "Aperture"
 END
 
 STRINGTABLE
@@ -977,6 +1008,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "or"
     IDS_AND                 "and"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE
@@ -997,7 +1030,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS or DeepSkyStacker Image|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Picture Files|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Picture Files|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "TIFF Image (16 bit/ch)|*.TIF|TIFF Image (32 bit/ch - integer)|*.TIF|TIFF Image (32 bit/ch - rational)|*.TIF|FITS Image (16 bit/ch)|*.FTS|FITS Image (32 bit/ch - integer)|*.FTS|FITS Image (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "File List (*.txt)|*.txt|File List (*.dssfilelist)|*.dssfilelist|All Files|*.*||"
     IDS_FILTER_MASK         "TIFF Image|*.tif;*.tiff|FITS Image|*.fits;*.fts;*.fit||"
@@ -1201,15 +1234,15 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_STEP          "Stacking step %ld\n  ->%ld frames (ISO: %s) - total exposure: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (ISO: %s) exposure: %s\n"
+    IDS_RECAP_STEP          "Stacking step %ld\n  ->%ld frames (%s: %s) - total exposure: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (%s: %s) exposure: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tWarning: ISO speed not matching with light frames\n"
     IDS_RECAP_NOOFFSET      "\t-> No Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld frames (ISO : %s) exposure: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld frames (%s : %s) exposure: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tWarning: exposure time not matching with light frames\n"
     IDS_RECAP_NODARK        "\t-> No Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (ISO: %s) exposure: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (%s: %s) exposure: %s\n"
     IDS_RECAP_NOFLAT        "\t-> No Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nEstimated Total exposure time: %s\n(the total exposure time is computed considering that all the checked light frames are kept for the stacking process)\n"
@@ -1218,11 +1251,21 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "RGB Channels Background Calibration: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Dark optimization: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (ISO : %s) exposure: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (%s : %s) exposure: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tWarning: ISO speed not matching with flat frames\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tWarning: exposure time not matching with flat frames\n"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
+                            "Per Channel Background Calibration: %s\n"
+    IDS_RECAP_DARKMULTIPLICATIONFACTOR "Dark Multiplication Factor: %.2f\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
 END
 
 STRINGTABLE
@@ -1404,13 +1447,6 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILELISTDESCRIPTION "DeepSkyStacker File List"
-END
-
-STRINGTABLE
-BEGIN
-    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
-                            "Per Channel Background Calibration: %s\n"
-    IDS_RECAP_DARKMULTIPLICATIONFACTOR "Dark Multiplication Factor: %.2f\n"
 END
 
 STRINGTABLE

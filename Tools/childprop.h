@@ -21,8 +21,12 @@ class CChildPropertyPage : public CPropertyPage
 	DECLARE_DYNCREATE(CChildPropertyPage)
 
 public:
-	CChildPropertyPage() : CPropertyPage() {}
-	CChildPropertyPage(UINT nIDPage, UINT nIDCaption = 0, UINT nSelectedPage = 0, UINT nIDGroup = 0); 
+	CChildPropertyPage() : CPropertyPage()
+    {
+        m_nSelectedPage = 0;
+        m_nIDGroup = 0;
+    }
+	CChildPropertyPage(UINT nIDPage, UINT nIDCaption = 0, UINT nSelectedPage = 0, UINT nIDGroup = 0);
 	~CChildPropertyPage();
 
 	void AddPage(CPropertyPage* pPage) { m_arrPages.Add(pPage); }

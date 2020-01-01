@@ -8,7 +8,7 @@ Purpose:	Tool tips window
 ----------------------------------------------------------------------*/
 #include "stdafx.h"
 #include <guitools/guitools.h>
-#include <versionhelpers.h>
+#include <DSS-versionhelpers.h>
 #include "Defaults.h"
 #include "TipWindow.h"
 #include "utils.h"

@@ -22,7 +22,7 @@ const DWORD		COLUMN_SIZES	= 11;
 const DWORD		COLUMN_CFA		= 12;
 const DWORD		COLUMN_DEPTH	= 13;
 const DWORD		COLUMN_INFO		= 14;
-const DWORD		COLUMN_ISO		= 15;
+const DWORD		COLUMN_ISO_GAIN		= 15;
 const DWORD		COLUMN_SKYBACKGROUND = 16;
 
 
@@ -31,7 +31,7 @@ const DWORD		COLUMN_SKYBACKGROUND = 16;
 
 IMPLEMENT_DYNAMIC(CImageListTab, CDialog)
 
-CImageListTab::CImageListTab(CWnd* pParent /*=NULL*/)
+CImageListTab::CImageListTab(CWnd* pParent /*=nullptr*/)
 	: CDialog(CImageListTab::IDD, pParent)
 {
 }
@@ -63,6 +63,13 @@ void CImageListTab::OnSize(UINT nType, int cx, int cy)
 	CDialog::OnSize(nType, cx, cy);
 
 	m_ControlPos.MoveControls();
+}
+
+/* ------------------------------------------------------------------- */
+
+void CImageListTab::SetToDarkMode()
+{
+	m_ImageList.SetBkColor(COLORREF(RGB(80, 80, 80)));
 }
 
 /* ------------------------------------------------------------------- */
@@ -102,8 +109,8 @@ void CImageListTab::InitList()
 	m_ImageList.InsertColumn(COLUMN_DEPTH, strColumn, LVCFMT_LEFT, 50);
 	strColumn.LoadString(IDS_COLUMN_INFOS);
 	m_ImageList.InsertColumn(COLUMN_INFO, strColumn, LVCFMT_LEFT, 50);
-	strColumn.LoadString(IDS_COLUMN_ISO);
-	m_ImageList.InsertColumn(COLUMN_ISO, strColumn, LVCFMT_RIGHT, 50);
+	strColumn.LoadString(IDS_COLUMN_ISO_GAIN);
+	m_ImageList.InsertColumn(COLUMN_ISO_GAIN, strColumn, LVCFMT_RIGHT, 50);
 	strColumn.LoadString(IDS_COLUMN_SKYBACKGROUND);
 	m_ImageList.InsertColumn(COLUMN_SKYBACKGROUND, strColumn, LVCFMT_RIGHT, 50);
 
@@ -120,7 +127,7 @@ BOOL CImageListTab::OnInitDialog()
 	m_ControlPos.AddControl(IDC_IMAGELIST, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
 	InitList();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -150,7 +157,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		TCHAR				szName[_MAX_FNAME];
 		TCHAR				szExt[_MAX_EXT];
 
-		_tsplitpath(szImage, NULL, NULL, szName, szExt);
+		_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 		strImage.Format(_T("%s%s"), szName, szExt);
 
 		nItem = m_ImageList.InsertItem(m_ImageList.GetItemCount(), _T(""));
@@ -158,7 +165,6 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 
 		CString				strSizes;
 		CString				strDepth;
-		CString				strInfos;
 
 		strSizes.Format(_T("%ld x %ld"), bmpInfo.m_lWidth, bmpInfo.m_lHeight);
 		m_ImageList.SetItemText(nItem, COLUMN_SIZES, (LPCTSTR)strSizes);
@@ -171,8 +177,13 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 
 		CString				strText;
 
-		ISOToString(bmpInfo.m_lISOSpeed, strText);
-		m_ImageList.SetItemText(nItem, COLUMN_ISO, (LPCTSTR)strText);
+		if (bmpInfo.m_lISOSpeed)
+			ISOToString(bmpInfo.m_lISOSpeed, strText);
+		else if (bmpInfo.m_lGain >= 0)
+			GainToString(bmpInfo.m_lGain, strText);
+		else
+			ISOToString(0, strText);
+		m_ImageList.SetItemText(nItem, COLUMN_ISO_GAIN, (LPCTSTR)strText);
 
 		ExposureToString(bmpInfo.m_fExposure, strText);
 		m_ImageList.SetItemText(nItem, COLUMN_EXPOSURE, (LPCTSTR)strText);
@@ -218,7 +229,7 @@ void	CImageListTab::ChangeImageStatus(LPCTSTR szImage, IMAGESTATUS status)
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list
@@ -265,7 +276,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 	TCHAR				szName[_MAX_FNAME];
 	TCHAR				szExt[_MAX_EXT];
 
-	_tsplitpath(szImage, NULL, NULL, szName, szExt);
+	_tsplitpath(szImage, nullptr, nullptr, szName, szExt);
 	strImage.Format(_T("%s%s"), szName, szExt);
 
 	// Search the image in the list

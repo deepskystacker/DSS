@@ -48,7 +48,7 @@
 
 #define MAX_LABEL_TEXT				30
 
-typedef struct _CTC_NMHDR 
+typedef struct _CTC_NMHDR
 {
     NMHDR hdr;
 	int	nItem;
@@ -76,7 +76,7 @@ private:
 	LPARAM						m_lParam;
 	CRect						m_rect;
 	CRect						m_rectText;
-	CRgn						m_rgn;			
+	CRgn						m_rgn;
 	BYTE						m_bShape;
 	BOOL						m_fSelected;
 	BOOL						m_fHighlighted;
@@ -87,8 +87,8 @@ private:
 // CCustomTabCtrl
 
 // styles
-#define CTCS_FIXEDWIDTH			1		// Makes all tabs the same width. 
-#define CTCS_FOURBUTTONS		2		// Four buttons (First, Prev, Next, Last) 
+#define CTCS_FIXEDWIDTH			1		// Makes all tabs the same width.
+#define CTCS_FOURBUTTONS		2		// Four buttons (First, Prev, Next, Last)
 #define CTCS_AUTOHIDEBUTTONS	4		// Auto hide buttons
 #define CTCS_TOOLTIPS			8		// Tooltips
 #define CTCS_MULTIHIGHLIGHT		16		// Multi highlighted items
@@ -124,7 +124,7 @@ private:
 
 #define CTCID_FIRSTBUTTON		-1
 #define CTCID_PREVBUTTON		-2
-#define CTCID_NEXTBUTTON		-3	
+#define CTCID_NEXTBUTTON		-3
 #define CTCID_LASTBUTTON		-4
 #define CTCID_CLOSEBUTTON		-5
 #define CTCID_NOBUTTON			-6
@@ -220,7 +220,7 @@ protected:
 	afx_msg void				OnRButtonDblClk(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	afx_msg LRESULT				OnSizeParent(WPARAM, LPARAM lParam);
-	DECLARE_MESSAGE_MAP()	
+	DECLARE_MESSAGE_MAP()
 
 private:
 	void						RecalcLayout(int nRecalcType,int nItem);

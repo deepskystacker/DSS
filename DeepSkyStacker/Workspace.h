@@ -34,50 +34,63 @@ private :
 		m_bDirty	= s.m_bDirty;
 	};
 
+    void Initialize()
+    {
+        m_Type		= DST_STRING;
+		m_bDirty	= FALSE;
+        m_dwValue   = 0;
+        m_fValue    = 0;
+        m_bValue    = FALSE;
+    }
+
 public :
 	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName)
 	{
-		m_Type		= DST_DWORD;
+        Initialize();
+
+        m_Type      = DST_DWORD;
 		m_strPath	= szPath;
 		m_strName	= szName;
-		m_dwValue	= 0;
-		m_bDirty	= FALSE;
 	};
 
 	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, LPCTSTR szDefValue)
 	{
-		m_Type		= DST_STRING;
+        Initialize();
+
+        m_Type      = DST_STRING;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_strValue	= szDefValue;
-		m_bDirty	= FALSE;
 	};
 
 	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, DWORD dwValue)
 	{
-		m_Type		= DST_DWORD;
+        Initialize();
+
+        m_Type      = DST_DWORD;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_dwValue   = dwValue;
-		m_bDirty	= FALSE;
 	};
 
 	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, bool bValue)
 	{
-		m_Type		= DST_BOOL;
+        Initialize();
+
+        m_Type      = DST_BOOL;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_bValue	= bValue;
-		m_bDirty	= FALSE;
 	};
 
 	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, double fValue)
 	{
-		m_Type		= DST_DOUBLE;
+        Initialize();
+
+        m_Type      = DST_DOUBLE;
 		m_strPath	= szPath;
 		m_strName	= szName;
 		m_fValue	= fValue;
-		m_bDirty	= FALSE;
 	};
 
 	CWorkspaceSetting(const CWorkspaceSetting & s)
@@ -162,7 +175,7 @@ protected :
 	void	Init();
 
 public :
-	CWorkspaceSettingsInternal() 
+	CWorkspaceSettingsInternal()
 	{
 		Init();
 	};
@@ -173,6 +186,11 @@ public :
 		CopyFrom(ws);
 		return (*this);
 	};
+
+    CWorkspaceSettingsInternal(CWorkspaceSettingsInternal const& other)
+    {
+        CopyFrom(other);
+    }
 
 	void	InitFrom(const CWorkspaceSettingsInternal & ws)
 	{

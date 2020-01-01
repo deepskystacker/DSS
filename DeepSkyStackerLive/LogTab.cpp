@@ -11,8 +11,9 @@
 
 IMPLEMENT_DYNAMIC(CLogTab, CDialog)
 
-CLogTab::CLogTab(CWnd* pParent /*=NULL*/)
-	: CDialog(CLogTab::IDD, pParent)
+CLogTab::CLogTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
+	: CDialog(CLogTab::IDD, pParent),
+	m_bDarkMode(bDarkMode)
 {
 }
 
@@ -34,7 +35,6 @@ void CLogTab::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CLogTab, CDialog)
 	ON_WM_SIZE()
-
 END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
@@ -56,7 +56,10 @@ BOOL CLogTab::OnInitDialog()
 
 	m_ControlPos.AddControl(IDC_LOG, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
 
-	return TRUE;  
+	if(m_bDarkMode)
+		m_Log.SetBackgroundColor(false, COLORREF(RGB(80, 80, 80)));
+
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -73,8 +76,8 @@ void CLogTab::AddToLog(LPCTSTR szText, BOOL bAddDateTime, BOOL bBold, BOOL bItal
 		TCHAR			szDate[1000];
 
 		GetLocalTime(&SystemTime);
-		GetTimeFormat(GetThreadLocale(), 0, &SystemTime, NULL, szTime, sizeof(szTime));
-		GetDateFormat(GetThreadLocale(), DATE_SHORTDATE, &SystemTime, NULL, szDate, sizeof(szDate));
+		GetTimeFormat(GetThreadLocale(), 0, &SystemTime, nullptr, szTime, sizeof(szTime));
+		GetDateFormat(GetThreadLocale(), DATE_SHORTDATE, &SystemTime, nullptr, szDate, sizeof(szDate));
 
 		strTime = szDate;
 		strTime += "  ";
@@ -98,12 +101,9 @@ void CLogTab::AddToLog(LPCTSTR szText, BOOL bAddDateTime, BOOL bBold, BOOL bItal
 	if (bBold)
 		cf.dwEffects |= CFE_BOLD;
 	if (bItalic)
-		cf.dwEffects |= CFE_ITALIC;	
+		cf.dwEffects |= CFE_ITALIC;
 
 	m_Log.SetSel(m_Log.GetTextLength(), -1);
 	m_Log.SetSelectionCharFormat(cf);
 	m_Log.ReplaceSel(szText);
 };
-
-/* ------------------------------------------------------------------- */
-

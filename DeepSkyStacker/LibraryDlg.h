@@ -14,7 +14,7 @@ private :
 	DECLARE_DYNAMIC(CLibraryDlg)
 
 public:
-	CLibraryDlg(CWnd* pParent = NULL);   // standard constructor
+	CLibraryDlg(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CLibraryDlg();
 
 // Dialog Data

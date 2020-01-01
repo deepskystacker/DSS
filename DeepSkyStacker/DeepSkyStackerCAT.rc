@@ -27,7 +27,7 @@ BEGIN
 END
 
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Sortida"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -277,7 +277,7 @@ BEGIN
                     274,86
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Alineació"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -515,10 +515,10 @@ BEGIN
     LTEXT           "Escala de Blau",IDC_STATIC,15,53,54,8
     EDITTEXT        IDC_BLUESCALE,74,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Balanç de Blancs",IDC_STATIC,140,7,131,64
-    CONTROL         "Utilitzar Balanç de Blancs Automàtic",IDC_AUTOWB,"Button",
-                    BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,112,17
+    CONTROL         "Sense processament del Balanç de Blancs",IDC_NOWB,"Button",
+						BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,21,112,17
     CONTROL         "Utilitzar Balanç de Blancs de la Càmera",IDC_CAMERAWB,"Button",
-                    BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,117,19
+						BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,149,43,117,19
     CONTROL         "Interpolació Bilineal",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,15,91,251,10
     CONTROL         "Interpolació Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
@@ -588,7 +588,7 @@ BEGIN
                     IDC_STACKWARNING,13,80,182,19,SS_SUNKEN
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Resultat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -688,7 +688,7 @@ BEGIN
                     WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cometa"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -710,7 +710,7 @@ BEGIN
                     19,151,124
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Arxius Intermedis"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -736,7 +736,7 @@ BEGIN
                     27,36,202,10
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Apilant"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -801,14 +801,14 @@ BEGIN
                     200
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Paràmetres d'apilat"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "Acceptar",IDOK,266,207,50,14
     PUSHBUTTON      "Cancel·lar",IDCANCEL,266,191,50,14
-    LTEXT           "Static",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Static",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Carpeta d'Arxius Temporals:",IDC_STATIC,11,178,109,9
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Static",IDC_TEMPFOLDER,105,178,192,9,SS_PATHELLIPSIS
@@ -897,7 +897,7 @@ BEGIN
                     IDC_STATIC,15,94,210,17
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Cosmètica"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -1130,7 +1130,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Profunditat"
     IDS_COLUMN_INFOS        "Infos"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposició"
 	IDS_COLUMN_APERTURE		"Obertura"
     IDS_COLUMN_STARS        "# Estrelles"
@@ -1155,6 +1155,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "o"
     IDS_AND                 "i"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE 
@@ -1175,7 +1177,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS o Imatge DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Arxius d'Imatge|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Bitmaps de Windows (.bmp)|*.bmp| Arxiu JPEG o PNG|*.jpg;*.jpeg;*.png|Arxiu TIFF (.tif)|*.tif;*.tiff|Arxiu RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Arxiu FITS|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Arxius d'Imatge|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Bitmaps de Windows (.bmp)|*.bmp| Arxiu JPEG o PNG|*.jpg;*.jpeg;*.png|Arxiu TIFF (.tif)|*.tif;*.tiff|Arxiu RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Arxiu FITS|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "Imatge TIFF (16 bit/ch)|*.TIF|Imatge TIFF (32 bit/ch - integer)|*.TIF|Imatge TIFF (32 bit/ch - rational)|*.TIF|Imatge FITS (16 bit/ch)|*.FTS|Imatge FITS (32 bit/ch - integer)|*.FTS|Imatge FITS (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Llista d'Arxius (*.txt)|*.txt|Llista d'Arxius (*.dssfilelist)|*.dssfilelist|Tots Els Arxius|*.*||"
     IDS_FILTER_MASK         "Imatge TIFF|*.tif;*.tiff|Imatge FITS|*.fits;*.fts;*.fit||"
@@ -1379,15 +1381,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RECAP_STEP          "Apilat Pas %ld\n  ->%ld frames (ISO: %s) - exposició total: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (ISO: %s) exposició: %s\n"
+    IDS_RECAP_STEP          "Apilat Pas %ld\n  ->%ld frames (%s: %s) - exposició total: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld frames (%s: %s) exposició: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tPrecaució: la sensibilitat ISO no coincideix amb la dels light frames\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Sense Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld frames (ISO : %s) exposició: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld frames (%s : %s) exposició: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tPrecaució: el temps d'exposició no coincideix amb el dels light frames\n"
     IDS_RECAP_NODARK        "\t-> Sense Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (ISO: %s) exposició: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld frames (%s: %s) exposició: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Sense Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\n Temps d'Exposició Total estimat: %s\n (el total de temps d'exposició és calculat tenint en compte que tots els light frames seleccionats són utilitzats en el procés d'apilat)\n"
@@ -1396,9 +1399,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "Calibració de Fons de Canals RGB: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Optimizació de Darks: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (ISO : %s) exposició: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld frames (%s : %s) exposició: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tPrecaució: la sensibilitat ISO no coincideix amb la dels flat frames\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tPrecaució: el temps d'exposició no coincideix amb el dels flat frames\n"
 END

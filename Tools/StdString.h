@@ -103,7 +103,7 @@
 //					finally spotting a silly little error in StdCodeCvt that
 //					has been causing me (and users of CStdString) problems for
 //					years in some relatively rare conversions.  I had reversed
-//					two length arguments. 
+//					two length arguments.
 //
 //    2003-NOV-24 - Thanks to a bunch of people for helping me clean up many
 //					compiler warnings (and yes, even a couple of actual compiler
@@ -167,7 +167,7 @@
 //
 //    2001-OCT-29 - Added a minor range checking fix for the Mid function to
 //					make it as forgiving as CString's version is.  Thanks to
-//					Igor Kholodov for noticing this.  
+//					Igor Kholodov for noticing this.
 //				  - Added a specialization of std::swap for CStdString.  Thanks
 //					to Mike Crusader for suggesting this!  It's commented out
 //					because you're not supposed to inject your own code into the
@@ -231,7 +231,7 @@
 //
 //	  1999-DEC-22 - Thanks to Greg Pickles for helping me identify a problem
 //					with my implementation of CStdString::FormatV in which
-//					resulting string might not be properly NULL terminated.
+//					resulting string might not be properly nullptr terminated.
 //
 //	  1999-DEC-06 - Chris Conti pointed yet another basic_string<> assignment
 //					bug that MS has not fixed.  CStdString did nothing to fix
@@ -245,11 +245,11 @@
 //				  - Some of the Q172398 fixes were not checking for assignment-
 //					to-self.  Fixed.  Thanks to Baptiste Lepilleur.
 //
-//	  1999-AUG-20 - Improved Load() function to be more efficient by using 
+//	  1999-AUG-20 - Improved Load() function to be more efficient by using
 //					SizeOfResource().  Thanks to Rich Zuris for this.
 //				  - Corrected resource ID constructor, again thanks to Rich.
 //				  - Fixed a bug that occurred with UNICODE characters above
-//					the first 255 ANSI ones.  Thanks to Craig Watson. 
+//					the first 255 ANSI ones.  Thanks to Craig Watson.
 //				  - Added missing overloads of TrimLeft() and TrimRight().
 //					Thanks to Karim Ratib for pointing them out
 //
@@ -274,7 +274,7 @@
 //				  - Changed operators << and >> (for MFC CArchive) to serialize
 //					EXACTLY as CString's do.  So now you can send a CString out
 //					to a CArchive and later read it in as a CStdString.   I have
-//					no idea why you would want to do this but you can. 
+//					no idea why you would want to do this but you can.
 //
 //	  1999-JUN-21 - Changed the CStdString class into the CStdStr template.
 //				  - Fixed FormatV() to correctly decrement the loop counter.
@@ -284,7 +284,7 @@
 //					using to _alloca().
 //				  - Updated the text conversion macros to properly use code
 //					pages and to fit in better in MFC/ATL builds.  In other
-//					words, I copied Microsoft's conversion stuff again. 
+//					words, I copied Microsoft's conversion stuff again.
 //				  - Added equivalents of CString::GetBuffer, GetBufferSetLength
 //				  - new sscpy() replacement of CStdString::CopyString()
 //				  - a Trim() function that combines TrimRight() and TrimLeft().
@@ -298,15 +298,15 @@
 //	  1999-FEB-03 - Fixed a bug in a rarely-used overload of operator+() that
 //					caused infinite recursion and stack overflow
 //				  - Added member functions to simplify the process of
-//					persisting CStdStrings to/from DCOM IStream interfaces 
+//					persisting CStdStrings to/from DCOM IStream interfaces
 //				  - Added functional objects (e.g. StdStringLessNoCase) that
 //					allow CStdStrings to be used as keys STL map objects with
-//					case-insensitive comparison 
+//					case-insensitive comparison
 //				  - Added array indexing operators (i.e. operator[]).  I
 //					originally assumed that these were unnecessary and would be
 //					inherited from basic_string.  However, without them, Visual
 //					C++ complains about ambiguous overloads when you try to use
-//					them.  Thanks to Julian Selman to pointing this out. 
+//					them.  Thanks to Julian Selman to pointing this out.
 //
 //	  1998-FEB-?? - Added overloads of assign() function to completely account
 //					for Q172398 bug.  Thanks to "Pete the Plumber" for this
@@ -316,7 +316,7 @@
 // COPYRIGHT:
 //		2002 Joseph M. O'Leary.  This code is 100% free.  Use it anywhere you
 //      want.  Rewrite it, restructure it, whatever.  If you can write software
-//      that makes money off of it, good for you.  I kinda like capitalism. 
+//      that makes money off of it, good for you.  I kinda like capitalism.
 //      Please don't blame me if it causes your $30 billion dollar satellite
 //      explode in orbit.  If you redistribute it in any form, I'd appreciate it
 //      if you would leave this notice here.
@@ -359,7 +359,6 @@
 		#define SS_IS_INTRESOURCE(_r) (((unsigned long)(_r) >> 16) == 0)
 	#endif
 #endif
-
 
 // MACRO: SS_UNSIGNED
 // ------------------
@@ -411,13 +410,12 @@
 //      out of the MFC world and you don't want to rewrite all your calls to
 //      Format(), then you can define this flag and it will no longer crash.
 //
-//      Note however that this ONLY works for Format(), not sprintf, fprintf, 
+//      Note however that this ONLY works for Format(), not sprintf, fprintf,
 //      etc.  If you pass a CStdString object to one of those functions, your
 //      program will crash.  Not much I can do to get around this, short of
 //      writing substitutes for those functions as well.
 
 #define SS_SAFE_FORMAT  // use new template style Format() function
-
 
 // MACRO: SS_NO_IMPLICIT_CAST
 // --------------------------
@@ -428,7 +426,6 @@
 //      cast.
 
 //#define SS_NO_IMPLICIT_CAST // gets rid of operator const CT*()
-
 
 // MACRO: SS_NO_REFCOUNT
 // ---------------------
@@ -461,7 +458,7 @@
 //      standard library functions to do it's work.  It will NOT attempt to use
 //      any Win32 of Visual C++ specific functions -- even if they are
 //      available.  You may define this flag yourself to prevent any Win32
-//      of VC++ specific functions from being called. 
+//      of VC++ specific functions from being called.
 
 // If we're not on Win32, we MUST use an ANSI build
 
@@ -489,7 +486,6 @@
 	#define SS_ALLOCA
 #endif
 
-
 // MACRO: SS_MBCS
 // --------------
 //		Setting this macro means you are using MBCS characters.  In MSVC builds,
@@ -506,7 +502,6 @@
 	#define SS_MBCS
 #endif
 
-
 // MACRO SS_NO_LOCALE
 // ------------------
 // If your implementation of the Standard C++ Library lacks the <locale> header,
@@ -516,14 +511,13 @@
 
 // #define SS_NO_LOCALE
 
-
 // Compiler Error regarding _UNICODE and UNICODE
 // -----------------------------------------------
-// Microsoft header files are screwy.  Sometimes they depend on a preprocessor 
+// Microsoft header files are screwy.  Sometimes they depend on a preprocessor
 // flag named "_UNICODE".  Other times they check "UNICODE" (note the lack of
 // leading underscore in the second version".  In several places, they silently
-// "synchronize" these two flags this by defining one of the other was defined. 
-// In older version of this header, I used to try to do the same thing. 
+// "synchronize" these two flags this by defining one of the other was defined.
+// In older version of this header, I used to try to do the same thing.
 //
 // However experience has taught me that this is a bad idea.  You get weird
 // compiler errors that seem to indicate things like LPWSTR and LPTSTR not being
@@ -554,10 +548,9 @@
 	#endif
 #endif
 
-
 // -----------------------------------------------------------------------------
 // MIN and MAX.  The Standard C++ template versions go by so many names (at
-// at least in the MS implementation) that you never know what's available 
+// at least in the MS implementation) that you never know what's available
 // -----------------------------------------------------------------------------
 template<class Type>
 inline const Type& SSMIN(const Type& arg1, const Type& arg2)
@@ -581,7 +574,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 
 		// On Win32 we have TCHAR.H so just include it.  This is NOT violating
         // the spirit of SS_ANSI as we are not calling any Win32 functions here.
-        
+
 		#ifdef SS_WIN32
 
 			#include <TCHAR.H>
@@ -606,7 +599,6 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 			typedef wchar_t			OLECHAR;
 
 		#endif	// #ifndef _WIN32
-
 
 		// Make sure ASSERT and verify are defined using only ANSI stuff
 
@@ -705,14 +697,12 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 	#define PCUSTR_DEFINED
 #endif
 
-
 // SGI compiler 7.3 doesnt know these  types - oh and btw, remember to use
 // -LANG:std in the CXX Flags
 #if defined(__sgi)
     typedef unsigned long           DWORD;
     typedef void *                  LPCVOID;
 #endif
-
 
 // SS_USE_FACET macro and why we need it:
 //
@@ -778,7 +768,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 #include <wchar.h>      // Added to Std Library with Amendment #1.
 
 // First define the conversion helper functions.  We define these regardless of
-// any preprocessor macro settings since their names won't collide. 
+// any preprocessor macro settings since their names won't collide.
 
 // Not sure if we need all these headers.   I believe ANSI says we do.
 
@@ -791,12 +781,11 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 	#include <varargs.h>
 #endif
 
-
 #ifdef SS_NO_LOCALE
 
 	#if defined(_WIN32) || defined (_WIN32_WCE)
 
-		inline PWSTR StdCodeCvt(PWSTR pDstW, int nDst, PCSTR pSrcA, int nSrc, 
+		inline PWSTR StdCodeCvt(PWSTR pDstW, int nDst, PCSTR pSrcA, int nSrc,
 			UINT acp=CP_ACP)
 		{
 			ASSERT(0 != pSrcA);
@@ -805,13 +794,13 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 			MultiByteToWideChar(acp, 0, pSrcA, nSrc, pDstW, nDst);
 			return pDstW;
 		}
-		inline PWSTR StdCodeCvt(PWSTR pDstW, int nDst, PCUSTR pSrcA, int nSrc, 
+		inline PWSTR StdCodeCvt(PWSTR pDstW, int nDst, PCUSTR pSrcA, int nSrc,
 			UINT acp=CP_ACP)
 		{
 			return StdCodeCvt(pDstW, nDst, (PCSTR)pSrcA, nSrc, acp);
 		}
 
-		inline PSTR StdCodeCvt(PSTR pDstA, int nDst, PCWSTR pSrcW, int nSrc, 
+		inline PSTR StdCodeCvt(PSTR pDstA, int nDst, PCWSTR pSrcW, int nSrc,
 			UINT acp=CP_ACP)
 		{
 			ASSERT(0 != pDstA);
@@ -820,7 +809,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 			WideCharToMultiByte(acp, 0, pSrcW, nSrc, pDstA, nDst, 0, 0);
 			return pDstA;
 		}
-		inline PUSTR StdCodeCvt(PUSTR pDstA, int nDst, PCWSTR pSrcW, int nSrc, 
+		inline PUSTR StdCodeCvt(PUSTR pDstA, int nDst, PCWSTR pSrcW, int nSrc,
 			UINT acp=CP_ACP)
 		{
 			return (PUSTR)StdCodeCvt((PSTR)pDstA, nDst, pSrcW, nSrc, acp);
@@ -847,7 +836,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 		ASSERT(0 != pSrcA);
 		ASSERT(0 != pDstW);
 
-		pDstW[0]					= '\0';	
+		pDstW[0]					= '\0';
 
 		if ( nSrc > 0 )
 		{
@@ -886,7 +875,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 		ASSERT(0 != pDstA);
 		ASSERT(0 != pSrcW);
 
-		pDstA[0]					= '\0';	
+		pDstA[0]					= '\0';
 
 		if ( nSrc > 0 )
 		{
@@ -922,13 +911,11 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 
 #endif
 
-
-
 // Unicode/MBCS conversion macros are only available on implementations of
 // the "C" library that have the non-standard _alloca function.  As far as I
 // know that's only Microsoft's though I've heard that the function exists
-// elsewhere.  
-    
+// elsewhere.
+
 #if defined(SS_ALLOCA) && !defined SS_NO_CONVERSION
 
     #include <malloc.h>	// needed for _alloca
@@ -985,7 +972,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 	    #define SST2CA	SSW2CA
 	    #define SSA2CT	SSA2CW
 		// (Did you get a compiler error here about not being able to convert
-		// PTSTR into PWSTR?  Then your _UNICODE and UNICODE flags are messed 
+		// PTSTR into PWSTR?  Then your _UNICODE and UNICODE flags are messed
 		// up.  Best bet: #define BOTH macros before including any MS headers.)
 	    inline PWSTR	SST2W(PTSTR p)			{ return p; }
 	    inline PTSTR	SSW2T(PWSTR p)			{ return p; }
@@ -1044,7 +1031,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 
     // Above we've defined macros that look like MS' but all have
     // an 'SS' prefix.  Now we need the real macros.  We'll either
-    // get them from the macros above or from MFC/ATL. 
+    // get them from the macros above or from MFC/ATL.
 
 	#if defined (USES_CONVERSION)
 
@@ -1084,7 +1071,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 			#define OLE2CA			SSOLE2CA
 			#define W2COLE			SSW2COLE
 			#define OLE2CW			SSOLE2CW
-	
+
 		#endif // #ifdef _MFC_VER
 	#endif // #ifndef USES_CONVERSION
 #endif // #ifndef SS_NO_CONVERSION
@@ -1135,7 +1122,6 @@ inline PWSTR StdCodeCvt(PWSTR pDst, int nDst, PCWSTR pSrc, int nSrc)
 	return pDst;
 }
 
-
 // Define tstring -- generic name for std::basic_string<TCHAR>
 
 #if !defined(tstring) && !defined(TSTRING_DEFINED)
@@ -1165,7 +1151,7 @@ inline PWSTR StdCodeCvt(PWSTR pDst, int nDst, PCWSTR pSrc, int nSrc)
 // Therefore, to keep the CStdStr declaration simple, we have these inline
 // functions.  The template calls them often.  Since they are inline (and NOT
 // exported when this is built as a DLL), they will probably be resolved away
-// to nothing. 
+// to nothing.
 //
 // Without these functions, the CStdStr<> template would probably have to broken
 // out into two, almost identical classes.  Either that or it would be a huge,
@@ -1178,21 +1164,20 @@ inline PWSTR StdCodeCvt(PWSTR pDst, int nDst, PCWSTR pSrc, int nSrc)
 	// --------------------------------------------------------------------------
 	// Win32 GetStringTypeEx wrappers
 	// --------------------------------------------------------------------------
-	inline bool wsGetStringType(LCID lc, DWORD dwT, PCSTR pS, int nSize, 
+	inline bool wsGetStringType(LCID lc, DWORD dwT, PCSTR pS, int nSize,
 		WORD* pWd)
 	{
 		return FALSE != GetStringTypeExA(lc, dwT, pS, nSize, pWd);
 	}
-	inline bool wsGetStringType(LCID lc, DWORD dwT, PCWSTR pS, int nSize, 
+	inline bool wsGetStringType(LCID lc, DWORD dwT, PCWSTR pS, int nSize,
 		WORD* pWd)
 	{
 		return FALSE != GetStringTypeExW(lc, dwT, pS, nSize, pWd);
 	}
 
-
 	template<typename CT>
 		inline bool ssisspace (CT t)
-	{ 
+	{
 		WORD toYourMother;
 		return	wsGetStringType(GetThreadLocale(), CT_CTYPE1, &t, 1, &toYourMother)
 			&& 0 != (C1_BLANK & toYourMother);
@@ -1255,9 +1240,9 @@ inline SS_NOTHROW int sslen(const std::wstring& s)
 // ssasn: assignment functions -- assign "sSrc" to "sDst"
 // -----------------------------------------------------------------------------
 typedef std::string::size_type		SS_SIZETYPE; // just for shorthand, really
-typedef std::string::pointer		SS_PTRTYPE;  
+typedef std::string::pointer		SS_PTRTYPE;
 typedef std::wstring::size_type		SW_SIZETYPE;
-typedef std::wstring::pointer		SW_PTRTYPE;  
+typedef std::wstring::pointer		SW_PTRTYPE;
 
 inline void	ssasn(std::string& sDst, const std::string& sSrc)
 {
@@ -1362,7 +1347,7 @@ inline void ssasn(std::string& sDst, const int nNull)
 	UNUSED(nNull);
 	ASSERT(nNull==0);
 	sDst.assign("");
-}	
+}
 inline void	ssasn(std::wstring& sDst, const std::wstring& sSrc)
 {
 	if ( sDst.c_str() != sSrc.c_str() )
@@ -1441,7 +1426,6 @@ inline void ssasn(std::wstring& sDst, const int nNull)
 	sDst.assign(L"");
 }
 
-
 // -----------------------------------------------------------------------------
 // ssadd: string object concatenation -- add second argument to first
 // -----------------------------------------------------------------------------
@@ -1519,7 +1503,7 @@ inline void	ssadd(std::string& sDst, PCSTR pA)
 		}
 		else
 		{
-			sDst.append(pA); 
+			sDst.append(pA);
 		}
 	}
 }
@@ -1535,7 +1519,7 @@ inline void	ssadd(std::wstring& sDst, const std::string& sSrc)
 		int nDst	= static_cast<int>(sDst.size());
 
 		sDst.resize(nDst + nSrc + 1);
-		PCWSTR szCvt = StdCodeCvt(const_cast<SW_PTRTYPE>(sDst.data()+nDst), 
+		PCWSTR szCvt = StdCodeCvt(const_cast<SW_PTRTYPE>(sDst.data()+nDst),
 			nSrc, sSrc.c_str(), nSrc+1);
 
 #ifdef SS_MBCS
@@ -1589,7 +1573,6 @@ inline void	ssadd(std::wstring& sDst, PCWSTR pW)
 	}
 }
 
-
 // -----------------------------------------------------------------------------
 // sscmp: comparison (case sensitive, not affected by locale)
 // -----------------------------------------------------------------------------
@@ -1599,7 +1582,7 @@ inline int sscmp(const CT* pA1, const CT* pA2)
     CT f;
     CT l;
 
-    do 
+    do
     {
 	    f = *(pA1++);
 	    l = *(pA2++);
@@ -1621,7 +1604,7 @@ inline int ssicmp(const CT* pA1, const CT* pA2)
     CT f;
     CT l;
 
-    do 
+    do
     {
 	    f = ct.tolower(*(pA1++));
 	    l = ct.tolower(*(pA2++));
@@ -1650,7 +1633,7 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 // builds we can't use _vsnprintf/_vsnwsprintf because they're MS extensions.
 //
 // -----------------------------------------------------------------------------
-// Borland's headers put some ANSI "C" functions in the 'std' namespace. 
+// Borland's headers put some ANSI "C" functions in the 'std' namespace.
 // Promote them to the global namespace so we can use them here.
 
 #if defined(__BORLANDC__)
@@ -1664,7 +1647,7 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 #if defined(__GNUC__)
 
 	inline int ssvsprintf(PSTR pA, size_t nCount, PCSTR pFmtA, va_list vl)
-	{ 
+	{
 		return vsnprintf(pA, nCount, pFmtA, vl);
 	}
 	inline int ssvsprintf(PWSTR pW, size_t nCount, PCWSTR pFmtW, va_list vl)
@@ -1676,7 +1659,7 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 #elif defined(_MSC_VER) && !defined(SS_ANSI)
 
 	inline int	ssnprintf(PSTR pA, size_t nCount, PCSTR pFmtA, va_list vl)
-	{ 
+	{
 		return _vsnprintf(pA, nCount, pFmtA, vl);
 	}
 	inline int	ssnprintf(PWSTR pW, size_t nCount, PCWSTR pFmtW, va_list vl)
@@ -1694,7 +1677,7 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 	inline int ssvsprintf(PWSTR pW, size_t nCount, PCWSTR pFmtW, va_list vl)
 	{
 		// JMO: Some distributions of the "C" have a version of vswprintf that
-        // takes 3 arguments (e.g. Microsoft, Borland, GNU).  Others have a 
+        // takes 3 arguments (e.g. Microsoft, Borland, GNU).  Others have a
         // version which takes 4 arguments (an extra "count" argument in the
         // second position.  The best stab I can take at this so far is that if
         // you are NOT running with MS, Borland, or GNU, then I'll assume you
@@ -1735,7 +1718,7 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 
 	}
 
-#else 
+#else
 
 	// GOT COMPILER PROBLEMS HERE?
 	// ---------------------------
@@ -1744,7 +1727,7 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 	// your version of the CRT.  This is understandable since neither is an ANSI
 	// "C" function.  However it still leaves you in a dilemma.  In order to make
 	// this code build, you're going to have to to use some non-length-checked
-	// formatting functions that every CRT has:  vsprintf and vswprintf.  
+	// formatting functions that every CRT has:  vsprintf and vswprintf.
 	//
 	// This is very dangerous.  With the proper erroneous (or malicious) code, it
 	// can lead to buffer overlows and crashing your PC.  Use at your own risk
@@ -1773,9 +1756,6 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 
 #endif
 
-
-
-
 // -----------------------------------------------------------------------------
 // ssload: Type safe, overloaded ::LoadString wrappers
 // There is no equivalent of these in non-Win32-specific builds.  However, I'm
@@ -1791,7 +1771,6 @@ inline void ssupr(CT* pT, size_t nLen, const std::locale& loc=std::locale())
 		return ::LoadStringW(hInst, uId, pBuf, nMax);
 	}
 #endif
-
 
 // -----------------------------------------------------------------------------
 // sscoll/ssicoll: Collation wrappers
@@ -1830,7 +1809,6 @@ inline int ssicoll(const CT* sz1, int nLen1, const CT* sz2, int nLen2)
 }
 #endif
 
-
 // -----------------------------------------------------------------------------
 // ssfmtmsg: FormatMessage equivalents.  Needed because I added a CString facade
 // Again -- no equivalent of these on non-Win32 builds but their might one day
@@ -1840,7 +1818,7 @@ inline int ssicoll(const CT* sz1, int nLen1, const CT* sz2, int nLen2)
 	inline DWORD ssfmtmsg(DWORD dwFlags, LPCVOID pSrc, DWORD dwMsgId,
 						  DWORD dwLangId, PSTR pBuf, DWORD nSize,
 						  va_list* vlArgs)
-	{ 
+	{
 		return FormatMessageA(dwFlags, pSrc, dwMsgId, dwLangId,
 							  pBuf, nSize,vlArgs);
 	}
@@ -1853,8 +1831,6 @@ inline int ssicoll(const CT* sz1, int nLen1, const CT* sz2, int nLen2)
 	}
 #else
 #endif
- 
-
 
 // FUNCTION: sscpy.  Copies up to 'nMax' characters from pSrc to pDst.
 // -----------------------------------------------------------------------------
@@ -1874,12 +1850,12 @@ inline int ssicoll(const CT* sz1, int nLen1, const CT* sz2, int nLen2)
 //
 //		"Character" is expressed in terms of the destination string, not
 //		the source.  If no 'nMax' argument is supplied, then the number of
-//		characters copied will be sslen(pSrc).  A NULL terminator will
+//		characters copied will be sslen(pSrc).  A nullptr terminator will
 //		also be added so pDst must actually be big enough to hold nMax+1
 //		characters.  The return value is the number of characters copied,
-//		not including the NULL terminator.
+//		not including the nullptr terminator.
 //
-// PARAMETERS: 
+// PARAMETERS:
 //		pSrc - the string to be copied FROM.  May be a char based string, an
 //			   MBCS string (in Win32 builds) or a wide string (wchar_t).
 //		pSrc - the string to be copied TO.  Also may be either MBCS or wide
@@ -1899,7 +1875,7 @@ inline int sscpycvt(CT1* pDst, const CT2* pSrc, int nMax)
 {
 	// Note -- we assume pDst is big enough to hold pSrc.  If not, we're in
 	// big trouble.  No bounds checking.  Caveat emptor.
-	
+
 	int nSrc = sslen(pSrc);
 
 	const CT1* szCvt = StdCodeCvt(pDst, nMax, pSrc, nSrc);
@@ -1980,7 +1956,6 @@ inline int sscpy(CT1* pDst, const std::basic_string<CT2>& sSrc)
 	}
 #endif
 
-
 // -----------------------------------------------------------------------------
 // Functional objects for changing case.  They also let you pass locales
 // -----------------------------------------------------------------------------
@@ -2043,9 +2018,9 @@ struct NotSpace : public std::unary_function<CT, bool>
 	// This is DinkumWare's implementation problem.  If you encounter this
 	// problem, you may replace the calls here with good old isspace() and
 	// iswspace() from the CRT unless they specify SS_ANSI
-    
+
 #ifdef SS_NO_LOCALE
-	
+
 	bool operator() (CT t) const { return !ssisspace(t); }
 
 #else
@@ -2054,9 +2029,6 @@ struct NotSpace : public std::unary_function<CT, bool>
 	bool operator() (CT t) const { return !std::isspace(t, loc); }
 #endif
 };
-
-
-
 
 //			Now we can define the template (finally!)
 // =============================================================================
@@ -2071,7 +2043,7 @@ struct NotSpace : public std::unary_function<CT, bool>
 //		easy to use as the MFC CString class.
 //
 //		Note that although this is a template, it makes the assumption that the
-//		template argument (CT, the character type) is either char or wchar_t.  
+//		template argument (CT, the character type) is either char or wchar_t.
 // =============================================================================
 
 //#define CStdStr _SS	// avoid compiler warning 4786
@@ -2099,25 +2071,27 @@ class CStdStr : public std::basic_string<CT>
 	#define MYBASE std::basic_string<CT>				 // my base class
 	//typedef typename std::basic_string<CT>		MYBASE;	 // my base class
 	typedef CStdStr<CT>							MYTYPE;	 // myself
-	typedef typename MYBASE::const_pointer		PCMYSTR; // PCSTR or PCWSTR 
+	typedef typename MYBASE::const_pointer		PCMYSTR; // PCSTR or PCWSTR
 	typedef typename MYBASE::pointer			PMYSTR;	 // PSTR or PWSTR
 	typedef typename MYBASE::iterator			MYITER;  // my iterator type
 	typedef typename MYBASE::const_iterator		MYCITER; // you get the idea...
 	typedef typename MYBASE::reverse_iterator	MYRITER;
-	typedef typename MYBASE::size_type			MYSIZE;   
-	typedef typename MYBASE::value_type			MYVAL; 
+	typedef typename MYBASE::size_type			MYSIZE;
+	typedef typename MYBASE::value_type			MYVAL;
 	typedef typename MYBASE::allocator_type		MYALLOC;
-	
+
 public:
 	// shorthand conversion from PCTSTR to string resource ID
-	#define SSRES(pctstr)  LOWORD(reinterpret_cast<unsigned long>(pctstr))	
+	#define SSRES(pctstr)  LOWORD(reinterpret_cast<unsigned long>(pctstr))
 
 	bool TryLoad(const void* pT)
 	{
 		bool bLoaded = false;
 
 #if defined(SS_WIN32) && !defined(SS_ANSI)
-		if ( ( pT != NULL ) && SS_IS_INTRESOURCE(pT) )
+#pragma warning(push)
+#pragma warning(disable: 4302 4311)
+		if ( ( pT != nullptr ) && SS_IS_INTRESOURCE(pT) )
 		{
 			UINT nId = LOWORD(reinterpret_cast<unsigned long>(pT));
 			if ( !LoadString(nId) )
@@ -2126,11 +2100,11 @@ public:
 			}
 			bLoaded = true;
 		}
+#pragma warning(pop)
 #endif
 
 		return bLoaded;
 	}
-
 
 	// CStdStr inline constructors
 	CStdStr()
@@ -2203,8 +2177,8 @@ public:
 	// CStdStr inline assignment operators -- the ssasn function now takes care
 	// of fixing  the MSVC assignment bug (see knowledge base article Q172398).
 	MYTYPE& operator=(const MYTYPE& str)
-	{ 
-		ssasn(*this, str); 
+	{
+		ssasn(*this, str);
 		return *this;
 	}
 
@@ -2263,11 +2237,10 @@ public:
 		}
 	#endif
 
-
 	// Overloads  also needed to fix the MSVC assignment bug (KB: Q172398)
 	//  *** Thanks to Pete The Plumber for catching this one ***
 	// They also are compiled if you have explicitly turned off refcounting
-	#if ( defined(_MSC_VER) && ( _MSC_VER < 1200 ) ) || defined(SS_NO_REFCOUNT) 
+	#if ( defined(_MSC_VER) && ( _MSC_VER < 1200 ) ) || defined(SS_NO_REFCOUNT)
 
 		MYTYPE& assign(const MYTYPE& str)
 		{
@@ -2280,7 +2253,7 @@ public:
 		MYTYPE& assign(const MYTYPE& str, MYSIZE nStart, MYSIZE nChars)
 		{
 			// This overload of basic_string::assign is supposed to assign up to
-			// <nChars> or the NULL terminator, whichever comes first.  Since we
+			// <nChars> or the nullptr terminator, whichever comes first.  Since we
 			// are about to call a less forgiving overload (in which <nChars>
 			// must be a valid length), we must adjust the length here to a safe
 			// value.  Thanks to Ullrich Pollähne for catching this bug
@@ -2301,7 +2274,7 @@ public:
 		MYTYPE& assign(const MYBASE& str, MYSIZE nStart, MYSIZE nChars)
 		{
 			// This overload of basic_string::assign is supposed to assign up to
-			// <nChars> or the NULL terminator, whichever comes first.  Since we
+			// <nChars> or the nullptr terminator, whichever comes first.  Since we
 			// are about to call a less forgiving overload (in which <nChars>
 			// must be a valid length), we must adjust the length here to a safe
 			// value. Thanks to Ullrich Pollähne for catching this bug
@@ -2354,7 +2327,7 @@ public:
 
 		MYTYPE& assign(MYCITER iterFirst, MYCITER iterLast)
 		{
-	#if defined ( _MSC_VER ) && ( _MSC_VER < 1200 ) 
+	#if defined ( _MSC_VER ) && ( _MSC_VER < 1200 )
 			// Q172398 fix.  don't call erase() if we're assigning from ourself
 			if ( iterFirst < this->begin() ||
                  iterFirst > this->begin() + this->size() )
@@ -2366,7 +2339,6 @@ public:
 			return *this;
 		}
 	#endif
-
 
 	// -------------------------------------------------------------------------
 	// CStdStr inline concatenation.
@@ -2380,7 +2352,7 @@ public:
 	MYTYPE& operator+=(const std::string& str)
 	{
 		ssadd(*this, str);
-		return *this; 
+		return *this;
 	}
 
 	MYTYPE& operator+=(const std::wstring& str)
@@ -2412,7 +2384,6 @@ public:
 			return this->operator+=(static_cast<PCMYSTR>(bstr));
 		}
 	#endif
-
 
 	// -------------------------------------------------------------------------
 	// Case changing functions
@@ -2473,12 +2444,10 @@ public:
 		return *this;
 	}
 
-
 	MYTYPE& Normalize()
 	{
 		return Trim().ToLower();
 	}
-
 
 	// -------------------------------------------------------------------------
 	// CStdStr -- Direct access to character buffer.  In the MS' implementation,
@@ -2517,7 +2486,7 @@ public:
 	bool Equals(const CT* pT, bool bUseCase=false) const
 	{
 		return  0 == (bUseCase ? this->compare(pT) : ssicmp(this->c_str(), pT));
-	} 
+	}
 
 	// -------------------------------------------------------------------------
 	// FUNCTION:  CStdStr::Load
@@ -2533,7 +2502,7 @@ public:
 
 #ifndef SS_ANSI
 
-	bool Load(UINT nId, HMODULE hModule=NULL)
+	bool Load(UINT nId, HMODULE hModule=nullptr)
 	{
 		bool bLoaded		= false;	// set to true of we succeed.
 
@@ -2544,9 +2513,9 @@ public:
 		// land, you ought to be using CString for resources anyway since
 		// it walks the resource chain for you.
 
-		HMODULE hModuleOld = NULL;
+		HMODULE hModuleOld = nullptr;
 
-		if ( NULL != hModule )
+		if ( nullptr != hModule )
 		{
 			hModuleOld = AfxGetResourceHandle();
 			AfxSetResourceHandle(hModule);
@@ -2559,27 +2528,27 @@ public:
 
 		// ...and if we set the resource handle, restore it.
 
-		if ( NULL != hModuleOld )
+		if ( nullptr != hModuleOld )
 			AfxSetResourceHandle(hModule);
 
 		if ( bLoaded )
 			*this			= strRes;
 
 	#else // otherwise make our own hackneyed version of CString's Load
-		
+
 		// Get the resource name and module handle
 
-		if ( NULL == hModule )
+		if ( nullptr == hModule )
 			hModule			= GetResourceHandle();
 
-		PCTSTR szName		= MAKEINTRESOURCE((nId>>4)+1); // lifted 
+		PCTSTR szName		= MAKEINTRESOURCE((nId>>4)+1); // lifted
 		DWORD dwSize		= 0;
 
 		// No sense continuing if we can't find the resource
 
 		HRSRC hrsrc			= ::FindResource(hModule, szName, RT_STRING);
 
-		if ( NULL == hrsrc )
+		if ( nullptr == hrsrc )
 		{
 			TRACE(_T("Cannot find resource %d: 0x%X"), nId, ::GetLastError());
 		}
@@ -2602,19 +2571,19 @@ public:
 	}
 
 #endif  // #ifdef SS_ANSI
-	
+
 	// -------------------------------------------------------------------------
 	// FUNCTION:  CStdStr::Format
 	//		void _cdecl Formst(CStdStringA& PCSTR szFormat, ...)
 	//		void _cdecl Format(PCSTR szFormat);
-	//           
+	//
 	// DESCRIPTION:
 	//		This function does sprintf/wsprintf style formatting on CStdStringA
 	//		objects.  It looks a lot like MFC's CString::Format.  Some people
 	//		might even call this identical.  Fortunately, these people are now
 	//		dead... heh heh.
 	//
-	// PARAMETERS: 
+	// PARAMETERS:
 	//		nId - ID of string resource holding the format string
 	//		szFormat - a PCSTR holding the format specifiers
 	//		argList - a va_list holding the arguments for the format specifiers.
@@ -2625,9 +2594,9 @@ public:
 
     // If they want a Format() function that safely handles string objects
     // without casting
- 
-#ifdef SS_SAFE_FORMAT       
-    
+
+#ifdef SS_SAFE_FORMAT
+
     // Question:  Joe, you wacky coder you, why do you have so many overloads
     //      of the Format() function
     // Answer:  One reason only - CString compatability.  In short, by making
@@ -2658,7 +2627,7 @@ public:
     void Format(UINT nId)
     {
 		MYTYPE strFmt;
-		if ( strFmt.Load(nId) ) 
+		if ( strFmt.Load(nId) )
             this->swap(strFmt);
     }
     template<class A1>
@@ -2906,7 +2875,7 @@ public:
 
     template<class A1, class A2, class A3, class A4, class A5, class A6,
         class A7, class A8, class A9, class A10, class A11, class A12,
-        class A13, class A14, class A15, class A16, class A17, class A18, 
+        class A13, class A14, class A15, class A16, class A17, class A18,
 		class A19, class A20, class A21>
     void Format(UINT nId, const A1& v1, const A2& v2, const A3& v3,
                 const A4& v4, const A5& v5, const A6& v6, const A7& v7,
@@ -2931,7 +2900,7 @@ public:
 
     template<class A1, class A2, class A3, class A4, class A5, class A6,
         class A7, class A8, class A9, class A10, class A11, class A12,
-        class A13, class A14, class A15, class A16, class A17, class A18, 
+        class A13, class A14, class A15, class A16, class A17, class A18,
 		class A19, class A20, class A21, class A22, class A23, class A24,
 		class A25, class A26, class A27, class A28, class A29, class A30,
 		class A31, class A32, class A33, class A34, class A35>
@@ -3151,7 +3120,7 @@ public:
 
     template<class A1, class A2, class A3, class A4, class A5, class A6,
         class A7, class A8, class A9, class A10, class A11, class A12,
-        class A13, class A14, class A15, class A16, class A17, class A18, 
+        class A13, class A14, class A15, class A16, class A17, class A18,
 		class A19, class A20, class A21>
     void Format(const CT* szFmt, const A1& v1, const A2& v2, const A3& v3,
                 const A4& v4, const A5& v5, const A6& v6, const A7& v7,
@@ -3172,7 +3141,7 @@ public:
 
     template<class A1, class A2, class A3, class A4, class A5, class A6,
         class A7, class A8, class A9, class A10, class A11, class A12,
-        class A13, class A14, class A15, class A16, class A17, class A18, 
+        class A13, class A14, class A15, class A16, class A17, class A18,
 		class A19, class A20, class A21, class A22, class A23, class A24,
 		class A25, class A26, class A27, class A28, class A29, class A30,
 		class A31, class A32, class A33, class A34, class A35>
@@ -3201,7 +3170,6 @@ public:
     }
 #else  // #ifdef SS_SAFE_FORMAT
 
-
 #ifndef SS_ANSI
 
 	void Format(UINT nId, ...)
@@ -3215,7 +3183,7 @@ public:
 
 		va_end(argList);
 	}
-    
+
 #endif  // #ifdef SS_ANSI
 
 	void Format(const CT* szFmt, ...)
@@ -3236,7 +3204,7 @@ public:
 		va_end(argList);
 	}
 
-	#define MAX_FMT_TRIES		5	 // #of times we try 
+	#define MAX_FMT_TRIES		5	 // #of times we try
 	#define FMT_BLOCK_SIZE		2048 // # of bytes to increment per try
 	#define BUFSIZE_1ST	256
 	#define BUFSIZE_2ND 512
@@ -3256,18 +3224,18 @@ public:
 	// -------------------------------------------------------------------------
 	// FUNCTION:  FormatV
 	//		void FormatV(PCSTR szFormat, va_list, argList);
-	//           
+	//
 	// DESCRIPTION:
-	//		This function formats the string with sprintf style format-specs. 
+	//		This function formats the string with sprintf style format-specs.
 	//		It makes a general guess at required buffer size and then tries
 	//		successively larger buffers until it finds one big enough or a
 	//		threshold (MAX_FMT_TRIES) is exceeded.
 	//
-	// PARAMETERS: 
+	// PARAMETERS:
 	//		szFormat - a PCSTR holding the format of the output
 	//		argList - a Microsoft specific va_list for variable argument lists
 	//
-	// RETURN VALUE: 
+	// RETURN VALUE:
 	// -------------------------------------------------------------------------
 
 	void FormatV(const CT* szFormat, va_list argList)
@@ -3281,13 +3249,13 @@ public:
 
 	#else
 
-		CT* pBuf			= NULL;
+		CT* pBuf			= nullptr;
 		int nChars			= 1;
 		int nUsed			= 0;
 		size_type nActual	= 0;
 		int nTry			= 0;
 
-		do	
+		do
 		{
 			// Grow more than linearly (e.g. 512, 1536, 3072, etc)
 
@@ -3295,11 +3263,10 @@ public:
 			pBuf			= reinterpret_cast<CT*>(_alloca(sizeof(CT)*nChars));
 			nUsed			= ssnprintf(pBuf, nChars-1, szFormat, argList);
 
-			// Ensure proper NULL termination.
+			// Ensure proper nullptr termination.
 
 			nActual			= nUsed == -1 ? nChars-1 : SSMIN(nUsed, nChars-1);
 			pBuf[nActual]= '\0';
-
 
 		} while ( nUsed < 0 && nTry++ < MAX_FMT_TRIES );
 
@@ -3338,7 +3305,7 @@ public:
 #endif
 	int Compare(PCMYSTR szThat) const
 	{
-		return this->compare(szThat);	
+		return this->compare(szThat);
 	}
 
 	int CompareNoCase(PCMYSTR szThat)	const
@@ -3469,7 +3436,7 @@ public:
 	{
 		return static_cast<int>(this->length());
 	}
-	
+
 	int Insert(int nIdx, CT ch)
 	{
 		if ( static_cast<MYSIZE>(nIdx) > this->size()-1 )
@@ -3499,7 +3466,7 @@ public:
         // Range check the count.
 
 		nCount = SSMAX(0, SSMIN(nCount, static_cast<int>(this->size())));
-		return this->substr(0, static_cast<MYSIZE>(nCount)); 
+		return this->substr(0, static_cast<MYSIZE>(nCount));
 	}
 
 #ifndef SS_ANSI
@@ -3520,7 +3487,7 @@ public:
 	}
 
 	void MakeUpper()
-	{ 
+	{
 		ToUpper();
 	}
 
@@ -3612,12 +3579,11 @@ public:
 				this->reserve(this->size() + nFound * (nNewLen - nOldLen));
 			}
 
-
 			static const CT ch	= CT(0);
 			PCMYSTR szRealNew	= szNew == 0 ? &ch : szNew;
 			nIdx				= 0;
 
-			while ( nIdx < this->length() && 
+			while ( nIdx < this->length() &&
 				(nIdx=this->find(szOld, nIdx)) != MYBASE::npos )
 			{
 				this->replace(this->begin()+nIdx, this->begin()+nIdx+nOldLen,
@@ -3717,7 +3683,6 @@ public:
 	}
 
 #endif
-	
 
 	// -------------------------------------------------------------------------
 	// Trim and its variants
@@ -3865,7 +3830,6 @@ public:
 		hdr.byCtrl		= sizeof(CT) == 2 ? SSSO_UNICODE : 0;
 		hdr.nChars		= this->size();
 
-
 		if ( FAILED(hr=pStream->Write(&hdr, sizeof(SSSHDR), 0)) )
 		{
 			TRACE(_T("StreamSave: Cannot write control header, ERR=0x%X\n"),hr);
@@ -3882,7 +3846,6 @@ public:
 
 		return hr;
 	}
-
 
 	// -------------------------------------------------------------------------
 	// FUNCTION: StreamLoad
@@ -3908,7 +3871,7 @@ public:
 			// we're trying to read, then we can read it directly into our
 			// buffer. Otherwise, we have to read into an intermediate buffer
 			// and convert.
-			
+
 			if ( (hdr.byCtrl & SSSO_UNICODE) != 0 )
 			{
 				ULONG nBytes	= hdr.nChars * sizeof(wchar_t);
@@ -3918,7 +3881,7 @@ public:
 						TRACE(_T("StreamLoad: Cannot read string: 0x%X\n"), hr);
 				}
 				else
-				{	
+				{
 					PWSTR pBufW = reinterpret_cast<PWSTR>(_alloca((nBytes)+1));
 					if ( FAILED(hr=pStream->Read(pBufW, nBytes, &nRead)) )
 						TRACE(_T("StreamLoad: Cannot read string: 0x%X\n"), hr);
@@ -4001,8 +3964,8 @@ public:
 //		SSDLLEXP	(nothing, just #define it)		extern
 //		SSDLLSPEC	__declspec(dllexport)			__declspec(dllimport)
 //
-//		Note that these macros must be available to ALL clients who want to 
-//		link to the DLL and use the class.  If they 
+//		Note that these macros must be available to ALL clients who want to
+//		link to the DLL and use the class.  If they
 //
 // A word of advice: Don't bother.
 //
@@ -4028,7 +3991,6 @@ public:
 //	SSDLLEXP template class SSDLLSPEC CStdStr<char>;
 //	SSDLLEXP template class SSDLLSPEC CStdStr<wchar_t>;
 
-
 // =============================================================================
 //						END OF CStdStr INLINE FUNCTION DEFINITIONS
 // =============================================================================
@@ -4042,7 +4004,6 @@ typedef CStdStr<OLECHAR>	CStdStringO;	// almost always CStdStringW
 // -----------------------------------------------------------------------------
 // CStdStr addition functions defined as inline
 // -----------------------------------------------------------------------------
-
 
 inline CStdStringA operator+(const CStdStringA& s1, const CStdStringA& s2)
 {
@@ -4066,7 +4027,7 @@ inline CStdStringA operator+(PCSTR pA, const CStdStringA& sA)
 {
 	CStdStringA sRet;
 	CStdStringA::size_type nObjSize = sA.size();
-	CStdStringA::size_type nLitSize = 
+	CStdStringA::size_type nLitSize =
 		static_cast<CStdStringA::size_type>(sslen(pA));
 
 	sRet.reserve(nLitSize + nObjSize);
@@ -4074,7 +4035,6 @@ inline CStdStringA operator+(PCSTR pA, const CStdStringA& sA)
 	sRet.append(sA);
 	return sRet;
 }
-
 
 inline CStdStringA operator+(const CStdStringA& s1, const CStdStringW& s2)
 {
@@ -4128,7 +4088,7 @@ inline CStdStringW operator+(PCWSTR pW, const CStdStringW& sW)
 {
 	CStdStringW sRet;
 	CStdStringW::size_type nObjSize = sW.size();
-	CStdStringA::size_type nLitSize = 
+	CStdStringA::size_type nLitSize =
 		static_cast<CStdStringW::size_type>(sslen(pW));
 
 	sRet.reserve(nLitSize + nObjSize);
@@ -4145,7 +4105,6 @@ inline CStdStringW operator+(const CStdStringW& s1, PCSTR pA)
 {
 	return s1 + CStdStringW(pA);
 }
-
 
 // New-style format function is a template
 
@@ -4192,7 +4151,7 @@ private:
 
 #ifndef SS_ANSI
 	// SSResourceHandle: our MFC-like resource handle
-	static HMODULE g_hModuleSS	= NULL;
+	static HMODULE g_hModuleSS	= nullptr;
 
 	inline HMODULE& SSResourceHandle()
 	{
@@ -4208,7 +4167,6 @@ private:
 	}
 
 #endif
-
 
 // In MFC builds, define some global serialization operators
 // Special operators that allow us to serialize CStdStrings to CArchives.
@@ -4242,8 +4200,6 @@ private:
 		return ar;
 	}
 #endif	// #ifdef _MFC_VER -- (i.e. is this MFC?)
-
-
 
 // -----------------------------------------------------------------------------
 // GLOBAL FUNCTION:  WUFormat
@@ -4304,35 +4260,33 @@ inline CStdStringW WUFormatW(PCWSTR szwFormat, ...)
 	}
 #endif // #ifdef SS_ANSI
 
-
-
 #if defined(SS_WIN32) && !defined (SS_ANSI)
 	// -------------------------------------------------------------------------
 	// FUNCTION: WUSysMessage
 	//	 CStdStringA WUSysMessageA(DWORD dwError, DWORD dwLangId=SS_DEFLANGID);
 	//	 CStdStringW WUSysMessageW(DWORD dwError, DWORD dwLangId=SS_DEFLANGID);
-	//           
+	//
 	// DESCRIPTION:
 	//	 This function simplifies the process of obtaining a string equivalent
 	//	 of a system error code returned from GetLastError().  You simply
 	//	 supply the value returned by GetLastError() to this function and the
 	//	 corresponding system string is returned in the form of a CStdStringA.
 	//
-	// PARAMETERS: 
+	// PARAMETERS:
 	//	 dwError - a DWORD value representing the error code to be translated
 	//	 dwLangId - the language id to use.  defaults to english.
 	//
-	// RETURN VALUE: 
+	// RETURN VALUE:
 	//	 a CStdStringA equivalent of the error code.  Currently, this function
-	//	 only returns either English of the system default language strings.  
+	//	 only returns either English of the system default language strings.
 	// -------------------------------------------------------------------------
 	#define SS_DEFLANGID MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT)
 	inline CStdStringA WUSysMessageA(DWORD dwError, DWORD dwLangId=SS_DEFLANGID)
 	{
 		CHAR szBuf[512];
 
-		if ( 0 != ::FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwError,
-								   dwLangId, szBuf, 511, NULL) )
+		if ( 0 != ::FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, dwError,
+								   dwLangId, szBuf, 511, nullptr) )
 			return WUFormatA("%s (0x%X)", szBuf, dwError);
 		else
  			return WUFormatA("Unknown error (0x%X)", dwError);
@@ -4341,8 +4295,8 @@ inline CStdStringW WUFormatW(PCWSTR szwFormat, ...)
 	{
 		WCHAR szBuf[512];
 
-		if ( 0 != ::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, dwError,
-								   dwLangId, szBuf, 511, NULL) )
+		if ( 0 != ::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, nullptr, dwError,
+								   dwLangId, szBuf, 511, nullptr) )
 			return WUFormatW(L"%s (0x%X)", szBuf, dwError);
 		else
  			return WUFormatW(L"Unknown error (0x%X)", dwError);
@@ -4375,7 +4329,6 @@ inline CStdStringW WUFormatW(PCWSTR szwFormat, ...)
 #define WULastErrMsgA()				WUSysMessageA(::GetLastError())
 #define WULastErrMsgW()				WUSysMessageW(::GetLastError())
 
-
 // -----------------------------------------------------------------------------
 // FUNCTIONAL COMPARATORS:
 // REMARKS:
@@ -4386,16 +4339,16 @@ inline CStdStringW WUFormatW(PCWSTR szwFormat, ...)
 //		 proper string but in the wrong case.
 // -----------------------------------------------------------------------------
 #define StdStringLessNoCaseW		SSLNCW	// avoid VC compiler warning 4786
-#define StdStringEqualsNoCaseW		SSENCW		
-#define StdStringLessNoCaseA		SSLNCA		
-#define StdStringEqualsNoCaseA		SSENCA		
+#define StdStringEqualsNoCaseW		SSENCW
+#define StdStringLessNoCaseA		SSLNCA
+#define StdStringEqualsNoCaseA		SSENCA
 
 #ifdef UNICODE
-	#define StdStringLessNoCase		SSLNCW		
-	#define StdStringEqualsNoCase	SSENCW		
+	#define StdStringLessNoCase		SSLNCW
+	#define StdStringEqualsNoCase	SSENCW
 #else
-	#define StdStringLessNoCase		SSLNCA		
-	#define StdStringEqualsNoCase	SSENCA		
+	#define StdStringLessNoCase		SSLNCA
+	#define StdStringEqualsNoCase	SSENCA
 #endif
 
 struct StdStringLessNoCaseW
@@ -4434,8 +4387,7 @@ struct StdStringEqualsNoCaseA
 	#undef TRACE_DEFINED_HERE
 #endif
 
-
-// These std::swap specializations come courtesy of Mike Crusader. 
+// These std::swap specializations come courtesy of Mike Crusader.
 
 //namespace std
 //{

@@ -24,11 +24,11 @@ void CEntropyInfo::InitSquareEntropies()
 	m_vBlueEntropies.resize(m_lNrSquaresX*m_lNrSquaresY);
 
 	if (m_pProgress)
-		m_pProgress->Start2(NULL, m_lNrSquaresX);
+		m_pProgress->Start2(nullptr, m_lNrSquaresX);
 
 	for (long i = 0;i<m_lNrSquaresX;i++)
 	{
-		LONG			lMinX, 
+		LONG			lMinX,
 						lMaxX;
 
 		lMinX = i * lSquareSize;
@@ -54,7 +54,7 @@ void CEntropyInfo::InitSquareEntropies()
 
 		if (m_pProgress)
 			if (0 == i%m_lWindowSize)
-				m_pProgress->Progress2(NULL, 1+i);
+				m_pProgress->Progress2(nullptr, 1+i);
 	};
 	if (m_pProgress)
 		m_pProgress->End2();

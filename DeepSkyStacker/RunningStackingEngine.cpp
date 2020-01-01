@@ -160,11 +160,11 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 						CPixelDispatch &		Pixel = vPixels[k];
 
 						// For each plane adjust the values
-						if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth && 
+						if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth &&
 							Pixel.m_lY >= 0 && Pixel.m_lY < lHeight)
 						{
-							double		fPreviousRed, 
-										fPreviousGreen, 
+							double		fPreviousRed,
+										fPreviousGreen,
 										fPreviousBlue;
 
 							m_pStackedBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
@@ -177,7 +177,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 				};
 			};
 			if (pProgress)
-				pProgress->Progress2(NULL, j+1);
+				pProgress->Progress2(nullptr, j+1);
 		};
 
 		if (pProgress)
@@ -185,7 +185,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 		m_lNrStacked++;
 		m_fTotalExposure += lfi.m_fExposure;
 		bResult = TRUE;
-	};	
+	};
 
 	if (bResult && !m_MatchingStars.IsReferenceSet())
 	{
@@ -193,7 +193,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 
 		std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
 
-		for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<size_t>(100));i++)
+		for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
 			m_MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 	};
 
@@ -218,7 +218,7 @@ BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 
 		std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
 
-		for (LONG i = 0;i<min(vStarsDst.size(), static_cast<size_t>(100));i++)
+		for (LONG i = 0;i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100));i++)
 			m_MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 
 		m_MatchingStars.SetSizes(lfi.RenderedWidth(), lfi.RenderedHeight());

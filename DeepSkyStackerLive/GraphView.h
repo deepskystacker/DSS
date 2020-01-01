@@ -11,6 +11,7 @@
 #include "BitmapExt.h"
 #include "ChartCtrl.h"
 #include "ChartPointsSerie.h"
+#include "Utils.h"
 // CGraphViewTab dialog
 
 typedef enum tagPOINTTYPE
@@ -58,9 +59,15 @@ private :
 	};
 
 public :
-	CChartSeries()
-	{
-	};
+    CChartSeries()
+    {
+        m_pChart = nullptr;
+        m_pMain = nullptr;;
+        m_pReference = nullptr;;
+        m_pOk = nullptr;;
+        m_pWrong = nullptr;;
+        m_pWarning = nullptr;;
+    }
 
 	~CChartSeries()
 	{
@@ -110,7 +117,7 @@ public :
 	void	SetName(LPCTSTR szName)
 	{
 		if (m_pMain)
-			m_pMain->SetName((LPCSTR)CT2CA(szName));
+			m_pMain->SetName(CStringToString(szName));
 	};
 
 	void	SetVisible(bool bShow)
@@ -187,8 +194,9 @@ private :
 
 	std::vector<CString>	m_vFiles;
 
+	bool m_bDarkMode;
 public:
-	CGraphViewTab(CWnd* pParent = NULL);   // standard constructor
+	CGraphViewTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CGraphViewTab();
 
 	//void	CallHelp();
@@ -210,6 +218,8 @@ protected :
 	afx_msg void OnOffset();
 	afx_msg void OnAngle();
 	afx_msg void OnSkyBackground();
+	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
 private :
 	void ChangeVisibleGraph();

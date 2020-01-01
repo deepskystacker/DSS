@@ -19,6 +19,10 @@ CIntermediateFiles::CIntermediateFiles()
 {
 	m_bFirstActivation = TRUE;
 	m_bRegisteringOnly = FALSE;
+    m_bCreateIntermediates = false;
+    m_bSaveCalibrated = false;
+    m_bSaveDebayered = false;
+    m_lSaveFormat = INTERMEDIATEFILEFORMAT(0);
 }
 
 /* ------------------------------------------------------------------- */
@@ -56,7 +60,7 @@ void CIntermediateFiles::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
 	BOOL				bEnable;
-	
+
 	bEnable = m_SaveCalibrated.GetCheck() || m_CreateIntermediates.GetCheck();
 
 	m_SaveAsTIFF.EnableWindow(TRUE);

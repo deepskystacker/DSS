@@ -7,6 +7,7 @@
 #include "StackingTasks.h"
 #include <algorithm>
 #include <deque>
+#include "Utils.h"
 
 
 /* ------------------------------------------------------------------- */
@@ -38,7 +39,7 @@ void CWorkspaceSetting::ReadFromRegistry()
 		case DST_STRING :
 			reg.LoadKey(m_strPath, m_strName, m_strValue);
 			break;
-		case DST_BOOL : 
+		case DST_BOOL :
 			dwValue = (DWORD)m_bValue;
 			reg.LoadKey(m_strPath, m_strName, dwValue);
 			m_bValue = dwValue ? true : false;
@@ -70,7 +71,7 @@ void CWorkspaceSetting::SaveToRegistry() const
 	case DST_STRING :
 		reg.SaveKey(m_strPath, m_strName, m_strValue);
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		dwValue = (DWORD)m_bValue;
 		reg.SaveKey(m_strPath, m_strName, dwValue);
 		break;
@@ -91,7 +92,7 @@ void CWorkspaceSetting::SaveToRegistry() const
 bool	CWorkspaceSetting::SetValue(const CWorkspaceSetting & ws)
 {
 	bool				bResult = false;
-	
+
 	// Assume that this is the same type
 	if (m_Type == ws.m_Type)
 	{
@@ -104,7 +105,7 @@ bool	CWorkspaceSetting::SetValue(const CWorkspaceSetting & ws)
 				m_strValue = ws.m_strValue;
 			};
 			break;
-		case DST_BOOL : 
+		case DST_BOOL :
 			if (m_bValue != ws.m_bValue)
 			{
 				m_bDirty = TRUE;
@@ -149,7 +150,7 @@ void	CWorkspaceSetting::SetValue(LPCTSTR szValue)
 			m_bDirty = TRUE;
 		m_strValue = strValue;
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		bValue = _ttol(szValue) ? true : false;
 		if (bValue != m_bValue)
 			m_bDirty = TRUE;
@@ -187,7 +188,7 @@ void	CWorkspaceSetting::SetValue(bool bNewValue)
 			m_bDirty = TRUE;
 		m_strValue = strValue;
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		bValue = bNewValue;
 		if (bValue != m_bValue)
 			m_bDirty = TRUE;
@@ -225,7 +226,7 @@ void	CWorkspaceSetting::SetValue(DWORD dwNewValue)
 			m_bDirty = TRUE;
 		m_strValue = strValue;
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		bValue = dwNewValue ? true : false;
 		if (bValue != m_bValue)
 			m_bDirty = TRUE;
@@ -264,7 +265,7 @@ void	CWorkspaceSetting::SetValue(double fNewValue)
 			m_bDirty = TRUE;
 		m_strValue = strValue;
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		bValue = fNewValue ? true : false;
 		if (bValue != m_bValue)
 			m_bDirty = TRUE;
@@ -294,7 +295,7 @@ void	CWorkspaceSetting::GetValue(CString & strValue) const
 	case DST_STRING :
 		strValue = m_strValue;
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		strValue = m_bValue ? "1" : "0";
 		break;
 	case DST_DWORD :
@@ -315,7 +316,7 @@ void	CWorkspaceSetting::GetValue(bool & bValue) const
 	case DST_STRING :
 		bValue = _ttol(m_strValue) ? true : false;
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		bValue = m_bValue;
 		break;
 	case DST_DWORD :
@@ -336,7 +337,7 @@ void	CWorkspaceSetting::GetValue(DWORD & dwValue) const
 	case DST_STRING :
 		dwValue = _ttol(m_strValue);
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		dwValue = m_bValue ? 1 : 0;
 		break;
 	case DST_DWORD :
@@ -358,7 +359,7 @@ void	CWorkspaceSetting::GetValue(double & fValue) const
 	case DST_STRING :
 		fValue = _ttof(m_strValue);
 		break;
-	case DST_BOOL : 
+	case DST_BOOL :
 		fValue = m_bValue ? 1 : 0;
 		break;
 	case DST_DWORD :
@@ -444,11 +445,11 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
   	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectHotPixels"), true));
   	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectionThreshold"), (DWORD)10));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), false));
-  
+
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), 1.0));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), 1.0));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), 1.0));
-	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AutoWB"), false));
+	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), false));
 	vSettings.push_back(CWorkspaceSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), _T("Bilinear")));
@@ -567,7 +568,7 @@ void	CWorkspaceSettingsInternal::SaveToFile(FILE * hFile)
 		m_vSettings[i].GetName(strName);
 		m_vSettings[i].GetValue(strValue);
 
-		fprintf(hFile, "#WS#%s|%s=%s\n", (LPCSTR)CT2CA(strPath), (LPCSTR)CT2CA(strName), (LPCSTR)CT2CA(strValue));
+		fprintf(hFile, "#WS#%s|%s=%s\n", CStringToChar(strPath), CStringToChar(strName), CStringToChar(strValue));
 	};
 };
 
@@ -611,7 +612,7 @@ BOOL	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 			CString		strName;
 			CString		strValue;
 
-			// 012345678901234567890123456789 
+			// 012345678901234567890123456789
 			// #WS#HKCU\MYPATH|MYNAME=MYVALUE
 			// Length    = 30
 			// nSepPos   = 15
@@ -693,7 +694,7 @@ void	CWorkspace::SetValue(LPCTSTR szPath, LPCTSTR szName, bool bValue)
 	WORKSPACESETTINGITERATOR				it;
 
 	it = m_pSettings->FindSetting(szPath, szName);
-	
+
 	if (it != m_pSettings->end())
 		it->SetValue(bValue);
 };
@@ -705,7 +706,7 @@ void	CWorkspace::SetValue(LPCTSTR szPath, LPCTSTR szName, DWORD dwValue)
 	WORKSPACESETTINGITERATOR				it;
 
 	it = m_pSettings->FindSetting(szPath, szName);
-	
+
 	if (it != m_pSettings->end())
 		it->SetValue(dwValue);
 };
@@ -717,7 +718,7 @@ void	CWorkspace::SetValue(LPCTSTR szPath, LPCTSTR szName, double fValue)
 	WORKSPACESETTINGITERATOR				it;
 
 	it = m_pSettings->FindSetting(szPath, szName);
-	
+
 	if (it != m_pSettings->end())
 		it->SetValue(fValue);
 };
@@ -729,7 +730,7 @@ void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, CString & strValue)
 	WORKSPACESETTINGITERATOR				it;
 
 	it = m_pSettings->FindSetting(szPath, szName);
-	
+
 	if (it != m_pSettings->end())
 		it->GetValue(strValue);
 };
@@ -741,7 +742,7 @@ void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, bool & bValue)
 	WORKSPACESETTINGITERATOR				it;
 
 	it = m_pSettings->FindSetting(szPath, szName);
-	
+
 	if (it != m_pSettings->end())
 		it->GetValue(bValue);
 };
@@ -753,7 +754,7 @@ void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, DWORD & dwValue)
 	WORKSPACESETTINGITERATOR				it;
 
 	it = m_pSettings->FindSetting(szPath, szName);
-	
+
 	if (it != m_pSettings->end())
 		it->GetValue(dwValue);
 };
@@ -765,7 +766,7 @@ void	CWorkspace::GetValue(LPCTSTR szPath, LPCTSTR szName, double & fValue)
 	WORKSPACESETTINGITERATOR				it;
 
 	it = m_pSettings->FindSetting(szPath, szName);
-	
+
 	if (it != m_pSettings->end())
 		it->GetValue(fValue);
 };

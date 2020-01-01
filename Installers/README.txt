@@ -1,3 +1,48 @@
+﻿Welcome to DeepSkyStacker 4.2.3
+
+************** IF YOU INSTALLED 4.2.3 BETA 1 **************
+  When you next use DeepSkyStacker, please restore all
+  settings to the default using:  
+
+	Settings/Load/Restore Defaults
+
+  before you run your stack.
+*******************************************************
+
+The main changes in this release are:
+
+1. The 32 bit version will now run on Windows XP SP3.  It is likely that the next release of DeepSkyStacker will not do so.
+
+2. The stacking settings dialog width has been increased to reduce or eliminate the need to scroll the tabs.
+
+3. Add .rw2 to list of RAW file extensions.
+
+4. Change the colour scheme for DeepSkyStacker Live to make it more "night vision" friendly.
+
+5. Recognise and use GAIN values in FITS file from CMOS/CCD cameras in a manner similar to how ISO is handled for matching darks, lights etc..   Please note this is not the same as EGAIN (e-/ADU).  It refers to the camera's scaling of EGAIN.
+
+6. Update help files.  My thanks to Estela Nuñez, Giovanni Benintende, Günter Heberger, José Mozart Fusco, Luc Coiffier, Михаил Тимофеев (Mickle Timofeyev), and Premysl Lukavský for their immense help with all the translation work needed for this release.   Dutch help is deferred until the next release.
+
+7. Issue #83: Provide the option to perform NO White Balance processing at all (requested by Ivo Jager for StarTools).
+
+8. Fix for issue #42 - the stacking method "Average" wasn't always reported in the recap html file.
+
+9. Common control library 6 now used so some cosmetic changes such as filled progress bars.
+
+19. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
+
+11. Update the DeepSkyStacker taskbar icon with a progress bar that matches the main progress bar.
+
+12. Saving of final TIFF file is now faster, and a number of other performance enhancements have been made.
+
+13. Ctrl-A will select all images in the file list (not the same as "Check All").
+
+14. Del key will delete an image from the file list so you don't need right click and select "Remove from list"
+
+15. Bug fix - if you change the type of an image from the file list "Properties" dialogue, the icon was changed, but the text wasn't.
+
+16. Bug fix - Settings were handled incorrectly in 4.2.3 Beta 1 
+
 Welcome to DeepSkyStacker 4.2.2
 
 This release is all about performance, though other areas have been enhanced as well.  The main changes since 4.2.1 are:

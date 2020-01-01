@@ -50,7 +50,7 @@ static inline CRect makeTextRect(const CRect & rectClient, const CSize & sz, DWO
 
 			rectText.top		=	rectClient.top - sz.cy/2 - 2;
 			rectText.bottom	=	rectText.top + sz.cy;
-			
+
 			switch(dwType)
 			{
 				default			:	ASSERT(false);
@@ -138,12 +138,12 @@ static inline CSize textExtent(CDC & dc, CString s)
 	return sz;
 }
 
-void cdxCRotBevelLine::OnPaint() 
+void cdxCRotBevelLine::OnPaint()
 {
 	// make dc
 
 	CPaintDC dc(this); // device context for painting
-	
+
 	CRect	rectClient;
 	GetClientRect(rectClient);
 
@@ -188,7 +188,7 @@ void cdxCRotBevelLine::OnPaint()
 		// interpret my ~ stuff (even for horizontals where we cut it off only)
 
 		int	iAngle;
-		
+
 		if(s[0] == _T('~'))
 		{
 			s			=	s.Mid(1);
@@ -245,7 +245,7 @@ void cdxCRotBevelLine::OnPaint()
 
 /////////////////////////////////////////////////////////////////////////////
 
-void cdxCRotBevelLine::OnEnable(BOOL bEnable) 
+void cdxCRotBevelLine::OnEnable(BOOL bEnable)
 {
 	SetRedraw(FALSE);
 	CStatic::OnEnable(bEnable);
@@ -253,12 +253,12 @@ void cdxCRotBevelLine::OnEnable(BOOL bEnable)
 	Invalidate();
 }
 
-BOOL cdxCRotBevelLine::OnEraseBkgnd(CDC* pDC) 
+BOOL cdxCRotBevelLine::OnEraseBkgnd(CDC* pDC)
 {
 	return TRUE;
 }
 
-void cdxCRotBevelLine::OnNcPaint() 
+void cdxCRotBevelLine::OnNcPaint()
 {
 	// do nothing here
 }

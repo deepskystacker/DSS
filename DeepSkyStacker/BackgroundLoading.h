@@ -30,7 +30,7 @@ private :
 public :
 	CLoadedImage()
 	{
-		m_hBitmap	= NULL;
+		m_hBitmap	= nullptr;
 		m_lLastUse	= 0;
 	};
 

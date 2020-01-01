@@ -6,6 +6,7 @@
 #include <set>
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
+#include "Utils.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -14,7 +15,7 @@
 
 /* ------------------------------------------------------------------- */
 
-CStackedBitmap::CStackedBitmap() 
+CStackedBitmap::CStackedBitmap()
 {
 	m_lNrBitmaps	= 0;
 	m_lWidth		= 0;
@@ -22,6 +23,7 @@ CStackedBitmap::CStackedBitmap()
 	m_lOutputWidth	= 0;
 	m_lOutputHeight = 0;
 	m_lISOSpeed		= 0;
+	m_lGain		= -1;
 	m_lTotalTime	= 0;
 	m_bMonochrome   = FALSE;
 	DSSTIFFInitialize();
@@ -36,7 +38,7 @@ void CStackedBitmap::GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, do
 	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
-	fRed   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0; 
+	fRed   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0;
 	if (!m_bMonochrome)
 	{
 		fGreen = m_vGreenPlane[lOffset]/m_lNrBitmaps*256.0;
@@ -88,7 +90,7 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, BOOL bA
 	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
-	Red   = fRed/m_lNrBitmaps*255.0; 
+	Red   = fRed/m_lNrBitmaps*255.0;
 	Green = fGreen/m_lNrBitmaps*255.0;
 	Blue  = fBlue/m_lNrBitmaps*255.0;
 
@@ -151,7 +153,7 @@ COLORREF16	CStackedBitmap::GetPixel16(LONG X, LONG Y, BOOL bApplySettings)
 	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
-	Red   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0; 
+	Red   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0;
 	if (!m_bMonochrome)
 	{
 		Green = m_vGreenPlane[lOffset]/m_lNrBitmaps*256.0;
@@ -211,7 +213,7 @@ COLORREF32	CStackedBitmap::GetPixel32(LONG X, LONG Y, BOOL bApplySettings)
 	double		H, S, L;
 
 	// Adjust beetween 0 and 65535.0
-	Red   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0; 
+	Red   = m_vRedPlane[lOffset]/m_lNrBitmaps*256.0;
 	if (!m_bMonochrome)
 	{
 		Green = m_vGreenPlane[lOffset]/m_lNrBitmaps*256.0;
@@ -275,7 +277,8 @@ typedef struct tagHDSTACKEDBITMAPHEADER
 	DWORD			dwFlags;		// Flags
 	LONG			lTotalTime;		// Total Time
 	WORD			lISOSpeed;		// ISO Speed of each frame
-	char			Reserved[26];	// Reserved (set to 0)
+	LONG			lGain;		// Camera gain of each frame
+	LONG			Reserved[22];	// Reserved (set to 0)
 }HDSTACKEDBITMAPHEADER;
 
 #pragma pack(pop, HDSTACKEDBITMAP)
@@ -288,7 +291,7 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 	BOOL			bResult = FALSE;
 	FILE *			hFile;
 	CString			strText;
-	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8); // Stacked fileid in ASCII
+	LPCSTR			strFile = CStringToChar(szStackedFile); // Stacked fileid in ASCII
 
 	strText.LoadString(IDS_LOADDSIMAGE);
 	if (pProgress)
@@ -307,7 +310,7 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 		};
 
 		fread(&Header, sizeof(Header), 1, hFile);
-		if ((Header.dwMagic == HDSTACKEDBITMAP_MAGIC) && 
+		if ((Header.dwMagic == HDSTACKEDBITMAP_MAGIC) &&
 			(Header.dwHeaderSize == sizeof(Header)))
 		{
 			m_lWidth	= Header.lWidth;
@@ -315,17 +318,18 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 			m_lNrBitmaps= Header.lNrBitmaps;
 			m_lTotalTime= Header.lTotalTime;
 			m_lISOSpeed = Header.lISOSpeed;
+			m_lGain     = Header.lGain;
 
 			Allocate(Header.lWidth, Header.lHeight, FALSE);
 
 			if (pProgress)
-				pProgress->Start(NULL, m_lWidth * m_lHeight, FALSE);
+				pProgress->Start(nullptr, m_lWidth * m_lHeight, FALSE);
 
 			for (LONG i = 0;i<m_vRedPlane.size();i++)
 			{
 				lProgress++;
 				if (pProgress)
-					pProgress->Progress1(NULL, lProgress);
+					pProgress->Progress1(nullptr, lProgress);
 
 				fread(&m_vRedPlane[i], sizeof(float), 1, hFile);
 				fread(&m_vGreenPlane[i], sizeof(float), 1, hFile);
@@ -364,7 +368,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 	ZFUNCTRACE_RUNTIME();
 	FILE *			hFile;
 	CString			strText;
-	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8);  // in UTF-8
+	LPCSTR			strFile = CStringToChar(szStackedFile);  // in UTF-8
 
 	printf("Saving Stacked Bitmap in %s\n", strFile);
 	ZTRACE_RUNTIME("Saving Stacked Bitmap in %s", strFile);
@@ -419,6 +423,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 		Header.lNrBitmaps	= m_lNrBitmaps;
 		Header.lTotalTime	= m_lTotalTime;
 		Header.lISOSpeed	= m_lISOSpeed;
+		Header.lGain		= m_lGain;
 
 		fwrite(&Header, sizeof(Header), 1, hFile);
 
@@ -442,7 +447,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 			};
 
 			if (pProgress)
-				pProgress->Progress1(NULL, lProgress);
+				pProgress->Progress1(nullptr, lProgress);
 		};
 
 		fclose(hFile);
@@ -474,7 +479,7 @@ private :
 		m_fBlue		= px.m_fBlue;
 	};
 public :
-	CPixel(double fRed = 0, double fGreen = 0, double fBlue = 0) 
+	CPixel(double fRed = 0, double fGreen = 0, double fBlue = 0)
 	{
 		m_fRed		= fRed;
 		m_fGreen	= fGreen;
@@ -484,6 +489,8 @@ public :
 	{
 		CopyFrom(px);
 	};
+
+    CPixel& operator=(CPixel const& other) = delete;
 
 	~CPixel() {};
 
@@ -512,9 +519,9 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 	if (!Bitmap.IsEmpty())
 	{
-		LONG		lXMin = 0, 
-					lYMin = 0, 
-					lXMax = m_lWidth, 
+		LONG		lXMin = 0,
+					lYMin = 0,
+					lXMax = m_lWidth,
 					lYMax = m_lHeight;
 
 		if (pRect)
@@ -604,7 +611,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	*ppBitmap = NULL;
+	*ppBitmap = nullptr;
 
 	CSmartPtr<CMemoryBitmap>	pBitmap;
 
@@ -697,11 +704,11 @@ BOOL CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 			if (pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
 				iProgress += omp_get_num_threads();
-				pProgress->Progress2(NULL, iProgress);
+				pProgress->Progress2(nullptr, iProgress);
 			}
 #else
 			if (pProgress)
-				pProgress->Progress2(NULL, ++iProgress);
+				pProgress->Progress2(nullptr, ++iProgress);
 #endif
 		};
 
@@ -745,13 +752,14 @@ void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 	{
 		// Read specific fields (if present)
 		m_lISOSpeed = tiffReader->GetISOSpeed();
+		m_lGain = tiffReader->GetGain();
 		m_lTotalTime = tiffReader->GetExposureTime();
 
 		if (TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_NRFRAMES, &nrbitmaps))
 			m_lNrBitmaps = nrbitmaps;
 		else
 			m_lNrBitmaps = 1;
-		
+
 		if (!TIFFGetField(tiffReader->m_tiff, TIFFTAG_DSS_SETTINGSAPPLIED, &settingsapplied))
 			settingsapplied = 1;
 
@@ -762,8 +770,8 @@ void CStackedBitmap::ReadSpecificTags(CTIFFReader * tiffReader)
 		}
 		else
 		{
-			char *				szBezierParameters = NULL;
-			char *				szAdjustParameters = NULL;
+			char *				szBezierParameters = nullptr;
+			char *				szAdjustParameters = nullptr;
 			CString				strBezierParameters;
 			CString				strAdjustParameters;
 
@@ -794,9 +802,10 @@ void CStackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 	{
 		// Read specific fields (if present)
 		m_lISOSpeed  = fitsReader->m_lISOSpeed;
+		m_lGain      = fitsReader->m_lGain;
 		m_lTotalTime = fitsReader->m_fExposureTime;
 		m_lNrBitmaps = 1;
-		
+
 		m_BezierAdjust.Reset(TRUE);
 		m_HistoAdjust.Reset();
 	};
@@ -804,7 +813,7 @@ void CStackedBitmap::ReadSpecificTags(CFITSReader * fitsReader)
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, BOOL bApplySettings)	
+void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, BOOL bApplySettings)
 {
 	if (tiffWriter)
 	{
@@ -826,7 +835,7 @@ void CStackedBitmap::WriteSpecificTags(CTIFFWriter * tiffWriter, BOOL bApplySett
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::WriteSpecificTags(CFITSWriter * fitsWriter, BOOL bApplySettings)	
+void CStackedBitmap::WriteSpecificTags(CFITSWriter * fitsWriter, BOOL bApplySettings)
 {
 	if (fitsWriter)
 	{
@@ -856,10 +865,12 @@ public :
 		m_TiffFormat	 = TF_16BITRGB;
 		m_lXStart = 0;
 		m_lYStart = 0;
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CTIFFWriterStacker()
 	{
+		OnClose();
 	};
 
 	void	SetStackedBitmap(CStackedBitmap * pStackedBitmap)
@@ -986,7 +997,6 @@ void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	if (tiff.Open())
 	{
 		tiff.Write();
-		tiff.Close();
 	};
 };
 
@@ -1025,11 +1035,11 @@ void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	tiff.SetDescription(strText);
 	tiff.SetExposureTime(m_lTotalTime);
 	tiff.SetISOSpeed(m_lISOSpeed);
+	tiff.SetGain(m_lGain);
 
 	if (tiff.Open())
 	{
 		tiff.Write();
-		tiff.Close();
 	};
 };
 
@@ -1054,6 +1064,7 @@ public :
 		m_FitsFormat	 = FF_16BITRGB;
 		m_lXStart = 0;
 		m_lYStart = 0;
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CFITSWriterStacker()
@@ -1180,6 +1191,7 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	fits.SetDescription(strText);
 	fits.m_fExposureTime	= m_lTotalTime;
 	fits.m_lISOSpeed		= m_lISOSpeed;
+	fits.m_lGain		= m_lGain;
 	if (fits.Open())
 	{
 		fits.Write();
@@ -1221,6 +1233,7 @@ void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	fits.SetDescription(strText);
 	fits.m_fExposureTime	= m_lTotalTime;
 	fits.m_lISOSpeed		= m_lISOSpeed;
+	fits.m_lGain		= m_lGain;
 
 	if (fits.Open())
 	{
@@ -1238,9 +1251,10 @@ private :
 	CStackedBitmap *		m_pStackedBitmap;
 
 public :
-	CTIFFReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress) 
+	CTIFFReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress)
 		: CTIFFReader(szFileName, pProgress)
 	{
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CTIFFReadStacker() {};
@@ -1334,9 +1348,10 @@ private :
 	CStackedBitmap *		m_pStackedBitmap;
 
 public :
-	CFITSReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress) 
+	CFITSReadStacker(LPCTSTR szFileName, CDSSProgress *	pProgress)
 		: CFITSReader(szFileName, pProgress)
 	{
+        m_pStackedBitmap = NULL;
 	};
 
 	virtual ~CFITSReadStacker() {};

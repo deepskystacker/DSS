@@ -81,7 +81,7 @@ private :
 	};
 
 public :
-	CPostCalibrationSettings() 
+	CPostCalibrationSettings()
 	{
 		m_bHot			= FALSE;
 		m_lHotFilter	= 1;
@@ -155,6 +155,12 @@ public:
 	{
 		CopyFrom(right);
 	};
+
+    COutputSettings& operator=(COutputSettings const& other)
+    {
+        CopyFrom(other);
+        return *this;
+    }
 };
 
 
@@ -167,6 +173,7 @@ public :
 	DWORD						m_dwGroupID;
 	PICTURETYPE					m_TaskType;
 	LONG						m_lISOSpeed;
+	LONG						m_lGain;
 	double						m_fExposure;
 	double						m_fAperture;
 	BOOL						m_bUnmodified;
@@ -185,6 +192,7 @@ private :
 		m_dwGroupID		= ti.m_dwGroupID;
 		m_TaskType		= ti.m_TaskType;
 		m_lISOSpeed		= ti.m_lISOSpeed;
+		m_lGain			= ti.m_lGain;
 		m_fExposure		= ti.m_fExposure;
 		m_fAperture     = ti.m_fAperture;
 		m_vBitmaps		= ti.m_vBitmaps;
@@ -203,6 +211,7 @@ public :
 		m_dwTaskID  = 0;
 		m_dwGroupID = 0;
 		m_lISOSpeed = 0;
+		m_lGain     = -1;
 		m_fExposure = 0.0;
 		m_fAperture = 0.0;
 		m_bDone	    = FALSE;
@@ -210,6 +219,7 @@ public :
 		m_fKappa	= 2.0;
 		m_lNrIterations = 5;
 		m_bUnmodified = FALSE;
+        m_TaskType = PICTURETYPE(0);
 	};
 
 	CTaskInfo(const CTaskInfo & ti)
@@ -222,7 +232,7 @@ public :
 		CopyFrom(ti);
 		return (*this);
 	};
-	
+
 	virtual ~CTaskInfo()
 	{
 	};
@@ -255,7 +265,7 @@ public :
 		{
 			CSmartPtr<CMemoryBitmap>	pBitmap;
 
-			*ppBitmap = NULL;
+			*ppBitmap = nullptr;
 			if (m_pMaster && m_pMaster->GetNrBitmaps() > 1)
 			{
 				bResult = m_pMaster->GetResult(&pBitmap, pProgress);
@@ -267,6 +277,12 @@ public :
 		};
 
 		return bResult;
+	};
+
+	BOOL 	HasISOSpeed() const
+	{
+		// Has valid ISOSpeed value or no valid Gain value.
+		return m_lISOSpeed != 0 || m_lGain < 0;
 	};
 };
 
@@ -305,11 +321,11 @@ private :
 public :
 	CStackingInfo()
 	{
-		m_pOffsetTask	= NULL;
-		m_pDarkTask		= NULL;
-		m_pFlatTask		= NULL;
-		m_pLightTask	= NULL;
-		m_pDarkFlatTask	= NULL;
+		m_pOffsetTask	= nullptr;
+		m_pDarkTask		= nullptr;
+		m_pFlatTask		= nullptr;
+		m_pLightTask	= nullptr;
+		m_pDarkFlatTask	= nullptr;
 	};
 
 	CStackingInfo(const CStackingInfo & si)
@@ -393,6 +409,10 @@ private :
 		m_lNrDarkFlatFrames	= tasks.m_lNrDarkFlatFrames;
 		m_lNrFlatFrames		= tasks.m_lNrFlatFrames;
 		m_fMaxExposureTime	= tasks.m_fMaxExposureTime;
+
+        m_bDarkUsed         = tasks.m_bDarkUsed;
+        m_bBiasUsed         = tasks.m_bBiasUsed;
+        m_bFlatUsed         = tasks.m_bFlatUsed;
 	};
 
 public :
@@ -568,7 +588,7 @@ public :
 	{
 		if (m_bUseCustomRectangle)
 			return SM_CUSTOM;
-		else 
+		else
 			return GetResultMode();
 	};
 
@@ -578,8 +598,8 @@ public :
 	BOOL	DoDarkFlatTasks(CDSSProgress * pProgress);
 	BOOL	DoAllPreTasks(CDSSProgress * pProgress)
 	{
-		return DoOffsetTasks(pProgress) && 
-			   DoDarkTasks(pProgress) && 
+		return DoOffsetTasks(pProgress) &&
+			   DoDarkTasks(pProgress) &&
 			   DoDarkFlatTasks(pProgress) &&
 			   DoFlatTasks(pProgress);
 	};

@@ -9,7 +9,7 @@ Purpose:	Imaging library.
 #define IMGLIB_H
 
 #ifndef _WINDOWS_
-	#include <Windows.h>
+	#include <windows.h>
 #endif	//	_WINDOWS_
 
 #ifdef __cplusplus

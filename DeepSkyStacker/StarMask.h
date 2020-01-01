@@ -23,7 +23,10 @@ protected :
 public :
 	CStarMaskFunction()
 	{
+        m_fRadius = 0;
 	};
+
+    virtual ~CStarMaskFunction() { }
 
 	virtual void	SetRadius(double fRadius)
 	{
@@ -43,18 +46,20 @@ protected :
 public :
 	CStarMaskFunction_Bell()
 	{
+        fFactor1 = 0;
+        fFactor2 = 0;
 	};
 
 	virtual void	SetRadius(double fRadius)
 	{
 		CStarMaskFunction::SetRadius(fRadius);
-		fFactor1 = 1.0; 
+		fFactor1 = 1.0;
 		fFactor2 = 2*fRadius*fRadius;
 	};
 
 	virtual double	Compute(double fValue)
 	{
-		return fFactor1 * exp(-(fValue * fValue)/fFactor2);	
+		return fFactor1 * exp(-(fValue * fValue)/fFactor2);
 	};
 };
 
@@ -70,12 +75,12 @@ public :
 	virtual void	SetRadius(double fRadius)
 	{
 		CStarMaskFunction_Bell::SetRadius(fRadius);
-		fFactor1 = 1.0/exp(-0.5); 
+		fFactor1 = 1.0/exp(-0.5);
 	};
 
 	virtual double	Compute(double fValue)
 	{
-		return min(1.0, fFactor1 * exp(-(fValue * fValue)/fFactor2));	
+		return min(1.0, fFactor1 * exp(-(fValue * fValue)/fFactor2));
 	};
 };
 
@@ -97,7 +102,7 @@ public :
 
 	virtual double	Compute(double fValue)
 	{
-		return max(0.0, 1-fValue/3.0/m_fRadius);	
+		return max(0.0, 1-fValue/3.0/m_fRadius);
 	};
 };
 
@@ -119,7 +124,7 @@ public :
 
 	virtual double	Compute(double fValue)
 	{
-		return max(0.0, 1.5-fValue*1.5/3.0/m_fRadius);	
+		return max(0.0, 1.5-fValue*1.5/3.0/m_fRadius);
 	};
 };
 
@@ -142,7 +147,7 @@ public :
 	virtual double	Compute(double fValue)
 	{
 		fValue /= 3.0*m_fRadius;
-		return max(0.0, 1.0-fValue*fValue*fValue);	
+		return max(0.0, 1.0-fValue*fValue*fValue);
 	};
 };
 
@@ -165,7 +170,7 @@ public :
 	virtual double	Compute(double fValue)
 	{
 		fValue /= 3.0*m_fRadius;
-		return max(0.0, 1.0-fValue*fValue*fValue*fValue);	
+		return max(0.0, 1.0-fValue*fValue*fValue*fValue);
 	};
 };
 
@@ -219,7 +224,7 @@ public :
 		DWORD				dwMinSize = 2;
 		DWORD				dwMaxSize = 25;
 		DWORD				dwStarShape = 1;
-	
+
 		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectHotPixels"), bHotPixels);
 		m_bRemoveHotPixels = bHotPixels;
 		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectionThreshold"), dwThreshold);
@@ -251,8 +256,8 @@ public :
 		m_bRemoveHotPixels = bHotPixels;
 	};
 
-	BOOL	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = NULL);
-	BOOL	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = NULL);
+	BOOL	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	BOOL	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 #endif // __STARMASK_H__

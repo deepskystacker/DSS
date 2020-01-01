@@ -11,6 +11,7 @@ public :
 	LONG				m_lWidth,
 						m_lHeight;
 	LONG				m_lISOSpeed;
+	LONG				m_lGain;
 	double				m_fExposure;
 	double				m_fAperture;
 	PICTURETYPE			m_PictureType;
@@ -35,6 +36,7 @@ protected :
 		m_lHeight		  = cfi.m_lHeight;
 		m_strFileName	  = cfi.m_strFileName;
 		m_lISOSpeed		  = cfi.m_lISOSpeed;
+		m_lGain			  = cfi.m_lGain;
 		m_fExposure		  = cfi.m_fExposure;
 		m_fAperture = cfi.m_fAperture;
 		m_PictureType	  = cfi.m_PictureType;
@@ -54,6 +56,7 @@ protected :
 	void	Reset()
 	{
 		m_lISOSpeed		  = 0;
+		m_lGain			  = -1;
 		m_fExposure		  = 0.0;
 		m_fAperture = 0.0;
 		m_PictureType     = PICTURETYPE_LIGHTFRAME;
@@ -65,10 +68,12 @@ protected :
 		m_bSuperPixel	  = FALSE;
 		m_DateTime.wYear  = 0;
 		m_ExtraInfo.Clear();
+        m_lWidth = 0;
+        m_lHeight = 0;
 	};
 
 public :
-	CFrameInfo() 
+	CFrameInfo()
 	{
 		Reset();
 	};
@@ -127,8 +132,8 @@ public :
 	{
 		BOOL			bResult;
 
-		bResult = (m_lWidth == lWidth) && 
-				  (m_lHeight == lHeight) && 
+		bResult = (m_lWidth == lWidth) &&
+				  (m_lHeight == lHeight) &&
 				  (m_lBitPerChannels == lBitPerChannels);
 
 		if (bResult)
@@ -235,6 +240,16 @@ inline void	ISOToString(LONG lISOSpeed, CString & strText)
 {
 	if (lISOSpeed)
 		strText.Format(_T("%ld"), lISOSpeed);
+	else
+		strText = "-";
+};
+
+/* ------------------------------------------------------------------- */
+
+inline void	GainToString(LONG lGain, CString & strText)
+{
+	if (lGain >= 0)
+		strText.Format(_T("%ld"), lGain);
 	else
 		strText = "-";
 };

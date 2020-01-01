@@ -53,7 +53,7 @@ public :
 			return true;
 		else if (m_lX > hp.m_lX)
 			return false;
-		else 
+		else
 			return (m_lY < hp.m_lY);
 	};
 
@@ -87,7 +87,10 @@ private :
 public :
 	CDarkMultiplier()
 	{
-	};
+        m_fMax = 0;
+        m_fMin = 0;
+        m_fMultiplier = 0;
+    };
 
 	virtual ~CDarkMultiplier()
 	{
@@ -140,7 +143,7 @@ public :
 			return true;
 		else if (X > ep.X)
 			return false;
-		else 
+		else
 			return (Y < ep.Y);
 	};
 };
@@ -157,7 +160,7 @@ public :
 	double						m_fGrayValue;
 
 public :
-	CDarkFrameHotParameters() {};
+	CDarkFrameHotParameters() : m_fGrayValue(0) {};
 	virtual ~CDarkFrameHotParameters() {};
 
 	void	ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXELVECTOR & vHotPixels);
@@ -226,8 +229,13 @@ private :
 	double	ComputeMedianValueInRect(CMemoryBitmap * pBitmap, CRect & rc);
 
 public :
-	CDarkAmpGlowParameters() {};
-	CDarkAmpGlowParameters(const CDarkAmpGlowParameters & dagp) 
+	CDarkAmpGlowParameters()
+    {
+        m_fMedianHotest = 0;
+        m_fGrayValue = 0;
+        m_lColdestIndice = 0;
+    }
+	CDarkAmpGlowParameters(const CDarkAmpGlowParameters & dagp)
 	{
 		CopyFrom(dagp);
 	};
@@ -293,7 +301,7 @@ protected :
 	void	FindBadVerticalLines(CDSSProgress * pProgress);
 
 public :
-	CDarkFrame(CMemoryBitmap * pMasterDark = NULL)
+	CDarkFrame(CMemoryBitmap * pMasterDark = nullptr)
 	{
 		Reset();
 		m_pMasterDark = pMasterDark;
@@ -309,13 +317,13 @@ public :
 		m_pMasterDark = pMasterDark;
 	};
 
-	BOOL	Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress = NULL);
+	BOOL	Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
 
-	void	InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = NULL);
+	void	InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = nullptr);
 
 	BOOL	IsOk()
 	{
-		return (m_pMasterDark != NULL);
+		return (m_pMasterDark != nullptr);
 	};
 };
 

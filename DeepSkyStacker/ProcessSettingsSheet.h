@@ -20,8 +20,8 @@ class CProcessSettingsSheet : public CPropertySheet
 
 // Construction
 public:
-	CProcessSettingsSheet(UINT nIDCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
-	CProcessSettingsSheet(LPCTSTR pszCaption, CWnd* pParentWnd = NULL, UINT iSelectPage = 0);
+	CProcessSettingsSheet(UINT nIDCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
+	CProcessSettingsSheet(LPCTSTR pszCaption, CWnd* pParentWnd = nullptr, UINT iSelectPage = 0);
 
 // Attributes
 public:

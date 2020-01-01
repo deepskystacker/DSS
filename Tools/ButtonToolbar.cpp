@@ -9,8 +9,8 @@ Bitmap *	GetBitmapFromIcon(int nBitmap, int nMask)
 	HBITMAP				hBitmap = LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(nBitmap));
 	HBITMAP				hMask   = LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(nMask));
 	Bitmap	*			pResult;
-	Bitmap				bmp(hBitmap, NULL);
-	Bitmap				bmpMask(hMask, NULL);
+	Bitmap				bmp(hBitmap, nullptr);
+	Bitmap				bmpMask(hMask, nullptr);
 
 	pResult = bmp.Clone(0, 0, BUTTONTOOLBARSIZE, BUTTONTOOLBARSIZE, PixelFormat32bppARGB);
 	for (LONG i = 0;i<bmp.GetWidth();i++)
@@ -45,7 +45,7 @@ void	CMaskedButton::Init(UINT nBitmapUp, UINT nBitmapDown, UINT nBitmapHot, UINT
 
 void CButtonToolbar::ComputeTooltipSize(LPCTSTR szTooltip, CRect & rcTooltip)
 {
-	HDC					hDC = GetDC(NULL);
+	HDC					hDC = GetDC(nullptr);
 	Graphics			graphics(hDC);
 	Font				font(FontFamily::GenericSansSerif(), 10, FontStyleRegular);
 	StringFormat		format;
@@ -56,7 +56,7 @@ void CButtonToolbar::ComputeTooltipSize(LPCTSTR szTooltip, CRect & rcTooltip)
 
 	graphics.MeasureString(CComBSTR(szTooltip), -1, &font, PointF(0, 0), &format, &rcFBound);
 
-	ReleaseDC(NULL, hDC);
+	ReleaseDC(nullptr, hDC);
 
 	rcTooltip.left  = rcFBound.X;
 	rcTooltip.right = rcFBound.X+rcFBound.Width;
@@ -155,7 +155,7 @@ Image*	CButtonToolbar::GetImage()
 
 Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 {
-	Image *				pResult = NULL;
+	Image *				pResult = nullptr;
 	CString				strTooltip;
 
 	if (GetTooltipRect(rcTooltip, strTooltip))
@@ -177,13 +177,13 @@ Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 			path.SetFillMode(FillModeWinding);
 			path.AddRectangle(RectF(10*10, 0, lWidth-20*10, lHeight));
 			path.AddRectangle(RectF(0, 10*10, lWidth, lHeight-20*10));
-			
+
 			path.AddEllipse(0, 0, 20*10, 20*10);
 			path.AddEllipse(lWidth-20*10, 0, 20*10, 20*10);
 			path.AddEllipse(0, lHeight-20*10, 20*10, 20*10);
 			path.AddEllipse(lWidth-20*10, lHeight-20*10, 20*10, 20*10);
 			//path.Flatten();
-			path.Outline(NULL, (REAL)0.01);
+			path.Outline(nullptr, (REAL)0.01);
 
 			Matrix				matrix;
 
@@ -212,7 +212,7 @@ Image*	CButtonToolbar::GetTooltipImage(CRect & rcTooltip)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -221,7 +221,7 @@ BOOL	CButtonToolbar::OnMouseEnter(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseMove(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnMouseMove(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -268,7 +268,7 @@ BOOL	CButtonToolbar::OnMouseMove(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnMouseLeave() 
+BOOL	CButtonToolbar::OnMouseLeave()
 {
 	BOOL				bResult = FALSE;
 
@@ -285,7 +285,7 @@ BOOL	CButtonToolbar::OnMouseLeave()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 	BOOL				bFound = FALSE;
@@ -316,7 +316,7 @@ BOOL	CButtonToolbar::OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 
@@ -327,7 +327,7 @@ BOOL	CButtonToolbar::OnLButtonUp(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CButtonToolbar::OnRButtonDown(LONG lX, LONG lY) 
+BOOL	CButtonToolbar::OnRButtonDown(LONG lX, LONG lY)
 {
 	BOOL				bResult = FALSE;
 	LONG				lIndice;

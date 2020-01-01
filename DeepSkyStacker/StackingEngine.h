@@ -25,7 +25,7 @@ private :
 	};
 
 public :
-	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0) 
+	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0)
 	{
 		m_lImageIndex	= lIndex;
 		m_fXShift		= fXShift;
@@ -74,7 +74,7 @@ private :
 		m_BilinearParameters = lfsi.m_BilinearParameters;
 	};
 public :
-	CLightFrameStackingInfo(LPCTSTR szFileName = NULL)
+	CLightFrameStackingInfo(LPCTSTR szFileName = nullptr)
 	{
 		m_strFileName = szFileName;
 	};
@@ -146,6 +146,7 @@ private :
 	LONG						m_lNrStackable;
 	LONG						m_lNrCometStackable;
 	LONG						m_lISOSpeed;
+	LONG						m_lGain;
 	SYSTEMTIME					m_DateTime;
 	CBitmapExtraInfo			m_ExtraInfo;
 	CRect						m_rcResult;
@@ -186,6 +187,7 @@ private :
 	BOOL	IsLightFrameStackable(LPCTSTR szFile);
 	BOOL	RemoveNonStackableLightFrames(CAllStackingTasks & tasks);
 	void	GetResultISOSpeed();
+	void	GetResultGain();
 	void	GetResultDateTime();
 	void	GetResultExtraInfo();
 	void	ComputeLargestRectangle(CRect & rc);
@@ -210,8 +212,9 @@ public :
 		m_lNrStackable			= 0;
 		m_lNrCometStackable		= 0;
 		m_lISOSpeed				= 0;
+		m_lGain				= -1;
 		m_DateTime.wYear		= 0;
-		m_pLightTask			= NULL;
+		m_pLightTask			= nullptr;
 		m_lNrStacked			= 0;
 		m_fTotalExposure		= 0;
 		m_fKeptPercentage		= 100.0;

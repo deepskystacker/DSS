@@ -8,7 +8,7 @@
 #include "MatchingStars.h"
 
 // {89AEE9BB-89E3-47ef-BEB5-A0819D957C77}
-const GUID MAINJOBID = 
+const GUID MAINJOBID =
 { 0x89aee9bb, 0x89e3, 0x47ef, { 0xbe, 0xb5, 0xa0, 0x81, 0x9d, 0x95, 0x7c, 0x77 } };
 
 #include "StackingTasks.h"
@@ -32,7 +32,7 @@ private :
 	};
 
 public :
-	CMRUList(LPCTSTR szBasePath = NULL) 
+	CMRUList(LPCTSTR szBasePath = nullptr)
 	{
 		if (szBasePath)
 			m_strBasePath = szBasePath;
@@ -46,7 +46,7 @@ public :
 		m_strBasePath = szBasePath;
 	};
 
-	CMRUList(const CMRUList & ml) 
+	CMRUList(const CMRUList & ml)
 	{
 		CopyFrom(ml);
 	};
@@ -209,7 +209,7 @@ private :
 	};
 
 public :
-	CJob() 
+	CJob()
 	{
 		m_strName.Empty();
 		m_ID	= GUID_NULL;
@@ -303,7 +303,7 @@ public :
 		return lIndice>=0 ? m_vJobs[lIndice] : m_NullJob;
 	};
 
-	CJob & GetJob(GUID dwID)
+	CJob & GetJob(GUID const& dwID)
 	{
 		LONG			lIndice = -1;
 
@@ -316,7 +316,7 @@ public :
 		return lIndice>=0 ? m_vJobs[lIndice] : m_NullJob;
 	};
 
-	BOOL	RemoveJob(GUID dwID)
+	BOOL	RemoveJob(GUID const& dwID)
 	{
 		LONG			lIndice = -1;
 		for (LONG i = 0;i<m_vJobs.size() && lIndice<0;i++)
@@ -337,7 +337,7 @@ public :
 
 	void	AddMainJob()
 	{
-		AddJob(NULL, MAINJOBID);
+		AddJob(nullptr, MAINJOBID);
 	};
 };
 
@@ -374,7 +374,7 @@ public :
 		return FALSE;
 	};
 
-	void	FillTasks(CAllStackingTasks & tasks, GUID dwJobID = MAINJOBID);
+	void	FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID = MAINJOBID);
 	BOOL	GetReferenceFrame(CString & strReferenceFrame);
 	LONG	GetNrUnregisteredCheckedLightFrames(LONG lGroupID = -1);
 

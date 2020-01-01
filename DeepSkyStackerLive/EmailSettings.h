@@ -7,7 +7,7 @@ class CEmailSettings : public CDialog
 {
 // Construction
 public:
-	CEmailSettings(CWnd* pParent = NULL);	// standard constructor
+	CEmailSettings(CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 	enum { IDD = IDD_EMAILSETTINGS };

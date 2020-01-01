@@ -11,8 +11,10 @@
 
 IMPLEMENT_DYNAMIC(CGraphViewTab, CDialog)
 
-CGraphViewTab::CGraphViewTab(CWnd* pParent /*=NULL*/)
-	: CDialog(CGraphViewTab::IDD, pParent)
+CGraphViewTab::CGraphViewTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
+	: CDialog(CGraphViewTab::IDD, pParent),
+	m_bDarkMode(bDarkMode),
+	m_Graph(bDarkMode)
 {
 }
 
@@ -46,6 +48,8 @@ BEGIN_MESSAGE_MAP(CGraphViewTab, CDialog)
 	ON_BN_CLICKED(IDC_OFFSET, OnOffset)
 	ON_BN_CLICKED(IDC_ANGLE, OnAngle)
 	ON_BN_CLICKED(IDC_SKYBACKGROUND, OnSkyBackground)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
@@ -144,26 +148,40 @@ BOOL CGraphViewTab::OnInitDialog()
 
 	m_Score.SetCheck(TRUE);
 
-	m_csScores.Init(m_Graph, RGB(255, 0, 0));
-	m_csFWHM.Init(m_Graph, RGB(128, 0, 0));
-	m_csStars.Init(m_Graph, RGB(0, 0, 128));
-	m_csdX.Init(m_Graph, RGB(255, 0, 0));
-	m_csdY.Init(m_Graph, RGB(0, 0, 255));
-	m_csAngle.Init(m_Graph, RGB(0, 255, 0));
-	m_csSkyBackground.Init(m_Graph, RGB(0, 0, 128));
+	if (m_bDarkMode)
+	{
+		m_Graph.SetBackColor(RGB(51, 51, 51));
+		m_csScores.Init(m_Graph, RGB(200, 0, 0));
+		m_csFWHM.Init(m_Graph, RGB(200, 0, 0));
+		m_csStars.Init(m_Graph, RGB(0, 100, 200));
+		m_csdX.Init(m_Graph, RGB(200, 0, 0));
+		m_csdY.Init(m_Graph, RGB(0, 100, 200));
+		m_csAngle.Init(m_Graph, RGB(0, 200, 0));
+		m_csSkyBackground.Init(m_Graph, RGB(0, 100, 200));
+	}
+	else
+	{
+		m_Graph.SetBackColor(RGB(255, 255, 255));
+		m_csScores.Init(m_Graph, RGB(255, 0, 0));
+		m_csFWHM.Init(m_Graph, RGB(128, 0, 0));
+		m_csStars.Init(m_Graph, RGB(0, 0, 128));
+		m_csdX.Init(m_Graph, RGB(255, 0, 0));
+		m_csdY.Init(m_Graph, RGB(0, 0, 255));
+		m_csAngle.Init(m_Graph, RGB(0, 255, 0));
+		m_csSkyBackground.Init(m_Graph, RGB(0, 0, 128));
+	}
 
 	m_csdX.SetName(_T("dX"));
 	m_csdY.SetName(_T("dY"));
 
 	m_Graph.GetBottomAxis()->SetAutomatic(true);
 	m_Graph.GetLeftAxis()->SetAutomatic(true);
-	m_Graph.SetBackColor(RGB(255, 255, 255));
 	m_Graph.SetPanEnabled(false);
 	m_Graph.SetZoomEnabled(false);
 
 	ChangeVisibleGraph();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -240,6 +258,36 @@ void CGraphViewTab::OnAngle()
 		ChangeVisibleGraph();
 	};
 };
+
+/* ------------------------------------------------------------------- */
+
+HBRUSH CGraphViewTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	if (!m_bDarkMode)
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	pDC->SetBkMode(TRANSPARENT);
+	pDC->SetTextColor(GetSysColor(COLOR_WINDOWTEXT));
+	CBrush Nothing;
+	Nothing.CreateStockObject(NULL_BRUSH);
+	return Nothing;
+}
+
+/* ------------------------------------------------------------------- */
+
+BOOL CGraphViewTab::OnEraseBkgnd(CDC* pDC)
+{
+	if (!m_bDarkMode)
+		return CDialog::OnEraseBkgnd(pDC);
+
+	CRect rect;
+	GetClientRect(&rect);
+	CBrush myBrush(RGB(80, 80, 80));    // dialog background color
+	CBrush *pOld = pDC->SelectObject(&myBrush);
+	BOOL bRes = pDC->PatBlt(0, 0, rect.Width(), rect.Height(), PATCOPY);
+	pDC->SelectObject(pOld);    // restore old brush
+	return bRes;                       // CDialog::OnEraseBkgnd(pDC);
+}
 
 /* ------------------------------------------------------------------- */
 

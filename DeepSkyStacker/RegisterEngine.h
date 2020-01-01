@@ -172,6 +172,9 @@ protected :
 		m_fBackground = 0.0;
 
 		m_SkyBackground.Reset();
+
+        m_fOverallQuality = 0;
+        m_fFWHM = 0;
 	};
 
 	BOOL	FindStarShape(CMemoryBitmap * pBitmap, CStar & star);
@@ -297,7 +300,7 @@ private :
 		m_fYOffset = 0;
 		m_fAngle   = 0;
 		m_bDisabled= FALSE;
-		m_pProgress= NULL;
+		m_pProgress= nullptr;
 		m_bStartingFrame  = FALSE;
 		m_vVotedPairs.clear();
 
@@ -311,7 +314,7 @@ private :
 	};
 
 public :
-	CLightFrameInfo() 
+	CLightFrameInfo()
 	{
 		Reset();
 	};
@@ -322,6 +325,8 @@ public :
 
 	CLightFrameInfo(const CFrameInfo & cbi)
 	{
+        Reset();
+
 		CFrameInfo::CopyFrom(cbi);
 	};
 
@@ -357,12 +362,12 @@ public :
 			return false;
 		else if (m_fOverallQuality > cbi.m_fOverallQuality)
 			return true;
-		else 
+		else
 			return false;
 	};
 
 	void	RegisterPicture(CMemoryBitmap * pBitmap);
-	void	RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, BOOL bRemoveHotPixels = TRUE, BOOL bApplyMedianFilter = FALSE, CDSSProgress * pProgress = NULL);
+	void	RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, BOOL bRemoveHotPixels = TRUE, BOOL bApplyMedianFilter = FALSE, CDSSProgress * pProgress = nullptr);
 	void	SaveRegisteringInfo();
 
 private :

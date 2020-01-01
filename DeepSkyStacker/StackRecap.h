@@ -11,7 +11,7 @@ class CStackRecap : public CDialog
 	DECLARE_EASYSIZE
 
 public:
-	CStackRecap(CWnd* pParent = NULL);   // standard constructor
+	CStackRecap(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CStackRecap();
 
 	void		SetStackingTasks(CAllStackingTasks * pStackingTasks)

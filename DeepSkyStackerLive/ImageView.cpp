@@ -12,8 +12,10 @@
 
 IMPLEMENT_DYNAMIC(CImageViewTab, CDialog)
 
-CImageViewTab::CImageViewTab(CWnd* pParent /*=NULL*/)
-	: CDialog(CImageViewTab::IDD, pParent)
+CImageViewTab::CImageViewTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
+	: CDialog(CImageViewTab::IDD, pParent),
+	m_bDarkMode(bDarkMode),
+	m_Picture(bDarkMode)
 {
 	m_bStackedImage = FALSE;
 }
@@ -46,6 +48,7 @@ BEGIN_MESSAGE_MAP(CImageViewTab, CDialog)
 	ON_NOTIFY(NM_LINKCLICK, IDC_FILENAME, OnFileName)
 	ON_NOTIFY(NM_LINKCLICK, IDC_COPYTOCLIPBOARD, OnCopyToClipboard)
 	ON_BN_CLICKED(IDC_4CORNERS, OnBnClicked4corners)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
@@ -66,7 +69,11 @@ BOOL CImageViewTab::OnInitDialog()
 
 	m_Picture.CreateFromStatic(&m_PictureStatic);
 
-	m_Background.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+	if(m_bDarkMode)
+		m_Background.SetBkColor(RGB(112, 122, 126), RGB(69, 93, 121), CLabel::Gradient);
+	else
+		m_Background.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+
 	m_ControlPos.AddControl(IDC_BACKGROUND, CP_RESIZE_HORIZONTAL);
 	m_ControlPos.AddControl(IDC_FILENAME, CP_RESIZE_HORIZONTAL);
 	m_ControlPos.AddControl(IDC_PICTURE, CP_RESIZE_HORIZONTAL | CP_RESIZE_VERTICAL);
@@ -81,11 +88,11 @@ BOOL CImageViewTab::OnInitDialog()
 
 	m_CopyToClipboard.ShowWindow(SW_HIDE);
 	m_CopyToClipboard.SetTransparent(TRUE);
-	m_CopyToClipboard.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
+	m_CopyToClipboard.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
 	m_CopyToClipboard.SetLink(TRUE, TRUE);
-	m_CopyToClipboard.SetTextColor(RGB(0, 0, 128));
+	m_CopyToClipboard.SetTextColor(m_bDarkMode ? RGB(0, 0, 64) : RGB(0, 0, 128));
 
-	m_Gamma.SetBackgroundColor(GetSysColor(COLOR_3DFACE));
+	m_Gamma.SetBackgroundColor(m_bDarkMode ? COLORREF(RGB(80,80,80)) : GetSysColor(COLOR_3DFACE));
 	m_Gamma.ShowTooltips(FALSE);
 	m_Gamma.SetOrientation(CGradientCtrl::ForceHorizontal);
 	m_Gamma.SetPegSide(TRUE, FALSE);
@@ -95,10 +102,19 @@ BOOL CImageViewTab::OnInitDialog()
 	m_Gamma.GetGradient().AddPeg(RGB(128, 128, 128), sqrt(0.5), 1);
 	m_Gamma.GetGradient().AddPeg(RGB(255, 255, 255), 1.0, 2);
 	m_Gamma.GetGradient().SetEndPegColour(RGB(255, 255, 255));
-	m_Gamma.GetGradient().SetBackgroundColour(RGB(255, 255, 255));
+	if(m_bDarkMode)
+		m_Gamma.GetGradient().SetBackgroundColour(RGB(128, 128, 128));
+	else
+		m_Gamma.GetGradient().SetBackgroundColour(RGB(255, 255, 255));
 	m_Gamma.GetGradient().SetInterpolationMethod(CGradient::Linear);
 
 	m_4Corners.SetBitmaps(IDB_4CORNERS, RGB(255,0, 255));
+	if (m_bDarkMode)
+	{
+		m_4Corners.SetColor(CButtonST::BTNST_COLOR_BK_IN, COLORREF(RGB(80, 80, 80)));
+		m_4Corners.SetColor(CButtonST::BTNST_COLOR_BK_OUT, COLORREF(RGB(80, 80, 80)));
+		m_4Corners.SetColor(CButtonST::BTNST_COLOR_BK_FOCUS, COLORREF(RGB(80, 80, 80)));
+	}
 	m_4Corners.SetFlat(TRUE);
 
 	CString				strText;
@@ -112,7 +128,7 @@ BOOL CImageViewTab::OnInitDialog()
 		strText.LoadString(IDS_NOIMAGELOADED);
 	m_FileName.SetText(strText);
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -130,7 +146,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 	if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
 		(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
 	{
-		// Adjust 
+		// Adjust
 		CGradient &			Gradient = m_Gamma.GetGradient();
 		fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
 		fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
@@ -184,7 +200,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
 			Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
-			m_Gamma.InvalidateRect(NULL);
+			m_Gamma.InvalidateRect(nullptr);
 		};
 	};
 
@@ -209,7 +225,11 @@ void CImageViewTab::SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap
 	CString						strText;
 
 	strText = szFileName;
-	m_FileName.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+	if(m_bDarkMode)
+		m_FileName.SetBkColor(RGB(112, 122, 126), RGB(69, 93, 121), CLabel::Gradient);
+	else
+		m_FileName.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+
 	if (pBitmap)
 	{
 		m_Picture.SetImg(pWndBitmap->GetHBITMAP(), true);
@@ -240,7 +260,7 @@ void CImageViewTab::SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap
 		else
 			strText.LoadString(IDS_NOSTACKEDIMAGE);
 		m_StackedSink.ClearFootprint();
-		m_Picture.SetImg((HBITMAP)NULL);
+		m_Picture.SetImg((HBITMAP)nullptr);
 		m_FileName.SetText(strText);
 		m_pWndImage.Release();
 		m_pBitmap.Release();
@@ -267,7 +287,10 @@ void CImageViewTab::OnFileName(NMHDR* pNMHDR, LRESULT* pResult)
 		strText.LoadString(IDS_STACKEDIMAGEWILLBESAVED);
 		m_FileName.SetText(strText);
 		m_FileName.SetLink(FALSE, FALSE);
-		m_FileName.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
+		if(m_bDarkMode)
+			m_FileName.SetBkColor(RGB(126, 126, 111), RGB(128, 76, 77), CLabel::Gradient);
+		else
+			m_FileName.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
 	}
 	else
 	{
@@ -283,8 +306,10 @@ void CImageViewTab::OnFileName(NMHDR* pNMHDR, LRESULT* pResult)
 void CImageViewTab::OnStackedImageSaved()
 {
 	CString				strText;
-
-	m_FileName.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+	if (m_bDarkMode)
+		m_FileName.SetBkColor(RGB(112, 122, 126), RGB(69, 92, 121), CLabel::Gradient);
+	else
+		m_FileName.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 
 	strText.LoadString(IDS_STACKEDIMAGESAVED);
 	m_FileName.SetText(strText);
@@ -301,7 +326,7 @@ void CImageViewTab::OnCopyToClipboard(NMHDR* pNMHDR, LRESULT* pResult)
 
 /* ------------------------------------------------------------------- */
 
-void CImageViewTab::OnSetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+void CImageViewTab::OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 {
 	m_StackedSink.SetFootprint(pt1, pt2, pt3, pt4);
 	m_Picture.Invalidate();
@@ -316,3 +341,16 @@ void CImageViewTab::OnBnClicked4corners()
 
 /* ------------------------------------------------------------------- */
 
+BOOL CImageViewTab::OnEraseBkgnd(CDC* pDC)
+{
+	if (!m_bDarkMode)
+		return CDialog::OnEraseBkgnd(pDC);
+
+	CRect rect;
+	GetClientRect(&rect);
+	CBrush myBrush(RGB(80, 80, 80));    // dialog background color
+	CBrush *pOld = pDC->SelectObject(&myBrush);
+	BOOL bRes = pDC->PatBlt(0, 0, rect.Width(), rect.Height(), PATCOPY);
+	pDC->SelectObject(pOld);    // restore old brush
+	return bRes;                       // CDialog::OnEraseBkgnd(pDC);
+}

@@ -7,14 +7,14 @@
 // Author:	Paul S. Vickery
 // E-mail:	developer@vickeryhome.freeserve.co.uk
 //
-// Class to provide a means of using rich text in a tool-tip, without using 
+// Class to provide a means of using rich text in a tool-tip, without using
 // the newer styles only available in later systems. Based on CToolTipCtrl.
 //
 // You are free to use or modify this code, with no restrictions, other than
 // you continue to acknowledge me as the original author in this source code,
 // or any code derived from it.
 //
-// If you use this code, or use it as a base for your own code, it would be 
+// If you use this code, or use it as a base for your own code, it would be
 // nice to hear from you simply so I know it's not been a waste of time!
 //
 // Copyright (c) 2005 Paul S. Vickery
@@ -27,11 +27,11 @@
 // - Added static method for escaping plain text to make it RTF safe
 // - Modified the positioning to work on multi-monitor systems
 // - Removed dependency on RichToolTipCtrlDemo.h
-// 
+//
 // Version 1.0 - 14-Mar-2005
 // =========================
 // Initial version
-// 
+//
 ////////////////////////////////////////////////////////////////////////////
 // PLEASE LEAVE THIS HEADER INTACT
 ////////////////////////////////////////////////////////////////////////////

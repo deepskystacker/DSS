@@ -11,9 +11,9 @@
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
 //
-// Want to support windows 7 and up
+// Want to support Windows XP and up
 //
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
 
 #include <algorithm>
 using std::min;
@@ -38,3 +38,5 @@ using std::max;
 #define TRACE1(x, y)
 
 // TODO: reference additional headers your program requires here
+
+#include "BitmapExt.h"

@@ -11,7 +11,7 @@ class CExplorerBar : public CScrollDialog
 	DECLARE_DYNAMIC(CExplorerBar)
 
 public:
-	CExplorerBar(CWnd* pParent = NULL);   // standard constructor
+	CExplorerBar(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CExplorerBar();
 
 	void	CallHelp();

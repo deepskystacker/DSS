@@ -38,7 +38,7 @@ class CChartLegend : public CChartObject
 
 public:
 //	int SerieIndexFromPoint(CPoint NewPoint) const;
-	void SetFont(int iPointSize,std::string strFaceName)
+	void SetFont(int iPointSize, std::string const& strFaceName)
 	{
 		m_iFontSize = iPointSize;
 		m_strFontName = strFaceName;

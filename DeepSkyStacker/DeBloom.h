@@ -27,6 +27,9 @@ private:
 public:
 	CBloomInfo()
 	{
+        m_fRadius = 0;
+        m_fBloom = 0;
+        m_fAngle = 0;
 	};
 	~CBloomInfo()
 	{
@@ -71,6 +74,8 @@ private:
 public:
 	CBloomedStar()
 	{
+        m_fRadius = 0;
+        m_fBloom = 0;
 	};
 	~CBloomedStar()
 	{
@@ -103,9 +108,9 @@ public :
 	CPointExt			ptStar;
 	double				fdX,
 						fdY;
-	double				fNW, 
-						fSW, 
-						fNE, 
+	double				fNW,
+						fSW,
+						fNE,
 						fSE;
 	double				fGradient;
 	double				fPercentGradient;
@@ -117,9 +122,9 @@ private:
 		ptStar	= right.ptStar	;
 		fdX		= right.fdX		;
 		fdY		= right.fdY		;
-		fNW		= right.fNW		; 
-		fSW		= right.fSW		; 
-		fNE		= right.fNE		; 
+		fNW		= right.fNW		;
+		fSW		= right.fSW		;
+		fNE		= right.fNE		;
 		fSE		= right.fSE		;
 		fGradient = right.fGradient;
 		fPercentGradient = right.fPercentGradient;
@@ -132,6 +137,10 @@ public:
 		fdY = 0;
 		fGradient = 0;
 		fPercentGradient = 0;
+        fNW = 0;
+        fSW = 0;
+        fNE = 0;
+        fSE = 0;
 	};
 	~CBloomedStarGradient()
 	{
@@ -185,10 +194,13 @@ private :
 	void	RefineStarCenter2(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
 
 public :
-	CDeBloom() 
+	CDeBloom()
 	{
 		m_fBloomThreshold = 0.85;
 		m_fBackground = 0;
+        m_lWidth = 0;
+        m_lHeight = 0;
+        m_pProgress = nullptr;
 	};
 
 	virtual ~CDeBloom() {};

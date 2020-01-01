@@ -191,6 +191,10 @@ public :
 	{
 		m_HAT = HAT_LOGSQUAREROOT;
 		SetOrgValues(0.0, 65535.0);
+
+        m_fMin = 0;
+        m_fMax = 0;
+        m_fShift = 0;
 	};
 
 	virtual ~CHistogramAdjust() {};
@@ -261,7 +265,7 @@ public :
 			fResult = m_fOrgMin + fValue/max(1.0, m_fMin - m_fOrgMin) * (m_fUsedMin - m_fOrgMin);
 		else if (fValue > m_fMax)
 			fResult = m_fOrgMax - (fValue - m_fMax)/max(1.0, m_fOrgMax - m_fMax) * (m_fOrgMax - m_fUsedMax);
-		else 
+		else
 			fResult = m_fUsedMin + AdjustValue((fValue-m_fMin)/max(1.0, (m_fMax - m_fMin)))*(m_fUsedMax - m_fUsedMin);
 
 		// Then shift the value
@@ -391,17 +395,17 @@ public :
 		fBlue	= m_BlueAdjust.Adjust(fBlue);
 	};
 
-	CHistogramAdjust & GetRedAdjust() 
+	CHistogramAdjust & GetRedAdjust()
 	{
 		return m_RedAdjust;
 	};
 
-	CHistogramAdjust & GetGreenAdjust() 
+	CHistogramAdjust & GetGreenAdjust()
 	{
 		return m_GreenAdjust;
 	};
 
-	CHistogramAdjust & GetBlueAdjust() 
+	CHistogramAdjust & GetBlueAdjust()
 	{
 		return m_BlueAdjust;
 	};
@@ -425,18 +429,14 @@ public :
 		m_GreenAdjust.ToText(strGreenParameters);
 		m_BlueAdjust.ToText(strBlueParameters);
 
-		strParameters.Format(_T("RedAdjust{%s}GreenAdjust{%s}BlueAdjust{%s}"), 
-					strRedParameters, 
-					strGreenParameters, 
+		strParameters.Format(_T("RedAdjust{%s}GreenAdjust{%s}BlueAdjust{%s}"),
+					strRedParameters,
+					strGreenParameters,
 					strBlueParameters);
 	};
 
 	void	FromText(LPCTSTR szParameters)
 	{
-		CString				strRedParameters;
-		CString				strGreenParameters;
-		CString				strBlueParameters;
-
 		ExtractParameters(szParameters, "RedAdjust", m_RedAdjust);
 		ExtractParameters(szParameters, "GreenAdjust", m_GreenAdjust);
 		ExtractParameters(szParameters, "BlueAdjust", m_BlueAdjust);
@@ -445,7 +445,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-class CHistogram 
+class CHistogram
 {
 private :
 	std::vector<DWORD>		m_vValues;
@@ -460,7 +460,7 @@ private :
 	BOOL					m_bInitOk;
 
 public :
-	CHistogram() 
+	CHistogram()
 	{
 		m_fSum		= 0;
 		m_fPowSum	= 0;
@@ -469,6 +469,8 @@ public :
 		m_fMax		= 0;
 		m_fMin		= -1;
 		m_bInitOk	= FALSE;
+        m_fAbsMax   = 0;
+        m_fStep     = 0;
 	};
 
 	virtual ~CHistogram() {};
@@ -696,7 +698,7 @@ public :
 	{
 		lNrReds		= m_RedHisto.GetValue(lValue);
 		lNrGreens	= m_GreenHisto.GetValue(lValue);
-		lNrBlues	= m_BlueHisto.GetValue(lValue); 
+		lNrBlues	= m_BlueHisto.GetValue(lValue);
 	};
 
 	CHistogram & GetRedHistogram()

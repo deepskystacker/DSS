@@ -18,7 +18,7 @@ class CRawDDPSettings : public CDialog
 {
 // Construction
 public:
-	CRawDDPSettings(CWnd* pParent = NULL);   // standard constructor
+	CRawDDPSettings(CWnd* pParent = nullptr);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CRawDDPSettings)

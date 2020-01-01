@@ -321,3 +321,7 @@ ASALocalRun/
 
 # Line Endings Unifier VS plugin
 *.leu
+
+# CodeMaid settings
+CodeMaid.config
+/DeepSkyStacker/My Inspector Results - DeepSkyStacker

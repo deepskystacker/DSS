@@ -11,18 +11,18 @@
 #endif // _MSC_VER > 1000
 
 #if defined(USE_HOARD)
-#pragma comment(lib, "lib\\winhoard.lib") 
-#endif 
+#pragma comment(lib, "lib\\winhoard.lib")
+#endif
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 //
-// Want to support windows 7 and up
+// Want to support windows XP and up
 //
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
 
 // Visual Leak Detector
 //
-#include <vld.h>
+//#include <vld.h>
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
@@ -41,6 +41,7 @@
 #endif
 
 #include <windows.h>
+#include <commctrl.h>
 
 #include <algorithm>
 using std::min;
@@ -70,5 +71,9 @@ BOOL CheckVersion(CString & strVersion);
 #include "commonresource.h"
 #include <afxdlgs.h>
 #include "..\QHTML_Static\QHTM\QHTM.h"
+
+#include "BitmapExt.h"
+#include "DeepStackerDlg.h"
+#include "Utils.h"
 
 #endif // !defined(AFX_STDAFX_H__C280BBDC_7360_4663_B015_7C2BE32EF97A__INCLUDED_)

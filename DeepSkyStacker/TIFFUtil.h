@@ -19,6 +19,7 @@ const LONG	TIFFTAG_DSS_MASTER			= (TIFFTAG_DSS_BASE + 7);
 const LONG	TIFFTAG_DSS_TOTALEXPOSURE	= (TIFFTAG_DSS_BASE + 8);
 const LONG	TIFFTAG_DSS_CFATYPE			= (TIFFTAG_DSS_BASE + 9);
 const LONG  TIFFTAG_DSS_APERTURE        = (TIFFTAG_DSS_BASE + 10);
+const LONG	TIFFTAG_DSS_GAIN			= (TIFFTAG_DSS_BASE + 11);
 
 void DSSTIFFInitialize();
 
@@ -26,9 +27,9 @@ class CTIFFHeader
 {
 protected :
 	int					w, h;
-    uint16				spp, 
-						bpp, 
-						photo, 
+    uint16				spp,
+						bpp,
+						photo,
 						compression,
 						planarconfig,
 						sampleformat;
@@ -40,27 +41,38 @@ protected :
 						samplemax;
 	float				exposureTime;
 	float				aperture;
-	short				isospeed;
+	LONG				isospeed;
+	LONG				gain;
 	LONG				nrframes;
 	SYSTEMTIME			m_DateTime;
 
 public :
-	CTIFFHeader() 
+	CTIFFHeader()
 	{
-		TIFFSetWarningHandler(NULL);
-		TIFFSetWarningHandlerExt(NULL);
-		TIFFSetErrorHandler(NULL);
-		TIFFSetErrorHandlerExt(NULL);
+		TIFFSetWarningHandler(nullptr);
+		TIFFSetWarningHandlerExt(nullptr);
+		TIFFSetErrorHandler(nullptr);
+		TIFFSetErrorHandlerExt(nullptr);
 		DSSTIFFInitialize();
 		samplemax = 1.0;
 		samplemin = 0.0;
 		exposureTime = 0.0;
 		aperture = 0.0;
 		isospeed = 0;
+		gain = -1;
 		cfatype  = 0;
 		cfa      = 0;
 		nrframes = 0;
 		m_DateTime.wYear = 0;
+        w = 0;
+        h = 0;
+        spp = 0;
+        bpp = 0;
+        photo = 0;
+        compression = 0;
+        planarconfig = 0;
+        sampleformat = 0;
+        master = 0;
 	};
 	virtual ~CTIFFHeader() {};
 
@@ -98,6 +110,16 @@ public :
 	void	SetISOSpeed(LONG lISOSpeed)
 	{
 		isospeed = lISOSpeed;
+	};
+
+	LONG	GetGain()
+	{
+		return gain;
+	};
+
+	void	SetGain(LONG lGain)
+	{
+		gain = lGain;
 	};
 
 	double	GetExposureTime()
@@ -184,12 +206,12 @@ public :
 public :
 	CTIFFReader(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_tiff		  = NULL;
+		m_tiff		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 	};
 
-	virtual ~CTIFFReader() 
+	virtual ~CTIFFReader()
 	{
 		Close();
 	};
@@ -233,14 +255,14 @@ protected :
 public :
 	CTIFFWriter(LPCTSTR szFileName, CDSSProgress *	pProgress)
 	{
-		m_tiff		  = NULL;
+		m_tiff		  = nullptr;
 		m_strFileName = szFileName;
 		m_pProgress   = pProgress;
 		compression   = COMPRESSION_NONE;
 		m_Format	  = TF_UNKNOWN;
 	};
 
-	virtual ~CTIFFWriter() 
+	virtual ~CTIFFWriter()
 	{
 		Close();
 	};
@@ -269,10 +291,14 @@ public :
 
 BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription = NULL,
-			LONG lISOSpeed = 0, double fExposure = 0.0, double fAperture = 0.0);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription = NULL,
-			LONG lISOSpeed = 0, double fExposure = 0.0, double fAperture = 0.0);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
+			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
+BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
+			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
 
 BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 BOOL	LoadTIFFPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);

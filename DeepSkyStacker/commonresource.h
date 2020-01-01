@@ -236,7 +236,7 @@
 #define IDC_THRESHOLD                   1056
 #define IDC_STACK                       1057
 #define IDC_PERCENT                     1058
-#define IDC_AUTOWB                      1061
+#define IDC_NOWB                        1061
 #define IDC_CAMERAWB                    1062
 #define IDC_BILINEAR                    1064
 #define IDC_VNG                         1065
@@ -657,7 +657,7 @@
 #define ID_FILELIST_FIRSTMRU            40044
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        219

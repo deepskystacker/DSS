@@ -48,7 +48,7 @@ public:
 // Operations
 public:
 	void	Initialize();
-	void	AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE, int nItem = -1);
+	void	AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE, int nItem = -1);
 	virtual BOOL AddFile(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE)
 	{
 		AddFileToList(szFile, dwGroupID, dwJobID, PictureType, bCheck);
@@ -65,7 +65,7 @@ public:
 		};
 	};
 
-	void	SetCurrentJobID(GUID dwJobID)
+	void	SetCurrentJobID(GUID const& dwJobID)
 	{
 		if (m_dwCurrentJobID != dwJobID)
 		{
@@ -102,7 +102,7 @@ public:
 	BOOL	GetSelectedFileName(CString & strFileName);
 	BOOL	GetItemFileName(int nItem, CString & strFileName);
 	BOOL	GetFirstCheckedLightFrame(CString & strFileName);
-	BOOL	GetItemISOSpeedAndExposure(int nItem, LONG & lISOSpeed, double & fExposure);
+	BOOL	GetItemISOSpeedGainAndExposure(int nItem, LONG & lISOSpeed, LONG & lGain, double & fExposure);
 	void	UpdateOffset(LPCTSTR szFileName, double fdX, double fdY, double fAngle, const CBilinearParameters & Transformation, const VOTINGPAIRVECTOR & vVotedPairs);
 	void	ClearOffset(LPCTSTR szFileName);
 	int		FindIndice(LPCTSTR szFileName);
@@ -180,6 +180,8 @@ public:
 
 	void	CopyToClipboard();
 
+    void	ChangePictureType(int nItem, PICTURETYPE PictureType);
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CPictureListCtrl)
@@ -188,7 +190,7 @@ public:
 // Implementation
 private :
 	//void	UpdateOffset(int nItem);
-	void	ChangePictureType(int nItem, PICTURETYPE PictureType);
+
 
 	void	PostItemChanged()
 	{

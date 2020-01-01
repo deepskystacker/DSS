@@ -21,9 +21,10 @@ using std::min;
 using std::max;
 
 //
-// Want to support windows 7 and up
+// Want to support Windows XP and up
 //
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
@@ -54,5 +55,7 @@ using std::max;
 
 #include "resource.h"
 #include <afxdlgs.h>
+
+#include "BitmapExt.h"
 
 #endif // !defined(AFX_STDAFX_H_)

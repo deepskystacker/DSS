@@ -26,19 +26,16 @@ BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 
 	GetFileCreationDateTime(szFile, FileTime);
 	FileTimeToSystemTime(&FileTime, &m_FileTime);
-	SystemTimeToTzSpecificLocalTime(NULL, &m_FileTime, &m_FileTime);
+	SystemTimeToTzSpecificLocalTime(nullptr, &m_FileTime, &m_FileTime);
 
-	GetDateFormat(LOCALE_USER_DEFAULT, 0, &m_FileTime, NULL, szDate, sizeof(szDate));
-	GetTimeFormat(LOCALE_USER_DEFAULT, 0, &m_FileTime, NULL, szTime, sizeof(szTime));
+	GetDateFormat(LOCALE_USER_DEFAULT, 0, &m_FileTime, nullptr, szDate, sizeof(szDate));
+	GetTimeFormat(LOCALE_USER_DEFAULT, 0, &m_FileTime, nullptr, szTime, sizeof(szTime));
 
 	strDateTime.Format("%s %s", szDate, szTime);
 	m_strDateTime = strDateTime;
 	*/
 
 	CBitmapInfo			bmpInfo;
-	CString				strSizes;
-	CString				strDepth;
-	CString				strInfos;
 
 	bResult = GetPictureInfo(szFile ,bmpInfo);
 
@@ -57,6 +54,7 @@ BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 		bmpInfo.GetDescription(m_strInfos);
 
 		m_lISOSpeed			= bmpInfo.m_lISOSpeed;
+		m_lGain				= bmpInfo.m_lGain;
 		m_fExposure			= bmpInfo.m_fExposure;
 		m_fAperture = bmpInfo.m_fAperture;
 

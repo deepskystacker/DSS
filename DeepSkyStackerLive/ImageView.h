@@ -34,9 +34,10 @@ private :
 	CSmartPtr<C32BitsBitmap>	m_pWndImage;
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
 	CGammaTransformation		m_GammaTransformation;
+	bool						m_bDarkMode;
 
 public:
-	CImageViewTab(CWnd* pParent = NULL);   // standard constructor
+	CImageViewTab(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CImageViewTab();
 
 	void	SetStackedImage(BOOL bStackedImage)
@@ -61,6 +62,7 @@ protected :
 	afx_msg void OnFileName(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnCopyToClipboard(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnBnClicked4corners();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 
 //	afx_msg void OnAbout( NMHDR * pNotifyStruct, LRESULT * result );
 //	afx_msg void OnHelp( NMHDR * pNotifyStruct, LRESULT * result );
@@ -68,7 +70,7 @@ protected :
 public :
 	void	SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName);
 	void	OnStackedImageSaved();
-	void	OnSetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4);
+	void	OnSetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4);
 
 };
 

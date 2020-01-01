@@ -11,13 +11,13 @@
 
 Image *	CStackedSink::GetOverlayImage(CRect & rcClient)
 {
-	Image *				pResult = NULL;
-	HDC					hDC = GetDC(NULL);
+	Image *				pResult = nullptr;
+	HDC					hDC = GetDC(nullptr);
 
 	//pResult = new Bitmap(rcClient.Width(), rcClient.Height(), PixelFormat32bppARGB);
 	if (m_pt1!=m_pt2)
 	{
-		pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, NULL);
+		pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, nullptr);
 
 		if (pResult)
 		{
@@ -42,12 +42,12 @@ Image *	CStackedSink::GetOverlayImage(CRect & rcClient)
 		};
 	};
 
-	return pResult; 
+	return pResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CStackedSink::SetFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+void	CStackedSink::SetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
 {
 	m_pt1 = pt1;
 	m_pt2 = pt2;

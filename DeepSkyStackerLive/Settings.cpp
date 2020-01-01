@@ -14,8 +14,10 @@
 
 IMPLEMENT_DYNAMIC(CSettingsTab, CDialog)
 
-CSettingsTab::CSettingsTab(CWnd* pParent /*=NULL*/)
-	: CDialog(CSettingsTab::IDD, pParent)
+CSettingsTab::CSettingsTab(CWnd* pParent /*=nullptr*/, bool bDarkMode /*=false*/)
+	: CDialog(CSettingsTab::IDD, pParent),
+	m_bDarkMode(bDarkMode),
+    m_bDirty(false)
 {
 }
 
@@ -122,7 +124,50 @@ BEGIN_MESSAGE_MAP(CSettingsTab, CDialog)
 	ON_BN_CLICKED(IDC_PROCESS_FITS, OnChangeSetting)
 	ON_BN_CLICKED(IDC_PROCESS_TIFF, OnChangeSetting)
 	ON_BN_CLICKED(IDC_PROCESS_OTHERS, OnChangeSetting)
+
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
+
 END_MESSAGE_MAP()
+
+/* ------------------------------------------------------------------- */
+
+BOOL CSettingsTab::OnEraseBkgnd(CDC* pDC)
+{
+	if (!m_bDarkMode)
+		return CDialog::OnEraseBkgnd(pDC);
+
+	CRect rect;
+	GetClientRect(&rect);
+	CBrush myBrush(RGB(80, 80, 80));    // dialog background color
+	CBrush *pOld = pDC->SelectObject(&myBrush);
+	BOOL bRes = pDC->PatBlt(0, 0, rect.Width(), rect.Height(), PATCOPY);
+	pDC->SelectObject(pOld);    // restore old brush
+	return bRes;                       // CDialog::OnEraseBkgnd(pDC);
+}
+
+HBRUSH CSettingsTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+{
+	if (!m_bDarkMode)
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+
+	const HBRUSH brush = (HBRUSH)GetStockObject(NULL_BRUSH);
+	int nCtrl = pWnd->GetDlgCtrlID();
+	if (nCtrl == IDC_STACKING || nCtrl == IDC_WARNINGS || nCtrl == IDC_OPTIONS || nCtrl == IDC_FILTERS)
+	{
+		pDC->SetBkColor(RGB(80,80,80));
+	}
+	else if (nCtrl == IDC_DONTSTACK_SCORE)
+	{
+		pDC->SetBkMode(TRANSPARENT);
+		pDC->SetTextColor(GetSysColor(COLOR_WINDOWTEXT));
+	}
+	else
+	{
+		pDC->SetBkMode(TRANSPARENT);
+	}
+	return brush;
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -300,7 +345,7 @@ static void InitLabel(CLabel & label, BOOL bMain = FALSE)
 {
 	label.SetLink(TRUE, TRUE);
 	label.SetTransparent(TRUE);
-	label.SetLinkCursor(LoadCursor(NULL,IDC_HAND));
+	label.SetLinkCursor(LoadCursor(nullptr,IDC_HAND));
 	label.SetFont3D(FALSE);
 	//label.SetTextColor(RGB(255, 255, 255));
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));
@@ -339,7 +384,7 @@ BOOL CSettingsTab::OnInitDialog()
 	UpdateFromRegistry();
 	UpdateControls();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -382,7 +427,7 @@ void CSettingsTab::OnWarningFileFolder( NMHDR * pNotifyStruct, LRESULT * result 
 	BOOL					bResult = FALSE;
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	strFolder = m_strWarnFileFolder;
 
 	CFolderDlg				dlg(FALSE, strFolder, this);
@@ -408,7 +453,7 @@ void CSettingsTab::OnStackedOutputFolder( NMHDR * pNotifyStruct, LRESULT * resul
 	BOOL					bResult = FALSE;
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	strFolder = m_strStackedOutputFolder;
 
 	CFolderDlg				dlg(FALSE, strFolder, this);

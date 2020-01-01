@@ -908,7 +908,10 @@ void CWSocket::ConnectViaSocks5(LPCTSTR lpszHostAddress, UINT nHostPort, LPCTSTR
 void CWSocket::ReadSocks5ConnectReply(DWORD dwTimeout)
 {
   //The local variables which will receive the data
+#pragma warning(push)
+#pragma warning(disable: 4267)
   int nBufSize = max(sizeof(WSOCKET_SOCKS5_IP4_REQUEST_DETAILS), sizeof(WSOCKET_SOCKS5_HOSTNAME_REQUEST_DETAILS));
+#pragma warning(pop)
   BYTE* pRawRequest = new BYTE[nBufSize];
   
   //retrieve the reponse

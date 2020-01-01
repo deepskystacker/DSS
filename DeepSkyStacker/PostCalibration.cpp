@@ -21,6 +21,7 @@ CPostCalibration::CPostCalibration()
 	: CChildPropertyPage(CPostCalibration::IDD)
 {
 	m_bFirstActivation = TRUE;
+    m_pStackingTasks = NULL;
 }
 
 /* ------------------------------------------------------------------- */
@@ -96,7 +97,7 @@ static void	GetMethodText(COSMETICREPLACE cr, CString & strText)
 
 	menu.LoadMenu(IDR_COSMETICMETHOD);
 	popup = menu.GetSubMenu(0);
-	
+
 	if (cr == CR_GAUSSIAN)
 		popup->GetMenuString(ID_COSMETICMETHOD_GAUSSIAN, strText, MF_BYCOMMAND);
 	else
@@ -110,7 +111,7 @@ void CPostCalibration::UpdateControls()
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
 	BOOL				bEnableHot  = m_DetectCleanHot.GetCheck(),
 						bEnableCold = m_DetectCleanCold.GetCheck();
-	
+
 	m_HotFilterText.EnableWindow(bEnableHot);
 	m_HotFilter.EnableWindow(bEnableHot);
 	m_HotDetectionText.EnableWindow(bEnableHot);
@@ -265,6 +266,7 @@ void CPostCalibration::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
 
 void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 {
+	ZFUNCTRACE_RUNTIME();
 	// Load the reference light frame
 	if (m_pStackingTasks)
 	{
@@ -329,7 +331,7 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 					if (::LoadPicture(strFileName, &pBitmap, &dlg))
 					{
 						// Apply offset, dark and flat to lightframe
-						MasterFrames.ApplyAllMasters(pBitmap, NULL, &dlg);
+						MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);
 
 						// Then simulate the cosmetic on this image
 						CCosmeticStats			Stats;
@@ -348,7 +350,7 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 					};
 
 					dlg.End2();
-				};			
+				};
 			};
 		};
 	};
@@ -358,6 +360,7 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 
 void CPostCalibration::OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result )
 {
+	ZFUNCTRACE_RUNTIME();
 	CPoint				pt;
 	CMenu				menu;
 	CMenu *				popup;
@@ -365,7 +368,7 @@ void CPostCalibration::OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result
 
 	menu.LoadMenu(IDR_COSMETICMETHOD);
 	popup = menu.GetSubMenu(0);
-	
+
 	CRect				rc;
 	CString				strText;
 
@@ -378,7 +381,7 @@ void CPostCalibration::OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result
 	else
 		popup->CheckMenuItem(ID_COSMETICMETHOD_GAUSSIAN, MF_BYCOMMAND | MF_CHECKED);
 
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);
+	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
 
 	if (nResult == ID_COSMETICMETHOD_MEDIAN)
 	{

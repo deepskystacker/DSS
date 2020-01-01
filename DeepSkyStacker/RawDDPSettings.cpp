@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 // CRawDDPSettings dialog
 
 
-CRawDDPSettings::CRawDDPSettings(CWnd* pParent /*=NULL*/)
+CRawDDPSettings::CRawDDPSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CRawDDPSettings::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CRawDDPSettings)
@@ -49,7 +49,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CRawDDPSettings message handlers
 
-BOOL CRawDDPSettings::OnInitDialog() 
+BOOL CRawDDPSettings::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -88,12 +88,12 @@ void CRawDDPSettings::UpdateControls()
 
 /* ------------------------------------------------------------------- */
 
-void CRawDDPSettings::OnOK() 
+void CRawDDPSettings::OnOK()
 {
 	m_tabRAWFiles.SaveValues();
 	m_tabFITSFiles.SaveValues();
 
-	GetDeepStackerDlg(NULL)->GetStackingDlg().ReloadCurrentImage();
+	GetDeepStackerDlg(nullptr)->GetStackingDlg().ReloadCurrentImage();
 	CDialog::OnOK();
 }
 
@@ -104,7 +104,7 @@ void CRawDDPSettings::OnApply()
 	m_tabRAWFiles.SaveValues();
 	m_tabFITSFiles.SaveValues();
 
-	GetDeepStackerDlg(NULL)->GetStackingDlg().ReloadCurrentImage();
+	GetDeepStackerDlg(nullptr)->GetStackingDlg().ReloadCurrentImage();
 };
 
 /* ------------------------------------------------------------------- */

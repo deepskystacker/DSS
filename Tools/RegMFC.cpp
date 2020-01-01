@@ -95,7 +95,7 @@ BOOL CRegVal :: GetValue( CString & rString_p ) const {
 		TRACE0("CRegVal::GetValue(CString &): wrong type.\n");
 		return FALSE ;
 	}
-	
+
 	rString_p = LPCTSTR(m_pbyteData);
 
 	return TRUE ;
@@ -115,7 +115,7 @@ BOOL CRegVal :: GetValue( CStringArray & rArray_p ) const {
 
 	for( register LPCTSTR p = LPCTSTR(m_pbyteData); *p; p += _tcslen(p)+1 )
 		rArray_p.Add( CString(p) );
-	
+
 	return TRUE ;
 }
 

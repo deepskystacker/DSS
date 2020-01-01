@@ -19,7 +19,7 @@ IMPLEMENT_DYNAMIC(CStackSettings, CDialog)
 
 /* ------------------------------------------------------------------- */
 
-CStackSettings::CStackSettings(CWnd* pParent /*=NULL*/)
+CStackSettings::CStackSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackSettings::IDD, pParent)
 {
 	m_lStartingTab			= 0;
@@ -27,7 +27,7 @@ CStackSettings::CStackSettings(CWnd* pParent /*=NULL*/)
 	m_bUseCustomRectangle	= FALSE;
 	m_bEnableCustomRectangle= FALSE;
 	m_bEnableCometStacking	= FALSE;
-	m_pStackingTasks		= NULL;
+	m_pStackingTasks		= nullptr;
 
 	m_bEnableDark			= TRUE;
 	m_bEnableFlat			= TRUE;
@@ -151,7 +151,7 @@ BOOL CStackSettings::OnInitDialog()
 			m_tabResult.SetResultMode(SM_INTERSECTION);
 		else if (dwMosaic==1)
 			m_tabResult.SetResultMode(SM_MOSAIC);
-		else 
+		else
 			m_tabResult.SetResultMode(SM_NORMAL);
 
 		m_tabResult.SetCustom(m_bEnableCustomRectangle, m_bUseCustomRectangle);
@@ -233,7 +233,7 @@ BOOL CStackSettings::OnInitDialog()
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkOptimization"), dwDarkOptimization);
 		m_tabDarkFrames.m_DarkOptimization.ShowWindow(SW_SHOW);
 		m_tabDarkFrames.m_DarkOptimization.SetCheck(dwDarkOptimization);
-		
+
 		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("UseDarkFactor"), dwDarkFactor);
 		m_tabDarkFrames.m_UseDarkFactor.ShowWindow(SW_SHOW);
 		m_tabDarkFrames.m_UseDarkFactor.SetCheck(dwDarkFactor);
@@ -339,7 +339,7 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 {
 	BOOL			bResult = FALSE;
 
-	if (NULL != pTab->m_SigmaClipping.GetSafeHwnd() &&
+	if (nullptr != pTab->m_SigmaClipping.GetSafeHwnd() &&
 		pTab->m_SigmaClipping.GetCheck())
 	{
 		CString		strKappa;
@@ -359,7 +359,7 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 	else
 		bResult = TRUE;
 
-	if (NULL != pTab->m_DarkFactor.GetSafeHwnd() && 
+	if (nullptr != pTab->m_DarkFactor.GetSafeHwnd() &&
 		pTab->m_DarkFactor.IsWindowVisible())
 	{
 		CString		strFactor;
@@ -388,13 +388,13 @@ void CStackSettings::UpdateControls()
 		if (m_bEnableCometStacking)
 		{
 			BOOL			bEnable;
-			
+
 			bEnable = !m_tabComet.m_AdvancedStacking.GetCheck();
 			m_tabLightFrames.m_Maximum.EnableWindow(bEnable);
 			m_tabLightFrames.m_EntropyAverage.EnableWindow(bEnable);
 
-			if (!bEnable && 
-				(m_tabLightFrames.m_Maximum.GetCheck() || 
+			if (!bEnable &&
+				(m_tabLightFrames.m_Maximum.GetCheck() ||
 				 m_tabLightFrames.m_EntropyAverage.GetCheck()))
 			{
 				// Revert to Median stacking
@@ -603,7 +603,7 @@ void CStackSettings::OnBnClickedChangetempfolder()
 {
 	CString					strFolder;
 	CString					strTitle;
-	
+
 	m_TempFolder.GetWindowText(strFolder);
 
 	CFolderDlg				dlg(FALSE, strFolder, this);

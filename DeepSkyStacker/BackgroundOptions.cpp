@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 // CBackgroundOptions dialog
 
 
-CBackgroundOptions::CBackgroundOptions(CWnd* pParent /*=NULL*/)
+CBackgroundOptions::CBackgroundOptions(CWnd* pParent /*=nullptr*/)
 	: CDialog(CBackgroundOptions::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CBackgroundOptions)
@@ -91,7 +91,7 @@ BOOL CBackgroundOptions::OnInitDialog()
 
 /* ------------------------------------------------------------------- */
 
-void CBackgroundOptions::OnOK() 
+void CBackgroundOptions::OnOK()
 {
 	CWorkspace			workspace;
 
@@ -109,10 +109,10 @@ void CBackgroundOptions::OnOK()
 			m_RGBCalibrationMethod = RBCM_MINIMUM;
 		else if (m_Middle.GetCheck())
 			m_RGBCalibrationMethod = RBCM_MIDDLE;
-		else 
+		else
 			m_RGBCalibrationMethod = RBCM_MAXIMUM;
 
-		
+
 		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("RGBBackgroundCalibrationMethod"), (DWORD)m_RGBCalibrationMethod);
 	}
 	else if (m_CalibrationMode == BCM_RGB)

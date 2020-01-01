@@ -25,7 +25,7 @@ BEGIN
 END
 
 
-IDD_OUTPUT DIALOGEX 0, 0, 308, 150
+IDD_OUTPUT DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ausgabe"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -345,7 +345,7 @@ BEGIN
     PUSHBUTTON      "Abbrechen",IDCANCEL,205,151,50,14
 END
 
-IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 308, 150
+IDD_STACKINGPARAMETERS DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -394,14 +394,14 @@ BEGIN
     PUSHBUTTON      "Einstellungen...",IDC_DEBLOOMSETTINGS,184,130,53,14,NOT WS_VISIBLE
 END
 
-IDD_STACKSETTINGS DIALOGEX 0, 0, 323, 228
+IDD_STACKSETTINGS DIALOGEX 0, 0, 380, 228
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stacking Parameter"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,266,207,50,14
     PUSHBUTTON      "Abbrechen",IDCANCEL,266,191,50,14
-    LTEXT           "Statik",IDC_TABRECT,7,7,309,165,SS_SUNKEN | NOT WS_VISIBLE
+    LTEXT           "Statik",IDC_TABRECT,7,7,366,165,SS_SUNKEN | NOT WS_VISIBLE
     LTEXT           "Temporärer Dateiordner:",IDC_STATIC,11,177,80,8
     PUSHBUTTON      "...",IDC_CHANGETEMPFOLDER,300,174,16,14
     LTEXT           "Statik",IDC_TEMPFOLDER,97,178,200,9,SS_PATHELLIPSIS
@@ -411,7 +411,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,198,153,10
 END
 
-IDD_RESULTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_RESULTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ergebnis"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -485,10 +485,10 @@ BEGIN
     LTEXT           "Blau-Scala",IDC_STATIC,15,53,34,8
     EDITTEXT        IDC_BLUESCALE,63,50,40,14,ES_RIGHT | ES_AUTOHSCROLL
     GROUPBOX        "Weißabgleich",IDC_STATIC,140,7,131,64
-    CONTROL         "Automatischen Weißabgleich verwenden",IDC_AUTOWB,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,22,113,16
+    CONTROL         "Keine Weißabgleichverarbeitung",IDC_NOWB,"Button",
+						BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,22,113,16
     CONTROL         "Weißabgleich der Kamera verwenden",IDC_CAMERAWB,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,44,115,17
+						BS_AUTOCHECKBOX | WS_TABSTOP | BS_MULTILINE,149,44,115,17
     CONTROL         "Bilineare Interpolation",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | 
                     WS_GROUP | WS_TABSTOP,15,91,83,10
     CONTROL         "Adaptive Homogeneity-Directed Interpolation (AHD)",IDC_AHD,
@@ -550,7 +550,7 @@ BEGIN
                     BS_MULTILINE,6,251,262,17
 END
 
-IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 308, 140
+IDD_ALIGNMENTSETTINGS DIALOGEX 0, 0, 365, 140
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Ausrichtung"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -590,7 +590,7 @@ BEGIN
                     WS_GROUP | WS_TABSTOP,7,67,70,10
 END
 
-IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 308, 150
+IDD_STACKINGINTERMEDIATE DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Zwischenbilder"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -655,7 +655,7 @@ BEGIN
                     WS_TABSTOP
 END
 
-IDD_STACKINGCOMET DIALOGEX 0, 0, 308, 150
+IDD_STACKINGCOMET DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Komet"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -717,7 +717,7 @@ BEGIN
                     164,10
 END
 
-IDD_POSTCALIBRATION DIALOGEX 0, 0, 308, 150
+IDD_POSTCALIBRATION DIALOGEX 0, 0, 365, 150
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Kosmetik"
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
@@ -1037,7 +1037,7 @@ BEGIN
     IDS_COLUMN_CFA          "CFA"
     IDS_COLUMN_DEPTH        "Tiefe"
     IDS_COLUMN_INFOS        "Infos"
-    IDS_COLUMN_ISO          "ISO"
+    IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Belichtung"
 	IDS_COLUMN_APERTURE		"Blende"
     IDS_COLUMN_STARS        "#Sterne"
@@ -1062,6 +1062,8 @@ BEGIN
     IDS_EXPOSUREFORMAT_INF  "1/%ld s"
     IDS_OR                  "oder"
     IDS_AND                 "und"
+    IDS_ISO                 "ISO"
+    IDS_GAIN                "Gain"
 END
 
 STRINGTABLE 
@@ -1082,7 +1084,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS oder DeepSkyStacker Image|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Bild Dateien|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|Windows Bitmaps (.bmp)|*.bmp|JPEG oder PNG Dateien|*.jpg;*.jpeg;*.png|TIFF Dateien (.tif)|*.tif;*.tiff|RAW Dateien|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia|FITS Dateien|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Bild Dateien|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG oder PNG Dateien|*.jpg;*.jpeg;*.png|TIFF Dateien (.tif)|*.tif;*.tiff|RAW Dateien|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Dateien|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "TIFF Bild (16 Bit/K)|*.TIF|TIFF Bild (32 Bit/K - integer)|*.TIF|TIFF Bild (32 Bit/K - rational)|*.TIF|FITS Bild (16 Bit/K)|*.FTS|FITS Bild (32 Bit/K - integer)|*.FTS|FITS Bild (32 Bit/K -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Datei Liste (*.txt)|*.txt|Datei Liste (*.dssfilelist)|*.dssfilelist|Alle Dateien|*.*||"
     IDS_FILTER_MASK         "TIFF Bild|*.tif;*.tiff|FITS Bild|*.fits;*.fts;*.fit||"
@@ -1286,15 +1288,16 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_RECAP_STEP          "Stacking Schritt %ld\n  ->%ld Bilder (ISO: %s) - Gesamtbelichtung: "
-    IDS_RECAP_OFFSET        "\t-> Offset: %ld Bilder (ISO: %s) Belichtungszeit: %s\n"
+    IDS_RECAP_STEP          "Stacking Schritt %ld\n  ->%ld Bilder (%s: %s) - Gesamtbelichtung: "
+    IDS_RECAP_OFFSET        "\t-> Offset: %ld Bilder (%s: %s) Belichtungszeit: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAchtung: ISO Wert passt nicht zum Lightframe\n"
+    IDS_RECAP_GAINWARNING   "\t\tAchtung: Gain stimmt nicht mit dem Gain des Lightframes überein\n"
     IDS_RECAP_NOOFFSET      "\t-> Kein Offset\n"
-    IDS_RECAP_DARK          "\t-> Dark: %ld Bilder (ISO : %s) Belichtungszeit: %s\n"
+    IDS_RECAP_DARK          "\t-> Dark: %ld Bilder (%s : %s) Belichtungszeit: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
                             "\t\tAchtung: Belichtungszeit passt nicht zum Lightframe\n"
     IDS_RECAP_NODARK        "\t-> Kein Dark\n"
-    IDS_RECAP_FLAT          "\t-> Flat: %ld Bilder (ISO: %s) Belichtungszeit: %s\n"
+    IDS_RECAP_FLAT          "\t-> Flat: %ld Bilder (%s: %s) Belichtungszeit: %s\n"
     IDS_RECAP_NOFLAT        "\t-> Kein Flat\n"
     IDS_RECAP_TOTALEXPOSURETIME 
                             "\nGeschätzte Gesamt-Belichtungszeit: %s\n(Bei der berechneten Gesamt-Belichtungszeit wird davon ausgegangen, dass alle abgehakten Lightframes für den Stacking-Prozess verwendet werden)\n"
@@ -1303,9 +1306,11 @@ BEGIN
     IDS_RECAP_BACKGROUNDCALIBRATION 
                             "RGB-Kanäle Hintergrund Kalibrierung: %s\n"
     IDS_RECAP_DARKOPTIMIZATION "Dark Optimierung: %s\n"
-    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld Bilder (ISO : %s) Belichtungszeit: %s\n"
+    IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld Bilder (%s : %s) Belichtungszeit: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAchtung: ISO Wert passt nicht zum Flatframe\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tAchtung: Gain des Dark Flats stimmt nicht mit dem Gain des Flats überein\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAchtung: Belichtungszeit passt nicht zum Flatframe\n"
 END

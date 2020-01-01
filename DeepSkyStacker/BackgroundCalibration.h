@@ -92,6 +92,10 @@ private :
 		m_liRed			= bc.m_liRed;
 		m_liBlue		= bc.m_liBlue;
 		m_liGreen		= bc.m_liGreen;
+
+        m_fTgtRedBk     = bc.m_fTgtRedBk;
+        m_fTgtGreenBk   = bc.m_fTgtGreenBk;
+        m_fTgtBlueBk    = bc.m_fTgtBlueBk;
 	};
 
 public :
@@ -124,8 +128,8 @@ public :
 		m_fMultiplier = fMultiplier;
 	};
 
-	void	SetMode(BACKGROUNDCALIBRATIONMODE BackgroundCalibrationMode, 
-					BACKGROUNDCALIBRATIONINTERPOLATION BackgroundInterpolation, 
+	void	SetMode(BACKGROUNDCALIBRATIONMODE BackgroundCalibrationMode,
+					BACKGROUNDCALIBRATIONINTERPOLATION BackgroundInterpolation,
 					RGBBACKGROUNDCALIBRATIONMETHOD RGBBackgroundMethod)
 	{
 		m_BackgroundCalibrationMode	= BackgroundCalibrationMode;
@@ -147,8 +151,8 @@ public :
 			fGreen = m_liGreen.Interpolate(fGreen);
 			fBlue = m_liBlue.Interpolate(fBlue);
 		};
-		/*ApplyCalibrationInternal(fRed,		m_fSrcRedBk,	m_fSrcRedMax);	
-		ApplyCalibrationInternal(fGreen,	m_fSrcGreenBk,	m_fSrcGreenMax);	
+		/*ApplyCalibrationInternal(fRed,		m_fSrcRedBk,	m_fSrcRedMax);
+		ApplyCalibrationInternal(fGreen,	m_fSrcGreenBk,	m_fSrcGreenMax);
 		ApplyCalibrationInternal(fBlue,		m_fSrcBlueBk,	m_fSrcBlueMax);	*/
 	};
 	void	ApplyCalibration(double & fRed, double & fGreen, double & fBlue)
@@ -166,8 +170,8 @@ public :
 			fBlue = m_liBlue.Interpolate(fBlue);
 		};
 
-		/*ApplyCalibrationInternal(fRed,		m_fSrcRedBk,	m_fSrcRedMax);	
-		ApplyCalibrationInternal(fGreen,	m_fSrcGreenBk,	m_fSrcGreenMax);	
+		/*ApplyCalibrationInternal(fRed,		m_fSrcRedBk,	m_fSrcRedMax);
+		ApplyCalibrationInternal(fGreen,	m_fSrcGreenBk,	m_fSrcGreenMax);
 		ApplyCalibrationInternal(fBlue,		m_fSrcBlueBk,	m_fSrcBlueMax);	*/
 	};
 };

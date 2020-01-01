@@ -1,40 +1,40 @@
 //------------------------------------------------------------------------------
 // ControlPos.cpp
-// 
-//	CControlPos 
-//	Position controls on a form's resize 
-// 
+//
+//	CControlPos
+//	Position controls on a form's resize
+//
 //		Copyright (c) 2000 Paul Wendt
-// 
+//
 //		VERSION#	DATE			NAME	DESCRIPTION OF CHANGE
 //		--------	----------	----	---------------------
 //		1.01  	07/11/2000	PRW	Original creation.
-// 
+//
 #include "StdAfx.h"
 #include "ControlPos.h"
 #include <vector>
 
 //------------------------------------------------------------------------------
 // CControlPos::CControlPos
-// 
-//	default constructor 
-// 
+//
+//	default constructor
+//
 //	Access: public
-// 
+//
 //	Args:
 //		CWnd* pParent				=	pointer to parent window
-// 
+//
 //	Return:
 //		none
-// 
-CControlPos::CControlPos(CWnd* pParent /* = NULL */)
+//
+CControlPos::CControlPos(CWnd* pParent /* = nullptr */)
 {
 	m_pParent = pParent;
 	UpdateParentSize();
 
 	m_nOldParentHeight = 0;
 	m_nOldParentWidth = 0;
-	
+
 	SetNegativeMoves(FALSE);
 
 	ResetControls();
@@ -42,17 +42,17 @@ CControlPos::CControlPos(CWnd* pParent /* = NULL */)
 
 //------------------------------------------------------------------------------
 // CControlPos::~CControlPos
-// 
-//	default destructor -- It deletes all controls. 
-// 
+//
+//	default destructor -- It deletes all controls.
+//
 //	Access: public
-// 
+//
 //	Args:
 //		none
-// 
+//
 //	Return:
 //		none
-// 
+//
 CControlPos::~CControlPos()
 {
 	ResetControls();
@@ -60,18 +60,18 @@ CControlPos::~CControlPos()
 
 //------------------------------------------------------------------------------
 // CControlPos::SetParent
-// 
-//	This sets the parent window. It should be called from a CWnd's 
-//    post-constructor function, like OnInitdialog or InitialUpdate. 
-// 
+//
+//	This sets the parent window. It should be called from a CWnd's
+//    post-constructor function, like OnInitdialog or InitialUpdate.
+//
 //	Access: public
-// 
+//
 //	Args:
 //		CWnd* pParent	=	parent window
-// 
+//
 //	Return:
 //		none
-// 
+//
 void CControlPos::SetParent(CWnd* pParent)
 {
 	CRect rcParentOriginalSize;
@@ -87,19 +87,19 @@ void CControlPos::SetParent(CWnd* pParent)
 
 //------------------------------------------------------------------------------
 // CControlPos::AddControl
-// 
-//	This adds a control to the internal list of controls in CControlPos.  
-// 
+//
+//	This adds a control to the internal list of controls in CControlPos.
+//
 //	Access: public
-// 
+//
 //	Args:
 //		CWnd* pControl				=	pointer to the control to be added
 //		const DWORD& dwStyle		=  how the window should be moved -- see #define's
 //                               in the header file
-// 
+//
 //	Return:
 //		BOOL 	=	TRUE if the control was added successfully, FALSE otherwise
-// 
+//
 BOOL CControlPos::AddControl(CWnd* pControl, const DWORD& dwStyle /* = CP_MOVE_HORIZONTAL */)
 {
 	BOOL fReturnValue = TRUE;
@@ -121,19 +121,19 @@ BOOL CControlPos::AddControl(CWnd* pControl, const DWORD& dwStyle /* = CP_MOVE_H
 
 //------------------------------------------------------------------------------
 // CControlPos::AddControl
-// 
-//	This adds a control the internal list of controls in CControlPos. 
-// 
+//
+//	This adds a control the internal list of controls in CControlPos.
+//
 //	Access: public
-// 
+//
 //	Args:
 //		const UINT& unId			=	ID of the control to add
 //		const DWORD& dwStyle		=	how the window should be moved -- see #define's
 //                               in the header file
-// 
+//
 //	Return:
 //		BOOL 	=	TRUE if the control was added successfully, FALSE otherwise
-// 
+//
 BOOL CControlPos::AddControl(const UINT& unId, const DWORD& dwStyle /* = CP_MOVE_HORIZONTAL */)
 {
 	CWnd* pControl;
@@ -151,19 +151,19 @@ BOOL CControlPos::AddControl(const UINT& unId, const DWORD& dwStyle /* = CP_MOVE
 
 //------------------------------------------------------------------------------
 // CControlPos::RemoveControl
-// 
-//	If a client ever wants to remove a control programmatically, this 
-//    function will do it. 
-// 
+//
+//	If a client ever wants to remove a control programmatically, this
+//    function will do it.
+//
 //	Access: public
-// 
+//
 //	Args:
-//		CWnd* pControl	=	pointer of the window who should be removed from 
+//		CWnd* pControl	=	pointer of the window who should be removed from
 //								the internal control list [ie: will not be repositioned]
-// 
+//
 //	Return:
 //		BOOL 	=	TRUE if the control was found [and deleted], FALSE otherwise
-// 
+//
 BOOL CControlPos::RemoveControl(CWnd* pControl)
 {
 	BOOL fReturnValue = FALSE;
@@ -171,7 +171,7 @@ BOOL CControlPos::RemoveControl(CWnd* pControl)
 	for (int i = 0; i < m_awndControls.GetSize(); i++)
 	{
 		LPCONTROLDATA pstControl = ((LPCONTROLDATA)m_awndControls.GetAt(i));
-		
+
 		if (pstControl->hControl == pControl->GetSafeHwnd())
 		{
 			m_awndControls.RemoveAt(i);
@@ -186,19 +186,19 @@ BOOL CControlPos::RemoveControl(CWnd* pControl)
 
 //------------------------------------------------------------------------------
 // CControlPos::RemoveControl
-// 
-//	If a client ever wants to remove a control programmatically, this 
-//    function will do it. 
-// 
+//
+//	If a client ever wants to remove a control programmatically, this
+//    function will do it.
+//
 //	Access: public
-// 
+//
 //	Args:
 //		const UINT& unId  =  ID of the control that should be removed from the
 //                         internal control list [ie: will not be repositioned]
-// 
+//
 //	Return:
 //		BOOL 	=	TRUE if the control was found [and deleted], FALSE otherwise
-// 
+//
 BOOL CControlPos::RemoveControl(const UINT& unId)
 {
 	CWnd* pControl;
@@ -216,17 +216,17 @@ BOOL CControlPos::RemoveControl(const UINT& unId)
 
 //------------------------------------------------------------------------------
 // CControlPos::ResetControls
-// 
-//	This function removes all controls from the CControlPos object 
-// 
+//
+//	This function removes all controls from the CControlPos object
+//
 //	Access: public
-// 
+//
 //	Args:
 //		none
-// 
+//
 //	Return:
 //		none
-// 
+//
 void CControlPos::ResetControls(void)
 {
 	while (m_awndControls.GetSize() > 0)
@@ -243,19 +243,19 @@ void CControlPos::ResetControls(void)
 
 //------------------------------------------------------------------------------
 // CControlPos::MoveControls
-// 
-//	This function takes care of moving all controls that have been added to 
-//    the object [see AddControl].  This function should be called from the 
-//    WM_SIZE handler-function [typically OnSize]. 
-// 
+//
+//	This function takes care of moving all controls that have been added to
+//    the object [see AddControl].  This function should be called from the
+//    WM_SIZE handler-function [typically OnSize].
+//
 //	Access: public
-// 
+//
 //	Args:
 //		none
-// 
+//
 //	Return:
 //		none
-// 
+//
 void CControlPos::MoveControls(void)
 {
 	if (m_pParent)
@@ -452,21 +452,21 @@ void CControlPos::MoveControls(void)
 
 //------------------------------------------------------------------------------
 // CControlPos::SetNegativeMoves
-// 
-//	This sets the NegativeMoves boolean parameter of the object. When the 
-//    parent window becomes smaller than it started, setting this to FALSE 
-//    will not allow controls to be moved; the parent size may change, but 
-//    it'll just force the controls to go off of the 
+//
+//	This sets the NegativeMoves boolean parameter of the object. When the
+//    parent window becomes smaller than it started, setting this to FALSE
+//    will not allow controls to be moved; the parent size may change, but
+//    it'll just force the controls to go off of the
 //    This parameter defaults to FALSE on object creation.
-// 
+//
 //	Access: public
-// 
+//
 //	Args:
 //		const BOOL& fNegativeMoves /* = TRUE */	=	value to set
-// 
+//
 //	Return:
 //		none
-// 
+//
 void CControlPos::SetNegativeMoves(const BOOL& fNegativeMoves /* = TRUE */)
 {
 	m_fNegativeMoves = fNegativeMoves;
@@ -474,17 +474,17 @@ void CControlPos::SetNegativeMoves(const BOOL& fNegativeMoves /* = TRUE */)
 
 //------------------------------------------------------------------------------
 // CControlPos::GetNegativeMoves
-// 
-//	This function returns whether or not negative moves are enabled. 
-// 
+//
+//	This function returns whether or not negative moves are enabled.
+//
 //	Access: public
-// 
+//
 //	Args:
 //		none
-// 
+//
 //	Return:
 //		BOOL 	=	TRUE if negative moves are enabled, FALSE otherwise
-// 
+//
 BOOL CControlPos::GetNegativeMoves(void) const
 {
 	return (m_fNegativeMoves);
@@ -492,19 +492,19 @@ BOOL CControlPos::GetNegativeMoves(void) const
 
 //------------------------------------------------------------------------------
 // CControlPos::UpdateParentSize
-// 
-//	Since CControlPos keeps track of the parent's size, it gets updated 
-//    every time it tells us to size the controls. We keep track so we know 
-//    how much it changed from the last WM_SIZE message. 
-// 
+//
+//	Since CControlPos keeps track of the parent's size, it gets updated
+//    every time it tells us to size the controls. We keep track so we know
+//    how much it changed from the last WM_SIZE message.
+//
 //	Access: protected
-// 
+//
 //	Args:
 //		none
-// 
+//
 //	Return:
 //		none
-// 
+//
 void CControlPos::UpdateParentSize(void)
 {
 	if (m_pParent)

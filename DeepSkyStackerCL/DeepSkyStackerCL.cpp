@@ -36,7 +36,7 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 
 	for (i = 1;i<argc;i++)
 	{
-		vCommandLine.push_back(CString(argv[i]));
+		vCommandLine.emplace_back(argv[i]);
 	};
 
 	// At least 2 arguments (registering and/or stacking + filename)
@@ -184,7 +184,7 @@ void ComputeStacks(CFrameList & FrameList, CAllStackingTasks & tasks)
 				TCHAR			szDrive[_MAX_DRIVE];
 				TCHAR			szDir[_MAX_DIR];
 
-				_tsplitpath(strPath, szDrive, szDir, NULL, NULL);
+				_tsplitpath(strPath, szDrive, szDir, nullptr, nullptr);
 				strPath = szDrive;
 				strPath += szDir;
 				if (g_bFITSOutput)
@@ -230,7 +230,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				break;
 			};
 
-			WriteFITS(g_strOutputFile, pBitmap, &progress, fitsformat);
+			WriteFITS(g_strOutputFile, pBitmap, &progress, fitsformat, nullptr);
 		}
 		else
 		{
@@ -250,7 +250,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				};
 			};
 
-			WriteTIFF(g_strOutputFile, pBitmap, &progress, g_TIFFFormat, g_TIFFCompression);
+			WriteTIFF(g_strOutputFile, pBitmap, &progress, g_TIFFFormat, g_TIFFCompression, nullptr);
 		};
 	};
 };
@@ -259,7 +259,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	OleInitialize(NULL);
+	OleInitialize(nullptr);
 
 	SetUILanguage();
 
@@ -268,7 +268,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	GdiplusStartupOutput	gdiSO;
 	ULONG_PTR				gdiplusToken;
 	ULONG_PTR				gdiHookToken;
-  
+
 	// Initialize GDI+.
 	gdiplusStartupInput.SuppressBackgroundThread = TRUE;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
@@ -278,7 +278,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	std::vector<CString>	vCommandLine;
 
 	_tprintf(_T("DeepSkyStacker %s Command Line\n\n"), _T(VERSION_DEEPSKYSTACKER));
-	
+
 	// Decode command line
 	if (!DecodeCommandLine(argc, argv))
 	{

@@ -70,7 +70,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CLuminanceTab message handlers
 
-BOOL CLuminanceTab::OnSetActive() 
+BOOL CLuminanceTab::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
@@ -132,7 +132,7 @@ void CLuminanceTab::UpdateTexts()
 
 /* ------------------------------------------------------------------- */
 
-void CLuminanceTab::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CLuminanceTab::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	GetParentProcessingDlg(this)->OnHScroll(nSBCode, nPos, pScrollBar);
 	UpdateTexts();
@@ -141,35 +141,35 @@ void CLuminanceTab::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 /* ------------------------------------------------------------------- */
 
-void CLuminanceTab::OnProcess() 
+void CLuminanceTab::OnProcess()
 {
 	GetParentProcessingDlg(this)->OnProcess();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CLuminanceTab::OnRedo() 
+void CLuminanceTab::OnRedo()
 {
 	GetParentProcessingDlg(this)->OnRedo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CLuminanceTab::OnUndo() 
+void CLuminanceTab::OnUndo()
 {
 	GetParentProcessingDlg(this)->OnUndo();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CLuminanceTab::OnReset() 
+void CLuminanceTab::OnReset()
 {
 	GetParentProcessingDlg(this)->OnReset();
 }
 
 /* ------------------------------------------------------------------- */
 
-void CLuminanceTab::OnSettings() 
+void CLuminanceTab::OnSettings()
 {
 	GetParentProcessingDlg(this)->OnSettings();
 }

@@ -1,4 +1,4 @@
-/* 
+/*
   Copyright 2008-2013 LibRaw LLC (info@libraw.org)
 
 LibRaw is free software; you can redistribute it and/or modify

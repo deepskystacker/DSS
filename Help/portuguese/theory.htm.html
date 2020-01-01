@@ -1,0 +1,298 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Teoria ou Como criar imagens melhores</title>
+<style>
+<!--
+.Standard    { text-align: justify; margin-left: 5; margin-right: 10 }
+-->
+</style>
+</head>
+
+<body>
+
+<p><b><font face="Arial" size="5">Conceito Teórico<br>
+</font><font face="Arial" size="4">Como criar imagens melhores</font></b></p>
+<blockquote>
+  <p>
+  <b>
+  <font face="Arial"><a href="#WhyCombine">Porque integrar?</a><br>
+  <a href="#CombineHowMany">Quantas fotografias são necessárias?</a><br>
+  <a href="#Calibration">Calibração: como usar as fotografias do tipo Dark, Bias/Offset e Flat</a></font></b><br>
+  <b><font face="Arial"><a href="#ISOSpeed">Qual a sensibilidadede ISO usar?</a></font></b><br>
+  <b><font face="Arial"><a href="#CalibrationProcess">O Processo de Calibração</a></font></b></p>
+</blockquote>
+<hr color="#0000ff">
+<p class="Standard"><font face="Arial">Abaixo você encontrará informações
+importantes, mas de qualquer forma nada vai substituir a experiência pessoal.<br>
+Alguns especialistas decidiram criar sites e/ou revistas dedicados a astrofotografia
+e que estão cheias de preciosismos, e em muitos casos de conhecimentos muito avançados.</font></p>
+<p class="Standard"><font face="Arial">Alguns dos tópicos são compreensíveis como sejam o
+ruído nas imagens, Drizzle, Guiagem, etc...</font></p>
+<a target="_blank" href="http://www.skyinsight.net/astrophoto/current.php">	
+<img src = "http://www.skyinsight.net//images/banner2.jpg" width="300" height="147" style="HEIGHT: 155px; WIDTH: 458px" alt=""></a>
+<p><font face="Arial">Nota: não estou a escrever estes tópicos para nenhuma publicação
+que voce possa a encontrar.<br>
+Estou apenas apresentando este meu programa que é bom, gratuito e muito
+completo em informação útil.</font></p>
+<hr color="#0000ff">
+<p align="justify"><font face="Arial"><b><font size="4" color="#FF0000"><a name="WhyCombine">
+</a></font><font color="#ff0000" size="4">Porque Integrar?</font><font size="2"><br>
+A resposta é simples: para aumentar a razão Sinal/Ruído (SNR) na imagem astronômica final.</font><br>
+</b><font size="2">A imagem final resultante é mais luminosa? Não.<br>
+O resultado da imagem final é mais colorida? Não.<br>
+<br>
+O segredo está em integrar muitas fotografias numa única fotografia para aumentar o nível da informação ou razão Sinal/Ruído (SNR).
+o resultado não será nem mais luminoso nem mais colorido mas contém
+menos ruido o que permitira intensificar o histograma para melhorar a definição,
+evidenciando os pequenos detalhes e as cores RGB.</font></font></p>
+<table id="AutoNumber1" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p style="margin-right: 10px" class="Standard"><font face="Arial" size="2">O exemplo do lado direito
+    mostra o resultado de uma integração de 1, 2, 4, 16 e 32 fotografias.<br>
+    <br>
+    Não foi feita a calibração e alguns pixels quentes são visíveis em alguns casos (sem a subtração das imagens 
+    Dark e Bias/Offset, assim como, sem divisão pelo Flat Frame).<br>
+    <br>
+    Passe o mouse por cima da foto e veja o resultado da integração de &nbsp; <br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_1.jpg';;document.getElementById('LEGEND01').innerHTML='One Light Frame';" href="javascript:void(0);">
+    1 imagem</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_2.jpg';document.getElementById('LEGEND01').innerHTML='Stack of 2 light frames';" href="javascript:void(0);">
+    2 imagens</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_4.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 4 light frames';" href="javascript:void(0);">
+    4 imagens</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_16.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 16 light frames';" href="javascript:void(0);">
+    16 imagens</a></b><br>
+    <b>&nbsp;&nbsp;
+    <a onmouseover="document['STACKRESULT01'].src='../images/Theory/Stack_32.jpg';;document.getElementById('LEGEND01').innerHTML='Stack of 32 light frames';" href="javascript:void(0);">
+    32 imagens</a></b></font></p>
+    <p class="Standard"><font face="Arial" size="2">Como se pode ver a fotografia resultante não mostra
+    aumento da luminosidade ou aumento da coloração quando se incrementa o número de imagens astronomicas integradas do objeto astronômico, o que
+    aumenta SIM é a suavidade, a imagem fica mais enevoada.</font></p>
+    <p>&nbsp;</td>
+    <td width="62%">
+    <p align="center">
+    <img id="STACKRESULT01" src="../images/Theory/Stack_2.jpg" border="0" name="STACKRESULT01" width="591" height="591"><br>
+    <font face="Arial" size="2"><b id="LEGEND01" name="LEGEND01">
+    Apenas uma fotografia</b></font></td>
+  </tr>
+</table>
+<hr color="#0000ff">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000"><a name="CombineHowMany"></a>
+Quantas fotografias são necessárias</font></b><font face="Arial"><b><font color="#ff0000" size="4">?</font><font size="2"><br>
+Quanto mais melhor, mas acima de um certo valor será menos eficiente.</font><br>
+</b><font size="2">A razão de Sinal/Ruído aumenta com a raiz quadrada
+do número de fotografias integradas, independente do tempo de exposição de cada fotografia.<br>
+Isto é verdadeiro para todos os métodos de integração (seja o método de média, mediana, Kappa-Sigma
+, média ponderal auto adaptiva , ...) exceto o do método da média ponderal da entropia uma vez que emprega a proporção da entropia de cada pixel
+e assim incrementando o sinal de ruído que é a grande fonte da entropia.</font></font><font face="Arial" size="2">.</font></p>
+<p align="justify"><font face="Arial" size="2">Isto significa que tendo uma base SNR de 1, quando
+integramos 10 fotografias o SNR aumenta para 3.16 (raiz quadrada de 10). Para 30 imagens temos SNR de
+5.47, para 50 imagens temos SNR de 7.07, para 100 imagens temos SNR de 10 e para 300 imagens
+temos SNR de 17.32.</font></p>
+<p align="justify"><font face="Arial" size="2">Como você pode ver, para elevar o ganho de SNR para 7 são necessárias 50 fotografias (isto é de 1 a 50), no entanto para ter o mesmo ganho de SNR da ordem de 7 
+a partir de 100 fotografias, são necessárias mais 200 fotografias (isto é de 100 para 300).</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Os conjuntos de 100 fotografias x 1 minuto de exposição e
+10 fotografias x 10 minutos oferecem o mesmo resultado?</b><br>
+Teoricamente Sim, tomando em consideração apenas o SNR, mas na prática definitivamente NÃO, face ao resultado final, considerando o tempo de exposição.<br>
+A diferença entre 10 minutos de exposicao e 1 minuto de exposição está em que o
+SNR em 10 minutos de exposição é maior que o 3.16 relativamente a 1 minuto de exposição.</font></p>
+<p align="justify"><font face="Arial" size="2">Será obtido o mesmo SNR se integrarmos 10
+fotografias de 10 minutes ou 100 fotografias de 1 minuto. No entanto, o sinal capturado pelo chip
+será diferente (a parte interessante). De forma simples, você só vai obter sinal se o tempo de exposição for suficientemente longo 
+para capturar os fótons do objeto astronômico na mesma posição na maioria de suas imagens, de forma que esse sinal (fótons) não sejam considerados como ruído.</font></p>
+<p align="justify"><font face="Arial" size="2">Por exemplo, no caso de uma nebulosa longínqua e fraca, você pode capturar  
+fótons em cada 10 minutos. Se usar 10 minutos de exposição, terá capturado
+fótons para cada uma das fotografias que quando integradas resultará no sinal ampliado. <br>
+Se estiver usando apenas 1 minuto de exposição para a captura dos fótons, em apenas algumas
+fotografias esse sinal estará presente, quando integradas será considerado como ruído, visto esse sinal não estar presente em todas as fotografias do objeto astronômico.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Posso integrar duas ou mais fotografias finais?<br>
+</b>Afirmativo, a regra do quadrado aplica-se também para pequenas integrações.<br>
+<br>
+Quando integramos duas fotografias o SNR aumenta pra  1.414 (raiz quadrada de 2).<br>
+Se as duas fotografias tiverem o mesmo SNR, então é o mesmo que ter uma simples integração.
+Isto não quer dizer que essa integração resulta na mesma imagem final, apenas que o
+SNR se manteve o mesmo.<br>
+<br>
+No entanto, se uma integração contiver mais fotografias que a outra, o SNR final das
+duas integrações será diferente e o SNR será mais baixo do que uma simples integração contendo todas as fotografias.<br>
+<br>
+Assim ao combinar o resultado de integração de um conjunto de fotografias de 10 X 1 minuto com uma simples fotografia de 1 minuto, 
+a relação Sinal/Ruído - SNR resultante vai ser aproximadamente a mesma obtida pela combinação de 2 fotografias. 
+Isso é devido ao fato de que quando combinamos (integramos) duas imagens o ruído é aditivo e a melhor imagem é danificada pela pior imagem no processo.
+</font></p>
+<hr color="#0000ff" SIZE="1">
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000"><a name="Calibration"></a></font><font face="Arial" color="#ff0000" size="4">Calibração:
+como usar as fotografias de ruido térmico - Dark, artefatos - Bias/Offset e campo pleno iluminado - Flat<br>
+</font></b><font face="Arial" size="2">A calibração é um processo de tratamento das imagens astronômicas (Light Frames) em que consiste
+na subtração dos artefatos via as imagens de Bias/Offset e o sinal de ruído térmico via Darks, dividindo pela imagem Flat (para corrigir os defeitos do sistema ótico).<br>
+Não explicarei aqui como se faz as fotografias de Dark, Bias/Offset e Flat ( veja
+<a href="faq.htm#lightdarkflatoffset">aqui</a>) mas ensinar como
+fazer uso delas para obter as melhores imagens possíveis.</font></p>
+<p align="justify"><font face="Arial" size="2"><b>Uma boa idéia</b><br>
+Todos dizem que temos que tirar fotografias tipo Dark, Bias/Offsets e Flats para criar
+boas imagens, mas se o fizermos da forma errada, facilmente essas imagens de calibração irão danificar
+as boas fotografias dos objetos astronômicos e você terminará obtendo resultado final muito desapontador.</font></p>
+<p align="justify"><font face="Arial" size="2">A boa novidade e que e fácil obter
+bons resultados. Aqui se encontram as respostas de porquê e as formas de como fazer.<br>
+<br>
+<b>Os equívocos mais comuns</b><br>
+Um equívoco comum é pensar que o número de fotografias tipo Dark, Bias/Offset e Flat
+está relacionada com o número de fotografias do objeto astronômico (Light Frames).<br>
+Muitos usam poucas (algumas vezes somente uma) fotografias tipo Dark, Bias/Offset e Flat
+enquanto poderiam obter resultados muito melhores usando um grande número das imagens de Dark,
+Bias/Offset e Flat com o mesmo número de fotografias do objeto astronômico (Light Frames).<br>
+<br>
+Seguindo a regra da raiz quadrada para o número de imagens você vai obter dos "masters" mais limpos e perfeitos, usando
+um grande numero dessas fotografias. Lembre-se que com o Dark está buscando eliminar o ruído térmico 
+e via a Bias/Offset os artefatos do chip, e não ao ruído inerente do processo de captura de fótons nas fotografias. <br>
+<br>
+Por exemplo: quando se subtrai o Master Dark de cada fotografia também está se adicionando o ruído existente na Master Dark 
+à fotografia em causa. Quanto menor o ruído da imagem Master dark, menor o ruído você estará adicionando à Light Frame. 
+Isto também é verdadeiro para os Masters de Bias/Offset e Flat.<br>
+<br>
+De fato, por usar apenas um número muito pequeno de imagens para a criação dos Masters, você está facilmente triplicando o ruído 
+das imagens astronomômicas (Light Frames) calibradas (após subtração das imagens de Bias/Offset), comparado ao ruído existente nas
+Light Frames antes da calibração.</font></p>
+<p align="justify"><font face="Arial" size="2">Será necessário 9 vezes mais (3 x 3) imagens astronômicas 
+para trazer o nível do ruído para os mesmo valores, caso estivesse empregando "Masters" com livres de nível de ruído.</font></p>
+<table id="AutoNumber2" cellSpacing="1" width="100%" border="0">
+  <tr>
+    <td vAlign="top" width="38%">
+    <p class="Standard"><font face="Arial" size="2">O exemplo da imagem do lado direito mostra
+    o resultado da integração de (passe com o mouse por cima da imagem)<br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/NoCalibration.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (no calibration)';" href="javascript:void(0);">
+    32 fotografias (sem calibração)</a><br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration2.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (2 darks, 2 flats and 2 biases calibration)';" href="javascript:void(0);">
+    32 fotografias (2 Darks, 2 Bias/Offset e 2 Flats - todos  calibrados)</a><br>
+    <br>
+    <a onmouseover="document['STACKRESULT02'].src='../images/Theory/Calibration20.jpg';;document.getElementById('LEGEND02').innerHTML='Stack of 32 light frames (20 darks, 20 flats and 20 biases calibration)';" href="javascript:void(0);">
+    32 fotografiase (20 Darks, 20 Bias/Offsets e  20 Flats - todos calibrados)</a><br>
+    <br>
+    Como pode constatar o aumento do número de fotografias tipo Dark, Bias/Offsets e Flats
+    modifica a imagem resultante, tornando os detalhes mais visíveis.</font></td>
+    <td width="50%">
+    <p align="center">
+    <img id="STACKRESULT02" src="../images/Theory/Calibration20.jpg" border="0" name="STACKRESULT02" width="591" height="591"><br>
+    <font face="Arial" size="2"><b id="LEGEND02" name="LEGEND02">Integração de 32 fotografias (sem calibração)</b></font></td>
+  </tr>
+</table>
+<p align="justify"><font face="Arial" size="2">esta é a razão pela qual você deve usar o maior
+número possível de Darks/ Bias/Offsets /Flats. Na prática 20 fotografias é o valor mínimo se não quiser adicionar muito ruído,
+mas ficará muito melhor, com 50 a 100 fotografias que integradas resultarão em "Masters" (quase) sem ruídos.<br>
+<br>
+<b>Nota sobre os Pixels Quentes</b><br>
+Pixels quentes, são aqueles pixels que tiveram um comportamento anormal em relação aos pixels da imagem. Possuem um sinal muito
+forte de tal maneira que conseguem ser sobressair e serem visiveis em cada uma das fotografias astronômicas e Darks.<br>
+<br>
+Naturalmente, quando se subtrai uma imagem Dark de uma fotografia astronômica você estará removendo os pixels quentes
+o que pode dar a falsa impressão que a imagem Dark cumpriu o seu trabalho ... mas
+não é bem assim. <br>
+Ao mesmo tempo que se subtrai os pixels quentes / ruído térmico, adiciona e duplica o ruído da imagem resultante (calibrada),
+arruinando-a totalmente.<font></p>
+
+<hr color="#0000ff" SIZE="1">
+
+<p align="justify"><font face="Arial" size="2"><a name="ISOSpeed"></a></font>
+<font face="Arial" color="#FF0000" size="4"><b>Que sensibilidade ISO usar?<br>
+</b></font><font face="Arial" size="2">Uma pergunta bastante frequente e a resposta
+é simples: não tem importância...escolha você.<br>
+<br>
+De fato a sensibilidade ISO é apenas um ajuste de qualquer câmera DSLR, mas uma vez que o chip detector é o mesmo 
+(você não altera o chip quando muda o ajuste de sensibilidade ISO, não é mesmo?) os resultados são os mesmos.<br>
+Não é porquê você esta usando um valor de sensibilidade ISO mais elevada que você adquire mais fótons, 
+é apenas o sinal eletrônico que está sendo amplificado (com ruído e tudo mais).</font></p>
+<p align="justify"><font face="Arial" size="2">A boa novidade é que você não necessita
+ alterar a sensibilidade ISO para capturar objetos de céu profundo,longinquos e esmaecidos. 
+Necessita apenas fazer fotografias do objeto astronômico com
+longas exposições.<br>
+<br>
+Naturalmente isto é um pouco mais complicado, uma vez que existe uma boa sensibilidade ISO para cada modelo de câmera DSLR.<br>
+Depende das características de cada chip detector (cuja eletrônica determina o nível de ruído de leitura e ruído térmico)
+e isso não é tão simples de calcular ou obter.<br>
+Christian Buil determinou alguns bons valores para algumas câmeras DSLR da Canon:</font></p>
+<table border="1" cellspacing="1" width="43%" id="AutoNumber3">
+  <tr>
+    <td width="35%"><b><font face="Arial" size="2">DSLR</font></b></td>
+    <td width="65%"><b><font face="Arial" size="2">Recomendado (Ótimo) Sensibilidade ISO</font></b></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 10D&nbsp;&nbsp;&nbsp;
+    </font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">400&nbsp;&nbsp;&nbsp; 
+    (290)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 20D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1000)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 350D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">800&nbsp;&nbsp;&nbsp; 
+    (900)</font></td>
+  </tr>
+  <tr>
+    <td width="35%"><font face="Arial" size="2">Canon EOS 5D</font></td>
+    <td width="65%" align="right"><font face="Arial" size="2">1000&nbsp; (1100)</font></td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+
+<hr color="#0000ff" SIZE="1">
+
+<p align="justify"><b><font face="Arial" size="4" color="#FF0000">
+<a name="CalibrationProcess"></a>O Processo de Calibração</font></b><font face="Arial" color="#FF0000" size="4"><b><br>
+</b></font><font face="Arial" size="2">O processo de calibração é como cada um dos conjuntos de arquivos (fotografias
+de imagens tipo, Darks, Bias/Offsets, Flats,...)&nbsp; são utilizados, frequentemente é percebido como um mistério,
+mas que na realidade é um processo bastante simples.<br>
+<br>
+Abaixo é apresentado um gráfico que mostra o processo de calibração total, quando todos os arquivos estão disponíveis :</font></p>
+
+<p align="left"><font face="Arial" size="4"><b>O Processo de Calibração total (todos
+os arquivos disponíveis)</b></font><font face="Arial" size="2"><br>
+<br>
+<img border="0" src="../images/portuguese/Calibration_Full.jpg" width="918" height="456"></font></p>
+
+<p align="justify"><font face="Arial" size="2"><br>
+No entanto é comum e perfeitamente possível, não usar arquivos de calibração tipo Dark Flat. O gráfico do processo de calibração nesse caso segue abaixo :</font></p>
+
+<p align="justify"><font face="Arial" size="4"><b>Processo de calibração alternativo
+I (sem uso de Dark Flat Frames)</b></font><font face="Arial" size="2"><br>
+<br>
+<img border="0" src="../images/portuguese/Calibration_Alternate1.jpg" width="918" height="454"></font></p>
+
+<p align="justify"><font face="Arial" size="2">Por outro lado, se estás usando Dark Flat Frames é possível fazer a calibração sem o Bias/Offset.
+Veja o gráfico em baixo:</font></p>
+
+<p align="justify"><font face="Arial" size="4"><b>Processo de calibração alternativo
+II (sem o Bias/Offset Frames)</b></font><font face="Arial" size="2"><br>
+<br>
+<img border="0" src="../images/portuguese/Calibration_Alternate2.jpg" width="918" height="454"></font></p>
+
+<p align="justify"><font face="Arial" size="2">Qualquer outra combinação de imagens para fazer a calibração
+é considerado inadequada. Só existem estas 3 possibilidades.</font></p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-7477345-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

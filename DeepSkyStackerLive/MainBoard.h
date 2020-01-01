@@ -17,7 +17,7 @@ class CMainBoard : public CDialog
 	DECLARE_DYNAMIC(CMainBoard)
 
 public:
-	CMainBoard(CWnd* pParent = NULL);   // standard constructor
+	CMainBoard(CWnd* pParent = nullptr, bool bDarkMode = false);   // standard constructor
 	virtual ~CMainBoard();
 
 	//void	CallHelp();
@@ -95,6 +95,8 @@ private :
 	LONG					m_lNrEmails;
 
 	CLiveSettings			m_LiveSettings;
+
+	bool m_bDarkMode;
 
 private :
 	BOOL	IsMonitoredFolderOk();

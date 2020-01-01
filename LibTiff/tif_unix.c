@@ -55,9 +55,7 @@
 
 #include "tiffiop.h"
 
-
-#define TIFF_IO_MAX 2147483647U
-
+#define TIFF_IO_MAX 16777216UL
 
 typedef union fd_as_handle_union
 {
@@ -77,19 +75,25 @@ _tiffReadProc(thandle_t fd, void* buf, tmsize_t size)
 		errno=EINVAL;
 		return (tmsize_t) -1;
 	}
+
+	const unsigned long limit = TIFF_IO_MAX;
+
 	fdh.h = fd;
         for (bytes_read=0; bytes_read < bytes_total; bytes_read+=count)
         {
                 char *buf_offset = (char *) buf+bytes_read;
                 size_t io_size = bytes_total-bytes_read;
-                if (io_size > TIFF_IO_MAX)
-                        io_size = TIFF_IO_MAX;
+                if (io_size > limit)
+                        io_size = limit;
                 count=read(fdh.fd, buf_offset, (TIFFIOSize_t) io_size);
                 if (count <= 0)
                         break;
         }
-        if (count < 0)
-                return (tmsize_t)-1;
+		if (count < 0)
+		{
+			fprintf(stderr, "read() failed with errno %d\n", *_errno());
+			return (tmsize_t)-1;
+		}
         return (tmsize_t) bytes_read;
 }
 
@@ -105,19 +109,25 @@ _tiffWriteProc(thandle_t fd, void* buf, tmsize_t size)
 		errno=EINVAL;
 		return (tmsize_t) -1;
 	}
+
+	const unsigned long limit = TIFF_IO_MAX;
+
 	fdh.h = fd;
         for (bytes_written=0; bytes_written < bytes_total; bytes_written+=count)
         {
                 const char *buf_offset = (char *) buf+bytes_written;
                 size_t io_size = bytes_total-bytes_written;
-                if (io_size > TIFF_IO_MAX)
-                        io_size = TIFF_IO_MAX;
+                if (io_size > limit)
+                        io_size = limit;
                 count=write(fdh.fd, buf_offset, (TIFFIOSize_t) io_size);
                 if (count <= 0)
                         break;
         }
-        if (count < 0)
-                return (tmsize_t)-1;
+		if (count < 0)
+		{
+			fprintf(stderr, "write() failed with errno %d\n", *_errno());
+			return (tmsize_t)-1;
+		}
         return (tmsize_t) bytes_written;
 	/* return ((tmsize_t) write(fdh.fd, buf, bytes_total)); */
 }

@@ -18,11 +18,13 @@ using namespace Gdiplus;
 
 IMPLEMENT_DYNAMIC(CExplorerBar, CScrollDialog)
 
-CExplorerBar::CExplorerBar(CWnd* pParent /*=NULL*/)
+CExplorerBar::CExplorerBar(CWnd* pParent /*=nullptr*/)
 	: CScrollDialog(CExplorerBar::IDD, pParent)
 {
 	m_MRUSettings.SetBasePath(REGENTRY_BASEKEY_SETTINGFILES);
 	m_bHorz = FALSE;
+    m_dwCurrentTabID = 0;
+    m_nScrollPos = 0;
 }
 
 /* ------------------------------------------------------------------- */
@@ -128,11 +130,11 @@ void CExplorerBar::DrawGradientRect(CDC * pDC, const CRect & rc, COLORREF crColo
 	// Use GDI+
 	#ifndef NOGDIPLUS
 	Graphics 				graphics(pDC->GetSafeHdc());
-	LinearGradientBrush		brush(PointF(rc.left, rc.top), 
-					PointF(rc.right, rc.bottom), 
-					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	LinearGradientBrush		brush(PointF(rc.left, rc.top),
+					PointF(rc.right, rc.bottom),
+					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
-	
+
 	graphics.FillRectangle(&brush, RectF(rc.left, rc.top, rc.Width(), rc.Height()));
 	#endif // NOGDIPLUS
 };
@@ -147,12 +149,12 @@ void CExplorerBar::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 
 	COLORREF		crColor1 = RGB(90, 90, 90);
 	COLORREF		crColor2 = RGB(90, 90, 90);
-			
-	LinearGradientBrush		brush(PointF(rc.right, rc.top), 
-					PointF(rc.left, rc.bottom), 
-					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+
+	LinearGradientBrush		brush(PointF(rc.right, rc.top),
+					PointF(rc.left, rc.bottom),
+					Color(GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
-	
+
 	graphics.FillRectangle(&brush, RectF(rc.left, rc.top, rc.Width(), rc.Height()));
 
 	#endif // NOGDIPLUS
@@ -190,18 +192,18 @@ void CExplorerBar::DrawGradientFrameRect(CDC * pDC, const CRect & rc, BOOL bActi
 
 	#ifndef NOGDIPLUS
 	Graphics 				graphics(pDC->GetSafeHdc());
-	LinearGradientBrush		brush(PointF(rc.left, rc.top), 
-					PointF(rc.right, rc.bottom), 
-					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)), 
+	LinearGradientBrush		brush(PointF(rc.left, rc.top),
+					PointF(rc.right, rc.bottom),
+					Color(fAlpha*255.0, GetRValue(crColor1), GetGValue(crColor1), GetBValue(crColor1)),
 					Color(fAlpha*255.0, GetRValue(crColor2), GetGValue(crColor2), GetBValue(crColor2)));
 
 	GraphicsPath 	path(FillModeWinding);
-	
-	CRect			rc1(rcTop.left, rcTop.top + 5, rcTop.right, rcTop.bottom), 
+
+	CRect			rc1(rcTop.left, rcTop.top + 5, rcTop.right, rcTop.bottom),
 					rc2(rcTop.left+5, rcTop.top, rcTop.right-5, rcTop.bottom),
-					rc3(rcTop.left, rcTop.top, rcTop.left+10, rcTop.top+10), 
+					rc3(rcTop.left, rcTop.top, rcTop.left+10, rcTop.top+10),
 					rc4(rcTop.right-10, rcTop.top, rcTop.right, rcTop.top+10);
-	
+
 	path.AddRectangle(RectF(rc1.left, rc1.top, rc1.Width(), rc1.Height()));
 	path.AddRectangle(RectF(rc2.left, rc2.top, rc2.Width(), rc2.Height()));
 	path.AddEllipse(RectF(rc3.left, rc3.top, rc3.Width(), rc3.Height()));
@@ -230,10 +232,10 @@ void CExplorerBar::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 	Graphics 		graphics(pDC->GetSafeHdc());
 
 	GraphicsPath 	path(FillModeWinding);
-	
-	CRect			rc1(rc.left+3, rc.top, rc.right-3, rc.bottom), 
+
+	CRect			rc1(rc.left+3, rc.top, rc.right-3, rc.bottom),
 					rc2(rc.left, rc.top+3, rc.right, rc.bottom-3);
-	
+
 	path.AddRectangle(RectF(rc1.left, rc1.top, rc1.Width(), rc1.Height()));
 	path.AddRectangle(RectF(rc2.left, rc2.top, rc2.Width(), rc2.Height()));
 	path.AddEllipse(RectF(rc.left, rc.top, 6, 6));
@@ -266,7 +268,7 @@ BOOL CExplorerBar::OnEraseBkgnd(CDC* pDC)
 			      (rc != m_rcBackground) ||
 				  (GetScrollPos(SB_VERT) != m_nScrollPos);
 	};
-	
+
 
 	if (bRedraw)
 	{
@@ -403,7 +405,7 @@ void CExplorerBar::OnSize(UINT nType, int cx, int cy)
 		m_OptionsRect.MoveWindow(&rcControl);
 	};
 
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 }
 
 /* ------------------------------------------------------------------- */
@@ -430,10 +432,10 @@ void CExplorerBar::OnLButtonDown( UINT nFlags, CPoint pt)
 
 /* ------------------------------------------------------------------- */
 
-void CExplorerBar::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CExplorerBar::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	CScrollDialog::OnVScroll(nSBCode, nPos, pScrollBar);
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -443,7 +445,7 @@ void CExplorerBar::InitLabel(CLabel & label, BOOL bMain)
 	m_vLabels.push_back(&label);
 	label.SetLink(TRUE, TRUE);
 	label.SetTransparent(TRUE);
-	label.SetLinkCursor(LoadCursor(NULL, IDC_HAND));
+	label.SetLinkCursor(LoadCursor(nullptr, IDC_HAND));
 	label.SetFont3D(FALSE);
 	label.SetTextColor(RGB(42, 42, 42));
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));
@@ -505,7 +507,7 @@ BOOL CExplorerBar::OnInitDialog()
 
 	m_MRUSettings.InitFromRegistry();
 
-	return TRUE;  
+	return TRUE;
 }
 
 /* ------------------------------------------------------------------- */
@@ -517,7 +519,7 @@ void CExplorerBar::OnStackingTitle( NMHDR * pNotifyStruct, LRESULT * result )
 	if (pDlg)
 		pDlg->ChangeTab(IDD_STACKING);
 
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -529,7 +531,7 @@ void CExplorerBar::OnProcessingTitle( NMHDR * pNotifyStruct, LRESULT * result )
 	if (pDlg)
 		pDlg->ChangeTab(IDD_PROCESSING);
 
-	InvalidateRect(NULL);
+	InvalidateRect(nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -541,7 +543,7 @@ void CExplorerBar::OnRegisteringRegisterChecked( NMHDR * pNotifyStruct, LRESULT 
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().RegisterCheckedImage();
 	};
 };
@@ -555,7 +557,7 @@ void CExplorerBar::OnStackingOpenFiles( NMHDR * pNotifyStruct, LRESULT * result 
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().OnAddpictures();
 	};
 };
@@ -569,7 +571,7 @@ void CExplorerBar::OnStackingOpenDarks( NMHDR * pNotifyStruct, LRESULT * result 
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().OnAdddarks();
 	};
 };
@@ -583,7 +585,7 @@ void CExplorerBar::OnStackingOpenDarkFlats( NMHDR * pNotifyStruct, LRESULT * res
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().OnAddDarkFlats();
 	};
 };
@@ -597,7 +599,7 @@ void CExplorerBar::OnStackingOpenFlats( NMHDR * pNotifyStruct, LRESULT * result 
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().OnAddFlats();
 	};
 };
@@ -611,7 +613,7 @@ void CExplorerBar::OnStackingOpenOffsets( NMHDR * pNotifyStruct, LRESULT * resul
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().OnAddOffsets();
 	};
 };
@@ -625,7 +627,7 @@ void CExplorerBar::OnStackingClearList( NMHDR * pNotifyStruct, LRESULT * result 
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().ClearList();
 	};
 };
@@ -639,7 +641,7 @@ void CExplorerBar::OnStackingLoadList( NMHDR * pNotifyStruct, LRESULT * result )
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().LoadList();
 	};
 };
@@ -653,7 +655,7 @@ void CExplorerBar::OnStackingSaveList( NMHDR * pNotifyStruct, LRESULT * result )
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().SaveList();
 	};
 };
@@ -667,7 +669,7 @@ void CExplorerBar::OnStackingCheckAll( NMHDR * pNotifyStruct, LRESULT * result )
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().CheckAll();
 	};
 };
@@ -681,7 +683,7 @@ void CExplorerBar::OnStackingCheckAbove( NMHDR * pNotifyStruct, LRESULT * result
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().CheckAbove();
 	};
 };
@@ -695,7 +697,7 @@ void CExplorerBar::OnStackingUncheckAll( NMHDR * pNotifyStruct, LRESULT * result
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().UncheckAll();
 	};
 };
@@ -709,7 +711,7 @@ void CExplorerBar::OnStackingComputeOffsets( NMHDR * pNotifyStruct, LRESULT * re
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().ComputeOffsets();
 	};
 };
@@ -723,7 +725,7 @@ void CExplorerBar::OnStackingStackChecked( NMHDR * pNotifyStruct, LRESULT * resu
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().StackCheckedImage();
 	};
 };
@@ -737,7 +739,7 @@ void CExplorerBar::OnStackingBatchStack( NMHDR * pNotifyStruct, LRESULT * result
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_STACKING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetStackingDlg().BatchStack();
 	};
 };
@@ -752,7 +754,7 @@ void CExplorerBar::OnProcessingOpenFile( NMHDR * pNotifyStruct, LRESULT * result
 	{
 		pDlg->GetProcessingDlg().OnLoaddsi();
 		pDlg->ChangeTab(IDD_PROCESSING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 	};
 };
 
@@ -765,7 +767,7 @@ void CExplorerBar::OnProcessingCopyToClipboard( NMHDR * pNotifyStruct, LRESULT *
 	if (pDlg)
 	{
 		pDlg->ChangeTab(IDD_PROCESSING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 		pDlg->GetProcessingDlg().CopyPictureToClipboard();
 	};
 };
@@ -780,7 +782,7 @@ void CExplorerBar::OnProcessingCreateStarMask( NMHDR * pNotifyStruct, LRESULT * 
 	{
 		pDlg->GetProcessingDlg().CreateStarMask();
 		pDlg->ChangeTab(IDD_PROCESSING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 	};
 };
 
@@ -794,7 +796,7 @@ void CExplorerBar::OnProcessingSaveFile( NMHDR * pNotifyStruct, LRESULT * result
 	{
 		pDlg->GetProcessingDlg().SavePictureToFile();
 		pDlg->ChangeTab(IDD_PROCESSING);
-		InvalidateRect(NULL);
+		InvalidateRect(nullptr);
 	};
 };
 
@@ -825,7 +827,7 @@ void CExplorerBar::OnOptionsSettings( NMHDR * pNotifyStruct, LRESULT * result )
 	pt.x = rc.left;
 	pt.y = rc.bottom;
 
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);;
+	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 	if (nResult == ID_EDITSETTINGS_REGISTERSETTINGS)
 	{
@@ -854,20 +856,20 @@ void CExplorerBar::LoadSettingFile()
 
 	TCHAR						szPath[1+_MAX_PATH];
 
-	SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
+	SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
 
 	strBaseDirectory = szPath;
 	strBaseDirectory += "\\DeepSkyStacker";
 
 	// Check that the path exists, else create it
-	CreateDirectory(strBaseDirectory, NULL);
+	CreateDirectory(strBaseDirectory, nullptr);
 
 	strBaseExtension = _T(".dsssettings");
 	strTitle.LoadString(IDS_TITLE_LOADSETTINGS);
 
-	CFileDialog			dlgOpen(TRUE, 
+	CFileDialog			dlgOpen(TRUE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
 								SETTINGFILE_FILTERS,
 								this);
@@ -884,8 +886,6 @@ void CExplorerBar::LoadSettingFile()
 	if (dlgOpen.DoModal() == IDOK)
 	{
 		POSITION		pos;
-		CString			strDrive;
-		CString			strDir;
 
 		pos = dlgOpen.GetStartPosition();
 		while (pos)
@@ -901,7 +901,7 @@ void CExplorerBar::LoadSettingFile()
 			m_MRUSettings.Add(strFile);
 			m_MRUSettings.SaveToRegistry();
 		};
-	};	
+	};
 };
 
 /* ------------------------------------------------------------------- */
@@ -937,7 +937,7 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			TCHAR				szName[1+_MAX_FNAME];
 			CString				strItem;
 
-			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, NULL);
+			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, nullptr);
 			strItem = szName;
 
 			popup->InsertMenu(ID_LOADSETTINGS_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
@@ -951,7 +951,7 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			popup->DeleteMenu(0, MF_BYPOSITION);
 		};
 
-		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);;
+		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 		if (nResult == ID_LOADSETTINGS_LOAD)
 			bOpenAnother = TRUE;
@@ -961,7 +961,7 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			TCHAR				szPath[1+_MAX_PATH];
 			CString				strPath;
 
-			SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
+			SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
 
 			strPath = szPath;
 			strPath += "\\DeepSkyStacker\\DSSLive.settings";
@@ -1001,20 +1001,20 @@ void CExplorerBar::SaveSettingFile()
 
 	TCHAR						szPath[1+_MAX_PATH];
 
-	SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
+	SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
 
 	strBaseDirectory = szPath;
 	strBaseDirectory += "\\DeepSkyStacker";
 
 	// Check that the path exists, else create it
-	CreateDirectory(strBaseDirectory, NULL);
+	CreateDirectory(strBaseDirectory, nullptr);
 
 	strBaseExtension = _T(".dsssettings");
 	strTitle.LoadString(IDS_TITLE_SAVESETTINGS);
 
-	CFileDialog					dlgSave(FALSE, 
+	CFileDialog					dlgSave(FALSE,
 								strBaseExtension,
-								NULL,
+								nullptr,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_DONTADDTORECENT,
 								SETTINGFILE_FILTERS,
 								this);
@@ -1074,7 +1074,7 @@ void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			TCHAR				szName[1+_MAX_FNAME];
 			CString				strItem;
 
-			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, NULL);
+			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, nullptr);
 			strItem = szName;
 
 			popup->InsertMenu(ID_SAVESETTINGS_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
@@ -1088,7 +1088,7 @@ void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			popup->DeleteMenu(0, MF_BYPOSITION);
 		};
 
-		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, NULL);;
+		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 		if (nResult == ID_SAVESETTINGS_SAVEAS)
 			bSaveAnother = TRUE;
@@ -1098,7 +1098,7 @@ void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			TCHAR				szPath[1+_MAX_PATH];
 			CString				strPath;
 
-			SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, SHGFP_TYPE_CURRENT, szPath);
+			SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
 
 			strPath = szPath;
 			strPath += "\\DeepSkyStacker\\DSSLive.settings";
@@ -1150,15 +1150,15 @@ void CExplorerBar::CallHelp()
 
 	strHelpFile.LoadString(IDS_HELPFILE);
 
-	GetModuleFileName(NULL, szFileName, sizeof(szFileName)/sizeof(TCHAR));
+	GetModuleFileName(nullptr, szFileName, sizeof(szFileName)/sizeof(TCHAR));
 	strBase = szFileName;
-	_tsplitpath(strBase, szDrive, szDir, NULL, NULL);
+	_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
 
 	strFile = szDrive;
 	strFile += szDir;
 	strFile += strHelpFile;
 
-	::HtmlHelp(::GetDesktopWindow(), strFile, HH_DISPLAY_TOPIC, NULL);
+	::HtmlHelp(::GetDesktopWindow(), strFile, HH_DISPLAY_TOPIC, 0);
 };
 
 /* ------------------------------------------------------------------- */

@@ -9,7 +9,7 @@ protected :
 	BOOL			m_bJointProgress;
 
 public :
-	CDSSProgress() 
+	CDSSProgress()
 	{
 		m_bJointProgress = FALSE;
 	};

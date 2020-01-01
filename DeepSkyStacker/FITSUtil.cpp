@@ -3,21 +3,27 @@
 #include <float.h>
 #include "Registry.h"
 #include "Workspace.h"
+#include "Utils.h"
 
 /* ------------------------------------------------------------------- */
 
 static	CComAutoCriticalSection			g_FITSCritical;
 
-CFITSHeader::CFITSHeader() 
+CFITSHeader::CFITSHeader()
 {
 	m_bFloat = FALSE;
 	m_fExposureTime = 0;
 	m_lISOSpeed     = 0;
+	m_lGain         = -1;
 	m_CFAType		= CFATYPE_NONE;
 	m_bByteSwap		= FALSE;
 	m_bSigned		= FALSE;
 	m_DateTime.wYear= 0;
 	g_FITSCritical.Lock();
+    m_lWidth = 0;
+    m_lHeight = 0;
+    m_lBitsPerPixel = 0;
+    m_lNrChannels = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -36,7 +42,7 @@ inline void ByteSwap(DWORD & InValue)
 				bLowHighByte,
 				bHighLowByte,
 				bHighHighByte;*/
-				
+
 
 	wLow = LOWORD(InValue);
 	/*bLowLowByte = LOBYTE(wLow);
@@ -53,9 +59,9 @@ inline void ByteSwap(DWORD & InValue)
 
 /*	DWORD		OutValue;
 
-	OutValue = ((Value & 0xFF) << 24) | 
-			   ((Value & 0xFF00) << 8) | 
-			   ((Value & 0xFF0000) >> 8) | 
+	OutValue = ((Value & 0xFF) << 24) |
+			   ((Value & 0xFF00) << 8) |
+			   ((Value & 0xFF0000) >> 8) |
 			   ((Value & 0xFF000000) >> 24);
 
 	Value = OutValue;*/
@@ -173,7 +179,7 @@ void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), fGreen);
 	if (fGreen<=0)
 		fGreen = 1.0;
-	
+
 	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), fRed);
 	fRed *= fGreen;
 	if (fRed <= 0)
@@ -208,7 +214,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, double & fValue, CString & strComment)
 	{
 		CHAR			szComment[500];
 
-		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);		
+		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);
 		if (!nStatus)
 		{
 			bResult = TRUE;
@@ -226,7 +232,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, double & fValue)
 
 	if (m_fits)
 	{
-		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, NULL, &nStatus);		
+		fits_read_key(m_fits, TDOUBLE, szKey, &fValue, nullptr, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -241,7 +247,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, LONG & lValue)
 
 	if (m_fits)
 	{
-		fits_read_key(m_fits, TLONG, szKey, &lValue, NULL, &nStatus);		
+		fits_read_key(m_fits, TLONG, szKey, &lValue, nullptr, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -257,7 +263,7 @@ BOOL CFITSReader::ReadKey(LPSTR szKey, CString & strValue)
 
 	if (m_fits)
 	{
-		fits_read_key(m_fits, TSTRING, szKey, szValue, NULL, &nStatus);
+		fits_read_key(m_fits, TSTRING, szKey, szValue, nullptr, &nStatus);
 		if (!nStatus)
 		{
 			strValue = szValue;
@@ -281,9 +287,9 @@ void CFITSReader::ReadAllKeys()
 
 		if (!reg.LoadKey(REGENTRY_BASEKEY_FITSSETTINGS, _T("Propagated"), strPropagated))
 			strPropagated = "[CRVAL1][CRVAL2][CRTYPE1][CRTYPE2][DEC][RA][OBJCTDEC][OBJCTRA][OBJCTALT][OBJCTAZ][OBJCTHA][SITELAT][SITELONG][TELESCOP][INSTRUME][OBSERVER][RADECSYS]";
-		
 
-		fits_get_hdrspace(m_fits, &nKeywords, NULL, &nStatus);
+
+		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
 		for (LONG i = 1;i<=nKeywords;i++)
 		{
 			CHAR			szKeyName[FLEN_CARD];
@@ -297,14 +303,14 @@ void CFITSReader::ReadAllKeys()
 			{
 				bool		bPropagate = false;
 				CString		strKeyName;
-				strKeyName.Format(_T("[%s]"), (LPCTSTR)CA2CT(szKeyName));
+				strKeyName.Format(_T("[%s]"), (LPCTSTR)CharToCString(szKeyName));
 
 				if (strPropagated.Find(strKeyName) != -1)
 					bPropagate = true;
 				m_ExtraInfo.AddInfo(
-					(LPCTSTR)CA2CT(szKeyName),
-					(LPCTSTR)CA2CT(szValue),
-					(LPCTSTR)CA2CT(szComment), bPropagate);
+					(LPCTSTR)CharToCString(szKeyName),
+					(LPCTSTR)CharToCString(szValue),
+					(LPCTSTR)CharToCString(szComment), bPropagate);
 			};
 		};
 	};
@@ -319,7 +325,7 @@ BOOL CFITSReader::Open()
 	int					nStatus = 0;
 
 	Close();
-	fits_open_diskfile(&m_fits, (LPCSTR)CT2CA(m_strFileName, CP_UTF8), READONLY, &nStatus);
+	fits_open_diskfile(&m_fits, CStringToChar(m_strFileName), READONLY, &nStatus);
 	if (!nStatus && m_fits)
 	{
 		// File ok - move to the first image HDU
@@ -333,6 +339,7 @@ BOOL CFITSReader::Open()
 		CString			strMake;
 		CString			strISOSpeed;
 		LONG			lISOSpeed = 0;
+		LONG			lGain = -1;
 		LONG			cfaType;
 		m_bDSI = FALSE;
 
@@ -368,6 +375,8 @@ BOOL CFITSReader::Open()
 					lISOSpeed = _ttol(strISOSpeed);
 				};
 			};
+
+			bResult = ReadKey("GAIN", lGain);
 
 			bResult = ReadKey("NAXIS1", lWidth);
 			bResult = ReadKey("NAXIS2", lHeight);
@@ -443,6 +452,7 @@ BOOL CFITSReader::Open()
 				m_fExposureTime = fExposureTime;
 				m_strMake	= strMake;
 				m_lISOSpeed = lISOSpeed;
+				m_lGain     = lGain;
 				m_bSigned = FALSE;
 				switch (lBitFormat)
 				{
@@ -487,7 +497,7 @@ BOOL CFITSReader::Open()
 			if (m_fits)
 			{
 				fits_close_file(m_fits, &nStatus);
-				m_fits = NULL;
+				m_fits = nullptr;
 			};
 		};
 	};
@@ -505,10 +515,10 @@ BOOL CFITSReader::Read()
 	if (m_fits)
 	{
 		LONG			lScanLineSize;
-		VOID *			pScanLine = NULL;
-		VOID *			pScanLineRed = NULL;
-		VOID *			pScanLineGreen = NULL;
-		VOID *			pScanLineBlue = NULL;
+		VOID *			pScanLine = nullptr;
+		VOID *			pScanLineRed = nullptr;
+		VOID *			pScanLineGreen = nullptr;
+		VOID *			pScanLineBlue = nullptr;
 
 		BYTE	cNULL = 0;
 		WORD	wNULL = 0;
@@ -526,7 +536,7 @@ BOOL CFITSReader::Read()
 			pNULL = &fNULL;
 
 		if (m_pProgress)
-			m_pProgress->Start2(NULL, m_lHeight);
+			m_pProgress->Start2(nullptr, m_lHeight);
 
 		lScanLineSize = m_lWidth * m_lBitsPerPixel/8;
 		if (m_lNrChannels == 1)
@@ -588,7 +598,7 @@ BOOL CFITSReader::Read()
 					pfPixel[2] = 1;
 
 					nStatus = 0;
-					fits_read_pix(m_fits, TFLOAT, pfPixel, m_lWidth * m_lNrChannels, &fNULL, pBuffer, NULL, &nStatus);
+					fits_read_pix(m_fits, TFLOAT, pfPixel, m_lWidth * m_lNrChannels, &fNULL, pBuffer, nullptr, &nStatus);
 
 					if (!nStatus)
 					{
@@ -617,7 +627,7 @@ BOOL CFITSReader::Read()
 					};
 				};
 				free(pBuffer);
-				
+
 				double		fZero,
 							fScale;
 
@@ -656,17 +666,19 @@ BOOL CFITSReader::Read()
 					DWORD * pDWORDLine				= (DWORD *)pScanLine;
 					LONG *	pLONGLine				= (LONG *)pScanLine;
 					float *	pFLOATLine				= (float *)pScanLine;
-					
+
 					pfPixel[0] = 1;
 					pfPixel[1] = j+1;
 					pfPixel[2] = 1;
 
 					nStatus = 0;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLine, NULL, &nStatus);
+					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLine, nullptr, &nStatus);
 
 					for (i = 0;i<m_lWidth && bResult && !nStatus;i++)
 					{
-						double		fRed, fGreen, fBlue;
+                        double fRed = 0;
+                        double fGreen = 0;
+                        double fBlue = 0;
 
 						if (m_lBitsPerPixel == 8)
 						{
@@ -728,7 +740,7 @@ BOOL CFITSReader::Read()
 
 					};
 					if (m_pProgress)
-						m_pProgress->Progress2(NULL, j+1);
+						m_pProgress->Progress2(nullptr, j+1);
 				}
 				else
 				{
@@ -749,15 +761,18 @@ BOOL CFITSReader::Read()
 					pfPixel[1] = j+1;
 					pfPixel[2] = 1;
 					nStatus = 0;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineRed, NULL, &nStatus);
+					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineRed, nullptr, &nStatus);
 					pfPixel[2] = 2;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineGreen, NULL, &nStatus);
+					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineGreen, nullptr, &nStatus);
 					pfPixel[2] = 3;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineBlue, NULL, &nStatus);
+					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineBlue, nullptr, &nStatus);
 
 					for (i = 0;i<m_lWidth && bResult && !nStatus;i++)
 					{
-						double		fRed, fGreen, fBlue;
+                        double fRed = 0;
+                        double fGreen = 0;
+                        double fBlue = 0;
+
 						if (m_lBitsPerPixel == 8)
 						{
 							fRed	= *(pBYTELineRed);
@@ -805,9 +820,9 @@ BOOL CFITSReader::Read()
 
 						bResult = OnRead(i, j, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
 
-					};				
+					};
 					if (m_pProgress)
-						m_pProgress->Progress2(NULL, j+1);
+						m_pProgress->Progress2(nullptr, j+1);
 				};
 			};
 
@@ -841,7 +856,7 @@ BOOL CFITSReader::Close()
 		if (bResult)
 		{
 			fits_close_file(m_fits, &nStatus);
-			m_fits = NULL;
+			m_fits = nullptr;
 		};
 	};
 
@@ -939,8 +954,8 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		if ((m_CFAType != CFATYPE_NONE) && (m_lNrChannels != 1))// || (m_lBitsPerPixel != 16)))
 			m_CFAType = CFATYPE_NONE;
 
-		if (IsFITSisRaw() && 
-			(m_lNrChannels == 1) && 
+		if (IsFITSisRaw() &&
+			(m_lNrChannels == 1) &&
 			((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
 			m_CFAType = GetFITSCFATYPE();
 
@@ -976,6 +991,8 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap->SetExposure(m_fExposureTime);
 		if (m_lISOSpeed)
 			m_pBitmap->SetISOSpeed(m_lISOSpeed);
+		if (m_lGain >= 0)
+			m_pBitmap->SetGain(m_lGain);
 		m_pBitmap->m_DateTime = m_DateTime;
 
 		CString			strDescription;
@@ -1071,17 +1088,17 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	BOOL					bResult = FALSE;
 	BOOL					bContinue = TRUE;
-	CFITSReader				fits(szFileName, NULL);
+	CFITSReader				fits(szFileName, nullptr);
 
 	// Exclude JPEG, PNG or TIFF format
 	{
 		TCHAR				szExt[1+_MAX_EXT];
 		CString				strExt;
 
-		_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
+		_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 		strExt = szExt;
 
-		if (!strExt.CompareNoCase(_T(".JPG")) || 
+		if (!strExt.CompareNoCase(_T(".JPG")) ||
 			!strExt.CompareNoCase(_T(".JPEG")) ||
 			!strExt.CompareNoCase(_T(".PNG")) ||
 			!strExt.CompareNoCase(_T(".TIF")) ||
@@ -1103,6 +1120,7 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_CFAType		= fits.GetCFAType();
 		BitmapInfo.m_bMaster		= fits.IsMaster();
 		BitmapInfo.m_lISOSpeed		= fits.GetISOSpeed();
+		BitmapInfo.m_lGain		= fits.GetGain();
 		BitmapInfo.m_bCanLoad		= TRUE;
 		BitmapInfo.m_fExposure		= fits.GetExposureTime();
 		BitmapInfo.m_bFITS16bit	    = (fits.NrChannels() == 1) &&
@@ -1125,7 +1143,7 @@ BOOL	CFITSWriter::WriteKey(LPSTR szKey, double fValue, LPSTR szComment)
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);		
+		fits_write_key(m_fits, TDOUBLE, szKey, &fValue, szComment, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -1142,7 +1160,7 @@ BOOL	CFITSWriter::WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment)
 
 	if (m_fits)
 	{
-		fits_write_key(m_fits, TLONG, szKey, &lValue, szComment, &nStatus);		
+		fits_write_key(m_fits, TLONG, szKey, &lValue, szComment, &nStatus);
 		if (!nStatus)
 			bResult = TRUE;
 	};
@@ -1187,8 +1205,8 @@ void	CFITSWriter::WriteAllKeys()
 		// Add DATE-OBS to the list
 		CString			strDateTime;
 
-		strDateTime.Format(_T("%04d-%02d-%02dT%02d:%02d:%02d"), 
-						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay, 
+		strDateTime.Format(_T("%04d-%02d-%02dT%02d:%02d:%02d"),
+						   m_DateTime.wYear, m_DateTime.wMonth, m_DateTime.wDay,
 						   m_DateTime.wHour, m_DateTime.wMinute, m_DateTime.wSecond);
 
 		m_ExtraInfo.AddInfo(_T("DATE-OBS"), strDateTime);
@@ -1205,7 +1223,7 @@ void	CFITSWriter::WriteAllKeys()
 			CHAR			szValue[FLEN_VALUE];
 
 			// check that the keyword is not already used
-			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(ei.m_strName, CP_UTF8), szValue, NULL, &nStatus);
+			fits_read_key(m_fits, TSTRING, (LPCSTR)CT2A(ei.m_strName, CP_UTF8), szValue, nullptr, &nStatus);
 			if (nStatus)
 			{
 				nStatus = 0;
@@ -1216,9 +1234,9 @@ void	CFITSWriter::WriteAllKeys()
 				if (ei.m_strComment.GetLength())
 					strTemplate.Format(_T("%s = %s / %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
 				else
-					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue, ei.m_strComment);
+					strTemplate.Format(_T("%s = %s"), ei.m_strName, ei.m_strValue);
 
-				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus); 
+				fits_parse_template((LPSTR)CT2A(strTemplate, CP_UTF8), szCard, &nType, &nStatus);
 				fits_write_record(m_fits, szCard, &nStatus);
 			};
 		};
@@ -1324,6 +1342,8 @@ BOOL CFITSWriter::Open()
 
 				if (m_lISOSpeed)
 					bResult = bResult && WriteKey("ISOSPEED", m_lISOSpeed);
+				if (m_lGain >= 0)
+					bResult = bResult && WriteKey("GAIN", m_lGain);
 				if (m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
@@ -1343,7 +1363,7 @@ BOOL CFITSWriter::Open()
 		if (!bResult)
 		{
 			fits_close_file(m_fits, &nStatus);
-			m_fits = NULL;
+			m_fits = nullptr;
 		};
 	};
 
@@ -1360,10 +1380,10 @@ BOOL CFITSWriter::Write()
 	if (m_fits)
 	{
 		LONG			lScanLineSize;
-		VOID *			pScanLine = NULL;
-		VOID *			pScanLineRed = NULL;
-		VOID *			pScanLineGreen = NULL;
-		VOID *			pScanLineBlue = NULL;
+		VOID *			pScanLine = nullptr;
+		VOID *			pScanLineRed = nullptr;
+		VOID *			pScanLineGreen = nullptr;
+		VOID *			pScanLineBlue = nullptr;
 
 		lScanLineSize = m_lWidth * m_lBitsPerPixel/8;
 		if (m_lNrChannels == 1)
@@ -1379,7 +1399,7 @@ BOOL CFITSWriter::Write()
 		if (pScanLine || (pScanLineRed && pScanLineGreen && pScanLineBlue))
 		{
 			bResult = TRUE;
-			int			datatype;
+			int			datatype = 0;
 			int			nStatus = 0;
 
 			switch (m_lBitsPerPixel)
@@ -1402,7 +1422,7 @@ BOOL CFITSWriter::Write()
 			};
 
 			if (m_pProgress)
-				m_pProgress->Start2(NULL, m_lHeight);
+				m_pProgress->Start2(nullptr, m_lHeight);
 
 			for (LONG j = 0;j<m_lHeight;j++)
 			{
@@ -1526,7 +1546,7 @@ BOOL CFITSWriter::Write()
 								pDWORDLineGreen ++;
 								pDWORDLineBlue ++;
 							};
-						};					
+						};
 					};
 
 					pfPixel[0] = 1;
@@ -1540,7 +1560,7 @@ BOOL CFITSWriter::Write()
 				};
 
 				if (m_pProgress)
-					m_pProgress->Progress2(NULL, j+1);
+					m_pProgress->Progress2(nullptr, j+1);
 			};
 			if (pScanLine)
 				free(pScanLine);
@@ -1572,7 +1592,7 @@ BOOL CFITSWriter::Close()
 		if (bResult)
 		{
 			fits_close_file(m_fits, &nStatus);
-			m_fits = NULL;
+			m_fits = nullptr;
 		};
 	};
 
@@ -1615,7 +1635,7 @@ FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap
 	C48BitColorBitmap *			p48Color = dynamic_cast<C48BitColorBitmap *>(pBitmap);
 	C96BitColorBitmap *			p96Color = dynamic_cast<C96BitColorBitmap *>(pBitmap);
 	C96BitFloatColorBitmap*		p96FloatColor = dynamic_cast<C96BitFloatColorBitmap*>(pBitmap);
-	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);	
+	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);
 	C16BitGrayBitmap *				p16Gray = dynamic_cast<C16BitGrayBitmap *>(pBitmap);
 	C32BitGrayBitmap *				p32Gray = dynamic_cast<C32BitGrayBitmap *>(pBitmap);
 	C32BitFloatGrayBitmap *			p32FloatGray = dynamic_cast<C32BitFloatGrayBitmap *>(pBitmap);
@@ -1636,7 +1656,7 @@ FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap
 		Result = FF_32BITGRAY;
 	else if (p32FloatGray)
 		Result = FF_32BITGRAYFLOAT;
-	
+
 	return Result;
 };
 
@@ -1657,7 +1677,7 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 	m_CFAType = CFATYPE_NONE;
 	if (::IsCFA(m_pMemoryBitmap))
 		m_CFAType = ::GetCFAType(m_pMemoryBitmap);
-	
+
 	if (m_Format == TF_UNKNOWN)
 		m_Format = GetBestFITSFormat(m_pMemoryBitmap);
 
@@ -1666,6 +1686,8 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 		SetFormat(lWidth, lHeight, m_Format, m_CFAType);
 		if (!m_lISOSpeed)
 			m_lISOSpeed = m_pMemoryBitmap->GetISOSpeed();
+		if (m_lGain < 0)
+			m_lGain = m_pMemoryBitmap->GetGain();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
 		bResult = TRUE;
@@ -1705,7 +1727,8 @@ BOOL CFITSWriteFromMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription, LONG lISOSpeed, double fExposure)
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure)
 {
 	BOOL					bResult = FALSE;
 
@@ -1719,6 +1742,8 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
+		if (lGain >= 0)
+			fits.m_lGain = lGain;
 		if (fExposure)
 			fits.m_fExposureTime = fExposure;
 		fits.SetFormat(FITSFormat);
@@ -1732,9 +1757,19 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 	return bResult;
 };
 
+
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription, LONG lISOSpeed, double fExposure)
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription,
+			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+};
+
+/* ------------------------------------------------------------------- */
+
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
+			LONG lISOSpeed, LONG lGain, double fExposure)
 {
 	BOOL					bResult = FALSE;
 
@@ -1748,6 +1783,8 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			fits.SetDescription(szDescription);
 		if (lISOSpeed)
 			fits.m_lISOSpeed = lISOSpeed;
+		if (lGain >= 0)
+			fits.m_lGain = lGain;
 		if (fExposure)
 			fits.m_fExposureTime = fExposure;
 		if (fits.Open())
@@ -1758,6 +1795,14 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 	};
 
 	return bResult;
+};
+
+/* ------------------------------------------------------------------- */
+
+BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+{
+	return WriteFITS(szFileName, pBitmap, pProgress, szDescription,
+			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1807,7 +1852,7 @@ void	GetFITSExtension(LPCTSTR szFileName, CString & strExtension)
 	TCHAR			szExt[1+_MAX_EXT];
 	CString			strExt;
 
-	_tsplitpath(szFileName, NULL, NULL, NULL, szExt);
+	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 
 	strExt = szExt;
 	if (!strExt.CompareNoCase(_T(".FITS")))

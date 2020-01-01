@@ -736,6 +736,18 @@
     <ClInclude Include="PCLTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Tools\Utils.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="DSS-versionhelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DSS-winapifamily.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DSS-winpackagefamily.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\4Corners.bmp">
@@ -1011,6 +1023,5 @@
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
       <Filter>Tools</Filter>
     </CustomBuild>
-    <CustomBuild Include="res\DeepSkyStacker.manifest" />
   </ItemGroup>
 </Project>

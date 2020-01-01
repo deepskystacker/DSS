@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
+#include "DSS-versionhelpers.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -20,9 +21,9 @@ static BOOL	GetDefaultSettingsFileName(CString & strFile)
 	TCHAR			szDrive[1+_MAX_DRIVE];
 	TCHAR			szDir[1+_MAX_DIR];
 
-	GetModuleFileName(NULL, szFileName, sizeof(szFileName));
+	GetModuleFileName(nullptr, szFileName, sizeof(szFileName));
 	strBase = szFileName;
-	_tsplitpath(strBase, szDrive, szDir, NULL, NULL);
+	_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
 
 	strFile = szDrive;
 	strFile += szDir;
@@ -54,7 +55,7 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 {
 	BOOL			bResult = FALSE;
 	CString			strFile = szFile;
-	FILE *			hFile = NULL;
+	FILE *			hFile = nullptr;
 
 	if (!strFile.GetLength())
 		GetDefaultSettingsFileName(strFile);
@@ -66,7 +67,7 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 		LONG					i;
 
 		fread(&Header, sizeof(Header), 1, hFile);
-		if ((Header.dwMagic == HDSSETTINGS_MAGIC) && 
+		if ((Header.dwMagic == HDSSETTINGS_MAGIC) &&
 			(Header.dwHeaderSize == sizeof(Header)))
 		{
 			m_lSettings.clear();
@@ -84,7 +85,7 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 
 		fclose(hFile);
 	};
-	
+
 	m_bLoaded = TRUE;
 
 	return bResult;
@@ -96,7 +97,7 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 {
 	BOOL			bResult = FALSE;
 	CString			strFile = szFile;
-	FILE *			hFile = NULL;
+	FILE *			hFile = nullptr;
 
 	if (!strFile.GetLength())
 		GetDefaultSettingsFileName(strFile);
@@ -132,14 +133,21 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
 
+UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage("TaskbarButtonCreated");
 
-CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CDeepStackerDlg::IDD, pParent)
+CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(CDeepStackerDlg::IDD, pParent),
+	m_dlgStacking(this),
+	m_dlgProcessing(this),
+	m_dlgLibrary(this),
+	m_ExplorerBar(this)
 {
 	//{{AFX_DATA_INIT(CDeepStackerDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	m_dwCurrentTab = 0;
+    m_taskbarList = nullptr;
+    m_progress = false;
 }
 
 /* ------------------------------------------------------------------- */
@@ -163,6 +171,10 @@ BEGIN_MESSAGE_MAP(CDeepStackerDlg, CDialog)
 	ON_BN_CLICKED(IDCANCEL, &CDeepStackerDlg::OnBnClickedCancel)
 	ON_WM_DROPFILES()
 	ON_WM_ERASEBKGND()
+    ON_REGISTERED_MESSAGE(WM_TASKBAR_BUTTON_CREATED, &CDeepStackerDlg::OnTaskbarButtonCreated)
+    ON_MESSAGE(WM_PROGRESS_INIT, &CDeepStackerDlg::OnProgressInit)
+    ON_MESSAGE(WM_PROGRESS_UPDATE, &CDeepStackerDlg::OnProgressUpdate)
+    ON_MESSAGE(WM_PROGRESS_STOP, &CDeepStackerDlg::OnProgressStop)
 END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
@@ -188,7 +200,7 @@ void CDeepStackerDlg::UpdateTab()
 		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
 	};
-	m_ExplorerBar.InvalidateRect(NULL);
+	m_ExplorerBar.InvalidateRect(nullptr);
 };
 
 /* ------------------------------------------------------------------- */
@@ -213,7 +225,7 @@ void CDeepStackerDlg::UpdateSizes()
 		rcExplorerBar = rcDlg;
 		rcDlg.left += 220;
 		rcExplorerBar.right = rcDlg.left;
-		
+
 		if (m_dlgStacking.m_hWnd)
 			m_dlgStacking.MoveWindow(&rcDlg);
 		if (m_dlgProcessing.m_hWnd)
@@ -243,7 +255,7 @@ void CDeepStackerDlg::ChangeTab(DWORD dwTabID)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CDeepStackerDlg::OnInitDialog() 
+BOOL CDeepStackerDlg::OnInitDialog()
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Initializing Main Dialog");
@@ -256,9 +268,9 @@ BOOL CDeepStackerDlg::OnInitDialog()
 
 	//
 	// The call to CWnd::DragAcceptFiles() was moved here from DeepSkyStacker.cpp because it can only be called once
-	// the HWND for the dialog is valid (not NULL).  This is only true once CDialog::OnInitDialog() above has been called.
+	// the HWND for the dialog is valid (not nullptr).  This is only true once CDialog::OnInitDialog() above has been called.
 	//
-	this->DragAcceptFiles(TRUE);		
+	this->DragAcceptFiles(TRUE);
 
 	GetWindowText(strMask);
 	strTitle.Format(strMask, _T(VERSION_DEEPSKYSTACKER));
@@ -305,7 +317,7 @@ void CDeepStackerDlg::SetCurrentFileInTitle(LPCTSTR szFile)
 		TCHAR				szFileName[1+_MAX_FNAME];
 		TCHAR				szExt[1+_MAX_EXT];
 
-		_tsplitpath(szFile, NULL, NULL, szFileName, szExt);
+		_tsplitpath(szFile, nullptr, nullptr, szFileName, szExt);
 
 		CString				strTitle;
 
@@ -330,9 +342,62 @@ void CDeepStackerDlg::OnDropFiles(HDROP hDropInfo)
 	};
 };
 
+LRESULT CDeepStackerDlg::OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	if (IsWindows7OrGreater())
+	{
+		HRESULT hr = ::CoCreateInstance(CLSID_TaskbarList, nullptr, CLSCTX_INPROC_SERVER, IID_ITaskbarList3, reinterpret_cast<void**>(&m_taskbarList));
+
+		if (FAILED(hr))
+			return 0;
+
+		hr = m_taskbarList->HrInit();
+
+		m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+	}
+    return 0;
+}
+
+LRESULT CDeepStackerDlg::OnProgressInit(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	if (IsWindows7OrGreater())
+	{
+		m_taskbarList->SetProgressState(m_hWnd, TBPF_NORMAL);
+
+		m_progress = true;
+	}
+
+
+    return 0;
+}
+
+LRESULT CDeepStackerDlg::OnProgressUpdate(WPARAM wParam, LPARAM lParam)
+{
+	if (IsWindows7OrGreater())
+	{
+		// do not update if progress wasn't started manually
+		if (m_progress)
+			m_taskbarList->SetProgressValue(m_hWnd, wParam, lParam);
+	}
+
+    return 0;
+}
+
+LRESULT CDeepStackerDlg::OnProgressStop(WPARAM /*wParam*/, LPARAM /*lParam*/)
+{
+	if (IsWindows7OrGreater())
+	{
+		m_taskbarList->SetProgressState(m_hWnd, TBPF_NOPROGRESS);
+
+		m_progress = false;
+	}
+
+    return 0;
+}
+
 /* ------------------------------------------------------------------- */
 
-void CDeepStackerDlg::OnSize(UINT nType, int cx, int cy) 
+void CDeepStackerDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 
