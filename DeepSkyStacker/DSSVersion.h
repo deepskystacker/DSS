@@ -4,9 +4,9 @@
 #define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 2
-#define DSSBETAEXPIREYEAR 2019
-#define DSSBETAEXPIREMONTH 12
+#define DSSBETARELEASE 3
+constexpr long DSSBETAEXPIREYEAR = 2020L;
+constexpr long DSSBETAEXPIREMONTH = 3L;
 #endif
 
 #define DSSVER_MAJOR			4
