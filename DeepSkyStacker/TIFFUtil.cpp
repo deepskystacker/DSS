@@ -73,7 +73,7 @@ BOOL CTIFFReader::Open()
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	CRegistry		reg;
-	DWORD			dwSkipExifInfo = 1;
+	DWORD			dwSkipExifInfo = 0;
 
 	reg.LoadKey(REGENTRY_BASEKEY, _T("SkipTIFFExifInfo"), dwSkipExifInfo);
 
@@ -175,7 +175,7 @@ BOOL CTIFFReader::Open()
 		if (!dwSkipExifInfo)
 		{
 			// Try to read EXIF data
-			uint32				ExifID;
+			uint64				ExifID;
 
 			if (TIFFGetField(m_tiff, TIFFTAG_EXIFIFD, &ExifID))
 			{
@@ -185,10 +185,16 @@ BOOL CTIFFReader::Open()
 						exposureTime = 0.0;
 					if (!TIFFGetField(m_tiff, EXIFTAG_FNUMBER, &aperture))
 						aperture = 0.0;
-					// EXIFTAG_ISOSPEEDRATINGS is a int16u according to the EXIF spec
+					// EXIFTAG_ISOSPEEDRATINGS is a uint16 according to the EXIF spec
 					isospeed = 0;
-					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, (short *)&isospeed))
+					uint16	count = 0;
+					uint16 * iso_setting = nullptr;
+					if (!TIFFGetField(m_tiff, EXIFTAG_ISOSPEEDRATINGS, &count, &iso_setting))
 						isospeed = 0;
+					else
+					{
+						isospeed = iso_setting[0];
+					}
 					// EXIFTAG_GAINCONTROL does not represent a gain value, so ignore it.
 				};
 			};
