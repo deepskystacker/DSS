@@ -94,7 +94,7 @@ public :
 
 	BOOL	IsFloat()
 	{
-		return (sampleformat = SAMPLEFORMAT_IEEEFP) && (bpp == 32);
+		return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bpp == 32);
 	};
 
 	LONG	Height()
