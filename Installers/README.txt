@@ -29,7 +29,7 @@ The main changes in this release are:
 
 9. Common control library 6 now used so some cosmetic changes such as filled progress bars.
 
-19. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
+10. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
 
 11. Update the DeepSkyStacker taskbar icon with a progress bar that matches the main progress bar.
 
