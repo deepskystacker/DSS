@@ -1,5 +1,3 @@
-# $Id: Makefile.vc,v 1.17.2.2 2007/07/18 14:30:05 dron Exp $
-#
 # Copyright (C) 2004, Andrey Kiselev <dron@ak4719.spb.edu>
 #
 # Permission to use, copy, modify, distribute, and sell this software and 
@@ -55,6 +53,7 @@ OBJ	= \
 	tif_getimage.obj \
 	tif_jbig.obj \
 	tif_jpeg.obj \
+	tif_jpeg_12.obj \
 	tif_ojpeg.obj \
 	tif_flush.obj \
 	tif_luv.obj \
@@ -75,7 +74,6 @@ OBJ	= \
 	tif_warning.obj \
 	tif_write.obj \
 	tif_zip.obj \
-	tif_jbig.obj \
 	$(OBJ_SYSDEP_MODULE)
 
 all:	libtiff.lib $(DLLNAME)
@@ -87,16 +85,16 @@ tiffconf.h:	tiffconf.vc.h
 	copy tiffconf.vc.h tiffconf.h
 
 libtiff.lib:	tif_config.h tiffconf.h $(OBJ)
-	$(AR) /out:libtiff.lib $(OBJ) $(LIBS)
+	$(AR) /out:libtiff.lib ..\port\libport.lib $(OBJ) $(LIBS)
 
 $(DLLNAME):	tif_config.h tiffconf.h libtiff.def $(OBJ)
 	$(LD) /debug /dll /def:libtiff.def /out:$(DLLNAME) \
-	/implib:libtiff_i.lib $(OBJ) $(LIBS)
+	/implib:libtiff_i.lib ..\port\libport.lib $(OBJ) $(LIBS)
 	
 clean:
 	-del tif_config.h tiffconf.h
 	-del *.obj
 	-del *.lib
 	-del *.dll
-	-del *.exe
+	-del *.dll.manifest
 	-del *.pdb

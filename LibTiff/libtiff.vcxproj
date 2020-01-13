@@ -305,7 +305,6 @@
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="t4.h" />
     <ClInclude Include="tiff.h" />
-    <ClInclude Include="tiff2pdf.h" />
     <ClInclude Include="tiffconf.h" />
     <ClInclude Include="tiffconf.vc.h" />
     <ClInclude Include="tiffconf.wince.h" />

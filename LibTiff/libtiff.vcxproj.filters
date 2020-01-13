@@ -160,9 +160,6 @@
     <ClInclude Include="tiff.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tiff2pdf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tiffconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
