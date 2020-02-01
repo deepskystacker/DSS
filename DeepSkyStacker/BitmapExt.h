@@ -498,6 +498,7 @@ typedef enum CFATYPE
 	CFATYPE_GRBG		= 2,
 	CFATYPE_GBRG		= 3,
 	CFATYPE_RGGB		= 4,
+	CFATYPE_AUTO        = 9,
 
 	// A = Cyan		B = Green		C = Magenta		D = Yellow
 	CFATYPE_CGMY		= 0xABCD,
@@ -1317,7 +1318,7 @@ protected :
 		vdWork1.reserve(vScanLines.size());
 		vdWork2.reserve(vScanLines.size());
 
-		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
+		for (LONG i = 0; i<lWidth; i++)
 		{
 			TType *					pValue;
 			double					fWeight = 1.0;
@@ -1382,12 +1383,9 @@ protected :
 			pCurrentValue++;
 		};
 
-		if (pOutputScanLine)
-		{
-			pBitmap->SetScanLine(lLine, pOutputScanLine);
-			free(pOutputScanLine);
-			bResult = TRUE;
-		};
+		pBitmap->SetScanLine(lLine, pOutputScanLine);
+		free(pOutputScanLine);
+		bResult = TRUE;
 
 		return bResult;
 	};
@@ -1948,24 +1946,23 @@ public :
 		CGrayBitmapT<TType> *	pResult;
 
 		pResult = new CGrayBitmapT<TType>;
-		if (pResult)
-		{
-			if (!bEmpty)
-			{
-				pResult->m_vPixels	= m_vPixels;
-				pResult->m_lWidth	= m_lWidth;
-				pResult->m_lHeight	= m_lHeight;
-			};
-			pResult->m_bWord	= m_bWord;
-			pResult->m_bDouble	= m_bDouble;
-			pResult->m_bDWord	= m_bDWord;
-			pResult->m_bFloat	= m_bFloat;
-			pResult->m_CFATransform = m_CFATransform;
-			pResult->m_CFAType  = m_CFAType;
-			pResult->m_bCYMG	= m_bCYMG;
 
-			pResult->CopyFrom(*this);
+		if (!bEmpty)
+		{
+			pResult->m_vPixels	= m_vPixels;
+			pResult->m_lWidth	= m_lWidth;
+			pResult->m_lHeight	= m_lHeight;
 		};
+		pResult->m_bWord	= m_bWord;
+		pResult->m_bDouble	= m_bDouble;
+		pResult->m_bDWord	= m_bDWord;
+		pResult->m_bFloat	= m_bFloat;
+		pResult->m_CFATransform = m_CFATransform;
+		pResult->m_CFAType  = m_CFAType;
+		pResult->m_bCYMG	= m_bCYMG;
+
+		pResult->CopyFrom(*this);
+
 
 		return pResult;
 	};
@@ -2226,8 +2223,7 @@ public :
 		CMultiBitmap *		pResult;
 
 		pResult = new CGrayMultiBitmapT<TType>();
-		if (pResult)
-			pResult->SetBitmapModel(this);
+		pResult->SetBitmapModel(this);
 
 		return pResult;
 	};
@@ -2683,7 +2679,7 @@ protected :
 		vdWork1.reserve(vScanLines.size());
 		vdWork2.reserve(vScanLines.size());
 
-		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
+		for (LONG i = 0; i<lWidth; i++)
 		{
 			TType *					pRedValue;
 			TType *					pGreenValue;
@@ -2810,12 +2806,9 @@ protected :
 			pBlueCurrentValue++;
 		};
 
-		if (pOutputScanLine)
-		{
-			pBitmap->SetScanLine(lLine, pOutputScanLine);
-			free(pOutputScanLine);
-			bResult = TRUE;
-		};
+		pBitmap->SetScanLine(lLine, pOutputScanLine);
+		free(pOutputScanLine);
+		bResult = TRUE;
 
 		return bResult;
 	};
@@ -3073,23 +3066,21 @@ public :
 		CColorBitmapT<TType> *	pResult;
 
 		pResult = new CColorBitmapT<TType>();
-		if (pResult)
+		if (!bEmpty)
 		{
-			if (!bEmpty)
-			{
-				pResult->m_lHeight		= m_lHeight;
-				pResult->m_lWidth		= m_lWidth;
-				pResult->m_Red.m_vPixels	= m_Red.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
-				pResult->m_Green.m_vPixels	= m_Green.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
-				pResult->m_Blue.m_vPixels	= m_Blue.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
-			};
-			pResult->m_bWord		= m_bWord;
-			pResult->m_bDouble		= m_bDouble;
-			pResult->m_bDWord		= m_bDWord;
-			pResult->m_bFloat		= m_bFloat;
-
-			pResult->CopyFrom(*this);
+			pResult->m_lHeight		= m_lHeight;
+			pResult->m_lWidth		= m_lWidth;
+			pResult->m_Red.m_vPixels	= m_Red.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
+			pResult->m_Green.m_vPixels	= m_Green.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
+			pResult->m_Blue.m_vPixels	= m_Blue.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
 		};
+		pResult->m_bWord		= m_bWord;
+		pResult->m_bDouble		= m_bDouble;
+		pResult->m_bDWord		= m_bDWord;
+		pResult->m_bFloat		= m_bFloat;
+
+		pResult->CopyFrom(*this);
+
 
 		return pResult;
 	};
@@ -3293,8 +3284,7 @@ public :
 		CMultiBitmap *		pResult;
 
 		pResult = new CColorMultiBitmapT<TType>();
-		if (pResult)
-			pResult->SetBitmapModel(this);
+		pResult->SetBitmapModel(this);
 
 		return pResult;
 	};
