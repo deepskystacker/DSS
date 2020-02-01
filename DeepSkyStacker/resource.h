@@ -734,6 +734,7 @@
 #define IDS_GENERIC_GRBG                5002
 #define IDS_GENERIC_GBRG                5003
 #define IDS_GENERIC                     5004
+#define IDS_AUTOMATIC					5005
 #define IDS_TIP_ADDSTAR                 6000
 #define IDS_TIP_REMOVESTAR              6001
 #define IDS_TIP_SETCOMET                6002

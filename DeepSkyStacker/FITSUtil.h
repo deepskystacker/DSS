@@ -26,71 +26,83 @@ public :
 	BOOL				m_bByteSwap;
 	CBitmapExtraInfo	m_ExtraInfo;
 	SYSTEMTIME			m_DateTime;
+	LONG				m_xBayerOffset;
+	LONG				m_yBayerOffset;
 
 public :
 	CFITSHeader();
 	virtual ~CFITSHeader();
 
 public :
-	LONG	Height()
+	inline LONG	Height() noexcept
 	{
 		return m_lHeight;
 	};
 
-	LONG	Width()
+	inline LONG	Width() noexcept
 	{
 		return m_lWidth;
 	};
 
-	LONG	BitPerChannels()
+	inline LONG	BitPerChannels() noexcept
 	{
 		return m_lBitsPerPixel;
 	};
 
-	LONG	NrChannels()
+	inline LONG	NrChannels() noexcept
 	{
 		return m_lNrChannels;
 	};
 
-	BOOL	IsFloat()
+	inline BOOL	IsFloat() noexcept
 	{
 		return m_bFloat;
 	};
 
-	BOOL	IsCFA()
+	inline BOOL	IsCFA() noexcept
 	{
 		return (m_CFAType != CFATYPE_NONE);
 	};
 
-	CFATYPE GetCFAType()
+	inline CFATYPE GetCFAType() noexcept
 	{
 		return m_CFAType;
 	};
 
-	BOOL	IsMaster()
+	inline BOOL	IsMaster() noexcept
 	{
 		return FALSE;
 	};
 
-	double	GetExposureTime()
+	inline double	GetExposureTime() noexcept
 	{
 		return m_fExposureTime;
 	};
 
-	LONG	GetISOSpeed()
+	inline LONG	GetISOSpeed() noexcept
 	{
 		return m_lISOSpeed;
 	};
 
-	LONG	GetGain()
+	inline LONG	GetGain() noexcept
 	{
 		return m_lGain;
 	};
 
-	SYSTEMTIME	GetDateTime()
+	inline SYSTEMTIME	GetDateTime() noexcept
 	{
 		return m_DateTime;
 	};
+
+	inline LONG	getXOffset() noexcept
+	{
+		return m_xBayerOffset;
+	}
+
+	inline LONG	getYOffset() noexcept
+	{
+		return m_yBayerOffset;
+	}
 };
 
 /* ------------------------------------------------------------------- */

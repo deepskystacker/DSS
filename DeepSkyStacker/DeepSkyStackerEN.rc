@@ -1338,6 +1338,7 @@ BEGIN
     IDS_GENERIC_GRBG        "Generic GRBG"
     IDS_GENERIC_GBRG        "Generic GBRG"
     IDS_GENERIC             "Generic"
+	IDS_AUTOMATIC			"Automatic (default RGGB)"
 END
 
 STRINGTABLE

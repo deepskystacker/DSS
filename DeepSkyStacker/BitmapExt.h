@@ -904,8 +904,11 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-inline BAYERCOLOR GetBayerColor(LONG x, LONG y, CFATYPE CFAType)
+inline BAYERCOLOR GetBayerColor(LONG baseX, LONG baseY, CFATYPE CFAType, LONG xOffset=0, LONG yOffset=0)
 {
+	LONG	x = baseX + xOffset;		// Apply the X Bayer offset if supplied
+	LONG	y = baseY + yOffset;		// Apply the Y Bayer offset if supplied
+
 	switch (CFAType)
 	{
 		case CFATYPE_NONE :
@@ -1032,30 +1035,44 @@ inline BAYERCOLOR GetBayerColor(LONG x, LONG y, CFATYPE CFAType)
 	return BAYER_UNKNOWN;
 };
 
-inline BOOL	IsBayerBlueLine(LONG y, CFATYPE CFAType)
+//
+// Add parameter yOffset to specify CFA Matrix offset to be applied (for FITS files)
+//
+inline BOOL	IsBayerBlueLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
 {
+	LONG y = baseY + yOffset;
+
 	if ((CFAType == CFATYPE_GRBG) || (CFAType == CFATYPE_RGGB))
 		return (y & 1) ? TRUE : FALSE;
 	else
 		return (y & 1) ? FALSE : TRUE;
 };
 
-inline BOOL IsBayerBlueColumn(LONG x, CFATYPE CFAType)
+//
+// Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
+//
+inline BOOL IsBayerBlueColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
 {
+	LONG x = baseX + xOffset;
+
 	if ((CFAType == CFATYPE_GBRG) || (CFAType == CFATYPE_RGGB))
 		return (x & 1) ? TRUE : FALSE;
 	else
 		return (x & 1) ? FALSE : TRUE;
 };
 
-inline BOOL IsBayerRedLine(LONG y, CFATYPE CFAType)
+
+inline BOOL IsBayerRedLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
 {
-	return !IsBayerBlueLine(y, CFAType);
+	return !IsBayerBlueLine(baseY, CFAType, yOffset);
 };
 
-inline BOOL IsBayerRedColumn(LONG x, CFATYPE CFAType)
+//
+// Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
+//
+inline BOOL IsBayerRedColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
 {
-	return !IsBayerBlueColumn(x, CFAType);
+	return !IsBayerBlueColumn(baseX, CFAType, xOffset);
 };
 
 void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue);
@@ -1155,6 +1172,8 @@ protected :
 	CFATRANSFORMATION	m_CFATransform;
 	CFATYPE				m_CFAType;
 	BOOL				m_bCYMG;
+	LONG				m_xBayerOffset;
+	LONG				m_yBayerOffset;
 
 protected :
 	virtual void SetCFA(BOOL bCFA) = 0;
@@ -1165,6 +1184,8 @@ public :
 		m_CFATransform = pCFABitmapInfo->m_CFATransform;
 		m_CFAType	   = pCFABitmapInfo->m_CFAType;
 		m_bCYMG		   = pCFABitmapInfo->m_bCYMG;
+		m_xBayerOffset = pCFABitmapInfo->m_xBayerOffset;
+		m_yBayerOffset = pCFABitmapInfo->m_yBayerOffset;
 	};
 
 public :
@@ -1173,6 +1194,8 @@ public :
 		m_CFATransform = CFAT_NONE;
 		m_CFAType	   = CFATYPE_NONE;
 		m_bCYMG		   = FALSE;
+		m_xBayerOffset = 0;
+		m_yBayerOffset = 0;
 	};
 
 	void	SetCFAType(CFATYPE Type)
@@ -1181,7 +1204,30 @@ public :
 		m_bCYMG = IsCYMGType(m_CFAType);
 	};
 
-	CFATYPE	GetCFAType()
+	CCFABitmapInfo& setXoffset(LONG xOffset) noexcept
+	{
+		m_xBayerOffset = xOffset;
+		return *this;
+	};
+
+	inline LONG xOffset() noexcept
+	{
+		return m_xBayerOffset;
+	}
+
+	CCFABitmapInfo& setYoffset(LONG yOffset) noexcept
+	{
+		m_yBayerOffset = yOffset;
+		return *this;
+	};
+
+
+	inline LONG yOffset() noexcept
+	{
+		return m_yBayerOffset;
+	}
+
+	inline CFATYPE	GetCFAType() noexcept
 	{
 		return m_CFAType;
 	};
@@ -1749,7 +1795,7 @@ private :
 		if (!pValue)
 			pValue = &m_vPixels[GetOffset(x, y)];
 
-		if (IsBayerBlueLine(y, m_CFAType))
+		if (IsBayerBlueLine(y, m_CFAType, m_yBayerOffset))
 		{
 			// Pixel between 2 blue pixel (horizontaly)
 			if (x > 0)
@@ -1763,7 +1809,7 @@ private :
 				lNrValues++;
 			};
 		}
-		else if (IsBayerBlueColumn(x, m_CFAType))
+		else if (IsBayerBlueColumn(x, m_CFAType, m_xBayerOffset))
 		{
 			// Pixel between 2 blue pixels (verticaly)
 			if (y > 0)
@@ -1812,7 +1858,7 @@ private :
 		if (!pValue)
 			pValue = &m_vPixels[GetOffset(x, y)];
 
-		if (IsBayerRedLine(y, m_CFAType))
+		if (IsBayerRedLine(y, m_CFAType, m_yBayerOffset))
 		{
 			// Pixel between 2 blue pixel (horizontaly)
 			if (x > 0)
@@ -1826,7 +1872,7 @@ private :
 				lNrValues++;
 			};
 		}
-		else if (IsBayerRedColumn(x, m_CFAType))
+		else if (IsBayerRedColumn(x, m_CFAType, m_xBayerOffset))
 		{
 			// Pixel between 2 blue pixels (verticaly)
 			if (y > 0)
@@ -1969,7 +2015,7 @@ public :
 
 	virtual BAYERCOLOR GetBayerColor(LONG x, LONG y)
 	{
-		return ::GetBayerColor(x, y, m_CFAType);
+		return ::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset);
 	};
 
 	virtual LONG	BitPerSample()
@@ -3404,6 +3450,8 @@ public :
 	SYSTEMTIME			m_DateTime;
 	SYSTEMTIME			m_InfoTime;
 	CBitmapExtraInfo	m_ExtraInfo;
+	LONG				m_xBayerOffset;
+	LONG				m_yBayerOffset;
 
 private :
 	void	CopyFrom(const CBitmapInfo & bi)
@@ -3428,6 +3476,8 @@ private :
 		m_DateTime		=bi.m_DateTime		;
 		m_InfoTime		=bi.m_InfoTime		;
 		m_ExtraInfo		=bi.m_ExtraInfo		;
+		m_xBayerOffset  =bi.m_xBayerOffset;
+		m_yBayerOffset = bi.m_yBayerOffset;
 	};
 
     void Init()
@@ -3446,6 +3496,8 @@ private :
         m_fAperture = 0.0;
         m_bFITS16bit = FALSE;
         m_DateTime.wYear = 0;
+		m_xBayerOffset = 0;
+		m_yBayerOffset = 0;
     }
 
 public :

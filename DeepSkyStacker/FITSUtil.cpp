@@ -24,6 +24,8 @@ CFITSHeader::CFITSHeader()
     m_lHeight = 0;
     m_lBitsPerPixel = 0;
     m_lNrChannels = 0;
+	m_xBayerOffset = 0;
+	m_yBayerOffset = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -338,9 +340,12 @@ BOOL CFITSReader::Open()
 		double			fExposureTime = 0;
 		CString			strMake;
 		CString			strISOSpeed;
+		CString			CFAPattern("");
 		LONG			lISOSpeed = 0;
 		LONG			lGain = -1;
-		LONG			cfaType;
+		LONG			cfaType = 0;
+		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
+
 		m_bDSI = FALSE;
 
 		bResult = ReadKey("SIMPLE", strSimple);
@@ -390,20 +395,129 @@ BOOL CFITSReader::Open()
 			if (ReadKey("BYTESWAP", strByteSwap))
 				m_bByteSwap = TRUE;
 
-			CString			strMosaic;
-
-			if (ReadKey("DSSCFATYPE", cfaType))
-				m_CFAType = (CFATYPE)cfaType;
-			else if (ReadKey("MOSAIC", strMosaic) && (strMake.Left(3) == _T("DSI")))
+			//
+			// If the user has set the CFA type to automatic, then we'll attempt to determine the correct
+			// CFA (aka Bayer) based on keywords in the FITS header.
+			// 
+			// Some Meade DSI cameras used the keyword MOSAIC with a value of "CMYG", when in fact the actual
+			// matrix used was CYGMCYMG. so that is special cased.
+			// 
+			// Otherwise the pattern used should be found in either the BAYERPAT or COLORTYP keyword.
+			// We define that BAYERPAT has precedence over COLORTYP
+			//
+			if (CFATYPE_AUTO == m_CFAType)
 			{
-				m_bDSI = TRUE;
-				// Special case of DSI FITS files
-				strMosaic.Trim();
-				//if (strMosaic == "CMYG")
-				//	m_CFAType = CFATYPE_CYGMCYMG;
-			};
+				//
+				// Special case for early Meade DSI cameras 
+				//
+				if (ReadKey("MOSAIC", CFAPattern) && (strMake.Left(3) == _T("DSI")))
+				{
+					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", CStringToChar(CFAPattern));
+
+					m_bDSI = TRUE;
+					// Special case of DSI FITS files
+					CFAPattern.Trim();
+					if (CFAPattern == "CMYG")
+						m_CFAType = CFATYPE_CYGMCYMG;
+				} 
+				//
+				// For everything else we attempt to use the BAYERPAT or COLORTYP keywords to establish
+				// the correct CFA (Bayer) pattern.
+				//
+				else
+				{
+					//
+					// If BAYERPAT keyword not found try to read COLORTYP, but only if BAYERPAT isn't found
+					// as BAYERPAT has precedence.
+					//
+					if (ReadKey("BAYERPAT", CFAPattern) || ReadKey("COLORTYP", CFAPattern))
+					{
+						ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", CStringToChar(CFAPattern));
+					}
+
+					CFAPattern.Trim();
+
+					if (CFAPattern != "")
+					{
+
+						if (CFAPattern == _T("BGGR")) m_CFAType = CFATYPE_BGGR;
+						if (CFAPattern == _T("GRBG")) m_CFAType = CFATYPE_GRBG;
+						if (CFAPattern == _T("GBRG")) m_CFAType = CFATYPE_GBRG;
+						if (CFAPattern == _T("RGGB")) m_CFAType = CFATYPE_RGGB;
+
+						if (CFAPattern == _T("CGMY")) m_CFAType = CFATYPE_CGMY;
+						if (CFAPattern == _T("CGYM")) m_CFAType = CFATYPE_CGYM;
+						if (CFAPattern == _T("CMGY")) m_CFAType = CFATYPE_CMGY;
+						if (CFAPattern == _T("CMYG")) m_CFAType = CFATYPE_CMYG;
+						if (CFAPattern == _T("CYMG")) m_CFAType = CFATYPE_CYMG;
+						if (CFAPattern == _T("CYGM")) m_CFAType = CFATYPE_CYGM;
+
+						if (CFAPattern == _T("GCMY")) m_CFAType = CFATYPE_GCMY;
+						if (CFAPattern == _T("GCYM")) m_CFAType = CFATYPE_GCYM;
+						if (CFAPattern == _T("GMCY")) m_CFAType = CFATYPE_GMCY;
+						if (CFAPattern == _T("GMYC")) m_CFAType = CFATYPE_GMYC;
+						if (CFAPattern == _T("GYCM")) m_CFAType = CFATYPE_GYCM;
+						if (CFAPattern == _T("GYMC")) m_CFAType = CFATYPE_GYMC;
+
+						if (CFAPattern == _T("MCGY")) m_CFAType = CFATYPE_MCGY;
+						if (CFAPattern == _T("MCYG")) m_CFAType = CFATYPE_MCYG;
+						if (CFAPattern == _T("MGYC")) m_CFAType = CFATYPE_MGYC;
+						if (CFAPattern == _T("MGCY")) m_CFAType = CFATYPE_MGCY;
+						if (CFAPattern == _T("MYGC")) m_CFAType = CFATYPE_MYGC;
+						if (CFAPattern == _T("MYCG")) m_CFAType = CFATYPE_MYCG;
+
+						if (CFAPattern == _T("YCGM")) m_CFAType = CFATYPE_YCGM;
+						if (CFAPattern == _T("YCMG")) m_CFAType = CFATYPE_YCMG;
+						if (CFAPattern == _T("YGMC")) m_CFAType = CFATYPE_YGMC;
+						if (CFAPattern == _T("YGCM")) m_CFAType = CFATYPE_YGCM;
+						if (CFAPattern == _T("YMCG")) m_CFAType = CFATYPE_YMCG;
+						if (CFAPattern == _T("YMGC")) m_CFAType = CFATYPE_YMGC;
+
+						if (CFAPattern == _T("CYGMCYMG")) m_CFAType = CFATYPE_CYGMCYMG;
+						if (CFAPattern == _T("GMCYMGCY")) m_CFAType = CFATYPE_GMCYMGCY;
+						if (CFAPattern == _T("CYMGCYGM")) m_CFAType = CFATYPE_CYMGCYGM;
+						if (CFAPattern == _T("MGCYGMCY")) m_CFAType = CFATYPE_MGCYGMCY;
+						if (CFAPattern == _T("GMYCGMCY")) m_CFAType = CFATYPE_GMYCGMCY;
+						if (CFAPattern == _T("YCGMCYGM")) m_CFAType = CFATYPE_YCGMCYGM;
+						if (CFAPattern == _T("GMCYGMYC")) m_CFAType = CFATYPE_GMCYGMYC;
+						if (CFAPattern == _T("CYGMYCGM")) m_CFAType = CFATYPE_CYGMYCGM;
+						if (CFAPattern == _T("YCGMYCMG")) m_CFAType = CFATYPE_YCGMYCMG;
+						if (CFAPattern == _T("GMYCMGYC")) m_CFAType = CFATYPE_GMYCMGYC;
+						if (CFAPattern == _T("YCMGYCGM")) m_CFAType = CFATYPE_YCMGYCGM;
+						if (CFAPattern == _T("MGYCGMYC")) m_CFAType = CFATYPE_MGYCGMYC;
+						if (CFAPattern == _T("MGYCMGCY")) m_CFAType = CFATYPE_MGYCMGCY;
+						if (CFAPattern == _T("YCMGCYMG")) m_CFAType = CFATYPE_YCMGCYMG;
+						if (CFAPattern == _T("MGCYMGYC")) m_CFAType = CFATYPE_MGCYMGYC;
+						if (CFAPattern == _T("CYMGYCMG")) m_CFAType = CFATYPE_CYMGYCMG;
+					}
+				}
+			}
+			
+			//
+			// If we get to here and CFAType is still CFATYPE_AUTO, then set to the default of CFATYPE_RGGB
+			// 
+			if (CFATYPE_AUTO == m_CFAType) m_CFAType = CFATYPE_RGGB;
 
 			CString			strDateTime;
+
+			//
+			// Now extract the "Bayer" matrix offset values:
+			// XBAYROFF (BAYOFFX) and 
+			// YBAYROFF (BAYOFFY) values 
+			//
+			// The non-bracketed keywords have precedence if both are present
+			// Both are zero unless set ...
+			//
+			if (ReadKey("XBAYROFF", xBayerOffset) || ReadKey("BAYOFFX", xBayerOffset))
+			{
+				ZTRACE_RUNTIME("CFA pattern X offset read from keyword XBAYROFF or BAYOFFX is %d", xBayerOffset);
+			}
+			if (ReadKey("YBAYROFF", yBayerOffset) || ReadKey("BAYOFFY", yBayerOffset))
+			{
+				ZTRACE_RUNTIME("CFA pattern X offset read from keyword YBAYROFF or BAYOFFY is %d", xBayerOffset);
+			}
+			m_xBayerOffset = xBayerOffset;
+			m_yBayerOffset = yBayerOffset;
 
 			memset(&m_DateTime, 0, sizeof(m_DateTime));
 			if (ReadKey("DATE-OBS", strDateTime))
@@ -968,6 +1082,11 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			{
 				m_pBitmap->SetCFA(TRUE);
 				pCFABitmapInfo->SetCFAType(m_CFAType);
+				//
+				// Set the CFA/Bayer offset information into the CFABitmapInfo
+				//
+				pCFABitmapInfo->setXoffset(m_xBayerOffset);
+				pCFABitmapInfo->setYoffset(m_yBayerOffset);
 				if (::IsCYMGType(m_CFAType))
 					pCFABitmapInfo->UseBilinear(TRUE);
 				else if (IsFITSRawBayer())
@@ -1107,10 +1226,9 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	}
 	if (bContinue && fits.Open())
 	{
-		if (fits.m_strMake.GetLength())
-			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), (LPCTSTR)fits.m_strMake);
-		else
-			BitmapInfo.m_strFileType	= _T("FITS");
+		if (fits.m_strMake.GetLength()) BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), (LPCTSTR)fits.m_strMake);
+		
+		BitmapInfo.m_strFileType	= _T("FITS");
 		BitmapInfo.m_strFileName	= szFileName;
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
@@ -1120,13 +1238,15 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_CFAType		= fits.GetCFAType();
 		BitmapInfo.m_bMaster		= fits.IsMaster();
 		BitmapInfo.m_lISOSpeed		= fits.GetISOSpeed();
-		BitmapInfo.m_lGain		= fits.GetGain();
+		BitmapInfo.m_lGain			= fits.GetGain();
 		BitmapInfo.m_bCanLoad		= TRUE;
 		BitmapInfo.m_fExposure		= fits.GetExposureTime();
 		BitmapInfo.m_bFITS16bit	    = (fits.NrChannels() == 1) &&
 									  ((fits.BitPerChannels() == 16) || (fits.BitPerChannels() == 32));
 		BitmapInfo.m_DateTime		= fits.GetDateTime();
 		BitmapInfo.m_ExtraInfo		= fits.m_ExtraInfo;
+		BitmapInfo.m_xBayerOffset	= fits.getXOffset();
+		BitmapInfo.m_yBayerOffset	= fits.getYOffset();
 		bResult = fits.Close();
 	};
 
@@ -1295,6 +1415,7 @@ void CFITSWriter::SetFormat(LONG lWidth, LONG lHeight, FITSFORMAT FITSFormat, CF
 
 BOOL CFITSWriter::Open()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	CString			strFileName = m_strFileName;
 
