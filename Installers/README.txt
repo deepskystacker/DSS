@@ -6,7 +6,7 @@ The main changes in this release are:
 
 2. Update libtiff to  4.1.0
 
-3. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).  The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.  If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic detection will be used.  You can override this be selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
+3. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).  The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.  If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic detection will be used.  You can override this by selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
 
 4. The exposure time is now correctly displayed for FITS files with the exposure time in microseconds (keyword EXPOINUS). 
 
