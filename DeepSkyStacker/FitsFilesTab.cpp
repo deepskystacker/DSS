@@ -22,8 +22,6 @@ static void	FillDSLRList(std::vector<CDSLR> & vDSLRs)
 	// Fill the four generic DSLR bayer pattern
 	CString				strValue;
 
-	strValue.LoadString(IDS_AUTOMATIC);
-	vDSLRs.emplace_back(strValue, CFATYPE_AUTO);
 	strValue.LoadString(IDS_GENERIC_RGGB);
 	vDSLRs.emplace_back(strValue, CFATYPE_RGGB);
 	strValue.LoadString(IDS_GENERIC_BGGR);
@@ -455,7 +453,6 @@ void CFitsFilesTab::UpdateBayerPattern()
 			m_BayerPattern.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_PATTERN_GRBG)));
 			break;
 		case CFATYPE_RGGB :
-		case CFATYPE_AUTO :
 			m_BayerPattern.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_PATTERN_RGGB)));
 			break;
 		case CFATYPE_CYGMCYMG :

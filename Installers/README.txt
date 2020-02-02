@@ -1,4 +1,14 @@
-﻿Welcome to DeepSkyStacker 4.2.3
+﻿Welcome to DeepSkyStacker 4.2.4
+
+The main changes in this release are:
+
+1. Fix to display Exposure, f-Stop, and ISO setting from EXIF tags in TIFF files.
+
+2. Update libtiff to  4.1.0
+
+3. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).  RAW/FITS/DDP settings are change.  If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic detection will be used.  You can override this be selecting this option and manually selecting the CFA pattern to be used. 
+
+Welcome to DeepSkyStacker 4.2.3
 
 ************** IF YOU INSTALLED 4.2.3 BETA 1 **************
   When you next use DeepSkyStacker, please restore all

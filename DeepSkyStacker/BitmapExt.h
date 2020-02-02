@@ -498,7 +498,6 @@ typedef enum CFATYPE
 	CFATYPE_GRBG		= 2,
 	CFATYPE_GBRG		= 3,
 	CFATYPE_RGGB		= 4,
-	CFATYPE_AUTO        = 9,
 
 	// A = Cyan		B = Green		C = Magenta		D = Yellow
 	CFATYPE_CGMY		= 0xABCD,
@@ -1722,7 +1721,7 @@ private :
 
 	TType	GetPrimary(LONG x, LONG y, const COLORREF16 & crColor)
 	{
-		switch (::GetBayerColor(x, y, m_CFAType))
+		switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 		{
 		case BAYER_RED :
 			return crColor.red;
@@ -1740,7 +1739,7 @@ private :
 
 	double	GetPrimary(LONG x, LONG y, double fRed, double fGreen, double fBlue)
 	{
-		switch (::GetBayerColor(x, y, m_CFAType))
+		switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 		{
 		case BAYER_RED :
 			return fRed;
@@ -1925,7 +1924,7 @@ private :
 		for (LONG i = max(0L, x-1);i<=min(m_lWidth-1, x+1);i++)
 			for (LONG j = max(0L, y-1);j<=min(m_lHeight-1, y+1);j++)
 			{
-				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType));
+				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset));
 				pfValues[lIndice]  += m_vPixels[GetOffset(i, j)];
 				lNrValues[lIndice] ++;
 			};
@@ -2155,7 +2154,7 @@ public :
 				bResult = TRUE;
 				TType *		pValue = &(m_vPixels[GetOffset(i, j)]);
 
-				switch (::GetBayerColor(i, j, m_CFAType))
+				switch (::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 				{
 				case BAYER_RED :
 					fRed	= (*pValue)/m_fMultiplier;
@@ -2191,7 +2190,7 @@ public :
 				else
 				{
 					TType *			pValue = &(m_vPixels[GetOffset(i, j)]);
-					switch (::GetBayerColor(i, j, m_CFAType))
+					switch (::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 					{
 					case BAYER_RED :
 						fRed	= (*pValue)/m_fMultiplier;

@@ -2,6 +2,7 @@
 #include "FITSUtil.h"
 #include <float.h>
 #include <cmath>
+#include <map>
 #include "Registry.h"
 #include "Workspace.h"
 #include "Utils.h"
@@ -17,6 +18,7 @@ CFITSHeader::CFITSHeader()
 	m_lISOSpeed     = 0;
 	m_lGain         = -1;
 	m_CFAType		= CFATYPE_NONE;
+	m_Format		= FF_UNKNOWN;
 	m_bByteSwap		= FALSE;
 	m_bSigned		= FALSE;
 	m_DateTime.wYear= 0;
@@ -27,6 +29,7 @@ CFITSHeader::CFITSHeader()
     m_lNrChannels = 0;
 	m_xBayerOffset = 0;
 	m_yBayerOffset = 0;
+	
 };
 
 /* ------------------------------------------------------------------- */
@@ -89,7 +92,7 @@ inline double AdjustColor(double fColor)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsFITSisRaw()
+BOOL	IsFITSRaw()
 {
 	CWorkspace			workspace;
 	DWORD				dwFitsisRaw = 0;
@@ -327,7 +330,7 @@ BOOL CFITSReader::Open()
 	BOOL				bResult = FALSE;
 	int					nStatus = 0;
 
-	Close();
+	// Close();
 	fits_open_diskfile(&m_fits, CStringToChar(m_strFileName), READONLY, &nStatus);
 	if (!nStatus && m_fits)
 	{
@@ -344,7 +347,6 @@ BOOL CFITSReader::Open()
 		CString			CFAPattern("");
 		LONG			lISOSpeed = 0;
 		LONG			lGain = -1;
-		LONG			cfaType = 0;
 		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
 
 		m_bDSI = FALSE;
@@ -357,6 +359,10 @@ BOOL CFITSReader::Open()
 			ReadAllKeys();
 
 			bResult = ReadKey("INSTRUME", strMake);
+
+			//
+			// Attempt to get the exposure time
+			//
 			bResult = ReadKey("EXPTIME", fExposureTime, strComment);
 			if (!bResult)
 				bResult = ReadKey("EXPOSURE", fExposureTime, strComment);
@@ -370,6 +376,14 @@ BOOL CFITSReader::Open()
 					fExposureTime /= 1000.0;
 				};
 			};
+			// 
+			// Just to be awkward, some software (e.g. ZWO ASICAP) supplies the exposure
+			// time in microseconds!
+			//
+			if (ReadKey("EXPOINUS", fExposureTime))
+			{
+				fExposureTime /= 1000000.0;
+			}
 
 			bResult = ReadKey("ISOSPEED", strISOSpeed);
 			if (bResult)
@@ -397,109 +411,102 @@ BOOL CFITSReader::Open()
 				m_bByteSwap = TRUE;
 
 			//
-			// If the user has set the CFA type to automatic, then we'll attempt to determine the correct
-			// CFA (aka Bayer) based on keywords in the FITS header.
+			// One time action to create a mapping between the character name of the CFA
+			// pattern and our internal CFA type 
+			// 
+			static std::map<CString, CFATYPE> bayerMap;
+			if (bayerMap.empty())
+			{
+				bayerMap.emplace("BGGR", CFATYPE_BGGR);
+				bayerMap.emplace("GRBG", CFATYPE_GRBG);
+				bayerMap.emplace("GBRG", CFATYPE_GBRG);
+				bayerMap.emplace("RGGB", CFATYPE_RGGB);
+
+				bayerMap.emplace("CGMY", CFATYPE_CGMY);
+				bayerMap.emplace("CGYM", CFATYPE_CGYM);
+				bayerMap.emplace("CMGY", CFATYPE_CMGY);
+				bayerMap.emplace("CMYG", CFATYPE_CMYG);
+				bayerMap.emplace("CYMG", CFATYPE_CYMG);
+				bayerMap.emplace("CYGM", CFATYPE_CYGM);
+
+				bayerMap.emplace("GCMY", CFATYPE_GCMY);
+				bayerMap.emplace("GCYM", CFATYPE_GCYM);
+				bayerMap.emplace("GMCY", CFATYPE_GMCY);
+				bayerMap.emplace("GMYC", CFATYPE_GMYC);
+				bayerMap.emplace("GYCM", CFATYPE_GYCM);
+				bayerMap.emplace("GYMC", CFATYPE_GYMC);
+
+				bayerMap.emplace("MCGY", CFATYPE_MCGY);
+				bayerMap.emplace("MCYG", CFATYPE_MCYG);
+				bayerMap.emplace("MGYC", CFATYPE_MGYC);
+				bayerMap.emplace("MGCY", CFATYPE_MGCY);
+				bayerMap.emplace("MYGC", CFATYPE_MYGC);
+				bayerMap.emplace("MYCG", CFATYPE_MYCG);
+
+				bayerMap.emplace("YCGM", CFATYPE_YCGM);
+				bayerMap.emplace("YCMG", CFATYPE_YCMG);
+				bayerMap.emplace("YGMC", CFATYPE_YGMC);
+				bayerMap.emplace("YGCM", CFATYPE_YGCM);
+				bayerMap.emplace("YMCG", CFATYPE_YMCG);
+				bayerMap.emplace("YMGC", CFATYPE_YMGC);
+
+				bayerMap.emplace("CYGMCYMG", CFATYPE_CYGMCYMG);
+				bayerMap.emplace("GMCYMGCY", CFATYPE_GMCYMGCY);
+				bayerMap.emplace("CYMGCYGM", CFATYPE_CYMGCYGM);
+				bayerMap.emplace("MGCYGMCY", CFATYPE_MGCYGMCY);
+				bayerMap.emplace("GMYCGMCY", CFATYPE_GMYCGMCY);
+				bayerMap.emplace("YCGMCYGM", CFATYPE_YCGMCYGM);
+				bayerMap.emplace("GMCYGMYC", CFATYPE_GMCYGMYC);
+				bayerMap.emplace("CYGMYCGM", CFATYPE_CYGMYCGM);
+				bayerMap.emplace("YCGMYCMG", CFATYPE_YCGMYCMG);
+				bayerMap.emplace("GMYCMGYC", CFATYPE_GMYCMGYC);
+				bayerMap.emplace("YCMGYCGM", CFATYPE_YCMGYCGM);
+				bayerMap.emplace("MGYCGMYC", CFATYPE_MGYCGMYC);
+				bayerMap.emplace("MGYCMGCY", CFATYPE_MGYCMGCY);
+				bayerMap.emplace("YCMGCYMG", CFATYPE_YCMGCYMG);
+				bayerMap.emplace("MGCYMGYC", CFATYPE_MGCYMGYC);
+				bayerMap.emplace("CYMGYCMG", CFATYPE_CYMGYCMG);
+			}
+
+			//
+			// Attempt to determine the correct CFA (aka Bayer matrix) from keywords in the FITS header.
 			// 
 			// Some Meade DSI cameras used the keyword MOSAIC with a value of "CMYG", when in fact the actual
 			// matrix used was CYGMCYMG. so that is special cased.
 			// 
-			// Otherwise the pattern used should be found in either the BAYERPAT or COLORTYP keyword.
-			// We define that BAYERPAT has precedence over COLORTYP
+			if (ReadKey("MOSAIC", CFAPattern) && (strMake.Left(3) == _T("DSI")))
+			{
+				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", CStringToChar(CFAPattern));
+
+				m_bDSI = TRUE;
+				// Special case of DSI FITS files
+				CFAPattern.Trim();
+				if (CFAPattern == "CMYG")
+					m_CFAType = CFATYPE_CYGMCYMG;
+			} 
 			//
-			if (CFATYPE_AUTO == m_CFAType)
+			// For everything else we attempt to use the BAYERPAT or COLORTYP keywords to establish
+			// the correct CFA (Bayer) pattern.
+			//
+			else
 			{
 				//
-				// Special case for early Meade DSI cameras 
+				// If BAYERPAT keyword not found try to read COLORTYP, but only if BAYERPAT isn't found
+				// as BAYERPAT has precedence.
 				//
-				if (ReadKey("MOSAIC", CFAPattern) && (strMake.Left(3) == _T("DSI")))
+				if (ReadKey("BAYERPAT", CFAPattern) || ReadKey("COLORTYP", CFAPattern))
 				{
-					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", CStringToChar(CFAPattern));
+					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", CStringToChar(CFAPattern));
+				}
 
-					m_bDSI = TRUE;
-					// Special case of DSI FITS files
-					CFAPattern.Trim();
-					if (CFAPattern == "CMYG")
-						m_CFAType = CFATYPE_CYGMCYMG;
-				} 
-				//
-				// For everything else we attempt to use the BAYERPAT or COLORTYP keywords to establish
-				// the correct CFA (Bayer) pattern.
-				//
-				else
+				CFAPattern.Trim();
+
+				if (CFAPattern != "")
 				{
-					//
-					// If BAYERPAT keyword not found try to read COLORTYP, but only if BAYERPAT isn't found
-					// as BAYERPAT has precedence.
-					//
-					if (ReadKey("BAYERPAT", CFAPattern) || ReadKey("COLORTYP", CFAPattern))
-					{
-						ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", CStringToChar(CFAPattern));
-					}
-
-					CFAPattern.Trim();
-
-					if (CFAPattern != "")
-					{
-
-						if (CFAPattern == _T("BGGR")) m_CFAType = CFATYPE_BGGR;
-						if (CFAPattern == _T("GRBG")) m_CFAType = CFATYPE_GRBG;
-						if (CFAPattern == _T("GBRG")) m_CFAType = CFATYPE_GBRG;
-						if (CFAPattern == _T("RGGB")) m_CFAType = CFATYPE_RGGB;
-
-						if (CFAPattern == _T("CGMY")) m_CFAType = CFATYPE_CGMY;
-						if (CFAPattern == _T("CGYM")) m_CFAType = CFATYPE_CGYM;
-						if (CFAPattern == _T("CMGY")) m_CFAType = CFATYPE_CMGY;
-						if (CFAPattern == _T("CMYG")) m_CFAType = CFATYPE_CMYG;
-						if (CFAPattern == _T("CYMG")) m_CFAType = CFATYPE_CYMG;
-						if (CFAPattern == _T("CYGM")) m_CFAType = CFATYPE_CYGM;
-
-						if (CFAPattern == _T("GCMY")) m_CFAType = CFATYPE_GCMY;
-						if (CFAPattern == _T("GCYM")) m_CFAType = CFATYPE_GCYM;
-						if (CFAPattern == _T("GMCY")) m_CFAType = CFATYPE_GMCY;
-						if (CFAPattern == _T("GMYC")) m_CFAType = CFATYPE_GMYC;
-						if (CFAPattern == _T("GYCM")) m_CFAType = CFATYPE_GYCM;
-						if (CFAPattern == _T("GYMC")) m_CFAType = CFATYPE_GYMC;
-
-						if (CFAPattern == _T("MCGY")) m_CFAType = CFATYPE_MCGY;
-						if (CFAPattern == _T("MCYG")) m_CFAType = CFATYPE_MCYG;
-						if (CFAPattern == _T("MGYC")) m_CFAType = CFATYPE_MGYC;
-						if (CFAPattern == _T("MGCY")) m_CFAType = CFATYPE_MGCY;
-						if (CFAPattern == _T("MYGC")) m_CFAType = CFATYPE_MYGC;
-						if (CFAPattern == _T("MYCG")) m_CFAType = CFATYPE_MYCG;
-
-						if (CFAPattern == _T("YCGM")) m_CFAType = CFATYPE_YCGM;
-						if (CFAPattern == _T("YCMG")) m_CFAType = CFATYPE_YCMG;
-						if (CFAPattern == _T("YGMC")) m_CFAType = CFATYPE_YGMC;
-						if (CFAPattern == _T("YGCM")) m_CFAType = CFATYPE_YGCM;
-						if (CFAPattern == _T("YMCG")) m_CFAType = CFATYPE_YMCG;
-						if (CFAPattern == _T("YMGC")) m_CFAType = CFATYPE_YMGC;
-
-						if (CFAPattern == _T("CYGMCYMG")) m_CFAType = CFATYPE_CYGMCYMG;
-						if (CFAPattern == _T("GMCYMGCY")) m_CFAType = CFATYPE_GMCYMGCY;
-						if (CFAPattern == _T("CYMGCYGM")) m_CFAType = CFATYPE_CYMGCYGM;
-						if (CFAPattern == _T("MGCYGMCY")) m_CFAType = CFATYPE_MGCYGMCY;
-						if (CFAPattern == _T("GMYCGMCY")) m_CFAType = CFATYPE_GMYCGMCY;
-						if (CFAPattern == _T("YCGMCYGM")) m_CFAType = CFATYPE_YCGMCYGM;
-						if (CFAPattern == _T("GMCYGMYC")) m_CFAType = CFATYPE_GMCYGMYC;
-						if (CFAPattern == _T("CYGMYCGM")) m_CFAType = CFATYPE_CYGMYCGM;
-						if (CFAPattern == _T("YCGMYCMG")) m_CFAType = CFATYPE_YCGMYCMG;
-						if (CFAPattern == _T("GMYCMGYC")) m_CFAType = CFATYPE_GMYCMGYC;
-						if (CFAPattern == _T("YCMGYCGM")) m_CFAType = CFATYPE_YCMGYCGM;
-						if (CFAPattern == _T("MGYCGMYC")) m_CFAType = CFATYPE_MGYCGMYC;
-						if (CFAPattern == _T("MGYCMGCY")) m_CFAType = CFATYPE_MGYCMGCY;
-						if (CFAPattern == _T("YCMGCYMG")) m_CFAType = CFATYPE_YCMGCYMG;
-						if (CFAPattern == _T("MGCYMGYC")) m_CFAType = CFATYPE_MGCYMGYC;
-						if (CFAPattern == _T("CYMGYCMG")) m_CFAType = CFATYPE_CYMGYCMG;
-					}
+					auto it = bayerMap.find(CFAPattern);
+					if (bayerMap.end() != it) m_CFAType = it->second;
 				}
 			}
-			
-			//
-			// If we get to here and CFAType is still CFATYPE_AUTO, then set to the default of CFATYPE_RGGB
-			// 
-			if (CFATYPE_AUTO == m_CFAType) m_CFAType = CFATYPE_RGGB;
-
-			CString			strDateTime;
 
 			//
 			// Now extract the "Bayer" matrix offset values:
@@ -519,6 +526,8 @@ BOOL CFITSReader::Open()
 			}
 			m_xBayerOffset = std::lround(xBayerOffset);
 			m_yBayerOffset = std::lround(yBayerOffset);
+
+			CString			strDateTime;
 
 			memset(&m_DateTime, 0, sizeof(m_DateTime));
 			if (ReadKey("DATE-OBS", strDateTime))
@@ -995,7 +1004,9 @@ public :
 		m_ppBitmap = ppBitmap;
 	};
 
-	virtual ~CFITSReadInMemoryBitmap() {};
+	virtual ~CFITSReadInMemoryBitmap() { Close(); };
+
+	virtual BOOL Close() { return OnClose(); };
 
 	virtual BOOL	OnOpen();
 	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
@@ -1069,10 +1080,24 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		if ((m_CFAType != CFATYPE_NONE) && (m_lNrChannels != 1))// || (m_lBitsPerPixel != 16)))
 			m_CFAType = CFATYPE_NONE;
 
-		if (IsFITSisRaw() &&
+		//
+		// If the user has explicitly set that this FITS file is a Bayer format RAW file,
+		// then the user will also have explicitly set the Bayer pattern that's to be used.
+		// In this case we use that and set the Bayer offsets (if any) to zero
+		//
+		bool isRaw = IsFITSRaw();
+		if (isRaw &&
 			(m_lNrChannels == 1) &&
 			((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
+		{
 			m_CFAType = GetFITSCFATYPE();
+			m_xBayerOffset = 0;
+			m_yBayerOffset = 0;
+		}
+
+		//
+		// If this wasn't set by the user, then use the CFA from the FITS header if set.
+		//		
 
 		if (m_CFAType != CFATYPE_NONE)
 		{
@@ -1137,9 +1162,9 @@ BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 	{
 		if (m_lNrChannels == 1)
 		{
-			if (m_CFAType != CFAT_NONE)
+			if (m_CFAType != CFATYPE_NONE)
 			{
-				switch (::GetBayerColor(lX, lY, m_CFAType))
+				switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 				{
 				case BAYER_BLUE :
 					fRed *= m_fBlueRatio;
@@ -1171,6 +1196,7 @@ BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 
 BOOL CFITSReadInMemoryBitmap::OnClose()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_pBitmap)
@@ -1187,6 +1213,7 @@ BOOL CFITSReadInMemoryBitmap::OnClose()
 
 BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	CFITSReadInMemoryBitmap	fits(szFileName, ppBitmap, pProgress);
 
@@ -1195,8 +1222,7 @@ BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 		bResult = fits.Open();
 		if (bResult)
 			bResult = fits.Read();
-		if (bResult)
-			bResult = fits.Close();
+		// if (bResult) bResult = fits.Close();
 	};
 
 	return bResult;
@@ -1206,6 +1232,7 @@ BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 
 BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	BOOL					bContinue = TRUE;
 	CFITSReader				fits(szFileName, nullptr);
@@ -1248,7 +1275,7 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_ExtraInfo		= fits.m_ExtraInfo;
 		BitmapInfo.m_xBayerOffset	= fits.getXOffset();
 		BitmapInfo.m_yBayerOffset	= fits.getYOffset();
-		bResult = fits.Close();
+		bResult = true;
 	};
 
 	return bResult;
@@ -1368,6 +1395,7 @@ void	CFITSWriter::WriteAllKeys()
 
 void CFITSWriter::SetFormat(LONG lWidth, LONG lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType)
 {
+	ZFUNCTRACE_RUNTIME();
 	m_CFAType	= CFAType;
 
 	m_lWidth	= lWidth;
@@ -1420,7 +1448,7 @@ BOOL CFITSWriter::Open()
 	BOOL			bResult = FALSE;
 	CString			strFileName = m_strFileName;
 
-	Close();
+	// Close();
 
 	// Create a new fits file
 	int				nStatus = 0;
@@ -1739,8 +1767,11 @@ public :
 		m_pMemoryBitmap = pBitmap;
 	};
 
+	virtual BOOL Close() { return OnClose(); }
+
 	virtual ~CFITSWriteFromMemoryBitmap()
 	{
+		Close();
 	};
 
 	virtual BOOL	OnOpen();
@@ -1752,6 +1783,7 @@ public :
 
 FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	FITSFORMAT						Result = FF_UNKNOWN;
 	C24BitColorBitmap *			p24Color = dynamic_cast<C24BitColorBitmap *>(pBitmap);
 	C48BitColorBitmap *			p48Color = dynamic_cast<C48BitColorBitmap *>(pBitmap);
@@ -1786,6 +1818,7 @@ FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap
 
 BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 	LONG			lWidth,
 					lHeight;
@@ -1852,6 +1885,7 @@ BOOL CFITSWriteFromMemoryBitmap::OnClose()
 BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	if (pBitmap)
@@ -1872,7 +1906,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 		if (fits.Open())
 		{
 			bResult = fits.Write();
-			fits.Close();
+			// fits.Close();
 		};
 	};
 
@@ -1893,6 +1927,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	if (pBitmap)
@@ -1912,7 +1947,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 		if (fits.Open())
 		{
 			bResult = fits.Write();
-			fits.Close();
+			// fits.Close();
 		};
 	};
 
@@ -1931,6 +1966,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	return GetFITSInfo(szFileName, BitmapInfo);
 };
 
@@ -1938,6 +1974,7 @@ BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 	CBitmapInfo			BitmapInfo;
 

@@ -1385,7 +1385,6 @@ BEGIN
     IDS_GENERIC_GRBG        "Allgemeines GRBG"
     IDS_GENERIC_GBRG        "Allgemeines GBRG"
     IDS_GENERIC             "Allgemein"
-	IDS_AUTOMATIC			"Automatisch (Standard RGGB)"
 END
 
 STRINGTABLE 

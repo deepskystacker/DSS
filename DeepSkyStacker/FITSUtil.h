@@ -148,7 +148,7 @@ public :
 
 	BOOL	Open();
 	BOOL	Read();
-	BOOL	Close();
+	virtual BOOL	Close();
 
 	virtual BOOL	OnOpen() { return TRUE; };
 	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return FALSE;};
