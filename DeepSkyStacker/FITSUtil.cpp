@@ -1,6 +1,7 @@
 #include <stdafx.h>
 #include "FITSUtil.h"
 #include <float.h>
+#include <cmath>
 #include "Registry.h"
 #include "Workspace.h"
 #include "Utils.h"
@@ -516,8 +517,8 @@ BOOL CFITSReader::Open()
 			{
 				ZTRACE_RUNTIME("CFA pattern X offset read from keyword YBAYROFF or BAYOFFY is %d", xBayerOffset);
 			}
-			m_xBayerOffset = xBayerOffset;
-			m_yBayerOffset = yBayerOffset;
+			m_xBayerOffset = std::lround(xBayerOffset);
+			m_yBayerOffset = std::lround(yBayerOffset);
 
 			memset(&m_DateTime, 0, sizeof(m_DateTime));
 			if (ReadKey("DATE-OBS", strDateTime))
