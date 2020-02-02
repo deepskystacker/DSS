@@ -383,18 +383,18 @@ void CFitsFilesTab::UpdateControls()
 		bCYMG = ::IsCYMGType(m_vDSLRs[lIndice].m_CFAType);
 
 		m_Brightness.EnableWindow(!bCYMG);
-		m_RedScale.EnableWindow(!bCYMG && bAllEnabled);
-		m_BlueScale.EnableWindow(!bCYMG && bAllEnabled);
+		m_RedScale.EnableWindow(!bCYMG);
+		m_BlueScale.EnableWindow(!bCYMG);
 
-		m_RawBayer.EnableWindow(!bCYMG && bAllEnabled);
-		m_SuperPixels.EnableWindow(!bCYMG && bAllEnabled);
-		m_AHD.EnableWindow(!bCYMG && bAllEnabled);
+		m_RawBayer.EnableWindow(!bCYMG);
+		m_SuperPixels.EnableWindow(!bCYMG);
+		m_AHD.EnableWindow(!bCYMG);
 
 		GetDlgItem(IDC_TEXT2)->EnableWindow(!bCYMG);
-		GetDlgItem(IDC_TEXT3)->EnableWindow(!bCYMG && bAllEnabled);
-		GetDlgItem(IDC_TEXT4)->EnableWindow(!bCYMG && bAllEnabled);
-		GetDlgItem(IDC_TEXT6)->EnableWindow(!bCYMG && bAllEnabled);
-		GetDlgItem(IDC_TEXT7)->EnableWindow(!bCYMG && bAllEnabled);
+		GetDlgItem(IDC_TEXT3)->EnableWindow(!bCYMG);
+		GetDlgItem(IDC_TEXT4)->EnableWindow(!bCYMG);
+		GetDlgItem(IDC_TEXT6)->EnableWindow(!bCYMG);
+		GetDlgItem(IDC_TEXT7)->EnableWindow(!bCYMG);
 		if (bCYMG)
 		{
 			if (m_RawBayer.GetCheck() || m_SuperPixels.GetCheck() || m_AHD.GetCheck())
@@ -409,22 +409,22 @@ void CFitsFilesTab::UpdateControls()
 	else
 	{
 		m_Brightness.EnableWindow(TRUE);
-		m_RedScale.EnableWindow(bAllEnabled);
-		m_BlueScale.EnableWindow(bAllEnabled);
-		m_RawBayer.EnableWindow(bAllEnabled);
-		m_SuperPixels.EnableWindow(bAllEnabled);
-		m_AHD.EnableWindow(bAllEnabled);
+		m_RedScale.EnableWindow(TRUE);
+		m_BlueScale.EnableWindow(TRUE);
+		m_RawBayer.EnableWindow(TRUE);
+		m_SuperPixels.EnableWindow(TRUE);
+		m_AHD.EnableWindow(TRUE);
 		GetDlgItem(IDC_TEXT2)->EnableWindow(TRUE);
-		GetDlgItem(IDC_TEXT3)->EnableWindow(bAllEnabled);
-		GetDlgItem(IDC_TEXT4)->EnableWindow(bAllEnabled);
-		GetDlgItem(IDC_TEXT6)->EnableWindow(bAllEnabled);
-		GetDlgItem(IDC_TEXT7)->EnableWindow(bAllEnabled);
+		GetDlgItem(IDC_TEXT3)->EnableWindow(TRUE);
+		GetDlgItem(IDC_TEXT4)->EnableWindow(TRUE);
+		GetDlgItem(IDC_TEXT6)->EnableWindow(TRUE);
+		GetDlgItem(IDC_TEXT7)->EnableWindow(TRUE);
 	};
 
 	m_DSLR.EnableWindow(bAllEnabled);
-	m_Bilinear.EnableWindow(bAllEnabled);
-	GetDlgItem(IDC_TEXT1)->EnableWindow(bAllEnabled);
-	GetDlgItem(IDC_TEXT5)->EnableWindow(bAllEnabled);
+	m_Bilinear.EnableWindow(TRUE);
+	GetDlgItem(IDC_TEXT1)->EnableWindow(TRUE);
+	GetDlgItem(IDC_TEXT5)->EnableWindow(TRUE);
 
 	m_BayerPattern.ShowWindow(bAllEnabled ? SW_SHOW : SW_HIDE);
 
