@@ -263,142 +263,166 @@ BOOL CTIFFReader::Read()
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
-	if (m_tiff)
+	if (m_tiff) do
 	{
-		tmsize_t		szScanLineSize;
-		VOID *			pScanLine;
+		bResult = TRUE;
+		tmsize_t		scanLineSize;
+		tdata_t			buff = nullptr, curr = nullptr;
 
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, h);
 
-		szScanLineSize = TIFFScanlineSize(m_tiff);
-		ZTRACE_DEVELOP("TIFF Scan Line Size %zu", szScanLineSize);
+		scanLineSize = TIFFScanlineSize(m_tiff);
+		ZTRACE_DEVELOP("TIFF Scan Line Size %zu", scanLineSize);
 		ZTRACE_DEVELOP("TIFF spp=%d, bpp=%d, w=%d, h=%d", spp, bpp, w, h);
 
-		pScanLine = (VOID *)malloc(szScanLineSize);
-		if (pScanLine)
+		//
+		// Allocate enough to hold the entire image
+		//
+		tmsize_t buffSize = scanLineSize * h;
+		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
+		curr = buff = (tdata_t)malloc(h * scanLineSize);
+		if (nullptr == buff)
 		{
-			bResult = TRUE;
-			for (LONG j = 0;j<h && bResult;j++)
+			bResult = FALSE;
+			break;
+		}
+		tdata_t limit = (byte*)buff + (1 + (h*scanLineSize));		// One past end of buffer
+		//
+		// The code used to read scan line by scan line and decode each individually
+		// Now try to inhale the whole image in as few calls as possible using
+		// TIFFReadEncodedStrip
+		//
+		auto stripCount = TIFFNumberOfStrips(m_tiff);
+		ZTRACE_RUNTIME("Number of strips is %u", stripCount);
+
+		for (int i = 0; i < stripCount; i++)
+		{
+			auto count = TIFFReadEncodedStrip(m_tiff, i, curr, -1);
+			if (-1 == count)
 			{
-				BYTE *  pBYTELine	= (BYTE *)pScanLine;
-				WORD *	pWORDLine	= (WORD *)pScanLine;
-				DWORD * pDWORDLine	= (DWORD *)pScanLine;
-				float *	pFLOATLine	= (float *)pScanLine;
+				ZTRACE_RUNTIME("TIFFReadEncodedStrip returned an error");
+				bResult = FALSE;
+				break;
+			}
+			curr = static_cast<byte*>(curr) + count;		// Increment current buffer pointer
+			ZASSERT(curr < limit);
+		}
+		ZTRACE_DEVELOP("limit - curr = %d", static_cast<byte*>(limit) - static_cast<byte*>(curr));
 
-				int			nResult;
+		if (!bResult) break;
 
-				nResult = TIFFReadScanline(m_tiff, pScanLine, j);
-				if (1 != nResult)
+		BYTE *  pBYTELine = (BYTE *)buff;
+		WORD *	pWORDLine = (WORD *)buff;
+		DWORD * pDWORDLine = (DWORD *)buff;
+		float *	pFLOATLine = (float *)buff;
+
+		for (LONG j = 0; j < h && bResult; j++)
+		{
+
+			for (LONG i = 0; i < w && bResult; i++)
+			{
+				double fRed = 0;
+				double fGreen = 0;
+				double fBlue = 0;
+
+				if (spp == 1)
 				{
-					ZTRACE_RUNTIME("TIFFReadScanLine returned an error");
-					bResult = false;
-				}
-
-				for (LONG i = 0;i<w && bResult;i++)
-				{
-                    double fRed = 0;
-                    double fGreen = 0;
-                    double fBlue = 0;
-
-					if (spp == 1)
+					if (bpp == 8)
 					{
-						if (bpp == 8)
-						{
-							fRed	= *(pBYTELine);
-							fGreen	= *(pBYTELine);
-							fBlue	= *(pBYTELine);
-							pBYTELine ++;
-						}
-						else if (bpp == 16)
-						{
-							fRed	= (double)(*(pWORDLine))/256.0;
-							fGreen	= (double)(*(pWORDLine))/256.0;
-							fBlue	= (double)(*(pWORDLine))/256.0;
-							pWORDLine ++;
-						}
-						else if (bpp == 32)
-						{
-							if (sampleformat == SAMPLEFORMAT_IEEEFP)
-							{
-								fRed	= (double)(*(pFLOATLine));
-								fGreen	= (double)(*(pFLOATLine));
-								fBlue	= (double)(*(pFLOATLine));
-
-								fRed   = (fRed - samplemin)/(samplemax-samplemin) * 256.0;
-								fGreen = (fGreen - samplemin)/(samplemax-samplemin) * 256.0;
-								fBlue  = (fBlue - samplemin)/(samplemax-samplemin) * 256.0;
-
-								pFLOATLine ++;
-							}
-							else
-							{
-								fRed	= (double)(*(pDWORDLine))/256.0/65536.0;
-								fGreen	= (double)(*(pDWORDLine))/256.0/65536.0;
-								fBlue	= (double)(*(pDWORDLine))/256.0/65536.0;
-								pDWORDLine ++;
-							};
-						};
+						fRed = *(pBYTELine);
+						fGreen = *(pBYTELine);
+						fBlue = *(pBYTELine);
+						pBYTELine++;
 					}
-					else
+					else if (bpp == 16)
 					{
-						if (bpp == 8)
+						fRed = (double)(*(pWORDLine)) / 256.0;
+						fGreen = (double)(*(pWORDLine)) / 256.0;
+						fBlue = (double)(*(pWORDLine)) / 256.0;
+						pWORDLine++;
+					}
+					else if (bpp == 32)
+					{
+						if (sampleformat == SAMPLEFORMAT_IEEEFP)
 						{
-							fRed	= *(pBYTELine);
-							fGreen	= *(pBYTELine+1);
-							fBlue	= *(pBYTELine+2);
-							pBYTELine += 3;
-							if (spp == 4)
-								pBYTELine++;
-						}
-						else if (bpp == 16)
-						{
-							fRed	= (double)(*(pWORDLine))/256.0;
-							fGreen	= (double)(*(pWORDLine+1))/256.0;
-							fBlue	= (double)(*(pWORDLine+2))/256.0;
-							pWORDLine += 3;
-							if (spp == 4)
-								pWORDLine++;
-						}
-						else if (bpp == 32)
-						{
-							if (sampleformat == SAMPLEFORMAT_IEEEFP)
-							{
-								fRed	= (double)(*(pFLOATLine));
-								fGreen	= (double)(*(pFLOATLine+1));
-								fBlue	= (double)(*(pFLOATLine+2));
+							fRed = (double)(*(pFLOATLine));
+							fGreen = (double)(*(pFLOATLine));
+							fBlue = (double)(*(pFLOATLine));
 
-								fRed   = (fRed - samplemin)/(samplemax-samplemin) * 256.0;
-								fGreen = (fGreen - samplemin)/(samplemax-samplemin) * 256.0;
-								fBlue  = (fBlue - samplemin)/(samplemax-samplemin) * 256.0;
+							fRed = (fRed - samplemin) / (samplemax - samplemin) * 256.0;
+							fGreen = (fGreen - samplemin) / (samplemax - samplemin) * 256.0;
+							fBlue = (fBlue - samplemin) / (samplemax - samplemin) * 256.0;
 
-								pFLOATLine += 3;
-								if (spp == 4)
-									pFLOATLine++;
-							}
-							else
-							{
-								fRed	= (double)(*(pDWORDLine))/256.0/65536.0;
-								fGreen	= (double)(*(pDWORDLine+1))/256.0/65536.0;
-								fBlue	= (double)(*(pDWORDLine+2))/256.0/65536.0;
-								pDWORDLine += 3;
-								if (spp == 4)
-									pDWORDLine++;
-							};
+							pFLOATLine++;
+						}
+						else
+						{
+							fRed = (double)(*(pDWORDLine)) / 256.0 / 65536.0;
+							fGreen = (double)(*(pDWORDLine)) / 256.0 / 65536.0;
+							fBlue = (double)(*(pDWORDLine)) / 256.0 / 65536.0;
+							pDWORDLine++;
 						};
 					};
+				}
+				else
+				{
+					if (bpp == 8)
+					{
+						fRed = *(pBYTELine);
+						fGreen = *(pBYTELine + 1);
+						fBlue = *(pBYTELine + 2);
+						pBYTELine += 3;
+						if (spp == 4)
+							pBYTELine++;
+					}
+					else if (bpp == 16)
+					{
+						fRed = (double)(*(pWORDLine)) / 256.0;
+						fGreen = (double)(*(pWORDLine + 1)) / 256.0;
+						fBlue = (double)(*(pWORDLine + 2)) / 256.0;
+						pWORDLine += 3;
+						if (spp == 4)
+							pWORDLine++;
+					}
+					else if (bpp == 32)
+					{
+						if (sampleformat == SAMPLEFORMAT_IEEEFP)
+						{
+							fRed = (double)(*(pFLOATLine));
+							fGreen = (double)(*(pFLOATLine + 1));
+							fBlue = (double)(*(pFLOATLine + 2));
 
-					bResult = OnRead(i, j, fRed, fGreen, fBlue);
+							fRed = (fRed - samplemin) / (samplemax - samplemin) * 256.0;
+							fGreen = (fGreen - samplemin) / (samplemax - samplemin) * 256.0;
+							fBlue = (fBlue - samplemin) / (samplemax - samplemin) * 256.0;
 
-					if (m_pProgress)
-						m_pProgress->Progress2(nullptr, j+1);
+							pFLOATLine += 3;
+							if (spp == 4)
+								pFLOATLine++;
+						}
+						else
+						{
+							fRed = (double)(*(pDWORDLine)) / 256.0 / 65536.0;
+							fGreen = (double)(*(pDWORDLine + 1)) / 256.0 / 65536.0;
+							fBlue = (double)(*(pDWORDLine + 2)) / 256.0 / 65536.0;
+							pDWORDLine += 3;
+							if (spp == 4)
+								pDWORDLine++;
+						};
+					};
 				};
+
+				bResult = OnRead(i, j, fRed, fGreen, fBlue);
+
+				if (m_pProgress)
+					m_pProgress->Progress2(nullptr, j + 1);
 			};
-			free(pScanLine);
-			if (m_pProgress)
-				m_pProgress->End2();
-		}
-	};
+		};
+		free(buff);
+		if (m_pProgress)
+			m_pProgress->End2();
+	} while (false);
 
 	return bResult;
 };
