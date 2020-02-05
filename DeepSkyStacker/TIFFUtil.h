@@ -63,7 +63,7 @@ public :
 		cfatype  = 0;
 		cfa      = 0;
 		nrframes = 0;
-		m_DateTime.wYear = 0;
+		m_DateTime = { 0, 0, 0, 0, 0, 0, 0, 0};
         w = 0;
         h = 0;
         spp = 0;
@@ -220,6 +220,8 @@ public :
 	BOOL	Read();
 	BOOL	Close();
 
+	// bool getInfo();
+
 	virtual BOOL	OnOpen() { return TRUE; };
 	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return FALSE;};
 	virtual BOOL	OnClose() { return TRUE; };
@@ -301,7 +303,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
 
 BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	LoadTIFFPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+int		LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
 
 /* ------------------------------------------------------------------- */
 

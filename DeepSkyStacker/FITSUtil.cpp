@@ -518,11 +518,11 @@ BOOL CFITSReader::Open()
 			//
 			if (ReadKey("XBAYROFF", xBayerOffset) || ReadKey("BAYOFFX", xBayerOffset))
 			{
-				ZTRACE_RUNTIME("CFA pattern X offset read from keyword XBAYROFF or BAYOFFX is %d", xBayerOffset);
+				ZTRACE_RUNTIME("CFA pattern X offset read from keyword XBAYROFF or BAYOFFX is %lf", xBayerOffset);
 			}
 			if (ReadKey("YBAYROFF", yBayerOffset) || ReadKey("BAYOFFY", yBayerOffset))
 			{
-				ZTRACE_RUNTIME("CFA pattern X offset read from keyword YBAYROFF or BAYOFFY is %d", xBayerOffset);
+				ZTRACE_RUNTIME("CFA pattern Y offset read from keyword YBAYROFF or BAYOFFY is %lf", yBayerOffset);
 			}
 			m_xBayerOffset = std::lround(xBayerOffset);
 			m_yBayerOffset = std::lround(yBayerOffset);
@@ -1157,7 +1157,12 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
 {
 	BOOL			bResult = FALSE;
-
+	
+	//
+	// Define maximal scaled pixel value of 255 (will be multiplied up later)
+	//
+	double maxValue = 255.;
+	
 	if (m_pBitmap)
 	{
 		if (m_lNrChannels == 1)
@@ -1167,21 +1172,21 @@ BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 				switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 				{
 				case BAYER_BLUE :
-					fRed *= m_fBlueRatio;
+					fRed = min(maxValue, fRed *= m_fBlueRatio);
 					break;
 				case BAYER_GREEN :
-					fRed *= m_fGreenRatio;
+					fRed = min(maxValue, fRed *= m_fGreenRatio);
 					break;
 				case BAYER_RED :
-					fRed *= m_fRedRatio;
+					fRed = min(maxValue, fRed *= m_fRedRatio);
 					break;
 				};
 			}
 			else
 			{
-				fRed	*= m_fBrightnessRatio;
-				fGreen	*= m_fBrightnessRatio;
-				fBlue	*= m_fBrightnessRatio;
+				fRed	= min(maxValue, fRed *= m_fBrightnessRatio);
+				fGreen	= min(maxValue, fGreen *= m_fBrightnessRatio);
+				fBlue	= min(maxValue, fBlue *= m_fBrightnessRatio);
 			};
 			bResult = m_pBitmap->SetPixel(lX, lY, fRed);
 		}
@@ -1972,11 +1977,10 @@ BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
-	CBitmapInfo			BitmapInfo;
+	int		result = -1;		// -1 means not a FITS file.
 
 	if (GetFITSInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
@@ -1997,11 +2001,15 @@ BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress
 					pGrayBitmap->UseBilinear(TRUE);
 			};*/
 			pBitmap.CopyTo(ppBitmap);
-			bResult = TRUE;
-		};
+			result = 0;
+		}
+		else
+		{
+			result = 1;		// Failed to read file
+		}
 	};
 
-	return bResult;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */

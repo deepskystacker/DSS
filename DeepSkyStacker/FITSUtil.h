@@ -18,12 +18,12 @@ public :
 	double				m_fExposureTime;
 	LONG				m_lISOSpeed;
 	LONG				m_lGain;
-	BOOL				m_bFloat;
-	BOOL				m_bSigned;
+	bool				m_bFloat;
+	bool				m_bSigned;
 	CString				m_strMake;
 	CFATYPE				m_CFAType;
 	FITSFORMAT			m_Format;
-	BOOL				m_bByteSwap;
+	bool				m_bByteSwap;
 	CBitmapExtraInfo	m_ExtraInfo;
 	SYSTEMTIME			m_DateTime;
 	LONG				m_xBayerOffset;
@@ -220,7 +220,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
 
 BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+int		LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
 
 void	GetFITSExtension(LPCTSTR szFileName, CString & strExtension);
 

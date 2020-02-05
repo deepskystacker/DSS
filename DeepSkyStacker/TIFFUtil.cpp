@@ -77,7 +77,6 @@ BOOL CTIFFReader::Open()
 
 	reg.LoadKey(REGENTRY_BASEKEY, _T("SkipTIFFExifInfo"), dwSkipExifInfo);
 
-	Close();
 	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "r");
 	if (m_tiff)
 	{
@@ -172,6 +171,29 @@ BOOL CTIFFReader::Open()
 			};
 		};
 
+		// Retrieve the Date/Time as in the TIFF TAG
+		char *				szDateTime;
+
+		if (TIFFGetField(m_tiff, TIFFTAG_DATETIME, &szDateTime))
+		{
+			CString			strDateTime = szDateTime;
+
+			// Decode 2007:11:02 22:07:03
+			//        0123456789012345678
+
+			if (strDateTime.GetLength() >= 19)
+			{
+				m_DateTime.wYear = _ttol(strDateTime.Left(4));
+				m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+				m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
+				m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
+				m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
+				m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
+			};
+		};
+
+
+
 		if (!dwSkipExifInfo)
 		{
 			// Try to read EXIF data
@@ -196,6 +218,11 @@ BOOL CTIFFReader::Open()
 						isospeed = iso_setting[0];
 					}
 					// EXIFTAG_GAINCONTROL does not represent a gain value, so ignore it.
+
+					//
+					// Revert to first IFD
+					//
+					TIFFSetDirectory(m_tiff, 0);
 				};
 			};
 		}
@@ -210,27 +237,6 @@ BOOL CTIFFReader::Open()
 				isospeed	 = BitmapInfo.m_lISOSpeed;
 				gain		 = BitmapInfo.m_lGain;
 				m_DateTime	 = BitmapInfo.m_DateTime;
-			};
-		};
-
-		// Retrieve the Date/Time as in the TIFF TAG
-		char *				szDateTime;
-
-		if (TIFFGetField(m_tiff, TIFFTAG_DATETIME, &szDateTime))
-		{
-			CString			strDateTime = szDateTime;
-
-			// Decode 2007:11:02 22:07:03
-			//        0123456789012345678
-
-			if (strDateTime.GetLength() >= 19)
-			{
-				m_DateTime.wYear  = _ttol(strDateTime.Left(4));
-				m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-				m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
-				m_DateTime.wHour  = _ttol(strDateTime.Mid(11, 2));
-				m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
-				m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
 			};
 		};
 
@@ -255,17 +261,17 @@ BOOL CTIFFReader::Read()
 
 	if (m_tiff)
 	{
-		LONG			lScanLineSize;
+		tmsize_t		szScanLineSize;
 		VOID *			pScanLine;
 
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, h);
 
-		lScanLineSize = TIFFScanlineSize(m_tiff);
-		ZTRACE_DEVELOP("TIFF Scan Line Size %d", lScanLineSize);
+		szScanLineSize = TIFFScanlineSize(m_tiff);
+		ZTRACE_DEVELOP("TIFF Scan Line Size %zu", szScanLineSize);
 		ZTRACE_DEVELOP("TIFF spp=%d, bpp=%d, w=%d, h=%d", spp, bpp, w, h);
 
-		pScanLine = (VOID *)malloc(lScanLineSize);
+		pScanLine = (VOID *)malloc(szScanLineSize);
 		if (pScanLine)
 		{
 			bResult = TRUE;
@@ -485,7 +491,6 @@ BOOL CTIFFWriter::Open()
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
-	Close();
 	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "w");
 	if (m_tiff)
 	{
@@ -755,7 +760,10 @@ public :
 
 	virtual ~CTIFFWriteFromMemoryBitmap()
 	{
+		Close();
 	};
+
+	virtual BOOL Close() { return OnClose(); };
 
 	virtual BOOL	OnOpen();
 	virtual BOOL	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue);
@@ -972,7 +980,9 @@ public :
 		m_ppBitmap = ppBitmap;
 	};
 
-	virtual ~CTIFFReadInMemoryBitmap() { OnClose(); };
+	virtual ~CTIFFReadInMemoryBitmap() { Close(); };
+
+	virtual BOOL Close() { return OnClose(); };
 
 	virtual BOOL	OnOpen();
 	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
@@ -1148,7 +1158,7 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_fExposure		= tiff.GetExposureTime();
 		BitmapInfo.m_fAperture		= tiff.GetAperture();
 		BitmapInfo.m_DateTime		= tiff.GetDateTime();
-		bResult = true; // tiff.Close();
+		bResult = true; //tiff.Close();
 	};
 
 	return bResult;
@@ -1164,11 +1174,10 @@ BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadTIFFPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+BOOL	LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
-	CBitmapInfo			BitmapInfo;
+	int		result = -1;		// -1 means not a TIFF file.
 
 	if (GetTIFFInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
@@ -1195,11 +1204,15 @@ BOOL	LoadTIFFPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress
 				};
 			};
 			pBitmap.CopyTo(ppBitmap);
-			bResult = TRUE;
-		};
+			result = 0;
+		}
+		else
+		{
+			result = 1;		// Failed to load file
+		}
 	};
 
-	return bResult;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */

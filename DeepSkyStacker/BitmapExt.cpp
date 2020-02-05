@@ -1108,19 +1108,57 @@ BOOL	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 		CBitmapInfo					BitmapInfo;
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 		*ppBitmap = nullptr;
+		int loadResult = 0;
 
 #if DSSFILEDECODING==0
 		if (IsPCLPicture(szFileName, BitmapInfo))
 			bResult = LoadPCLPicture(szFileName, &pBitmap, pProgress);
 #else
-		if (IsRAWPicture(szFileName, BitmapInfo))
-			bResult = LoadRAWPicture(szFileName, &pBitmap, pProgress);
-		else if (IsTIFFPicture(szFileName, BitmapInfo))
-			bResult = LoadTIFFPicture(szFileName, &pBitmap, pProgress);
-		else if (IsFITSPicture(szFileName, BitmapInfo))
-			bResult = LoadFITSPicture(szFileName, &pBitmap, pProgress);
-		else
+		do  // Once only 
+		{
+			if (IsRAWPicture(szFileName, BitmapInfo))
+				bResult = LoadRAWPicture(szFileName, &pBitmap, pProgress);
+			if (bResult)
+				break;		// All done - file has been loaded 
+			
+			//
+			// Meanings of loadResult:
+			//
+			//		-1		Not a file of the appropriate type
+			//		0		File successfully loaded
+			//		1		File failed to load
+			//
+			// If the file loaded or failed to load, leave the loop with an appropriate
+			// value of bResult set.
+			//
+			loadResult = LoadTIFFPicture(szFileName, BitmapInfo, &pBitmap, pProgress);
+			if (0 == loadResult)
+			{
+				bResult = TRUE;
+				break;		// All done - file has been loaded 
+			}
+			else if (1 == loadResult)
+				break;		// All done - file failed to load
+
+			//
+			// It wasn't a TIFF file, so try to load a FITS file
+			//
+			loadResult = LoadFITSPicture(szFileName, BitmapInfo, &pBitmap, pProgress);
+			if (0 == loadResult)
+			{
+				bResult = TRUE;
+				break;		// All done - file has been loaded 
+			}
+			else if (1 == loadResult)
+				break;		// All done - file failed to load
+
+			//
+			// It wasn't a FITS file, so try to load other stuff ...
+			//
 			bResult = LoadOtherPicture(szFileName, &pBitmap, pProgress);
+
+		} while (false);
+
 #endif
 
 		if (bResult)
