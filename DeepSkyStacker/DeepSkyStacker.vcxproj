@@ -424,7 +424,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>"C:\Program Files (x86)\Visual Leak Detector\include";.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -464,7 +464,7 @@
     </Midl>
     <ClCompile>
       <AdditionalIncludeDirectories>"C:\Program Files (x86)\Visual Leak Detector\include";.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
