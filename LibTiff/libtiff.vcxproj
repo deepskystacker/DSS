@@ -301,8 +301,6 @@
     <ClCompile Include="tif_zip.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="StdAfx.h" />
     <ClInclude Include="t4.h" />
     <ClInclude Include="tiff.h" />
     <ClInclude Include="tiffconf.h" />
