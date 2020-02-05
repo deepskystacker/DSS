@@ -201,6 +201,10 @@ BOOL CTIFFReader::Open()
 
 			if (TIFFGetField(m_tiff, TIFFTAG_EXIFIFD, &ExifID))
 			{
+				//
+				// Get current TIFF Directory so we can return to it
+				//
+				auto currentIFD = TIFFCurrentDirectory(m_tiff);
 				if (TIFFReadEXIFDirectory(m_tiff, ExifID))
 				{
 					if (!TIFFGetField(m_tiff, EXIFTAG_EXPOSURETIME, &exposureTime))
@@ -220,9 +224,9 @@ BOOL CTIFFReader::Open()
 					// EXIFTAG_GAINCONTROL does not represent a gain value, so ignore it.
 
 					//
-					// Revert to first IFD
+					// Revert IFD to status quo ante TIFFReadEXIFDirectory
 					//
-					TIFFSetDirectory(m_tiff, 0);
+					TIFFSetDirectory(m_tiff, currentIFD);
 				};
 			};
 		}
