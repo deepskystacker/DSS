@@ -2,6 +2,7 @@
 #include "FITSUtil.h"
 #include <float.h>
 #include <cmath>
+#include <iostream>
 #include <map>
 #include "Registry.h"
 #include "Workspace.h"
@@ -1086,18 +1087,46 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		// In this case we use that and set the Bayer offsets (if any) to zero
 		//
 		bool isRaw = IsFITSRaw();
-		if (isRaw &&
-			(m_lNrChannels == 1) &&
+		
+		if ((m_lNrChannels == 1) &&
 			((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
 		{
-			m_CFAType = GetFITSCFATYPE();
-			m_xBayerOffset = 0;
-			m_yBayerOffset = 0;
+			if (isRaw)
+			{
+				m_CFAType = GetFITSCFATYPE();
+					m_xBayerOffset = 0;
+					m_yBayerOffset = 0;
+			}
+			//
+			// If user hasn't said it's a FITS format RAW, then use the CFA we've already
+			// retrieved from the FITS header if set.
+			//				
+		}
+		else
+		{
+			// 
+			// Set CFA type to none even if the FITS header specified a value
+			//
+			m_CFAType = CFATYPE_NONE;
+
+			static bool eightBitWarningIssued = false;
+			if (!eightBitWarningIssued &&
+				(m_lNrChannels == 1) &&
+				(m_lBitsPerPixel == 8))
+			{
+				CString errorMessage;
+				errorMessage.Format(IDS_8BIT_FITS_NODEBAYER);
+#if defined(_CONSOLE)
+				std::cerr << errorMessage;
+#else
+				AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+#endif
+				// Remember we already said we won't do that!
+				eightBitWarningIssued = true;
+			}
 		}
 
-		//
-		// If this wasn't set by the user, then use the CFA from the FITS header if set.
-		//		
+
 
 		if (m_CFAType != CFATYPE_NONE)
 		{
@@ -1156,45 +1185,68 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 
 BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
 {
-	BOOL			bResult = FALSE;
-	
 	//
 	// Define maximal scaled pixel value of 255 (will be multiplied up later)
 	//
 	double maxValue = 255.;
 	
-	if (m_pBitmap)
+	try
 	{
-		if (m_lNrChannels == 1)
+		if (m_pBitmap)
 		{
-			if (m_CFAType != CFATYPE_NONE)
+			if (m_lNrChannels == 1)
 			{
-				switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
+				if (m_CFAType != CFATYPE_NONE)
 				{
-				case BAYER_BLUE :
-					fRed = min(maxValue, fRed *= m_fBlueRatio);
-					break;
-				case BAYER_GREEN :
-					fRed = min(maxValue, fRed *= m_fGreenRatio);
-					break;
-				case BAYER_RED :
-					fRed = min(maxValue, fRed *= m_fRedRatio);
-					break;
+					switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
+					{
+					case BAYER_BLUE:
+						fRed = min(maxValue, fRed *= m_fBlueRatio);
+						break;
+					case BAYER_GREEN:
+						fRed = min(maxValue, fRed *= m_fGreenRatio);
+						break;
+					case BAYER_RED:
+						fRed = min(maxValue, fRed *= m_fRedRatio);
+						break;
+					};
+				}
+				else
+				{
+					fRed = min(maxValue, fRed *= m_fBrightnessRatio);
+					fGreen = min(maxValue, fGreen *= m_fBrightnessRatio);
+					fBlue = min(maxValue, fBlue *= m_fBrightnessRatio);
 				};
+				m_pBitmap->SetPixel(lX, lY, fRed);
 			}
 			else
-			{
-				fRed	= min(maxValue, fRed *= m_fBrightnessRatio);
-				fGreen	= min(maxValue, fGreen *= m_fBrightnessRatio);
-				fBlue	= min(maxValue, fBlue *= m_fBrightnessRatio);
-			};
-			bResult = m_pBitmap->SetPixel(lX, lY, fRed);
-		}
-		else
-			bResult = m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
-	};
+				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+		};
+	}
+	catch (ZException e)
+	{
+		CString errorMessage;
+		CString name(CharToCString(e.name()));
+		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
+		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
+		CString text(CharToCString(e.text(0)));
 
-	return bResult;
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			e.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+
+	}
+	return TRUE;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1860,20 +1912,44 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 
 BOOL CFITSWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
 {
-	BOOL			bResult = FALSE;
-
-	if (m_pMemoryBitmap)
+	try
 	{
-		if (m_lNrChannels == 1)
+		if (m_pMemoryBitmap)
 		{
-			bResult = m_pMemoryBitmap->GetPixel(lX, lY, fRed);
-			fGreen = fBlue = fRed;
-		}
-		else
-			bResult = m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
-	};
+			if (m_lNrChannels == 1)
+			{
+				m_pMemoryBitmap->GetPixel(lX, lY, fRed);
+				fGreen = fBlue = fRed;
+			}
+			else
+				m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
+		};
+	}
+	catch (ZException e)
+	{
+		CString errorMessage;
+		CString name(CharToCString(e.name()));
+		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
+		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
+		CString text(CharToCString(e.text(0)));
 
-	return bResult;
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			e.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
+
+
+	return TRUE;
 };
 
 /* ------------------------------------------------------------------- */

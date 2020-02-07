@@ -3,6 +3,7 @@
 #include "Registry.h"
 #include "zlib.h"
 #include "Utils.h"
+#include <iostream>
 
 #define NRCUSTOMTIFFTAGS		12
 
@@ -875,20 +876,45 @@ BOOL CTIFFWriteFromMemoryBitmap::OnOpen()
 
 BOOL CTIFFWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
 {
-	BOOL			bResult = FALSE;
 
-	if (m_pMemoryBitmap)
+	try
 	{
-		if (spp == 1)
+		if (m_pMemoryBitmap)
 		{
-			bResult = m_pMemoryBitmap->GetPixel(lX, lY, fRed);
-			fGreen = fBlue = fRed;
-		}
-		else
-			bResult = m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
-	};
+			if (spp == 1)
+			{
+				m_pMemoryBitmap->GetPixel(lX, lY, fRed);
+				fGreen = fBlue = fRed;
+			}
+			else
+				m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
+		};
+	}
+	catch (ZException e)
+	{
+		CString errorMessage;
+		CString name(CharToCString(e.name()));
+		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
+		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
+		CString text(CharToCString(e.text(0)));
 
-	return bResult;
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			e.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+
+	}
+
+	return TRUE;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1110,12 +1136,37 @@ BOOL CTIFFReadInMemoryBitmap::OnOpen()
 
 BOOL CTIFFReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
 {
-	BOOL			bResult = FALSE;
 
-	if (m_pBitmap)
-		bResult = m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+	try
+	{
+		if (m_pBitmap)
+			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+	}
+	catch (ZException e)
+	{
+		CString errorMessage;
+		CString name(CharToCString(e.name()));
+		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
+		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
+		CString text(CharToCString(e.text(0)));
 
-	return bResult;
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			e.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+
+	}
+
+	return TRUE;
 };
 
 /* ------------------------------------------------------------------- */
