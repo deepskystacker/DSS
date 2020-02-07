@@ -238,6 +238,9 @@ BOOL	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 			pColorBitmap->Init(lWidth, lHeight);
 			pColorBitmap->GetIterator(&it);
 
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
 			for (LONG j = 0;j<lHeight;j++)
 			{
 				for (LONG i = 0;i<lWidth;i++)
