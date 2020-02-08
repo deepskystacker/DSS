@@ -28,7 +28,7 @@ class CTIFFHeader
 protected :
 	int					w, h;
     uint16				spp,
-						bpp,
+						bps,
 						photo,
 						compression,
 						planarconfig,
@@ -67,7 +67,7 @@ public :
         w = 0;
         h = 0;
         spp = 0;
-        bpp = 0;
+        bps = 0;
         photo = 0;
         compression = 0;
         planarconfig = 0;
@@ -94,7 +94,7 @@ public :
 
 	BOOL	IsFloat()
 	{
-		return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bpp == 32);
+		return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bps == 32);
 	};
 
 	LONG	Height()
@@ -159,22 +159,22 @@ public :
 
 	BOOL	Is8Bits()
 	{
-		return (bpp == 8);
+		return (bps == 8);
 	};
 
 	BOOL	Is16Bits()
 	{
-		return (bpp == 16);
+		return (bps == 16);
 	};
 
 	BOOL	Is32Bits()
 	{
-		return (bpp == 32);
+		return (bps == 32);
 	};
 
 	LONG	BitPerChannels()
 	{
-		return bpp;
+		return bps;
 	};
 
 	LONG	NrChannels()
@@ -223,7 +223,7 @@ public :
 	// bool getInfo();
 
 	virtual BOOL	OnOpen() { return TRUE; };
-	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return FALSE;};
+	virtual void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return;};
 	virtual BOOL	OnClose() { return TRUE; };
 };
 

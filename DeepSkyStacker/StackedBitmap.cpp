@@ -937,7 +937,7 @@ BOOL CTIFFWriterStacker::OnOpen()
 		CString		strText;
 
 		m_pProgress->SetJointProgress(TRUE);
-		strText.Format(IDS_SAVINGTIFF, bpp);
+		strText.Format(IDS_SAVINGTIFF, bps);
 
 		m_pProgress->Start(strText, 0, FALSE);
 		strText.Format(IDS_SAVINGPICTURE, (LPCTSTR)m_strFileName);
@@ -1265,7 +1265,7 @@ public :
 	};
 
 	virtual BOOL	OnOpen();
-	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
+	void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) override;
 	virtual BOOL	OnClose();
 };
 
@@ -1282,9 +1282,9 @@ BOOL CTIFFReadStacker::OnOpen()
 
 		m_pProgress->SetJointProgress(TRUE);
 		if (spp == 1)
-			strText.Format(IDS_LOADGRAYTIFF, bpp);
+			strText.Format(IDS_LOADGRAYTIFF, bps);
 		else
-			strText.Format(IDS_LOADRGBTIFF, bpp);
+			strText.Format(IDS_LOADRGBTIFF, bps);
 
 		m_pProgress->Start(strText, 0, FALSE);
 		strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strFileName);
@@ -1301,14 +1301,14 @@ BOOL CTIFFReadStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
+void CTIFFReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
 {
 	BOOL			bResult = TRUE;
 
 	if (m_pStackedBitmap)
 		m_pStackedBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 
-	return bResult;
+	return;
 };
 
 /* ------------------------------------------------------------------- */

@@ -8,7 +8,11 @@ The main changes in this release are:
 
 3. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).  The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.  If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic detection will be used.  You can override this by selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
 
-4. The exposure time is now correctly displayed for FITS files with the exposure time in microseconds (keyword EXPOINUS). 
+4. The exposure time is now correctly displayed for FITS files with the exposure time in microseconds (keyword EXPOINUS).
+
+5. Display a warning message saying that DeepSkyStacker won't de-Bayer 8-bit FITS images.
+
+6. Refactor code to read TIFF files and use OpenMP - about 4-5 times faster
 
 Welcome to DeepSkyStacker 4.2.3
 
