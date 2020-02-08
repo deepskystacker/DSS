@@ -12,7 +12,9 @@ The main changes in this release are:
 
 5. Display a warning message saying that DeepSkyStacker won't de-Bayer 8-bit FITS images.
 
-6. Refactor code to read TIFF files and use OpenMP - about 4-5 times faster
+6. Change code to read TIFF files in strips instead of by scanline.  This can reduce the time to read the image by as much as a factor of 3.
+
+7. Refactor the code to decode the TIFF file we just read and also use OpenMP.  Time to decode the image reduced by about 4-5 times.
 
 Welcome to DeepSkyStacker 4.2.3
 
