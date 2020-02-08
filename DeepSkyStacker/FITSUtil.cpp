@@ -1126,8 +1126,6 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			}
 		}
 
-
-
 		if (m_CFAType != CFATYPE_NONE)
 		{
 			CCFABitmapInfo *		pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(m_pBitmap.m_p);
