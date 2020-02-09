@@ -1700,14 +1700,19 @@ private :
 		return ((size_t)m_vPixels.size() == (size_t)m_lWidth * (size_t)m_lHeight);
 	};
 
-	inline void	IsXYOk(LONG x, LONG y)
+	inline void	CheckXY(LONG x, LONG y)
 	{
-		ZASSERT (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
+		ZASSERT(x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
+	};
+
+	inline bool	IsXYOk(LONG x, LONG y)
+	{
+		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	};
 
 	size_t	GetOffset(LONG x, LONG y)
 	{
-		IsXYOk(x, y);
+		CheckXY(x, y);
 			
 		return (size_t)m_lWidth * (size_t)y + (size_t)x;
 	};
@@ -2053,7 +2058,7 @@ public :
 
 	virtual void SetValue(LONG i, LONG j, double fGray)
 	{
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
 		m_vPixels[GetOffset(i, j)] = fGray;
 
@@ -2062,7 +2067,7 @@ public :
 
 	virtual void GetValue(LONG i, LONG j, double & fGray)
 	{
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
 		fGray = m_vPixels[GetOffset(i, j)];
 
@@ -2089,7 +2094,7 @@ public :
 
 	virtual void SetPixel(LONG i, LONG j, double fGray)
 	{
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
 		fGray *= m_fMultiplier;
 		m_vPixels[GetOffset(i, j)] = fGray;
@@ -2103,39 +2108,40 @@ public :
 		if (m_CFATransform == CFAT_SUPERPIXEL)
 		{
 			ASSERT(m_bWord);
-			IsXYOk((i - 1) * 2, (j - 1) * 2);
-			IsXYOk((i + 1) * 2 + 1, (j + 1) * 2 + 1);
-
-			TType *			pValue = &(m_vPixels[GetOffset(i*2, j*2)]);
-
-			switch (m_CFAType)
+			if (IsXYOk((i - 1) * 2, (j - 1) * 2) && IsXYOk((i + 1) * 2 + 1, (j + 1) * 2 + 1))
 			{
-			case CFATYPE_GRBG :
-				fRed	= (*(pValue+1))/m_fMultiplier;
-				fGreen	= ((*pValue)+(*(pValue+1+m_lWidth)))/2.0/m_fMultiplier;
-				fBlue	= (*(pValue+m_lWidth))/m_fMultiplier;
-				break;
-			case CFATYPE_GBRG :
-				fRed	= (*(pValue+m_lWidth))/m_fMultiplier;
-				fGreen	= ((*pValue)+(*(pValue+1+m_lWidth)))/2.0/m_fMultiplier;
-				fBlue	= (*(pValue+1))/m_fMultiplier;
-				break;
-			case CFATYPE_BGGR :
-				fRed	= (*(pValue+1+m_lWidth))/m_fMultiplier;
-				fGreen	= ((*(pValue+m_lWidth))+(*(pValue+1)))/2.0/m_fMultiplier;
-				fBlue	= (*pValue)/m_fMultiplier;
-				break;
-			case CFATYPE_RGGB :
-				fRed	= (*pValue)/m_fMultiplier;
-				fGreen	= ((*(pValue+m_lWidth))+(*(pValue+1)))/2.0/m_fMultiplier;
-				fBlue	= (*(pValue+1+m_lWidth))/m_fMultiplier;
-				break;
+
+				TType *			pValue = &(m_vPixels[GetOffset(i * 2, j * 2)]);
+
+				switch (m_CFAType)
+				{
+				case CFATYPE_GRBG:
+					fRed = (*(pValue + 1)) / m_fMultiplier;
+					fGreen = ((*pValue) + (*(pValue + 1 + m_lWidth))) / 2.0 / m_fMultiplier;
+					fBlue = (*(pValue + m_lWidth)) / m_fMultiplier;
+					break;
+				case CFATYPE_GBRG:
+					fRed = (*(pValue + m_lWidth)) / m_fMultiplier;
+					fGreen = ((*pValue) + (*(pValue + 1 + m_lWidth))) / 2.0 / m_fMultiplier;
+					fBlue = (*(pValue + 1)) / m_fMultiplier;
+					break;
+				case CFATYPE_BGGR:
+					fRed = (*(pValue + 1 + m_lWidth)) / m_fMultiplier;
+					fGreen = ((*(pValue + m_lWidth)) + (*(pValue + 1))) / 2.0 / m_fMultiplier;
+					fBlue = (*pValue) / m_fMultiplier;
+					break;
+				case CFATYPE_RGGB:
+					fRed = (*pValue) / m_fMultiplier;
+					fGreen = ((*(pValue + m_lWidth)) + (*(pValue + 1))) / 2.0 / m_fMultiplier;
+					fBlue = (*(pValue + 1 + m_lWidth)) / m_fMultiplier;
+					break;
+				}
 			}
 		}
 		else if (m_CFATransform == CFAT_RAWBAYER)
 		{
 			ASSERT(m_bWord);
-			IsXYOk(i, j);
+			CheckXY(i, j);
 
 			TType *		pValue = &(m_vPixels[GetOffset(i, j)]);
 
@@ -2155,7 +2161,7 @@ public :
 		else if ((m_CFATransform == CFAT_BILINEAR) || (m_CFATransform == CFAT_AHD))
 		{
 			ASSERT(m_bWord);
-			IsXYOk(i, j);
+			CheckXY(i, j);
 
 			if (m_bCYMG)
 			{
@@ -2198,7 +2204,7 @@ public :
 		}
 		else 
 		{
-			IsXYOk(i, j);
+			CheckXY(i, j);
 			fRed = fBlue = fGreen = m_vPixels[GetOffset(i, j)]/m_fMultiplier;
 		};
 
@@ -2209,7 +2215,7 @@ public :
 	{
 		fGray = 0.0;
 
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
 		fGray = m_vPixels[GetOffset(i, j)]/m_fMultiplier;
 
@@ -3045,13 +3051,13 @@ public :
 	CGrayBitmapT<TType>		m_Blue;
 
 private :
-	inline void	IsXYOk(LONG x, LONG y)
+	inline void	CheckXY(LONG x, LONG y)
 	{
 		ZASSERT (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
 	};
 	size_t	GetOffset(LONG x, LONG y)
 	{
-		IsXYOk(x, y);
+		CheckXY(x, y);
 		if (m_bTopDown)
 			return (size_t)m_lWidth * (size_t)y + (size_t)x;
 		else
@@ -3146,7 +3152,7 @@ public :
 
 	virtual void SetValue(LONG i, LONG j, double fRed, double fGreen, double fBlue)
 	{
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
         size_t			lOffset = GetOffset(i, j);
 
@@ -3159,7 +3165,7 @@ public :
 
 	virtual void GetValue(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
 	{
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
         size_t			lOffset = GetOffset(i, j);
 
@@ -3172,7 +3178,7 @@ public :
 
 	virtual void SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)
 	{
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
 		size_t			lOffset = GetOffset(i, j);
 		m_Red.m_vPixels[lOffset]	= fRed * m_fMultiplier;
@@ -3185,7 +3191,7 @@ public :
 	virtual void	SetPixel(LONG i, LONG j, double fGray)
 	{
 
-		IsXYOk(i, j);		// Throw if not
+		CheckXY(i, j);		// Throw if not
 
 		size_t			lOffset = GetOffset(i, j);
 		m_Red.m_vPixels[lOffset]	= fGray * m_fMultiplier;
@@ -3199,7 +3205,7 @@ public :
 	{
 		fRed = fGreen = fBlue = 0.0;
 
-		IsXYOk(i, j);
+		CheckXY(i, j);
 
 		size_t	lOffset = GetOffset(i, j);
 
