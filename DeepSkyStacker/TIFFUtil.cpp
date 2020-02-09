@@ -318,7 +318,7 @@ BOOL CTIFFReader::Read()
 		DWORD * longBuff = (DWORD *)buff;
 		float *	floatBuff = (float *)buff;
 
-		int	iProgress = 0;
+		int	rowProgress = 0;
 
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
@@ -377,7 +377,7 @@ BOOL CTIFFReader::Read()
 					case 4:
 						fRed	= (double)(floatBuff[index]);
 						fGreen	= (double)(floatBuff[index + 1]);
-						fGreen	= (double)(floatBuff[index + 2]);
+						fBlue	= (double)(floatBuff[index + 2]);
 
 						fRed	= (fRed - samplemin) / (samplemax - samplemin) * 256.0;
 						fGreen	= (fGreen - samplemin) / (samplemax - samplemin) * 256.0;
@@ -405,18 +405,18 @@ BOOL CTIFFReader::Read()
 				}
 
 				OnRead(col, row, fRed, fGreen, fBlue);
+			};
 #if defined (_OPENMP)
-				if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-				{
-					iProgress += omp_get_num_threads();
-					m_pProgress->Progress2(nullptr, iProgress);
-				}
+			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+			{
+				rowProgress += omp_get_num_threads();
+				m_pProgress->Progress2(nullptr, rowProgress);
+			}
 #else
-				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, ++iProgress);
+			if (m_pProgress)
+				m_pProgress->Progress2(nullptr, ++rowProgress);
 #endif
 
-			};
 		};
 		free(buff);
 		if (m_pProgress)
@@ -626,118 +626,175 @@ BOOL CTIFFWriter::Write()
 	if (m_tiff)
 	{
 		tmsize_t		szScanLineSize;
-		VOID *			pScanLine;
+		tdata_t			buff;
 
 		szScanLineSize = TIFFScanlineSize(m_tiff);
-		pScanLine = (VOID *)malloc(szScanLineSize);
-		if (pScanLine)
+		buff = (tdata_t)malloc(szScanLineSize * h);
+
+		ZTRACE_DEVELOP("TIFF Scan Line Size %zu", scanLineSize);
+		ZTRACE_DEVELOP("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
+
+		if (buff)
 		{
 			if (m_pProgress)
 				m_pProgress->Start2(nullptr, h);
 
-			for (LONG j = 0; j < h; j++)
+			BYTE *  byteBuff = (BYTE *)buff;
+			WORD *	shortBuff = (WORD *)buff;
+			DWORD * longBuff = (DWORD *)buff;
+			float *	floatBuff = (float *)buff;
+
+			int	rowProgress = 0;
+
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+			for (LONG row = 0; row < h; row++)
 			{
-				BYTE *  pBYTELine	= (BYTE *)pScanLine;
-				WORD *	pWORDLine	= (WORD *)pScanLine;
-				DWORD * pDWORDLine	= (DWORD *)pScanLine;
-				float *	pFLOATLine	= (float *)pScanLine;
-
-				for (LONG i = 0;i<w;i++)
+				for (LONG col = 0; col < w; col++)
 				{
-					double		fRed, fGreen, fBlue;
+					long index = (row * w * spp) + (col * spp);
 
-					OnWrite(i, j, fRed, fGreen, fBlue);
+					double		fRed = 0, fGreen = 0, fBlue = 0, fGrey = 0;
 
-					if (spp == 1)
+					OnWrite(col, row, fRed, fGreen, fBlue);
+
+					//
+					// If its a cfa bitmap, set grey level to maximum of RGB
+					// else convert from RGB to HSL and use Luminance.
+					// 
+					if (cfa)
 					{
-						double			fGray;
-
-						if (cfa)
-						{
-							fGray = max(fRed, max(fGreen, fBlue));
-							// 2 out of 3 should be 0
-						}
-						else
-						{
-							// Convert to gray scale
-							double		H, S, L;
-							ToHSL(fRed, fGreen, fBlue, H, S, L);
-							fGray = L*255.0;
-						};
-
-						if (bps == 8)
-						{
-							*(pBYTELine) = fGray;
-							pBYTELine ++;
-						}
-						else if (bps == 16)
-						{
-							(*(pWORDLine)) = fGray * 256.0;
-							pWORDLine ++;
-						}
-						else if (bps == 32)
-						{
-							if (sampleformat == SAMPLEFORMAT_IEEEFP)
-							{
-								(*(pFLOATLine)) = fGray / 256.0 * (samplemax - samplemin) + samplemin;
-								pFLOATLine ++;
-							}
-							else
-							{
-								(*(pDWORDLine)) = fGray * 256.0 *65536.0;
-								pDWORDLine ++;
-							};
-						};
+						fGrey = max(fRed, max(fGreen, fBlue));
 					}
 					else
 					{
-						if (bps == 8)
+						double H, S, L;
+						ToHSL(fRed, fGreen, fBlue, H, S, L);
+						fGrey = L * 255.0;
+					}
+
+					switch (bps)	// Bits per sample
+					{
+					case 8:			// One byte 
+						switch (spp)
 						{
-							*(pBYTELine) = fRed;
-							*(pBYTELine+1) = fGreen;
-							*(pBYTELine+2) = fBlue;
-							pBYTELine += 3;
+						case 1:
+							byteBuff[index] = fGrey;
+							break;
+						case 3:
+						case 4:
+							byteBuff[index] = fRed;
+							byteBuff[index + 1] = fGreen;
+							byteBuff[index + 2] = fBlue;
+							break;
 						}
-						else if (bps == 16)
+						break;
+					case 16:		// Unsigned short == WORD 
+						switch (spp)
 						{
-							(*(pWORDLine))   = fRed *256.0;
-							(*(pWORDLine+1)) = fGreen *256.0;
-							(*(pWORDLine+2)) = fBlue *256.0;
-							pWORDLine += 3;
+						case 1:
+							shortBuff[index] = fGrey * 256.0;
+							break;
+						case 3:
+						case 4:
+							shortBuff[index] = fRed * 256.0;
+							shortBuff[index + 1] = fGreen * 256.0;
+							shortBuff[index + 2] = fBlue * 256.0;
+							break;
 						}
-						else if (bps == 32)
-						{
-							if (sampleformat == SAMPLEFORMAT_IEEEFP)
+						break;
+					case 32:		// Unsigned long or 32 bit floating point 
+						if (sampleformat == SAMPLEFORMAT_IEEEFP)
+							switch (spp)
 							{
-								(*(pFLOATLine))	  = fRed / 256.0  * (samplemax - samplemin) + samplemin;
-								(*(pFLOATLine+1)) = fGreen / 256.0  * (samplemax - samplemin) + samplemin;
-								(*(pFLOATLine+2)) = fBlue / 256.0  * (samplemax - samplemin) + samplemin;
-								pFLOATLine += 3;
+							case 1:
+								floatBuff[index] = fGrey / 256.0 * (samplemax - samplemin) + samplemin;
+								break;
+							case 3:
+							case 4:
+								floatBuff[index] = fRed / 256.0 * (samplemax - samplemin) + samplemin;
+								floatBuff[index + 1] = fGreen / 256.0 * (samplemax - samplemin) + samplemin;
+								floatBuff[index + 2] = fBlue / 256.0 * (samplemax - samplemin) + samplemin;
+								break;
 							}
-							else
-							{
-								(*(pDWORDLine))   = fRed * 256.0 * 65536.0;
-								(*(pDWORDLine+1)) = fGreen * 256.0 * 65536.0;
-								(*(pDWORDLine+2)) = fBlue * 256.0 *65536.0;
-								pDWORDLine += 3;
-							};
-						};
-					};
+						else switch (spp)	// unsigned long == DWORD
+						{
+						case 1:
+							longBuff[index] = fGrey * 256.0 * 65536.0;
+							break;
+						case 3:
+						case 4:
+							longBuff[index] = fRed * 256.0 * 65536.0;
+							longBuff[index + 1] = fGreen * 256.0 * 65536.0;
+							longBuff[index + 2] = fBlue * 256.0 * 65536.0;
+							break;
 
-				};
-				int			nResult;
+						}
+					}
 
-				nResult = TIFFWriteScanline(m_tiff, pScanLine, j, 0);
-				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, j+1);
-				if (-1 == nResult)
+				}
+#if defined (_OPENMP)
+				if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
 				{
-					ZTRACE_RUNTIME("TIFFWriteScanLine failed");
+					rowProgress += omp_get_num_threads();
+					m_pProgress->Progress2(nullptr, rowProgress);
+				}
+#else
+				if (m_pProgress)
+					m_pProgress->Progress2(nullptr, ++rowProgress);
+#endif
+			};
+
+			//
+			// Write the image out as Strips (i.e. not scanline by scanline)
+			// 
+			const unsigned long STRIP_SIZE_DEFAULT = 262144UL;		// 256kB
+
+			//
+			// Work out how many scanlines fit into 256K
+			//
+			unsigned long rowsPerStrip = STRIP_SIZE_DEFAULT / szScanLineSize;
+			//
+			// Handle the case where the scanline is longer the 256kB
+			//
+			if (0 == rowsPerStrip) rowsPerStrip = 1; 
+			TIFFSetField(m_tiff, TIFFTAG_ROWSPERSTRIP, rowsPerStrip);
+
+			//
+			// From that we derive the number of strips
+			//
+			long numStrips = h / rowsPerStrip;
+			//
+			// If it wasn't an exact division (IOW there's a remainder), add one
+			// for the final (short) strip.
+			//
+			if (0 != h % rowsPerStrip)
+				++numStrips;
+
+			ZTRACE_RUNTIME("Number of strips is %u", numStrips);
+
+			BYTE * curr = (BYTE *)buff;
+			tsize_t stripSize = rowsPerStrip * szScanLineSize;
+			tsize_t bytesRemaining = h * szScanLineSize;
+			tsize_t size = stripSize;
+			for (long strip = 0; strip < numStrips; strip++)
+			{
+				if (bytesRemaining < stripSize)
+					size = bytesRemaining;
+
+				tsize_t result = TIFFWriteEncodedStrip(m_tiff, strip, curr, size);
+				if (-1 == result)
+				{
+					ZTRACE_RUNTIME("TIFFWriteEncodedStrip() failed");
 					bError = true;
 					break;
 				}
-			};
-			free(pScanLine);
+				curr += result;
+				bytesRemaining -= result;
+			}
+
+			free(buff);
 			if (m_pProgress)
 				m_pProgress->End2();
 		};
@@ -793,7 +850,7 @@ public :
 	virtual BOOL Close() { return OnClose(); };
 
 	virtual BOOL	OnOpen();
-	virtual BOOL	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue);
+	void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual BOOL	OnClose();
 };
 
@@ -872,7 +929,7 @@ BOOL CTIFFWriteFromMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
+void CTIFFWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
 {
 
 	try
@@ -912,7 +969,7 @@ BOOL CTIFFWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double
 
 	}
 
-	return TRUE;
+	return;
 };
 
 /* ------------------------------------------------------------------- */

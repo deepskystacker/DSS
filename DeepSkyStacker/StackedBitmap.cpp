@@ -890,7 +890,7 @@ public :
 	};
 
 	virtual BOOL	OnOpen();
-	virtual BOOL	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue);
+	void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual BOOL	OnClose();
 };
 
@@ -949,7 +949,7 @@ BOOL CTIFFWriterStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
+void CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
 {
 	BOOL			bResult = TRUE;
 
@@ -958,7 +958,7 @@ BOOL CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGree
 
 	m_pStackedBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue, m_bApplySettings);
 
-	return bResult;
+	return;
 };
 
 /* ------------------------------------------------------------------- */

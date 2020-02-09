@@ -285,7 +285,7 @@ public :
 	BOOL	Close();
 
 	virtual BOOL	OnOpen() { return TRUE; };
-	virtual BOOL	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
+	virtual void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
 	virtual BOOL	OnClose() { return TRUE; };
 };
 
