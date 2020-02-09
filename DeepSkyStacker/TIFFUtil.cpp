@@ -276,8 +276,8 @@ BOOL CTIFFReader::Read()
 			m_pProgress->Start2(nullptr, h);
 
 		scanLineSize = TIFFScanlineSize(m_tiff);
-		ZTRACE_DEVELOP("TIFF Scan Line Size %zu", scanLineSize);
-		ZTRACE_DEVELOP("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
+		ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
+		ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
 
 		//
 		// Allocate enough to hold the entire image
@@ -625,14 +625,19 @@ BOOL CTIFFWriter::Write()
 
 	if (m_tiff)
 	{
-		tmsize_t		szScanLineSize;
+		tmsize_t		scanLineSize;
 		tdata_t			buff;
 
-		szScanLineSize = TIFFScanlineSize(m_tiff);
-		buff = (tdata_t)malloc(szScanLineSize * h);
+		scanLineSize = TIFFScanlineSize(m_tiff);
+		ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
+		ZTRACE_RUNTIME("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
 
-		ZTRACE_DEVELOP("TIFF Scan Line Size %zu", scanLineSize);
-		ZTRACE_DEVELOP("TIFF spp=%d, bps=%d, w=%d, h=%d", spp, bps, w, h);
+		//
+        // Allocate enough to hold the entire image
+        //
+		tmsize_t buffSize = scanLineSize * h;
+		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
+		buff = (tdata_t)malloc(buffSize);
 
 		if (buff)
 		{
@@ -754,7 +759,7 @@ BOOL CTIFFWriter::Write()
 			//
 			// Work out how many scanlines fit into 256K
 			//
-			unsigned long rowsPerStrip = STRIP_SIZE_DEFAULT / szScanLineSize;
+			unsigned long rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
 			//
 			// Handle the case where the scanline is longer the 256kB
 			//
@@ -775,8 +780,8 @@ BOOL CTIFFWriter::Write()
 			ZTRACE_RUNTIME("Number of strips is %u", numStrips);
 
 			BYTE * curr = (BYTE *)buff;
-			tsize_t stripSize = rowsPerStrip * szScanLineSize;
-			tsize_t bytesRemaining = h * szScanLineSize;
+			tsize_t stripSize = rowsPerStrip * scanLineSize;
+			tsize_t bytesRemaining = h * scanLineSize;
 			tsize_t size = stripSize;
 			for (long strip = 0; strip < numStrips; strip++)
 			{
