@@ -307,7 +307,7 @@ typedef enum
 
 inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
 {
-	strText = "";
+	strText.Empty();
 	switch (Method)
 	{
 	case MBP_FASTAVERAGE :
@@ -1088,8 +1088,8 @@ inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGr
 	fBlue  = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
 
 	fRed = max(0.0, min (255.0, fRed));
-	fGreen = max(0.0, min (255.0, fRed));
-	fBlue = max(0.0, min (255.0, fRed));
+	fGreen = max(0.0, min (255.0, fGreen));
+	fBlue = max(0.0, min (255.0, fBlue));
 };
 
 inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
