@@ -540,7 +540,7 @@ BOOL CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLEFORMAT, sampleformat);
 
-			if IsFloat() TIFFSetField(m_tiff, TIFFTAG_PREDICTOR, PREDICTOR_FLOATINGPOINT);
+			if (IsFloat()) TIFFSetField(m_tiff, TIFFTAG_PREDICTOR, PREDICTOR_FLOATINGPOINT);
 
 			if (samplemax-samplemin)
 			{
