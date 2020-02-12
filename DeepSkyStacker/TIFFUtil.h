@@ -51,8 +51,8 @@ public :
 	{
 		TIFFSetWarningHandler(nullptr);
 		TIFFSetWarningHandlerExt(nullptr);
-		TIFFSetErrorHandler(nullptr);
-		TIFFSetErrorHandlerExt(nullptr);
+		//TIFFSetErrorHandler(nullptr);
+		//TIFFSetErrorHandlerExt(nullptr);
 		DSSTIFFInitialize();
 		samplemax = 1.0;
 		samplemin = 0.0;
