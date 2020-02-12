@@ -3,10 +3,13 @@
 #include <float.h>
 #include <cmath>
 #include <iostream>
+#include <memory>
 #include <map>
 #include "Registry.h"
 #include "Workspace.h"
 #include "Utils.h"
+
+#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 
@@ -605,6 +608,10 @@ BOOL CFITSReader::Open()
 					m_lBitsPerPixel = 64;
 					m_bFloat = TRUE;
 					break;
+				case LONGLONG_IMG :
+					m_lBitsPerPixel = 64;
+					m_bFloat = FALSE;
+					break;
 				default :
 					// Format not recognized
 					bResult = FALSE;
@@ -635,35 +642,309 @@ BOOL CFITSReader::Open()
 BOOL CFITSReader::Read()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	BOOL			bResult = true;
+	char error_text[31];			// Error text for FITS errors.
+	
+	int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
+	int			datatype;			// format of image data 
 
-	if (m_fits)
+
+	double		fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
+
+	if (m_lNrChannels > 3)
+		ZTRACE_RUNTIME("Number of colour channels is %d, only 3 will be used.", m_lNrChannels);
+
+	if (m_fits) do
 	{
-		LONG			lScanLineSize;
-		VOID *			pScanLine = nullptr;
-		VOID *			pScanLineRed = nullptr;
-		VOID *			pScanLineGreen = nullptr;
-		VOID *			pScanLineBlue = nullptr;
-
 		BYTE	cNULL = 0;
 		WORD	wNULL = 0;
 		DWORD	dwNULL = 0;
+		LONGLONG llNULL = 0;
 		float	fNULL = 0;
+		double	dNULL = 0;
 		void *	pNULL;
 
 		if (m_lBitsPerPixel == 8)
 			pNULL = &cNULL;
 		else if (m_lBitsPerPixel == 16)
 			pNULL = &wNULL;
-		else if ((m_lBitsPerPixel == 32) && !m_bFloat)
-			pNULL = &dwNULL;
-		else
-			pNULL = &fNULL;
+		else if (m_lBitsPerPixel == 32)
+		{
+			if (m_bFloat)
+				pNULL = &fNULL;
+			else
+				pNULL = &dwNULL;
+		}
+		else if (m_lBitsPerPixel == 64)
+		{
+			if (m_bFloat)
+				pNULL = &dNULL;
+			else
+				pNULL = &llNULL;
+		}
 
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, m_lHeight);
 
+		switch (m_lBitsPerPixel)
+		{
+		case 8:
+			datatype = TBYTE;
+			break;
+		case 16:
+			datatype = TUSHORT;
+			if (m_bSigned && IsFITSForcedUnsigned())
+				datatype = TSHORT;
+			break;
+		case 32:
+			if (m_bFloat)
+				datatype = TFLOAT;
+			else if (m_bByteSwap/* || m_bSigned*/)
+				datatype = TLONG;
+			else
+				datatype = TULONG;
+			break;
+		case 64:
+			if (m_bFloat)
+				datatype = TDOUBLE;
+			else
+				datatype = TLONGLONG;
+			break;
+		};
+
+		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
+
+		LONGLONG nelements = m_lWidth * m_lHeight * colours;
+		size_t bufferSize = nelements * m_lBitsPerPixel / 8;
+
+		auto buff = std::make_unique<byte []>(bufferSize);
+
+		byte *	byteBuff	= (byte *)buff.get();
+		short * shortBuff	= (short *)buff.get();
+		WORD *	wordBuff	= (WORD *)buff.get();
+		LONG *	longBuff	= (LONG *)buff.get();
+		DWORD *	dwordBuff	= (DWORD *)buff.get();
+		LONGLONG * longlongBuff = (LONGLONG *)buff.get();
+		float *	floatBuff	= (float *)buff.get();
+		double * doubleBuff = (double *)buff.get();
+
+		int status = 0;			// used for result of fits_read_pixll call
+
+		//
+		// Inhale the entire image (either single colour or RGB).
+		//
+		fits_read_pixll(m_fits, datatype, fPixel, nelements, pNULL, byteBuff, nullptr, &status);
+		if (0 != status)
+		{
+			fits_get_errstatus(status, error_text);
+				ZTRACE_RUNTIME("fits_read_pixll returned a status of %n, error message: %s", status, error_text);
+			bResult = false;
+			break;
+		}
+
+		//
+		// Step 1: If the image is in float format, need to extract the minimum and maximum pixel values.
+		//
+		if (m_bFloat)
+		{
+			double localMin = 0, localMax = 0;
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax)
+			{
+#pragma omp for
+#endif
+				for (LONGLONG element = 0; element < nelements; ++element)
+				{
+					double	fValue = 0.0;
+					
+					if (datatype == TFLOAT)
+						fValue = floatBuff[element];	// Short (4 byte) floating point
+					else
+						fValue = doubleBuff[element];	// Long (8 byte) floating point
+
+					if (!_isnan(fValue))
+					{
+						localMin = min(localMin, fValue);
+						localMax = max(localMax, fValue);
+					};
+				}
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+				{
+					fMin = localMin < fMin ? localMin : fMin; // For non-OMP case this is equal to fMin = localMin
+					fMax = localMax > fMax ? localMax : fMax; // For non-OMP case this is equal to fMax = localMax
+				}
+#if defined(_OPENMP)
+			}
+#endif
+			double		fZero,
+				fScale;
+
+			if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
+			{
+				fMax = (fMax + fZero) / fScale;
+				fMin = fZero / fScale;
+			}
+			else if (fMin >= 0 && fMin <= 1 && fMax >= 0 && fMax <= 1)
+			{
+				fMin = 0;
+				fMax = 1;
+			}
+			if (m_bDSI && (fMax > 1))
+			{
+				fMin = min(0.0, fMin);
+				fMax = max(fMax, 65535.0);
+			};
+
+		}
+		else
+		{
+			if (!ReadKey("BZERO", fMin))
+				fMin = 0;
+		};
+
+		//
+		// Step 2: Process the image pixels
+		//
+		double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
+		unsigned long greenOffset = m_lWidth * m_lHeight;		// index into buffer of the green image
+		unsigned long blueOffset = 2 * greenOffset;				// index into buffer of the blue image
+
+		long	rowProgress = 0;
+
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+		for (long row = 0; row < m_lHeight; ++row)
+		{
+			for (long col = 0; col < m_lWidth; ++col)
+			{
+				long index = col + (row * m_lWidth);	// index into the image for this plane
+
+				DWORD redValue, greenValue, blueValue;	// Use only for some cases
+
+				if (1 == colours)
+				{
+					//
+					// This is a monochrome image 
+					//
+					switch (datatype)
+					{
+					case TBYTE:
+						fRed = byteBuff[index];
+						break;
+					case TUSHORT:
+					case TSHORT:
+						fRed = ((double)(wordBuff[index])) / 256.0;
+						// Currently don't handle signed type.
+						break;
+					case TULONG:
+					case TLONG:
+						redValue = dwordBuff[index];
+						if (m_bByteSwap)
+							ByteSwap(redValue);
+						fRed = ((double)(redValue)) / 256.0 / 65536.0;
+						break;
+					case TFLOAT:
+						fRed = (double)(floatBuff[index]);
+						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
+						break;
+					case TLONGLONG:
+						fRed = (double)(longlongBuff[index]);
+						fRed = fRed / 256.0 / 65536.0;
+						break;
+					case TDOUBLE:
+						fRed = doubleBuff[index];
+						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
+						break;
+					}
+					//
+					// Set green and blue to the same as red
+					// 
+					fGreen = fBlue = fRed;
+				}
+				else  
+				{
+					//
+					// We assume this is a 3 colour image with each colour in a separate image plane
+					//
+					switch (datatype)
+					{
+					case TBYTE:
+						fRed = byteBuff[index];
+						fGreen = byteBuff[greenOffset + index];
+						fBlue = byteBuff[blueOffset + index];
+						break;
+					case TUSHORT:
+					case TSHORT:
+						fRed = ((double)(wordBuff[index])) / 256.0;
+						fGreen = ((double)(wordBuff[greenOffset + index])) / 256.0;
+						fBlue = ((double)(wordBuff[blueOffset + index])) / 256.0;
+						// Currently don't handle signed type.
+						break;
+					case TULONG:
+					case TLONG:
+						redValue = dwordBuff[index];
+						greenValue = dwordBuff[greenOffset + index];
+						blueValue = dwordBuff[blueOffset + index];
+						if (m_bByteSwap)
+						{
+							ByteSwap(redValue);
+							ByteSwap(greenValue);
+							ByteSwap(blueValue);
+						}
+						fRed = ((double)(redValue)) / 256.0 / 65536.0;
+						fGreen = ((double)(greenValue)) / 256.0 / 65536.0;
+						fBlue = ((double)(blueValue)) / 256.0 / 65536.0;
+						break;
+					case TFLOAT:
+						fRed = (double)(floatBuff[index]);
+						fGreen = (double)(floatBuff[greenOffset + index]);
+						fBlue = (double)(floatBuff[blueOffset + index]);
+						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
+						fGreen = (fGreen - fMin) / (fMax - fMin) * 256.0;
+						fBlue = (fBlue - fMin) / (fMax - fMin) * 256.0;
+						break;
+					case TLONGLONG:
+						fRed = (double)(longlongBuff[index]);
+						fGreen = (double)(longlongBuff[greenOffset + index]);
+						fBlue = (double)(longlongBuff[blueOffset + index]);
+						fRed = fRed / 256.0 / 65536.0;
+						fGreen = fGreen / 256.0 / 65536.0;
+						fGreen = fGreen / 256.0 / 65536.0;
+						break;
+					case TDOUBLE:
+						fRed = doubleBuff[index];
+						fGreen = doubleBuff[greenOffset + index];
+						fBlue = doubleBuff[blueOffset + index];
+						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
+						fGreen = (fGreen - fMin) / (fMax - fMin) * 256.0;
+						fBlue = (fBlue - fMin) / (fMax - fMin) * 256.0;
+						break;
+					}
+
+				}
+
+				OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
+
+			}
+
+#if defined (_OPENMP)
+			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+			{
+				rowProgress += omp_get_num_threads();
+				m_pProgress->Progress2(nullptr, rowProgress);
+			}
+#else
+			if (m_pProgress)
+				m_pProgress->Progress2(nullptr, ++rowProgress);
+#endif
+		}
+
+#if (0)
 		lScanLineSize = m_lWidth * m_lBitsPerPixel/8;
+
 		if (m_lNrChannels == 1)
 		{
 			pScanLine = (VOID *)malloc(lScanLineSize);
@@ -962,7 +1243,8 @@ BOOL CFITSReader::Read()
 			if (m_pProgress)
 				m_pProgress->End2();
 		}
-	};
+#endif
+	} while (false);
 
 	return bResult;
 };
@@ -1033,7 +1315,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap.Attach(new C16BitGrayBitmap());
 			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", m_pBitmap.m_p);
 		}
-		else if (m_lBitsPerPixel == 32)
+		else if (m_lBitsPerPixel == 32 || m_lBitsPerPixel == 64)
 		{
 			if (m_bFloat)
 			{
@@ -1059,7 +1341,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap.Attach(new C48BitColorBitmap());
 			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", m_pBitmap.m_p);
 		}
-		else if (m_lBitsPerPixel == 32)
+		else if (m_lBitsPerPixel == 32 || m_lBitsPerPixel == 64)
 		{
 			if (m_bFloat)
 			{
