@@ -912,7 +912,7 @@ BOOL CFITSReader::Read()
 						fBlue = (double)(longlongBuff[blueOffset + index]);
 						fRed = fRed / 256.0 / 65536.0;
 						fGreen = fGreen / 256.0 / 65536.0;
-						fGreen = fGreen / 256.0 / 65536.0;
+						fBlue = fBlue / 256.0 / 65536.0;
 						break;
 					case TDOUBLE:
 						fRed = doubleBuff[index];
