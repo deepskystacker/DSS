@@ -683,10 +683,9 @@ Raw und FITS DDP-Einstellungen<br>
           Interpolations-Modus</font></div></LI></UL> 
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Die Farbanpassung wird nach dem Weißabgleichs-Prozess und nachdem 
       die 12 oder 14 bit Werte aus den RAWs in 16 bit Werte<BR>(0-65535) 
-      gewandelt wurden angewendet.&nbsp;&nbsp;</FONT></FONT><FONT face=Arial><FONT size=2>Wenn Sie diese Werte über den Standardwert von 1.0 
-      erhöhen hat das zur Folge dass mehr und mehr Pixel gesättigt 
-      werden.<?xml:namespace prefix = "o" ns = 
-      "urn:schemas-microsoft-com:office:office" /><o:p></o:p></FONT></FONT></P>
+      gewandelt wurden angewendet.&nbsp;&nbsp;</FONT></FONT><FONT face=Arial><FONT size=2>Wenn Sie diese 
+      Werte über den Standardwert von 1.0 erhöhen hat das zur Folge dass mehr 
+      und mehr Pixel gesättigt werden.<o:p></o:p></FONT></FONT></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><o:p><FONT size=2 face=Arial>&nbsp;</FONT></o:p></P>
       <P class=MsoPlainText style="MARGIN: 0cm 0cm 0pt"><FONT face=Arial><FONT size=2>Die Helligkeit (oder Luminanz) Einstellung beeinflusst alle 3 
       Kanäle gleichermaßen. Die Änderung der Werte für <FONT color=#ff0000>rot</FONT> und <FONT color=#0000ff>blau</FONT> passiert 
@@ -733,11 +732,30 @@ Raw und FITS DDP-Einstellungen<br>
     Die einzige Einstellung in diesem Register, die für alle  FITS-Dateien zählt, ist der Luminanz-Wert (Helligkeit).<br>
     Man kann damit ein 12 Bit Bild zu einem  16 Bit Bild vergrößern<br>
     (um das zu tun, verwenden Sie einen Wert von 16).</font></p>
-    <p class="Standard"><font face="Arial" size="2">Alle anderen Einstellungen sind <strong>nur</strong> mit 16 Bit S/W FITS-Dateien, die mit einer  DSLR 
-    oder einer Farb-CCD-Kamera erstellt wurden möglich.<br>
+    <p class="Standard"><font face="Arial" size="2">Alle anderen Einstellungen sind <strong>nur</strong>
+                          
+         mit 16 Bit S/W FITS-Dateien, die mit einer DSLR oder einer Farb-CCD-Kamera erstellt wurden möglich.</font></p>
+    <p class="Standard"> <FONT face=Arial><FONT size=2><SPAN lang=de 
+      class="tlid-translation translation"><SPAN title="">Wenn das 
+      Kontrollkästchen "Monochrome 16 Bit FITS Dateien sind RAW ..." 
+      <STRONG>nicht aktiviert ist</STRONG>, versucht DeepSkyStacker, die 
+      automatische Erkennung der CFA-Matrix anhand von FITS-Schlüsselwörtern wie 
+      BAYERPAT, COLORTYP und MOSAIC (für Meade DSI-Farbkameras) zu 
+      verwenden.</SPAN> <SPAN title="">Wenn die FITS-Datei diese Schlüsselwörter 
+      nicht enthält oder das falsche Muster in der Datei angegeben ist, können 
+      Sie das Kontrollkästchen aktivieren und die Kamera / das Muster auswählen, 
+      die bzw. das in früheren Versionen von DeepSyStacker verwendet werden 
+      soll.</SPAN></SPAN>           
+         <br>
     <br>
-    Als erstes müssen Sie Ihre DSLR oder CCD Kamera, mit der die Bilder in der Bilderliste erstellt wurden, aus der Dropdown-Liste auswählen. 
-    Dies ist unbedingt notwendig, damit die korrekte Bayer-Filter-Maske zum dekodieren verwendet wird, um aus dem S/W-Bild ein Farbbild zu erstellen.</font></p>
+    Als 
+      erstes müssen Sie Ihre DSLR oder CCD Kamera, mit der die Bilder in der 
+      Bilderliste erstellt wurden, aus der Dropdown-Liste auswählen. Dies ist 
+      unbedingt notwendig, damit die korrekte Bayer-Filter-Maske zum dekodieren 
+      verwendet wird, um aus dem S/W-Bild ein Farbbild zu 
+      erstellen.</FONT></FONT>
+                          
+                       </p>
     <p class="Standard"><font face="Arial" size="2">Folgende Einstellungs-Parameter stehen zur Verfügung:<br>
      - Angleichen der RGB-Kanäle<br>
     - Interpolations-Modus<br>
