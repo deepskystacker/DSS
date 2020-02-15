@@ -1,4 +1,4 @@
-﻿Welcome to DeepSkyStacker 4.2.4 Beta 1
+﻿Welcome to DeepSkyStacker 4.2.4 Beta 2
 
 The main changes in this release are:
 
@@ -17,6 +17,8 @@ The main changes in this release are:
 7. Refactor the code to decode the TIFF file we just read and also use OpenMP.  Time to decode the image reduced by about 4-5 times.
 
 8. Refactor the code that writes TIFF files and use OpenMP to speed it up.  Also write the output file in strips rather than scanlines.  Substantial performance increase.
+
+9. Refactor the code that reads FITS files to make it easier to understand and also use OpenMP.  Only a marginal performance benefit.
 
 Welcome to DeepSkyStacker 4.2.3
 
