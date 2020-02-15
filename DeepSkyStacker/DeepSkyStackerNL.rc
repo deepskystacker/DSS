@@ -1559,7 +1559,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw ondersteund uw %s camera niet"
-	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker will not de-Bayer 8 bit images"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker zal niet de-Bayer 8 bits afbeeldingen"
 END
 
 #endif    // Dutch (Netherlands) resources
