@@ -813,9 +813,9 @@ BOOL CFITSReader::Read()
 
 		long	rowProgress = 0;
 
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
+//#if defined(_OPENMP)
+//#pragma omp parallel for default(none)
+//#endif
 		for (long row = 0; row < m_lHeight; ++row)
 		{
 			for (long col = 0; col < m_lWidth; ++col)
@@ -930,16 +930,16 @@ BOOL CFITSReader::Read()
 
 			}
 
-#if defined (_OPENMP)
-			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-			{
-				rowProgress += omp_get_num_threads();
-				m_pProgress->Progress2(nullptr, rowProgress);
-			}
-#else
+//#if defined (_OPENMP)
+//			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+//			{
+//				rowProgress += omp_get_num_threads();
+//				m_pProgress->Progress2(nullptr, rowProgress);
+//			}
+//#else
 			if (m_pProgress)
 				m_pProgress->Progress2(nullptr, ++rowProgress);
-#endif
+//#endif
 		}
 
 	} while (false);
@@ -1289,9 +1289,10 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	}
 	if (bContinue && fits.Open())
 	{
-		if (fits.m_strMake.GetLength()) BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), (LPCTSTR)fits.m_strMake);
-		
-		BitmapInfo.m_strFileType	= _T("FITS");
+		if (fits.m_strMake.GetLength()) 
+			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), (LPCTSTR)fits.m_strMake);
+		else 
+			BitmapInfo.m_strFileType	= _T("FITS");
 		BitmapInfo.m_strFileName	= szFileName;
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
