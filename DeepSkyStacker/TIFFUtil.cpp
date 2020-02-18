@@ -80,6 +80,7 @@ BOOL CTIFFReader::Open()
 
 	reg.LoadKey(REGENTRY_BASEKEY, _T("SkipTIFFExifInfo"), dwSkipExifInfo);
 
+	ZTRACE_RUNTIME("Opening %s", CStringToChar(m_strFileName));
 	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "r");
 	if (m_tiff)
 	{

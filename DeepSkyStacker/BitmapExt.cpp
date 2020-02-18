@@ -1260,6 +1260,7 @@ private :
 	CDSSProgress *				m_pProgress;
 	BOOL						m_bAddMode;
 	double						m_fMinimum;
+	bool						m_isSuperPixel;
 
 public :
     CSubtractTask()
@@ -1274,6 +1275,7 @@ public :
         m_fGrayFactor = 0;
         m_bMonochrome = false;
         m_pProgress = nullptr;
+		m_isSuperPixel = false;
     }
 
 	virtual ~CSubtractTask()
@@ -1299,21 +1301,30 @@ public :
 			m_pProgress->Start2(nullptr, pTarget->RealWidth());
 	};
 
-	void	SetShift(double fXShift, double fYShift)
+	CSubtractTask&	SetShift(double fXShift, double fYShift)
 	{
 		m_fXShift	= fXShift;
 		m_fYShift	= fYShift;
+		return *this;
 	};
 
-	void	SetAddMode(BOOL bSet)
+	CSubtractTask&	SetAddMode(BOOL bSet)
 	{
 		m_bAddMode = bSet;
+		return *this;
 	};
 
-	void	SetMinimumValue(double fValue)
+	CSubtractTask&	SetMinimumValue(double fValue)
 	{
 		m_fMinimum = fValue;
+		return *this;
 	};
+
+	CSubtractTask& setSuperPixel(bool value)
+	{
+		m_isSuperPixel = value;
+		return *this;
+	}
 
 	void	End()
 	{
@@ -1380,8 +1391,19 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 				// Source is moved
 				lSrcStartY += fabs(m_fYShift)+0.5;
 			};
+
+			//
+			// If the target is in Super-Pixel mode we need to set the location
+			// in the source to HALF the calculated value
+			//
+			if (m_isSuperPixel)
+			{
+				lSrcStartX /= 2;
+				lSrcStartY /= 2;
+			}
 			PixelItTgt->Reset(lTgtStartX, lTgtStartY);
 			PixelItSrc->Reset(lSrcStartX, lSrcStartY);
+
 			for (j = 0;j<msg.lParam;j++)
 			{
 				for (i = 0;i<lWidth;i++)
@@ -1393,6 +1415,7 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 
 						PixelItTgt->GetPixel(fTgtGray);
 						PixelItSrc->GetPixel(fSrcGray);
+
 						if (m_bAddMode)
 							fTgtGray = min(max(0.0, fTgtGray+fSrcGray * m_fGrayFactor), 256.0);
 						else
@@ -1422,10 +1445,28 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 					};
 
 					(*PixelItTgt)++;
-					(*PixelItSrc)++;
+
+					//
+					// If the target is in Super-Pixel mode only increment the
+					// pixel iterator for the source for each quad pixel
+					//
+					if (m_isSuperPixel)
+					{
+						if ((0 == j % 2) && (0 == i % 2))
+							(*PixelItSrc)++;
+					}
+					else
+						(*PixelItSrc)++;
 				};
 				(*PixelItTgt)+=lExtraWidth;
-				(*PixelItSrc)+=lExtraWidth;
+				//
+				// If the target is in Super-Pixel mode only increment the
+				// pixel iterator by half the extra width.
+				//
+				if (m_isSuperPixel)
+					(*PixelItSrc) += lExtraWidth/2;
+				else
+					(*PixelItSrc) += lExtraWidth;				
 			};
 			SetEvent(hEvent);
 		}
@@ -1491,19 +1532,50 @@ BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * p
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
+	bool	isSuperPixel = false;
+
+
 	// Check that it is the same sizes
 	if (pTarget && pSource)
 	{
-		if ((pTarget->RealWidth() == pSource->RealWidth()) &&
-			(pTarget->RealHeight() == pSource->RealHeight()) &&
+		if ((pTarget->Width() == pSource->RealWidth()) &&
+			(pTarget->Height() == pSource->RealHeight()) &&
 			(pTarget->IsMonochrome() == pSource->IsMonochrome()))
 		{
+			CGrayBitmap * pGreyBitmap = dynamic_cast<CGrayBitmap *>(pTarget);
+			C8BitGrayBitmap * p8BitGreyBitmap = dynamic_cast<C8BitGrayBitmap *>(pTarget);
+			C16BitGrayBitmap * p16BitGreyBitmap = dynamic_cast<C16BitGrayBitmap *>(pTarget);
+			C32BitGrayBitmap * p32BitGreyBitmap = dynamic_cast<C32BitGrayBitmap *>(pTarget);
+			C32BitFloatGrayBitmap * p32BitFloatGreyBitmap = dynamic_cast<C32BitFloatGrayBitmap *>(pTarget);
+
+			if (pGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == pGreyBitmap->GetCFATransformation());
+			if (p8BitGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p8BitGreyBitmap->GetCFATransformation());
+			if (p16BitGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p16BitGreyBitmap->GetCFATransformation());
+			if (p32BitGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p32BitGreyBitmap->GetCFATransformation());
+			if (p32BitFloatGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p32BitFloatGreyBitmap->GetCFATransformation());
+
 			CSubtractTask			SubtractTask;
+
+			//
+			// Set whether the target bitmap is in Super-Pixel mode
+			//
+			SubtractTask.setSuperPixel(isSuperPixel);
 
 			SubtractTask.Init(pTarget, pSource, pProgress, fRedFactor, fGreenFactor, fBlueFactor);
 			SubtractTask.StartThreads();
 			SubtractTask.Process();
-		};
+		}
+		else
+		{
+			ZTRACE_RUNTIME("Target.RealWidth = %d, Source.RealWidth = %d", pTarget->Width(), pSource->RealWidth());
+			ZTRACE_RUNTIME("Target.RealHeight = %d, Source.RealHeight = %d", pTarget->Height(), pSource->RealHeight());
+			ZTRACE_RUNTIME("Subtraction skipped");
+		}
 	};
 
 	return bResult;

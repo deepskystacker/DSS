@@ -335,6 +335,7 @@ BOOL CFITSReader::Open()
 	int					nStatus = 0;
 
 	// Close();
+	ZTRACE_RUNTIME("Opening %s", CStringToChar(m_strFileName));
 	fits_open_diskfile(&m_fits, CStringToChar(m_strFileName), READONLY, &nStatus);
 	if (!nStatus && m_fits)
 	{
@@ -713,6 +714,8 @@ BOOL CFITSReader::Read()
 		};
 
 		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
+
+		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
 		LONGLONG nelements = m_lWidth * m_lHeight * colours;
 		size_t bufferSize = nelements * m_lBitsPerPixel / 8;

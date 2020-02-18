@@ -3,6 +3,7 @@
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "Multitask.h"
+#include "Utils.h"
 
 class CFlatDivideTask : public CMultitask
 {
@@ -159,24 +160,47 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
-	/*BOOL			bUseGray;
-	BOOL			bUseCFA;*/
+	BOOL			bUseGray;
+	BOOL			bUseCFA;
+	BOOL			isSuperPixel;
+	CString strText;
+	strText.LoadString(IDS_APPLYINGFLAT);
 
 	// Check that it is the same sizes
 	if (pTarget && m_pFlatFrame)
 	{
-		if ((pTarget->RealWidth() == m_pFlatFrame->RealWidth()) &&
-			(pTarget->RealHeight() == m_pFlatFrame->RealHeight()))
+		if ((pTarget->Width() == m_pFlatFrame->RealWidth()) &&
+			(pTarget->Height() == m_pFlatFrame->RealHeight()))
 		{
+			ZTRACE_RUNTIME(CStringToChar(strText));
+			/*
 			CFlatDivideTask			DivideTask;
 
 			DivideTask.Init(pTarget, pProgress, this);
 			DivideTask.StartThreads();
 			DivideTask.Process();
+			*/
 
-			/*
 			bUseGray = m_FlatNormalization.UseGray();
 			bUseCFA     = IsCFA();
+			
+			CGrayBitmap * pGreyBitmap = dynamic_cast<CGrayBitmap *>(pTarget);
+			C8BitGrayBitmap * p8BitGreyBitmap = dynamic_cast<C8BitGrayBitmap *>(pTarget);
+			C16BitGrayBitmap * p16BitGreyBitmap = dynamic_cast<C16BitGrayBitmap *>(pTarget);
+			C32BitGrayBitmap * p32BitGreyBitmap = dynamic_cast<C32BitGrayBitmap *>(pTarget);
+			C32BitFloatGrayBitmap * p32BitFloatGreyBitmap = dynamic_cast<C32BitFloatGrayBitmap *>(pTarget);
+
+			if (pGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == pGreyBitmap->GetCFATransformation());
+			if (p8BitGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p8BitGreyBitmap->GetCFATransformation());
+			if (p16BitGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p16BitGreyBitmap->GetCFATransformation());
+			if (p32BitGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p32BitGreyBitmap->GetCFATransformation());
+			if (p32BitFloatGreyBitmap)
+				isSuperPixel = (CFAT_SUPERPIXEL == p32BitFloatGreyBitmap->GetCFATransformation());
+
 			if (pProgress)
 				pProgress->Start2(nullptr, pTarget->RealWidth());
 			bResult = TRUE;
@@ -184,15 +208,22 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 			{
 				for (LONG j = 0;j<pTarget->RealHeight();j++)
 				{
+					long i_Flat = i, j_Flat = j;
+					if (isSuperPixel)
+					{
+						i_Flat /= 2;
+						j_Flat /= 2;
+					}
 					if (bUseGray)
 					{
 						double			fSrcGray;
 						double			fTgtGray;
 
 						pTarget->GetPixel(i, j, fTgtGray);
-						m_pFlatFrame->GetPixel(i, j, fSrcGray);
+
+						m_pFlatFrame->GetPixel(i_Flat, j_Flat, fSrcGray);
 						if (bUseCFA)
-							m_FlatNormalization.Normalize(fTgtGray, fSrcGray, m_pFlatFrame->GetBayerColor(i, j));
+							m_FlatNormalization.Normalize(fTgtGray, fSrcGray, m_pFlatFrame->GetBayerColor(i_Flat, j_Flat));
 						else
 							m_FlatNormalization.Normalize(fTgtGray, fSrcGray);
 						pTarget->SetPixel(i, j, fTgtGray);
@@ -203,7 +234,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 						double			fTgtRed, fTgtGreen, fTgtBlue;
 
 						pTarget->GetPixel(i, j, fTgtRed, fTgtGreen, fTgtBlue);
-						m_pFlatFrame->GetPixel(i, j, fSrcRed, fSrcGreen, fSrcBlue);
+						m_pFlatFrame->GetPixel(i_Flat, j_Flat, fSrcRed, fSrcGreen, fSrcBlue);
 						m_FlatNormalization.Normalize(fTgtRed, fTgtGreen, fTgtBlue, fSrcRed, fSrcGreen, fSrcBlue);
 						pTarget->SetPixel(i, j, fTgtRed, fTgtGreen, fTgtBlue);
 					};
@@ -213,8 +244,10 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 					pProgress->Progress2(nullptr, i+1);
 			};
 			if (pProgress)
-				pProgress->End2();*/
-		};
+				pProgress->End2();
+		}
+		else
+			ZTRACE_RUNTIME("Did not perform %s", CStringToChar(strText));
 	};
 
 	return bResult;
