@@ -616,6 +616,8 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Desculpe, LibRaw não suporta % modelo de câmera"
+	IDS_8BIT_FITS_NODEBAYER "O DeepSkyStacker não fará o processamento de-Bayer de imagens de 8 bits"
+END	
 END
 
 #endif    // Portuguese (Brazil) resources

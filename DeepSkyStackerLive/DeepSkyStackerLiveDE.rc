@@ -681,6 +681,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Es tut uns leid aber LibRaw unterstützt das Kameramodell %s nicht"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker debayer 8-Bit-Bilder nicht"	
 END
 
 

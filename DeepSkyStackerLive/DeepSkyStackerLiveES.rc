@@ -564,6 +564,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Lo sentimos, Libraw no reconoce la cámara %s"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker no se des-Bayer imágenes de 8 bits"	
 END
 
 #endif    // Spanish (Spain, International Sort) resources
