@@ -1489,7 +1489,7 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 		else
 			bResult = WriteFITS(strOutputFile, pOutBitmap, pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
 
-		if ((CFATransform == CFAT_SUPERPIXEL) && pCFABitmapInfo)
+		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseSuperPixels(TRUE);
 
 		if (pProgress)

@@ -560,6 +560,8 @@ void CFitsFilesTab::SaveValues()
 		m_BlueScale.GetWindowText(strValue);
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), strValue);
 
+		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), m_SuperPixels.GetCheck() ? true : false);
+
 		strValue.Empty();
 		if (m_Bilinear.GetCheck())
 			strValue = _T("Bilinear");
@@ -571,6 +573,7 @@ void CFitsFilesTab::SaveValues()
 			strValue = _T("AHD");
 
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), strValue);
+
 
 		m_DSLR.GetLBText(m_DSLR.GetCurSel(), strValue);
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), strValue);

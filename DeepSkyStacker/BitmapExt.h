@@ -2059,7 +2059,6 @@ public :
 	virtual void SetValue(LONG i, LONG j, double fGray)
 	{
 		CheckXY(i, j);
-
 		m_vPixels[GetOffset(i, j)] = fGray;
 
 		return;
@@ -2067,8 +2066,11 @@ public :
 
 	virtual void GetValue(LONG i, LONG j, double & fGray)
 	{
+		if (CFAT_SUPERPIXEL == m_CFATransform)
+		{
+			i *= 2; j *= 2;
+		}
 		CheckXY(i, j);
-
 		fGray = m_vPixels[GetOffset(i, j)];
 
 		return;
@@ -2092,18 +2094,16 @@ public :
 		return;
 	};
 
-	virtual void SetPixel(LONG i, LONG j, double fGray)
+	virtual void inline SetPixel(LONG i, LONG j, double fGray)
 	{
-		CheckXY(i, j);
-
-		fGray *= m_fMultiplier;
-		m_vPixels[GetOffset(i, j)] = fGray;
-		
+		SetValue(i, j, fGray * m_fMultiplier);
 		return;
 	};
 
 	virtual void GetPixel(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
 	{
+
+		CheckXY(i, j);
 		fRed = fGreen = fBlue = 0.0;
 		if (m_CFATransform == CFAT_SUPERPIXEL)
 		{
@@ -2138,10 +2138,10 @@ public :
 				}
 			}
 		}
+
 		else if (m_CFATransform == CFAT_RAWBAYER)
 		{
 			ASSERT(m_bWord);
-			CheckXY(i, j);
 
 			TType *		pValue = &(m_vPixels[GetOffset(i, j)]);
 
@@ -2161,7 +2161,6 @@ public :
 		else if ((m_CFATransform == CFAT_BILINEAR) || (m_CFATransform == CFAT_AHD))
 		{
 			ASSERT(m_bWord);
-			CheckXY(i, j);
 
 			if (m_bCYMG)
 			{
@@ -2204,21 +2203,16 @@ public :
 		}
 		else 
 		{
-			CheckXY(i, j);
 			fRed = fBlue = fGreen = m_vPixels[GetOffset(i, j)]/m_fMultiplier;
 		};
 
 		return;
 	};
 
-	virtual void GetPixel(LONG i, LONG j, double & fGray)
+	virtual void inline GetPixel(LONG i, LONG j, double & fGray)
 	{
-		fGray = 0.0;
-
-		CheckXY(i, j);
-
-		fGray = m_vPixels[GetOffset(i, j)]/m_fMultiplier;
-
+		GetValue(i, j, fGray);
+		fGray /= m_fMultiplier;
 		return;
 	};
 

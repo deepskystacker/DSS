@@ -334,11 +334,11 @@ BOOL CFITSReader::Open()
 	BOOL				bResult = FALSE;
 	int					nStatus = 0;
 
-	// Close();
-	ZTRACE_RUNTIME("Opening %s", CStringToChar(m_strFileName));
 	fits_open_diskfile(&m_fits, CStringToChar(m_strFileName), READONLY, &nStatus);
 	if (!nStatus && m_fits)
 	{
+		ZTRACE_RUNTIME("Opened %s", CStringToChar(m_strFileName));
+
 		// File ok - move to the first image HDU
 		CString			strSimple;
 		LONG			lNrAxis = 0;
@@ -810,19 +810,20 @@ BOOL CFITSReader::Read()
 		//
 		// Step 2: Process the image pixels
 		//
-		double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
 		unsigned long greenOffset = m_lWidth * m_lHeight;		// index into buffer of the green image
 		unsigned long blueOffset = 2 * greenOffset;				// index into buffer of the blue image
 
 		long	rowProgress = 0;
 
-//#if defined(_OPENMP)
-//#pragma omp parallel for default(none)
-//#endif
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
 		for (long row = 0; row < m_lHeight; ++row)
 		{
 			for (long col = 0; col < m_lWidth; ++col)
 			{
+				double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
+
 				long index = col + (row * m_lWidth);	// index into the image for this plane
 
 				DWORD redValue, greenValue, blueValue;	// Use only for some cases
@@ -933,16 +934,16 @@ BOOL CFITSReader::Read()
 
 			}
 
-//#if defined (_OPENMP)
-//			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-//			{
-//				rowProgress += omp_get_num_threads();
-//				m_pProgress->Progress2(nullptr, rowProgress);
-//			}
-//#else
+#if defined (_OPENMP)
+			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+			{
+				rowProgress += omp_get_num_threads();
+				m_pProgress->Progress2(nullptr, rowProgress);
+			}
+#else
 			if (m_pProgress)
 				m_pProgress->Progress2(nullptr, ++rowProgress);
-//#endif
+#endif
 		}
 
 	} while (false);
@@ -1127,7 +1128,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 					pCFABitmapInfo->UseBilinear(TRUE);
 				else if (IsFITSRawBayer())
 					pCFABitmapInfo->UseRawBayer(TRUE);
-				else if (IsFITSSuperPixels())
+				else if (IsSuperPixels())			// Was IsFITSSuperPixels()
 					pCFABitmapInfo->UseSuperPixels(TRUE);
 				else if (IsFITSBilinear())
 					pCFABitmapInfo->UseBilinear(TRUE);
@@ -1182,21 +1183,21 @@ BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 					switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 					{
 					case BAYER_BLUE:
-						fRed = min(maxValue, fRed *= m_fBlueRatio);
+						fRed = min(maxValue, fRed * m_fBlueRatio);
 						break;
 					case BAYER_GREEN:
-						fRed = min(maxValue, fRed *= m_fGreenRatio);
+						fRed = min(maxValue, fRed * m_fGreenRatio);
 						break;
 					case BAYER_RED:
-						fRed = min(maxValue, fRed *= m_fRedRatio);
+						fRed = min(maxValue, fRed * m_fRedRatio);
 						break;
 					};
 				}
 				else
 				{
-					fRed = min(maxValue, fRed *= m_fBrightnessRatio);
-					fGreen = min(maxValue, fGreen *= m_fBrightnessRatio);
-					fBlue = min(maxValue, fBlue *= m_fBrightnessRatio);
+					fRed = min(maxValue, fRed * m_fBrightnessRatio);
+					fGreen = min(maxValue, fGreen * m_fBrightnessRatio);
+					fBlue = min(maxValue, fBlue * m_fBrightnessRatio);
 				};
 				m_pBitmap->SetPixel(lX, lY, fRed);
 			}
@@ -2046,7 +2047,7 @@ int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap 
 
 		if (ReadFITS(szFileName, &pBitmap, pProgress))
 		{
-/*			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
+			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
 			{
 				C16BitGrayBitmap *	pGrayBitmap;
 
@@ -2057,7 +2058,7 @@ int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap 
 					pGrayBitmap->UseRawBayer(TRUE);
 				else if (IsRawBilinear())
 					pGrayBitmap->UseBilinear(TRUE);
-			};*/
+			};
 			pBitmap.CopyTo(ppBitmap);
 			result = 0;
 		}

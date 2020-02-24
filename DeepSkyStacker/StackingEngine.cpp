@@ -2460,6 +2460,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 									else
 										strText.Format(IDS_STACKGRAYLIGHT, m_vBitmaps[lIndice].m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)m_vBitmaps[lIndice].m_strFileName);
 
+									ZTRACE_RUNTIME(CStringToChar(strText));
 									// First apply transformations
 									MasterFrames.ApplyAllMasters(pBitmap, &(m_vBitmaps[lIndice].m_vStars), m_pProgress);
 

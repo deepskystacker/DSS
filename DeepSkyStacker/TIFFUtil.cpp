@@ -80,10 +80,19 @@ BOOL CTIFFReader::Open()
 
 	reg.LoadKey(REGENTRY_BASEKEY, _T("SkipTIFFExifInfo"), dwSkipExifInfo);
 
-	ZTRACE_RUNTIME("Opening %s", CStringToChar(m_strFileName));
+	//
+	// Quietly attempt to open the putative TIFF file 
+	//
+	TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
+	TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
 	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "r");
+	TIFFSetErrorHandler(oldHandler);
+	TIFFSetErrorHandlerExt(oldHandlerExt);
+
 	if (m_tiff)
 	{
+		ZTRACE_RUNTIME("Opened %s", CStringToChar(m_strFileName));
+
 		cfa = 0;
 		master = 0;
 		samplemin = 0;
@@ -1203,7 +1212,9 @@ void CTIFFReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 	try
 	{
 		if (m_pBitmap)
+		{
 			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+		}
 	}
 	catch (ZException e)
 	{
