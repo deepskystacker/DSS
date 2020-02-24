@@ -1444,7 +1444,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Ne pare rãu, LibRaw nu acceptã camera %s"
-	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker nu va dezactiva imaginile pe 8 bitis"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker nu va debayeriza imaginile pe 8 biti"
 END
 
 #endif    // Romanian (Romania) resources
