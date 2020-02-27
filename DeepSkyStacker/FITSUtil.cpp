@@ -644,7 +644,7 @@ BOOL CFITSReader::Read()
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = true;
-	char error_text[31];			// Error text for FITS errors.
+	char error_text[31] = "";			// Error text for FITS errors.
 	
 	int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
 	int			datatype;			// format of image data 
@@ -694,8 +694,8 @@ BOOL CFITSReader::Read()
 			break;
 		case 16:
 			datatype = TUSHORT;
-			if (m_bSigned && IsFITSForcedUnsigned())
-				datatype = TSHORT;
+			//if (m_bSigned && IsFITSForcedUnsigned())
+				//datatype = TUSHORT;
 			break;
 		case 32:
 			if (m_bFloat)
@@ -740,7 +740,7 @@ BOOL CFITSReader::Read()
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
-				ZTRACE_RUNTIME("fits_read_pixll returned a status of %n, error message: %s", status, error_text);
+				ZTRACE_RUNTIME("fits_read_pixll returned a status of %d, error message: %s", status, error_text);
 			bResult = false;
 			break;
 		}
