@@ -156,33 +156,33 @@ BEGIN
                     133,9
     CONTROL         "",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     30,49,16,10
-    CONTROL         "...score is minder dan",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "...score minder is dan",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,74,49,82,10
     EDITTEXT        IDC_SCORE,160,50,44,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
                     WS_EX_RIGHT
     CONTROL         "",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     30,66,16,10
-    CONTROL         "...sterren aantal is minder dan",IDC_DONTSTACK_STARS,"Button",
+    CONTROL         "...sterren aantal minder is dan",IDC_DONTSTACK_STARS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,74,66,110,10
     EDITTEXT        IDC_STARCOUNT,187,66,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
                     NOT WS_BORDER,WS_EX_RIGHT
     CONTROL         "",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,30,
                     98,16,10
-    CONTROL         "...FWHM is groter dan",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "...FWHM groter is dan",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,74,98,84,10
     EDITTEXT        IDC_FWHM,161,98,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
                     WS_EX_RIGHT
     LTEXT           "Pixels",IDC_STATIC,192,99,19,8
     CONTROL         "",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     30,115,16,10
-    CONTROL         "...dX of dY is groter dan",IDC_DONTSTACK_OFFSET,"Button",
+    CONTROL         "...dX of dY groter is dan",IDC_DONTSTACK_OFFSET,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,74,115,90,10
     EDITTEXT        IDC_OFFSET,166,115,31,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
                     WS_EX_RIGHT
     LTEXT           "Pixels",IDC_STATIC,200,116,19,8
     CONTROL         "",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     30,133,16,10
-    CONTROL         "...Hoek is groter dan",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "...Hoek groter is dan",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,74,133,79,10
     EDITTEXT        IDC_ANGLE,156,133,25,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
                     WS_EX_RIGHT
@@ -197,7 +197,7 @@ BEGIN
     CONTROL         "Maak een waarschuwing bestand in ",IDC_WARN_FILE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,107,207,128,10
     GROUPBOX        "Opties",IDC_OPTIONS,7,227,306,47
-    CONTROL         "Bewaar gestapelde afbeelding naar ieder bestand",IDC_SAVESTACKEDIMAGE,
+    CONTROL         "Bewaar gestapelde afbeelding na iedere",IDC_SAVESTACKEDIMAGE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,172,10
     EDITTEXT        IDC_IMAGECOUNT,190,240,22,10,ES_RIGHT | ES_AUTOHSCROLL | 
                     ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
@@ -210,7 +210,7 @@ BEGIN
                     BS_MULTILINE
     EDITTEXT        IDC_MINIMAGES,125,21,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
                     NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "afbeeldingen zijn beschikbaar",IDC_STATIC,155,22,94,8
+    LTEXT           "afbeeldingen beschikbaar zijn",IDC_STATIC,155,22,94,8
     LTEXT           "<Klik hier om de map te selecteren>",IDC_WARNINGFILEFOLDER,
                     238,207,69,9
     LTEXT           "<Klik hier om een email adres toe te voegen>",IDC_EMAIL,
@@ -233,7 +233,7 @@ BEGIN
                     IDC_STATIC,26,165,189,8
     CONTROL         "",IDC_WARN_SKYBACKGROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     30,82,16,10
-    CONTROL         "...Achtergrond Hemel is groter dan",IDC_DONTSTACK_SKYBACKGROUND,
+    CONTROL         "...Achtergrond Hemel groter is dan",IDC_DONTSTACK_SKYBACKGROUND,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,74,82,125,10
     EDITTEXT        IDC_MAX_SKYBACKGROUND,201,82,27,10,ES_RIGHT | ES_AUTOHSCROLL | 
                     NOT WS_BORDER,WS_EX_RIGHT
@@ -643,11 +643,11 @@ BEGIN
     IDS_STATUS_NOTSTACKABLE "Niet stapelbaar"
     IDS_STATUS_STACKED      "Gestapeld"
     IDS_LOG_IMAGENOTSTACKABLE1 "Afbeelding %s is niet stapelbaar (%s)\n"
-    IDS_NOSTACK_SCORE       "Score (%.2f) is minder dan %.2f"
-    IDS_NOSTACK_STARS       "Ster telling (%.0f) is minder dan %.0f"
-    IDS_NOSTACK_FWHM        "FWHM (%.2f pixels) is groter dan %.2f pixels"
-    IDS_NOSTACK_OFFSET      "dx (%.2f pixels) of dY (%.2f pixels) is groter dan %.2f pixels"
-    IDS_NOSTACK_ANGLE       "Hoek (%.2f°) is groter dan %.2f°"
+    IDS_NOSTACK_SCORE       "Score (%.2f) minder is dan %.2f"
+    IDS_NOSTACK_STARS       "Ster telling (%.0f) minder is dan %.0f"
+    IDS_NOSTACK_FWHM        "FWHM (%.2f pixels) groter is dan %.2f pixels"
+    IDS_NOSTACK_OFFSET      "dx (%.2f pixels) of dY (%.2f pixels) groter is dan %.2f pixels"
+    IDS_NOSTACK_ANGLE       "Hoek (%.2f°) groter is dan %.2f°"
     IDS_NOSTACK_NOTRANSFORMATION 
                             "Geen verplaatsing gevonden vanuit de referentie plaat"
     IDS_LOG_WARNING         "Waarschuwing: Afbeelding %s -> %s\n"
@@ -671,7 +671,7 @@ BEGIN
     IDS_USEEXISTINGIMAGES   "U heeft %ld afbeelding(en) in de controle map.\nWilt u deze verwerken?"
     IDS_ERRORMOVINGFILE     "Er is een fout opgetreden met de poging %s naar %s submap te verplaatsen\n"
     IDS_FILEMOVED           "Bestand %s verplaatst naar submap %s\n"
-    IDS_NOSTACK_SKYBACKGROUND "Hemel Achtergrond (%2.f%%) is groter dan %2.f%%"
+    IDS_NOSTACK_SKYBACKGROUND "Hemel Achtergrond (%2.f%%) groter is dan %2.f%%"
 END
 
 STRINGTABLE 
