@@ -646,9 +646,16 @@ BOOL CFITSReader::Read()
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
-				ZTRACE_RUNTIME("fits_read_pixll returned a status of %d, error message: %s", status, error_text);
-			bResult = false;
-			break;
+			CString errMsg;
+			errMsg.Format(
+				_T("fits_read_pixll returned a status of %d, error text is \"%s\""),
+				status,
+				error_text);
+
+			ZInvalidRequest exc(CStringToChar(errMsg), status, ZException::unrecoverable);
+			exc.addLocation(ZEXCEPTION_LOCATION());
+			exc.logExceptionData();
+			throw exc;
 		}
 
 		//
