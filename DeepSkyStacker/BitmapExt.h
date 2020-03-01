@@ -1368,7 +1368,7 @@ protected :
 			double					fWeight = 1.0;
 
 			vValues.resize(0);
-			for (LONG j = 0;j<vScanLines.size();j++)
+			for (size_t j = 0;j<vScanLines.size();j++)
 			{
 				pValue = (TType *)vScanLines[j];
 				pValue += i;
@@ -1395,7 +1395,7 @@ protected :
 					// Change the order to respect the order of the images
 					vAuxValues = vValues;
 					vValues.resize(0);
-					for (LONG k = 0;k<m_vImageOrder.size();k++)
+					for (size_t k = 0;k<m_vImageOrder.size();k++)
 						if (vAuxValues[m_vImageOrder[k]])
 							vValues.push_back(vAuxValues[m_vImageOrder[k]]);
 
