@@ -23,11 +23,11 @@ public :
 	CString				m_strMake;
 	CFATYPE				m_CFAType;
 	FITSFORMAT			m_Format;
-	bool				m_bByteSwap;
 	CBitmapExtraInfo	m_ExtraInfo;
 	SYSTEMTIME			m_DateTime;
 	LONG				m_xBayerOffset;
 	LONG				m_yBayerOffset;
+	long				m_bitPix;
 
 public :
 	CFITSHeader();

@@ -3,6 +3,7 @@
 #include <float.h>
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <map>
 #include "Registry.h"
@@ -23,16 +24,17 @@ CFITSHeader::CFITSHeader()
 	m_lGain         = -1;
 	m_CFAType		= CFATYPE_NONE;
 	m_Format		= FF_UNKNOWN;
-	m_bByteSwap		= FALSE;
 	m_bSigned		= FALSE;
 	m_DateTime.wYear= 0;
 	g_FITSCritical.Lock();
     m_lWidth = 0;
     m_lHeight = 0;
-    m_lBitsPerPixel = 0;
+	m_lBitsPerPixel = 0;
     m_lNrChannels = 0;
 	m_xBayerOffset = 0;
 	m_yBayerOffset = 0;
+	m_bitPix = 0;
+
 	
 };
 
@@ -41,40 +43,6 @@ CFITSHeader::CFITSHeader()
 CFITSHeader::~CFITSHeader()
 {
 	g_FITSCritical.Unlock();
-};
-
-/* ------------------------------------------------------------------- */
-
-inline void ByteSwap(DWORD & InValue)
-{
-	WORD		wLow, wHigh;
-	/*BYTE		bLowLowByte,
-				bLowHighByte,
-				bHighLowByte,
-				bHighHighByte;*/
-
-
-	wLow = LOWORD(InValue);
-	/*bLowLowByte = LOBYTE(wLow);
-	bLowHighByte = HIBYTE(wLow);
-	wLow = MAKEWORD(bLowHighByte, bLowLowByte);*/
-
-	wHigh = HIWORD(InValue);
-	/*bHighLowByte = LOBYTE(wHigh);
-	bHighHighByte = HIBYTE(wHigh);
-	wHigh = MAKEWORD(bHighHighByte, bHighLowByte);*/
-
-	InValue = MAKELONG(wHigh, wLow);
-	InValue <<=5;
-
-/*	DWORD		OutValue;
-
-	OutValue = ((Value & 0xFF) << 24) |
-			   ((Value & 0xFF00) << 8) |
-			   ((Value & 0xFF0000) >> 8) |
-			   ((Value & 0xFF000000) >> 24);
-
-	Value = OutValue;*/
 };
 
 /* ------------------------------------------------------------------- */
@@ -202,16 +170,6 @@ void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
 };
 
 /* ------------------------------------------------------------------- */
-
-bool	IsFITSForcedUnsigned()
-{
-	bool				bResult = false;
-	CWorkspace			workspace;
-
-	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), bResult);
-
-	return bResult;
-};
 
 /* ------------------------------------------------------------------- */
 
@@ -345,7 +303,6 @@ BOOL CFITSReader::Open()
 		LONG			lWidth  = 0,
 						lHeight = 0,
 						lNrChannels = 0;
-		LONG			lBitFormat = 0;
 		double			fExposureTime = 0;
 		CString			strMake;
 		CString			strISOSpeed;
@@ -409,11 +366,7 @@ BOOL CFITSReader::Open()
 				bResult = ReadKey("NAXIS3", lNrChannels);
 			else
 				lNrChannels = 1;
-			bResult = ReadKey("BITPIX", lBitFormat);
-
-			CString				strByteSwap;
-			if (ReadKey("BYTESWAP", strByteSwap))
-				m_bByteSwap = TRUE;
+			bResult = ReadKey("BITPIX", m_bitPix);
 
 			//
 			// One time action to create a mapping between the character name of the CFA
@@ -573,6 +526,20 @@ BOOL CFITSReader::Open()
 				};
 			};
 
+			//
+			// Before setting everything up for reading the data, there's a couple of special cases
+			// where we need to treat a signed data file as if it were unsigned.
+			//
+			//double		fZero,	fScale;
+
+			//if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
+			//{
+			//	if ((SHORT_IMG == lBitFormat) && (32768.0 == fZero) && (1.0 == fScale))
+			//		lBitFormat = USHORT_IMG;
+			//	if ((LONG_IMG == lBitFormat) && (2147483648.0 == fZero) && (1.0 == fScale))
+			//		lBitFormat = ULONG_IMG;
+			//}
+
 			if (bResult)
 			{
 				m_lWidth	= lWidth;
@@ -583,7 +550,7 @@ BOOL CFITSReader::Open()
 				m_lISOSpeed = lISOSpeed;
 				m_lGain     = lGain;
 				m_bSigned = FALSE;
-				switch (lBitFormat)
+				switch (m_bitPix)
 				{
 				case BYTE_IMG :
 					m_lBitsPerPixel = 8;
@@ -647,8 +614,6 @@ BOOL CFITSReader::Read()
 	char error_text[31] = "";			// Error text for FITS errors.
 	
 	int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
-	int			datatype;			// format of image data 
-
 
 	double		fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
 
@@ -657,86 +622,27 @@ BOOL CFITSReader::Read()
 
 	if (m_fits) do
 	{
-		BYTE	cNULL = 0;
-		WORD	wNULL = 0;
-		DWORD	dwNULL = 0;
-		LONGLONG llNULL = 0;
-		float	fNULL = 0;
 		double	dNULL = 0;
-		void *	pNULL;
-
-		if (m_lBitsPerPixel == 8)
-			pNULL = &cNULL;
-		else if (m_lBitsPerPixel == 16)
-			pNULL = &wNULL;
-		else if (m_lBitsPerPixel == 32)
-		{
-			if (m_bFloat)
-				pNULL = &fNULL;
-			else
-				pNULL = &dwNULL;
-		}
-		else if (m_lBitsPerPixel == 64)
-		{
-			if (m_bFloat)
-				pNULL = &dNULL;
-			else
-				pNULL = &llNULL;
-		}
 
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, m_lHeight);
-
-		switch (m_lBitsPerPixel)
-		{
-		case 8:
-			datatype = TBYTE;
-			break;
-		case 16:
-			datatype = TUSHORT;
-			//if (m_bSigned && IsFITSForcedUnsigned())
-				//datatype = TUSHORT;
-			break;
-		case 32:
-			if (m_bFloat)
-				datatype = TFLOAT;
-			else if (m_bByteSwap/* || m_bSigned*/)
-				datatype = TLONG;
-			else
-				datatype = TULONG;
-			break;
-		case 64:
-			if (m_bFloat)
-				datatype = TDOUBLE;
-			else
-				datatype = TLONGLONG;
-			break;
-		};
 
 		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
-		LONGLONG nelements = m_lWidth * m_lHeight * colours;
-		size_t bufferSize = nelements * m_lBitsPerPixel / 8;
+		LONGLONG nElements = m_lWidth * m_lHeight * colours;
 
-		auto buff = std::make_unique<byte []>(bufferSize);
+		auto buff = std::make_unique<double []>(nElements);
 
-		byte *	byteBuff	= (byte *)buff.get();
-		short * shortBuff	= (short *)buff.get();
-		WORD *	wordBuff	= (WORD *)buff.get();
-		LONG *	longBuff	= (LONG *)buff.get();
-		DWORD *	dwordBuff	= (DWORD *)buff.get();
-		LONGLONG * longlongBuff = (LONGLONG *)buff.get();
-		float *	floatBuff	= (float *)buff.get();
 		double * doubleBuff = (double *)buff.get();
 
 		int status = 0;			// used for result of fits_read_pixll call
 
 		//
-		// Inhale the entire image (either single colour or RGB).
+		// Inhale the entire image (either single colour or RGB) as an array of doubles
 		//
-		fits_read_pixll(m_fits, datatype, fPixel, nelements, pNULL, byteBuff, nullptr, &status);
+		fits_read_pixll(m_fits, TDOUBLE, fPixel, nElements, &dNULL, doubleBuff, nullptr, &status);
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
@@ -756,14 +662,11 @@ BOOL CFITSReader::Read()
 			{
 #pragma omp for
 #endif
-				for (LONGLONG element = 0; element < nelements; ++element)
+				for (LONGLONG element = 0; element < nElements; ++element)
 				{
 					double	fValue = 0.0;
 					
-					if (datatype == TFLOAT)
-						fValue = floatBuff[element];	// Short (4 byte) floating point
-					else
-						fValue = doubleBuff[element];	// Long (8 byte) floating point
+					fValue = doubleBuff[element];	// Long (8 byte) floating point
 
 					if (!_isnan(fValue))
 					{
@@ -810,8 +713,8 @@ BOOL CFITSReader::Read()
 		//
 		// Step 2: Process the image pixels
 		//
-		unsigned long greenOffset = m_lWidth * m_lHeight;		// index into buffer of the green image
-		unsigned long blueOffset = 2 * greenOffset;				// index into buffer of the blue image
+		ptrdiff_t greenOffset = m_lWidth * m_lHeight;		// index into buffer of the green image
+		ptrdiff_t blueOffset = 2 * greenOffset;				// index into buffer of the blue image
 
 		long	rowProgress = 0;
 
@@ -826,108 +729,50 @@ BOOL CFITSReader::Read()
 
 				long index = col + (row * m_lWidth);	// index into the image for this plane
 
-				DWORD redValue, greenValue, blueValue;	// Use only for some cases
-
 				if (1 == colours)
 				{
 					//
 					// This is a monochrome image 
 					//
-					switch (datatype)
-					{
-					case TBYTE:
-						fRed = byteBuff[index];
-						break;
-					case TUSHORT:
-					case TSHORT:
-						fRed = ((double)(wordBuff[index])) / 256.0;
-						// Currently don't handle signed type.
-						break;
-					case TULONG:
-					case TLONG:
-						redValue = dwordBuff[index];
-						if (m_bByteSwap)
-							ByteSwap(redValue);
-						fRed = ((double)(redValue)) / 256.0 / 65536.0;
-						break;
-					case TFLOAT:
-						fRed = (double)(floatBuff[index]);
-						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
-						break;
-					case TLONGLONG:
-						fRed = (double)(longlongBuff[index]);
-						fRed = fRed / 256.0 / 65536.0;
-						break;
-					case TDOUBLE:
-						fRed = doubleBuff[index];
-						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
-						break;
-					}
-					//
-					// Set green and blue to the same as red
-					// 
-					fGreen = fBlue = fRed;
+					fRed = fGreen = fBlue = doubleBuff[index];
 				}
-				else  
+				else
 				{
 					//
 					// We assume this is a 3 colour image with each colour in a separate image plane
 					//
-					switch (datatype)
-					{
-					case TBYTE:
-						fRed = byteBuff[index];
-						fGreen = byteBuff[greenOffset + index];
-						fBlue = byteBuff[blueOffset + index];
-						break;
-					case TUSHORT:
-					case TSHORT:
-						fRed = ((double)(wordBuff[index])) / 256.0;
-						fGreen = ((double)(wordBuff[greenOffset + index])) / 256.0;
-						fBlue = ((double)(wordBuff[blueOffset + index])) / 256.0;
-						// Currently don't handle signed type.
-						break;
-					case TULONG:
-					case TLONG:
-						redValue = dwordBuff[index];
-						greenValue = dwordBuff[greenOffset + index];
-						blueValue = dwordBuff[blueOffset + index];
-						if (m_bByteSwap)
-						{
-							ByteSwap(redValue);
-							ByteSwap(greenValue);
-							ByteSwap(blueValue);
-						}
-						fRed = ((double)(redValue)) / 256.0 / 65536.0;
-						fGreen = ((double)(greenValue)) / 256.0 / 65536.0;
-						fBlue = ((double)(blueValue)) / 256.0 / 65536.0;
-						break;
-					case TFLOAT:
-						fRed = (double)(floatBuff[index]);
-						fGreen = (double)(floatBuff[greenOffset + index]);
-						fBlue = (double)(floatBuff[blueOffset + index]);
-						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
-						fGreen = (fGreen - fMin) / (fMax - fMin) * 256.0;
-						fBlue = (fBlue - fMin) / (fMax - fMin) * 256.0;
-						break;
-					case TLONGLONG:
-						fRed = (double)(longlongBuff[index]);
-						fGreen = (double)(longlongBuff[greenOffset + index]);
-						fBlue = (double)(longlongBuff[blueOffset + index]);
-						fRed = fRed / 256.0 / 65536.0;
-						fGreen = fGreen / 256.0 / 65536.0;
-						fBlue = fBlue / 256.0 / 65536.0;
-						break;
-					case TDOUBLE:
-						fRed = doubleBuff[index];
-						fGreen = doubleBuff[greenOffset + index];
-						fBlue = doubleBuff[blueOffset + index];
-						fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
-						fGreen = (fGreen - fMin) / (fMax - fMin) * 256.0;
-						fBlue = (fBlue - fMin) / (fMax - fMin) * 256.0;
-						break;
-					}
+					fRed = doubleBuff[index];
+					fGreen = doubleBuff[greenOffset + index];
+					fBlue = doubleBuff[blueOffset + index];
+				}
 
+				switch (m_bitPix)
+				{
+				case BYTE_IMG:
+					break;
+				case SHORT_IMG:
+				case USHORT_IMG:
+					fRed /= 256.0;
+					fGreen /= 256.0;
+					fBlue /= 256.0;
+					break;
+				case LONG_IMG:
+				case ULONG_IMG:
+					fRed = fRed / 256.0 / 65536.0;
+					fGreen = fGreen / 256.0 / 65536.0;
+					fBlue = fBlue / 256.0 / 65536.0;
+					break;
+				case LONGLONG_IMG:
+					fRed = fRed / 256.0 / 65536.0;
+					fGreen = fGreen / 256.0 / 65536.0;
+					fBlue = fBlue / 256.0 / 65536.0;
+					break;
+				case FLOAT_IMG:
+				case DOUBLE_IMG:
+					fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
+					fGreen = (fGreen - fMin) / (fMax - fMin) * 256.0;
+					fBlue = (fBlue - fMin) / (fMax - fMin) * 256.0;
+					break;
 				}
 
 				OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));

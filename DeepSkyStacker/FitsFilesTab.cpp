@@ -476,8 +476,11 @@ BOOL CFitsFilesTab::OnSetActive()
 
 		bValue = FALSE;
 
-		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), bValue);
-		m_ForceUnsigned.SetCheck(bValue);
+		//
+		// Force unsigned is now irrelvant as we load FITS as double
+		//
+		m_ForceUnsigned.EnableWindow(false);
+		m_ForceUnsigned.ShowWindow(false);
 
 		bValue = FALSE;
 		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), bValue);
@@ -549,7 +552,6 @@ void CFitsFilesTab::SaveValues()
 		CString				strValue;
 
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), m_FITSisRAW.GetCheck() ? true : false);
-		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), m_ForceUnsigned.GetCheck() ? true : false);
 
 		m_Brightness.GetWindowText(strValue);
 		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), strValue);
