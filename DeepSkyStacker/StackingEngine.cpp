@@ -14,6 +14,7 @@
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"
 #include "Utils.h"
+#include <iostream>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -2541,11 +2542,13 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
 	}
+#if !defined(_CONSOLE)
 	catch (CException & e)
 	{
 		e.ReportError();
 		e.Delete();
 	}
+#endif
 	catch (ZException & ze)
 	{
 		CString errorMessage;

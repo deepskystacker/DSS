@@ -652,7 +652,7 @@ BOOL CFITSReader::Read()
 				status,
 				error_text);
 
-			ZInvalidRequest exc(CStringToChar(errMsg), status, ZException::unrecoverable);
+			ZException exc(CStringToChar(errMsg), status, ZException::unrecoverable);
 			exc.addLocation(ZEXCEPTION_LOCATION());
 			exc.logExceptionData();
 			throw exc;
