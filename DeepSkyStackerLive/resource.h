@@ -111,6 +111,7 @@
 #define IDC_WARNINGFILEFOLDER           1042
 #define IDC_WARN_SKYBACKGROUND          1043
 #define IDC_MAX_SKYBACKGROUND           1044
+#define IDC_DARKTHEME                   1045
 #define IDC_SENDTO                      1048
 #define IDC_SMTPSERVER                  1049
 #define IDC_ACCOUNT                     1050
@@ -244,7 +245,7 @@
 #define IDS_RECAP_GIGABYTES             4202
 #define IDS_RECAP_WARNINGDISKSPACE      4250
 #define IDS_CAMERA_NOT_SUPPORTED        8001
-#define IDS_8BIT_FITS_NODEBAYER			8002
+#define IDS_8BIT_FITS_NODEBAYER         8002
 #define IDS_HELPFILE                    20000
 #define IDS_SELECTMONITOREDFOLDER       42000
 #define IDS_LOG_NEWFILESFOUND           42001
@@ -295,10 +296,10 @@
 #define IDS_NOSTACK_SKYBACKGROUND       42045
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        139
+#define _APS_NEXT_RESOURCE_VALUE        140
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1067
 #define _APS_NEXT_SYMED_VALUE           101

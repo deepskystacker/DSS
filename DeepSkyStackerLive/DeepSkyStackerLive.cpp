@@ -132,7 +132,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 
 		if (!IsExpired())
 		{
-			CDeepSkyStackerLiveDlg	dlg;
+			CLiveSettings liveSettings;
+			liveSettings.LoadFromRegistry();
+
+			CDeepSkyStackerLiveDlg	dlg(liveSettings.UseDarkTheme());
 
 			theApp.m_pMainWnd = &dlg;
 			//dlg.DragAcceptFiles(TRUE);

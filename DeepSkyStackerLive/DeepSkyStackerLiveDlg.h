@@ -28,7 +28,7 @@ class CDeepSkyStackerLiveDlg : public CDialog
 {
 // Construction
 public:
-	CDeepSkyStackerLiveDlg(CWnd* pParent = nullptr);	// standard constructor
+	CDeepSkyStackerLiveDlg(bool bUseDarkTheme, CWnd* pParent = nullptr);	// standard constructor
 
 // Dialog Data
 	enum { IDD = IDD_DEEPSKYSTACKERLIVE_DIALOG };
@@ -45,6 +45,7 @@ private :
 	CImageListTab		m_ImageList;
 	CGraphViewTab		m_Graphs;
 	CSettingsTab		m_Settings;
+	bool			    m_bUseDarkTheme;
 
 	void	UpdateTab();
 	void	UpdateSizes();

@@ -29,7 +29,7 @@ public:
 // Dialog Data
 	enum { IDD = IDD_IMAGELIST };
 
-	void SetToDarkMode();
+	void SetToDarkMode(bool bState);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

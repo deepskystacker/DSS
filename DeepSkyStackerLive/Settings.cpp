@@ -77,6 +77,7 @@ void CSettingsTab::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PROCESS_FITS, m_Process_FITS);
 	DDX_Control(pDX, IDC_PROCESS_TIFF, m_Process_TIFF);
 	DDX_Control(pDX, IDC_PROCESS_OTHERS, m_Process_Others);
+	DDX_Control(pDX, IDC_DARKTHEME, m_DarkTheme);
 }
 
 /* ------------------------------------------------------------------- */
@@ -110,6 +111,7 @@ BEGIN_MESSAGE_MAP(CSettingsTab, CDialog)
 	ON_EN_CHANGE(IDC_OFFSET, OnChangeSetting)
 	ON_EN_CHANGE(IDC_ANGLE, OnChangeSetting)
 	ON_EN_CHANGE(IDC_MAX_SKYBACKGROUND, OnChangeSetting)
+	ON_BN_CLICKED(IDC_DARKTHEME, OnChangeSetting)
 
 	ON_BN_CLICKED(IDC_WARN_SOUND, OnChangeSetting)
 	ON_BN_CLICKED(IDC_WARN_FLASH, OnChangeSetting)
@@ -252,6 +254,7 @@ void CSettingsTab::UpdateFromRegistry()
 	m_Process_FITS.SetCheck(m_LiveSettings.IsProcess_FITS());
 	m_Process_TIFF.SetCheck(m_LiveSettings.IsProcess_TIFF());
 	m_Process_Others.SetCheck(m_LiveSettings.IsProcess_Others());
+	m_DarkTheme.SetCheck(m_LiveSettings.UseDarkTheme());
 
 	m_LiveSettings.GetWarning_FileFolder(m_strWarnFileFolder);
 	if (m_strWarnFileFolder.GetLength())
@@ -321,6 +324,7 @@ void CSettingsTab::SaveToRegistry()
 	m_LiveSettings.SetProcess_FITS(m_Process_FITS.GetCheck());
 	m_LiveSettings.SetProcess_TIFF(m_Process_TIFF.GetCheck());
 	m_LiveSettings.SetProcess_Others(m_Process_Others.GetCheck());
+	m_LiveSettings.UseDarkTheme(m_DarkTheme.GetCheck());
 
 	m_LiveSettings.SetScore(GetEditDoubleValue(m_Score));
 	m_LiveSettings.SetStars(GetEditDWORDValue(m_Stars));

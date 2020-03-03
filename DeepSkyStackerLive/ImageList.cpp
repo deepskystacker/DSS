@@ -67,9 +67,10 @@ void CImageListTab::OnSize(UINT nType, int cx, int cy)
 
 /* ------------------------------------------------------------------- */
 
-void CImageListTab::SetToDarkMode()
+void CImageListTab::SetToDarkMode(bool bState)
 {
-	m_ImageList.SetBkColor(COLORREF(RGB(80, 80, 80)));
+	if(bState)
+		m_ImageList.SetBkColor(COLORREF(RGB(80, 80, 80)));
 }
 
 /* ------------------------------------------------------------------- */
