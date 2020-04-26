@@ -145,99 +145,61 @@ BEGIN
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 393, 333
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | 
-    WS_SYSMENU
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Stacking",IDC_STACKING,7,8,306,169
-    CONTROL         "Nicht stacken, bis mindestens",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,16,21,107,10
-    LTEXT           "Warnen      Nicht stacken, wenn...",IDC_STATIC,16,38,120,
-                    9
-    CONTROL         "",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,49,16,10
-    CONTROL         "...der Score-Wert kleiner ist als",IDC_DONTSTACK_SCORE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,49,113,10
-    EDITTEXT        IDC_SCORE,160,50,44,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
-    CONTROL         "",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,66,16,10
-    CONTROL         "...die Sternanzahl kleiner ist als",IDC_DONTSTACK_STARS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,66,113,10
-    EDITTEXT        IDC_STARCOUNT,160,66,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
-                    NOT WS_BORDER,WS_EX_RIGHT
-    CONTROL         "",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,
-                    98,16,10
-    CONTROL         "...der FWHM größer ist als",IDC_DONTSTACK_FWHM,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,43,98,97,10
-    EDITTEXT        IDC_FWHM,143,98,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
-    LTEXT           "Pixel",IDC_STATIC,174,99,19,8
-    CONTROL         "",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,115,16,10
-    CONTROL         "...dX oder dY  größer ist als",IDC_DONTSTACK_OFFSET,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,43,115,101,10
-    EDITTEXT        IDC_OFFSET,147,115,31,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
-    LTEXT           "Pixel",IDC_STATIC,181,116,19,8
-    CONTROL         "",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,133,16,10
-    CONTROL         "...der Winkel größer ist als",IDC_DONTSTACK_ANGLE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,43,133,97,10
-    EDITTEXT        IDC_ANGLE,144,133,25,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,
-                    WS_EX_RIGHT
-    LTEXT           "°",IDC_STATIC,172,134,8,8
+    GROUPBOX        "Stacking",IDC_STACKING,7,8,306,168
+    CONTROL         "Nicht stacken, bis mindestens",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,21,150,10
+    LTEXT           "Warnen      Nicht stacken, wenn...",IDC_STATIC,16,38,78,8
+    CONTROL         "",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,49,16,10
+    CONTROL         "...der Score-Wert kleiner ist als",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,49,150,10
+    EDITTEXT        IDC_SCORE,201,50,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,66,16,10
+    CONTROL         "...die Sternanzahl kleiner ist als",IDC_DONTSTACK_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,66,150,10
+    EDITTEXT        IDC_STARCOUNT,201,66,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,98,16,10
+    CONTROL         "...der FWHM größer ist als",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,98,150,10
+    EDITTEXT        IDC_FWHM,201,98,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "Pixel",IDC_STATIC,255,99,50,8
+    CONTROL         "",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,115,16,10
+    CONTROL         "...dX oder dY  größer ist als",IDC_DONTSTACK_OFFSET, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,115,150,10
+    EDITTEXT        IDC_OFFSET,201,115,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "Pixel",IDC_STATIC,255,116,50,8
+    CONTROL         "",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,133,16,10
+    CONTROL         "...der Winkel größer ist als",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,133,150,10
+    EDITTEXT        IDC_ANGLE,201,133,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "°",IDC_STATIC,255,134,18,8
     GROUPBOX        "Warnungen",IDC_WARNINGS,7,179,306,41
-    CONTROL         "Warnton",IDC_WARN_SOUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    16,192,41,10
-    CONTROL         "Optisch",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    16,207,37,10
-    CONTROL         "E-Mail senden",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,88,192,57,10
-    CONTROL         "Erstellen einer Warndatei in ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,88,207,103,10
-    GROUPBOX        "Optionen",IDC_OPTIONS,7,227,306,47
-    CONTROL         "Gestacktes Bilder in eine Datei speichern alle",IDC_SAVESTACKEDIMAGE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,154,10
-    EDITTEXT        IDC_IMAGECOUNT,171,240,22,10,ES_RIGHT | ES_AUTOHSCROLL | 
-                    ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "Bild(er)",IDC_STATIC,197,241,28,8
-    LTEXT           "Ausgabe-Ordner:",IDC_STATIC,27,257,56,8
-    LTEXT           "<Hier klicken um den Ausgabeordner auszuwählen>",IDC_STACKEDOUTPUTFOLDER,
-                    89,258,215,9
-    PUSHBUTTON      "Änderungen übernehmen",IDC_APPLYCHANGES,319,10,70,20,BS_MULTILINE
-    PUSHBUTTON      "Änderungen abbrechen",IDC_CANCELCHANGES,319,38,70,21,BS_MULTILINE
-    EDITTEXT        IDC_MINIMAGES,125,21,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | 
-                    NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "Bilder verfügbar sind",IDC_STATIC,155,22,66,8
-    LTEXT           "<Hier klicken, um den Ordner auszuwählen>",IDC_WARNINGFILEFOLDER,
-                    196,207,109,9
-    LTEXT           "<Hier klicken, um eine e-Mail Adresse einzugeben>",IDC_EMAIL,
-                    150,192,155,9
-    PUSHBUTTON      "E-Mail Zähler zurücksetzen",IDC_RESETEMAILCOUNT,319,190,
-                    70,21,NOT WS_VISIBLE | BS_MULTILINE
-    GROUPBOX        "Filter",IDC_FILTERS,7,278,306,50
-    LTEXT           "Verarbeite nur...",IDC_STATIC,16,288,54,8
-    CONTROL         "RAW Bilder (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,16,299,139,10
-    CONTROL         "FITS Bilder",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,16,313,55,10
-    CONTROL         "TIFF Bilder",IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,157,299,55,10
-    CONTROL         "Andere Bilder (JPEG, BMP, GIF...)",IDC_PROCESS_OTHERS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,157,313,124,10
-    CONTROL         "Nicht stackbare Bilder in den Unterordner 'NonStackable' verschieben",
-                    IDC_MOVENONSTACKABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    16,154,235,10
-    LTEXT           "(der 'NonStackable' Ordner wird wenn nötig erstellt)",IDC_STATIC,
-                    26,165,167,8
-    CONTROL         "",IDC_WARN_SKYBACKGROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    21,82,16,10
-    CONTROL         "...der Himmelshintergrund größer ist als",IDC_DONTSTACK_SKYBACKGROUND,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,82,139,10
-    EDITTEXT        IDC_MAX_SKYBACKGROUND,184,82,27,10,ES_RIGHT | ES_AUTOHSCROLL | 
-                    NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "%",IDC_STATIC,213,82,8,8
+    CONTROL         "Warnton",IDC_WARN_SOUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,192,36,10
+    CONTROL         "Optisch",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,207,64,10
+    CONTROL         "E-Mail senden",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,192,120,10
+    CONTROL         "Erstellen einer Warndatei in ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,207,180,10
+    GROUPBOX        "Optionen",IDC_OPTIONS,7,227,306,65
+    CONTROL         "Gestacktes Bilder in eine Datei speichern alle",IDC_SAVESTACKEDIMAGE, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,180,10
+    EDITTEXT        IDC_IMAGECOUNT,201,240,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "Bild(er)",IDC_STATIC,255,241,50,8
+    LTEXT           "Ausgabe-Ordner:",IDC_STATIC,27,257,180,8
+    LTEXT           "<Hier klicken um den Ausgabeordner auszuwählen>",IDC_STACKEDOUTPUTFOLDER,191,257,226,8
+    PUSHBUTTON      "Änderungen übernehmen",IDC_APPLYCHANGES,319,10,69,14
+    PUSHBUTTON      "Änderungen abbrechen",IDC_CANCELCHANGES,319,30,69,14
+    EDITTEXT        IDC_MINIMAGES,201,21,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "Bilder verfügbar sind",IDC_STATIC,255,22,66,8
+    LTEXT           "<Hier klicken, um den Ordner auszuwählen>",IDC_WARNINGFILEFOLDER,345,207,136,8
+    LTEXT           "<Hier klicken, um eine e-Mail Adresse einzugeben>",IDC_EMAIL,345,193,160,8
+    PUSHBUTTON      "E-Mail Zähler zurücksetzen",IDC_RESETEMAILCOUNT,319,190,69,14,NOT WS_VISIBLE
+    GROUPBOX        "Filter",IDC_FILTERS,7,300,306,50
+    LTEXT           "Verarbeite nur...",IDC_STATIC,16,310,49,8
+    CONTROL         "RAW Bilder (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,321,180,10
+    CONTROL         "FITS Bilder",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,335,180,10
+    CONTROL         "TIFF Bilder", IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,321,180,10
+    CONTROL         "Andere Bilder (JPEG, BMP, GIF...)",IDC_PROCESS_OTHERS, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,335,180,10
+    CONTROL         "Nicht stackbare Bilder in den Unterordner 'NonStackable' verschieben", IDC_MOVENONSTACKABLE, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,154,250,10
+    LTEXT           "(der 'NonStackable' Ordner wird wenn nötig erstellt)",IDC_STATIC,26,165,250,8
+    CONTROL         "",IDC_WARN_SKYBACKGROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,82,16,10
+    CONTROL         "...der Himmelshintergrund größer ist als",IDC_DONTSTACK_SKYBACKGROUND, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,82,160,10
+    EDITTEXT        IDC_MAX_SKYBACKGROUND,201,82,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "%",IDC_STATIC,255,82,8,8
+    CONTROL         "Verwenden von Dark Theme (Neustart erforderlich)",IDC_DARKTHEME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,274,180,10
 END
 
 IDD_RESTARTMONITORING DIALOGEX 0, 0, 217, 137
