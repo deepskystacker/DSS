@@ -155,7 +155,13 @@ HBRUSH CSettingsTab::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 	const HBRUSH brush = (HBRUSH)GetStockObject(NULL_BRUSH);
 	int nCtrl = pWnd->GetDlgCtrlID();
-	if (nCtrl == IDC_STACKING || nCtrl == IDC_WARNINGS || nCtrl == IDC_OPTIONS || nCtrl == IDC_FILTERS)
+
+	// These edit controls need to stay as they are else they don't look right at all!
+	if (nCtrl == IDC_SCORE || nCtrl == IDC_STARCOUNT || nCtrl == IDC_FWHM || nCtrl == IDC_OFFSET || nCtrl == IDC_ANGLE || nCtrl == IDC_IMAGECOUNT || nCtrl == IDC_MINIMAGES || nCtrl == IDC_MAX_SKYBACKGROUND)
+	{
+		return CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
+	}
+	else if (nCtrl == IDC_STACKING || nCtrl == IDC_WARNINGS || nCtrl == IDC_OPTIONS || nCtrl == IDC_FILTERS)
 	{
 		pDC->SetBkColor(RGB(80,80,80));
 	}
