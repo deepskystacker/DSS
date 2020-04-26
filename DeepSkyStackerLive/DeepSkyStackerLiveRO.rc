@@ -82,68 +82,61 @@ BEGIN
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 393, 333
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Stackez",IDC_STACKING,7,8,306,182
-    CONTROL         "Nu stacka pana cel putin",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,21,91,10
-    LTEXT           "Atentie     Nu stacka daca...",IDC_STATIC,16,38,90,8
+    GROUPBOX        "Stackez",IDC_STACKING,7,8,306,168
+    CONTROL         "Nu stacka pana cel putin",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,21,150,10
+    LTEXT           "Atentie     Nu stacka daca...",IDC_STATIC,16,38,78,8
     CONTROL         "",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,49,16,10
-    CONTROL         "...scorul este mai mic decat",IDC_DONTSTACK_SCORE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,49,100,10
-    EDITTEXT        IDC_SCORE,146,50,44,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "...scorul este mai mic decat",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,49,150,10
+    EDITTEXT        IDC_SCORE,201,50,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
     CONTROL         "",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,66,16,10
-    CONTROL         "...nr. stele ste mai mic decat",IDC_DONTSTACK_STARS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,66,104,10
-    EDITTEXT        IDC_STARCOUNT,151,66,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "...nr. stele ste mai mic decat",IDC_DONTSTACK_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,66,150,10
+    EDITTEXT        IDC_STARCOUNT,201,66,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
     CONTROL         "",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,98,16,10
-    CONTROL         "...FWHM este mai mare ca",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,98,97,10
-    EDITTEXT        IDC_FWHM,143,98,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "pixeli",IDC_STATIC,174,99,19,8
+    CONTROL         "...FWHM este mai mare ca",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,98,150,10
+    EDITTEXT        IDC_FWHM,201,98,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "pixeli",IDC_STATIC,255,99,50,8
     CONTROL         "",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,115,16,10
-    CONTROL         "...dX sau dY este mai mare ca",IDC_DONTSTACK_OFFSET,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,115,108,10
-    EDITTEXT        IDC_OFFSET,153,115,31,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "pixeli",IDC_STATIC,187,116,19,8
+    CONTROL         "...dX sau dY este mai mare ca",IDC_DONTSTACK_OFFSET, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,115,150,10
+    EDITTEXT        IDC_OFFSET,201,115,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "pixeli",IDC_STATIC,255,116,50,8
     CONTROL         "",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,133,16,10
-    CONTROL         "...Unghiul este mai mare ca",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,133,100,10
-    EDITTEXT        IDC_ANGLE,146,133,25,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "°",IDC_STATIC,174,134,8,8
+    CONTROL         "...Unghiul este mai mare ca",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,133,150,10
+    EDITTEXT        IDC_ANGLE,201,133,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "°",IDC_STATIC,255,134,18,8
     GROUPBOX        "Atentionari",IDC_WARNINGS,7,179,306,41
     CONTROL         "Sunet",IDC_WARN_SOUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,192,36,10
-    CONTROL         "Atentioneaza aplicatia",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,207,83,10
-    CONTROL         "Trimite email la",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,192,59,10
-    CONTROL         "Creaza fisiere de atentionare in ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,207,115,10
-    GROUPBOX        "Optiuni",IDC_OPTIONS,7,227,306,47
-    CONTROL         "Salveaza imaginea stackata in fisier la fiecare",IDC_SAVESTACKEDIMAGE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,157,10
-    EDITTEXT        IDC_IMAGECOUNT,174,240,22,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "imagine(i)",IDC_STATIC,200,241,31,8
-    LTEXT           "Director salvare:",IDC_STATIC,27,257,53,8
-    LTEXT           "<Clic aici pt. a selecta directorul salvare>",IDC_STACKEDOUTPUTFOLDER,84,257,221,8
+    CONTROL         "Atentioneaza aplicatia",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,207,64,10
+    CONTROL         "Trimite email la",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,192,120,10
+    CONTROL         "Creaza fisiere de atentionare in ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,207,180,10
+    GROUPBOX        "Optiuni",IDC_OPTIONS,7,227,306,65
+    CONTROL         "Salveaza imaginea stackata in fisier la fiecare",IDC_SAVESTACKEDIMAGE, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,180,10
+    EDITTEXT        IDC_IMAGECOUNT,201,240,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "imagine(i)",IDC_STATIC,255,241,50,8
+    LTEXT           "Director salvare:",IDC_STATIC,27,257,180,8
+    LTEXT           "<Clic aici pt. a selecta directorul salvare>",IDC_STACKEDOUTPUTFOLDER,191,257,226,8
     PUSHBUTTON      "Aplica modificarile",IDC_APPLYCHANGES,319,10,69,14
     PUSHBUTTON      "Anuleaza modificarile",IDC_CANCELCHANGES,319,30,69,14
-    EDITTEXT        IDC_MINIMAGES,109,21,27,10,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "imagini sunt disponibile",IDC_STATIC,139,22,72,8
-    LTEXT           "<Clic aici pentru a selecta directorul>",IDC_WARNINGFILEFOLDER,222,207,85,8
-    LTEXT           "<Clic aici pentru a stabili adresa de email>",IDC_EMAIL,168,193,139,8
-    PUSHBUTTON      "Reseteaza contorul email-urilor",IDC_RESETEMAILCOUNT,319,190,69,21,BS_MULTILINE | NOT WS_VISIBLE
-    GROUPBOX        "Filtre",IDC_FILTERS,7,278,306,50
-    LTEXT           "Proceseaza doar...",IDC_STATIC,16,288,61,8
-    CONTROL         "Imagini RAW (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,299,139,10
-    CONTROL         "Imagini FITS",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,313,55,10
-    CONTROL         "Imagini TIFF",IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,299,55,10
-    CONTROL         "Alte imagini (JPEG, BMP, GIF...)",IDC_PROCESS_OTHERS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,157,313,124,10
-    CONTROL         "Muta imaginile nestackabile in subdirectorul 'NonStackable'",IDC_MOVENONSTACKABLE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,154,197,10
-    LTEXT           "(directorul 'NonStackable' va fi creat daca e necesar)",IDC_STATIC,26,165,188,8
+    EDITTEXT        IDC_MINIMAGES,201,21,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "imagini sunt disponibile",IDC_STATIC,255,22,66,8
+    LTEXT           "<Clic aici pentru a selecta directorul>",IDC_WARNINGFILEFOLDER,345,207,136,8
+    LTEXT           "<Clic aici pentru a stabili adresa de email>",IDC_EMAIL,345,193,160,8
+    PUSHBUTTON      "Reseteaza contorul email-urilor",IDC_RESETEMAILCOUNT,319,190,69,14,NOT WS_VISIBLE
+    GROUPBOX        "Filtre",IDC_FILTERS,7,300,306,50
+    LTEXT           "Proceseaza doar...",IDC_STATIC,16,310,49,8
+    CONTROL         "Imagini RAW (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,321,180,10
+    CONTROL         "Imagini FITS",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,335,180,10
+    CONTROL         "Imagini TIFF",IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,321,180,10
+    CONTROL         "Alte imagini (JPEG, BMP, GIF...)",IDC_PROCESS_OTHERS, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,335,180,10
+    CONTROL         "Muta imaginile nestackabile in subdirectorul 'NonStackable'",IDC_MOVENONSTACKABLE, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,154,250,10
+    LTEXT           "(directorul 'NonStackable' va fi creat daca e necesar)",IDC_STATIC,26,165,250,8
     CONTROL         "",IDC_WARN_SKYBACKGROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,82,16,10
-    CONTROL         "...Fundalul cerului este mai mare decat",IDC_DONTSTACK_SKYBACKGROUND,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,82,137,10
-    EDITTEXT        IDC_MAX_SKYBACKGROUND,183,82,27,10,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "%",IDC_STATIC,212,82,8,8
+    CONTROL         "...Fundalul cerului este mai mare decat",IDC_DONTSTACK_SKYBACKGROUND, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,82,160,10
+    EDITTEXT        IDC_MAX_SKYBACKGROUND,201,82,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "%",IDC_STATIC,255,82,8,8
+    CONTROL         "Utilizare tema întunecata (repornire necesara)",IDC_DARKTHEME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,274,180,10
 END
 
 IDD_RESTARTMONITORING DIALOGEX 0, 0, 217, 137
