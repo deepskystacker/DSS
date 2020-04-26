@@ -22,6 +22,8 @@ The main changes in this release are:
 
 10. Major bug fix - calibration frames were either not applied or incorrectly applied when using Super-Pixel mode.
 
+11. Change DeepSkyStackerLive so that the choice of using the Dark Theme is controlled by the user settings.
+
 Welcome to DeepSkyStacker 4.2.3
 
 ************** IF YOU INSTALLED 4.2.3 BETA 1 **************
