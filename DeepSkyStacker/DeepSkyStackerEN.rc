@@ -988,6 +988,7 @@ BEGIN
     IDS_COLUMN_STARS        "#Stars"
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
     IDS_COLUMN_APERTURE     "Aperture"
+	IDS_COLUMN_FILTER		"Filter"
 END
 
 STRINGTABLE

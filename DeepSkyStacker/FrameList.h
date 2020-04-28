@@ -77,6 +77,7 @@ public :
 	CString					m_strType;
 	CString					m_strPath;
 	CString					m_strFile;
+	CString					m_filterName;
 	BOOL					m_bRegistered;
 	BOOL					m_bChecked;
 	double					m_fOverallQuality;

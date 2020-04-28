@@ -864,6 +864,7 @@ BEGIN
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposicao"
 	IDS_COLUMN_APERTURE		"Abertura"
+	IDS_COLUMN_FILTER		"Filtro"
     IDS_COLUMN_STARS        "#Estrelas"
     IDS_COLUMN_SKYBACKGROUND "Sky Background"
 END

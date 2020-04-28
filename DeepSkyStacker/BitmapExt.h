@@ -680,6 +680,7 @@ protected :
 	LONG				m_lGain;
 	LONG				m_lNrFrames;
 	CString				m_strDescription;
+	CString				m_filterName;
 
 protected :
 	void			CopyFrom(const CMemoryBitmap & mb)
@@ -695,6 +696,7 @@ protected :
 		m_lNrFrames			= mb.m_lNrFrames;
 		m_strDescription	= mb.m_strDescription;
 		m_DateTime			= mb.m_DateTime;
+		m_filterName		= mb.m_filterName;
 	};
 
 public :
@@ -720,9 +722,10 @@ public :
 		return m_fExposure;
 	};
 
-	virtual void	SetExposure(double fExposure)
+	virtual CMemoryBitmap&	SetExposure(double fExposure)
 	{
 		m_fExposure = fExposure;
+		return *this;
 	};
 
 	virtual double	GetAperture()
@@ -730,9 +733,10 @@ public :
 		return m_fAperture;
 	};
 
-	virtual void SetAperture(double fAperture)
+	virtual CMemoryBitmap& SetAperture(double fAperture)
 	{
 		m_fAperture = fAperture;
+		return *this;
 	};
 
 	virtual LONG	GetISOSpeed()
@@ -740,9 +744,10 @@ public :
 		return m_lISOSpeed;
 	};
 
-	virtual void	SetISOSpeed(LONG lISOSpeed)
+	virtual CMemoryBitmap&	SetISOSpeed(LONG lISOSpeed)
 	{
 		m_lISOSpeed = lISOSpeed;
+		return *this;
 	};
 
 	virtual LONG	GetGain()
@@ -750,9 +755,10 @@ public :
 		return m_lGain;
 	};
 
-	virtual void	SetGain(LONG lGain)
+	virtual CMemoryBitmap&	SetGain(LONG lGain)
 	{
 		m_lGain = lGain;
+		return *this;
 	};
 
 	virtual LONG	GetNrFrames()
@@ -760,20 +766,34 @@ public :
 		return m_lNrFrames;
 	};
 
-	virtual void	SetNrFrames(LONG lNrFrames)
+	virtual CMemoryBitmap&	SetNrFrames(LONG lNrFrames)
 	{
 		m_lNrFrames = lNrFrames;
+		return *this;
 	};
 
-	virtual void	SetDescription(LPCTSTR szDescription)
+	virtual CMemoryBitmap&	SetDescription(LPCTSTR szDescription)
 	{
 		m_strDescription = szDescription;
+		return *this;
 	};
 
-	virtual void	GetDescription(CString & strDescription)
+	virtual CMemoryBitmap&	GetDescription(CString & strDescription)
 	{
 		strDescription = m_strDescription;
+		return *this;
 	};
+
+	virtual CMemoryBitmap& setFilterName(CString& name)
+	{
+		m_filterName = name;
+		return *this;
+	}
+
+	virtual CString filterName()
+	{
+		return m_filterName;
+	}
 
 	virtual BOOL	Init(LONG lWidth, LONG lHeight) = 0;
 
@@ -3399,6 +3419,7 @@ public :
 	CBitmapExtraInfo	m_ExtraInfo;
 	LONG				m_xBayerOffset;
 	LONG				m_yBayerOffset;
+	CString				m_filterName;
 
 private :
 	void	CopyFrom(const CBitmapInfo & bi)
@@ -3424,7 +3445,8 @@ private :
 		m_InfoTime		=bi.m_InfoTime		;
 		m_ExtraInfo		=bi.m_ExtraInfo		;
 		m_xBayerOffset  =bi.m_xBayerOffset;
-		m_yBayerOffset = bi.m_yBayerOffset;
+		m_yBayerOffset	=bi.m_yBayerOffset;
+		m_filterName	=bi.m_filterName;
 	};
 
     void Init()

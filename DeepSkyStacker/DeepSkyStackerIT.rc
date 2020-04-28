@@ -1034,6 +1034,7 @@ BEGIN
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Esposizione"
 	IDS_COLUMN_APERTURE		"Apertura"
+	IDS_COLUMN_FILTER		"Filtro"
     IDS_COLUMN_STARS        "#Stelle"
     IDS_COLUMN_SKYBACKGROUND "Fondo Cielo"
 END

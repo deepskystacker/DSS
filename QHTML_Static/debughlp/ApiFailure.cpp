@@ -49,17 +49,21 @@ BOOL _cdecl ApiFailure( LPCSTR pcszFilename, int nLine, LPCSTR pcszExpression, i
 
 
 	char szMessage[ 1024 ];
-  _snprintf( szMessage, countof( szMessage )
-						, "API VERIFY Failure!"
-							"\nProgram: %s"
-							"\n"
-							"\nFile %s"
-							"\nLine %d"
-							"\n"
-							"\nExpression %s"
-							"\n"
-							"\nLast Error %d"
+	_snprintf(szMessage, countof(szMessage)
+		, "API VERIFY Failure!"
+		"\nProgram: %s"
+		"\n"
+		"\nFile %s"
+		"\nLine %d"
+		"\n"
+		"\nExpression %s"
+		"\n"
+		"\nLast Error %d"
+#if defined(_UNICODE)
+							"\n           %ws"	
+#else
 							"\n           %s"
+#endif
 							"\n\nPress Retry to debug the application"
 						, szExeName
 						, pcszFilename

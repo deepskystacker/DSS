@@ -189,7 +189,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		ExposureToString(bmpInfo.m_fExposure, strText);
 		m_ImageList.SetItemText(nItem, COLUMN_EXPOSURE, (LPCTSTR)strText);
 
-		strText.Format("%.1f", bmpInfo.m_fAperture);
+		strText.Format(_T("%.1f"), bmpInfo.m_fAperture);
 		m_ImageList.SetItemText(nItem, COLUMN_APERTURE, (LPCTSTR)strText);
 
 		strText.Format(_T("%ld"), lfi.m_vStars.size());

@@ -1001,6 +1001,7 @@ BEGIN
     IDS_COLUMN_STARS        "#Sterren"
     IDS_COLUMN_SKYBACKGROUND "Hemel Achtergrond"
     IDS_COLUMN_APERTURE     "Diafragma"
+	IDS_COLUMN_FILTER		"Filter"
 END
 
 STRINGTABLE

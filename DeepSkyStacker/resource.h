@@ -137,6 +137,7 @@
 #define IDR_EDITSETTINGS                214
 #define IDS_COLUMN_SKYBACKGROUND        215
 #define IDS_COLUMN_APERTURE				216
+#define IDS_COLUMN_FILTER				217
 #define IDS_TYPE_LIGHT                  300
 #define IDS_TYPE_DARK                   301
 #define IDS_TYPE_FLAT                   302

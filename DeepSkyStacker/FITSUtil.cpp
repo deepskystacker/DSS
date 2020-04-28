@@ -307,6 +307,7 @@ BOOL CFITSReader::Open()
 		CString			strMake;
 		CString			strISOSpeed;
 		CString			CFAPattern("");
+		CString			filterName("");
 		LONG			lISOSpeed = 0;
 		LONG			lGain = -1;
 		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
@@ -359,6 +360,8 @@ BOOL CFITSReader::Open()
 			};
 
 			bResult = ReadKey("GAIN", lGain);
+
+			ReadKey("FILTER", filterName);
 
 			bResult = ReadKey("NAXIS1", lWidth);
 			bResult = ReadKey("NAXIS2", lHeight);
@@ -439,7 +442,7 @@ BOOL CFITSReader::Open()
 				m_bDSI = TRUE;
 				// Special case of DSI FITS files
 				CFAPattern.Trim();
-				if (CFAPattern == "CMYG")
+				if (CFAPattern == _T("CMYG"))
 					m_CFAType = CFATYPE_CYGMCYMG;
 			} 
 			//
@@ -459,7 +462,7 @@ BOOL CFITSReader::Open()
 
 				CFAPattern.Trim();
 
-				if (CFAPattern != "")
+				if (CFAPattern != _T(""))
 				{
 					auto it = bayerMap.find(CFAPattern);
 					if (bayerMap.end() != it) m_CFAType = it->second;
@@ -585,6 +588,7 @@ BOOL CFITSReader::Open()
 					bResult = FALSE;
 					break;
 				};
+				m_filterName = filterName;
 			};
 		}
 		else
@@ -1001,6 +1005,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap->SetISOSpeed(m_lISOSpeed);
 		if (m_lGain >= 0)
 			m_pBitmap->SetGain(m_lGain);
+		m_pBitmap->setFilterName(m_filterName);
 		m_pBitmap->m_DateTime = m_DateTime;
 
 		CString			strDescription;
@@ -1167,6 +1172,7 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_ExtraInfo		= fits.m_ExtraInfo;
 		BitmapInfo.m_xBayerOffset	= fits.getXOffset();
 		BitmapInfo.m_yBayerOffset	= fits.getYOffset();
+		BitmapInfo.m_filterName		= fits.m_filterName;
 		bResult = true;
 	};
 
@@ -1386,6 +1392,8 @@ BOOL CFITSWriter::Open()
 					bResult = bResult && WriteKey("ISOSPEED", m_lISOSpeed);
 				if (m_lGain >= 0)
 					bResult = bResult && WriteKey("GAIN", m_lGain);
+				if (m_filterName != _T(""))
+					bResult = bResult && WriteKey("FILTER", m_filterName);
 				if (m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");

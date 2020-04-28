@@ -50,7 +50,7 @@ BOOL	IsExpired()
 	if ((SystemTime.wYear>lMaxYear) ||
 		((SystemTime.wYear==lMaxYear) && (SystemTime.wMonth>lMaxMonth)))
 	{
-		AfxMessageBox("This beta version has expired\nYou can probably get another one or download the final release from the web site.", MB_OK | MB_ICONSTOP);
+		AfxMessageBox(_T("This beta version has expired\nYou can probably get another one or download the final release from the web site."), MB_OK | MB_ICONSTOP);
 		bResult = TRUE;
 	};
 

@@ -133,7 +133,7 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
 
-UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage("TaskbarButtonCreated");
+UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage(_T("TaskbarButtonCreated"));
 
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepStackerDlg::IDD, pParent),

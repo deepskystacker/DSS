@@ -28,6 +28,7 @@ public :
 	LONG				m_xBayerOffset;
 	LONG				m_yBayerOffset;
 	long				m_bitPix;
+	CString				m_filterName;
 
 public :
 	CFITSHeader();

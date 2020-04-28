@@ -1249,6 +1249,7 @@ BEGIN
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Temps de pose"
 	IDS_COLUMN_APERTURE		"Ouverture"
+	IDS_COLUMN_FILTER		"Filtre"
     IDS_COLUMN_STARS        "#Etoiles"
     IDS_COLUMN_SKYBACKGROUND "Fond du ciel"
 END
