@@ -135,7 +135,7 @@
       <AdditionalOptions>-Zm200 -MP %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_WIN32;WIN32;_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;LIBRAW_NODLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <OpenMPSupport>Yes</OpenMPSupport>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
@@ -164,7 +164,7 @@
       <AdditionalOptions>-Zm200 -MP %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_WIN32;WIN32;_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;LIBRAW_NODLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <OpenMPSupport>Yes</OpenMPSupport>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
@@ -195,7 +195,7 @@
       <AdditionalOptions>-Zm200 -MP %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_WIN32;WIN32;QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;LIBRAW_NODLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <OpenMPSupport>Yes</OpenMPSupport>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
@@ -224,7 +224,7 @@
       <AdditionalOptions>-Zm200 -MP %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_WIN32;WIN32;QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;LIBRAW_NODLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <OpenMPSupport>Yes</OpenMPSupport>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
@@ -255,7 +255,7 @@
       <AdditionalOptions>-Zm200 -MP %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_WIN32;WIN32;QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;LIBRAW_NODLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <OpenMPSupport>Yes</OpenMPSupport>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>
@@ -286,7 +286,7 @@
       <AdditionalOptions>-Zm200 -MP %(AdditionalOptions)</AdditionalOptions>
       <PreprocessorDefinitions>_WIN32;WIN32;QT_NO_DEBUG;NDEBUG;_WINDOWS;UNICODE;QT_LARGEFILE_SUPPORT;LIBRAW_NODLL;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
       <OpenMPSupport>Yes</OpenMPSupport>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level1</WarningLevel>

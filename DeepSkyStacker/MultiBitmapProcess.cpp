@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <iostream>
 #include "Multitask.h"
-#include "Utils.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -260,7 +259,7 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 	}
 	catch (std::exception & e)
 	{
-		CString errorMessage(CharToCString(e.what()));
+		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
 #else
@@ -279,10 +278,10 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 	catch (ZException & ze)
 	{
 		CString errorMessage;
-		CString name(CharToCString(ze.name()));
-		CString fileName(CharToCString(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CharToCString(ze.locationAtIndex(0)->functionName()));
-		CString text(CharToCString(ze.text(0)));
+		CString name(CA2CT(ze.name()));
+		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(ze.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),

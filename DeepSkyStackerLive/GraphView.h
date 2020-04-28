@@ -11,7 +11,7 @@
 #include "BitmapExt.h"
 #include "ChartCtrl.h"
 #include "ChartPointsSerie.h"
-#include "Utils.h"
+
 // CGraphViewTab dialog
 
 typedef enum tagPOINTTYPE
@@ -117,7 +117,7 @@ public :
 	void	SetName(LPCTSTR szName)
 	{
 		if (m_pMain)
-			m_pMain->SetName(CStringToString(szName));
+			m_pMain->SetName((LPCSTR)CT2CA(szName));
 	};
 
 	void	SetVisible(bool bShow)

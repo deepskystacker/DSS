@@ -6,7 +6,6 @@
 #include <set>
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "Utils.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -291,7 +290,7 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 	BOOL			bResult = FALSE;
 	FILE *			hFile;
 	CString			strText;
-	LPCSTR			strFile = CStringToChar(szStackedFile); // Stacked fileid in ASCII
+	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8); // Stacked fileid in ASCII
 
 	strText.LoadString(IDS_LOADDSIMAGE);
 	if (pProgress)
@@ -368,7 +367,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 	ZFUNCTRACE_RUNTIME();
 	FILE *			hFile;
 	CString			strText;
-	LPCSTR			strFile = CStringToChar(szStackedFile);  // in UTF-8
+	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8);  // in UTF-8
 
 	printf("Saving Stacked Bitmap in %s\n", strFile);
 	ZTRACE_RUNTIME("Saving Stacked Bitmap in %s", strFile);

@@ -1532,7 +1532,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 						hFile = _tfopen(strFile, _T("at"));
 						if (hFile)
 						{
-							fprintf(hFile, "%s\n", CStringToChar(strWarning));
+							fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strWarning, CP_UTF8));
 							fclose(hFile);
 						};
 					};

@@ -8,7 +8,6 @@
 #include <map>
 #include "Registry.h"
 #include "Workspace.h"
-#include "Utils.h"
 
 #include <omp.h>
 
@@ -271,14 +270,14 @@ void CFITSReader::ReadAllKeys()
 			{
 				bool		bPropagate = false;
 				CString		strKeyName;
-				strKeyName.Format(_T("[%s]"), (LPCTSTR)CharToCString(szKeyName));
+				strKeyName.Format(_T("[%s]"), (LPCTSTR)CA2CT(szKeyName));
 
 				if (strPropagated.Find(strKeyName) != -1)
 					bPropagate = true;
 				m_ExtraInfo.AddInfo(
-					(LPCTSTR)CharToCString(szKeyName),
-					(LPCTSTR)CharToCString(szValue),
-					(LPCTSTR)CharToCString(szComment), bPropagate);
+					(LPCTSTR)CA2CT(szKeyName),
+					(LPCTSTR)CA2CT(szValue),
+					(LPCTSTR)CA2CT(szComment), bPropagate);
 			};
 		};
 	};
@@ -290,12 +289,30 @@ BOOL CFITSReader::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
-	int					nStatus = 0;
+	int					status = 0;
+	char error_text[31] = "";			// Error text for FITS errors.
 
-	fits_open_diskfile(&m_fits, CStringToChar(m_strFileName), READONLY, &nStatus);
-	if (!nStatus && m_fits)
+	fits_open_diskfile(&m_fits, CT2CA(m_strFileName, CP_UTF8), READONLY, &status);
+	if (0 != status)
 	{
-		ZTRACE_RUNTIME("Opened %s", CStringToChar(m_strFileName));
+		fits_get_errstatus(status, error_text);
+		CStringA errMsg;
+		errMsg.Format(
+			"fits_open_diskfile returned a status of %d, error text is \"%s\"",
+			status,
+			error_text);
+
+		ZException exc(errMsg, status, ZException::unrecoverable);
+		exc.addLocation(ZEXCEPTION_LOCATION());
+		exc.logExceptionData();
+		throw exc;
+	}
+
+
+	if (m_fits)
+	{
+		CStringA fileName(m_strFileName);
+		ZTRACE_RUNTIME("Opened %s", fileName);
 
 		// File ok - move to the first image HDU
 		CString			strSimple;
@@ -437,7 +454,7 @@ BOOL CFITSReader::Open()
 			// 
 			if (ReadKey("MOSAIC", CFAPattern) && (strMake.Left(3) == _T("DSI")))
 			{
-				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", CStringToChar(CFAPattern));
+				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", (LPCSTR)CT2CA(CFAPattern, CP_UTF8));
 
 				m_bDSI = TRUE;
 				// Special case of DSI FITS files
@@ -457,7 +474,7 @@ BOOL CFITSReader::Open()
 				//
 				if (ReadKey("BAYERPAT", CFAPattern) || ReadKey("COLORTYP", CFAPattern))
 				{
-					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", CStringToChar(CFAPattern));
+					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", (LPCSTR)CT2CA(CFAPattern,CP_UTF8));
 				}
 
 				CFAPattern.Trim();
@@ -600,7 +617,7 @@ BOOL CFITSReader::Open()
 		{
 			if (m_fits)
 			{
-				fits_close_file(m_fits, &nStatus);
+				fits_close_file(m_fits, &status);
 				m_fits = nullptr;
 			};
 		};
@@ -650,13 +667,13 @@ BOOL CFITSReader::Read()
 		if (0 != status)
 		{
 			fits_get_errstatus(status, error_text);
-			CString errMsg;
+			CStringA errMsg;
 			errMsg.Format(
-				_T("fits_read_pixll returned a status of %d, error text is \"%s\""),
+				"fits_read_pixll returned a status of %d, error text is \"%s\"",
 				status,
 				error_text);
 
-			ZException exc(CStringToChar(errMsg), status, ZException::unrecoverable);
+			ZException exc(errMsg, status, ZException::unrecoverable);
 			exc.addLocation(ZEXCEPTION_LOCATION());
 			exc.logExceptionData();
 			throw exc;
@@ -1065,10 +1082,10 @@ BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 	catch (ZException e)
 	{
 		CString errorMessage;
-		CString name(CharToCString(e.name()));
-		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
-		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
-		CString text(CharToCString(e.text(0)));
+		CString name(CA2CT(e.name()));
+		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(e.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
@@ -1771,10 +1788,10 @@ BOOL CFITSWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double
 	catch (ZException e)
 	{
 		CString errorMessage;
-		CString name(CharToCString(e.name()));
-		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
-		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
-		CString text(CharToCString(e.text(0)));
+		CString name(CA2CT(e.name()));
+		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(e.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),

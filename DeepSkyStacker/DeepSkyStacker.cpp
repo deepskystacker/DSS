@@ -14,7 +14,6 @@ using namespace Gdiplus;
 #include "cgfiltyp.h"
 #include "SetUILanguage.h"
 #include <zexcept.h>
-#include "Utils.h"
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -391,7 +390,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 			}
 			catch (std::exception & e)
 			{
-				CString errorMessage(CharToCString(e.what()));
+				CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
 #if defined(_CONSOLE)
 				std::cerr << errorMessage;
 #else
@@ -406,10 +405,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 			catch (ZException & ze)
 			{
 				CString errorMessage;
-				CString name(CharToCString(ze.name()));
-				CString fileName(CharToCString(ze.locationAtIndex(0)->fileName()));
-				CString functionName(CharToCString(ze.locationAtIndex(0)->functionName()));
-				CString text(CharToCString(ze.text(0)));
+				CString name(CA2CT(ze.name()));
+				CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
+				CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
+				CString text(CA2CT(ze.text(0)));
 
 				errorMessage.Format(
 					_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),

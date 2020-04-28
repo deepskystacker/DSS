@@ -7,7 +7,6 @@
 #include "StackingTasks.h"
 #include <algorithm>
 #include <deque>
-#include "Utils.h"
 
 
 /* ------------------------------------------------------------------- */
@@ -568,7 +567,7 @@ void	CWorkspaceSettingsInternal::SaveToFile(FILE * hFile)
 		m_vSettings[i].GetName(strName);
 		m_vSettings[i].GetValue(strValue);
 
-		fprintf(hFile, "#WS#%s|%s=%s\n", CStringToChar(strPath), CStringToChar(strName), CStringToChar(strValue));
+		fprintf(hFile, "#WS#%s|%s=%s\n", (LPCSTR)CT2CA(strPath, CP_UTF8), (LPCSTR)CT2CA(strName, CP_UTF8), (LPCSTR)CT2CA(strValue, CP_UTF8));
 	};
 };
 

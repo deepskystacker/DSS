@@ -13,7 +13,6 @@
 #include "Filters.h"
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"
-#include "Utils.h"
 #include <iostream>
 
 #define _USE_MATH_DEFINES
@@ -241,17 +240,17 @@ void	CLightFramesStackingInfo::Save()
 			CString					strInfoFileName;
 
 			GetInfoFileName((LPCTSTR)m_strReferenceFrame, strInfoFileName);
-			fprintf(hFile, "%s\n", CStringToChar(strInfoFileName));
+			fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strInfoFileName, CP_UTF8));
 
 			for (LONG i = 0;i<m_vLightFrameStackingInfo.size();i++)
 			{
-				fprintf(hFile, "%s\n", CStringToChar(m_vLightFrameStackingInfo[i].m_strInfoFileName));
-				fprintf(hFile, "%s\n", CStringToChar(m_vLightFrameStackingInfo[i].m_strFileName));
+				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vLightFrameStackingInfo[i].m_strInfoFileName, CP_UTF8));
+				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vLightFrameStackingInfo[i].m_strFileName, CP_UTF8));
 
 				CString			strParameters;
 
 				m_vLightFrameStackingInfo[i].m_BilinearParameters.ToText(strParameters);
-				fprintf(hFile, "%s\n", CStringToChar(strParameters));
+				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strParameters, CP_UTF8));
 			};
 
 			fclose(hFile);
@@ -2464,7 +2463,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 										else
 											strText.Format(IDS_STACKGRAYLIGHT, m_vBitmaps[lIndice].m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)m_vBitmaps[lIndice].m_strFileName);
 
-										ZTRACE_RUNTIME(CStringToChar(strText));
+										ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 										// First apply transformations
 										MasterFrames.ApplyAllMasters(pBitmap, &(m_vBitmaps[lIndice].m_vStars), m_pProgress);
 
@@ -2535,7 +2534,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 	}
 	catch (std::exception & e)
 	{
-		CString errorMessage(CharToCString(e.what()));
+		CString errorMessage(CA2CT(e.what()));
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
 #else
@@ -2552,10 +2551,10 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 	catch (ZException & ze)
 	{
 		CString errorMessage;
-		CString name(CharToCString(ze.name()));
-		CString fileName(CharToCString(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CharToCString(ze.locationAtIndex(0)->functionName()));
-		CString text(CharToCString(ze.text(0)));
+		CString name(CA2CT(ze.name()));
+		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(ze.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
@@ -2882,16 +2881,16 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 
 			fprintf(hFile, "<head>\n");
 			fprintf(hFile, "<meta name=\"GENERATOR\" content=\"DeepSkyStacker\">");
-			fprintf(hFile, "<title>DeepSkyStacker - %s</title>", CStringToChar(szName));
+			fprintf(hFile, "<title>DeepSkyStacker - %s</title>", (LPCSTR)CT2CA(szName, CP_UTF8));
 			fprintf(hFile, "</head>\n");
 
 
 			fprintf(hFile, "<body>\n");
-			fprintf(hFile, "-> %s<br><br>\n", CStringToChar(szName));
+			fprintf(hFile, "-> %s<br><br>\n", (LPCSTR)CT2CA(szName, CP_UTF8));
 
 			// Stacking Mode
 			strText.Format(IDS_RECAP_STACKINGMODE);
-			fprintf(hFile, "%s", CStringToChar(strText));
+			fprintf(hFile, "%s", (LPCSTR)CT2CA(strText, CP_UTF8));
 			switch (tasks.GetStackingMode())
 			{
 			case SM_NORMAL :
@@ -2908,11 +2907,11 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 				break;
 			};
 
-			fprintf(hFile, "%s<br>", CStringToChar(strText));
+			fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(strText, CP_UTF8));
 
 			// Alignment method
 			strText.Format(IDS_RECAP_ALIGNMENT);
-			fprintf(hFile, "%s", CStringToChar(strText));
+			fprintf(hFile, "%s", (LPCSTR)CT2CA(strText, CP_UTF8));
 
 			switch (tasks.GetAlignmentMethod())
 			{
@@ -2933,7 +2932,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 				strText.Format(IDS_ALIGN_NONE);
 				break;
 			};
-			fprintf(hFile, "%s<br>\n", CStringToChar(strText));
+			fprintf(hFile, "%s<br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 
 			// Drizzle ?
 			DWORD				dwDrizzle;
@@ -2942,7 +2941,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 			if (dwDrizzle > 1)
 			{
 				strText.Format(IDS_RECAP_DRIZZLE, dwDrizzle);
-				fprintf(hFile, "%s<br>\n", CStringToChar(strText));
+				fprintf(hFile, "%s<br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 			};
 
 			// Comet
@@ -2952,7 +2951,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 
 				CometStackingMode = tasks.GetCometStackingMode();
 				strText.Format(IDS_RECAP_COMETSTACKING);
-				fprintf(hFile, CStringToChar(strText));
+				fprintf(hFile, CT2CA(strText, CP_UTF8));
 				switch (CometStackingMode)
 				{
 				case CSM_STANDARD :
@@ -2965,7 +2964,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					strText.Format(IDS_RECAP_COMETSTACKING_BOTH);
 					break;
 				};
-				fprintf(hFile, "%s<br>\n", CStringToChar(strText));;
+				fprintf(hFile, "%s<br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));;
 			};
 
 			// Post calibration settings
@@ -2975,12 +2974,12 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 			if (pcs.m_bHot)
 			{
 				strText.Format(IDS_RECAP_COSMETICHOT, pcs.m_lHotFilter, pcs.m_fHotDetection);
-				fprintf(hFile, "%s<br>\n", CStringToChar(strText));
+				fprintf(hFile, "%s<br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 			};
 			if (pcs.m_bCold)
 			{
 				strText.Format(IDS_RECAP_COSMETICCOLD, pcs.m_lColdFilter, pcs.m_fColdDetection);
-				fprintf(hFile, "%s<br>\n", CStringToChar(strText));
+				fprintf(hFile, "%s<br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 			};
 
 			if (pcs.m_bHot || pcs.m_bCold)
@@ -3031,21 +3030,21 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
 					strText.Format(IDS_RECAP_STEP, i+1, si.m_pLightTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue);
-					fprintf(hFile, "<a href=\"#Task%ld\">%s</a>", i, CStringToChar(strText));
-					fprintf(hFile, CStringToChar(strExposure));
+					fprintf(hFile, "<a href=\"#Task%ld\">%s</a>", i, (LPCSTR)CT2CA(strText, CP_UTF8));
+					fprintf(hFile, CT2CA(strExposure, CP_UTF8));
 					fprintf(hFile, "<br>");
 					fprintf(hFile, "<ul>");
-					fprintf(hFile, CStringToChar(strBackgroundCalibration));
+					fprintf(hFile, CT2CA(strBackgroundCalibration, CP_UTF8));
 					fprintf(hFile, "<br>");
-					fprintf(hFile, CStringToChar(strPerChannelBackgroundCalibration));
+					fprintf(hFile, CT2CA(strPerChannelBackgroundCalibration, CP_UTF8));
 					fprintf(hFile, "</ul>");
 					if (si.m_pLightTask->m_vBitmaps.size()>1)
 					{
 						fprintf(hFile, "<ul>");
 						strText.Format(IDS_RECAP_METHOD);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 						FormatFromMethod(strText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 						fprintf(hFile, "</ul>");
 
 						if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
@@ -3053,7 +3052,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						{
 							fprintf(hFile, "<br>");
 							strText.Format(IDS_RECAP_WARNINGBAYERDRIZZLE);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 						};
 					};
 
@@ -3067,15 +3066,15 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
 						strText.Format(IDS_RECAP_OFFSET, si.m_pOffsetTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 
 						if (si.m_pOffsetTask->m_vBitmaps.size()>1)
 						{
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							FormatFromMethod(strText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						}
 						else
@@ -3086,7 +3085,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 							{
 								strText.Format(IDS_RECAP_ISOWARNING);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 							};
 						}
 						else
@@ -3094,7 +3093,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
 							{
 								strText.Format(IDS_RECAP_GAINWARNING);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 							};
 						};
 						fprintf(hFile, "</ul>");
@@ -3102,7 +3101,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					else
 					{
 						strText.Format(IDS_RECAP_NOOFFSET);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 					};
 					if (si.m_pDarkTask)
 					{
@@ -3110,24 +3109,24 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
 						strText.Format(IDS_RECAP_DARK, si.m_pDarkTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 
 						if (si.m_pDarkTask->m_vBitmaps.size()>1)
 						{
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							FormatFromMethod(strText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						};
 
 						fprintf(hFile, "<ul>");
-						fprintf(hFile, CStringToChar(strDarkOptimization));
-						fprintf(hFile, CStringToChar(strHotPixels));
+						fprintf(hFile, CT2CA(strDarkOptimization, CP_UTF8));
+						fprintf(hFile, CT2CA(strHotPixels, CP_UTF8));
 						if (strDarkFactor.GetLength())
 						{
-							fprintf(hFile, CStringToChar(strDarkFactor));
+							fprintf(hFile, CT2CA(strDarkFactor, CP_UTF8));
 							fprintf(hFile, "<br>");
 						};
 
@@ -3136,7 +3135,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 							{
 								strText.Format(IDS_RECAP_ISOWARNING);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 								fprintf(hFile, "<br>");
 							};
 						}
@@ -3145,14 +3144,14 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
 							{
 								strText.Format(IDS_RECAP_GAINWARNING);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 								fprintf(hFile, "<br>");
 							};
 						};
 						if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
 						{
 							strText.Format(IDS_RECAP_EXPOSUREWARNING);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "<br>");
 						};
 						fprintf(hFile, "</ul>");
@@ -3160,7 +3159,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					else
 					{
 						strText.Format(IDS_RECAP_NODARK);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 					};
 					if (si.m_pDarkFlatTask && si.m_pFlatTask)
 					{
@@ -3168,15 +3167,15 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
 						strText.Format(IDS_RECAP_DARKFLAT, si.m_pDarkFlatTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 
 						if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
 						{
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
-							fprintf(hFile, CStringToChar(strText+"<br>"));
+							fprintf(hFile, (LPCSTR)CT2CA(strText+"<br>", CP_UTF8));
 							FormatFromMethod(strText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						}
 						else
@@ -3187,7 +3186,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
 							{
 								strText.Format(IDS_RECAP_ISOWARNINGDARKFLAT);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 							};
 						}
 						else
@@ -3195,13 +3194,13 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
 							{
 								strText.Format(IDS_RECAP_GAINWARNINGDARKFLAT);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 							};
 						};
 						if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
 						{
 							strText.Format(IDS_RECAP_EXPOSUREWARNINGDARKFLAT);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 						};
 						fprintf(hFile, "</ul>");
 					};
@@ -3211,14 +3210,14 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
 						strText.Format(IDS_RECAP_FLAT, si.m_pFlatTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue, strExposure);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 						if (si.m_pFlatTask->m_vBitmaps.size()>1)
 						{
 							fprintf(hFile, "<ul>");
 							strText.Format(IDS_RECAP_METHOD);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							FormatFromMethod(strText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
-							fprintf(hFile, CStringToChar(strText));
+							fprintf(hFile, CT2CA(strText, CP_UTF8));
 							fprintf(hFile, "</ul>");
 						};
 
@@ -3227,7 +3226,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 							{
 								strText.Format(IDS_RECAP_ISOWARNING);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 							};
 						}
 						else
@@ -3235,7 +3234,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 							if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
 							{
 								strText.Format(IDS_RECAP_GAINWARNING);
-								fprintf(hFile, CStringToChar(strText));
+								fprintf(hFile, CT2CA(strText, CP_UTF8));
 							};
 						};
 						fprintf(hFile, "</ul>");
@@ -3243,7 +3242,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 					else
 					{
 						strText.Format(IDS_RECAP_NOFLAT);
-						fprintf(hFile, CStringToChar(strText));
+						fprintf(hFile, CT2CA(strText, CP_UTF8));
 					};
 
 					if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
@@ -3263,61 +3262,61 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 						fprintf(hFile, "<hr><br>\n");
 						fprintf(hFile, "<a name=\"Task%ld\"></a>", i);
 						strText.LoadString(IDS_TYPE_LIGHT);
-						fprintf(hFile, "<b>%s</b><br>\n", CStringToChar(strText));
+						fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 						for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
-							fprintf(hFile, "%s<br>", CStringToChar(si.m_pLightTask->m_vBitmaps[j].m_strFileName));
+							fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pLightTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
 
 						if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_OFFSET);
-							fprintf(hFile, "<b>%s</b><br>\n", CStringToChar(strText));
+							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 							if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].m_strFileName)
 							{
 								strText.LoadString(IDS_TYPE_MASTEROFFSET);
-								fprintf(hFile, "%s -> %s<br>", CStringToChar(strText), CStringToChar(si.m_pOffsetTask->m_strOutputFile));
+								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8), (LPCSTR)CT2CA(si.m_pOffsetTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pOffsetTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", CStringToChar(si.m_pOffsetTask->m_vBitmaps[j].m_strFileName));
+								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pOffsetTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
 						};
 
 						if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_DARK);
-							fprintf(hFile, "<b>%s</b><br>\n", CStringToChar(strText));
+							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 							if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].m_strFileName)
 							{
 								strText.LoadString(IDS_TYPE_MASTERDARK);
-								fprintf(hFile, "%s -> %s<br>", CStringToChar(strText), CStringToChar(si.m_pDarkTask->m_strOutputFile));
+								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8), (LPCSTR)CT2CA(si.m_pDarkTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", CStringToChar(si.m_pDarkTask->m_vBitmaps[j].m_strFileName));
+								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pDarkTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
 						};
 
 						if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_DARKFLAT);
-							fprintf(hFile, "<b>%s</b><br>\n", CStringToChar(strText));
+							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 							if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].m_strFileName)
 							{
 								strText.LoadString(IDS_TYPE_MASTERDARKFLAT);
-								fprintf(hFile, "%s -> %s<br>", CStringToChar(strText),
-									CStringToChar(si.m_pDarkFlatTask->m_strOutputFile));
+								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8),
+									(LPCSTR)CT2CA(si.m_pDarkFlatTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", CStringToChar(si.m_pDarkFlatTask->m_vBitmaps[j].m_strFileName));
+								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pDarkFlatTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
 						};
 						if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_FLAT);
-							fprintf(hFile, "<b>%s</b><br>\n", CStringToChar(strText));
+							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 							if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].m_strFileName)
 							{
 								strText.LoadString(IDS_TYPE_MASTERFLAT);
-								fprintf(hFile, "%s -> %s<br>", CStringToChar(strText),
-									CStringToChar(si.m_pFlatTask->m_strOutputFile));
+								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8),
+									(LPCSTR)CT2CA(si.m_pFlatTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", CStringToChar(si.m_pFlatTask->m_vBitmaps[j].m_strFileName));
+								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pFlatTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
 						};
 					};
 				};

@@ -4,7 +4,6 @@
 #include <Registry.h>
 #include <set>
 #include "Workspace.h"
-#include "Utils.h"
 
 class CSetting
 {
@@ -86,7 +85,7 @@ public :
 	{
 		BOOL		bResult = TRUE;
 
-		fprintf(hFile, "%s=%s\n", CStringToChar(m_strVariable), CStringToChar(m_strValue));
+		fprintf(hFile, "%s=%s\n", (LPCSTR)CT2CA(m_strVariable), (LPCSTR)CT2CA(m_strValue));
 
 		return bResult;
 	};

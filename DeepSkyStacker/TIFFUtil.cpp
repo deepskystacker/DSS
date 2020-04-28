@@ -2,7 +2,6 @@
 #include "TIFFUtil.h"
 #include "Registry.h"
 #include "zlib.h"
-#include "Utils.h"
 #include <iostream>
 
 #include <omp.h>
@@ -85,13 +84,13 @@ BOOL CTIFFReader::Open()
 	//
 	TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
 	TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
-	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "r");
+	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_UTF8), "r");
 	TIFFSetErrorHandler(oldHandler);
 	TIFFSetErrorHandlerExt(oldHandlerExt);
 
 	if (m_tiff)
 	{
-		ZTRACE_RUNTIME("Opened %s", CStringToChar(m_strFileName));
+		ZTRACE_RUNTIME("Opened %s", (LPCSTR)CT2CA(m_strFileName, CP_UTF8));
 
 		cfa = 0;
 		master = 0;
@@ -528,7 +527,7 @@ BOOL CTIFFWriter::Open()
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
-	m_tiff = TIFFOpen(CStringToChar(m_strFileName), "w");
+	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_UTF8), "w");
 	if (m_tiff)
 	{
 		photo = PHOTOMETRIC_RGB;
@@ -965,10 +964,10 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double
 	catch (ZException e)
 	{
 		CString errorMessage;
-		CString name(CharToCString(e.name()));
-		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
-		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
-		CString text(CharToCString(e.text(0)));
+		CString name(CA2CT(e.name()));
+		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(e.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
@@ -1219,10 +1218,10 @@ void CTIFFReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 	catch (ZException e)
 	{
 		CString errorMessage;
-		CString name(CharToCString(e.name()));
-		CString fileName(CharToCString(e.locationAtIndex(0)->fileName()));
-		CString functionName(CharToCString(e.locationAtIndex(0)->functionName()));
-		CString text(CharToCString(e.text(0)));
+		CString name(CA2CT(e.name()));
+		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(e.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),

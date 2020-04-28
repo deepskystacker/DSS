@@ -3,7 +3,6 @@
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "Multitask.h"
-#include "Utils.h"
 
 #include <omp.h>
 
@@ -164,7 +163,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 	BOOL			bResult = FALSE;
 	BOOL			bUseGray;
 	BOOL			bUseCFA;
-	CString strText;
+	CStringA strText;
 	strText.LoadString(IDS_APPLYINGFLAT);
 
 	// Check and remove super pixel settings
@@ -185,7 +184,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 		if ((pTarget->RealWidth() == m_pFlatFrame->RealWidth()) &&
 			(pTarget->RealHeight() == m_pFlatFrame->RealHeight()))
 		{
-			ZTRACE_RUNTIME(CStringToChar(strText));
+			ZTRACE_RUNTIME(strText);
 			/*
 			CFlatDivideTask			DivideTask;
 
@@ -256,7 +255,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 		{
 			ZTRACE_RUNTIME("Target.RealWidth = %d, Source.RealWidth = %d", pTarget->RealWidth(), m_pFlatFrame->RealWidth());
 			ZTRACE_RUNTIME("Target.RealHeight = %d, Source.RealHeight = %d", pTarget->RealHeight(), m_pFlatFrame->RealHeight());
-			ZTRACE_RUNTIME("Did not perform %s", CStringToChar(strText));
+			ZTRACE_RUNTIME("Did not perform %s", strText);
 		}
 	};
 

@@ -587,8 +587,7 @@ public :
         m_lHeight = 0;
         m_lWidth = 0;
 
-		CStringA fileNameA(szFile);
-        m_isRawFile = rawProcessor.open_file(fileNameA) == LIBRAW_SUCCESS;
+        m_isRawFile = rawProcessor.open_file(szFile) == LIBRAW_SUCCESS;
 
         if (m_isRawFile)
         {
