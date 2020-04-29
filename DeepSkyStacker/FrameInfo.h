@@ -24,6 +24,7 @@ public :
 	CString				m_strInfos;
 	BOOL				m_bFITS16bit;
 	CBitmapExtraInfo	m_ExtraInfo;
+	CString				m_filterName;
 
 private :
 	mutable CFATYPE			m_CFAType;
@@ -51,6 +52,7 @@ protected :
 		m_bFITS16bit	  = cfi.m_bFITS16bit;
 		m_bSuperPixel	  = cfi.m_bSuperPixel;
 		m_ExtraInfo		  = cfi.m_ExtraInfo;
+		m_filterName	  = cfi.m_filterName;
 	};
 
 	void	Reset()

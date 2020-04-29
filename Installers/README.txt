@@ -24,6 +24,8 @@ The main changes in this release are:
 
 11. Change DeepSkyStackerLive so that the choice of using the Dark Theme is controlled by the user settings.
 
+12. Display the FITS FILTER name in the picture list control, for information only at present.
+
 Welcome to DeepSkyStacker 4.2.3
 
 ************** IF YOU INSTALLED 4.2.3 BETA 1 **************

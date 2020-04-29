@@ -1760,6 +1760,9 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 			m_lISOSpeed = m_pMemoryBitmap->GetISOSpeed();
 		if (m_lGain < 0)
 			m_lGain = m_pMemoryBitmap->GetGain();
+		if ((m_pMemoryBitmap->filterName() != _T("")) && 
+			(m_filterName == _T("")))
+			m_filterName = m_pMemoryBitmap->filterName();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
 		bResult = TRUE;

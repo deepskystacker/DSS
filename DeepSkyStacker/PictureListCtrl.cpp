@@ -867,6 +867,9 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 		case COLUMN_FTYPE :
 			strValue = m_vFiles[lIndice].m_strType;
 			break;
+		case COLUMN_FILTER :
+			strValue = m_vFiles[lIndice].m_filterName;
+			break;
 		case COLUMN_SCORE :
 			if (m_vFiles[lIndice].m_PictureType != PICTURETYPE_LIGHTFRAME)
 				strValue = "N/A";

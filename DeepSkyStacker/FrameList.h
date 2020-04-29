@@ -77,7 +77,6 @@ public :
 	CString					m_strType;
 	CString					m_strPath;
 	CString					m_strFile;
-	CString					m_filterName;
 	BOOL					m_bRegistered;
 	BOOL					m_bChecked;
 	double					m_fOverallQuality;
@@ -109,6 +108,7 @@ protected :
 		m_bUseAsStarting	= lb.m_bUseAsStarting;
 		m_strType			= lb.m_strType;
 		m_strPath			= lb.m_strPath;
+		m_strFile			= lb.m_strFile;
 		m_bRegistered		= lb.m_bRegistered;
 		m_bChecked			= lb.m_bChecked;
 		m_fOverallQuality	= lb.m_fOverallQuality;
