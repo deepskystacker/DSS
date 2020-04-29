@@ -1,5 +1,4 @@
-﻿Welcome to DeepSkyStacker 4.2.4 Beta 3
-
+﻿Welcome to DeepSkyStacker 4.2.4 Beta 4
 The main changes in this release are:
 
 1. Fix to display Exposure, f-Stop, and ISO setting from EXIF tags in TIFF files.
@@ -25,6 +24,8 @@ The main changes in this release are:
 11. Change DeepSkyStackerLive so that the choice of using the Dark Theme is controlled by the user settings.
 
 12. Display the FITS FILTER name in the picture list control, for information only at present.
+
+13. Change the text used in the language selection ComboBox to always use Latin characters.  This is a work around a problem with DLGINIT processing and Unicode characters.
 
 Welcome to DeepSkyStacker 4.2.3
 
