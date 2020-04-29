@@ -8,8 +8,7 @@
 // Generated from the TEXTINCLUDE 2 resource.
 //
 #include "resource.h"
-#include "afxres.h"
-
+#include "afxres.h"
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
@@ -870,13 +869,24 @@ BEGIN
 0x6943, 0x656e, 0x6573, 0x5420, 0x6172, 0x6964, 0x697a, 0x6e6f, 0x6c61, 
 0x0065, 
     IDC_LANGUAGE, 0x403, 11, 0
-0x6f70, 0x7472, 0x676f, 0x6568, 0x6573, "\000" 
+0x6f50, 0x7472, 0x676f, 0x6568, 0x6573, "\000" 
     IDC_LANGUAGE, 0x403, 7, 0
 0x6f52, 0x656d, 0x6f6e, "\000" 
     IDC_LANGUAGE, 0x403, 6, 0
-0x7572, 0x7373, 0x006f, 
+0x7552, 0x7373, 0x006f, 
     IDC_LANGUAGE, 0x403, 6, 0
 0x7554, 0x6372, 0x006f, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_ABOUT AFX_DIALOG_LAYOUT
+BEGIN
     0
 END
 
@@ -1033,10 +1043,10 @@ BEGIN
     IDS_COLUMN_INFOS        "Info"
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Esposizione"
-	IDS_COLUMN_APERTURE		"Apertura"
-	IDS_COLUMN_FILTER		"Filtro"
     IDS_COLUMN_STARS        "#Stelle"
     IDS_COLUMN_SKYBACKGROUND "Fondo Cielo"
+    IDS_COLUMN_APERTURE     "Apertura"
+    IDS_COLUMN_FILTER       "Filtro"
 END
 
 STRINGTABLE
@@ -1288,7 +1298,6 @@ BEGIN
     IDS_RECAP_STEP          "Passo combinazione %ld\n  ->%ld immagini (%s: %s) - esposizione totale: "
     IDS_RECAP_OFFSET        "\t-> Offset: %ld immagini (%s: %s) esposizione: %s\n"
     IDS_RECAP_ISOWARNING    "\t\tAttenzione: velocità ISO non congruente con le immagini\n"
-    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
     IDS_RECAP_NOOFFSET      "\t-> Nessun Offset\n"
     IDS_RECAP_DARK          "\t-> Dark: %ld immagini (%s : %s) esposizione: %s\n"
     IDS_RECAP_EXPOSUREWARNING 
@@ -1306,10 +1315,19 @@ BEGIN
     IDS_RECAP_DARKFLAT      "\t-> Dark Flat: %ld immagini (%s : %s) esposizione: %s\n"
     IDS_RECAP_ISOWARNINGDARKFLAT 
                             "\t\tAttenzione: velocità ISO non congruente con i flat\n"
-    IDS_RECAP_GAINWARNINGDARKFLAT 
-                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
     IDS_RECAP_EXPOSUREWARNINGDARKFLAT 
                             "\t\tAttenzione: tempo di posa non congruente con i flat\n"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
+                            "Calibrazione sfondo per canale: %s\n"
+    IDS_RECAP_DARKMULTIPLICATIONFACTOR 
+                            "Fattore di moltiplicazione del dark: %.2f\n"
+    IDS_RECAP_GAINWARNING   "\t\tWarning: Gain does not match Light frame gain\n"
+    IDS_RECAP_GAINWARNINGDARKFLAT 
+                            "\t\tWarning: Dark Flat frame gain does not match Flat frame gain\n"
 END
 
 STRINGTABLE
@@ -1497,17 +1515,9 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_RECAP_PERCHANNELBACKGROUNDCALIBRATION 
-                            "Calibrazione sfondo per canale: %s\n"
-    IDS_RECAP_DARKMULTIPLICATIONFACTOR 
-                            "Fattore di moltiplicazione del dark: %.2f\n"
-END
-
-STRINGTABLE
-BEGIN
     IDS_CAMERA_NOT_SUPPORTED 
                             "Siamo spiacenti, la tua camera %s non è supportata da LibRaw"
-	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker non de-Bayer immagini a 8 bit"
+    IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker non de-Bayer immagini a 8 bit"
 END
 
 #endif    // Italian (Italy) resources
@@ -1544,8 +1554,7 @@ END
 //
 // Generated from the TEXTINCLUDE 3 resource.
 //
-
-
+
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
 
