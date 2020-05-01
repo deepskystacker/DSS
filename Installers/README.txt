@@ -1,4 +1,33 @@
-﻿Welcome to DeepSkyStacker 4.2.3
+﻿Welcome to DeepSkyStacker 4.2.4 Beta 4
+The main changes in this release are:
+
+1. Fix to display Exposure, f-Stop, and ISO setting from EXIF tags in TIFF files.
+
+2. Update libtiff to  4.1.0
+
+3. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).  The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.  If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic detection will be used.  You can override this by selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
+
+4. The exposure time is now correctly displayed for FITS files with the exposure time in microseconds (keyword EXPOINUS).
+
+5. Display a warning message saying that DeepSkyStacker won't de-Bayer 8-bit FITS images.
+
+6. Change code to read TIFF files in strips instead of by scanline.  This can reduce the time to read the image by as much as a factor of 3.
+
+7. Refactor the code to decode the TIFF file we just read and also use OpenMP.  Time to decode the image reduced by about 4-5 times.
+
+8. Refactor the code that writes TIFF files and use OpenMP to speed it up.  Also write the output file in strips rather than scanlines.  Substantial performance increase.
+
+9. Refactor the code that reads FITS files to make it easier to understand and also use OpenMP.  Only a marginal performance benefit.
+
+10. Major bug fix - calibration frames were either not applied or incorrectly applied when using Super-Pixel mode.
+
+11. Change DeepSkyStackerLive so that the choice of using the Dark Theme is controlled by the user settings.
+
+12. Display the FITS FILTER name in the picture list control, for information only at present.
+
+13. Change the text used in the language selection ComboBox to always use Latin characters.  This is a work around a problem with DLGINIT processing and Unicode characters.
+
+Welcome to DeepSkyStacker 4.2.3
 
 ************** IF YOU INSTALLED 4.2.3 BETA 1 **************
   When you next use DeepSkyStacker, please restore all
@@ -29,7 +58,7 @@ The main changes in this release are:
 
 9. Common control library 6 now used so some cosmetic changes such as filled progress bars.
 
-19. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
+10. Make the progress dialogs non-modal so that DeepSkyStacker can be minimised while processing.
 
 11. Update the DeepSkyStacker taskbar icon with a progress bar that matches the main progress bar.
 

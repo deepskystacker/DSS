@@ -307,7 +307,7 @@ typedef enum
 
 inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
 {
-	strText = "";
+	strText.Empty();
 	switch (Method)
 	{
 	case MBP_FASTAVERAGE :
@@ -680,6 +680,7 @@ protected :
 	LONG				m_lGain;
 	LONG				m_lNrFrames;
 	CString				m_strDescription;
+	CString				m_filterName;
 
 protected :
 	void			CopyFrom(const CMemoryBitmap & mb)
@@ -695,6 +696,7 @@ protected :
 		m_lNrFrames			= mb.m_lNrFrames;
 		m_strDescription	= mb.m_strDescription;
 		m_DateTime			= mb.m_DateTime;
+		m_filterName		= mb.m_filterName;
 	};
 
 public :
@@ -720,9 +722,10 @@ public :
 		return m_fExposure;
 	};
 
-	virtual void	SetExposure(double fExposure)
+	virtual CMemoryBitmap&	SetExposure(double fExposure)
 	{
 		m_fExposure = fExposure;
+		return *this;
 	};
 
 	virtual double	GetAperture()
@@ -730,9 +733,10 @@ public :
 		return m_fAperture;
 	};
 
-	virtual void SetAperture(double fAperture)
+	virtual CMemoryBitmap& SetAperture(double fAperture)
 	{
 		m_fAperture = fAperture;
+		return *this;
 	};
 
 	virtual LONG	GetISOSpeed()
@@ -740,9 +744,10 @@ public :
 		return m_lISOSpeed;
 	};
 
-	virtual void	SetISOSpeed(LONG lISOSpeed)
+	virtual CMemoryBitmap&	SetISOSpeed(LONG lISOSpeed)
 	{
 		m_lISOSpeed = lISOSpeed;
+		return *this;
 	};
 
 	virtual LONG	GetGain()
@@ -750,9 +755,10 @@ public :
 		return m_lGain;
 	};
 
-	virtual void	SetGain(LONG lGain)
+	virtual CMemoryBitmap&	SetGain(LONG lGain)
 	{
 		m_lGain = lGain;
+		return *this;
 	};
 
 	virtual LONG	GetNrFrames()
@@ -760,51 +766,64 @@ public :
 		return m_lNrFrames;
 	};
 
-	virtual void	SetNrFrames(LONG lNrFrames)
+	virtual CMemoryBitmap&	SetNrFrames(LONG lNrFrames)
 	{
 		m_lNrFrames = lNrFrames;
+		return *this;
 	};
 
-	virtual void	SetDescription(LPCTSTR szDescription)
+	virtual CMemoryBitmap&	SetDescription(LPCTSTR szDescription)
 	{
 		m_strDescription = szDescription;
+		return *this;
 	};
 
-	virtual void	GetDescription(CString & strDescription)
+	virtual CMemoryBitmap&	GetDescription(CString & strDescription)
 	{
 		strDescription = m_strDescription;
+		return *this;
 	};
+
+	virtual CMemoryBitmap& setFilterName(CString& name)
+	{
+		m_filterName = name;
+		return *this;
+	}
+
+	virtual CString filterName()
+	{
+		return m_filterName;
+	}
 
 	virtual BOOL	Init(LONG lWidth, LONG lHeight) = 0;
 
-	virtual BOOL	SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)  =0;
-	virtual BOOL	SetPixel(LONG i, LONG j, double fGray)  =0;
-	virtual BOOL	GetPixel(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue) = 0;
-	virtual BOOL	GetPixel(LONG i, LONG j, double & fGray) = 0;
+	virtual void	SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)  =0;
+	virtual void	SetPixel(LONG i, LONG j, double fGray)  =0;
+	virtual void	GetPixel(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue) = 0;
+	virtual void	GetPixel(LONG i, LONG j, double & fGray) = 0;
 
-	virtual BOOL	SetValue(LONG i, LONG j, double fRed, double fGreen, double fBlue) { return FALSE; };
-	virtual BOOL	GetValue(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue) { return FALSE; };
-	virtual BOOL	SetValue(LONG i, LONG j, double fGray) { return FALSE; };
-	virtual BOOL	GetValue(LONG i, LONG j, double & fGray) { return FALSE; };
+	virtual void	SetValue(LONG i, LONG j, double fRed, double fGreen, double fBlue) {};
+	virtual void	GetValue(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue) {};
+	virtual void	SetValue(LONG i, LONG j, double fGray) {};
+	virtual void	GetValue(LONG i, LONG j, double & fGray) {};
 
 	virtual BOOL	GetScanLine(LONG j, void * pScanLine) = 0;
 	virtual BOOL	SetScanLine(LONG j, void * pScanLine) = 0;
 
-	virtual BOOL	GetPixel16(LONG i, LONG j, COLORREF16 & crResult)
+	virtual void	GetPixel16(LONG i, LONG j, COLORREF16 & crResult)
 	{
 		// Use get pixel
 		double fRed, fGreen, fBlue;
-		BOOL fResult = GetPixel(i, j, fRed, fGreen, fBlue);
+		GetPixel(i, j, fRed, fGreen, fBlue);
 
 		crResult.red = (WORD)(fRed * 256.0);
 		crResult.green = (WORD)(fGreen * 256.0);
 		crResult.blue = (WORD)(fBlue * 256.0);
-		return fResult;
 	};
 
-	virtual BOOL	SetPixel16(LONG i, LONG j, const COLORREF16 & crColor)
+	virtual void SetPixel16(LONG i, LONG j, const COLORREF16 & crColor)
 	{
-		return SetPixel(i, j, (double)crColor.red/256.0, (double)crColor.green/256.0, (double)crColor.blue/256.0);
+		SetPixel(i, j, (double)crColor.red/256.0, (double)crColor.green/256.0, (double)crColor.blue/256.0);
 	};
 
 	virtual LONG	Width() = 0;
@@ -903,8 +922,11 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-inline BAYERCOLOR GetBayerColor(LONG x, LONG y, CFATYPE CFAType)
+inline BAYERCOLOR GetBayerColor(LONG baseX, LONG baseY, CFATYPE CFAType, LONG xOffset=0, LONG yOffset=0)
 {
+	LONG	x = baseX + xOffset;		// Apply the X Bayer offset if supplied
+	LONG	y = baseY + yOffset;		// Apply the Y Bayer offset if supplied
+
 	switch (CFAType)
 	{
 		case CFATYPE_NONE :
@@ -1031,30 +1053,44 @@ inline BAYERCOLOR GetBayerColor(LONG x, LONG y, CFATYPE CFAType)
 	return BAYER_UNKNOWN;
 };
 
-inline BOOL	IsBayerBlueLine(LONG y, CFATYPE CFAType)
+//
+// Add parameter yOffset to specify CFA Matrix offset to be applied (for FITS files)
+//
+inline BOOL	IsBayerBlueLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
 {
+	LONG y = baseY + yOffset;
+
 	if ((CFAType == CFATYPE_GRBG) || (CFAType == CFATYPE_RGGB))
 		return (y & 1) ? TRUE : FALSE;
 	else
 		return (y & 1) ? FALSE : TRUE;
 };
 
-inline BOOL IsBayerBlueColumn(LONG x, CFATYPE CFAType)
+//
+// Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
+//
+inline BOOL IsBayerBlueColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
 {
+	LONG x = baseX + xOffset;
+
 	if ((CFAType == CFATYPE_GBRG) || (CFAType == CFATYPE_RGGB))
 		return (x & 1) ? TRUE : FALSE;
 	else
 		return (x & 1) ? FALSE : TRUE;
 };
 
-inline BOOL IsBayerRedLine(LONG y, CFATYPE CFAType)
+
+inline BOOL IsBayerRedLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
 {
-	return !IsBayerBlueLine(y, CFAType);
+	return !IsBayerBlueLine(baseY, CFAType, yOffset);
 };
 
-inline BOOL IsBayerRedColumn(LONG x, CFATYPE CFAType)
+//
+// Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
+//
+inline BOOL IsBayerRedColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
 {
-	return !IsBayerBlueColumn(x, CFAType);
+	return !IsBayerBlueColumn(baseX, CFAType, xOffset);
 };
 
 void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue);
@@ -1072,8 +1108,8 @@ inline void	CYMGToRGB2(double fCyan, double fYellow, double fMagenta, double fGr
 	fBlue  = -0.180853396 * fR + -7.714219397 * fG + 9.438903145 * fB;
 
 	fRed = max(0.0, min (255.0, fRed));
-	fGreen = max(0.0, min (255.0, fRed));
-	fBlue = max(0.0, min (255.0, fRed));
+	fGreen = max(0.0, min (255.0, fGreen));
+	fBlue = max(0.0, min (255.0, fBlue));
 };
 
 inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGreen2, double & fRed, double & fGreen, double & fBlue)
@@ -1154,6 +1190,8 @@ protected :
 	CFATRANSFORMATION	m_CFATransform;
 	CFATYPE				m_CFAType;
 	BOOL				m_bCYMG;
+	LONG				m_xBayerOffset;
+	LONG				m_yBayerOffset;
 
 protected :
 	virtual void SetCFA(BOOL bCFA) = 0;
@@ -1164,6 +1202,8 @@ public :
 		m_CFATransform = pCFABitmapInfo->m_CFATransform;
 		m_CFAType	   = pCFABitmapInfo->m_CFAType;
 		m_bCYMG		   = pCFABitmapInfo->m_bCYMG;
+		m_xBayerOffset = pCFABitmapInfo->m_xBayerOffset;
+		m_yBayerOffset = pCFABitmapInfo->m_yBayerOffset;
 	};
 
 public :
@@ -1172,6 +1212,8 @@ public :
 		m_CFATransform = CFAT_NONE;
 		m_CFAType	   = CFATYPE_NONE;
 		m_bCYMG		   = FALSE;
+		m_xBayerOffset = 0;
+		m_yBayerOffset = 0;
 	};
 
 	void	SetCFAType(CFATYPE Type)
@@ -1180,7 +1222,30 @@ public :
 		m_bCYMG = IsCYMGType(m_CFAType);
 	};
 
-	CFATYPE	GetCFAType()
+	CCFABitmapInfo& setXoffset(LONG xOffset) noexcept
+	{
+		m_xBayerOffset = xOffset;
+		return *this;
+	};
+
+	inline LONG xOffset() noexcept
+	{
+		return m_xBayerOffset;
+	}
+
+	CCFABitmapInfo& setYoffset(LONG yOffset) noexcept
+	{
+		m_yBayerOffset = yOffset;
+		return *this;
+	};
+
+
+	inline LONG yOffset() noexcept
+	{
+		return m_yBayerOffset;
+	}
+
+	inline CFATYPE	GetCFAType() noexcept
 	{
 		return m_CFAType;
 	};
@@ -1317,13 +1382,13 @@ protected :
 		vdWork1.reserve(vScanLines.size());
 		vdWork2.reserve(vScanLines.size());
 
-		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
+		for (LONG i = 0; i<lWidth; i++)
 		{
 			TType *					pValue;
 			double					fWeight = 1.0;
 
 			vValues.resize(0);
-			for (LONG j = 0;j<vScanLines.size();j++)
+			for (size_t j = 0;j<vScanLines.size();j++)
 			{
 				pValue = (TType *)vScanLines[j];
 				pValue += i;
@@ -1350,7 +1415,7 @@ protected :
 					// Change the order to respect the order of the images
 					vAuxValues = vValues;
 					vValues.resize(0);
-					for (LONG k = 0;k<m_vImageOrder.size();k++)
+					for (size_t k = 0;k<m_vImageOrder.size();k++)
 						if (vAuxValues[m_vImageOrder[k]])
 							vValues.push_back(vAuxValues[m_vImageOrder[k]]);
 
@@ -1382,12 +1447,9 @@ protected :
 			pCurrentValue++;
 		};
 
-		if (pOutputScanLine)
-		{
-			pBitmap->SetScanLine(lLine, pOutputScanLine);
-			free(pOutputScanLine);
-			bResult = TRUE;
-		};
+		pBitmap->SetScanLine(lLine, pOutputScanLine);
+		free(pOutputScanLine);
+		bResult = TRUE;
 
 		return bResult;
 	};
@@ -1658,17 +1720,21 @@ private :
 		return ((size_t)m_vPixels.size() == (size_t)m_lWidth * (size_t)m_lHeight);
 	};
 
-	BOOL	IsXYOk(LONG x, LONG y)
+	inline void	CheckXY(LONG x, LONG y)
 	{
-		return (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
+		ZASSERT(x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
+	};
+
+	inline bool	IsXYOk(LONG x, LONG y)
+	{
+		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	};
 
 	size_t	GetOffset(LONG x, LONG y)
 	{
-		if (IsXYOk(x, y))
-			return (size_t)m_lWidth * (size_t)y + (size_t)x;
-		else
-			return 0;
+		CheckXY(x, y);
+			
+		return (size_t)m_lWidth * (size_t)y + (size_t)x;
 	};
 
 	virtual BOOL	IsMonochrome()
@@ -1678,7 +1744,7 @@ private :
 
 	TType	GetPrimary(LONG x, LONG y, const COLORREF16 & crColor)
 	{
-		switch (::GetBayerColor(x, y, m_CFAType))
+		switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 		{
 		case BAYER_RED :
 			return crColor.red;
@@ -1696,7 +1762,7 @@ private :
 
 	double	GetPrimary(LONG x, LONG y, double fRed, double fGreen, double fBlue)
 	{
-		switch (::GetBayerColor(x, y, m_CFAType))
+		switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 		{
 		case BAYER_RED :
 			return fRed;
@@ -1751,7 +1817,7 @@ private :
 		if (!pValue)
 			pValue = &m_vPixels[GetOffset(x, y)];
 
-		if (IsBayerBlueLine(y, m_CFAType))
+		if (IsBayerBlueLine(y, m_CFAType, m_yBayerOffset))
 		{
 			// Pixel between 2 blue pixel (horizontaly)
 			if (x > 0)
@@ -1765,7 +1831,7 @@ private :
 				lNrValues++;
 			};
 		}
-		else if (IsBayerBlueColumn(x, m_CFAType))
+		else if (IsBayerBlueColumn(x, m_CFAType, m_xBayerOffset))
 		{
 			// Pixel between 2 blue pixels (verticaly)
 			if (y > 0)
@@ -1814,7 +1880,7 @@ private :
 		if (!pValue)
 			pValue = &m_vPixels[GetOffset(x, y)];
 
-		if (IsBayerRedLine(y, m_CFAType))
+		if (IsBayerRedLine(y, m_CFAType, m_yBayerOffset))
 		{
 			// Pixel between 2 blue pixel (horizontaly)
 			if (x > 0)
@@ -1828,7 +1894,7 @@ private :
 				lNrValues++;
 			};
 		}
-		else if (IsBayerRedColumn(x, m_CFAType))
+		else if (IsBayerRedColumn(x, m_CFAType, m_xBayerOffset))
 		{
 			// Pixel between 2 blue pixels (verticaly)
 			if (y > 0)
@@ -1881,7 +1947,7 @@ private :
 		for (LONG i = max(0L, x-1);i<=min(m_lWidth-1, x+1);i++)
 			for (LONG j = max(0L, y-1);j<=min(m_lHeight-1, y+1);j++)
 			{
-				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType));
+				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset));
 				pfValues[lIndice]  += m_vPixels[GetOffset(i, j)];
 				lNrValues[lIndice] ++;
 			};
@@ -1948,31 +2014,30 @@ public :
 		CGrayBitmapT<TType> *	pResult;
 
 		pResult = new CGrayBitmapT<TType>;
-		if (pResult)
-		{
-			if (!bEmpty)
-			{
-				pResult->m_vPixels	= m_vPixels;
-				pResult->m_lWidth	= m_lWidth;
-				pResult->m_lHeight	= m_lHeight;
-			};
-			pResult->m_bWord	= m_bWord;
-			pResult->m_bDouble	= m_bDouble;
-			pResult->m_bDWord	= m_bDWord;
-			pResult->m_bFloat	= m_bFloat;
-			pResult->m_CFATransform = m_CFATransform;
-			pResult->m_CFAType  = m_CFAType;
-			pResult->m_bCYMG	= m_bCYMG;
 
-			pResult->CopyFrom(*this);
+		if (!bEmpty)
+		{
+			pResult->m_vPixels	= m_vPixels;
+			pResult->m_lWidth	= m_lWidth;
+			pResult->m_lHeight	= m_lHeight;
 		};
+		pResult->m_bWord	= m_bWord;
+		pResult->m_bDouble	= m_bDouble;
+		pResult->m_bDWord	= m_bDWord;
+		pResult->m_bFloat	= m_bFloat;
+		pResult->m_CFATransform = m_CFATransform;
+		pResult->m_CFAType  = m_CFAType;
+		pResult->m_bCYMG	= m_bCYMG;
+
+		pResult->CopyFrom(*this);
+
 
 		return pResult;
 	};
 
 	virtual BAYERCOLOR GetBayerColor(LONG x, LONG y)
 	{
-		return ::GetBayerColor(x, y, m_CFAType);
+		return ::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset);
 	};
 
 	virtual LONG	BitPerSample()
@@ -2011,188 +2076,164 @@ public :
 		return m_lWidth;
 	};
 
-	virtual BOOL	SetValue(LONG i, LONG j, double fGray)
+	virtual void SetValue(LONG i, LONG j, double fGray)
 	{
-		BOOL		bResult = TRUE;
+		CheckXY(i, j);
+		m_vPixels[GetOffset(i, j)] = fGray;
 
-		if (IsXYOk(i, j))
-			m_vPixels[GetOffset(i, j)] = fGray;
-		else
-			bResult = FALSE;
-
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	GetValue(LONG i, LONG j, double & fGray)
+	virtual void GetValue(LONG i, LONG j, double & fGray)
 	{
-		BOOL		bResult = TRUE;
+		if (CFAT_SUPERPIXEL == m_CFATransform)
+		{
+			i *= 2; j *= 2;
+		}
+		CheckXY(i, j);
+		fGray = m_vPixels[GetOffset(i, j)];
 
-		if (IsXYOk(i, j))
-			fGray = m_vPixels[GetOffset(i, j)];
-		else
-			bResult = FALSE;
-
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)
+	virtual void SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)
 	{
-		BOOL			bResult = FALSE;
 
 		if (m_CFATransform == CFAT_SUPERPIXEL)
 		{
-			bResult = SetPixel(i*2, j*2, fRed) &&
-					  SetPixel(i*2, j*2+1, fGreen) &&
-					  SetPixel(i*2+1, j*2, fGreen) &&
-					  SetPixel(i*2+1, j*2+1, fBlue);
+			SetPixel(i * 2, j * 2, fRed);
+			SetPixel(i * 2, j * 2 + 1, fGreen);
+			SetPixel(i * 2 + 1, j * 2, fGreen);
+			SetPixel(i*2+1, j*2+1, fBlue);
 		}
 		else if (m_CFATransform == CFAT_NONE)
-			bResult = SetPixel(i, j, fRed);
+			SetPixel(i, j, fRed);
 		else
-			bResult = SetPixel(i, j, GetPrimary(i, j, fRed, fGreen, fBlue));
+			SetPixel(i, j, GetPrimary(i, j, fRed, fGreen, fBlue));
 
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	SetPixel(LONG i, LONG j, double fGray)
+	virtual void inline SetPixel(LONG i, LONG j, double fGray)
 	{
-		if (IsXYOk(i, j))
-		{
-			fGray *= m_fMultiplier;
-			m_vPixels[GetOffset(i, j)] = fGray;
-			return TRUE;
-		}
-		else
-			return FALSE;
+		SetValue(i, j, fGray * m_fMultiplier);
+		return;
 	};
 
-	virtual BOOL	GetPixel(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
+	virtual void GetPixel(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
 	{
-		BOOL			bResult = FALSE;
 
+		CheckXY(i, j);
 		fRed = fGreen = fBlue = 0.0;
 		if (m_CFATransform == CFAT_SUPERPIXEL)
 		{
 			ASSERT(m_bWord);
-			if (IsXYOk((i-1)*2, (j-1)*2) && IsXYOk((i+1)*2+1, (j+1)*2+1))
+			if (IsXYOk((i - 1) * 2, (j - 1) * 2) && IsXYOk((i + 1) * 2 + 1, (j + 1) * 2 + 1))
 			{
-				TType *			pValue = &(m_vPixels[GetOffset(i*2, j*2)]);
 
-				bResult = TRUE;
+				TType *			pValue = &(m_vPixels[GetOffset(i * 2, j * 2)]);
+
 				switch (m_CFAType)
 				{
-				case CFATYPE_GRBG :
-					fRed	= (*(pValue+1))/m_fMultiplier;
-					fGreen	= ((*pValue)+(*(pValue+1+m_lWidth)))/2.0/m_fMultiplier;
-					fBlue	= (*(pValue+m_lWidth))/m_fMultiplier;
+				case CFATYPE_GRBG:
+					fRed = (*(pValue + 1)) / m_fMultiplier;
+					fGreen = ((*pValue) + (*(pValue + 1 + m_lWidth))) / 2.0 / m_fMultiplier;
+					fBlue = (*(pValue + m_lWidth)) / m_fMultiplier;
 					break;
-				case CFATYPE_GBRG :
-					fRed	= (*(pValue+m_lWidth))/m_fMultiplier;
-					fGreen	= ((*pValue)+(*(pValue+1+m_lWidth)))/2.0/m_fMultiplier;
-					fBlue	= (*(pValue+1))/m_fMultiplier;
+				case CFATYPE_GBRG:
+					fRed = (*(pValue + m_lWidth)) / m_fMultiplier;
+					fGreen = ((*pValue) + (*(pValue + 1 + m_lWidth))) / 2.0 / m_fMultiplier;
+					fBlue = (*(pValue + 1)) / m_fMultiplier;
 					break;
-				case CFATYPE_BGGR :
-					fRed	= (*(pValue+1+m_lWidth))/m_fMultiplier;
-					fGreen	= ((*(pValue+m_lWidth))+(*(pValue+1)))/2.0/m_fMultiplier;
-					fBlue	= (*pValue)/m_fMultiplier;
+				case CFATYPE_BGGR:
+					fRed = (*(pValue + 1 + m_lWidth)) / m_fMultiplier;
+					fGreen = ((*(pValue + m_lWidth)) + (*(pValue + 1))) / 2.0 / m_fMultiplier;
+					fBlue = (*pValue) / m_fMultiplier;
 					break;
-				case CFATYPE_RGGB :
-					fRed	= (*pValue)/m_fMultiplier;
-					fGreen	= ((*(pValue+m_lWidth))+(*(pValue+1)))/2.0/m_fMultiplier;
-					fBlue	= (*(pValue+1+m_lWidth))/m_fMultiplier;
+				case CFATYPE_RGGB:
+					fRed = (*pValue) / m_fMultiplier;
+					fGreen = ((*(pValue + m_lWidth)) + (*(pValue + 1))) / 2.0 / m_fMultiplier;
+					fBlue = (*(pValue + 1 + m_lWidth)) / m_fMultiplier;
 					break;
 				}
-			};
+			}
 		}
+
 		else if (m_CFATransform == CFAT_RAWBAYER)
 		{
 			ASSERT(m_bWord);
-			if (IsXYOk(i, j))
-			{
-				bResult = TRUE;
-				TType *		pValue = &(m_vPixels[GetOffset(i, j)]);
 
-				switch (::GetBayerColor(i, j, m_CFAType))
-				{
-				case BAYER_RED :
-					fRed	= (*pValue)/m_fMultiplier;
-					break;
-				case BAYER_GREEN :
-					fGreen	= (*pValue)/m_fMultiplier;
-					break;
-				case BAYER_BLUE :
-					fBlue	= (*pValue)/m_fMultiplier;
-					break;
-				};
+			TType *		pValue = &(m_vPixels[GetOffset(i, j)]);
+
+			switch (::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset))
+			{
+			case BAYER_RED :
+				fRed	= (*pValue)/m_fMultiplier;
+				break;
+			case BAYER_GREEN :
+				fGreen	= (*pValue)/m_fMultiplier;
+				break;
+			case BAYER_BLUE :
+				fBlue	= (*pValue)/m_fMultiplier;
+				break;
 			};
 		}
 		else if ((m_CFATransform == CFAT_BILINEAR) || (m_CFATransform == CFAT_AHD))
 		{
 			ASSERT(m_bWord);
-			if (IsXYOk(i, j))
+
+			if (m_bCYMG)
 			{
-				bResult = TRUE;
+				double			fValue[4]; // Myself
 
-				if (m_bCYMG)
+				InterpolateAll(fValue , i, j);
+
+				CYMGToRGB(fValue[CMYGZeroIndex(BAYER_CYAN)]/m_fMultiplier,
+							fValue[CMYGZeroIndex(BAYER_YELLOW)]/m_fMultiplier,
+							fValue[CMYGZeroIndex(BAYER_MAGENTA)]/m_fMultiplier,
+							fValue[CMYGZeroIndex(BAYER_GREEN2)]/m_fMultiplier,
+							fRed, fGreen, fBlue);
+			}
+			else
+			{
+				TType *			pValue = &(m_vPixels[GetOffset(i, j)]);
+				switch (::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 				{
-					double			fValue[4]; // Myself
-
-					InterpolateAll(fValue , i, j);
-
-					CYMGToRGB(fValue[CMYGZeroIndex(BAYER_CYAN)]/m_fMultiplier,
-							  fValue[CMYGZeroIndex(BAYER_YELLOW)]/m_fMultiplier,
-							  fValue[CMYGZeroIndex(BAYER_MAGENTA)]/m_fMultiplier,
-							  fValue[CMYGZeroIndex(BAYER_GREEN2)]/m_fMultiplier,
-							  fRed, fGreen, fBlue);
-				}
-				else
-				{
-					TType *			pValue = &(m_vPixels[GetOffset(i, j)]);
-					switch (::GetBayerColor(i, j, m_CFAType))
-					{
-					case BAYER_RED :
-						fRed	= (*pValue)/m_fMultiplier;
-						fGreen	= InterpolateGreen(i, j, pValue)/m_fMultiplier;
-						fBlue	= InterpolateBlue(i, j, pValue)/m_fMultiplier;
-						break;
-					case BAYER_GREEN :
-						fRed	= InterpolateRed(i, j, pValue)/m_fMultiplier;
-						fGreen	= (*pValue)/m_fMultiplier;
-						fBlue	= InterpolateBlue(i, j, pValue)/m_fMultiplier;
-						break;
-					case BAYER_BLUE :
-						fRed	= InterpolateRed(i, j, pValue)/m_fMultiplier;
-						fGreen	= InterpolateGreen(i, j, pValue)/m_fMultiplier;
-						fBlue	= (*pValue)/m_fMultiplier;
-						break;
-					};
+				case BAYER_RED :
+					fRed	= (*pValue)/m_fMultiplier;
+					fGreen	= InterpolateGreen(i, j, pValue)/m_fMultiplier;
+					fBlue	= InterpolateBlue(i, j, pValue)/m_fMultiplier;
+					break;
+				case BAYER_GREEN :
+					fRed	= InterpolateRed(i, j, pValue)/m_fMultiplier;
+					fGreen	= (*pValue)/m_fMultiplier;
+					fBlue	= InterpolateBlue(i, j, pValue)/m_fMultiplier;
+					break;
+				case BAYER_BLUE :
+					fRed	= InterpolateRed(i, j, pValue)/m_fMultiplier;
+					fGreen	= InterpolateGreen(i, j, pValue)/m_fMultiplier;
+					fBlue	= (*pValue)/m_fMultiplier;
+					break;
 				};
 			};
+
 		}
 		else if (m_CFATransform == CFAT_GRADIENT)
 		{
 		}
-		else if (IsXYOk(i, j))
+		else 
 		{
-			bResult = TRUE;
 			fRed = fBlue = fGreen = m_vPixels[GetOffset(i, j)]/m_fMultiplier;
 		};
 
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	GetPixel(LONG i, LONG j, double & fGray)
+	virtual void inline GetPixel(LONG i, LONG j, double & fGray)
 	{
-		BOOL			bResult = FALSE;
-		fGray = 0.0;
-
-		if (IsXYOk(i, j))
-		{
-			bResult = TRUE;
-			fGray = m_vPixels[GetOffset(i, j)]/m_fMultiplier;
-		}
-
-		return bResult;
+		GetValue(i, j, fGray);
+		fGray /= m_fMultiplier;
+		return;
 	};
 
 	virtual BOOL	GetScanLine(LONG j, void * pScanLine)
@@ -2226,8 +2267,7 @@ public :
 		CMultiBitmap *		pResult;
 
 		pResult = new CGrayMultiBitmapT<TType>();
-		if (pResult)
-			pResult->SetBitmapModel(this);
+		pResult->SetBitmapModel(this);
 
 		return pResult;
 	};
@@ -2567,7 +2607,7 @@ public :
 		};
 	};
 
-	virtual BOOL	SetPixel16(LONG i, LONG j, const COLORREF16 &crColor16)
+	virtual void	SetPixel16(LONG i, LONG j, const COLORREF16 &crColor16)
 	{
 		COLORREF			crColor;
 
@@ -2575,7 +2615,7 @@ public :
 
 		SetPixel(i, j, crColor);
 
-		return TRUE;
+		return;
 	};
 
 };
@@ -2683,7 +2723,7 @@ protected :
 		vdWork1.reserve(vScanLines.size());
 		vdWork2.reserve(vScanLines.size());
 
-		for (LONG i = 0;i<lWidth && pOutputScanLine;i++)
+		for (LONG i = 0; i<lWidth; i++)
 		{
 			TType *					pRedValue;
 			TType *					pGreenValue;
@@ -2810,12 +2850,9 @@ protected :
 			pBlueCurrentValue++;
 		};
 
-		if (pOutputScanLine)
-		{
-			pBitmap->SetScanLine(lLine, pOutputScanLine);
-			free(pOutputScanLine);
-			bResult = TRUE;
-		};
+		pBitmap->SetScanLine(lLine, pOutputScanLine);
+		free(pOutputScanLine);
+		bResult = TRUE;
 
 		return bResult;
 	};
@@ -3028,21 +3065,17 @@ public :
 	CGrayBitmapT<TType>		m_Blue;
 
 private :
-	BOOL	IsXYOk(LONG x, LONG y)
+	inline void	CheckXY(LONG x, LONG y)
 	{
-		return (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
+		ZASSERT (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
 	};
 	size_t	GetOffset(LONG x, LONG y)
 	{
-		if (IsXYOk(x, y))
-		{
-			if (m_bTopDown)
-				return (size_t)m_lWidth * (size_t)y + (size_t)x;
-			else
-				return (size_t)m_lWidth * ((size_t)m_lHeight-1- (size_t)y) + (size_t)x;
-		}
+		CheckXY(x, y);
+		if (m_bTopDown)
+			return (size_t)m_lWidth * (size_t)y + (size_t)x;
 		else
-			return 0;
+			return (size_t)m_lWidth * ((size_t)m_lHeight-1- (size_t)y) + (size_t)x;
 	};
 
 public :
@@ -3073,23 +3106,21 @@ public :
 		CColorBitmapT<TType> *	pResult;
 
 		pResult = new CColorBitmapT<TType>();
-		if (pResult)
+		if (!bEmpty)
 		{
-			if (!bEmpty)
-			{
-				pResult->m_lHeight		= m_lHeight;
-				pResult->m_lWidth		= m_lWidth;
-				pResult->m_Red.m_vPixels	= m_Red.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
-				pResult->m_Green.m_vPixels	= m_Green.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
-				pResult->m_Blue.m_vPixels	= m_Blue.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
-			};
-			pResult->m_bWord		= m_bWord;
-			pResult->m_bDouble		= m_bDouble;
-			pResult->m_bDWord		= m_bDWord;
-			pResult->m_bFloat		= m_bFloat;
-
-			pResult->CopyFrom(*this);
+			pResult->m_lHeight		= m_lHeight;
+			pResult->m_lWidth		= m_lWidth;
+			pResult->m_Red.m_vPixels	= m_Red.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
+			pResult->m_Green.m_vPixels	= m_Green.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
+			pResult->m_Blue.m_vPixels	= m_Blue.m_vPixels;//vRedPixel	= m_Red.m_vPixels;
 		};
+		pResult->m_bWord		= m_bWord;
+		pResult->m_bDouble		= m_bDouble;
+		pResult->m_bDWord		= m_bDWord;
+		pResult->m_bFloat		= m_bFloat;
+
+		pResult->CopyFrom(*this);
+
 
 		return pResult;
 	};
@@ -3133,112 +3164,85 @@ public :
 		return FALSE;
 	};
 
-	virtual BOOL	SetValue(LONG i, LONG j, double fRed, double fGreen, double fBlue)
+	virtual void SetValue(LONG i, LONG j, double fRed, double fGreen, double fBlue)
 	{
-		BOOL		bResult = TRUE;
+		CheckXY(i, j);
 
-		if (IsXYOk(i, j))
-		{
-            size_t			lOffset = GetOffset(i, j);
+        size_t			lOffset = GetOffset(i, j);
 
-			m_Red.m_vPixels[lOffset]	= fRed;
-			m_Green.m_vPixels[lOffset]	= fGreen;
-			m_Blue.m_vPixels[lOffset]	= fBlue;
-		}
-		else
-			bResult = FALSE;
+		m_Red.m_vPixels[lOffset]	= fRed;
+		m_Green.m_vPixels[lOffset]	= fGreen;
+		m_Blue.m_vPixels[lOffset]	= fBlue;
 
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	GetValue(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
+	virtual void GetValue(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
 	{
-		BOOL		bResult = TRUE;
+		CheckXY(i, j);
 
-		if (IsXYOk(i, j))
-		{
-            size_t			lOffset = GetOffset(i, j);
+        size_t			lOffset = GetOffset(i, j);
 
-			fRed   = m_Red.m_vPixels[lOffset];
-			fGreen = m_Green.m_vPixels[lOffset];
-			fBlue  = m_Blue.m_vPixels[lOffset];
-		}
-		else
-			bResult = FALSE;
+		fRed   = m_Red.m_vPixels[lOffset];
+		fGreen = m_Green.m_vPixels[lOffset];
+		fBlue  = m_Blue.m_vPixels[lOffset];
 
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)
+	virtual void SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)
 	{
-		BOOL				bResult = FALSE;
+		CheckXY(i, j);
 
-		if (IsXYOk(i, j))
-		{
-			size_t			lOffset = GetOffset(i, j);
-			m_Red.m_vPixels[lOffset]	= fRed * m_fMultiplier;
-			m_Green.m_vPixels[lOffset]	= fGreen * m_fMultiplier;
-			m_Blue.m_vPixels[lOffset]	= fBlue * m_fMultiplier;
+		size_t			lOffset = GetOffset(i, j);
+		m_Red.m_vPixels[lOffset]	= fRed * m_fMultiplier;
+		m_Green.m_vPixels[lOffset]	= fGreen * m_fMultiplier;
+		m_Blue.m_vPixels[lOffset]	= fBlue * m_fMultiplier;
 
-			bResult = TRUE;
-		};
-
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	SetPixel(LONG i, LONG j, double fGray)
+	virtual void	SetPixel(LONG i, LONG j, double fGray)
 	{
-		BOOL				bResult = FALSE;
 
-		if (IsXYOk(i, j))
-		{
-			size_t			lOffset = GetOffset(i, j);
-			m_Red.m_vPixels[lOffset]	= fGray * m_fMultiplier;
-			m_Green.m_vPixels[lOffset]	= fGray * m_fMultiplier;
-			m_Blue.m_vPixels[lOffset]	= fGray * m_fMultiplier;
+		CheckXY(i, j);		// Throw if not
 
-			bResult = TRUE;
-		};
+		size_t			lOffset = GetOffset(i, j);
+		m_Red.m_vPixels[lOffset]	= fGray * m_fMultiplier;
+		m_Green.m_vPixels[lOffset]	= fGray * m_fMultiplier;
+		m_Blue.m_vPixels[lOffset]	= fGray * m_fMultiplier;
 
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	GetPixel(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
+	virtual void GetPixel(LONG i, LONG j, double & fRed, double & fGreen, double & fBlue)
 	{
-		BOOL			bResult = FALSE;
 		fRed = fGreen = fBlue = 0.0;
 
-		if (IsXYOk(i, j))
-		{
-			size_t	lOffset = GetOffset(i, j);
+		CheckXY(i, j);
 
-			fRed   = m_Red.m_vPixels[lOffset]/m_fMultiplier;
-			fGreen = m_Green.m_vPixels[lOffset]/m_fMultiplier;
-			fBlue  = m_Blue.m_vPixels[lOffset]/m_fMultiplier;
+		size_t	lOffset = GetOffset(i, j);
 
-			bResult = TRUE;
-		}
+		fRed   = m_Red.m_vPixels[lOffset]/m_fMultiplier;
+		fGreen = m_Green.m_vPixels[lOffset]/m_fMultiplier;
+		fBlue  = m_Blue.m_vPixels[lOffset]/m_fMultiplier;
 
-		return bResult;
+		return;
 	};
 
-	virtual BOOL	GetPixel(LONG i, LONG j, double & fGray)
+	virtual void GetPixel(LONG i, LONG j, double & fGray)
 	{
-		BOOL			bResult = FALSE;
 		double			fRed, fGreen, fBlue;
 
 		fGray = 0.0;
 
-		if (GetPixel(i, j , fRed, fGreen, fBlue))
-		{
-			double		H, S, L;
+		GetPixel(i, j, fRed, fGreen, fBlue);
+		double		H, S, L;
 
-			ToHSL(fRed, fGreen, fBlue, H, S, L);
-			fGray = L * 255.0;
-			bResult = TRUE;
-		}
+		ToHSL(fRed, fGreen, fBlue, H, S, L);
+		fGray = L * 255.0;
 
-		return bResult;
+		return;
 	};
 
 	virtual BOOL	GetScanLine(LONG j, void * pScanLine)
@@ -3293,8 +3297,7 @@ public :
 		CMultiBitmap *		pResult;
 
 		pResult = new CColorMultiBitmapT<TType>();
-		if (pResult)
-			pResult->SetBitmapModel(this);
+		pResult->SetBitmapModel(this);
 
 		return pResult;
 	};
@@ -3414,6 +3417,9 @@ public :
 	SYSTEMTIME			m_DateTime;
 	SYSTEMTIME			m_InfoTime;
 	CBitmapExtraInfo	m_ExtraInfo;
+	LONG				m_xBayerOffset;
+	LONG				m_yBayerOffset;
+	CString				m_filterName;
 
 private :
 	void	CopyFrom(const CBitmapInfo & bi)
@@ -3438,6 +3444,9 @@ private :
 		m_DateTime		=bi.m_DateTime		;
 		m_InfoTime		=bi.m_InfoTime		;
 		m_ExtraInfo		=bi.m_ExtraInfo		;
+		m_xBayerOffset  =bi.m_xBayerOffset;
+		m_yBayerOffset	=bi.m_yBayerOffset;
+		m_filterName	=bi.m_filterName;
 	};
 
     void Init()
@@ -3456,6 +3465,8 @@ private :
         m_fAperture = 0.0;
         m_bFITS16bit = FALSE;
         m_DateTime.wYear = 0;
+		m_xBayerOffset = 0;
+		m_yBayerOffset = 0;
     }
 
 public :

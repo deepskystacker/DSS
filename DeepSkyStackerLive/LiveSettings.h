@@ -53,6 +53,8 @@ private :
 	CString				m_strSMTP;
 	CString				m_strAccount;
 	CString				m_strObject;
+	
+	bool				m_bDarkMode;
 
 public :
 	CLiveSettings()
@@ -69,6 +71,7 @@ public :
 		m_dwSaveCount	  = 10;
 		m_dwSkyBackground = 20;
 		m_dwProcessFlags  = LSPF_ALL;
+		m_bDarkMode = true;
 	};
 
 	~CLiveSettings()
@@ -105,6 +108,9 @@ public :
 	BOOL	IsProcess_FITS()	{	return (m_dwProcessFlags & LSPF_FITS) ? TRUE : FALSE; };
 	BOOL	IsProcess_TIFF()	{	return (m_dwProcessFlags & LSPF_TIFF) ? TRUE : FALSE; };
 	BOOL	IsProcess_Others()	{	return (m_dwProcessFlags & LSPF_OTHERS) ? TRUE : FALSE; };
+
+	bool	UseDarkTheme() const { return m_bDarkMode; }
+	void	UseDarkTheme(bool bState) { m_bDarkMode=bState; }
 
 	void	SetDontStack_Score(BOOL bSet)	{ bSet ? (m_dwStackingFlags |= LSSF_SCORE) : (m_dwStackingFlags &=~LSSF_SCORE);};
 	void	SetDontStack_Stars(BOOL bSet)	{ bSet ? (m_dwStackingFlags |= LSSF_STARS) : (m_dwStackingFlags &=~LSSF_STARS);};

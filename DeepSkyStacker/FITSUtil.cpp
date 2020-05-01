@@ -1,9 +1,15 @@
 #include <stdafx.h>
 #include "FITSUtil.h"
 #include <float.h>
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include <memory>
+#include <map>
 #include "Registry.h"
 #include "Workspace.h"
-#include "Utils.h"
+
+#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 
@@ -16,14 +22,19 @@ CFITSHeader::CFITSHeader()
 	m_lISOSpeed     = 0;
 	m_lGain         = -1;
 	m_CFAType		= CFATYPE_NONE;
-	m_bByteSwap		= FALSE;
+	m_Format		= FF_UNKNOWN;
 	m_bSigned		= FALSE;
 	m_DateTime.wYear= 0;
 	g_FITSCritical.Lock();
     m_lWidth = 0;
     m_lHeight = 0;
-    m_lBitsPerPixel = 0;
+	m_lBitsPerPixel = 0;
     m_lNrChannels = 0;
+	m_xBayerOffset = 0;
+	m_yBayerOffset = 0;
+	m_bitPix = 0;
+
+	
 };
 
 /* ------------------------------------------------------------------- */
@@ -31,40 +42,6 @@ CFITSHeader::CFITSHeader()
 CFITSHeader::~CFITSHeader()
 {
 	g_FITSCritical.Unlock();
-};
-
-/* ------------------------------------------------------------------- */
-
-inline void ByteSwap(DWORD & InValue)
-{
-	WORD		wLow, wHigh;
-	/*BYTE		bLowLowByte,
-				bLowHighByte,
-				bHighLowByte,
-				bHighHighByte;*/
-
-
-	wLow = LOWORD(InValue);
-	/*bLowLowByte = LOBYTE(wLow);
-	bLowHighByte = HIBYTE(wLow);
-	wLow = MAKEWORD(bLowHighByte, bLowLowByte);*/
-
-	wHigh = HIWORD(InValue);
-	/*bHighLowByte = LOBYTE(wHigh);
-	bHighHighByte = HIBYTE(wHigh);
-	wHigh = MAKEWORD(bHighHighByte, bHighLowByte);*/
-
-	InValue = MAKELONG(wHigh, wLow);
-	InValue <<=5;
-
-/*	DWORD		OutValue;
-
-	OutValue = ((Value & 0xFF) << 24) |
-			   ((Value & 0xFF00) << 8) |
-			   ((Value & 0xFF0000) >> 8) |
-			   ((Value & 0xFF000000) >> 24);
-
-	Value = OutValue;*/
 };
 
 /* ------------------------------------------------------------------- */
@@ -86,7 +63,7 @@ inline double AdjustColor(double fColor)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsFITSisRaw()
+BOOL	IsFITSRaw()
 {
 	CWorkspace			workspace;
 	DWORD				dwFitsisRaw = 0;
@@ -193,16 +170,6 @@ void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
 
 /* ------------------------------------------------------------------- */
 
-bool	IsFITSForcedUnsigned()
-{
-	bool				bResult = false;
-	CWorkspace			workspace;
-
-	workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), bResult);
-
-	return bResult;
-};
-
 /* ------------------------------------------------------------------- */
 
 BOOL CFITSReader::ReadKey(LPSTR szKey, double & fValue, CString & strComment)
@@ -303,14 +270,14 @@ void CFITSReader::ReadAllKeys()
 			{
 				bool		bPropagate = false;
 				CString		strKeyName;
-				strKeyName.Format(_T("[%s]"), (LPCTSTR)CharToCString(szKeyName));
+				strKeyName.Format(_T("[%s]"), (LPCTSTR)CA2CT(szKeyName));
 
 				if (strPropagated.Find(strKeyName) != -1)
 					bPropagate = true;
 				m_ExtraInfo.AddInfo(
-					(LPCTSTR)CharToCString(szKeyName),
-					(LPCTSTR)CharToCString(szValue),
-					(LPCTSTR)CharToCString(szComment), bPropagate);
+					(LPCTSTR)CA2CT(szKeyName),
+					(LPCTSTR)CA2CT(szValue),
+					(LPCTSTR)CA2CT(szComment), bPropagate);
 			};
 		};
 	};
@@ -322,25 +289,46 @@ BOOL CFITSReader::Open()
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
-	int					nStatus = 0;
+	int					status = 0;
+	char error_text[31] = "";			// Error text for FITS errors.
 
-	Close();
-	fits_open_diskfile(&m_fits, CStringToChar(m_strFileName), READONLY, &nStatus);
-	if (!nStatus && m_fits)
+	fits_open_diskfile(&m_fits, CT2CA(m_strFileName, CP_UTF8), READONLY, &status);
+	if (0 != status)
 	{
+		fits_get_errstatus(status, error_text);
+		CStringA errMsg;
+		errMsg.Format(
+			"fits_open_diskfile returned a status of %d, error text is \"%s\"",
+			status,
+			error_text);
+
+		ZException exc(errMsg, status, ZException::unrecoverable);
+		exc.addLocation(ZEXCEPTION_LOCATION());
+		exc.logExceptionData();
+		throw exc;
+	}
+
+
+	if (m_fits)
+	{
+		CStringA fileName(m_strFileName);
+		ZTRACE_RUNTIME("Opened %s", fileName);
+
 		// File ok - move to the first image HDU
 		CString			strSimple;
 		LONG			lNrAxis = 0;
 		LONG			lWidth  = 0,
 						lHeight = 0,
 						lNrChannels = 0;
-		LONG			lBitFormat = 0;
 		double			fExposureTime = 0;
 		CString			strMake;
 		CString			strISOSpeed;
+		CString			CFAPattern("");
+		CString			filterName("");
 		LONG			lISOSpeed = 0;
 		LONG			lGain = -1;
-		LONG			cfaType;
+		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
+
 		m_bDSI = FALSE;
 
 		bResult = ReadKey("SIMPLE", strSimple);
@@ -351,6 +339,10 @@ BOOL CFITSReader::Open()
 			ReadAllKeys();
 
 			bResult = ReadKey("INSTRUME", strMake);
+
+			//
+			// Attempt to get the exposure time
+			//
 			bResult = ReadKey("EXPTIME", fExposureTime, strComment);
 			if (!bResult)
 				bResult = ReadKey("EXPOSURE", fExposureTime, strComment);
@@ -364,6 +356,14 @@ BOOL CFITSReader::Open()
 					fExposureTime /= 1000.0;
 				};
 			};
+			// 
+			// Just to be awkward, some software (e.g. ZWO ASICAP) supplies the exposure
+			// time in microseconds!
+			//
+			if (ReadKey("EXPOINUS", fExposureTime))
+			{
+				fExposureTime /= 1000000.0;
+			}
 
 			bResult = ReadKey("ISOSPEED", strISOSpeed);
 			if (bResult)
@@ -378,30 +378,132 @@ BOOL CFITSReader::Open()
 
 			bResult = ReadKey("GAIN", lGain);
 
+			ReadKey("FILTER", filterName);
+
 			bResult = ReadKey("NAXIS1", lWidth);
 			bResult = ReadKey("NAXIS2", lHeight);
 			if (lNrAxis>=3)
 				bResult = ReadKey("NAXIS3", lNrChannels);
 			else
 				lNrChannels = 1;
-			bResult = ReadKey("BITPIX", lBitFormat);
+			bResult = ReadKey("BITPIX", m_bitPix);
 
-			CString				strByteSwap;
-			if (ReadKey("BYTESWAP", strByteSwap))
-				m_bByteSwap = TRUE;
-
-			CString			strMosaic;
-
-			if (ReadKey("DSSCFATYPE", cfaType))
-				m_CFAType = (CFATYPE)cfaType;
-			else if (ReadKey("MOSAIC", strMosaic) && (strMake.Left(3) == _T("DSI")))
+			//
+			// One time action to create a mapping between the character name of the CFA
+			// pattern and our internal CFA type 
+			// 
+			static std::map<CString, CFATYPE> bayerMap;
+			if (bayerMap.empty())
 			{
+				bayerMap.emplace("BGGR", CFATYPE_BGGR);
+				bayerMap.emplace("GRBG", CFATYPE_GRBG);
+				bayerMap.emplace("GBRG", CFATYPE_GBRG);
+				bayerMap.emplace("RGGB", CFATYPE_RGGB);
+
+				bayerMap.emplace("CGMY", CFATYPE_CGMY);
+				bayerMap.emplace("CGYM", CFATYPE_CGYM);
+				bayerMap.emplace("CMGY", CFATYPE_CMGY);
+				bayerMap.emplace("CMYG", CFATYPE_CMYG);
+				bayerMap.emplace("CYMG", CFATYPE_CYMG);
+				bayerMap.emplace("CYGM", CFATYPE_CYGM);
+
+				bayerMap.emplace("GCMY", CFATYPE_GCMY);
+				bayerMap.emplace("GCYM", CFATYPE_GCYM);
+				bayerMap.emplace("GMCY", CFATYPE_GMCY);
+				bayerMap.emplace("GMYC", CFATYPE_GMYC);
+				bayerMap.emplace("GYCM", CFATYPE_GYCM);
+				bayerMap.emplace("GYMC", CFATYPE_GYMC);
+
+				bayerMap.emplace("MCGY", CFATYPE_MCGY);
+				bayerMap.emplace("MCYG", CFATYPE_MCYG);
+				bayerMap.emplace("MGYC", CFATYPE_MGYC);
+				bayerMap.emplace("MGCY", CFATYPE_MGCY);
+				bayerMap.emplace("MYGC", CFATYPE_MYGC);
+				bayerMap.emplace("MYCG", CFATYPE_MYCG);
+
+				bayerMap.emplace("YCGM", CFATYPE_YCGM);
+				bayerMap.emplace("YCMG", CFATYPE_YCMG);
+				bayerMap.emplace("YGMC", CFATYPE_YGMC);
+				bayerMap.emplace("YGCM", CFATYPE_YGCM);
+				bayerMap.emplace("YMCG", CFATYPE_YMCG);
+				bayerMap.emplace("YMGC", CFATYPE_YMGC);
+
+				bayerMap.emplace("CYGMCYMG", CFATYPE_CYGMCYMG);
+				bayerMap.emplace("GMCYMGCY", CFATYPE_GMCYMGCY);
+				bayerMap.emplace("CYMGCYGM", CFATYPE_CYMGCYGM);
+				bayerMap.emplace("MGCYGMCY", CFATYPE_MGCYGMCY);
+				bayerMap.emplace("GMYCGMCY", CFATYPE_GMYCGMCY);
+				bayerMap.emplace("YCGMCYGM", CFATYPE_YCGMCYGM);
+				bayerMap.emplace("GMCYGMYC", CFATYPE_GMCYGMYC);
+				bayerMap.emplace("CYGMYCGM", CFATYPE_CYGMYCGM);
+				bayerMap.emplace("YCGMYCMG", CFATYPE_YCGMYCMG);
+				bayerMap.emplace("GMYCMGYC", CFATYPE_GMYCMGYC);
+				bayerMap.emplace("YCMGYCGM", CFATYPE_YCMGYCGM);
+				bayerMap.emplace("MGYCGMYC", CFATYPE_MGYCGMYC);
+				bayerMap.emplace("MGYCMGCY", CFATYPE_MGYCMGCY);
+				bayerMap.emplace("YCMGCYMG", CFATYPE_YCMGCYMG);
+				bayerMap.emplace("MGCYMGYC", CFATYPE_MGCYMGYC);
+				bayerMap.emplace("CYMGYCMG", CFATYPE_CYMGYCMG);
+			}
+
+			//
+			// Attempt to determine the correct CFA (aka Bayer matrix) from keywords in the FITS header.
+			// 
+			// Some Meade DSI cameras used the keyword MOSAIC with a value of "CMYG", when in fact the actual
+			// matrix used was CYGMCYMG. so that is special cased.
+			// 
+			if (ReadKey("MOSAIC", CFAPattern) && (strMake.Left(3) == _T("DSI")))
+			{
+				ZTRACE_RUNTIME("CFA Pattern read from FITS keyword MOSAIC is %s", (LPCSTR)CT2CA(CFAPattern, CP_UTF8));
+
 				m_bDSI = TRUE;
 				// Special case of DSI FITS files
-				strMosaic.Trim();
-				//if (strMosaic == "CMYG")
-				//	m_CFAType = CFATYPE_CYGMCYMG;
-			};
+				CFAPattern.Trim();
+				if (CFAPattern == _T("CMYG"))
+					m_CFAType = CFATYPE_CYGMCYMG;
+			} 
+			//
+			// For everything else we attempt to use the BAYERPAT or COLORTYP keywords to establish
+			// the correct CFA (Bayer) pattern.
+			//
+			else
+			{
+				//
+				// If BAYERPAT keyword not found try to read COLORTYP, but only if BAYERPAT isn't found
+				// as BAYERPAT has precedence.
+				//
+				if (ReadKey("BAYERPAT", CFAPattern) || ReadKey("COLORTYP", CFAPattern))
+				{
+					ZTRACE_RUNTIME("CFA Pattern read from FITS keyword BAYERPAT or COLORTYP is %s", (LPCSTR)CT2CA(CFAPattern,CP_UTF8));
+				}
+
+				CFAPattern.Trim();
+
+				if (CFAPattern != _T(""))
+				{
+					auto it = bayerMap.find(CFAPattern);
+					if (bayerMap.end() != it) m_CFAType = it->second;
+				}
+			}
+
+			//
+			// Now extract the "Bayer" matrix offset values:
+			// XBAYROFF (BAYOFFX) and 
+			// YBAYROFF (BAYOFFY) values 
+			//
+			// The non-bracketed keywords have precedence if both are present
+			// Both are zero unless set ...
+			//
+			if (ReadKey("XBAYROFF", xBayerOffset) || ReadKey("BAYOFFX", xBayerOffset))
+			{
+				ZTRACE_RUNTIME("CFA pattern X offset read from keyword XBAYROFF or BAYOFFX is %lf", xBayerOffset);
+			}
+			if (ReadKey("YBAYROFF", yBayerOffset) || ReadKey("BAYOFFY", yBayerOffset))
+			{
+				ZTRACE_RUNTIME("CFA pattern Y offset read from keyword YBAYROFF or BAYOFFY is %lf", yBayerOffset);
+			}
+			m_xBayerOffset = std::lround(xBayerOffset);
+			m_yBayerOffset = std::lround(yBayerOffset);
 
 			CString			strDateTime;
 
@@ -444,6 +546,20 @@ BOOL CFITSReader::Open()
 				};
 			};
 
+			//
+			// Before setting everything up for reading the data, there's a couple of special cases
+			// where we need to treat a signed data file as if it were unsigned.
+			//
+			//double		fZero,	fScale;
+
+			//if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
+			//{
+			//	if ((SHORT_IMG == lBitFormat) && (32768.0 == fZero) && (1.0 == fScale))
+			//		lBitFormat = USHORT_IMG;
+			//	if ((LONG_IMG == lBitFormat) && (2147483648.0 == fZero) && (1.0 == fScale))
+			//		lBitFormat = ULONG_IMG;
+			//}
+
 			if (bResult)
 			{
 				m_lWidth	= lWidth;
@@ -454,7 +570,7 @@ BOOL CFITSReader::Open()
 				m_lISOSpeed = lISOSpeed;
 				m_lGain     = lGain;
 				m_bSigned = FALSE;
-				switch (lBitFormat)
+				switch (m_bitPix)
 				{
 				case BYTE_IMG :
 					m_lBitsPerPixel = 8;
@@ -480,11 +596,16 @@ BOOL CFITSReader::Open()
 					m_lBitsPerPixel = 64;
 					m_bFloat = TRUE;
 					break;
+				case LONGLONG_IMG :
+					m_lBitsPerPixel = 64;
+					m_bFloat = FALSE;
+					break;
 				default :
 					// Format not recognized
 					bResult = FALSE;
 					break;
 				};
+				m_filterName = filterName;
 			};
 		}
 		else
@@ -496,7 +617,7 @@ BOOL CFITSReader::Open()
 		{
 			if (m_fits)
 			{
-				fits_close_file(m_fits, &nStatus);
+				fits_close_file(m_fits, &status);
 				m_fits = nullptr;
 			};
 		};
@@ -510,334 +631,195 @@ BOOL CFITSReader::Open()
 BOOL CFITSReader::Read()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	BOOL			bResult = true;
+	char error_text[31] = "";			// Error text for FITS errors.
+	
+	int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
 
-	if (m_fits)
+	double		fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
+
+	if (m_lNrChannels > 3)
+		ZTRACE_RUNTIME("Number of colour channels is %d, only 3 will be used.", m_lNrChannels);
+
+	if (m_fits) do
 	{
-		LONG			lScanLineSize;
-		VOID *			pScanLine = nullptr;
-		VOID *			pScanLineRed = nullptr;
-		VOID *			pScanLineGreen = nullptr;
-		VOID *			pScanLineBlue = nullptr;
-
-		BYTE	cNULL = 0;
-		WORD	wNULL = 0;
-		DWORD	dwNULL = 0;
-		float	fNULL = 0;
-		void *	pNULL;
-
-		if (m_lBitsPerPixel == 8)
-			pNULL = &cNULL;
-		else if (m_lBitsPerPixel == 16)
-			pNULL = &wNULL;
-		else if ((m_lBitsPerPixel == 32) && !m_bFloat)
-			pNULL = &dwNULL;
-		else
-			pNULL = &fNULL;
+		double	dNULL = 0;
 
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, m_lHeight);
 
-		lScanLineSize = m_lWidth * m_lBitsPerPixel/8;
-		if (m_lNrChannels == 1)
+		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
+
+		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
+
+		LONGLONG nElements = m_lWidth * m_lHeight * colours;
+
+		auto buff = std::make_unique<double []>(nElements);
+
+		double * doubleBuff = (double *)buff.get();
+
+		int status = 0;			// used for result of fits_read_pixll call
+
+		//
+		// Inhale the entire image (either single colour or RGB) as an array of doubles
+		//
+		fits_read_pixll(m_fits, TDOUBLE, fPixel, nElements, &dNULL, doubleBuff, nullptr, &status);
+		if (0 != status)
 		{
-			pScanLine = (VOID *)malloc(lScanLineSize);
+			fits_get_errstatus(status, error_text);
+			CStringA errMsg;
+			errMsg.Format(
+				"fits_read_pixll returned a status of %d, error text is \"%s\"",
+				status,
+				error_text);
+
+			ZException exc(errMsg, status, ZException::unrecoverable);
+			exc.addLocation(ZEXCEPTION_LOCATION());
+			exc.logExceptionData();
+			throw exc;
+		}
+
+		//
+		// Step 1: If the image is in float format, need to extract the minimum and maximum pixel values.
+		//
+		if (m_bFloat)
+		{
+			double localMin = 0, localMax = 0;
+#if defined(_OPENMP)
+#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax)
+			{
+#pragma omp for
+#endif
+				for (LONGLONG element = 0; element < nElements; ++element)
+				{
+					double	fValue = 0.0;
+					
+					fValue = doubleBuff[element];	// Long (8 byte) floating point
+
+					if (!_isnan(fValue))
+					{
+						localMin = min(localMin, fValue);
+						localMax = max(localMax, fValue);
+					};
+				}
+#if defined(_OPENMP)
+#pragma omp critical
+#endif
+				{
+					fMin = localMin < fMin ? localMin : fMin; // For non-OMP case this is equal to fMin = localMin
+					fMax = localMax > fMax ? localMax : fMax; // For non-OMP case this is equal to fMax = localMax
+				}
+#if defined(_OPENMP)
+			}
+#endif
+			double		fZero,
+				fScale;
+
+			if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
+			{
+				fMax = (fMax + fZero) / fScale;
+				fMin = fZero / fScale;
+			}
+			else if (fMin >= 0 && fMin <= 1 && fMax >= 0 && fMax <= 1)
+			{
+				fMin = 0;
+				fMax = 1;
+			}
+			if (m_bDSI && (fMax > 1))
+			{
+				fMin = min(0.0, fMin);
+				fMax = max(fMax, 65535.0);
+			};
+
 		}
 		else
 		{
-			pScanLineRed   = (VOID *)malloc(lScanLineSize);
-			pScanLineGreen = (VOID *)malloc(lScanLineSize);
-			pScanLineBlue  = (VOID *)malloc(lScanLineSize);
+			if (!ReadKey("BZERO", fMin))
+				fMin = 0;
 		};
-		if (pScanLine || (pScanLineRed && pScanLineGreen && pScanLineBlue))
+
+		//
+		// Step 2: Process the image pixels
+		//
+		ptrdiff_t greenOffset = m_lWidth * m_lHeight;		// index into buffer of the green image
+		ptrdiff_t blueOffset = 2 * greenOffset;				// index into buffer of the blue image
+
+		long	rowProgress = 0;
+
+#if defined(_OPENMP)
+#pragma omp parallel for default(none)
+#endif
+		for (long row = 0; row < m_lHeight; ++row)
 		{
-			bResult = TRUE;
-			LONG		i, j, k;
-			int			datatype;
-			double		fMin, fMax;
-			int			nStatus = 0;
-
-			switch (m_lBitsPerPixel)
+			for (long col = 0; col < m_lWidth; ++col)
 			{
-			case 8 :
-				datatype = TBYTE;
-				break;
-			case 16 :
-				datatype = TUSHORT;
-				if (m_bSigned && IsFITSForcedUnsigned())
-					datatype = TSHORT;
-				break;
-			case 32 :
-				if (m_bFloat)
-					datatype = TFLOAT;
-				else if (m_bByteSwap/* || m_bSigned*/)
-					datatype = TLONG;
+				double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
+
+				long index = col + (row * m_lWidth);	// index into the image for this plane
+
+				if (1 == colours)
+				{
+					//
+					// This is a monochrome image 
+					//
+					fRed = fGreen = fBlue = doubleBuff[index];
+				}
 				else
-					datatype = TULONG;
-				break;
-			case 64 :
-				datatype = TFLOAT;
-				break;
-			};
-
-			// Step 1 - read min and max values
-			if (m_bFloat)
-			{
-				BOOL			bFirst = TRUE;
-				float *			pBuffer;
-
-				pBuffer = (float*)malloc(sizeof(float)*m_lWidth*m_lNrChannels);
-
-				for (j = 0;j<m_lHeight;j++)
 				{
-					LONG	pfPixel[3];
-					float *	pValue = pBuffer;
-
-					pfPixel[0] = 1;
-					pfPixel[1] = j+1;
-					pfPixel[2] = 1;
-
-					nStatus = 0;
-					fits_read_pix(m_fits, TFLOAT, pfPixel, m_lWidth * m_lNrChannels, &fNULL, pBuffer, nullptr, &nStatus);
-
-					if (!nStatus)
-					{
-						for (i = 0;i<m_lWidth;i++)
-						{
-							for (k = 0;k<m_lNrChannels;k++)
-							{
-								float	fValue = *pValue;
-
-								if (!_isnan(fValue))
-								{
-									if (bFirst)
-									{
-										fMin = fMax = fValue;
-										bFirst = FALSE;
-									}
-									else
-									{
-										fMin = min(fMin, static_cast<double>(fValue));
-										fMax = max(fMax, static_cast<double>(fValue));
-									};
-								};
-								pValue++;
-							};
-						};
-					};
-				};
-				free(pBuffer);
-
-				double		fZero,
-							fScale;
-
-				if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
-				{
-					fMax = (fMax + fZero) / fScale;
-					fMin = fZero / fScale;
+					//
+					// We assume this is a 3 colour image with each colour in a separate image plane
+					//
+					fRed = doubleBuff[index];
+					fGreen = doubleBuff[greenOffset + index];
+					fBlue = doubleBuff[blueOffset + index];
 				}
-				else if (fMin >=0 && fMin <= 1 && fMax>=0 && fMax <= 1)
+
+				switch (m_bitPix)
 				{
-					fMin = 0;
-					fMax = 1;
+				case BYTE_IMG:
+					break;
+				case SHORT_IMG:
+				case USHORT_IMG:
+					fRed /= 256.0;
+					fGreen /= 256.0;
+					fBlue /= 256.0;
+					break;
+				case LONG_IMG:
+				case ULONG_IMG:
+					fRed = fRed / 256.0 / 65536.0;
+					fGreen = fGreen / 256.0 / 65536.0;
+					fBlue = fBlue / 256.0 / 65536.0;
+					break;
+				case LONGLONG_IMG:
+					fRed = fRed / 256.0 / 65536.0;
+					fGreen = fGreen / 256.0 / 65536.0;
+					fBlue = fBlue / 256.0 / 65536.0;
+					break;
+				case FLOAT_IMG:
+				case DOUBLE_IMG:
+					fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
+					fGreen = (fGreen - fMin) / (fMax - fMin) * 256.0;
+					fBlue = (fBlue - fMin) / (fMax - fMin) * 256.0;
+					break;
 				}
-				if (m_bDSI && (fMax>1))
-				{
-					fMin = min(0.0, fMin);
-					fMax = max(fMax, 65535.0);
-				};
+
+				OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
+
 			}
-			else
+
+#if defined (_OPENMP)
+			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
-				if (!ReadKey("BZERO", fMin))
-					fMin = 0;
-			};
-
-			// Step 2 - read the values
-			for (j = 0;j<m_lHeight && bResult;j++)
-			{
-				LONG	pfPixel[3];
-
-				if (m_lNrChannels == 1)
-				{
-					BYTE *  pBYTELine				= (BYTE *)pScanLine;
-					WORD *	pWORDLine				= (WORD *)pScanLine;
-					signed short int * pSHORTLine	= (signed short int*)pScanLine;
-					DWORD * pDWORDLine				= (DWORD *)pScanLine;
-					LONG *	pLONGLine				= (LONG *)pScanLine;
-					float *	pFLOATLine				= (float *)pScanLine;
-
-					pfPixel[0] = 1;
-					pfPixel[1] = j+1;
-					pfPixel[2] = 1;
-
-					nStatus = 0;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLine, nullptr, &nStatus);
-
-					for (i = 0;i<m_lWidth && bResult && !nStatus;i++)
-					{
-                        double fRed = 0;
-                        double fGreen = 0;
-                        double fBlue = 0;
-
-						if (m_lBitsPerPixel == 8)
-						{
-							fRed	= *(pBYTELine);
-							fGreen	= *(pBYTELine);
-							fBlue	= *(pBYTELine);
-							pBYTELine ++;
-						}
-						else if (m_lBitsPerPixel == 16)
-						{
-							if (true)//!m_bSigned)
-							{
-								fRed	= ((double)(*(pWORDLine)))/256.0;
-								fGreen	= ((double)(*(pWORDLine)))/256.0;
-								fBlue	= ((double)(*(pWORDLine)))/256.0;
-								pWORDLine ++;
-							}
-							else
-							{
-								fRed	= ((double)(*(pSHORTLine)))/256.0;
-								fGreen	= ((double)(*(pSHORTLine)))/256.0;
-								fBlue	= ((double)(*(pSHORTLine)))/256.0;
-								pSHORTLine ++;
-							};
-						}
-						else if (m_lBitsPerPixel == 32)
-						{
-							if (m_bFloat)
-							{
-								fRed	= (double)(*(pFLOATLine));
-								fGreen	= (double)(*(pFLOATLine));
-								fBlue	= (double)(*(pFLOATLine));
-
-								fRed   = (fRed - fMin)/(fMax-fMin)  * 256.0;
-								fGreen = (fGreen - fMin)/(fMax-fMin)* 256.0;
-								fBlue  = (fBlue - fMin)/(fMax-fMin) * 256.0;
-
-								pFLOATLine ++;
-								pWORDLine+=2;
-							}
-							else
-							{
-								if (m_bByteSwap)
-								{
-									LPLONG			lpValue = (LPLONG)pDWORDLine;
-									LONG			lValue;
-
-									ByteSwap(*(pDWORDLine));
-
-									lValue = *lpValue;
-									(*(pDWORDLine)) = lValue;
-								};
-								fRed = fGreen = fBlue = ((double)(*(pDWORDLine)))/256.0/65536.0;
-								pDWORDLine ++;
-							};
-						};
-
-						bResult = OnRead(i, j, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
-
-					};
-					if (m_pProgress)
-						m_pProgress->Progress2(nullptr, j+1);
-				}
-				else
-				{
-					BYTE *  pBYTELineRed	= (BYTE *)pScanLineRed;
-					WORD *	pWORDLineRed	= (WORD *)pScanLineRed;
-					DWORD * pDWORDLineRed	= (DWORD *)pScanLineRed;
-					float *	pFLOATLineRed	= (float *)pScanLineRed;
-					BYTE *  pBYTELineGreen	= (BYTE *)pScanLineGreen;
-					WORD *	pWORDLineGreen	= (WORD *)pScanLineGreen;
-					DWORD * pDWORDLineGreen	= (DWORD *)pScanLineGreen;
-					float *	pFLOATLineGreen	= (float *)pScanLineGreen;
-					BYTE *  pBYTELineBlue	= (BYTE *)pScanLineBlue;
-					WORD *	pWORDLineBlue	= (WORD *)pScanLineBlue;
-					DWORD * pDWORDLineBlue	= (DWORD *)pScanLineBlue;
-					float *	pFLOATLineBlue	= (float *)pScanLineBlue;
-
-					pfPixel[0] = 1;
-					pfPixel[1] = j+1;
-					pfPixel[2] = 1;
-					nStatus = 0;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineRed, nullptr, &nStatus);
-					pfPixel[2] = 2;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineGreen, nullptr, &nStatus);
-					pfPixel[2] = 3;
-					fits_read_pix(m_fits, datatype, pfPixel, m_lWidth, pNULL, pScanLineBlue, nullptr, &nStatus);
-
-					for (i = 0;i<m_lWidth && bResult && !nStatus;i++)
-					{
-                        double fRed = 0;
-                        double fGreen = 0;
-                        double fBlue = 0;
-
-						if (m_lBitsPerPixel == 8)
-						{
-							fRed	= *(pBYTELineRed);
-							fGreen	= *(pBYTELineGreen);
-							fBlue	= *(pBYTELineBlue);
-							pBYTELineRed ++;
-							pBYTELineGreen ++;
-							pBYTELineBlue ++;
-						}
-						else if (m_lBitsPerPixel == 16)
-						{
-							fRed	= ((double)(*(pWORDLineRed)))/256.0;
-							fGreen	= ((double)(*(pWORDLineGreen)))/256.0;
-							fBlue	= ((double)(*(pWORDLineBlue)))/256.0;
-							pWORDLineRed ++;
-							pWORDLineGreen ++;
-							pWORDLineBlue ++;
-						}
-						else if (m_lBitsPerPixel == 32)
-						{
-							if (m_bFloat)
-							{
-								fRed	= (double)(*(pFLOATLineRed));
-								fGreen	= (double)(*(pFLOATLineGreen));
-								fBlue	= (double)(*(pFLOATLineBlue));
-
-								fRed   = (fRed - fMin)/(fMax-fMin) * 256.0;
-								fGreen = (fGreen - fMin)/(fMax-fMin) * 256.0;
-								fBlue  = (fBlue - fMin)/(fMax-fMin) * 256.0;
-
-								pFLOATLineRed ++;
-								pFLOATLineGreen ++;
-								pFLOATLineBlue ++;
-							}
-							else
-							{
-								fRed	= ((double)(*(pDWORDLineRed)))/256.0/65536.0;
-								fGreen	= ((double)(*(pDWORDLineGreen)))/256.0/65536.0;
-								fBlue	= ((double)(*(pDWORDLineBlue)))/256.0/65536.0;
-								pDWORDLineRed ++;
-								pDWORDLineGreen ++;
-								pDWORDLineBlue ++;
-							};
-						};
-
-						bResult = OnRead(i, j, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
-
-					};
-					if (m_pProgress)
-						m_pProgress->Progress2(nullptr, j+1);
-				};
-			};
-
-			if (pScanLine)
-				free(pScanLine);
-			if (pScanLineRed)
-				free(pScanLineRed);
-			if (pScanLineGreen)
-				free(pScanLineGreen);
-			if (pScanLineBlue)
-				free(pScanLineBlue);
+				rowProgress += omp_get_num_threads();
+				m_pProgress->Progress2(nullptr, rowProgress);
+			}
+#else
 			if (m_pProgress)
-				m_pProgress->End2();
+				m_pProgress->Progress2(nullptr, ++rowProgress);
+#endif
 		}
-	};
+
+	} while (false);
 
 	return bResult;
 };
@@ -880,7 +862,9 @@ public :
 		m_ppBitmap = ppBitmap;
 	};
 
-	virtual ~CFITSReadInMemoryBitmap() {};
+	virtual ~CFITSReadInMemoryBitmap() { Close(); };
+
+	virtual BOOL Close() { return OnClose(); };
 
 	virtual BOOL	OnOpen();
 	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
@@ -906,7 +890,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap.Attach(new C16BitGrayBitmap());
 			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", m_pBitmap.m_p);
 		}
-		else if (m_lBitsPerPixel == 32)
+		else if (m_lBitsPerPixel == 32 || m_lBitsPerPixel == 64)
 		{
 			if (m_bFloat)
 			{
@@ -932,7 +916,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap.Attach(new C48BitColorBitmap());
 			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", m_pBitmap.m_p);
 		}
-		else if (m_lBitsPerPixel == 32)
+		else if (m_lBitsPerPixel == 32 || m_lBitsPerPixel == 64)
 		{
 			if (m_bFloat)
 			{
@@ -954,10 +938,50 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 		if ((m_CFAType != CFATYPE_NONE) && (m_lNrChannels != 1))// || (m_lBitsPerPixel != 16)))
 			m_CFAType = CFATYPE_NONE;
 
-		if (IsFITSisRaw() &&
-			(m_lNrChannels == 1) &&
+		//
+		// If the user has explicitly set that this FITS file is a Bayer format RAW file,
+		// then the user will also have explicitly set the Bayer pattern that's to be used.
+		// In this case we use that and set the Bayer offsets (if any) to zero
+		//
+		bool isRaw = IsFITSRaw();
+		
+		if ((m_lNrChannels == 1) &&
 			((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
-			m_CFAType = GetFITSCFATYPE();
+		{
+			if (isRaw)
+			{
+				m_CFAType = GetFITSCFATYPE();
+					m_xBayerOffset = 0;
+					m_yBayerOffset = 0;
+			}
+			//
+			// If user hasn't said it's a FITS format RAW, then use the CFA we've already
+			// retrieved from the FITS header if set.
+			//				
+		}
+		else
+		{
+			// 
+			// Set CFA type to none even if the FITS header specified a value
+			//
+			m_CFAType = CFATYPE_NONE;
+
+			static bool eightBitWarningIssued = false;
+			if (!eightBitWarningIssued &&
+				(m_lNrChannels == 1) &&
+				(m_lBitsPerPixel == 8))
+			{
+				CString errorMessage;
+				errorMessage.Format(IDS_8BIT_FITS_NODEBAYER);
+#if defined(_CONSOLE)
+				std::cerr << errorMessage;
+#else
+				AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+#endif
+				// Remember we already said we won't do that!
+				eightBitWarningIssued = true;
+			}
+		}
 
 		if (m_CFAType != CFATYPE_NONE)
 		{
@@ -968,11 +992,16 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			{
 				m_pBitmap->SetCFA(TRUE);
 				pCFABitmapInfo->SetCFAType(m_CFAType);
+				//
+				// Set the CFA/Bayer offset information into the CFABitmapInfo
+				//
+				pCFABitmapInfo->setXoffset(m_xBayerOffset);
+				pCFABitmapInfo->setYoffset(m_yBayerOffset);
 				if (::IsCYMGType(m_CFAType))
 					pCFABitmapInfo->UseBilinear(TRUE);
 				else if (IsFITSRawBayer())
 					pCFABitmapInfo->UseRawBayer(TRUE);
-				else if (IsFITSSuperPixels())
+				else if (IsSuperPixels())			// Was IsFITSSuperPixels()
 					pCFABitmapInfo->UseSuperPixels(TRUE);
 				else if (IsFITSBilinear())
 					pCFABitmapInfo->UseBilinear(TRUE);
@@ -993,6 +1022,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_pBitmap->SetISOSpeed(m_lISOSpeed);
 		if (m_lGain >= 0)
 			m_pBitmap->SetGain(m_lGain);
+		m_pBitmap->setFilterName(m_filterName);
 		m_pBitmap->m_DateTime = m_DateTime;
 
 		CString			strDescription;
@@ -1011,46 +1041,75 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 
 BOOL CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
 {
-	BOOL			bResult = FALSE;
-
-	if (m_pBitmap)
+	//
+	// Define maximal scaled pixel value of 255 (will be multiplied up later)
+	//
+	double maxValue = 255.;
+	
+	try
 	{
-		if (m_lNrChannels == 1)
+		if (m_pBitmap)
 		{
-			if (m_CFAType != CFAT_NONE)
+			if (m_lNrChannels == 1)
 			{
-				switch (::GetBayerColor(lX, lY, m_CFAType))
+				if (m_CFAType != CFATYPE_NONE)
 				{
-				case BAYER_BLUE :
-					fRed *= m_fBlueRatio;
-					break;
-				case BAYER_GREEN :
-					fRed *= m_fGreenRatio;
-					break;
-				case BAYER_RED :
-					fRed *= m_fRedRatio;
-					break;
+					switch (::GetBayerColor(lX, lY, m_CFAType, m_xBayerOffset, m_yBayerOffset))
+					{
+					case BAYER_BLUE:
+						fRed = min(maxValue, fRed * m_fBlueRatio);
+						break;
+					case BAYER_GREEN:
+						fRed = min(maxValue, fRed * m_fGreenRatio);
+						break;
+					case BAYER_RED:
+						fRed = min(maxValue, fRed * m_fRedRatio);
+						break;
+					};
+				}
+				else
+				{
+					fRed = min(maxValue, fRed * m_fBrightnessRatio);
+					fGreen = min(maxValue, fGreen * m_fBrightnessRatio);
+					fBlue = min(maxValue, fBlue * m_fBrightnessRatio);
 				};
+				m_pBitmap->SetPixel(lX, lY, fRed);
 			}
 			else
-			{
-				fRed	*= m_fBrightnessRatio;
-				fGreen	*= m_fBrightnessRatio;
-				fBlue	*= m_fBrightnessRatio;
-			};
-			bResult = m_pBitmap->SetPixel(lX, lY, fRed);
-		}
-		else
-			bResult = m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
-	};
+				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
+		};
+	}
+	catch (ZException e)
+	{
+		CString errorMessage;
+		CString name(CA2CT(e.name()));
+		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(e.text(0)));
 
-	return bResult;
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			e.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+
+	}
+	return TRUE;
 };
 
 /* ------------------------------------------------------------------- */
 
 BOOL CFITSReadInMemoryBitmap::OnClose()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
 	if (m_pBitmap)
@@ -1067,6 +1126,7 @@ BOOL CFITSReadInMemoryBitmap::OnClose()
 
 BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	CFITSReadInMemoryBitmap	fits(szFileName, ppBitmap, pProgress);
 
@@ -1075,8 +1135,7 @@ BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 		bResult = fits.Open();
 		if (bResult)
 			bResult = fits.Read();
-		if (bResult)
-			bResult = fits.Close();
+		// if (bResult) bResult = fits.Close();
 	};
 
 	return bResult;
@@ -1086,6 +1145,7 @@ BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 
 BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 	BOOL					bContinue = TRUE;
 	CFITSReader				fits(szFileName, nullptr);
@@ -1107,9 +1167,9 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	}
 	if (bContinue && fits.Open())
 	{
-		if (fits.m_strMake.GetLength())
+		if (fits.m_strMake.GetLength()) 
 			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), (LPCTSTR)fits.m_strMake);
-		else
+		else 
 			BitmapInfo.m_strFileType	= _T("FITS");
 		BitmapInfo.m_strFileName	= szFileName;
 		BitmapInfo.m_lWidth			= fits.Width();
@@ -1120,14 +1180,17 @@ BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_CFAType		= fits.GetCFAType();
 		BitmapInfo.m_bMaster		= fits.IsMaster();
 		BitmapInfo.m_lISOSpeed		= fits.GetISOSpeed();
-		BitmapInfo.m_lGain		= fits.GetGain();
+		BitmapInfo.m_lGain			= fits.GetGain();
 		BitmapInfo.m_bCanLoad		= TRUE;
 		BitmapInfo.m_fExposure		= fits.GetExposureTime();
 		BitmapInfo.m_bFITS16bit	    = (fits.NrChannels() == 1) &&
 									  ((fits.BitPerChannels() == 16) || (fits.BitPerChannels() == 32));
 		BitmapInfo.m_DateTime		= fits.GetDateTime();
 		BitmapInfo.m_ExtraInfo		= fits.m_ExtraInfo;
-		bResult = fits.Close();
+		BitmapInfo.m_xBayerOffset	= fits.getXOffset();
+		BitmapInfo.m_yBayerOffset	= fits.getYOffset();
+		BitmapInfo.m_filterName		= fits.m_filterName;
+		bResult = true;
 	};
 
 	return bResult;
@@ -1247,6 +1310,7 @@ void	CFITSWriter::WriteAllKeys()
 
 void CFITSWriter::SetFormat(LONG lWidth, LONG lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType)
 {
+	ZFUNCTRACE_RUNTIME();
 	m_CFAType	= CFAType;
 
 	m_lWidth	= lWidth;
@@ -1295,10 +1359,11 @@ void CFITSWriter::SetFormat(LONG lWidth, LONG lHeight, FITSFORMAT FITSFormat, CF
 
 BOOL CFITSWriter::Open()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 	CString			strFileName = m_strFileName;
 
-	Close();
+	// Close();
 
 	// Create a new fits file
 	int				nStatus = 0;
@@ -1344,6 +1409,8 @@ BOOL CFITSWriter::Open()
 					bResult = bResult && WriteKey("ISOSPEED", m_lISOSpeed);
 				if (m_lGain >= 0)
 					bResult = bResult && WriteKey("GAIN", m_lGain);
+				if (m_filterName != _T(""))
+					bResult = bResult && WriteKey("FILTER", m_filterName);
 				if (m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
@@ -1617,8 +1684,11 @@ public :
 		m_pMemoryBitmap = pBitmap;
 	};
 
+	virtual BOOL Close() { return OnClose(); }
+
 	virtual ~CFITSWriteFromMemoryBitmap()
 	{
+		Close();
 	};
 
 	virtual BOOL	OnOpen();
@@ -1630,6 +1700,7 @@ public :
 
 FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	FITSFORMAT						Result = FF_UNKNOWN;
 	C24BitColorBitmap *			p24Color = dynamic_cast<C24BitColorBitmap *>(pBitmap);
 	C48BitColorBitmap *			p48Color = dynamic_cast<C48BitColorBitmap *>(pBitmap);
@@ -1664,6 +1735,7 @@ FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap
 
 BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = TRUE;
 	LONG			lWidth,
 					lHeight;
@@ -1688,6 +1760,9 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 			m_lISOSpeed = m_pMemoryBitmap->GetISOSpeed();
 		if (m_lGain < 0)
 			m_lGain = m_pMemoryBitmap->GetGain();
+		if ((m_pMemoryBitmap->filterName() != _T("")) && 
+			(m_filterName == _T("")))
+			m_filterName = m_pMemoryBitmap->filterName();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
 		bResult = TRUE;
@@ -1700,20 +1775,44 @@ BOOL CFITSWriteFromMemoryBitmap::OnOpen()
 
 BOOL CFITSWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
 {
-	BOOL			bResult = FALSE;
-
-	if (m_pMemoryBitmap)
+	try
 	{
-		if (m_lNrChannels == 1)
+		if (m_pMemoryBitmap)
 		{
-			bResult = m_pMemoryBitmap->GetPixel(lX, lY, fRed);
-			fGreen = fBlue = fRed;
-		}
-		else
-			bResult = m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
-	};
+			if (m_lNrChannels == 1)
+			{
+				m_pMemoryBitmap->GetPixel(lX, lY, fRed);
+				fGreen = fBlue = fRed;
+			}
+			else
+				m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
+		};
+	}
+	catch (ZException e)
+	{
+		CString errorMessage;
+		CString name(CA2CT(e.name()));
+		CString fileName(CA2CT(e.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(e.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(e.text(0)));
 
-	return bResult;
+		errorMessage.Format(
+			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+			name,
+			fileName,
+			functionName,
+			e.locationAtIndex(0)->lineNumber(),
+			text);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
+#endif
+		exit(1);
+	}
+
+
+	return TRUE;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1730,6 +1829,7 @@ BOOL CFITSWriteFromMemoryBitmap::OnClose()
 BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	if (pBitmap)
@@ -1750,7 +1850,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 		if (fits.Open())
 		{
 			bResult = fits.Write();
-			fits.Close();
+			// fits.Close();
 		};
 	};
 
@@ -1771,6 +1871,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL					bResult = FALSE;
 
 	if (pBitmap)
@@ -1790,7 +1891,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 		if (fits.Open())
 		{
 			bResult = fits.Write();
-			fits.Close();
+			// fits.Close();
 		};
 	};
 
@@ -1809,15 +1910,16 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
+	ZFUNCTRACE_RUNTIME();
 	return GetFITSInfo(szFileName, BitmapInfo);
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
-	BOOL				bResult = FALSE;
-	CBitmapInfo			BitmapInfo;
+	ZFUNCTRACE_RUNTIME();
+	int		result = -1;		// -1 means not a FITS file.
 
 	if (GetFITSInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
@@ -1825,7 +1927,7 @@ BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress
 
 		if (ReadFITS(szFileName, &pBitmap, pProgress))
 		{
-/*			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
+			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
 			{
 				C16BitGrayBitmap *	pGrayBitmap;
 
@@ -1836,13 +1938,17 @@ BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress
 					pGrayBitmap->UseRawBayer(TRUE);
 				else if (IsRawBilinear())
 					pGrayBitmap->UseBilinear(TRUE);
-			};*/
+			};
 			pBitmap.CopyTo(ppBitmap);
-			bResult = TRUE;
-		};
+			result = 0;
+		}
+		else
+		{
+			result = 1;		// Failed to read file
+		}
 	};
 
-	return bResult;
+	return result;
 };
 
 /* ------------------------------------------------------------------- */

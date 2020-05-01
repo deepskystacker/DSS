@@ -889,12 +889,30 @@ to all the parameters used while developing a RAW file to transform it into a pi
     value.<br>
     It may be used to scale up 12 bit images to 16 bits images (use a value of 
     16 to do so).</font></p>
-    <p class="Standard"><font face="Arial" size="2">All the other settings are <b>only used</b> with 16 bit B&amp;W FITS files created by a DSLR 
-    or a color CCD camera.<br>
+    <p class="Standard"><font face="Arial" size="2">All the other settings are <b>only used</b>
+                        
+              with 16 bit B&amp;W 
+    FITS files created by a DSLR or a color CCD camera.</font></p>
+    <p class="Standard"> <FONT face=Arial><FONT size=2><SPAN lang=nl 
+      class="tlid-translation translation"><SPAN title="">Als het selectievakje 
+      "Zwart-wit 16-bits FITS Bestanden zijn RAW&nbsp; ..." <STRONG>niet is 
+      geselecteerd</STRONG>, probeert DeepSkyStacker automatische detectie van 
+      de CFA-matrix te gebruiken op basis van FITS-trefwoorden zoals BAYERPAT, 
+      COLORTYP en MOSAIC (voor Meade DSI-kleurencamera's).</SPAN> <SPAN 
+      title="">Als het FITS-bestand deze trefwoorden niet bevat of als het 
+      onjuiste patroon in het bestand is opgegeven, kunt u het selectievakje 
+      inschakelen en de camera / het patroon kiezen dat moet worden gebruikt 
+      zoals in eerdere releases van DeepSkyStacker.</SPAN></SPAN>           
+        <br>
     <br>
-    The first step is to select the DSLR or the CCD camera used to take the images from the list. 
-    This is necessary to use the correct Bayer Filter Pattern that will be used 
-    to decode the image transforming them from B&amp;W to color images.</font></p>
+    The first step is to select 
+      the DSLR or the CCD camera used to take the images from the list. This is 
+      necessary to use the correct Bayer Filter Pattern that will be used to 
+      decode the image transforming them from B&amp;W to color 
+      images.</FONT></FONT>
+                        
+                  
+              </p>
     <p class="Standard"><font face="Arial" size="2">The parameters are:<br>
     - balance of the RGB channels<br>
     - interpolation mode<br>

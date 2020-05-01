@@ -32,7 +32,7 @@ public:
 	void AddPage(CPropertyPage* pPage) { m_arrPages.Add(pPage); }
 	CPropertyPage* GetPage(const int i) const { return (i<GetPageCount()) ? m_arrPages[i] : 0; }
 	CPropertyPage* GetActivePage() const { return (GetPageCount()>0) ? m_Sheet.GetActivePage() : 0; }
-	BOOL GetPageCount() const { return m_arrPages.GetSize(); }
+	BOOL GetPageCount() const { return (m_arrPages.GetSize() > 0); }
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);

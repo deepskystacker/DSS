@@ -321,7 +321,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 
 	BOOL						bBlueLine;
 
-	bBlueLine = IsBayerBlueLine(y, pGrayBitmap->GetCFAType());
+	bBlueLine = IsBayerBlueLine(y, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 
 	// Interpolate red and blue horizontally and vertically
 	for (wy = y;wy<lHeight && wy<y+AHDWS;wy++)
@@ -772,7 +772,7 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 	pOutputGreenPixel2	= pColorBitmap->GetGreenPixel(lWidth-1, 1);
 	pOutputBluePixel2	= pColorBitmap->GetBluePixel(lWidth-1, 1);
 	// Vertical interpolation
-	bBlueLine = IsBayerBlueLine(1, pGrayBitmap->GetCFAType());
+	bBlueLine = IsBayerBlueLine(1, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 	for (y = 1;y<lHeight-1;y++)
 	{
 		BAYERCOLOR				BayerColor;
@@ -859,8 +859,8 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 	pOutputGreenPixel2	= pColorBitmap->GetGreenPixel(1, lHeight-1);
 	pOutputBluePixel2	= pColorBitmap->GetBluePixel(1, lHeight-1);
 	// Vertical interpolation
-	bBlueLine1 = IsBayerBlueLine(0, pGrayBitmap->GetCFAType());
-	bBlueLine2 = IsBayerBlueLine(lHeight-1, pGrayBitmap->GetCFAType());
+	bBlueLine1 = IsBayerBlueLine(0, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
+	bBlueLine2 = IsBayerBlueLine(lHeight-1, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 	for (x = 1;x<lWidth-1;x++)
 	{
 		BAYERCOLOR				BayerColor;
@@ -1208,7 +1208,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 
 				BOOL						bBlueLine;
 
-				bBlueLine = IsBayerBlueLine(y, pGrayBitmap->GetCFAType());
+				bBlueLine = IsBayerBlueLine(y, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 
 				// Interpolate red and blue horizontally and vertically
 				for (wy = y;wy<lHeight && wy<y+AHDWS;wy++)
@@ -1636,7 +1636,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 			pOutputGreenPixel2	= pColorBitmap->GetGreenPixel(lWidth-1, 1);
 			pOutputBluePixel2	= pColorBitmap->GetBluePixel(lWidth-1, 1);
 			// Vertical interpolation
-			bBlueLine = IsBayerBlueLine(1, pGrayBitmap->GetCFAType());
+			bBlueLine = IsBayerBlueLine(1, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 			for (y = 1;y<lHeight-1;y++)
 			{
 				BAYERCOLOR				BayerColor;
@@ -1723,8 +1723,8 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 			pOutputGreenPixel2	= pColorBitmap->GetGreenPixel(1, lHeight-1);
 			pOutputBluePixel2	= pColorBitmap->GetBluePixel(1, lHeight-1);
 			// Vertical interpolation
-			bBlueLine1 = IsBayerBlueLine(0, pGrayBitmap->GetCFAType());
-			bBlueLine2 = IsBayerBlueLine(lHeight-1, pGrayBitmap->GetCFAType());
+			bBlueLine1 = IsBayerBlueLine(0, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
+			bBlueLine2 = IsBayerBlueLine(lHeight-1, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 			for (x = 1;x<lWidth-1;x++)
 			{
 				BAYERCOLOR				BayerColor;

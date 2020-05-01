@@ -1133,6 +1133,7 @@ BEGIN
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposició"
 	IDS_COLUMN_APERTURE		"Obertura"
+	IDS_COLUMN_FILTER		"Filtre"
     IDS_COLUMN_STARS        "# Estrelles"
     IDS_COLUMN_SKYBACKGROUND "Fons de cel"
 END
@@ -1600,6 +1601,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Ho sentim, LibRaw no funciona amb la teva càmera %s"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker no es des-Bayer imatges de 8 bits "
 END
 
 #endif

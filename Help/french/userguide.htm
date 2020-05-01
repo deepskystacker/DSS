@@ -932,8 +932,20 @@ une image couleur.</font></p>
     bits en vrai 16 bits. Pour ce faire entrer la valeur 16 comme ajustement de 
     luminosité.</font></p>
     <p class="Standard" align="justify"><font size="2" face="Arial">Tous les 
-    autres réglages <b>ne concernent que</b> les fichiers FITS 16 bits monochrome issus 
-    d'un APN ou d'une caméra CCD couleur.<br>
+    autres réglages <b>ne concernent que</b> les fichiers
+    FITS 16 bits monochrome issus d'un APN ou d'une caméra CCD 
+    couleur.</font></p>
+    <p class="Standard" align="justify"> <FONT face=Arial><FONT size=2><SPAN lang=fr 
+      class="tlid-translation translation"><SPAN title="">Si la case à cocher 
+      "Considérer les fichiers FITS monochromes 16 bits&nbsp;comme des 
+      fichiers&nbsp;RAW ..." <STRONG>n'est pas cochée</STRONG>, DeepSkyStacker 
+      tentera d'utiliser la détection automatique de la matrice CFA sur la base 
+      des mots clés FITS tels que BAYERPAT, COLORTYP et MOSAIC (pour les caméras 
+      couleur DSI Meade).</SPAN> <SPAN title="">Si le fichier FITS ne contient 
+      pas ces mots clés ou si le motif incorrect est spécifié dans le fichier, 
+      vous pouvez cocher la case et choisir la caméra / le motif à utiliser 
+      comme dans les versions précédentes de DeepSkyStacker.</SPAN></SPAN>        
+          <br>
     <br>
     La première étape consiste à sélectionner dans la liste l'APN ou la caméra 
     CCD qui a servi à 
@@ -953,8 +965,10 @@ une image couleur.</font></p>
     Les valeurs pour les échelle <font color="#ff0000">Rouge</font> et échelle
     <font color="#0000ff">Bleu</font> permettent de situer la valeur par rapport 
     au <font color="#008000">Vert</font>.<br>
-    L'ajustement de la luminosité permet de jouer sur l'ensemble des trois 
-    canaux.</font></p>
+    L'ajustement de la luminosité permet de jouer sur 
+      l'ensemble des trois canaux.</FONT></FONT>
+               
+    </p>
     <p class="Standard" align="justify"><font size="2" face="Arial">Concernant les modes 
     d'interpolation et le fonctionnement particulier liés à l'optimisation de la 
     matrice de Bayer, vous aurez plus de détails en consultant les

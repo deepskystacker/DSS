@@ -137,6 +137,7 @@
 #define IDR_EDITSETTINGS                214
 #define IDS_COLUMN_SKYBACKGROUND        215
 #define IDS_COLUMN_APERTURE				216
+#define IDS_COLUMN_FILTER				217
 #define IDS_TYPE_LIGHT                  300
 #define IDS_TYPE_DARK                   301
 #define IDS_TYPE_FLAT                   302
@@ -739,6 +740,7 @@
 #define IDS_TIP_SETCOMET                6002
 #define IDS_TIP_REMOVECOMET             6003
 #define IDS_CAMERA_NOT_SUPPORTED        8001
+#define IDS_8BIT_FITS_NODEBAYER			8002
 #define IDS_TOOLTIP_KAPPASIGMA          10000
 #define IDS_TOOLTIP_AUTOADAPTIVE        10001
 #define IDS_TOOLTIP_MEDIANKAPPASIGMA    10002

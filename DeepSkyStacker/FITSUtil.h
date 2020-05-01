@@ -18,79 +18,92 @@ public :
 	double				m_fExposureTime;
 	LONG				m_lISOSpeed;
 	LONG				m_lGain;
-	BOOL				m_bFloat;
-	BOOL				m_bSigned;
+	bool				m_bFloat;
+	bool				m_bSigned;
 	CString				m_strMake;
 	CFATYPE				m_CFAType;
 	FITSFORMAT			m_Format;
-	BOOL				m_bByteSwap;
 	CBitmapExtraInfo	m_ExtraInfo;
 	SYSTEMTIME			m_DateTime;
+	LONG				m_xBayerOffset;
+	LONG				m_yBayerOffset;
+	long				m_bitPix;
+	CString				m_filterName;
 
 public :
 	CFITSHeader();
 	virtual ~CFITSHeader();
 
 public :
-	LONG	Height()
+	inline LONG	Height() noexcept
 	{
 		return m_lHeight;
 	};
 
-	LONG	Width()
+	inline LONG	Width() noexcept
 	{
 		return m_lWidth;
 	};
 
-	LONG	BitPerChannels()
+	inline LONG	BitPerChannels() noexcept
 	{
 		return m_lBitsPerPixel;
 	};
 
-	LONG	NrChannels()
+	inline LONG	NrChannels() noexcept
 	{
 		return m_lNrChannels;
 	};
 
-	BOOL	IsFloat()
+	inline BOOL	IsFloat() noexcept
 	{
 		return m_bFloat;
 	};
 
-	BOOL	IsCFA()
+	inline BOOL	IsCFA() noexcept
 	{
 		return (m_CFAType != CFATYPE_NONE);
 	};
 
-	CFATYPE GetCFAType()
+	inline CFATYPE GetCFAType() noexcept
 	{
 		return m_CFAType;
 	};
 
-	BOOL	IsMaster()
+	inline BOOL	IsMaster() noexcept
 	{
 		return FALSE;
 	};
 
-	double	GetExposureTime()
+	inline double	GetExposureTime() noexcept
 	{
 		return m_fExposureTime;
 	};
 
-	LONG	GetISOSpeed()
+	inline LONG	GetISOSpeed() noexcept
 	{
 		return m_lISOSpeed;
 	};
 
-	LONG	GetGain()
+	inline LONG	GetGain() noexcept
 	{
 		return m_lGain;
 	};
 
-	SYSTEMTIME	GetDateTime()
+	inline SYSTEMTIME	GetDateTime() noexcept
 	{
 		return m_DateTime;
 	};
+
+	inline LONG	getXOffset() noexcept
+	{
+		return m_xBayerOffset;
+	}
+
+	inline LONG	getYOffset() noexcept
+	{
+		return m_yBayerOffset;
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -136,7 +149,7 @@ public :
 
 	BOOL	Open();
 	BOOL	Read();
-	BOOL	Close();
+	virtual BOOL	Close();
 
 	virtual BOOL	OnOpen() { return TRUE; };
 	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return FALSE;};
@@ -208,7 +221,7 @@ BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
 
 BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	LoadFITSPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+int		LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
 
 void	GetFITSExtension(LPCTSTR szFileName, CString & strExtension);
 

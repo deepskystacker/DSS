@@ -14,7 +14,7 @@
 #include "Workspace.h"
 #include <iostream>
 #include <zexcept.h>
-#include "Utils.h"
+
 
 #include <GdiPlus.h>
 using namespace Gdiplus;
@@ -238,6 +238,9 @@ BOOL	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 			pColorBitmap->Init(lWidth, lHeight);
 			pColorBitmap->GetIterator(&it);
 
+//#if defined(_OPENMP)	Don't use OpenMP here - doesn't mix with Pixel Iterator
+//#pragma omp parallel for default(none)
+//#endif
 			for (LONG j = 0;j<lHeight;j++)
 			{
 				for (LONG i = 0;i<lWidth;i++)
@@ -328,7 +331,7 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 	}
 	catch (std::exception & e)
 	{
-		CString errorMessage(CharToCString(e.what()));
+		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
 #else
@@ -347,10 +350,10 @@ BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 	catch (ZException & ze)
 	{
 		CString errorMessage;
-		CString name(CharToCString(ze.name()));
-		CString fileName(CharToCString(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CharToCString(ze.locationAtIndex(0)->functionName()));
-		CString text(CharToCString(ze.text(0)));
+		CString name(CA2CT(ze.name()));
+		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
+		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
+		CString text(CA2CT(ze.text(0)));
 
 		errorMessage.Format(
 			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
@@ -1108,19 +1111,57 @@ BOOL	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 		CBitmapInfo					BitmapInfo;
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 		*ppBitmap = nullptr;
+		int loadResult = 0;
 
 #if DSSFILEDECODING==0
 		if (IsPCLPicture(szFileName, BitmapInfo))
 			bResult = LoadPCLPicture(szFileName, &pBitmap, pProgress);
 #else
-		if (IsRAWPicture(szFileName, BitmapInfo))
-			bResult = LoadRAWPicture(szFileName, &pBitmap, pProgress);
-		else if (IsTIFFPicture(szFileName, BitmapInfo))
-			bResult = LoadTIFFPicture(szFileName, &pBitmap, pProgress);
-		else if (IsFITSPicture(szFileName, BitmapInfo))
-			bResult = LoadFITSPicture(szFileName, &pBitmap, pProgress);
-		else
+		do  // Once only 
+		{
+			if (IsRAWPicture(szFileName, BitmapInfo))
+				bResult = LoadRAWPicture(szFileName, &pBitmap, pProgress);
+			if (bResult)
+				break;		// All done - file has been loaded 
+			
+			//
+			// Meanings of loadResult:
+			//
+			//		-1		Not a file of the appropriate type
+			//		0		File successfully loaded
+			//		1		File failed to load
+			//
+			// If the file loaded or failed to load, leave the loop with an appropriate
+			// value of bResult set.
+			//
+			loadResult = LoadTIFFPicture(szFileName, BitmapInfo, &pBitmap, pProgress);
+			if (0 == loadResult)
+			{
+				bResult = TRUE;
+				break;		// All done - file has been loaded 
+			}
+			else if (1 == loadResult)
+				break;		// All done - file failed to load
+
+			//
+			// It wasn't a TIFF file, so try to load a FITS file
+			//
+			loadResult = LoadFITSPicture(szFileName, BitmapInfo, &pBitmap, pProgress);
+			if (0 == loadResult)
+			{
+				bResult = TRUE;
+				break;		// All done - file has been loaded 
+			}
+			else if (1 == loadResult)
+				break;		// All done - file failed to load
+
+			//
+			// It wasn't a FITS file, so try to load other stuff ...
+			//
 			bResult = LoadOtherPicture(szFileName, &pBitmap, pProgress);
+
+		} while (false);
+
 #endif
 
 		if (bResult)
@@ -1258,20 +1299,23 @@ public :
 			m_pProgress->Start2(nullptr, pTarget->RealWidth());
 	};
 
-	void	SetShift(double fXShift, double fYShift)
+	CSubtractTask&	SetShift(double fXShift, double fYShift)
 	{
 		m_fXShift	= fXShift;
 		m_fYShift	= fYShift;
+		return *this;
 	};
 
-	void	SetAddMode(BOOL bSet)
+	CSubtractTask&	SetAddMode(BOOL bSet)
 	{
 		m_bAddMode = bSet;
+		return *this;
 	};
 
-	void	SetMinimumValue(double fValue)
+	CSubtractTask&	SetMinimumValue(double fValue)
 	{
 		m_fMinimum = fValue;
+		return *this;
 	};
 
 	void	End()
@@ -1339,8 +1383,10 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 				// Source is moved
 				lSrcStartY += fabs(m_fYShift)+0.5;
 			};
+
 			PixelItTgt->Reset(lTgtStartX, lTgtStartY);
 			PixelItSrc->Reset(lSrcStartX, lSrcStartY);
+
 			for (j = 0;j<msg.lParam;j++)
 			{
 				for (i = 0;i<lWidth;i++)
@@ -1352,6 +1398,7 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 
 						PixelItTgt->GetPixel(fTgtGray);
 						PixelItSrc->GetPixel(fSrcGray);
+
 						if (m_bAddMode)
 							fTgtGray = min(max(0.0, fTgtGray+fSrcGray * m_fGrayFactor), 256.0);
 						else
@@ -1381,10 +1428,12 @@ BOOL	CSubtractTask::DoTask(HANDLE hEvent)
 					};
 
 					(*PixelItTgt)++;
+
 					(*PixelItSrc)++;
 				};
 				(*PixelItTgt)+=lExtraWidth;
-				(*PixelItSrc)+=lExtraWidth;
+
+				(*PixelItSrc) += lExtraWidth;				
 			};
 			SetEvent(hEvent);
 		}
@@ -1450,6 +1499,19 @@ BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * p
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
+
+	// Check and remove super pixel settings
+	CCFABitmapInfo *			pCFABitmapInfo;
+	CFATRANSFORMATION			CFATransform = CFAT_NONE;
+
+	pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
+	if (pCFABitmapInfo)
+	{
+		CFATransform = pCFABitmapInfo->GetCFATransformation();
+		if (CFATransform == CFAT_SUPERPIXEL)
+			pCFABitmapInfo->UseBilinear(TRUE);
+	};
+
 	// Check that it is the same sizes
 	if (pTarget && pSource)
 	{
@@ -1457,13 +1519,23 @@ BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * p
 			(pTarget->RealHeight() == pSource->RealHeight()) &&
 			(pTarget->IsMonochrome() == pSource->IsMonochrome()))
 		{
+
 			CSubtractTask			SubtractTask;
 
 			SubtractTask.Init(pTarget, pSource, pProgress, fRedFactor, fGreenFactor, fBlueFactor);
 			SubtractTask.StartThreads();
 			SubtractTask.Process();
-		};
+		}
+		else
+		{
+			ZTRACE_RUNTIME("Target.Width = %d, Source.RealWidth = %d", pTarget->RealWidth(), pSource->RealWidth());
+			ZTRACE_RUNTIME("Target.Height = %d, Source.RealHeight = %d", pTarget->RealHeight(), pSource->RealHeight());
+			ZTRACE_RUNTIME("Subtraction skipped");
+		}
 	};
+
+	if (CFATransform == CFAT_SUPERPIXEL)
+		pCFABitmapInfo->UseSuperPixels(TRUE);
 
 	return bResult;
 };

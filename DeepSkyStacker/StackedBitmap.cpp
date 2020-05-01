@@ -6,7 +6,6 @@
 #include <set>
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
-#include "Utils.h"
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -291,7 +290,7 @@ BOOL CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 	BOOL			bResult = FALSE;
 	FILE *			hFile;
 	CString			strText;
-	LPCSTR			strFile = CStringToChar(szStackedFile); // Stacked fileid in ASCII
+	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8); // Stacked fileid in ASCII
 
 	strText.LoadString(IDS_LOADDSIMAGE);
 	if (pProgress)
@@ -368,7 +367,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 	ZFUNCTRACE_RUNTIME();
 	FILE *			hFile;
 	CString			strText;
-	LPCSTR			strFile = CStringToChar(szStackedFile);  // in UTF-8
+	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8);  // in UTF-8
 
 	printf("Saving Stacked Bitmap in %s\n", strFile);
 	ZTRACE_RUNTIME("Saving Stacked Bitmap in %s", strFile);
@@ -890,7 +889,7 @@ public :
 	};
 
 	virtual BOOL	OnOpen();
-	virtual BOOL	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue);
+	void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual BOOL	OnClose();
 };
 
@@ -937,7 +936,7 @@ BOOL CTIFFWriterStacker::OnOpen()
 		CString		strText;
 
 		m_pProgress->SetJointProgress(TRUE);
-		strText.Format(IDS_SAVINGTIFF, bpp);
+		strText.Format(IDS_SAVINGTIFF, bps);
 
 		m_pProgress->Start(strText, 0, FALSE);
 		strText.Format(IDS_SAVINGPICTURE, (LPCTSTR)m_strFileName);
@@ -949,7 +948,7 @@ BOOL CTIFFWriterStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
+void CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
 {
 	BOOL			bResult = TRUE;
 
@@ -958,7 +957,7 @@ BOOL CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGree
 
 	m_pStackedBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue, m_bApplySettings);
 
-	return bResult;
+	return;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1265,7 +1264,7 @@ public :
 	};
 
 	virtual BOOL	OnOpen();
-	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
+	void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) override;
 	virtual BOOL	OnClose();
 };
 
@@ -1282,9 +1281,9 @@ BOOL CTIFFReadStacker::OnOpen()
 
 		m_pProgress->SetJointProgress(TRUE);
 		if (spp == 1)
-			strText.Format(IDS_LOADGRAYTIFF, bpp);
+			strText.Format(IDS_LOADGRAYTIFF, bps);
 		else
-			strText.Format(IDS_LOADRGBTIFF, bpp);
+			strText.Format(IDS_LOADRGBTIFF, bps);
 
 		m_pProgress->Start(strText, 0, FALSE);
 		strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strFileName);
@@ -1301,14 +1300,14 @@ BOOL CTIFFReadStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
+void CTIFFReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
 {
 	BOOL			bResult = TRUE;
 
 	if (m_pStackedBitmap)
 		m_pStackedBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 
-	return bResult;
+	return;
 };
 
 /* ------------------------------------------------------------------- */

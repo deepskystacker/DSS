@@ -624,7 +624,7 @@ Ud. puede agrandarla y achicarla apuntando con el cursor y moviendo la rueda del
                    
               &nbsp; 
         </FONT>
-                         </FONT></DIV>
+                         </FONT></div>
         <LI>
     <div class="Standard"><font face="Arial" size="2">
                      editar la posición del cometa</font></div>
@@ -737,10 +737,23 @@ Ajustes Raw y FITS DDP<br>
     </b></font><font face="Arial" size="2"><br>
     El único parametro en esta pestaña utilizado para todos los archivos FITS es el valor de Brillo.<br>
     Este puede ser utilizado para incrementar la profunidad de bits de imágenes de 12 bits a imágenes de 16 bits (utiliza un valor de 16 para llevarlo a cabo).</font></p>
-    <p class="Standard"><font face="Arial" size="2">Todos los demás ajustes son  <b>únicamente utilizados</b> con archivos FITS Blanco y Negro de 16 bits creados por una DSLR o una cámara CCD color.<br>
+    <p class="Standard"><font face="Arial" size="2">Todos los demás ajustes son  <b>únicamente utilizados</b>
+                      
+           con archivos FITS Blanco y Negro de 16 bits creados por una DSLR o una cámara CCD color.</font></p><font face="Arial" size="2">
+      <DIV class="text-wrap tlid-copy-target">
+      <DIV tabIndex=0 class="result-shield-container tlid-copy-target"><SPAN 
+      lang=es class="tlid-translation translation"><SPAN title="">Si la casilla 
+      de verificación "Los archivos FITS Monocromáticos de 16 bits son archivos 
+      RAW ..." <STRONG>no está seleccionada</STRONG>, DeepSkyStacker intentará 
+      utilizar la detección automática de la matriz CFA basada en palabras clave 
+      FITS como BAYERPAT, COLORTYP y MOSAIC (para cámaras en color Meade 
+      DSI).</SPAN> <SPAN title="">Si el archivo FITS no contiene estas palabras 
+      clave o si se especifica un patrón incorrecto en el archivo, puede 
+      seleccionar la casilla de verificación y elegir la cámara / patrón que se 
+      utilizará como en versiones anteriores de DeepSkyStacker.</SPAN></SPAN>                  <br>
     <br>
     El primer paso es seleccionar de la lista la DSLR o cámara CCD utilizada para tomar las imágenes. 
-    Esto es necesario para utilizar el Patrón de Filtro Bayer correcto que será utilizado pra decodificar la imagen transformándola de Blanco y Negro a color..</font></p>
+    Esto es necesario para utilizar el Patrón de Filtro Bayer correcto que será utilizado pra decodificar la imagen transformándola de Blanco y Negro a color..</font></DIV></DIV>
     <p class="Standard"><font face="Arial" size="2">Los parámetros son:<br>
     - Balance de los canales RGB<br>
     - Modo de interpolación<br>

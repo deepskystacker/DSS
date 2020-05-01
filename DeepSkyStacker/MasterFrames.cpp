@@ -44,6 +44,8 @@ void	CMasterFrames::ApplyMasterOffset(CMemoryBitmap * pBitmap, CDSSProgress * pP
 	ZFUNCTRACE_RUNTIME();
 	CString				strText;
 
+	ZTRACE_RUNTIME("Subtracting Offset Frame");
+
 	if (m_pMasterOffset && m_pMasterOffset->IsOk())
 	{
 		if (pProgress)
@@ -60,6 +62,7 @@ void	CMasterFrames::ApplyMasterOffset(CMemoryBitmap * pBitmap, CDSSProgress * pP
 void	CMasterFrames::ApplyMasterDark(CMemoryBitmap * pBitmap, STARVECTOR * pStars, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
+	ZTRACE_RUNTIME("Subtracting Dark Frame");
 
 	if (m_MasterDark.IsOk())
 		m_MasterDark.Subtract(pBitmap, pProgress);

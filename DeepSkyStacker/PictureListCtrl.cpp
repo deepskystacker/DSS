@@ -18,30 +18,32 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // Change the list version each time a new column is added
-const DWORD		LISTVERSION	    = 2;
+const DWORD		LISTVERSION	    = 3;
 
 const DWORD		COLUMN_CHECKED	= 0;
 const DWORD 	COLUMN_PATH		= 1;
 const DWORD 	COLUMN_FILE		= 2;
 const DWORD 	COLUMN_FTYPE	= 3;
-const DWORD 	COLUMN_SCORE	= 4;
-const DWORD 	COLUMN_DX		= 5;
-const DWORD 	COLUMN_DY		= 6;
-const DWORD 	COLUMN_ANGLE	= 7;
-const DWORD		COLUMN_FILETIME = 8;
-const DWORD		COLUMN_SIZES	= 9;
-const DWORD		COLUMN_CFA		= 10;
-const DWORD		COLUMN_DEPTH	= 11;
-const DWORD		COLUMN_INFO		= 12;
-const DWORD		COLUMN_ISO_GAIN	= 13;
-const DWORD		COLUMN_EXPOSURE = 14;
-const DWORD		COLUMN_APERTURE = 15;
-const DWORD		COLUMN_FWHM		= 16;
-const DWORD		COLUMN_STARS	= 17;
-const DWORD		COLUMN_SKYBACKGROUND = 18;
+const DWORD		COLUMN_FILTER	= 4;
+const DWORD 	COLUMN_SCORE	= 5;
+const DWORD 	COLUMN_DX		= 6;
+const DWORD 	COLUMN_DY		= 7;
+const DWORD 	COLUMN_ANGLE	= 8;
+const DWORD		COLUMN_FILETIME = 9;
+const DWORD		COLUMN_SIZES	= 10;
+const DWORD		COLUMN_CFA		= 11;
+const DWORD		COLUMN_DEPTH	= 12;
+const DWORD		COLUMN_INFO		= 13;
+const DWORD		COLUMN_ISO_GAIN	= 14;
+const DWORD		COLUMN_EXPOSURE = 15;
+const DWORD		COLUMN_APERTURE = 16;
+const DWORD		COLUMN_FWHM		= 17;
+const DWORD		COLUMN_STARS	= 18;
+const DWORD		COLUMN_SKYBACKGROUND = 19;
 
-#define M_PI			3.141592654
-
+#ifndef M_PI
+#define M_PI			3.14159265358979323846
+#endif
 
 /* ------------------------------------------------------------------- */
 
@@ -167,6 +169,8 @@ void CPictureListCtrl::Initialize()
 	InsertColumn(COLUMN_FILE, strColumn, LVCFMT_LEFT, 200);
 	strColumn.LoadString(IDS_COLUMN_TYPE);
 	InsertColumn(COLUMN_FTYPE, strColumn, LVCFMT_LEFT, 60);
+	strColumn.LoadString(IDS_COLUMN_FILTER);
+	InsertColumn(COLUMN_FILTER, strColumn, LVCFMT_LEFT, 60);
 	strColumn.LoadString(IDS_COLUMN_SCORE);
 	InsertColumn(COLUMN_SCORE, strColumn, LVCFMT_RIGHT, 80);
 	strColumn.LoadString(IDS_COLUMN_DX);
@@ -289,6 +293,9 @@ int	CPictureListCtrl::CompareItems(LONG lItem1, LONG lItem2)
 			break;
 		case COLUMN_FTYPE :
 			lResult = m_vFiles[lItem1].m_strType.CompareNoCase(m_vFiles[lItem2].m_strType);
+			break;
+		case COLUMN_FILTER :
+			lResult = m_vFiles[lItem1].m_filterName.CompareNoCase(m_vFiles[lItem2].m_filterName);
 			break;
 		case COLUMN_INFO :
 			lResult = m_vFiles[lItem1].m_strInfos.CompareNoCase(m_vFiles[lItem2].m_strInfos);
@@ -860,6 +867,9 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 		case COLUMN_FTYPE :
 			strValue = m_vFiles[lIndice].m_strType;
 			break;
+		case COLUMN_FILTER :
+			strValue = m_vFiles[lIndice].m_filterName;
+			break;
 		case COLUMN_SCORE :
 			if (m_vFiles[lIndice].m_PictureType != PICTURETYPE_LIGHTFRAME)
 				strValue = "N/A";
@@ -977,7 +987,7 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 			ExposureToString(m_vFiles[lIndice].m_fExposure, strValue);
 			break;
 		case COLUMN_APERTURE :
-			strValue.Format("%.1f", m_vFiles[lIndice].m_fAperture);
+			strValue.Format(_T("%.1f"), m_vFiles[lIndice].m_fAperture);
 			break;
 		};
 

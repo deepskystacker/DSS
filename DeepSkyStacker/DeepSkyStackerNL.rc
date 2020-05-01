@@ -1001,6 +1001,7 @@ BEGIN
     IDS_COLUMN_STARS        "#Sterren"
     IDS_COLUMN_SKYBACKGROUND "Hemel Achtergrond"
     IDS_COLUMN_APERTURE     "Diafragma"
+	IDS_COLUMN_FILTER		"Filter"
 END
 
 STRINGTABLE
@@ -1559,6 +1560,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Sorry, LibRaw ondersteund uw %s camera niet"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker zal 8 bit afbeeldingen niet de-Bayeren"
 END
 
 #endif    // Dutch (Netherlands) resources

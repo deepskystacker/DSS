@@ -1040,6 +1040,7 @@ BEGIN
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Belichtung"
 	IDS_COLUMN_APERTURE		"Blende"
+	IDS_COLUMN_FILTER		"Filter"
     IDS_COLUMN_STARS        "#Sterne"
     IDS_COLUMN_SKYBACKGROUND "Himmels-Hintergrund"
 END
@@ -1595,6 +1596,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Es tut uns leid aber LibRaw unterstützt das Kameramodell %s nicht"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker debayer 8-Bit-Bilder nicht"
 END
 
 

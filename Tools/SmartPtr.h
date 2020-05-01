@@ -165,11 +165,11 @@ public :
 
 	bool operator < (const CSmartPtr<T> & p) const
 	{
-		return (LONG)m_p < (LONG)p.m_p;
+		return (uintptr_t)m_p < (uintptr_t)p.m_p;
 	};
 	bool operator < (const T * p) const
 	{
-		return (LONG)m_p < (LONG)p;
+		return (uintptr_t)m_p < (uintptr_t)p;
 	};
 	bool operator != (const T * p) const
 	{

@@ -2020,6 +2020,18 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 		// Then Interpolate Hot Pixels
 		if (pBitmap->IsMonochrome())
 		{
+			// Check and remove super pixel settings
+			CCFABitmapInfo *			pCFABitmapInfo;
+			CFATRANSFORMATION			CFATransform = CFAT_NONE;
+
+			pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pBitmap);
+			if (pCFABitmapInfo)
+			{
+				CFATransform = pCFABitmapInfo->GetCFATransformation();
+				if (CFATransform == CFAT_SUPERPIXEL)
+					pCFABitmapInfo->UseBilinear(TRUE);
+			};
+
 			// Interpolate with neighbor pixels (level 1)
 			BOOL				bCFA = pBitmap->IsCFA();
 
@@ -2046,7 +2058,10 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 				if (lTotalWeight)
 					fValue /= lTotalWeight;
 				pBitmap->SetPixel(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY, fValue);
+
 			};
+			if (CFATransform == CFAT_SUPERPIXEL)
+				pCFABitmapInfo->UseSuperPixels(TRUE);
 		}
 		else
 		{

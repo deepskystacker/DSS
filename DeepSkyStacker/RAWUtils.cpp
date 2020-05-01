@@ -471,6 +471,7 @@ public:
 		return 0;
 	};
 
+#if (0)
 	int	Printf(const char *format, va_list va)
 	{
 		int				nResult;
@@ -486,6 +487,7 @@ public:
 
 		return nResult;
 	};
+#endif
 
 	size_t Write(const void *buffer, size_t size, size_t count)
 	{
@@ -572,10 +574,10 @@ private :
 #define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 public :
-    CRawDecod(LPCTSTR szFile) noexcept
+    CRawDecod(LPCTSTR szFile) noexcept :
+		m_strFileName(szFile)
     {
         ZFUNCTRACE_RUNTIME();
-        m_strFileName = szFile;
         m_bColorRAW = FALSE;
         m_CFAType = CFATYPE_NONE;
         m_DateTime.wYear = 0;
@@ -585,7 +587,7 @@ public :
         m_lHeight = 0;
         m_lWidth = 0;
 
-        m_isRawFile = rawProcessor.open_file(m_strFileName) == LIBRAW_SUCCESS;
+        m_isRawFile = rawProcessor.open_file(szFile) == LIBRAW_SUCCESS;
 
         if (m_isRawFile)
         {
@@ -750,7 +752,8 @@ public :
 void CRawDecod::checkCameraSupport(const CString& strModel)
 {
 	bool result = false;
-	const char * camera = static_cast<LPCSTR>(strModel);
+	CStringA strModelA(strModel);
+	const char * camera = static_cast<LPCSTR>(strModelA);
 
 	static std::set<std::string> checkedCameras;
 
@@ -1349,10 +1352,10 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 	// Check the extension - a tiff of tif file is not to be
 	// considered as a RAW file
-	_splitpath(szFileName, nullptr, nullptr, nullptr, szExt);
+	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
-	if ((strExt == ".TIF") || (strExt == ".TIFF"))
+	if ((strExt == _T(".TIF")) || (strExt == _T(".TIFF")))
 		bIsTiff = TRUE;
 
 	if (!bIsTiff)

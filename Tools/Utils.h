@@ -2,11 +2,6 @@
 
 #include <string>
 
-inline LPCSTR CStringToChar(CString const& cstr)
-{
-    return CT2CA(cstr, CP_UTF8);
-}
-
 inline CString CharToCString(char const* str)
 {
     return CString(CA2CT(str));
@@ -14,7 +9,7 @@ inline CString CharToCString(char const* str)
 
 inline std::string CStringToString(CString const& cstr)
 {
-    return std::string(CStringToChar(cstr));
+    return std::string(CT2CA(cstr, CP_UTF8));
 }
 
 inline CString StringToCString(std::string const& str)

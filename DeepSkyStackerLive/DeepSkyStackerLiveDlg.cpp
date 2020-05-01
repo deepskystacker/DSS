@@ -15,14 +15,15 @@
 
 /* ------------------------------------------------------------------- */
 
-CDeepSkyStackerLiveDlg::CDeepSkyStackerLiveDlg(CWnd* pParent /*=nullptr*/)
+CDeepSkyStackerLiveDlg::CDeepSkyStackerLiveDlg(bool bUseDarkTheme, CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepSkyStackerLiveDlg::IDD, pParent),
-	m_StackedImage(nullptr, true),
-	m_LastImage(nullptr, true),
-	m_Graphs(nullptr, true),
-	m_MainBoard(nullptr, true),
-	m_Log(nullptr, true),
-	m_Settings(nullptr, true)
+	m_StackedImage(nullptr, bUseDarkTheme),
+	m_LastImage(nullptr, bUseDarkTheme),
+	m_Graphs(nullptr, bUseDarkTheme),
+	m_MainBoard(nullptr, bUseDarkTheme),
+	m_Log(nullptr, bUseDarkTheme),
+	m_Settings(nullptr, bUseDarkTheme),
+	m_bUseDarkTheme(bUseDarkTheme)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_CurrentTab	= DLT_LOG;
@@ -131,7 +132,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	m_LastImage.SetStackedImage(FALSE);
 	m_LastImage.Create(IDD_IMAGEVIEW, this);
 	m_ImageList.Create(IDD_IMAGELIST, this);
-	m_ImageList.SetToDarkMode();
+	m_ImageList.SetToDarkMode(m_bUseDarkTheme);
 	m_Graphs.Create(IDD_GRAPHS, this);
 	m_Settings.Create(IDD_SETTINGS, this);
 

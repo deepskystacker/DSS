@@ -75,7 +75,11 @@ IDD_LOG DIALOGEX 0, 0, 336, 166
 STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    CONTROL         "",IDC_LOG,"RichEdit20A",ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,0,0,335,166
+#if defined(_UNICODE)
+	CONTROL         "", IDC_LOG, "RichEdit20W", ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_HSCROLL, 0, 0, 335, 166
+#else
+	CONTROL         "", IDC_LOG, "RichEdit20A", ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_BORDER | WS_VSCROLL | WS_HSCROLL, 0, 0, 335, 166
+#endif
 END
 
 IDD_IMAGEVIEW DIALOGEX 0, 0, 335, 166
@@ -111,66 +115,61 @@ BEGIN
 END
 
 IDD_SETTINGS DIALOGEX 0, 0, 393, 333
-STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
+STYLE DS_SETFONT | DS_CONTROL | WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_SYSMENU
 FONT 8, "MS Shell Dlg 2", 400, 0, 0x1
 BEGIN
-    GROUPBOX        "Combinazione",IDC_STACKING,7,8,306,182
-    CONTROL         "Non combinare prima che almeno",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,21,117,10
-    LTEXT           "Avvisa   Non combinare se...",IDC_STATIC,16,38,99,9
+    GROUPBOX        "Combinazione",IDC_STACKING,7,8,306,168
+    CONTROL         "Non combinare prima che almeno",IDC_DONTSTACK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,21,150,10
+    LTEXT           "Avvisa   Non combinare se...",IDC_STATIC,16,38,78,8
     CONTROL         "",IDC_WARN_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,49,16,10
-    CONTROL         "...il punteggio è meno di",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,49,90,10
-    EDITTEXT        IDC_SCORE,137,50,44,8,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "...il punteggio è meno di",IDC_DONTSTACK_SCORE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,49,150,10
+    EDITTEXT        IDC_SCORE,201,50,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
     CONTROL         "",IDC_WARN_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,66,16,10
-    CONTROL         "...le stelle sono meno di",IDC_DONTSTACK_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,66,90,10
-    EDITTEXT        IDC_STARCOUNT,134,66,27,8,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    CONTROL         "...le stelle sono meno di",IDC_DONTSTACK_STARS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,66,150,10
+    EDITTEXT        IDC_STARCOUNT,201,66,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
     CONTROL         "",IDC_WARN_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,98,16,10
-    CONTROL         "...l'FWHM è maggiore di",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,98,89,10
-    EDITTEXT        IDC_FWHM,134,98,27,8,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "Pixels",IDC_STATIC,165,99,19,8
+    CONTROL         "...l'FWHM è maggiore di",IDC_DONTSTACK_FWHM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,98,150,10
+    EDITTEXT        IDC_FWHM,201,98,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "Pixels",IDC_STATIC,255,99,50,8
     CONTROL         "",IDC_WARN_OFFSET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,115,16,10
-    CONTROL         "...dX o dY sono maggiori di",IDC_DONTSTACK_OFFSET,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,115,98,10
-    EDITTEXT        IDC_OFFSET,143,115,31,8,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "Pixels",IDC_STATIC,177,116,19,8
+    CONTROL         "...dX o dY sono maggiori di",IDC_DONTSTACK_OFFSET, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,115,150,10
+    EDITTEXT        IDC_OFFSET,201,115,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "Pixels",IDC_STATIC,255,116,50,8
     CONTROL         "",IDC_WARN_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,133,16,10
-    CONTROL         "...l'Angolo è maggiore di",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,133,90,10
-    EDITTEXT        IDC_ANGLE,135,133,25,8,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "°",IDC_STATIC,163,134,8,8
+    CONTROL         "...l'Angolo è maggiore di",IDC_DONTSTACK_ANGLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,133,150,10
+    EDITTEXT        IDC_ANGLE,201,133,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "°",IDC_STATIC,255,134,18,8
     GROUPBOX        "Avvisi",IDC_WARNINGS,7,179,306,41
     CONTROL         "Suono",IDC_WARN_SOUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,192,36,10
-    CONTROL         "Segnalazione visiva",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,207,75,10
-    CONTROL         "Invia mail a",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,95,192,49,10
-    CONTROL         "Crea file d'avviso in ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,95,207,77,10
-    GROUPBOX        "Opzioni",IDC_OPTIONS,7,227,306,47
-    CONTROL         "Salva immagini combinate ogni",IDC_SAVESTACKEDIMAGE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,114,10
-    EDITTEXT        IDC_IMAGECOUNT,127,240,22,8,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "immagini",IDC_STATIC,153,241,28,8
-    LTEXT           "Cartella di destinazione:",IDC_STATIC,27,257,77,8
-    LTEXT           "<Clicca qui per selezionare la cartella di destinazione>",IDC_STACKEDOUTPUTFOLDER,109,258,195,9
+    CONTROL         "Segnalazione visiva",IDC_WARN_FLASH,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,207,64,10
+    CONTROL         "Invia mail a",IDC_WARN_EMAIL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,192,120,10
+    CONTROL         "Crea file d'avviso in ",IDC_WARN_FILE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,207,180,10
+    GROUPBOX        "Opzioni",IDC_OPTIONS,7,227,306,65
+    CONTROL         "Salva immagini combinate ogni",IDC_SAVESTACKEDIMAGE, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,240,180,10
+    EDITTEXT        IDC_IMAGECOUNT,201,240,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "immagini",IDC_STATIC,255,241,50,8
+    LTEXT           "Cartella di destinazione:",IDC_STATIC,27,257,180,8
+    LTEXT           "<Clicca qui per selezionare la cartella di destinazione>",IDC_STACKEDOUTPUTFOLDER,191,257,226,8
     PUSHBUTTON      "Applica modifiche",IDC_APPLYCHANGES,319,10,69,14
     PUSHBUTTON      "Cancella modifiche",IDC_CANCELCHANGES,319,30,69,14
-    EDITTEXT        IDC_MINIMAGES,135,21,27,8,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "immagini siano disponibili",IDC_STATIC,165,22,77,8
-    LTEXT           "<Clicca qui per selezionare la cartella>",IDC_WARNINGFILEFOLDER,174,207,131,9
-    LTEXT           "<Clicca qui per impostare un indirizzo email>",IDC_EMAIL,150,194,154,9
-    PUSHBUTTON      "Azzera il conteggio delle email",IDC_RESETEMAILCOUNT,319,190,70,21,BS_MULTILINE | NOT WS_VISIBLE
-    GROUPBOX        "Filtri",IDC_FILTERS,7,278,306,50
-    LTEXT           "Processa solamente...",IDC_STATIC,16,288,71,8
-    CONTROL         "Immagini RAW (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,299,142,10
-    CONTROL         "Immagini FITS",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,313,57,10
-    CONTROL         "Immagini TIFF",IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,299,57,10
-    CONTROL         "Altre immagini (JPEG, BMP, GIF...)",IDC_PROCESS_OTHERS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,163,313,124,10
-    CONTROL         "Muovi i files non combinabili nella sotto-cartella 'NonStackable'",IDC_MOVENONSTACKABLE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,154,209,10
-    LTEXT           "(la sotto-cartella 'NonStackable' verrà creata se necessario)",IDC_STATIC,26,165,191,8
+    EDITTEXT        IDC_MINIMAGES,201,21,44,12,ES_RIGHT | ES_AUTOHSCROLL | ES_NUMBER | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "immagini siano disponibili",IDC_STATIC,255,22,66,8
+    LTEXT           "<Clicca qui per selezionare la cartella>",IDC_WARNINGFILEFOLDER,345,207,136,8
+    LTEXT           "<Clicca qui per impostare un indirizzo email>",IDC_EMAIL,345,193,160,8
+    PUSHBUTTON      "Azzera il conteggio delle email",IDC_RESETEMAILCOUNT,319,190,69,14,NOT WS_VISIBLE
+    GROUPBOX        "Filtri",IDC_FILTERS,7,300,306,50
+    LTEXT           "Processa solamente...",IDC_STATIC,16,310,49,8
+    CONTROL         "Immagini RAW (CR2, NEF, ORF, DNG...)",IDC_PROCESS_RAW, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,321,180,10
+    CONTROL         "Immagini FITS",IDC_PROCESS_FITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,335,180,10
+    CONTROL         "Immagini TIFF",IDC_PROCESS_TIFF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,321,180,10
+    CONTROL         "Altre immagini (JPEG, BMP, GIF...)",IDC_PROCESS_OTHERS, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,335,180,10
+    CONTROL         "Muovi i files non combinabili nella sotto-cartella 'NonStackable'", IDC_MOVENONSTACKABLE, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,154,250,10
+    LTEXT           "(la sotto-cartella 'NonStackable' verrà creata se necessario)",IDC_STATIC,26,165,250,8
     CONTROL         "",IDC_WARN_SKYBACKGROUND,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,82,16,10
-    CONTROL         "...Fondo Cielo è maggiore di",IDC_DONTSTACK_SKYBACKGROUND,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,82,103,10
-    EDITTEXT        IDC_MAX_SKYBACKGROUND,149,82,27,8,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
-    LTEXT           "%",IDC_STATIC,178,82,8,8
+    CONTROL         "...Fondo Cielo è maggiore di",IDC_DONTSTACK_SKYBACKGROUND, "Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,82,160,10
+    EDITTEXT        IDC_MAX_SKYBACKGROUND,201,82,44,12,ES_RIGHT | ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_RIGHT
+    LTEXT           "%",IDC_STATIC,255,82,8,8
+    CONTROL         "Usa tema scuro (riavvio richiesto)",IDC_DARKTHEME,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,274,180,10
 END
 
 IDD_RESTARTMONITORING DIALOGEX 0, 0, 217, 137
@@ -615,6 +614,7 @@ STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED 
                             "Siamo spiacenti, la tua camera %s non è supportata da LibRaw"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker non de-Bayer immagini a 8 bit"							
 END
 
 #endif    // Italian (Italy) resources

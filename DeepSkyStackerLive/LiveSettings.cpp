@@ -29,6 +29,9 @@ void	CLiveSettings::LoadFromRegistry()
 	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("SMTP"), m_strSMTP);
 	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Account"), m_strAccount);
 	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Object"), m_strObject);
+	DWORD dwDarkMode = 1;
+	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("DarkMode"), dwDarkMode);
+	m_bDarkMode = (dwDarkMode > 0);
 
 	if (!m_strSMTP.GetLength() && !m_strAccount.GetLength())
 	{
@@ -64,6 +67,9 @@ void	CLiveSettings::SaveToRegistry()
 	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("SMTP"), m_strSMTP);
 	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Account"), m_strAccount);
 	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("Object"), m_strObject);
+	DWORD dwDarkMode = m_bDarkMode ? 1 : 0;
+	reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("DarkMode"), dwDarkMode);
+	m_bDarkMode = (dwDarkMode > 0);
 };
 
 /* ------------------------------------------------------------------- */

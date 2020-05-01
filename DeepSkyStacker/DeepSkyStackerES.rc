@@ -1241,6 +1241,7 @@ BEGIN
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Exposición"
 	IDS_COLUMN_APERTURE		"Apertura"
+	IDS_COLUMN_FILTER		"Filtrar"
     IDS_COLUMN_STARS        "#Estrellas"
     IDS_COLUMN_SKYBACKGROUND "Fondo del Cielo"
 END
@@ -1712,6 +1713,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Lo sentimos, Libraw no reconoce la cámara %s"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker no se des-Bayer imágenes de 8 bits"
 END
 
 #endif    // Spanish (Spain, International Sort) resources

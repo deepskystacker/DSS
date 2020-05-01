@@ -108,6 +108,7 @@ private :
 	CButton				m_Process_FITS;
 	CButton				m_Process_TIFF;
 	CButton				m_Process_Others;
+	CButton				m_DarkTheme;
 
 	BOOL m_bDarkMode;
 

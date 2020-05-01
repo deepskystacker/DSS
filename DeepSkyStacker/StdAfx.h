@@ -74,6 +74,5 @@ BOOL CheckVersion(CString & strVersion);
 
 #include "BitmapExt.h"
 #include "DeepStackerDlg.h"
-#include "Utils.h"
 
 #endif // !defined(AFX_STDAFX_H__C280BBDC_7360_4663_B015_7C2BE32EF97A__INCLUDED_)

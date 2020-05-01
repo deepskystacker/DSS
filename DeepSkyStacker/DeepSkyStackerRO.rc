@@ -862,6 +862,7 @@ BEGIN
     IDS_COLUMN_ISO_GAIN     "ISO/Gain"
     IDS_COLUMN_EXPOSURE     "Expunere"
 	IDS_COLUMN_APERTURE		"Deschidere"
+	IDS_COLUMN_FILTER		"Filtru"
     IDS_COLUMN_STARS        "#Stele"
     IDS_COLUMN_SKYBACKGROUND "Fundal cer"
 END
@@ -1444,6 +1445,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_CAMERA_NOT_SUPPORTED "Ne pare rãu, LibRaw nu acceptã camera %s"
+	IDS_8BIT_FITS_NODEBAYER "DeepSkyStacker nu va debayeriza imaginile pe 8 biti"
 END
 
 #endif    // Romanian (Romania) resources

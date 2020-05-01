@@ -251,7 +251,7 @@ void _cdecl DebugTraceMemory( LPVOID lp, UINT uSize )
 			}
 			else
 			{
-				TCHAR sz[ 2 ] = {*pChar, 0 };
+				TCHAR sz[ 2 ] = {(TCHAR)*pChar, 0 };
 				_tcscat( szBufferText, sz );
 			}
 			_tcscat( szBufferText, _T("  ") );

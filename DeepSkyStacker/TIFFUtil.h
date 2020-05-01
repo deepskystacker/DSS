@@ -28,7 +28,7 @@ class CTIFFHeader
 protected :
 	int					w, h;
     uint16				spp,
-						bpp,
+						bps,
 						photo,
 						compression,
 						planarconfig,
@@ -51,8 +51,8 @@ public :
 	{
 		TIFFSetWarningHandler(nullptr);
 		TIFFSetWarningHandlerExt(nullptr);
-		TIFFSetErrorHandler(nullptr);
-		TIFFSetErrorHandlerExt(nullptr);
+		//TIFFSetErrorHandler(nullptr);
+		//TIFFSetErrorHandlerExt(nullptr);
 		DSSTIFFInitialize();
 		samplemax = 1.0;
 		samplemin = 0.0;
@@ -63,11 +63,11 @@ public :
 		cfatype  = 0;
 		cfa      = 0;
 		nrframes = 0;
-		m_DateTime.wYear = 0;
+		m_DateTime = { 0, 0, 0, 0, 0, 0, 0, 0};
         w = 0;
         h = 0;
         spp = 0;
-        bpp = 0;
+        bps = 0;
         photo = 0;
         compression = 0;
         planarconfig = 0;
@@ -94,7 +94,7 @@ public :
 
 	BOOL	IsFloat()
 	{
-		return (sampleformat = SAMPLEFORMAT_IEEEFP) && (bpp == 32);
+		return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bps == 32);
 	};
 
 	LONG	Height()
@@ -159,22 +159,22 @@ public :
 
 	BOOL	Is8Bits()
 	{
-		return (bpp == 8);
+		return (bps == 8);
 	};
 
 	BOOL	Is16Bits()
 	{
-		return (bpp == 16);
+		return (bps == 16);
 	};
 
 	BOOL	Is32Bits()
 	{
-		return (bpp == 32);
+		return (bps == 32);
 	};
 
 	LONG	BitPerChannels()
 	{
-		return bpp;
+		return bps;
 	};
 
 	LONG	NrChannels()
@@ -220,8 +220,10 @@ public :
 	BOOL	Read();
 	BOOL	Close();
 
+	// bool getInfo();
+
 	virtual BOOL	OnOpen() { return TRUE; };
-	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return FALSE;};
+	virtual void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return;};
 	virtual BOOL	OnClose() { return TRUE; };
 };
 
@@ -283,7 +285,7 @@ public :
 	BOOL	Close();
 
 	virtual BOOL	OnOpen() { return TRUE; };
-	virtual BOOL	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
+	virtual void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
 	virtual BOOL	OnClose() { return TRUE; };
 };
 
@@ -301,7 +303,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
 
 BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	LoadTIFFPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+int		LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
 
 /* ------------------------------------------------------------------- */
 

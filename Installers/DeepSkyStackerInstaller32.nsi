@@ -25,7 +25,7 @@ SetCompressor /SOLID lzma
 !define DSS_HELP_PT        "DeepSkyStacker Ajuda.chm"
 !define DSS_HELP_NL        "DeepSkyStacker Hulp.chm"
 
-!define DSS_RUNTIME_MFC    "mfc140.dll"
+!define DSS_RUNTIME_MFC    "mfc140u.dll"
 !define DSS_RUNTIME_CPP    "msvcp140.dll"
 !define DSS_RUNTIME_C      "vcruntime140.dll"
 !define DSS_RUNTIME_OMP    "vcomp140.dll"
@@ -33,8 +33,8 @@ SetCompressor /SOLID lzma
 !define DSS_RUNTIME_MSVC   "msvcrt.dll"
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
-!define DSS_VERSION        "4.2.3"                                  # For control panel
-!define DSS_VERSION_SUFFIX " Beta 1"                                # For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION        "4.2.4"                                  # For control panel
+!define DSS_VERSION_SUFFIX " Beta 4"                                # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"

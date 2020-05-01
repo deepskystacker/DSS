@@ -67,9 +67,10 @@ void CImageListTab::OnSize(UINT nType, int cx, int cy)
 
 /* ------------------------------------------------------------------- */
 
-void CImageListTab::SetToDarkMode()
+void CImageListTab::SetToDarkMode(bool bState)
 {
-	m_ImageList.SetBkColor(COLORREF(RGB(80, 80, 80)));
+	if(bState)
+		m_ImageList.SetBkColor(COLORREF(RGB(80, 80, 80)));
 }
 
 /* ------------------------------------------------------------------- */
@@ -188,7 +189,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 		ExposureToString(bmpInfo.m_fExposure, strText);
 		m_ImageList.SetItemText(nItem, COLUMN_EXPOSURE, (LPCTSTR)strText);
 
-		strText.Format("%.1f", bmpInfo.m_fAperture);
+		strText.Format(_T("%.1f"), bmpInfo.m_fAperture);
 		m_ImageList.SetItemText(nItem, COLUMN_APERTURE, (LPCTSTR)strText);
 
 		strText.Format(_T("%ld"), lfi.m_vStars.size());
