@@ -40,6 +40,9 @@
     <Filter Include="Kernel">
       <UniqueIdentifier>{5dd1951e-d858-4df9-92a8-647fe6af8ebe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Qt Porting">
+      <UniqueIdentifier>{db9eb54e-7edb-4ace-9ead-2b1cc7cb7fb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeepSkyStacker.cpp">
@@ -335,6 +338,9 @@
     </ClCompile>
     <ClCompile Include="..\Tools\CtrlCache.cpp">
       <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="qmfcapp.cpp">
+      <Filter>Qt Porting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -745,6 +751,9 @@
     <ClInclude Include="DSS-winpackagefamily.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="qmfcapp.h">
+      <Filter>Qt Porting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\4Corners.bmp">
@@ -1020,5 +1029,10 @@
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
       <Filter>Tools</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="QMfcApp">
+      <Filter>Qt Porting</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -24,6 +24,7 @@ public :
 	};
 
 	virtual BOOL InitInstance( );
+	virtual BOOL Run();
 
 };
 

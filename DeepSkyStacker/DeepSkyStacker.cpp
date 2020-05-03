@@ -15,6 +15,8 @@ using namespace Gdiplus;
 #include "SetUILanguage.h"
 #include <zexcept.h>
 
+#include "qmfcapp.h"
+
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -206,12 +208,36 @@ void	CheckRemainingTempFiles()
 /////////////////////////////////////////////////////////////////////////////
 // The one and only application object
 
+
+// The CDeepSkyStacker class, a subclass of CWinApp, runs the event loop in the default implementation of Run().
+// The MFC event loop is a standard Win32 event loop, but uses the CWinApp API PreTranslateMessage() to activate accelerators.
+//
+// In order to keep MFC accelerators working we must use the QApplication subclass QMfcApp that is provided by the Qt 
+// Windows Migration framework and which merges the Qt and the MFC event loops.
+// 
+// The first step of the Qt migration is to reimplement the Run() function in the CDeepSkyStacker class.
+// This is done by invoking the static run() function of the QMfcApp class to implicitly instantiate a QApplication object,
+// and run the event loops for both Qt and MFC
+//
 /* ------------------------------------------------------------------- */
+BOOL CDeepSkyStackerApp::Run()
+{
+	int result = QMfcApp::run(this);
+	delete qApp;
+	return result;
+}
 
 BOOL CDeepSkyStackerApp::InitInstance( )
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult;
+
+	//
+	// To be able to use Qt, we need to create a QApplication object.
+    // The QApplication class controls the event delivery and display management for all Qt objects and widgets.
+	//
+	// Qt initialization
+	QMfcApp::instance(this);
 
 	AfxInitRichEdit2();
 
