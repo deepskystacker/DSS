@@ -325,3 +325,30 @@ ASALocalRun/
 # CodeMaid settings
 CodeMaid.config
 /DeepSkyStacker/My Inspector Results - DeepSkyStacker
+/Installers/RunTime32/translations
+/Installers/RunTime32/styles
+/Installers/RunTime32/Qt5Widgets.dll
+/Installers/RunTime32/Qt5Svg.dll
+/Installers/RunTime32/Qt5Gui.dll
+/Installers/RunTime32/Qt5Core.dll
+/Installers/RunTime32/platforms
+/Installers/RunTime32/opengl32sw.dll
+/Installers/RunTime32/libGLESV2.dll
+/Installers/RunTime32/libEGL.dll
+/Installers/RunTime32/imageformats
+/Installers/RunTime32/iconengines/qsvgicon.dll
+/Installers/RunTime32/iconengines
+/Installers/RunTime32/D3Dcompiler_47.dll
+/Installers/RunTime64/translations
+/Installers/RunTime64/styles
+/Installers/RunTime64/Qt5Widgets.dll
+/Installers/RunTime64/Qt5Svg.dll
+/Installers/RunTime64/Qt5Gui.dll
+/Installers/RunTime64/Qt5Core.dll
+/Installers/RunTime64/platforms
+/Installers/RunTime64/opengl32sw.dll
+/Installers/RunTime64/libGLESV2.dll
+/Installers/RunTime64/libEGL.dll
+/Installers/RunTime64/imageformats
+/Installers/RunTime64/iconengines
+/Installers/RunTime64/D3Dcompiler_47.dll

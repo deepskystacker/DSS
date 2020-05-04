@@ -180,29 +180,31 @@
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <QtInstall>5.12.8</QtInstall>
+    <QtInstall>5.12.8x86</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <QtInstall>5.12.8</QtInstall>
+    <QtInstall>5.12.8x86</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <QtInstall>5.12.8</QtInstall>
+    <QtInstall>5.12.8x86</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>5.12.8</QtInstall>
+    <QtInstall>5.12.8x64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>5.12.8</QtInstall>
+    <QtInstall>5.12.8x64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
-    <QtInstall>5.12.8</QtInstall>
+    <QtInstall>5.12.8x64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -241,6 +243,13 @@
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
+    <PostBuildEvent>
+      <Message>Add necessary Qt stuff to the output directory</Message>
+      <Command>call C:\Qt\5.12.8\msvc2017\bin\qtenv2.bat
+
+C:\Qt\5.12.8\msvc2017\bin\windeployqt $(TargetPath)
+C:\Qt\5.12.8\msvc2017\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS\Installers\RunTime32 $(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <Midl>
@@ -280,6 +289,11 @@
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
+    <PostBuildEvent>
+      <Message>Add necessary Qt stuff to the output directory</Message>
+      <Command>call C:\Qt\5.12.8\msvc2017\bin\qtenv2.bat
+C:\Qt\5.12.8\msvc2017\bin\windeployqt $(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -315,6 +329,13 @@
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
+    <PostBuildEvent>
+      <Command>call C:\Qt\5.12.8\msvc2017_64\bin\qtenv2.bat
+
+C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)
+C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS\Installers\RunTime64 $(TargetPath)</Command>
+      <Message>Add necessary Qt stuff to the output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
@@ -353,6 +374,11 @@
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
+    <PostBuildEvent>
+      <Command>call C:\Qt\5.12.8\msvc2017_64\bin\qtenv2.bat;
+C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)</Command>
+      <Message>Add necessary Qt stuff to the output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
     <Midl>
@@ -495,6 +521,12 @@
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
+    <PostBuildEvent>
+      <Message>Add necessary Qt stuff to the output directory</Message>
+      <Command>call C:\Qt\5.12.8\msvc2017\bin\qtenv2.bat
+
+C:\Qt\5.12.8\msvc2017\bin\windeployqt --pdb $(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -534,6 +566,18 @@
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>call C:\Qt\5.12.8\msvc2017_64\bin\qtenv2.bat
+
+C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --pdb $(TargetPath)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Add necessary Qt stuff to the output directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\BitmapSlider.cpp" />
