@@ -193,11 +193,10 @@ void ZMasterLock::getLock()
             EnterCriticalSection( &_CritSec );
 
 #elif TARGET_OS_MAC
-	static const DWORD ONE_MILLISECOND = 1; // Milliseconds
 	/* Most common case - just enter the critical section */
 
 	if (_InitFlag == 2L) {
-		EnterCriticalSection(&_CritSec);
+		MPEnterCriticalRegion(_CritSec, kDurationForever);
 		return;
 	}
 
