@@ -12,9 +12,6 @@
 #include <QMutex>
 #include <QSettings>
 
-typedef std::vector<CWorkspaceSetting>				WORKSPACESETTINGVECTOR;
-typedef WORKSPACESETTINGVECTOR::iterator			WORKSPACESETTINGITERATOR;
-
 class CWorkspaceSettingsInternal
 {
 public:
@@ -357,9 +354,20 @@ bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 	static std::map<QString, QString> keyMap;
 	if (keyMap.empty())
 	{
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position", "Batch/Position/");
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Recommended\\Position", "Recommended/Position/");
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\StackingSteps\\Position", "StackingSteps/Position/");
+		keyMap.emplace("Software\\DeepSkyStacker\\EditStars", "EditStars/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Folders", "Folders/");
+		keyMap.emplace("Software\\DeepSkyStacker\\FileLists", "FileLists/");
 		keyMap.emplace("Software\\DeepSkyStacker\\FitsDDP", "FitsDDP/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Live", "Live/");
+		keyMap.emplace("Software\\DeepSkyStacker\\Output", "Output/");
+		keyMap.emplace("Software\\DeepSkyStacker\\DeepSkyStacker\\Position", "Position/");
 		keyMap.emplace("Software\\DeepSkyStacker\\RawDDP", "RawDDP/");
 		keyMap.emplace("Software\\DeepSkyStacker\\Register", "Register/");
+		keyMap.emplace("Software\\DeepSkyStacker\\SettingsFiles", "SettingsFiles/");
+		keyMap.emplace("Software\\DeepSkyStacker\\StarMask", "StarMask/");
 		keyMap.emplace("Software\\DeepSkyStacker\\Stacking", "Stacking/");
 	}
 

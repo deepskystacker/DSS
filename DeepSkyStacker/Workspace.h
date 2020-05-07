@@ -77,7 +77,7 @@ public :
 		return result;
 	};
 
-	QString key() const
+	inline QString key() const
 	{
 		return keyName;
 	};
@@ -85,10 +85,16 @@ public :
 	bool	setValue(const CWorkspaceSetting & ws);
 	void	setValue(const QVariant& value);
 
-	QVariant value() const;
+	inline QVariant value() const
+	{
+		return Value;
+	};
 };
 
 /* ------------------------------------------------------------------- */
+
+typedef std::vector<CWorkspaceSetting>				WORKSPACESETTINGVECTOR;
+typedef WORKSPACESETTINGVECTOR::iterator			WORKSPACESETTINGITERATOR;
 
 class CWorkspace
 {
