@@ -17,6 +17,8 @@ using namespace Gdiplus;
 
 #include "qmfcapp.h"
 
+#include <QSettings>
+
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -31,14 +33,14 @@ CString OUTPUTFILE_FILTERS;
 CString	OUTPUTLIST_FILTERS;
 CString SETTINGFILE_FILTERS;
 CString STARMASKFILE_FILTERS;
-BOOL	g_bShowRefStars = FALSE;
+bool	g_bShowRefStars = false;
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsExpired()
+bool	IsExpired()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 #ifdef DSSBETA
 
 	ZTRACE_RUNTIME("Check beta expiration\n");
@@ -52,7 +54,7 @@ BOOL	IsExpired()
 		((SystemTime.wYear==lMaxYear) && (SystemTime.wMonth>lMaxMonth)))
 	{
 		AfxMessageBox(_T("This beta version has expired\nYou can probably get another one or download the final release from the web site."), MB_OK | MB_ICONSTOP);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	ZTRACE_RUNTIME("Check beta expiration - ok\n");
@@ -63,10 +65,10 @@ BOOL	IsExpired()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CheckVersion(CString & strVersion)
+bool CheckVersion(CString & strVersion)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL		bResult = FALSE;
+	bool		bResult = false;
 
 	#ifndef DSSBETA
 	CRegistry			reg;
@@ -98,7 +100,7 @@ BOOL CheckVersion(CString & strVersion)
 
 			if (strVersion.Find(_T("DeepSkyStackerVersion="))==0)
 			{
-				bResult = TRUE;
+				bResult = true;
 				strVersion = strVersion.Right(strVersion.GetLength()-22);
 			}
 			else
@@ -106,7 +108,7 @@ BOOL CheckVersion(CString & strVersion)
 		}
 		CATCH_ALL(error)
 		{
-			bResult = FALSE;
+			bResult = false;
 		}
 		END_CATCH_ALL;
 	};
@@ -204,6 +206,7 @@ void	CheckRemainingTempFiles()
 
 };
 
+
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
 // The one and only application object
@@ -220,17 +223,17 @@ void	CheckRemainingTempFiles()
 // and run the event loops for both Qt and MFC
 //
 /* ------------------------------------------------------------------- */
-BOOL CDeepSkyStackerApp::Run()
+bool CDeepSkyStackerApp::Run()
 {
 	int result = QMfcApp::run(this);
 	delete qApp;
 	return result;
 }
 
-BOOL CDeepSkyStackerApp::InitInstance( )
+bool CDeepSkyStackerApp::InitInstance( )
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult;
+	bool			bResult;
 
 	//
 	// To be able to use Qt, we need to create a QApplication object.
@@ -238,6 +241,18 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	//
 	// Qt initialization
 	QMfcApp::instance(this);
+
+	//
+	// Set up organisation etc. for QSettings usage
+	//
+	QCoreApplication::setOrganizationName("DeepSkyStacker");
+	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
+	QCoreApplication::setApplicationName("DeepSkyStacker5");
+
+	//
+	// Record the current DSS Version
+	//
+	QSettings().setValue("Version", DSSVER_MAJOR);
 
 	AfxInitRichEdit2();
 
@@ -315,7 +330,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 
 	ZTRACE_RUNTIME("Checking Mutex");
 
-	hMutex = CreateMutex(nullptr, TRUE, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));
+	hMutex = CreateMutex(nullptr, true, _T("DeepSkyStacker.Mutex.UniqueID.12354687"));
 	if (GetLastError() == ERROR_ALREADY_EXISTS)
 		bFirstInstance = false;
 	ZTRACE_RUNTIME("Checking Mutex - ok");
@@ -356,7 +371,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	ZTRACE_RUNTIME("Initialize GDI+");
 
 	// Initialize GDI+.
-	gdiplusStartupInput.SuppressBackgroundThread = TRUE;
+	gdiplusStartupInput.SuppressBackgroundThread = true;
 	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, &gdiSO);
 	gdiSO.NotificationHook(&gdiHookToken);
 
