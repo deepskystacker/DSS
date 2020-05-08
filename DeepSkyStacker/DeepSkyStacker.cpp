@@ -249,15 +249,10 @@ bool CDeepSkyStackerApp::InitInstance( )
 	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 	QCoreApplication::setApplicationName("DeepSkyStacker5");
 
-	//
-	// Record the current DSS Version
-	//
-	QSettings().setValue("Version", DSSVER_MAJOR);
-
 	AfxInitRichEdit2();
 
 	bResult = CWinApp::InitInstance();
-	SetRegistryKey(_T("DeepSkyStacker"));
+	SetRegistryKey(_T("DeepSkyStacker5"));
 
 
 	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS\n");
