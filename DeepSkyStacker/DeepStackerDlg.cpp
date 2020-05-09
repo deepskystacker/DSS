@@ -482,16 +482,16 @@ void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath)
 	QString key = regBase += "/Maximized";
 	settings.setValue(key, (uint)dwMaximized);
 
-	key = regBase += "/Top";
+	key = regBase + "/Top";
 	settings.setValue(key, (uint)dwTop);
 
-	key = regBase += "/Left";
+	key = regBase + "/Left";
 	settings.setValue(key, (uint)dwLeft);
 
-	key = regBase += "/Width";
+	key = regBase + "/Width";
 	settings.setValue(key, (uint)dwWidth);
 
-	key = regBase += "/Height";
+	key = regBase + "/Height";
 	settings.setValue(key, (uint)dwHeight);
 
 };
