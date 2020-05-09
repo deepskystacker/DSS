@@ -479,7 +479,7 @@ void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath)
 	
 	ZTRACE_RUNTIME("Saving window position to: %s", szRegistryPath);
 	QString regBase(szRegistryPath);
-	QString key = regBase += "/Maximized";
+	QString key = regBase + "/Maximized";
 	settings.setValue(key, (uint)dwMaximized);
 
 	key = regBase + "/Top";
@@ -512,7 +512,7 @@ void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter)
 	ZTRACE_RUNTIME("Restoring window position from: %s", szRegistryPath);
 
 	QString regBase(szRegistryPath);
-	QString key = regBase += "/Maximized";
+	QString key = regBase + "/Maximized";
 	dwMaximized = settings.value(key).toUInt();
 
 	key = regBase += "/Top";
