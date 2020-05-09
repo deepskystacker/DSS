@@ -20,7 +20,7 @@ You will need to install Visual Studio 2017, Qt 5.12.8 and Qt VS Tools 2.4.3
 
 You will need to use QT VS Tools Options dialog to set up two named Qt Installations:
 
-	1. Called 5.12.8x86 pointing to msvc2017 sub-direcotry of your Qt install
+	1. Called 5.12.8x86 pointing to msvc2017 sub-directory of your Qt install
 		for example C:\Qt\5.12.8\msvc2017
 	2. Called 5.12.8x64 pointing to the msvc2017_64 sub-directory of your Qt install
 		for example C:\Qt\5.12.8\msvc2017_64
