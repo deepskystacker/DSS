@@ -1,24 +1,6 @@
 #ifndef __DSSCOMMON_H__
 #define __DSSCOMMON_H__
 
-#define REGENTRY_BASEKEY					_T("Software\\DeepSkyStacker")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER		_T("Software\\DeepSkyStacker\\DeepSkyStacker")
-#define REGENTRY_BASEKEY_EDITSTARS			_T("Software\\DeepSkyStacker\\EditStars")
-#define REGENTRY_BASEKEY_FOLDERS			_T("Software\\DeepSkyStacker\\Folders")
-#define REGENTRY_BASEKEY_REGISTERSETTINGS	_T("Software\\DeepSkyStacker\\Register")
-#define REGENTRY_BASEKEY_STACKINGSETTINGS	_T("Software\\DeepSkyStacker\\Stacking")
-#define REGENTRY_BASEKEY_RAWSETTINGS		_T("Software\\DeepSkyStacker\\RawDDP")
-#define REGENTRY_BASEKEY_FITSSETTINGS		_T("Software\\DeepSkyStacker\\FitsDDP")
-#define REGENTRY_BASEKEY_STARMASK			_T("Software\\DeepSkyStacker\\StarMask")
-#define REGENTRY_BASEKEY_FILELISTS			_T("Software\\DeepSkyStacker\\FileLists")
-#define REGENTRY_BASEKEY_SETTINGFILES		_T("Software\\DeepSkyStacker\\SettingsFiles")
-#define REGENTRY_BASEKEY_LIVE				_T("Software\\DeepSkyStacker\\Live")
-#define REGENTRY_BASEKEY_OUTPUT				_T("Software\\DeepSkyStacker\\Output")
-
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_POSITION		_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Position")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_STEPS_POSITION	_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\StackingSteps\\Position")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_RECO_POSITION	_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Recommended\\Position")
-#define REGENTRY_BASEKEY_DEEPSKYSTACKER_BATCH_POSITION	_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position")
 #define REGENTRY_BASEKEY_LIVE_POSITION					_T("Software\\DeepSkyStacker\\DeepSkyStackerLive\\Position")
 
 typedef enum PICTURETYPE
