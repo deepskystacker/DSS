@@ -276,7 +276,6 @@ void CAbout::OnOK()
 		settings.setValue("Language", "TR");
 		break;
 	};
-	settings.sync();
 
 	CDialog::OnOK();
 }
