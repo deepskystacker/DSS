@@ -515,13 +515,13 @@ void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter)
 	QString key = regBase + "/Maximized";
 	dwMaximized = settings.value(key).toUInt();
 
-	key = regBase += "/Top";
+	key = regBase + "/Top";
 	dwTop = settings.value(key).toUInt();
 
-	key = regBase += "/Left";
+	key = regBase + "/Left";
 	dwLeft = settings.value(key).toUInt();
 
-	key = regBase += "/Width";
+	key = regBase + "/Width";
 	dwWidth = settings.value(key).toUInt();
 
 	key = regBase += "/Height";
