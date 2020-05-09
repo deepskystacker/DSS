@@ -84,7 +84,8 @@ void CWorkspaceSetting::readSetting()
 {
 	QSettings settings;
 
-	settings.value(keyName, Value);
+	Value = settings.value(keyName);
+	type = Value.type();
 	dirty = false;
 };
 

@@ -19,28 +19,15 @@ private :
 	{
 		keyName		= s.keyName;
 		Value	= s.Value;
+		type = s.type;
 		dirty = s.dirty;
 	};
 
-    inline void Initialize() 
-    {
-		dirty	= false;
-    }
-
 public :
 	CWorkspaceSetting(const QString& name, const QVariant& value = QVariant())
+		: keyName(name), Value(value), dirty(false)
 	{
-        Initialize();
-
-		keyName = name;
-		Value	= value;
 		type = value.type();
-	};
-
-	CWorkspaceSetting(const char * const aName, const DWORD& aValue)
-	{
-		QString name(aName); QVariant value((uint)aValue);
-		CWorkspaceSetting(name, value);
 	};
 
 	CWorkspaceSetting & operator = (const CWorkspaceSetting & s)
