@@ -84,9 +84,15 @@ void CWorkspaceSetting::readSetting()
 {
 	QSettings settings;
 
-	Value = settings.value(keyName);
-	type = Value.type();
-	dirty = false;
+	// If there wasn't a valid stored value in the settings, we will be returned 
+	// a default QVariant. We for sure don't want to use that!
+	QVariant temp = settings.value(keyName);
+	if (QVariant() != temp)
+	{
+		Value = temp;
+		type = Value.type();
+		dirty = false;
+	}
 };
 
 /* ------------------------------------------------------------------- */
