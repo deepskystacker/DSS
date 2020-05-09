@@ -2,6 +2,7 @@
 #include "SetUILanguage.h"
 #include "Registry.h"
 #include "DSS-VersionHelpers.h"
+#include <QSettings>
 
 /* ------------------------------------------------------------------- */
 
@@ -198,37 +199,37 @@ typedef enum tagDSSLANGUAGE
 void	SetUILanguage()
 {
 	DSSLANGUAGE			DSSLanguage = DSSL_DEFAULT;
-	CRegistry			reg;
-	CString				strLanguage;
+	QSettings			settings;
+	QString				strLanguage;
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("Language"), strLanguage);
-	if (strLanguage.GetLength())
+	strLanguage = settings.value("Language").toString();
+	if (strLanguage.length())
 	{
-		if (!strLanguage.CompareNoCase(_T("FR")))
+		if (!strLanguage.compare("FR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_FRENCH;
-		else if (!strLanguage.CompareNoCase(_T("EN")))
+		else if (!strLanguage.compare("EN", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ENGLISH;
-		else if (!strLanguage.CompareNoCase(_T("ES")))
+		else if (!strLanguage.compare("ES", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_SPANISH;
-		else if (!strLanguage.CompareNoCase(_T("CZ")))
+		else if (!strLanguage.compare("CZ", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CZECH;
-		else if (!strLanguage.CompareNoCase(_T("IT")))
+		else if (!strLanguage.compare("IT", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ITALIAN;
-		else if (!strLanguage.CompareNoCase(_T("CAT")))
+		else if (!strLanguage.compare("CAT", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CATALAN;
-		else if (!strLanguage.CompareNoCase(_T("DE")))
+		else if (!strLanguage.compare("DE", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_GERMAN;
-		else if (!strLanguage.CompareNoCase(_T("NL")))
+		else if (!strLanguage.compare("NL", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_DUTCH;
-		else if (!strLanguage.CompareNoCase(_T("CN")))
+		else if (!strLanguage.compare("CN", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CHINESE;
-		else if (!strLanguage.CompareNoCase(_T("PTB")))
+		else if (!strLanguage.compare("PTB", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_PORTUGUESE;
-		else if (!strLanguage.CompareNoCase(_T("RO")))
+		else if (!strLanguage.compare("RO", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ROMANIAN;
-		else if (!strLanguage.CompareNoCase(_T("RU")))
+		else if (!strLanguage.compare("RU", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_RUSSIAN;
-		else if (!strLanguage.CompareNoCase(_T("TR")))
+		else if (!strLanguage.compare("TR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_TURKISH;
 	};
 

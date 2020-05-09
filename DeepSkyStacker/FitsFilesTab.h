@@ -47,7 +47,7 @@ class CFitsFilesTab : public CPropertyPage //CChildPropertyPage
 {
 	DECLARE_DYNCREATE(CFitsFilesTab)
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 	std::vector<CDSLR>	m_vDSLRs;
 
 // Construction

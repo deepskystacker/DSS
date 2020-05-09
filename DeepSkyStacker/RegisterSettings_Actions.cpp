@@ -15,7 +15,7 @@ CRegisterSettings_Actions::CRegisterSettings_Actions()
 	: CPropertyPage(CRegisterSettings_Actions::IDD)
 {
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -49,7 +49,7 @@ BOOL CRegisterSettings_Actions::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
 	return CPropertyPage::OnSetActive();

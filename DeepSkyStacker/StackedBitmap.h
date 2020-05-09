@@ -156,23 +156,23 @@ private :
 	LONG						m_lISOSpeed;
 	LONG						m_lGain;
 	LONG						m_lTotalTime;
-	BOOL						m_bMonochrome;
+	bool						m_bMonochrome;
 
 	CBezierAdjust				m_BezierAdjust;
 	CRGBHistogramAdjust 		m_HistoAdjust;
 
 private :
-	BOOL	LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
-	BOOL	LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
-	BOOL	LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	bool	LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	bool	LoadTIFF(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	bool	LoadFITS(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
 
-	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, BOOL bApplySettings);
+	COLORREF	GetPixel(float fRed, float fGreen, float fBlue, bool bApplySettings);
 
 public :
 	void	ReadSpecificTags(CTIFFReader * tiffReader);
 	void	ReadSpecificTags(CFITSReader * fitsReader);
-	void	WriteSpecificTags(CTIFFWriter * tiffWriter, BOOL bApplySettings);
-	void	WriteSpecificTags(CFITSWriter * fitsWriter, BOOL bApplySettings);
+	void	WriteSpecificTags(CTIFFWriter * tiffWriter, bool bApplySettings);
+	void	WriteSpecificTags(CFITSWriter * fitsWriter, bool bApplySettings);
 
 public :
 	CStackedBitmap() ;
@@ -184,7 +184,7 @@ public :
 		m_lOutputHeight = lHeight;
 	};
 
-	BOOL	Allocate(LONG lWidth, LONG lHeight, BOOL bMonochrome)
+	bool	Allocate(LONG lWidth, LONG lHeight, bool bMonochrome)
 	{
 		LONG			lSize;
 
@@ -232,9 +232,9 @@ public :
 		HistoAdjust = m_HistoAdjust;
 	};
 
-	COLORREF	GetPixel(LONG X, LONG Y, BOOL bApplySettings = TRUE);
-	COLORREF16	GetPixel16(LONG X, LONG Y, BOOL bApplySettings = TRUE);
-	COLORREF32	GetPixel32(LONG X, LONG Y, BOOL bApplySettings = TRUE);
+	COLORREF	GetPixel(LONG X, LONG Y, bool bApplySettings = true);
+	COLORREF16	GetPixel16(LONG X, LONG Y, bool bApplySettings = true);
+	COLORREF32	GetPixel32(LONG X, LONG Y, bool bApplySettings = true);
 
 
 	void		SetPixel(LONG X, LONG Y, double fRed, double fGreen, double fBlue)
@@ -249,7 +249,7 @@ public :
 		};
 	};
 
-	void		GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, double & fBlue, BOOL bApplySettings);
+	void		GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, double & fBlue, bool bApplySettings);
 
 	double		GetRedValue(LONG X, LONG Y)
 	{
@@ -300,16 +300,16 @@ public :
 		return m_lNrBitmaps;
 	};
 
-	BOOL	Load(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
+	bool	Load(LPCTSTR szStackedFile, CDSSProgress * pProgress = nullptr);
 	void	SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr);
-	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE, TIFFCOMPRESSION TiffComp = TC_NONE);
-	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE);
-	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, BOOL bApplySettings = TRUE, BOOL bFloat = FALSE);
+	void	SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, bool bApplySettings = true, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, bool bApplySettings = true, bool bFloat = false, TIFFCOMPRESSION TiffComp = TC_NONE);
+	void	SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, bool bApplySettings = true);
+	void	SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect = nullptr, CDSSProgress * pProgress = nullptr, bool bApplySettings = true, bool bFloat = false);
 #if !defined(PCL_PROJECT) && !defined(_CONSOLE)
 	HBITMAP	GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect = nullptr);
 #endif
-	BOOL	GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	bool	GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 
 	void	Clear()
 	{
@@ -336,7 +336,7 @@ public :
 		return m_lHeight;
 	};
 
-	BOOL	IsMonochrome()
+	bool	IsMonochrome()
 	{
 		return m_bMonochrome;
 	};

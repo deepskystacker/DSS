@@ -142,29 +142,29 @@ void	CWorkspaceSetting::setValue(const QVariant& value)
 void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 {
 	vSettings.clear();
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Method", (DWORD)MBP_AVERAGE));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Iteration", (DWORD)5));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Iteration", (uint)5));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", 2.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Debloom", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Method", (DWORD)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Iteration", (DWORD)5));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Iteration", (uint)5));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Method", (DWORD)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Iteration", (DWORD)5));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Iteration", (uint)5));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Method", (DWORD)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Iteration", (DWORD)5));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Iteration", (uint)5));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Kappa", 2.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/BackgroundCalibration", false));
 	vSettings.push_back(CWorkspaceSetting("Stacking/PerChannelBackgroundCalibration", true));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", (DWORD)BCI_RATIONAL));
-	vSettings.push_back(CWorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", (DWORD)RBCM_MAXIMUM));
+	vSettings.push_back(CWorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", (uint)BCI_RATIONAL));
+	vSettings.push_back(CWorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", (uint)RBCM_MAXIMUM));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/DarkOptimization", false));
 
@@ -175,39 +175,39 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/BadLinesDetection", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Mosaic", (DWORD)0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Mosaic", (uint)0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/CreateIntermediates", false));
 	vSettings.push_back(CWorkspaceSetting("Stacking/SaveCalibrated", false));
 	vSettings.push_back(CWorkspaceSetting("Stacking/SaveCalibratedDebayered", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/AlignmentTransformation", (DWORD)0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/AlignmentTransformation", (uint)0));
 	vSettings.push_back(CWorkspaceSetting("Stacking/LockCorners", true));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/PixelSizeMultiplier", (DWORD)1));
+	vSettings.push_back(CWorkspaceSetting("Stacking/PixelSizeMultiplier", (uint)1));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/AlignChannels", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/CometStackingMode", (DWORD)0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/CometStackingMode", (uint)0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/SaveCometImages", false));
 	vSettings.push_back(CWorkspaceSetting("Stacking/ApplyFilterToCometImages", true));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/IntermediateFileFormat", (DWORD)1));
+	vSettings.push_back(CWorkspaceSetting("Stacking/IntermediateFileFormat", (uint)1));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_DetectCleanHot", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_HotFilter", (DWORD)1));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_HotDetection", (DWORD)500));
+	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_HotFilter", (uint)1));
+	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_HotDetection", (uint)500));
 	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_DetectCleanCold", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ColdFilter", (DWORD)1));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ColdDetection", (DWORD)500));
+	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ColdFilter", (uint)1));
+	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ColdDetection", (uint)500));
 	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_SaveDeltaImage", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ReplaceMethod", (DWORD)1));
+	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ReplaceMethod", (uint)1));
 
-	vSettings.push_back(CWorkspaceSetting("Register/PercentStack", (DWORD)80));
+	vSettings.push_back(CWorkspaceSetting("Register/PercentStack", (uint)80));
   	vSettings.push_back(CWorkspaceSetting("Register/StackAfter", true));
   	vSettings.push_back(CWorkspaceSetting("Register/DetectHotPixels", true));
-  	vSettings.push_back(CWorkspaceSetting("Register/DetectionThreshold", (DWORD)10));
+  	vSettings.push_back(CWorkspaceSetting("Register/DetectionThreshold", (uint)10));
 	vSettings.push_back(CWorkspaceSetting("Register/ApplyMedianFilter", false));
 
 	vSettings.push_back(CWorkspaceSetting("RawDDP/Brightness", 1.0));
@@ -226,7 +226,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/RedScale", 1.0));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/BlueScale", 1.0));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/DSLR", ""));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/BayerPattern", (DWORD)4));
+	vSettings.push_back(CWorkspaceSetting("FitsDDP/BayerPattern", (uint)4));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/Interpolation", "Bilinear"));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/ForceUnsigned", false));
 
@@ -451,9 +451,8 @@ static std::deque<CWorkspaceSettingsInternal>	g_WSStack;
 
 CWorkspace::CWorkspace()
 { 
-
 	theLock->lock();
-	if (nullptr == g_pSettings);
+	if (nullptr == g_pSettings)
 	{
 		g_pSettings = std::make_shared <CWorkspaceSettings>();
 	}

@@ -50,7 +50,7 @@ DWORD	WINAPI	BackgroundLoadingThreadProc(LPVOID lpParameter)
 void CBackgroundLoading::LoadCurrentImage()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL						bLoaded = FALSE;
+	bool						bLoaded = false;
 
 
 	m_CriticalSection.Lock();
@@ -59,7 +59,7 @@ void CBackgroundLoading::LoadCurrentImage()
 	for (LONG i = 0;i<m_vLoadedImages.size() && !bLoaded;i++)
 	{
 		if (!m_vLoadedImages[i].m_strName.CompareNoCase(m_strToLoad))
-			bLoaded = TRUE;
+			bLoaded = true;
 	};
 	m_CriticalSection.Unlock();
 	if (!bLoaded && strImage.GetLength())
@@ -76,7 +76,7 @@ void CBackgroundLoading::LoadCurrentImage()
 			li.m_strName = strImage;
 			li.m_lLastUse= 0;
 			m_vLoadedImages.push_back(li);
-			bLoaded = TRUE;
+			bLoaded = true;
 			m_CriticalSection.Unlock();
 		};
 	};
@@ -93,7 +93,7 @@ void CBackgroundLoading::LoadCurrentImage()
 void CBackgroundLoading::BackgroundLoad()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bEnd = FALSE;
+	bool				bEnd = false;
 	MSG					msg;
 
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
@@ -106,7 +106,7 @@ void CBackgroundLoading::BackgroundLoad()
 			SetEvent(m_hEvent);
 		}
 		else if (msg.message == WM_BL_STOP)
-			bEnd = TRUE;
+			bEnd = true;
 	};
 };
 
@@ -118,7 +118,7 @@ void CBackgroundLoading::LoadImageInBackground(LPCTSTR szImage)
 	if (!m_hThread)
 	{
 		// Create the thread
-		m_hEvent	= CreateEvent(nullptr, TRUE, FALSE, nullptr);
+		m_hEvent	= CreateEvent(nullptr, true, false, nullptr);
 		if (m_hEvent)
 		{
 			m_hThread = CreateThread(nullptr, 0, BackgroundLoadingThreadProc, (LPVOID)this, CREATE_SUSPENDED, &m_dwThreadID);
@@ -127,7 +127,7 @@ void CBackgroundLoading::LoadImageInBackground(LPCTSTR szImage)
 				SetThreadPriority(m_hThread, THREAD_PRIORITY_BELOW_NORMAL);
 				ResetEvent(m_hEvent);
 				ResumeThread(m_hThread);
-				WaitForMultipleObjects(1, &m_hEvent, TRUE, INFINITE);
+				WaitForMultipleObjects(1, &m_hEvent, true, INFINITE);
 			};
 		};
 	};
@@ -146,10 +146,10 @@ void CBackgroundLoading::CloseThread()
 	if (m_hThread)
 	{
 		PostThreadMessage(m_dwThreadID, WM_BL_ABORT, 0, 0);
-		WaitForMultipleObjects(1, &m_hEvent, TRUE, INFINITE);
+		WaitForMultipleObjects(1, &m_hEvent, true, INFINITE);
 		PostThreadMessage(m_dwThreadID, WM_BL_STOP, 0, 0);
 
-		WaitForMultipleObjects(1, &m_hThread, TRUE, INFINITE);
+		WaitForMultipleObjects(1, &m_hThread, true, INFINITE);
 
 		CloseHandle(m_hThread);
 		CloseHandle(m_hEvent);
@@ -160,11 +160,11 @@ void CBackgroundLoading::CloseThread()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C32BitsBitmap ** pphBitmap)
+bool	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C32BitsBitmap ** pphBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
-	BOOL				bFound = FALSE;
+	bool				bResult = false;
+	bool				bFound = false;
 
 	// Check if the image is in the list first
 	if (ppBitmap)
@@ -178,7 +178,7 @@ BOOL	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C
 		{
 			m_vLoadedImages[i].m_pBitmap.CopyTo(ppBitmap);
 			m_vLoadedImages[i].m_hBitmap.CopyTo(pphBitmap);
-			bFound = TRUE;
+			bFound = true;
 		}
 		else
 		{
@@ -194,12 +194,12 @@ BOOL	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C
 			m_vLoadedImages.resize(MAXIMAGESINCACHE);
 		};
 
-		bResult = TRUE;
+		bResult = true;
 	}
 	else
 	{
 		LoadImageInBackground(szImage);
-		bResult = FALSE;
+		bResult = false;
 	};
 	m_CriticalSection.Unlock();
 

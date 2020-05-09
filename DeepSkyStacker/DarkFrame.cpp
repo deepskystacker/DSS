@@ -194,7 +194,7 @@ static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 
 /* ------------------------------------------------------------------- */
 
-inline BOOL IsInStdDev(double fValue, double fMean, double fStdDev)
+inline bool IsInStdDev(double fValue, double fMean, double fStdDev)
 {
 	ZFUNCTRACE_RUNTIME();
 	return (fValue >= fMean-2*fStdDev) && (fValue <= fMean+2*fStdDev);
@@ -1162,8 +1162,8 @@ double	CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap * pBitmap,
 	ZFUNCTRACE_RUNTIME();
 	double				fResult = 0;
 	CRGBHistogram		RGBHistogram;
-	BOOL				bMonochrome = pBitmap->IsMonochrome();
-	BOOL				bCFA = pBitmap->IsCFA();
+	bool				bMonochrome = pBitmap->IsMonochrome();
+	bool				bCFA = pBitmap->IsCFA();
 
 	RGBHistogram.SetSize(256.0, (LONG)65536);
 	for (LONG i = rc.left;i<=rc.right;i++)
@@ -1223,8 +1223,8 @@ double	CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap * pBitmap,
 void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bMonochrome = pBitmap->IsMonochrome();
-	BOOL				bCFA = pBitmap->IsCFA();
+	bool				bMonochrome = pBitmap->IsMonochrome();
+	bool				bCFA = pBitmap->IsCFA();
 	LONG				lWidth = pBitmap->RealWidth(),
 						lHeight = pBitmap->RealHeight();
 
@@ -1602,7 +1602,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bMonochrome = m_pMasterDark->IsMonochrome();
+	bool				bMonochrome = m_pMasterDark->IsMonochrome();
 	LONG				i, j;
 
 	if (bMonochrome)
@@ -1613,8 +1613,8 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 
 		for (i = 1;i<lWidth-1;i++)
 		{
-			BOOL					bLineInProgress = FALSE;
-			BOOL					bLighterLine = FALSE;
+			bool					bLineInProgress = false;
+			bool					bLighterLine = false;
 			LONG					lStartY = 0;
 			LONG					lNrPixels = 0;
 			LONG					lNrOutPixels = 0;
@@ -1626,7 +1626,7 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 									fValue,
 									fRightValue;
 
-				BOOL				bLighter,
+				bool				bLighter,
 									bDarker;
 
 				m_pMasterDark->GetPixel(i-1, j, fLeftValue);
@@ -1653,7 +1653,7 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 						if ((double)lNrOutPixels/(double)lNrPixels > 0.10)
 						{
 							// End the line - save it
-							bLineInProgress = FALSE;
+							bLineInProgress = false;
 							if (lNrPixels > 10)
 							{
 								for (LONG k = lStartY;k<lStartY+lNrPixels-lNrConsecutiveOutPixels;k++)
@@ -1671,7 +1671,7 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 					lNrPixels = 1;
 					lNrOutPixels = 0;
 					lNrConsecutiveOutPixels = 0;
-					bLineInProgress = TRUE;
+					bLineInProgress = true;
 					bLighterLine = bLighter;
 				};
 			};
@@ -1688,7 +1688,7 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 				};
 			};
 		};
-		m_bHotPixelDetected = TRUE;
+		m_bHotPixelDetected = true;
 	};
 };
 
@@ -1699,7 +1699,7 @@ class CFindHotPixelTask1 : public CMultitask
 public :
 	CRGBHistogram				m_RGBHistogram;
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	BOOL						m_bMonochrome;
+	bool						m_bMonochrome;
 	CDSSProgress *				m_pProgress;
 
 public :
@@ -1719,13 +1719,13 @@ public :
 		m_RGBHistogram.SetSize(256.0, (LONG)65535);
 	};
 
-	virtual BOOL	DoTask(HANDLE hEvent)
+	virtual bool	DoTask(HANDLE hEvent)
 	{
 		ZFUNCTRACE_RUNTIME();
-		BOOL				bResult = TRUE;
+		bool				bResult = true;
 
 		LONG				i, j;
-		BOOL				bEnd = FALSE;
+		bool				bEnd = false;
 		MSG					msg;
 		LONG				lWidth = m_pBitmap->RealWidth();
 
@@ -1769,19 +1769,19 @@ public :
 				SetEvent(hEvent);
 			}
 			else if (msg.message == WM_MT_STOP)
-				bEnd = TRUE;
+				bEnd = true;
 		};
 
 		m_CriticalSection.Lock();
 		m_RGBHistogram.AddValues(RGBHistogram);
 		m_CriticalSection.Unlock();
-		return TRUE;
+		return true;
 	};
 
-	virtual BOOL	Process()
+	virtual bool	Process()
 	{
 		ZFUNCTRACE_RUNTIME();
-		BOOL				bResult = TRUE;
+		bool				bResult = true;
 		LONG				lHeight = m_pBitmap->RealHeight();
 		LONG				i = 0;
 		LONG				lStep;
@@ -1817,7 +1817,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::RemoveContiguousHotPixels(BOOL bCFA)
+void	CDarkFrame::RemoveContiguousHotPixels(bool bCFA)
 {
 	ZFUNCTRACE_RUNTIME();
 	HOTPIXELVECTOR			vNewHotPixels;
@@ -1866,7 +1866,7 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 	{
 		CRGBHistogram		RGBHistogram;
 		LONG				i, j;
-		BOOL				bMonochrome = m_pMasterDark->IsMonochrome();
+		bool				bMonochrome = m_pMasterDark->IsMonochrome();
 
 		if (pProgress)
 		{
@@ -1935,7 +1935,7 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 								fRed,
 								fGreen,
 								fBlue;
-				BOOL			bHot = FALSE;
+				bool			bHot = false;
 
 				if (bMonochrome)
 				{
@@ -1972,7 +1972,7 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 		RemoveContiguousHotPixels(m_pMasterDark->IsCFA());
 	};
 
-	m_bHotPixelDetected = TRUE;
+	m_bHotPixelDetected = true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1987,15 +1987,15 @@ void	CDarkFrame::GetValidNeighbors(LONG lX, LONG lY, HOTPIXELVECTOR & vPixels, L
 			if ((i != lX) || (j != lY))
 			{
 				LONG				lWeight;
-				BOOL				bAdd = FALSE;
+				bool				bAdd = false;
 
 				lWeight = labs(1+lRadius-labs(lX - i)) + labs(1+lRadius-labs(lY - j));
 				CHotPixel			hp(i, j, lWeight);
 
 				if (!std::binary_search(m_vHotPixels.begin(), m_vHotPixels.end(), hp))
-					bAdd = TRUE;
+					bAdd = true;
 				if ((BayerColor != BAYER_UNKNOWN) && (m_pMasterDark->GetBayerColor(i, j) != BayerColor))
-					bAdd = FALSE;
+					bAdd = false;
 
 				if (bAdd)
 					vPixels.push_back(hp);
@@ -2029,11 +2029,11 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 			{
 				CFATransform = pCFABitmapInfo->GetCFATransformation();
 				if (CFATransform == CFAT_SUPERPIXEL)
-					pCFABitmapInfo->UseBilinear(TRUE);
+					pCFABitmapInfo->UseBilinear(true);
 			};
 
 			// Interpolate with neighbor pixels (level 1)
-			BOOL				bCFA = pBitmap->IsCFA();
+			bool				bCFA = pBitmap->IsCFA();
 
 
 			for (i = 0;i<m_vHotPixels.size();i++)
@@ -2061,7 +2061,7 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 
 			};
 			if (CFATransform == CFAT_SUPERPIXEL)
-				pCFABitmapInfo->UseSuperPixels(TRUE);
+				pCFABitmapInfo->UseSuperPixels(true);
 		}
 		else
 		{
@@ -2098,10 +2098,10 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
+bool	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	if (m_pMasterDark && m_pMasterDark->IsOk())
 	{

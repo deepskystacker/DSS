@@ -24,11 +24,11 @@ public :
 	CRunningStackingEngine();
 	~CRunningStackingEngine();
 
-	BOOL	ComputeOffset(CLightFrameInfo & lfi);
-	BOOL	AddImage(CLightFrameInfo & lfi, CDSSProgress * pProgress);
-	BOOL	GetStackedImage(CMemoryBitmap ** ppBitmap)
+	bool	ComputeOffset(CLightFrameInfo & lfi);
+	bool	AddImage(CLightFrameInfo & lfi, CDSSProgress * pProgress);
+	bool	GetStackedImage(CMemoryBitmap ** ppBitmap)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (ppBitmap)
 			*ppBitmap = nullptr;

@@ -20,7 +20,7 @@ CSettingsDlg::CSettingsDlg(CWnd* pParent /*=nullptr*/)
 {
 	//{{AFX_DATA_INIT(CSettingsDlg)
 	//}}AFX_DATA_INIT
-	m_bLoadSettings = FALSE;
+	m_bLoadSettings = false;
     m_pSettings = NULL;
 }
 
@@ -56,8 +56,8 @@ END_MESSAGE_MAP()
 void CSettingsDlg::UpdateControls()
 {
 	CString				strText;
-	BOOL				bAdd = FALSE;
-	BOOL				bLoad = FALSE;
+	bool				bAdd = false;
+	bool				bLoad = false;
 
 	m_Name.GetWindowText(strText);
 
@@ -69,7 +69,7 @@ void CSettingsDlg::UpdateControls()
 
 		lNrSettings = m_pSettings->Count();
 
-		bAdd = TRUE;
+		bAdd = true;
 
 		for (i = 0;i<lNrSettings && bAdd;i++)
 		{
@@ -78,12 +78,12 @@ void CSettingsDlg::UpdateControls()
 			m_pSettings->GetItem(i, cds);
 
 			if (!cds.m_strName.CompareNoCase(strText))
-				bAdd = FALSE;
+				bAdd = false;
 		};
 	};
 
 	if (m_List.GetCurSel() >= 0)
-		bLoad = TRUE;
+		bLoad = true;
 
 	m_Load.EnableWindow(bLoad);
 	m_Delete.EnableWindow(bLoad);
@@ -140,7 +140,7 @@ void CSettingsDlg::OnLoad()
 	if (lCurSel >= 0)
 	{
 		m_pSettings->GetItem(lCurSel, m_CurrentSetting);
-		m_bLoadSettings = TRUE;
+		m_bLoadSettings = true;
 	};
 
 	OnOK();
@@ -191,8 +191,8 @@ BOOL CSettingsDlg::OnInitDialog()
 
 	UpdateControls();
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */

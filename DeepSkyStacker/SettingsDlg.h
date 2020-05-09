@@ -17,7 +17,7 @@ class CSettingsDlg : public CDialog
 private :
 	CDSSSettings *			m_pSettings;
 	CDSSSetting				m_CurrentSetting;
-	BOOL					m_bLoadSettings;
+	bool					m_bLoadSettings;
 
 // Construction
 public:
@@ -51,7 +51,7 @@ public :
 		m_CurrentSetting	= cds;
 	};
 
-	BOOL	IsLoaded()
+	bool	IsLoaded()
 	{
 		return m_bLoadSettings;
 	};

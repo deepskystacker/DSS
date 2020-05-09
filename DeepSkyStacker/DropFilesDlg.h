@@ -43,7 +43,7 @@ private :
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	BOOL	IsMasterFile(LPCTSTR szFile);
+	bool	IsMasterFile(LPCTSTR szFile);
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
 

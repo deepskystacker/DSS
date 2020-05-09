@@ -54,7 +54,7 @@ private :
 public:
 	CStackingDlg(CWnd* pParent = nullptr);   // standard constructor
 
-	BOOL	SaveOnClose();
+	bool	SaveOnClose();
 
 	void	ClearStackList()
 	{
@@ -91,8 +91,8 @@ private :
 	void		UpdateListInfo();
 
 public :
-	BOOL		CheckDiskSpace(CAllStackingTasks & tasks);
-	BOOL		CheckWorkspaceChanges();
+	bool		CheckDiskSpace(CAllStackingTasks & tasks);
+	bool		CheckWorkspaceChanges();
 	void		CheckAskRegister();
 	void		RegisterCheckedImage();
 	void		CheckAll();
@@ -107,10 +107,10 @@ public :
 	void		ComputeOffsets();
 	void		LoadList();
 	void		SaveList();
-	void		ShowStars(BOOL bShow);
-	BOOL		ShowRecap(CAllStackingTasks & tasks);
-	BOOL		CheckStacking(CAllStackingTasks & tasks);
-	BOOL		CheckReadOnlyFolders(CAllStackingTasks & tasks);
+	void		ShowStars(bool bShow);
+	bool		ShowRecap(CAllStackingTasks & tasks);
+	bool		CheckStacking(CAllStackingTasks & tasks);
+	bool		CheckReadOnlyFolders(CAllStackingTasks & tasks);
 	void		ReloadCurrentImage();
 	void		DropFiles(HDROP hDropInfo);
 	void		SetStartingFileList(LPCTSTR szFileList)
@@ -127,7 +127,7 @@ private :
 	void		DoStacking(CAllStackingTasks & tasks, double fPercent = 100.0);
 
 	void		UpdateGroupTabs();
-	BOOL		CheckEditChanges();
+	bool		CheckEditChanges();
 	void		UpdateLayout();
 
 // Overrides

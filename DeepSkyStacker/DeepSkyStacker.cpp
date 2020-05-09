@@ -71,13 +71,12 @@ bool CheckVersion(CString & strVersion)
 	bool		bResult = false;
 
 	#ifndef DSSBETA
-	CRegistry			reg;
-	DWORD				bCheckVersion = 0;
+	QSettings			reg;
 	CStdioFile			*remotefile = nullptr;
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
-	if (bCheckVersion == 2)
-	{
+	bool checkVersion = settings.value("InternetCheck"), false).toBool();
+	if (checkVersion)
+	
 		#define HTTPBUFLEN    512 // Size of HTTP Buffer...
 		char		httpbuff[HTTPBUFLEN];
 
@@ -123,12 +122,15 @@ bool CheckVersion(CString & strVersion)
 void	AskForVersionChecking()
 {
 	ZFUNCTRACE_RUNTIME();
-	CRegistry			reg;
-	DWORD				bCheckVersion = 0;
-
-	reg.LoadKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
-
-	if (!bCheckVersion)
+	QSettings			settings;
+	
+	bool checkVersion = false;
+	
+	//
+	// If we don't know whether to do a version check or not
+	// we ask
+	//
+	if (QVariant() == settings.value("InternetCheck"))
 	{
 		CString			strMsg;
 		int				nResult;
@@ -137,10 +139,10 @@ void	AskForVersionChecking()
 
 		nResult = AfxMessageBox(strMsg, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION);
 		if (nResult == IDYES)
-			bCheckVersion = 2;
+			checkVersion = true;
 		else
-			bCheckVersion = 1;
-		reg.SaveKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
+			checkVersion = false;
+		settings.setValue("InternetCheck", checkVersion);
 	};
 };
 
@@ -158,7 +160,7 @@ void	CheckRemainingTempFiles()
 
 	ZTRACE_RUNTIME("Check remaining temp files\n");
 
-	CAllStackingTasks::GetTemporaryFilesFolder(strFolder);
+	CAllStackingTasks::GetTemporaryFilesFolder(QString((QChar*)strFolder.GetBuffer()));
 	strFileMask = strFolder;
 	strFileMask += "DSS*.tmp";
 
@@ -223,14 +225,14 @@ void	CheckRemainingTempFiles()
 // and run the event loops for both Qt and MFC
 //
 /* ------------------------------------------------------------------- */
-bool CDeepSkyStackerApp::Run()
+BOOL CDeepSkyStackerApp::Run()
 {
 	int result = QMfcApp::run(this);
 	delete qApp;
 	return result;
 }
 
-bool CDeepSkyStackerApp::InitInstance( )
+BOOL CDeepSkyStackerApp::InitInstance( )
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult;
@@ -252,7 +254,18 @@ bool CDeepSkyStackerApp::InitInstance( )
 	AfxInitRichEdit2();
 
 	bResult = CWinApp::InitInstance();
-	SetRegistryKey(_T("DeepSkyStacker5"));
+	SetRegistryKey(_T("DeepSkyStacker"));
+
+	//
+	// Set our Profile Name to DeepSkyStacker5 so native Windows registry stuff
+	// will be written under "DeepSkyStacker\\DeepSkyStacker5"
+	// 
+	// First free the string allocated by MFC at CWinApp startup.
+    // The string is allocated before InitInstance is called.
+	free((void*)m_pszProfileName);
+	// Change the name of the registry profile to use.
+	// The CWinApp destructor will free the memory.
+	m_pszProfileName = _tcsdup(_T("DeepSkyStacker5"));
 
 
 	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS\n");
@@ -342,19 +355,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	OleInitialize(nullptr);
 	ZTRACE_RUNTIME("OLE Initialize - ok");
 
-	ZTRACE_RUNTIME("Set UI Language");
-
-	SetUILanguage();
-
-	ZTRACE_RUNTIME("Set UI Language - ok");
-
 	{
-		DWORD			dwShowRefStars = 0;
-		CRegistry		reg;
+		bool		showRefStars = false;
+		QSettings		settings;
 
-		reg.LoadKey(REGENTRY_BASEKEY, _T("ShowRefStars"), dwShowRefStars);
+		showRefStars = settings.value("ShowRefStars", false).toBool();
 
-		g_bShowRefStars = dwShowRefStars;
+		g_bShowRefStars = showRefStars;
 	}
 
 	#ifndef NOGDIPLUS
@@ -387,6 +394,13 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 		theApp.InitInstance();
 
 		ZTRACE_RUNTIME("Initialize Application - ok");
+
+		ZTRACE_RUNTIME("Set UI Language");
+
+		SetUILanguage();
+
+		ZTRACE_RUNTIME("Set UI Language - ok");
+
 
 		INPUTFILE_FILTERS.LoadString(IDS_FILTER_INPUT);
 		OUTPUTFILE_FILTERS.LoadString(IDS_FILTER_OUTPUT);

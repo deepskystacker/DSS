@@ -19,7 +19,7 @@ static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 	DWORD					dwAlignmentTransformation = 2;
 	CWorkspace				workspace;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignmentTransformation"), dwAlignmentTransformation);
+	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 
 	if (dwAlignmentTransformation > TT_LAST)
 		dwAlignmentTransformation = 0;
@@ -54,14 +54,11 @@ static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 
 /* ------------------------------------------------------------------- */
 
-static BOOL AreCornersLocked()
+static bool AreCornersLocked()
 {
-	DWORD					dwLockCorners = 1;
 	CWorkspace				workspace;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("LockCorners"), dwLockCorners);
-
-	return dwLockCorners;
+	return workspace.value("Stacking/LockCorners", true).toBool();
 };
 
 /* ------------------------------------------------------------------- */
@@ -205,9 +202,9 @@ void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTIN
 
 typedef math::matrix<double>		DMATRIX;
 
-BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	LONG				i;
 	double				fXWidth = m_lWidth,
 						fYWidth = m_lHeight;
@@ -301,12 +298,12 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b14 = B(14, 0);
 				BilinearParameters.b15 = B(15, 0);
 
-				bResult = TRUE;
+				bResult = true;
 			};
 		}
 		catch(math::matrix_error const&)
 		{
-			bResult = FALSE;
+			bResult = false;
 		};
 	}
 	else if (TType == TT_BISQUARED)
@@ -374,12 +371,12 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b7 = B(7, 0);
 				BilinearParameters.b8 = B(8, 0);
 
-				bResult = TRUE;
+				bResult = true;
 			};
 		}
 		catch(math::matrix_error const&)
 		{
-			bResult = FALSE;
+			bResult = false;
 		};
 	}
 	else
@@ -428,12 +425,12 @@ BOOL CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 				BilinearParameters.b2 = B(2, 0);
 				BilinearParameters.b3 = B(3, 0);
 
-				bResult = TRUE;
+				bResult = true;
 			};
 		}
 		catch(math::matrix_error const&)
 		{
-			bResult = FALSE;
+			bResult = false;
 		};
 	};
 
@@ -471,10 +468,10 @@ double CMatchingStars::ValidateTransformation(const VOTINGPAIRVECTOR & vTestedPa
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE MaxTType)
+bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE MaxTType)
 {
-	BOOL								bResult = FALSE;
-	BOOL								bEnd = FALSE;
+	bool								bResult = false;
+	bool								bEnd = false;
 	VOTINGPAIRVECTOR					vPairs;
 	LONG								i;
 	LONG								lNrExtraPairs = 0;
@@ -566,7 +563,7 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 					LONG						lDeactivatedIndice;
 					double						fAverage;
 					double						fSigma;
-					BOOL						bOneDeactivated = FALSE;
+					bool						bOneDeactivated = false;
 
 					fAverage = Average(vDistances);
 					fSigma = Sigma(vDistances);
@@ -582,10 +579,10 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 							}
 							else
 							{
-								vPairs[lDeactivatedIndice].SetActive(FALSE);
+								vPairs[lDeactivatedIndice].SetActive(false);
 								if (vDistances[i] < 7)
-									vPairs[lDeactivatedIndice].SetPossible(TRUE);
-								bOneDeactivated = TRUE;
+									vPairs[lDeactivatedIndice].SetPossible(true);
+								bOneDeactivated = true;
 							};
 						};
 					};
@@ -603,8 +600,8 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 								}
 								else
 								{
-									vPairs[lDeactivatedIndice].SetActive(FALSE);
-									bOneDeactivated = TRUE;
+									vPairs[lDeactivatedIndice].SetActive(false);
+									bOneDeactivated = true;
 								};
 							};
 						};
@@ -618,7 +615,7 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						}
 						else
 						{
-							vPairs[lDeactivatedIndice].SetActive(FALSE);
+							vPairs[lDeactivatedIndice].SetActive(false);
 						};
 					};
 				}
@@ -637,34 +634,34 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						{
 							if (vPairs[i].IsPossible())
 							{
-								vPairs[i].SetActive(TRUE);
-								vPairs[i].SetPossible(FALSE);
+								vPairs[i].SetActive(true);
+								vPairs[i].SetPossible(false);
 							};
 						};
 
 						// Lock the pairs
 						for (i = 0;i<vAddedPairs.size();i++)
-							vPairs[vAddedPairs[i]].SetLocked(TRUE);
+							vPairs[vAddedPairs[i]].SetLocked(true);
 					};
 				};
 			}
 			else
 			{
 				// Remove the last pair of the selected pairs
-				vPairs[vAddedPairs[lNrPairs-1]].SetActive(FALSE);
+				vPairs[vAddedPairs[lNrPairs-1]].SetActive(false);
 			};
 		}
 		else
-			bEnd = TRUE;
+			bEnd = true;
 	};
 
 	if (vOkPairs.size())
-		bResult = TRUE;
+		bResult = true;
 
 	if (bResult)
 	{
 		// Try to add other pairs to refine the transformation
-		bEnd = FALSE;
+		bEnd = false;
 		CBilinearParameters		transform;
 		VOTINGPAIRVECTOR		vTempPairs;
 		LONG					lNrFails = 0;
@@ -676,12 +673,12 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 		TType		 = OkTType;
 
 		for (i = 0;i<vAddedPairs.size();i++)
-			vVotingPairs[vAddedPairs[i]].SetUsed(TRUE);
+			vVotingPairs[vAddedPairs[i]].SetUsed(true);
 
 		while (!bEnd)
 		{
 			double				fMaxDistance;
-			BOOL				bTransformOk = FALSE;
+			bool				bTransformOk = false;
 			LONG				lAddedPair = -1;
 
 			vTempPairs = vTestedPairs;
@@ -691,7 +688,7 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 				{
 					lAddedPair = i;
 					vTempPairs.push_back(vVotingPairs[i]);
-					vVotingPairs[lAddedPair].SetUsed(TRUE);
+					vVotingPairs[lAddedPair].SetUsed(true);
 				};
 			};
 
@@ -705,21 +702,21 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						vTestedPairs = vTempPairs;
 						BilinearParameters = transform;
 						vAddedPairs.push_back(lAddedPair);
-						bTransformOk = TRUE;
+						bTransformOk = true;
 					}
 					else
-						vVotingPairs[lAddedPair].SetActive(FALSE);
+						vVotingPairs[lAddedPair].SetActive(false);
 				};
 
 				if (!bTransformOk)
 				{
 					lNrFails++;
 					if (lNrFails > 3)
-						bEnd = TRUE;
+						bEnd = true;
 				}
 			}
 			else
-				bEnd = TRUE;
+				bEnd = true;
 		};
 	};
 
@@ -731,9 +728,9 @@ BOOL CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
 {
-	BOOL								bResult = FALSE;
+	bool								bResult = false;
 	VOTINGPAIRVECTOR					vPairs;
 
 	vPairs = vVotingPairs;
@@ -813,9 +810,9 @@ BOOL CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
+bool CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType)
 {
-	BOOL								bResult = FALSE;
+	bool								bResult = false;
 	std::vector<CBilinearParameters>	vBilinears;
 	LONG								i, j, k, l;
 
@@ -935,7 +932,7 @@ BOOL CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotin
 			BilinearParameters.b15 = Median(vB15);
 		};
 
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -945,9 +942,9 @@ BOOL CMatchingStars::ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotin
 
 const	float					TRIANGLETOLERANCE = (float)0.002;
 
-BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters)
+bool	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	// First compute the triangles for reference and target
 	if (!m_vRefTriangles.size())
@@ -957,7 +954,7 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 
 	// Then match the triangle filling the voting grid in the process
 	// At this point the triangles vectors are sorted along the X axis
-	BOOL						bEnd = FALSE;
+	bool						bEnd = false;
 	STARTRIANGLEITERATOR		itRef,
 								itLastUsedRef,
 								itTgt;
@@ -975,7 +972,7 @@ BOOL	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 			   itLastUsedRef++;
 
 		if (itLastUsedRef == m_vRefTriangles.end())
-			bEnd = TRUE;
+			bEnd = true;
 		else
 		{
 			// At this point (*itLastUsedRef).m_fX is less than (*itTgt).m_fX
@@ -1054,9 +1051,9 @@ inline bool CompareStarDistances (LONG lDist1, LONG lDist2)
 	return (*g_pvDists)[lDist1].m_fDistance > (*g_pvDists)[lDist2].m_fDistance;
 };
 
-BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters)
+bool	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters)
 {
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 	LONG					i = 0,
 							j = 0;
 
@@ -1218,12 +1215,12 @@ BOOL	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 void	CMatchingStars::AdjustSize()
 {
 	// if all the stars are in the top/left corner divide the sizes by two
-	BOOL				bAllInTopLeft = TRUE;
+	bool				bAllInTopLeft = true;
 
 	for (LONG i = 0;(i<m_vTgtStars.size()) && bAllInTopLeft;i++)
 	{
 		if ((m_vTgtStars[i].X>m_lWidth/2) || (m_vTgtStars[i].Y>m_lHeight/2))
-			bAllInTopLeft = FALSE;
+			bAllInTopLeft = false;
 	};
 
 	if (bAllInTopLeft)
@@ -1234,11 +1231,11 @@ void	CMatchingStars::AdjustSize()
 	else
 	{
 		// Check that stars are not outside the given sizes
-		BOOL			bOutside = FALSE;
+		bool			bOutside = false;
 		for (LONG i = 0;i<m_vTgtStars.size() && !bOutside;i++)
 		{
 			if ((m_vTgtStars[i].X>m_lWidth) || (m_vTgtStars[i].Y>m_lHeight))
-				bOutside = TRUE;
+				bOutside = true;
 		};
 		if (bOutside)
 		{
@@ -1250,9 +1247,9 @@ void	CMatchingStars::AdjustSize()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters)
+bool	CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters)
 {
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 
 	if (GetTransformationType() != TT_NONE)
 	{
@@ -1266,7 +1263,7 @@ BOOL	CMatchingStars::ComputeCoordinateTransformation(CBilinearParameters & Bilin
 	}
 	else
 	{
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;

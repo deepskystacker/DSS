@@ -63,7 +63,7 @@ BOOL CRawDDPSettings::OnInitDialog()
 	m_Sheet.AddPage(&m_tabRAWFiles);
 	m_Sheet.AddPage(&m_tabFITSFiles);
 
-	m_Sheet.EnableStackedTabs( FALSE );
+	m_Sheet.EnableStackedTabs( false );
 	m_Sheet.Create (this, WS_VISIBLE | WS_CHILD | WS_TABSTOP, 0);
 
 	m_Sheet.ModifyStyleEx (0, WS_EX_CONTROLPARENT);
@@ -71,12 +71,12 @@ BOOL CRawDDPSettings::OnInitDialog()
 
 	// move to left upper corner
 
-	m_Sheet.MoveWindow(&rcSettings, TRUE);
+	m_Sheet.MoveWindow(&rcSettings, true);
 	m_Sheet.ShowWindow(SW_SHOWNA);
 
 	// UpdateControls();
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */

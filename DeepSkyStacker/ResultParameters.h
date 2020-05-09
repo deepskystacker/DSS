@@ -30,7 +30,7 @@ public:
 		m_Mosaic.SetCheck(Mode == SM_MOSAIC);
 		m_Normal.SetCheck(Mode == SM_NORMAL);
 		m_Intersection.SetCheck(Mode==SM_INTERSECTION);
-		m_Custom.SetCheck(FALSE);
+		m_Custom.SetCheck(false);
 		m_ResultMode = Mode;
 		UpdateControls();
 	};
@@ -40,10 +40,10 @@ public:
 		return m_ResultMode;
 	};
 
-	void	SetCustom(BOOL bEnable, BOOL bUse)
+	void	SetCustom(bool bEnable, bool bUse)
 	{
 		if (bUse)
-			bEnable = TRUE;
+			bEnable = true;
 
 		m_bEnableCustom = bEnable;
 		m_bUseCustom    = bUse;
@@ -52,15 +52,15 @@ public:
 
 		if (bUse)
 		{
-			m_Mosaic.SetCheck(FALSE);
-			m_Normal.SetCheck(FALSE);
-			m_Intersection.SetCheck(FALSE);
-			m_Custom.SetCheck(TRUE);
+			m_Mosaic.SetCheck(false);
+			m_Normal.SetCheck(false);
+			m_Intersection.SetCheck(false);
+			m_Custom.SetCheck(true);
 		};
 		UpdateControls();
 	};
 
-	BOOL	GetCustom()
+	bool	GetCustom()
 	{
 		return m_bUseCustom;
 	};
@@ -76,13 +76,13 @@ public:
 		return m_lDrizzle;
 	};
 
-	void	SetAlignChannels(BOOL bAlignChannels)
+	void	SetAlignChannels(bool bAlignChannels)
 	{
 		m_bAlignChannels = bAlignChannels;
 		UpdateControls();
 	};
 
-	BOOL	GetAlignChannels()
+	bool	GetAlignChannels()
 	{
 		return m_bAlignChannels;
 	};
@@ -90,7 +90,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 
 	void				UpdateControls();
 
@@ -113,9 +113,9 @@ public :
 	CButton				m_AlignChannels;
 
 	STACKINGMODE		m_ResultMode;
-	BOOL				m_bEnableCustom;
-	BOOL				m_bUseCustom;
+	bool				m_bEnableCustom;
+	bool				m_bUseCustom;
 	LONG				m_lDrizzle;
-	BOOL				m_bAlignChannels;
+	bool				m_bAlignChannels;
 	afx_msg void OnBnClickedAlignchannels();
 };

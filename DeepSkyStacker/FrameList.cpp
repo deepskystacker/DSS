@@ -3,24 +3,30 @@
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include <direct.h>
+#include <QSettings>
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	CMRUList::InitFromRegistry()
+void	CMRUList::readSettings()
 {
-	CRegistry			reg;
+	QSettings			settings;
 	DWORD				dwNrValues = 0;
 
 	m_vLists.clear();
-	reg.LoadKey(m_strBasePath, _T("NrMRU"), dwNrValues);
+
+	QString keyName((QChar *)m_strBasePath.GetBuffer());
+	keyName += "/NrMRU";
+
+	dwNrValues = settings.value(keyName, 0).toUInt();
+
 	for (LONG i = 0;i<dwNrValues;i++)
 	{
-		CString			strKey;
-		CString			strValue;
+		QString keyName = QString("%1/MRU%2")
+			.arg((QChar *)m_strBasePath.GetBuffer()).arg(i);
 
-		strKey.Format(_T("MRU%ld"), i);
-		reg.LoadKey(m_strBasePath, (LPCTSTR)strKey, strValue);
+		QString temp = settings.value(keyName).toString();
+		CString strValue((LPCTSTR)temp.utf16());
 
 		FILE *			hFile;
 
@@ -35,20 +41,25 @@ void	CMRUList::InitFromRegistry()
 
 /* ------------------------------------------------------------------- */
 
-void	CMRUList::SaveToRegistry()
+void	CMRUList::saveSettings()
 {
-	CRegistry			reg;
+	QSettings	settings;
+
+	QString keyName((QChar *)m_strBasePath.GetBuffer());
 
 	// Clear all the entries first
-	reg.DeleteKey(m_strBasePath);
+	settings.remove(keyName);
 
-	reg.SaveKey(m_strBasePath, _T("NrMRU"), (DWORD)m_vLists.size());
+	keyName += "NrMRU";
+	
+	settings.setValue(keyName, (uint)m_vLists.size());
 	for (LONG i = 0;i<m_vLists.size();i++)
 	{
-		CString			strKey;
+		QString keyName = QString("%1/MRU%2")
+			.arg((QChar *)m_strBasePath.GetBuffer()).arg(i);
+		QString value((QChar *)m_vLists[i].GetBuffer());
 
-		strKey.Format(_T("MRU%ld"), i);
-		reg.SaveKey(m_strBasePath, (LPCTSTR)strKey, (LPCTSTR)m_vLists[i]);
+		settings.setValue(keyName, value);
 	};
 };
 
@@ -57,14 +68,14 @@ void	CMRUList::SaveToRegistry()
 
 void	CMRUList::Add(LPCTSTR szList)
 {
-	BOOL				bFound = FALSE;
+	bool				bFound = false;
 	LONG				lFoundIndice = -1;
 
 	for (LONG i = 0;i<m_vLists.size() && !bFound;i++)
 	{
 		if (!m_vLists[i].CompareNoCase(szList))
 		{
-			bFound = TRUE;
+			bFound = true;
 			lFoundIndice = i;
 		};
 	};
@@ -199,8 +210,8 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 		CWorkspace				workspace;
 
 		workspace.SaveToFile(hFile);
-		workspace.ResetDirty();
-		m_bDirty = FALSE;
+		workspace.setDirty();
+		m_bDirty = false;
 
 		fclose(hFile);
 	};
@@ -208,9 +219,9 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-static BOOL ParseLine(LPCTSTR szLine, LONG & lChecked, CString & strType, CString & strFile)
+static bool ParseLine(LPCTSTR szLine, LONG & lChecked, CString & strType, CString & strFile)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	LPCTSTR				szPos = szLine;
 	LONG				lPos = 0;
 	LONG				lTab1 = -1,
@@ -251,7 +262,7 @@ static BOOL ParseLine(LPCTSTR szLine, LONG & lChecked, CString & strType, CStrin
 		strType = strLine.Mid(lTab1+1, lTab2-lTab1-1);
 		strFile = strLine.Mid(lTab2+1, lEnd-lTab2-1);
 
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -259,9 +270,9 @@ static BOOL ParseLine(LPCTSTR szLine, LONG & lChecked, CString & strType, CStrin
 
 /* ------------------------------------------------------------------- */
 
-static BOOL	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
+static bool	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	CString				strLine = szLine;
 
 	if (strLine.Left(9) == _T("#GROUPID#"))
@@ -276,7 +287,7 @@ static BOOL	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
 			szPos++;
 		};
 		dwGroupID = _ttol(strGroup);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -296,7 +307,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 	{
 		CHAR			szBuffer[2000];
 		CString			strValue;
-		BOOL			bContinue = FALSE;
+		bool			bContinue = false;
 
 		CString		strBaseDirectory;
 		TCHAR		szDir[1 + _MAX_DIR];
@@ -320,17 +331,17 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 		{
 			strValue = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer, CP_UTF8);
 			if (!strValue.CompareNoCase(_T("DSS file list\n")))
-				bContinue = TRUE;
+				bContinue = true;
 		}
 
 		if (bContinue)
 		{
-			bContinue = FALSE;
+			bContinue = false;
 			if (fgets(szBuffer, sizeof(szBuffer), hFile))
 			{
 				strValue = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer, CP_UTF8);
 				if (!strValue.CompareNoCase(_T("CHECKED\tTYPE\tFILE\n")))
-					bContinue = TRUE;
+					bContinue = true;
 			}
 		};
 
@@ -347,7 +358,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 				CString			strFile;
 				CString			strLine((LPCTSTR)CA2CTEX<sizeof(szLine)>(szLine, CP_UTF8));
 
-				BOOL			bUseAsStarting = FALSE;
+				bool			bUseAsStarting = false;
 
 				if (workspace.ReadFromString(strLine))
 				{
@@ -372,7 +383,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 					else if (!strType.CompareNoCase(_T("reflight")))
 					{
 						Type = PICTURETYPE_REFLIGHTFRAME;
-						bUseAsStarting = TRUE;
+						bUseAsStarting = true;
 					};
 
 					if (Type != PICTURETYPE_UNKNOWN)
@@ -412,10 +423,10 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 										lb.m_bUseAsStarting = bUseAsStarting;
 										CLightFrameInfo			bmpInfo;
 
-										bmpInfo.SetBitmap(pszAbsoluteFile, FALSE);
+										bmpInfo.SetBitmap(pszAbsoluteFile, false);
 										if (bmpInfo.m_bInfoOk)
 										{
-											lb.m_bRegistered = TRUE;
+											lb.m_bRegistered = true;
 											lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
 											lb.m_fFWHM			 = bmpInfo.m_fFWHM;
 											lb.m_lNrStars		 = (DWORD)bmpInfo.m_vStars.size();
@@ -432,7 +443,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 				};
 			};
 
-			workspace.ResetDirty();
+			workspace.setDirty();
 		};
 
 
@@ -446,7 +457,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 			free(szOldCWD);
 		}
 	};
-	m_bDirty = FALSE;
+	m_bDirty = false;
 	SetCursor(::LoadCursor(nullptr, IDC_ARROW));
 };
 
@@ -455,8 +466,8 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
 {
 	LONG				lNrComets = 0;
-	BOOL				bReferenceFrameHasComet = FALSE;
-	BOOL				bReferenceFrameSet = FALSE;
+	bool				bReferenceFrameHasComet = false;
+	bool				bReferenceFrameSet = false;
 	double				fMaxScore = -1.0;
 
 	if (m_vFiles.size())
@@ -473,7 +484,7 @@ void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
 				{
 					if (m_vFiles[i].m_bUseAsStarting)
 					{
-						bReferenceFrameSet = TRUE;
+						bReferenceFrameSet = true;
 						bReferenceFrameHasComet = m_vFiles[i].m_bComet;
 					}
 					if (!bReferenceFrameSet && (m_vFiles[i].m_fOverallQuality > fMaxScore))
@@ -488,7 +499,7 @@ void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
 			};
 
 			if (lNrComets>1 && bReferenceFrameHasComet)
-				tasks.SetCometAvailable(TRUE);
+				tasks.SetCometAvailable(true);
 
 			tasks.m_dwJobID = Job.m_ID;
 			tasks.m_strJob  = Job.m_strName;
@@ -498,10 +509,10 @@ void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CFrameList::GetReferenceFrame(CString & strReferenceFrame)
+bool CFrameList::GetReferenceFrame(CString & strReferenceFrame)
 {
 	// First search for a reference frame
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	for (LONG i = 0;i<m_vFiles.size() && !bResult;i++)
 	{
@@ -510,7 +521,7 @@ BOOL CFrameList::GetReferenceFrame(CString & strReferenceFrame)
 		{
 			if (m_vFiles[i].m_bUseAsStarting)
 			{
-				bResult = TRUE;
+				bResult = true;
 				strReferenceFrame = m_vFiles[i].m_strFileName;
 			};
 		};

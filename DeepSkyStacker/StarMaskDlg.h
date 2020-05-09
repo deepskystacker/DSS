@@ -23,7 +23,7 @@ public:
 		m_strOutputFile += "StarMask";
 	};
 
-	void	GetOutputFileName(CString & strOutputFile, BOOL & bFits)
+	void	GetOutputFileName(CString & strOutputFile, bool & bFits)
 	{
 		strOutputFile = m_strOutputFile;
 		bFits		  = m_bOutputFITS;
@@ -44,11 +44,11 @@ protected:
 private :
 	void	UpdateTexts();
 	void	UpdateStarShapePreview();
-	BOOL	AskOutputFile();
+	bool	AskOutputFile();
 
 private :
 	CString					m_strOutputFile;
-	BOOL					m_bOutputFITS;
+	bool					m_bOutputFITS;
 	CString					m_StarThresholdMask;
 	CString					m_MinSizeMask;
 	CString					m_MaxSizeMask;

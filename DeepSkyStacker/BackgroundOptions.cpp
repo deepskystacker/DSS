@@ -70,23 +70,23 @@ BOOL CBackgroundOptions::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	if ((m_CalibrationMode == BCM_NONE) || (m_CalibrationMode == BCM_PERCHANNEL))
-		m_None.SetCheck(TRUE);
+		m_None.SetCheck(true);
 	else if (m_RGBCalibrationMethod == RBCM_MINIMUM)
-		m_Minimum.SetCheck(TRUE);
+		m_Minimum.SetCheck(true);
 	else if (m_RGBCalibrationMethod == RBCM_MIDDLE)
-		m_Middle.SetCheck(TRUE);
+		m_Middle.SetCheck(true);
 	else
-		m_Maximum.SetCheck(TRUE);
+		m_Maximum.SetCheck(true);
 
 	if (m_CalibrationInterpolation == BCI_LINEAR)
-		m_Linear.SetCheck(TRUE);
+		m_Linear.SetCheck(true);
 	else
-		m_Rational.SetCheck(TRUE);
+		m_Rational.SetCheck(true);
 
 	UpdateCalibrationPreview();
 	UpdateRGBCalibrationPreview();
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -100,7 +100,7 @@ void CBackgroundOptions::OnOK()
 	else
 		m_CalibrationInterpolation = BCI_RATIONAL;
 
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibrationInterpolation"), (DWORD)m_CalibrationInterpolation);
+	workspace.setValue("Stacking/BackgroundCalibrationInterpolation", (uint)m_CalibrationInterpolation);
 
 	if (!m_None.GetCheck())
 	{
@@ -113,7 +113,7 @@ void CBackgroundOptions::OnOK()
 			m_RGBCalibrationMethod = RBCM_MAXIMUM;
 
 
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("RGBBackgroundCalibrationMethod"), (DWORD)m_RGBCalibrationMethod);
+		workspace.setValue("Stacking/RGBBackgroundCalibrationMethod", (uint)m_RGBCalibrationMethod);
 	}
 	else if (m_CalibrationMode == BCM_RGB)
 	{
@@ -153,7 +153,7 @@ void CBackgroundOptions::OnBnClickedLinear()
 {
 	if (m_Linear.GetCheck())
 	{
-		m_Rational.SetCheck(FALSE);
+		m_Rational.SetCheck(false);
 		UpdateCalibrationPreview();
 	};
 }
@@ -164,7 +164,7 @@ void CBackgroundOptions::OnBnClickedRational()
 {
 	if (m_Rational.GetCheck())
 	{
-		m_Linear.SetCheck(FALSE);
+		m_Linear.SetCheck(false);
 		UpdateCalibrationPreview();
 	};
 }
@@ -175,9 +175,9 @@ void CBackgroundOptions::OnBnClickedNone()
 {
 	if (m_None.GetCheck())
 	{
-		m_Minimum.SetCheck(FALSE);
-		m_Middle.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
+		m_Minimum.SetCheck(false);
+		m_Middle.SetCheck(false);
+		m_Maximum.SetCheck(false);
 		UpdateRGBCalibrationPreview();
 	};
 }
@@ -188,9 +188,9 @@ void CBackgroundOptions::OnBnClickedMinimum()
 {
 	if (m_Minimum.GetCheck())
 	{
-		m_None.SetCheck(FALSE);
-		m_Middle.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
+		m_None.SetCheck(false);
+		m_Middle.SetCheck(false);
+		m_Maximum.SetCheck(false);
 		UpdateRGBCalibrationPreview();
 	};
 }
@@ -201,9 +201,9 @@ void CBackgroundOptions::OnBnClickedMiddle()
 {
 	if (m_Middle.GetCheck())
 	{
-		m_None.SetCheck(FALSE);
-		m_Minimum.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
+		m_None.SetCheck(false);
+		m_Minimum.SetCheck(false);
+		m_Maximum.SetCheck(false);
 		UpdateRGBCalibrationPreview();
 	};
 }
@@ -214,9 +214,9 @@ void CBackgroundOptions::OnBnClickedMaximum()
 {
 	if (m_Maximum.GetCheck())
 	{
-		m_None.SetCheck(FALSE);
-		m_Minimum.SetCheck(FALSE);
-		m_Middle.SetCheck(FALSE);
+		m_None.SetCheck(false);
+		m_Minimum.SetCheck(false);
+		m_Middle.SetCheck(false);
 		UpdateRGBCalibrationPreview();
 	};
 }

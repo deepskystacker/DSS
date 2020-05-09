@@ -25,7 +25,7 @@ CLuminanceTab::CLuminanceTab() : CChildPropertyPage(CLuminanceTab::IDD)
 	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 CLuminanceTab::~CLuminanceTab()
@@ -74,22 +74,22 @@ BOOL CLuminanceTab::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
-		m_Redo.DrawTransparent(TRUE);
-		m_Undo.DrawTransparent(TRUE);
-		m_Redo.SetFlat(TRUE);
-		m_Undo.SetFlat(TRUE);
+		m_Redo.DrawTransparent(true);
+		m_Undo.DrawTransparent(true);
+		m_Redo.SetFlat(true);
+		m_Undo.SetFlat(true);
 		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
 		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
 
 		m_Redo.SetTooltipText(IDS_REDOLASTSETTINGS);
 		m_Undo.SetTooltipText(IDS_UNDOLASTSETTINGS);
 
-		m_Settings.DrawTransparent(TRUE);
-		m_Settings.SetFlat(TRUE);
+		m_Settings.DrawTransparent(true);
+		m_Settings.SetFlat(true);
 		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 
 		m_DarknessTitle.SetTextColor(RGB(0, 0, 0));
 		m_DarknessTitle.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);

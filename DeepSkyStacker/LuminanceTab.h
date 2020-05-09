@@ -19,7 +19,7 @@ class CLuminanceTab : public CChildPropertyPage //CChildPropertyPage
 {
 	DECLARE_DYNCREATE(CLuminanceTab)
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 
 // Construction
 public:

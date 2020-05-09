@@ -5,6 +5,7 @@
 #include "DeepSkyStacker.h"
 #include "StarMaskDlg.h"
 #include "Registry.h"
+#include <QSettings>
 
 
 // CStarMaskDlg dialog
@@ -15,7 +16,7 @@ class CSaveMaskDlg : public CFileDialog
 	DECLARE_DYNAMIC(CSaveMaskDlg)
 
 public :
-	CSaveMaskDlg(BOOL bOpenFileDialog, // TRUE for FileOpen, FALSE for FileSaveAs
+	CSaveMaskDlg(bool bOpenFileDialog, // true for FileOpen, false for FileSaveAs
 		LPCTSTR lpszDefExt = nullptr,
 		LPCTSTR lpszFileName = nullptr,
 		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
@@ -54,7 +55,7 @@ IMPLEMENT_DYNAMIC(CStarMaskDlg, CDialog)
 CStarMaskDlg::CStarMaskDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStarMaskDlg::IDD, pParent)
 {
-	m_bOutputFITS = FALSE;
+	m_bOutputFITS = false;
 }
 
 /* ------------------------------------------------------------------- */
@@ -167,57 +168,49 @@ BOOL CStarMaskDlg::OnInitDialog()
 	m_Percent.SetRange(10, 200);
 	m_Pixels.SetRange(0, 10);
 
-	CRegistry			reg;
-	DWORD				bHotPixels = 0;
-	DWORD				dwThreshold = 10;
-	DWORD				dwPercent = 100;
-	DWORD				dwPixel = 0;
-	DWORD				dwMinSize = 2;
-	DWORD				dwMaxSize = 25;
-	DWORD				dwStarShape = 0;
+	QSettings	settings;
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("StarShape"), dwStarShape);
+	DWORD dwStarShape = settings.value("StarMask/StarShape", 0).toUInt();
 	m_StarShape.SetCurSel(dwStarShape);
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectHotPixels"), bHotPixels);
+	bool bHotPixels = settings.value("StarMask/DetectHotPixels", false).toBool();
 	m_HotPixels.SetCheck(bHotPixels);
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectionThreshold"), dwThreshold);
+	DWORD dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
 	m_StarThreshold.SetPos(dwThreshold);
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("PercentRadius"), dwPercent);
+	DWORD dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
 	m_Percent.SetPos(dwPercent);
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("PixelIncrease"), dwPixel);
+	DWORD dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
 	m_Pixels.SetPos(dwPixel);
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("MinSize"), dwMinSize);
+	DWORD dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
 	m_MinSize.SetPos(dwMinSize);
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("MaxSize"), dwMaxSize);
+	DWORD dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
 	m_MaxSize.SetPos(dwMaxSize);
 
 	UpdateTexts();
 	UpdateStarShapePreview();
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStarMaskDlg::AskOutputFile()
+bool CStarMaskDlg::AskOutputFile()
 {
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 	CString					strTitle;
-	CRegistry				reg;
-	DWORD					dwFileType = 0;
+	QSettings				settings;
 
-	reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("FileType"), dwFileType);
+	DWORD dwFileType = settings.value("StarMask/FileType", 0).toUInt();
 
 	strTitle.LoadString(IDS_TITLE_MASK);
 
-	CSaveMaskDlg			dlgSave(FALSE,
+	CSaveMaskDlg			dlgSave(false,
 								nullptr,
 								nullptr,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -258,8 +251,8 @@ BOOL CStarMaskDlg::AskOutputFile()
 			m_strOutputFile = dlgSave.GetNextPathName(pos);
 
 			dwFileType = dlgSave.GetOFN().nFilterIndex;
-			reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("FileType"), dwFileType);
-			bResult = TRUE;
+			settings.setValue("StarMask/FileType", (uint)dwFileType);
+			bResult = true;
 			m_bOutputFITS = (dwFileType == 2);
 		};
 	};
@@ -280,9 +273,9 @@ void CStarMaskDlg::OnOK()
 {
 	if (AskOutputFile())
 	{
-		CRegistry			reg;
+		QSettings			settings;
 		DWORD				dwStarShape = 0;
-		DWORD				bHotPixels = 0;
+		bool				bHotPixels = 0;
 		DWORD				dwThreshold = 10;
 		DWORD				dwPercent = 100;
 		DWORD				dwPixel = 0;
@@ -290,25 +283,25 @@ void CStarMaskDlg::OnOK()
 		DWORD				dwMaxSize = 25;
 
 		dwStarShape = m_StarShape.GetCurSel();
-		reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("StarShape"), dwStarShape);
+		settings.setValue("StarMask/StarShape", (uint)dwStarShape);
 
 		bHotPixels = m_HotPixels.GetCheck() ? 1 : 0;
-		reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("DetectHotPixels"), bHotPixels);
+		settings.setValue("StarMask/DetectHotPixels", bHotPixels);
 
 		dwThreshold = m_StarThreshold.GetPos();
-		reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("DetectionThreshold"), dwThreshold);
+		settings.setValue("StarMask/DetectionThreshold", (uint)dwThreshold);
 
 		dwPercent = m_Percent.GetPos();
-		reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("PercentRadius"), dwPercent);
+		settings.setValue("StarMask/PercentRadius", (uint)dwPercent);
 
 		dwPixel = m_Pixels.GetPos();
-		reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("PixelIncrease"), dwPixel);
+		settings.setValue("StarMask/PixelIncrease", (uint)dwPixel);
 
 		dwMinSize = m_MinSize.GetPos();
-		reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("MinSize"), dwMinSize);
+		settings.setValue("StarMask/MinSize", (uint)dwMinSize);
 
 		dwMaxSize = m_MaxSize.GetPos();
-		reg.SaveKey(REGENTRY_BASEKEY_STARMASK, _T("MaxSize"), dwMaxSize);
+		settings.setValue("StarMask/MaxSize", (uint)dwMaxSize);
 
 		CDialog::OnOK();
 	};

@@ -10,7 +10,7 @@ class CRawFilesTab : public CPropertyPage //CChildPropertyPage
 {
 	DECLARE_DYNCREATE(CRawFilesTab)
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 
 // Construction
 public:

@@ -16,7 +16,7 @@ CRegisterSettings_Advanced::CRegisterSettings_Advanced()
 	: CPropertyPage(CRegisterSettings_Advanced::IDD)
 {
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -56,7 +56,7 @@ BOOL CRegisterSettings_Advanced::OnSetActive()
 		m_NrStars.SetWindowText(_T(""));
 	};
 
-	m_bFirstActivation = FALSE;
+	m_bFirstActivation = false;
 
 	return CPropertyPage::OnSetActive();
 };
@@ -102,10 +102,10 @@ void CRegisterSettings_Advanced::OnComputeStars()
 	_tsplitpath(m_strFirstLightFrame, nullptr, nullptr, szFileName, szExt);
 	strFileName.Format(_T("%s%s"), szFileName, szExt);
 	strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)strFileName);
-	dlg.Start(strText, 0, FALSE);
-	dlg.SetJointProgress(TRUE);
-	fi.RegisterPicture(m_strFirstLightFrame, (double)lPos/100.0, TRUE, m_MedianFilter.GetCheck(), &dlg);
-	dlg.SetJointProgress(FALSE);
+	dlg.Start(strText, 0, false);
+	dlg.SetJointProgress(true);
+	fi.RegisterPicture(m_strFirstLightFrame, (double)lPos/100.0, true, m_MedianFilter.GetCheck(), &dlg);
+	dlg.SetJointProgress(false);
 
 	strText.Format(m_strMask, fi.m_vStars.size());
 	m_NrStars.SetWindowText(strText);

@@ -17,8 +17,8 @@ IMPLEMENT_DYNAMIC(CIntermediateFiles, CChildPropertyPage)
 CIntermediateFiles::CIntermediateFiles()
 	: CChildPropertyPage(CIntermediateFiles::IDD)
 {
-	m_bFirstActivation = TRUE;
-	m_bRegisteringOnly = FALSE;
+	m_bFirstActivation = true;
+	m_bRegisteringOnly = false;
     m_bCreateIntermediates = false;
     m_bSaveCalibrated = false;
     m_bSaveDebayered = false;
@@ -59,12 +59,12 @@ END_MESSAGE_MAP()
 void CIntermediateFiles::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	BOOL				bEnable;
+	bool				bEnable;
 
 	bEnable = m_SaveCalibrated.GetCheck() || m_CreateIntermediates.GetCheck();
 
-	m_SaveAsTIFF.EnableWindow(TRUE);
-	m_SaveAsFITS.EnableWindow(TRUE);
+	m_SaveAsTIFF.EnableWindow(true);
+	m_SaveAsFITS.EnableWindow(true);
 	m_SaveDebayered.EnableWindow(m_SaveCalibrated.GetCheck());
 
 	if (pDialog)
@@ -86,10 +86,10 @@ BOOL CIntermediateFiles::OnSetActive()
 
 		m_CreateIntermediates.EnableWindow(!m_bRegisteringOnly);
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -124,7 +124,7 @@ void CIntermediateFiles::OnBnClickedSaveAsTIFF()
 	if (m_SaveAsTIFF.GetCheck())
 	{
 		m_lSaveFormat = IFF_TIFF;
-		m_SaveAsFITS.SetCheck(FALSE);
+		m_SaveAsFITS.SetCheck(false);
 	};
 	UpdateControls();
 };
@@ -136,7 +136,7 @@ void CIntermediateFiles::OnBnClickedSaveAsFITS()
 	if (m_SaveAsFITS.GetCheck())
 	{
 		m_lSaveFormat = IFF_FITS;
-		m_SaveAsTIFF.SetCheck(FALSE);
+		m_SaveAsTIFF.SetCheck(false);
 	};
 	UpdateControls();
 };

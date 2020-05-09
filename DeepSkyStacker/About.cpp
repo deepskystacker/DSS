@@ -5,6 +5,7 @@
 #include "DeepSkyStacker.h"
 #include "About.h"
 #include "Registry.h"
+#include <QSettings>
 
 
 // CAbout dialog
@@ -175,15 +176,14 @@ BOOL CAbout::OnInitDialog()
 
 	m_LanguageCredits.SetWindowText(strHTML);
 
-	CRegistry			reg;
-	DWORD				bCheckVersion = 0;
+	QSettings			settings;
+	
+	bool checkVersion = settings.value("InternetCheck", false).toBool();
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
-
-	m_CheckVersion.SetCheck(bCheckVersion == 2);
+	m_CheckVersion.SetCheck(checkVersion);
 
 	CString				strLanguage;
-	reg.LoadKey(REGENTRY_BASEKEY, _T("Language"), strLanguage);
+	strLanguage = CString((LPCTSTR)settings.value("Language").toString().utf16());
 
 	if (!strLanguage.CompareNoCase(_T("FR")))
 		m_Language.SetCurSel(2);
@@ -214,68 +214,69 @@ BOOL CAbout::OnInitDialog()
 	else
 		m_Language.SetCurSel(0);
 
-	return TRUE;
+	return true;
 }
 
 /* ------------------------------------------------------------------- */
 
 void CAbout::OnOK()
 {
-	DWORD				bCheckVersion;
-	CRegistry			reg;
+	
+	QSettings			settings;
 
-	if (m_CheckVersion.GetCheck())
-		bCheckVersion = 2;
-	else
-		bCheckVersion = 1;
+	bool checkVersion = false;
 
-	reg.SaveKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
+	if (BST_UNCHECKED == m_CheckVersion.GetCheck())
+		checkVersion = true;
+
+	settings.setValue("InternetCheck", checkVersion);
 
 	switch (m_Language.GetCurSel())
 	{
 	case 0 :
-		reg.DeleteKey(REGENTRY_BASEKEY, _T("Language"));
+		settings.remove("Language");
 		break;
 	case 1 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("EN"));
+		settings.setValue("Language", "EN");
 		break;
 	case 2 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("FR"));
+		settings.setValue("Language", "FR");
 		break;
 	case 3 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("ES"));
+		settings.setValue("Language", "ES");
 		break;
 	case 4 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("IT"));
+		settings.setValue("Language", "IT");
 		break;
 	case 5 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("CZ"));
+		settings.setValue("Language", "CZ");
 		break;
 	case 6 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("CAT"));
+		settings.setValue("Language", "CAT");
 		break;
 	case 7 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("DE"));
+		settings.setValue("Language", "DE");
 		break;
 	case 8 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("NL"));
+		settings.setValue("Language", "NL");
 		break;
 	case 9 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("CN"));
+		settings.setValue("Language", "CN");
 		break;
 	case 10 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("PTB"));
+		settings.setValue("Language", "PTB");
 		break;
 	case 11 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("RO"));
+		settings.setValue("Language", "RO");
 		break;
 	case 12 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("RU"));
+		settings.setValue("Language", "RU");
 		break;
 	case 13 :
-		reg.SaveKey(REGENTRY_BASEKEY, _T("Language"), _T("TR"));
+		settings.setValue("Language", "TR");
 		break;
 	};
+	settings.sync();
 
 	CDialog::OnOK();
 }

@@ -17,12 +17,12 @@ IMPLEMENT_DYNAMIC(CResultParameters, CChildPropertyPage)
 CResultParameters::CResultParameters()
 	: CChildPropertyPage(CResultParameters::IDD)
 {
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 	m_ResultMode = SM_NORMAL;
 	m_lDrizzle = 1;
-	m_bAlignChannels = FALSE;
-    m_bEnableCustom = FALSE;
-    m_bUseCustom = FALSE;
+	m_bAlignChannels = false;
+    m_bEnableCustom = false;
+    m_bUseCustom = false;
 }
 
 /* ------------------------------------------------------------------- */
@@ -105,24 +105,24 @@ BOOL CResultParameters::OnSetActive()
 {
 	if (m_bFirstActivation)
 	{
-		m_Custom.EnableWindow(FALSE);
+		m_Custom.EnableWindow(false);
 		m_Normal.SetCheck(m_ResultMode==SM_NORMAL);
 		m_Mosaic.SetCheck(m_ResultMode==SM_MOSAIC);
 		m_Intersection.SetCheck(m_ResultMode==SM_INTERSECTION);
 		if (m_lDrizzle == 2)
-			m_Drizzlex2.SetCheck(TRUE);
+			m_Drizzlex2.SetCheck(true);
 		else if (m_lDrizzle > 2)
 		{
-			m_Drizzlex3.SetCheck(TRUE);
+			m_Drizzlex3.SetCheck(true);
 			m_lDrizzle = 3;
 		}
 		else
 			m_lDrizzle = 1;
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -132,11 +132,11 @@ void CResultParameters::OnBnClickedNormal()
 {
 	if (m_Normal.GetCheck())
 	{
-		m_Mosaic.SetCheck(FALSE);
-		m_Custom.SetCheck(FALSE);
-		m_Intersection.SetCheck(FALSE);
+		m_Mosaic.SetCheck(false);
+		m_Custom.SetCheck(false);
+		m_Intersection.SetCheck(false);
 		m_ResultMode	= SM_NORMAL;
-		m_bUseCustom	= FALSE;
+		m_bUseCustom	= false;
 		UpdateControls();
 	};
 }
@@ -147,11 +147,11 @@ void CResultParameters::OnBnClickedMosaic()
 {
 	if (m_Mosaic.GetCheck())
 	{
-		m_Normal.SetCheck(FALSE);
-		m_Custom.SetCheck(FALSE);
-		m_Intersection.SetCheck(FALSE);
+		m_Normal.SetCheck(false);
+		m_Custom.SetCheck(false);
+		m_Intersection.SetCheck(false);
 		m_ResultMode    = SM_MOSAIC;
-		m_bUseCustom	= FALSE;
+		m_bUseCustom	= false;
 		UpdateControls();
 	};
 }
@@ -162,11 +162,11 @@ void CResultParameters::OnBnClickedCustom()
 {
 	if (m_Custom.GetCheck())
 	{
-		m_Normal.SetCheck(FALSE);
-		m_Mosaic.SetCheck(FALSE);
-		m_Intersection.SetCheck(FALSE);
+		m_Normal.SetCheck(false);
+		m_Mosaic.SetCheck(false);
+		m_Intersection.SetCheck(false);
 		m_ResultMode    = SM_NORMAL;
-		m_bUseCustom	= TRUE;
+		m_bUseCustom	= true;
 		UpdateControls();
 	};
 }
@@ -177,11 +177,11 @@ void CResultParameters::OnBnClickedIntersection()
 {
 	if (m_Intersection.GetCheck())
 	{
-		m_Normal.SetCheck(FALSE);
-		m_Mosaic.SetCheck(FALSE);
-		m_Custom.SetCheck(FALSE);
+		m_Normal.SetCheck(false);
+		m_Mosaic.SetCheck(false);
+		m_Custom.SetCheck(false);
 		m_ResultMode    = SM_INTERSECTION;
-		m_bUseCustom	= FALSE;
+		m_bUseCustom	= false;
 		UpdateControls();
 	};
 }
@@ -192,7 +192,7 @@ void CResultParameters::OnBnClicked2xDrizzle()
 {
 	if (m_Drizzlex2.GetCheck())
 	{
-		m_Drizzlex3.SetCheck(FALSE);
+		m_Drizzlex3.SetCheck(false);
 		m_lDrizzle = 2;
 	}
 	else
@@ -205,7 +205,7 @@ void CResultParameters::OnBnClicked3xDrizzle()
 {
 	if (m_Drizzlex3.GetCheck())
 	{
-		m_Drizzlex2.SetCheck(FALSE);
+		m_Drizzlex2.SetCheck(false);
 		m_lDrizzle = 3;
 	}
 	else

@@ -57,11 +57,11 @@ BOOL CAskRegistering::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_RegisterOne.SetCheck(TRUE);
+	m_RegisterOne.SetCheck(true);
 	m_Result = ARA_ONE;
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
@@ -77,8 +77,8 @@ void CAskRegistering::OnRegisterOne()
 {
 	if (m_RegisterOne.GetCheck())
 	{
-		m_RegisterAll.SetCheck(FALSE);
-		m_RegisterNone.SetCheck(FALSE);
+		m_RegisterAll.SetCheck(false);
+		m_RegisterNone.SetCheck(false);
 		m_Result = ARA_ONE;
 	};
 }
@@ -89,8 +89,8 @@ void CAskRegistering::OnRegisterAll()
 {
 	if (m_RegisterAll.GetCheck())
 	{
-		m_RegisterOne.SetCheck(FALSE);
-		m_RegisterNone.SetCheck(FALSE);
+		m_RegisterOne.SetCheck(false);
+		m_RegisterNone.SetCheck(false);
 		m_Result = ARA_ALL;
 	};
 }
@@ -101,8 +101,8 @@ void CAskRegistering::OnRegisterNone()
 {
 	if (m_RegisterNone.GetCheck())
 	{
-		m_RegisterAll.SetCheck(FALSE);
-		m_RegisterOne.SetCheck(FALSE);
+		m_RegisterAll.SetCheck(false);
+		m_RegisterOne.SetCheck(false);
 		m_Result = ARA_CONTINUE;
 	};
 }

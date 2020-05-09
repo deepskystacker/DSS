@@ -25,13 +25,13 @@ private :
 	CStackedBitmap			m_StackedBitmap;
 	CRGBHistogram			m_OriginalHisto;
 	C32BitsBitmap			m_Bitmap;
-	BOOL					m_bNewStackedBitmap;
+	bool					m_bNewStackedBitmap;
 	CDSSProgress *			m_pProgress;
 
 public :
 	CDeepStack()
 	{
-		m_bNewStackedBitmap = FALSE;
+		m_bNewStackedBitmap = false;
 		m_pProgress			= nullptr;
 	};
 	virtual ~CDeepStack() {};
@@ -41,7 +41,7 @@ public :
 		m_StackedBitmap.Clear();
 		m_Bitmap.Free();
 		m_OriginalHisto.Clear();
-		m_bNewStackedBitmap = FALSE;
+		m_bNewStackedBitmap = false;
 	};
 
 	LONG	GetWidth()
@@ -64,18 +64,18 @@ public :
 		m_pProgress = pProgress;
 	};
 
-	BOOL	IsNewStackedBitmap(BOOL bReset = FALSE)
+	bool	IsNewStackedBitmap(bool bReset = false)
 	{
-		BOOL			bResult = m_bNewStackedBitmap;
+		bool			bResult = m_bNewStackedBitmap;
 
 		if (bReset)
-			m_bNewStackedBitmap = FALSE;
+			m_bNewStackedBitmap = false;
 
 		return bResult;
 	};
 
 	void	SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect = nullptr);
-	BOOL	LoadStackedInfo(LPCTSTR szStackedInfoFile);
+	bool	LoadStackedInfo(LPCTSTR szStackedInfoFile);
 
 	HBITMAP PartialProcess(RECT rcProcess, const CBezierAdjust & BezierAdjust, const CRGBHistogramAdjust & HistogramAdjust)
 	{
@@ -113,7 +113,7 @@ public :
 		return m_OriginalHisto;
 	};
 
-	BOOL	IsLoaded()
+	bool	IsLoaded()
 	{
 		return GetWidth() && GetHeight();
 	};

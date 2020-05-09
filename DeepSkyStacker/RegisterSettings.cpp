@@ -30,17 +30,17 @@ CRegisterSettings::CRegisterSettings(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(CRegisterSettings)
 	//}}AFX_DATA_INIT
 
-	m_bStack = FALSE;
+	m_bStack = false;
 	m_fPercentStack = 80;
 
-	m_bNoDark = FALSE;
-	m_bNoFlat = FALSE;
-	m_bNoOffset = FALSE;
+	m_bNoDark = false;
+	m_bNoFlat = false;
+	m_bNoOffset = false;
 	m_pStackingTasks = nullptr;
-	m_bForceRegister = FALSE;
-	m_bSettingsOnly	 = FALSE;
+	m_bForceRegister = false;
+	m_bSettingsOnly	 = false;
     m_dwDetectionThreshold = 0;
-    m_bMedianFilter = FALSE;
+    m_bMedianFilter = false;
 }
 
 /* ------------------------------------------------------------------- */
@@ -74,7 +74,7 @@ BOOL CRegisterSettings::OnInitDialog()
 	CString				strValue;
 	DWORD				bValue;
 	DWORD				bUseFileSettings = 1;
-	DWORD				bHotPixels = 0;
+
 
 	CDialog::OnInitDialog();
 
@@ -90,7 +90,7 @@ BOOL CRegisterSettings::OnInitDialog()
 
 	m_Sheet.AddPage(&m_tabAdvanced);
 
-	m_Sheet.EnableStackedTabs( FALSE );
+	m_Sheet.EnableStackedTabs( false );
 	m_Sheet.Create (this, WS_VISIBLE | WS_CHILD | WS_TABSTOP, 0);
 
 	m_Sheet.ModifyStyleEx (0, WS_EX_CONTROLPARENT);
@@ -98,27 +98,27 @@ BOOL CRegisterSettings::OnInitDialog()
 
 	// move to left upper corner
 
-	m_Sheet.MoveWindow(&rcSettings, TRUE);
+	m_Sheet.MoveWindow(&rcSettings, true);
 	m_Sheet.ShowWindow(SW_SHOWNA);
 
 	if (!m_bSettingsOnly)
 	{
 		m_tabActions.m_ForceRegister.SetCheck(m_bForceRegister);
 		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("PercentStack"), strValue);
+		QString temp = workspace.value("Register/PercentStack").toString();
+		strValue = CString((LPCTSTR)temp.utf16());
 		if (!strValue.GetLength())
 			strValue = _T("80");
 
 		m_tabActions.m_Percent.SetWindowText(strValue);
 
-		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("StackAfter"), bValue);
-		m_tabActions.m_Stack.SetCheck(bValue);
+		bValue = workspace.value("Register/StackAfter", false).toBool();
 
+		m_tabActions.m_Stack.SetCheck(bValue);
 		m_tabActions.m_Percent.EnableWindow(bValue);
 
-		workspace.GetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectHotPixels"), bHotPixels);
-		m_tabActions.m_HotPixels.SetCheck(bHotPixels);
+		
+		m_tabActions.m_HotPixels.SetCheck(workspace.value("Register/DetectHotPixels", false).toBool());
 	}
 	else
 	{
@@ -127,16 +127,11 @@ BOOL CRegisterSettings::OnInitDialog()
 		m_tabAdvanced.GetDlgItem(IDC_COMPUTEDETECTEDSTARS)->ShowWindow(SW_HIDE);
 	};
 
-	DWORD				dwDetectionThreshold = 10;
-	DWORD				bMedianFilter = FALSE;
-
-	workspace.GetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectionThreshold"), dwDetectionThreshold);
 	m_tabAdvanced.m_PercentSlider.SetRange(2, 98);
-	m_tabAdvanced.m_PercentSlider.SetPos(dwDetectionThreshold);
+	m_tabAdvanced.m_PercentSlider.SetPos(workspace.value("Register/DetectionThreshold", 10).toUInt());
 	m_tabAdvanced.m_strFirstLightFrame = m_strFirstLightFrame;
-
-	workspace.GetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), bMedianFilter);
-	m_tabAdvanced.m_MedianFilter.SetCheck(bMedianFilter);
+	
+	m_tabAdvanced.m_MedianFilter.SetCheck(workspace.value("Register/ApplyMedianFilter", false).toBool());
 	m_tabAdvanced.UpdateSliderText();
 
 	if (!m_bSettingsOnly)
@@ -180,8 +175,8 @@ BOOL CRegisterSettings::OnInitDialog()
 		};
 	};
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
@@ -190,31 +185,31 @@ void CRegisterSettings::OnOK()
 {
 	CString				strText;
 	CWorkspace			workspace;
-	DWORD				dwHotPixels;
+	bool				hotPixels;
 
 	if (!m_bSettingsOnly)
 	{
 		m_bForceRegister = m_tabActions.m_ForceRegister.GetCheck();
 
 		m_bStack = m_tabActions.m_Stack.GetCheck() ? true : false;
-		workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("StackAfter"), m_bStack);
+		workspace.setValue("Register/StackAfter", m_bStack);
 
 		m_tabActions.m_Percent.GetWindowText(strText);
-		workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("PercentStack"), strText);
+		workspace.setValue("Register/PercentStack", QString((QChar *)strText.GetBuffer()));
 
-		dwHotPixels = m_tabActions.m_HotPixels.GetCheck();
-		workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectHotPixels"), dwHotPixels);
+		hotPixels = m_tabActions.m_HotPixels.GetCheck() ? true : false;
+		workspace.setValue("Register/DetectHotPixels", hotPixels);
 
 		m_fPercentStack = _ttof(strText);
 	};
 
 	m_dwDetectionThreshold = m_tabAdvanced.m_PercentSlider.GetPos();
-	workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectionThreshold"), m_dwDetectionThreshold);
+	workspace.setValue("Register/DetectionThreshold", (uint)m_dwDetectionThreshold);
 
-	m_bMedianFilter = m_tabAdvanced.m_MedianFilter.GetCheck();
-	workspace.SetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), m_bMedianFilter);
+	m_bMedianFilter = m_tabAdvanced.m_MedianFilter.GetCheck() ? true : false;
+	workspace.setValue("Register/ApplyMedianFilter", m_bMedianFilter);
 
-	workspace.SaveToRegistry();
+	workspace.saveSettings();
 
 	CDialog::OnOK();
 }
@@ -238,16 +233,16 @@ void CRegisterSettings::OnStackingParameters()
 	if (m_pStackingTasks)
 	{
 		if (m_pStackingTasks->GetCustomRectangle(rcCustom))
-			dlg.SetCustomRectangleAvailability(TRUE, m_pStackingTasks->IsCustomRectangleUsed());
+			dlg.SetCustomRectangleAvailability(true, m_pStackingTasks->IsCustomRectangleUsed());
 		else
-			dlg.SetCustomRectangleAvailability(FALSE);
+			dlg.SetCustomRectangleAvailability(false);
 		dlg.SetDarkFlatBiasTabsVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
 	}
 	else
-		dlg.SetCustomRectangleAvailability(FALSE);
+		dlg.SetCustomRectangleAvailability(false);
 
 	if (!m_tabActions.m_Stack.GetCheck())
-		dlg.SetRegisteringOnly(TRUE);
+		dlg.SetRegisteringOnly(true);
 
 	dlg.SetStackingTasks(m_pStackingTasks);
 
@@ -270,9 +265,8 @@ void CRegisterSettings::OnBnClickedRecommandedsettings()
 			m_pStackingTasks->UpdateTasksMethods();
 
 		CWorkspace				workspace;
-		bool					bMedianFilter;
 
-		workspace.GetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), bMedianFilter);
+		bool bMedianFilter = workspace.value("Register/ApplyMedianFilter").toBool();
 		m_tabAdvanced.m_MedianFilter.SetCheck(bMedianFilter);
 	};
 }

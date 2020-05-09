@@ -17,7 +17,7 @@ IMPLEMENT_DYNAMIC(CCometStacking, CChildPropertyPage)
 CCometStacking::CCometStacking()
 	: CChildPropertyPage(CCometStacking::IDD)
 {
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 	m_CometStackingMode = CSM_STANDARD;
 }
 
@@ -93,10 +93,10 @@ BOOL CCometStacking::OnSetActive()
 		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */

@@ -12,8 +12,8 @@ private :
 	CSmartPtr<CMemoryBitmap>	m_pTarget;
 	CDSSProgress *				m_pProgress;
 	CFlatFrame *				m_pFlatFrame;
-	BOOL						m_bUseGray;
-	BOOL						m_bUseCFA;
+	bool						m_bUseGray;
+	bool						m_bUseCFA;
 
 public :
     CFlatDivideTask()
@@ -47,19 +47,19 @@ public :
 			m_pProgress->End2();
 	};
 
-	virtual BOOL	Process();
-	virtual BOOL	DoTask(HANDLE hEvent);
+	virtual bool	Process();
+	virtual bool	DoTask(HANDLE hEvent);
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CFlatDivideTask::DoTask(HANDLE hEvent)
+bool	CFlatDivideTask::DoTask(HANDLE hEvent)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 
 	LONG			i, j;
-	BOOL			bEnd = FALSE;
+	bool			bEnd = false;
 	MSG				msg;
 	LONG			lWidth = m_pTarget->RealWidth();
 
@@ -102,18 +102,18 @@ BOOL	CFlatDivideTask::DoTask(HANDLE hEvent)
 			SetEvent(hEvent);
 		}
 		else if (msg.message == WM_MT_STOP)
-			bEnd = TRUE;
+			bEnd = true;
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CFlatDivideTask::Process()
+bool	CFlatDivideTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 	LONG			lHeight = m_pTarget->RealHeight();
 	LONG			lStep;
 	LONG			lRemaining;
@@ -128,7 +128,7 @@ BOOL	CFlatDivideTask::Process()
 	lStep		= max(1L, lHeight/50);
 	lRemaining	= lHeight;
 
-	bResult = TRUE;
+	bResult = true;
 	while (i<lHeight)
 	{
 		LONG			lAdd = min(lStep, lRemaining);
@@ -157,12 +157,12 @@ BOOL	CFlatDivideTask::Process()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
+bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
-	BOOL			bUseGray;
-	BOOL			bUseCFA;
+	bool			bResult = false;
+	bool			bUseGray;
+	bool			bUseCFA;
 	CStringA strText;
 	strText.LoadString(IDS_APPLYINGFLAT);
 
@@ -175,7 +175,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 	{
 		CFATransform = pCFABitmapInfo->GetCFATransformation();
 		if (CFATransform == CFAT_SUPERPIXEL)
-			pCFABitmapInfo->UseBilinear(TRUE);
+			pCFABitmapInfo->UseBilinear(true);
 	};
 
 	// Check that it is the same sizes
@@ -198,7 +198,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 			
 			if (pProgress)
 				pProgress->Start2(nullptr, pTarget->RealWidth());
-			bResult = TRUE;
+			bResult = true;
 
 			int	rowProgress = 0;
 
@@ -260,7 +260,7 @@ BOOL CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 	};
 
 	if (CFATransform == CFAT_SUPERPIXEL)
-		pCFABitmapInfo->UseSuperPixels(TRUE);
+		pCFABitmapInfo->UseSuperPixels(true);
 
 	return bResult;
 };
@@ -300,7 +300,7 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 						lNrMagentas	= 0,
 						lNrCyans	= 0,
 						lNrGreen2s	= 0;
-		BOOL			bCFA;
+		bool			bCFA;
 
 		bCFA = ::IsCFA(m_pFlatFrame);
 		for (LONG j = 0;j<m_pFlatFrame->RealHeight();j++)
@@ -399,6 +399,6 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 			pProgress->End2();
 			pProgress->Start2(strStart2, 0);
 		};
-		m_bComputed = TRUE;
+		m_bComputed = true;
 	};
 };

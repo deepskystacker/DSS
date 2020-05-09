@@ -68,14 +68,14 @@ BOOL CFileProperty::OnInitDialog()
 
 	InitControls();
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
 void CFileProperty::InitControls()
 {
-	BOOL				bFirst = TRUE;
+	bool				bFirst = true;
 	CString				strFileName;
 	CString				strDateTime;
 	CString				strSizes;
@@ -103,7 +103,7 @@ void CFileProperty::InitControls()
 				strCFA		= bitmap->m_strCFA;
 				lISOSpeed	= bitmap->m_lISOSpeed;
 				fExposure	= bitmap->m_fExposure;
-				bFirst = FALSE;
+				bFirst = false;
 			}
 			else
 			{
@@ -169,9 +169,9 @@ void CFileProperty::InitControls()
 		m_Exposure.SetWindowText(strExposure);
 	};
 
-	m_bChangeType	  = FALSE;
-	m_bChangeISOSpeed = FALSE;
-	m_bChangeExposure = FALSE;
+	m_bChangeType	  = false;
+	m_bChangeISOSpeed = false;
+	m_bChangeExposure = false;
 };
 
 /* ------------------------------------------------------------------- */
@@ -179,7 +179,7 @@ void CFileProperty::InitControls()
 
 void CFileProperty::OnCbnSelchangeType()
 {
-	m_bChangeType	  = TRUE;
+	m_bChangeType	  = true;
 	UpdateControls();
 }
 
@@ -187,7 +187,7 @@ void CFileProperty::OnCbnSelchangeType()
 
 void CFileProperty::OnCbnSelchangeIsospeed()
 {
-	m_bChangeISOSpeed = TRUE;
+	m_bChangeISOSpeed = true;
 	UpdateControls();
 }
 
@@ -195,7 +195,7 @@ void CFileProperty::OnCbnSelchangeIsospeed()
 
 void CFileProperty::OnCbnEditupdateIsospeed()
 {
-	m_bChangeISOSpeed = TRUE;
+	m_bChangeISOSpeed = true;
 	UpdateControls();
 }
 
@@ -203,7 +203,7 @@ void CFileProperty::OnCbnEditupdateIsospeed()
 
 void CFileProperty::OnEnChangeExposure()
 {
-	m_bChangeExposure = TRUE;
+	m_bChangeExposure = true;
 	UpdateControls();
 }
 
@@ -211,7 +211,7 @@ void CFileProperty::OnEnChangeExposure()
 
 void CFileProperty::UpdateControls()
 {
-	BOOL			bOk = TRUE;
+	bool			bOk = true;
 
 	if (m_bChangeISOSpeed)
 	{
@@ -223,7 +223,7 @@ void CFileProperty::UpdateControls()
 			LONG	lISOSpeed = _ttol(strISOSpeed);
 
 			if ((lISOSpeed < MINISOSPEED) || (lISOSpeed > MAXISOSPEED))
-				bOk = FALSE;
+				bOk = false;
 		};
 	};
 
@@ -237,7 +237,7 @@ void CFileProperty::UpdateControls()
 			LONG		lExposure = _ttol(strExposure);
 
 			if ((lExposure <MINEXPOSURE) || (lExposure > MAXEXPOSURE))
-				bOk = FALSE;
+				bOk = false;
 		};
 	};
 

@@ -15,9 +15,9 @@ public :
 	double			m_fQuality;
 	double			m_fMeanRadius;
 	double			m_fX, m_fY;
-	BOOL			m_bUsed;
-	BOOL			m_bAdded;
-	BOOL			m_bRemoved;
+	bool			m_bUsed;
+	bool			m_bAdded;
+	bool			m_bRemoved;
 	double			m_fLargeMajorAxis;
 	double			m_fSmallMajorAxis;
 	double			m_fLargeMinorAxis;
@@ -50,9 +50,9 @@ public :
 	{
 		m_fX	   = 0;
 		m_fY	   = 0;
-		m_bUsed    = FALSE;
-		m_bAdded   = FALSE;
-		m_bRemoved = FALSE;
+		m_bUsed    = false;
+		m_bAdded   = false;
+		m_bRemoved = false;
 		m_fLargeMajorAxis = 0;
 		m_fSmallMajorAxis = 0;
 		m_fLargeMinorAxis = 0;
@@ -76,9 +76,9 @@ public :
 	{
 		m_fX = fX;
 		m_fY = fY;
-		m_bUsed    = FALSE;
-		m_bAdded   = FALSE;
-		m_bRemoved = FALSE;
+		m_bUsed    = false;
+		m_bAdded   = false;
+		m_bRemoved = false;
 		m_fLargeMajorAxis = 0;
 		m_fSmallMajorAxis = 0;
 		m_fLargeMinorAxis = 0;
@@ -108,27 +108,27 @@ public :
 			return (m_fY < ms.m_fY);
 	};
 
-	BOOL	IsInRect(const CRect & rc)
+	bool	IsInRect(const CRect & rc)
 	{
 		return rc.PtInRect(CPoint(m_fX, m_fY));
 	};
 
-	BOOL	IsInRadius(const CPoint & pt) const
+	bool	IsInRadius(const CPoint & pt) const
 	{
 		return Distance(CPointExt(m_fX ,m_fY), CPointExt(pt))<=m_fMeanRadius*2.35/1.5;
 	};
 
-	BOOL	IsInRadius(double fX, double fY)
+	bool	IsInRadius(double fX, double fY)
 	{
 		return Distance(CPointExt(m_fX ,m_fY), CPointExt(fX, fY))<=m_fMeanRadius*2.35/1.5;
 	};
 
-	BOOL	IsValid()
+	bool	IsValid()
 	{
-		BOOL		bResult = FALSE;
+		bool		bResult = false;
 
 		if (m_fX > 0 && m_fY > 0 && m_fQuality > 0 && m_fIntensity > 0 && m_fMeanRadius > 0)
-			bResult = TRUE;
+			bResult = true;
 
 		return bResult;
 	};
@@ -149,12 +149,12 @@ typedef STARVECTOR::iterator	STARITERATOR;
 typedef std::set<CStar>			STARSET;
 typedef STARSET::iterator		STARSETITERATOR;
 
-inline LONG	FindNearestStar(double fX, double fY, STARVECTOR & vStars, BOOL & bIn, double & fDistance)
+inline LONG	FindNearestStar(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
 {
 	LONG			lResult = -1;
 	double			fMinDistance = -1;
 
-	bIn = FALSE;
+	bIn = false;
 	fDistance = -1.0;
 	for (LONG i = 0;i<vStars.size();i++)
 	{
@@ -181,13 +181,13 @@ inline LONG	FindNearestStar(double fX, double fY, STARVECTOR & vStars, BOOL & bI
 	return lResult;
 };
 
-inline LONG	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vStars, BOOL & bIn, double & fDistance)
+inline LONG	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
 {
 	LONG			lResult = -1;
 	double			fMinDistance = -1;
 	STARITERATOR	it;
 
-	bIn = FALSE;
+	bIn = false;
 	it = std::lower_bound(vStars.begin(), vStars.end(), CStar(fX-fDistance, 0));
 	while (it != vStars.end())
 	{

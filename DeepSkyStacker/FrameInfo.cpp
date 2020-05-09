@@ -8,9 +8,9 @@
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
+bool	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (Type == PICTURETYPE_REFLIGHTFRAME)
 		m_PictureType  = PICTURETYPE_LIGHTFRAME;

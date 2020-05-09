@@ -19,6 +19,7 @@
 #include "AskRegistering.h"
 #include "BatchStacking.h"
 #include "DSSVersion.h"
+#include <QSettings>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -47,7 +48,7 @@ CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(CStackingDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
-	m_MRUList.InitFromRegistry();
+	m_MRUList.readSettings();
 }
 
 
@@ -135,19 +136,19 @@ BOOL CStackingDlg::OnInitDialog()
 	m_ButtonToolbar.AddButton(IDC_EDIT_SAVE,	MBI(SAVE), IDB_BUTTONBASE_MASK, strTooltip);
 
 	m_ButtonToolbar.Check(IDC_EDIT_SELECT);
-	m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+	m_ButtonToolbar.Enable(IDC_EDIT_SAVE, false);
 
-	m_Picture.EnableZoom(TRUE);
+	m_Picture.EnableZoom(true);
 	m_Picture.SetButtonToolbar(&m_ButtonToolbar);
 	m_SelectRectSink.ShowDrizzleRectangles();
 	m_Picture.SetImageSink(&m_SelectRectSink);
 	m_ButtonToolbar.SetSink(this);
 
 	m_Gamma.SetBackgroundColor(GetSysColor(COLOR_3DFACE));
-	m_Gamma.ShowTooltips(FALSE);
+	m_Gamma.ShowTooltips(false);
 	m_Gamma.SetOrientation(CGradientCtrl::ForceHorizontal);
-	m_Gamma.SetPegSide(TRUE, FALSE);
-	m_Gamma.SetPegSide(FALSE, TRUE);
+	m_Gamma.SetPegSide(true, false);
+	m_Gamma.SetPegSide(false, true);
 	m_Gamma.GetGradient().SetStartPegColour(RGB(0, 0, 0));
 	m_Gamma.GetGradient().AddPeg(RGB(0, 0, 0), 0.0, 0);
 	m_Gamma.GetGradient().AddPeg(RGB(128, 128, 128), sqrt(0.5), 1);
@@ -158,14 +159,12 @@ BOOL CStackingDlg::OnInitDialog()
 
 
 	m_4Corners.SetBitmaps(IDB_4CORNERS, RGB(255,0, 255));
-	m_4Corners.SetFlat(TRUE);
-	//m_4Corners.DrawTransparent(TRUE);
+	m_4Corners.SetFlat(true);
+	//m_4Corners.DrawTransparent(true);
 
-	CRegistry			reg;
-	DWORD				bCheckVersion = 0;
-
-	reg.LoadKey(REGENTRY_BASEKEY, _T("InternetCheck"), bCheckVersion);
-	if (bCheckVersion == 2)
+	QSettings			settings;
+	bool checkVersion = settings.value("InternetCheck", false).toBool();
+	if (checkVersion)
 	{
 		CString			strVersion;
 
@@ -191,7 +190,7 @@ BOOL CStackingDlg::OnInitDialog()
 				strNewVersion.Format(IDS_VERSIONAVAILABLE, strVersion);
 				m_Infos.SetTextColor(RGB(255, 0, 0));
 				m_Infos.SetText(strNewVersion);
-				m_Infos.SetLink(TRUE, FALSE);
+				m_Infos.SetLink(true, false);
 				m_Infos.SetHyperLink("http://deepskystacker.free.fr");
 			};
 		};
@@ -204,10 +203,10 @@ BOOL CStackingDlg::OnInitDialog()
 	};
 
 /*
-	m_ShowHideJobs.SetLink(TRUE, TRUE);
-	m_ShowHideJobs.SetTransparent(TRUE);
+	m_ShowHideJobs.SetLink(true, true);
+	m_ShowHideJobs.SetTransparent(true);
 	m_ShowHideJobs.SetLinkCursor(LoadCursor(nullptr,MAKEINTRESOURCE(IDC_HAND)));
-	m_ShowHideJobs.SetFont3D(FALSE);
+	m_ShowHideJobs.SetFont3D(false);
 	m_ShowHideJobs.SetTextColor(RGB(0, 0, 192));
 	m_ShowHideJobs.SetWindowText("Show/Hide Jobs");
 	{
@@ -224,8 +223,8 @@ BOOL CStackingDlg::OnInitDialog()
 
 	m_BackgroundLoading.SetWindow(m_hWnd);
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
@@ -408,7 +407,7 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 		fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
 		fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
 		fWhitePoint = Gradient.GetPeg(Gradient.IndexFromId(2)).position;
-		BOOL				bAdjust = FALSE;
+		bool				bAdjust = false;
 
 		switch (pPegNMHDR->peg.id)
 		{
@@ -417,12 +416,12 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			if (fBlackPoint>fWhitePoint-0.02)
 			{
 				fBlackPoint = fWhitePoint-0.02;
-				bAdjust = TRUE;
+				bAdjust = true;
 			};
 			if (fBlackPoint>fGrayPoint-0.01)
 			{
 				fGrayPoint = fBlackPoint+0.01;
-				bAdjust = TRUE;
+				bAdjust = true;
 			};
 			break;
 		case 1 :
@@ -430,12 +429,12 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			if (fGrayPoint<fBlackPoint+0.01)
 			{
 				fGrayPoint = fBlackPoint+0.01;
-				bAdjust = TRUE;
+				bAdjust = true;
 			};
 			if (fGrayPoint>fWhitePoint-0.01)
 			{
 				fGrayPoint = fWhitePoint-0.01;
-				bAdjust = TRUE;
+				bAdjust = true;
 			};
 			break;
 		case 2 :
@@ -443,12 +442,12 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			if (fWhitePoint<fBlackPoint+0.02)
 			{
 				fWhitePoint = fBlackPoint+0.02;
-				bAdjust = TRUE;
+				bAdjust = true;
 			};
 			if (fWhitePoint < fGrayPoint+0.01)
 			{
 				fGrayPoint = fWhitePoint-0.01;
-				bAdjust = TRUE;
+				bAdjust = true;
 			};
 			break;
 		};
@@ -470,16 +469,16 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 		{
 			ApplyGammaTransformation(m_LoadedImage.m_hBitmap, m_LoadedImage.m_pBitmap, m_GammaTransformation);
 			// Refresh
-			m_Picture.Invalidate(TRUE);
+			m_Picture.Invalidate(true);
 		};
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
+bool CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	__int64				ulFlatSpace = 0,
 						ulDarkSpace = 0,
 						ulOffsetSpace = 0;
@@ -541,21 +540,21 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 
 		strMessage.Format(IDS_ERROR_NOTENOUGHFREESPACE, lNeededSpace, lFreeSpace, strDrive);
 		if (AfxMessageBox(strMessage, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION)==IDYES)
-			bResult = TRUE;
+			bResult = true;
 		else
-			bResult = FALSE;
+			bResult = false;
 	}
 	else
-		bResult = TRUE;
+		bResult = true;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
+bool CStackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 {
-	BOOL					bResult = TRUE;
+	bool					bResult = true;
 	std::vector<CString>	vFolders;
 
 	if (!tasks.CheckReadOnlyStatus(vFolders))
@@ -572,7 +571,7 @@ BOOL CStackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 		strText.Format(IDS_WARNINGREADONLY, strFolders);
 
 		AfxMessageBox(strText, MB_OK | MB_ICONSTOP);
-		bResult = FALSE;
+		bResult = false;
 	};
 
 	return bResult;
@@ -582,7 +581,7 @@ BOOL CStackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 
 void CStackingDlg::OnAdddarks()
 {
-	CRegistry			reg;
+	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
 	DWORD				dwFilterIndex = 0;
@@ -590,22 +589,22 @@ void CStackingDlg::OnAdddarks()
 
 	strTitle.LoadString(IDS_TITLE_OPENDARKFRAMES);
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFolder"), strBaseDirectory);
+	strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddDarkFolder").toString().utf16());
 	if (!strBaseDirectory.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureFolder"), strBaseDirectory);
+		strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddPictureFolder").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkExtension"), strBaseExtension);
+	strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddDarkExtension").toString().utf16());
 	if (!strBaseExtension.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureExtension"), strBaseExtension);
+		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkIndex"), dwFilterIndex);
+	dwFilterIndex = settings.value("Folders/AddDarkIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureIndex"), dwFilterIndex);
+		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE,
+	CFileDialog			dlgOpen(true,
 								strBaseExtension,
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
@@ -636,7 +635,7 @@ void CStackingDlg::OnAdddarks()
 			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
-			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFRAME, TRUE);
+			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFRAME, true);
 			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
@@ -646,9 +645,9 @@ void CStackingDlg::OnAdddarks()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFolder"), strBaseDirectory);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkExtension"), strBaseExtension);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkIndex"), dwFilterIndex);
+		settings.setValue("Folders/AddDarkFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddDarkExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddDarkIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
 	};
@@ -659,7 +658,7 @@ void CStackingDlg::OnAdddarks()
 
 void CStackingDlg::OnAddDarkFlats()
 {
-	CRegistry			reg;
+	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
 	DWORD				dwFilterIndex = 0;
@@ -667,22 +666,22 @@ void CStackingDlg::OnAddDarkFlats()
 
 	strTitle.LoadString(IDS_TITLE_OPENDARKFLATFRAMES);
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFlatFolder"), strBaseDirectory);
+	strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddDarkFlatFolder").toString().utf16());
 	if (!strBaseDirectory.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureFolder"), strBaseDirectory);
+		strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddPictureFolder").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFlatExtension"), strBaseExtension);
+	strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddDarkFlatExtension").toString().utf16());
 	if (!strBaseExtension.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureExtension"), strBaseExtension);
+		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFlatIndex"), dwFilterIndex);
+	dwFilterIndex = settings.value("Folders/AddDarkFlatIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureIndex"), dwFilterIndex);
+		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE,
+	CFileDialog			dlgOpen(true,
 								strBaseExtension,
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
@@ -713,7 +712,7 @@ void CStackingDlg::OnAddDarkFlats()
 			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
-			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFLATFRAME, TRUE);
+			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFLATFRAME, true);
 			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
@@ -723,9 +722,9 @@ void CStackingDlg::OnAddDarkFlats()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFlatFolder"), strBaseDirectory);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFlatExtension"), strBaseExtension);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddDarkFlatIndex"), dwFilterIndex);
+		settings.setValue("Folders/AddDarkFlatFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddDarkFlatExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddDarkFlatIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
 	};
@@ -736,7 +735,7 @@ void CStackingDlg::OnAddDarkFlats()
 
 void CStackingDlg::OnAddFlats()
 {
-	CRegistry			reg;
+	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
 	DWORD				dwFilterIndex = 0;
@@ -744,22 +743,22 @@ void CStackingDlg::OnAddFlats()
 
 	strTitle.LoadString(IDS_TITLE_OPENFLATFRAMES);
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddFlatFolder"), strBaseDirectory);
+	strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddFlatFolder").toString().utf16());
 	if (!strBaseDirectory.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureFolder"), strBaseDirectory);
+		strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddPictureFolder").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddFlatExtension"), strBaseExtension);
+	strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddFlatExtension").toString().utf16());
 	if (!strBaseExtension.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureExtension"), strBaseExtension);
+		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddFlatIndex"), dwFilterIndex);
+	dwFilterIndex = settings.value("Folders/AddFlatIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureIndex"), dwFilterIndex);
+		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE,
+	CFileDialog			dlgOpen(true,
 								strBaseExtension,
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
@@ -791,7 +790,7 @@ void CStackingDlg::OnAddFlats()
 			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
-			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_FLATFRAME, TRUE);
+			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_FLATFRAME, true);
 			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
@@ -801,9 +800,9 @@ void CStackingDlg::OnAddFlats()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddFlatFolder"), strBaseDirectory);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddFlatExtension"), strBaseExtension);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddFlatIndex"), dwFilterIndex);
+		settings.setValue("Folders/AddFlatFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddFlatExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddFlatIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
 	};
@@ -814,7 +813,7 @@ void CStackingDlg::OnAddFlats()
 
 void CStackingDlg::OnAddOffsets()
 {
-	CRegistry			reg;
+	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
 	DWORD				dwFilterIndex = 0;
@@ -822,22 +821,22 @@ void CStackingDlg::OnAddOffsets()
 
 	strTitle.LoadString(IDS_TITLE_OPENBIASFRAMES);
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddOffsetFolder"), strBaseDirectory);
+	strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddOffsetFolder").toString().utf16());
 	if (!strBaseDirectory.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureFolder"), strBaseDirectory);
+		strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddPictureFolder").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddOffsetExtension"), strBaseExtension);
+	strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddOffsetExtension").toString().utf16());
 	if (!strBaseExtension.GetLength())
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureExtension"), strBaseExtension);
+		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddOffsetIndex"), dwFilterIndex);
+	dwFilterIndex = settings.value("Folders/AddOffsetIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
-		reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureIndex"), dwFilterIndex);
+		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE,
+	CFileDialog			dlgOpen(true,
 								strBaseExtension,
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
@@ -868,7 +867,7 @@ void CStackingDlg::OnAddOffsets()
 			TCHAR		szExt[1+_MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
-			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_OFFSETFRAME, TRUE);
+			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_OFFSETFRAME, true);
 			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
 			strBaseDirectory = szDrive;
 			strBaseDirectory += szDir;
@@ -878,9 +877,9 @@ void CStackingDlg::OnAddOffsets()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddOffsetFolder"), strBaseDirectory);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddOffsetExtension"), strBaseExtension);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddOffsetIndex"), dwFilterIndex);
+		settings.setValue("Folders/AddOffsetFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddOffsetExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddOffsetIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
 	};
@@ -892,7 +891,7 @@ void CStackingDlg::OnAddOffsets()
 void CStackingDlg::OnAddpictures()
 {
 	ZFUNCTRACE_RUNTIME();
-	CRegistry			reg;
+	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
 	DWORD				dwFilterIndex = 0;
@@ -900,14 +899,16 @@ void CStackingDlg::OnAddpictures()
 
 	strTitle.LoadString(IDS_TITLE_OPENLIGHTFRAMES);
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureFolder"), strBaseDirectory);
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureExtension"), strBaseExtension);
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureIndex"), dwFilterIndex);
+	strBaseDirectory = CString((LPCTSTR)settings.value("Folders/AddPictureFolder").toString().utf16());
+
+	strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
+
+	dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
 
-	CFileDialog			dlgOpen(TRUE,
+	CFileDialog			dlgOpen(true,
 								strBaseExtension,
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
@@ -949,9 +950,9 @@ void CStackingDlg::OnAddpictures()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureFolder"), strBaseDirectory);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureExtension"), strBaseExtension);
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("AddPictureIndex"), dwFilterIndex);
+		settings.setValue("Folders/AddPictureFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddPictureExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddPictureIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
 	};
@@ -973,7 +974,7 @@ void CStackingDlg::DropFiles(HDROP hDropInfo)
 		dlg.GetDroppedFiles(vFiles);
 
 		for (LONG i = 0;i<vFiles.size();i++)
-			m_Pictures.AddFile(vFiles[i], m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), dlg.GetDropType(), TRUE);
+			m_Pictures.AddFile(vFiles[i], m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), dlg.GetDropType(), true);
 		m_Pictures.RefreshList();
 		UpdateGroupTabs();
 		UpdateListInfo();
@@ -1012,7 +1013,7 @@ void CStackingDlg::LoadList()
 {
 	if (CheckWorkspaceChanges())
 	{
-		BOOL			bOpenAnother = TRUE;
+		bool			bOpenAnother = true;
 
 		if (m_MRUList.m_vLists.size())
 		{
@@ -1022,7 +1023,7 @@ void CStackingDlg::LoadList()
 			int					nResult;
 			UINT				lStartID;
 
-			bOpenAnother = FALSE;
+			bOpenAnother = false;
 
 			menu.LoadMenu(IDR_FILELISTS);
 			popup = menu.GetSubMenu(0);
@@ -1053,7 +1054,7 @@ void CStackingDlg::LoadList()
 			nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 			if (nResult == ID_FILELIST_OPENANOTHERFILELIST)
-				bOpenAnother = TRUE;
+				bOpenAnother = true;
 			else if (nResult > ID_FILELIST_FIRSTMRU)
 			{
 				CString			strList;
@@ -1092,7 +1093,7 @@ void CStackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	// Here check if the new image is dirty
 	if (m_EditStarSink.IsDirty())
-		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, TRUE);
+		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, true);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1117,7 +1118,7 @@ void CStackingDlg::CheckAskRegister()
 	// and ask accordingly
 	CLightFrameInfo			lfi;
 
-	lfi.SetBitmap(m_strShowFile, FALSE, FALSE);
+	lfi.SetBitmap(m_strShowFile, false, false);
 	if (!lfi.IsRegistered())
 	{
 		CAskRegistering		dlg;
@@ -1127,14 +1128,14 @@ void CStackingDlg::CheckAskRegister()
 			if (dlg.GetAction()==ARA_ONE)
 			{
 				// Register only this light frame
-				m_Pictures.CheckAllLights(FALSE);
-				m_Pictures.CheckImage(m_strShowFile, TRUE);
+				m_Pictures.CheckAllLights(false);
+				m_Pictures.CheckImage(m_strShowFile, true);
 				RegisterCheckedImage();
 			}
 			else if (dlg.GetAction()==ARA_ALL)
 			{
 				// Register all the checked light frames
-				m_Pictures.CheckImage(m_strShowFile, TRUE);
+				m_Pictures.CheckImage(m_strShowFile, true);
 				RegisterCheckedImage();
 			};
 		};
@@ -1151,9 +1152,9 @@ void CStackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToo
 		if (pButtonToolbar->IsChecked(dwID))
 		{
 			CheckAskRegister();
-			pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
-			pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
-			m_EditStarSink.SetCometMode(TRUE);
+			pButtonToolbar->Check(IDC_EDIT_STAR, false);
+			pButtonToolbar->Check(IDC_EDIT_SELECT, false);
+			m_EditStarSink.SetCometMode(true);
 			m_Picture.SetImageSink(&m_EditStarSink);
 		};
 		break;
@@ -1161,17 +1162,17 @@ void CStackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToo
 		if (pButtonToolbar->IsChecked(dwID))
 		{
 			CheckAskRegister();
-			pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
-			pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
-			m_EditStarSink.SetCometMode(FALSE);
+			pButtonToolbar->Check(IDC_EDIT_COMET, false);
+			pButtonToolbar->Check(IDC_EDIT_SELECT, false);
+			m_EditStarSink.SetCometMode(false);
 			m_Picture.SetImageSink(&m_EditStarSink);
 		};
 		break;
 	case IDC_EDIT_SELECT :
 		if (pButtonToolbar->IsChecked(dwID))
 		{
-			pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
-			pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
+			pButtonToolbar->Check(IDC_EDIT_COMET, false);
+			pButtonToolbar->Check(IDC_EDIT_STAR, false);
 			m_Picture.SetImageSink(&m_SelectRectSink);
 		};
 		break;
@@ -1185,7 +1186,7 @@ void CStackingDlg::ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToo
 	if (dwID == IDC_EDIT_SAVE)
 	{
 		m_EditStarSink.SaveRegisterSettings();
-		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, false);
 		// Update the list with the new info
 		m_Pictures.UpdateItemScores(m_strShowFile);
 	};
@@ -1260,15 +1261,15 @@ void	CStackingDlg::UpdateListInfo()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackingDlg::CheckWorkspaceChanges()
+bool CStackingDlg::CheckWorkspaceChanges()
 {
-	BOOL						bResult = FALSE;
+	bool						bResult = false;
 
 	if (m_strCurrentFileList.GetLength() || m_Pictures.GetNrFrames())
 	{
 		CWorkspace				workspace;
 
-		if (m_Pictures.IsDirty() || workspace.IsDirty())
+		if (m_Pictures.IsDirty() || workspace.isDirty())
 		{
 			// Ask for saving the current list.
 			CString				strText;
@@ -1289,19 +1290,19 @@ BOOL CStackingDlg::CheckWorkspaceChanges()
 			bResult = (nResult != IDCANCEL);
 		}
 		else
-			bResult = TRUE;
+			bResult = true;
 	}
 	else
-		bResult = TRUE;
+		bResult = true;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackingDlg::CheckEditChanges()
+bool CStackingDlg::CheckEditChanges()
 {
-	BOOL						bResult = FALSE;
+	bool						bResult = false;
 
 	if (m_EditStarSink.IsDirty())
 	{
@@ -1312,17 +1313,17 @@ BOOL CStackingDlg::CheckEditChanges()
 		if (nResult == IDYES)
 		{
 			// Save the changes
-			bResult = TRUE;
+			bResult = true;
 			m_EditStarSink.SaveRegisterSettings();
-			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, false);
 			// Update the list with the new info
 			m_Pictures.UpdateItemScores(m_strShowFile);
 		}
 		else if (nResult == IDNO)
-			bResult = TRUE;
+			bResult = true;
 	}
 	else
-		bResult = TRUE;
+		bResult = true;
 
 	return bResult;
 };
@@ -1404,7 +1405,7 @@ void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult)
 				BeginWaitCursor();
 				m_Infos.SetTextColor(RGB(0, 0, 0));
 				m_Infos.SetText(strFileName);
-				m_Infos.SetLink(FALSE, FALSE);
+				m_Infos.SetLink(false, false);
 				m_strShowFile = strFileName;
 				OnBackgroundImageLoaded(0, 0);
 			};
@@ -1413,7 +1414,7 @@ void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult)
 	else
 	{
 		m_Infos.SetTextColor(RGB(0, 0, 0));
-		m_Infos.SetLink(FALSE, FALSE);
+		m_Infos.SetLink(false, false);
 		m_Infos.SetText("");
 	};
 
@@ -1432,7 +1433,7 @@ void CStackingDlg::ReloadCurrentImage()
 		EndWaitCursor();
 	};
 
-	m_Pictures.Invalidate(FALSE);
+	m_Pictures.Invalidate(false);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1510,9 +1511,9 @@ void CStackingDlg::UncheckNonStackablePictures()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackingDlg::ShowRecap(CAllStackingTasks & tasks)
+bool CStackingDlg::ShowRecap(CAllStackingTasks & tasks)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	CStackRecap			dlg;
 
 	dlg.SetStackingTasks(&tasks);
@@ -1547,7 +1548,7 @@ void CStackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
 void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bContinue = TRUE;
+	bool				bContinue = true;
 	CDSSProgressDlg		dlg;
 	DWORD				dwStartTime = GetTickCount();
 	DWORD				dwElapsedTime;
@@ -1585,7 +1586,7 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 			DWORD					iff;
 			CWorkspace				workspace;
 
-			workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("IntermediateFileFormat"), iff);
+			iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
 
 			if (StackingEngine.GetDefaultOutputFileName(strFileName, m_strCurrentFileList, (iff==IFF_TIFF)))
 			{
@@ -1642,16 +1643,16 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackingDlg::CheckStacking(CAllStackingTasks & tasks)
+bool CStackingDlg::CheckStacking(CAllStackingTasks & tasks)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (!m_Pictures.AreCheckedPictureCompatible())
 		AfxMessageBox(IDS_ERROR_NOTCOMPATIBLE, MB_OK | MB_ICONSTOP);
 	else if (!m_Pictures.GetNrCheckedFrames())
 		AfxMessageBox(IDS_ERROR_NOTLIGHTCHECKED, MB_OK | MB_ICONSTOP);
 	else
-		bResult = TRUE;
+		bResult = true;
 
 	return bResult;
 };
@@ -1670,7 +1671,7 @@ void CStackingDlg::StackCheckedImage()
 {
 	if (CheckEditChanges())
 	{
-		BOOL				bContinue;
+		bool				bContinue;
 		CAllStackingTasks	tasks;
 		CRect				rcSelect;
 
@@ -1695,7 +1696,7 @@ void CStackingDlg::StackCheckedImage()
 					CDSSProgressDlg	dlg;
 
 					m_Pictures.BlankCheckedItemScores();
-					bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
+					bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
 					m_Pictures.UpdateCheckedItemScores();
 					dlg.Close();
 				};
@@ -1744,8 +1745,8 @@ void CStackingDlg::CheckAbove()
 
 void CStackingDlg::CheckAll()
 {
-	m_Pictures.CheckAll(TRUE);
-	m_Pictures.CheckAllDarks(TRUE);
+	m_Pictures.CheckAll(true);
+	m_Pictures.CheckAllDarks(true);
 	UpdateListInfo();
 };
 
@@ -1753,8 +1754,8 @@ void CStackingDlg::CheckAll()
 
 void CStackingDlg::UncheckAll()
 {
-	m_Pictures.CheckAll(FALSE);
-	m_Pictures.CheckAllDarks(FALSE);
+	m_Pictures.CheckAll(false);
+	m_Pictures.CheckAllDarks(false);
 	UpdateListInfo();
 };
 
@@ -1795,7 +1796,7 @@ void CStackingDlg::ComputeOffsets()
 
 	if (CheckEditChanges() && (m_Pictures.GetNrCheckedFrames() > 0))
 	{
-		BOOL					bContinue = TRUE;
+		bool					bContinue = true;
 		CAllStackingTasks		tasks;
 
 		m_Pictures.FillTasks(tasks);
@@ -1807,7 +1808,7 @@ void CStackingDlg::ComputeOffsets()
 			CDSSProgressDlg	dlg;
 
 			m_Pictures.BlankCheckedItemScores();
-			bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
+			bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
 			m_Pictures.UpdateCheckedItemScores();
 			dlg.Close();
 		};
@@ -1834,10 +1835,10 @@ void CStackingDlg::ComputeOffsets()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackingDlg::SaveOnClose()
+bool CStackingDlg::SaveOnClose()
 {
 	m_Pictures.SaveState();
-	m_MRUList.SaveToRegistry();
+	m_MRUList.saveSettings();
 
 	return CheckEditChanges() && CheckWorkspaceChanges();
 };
@@ -1848,9 +1849,9 @@ void CStackingDlg::RegisterCheckedImage()
 {
 	CDSSProgressDlg			dlg;
 	CRegisterSettings		dlgSettings;
-	BOOL					bContinue = TRUE;
+	bool					bContinue = true;
 
-	BOOL					bFound = FALSE;
+	bool					bFound = false;
 
 	if (m_Pictures.GetNrCheckedFrames())
 	{
@@ -1877,11 +1878,11 @@ void CStackingDlg::RegisterCheckedImage()
 		if (dlgSettings.DoModal() == IDOK)
 		{
 			double				fMinLuminancy = 0.10;
-			BOOL				bForceRegister;
+			bool				bForceRegister;
 			LONG				lCount = 0;
 			LONG				lMaxCount = 0;
 			double				fPercent;
-			BOOL				bStackAfter;
+			bool				bStackAfter;
 
 			bForceRegister = dlgSettings.GetForceRegister();
 
@@ -1922,7 +1923,7 @@ void CStackingDlg::RegisterCheckedImage()
 					{
 						// Update the registering info
 						m_EditStarSink.SetLightFrame(m_strShowFile);
-						m_Picture.Invalidate(TRUE);
+						m_Picture.Invalidate(true);
 					};
 
 					dlg.Close();

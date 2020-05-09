@@ -1,6 +1,7 @@
 #ifndef __STARMASK_H__
 #define __STARMASK_H__
 
+#include <QSettings>
 #include "RegisterEngine.h"
 
 /* ------------------------------------------------------------------- */
@@ -180,7 +181,7 @@ class CStarMaskEngine
 {
 private :
 	double				m_fMinLuminancy;
-	BOOL				m_bRemoveHotPixels;
+	bool				m_bRemoveHotPixels;
 	double				m_fPercentIncrease;
 	double				m_fPixelIncrease;
 	double				m_fMinSize,
@@ -216,31 +217,24 @@ private :
 public :
 	CStarMaskEngine()
 	{
-		CRegistry			reg;
-		DWORD				bHotPixels = 0;
-		DWORD				dwThreshold = 10;
-		DWORD				dwPercent = 100;
-		DWORD				dwPixel = 0;
-		DWORD				dwMinSize = 2;
-		DWORD				dwMaxSize = 25;
-		DWORD				dwStarShape = 1;
+		QSettings			settings;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectHotPixels"), bHotPixels);
+		bool bHotPixels = settings.value("StarMask/DetectHotPixels", false).toBool();
 		m_bRemoveHotPixels = bHotPixels;
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("DetectionThreshold"), dwThreshold);
+		DWORD dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
 		m_fMinLuminancy = (double)dwThreshold/100.0;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("PercentRadius"), dwPercent);
+		DWORD dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
 		m_fPercentIncrease = (double)dwPercent/100.0;
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("PixelIncrease"), dwPixel);
+		DWORD dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
 		m_fPixelIncrease = (double)dwPixel;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("MinSize"), dwMinSize);
+		DWORD dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
 		m_fMinSize = (double)dwMinSize;
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("MaxSize"), dwMaxSize);
+		DWORD dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
 		m_fMaxSize = (double)dwMaxSize;
 
-		reg.LoadKey(REGENTRY_BASEKEY_STARMASK, _T("StarShape"), dwStarShape);
+		DWORD dwStarShape = settings.value("StarMask/StarShape", 1).toUInt();
 		m_StarShape = (STARMASKSTYLE)dwStarShape;
 	};
 
@@ -251,13 +245,13 @@ public :
 		m_fMinLuminancy = fMinLuminancy;
 	};
 
-	void	SetHotPixelRemoval(BOOL bHotPixels)
+	void	SetHotPixelRemoval(bool bHotPixels)
 	{
 		m_bRemoveHotPixels = bHotPixels;
 	};
 
-	BOOL	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
-	BOOL	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	bool	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	bool	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 };
 
 #endif // __STARMASK_H__

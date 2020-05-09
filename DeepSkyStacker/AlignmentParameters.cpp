@@ -17,7 +17,7 @@ IMPLEMENT_DYNAMIC(CAlignmentParameters, CChildPropertyPage)
 CAlignmentParameters::CAlignmentParameters()
 	: CChildPropertyPage(CAlignmentParameters::IDD)
 {
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 	m_Alignment = 0;
 }
 
@@ -105,13 +105,13 @@ BOOL CAlignmentParameters::OnSetActive()
 		m_Bicubic.SetCheck(m_Alignment == 4);
 		m_NoAlignment.SetCheck(m_Alignment == 5);
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 
 		m_Title.SetTextColor(RGB(0, 0, 0));
 		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -121,10 +121,10 @@ void CAlignmentParameters::OnBnClickedAutomatic()
 {
 	if (m_Automatic.GetCheck())
 	{
-		m_Bilinear.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
+		m_Bilinear.SetCheck(false);
+		m_Bisquared.SetCheck(false);
+		m_Bicubic.SetCheck(false);
+		m_NoAlignment.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -135,10 +135,10 @@ void CAlignmentParameters::OnBnClickedBilinear()
 {
 	if (m_Bilinear.GetCheck())
 	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
+		m_Automatic.SetCheck(false);
+		m_Bisquared.SetCheck(false);
+		m_Bicubic.SetCheck(false);
+		m_NoAlignment.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -149,10 +149,10 @@ void CAlignmentParameters::OnBnClickedBisquared()
 {
 	if (m_Bisquared.GetCheck())
 	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bilinear.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
+		m_Automatic.SetCheck(false);
+		m_Bilinear.SetCheck(false);
+		m_Bicubic.SetCheck(false);
+		m_NoAlignment.SetCheck(false);
 		UpdateControls();
 	};
 };
@@ -163,10 +163,10 @@ void CAlignmentParameters::OnBnClickedBicubic()
 {
 	if (m_Bicubic.GetCheck())
 	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bilinear.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
+		m_Automatic.SetCheck(false);
+		m_Bilinear.SetCheck(false);
+		m_Bisquared.SetCheck(false);
+		m_NoAlignment.SetCheck(false);
 		UpdateControls();
 	};
 };
@@ -177,10 +177,10 @@ void CAlignmentParameters::OnBnClickedNoAlignment()
 {
 	if (m_NoAlignment.GetCheck())
 	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bilinear.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
+		m_Automatic.SetCheck(false);
+		m_Bilinear.SetCheck(false);
+		m_Bisquared.SetCheck(false);
+		m_Bicubic.SetCheck(false);
 		UpdateControls();
 	};
 };

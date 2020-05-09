@@ -48,9 +48,9 @@ bool CGlobalSettings::operator == (const CGlobalSettings & gs) const
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
+bool	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
 {
-	BOOL		bResult = FALSE;
+	bool		bResult = false;
 	FILE *		hFile;
 
 	m_sSettings.clear();
@@ -78,7 +78,7 @@ BOOL	CGlobalSettings::ReadFromFile(LPCTSTR szFile)
 		std::sort(m_vFiles.begin(), m_vFiles.end());
 
 		fclose(hFile);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -113,20 +113,20 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
+bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	CBitmapInfo			bmpInfo;
 
 	m_sSettings.clear();
 	m_vFiles.clear();
 	if (pTask && GetPictureInfo(szFile, bmpInfo))
 	{
-		bResult = TRUE;
+		bResult = true;
 
 		ReadFromRegistry();
-		BOOL				bFITS = FALSE;
-		BOOL				bRAW  = FALSE;
+		bool				bFITS = false;
+		bool				bRAW  = false;
 		LONG				lWidth = 0,
 							lHeight = 0,
 							lBitPerChannels = 0,
@@ -142,9 +142,9 @@ BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 			m_vFiles.push_back(strFile);
 
 			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.Left(4) == _T("FITS")))
-				bFITS = TRUE;
+				bFITS = true;
 			else if (!bRAW && (pTask->m_vBitmaps[i].m_strInfos.Left(3) == _T("RAW")))
-				bRAW = TRUE;
+				bRAW = true;
 			lWidth  = pTask->m_vBitmaps[i].m_lWidth;
 			lHeight = pTask->m_vBitmaps[i].m_lHeight;
 			lBitPerChannels = pTask->m_vBitmaps[i].m_lBitPerChannels;
@@ -153,11 +153,11 @@ BOOL	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 
 		// Check sizes
 		if ((lWidth != bmpInfo.m_lWidth) || (lHeight!=bmpInfo.m_lHeight))
-			bResult = FALSE;
+			bResult = false;
 		if ((lBitPerChannels != bmpInfo.m_lBitPerChannel) || (lNrChannels != bmpInfo.m_lNrChannels))
-			bResult = FALSE;
+			bResult = false;
 		if (!bmpInfo.m_bMaster)
-			bResult = FALSE;
+			bResult = false;
 
 		AddFileVariable(_T("Bitmap.FileName"), szFile);
 		AddVariable(_T("Bitmap.Width"), lWidth);

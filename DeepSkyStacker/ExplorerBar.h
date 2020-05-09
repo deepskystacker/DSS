@@ -27,7 +27,7 @@ protected :
 	void	DrawSubFrameRect(CDC * pDC, const CRect & rc);
 	void	DrawGradientRect(CDC * pDC, const CRect & rc, COLORREF crColor1, COLORREF crColor2, double fAlpha = 0.0);
 	void	DrawGradientBackgroundRect(CDC * pDC, const CRect & rc);
-	void	DrawGradientFrameRect(CDC * pDC, const CRect & rc, BOOL bActive, BOOL bShadow);
+	void	DrawGradientFrameRect(CDC * pDC, const CRect & rc, bool bActive, bool bShadow);
 
 	void	LoadSettingFile();
 	void	SaveSettingFile();
@@ -80,7 +80,7 @@ private :
 	int			m_nScrollPos;
 	std::vector<CLabel *>	m_vLabels;
 
-	void InitLabel(CLabel & label, BOOL bMain = FALSE);
+	void InitLabel(CLabel & label, bool bMain = false);
 
 public :
 	CRect		m_rcRegisterStack;

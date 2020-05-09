@@ -20,15 +20,15 @@ public :
 	SYSTEMTIME			m_FileTime;
 	CString				m_strDateTime;
 	SYSTEMTIME			m_DateTime;
-	BOOL				m_bMaster;
+	bool				m_bMaster;
 	CString				m_strInfos;
-	BOOL				m_bFITS16bit;
+	bool				m_bFITS16bit;
 	CBitmapExtraInfo	m_ExtraInfo;
 	CString				m_filterName;
 
 private :
 	mutable CFATYPE			m_CFAType;
-	mutable BOOL			m_bSuperPixel;
+	mutable bool			m_bSuperPixel;
 
 protected :
 	void CopyFrom(const CFrameInfo & cfi)
@@ -65,9 +65,9 @@ protected :
 		m_CFAType		  = CFATYPE_NONE;
 		m_lNrChannels	  = 3;
 		m_lBitPerChannels = 16;
-		m_bMaster		  = FALSE;
-		m_bFITS16bit	  = FALSE;
-		m_bSuperPixel	  = FALSE;
+		m_bMaster		  = false;
+		m_bFITS16bit	  = false;
+		m_bSuperPixel	  = false;
 		m_DateTime.wYear  = 0;
 		m_ExtraInfo.Clear();
         m_lWidth = 0;
@@ -90,32 +90,32 @@ public :
 		return (*this);
 	};
 
-	BOOL	IsLightFrame() const
+	bool	IsLightFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_LIGHTFRAME);
 	};
 
-	BOOL	IsDarkFrame() const
+	bool	IsDarkFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_DARKFRAME);
 	};
 
-	BOOL	IsDarkFlatFrame() const
+	bool	IsDarkFlatFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_DARKFLATFRAME);
 	};
 
-	BOOL	IsFlatFrame() const
+	bool	IsFlatFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_FLATFRAME);
 	};
 
-	BOOL	IsOffsetFrame() const
+	bool	IsOffsetFrame() const
 	{
 		return (m_PictureType == PICTURETYPE_OFFSETFRAME);
 	};
 
-	BOOL	IsMasterFrame() const
+	bool	IsMasterFrame() const
 	{
 		return m_bMaster;
 	};
@@ -130,9 +130,9 @@ public :
 		return m_lHeight/(m_bSuperPixel ? 2 : 1);
 	};
 
-	BOOL	IsCompatible(LONG lWidth, LONG lHeight, LONG lBitPerChannels, LONG lNrChannels, CFATYPE CFAType)
+	bool	IsCompatible(LONG lWidth, LONG lHeight, LONG lBitPerChannels, LONG lNrChannels, CFATYPE CFAType)
 	{
-		BOOL			bResult;
+		bool			bResult;
 
 		bResult = (m_lWidth == lWidth) &&
 				  (m_lHeight == lHeight) &&
@@ -161,12 +161,12 @@ public :
 		return  bResult;
 	};
 
-	BOOL	IsCompatible(const CFrameInfo & cfi)
+	bool	IsCompatible(const CFrameInfo & cfi)
 	{
 		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitPerChannels, cfi.m_lNrChannels, cfi.m_CFAType);
 	};
 
-	BOOL	InitFromFile(LPCTSTR szFile, PICTURETYPE Type);
+	bool	InitFromFile(LPCTSTR szFile, PICTURETYPE Type);
 
 	CFATYPE	GetCFAType() const
 	{
@@ -176,7 +176,7 @@ public :
 			return m_CFAType;
 	};
 
-	BOOL	IsSuperPixel() const
+	bool	IsSuperPixel() const
 	{
 		if (m_bFITS16bit)
 			m_bSuperPixel = IsFITSSuperPixels() && (GetCFAType() != CFATYPE_NONE);
@@ -186,7 +186,7 @@ public :
 
 	void	RefreshSuperPixel()
 	{
-		m_bSuperPixel = FALSE;
+		m_bSuperPixel = false;
 		if (m_bFITS16bit)
 			m_bSuperPixel = IsFITSSuperPixels() && (GetCFAType() != CFATYPE_NONE);
 		else if (m_CFAType != CFATYPE_NONE)

@@ -167,12 +167,12 @@ void QMfcApp::exitModalLoop()
     memory.
 
     \code
-    BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpvReserved)
+    bool WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpvReserved)
     {
 	if (dwReason == DLL_PROCESS_ATTACH)
 	    QMfcApp::pluginInstance(hInstance);
 
-	return TRUE;
+	return true;
     }
     \endcode
 
@@ -194,7 +194,7 @@ void QMfcApp::exitModalLoop()
 bool QMfcApp::pluginInstance(Qt::HANDLE plugin)
 {
     if (qApp)
-	return FALSE;
+	return false;
 
     QT_WA({
 	hhook = SetWindowsHookExW(WH_GETMESSAGE, QtFilterProc, 0, GetCurrentThreadId());
@@ -211,7 +211,7 @@ bool QMfcApp::pluginInstance(Qt::HANDLE plugin)
 	    LoadLibraryA(filename);
     }
 
-    return TRUE;
+    return true;
 }
 
 #if QT_VERSION >= 0x050000
@@ -273,7 +273,7 @@ int QMfcApp::run(CWinApp *mfcApp)
     reimplementation of CWinApp:
 
     \code
-    BOOL MyMfcApp::InitInstance()
+    bool MyMfcApp::InitInstance()
     {
 	// standard MFC initialization
 	// ...
@@ -284,7 +284,7 @@ int QMfcApp::run(CWinApp *mfcApp)
 	// Qt GUI initialization
     }
 
-    BOOL MyMfcApp::Run()
+    bool MyMfcApp::Run()
     {
 	int result = QMfcApp::run(this);
 	delete qApp;
@@ -342,7 +342,7 @@ static bool qmfc_eventFilter(void *message)
     \code
     QMfcApp *qtApp;
 
-    BOOL MyMfcApp::InitInstance()
+    bool MyMfcApp::InitInstance()
     {
 	// standard MFC initialization
 
@@ -354,7 +354,7 @@ static bool qmfc_eventFilter(void *message)
 	// Qt GUI initialization
     }
 
-    BOOL MyMfcApp::Run()
+    bool MyMfcApp::Run()
     {
 	int result = qtApp->exec();
 	delete qtApp;
@@ -367,7 +367,7 @@ static bool qmfc_eventFilter(void *message)
     \sa instance() run()
 */
 QMfcApp::QMfcApp(CWinApp *mfcApp, int &argc, char **argv)
-: QApplication(argc, argv), idleCount(0), doIdle(FALSE)
+: QApplication(argc, argv), idleCount(0), doIdle(false)
 {
     mfc_app = mfcApp;
 #if QT_VERSION >= 0x050000
@@ -435,12 +435,12 @@ bool QMfcApp::winEventFilter(MSG *msg, long *result)
                 SendMessage(toplevel, msg->message, msg->wParam, msg->lParam);
                 widget->setFocus();
                 recursion = false;
-                return TRUE;
+                return true;
             } else if (msg->message == WM_SYSKEYDOWN && msg->wParam != VK_MENU) {
                 SendMessage(toplevel, msg->message, msg->wParam, msg->lParam);
                 SendMessage(toplevel, WM_SYSKEYUP, VK_MENU, msg->lParam);
                 recursion = false;
-                return TRUE;
+                return true;
             }
         }
     }
@@ -449,16 +449,16 @@ bool QMfcApp::winEventFilter(MSG *msg, long *result)
         MSG tmp;
         while (doIdle && !PeekMessage(&tmp, 0, 0, 0, PM_NOREMOVE)) {
             if (!mfc_app->OnIdle(idleCount++))
-                doIdle = FALSE;
+                doIdle = false;
         }
         if (mfc_app->IsIdleMessage(msg)) {
-            doIdle = TRUE;
+            doIdle = true;
             idleCount = 0;
         }
     }
     if (mfc_app && mfc_app->PreTranslateMessage(msg)) {
         recursion = false;
-	return TRUE;
+	return true;
     }
 #endif
 

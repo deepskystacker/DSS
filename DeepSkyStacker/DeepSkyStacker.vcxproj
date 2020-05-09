@@ -144,21 +144,25 @@
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
+    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LibraryPath>..\libs\$(Platform)\ReleaseLibs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
+    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LibraryPath>..\libs\Win64\ReleaseLibs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
     <OutDir>.\DeepSkyStacker___Win32_Release_Debug_Info\</OutDir>
@@ -174,6 +178,7 @@
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
     <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
+    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
@@ -182,6 +187,7 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <QtInstall>5.12.8x86</QtInstall>
@@ -250,6 +256,12 @@
 C:\Qt\5.12.8\msvc2017\bin\windeployqt $(TargetPath)
 C:\Qt\5.12.8\msvc2017\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS\Installers\RunTime32 $(TargetPath)</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <Midl>
@@ -294,6 +306,12 @@ C:\Qt\5.12.8\msvc2017\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS
       <Command>call C:\Qt\5.12.8\msvc2017\bin\qtenv2.bat
 C:\Qt\5.12.8\msvc2017\bin\windeployqt $(TargetPath)</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -336,6 +354,12 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)
 C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS\Installers\RunTime64 $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
@@ -379,6 +403,12 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\
 C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
     <Midl>
@@ -527,6 +557,12 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)</Command>
 
 C:\Qt\5.12.8\msvc2017\bin\windeployqt --pdb $(TargetPath)</Command>
     </PostBuildEvent>
+    <CustomBuildStep>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -567,8 +603,8 @@ C:\Qt\5.12.8\msvc2017\bin\windeployqt --pdb $(TargetPath)</Command>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
     <CustomBuildStep>
-      <Command>
-      </Command>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
+      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>call C:\Qt\5.12.8\msvc2017_64\bin\qtenv2.bat
@@ -596,8 +632,6 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="..\Tools\GradientCtrlImpl.cpp" />
     <ClCompile Include="..\Tools\Label.cpp" />
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp" />
-    <ClCompile Include="..\Tools\Registry.cpp" />
-    <ClCompile Include="..\Tools\RegMFC.cpp" />
     <ClCompile Include="..\Tools\RichToolTipCtrl.cpp" />
     <ClCompile Include="..\Tools\ScrollDialog.cpp" />
     <ClCompile Include="..\Tools\SplitterControl.cpp" />
@@ -741,7 +775,6 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
     <ClInclude Include="..\Tools\memdc.h" />
-    <ClInclude Include="..\Tools\Registry.h" />
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h" />
     <ClInclude Include="..\Tools\Schemadef.h" />
     <ClInclude Include="..\Tools\ScrollDialog.h" />
@@ -978,7 +1011,44 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --pdb $(TargetPath)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="i18n\DSS_ca.ts" />
+    <None Include="i18n\DSS_cs.ts" />
+    <None Include="i18n\DSS_de.ts" />
+    <None Include="i18n\DSS_en.ts" />
+    <None Include="i18n\DSS_es.ts" />
+    <None Include="i18n\DSS_fr.ts" />
+    <None Include="i18n\DSS_it.ts" />
+    <None Include="i18n\DSS_nl.ts" />
+    <None Include="i18n\DSS_pt.ts" />
+    <None Include="i18n\DSS_ro.ts" />
+    <None Include="i18n\DSS_ru.ts" />
+    <None Include="i18n\DSS_tr.ts" />
+    <None Include="i18n\DSS_zh.ts" />
     <None Include="QMfcApp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ui\About.ui" />
+    <QtUic Include="ui\AlignmentParameters.ui" />
+    <QtUic Include="ui\AskRegistering.ui" />
+    <QtUic Include="ui\BackgroundOptions.ui" />
+    <QtUic Include="ui\BatchStacking.ui" />
+    <QtUic Include="ui\CheckAbove.ui" />
+    <QtUic Include="ui\CometStacking.ui" />
+    <QtUic Include="ui\DeepStackerDlg.ui" />
+    <QtUic Include="ui\DropFilesDlg.ui" />
+    <QtUic Include="ui\ExplorerBar.ui" />
+    <QtUic Include="ui\FitsFilesTab.ui" />
+    <QtUic Include="ui\IntermediateFiles.ui" />
+    <QtUic Include="ui\OutputTab.ui" />
+    <QtUic Include="ui\PostCalibration.ui" />
+    <QtUic Include="ui\RawDDPSettings.ui" />
+    <QtUic Include="ui\RawFilesTab.ui" />
+    <QtUic Include="ui\ResultParameters.ui" />
+    <QtUic Include="ui\StackingParameters.ui" />
+    <QtUic Include="ui\StackSettings.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

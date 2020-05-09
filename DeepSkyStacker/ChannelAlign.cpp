@@ -34,10 +34,10 @@ void	CChannelAlign::CopyBitmap(CMemoryBitmap * pSrcBitmap, CMemoryBitmap * pTgtB
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CPixelTransform & PixTransform, CDSSProgress * pProgress)
+bool	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CPixelTransform & PixTransform, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL						bResult = FALSE;
+	bool						bResult = false;
 	CSmartPtr<CMemoryBitmap>	pOutBitmap;
 	CString						strText;
 	LONG						lWidth = pBitmap->Width(),
@@ -46,7 +46,7 @@ BOOL	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 
 	vPixels.reserve(16);
 
-	pOutBitmap.Attach(pBitmap->Clone(TRUE));
+	pOutBitmap.Attach(pBitmap->Clone(true));
 	pOutBitmap->Init(lWidth, lHeight);
 
 	if (pProgress)
@@ -102,10 +102,10 @@ BOOL	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+bool	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (!pBitmap->IsMonochrome())
 	{
@@ -124,7 +124,7 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 			if (pProgress)
 			{
 				// We will advance the progress1 bar for each channel (3 of them)
-				pProgress->Start(nullptr, 3, FALSE);
+				pProgress->Start(nullptr, 3, false);
 				pProgress->Progress1(nullptr, 0);
 			}
 
@@ -188,7 +188,7 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 
 			// Compute the transformations
 			CMatchingStars		MatchingStars;
-			BOOL				bTransformationsOk;
+			bool				bTransformationsOk;
 
 			MatchingStars.SetSizes(pBitmap->Width(), pBitmap->Height());
 			{
@@ -231,13 +231,13 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 
 			if (bTransformationsOk)
 			{
-				bResult = TRUE;
+				bResult = true;
 				CPixelTransform				PixTransform;
 
 				if (pProgress)
 				{
 					// Advance the progress1 bar for each alignment step (2 of them)
-					pProgress->Start(nullptr, 2, FALSE);
+					pProgress->Start(nullptr, 2, false);
 					pProgress->Progress1(nullptr, 0);
 				}
 
@@ -261,7 +261,7 @@ BOOL	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 		};
 	}
 	else
-		bResult = TRUE;
+		bResult = true;
 
 	return bResult;
 };

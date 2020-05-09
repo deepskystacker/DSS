@@ -4,15 +4,16 @@
 #include "TIFFUtil.h"
 #include <set>
 #include "Settings.h"
+#include <QSettings>
 
 /* ------------------------------------------------------------------- */
 
-BOOL	AreExposureEquals(double fExposure1, double fExposure2)
+bool	AreExposureEquals(double fExposure1, double fExposure2)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (fExposure1 == fExposure2)
-		bResult = TRUE;
+		bResult = true;
 	else if (fExposure1 >= 1 && fExposure2 >= 1)
 	{
 		// Both more than 1 second - 5% difference allowed
@@ -29,11 +30,11 @@ BOOL	AreExposureEquals(double fExposure1, double fExposure2)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
+bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	CBitmapInfo			bmpInfo;
 
@@ -42,7 +43,7 @@ BOOL	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 		CString						strText;
 		CString						strDescription;
-		BOOL						bOverrideRAW = TRUE;
+		bool						bOverrideRAW = true;
 
 		bmpInfo.GetDescription(strDescription);
 
@@ -77,7 +78,7 @@ BOOL	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 				strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
 			else
 				strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
-			bOverrideRAW = FALSE;
+			bOverrideRAW = false;
 			break;
 		};
 
@@ -85,7 +86,7 @@ BOOL	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 			pProgress->Start2(strText, 0);
 
 		if (bOverrideRAW)
-			PushRAWSettings(FALSE, TRUE); // Allways use Raw Bayer for dark, offset, and flat frames
+			PushRAWSettings(false, true); // Allways use Raw Bayer for dark, offset, and flat frames
 		if (::LoadPicture(szFile, &pBitmap, pProgress))
 			bResult = pBitmap.CopyTo(ppBitmap);
 		if (bOverrideRAW)
@@ -134,10 +135,10 @@ public :
 		m_pFlatBitmap.Release();
 	};
 
-	BOOL	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
+	bool	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
 	{
 		ZFUNCTRACE_RUNTIME();
-		BOOL					bResult = FALSE;
+		bool					bResult = false;
 
 		*ppBitmap = nullptr;
 		if (pTaskInfo && pTaskInfo->m_strOutputFile.GetLength())
@@ -219,7 +220,7 @@ static	CTaskBitmapCache		g_BitmapCache;
 
 /* ------------------------------------------------------------------- */
 
-BOOL	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
+bool	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
 {
 	return g_BitmapCache.GetTaskResult(pTaskInfo, pProgress, ppBitmap);
 };
@@ -231,7 +232,7 @@ void	ClearTaskCache()
 
 /* ------------------------------------------------------------------- */
 
-static void BuildMasterFileNames(CTaskInfo *pTaskInfo, TCHAR const *pszType, BOOL bExposure, TCHAR const *pszDrive, TCHAR const *pszDir,
+static void BuildMasterFileNames(CTaskInfo *pTaskInfo, TCHAR const *pszType, bool bExposure, TCHAR const *pszDrive, TCHAR const *pszDir,
 	CString *pstrMasterFile, CString *pstrMasterInfoFile)
 {
 	TCHAR const *pszISOGain = pTaskInfo->HasISOSpeed() ? _T("ISO") : _T("Gain");
@@ -260,10 +261,10 @@ static void WriteMasterTIFF(LPCTSTR szMasterFileName, CMemoryBitmap * pMasterBit
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
+bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (m_pOffsetTask && m_pOffsetTask->m_vBitmaps.size())
 	{
@@ -287,7 +288,7 @@ BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 			if (newSettings == bmpSettings)
 			{
 				strMasterFile = strMasterOffset;
-				bResult = TRUE;
+				bResult = true;
 			};
 		};
 	};
@@ -297,10 +298,10 @@ BOOL	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
+bool	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	if (!m_pOffsetTask->m_bDone)
 	{
@@ -308,13 +309,13 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 		if (m_pOffsetTask->m_vBitmaps.size() == 1)
 		{
 			m_pOffsetTask->m_strOutputFile = m_pOffsetTask->m_vBitmaps[0].m_strFileName;
-			m_pOffsetTask->m_bDone = TRUE;
-			m_pOffsetTask->m_bUnmodified = TRUE;
+			m_pOffsetTask->m_bDone = true;
+			m_pOffsetTask->m_bUnmodified = true;
 		}
 		else if (CheckForExistingOffset(m_pOffsetTask->m_strOutputFile))
 		{
-			m_pOffsetTask->m_bDone		 = TRUE;
-			m_pOffsetTask->m_bUnmodified = TRUE;
+			m_pOffsetTask->m_bDone		 = true;
+			m_pOffsetTask->m_bUnmodified = true;
 		}
 		else
 		{
@@ -327,7 +328,7 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pOffsetTask->m_vBitmaps.size(), TRUE);
+				pProgress->Start(strText, (LONG)m_pOffsetTask->m_vBitmaps.size(), true);
 
 			for (i = 0;i<m_pOffsetTask->m_vBitmaps.size() && bResult;i++)
 			{
@@ -367,13 +368,13 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 				if (pProgress)
 				{
-					pProgress->Start(strText, 1, FALSE);
+					pProgress->Start(strText, 1, false);
 					pProgress->Progress1(strText, 0);
-					pProgress->SetJointProgress(TRUE);
+					pProgress->SetJointProgress(true);
 				};
 				m_pOffsetTask->GetMaster(&pOffsetBitmap, pProgress);
 				if (pProgress)
-					pProgress->SetJointProgress(FALSE);
+					pProgress->SetJointProgress(false);
 				if (pOffsetBitmap)
 				{
 					TCHAR			szDrive[1+_MAX_DRIVE];
@@ -392,14 +393,14 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 					if (pProgress)
 					{
-						pProgress->Start(strText, 1, FALSE);
+						pProgress->Start(strText, 1, false);
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterOffset, 0);
 					};
 					WriteMasterTIFF(strMasterOffset, pOffsetBitmap, pProgress, strInfo, m_pOffsetTask);
 
 					m_pOffsetTask->m_strOutputFile = strMasterOffset;
-					m_pOffsetTask->m_bDone = TRUE;
+					m_pOffsetTask->m_bDone = true;
 
 					// Save the description
 					COffsetSettings		s;
@@ -416,10 +417,10 @@ BOOL	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
+bool	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (m_pDarkTask && m_pDarkTask->m_vBitmaps.size())
 	{
@@ -447,7 +448,7 @@ BOOL	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 				if (newSettings == bmpSettings)
 				{
 					strMasterFile = strMasterDark;
-					bResult = TRUE;
+					bResult = true;
 				};
 			};
 		};
@@ -458,11 +459,11 @@ BOOL	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
+bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	if (!m_pDarkTask->m_bDone)
 	{
@@ -471,12 +472,12 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 		if (m_pDarkTask->m_vBitmaps.size() == 1)
 		{
 			m_pDarkTask->m_strOutputFile = m_pDarkTask->m_vBitmaps[0].m_strFileName;
-			m_pDarkTask->m_bDone = TRUE;
+			m_pDarkTask->m_bDone = true;
 		}
 		else if (CheckForExistingDark(m_pDarkTask->m_strOutputFile))
 		{
-			m_pDarkTask->m_bDone	   = TRUE;
-			m_pDarkTask->m_bUnmodified = TRUE;
+			m_pDarkTask->m_bDone	   = true;
+			m_pDarkTask->m_bUnmodified = true;
 		}
 		else
 		{
@@ -490,7 +491,7 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pDarkTask->m_vBitmaps.size(), TRUE);
+				pProgress->Start(strText, (LONG)m_pDarkTask->m_vBitmaps.size(), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
@@ -553,14 +554,14 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 				if (pProgress)
 				{
-					pProgress->Start(strText, 1, FALSE);
+					pProgress->Start(strText, 1, false);
 					pProgress->Progress1(strText, 0);
-					pProgress->SetJointProgress(TRUE);
+					pProgress->SetJointProgress(true);
 					pProgress->Start2(strText, 0);
 				};
 				m_pDarkTask->GetMaster(&pDarkBitmap, pProgress);
 				if (pProgress)
-					pProgress->SetJointProgress(FALSE);
+					pProgress->SetJointProgress(false);
 				if (pDarkBitmap)
 				{
 					TCHAR			szDrive[1+_MAX_DRIVE];
@@ -579,14 +580,14 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 					if (pProgress)
 					{
-						pProgress->Start(strText, 1, FALSE);
+						pProgress->Start(strText, 1, false);
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterDark, 0);
 					};
 					WriteMasterTIFF(strMasterDark, pDarkBitmap, pProgress, strInfo, m_pDarkTask);
 
 					m_pDarkTask->m_strOutputFile = strMasterDark;
-					m_pDarkTask->m_bDone = TRUE;
+					m_pDarkTask->m_bDone = true;
 
 					// Save the description
 					CDarkSettings		s;
@@ -604,11 +605,11 @@ BOOL	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
+bool	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (m_pDarkFlatTask && m_pDarkFlatTask->m_vBitmaps.size())
 	{
@@ -636,7 +637,7 @@ BOOL	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 				if (newSettings == bmpSettings)
 				{
 					strMasterFile = strMasterDarkFlat;
-					bResult = TRUE;
+					bResult = true;
 				};
 			};
 		};
@@ -647,11 +648,11 @@ BOOL	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
+bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	if (!m_pDarkFlatTask->m_bDone)
 	{
@@ -660,12 +661,12 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 		if (m_pDarkFlatTask->m_vBitmaps.size() == 1)
 		{
 			m_pDarkFlatTask->m_strOutputFile = m_pDarkFlatTask->m_vBitmaps[0].m_strFileName;
-			m_pDarkFlatTask->m_bDone = TRUE;
+			m_pDarkFlatTask->m_bDone = true;
 		}
 		else if (CheckForExistingDarkFlat(m_pDarkFlatTask->m_strOutputFile))
 		{
-			m_pDarkFlatTask->m_bDone	   = TRUE;
-			m_pDarkFlatTask->m_bUnmodified = TRUE;
+			m_pDarkFlatTask->m_bDone	   = true;
+			m_pDarkFlatTask->m_bUnmodified = true;
 		}
 		else
 		{
@@ -679,7 +680,7 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pDarkFlatTask->m_vBitmaps.size(), TRUE);
+				pProgress->Start(strText, (LONG)m_pDarkFlatTask->m_vBitmaps.size(), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
@@ -743,14 +744,14 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 				if (pProgress)
 				{
-					pProgress->Start(strText, 1, FALSE);
+					pProgress->Start(strText, 1, false);
 					pProgress->Progress1(strText, 0);
-					pProgress->SetJointProgress(TRUE);
+					pProgress->SetJointProgress(true);
 					pProgress->Start2(strText, 0);
 				};
 				m_pDarkFlatTask->GetMaster(&pDarkFlatBitmap, pProgress);
 				if (pProgress)
-					pProgress->SetJointProgress(FALSE);
+					pProgress->SetJointProgress(false);
 				if (pDarkFlatBitmap)
 				{
 					TCHAR			szDrive[1+_MAX_DRIVE];
@@ -769,14 +770,14 @@ BOOL	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 					if (pProgress)
 					{
-						pProgress->Start(strText, 1, FALSE);
+						pProgress->Start(strText, 1, false);
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterDarkFlat, 0);
 					};
 					WriteMasterTIFF(strMasterDarkFlat, pDarkFlatBitmap, pProgress, strInfo, m_pDarkFlatTask);
 
 					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat;
-					m_pDarkFlatTask->m_bDone = TRUE;
+					m_pDarkFlatTask->m_bDone = true;
 
 					// Save the description
 					CDarkSettings		s;
@@ -892,7 +893,7 @@ class CFlatCalibrationParameters
 {
 public :
 	std::vector<CRunningStatistics>		m_vStats;
-	BOOL								m_bInitialized;
+	bool								m_bInitialized;
 
 private :
 	void	AdjustValue(double & fValue)
@@ -904,10 +905,10 @@ public :
 	CFlatCalibrationParameters()
 	{
 		m_vStats.resize(BAYER_NRCOLORS);
-		m_bInitialized = FALSE;
+		m_bInitialized = false;
 	};
 
-	BOOL	IsInitialized()
+	bool	IsInitialized()
 	{
 		return m_bInitialized;
 	};
@@ -966,7 +967,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap * pBitmap, CDSS
 		pProgress->Start2(strStart2, 0);
 	};
 
-	m_bInitialized = TRUE;
+	m_bInitialized = true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1031,11 +1032,11 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
+bool	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (m_pFlatTask && m_pFlatTask->m_vBitmaps.size())
 	{
@@ -1063,7 +1064,7 @@ BOOL	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 				if (newSettings == bmpSettings)
 				{
 					strMasterFile = strMasterFlat;
-					bResult = TRUE;
+					bResult = true;
 				};
 			};
 		};
@@ -1074,11 +1075,11 @@ BOOL	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
+bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	if (!m_pFlatTask->m_bDone)
 	{
@@ -1087,12 +1088,12 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 		if (m_pFlatTask->m_vBitmaps.size() == 1)
 		{
 			m_pFlatTask->m_strOutputFile = m_pFlatTask->m_vBitmaps[0].m_strFileName;
-			m_pFlatTask->m_bDone = TRUE;
+			m_pFlatTask->m_bDone = true;
 		}
 		else if (CheckForExistingFlat(m_pFlatTask->m_strOutputFile))
 		{
-			m_pFlatTask->m_bDone	   = TRUE;
-			m_pFlatTask->m_bUnmodified = TRUE;
+			m_pFlatTask->m_bDone	   = true;
+			m_pFlatTask->m_bUnmodified = true;
 		}
 		else
 		{
@@ -1108,7 +1109,7 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pFlatTask->m_vBitmaps.size(), TRUE);
+				pProgress->Start(strText, (LONG)m_pFlatTask->m_vBitmaps.size(), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
@@ -1203,13 +1204,13 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 				if (pProgress)
 				{
-					pProgress->Start(strText, 1, FALSE);
+					pProgress->Start(strText, 1, false);
 					pProgress->Progress1(strText, 0);
-					pProgress->SetJointProgress(TRUE);
+					pProgress->SetJointProgress(true);
 				};
 				m_pFlatTask->GetMaster(&pFlatBitmap, pProgress);
 				if (pProgress)
-					pProgress->SetJointProgress(FALSE);
+					pProgress->SetJointProgress(false);
 
 				if (pFlatBitmap)
 				{
@@ -1228,14 +1229,14 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 					if (pProgress)
 					{
-						pProgress->Start(strText, 1, FALSE);
+						pProgress->Start(strText, 1, false);
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterFlat, 0);
 					};
 					WriteMasterTIFF(strMasterFlat, pFlatBitmap, pProgress, strInfo, m_pFlatTask);
 
 					m_pFlatTask->m_strOutputFile = strMasterFlat;
-					m_pFlatTask->m_bDone = TRUE;
+					m_pFlatTask->m_bDone = true;
 
 					// Save the description
 					CFlatSettings		s;
@@ -1254,27 +1255,27 @@ BOOL	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-inline BOOL	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, CTaskInfo * pNewTask)
+inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, CTaskInfo * pNewTask)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (pCurrentTask)
 	{
 		if (pCurrentTask->m_dwGroupID)
 		{
 			if (pNewTask->m_dwGroupID == pCurrentTask->m_dwGroupID)
-				bResult = TRUE;
+				bResult = true;
 		}
 		else
 		{
 			if ((pNewTask->m_dwGroupID == BaseTask.m_dwGroupID) ||
 				 !pNewTask->m_dwGroupID)
-				bResult = TRUE;
+				bResult = true;
 		};
 	}
 	else if ((pNewTask->m_dwGroupID == BaseTask.m_dwGroupID) ||
 		     !pNewTask->m_dwGroupID)
-		bResult = TRUE;
+		bResult = true;
 
 	return bResult;
 };
@@ -1285,7 +1286,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 {
 	ZFUNCTRACE_RUNTIME();
 
-	BOOL			bFound = FALSE;
+	bool			bFound = false;
 
 	for (LONG i = 0;i<m_vTasks.size() && !bFound;i++)
 	{
@@ -1296,7 +1297,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 			if ((m_vTasks[i].HasISOSpeed() ? (m_vTasks[i].m_lISOSpeed == FrameInfo.m_lISOSpeed) : (m_vTasks[i].m_lGain == FrameInfo.m_lGain)) &&
 				AreExposureEquals(m_vTasks[i].m_fExposure,FrameInfo.m_fExposure))
 			{
-				bFound = TRUE;
+				bFound = true;
 				m_vTasks[i].m_vBitmaps.push_back(FrameInfo);
 			};
 		};
@@ -1320,34 +1321,34 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 	};
 
 	if (!m_bUsingJPEG && (FrameInfo.m_strInfos.Left(4) == _T("JPEG")))
-		m_bUsingJPEG = TRUE;
+		m_bUsingJPEG = true;
 	if (!m_bUsingFITS && (FrameInfo.m_strInfos.Left(4) == _T("FITS")))
-		m_bUsingFITS = TRUE;
+		m_bUsingFITS = true;
 	if (!m_bCalibrating && !FrameInfo.IsLightFrame())
-		m_bCalibrating = TRUE;
+		m_bCalibrating = true;
 	if (!m_bUsingBayer && (FrameInfo.GetCFAType() != CFATYPE_NONE))
-		m_bUsingBayer = TRUE;
+		m_bUsingBayer = true;
 	if (!m_bUsingColorImages && (m_bUsingBayer || FrameInfo.m_lNrChannels>1))
-		m_bUsingColorImages = TRUE;
+		m_bUsingColorImages = true;
 
 	if (FrameInfo.IsDarkFrame())
 	{
-		m_bDarkUsed = TRUE;
+		m_bDarkUsed = true;
 		m_lNrDarkFrames++;
 	}
 	else if (FrameInfo.IsDarkFlatFrame())
 	{
-		m_bDarkUsed = TRUE;
+		m_bDarkUsed = true;
 		m_lNrDarkFlatFrames++;
 	}
 	else if (FrameInfo.IsFlatFrame())
 	{
-		m_bFlatUsed = TRUE;
+		m_bFlatUsed = true;
 		m_lNrFlatFrames++;
 	}
 	else if (FrameInfo.IsOffsetFrame())
 	{
-		m_bBiasUsed = TRUE;
+		m_bBiasUsed = true;
 		m_lNrBiasFrames++;
 	}
 	else
@@ -1365,7 +1366,7 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 
 	CTaskInfo *			pResult = nullptr;
 	LONG				j;
-	BOOL				bExposureFirst = (TaskType == PICTURETYPE_DARKFRAME);
+	bool				bExposureFirst = (TaskType == PICTURETYPE_DARKFRAME);
 
 	if (bExposureFirst)
 	{
@@ -1597,7 +1598,7 @@ void CAllStackingTasks::ResolveTasks()
 void CAllStackingTasks::ResetTasksStatus()
 {
 	for (LONG i = 0;i<m_vTasks.size();i++)
-		m_vTasks[i].m_bDone = FALSE;
+		m_vTasks[i].m_bDone = false;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1645,43 +1646,31 @@ void CAllStackingTasks::UpdateTasksMethods()
 	DWORD						lOffsetIteration = 5;
 
 	DWORD						dwMethod;
-	CString						strKappa;
 
-	dwMethod = 0;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), dwMethod);
+	dwMethod = workspace.value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt();
 	if (dwMethod)
 		LightMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Iteration"), lLightIteration);
-	strKappa ="2.0";
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Kappa"), strKappa);
-	fLightKappa = _ttof(strKappa);
+	lLightIteration = workspace.value("Stacking/Light_Iteration", (uint)5).toUInt();
+	fLightKappa = workspace.value("Stacking/Light_Kappa" "2.0").toDouble();
 
-	dwMethod = 0;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), dwMethod);
+
+	dwMethod = workspace.value("Stacking/Dark_Method", (uint)MBP_MEDIAN).toUInt();
 	if (dwMethod)
 		DarkMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), lDarkIteration);
-	strKappa ="2.0";
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), strKappa);
-	fDarkKappa = _ttof(strKappa);
+	lDarkIteration = workspace.value("Stacking/Dark_Iteration", (uint)5).toUInt();
+	fDarkKappa = workspace.value("Stacking/Dark_Kappa", "2.0").toDouble();
 
-	dwMethod = 0;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), dwMethod);
+	dwMethod = workspace.value("Stacking/Flat_Method", (uint)MBP_MEDIAN).toUInt();
 	if (dwMethod)
 		FlatMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), lFlatIteration);
-	strKappa ="2.0";
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), strKappa);
-	fFlatKappa = _ttof(strKappa);
+	lFlatIteration = workspace.value("Stacking/Flat_Iteration", (uint)5).toUInt();
+	fFlatKappa = workspace.value("Stacking/Flat_Kappa", "2.0").toDouble();
 
-	dwMethod = 0;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), dwMethod);
+	dwMethod = workspace.value("Stacking/Offset_Method", (uint)MBP_MEDIAN).toUInt();
 	if (dwMethod)
 		OffsetMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), lOffsetIteration);
-	strKappa ="2.0";
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), strKappa);
-	fOffsetKappa = _ttof(strKappa);
+	lOffsetIteration = workspace.value("Stacking/Offset_Iteration", (uint)5).toUInt();
+	fOffsetKappa = workspace.value("Stacking/Offset_Kappa", "2.0").toDouble();
 
 	for (i = 0;i<m_vStacks.size();i++)
 	{
@@ -1700,10 +1689,10 @@ void CAllStackingTasks::UpdateTasksMethods()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::DoOffsetTasks(CDSSProgress * pProgress)
+bool CAllStackingTasks::DoOffsetTasks(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	// 1. create all the offset masters
 	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
@@ -1726,10 +1715,10 @@ BOOL CAllStackingTasks::DoOffsetTasks(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::DoDarkTasks(CDSSProgress * pProgress)
+bool CAllStackingTasks::DoDarkTasks(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	// 2. create all the dark masters (using the offset master if necessary)
 	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
@@ -1761,10 +1750,10 @@ BOOL CAllStackingTasks::DoDarkTasks(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
+bool CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	// 2. create all the dark masters (using the offset master if necessary)
 	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
@@ -1796,10 +1785,10 @@ BOOL CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
+bool CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	// 3. create all the flat masters (using the offset master if necessary)
 	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
@@ -1830,9 +1819,9 @@ BOOL CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
+bool CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
 {
-	BOOL						bResult = FALSE;
+	bool						bResult = false;
 	std::set<CString>			sFolders;
 	std::set<CString>::iterator	it;
 
@@ -1863,7 +1852,7 @@ BOOL CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
 	// Check that it is possible to write a file in all the folders
 	for (it = sFolders.begin(); it!= sFolders.end();it++)
 	{
-		BOOL			bDirOk = TRUE;
+		bool			bDirOk = true;
 		CString			strFileName;
 		FILE *			hFile;
 
@@ -1877,12 +1866,12 @@ BOOL CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
 
 			nResult = fprintf(hFile, "DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
 			if (nResult<=0)
-				bDirOk = FALSE;
+				bDirOk = false;
 			fclose(hFile);
 			DeleteFile(strFileName);
 		}
 		else
-			bDirOk = FALSE;
+			bDirOk = false;
 
 		if (!bDirOk)
 			vFolders.push_back((*it));
@@ -1979,7 +1968,7 @@ __int64	CAllStackingTasks::ComputeNecessaryDiskSpace()
 
 __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 {
-	CString			strTempPath;
+	QString			strTempPath;
 
 	GetTemporaryFilesFolder(strTempPath);
 
@@ -1987,49 +1976,49 @@ __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 	ULARGE_INTEGER			ulTotal;
 	ULARGE_INTEGER			ulTotalFree;
 
-	strDrive = strTempPath;
+	strDrive = CString((LPCTSTR)strTempPath.utf16());
 	strDrive = strDrive.Left(2);
 
-	GetDiskFreeSpaceEx(strTempPath, &ulFreeSpace, &ulTotal, &ulTotalFree);
+	GetDiskFreeSpaceEx(CString((LPCTSTR)strTempPath.utf16()), &ulFreeSpace, &ulTotal, &ulTotalFree);
 
 	return ulFreeSpace.QuadPart;
 };
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::GetTemporaryFilesFolder(CString & strFolder)
+void CAllStackingTasks::GetTemporaryFilesFolder(QString & strFolder)
 {
 
-	CRegistry			reg;
-	CString				strTemp;
+	QSettings	settings;
 
-	reg.LoadKey(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("TemporaryFilesFolder"), strTemp);
-	if (strTemp.GetLength())
+	QString strTemp = settings.value("Stacking/TemporaryFilesFolder", QString("")).toString();
+	if (strTemp.length())
 	{
 		// Check that the folder exists by creating an file in it
 		FILE *			hFile;
-		CString			strFile;
+		QString			strFile;
 
 		strFile = strTemp;
 		strFile += "Temp.txt";
 
-		hFile = _tfopen(strFile, _T("wb"));
+		hFile = _tfopen((LPCTSTR)strFile.utf16(), _T("wb"));
 		if (hFile)
 		{
 			fclose(hFile);
-			DeleteFile(strFile);
+			DeleteFile((LPCTSTR)strFile.utf16());
 		}
 		else
-			strTemp.Empty();
+			strTemp = "";
 	};
 
-	if (!strTemp.GetLength())
+	if (!strTemp.length())
 	{
 		TCHAR			szTempPath[1+_MAX_PATH] = _T("");
 
 		GetTempPath(sizeof(szTempPath)/sizeof(TCHAR), szTempPath);
 
-		strTemp = szTempPath;
+		CString temp(szTempPath);
+		strTemp = QString((QChar *)temp.GetBuffer());
 	};
 
 	strFolder = strTemp;
@@ -2041,13 +2030,13 @@ void CAllStackingTasks::SetTemporaryFilesFolder(LPCTSTR szFolder)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	CRegistry			reg;
-	CString				strFolder = szFolder;
+	QSettings settings;
+	QString				strFolder(CT2CA(szFolder, CP_UTF8));
 
-	if ((strFolder.Right(1) != _T("\\")) && (strFolder.Right(1) != _T("/")))
-		strFolder+=_T("\\");
+	if ((strFolder.right(1) != "\\") && (strFolder.right(1) != "/"))
+		strFolder += "\\";
 
-	reg.SaveKey(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("TemporaryFilesFolder"), strFolder);
+	settings.setValue("Stacking/TemporaryFilesFolder", strFolder);
 };
 
 /* ------------------------------------------------------------------- */
@@ -2055,15 +2044,13 @@ void CAllStackingTasks::SetTemporaryFilesFolder(LPCTSTR szFolder)
 BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
 {
 	CWorkspace			workspace;
-	DWORD				dwBackgroundCalibration = 1;
-	DWORD				dwPerChannelCalibration = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibration"), dwBackgroundCalibration);
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PerChannelBackgroundCalibration"), dwPerChannelCalibration);
+	bool backgroundCalibration = workspace.value("Stacking/BackgroundCalibration", true).toBool();
+	bool perChannelCalibration = workspace.value("Stacking/PerChannelBackgroundCalibration", false).toBool();
 
-	if (dwBackgroundCalibration)
+	if (backgroundCalibration)
 		return BCM_RGB;
-	else if (dwPerChannelCalibration)
+	else if (perChannelCalibration)
 		return BCM_PERCHANNEL;
 	else
 		return BCM_NONE;
@@ -2074,11 +2061,11 @@ BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
 BACKGROUNDCALIBRATIONINTERPOLATION	CAllStackingTasks::GetBackgroundCalibrationInterpolation()
 {
 	CWorkspace			workspace;
-	DWORD				dwInterpolation = (DWORD)BCI_RATIONAL;
+	int				interpolation = (int)BCI_RATIONAL;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibrationInterpolation"), dwInterpolation);
+	interpolation = workspace.value("Stacking/BackgroundCalibrationInterpolation").toUInt();
 
-	return (BACKGROUNDCALIBRATIONINTERPOLATION)dwInterpolation;
+	return (BACKGROUNDCALIBRATIONINTERPOLATION)interpolation;
 };
 
 /* ------------------------------------------------------------------- */
@@ -2086,67 +2073,58 @@ BACKGROUNDCALIBRATIONINTERPOLATION	CAllStackingTasks::GetBackgroundCalibrationIn
 RGBBACKGROUNDCALIBRATIONMETHOD	CAllStackingTasks::GetRGBBackgroundCalibrationMethod()
 {
 	CWorkspace			workspace;
-	DWORD				dwMethod = (DWORD)RBCM_MAXIMUM;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("RGBBackgroundCalibrationMethod"), dwMethod);
+	int method = workspace.value("Stacking/RGBBackgroundCalibrationMethod", (int)RBCM_MAXIMUM).toUInt();
 
-	return (RGBBACKGROUNDCALIBRATIONMETHOD)dwMethod;
+	return (RGBBACKGROUNDCALIBRATIONMETHOD)method;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CAllStackingTasks::GetDarkOptimization()
+bool	CAllStackingTasks::GetDarkOptimization()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkOptimization"), dwValue);
+	bool value = workspace.value("Stacking/DarkOptimization", false).toBool();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
 
 double	CAllStackingTasks::GetDarkFactor()
 {
-	double				fResult = 1.0;
+	double				value = 1.0;
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("UseDarkFactor"), dwValue);
-	if (dwValue)
+	if (workspace.value("Stacking/UseDarkFactor", false).toBool())
 	{
-		CString			strFactor;
-
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkFactor"), strFactor);
-		fResult = _ttof(strFactor);
+		value = workspace.value("Stacking/DarkFactor").toDouble();
 	};
 
-	return fResult;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::GetHotPixelsDetection()
+bool CAllStackingTasks::GetHotPixelsDetection()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 1;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("HotPixelsDetection"), dwValue);
+	bool value = workspace.value("Stacking/HotPixelsDetection", true).toBool();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::GetBadLinesDetection()
+bool CAllStackingTasks::GetBadLinesDetection()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BadLinesDetection"), dwValue);
+	bool value = workspace.value("Stacking/BadLinesDetection", false).toBool();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
@@ -2155,12 +2133,11 @@ STACKINGMODE	CAllStackingTasks::GetResultMode()
 {
 	STACKINGMODE		Result = SM_NORMAL;
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Mosaic"), dwValue);
-	if (dwValue==2)
+	int value = workspace.value("Stacking/Mosaic", 0).toUInt();
+	if (value==2)
 		Result = SM_INTERSECTION;
-	else if (dwValue==1)
+	else if (value==1)
 		Result = SM_MOSAIC;
 
 	return Result;
@@ -2168,38 +2145,35 @@ STACKINGMODE	CAllStackingTasks::GetResultMode()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::GetCreateIntermediates()
+bool CAllStackingTasks::GetCreateIntermediates()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CreateIntermediates"), dwValue);
+	bool value = workspace.value("Stacking/CreateIntermediates", false).toBool();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::GetSaveCalibrated()
+bool CAllStackingTasks::GetSaveCalibrated()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibrated"), dwValue);
+	bool value = workspace.value("Stacking/SaveCalibrated", false).toBool();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CAllStackingTasks::GetSaveCalibratedDebayered()
+bool CAllStackingTasks::GetSaveCalibratedDebayered()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibratedDebayered"), dwValue);
+	bool value = workspace.value("Stacking/SaveCalibratedDebayered", false).toBool();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
@@ -2207,11 +2181,10 @@ BOOL CAllStackingTasks::GetSaveCalibratedDebayered()
 WORD	CAllStackingTasks::GetAlignmentMethod()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignmentTransformation"), dwValue);
+	WORD value = workspace.value("Stacking/AlignmentTransformation", 0).toUInt();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
@@ -2219,47 +2192,41 @@ WORD	CAllStackingTasks::GetAlignmentMethod()
 LONG	CAllStackingTasks::GetPixelSizeMultiplier()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 1;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PixelSizeMultiplier"), dwValue);
+	LONG value = workspace.value("Stacking/PixelSizeMultiplier", 1).toUInt();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CAllStackingTasks::GetChannelAlign()
+bool	CAllStackingTasks::GetChannelAlign()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignChannels"), dwValue);
-
-	return dwValue;
+	return workspace.value("Stacking/AlignChannels", false).toBool();
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CAllStackingTasks::GetSaveIntermediateCometImages()
+bool	CAllStackingTasks::GetSaveIntermediateCometImages()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCometImages"), dwValue);
+	bool value = workspace.value("Stacking/SaveCometImages", false).toBool();
 
-	return dwValue;
+	return value;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CAllStackingTasks::GetApplyMedianFilterToCometImage()
+bool	CAllStackingTasks::GetApplyMedianFilterToCometImage()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 1;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("ApplyFilterToCometImages"), dwValue);
+	bool value = workspace.value("Stacking/ApplyFilterToCometImages", true).toBool();
 
-	return 0; //dwValue;
+	return false; //value;
 };
 
 /* ------------------------------------------------------------------- */
@@ -2267,14 +2234,13 @@ BOOL	CAllStackingTasks::GetApplyMedianFilterToCometImage()
 INTERMEDIATEFILEFORMAT CAllStackingTasks::GetIntermediateFileFormat()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 1;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("IntermediateFileFormat"), dwValue);
+	int value = workspace.value("Stacking/IntermediateFileFormat", 1).toUInt();
 
-	if (dwValue != IFF_TIFF && dwValue != IFF_FITS)
-		dwValue = IFF_TIFF;
+	if (value != IFF_TIFF && value != IFF_FITS)
+		value = IFF_TIFF;
 
-	return (INTERMEDIATEFILEFORMAT)dwValue;
+	return (INTERMEDIATEFILEFORMAT)value;
 };
 
 /* ------------------------------------------------------------------- */
@@ -2282,14 +2248,13 @@ INTERMEDIATEFILEFORMAT CAllStackingTasks::GetIntermediateFileFormat()
 COMETSTACKINGMODE CAllStackingTasks::GetCometStackingMode()
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CometStackingMode"), dwValue);
+	int value = workspace.value("Stacking/CometStackingMode", 0).toUInt();
 
-	if (dwValue != CSM_STANDARD && dwValue != CSM_COMETONLY)
-		dwValue = CSM_COMETSTAR;
+	if (value != CSM_STANDARD && value != CSM_COMETONLY)
+		value = CSM_COMETSTAR;
 
-	return (COMETSTACKINGMODE)dwValue;
+	return (COMETSTACKINGMODE)value;
 };
 
 /* ------------------------------------------------------------------- */
@@ -2297,40 +2262,22 @@ COMETSTACKINGMODE CAllStackingTasks::GetCometStackingMode()
 void CAllStackingTasks::GetPostCalibrationSettings(CPostCalibrationSettings & pcs)
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
+	
+	pcs.m_bHot = workspace.value("Stacking/PCS_DetectCleanHot", false).toBool();
 
-	dwValue = 0;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_DetectCleanHot"), dwValue);
-	pcs.m_bHot = dwValue;
+	pcs.m_lHotFilter = workspace.value("Stacking/PCS_HotFilter", 1).toUInt();
 
-	dwValue = 1;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_HotFilter"), dwValue);
-	pcs.m_lHotFilter = dwValue;
+	pcs.m_fHotDetection = workspace.value("Stacking/PCS_HotDetection", 500.0).toDouble()/10.0;
 
-	dwValue = 500;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_HotDetection"), dwValue);
-	pcs.m_fHotDetection = (double)dwValue/10.0;
+	pcs.m_bCold = workspace.value("Stacking/PCS_DetectCleanCold", false).toBool();
 
-	dwValue = 0;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_DetectCleanCold"), dwValue);
-	pcs.m_bCold = dwValue;
+	pcs.m_lColdFilter = workspace.value("Stacking/PCS_ColdFilter", 1L).toUInt();
 
-	dwValue = 1;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ColdFilter"), dwValue);
-	pcs.m_lColdFilter = dwValue;
+	pcs.m_fColdDetection = workspace.value("Stacking/PCS_ColdDetection", 500.0).toDouble()/10.0;
+	 
+	pcs.m_bSaveDeltaImage = workspace.value("Stacking/PCS_SaveDeltaImage", false).toBool();
 
-	dwValue = 500;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ColdDetection"), dwValue);
-	pcs.m_fColdDetection = (double)dwValue/10.0;
-
-	dwValue = 0;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_SaveDeltaImage"), dwValue);
-	pcs.m_bSaveDeltaImage = dwValue;
-
-	dwValue = 1;
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ReplaceMethod"), dwValue);
-	pcs.m_Replace = (COSMETICREPLACE)dwValue;
-
+	pcs.m_Replace = static_cast<COSMETICREPLACE>(workspace.value("Stacking/PCS_ReplaceMethod", (int)CR_MEDIAN).toInt());
 };
 
 /* ------------------------------------------------------------------- */
@@ -2338,97 +2285,75 @@ void CAllStackingTasks::GetPostCalibrationSettings(CPostCalibrationSettings & pc
 void CAllStackingTasks::SetPostCalibrationSettings(const CPostCalibrationSettings & pcs)
 {
 	CWorkspace			workspace;
-	DWORD				dwValue = 0;
 
-	dwValue = pcs.m_bHot;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_DetectCleanHot"), dwValue);
+	workspace.setValue("Stacking/PCS_DetectCleanHot", pcs.m_bHot);
 
-	dwValue = pcs.m_lHotFilter;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_HotFilter"), dwValue);
+	workspace.setValue("Stacking/PCS_HotFilter", pcs.m_lHotFilter);
 
-	dwValue = pcs.m_fHotDetection*10.0;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_HotDetection"), dwValue);
+	workspace.setValue("Stacking/PCS_HotDetection", pcs.m_fHotDetection*10.0);
 
-	dwValue = pcs.m_bCold;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_DetectCleanCold"), dwValue);
+	workspace.setValue("Stacking/PCS_DetectCleanCold", pcs.m_bCold);
 
-	dwValue = pcs.m_lColdFilter;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ColdFilter"), dwValue);
+	workspace.setValue("Stacking/PCS_ColdFilter", pcs.m_lColdFilter);
 
-	dwValue = pcs.m_fColdDetection*10.0;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ColdDetection"), dwValue);
+	workspace.setValue("Stacking/PCS_ColdDetection", pcs.m_fColdDetection*10.0);
 
-	dwValue = pcs.m_bSaveDeltaImage;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_SaveDeltaImage"), dwValue);
+	workspace.setValue("Stacking/PCS_SaveDeltaImage", pcs.m_bSaveDeltaImage);
 
-	dwValue = pcs.m_Replace;
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PCS_ReplaceMethod"), dwValue);
+	workspace.setValue("Stacking/PCS_ReplaceMethod", (int)pcs.m_Replace);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CAllStackingTasks::GetOutputSettings(COutputSettings & os)
 {
-	CRegistry			registry;
-	DWORD				dwValue = 0;
+	QSettings settings;
 
-	dwValue = 1;
-	registry.LoadKey(REGENTRY_BASEKEY_OUTPUT, _T("Output"), dwValue);
-	os.m_bOutput = (dwValue == 1);
+	os.m_bOutput = settings.value("Output/Output", true).toBool();
 
-	dwValue = 0;
-	registry.LoadKey(REGENTRY_BASEKEY_OUTPUT, _T("OutputHTML"), dwValue);
-	os.m_bOutputHTML = (dwValue == 1);
+	os.m_bOutputHTML = settings.value("Output/OutputHTML", false).toBool();
 
-	dwValue = 0;
-	registry.LoadKey(REGENTRY_BASEKEY_OUTPUT, _T("FileName"), dwValue);
-	os.m_bAutosave = (dwValue == 0);
-	os.m_bFileList = (dwValue == 1);
+	bool temp = settings.value("Output/FileName", false).toBool();
+	os.m_bAutosave = !temp;
+	os.m_bFileList = temp;
 
-	dwValue = 1;
-	registry.LoadKey(REGENTRY_BASEKEY_OUTPUT, _T("AppendNumber"), dwValue);
-	os.m_bAppend = (dwValue == 1);
+	os.m_bAppend = settings.value("Output/AppendNumber", true).toBool();
 
-	dwValue = 0;
-	registry.LoadKey(REGENTRY_BASEKEY_OUTPUT, _T("OutputFolder"), dwValue);
-	os.m_bRefFrameFolder = (dwValue == 0);
-	os.m_bFileListFolder = (dwValue == 1);
-	os.m_bOtherFolder	 = (dwValue == 2);
+	int tempInt = settings.value("Output/OutputFolder", 0).toUInt();
+	os.m_bRefFrameFolder = (tempInt == 0);
+	os.m_bFileListFolder = (tempInt == 1);
+	os.m_bOtherFolder	 = (tempInt == 2);
 
-	registry.LoadKey(REGENTRY_BASEKEY_OUTPUT, _T("OutputFolderName"), os.m_strFolder);
+	os.m_strFolder = settings.value("Output/OutputFolderName").toString();
 };
 
 /* ------------------------------------------------------------------- */
 
 void CAllStackingTasks::SetOutputSettings(const COutputSettings & os)
 {
-	CRegistry			registry;
-	DWORD				dwValue;
+	QSettings settings;
 
-	dwValue = os.m_bOutput ? 1 : 0;
-	registry.SaveKey(REGENTRY_BASEKEY_OUTPUT, _T("Output"), dwValue);
+	settings.setValue("Output/Output", os.m_bOutput);
 
-	dwValue = os.m_bOutputHTML ? 1 : 0;
-	registry.SaveKey(REGENTRY_BASEKEY_OUTPUT, _T("OutputHTML"), dwValue);
+	settings.setValue("Output/OutputHTML", os.m_bOutputHTML);
 
-	if (os.m_bAutosave)
-		dwValue = 0;
-	else
-		dwValue = 1;
-	registry.SaveKey(REGENTRY_BASEKEY_OUTPUT, _T("FileName"), dwValue);
+	// 
+	// Save value of false if m_bAutosave is true
+	//
+	settings.setValue("Output/FileName", (os.m_bAutosave ? false : true));
 
-	dwValue = os.m_bAppend ? 1 : 0;
-	registry.SaveKey(REGENTRY_BASEKEY_OUTPUT, _T("AppendNumber"), dwValue);
+	settings.setValue("Output/AppendNumber",  os.m_bAppend);
 
+	int	tempInt;
 	if (os.m_bRefFrameFolder)
-		dwValue = 0;
+		tempInt = 0;
 	else if (os.m_bFileListFolder)
-		dwValue = 1;
+		tempInt = 1;
 	else
-		dwValue = 2;
-	registry.SaveKey(REGENTRY_BASEKEY_OUTPUT, _T("OutputFolder"), dwValue);
+		tempInt = 2;
+	settings.setValue("Output/OutputFolder", tempInt);
 
-	registry.SaveKey(REGENTRY_BASEKEY_OUTPUT, _T("OutputFolderName"), os.m_strFolder);
+	settings.setValue("Output/OutputFolderName", os.m_strFolder);
 };
 
 /* ------------------------------------------------------------------- */

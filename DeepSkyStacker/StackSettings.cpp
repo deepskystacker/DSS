@@ -23,16 +23,16 @@ CStackSettings::CStackSettings(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackSettings::IDD, pParent)
 {
 	m_lStartingTab			= 0;
-	m_bRegisteringOnly		= FALSE;
-	m_bUseCustomRectangle	= FALSE;
-	m_bEnableCustomRectangle= FALSE;
-	m_bEnableCometStacking	= FALSE;
+	m_bRegisteringOnly		= false;
+	m_bUseCustomRectangle	= false;
+	m_bEnableCustomRectangle= false;
+	m_bEnableCometStacking	= false;
 	m_pStackingTasks		= nullptr;
 
-	m_bEnableDark			= TRUE;
-	m_bEnableFlat			= TRUE;
-	m_bEnableBias			= TRUE;
-	m_bEnableAll			= FALSE;
+	m_bEnableDark			= true;
+	m_bEnableFlat			= true;
+	m_bEnableBias			= true;
+	m_bEnableAll			= false;
 }
 
 /* ------------------------------------------------------------------- */
@@ -117,7 +117,7 @@ BOOL CStackSettings::OnInitDialog()
 		m_Sheet.AddPage(&m_tabOutput);
 	};
 
-	m_Sheet.EnableStackedTabs( FALSE );
+	m_Sheet.EnableStackedTabs( false );
 	m_Sheet.Create (this, WS_VISIBLE | WS_CHILD | WS_TABSTOP, 0);
 
 	// Init controls
@@ -126,27 +126,26 @@ BOOL CStackSettings::OnInitDialog()
 	DWORD				lIteration;
 	DWORD				dwBackgroundCalibration = 1;
 	DWORD				dwPerChannelBackgroundCalibration = 0;
-	DWORD				dwDarkOptimization = 0;
-	DWORD				dwDarkFactor = 0;
-	CString				strDarkFactor = "1.0";
-	DWORD				dwHotPixels = 1;
-	DWORD				dwBadColumns = 0;
+	bool				fDarkOptimization;
+	bool				fDarkFactor;
+	QString				strDarkFactor = "1.0";
+	bool				fHotPixels;
+	bool				fBadColumns = 0;
 	DWORD				dwMosaic = 0;
-	DWORD				dwCreateIntermediates = 0;
-	DWORD				dwSaveCalibrated = 0;
-	DWORD				dwSaveDebayered = 0;
+	bool				fCreateIntermediates;
+	bool				fSaveCalibrated;
+	bool				fSaveDebayered = 0;
 	DWORD				dwSaveFormat = 1;
-	CString				strKappa;
 	DWORD				dwAlignment = 0;
 	DWORD				dwDrizzle = 1;
-	DWORD				dwAlignChannels = 0;
+	bool				fAlignChannels = 0;
 	DWORD				dwCometStackingMode = 0;
-	DWORD				dwDebloom = 0;
+	bool				fDebloom = false;
 	double				fKappa;
 
 	if (m_bEnableAll || !m_bRegisteringOnly)
 	{
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Mosaic"), dwMosaic);
+		dwMosaic = workspace.value("Stacking/Mosaic", (uint)0).toUInt();
 		if (dwMosaic==2)
 			m_tabResult.SetResultMode(SM_INTERSECTION);
 		else if (dwMosaic==1)
@@ -156,19 +155,18 @@ BOOL CStackSettings::OnInitDialog()
 
 		m_tabResult.SetCustom(m_bEnableCustomRectangle, m_bUseCustomRectangle);
 
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PixelSizeMultiplier"), dwDrizzle);
+		dwDrizzle = workspace.value("Stacking/PixelSizeMultiplier", 1).toUInt();
 		m_tabResult.SetDrizzle(dwDrizzle);
 
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignChannels"), dwAlignChannels);
-		m_tabResult.SetAlignChannels(dwAlignChannels);
+		fAlignChannels = workspace.value("Stacking/AlignChannels", false).toUInt();
+		m_tabResult.SetAlignChannels(fAlignChannels);
 
 		dwMethod = MBP_AVERAGE;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), dwMethod);
-		lIteration = 5;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Iteration"), lIteration);
-		strKappa ="2.0";
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Kappa"), strKappa);
-		fKappa = _ttof(strKappa);
+		dwMethod = workspace.value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt();
+		lIteration = workspace.value("Stacking/Light_Iteration", (uint)5).toUInt();
+
+		fKappa = workspace.value("Stacking/Light_Kappa", "2.0").toDouble();
+
 		m_tabLightFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
 
 		if (!m_pStackingTasks ||
@@ -176,9 +174,9 @@ BOOL CStackSettings::OnInitDialog()
 			!m_pStackingTasks->AreColorImageUsed()))
 		{
 			m_tabLightFrames.m_Debloom.ShowWindow(SW_SHOW);
-			workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Debloom"), dwDebloom);
-			m_tabLightFrames.m_Debloom.SetCheck(dwDebloom);
-			//m_tabLightFrames.m_DebloomSettings.ShowWindow(dwDebloom ? SW_SHOW : SW_HIDE);
+			fDebloom = workspace.value("Stacking/Debloom", false).toBool();
+			m_tabLightFrames.m_Debloom.SetCheck(fDebloom);
+			//m_tabLightFrames.m_DebloomSettings.ShowWindow(fDeBloom ? SW_SHOW : SW_HIDE);
 		};
 
 		BACKGROUNDCALIBRATIONMODE		CalibrationMode;
@@ -190,7 +188,7 @@ BOOL CStackSettings::OnInitDialog()
 
 		if (m_bEnableCometStacking || m_bEnableAll)
 		{
-			workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CometStackingMode"), dwCometStackingMode);
+			dwCometStackingMode = workspace.value("Stacking/CometStackingMode", (uint)CSM_STANDARD).toUInt();
 			m_tabComet.SetCometStackingMode((COMETSTACKINGMODE)dwCometStackingMode);
 		};
 
@@ -206,93 +204,82 @@ BOOL CStackSettings::OnInitDialog()
 		m_tabOutput.SetOutputSettings(OutputSettings);
 	};
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("IntermediateFileFormat"), dwSaveFormat);
+	dwSaveFormat = workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
 	m_tabIntermediate.SetFileFormat((INTERMEDIATEFILEFORMAT)dwSaveFormat);
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CreateIntermediates"), dwCreateIntermediates);
-	m_tabIntermediate.SetCreateIntermediates(dwCreateIntermediates);
+	fCreateIntermediates = workspace.value("Stacking/CreateIntermediates", false).toBool();
+	m_tabIntermediate.SetCreateIntermediates(fCreateIntermediates);
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibrated"), dwSaveCalibrated);
-	m_tabIntermediate.SetSaveCalibrated(dwSaveCalibrated);
+	fSaveCalibrated = workspace.value("Stacking/SaveCalibrated", false).toBool();
+	m_tabIntermediate.SetSaveCalibrated(fSaveCalibrated);
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibratedDebayered"), dwSaveDebayered);
-	m_tabIntermediate.SetSaveDebayered(dwSaveDebayered);
+	fSaveDebayered = workspace.value("Stacking/SaveCalibratedDebayered", false).toBool();
+	m_tabIntermediate.SetSaveDebayered(fSaveDebayered);
 
 	if (m_bEnableDark || m_bEnableAll)
 	{
-		dwMethod = MBP_MEDIAN;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), dwMethod);
-		lIteration = 5;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), lIteration);
-		strKappa ="2.0";
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), strKappa);
-		fKappa = _ttof(strKappa);
+		dwMethod = workspace.value("Stacking/Dark_Method", (uint)MBP_MEDIAN).toUInt();
+		lIteration = workspace.value("Stacking/Dark_Iteration", (uint)5).toUInt();
+		fKappa = workspace.value("Stacking/Dark_Kappa", "2.0").toDouble();
+
 		m_tabDarkFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
-		m_tabDarkFrames.m_EntropyAverage.EnableWindow(FALSE);
+		m_tabDarkFrames.m_EntropyAverage.EnableWindow(false);
 
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkOptimization"), dwDarkOptimization);
+		fDarkOptimization = workspace.value("Stacking/DarkOptimization", false).toBool();
 		m_tabDarkFrames.m_DarkOptimization.ShowWindow(SW_SHOW);
-		m_tabDarkFrames.m_DarkOptimization.SetCheck(dwDarkOptimization);
+		m_tabDarkFrames.m_DarkOptimization.SetCheck(fDarkOptimization);
 
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("UseDarkFactor"), dwDarkFactor);
+		fDarkFactor = workspace.value("Stacking/UseDarkFactor", false).toBool();
 		m_tabDarkFrames.m_UseDarkFactor.ShowWindow(SW_SHOW);
-		m_tabDarkFrames.m_UseDarkFactor.SetCheck(dwDarkFactor);
+		m_tabDarkFrames.m_UseDarkFactor.SetCheck(fDarkFactor);
 
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkFactor"), strDarkFactor);
+		strDarkFactor = workspace.value("Stacking/DarkFactor", "1.0").toString();
 		m_tabDarkFrames.m_DarkFactor.ShowWindow(SW_SHOW);
-		m_tabDarkFrames.m_DarkFactor.SetWindowText(strDarkFactor);
+		m_tabDarkFrames.m_DarkFactor.SetWindowText((LPCTSTR)strDarkFactor.utf16());
 
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("HotPixelsDetection"), dwHotPixels);
+		fHotPixels = workspace.value("Stacking/HotPixelsDetection", true).toBool();
 		m_tabDarkFrames.m_HotPixels.ShowWindow(SW_SHOW);
-		m_tabDarkFrames.m_HotPixels.SetCheck(dwHotPixels);
+		m_tabDarkFrames.m_HotPixels.SetCheck(fHotPixels);
 
 		if (!m_pStackingTasks ||
 			(!m_pStackingTasks->AreBayerImageUsed() &&
 			!m_pStackingTasks->AreColorImageUsed()))
 		{
-			workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BadLinesDetection"), dwBadColumns);
+			fBadColumns = workspace.value("Stacking/BadLinesDetection").toBool();
 			m_tabDarkFrames.m_BadColumns.ShowWindow(SW_SHOW);
-			m_tabDarkFrames.m_BadColumns.SetCheck(dwBadColumns);
+			m_tabDarkFrames.m_BadColumns.SetCheck(fBadColumns);
 		};
 	};
 
 	if (m_bEnableFlat || m_bEnableAll)
 	{
-		dwMethod = MBP_MEDIAN;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), dwMethod);
+		dwMethod = workspace.value("Stacking/Flat_Method", (uint)MBP_MEDIAN).toUInt();
 		lIteration = 5;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), lIteration);
-		strKappa ="2.0";
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), strKappa);
-		fKappa = _ttof(strKappa);
+		lIteration = workspace.value("Stacking/Flat_Iteration", (uint)5).toUInt();
+		fKappa = workspace.value("Stacking/Flat_Kappa", "2.0").toDouble();
 		m_tabFlatFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
-		m_tabFlatFrames.m_EntropyAverage.EnableWindow(FALSE);
+		m_tabFlatFrames.m_EntropyAverage.EnableWindow(false);
 	};
 
 	if (m_bEnableBias || m_bEnableAll)
 	{
-		dwMethod = MBP_MEDIAN;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), dwMethod);
-		lIteration = 5;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), lIteration);
-		strKappa ="2.0";
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), strKappa);
-		fKappa = _ttof(strKappa);
+		dwMethod = workspace.value("Stacking/Offset_Method", (uint)MBP_MEDIAN).toUInt();
+		lIteration = workspace.value("Stacking/Offset_Iteration").toUInt();
+		fKappa = workspace.value("Stacking/Offset_Kappa", "2.0").toDouble();
 		m_tabOffsetFrames.SetControls((MULTIBITMAPPROCESSMETHOD)dwMethod, fKappa, lIteration);
-		m_tabOffsetFrames.m_EntropyAverage.EnableWindow(FALSE);
+		m_tabOffsetFrames.m_EntropyAverage.EnableWindow(false);
 	};
 
 	if (m_bEnableAll || !m_bRegisteringOnly)
 	{
-		dwAlignment = 0;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignmentTransformation"), dwAlignment);
+		dwAlignment = workspace.value("Stacking/AlignmentTransformation", 0).toUInt();
 		m_tabAlignment.SetAlignment(dwAlignment);
 	};
 
 	m_Sheet.ModifyStyleEx (0, WS_EX_CONTROLPARENT);
 	m_Sheet.ModifyStyle( 0, WS_TABSTOP );
 
-	m_Sheet.MoveWindow(&rcTabs, TRUE);
+	m_Sheet.MoveWindow(&rcTabs, true);
 	m_Sheet.ShowWindow(SW_SHOWNA);
 
 	if (m_lStartingTab)
@@ -315,29 +302,29 @@ BOOL CStackSettings::OnInitDialog()
 			m_Sheet.SetActivePage(&m_tabOutput);
 	};
 
-	CString				strTempFolder;
+	QString				strTempFolder;
 
 	CAllStackingTasks::GetTemporaryFilesFolder(strTempFolder);
-	m_TempFolder.SetWindowText(strTempFolder);
+	m_TempFolder.SetWindowText(CString((LPCTSTR)strTempFolder.utf16()));
 
 	UpdateControls();
 
 	if (CMultitask::GetReducedThreadsPriority())
-		m_ReducePriority.SetCheck(TRUE);
+		m_ReducePriority.SetCheck(true);
 
-	if (CMultitask::GetNrProcessors(TRUE)>1)
+	if (CMultitask::GetNrProcessors(true)>1)
 		m_UseAllProcessors.SetCheck(CMultitask::GetNrProcessors()>1);
 	else
 		m_UseAllProcessors.ShowWindow(SW_HIDE);
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
+bool CStackSettings::CheckTabControls(CStackingParameters * pTab)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (nullptr != pTab->m_SigmaClipping.GetSafeHwnd() &&
 		pTab->m_SigmaClipping.GetCheck())
@@ -354,10 +341,10 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 		lIteration = _ttol(strIteration);
 
 		if ((fKappa > 0) && (fKappa < 5) && (lIteration > 0) && (lIteration < 50))
-			bResult = TRUE;
+			bResult = true;
 	}
 	else
-		bResult = TRUE;
+		bResult = true;
 
 	if (nullptr != pTab->m_DarkFactor.GetSafeHwnd() &&
 		pTab->m_DarkFactor.IsWindowVisible())
@@ -369,7 +356,7 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 		fFactor = _ttof(strFactor);
 
 		if (fFactor<=0)
-			bResult = FALSE;
+			bResult = false;
 	};
 
 	return bResult;
@@ -379,7 +366,7 @@ BOOL CStackSettings::CheckTabControls(CStackingParameters * pTab)
 
 void CStackSettings::UpdateControls()
 {
-	BOOL			bOk;
+	bool			bOk;
 
 	if (m_bEnableAll || !m_bRegisteringOnly)
 	{
@@ -387,7 +374,7 @@ void CStackSettings::UpdateControls()
 		// options
 		if (m_bEnableCometStacking)
 		{
-			BOOL			bEnable;
+			bool			bEnable;
 
 			bEnable = !m_tabComet.m_AdvancedStacking.GetCheck();
 			m_tabLightFrames.m_Maximum.EnableWindow(bEnable);
@@ -398,9 +385,9 @@ void CStackSettings::UpdateControls()
 				 m_tabLightFrames.m_EntropyAverage.GetCheck()))
 			{
 				// Revert to Median stacking
-				m_tabLightFrames.m_Maximum.SetCheck(FALSE);
-				m_tabLightFrames.m_EntropyAverage.SetCheck(FALSE);
-				m_tabLightFrames.m_Median.SetCheck(TRUE);
+				m_tabLightFrames.m_Maximum.SetCheck(false);
+				m_tabLightFrames.m_EntropyAverage.SetCheck(false);
+				m_tabLightFrames.m_Median.SetCheck(true);
 			};
 		};
 
@@ -414,7 +401,7 @@ void CStackSettings::UpdateControls()
 	}
 	else
 	{
-		bOk = TRUE;
+		bOk = true;
 		if (m_bEnableDark)
 			bOk = bOk && CheckTabControls(&m_tabDarkFrames);
 		if (m_bEnableFlat)
@@ -442,14 +429,14 @@ void CStackSettings::OnBnClickedOk()
 	CWorkspace					workspace;
 	MULTIBITMAPPROCESSMETHOD	dwMethod;
 	LONG						lIteration;
-	CString						strKappa;
+	QString						strKappa;
 	double						fKappa;
 	STACKINGMODE				ResultMode;
 	DWORD						dwDrizzle;
-	DWORD						dwAlignChannels;
-	DWORD						dwCreateIntermediates;
-	DWORD						dwSaveCalibrated;
-	DWORD						dwSaveDebayered;
+	bool						fAlignChannels;
+	bool						fCreateIntermediates;
+	bool						fSaveCalibrated;
+	bool						fSaveDebayered;
 	DWORD						dwSaveFormat;
 
 	if (m_bEnableAll || !m_bRegisteringOnly)
@@ -458,86 +445,86 @@ void CStackSettings::OnBnClickedOk()
 
 		ResultMode = m_tabResult.GetResultMode();
 		if (ResultMode == SM_MOSAIC)
-			workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Mosaic"), (DWORD)1);
+			workspace.setValue("Stacking/Mosaic", (uint)1);
 		else if (ResultMode == SM_INTERSECTION)
-			workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Mosaic"), (DWORD)2);
+			workspace.setValue("Stacking/Mosaic", (uint)2);
 		else
-			workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Mosaic"), (DWORD)0);
+			workspace.setValue("Stacking/Mosaic", (uint)0);
 
 		dwDrizzle = m_tabResult.GetDrizzle();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PixelSizeMultiplier"), (DWORD)dwDrizzle);
+		workspace.setValue("Stacking/PixelSizeMultiplier", (uint)dwDrizzle);
 
-		dwAlignChannels = m_tabResult.GetAlignChannels();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignChannels"), (DWORD)dwAlignChannels);
+		fAlignChannels = m_tabResult.GetAlignChannels();
+		workspace.setValue("Stacking/AlignChannels", fAlignChannels);
 
 		m_tabLightFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format(_T("%.4f"), fKappa);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)dwMethod);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Iteration"), (DWORD)lIteration);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Kappa"), strKappa);
+		strKappa = QString::asprintf("%.4f", fKappa);
+		workspace.setValue("Stacking/Light_Method", (uint)dwMethod);
+		workspace.setValue("Stacking/Light_Iteration", (uint)lIteration);
+		workspace.setValue("Stacking/Light_Kappa", strKappa);
 	};
 
 	dwSaveFormat= m_tabIntermediate.GetFileFormat();
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("IntermediateFileFormat"), (DWORD)dwSaveFormat);
+	workspace.setValue("Stacking/IntermediateFileFormat", (uint)dwSaveFormat);
 
-	dwCreateIntermediates = m_tabIntermediate.GetCreateIntermediates();
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CreateIntermediates"), (DWORD)dwCreateIntermediates);
+	fCreateIntermediates = m_tabIntermediate.GetCreateIntermediates();
+	workspace.setValue("Stacking/CreateIntermediates", fCreateIntermediates);
 
-	dwSaveCalibrated = m_tabIntermediate.GetSaveCalibrated();
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibrated"), (DWORD)dwSaveCalibrated);
+	fSaveCalibrated = m_tabIntermediate.GetSaveCalibrated();
+	workspace.setValue("Stacking/SaveCalibrated", fSaveCalibrated);
 
-	dwSaveDebayered= m_tabIntermediate.GetSaveDebayered();
-	workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("SaveCalibratedDebayered"), (DWORD)dwSaveDebayered);
+	fSaveDebayered= m_tabIntermediate.GetSaveDebayered();
+	workspace.setValue("Stacking/SaveCalibratedDebayered", fSaveDebayered);
 
 	if (m_bEnableDark || m_bEnableAll)
 	{
 		m_tabDarkFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format(_T("%.4f"), fKappa);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), (DWORD)dwMethod);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), (DWORD)lIteration);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), strKappa);
+		strKappa = QString::asprintf("%.4f", fKappa);
+		workspace.setValue("Stacking/Dark_Method", (uint)dwMethod);
+		workspace.setValue("Stacking/Dark_Iteration", (uint)lIteration);
+		workspace.setValue("Stacking/Dark_Kappa", strKappa);
 
-		DWORD						dwDarkOptimization;
+		bool						fDarkOptimization;
 
-		dwDarkOptimization = m_tabDarkFrames.m_DarkOptimization.GetCheck();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkOptimization"), dwDarkOptimization);
+		fDarkOptimization = m_tabDarkFrames.m_DarkOptimization.GetCheck();
+		workspace.setValue("Stacking/DarkOptimization", fDarkOptimization);
 
-		DWORD						dwDarkFactor;
+		bool						fDarkFactor;
 		CString						strDarkFactor;
 
-		dwDarkFactor = m_tabDarkFrames.m_UseDarkFactor.GetCheck();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("UseDarkFactor"), dwDarkFactor);
+		fDarkFactor = (bool)m_tabDarkFrames.m_UseDarkFactor.GetCheck();
+		workspace.setValue("Stacking/UseDarkFactor", fDarkFactor);
 
 		m_tabDarkFrames.m_DarkFactor.GetWindowText(strDarkFactor);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("DarkFactor"), strDarkFactor);
+		workspace.setValue("Stacking/DarkFactor", QString((QChar *)strDarkFactor.GetBuffer()));
 
-		DWORD						dwHotPixels;
+		bool						fHotPixels;
 
-		dwHotPixels = m_tabDarkFrames.m_HotPixels.GetCheck();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("HotPixelsDetection"), dwHotPixels);
+		fHotPixels = m_tabDarkFrames.m_HotPixels.GetCheck();
+		workspace.setValue("Stacking/HotPixelsDetection", fHotPixels);
 
-		DWORD						dwBadColumns;
+		bool						fBadColumns;
 
-		dwBadColumns = m_tabDarkFrames.m_BadColumns.GetCheck();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BadLinesDetection"), dwBadColumns);
+		fBadColumns = m_tabDarkFrames.m_BadColumns.GetCheck();
+		workspace.setValue("Stacking/BadLinesDetection", fBadColumns);
 	};
 
 	if (m_bEnableFlat || m_bEnableAll)
 	{
 		m_tabFlatFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format(_T("%.4f"), fKappa);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), (DWORD)dwMethod);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), (DWORD)lIteration);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), strKappa);
+		strKappa = QString::asprintf("%.4f", fKappa);
+		workspace.setValue("Stacking/Flat_Method", (uint)dwMethod);
+		workspace.setValue("Stacking/Flat_Iteration", (uint)lIteration);
+		workspace.setValue("Stacking/Flat_Kappa", strKappa);
 	};
 
 	if (m_bEnableBias || m_bEnableAll)
 	{
 		m_tabOffsetFrames.GetControls(dwMethod, fKappa, lIteration);
-		strKappa.Format(_T("%.4f"), fKappa);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), (DWORD)dwMethod);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), (DWORD)lIteration);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), strKappa);
+		strKappa = QString::asprintf("%.4f", fKappa);
+		workspace.setValue("Stacking/Offset_Method", (uint)dwMethod);
+		workspace.setValue("Stacking/Offset_Iteration", (uint)lIteration);
+		workspace.setValue("Stacking/Offset_Kappa", strKappa);
 	};
 
 	CString						strFolder;
@@ -547,18 +534,18 @@ void CStackSettings::OnBnClickedOk()
 
 	if (m_bEnableAll || !m_bRegisteringOnly)
 	{
-		DWORD						dwDebloom;
-		DWORD						dwBackgroundCalibration;
-		DWORD						dwPerChannelBackgroundCalibration;
+		bool						fDeBloom;
+		bool						fBackgroundCalibration;
+		bool						fPerChannelBackgroundCalibration;
 
-		dwDebloom = m_tabLightFrames.m_Debloom.GetCheck();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Debloom"), dwDebloom);
+		fDeBloom = m_tabLightFrames.m_Debloom.GetCheck();
+		workspace.setValue("Stacking/Debloom", fDeBloom);
 
-		dwBackgroundCalibration = (m_tabLightFrames.m_BackgroundCalibrationMode == BCM_RGB);
-		dwPerChannelBackgroundCalibration = (m_tabLightFrames.m_BackgroundCalibrationMode == BCM_PERCHANNEL);
+		fBackgroundCalibration = (m_tabLightFrames.m_BackgroundCalibrationMode == BCM_RGB);
+		fPerChannelBackgroundCalibration = (m_tabLightFrames.m_BackgroundCalibrationMode == BCM_PERCHANNEL);
 
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibration"), dwBackgroundCalibration);
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PerChannelBackgroundCalibration"), dwPerChannelBackgroundCalibration);
+		workspace.setValue("Stacking/BackgroundCalibration", fBackgroundCalibration);
+		workspace.setValue("Stacking/PerChannelBackgroundCalibration", fPerChannelBackgroundCalibration);
 	};
 
 
@@ -567,7 +554,7 @@ void CStackSettings::OnBnClickedOk()
 		DWORD						dwAlignment;
 		dwAlignment = m_tabAlignment.GetAlignment();
 
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("AlignmentTransformation"), dwAlignment);
+		workspace.setValue("Stacking/AlignmentTransformation", (uint)dwAlignment);
 
 		CPostCalibrationSettings	PCSettings;
 
@@ -585,14 +572,14 @@ void CStackSettings::OnBnClickedOk()
 		COMETSTACKINGMODE			CometStackingMode;
 
 		CometStackingMode = m_tabComet.GetCometStackingMode();
-		workspace.SetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CometStackingMode"), (DWORD)CometStackingMode);
+		workspace.setValue("Stacking/CometStackingMode", (uint)CometStackingMode);
 	};
 
-	if (CMultitask::GetNrProcessors(TRUE)>1)
+	if (CMultitask::GetNrProcessors(true)>1)
 		CMultitask::SetUseAllProcessors(m_UseAllProcessors.GetCheck());
 	CMultitask::SetReducedThreadsPriority(m_ReducePriority.GetCheck());
 
-	workspace.SaveToRegistry();
+	workspace.saveSettings();
 
 	OnOK();
 }
@@ -606,7 +593,7 @@ void CStackSettings::OnBnClickedChangetempfolder()
 
 	m_TempFolder.GetWindowText(strFolder);
 
-	CFolderDlg				dlg(FALSE, strFolder, this);
+	CFolderDlg				dlg(false, strFolder, this);
 
 	strTitle.LoadString(IDS_RECAP_SELECTTEMPFOLDER);
 	dlg.SetTitle(strTitle);

@@ -40,7 +40,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 	CRichToolTipCtrl	m_Tooltips;
 
 	void				UpdateControls();

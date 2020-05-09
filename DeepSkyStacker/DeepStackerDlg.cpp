@@ -5,6 +5,7 @@
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
 #include "DSS-versionhelpers.h"
+#include <QSettings>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 
 /* ------------------------------------------------------------------- */
 
-static BOOL	GetDefaultSettingsFileName(CString & strFile)
+static bool	GetDefaultSettingsFileName(CString & strFile)
 {
 	CString			strBase;
 	TCHAR			szFileName[1+_MAX_PATH];
@@ -29,7 +30,7 @@ static BOOL	GetDefaultSettingsFileName(CString & strFile)
 	strFile += szDir;
 	strFile += "DSSSettings.DSSSettings";
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -51,9 +52,9 @@ typedef struct tagHDSETTINGSHEADER
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CDSSSettings::Load(LPCTSTR szFile)
+bool	CDSSSettings::Load(LPCTSTR szFile)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 	CString			strFile = szFile;
 	FILE *			hFile = nullptr;
 
@@ -79,23 +80,23 @@ BOOL	CDSSSettings::Load(LPCTSTR szFile)
 				m_lSettings.push_back(cds);
 			};
 
-			bResult = TRUE;
+			bResult = true;
 			m_lSettings.sort();
 		};
 
 		fclose(hFile);
 	};
 
-	m_bLoaded = TRUE;
+	m_bLoaded = true;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CDSSSettings::Save(LPCTSTR szFile)
+bool	CDSSSettings::Save(LPCTSTR szFile)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 	CString			strFile = szFile;
 	FILE *			hFile = nullptr;
 
@@ -121,7 +122,7 @@ BOOL	CDSSSettings::Save(LPCTSTR szFile)
 			(*it).Save(hFile);
 
 		fclose(hFile);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -270,7 +271,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	// The call to CWnd::DragAcceptFiles() was moved here from DeepSkyStacker.cpp because it can only be called once
 	// the HWND for the dialog is valid (not nullptr).  This is only true once CDialog::OnInitDialog() above has been called.
 	//
-	this->DragAcceptFiles(TRUE);
+	this->DragAcceptFiles(true);
 
 	GetWindowText(strMask);
 	strTitle.Format(strMask, _T(VERSION_DEEPSKYSTACKER));
@@ -281,7 +282,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	m_ExplorerBar.Create(IDD_EXPLORERBAR, this);
 	ZTRACE_RUNTIME("Creating Left Panel - ok");
 
-	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), TRUE);
+	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), true);
 	m_dlgStacking.SetStartingFileList(m_strStartFileList);
 	ZTRACE_RUNTIME("Creating Stacking Panel");
 	m_dlgStacking.Create(IDD_STACKING, this);
@@ -292,7 +293,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	m_dlgLibrary.Create(IDD_LIBRARY, this);
 
 	ZTRACE_RUNTIME("Restoring Window Position");
-	RestoreWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_POSITION);
+	RestoreWindowPosition(this, "Position");
 	ZTRACE_RUNTIME("Restoring Window Position - ok");
 
 	m_dwCurrentTab = IDD_REGISTERING;
@@ -303,8 +304,8 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	UpdateSizes();
 	ZTRACE_RUNTIME("Updating Sizes - ok");
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
@@ -412,7 +413,7 @@ void CDeepStackerDlg::OnClose()
 	if (m_dlgStacking.SaveOnClose() &&
 		m_dlgProcessing.SaveOnClose())
 	{
-		SaveWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_POSITION);
+		SaveWindowPosition(this, "Position");
 
 		CDialog::OnClose();
 	};
@@ -452,15 +453,16 @@ void CDeepStackerDlg::OnHelp()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	SaveWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath)
+void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath)
 {
+	ZFUNCTRACE_RUNTIME();
 	DWORD		dwMaximized = 0;
-	CString		strTop = "";
-	CString		strLeft = "";
+	DWORD		dwTop = 0;
+	DWORD		dwLeft = 0;
 	DWORD		dwWidth = 0;
 	DWORD		dwHeight = 0;
 
-	CRegistry	reg;
+	QSettings	settings;
 
 	WINDOWPLACEMENT		wp;
 
@@ -469,38 +471,63 @@ void	SaveWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath)
 
 	pWnd->GetWindowPlacement(&wp);
 	dwMaximized = (wp.showCmd == SW_SHOWMAXIMIZED);
-	strLeft.Format(_T("%ld"), wp.rcNormalPosition.left);
-	strTop.Format(_T("%ld"), wp.rcNormalPosition.top);
+	dwLeft = wp.rcNormalPosition.left;
+	dwTop = wp.rcNormalPosition.top;
 
 	dwWidth  = wp.rcNormalPosition.right-wp.rcNormalPosition.left;
 	dwHeight = wp.rcNormalPosition.bottom-wp.rcNormalPosition.top;
+	
+	ZTRACE_RUNTIME("Saving window position to: %s", szRegistryPath);
+	QString regBase(szRegistryPath);
+	QString key = regBase += "/Maximized";
+	settings.setValue(key, (uint)dwMaximized);
 
-	reg.SaveKey(szRegistryPath, _T("Maximized"), dwMaximized);
-	reg.SaveKey(szRegistryPath, _T("Top"), strTop);
-	reg.SaveKey(szRegistryPath, _T("Left"), strLeft);
-	reg.SaveKey(szRegistryPath, _T("Width"), dwWidth);
-	reg.SaveKey(szRegistryPath, _T("Height"), dwHeight);
+	key = regBase += "/Top";
+	settings.setValue(key, (uint)dwTop);
+
+	key = regBase += "/Left";
+	settings.setValue(key, (uint)dwLeft);
+
+	key = regBase += "/Width";
+	settings.setValue(key, (uint)dwWidth);
+
+	key = regBase += "/Height";
+	settings.setValue(key, (uint)dwHeight);
+
 };
 
 /* ------------------------------------------------------------------- */
 
-void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter)
+void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter)
 {
+	ZFUNCTRACE_RUNTIME();
 	DWORD		dwMaximized = 0;
-	CString		strTop = "";
-	CString		strLeft = "";
+	DWORD		dwTop = 0;
+	DWORD		dwLeft = 0;
 	DWORD		dwWidth = 0;
 	DWORD		dwHeight = 0;
 
-	CRegistry	reg;
+	QSettings   settings;
 
-	reg.LoadKey(szRegistryPath, _T("Maximized"), dwMaximized);
-	reg.LoadKey(szRegistryPath, _T("Top"), strTop);
-	reg.LoadKey(szRegistryPath, _T("Left"), strLeft);
-	reg.LoadKey(szRegistryPath, _T("Width"), dwWidth);
-	reg.LoadKey(szRegistryPath, _T("Height"), dwHeight);
+	ZTRACE_RUNTIME("Restoring window position from: %s", szRegistryPath);
 
-	if (strTop.GetLength() && strLeft.GetLength() && dwWidth && dwHeight)
+	QString regBase(szRegistryPath);
+	QString key = regBase += "/Maximized";
+	dwMaximized = settings.value(key).toUInt();
+
+	key = regBase += "/Top";
+	dwTop = settings.value(key).toUInt();
+
+	key = regBase += "/Left";
+	dwLeft = settings.value(key).toUInt();
+
+	key = regBase += "/Width";
+	dwWidth = settings.value(key).toUInt();
+
+	key = regBase += "/Height";
+	dwHeight = settings.value(key).toUInt();
+
+	if (dwTop && dwLeft && dwWidth && dwHeight)
 	{
 		WINDOWPLACEMENT		wp;
 
@@ -508,8 +535,8 @@ void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter)
 		wp.length  = sizeof(wp);
 		wp.flags   = 0;
 		wp.showCmd = dwMaximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
-		wp.rcNormalPosition.left   = _ttol(strLeft);
-		wp.rcNormalPosition.top    = _ttol(strTop);
+		wp.rcNormalPosition.left   = dwLeft;
+		wp.rcNormalPosition.top    = dwTop;
 		wp.rcNormalPosition.right  = wp.rcNormalPosition.left+dwWidth;
 		wp.rcNormalPosition.bottom = wp.rcNormalPosition.top+dwHeight;
 

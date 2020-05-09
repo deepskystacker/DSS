@@ -44,27 +44,27 @@ protected :
 	CStatic							m_Rect;
 	CButton							m_OK;
 
-	BOOL							m_bForceRegister;
+	bool							m_bForceRegister;
 	bool							m_bStack;
 	double							m_fPercentStack;
-	BOOL							m_bNoDark;
-	BOOL							m_bNoFlat;
-	BOOL							m_bNoOffset;
+	bool							m_bNoDark;
+	bool							m_bNoFlat;
+	bool							m_bNoOffset;
 	DWORD							m_dwDetectionThreshold;
-	DWORD							m_bMedianFilter;
+	bool							m_bMedianFilter;
 	CString							m_strFirstLightFrame;
 	CAllStackingTasks *				m_pStackingTasks;
-	BOOL							m_bSettingsOnly;
+	bool							m_bSettingsOnly;
 
 	void	UpdateControls();
 
 public :
-	BOOL	GetForceRegister()
+	bool	GetForceRegister()
 	{
 		return m_bForceRegister;
 	};
 
-	void	SetForceRegister(BOOL bForce)
+	void	SetForceRegister(bool bForce)
 	{
 		m_bForceRegister = bForce;
 	};
@@ -74,7 +74,7 @@ public :
 		m_pStackingTasks = pStackingTasks;
 	};
 
-	BOOL	IsStackAfter(double & fPercent)
+	bool	IsStackAfter(double & fPercent)
 	{
 		fPercent	= m_fPercentStack;
 
@@ -86,17 +86,17 @@ public :
 		return m_dwDetectionThreshold;
 	};
 
-	void	SetNoDark(BOOL bNoDark)
+	void	SetNoDark(bool bNoDark)
 	{
 		m_bNoDark = bNoDark;
 	};
 
-	void	SetNoFlat(BOOL bNoFlat)
+	void	SetNoFlat(bool bNoFlat)
 	{
 		m_bNoFlat = bNoFlat;
 	};
 
-	void	SetNoOffset(BOOL bNoOffset)
+	void	SetNoOffset(bool bNoOffset)
 	{
 		m_bNoOffset = bNoOffset;
 	};
@@ -106,7 +106,7 @@ public :
 		m_strFirstLightFrame = szFile;
 	};
 
-	void	SetSettingsOnly(BOOL bSettingsOnly)
+	void	SetSettingsOnly(bool bSettingsOnly)
 	{
 		m_bSettingsOnly = bSettingsOnly;
 	};

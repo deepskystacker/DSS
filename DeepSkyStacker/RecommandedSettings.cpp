@@ -84,7 +84,7 @@ BOOL CRecommendedSettings::OnInitDialog()
 
 	INIT_EASYSIZE;
 
-	RestoreWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_RECO_POSITION, true);
+	RestoreWindowPosition(this, "Dialogs/Recommended/Position", true);
 
 	workspace.Push();
 
@@ -94,10 +94,10 @@ BOOL CRecommendedSettings::OnInitDialog()
 		m_pStackingTasks = &m_StackingTasks;
 	};
 
-	m_RecommendedSettingsHTML.SetToolTips(FALSE);
+	m_RecommendedSettingsHTML.SetToolTips(false);
 
 	FillWithRecommendedSettings();
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -157,12 +157,12 @@ void CRecommendedSettings::InsertHeader()
 	strHTML += _T("</font>");
 	strHTML += _T("</td></tr></table><BR>");
 
-	m_RecommendedSettingsHTML.AddHTML(strHTML, FALSE);
+	m_RecommendedSettingsHTML.AddHTML(strHTML, false);
 };
 
 /* ------------------------------------------------------------------- */
 
-void CRecommendedSettings::InsertText(LPCTSTR szText, COLORREF crColor, BOOL bBold, BOOL bItalic, LONG lLinkID)
+void CRecommendedSettings::InsertText(LPCTSTR szText, COLORREF crColor, bool bBold, bool bItalic, LONG lLinkID)
 {
 	CString					strText;
 	CString					strInputText = szText;
@@ -189,13 +189,13 @@ void CRecommendedSettings::InsertText(LPCTSTR szText, COLORREF crColor, BOOL bBo
 		strInputText = strText;
 	};
 
-	m_RecommendedSettingsHTML.AddHTML(strInputText, FALSE);
+	m_RecommendedSettingsHTML.AddHTML(strInputText, false);
 };
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-static void AddRAWNarrowBandRecommendation(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFITS)
+static void AddRAWNarrowBandRecommendation(RECOMMANDATIONVECTOR & vRecommendations, bool bFITS)
 {
 	CRecommendationItem			ri;
 	CRecommendation				rec;
@@ -209,13 +209,13 @@ static void AddRAWNarrowBandRecommendation(RECOMMANDATIONVECTOR & vRecommendatio
 
 	if (bFITS)
 	{
-		ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "SuperPixels");
+		ri.AddSetting("FitsDDP/Interpolation", "SuperPixels");
 	}
 	else
 	{
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), true);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), false);
+		ri.AddSetting("RawDDP/SuperPixels", true);
+		ri.AddSetting("RawDDP/RawBayer", false);
+		ri.AddSetting("RawDDP/AHD", false);
 	};
 	rec.m_bImportant = false;
 	rec.AddItem(ri);
@@ -239,8 +239,8 @@ static void AddNarrowBandPerChannelBackgroundCalibration(RECOMMANDATIONVECTOR & 
 
 	rec.m_bImportant = false;
 
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibration"), false);
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PerChannelBackgroundCalibration"), true);
+	ri.AddSetting("Stacking/BackgroundCalibration", false);
+	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", true);
 
 	rec.AddItem(ri);
 	vRecommendations.push_back(rec);
@@ -248,7 +248,7 @@ static void AddNarrowBandPerChannelBackgroundCalibration(RECOMMANDATIONVECTOR & 
 
 /* ------------------------------------------------------------------- */
 
-static void AddRAWDebayering(RECOMMANDATIONVECTOR & vRecommendations, double fExposureTime, BOOL bFITS)
+static void AddRAWDebayering(RECOMMANDATIONVECTOR & vRecommendations, double fExposureTime, bool bFITS)
 {
 	CRecommendationItem			ri;
 	CRecommendation				rec;
@@ -267,25 +267,25 @@ static void AddRAWDebayering(RECOMMANDATIONVECTOR & vRecommendations, double fEx
 	if (bFITS)
 	{
 		if (fExposureTime > 4*60.0)
-			ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "AHD");
+			ri.AddSetting("FitsDDP/Interpolation", "AHD");
 		else
-			ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "Bilinear");
+			ri.AddSetting("FitsDDP/Interpolation", "Bilinear");
 	}
 	else
 	{
 		if (fExposureTime > 4*60.0)
 		{
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), false);
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false);
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), "AHD");
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), true);
+			ri.AddSetting("RawDDP/SuperPixels", false);
+			ri.AddSetting("RawDDP/RawBayer", false);
+			ri.AddSetting("RawDDP/Interpolation", "AHD");
+			ri.AddSetting("RawDDP/AHD", true);
 		}
 		else
 		{
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), false);
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false);
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), "Bilinear");
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), false);
+			ri.AddSetting("RawDDP/SuperPixels", false);
+			ri.AddSetting("RawDDP/RawBayer", false);
+			ri.AddSetting("RawDDP/Interpolation", "Bilinear");
+			ri.AddSetting("RawDDP/AHD", false);
 		};
 	};
 
@@ -295,7 +295,7 @@ static void AddRAWDebayering(RECOMMANDATIONVECTOR & vRecommendations, double fEx
 
 /* ------------------------------------------------------------------- */
 
-static void AddRAWBlackPoint(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFlat, BOOL bBias)
+static void AddRAWBlackPoint(RECOMMANDATIONVECTOR & vRecommendations, bool bFlat, bool bBias)
 {
 	CRecommendationItem			ri;
 	CRecommendation				rec;
@@ -304,7 +304,7 @@ static void AddRAWBlackPoint(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFlat
 	{
 		rec.SetText(IDS_RECO_RAWSETBP_REASON);
 		ri.SetRecommendation(IDS_RECO_RAWSETBP_TEXT);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), true);
+		ri.AddSetting("RawDDP/BlackPointTo0", true);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	}
@@ -312,7 +312,7 @@ static void AddRAWBlackPoint(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFlat
 	{
 		rec.SetText(IDS_RECO_RAWCLEARBP_REASON);
 		ri.SetRecommendation(IDS_RECO_RAWCLEARBP_TEXT);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), false);
+		ri.AddSetting("RawDDP/BlackPointTo0", false);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	};
@@ -328,13 +328,13 @@ static void AddRegisterUseOfMedianFilter(RECOMMANDATIONVECTOR & vRecommendations
 	CWorkspace					workspace;
 	DWORD						dwThreshold;
 
-	workspace.GetValue(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("DetectionThreshold"), dwThreshold);
+	dwThreshold = workspace.value("Register/DetectionThreshold").toUInt();
 
 	if (dwThreshold <= 5)
 	{
 		rec.SetText(IDS_RECO_MEDIANFILTER_REASON);
 		ri.SetRecommendation(IDS_RECO_MEDIANFILTER_TEXT);
-		ri.AddSetting(REGENTRY_BASEKEY_REGISTERSETTINGS, _T("ApplyMedianFilter"), true);
+		ri.AddSetting("Register/ApplyMedianFilter", true);
 
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
@@ -343,7 +343,7 @@ static void AddRegisterUseOfMedianFilter(RECOMMANDATIONVECTOR & vRecommendations
 
 /* ------------------------------------------------------------------- */
 
-static void AddModdedDSLR(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFITS)
+static void AddModdedDSLR(RECOMMANDATIONVECTOR & vRecommendations, bool bFITS)
 {
 	CRecommendationItem			ri;
 	CRecommendation				rec;
@@ -353,17 +353,17 @@ static void AddModdedDSLR(RECOMMANDATIONVECTOR & vRecommendations, BOOL bFITS)
 
 	if (bFITS)
 	{
-		ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), 1.0);
-		ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), 1.0);
-		ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), 1.0);
+		ri.AddSetting("FitsDDP/Brightness", 1.0);
+		ri.AddSetting("FitsDDP/RedScale", 1.0);
+		ri.AddSetting("FitsDDP/BlueScale", 1.0);
 	}
 	else
 	{
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), false);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), false);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), 1.0);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), 1.0);
-		ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), 1.0);
+		ri.AddSetting("RawDDP/NoWB", false);
+		ri.AddSetting("RawDDP/CameraWB", false);
+		ri.AddSetting("RawDDP/Brightness", 1.0);
+		ri.AddSetting("RawDDP/RedScale", 1.0);
+		ri.AddSetting("RawDDP/BlueScale", 1.0);
 	};
 
 	rec.m_bImportant = false;
@@ -381,13 +381,13 @@ static void AddCometStarTrails(RECOMMANDATIONVECTOR & vRecommendations, LONG lNr
 	CWorkspace					workspace;
 	DWORD						dwCometMode;
 
-	workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("CometStackingMode"), dwCometMode);
+	dwCometMode = workspace.value("Stacking/CometStackingMode").toUInt();
 
 	if (dwCometMode == CSM_COMETONLY)
 	{
 		rec.SetText(IDS_RECO_COMETSTARTRAILS_REASON);
 		ri.SetRecommendation(IDS_RECO_USEAVERAGECOMBINE);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_AVERAGE);
+		ri.AddSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
 
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
@@ -401,13 +401,13 @@ static void AddCometStarTrails(RECOMMANDATIONVECTOR & vRecommendations, LONG lNr
 		{
 			rec.SetText(strText);
 			ri.SetRecommendation(IDS_RECO_USESIGMACLIPPING);
-			ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_SIGMACLIP);
+			ri.AddSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
 		}
 		else
 		{
 			rec.SetText(strText);
 			ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-			ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_MEDIAN);
+			ri.AddSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
 		};
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
@@ -428,11 +428,11 @@ static void AddLightMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFram
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USESIGMACLIPPING);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_SIGMACLIP);
+		ri.AddSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
 		rec.AddItem(ri);
 		ri.Clear();
 		ri.SetRecommendation(IDS_RECO_USEAUTOADAPTIVEAVERAGE);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_AUTOADAPTIVE);
+		ri.AddSetting("Stacking/Light_Method", (uint)MBP_AUTOADAPTIVE);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	}
@@ -440,11 +440,11 @@ static void AddLightMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFram
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USEAVERAGECOMBINE);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_AVERAGE);
+		ri.AddSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
 		rec.AddItem(ri);
 		ri.Clear();
 		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Light_Method"), (DWORD)MBP_MEDIAN);
+		ri.AddSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	};
@@ -464,7 +464,7 @@ static void AddDarkMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrame
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USESIGMAMEDIAN);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), (DWORD)MBP_MEDIANSIGMACLIP);
+		ri.AddSetting("Stacking/Dark_Method", (uint)MBP_MEDIANSIGMACLIP);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	}
@@ -472,7 +472,7 @@ static void AddDarkMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrame
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), (DWORD)MBP_MEDIAN);
+		ri.AddSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	};
@@ -492,7 +492,7 @@ static void AddBiasMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrame
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USESIGMAMEDIAN);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), (DWORD)MBP_MEDIANSIGMACLIP);
+		ri.AddSetting("Stacking/Offset_Method", (uint)MBP_MEDIANSIGMACLIP);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	}
@@ -500,7 +500,7 @@ static void AddBiasMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrame
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), (DWORD)MBP_MEDIAN);
+		ri.AddSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	};
@@ -520,7 +520,7 @@ static void AddFlatMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrame
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USESIGMAMEDIAN);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), (DWORD)MBP_MEDIANSIGMACLIP);
+		ri.AddSetting("Stacking/Flat_Method", (uint)MBP_MEDIANSIGMACLIP);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	}
@@ -528,7 +528,7 @@ static void AddFlatMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrame
 	{
 		rec.SetText(strText);
 		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), (DWORD)MBP_MEDIAN);
+		ri.AddSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN);
 		rec.AddItem(ri);
 		vRecommendations.push_back(rec);
 	};
@@ -547,10 +547,10 @@ static void AddPerChannelBackgroundCalibration(RECOMMANDATIONVECTOR & vRecommend
 	rec.SetText(strText);
 	ri.SetRecommendation(IDS_RECO_USEPERCHANNEL);
 
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibration"), false);
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PerChannelBackgroundCalibration"), true);
+	ri.AddSetting("Stacking/BackgroundCalibration", false);
+	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", true);
 
-	rec.m_bImportant = FALSE;
+	rec.m_bImportant = false;
 
 	rec.AddItem(ri);
 	vRecommendations.push_back(rec);
@@ -569,10 +569,10 @@ static void AddRGBChannelBackgroundCalibration(RECOMMANDATIONVECTOR & vRecommend
 	rec.SetText(strText);
 	ri.SetRecommendation(IDS_RECO_USERGBCALIBRATION);
 
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibration"), true);
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PerChannelBackgroundCalibration"), false);
+	ri.AddSetting("Stacking/BackgroundCalibration", true);
+	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", false);
 
-	rec.m_bImportant = FALSE;
+	rec.m_bImportant = false;
 
 	rec.AddItem(ri);
 	vRecommendations.push_back(rec);
@@ -591,8 +591,8 @@ static void AddPerChannelBackgroundCalibrationGray(RECOMMANDATIONVECTOR & vRecom
 	rec.SetText(strText);
 	ri.SetRecommendation(IDS_RECO_USEPERCHANNEL);
 
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("BackgroundCalibration"), false);
-	ri.AddSetting(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("PerChannelBackgroundCalibration"), true);
+	ri.AddSetting("Stacking/BackgroundCalibration", false);
+	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", true);
 
 	rec.AddItem(ri);
 	vRecommendations.push_back(rec);
@@ -606,7 +606,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 
 	nScrollPos = QHTM_GetScrollPos(m_RecommendedSettingsHTML.GetSafeHwnd());
 
-	m_RecommendedSettingsHTML.SetRedraw(FALSE);
+	m_RecommendedSettingsHTML.SetRedraw(false);
 	ClearText();
 	if (m_pStackingTasks && m_pStackingTasks->GetNrLightFrames())
 	{
@@ -679,7 +679,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 		for (LONG i = 0;i<m_vRecommendations.size();i++)
 		{
 			COLORREF			crColor;
-			BOOL				bDifferent = FALSE;
+			bool				bDifferent = false;
 
 			if (m_vRecommendations[i].IsBreakBefore())
 				InsertText(_T("<hr>"));
@@ -712,7 +712,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 				if (j)
 				{
 					InsertText(_T("    "));
-					InsertText(strOr+"\n", RGB(0, 0, 0), FALSE, TRUE);
+					InsertText(strOr+"\n", RGB(0, 0, 0), false, true);
 				};
 
 				InsertText(_T("->  "));
@@ -724,7 +724,7 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 				{
 					lLastLinkID++;
 					lLinkID = lLastLinkID;
-					InsertText(ri.m_strRecommendation, RGB(0, 0, 128), FALSE, FALSE, lLinkID);
+					InsertText(ri.m_strRecommendation, RGB(0, 0, 128), false, false, lLinkID);
 				};
 				ri.m_lLinkID = lLinkID;
 			};
@@ -736,19 +736,19 @@ void CRecommendedSettings::FillWithRecommendedSettings()
 		CString				strText;
 
 		strText.LoadString(IDS_RECO_PREREQUISITES);
-		InsertText(strText, RGB(255, 0, 0), TRUE);
+		InsertText(strText, RGB(255, 0, 0), true);
 	};
 
 	QHTM_SetScrollPos(m_RecommendedSettingsHTML.GetSafeHwnd(), nScrollPos);
-	m_RecommendedSettingsHTML.SetRedraw(TRUE);
-	m_RecommendedSettingsHTML.Invalidate(TRUE);
+	m_RecommendedSettingsHTML.SetRedraw(true);
+	m_RecommendedSettingsHTML.Invalidate(true);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CRecommendedSettings::SetSetting(LONG lID)
 {
-	BOOL					bFound = FALSE;
+	bool					bFound = false;
 
 	for (LONG i = 0;i<m_vRecommendations.size() && !bFound;i++)
 	{
@@ -758,7 +758,7 @@ void CRecommendedSettings::SetSetting(LONG lID)
 
 			if (ri.m_lLinkID == lID)
 			{
-				bFound = TRUE;
+				bFound = true;
 				ri.ApplySettings();
 			};
 		};
@@ -775,7 +775,7 @@ void CRecommendedSettings::OnQHTMHyperlink(NMHDR*nmh, LRESULT*)
 	LPNMQHTM pnm = reinterpret_cast<LPNMQHTM>( nmh );
 	if( pnm->pcszLinkText )
 	{
-		pnm->resReturnValue = FALSE;
+		pnm->resReturnValue = false;
 		LONG				lLinkID;
 
 		lLinkID = _ttol(pnm->pcszLinkText);
@@ -794,12 +794,12 @@ void CRecommendedSettings::OnBnClickedShowAll()
 
 void CRecommendedSettings::OnBnClickedOk()
 {
-	SaveWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_RECO_POSITION);
+	SaveWindowPosition(this, "Dialogs/Recommended/Position");
 
 	CWorkspace				workspace;
 
 	workspace.Pop(false);
-	workspace.SaveToRegistry();
+	workspace.saveSettings();
 	OnOK();
 }
 
@@ -807,7 +807,7 @@ void CRecommendedSettings::OnBnClickedOk()
 
 void CRecommendedSettings::OnBnClickedCancel()
 {
-	SaveWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_RECO_POSITION);
+	SaveWindowPosition(this, "Dialogs/Recommended/Position");
 
 	CWorkspace				workspace;
 

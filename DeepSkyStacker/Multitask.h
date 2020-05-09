@@ -28,10 +28,10 @@ public :
 		CloseAllThreads();
 	};
 
-	static LONG	GetNrProcessors(BOOL bReal = FALSE);
-	static void	SetUseAllProcessors(BOOL bUseAll);
-	static BOOL	GetReducedThreadsPriority();
-	static void	SetReducedThreadsPriority(BOOL bReduced);
+	static LONG	GetNrProcessors(bool bReal = false);
+	static void	SetUseAllProcessors(bool bUseAll);
+	static bool	GetReducedThreadsPriority();
+	static void	SetReducedThreadsPriority(bool bReduced);
 
 	HANDLE	GetThreadEvent(DWORD dwThreadId)
 	{
@@ -51,8 +51,8 @@ public :
 	HANDLE	GetAvailableThread();
 	DWORD	GetAvailableThreadId();
 
-	virtual BOOL	DoTask(HANDLE hEvent)   = 0;
-	virtual BOOL	Process() = 0;
+	virtual bool	DoTask(HANDLE hEvent)   = 0;
+	virtual bool	Process() = 0;
 };
 
 #endif // __MULTITASK_H__

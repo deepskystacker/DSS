@@ -54,14 +54,14 @@ BOOL CLibraryDlg::OnInitDialog()
 	m_ControlPos.AddControl(IDC_HEADER, CP_RESIZE_HORIZONTAL);
 	m_ControlPos.AddControl(IDC_LIBRARY, CP_RESIZE_VERTICAL | CP_RESIZE_HORIZONTAL);
 
-	m_HeaderHTML.SetToolTips(FALSE);
-	m_LibraryHTML.SetToolTips(FALSE);
+	m_HeaderHTML.SetToolTips(false);
+	m_LibraryHTML.SetToolTips(false);
 
 	m_HeaderHTML.SetWindowText(_T("<b><font size='6' color='#6699FF'>Library</font><font size='5' color='#0000FF'><br>Use&nbsp;&nbsp;&nbsp; Manage</font></b>"));
 	m_LibraryHTML.SetWindowText(_T("Library Content"));
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
@@ -80,7 +80,7 @@ void CLibraryDlg::OnQHTMHyperlink(NMHDR*nmh, LRESULT*)
 	LPNMQHTM pnm = reinterpret_cast<LPNMQHTM>( nmh );
 	if( pnm->pcszLinkText )
 	{
-		pnm->resReturnValue = FALSE;
+		pnm->resReturnValue = false;
 /*		LONG				lLinkID;
 
 		lLinkID = _ttol(pnm->pcszLinkText);

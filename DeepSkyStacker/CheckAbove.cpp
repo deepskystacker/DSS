@@ -22,7 +22,7 @@ CCheckAbove::CCheckAbove(CWnd* pParent /*=nullptr*/)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	m_fThreshold = 0;
-	m_bPercent   = FALSE;
+	m_bPercent   = false;
 }
 
 
@@ -51,7 +51,7 @@ void CCheckAbove::OnOK()
 
 	if (strValue.Find(_T("%")) > 0)
 	{
-		m_bPercent = TRUE;
+		m_bPercent = true;
 		strValue = strValue.Left(strValue.GetLength()-1);
 		m_fThreshold = _ttof(strValue);
 	}

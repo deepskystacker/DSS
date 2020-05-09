@@ -26,12 +26,12 @@ inline double	GetMedianPosition(std::vector<double> & vValues, double fValue)
 
 /* ------------------------------------------------------------------- */
 
-void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bComputeThresholds)
+void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds)
 {
 	ZFUNCTRACE_RUNTIME();
 	LONG				lWidth = pInBitmap->Width(),
 						lHeight = pInBitmap->Height();
-	BOOL				bMonochrome = pInBitmap->IsMonochrome();
+	bool				bMonochrome = pInBitmap->IsMonochrome();
 
 	std::vector<double>		vGrays,
 							vReds,
@@ -151,7 +151,7 @@ void	CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryB
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcluded = m_vExcludedPixels;
 	LONG					lNrOkNeighbors = 8;
-	BOOL					bMonochrome = pInBitmap->IsMonochrome();
+	bool					bMonochrome = pInBitmap->IsMonochrome();
 
 	std::sort(vExcluded.begin(), vExcluded.end());
 	while (vExcluded.size() && lNrOkNeighbors)
@@ -235,8 +235,8 @@ void	CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryB
 {
 	ZFUNCTRACE_RUNTIME();
 	if (m_bUseRejectThreshold)
-		AnalyzeImage(pInBitmap, TRUE);
-	AnalyzeImage(pInBitmap, FALSE);
+		AnalyzeImage(pInBitmap, true);
+	AnalyzeImage(pInBitmap, false);
 
 	CSmartPtr<CMemoryBitmap>	pOutBitmap;
 

@@ -21,8 +21,8 @@ IMPLEMENT_DYNAMIC(CExplorerBar, CScrollDialog)
 CExplorerBar::CExplorerBar(CWnd* pParent /*=nullptr*/)
 	: CScrollDialog(CExplorerBar::IDD, pParent)
 {
-	m_MRUSettings.SetBasePath(REGENTRY_BASEKEY_SETTINGFILES);
-	m_bHorz = FALSE;
+	m_MRUSettings.SetBasePath(_T("SettingsFiles"));
+	m_bHorz = false;
     m_dwCurrentTabID = 0;
     m_nScrollPos = 0;
 }
@@ -160,7 +160,7 @@ void CExplorerBar::DrawGradientBackgroundRect(CDC * pDC, const CRect & rc)
 	#endif // NOGDIPLUS
 };
 
-void CExplorerBar::DrawGradientFrameRect(CDC * pDC, const CRect & rc, BOOL bActive, BOOL bShadow)
+void CExplorerBar::DrawGradientFrameRect(CDC * pDC, const CRect & rc, bool bActive, bool bShadow)
 {
 	CRect			rcTop;
 	CRect			rcBottom;
@@ -251,8 +251,8 @@ void CExplorerBar::DrawSubFrameRect(CDC * pDC, const CRect & rc)
 };
 BOOL CExplorerBar::OnEraseBkgnd(CDC* pDC)
 {
-	BOOL				bResult = TRUE;//CDialog::OnEraseBkgnd(pDC);
-	BOOL				bRedraw = TRUE;
+	bool				bResult = true;//CDialog::OnEraseBkgnd(pDC);
+	bool				bRedraw = true;
 	DWORD				dwTabID = 0;
 	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(this);
 
@@ -286,8 +286,8 @@ BOOL CExplorerBar::OnEraseBkgnd(CDC* pDC)
 
 		m_StackingRect.GetWindowRect(&rc);
 		ScreenToClient(&rc);
-		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_STACKING) || (dwTabID == IDD_REGISTERING), TRUE);
-		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_STACKING) || (dwTabID == IDD_REGISTERING), FALSE);
+		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_STACKING) || (dwTabID == IDD_REGISTERING), true);
+		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_STACKING) || (dwTabID == IDD_REGISTERING), false);
 
 		m_rcRegisterStack = rc;
 
@@ -309,15 +309,15 @@ BOOL CExplorerBar::OnEraseBkgnd(CDC* pDC)
 
 		m_ProcessingRect.GetWindowRect(&rc);
 		ScreenToClient(&rc);
-		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_PROCESSING), TRUE);
-		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_PROCESSING), FALSE);
+		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_PROCESSING), true);
+		DrawGradientFrameRect(&MemDC, rc, (dwTabID == IDD_PROCESSING), false);
 
 		m_rcProcessing = rc;
 
 		m_OptionsRect.GetWindowRect(&rc);
 		ScreenToClient(&rc);
-		DrawGradientFrameRect(&MemDC, rc, TRUE, TRUE);
-		DrawGradientFrameRect(&MemDC, rc, TRUE, FALSE);
+		DrawGradientFrameRect(&MemDC, rc, true, true);
+		DrawGradientFrameRect(&MemDC, rc, true, false);
 
 		for (LONG i = 0;i<m_vLabels.size();i++)
 		{
@@ -440,19 +440,19 @@ void CExplorerBar::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 /* ------------------------------------------------------------------- */
 
-void CExplorerBar::InitLabel(CLabel & label, BOOL bMain)
+void CExplorerBar::InitLabel(CLabel & label, bool bMain)
 {
 	m_vLabels.push_back(&label);
-	label.SetLink(TRUE, TRUE);
-	label.SetTransparent(TRUE);
+	label.SetLink(true, true);
+	label.SetTransparent(true);
 	label.SetLinkCursor(LoadCursor(nullptr, IDC_HAND));
-	label.SetFont3D(FALSE);
+	label.SetFont3D(false);
 	label.SetTextColor(RGB(42, 42, 42));
 //	label.SetText3DHiliteColor(RGB(0, 0, 0));
 
 	if (bMain)
 	{
-		//label.SetFontBold(TRUE);
+		//label.SetFontBold(true);
 		label.SetTextColor(RGB(109*1.5, 23*1.5, 7*1.5));
 	};
 };
@@ -463,9 +463,9 @@ BOOL CExplorerBar::OnInitDialog()
 {
 	CScrollDialog::OnInitDialog();
 
-	InitLabel(m_Register_RegisterChecked, TRUE);
+	InitLabel(m_Register_RegisterChecked, true);
 
-	InitLabel(m_Stacking_OpenFiles, TRUE);
+	InitLabel(m_Stacking_OpenFiles, true);
 
 	InitLabel(m_Stacking_OpenDarks);
 	InitLabel(m_Stacking_OpenDarkFlats);
@@ -476,7 +476,7 @@ BOOL CExplorerBar::OnInitDialog()
 	InitLabel(m_Stacking_CheckAbove);
 	InitLabel(m_Stacking_UncheckAll);
 	InitLabel(m_Stacking_ComputeOffsets);
-	InitLabel(m_Stacking_StackChecked, TRUE);
+	InitLabel(m_Stacking_StackChecked, true);
 
 	InitLabel(m_Stacking_BatchStack);
 	InitLabel(m_Stacking_LoadList);
@@ -491,23 +491,23 @@ BOOL CExplorerBar::OnInitDialog()
 	InitLabel(m_Options_Settings);
 	InitLabel(m_Options_LoadSettings);
 	InitLabel(m_Options_SaveSettings);
-	InitLabel(m_Options_RecommandedSettings, TRUE);
+	InitLabel(m_Options_RecommandedSettings, true);
 	InitLabel(m_About);
 	InitLabel(m_Help);
 
 	InitLabel(m_Stacking_Title);
-	m_Stacking_Title.SetFontBold(TRUE);
+	m_Stacking_Title.SetFontBold(true);
 
 	InitLabel(m_Processing_Title);
-	m_Processing_Title.SetFontBold(TRUE);
+	m_Processing_Title.SetFontBold(true);
 
 	InitLabel(m_Options_Title);
-	m_Options_Title.SetFontBold(TRUE);
-	m_Options_Title.SetLink(FALSE, FALSE);
+	m_Options_Title.SetFontBold(true);
+	m_Options_Title.SetLink(false, false);
 
-	m_MRUSettings.InitFromRegistry();
+	m_MRUSettings.readSettings();
 
-	return TRUE;
+	return true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -833,14 +833,14 @@ void CExplorerBar::OnOptionsSettings( NMHDR * pNotifyStruct, LRESULT * result )
 	{
 		CRegisterSettings		dlg;
 
-		dlg.SetSettingsOnly(TRUE);
+		dlg.SetSettingsOnly(true);
 		dlg.DoModal();
 	}
 	else if (nResult == ID_EDITSETTINGS_STACKINGSETTINGS)
 	{
 		CStackSettings			dlg;
 
-		dlg.SetEnableAll(TRUE);
+		dlg.SetEnableAll(true);
 		dlg.DoModal();
 	};
 };
@@ -867,7 +867,7 @@ void CExplorerBar::LoadSettingFile()
 	strBaseExtension = _T(".dsssettings");
 	strTitle.LoadString(IDS_TITLE_LOADSETTINGS);
 
-	CFileDialog			dlgOpen(TRUE,
+	CFileDialog			dlgOpen(true,
 								strBaseExtension,
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -896,10 +896,10 @@ void CExplorerBar::LoadSettingFile()
 			strFile = dlgOpen.GetNextPathName(pos);
 
 			workspace.ReadFromFile(strFile);
-			workspace.SaveToRegistry();
+			workspace.saveSettings();
 
 			m_MRUSettings.Add(strFile);
-			m_MRUSettings.SaveToRegistry();
+			m_MRUSettings.saveSettings();
 		};
 	};
 };
@@ -908,7 +908,7 @@ void CExplorerBar::LoadSettingFile()
 
 void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * result )
 {
-	BOOL			bOpenAnother = TRUE;
+	bool			bOpenAnother = true;
 
 	{
 		CPoint				pt;
@@ -918,7 +918,7 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		UINT				lStartID;
 		CWorkspace			workspace;
 
-		bOpenAnother = FALSE;
+		bOpenAnother = false;
 
 		menu.LoadMenu(IDR_LOADSETTINGS);
 		popup = menu.GetSubMenu(0);
@@ -954,7 +954,7 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 		if (nResult == ID_LOADSETTINGS_LOAD)
-			bOpenAnother = TRUE;
+			bOpenAnother = true;
 		else if (nResult == ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS)
 		{
 			// Load the DSSLive setting file
@@ -966,12 +966,12 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			strPath = szPath;
 			strPath += "\\DeepSkyStacker\\DSSLive.settings";
 			workspace.ReadFromFile(strPath);
-			workspace.SaveToRegistry();
+			workspace.saveSettings();
 		}
 		else if (nResult == ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS)
 		{
 			workspace.ResetToDefault();
-			workspace.SaveToRegistry();
+			workspace.saveSettings();
 		}
 		else if (nResult > ID_LOADSETTINGS_FIRSTMRU)
 		{
@@ -980,9 +980,9 @@ void CExplorerBar::OnOptionsLoadSettings( NMHDR * pNotifyStruct, LRESULT * resul
 			strFile = m_MRUSettings.m_vLists[nResult-ID_LOADSETTINGS_FIRSTMRU-1];
 
 			workspace.ReadFromFile(strFile);
-			workspace.SaveToRegistry();
+			workspace.saveSettings();
 			m_MRUSettings.Add(strFile);
-			m_MRUSettings.SaveToRegistry();
+			m_MRUSettings.saveSettings();
 		};
 	};
 
@@ -1012,7 +1012,7 @@ void CExplorerBar::SaveSettingFile()
 	strBaseExtension = _T(".dsssettings");
 	strTitle.LoadString(IDS_TITLE_SAVESETTINGS);
 
-	CFileDialog					dlgSave(FALSE,
+	CFileDialog					dlgSave(false,
 								strBaseExtension,
 								nullptr,
 								OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_DONTADDTORECENT,
@@ -1045,7 +1045,7 @@ void CExplorerBar::SaveSettingFile()
 
 void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * result )
 {
-	BOOL			bSaveAnother = TRUE;
+	bool			bSaveAnother = true;
 
 	{
 		CPoint				pt;
@@ -1055,7 +1055,7 @@ void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		UINT				lStartID;
 		CWorkspace			workspace;
 
-		bSaveAnother = FALSE;
+		bSaveAnother = false;
 
 		menu.LoadMenu(IDR_SAVESETTINGS);
 		popup = menu.GetSubMenu(0);
@@ -1091,7 +1091,7 @@ void CExplorerBar::OnOptionsSaveSettings( NMHDR * pNotifyStruct, LRESULT * resul
 		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 		if (nResult == ID_SAVESETTINGS_SAVEAS)
-			bSaveAnother = TRUE;
+			bSaveAnother = true;
 		else if (nResult == ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS)
 		{
 			// Sace the DSSLive setting file

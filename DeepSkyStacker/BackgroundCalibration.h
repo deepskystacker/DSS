@@ -11,7 +11,7 @@ class CBackgroundCalibration
 friend CBackgroundCalibrationTask;
 
 public :
-	BOOL				m_bInitOk;
+	bool				m_bInitOk;
 	double				m_fTgtRedBk,
 						m_fTgtGreenBk,
 						m_fTgtBlueBk;
@@ -101,7 +101,7 @@ private :
 public :
 	CBackgroundCalibration()
 	{
-		m_bInitOk = FALSE;
+		m_bInitOk = false;
 		m_fMultiplier = 1.0;
 		m_BackgroundCalibrationMode = CAllStackingTasks::GetBackgroundCalibrationMode();
 		m_BackgroundInterpolation	= CAllStackingTasks::GetBackgroundCalibrationInterpolation();
@@ -136,7 +136,7 @@ public :
 		m_BackgroundInterpolation	= BackgroundInterpolation;
 		m_RGBBackgroundMethod		= RGBBackgroundMethod;
 	};
-	void	ComputeBackgroundCalibration(CMemoryBitmap * pBitmap, BOOL bFirst, CDSSProgress * pProgress);
+	void	ComputeBackgroundCalibration(CMemoryBitmap * pBitmap, bool bFirst, CDSSProgress * pProgress);
 	void	ApplyCalibration(float & fRed, float & fGreen, float & fBlue)
 	{
 		if (m_BackgroundInterpolation == BCI_RATIONAL)

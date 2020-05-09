@@ -60,9 +60,9 @@ extern CString OUTPUTLIST_FILTERS;
 extern CString SETTINGFILE_FILTERS;
 extern CString STARMASKFILE_FILTERS;
 
-extern BOOL		g_bShowRefStars;
+extern bool		g_bShowRefStars;
 
-BOOL CheckVersion(CString & strVersion);
+bool CheckVersion(CString & strVersion);
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

@@ -16,7 +16,7 @@ private :
 	double						m_fMeanMagenta;
 	double						m_fMeanGreen2;
 	double						m_fMeanYellow;
-	BOOL						m_bUseGray;
+	bool						m_bUseGray;
 
 public :
 	CFlatNormalization()
@@ -30,7 +30,7 @@ public :
 		m_fMeanGreen2  = 0;
 		m_fMeanYellow  = 0;
 
-		m_bUseGray	= FALSE;
+		m_bUseGray	= false;
 	};
 
 	virtual ~CFlatNormalization()
@@ -40,7 +40,7 @@ public :
 	void	SetParameters(double fMeanGray)
 	{
 		m_fMeanGray = fMeanGray;
-		m_bUseGray  = TRUE;
+		m_bUseGray  = true;
 	};
 
 	void	SetParameters(double fMeanRed, double fMeanGreen, double fMeanBlue)
@@ -48,7 +48,7 @@ public :
 		m_fMeanRed   = fMeanRed;
 		m_fMeanGreen = fMeanGreen;
 		m_fMeanBlue  = fMeanBlue;
-		m_bUseGray   = FALSE;
+		m_bUseGray   = false;
 	};
 
 	void	SetParameters(double fMeanCyan, double fMeanMagenta, double fMeanYellow, double fMeanGreen2)
@@ -57,10 +57,10 @@ public :
 		m_fMeanYellow	= fMeanYellow;
 		m_fMeanGreen2	= fMeanGreen2;
 		m_fMeanMagenta  = fMeanMagenta;
-		m_bUseGray   = FALSE;
+		m_bUseGray   = false;
 	};
 
-	BOOL	UseGray()
+	bool	UseGray()
 	{
 		return m_bUseGray;
 	};
@@ -116,36 +116,36 @@ class CFlatFrame
 public :
 	CSmartPtr<CMemoryBitmap>	m_pFlatFrame;
 	CFlatNormalization			m_FlatNormalization;
-	BOOL						m_bComputed;
+	bool						m_bComputed;
 
 public :
 	CFlatFrame()
 	{
-		m_bComputed = FALSE;
+		m_bComputed = false;
 	};
 
 	virtual  ~CFlatFrame()
 	{
 	};
 
-	BOOL	IsOk()
+	bool	IsOk()
 	{
 		return m_pFlatFrame && m_pFlatFrame->IsOk();
 	};
 
-	BOOL	IsCFA()
+	bool	IsCFA()
 	{
 		return ::IsCFA(m_pFlatFrame);
 	};
 
 	void	Clear()
 	{
-		m_bComputed = FALSE;
+		m_bComputed = false;
 		m_pFlatFrame.Release();
 	};
 
 	void	ComputeFlatNormalization(CDSSProgress * pProgress = nullptr);
-	BOOL	ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
+	bool	ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */

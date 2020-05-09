@@ -39,7 +39,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 
 	void				UpdateControls();
 

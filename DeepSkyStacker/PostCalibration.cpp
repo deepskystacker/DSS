@@ -20,7 +20,7 @@ IMPLEMENT_DYNAMIC(CPostCalibration, CChildPropertyPage)
 CPostCalibration::CPostCalibration()
 	: CChildPropertyPage(CPostCalibration::IDD)
 {
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
     m_pStackingTasks = NULL;
 }
 
@@ -85,7 +85,7 @@ static void	MakeSmallLabel(CLabel & label)
 	lf.lfHeight += 3;
 	label.SetFont(lf);
 
-	label.SetTransparent(TRUE);
+	label.SetTransparent(true);
 };
 
 /* ------------------------------------------------------------------- */
@@ -109,7 +109,7 @@ static void	GetMethodText(COSMETICREPLACE cr, CString & strText)
 void CPostCalibration::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	BOOL				bEnableHot  = m_DetectCleanHot.GetCheck(),
+	bool				bEnableHot  = m_DetectCleanHot.GetCheck(),
 						bEnableCold = m_DetectCleanCold.GetCheck();
 
 	m_HotFilterText.EnableWindow(bEnableHot);
@@ -226,23 +226,23 @@ BOOL CPostCalibration::OnSetActive()
 		MakeSmallLabel(m_Weak1);
 		MakeSmallLabel(m_Weak2);
 
-		m_ReplaceText.SetTransparent(TRUE);
-		m_ReplaceMethod.SetTransparent(TRUE);
-		m_Test.SetTransparent(TRUE);
+		m_ReplaceText.SetTransparent(true);
+		m_ReplaceMethod.SetTransparent(true);
+		m_Test.SetTransparent(true);
 
-		m_ReplaceMethod.SetLink(TRUE, TRUE);
+		m_ReplaceMethod.SetLink(true, true);
 
 		if (m_pStackingTasks)
-			m_Test.SetLink(TRUE, TRUE);
+			m_Test.SetLink(true, true);
 		else
 			m_Test.ShowWindow(SW_HIDE);
 
 		UpdateControlsFromSettings();
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -293,22 +293,22 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 
 				// Disable all the tasks except the one used by StackingInfo
 				for (LONG i = 0;i<tasks.m_vTasks.size();i++)
-					tasks.m_vTasks[i].m_bDone = TRUE;
+					tasks.m_vTasks[i].m_bDone = true;
 				if (StackingInfo.m_pDarkFlatTask)
-					StackingInfo.m_pDarkFlatTask->m_bDone = FALSE;
+					StackingInfo.m_pDarkFlatTask->m_bDone = false;
 				if (StackingInfo.m_pOffsetTask)
-					StackingInfo.m_pOffsetTask->m_bDone = FALSE;
+					StackingInfo.m_pOffsetTask->m_bDone = false;
 				if (StackingInfo.m_pDarkTask)
-					StackingInfo.m_pDarkTask->m_bDone = FALSE;
+					StackingInfo.m_pDarkTask->m_bDone = false;
 				if (StackingInfo.m_pFlatTask)
-					StackingInfo.m_pFlatTask->m_bDone = FALSE;
+					StackingInfo.m_pFlatTask->m_bDone = false;
 				if (StackingInfo.m_pLightTask)
-					StackingInfo.m_pLightTask->m_bDone = FALSE;
+					StackingInfo.m_pLightTask->m_bDone = false;
 
 				strText.LoadString(IDS_COMPUTINGCOSMETICSTATS);
-				dlg.Start(strText, 0, FALSE);
+				dlg.Start(strText, 0, false);
 
-				dlg.SetJointProgress(TRUE);
+				dlg.SetJointProgress(true);
 				tasks.DoAllPreTasks(&dlg);
 				MasterFrames.LoadMasters(&StackingInfo, &dlg);
 

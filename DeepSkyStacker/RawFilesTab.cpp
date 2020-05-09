@@ -24,7 +24,7 @@ CRawFilesTab::CRawFilesTab() : CPropertyPage(CRawFilesTab::IDD)
 	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 CRawFilesTab::~CRawFilesTab()
@@ -72,67 +72,45 @@ BOOL CRawFilesTab::OnSetActive()
 	if (m_bFirstActivation)
 	{
 		CWorkspace			workspace;
-		CString				strValue;
-		DWORD				bValue;
+		QString				strValue;
 
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("1.0");
-		m_Brightness.SetWindowText(strValue);
+		strValue = workspace.value("RawDDP/Brightness", "1.0").toString();
+		m_Brightness.SetWindowText((LPCTSTR)strValue.utf16());
 
-		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("1.0");
-		m_RedScale.SetWindowText(strValue);
+		strValue = workspace.value("RawDDP/RedScale", "1.0").toString();
+		m_RedScale.SetWindowText((LPCTSTR)strValue.utf16());
 
-		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("1.0");
-		m_BlueScale.SetWindowText(strValue);
+		strValue = workspace.value("RawDDP/BlueScale", "1.0").toString();
+		m_BlueScale.SetWindowText((LPCTSTR)strValue.utf16());
 
 		//
 		// Replace Auto WB processing with NO WB processing
 		//
-		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), bValue);
-		m_NoWB.SetCheck(bValue);
+		m_NoWB.SetCheck(workspace.value("RawDDP/NoWB", false).toBool());
 
-		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
-		m_CameraWB.SetCheck(bValue);
+		m_CameraWB.SetCheck(workspace.value("RawDDP/CameraWB", false).toBool());
 
-		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bValue);
-		m_BlackPoint.SetCheck(bValue);
+		m_BlackPoint.SetCheck(workspace.value("RawDDP/BlackPointTo0", false).toBool());
 
-		DWORD				bSuperPixel;
+		bool isSuperPixel;
+		bool isRawBayer;
 
-		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), bSuperPixel);
+		isSuperPixel = workspace.value("RawDDP/SuperPixels", false).toBool();
+		isRawBayer = workspace.value("RawDDP/RawBayer", false).toBool();
 
-		DWORD				bRawBayer;
+		strValue = workspace.value("RawDDP/Interpolation", "Bilinear").toString();
 
-		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), bRawBayer);
-
-		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("Bilinear");
-
-		if (bRawBayer)
-			m_RawBayer.SetCheck(TRUE);
-		else if (bSuperPixel)
-			m_SuperPixels.SetCheck(TRUE);
+		if (isRawBayer)
+			m_RawBayer.SetCheck(true);
+		else if (isSuperPixel)
+			m_SuperPixels.SetCheck(true);
 		else if (strValue == _T("Bilinear"))
-			m_Bilinear.SetCheck(TRUE);
+			m_Bilinear.SetCheck(true);
 		else if (strValue == _T("AHD") || strValue == _T("VNG"))
-			m_AHD.SetCheck(TRUE);
+			m_AHD.SetCheck(true);
 
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
 	return CPropertyPage::OnSetActive();
@@ -143,24 +121,24 @@ BOOL CRawFilesTab::OnSetActive()
 void CRawFilesTab::UpdateControls()
 {
 	CString				strValue;
-	BOOL				bOk = TRUE;
-	BOOL				bInterpolation = TRUE;
+	bool				bOk = true;
+	bool				bInterpolation = true;
 	double				fValue;
 
 	m_Brightness.GetWindowText(strValue);
 	fValue = _ttof(strValue);
 	if (fValue <= 0)
-		bOk = FALSE;
+		bOk = false;
 
 	m_RedScale.GetWindowText(strValue);
 	fValue = _ttof(strValue);
 	if (fValue <= 0)
-		bOk = FALSE;
+		bOk = false;
 
 	m_BlueScale.GetWindowText(strValue);
 	fValue = _ttof(strValue);
 	if (fValue <= 0)
-		bOk = FALSE;
+		bOk = false;
 
 //	m_OK.EnableWindow(bOk);
 };
@@ -213,35 +191,35 @@ void CRawFilesTab::OnCameraWB()
 
 void CRawFilesTab::OnBilinear()
 {
-	m_AHD.SetCheck(FALSE);
-	m_RawBayer.SetCheck(FALSE);
-	m_SuperPixels.SetCheck(FALSE);
+	m_AHD.SetCheck(false);
+	m_RawBayer.SetCheck(false);
+	m_SuperPixels.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */
 
 void CRawFilesTab::OnAhd()
 {
-	m_Bilinear.SetCheck(FALSE);
-	m_RawBayer.SetCheck(FALSE);
-	m_SuperPixels.SetCheck(FALSE);
+	m_Bilinear.SetCheck(false);
+	m_RawBayer.SetCheck(false);
+	m_SuperPixels.SetCheck(false);
 }
 /* ------------------------------------------------------------------- */
 
 void CRawFilesTab::OnBnClickedSuperpixels()
 {
-	m_AHD.SetCheck(FALSE);
-	m_Bilinear.SetCheck(FALSE);
-	m_RawBayer.SetCheck(FALSE);
+	m_AHD.SetCheck(false);
+	m_Bilinear.SetCheck(false);
+	m_RawBayer.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */
 
 void CRawFilesTab::OnBnClickedRawbayer()
 {
-	m_AHD.SetCheck(FALSE);
-	m_Bilinear.SetCheck(FALSE);
-	m_SuperPixels.SetCheck(FALSE);
+	m_AHD.SetCheck(false);
+	m_Bilinear.SetCheck(false);
+	m_SuperPixels.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */
@@ -253,23 +231,23 @@ void CRawFilesTab::SaveValues()
 	CString				strValue;
 
 	m_Brightness.GetWindowText(strValue);
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), strValue);
+	workspace.setValue("RawDDP/Brightness", QString((QChar *)strValue.GetBuffer()));
 
 	m_RedScale.GetWindowText(strValue);
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), strValue);
+	workspace.setValue("RawDDP/RedScale", QString((QChar *)strValue.GetBuffer()));
 
 	m_BlueScale.GetWindowText(strValue);
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), strValue);
+	workspace.setValue("RawDDP/BlueScale", QString((QChar *)strValue.GetBuffer()));
 
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), m_NoWB.GetCheck() ? true : false);
+	workspace.setValue("RawDDP/NoWB", m_NoWB.GetCheck() ? true : false);
 
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), m_CameraWB.GetCheck() ? true : false);
+	workspace.setValue("RawDDP/CameraWB", m_CameraWB.GetCheck() ? true : false);
 
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), m_BlackPoint.GetCheck() ? true : false);
+	workspace.setValue("RawDDP/BlackPointTo0", m_BlackPoint.GetCheck() ? true : false);
 
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), m_SuperPixels.GetCheck() ? true : false);
+	workspace.setValue("RawDDP/SuperPixels", m_SuperPixels.GetCheck() ? true : false);
 
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), m_RawBayer.GetCheck() ? true : false);
+	workspace.setValue("RawDDP/RawBayer", m_RawBayer.GetCheck() ? true : false);
 
 	strValue.Empty();
 	if (m_Bilinear.GetCheck())
@@ -277,7 +255,7 @@ void CRawFilesTab::SaveValues()
 	else if (m_AHD.GetCheck())
 		strValue = _T("AHD");
 
-	workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), strValue);
+	workspace.setValue("RawDDP/Interpolation", QString((QChar *)strValue.GetBuffer()));
 }
 
 /* ------------------------------------------------------------------- */

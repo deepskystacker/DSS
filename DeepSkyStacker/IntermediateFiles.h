@@ -25,21 +25,21 @@ protected:
 public:
 	virtual BOOL OnSetActive();
 
-	void	SetCreateIntermediates(BOOL bCreateIntermediates)
+	void	SetCreateIntermediates(bool bCreateIntermediates)
 	{
 		m_bCreateIntermediates = bCreateIntermediates;
 		m_CreateIntermediates.SetCheck(m_bCreateIntermediates);
 		UpdateControls();
 	};
 
-	void	SetSaveCalibrated(BOOL bSaveCalibrated)
+	void	SetSaveCalibrated(bool bSaveCalibrated)
 	{
 		m_bSaveCalibrated = bSaveCalibrated;
 		m_SaveCalibrated.SetCheck(m_bSaveCalibrated);
 		UpdateControls();
 	};
 
-	void	SetSaveDebayered(BOOL bSaveDebayered)
+	void	SetSaveDebayered(bool bSaveDebayered)
 	{
 		m_bSaveDebayered = bSaveDebayered;
 		m_SaveDebayered.SetCheck(m_bSaveDebayered);
@@ -54,22 +54,22 @@ public:
 		UpdateControls();
 	};
 
-	void	SetRegisteringOnly(BOOL bRegisteringOnly)
+	void	SetRegisteringOnly(bool bRegisteringOnly)
 	{
 		m_bRegisteringOnly = bRegisteringOnly;
 	};
 
-	BOOL	GetCreateIntermediates()
+	bool	GetCreateIntermediates()
 	{
 		return m_bCreateIntermediates;
 	};
 
-	BOOL	GetSaveCalibrated()
+	bool	GetSaveCalibrated()
 	{
 		return m_bSaveCalibrated;
 	};
 
-	BOOL	GetSaveDebayered()
+	bool	GetSaveDebayered()
 	{
 		return m_bSaveDebayered;
 	};
@@ -82,8 +82,8 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 private :
-	BOOL				m_bFirstActivation;
-	BOOL				m_bRegisteringOnly;
+	bool				m_bFirstActivation;
+	bool				m_bRegisteringOnly;
 
 	void				UpdateControls();
 
@@ -101,8 +101,8 @@ public :
 	CButton				m_SaveAsTIFF;
 	CButton				m_SaveAsFITS;
 
-	BOOL					m_bCreateIntermediates;
-	BOOL					m_bSaveDebayered;
-	BOOL					m_bSaveCalibrated;
+	bool					m_bCreateIntermediates;
+	bool					m_bSaveDebayered;
+	bool					m_bSaveCalibrated;
 	INTERMEDIATEFILEFORMAT	m_lSaveFormat;
 };

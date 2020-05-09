@@ -24,13 +24,13 @@ class CPictureListCtrl : public CListCtrlEx,
 {
 private :
 	LONG				m_lSortColumn;
-	BOOL				m_bAscending;
+	bool				m_bAscending;
 	CDSSProgress *		m_pProgress;
 	CImageList			m_ImageList;
 	DWORD				m_dwCurrentGroupID;
 	GUID				m_dwCurrentJobID;
 	std::vector<LONG>	m_vVisibles;
-	BOOL				m_bRefreshNeeded;
+	bool				m_bRefreshNeeded;
 	CBitmap				m_bmpGrayScale;
 	CBitmap				m_bmpCFACYMG;
 	CBitmap				m_bmpCFARGB;
@@ -48,11 +48,11 @@ public:
 // Operations
 public:
 	void	Initialize();
-	void	AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE, int nItem = -1);
-	virtual BOOL AddFile(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE)
+	void	AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
+	virtual bool AddFile(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
 	{
 		AddFileToList(szFile, dwGroupID, dwJobID, PictureType, bCheck);
-		return TRUE;
+		return true;
 	};
 
 	void	SetCurrentGroupID(DWORD dwGroupID)
@@ -99,16 +99,16 @@ public:
 	};
 
 	int		CompareItems(LONG lItem1, LONG lItem2);
-	BOOL	GetSelectedFileName(CString & strFileName);
-	BOOL	GetItemFileName(int nItem, CString & strFileName);
-	BOOL	GetFirstCheckedLightFrame(CString & strFileName);
-	BOOL	GetItemISOSpeedGainAndExposure(int nItem, LONG & lISOSpeed, LONG & lGain, double & fExposure);
+	bool	GetSelectedFileName(CString & strFileName);
+	bool	GetItemFileName(int nItem, CString & strFileName);
+	bool	GetFirstCheckedLightFrame(CString & strFileName);
+	bool	GetItemISOSpeedGainAndExposure(int nItem, LONG & lISOSpeed, LONG & lGain, double & fExposure);
 	void	UpdateOffset(LPCTSTR szFileName, double fdX, double fdY, double fAngle, const CBilinearParameters & Transformation, const VOTINGPAIRVECTOR & vVotedPairs);
 	void	ClearOffset(LPCTSTR szFileName);
 	int		FindIndice(LPCTSTR szFileName);
-	BOOL	IsLightFrame(LPCTSTR szFileName)
+	bool	IsLightFrame(LPCTSTR szFileName)
 	{
-		BOOL		bResult = FALSE;
+		bool		bResult = false;
 		int			nIndice = FindIndice(szFileName);
 
 		if (nIndice>=0)
@@ -122,10 +122,10 @@ public:
 	void	CheckBest(double fPercent);
 	void	UnCheckNonStackable();
 
-	BOOL	AreCheckedPictureCompatible();
-	BOOL	GetPictureSizes(int nItem, LONG & lWidth, LONG & lHeight, LONG & lNrChannels);
+	bool	AreCheckedPictureCompatible();
+	bool	GetPictureSizes(int nItem, LONG & lWidth, LONG & lHeight, LONG & lNrChannels);
 
-	BOOL	SaveState();
+	bool	SaveState();
 
 	LONG	GetNrCheckedFrames(LONG lGroupID = -1);
 	LONG	GetNrCheckedDarks(LONG lGroupID = -1);
@@ -133,16 +133,16 @@ public:
 	LONG	GetNrCheckedFlats(LONG lGroupID = -1);
 	LONG	GetNrCheckedOffsets(LONG lGroupID = -1);
 	LONG	GetNrFrames(LONG lGroupID = -1);
-	BOOL	IsChecked(int nItem)
+	bool	IsChecked(int nItem)
 	{
 		LONG		lIndice = m_vVisibles[nItem];
 
 		return m_vFiles[lIndice].m_bChecked;
 	};
 
-	BOOL	IsChecked(LPCTSTR szFileName)
+	bool	IsChecked(LPCTSTR szFileName)
 	{
-		BOOL		bResult = FALSE;
+		bool		bResult = false;
 		int			nIndice;
 
 		nIndice = FindIndice(szFileName);
@@ -156,16 +156,16 @@ public:
 
 	void	SortListQualityDesc();
 
-	void	CheckAll(BOOL bCheck);
-	void	CheckAllLights(BOOL bCheck);
-	void	CheckAllDarks(BOOL bCheck);
-	void	CheckAllFlats(BOOL bCheck);
-	void	CheckAllOffsets(BOOL bCheck);
+	void	CheckAll(bool bCheck);
+	void	CheckAllLights(bool bCheck);
+	void	CheckAllDarks(bool bCheck);
+	void	CheckAllFlats(bool bCheck);
+	void	CheckAllOffsets(bool bCheck);
 
-	void	CheckImage(LPCTSTR szImage, BOOL bCheck);
+	void	CheckImage(LPCTSTR szImage, bool bCheck);
 
-	void	SetUseAsStarting(int nItem, BOOL bUse);
-	BOOL	GetTransformation(LPCTSTR szFile, CBilinearParameters & Transformation, VOTINGPAIRVECTOR & vVotedPairs);
+	void	SetUseAsStarting(int nItem, bool bUse);
+	bool	GetTransformation(LPCTSTR szFile, CBilinearParameters & Transformation, VOTINGPAIRVECTOR & vVotedPairs);
 
 	void	SetProgress(CDSSProgress * pProgress)
 	{
@@ -206,7 +206,7 @@ private :
 
 		//And redraw
 		RedrawItems(nItem, nItem);
-		m_bRefreshNeeded = TRUE;
+		m_bRefreshNeeded = true;
 		PostItemChanged();
 	}
 

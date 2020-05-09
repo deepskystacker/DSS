@@ -4,6 +4,8 @@
 #include "Workspace.h"
 #include <ControlPos.h>
 #include "EasySize.h"
+#include <QString>
+#include <QVariant>
 
 // CRecommendedSettings dialog
 
@@ -61,15 +63,16 @@ public:
 		for (LONG i = 0;i<m_vSettings.size() && !bResult;i++)
 		{
 			CString				strValue;
-			CString				strPath;
-			CString				strName;
+			QString				keyName;
 			CString				strCurrentValue;
+			QString	temp;
 
-			m_vSettings[i].GetPath(strPath);
-			m_vSettings[i].GetName(strName);
+			keyName = m_vSettings[i].key();
 
-			workspace.GetValue(strPath, strName, strCurrentValue);
-			m_vSettings[i].GetValue(strValue);
+			temp = workspace.value(keyName).toString();
+			strCurrentValue = CString((LPCTSTR)temp.utf16());
+			temp = m_vSettings[i].value().toString();
+			strValue = CString((LPCTSTR)temp.utf16());
 
 			bResult = (strCurrentValue != strValue);
 		};
@@ -83,15 +86,13 @@ public:
 
 		for (LONG i = 0;i<m_vSettings.size();i++)
 		{
-			CString				strValue;
-			CString				strPath;
-			CString				strName;
+			QString				keyName;
+			QVariant			value;
 
-			m_vSettings[i].GetPath(strPath);
-			m_vSettings[i].GetName(strName);
-			m_vSettings[i].GetValue(strValue);
+			keyName = m_vSettings[i].key();
+			value = m_vSettings[i].value();
 
-			workspace.SetValue(strPath, strName, strValue);
+			workspace.setValue(keyName, value);
 		};
 	};
 
@@ -107,29 +108,9 @@ public:
 	{
 		m_strRecommendation = szText;
 	};
-	void	AddSetting(LPCTSTR szPath, LPCTSTR szName, LPCTSTR szValue)
+	void	AddSetting(QString keyName, QVariant value)
 	{
-		CWorkspaceSetting		ws(szPath, szName, szValue);
-
-		m_vSettings.push_back(ws);
-	};
-	void	AddSetting(LPCTSTR szPath, LPCTSTR szName, DWORD dwValue)
-	{
-		CWorkspaceSetting		ws(szPath, szName, dwValue);
-
-		m_vSettings.push_back(ws);
-	};
-	void	AddSetting(LPCTSTR szPath, LPCTSTR szName, bool bValue)
-	{
-		CWorkspaceSetting		ws(szPath, szName, bValue);
-
-		m_vSettings.push_back(ws);
-	};
-	void	AddSetting(LPCTSTR szPath, LPCTSTR szName, double fValue)
-	{
-		CWorkspaceSetting		ws(szPath, szName, fValue);
-
-		m_vSettings.push_back(ws);
+		m_vSettings.emplace_back(keyName, value);
 	};
 };
 
@@ -239,7 +220,7 @@ protected:
 private :
 	void	ClearText();
 	void	InsertHeader();
-	void	InsertText(LPCTSTR szText, COLORREF crColor = RGB(0, 0, 0), BOOL bBold = FALSE, BOOL bItalic = FALSE, LONG lLinkID = 0);
+	void	InsertText(LPCTSTR szText, COLORREF crColor = RGB(0, 0, 0), bool bBold = false, bool bItalic = false, LONG lLinkID = 0);
 	void	FillWithRecommendedSettings();
 	void	SetSetting(LONG lID = 0);
 

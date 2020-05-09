@@ -13,10 +13,10 @@
 static void GetTempFileName(CString & strFile)
 {
 	TCHAR			szTempFileName[1+_MAX_PATH];
-	CString			strFolder;
+	QString			strFolder;
 
 	CAllStackingTasks::GetTemporaryFilesFolder(strFolder);
-	GetTempFileName(strFolder, _T("DSS"), 0, szTempFileName);
+	GetTempFileName(CString((LPCTSTR)strFolder.utf16()), _T("DSS"), 0, szTempFileName);
 
 	strFile = szTempFileName;
 };
@@ -26,7 +26,7 @@ static void GetTempFileName(CString & strFile)
 
 void CMultiBitmap::SetBitmapModel(CMemoryBitmap * pBitmap)
 {
-	m_pBitmapModel.Attach(pBitmap->Clone(TRUE));
+	m_pBitmapModel.Attach(pBitmap->Clone(true));
 };
 
 /* ------------------------------------------------------------------- */
@@ -94,15 +94,15 @@ void CMultiBitmap::InitParts()
 		m_vFiles.push_back(bp);
 	};
 
-	m_bInitDone = TRUE;
+	m_bInitDone = true;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+bool CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 
 	// Save the bitmap to the temporary file
 	if (!m_bInitDone)
@@ -123,7 +123,7 @@ BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 		pScanLine = (void*)malloc(lScanLineSize);
 
 		if (pScanLine)
-			bResult = TRUE;
+			bResult = true;
 		if (pProgress)
 			pProgress->Start2(nullptr, m_lHeight);
 
@@ -134,7 +134,7 @@ BOOL CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 			hFile = _tfopen(m_vFiles[k].m_strFile, _T("a+b"));
 			if (hFile)
 			{
-				bResult = TRUE;
+				bResult = true;
 				fseek(hFile, 0, SEEK_END);
 			};
 			for (LONG j = m_vFiles[k].m_lStartRow;j<=m_vFiles[k].m_lEndRow && bResult;j++)
@@ -201,19 +201,19 @@ public :
 		m_pHomBitmap	= pHomBitmap;
 	};
 
-	virtual BOOL	DoTask(HANDLE hEvent);
-	virtual BOOL	Process();
+	virtual bool	DoTask(HANDLE hEvent);
+	virtual bool	Process();
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CCombineTask::DoTask(HANDLE hEvent)
+bool	CCombineTask::DoTask(HANDLE hEvent)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	LONG				i;
-	BOOL				bEnd = FALSE;
+	bool				bEnd = false;
 	MSG					msg;
 	LONG				lNrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
 	std::vector<void *>	vScanLines;
@@ -254,7 +254,7 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 				SetEvent(hEvent);
 			}
 			else if (msg.message == WM_MT_STOP)
-				bEnd = TRUE;
+				bEnd = true;
 		};
 	}
 	catch (std::exception & e)
@@ -307,15 +307,15 @@ BOOL	CCombineTask::DoTask(HANDLE hEvent)
 #endif
 		exit(1);
 	}
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CCombineTask::Process()
+bool	CCombineTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 	LONG			i = m_lStartRow;
 	LONG			lStep;
 	LONG			lRemaining;
@@ -357,7 +357,7 @@ BOOL	CCombineTask::Process()
 static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap, CMemoryBitmap * pOutBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bColor = pBitmap->IsMonochrome();
+	bool			bColor = pBitmap->IsMonochrome();
 	LONG			lWidth = pBitmap->Width();
 	LONG			lHeight = pBitmap->Height();
 
@@ -446,10 +446,10 @@ void	CMultiBitmap::SmoothOut(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppOutBitm
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL						bResult = FALSE;
+	bool						bResult = false;
 	LONG						lScanLineSize;
 	LONG						/*i, k, */l;
 	CSmartPtr<CMemoryBitmap>	pBitmap;
@@ -459,7 +459,7 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 	if (m_bInitDone && m_vFiles.size())
 	{
 		*ppBitmap = nullptr;
-		bResult = FALSE;
+		bResult = false;
 
 		CreateOutputMemoryBitmap(&pBitmap);
 		if (pBitmap)
@@ -506,7 +506,7 @@ BOOL CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 				fclose(hFile);
 			}
 			else
-				bResult = FALSE;
+				bResult = false;
 
 			{
 				CCombineTask		CombineTask;

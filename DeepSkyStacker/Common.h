@@ -5,9 +5,9 @@
 // Redefine WIN32 types and important classes
 
 #if !defined(_WINDOWS_)
-#define BOOL				bool
-#define TRUE				true
-#define FALSE				false
+#define bool				bool
+#define true				true
+#define false				false
 #define LONG				int32
 #define DWORD				uint32
 #define WORD				uint16
@@ -146,7 +146,7 @@ public :
 	{
 	};
 
-	BOOL	PtInRect(const CPoint & pt) const
+	bool	PtInRect(const CPoint & pt) const
 	{
 		return (pt.x >= left) && (pt.x <= right) &&
 			   (pt.y >= top) && (pt.y <= bottom);
@@ -157,14 +157,14 @@ public :
 		left = right = top = bottom = 0;
 	};
 
-	BOOL	IsRectEmpty() const
+	bool	IsRectEmpty() const
 	{
 		return (left==right) || (top == bottom);
 	};
 
-	BOOL	IntersectRect(LPCRECT pRect1, LPCRECT pRect2)
+	bool	IntersectRect(LPCRECT pRect1, LPCRECT pRect2)
 	{
-		BOOL		bResult = FALSE;
+		bool		bResult = false;
 
 		if (pRect1 && pRect2)
 		{
@@ -177,7 +177,7 @@ public :
 				right	= min(pRect1->right, pRect2->right);
 				top		= max(pRect1->top, pRect2->top);
 				bottom	= min(pRect1->bottom, pRect2->bottom);
-				bResult = TRUE;
+				bResult = true;
 			}
 		};
 		if (!bResult)

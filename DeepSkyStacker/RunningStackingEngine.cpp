@@ -27,7 +27,7 @@ CRunningStackingEngine::~CRunningStackingEngine()
 void	CRunningStackingEngine::CreatePublicBitmap()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL					bMonochrome;
+	bool					bMonochrome;
 	LONG					lWidth,
 							lHeight;
 
@@ -82,13 +82,13 @@ void	CRunningStackingEngine::CreatePublicBitmap()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pProgress)
+bool	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	LONG				lWidth,
 						lHeight;
-	BOOL				bColor;
+	bool				bColor;
 
 	// First load the input bitmap
 	CSmartPtr<CMemoryBitmap>		pBitmap;
@@ -184,7 +184,7 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 			pProgress->End2();
 		m_lNrStacked++;
 		m_fTotalExposure += lfi.m_fExposure;
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	if (bResult && !m_MatchingStars.IsReferenceSet())
@@ -205,10 +205,10 @@ BOOL	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
+bool	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (m_lNrStacked)
 	{
@@ -228,7 +228,7 @@ BOOL	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 	{
 		m_MatchingStars.ClearReference();
 		lfi.m_BilinearParameters.Clear();
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;

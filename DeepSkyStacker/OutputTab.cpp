@@ -20,7 +20,7 @@ IMPLEMENT_DYNAMIC(COutputTab, CChildPropertyPage)
 COutputTab::COutputTab()
 	: CChildPropertyPage(COutputTab::IDD)
 {
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -66,7 +66,7 @@ END_MESSAGE_MAP()
 void COutputTab::UpdateControls()
 {
 	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	BOOL				bEnable = m_OutputFile.GetCheck();
+	bool				bEnable = m_OutputFile.GetCheck();
 
 	m_OutputHTML.EnableWindow(bEnable);
 	m_Autosave.EnableWindow(bEnable);
@@ -90,8 +90,8 @@ BOOL COutputTab::OnSetActive()
 		m_Title.SetTextColor(RGB(0, 0, 0));
 		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 
-		m_OutputFolder.SetTransparent(TRUE);
-		m_OutputFolder.SetLink(TRUE, TRUE);
+		m_OutputFolder.SetTransparent(true);
+		m_OutputFolder.SetLink(true, true);
 		m_OutputFolder.SetTextColor(RGB(0, 0, 128));
 
 		m_OutputFolder.GetWindowText(m_strNoFolder);
@@ -105,14 +105,14 @@ BOOL COutputTab::OnSetActive()
 		m_FileListFolder.SetCheck(m_OutputSettings.m_bFileListFolder);
 		m_OtherFolder.SetCheck(m_OutputSettings.m_bOtherFolder);
 
-		if (m_OutputSettings.m_strFolder.GetLength())
-			m_OutputFolder.SetWindowText((LPCTSTR)m_OutputSettings.m_strFolder);
+		if ("" != m_OutputSettings.m_strFolder)
+			m_OutputFolder.SetWindowText((LPCTSTR)m_OutputSettings.m_strFolder.utf16());
 
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -124,7 +124,7 @@ void COutputTab::OnBnClickedAutosave()
 {
 	if (m_Autosave.GetCheck())
 	{
-		m_FileListName.SetCheck(FALSE);
+		m_FileListName.SetCheck(false);
 		m_OutputSettings.m_bAutosave = true;
 		m_OutputSettings.m_bFileList = false;
 	};
@@ -136,7 +136,7 @@ void COutputTab::OnBnClickedFilelist()
 {
 	if (m_FileListName.GetCheck())
 	{
-		m_Autosave.SetCheck(FALSE);
+		m_Autosave.SetCheck(false);
 		m_OutputSettings.m_bAutosave = false;
 		m_OutputSettings.m_bFileList = true;
 	};
@@ -148,8 +148,8 @@ void COutputTab::OnBnClickedUsereferenceframefolder()
 {
 	if (m_RefFrameFolder.GetCheck())
 	{
-		m_FileListFolder.SetCheck(FALSE);
-		m_OtherFolder.SetCheck(FALSE);
+		m_FileListFolder.SetCheck(false);
+		m_OtherFolder.SetCheck(false);
 		m_OutputSettings.m_bRefFrameFolder = true;
 		m_OutputSettings.m_bFileListFolder = false;
 		m_OutputSettings.m_bOtherFolder    = false;
@@ -162,8 +162,8 @@ void COutputTab::OnBnClickedUsefilelistfolder()
 {
 	if (m_FileListFolder.GetCheck())
 	{
-		m_RefFrameFolder.SetCheck(FALSE);
-		m_OtherFolder.SetCheck(FALSE);
+		m_RefFrameFolder.SetCheck(false);
+		m_OtherFolder.SetCheck(false);
 		m_OutputSettings.m_bRefFrameFolder = false;
 		m_OutputSettings.m_bFileListFolder = true;
 		m_OutputSettings.m_bOtherFolder    = false;
@@ -176,8 +176,8 @@ void COutputTab::OnBnClickedUseanotherfolder()
 {
 	if (m_OtherFolder.GetCheck())
 	{
-		m_FileListFolder.SetCheck(FALSE);
-		m_RefFrameFolder.SetCheck(FALSE);
+		m_FileListFolder.SetCheck(false);
+		m_RefFrameFolder.SetCheck(false);
 		m_OutputSettings.m_bRefFrameFolder = false;
 		m_OutputSettings.m_bFileListFolder = false;
 		m_OutputSettings.m_bOtherFolder    = true;
@@ -215,7 +215,7 @@ void COutputTab::OnOutputFolder( NMHDR * pNotifyStruct, LRESULT * result )
 
 	m_OutputFolder.GetWindowText(strFolder);
 
-	CFolderDlg				dlg(FALSE, strFolder, this);
+	CFolderDlg				dlg(false, strFolder, this);
 
 	strTitle.LoadString(IDS_SELECTOUTPUTFOLDER);
 	dlg.SetTitle(strTitle);
@@ -224,8 +224,8 @@ void COutputTab::OnOutputFolder( NMHDR * pNotifyStruct, LRESULT * result )
 	{
 		strFolder = dlg.GetFolderName();
 		m_OutputFolder.SetWindowText(strFolder);
-		m_OutputSettings.m_strFolder = strFolder;
-		m_OtherFolder.SetCheck(TRUE);
+		m_OutputSettings.m_strFolder = QString((QChar *)strFolder.GetBuffer());
+		m_OtherFolder.SetCheck(true);
 		OnBnClickedUseanotherfolder();
 	};
 };

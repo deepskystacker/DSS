@@ -302,7 +302,7 @@ CFitsFilesTab::CFitsFilesTab() : CPropertyPage(CFitsFilesTab::IDD)
 	//}}AFX_DATA_INIT
 
 	m_psp.dwFlags |= PSP_PREMATURE;
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -352,33 +352,33 @@ END_MESSAGE_MAP()
 void CFitsFilesTab::UpdateControls()
 {
 	CString				strValue;
-	BOOL				bOk = TRUE;
-	BOOL				bInterpolation = TRUE;
+	bool				bOk = true;
+	bool				bInterpolation = true;
 	double				fValue;
 
-	BOOL				bAllEnabled;
+	bool				bAllEnabled;
 
 	bAllEnabled = m_FITSisRAW.GetCheck();
 
 	m_Brightness.GetWindowText(strValue);
 	fValue = _ttof(strValue);
 	if (fValue <= 0)
-		bOk = FALSE;
+		bOk = false;
 
 	m_RedScale.GetWindowText(strValue);
 	fValue = _ttof(strValue);
 	if (fValue <= 0)
-		bOk = FALSE;
+		bOk = false;
 
 	m_BlueScale.GetWindowText(strValue);
 	fValue = _ttof(strValue);
 	if (fValue <= 0)
-		bOk = FALSE;
+		bOk = false;
 
 	LONG			lIndice = m_DSLR.GetCurSel();
 	if (lIndice >= 0 && lIndice < m_vDSLRs.size())
 	{
-		BOOL		bCYMG;
+		bool		bCYMG;
 
 		bCYMG = ::IsCYMGType(m_vDSLRs[lIndice].m_CFAType);
 
@@ -399,32 +399,32 @@ void CFitsFilesTab::UpdateControls()
 		{
 			if (m_RawBayer.GetCheck() || m_SuperPixels.GetCheck() || m_AHD.GetCheck())
 			{
-				m_RawBayer.SetCheck(FALSE);
-				m_SuperPixels.SetCheck(FALSE);
-				m_AHD.SetCheck(FALSE);
-				m_Bilinear.SetCheck(TRUE);
+				m_RawBayer.SetCheck(false);
+				m_SuperPixels.SetCheck(false);
+				m_AHD.SetCheck(false);
+				m_Bilinear.SetCheck(true);
 			};
 		};
 	}
 	else
 	{
-		m_Brightness.EnableWindow(TRUE);
-		m_RedScale.EnableWindow(TRUE);
-		m_BlueScale.EnableWindow(TRUE);
-		m_RawBayer.EnableWindow(TRUE);
-		m_SuperPixels.EnableWindow(TRUE);
-		m_AHD.EnableWindow(TRUE);
-		GetDlgItem(IDC_TEXT2)->EnableWindow(TRUE);
-		GetDlgItem(IDC_TEXT3)->EnableWindow(TRUE);
-		GetDlgItem(IDC_TEXT4)->EnableWindow(TRUE);
-		GetDlgItem(IDC_TEXT6)->EnableWindow(TRUE);
-		GetDlgItem(IDC_TEXT7)->EnableWindow(TRUE);
+		m_Brightness.EnableWindow(true);
+		m_RedScale.EnableWindow(true);
+		m_BlueScale.EnableWindow(true);
+		m_RawBayer.EnableWindow(true);
+		m_SuperPixels.EnableWindow(true);
+		m_AHD.EnableWindow(true);
+		GetDlgItem(IDC_TEXT2)->EnableWindow(true);
+		GetDlgItem(IDC_TEXT3)->EnableWindow(true);
+		GetDlgItem(IDC_TEXT4)->EnableWindow(true);
+		GetDlgItem(IDC_TEXT6)->EnableWindow(true);
+		GetDlgItem(IDC_TEXT7)->EnableWindow(true);
 	};
 
 	m_DSLR.EnableWindow(bAllEnabled);
-	m_Bilinear.EnableWindow(TRUE);
-	GetDlgItem(IDC_TEXT1)->EnableWindow(TRUE);
-	GetDlgItem(IDC_TEXT5)->EnableWindow(TRUE);
+	m_Bilinear.EnableWindow(true);
+	GetDlgItem(IDC_TEXT1)->EnableWindow(true);
+	GetDlgItem(IDC_TEXT5)->EnableWindow(true);
 
 	m_BayerPattern.ShowWindow(bAllEnabled ? SW_SHOW : SW_HIDE);
 
@@ -471,10 +471,7 @@ BOOL CFitsFilesTab::OnSetActive()
 	if (m_bFirstActivation)
 	{
 		CWorkspace			workspace;
-		CString				strValue;
-		DWORD				bValue;
-
-		bValue = FALSE;
+		QString				strValue;
 
 		//
 		// Force unsigned is now irrelvant as we load FITS as double
@@ -482,40 +479,27 @@ BOOL CFitsFilesTab::OnSetActive()
 		m_ForceUnsigned.EnableWindow(false);
 		m_ForceUnsigned.ShowWindow(false);
 
-		bValue = FALSE;
-		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), bValue);
-		m_FITSisRAW.SetCheck(bValue);
+		m_FITSisRAW.SetCheck(workspace.value("FitsDDP/FITSisRAW", false).toBool());
 
-		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("1.0");
-		m_Brightness.SetWindowText(strValue);
+		strValue = workspace.value("FitsDDP/Brightness", "1.0").toString();
+		m_Brightness.SetWindowText((LPCTSTR)strValue.utf16());
 
-		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("1.0");
-		m_RedScale.SetWindowText(strValue);
+		strValue = workspace.value("FitsDDP/RedScale", "1.0").toString();
+		m_RedScale.SetWindowText((LPCTSTR)strValue.utf16());
 
-		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("1.0");
-		m_BlueScale.SetWindowText(strValue);
+		strValue = workspace.value("FitsDDP/BlueScale", "1.0").toString();
+		m_BlueScale.SetWindowText((LPCTSTR)strValue.utf16());
 
-		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), strValue);
-		if (!strValue.GetLength())
-			strValue = _T("Bilinear");
+		strValue = workspace.value("FitsDDP/Interpolation", "Bilinear").toString();
 
 		if (strValue == _T("Bilinear"))
-			m_Bilinear.SetCheck(TRUE);
+			m_Bilinear.SetCheck(true);
 		else if (strValue == _T("RawBayer"))
-			m_RawBayer.SetCheck(TRUE);
+			m_RawBayer.SetCheck(true);
 		else if (strValue == _T("AHD"))
-			m_AHD.SetCheck(TRUE);
+			m_AHD.SetCheck(true);
 		else
-			m_SuperPixels.SetCheck(TRUE);
+			m_SuperPixels.SetCheck(true);
 
 		FillDSLRList(m_vDSLRs);
 		for (LONG i = 0;i<m_vDSLRs.size();i++)
@@ -523,20 +507,20 @@ BOOL CFitsFilesTab::OnSetActive()
 			m_DSLR.AddString(m_vDSLRs[i].m_strName);
 		};
 
-		strValue.Empty();
-		workspace.GetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), strValue);
-		if (!strValue.GetLength())
+
+		strValue = workspace.value("FitsDDP/DSLR", "").toString();
+		if (strValue != "")
 			m_DSLR.SetCurSel(0);
 		else
 		{
-			m_DSLR.SelectString(-1, strValue);
+			m_DSLR.SelectString(-1, (LPCTSTR)strValue.utf16());
 			if (m_DSLR.GetCurSel() < 0)
 				m_DSLR.SetCurSel(0);
 		};
 
 		UpdateBayerPattern();
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 	};
 
 	return CPropertyPage::OnSetActive();
@@ -551,18 +535,18 @@ void CFitsFilesTab::SaveValues()
 		CWorkspace			workspace;
 		CString				strValue;
 
-		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), m_FITSisRAW.GetCheck() ? true : false);
+		workspace.setValue("FitsDDP/FITSisRAW", m_FITSisRAW.GetCheck() ? true : false);
 
 		m_Brightness.GetWindowText(strValue);
-		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), strValue);
+		workspace.setValue("FitsDDP/Brightness", QString((QChar *)strValue.GetBuffer()));
 
 		m_RedScale.GetWindowText(strValue);
-		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), strValue);
+		workspace.setValue("FitsDDP/RedScale", QString((QChar *)strValue.GetBuffer()));
 
 		m_BlueScale.GetWindowText(strValue);
-		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), strValue);
+		workspace.setValue("FitsDDP/BlueScale", QString((QChar *)strValue.GetBuffer()));
 
-		workspace.SetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), m_SuperPixels.GetCheck() ? true : false);
+		workspace.setValue("RawDDP/SuperPixels", m_SuperPixels.GetCheck() ? true : false);
 
 		strValue.Empty();
 		if (m_Bilinear.GetCheck())
@@ -574,21 +558,21 @@ void CFitsFilesTab::SaveValues()
 		else
 			strValue = _T("AHD");
 
-		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), strValue);
+		workspace.setValue("FitsDDP/Interpolation", QString((QChar *)strValue.GetBuffer()));
 
 
 		m_DSLR.GetLBText(m_DSLR.GetCurSel(), strValue);
-		workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), strValue);
+		workspace.setValue("FitsDDP/DSLR", QString((QChar *)strValue.GetBuffer()));
 
 		if (m_DSLR.GetCurSel() >= 0)
 		{
 			DWORD		dwPattern;
 
 			dwPattern = m_vDSLRs[m_DSLR.GetCurSel()].m_CFAType;
-			workspace.SetValue(REGENTRY_BASEKEY_FITSSETTINGS, _T("BayerPattern"), dwPattern);
+			workspace.setValue("FitsDDP/BayerPattern", (uint)dwPattern);
 		};
 
-		workspace.SaveToRegistry();
+		workspace.saveSettings();
 	};
 };
 
@@ -617,36 +601,36 @@ void CFitsFilesTab::OnChangeRedscale()
 
 void CFitsFilesTab::OnBilinear()
 {
-	m_RawBayer.SetCheck(FALSE);
-	m_SuperPixels.SetCheck(FALSE);
-	m_AHD.SetCheck(FALSE);
+	m_RawBayer.SetCheck(false);
+	m_SuperPixels.SetCheck(false);
+	m_AHD.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */
 
 void CFitsFilesTab::OnBnClickedSuperpixels()
 {
-	m_RawBayer.SetCheck(FALSE);
-	m_Bilinear.SetCheck(FALSE);
-	m_AHD.SetCheck(FALSE);
+	m_RawBayer.SetCheck(false);
+	m_Bilinear.SetCheck(false);
+	m_AHD.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */
 
 void CFitsFilesTab::OnBnClickedRawbayer()
 {
-	m_SuperPixels.SetCheck(FALSE);
-	m_Bilinear.SetCheck(FALSE);
-	m_AHD.SetCheck(FALSE);
+	m_SuperPixels.SetCheck(false);
+	m_Bilinear.SetCheck(false);
+	m_AHD.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */
 
 void CFitsFilesTab::OnAHD()
 {
-	m_SuperPixels.SetCheck(FALSE);
-	m_Bilinear.SetCheck(FALSE);
-	m_RawBayer.SetCheck(FALSE);
+	m_SuperPixels.SetCheck(false);
+	m_Bilinear.SetCheck(false);
+	m_RawBayer.SetCheck(false);
 }
 
 /* ------------------------------------------------------------------- */

@@ -352,3 +352,4 @@ CodeMaid.config
 /Installers/RunTime64/imageformats
 /Installers/RunTime64/iconengines
 /Installers/RunTime64/D3Dcompiler_47.dll
+*.qm

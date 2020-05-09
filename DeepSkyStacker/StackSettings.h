@@ -45,14 +45,14 @@ private :
 	CButton					m_ReducePriority;
 	CButton					m_OK;
 	LONG					m_lStartingTab;
-	BOOL					m_bRegisteringOnly;
-	BOOL					m_bEnableCustomRectangle;
-	BOOL					m_bUseCustomRectangle;
-	BOOL					m_bEnableCometStacking;
-	BOOL					m_bEnableDark;
-	BOOL					m_bEnableFlat;
-	BOOL					m_bEnableBias;
-	BOOL					m_bEnableAll;
+	bool					m_bRegisteringOnly;
+	bool					m_bEnableCustomRectangle;
+	bool					m_bUseCustomRectangle;
+	bool					m_bEnableCometStacking;
+	bool					m_bEnableDark;
+	bool					m_bEnableFlat;
+	bool					m_bEnableBias;
+	bool					m_bEnableAll;
 	CAllStackingTasks *		m_pStackingTasks;
 
 public:
@@ -61,13 +61,13 @@ public:
 
 	void		UpdateControls();
 
-	void		SetCustomRectangleAvailability(BOOL bEnabled, BOOL bUsed = FALSE)
+	void		SetCustomRectangleAvailability(bool bEnabled, bool bUsed = false)
 	{
 		m_bEnableCustomRectangle	= bEnabled;
 		m_bUseCustomRectangle		= bUsed;
 	};
 
-	BOOL		IsCustomRectangleUsed()
+	bool		IsCustomRectangleUsed()
 	{
 		return m_bEnableCustomRectangle && m_bUseCustomRectangle;
 	};
@@ -77,12 +77,12 @@ public:
 		m_lStartingTab = lStartingTab;
 	};
 
-	void		SetRegisteringOnly(BOOL bRegisteringOnly)
+	void		SetRegisteringOnly(bool bRegisteringOnly)
 	{
 		m_bRegisteringOnly = bRegisteringOnly;
 	};
 
-	void		EnableCometStacking(BOOL bEnable)
+	void		EnableCometStacking(bool bEnable)
 	{
 		m_bEnableCometStacking = bEnable;
 	};
@@ -92,14 +92,14 @@ public:
 		m_pStackingTasks = pStackingTasks;
 	};
 
-	void		SetDarkFlatBiasTabsVisibility(BOOL bDark, BOOL bFlat, BOOL bBias)
+	void		SetDarkFlatBiasTabsVisibility(bool bDark, bool bFlat, bool bBias)
 	{
 		m_bEnableDark = bDark;
 		m_bEnableFlat = bFlat;
 		m_bEnableBias = bBias;
 	};
 
-	void		SetEnableAll(BOOL bEnableAll)
+	void		SetEnableAll(bool bEnableAll)
 	{
 		m_bEnableAll = bEnableAll;
 	};
@@ -111,7 +111,7 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
 	virtual BOOL OnInitDialog();
-	BOOL	CheckTabControls(CStackingParameters * pTab);
+	bool	CheckTabControls(CStackingParameters * pTab);
 
 	DECLARE_MESSAGE_MAP()
 public:

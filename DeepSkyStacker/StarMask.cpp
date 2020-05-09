@@ -10,9 +10,9 @@ using namespace Gdiplus;
 
 /* ------------------------------------------------------------------- */
 
-BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	CLightFrameInfo		LightFrame;
 	STARVECTOR			vStars;
 
@@ -98,7 +98,7 @@ BOOL CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 
 			if (pStarMaskFunction)
 				delete pStarMaskFunction;
-			bResult = TRUE;
+			bResult = true;
 		};
 	}
 

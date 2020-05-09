@@ -75,9 +75,9 @@ static void	GetFilesInFolder(LPCTSTR szFolder, std::vector<CString>	& vFiles)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CDropFilesDlg::IsMasterFile(LPCTSTR szFile)
+bool CDropFilesDlg::IsMasterFile(LPCTSTR szFile)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	CBitmapInfo			BitmapInfo;
 
 	if (GetPictureInfo(szFile, BitmapInfo))
@@ -145,9 +145,9 @@ BOOL CDropFilesDlg::OnInitDialog()
 	strText.Format(strText, lNrFiles);
 	m_Text.SetWindowText(strText);
 
-	m_LightFrames.SetCheck(TRUE);
+	m_LightFrames.SetCheck(true);
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -172,50 +172,50 @@ void CDropFilesDlg::OnOK()
 
 void CDropFilesDlg::OnLightFrames()
 {
-	m_DarkFrames.SetCheck(FALSE);
-	m_FlatFrames.SetCheck(FALSE);
-	m_BiasFrames.SetCheck(FALSE);
-	m_DarkFlatFrames.SetCheck(FALSE);
+	m_DarkFrames.SetCheck(false);
+	m_FlatFrames.SetCheck(false);
+	m_BiasFrames.SetCheck(false);
+	m_DarkFlatFrames.SetCheck(false);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CDropFilesDlg::OnDarkFrames()
 {
-	m_LightFrames.SetCheck(FALSE);
-	m_FlatFrames.SetCheck(FALSE);
-	m_BiasFrames.SetCheck(FALSE);
-	m_DarkFlatFrames.SetCheck(FALSE);
+	m_LightFrames.SetCheck(false);
+	m_FlatFrames.SetCheck(false);
+	m_BiasFrames.SetCheck(false);
+	m_DarkFlatFrames.SetCheck(false);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CDropFilesDlg::OnFlatFrames()
 {
-	m_LightFrames.SetCheck(FALSE);
-	m_DarkFrames.SetCheck(FALSE);
-	m_BiasFrames.SetCheck(FALSE);
-	m_DarkFlatFrames.SetCheck(FALSE);
+	m_LightFrames.SetCheck(false);
+	m_DarkFrames.SetCheck(false);
+	m_BiasFrames.SetCheck(false);
+	m_DarkFlatFrames.SetCheck(false);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CDropFilesDlg::OnDarkFlatFrames()
 {
-	m_LightFrames.SetCheck(FALSE);
-	m_DarkFrames.SetCheck(FALSE);
-	m_BiasFrames.SetCheck(FALSE);
-	m_FlatFrames.SetCheck(FALSE);
+	m_LightFrames.SetCheck(false);
+	m_DarkFrames.SetCheck(false);
+	m_BiasFrames.SetCheck(false);
+	m_FlatFrames.SetCheck(false);
 };
 
 /* ------------------------------------------------------------------- */
 
 void CDropFilesDlg::OnBiasFrames()
 {
-	m_LightFrames.SetCheck(FALSE);
-	m_DarkFrames.SetCheck(FALSE);
-	m_FlatFrames.SetCheck(FALSE);
-	m_DarkFlatFrames.SetCheck(FALSE);
+	m_LightFrames.SetCheck(false);
+	m_DarkFrames.SetCheck(false);
+	m_FlatFrames.SetCheck(false);
+	m_DarkFlatFrames.SetCheck(false);
 };
 
 /* ------------------------------------------------------------------- */

@@ -7,7 +7,7 @@
 class CRegisterSettings_Actions : public CPropertyPage
 {
 private :
-	BOOL				m_bFirstActivation;
+	bool				m_bFirstActivation;
 
 	DECLARE_DYNAMIC(CRegisterSettings_Actions)
 

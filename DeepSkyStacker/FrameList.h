@@ -26,7 +26,6 @@ public :
 private :
 	void	CopyFrom(const CMRUList & ml)
 	{
-		m_strBasePath	= ml.m_strBasePath;
 		m_vLists		= ml.m_vLists;
 		m_lMaxLists		= ml.m_lMaxLists;
 	};
@@ -37,7 +36,7 @@ public :
 		if (szBasePath)
 			m_strBasePath = szBasePath;
 		else
-			m_strBasePath = REGENTRY_BASEKEY_FILELISTS;
+			m_strBasePath = _T("FileLists");
 		m_lMaxLists = 10;
 	};
 
@@ -59,8 +58,8 @@ public :
 		return (*this);
 	};
 
-	void	InitFromRegistry();
-	void	SaveToRegistry();
+	void	readSettings();
+	void	saveSettings();
 
 	void	Add(LPCTSTR szList);
 };
@@ -70,30 +69,30 @@ public :
 class CListBitmap : public CFrameInfo
 {
 public :
-	BOOL					m_bRemoved;
+	bool					m_bRemoved;
 	DWORD					m_dwGroupID;
 	GUID					m_JobID;
-	BOOL					m_bUseAsStarting;
+	bool					m_bUseAsStarting;
 	CString					m_strType;
 	CString					m_strPath;
 	CString					m_strFile;
-	BOOL					m_bRegistered;
-	BOOL					m_bChecked;
+	bool					m_bRegistered;
+	bool					m_bChecked;
 	double					m_fOverallQuality;
 	double					m_fFWHM;
 	double					m_dX;
 	double					m_dY;
 	double					m_fAngle;
 	CSkyBackground			m_SkyBackground;
-	BOOL					m_bDeltaComputed;
+	bool					m_bDeltaComputed;
 	CString					m_strCFA;
 	CString					m_strSizes;
 	CString					m_strDepth;
-	BOOL					m_bCompatible;
+	bool					m_bCompatible;
 	CBilinearParameters		m_Transformation;
 	VOTINGPAIRVECTOR		m_vVotedPairs;
 	LONG					m_lNrStars;
-	BOOL					m_bComet;
+	bool					m_bComet;
 
 
 protected :
@@ -133,17 +132,17 @@ public :
 	{
 		m_dwGroupID			= 0;
 		m_JobID				= MAINJOBID;
-		m_bRemoved			= FALSE;
-		m_bUseAsStarting	= FALSE;
-		m_bRegistered		= FALSE;
-		m_bChecked			= FALSE;
+		m_bRemoved			= false;
+		m_bUseAsStarting	= false;
+		m_bRegistered		= false;
+		m_bChecked			= false;
 		m_fOverallQuality	= 0;
 		m_fFWHM				= 0;
 		m_dX				= 0;
 		m_dY				= 0;
 		m_fAngle			= 0;
-		m_bDeltaComputed	= FALSE;
-		m_bCompatible		= TRUE;
+		m_bDeltaComputed	= false;
+		m_bCompatible		= true;
 		m_lNrStars			= 0;
 		m_bComet			= 0;
 	};
@@ -159,12 +158,12 @@ public :
 		return (*this);
 	};
 
-	BOOL	IsUseAsStarting()
+	bool	IsUseAsStarting()
 	{
 		return m_bUseAsStarting;
 	};
 
-	BOOL	IsDeltaComputed()
+	bool	IsDeltaComputed()
 	{
 		return m_bDeltaComputed;
 	};
@@ -230,7 +229,7 @@ public :
 		return (*this);
 	};
 
-	BOOL	IsNullJob()
+	bool	IsNullJob()
 	{
 		return (m_ID == GUID_NULL);
 	};
@@ -268,7 +267,7 @@ public :
 	CJob &	AddJob(LPCTSTR szName, GUID dwID = GUID_NULL)
 	{
 		// Check if the ID already exists
-		BOOL				bFound = FALSE;
+		bool				bFound = false;
 
 		if (dwID == GUID_NULL)
 			::CoCreateGuid(&dwID);
@@ -276,7 +275,7 @@ public :
 		for (LONG i = 0;i<m_vJobs.size();i++)
 		{
 			if (m_vJobs[i].m_ID == dwID)
-				bFound = TRUE;
+				bFound = true;
 		};
 		if (bFound)
 			::CoCreateGuid(&dwID);
@@ -317,7 +316,7 @@ public :
 		return lIndice>=0 ? m_vJobs[lIndice] : m_NullJob;
 	};
 
-	BOOL	RemoveJob(GUID const& dwID)
+	bool	RemoveJob(GUID const& dwID)
 	{
 		LONG			lIndice = -1;
 		for (LONG i = 0;i<m_vJobs.size() && lIndice<0;i++)
@@ -333,7 +332,7 @@ public :
 			m_vJobs.erase(it);
 		};
 
-		return lIndice>=0 ? TRUE : FALSE;
+		return lIndice>=0 ? true : false;
 	};
 
 	void	AddMainJob()
@@ -349,13 +348,13 @@ class CFrameList
 public :
 	LISTBITMAPVECTOR	m_vFiles;
 	CJobList			m_Jobs;
-	BOOL				m_bDirty;
+	bool				m_bDirty;
 
 public :
 	CFrameList()
 	{
 		m_Jobs.AddMainJob();
-		m_bDirty = FALSE;
+		m_bDirty = false;
 	};
 
 	virtual ~CFrameList()
@@ -370,21 +369,21 @@ public :
 		return m_Jobs;
 	};
 
-	virtual BOOL	AddFile(LPCTSTR szFile, DWORD dwGroupID = 0, GUID dwJobID = GUID_NULL, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, BOOL bCheck = FALSE)
+	virtual bool	AddFile(LPCTSTR szFile, DWORD dwGroupID = 0, GUID dwJobID = GUID_NULL, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
 	{
-		return FALSE;
+		return false;
 	};
 
 	void	FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID = MAINJOBID);
-	BOOL	GetReferenceFrame(CString & strReferenceFrame);
+	bool	GetReferenceFrame(CString & strReferenceFrame);
 	LONG	GetNrUnregisteredCheckedLightFrames(LONG lGroupID = -1);
 
-	BOOL	IsDirty(BOOL bReset = FALSE)
+	bool	IsDirty(bool bReset = false)
 	{
-		BOOL			bResult = m_bDirty;
+		bool			bResult = m_bDirty;
 
 		if (bReset)
-			m_bDirty = FALSE;
+			m_bDirty = false;
 
 		return bResult;
 	};

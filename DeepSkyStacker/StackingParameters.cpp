@@ -18,7 +18,7 @@ IMPLEMENT_DYNAMIC(CStackingParameters, CChildPropertyPage)
 CStackingParameters::CStackingParameters()
 	: CChildPropertyPage(CStackingParameters::IDD)
 {
-	m_bFirstActivation = TRUE;
+	m_bFirstActivation = true;
     m_BackgroundCalibrationMode = BACKGROUNDCALIBRATIONMODE(0);
 }
 
@@ -85,28 +85,28 @@ void CStackingParameters::UpdateControls()
 
 	if (m_WeightedAverage.GetCheck())
 	{
-		m_Kappa.EnableWindow(FALSE);
-		m_KappaStatic.EnableWindow(FALSE);
-		m_Iteration.EnableWindow(TRUE);
-		m_IterationStatic.EnableWindow(TRUE);
+		m_Kappa.EnableWindow(false);
+		m_KappaStatic.EnableWindow(false);
+		m_Iteration.EnableWindow(true);
+		m_IterationStatic.EnableWindow(true);
 		m_WeightedFrame.ShowWindow(SW_SHOW);
 		m_KappaFrame.ShowWindow(SW_HIDE);
 	}
 	else if (m_SigmaClipping.GetCheck() || m_MedianSigmaClipping.GetCheck())
 	{
-		m_Kappa.EnableWindow(TRUE);
-		m_KappaStatic.EnableWindow(TRUE);
-		m_Iteration.EnableWindow(TRUE);
-		m_IterationStatic.EnableWindow(TRUE);
+		m_Kappa.EnableWindow(true);
+		m_KappaStatic.EnableWindow(true);
+		m_Iteration.EnableWindow(true);
+		m_IterationStatic.EnableWindow(true);
 		m_WeightedFrame.ShowWindow(SW_HIDE);
 		m_KappaFrame.ShowWindow(SW_SHOW);
 	}
 	else
 	{
-		m_Kappa.EnableWindow(FALSE);
-		m_KappaStatic.EnableWindow(FALSE);
-		m_Iteration.EnableWindow(FALSE);
-		m_IterationStatic.EnableWindow(FALSE);
+		m_Kappa.EnableWindow(false);
+		m_KappaStatic.EnableWindow(false);
+		m_Iteration.EnableWindow(false);
+		m_IterationStatic.EnableWindow(false);
 		m_WeightedFrame.ShowWindow(SW_HIDE);
 		m_KappaFrame.ShowWindow(SW_HIDE);
 	};
@@ -125,7 +125,7 @@ BOOL CStackingParameters::OnSetActive()
 		m_Title.SetTextColor(RGB(0, 0, 0));
 		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 		UpdateControls();
-		m_bFirstActivation = FALSE;
+		m_bFirstActivation = false;
 
 		CString			strText;
 
@@ -149,16 +149,16 @@ BOOL CStackingParameters::OnSetActive()
 		strText.Replace(_T("[kappa]"), _T("<font face='Symbol'>k</font>"));
 		m_Tooltips.AddTool(GetDlgItem(IDC_AUTOADAPTIVEAVERAGE), strText);
 
-		m_Tooltips.Activate(TRUE);
+		m_Tooltips.Activate(true);
 
-		m_BackgroundCalibration.SetLink(TRUE, TRUE);
-		m_BackgroundCalibration.SetTransparent(TRUE);
+		m_BackgroundCalibration.SetLink(true, true);
+		m_BackgroundCalibration.SetTransparent(true);
 		m_BackgroundCalibration.SetTextColor(RGB(0, 0, 128));
 
 		UpdateCalibrationMode();
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -168,25 +168,25 @@ void CStackingParameters::SetControls(MULTIBITMAPPROCESSMETHOD Method, double fK
 	switch (Method)
 	{
 	case MBP_AVERAGE :
-		m_Average.SetCheck(TRUE);
+		m_Average.SetCheck(true);
 		break;
 	case MBP_MEDIAN :
-		m_Median.SetCheck(TRUE);
+		m_Median.SetCheck(true);
 		break;
 	case MBP_MAXIMUM :
-		m_Maximum.SetCheck(TRUE);
+		m_Maximum.SetCheck(true);
 		break;
 	case MBP_SIGMACLIP :
-		m_SigmaClipping.SetCheck(TRUE);
+		m_SigmaClipping.SetCheck(true);
 		break;
 	case MBP_MEDIANSIGMACLIP :
-		m_MedianSigmaClipping.SetCheck(TRUE);
+		m_MedianSigmaClipping.SetCheck(true);
 		break;
 	case MBP_AUTOADAPTIVE :
-		m_WeightedAverage.SetCheck(TRUE);
+		m_WeightedAverage.SetCheck(true);
 		break;
 	case MBP_ENTROPYAVERAGE :
-		m_EntropyAverage.SetCheck(TRUE);
+		m_EntropyAverage.SetCheck(true);
 		break;
 	};
 
@@ -234,12 +234,12 @@ void CStackingParameters::OnBnClickedAverage()
 {
 	if (m_Average.GetCheck())
 	{
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
+		m_Median.SetCheck(false);
+		m_Maximum.SetCheck(false);
+		m_SigmaClipping.SetCheck(false);
+		m_MedianSigmaClipping.SetCheck(false);
+		m_WeightedAverage.SetCheck(false);
+		m_EntropyAverage.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -250,12 +250,12 @@ void CStackingParameters::OnBnClickedMedian()
 {
 	if (m_Median.GetCheck())
 	{
-		m_Average.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
+		m_Average.SetCheck(false);
+		m_Maximum.SetCheck(false);
+		m_SigmaClipping.SetCheck(false);
+		m_MedianSigmaClipping.SetCheck(false);
+		m_WeightedAverage.SetCheck(false);
+		m_EntropyAverage.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -266,12 +266,12 @@ void CStackingParameters::OnBnClickedMaximum()
 {
 	if (m_Maximum.GetCheck())
 	{
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
+		m_Average.SetCheck(false);
+		m_Median.SetCheck(false);
+		m_SigmaClipping.SetCheck(false);
+		m_MedianSigmaClipping.SetCheck(false);
+		m_WeightedAverage.SetCheck(false);
+		m_EntropyAverage.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -282,12 +282,12 @@ void CStackingParameters::OnBnClickedSigmaclipping()
 {
 	if (m_SigmaClipping.GetCheck())
 	{
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
+		m_Average.SetCheck(false);
+		m_Median.SetCheck(false);
+		m_Maximum.SetCheck(false);
+		m_MedianSigmaClipping.SetCheck(false);
+		m_WeightedAverage.SetCheck(false);
+		m_EntropyAverage.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -298,12 +298,12 @@ void CStackingParameters::OnBnClickedMedianSigmaclipping()
 {
 	if (m_MedianSigmaClipping.GetCheck())
 	{
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
+		m_Average.SetCheck(false);
+		m_Median.SetCheck(false);
+		m_Maximum.SetCheck(false);
+		m_SigmaClipping.SetCheck(false);
+		m_WeightedAverage.SetCheck(false);
+		m_EntropyAverage.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -335,12 +335,12 @@ void CStackingParameters::OnBnClickedEntropyaverage()
 {
 	if (m_EntropyAverage.GetCheck())
 	{
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
+		m_SigmaClipping.SetCheck(false);
+		m_MedianSigmaClipping.SetCheck(false);
+		m_Average.SetCheck(false);
+		m_Median.SetCheck(false);
+		m_Maximum.SetCheck(false);
+		m_WeightedAverage.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -351,12 +351,12 @@ void CStackingParameters::OnBnClickedAutoadaptiveaverage()
 {
 	if (m_WeightedAverage.GetCheck())
 	{
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
+		m_SigmaClipping.SetCheck(false);
+		m_MedianSigmaClipping.SetCheck(false);
+		m_Average.SetCheck(false);
+		m_Median.SetCheck(false);
+		m_Maximum.SetCheck(false);
+		m_EntropyAverage.SetCheck(false);
 		UpdateControls();
 	};
 }
@@ -366,7 +366,7 @@ void CStackingParameters::OnBnClickedAutoadaptiveaverage()
 void CStackingParameters::OnBnClickedUseDarkFactor()
 {
 	if (m_UseDarkFactor.GetCheck())
-		m_DarkOptimization.SetCheck(FALSE);
+		m_DarkOptimization.SetCheck(false);
 };
 
 /* ------------------------------------------------------------------- */
@@ -374,7 +374,7 @@ void CStackingParameters::OnBnClickedUseDarkFactor()
 void CStackingParameters::OnBnClickedDarkOptimization()
 {
 	if (m_DarkOptimization.GetCheck())
-		m_UseDarkFactor.SetCheck(FALSE);
+		m_UseDarkFactor.SetCheck(false);
 };
 
 /* ------------------------------------------------------------------- */

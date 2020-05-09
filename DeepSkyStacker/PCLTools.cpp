@@ -10,11 +10,11 @@
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsPCLPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool	IsPCLPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 
-	BitmapInfo.m_bCanLoad		= TRUE;
+	BitmapInfo.m_bCanLoad		= true;
 	BitmapInfo.m_strFileName	= szFileName;
 	BitmapInfo.m_lNrChannels	= 3;
 
@@ -24,10 +24,10 @@ BOOL	IsPCLPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 /* ------------------------------------------------------------------- */
 
 template <class PCLImage>
-BOOL	LoadPCLImageInMemoryBitmap(CMemoryBitmap * pBitmap, PCLImage * pImage, int NrChannels, double fMultiplier)
+bool	LoadPCLImageInMemoryBitmap(CMemoryBitmap * pBitmap, PCLImage * pImage, int NrChannels, double fMultiplier)
 {
-	BOOL					bResult = TRUE;
-	BOOL					bGray = (NrChannels == 1);
+	bool					bResult = true;
+	bool					bGray = (NrChannels == 1);
 
 	for (LONG i = 0;i<pBitmap->Width();i++)
 	{
@@ -60,9 +60,9 @@ BOOL	LoadPCLImageInMemoryBitmap(CMemoryBitmap * pBitmap, PCLImage * pImage, int 
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadPCLPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool	LoadPCLPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 	CString					strFileName = szFileName;
 	pcl::String				filename;
 	filename = szFileName;
@@ -188,15 +188,15 @@ void CreatePCLImageWindow( const pcl::Generic2DImage<P> & image, const pcl::Stri
 /* ------------------------------------------------------------------- */
 
 template <class P>
-BOOL CreatePCLImage(CMemoryBitmap * pBitmap, pcl::Generic2DImage<P> & image, double fMultiplier)
+bool CreatePCLImage(CMemoryBitmap * pBitmap, pcl::Generic2DImage<P> & image, double fMultiplier)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	pcl::String			id;
 	LONG				i, j;
 
 	try
 	{
-		bResult = TRUE;
+		bResult = true;
 		if (pBitmap->IsMonochrome() && !pBitmap->IsCFA())
 		{
 			image.AllocateData(pBitmap->Width(), pBitmap->Height(), 1, pcl::ColorSpace::Gray);
@@ -239,7 +239,7 @@ BOOL CreatePCLImage(CMemoryBitmap * pBitmap, pcl::Generic2DImage<P> & image, dou
 	}
 	catch(...)
 	{
-		bResult = FALSE;
+		bResult = false;
 	};
 
 	return bResult;
@@ -247,9 +247,9 @@ BOOL CreatePCLImage(CMemoryBitmap * pBitmap, pcl::Generic2DImage<P> & image, dou
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CreatePCLView(CMemoryBitmap * pBitmap)
+bool	CreatePCLView(CMemoryBitmap * pBitmap)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (pBitmap)
 	{

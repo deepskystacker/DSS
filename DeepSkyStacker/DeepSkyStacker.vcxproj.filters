@@ -43,6 +43,15 @@
     <Filter Include="Qt Porting">
       <UniqueIdentifier>{db9eb54e-7edb-4ace-9ead-2b1cc7cb7fb2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Qt">
+      <UniqueIdentifier>{31a4e7c2-73e1-42fc-a635-0db545d92d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Qt\ui">
+      <UniqueIdentifier>{3a62d95a-ea18-444e-8cb5-0d9cafe68e81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Qt\i18n">
+      <UniqueIdentifier>{5fa33482-6260-4ecd-9e29-d45fd46209d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeepSkyStacker.cpp">
@@ -217,12 +226,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\Registry.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\RegMFC.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\RichToolTipCtrl.cpp">
@@ -584,9 +587,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\memdc.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\Registry.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\Schemadef.h">
@@ -1034,5 +1034,108 @@
     <None Include="QMfcApp">
       <Filter>Qt Porting</Filter>
     </None>
+    <None Include="i18n\DSS_ca.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_cs.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_de.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_en.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_es.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_fr.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_it.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_nl.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_pt.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_ro.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_ru.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_tr.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_zh.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations.qrc">
+      <Filter>Qt\i18n</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="ui\About.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\AlignmentParameters.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\AskRegistering.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\BackgroundOptions.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\BatchStacking.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\CheckAbove.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\CometStacking.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\DeepStackerDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\DropFilesDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ExplorerBar.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\FitsFilesTab.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\IntermediateFiles.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\OutputTab.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\PostCalibration.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\RawDDPSettings.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\RawFilesTab.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ResultParameters.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\StackingParameters.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\StackSettings.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

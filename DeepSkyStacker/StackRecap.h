@@ -33,7 +33,7 @@ private :
 	void	ClearText();
 
 	void	InsertHeaderHTML(CString & strHTML);
-	void	InsertHTML(CString & strHTML, LPCTSTR szText, COLORREF crColor = RGB(0, 0, 0), BOOL bBold = FALSE, BOOL bItalic = FALSE, LONG lLinkID = 0);
+	void	InsertHTML(CString & strHTML, LPCTSTR szText, COLORREF crColor = RGB(0, 0, 0), bool bBold = false, bool bItalic = false, LONG lLinkID = 0);
 	void	FillWithAllTasksHTML();
 	void	CallStackingParameters(LONG lID = 0);
 

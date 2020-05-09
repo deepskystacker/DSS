@@ -82,13 +82,13 @@ BOOL CStackRecap::OnInitDialog()
 
 	INIT_EASYSIZE;
 
-	RestoreWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_STEPS_POSITION, true);
+	RestoreWindowPosition(this, "Dialogs/StackingSteps/Position", true);
 
-	m_RecapHTML.SetToolTips(FALSE);
+	m_RecapHTML.SetToolTips(false);
 	SetWindowLong(m_RecapHTML.GetSafeHwnd(), GWL_EXSTYLE, GetWindowLong(m_RecapHTML.GetSafeHwnd(), GWL_STYLE ) | WS_EX_CLIENTEDGE );
 
 	FillWithAllTasksHTML();
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -123,7 +123,7 @@ void	CStackRecap::InsertHeaderHTML(CString & strHTML)
 
 /* ------------------------------------------------------------------- */
 
-void	CStackRecap::InsertHTML(CString & strHTML, LPCTSTR szText, COLORREF crColor, BOOL bBold, BOOL bItalic, LONG lLinkID)
+void	CStackRecap::InsertHTML(CString & strHTML, LPCTSTR szText, COLORREF crColor, bool bBold, bool bItalic, LONG lLinkID)
 {
 	CString					strText;
 	CString					strInputText = szText;
@@ -191,7 +191,7 @@ void CStackRecap::FillWithAllTasksHTML()
 		CString				strFreeSpace;
 		CString				strNeededSpace;
 		STACKINGMODE		ResultMode;
-		BOOL				bSaveIntermediates;
+		bool				bSaveIntermediates;
 
 		ulNeededSpace	= m_pStackingTasks->ComputeNecessaryDiskSpace();
 		ulFreeSpace		= m_pStackingTasks->AvailableDiskSpace(strDrive);
@@ -236,7 +236,7 @@ void CStackRecap::FillWithAllTasksHTML()
 			InsertHTML(strHTML,
 				_T("<table border='1px' cellpadding='5' bordercolor=#ffc0c0 bordercolorlight=#ffc0c0 bgcolor=#ffffc0 bordercolordark=#ffffc0 cellspacing=0 width='100%'><tr><td>"));
 			strText.Format(IDS_RECAP_WARNINGDISKSPACE, strNeededSpace, strDrive, strFreeSpace);
-			InsertHTML(strHTML, strText, RGB(255, 0, 0), TRUE, FALSE);
+			InsertHTML(strHTML, strText, RGB(255, 0, 0), true, false);
 			if (ResultMode == SM_MOSAIC)
 			{
 				InsertHTML(strHTML, _T("\n"));
@@ -251,14 +251,14 @@ void CStackRecap::FillWithAllTasksHTML()
 			InsertHTML(strHTML,
 				_T("<table border='1px' cellpadding='5' bordercolor=#ffc0c0 bordercolorlight=#ffc0c0 bgcolor=#ffffc0 bordercolordark=#ffffc0 cellspacing=0 width='100%'><tr><td>"));
 			strText.Format(IDS_RECAP_WARNINGJPEG);
-			InsertHTML(strHTML, strText, RGB(255, 0, 0), TRUE, FALSE);
+			InsertHTML(strHTML, strText, RGB(255, 0, 0), true, false);
 			InsertHTML(strHTML, _T("</td></tr></table>"));
 		};
 
 		InsertHTML(strHTML, _T("<table border=0 valign=middle cellspacing=0 width='100%'><tr>"));
 		InsertHTML(strHTML, _T("<td width='48%'>"));
 		strText.Format(IDS_RECAP_STACKINGMODE);
-		InsertHTML(strHTML, strText, RGB(0, 0, 0), TRUE);
+		InsertHTML(strHTML, strText, RGB(0, 0, 0), true);
 		switch (m_pStackingTasks->GetStackingMode())
 		{
 		case SM_NORMAL :
@@ -275,14 +275,14 @@ void CStackRecap::FillWithAllTasksHTML()
 			break;
 		};
 
-		InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_RESULT);
+		InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_RESULT);
 
 		DWORD				dwAlignment;
 		dwAlignment = m_pStackingTasks->GetAlignmentMethod();
 
 		strText.Format(IDS_RECAP_ALIGNMENT);
 		InsertHTML(strHTML, _T("</td><td width='48%'>"));
-		InsertHTML(strHTML, strText, RGB(0, 0, 0), TRUE);
+		InsertHTML(strHTML, strText, RGB(0, 0, 0), true);
 
 		switch (dwAlignment)
 		{
@@ -304,7 +304,7 @@ void CStackRecap::FillWithAllTasksHTML()
 			break;
 		};
 
-		InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_ALIGNMENT);
+		InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_ALIGNMENT);
 		InsertHTML(strHTML, _T("</td>"));
 		InsertHTML(strHTML, _T("</tr></table>"));
 
@@ -314,26 +314,26 @@ void CStackRecap::FillWithAllTasksHTML()
 		if (dwDrizzle > 1)
 		{
 			strText.Format(IDS_RECAP_DRIZZLE, dwDrizzle);
-			InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_RESULT);
+			InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_RESULT);
 			InsertHTML(strHTML, _T("\n"));
 			if (IsRawBayer() || IsFITSRawBayer())
 			{
 				strText.Format(IDS_RECAP_WARNINGDRIZZLE);
-				InsertHTML(strHTML, strText, RGB(255, 0, 0), TRUE);
+				InsertHTML(strHTML, strText, RGB(255, 0, 0), true);
 				InsertHTML(strHTML, _T("\n"));
 			};
 		};
 
 		LONG				lNrProcessors;
 
-		lNrProcessors = CMultitask::GetNrProcessors(TRUE);
+		lNrProcessors = CMultitask::GetNrProcessors(true);
 		if (lNrProcessors>1)
 		{
 			if (CMultitask::GetNrProcessors()>1)
 				strText.Format(IDS_RECAP_DETECTEDANDUSEDPROCESSORS, lNrProcessors);
 			else
 				strText.Format(IDS_RECAP_DETECTEDNOTUSEDPROCESSORS, lNrProcessors);
-			InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, TRUE);
+			InsertHTML(strHTML, strText, RGB(0, 0, 128), false, true);
 			InsertHTML(strHTML, _T("\n"));
 		};
 
@@ -344,7 +344,7 @@ void CStackRecap::FillWithAllTasksHTML()
 
 			CometStackingMode = m_pStackingTasks->GetCometStackingMode();
 			strText.Format(IDS_RECAP_COMETSTACKING);
-			InsertHTML(strHTML, strText, RGB(0, 0, 0), TRUE, FALSE);
+			InsertHTML(strHTML, strText, RGB(0, 0, 0), true, false);
 			switch (CometStackingMode)
 			{
 			case CSM_STANDARD :
@@ -357,7 +357,7 @@ void CStackRecap::FillWithAllTasksHTML()
 				strText.Format(IDS_RECAP_COMETSTACKING_BOTH);
 				break;
 			};
-			InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_COMET);
+			InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_COMET);
 			InsertHTML(strHTML, _T("\n"));
 		};
 		InsertHTML(strHTML, _T("\n"));
@@ -368,12 +368,12 @@ void CStackRecap::FillWithAllTasksHTML()
 		if (pcs.m_bHot)
 		{
 			strText.Format(IDS_RECAP_COSMETICHOT, pcs.m_lHotFilter, pcs.m_fHotDetection);
-			InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_POSTCALIBRATION);
+			InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_POSTCALIBRATION);
 		};
 		if (pcs.m_bCold)
 		{
 			strText.Format(IDS_RECAP_COSMETICCOLD, pcs.m_lColdFilter, pcs.m_fColdDetection);
-			InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_POSTCALIBRATION);
+			InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_POSTCALIBRATION);
 		};
 
 		if (pcs.m_bHot || pcs.m_bCold)
@@ -398,12 +398,12 @@ void CStackRecap::FillWithAllTasksHTML()
 				GetISOGainStrings(si.m_pLightTask, strISOText, strGainText, &pstrISOGainText, &strISOGainValue);
 
 				strText.Format(IDS_RECAP_STEP, i+1, si.m_pLightTask->m_vBitmaps.size(), *pstrISOGainText, strISOGainValue);
-				InsertHTML(strHTML, strText, RGB(0, 0, 0), TRUE);
-				InsertHTML(strHTML, strExposure, RGB(0, 128, 0), TRUE);
+				InsertHTML(strHTML, strText, RGB(0, 0, 0), true);
+				InsertHTML(strHTML, strExposure, RGB(0, 128, 0), true);
 				InsertHTML(strHTML, _T("\n"));
 				InsertHTML(strHTML, _T("<ul>"));
-				InsertHTML(strHTML, strBackgroundCalibration, RGB(0, 0, 128), FALSE, FALSE, SSTAB_LIGHT);
-				InsertHTML(strHTML, strPerChannelBackgroundCalibration, RGB(0, 0, 128), FALSE, FALSE, SSTAB_LIGHT);
+				InsertHTML(strHTML, strBackgroundCalibration, RGB(0, 0, 128), false, false, SSTAB_LIGHT);
+				InsertHTML(strHTML, strPerChannelBackgroundCalibration, RGB(0, 0, 128), false, false, SSTAB_LIGHT);
 				InsertHTML(strHTML, _T("</ul>"));
 				if (si.m_pLightTask->m_vBitmaps.size()>1)
 				{
@@ -411,7 +411,7 @@ void CStackRecap::FillWithAllTasksHTML()
 					strText.Format(IDS_RECAP_METHOD);
 					InsertHTML(strHTML, strText);
 					FormatFromMethod(strText, si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
-					InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_LIGHT);
+					InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_LIGHT);
 					InsertHTML(strHTML, _T("</ul>"));
 
 					if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
@@ -419,7 +419,7 @@ void CStackRecap::FillWithAllTasksHTML()
 					{
 						InsertHTML(strHTML, _T("\n"));
 						strText.Format(IDS_RECAP_WARNINGBAYERDRIZZLE);
-						InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 					};
 				};
 
@@ -441,7 +441,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						strText.Format(IDS_RECAP_METHOD);
 						InsertHTML(strHTML, strText);
 						FormatFromMethod(strText, si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
-						InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_OFFSET);
+						InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_OFFSET);
 						InsertHTML(strHTML, _T("</ul>"));
 					};
 
@@ -450,7 +450,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
 							strText.Format(IDS_RECAP_ISOWARNING);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 						};
 					}
 					else
@@ -458,7 +458,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
 							strText.Format(IDS_RECAP_GAINWARNING);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 						};
 					};
 				}
@@ -481,16 +481,16 @@ void CStackRecap::FillWithAllTasksHTML()
 						strText.Format(IDS_RECAP_METHOD);
 						InsertHTML(strHTML, strText);
 						FormatFromMethod(strText, si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
-						InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_DARK);
+						InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_DARK);
 						InsertHTML(strHTML, _T("</ul>"));
 					};
 
 					InsertHTML(strHTML, _T("<ul>"));
-					InsertHTML(strHTML, strDarkOptimization, RGB(0, 0, 128), FALSE, FALSE, SSTAB_DARK);
-					InsertHTML(strHTML, strHotPixels, RGB(0, 0, 128), FALSE, FALSE, SSTAB_DARK);
+					InsertHTML(strHTML, strDarkOptimization, RGB(0, 0, 128), false, false, SSTAB_DARK);
+					InsertHTML(strHTML, strHotPixels, RGB(0, 0, 128), false, false, SSTAB_DARK);
 					if (strDarkFactor.GetLength())
 					{
-						InsertHTML(strHTML, strDarkFactor, RGB(0, 0, 128), FALSE, FALSE, SSTAB_DARK);
+						InsertHTML(strHTML, strDarkFactor, RGB(0, 0, 128), false, false, SSTAB_DARK);
 						InsertHTML(strHTML, _T("\n"));
 					};
 
@@ -499,7 +499,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
 							strText.Format(IDS_RECAP_ISOWARNING);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 							InsertHTML(strHTML, _T("\n"));
 						};
 					}
@@ -508,14 +508,14 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
 							strText.Format(IDS_RECAP_GAINWARNING);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 							InsertHTML(strHTML, _T("\n"));
 						};
 					};
 					if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
 					{
 						strText.Format(IDS_RECAP_EXPOSUREWARNING);
-						InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 						InsertHTML(strHTML, _T("\n"));
 					};
 					InsertHTML(strHTML, _T("</ul>"));
@@ -539,7 +539,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						strText.Format(IDS_RECAP_METHOD);
 						InsertHTML(strHTML, strText+_T("\n"));
 						FormatFromMethod(strText, si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
-						InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_DARK);
+						InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_DARK);
 						InsertHTML(strHTML, _T("</ul>"));
 					};
 
@@ -548,7 +548,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
 						{
 							strText.Format(IDS_RECAP_ISOWARNINGDARKFLAT);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 						};
 					}
 					else
@@ -556,13 +556,13 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
 						{
 							strText.Format(IDS_RECAP_GAINWARNINGDARKFLAT);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 						};
 					};
 					if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
 					{
 						strText.Format(IDS_RECAP_EXPOSUREWARNINGDARKFLAT);
-						InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+						InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 					};
 				};
 				if (si.m_pFlatTask)
@@ -578,7 +578,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						strText.Format(IDS_RECAP_METHOD);
 						InsertHTML(strHTML, strText);
 						FormatFromMethod(strText, si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
-						InsertHTML(strHTML, strText, RGB(0, 0, 128), FALSE, FALSE, SSTAB_FLAT);
+						InsertHTML(strHTML, strText, RGB(0, 0, 128), false, false, SSTAB_FLAT);
 						InsertHTML(strHTML, _T("</ul>"));
 					};
 
@@ -587,7 +587,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
 							strText.Format(IDS_RECAP_ISOWARNING);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 						};
 					}
 					else
@@ -595,7 +595,7 @@ void CStackRecap::FillWithAllTasksHTML()
 						if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
 							strText.Format(IDS_RECAP_GAINWARNING);
-							InsertHTML(strHTML, strText, RGB(128, 0, 0), FALSE, TRUE);
+							InsertHTML(strHTML, strText, RGB(128, 0, 0), false, true);
 						};
 					};
 				}
@@ -615,7 +615,7 @@ void CStackRecap::FillWithAllTasksHTML()
 		strText.Format(_T("<font color=#008f00>%s</font>"), (LPCTSTR)strExposure);
 		strExposure = strText;
 		strText.Format(IDS_RECAP_TOTALEXPOSURETIME, (LPCTSTR)strExposure);
-		InsertHTML(strHTML, strText, RGB(0, 0, 0), TRUE, TRUE);
+		InsertHTML(strHTML, strText, RGB(0, 0, 0), true, true);
 
 		if (ulFreeSpace > ulNeededSpace)
 		{
@@ -640,12 +640,12 @@ void CStackRecap::FillWithAllTasksHTML()
 
 		nScrollPos = QHTM_GetScrollPos(m_RecapHTML.GetSafeHwnd());
 
-		m_RecapHTML.SetRedraw(FALSE);
+		m_RecapHTML.SetRedraw(false);
 
 		m_RecapHTML.SetWindowText(strHTML);
 		QHTM_SetScrollPos(m_RecapHTML.GetSafeHwnd(), nScrollPos);
-		m_RecapHTML.SetRedraw(TRUE);
-		m_RecapHTML.Invalidate(TRUE);
+		m_RecapHTML.SetRedraw(true);
+		m_RecapHTML.Invalidate(true);
 	};
 };
 
@@ -659,12 +659,12 @@ void CStackRecap::CallStackingParameters(LONG lID)
 	CRect					rcCustom;
 
 	if (m_pStackingTasks->GetCustomRectangle(rcCustom))
-		dlg.SetCustomRectangleAvailability(TRUE, m_pStackingTasks->IsCustomRectangleUsed());
+		dlg.SetCustomRectangleAvailability(true, m_pStackingTasks->IsCustomRectangleUsed());
 	else
-		dlg.SetCustomRectangleAvailability(FALSE);
+		dlg.SetCustomRectangleAvailability(false);
 
 	if (m_pStackingTasks->IsCometAvailable())
-		dlg.EnableCometStacking(TRUE);
+		dlg.EnableCometStacking(true);
 
 	dlg.SetDarkFlatBiasTabsVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
 
@@ -695,7 +695,7 @@ void CStackRecap::OnQHTMHyperlink(NMHDR*nmh, LRESULT*)
 	LPNMQHTM pnm = reinterpret_cast<LPNMQHTM>( nmh );
 	if( pnm->pcszLinkText )
 	{
-		pnm->resReturnValue = FALSE;
+		pnm->resReturnValue = false;
 		LONG				lLinkID;
 
 		lLinkID = _ttol(pnm->pcszLinkText);
@@ -721,7 +721,7 @@ void CStackRecap::OnBnClickedRecommandedsettings()
 
 void CStackRecap::OnBnClickedOk()
 {
-	SaveWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_STEPS_POSITION);
+	SaveWindowPosition(this, "Dialogs/StackingSteps/Position");
 
 	OnOK();
 }
@@ -730,7 +730,7 @@ void CStackRecap::OnBnClickedOk()
 
 void CStackRecap::OnBnClickedCancel()
 {
-	SaveWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_STEPS_POSITION);
+	SaveWindowPosition(this, "Dialogs/StackingSteps/Position");
 
 	OnCancel();
 }
