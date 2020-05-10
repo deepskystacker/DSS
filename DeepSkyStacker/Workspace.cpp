@@ -80,66 +80,59 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-void CWorkspaceSetting::readSetting()
+CWorkspaceSetting & CWorkspaceSetting::readSetting()
 {
 	QSettings settings;
 
 	// If there wasn't a valid stored value in the settings, we will be returned 
-	// a default QVariant. We for sure don't want to use that!
+	// a null QVariant. We for sure don't want to use that!
 	QVariant temp = settings.value(keyName);
-	if (QVariant() != temp)
+	if (!temp.isNull())
 	{
 		Value = temp;
-		type = Value.type();
 		dirty = false;
 	}
+	return *this;
 };
 
 /* ------------------------------------------------------------------- */
 
-void CWorkspaceSetting::saveSetting() const
+CWorkspaceSetting & CWorkspaceSetting::saveSetting()
 {
-	QSettings settings;
-
-	settings.setValue(keyName, Value);
-	//m_bDirty = false;
-};
-
-
-/* ------------------------------------------------------------------- */
-
-bool	CWorkspaceSetting::setValue(const CWorkspaceSetting & ws)
-{
-	bool				bResult = false;
-
-	// Assume that this is the same type
-	if (type == ws.type)
+	if (dirty)
 	{
+		QSettings settings;
 
-		if (Value != ws.Value)
-		{
-			dirty = true;
-			Value = ws.Value;
-		};
-		bResult = true;
-	};
-
-	return bResult;
+		settings.setValue(keyName, Value);
+		dirty = false;
+	}
+	return *this;
 };
+
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSetting::setValue(const QVariant& value)
+CWorkspaceSetting & CWorkspaceSetting::setValue(const CWorkspaceSetting & ws)
 {
-	ZASSERT(value.canConvert(type));
 
-	QVariant localValue = value;
-	localValue.convert(type);
-	if (Value != localValue)
+	if (Value != ws.Value)
 	{
 		dirty = true;
-		Value = localValue;
+		Value = ws.Value;
+	};
+	return *this;
+};
+
+/* ------------------------------------------------------------------- */
+
+CWorkspaceSetting & CWorkspaceSetting::setValue(const QVariant& value)
+{
+	if (Value != value)
+	{
+		dirty = true;
+		Value = value;
 	}
+	return *this;
 };
 
 

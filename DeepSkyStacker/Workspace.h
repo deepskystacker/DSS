@@ -11,28 +11,19 @@ class CWorkspaceSetting
 private :
 	QString					keyName;
 	QVariant				Value;
-	QVariant::Type			type;
 	bool					dirty;
-
-private :
-	void	CopyFrom(const CWorkspaceSetting & s)
-	{
-		keyName		= s.keyName;
-		Value	= s.Value;
-		type = s.type;
-		dirty = s.dirty;
-	};
 
 public :
 	CWorkspaceSetting(const QString& name, const QVariant& value = QVariant())
 		: keyName(name), Value(value), dirty(false)
 	{
-		type = value.type();
 	};
 
-	CWorkspaceSetting & operator = (const CWorkspaceSetting & s)
+	CWorkspaceSetting & operator = (const CWorkspaceSetting & rhs)
 	{
-		CopyFrom(s);
+		keyName = rhs.keyName;
+		Value = rhs.Value;
+		dirty = rhs.dirty;
 		return (*this);
 	};
 
@@ -51,8 +42,8 @@ public :
 		return (keyName != s.keyName);
 	};
 
-	void	readSetting();
-	void	saveSetting() const;
+	CWorkspaceSetting &	readSetting();
+	CWorkspaceSetting &	saveSetting();
 
 	bool	isDirty(bool bClear)
 	{
@@ -69,8 +60,8 @@ public :
 		return keyName;
 	};
 
-	bool	setValue(const CWorkspaceSetting & ws);
-	void	setValue(const QVariant& value);
+	CWorkspaceSetting &	setValue(const CWorkspaceSetting & ws);
+	CWorkspaceSetting &	setValue(const QVariant& value);
 
 	inline QVariant value() const
 	{

@@ -130,7 +130,7 @@ void	AskForVersionChecking()
 	// If we don't know whether to do a version check or not
 	// we ask
 	//
-	if (QVariant() == settings.value("InternetCheck"))
+	if (settings.value("InternetCheck").isNull())
 	{
 		CString			strMsg;
 		int				nResult;
