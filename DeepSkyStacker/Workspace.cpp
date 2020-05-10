@@ -237,7 +237,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 
 void	CWorkspaceSettingsInternal::Init()
 {
-	InitToDefault(m_vSettings);			// Set up default values for all the main settings, and mark all as dirty
+	InitToDefault(m_vSettings);		// Set up default values for all the main settings, and mark all as dirty
 	//
 	// Now read all the settings that have previously been saved.
 	//
@@ -246,7 +246,7 @@ void	CWorkspaceSettingsInternal::Init()
 	// that setting value in the settings cache (this workspace) will have its
 	// dirty flag reset so saveSettings() won't store it again.
 	//
-	readSettings();						// Read all settings that are hardened to wherever by QSettings
+	readSettings();		// Read all settings that were previously hardened to wherever by QSettings
 	//
 	// Now write out the settings whose dirty flag is still set
 	// IOW those that were NOT read by readSettings().
