@@ -538,13 +538,13 @@ void CFitsFilesTab::SaveValues()
 		workspace.setValue("FitsDDP/FITSisRAW", m_FITSisRAW.GetCheck() ? true : false);
 
 		m_Brightness.GetWindowText(strValue);
-		workspace.setValue("FitsDDP/Brightness", QString((QChar *)strValue.GetBuffer()));
+		workspace.setValue("FitsDDP/Brightness", QString::fromWCharArray(strValue.GetBuffer()));
 
 		m_RedScale.GetWindowText(strValue);
-		workspace.setValue("FitsDDP/RedScale", QString((QChar *)strValue.GetBuffer()));
+		workspace.setValue("FitsDDP/RedScale", QString::fromWCharArray(strValue.GetBuffer()));
 
 		m_BlueScale.GetWindowText(strValue);
-		workspace.setValue("FitsDDP/BlueScale", QString((QChar *)strValue.GetBuffer()));
+		workspace.setValue("FitsDDP/BlueScale", QString::fromWCharArray(strValue.GetBuffer()));
 
 		workspace.setValue("RawDDP/SuperPixels", m_SuperPixels.GetCheck() ? true : false);
 
@@ -558,11 +558,11 @@ void CFitsFilesTab::SaveValues()
 		else
 			strValue = _T("AHD");
 
-		workspace.setValue("FitsDDP/Interpolation", QString((QChar *)strValue.GetBuffer()));
+		workspace.setValue("FitsDDP/Interpolation", QString::fromWCharArray(strValue.GetBuffer()));
 
 
 		m_DSLR.GetLBText(m_DSLR.GetCurSel(), strValue);
-		workspace.setValue("FitsDDP/DSLR", QString((QChar *)strValue.GetBuffer()));
+		workspace.setValue("FitsDDP/DSLR", QString::fromWCharArray(strValue.GetBuffer()));
 
 		if (m_DSLR.GetCurSel() >= 0)
 		{

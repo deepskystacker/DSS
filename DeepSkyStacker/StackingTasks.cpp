@@ -2018,7 +2018,7 @@ void CAllStackingTasks::GetTemporaryFilesFolder(QString & strFolder)
 		GetTempPath(sizeof(szTempPath)/sizeof(TCHAR), szTempPath);
 
 		CString temp(szTempPath);
-		strTemp = QString((QChar *)temp.GetBuffer());
+		strTemp = QString::fromWCharArray(temp.GetBuffer());
 	};
 
 	strFolder = strTemp;

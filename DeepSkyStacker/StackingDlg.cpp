@@ -645,8 +645,8 @@ void CStackingDlg::OnAdddarks()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddDarkFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddDarkExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddDarkFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddDarkExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
 		settings.setValue("Folders/AddDarkIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -722,8 +722,8 @@ void CStackingDlg::OnAddDarkFlats()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddDarkFlatFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddDarkFlatExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddDarkFlatFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddDarkFlatExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
 		settings.setValue("Folders/AddDarkFlatIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -800,8 +800,8 @@ void CStackingDlg::OnAddFlats()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddFlatFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddFlatExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddFlatFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddFlatExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
 		settings.setValue("Folders/AddFlatIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -877,8 +877,8 @@ void CStackingDlg::OnAddOffsets()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddOffsetFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddOffsetExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddOffsetFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddOffsetExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
 		settings.setValue("Folders/AddOffsetIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -950,8 +950,8 @@ void CStackingDlg::OnAddpictures()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddPictureFolder", QString((QChar *)strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddPictureExtension", QString((QChar *)strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddPictureFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/AddPictureExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
 		settings.setValue("Folders/AddPictureIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();

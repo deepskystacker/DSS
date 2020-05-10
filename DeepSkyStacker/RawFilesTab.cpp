@@ -231,13 +231,13 @@ void CRawFilesTab::SaveValues()
 	CString				strValue;
 
 	m_Brightness.GetWindowText(strValue);
-	workspace.setValue("RawDDP/Brightness", QString((QChar *)strValue.GetBuffer()));
+	workspace.setValue("RawDDP/Brightness", QString::fromWCharArray(strValue.GetBuffer()));
 
 	m_RedScale.GetWindowText(strValue);
-	workspace.setValue("RawDDP/RedScale", QString((QChar *)strValue.GetBuffer()));
+	workspace.setValue("RawDDP/RedScale", QString::fromWCharArray(strValue.GetBuffer()));
 
 	m_BlueScale.GetWindowText(strValue);
-	workspace.setValue("RawDDP/BlueScale", QString((QChar *)strValue.GetBuffer()));
+	workspace.setValue("RawDDP/BlueScale", QString::fromWCharArray(strValue.GetBuffer()));
 
 	workspace.setValue("RawDDP/NoWB", m_NoWB.GetCheck() ? true : false);
 
@@ -255,7 +255,7 @@ void CRawFilesTab::SaveValues()
 	else if (m_AHD.GetCheck())
 		strValue = _T("AHD");
 
-	workspace.setValue("RawDDP/Interpolation", QString((QChar *)strValue.GetBuffer()));
+	workspace.setValue("RawDDP/Interpolation", QString::fromWCharArray(strValue.GetBuffer()));
 }
 
 /* ------------------------------------------------------------------- */

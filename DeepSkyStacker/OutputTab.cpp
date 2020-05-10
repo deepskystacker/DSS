@@ -224,7 +224,7 @@ void COutputTab::OnOutputFolder( NMHDR * pNotifyStruct, LRESULT * result )
 	{
 		strFolder = dlg.GetFolderName();
 		m_OutputFolder.SetWindowText(strFolder);
-		m_OutputSettings.m_strFolder = QString((QChar *)strFolder.GetBuffer());
+		m_OutputSettings.m_strFolder = QString::fromWCharArray(strFolder.GetBuffer());
 		m_OtherFolder.SetCheck(true);
 		OnBnClickedUseanotherfolder();
 	};

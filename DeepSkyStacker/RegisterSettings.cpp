@@ -195,7 +195,7 @@ void CRegisterSettings::OnOK()
 		workspace.setValue("Register/StackAfter", m_bStack);
 
 		m_tabActions.m_Percent.GetWindowText(strText);
-		workspace.setValue("Register/PercentStack", QString((QChar *)strText.GetBuffer()));
+		workspace.setValue("Register/PercentStack", QString::fromWCharArray(strText.GetBuffer()));
 
 		hotPixels = m_tabActions.m_HotPixels.GetCheck() ? true : false;
 		workspace.setValue("Register/DetectHotPixels", hotPixels);

@@ -496,7 +496,7 @@ void CStackSettings::OnBnClickedOk()
 		workspace.setValue("Stacking/UseDarkFactor", fDarkFactor);
 
 		m_tabDarkFrames.m_DarkFactor.GetWindowText(strDarkFactor);
-		workspace.setValue("Stacking/DarkFactor", QString((QChar *)strDarkFactor.GetBuffer()));
+		workspace.setValue("Stacking/DarkFactor", QString::fromWCharArray(strDarkFactor.GetBuffer()));
 
 		bool						fHotPixels;
 
