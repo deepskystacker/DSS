@@ -251,10 +251,10 @@
     </Manifest>
     <PostBuildEvent>
       <Message>Add necessary Qt stuff to the output directory</Message>
-      <Command>call C:\Qt\5.12.8\msvc2017\bin\qtenv2.bat
+      <Command>call $(QTDIR)\bin\qtenv2.bat
 
-C:\Qt\5.12.8\msvc2017\bin\windeployqt $(TargetPath)
-C:\Qt\5.12.8\msvc2017\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS\Installers\RunTime32 $(TargetPath)</Command>
+$(QTDIR)\bin\windeployqt $(TargetPath)
+$(QTDIR)\bin\windeployqt --dir $(SolutionDir)Installers\RunTime32 $(TargetPath)</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
@@ -303,8 +303,9 @@ C:\Qt\5.12.8\msvc2017\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS
     </Manifest>
     <PostBuildEvent>
       <Message>Add necessary Qt stuff to the output directory</Message>
-      <Command>call C:\Qt\5.12.8\msvc2017\bin\qtenv2.bat
-C:\Qt\5.12.8\msvc2017\bin\windeployqt $(TargetPath)</Command>
+      <Command>call $(QTDIR)\bin\qtenv2.bat
+
+$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
@@ -348,10 +349,10 @@ C:\Qt\5.12.8\msvc2017\bin\windeployqt $(TargetPath)</Command>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
     <PostBuildEvent>
-      <Command>call C:\Qt\5.12.8\msvc2017_64\bin\qtenv2.bat
+      <Command>call $(QTDIR)\bin\qtenv2.bat
 
-C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)
-C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\DSS\Installers\RunTime64 $(TargetPath)</Command>
+$(QTDIR)\bin\windeployqt $(TargetPath)
+$(QTDIR)\bin\windeployqt --dir $(SolutionDir)Installers\RunTime64 $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
     <CustomBuildStep>
@@ -399,8 +400,9 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --dir D:\Users\amonra\Documents\GitHub\
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
     <PostBuildEvent>
-      <Command>call C:\Qt\5.12.8\msvc2017_64\bin\qtenv2.bat;
-C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)</Command>
+      <Command>call $(QTDIR)\bin\qtenv2.bat
+
+$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
     <CustomBuildStep>
@@ -553,9 +555,9 @@ C:\Qt\5.12.8\msvc2017_64\bin\windeployqt $(TargetPath)</Command>
     </Manifest>
     <PostBuildEvent>
       <Message>Add necessary Qt stuff to the output directory</Message>
-      <Command>call C:\Qt\5.12.8\msvc2017\bin\qtenv2.bat
+      <Command>call $(QTDIR)\bin\qtenv2.bat
 
-C:\Qt\5.12.8\msvc2017\bin\windeployqt --pdb $(TargetPath)</Command>
+$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
@@ -607,9 +609,9 @@ C:\Qt\5.12.8\msvc2017\bin\windeployqt --pdb $(TargetPath)</Command>
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
-      <Command>call C:\Qt\5.12.8\msvc2017_64\bin\qtenv2.bat
+      <Command>call $(QTDIR)\bin\qtenv2.bat
 
-C:\Qt\5.12.8\msvc2017_64\bin\windeployqt --pdb $(TargetPath)</Command>
+$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Add necessary Qt stuff to the output directory</Message>
