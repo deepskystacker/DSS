@@ -15,7 +15,7 @@ private :
 
 public :
 	CWorkspaceSetting(const QString& name, const QVariant& value = QVariant())
-		: keyName(name), Value(value), dirty(false)
+		: keyName(name), Value(value), dirty(true)
 	{
 	};
 

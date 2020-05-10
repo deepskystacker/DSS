@@ -144,21 +144,21 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.clear();
 	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", 2.0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", "2.0"));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Debloom", false));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Kappa", 2.0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Kappa", "2.0"));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Kappa", 2.0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Kappa", "2.0"));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Kappa", 2.0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Kappa", "2.0"));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/BackgroundCalibration", false));
 	vSettings.push_back(CWorkspaceSetting("Stacking/PerChannelBackgroundCalibration", true));
@@ -169,7 +169,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting("Stacking/DarkOptimization", false));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/UseDarkFactor", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/DarkFactor", 1.0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/DarkFactor", "1.0"));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/HotPixelsDetection", true));
 
@@ -210,9 +210,9 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
   	vSettings.push_back(CWorkspaceSetting("Register/DetectionThreshold", (uint)10));
 	vSettings.push_back(CWorkspaceSetting("Register/ApplyMedianFilter", false));
 
-	vSettings.push_back(CWorkspaceSetting("RawDDP/Brightness", 1.0));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/RedScale", 1.0));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/BlueScale", 1.0));
+	vSettings.push_back(CWorkspaceSetting("RawDDP/Brightness", "1.0000"));
+	vSettings.push_back(CWorkspaceSetting("RawDDP/RedScale", "1.0000"));
+	vSettings.push_back(CWorkspaceSetting("RawDDP/BlueScale", "1.0000"));
 	vSettings.push_back(CWorkspaceSetting("RawDDP/NoWB", false));
 	vSettings.push_back(CWorkspaceSetting("RawDDP/CameraWB", false));
 	vSettings.push_back(CWorkspaceSetting("RawDDP/BlackPointTo0", false));
@@ -222,9 +222,9 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting("RawDDP/AHD", false));
 
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/FITSisRAW", false));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/Brightness", 1.0));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/RedScale", 1.0));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/BlueScale", 1.0));
+	vSettings.push_back(CWorkspaceSetting("FitsDDP/Brightness", "1.0000"));
+	vSettings.push_back(CWorkspaceSetting("FitsDDP/RedScale", "1.0000"));
+	vSettings.push_back(CWorkspaceSetting("FitsDDP/BlueScale", "1.0000"));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/DSLR", ""));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/BayerPattern", (uint)4));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/Interpolation", "Bilinear"));
@@ -237,8 +237,19 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 
 void	CWorkspaceSettingsInternal::Init()
 {
-	InitToDefault(m_vSettings);
-	readSettings();
+	InitToDefault(m_vSettings);			// Set up default values for main settings, and mark all as dirty
+	//
+	// Now read all setting from the settings that have previusly been saved.
+	//
+	// NOTE WELL: When we read successfully read any non-null setting that setting value in the
+	// cache wil have its dirty flag reset so saveSettings() won't store it again.
+	//
+	readSettings();						// Read all settings that are hardened to wherever by QSettings
+	//
+	// Now write out the settings whose dirty flag is still true
+	// IOW those that were NOT read by readSettings().
+	//
+	saveSettings();						// Save all dirty settings.
 };
 
 /* ------------------------------------------------------------------- */
@@ -381,10 +392,10 @@ bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 	if (theString.startsWith("#WS#"))
 	{
 		QString temp = theString.section("#", 2);
-		QString regKey = temp.section("|", 1, 1);
-		QString nameAndValue = temp.section("|", 2);
-		QString name = nameAndValue.section("=", 1, 1);
-		QString value = nameAndValue.section("=", 2);
+		QString regKey = temp.section("|", 0, 0);
+		QString nameAndValue = temp.section("|", 1);
+		QString name = nameAndValue.section("=", 0, 0);
+		QString value = nameAndValue.section("=", 1);
 
 		auto keyIter = keyMap.find(regKey);
 		ZASSERT(keyMap.end() != keyIter);
@@ -399,7 +410,15 @@ bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 		it = findSetting(keyName);
 		if (it != m_vSettings.end())
 		{
+			//
+			// In all cases when we enter here the variable "value" will be
+			// a QString.
+			// We need to convert it to the same type as is currently stored
+			//
 			QVariant variant(value);
+			QVariant::Type type = it->value().type();
+			ZASSERT(variant.canConvert(type));
+			variant.convert(type);
 			it->setValue(variant);
 			bResult = true;
 		}
@@ -413,7 +432,15 @@ bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 		it = findSetting(keyName);
 		if (it != m_vSettings.end())
 		{
+			//
+			// In all cases when we enter here the variable "value" will be
+			// a QString.
+			// We need to convert it to the same type as is currently stored
+			//
 			QVariant variant(value);
+			QVariant::Type type = it->value().type();
+			ZASSERT(variant.canConvert(type));
+			variant.convert(type);
 			it->setValue(variant);
 			bResult = true;
 		}
