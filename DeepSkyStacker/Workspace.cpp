@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <deque>
 #include <memory>
+#include <QDebug>
 #include <QGlobalStatic>
 #include <QMutex>
 #include <QSettings>
@@ -362,7 +363,12 @@ void	CWorkspaceSettingsInternal::SaveToFile(LPCTSTR szFile)
 bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 {
 	bool				bResult = false;
-	QString	theString((QChar *)szString);
+
+	//
+	// Convert the line to a QString and strip leading and trailing white space
+	//
+	QString	theString = QString::fromWCharArray(szString).trimmed();
+	QString keyName, value;
 
 	static std::map<QString, QString> keyMap;
 	if (keyMap.empty())
@@ -384,20 +390,20 @@ bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 		keyMap.emplace("Software\\DeepSkyStacker\\Stacking", "Stacking/");
 	}
 
-
-	CString				strString = szString;
-
-	CString				strPrefix;
-
-	strString.TrimRight(_T("\n"));
-	strPrefix = strString.Left(4);
 	if (theString.startsWith("#WS#"))
 	{
 		QString temp = theString.section("#", 2);
 		QString regKey = temp.section("|", 0, 0);
 		QString nameAndValue = temp.section("|", 1);
 		QString name = nameAndValue.section("=", 0, 0);
-		QString value = nameAndValue.section("=", 1);
+
+		//
+		// Fix issue with changed spelling of "Brightness" - DSS4 and below spelt it "Brighness"
+		//
+		if ("Brighness" == name)
+			name = "Brightness";
+		
+		value = nameAndValue.section("=", 1);
 
 		auto keyIter = keyMap.find(regKey);
 		ZASSERT(keyMap.end() != keyIter);
@@ -405,50 +411,33 @@ bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 		//
 		// Get the root of our QSettings key name
 		//
-		QString keyName(keyIter->second);
-		keyName += name;
-
-		WORKSPACESETTINGITERATOR			it;
-		it = findSetting(keyName);
-		if (it != m_vSettings.end())
-		{
-			//
-			// In all cases when we enter here the variable "value" will be
-			// a QString.
-			// We need to convert it to the same type as is currently stored
-			//
-			QVariant variant(value);
-			QVariant::Type type = it->value().type();
-			ZASSERT(variant.canConvert(type));
-			variant.convert(type);
-			it->setValue(variant);
-			bResult = true;
-		}
+		keyName = (keyIter->second) + name;
 	}
 	else if (theString.startsWith("#V5WS#"))
 	{
-		QString keyName = theString.section("#", 2, 2);
-		QString value = theString.section("#", 3);
+		keyName = theString.section("#", 2, 2);
+		value = theString.section("#", 3);
+	}
+	else
+	{
+		return false;
+	}
 
-		WORKSPACESETTINGITERATOR			it;
-		it = findSetting(keyName);
-		if (it != m_vSettings.end())
-		{
-			//
-			// In all cases when we enter here the variable "value" will be
-			// a QString.
-			// We need to convert it to the same type as is currently stored
-			//
-			QVariant variant(value);
-			QVariant::Type type = it->value().type();
-			ZASSERT(variant.canConvert(type));
-			variant.convert(type);
-			it->setValue(variant);
-			bResult = true;
-		}
-
-
-	};
+	WORKSPACESETTINGITERATOR it = findSetting(keyName);
+	if (it != m_vSettings.end())
+	{
+		//
+		// In all cases when we enter here the variable "value" will be
+		// a QString.
+		// We need to convert it to the same type as is currently stored
+		//
+		QVariant variant(value);
+		QVariant::Type type = it->value().type();
+		ZASSERT(variant.canConvert(type));
+		variant.convert(type);
+		it->setValue(variant);
+		bResult = true;
+	}
 
 	return bResult;
 };
