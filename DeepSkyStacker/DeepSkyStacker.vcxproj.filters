@@ -345,6 +345,9 @@
     <ClCompile Include="qmfcapp.cpp">
       <Filter>Qt Porting</Filter>
     </ClCompile>
+    <ClCompile Include="qwinwidget.cpp">
+      <Filter>Qt Porting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -1137,5 +1140,10 @@
     <QtUic Include="ui\StackSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="qwinwidget.h">
+      <Filter>Qt Porting</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

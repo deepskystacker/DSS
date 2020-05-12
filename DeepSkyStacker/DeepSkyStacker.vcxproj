@@ -640,7 +640,14 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="..\Tools\ThemeUtil.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp" />
-    <ClCompile Include="About.cpp" />
+    <ClCompile Include="About.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="AHDDemosaicing.cpp" />
     <ClCompile Include="AlignmentParameters.cpp" />
     <ClCompile Include="AskRegistering.cpp" />
@@ -686,6 +693,14 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="ProcessSettingsSheet.cpp" />
     <ClCompile Include="ProgressDlg.cpp" />
     <ClCompile Include="qmfcapp.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="qwinwidget.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -847,6 +862,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="ProcessSettingsSheet.h" />
     <ClInclude Include="ProgressDlg.h" />
     <ClInclude Include="qmfcapp.h" />
+    <QtMoc Include="qwinwidget.h" />
     <ClInclude Include="RawDDPSettings.h" />
     <ClInclude Include="RawFilesTab.h" />
     <ClInclude Include="RAWUtils.h" />
