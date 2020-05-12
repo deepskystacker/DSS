@@ -70,13 +70,13 @@ bool CheckVersion(CString & strVersion)
 	ZFUNCTRACE_RUNTIME();
 	bool		bResult = false;
 
-	#ifndef DSSBETA
-	QSettings			reg;
+#ifndef DSSBETA
+	QSettings			settings;
 	CStdioFile			*remotefile = nullptr;
 
-	bool checkVersion = settings.value("InternetCheck"), false).toBool();
+	bool checkVersion = settings.value("InternetCheck", false).toBool();
 	if (checkVersion)
-	
+	{
 		#define HTTPBUFLEN    512 // Size of HTTP Buffer...
 		char		httpbuff[HTTPBUFLEN];
 
@@ -112,7 +112,7 @@ bool CheckVersion(CString & strVersion)
 		END_CATCH_ALL;
 	};
 	delete remotefile;
-	#endif
+#endif
 
 	return bResult;
 }

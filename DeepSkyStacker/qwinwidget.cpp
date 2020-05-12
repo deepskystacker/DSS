@@ -40,6 +40,8 @@
 
 // Implementation of the QWinWidget classes
 
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+
 #ifdef QT3_SUPPORT
 #undef QT3_SUPPORT
 #endif

@@ -191,7 +191,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <QtInstall>5.12.8x86</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;gui-private;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <QtInstall>5.12.8x86</QtInstall>
@@ -203,7 +203,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>5.12.8x64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;gui-private;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>5.12.8x64</QtInstall>
@@ -262,6 +262,15 @@ $(QTDIR)\bin\windeployqt --dir $(SolutionDir)Installers\RunTime32 $(TargetPath)<
     <CustomBuildStep>
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <Midl>
@@ -313,6 +322,15 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <CustomBuildStep>
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -361,6 +379,15 @@ $(QTDIR)\bin\windeployqt --dir $(SolutionDir)Installers\RunTime64 $(TargetPath)<
     <CustomBuildStep>
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
@@ -411,6 +438,15 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <CustomBuildStep>
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
     <Midl>
@@ -520,7 +556,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;"C:\Program Files (x86)\Visual Leak Detector\include";.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\PROGRA~2\VISUAL~2\include;.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -565,6 +601,15 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <CustomBuildStep>
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -573,7 +618,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;"C:\Program Files (x86)\Visual Leak Detector\include";.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\PROGRA~2\VISUAL~2\include;.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -616,6 +661,15 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <PostBuildEvent>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
+    <QtMoc>
+      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+    </QtMoc>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
+    <QtUic>
+      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\BitmapSlider.cpp" />
@@ -801,7 +855,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\Tmschema.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
-    <ClInclude Include="About.h" />
+    <QtMoc Include="About.h" />
     <ClInclude Include="AHDDemosaicing.h" />
     <ClInclude Include="AlignmentParameters.h" />
     <ClInclude Include="AskRegistering.h" />
@@ -1032,7 +1086,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <None Include="i18n\DSS_ca.ts" />
     <None Include="i18n\DSS_cs.ts" />
     <None Include="i18n\DSS_de.ts" />
-    <None Include="i18n\DSS_en.ts" />
+    <None Include="i18n\DSS_en_UK.ts" />
     <None Include="i18n\DSS_es.ts" />
     <None Include="i18n\DSS_fr.ts" />
     <None Include="i18n\DSS_it.ts" />

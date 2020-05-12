@@ -11,6 +11,9 @@
 #include "RegisterSettings.h"
 #include "StackSettings.h"
 #include "RecommandedSettings.h"
+#include "qmfcapp.h"
+#include "qwinwidget.h"
+
 using namespace Gdiplus;
 
 /* ------------------------------------------------------------------- */
@@ -1132,9 +1135,11 @@ void CExplorerBar::OnOptionsRecommandedSettings( NMHDR * pNotifyStruct, LRESULT 
 
 void CExplorerBar::OnAbout( NMHDR * pNotifyStruct, LRESULT * result )
 {
-	CAbout				dlg;
+	QWinWidget	widget(this);	
+	About	dlg(&widget);
 
-	dlg.DoModal();
+	widget.showCentered();
+	dlg.exec();
 };
 
 /* ------------------------------------------------------------------- */

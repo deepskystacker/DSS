@@ -421,9 +421,6 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="About.h">
-      <Filter>Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="DeepStackerDlg.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
@@ -1046,9 +1043,6 @@
     <None Include="i18n\DSS_de.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_en.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
     <None Include="i18n\DSS_es.ts">
       <Filter>Qt\i18n</Filter>
     </None>
@@ -1074,6 +1068,9 @@
       <Filter>Qt\i18n</Filter>
     </None>
     <None Include="i18n\DSS_zh.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS_en_UK.ts">
       <Filter>Qt\i18n</Filter>
     </None>
   </ItemGroup>
@@ -1144,6 +1141,9 @@
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
       <Filter>Qt Porting</Filter>
+    </QtMoc>
+    <QtMoc Include="About.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
