@@ -1135,7 +1135,7 @@ void CExplorerBar::OnOptionsRecommandedSettings( NMHDR * pNotifyStruct, LRESULT 
 
 void CExplorerBar::OnAbout( NMHDR * pNotifyStruct, LRESULT * result )
 {
-	QWinWidget	widget(this);	
+	QWinWidget	widget(this->GetParent());	
 	About	dlg(&widget);
 
 	widget.showCentered();

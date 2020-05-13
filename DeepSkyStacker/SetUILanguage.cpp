@@ -2,7 +2,10 @@
 #include "SetUILanguage.h"
 #include "Registry.h"
 #include "DSS-VersionHelpers.h"
+#include <QCoreApplication>
+#include <QLocale>
 #include <QSettings>
+#include <QTranslator>
 
 /* ------------------------------------------------------------------- */
 
@@ -200,40 +203,63 @@ void	SetUILanguage()
 {
 	DSSLANGUAGE			DSSLanguage = DSSL_DEFAULT;
 	QSettings			settings;
-	QString				strLanguage;
+	QTranslator			translator;
+	QLocale				locale;
+	QString				language;
 
 	//
-	// Retrieve the Qt language name (e.g.) en_GB and convert to the DSSLANGUAGE enum values
+	// Retrieve the Qt language name (e.g.) en_GB
 	//
-	strLanguage = settings.value("Language").toString();
+	language = settings.value("Language").toString();
 
-	if (strLanguage.length())
+	//
+	// Language was not defined in our preferences, so select the system default
+	//
+	if (language == "")
 	{
-		if (!strLanguage.compare("fr_FR", Qt::CaseInsensitive))
+		language = QLocale().name();
+	}
+
+	//
+	// Install the language if it actually exists.
+	//
+	if (translator.load("DSS." + language, ":/i18n/"))
+	{
+		QCoreApplication::instance()->installTranslator(&translator);
+	}
+
+	//
+	// What follows is for the older MFC stuff which will go one day!
+	//
+	// Convert the Qt language name to the DSSLANGUAGE enum values
+	//
+	if (language.length())
+	{
+		if (!language.compare("fr_FR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_FRENCH;
-		else if (!strLanguage.compare("en_GB", Qt::CaseInsensitive))
+		else if (!language.compare("en_GB", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ENGLISH;
-		else if (!strLanguage.compare("es_ES", Qt::CaseInsensitive))
+		else if (!language.compare("es_ES", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_SPANISH;
-		else if (!strLanguage.compare("cs_CZ", Qt::CaseInsensitive))
+		else if (!language.compare("cs_CZ", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CZECH;
-		else if (!strLanguage.compare("it_IT", Qt::CaseInsensitive))
+		else if (!language.compare("it_IT", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ITALIAN;
-		else if (!strLanguage.compare("ca_ES", Qt::CaseInsensitive))
+		else if (!language.compare("ca_ES", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CATALAN;
-		else if (!strLanguage.compare("de_DE", Qt::CaseInsensitive))
+		else if (!language.compare("de_DE", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_GERMAN;
-		else if (!strLanguage.compare("nl_NL", Qt::CaseInsensitive))
+		else if (!language.compare("nl_NL", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_DUTCH;
-		else if (!strLanguage.compare("zh_TW", Qt::CaseInsensitive))
+		else if (!language.compare("zh_TW", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_CHINESE;
-		else if (!strLanguage.compare("pt_BR", Qt::CaseInsensitive))
+		else if (!language.compare("pt_BR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_PORTUGUESE;
-		else if (!strLanguage.compare("ro_RO", Qt::CaseInsensitive))
+		else if (!language.compare("ro_RO", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_ROMANIAN;
-		else if (!strLanguage.compare("ru_RU", Qt::CaseInsensitive))
+		else if (!language.compare("ru_RU", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_RUSSIAN;
-		else if (!strLanguage.compare("tr_TR", Qt::CaseInsensitive))
+		else if (!language.compare("tr_TR", Qt::CaseInsensitive))
 			DSSLanguage = DSSL_TURKISH;
 	};
 
