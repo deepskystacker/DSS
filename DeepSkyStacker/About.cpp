@@ -34,7 +34,7 @@ About::About(QWidget *parent) :
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://deepskystacker.free.fr/");
     strHTML += strText;
 
-    strText = QString(QCoreApplication::translate("About", 
+    strText = QString(QCoreApplication::translate("About",
                 "RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2019 LibRaw LLC")).arg(LIBRAW_VERSION_STR);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
@@ -44,14 +44,14 @@ About::About(QWidget *parent) :
     copyright = TIFFGetVersion();
     copyright = copyright.remove(0, copyright.indexOf("Version ") + 8);
     copyright = copyright.left(copyright.indexOf("Copyright")-1);
-    strText = QString(QCoreApplication::translate("About", 
+    strText = QString(QCoreApplication::translate("About",
                 "TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.")).arg(copyright);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://www.remotesensing.org/libtiff/");
     strHTML += strText;
 
-    strText = QString(QCoreApplication::translate("About", 
+    strText = QString(QCoreApplication::translate("About",
                 "FITS decoding by CFitsIO (version %1)\nCopyright NASA")).arg(xstr(CFITSIO_VERSION));
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
@@ -60,10 +60,10 @@ About::About(QWidget *parent) :
 
     ui->setupUi(this);
     ui->comboBox->addItem(tr("Default"), "");
-    QDir dir(":/i18n/", "DSS_*.qm");
+    QDir dir(":/i18n/", "DSS.*.qm");
     for(auto it: dir.entryList())
     {
-        QString lang = it.section(".", 0, 0).right(2);
+		QString lang = it.section(".", 1, 1);
         QString langName = QLocale(lang).nativeLanguageName();
         langName[0] = langName[0].toUpper();
         ui->comboBox->addItem(langName, lang);

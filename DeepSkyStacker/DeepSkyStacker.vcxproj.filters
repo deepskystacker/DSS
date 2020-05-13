@@ -1034,43 +1034,43 @@
     <None Include="QMfcApp">
       <Filter>Qt Porting</Filter>
     </None>
-    <None Include="i18n\DSS_ca.ts">
+    <None Include="i18n\DSS.ca_ES.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_cs.ts">
+    <None Include="i18n\DSS.cs_CZ.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_de.ts">
+    <None Include="i18n\DSS.de_DE.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_es.ts">
+    <None Include="i18n\DSS.en_GB.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_fr.ts">
+    <None Include="i18n\DSS.es_ES.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_it.ts">
+    <None Include="i18n\DSS.fr_FR.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_nl.ts">
+    <None Include="i18n\DSS.it_IT.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_pt.ts">
+    <None Include="i18n\DSS.nl_NL.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_ro.ts">
+    <None Include="i18n\DSS.pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_ru.ts">
+    <None Include="i18n\DSS.ro_RO.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_tr.ts">
+    <None Include="i18n\DSS.ru_RU.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_zh.ts">
+    <None Include="i18n\DSS.tr_TR.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS_en_UK.ts">
+    <None Include="i18n\DSS.zh_TW.ts">
       <Filter>Qt\i18n</Filter>
     </None>
   </ItemGroup>
