@@ -6,21 +6,38 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <QTranslator>
+
 class CDeepSkyStackerApp : public CWinApp
 {
 public :
 	CWnd *				m_pMainDlg;
+	QTranslator *		appTranslator;
+	QTranslator *		qtTranslator;
 
 public :
 	CDeepSkyStackerApp()
 	{
         m_pMainDlg = nullptr;
+		appTranslator = nullptr;
+		qtTranslator = nullptr;
 
 		EnableHtmlHelp();
 	};
 
 	virtual ~CDeepSkyStackerApp()
 	{
+		if (appTranslator)
+		{
+			delete appTranslator;
+			appTranslator = nullptr;
+		}
+		if (qtTranslator)
+		{
+			delete qtTranslator;
+			qtTranslator = nullptr;
+		}
+
 	};
 
 	virtual BOOL InitInstance( );

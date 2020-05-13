@@ -30,8 +30,8 @@ About::About(QWidget *parent) :
     strText += "<br>";
     strText += copyright;
     strText = strText.replace("\n", "<br>");
-    strHTML += "<b>" + strText + "</b><br><br>";
-    strText = QString("<a href=\"%1\">%1</a><br>").arg("http://deepskystacker.free.fr/");
+    strHTML += "<b>" + strText + "</b><br>";
+    strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://deepskystacker.free.fr/");
     strHTML += strText;
 
     strText = QString(QCoreApplication::translate("About",

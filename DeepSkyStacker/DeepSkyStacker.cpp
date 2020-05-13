@@ -17,7 +17,11 @@ using namespace Gdiplus;
 
 #include "qmfcapp.h"
 
+#include <QLibraryInfo>
 #include <QSettings>
+#include <QStyleFactory>
+#include <QTranslator>
+
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -244,12 +248,6 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	// Qt initialization
 	QMfcApp::instance(this);
 
-	//
-	// Set up organisation etc. for QSettings usage
-	//
-	QCoreApplication::setOrganizationName("DeepSkyStacker");
-	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
-	QCoreApplication::setApplicationName("DeepSkyStacker5");
 
 	AfxInitRichEdit2();
 
@@ -266,7 +264,6 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	// Change the name of the registry profile to use.
 	// The CWinApp destructor will free the memory.
 	m_pszProfileName = _tcsdup(_T("DeepSkyStacker5"));
-
 
 	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS\n");
 
@@ -392,6 +389,30 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	else
 	{
 		theApp.InitInstance();
+
+		//
+		// Set up organisation etc. for QSettings usage
+		//
+		QCoreApplication::setOrganizationName("DeepSkyStacker");
+		QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
+		QCoreApplication::setApplicationName("DeepSkyStacker5");
+		QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
+		QApplication* app = qApp;
+
+		//
+		// Set the Qt Application Style
+		//
+		app->setStyle(QStyleFactory::create("Fusion"));
+
+#ifndef QT_NO_TRANSLATION
+		QString translatorFileName = QLatin1String("qt_");
+		translatorFileName += QLocale::system().name();
+		theApp.qtTranslator = new QTranslator(app);
+		if (theApp.qtTranslator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+			app->installTranslator(theApp.qtTranslator);
+#endif
+
 
 		ZTRACE_RUNTIME("Initialize Application - ok");
 
