@@ -1005,25 +1005,51 @@
     <Image Include="undo.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\brazil.png" />
-    <Image Include="res\Catalan.png" />
-    <Image Include="res\Czech.png" />
-    <Image Include="res\Dutch.png" />
-    <Image Include="res\German.png" />
-    <Image Include="res\Italian.png" />
-    <Image Include="res\logo.png" />
-    <Image Include="res\Portugal.png" />
-    <Image Include="res\Romanian.png" />
-    <Image Include="res\Russian.png" />
-    <Image Include="res\Spanish.png" />
-    <Image Include="res\Taiwan.png" />
     <Image Include="res\hdrup.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\hdrdown.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="res\Turkish.png" />
+    <Image Include="res\brazil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Catalan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Czech.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Dutch.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\German.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Italian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\logo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Portugal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Romanian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Russian.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Spanish.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Taiwan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Turkish.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
@@ -1077,6 +1103,9 @@
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
+    </QtRcc>
+    <QtRcc Include="ui\resources.qrc">
+      <Filter>Qt\ui</Filter>
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
