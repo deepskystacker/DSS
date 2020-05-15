@@ -31,4 +31,11 @@
     <file alias="taiwan.png">../res/Taiwan.png</file>
     <file alias="turkish.png">../res/Turkish.png</file>
 </qresource>
+<qresource prefix="stacking">
+    <file alias="normalmode.bmp">../res/normalmode.bmp</file>
+    <file alias="intersectionmode.bmp">../res/intersectionmode.bmp</file>
+    <file alias="mosaicmode.bmp">../res/mosaicmode.bmp</file>
+	<file alias="custommode.bmp">../res/custommode.bmp</file>
+</qresource>
+
 </RCC>

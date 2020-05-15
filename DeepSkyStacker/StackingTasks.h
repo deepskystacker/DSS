@@ -7,38 +7,6 @@
 #include "FrameInfo.h"
 //#include "FrameList.h"
 
-typedef enum INTERMEDIATEFILEFORMAT
-{
-	IFF_TIFF = 1,
-	IFF_FITS = 2
-}INTERMEDIATEFILEFORMAT;
-
-typedef enum tagCOMETSTACKINGMODE
-{
-	CSM_STANDARD	= 0,
-	CSM_COMETONLY	= 1,
-	CSM_COMETSTAR	= 2
-}COMETSTACKINGMODE;
-
-typedef enum tagBACKGROUNDCALIBRATIONMODE
-{
-	BCM_NONE		= 0,
-	BCM_PERCHANNEL	= 1,
-	BCM_RGB			= 2
-}BACKGROUNDCALIBRATIONMODE;
-
-typedef enum tagBACKGROUNDCALIBRATIONINTERPOLATION
-{
-	BCI_LINEAR		= 0,
-	BCI_RATIONAL	= 1
-}BACKGROUNDCALIBRATIONINTERPOLATION;
-
-typedef enum tagRGBBACKGROUNDCALIBRATIONMETHOD
-{
-	RBCM_MINIMUM		= 0,
-	RBCM_MIDDLE			= 1,
-	RBCM_MAXIMUM		= 2
-}RGBBACKGROUNDCALIBRATIONMETHOD;
 
 /* ------------------------------------------------------------------- */
 
@@ -46,12 +14,6 @@ bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PistureType, CDSSProgress * pProgress
 bool	AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */
-
-typedef enum tagCOSMETICREPLACE
-{
-	CR_MEDIAN			= 1,
-	CR_GAUSSIAN			= 2
-}COSMETICREPLACE;
 
 class	CPostCalibrationSettings
 {
@@ -352,14 +314,6 @@ public :
 };
 
 /* ------------------------------------------------------------------- */
-
-typedef enum tagSTACKINGMODE
-{
-	SM_NORMAL		= 0,
-	SM_MOSAIC		= 1,
-	SM_CUSTOM		= 2,
-	SM_INTERSECTION = 3
-}STACKINGMODE;
 
 class CAllStackingTasks
 {

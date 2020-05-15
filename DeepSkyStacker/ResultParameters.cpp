@@ -1,222 +1,166 @@
-// ResultParameters.cpp : implementation file
-//
+#include <algorithm>
+using std::min;
+using std::max;
 
-#include "stdafx.h"
-#include "DeepSkyStacker.h"
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#include <afx.h>
+
 #include "ResultParameters.h"
+#include "ui/ui_ResultParameters.h"
+
+#include <ZExcept.h>
+#include <Ztrace.h>
+
+#include "DSSCommon.h"
 #include "StackSettings.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
+#include "Workspace.h"
 
-// CResultParameters dialog
 
-IMPLEMENT_DYNAMIC(CResultParameters, CChildPropertyPage)
-
-/* ------------------------------------------------------------------- */
-
-CResultParameters::CResultParameters()
-	: CChildPropertyPage(CResultParameters::IDD)
+ResultParameters::ResultParameters(QWidget *parent) :
+	QWidget(parent),
+	ui(new Ui::ResultParameters),
+	workspace(new CWorkspace()),
+	pStackSettings(dynamic_cast<StackSettings *>(parent))
 {
-	m_bFirstActivation = true;
-	m_ResultMode = SM_NORMAL;
-	m_lDrizzle = 1;
-	m_bAlignChannels = false;
-    m_bEnableCustom = false;
-    m_bUseCustom = false;
-}
-
-/* ------------------------------------------------------------------- */
-
-CResultParameters::~CResultParameters()
-{
-}
-
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::DoDataExchange(CDataExchange* pDX)
-{
-	CChildPropertyPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_NORMALRESULT, m_Normal);
-	DDX_Control(pDX, IDC_MOSAICRESULT, m_Mosaic);
-	DDX_Control(pDX, IDC_INTERSECTIONMODE, m_Intersection);
-	DDX_Control(pDX, IDC_CUSTOMRECTANGLE, m_Custom);
-	DDX_Control(pDX, IDC_MODEPREVIEW, m_Preview);
-	DDX_Control(pDX, IDC_ENABLE2XDRIZZLE, m_Drizzlex2);
-	DDX_Control(pDX, IDC_ENABLE3XDRIZZLE, m_Drizzlex3);
-	DDX_Control(pDX, IDC_ALIGNCHANNELS, m_AlignChannels);
-	DDX_Control(pDX, IDC_MODE_TEXT, m_ModeText);
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CResultParameters, CChildPropertyPage)
-	ON_BN_CLICKED(IDC_NORMALRESULT, &CResultParameters::OnBnClickedNormal)
-	ON_BN_CLICKED(IDC_INTERSECTIONMODE, &CResultParameters::OnBnClickedIntersection)
-	ON_BN_CLICKED(IDC_MOSAICRESULT, &CResultParameters::OnBnClickedMosaic)
-	ON_BN_CLICKED(IDC_CUSTOMRECTANGLE, &CResultParameters::OnBnClickedCustom)
-	ON_BN_CLICKED(IDC_ENABLE2XDRIZZLE, &CResultParameters::OnBnClicked2xDrizzle)
-	ON_BN_CLICKED(IDC_ENABLE3XDRIZZLE, &CResultParameters::OnBnClicked3xDrizzle)
-	ON_BN_CLICKED(IDC_ALIGNCHANNELS, &CResultParameters::OnBnClickedAlignchannels)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::UpdateControls()
-{
-	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	CString				strText;
-
-	if (m_bUseCustom)
+	if (nullptr == pStackSettings)
 	{
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_CUSTOMMODE)));
-		m_ModeText.SetWindowText(_T(""));
+		delete ui;
+		ZASSERTSTATE(nullptr != pStackSettings);
 	}
-	else if (m_ResultMode == SM_MOSAIC)
+	
+	//
+	// Load up the images 
+	//
+	normalPic.load("qrc:///stacking/normalmode.bmp");
+	mosaicPic.load("qrc:///stacking/mosaicmode.bmp");
+	intersectionPic.load("qrc:///stacking/intersectionmode.bmp");
+	customPic.load("qrc:///stacking/custommode.bmp");
+
+    ui->setupUi(this);
+
+	//
+	// select the appropriate check box for stacking mode
+	//
+    STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
+
+	switch (stackingMode)
 	{
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_MOSAICMODE)));
-		strText.LoadString(IDS_STACKINGMODE_MOSAIC);
-		m_ModeText.SetWindowText(strText);
-	}
-	else if (m_ResultMode == SM_INTERSECTION)
-	{
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_INTERSECTIONMODE)));
-		strText.LoadString(IDS_STACKINGMODE_INTERSECTION);
-		m_ModeText.SetWindowText(strText);
-	}
-	else
-	{
-		m_Preview.SetBitmap(LoadBitmap(AfxGetResourceHandle(), MAKEINTRESOURCE(IDB_NORMALMODE)));
-		strText.LoadString(IDS_STACKINGMODE_NORMAL);
-		m_ModeText.SetWindowText(strText);
-	};
-
-	m_Drizzlex2.SetCheck(m_lDrizzle==2);
-	m_Drizzlex3.SetCheck(m_lDrizzle>2);
-
-	m_AlignChannels.SetCheck(m_bAlignChannels);
-
-	if (pDialog)
-		pDialog->UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL CResultParameters::OnSetActive()
-{
-	if (m_bFirstActivation)
-	{
-		m_Custom.EnableWindow(false);
-		m_Normal.SetCheck(m_ResultMode==SM_NORMAL);
-		m_Mosaic.SetCheck(m_ResultMode==SM_MOSAIC);
-		m_Intersection.SetCheck(m_ResultMode==SM_INTERSECTION);
-		if (m_lDrizzle == 2)
-			m_Drizzlex2.SetCheck(true);
-		else if (m_lDrizzle > 2)
+	case SM_NORMAL:
+		//
+		// Custom rectangle mode is actually Normal Mode but with a custom 
+		// rectangle enabled (not necessarily defined).
+		//
+		if (pStackSettings->isCustomRectangleEnabled())
 		{
-			m_Drizzlex3.SetCheck(true);
-			m_lDrizzle = 3;
+			ui->customMode->setChecked(true);
+			ui->previewImage->setPicture(customPic);
+			ui->modeText->setText("");
 		}
 		else
-			m_lDrizzle = 1;
-		UpdateControls();
-		m_bFirstActivation = false;
-	};
+		{
+			ui->normalMode->setChecked(true);
+			ui->previewImage->setPicture(normalPic);
+			ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame."));
+		}
+		break;
+	case SM_MOSAIC:
+		ui->mosaicMode->setChecked(true);
+		ui->previewImage->setPicture(mosaicPic);
+		ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
+		break;
+	case SM_INTERSECTION:
+		ui->intersectionMode->setChecked(true);
+		ui->previewImage->setPicture(intersectionPic);
+		ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
+		break;
+	//
+	// SM_CUSTOM isn't used here
+	//
+	default:
+		break;
+	}
 
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-// CResultParameters message handlers
-
-void CResultParameters::OnBnClickedNormal()
-{
-	if (m_Normal.GetCheck())
+	uint drizzle = workspace->value("Stacking/PixelSizeMultiplier", uint(0)).toUInt();
+	switch (drizzle)
 	{
-		m_Mosaic.SetCheck(false);
-		m_Custom.SetCheck(false);
-		m_Intersection.SetCheck(false);
-		m_ResultMode	= SM_NORMAL;
-		m_bUseCustom	= false;
-		UpdateControls();
-	};
+	case 2:
+		ui->drizzle2x->setChecked(true);
+		break;
+	case 3:
+		ui->drizzle3x->setChecked(true);
+		break;
+	default:
+		break;
+	}
+
+	bool alignRGB = workspace->value("Stacking/AlignChannels", false).toBool();
+	ui->alignRGB->setChecked(alignRGB);
 }
 
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::OnBnClickedMosaic()
+ResultParameters::~ResultParameters()
 {
-	if (m_Mosaic.GetCheck())
-	{
-		m_Normal.SetCheck(false);
-		m_Custom.SetCheck(false);
-		m_Intersection.SetCheck(false);
-		m_ResultMode    = SM_MOSAIC;
-		m_bUseCustom	= false;
-		UpdateControls();
-	};
+    delete ui;
 }
 
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::OnBnClickedCustom()
+void	ResultParameters::on_normalMode_clicked()
 {
-	if (m_Custom.GetCheck())
-	{
-		m_Normal.SetCheck(false);
-		m_Mosaic.SetCheck(false);
-		m_Intersection.SetCheck(false);
-		m_ResultMode    = SM_NORMAL;
-		m_bUseCustom	= true;
-		UpdateControls();
-	};
+	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
+	pStackSettings->enableCustomRectangle(false);
 }
 
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::OnBnClickedIntersection()
+void	ResultParameters::on_mosaicMode_clicked()
 {
-	if (m_Intersection.GetCheck())
-	{
-		m_Normal.SetCheck(false);
-		m_Mosaic.SetCheck(false);
-		m_Custom.SetCheck(false);
-		m_ResultMode    = SM_INTERSECTION;
-		m_bUseCustom	= false;
-		UpdateControls();
-	};
+	workspace->setValue("Stacking/Mosaic", (uint)SM_MOSAIC);
+	pStackSettings->enableCustomRectangle(false);
 }
 
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::OnBnClicked2xDrizzle()
+void	ResultParameters::on_intersectionMode_clicked()
 {
-	if (m_Drizzlex2.GetCheck())
+	workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
+	pStackSettings->enableCustomRectangle(false);
+}
+
+void	ResultParameters::on_customMode_clicked()
+{
+	//
+	// SM_CUSTOM isn't used - instead we use normal stacking mode
+	// and record the fact that a custom rectangle is being used
+	// by calling a method on our parent dialog
+	//
+	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
+	pStackSettings->enableCustomRectangle(true);
+}
+
+void	ResultParameters::on_drizzle2x_clicked()
+{
+	if (ui->drizzle2x->isChecked())
 	{
-		m_Drizzlex3.SetCheck(false);
-		m_lDrizzle = 2;
+		ui->drizzle3x->setChecked(false);
+		workspace->setValue("Stacking/PixelSizeMultiplier", uint(2));
 	}
 	else
-		m_lDrizzle = 1;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::OnBnClicked3xDrizzle()
-{
-	if (m_Drizzlex3.GetCheck())
-	{
-		m_Drizzlex2.SetCheck(false);
-		m_lDrizzle = 3;
-	}
-	else
-		m_lDrizzle = 1;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CResultParameters::OnBnClickedAlignchannels()
-{
-	m_bAlignChannels = m_AlignChannels.GetCheck();
+		workspace->setValue("Stacking/PixelSizeMultiplier", uint(1));
 }
 
-/* ------------------------------------------------------------------- */
+void	ResultParameters::on_drizzle3x_clicked()
+{
+	if (ui->drizzle3x->isChecked())
+	{
+		ui->drizzle2x->setChecked(false);
+		workspace->setValue("Stacking/PixelSizeMultiplier", uint(3));
+	}
+	else
+		workspace->setValue("Stacking/PixelSizeMultiplier", uint(1));
+}
+
+void	ResultParameters::on_alignRGB_clicked()
+{
+	if (ui->alignRGB->isChecked())
+	{
+		workspace->setValue("Stacking/AlignChannels", true);
+	}
+	else
+	{
+		workspace->setValue("Stacking/AlignChannels", false);
+	}
+}
