@@ -20,14 +20,7 @@ ResultParameters::ResultParameters(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ResultParameters),
 	workspace(new CWorkspace()),
-	pStackSettings(dynamic_cast<StackSettings *>(parent)),
-	//
-	// Load up the pixmaps
-	//
-	normalPix(":/stacking/normalmode.bmp"),
-	mosaicPix(":/stacking/mosaicmode.bmp"),
-	intersectionPix(":/stacking/intersectionmode.bmp"),
-	customPix(":/stacking/custommode.bmp")
+	pStackSettings(dynamic_cast<StackSettings *>(parent))
 {
 	if (nullptr == pStackSettings)
 	{
@@ -125,6 +118,10 @@ void	ResultParameters::on_normalMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
 	pStackSettings->selectCustomRectangle(false);
+	if (normalPix.isNull())
+	{
+		normalPix.load(":/stacking/normalmode.bmp");
+	}
 	ui->previewImage->setPixmap(normalPix);
 	ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame."));
 }
@@ -133,6 +130,10 @@ void	ResultParameters::on_mosaicMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_MOSAIC);
 	pStackSettings->selectCustomRectangle(false);
+	if (mosaicPix.isNull())
+	{
+		mosaicPix.load(":/stacking/mosaicmode.bmp");
+	}
 	ui->previewImage->setPixmap(mosaicPix);
 	ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
 
@@ -142,6 +143,10 @@ void	ResultParameters::on_intersectionMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
 	pStackSettings->selectCustomRectangle(false);
+	if (intersectionPix.isNull())
+	{
+		intersectionPix.load(":/stacking/intersectionmode.bmp");
+	}
 	ui->previewImage->setPixmap(intersectionPix);
 	ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
 }
@@ -155,6 +160,10 @@ void	ResultParameters::on_customMode_clicked()
 	//
 	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
 	pStackSettings->selectCustomRectangle(true);
+	if (customPix.isNull())
+	{
+		customPix.load(":/stacking/custommode.bmp");
+	}
 	ui->previewImage->setPixmap(customPix);
 	ui->modeText->setText("");
 }
