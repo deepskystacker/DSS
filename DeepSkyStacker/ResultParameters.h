@@ -23,10 +23,10 @@ private:
 	Ui::ResultParameters *ui;
 	std::unique_ptr<CWorkspace> workspace;
 	StackSettings * pStackSettings;
-	QPicture normalPic;
-	QPicture mosaicPic;
-	QPicture intersectionPic;
-	QPicture customPic;
+	QPixmap normalPix;
+	QPixmap mosaicPix;
+	QPixmap intersectionPix;
+	QPixmap customPix;
 
 private slots:
 	void	on_normalMode_clicked();

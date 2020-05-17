@@ -20,7 +20,14 @@ ResultParameters::ResultParameters(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ResultParameters),
 	workspace(new CWorkspace()),
-	pStackSettings(dynamic_cast<StackSettings *>(parent))
+	pStackSettings(dynamic_cast<StackSettings *>(parent)),
+	//
+	// Load up the pixmaps
+	//
+	normalPix(":/stacking/normalmode.bmp"),
+	mosaicPix(":/stacking/mosaicmode.bmp"),
+	intersectionPix(":/stacking/intersectionmode.bmp"),
+	customPix(":/stacking/custommode.bmp")
 {
 	if (nullptr == pStackSettings)
 	{
@@ -28,15 +35,13 @@ ResultParameters::ResultParameters(QWidget *parent) :
 		ZASSERTSTATE(nullptr != pStackSettings);
 	}
 	
-	//
-	// Load up the images 
-	//
-	normalPic.load("qrc:///stacking/normalmode.bmp");
-	mosaicPic.load("qrc:///stacking/mosaicmode.bmp");
-	intersectionPic.load("qrc:///stacking/intersectionmode.bmp");
-	customPic.load("qrc:///stacking/custommode.bmp");
-
     ui->setupUi(this);
+
+	//
+	// Initially set the Custom Rectangle radio buttion to disabled - it should only be enabled if
+	// a custom rectangle has been defined and we are going to stack after registering.
+	//
+	ui->customMode->setEnabled(false);
 
 	//
 	// select the appropriate check box for stacking mode
@@ -47,30 +52,44 @@ ResultParameters::ResultParameters(QWidget *parent) :
 	{
 	case SM_NORMAL:
 		//
-		// Custom rectangle mode is actually Normal Mode but with a custom 
-		// rectangle enabled (not necessarily defined).
+		// Custom rectangle mode is actually Normal Mode but with a custom rectangle
+		// selected in this dialog.
+		//
+		// Its is only possible to do this if a custom rectangle has been defined which
+		// should set customRectangleEnabled in the StackSettings class.
+		//
+		// If this has been done it is valid to select the custom rectangle stacking mode
+		// so the radio button to select it can be enabled.
+		//
+		// If the user has previously selected to actually use custom rectangle mode by
+		// clicking on the custom mode radiao button in this dialog, we will make sure we 
+		// select the button as we initialise and choose the appropiate picture and text.
 		//
 		if (pStackSettings->isCustomRectangleEnabled())
 		{
-			ui->customMode->setChecked(true);
-			ui->previewImage->setPicture(customPic);
-			ui->modeText->setText("");
+			ui->customMode->setEnabled(true);
+			if (pStackSettings->isCustomRectangleSelected())
+			{
+				ui->customMode->setChecked(true);
+				ui->previewImage->setPixmap(customPix);
+				ui->modeText->setText("");
+			}
 		}
 		else
 		{
 			ui->normalMode->setChecked(true);
-			ui->previewImage->setPicture(normalPic);
+			ui->previewImage->setPixmap(normalPix);
 			ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame."));
 		}
 		break;
 	case SM_MOSAIC:
 		ui->mosaicMode->setChecked(true);
-		ui->previewImage->setPicture(mosaicPic);
+		ui->previewImage->setPixmap(mosaicPix);
 		ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
 		break;
 	case SM_INTERSECTION:
 		ui->intersectionMode->setChecked(true);
-		ui->previewImage->setPicture(intersectionPic);
+		ui->previewImage->setPixmap(intersectionPix);
 		ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
 		break;
 	//
@@ -105,19 +124,26 @@ ResultParameters::~ResultParameters()
 void	ResultParameters::on_normalMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
-	pStackSettings->enableCustomRectangle(false);
+	pStackSettings->selectCustomRectangle(false);
+	ui->previewImage->setPixmap(normalPix);
+	ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame."));
 }
 
 void	ResultParameters::on_mosaicMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_MOSAIC);
-	pStackSettings->enableCustomRectangle(false);
+	pStackSettings->selectCustomRectangle(false);
+	ui->previewImage->setPixmap(mosaicPix);
+	ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
+
 }
 
 void	ResultParameters::on_intersectionMode_clicked()
 {
 	workspace->setValue("Stacking/Mosaic", (uint)SM_INTERSECTION);
-	pStackSettings->enableCustomRectangle(false);
+	pStackSettings->selectCustomRectangle(false);
+	ui->previewImage->setPixmap(intersectionPix);
+	ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
 }
 
 void	ResultParameters::on_customMode_clicked()
@@ -128,7 +154,9 @@ void	ResultParameters::on_customMode_clicked()
 	// by calling a method on our parent dialog
 	//
 	workspace->setValue("Stacking/Mosaic", (uint)SM_NORMAL);
-	pStackSettings->enableCustomRectangle(true);
+	pStackSettings->selectCustomRectangle(true);
+	ui->previewImage->setPixmap(customPix);
+	ui->modeText->setText("");
 }
 
 void	ResultParameters::on_drizzle2x_clicked()
