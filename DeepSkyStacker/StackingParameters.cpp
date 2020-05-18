@@ -52,18 +52,21 @@ StackingParameters::StackingParameters(QWidget *parent) :
 	//
 	kappaSigmaTip = tr("The pixels outside the range:\n[Mean-%1*%2, Mean+%1*%2]\n"
 		"are iteratively removed.\n\nThe remaining pixels are averaged.")
-		.arg("\xce\xba").arg("\xcf\x83");
+		// Greek character kappa (κ) = \xce\xba UTF8, Greek character sigma (σ) = \xcf\x83 UTF8
+		.arg("\xce\xba").arg("\xcf\x83");		
 	ui->modeKS->setToolTip(kappaSigmaTip);
 	ui->staticKappa->setToolTip(kappaSigmaTip);
 	ui->kappa->setToolTip(kappaSigmaTip);
 
 	medianKappaSigmaTip = tr("The pixels outside the range:\n[Mean-%1*%2, Mean+%1*%2]\n"
 		"are iteratively replaced by the median value.\n\nThe pixels are then averaged.")
+		// Greek character kappa (κ) = \xce\xba UTF8, Greek character sigma (σ) = \xcf\x83 UTF8
 		.arg("\xce\xba").arg("\xcf\x83");
 	ui->modeMKS->setToolTip(medianKappaSigmaTip);
 
 	QString text = tr("The <b>weighted average</b> is obtained by\niteratively weighting each pixel\n"
 		"from the deviation from the mean\ncomparatively to the standard deviation (%1).")
+		// Greek character sigma (σ) = \xcf\x83 UTF8
 		.arg("\xce\xba");
 	ui->modeAAWA->setToolTip(text);
 }
