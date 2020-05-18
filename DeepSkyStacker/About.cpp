@@ -18,7 +18,7 @@ About::About(QWidget *parent) :
 {
     QString strHTML("<body link=#0000ff></body><img valign=top align=right src=\"qrc:///logo.png\">");
     QString strText;
-    QString copyright = DSSVER_COPYRIGHT;
+    QString copyright(DSSVER_COPYRIGHT);
 
     QStringList copyrightList = copyright.split(", ");
     for (auto& i: copyrightList) {
