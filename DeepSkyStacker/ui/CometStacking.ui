@@ -45,7 +45,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QRadioButton" name="radioButton">
+        <widget class="QRadioButton" name="modeStandard">
          <property name="text">
           <string>Standard Stacking</string>
          </property>
@@ -82,7 +82,7 @@ The comet will be fuzzy.</string>
         </spacer>
        </item>
        <item>
-        <widget class="QRadioButton" name="radioButton_2">
+        <widget class="QRadioButton" name="modeComet">
          <property name="text">
           <string>Comet Stacking</string>
          </property>
@@ -119,7 +119,7 @@ The comet will be sharp and the stars will have trails.</string>
         </spacer>
        </item>
        <item>
-        <widget class="QRadioButton" name="radioButton_3">
+        <widget class="QRadioButton" name="modeAdvanced">
          <property name="text">
           <string>Stars + Comet Stacking</string>
          </property>
@@ -132,7 +132,7 @@ The comet will be sharp and the stars will have trails.</string>
          </property>
          <property name="text">
           <string>Comet position is used.
-The comet and the stars will be sharp. This process is twice longer.</string>
+The comet and the stars will be sharp. This process takes twice as long.</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -180,7 +180,7 @@ The comet and the stars will be sharp. This process is twice longer.</string>
  <resources/>
  <connections>
   <connection>
-   <sender>radioButton</sender>
+   <sender>modeStandard</sender>
    <signal>toggled(bool)</signal>
    <receiver>CometStacking</receiver>
    <slot>onBnClickedStandardStacking(bool)</slot>
@@ -196,7 +196,7 @@ The comet and the stars will be sharp. This process is twice longer.</string>
    </hints>
   </connection>
   <connection>
-   <sender>radioButton_2</sender>
+   <sender>modeComet</sender>
    <signal>toggled(bool)</signal>
    <receiver>CometStacking</receiver>
    <slot>onBnClickedCometStacking(bool)</slot>
@@ -212,7 +212,7 @@ The comet and the stars will be sharp. This process is twice longer.</string>
    </hints>
   </connection>
   <connection>
-   <sender>radioButton_3</sender>
+   <sender>modeAdvanced</sender>
    <signal>toggled(bool)</signal>
    <receiver>CometStacking</receiver>
    <slot>onBnClickedAdvancedStacking(bool)</slot>
