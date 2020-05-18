@@ -1,90 +1,34 @@
-#pragma once
+#ifndef STACKINGPARAMETERS_H
+#define STACKINGPARAMETERS_H
 
+#include <QWidget>
+enum MULTIBITMAPPROCESSMETHOD : short;
+enum PICTURETYPE : short;
+class CWorkspace;
+class StackSettings;
 
-// CStackingParameters dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
-#include <RichToolTipCtrl.h>
-#include "StackingTasks.h"
+namespace Ui {
+class StackingParameters;
+}
 
-class CStackingParameters : public CChildPropertyPage
+class StackingParameters : public QWidget
 {
-	DECLARE_DYNAMIC(CStackingParameters)
+    Q_OBJECT
 
 public:
-	CStackingParameters();
-	virtual ~CStackingParameters();
+    explicit StackingParameters(QWidget *parent = nullptr);
+    ~StackingParameters();
 
-// Dialog Data
-	enum { IDD = IDD_STACKINGPARAMETERS };
+private:
+    Ui::StackingParameters *ui;
+	std::unique_ptr<CWorkspace> workspace;
+	StackSettings * pStackSettings;
+	PICTURETYPE type;
+	QString kappaSigmaTip;
+	QString medianKappaSigmaTip;
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-	virtual BOOL PreTranslateMessage(MSG* pMsg)
-	{
-		m_Tooltips.RelayEvent(pMsg);
-
-		return 0;
-	};
-
-
-public:
-	virtual BOOL OnSetActive();
-	void	SetControls(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lIteration);
-	void	GetControls(MULTIBITMAPPROCESSMETHOD & Method, double & fKappa, LONG & lIteration);
-
-	void	SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode);
-
-	DECLARE_MESSAGE_MAP()
-
-private :
-	bool				m_bFirstActivation;
-	CRichToolTipCtrl	m_Tooltips;
-
-	void				UpdateControls();
-	void				UpdateCalibrationMode();
-
-	afx_msg void OnBnClickedAverage();
-	afx_msg void OnBnClickedMedian();
-	afx_msg void OnBnClickedMaximum();
-	afx_msg void OnBnClickedSigmaclipping();
-	afx_msg void OnBnClickedMedianSigmaclipping();
-	afx_msg void OnEnChangeKappa();
-	afx_msg void OnEnChangeIteration();
-	afx_msg void OnBnClickedEntropyaverage();
-	afx_msg void OnBnClickedAutoadaptiveaverage();
-	afx_msg void OnBnClickedUseDarkFactor();
-	afx_msg void OnBnClickedDarkOptimization();
-	afx_msg void OnBnClickedDebloom();
-	afx_msg void OnBnClickedDebloomSettings();
-	afx_msg void OnEnChangeDarkFactor();
-	afx_msg void OnBackgroundCalibration( NMHDR * pNotifyStruct, LRESULT * result );
-
-public :
-	CButton				m_Average;
-	CButton				m_Median;
-	CButton				m_Maximum;
-	CButton				m_SigmaClipping;
-	CButton				m_MedianSigmaClipping;
-	CButton				m_EntropyAverage;
-	CButton				m_WeightedAverage;
-	CEdit				m_Kappa;
-	CEdit				m_Iteration;
-	CStatic				m_KappaStatic;
-	CStatic				m_IterationStatic;
-	CLabel				m_Title;
-	CStatic				m_KappaFrame;
-	CStatic				m_WeightedFrame;
-	CLabel				m_BackgroundCalibration;
-	CButton				m_DarkOptimization;
-	CButton				m_HotPixels;
-	CButton				m_BadColumns;
-	CButton				m_UseDarkFactor;
-	CEdit				m_DarkFactor;
-	CButton				m_Debloom;
-//	CButton				m_DebloomSettings;
-
-	BACKGROUNDCALIBRATIONMODE	m_BackgroundCalibrationMode;
+StackingParameters & init(PICTURETYPE rhs);
+StackingParameters & setControls(MULTIBITMAPPROCESSMETHOD method, double kappa, uint iteration);
 };
+
+#endif // STACKINGPARAMETERS_H
