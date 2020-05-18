@@ -202,7 +202,7 @@ public:
 	CRecommendedSettings(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CRecommendedSettings();
 
-	void		SetStackingTasks(CAllStackingTasks * pStackingTasks)
+	void		setStackingTasks(CAllStackingTasks * pStackingTasks)
 	{
 		m_pStackingTasks = pStackingTasks;
 	};

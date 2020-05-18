@@ -1,58 +1,52 @@
-#pragma once
+#ifndef COMETSTACKING_H
+#define COMETSTACKING_H
+#include <memory>
+#include "DSSCommon.h"
+#include <QWidget>
 
+namespace Ui {
+class CometStacking;
+}
 
-// CCometStacking dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
-#include "StackingTasks.h"
+class CWorkspace;
 
-
-class CCometStacking : public CChildPropertyPage
+class CometStacking : public QWidget
 {
-	DECLARE_DYNAMIC(CCometStacking)
+    Q_OBJECT
+    Q_PROPERTY(COMETSTACKINGMODE cometStackingMode READ cometStackingMode WRITE setCometStackingMode NOTIFY cometStackingModeChanged);
 
 public:
-	CCometStacking();
-	virtual ~CCometStacking();
+    explicit CometStacking(QWidget *parent = nullptr);
+    ~CometStacking();
 
-	void	SetCometStackingMode(COMETSTACKINGMODE CometStackingMode)
-	{
-		m_CometStackingMode = CometStackingMode;
-		UpdateControls();
-	};
+    void setCometStackingMode(COMETSTACKINGMODE mode)
+    {
+        if (mode != m_CometStackingMode)
+        {
+            m_CometStackingMode = mode;
+            updateImage();
+            emit cometStackingModeChanged();
+        }
+    }
 
-	COMETSTACKINGMODE	GetCometStackingMode()
-	{
-		return m_CometStackingMode;
-	};
+    COMETSTACKINGMODE cometStackingMode()
+    {
+        return m_CometStackingMode;
+    }
 
-// Dialog Data
-	enum { IDD = IDD_STACKINGCOMET };
+signals:
+    void cometStackingModeChanged();
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+private slots:
+    void onBnClickedStandardStacking(bool);
+    void onBnClickedCometStacking(bool);
+    void onBnClickedAdvancedStacking(bool);
 
-public:
-	virtual BOOL OnSetActive();
-
-	DECLARE_MESSAGE_MAP()
-
-private :
-	bool				m_bFirstActivation;
-
-	void				UpdateControls();
-
-	afx_msg void OnBnClickedStandardStacking();
-	afx_msg void OnBnClickedCometStacking();
-	afx_msg void OnBnClickedAdvancedStacking();
-
-public :
-	CLabel				m_Title;
-	CButton				m_StandardStacking;
-	CButton				m_CometStacking;
-	CButton				m_AdvancedStacking;
-	CStatic				m_Preview;
-
-	COMETSTACKINGMODE	m_CometStackingMode;
+private:
+    Ui::CometStacking *ui;
+	std::unique_ptr<CWorkspace> workspace;
+    COMETSTACKINGMODE m_CometStackingMode;
+    void updateImage();
 };
+
+#endif // COMETSTACKING_H

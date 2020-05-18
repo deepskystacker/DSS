@@ -69,7 +69,7 @@ public :
 		m_bForceRegister = bForce;
 	};
 
-	void		SetStackingTasks(CAllStackingTasks * pStackingTasks)
+	void		setStackingTasks(CAllStackingTasks * pStackingTasks)
 	{
 		m_pStackingTasks = pStackingTasks;
 	};

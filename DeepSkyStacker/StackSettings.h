@@ -17,67 +17,80 @@ class StackSettings;
 
 class StackSettings : public QDialog
 {
-    Q_OBJECT
+	friend class StackingParameters;
+
+	Q_OBJECT
 
 public:
     explicit StackSettings(QWidget *parent = nullptr);
     ~StackSettings();
 
-	StackSettings & SetStartingTab(LONG lStartingTab)
+	inline StackSettings & setStartingTab(LONG lStartingTab) noexcept
 	{
-		m_lStartingTab = lStartingTab;
+		startingTab = lStartingTab;
 		return *this;
 	};
 
-	StackSettings & SetRegisteringOnly(bool bRegisteringOnly)
+	inline StackSettings & setRegisteringOnly(bool bRegisteringOnly) noexcept
 	{
-		m_bRegisteringOnly = bRegisteringOnly;
+		registeringOnly = bRegisteringOnly;
 		return *this;
 	};
 
-	StackSettings & EnableCometStacking(bool bEnable)
+	inline StackSettings & enableCometStacking(bool value) noexcept
 	{
-		m_bEnableCometStacking = bEnable;
+		cometStacking = value;
 		return *this;
 	};
 
-	StackSettings & SetStackingTasks(CAllStackingTasks * pStackingTasks)
+	inline StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept
 	{
-		m_pStackingTasks = pStackingTasks;
+		pStackingTasks = tasks;
 		return *this;
 	};
 
-	StackSettings & SetDarkFlatBiasTabsVisibility(bool bDark, bool bFlat, bool bBias)
+	inline StackSettings & setTabVisibility(bool bDark, bool bFlat, bool bBias) noexcept
 	{
-		m_bEnableDark = bDark;
-		m_bEnableFlat = bFlat;
-		m_bEnableBias = bBias;
+		enableDark = bDark;
+		enableFlat = bFlat;
+		enableBias = bBias;
 		return *this;
 	};
 
-	StackSettings & SetEnableAll(bool bEnableAll)
+	inline StackSettings & setEnableAll(bool bEnableAll) noexcept
 	{
-		m_bEnableAll = bEnableAll;
+		enableAll = bEnableAll;
 		return *this;
 	};
 
-
-	StackSettings & enableCustomRectangle(bool value)
+	inline StackSettings & enableCustomRectangle(bool value) noexcept
 	{
 		customRectangleEnabled = value;
 		return *this;
 	}
 
-	bool isCustomRectangleEnabled()
+	inline StackSettings & selectCustomRectangle(bool value) noexcept
+	{
+		customRectangleSelected = value;
+		return *this;
+	}
+
+	inline bool isCustomRectangleEnabled() noexcept
 	{
 		return customRectangleEnabled;
 	}
 
-	bool		useCustomRectangle()
+	inline bool isCustomRectangleSelected() noexcept
 	{
-		return customRectangleEnabled && customRectangleAvailable;
+		return customRectangleSelected;
+	}
+
+	inline bool	useCustomRectangle() noexcept
+	{
+		return (customRectangleEnabled && customRectangleSelected);
 	};
 
+	bool shouldShowDebloom() noexcept;
 
 private:
     Ui::StackSettings *ui;
@@ -103,16 +116,16 @@ private:
 	int postCalibrationTab;
 	int outputTab;
 
-	LONG					m_lStartingTab;
-	bool					m_bRegisteringOnly;
-	bool					m_bEnableCometStacking;
-	bool					m_bEnableDark;
-	bool					m_bEnableFlat;
-	bool					m_bEnableBias;
-	bool					m_bEnableAll;
-	bool					customRectangleAvailable;
+	LONG					startingTab;
+	bool					registeringOnly;
+	bool					cometStacking;
+	bool					enableDark;
+	bool					enableFlat;
+	bool					enableBias;
+	bool					enableAll;
+	bool					customRectangleSelected;
 	bool					customRectangleEnabled;
-	CAllStackingTasks *		m_pStackingTasks;
+	CAllStackingTasks *		pStackingTasks;
 
 };
 #endif // STACKSETTINGS_H

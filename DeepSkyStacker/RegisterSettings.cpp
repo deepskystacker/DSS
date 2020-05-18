@@ -227,7 +227,7 @@ void CRegisterSettings::OnRawddpsettings()
 
 void CRegisterSettings::OnStackingParameters()
 {
-	CStackSettings			dlg;
+	StackSettings			dlg;
 	CRect					rcCustom;
 
 	if (m_pStackingTasks)
@@ -236,7 +236,7 @@ void CRegisterSettings::OnStackingParameters()
 			dlg.SetCustomRectangleAvailability(true, m_pStackingTasks->IsCustomRectangleUsed());
 		else
 			dlg.SetCustomRectangleAvailability(false);
-		dlg.SetDarkFlatBiasTabsVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
+		dlg.setTabVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
 	}
 	else
 		dlg.SetCustomRectangleAvailability(false);
@@ -244,7 +244,7 @@ void CRegisterSettings::OnStackingParameters()
 	if (!m_tabActions.m_Stack.GetCheck())
 		dlg.SetRegisteringOnly(true);
 
-	dlg.SetStackingTasks(m_pStackingTasks);
+	dlg.setStackingTasks(m_pStackingTasks);
 
 	if ((dlg.DoModal()==IDOK) && m_pStackingTasks)
 		m_pStackingTasks->UpdateTasksMethods();
@@ -257,7 +257,7 @@ void CRegisterSettings::OnBnClickedRecommandedsettings()
 {
 	CRecommendedSettings		dlg;
 
-	dlg.SetStackingTasks(m_pStackingTasks);
+	dlg.setStackingTasks(m_pStackingTasks);
 
 	if (dlg.DoModal()==IDOK)
 	{

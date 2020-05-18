@@ -3,6 +3,7 @@
 
 #include "Multitask.h"
 #include <zexcept.h>
+#include "resource.h"
 
 #ifndef DSSFILEDECODING
 #define DSSFILEDECODING 1
@@ -290,18 +291,6 @@ inline double ClampPixel(double fValue)
 /* ------------------------------------------------------------------- */
 
 class CMemoryBitmap;
-
-typedef enum
-{
-	MBP_AVERAGE		= 1,
-	MBP_MEDIAN	    = 2,
-	MBP_MAXIMUM		= 3,
-	MBP_SIGMACLIP	= 4,
-	MBP_ENTROPYAVERAGE	= 5,
-	MBP_AUTOADAPTIVE	= 6,
-	MBP_MEDIANSIGMACLIP = 7,
-	MBP_FASTAVERAGE		= 8
-}MULTIBITMAPPROCESSMETHOD;
 
 /* ------------------------------------------------------------------- */
 

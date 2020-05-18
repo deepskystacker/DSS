@@ -1516,7 +1516,7 @@ bool CStackingDlg::ShowRecap(CAllStackingTasks & tasks)
 	bool				bResult = false;
 	CStackRecap			dlg;
 
-	dlg.SetStackingTasks(&tasks);
+	dlg.setStackingTasks(&tasks);
 	bResult = (dlg.DoModal() == IDOK);
 
 	return bResult;
@@ -1873,7 +1873,7 @@ void CStackingDlg::RegisterCheckedImage()
 		if (m_SelectRectSink.GetSelectRect(rcSelect))
 			tasks.SetCustomRectangle(rcSelect);
 
-		dlgSettings.SetStackingTasks(&tasks);
+		dlgSettings.setStackingTasks(&tasks);
 
 		if (dlgSettings.DoModal() == IDOK)
 		{

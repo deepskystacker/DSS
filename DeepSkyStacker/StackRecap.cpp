@@ -12,6 +12,17 @@
 #include "Registry.h"
 #include "DeepStackerDlg.h"
 
+const LONG					SSTAB_RESULT = 1;
+const LONG					SSTAB_LIGHT = 2;
+const LONG					SSTAB_DARK = 3;
+const LONG					SSTAB_FLAT = 4;
+const LONG					SSTAB_OFFSET = 5;
+const LONG					SSTAB_ALIGNMENT = 6;
+const LONG					SSTAB_INTERMEDIATE = 7;
+const LONG					SSTAB_COMET = 8;
+const LONG					SSTAB_POSTCALIBRATION = 9;
+const LONG					SSTAB_OUTPUT = 10;
+
 // CStackRecap dialog
 
 /* ------------------------------------------------------------------- */
@@ -666,9 +677,9 @@ void CStackRecap::CallStackingParameters(LONG lID)
 	if (m_pStackingTasks->IsCometAvailable())
 		dlg.EnableCometStacking(true);
 
-	dlg.SetDarkFlatBiasTabsVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
+	dlg.setTabVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
 
-	dlg.SetStackingTasks(m_pStackingTasks);
+	dlg.setStackingTasks(m_pStackingTasks);
 	dlg.SetStartingTab(lID);
 	if (dlg.DoModal() == IDOK)
 	{
@@ -709,7 +720,7 @@ void CStackRecap::OnBnClickedRecommandedsettings()
 {
 	CRecommendedSettings		dlg;
 
-	dlg.SetStackingTasks(m_pStackingTasks);
+	dlg.setStackingTasks(m_pStackingTasks);
 	if ((dlg.DoModal()==IDOK) && m_pStackingTasks)
 	{
 		m_pStackingTasks->UpdateTasksMethods();

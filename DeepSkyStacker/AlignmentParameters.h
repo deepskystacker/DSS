@@ -1,62 +1,50 @@
-#pragma once
+#ifndef ALIGNMENTPARAMETERS_H
+#define ALIGNMENTPARAMETERS_H
 
+#include <QWidget>
 
-// CAlignmentParameters dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
+namespace Ui {
+class AlignmentParameters;
+}
 
-
-class CAlignmentParameters : public CChildPropertyPage
+class AlignmentParameters : public QWidget
 {
-	DECLARE_DYNAMIC(CAlignmentParameters)
+    Q_OBJECT
+    Q_PROPERTY(uint16_t alignment READ alignment WRITE setAlignment NOTIFY alignmentChanged)
 
 public:
-	CAlignmentParameters();
-	virtual ~CAlignmentParameters();
+    explicit AlignmentParameters(QWidget *parent = 0);
+    ~AlignmentParameters();
 
-// Dialog Data
-	enum { IDD = IDD_ALIGNMENTSETTINGS };
+    uint16_t alignment()
+    {
+        return m_Alignment;
+    };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    void setAlignment(uint16_t wAlignment)
+    {
+        if (m_Alignment != wAlignment)
+        {
+            m_Alignment = wAlignment;
+            updateText();
+            emit alignmentChanged();
+        }
+    };
 
-public:
-	virtual BOOL OnSetActive();
+signals:
+    void alignmentChanged();
 
-	void	SetAlignment(WORD wAlignment)
-	{
-		m_Alignment = wAlignment;
-		UpdateControls();
-	};
+private slots:
+    void onAutomaticClicked();
+    void onBilinearClicked();
+    void onBisquaredClicked();
+    void onBicubicClicked();
+    void onNoAlignemtnClicked();
+    void updateText();
 
-	WORD	GetAlignment()
-	{
-		return m_Alignment;
-	};
-
-
-	DECLARE_MESSAGE_MAP()
-
-private :
-	bool				m_bFirstActivation;
-
-	void				UpdateControls();
-
-	afx_msg void OnBnClickedAutomatic();
-	afx_msg void OnBnClickedBilinear();
-	afx_msg void OnBnClickedBisquared();
-	afx_msg void OnBnClickedBicubic();
-	afx_msg void OnBnClickedNoAlignment();
-
-public :
-	CButton				m_Automatic;
-	CButton				m_Bilinear;
-	CButton				m_Bicubic;
-	CButton				m_Bisquared;
-	CButton				m_NoAlignment;
-	CStatic				m_Explanation;
-	CLabel				m_Title;
-
-	WORD				m_Alignment;
+private:
+    uint16_t m_Alignment;
+    Ui::AlignmentParameters *ui;
 };
+
+#endif // ALIGNMENTPARAMETERS_H

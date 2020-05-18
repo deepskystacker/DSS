@@ -436,9 +436,6 @@
     <ClInclude Include="ProgressDlg.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="AlignmentParameters.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="BackgroundLoading.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
@@ -451,37 +448,13 @@
     <ClInclude Include="CheckAbove.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
-    <ClInclude Include="CometStacking.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="DropFilesDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="IntermediateFiles.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="OutputTab.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="PostCalibration.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="RecommandedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
-    <ClInclude Include="ResultParameters.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="StackingDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="StackingParameters.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="StackRecap.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="StackSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="AskRegistering.h">
@@ -1171,8 +1144,35 @@
     <QtMoc Include="qwinwidget.h">
       <Filter>Qt Porting</Filter>
     </QtMoc>
-    <QtMoc Include="About.h">
+    <QtMoc Include="StackSettings.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="AlignmentParameters.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="IntermediateFiles.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="OutputTab.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PostCalibration.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StackRecap.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="About.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="ResultParameters.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="CometStacking.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="StackingParameters.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

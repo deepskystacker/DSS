@@ -11,8 +11,13 @@
 #include "RegisterSettings.h"
 #include "StackSettings.h"
 #include "RecommandedSettings.h"
+
 #include "qmfcapp.h"
 #include "qwinwidget.h"
+
+#include <QMenu>
+#include <QMessageBox>
+#include <QObject>
 
 using namespace Gdiplus;
 
@@ -814,8 +819,44 @@ void CExplorerBar::OnOptionsRawDDPSettings( NMHDR * pNotifyStruct, LRESULT * res
 
 /* ------------------------------------------------------------------- */
 
-void CExplorerBar::OnOptionsSettings( NMHDR * pNotifyStruct, LRESULT * result )
+void CExplorerBar::OnOptionsSettings(NMHDR * pNotifyStruct, LRESULT * result)
 {
+	QWinWidget	widget(this);
+
+	QMenu menu(&widget);
+
+
+	QAction *aRegisterSettings;
+	QAction *aStackingSettings;
+
+	aRegisterSettings = menu.addAction(QCoreApplication::translate("Explorer Bar", "Register Settings..."));
+	aStackingSettings = menu.addAction(QCoreApplication::translate("Explorer Bar", "Stacking Settings..."));
+
+	CRect rect;
+	m_Options_Settings.GetWindowRect(&rect);
+
+
+	QPoint point(rect.left, int(2 + rect.bottom));
+	QAction *a = menu.exec(point);
+
+
+	if (a == aRegisterSettings)
+	{
+		QMessageBox msgBox(&widget);
+		msgBox.setText("Register Settings");
+		msgBox.exec();
+	}
+	else if (a == aStackingSettings)
+	{
+		QWinWidget	widget(this->GetParent());
+		widget.showCentered();
+
+		StackSettings dlg(&widget);
+		dlg.SetEnableAll(true);
+		dlg.exec();
+	}
+}
+#if (0)
 	CPoint				pt;
 	CMenu				menu;
 	CMenu *				popup;
@@ -847,6 +888,7 @@ void CExplorerBar::OnOptionsSettings( NMHDR * pNotifyStruct, LRESULT * result )
 		dlg.DoModal();
 	};
 };
+#endif
 
 /* ------------------------------------------------------------------- */
 
