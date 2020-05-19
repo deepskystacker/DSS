@@ -439,9 +439,6 @@
     <ClInclude Include="BackgroundLoading.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
-    <ClInclude Include="BackgroundOptions.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="BatchStacking.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
@@ -1156,9 +1153,6 @@
     <QtMoc Include="OutputTab.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="PostCalibration.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="StackRecap.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -1172,6 +1166,12 @@
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
     <QtMoc Include="StackingParameters.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="PostCalibration.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="BackgroundOptions.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>

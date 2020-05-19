@@ -1,71 +1,93 @@
-#ifndef __BACKGROUNDOPTIONS_H__
-#define __BACKGROUNDOPTIONS_H__
+#ifndef BACKGROUNDOPTIONS_H
+#define BACKGROUNDOPTIONS_H
 
-class CBackgroundOptions : public CDialog
+#include <QDialog>
+
+enum BACKGROUNDCALIBRATIONMODE : short;
+
+enum BACKGROUNDCALIBRATIONINTERPOLATION : short;
+
+enum RGBBACKGROUNDCALIBRATIONMETHOD : short;
+
+namespace Ui {
+class BackgroundOptions;
+}
+
+class BackgroundOptions : public QDialog
 {
-private :
-	CButton				m_Linear;
-	CButton				m_Rational;
-	CStatic				m_CalibrationPreview;
+    Q_OBJECT
+    Q_PROPERTY(BACKGROUNDCALIBRATIONMODE backgroundCalibrationMode READ backgroundCalibrationMode WRITE setBackgroundCalibrationMode NOTIFY backgroundCalibrationModeChanged);
+    Q_PROPERTY(BACKGROUNDCALIBRATIONINTERPOLATION backgroundCalibrationInterpolation READ backgroundCalibrationInterpolation WRITE setBackgroundCalibrationInterpolation NOTIFY backgroundCalibrationInterpolationChanged);
+    Q_PROPERTY(RGBBACKGROUNDCALIBRATIONMETHOD RGBBackgroundCalibrationMethod READ RGBBackgroundCalibrationMethod WRITE setRGBBackgroundCalibrationMethod NOTIFY RGBBackgroundCalibrationMethodChanged);
 
-	CButton				m_None;
-	CButton				m_Minimum;
-	CButton				m_Middle;
-	CButton				m_Maximum;
-	CStatic				m_RGBCalibrationPreview;
-
-	BACKGROUNDCALIBRATIONMODE			m_CalibrationMode;
-	BACKGROUNDCALIBRATIONINTERPOLATION	m_CalibrationInterpolation;
-	RGBBACKGROUNDCALIBRATIONMETHOD		m_RGBCalibrationMethod;
-
-// Construction
 public:
-	CBackgroundOptions(CWnd* pParent = nullptr);   // standard constructor
+    explicit BackgroundOptions(QWidget *parent = 0);
+    ~BackgroundOptions();
 
-	void	SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode)
-	{
-		m_CalibrationMode = Mode;
-	};
+    void setBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE mode)
+    {
+        if (mode != m_CalibrationMode)
+        {
+            m_CalibrationMode = mode;
+            emit backgroundCalibrationModeChanged();
+        }
+    }
 
-	BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode()
-	{
-		return m_CalibrationMode;
-	};
+    BACKGROUNDCALIBRATIONMODE backgroundCalibrationMode()
+    {
+        return m_CalibrationMode;
+    }
 
-// Dialog Data
-	//{{AFX_DATA(CBackgroundOptions)
-	enum { IDD = IDD_BACKGROUNDOPTIONS };
-	//}}AFX_DATA
+    void setBackgroundCalibrationInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation)
+    {
+        if (interpolation != m_CalibrationInterpolation)
+        {
+            m_CalibrationInterpolation = interpolation;
+            updateInterpolation();
+            emit backgroundCalibrationInterpolationChanged();
+        }
+    }
 
+    BACKGROUNDCALIBRATIONINTERPOLATION backgroundCalibrationInterpolation()
+    {
+        return m_CalibrationInterpolation;
+    }
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CBackgroundOptions)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	//}}AFX_VIRTUAL
+    void setRGBBackgroundCalibrationMethod(RGBBACKGROUNDCALIBRATIONMETHOD method)
+    {
+        if (method != m_RGBBackgroundCalibrationMethod)
+        {
+            m_RGBBackgroundCalibrationMethod = method;
+            emit RGBBackgroundCalibrationMethodChanged();
+        }
+    }
 
-// Implementation
-private :
-	void		UpdateCalibrationPreview();
-	void		UpdateRGBCalibrationPreview();
+    RGBBACKGROUNDCALIBRATIONMETHOD RGBBackgroundCalibrationMethod()
+    {
+        return m_RGBBackgroundCalibrationMethod;
+    }
 
-protected:
+signals:
+    void backgroundCalibrationModeChanged();
+    void backgroundCalibrationInterpolationChanged();
+    void RGBBackgroundCalibrationMethodChanged();
 
-	// Generated message map functions
-	//{{AFX_MSG(CBackgroundOptions)
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedLinear();
-	afx_msg void OnBnClickedRational();
-	afx_msg void OnBnClickedNone();
-	afx_msg void OnBnClickedMinimum();
-	afx_msg void OnBnClickedMiddle();
-	afx_msg void OnBnClickedMaximum();
+private slots:
+    void onToggledLinear(bool);
+    void onToggledRational(bool);
+    void onToggledNone(bool);
+    void onToggledMinimum(bool);
+    void onToggledMiddle(bool);
+    void onToggledMaximum(bool);
+
+private:
+    Ui::BackgroundOptions *ui;
+    BACKGROUNDCALIBRATIONMODE m_CalibrationMode;
+    BACKGROUNDCALIBRATIONINTERPOLATION m_CalibrationInterpolation;
+    RGBBACKGROUNDCALIBRATIONMETHOD m_RGBBackgroundCalibrationMethod;
+
+    void updateInterpolation();
+    void updateRGBCalibration();
 };
 
-
-#endif
+#endif // BACKGROUNDOPTIONS_H

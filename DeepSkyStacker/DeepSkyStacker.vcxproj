@@ -889,7 +889,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="AskRegistering.h" />
     <ClInclude Include="BackgroundCalibration.h" />
     <ClInclude Include="BackgroundLoading.h" />
-    <ClInclude Include="BackgroundOptions.h" />
+    <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BatchStacking.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapExt.h" />

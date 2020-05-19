@@ -15,6 +15,7 @@ using std::max;
 #include <ZExcept.h>
 #include <Ztrace.h>
 
+#include "BackgroundOptions.h"
 #include "DSSCommon.h"
 #include "StackSettings.h"
 #include "StackingTasks.h"
@@ -91,7 +92,6 @@ StackingParameters & StackingParameters::createActions()
 		[=]() { this->setBackgroundCalibration(BCM_PERCHANNEL); });
 	connect(pcbgCal, &QAction::triggered, this,
 		[=]() { ui->backgroundCalibration->setText(pcbgCal->text()); });
-
 
 	rgbbgCal = new QAction(tr("RGB Channels Background Calibration"), this);
 	connect(rgbbgCal, &QAction::triggered, this,
@@ -279,7 +279,6 @@ StackingParameters & StackingParameters::setControls(MULTIBITMAPPROCESSMETHOD me
 		ui->modeKS->setToolTip(kappaSigmaTip);
 		ui->staticKappa->setToolTip(kappaSigmaTip);
 		ui->kappa->setToolTip(kappaSigmaTip);
-
 		break;
 	case MBP_MEDIANSIGMACLIP:
 		ui->modeMKS->setChecked(true);
@@ -334,5 +333,7 @@ void StackingParameters::backgroundCalibrationOptions()
 	//
 	// Show the background calibration options dialog
 	// 
+	BackgroundOptions dlg(this);
 
+	dlg.exec();
 }
