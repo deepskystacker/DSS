@@ -21,10 +21,18 @@ StackSettings::StackSettings(QWidget *parent) :
     m_intermediateFiles = new IntermediateFiles();
     m_postCalibration = new PostCalibration();
     m_outputTab = new OutputTab();
+
     m_lightFrames = new StackingParameters();
+	m_lightFrames->init(PICTURETYPE_LIGHTFRAME);
+
     m_darkFrames = new StackingParameters();
+	m_darkFrames->init(PICTURETYPE_DARKFRAME);
+
     m_flatFrames = new StackingParameters();
+	m_flatFrames->init(PICTURETYPE_FLATFRAME);
+
     m_biasFrames = new StackingParameters();
+	m_biasFrames->init(PICTURETYPE_OFFSETFRAME);
 
 	resultTab = ui->tabWidget->addTab(m_resultParameters, m_resultParameters->windowTitle());
 	cometTab = ui->tabWidget->addTab(m_cometStacking, m_cometStacking->windowTitle());;

@@ -22,6 +22,7 @@ class StackingParameters : public QWidget
 public:
     explicit StackingParameters(QWidget *parent = nullptr);
     ~StackingParameters();
+	void init(PICTURETYPE rhs);
 
 private:
     Ui::StackingParameters *ui;
@@ -33,17 +34,17 @@ private:
 	QAction * nobgCal;
 	QAction * pcbgCal;
 	QAction * rgbbgCal;
-	QMenu * backgroundCalibrationMenu;
+	QAction * bgCalOptions;
+	QMenu   * backgroundCalibrationMenu;
 
-private slots:
+	StackingParameters & setControls(MULTIBITMAPPROCESSMETHOD method, double kappa, uint iteration);
+	StackingParameters & createActions();
+	StackingParameters & createMenus();
 	void setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode);
 
-StackingParameters & init(PICTURETYPE rhs);
-StackingParameters & setControls(MULTIBITMAPPROCESSMETHOD method, double kappa, uint iteration);
-StackingParameters & createActions();
-StackingParameters & createMenu();
-
-void	on_backgroundCalibration_clicked();
+private slots:
+	void backgroundCalibrationOptions();
+	void on_backgroundCalibration_clicked();
 };
 
 #endif // STACKINGPARAMETERS_H

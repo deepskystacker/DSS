@@ -9,6 +9,8 @@ using std::max;
 #include "ui/ui_StackingParameters.h"
 
 #include <QAction>
+#include <QCursor>
+#include <QMenu>
 
 #include <ZExcept.h>
 #include <Ztrace.h>
@@ -72,7 +74,7 @@ StackingParameters::StackingParameters(QWidget *parent) :
 		.arg("\xce\xba");
 	ui->modeAAWA->setToolTip(text);
 
-	createActions().createMenu();
+	createActions().createMenus();
 	
 }
 
@@ -94,24 +96,35 @@ StackingParameters & StackingParameters::createActions()
 	rgbbgCal = new QAction(tr("RGB Channels Background Calibration"), this);
 	connect(rgbbgCal, &QAction::triggered, this,
 		[=]() { this->setBackgroundCalibration(BCM_RGB); });
-	connect(pcbgCal, &QAction::triggered, this,
+	connect(rgbbgCal, &QAction::triggered, this,
 		[=]() { ui->backgroundCalibration->setText(rgbbgCal->text()); });
+
+	bgCalOptions = new QAction(tr("Options..."), this);
+	connect(bgCalOptions, SIGNAL(triggered()), this, SLOT(backgroundCalibrationOptions));
 
 	return *this;
 }
 
-StackingParameters & StackingParameters::createMenu()
+StackingParameters & StackingParameters::createMenus()
 {
+	QMenu * menu = new QMenu(this);
+	menu->addAction(nobgCal);
+	menu->addAction(pcbgCal);
+	menu->addAction(rgbbgCal);
+	menu->addSeparator();
+	menu->addAction(bgCalOptions);
+
+	backgroundCalibrationMenu = menu;
 
 	return *this;
 }
 
 StackingParameters::~StackingParameters()
 {
-    delete ui;
+	delete ui; ui = nullptr;
 }
 
-StackingParameters & StackingParameters::init(PICTURETYPE rhs)
+void StackingParameters::init(PICTURETYPE rhs)
 {
 	type = rhs;
 	MULTIBITMAPPROCESSMETHOD method;
@@ -144,26 +157,30 @@ StackingParameters & StackingParameters::init(PICTURETYPE rhs)
 			ui->debloom->setChecked(workspace->value("Stacking/Debloom", false).toBool());
 		};
 
-		BACKGROUNDCALIBRATIONMODE		calibrationMode;
-
-		calibrationMode = CAllStackingTasks::GetBackgroundCalibrationMode();
+		//
+		// Set up the background calibration control
+		//
+		BACKGROUNDCALIBRATIONMODE calibrationMode =
+			CAllStackingTasks::GetBackgroundCalibrationMode();
 
 		//
 		// Set the text colour as for a Hyper-Link
 		// 
 		ui->backgroundCalibration->setForegroundRole(QPalette::Link);
 
-		// Set the text of the control
+		//
+		// Set the text of the control depending on the calibration mode.
+		//
 		switch (calibrationMode)
 		{
 		case BCM_NONE:
-			string = tr("No Background Calibration");
+			string = nobgCal->text();
 			break;
 		case BCM_PERCHANNEL:
-			string = tr("Per Channel Background Calibration");
+			string = pcbgCal->text();
 			break;
 		case BCM_RGB:
-			string = tr("RGB Channels Background Calibration");
+			string = rgbbgCal->text();
 			break;
 		}
 		ui->backgroundCalibration->setText(string);
@@ -240,7 +257,6 @@ StackingParameters & StackingParameters::init(PICTURETYPE rhs)
 		ui->modeEWA->setEnabled(false);
 		break;
 	};
-	return *this;
 }
 
 StackingParameters & StackingParameters::setControls(MULTIBITMAPPROCESSMETHOD method, double kappa, uint iteration)
@@ -287,7 +303,10 @@ StackingParameters & StackingParameters::setControls(MULTIBITMAPPROCESSMETHOD me
 
 void	StackingParameters::on_backgroundCalibration_clicked()
 {
-	
+	//
+	// Show the popup menu 
+	//
+	backgroundCalibrationMenu->exec(QCursor::pos());
 }
 
 void StackingParameters::setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode)
@@ -307,4 +326,12 @@ void StackingParameters::setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode
 		workspace->setValue("Stacking/PerChannelBackgroundCalibration", false);
 		break;
 	}
+}
+
+void StackingParameters::backgroundCalibrationOptions()
+{
+	//
+	// Show the background calibration options dialog
+	// 
+
 }
