@@ -127,7 +127,8 @@ StackingParameters::~StackingParameters()
 void StackingParameters::init(PICTURETYPE rhs)
 {
 	type = rhs;
-	MULTIBITMAPPROCESSMETHOD method;
+	MULTIBITMAPPROCESSMETHOD method = MBP_AVERAGE;
+	BACKGROUNDCALIBRATIONMODE calibrationMode = BCM_NONE;
 	uint iteration;
 	double kappa;
 	bool isChecked;
@@ -160,7 +161,7 @@ void StackingParameters::init(PICTURETYPE rhs)
 		//
 		// Set up the background calibration control
 		//
-		BACKGROUNDCALIBRATIONMODE calibrationMode =
+		calibrationMode =
 			CAllStackingTasks::GetBackgroundCalibrationMode();
 
 		//
