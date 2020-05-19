@@ -70,9 +70,9 @@ StackingParameters::StackingParameters(QWidget *parent) :
 	ui->modeMKS->setToolTip(medianKappaSigmaTip);
 
 	QString text = tr("The <b>weighted average</b> is obtained by\niteratively weighting each pixel\n"
-		"from the deviation from the mean\ncomparatively to the standard deviation (%1).")
+		"based on its deviation from the mean\ncompared to the standard deviation (%1).")
 		// Greek character sigma (σ) = \xcf\x83 UTF8
-		.arg("\xce\xba");
+		.arg("\xcf\x83");
 	ui->modeAAWA->setToolTip(text);
 
 	createActions().createMenus();
