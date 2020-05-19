@@ -8,6 +8,8 @@ using std::max;
 #include "StackingParameters.h"
 #include "ui/ui_StackingParameters.h"
 
+#include <QAction>
+
 #include <ZExcept.h>
 #include <Ztrace.h>
 
@@ -69,6 +71,39 @@ StackingParameters::StackingParameters(QWidget *parent) :
 		// Greek character sigma (σ) = \xcf\x83 UTF8
 		.arg("\xce\xba");
 	ui->modeAAWA->setToolTip(text);
+
+	createActions().createMenu();
+	
+}
+
+StackingParameters & StackingParameters::createActions()
+{
+	nobgCal = new QAction(tr("No Background Calibration"), this);
+	connect(nobgCal, &QAction::triggered, this,
+		[=]() { this->setBackgroundCalibration(BCM_NONE); });
+	connect(nobgCal, &QAction::triggered, this,
+		[=]() { ui->backgroundCalibration->setText(nobgCal->text()); });
+
+	pcbgCal = new QAction(tr("Per Channel Background Calibration"), this);
+	connect(pcbgCal, &QAction::triggered, this,
+		[=]() { this->setBackgroundCalibration(BCM_PERCHANNEL); });
+	connect(pcbgCal, &QAction::triggered, this,
+		[=]() { ui->backgroundCalibration->setText(pcbgCal->text()); });
+
+
+	rgbbgCal = new QAction(tr("RGB Channels Background Calibration"), this);
+	connect(rgbbgCal, &QAction::triggered, this,
+		[=]() { this->setBackgroundCalibration(BCM_RGB); });
+	connect(pcbgCal, &QAction::triggered, this,
+		[=]() { ui->backgroundCalibration->setText(rgbbgCal->text()); });
+
+	return *this;
+}
+
+StackingParameters & StackingParameters::createMenu()
+{
+
+	return *this;
 }
 
 StackingParameters::~StackingParameters()
@@ -109,13 +144,32 @@ StackingParameters & StackingParameters::init(PICTURETYPE rhs)
 			ui->debloom->setChecked(workspace->value("Stacking/Debloom", false).toBool());
 		};
 
-		BACKGROUNDCALIBRATIONMODE		CalibrationMode;
+		BACKGROUNDCALIBRATIONMODE		calibrationMode;
 
-		CalibrationMode = CAllStackingTasks::GetBackgroundCalibrationMode();
+		calibrationMode = CAllStackingTasks::GetBackgroundCalibrationMode();
 
-		// What on earth to do with that
+		//
+		// Set the text colour as for a Hyper-Link
+		// 
+		ui->backgroundCalibration->setForegroundRole(QPalette::Link);
+
+		// Set the text of the control
+		switch (calibrationMode)
+		{
+		case BCM_NONE:
+			string = tr("No Background Calibration");
+			break;
+		case BCM_PERCHANNEL:
+			string = tr("Per Channel Background Calibration");
+			break;
+		case BCM_RGB:
+			string = tr("RGB Channels Background Calibration");
+			break;
+		}
+		ui->backgroundCalibration->setText(string);
 
 		break;
+	
 
 	case PICTURETYPE_DARKFRAME:
 		// Make the Dark frame specific controls visible
@@ -229,4 +283,28 @@ StackingParameters & StackingParameters::setControls(MULTIBITMAPPROCESSMETHOD me
 	ui->kappa->setText(string);
 	string = QString::asprintf("%ld", iteration);
 	return *this;
+}
+
+void	StackingParameters::on_backgroundCalibration_clicked()
+{
+	
+}
+
+void StackingParameters::setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode)
+{
+	switch (mode)
+	{
+	case BCM_NONE:
+		workspace->setValue("Stacking/BackgroundCalibration", false);
+		workspace->setValue("Stacking/PerChannelBackgroundCalibration", false);
+		break;
+	case BCM_PERCHANNEL:
+		workspace->setValue("Stacking/BackgroundCalibration", false);
+		workspace->setValue("Stacking/PerChannelBackgroundCalibration", true);
+		break;
+	case BCM_RGB:
+		workspace->setValue("Stacking/BackgroundCalibration", true);
+		workspace->setValue("Stacking/PerChannelBackgroundCalibration", false);
+		break;
+	}
 }
