@@ -11,6 +11,7 @@ using std::max;
 #include <QAction>
 #include <QCursor>
 #include <QDoubleValidator>
+#include <QIntValidator>
 #include <QMenu>
 
 #include <ZExcept.h>
@@ -258,6 +259,7 @@ void StackingParameters::init(PICTURETYPE rhs)
 		//
 		ui->modeEWA->setEnabled(false);
 		break;
+
 	case PICTURETYPE_OFFSETFRAME:
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Offset_Method", (uint)MBP_AVERAGE).toUInt());
