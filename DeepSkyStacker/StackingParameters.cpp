@@ -10,6 +10,7 @@ using std::max;
 
 #include <QAction>
 #include <QCursor>
+#include <QDoubleValidator>
 #include <QMenu>
 
 #include <ZExcept.h>
@@ -53,6 +54,16 @@ StackingParameters::StackingParameters(QWidget *parent) :
 	ui->darkMultiplicationFactor->setVisible(false);
 
 	//
+	// Set up the validators for the input fields
+	//
+	darkFactorValidator = new QDoubleValidator(0.0, 5.0, 4, this);
+	ui->darkMultiplicationFactor->setValidator(darkFactorValidator);
+	iterationValidator = new QIntValidator(0, 5, this);
+	ui->iterations->setValidator(iterationValidator);
+	kappaValidator = new QDoubleValidator(0.0, 5.0, 2, this);
+	ui->kappa->setValidator(kappaValidator);
+
+	//
 	// Set the tooltip text
 	//
 	kappaSigmaTip = tr("The pixels outside the range:\n[Mean-%1*%2, Mean+%1*%2]\n"
@@ -76,7 +87,9 @@ StackingParameters::StackingParameters(QWidget *parent) :
 	ui->modeAAWA->setToolTip(text);
 
 	createActions().createMenus();
-	
+
+	connect(this, SIGNAL(methodChanged(MULTIBITMAPPROCESSMETHOD)),
+		this, SLOT(updateControls(MULTIBITMAPPROCESSMETHOD)));
 }
 
 StackingParameters & StackingParameters::createActions()
@@ -144,7 +157,7 @@ void StackingParameters::init(PICTURETYPE rhs)
 			(workspace->value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Light_Iteration", (uint)5).toUInt();
 		kappa = workspace->value("Stacking/Light_Kappa", "2.0").toDouble();
-		setControls(method, kappa, iteration);
+		setControls();
 
 		//
 		// Use our friendship with StackSettings to get at pStackingTasks pointer
@@ -205,7 +218,7 @@ void StackingParameters::init(PICTURETYPE rhs)
 			(workspace->value("Stacking/Dark_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Dark_Iteration", (uint)5).toUInt();
 		kappa = workspace->value("Stacking/Dark_Kappa", "2.0").toDouble();
-		setControls(method, kappa, iteration);
+		setControls();
 
 		isChecked = workspace->value("Stacking/DarkOptimization", false).toBool();
 		ui->darkOptimisation->setChecked(isChecked);
@@ -236,9 +249,9 @@ void StackingParameters::init(PICTURETYPE rhs)
 	case PICTURETYPE_FLATFRAME:
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Flat_Method", (uint)MBP_AVERAGE).toUInt());
-				iteration = workspace->value("Stacking/Flat_Iteration", (uint)5).toUInt();
+		iteration = workspace->value("Stacking/Flat_Iteration", (uint)5).toUInt();
 		kappa = workspace->value("Stacking/Flat_Kappa", "2.0").toDouble();
-		setControls(method, kappa, iteration);
+		setControls();
 
 		//
 		// Disable Entropy-Weighted Average
@@ -248,9 +261,9 @@ void StackingParameters::init(PICTURETYPE rhs)
 	case PICTURETYPE_OFFSETFRAME:
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Offset_Method", (uint)MBP_AVERAGE).toUInt());
-				iteration = workspace->value("Stacking/Offset_Iteration", (uint)5).toUInt();
+		iteration = workspace->value("Stacking/Offset_Iteration", (uint)5).toUInt();
 		kappa = workspace->value("Stacking/FlatOffset_Kappa", "2.0").toDouble();
-		setControls(method, kappa, iteration);
+		setControls();
 
 		//
 		// Disable Entropy-Weighted Average
@@ -260,7 +273,7 @@ void StackingParameters::init(PICTURETYPE rhs)
 	};
 }
 
-StackingParameters & StackingParameters::setControls(MULTIBITMAPPROCESSMETHOD method, double kappa, uint iteration)
+StackingParameters & StackingParameters::setControls()
 {
 	QString text;
 	switch (method)
@@ -298,6 +311,7 @@ StackingParameters & StackingParameters::setControls(MULTIBITMAPPROCESSMETHOD me
 	string = QString::asprintf("%.2f", kappa);
 	ui->kappa->setText(string);
 	string = QString::asprintf("%ld", iteration);
+	ui->iterations->setText(string);
 	return *this;
 }
 
@@ -336,4 +350,176 @@ void StackingParameters::backgroundCalibrationOptions()
 	BackgroundOptions dlg(this);
 
 	dlg.exec();
+}
+
+void StackingParameters::updateControls(MULTIBITMAPPROCESSMETHOD newMethod)
+{
+	if (MBP_AUTOADAPTIVE == newMethod)
+	{
+		ui->staticKappa->setEnabled(false);
+		ui->kappa->setEnabled(false);
+		ui->staticIterations->setEnabled(true);
+		ui->iterations->setEnabled(true);
+	}
+	else if (MBP_SIGMACLIP == newMethod || MBP_MEDIANSIGMACLIP == newMethod)
+	{
+		ui->staticKappa->setEnabled(true);
+		ui->kappa->setEnabled(true);;
+		ui->staticIterations->setEnabled(true);
+		ui->iterations->setEnabled(true);
+	}
+	else
+	{
+		ui->staticKappa->setEnabled(false);
+		ui->kappa->setEnabled(false);
+		ui->staticIterations->setEnabled(false);
+		ui->iterations->setEnabled(false);
+	}
+}
+
+void StackingParameters::setMethod(MULTIBITMAPPROCESSMETHOD rhs)
+{
+	if (method != rhs)
+	{
+		method = rhs;
+		switch (type)
+		{
+		case PICTURETYPE_LIGHTFRAME:
+			workspace->setValue("Stacking/Light_Method", (uint)method);
+			break;
+		case PICTURETYPE_DARKFRAME:
+			workspace->setValue("Stacking/Dark_Method", (uint)method);
+			break;
+		case PICTURETYPE_FLATFRAME:
+			workspace->setValue("Stacking/Flat_Method", (uint)method);
+			break;
+		case PICTURETYPE_OFFSETFRAME:
+			workspace->setValue("Stacking/Offset_Method", (uint)method);
+			break;
+		}
+		emit methodChanged(method);
+	}
+}
+
+void StackingParameters::on_modeAverage_clicked()
+{
+	setMethod(MBP_AVERAGE);
+}
+
+void StackingParameters::on_modeMedian_clicked()
+{
+	setMethod(MBP_MEDIAN);
+}
+
+void StackingParameters::on_modeKS_clicked()
+{
+	setMethod(MBP_SIGMACLIP);
+}
+
+void StackingParameters::on_modeMKS_clicked()
+{
+	setMethod(MBP_MEDIANSIGMACLIP);
+}
+
+void StackingParameters::on_modeAAWA_clicked()
+{
+	setMethod(MBP_AUTOADAPTIVE);
+}
+
+void StackingParameters::on_modeEWA_clicked()
+{
+	setMethod(MBP_ENTROPYAVERAGE);
+}
+
+void StackingParameters::on_modeMaximum_clicked()
+{
+	setMethod(MBP_MAXIMUM);
+}
+
+void StackingParameters::on_debloom_stateChanged(int state)
+{
+	//
+	// If it's checked then set Debloom to true
+	//
+	workspace->setValue("Stacking/Debloom", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_hotPixels_stateChanged(int state)
+{
+	//
+	// If it's checked then set Hot Pixel detection to true
+	//
+	workspace->setValue("Stacking/HotPixelsDetection", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_badColumns_stateChanged(int state)
+{
+	//
+	// If it's checked then set Bad Column detection to true
+	//
+	workspace->setValue("Stacking/BadLinesDetection", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_darkOptimisation_stateChanged(int state)
+{
+	//
+	// If it's checked then set Dark Optimisation to true
+	//
+	workspace->setValue("Stacking/DarkOptimization", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_useDarkFactor_stateChanged(int state)
+{
+	//
+	// If it's checked then want to use a user specified value for Dark Factor
+	//
+	workspace->setValue("Stacking/UseDarkFactor", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_darkMultiplicationFactor_textEdited(const QString &text)
+{
+	workspace.setValue("Stacking/DarkFactor", text);
+}
+
+void StackingParameters::on_iterations_textEdited(const QString &text)
+{
+	bool convertedOK = false;
+	uint value = text.toUInt(&convertedOK);
+	
+	ZASSERTSTATE(convertedOK);
+
+	switch (type)
+	{
+	case PICTURETYPE_LIGHTFRAME:
+		workspace->setValue("Stacking/Light_Iteration", value);
+		break;
+	case PICTURETYPE_DARKFRAME:
+		workspace->setValue("Stacking/Dark_Iteration", value);
+		break;
+	case PICTURETYPE_FLATFRAME:
+		workspace->setValue("Stacking/Flat_Iteration", value);
+		break;
+	case PICTURETYPE_OFFSETFRAME:
+		workspace->setValue("Stacking/Offset_Iteration", value);
+		break;
+	}
+}
+
+void StackingParameters::on_kappa_textEdited(const QString &text)
+{
+	switch (type)
+	{
+	case PICTURETYPE_LIGHTFRAME:
+		workspace->setValue("Stacking/Light_Kappa", text);
+		break;
+	case PICTURETYPE_DARKFRAME:
+		workspace->setValue("Stacking/Dark_Kappa", text);
+		break;
+	case PICTURETYPE_FLATFRAME:
+		workspace->setValue("Stacking/Flat_Kappa", text);
+		break;
+	case PICTURETYPE_OFFSETFRAME:
+		workspace->setValue("Stacking/Offset_Kappa", text);
+		break;
+	}
 }
