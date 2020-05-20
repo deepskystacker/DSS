@@ -10,6 +10,7 @@ class CWorkspace;
 class StackSettings;
 class QAction;
 class QMenu;
+class QValidator;
 
 namespace Ui {
 class StackingParameters;

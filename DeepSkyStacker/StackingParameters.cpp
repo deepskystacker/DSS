@@ -478,7 +478,7 @@ void StackingParameters::on_useDarkFactor_stateChanged(int state)
 
 void StackingParameters::on_darkMultiplicationFactor_textEdited(const QString &text)
 {
-	workspace.setValue("Stacking/DarkFactor", text);
+	workspace->setValue("Stacking/DarkFactor", text);
 }
 
 void StackingParameters::on_iterations_textEdited(const QString &text)
