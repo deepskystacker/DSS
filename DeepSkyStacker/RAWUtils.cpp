@@ -819,7 +819,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	if (false == result)
 	{
 		CString errorMessage;
-		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, camera);
+		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, strModel);
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
 #else
