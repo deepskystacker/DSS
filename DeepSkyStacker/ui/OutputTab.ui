@@ -24,14 +24,14 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_3">
      <item>
-      <widget class="QCheckBox" name="checkBox">
+      <widget class="QCheckBox" name="createOutput">
        <property name="text">
         <string>Create Output file</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox_2">
+      <widget class="QCheckBox" name="createHTML">
        <property name="text">
         <string>Create HTML Description file</string>
        </property>
@@ -48,14 +48,14 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="autoSave">
           <property name="text">
            <string>Autosave.tif/fits</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_2">
+         <widget class="QRadioButton" name="fileListName">
           <property name="text">
            <string>&lt;file list name&gt;.tif/fits</string>
           </property>
@@ -66,7 +66,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="QCheckBox" name="checkBox_3">
+         <widget class="QCheckBox" name="appendNumber">
           <property name="text">
            <string>Append a number to avoid file overwrite (001, 002, ...)</string>
           </property>
@@ -89,7 +89,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="radioButton_3">
+         <widget class="QRadioButton" name="refFrameFolder">
           <property name="text">
            <string>Create Output file in the folder of the reference frame</string>
           </property>
@@ -103,7 +103,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="radioButton_4">
+         <widget class="QRadioButton" name="fileListFolder">
           <property name="text">
            <string>Create Output file in the folder of the file list</string>
           </property>
@@ -117,14 +117,14 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="QRadioButton" name="radioButton_5">
+         <widget class="QRadioButton" name="otherFolder">
           <property name="text">
            <string>Create Output file in</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="outputFolder">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
             <horstretch>0</horstretch>
