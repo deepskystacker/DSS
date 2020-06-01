@@ -13,6 +13,9 @@ class AlignmentParameters : public QWidget
 {
     Q_OBJECT
 
+typedef QWidget
+		Inherited;
+
 public:
     explicit AlignmentParameters(QWidget *parent = 0);
     ~AlignmentParameters();

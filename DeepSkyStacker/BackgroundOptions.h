@@ -4,9 +4,7 @@
 #include <QDialog>
 
 enum BACKGROUNDCALIBRATIONMODE : short;
-
 enum BACKGROUNDCALIBRATIONINTERPOLATION : short;
-
 enum RGBBACKGROUNDCALIBRATIONMETHOD : short;
 
 namespace Ui {
@@ -16,78 +14,42 @@ class BackgroundOptions;
 class BackgroundOptions : public QDialog
 {
     Q_OBJECT
-    Q_PROPERTY(BACKGROUNDCALIBRATIONMODE backgroundCalibrationMode READ backgroundCalibrationMode WRITE setBackgroundCalibrationMode NOTIFY backgroundCalibrationModeChanged);
-    Q_PROPERTY(BACKGROUNDCALIBRATIONINTERPOLATION backgroundCalibrationInterpolation READ backgroundCalibrationInterpolation WRITE setBackgroundCalibrationInterpolation NOTIFY backgroundCalibrationInterpolationChanged);
-    Q_PROPERTY(RGBBACKGROUNDCALIBRATIONMETHOD RGBBackgroundCalibrationMethod READ RGBBackgroundCalibrationMethod WRITE setRGBBackgroundCalibrationMethod NOTIFY RGBBackgroundCalibrationMethodChanged);
+
+typedef QDialog
+		Inherited;
 
 public:
     explicit BackgroundOptions(QWidget *parent = 0);
     ~BackgroundOptions();
 
-    void setBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE mode)
-    {
-        if (mode != m_CalibrationMode)
-        {
-            m_CalibrationMode = mode;
-            emit backgroundCalibrationModeChanged();
-        }
-    }
+	void	SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode)
+	{
+		m_CalibrationMode = Mode;
+	};
 
-    BACKGROUNDCALIBRATIONMODE backgroundCalibrationMode()
-    {
-        return m_CalibrationMode;
-    }
-
-    void setBackgroundCalibrationInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation)
-    {
-        if (interpolation != m_CalibrationInterpolation)
-        {
-            m_CalibrationInterpolation = interpolation;
-            updateInterpolation();
-            emit backgroundCalibrationInterpolationChanged();
-        }
-    }
-
-    BACKGROUNDCALIBRATIONINTERPOLATION backgroundCalibrationInterpolation()
-    {
-        return m_CalibrationInterpolation;
-    }
-
-    void setRGBBackgroundCalibrationMethod(RGBBACKGROUNDCALIBRATIONMETHOD method)
-    {
-        if (method != m_RGBBackgroundCalibrationMethod)
-        {
-            m_RGBBackgroundCalibrationMethod = method;
-            emit RGBBackgroundCalibrationMethodChanged();
-        }
-    }
-
-    RGBBACKGROUNDCALIBRATIONMETHOD RGBBackgroundCalibrationMethod()
-    {
-        return m_RGBBackgroundCalibrationMethod;
-    }
-
-signals:
-    void backgroundCalibrationModeChanged();
-    void backgroundCalibrationInterpolationChanged();
-    void RGBBackgroundCalibrationMethodChanged();
+	BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode()
+	{
+		return m_CalibrationMode;
+	};
 
 private slots:
-    void onToggledLinear(bool);
-    void onToggledRational(bool);
-    void onToggledNone(bool);
-    void onToggledMinimum(bool);
-    void onToggledMiddle(bool);
-    void onToggledMaximum(bool);
+    void on_rbLinear_clicked();
+    void on_rbRational_clicked();
+	void on_rbNone_clicked();
+	void on_rbMinimum_clicked();
+	void on_rbMiddle_clicked();
+	void on_rbMaximum_clicked();
+
+	void accept();
+	void reject();
 
 private:
     Ui::BackgroundOptions *ui;
     BACKGROUNDCALIBRATIONMODE m_CalibrationMode;
     BACKGROUNDCALIBRATIONINTERPOLATION m_CalibrationInterpolation;
-    RGBBACKGROUNDCALIBRATIONMETHOD m_RGBBackgroundCalibrationMethod;
+    RGBBACKGROUNDCALIBRATIONMETHOD m_RGBCalibrationMethod;
 
-    void updateInterpolation();
-    void updateRGBCalibration();
+    void updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation);
 };
 
 #endif // BACKGROUNDOPTIONS_H

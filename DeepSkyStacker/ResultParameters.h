@@ -1,6 +1,7 @@
 #ifndef RESULTPARAMETERS_H
 #define RESULTPARAMETERS_H
 #include <memory>
+
 #include <QWidget>
 #include <QPicture>
 
@@ -14,6 +15,9 @@ class ResultParameters;
 class ResultParameters : public QWidget
 {
 	Q_OBJECT
+
+typedef QWidget
+		Inherited;
 
 public:
 	explicit ResultParameters(QWidget *parent = nullptr);

@@ -13,34 +13,22 @@ class CWorkspace;
 class CometStacking : public QWidget
 {
     Q_OBJECT
-    Q_PROPERTY(COMETSTACKINGMODE cometStackingMode READ cometStackingMode WRITE setCometStackingMode NOTIFY cometStackingModeChanged);
 
+typedef QWidget
+		Inherited;
 public:
     explicit CometStacking(QWidget *parent = nullptr);
     ~CometStacking();
 
-    void setCometStackingMode(COMETSTACKINGMODE mode)
-    {
-        if (mode != m_CometStackingMode)
-        {
-            m_CometStackingMode = mode;
-            updateImage();
-            emit cometStackingModeChanged();
-        }
-    }
+	void setCometStackingMode(COMETSTACKINGMODE);
 
-    COMETSTACKINGMODE cometStackingMode()
-    {
-        return m_CometStackingMode;
-    }
-
-signals:
-    void cometStackingModeChanged();
+public slots:
+	void onSetActive();
 
 private slots:
-    void onBnClickedStandardStacking(bool);
-    void onBnClickedCometStacking(bool);
-    void onBnClickedAdvancedStacking(bool);
+    void on_modeStandard_clicked();
+	void on_modeComet_clicked();
+	void on_modeAdvanced_clicked();
 
 private:
     Ui::CometStacking *ui;

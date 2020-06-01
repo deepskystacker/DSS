@@ -23,11 +23,12 @@ using std::max;
 #include "StackingTasks.h"
 #include "Workspace.h"
 
-StackingParameters::StackingParameters(QWidget *parent) :
+StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
     QWidget(parent),
     ui(new Ui::StackingParameters),
 	workspace(new CWorkspace()),
-	pStackSettings(dynamic_cast<StackSettings *>(parent))
+	pStackSettings(dynamic_cast<StackSettings *>(parent->parentWidget())),
+	type(theType)
 {
 	if (nullptr == pStackSettings)
 	{
@@ -138,9 +139,8 @@ StackingParameters::~StackingParameters()
 	delete ui; ui = nullptr;
 }
 
-void StackingParameters::init(PICTURETYPE rhs)
+void StackingParameters::onSetActive()
 {
-	type = rhs;
 	MULTIBITMAPPROCESSMETHOD method = MBP_AVERAGE;
 	BACKGROUNDCALIBRATIONMODE calibrationMode = BCM_NONE;
 	uint iteration;
@@ -201,7 +201,7 @@ void StackingParameters::init(PICTURETYPE rhs)
 		ui->backgroundCalibration->setText(string);
 
 		break;
-	
+
 
 	case PICTURETYPE_DARKFRAME:
 		// Make the Dark frame specific controls visible
@@ -325,8 +325,9 @@ void	StackingParameters::on_backgroundCalibration_clicked()
 	backgroundCalibrationMenu->exec(QCursor::pos());
 }
 
-void StackingParameters::setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode)
+void StackingParameters::setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE rhs)
 {
+	mode = rhs;
 	switch (mode)
 	{
 	case BCM_NONE:
@@ -351,7 +352,11 @@ void StackingParameters::backgroundCalibrationOptions()
 	// 
 	BackgroundOptions dlg(this);
 
-	dlg.exec();
+	dlg.SetBackgroundCalibrationMode(mode);
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		setBackgroundCalibration(dlg.GetBackgroundCalibrationMode());
+	};
 }
 
 void StackingParameters::updateControls(MULTIBITMAPPROCESSMETHOD newMethod)

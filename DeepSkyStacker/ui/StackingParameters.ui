@@ -268,6 +268,24 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>modeAverage</tabstop>
+  <tabstop>modeMedian</tabstop>
+  <tabstop>modeKS</tabstop>
+  <tabstop>modeMKS</tabstop>
+  <tabstop>modeAAWA</tabstop>
+  <tabstop>modeEWA</tabstop>
+  <tabstop>modeMaximum</tabstop>
+  <tabstop>kappa</tabstop>
+  <tabstop>iterations</tabstop>
+  <tabstop>hotPixels</tabstop>
+  <tabstop>badColumns</tabstop>
+  <tabstop>darkOptimisation</tabstop>
+  <tabstop>debloom</tabstop>
+  <tabstop>useDarkFactor</tabstop>
+  <tabstop>darkMultiplicationFactor</tabstop>
+  <tabstop>deBloomSettings</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

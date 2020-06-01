@@ -17,7 +17,15 @@ CometStacking::CometStacking(QWidget *parent) :
 	workspace(new CWorkspace())
 {
     ui->setupUi(this);
+}
 
+CometStacking::~CometStacking()
+{
+    delete ui;
+}
+
+void CometStacking::onSetActive()
+{
 	m_CometStackingMode = static_cast<COMETSTACKINGMODE>
 		(workspace->value("Stacking/CometStackingMode", (uint)CSM_STANDARD).toUInt());
 
@@ -35,30 +43,29 @@ CometStacking::CometStacking(QWidget *parent) :
 	}
 }
 
-CometStacking::~CometStacking()
+void CometStacking::setCometStackingMode(COMETSTACKINGMODE mode)
 {
-    delete ui;
+	if (mode != m_CometStackingMode)
+	{
+		m_CometStackingMode = mode;
+		workspace->setValue("Stacking/CometStackingMode", static_cast<uint>(mode));
+		updateImage();
+	}
 }
 
-void CometStacking::onBnClickedStandardStacking(bool on)
+void CometStacking::on_modeStandard_clicked()
 {
-    if (on) {
-        setCometStackingMode(CSM_STANDARD);
-    }
+	setCometStackingMode(CSM_STANDARD);
 }
 
-void CometStacking::onBnClickedCometStacking(bool on)
+void CometStacking::on_modeComet_clicked()
 {
-    if (on) {
-        setCometStackingMode(CSM_COMETONLY);
-    }
+	setCometStackingMode(CSM_COMETONLY);
 }
 
-void CometStacking::onBnClickedAdvancedStacking(bool on)
+void CometStacking::on_modeAdvanced_clicked()
 {
-    if (on) {
-        setCometStackingMode(CSM_COMETSTAR);
-    }
+	setCometStackingMode(CSM_COMETSTAR);
 }
 
 void CometStacking::updateImage()

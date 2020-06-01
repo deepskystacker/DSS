@@ -11,6 +11,9 @@ class OutputTab : public QWidget
 {
     Q_OBJECT
 
+typedef QWidget
+		Inherited;
+
 public:
     explicit OutputTab(QWidget *parent = nullptr);
     ~OutputTab();

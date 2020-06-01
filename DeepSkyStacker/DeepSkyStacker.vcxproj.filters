@@ -84,9 +84,6 @@
     <ClCompile Include="AlignmentParameters.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="BackgroundLoading.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
     <ClCompile Include="BackgroundOptions.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -348,6 +345,9 @@
     <ClCompile Include="qwinwidget.cpp">
       <Filter>Qt Porting</Filter>
     </ClCompile>
+    <ClCompile Include="BackgroundLoading.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -435,9 +435,6 @@
     </ClInclude>
     <ClInclude Include="ProgressDlg.h">
       <Filter>Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="BackgroundLoading.h">
-      <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="BatchStacking.h">
       <Filter>Dialogs\Stacking</Filter>
@@ -723,6 +720,9 @@
     </ClInclude>
     <ClInclude Include="qmfcapp.h">
       <Filter>Qt Porting</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundLoading.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1144,12 +1144,6 @@
     <QtMoc Include="StackSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="IntermediateFiles.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="OutputTab.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="StackRecap.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -1172,6 +1166,12 @@
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
     <QtMoc Include="AlignmentParameters.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="IntermediateFiles.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="OutputTab.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>

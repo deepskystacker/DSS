@@ -3,14 +3,13 @@
 
 #include <QWidget>
 
-enum BACKGROUNDCALIBRATIONMODE : short;
-enum MULTIBITMAPPROCESSMETHOD : short;
-enum PICTURETYPE : short;
 class CWorkspace;
 class StackSettings;
 class QAction;
 class QMenu;
 class QValidator;
+
+#include "DSSCommon.h"
 
 namespace Ui {
 class StackingParameters;
@@ -20,16 +19,22 @@ class StackingParameters : public QWidget
 {
     Q_OBJECT
 
+typedef QWidget
+		Inherited;
+
 public:
-    explicit StackingParameters(QWidget *parent = nullptr);
+    explicit StackingParameters(QWidget *parent = nullptr, PICTURETYPE = PICTURETYPE_UNKNOWN);
     ~StackingParameters();
-	void init(PICTURETYPE rhs);
+
+public slots:
+	void onSetActive();
 
 private:
     Ui::StackingParameters *ui;
 	std::unique_ptr<CWorkspace> workspace;
 	StackSettings * pStackSettings;
 	PICTURETYPE type;
+	BACKGROUNDCALIBRATIONMODE mode;
 	MULTIBITMAPPROCESSMETHOD method;
 	double	kappa;
 	uint	iteration;

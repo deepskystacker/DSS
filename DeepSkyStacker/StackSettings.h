@@ -1,7 +1,7 @@
 #ifndef STACKSETTINGS_H
 #define STACKSETTINGS_H
 
-#include <QDialog>
+#include <QTabWidget>
 #include "ResultParameters.h"
 #include "CometStacking.h"
 #include "PostCalibration.h"
@@ -15,9 +15,10 @@ namespace Ui {
 class StackSettings;
 }
 
-class StackSettings : public QDialog
+class StackSettings : public QTabWidget
 {
 	friend class StackingParameters;
+	friend class PostCalibration;
 
 	Q_OBJECT
 
@@ -126,6 +127,10 @@ private:
 	bool					customRectangleSelected;
 	bool					customRectangleEnabled;
 	CAllStackingTasks *		pStackingTasks;
+
+private slots:
+	void tabChanged(int tab);
+
 
 };
 #endif // STACKSETTINGS_H

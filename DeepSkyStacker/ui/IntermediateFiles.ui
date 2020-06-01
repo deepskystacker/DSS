@@ -6,116 +6,127 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>575</width>
-    <height>309</height>
+    <width>408</width>
+    <height>224</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Intermediate Files</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,10,10,0,1,10,20">
+  <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0">
    <item>
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Intermediate files creation settings</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBox">
-     <property name="text">
-      <string>Create a calibrated file for each light frame</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBox_2">
-     <property name="enabled">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string>Save a debayered image when processing RAW images</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Fixed</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
+    <widget class="QWidget" name="widget" native="true">
+     <property name="minimumSize">
       <size>
-       <width>20</width>
-       <height>10</height>
+       <width>0</width>
+       <height>13</height>
       </size>
      </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="checkBox_3">
-     <property name="text">
-      <string>Create a registered/calibrated file for each light frame</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Intermediate and Final Image File Format</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QRadioButton" name="radioButton">
-        <property name="text">
-         <string>TIFF Files</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QRadioButton" name="radioButton_2">
-        <property name="text">
-         <string>FITS Files</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QCheckBox" name="saveIntermediate">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>80</y>
+        <width>229</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Create a calibrated file for each light frame</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="saveDebayered">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>50</y>
+        <width>221</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Save a debayered image when processing RAW images</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="saveCalibrated">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>20</y>
+        <width>282</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Create a registered/calibrated file for each light frame</string>
+      </property>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="geometry">
+       <rect>
+        <x>9</x>
+        <y>120</y>
+        <width>381</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="title">
+       <string>Intermediate and Final Image File Format</string>
+      </property>
+      <widget class="QRadioButton" name="formatTIFF">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>69</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>TIFF Files</string>
+       </property>
+      </widget>
+      <widget class="QRadioButton" name="formatFITS">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>50</y>
+         <width>69</width>
+         <height>17</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>FITS Files</string>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>0</y>
+        <width>261</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Intermediate files creation settings</string>
+      </property>
+     </widget>
     </widget>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>saveCalibrated</tabstop>
+  <tabstop>saveDebayered</tabstop>
+  <tabstop>saveIntermediate</tabstop>
+  <tabstop>formatTIFF</tabstop>
+  <tabstop>formatFITS</tabstop>
+ </tabstops>
  <resources/>
- <connections>
-  <connection>
-   <sender>checkBox</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkBox_2</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>110</x>
-     <y>63</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>140</x>
-     <y>88</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

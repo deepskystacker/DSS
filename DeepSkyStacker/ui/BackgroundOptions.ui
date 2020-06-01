@@ -63,28 +63,28 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <item>
-         <widget class="QRadioButton" name="radioButton_3">
+         <widget class="QRadioButton" name="rbNone">
           <property name="text">
            <string>None</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_4">
+         <widget class="QRadioButton" name="rbMinimum">
           <property name="text">
            <string>Minimum</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_5">
+         <widget class="QRadioButton" name="rbMiddle">
           <property name="text">
            <string>Middle</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QRadioButton" name="radioButton_6">
+         <widget class="QRadioButton" name="rbMaximum">
           <property name="text">
            <string>Maximum</string>
           </property>
@@ -154,109 +154,5 @@
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>rbLinear</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>BackgroundOptions</receiver>
-   <slot>onToggledLinear(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>76</x>
-     <y>65</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>49</x>
-     <y>304</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rbRational</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>BackgroundOptions</receiver>
-   <slot>onToggledRational(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>57</x>
-     <y>106</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>82</x>
-     <y>303</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButton_3</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>BackgroundOptions</receiver>
-   <slot>onToggledNone(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>47</x>
-     <y>197</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>8</x>
-     <y>174</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButton_4</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>BackgroundOptions</receiver>
-   <slot>onToggledMinimum(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>82</x>
-     <y>222</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>7</x>
-     <y>142</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButton_5</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>BackgroundOptions</receiver>
-   <slot>onToggledMiddle(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>96</x>
-     <y>240</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>9</x>
-     <y>220</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>radioButton_6</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>BackgroundOptions</receiver>
-   <slot>onToggledMaximum(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>53</x>
-     <y>267</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>9</x>
-     <y>263</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
- <slots>
-  <slot>onToggledLinear(bool)</slot>
-  <slot>onToggledRational(bool)</slot>
-  <slot>onToggledNone(bool)</slot>
-  <slot>onToggledMinimum(bool)</slot>
-  <slot>onToggledMedium(bool)</slot>
-  <slot>onToggledMaximum(bool)</slot>
- </slots>
 </ui>

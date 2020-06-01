@@ -15,24 +15,26 @@ StackSettings::StackSettings(QWidget *parent) :
 	pStackingTasks(nullptr)
 {
     ui->setupUi(this);
-    m_resultParameters = new ResultParameters();
-    m_cometStacking = new CometStacking();
-    m_alignmentParameters = new AlignmentParameters();
-    m_intermediateFiles = new IntermediateFiles();
-    m_postCalibration = new PostCalibration();
-    m_outputTab = new OutputTab();
 
-    m_lightFrames = new StackingParameters();
-	m_lightFrames->init(PICTURETYPE_LIGHTFRAME);
+	//
+	// If the user selects a tab we want to know.
+	//
+	connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
-    m_darkFrames = new StackingParameters();
-	m_darkFrames->init(PICTURETYPE_DARKFRAME);
+	m_resultParameters = new ResultParameters(this);
+    m_cometStacking = new CometStacking(this);
+    m_alignmentParameters = new AlignmentParameters(this);
+    m_intermediateFiles = new IntermediateFiles(this);
+    m_postCalibration = new PostCalibration(this);
+    m_outputTab = new OutputTab(this);
 
-    m_flatFrames = new StackingParameters();
-	m_flatFrames->init(PICTURETYPE_FLATFRAME);
+    m_lightFrames = new StackingParameters(this, PICTURETYPE_LIGHTFRAME);
 
-    m_biasFrames = new StackingParameters();
-	m_biasFrames->init(PICTURETYPE_OFFSETFRAME);
+    m_darkFrames = new StackingParameters(this, PICTURETYPE_DARKFRAME);
+
+    m_flatFrames = new StackingParameters(this, PICTURETYPE_FLATFRAME);
+
+    m_biasFrames = new StackingParameters(this, PICTURETYPE_OFFSETFRAME);
 
 	resultTab = ui->tabWidget->addTab(m_resultParameters, m_resultParameters->windowTitle());
 	cometTab = ui->tabWidget->addTab(m_cometStacking, m_cometStacking->windowTitle());;
@@ -158,4 +160,11 @@ StackSettings::~StackSettings()
     delete m_IntermediateFiles;
     delete m_PostCalibration;
     delete m_OutputTab;
+}
+
+void StackSettings::tabChanged(int tab)
+{
+	QWidget * which = widget(tab);
+	if (nullptr != which)
+		QMetaObject::invokeMethod(which, "onSetActive");
 }
