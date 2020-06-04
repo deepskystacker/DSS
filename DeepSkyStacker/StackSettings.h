@@ -140,7 +140,5 @@ private:
 
 private slots:
 	void tabChanged(int tab);
-
-
 };
 #endif // STACKSETTINGS_H

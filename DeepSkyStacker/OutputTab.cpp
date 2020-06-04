@@ -37,7 +37,9 @@ OutputTab::~OutputTab()
 
 void OutputTab::onSetActive()
 {
-	bool enable = settings.value("Output/Output", true).toBool();
+	CAllStackingTasks::GetOutputSettings(os);
+
+	bool enable = os.m_bOutput;
 	bool temp = false;
 
 	ui->createOutput->setChecked(enable);
@@ -48,44 +50,24 @@ void OutputTab::onSetActive()
 	ui->refFrameFolder->setEnabled(enable);
 	ui->fileListFolder->setEnabled(enable);
 	ui->otherFolder->setEnabled(enable);
-	ui->outputFolder->setEnabled(false);
 
-	noFolder = ui->outputFolder->text();
+	ui->createHTML->setChecked(os.m_bOutputHTML);
 
-	ui->createHTML->setChecked(settings.value("Output/OutputHTML", false).toBool());
+	ui->autoSave->setChecked(os.m_bAutosave);		
+	ui->fileListName->setChecked(os.m_bFileList);
 
-	temp = settings.value("Output/FileName", false).toBool();
-	ui->autoSave->setChecked(!temp);		
-	ui->fileListName->setChecked(temp);
+	ui->appendNumber->setChecked(os.m_bAppend);
 
-	temp = settings.value("Output/AppendNumber", true).toBool();
-	ui->appendNumber->setChecked(temp);
+	ui->refFrameFolder->setChecked(os.m_bRefFrameFolder);
+	ui->fileListFolder->setChecked(os.m_bFileListFolder);
+	ui->otherFolder->setChecked(os.m_bOtherFolder);
 
-	switch (settings.value("Output/OutputFolder", 0).toUInt())
-	{
-	case 0:
-		ui->refFrameFolder->setChecked(true);
-		ui->fileListFolder->setChecked(false);
-		ui->otherFolder->setChecked(false);
-		break;
-	case 1:		
-		ui->refFrameFolder->setChecked(false);
-		ui->fileListFolder->setChecked(true);
-		ui->otherFolder->setChecked(false);
-		break;
-	case 2:
-		ui->refFrameFolder->setChecked(false);
-		ui->fileListFolder->setChecked(false);
-		ui->otherFolder->setChecked(true);
-		ui->outputFolder->setEnabled(true);
-		break;
-	}
+	ui->outputFolder->setEnabled(os.m_bOtherFolder);
 
-	QString dir = settings.value("Output/OutputFolderName").toString();
-	if (dir.length() > 0)
+	if (os.m_strFolder.length() > 0)
 	{
 		QString temp("<a href=\" \">");
-		temp += dir + QString("</a>");
+		temp += os.m_strFolder + QString("</a>");
 		ui->outputFolder->setText(temp);
 	}
 }
@@ -93,7 +75,7 @@ void OutputTab::onSetActive()
 void  OutputTab::on_createOutput_stateChanged(int newState)
 {
 	bool enable(newState == Qt::Checked);
-	ui->createOutput->setChecked(enable);
+
 	ui->createHTML->setEnabled(enable);
 	ui->autoSave->setEnabled(enable);
 	ui->fileListName->setEnabled(enable);
@@ -102,25 +84,27 @@ void  OutputTab::on_createOutput_stateChanged(int newState)
 	ui->fileListFolder->setEnabled(enable);
 	ui->otherFolder->setEnabled(enable);
 
+
 	if (ui->otherFolder->isChecked() && enable)
 		ui->outputFolder->setEnabled(enable);
 	else
 		ui->outputFolder->setEnabled(false);
 
-	settings.setValue("Output/Output", enable);
+	os.m_bOutput = enable;
 }
 
 void  OutputTab::on_createHTML_stateChanged(int newState)
 {
 	bool enable(newState == Qt::Checked);
 
-	settings.setValue("Output/OutputHTML", enable);
+	os.m_bOutputHTML = enable;
 }
 
 void OutputTab::on_autoSave_clicked()
 {
 	//
-	// is this is selected, then fileListName isn't and vice-versa
+	// If Autosave is selected then FileListName cannot be and
+	// vice-versa
 	//
 	on_fileListName_clicked();
 }
@@ -128,30 +112,36 @@ void OutputTab::on_autoSave_clicked()
 void OutputTab::on_fileListName_clicked()
 {
 	bool checked = ui->fileListName->isChecked();
-
-	settings.setValue("Output/FileName", checked);
+	os.m_bFileList = checked;
+	os.m_bAutosave = !checked;
 }
 
 void OutputTab::on_appendNumber_stateChanged(int newState)
 {
 	bool checked(newState == Qt::Checked);
 
-	settings.setValue("Output/AppendNumber", checked);
+	os.m_bAppend = checked;
 }
 
 void OutputTab::on_refFrameFolder_clicked()
 {
-	settings.setValue("Output/OutputFolder", uint(0));
+	os.m_bRefFrameFolder = true;
+	os.m_bFileListFolder = false;
+	os.m_bOtherFolder = false;
 	ui->outputFolder->setEnabled(false);
 }
 void OutputTab::on_fileListFolder_clicked()
 {
-	settings.setValue("Output/OutputFolder", uint(1));
+	os.m_bRefFrameFolder = false;
+	os.m_bFileListFolder = true;
+	os.m_bOtherFolder = false;
 	ui->outputFolder->setEnabled(false);
 }
 void OutputTab::on_otherFolder_clicked()
 {
-	settings.setValue("Output/OutputFolder", uint(2));
+	os.m_bRefFrameFolder = false;
+	os.m_bFileListFolder = false;
+	os.m_bOtherFolder = true;
 	ui->outputFolder->setEnabled(true);
 }
 
@@ -169,7 +159,12 @@ void OutputTab::on_outputFolder_linkActivated(const QString & str)
 		QString temp("<a href=\" \">");
 		temp += dir + QString("</a>");
 		ui->outputFolder->setText(temp);
-		settings.setValue("Output/OutputFolderName", dir);
+		os.m_strFolder = dir;
 	}
+}
+
+void OutputTab::saveOutputSettings()
+{
+	CAllStackingTasks::SetOutputSettings(os);
 }
 

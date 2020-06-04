@@ -132,6 +132,11 @@ void StackSettings::accept()
 	//
 	workspace.saveSettings();
 
+	//
+	// Ask the output tab to save the Output Settings direct to QSettings
+	//
+	m_outputTab->saveOutputSettings();
+
 	Inherited::accept();
 }
 

@@ -1,13 +1,12 @@
 #ifndef OUTPUTTAB_H
 #define OUTPUTTAB_H
 
-class CWorkspace;
 class QString;
 
-#include <QSettings>
 #include <QWidget>
 
 #include "DSSCommon.h"
+#include "StackingTasks.h"
 
 namespace Ui {
 class OutputTab;
@@ -24,13 +23,14 @@ public:
     explicit OutputTab(QWidget *parent = nullptr);
     ~OutputTab();
 
+	void saveOutputSettings();
+
 public slots:
 	void onSetActive();
 
 private:
     Ui::OutputTab *ui;
-	QSettings settings;
-	QString	noFolder;
+	COutputSettings	os;
 
 private slots:
 	void on_createOutput_stateChanged(int);
