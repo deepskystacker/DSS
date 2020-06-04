@@ -4,11 +4,6 @@
 #include "stdafx.h"
 #include "RestartMonitoring.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 // CRestartMonitoring dialog
 
 

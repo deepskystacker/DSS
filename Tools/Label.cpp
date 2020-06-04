@@ -4,12 +4,6 @@
 #include "stdafx.h"
 #include "Label.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 BEGIN_MESSAGE_MAP(CLabel, CStatic)
 	//{{AFX_MSG_MAP(CLabel)
 	ON_WM_TIMER()

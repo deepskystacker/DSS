@@ -27,13 +27,6 @@ to maintain a single distribution point for the source code.
 
 //////////////// Statics / Macros ////////////////////////////////////
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
-
 //////////////// Implementation //////////////////////////////////////
 
 int CBase64::DecodeGetRequiredLength(int nSrcLen)

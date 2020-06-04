@@ -53,14 +53,6 @@ to maintain a single distribution point for the source code.
 
 //////////////// Macros / Locals //////////////////////////////////////////////
 
-#if (_MFC_VER < 0x700)
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-#endif
-
 #ifndef SEC_SUCCESS
 #define SEC_SUCCESS(Status) ((Status) >= 0)
 #endif
