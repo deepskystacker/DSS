@@ -38,9 +38,8 @@ void	CMultitask::SetUseAllProcessors(bool bUseAll)
 bool	CMultitask::GetReducedThreadsPriority()
 {
 	QSettings			settings;
-	DWORD				dwReduced = 0;
 
-	return settings.value("ReducedThreadPriority", (uint)0).toUInt();
+	return settings.value("ReducedThreadPriority", true).toBool();
 
 };
 
@@ -50,10 +49,7 @@ void	CMultitask::SetReducedThreadsPriority(bool bReduced)
 {
 	QSettings			settings;
 
-	if (bReduced)
-		settings.setValue("ReducedThreadPriority", (uint)1);
-	else
-		settings.setValue("ReducedThreadPriority", (uint)0);
+	settings.setValue("ReducedThreadPriority", bReduced);
 };
 
 /* ------------------------------------------------------------------- */

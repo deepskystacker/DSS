@@ -2011,7 +2011,7 @@ void CAllStackingTasks::GetTemporaryFilesFolder(QString & strFolder)
 			strTemp = "";
 	};
 
-	if (!strTemp.length())
+	if (strTemp.isEmpty())
 	{
 		TCHAR			szTempPath[1+_MAX_PATH] = _T("");
 
@@ -2026,12 +2026,11 @@ void CAllStackingTasks::GetTemporaryFilesFolder(QString & strFolder)
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::SetTemporaryFilesFolder(LPCTSTR szFolder)
+void CAllStackingTasks::SetTemporaryFilesFolder(QString strFolder)
 {
 	ZFUNCTRACE_RUNTIME();
 
 	QSettings settings;
-	QString				strFolder(CT2CA(szFolder, CP_UTF8));
 
 	if ((strFolder.right(1) != "\\") && (strFolder.right(1) != "/"))
 		strFolder += "\\";

@@ -5,7 +5,9 @@ using std::max;
 #define _WIN32_WINNT _WIN32_WINNT_WINXP
 #include <afx.h>
 
+#include <QFileDialog>
 #include <QSettings>
+
 #include <ZExcept.h>
 #include <Ztrace.h>
 
@@ -29,6 +31,29 @@ StackSettings::StackSettings(QWidget *parent) :
     ui->setupUi(this);
 
 	setWindowTitle(tr("Stacking Settings"));
+
+	//
+	// Get number of processors we're allowed to use.   Normally this is the number of
+	// real cores available, but this can artificially be limited by setting a value for 
+	// "MaxProcessors" in the application settings (registry or ini file).
+	//
+	// If this is done the the number used will be min("MaxProcessors", cores)
+	//
+	ui->reducePriority->setChecked(CMultitask::GetReducedThreadsPriority());
+
+	if (CMultitask::GetNrProcessors(true) > 1)
+	{
+		ui->useAllProcessors->setChecked(CMultitask::GetNrProcessors() > 1);
+	}
+	else
+		ui->useAllProcessors->setDisabled(true);
+
+	//
+	// Get the temporary files folder
+	//
+	QString folder;
+	CAllStackingTasks::GetTemporaryFilesFolder(folder);
+	ui->tempFilesFolder->setText(folder);
 
 	//
 	// If the user selects a tab we want to know.
@@ -118,6 +143,20 @@ void StackSettings::tabChanged(int tab)
 		QMetaObject::invokeMethod(which, "onSetActive");
 }
 
+void StackSettings::on_chooseFolder_clicked(bool value)
+{
+	value;
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Temprorary Files Folder"),
+		ui->tempFilesFolder->text(),
+		QFileDialog::ShowDirsOnly
+		| QFileDialog::DontResolveSymlinks);
+
+	if (dir.length() > 0)
+	{
+		ui->tempFilesFolder->setText(dir);
+	}
+
+}
 void StackSettings::accept()
 {
 	CWorkspace workspace;
@@ -131,6 +170,17 @@ void StackSettings::accept()
 	// Harden the workspace changes
 	//
 	workspace.saveSettings();
+
+	// Save whether allowed to use all processors ane whether to run threads
+	// at reduced priority
+	if (CMultitask::GetNrProcessors(true) > 1)
+		CMultitask::SetUseAllProcessors(ui->useAllProcessors->isChecked());
+	CMultitask::SetReducedThreadsPriority(ui->reducePriority->isChecked());
+
+	//
+	// Save the temporary files folder
+	//
+	CAllStackingTasks::SetTemporaryFilesFolder(ui->tempFilesFolder->text());
 
 	//
 	// Ask the output tab to save the Output Settings direct to QSettings

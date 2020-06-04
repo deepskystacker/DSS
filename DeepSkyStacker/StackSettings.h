@@ -1,6 +1,7 @@
 #ifndef STACKSETTINGS_H
 #define STACKSETTINGS_H
 
+
 #include <QDialog>
 #include "ResultParameters.h"
 #include "CometStacking.h"
@@ -140,5 +141,6 @@ private:
 
 private slots:
 	void tabChanged(int tab);
+	void on_chooseFolder_clicked(bool value);
 };
 #endif // STACKSETTINGS_H

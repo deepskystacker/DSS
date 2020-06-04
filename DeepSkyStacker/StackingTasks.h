@@ -567,7 +567,7 @@ public :
 	bool	CheckReadOnlyStatus(std::vector<CString> & vFolders);
 
 	static	void GetTemporaryFilesFolder(QString & strFolder);
-	static	void SetTemporaryFilesFolder(LPCTSTR szFolder);
+	static	void SetTemporaryFilesFolder(QString strFolder);
 
 	static	void GetPostCalibrationSettings(CPostCalibrationSettings & pcs);
 	static	void SetPostCalibrationSettings(const CPostCalibrationSettings & pcs);

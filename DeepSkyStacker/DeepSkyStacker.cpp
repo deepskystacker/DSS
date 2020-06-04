@@ -149,7 +149,6 @@ void	AskForVersionChecking()
 void	CheckRemainingTempFiles()
 {
 	ZFUNCTRACE_RUNTIME();
-	CString					strFolder;
 	WIN32_FIND_DATA			FindData;
 	CString					strFileMask;
 	HANDLE					hFindFiles;
@@ -158,7 +157,10 @@ void	CheckRemainingTempFiles()
 
 	ZTRACE_RUNTIME("Check remaining temp files\n");
 
-	CAllStackingTasks::GetTemporaryFilesFolder(QString((QChar*)strFolder.GetBuffer()));
+	QString temp;
+	CAllStackingTasks::GetTemporaryFilesFolder(temp);
+	CString strFolder((wchar_t *)temp.utf16());
+		
 	strFileMask = strFolder;
 	strFileMask += "DSS*.tmp";
 
