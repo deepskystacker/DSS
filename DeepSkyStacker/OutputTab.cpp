@@ -8,19 +8,19 @@ using std::max;
 #include <ZExcept.h>
 #include <Ztrace.h>
 
-#include "OutputTab.h"
-#include "ui/ui_OutputTab.h"
-
 #include <QString>
 #include <QFileDialog>
+#include <QSettings>
 #include <QStandardPaths>
+
+#include "OutputTab.h"
+#include "ui/ui_OutputTab.h"
 
 #include "Workspace.h"
 
 OutputTab::OutputTab(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::OutputTab),
-	workspace(new CWorkspace())
+    ui(new Ui::OutputTab)
 {
     ui->setupUi(this);
 
@@ -37,7 +37,7 @@ OutputTab::~OutputTab()
 
 void OutputTab::onSetActive()
 {
-	bool enable = workspace->value("Output/Output", true).toBool();
+	bool enable = settings.value("Output/Output", true).toBool();
 	bool temp = false;
 
 	ui->createOutput->setChecked(enable);
@@ -48,20 +48,20 @@ void OutputTab::onSetActive()
 	ui->refFrameFolder->setEnabled(enable);
 	ui->fileListFolder->setEnabled(enable);
 	ui->otherFolder->setEnabled(enable);
-	ui->outputFolder->setEnabled(enable);
+	ui->outputFolder->setEnabled(false);
 
 	noFolder = ui->outputFolder->text();
 
-	ui->createHTML->setChecked(workspace->value("Output/OutputHTML", false).toBool());
+	ui->createHTML->setChecked(settings.value("Output/OutputHTML", false).toBool());
 
-	temp = workspace->value("Output/FileName", false).toBool();
+	temp = settings.value("Output/FileName", false).toBool();
 	ui->autoSave->setChecked(!temp);		
 	ui->fileListName->setChecked(temp);
 
-	temp = workspace->value("Output/AppendNumber", true).toBool();
+	temp = settings.value("Output/AppendNumber", true).toBool();
 	ui->appendNumber->setChecked(temp);
 
-	switch (workspace->value("Output/OutputFolder", 0).toUInt())
+	switch (settings.value("Output/OutputFolder", 0).toUInt())
 	{
 	case 0:
 		ui->refFrameFolder->setChecked(true);
@@ -77,12 +77,17 @@ void OutputTab::onSetActive()
 		ui->refFrameFolder->setChecked(false);
 		ui->fileListFolder->setChecked(false);
 		ui->otherFolder->setChecked(true);
+		ui->outputFolder->setEnabled(true);
 		break;
 	}
 
-	QString folderName = workspace->value("Output/OutputFolderName").toString();
-	if (folderName.length() > 0)
-		ui->outputFolder->setText(folderName);
+	QString dir = settings.value("Output/OutputFolderName").toString();
+	if (dir.length() > 0)
+	{
+		QString temp("<a href=\" \">");
+		temp += dir + QString("</a>");
+		ui->outputFolder->setText(temp);
+	}
 }
 
 void  OutputTab::on_createOutput_stateChanged(int newState)
@@ -96,16 +101,20 @@ void  OutputTab::on_createOutput_stateChanged(int newState)
 	ui->refFrameFolder->setEnabled(enable);
 	ui->fileListFolder->setEnabled(enable);
 	ui->otherFolder->setEnabled(enable);
-	ui->outputFolder->setEnabled(enable);
 
-	workspace->setValue("Output/Output", enable);
+	if (ui->otherFolder->isChecked() && enable)
+		ui->outputFolder->setEnabled(enable);
+	else
+		ui->outputFolder->setEnabled(false);
+
+	settings.setValue("Output/Output", enable);
 }
 
 void  OutputTab::on_createHTML_stateChanged(int newState)
 {
 	bool enable(newState == Qt::Checked);
 
-	workspace->setValue("Output/OutputHTML", enable);
+	settings.setValue("Output/OutputHTML", enable);
 }
 
 void OutputTab::on_autoSave_clicked()
@@ -120,38 +129,47 @@ void OutputTab::on_fileListName_clicked()
 {
 	bool checked = ui->fileListName->isChecked();
 
-	workspace->setValue("Output/FileName", checked);
-
+	settings.setValue("Output/FileName", checked);
 }
 
 void OutputTab::on_appendNumber_stateChanged(int newState)
 {
 	bool checked(newState == Qt::Checked);
 
-	workspace->setValue("Output/AppendNumber", checked);
+	settings.setValue("Output/AppendNumber", checked);
 }
 
 void OutputTab::on_refFrameFolder_clicked()
 {
-	workspace->setValue("Output/OutputFolder", uint(0));
+	settings.setValue("Output/OutputFolder", uint(0));
+	ui->outputFolder->setEnabled(false);
 }
 void OutputTab::on_fileListFolder_clicked()
 {
-	workspace->setValue("Output/OutputFolder", uint(1));
+	settings.setValue("Output/OutputFolder", uint(1));
+	ui->outputFolder->setEnabled(false);
 }
 void OutputTab::on_otherFolder_clicked()
 {
-	workspace->setValue("Output/OutputFolder", uint(2));
+	settings.setValue("Output/OutputFolder", uint(2));
+	ui->outputFolder->setEnabled(true);
 }
 
-void OutputTab::on_outputFolder_clicked()
+void OutputTab::on_outputFolder_linkActivated(const QString & str)
 {
+	str;
+
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"),
 		QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
 		QFileDialog::ShowDirsOnly
 		| QFileDialog::DontResolveSymlinks);
 
 	if (dir.length() > 0)
-		workspace->setValue("Output/OutputFolderName", dir);
+	{
+		QString temp("<a href=\" \">");
+		temp += dir + QString("</a>");
+		ui->outputFolder->setText(temp);
+		settings.setValue("Output/OutputFolderName", dir);
+	}
 }
 

@@ -1144,9 +1144,6 @@
     <QtMoc Include="StackSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="StackRecap.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="About.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
@@ -1172,6 +1169,9 @@
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
     <QtMoc Include="OutputTab.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="StackRecap.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>

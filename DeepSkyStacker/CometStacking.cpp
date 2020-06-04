@@ -41,6 +41,7 @@ void CometStacking::onSetActive()
 		ui->modeAdvanced->setChecked(true);
 		break;
 	}
+	updateImage();
 }
 
 void CometStacking::setCometStackingMode(COMETSTACKINGMODE mode)
@@ -72,17 +73,26 @@ void CometStacking::updateImage()
 {
     if (m_CometStackingMode == CSM_STANDARD)
     {
-        QPixmap pm(":/comet/normal.bmp");
-        ui->laComet->setPixmap(pm);
-    }
+		if (standardPix.isNull())
+		{
+			standardPix.load(":/comet/normal.bmp");
+		}
+		ui->laComet->setPixmap(standardPix);
+	}
     else if (m_CometStackingMode == CSM_COMETONLY)
     {
-        QPixmap pm(":/comet/trails.bmp");
-        ui->laComet->setPixmap(pm);
-    }
+		if (cometPix.isNull())
+		{
+			cometPix.load(":/comet/trails.bmp");
+		}
+		ui->laComet->setPixmap(cometPix);
+	}
     else 
     {
-        QPixmap pm(":/comet/freeze.bmp");
-        ui->laComet->setPixmap(pm);
-    }
+		if (advancedPix.isNull())
+		{
+			advancedPix.load(":/comet/freeze.bmp");
+		}
+		ui->laComet->setPixmap(advancedPix);
+	}
 }

@@ -20,12 +20,15 @@ public:
     explicit AlignmentParameters(QWidget *parent = 0);
     ~AlignmentParameters();
 
+public slots:
+	void onSetActive();
+
 private:
 	Ui::AlignmentParameters *ui;
 	std::unique_ptr<CWorkspace> workspace;
 	uint m_Alignment;
 
-	void updateText();
+	void updateControls();
 
 	void setAlignment(uint wAlignment);
 

@@ -135,7 +135,7 @@
            <number>0</number>
           </property>
           <property name="text">
-           <string>&lt;Output Folder&gt;</string>
+           <string>&lt;a href=&quot; &quot;&gt;&amp;lt;Output Folder&amp;gt;&lt;/a&gt;</string>
           </property>
           <property name="indent">
            <number>0</number>

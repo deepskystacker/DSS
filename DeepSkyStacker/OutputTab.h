@@ -4,6 +4,7 @@
 class CWorkspace;
 class QString;
 
+#include <QSettings>
 #include <QWidget>
 
 #include "DSSCommon.h"
@@ -28,7 +29,7 @@ public slots:
 
 private:
     Ui::OutputTab *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	QSettings settings;
 	QString	noFolder;
 
 private slots:
@@ -40,7 +41,7 @@ private slots:
 	void on_refFrameFolder_clicked();
 	void on_fileListFolder_clicked();
 	void on_otherFolder_clicked();
-	void on_outputFolder_clicked();
+	void on_outputFolder_linkActivated(const QString &);
 };
 
 #endif // OUTPUTTAB_H

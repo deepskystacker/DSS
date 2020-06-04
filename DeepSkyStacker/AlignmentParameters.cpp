@@ -21,7 +21,12 @@ AlignmentParameters::~AlignmentParameters()
     delete ui;
 }
 
-void AlignmentParameters::updateText()
+void AlignmentParameters::onSetActive()
+{
+	updateControls();
+}
+
+void AlignmentParameters::updateControls()
 {
     switch (m_Alignment)
     {
@@ -29,18 +34,23 @@ void AlignmentParameters::updateText()
             /* Passthrough */
         case 1:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Automatic\n\nThe alignment method is automatically selected depending on the number of available stars."));
+			ui->alignAuto->setChecked(true);
             break;
         case 2:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bilinear Alignment\n\nThe Bilinear Alignment is used in all cases."));
-            break;
+			ui->alignBilinear->setChecked(true);
+			break;
         case 3:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bisquared Alignment\n\nThe Bisquared Alignment is used when at least 25 stars are available, else the Bilinear Alignment method is used."));
-            break;
+			ui->alignBisquared->setChecked(true);
+			break;
         case 4:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bicubic Alignment\n\nThe Bicubic method is used when at least 40 stars are available, then the Bisquared method is used if 25 to 39 stars are available, then the Bilinear method is used when less than 25 stars are available."));
-            break;
+			ui->alignBicubic->setChecked(true);
+			break;
         case 5:
             ui->text->setText("");
+			ui->alignNone->setChecked(true);
             break;
     }
 }
@@ -51,7 +61,7 @@ void AlignmentParameters::setAlignment(uint wAlignment)
 	{
 		m_Alignment = wAlignment;
 		workspace->setValue("Stacking/AlignmentTransformation", uint(m_Alignment));
-		updateText();
+		updateControls();
 	}
 };
 

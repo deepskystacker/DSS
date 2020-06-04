@@ -5,6 +5,10 @@ using std::max;
 #define _WIN32_WINNT _WIN32_WINNT_WINXP
 #include <afx.h>
 
+#include <QSettings>
+#include <ZExcept.h>
+#include <Ztrace.h>
+
 #include "StackSettings.h"
 #include "ui/ui_StackSettings.h"
 #include "Workspace.h"
@@ -12,9 +16,19 @@ using std::max;
 StackSettings::StackSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::StackSettings),
-	pStackingTasks(nullptr)
+	pStackingTasks(nullptr),
+	registeringOnly(false),
+	cometStacking(false),
+	enableDark(false),
+	enableFlat(false),
+	enableBias(false),
+	enableAll(false),
+	customRectangleSelected(false),
+	customRectangleEnabled(false)
 {
     ui->setupUi(this);
+
+	setWindowTitle(tr("Stacking Settings"));
 
 	//
 	// If the user selects a tab we want to know.
@@ -24,7 +38,7 @@ StackSettings::StackSettings(QWidget *parent) :
 	m_resultParameters = new ResultParameters(this);
     m_cometStacking = new CometStacking(this);
     m_alignmentParameters = new AlignmentParameters(this);
-    m_intermediateFiles = new IntermediateFiles(this);
+    m_intermediateFiles = new IntermediateFiles(this, registeringOnly);
     m_postCalibration = new PostCalibration(this);
     m_outputTab = new OutputTab(this);
 
@@ -56,115 +70,79 @@ StackSettings::StackSettings(QWidget *parent) :
 	ui->tabWidget->setTabEnabled(intermediateTab, false);
 	ui->tabWidget->setTabEnabled(postCalibrationTab, false);
 	ui->tabWidget->setTabEnabled(outputTab, false);
-
-	// m_tabIntermediate.SetRegisteringOnly(registeringOnly);
-	if (registeringOnly)
-	{
-		if (m_bEnableDark || enableAll)
-			ui->tabWidget->setTabEnabled(darkTab, true);
-		if (m_bEnableFlat || enableAll)
-			ui->tabWidget->setTabEnabled(flatTab, true);
-		if (m_bEnableBias || enableAll)
-			ui->tabWidget->setTabEnabled(flatTab, true);
-		ui->tabWidget->setTabEnabled(intermediateTab, false);
-	}
-	else
-	{
-		ui->tabWidget->setTabEnabled(resultTab, true);
-		if (m_bEnableCometStacking || enableAll)
-			ui->tabWidget->setTabEnabled(cometTab, true);
-		if (m_bEnableDark || enableAll)
-			ui->tabWidget->setTabEnabled(darkTab, true);
-		if (m_bEnableFlat || enableAll)
-			ui->tabWidget->setTabEnabled(flatTab, true);
-		if (m_bEnableBias || enableAll)
-			ui->tabWidget->setTabEnabled(flatTab, true);
-		ui->tabWidget->setTabEnabled(alignmentTab, true);
-		ui->tabWidget->setTabEnabled(postCalibrationTab, true);
-		ui->tabWidget->setTabEnabled(outputTab, true);
-	};
-
-	// Init controls
-	CWorkspace			workspace;
-	DWORD				lIteration;
-	DWORD				dwBackgroundCalibration = 1;
-	DWORD				dwPerChannelBackgroundCalibration = 0;
-	bool				fDarkOptimization;
-	bool				fDarkFactor;
-	QString				strDarkFactor = "1.0";
-	bool				fHotPixels;
-	bool				fBadColumns = 0;
-	DWORD				dwMosaic = 0;
-	bool				fCreateIntermediates;
-	bool				fSaveCalibrated;
-	bool				fSaveDebayered = 0;
-	DWORD				dwSaveFormat = 1;
-	DWORD				dwAlignment = 0;
-	DWORD				dwDrizzle = 1;
-	bool				fAlignChannels = 0;
-	DWORD				dwCometStackingMode = 0;
-	bool				fDebloom = false;
-	double				fKappa;
-
-	if (enableAll || !registeringOnly)
-	{
-
-
-
-
-		if (cometStacking || enableAll)
-		{
-			dwCometStackingMode = workspace.value("Stacking/CometStackingMode", (uint)CSM_STANDARD).toUInt();
-			m_tabComet.SetCometStackingMode((COMETSTACKINGMODE)dwCometStackingMode);
-		};
-
-		CPostCalibrationSettings		PCSettings;
-
-		CAllStackingTasks::GetPostCalibrationSettings(PCSettings);
-		m_tabPostCalibration.SetPostCalibration(PCSettings);
-		m_tabPostCalibration.setStackingTasks(pStackingTasks);
-
-		COutputSettings					OutputSettings;
-
-		CAllStackingTasks::GetOutputSettings(OutputSettings);
-		m_tabOutput.SetOutputSettings(OutputSettings);
-	};
-
-	dwSaveFormat = workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
-	m_tabIntermediate.SetFileFormat((INTERMEDIATEFILEFORMAT)dwSaveFormat);
-
-	fCreateIntermediates = workspace.value("Stacking/CreateIntermediates", false).toBool();
-	m_tabIntermediate.SetCreateIntermediates(fCreateIntermediates);
-
-	fSaveCalibrated = workspace.value("Stacking/SaveCalibrated", false).toBool();
-	m_tabIntermediate.SetSaveCalibrated(fSaveCalibrated);
-
-	fSaveDebayered = workspace.value("Stacking/SaveCalibratedDebayered", false).toBool();
-	m_tabIntermediate.SetSaveDebayered(fSaveDebayered);
-
-
-	if (enableAll || !registeringOnly)
-	{
-		dwAlignment = workspace.value("Stacking/AlignmentTransformation", 0).toUInt();
-		m_tabAlignment.SetAlignment(dwAlignment);
-	};
-
-
 }
 
 StackSettings::~StackSettings()
 {
     delete ui;
-    delete m_ResultParameters;
-    delete m_CometStacking;
-    delete m_IntermediateFiles;
-    delete m_PostCalibration;
-    delete m_OutputTab;
+}
+
+void StackSettings::updateControls()
+{
+	if (registeringOnly)
+	{
+		if (enableDark || enableAll)
+			ui->tabWidget->setTabEnabled(darkTab, true);
+		if (enableFlat || enableAll)
+			ui->tabWidget->setTabEnabled(flatTab, true);
+		if (enableBias || enableAll)
+			ui->tabWidget->setTabEnabled(biasTab, true);
+		ui->tabWidget->setTabEnabled(intermediateTab, false);
+	}
+	else
+	{
+		ui->tabWidget->setTabEnabled(resultTab, true);
+		if (cometStacking || enableAll)
+			ui->tabWidget->setTabEnabled(cometTab, true);
+		if (enableDark || enableAll)
+			ui->tabWidget->setTabEnabled(darkTab, true);
+		if (enableFlat || enableAll)
+			ui->tabWidget->setTabEnabled(flatTab, true);
+		if (enableBias || enableAll)
+			ui->tabWidget->setTabEnabled(biasTab, true);
+		ui->tabWidget->setTabEnabled(alignmentTab, true);
+		ui->tabWidget->setTabEnabled(intermediateTab, true);
+		ui->tabWidget->setTabEnabled(postCalibrationTab, true);
+		ui->tabWidget->setTabEnabled(outputTab, true);
+	};
+
+	if (ui->tabWidget->isTabEnabled(resultTab))
+		ui->tabWidget->setCurrentIndex(resultTab);
+
 }
 
 void StackSettings::tabChanged(int tab)
 {
-	QWidget * which = widget(tab);
+	QWidget * which = ui->tabWidget->widget(tab);
 	if (nullptr != which)
 		QMetaObject::invokeMethod(which, "onSetActive");
+}
+
+void StackSettings::accept()
+{
+	CWorkspace workspace;
+
+	//
+	// Pop the preserved workspace setting and discard the saved values
+	//
+	workspace.Pop(false);
+
+	//
+	// Harden the workspace changes
+	//
+	workspace.saveSettings();
+
+	Inherited::accept();
+}
+
+void StackSettings::reject()
+{
+	CWorkspace workspace;
+
+	//
+	// Pop the preserved workspace setting and restore the status quo ante 
+	//
+	workspace.Pop(true);
+
+	Inherited::reject();
 }

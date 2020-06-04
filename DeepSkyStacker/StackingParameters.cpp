@@ -13,6 +13,7 @@ using std::max;
 #include <QDoubleValidator>
 #include <QIntValidator>
 #include <QMenu>
+#include <QSettings>
 
 #include <ZExcept.h>
 #include <Ztrace.h>
@@ -27,8 +28,11 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
     QWidget(parent),
     ui(new Ui::StackingParameters),
 	workspace(new CWorkspace()),
-	pStackSettings(dynamic_cast<StackSettings *>(parent->parentWidget())),
-	type(theType)
+	pStackSettings(dynamic_cast<StackSettings *>(parent)),
+	type(theType),
+	nobgCalString(tr("<a href=\" \">No Background Calibration</a>")),
+	pcbgCalString(tr("<a href=\" \">Per Channel Background Calibration</a>")),
+	rgbbgCalString(tr("<a href=\" \">RGB Channels Background Calibration</a>"))
 {
 	if (nullptr == pStackSettings)
 	{
@@ -38,6 +42,7 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 
     ui->setupUi(this);
 
+//	connect(ui->backgroundCalibration, SIGNAL(linkActivated(const QString &)), this, SLOT(on_backgroundCalibration_linkActivated(const QString &)));
 	//
 	// Make all the "optional" controls invisible
 	// 
@@ -100,22 +105,22 @@ StackingParameters & StackingParameters::createActions()
 	connect(nobgCal, &QAction::triggered, this,
 		[=]() { this->setBackgroundCalibration(BCM_NONE); });
 	connect(nobgCal, &QAction::triggered, this,
-		[=]() { ui->backgroundCalibration->setText(nobgCal->text()); });
+		[=]() { ui->backgroundCalibration->setText(nobgCalString); });
 
 	pcbgCal = new QAction(tr("Per Channel Background Calibration"), this);
 	connect(pcbgCal, &QAction::triggered, this,
 		[=]() { this->setBackgroundCalibration(BCM_PERCHANNEL); });
 	connect(pcbgCal, &QAction::triggered, this,
-		[=]() { ui->backgroundCalibration->setText(pcbgCal->text()); });
+		[=]() { ui->backgroundCalibration->setText(pcbgCalString); });
 
 	rgbbgCal = new QAction(tr("RGB Channels Background Calibration"), this);
 	connect(rgbbgCal, &QAction::triggered, this,
 		[=]() { this->setBackgroundCalibration(BCM_RGB); });
 	connect(rgbbgCal, &QAction::triggered, this,
-		[=]() { ui->backgroundCalibration->setText(rgbbgCal->text()); });
+		[=]() { ui->backgroundCalibration->setText(rgbbgCalString); });
 
 	bgCalOptions = new QAction(tr("Options..."), this);
-	connect(bgCalOptions, SIGNAL(triggered()), this, SLOT(backgroundCalibrationOptions));
+	connect(bgCalOptions, SIGNAL(triggered()), this, SLOT(backgroundCalibrationOptions()));
 
 	return *this;
 }
@@ -141,10 +146,9 @@ StackingParameters::~StackingParameters()
 
 void StackingParameters::onSetActive()
 {
-	MULTIBITMAPPROCESSMETHOD method = MBP_AVERAGE;
-	BACKGROUNDCALIBRATIONMODE calibrationMode = BCM_NONE;
-	uint iteration;
-	double kappa;
+	method = MBP_AVERAGE;
+	mode = BCM_NONE;
+	double value = 0.0;
 	bool isChecked;
 	QString string;
 
@@ -153,6 +157,7 @@ void StackingParameters::onSetActive()
 	case PICTURETYPE_LIGHTFRAME:
 		// Make the Light frame specific controls visible
 		ui->backgroundCalibration->setVisible(true);
+		ui->backgroundCalibration->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt());
@@ -175,7 +180,7 @@ void StackingParameters::onSetActive()
 		//
 		// Set up the background calibration control
 		//
-		calibrationMode =
+		mode =
 			CAllStackingTasks::GetBackgroundCalibrationMode();
 
 		//
@@ -186,16 +191,16 @@ void StackingParameters::onSetActive()
 		//
 		// Set the text of the control depending on the calibration mode.
 		//
-		switch (calibrationMode)
+		switch (mode)
 		{
 		case BCM_NONE:
-			string = nobgCal->text();
+			string = nobgCalString;
 			break;
 		case BCM_PERCHANNEL:
-			string = pcbgCal->text();
+			string = pcbgCalString;
 			break;
 		case BCM_RGB:
-			string = rgbbgCal->text();
+			string = rgbbgCalString;
 			break;
 		}
 		ui->backgroundCalibration->setText(string);
@@ -227,8 +232,8 @@ void StackingParameters::onSetActive()
 		isChecked = workspace->value("Stacking/UseDarkFactor", false).toBool();
 		ui->useDarkFactor->setChecked(isChecked);
 
-		string = workspace->value("Stacking/DarkFactor", "1.0").toString();
-		ui->darkMultiplicationFactor->setText(string);
+		value = workspace->value("Stacking/DarkFactor", "1.0").toDouble();
+		ui->darkMultiplicationFactor->setText(QString("%L1").arg(value, 0, 'f', 4));
 
 		isChecked = workspace->value("Stacking/HotPixelsDetection", true).toBool();
 		ui->hotPixels->setChecked(isChecked);
@@ -273,6 +278,7 @@ void StackingParameters::onSetActive()
 		ui->modeEWA->setEnabled(false);
 		break;
 	};
+	updateControls(method);
 }
 
 StackingParameters & StackingParameters::setControls()
@@ -310,15 +316,14 @@ StackingParameters & StackingParameters::setControls()
 	};
 
 	QString string;
-	string = QString::asprintf("%.2f", kappa);
-	ui->kappa->setText(string);
-	string = QString::asprintf("%ld", iteration);
-	ui->iterations->setText(string);
+	ui->kappa->setText(QString("%L1").arg(kappa, 0, 'f', 2));
+	ui->iterations->setText(QString("%L1").arg(iteration));
 	return *this;
 }
 
-void	StackingParameters::on_backgroundCalibration_clicked()
+void	StackingParameters::on_backgroundCalibration_linkActivated(const QString & str)
 {
+	str;
 	//
 	// Show the popup menu 
 	//

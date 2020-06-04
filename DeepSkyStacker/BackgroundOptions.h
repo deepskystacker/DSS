@@ -40,14 +40,20 @@ private slots:
 	void on_rbMiddle_clicked();
 	void on_rbMaximum_clicked();
 
-	void accept();
-	void reject();
+	void accept() override;
+	void reject() override;
 
 private:
     Ui::BackgroundOptions *ui;
     BACKGROUNDCALIBRATIONMODE m_CalibrationMode;
     BACKGROUNDCALIBRATIONINTERPOLATION m_CalibrationInterpolation;
     RGBBACKGROUNDCALIBRATIONMETHOD m_RGBCalibrationMethod;
+	QPixmap pxNone;
+	QPixmap pxMin;
+	QPixmap pxMid;
+	QPixmap pxMax;
+	QPixmap pxLinear;
+	QPixmap pxRational;
 
     void updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION interpolation);
 };

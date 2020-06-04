@@ -40,6 +40,9 @@ private:
 	uint	iteration;
 	QString kappaSigmaTip;
 	QString medianKappaSigmaTip;
+	QString nobgCalString;
+	QString pcbgCalString;
+	QString rgbbgCalString;
 	QAction * nobgCal;
 	QAction * pcbgCal;
 	QAction * rgbbgCal;
@@ -69,7 +72,7 @@ private slots:
 	void on_modeEWA_clicked();
 	void on_modeMaximum_clicked();
 
-	void on_backgroundCalibration_clicked();
+	void on_backgroundCalibration_linkActivated(const QString &);
 	void backgroundCalibrationOptions();
 
 	void on_iterations_textEdited(const QString &text);
@@ -81,12 +84,6 @@ private slots:
 	void on_darkOptimisation_stateChanged(int);
 	void on_useDarkFactor_stateChanged(int);
 	void on_darkMultiplicationFactor_textEdited(const QString &text);
-
-
-
-
-
-
 
 	void updateControls(MULTIBITMAPPROCESSMETHOD newMethod);
 

@@ -8,17 +8,15 @@ using std::max;
 #include <ZExcept.h>
 #include <Ztrace.h>
 
-#include "PostCalibration.h"
-#include "ui/ui_PostCalibration.h"
-
-#include <ZExcept.h>
-#include <Ztrace.h>
-
 #include <QAction>
 #include <QMenu>
 #include <QPalette>
+#include <QSettings>
 #include <QString>
 #include <QSlider>
+
+#include "PostCalibration.h"
+#include "ui/ui_PostCalibration.h"
 
 #include "StackSettings.h"
 #include "StackingTasks.h"
@@ -28,7 +26,11 @@ PostCalibration::PostCalibration(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PostCalibration),
 	workspace(new CWorkspace()),
-	pStackSettings(dynamic_cast<StackSettings *>(parent->parentWidget()))
+	pStackSettings(dynamic_cast<StackSettings *>(parent)),
+	// Use our friendship with StackSettings to get at the stacking tasks pointer
+	pStackingTasks(pStackSettings->pStackingTasks),
+	medianString(tr("<a href=\" \">the median</a>")),
+	gaussianString(tr("<a href=\" \">a gaussian filter</a>"))
 {
 	if (nullptr == pStackSettings)
 	{
@@ -37,10 +39,16 @@ PostCalibration::PostCalibration(QWidget *parent) :
 	}
     ui->setupUi(this);
 
-	//
-	// Use our friendship with StackSettings to get at the stacking tasks pointer
-	//
-	pStackingTasks = pStackSettings->pStackingTasks;
+	int value = workspace->value("Stacking/PCS_ReplaceMethod", (int)CR_MEDIAN).toInt();
+	switch (value)
+	{
+	case CR_MEDIAN:
+		ui->replacementMethod->setText(medianString);
+		break;
+	case CR_GAUSSIAN:
+		ui->replacementMethod->setText(gaussianString);
+		break;
+	}
 
 	createActions().createMenus();
 }
@@ -51,19 +59,20 @@ PostCalibration & PostCalibration::createActions()
 	connect(onMedian, &QAction::triggered, this,
 		[=]() { this->setReplacementMethod(CR_MEDIAN); });
 	connect(onMedian, &QAction::triggered, this,
-		[=]() { ui->replacementMethod->setText(onMedian->text()); });
+		[=]() { ui->replacementMethod->setText(medianString); });
 
 	onGaussian = new QAction(tr("a gaussian filter"), this);
 	connect(onGaussian, &QAction::triggered, this,
 		[=]() { this->setReplacementMethod(CR_GAUSSIAN); });
 	connect(onGaussian, &QAction::triggered, this,
-		[=]() { ui->replacementMethod->setText(onGaussian->text()); });
+		[=]() { ui->replacementMethod->setText(gaussianString); });
 
 	return *this;
 }
 
-void PostCalibration::on_replacementMethod_clicked()
+void PostCalibration::on_replacementMethod_linkActivated(const QString & str)
 {
+	str;
 	//
 	// Show the popup menu 
 	//
@@ -104,7 +113,7 @@ void PostCalibration::onSetActive()
 	// Display the Hot filter Detection Threshold in the user's Locale with one digit
 	// after the decimal point
 	//
-	ui->hotThresholdPercent->setText(QString("%L1").arg(pcs.m_fHotDetection, 0, 'f', 1));
+	ui->hotThresholdPercent->setText(QString("%L1%").arg(pcs.m_fHotDetection, 0, 'f', 1));
 	ui->hotThreshold->setSliderPosition(1000 - pcs.m_fHotDetection*10.0);
 
 	ui->cleanColdPixels->setChecked(pcs.m_bCold);
@@ -121,7 +130,7 @@ void PostCalibration::onSetActive()
 	// Display the Cold filter Detection Threshold in the user's Locale with one digit
 	// after the decimal point
 	//
-	ui->coldThresholdPercent->setText(QString("%L1").arg(pcs.m_fColdDetection, 0, 'f', 1));
+	ui->coldThresholdPercent->setText(QString("%L1%").arg(pcs.m_fColdDetection, 0, 'f', 1));
 	ui->coldThreshold->setSliderPosition(1000 - pcs.m_fColdDetection*10.0);
 
 	//
@@ -136,12 +145,10 @@ void PostCalibration::onSetActive()
 	if (nullptr != pStackingTasks && (pcs.m_bHot || pcs.m_bCold))
 	{
 		ui->testCosmetic->setForegroundRole(QPalette::Link);
-		ui->testCosmetic->setEnabled(true);
 	}
 	else
 	{
-		ui->testCosmetic->setForegroundRole(QPalette::Text);
-		ui->testCosmetic->setEnabled(false);
+		ui->testCosmetic->setVisible(false);
 	}
 
 	ui->saveDeltaImage->setChecked(pcs.m_bSaveDeltaImage);
@@ -184,8 +191,9 @@ void PostCalibration::on_cleanHotPixels_toggled(bool onOff)
 	}
 }
 
-void PostCalibration::on_hotFilter_valueChanged(int newValue)
+void PostCalibration::on_hotFilter_sliderReleased()
 {
+	int newValue = ui->hotFilter->value();
 	if (pcs.m_lHotFilter != newValue)
 	{
 		//
@@ -193,17 +201,20 @@ void PostCalibration::on_hotFilter_valueChanged(int newValue)
 		//
 		pcs.m_lHotFilter = newValue;
 		workspace->setValue("Stacking/PCS_HotFilter", newValue);
-
-		//
-		// Display the new value
-		//
-		ui->hotFilterSize->setText(QString("%L1").arg(newValue));
 	}
 }
 
-void PostCalibration::on_hotThreshold_valueChanged(int value)
+void PostCalibration::on_hotFilter_valueChanged(int newValue)
 {
-	double newValue = 100.0 - (double)value / 10.0;
+	//
+	// Display the new value
+	//
+	ui->hotFilterSize->setText(QString("%L1").arg(newValue));
+}
+
+void PostCalibration::on_hotThreshold_sliderReleased()
+{
+	double newValue = 100.0 - (double)ui->hotThreshold->value() / 10.0;
 	if (pcs.m_fHotDetection != newValue)
 	{
 		//
@@ -211,12 +222,17 @@ void PostCalibration::on_hotThreshold_valueChanged(int value)
 		//
 		pcs.m_fHotDetection = newValue;
 		workspace->setValue("Stacking/PCS_HotDetection", newValue*10.0);
-
-		//
-		// Display the new value
-		//
-		ui->hotThresholdPercent->setText(QString("%L1").arg(newValue, 0, 'f', 1));
 	}
+}
+
+void PostCalibration::on_hotThreshold_valueChanged(int value)
+{
+	double newValue = 100.0 - (double)value / 10.0;
+
+	//
+	// Display the new value
+	//
+	ui->hotThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
 }
 
 void PostCalibration::on_cleanColdPixels_toggled(bool onOff)
@@ -256,8 +272,9 @@ void PostCalibration::on_cleanColdPixels_toggled(bool onOff)
 	}
 }
 
-void PostCalibration::on_coldFilter_valueChanged(int newValue)
+void PostCalibration::on_coldFilter_sliderReleased()
 {
+	int newValue = ui->hotFilter->value();
 	if (pcs.m_lColdFilter != newValue)
 	{
 		//
@@ -265,17 +282,19 @@ void PostCalibration::on_coldFilter_valueChanged(int newValue)
 		//
 		pcs.m_lColdFilter = newValue;
 		workspace->setValue("Stacking/PCS_ColdFilter", newValue);
-
-		//
-		// Display the new value
-		//
-		ui->coldFilterSize->setText(QString("%L1").arg(newValue));
 	}
 }
-
-void PostCalibration::on_coldThreshold_valueChanged(int value)
+void PostCalibration::on_coldFilter_valueChanged(int newValue)
 {
-	double newValue = 100.0 - (double)value / 10.0;
+	//
+	// Display the new value
+	//
+	ui->coldFilterSize->setText(QString("%L1").arg(newValue));
+}
+
+void PostCalibration::on_coldThreshold_sliderReleased()
+{
+	double newValue = 100.0 - (double)ui->coldThreshold->value() / 10.0;
 	if (pcs.m_fColdDetection != newValue)
 	{
 		//
@@ -283,12 +302,17 @@ void PostCalibration::on_coldThreshold_valueChanged(int value)
 		//
 		pcs.m_fColdDetection = newValue;
 		workspace->setValue("Stacking/PCS_ColdDetection", newValue*10.0);
-
-		//
-		// Display the new value
-		//
-		ui->coldThresholdPercent->setText(QString("%L1").arg(newValue, 0, 'f', 1));
 	}
+}
+
+void PostCalibration::on_coldThreshold_valueChanged(int value)
+{
+	double newValue = 100.0 - (double)value / 10.0;
+
+	//
+	// Display the new value
+	//
+	ui->coldThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
 }
 
 PostCalibration& PostCalibration::setReplacementMethod(int value)

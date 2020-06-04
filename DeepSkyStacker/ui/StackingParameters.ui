@@ -6,116 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>559</width>
-    <height>259</height>
+    <width>535</width>
+    <height>318</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Stacking</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0" columnstretch="50">
-   <item row="4" column="0">
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Stacking Mode</string>
      </property>
-     <widget class="QRadioButton" name="modeEWA">
-      <property name="geometry">
-       <rect>
-        <x>292</x>
-        <y>10</y>
-        <width>321</width>
-        <height>30</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Entropy Weighted Average
-(High Dynamic Range)</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="modeMKS">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>110</y>
-        <width>160</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Median Kappa-Sigma clipping</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="modeKS">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>80</y>
-        <width>123</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Kappa-Sigma clipping</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="modeMaximum">
-      <property name="geometry">
-       <rect>
-        <x>291</x>
-        <y>50</y>
-        <width>661</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Maximum</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="modeMedian">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>50</y>
-        <width>57</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Median</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="modeAAWA">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>140</y>
-        <width>220</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Auto Adaptive Weighted Average</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="modeAverage">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>64</width>
-        <height>17</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Average</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="backgroundCalibration">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>210</y>
+        <y>260</y>
         <width>251</width>
         <height>21</height>
        </rect>
@@ -131,7 +39,7 @@
       <property name="geometry">
        <rect>
         <x>290</x>
-        <y>210</y>
+        <y>260</y>
         <width>671</width>
         <height>21</height>
        </rect>
@@ -144,7 +52,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>180</y>
+        <y>230</y>
         <width>251</width>
         <height>21</height>
        </rect>
@@ -157,7 +65,7 @@
       <property name="geometry">
        <rect>
         <x>290</x>
-        <y>180</y>
+        <y>230</y>
         <width>306</width>
         <height>21</height>
        </rect>
@@ -170,7 +78,7 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>210</y>
+        <y>260</y>
         <width>251</width>
         <height>21</height>
        </rect>
@@ -183,7 +91,7 @@
       <property name="geometry">
        <rect>
         <x>350</x>
-        <y>210</y>
+        <y>260</y>
         <width>70</width>
         <height>23</height>
        </rect>
@@ -196,7 +104,7 @@
       <property name="geometry">
        <rect>
         <x>290</x>
-        <y>210</y>
+        <y>260</y>
         <width>143</width>
         <height>21</height>
        </rect>
@@ -209,7 +117,7 @@
       <property name="geometry">
        <rect>
         <x>440</x>
-        <y>210</y>
+        <y>260</y>
         <width>51</width>
         <height>21</height>
        </rect>
@@ -218,51 +126,126 @@
        <string/>
       </property>
      </widget>
-     <widget class="QLabel" name="staticKappa">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>100</y>
-        <width>34</width>
-        <height>20</height>
+        <x>10</x>
+        <y>10</y>
+        <width>491</width>
+        <height>211</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Kappa:</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="kappa">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>100</y>
-        <width>71</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="iterations">
-      <property name="geometry">
-       <rect>
-        <x>400</x>
-        <y>130</y>
-        <width>71</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="staticIterations">
-      <property name="geometry">
-       <rect>
-        <x>290</x>
-        <y>130</y>
-        <width>102</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Number of iterations:</string>
-      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QRadioButton" name="modeAverage">
+         <property name="text">
+          <string>Average</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" colspan="3">
+        <widget class="QRadioButton" name="modeEWA">
+         <property name="text">
+          <string>Entropy Weighted Average
+(High Dynamic Range)</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QRadioButton" name="modeMedian">
+         <property name="text">
+          <string>Median</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="3">
+        <widget class="QRadioButton" name="modeMaximum">
+         <property name="text">
+          <string>Maximum</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QRadioButton" name="modeKS">
+         <property name="text">
+          <string>Kappa-Sigma clipping</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QRadioButton" name="modeMKS">
+         <property name="text">
+          <string>Median Kappa-Sigma clipping</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QRadioButton" name="modeAAWA">
+         <property name="text">
+          <string>Auto Adaptive Weighted Average</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="staticKappa">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Kappa:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QLineEdit" name="kappa">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="staticIterations">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>Number of iterations:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QLineEdit" name="iterations">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="3">
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
@@ -276,8 +259,6 @@
   <tabstop>modeAAWA</tabstop>
   <tabstop>modeEWA</tabstop>
   <tabstop>modeMaximum</tabstop>
-  <tabstop>kappa</tabstop>
-  <tabstop>iterations</tabstop>
   <tabstop>hotPixels</tabstop>
   <tabstop>badColumns</tabstop>
   <tabstop>darkOptimisation</tabstop>

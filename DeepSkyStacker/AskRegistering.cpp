@@ -6,13 +6,6 @@
 #include "AskRegistering.h"
 #include "Registry.h"
 
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
 // CAskRegistering dialog

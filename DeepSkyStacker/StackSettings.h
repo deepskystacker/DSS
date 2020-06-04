@@ -1,7 +1,7 @@
 #ifndef STACKSETTINGS_H
 #define STACKSETTINGS_H
 
-#include <QTabWidget>
+#include <QDialog>
 #include "ResultParameters.h"
 #include "CometStacking.h"
 #include "PostCalibration.h"
@@ -15,16 +15,22 @@ namespace Ui {
 class StackSettings;
 }
 
-class StackSettings : public QTabWidget
+class StackSettings : public QDialog
 {
 	friend class StackingParameters;
 	friend class PostCalibration;
+
+	typedef QDialog
+		Inherited;
 
 	Q_OBJECT
 
 public:
     explicit StackSettings(QWidget *parent = nullptr);
     ~StackSettings();
+
+	void accept() override;
+	void reject() override;
 
 	inline StackSettings & setStartingTab(LONG lStartingTab) noexcept
 	{
@@ -35,12 +41,14 @@ public:
 	inline StackSettings & setRegisteringOnly(bool bRegisteringOnly) noexcept
 	{
 		registeringOnly = bRegisteringOnly;
+		updateControls();
 		return *this;
 	};
 
 	inline StackSettings & enableCometStacking(bool value) noexcept
 	{
 		cometStacking = value;
+		updateControls();
 		return *this;
 	};
 
@@ -55,12 +63,14 @@ public:
 		enableDark = bDark;
 		enableFlat = bFlat;
 		enableBias = bBias;
+		updateControls();
 		return *this;
 	};
 
-	inline StackSettings & setEnableAll(bool bEnableAll) noexcept
+	inline StackSettings & setEnableAll(bool value) noexcept
 	{
-		enableAll = bEnableAll;
+		enableAll = value;
+		updateControls();
 		return *this;
 	};
 
@@ -91,8 +101,6 @@ public:
 		return (customRectangleEnabled && customRectangleSelected);
 	};
 
-	bool shouldShowDebloom() noexcept;
-
 private:
     Ui::StackSettings *ui;
     ResultParameters * m_resultParameters;
@@ -116,6 +124,8 @@ private:
 	int intermediateTab;
 	int postCalibrationTab;
 	int outputTab;
+
+	void updateControls();
 
 	LONG					startingTab;
 	bool					registeringOnly;

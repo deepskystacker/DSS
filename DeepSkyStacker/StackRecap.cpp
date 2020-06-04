@@ -2,6 +2,11 @@
 //
 
 #include "stdafx.h"
+
+#include <QMessageBox>
+#include <QSettings>
+#include <QWidget>
+
 #include "DeepSkyStacker.h"
 #include "StackRecap.h"
 #include "StackSettings.h"
@@ -11,6 +16,9 @@
 #include "RecommandedSettings.h"
 #include "Registry.h"
 #include "DeepStackerDlg.h"
+
+#include "qmfcapp.h"
+#include "qwinwidget.h"
 
 const LONG					SSTAB_RESULT = 1;
 const LONG					SSTAB_LIGHT = 2;
@@ -666,6 +674,13 @@ void CStackRecap::CallStackingParameters(LONG lID)
 {
 	ZFUNCTRACE_RUNTIME();
 
+	QWinWidget	widget(this);
+
+	QMessageBox msgBox(&widget);
+	msgBox.setText("Display Stacking Settings");
+	msgBox.exec();
+
+#if (0)
 	CStackSettings			dlg;
 	CRect					rcCustom;
 
@@ -690,6 +705,7 @@ void CStackRecap::CallStackingParameters(LONG lID)
 			FillWithAllTasksHTML();
 		};
 	};
+#endif
 };
 
 /* ------------------------------------------------------------------- */

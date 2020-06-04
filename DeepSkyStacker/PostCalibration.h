@@ -5,6 +5,7 @@ class CWorkspace;
 class StackSettings;
 class CAllStackingTasks;
 class QAction;
+class QString;
 class QMenu;
 
 #include <QWidget>
@@ -38,6 +39,8 @@ private:
 	QAction * onMedian;
 	QAction * onGaussian;
 	QMenu   * replacementMenu;
+	QString medianString;
+	QString gaussianString;
 	PostCalibration & createActions();
 	PostCalibration & createMenus();
 	PostCalibration & setReplacementMethod(int);
@@ -45,14 +48,18 @@ private:
 
 private slots:
 	void on_cleanHotPixels_toggled(bool);
+	void on_hotFilter_sliderReleased();
 	void on_hotFilter_valueChanged(int);
+	void on_hotThreshold_sliderReleased();
 	void on_hotThreshold_valueChanged(int);
 
 	void on_cleanColdPixels_toggled(bool);
+	void on_coldFilter_sliderReleased();
 	void on_coldFilter_valueChanged(int);
+	void on_coldThreshold_sliderReleased();
 	void on_coldThreshold_valueChanged(int);
 
-	void on_replacementMethod_clicked();
+	void on_replacementMethod_linkActivated(const QString &);
 	void on_saveDeltaImage_toggled(bool);
 };
 

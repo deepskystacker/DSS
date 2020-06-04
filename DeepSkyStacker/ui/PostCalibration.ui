@@ -96,6 +96,9 @@
           <property name="maximum">
            <number>6</number>
           </property>
+          <property name="tracking">
+           <bool>true</bool>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -132,11 +135,14 @@
           <property name="value">
            <number>500</number>
           </property>
+          <property name="tracking">
+           <bool>true</bool>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="invertedAppearance">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -214,6 +220,9 @@
           <property name="maximum">
            <number>6</number>
           </property>
+          <property name="tracking">
+           <bool>true</bool>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -247,11 +256,14 @@
           <property name="value">
            <number>500</number>
           </property>
+          <property name="tracking">
+           <bool>true</bool>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="invertedAppearance">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -272,7 +284,7 @@
      <item>
       <widget class="QLabel" name="replacementMethod">
        <property name="text">
-        <string>the median</string>
+        <string>&lt;a href=&quot; &quot;&gt;the median&lt;/a&gt;</string>
        </property>
       </widget>
      </item>
@@ -292,7 +304,7 @@
      <item>
       <widget class="QLabel" name="testCosmetic">
        <property name="text">
-        <string>Test on first frame...</string>
+        <string>&lt;a href=&quot; &quot;&gt;Test on first frame...&lt;/a&gt;</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

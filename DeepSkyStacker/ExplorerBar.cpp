@@ -2,6 +2,13 @@
 //
 
 #include "stdafx.h"
+
+
+#include <QMenu>
+#include <QMessageBox>
+#include <QSettings>
+#include <QObject>
+
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
 #include "RawDDPSettings.h"
@@ -14,10 +21,6 @@
 
 #include "qmfcapp.h"
 #include "qwinwidget.h"
-
-#include <QMenu>
-#include <QMessageBox>
-#include <QObject>
 
 using namespace Gdiplus;
 
@@ -852,7 +855,7 @@ void CExplorerBar::OnOptionsSettings(NMHDR * pNotifyStruct, LRESULT * result)
 		widget.showCentered();
 
 		StackSettings dlg(&widget);
-		dlg.SetEnableAll(true);
+		dlg.setEnableAll(true);
 		dlg.exec();
 	}
 }

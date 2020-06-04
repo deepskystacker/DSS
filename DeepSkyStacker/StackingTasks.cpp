@@ -2307,42 +2307,42 @@ void CAllStackingTasks::SetPostCalibrationSettings(const CPostCalibrationSetting
 
 void CAllStackingTasks::GetOutputSettings(COutputSettings & os)
 {
-	CWorkspace workspace;
+	QSettings settings;
 
-	os.m_bOutput = workspace.value("Output/Output", true).toBool();
+	os.m_bOutput = settings.value("Output/Output", true).toBool();
 
-	os.m_bOutputHTML = workspace.value("Output/OutputHTML", false).toBool();
+	os.m_bOutputHTML = settings.value("Output/OutputHTML", false).toBool();
 
-	bool temp = workspace.value("Output/FileName", false).toBool();
+	bool temp = settings.value("Output/FileName", false).toBool();
 	os.m_bAutosave = !temp;
 	os.m_bFileList = temp;
 
-	os.m_bAppend = workspace.value("Output/AppendNumber", true).toBool();
+	os.m_bAppend = settings.value("Output/AppendNumber", true).toBool();
 
-	int tempInt = workspace.value("Output/OutputFolder", 0).toUInt();
+	int tempInt = settings.value("Output/OutputFolder", 0).toUInt();
 	os.m_bRefFrameFolder = (tempInt == 0);
 	os.m_bFileListFolder = (tempInt == 1);
 	os.m_bOtherFolder	 = (tempInt == 2);
 
-	os.m_strFolder = workspace.value("Output/OutputFolderName").toString();
+	os.m_strFolder = settings.value("Output/OutputFolderName").toString();
 };
 
 /* ------------------------------------------------------------------- */
 
 void CAllStackingTasks::SetOutputSettings(const COutputSettings & os)
 {
-	CWorkspace workspace;
+	QSettings settings;
 
-	workspace.setValue("Output/Output", os.m_bOutput);
+	settings.setValue("Output/Output", os.m_bOutput);
 
-	workspace.setValue("Output/OutputHTML", os.m_bOutputHTML);
+	settings.setValue("Output/OutputHTML", os.m_bOutputHTML);
 
 	// 
 	// Save value of false if m_bAutosave is true
 	//
-	workspace.setValue("Output/FileName", (os.m_bAutosave ? false : true));
+	settings.setValue("Output/FileName", (os.m_bAutosave ? false : true));
 
-	workspace.setValue("Output/AppendNumber",  os.m_bAppend);
+	settings.setValue("Output/AppendNumber",  os.m_bAppend);
 
 	int	tempInt;
 	if (os.m_bRefFrameFolder)
@@ -2351,9 +2351,9 @@ void CAllStackingTasks::SetOutputSettings(const COutputSettings & os)
 		tempInt = 1;
 	else
 		tempInt = 2;
-	workspace.setValue("Output/OutputFolder", tempInt);
+	settings.setValue("Output/OutputFolder", tempInt);
 
-	workspace.setValue("Output/OutputFolderName", os.m_strFolder);
+	settings.setValue("Output/OutputFolderName", os.m_strFolder);
 };
 
 /* ------------------------------------------------------------------- */

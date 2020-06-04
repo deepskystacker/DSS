@@ -26,12 +26,6 @@ using namespace Gdiplus;
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 CString INPUTFILE_FILTERS;
 CString OUTPUTFILE_FILTERS;
 CString	OUTPUTLIST_FILTERS;
@@ -332,6 +326,8 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	int				nRetCode = 0;
 	HANDLE			hMutex;
 	bool			bFirstInstance = true;
+
+	_CrtSetDbgFlag(0);
 
 	ZTRACE_RUNTIME("Checking Mutex");
 

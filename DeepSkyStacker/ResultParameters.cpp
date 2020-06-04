@@ -5,11 +5,13 @@ using std::max;
 #define _WIN32_WINNT _WIN32_WINNT_WINXP
 #include <afx.h>
 
-#include "ResultParameters.h"
-#include "ui/ui_ResultParameters.h"
+#include <QSettings>
 
 #include <ZExcept.h>
 #include <Ztrace.h>
+
+#include "ResultParameters.h"
+#include "ui/ui_ResultParameters.h"
 
 #include "DSSCommon.h"
 #include "StackSettings.h"
@@ -30,6 +32,15 @@ ResultParameters::ResultParameters(QWidget *parent) :
 	
     ui->setupUi(this);
 
+}
+
+ResultParameters::~ResultParameters()
+{
+    delete ui;
+}
+
+void ResultParameters::onSetActive()
+{
 	//
 	// Initially set the Custom Rectangle radio buttion to disabled - it should only be enabled if
 	// a custom rectangle has been defined and we are going to stack after registering.
@@ -39,7 +50,7 @@ ResultParameters::ResultParameters(QWidget *parent) :
 	//
 	// select the appropriate check box for stacking mode
 	//
-    STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
+	STACKINGMODE stackingMode = static_cast<STACKINGMODE>(workspace->value("Stacking/Mosaic", uint(0)).toUInt());
 
 	switch (stackingMode)
 	{
@@ -64,6 +75,10 @@ ResultParameters::ResultParameters(QWidget *parent) :
 			if (pStackSettings->isCustomRectangleSelected())
 			{
 				ui->customMode->setChecked(true);
+				if (customPix.isNull())
+				{
+					customPix.load(":/stacking/custommode.bmp");
+				}
 				ui->previewImage->setPixmap(customPix);
 				ui->modeText->setText("");
 			}
@@ -71,23 +86,35 @@ ResultParameters::ResultParameters(QWidget *parent) :
 		else
 		{
 			ui->normalMode->setChecked(true);
+			if (normalPix.isNull())
+			{
+				normalPix.load(":/stacking/normalmode.bmp");
+			}
 			ui->previewImage->setPixmap(normalPix);
 			ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame."));
 		}
 		break;
 	case SM_MOSAIC:
 		ui->mosaicMode->setChecked(true);
+		if (mosaicPix.isNull())
+		{
+			mosaicPix.load(":/stacking/mosaicmode.bmp");
+		}
 		ui->previewImage->setPixmap(mosaicPix);
 		ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
 		break;
 	case SM_INTERSECTION:
 		ui->intersectionMode->setChecked(true);
+		if (intersectionPix.isNull())
+		{
+			intersectionPix.load(":/stacking/intersectionmode.bmp");
+		}
 		ui->previewImage->setPixmap(intersectionPix);
 		ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
 		break;
-	//
-	// SM_CUSTOM isn't used here
-	//
+		//
+		// SM_CUSTOM isn't used here
+		//
 	default:
 		break;
 	}
@@ -107,11 +134,6 @@ ResultParameters::ResultParameters(QWidget *parent) :
 
 	bool alignRGB = workspace->value("Stacking/AlignChannels", false).toBool();
 	ui->alignRGB->setChecked(alignRGB);
-}
-
-ResultParameters::~ResultParameters()
-{
-    delete ui;
 }
 
 void	ResultParameters::on_normalMode_clicked()

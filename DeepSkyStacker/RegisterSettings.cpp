@@ -2,6 +2,9 @@
 //
 
 #include "stdafx.h"
+
+#include <QSettings>
+
 #include "deepskystacker.h"
 #include "RegisterSettings.h"
 #include "Registry.h"
@@ -11,13 +14,6 @@
 #include "DSSProgress.h"
 #include "Workspace.h"
 #include "RecommandedSettings.h"
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -233,20 +229,29 @@ void CRegisterSettings::OnStackingParameters()
 	if (m_pStackingTasks)
 	{
 		if (m_pStackingTasks->GetCustomRectangle(rcCustom))
-			dlg.SetCustomRectangleAvailability(true, m_pStackingTasks->IsCustomRectangleUsed());
+		{
+			dlg.enableCustomRectangle(true);
+			dlg.selectCustomRectangle(m_pStackingTasks->IsCustomRectangleUsed());
+		}
 		else
-			dlg.SetCustomRectangleAvailability(false);
+		{
+			dlg.enableCustomRectangle(false);
+			dlg.selectCustomRectangle(false);
+		}
 		dlg.setTabVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
 	}
 	else
-		dlg.SetCustomRectangleAvailability(false);
+	{
+		dlg.enableCustomRectangle(false);
+		dlg.selectCustomRectangle(false);
+	}
 
 	if (!m_tabActions.m_Stack.GetCheck())
-		dlg.SetRegisteringOnly(true);
+		dlg.setRegisteringOnly(true);
 
 	dlg.setStackingTasks(m_pStackingTasks);
 
-	if ((dlg.DoModal()==IDOK) && m_pStackingTasks)
+	if ((dlg.exec()== QDialog::Accepted) && m_pStackingTasks)
 		m_pStackingTasks->UpdateTasksMethods();
 
 }

@@ -15,8 +15,9 @@ using std::max;
 #include "Workspace.h"
 
 
-IntermediateFiles::IntermediateFiles(QWidget *parent) :
+IntermediateFiles::IntermediateFiles(QWidget *parent, bool regOnly) :
 	QWidget(parent),
+	registerOnly(regOnly),
 	ui(new Ui::IntermediateFiles),
 	workspace(new CWorkspace())
 {
@@ -37,6 +38,7 @@ void IntermediateFiles::onSetActive()
 
 	value = workspace->value("Stacking/CreateIntermediates", false).toBool();
 	ui->saveIntermediate->setChecked(value);
+	ui->saveIntermediate->setDisabled(registerOnly);
 
 	fileFormat = workspace->value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
 
@@ -79,7 +81,7 @@ void IntermediateFiles::on_saveCalibrated_stateChanged(int state)
 		break;
 	}
 }
-void IntermediateFiles::on_saveBayered_stateChanged(int state)
+void IntermediateFiles::on_saveDebayered_stateChanged(int state)
 {
 	switch (state)
 	{

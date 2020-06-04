@@ -593,7 +593,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
       <Command>call $(QTDIR)\bin\qtenv2.bat
 
-$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
+$(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     </PostBuildEvent>
     <CustomBuildStep>
       <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
@@ -642,6 +642,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
       </ImageHasSafeExceptionHandlers>
       <AdditionalLibraryDirectories>C:\Program Files (x86)\Visual Leak Detector\lib\Win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <MapExports>false</MapExports>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -656,7 +657,7 @@ $(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
     <PostBuildEvent>
       <Command>call $(QTDIR)\bin\qtenv2.bat
 
-$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
+$(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Add necessary Qt stuff to the output directory</Message>

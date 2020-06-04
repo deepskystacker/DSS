@@ -1,6 +1,9 @@
 #ifndef COMETSTACKING_H
 #define COMETSTACKING_H
 #include <memory>
+
+class QPixmap;
+
 #include "DSSCommon.h"
 #include <QWidget>
 
@@ -34,6 +37,10 @@ private:
     Ui::CometStacking *ui;
 	std::unique_ptr<CWorkspace> workspace;
     COMETSTACKINGMODE m_CometStackingMode;
+	QPixmap standardPix;
+	QPixmap cometPix;
+	QPixmap advancedPix;
+
     void updateImage();
 };
 

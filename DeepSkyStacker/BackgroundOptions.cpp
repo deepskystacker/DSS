@@ -23,22 +23,30 @@ BackgroundOptions::BackgroundOptions(QWidget *parent) :
     ui->setupUi(this);
 
 	m_CalibrationMode = CAllStackingTasks::GetBackgroundCalibrationMode();
-	m_CalibrationInterpolation = CAllStackingTasks::GetBackgroundCalibrationInterpolation();
 	m_RGBCalibrationMethod = CAllStackingTasks::GetRGBBackgroundCalibrationMethod();
 
 	if ((m_CalibrationMode == BCM_NONE) || (m_CalibrationMode == BCM_PERCHANNEL))
+	{
 		ui->rbNone->setChecked(true);
+		on_rbNone_clicked();
+	}
 	else if (m_RGBCalibrationMethod == RBCM_MINIMUM)
+	{
 		ui->rbMinimum->setChecked(true);
+		on_rbMinimum_clicked();
+	}
 	else if (m_RGBCalibrationMethod == RBCM_MIDDLE)
+	{
 		ui->rbMiddle->setChecked(true);
+		on_rbMiddle_clicked();
+	}
 	else
+	{
 		ui->rbMaximum->setChecked(true);
+		on_rbMaximum_clicked();
+	}
 
-	if (m_CalibrationInterpolation == BCI_LINEAR)
-		ui->rbLinear->setChecked(true);
-	else
-		ui->rbRational->setChecked(true);
+	updateInterpolation(CAllStackingTasks::GetBackgroundCalibrationInterpolation());
 }
 
 BackgroundOptions::~BackgroundOptions()
@@ -51,14 +59,20 @@ void BackgroundOptions::updateInterpolation(BACKGROUNDCALIBRATIONINTERPOLATION i
 	m_CalibrationInterpolation = interpolation;
     if (m_CalibrationInterpolation == BCI_LINEAR)
     {
-        QPixmap pm(":/calibration/linear.bmp");
-        ui->laCalibration->setPixmap(pm);
+		if (pxLinear.isNull())
+		{
+			pxLinear.load(":/calibration/linear.bmp");
+		}
+        ui->laCalibration->setPixmap(pxLinear);
         ui->rbLinear->setChecked(true);
     }
     else
     {
-        QPixmap pm(":/calibration/rational.bmp");
-        ui->laCalibration->setPixmap(pm);
+		if (pxRational.isNull())
+		{
+			pxRational.load(":/calibration/rational.bmp");
+		}
+        ui->laCalibration->setPixmap(pxRational);
         ui->rbRational->setChecked(true);
     }
 }
@@ -75,26 +89,38 @@ void BackgroundOptions::on_rbRational_clicked()
 
 void BackgroundOptions::on_rbNone_clicked()
 {
-	QPixmap pm(":/rgbcalibration/none.bmp");
-	ui->laRGBCalibration->setPixmap(pm);
+	if (pxNone.isNull())
+	{
+		pxNone.load(":/rgbcalibration/none.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxNone);
 }
 
 void BackgroundOptions::on_rbMinimum_clicked()
 {
-	QPixmap pm(":/rgbcalibration/minimum.bmp");
-	ui->laRGBCalibration->setPixmap(pm);
+	if (pxMin.isNull())
+	{
+		pxMin.load(":/rgbcalibration/minimum.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxMin);
 }
 
 void BackgroundOptions::on_rbMiddle_clicked()
 {
-	QPixmap pm(":/rgbcalibration/middle.bmp");
-	ui->laRGBCalibration->setPixmap(pm);
+	if (pxMid.isNull())
+	{
+		pxMid.load(":/rgbcalibration/middle.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxMid);
 }
 
 void BackgroundOptions::on_rbMaximum_clicked()
 {
-	QPixmap pm(":/rgbcalibration/maximum.bmp");
-	ui->laRGBCalibration->setPixmap(pm);
+	if (pxMax.isNull())
+	{
+		pxMax.load(":/rgbcalibration/maximum.bmp");
+	}
+	ui->laRGBCalibration->setPixmap(pxMax);
 }
 
 void BackgroundOptions::accept()
@@ -125,7 +151,11 @@ void BackgroundOptions::accept()
 	{
 		m_CalibrationMode = BCM_PERCHANNEL;
 	};
+
+	Inherited::accept();
 }
 
 void BackgroundOptions::reject()
-{}
+{
+	Inherited::reject();
+}

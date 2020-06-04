@@ -23,6 +23,9 @@ public:
 	explicit ResultParameters(QWidget *parent = nullptr);
 	~ResultParameters();
 
+public slots:
+	void onSetActive();
+
 private:
 	Ui::ResultParameters *ui;
 	std::unique_ptr<CWorkspace> workspace;

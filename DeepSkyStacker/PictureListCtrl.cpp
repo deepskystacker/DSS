@@ -12,12 +12,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 // Change the list version each time a new column is added
 const DWORD		LISTVERSION	    = 3;
 
