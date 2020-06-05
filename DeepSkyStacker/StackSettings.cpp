@@ -95,6 +95,9 @@ StackSettings::StackSettings(QWidget *parent) :
 	ui->tabWidget->setTabEnabled(intermediateTab, false);
 	ui->tabWidget->setTabEnabled(postCalibrationTab, false);
 	ui->tabWidget->setTabEnabled(outputTab, false);
+
+	CWorkspace workspace;
+	workspace.Push();
 }
 
 StackSettings::~StackSettings()
