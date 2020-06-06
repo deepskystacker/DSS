@@ -130,7 +130,10 @@
            <number>990</number>
           </property>
           <property name="singleStep">
-           <number>1</number>
+           <number>10</number>
+          </property>
+          <property name="pageStep">
+           <number>100</number>
           </property>
           <property name="value">
            <number>500</number>
@@ -252,6 +255,12 @@
           </property>
           <property name="maximum">
            <number>990</number>
+          </property>
+          <property name="singleStep">
+           <number>10</number>
+          </property>
+          <property name="pageStep">
+           <number>100</number>
           </property>
           <property name="value">
            <number>500</number>

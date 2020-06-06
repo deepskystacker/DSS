@@ -191,9 +191,8 @@ void PostCalibration::on_cleanHotPixels_toggled(bool onOff)
 	}
 }
 
-void PostCalibration::on_hotFilter_sliderReleased()
+void PostCalibration::on_hotFilter_valueChanged(int newValue)
 {
-	int newValue = ui->hotFilter->value();
 	if (pcs.m_lHotFilter != newValue)
 	{
 		//
@@ -201,20 +200,17 @@ void PostCalibration::on_hotFilter_sliderReleased()
 		//
 		pcs.m_lHotFilter = newValue;
 		workspace->setValue("Stacking/PCS_HotFilter", newValue);
+
+		//
+		// Display the new value
+		//
+		ui->hotFilterSize->setText(QString("%L1").arg(newValue));
 	}
 }
 
-void PostCalibration::on_hotFilter_valueChanged(int newValue)
+void PostCalibration::on_hotThreshold_valueChanged(int value)
 {
-	//
-	// Display the new value
-	//
-	ui->hotFilterSize->setText(QString("%L1").arg(newValue));
-}
-
-void PostCalibration::on_hotThreshold_sliderReleased()
-{
-	double newValue = 100.0 - (double)ui->hotThreshold->value() / 10.0;
+	double newValue = 100.0 - (double)value / 10.0;
 	if (pcs.m_fHotDetection != newValue)
 	{
 		//
@@ -222,17 +218,12 @@ void PostCalibration::on_hotThreshold_sliderReleased()
 		//
 		pcs.m_fHotDetection = newValue;
 		workspace->setValue("Stacking/PCS_HotDetection", newValue*10.0);
+		//
+		// Display the new value
+		//
+		ui->hotThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
 	}
-}
 
-void PostCalibration::on_hotThreshold_valueChanged(int value)
-{
-	double newValue = 100.0 - (double)value / 10.0;
-
-	//
-	// Display the new value
-	//
-	ui->hotThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
 }
 
 void PostCalibration::on_cleanColdPixels_toggled(bool onOff)
@@ -272,9 +263,8 @@ void PostCalibration::on_cleanColdPixels_toggled(bool onOff)
 	}
 }
 
-void PostCalibration::on_coldFilter_sliderReleased()
+void PostCalibration::on_coldFilter_valueChanged(int newValue)
 {
-	int newValue = ui->hotFilter->value();
 	if (pcs.m_lColdFilter != newValue)
 	{
 		//
@@ -282,19 +272,16 @@ void PostCalibration::on_coldFilter_sliderReleased()
 		//
 		pcs.m_lColdFilter = newValue;
 		workspace->setValue("Stacking/PCS_ColdFilter", newValue);
+		//
+		// Display the new value
+		//
+		ui->coldFilterSize->setText(QString("%L1").arg(newValue));
 	}
 }
-void PostCalibration::on_coldFilter_valueChanged(int newValue)
-{
-	//
-	// Display the new value
-	//
-	ui->coldFilterSize->setText(QString("%L1").arg(newValue));
-}
 
-void PostCalibration::on_coldThreshold_sliderReleased()
+void PostCalibration::on_coldThreshold_valueChanged(int value)
 {
-	double newValue = 100.0 - (double)ui->coldThreshold->value() / 10.0;
+	double newValue = 100.0 - (double)value / 10.0;
 	if (pcs.m_fColdDetection != newValue)
 	{
 		//
@@ -302,17 +289,12 @@ void PostCalibration::on_coldThreshold_sliderReleased()
 		//
 		pcs.m_fColdDetection = newValue;
 		workspace->setValue("Stacking/PCS_ColdDetection", newValue*10.0);
+
+		//
+		// Display the new value
+		//
+		ui->coldThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
 	}
-}
-
-void PostCalibration::on_coldThreshold_valueChanged(int value)
-{
-	double newValue = 100.0 - (double)value / 10.0;
-
-	//
-	// Display the new value
-	//
-	ui->coldThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
 }
 
 PostCalibration& PostCalibration::setReplacementMethod(int value)
