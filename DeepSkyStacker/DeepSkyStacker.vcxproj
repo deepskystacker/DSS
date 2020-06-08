@@ -17,14 +17,6 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="RelWithDebInfo|Win32">
-      <Configuration>RelWithDebInfo</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="RelWithDebInfo|x64">
-      <Configuration>RelWithDebInfo</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectName>DeepSkyStacker</ProjectName>
@@ -40,12 +32,6 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Static</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141_xp</PlatformToolset>
@@ -54,23 +40,10 @@
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141_xp</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <UseOfAtl>Static</UseOfAtl>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141_xp</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
-    <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -79,12 +52,6 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141_xp</PlatformToolset>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
@@ -103,38 +70,20 @@
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Debug.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Release.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
-    <Import Project="..\RelWithDebInfo.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Debug.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
-  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
     <Import Project="..\Release.props" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC60.props" />
-    <Import Project="..\RelWithDebInfo.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -146,33 +95,11 @@
     <LibraryPath>..\libs\$(Platform)\$(Configuration)Libs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
     <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\$(Platform)\ReleaseLibs;$(VC_LibraryPath_x86);$(WindowsSdk_71A_LibraryPath_x86)</LibraryPath>
-    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64)</LibraryPath>
     <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
-    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\ReleaseLibs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
-    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
-    <OutDir>.\DeepSkyStacker___Win32_Release_Debug_Info\</OutDir>
-    <IntDir>.\DeepSkyStacker___Win32_Release_Debug_Info\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
-    <OutDir>$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
@@ -183,7 +110,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
     <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64);$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64)</LibraryPath>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <CustomBuildAfterTargets>
     </CustomBuildAfterTargets>
@@ -195,11 +122,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <QtInstall>5.12.8x86</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
-  </PropertyGroup>
-  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <QtInstall>5.12.8x86</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;gui-private;widgets</QtModules>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>5.12.8x64</QtInstall>
@@ -207,11 +130,7 @@
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>5.12.8x64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
-  </PropertyGroup>
-  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
-    <QtInstall>5.12.8x64</QtInstall>
-    <QtModules>core;gui;widgets</QtModules>
+    <QtModules>core;gui;gui-private;widgets</QtModules>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
@@ -263,67 +182,7 @@ $(QTDIR)\bin\windeployqt --dir $(SolutionDir)Installers\RunTime32 $(TargetPath)<
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
-    </QtMoc>
-    <QtRcc>
-      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
-    </QtRcc>
-    <QtUic>
-      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
-    </QtUic>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <Midl>
-      <TypeLibraryName>.\Release/DeepSkyStackerv8.tlb</TypeLibraryName>
-      <HeaderFileName>
-      </HeaderFileName>
-    </Midl>
-    <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <OpenMPSupport>true</OpenMPSupport>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x040c</Culture>
-    </ResourceCompile>
-    <ProjectReference />
-    <Link>
-      <AdditionalDependencies>htmlhelp.lib;zlibstat.lib;libpng16.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <SubSystem>Windows</SubSystem>
-      <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <TargetMachine>MachineX86</TargetMachine>
-      <LargeAddressAware>true</LargeAddressAware>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <ImageHasSafeExceptionHandlers>
-      </ImageHasSafeExceptionHandlers>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-    </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Bscmake>
-    <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
-    </Manifest>
-    <PostBuildEvent>
-      <Message>Add necessary Qt stuff to the output directory</Message>
-      <Command>call $(QTDIR)\bin\qtenv2.bat
-
-$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
-    </PostBuildEvent>
-    <CustomBuildStep>
-      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
-    </CustomBuildStep>
-    <QtMoc>
-      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -380,7 +239,7 @@ $(QTDIR)\bin\windeployqt --dir $(SolutionDir)Installers\RunTime64 $(TargetPath)<
       <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
     </CustomBuildStep>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -388,167 +247,6 @@ $(QTDIR)\bin\windeployqt --dir $(SolutionDir)Installers\RunTime64 $(TargetPath)<
     <QtUic>
       <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
     </QtUic>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\Release/DeepSkyStackerv8.tlb</TypeLibraryName>
-      <HeaderFileName>
-      </HeaderFileName>
-    </Midl>
-    <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <OpenMPSupport>true</OpenMPSupport>
-      <FunctionLevelLinking>false</FunctionLevelLinking>
-      <OmitFramePointers>false</OmitFramePointers>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x040c</Culture>
-    </ResourceCompile>
-    <ProjectReference />
-    <Link>
-      <AdditionalDependencies>htmlhelp.lib;zlibstat.lib;libpng16.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <SubSystem>Windows</SubSystem>
-      <TargetMachine>MachineX64</TargetMachine>
-      <EnableCOMDATFolding>false</EnableCOMDATFolding>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-    </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-    </Bscmake>
-    <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
-    </Manifest>
-    <PostBuildEvent>
-      <Command>call $(QTDIR)\bin\qtenv2.bat
-
-$(QTDIR)\bin\windeployqt --pdb $(TargetPath)</Command>
-      <Message>Add necessary Qt stuff to the output directory</Message>
-    </PostBuildEvent>
-    <CustomBuildStep>
-      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtInstallDir)\bin\lrelease %%f)</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>i18n\DSS_ca.qm;i18n\DSS_cs.qm;i18n\DSS_de.qm;i18n\DSS_en.qm;i18n\DSS_es.qm;i18n\DSS_fr.qm;i18n\DSS_it.qm;i18n\DSS_nl.qm;i18n\DSS_pt.qm;i18n\DSS_ro.qm;i18n\DSS_ru.qm;i18n\DSS_tr.qm;i18n\DSS_zh.qm</Outputs>
-    </CustomBuildStep>
-    <QtMoc>
-      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
-    </QtMoc>
-    <QtRcc>
-      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
-    </QtRcc>
-    <QtUic>
-      <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
-    </QtUic>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">
-    <Midl>
-      <TypeLibraryName>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;TRACEDSSON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\DeepSkyStacker___Win32_Release_Debug_Info/</AssemblerListingLocation>
-      <ObjectFileName>.\DeepSkyStacker___Win32_Release_Debug_Info/</ObjectFileName>
-      <ProgramDataBaseFileName>.\DeepSkyStacker___Win32_Release_Debug_Info/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x040c</Culture>
-    </ResourceCompile>
-    <Link>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStacker.exe</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
-      <GenerateMapFile>true</GenerateMapFile>
-      <SubSystem>Windows</SubSystem>
-      <LargeAddressAware>true</LargeAddressAware>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention />
-      <TargetMachine>MachineX86</TargetMachine>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.bsc</OutputFile>
-    </Bscmake>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">
-    <Midl>
-      <TargetEnvironment>X64</TargetEnvironment>
-      <TypeLibraryName>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.tlb</TypeLibraryName>
-      <HeaderFileName />
-    </Midl>
-    <ClCompile>
-      <Optimization>Disabled</Optimization>
-      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;..\tools;..\LibTIFF;..\CFitsIO;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;TRACEDSSON;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>.\DeepSkyStacker___x64_Release_Debug_Info/DeepSkyStackerv8.pch</PrecompiledHeaderOutputFile>
-      <AssemblerListingLocation>.\DeepSkyStacker___x64_Release_Debug_Info/</AssemblerListingLocation>
-      <ObjectFileName>.\DeepSkyStacker___x64_Release_Debug_Info/</ObjectFileName>
-      <ProgramDataBaseFileName>.\DeepSkyStacker___x64_Release_Debug_Info/</ProgramDataBaseFileName>
-      <WarningLevel>Level3</WarningLevel>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-    </ClCompile>
-    <ResourceCompile>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x040c</Culture>
-    </ResourceCompile>
-    <Link>
-      <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;htmlhelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>.\DeepSkyStacker___x64_Release_Debug_Info/DeepSkyStacker.exe</OutputFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.pdb</ProgramDatabaseFile>
-      <GenerateMapFile>true</GenerateMapFile>
-      <SubSystem>Windows</SubSystem>
-      <LargeAddressAware>true</LargeAddressAware>
-      <RandomizedBaseAddress>false</RandomizedBaseAddress>
-      <DataExecutionPrevention>true</DataExecutionPrevention>
-      <TargetMachine>MachineX64</TargetMachine>
-      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-    <Bscmake>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <OutputFile>.\DeepSkyStacker___Win32_Release_Debug_Info/DeepSkyStackerv8.bsc</OutputFile>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -602,7 +300,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
       <Outputs>i18n\DSS.ca_ES.qm;i18n\DSS.cs_CZ.qm;i18n\DSS.de_DE.qm;i18n\DSS.en_GB.qm;i18n\DSS.es_ES.qm;i18n\DSS.fr_FR.qm;i18n\DSS.it_IT.qm;i18n\DSS.nl_NL.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro_RO.qm;i18n\DSS.ru_RU.qm;i18n\DSS.tr_TR.qm;i18n\DSS.zh_TW.qm</Outputs>
     </CustomBuildStep>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -663,7 +361,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\$(ConfigurationName)%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -697,19 +395,15 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="..\Tools\WndImage.cpp" />
     <ClCompile Include="About.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AHDDemosaicing.cpp" />
     <ClCompile Include="AlignmentParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AskRegistering.cpp" />
@@ -717,10 +411,8 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="BackgroundLoading.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BatchStacking.cpp" />
@@ -730,6 +422,8 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="CometStacking.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CosmeticEngine.cpp" />
     <ClCompile Include="DarkFrame.cpp" />
@@ -752,9 +446,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="IntermediateFiles.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Library.cpp" />
@@ -767,9 +459,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="OutputTab.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PCLTools.cpp" />
@@ -777,9 +467,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="PostCalibration.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ProcessingDlg.cpp" />
@@ -787,18 +475,14 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="ProgressDlg.cpp" />
     <ClCompile Include="qmfcapp.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="qwinwidget.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RawDDPSettings.cpp" />
@@ -806,12 +490,17 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="RAWUtils.cpp" />
     <ClCompile Include="RecommandedSettings.cpp" />
     <ClCompile Include="RegisterEngine.cpp" />
-    <ClCompile Include="RegisterSettings.cpp" />
-    <ClCompile Include="RegisterSettings_Actions.cpp" />
-    <ClCompile Include="RegisterSettings_Advanced.cpp" />
+    <ClCompile Include="RegisterSettings.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ResultParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RGBTab.cpp" />
     <ClCompile Include="RunningStackingEngine.cpp" />
@@ -827,9 +516,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="StackingParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StackingTasks.cpp" />
@@ -837,41 +524,28 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="StackSettings.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StarMask.cpp" />
     <ClCompile Include="StarMaskDlg.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TIFFUtil.cpp" />
     <ClCompile Include="Workspace.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="DeepSkyStacker.rc">
-      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">0x0409</Culture>
-      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">0x0409</Culture>
-    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStacker.rc" />
     <ResourceCompile Include="DeepSkyStackerCAT.rc" />
     <ResourceCompile Include="DeepSkyStackerCN2.rc" />
-    <ResourceCompile Include="DeepSkyStackerCZ.rc">
-      <Culture Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">0x0405</Culture>
-      <Culture Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">0x0405</Culture>
-      <Culture Condition="'$(Configuration)|$(Platform)'=='Release|x64'">0x0405</Culture>
-      <Culture Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">0x0405</Culture>
-    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerCZ.rc" />
     <ResourceCompile Include="DeepSkyStackerDE.rc" />
     <ResourceCompile Include="DeepSkyStackerEN.rc" />
-    <ResourceCompile Include="DeepSkyStackerES.rc">
-      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|Win32'">0x0c0a</Culture>
-      <Culture Condition="'$(Configuration)|$(Platform)'=='Release Debug|x64'">0x0c0a</Culture>
-    </ResourceCompile>
+    <ResourceCompile Include="DeepSkyStackerES.rc" />
     <ResourceCompile Include="DeepSkyStackerFR.rc" />
     <ResourceCompile Include="DeepSkyStackerIT.rc" />
     <ResourceCompile Include="DeepSkyStackerNL.rc" />
@@ -974,9 +648,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="RAWUtils.h" />
     <ClInclude Include="RecommandedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
-    <ClInclude Include="RegisterSettings.h" />
-    <ClInclude Include="RegisterSettings_Actions.h" />
-    <ClInclude Include="RegisterSettings_Advanced.h" />
+    <QtMoc Include="RegisterSettings.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resourceCZ.h" />
     <ClInclude Include="resourceES.h" />
@@ -1171,6 +843,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\PostCalibration.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RawFilesTab.ui" />
+    <QtUic Include="ui\RegisterSettings.ui" />
     <QtUic Include="ui\ResultParameters.ui" />
     <QtUic Include="ui\StackingParameters.ui" />
     <QtUic Include="ui\StackSettings.ui" />

@@ -1842,22 +1842,22 @@ bool CStackingDlg::SaveOnClose()
 void CStackingDlg::RegisterCheckedImage()
 {
 	CDSSProgressDlg			dlg;
-	CRegisterSettings		dlgSettings;
+	RegisterSettings		dlgSettings;
 	bool					bContinue = true;
 
 	bool					bFound = false;
 
 	if (m_Pictures.GetNrCheckedFrames())
 	{
-		CString				strFirstLightFrame;
+		//CString				strFirstLightFrame;
 
-		m_Pictures.GetFirstCheckedLightFrame(strFirstLightFrame);
+		//m_Pictures.GetFirstCheckedLightFrame(strFirstLightFrame);
 
-		dlgSettings.SetForceRegister(!m_Pictures.GetNrUnregisteredCheckedLightFrames());
-		dlgSettings.SetNoDark(!m_Pictures.GetNrCheckedDarks());
-		dlgSettings.SetNoFlat(!m_Pictures.GetNrCheckedFlats());
-		dlgSettings.SetNoOffset(!m_Pictures.GetNrCheckedOffsets());
-		dlgSettings.SetFirstLightFrame(strFirstLightFrame);
+		//dlgSettings.SetForceRegister(!m_Pictures.GetNrUnregisteredCheckedLightFrames());
+		//dlgSettings.SetNoDark(!m_Pictures.GetNrCheckedDarks());
+		//dlgSettings.SetNoFlat(!m_Pictures.GetNrCheckedFlats());
+		//dlgSettings.SetNoOffset(!m_Pictures.GetNrCheckedOffsets());
+		//dlgSettings.SetFirstLightFrame(strFirstLightFrame);
 
 		CAllStackingTasks	tasks;
 		CRect				rcSelect;
@@ -1869,18 +1869,18 @@ void CStackingDlg::RegisterCheckedImage()
 
 		dlgSettings.setStackingTasks(&tasks);
 
-		if (dlgSettings.DoModal() == IDOK)
+		if (dlgSettings.exec())
 		{
 			double				fMinLuminancy = 0.10;
-			bool				bForceRegister;
+			bool				bForceRegister = false;
 			LONG				lCount = 0;
 			LONG				lMaxCount = 0;
-			double				fPercent;
-			bool				bStackAfter;
+			double				fPercent = 20.0;
+			bool				bStackAfter = false;
 
-			bForceRegister = dlgSettings.GetForceRegister();
-
-			bStackAfter = dlgSettings.IsStackAfter(fPercent);
+			bForceRegister = dlgSettings.isForceRegister();
+			
+			bStackAfter = dlgSettings.isStackAfter(fPercent);
 
 			if (CheckReadOnlyFolders(tasks))
 			{

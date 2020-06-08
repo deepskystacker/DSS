@@ -4,6 +4,9 @@ using std::max;
 
 #define _WIN32_WINNT _WIN32_WINNT_WINXP
 #include <afx.h>
+#include <afxcmn.h>
+#include <afxcview.h>
+#include <afxwin.h>
 
 #include <ZExcept.h>
 #include <Ztrace.h>
@@ -18,6 +21,18 @@ using std::max;
 #include "PostCalibration.h"
 #include "ui/ui_PostCalibration.h"
 
+extern bool	g_bShowRefStars;
+
+#include "..\QHTML_Static\qhtm\QHTM.h"
+
+#include "resource.h"
+#include "commonresource.h"
+#include "BitmapExt.h"
+#include "DeepStackerDlg.h"
+#include "CosmeticEngine.h"
+#include "MasterFrames.h"
+#include "DSSProgress.h"
+#include "ProgressDlg.h"
 #include "StackSettings.h"
 #include "StackingTasks.h"
 #include "Workspace.h"
@@ -27,16 +42,15 @@ PostCalibration::PostCalibration(QWidget *parent) :
     ui(new Ui::PostCalibration),
 	workspace(new CWorkspace()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent)),
-	// Use our friendship with StackSettings to get at the stacking tasks pointer
-	pStackingTasks(pStackSettings->pStackingTasks),
-	medianString(tr("<a href=\" \">the median</a>")),
-	gaussianString(tr("<a href=\" \">a gaussian filter</a>"))
+	medianString(tr("the median")),
+	gaussianString(tr("a gaussian filter"))
 {
 	if (nullptr == pStackSettings)
 	{
 		delete ui;
 		ZASSERTSTATE(nullptr != pStackSettings);
 	}
+
     ui->setupUi(this);
 
 	int value = workspace->value("Stacking/PCS_ReplaceMethod", (int)CR_MEDIAN).toInt();
@@ -70,15 +84,6 @@ PostCalibration & PostCalibration::createActions()
 	return *this;
 }
 
-void PostCalibration::on_replacementMethod_linkActivated(const QString & str)
-{
-	str;
-	//
-	// Show the popup menu 
-	//
-	replacementMenu->exec(QCursor::pos());
-}
-
 PostCalibration & PostCalibration::createMenus()
 {
 	QMenu * menu = new QMenu(this);
@@ -98,6 +103,9 @@ PostCalibration::~PostCalibration()
 void PostCalibration::onSetActive()
 {
 	CAllStackingTasks::GetPostCalibrationSettings(pcs);
+
+	// Use our friendship with StackSettings to get at the stacking tasks pointer
+	pStackingTasks = pStackSettings->pStackingTasks;
 
 	ui->cleanHotPixels->setChecked(pcs.m_bHot);
 	ui->hotFilterSize->setEnabled(pcs.m_bHot);
@@ -144,7 +152,7 @@ void PostCalibration::onSetActive()
 	//
 	if (nullptr != pStackingTasks && (pcs.m_bHot || pcs.m_bCold))
 	{
-		ui->testCosmetic->setForegroundRole(QPalette::Link);
+		ui->testCosmetic->setVisible(true);
 	}
 	else
 	{
@@ -180,13 +188,11 @@ void PostCalibration::on_cleanHotPixels_toggled(bool onOff)
 		//
 		if (nullptr != pStackingTasks && (pcs.m_bHot || pcs.m_bCold))
 		{
-			ui->testCosmetic->setForegroundRole(QPalette::Link);
-			ui->testCosmetic->setEnabled(true);
+			ui->testCosmetic->setVisible(true);
 		}
 		else
 		{
-			ui->testCosmetic->setForegroundRole(QPalette::Text);
-			ui->testCosmetic->setEnabled(false);
+			ui->testCosmetic->setVisible(false);
 		}
 	}
 }
@@ -252,13 +258,11 @@ void PostCalibration::on_cleanColdPixels_toggled(bool onOff)
 		//
 		if (nullptr != pStackingTasks && (pcs.m_bHot || pcs.m_bCold))
 		{
-			ui->testCosmetic->setForegroundRole(QPalette::Link);
-			ui->testCosmetic->setEnabled(true);
+			ui->testCosmetic->setVisible(true);
 		}
 		else
 		{
-			ui->testCosmetic->setForegroundRole(QPalette::Text);
-			ui->testCosmetic->setEnabled(false);
+			ui->testCosmetic->setVisible(false);
 		}
 	}
 }
@@ -315,3 +319,103 @@ void PostCalibration::on_saveDeltaImage_toggled(bool onOff)
 		workspace->setValue("Stacking/PCS_SaveDeltaImage", onOff);
 	}
 }
+
+void PostCalibration::on_replacementMethod_clicked()
+{
+	//
+	// Show the popup menu 
+	//
+	replacementMenu->exec(QCursor::pos());
+}
+
+void PostCalibration::on_testCosmetic_clicked()
+{
+	ZFUNCTRACE_RUNTIME();
+	// Load the reference light frame
+	if (pStackingTasks)
+	{
+		CAllStackingTasks			tasks = *(pStackingTasks);
+
+		// Retrieve the first light frame
+		tasks.ResolveTasks();
+		if (tasks.m_vStacks.size())
+		{
+			CDSSProgressDlg				dlg;
+			CStackingInfo &				StackingInfo = tasks.m_vStacks[0];
+
+			if (StackingInfo.m_pLightTask &&
+				StackingInfo.m_pLightTask->m_vBitmaps.size())
+			{
+				// Keep Only the first light frame
+				CString				strFileName;
+				CString				strText;
+
+				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
+				strFileName = StackingInfo.m_pLightTask->m_vBitmaps[0].m_strFileName;
+
+				CMasterFrames	MasterFrames;
+
+				// Disable all the tasks except the one used by StackingInfo
+				for (LONG i = 0; i < tasks.m_vTasks.size(); i++)
+					tasks.m_vTasks[i].m_bDone = true;
+				if (StackingInfo.m_pDarkFlatTask)
+					StackingInfo.m_pDarkFlatTask->m_bDone = false;
+				if (StackingInfo.m_pOffsetTask)
+					StackingInfo.m_pOffsetTask->m_bDone = false;
+				if (StackingInfo.m_pDarkTask)
+					StackingInfo.m_pDarkTask->m_bDone = false;
+				if (StackingInfo.m_pFlatTask)
+					StackingInfo.m_pFlatTask->m_bDone = false;
+				if (StackingInfo.m_pLightTask)
+					StackingInfo.m_pLightTask->m_bDone = false;
+
+				strText.LoadString(IDS_COMPUTINGCOSMETICSTATS);
+				dlg.Start(strText, 0, false);
+
+				dlg.SetJointProgress(true);
+				tasks.DoAllPreTasks(&dlg);
+				MasterFrames.LoadMasters(&StackingInfo, &dlg);
+
+				// Load the image
+				CBitmapInfo		bmpInfo;
+				// Load the bitmap
+				if (GetPictureInfo(strFileName, bmpInfo) && bmpInfo.CanLoad())
+				{
+					CSmartPtr<CMemoryBitmap>	pBitmap;
+					CString						strDescription;
+
+					bmpInfo.GetDescription(strDescription);
+
+					if (bmpInfo.m_lNrChannels == 3)
+						strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)strFileName);
+					else
+						strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)strFileName);
+					dlg.Start2(strText, 0);
+
+					if (::LoadPicture(strFileName, &pBitmap, &dlg))
+					{
+						// Apply offset, dark and flat to lightframe
+						MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);
+
+						// Then simulate the cosmetic on this image
+						CCosmeticStats			Stats;
+
+						SimulateCosmetic(pBitmap, pcs, Stats, &dlg);
+
+						// Show the results
+						double	fHotPct = (double)Stats.m_lNrDetectedHotPixels / Stats.m_lNrTotalPixels * 100.0,
+							fColdPct = (double)Stats.m_lNrDetectedColdPixels / Stats.m_lNrTotalPixels * 100.0;
+
+						CString	strCosmeticStat;
+
+						strCosmeticStat.Format(IDS_COSMETICSTATS, Stats.m_lNrDetectedHotPixels, fHotPct, Stats.m_lNrDetectedColdPixels, fColdPct);
+
+						AfxMessageBox(strCosmeticStat, MB_ICONINFORMATION | MB_OK);
+					};
+
+					dlg.End2();
+				};
+			};
+		};
+	};
+};

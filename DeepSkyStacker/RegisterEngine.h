@@ -181,7 +181,7 @@ protected :
 	void	ComputeOverallQuality()
 	{
 		m_fOverallQuality = 0.0;
-		for (LONG i = 0;i<m_vStars.size();i++)
+		for (STARVECTOR::size_type i = 0;i<m_vStars.size();i++)
 			m_fOverallQuality += m_vStars[i].m_fQuality;
 	};
 
@@ -223,7 +223,7 @@ public :
 
 		// Compute FWHM
 		m_fFWHM = 0.0;
-		for (LONG i = 0;i<m_vStars.size();i++)
+		for (STARVECTOR::size_type i = 0;i<m_vStars.size();i++)
 			vFWHM.push_back(m_vStars[i].m_fMeanRadius * 2.35/1.5);
 
 		if (vFWHM.size())

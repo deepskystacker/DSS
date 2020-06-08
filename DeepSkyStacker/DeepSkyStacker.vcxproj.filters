@@ -132,12 +132,6 @@
     <ClCompile Include="RegisterSettings.cpp">
       <Filter>Dialogs\Registering</Filter>
     </ClCompile>
-    <ClCompile Include="RegisterSettings_Actions.cpp">
-      <Filter>Dialogs\Registering</Filter>
-    </ClCompile>
-    <ClCompile Include="RegisterSettings_Advanced.cpp">
-      <Filter>Dialogs\Registering</Filter>
-    </ClCompile>
     <ClCompile Include="LuminanceTab.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
@@ -452,15 +446,6 @@
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="AskRegistering.h">
-      <Filter>Dialogs\Registering</Filter>
-    </ClInclude>
-    <ClInclude Include="RegisterSettings.h">
-      <Filter>Dialogs\Registering</Filter>
-    </ClInclude>
-    <ClInclude Include="RegisterSettings_Actions.h">
-      <Filter>Dialogs\Registering</Filter>
-    </ClInclude>
-    <ClInclude Include="RegisterSettings_Advanced.h">
       <Filter>Dialogs\Registering</Filter>
     </ClInclude>
     <ClInclude Include="LuminanceTab.h">
@@ -1136,6 +1121,9 @@
     <QtUic Include="ui\StackSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\RegisterSettings.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1173,6 +1161,9 @@
     </QtMoc>
     <QtMoc Include="StackRecap.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="RegisterSettings.h">
+      <Filter>Dialogs\Registering</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

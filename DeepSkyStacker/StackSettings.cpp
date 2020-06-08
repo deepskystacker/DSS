@@ -7,6 +7,7 @@ using std::max;
 
 #include <QFileDialog>
 #include <QSettings>
+#include <QShowEvent>
 
 #include <ZExcept.h>
 #include <Ztrace.h>
@@ -18,6 +19,7 @@ using std::max;
 StackSettings::StackSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::StackSettings),
+	initialised(false),
 	pStackingTasks(nullptr),
 	registeringOnly(false),
 	cometStacking(false),
@@ -32,10 +34,59 @@ StackSettings::StackSettings(QWidget *parent) :
 
 	setWindowTitle(tr("Stacking Settings"));
 
+	m_resultParameters = new ResultParameters(this);
+	m_cometStacking = new CometStacking(this);
+	m_alignmentParameters = new AlignmentParameters(this);
+	m_intermediateFiles = new IntermediateFiles(this, registeringOnly);
+	m_postCalibration = new PostCalibration(this);
+	m_outputTab = new OutputTab(this);
+
+	m_lightFrames = new StackingParameters(this, PICTURETYPE_LIGHTFRAME);
+	m_darkFrames = new StackingParameters(this, PICTURETYPE_DARKFRAME);
+	m_flatFrames = new StackingParameters(this, PICTURETYPE_FLATFRAME);
+	m_biasFrames = new StackingParameters(this, PICTURETYPE_OFFSETFRAME);
+
+	resultTab = ui->tabWidget->addTab(m_resultParameters, m_resultParameters->windowTitle());
+	cometTab = ui->tabWidget->addTab(m_cometStacking, m_cometStacking->windowTitle());;
+	lightTab = ui->tabWidget->addTab(m_lightFrames, tr("Light"));;
+	darkTab = ui->tabWidget->addTab(m_darkFrames, tr("Dark"));;
+	flatTab = ui->tabWidget->addTab(m_flatFrames, tr("Flat"));;
+	biasTab = ui->tabWidget->addTab(m_biasFrames, tr("Bias/Offset"));
+	alignmentTab = ui->tabWidget->addTab(m_alignmentParameters, m_alignmentParameters->windowTitle());
+	intermediateTab = ui->tabWidget->addTab(m_intermediateFiles, m_intermediateFiles->windowTitle());
+	postCalibrationTab = ui->tabWidget->addTab(m_postCalibration, m_postCalibration->windowTitle());;
+	outputTab = ui->tabWidget->addTab(m_outputTab, m_outputTab->windowTitle());
+
+	ui->tabWidget->setTabEnabled(resultTab, false);
+	ui->tabWidget->setTabEnabled(cometTab, false);
+	ui->tabWidget->setTabEnabled(darkTab, false);
+	ui->tabWidget->setTabEnabled(flatTab, false);
+	ui->tabWidget->setTabEnabled(biasTab, false);
+	ui->tabWidget->setTabEnabled(alignmentTab, false);
+	ui->tabWidget->setTabEnabled(intermediateTab, false);
+	ui->tabWidget->setTabEnabled(postCalibrationTab, false);
+	ui->tabWidget->setTabEnabled(outputTab, false);
+
+	//
+	// If the user selects a tab we want to know.
+	//
+	connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+
+	CWorkspace workspace;
+	workspace.Push();
+}
+
+StackSettings::~StackSettings()
+{
+    delete ui;
+}
+
+void StackSettings::onInitDialog()
+{
 	//
 	// Get number of processors we're allowed to use.   Normally this is the number of
-	// real cores available, but this can artificially be limited by setting a value for 
-	// "MaxProcessors" in the application settings (registry or ini file).
+	// real cores available, but this can artificially be limited by setting  
+	// "MaxProcessors" to 1 in the application settings (registry or ini file).
 	//
 	// If this is done the the number used will be min("MaxProcessors", cores)
 	//
@@ -55,54 +106,7 @@ StackSettings::StackSettings(QWidget *parent) :
 	CAllStackingTasks::GetTemporaryFilesFolder(folder);
 	ui->tempFilesFolder->setText(folder);
 
-	//
-	// If the user selects a tab we want to know.
-	//
-	connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
-
-	m_resultParameters = new ResultParameters(this);
-    m_cometStacking = new CometStacking(this);
-    m_alignmentParameters = new AlignmentParameters(this);
-    m_intermediateFiles = new IntermediateFiles(this, registeringOnly);
-    m_postCalibration = new PostCalibration(this);
-    m_outputTab = new OutputTab(this);
-
-    m_lightFrames = new StackingParameters(this, PICTURETYPE_LIGHTFRAME);
-
-    m_darkFrames = new StackingParameters(this, PICTURETYPE_DARKFRAME);
-
-    m_flatFrames = new StackingParameters(this, PICTURETYPE_FLATFRAME);
-
-    m_biasFrames = new StackingParameters(this, PICTURETYPE_OFFSETFRAME);
-
-	resultTab = ui->tabWidget->addTab(m_resultParameters, m_resultParameters->windowTitle());
-	cometTab = ui->tabWidget->addTab(m_cometStacking, m_cometStacking->windowTitle());;
-	lightTab = ui->tabWidget->addTab(m_lightFrames, tr("Light"));;
-	darkTab = ui->tabWidget->addTab(m_darkFrames, tr("Dark"));;
-	flatTab = ui->tabWidget->addTab(m_flatFrames, tr("Flat"));;
-	biasTab = ui->tabWidget->addTab(m_biasFrames, tr("Bias/Offset"));
-	alignmentTab = ui->tabWidget->addTab(m_alignmentParameters, m_alignmentParameters->windowTitle());
-	intermediateTab = ui->tabWidget->addTab(m_intermediateFiles, m_intermediateFiles->windowTitle());
-	postCalibrationTab = ui->tabWidget->addTab(m_postCalibration, m_postCalibration->windowTitle());;
-	outputTab  = ui->tabWidget->addTab(m_outputTab, m_outputTab->windowTitle());
-	
-	ui->tabWidget->setTabEnabled(resultTab, false); 
-	ui->tabWidget->setTabEnabled(cometTab, false);
-	ui->tabWidget->setTabEnabled(darkTab, false);
-	ui->tabWidget->setTabEnabled(flatTab, false);
-	ui->tabWidget->setTabEnabled(biasTab, false);
-	ui->tabWidget->setTabEnabled(alignmentTab, false);
-	ui->tabWidget->setTabEnabled(intermediateTab, false);
-	ui->tabWidget->setTabEnabled(postCalibrationTab, false);
-	ui->tabWidget->setTabEnabled(outputTab, false);
-
-	CWorkspace workspace;
-	workspace.Push();
-}
-
-StackSettings::~StackSettings()
-{
-    delete ui;
+	updateControls();
 }
 
 void StackSettings::updateControls()
@@ -203,4 +207,18 @@ void StackSettings::reject()
 	workspace.Pop(true);
 
 	Inherited::reject();
+}
+
+void StackSettings::showEvent(QShowEvent *event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitDialog();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
 }

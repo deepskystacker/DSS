@@ -104,6 +104,7 @@ public:
 
 private:
     Ui::StackSettings *ui;
+	bool initialised;
     ResultParameters * m_resultParameters;
     CometStacking * m_cometStacking;
     AlignmentParameters * m_alignmentParameters;
@@ -138,6 +139,10 @@ private:
 	bool					customRectangleSelected;
 	bool					customRectangleEnabled;
 	CAllStackingTasks *		pStackingTasks;
+
+	void showEvent(QShowEvent *event) override;
+
+	void onInitDialog();
 
 private slots:
 	void tabChanged(int tab);

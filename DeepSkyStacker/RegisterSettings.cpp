@@ -1,244 +1,288 @@
 // RegisterSettings.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include <algorithm>
+using std::min;
+using std::max;
 
-#include <QSettings>
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#include <afx.h>
+#include <afxcmn.h>
+#include <afxcview.h>
+#include <afxdlgs.h>
 
-#include "deepskystacker.h"
+#include <ZExcept.h>
+#include <Ztrace.h>
+
+#include <QDialog>
+#include <QFileInfo>
+#include <QIntValidator>
+#include <QShowEvent>
+#include <QString>
+
 #include "RegisterSettings.h"
-#include "Registry.h"
-#include "RawDDPSettings.h"
+#include "ui/ui_RegisterSettings.h"
+
+#include "..\QHTML_Static\QHTM\QHTM.h"   // Remove once we convert "Recommanded" settings
+
+extern bool		g_bShowRefStars;
+
+#include "DSSCommon.h"
+#include "commonresource.h"
+#include "DeepStackerDlg.h"
+#include "ProgressDlg.h"
+#include "RegisterEngine.h"
+#include "StackingDlg.h"
 #include "StackSettings.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
+
 #include "Workspace.h"
+
 #include "RecommandedSettings.h"
 
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CRegisterSettings dialog
-
-
-CRegisterSettings::CRegisterSettings(CWnd* pParent /*=nullptr*/)
-	: CDialog(CRegisterSettings::IDD, pParent)
+RegisterSettings::RegisterSettings(QWidget *parent) :
+	QDialog(parent),
+	ui(new Ui::RegisterSettings),
+	workspace(new CWorkspace()),
+	initialised(false),
+	forceRegister(false),
+	stackAfter(false),
+	percentStack(0.0),
+	noDarks(true),
+	noFlats(true),
+	noOffsets(true),
+	detectionThreshold(0),
+	medianFilter(false),
+	firstLightFrame(""),
+	pStackingTasks(nullptr),
+	settingsOnly(false)
 {
-	//{{AFX_DATA_INIT(CRegisterSettings)
-	//}}AFX_DATA_INIT
+	ui->setupUi(this);
 
-	m_bStack = false;
-	m_fPercentStack = 80;
+	perCentValidator = new QIntValidator(0, 100, this);
+	ui->percentStack->setValidator(perCentValidator);
 
-	m_bNoDark = false;
-	m_bNoFlat = false;
-	m_bNoOffset = false;
-	m_pStackingTasks = nullptr;
-	m_bForceRegister = false;
-	m_bSettingsOnly	 = false;
-    m_dwDetectionThreshold = 0;
-    m_bMedianFilter = false;
+	workspace->Push();
 }
 
-/* ------------------------------------------------------------------- */
-
-void CRegisterSettings::DoDataExchange(CDataExchange* pDX)
+RegisterSettings::~RegisterSettings()
 {
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CRegisterSettings)
-	DDX_Control(pDX, IDOK, m_OK);
-	DDX_Control(pDX, IDC_SHEETRECT, m_Rect);
-	//}}AFX_DATA_MAP
+	delete ui;
 }
 
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CRegisterSettings, CDialog)
-	//{{AFX_MSG_MAP(CRegisterSettings)
-	ON_BN_CLICKED(IDC_RAWDDPSETTINGS, OnRawddpsettings)
-	ON_BN_CLICKED(IDC_STACKINGPARAMETERS, OnStackingParameters)
-	//}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_RECOMMANDEDSETTINGS, &CRegisterSettings::OnBnClickedRecommandedsettings)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CRegisterSettings message handlers
-
-BOOL CRegisterSettings::OnInitDialog()
+void RegisterSettings::onInitDialog()
 {
-	CWorkspace			workspace;
-	CString				strValue;
-	DWORD				bValue;
-	DWORD				bUseFileSettings = 1;
+	QString string;
+	bool checked = false;
 
+	string = workspace->value("Register/PercentStack", "80").toString();
+	ui->percentStack->setText(string);
+	percentStack = string.toUInt();
 
-	CDialog::OnInitDialog();
+	stackAfter = workspace->value("Register/StackAfter", false).toBool();
+	ui->stackAfter->setChecked(stackAfter);
+	ui->percentStack->setEnabled(stackAfter);
 
- 	CRect				rcSettings;
+	ui->hotPixels->setChecked(workspace->value("Register/DetectHotPixels", false).toBool());
 
-	m_Rect.GetWindowRect(&rcSettings);
-	ScreenToClient(&rcSettings);
-	rcSettings.left -= 5;
-	rcSettings.top -= 11;
+	uint value = workspace->value("Register/DetectionThreshold", 10).toUInt();
+	ui->luminanceThreshold->
+		setSliderPosition(value);
+	ui->luminancePercent->setText(QString("%1%").arg(value));
 
-	if (!m_bSettingsOnly)
-		m_Sheet.AddPage(&m_tabActions);
+	ui->medianFilter->
+		setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
 
-	m_Sheet.AddPage(&m_tabAdvanced);
-
-	m_Sheet.EnableStackedTabs( false );
-	m_Sheet.Create (this, WS_VISIBLE | WS_CHILD | WS_TABSTOP, 0);
-
-	m_Sheet.ModifyStyleEx (0, WS_EX_CONTROLPARENT);
-	m_Sheet.ModifyStyle( 0, WS_TABSTOP );
-
-	// move to left upper corner
-
-	m_Sheet.MoveWindow(&rcSettings, true);
-	m_Sheet.ShowWindow(SW_SHOWNA);
-
-	if (!m_bSettingsOnly)
+	CStackingDlg & stackingDlg = GetStackingDlg(nullptr);
+	//
+	// If there are any stackable light frames, set up the 
+	// stacking related stuff
+	//
+	if (stackingDlg.m_Pictures.GetNrCheckedFrames() > 0)
 	{
-		m_tabActions.m_ForceRegister.SetCheck(m_bForceRegister);
-		strValue.Empty();
-		QString temp = workspace.value("Register/PercentStack").toString();
-		strValue = CString((LPCTSTR)temp.utf16());
-		if (!strValue.GetLength())
-			strValue = _T("80");
+		CString temp;
+		stackingDlg.m_Pictures.GetFirstCheckedLightFrame(temp);
+		firstLightFrame = QString::fromWCharArray(temp.GetBuffer());
 
-		m_tabActions.m_Percent.SetWindowText(strValue);
+		forceRegister = !stackingDlg.m_Pictures.GetNrUnregisteredCheckedLightFrames();
+		noDarks = !stackingDlg.m_Pictures.GetNrCheckedDarks();
+		noFlats = !stackingDlg.m_Pictures.GetNrCheckedFlats();
+		noOffsets = !stackingDlg.m_Pictures.GetNrCheckedOffsets();
+	}
 
-		bValue = workspace.value("Register/StackAfter", false).toBool();
+	// Enable the computeDetected Stars button if there's a stackable light frame
+	ui->computeDetectedStars->setEnabled(!firstLightFrame.isEmpty());
+	if (settingsOnly)
+	{
+		ui->recommendedSettings->setEnabled(false);
+		ui->stackingSettings->setEnabled(false);
 
-		m_tabActions.m_Stack.SetCheck(bValue);
-		m_tabActions.m_Percent.EnableWindow(bValue);
-
+		ui->actionsTab->setEnabled(false);
 		
-		m_tabActions.m_HotPixels.SetCheck(workspace.value("Register/DetectHotPixels", false).toBool());
+		ui->tabWidget->setCurrentWidget(ui->advancedTab);
 	}
 	else
 	{
-		GetDlgItem(IDC_STACKINGPARAMETERS)->ShowWindow(SW_HIDE);
-		GetDlgItem(IDC_RECOMMANDEDSETTINGS)->ShowWindow(SW_HIDE);
-		m_tabAdvanced.GetDlgItem(IDC_COMPUTEDETECTEDSTARS)->ShowWindow(SW_HIDE);
-	};
-
-	m_tabAdvanced.m_PercentSlider.SetRange(2, 98);
-	m_tabAdvanced.m_PercentSlider.SetPos(workspace.value("Register/DetectionThreshold", 10).toUInt());
-	m_tabAdvanced.m_strFirstLightFrame = m_strFirstLightFrame;
-	
-	m_tabAdvanced.m_MedianFilter.SetCheck(workspace.value("Register/ApplyMedianFilter", false).toBool());
-	m_tabAdvanced.UpdateSliderText();
-
-	if (!m_bSettingsOnly)
-	{
-		if (m_bNoDark || m_bNoFlat || m_bNoOffset)
+		if (noDarks || noFlats || noOffsets)
 		{
-			if (m_bNoDark && m_bNoFlat && m_bNoOffset)
-				strValue.LoadString(IDS_CHECK_DARKFLATOFFSET);
-			else if (m_bNoDark && m_bNoFlat)
-				strValue.LoadString(IDS_CHECK_DARKFLAT);
-			else if (m_bNoDark && m_bNoOffset)
-				strValue.LoadString(IDS_CHECK_DARKOFFSET);
-			else if (m_bNoFlat && m_bNoOffset)
-				strValue.LoadString(IDS_CHECK_FLATOFFSET);
-			else if (m_bNoDark)
-				strValue.LoadString(IDS_CHECK_DARK);
-			else if (m_bNoFlat)
-				strValue.LoadString(IDS_CHECK_FLAT);
-			else if (m_bNoOffset)
-				strValue.LoadString(IDS_CHECK_OFFSET);
+			if (noDarks && noFlats && noOffsets)
+				string = tr("Don't forget to add and check dark, flat and offset frames before stacking.",
+					"IDS_CHECK_DARKFLATOFFSET");
+			else if (noDarks && noFlats)
+				string = tr("Don't forget to add and check dark and flat frames before stacking.",
+					"IDS_CHECK_DARKFLAT");
+			else if (noDarks && noOffsets)
+				string = tr("Don't forget to add and check dark and offset frames before stacking.",
+					"IDS_CHECK_DARKOFFSET");
+			else if (noFlats && noOffsets)
+				string = tr("Don't forget to add and check flat and offset frames before stacking.",
+					"IDS_CHECK_FLATOFFSET");
+			else if (noDarks)
+				string = tr("Don't forget to add and check dark frames before stacking.",
+					"IDS_CHECK_DARK");
+			else if (noFlats)
+				string = tr("Don't forget to add and check flat frames before stacking.",
+					"IDS_CHECK_FLAT");
+			else if (noOffsets)
+				string = tr("Don't forget to add and check offset frames before stacking.",
+					"IDS_CHECK_OFFSET");
 
-			switch (m_bNoDark + m_bNoFlat + m_bNoOffset)
+			switch (noDarks + noFlats + noOffsets)
 			{
-			case 3 :
-				m_tabActions.m_StackWarning.SetBkColor(RGB(252, 220, 221), RGB(255, 64, 64), CLabel::Gradient);
+			case 3:
+				ui->stackWarning->setStyleSheet(
+					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 64, 64)) }" );
 				break;
-			case 2 :
-				m_tabActions.m_StackWarning.SetBkColor(RGB(252, 220, 221), RGB(255, 171, 63), CLabel::Gradient);
+			case 2:
+				ui->stackWarning->setStyleSheet(
+					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 171, 63)) }" );
 				break;
-			case 1 :
-				m_tabActions.m_StackWarning.SetBkColor(RGB(252, 220, 221), RGB(255, 234, 63), CLabel::Gradient);
+			case 1:
+				ui->stackWarning->setStyleSheet(
+					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"stop:0 rgb(252, 220, 221), stop:1 rgb(255, 234, 63)) }" );
 				break;
 			};
-			m_tabActions.m_StackWarning.SetText(strValue);
 		}
 		else
 		{
-			strValue.LoadString(IDS_CHECK_ALLOK);
-			m_tabActions.m_StackWarning.SetBkColor(RGB(229, 255, 193), RGB(21, 223, 33), CLabel::Gradient);
-			m_tabActions.m_StackWarning.SetText(strValue);
+			string = tr("darks, flats and offsets/bias checked.",
+				"IDS_CHECK_ALLOK");
+			ui->stackWarning->setStyleSheet(
+				"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+				"stop:0 rgb(229, 255, 193), stop:1 rgb(21, 223, 33)) }" );
 		};
-	};
+		ui->stackWarning->setText(string);
 
-	return true;  // return true unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return false
+	}
+
+	ui->forceRegister->setChecked(forceRegister);
 }
 
-/* ------------------------------------------------------------------- */
-
-void CRegisterSettings::OnOK()
+void RegisterSettings::on_forceRegister_stateChanged(int state)
 {
-	CString				strText;
-	CWorkspace			workspace;
-	bool				hotPixels;
+	state;
+	//
+	// Only used by StackingDlg.cpp by invoking isForceRegister() after 
+	// calling exec() on this dialog.  So only held as a class variable
+	//
+	forceRegister = ui->forceRegister->isChecked();
+}
 
-	if (!m_bSettingsOnly)
+void RegisterSettings::on_hotPixels_stateChanged(int state)
+{
+	state;
+	bool hotPixels = ui->hotPixels->isChecked();
+	workspace->setValue("Register/DetectHotPixels", hotPixels);
+}
+
+void RegisterSettings::on_stackAfter_clicked()
+{
+	stackAfter = ui->stackAfter->isChecked();
+	workspace->setValue("Register/StackAfter", stackAfter);
+}
+
+void RegisterSettings::on_percentStack_textEdited(const QString &text)
+{
+	percentStack = text.toUInt();
+	workspace->setValue("Register/PercentStack", text);
+}
+
+void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
+{
+	if (detectionThreshold != newValue)
 	{
-		m_bForceRegister = m_tabActions.m_ForceRegister.GetCheck();
-
-		m_bStack = m_tabActions.m_Stack.GetCheck() ? true : false;
-		workspace.setValue("Register/StackAfter", m_bStack);
-
-		m_tabActions.m_Percent.GetWindowText(strText);
-		workspace.setValue("Register/PercentStack", QString::fromWCharArray(strText.GetBuffer()));
-
-		hotPixels = m_tabActions.m_HotPixels.GetCheck() ? true : false;
-		workspace.setValue("Register/DetectHotPixels", hotPixels);
-
-		m_fPercentStack = _ttof(strText);
-	};
-
-	m_dwDetectionThreshold = m_tabAdvanced.m_PercentSlider.GetPos();
-	workspace.setValue("Register/DetectionThreshold", (uint)m_dwDetectionThreshold);
-
-	m_bMedianFilter = m_tabAdvanced.m_MedianFilter.GetCheck() ? true : false;
-	workspace.setValue("Register/ApplyMedianFilter", m_bMedianFilter);
-
-	workspace.saveSettings();
-
-	CDialog::OnOK();
+		detectionThreshold = newValue;
+		// Display new value
+		ui->luminancePercent->setText(QString("%1%").arg(newValue, 3));
+	}
 }
 
-/* ------------------------------------------------------------------- */
-
-void CRegisterSettings::OnRawddpsettings()
+void RegisterSettings::on_computeDetectedStars_clicked()
 {
-	CRawDDPSettings			dlg;
+	// Retrieve the first checked light frame of the list
+	CDSSProgressDlg				dlg;
+	CLightFrameInfo				fi;
 
-	dlg.DoModal();
+	QFileInfo info(firstLightFrame);
+	QString fileName = info.fileName();
+
+	QString string = tr("Registering %1", "IDS_REGISTERINGNAME").arg(fileName);
+
+	dlg.Start(CString((wchar_t*)string.utf16()), 0, false);
+	dlg.SetJointProgress(true);
+	fi.RegisterPicture(CString((wchar_t*)firstLightFrame.utf16()),
+		(double)detectionThreshold / 100.0, true, medianFilter, &dlg);
+	dlg.SetJointProgress(false);
+
+	string = tr("%1 star(s)", "IDC_NRSTARS").arg(fi.m_vStars.size());
+	ui->starCount->setText(string);
 }
 
-/* ------------------------------------------------------------------- */
-
-void CRegisterSettings::OnStackingParameters()
+void RegisterSettings::on_medianFilter_stateChanged(int state)
 {
-	StackSettings			dlg;
-	CRect					rcCustom;
+	state;
+	medianFilter = ui->medianFilter->isChecked();
+	workspace->setValue("Register/ApplyMedianFilter", medianFilter);
+} 
 
-	if (m_pStackingTasks)
+void RegisterSettings::on_recommendedSettings_clicked()
+{
+	CRecommendedSettings		dlg;
+
+	dlg.setStackingTasks(pStackingTasks);
+
+	if (dlg.DoModal() == IDOK)
 	{
-		if (m_pStackingTasks->GetCustomRectangle(rcCustom))
+		if (pStackingTasks)
+			pStackingTasks->UpdateTasksMethods();
+
+		ui->medianFilter->setChecked(workspace->value("Register/ApplyMedianFilter").toBool());
+	};
+}
+
+void RegisterSettings::on_stackingSettings_clicked()
+{
+	StackSettings dlg(this);
+
+	CRect	rcCustom;
+
+	if (pStackingTasks)
+	{
+		if (pStackingTasks->GetCustomRectangle(rcCustom))
 		{
 			dlg.enableCustomRectangle(true);
-			dlg.selectCustomRectangle(m_pStackingTasks->IsCustomRectangleUsed());
+			dlg.selectCustomRectangle(pStackingTasks->IsCustomRectangleUsed());
 		}
 		else
 		{
 			dlg.enableCustomRectangle(false);
 			dlg.selectCustomRectangle(false);
 		}
-		dlg.setTabVisibility(m_pStackingTasks->AreDarkUsed(), m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
+		dlg.setTabVisibility(pStackingTasks->AreDarkUsed(),
+			pStackingTasks->AreFlatUsed(),
+			pStackingTasks->AreBiasUsed());
 	}
 	else
 	{
@@ -246,34 +290,55 @@ void CRegisterSettings::OnStackingParameters()
 		dlg.selectCustomRectangle(false);
 	}
 
-	if (!m_tabActions.m_Stack.GetCheck())
+	if (!ui->stackAfter->isChecked())
 		dlg.setRegisteringOnly(true);
 
-	dlg.setStackingTasks(m_pStackingTasks);
+	dlg.setStackingTasks(pStackingTasks);
 
-	if ((dlg.exec()== QDialog::Accepted) && m_pStackingTasks)
-		m_pStackingTasks->UpdateTasksMethods();
-
+	if (dlg.exec() && pStackingTasks)
+		pStackingTasks->UpdateTasksMethods();
 }
 
-/* ------------------------------------------------------------------- */
-
-void CRegisterSettings::OnBnClickedRecommandedsettings()
+void RegisterSettings::accept()
 {
-	CRecommendedSettings		dlg;
+	// Save the luminance detection threshold which wasn't saved in 
+	// the valueChanged() slot
+	workspace->setValue("Register/DetectionThreshold", detectionThreshold);
+	//
+	// Pop the preserved workspace setting and discard the saved values
+	//
+	workspace->Pop(false);
 
-	dlg.setStackingTasks(m_pStackingTasks);
+	//
+	// Harden the workspace changes
+	//
+	workspace->saveSettings();
 
-	if (dlg.DoModal()==IDOK)
-	{
-		if (m_pStackingTasks)
-			m_pStackingTasks->UpdateTasksMethods();
-
-		CWorkspace				workspace;
-
-		bool bMedianFilter = workspace.value("Register/ApplyMedianFilter").toBool();
-		m_tabAdvanced.m_MedianFilter.SetCheck(bMedianFilter);
-	};
+	Inherited::accept();
 }
 
-/* ------------------------------------------------------------------- */
+void RegisterSettings::reject()
+{
+
+	//
+	// Pop the preserved workspace setting and restore the status quo ante 
+	//
+	workspace->Pop(true);
+
+	Inherited::reject();
+
+}
+
+void RegisterSettings::showEvent(QShowEvent *event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitDialog();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
+}

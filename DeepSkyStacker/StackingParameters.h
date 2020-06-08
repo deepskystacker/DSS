@@ -72,7 +72,7 @@ private slots:
 	void on_modeEWA_clicked();
 	void on_modeMaximum_clicked();
 
-	void on_backgroundCalibration_linkActivated(const QString &);
+	void on_backgroundCalibration_clicked();
 	void backgroundCalibrationOptions();
 
 	void on_iterations_textEdited(const QString &text);

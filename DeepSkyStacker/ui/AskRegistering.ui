@@ -61,21 +61,21 @@ Do you want...</string>
       </spacer>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton">
+      <widget class="QRadioButton" name="registerOne">
        <property name="text">
         <string>to register this light frame</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton_2">
+      <widget class="QRadioButton" name="registerAll">
        <property name="text">
         <string>to register all the light frames</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton_3">
+      <widget class="QRadioButton" name="registerNone">
        <property name="text">
         <string>to continue without registering the light frame</string>
        </property>
@@ -130,7 +130,7 @@ Do you want...</string>
    </hints>
   </connection>
   <connection>
-   <sender>radioButton</sender>
+   <sender>registerOne</sender>
    <signal>clicked()</signal>
    <receiver>AskRegistering</receiver>
    <slot>onRegisterOne()</slot>
@@ -146,7 +146,7 @@ Do you want...</string>
    </hints>
   </connection>
   <connection>
-   <sender>radioButton_2</sender>
+   <sender>registerAll</sender>
    <signal>clicked()</signal>
    <receiver>AskRegistering</receiver>
    <slot>onRegisterAll()</slot>
@@ -162,7 +162,7 @@ Do you want...</string>
    </hints>
   </connection>
   <connection>
-   <sender>radioButton_3</sender>
+   <sender>registerNone</sender>
    <signal>clicked()</signal>
    <receiver>AskRegistering</receiver>
    <slot>onRegisterNone()</slot>

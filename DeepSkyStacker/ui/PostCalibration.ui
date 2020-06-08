@@ -291,9 +291,16 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="replacementMethod">
+      <widget class="QPushButton" name="replacementMethod">
+       <property name="styleSheet">
+        <string notr="true">color: blue;
+text-align:left</string>
+       </property>
        <property name="text">
-        <string>&lt;a href=&quot; &quot;&gt;the median&lt;/a&gt;</string>
+        <string/>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -311,12 +318,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="testCosmetic">
-       <property name="text">
-        <string>&lt;a href=&quot; &quot;&gt;Test on first frame...&lt;/a&gt;</string>
+      <widget class="QPushButton" name="testCosmetic">
+       <property name="styleSheet">
+        <string notr="true">color: blue;
+text-align:left</string>
        </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       <property name="text">
+        <string>Test on first frame...</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>

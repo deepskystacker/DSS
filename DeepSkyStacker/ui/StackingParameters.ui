@@ -19,7 +19,7 @@
      <property name="title">
       <string>Stacking Mode</string>
      </property>
-     <widget class="QLabel" name="backgroundCalibration">
+     <widget class="QLabel" name="xackgroundCalibration">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -32,7 +32,7 @@
        <enum>Qt::ClickFocus</enum>
       </property>
       <property name="text">
-       <string>No Background Calibration</string>
+       <string/>
       </property>
      </widget>
      <widget class="QCheckBox" name="debloom">
@@ -246,6 +246,32 @@
         </spacer>
        </item>
       </layout>
+     </widget>
+     <widget class="QPushButton" name="backgroundCalibration">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>260</y>
+        <width>251</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:blue;
+text-align:left</string>
+      </property>
+      <property name="text">
+       <string>No Background Calibration</string>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
      </widget>
     </widget>
    </item>

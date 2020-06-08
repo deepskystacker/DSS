@@ -1,4 +1,5 @@
 #pragma once
+
 #include "afxcmn.h"
 #include "StackingTasks.h"
 #include "Workspace.h"

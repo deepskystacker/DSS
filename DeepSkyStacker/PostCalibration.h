@@ -55,8 +55,9 @@ private slots:
 	void on_coldFilter_valueChanged(int);
 	void on_coldThreshold_valueChanged(int);
 
-	void on_replacementMethod_linkActivated(const QString &);
+	void on_replacementMethod_clicked();
 	void on_saveDeltaImage_toggled(bool);
+	void on_testCosmetic_clicked();
 };
 
 #endif // POSTCALIBRATION_H

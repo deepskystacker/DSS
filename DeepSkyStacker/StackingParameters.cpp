@@ -30,9 +30,9 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 	workspace(new CWorkspace()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent)),
 	type(theType),
-	nobgCalString(tr("<a href=\" \">No Background Calibration</a>")),
-	pcbgCalString(tr("<a href=\" \">Per Channel Background Calibration</a>")),
-	rgbbgCalString(tr("<a href=\" \">RGB Channels Background Calibration</a>"))
+	nobgCalString(tr("No Background Calibration")),
+	pcbgCalString(tr("Per Channel Background Calibration")),
+	rgbbgCalString(tr("RGB Channels Background Calibration"))
 {
 	if (nullptr == pStackSettings)
 	{
@@ -101,19 +101,19 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 
 StackingParameters & StackingParameters::createActions()
 {
-	nobgCal = new QAction(tr("No Background Calibration"), this);
+	nobgCal = new QAction(nobgCalString, this);
 	connect(nobgCal, &QAction::triggered, this,
 		[=]() { this->setBackgroundCalibration(BCM_NONE); });
 	connect(nobgCal, &QAction::triggered, this,
 		[=]() { ui->backgroundCalibration->setText(nobgCalString); });
 
-	pcbgCal = new QAction(tr("Per Channel Background Calibration"), this);
+	pcbgCal = new QAction(pcbgCalString, this);
 	connect(pcbgCal, &QAction::triggered, this,
 		[=]() { this->setBackgroundCalibration(BCM_PERCHANNEL); });
 	connect(pcbgCal, &QAction::triggered, this,
 		[=]() { ui->backgroundCalibration->setText(pcbgCalString); });
 
-	rgbbgCal = new QAction(tr("RGB Channels Background Calibration"), this);
+	rgbbgCal = new QAction(rgbbgCalString, this);
 	connect(rgbbgCal, &QAction::triggered, this,
 		[=]() { this->setBackgroundCalibration(BCM_RGB); });
 	connect(rgbbgCal, &QAction::triggered, this,
@@ -157,7 +157,6 @@ void StackingParameters::onSetActive()
 	case PICTURETYPE_LIGHTFRAME:
 		// Make the Light frame specific controls visible
 		ui->backgroundCalibration->setVisible(true);
-		ui->backgroundCalibration->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
 
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt());
@@ -321,9 +320,8 @@ StackingParameters & StackingParameters::setControls()
 	return *this;
 }
 
-void	StackingParameters::on_backgroundCalibration_linkActivated(const QString & str)
+void	StackingParameters::on_backgroundCalibration_clicked()
 {
-	str;
 	//
 	// Show the popup menu 
 	//

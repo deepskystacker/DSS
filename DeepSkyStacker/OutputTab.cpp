@@ -66,9 +66,7 @@ void OutputTab::onSetActive()
 
 	if (os.m_strFolder.length() > 0)
 	{
-		QString temp("<a href=\" \">");
-		temp += os.m_strFolder + QString("</a>");
-		ui->outputFolder->setText(temp);
+		ui->outputFolder->setText(os.m_strFolder);
 	}
 }
 
@@ -156,9 +154,7 @@ void OutputTab::on_outputFolder_linkActivated(const QString & str)
 
 	if (dir.length() > 0)
 	{
-		QString temp("<a href=\" \">");
-		temp += dir + QString("</a>");
-		ui->outputFolder->setText(temp);
+		ui->outputFolder->setText(dir);
 		os.m_strFolder = dir;
 	}
 }

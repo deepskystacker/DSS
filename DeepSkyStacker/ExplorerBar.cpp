@@ -845,9 +845,12 @@ void CExplorerBar::OnOptionsSettings(NMHDR * pNotifyStruct, LRESULT * result)
 
 	if (a == aRegisterSettings)
 	{
-		QMessageBox msgBox(&widget);
-		msgBox.setText("Register Settings");
-		msgBox.exec();
+		QWinWidget	widget(this->GetParent());
+		widget.showCentered();
+
+		RegisterSettings dlg(&widget);
+		dlg.setSettingsOnly(true);
+		dlg.exec();
 	}
 	else if (a == aStackingSettings)
 	{

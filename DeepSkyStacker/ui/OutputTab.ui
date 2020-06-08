@@ -112,7 +112,7 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,99">
+       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="1,0,99">
         <property name="spacing">
          <number>0</number>
         </property>
@@ -124,7 +124,20 @@
          </widget>
         </item>
         <item>
-         <widget class="QLabel" name="outputFolder">
+         <widget class="QPushButton" name="outputFolder">
+          <property name="styleSheet">
+           <string notr="true">color: blue</string>
+          </property>
+          <property name="text">
+           <string>&lt;Output Folder&gt;</string>
+          </property>
+          <property name="flat">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
             <horstretch>0</horstretch>
@@ -135,7 +148,7 @@
            <number>0</number>
           </property>
           <property name="text">
-           <string>&lt;a href=&quot; &quot;&gt;&amp;lt;Output Folder&amp;gt;&lt;/a&gt;</string>
+           <string/>
           </property>
           <property name="indent">
            <number>0</number>
