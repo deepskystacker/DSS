@@ -211,9 +211,9 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
   	vSettings.push_back(CWorkspaceSetting("Register/DetectionThreshold", (uint)10));
 	vSettings.push_back(CWorkspaceSetting("Register/ApplyMedianFilter", false));
 
-	vSettings.push_back(CWorkspaceSetting("RawDDP/Brightness", "1.0000"));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/RedScale", "1.0000"));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/BlueScale", "1.0000"));
+	vSettings.push_back(CWorkspaceSetting("RawDDP/Brightness", 1.0));
+	vSettings.push_back(CWorkspaceSetting("RawDDP/RedScale", 1.0));
+	vSettings.push_back(CWorkspaceSetting("RawDDP/BlueScale", 1.0));
 	vSettings.push_back(CWorkspaceSetting("RawDDP/NoWB", false));
 	vSettings.push_back(CWorkspaceSetting("RawDDP/CameraWB", false));
 	vSettings.push_back(CWorkspaceSetting("RawDDP/BlackPointTo0", false));
@@ -223,9 +223,9 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting("RawDDP/AHD", false));
 
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/FITSisRAW", false));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/Brightness", "1.0000"));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/RedScale", "1.0000"));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/BlueScale", "1.0000"));
+	vSettings.push_back(CWorkspaceSetting("FitsDDP/Brightness", 1.0));
+	vSettings.push_back(CWorkspaceSetting("FitsDDP/RedScale", 1.0));
+	vSettings.push_back(CWorkspaceSetting("FitsDDP/BlueScale", 1.0));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/DSLR", ""));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/BayerPattern", (uint)4));
 	vSettings.push_back(CWorkspaceSetting("FitsDDP/Interpolation", "Bilinear"));

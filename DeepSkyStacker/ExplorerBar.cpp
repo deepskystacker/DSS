@@ -815,9 +815,11 @@ void CExplorerBar::OnProcessingSaveFile( NMHDR * pNotifyStruct, LRESULT * result
 
 void CExplorerBar::OnOptionsRawDDPSettings( NMHDR * pNotifyStruct, LRESULT * result )
 {
-	CRawDDPSettings		dlg;
+	QWinWidget	widget(this->GetParent());
+	widget.showCentered();
+	RawDDPSettings		dlg;
 
-	dlg.DoModal();
+	dlg.exec();
 };
 
 /* ------------------------------------------------------------------- */

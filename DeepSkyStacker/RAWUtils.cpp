@@ -139,7 +139,7 @@ bool IsRawAHD()
 
 	workspace.value("RawDDP/Interpolation", strInterpolation);
 
-	return strInterpolation.isEmpty() || (strInterpolation == _T("AHD")) || (strInterpolation == _T("VNG"));
+	return (strInterpolation.isEmpty() || (strInterpolation == "AHD"));
 };
 
 /* ------------------------------------------------------------------- */

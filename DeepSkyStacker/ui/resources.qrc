@@ -37,5 +37,13 @@
     <file alias="mosaicmode.bmp">../res/mosaicmode.bmp</file>
 	<file alias="custommode.bmp">../res/custommode.bmp</file>
 </qresource>
+<qresource prefix="rawddpsettings">
+    <file alias="Pattern_BGGR.bmp">../res/Pattern_BGGR.bmp</file>
+    <file alias="Pattern_GBRG.bmp">../res/Pattern_GBRG.bmp</file>
+    <file alias="Pattern_GRBG.bmp">../res/Pattern_GRBG.bmp</file>
+    <file alias="Pattern_RGGB.bmp">../res/Pattern_RGGB.bmp</file>
+    <file alias="Pattern_CYGMCYMG.bmp">../res/Pattern_CYGMCYMG.bmp</file>
+</qresource>
+
 
 </RCC>

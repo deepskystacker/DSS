@@ -440,7 +440,6 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="ExplorerBar.cpp" />
     <ClCompile Include="FileProperty.cpp" />
     <ClCompile Include="Filters.cpp" />
-    <ClCompile Include="FitsFilesTab.cpp" />
     <ClCompile Include="FITSUtil.cpp" />
     <ClCompile Include="FlatFrame.cpp" />
     <ClCompile Include="FrameInfo.cpp" />
@@ -488,8 +487,12 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="RawDDPSettings.cpp" />
-    <ClCompile Include="RawFilesTab.cpp" />
+    <ClCompile Include="RawDDPSettings.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="RAWUtils.cpp" />
     <ClCompile Include="RecommandedSettings.cpp" />
     <ClCompile Include="RegisterEngine.cpp" />
@@ -619,7 +622,6 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="ExplorerBar.h" />
     <ClInclude Include="FileProperty.h" />
     <ClInclude Include="Filters.h" />
-    <ClInclude Include="FitsFilesTab.h" />
     <ClInclude Include="FITSUtil.h" />
     <ClInclude Include="FlatFrame.h" />
     <ClInclude Include="FrameInfo.h" />
@@ -646,8 +648,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="ProgressDlg.h" />
     <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="qwinwidget.h" />
-    <ClInclude Include="RawDDPSettings.h" />
-    <ClInclude Include="RawFilesTab.h" />
+    <QtMoc Include="RawDDPSettings.h" />
     <ClInclude Include="RAWUtils.h" />
     <ClInclude Include="RecommandedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
@@ -840,12 +841,10 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\DeepStackerDlg.ui" />
     <QtUic Include="ui\DropFilesDlg.ui" />
     <QtUic Include="ui\ExplorerBar.ui" />
-    <QtUic Include="ui\FitsFilesTab.ui" />
     <QtUic Include="ui\IntermediateFiles.ui" />
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
-    <QtUic Include="ui\RawFilesTab.ui" />
     <QtUic Include="ui\RegisterSettings.ui" />
     <QtUic Include="ui\ResultParameters.ui" />
     <QtUic Include="ui\StackingParameters.ui" />

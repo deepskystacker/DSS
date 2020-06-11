@@ -156,13 +156,7 @@
     <ClCompile Include="StarMaskDlg.cpp">
       <Filter>Dialogs\Processing</Filter>
     </ClCompile>
-    <ClCompile Include="FitsFilesTab.cpp">
-      <Filter>Dialogs\Settings</Filter>
-    </ClCompile>
     <ClCompile Include="RawDDPSettings.cpp">
-      <Filter>Dialogs\Settings</Filter>
-    </ClCompile>
-    <ClCompile Include="RawFilesTab.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
     <ClCompile Include="ImageSinks.cpp">
@@ -471,15 +465,6 @@
     </ClInclude>
     <ClInclude Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="FitsFilesTab.h">
-      <Filter>Dialogs\Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="RawDDPSettings.h">
-      <Filter>Dialogs\Settings</Filter>
-    </ClInclude>
-    <ClInclude Include="RawFilesTab.h">
-      <Filter>Dialogs\Settings</Filter>
     </ClInclude>
     <ClInclude Include="ImageSinks.h">
       <Filter>Dialogs\ImageSinks</Filter>
@@ -1094,9 +1079,6 @@
     <QtUic Include="ui\ExplorerBar.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
-    <QtUic Include="ui\FitsFilesTab.ui">
-      <Filter>Qt\ui</Filter>
-    </QtUic>
     <QtUic Include="ui\IntermediateFiles.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
@@ -1107,9 +1089,6 @@
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\RawDDPSettings.ui">
-      <Filter>Qt\ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\RawFilesTab.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\ResultParameters.ui">
@@ -1164,6 +1143,9 @@
     </QtMoc>
     <QtMoc Include="RegisterSettings.h">
       <Filter>Dialogs\Registering</Filter>
+    </QtMoc>
+    <QtMoc Include="RawDDPSettings.h">
+      <Filter>Dialogs\Settings</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
