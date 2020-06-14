@@ -120,21 +120,25 @@
     <QtInstall>5.12.8x86</QtInstall>
     <QtModules>core;gui;gui-private;widgets</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
+    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <QtInstall>5.12.8x86</QtInstall>
     <QtModules>core;gui;gui-private;widgets</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
+    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>5.12.8x64</QtInstall>
     <QtModules>core;gui;gui-private;widgets</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
+    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <QtInstall>5.12.8x64</QtInstall>
     <QtModules>core;gui;gui-private;widgets</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
+    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Midl>
