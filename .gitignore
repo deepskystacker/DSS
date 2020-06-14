@@ -325,8 +325,6 @@ ASALocalRun/
 # CodeMaid settings
 CodeMaid.config
 /DeepSkyStacker/My Inspector Results - DeepSkyStacker
-/DeepSkyStacker/GeneratedFiles
-/DeepSkyStacker/i18n
 /Installers/RunTime64/translations/qt_zh_TW.qm
 /Installers/RunTime64/translations/qt_uk.qm
 /Installers/RunTime64/translations/qt_sk.qm
