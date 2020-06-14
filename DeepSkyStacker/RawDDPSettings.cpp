@@ -19,8 +19,8 @@ using std::max;
 
 #include <QDialog>
 #include <QDialogButtonBox>
-//#include <QFileInfo>
 #include <QDoubleValidator>
+#include <QSettings>
 #include <QShowEvent>
 #include <QString>
 
@@ -401,8 +401,15 @@ void RawDDPSettings::showEvent(QShowEvent *event)
 
 void RawDDPSettings::onInitDialog()
 {
+	QSettings settings;
 	double value = 0.0;
 	QString string;
+
+	//
+	// Restore Window position etc..
+	//
+	restoreGeometry(settings.value("Dialogs/RawDDPSettings/geometry").toByteArray());
+
 	//
 	// First initialise the controls on the Raw Files tab
 	//
@@ -751,6 +758,10 @@ void RawDDPSettings::on_buttonBox_clicked(QAbstractButton *button)
 
 void RawDDPSettings::accept()
 {
+	QSettings settings;
+
+	settings.setValue("Dialogs/RawDDPSettings/geometry", saveGeometry());
+
 	apply();
 
 	Inherited::accept();
@@ -776,6 +787,10 @@ void RawDDPSettings::apply()
 
 void RawDDPSettings::reject()
 {
+	QSettings settings;
+
+	settings.setValue("Dialogs/RawDDPSettings/geometry", saveGeometry());
+
 	//
 	// Pop the preserved workspace setting and restore the status quo ante 
 	//

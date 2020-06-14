@@ -21,6 +21,9 @@
 #include "DSSVersion.h"
 #include <QSettings>
 
+#include "qmfcapp.h"
+#include "qwinwidget.h"
+
 #define _USE_MATH_DEFINES
 #include <cmath>
 
@@ -1507,13 +1510,12 @@ void CStackingDlg::UncheckNonStackablePictures()
 
 bool CStackingDlg::ShowRecap(CAllStackingTasks & tasks)
 {
-	bool				bResult = false;
-	CStackRecap			dlg;
+	QWinWidget	widget(this->GetParent());
+	widget.showCentered();
+	StackRecap	dlg;
 
 	dlg.setStackingTasks(&tasks);
-	bResult = (dlg.DoModal() == IDOK);
-
-	return bResult;
+	return dlg.exec();
 };
 
 /* ------------------------------------------------------------------- */

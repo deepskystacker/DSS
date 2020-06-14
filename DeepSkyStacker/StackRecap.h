@@ -1,54 +1,79 @@
-#pragma once
-#include "afxcmn.h"
+#ifndef STACKRECAP_H
+#define STACKRECAP_H
+#include <memory>
+
+class CWorkspace;
+class QAbstractButton;
+class QUrl;
+
+#include "DSSCommon.h"
 #include "StackingTasks.h"
-#include "EasySize.h"
+#include <QDialog>
 
-// CStackRecap dialog
+namespace Ui {
+	class StackRecap;
+}
 
-class CStackRecap : public CDialog
+class StackRecap : public QDialog
 {
-	DECLARE_DYNAMIC(CStackRecap)
-	DECLARE_EASYSIZE
+	Q_OBJECT
 
+typedef QDialog
+		Inherited;
 public:
-	CStackRecap(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CStackRecap();
+	explicit StackRecap(QWidget *parent = nullptr);
+	~StackRecap();
 
-	void		setStackingTasks(CAllStackingTasks * pStackingTasks)
+	inline void setStackingTasks(CAllStackingTasks * stackingTasks) noexcept
 	{
-		m_pStackingTasks = pStackingTasks;
+		pStackingTasks = stackingTasks;
 	};
 
-// Dialog Data
-	enum { IDD = IDD_STACKRECAP };
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	virtual void OnSize(UINT nType, int cx, int cy);
-	virtual void OnSizing(UINT nSide, LPRECT lpRect);
-
-	DECLARE_MESSAGE_MAP()
-private :
-	void	ClearText();
-
-	void	InsertHeaderHTML(CString & strHTML);
-	void	InsertHTML(CString & strHTML, LPCTSTR szText, COLORREF crColor = RGB(0, 0, 0), bool bBold = false, bool bItalic = false, LONG lLinkID = 0);
-	void	FillWithAllTasksHTML();
-	void	CallStackingParameters(LONG lID = 0);
+private slots:
+	void accept() override;
+	void reject() override;
+	void on_recommended_clicked();
+	void on_stackingSettings_clicked();
+	void on_textBrowser_anchorClicked(const QUrl &);
 
 private:
-	CQhtmWnd						m_RecapHTML;
-	CScrollBar						m_Gripper;
+	Ui::StackRecap *ui;
+	std::unique_ptr<CWorkspace> workspace;
+	CAllStackingTasks *pStackingTasks;
+	bool	initialised;
 
-	CAllStackingTasks *				m_pStackingTasks;
-	afx_msg void OnBnClickedStackingparameters();
-	afx_msg void OnQHTMHyperlink(NMHDR*nmh, LRESULT*);
+	inline void	SpaceToQString(__int64 ulSpace, QString & strSpace)
+	{
+		double fKb, fMb, fGb;
 
-public:
-	afx_msg void OnBnClickedRecommandedsettings();
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
+		fKb = ulSpace / 1024.0;
+		fMb = fKb / 1024.0;
+		fGb = fMb / 1024.0;
+
+
+		if (fKb < 900)
+			strSpace = QString(tr("%L1 kB", "IDS_RECAP_KILOBYTES"))
+				.arg(fKb, 0, 'f', 1);
+		else if (fMb < 900)
+			strSpace = QString(tr("%L1 MB", "IDS_RECAP_MEGABYTES"))
+				.arg(fMb, 0, 'f', 1);
+		else
+			strSpace = QString(tr("%L1 GB", "IDS_RECAP_GIGABYTES"))
+				.arg(fGb, 0, 'f', 1);
+	};
+
+	void CallStackingSettings(int tab = 0);
+
+	//void	clearText();
+
+	void	insertHeader(QString & strHTML);
+	void	insertHTML(QString & strHTML, const QString& szText, QColor colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, LONG lLinkID = -1);
+	void	fillWithAllTasks();
+
+	void showEvent(QShowEvent *event) override;
+	void onInitDialog();
 };
 
 /* ------------------------------------------------------------------- */
+#endif

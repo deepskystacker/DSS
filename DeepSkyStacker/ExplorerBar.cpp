@@ -864,39 +864,6 @@ void CExplorerBar::OnOptionsSettings(NMHDR * pNotifyStruct, LRESULT * result)
 		dlg.exec();
 	}
 }
-#if (0)
-	CPoint				pt;
-	CMenu				menu;
-	CMenu *				popup;
-	int					nResult;
-
-	menu.LoadMenu(IDR_EDITSETTINGS);
-	popup = menu.GetSubMenu(0);
-
-	CRect				rc;
-
-	m_Options_Settings.GetWindowRect(&rc);
-	pt.x = rc.left;
-	pt.y = rc.bottom;
-
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
-
-	if (nResult == ID_EDITSETTINGS_REGISTERSETTINGS)
-	{
-		CRegisterSettings		dlg;
-
-		dlg.SetSettingsOnly(true);
-		dlg.DoModal();
-	}
-	else if (nResult == ID_EDITSETTINGS_STACKINGSETTINGS)
-	{
-		CStackSettings			dlg;
-
-		dlg.SetEnableAll(true);
-		dlg.DoModal();
-	};
-};
-#endif
 
 /* ------------------------------------------------------------------- */
 

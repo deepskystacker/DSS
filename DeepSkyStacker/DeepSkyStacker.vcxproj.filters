@@ -1103,6 +1103,9 @@
     <QtUic Include="ui\RegisterSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\StackRecap.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">

@@ -66,7 +66,7 @@ void ResultParameters::onSetActive()
 		// so the radio button to select it can be enabled.
 		//
 		// If the user has previously selected to actually use custom rectangle mode by
-		// clicking on the custom mode radiao button in this dialog, we will make sure we 
+		// clicking on the custom mode radio button in this dialog, we will make sure we 
 		// select the button as we initialise and choose the appropiate picture and text.
 		//
 		if (pStackSettings->isCustomRectangleEnabled())
@@ -103,6 +103,7 @@ void ResultParameters::onSetActive()
 		ui->previewImage->setPixmap(mosaicPix);
 		ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
 		break;
+	case SM_CUSTOM:
 	case SM_INTERSECTION:
 		ui->intersectionMode->setChecked(true);
 		if (intersectionPix.isNull())
@@ -112,9 +113,6 @@ void ResultParameters::onSetActive()
 		ui->previewImage->setPixmap(intersectionPix);
 		ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
 		break;
-		//
-		// SM_CUSTOM isn't used here
-		//
 	default:
 		break;
 	}

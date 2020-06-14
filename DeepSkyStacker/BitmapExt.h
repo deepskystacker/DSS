@@ -1,6 +1,9 @@
 #ifndef _BITMAPEXT_H__
 #define _BITMAPEXT_H__
 
+#include <QCoreApplication> 
+#include <QString>
+
 #include "Multitask.h"
 #include <zexcept.h>
 #include "resource.h"
@@ -321,6 +324,49 @@ inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method,
 	case MBP_MEDIANSIGMACLIP :
 		strText.Format(IDS_RECAP_MEDIANSIGMACLIP, fKappa, lNrIterations);
 	};
+};
+
+inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
+{
+	QString strText;
+
+	switch (Method)
+	{
+	case MBP_FASTAVERAGE:
+	case MBP_AVERAGE:
+		strText = QCoreApplication::translate("StackRecap", "Average", "IDS_RECAP_AVERAGE");
+		break;
+	case MBP_MEDIAN:
+		strText = QCoreApplication::translate("StackRecap", "Median", "IDS_RECAP_MEDIAN");
+		break;
+	case MBP_MAXIMUM:
+		strText = QCoreApplication::translate("StackRecap", "", "IDS_RECAP_MAXIMUM");
+		break;
+	case MBP_SIGMACLIP:
+		strText = QCoreApplication::translate("StackRecap", "Kappa-Sigma (Kappa = %1, Iterations = %2)",
+				"IDS_RECAP_KAPPASIGMA")
+			.arg(fKappa, 0, 'f', 2)
+			.arg(lNrIterations);
+		break;
+	case MBP_AUTOADAPTIVE:
+		strText = QCoreApplication::translate("StackRecap",
+				"Auto Adaptive Weighted Average (Iterations = %1)",
+				"IDS_RECAP_AUTOADAPTIVE")
+			.arg(lNrIterations);
+		break;
+	case MBP_ENTROPYAVERAGE:
+		strText = QCoreApplication::translate("StackRecap",
+			"Entropy Weighted Average",
+			"IDS_RECAP_ENTROPYAVERAGE");
+		break;
+	case MBP_MEDIANSIGMACLIP:
+		strText = QCoreApplication::translate("StackRecap", 
+				"Median Kappa-Sigma (Kappa = %1, Iterations = %2)",
+				"IDS_RECAP_MEDIANSIGMACLIP")
+			.arg(fKappa, 0, 'f', 2)
+			.arg(lNrIterations);
+	};
+	return strText;
 };
 
 /* ------------------------------------------------------------------- */

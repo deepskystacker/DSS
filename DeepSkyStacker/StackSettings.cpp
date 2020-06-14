@@ -28,7 +28,8 @@ StackSettings::StackSettings(QWidget *parent) :
 	enableBias(false),
 	enableAll(false),
 	customRectangleSelected(false),
-	customRectangleEnabled(false)
+	customRectangleEnabled(false),
+	startingTab(-1)
 {
     ui->setupUi(this);
 
@@ -83,6 +84,13 @@ StackSettings::~StackSettings()
 
 void StackSettings::onInitDialog()
 {
+	QSettings settings;
+
+	//
+	// Restore Window position etc..
+	//
+	restoreGeometry(settings.value("Dialogs/StackSettings/geometry").toByteArray());
+
 	//
 	// Get number of processors we're allowed to use.   Normally this is the number of
 	// real cores available, but this can artificially be limited by setting  
@@ -105,6 +113,17 @@ void StackSettings::onInitDialog()
 	QString folder;
 	CAllStackingTasks::GetTemporaryFilesFolder(folder);
 	ui->tempFilesFolder->setText(folder);
+
+	if (-1 != startingTab)
+	{
+		ui->tabWidget->setCurrentIndex(startingTab);
+		emit tabChanged(startingTab);
+	}
+	else if (ui->tabWidget->isTabEnabled(resultTab) && resultTab != ui->tabWidget->currentIndex())
+	{
+		ui->tabWidget->setCurrentIndex(resultTab);
+		emit tabChanged(resultTab);
+	}
 
 	updateControls();
 }
@@ -137,10 +156,6 @@ void StackSettings::updateControls()
 		ui->tabWidget->setTabEnabled(postCalibrationTab, true);
 		ui->tabWidget->setTabEnabled(outputTab, true);
 	};
-
-	if (ui->tabWidget->isTabEnabled(resultTab))
-		ui->tabWidget->setCurrentIndex(resultTab);
-
 }
 
 void StackSettings::tabChanged(int tab)
@@ -166,7 +181,10 @@ void StackSettings::on_chooseFolder_clicked(bool value)
 }
 void StackSettings::accept()
 {
+	QSettings settings;
 	CWorkspace workspace;
+
+	settings.setValue("Dialogs/StackSettings/geometry", saveGeometry());
 
 	//
 	// Pop the preserved workspace setting and discard the saved values
@@ -199,7 +217,10 @@ void StackSettings::accept()
 
 void StackSettings::reject()
 {
+	QSettings settings;
 	CWorkspace workspace;
+
+	settings.setValue("Dialogs/StackSettings/geometry", saveGeometry());
 
 	//
 	// Pop the preserved workspace setting and restore the status quo ante 

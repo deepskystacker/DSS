@@ -5,7 +5,6 @@
 class CWorkspace;
 class QAbstractButton;
 class QValidator;
-class CWorkspace;
 class CDSLR;
 enum CFATYPE : unsigned long;
 
