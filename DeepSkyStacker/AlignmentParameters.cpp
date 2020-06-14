@@ -4,8 +4,8 @@
 #include <ZExcept.h>
 #include <Ztrace.h>
 
+#include "DSSCommon.h"
 #include "Workspace.h"
-
 
 AlignmentParameters::AlignmentParameters(QWidget *parent) :
 	QWidget(parent),
@@ -32,23 +32,23 @@ void AlignmentParameters::updateControls()
     {
         case 0:
             /* Passthrough */
-        case 1:
+        case ALIGN_AUTO:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Automatic\n\nThe alignment method is automatically selected depending on the number of available stars."));
 			ui->alignAuto->setChecked(true);
             break;
-        case 2:
+        case ALIGN_BILINEAR:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bilinear Alignment\n\nThe Bilinear Alignment is used in all cases."));
 			ui->alignBilinear->setChecked(true);
 			break;
-        case 3:
+        case ALIGN_BISQUARED:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bisquared Alignment\n\nThe Bisquared Alignment is used when at least 25 stars are available, else the Bilinear Alignment method is used."));
 			ui->alignBisquared->setChecked(true);
 			break;
-        case 4:
+        case ALIGN_BICUBIC:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bicubic Alignment\n\nThe Bicubic method is used when at least 40 stars are available, then the Bisquared method is used if 25 to 39 stars are available, then the Bilinear method is used when less than 25 stars are available."));
 			ui->alignBicubic->setChecked(true);
 			break;
-        case 5:
+        case ALIGN_NONE:
             ui->text->setText("");
 			ui->alignNone->setChecked(true);
             break;
@@ -68,25 +68,25 @@ void AlignmentParameters::setAlignment(uint wAlignment)
 
 void AlignmentParameters::on_alignAuto_clicked()
 {
-    setAlignment(1);
+    setAlignment(ALIGN_AUTO);
 }
 
 void AlignmentParameters::on_alignBilinear_clicked()
 {
-    setAlignment(2);
+    setAlignment(ALIGN_BILINEAR);
 }
 
 void AlignmentParameters::on_alignBisquared_clicked()
 {
-    setAlignment(3);
+    setAlignment(ALIGN_BISQUARED);
 }
 
 void AlignmentParameters::on_alignBicubic_clicked()
 {
-    setAlignment(4);
+    setAlignment(ALIGN_BICUBIC);
 }
 
 void AlignmentParameters::on_alignNone_clicked()
 {
-    setAlignment(5);
+    setAlignment(ALIGN_NONE);
 }
