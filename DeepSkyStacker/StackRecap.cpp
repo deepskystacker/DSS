@@ -261,8 +261,9 @@ void StackRecap::fillWithAllTasks()
 			insertHTML(strHTML, strText, QColor(Qt::red), true, false);
 			if (ResultMode == SM_MOSAIC)
 			{
+				strHTML += "<br>";
 				insertHTML(strHTML, 
-					tr("<br>Note: the necessary disk space is computed using an image the size of the reference frame."
+					tr("Note: the necessary disk space is computed using an image the size of the reference frame."
 						"Depending of the resulting image total size more space may be necessary.", "IDS_RECAP_MOSAICWARNING"));
 			};
 			strHTML += "</td></tr></table>";
