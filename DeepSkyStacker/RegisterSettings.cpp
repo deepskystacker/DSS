@@ -17,6 +17,7 @@ using std::max;
 #include <QDialog>
 #include <QFileInfo>
 #include <QIntValidator>
+#include <QSettings>
 #include <QShowEvent>
 #include <QString>
 
@@ -71,9 +72,15 @@ RegisterSettings::~RegisterSettings()
 
 void RegisterSettings::onInitDialog()
 {
+	QSettings settings;
 	QString string;
 	bool checked = false;
 
+	//
+	// Restore Window position etc..
+	//
+	restoreGeometry(settings.value("Dialogs/RegisterSettings/geometry").toByteArray());
+	
 	string = workspace->value("Register/PercentStack", "80").toString();
 	ui->percentStack->setText(string);
 	percentStack = string.toUInt();
@@ -301,6 +308,10 @@ void RegisterSettings::on_stackingSettings_clicked()
 
 void RegisterSettings::accept()
 {
+	QSettings settings;
+
+	settings.setValue("Dialogs/RegisterSettings/geometry", saveGeometry());
+
 	// Save the luminance detection threshold which wasn't saved in 
 	// the valueChanged() slot
 	workspace->setValue("Register/DetectionThreshold", detectionThreshold);
@@ -319,6 +330,9 @@ void RegisterSettings::accept()
 
 void RegisterSettings::reject()
 {
+	QSettings settings;
+
+	settings.setValue("Dialogs/RegisterSettings/geometry", saveGeometry());
 
 	//
 	// Pop the preserved workspace setting and restore the status quo ante 
