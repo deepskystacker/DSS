@@ -1449,272 +1449,267 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="265"/>
-        <source>&lt;br&gt;Note: the necessary disk space is computed using an image the size of the reference frame.Depending of the resulting image total size more space may be necessary.</source>
-        <comment>IDS_RECAP_MOSAICWARNING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="276"/>
+        <location filename="../StackRecap.cpp" line="277"/>
         <source>Warning: you are using dark, flat or bias frames with JPEG files.&lt;br&gt;Because of the lossy compression, calibration doesn&apos;t work with JPEG files.</source>
         <comment>IDS_RECAP_WARNINGJPEG</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="284"/>
+        <location filename="../StackRecap.cpp" line="285"/>
         <source>Stacking mode: </source>
         <comment>IDS_RECAP_STACKINGMODE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="289"/>
+        <location filename="../StackRecap.cpp" line="290"/>
         <source>Standard</source>
         <comment>IDS_RECAP_STACKINGMODE_NORMAL</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="292"/>
+        <location filename="../StackRecap.cpp" line="293"/>
         <source>Mosaic</source>
         <comment>IDS_RECAP_STACKINGMODE_MOSAIC</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="295"/>
+        <location filename="../StackRecap.cpp" line="296"/>
         <source>Custom Rectangle</source>
         <comment>IDS_RECAP_STACKINGMODE_CUSTOM</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="298"/>
+        <location filename="../StackRecap.cpp" line="299"/>
         <source>Intersection</source>
         <comment>IDS_RECAP_STACKINGMODE_INTERSECTION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="307"/>
+        <location filename="../StackRecap.cpp" line="308"/>
         <source>Alignment method: </source>
         <comment>IDS_RECAP_ALIGNMENT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="315"/>
+        <location filename="../StackRecap.cpp" line="316"/>
         <source>Automatic</source>
         <comment>IDS_ALIGN_AUTO</comment>
         <translation type="unfinished">Automatico</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="318"/>
+        <location filename="../StackRecap.cpp" line="319"/>
         <source>Bilinear</source>
         <comment>IDS_ALIGN_BILINEAR</comment>
         <translation type="unfinished">Bilineare</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="321"/>
+        <location filename="../StackRecap.cpp" line="322"/>
         <source>Bisquared</source>
         <comment>IDS_ALIGN_BISQUARED</comment>
         <translation type="unfinished">Biquadratica</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="324"/>
+        <location filename="../StackRecap.cpp" line="325"/>
         <source>Bicubic</source>
         <comment>IDS_ALIGN_BICUBIC</comment>
         <translation type="unfinished">Bicubica</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="327"/>
+        <location filename="../StackRecap.cpp" line="328"/>
         <source>No Alignment</source>
         <comment>IDS_ALIGN_NONE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="340"/>
+        <location filename="../StackRecap.cpp" line="341"/>
         <source>Drizzle x%1 enabled</source>
         <comment>IDS_RECAP_DRIZZLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="346"/>
+        <location filename="../StackRecap.cpp" line="347"/>
         <source>The selected drizzle option is not compatible with Bayer Drizzle mode.</source>
         <comment>IDS_RECAP_WARNINGDRIZZLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="359"/>
+        <location filename="../StackRecap.cpp" line="360"/>
         <source>%1 processors detected and used</source>
         <comment>IDS_RECAP_DETECTEDANDUSEDPROCESSORS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="362"/>
+        <location filename="../StackRecap.cpp" line="363"/>
         <source>%1 processors detected - only one used</source>
         <comment>IDS_RECAP_DETECTEDNOTUSEDPROCESSORS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="374"/>
+        <location filename="../StackRecap.cpp" line="375"/>
         <source>Comet processing : </source>
         <comment>IDS_RECAP_COMETSTACKING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="379"/>
+        <location filename="../StackRecap.cpp" line="380"/>
         <source>Align on stars (no specific processing)</source>
         <comment>IDS_RECAP_COMETSTACKING_NONE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="382"/>
+        <location filename="../StackRecap.cpp" line="383"/>
         <source>Align on comet</source>
         <comment>IDS_RECAP_COMETSTACKING_COMET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="385"/>
+        <location filename="../StackRecap.cpp" line="386"/>
         <source>Align on stars and comet</source>
         <comment>IDS_RECAP_COMETSTACKING_BOTH</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="399"/>
+        <location filename="../StackRecap.cpp" line="400"/>
         <source>Cosmetic applied to hot pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICHOT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="407"/>
+        <location filename="../StackRecap.cpp" line="408"/>
         <source>Cosmetic applied to cold pixels (Filter = %1 px, Detection Threshold = %L2%)&lt;br&gt;</source>
         <comment>IDS_RECAP_COSMETICCOLD</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="436"/>
+        <location filename="../StackRecap.cpp" line="437"/>
         <source>Stacking step %1&lt;br&gt;  -&gt;%2 frames (%3: %4) - total exposure: </source>
         <comment>IDS_RECAP_STEP</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="451"/>
-        <location filename="../StackRecap.cpp" line="487"/>
-        <location filename="../StackRecap.cpp" line="534"/>
-        <location filename="../StackRecap.cpp" line="599"/>
-        <location filename="../StackRecap.cpp" line="647"/>
+        <location filename="../StackRecap.cpp" line="452"/>
+        <location filename="../StackRecap.cpp" line="488"/>
+        <location filename="../StackRecap.cpp" line="535"/>
+        <location filename="../StackRecap.cpp" line="600"/>
+        <location filename="../StackRecap.cpp" line="648"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="460"/>
+        <location filename="../StackRecap.cpp" line="461"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="477"/>
+        <location filename="../StackRecap.cpp" line="478"/>
         <source>	-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="498"/>
-        <location filename="../StackRecap.cpp" line="556"/>
+        <location filename="../StackRecap.cpp" line="499"/>
+        <location filename="../StackRecap.cpp" line="557"/>
         <source>		Warning: ISO speed does not match that of the Light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="507"/>
-        <location filename="../StackRecap.cpp" line="565"/>
-        <location filename="../StackRecap.cpp" line="667"/>
+        <location filename="../StackRecap.cpp" line="508"/>
+        <location filename="../StackRecap.cpp" line="566"/>
+        <location filename="../StackRecap.cpp" line="668"/>
         <source>		Warning: Gain does not match that of the Light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="515"/>
+        <location filename="../StackRecap.cpp" line="516"/>
         <source>	-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="524"/>
+        <location filename="../StackRecap.cpp" line="525"/>
         <source>	-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="572"/>
+        <location filename="../StackRecap.cpp" line="573"/>
         <source>		Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="579"/>
+        <location filename="../StackRecap.cpp" line="580"/>
         <source>	-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="588"/>
+        <location filename="../StackRecap.cpp" line="589"/>
         <source>	-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="611"/>
+        <location filename="../StackRecap.cpp" line="612"/>
         <source>		Warning: ISO speed does not match that of the Flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="620"/>
+        <location filename="../StackRecap.cpp" line="621"/>
         <source>		Warning: Gain does not match that of the Flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="627"/>
+        <location filename="../StackRecap.cpp" line="628"/>
         <source>		Warning: Exposure does not match that of the Flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="637"/>
+        <location filename="../StackRecap.cpp" line="638"/>
         <source>	-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="658"/>
+        <location filename="../StackRecap.cpp" line="659"/>
         <source>		Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="675"/>
+        <location filename="../StackRecap.cpp" line="676"/>
         <source>	-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="689"/>
+        <location filename="../StackRecap.cpp" line="690"/>
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed considering that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="699"/>
+        <location filename="../StackRecap.cpp" line="700"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="708"/>
+        <location filename="../StackRecap.cpp" line="266"/>
+        <location filename="../StackRecap.cpp" line="709"/>
         <source>Note: the necessary disk space is computed using an image the size of the reference frame.Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="716"/>
+        <location filename="../StackRecap.cpp" line="717"/>
         <source>Warning: the save registered and calibrated images option is checked.Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
         <translation type="unfinished"></translation>
