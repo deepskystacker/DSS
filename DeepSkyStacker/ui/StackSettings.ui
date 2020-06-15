@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Stacking Settings</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3" stretch="999,1,1">
    <property name="spacing">

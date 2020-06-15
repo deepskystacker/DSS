@@ -834,8 +834,8 @@ void CExplorerBar::OnOptionsSettings(NMHDR * pNotifyStruct, LRESULT * result)
 	QAction *aRegisterSettings;
 	QAction *aStackingSettings;
 
-	aRegisterSettings = menu.addAction(QCoreApplication::translate("Explorer Bar", "Register Settings..."));
-	aStackingSettings = menu.addAction(QCoreApplication::translate("Explorer Bar", "Stacking Settings..."));
+	aRegisterSettings = menu.addAction(QCoreApplication::translate("ExplorerBar", "Register Settings..."));
+	aStackingSettings = menu.addAction(QCoreApplication::translate("ExplorerBar", "Stacking Settings..."));
 
 	CRect rect;
 	m_Options_Settings.GetWindowRect(&rect);

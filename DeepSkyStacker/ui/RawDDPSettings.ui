@@ -41,7 +41,7 @@
             </size>
            </property>
            <property name="title">
-            <string>Color Adjustment</string>
+            <string>Colour Adjustment</string>
            </property>
            <layout class="QFormLayout" name="formLayout_5">
             <property name="formAlignment">

@@ -91,7 +91,8 @@ void ResultParameters::onSetActive()
 				normalPix.load(":/stacking/normalmode.bmp");
 			}
 			ui->previewImage->setPixmap(normalPix);
-			ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame."));
+			ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame.",
+				"IDS_STACKINGMODE_NORMAL"));
 		}
 		break;
 	case SM_MOSAIC:
@@ -101,7 +102,8 @@ void ResultParameters::onSetActive()
 			mosaicPix.load(":/stacking/mosaicmode.bmp");
 		}
 		ui->previewImage->setPixmap(mosaicPix);
-		ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
+		ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack.",
+			"IDS_STACKINGMODE_MOSAIC"));
 		break;
 	case SM_CUSTOM:
 	case SM_INTERSECTION:
@@ -111,7 +113,8 @@ void ResultParameters::onSetActive()
 			intersectionPix.load(":/stacking/intersectionmode.bmp");
 		}
 		ui->previewImage->setPixmap(intersectionPix);
-		ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
+		ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames.",
+			"IDS_STACKINGMODE_INTERSECTION"));
 		break;
 	default:
 		break;
@@ -143,7 +146,8 @@ void	ResultParameters::on_normalMode_clicked()
 		normalPix.load(":/stacking/normalmode.bmp");
 	}
 	ui->previewImage->setPixmap(normalPix);
-	ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame."));
+	ui->modeText->setText(tr("The result of the stacking process is framed by the reference light frame.",
+		"IDS_STACKINGMODE_NORMAL"));
 }
 
 void	ResultParameters::on_mosaicMode_clicked()
@@ -155,7 +159,8 @@ void	ResultParameters::on_mosaicMode_clicked()
 		mosaicPix.load(":/stacking/mosaicmode.bmp");
 	}
 	ui->previewImage->setPixmap(mosaicPix);
-	ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack."));
+	ui->modeText->setText(tr("The result of the stacking process contains all the light frames of the stack.",
+		"IDS_STACKINGMODE_MOSAIC"));
 
 }
 
@@ -168,7 +173,8 @@ void	ResultParameters::on_intersectionMode_clicked()
 		intersectionPix.load(":/stacking/intersectionmode.bmp");
 	}
 	ui->previewImage->setPixmap(intersectionPix);
-	ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames."));
+	ui->modeText->setText(tr("The result of the stacking process is framed by the intersection of all the frames.",
+		"IDS_STACKINGMODE_INTERSECTION"));
 }
 
 void	ResultParameters::on_customMode_clicked()

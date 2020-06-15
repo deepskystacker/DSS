@@ -155,6 +155,7 @@ void StackingParameters::onSetActive()
 	switch (type)
 	{
 	case PICTURETYPE_LIGHTFRAME:
+		ui->stackedWidget->setCurrentIndex((int)type - 1);
 		// Make the Light frame specific controls visible
 		ui->backgroundCalibration->setVisible(true);
 
@@ -208,6 +209,8 @@ void StackingParameters::onSetActive()
 
 
 	case PICTURETYPE_DARKFRAME:
+		ui->stackedWidget->setCurrentIndex((int)type - 1);
+
 		// Make the Dark frame specific controls visible
 		ui->hotPixels->setVisible(true);
 		ui->darkOptimisation->setVisible(true);

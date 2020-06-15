@@ -436,19 +436,6 @@ The comet and the stars will be sharp. This process is twice longer.</source>
     </message>
 </context>
 <context>
-    <name>Explorer Bar</name>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="837"/>
-        <source>Register Settings...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ExplorerBar.cpp" line="838"/>
-        <source>Stacking Settings...</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ExplorerBar</name>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="35"/>
@@ -595,6 +582,16 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <source>DeepSkyStacker&apos;s Help...</source>
         <translation>DeepSkyStacker說明...</translation>
     </message>
+    <message>
+        <location filename="../ExplorerBar.cpp" line="837"/>
+        <source>Register Settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ExplorerBar.cpp" line="838"/>
+        <source>Stacking Settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>FitsFilesTab</name>
@@ -675,37 +672,37 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <translation>中介檔</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="116"/>
+        <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
         <translation>中介檔儲存設定</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="35"/>
+        <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a calibrated file for each light frame</source>
         <translation>每幅天體影像校正後都儲存校正結果</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="51"/>
+        <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
         <translation>若為RAW檔則儲存解譯Bayer矩陣後的結果</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="64"/>
+        <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a registered/calibrated file for each light frame</source>
         <translation>儲存每幅天體影像校正/星點對齊後的結果</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="77"/>
+        <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
         <translation>中介檔格式</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="89"/>
+        <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
         <translation>將中介檔存為TIFF格式</translation>
     </message>
     <message>
-        <location filename="../ui/IntermediateFiles.ui" line="102"/>
+        <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
         <translation>將中介檔存為FITS格式FITS檔</translation>
     </message>
@@ -893,9 +890,8 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <source>Color Adjustment</source>
-        <translation type="unfinished">色彩調整</translation>
+        <translation type="obsolete">色彩調整</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
@@ -990,6 +986,7 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <translation type="unfinished">相機:</translation>
     </message>
     <message>
+        <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="381"/>
         <source>Colour Adjustment</source>
         <translation type="unfinished"></translation>
@@ -1135,47 +1132,47 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="88"/>
+        <location filename="../ui/RegisterSettings.ui" line="66"/>
         <source>Register already registered pictures</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="108"/>
+        <location filename="../ui/RegisterSettings.ui" line="86"/>
         <source>Automatic detection of hot pixels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="134"/>
+        <location filename="../ui/RegisterSettings.ui" line="112"/>
         <source>Stack after registering</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="154"/>
+        <location filename="../ui/RegisterSettings.ui" line="123"/>
         <source>Select the best</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="174"/>
+        <location filename="../ui/RegisterSettings.ui" line="143"/>
         <source>% of the pictures and stack them</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="230"/>
+        <location filename="../ui/RegisterSettings.ui" line="210"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="242"/>
+        <location filename="../ui/RegisterSettings.ui" line="216"/>
         <source>Star detection threshold</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="307"/>
+        <location filename="../ui/RegisterSettings.ui" line="274"/>
         <source>Compute the number of detected stars</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/RegisterSettings.ui" line="350"/>
+        <location filename="../ui/RegisterSettings.ui" line="317"/>
         <source>Reduce noise by using a median filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1284,20 +1281,23 @@ The comet and the stars will be sharp. This process is twice longer.</source>
     </message>
     <message>
         <location filename="../ResultParameters.cpp" line="94"/>
-        <location filename="../ResultParameters.cpp" line="146"/>
+        <location filename="../ResultParameters.cpp" line="149"/>
         <source>The result of the stacking process is framed by the reference light frame.</source>
+        <comment>IDS_STACKINGMODE_NORMAL</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ResultParameters.cpp" line="104"/>
-        <location filename="../ResultParameters.cpp" line="158"/>
+        <location filename="../ResultParameters.cpp" line="105"/>
+        <location filename="../ResultParameters.cpp" line="162"/>
         <source>The result of the stacking process contains all the light frames of the stack.</source>
+        <comment>IDS_STACKINGMODE_MOSAIC</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ResultParameters.cpp" line="114"/>
-        <location filename="../ResultParameters.cpp" line="171"/>
+        <location filename="../ResultParameters.cpp" line="116"/>
+        <location filename="../ResultParameters.cpp" line="176"/>
         <source>The result of the stacking process is framed by the intersection of all the frames.</source>
+        <comment>IDS_STACKINGMODE_INTERSECTION</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1455,13 +1455,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="247"/>
-        <source>Hot Pixels detection and removal: %1</source>
+        <source>Hot Pixel detection and removal: %1</source>
         <comment>IDS_RECAP_HOTPIXELS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="256"/>
-        <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %s are available on this drive.</source>
+        <source>The process temporarily requires %1 of free space on the %2 drive.&lt;br&gt;Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
         <translation type="unfinished"></translation>
     </message>
@@ -1604,141 +1604,136 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="452"/>
-        <location filename="../StackRecap.cpp" line="488"/>
-        <location filename="../StackRecap.cpp" line="535"/>
-        <location filename="../StackRecap.cpp" line="600"/>
-        <location filename="../StackRecap.cpp" line="648"/>
+        <location filename="../StackRecap.cpp" line="455"/>
+        <location filename="../StackRecap.cpp" line="499"/>
+        <location filename="../StackRecap.cpp" line="554"/>
+        <location filename="../StackRecap.cpp" line="630"/>
+        <location filename="../StackRecap.cpp" line="685"/>
         <source>Method: </source>
         <comment>IDS_RECAP_METHOD</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="461"/>
+        <location filename="../StackRecap.cpp" line="466"/>
         <source>Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.</source>
         <comment>IDS_RECAP_WARNINGBAYERDRIZZLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="478"/>
-        <source>	-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
+        <location filename="../StackRecap.cpp" line="486"/>
+        <source>-&gt; Offset: %1 frames (%2: %3) exposure: %4</source>
         <comment>IDS_RECAP_OFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="499"/>
-        <location filename="../StackRecap.cpp" line="557"/>
-        <source>		Warning: ISO speed does not match that of the Light frames</source>
+        <location filename="../StackRecap.cpp" line="511"/>
+        <location filename="../StackRecap.cpp" line="581"/>
+        <source>Warning: ISO speed does not match that of the Light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="508"/>
-        <location filename="../StackRecap.cpp" line="566"/>
-        <location filename="../StackRecap.cpp" line="668"/>
-        <source>		Warning: Gain does not match that of the Light frames</source>
+        <location filename="../StackRecap.cpp" line="521"/>
+        <location filename="../StackRecap.cpp" line="591"/>
+        <location filename="../StackRecap.cpp" line="707"/>
+        <source>Warning: Gain does not match that of the Light frames</source>
         <comment>IDS_RECAP_GAINWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="516"/>
-        <source>	-&gt; No Offset</source>
+        <location filename="../StackRecap.cpp" line="532"/>
+        <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="525"/>
-        <source>	-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
+        <location filename="../StackRecap.cpp" line="541"/>
+        <source>-&gt; Dark: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="573"/>
-        <source>		Warning: Exposure does not match that of the Light frames</source>
+        <location filename="../StackRecap.cpp" line="599"/>
+        <source>Warning: Exposure does not match that of the Light frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="580"/>
-        <source>	-&gt; No Dark</source>
+        <location filename="../StackRecap.cpp" line="608"/>
+        <source>-&gt; No Dark</source>
         <comment>IDS_RECAP_NODARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="589"/>
-        <source>	-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
+        <location filename="../StackRecap.cpp" line="617"/>
+        <source>-&gt; Dark Flat: %1 frames (%2 : %3) exposure: %4</source>
         <comment>IDS_RECAP_DARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="612"/>
-        <source>		Warning: ISO speed does not match that of the Flat frames</source>
+        <location filename="../StackRecap.cpp" line="643"/>
+        <source>Warning: ISO speed does not match that of the Flat frames</source>
         <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="621"/>
-        <source>		Warning: Gain does not match that of the Flat frames</source>
+        <location filename="../StackRecap.cpp" line="653"/>
+        <source>Warning: Gain does not match that of the Flat frames</source>
         <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="628"/>
-        <source>		Warning: Exposure does not match that of the Flat frames</source>
+        <location filename="../StackRecap.cpp" line="661"/>
+        <source>Warning: Exposure does not match that of the Flat frames</source>
         <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="638"/>
-        <source>	-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
+        <location filename="../StackRecap.cpp" line="673"/>
+        <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="659"/>
-        <source>		Warning: ISO speed does not match that of the light frames</source>
+        <location filename="../StackRecap.cpp" line="697"/>
+        <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="676"/>
-        <source>	-&gt; No Flat</source>
+        <location filename="../StackRecap.cpp" line="717"/>
+        <source>-&gt; No Flat</source>
         <comment>IDS_RECAP_NOFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="690"/>
-        <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed considering that all the checked light frames are kept for the stacking process)</source>
+        <location filename="../StackRecap.cpp" line="732"/>
+        <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="700"/>
+        <location filename="../StackRecap.cpp" line="742"/>
         <source>The process will temporarily use %1 on the %2 drive (%3 free).</source>
         <comment>IDS_RECAP_INFODISKSPACE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="266"/>
-        <location filename="../StackRecap.cpp" line="709"/>
-        <source>Note: the necessary disk space is computed using an image the size of the reference frame.Depending of the resulting image total size more space may be necessary.</source>
+        <location filename="../StackRecap.cpp" line="751"/>
+        <source>Note: the necessary disk space is computed using an image the size of the reference frame. Depending of the resulting image total size more space may be necessary.</source>
         <comment>IDS_RECAP_MOSAICWARNING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="717"/>
-        <source>Warning: the save registered and calibrated images option is checked.Please check that you have enough free disk space to store these files.</source>
+        <location filename="../StackRecap.cpp" line="759"/>
+        <source>Warning: the save registered and calibrated images option is checked. Please check that you have enough free disk space to store these files.</source>
         <comment>IDS_RECAP_WARNINGINTERMEDIATESAVE</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StackSettings</name>
-    <message>
-        <location filename="../ui/StackSettings.ui" line="14"/>
-        <source>Dialog</source>
-        <translation>疊合參數</translation>
-    </message>
     <message>
         <location filename="../ui/StackSettings.ui" line="41"/>
         <source>Temporary files folder:</source>
@@ -1760,33 +1755,33 @@ p, li { white-space: pre-wrap; }
         <translation>使用所有可用的處理器</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="36"/>
+        <location filename="../ui/StackSettings.ui" line="14"/>
         <source>Stacking Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="52"/>
+        <location filename="../StackSettings.cpp" line="50"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="53"/>
+        <location filename="../StackSettings.cpp" line="51"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="54"/>
+        <location filename="../StackSettings.cpp" line="52"/>
         <source>Flat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="55"/>
+        <location filename="../StackSettings.cpp" line="53"/>
         <source>Bias/Offset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="171"/>
-        <source>Select Temprorary Files Folder</source>
+        <location filename="../StackSettings.cpp" line="169"/>
+        <source>Select Temporary Files Folder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

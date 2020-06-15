@@ -244,7 +244,7 @@ void StackRecap::fillWithAllTasks()
 				.arg(fDarkFactor, 0, 'f', 2);
 
 		strYesNo = pStackingTasks->GetHotPixelsDetection() ? strYes : strNo;
-		strHotPixels = tr("Hot Pixels detection and removal: %1", "IDS_RECAP_HOTPIXELS")
+		strHotPixels = tr("Hot Pixel detection and removal: %1", "IDS_RECAP_HOTPIXELS")
 			.arg(strYesNo);
 
 		if (ulFreeSpace < ulNeededSpace)
@@ -254,7 +254,7 @@ void StackRecap::fillWithAllTasks()
 				"<table border='1px' cellpadding='5' bordercolor=#ffc0c0 bordercolorlight=#ffc0c0 bgcolor=#ffffc0"
 					"bordercolordark=#ffffc0 cellspacing=0 width='100%'><tr><td>";
 			strText = tr("The process temporarily requires %1 of free space on the %2 drive.<br>"
-					"Only %s are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE")
+					"Only %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE")
 				.arg(strNeededSpace)
 				.arg(strDrive)
 				.arg(strFreeSpace);
@@ -263,7 +263,7 @@ void StackRecap::fillWithAllTasks()
 			{
 				strHTML += "<br>";
 				insertHTML(strHTML, 
-					tr("Note: the necessary disk space is computed using an image the size of the reference frame."
+					tr("Note: the necessary disk space is computed using an image the size of the reference frame. "
 						"Depending of the resulting image total size more space may be necessary.", "IDS_RECAP_MOSAICWARNING"));
 			};
 			strHTML += "</td></tr></table>";
@@ -442,244 +442,286 @@ void StackRecap::fillWithAllTasks()
 					.arg(strISOGainValue);
 				insertHTML(strHTML, strText, QColor(Qt::black), true);
 				insertHTML(strHTML, strExposure, QColor(Qt::darkGreen), true);
-				strHTML += "<p style = \"margin-left: 20px\">";
+				strHTML += "<ul style=\"list-style: none; \">";
+				strHTML += "<li>";
 				insertHTML(strHTML, strBackgroundCalibration, QColor(Qt::darkBlue), false, false, SSTAB_LIGHT);
-				strHTML += "<br>";
+				strHTML += "</li>";
+				strHTML += "<li>";
 				insertHTML(strHTML, strPerChannelBackgroundCalibration, QColor(Qt::darkBlue), false, false, SSTAB_LIGHT);
-				strHTML += "<br>";
+				strHTML += "</li>";
 				if (si.m_pLightTask->m_vBitmaps.size()>1)
 				{
+					strHTML += "<li>";
 					strText = tr("Method: ", "IDS_RECAP_METHOD");
 					insertHTML(strHTML, strText);
 					strText = formatMethod(si.m_pLightTask->m_Method, si.m_pLightTask->m_fKappa, si.m_pLightTask->m_lNrIterations);
 					insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_LIGHT);
+					strHTML += "</li>";
 
 					if ((si.m_pLightTask->m_Method != MBP_AVERAGE) &&
 						(IsRawBayer() || IsFITSRawBayer()))
 					{
-						strHTML += "<br>";
+						strHTML += "<li>";
+						strHTML += "&nbsp;&nbsp;&nbsp;&nbsp;";
 						strText = tr(
 							"Warning: the Bayer Drizzle option selected in the RAW DDP settings may lead to strange results with a method other than average.",
 							"IDS_RECAP_WARNINGBAYERDRIZZLE");
 						insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
+						strHTML += "</li>";
 					};
 				};
+				strHTML += "</ul>";
 
 				strHTML += "<hr>";
+				strHTML += "<ul style=\"list-style: none; \">";
 
-				if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
-					strHTML += "<p style = \"margin-left: 20px\">";
+				//if (si.m_pDarkTask || si.m_pOffsetTask || si.m_pFlatTask || si.m_pDarkFlatTask)
+				//	strHTML += "<br>";
 
 				if (si.m_pOffsetTask)
 				{
+					strHTML += "<li>";
 					strExposure = exposureToString(si.m_pOffsetTask->m_fExposure);
 					GetISOGainStrings(si.m_pOffsetTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-					strText = tr("\t-> Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_OFFSET")
+					strText = tr("-> Offset: %1 frames (%2: %3) exposure: %4", "IDS_RECAP_OFFSET")
 						.arg(si.m_pOffsetTask->m_vBitmaps.size())
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
 					insertHTML(strHTML, strText);
-					strHTML += "<br>";
+					strHTML += "</li>";
+
+					strHTML += "<ul style=\"list-style: none; \">";
 
 					if (si.m_pOffsetTask->m_vBitmaps.size()>1)
 					{
+						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
 						strText = formatMethod(si.m_pOffsetTask->m_Method, si.m_pOffsetTask->m_fKappa, si.m_pOffsetTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_OFFSET);
-						strHTML += "<br>";
+						strHTML += "</li>";
 					};
 
 					if (si.m_pOffsetTask->HasISOSpeed())
 					{
 						if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
-							strText = tr("\t\tWarning: ISO speed does not match that of the Light frames", "IDS_RECAP_ISOWARNING");
+							strHTML += "<li>";
+							strText = tr("Warning: ISO speed does not match that of the Light frames", "IDS_RECAP_ISOWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
 						};
 					}
 					else
 					{
 						if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
-							strText = tr("\t\tWarning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
+							strHTML += "<li>";
+							strText = tr("Warning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
+
 						};
 					};
+					strHTML += "</ul>";
 				}
 				else
 				{
-					strText = tr("\t-> No Offset", "IDS_RECAP_NOOFFSET");
+					strHTML += "<li>";
+					strText = tr("-> No Offset", "IDS_RECAP_NOOFFSET");
 					insertHTML(strHTML, strText, QColor(Qt::darkRed));
-					strHTML += "<br>";
+					strHTML += "</li>";
 				};
 				if (si.m_pDarkTask)
 				{
 					strExposure = exposureToString(si.m_pDarkTask->m_fExposure);
 					GetISOGainStrings(si.m_pDarkTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-					strText = tr("\t-> Dark: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARK")
+					strHTML += "<li>";
+					strText = tr("-> Dark: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARK")
 						.arg(si.m_pDarkTask->m_vBitmaps.size())
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
 					insertHTML(strHTML, strText);
-					strHTML += "<br>";
+					strHTML += "</li>";
+
+					strHTML += "<ul style=\"list-style: none; \">";
 
 					if (si.m_pDarkTask->m_vBitmaps.size()>1)
 					{
+						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
 						strText = formatMethod(si.m_pDarkTask->m_Method, si.m_pDarkTask->m_fKappa, si.m_pDarkTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
-						strHTML += "<br>";
+						strHTML += "</li>";
 					};
 
+					strHTML += "<li>";
 					insertHTML(strHTML, strDarkOptimization, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
-					strHTML += "<br>";
+					strHTML += "</li>";
+					strHTML += "<li>";
 					insertHTML(strHTML, strHotPixels, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
-					strHTML += "<br>";
+					strHTML += "</li>";
+
 
 					if (!strDarkFactor.isEmpty())
 					{
+						strHTML += "<li>";
 						insertHTML(strHTML, strDarkFactor, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
-						strHTML += "<br>";
+						strHTML += "</li>";
 					};
 
 					if (si.m_pDarkTask->HasISOSpeed())
 					{
 						if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
-							strText = tr("\t\tWarning: ISO speed does not match that of the Light frames", "IDS_RECAP_ISOWARNING");
+							strHTML += "<li>";
+							strText = tr("Warning: ISO speed does not match that of the Light frames", "IDS_RECAP_ISOWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
 						};
 					}
 					else
 					{
 						if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
-							strText = tr("\t\tWarning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
+							strHTML += "<li>";
+							strText = tr("Warning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
 						};
 					};
 					if (!AreExposureEquals(si.m_pDarkTask->m_fExposure, si.m_pLightTask->m_fExposure))
 					{
-						strText = tr("\t\tWarning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING");
+						strHTML += "<li>";
+						strText = tr("Warning: Exposure does not match that of the Light frames", "IDS_RECAP_EXPOSUREWARNING");
 						insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-						strHTML += "<br>";
+						strHTML += "</li>";
 					};
+					strHTML += "</ul>";
 				}
 				else
 				{
-					strText = tr("\t-> No Dark", "IDS_RECAP_NODARK");
+					strHTML += "<li>";
+					strText = tr("-> No Dark", "IDS_RECAP_NODARK");
 					insertHTML(strHTML, strText, QColor(Qt::darkRed));
-					strHTML += "<br>";
+					strHTML += "</li>";
 				};
 				if (si.m_pDarkFlatTask && si.m_pFlatTask)
 				{
 					strExposure = exposureToString(si.m_pDarkFlatTask->m_fExposure);
 					GetISOGainStrings(si.m_pDarkFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
-
-					strText = tr("\t-> Dark Flat: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARKFLAT")
+					strHTML += "<li>";
+					strText = tr("-> Dark Flat: %1 frames (%2 : %3) exposure: %4", "IDS_RECAP_DARKFLAT")
 						.arg(si.m_pDarkFlatTask->m_vBitmaps.size())
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
 					insertHTML(strHTML, strText);
-					strHTML += "<br>";
+					strHTML += "</li>";
 
+					strHTML += "<ul style=\"list-style: none; \">";
 
 					if (si.m_pDarkFlatTask->m_vBitmaps.size()>1)
 					{
+						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
-						strHTML += "<br>";
+						strHTML += "</li>";
 						strText = formatMethod(si.m_pDarkFlatTask->m_Method, si.m_pDarkFlatTask->m_fKappa, si.m_pDarkFlatTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_DARK);
-						strHTML += "<br>";
+						strHTML += "</li>";
 					};
 
 					if (si.m_pDarkFlatTask->HasISOSpeed())
 					{
 						if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
 						{
-							strText = tr("\t\tWarning: ISO speed does not match that of the Flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
+							strHTML += "<li>";
+							strText = tr("Warning: ISO speed does not match that of the Flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
 						};
 					}
 					else
 					{
 						if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
 						{
-							strText = tr("\t\tWarning: Gain does not match that of the Flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
+							strHTML += "<li>";
+							strText = tr("Warning: Gain does not match that of the Flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
 						};
 					};
 					if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
 					{
-						strText = tr("\t\tWarning: Exposure does not match that of the Flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
+						strHTML += "<li>";
+						strText = tr("Warning: Exposure does not match that of the Flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
 						insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-						strHTML += "<br>";
+						strHTML += "</li>";
 					};
+					strHTML += "</ul>";
 				};
 				if (si.m_pFlatTask)
 				{
 					strExposure  = exposureToString(si.m_pFlatTask->m_fExposure);
 					GetISOGainStrings(si.m_pFlatTask, strISOText, strGainText, strISOGainText, strISOGainValue);
 
-					strText = tr("\t->Flat: %1 frames(%2: %3) exposure : %4", "IDS_RECAP_FLAT")
+					strHTML += "<li>";
+					strText = tr("->Flat: %1 frames(%2: %3) exposure : %4", "IDS_RECAP_FLAT")
 						.arg(si.m_pFlatTask->m_vBitmaps.size())
 						.arg(strISOGainText)
 						.arg(strISOGainValue)
 						.arg(strExposure);
 					insertHTML(strHTML, strText);
-					strHTML += "<br>";
+					strHTML += "</li>";
 
+					strHTML += "<ul style=\"list-style: none; \">";
 					if (si.m_pFlatTask->m_vBitmaps.size()>1)
 					{
+						strHTML += "<li>";
 						strText = tr("Method: ", "IDS_RECAP_METHOD");
 						insertHTML(strHTML, strText);
 						strText = formatMethod(si.m_pFlatTask->m_Method, si.m_pFlatTask->m_fKappa, si.m_pFlatTask->m_lNrIterations);
 						insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_FLAT);
-						strHTML +=  "<br>";
+						strHTML +=  "</li>";
 					};
 
 					if (si.m_pFlatTask->HasISOSpeed())
 					{
 						if (si.m_pFlatTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
-							strText = tr("\t\tWarning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
+							strHTML += "<li>";
+							strText = tr("Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
 						};
 					}
 					else
 					{
 						if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
-							strText = tr("\t\tWarning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
+							strHTML += "<li>";
+							strText = tr("Warning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
-							strHTML += "<br>";
+							strHTML += "</li>";
 						};
 					};
+					strHTML += "</ul>";
 				}
 				else
 				{
-					strText = tr("\t-> No Flat", "IDS_RECAP_NOFLAT");
+					strHTML += "<li>";
+					strText = tr("-> No Flat", "IDS_RECAP_NOFLAT");
 					insertHTML(strHTML, strText, QColor(Qt::darkRed));
-					strHTML += "<br>";
+					strHTML += "</li>";
+
 				};
 
+				strHTML += "</ul>";
 				strHTML += "</td></tr></table><br>";
-				strHTML += "</p>";
 			};
 		};
 
@@ -688,7 +730,7 @@ void StackRecap::fillWithAllTasks()
 		strExposure = strText;
 		strHTML += "<br>";
 		strText = tr(
-			"Estimated Total exposure time: %1<br>(the total exposure time is computed considering that all the checked light frames are kept for the stacking process)",
+			"Estimated Total exposure time: %1<br>(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)",
 			"IDS_RECAP_TOTALEXPOSURETIME")
 			.arg(strExposure);
 		insertHTML(strHTML, strText, QColor(Qt::black), true, true);
@@ -706,7 +748,7 @@ void StackRecap::fillWithAllTasks()
 			if (ResultMode == SM_MOSAIC)
 			{
 				strHTML += "<br>";
-				strText = tr("Note: the necessary disk space is computed using an image the size of the reference frame."
+				strText = tr("Note: the necessary disk space is computed using an image the size of the reference frame. "
 					"Depending of the resulting image total size more space may be necessary.",
 					"IDS_RECAP_MOSAICWARNING");
 				insertHTML(strHTML, strText);
@@ -714,13 +756,13 @@ void StackRecap::fillWithAllTasks()
 			if (bSaveIntermediates)
 			{
 				strHTML += "<br><br>";
-				strText = tr("Warning: the save registered and calibrated images option is checked."
+				strText = tr("Warning: the save registered and calibrated images option is checked. "
 					"Please check that you have enough free disk space to store these files.",
 					"IDS_RECAP_WARNINGINTERMEDIATESAVE");
 				insertHTML(strHTML, strText, QColor(Qt::darkRed));
 			};
 		};
-		ui->textBrowser->setText(strHTML);
+		ui->textBrowser->setHtml(strHTML);
 	};
 };
 
@@ -766,7 +808,7 @@ void StackRecap::CallStackingSettings(int tab)
 
 }
 
-void StackRecap::on_stackingSettings_clicked()
+void StackRecap::on_stackSettings_clicked()
 {
 	CallStackingSettings();
 };

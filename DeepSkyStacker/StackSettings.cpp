@@ -33,8 +33,6 @@ StackSettings::StackSettings(QWidget *parent) :
 {
     ui->setupUi(this);
 
-	setWindowTitle(tr("Stacking Settings"));
-
 	m_resultParameters = new ResultParameters(this);
 	m_cometStacking = new CometStacking(this);
 	m_alignmentParameters = new AlignmentParameters(this);
@@ -168,7 +166,7 @@ void StackSettings::tabChanged(int tab)
 void StackSettings::on_chooseFolder_clicked(bool value)
 {
 	value;
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Temprorary Files Folder"),
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Temporary Files Folder"),
 		ui->tempFilesFolder->text(),
 		QFileDialog::ShowDirsOnly
 		| QFileDialog::DontResolveSymlinks);

@@ -34,7 +34,7 @@ private slots:
 	void accept() override;
 	void reject() override;
 	void on_recommended_clicked();
-	void on_stackingSettings_clicked();
+	void on_stackSettings_clicked();
 	void on_textBrowser_anchorClicked(const QUrl &);
 
 private:
