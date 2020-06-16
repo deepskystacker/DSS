@@ -177,7 +177,7 @@ Copyright NASA</translation>
     <message>
         <location filename="../About.cpp" line="101"/>
         <source>and</source>
-        <translation>&quot;i&quot;</translation>
+        <translation>i</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="102"/>
