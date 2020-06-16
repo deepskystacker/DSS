@@ -45,18 +45,18 @@ void	CMRUList::saveSettings()
 {
 	QSettings	settings;
 
-	QString keyName((QChar *)m_strBasePath.GetBuffer());
+	QString keyName(QString::fromWCharArray(m_strBasePath.GetBuffer()));
 
 	// Clear all the entries first
 	settings.remove(keyName);
 
-	keyName += "NrMRU";
+	keyName += "/NrMRU";
 	
 	settings.setValue(keyName, (uint)m_vLists.size());
 	for (LONG i = 0;i<m_vLists.size();i++)
 	{
 		QString keyName = QString("%1/MRU%2")
-			.arg((QChar *)m_strBasePath.GetBuffer()).arg(i);
+			.arg(QString::fromWCharArray(m_strBasePath.GetBuffer())).arg(i);
 		QString value((QChar *)m_vLists[i].GetBuffer());
 
 		settings.setValue(keyName, value);
