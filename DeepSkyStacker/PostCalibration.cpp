@@ -42,8 +42,8 @@ PostCalibration::PostCalibration(QWidget *parent) :
     ui(new Ui::PostCalibration),
 	workspace(new CWorkspace()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent)),
-	medianString(tr("the median")),
-	gaussianString(tr("a gaussian filter"))
+	medianString(tr("the median", "ID_COSMETICMETHOD_MEDIAN")),
+	gaussianString(tr("a gaussian filter", "ID_COSMETICMETHOD_GAUSSIAN"))
 {
 	if (nullptr == pStackSettings)
 	{
@@ -69,13 +69,13 @@ PostCalibration::PostCalibration(QWidget *parent) :
 
 PostCalibration & PostCalibration::createActions()
 {
-	onMedian = new QAction(tr("the median"), this);
+	onMedian = new QAction(medianString, this);
 	connect(onMedian, &QAction::triggered, this,
 		[=]() { this->setReplacementMethod(CR_MEDIAN); });
 	connect(onMedian, &QAction::triggered, this,
 		[=]() { ui->replacementMethod->setText(medianString); });
 
-	onGaussian = new QAction(tr("a gaussian filter"), this);
+	onGaussian = new QAction(gaussianString, this);
 	connect(onGaussian, &QAction::triggered, this,
 		[=]() { this->setReplacementMethod(CR_GAUSSIAN); });
 	connect(onGaussian, &QAction::triggered, this,

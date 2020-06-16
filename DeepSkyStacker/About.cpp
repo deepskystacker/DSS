@@ -26,7 +26,8 @@ About::About(QWidget *parent) :
     }
     copyright = copyrightList.join(", ");
 
-    strText = QString(QCoreApplication::translate("About", "DeepSkyStacker version %1")).arg(VERSION_DEEPSKYSTACKER);
+    strText = QString(QCoreApplication::translate("About", "DeepSkyStacker version %1",
+		"IDS_ABOUT_DSS")).arg(VERSION_DEEPSKYSTACKER);
     strText += "<br>";
     strText += copyright;
     strText = strText.replace("\n", "<br>");
@@ -35,7 +36,8 @@ About::About(QWidget *parent) :
     strHTML += strText;
 
     strText = QString(QCoreApplication::translate("About",
-                "RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2019 LibRaw LLC")).arg(LIBRAW_VERSION_STR);
+                "RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2019 LibRaw LLC",
+				"IDS_ABOUT_DCRAW")).arg(LIBRAW_VERSION_STR);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://libraw.org/");
@@ -45,14 +47,16 @@ About::About(QWidget *parent) :
     copyright = copyright.remove(0, copyright.indexOf("Version ") + 8);
     copyright = copyright.left(copyright.indexOf("Copyright")-1);
     strText = QString(QCoreApplication::translate("About",
-                "TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.")).arg(copyright);
+                "TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.",
+				"IDS_ABOUT_TIFF")).arg(copyright);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://www.remotesensing.org/libtiff/");
     strHTML += strText;
 
     strText = QString(QCoreApplication::translate("About",
-                "FITS decoding by CFitsIO (version %1)\nCopyright NASA")).arg(xstr(CFITSIO_VERSION));
+                "FITS decoding by CFitsIO (version %1)\nCopyright NASA",
+				"IDS_ABOUT_FITS")).arg(xstr(CFITSIO_VERSION));
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
     strText = QString("<a href=\"%1\">%1</a><br>").arg("http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html");
@@ -73,48 +77,48 @@ About::About(QWidget *parent) :
     ui->html->setText(strHTML);
 
     strHTML  = "<img valign=center src=\"qrc:///flags/spanish.png\">&nbsp;&nbsp;";
-    strHTML += tr("Spanish version: Ricardo Contreras and the team from") + " ";
+    strHTML += tr("Spanish version: Ricardo Contreras and the team from", "IDS_ABOUT_LANG_SPANISH") + " ";
     strHTML += QString("<a href=\"http://espacioprofundo.com.ar/\">%1</a><br/>").arg(tr("Espacio Profundo"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/czech.png\">&nbsp;&nbsp;";
-    strHTML += tr("Czech version:") + " ";
+    strHTML += tr("Czech version:", "IDS_ABOUT_LANG_CZECH") + " ";
     strHTML += QString("<a href=\"mailto:lukavsky.premysl@tiscali.cz\">%1</a><br/>").arg(tr("Lukavský Premysl"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/italian.png\">&nbsp;&nbsp;";
-    strHTML += tr("Italian version:") + " ";
+    strHTML += tr("Italian version:", "IDS_ABOUT_LANG_ITALIAN") + " ";
     strHTML += QString("<a href=\"http://www.astrofilipc.it\">%1</a><br/>").arg(tr("Fabio Papa"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/catalan.png\">&nbsp;&nbsp;";
-    strHTML += tr("Catalan version:") + " ";
+    strHTML += tr("Catalan version:", "IDS_ABOUT_LANG_CATALAN") + " ";
     strHTML += QString("<a href=\"mailto:astroemporda@gmail.com\">%1</a><br/>").arg(tr("Francesc Pruneda"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/german.png\">&nbsp;&nbsp;";
-    strHTML += tr("German version:") + " ";
+    strHTML += tr("German version:", "IDS_ABOUT_LANG_GERMAN") + " ";
     strHTML += QString("<a href=\"mailto:kasakow@arcor.de\">%1</a><br/>").arg(tr("Wilhelm-Michael Kasakow"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/dutch.png\">&nbsp;&nbsp;";
-    strHTML += tr("Dutch version:") + " ";
+    strHTML += tr("Dutch version:", "IDS_ABOUT_LANG_DUTCH") + " ";
     strHTML += QString("<a href=\"http://www.geocities.com/me_gielis/\">%1</a> %2 ").arg(tr("Eelko Gielis"), tr("and"));
     strHTML += QString("%1<br/>").arg(tr("Inge van de Stadt"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/taiwan.png\">&nbsp;&nbsp;";
-    strHTML += tr("Traditional Chinese version:") + " ";
+    strHTML += tr("Traditional Chinese version:", "IDS_ABOUT_LANG_CHINESET") + " ";
     strHTML += QString("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%1</a><br/>").arg(tr("Wei-Hao Wang"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/portugal.png\">&nbsp;<img valign=center src=\"qrc:///flags/brazil.png\">&nbsp;&nbsp;";
-    strHTML += tr("Portuguese version:") + " ";
+    strHTML += tr("Portuguese version:", "IDS_ABOUT_LANG_PORTUGUESE") + " ";
     strHTML += QString("<a href=\"http://www.astrofotografia.biz/\">%1</a><br/>").arg(tr("Manuel Fernandes"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/romanian.png\">&nbsp;&nbsp;";
-    strHTML += tr("Romanian version:") + " ";
+    strHTML += tr("Romanian version:", "IDS_ABOUT_LANG_ROMANIAN") + " ";
     strHTML += QString("<a href=\"http://www.astronomy.ro/\">%1</a><br/>").arg(tr("Emil Kolbert and Valentin Stoica"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/russian.png\">&nbsp;&nbsp;";
-    strHTML += tr("Russian version:") + " ";
+    strHTML += tr("Russian version:", "IDS_ABOUT_LANG_RUSSIAN") + " ";
     strHTML += QString("<a href=\"http://oleg.milantiev.com/\">%1</a><br/>").arg(tr("Oleg Milantiev"));
 
     strHTML += "<img valign=center src=\"qrc:///flags/turkish.png\">&nbsp;&nbsp;";
-    strHTML += tr("Turkish version:") + " ";
+    strHTML += tr("Turkish version:", "IDS_ABOUT_LANG_TURKISH") + " ";
     strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br/>").arg(tr("Rasid Tugral"));
 
     ui->credits->setText(strHTML);

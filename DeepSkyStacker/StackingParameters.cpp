@@ -30,9 +30,9 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 	workspace(new CWorkspace()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent)),
 	type(theType),
-	nobgCalString(tr("No Background Calibration")),
-	pcbgCalString(tr("Per Channel Background Calibration")),
-	rgbbgCalString(tr("RGB Channels Background Calibration"))
+	nobgCalString(tr("No Background Calibration", "ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION")),
+	pcbgCalString(tr("Per Channel Background Calibration", "ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION")),
+	rgbbgCalString(tr("RGB Channels Background Calibration", "ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION"))
 {
 	if (nullptr == pStackSettings)
 	{
@@ -74,7 +74,8 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 	// Set the tooltip text
 	//
 	kappaSigmaTip = tr("The pixels outside the range:\n[Mean-%1*%2, Mean+%1*%2]\n"
-		"are iteratively removed.\n\nThe remaining pixels are averaged.")
+		"are iteratively removed.\n\nThe remaining pixels are averaged.",
+		"IDS_TOOLTIP_KAPPASIGMA")
 		// Greek character kappa (κ) = \xce\xba UTF8, Greek character sigma (σ) = \xcf\x83 UTF8
 		.arg("\xce\xba").arg("\xcf\x83");		
 	ui->modeKS->setToolTip(kappaSigmaTip);
@@ -82,13 +83,15 @@ StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
 	ui->kappa->setToolTip(kappaSigmaTip);
 
 	medianKappaSigmaTip = tr("The pixels outside the range:\n[Mean-%1*%2, Mean+%1*%2]\n"
-		"are iteratively replaced by the median value.\n\nThe pixels are then averaged.")
+		"are iteratively replaced by the median value.\n\nThe pixels are then averaged.",
+		"IDS_TOOLTIP_MEDIANKAPPASIGMA")
 		// Greek character kappa (κ) = \xce\xba UTF8, Greek character sigma (σ) = \xcf\x83 UTF8
 		.arg("\xce\xba").arg("\xcf\x83");
 	ui->modeMKS->setToolTip(medianKappaSigmaTip);
 
 	QString text = tr("The <b>weighted average</b> is obtained by\niteratively weighting each pixel\n"
-		"based on its deviation from the mean\ncompared to the standard deviation (%1).")
+		"based on its deviation from the mean\ncompared to the standard deviation (%1).",
+		"IDS_TOOLTIP_AUTOADAPTIVE")
 		// Greek character sigma (σ) = \xcf\x83 UTF8
 		.arg("\xcf\x83");
 	ui->modeAAWA->setToolTip(text);

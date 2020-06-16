@@ -24,157 +24,172 @@
         <translation>Beim Start überprüfen ob eine neue Version verfügbar ist</translation>
     </message>
     <message>
+        <location filename="../About.cpp" line="66"/>
+        <source>Default</source>
+        <translation>Voreinstellung</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="81"/>
+        <source>Espacio Profundo</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="85"/>
+        <source>Lukavský Premysl</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="89"/>
+        <source>Fabio Papa</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="93"/>
+        <source>Francesc Pruneda</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="97"/>
+        <source>Wilhelm-Michael Kasakow</source>
+        <translation></translation>
+    </message>
+    <message>
         <location filename="../About.cpp" line="29"/>
         <source>DeepSkyStacker version %1</source>
+        <comment>IDS_ABOUT_DSS</comment>
         <translation>DeepSkyStacker version %1</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="37"/>
+        <location filename="../About.cpp" line="38"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2019 LibRaw LLC</source>
+        <comment>IDS_ABOUT_DCRAW</comment>
         <translation>RAW-Dateien Dekodierung von LibRaw (Version %1)
 Copyright © 1997-2019 LibRaw LLC</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="47"/>
+        <location filename="../About.cpp" line="49"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
+        <comment>IDS_ABOUT_TIFF</comment>
         <translation>TIFF Dateien Kodierung/Dekodierung von LibTIFF (Version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="54"/>
+        <location filename="../About.cpp" line="57"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
+        <comment>IDS_ABOUT_FITS</comment>
         <translation>FITS Dekodierung von CFitsIO (Version %1)
 Copyright NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="62"/>
-        <source>Default</source>
-        <translation>Voreinstellung</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="76"/>
-        <source>Spanish version: Ricardo Contreras and the team from</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="77"/>
-        <source>Espacio Profundo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../About.cpp" line="80"/>
-        <source>Czech version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="81"/>
-        <source>Lukavský Premysl</source>
-        <translation type="unfinished"></translation>
+        <source>Spanish version: Ricardo Contreras and the team from</source>
+        <comment>IDS_ABOUT_LANG_SPANISH</comment>
+        <translation>Spanische Version: Ricardo Contreras und sein Team</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="84"/>
-        <source>Italian version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="85"/>
-        <source>Fabio Papa</source>
-        <translation type="unfinished"></translation>
+        <source>Czech version:</source>
+        <comment>IDS_ABOUT_LANG_CZECH</comment>
+        <translation>Tschechische Version:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="88"/>
-        <source>Catalan version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="89"/>
-        <source>Francesc Pruneda</source>
-        <translation type="unfinished"></translation>
+        <source>Italian version:</source>
+        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
+        <translation>Italienische Version:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="92"/>
-        <source>German version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Wilhelm-Michael Kasakow</source>
-        <translation type="unfinished"></translation>
+        <source>Catalan version:</source>
+        <comment>IDS_ABOUT_LANG_CATALAN</comment>
+        <translation>Katalanische Version:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="96"/>
+        <source>German version:</source>
+        <comment>IDS_ABOUT_LANG_GERMAN</comment>
+        <translation>Deutsche Version:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="100"/>
         <source>Dutch version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>Eelko Gielis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>and</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="98"/>
-        <source>Inge van de Stadt</source>
-        <translation type="unfinished"></translation>
+        <comment>IDS_ABOUT_LANG_DUTCH</comment>
+        <translation>Holländische Version:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="101"/>
-        <source>Traditional Chinese version:</source>
-        <translation type="unfinished"></translation>
+        <source>Eelko Gielis</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="101"/>
+        <source>and</source>
+        <translation>und</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="102"/>
-        <source>Wei-Hao Wang</source>
-        <translation type="unfinished"></translation>
+        <source>Inge van de Stadt</source>
+        <translation></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="105"/>
-        <source>Portuguese version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="106"/>
-        <source>Manuel Fernandes</source>
-        <translation type="unfinished"></translation>
+        <source>Traditional Chinese version:</source>
+        <comment>IDS_ABOUT_LANG_CHINESET</comment>
+        <translation>Traditionell Chinesische Version:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="109"/>
-        <source>Romanian version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="110"/>
-        <source>Emil Kolbert and Valentin Stoica</source>
-        <translation type="unfinished"></translation>
+        <source>Portuguese version:</source>
+        <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
+        <translation>Portugiesische Version:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="113"/>
-        <source>Russian version:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="114"/>
-        <source>Oleg Milantiev</source>
-        <translation type="unfinished"></translation>
+        <source>Romanian version:</source>
+        <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
+        <translation>Rumänische Version:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="117"/>
+        <source>Russian version:</source>
+        <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
+        <translation>Russische Version:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="121"/>
         <source>Turkish version:</source>
-        <translation type="unfinished"></translation>
+        <comment>IDS_ABOUT_LANG_TURKISH</comment>
+        <translation>Türkische Version:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="106"/>
+        <source>Wei-Hao Wang</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="110"/>
+        <source>Manuel Fernandes</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="114"/>
+        <source>Emil Kolbert and Valentin Stoica</source>
+        <translation>Emil Kolbert und Valentin Stoica</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="118"/>
+        <source>Oleg Milantiev</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="122"/>
         <source>Rasid Tugral</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -372,45 +387,48 @@ Fügen Sie die zu stackenden Bilderlisten im Auswahlfeld hinzu und klicken Sie a
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation type="unfinished"></translation>
+        <translation>Komet</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Komet Stacking-Parameter</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation>Standard Stacking</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Kometenposition wird ignoriert.
+Der Komet wird unscharf.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kometenposition wird berücksichtigt.
+Der Komet wird scharf und die Sterne als Strichspuren abgebildet.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kometenposition wird berücksichtigt.
+Der Komet und die Sterne werden scharf. Diese Prozess dauert doppelt so lange.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation>Komet Stacking</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation>Sterne + Komet Stacking</translation>
     </message>
 </context>
 <context>
@@ -580,113 +598,46 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     </message>
 </context>
 <context>
-    <name>FitsFilesTab</name>
-    <message>
-        <source>FITS Files</source>
-        <translation type="vanished">FITS Dateien</translation>
-    </message>
-    <message>
-        <source>Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera</source>
-        <translation type="vanished">Monochrome 16 Bit FITS Dateien sind RAW Dateien mit einer DSLR erstellt oder einer Farb-CCD Kamera</translation>
-    </message>
-    <message>
-        <source>Camera:</source>
-        <translation type="vanished">Kamera:</translation>
-    </message>
-    <message>
-        <source>Color Adjistment</source>
-        <translation type="vanished">Farbanpassung</translation>
-    </message>
-    <message>
-        <source>Brightness</source>
-        <translation type="vanished">Helligkeit</translation>
-    </message>
-    <message>
-        <source>Red scale</source>
-        <translation type="vanished">Rot-Scala</translation>
-    </message>
-    <message>
-        <source>Blue scale</source>
-        <translation type="vanished">Blau-Scala</translation>
-    </message>
-    <message>
-        <source>Bayer Pattern Filter used</source>
-        <translation type="vanished">Bayer Muster Filter verwenden</translation>
-    </message>
-    <message>
-        <source>Bayer Matrix Transformation</source>
-        <translation type="vanished">Bayer Matrix Umwandlung</translation>
-    </message>
-    <message>
-        <source>Bilinear Interpolation</source>
-        <translation type="vanished">Bilineare Interpolation</translation>
-    </message>
-    <message>
-        <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="vanished">Adaptive Homogeneity-Directed Interpolation (AHD)</translation>
-    </message>
-    <message>
-        <source>Use Bayer Drizzle algorithm (no interpolation, no debayerization)</source>
-        <translation type="vanished">Bayer Drizzle Algorithmus anwenden (keine Interpolation, keine Debayerisation)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="vanished">Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhält nur die Basiskomponenten des Rasters.</translation>
-    </message>
-    <message>
-        <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="vanished">Erstellen von Super-Pixel mit der reinen Bayer-Matrix (keine Interpolation)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="vanished">Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die Größe des fertigen Bildes halbiert sich dadurch.</translation>
-    </message>
-    <message>
-        <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="vanished">Erzwungene Verwendung von unsignierten Werten, wenn signierte Werte gespeichert sind</translation>
-    </message>
-</context>
-<context>
     <name>IntermediateFiles</name>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwischenbilder</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen für die Zwischenbilder</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstelle eine kalibrierte Datei für jedes Lightframe</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein debayerisiertes Bild speichern, wenn RAW Bildern verarbeitet werden</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstelle eine registrierte/kalibrierte Datei für jedes Lightframe</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwischenbilder Format</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation type="unfinished"></translation>
+        <translation>Zwischenbilder als TIFF-Datei speichern</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation type="unfinished">FITS Dateien</translation>
+        <translation>Zwischenbilder als FITS-Datei speichern</translation>
     </message>
 </context>
 <context>
@@ -694,72 +645,73 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabe</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabedatei Einstellungen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabedatei erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
-        <translation type="unfinished"></translation>
+        <translation>HTML Beschreibungs-Datei erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabedatei-Name</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
         <source>Autosave.tif/fits</source>
-        <translation type="unfinished"></translation>
+        <translation>Autosave.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="60"/>
         <source>&lt;file list name&gt;.tif/fits</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Dateilisten-Name&gt;.tif/fits</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
-        <translation type="unfinished"></translation>
+        <translation>Nummerieren um ein Überschreiben der Datei zu vermeiden (001, 002, ...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabe-Speicherstelle</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabedatei im Ordner des Referenzframe erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgabedatei im Ordner der Dateiliste erstellen</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ausgabedatei erstellen in</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
         <source>&lt;Output Folder&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;Ausgabe-Ordner&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="150"/>
         <source>Select Output Folder</source>
-        <translation type="unfinished"></translation>
+        <comment>IDS_SELECTOUTPUTFOLDER</comment>
+        <translation>Ausgabe-Ordner wählen</translation>
     </message>
 </context>
 <context>
@@ -767,17 +719,17 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     <message>
         <location filename="../ui/PostCalibration.ui" line="14"/>
         <source>Cosmetic</source>
-        <translation type="unfinished"></translation>
+        <translation>Kosmetik</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kosmetik-Einstellungen zur Nachkalibrierung</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
-        <translation type="unfinished"></translation>
+        <translation>Erkennen und Entfernen der verbliebenen Hot-Pixel</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="41"/>
@@ -785,78 +737,63 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../ui/PostCalibration.ui" line="174"/>
         <location filename="../ui/PostCalibration.ui" line="244"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
         <location filename="../ui/PostCalibration.ui" line="192"/>
         <source>&lt;small&gt;Effect weak&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;small&gt;Effekt  schwach&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="75"/>
         <location filename="../ui/PostCalibration.ui" line="202"/>
         <source>&lt;small&gt;Strong&lt;/small&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;small&gt;stark&lt;/small&gt;</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Filter-Größe</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>Erkennungs-Schwellenwert</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
-        <translation type="unfinished"></translation>
+        <translation>Erkennen und Entfernen der verbliebenen Cold-Pixel</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
-        <translation type="unfinished"></translation>
+        <translation>Pixel-Wert ersetzen mit</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
-        <translation type="unfinished"></translation>
+        <translation>An erstem Frame testen...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
-        <translation type="unfinished"></translation>
+        <translation>Ein Bild speichern welches die entfernten Pixel für jedes Ligthframe zeigt.</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="45"/>
-        <location filename="../PostCalibration.cpp" line="72"/>
         <source>the median</source>
-        <translation type="unfinished"></translation>
+        <comment>ID_COSMETICMETHOD_MEDIAN</comment>
+        <translation>Median</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="46"/>
-        <location filename="../PostCalibration.cpp" line="78"/>
         <source>a gaussian filter</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Abbrechen</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation type="vanished">Anwenden</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
+        <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
+        <translation>Gauss Filter</translation>
     </message>
 </context>
 <context>
@@ -869,7 +806,7 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation type="unfinished"></translation>
+        <translation>RAW Dateien</translation>
     </message>
     <message>
         <source>Color Adjustment</source>
@@ -879,216 +816,149 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
         <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Brightness</source>
-        <translation type="unfinished">Helligkeit</translation>
+        <translation>Helligkeit</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation type="unfinished">Rot-Scala</translation>
+        <translation>Rot-Scala</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
         <source>Blue Scale</source>
-        <translation type="unfinished">Blau-Scala</translation>
+        <translation>Blau-Scala</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="131"/>
         <source>White Balance</source>
-        <translation type="unfinished">Weißabgleich</translation>
+        <translation>Weißabgleich</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation type="unfinished">Keine Weißabgleichverarbeitung</translation>
+        <translation>Keine Weißabgleichverarbeitung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation type="unfinished">Weißabgleich der Kamera verwenden</translation>
+        <translation>Weißabgleich der Kamera verwenden</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
         <location filename="../ui/RawDDPSettings.ui" line="534"/>
         <source>Bayer Matrix Transformation</source>
-        <translation type="unfinished">Bayer Matrix Umwandlung</translation>
+        <translation>Bayer Matrix Umwandlung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="543"/>
         <source>Bilinear Interpolation</source>
-        <translation type="unfinished">Bilineare Interpolation</translation>
+        <translation>Bilineare Interpolation</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="563"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="unfinished">Adaptive Homogeneity-Directed Interpolation (AHD)</translation>
+        <translation>Adaptive Homogeneity-Directed Interpolation (AHD)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="583"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation type="unfinished"></translation>
+        <translation>Bayer Drizzle Algorithmus anwenden (keine Interpolation, keine Debayerisation)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="599"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="unfinished">Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhält nur die Basiskomponenten des Rasters.</translation>
+        <translation>Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhält nur die Basiskomponenten des Rasters.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <source>Create super- pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="unfinished">Erstellen von Super-Pixel mit der reinen Bayer-Matrix (keine Interpolation)</translation>
+        <translation>Erstellen von Super-Pixel mit der reinen Bayer-Matrix (keine Interpolation)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="641"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="unfinished">Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die Größe des fertigen Bildes halbiert sich dadurch.</translation>
+        <translation>Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die Größe des fertigen Bildes halbiert sich dadurch.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="289"/>
         <source>Set the black point to 0</source>
-        <translation type="unfinished">Schwarzpunkt auf 0 setzen</translation>
+        <translation>Schwarzpunkt auf 0 setzen</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="297"/>
         <source>FITS Files</source>
-        <translation type="unfinished">FITS Dateien</translation>
+        <translation>FITS Dateien</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="318"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 Bit FITS Dateien sind RAW Dateien mit einer DSLR erstellt oder einer Farb-CCD Kamera&lt;br&gt; Lassen Sie &lt;span style = &quot;font-style: italic;&quot;&gt;deaktiviert&lt;/ span&gt;, um eine automatische Erkennung basierend auf FITS-Schlüsselwörtern zu versuchen. &lt;/ P&gt; &lt;/ body&gt; &lt;/ html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="341"/>
         <source>Camera:</source>
-        <translation type="unfinished">Kamera:</translation>
+        <translation>Kamera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="381"/>
         <source>Colour Adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>Farbanpassung</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Red scale</source>
-        <translation type="unfinished">Rot-Scala</translation>
+        <translation>Rot-Scala</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="470"/>
         <source>Blue scale</source>
-        <translation type="unfinished">Blau-Scala</translation>
+        <translation>Blau-Scala</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="492"/>
         <source>Bayer Pattern Filter used</source>
-        <translation type="unfinished">Bayer Muster Filter verwenden</translation>
+        <translation>Bayer Muster Filter verwenden</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="625"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="unfinished">Erstellen von Super-Pixel mit der reinen Bayer-Matrix (keine Interpolation)</translation>
+        <translation>Erstellen von Super-Pixel mit der reinen Bayer-Matrix (keine Interpolation)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="657"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="unfinished">Erzwungene Verwendung von unsignierten Werten, wenn signierte Werte gespeichert sind</translation>
+        <translation>Erzwungene Verwendung von unsignierten Werten, wenn signierte Werte gespeichert sind</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="87"/>
         <source>Generic RGGB</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeines RGGB</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="88"/>
         <source>Generic BGGR</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeines BGGR</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="89"/>
         <source>Generic GBRG</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeines GBRG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="90"/>
         <source>Generic GRBG</source>
-        <translation type="unfinished"></translation>
+        <translation>Allgemeines GRBG</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="92"/>
         <source>Generic</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RawFilesTab</name>
-    <message>
-        <source>RAW Files</source>
-        <translation type="vanished">RAW Dateien</translation>
-    </message>
-    <message>
-        <source>Color Adjustment</source>
-        <translation type="vanished">Farbanpassung</translation>
-    </message>
-    <message>
-        <source>Brightness</source>
-        <translation type="vanished">Helligkeit</translation>
-    </message>
-    <message>
-        <source>Red Scale</source>
-        <translation type="vanished">Rot-Scala</translation>
-    </message>
-    <message>
-        <source>Blue Scale</source>
-        <translation type="vanished">Blau-Scala</translation>
-    </message>
-    <message>
-        <source>White Balance</source>
-        <translation type="vanished">Weißabgleich</translation>
-    </message>
-    <message>
-        <source>No White Balance Processing</source>
-        <translation type="vanished">Keine Weißabgleichverarbeitung</translation>
-    </message>
-    <message>
-        <source>Use Camera White Balance</source>
-        <translation type="vanished">Weißabgleich der Kamera verwenden</translation>
-    </message>
-    <message>
-        <source>Bayer Matrix Transformation</source>
-        <translation type="vanished">Bayer Matrix Umwandlung</translation>
-    </message>
-    <message>
-        <source>Bilinear Interpolation</source>
-        <translation type="vanished">Bilineare Interpolation</translation>
-    </message>
-    <message>
-        <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="vanished">Adaptive Homogeneity-Directed Interpolation (AHD)</translation>
-    </message>
-    <message>
-        <source>Use Bayer Drizzle algorithm (no interpolation, no debayerization)</source>
-        <translation type="vanished">Bayer Drizzle Algorithmus anwenden (keine Interpolation, keine Debayerisation)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="vanished">Diese Option verwendet auch die Bayer-Matrix. Es wird aber nicht interpoliert und jedes Pixel erhält nur die Basiskomponenten des Rasters.</translation>
-    </message>
-    <message>
-        <source>Create super- pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="vanished">Erstellen von Super-Pixel mit der reinen Bayer-Matrix (keine Interpolation)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="vanished">Diese Option verwendet die Bayer-Matrix um aus jeder 4er Pixelgruppe (RGBG) ein Superpixel zu erstellen. Die Größe des fertigen Bildes halbiert sich dadurch.</translation>
-    </message>
-    <message>
-        <source>Set the black point to 0</source>
-        <translation type="vanished">Schwarzpunkt auf 0 setzen</translation>
+        <translation>Allgemein</translation>
     </message>
 </context>
 <context>
@@ -1744,131 +1614,56 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Light</source>
+        <comment>IDS_TYPE_LIGHT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="51"/>
         <source>Dark</source>
+        <comment>IDS_TYPE_DARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="52"/>
         <source>Flat</source>
+        <comment>IDS_TYPE_FLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="53"/>
         <source>Bias/Offset</source>
+        <comment>IDS_TYPE_OFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="169"/>
+        <location filename="../StackSettings.cpp" line="170"/>
         <source>Select Temporary Files Folder</source>
+        <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>StackingParameters</name>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="14"/>
-        <source>Stacking</source>
-        <translation type="unfinished"></translation>
+        <source>Maximum</source>
+        <translation type="obsolete">Maximum</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="20"/>
-        <source>Stacking Mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="48"/>
-        <source>Debloom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="61"/>
-        <source>Hot pixel detection and removal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="74"/>
-        <source>Bad column detection and removal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="87"/>
-        <source>Dark Optimisation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="100"/>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="113"/>
-        <source>Dark Multiplication Factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="142"/>
-        <source>Average</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="157"/>
-        <source>Median</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="178"/>
-        <source>Median Kappa-Sigma clipping</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="270"/>
         <location filename="../StackingParameters.cpp" line="33"/>
         <source>No Background Calibration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="171"/>
-        <source>Kappa-Sigma clipping</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="149"/>
-        <source>Entropy Weighted Average
-(High Dynamic Range)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="164"/>
-        <source>Maximum</source>
-        <translation type="unfinished">Maximum</translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="198"/>
-        <source>Kappa:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="221"/>
-        <source>Number of iterations:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="185"/>
-        <source>Auto Adaptive Weighted Average</source>
+        <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="34"/>
         <source>Per Channel Background Calibration</source>
+        <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="35"/>
         <source>RGB Channels Background Calibration</source>
+        <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1878,28 +1673,135 @@ p, li { white-space: pre-wrap; }
 are iteratively removed.
 
 The remaining pixels are averaged.</source>
+        <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="84"/>
+        <location filename="../StackingParameters.cpp" line="85"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
+        <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="90"/>
+        <location filename="../StackingParameters.cpp" line="92"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
+        <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="122"/>
+        <location filename="../StackingParameters.cpp" line="125"/>
         <source>Options...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="14"/>
+        <source>Stacking</source>
+        <comment>IDD_STACKINGPARAMETERS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="20"/>
+        <source>Stacking Mode</source>
+        <comment>IDC_TITLE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="50"/>
+        <source>Number of iterations:</source>
+        <comment>IDC_STATICITERATION</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="57"/>
+        <source>Median</source>
+        <comment>IDC_MEDIAN</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="93"/>
+        <source>Kappa-Sigma clipping</source>
+        <comment>IDC_SIGMACLIPPING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="126"/>
+        <source>Maximum</source>
+        <comment>IDC_MAXIMUM</comment>
+        <translation type="unfinished">Maximum</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="133"/>
+        <source>Median Kappa-Sigma clipping</source>
+        <comment>IDC_MEDIANSIGMACLIPPING,</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="166"/>
+        <source>Auto Adaptive Weighted Average</source>
+        <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="173"/>
+        <source>Average</source>
+        <comment>IDC_AVERAGE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="186"/>
+        <source>Kappa:</source>
+        <comment>IDC_STATICKAPPA</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="193"/>
+        <source>Entropy Weighted Average
+(High Dynamic Range)</source>
+        <comment>IDC_ENTROPYAVERAGE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <source>Debloom</source>
+        <comment>IDC_DEBLOOM</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <source>Settings</source>
+        <comment>IDC_DEBLOOMSETTINGS</comment>
+        <extracomment>Not used!</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <source>Dark Optimisation</source>
+        <comment>IDC_DARKOPTIMIZATION</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <source>Bad column detection and removal</source>
+        <comment>IDC_BADCOLUMNREMOVAL</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <source>Hot pixel detection and removal</source>
+        <comment>IDC_HOTPIXELS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <source>Dark Multiplication Factor</source>
+        <comment>IDC_USEDARKFACTOR</comment>
         <translation type="unfinished"></translation>
     </message>
 </context>

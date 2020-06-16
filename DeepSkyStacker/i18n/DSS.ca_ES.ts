@@ -24,155 +24,238 @@
         <translation>Verificar si existeix una nova versió disponible en iniciar</translation>
     </message>
     <message>
+        <source>DeepSkyStacker version %1</source>
+        <translation type="vanished">DeepSkyStacker versió %1</translation>
+    </message>
+    <message>
+        <source>RAW file decoding by LibRaw (version %1)
+Copyright © 1997-2019 LibRaw LLC</source>
+        <translation type="vanished">Decodificació d&apos;arxius RAW amb LibRaw (versió %1)
+Copyright © 1997-2019 LibRaw LLC</translation>
+    </message>
+    <message>
+        <source>TIFF file encoding/decoding by LibTIFF (version %1)
+Copyright © 1988-1996 Sam Leffler
+Copyright © 1991-1996 Silicon Graphics, Inc.</source>
+        <translation type="vanished">Codificació i Decodificació d&apos;arcxius TIFF amb LibTIFF (versió %1)
+Copyright © 1988-1996 Sam Leffler
+Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
+    </message>
+    <message>
+        <source>FITS decoding by CFitsIO (version %1)
+Copyright NASA</source>
+        <translation type="vanished">Decodificació d&apos;arxius FITS amb CFitsIO (versió %1)
+Copyright NASA</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="66"/>
+        <source>Default</source>
+        <translation>Idioma per defecte</translation>
+    </message>
+    <message>
+        <source>Spanish version: Ricardo Contreras and the team from</source>
+        <translation type="vanished">Versió en Castellà: Ricardo Contreras i el seu equip del web</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="81"/>
+        <source>Espacio Profundo</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Czech version:</source>
+        <translation type="vanished">Versió en Txec:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="85"/>
+        <source>Lukavský Premysl</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Italian version:</source>
+        <translation type="vanished">Versió en Italià:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="89"/>
+        <source>Fabio Papa</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Catalan version:</source>
+        <translation type="vanished">Versió en Català:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="93"/>
+        <source>Francesc Pruneda</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>German version:</source>
+        <translation type="vanished">Versió Alemanya:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="97"/>
+        <source>Wilhelm-Michael Kasakow</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Dutch version:</source>
+        <translation type="vanished">Versió Holandesa:</translation>
+    </message>
+    <message>
         <location filename="../About.cpp" line="29"/>
         <source>DeepSkyStacker version %1</source>
+        <comment>IDS_ABOUT_DSS</comment>
         <translation>DeepSkyStacker versió %1</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="37"/>
+        <location filename="../About.cpp" line="38"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2019 LibRaw LLC</source>
+        <comment>IDS_ABOUT_DCRAW</comment>
         <translation>Decodificació d&apos;arxius RAW amb LibRaw (versió %1)
 Copyright © 1997-2019 LibRaw LLC</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="47"/>
+        <location filename="../About.cpp" line="49"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
+        <comment>IDS_ABOUT_TIFF</comment>
         <translation>Codificació i Decodificació d&apos;arcxius TIFF amb LibTIFF (versió %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="54"/>
+        <location filename="../About.cpp" line="57"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
+        <comment>IDS_ABOUT_FITS</comment>
         <translation>Decodificació d&apos;arxius FITS amb CFitsIO (versió %1)
 Copyright NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="62"/>
-        <source>Default</source>
-        <translation>Idioma per defecte</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="76"/>
+        <location filename="../About.cpp" line="80"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
+        <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Versió en Castellà: Ricardo Contreras i el seu equip del web</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="77"/>
-        <source>Espacio Profundo</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="80"/>
+        <location filename="../About.cpp" line="84"/>
         <source>Czech version:</source>
+        <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Versió en Txec:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="81"/>
-        <source>Lukavský Premysl</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="84"/>
+        <location filename="../About.cpp" line="88"/>
         <source>Italian version:</source>
+        <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Versió en Italià:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="85"/>
-        <source>Fabio Papa</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="88"/>
+        <location filename="../About.cpp" line="92"/>
         <source>Catalan version:</source>
+        <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Versió en Català:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="89"/>
-        <source>Francesc Pruneda</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="92"/>
+        <location filename="../About.cpp" line="96"/>
         <source>German version:</source>
+        <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Versió Alemanya:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Wilhelm-Michael Kasakow</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="96"/>
+        <location filename="../About.cpp" line="100"/>
         <source>Dutch version:</source>
+        <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Versió Holandesa:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="97"/>
+        <location filename="../About.cpp" line="101"/>
         <source>Eelko Gielis</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="97"/>
+        <location filename="../About.cpp" line="101"/>
         <source>and</source>
         <translation>&quot;i&quot;</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="98"/>
+        <location filename="../About.cpp" line="102"/>
         <source>Inge van de Stadt</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="101"/>
+        <location filename="../About.cpp" line="105"/>
         <source>Traditional Chinese version:</source>
+        <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Versió Xinès Tradicional:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="102"/>
+        <location filename="../About.cpp" line="109"/>
+        <source>Portuguese version:</source>
+        <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
+        <translation>Versió en portugès:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="113"/>
+        <source>Romanian version:</source>
+        <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
+        <translation>Versió romanesa:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="117"/>
+        <source>Russian version:</source>
+        <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
+        <translation>Versió en rus:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="121"/>
+        <source>Turkish version:</source>
+        <comment>IDS_ABOUT_LANG_TURKISH</comment>
+        <translation>Versió turca:</translation>
+    </message>
+    <message>
+        <source>Traditional Chinese version:</source>
+        <translation type="vanished">Versió Xinès Tradicional:</translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="106"/>
         <source>Wei-Hao Wang</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="105"/>
         <source>Portuguese version:</source>
-        <translation>Versió en portugès:</translation>
+        <translation type="vanished">Versió en portugès:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="106"/>
+        <location filename="../About.cpp" line="110"/>
         <source>Manuel Fernandes</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="109"/>
         <source>Romanian version:</source>
-        <translation>Versió romanesa:</translation>
+        <translation type="vanished">Versió romanesa:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="110"/>
+        <location filename="../About.cpp" line="114"/>
         <source>Emil Kolbert and Valentin Stoica</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="113"/>
         <source>Russian version:</source>
-        <translation>Versió en rus:</translation>
+        <translation type="vanished">Versió en rus:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="114"/>
+        <location filename="../About.cpp" line="118"/>
         <source>Oleg Milantiev</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
         <source>Turkish version:</source>
-        <translation>Versió turca:</translation>
+        <translation type="vanished">Versió turca:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="118"/>
+        <location filename="../About.cpp" line="122"/>
         <source>Rasid Tugral</source>
         <translation></translation>
     </message>
@@ -690,8 +773,13 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <translation>&lt;Carpeta de Sortida&gt;</translation>
     </message>
     <message>
+        <source>Select Output Folder</source>
+        <translation type="vanished">Seleccioneu Carpeta de sortida</translation>
+    </message>
+    <message>
         <location filename="../OutputTab.cpp" line="150"/>
         <source>Select Output Folder</source>
+        <comment>IDS_SELECTOUTPUTFOLDER</comment>
         <translation>Seleccioneu Carpeta de sortida</translation>
     </message>
 </context>
@@ -766,15 +854,23 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="45"/>
-        <location filename="../PostCalibration.cpp" line="72"/>
         <source>the median</source>
+        <comment>ID_COSMETICMETHOD_MEDIAN</comment>
         <translation>la mediana</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="46"/>
-        <location filename="../PostCalibration.cpp" line="78"/>
         <source>a gaussian filter</source>
+        <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
         <translation>el filtre gaussià</translation>
+    </message>
+    <message>
+        <source>the median</source>
+        <translation type="vanished">la mediana</translation>
+    </message>
+    <message>
+        <source>a gaussian filter</source>
+        <translation type="vanished">el filtre gaussià</translation>
     </message>
 </context>
 <context>
@@ -1601,132 +1697,81 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../StackSettings.cpp" line="50"/>
         <source>Light</source>
+        <comment>IDS_TYPE_LIGHT</comment>
         <translation></translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="51"/>
         <source>Dark</source>
+        <comment>IDS_TYPE_DARK</comment>
         <translation></translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="52"/>
         <source>Flat</source>
+        <comment>IDS_TYPE_FLAT</comment>
         <translation></translation>
     </message>
     <message>
         <location filename="../StackSettings.cpp" line="53"/>
         <source>Bias/Offset</source>
+        <comment>IDS_TYPE_OFFSET</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="169"/>
+        <location filename="../StackSettings.cpp" line="170"/>
         <source>Select Temporary Files Folder</source>
-        <translation>Seleccioneu Carpeta d&apos;arxius temporals</translation>
+        <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
+        <translation>Si us plau seleccioni la carpeta que conté els arxius temporals.</translation>
+    </message>
+    <message>
+        <source>Select Temporary Files Folder</source>
+        <translation type="vanished">Seleccioneu Carpeta d&apos;arxius temporals</translation>
     </message>
 </context>
 <context>
     <name>StackingParameters</name>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="14"/>
         <source>Stacking</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&quot;Apilant&quot;</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="20"/>
         <source>Stacking Mode</source>
-        <translation>Mètode d&apos;Apilat: </translation>
+        <translation type="obsolete">Mètode d&apos;Apilat</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="48"/>
-        <source>Debloom</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="61"/>
         <source>Hot pixel detection and removal</source>
-        <translation type="unfinished">Detecció i eliminat de Hot Pixels</translation>
+        <translation type="obsolete">Detecció i eliminat de Hot Pixels</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="74"/>
-        <source>Bad column detection and removal</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="87"/>
-        <source>Dark Optimisation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="100"/>
-        <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="113"/>
-        <source>Dark Multiplication Factor</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="142"/>
         <source>Average</source>
-        <translation type="unfinished">Mitjana</translation>
+        <translation type="obsolete">Mitjana</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="157"/>
         <source>Median</source>
-        <translation type="unfinished">Mediana</translation>
+        <translation type="obsolete">Mediana</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="178"/>
-        <source>Median Kappa-Sigma clipping</source>
-        <translation type="unfinished"></translation>
+        <source>Maximum</source>
+        <translation type="obsolete">Màxim</translation>
     </message>
     <message>
-        <location filename="../ui/StackingParameters.ui" line="270"/>
         <location filename="../StackingParameters.cpp" line="33"/>
         <source>No Background Calibration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="171"/>
-        <source>Kappa-Sigma clipping</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="149"/>
-        <source>Entropy Weighted Average
-(High Dynamic Range)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="164"/>
-        <source>Maximum</source>
-        <translation type="unfinished">Màxim</translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="198"/>
-        <source>Kappa:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="221"/>
-        <source>Number of iterations:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/StackingParameters.ui" line="185"/>
-        <source>Auto Adaptive Weighted Average</source>
-        <translation type="unfinished"></translation>
+        <comment>ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION</comment>
+        <translation>Sense Calibració de Fons</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="34"/>
         <source>Per Channel Background Calibration</source>
-        <translation type="unfinished"></translation>
+        <comment>ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION</comment>
+        <translation>Calibració de Fons per a cada Canal</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="35"/>
         <source>RGB Channels Background Calibration</source>
-        <translation type="unfinished"></translation>
+        <comment>ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION</comment>
+        <translation>Calibració de Fons de Canals RGB</translation>
     </message>
     <message>
         <location filename="../StackingParameters.cpp" line="76"/>
@@ -1735,29 +1780,148 @@ p, li { white-space: pre-wrap; }
 are iteratively removed.
 
 The remaining pixels are averaged.</source>
-        <translation type="unfinished"></translation>
+        <comment>IDS_TOOLTIP_KAPPASIGMA</comment>
+        <translation>Els píxels fora del rang:
+[Mean-%1*%2 , Mean+%1*%2 ]
+són eliminats iterativament.
+
+Els píxels restants són promitjats.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="84"/>
+        <location filename="../StackingParameters.cpp" line="85"/>
         <source>The pixels outside the range:
 [Mean-%1*%2, Mean+%1*%2]
 are iteratively replaced by the median value.
 
 The pixels are then averaged.</source>
-        <translation type="unfinished"></translation>
+        <comment>IDS_TOOLTIP_MEDIANKAPPASIGMA</comment>
+        <translation>Els píxels fora del rang:
+[Mean-%1*%2 , Mean+%1*%2 ]
+són reemplaçats iterativament pel valor mig.
+
+Els píxels són posteriorment promitjats.</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="90"/>
+        <location filename="../StackingParameters.cpp" line="92"/>
         <source>The &lt;b&gt;weighted average&lt;/b&gt; is obtained by
 iteratively weighting each pixel
 based on its deviation from the mean
 compared to the standard deviation (%1).</source>
-        <translation type="unfinished"></translation>
+        <comment>IDS_TOOLTIP_AUTOADAPTIVE</comment>
+        <translation>La &lt;b&gt;mitjana ponderada&lt;/b&gt; s&apos;obté mitjançant
+la ponderació iterativa de cada píxel
+partint de la desviació de la mitjana
+comparativament a la desviació estàndard (%1).</translation>
     </message>
     <message>
-        <location filename="../StackingParameters.cpp" line="122"/>
+        <location filename="../StackingParameters.cpp" line="125"/>
         <source>Options...</source>
-        <translation type="unfinished"></translation>
+        <translation>Opcions...</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="14"/>
+        <source>Stacking</source>
+        <comment>IDD_STACKINGPARAMETERS</comment>
+        <translation>Apilant</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="20"/>
+        <source>Stacking Mode</source>
+        <comment>IDC_TITLE</comment>
+        <translation>Mètode d&apos;Apilat</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="50"/>
+        <source>Number of iterations:</source>
+        <comment>IDC_STATICITERATION</comment>
+        <translation>Número d&apos;iteracions:</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="57"/>
+        <source>Median</source>
+        <comment>IDC_MEDIAN</comment>
+        <translation>Mediana</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="93"/>
+        <source>Kappa-Sigma clipping</source>
+        <comment>IDC_SIGMACLIPPING</comment>
+        <translation>Retallat (clipping) Kappa-Sigma</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="126"/>
+        <source>Maximum</source>
+        <comment>IDC_MAXIMUM</comment>
+        <translation>Màxim</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="133"/>
+        <source>Median Kappa-Sigma clipping</source>
+        <comment>IDC_MEDIANSIGMACLIPPING,</comment>
+        <translation>Retallat (clipping) Media Kappa-Sigma</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="166"/>
+        <source>Auto Adaptive Weighted Average</source>
+        <comment>IDC_AUTOADAPTIVEAVERAGE</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="173"/>
+        <source>Average</source>
+        <comment>IDC_AVERAGE</comment>
+        <translation>Mitjana</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="186"/>
+        <source>Kappa:</source>
+        <comment>IDC_STATICKAPPA</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="193"/>
+        <source>Entropy Weighted Average
+(High Dynamic Range)</source>
+        <comment>IDC_ENTROPYAVERAGE</comment>
+        <translation>Entropy Weighted Average
+(Alt rang dinàmic)</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="271"/>
+        <source>Debloom</source>
+        <comment>IDC_DEBLOOM</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="291"/>
+        <source>Settings</source>
+        <comment>IDC_DEBLOOMSETTINGS</comment>
+        <extracomment>Not used!</extracomment>
+        <translation>Paràmetres...</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="317"/>
+        <source>Dark Optimisation</source>
+        <comment>IDC_DARKOPTIMIZATION</comment>
+        <translation>Optimització de Darks</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="324"/>
+        <source>Bad column detection and removal</source>
+        <comment>IDC_BADCOLUMNREMOVAL</comment>
+        <translation>Detecció i eliminat de columnes defectuoses</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="331"/>
+        <source>Hot pixel detection and removal</source>
+        <comment>IDC_HOTPIXELS</comment>
+        <translation>Detecció i eliminat de Hot Pixels</translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingParameters.ui" line="351"/>
+        <source>Dark Multiplication Factor</source>
+        <comment>IDC_USEDARKFACTOR</comment>
+        <translation>Factor de multiplicació de Dark:</translation>
     </message>
 </context>
 </TS>

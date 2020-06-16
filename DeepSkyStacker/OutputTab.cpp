@@ -147,7 +147,7 @@ void OutputTab::on_outputFolder_linkActivated(const QString & str)
 {
 	str;
 
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Output Folder"),
+	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Output Folder", "IDS_SELECTOUTPUTFOLDER"),
 		QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
 		QFileDialog::ShowDirsOnly
 		| QFileDialog::DontResolveSymlinks);

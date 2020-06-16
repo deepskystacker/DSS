@@ -47,10 +47,10 @@ StackSettings::StackSettings(QWidget *parent) :
 
 	resultTab = ui->tabWidget->addTab(m_resultParameters, m_resultParameters->windowTitle());
 	cometTab = ui->tabWidget->addTab(m_cometStacking, m_cometStacking->windowTitle());;
-	lightTab = ui->tabWidget->addTab(m_lightFrames, tr("Light"));;
-	darkTab = ui->tabWidget->addTab(m_darkFrames, tr("Dark"));;
-	flatTab = ui->tabWidget->addTab(m_flatFrames, tr("Flat"));;
-	biasTab = ui->tabWidget->addTab(m_biasFrames, tr("Bias/Offset"));
+	lightTab = ui->tabWidget->addTab(m_lightFrames, tr("Light", "IDS_TYPE_LIGHT"));;
+	darkTab = ui->tabWidget->addTab(m_darkFrames, tr("Dark", "IDS_TYPE_DARK"));;
+	flatTab = ui->tabWidget->addTab(m_flatFrames, tr("Flat", "IDS_TYPE_FLAT"));;
+	biasTab = ui->tabWidget->addTab(m_biasFrames, tr("Bias/Offset", "IDS_TYPE_OFFSET"));
 	alignmentTab = ui->tabWidget->addTab(m_alignmentParameters, m_alignmentParameters->windowTitle());
 	intermediateTab = ui->tabWidget->addTab(m_intermediateFiles, m_intermediateFiles->windowTitle());
 	postCalibrationTab = ui->tabWidget->addTab(m_postCalibration, m_postCalibration->windowTitle());;
@@ -166,7 +166,8 @@ void StackSettings::tabChanged(int tab)
 void StackSettings::on_chooseFolder_clicked(bool value)
 {
 	value;
-	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Temporary Files Folder"),
+	QString dir =
+		QFileDialog::getExistingDirectory(this, tr("Select Temporary Files Folder", "IDS_RECAP_SELECTTEMPFOLDER"),
 		ui->tempFilesFolder->text(),
 		QFileDialog::ShowDirsOnly
 		| QFileDialog::DontResolveSymlinks);
