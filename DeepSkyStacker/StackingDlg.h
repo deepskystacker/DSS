@@ -7,6 +7,9 @@
 // StackingDlg.h : header file
 //
 
+class QNetworkAccessManager;
+class QNetworkReply;
+
 #include <CtrlCache.h>
 #include <WndImage.h>
 #include <BtnST.h>
@@ -42,6 +45,7 @@ private :
 	CLoadedImage			m_LoadedImage;
 	CGammaTransformation	m_GammaTransformation;
 	CString					m_strCurrentFileList;
+	QNetworkAccessManager *   networkManager;			// deleted using QObject::deleteLater();
 
 	// These values dictate how resizing should work.
 	static const int sm_nMinListWidth = 500;
@@ -129,6 +133,8 @@ private :
 	void		UpdateGroupTabs();
 	bool		CheckEditChanges();
 	void		UpdateLayout();
+	void		versionInfoReceived(QNetworkReply * reply);
+	void		retrieveLatestVersionInfo();
 
 // Overrides
 	// ClassWizard generated virtual function overrides

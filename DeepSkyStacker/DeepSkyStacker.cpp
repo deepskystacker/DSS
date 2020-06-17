@@ -22,7 +22,6 @@ using namespace Gdiplus;
 #include <QStyleFactory>
 #include <QTranslator>
 
-
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -60,60 +59,6 @@ bool	IsExpired()
 #endif
 	return bResult;
 };
-
-/* ------------------------------------------------------------------- */
-
-bool CheckVersion(CString & strVersion)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool		bResult = false;
-
-#ifndef DSSBETA
-	QSettings			settings;
-	CStdioFile			*remotefile = nullptr;
-
-	bool checkVersion = settings.value("InternetCheck", false).toBool();
-	if (checkVersion)
-	{
-		#define HTTPBUFLEN    512 // Size of HTTP Buffer...
-		char		httpbuff[HTTPBUFLEN];
-
-		TRY
-		{
-			CInternetSession	mysession;
-
-			mysession.SetOption(INTERNET_OPTION_CONNECT_RETRIES, 1);
-			mysession.SetOption(INTERNET_OPTION_RECEIVE_TIMEOUT, 1);
-
-			remotefile = mysession.OpenURL(_T("http://deepskystacker.free.fr/download/CurrentVersion.txt"),1,INTERNET_FLAG_TRANSFER_ASCII|INTERNET_FLAG_DONT_CACHE|INTERNET_FLAG_RELOAD);
-
-			int numbytes;
-
-			while (numbytes = remotefile->Read(httpbuff, HTTPBUFLEN))
-			{
-				for (LONG i = 0;i<numbytes;i++)
-					strVersion += httpbuff[i];
-			};
-
-			if (strVersion.Find(_T("DeepSkyStackerVersion="))==0)
-			{
-				bResult = true;
-				strVersion = strVersion.Right(strVersion.GetLength()-22);
-			}
-			else
-				strVersion.Empty();
-		}
-		CATCH_ALL(error)
-		{
-			bResult = false;
-		}
-		END_CATCH_ALL;
-	};
-	delete remotefile;
-#endif
-
-	return bResult;
-}
 
 /* ------------------------------------------------------------------- */
 
@@ -429,9 +374,9 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 
 		if (!IsExpired())
 		{
-			#ifndef DSSBETA
+//			#ifndef DSSBETA
 			AskForVersionChecking();
-			#endif
+//			#endif
 			if (bFirstInstance)
 				CheckRemainingTempFiles();
 

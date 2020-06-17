@@ -19,7 +19,11 @@
 #include "AskRegistering.h"
 #include "BatchStacking.h"
 #include "DSSVersion.h"
+
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 #include <QSettings>
+#include <QUrl>
 
 #include "qmfcapp.h"
 #include "qwinwidget.h"
@@ -40,7 +44,8 @@ const		DWORD					IDC_EDIT_SAVE   = 4;
 
 CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CStackingDlg::IDD, pParent),
-	m_cCtrlCache(this)
+	m_cCtrlCache(this),
+	networkManager(nullptr)
 {
 	//{{AFX_DATA_INIT(CStackingDlg)
 		// NOTE: the ClassWizard will add member initialization here
@@ -162,36 +167,7 @@ BOOL CStackingDlg::OnInitDialog()
 	QSettings			settings;
 	bool checkVersion = settings.value("InternetCheck", false).toBool();
 	if (checkVersion)
-	{
-		CString			strVersion;
-
-		if (CheckVersion(strVersion))
-		{
-			CString newMajorStr, newMinorStr, newSubStr;
-
-			int curPos = 0;
-
-			newMajorStr = strVersion.Tokenize(_T("."), curPos);
-			if (-1 != curPos) newMinorStr = strVersion.Tokenize(_T("."), curPos);
-			if (-1 != curPos) newSubStr   = strVersion.Tokenize(_T("."), curPos);
-
-			int newMajor = _ttoi(newMajorStr), newMinor = _ttoi(newMinorStr), newSub = _ttoi(newSubStr);
-
-			if ((newMajor > DSSVER_MAJOR) ||
-				(newMajor == DSSVER_MAJOR && newMinor > DSSVER_MINOR) ||
-				(newMajor == DSSVER_MAJOR && newMinor == DSSVER_MINOR && newSub > DSSVER_SUB)
-			   )
-			{
-				CString	strNewVersion;
-
-				strNewVersion.Format(IDS_VERSIONAVAILABLE, strVersion);
-				m_Infos.SetTextColor(RGB(255, 0, 0));
-				m_Infos.SetText(strNewVersion);
-				m_Infos.SetLink(true, false);
-				m_Infos.SetHyperLink("http://deepskystacker.free.fr");
-			};
-		};
-	};
+		retrieveLatestVersionInfo();   // will update ui asynchronously
 
 	{
 		m_GroupTab.ModifyStyle(0, CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
@@ -1949,3 +1925,52 @@ void CStackingDlg::OnBnClicked4corners()
 }
 
 /* ------------------------------------------------------------------- */
+
+void CStackingDlg::versionInfoReceived(QNetworkReply * reply)
+{
+	QString string(reply->read(reply->bytesAvailable()));
+
+	if (string.startsWith("DeepSkyStackerVersion="))
+	{
+		QString verStr = string.section('=', 1, 1);
+		int version = verStr.section('.', 0, 0).toInt();
+		int release = verStr.section('.', 1, 1).toInt();
+		int mod = verStr.section('.', 2, 2).toInt();
+
+		if ((version > DSSVER_MAJOR) ||
+			(version == DSSVER_MAJOR && release > DSSVER_MINOR) ||
+			(version == DSSVER_MAJOR && release == DSSVER_MINOR && mod > DSSVER_SUB)
+			)
+		{
+			CString	strNewVersion;
+
+			strNewVersion.Format(IDS_VERSIONAVAILABLE, CString((wchar_t *)verStr.utf16()));
+			m_Infos.SetTextColor(RGB(255, 0, 0));
+			m_Infos.SetText(strNewVersion);
+			m_Infos.SetLink(true, false);
+			m_Infos.SetHyperLink("https://github.com/deepskystacker/DSS/releases/latest");
+		};
+	}
+	reply->deleteLater();
+	networkManager->deleteLater();
+};
+
+void CStackingDlg::retrieveLatestVersionInfo()
+{
+#ifndef DSSBETA
+	ZFUNCTRACE_RUNTIME();
+
+	QSettings			settings;
+
+	bool checkVersion = settings.value("InternetCheck", false).toBool();
+	if (checkVersion)
+	{
+		networkManager = new QNetworkAccessManager();
+
+		QObject::connect(networkManager, &QNetworkAccessManager::finished,
+			[this](QNetworkReply * reply) { this->versionInfoReceived(reply); });
+
+		networkManager->get(QNetworkRequest(QUrl("http://deepskystacker.free.fr/download/CurrentVersion.txt")));
+	}
+#endif
+}
