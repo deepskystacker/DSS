@@ -35,6 +35,13 @@ About::About(QWidget *parent) :
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://deepskystacker.free.fr/");
     strHTML += strText;
 
+	strText = QString(tr("Qt Application Framework 5.12.8\nCopyright (C) 2016 The Qt Company Ltd."));
+	strText += "<br>";
+	strText = strText.replace("\n", "<br>");
+	strHTML += strText;
+	strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://www.qt.io/");
+	strHTML += strText;
+
     strText = QString(QCoreApplication::translate("About",
                 "RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2019 LibRaw LLC",
 				"IDS_ABOUT_DCRAW")).arg(LIBRAW_VERSION_STR);
@@ -78,48 +85,47 @@ About::About(QWidget *parent) :
 
     strHTML  = "<img valign=center src=\"qrc:///flags/spanish.png\">&nbsp;&nbsp;";
     strHTML += tr("Spanish version: Ricardo Contreras and the team from", "IDS_ABOUT_LANG_SPANISH") + " ";
-    strHTML += QString("<a href=\"http://espacioprofundo.com.ar/\">%1</a><br/>").arg(tr("Espacio Profundo"));
+    strHTML += QString("<a href=\"http://espacioprofundo.com.ar/\">%1</a><br>").arg("Espacio Profundo");
 
     strHTML += "<img valign=center src=\"qrc:///flags/czech.png\">&nbsp;&nbsp;";
     strHTML += tr("Czech version:", "IDS_ABOUT_LANG_CZECH") + " ";
-    strHTML += QString("<a href=\"mailto:lukavsky.premysl@tiscali.cz\">%1</a><br/>").arg(tr("Lukavský Premysl"));
+    strHTML += QString("<a href=\"mailto:lukavsky.premysl@tiscali.cz\">%1</a><br>").arg("Lukavský Premysl");
 
     strHTML += "<img valign=center src=\"qrc:///flags/italian.png\">&nbsp;&nbsp;";
     strHTML += tr("Italian version:", "IDS_ABOUT_LANG_ITALIAN") + " ";
-    strHTML += QString("<a href=\"http://www.astrofilipc.it\">%1</a><br/>").arg(tr("Fabio Papa"));
+    strHTML += QString("<a href=\"http://www.astrofilipc.it\">%1</a><br>").arg("Fabio Papa");
 
     strHTML += "<img valign=center src=\"qrc:///flags/catalan.png\">&nbsp;&nbsp;";
     strHTML += tr("Catalan version:", "IDS_ABOUT_LANG_CATALAN") + " ";
-    strHTML += QString("<a href=\"mailto:astroemporda@gmail.com\">%1</a><br/>").arg(tr("Francesc Pruneda"));
+    strHTML += QString("<a href=\"mailto:astroemporda@gmail.com\">%1</a><br>").arg("Francesc Pruneda");
 
     strHTML += "<img valign=center src=\"qrc:///flags/german.png\">&nbsp;&nbsp;";
     strHTML += tr("German version:", "IDS_ABOUT_LANG_GERMAN") + " ";
-    strHTML += QString("<a href=\"mailto:kasakow@arcor.de\">%1</a><br/>").arg(tr("Wilhelm-Michael Kasakow"));
+    strHTML += QString("<a href=\"mailto:kasakow@arcor.de\">%1</a><br>").arg("Wilhelm-Michael Kasakow");
 
     strHTML += "<img valign=center src=\"qrc:///flags/dutch.png\">&nbsp;&nbsp;";
     strHTML += tr("Dutch version:", "IDS_ABOUT_LANG_DUTCH") + " ";
-    strHTML += QString("<a href=\"http://www.geocities.com/me_gielis/\">%1</a> %2 ").arg(tr("Eelko Gielis"), tr("and"));
-    strHTML += QString("%1<br/>").arg(tr("Inge van de Stadt"));
+    strHTML += QString("<a href=\"http://www.geocities.com/me_gielis/\">%1</a><br>").arg("Eelko Gielis " + tr("and") + " Inge van de Stadt");
 
     strHTML += "<img valign=center src=\"qrc:///flags/taiwan.png\">&nbsp;&nbsp;";
     strHTML += tr("Traditional Chinese version:", "IDS_ABOUT_LANG_CHINESET") + " ";
-    strHTML += QString("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%1</a><br/>").arg(tr("Wei-Hao Wang"));
+    strHTML += QString("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%1</a><br>").arg("Wei-Hao Wang");
 
     strHTML += "<img valign=center src=\"qrc:///flags/portugal.png\">&nbsp;<img valign=center src=\"qrc:///flags/brazil.png\">&nbsp;&nbsp;";
     strHTML += tr("Portuguese version:", "IDS_ABOUT_LANG_PORTUGUESE") + " ";
-    strHTML += QString("<a href=\"http://www.astrofotografia.biz/\">%1</a><br/>").arg(tr("Manuel Fernandes"));
+    strHTML += QString("<a href=\"http://www.astrofotografia.biz/\">%1</a><br>").arg("Manuel Fernandes");
 
     strHTML += "<img valign=center src=\"qrc:///flags/romanian.png\">&nbsp;&nbsp;";
     strHTML += tr("Romanian version:", "IDS_ABOUT_LANG_ROMANIAN") + " ";
-    strHTML += QString("<a href=\"http://www.astronomy.ro/\">%1</a><br/>").arg(tr("Emil Kolbert and Valentin Stoica"));
+    strHTML += QString("<a href=\"http://www.astronomy.ro/\">%1</a><br>").arg("Emil Kolbert " + tr("and") + " Valentin Stoica");
 
     strHTML += "<img valign=center src=\"qrc:///flags/russian.png\">&nbsp;&nbsp;";
     strHTML += tr("Russian version:", "IDS_ABOUT_LANG_RUSSIAN") + " ";
-    strHTML += QString("<a href=\"http://oleg.milantiev.com/\">%1</a><br/>").arg(tr("Oleg Milantiev"));
+    strHTML += QString("<a href=\"http://oleg.milantiev.com/\">%1</a><br>").arg("Oleg Milantiev");
 
     strHTML += "<img valign=center src=\"qrc:///flags/turkish.png\">&nbsp;&nbsp;";
     strHTML += tr("Turkish version:", "IDS_ABOUT_LANG_TURKISH") + " ";
-    strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br/>").arg(tr("Rasid Tugral"));
+    strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br>").arg("Rasid Tugral");
 
     ui->credits->setText(strHTML);
 }
