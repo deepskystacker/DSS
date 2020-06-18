@@ -62,8 +62,6 @@ extern CString STARMASKFILE_FILTERS;
 
 extern bool		g_bShowRefStars;
 
-bool CheckVersion(CString & strVersion);
-
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
