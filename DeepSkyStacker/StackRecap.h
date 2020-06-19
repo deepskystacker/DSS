@@ -43,26 +43,6 @@ private:
 	CAllStackingTasks *pStackingTasks;
 	bool	initialised;
 
-	inline void	SpaceToQString(__int64 ulSpace, QString & strSpace)
-	{
-		double fKb, fMb, fGb;
-
-		fKb = ulSpace / 1024.0;
-		fMb = fKb / 1024.0;
-		fGb = fMb / 1024.0;
-
-
-		if (fKb < 900)
-			strSpace = QString(tr("%L1 kB", "IDS_RECAP_KILOBYTES"))
-				.arg(fKb, 0, 'f', 1);
-		else if (fMb < 900)
-			strSpace = QString(tr("%L1 MB", "IDS_RECAP_MEGABYTES"))
-				.arg(fMb, 0, 'f', 1);
-		else
-			strSpace = QString(tr("%L1 GB", "IDS_RECAP_GIGABYTES"))
-				.arg(fGb, 0, 'f', 1);
-	};
-
 	void CallStackingSettings(int tab = 0);
 
 	//void	clearText();

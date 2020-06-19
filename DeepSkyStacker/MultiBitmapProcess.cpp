@@ -13,9 +13,8 @@
 static void GetTempFileName(CString & strFile)
 {
 	TCHAR			szTempFileName[1+_MAX_PATH];
-	QString			strFolder;
+	QString			strFolder(CAllStackingTasks::GetTemporaryFilesFolder());
 
-	CAllStackingTasks::GetTemporaryFilesFolder(strFolder);
 	GetTempFileName(CString((LPCTSTR)strFolder.utf16()), _T("DSS"), 0, szTempFileName);
 
 	strFile = szTempFileName;

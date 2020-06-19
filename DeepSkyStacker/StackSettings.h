@@ -141,6 +141,7 @@ private:
 	CAllStackingTasks *		pStackingTasks;
 
 	void showEvent(QShowEvent *event) override;
+	void changeEvent(QEvent *event) override;
 
 	void onInitDialog();
 

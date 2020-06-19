@@ -1968,9 +1968,7 @@ __int64	CAllStackingTasks::ComputeNecessaryDiskSpace()
 
 __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 {
-	QString			strTempPath;
-
-	GetTemporaryFilesFolder(strTempPath);
+	QString			strTempPath(GetTemporaryFilesFolder());
 
 	ULARGE_INTEGER			ulFreeSpace;
 	ULARGE_INTEGER			ulTotal;
@@ -1986,7 +1984,7 @@ __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::GetTemporaryFilesFolder(QString & strFolder)
+QString CAllStackingTasks::GetTemporaryFilesFolder()
 {
 
 	QSettings	settings;
@@ -2021,7 +2019,7 @@ void CAllStackingTasks::GetTemporaryFilesFolder(QString & strFolder)
 		strTemp = QString::fromWCharArray(temp.GetBuffer());
 	};
 
-	strFolder = strTemp;
+	return strTemp;
 };
 
 /* ------------------------------------------------------------------- */

@@ -219,7 +219,7 @@ void	SetUILanguage()
 	//
 	if (language == "")
 	{
-		language = QLocale().name();
+		language = QLocale::system().name();
 	}
 
 	if (nullptr != theApp->appTranslator)

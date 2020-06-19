@@ -18,6 +18,10 @@ using namespace Gdiplus;
 #include "qmfcapp.h"
 
 #include <QLibraryInfo>
+#include <QDebug>
+#include <QDir>
+#include <QFileInfoList>
+#include <QMessageBox>
 #include <QSettings>
 #include <QStyleFactory>
 #include <QTranslator>
@@ -94,57 +98,53 @@ void	AskForVersionChecking()
 void	CheckRemainingTempFiles()
 {
 	ZFUNCTRACE_RUNTIME();
-	WIN32_FIND_DATA			FindData;
-	CString					strFileMask;
-	HANDLE					hFindFiles;
-	std::vector<CString>	vFiles;
-	__int64					ulTotalSize = 0;
+	std::vector<QString>	vFiles;
+	qint64					totalSize = 0;
 
 	ZTRACE_RUNTIME("Check remaining temp files\n");
 
-	QString temp;
-	CAllStackingTasks::GetTemporaryFilesFolder(temp);
-	CString strFolder((wchar_t *)temp.utf16());
-		
-	strFileMask = strFolder;
-	strFileMask += "DSS*.tmp";
+	QString folder(CAllStackingTasks::GetTemporaryFilesFolder());
+	
+	QStringList nameFilters("DSS*.tmp");
 
-	hFindFiles = FindFirstFile(strFileMask, &FindData);
-	if (hFindFiles != INVALID_HANDLE_VALUE)
+	QDir dir(folder);
+	dir.setNameFilters(nameFilters);
+
+	for(QFileInfo item : dir.entryInfoList())
 	{
-		do
+		if (item.isFile())
 		{
-			CString			strFile;
-
-			strFile = strFolder;
-			strFile += FindData.cFileName;
-
-			ulTotalSize += (__int64)(FindData.nFileSizeHigh * ((__int64)MAXDWORD+1)) + (__int64)FindData.nFileSizeLow;
-			vFiles.push_back(strFile);
+			vFiles.emplace_back(item.absoluteFilePath());
+			totalSize += item.size();
 		}
-		while (FindNextFile(hFindFiles, &FindData));
-
-		FindClose(hFindFiles);
-	};
+	}
 	ZTRACE_RUNTIME("Check remaining temp files - ok\n");
 
 	if (vFiles.size())
 	{
-		CString			strMsg;
-		CString			strSize;
-		int				nResult;
+		QString			strMsg;
+		QString			strSize;
 
 		ZTRACE_RUNTIME("Remove remaining temp files\n");
 
-		SpaceToString(ulTotalSize, strSize);
+		SpaceToQString(totalSize, strSize);
 
-		strMsg.Format(IDS_TEMPFILEREMOVAL, vFiles.size(), strSize);
-		nResult = AfxMessageBox(strMsg, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION);
+		strMsg = QString("One or more temporary files created by DeepSkyStacker are still in the working directory."
+			"\n\nDo you want to remove them?\n\n(%1 file(s) using %2)")
+			.arg(vFiles.size()).arg(strSize);
 
-		if (nResult == IDYES)
+		QMessageBox msgBox(QMessageBox::Question, QString(""), strMsg, (QMessageBox::Yes | QMessageBox::No));
+
+		msgBox.setDefaultButton(QMessageBox::Yes);
+
+		if (msgBox.exec())
 		{
-			for (LONG i = 0;i<vFiles.size();i++)
-				DeleteFile(vFiles[i]);
+			QFile file;
+			for (LONG i = 0; i < vFiles.size(); i++)
+			{
+				file.setFileName(vFiles[i]);
+				file.remove();
+			}
 		};
 
 		ZTRACE_RUNTIME("Remove remaining temp files - ok\n");

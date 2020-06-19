@@ -66,8 +66,8 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>426</width>
-           <height>370</height>
+           <width>442</width>
+           <height>413</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -101,7 +101,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetMinimumSize</enum>
      </property>
@@ -109,6 +109,13 @@
       <widget class="QCheckBox" name="cbCheckUpdate">
        <property name="text">
         <string>Check if newer version is available at startup</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="aboutQt">
+       <property name="text">
+        <string>About &amp;Qt</string>
        </property>
       </widget>
      </item>
@@ -183,8 +190,8 @@
    <slot>selectLanguage(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>452</x>
-     <y>144</y>
+     <x>459</x>
+     <y>129</y>
     </hint>
     <hint type="destinationlabel">
      <x>477</x>
@@ -199,12 +206,28 @@
    <slot>setCheck(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>76</x>
-     <y>567</y>
+     <x>86</x>
+     <y>586</y>
     </hint>
     <hint type="destinationlabel">
      <x>61</x>
      <y>551</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>aboutQt</sender>
+   <signal>clicked()</signal>
+   <receiver>About</receiver>
+   <slot>aboutQt()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>291</x>
+     <y>578</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>239</x>
+     <y>299</y>
     </hint>
    </hints>
   </connection>
@@ -213,5 +236,6 @@
   <slot>storeSettings()</slot>
   <slot>selectLanguage(int)</slot>
   <slot>setCheck(bool)</slot>
+  <slot>aboutQt()</slot>
  </slots>
 </ui>

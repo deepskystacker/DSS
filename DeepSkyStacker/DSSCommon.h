@@ -95,8 +95,6 @@ typedef enum TIFFFORMAT
 	TF_32BITGRAYFLOAT	= 8
 }TIFFFORMAT;
 
-
-
 typedef enum TIFFCOMPRESSION
 {
 	TC_NONE				= 0,

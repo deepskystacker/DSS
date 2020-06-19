@@ -108,8 +108,7 @@ void StackSettings::onInitDialog()
 	//
 	// Get the temporary files folder
 	//
-	QString folder;
-	CAllStackingTasks::GetTemporaryFilesFolder(folder);
+	QString folder(CAllStackingTasks::GetTemporaryFilesFolder());
 	ui->tempFilesFolder->setText(folder);
 
 	if (-1 != startingTab)
@@ -241,4 +240,13 @@ void StackSettings::showEvent(QShowEvent *event)
 	}
 	// Invoke base class showEvent()
 	return Inherited::showEvent(event);
+}
+
+void StackSettings::changeEvent(QEvent *event)
+{
+	if (event->type() == QEvent::LanguageChange)
+	{
+		ui->retranslateUi(this);
+	}
+	Inherited::changeEvent(event);
 }

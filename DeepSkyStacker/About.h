@@ -32,13 +32,15 @@ public:
     void setInternetCheck(bool);
 
 signals:
-    void languageChanged();
+    void languageChanged(QString);
     void internetCheckChanged();
 
 private slots:
     void storeSettings();
     void selectLanguage(int);
     void setCheck(bool);
+	void aboutQt();
+
 
 private:
     Ui::About *ui;

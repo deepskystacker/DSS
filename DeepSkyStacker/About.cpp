@@ -1,9 +1,25 @@
+#include <algorithm>
+using std::min;
+using std::max;
+
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#include <afx.h>
+//#include <afxcmn.h>
+//#include <afxcview.h>
+#include <afxwin.h>
+
+#include <ZExcept.h>
+#include <Ztrace.h>
 #include <QDir>
 #include <QSettings>
 #include <QString>
 #include <QDebug>
+#include <QTranslator>
+
 #include "About.h"
 #include "ui/ui_About.h"
+
+#include "DeepSkyStacker.h"
 #include "DSSVersion.h"
 #include <fitsio.h>
 #include <tiffio.h>
@@ -35,7 +51,7 @@ About::About(QWidget *parent) :
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://deepskystacker.free.fr/");
     strHTML += strText;
 
-	strText = QString(tr("Qt Application Framework 5.12.8\nCopyright (C) 2016 The Qt Company Ltd."));
+	strText = QString(tr("Qt Application Framework 5.12.8\nCopyright © 2016 The Qt Company Ltd."));
 	strText += "<br>";
 	strText = strText.replace("\n", "<br>");
 	strHTML += strText;
@@ -128,6 +144,7 @@ About::About(QWidget *parent) :
     strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br>").arg("Rasid Tugral");
 
     ui->credits->setText(strHTML);
+
 }
 
 About::~About()
@@ -151,7 +168,7 @@ void About::setLanguage(QString lang)
     {
         m_Language = lang;
         ui->comboBox->setCurrentIndex(ui->comboBox->findData(m_Language));
-        emit languageChanged();
+        emit languageChanged(lang);
     }
 }
 
@@ -165,9 +182,47 @@ void About::setCheck(bool check)
     setInternetCheck(check);
 }
 
+void About::aboutQt()
+{
+	qApp->aboutQt();
+}
+
 void About::storeSettings()
 {
     QSettings settings;
     settings.setValue("Language", m_Language);
+
+	CDeepSkyStackerApp * theApp(GetDSSApp());
+
+	//
+	// Retrieve the Qt language name (e.g.) en_GB
+	//
+	QString language = settings.value("Language").toString();
+
+	//
+	// Language was not defined in our preferences, so select the system default
+	//
+	if (language == "")
+	{
+		language = QLocale::system().name();
+	}
+
+	if (nullptr != theApp->appTranslator)
+	{
+		delete theApp->appTranslator;
+		theApp->appTranslator = nullptr;
+	}
+
+	theApp->appTranslator = new QTranslator(qApp);
+
+	//
+	// Install the language if it actually exists.
+	//
+	if (theApp->appTranslator->load("DSS." + language, ":/i18n/"))
+	{
+		QCoreApplication::instance()->installTranslator(theApp->appTranslator);
+	}
+
+
     settings.setValue("InternetCheck", m_InternetCheck);
 }

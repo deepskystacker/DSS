@@ -566,7 +566,7 @@ public :
 
 	bool	CheckReadOnlyStatus(std::vector<CString> & vFolders);
 
-	static	void GetTemporaryFilesFolder(QString & strFolder);
+	static	QString GetTemporaryFilesFolder();
 	static	void SetTemporaryFilesFolder(QString strFolder);
 
 	static	void GetPostCalibrationSettings(CPostCalibrationSettings & pcs);
@@ -631,6 +631,23 @@ inline void	SpaceToString(__int64 ulSpace, CString & strSpace)
 		strSpace.Format(IDS_RECAP_MEGABYTES, fMb);
 	else
 		strSpace.Format(IDS_RECAP_GIGABYTES, fGb);
+};
+
+inline void	SpaceToQString(__int64 ulSpace, QString & strSpace)
+{
+	double fKb(ulSpace / 1024.0);
+	double fMb(fKb / 1024.0);
+	double fGb(fMb / 1024.0);
+
+	if (fKb < 900)
+		strSpace = QString(QCoreApplication::translate("StackRecap", "%L1 kB", "IDS_RECAP_KILOBYTES"))
+		.arg(fKb, 0, 'f', 1);
+	else if (fMb < 900)
+		strSpace = QString(QCoreApplication::translate("StackRecap", "%L1 MB", "IDS_RECAP_MEGABYTES"))
+		.arg(fMb, 0, 'f', 1);
+	else
+		strSpace = QString(QCoreApplication::translate("StackRecap", "%L1 GB", "IDS_RECAP_GIGABYTES"))
+		.arg(fGb, 0, 'f', 1);
 };
 
 /* ------------------------------------------------------------------- */
