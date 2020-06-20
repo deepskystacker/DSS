@@ -508,7 +508,7 @@ void StackRecap::fillWithAllTasks()
 						if (si.m_pOffsetTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
 							strHTML += "<li>";
-							strText = tr("Warning: ISO speed does not match that of the Light frames", "IDS_RECAP_ISOWARNING");
+							strText = tr("Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 							strHTML += "</li>";
 						};
@@ -518,7 +518,7 @@ void StackRecap::fillWithAllTasks()
 						if (si.m_pOffsetTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
 							strHTML += "<li>";
-							strText = tr("Warning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
+							strText = tr("Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 							strHTML += "</li>";
 
@@ -578,7 +578,7 @@ void StackRecap::fillWithAllTasks()
 						if (si.m_pDarkTask->m_lISOSpeed != si.m_pLightTask->m_lISOSpeed)
 						{
 							strHTML += "<li>";
-							strText = tr("Warning: ISO speed does not match that of the Light frames", "IDS_RECAP_ISOWARNING");
+							strText = tr("Warning: ISO speed does not match that of the light frames", "IDS_RECAP_ISOWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 							strHTML += "</li>";
 						};
@@ -588,7 +588,7 @@ void StackRecap::fillWithAllTasks()
 						if (si.m_pDarkTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
 							strHTML += "<li>";
-							strText = tr("Warning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
+							strText = tr("Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 							strHTML += "</li>";
 						};
@@ -640,7 +640,7 @@ void StackRecap::fillWithAllTasks()
 						if (si.m_pDarkFlatTask->m_lISOSpeed != si.m_pFlatTask->m_lISOSpeed)
 						{
 							strHTML += "<li>";
-							strText = tr("Warning: ISO speed does not match that of the Flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
+							strText = tr("Warning: ISO speed does not match that of the flat frames", "IDS_RECAP_ISOWARNINGDARKFLAT");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 							strHTML += "</li>";
 						};
@@ -650,7 +650,7 @@ void StackRecap::fillWithAllTasks()
 						if (si.m_pDarkFlatTask->m_lGain != si.m_pFlatTask->m_lGain)
 						{
 							strHTML += "<li>";
-							strText = tr("Warning: Gain does not match that of the Flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
+							strText = tr("Warning: Gain does not match that of the flat frames", "IDS_RECAP_GAINWARNINGDARKFLAT");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 							strHTML += "</li>";
 						};
@@ -658,7 +658,7 @@ void StackRecap::fillWithAllTasks()
 					if (!AreExposureEquals(si.m_pDarkFlatTask->m_fExposure, si.m_pFlatTask->m_fExposure))
 					{
 						strHTML += "<li>";
-						strText = tr("Warning: Exposure does not match that of the Flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
+						strText = tr("Warning: Exposure does not match that of the flat frames", "IDS_RECAP_EXPOSUREWARNINGDARKFLAT");
 						insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 						strHTML += "</li>";
 					};
@@ -704,7 +704,7 @@ void StackRecap::fillWithAllTasks()
 						if (si.m_pFlatTask->m_lGain != si.m_pLightTask->m_lGain)
 						{
 							strHTML += "<li>";
-							strText = tr("Warning: Gain does not match that of the Light frames", "IDS_RECAP_GAINWARNING");
+							strText = tr("Warning: Gain does not match that of the light frames", "IDS_RECAP_GAINWARNING");
 							insertHTML(strHTML, strText, QColor(Qt::darkRed), false, true);
 							strHTML += "</li>";
 						};

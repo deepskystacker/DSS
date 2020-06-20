@@ -1,1 +1,0 @@
-@call "C:\Program Files (x86)\PVS-Studio\x64\PVS-Studio.exe" --cfg "D:\Users\amonra\Documents\GitHub\DSS\DeepSkyStacker\DeepSkyStacker.cpp.PVS-Studio.cfg"

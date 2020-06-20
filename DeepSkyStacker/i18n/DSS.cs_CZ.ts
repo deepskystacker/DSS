@@ -24,67 +24,29 @@
         <translation>Při spuštění ověřit, zda není novější verze</translation>
     </message>
     <message>
-        <source>DeepSkyStacker version %1</source>
-        <translation type="vanished">DeepSkyStacker verze %1</translation>
+        <location filename="../ui/About.ui" line="118"/>
+        <source>About &amp;Qt</source>
+        <translation>O &amp;Qt</translation>
     </message>
     <message>
-        <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2019 LibRaw LLC</source>
-        <translation type="vanished">RAW soubory dekódovány pomocí LibRaw (verze %1)
-Copyright © 1997-2019 LibRaw LLC</translation>
-    </message>
-    <message>
-        <source>TIFF file encoding/decoding by LibTIFF (version %1)
-Copyright © 1988-1996 Sam Leffler
-Copyright © 1991-1996 Silicon Graphics, Inc.</source>
-        <translation type="vanished">TIFF soubory kódovány/dekódovány pomocí LibTIFF (verze %1)
-Copyright © 1988-1996 Sam Leffler
-Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
-    </message>
-    <message>
-        <source>FITS decoding by CFitsIO (version %1)
-Copyright NASA</source>
-        <translation type="vanished">FITS dekódovány pomocí CFitsIO (verze %1)
-Copyright NASA</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="66"/>
+        <location filename="../About.cpp" line="89"/>
         <source>Default</source>
         <translation>Automaticky</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="81"/>
-        <source>Espacio Profundo</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="85"/>
-        <source>Lukavský Premysl</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="89"/>
-        <source>Fabio Papa</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Francesc Pruneda</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>Wilhelm-Michael Kasakow</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="29"/>
+        <location filename="../About.cpp" line="45"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
         <translation>DeepSkyStacker verze %1</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="38"/>
+        <location filename="../About.cpp" line="54"/>
+        <source>Qt Application Framework 5.12.8
+Copyright © 2016 The Qt Company Ltd.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="61"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2019 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
@@ -92,7 +54,7 @@ Copyright © 1997-2019 LibRaw LLC</source>
 Copyright © 1997-2019 LibRaw LLC</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="49"/>
+        <location filename="../About.cpp" line="72"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
@@ -102,7 +64,7 @@ Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="57"/>
+        <location filename="../About.cpp" line="80"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
@@ -110,110 +72,76 @@ Copyright NASA</source>
 Copyright NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="80"/>
+        <location filename="../About.cpp" line="103"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Španělský překlad: Ricardo Contreras a skupina</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="84"/>
+        <location filename="../About.cpp" line="107"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Český překlad:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="88"/>
+        <location filename="../About.cpp" line="111"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Italský překlad:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="92"/>
+        <location filename="../About.cpp" line="115"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Katalánský překlad:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="96"/>
+        <location filename="../About.cpp" line="119"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Německý překlad:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="100"/>
+        <location filename="../About.cpp" line="123"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Holandský překlad:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="101"/>
-        <source>Eelko Gielis</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="101"/>
+        <location filename="../About.cpp" line="124"/>
+        <location filename="../About.cpp" line="136"/>
         <source>and</source>
         <translation>a</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="102"/>
-        <source>Inge van de Stadt</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="105"/>
+        <location filename="../About.cpp" line="127"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Verze tradiční čínštiny:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="109"/>
+        <location filename="../About.cpp" line="131"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Portugalský překlad:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="113"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Rumunská verze:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
+        <location filename="../About.cpp" line="139"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Ruská verze:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="121"/>
+        <location filename="../About.cpp" line="143"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Turecká verze:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="106"/>
-        <source>Wei-Hao Wang</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="110"/>
-        <source>Manuel Fernandes</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="114"/>
-        <source>Emil Kolbert and Valentin Stoica</source>
-        <translation>Emil Kolbert a Valentin Stoica</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="118"/>
-        <source>Oleg Milantiev</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="122"/>
-        <source>Rasid Tugral</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -614,12 +542,12 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
     <message>
         <location filename="../ExplorerBar.cpp" line="837"/>
         <source>Register Settings...</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavení zpracování...</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="838"/>
         <source>Stacking Settings...</source>
-        <translation type="unfinished">Parametry slučování...</translation>
+        <translation>Parametry slučování...</translation>
     </message>
 </context>
 <context>
@@ -680,12 +608,56 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
+        <comment>IDC_CREATEOUTPUT</comment>
         <translation>Tvorba výstupního souboru</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
+        <comment>IDC_CREATEHTML</comment>
         <translation>Tvorba HTML popisu souboru</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="53"/>
+        <source>Autosave.tif/fits</source>
+        <comment>IDC_AUTOSAVE</comment>
+        <translation>Automat.tif/fits</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="60"/>
+        <source>&lt;file list name&gt;.tif/fits</source>
+        <comment>IDC_FILELIST</comment>
+        <translation>&lt;název seznamu&gt;.tif/fits</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="71"/>
+        <source>Append a number to avoid file overwrite (001, 002, ...)</source>
+        <comment>IDC_APPENDNUMBER</comment>
+        <translation>Přidat číslo pro zabránění přepsání souboru (001, 002, ...)</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="94"/>
+        <source>Create Output file in the folder of the reference frame</source>
+        <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
+        <translation>Vytvořit výstupní soubor ve složce souřadnicového systému</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="108"/>
+        <source>Create Output file in the folder of the file list</source>
+        <comment>IDC_USEFILELISTFOLDER</comment>
+        <translation>Vytvořit výstupní soubor ve složce seznamu souborů</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="122"/>
+        <source>Create Output file in</source>
+        <comment>IDC_USEANOTHERFOLDER</comment>
+        <translation>Vytvořit výstupní soubor ve</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="132"/>
+        <source>&lt;Output Folder&gt;</source>
+        <comment>IDC_OUTPUTFOLDER</comment>
+        <translation>&lt;výstupní složka&gt;</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
@@ -693,44 +665,9 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <translation>Název výstupního souboru</translation>
     </message>
     <message>
-        <location filename="../ui/OutputTab.ui" line="53"/>
-        <source>Autosave.tif/fits</source>
-        <translation>Automat.tif/fits</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="60"/>
-        <source>&lt;file list name&gt;.tif/fits</source>
-        <translation>&lt;název seznamu&gt;.tif/fits</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="71"/>
-        <source>Append a number to avoid file overwrite (001, 002, ...)</source>
-        <translation>Přidat číslo pro zabránění přepsání souboru (001, 002, ...)</translation>
-    </message>
-    <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
         <translation>Umístění výstupu</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="94"/>
-        <source>Create Output file in the folder of the reference frame</source>
-        <translation>Vytvořit výstupní soubor ve složce souřadnicového systému</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="108"/>
-        <source>Create Output file in the folder of the file list</source>
-        <translation>Vytvořit výstupní soubor ve složce seznamu souborů</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="122"/>
-        <source>Create Output file in</source>
-        <translation>Vytvořit výstupní soubor ve</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="132"/>
-        <source>&lt;Output Folder&gt;</source>
-        <translation>&lt;výstupní složka&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="150"/>
@@ -755,14 +692,6 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <translation>Zjistit a odstranit zbývající přepálené body</translation>
-    </message>
-    <message>
-        <location filename="../ui/PostCalibration.ui" line="41"/>
-        <location filename="../ui/PostCalibration.ui" line="117"/>
-        <location filename="../ui/PostCalibration.ui" line="174"/>
-        <location filename="../ui/PostCalibration.ui" line="244"/>
-        <source>TextLabel</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
@@ -822,21 +751,6 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
     </message>
 </context>
 <context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Storno</translation>
-    </message>
-    <message>
-        <source>Apply</source>
-        <translation type="vanished">Použít</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
-</context>
-<context>
     <name>RawDDPSettings</name>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
@@ -847,10 +761,6 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
         <translation>RAW soubory</translation>
-    </message>
-    <message>
-        <source>Color Adjustment</source>
-        <translation type="obsolete">Úprava barev</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
@@ -935,11 +845,6 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <translation>FITS soubory</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="318"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jednobarevný 16ti bitový FITS a RAW soubor vytvořený DSLR nebo barevnou CCD kamerou&lt;br/&gt;Ponechte &lt;span style = &quot;font-style: italic;&quot;&gt;nezaškrtnuté&lt;/span&gt; a pokuste se o automatickou detekci na základě klíčových slov FITS.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../ui/RawDDPSettings.ui" line="341"/>
         <source>Camera:</source>
         <translation>Kamera:</translation>
@@ -949,6 +854,11 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <location filename="../ui/RawDDPSettings.ui" line="381"/>
         <source>Colour Adjustment</source>
         <translation>Úprava barev</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="318"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Jednobarevný 16ti bitový FITS a RAW soubor vytvořený DSLR nebo barevnou CCD kamerou.&lt;br&gt;Ponechte &lt;span style = &quot;font-style: italic;&quot;&gt;nezaškrtnuté&lt;/span&gt; a pokuste se o automatickou detekci na základě klíčových slov FITS.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
@@ -1006,7 +916,7 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation>Nastavení zpracování</translation>
+        <translation type="unfinished">Nastavení zpracování</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="26"/>
@@ -1201,15 +1111,6 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <translation>Kroky slučování</translation>
     </message>
     <message>
-        <location filename="../ui/StackRecap.ui" line="20"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../ui/StackRecap.ui" line="31"/>
         <source>Recommended Settings ...</source>
         <translation>Doporučená nastavení...</translation>
@@ -1220,19 +1121,19 @@ p, li { white-space: pre-wrap; }
         <translation>Parametry slučování...</translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="56"/>
+        <location filename="../StackingTasks.h" line="643"/>
         <source>%L1 kB</source>
         <comment>IDS_RECAP_KILOBYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="59"/>
+        <location filename="../StackingTasks.h" line="646"/>
         <source>%L1 MB</source>
         <comment>IDS_RECAP_MEGABYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="62"/>
+        <location filename="../StackingTasks.h" line="649"/>
         <source>%L1 GB</source>
         <comment>IDS_RECAP_GIGABYTES</comment>
         <translation></translation>
@@ -1518,21 +1419,6 @@ p, li { white-space: pre-wrap; }
         <translation>-&gt; Zkreslení: %1 snímků (%2: %3) expozice: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="511"/>
-        <location filename="../StackRecap.cpp" line="581"/>
-        <source>Warning: ISO speed does not match that of the Light frames</source>
-        <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation>Varování: Hodnota ISO neodpovídá aktivním snímkům</translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="521"/>
-        <location filename="../StackRecap.cpp" line="591"/>
-        <location filename="../StackRecap.cpp" line="707"/>
-        <source>Warning: Gain does not match that of the Light frames</source>
-        <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation>Varování: Citlivost neodpovídá citlivosti aktivního snímku</translation>
-    </message>
-    <message>
         <location filename="../StackRecap.cpp" line="532"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
@@ -1563,34 +1449,44 @@ p, li { white-space: pre-wrap; }
         <translation>-&gt; Vyrovnání jasu: %1 snímků (%2 : %3) expozice: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="643"/>
-        <source>Warning: ISO speed does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation>Varování: Hodnota ISO neodpovídá snímkům vyrovnání jasu</translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="653"/>
-        <source>Warning: Gain does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation>Varování: Citlivost vyrovnání temného pozadí neodpovídá citlivosti vyrovnání jasu</translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="661"/>
-        <source>Warning: Exposure does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation>Varování: Expoziční čas neodpovídá snímkům vyrovnání jasu</translation>
-    </message>
-    <message>
         <location filename="../StackRecap.cpp" line="673"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation>-&gt; Vyrovnání jasu: %1 snímků (%2: %3) expozice: %4</translation>
     </message>
     <message>
+        <location filename="../StackRecap.cpp" line="511"/>
+        <location filename="../StackRecap.cpp" line="581"/>
         <location filename="../StackRecap.cpp" line="697"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation>Varování: Hodnota ISO neodpovídá aktivním snímkům</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="521"/>
+        <location filename="../StackRecap.cpp" line="591"/>
+        <location filename="../StackRecap.cpp" line="707"/>
+        <source>Warning: Gain does not match that of the light frames</source>
+        <comment>IDS_RECAP_GAINWARNING</comment>
+        <translation>Varování: Citlivost neodpovídá citlivosti aktivního snímku</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="643"/>
+        <source>Warning: ISO speed does not match that of the flat frames</source>
+        <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
+        <translation>Varování: Hodnota ISO neodpovídá snímkům vyrovnání jasu</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="653"/>
+        <source>Warning: Gain does not match that of the flat frames</source>
+        <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
+        <translation>Varování: Citlivost vyrovnání temného pozadí neodpovídá citlivosti vyrovnání jasu</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="661"/>
+        <source>Warning: Exposure does not match that of the flat frames</source>
+        <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
+        <translation>Varování: Expoziční čas neodpovídá snímkům vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="717"/>
@@ -1676,7 +1572,7 @@ p, li { white-space: pre-wrap; }
         <translation>Vyrovnání zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="170"/>
+        <location filename="../StackSettings.cpp" line="169"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Vyberte prosím složku, která bude obsahovat všechny odkládací soubory</translation>
@@ -1684,10 +1580,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>StackingParameters</name>
-    <message>
-        <source>Maximum</source>
-        <translation type="obsolete">Maximum</translation>
-    </message>
     <message>
         <location filename="../StackingParameters.cpp" line="33"/>
         <source>No Background Calibration</source>

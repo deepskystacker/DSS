@@ -24,91 +24,29 @@
         <translation>Verificar si existeix una nova versió disponible en iniciar</translation>
     </message>
     <message>
-        <source>DeepSkyStacker version %1</source>
-        <translation type="vanished">DeepSkyStacker versió %1</translation>
+        <location filename="../ui/About.ui" line="118"/>
+        <source>About &amp;Qt</source>
+        <translation>Referent a &amp;Qt</translation>
     </message>
     <message>
-        <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2019 LibRaw LLC</source>
-        <translation type="vanished">Decodificació d&apos;arxius RAW amb LibRaw (versió %1)
-Copyright © 1997-2019 LibRaw LLC</translation>
-    </message>
-    <message>
-        <source>TIFF file encoding/decoding by LibTIFF (version %1)
-Copyright © 1988-1996 Sam Leffler
-Copyright © 1991-1996 Silicon Graphics, Inc.</source>
-        <translation type="vanished">Codificació i Decodificació d&apos;arcxius TIFF amb LibTIFF (versió %1)
-Copyright © 1988-1996 Sam Leffler
-Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
-    </message>
-    <message>
-        <source>FITS decoding by CFitsIO (version %1)
-Copyright NASA</source>
-        <translation type="vanished">Decodificació d&apos;arxius FITS amb CFitsIO (versió %1)
-Copyright NASA</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="66"/>
+        <location filename="../About.cpp" line="89"/>
         <source>Default</source>
         <translation>Idioma per defecte</translation>
     </message>
     <message>
-        <source>Spanish version: Ricardo Contreras and the team from</source>
-        <translation type="vanished">Versió en Castellà: Ricardo Contreras i el seu equip del web</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="81"/>
-        <source>Espacio Profundo</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Czech version:</source>
-        <translation type="vanished">Versió en Txec:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="85"/>
-        <source>Lukavský Premysl</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Italian version:</source>
-        <translation type="vanished">Versió en Italià:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="89"/>
-        <source>Fabio Papa</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Catalan version:</source>
-        <translation type="vanished">Versió en Català:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Francesc Pruneda</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>German version:</source>
-        <translation type="vanished">Versió Alemanya:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>Wilhelm-Michael Kasakow</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Dutch version:</source>
-        <translation type="vanished">Versió Holandesa:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="29"/>
+        <location filename="../About.cpp" line="45"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
         <translation>DeepSkyStacker versió %1</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="38"/>
+        <location filename="../About.cpp" line="54"/>
+        <source>Qt Application Framework 5.12.8
+Copyright © 2016 The Qt Company Ltd.</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="61"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2019 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
@@ -116,7 +54,7 @@ Copyright © 1997-2019 LibRaw LLC</source>
 Copyright © 1997-2019 LibRaw LLC</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="49"/>
+        <location filename="../About.cpp" line="72"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
@@ -126,7 +64,7 @@ Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="57"/>
+        <location filename="../About.cpp" line="80"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
@@ -134,130 +72,76 @@ Copyright NASA</source>
 Copyright NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="80"/>
+        <location filename="../About.cpp" line="103"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>Versió en Castellà: Ricardo Contreras i el seu equip del web</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="84"/>
+        <location filename="../About.cpp" line="107"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Versió en Txec:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="88"/>
+        <location filename="../About.cpp" line="111"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>Versió en Italià:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="92"/>
+        <location filename="../About.cpp" line="115"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Versió en Català:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="96"/>
+        <location filename="../About.cpp" line="119"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Versió Alemanya:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="100"/>
+        <location filename="../About.cpp" line="123"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Versió Holandesa:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="101"/>
-        <source>Eelko Gielis</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="101"/>
+        <location filename="../About.cpp" line="124"/>
+        <location filename="../About.cpp" line="136"/>
         <source>and</source>
         <translation>i</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="102"/>
-        <source>Inge van de Stadt</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="105"/>
+        <location filename="../About.cpp" line="127"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Versió Xinès Tradicional:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="109"/>
+        <location filename="../About.cpp" line="131"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Versió en portugès:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="113"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Versió romanesa:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
+        <location filename="../About.cpp" line="139"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Versió en rus:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="121"/>
+        <location filename="../About.cpp" line="143"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Versió turca:</translation>
-    </message>
-    <message>
-        <source>Traditional Chinese version:</source>
-        <translation type="vanished">Versió Xinès Tradicional:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="106"/>
-        <source>Wei-Hao Wang</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Portuguese version:</source>
-        <translation type="vanished">Versió en portugès:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="110"/>
-        <source>Manuel Fernandes</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Romanian version:</source>
-        <translation type="vanished">Versió romanesa:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="114"/>
-        <source>Emil Kolbert and Valentin Stoica</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Russian version:</source>
-        <translation type="vanished">Versió en rus:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="118"/>
-        <source>Oleg Milantiev</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Turkish version:</source>
-        <translation type="vanished">Versió turca:</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="122"/>
-        <source>Rasid Tugral</source>
-        <translation></translation>
     </message>
 </context>
 <context>
@@ -720,12 +604,56 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
+        <comment>IDC_CREATEOUTPUT</comment>
         <translation>Crear fitxer de sortida</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
+        <comment>IDC_CREATEHTML</comment>
         <translation>Crear fitxer de descripció HTML</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="53"/>
+        <source>Autosave.tif/fits</source>
+        <comment>IDC_AUTOSAVE</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="60"/>
+        <source>&lt;file list name&gt;.tif/fits</source>
+        <comment>IDC_FILELIST</comment>
+        <translation>&lt;nom del llistat de fitxers &gt;.tif/fits</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="71"/>
+        <source>Append a number to avoid file overwrite (001, 002, ...)</source>
+        <comment>IDC_APPENDNUMBER</comment>
+        <translation>Annexar un número per evitar sobrescriure el fitxer (001, 002, ...)</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="94"/>
+        <source>Create Output file in the folder of the reference frame</source>
+        <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
+        <translation>Crear el Fitxer de sortida a la carpeta de l&apos;imatge de referència</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="108"/>
+        <source>Create Output file in the folder of the file list</source>
+        <comment>IDC_USEFILELISTFOLDER</comment>
+        <translation>Crear el Fitxer de sortida a la carpeta del llistat d&apos;arxius</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="122"/>
+        <source>Create Output file in</source>
+        <comment>IDC_USEANOTHERFOLDER</comment>
+        <translation>Crear el Fitxer de sortida a</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="132"/>
+        <source>&lt;Output Folder&gt;</source>
+        <comment>IDC_OUTPUTFOLDER</comment>
+        <translation>&lt;Carpeta de Sortida&gt;</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
@@ -733,48 +661,9 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <translation>Nom del fitxer de sortida</translation>
     </message>
     <message>
-        <location filename="../ui/OutputTab.ui" line="53"/>
-        <source>Autosave.tif/fits</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="60"/>
-        <source>&lt;file list name&gt;.tif/fits</source>
-        <translation>&lt;nom del llistat de fitxers &gt;.tif/fits</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="71"/>
-        <source>Append a number to avoid file overwrite (001, 002, ...)</source>
-        <translation>Annexar un número per evitar sobrescriure el fitxer (001, 002, ...)</translation>
-    </message>
-    <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
         <translation>Ubicació de sortida</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="94"/>
-        <source>Create Output file in the folder of the reference frame</source>
-        <translation>Crear el Fitxer de sortida a la carpeta de l&apos;imatge de referència</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="108"/>
-        <source>Create Output file in the folder of the file list</source>
-        <translation>Crear el Fitxer de sortida a la carpeta del llistat d&apos;arxius</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="122"/>
-        <source>Create Output file in</source>
-        <translation>Crear el Fitxer de sortida a</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="132"/>
-        <source>&lt;Output Folder&gt;</source>
-        <translation>&lt;Carpeta de Sortida&gt;</translation>
-    </message>
-    <message>
-        <source>Select Output Folder</source>
-        <translation type="vanished">Seleccioneu Carpeta de sortida</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="150"/>
@@ -799,14 +688,6 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <translation>Detectar i netejar els Hot Pixels restants</translation>
-    </message>
-    <message>
-        <location filename="../ui/PostCalibration.ui" line="41"/>
-        <location filename="../ui/PostCalibration.ui" line="117"/>
-        <location filename="../ui/PostCalibration.ui" line="174"/>
-        <location filename="../ui/PostCalibration.ui" line="244"/>
-        <source>TextLabel</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
@@ -863,14 +744,6 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <source>a gaussian filter</source>
         <comment>ID_COSMETICMETHOD_GAUSSIAN</comment>
         <translation>el filtre gaussià</translation>
-    </message>
-    <message>
-        <source>the median</source>
-        <translation type="vanished">la mediana</translation>
-    </message>
-    <message>
-        <source>a gaussian filter</source>
-        <translation type="vanished">el filtre gaussià</translation>
     </message>
 </context>
 <context>
@@ -968,11 +841,6 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <translation>Arxius FITS</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="318"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Els arxius FITS Monocromàtics de 16 bit són arxius RAW\n creats amb una DSLR o amb una càmera CCD color.&lt;br/&gt;Deixeu &lt;span style = &quot;font-style: italic;&quot;&gt;desmarcat&lt;/span&gt; per intentar la detecció automàtica basada en paraules clau FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
-    </message>
-    <message>
         <location filename="../ui/RawDDPSettings.ui" line="341"/>
         <source>Camera:</source>
         <translation>Càmera:</translation>
@@ -982,6 +850,11 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <location filename="../ui/RawDDPSettings.ui" line="381"/>
         <source>Colour Adjustment</source>
         <translation>Ajust de Colors</translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="318"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Els arxius FITS Monocromàtics de 16 bit són arxius RAW\n creats amb una DSLR o amb una càmera CCD color&lt;br&gt;Deixeu &lt;span style = &quot;font-style: italic;&quot;&gt;desmarcat&lt;/span&gt; per intentar la detecció automàtica basada en paraules clau FITS.&lt;/p&gt;&lt;/body&gt;&lt;/html</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
@@ -1234,15 +1107,6 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <translation>Passos d&apos;apilat</translation>
     </message>
     <message>
-        <location filename="../ui/StackRecap.ui" line="20"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../ui/StackRecap.ui" line="31"/>
         <source>Recommended Settings ...</source>
         <translation>Configuració recomanada</translation>
@@ -1253,19 +1117,19 @@ p, li { white-space: pre-wrap; }
         <translation>Configuració d&apos;apilat</translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="56"/>
+        <location filename="../StackingTasks.h" line="643"/>
         <source>%L1 kB</source>
         <comment>IDS_RECAP_KILOBYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="59"/>
+        <location filename="../StackingTasks.h" line="646"/>
         <source>%L1 MB</source>
         <comment>IDS_RECAP_MEGABYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="62"/>
+        <location filename="../StackingTasks.h" line="649"/>
         <source>%L1 GB</source>
         <comment>IDS_RECAP_GIGABYTES</comment>
         <translation></translation>
@@ -1377,11 +1241,6 @@ p, li { white-space: pre-wrap; }
         <source>Dark Multiplication Factor: %1</source>
         <comment>IDS_RECAP_DARKMULTIPLICATIONFACTOR</comment>
         <translation>Factor de multiplicació del Dark: %1</translation>
-    </message>
-    <message>
-        <source>Hot Pixels detection and removal: %1</source>
-        <comment>IDS_RECAP_HOTPIXELS</comment>
-        <translation type="vanished">Detecció i eliminat de Hot Pixels: %1</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="247"/>
@@ -1556,21 +1415,6 @@ p, li { white-space: pre-wrap; }
         <translation>Offset: %1 frames (%2: %3) exposició: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="511"/>
-        <location filename="../StackRecap.cpp" line="581"/>
-        <source>Warning: ISO speed does not match that of the Light frames</source>
-        <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation>Precaució: la sensibilitat ISO no coincideix amb la dels light frames</translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="521"/>
-        <location filename="../StackRecap.cpp" line="591"/>
-        <location filename="../StackRecap.cpp" line="707"/>
-        <source>Warning: Gain does not match that of the Light frames</source>
-        <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackRecap.cpp" line="532"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
@@ -1601,34 +1445,44 @@ p, li { white-space: pre-wrap; }
         <translation>-&gt; Dark Flat: %1 frames (%2 : %3) exposició: %4</translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="643"/>
-        <source>Warning: ISO speed does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation>Precaució: la sensibilitat ISO no coincideix amb la dels flat frames</translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="653"/>
-        <source>Warning: Gain does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="661"/>
-        <source>Warning: Exposure does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation>Precaució: el temps d&apos;exposició no coincideix amb el dels flat frames</translation>
-    </message>
-    <message>
         <location filename="../StackRecap.cpp" line="673"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation>-&gt; Flat: %1 frames (%2: %3) exposició: %4</translation>
     </message>
     <message>
+        <location filename="../StackRecap.cpp" line="511"/>
+        <location filename="../StackRecap.cpp" line="581"/>
         <location filename="../StackRecap.cpp" line="697"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
         <translation>Precaució: la sensibilitat ISO no coincideix amb la dels light frames</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="521"/>
+        <location filename="../StackRecap.cpp" line="591"/>
+        <location filename="../StackRecap.cpp" line="707"/>
+        <source>Warning: Gain does not match that of the light frames</source>
+        <comment>IDS_RECAP_GAINWARNING</comment>
+        <translation>Precaució:el guany no coincideix amb la dels light frames</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="643"/>
+        <source>Warning: ISO speed does not match that of the flat frames</source>
+        <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
+        <translation>Precaució: la sensibilitat ISO no coincideix amb la dels flat frames</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="653"/>
+        <source>Warning: Gain does not match that of the flat frames</source>
+        <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
+        <translation>Precaució: el guany no coincideix amb la dels flat frames</translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="661"/>
+        <source>Warning: Exposure does not match that of the flat frames</source>
+        <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
+        <translation>Precaució: el temps d&apos;exposició no coincideix amb el dels flat frames</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="717"/>
@@ -1641,11 +1495,6 @@ p, li { white-space: pre-wrap; }
         <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed assuming that all the checked light frames are kept for the stacking process)</source>
         <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
         <translation>Temps d&apos;Exposició Total estimat: %1&lt;br&gt;(el total de temps d&apos;exposició és calculat tenint en compte que tots els light frames seleccionats són utilitzats en el procés d&apos;apilat)</translation>
-    </message>
-    <message>
-        <source>Estimated Total exposure time: %1&lt;br&gt;(the total exposure time is computed considering that all the checked light frames are kept for the stacking process)</source>
-        <comment>IDS_RECAP_TOTALEXPOSURETIME</comment>
-        <translation type="vanished">Temps d&apos;Exposició Total estimat: %1&lt;br&gt;(el total de temps d&apos;exposició és calculat tenint en compte que tots els light frames seleccionats són utilitzats en el procés d&apos;apilat)&quot;</translation>
     </message>
     <message>
         <location filename="../StackRecap.cpp" line="742"/>
@@ -1719,42 +1568,14 @@ p, li { white-space: pre-wrap; }
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="170"/>
+        <location filename="../StackSettings.cpp" line="169"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation>Si us plau seleccioni la carpeta que conté els arxius temporals.</translation>
     </message>
-    <message>
-        <source>Select Temporary Files Folder</source>
-        <translation type="vanished">Seleccioneu Carpeta d&apos;arxius temporals</translation>
-    </message>
 </context>
 <context>
     <name>StackingParameters</name>
-    <message>
-        <source>Stacking</source>
-        <translation type="obsolete">&quot;Apilant&quot;</translation>
-    </message>
-    <message>
-        <source>Stacking Mode</source>
-        <translation type="obsolete">Mètode d&apos;Apilat</translation>
-    </message>
-    <message>
-        <source>Hot pixel detection and removal</source>
-        <translation type="obsolete">Detecció i eliminat de Hot Pixels</translation>
-    </message>
-    <message>
-        <source>Average</source>
-        <translation type="obsolete">Mitjana</translation>
-    </message>
-    <message>
-        <source>Median</source>
-        <translation type="obsolete">Mediana</translation>
-    </message>
-    <message>
-        <source>Maximum</source>
-        <translation type="obsolete">Màxim</translation>
-    </message>
     <message>
         <location filename="../StackingParameters.cpp" line="33"/>
         <source>No Background Calibration</source>

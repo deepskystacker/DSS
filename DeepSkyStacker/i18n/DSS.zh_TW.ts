@@ -24,50 +24,36 @@
         <translation>啟動時檢查是否有新版本</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="66"/>
-        <source>Default</source>
-        <translation>預設</translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="81"/>
-        <source>Espacio Profundo</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="85"/>
-        <source>Lukavský Premysl</source>
+        <location filename="../ui/About.ui" line="118"/>
+        <source>About &amp;Qt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../About.cpp" line="89"/>
-        <source>Fabio Papa</source>
-        <translation type="unfinished"></translation>
+        <source>Default</source>
+        <translation>預設</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="93"/>
-        <source>Francesc Pruneda</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="97"/>
-        <source>Wilhelm-Michael Kasakow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="29"/>
+        <location filename="../About.cpp" line="45"/>
         <source>DeepSkyStacker version %1</source>
         <comment>IDS_ABOUT_DSS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="38"/>
+        <location filename="../About.cpp" line="54"/>
+        <source>Qt Application Framework 5.12.8
+Copyright © 2016 The Qt Company Ltd.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../About.cpp" line="61"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2019 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="49"/>
+        <location filename="../About.cpp" line="72"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
@@ -75,116 +61,82 @@ Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="57"/>
+        <location filename="../About.cpp" line="80"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="80"/>
+        <location filename="../About.cpp" line="103"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="84"/>
+        <location filename="../About.cpp" line="107"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="88"/>
+        <location filename="../About.cpp" line="111"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="92"/>
+        <location filename="../About.cpp" line="115"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="96"/>
+        <location filename="../About.cpp" line="119"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="100"/>
+        <location filename="../About.cpp" line="123"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="101"/>
-        <source>Eelko Gielis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="101"/>
+        <location filename="../About.cpp" line="124"/>
+        <location filename="../About.cpp" line="136"/>
         <source>and</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="102"/>
-        <source>Inge van de Stadt</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="105"/>
+        <location filename="../About.cpp" line="127"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="109"/>
+        <location filename="../About.cpp" line="131"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="113"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="117"/>
+        <location filename="../About.cpp" line="139"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="121"/>
+        <location filename="../About.cpp" line="143"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="106"/>
-        <source>Wei-Hao Wang</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="110"/>
-        <source>Manuel Fernandes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="114"/>
-        <source>Emil Kolbert and Valentin Stoica</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="118"/>
-        <source>Oleg Milantiev</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../About.cpp" line="122"/>
-        <source>Rasid Tugral</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -414,32 +366,14 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Comet position is ignored.
-The comet will be fuzzy.</source>
-        <translation type="vanished">不考慮彗星位置。
-疊出的彗星會變模糊。</translation>
-    </message>
-    <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
         <translation>彗星疊合</translation>
     </message>
     <message>
-        <source>Comet position is used.
-The comet will be sharp and the stars will have trails.</source>
-        <translation type="vanished">使用彗星位置。
-疊出的彗星會是清析的，恆星則會拖線。</translation>
-    </message>
-    <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
         <translation>恆星加彗星疊合</translation>
-    </message>
-    <message>
-        <source>Comet position is used.
-The comet and the stars will be sharp. This process is twice longer.</source>
-        <translation type="vanished">使用彗星的位置。
-疊出的彗星與恆星都會是清析的。處理時間會加倍。</translation>
     </message>
 </context>
 <context>
@@ -609,77 +543,6 @@ The comet and the stars will be sharp. This process is twice longer.</source>
     </message>
 </context>
 <context>
-    <name>FitsFilesTab</name>
-    <message>
-        <source>FITS Files</source>
-        <translation type="vanished">FITS檔</translation>
-    </message>
-    <message>
-        <source>Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera</source>
-        <translation type="vanished">單色16 bit FITS檔乃由DSLR或彩色CCD相機產生</translation>
-    </message>
-    <message>
-        <source>Camera:</source>
-        <translation type="vanished">相機:</translation>
-    </message>
-    <message>
-        <source>Color Adjistment</source>
-        <translation type="vanished">色彩調整</translation>
-    </message>
-    <message>
-        <source>Brightness</source>
-        <translation type="vanished">亮度</translation>
-    </message>
-    <message>
-        <source>Red scale</source>
-        <translation type="vanished">紅色比率</translation>
-    </message>
-    <message>
-        <source>Blue scale</source>
-        <translation type="vanished">藍色比率</translation>
-    </message>
-    <message>
-        <source>Bayer Pattern Filter used</source>
-        <translation type="vanished">所使用的Bayer濾鏡配置</translation>
-    </message>
-    <message>
-        <source>Bayer Matrix Transformation</source>
-        <translation type="vanished">Bayer矩陣轉換</translation>
-    </message>
-    <message>
-        <source>Bilinear Interpolation</source>
-        <translation type="vanished">雙線性內插</translation>
-    </message>
-    <message>
-        <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="vanished">自調適均質性導向(AHD)內插法</translation>
-    </message>
-    <message>
-        <source>Use Bayer Drizzle algorithm (no interpolation, no debayerization)</source>
-        <translation type="vanished">使用Bayer Drizzle (無內插，不解譯Bayer矩陣)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="vanished">本選項不對Bayer矩陣作任何更動與內插，每個像元只取Bayer矩陣中原有的顏色。</translation>
-    </message>
-    <message>
-        <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="vanished">自原始Bayer矩陣產生大像元 (無內插)</translation>
-    </message>
-    <message>
-        <source>RadioButton</source>
-        <translation type="vanished">自原始Bayer矩陣產生大像元 (無內插)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="vanished">本選項將以Bayer矩陣中每四個GRGB像元合併成一個大像元，因此產生的影像長寬將各減半。</translation>
-    </message>
-    <message>
-        <source>Force use of unsigned values when signed values are stored</source>
-        <translation type="vanished">檔案中的數值有正負號時，強制忽略正負號。</translation>
-    </message>
-</context>
-<context>
     <name>IntermediateFiles</name>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
@@ -737,12 +600,56 @@ The comet and the stars will be sharp. This process is twice longer.</source>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
-        <translation>產生輸出檔</translation>
+        <comment>IDC_CREATEOUTPUT</comment>
+        <translation type="unfinished">產生輸出檔</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
-        <translation>產生HTML敘述檔</translation>
+        <comment>IDC_CREATEHTML</comment>
+        <translation type="unfinished">產生HTML敘述檔</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="53"/>
+        <source>Autosave.tif/fits</source>
+        <comment>IDC_AUTOSAVE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="60"/>
+        <source>&lt;file list name&gt;.tif/fits</source>
+        <comment>IDC_FILELIST</comment>
+        <translation type="unfinished">&lt;檔案清單名稱&gt;.tif</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="71"/>
+        <source>Append a number to avoid file overwrite (001, 002, ...)</source>
+        <comment>IDC_APPENDNUMBER</comment>
+        <translation type="unfinished">添附數字以避免檔案蓋寫 (001, 002, ...)</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="94"/>
+        <source>Create Output file in the folder of the reference frame</source>
+        <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
+        <translation type="unfinished">於參考影像所在的檔案夾產生輸出檔</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="108"/>
+        <source>Create Output file in the folder of the file list</source>
+        <comment>IDC_USEFILELISTFOLDER</comment>
+        <translation type="unfinished">於檔案清單所在的檔案夾產生輸出檔</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="122"/>
+        <source>Create Output file in</source>
+        <comment>IDC_USEANOTHERFOLDER</comment>
+        <translation type="unfinished">產生輸出檔於</translation>
+    </message>
+    <message>
+        <location filename="../ui/OutputTab.ui" line="132"/>
+        <source>&lt;Output Folder&gt;</source>
+        <comment>IDC_OUTPUTFOLDER</comment>
+        <translation type="unfinished">&lt;輸出檔案夾&gt;</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
@@ -750,44 +657,9 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <translation>輸出檔名</translation>
     </message>
     <message>
-        <location filename="../ui/OutputTab.ui" line="53"/>
-        <source>Autosave.tif/fits</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="60"/>
-        <source>&lt;file list name&gt;.tif/fits</source>
-        <translation>&lt;檔案清單名稱&gt;.tif</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="71"/>
-        <source>Append a number to avoid file overwrite (001, 002, ...)</source>
-        <translation>添附數字以避免檔案蓋寫 (001, 002, ...)</translation>
-    </message>
-    <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
         <translation>輸出位置</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="94"/>
-        <source>Create Output file in the folder of the reference frame</source>
-        <translation>於參考影像所在的檔案夾產生輸出檔</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="108"/>
-        <source>Create Output file in the folder of the file list</source>
-        <translation>於檔案清單所在的檔案夾產生輸出檔</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="122"/>
-        <source>Create Output file in</source>
-        <translation>產生輸出檔於</translation>
-    </message>
-    <message>
-        <location filename="../ui/OutputTab.ui" line="132"/>
-        <source>&lt;Output Folder&gt;</source>
-        <translation>&lt;輸出檔案夾&gt;</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="150"/>
@@ -812,14 +684,6 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <translation>偵測並移除殘餘的熱像元</translation>
-    </message>
-    <message>
-        <location filename="../ui/PostCalibration.ui" line="41"/>
-        <location filename="../ui/PostCalibration.ui" line="117"/>
-        <location filename="../ui/PostCalibration.ui" line="174"/>
-        <location filename="../ui/PostCalibration.ui" line="244"/>
-        <source>TextLabel</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
@@ -879,21 +743,6 @@ The comet and the stars will be sharp. This process is twice longer.</source>
     </message>
 </context>
 <context>
-    <name>QPlatformTheme</name>
-    <message>
-        <source>Apply</source>
-        <translation type="vanished">套用</translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="vanished">OK</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">取消</translation>
-    </message>
-</context>
-<context>
     <name>RawDDPSettings</name>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
@@ -904,10 +753,6 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Color Adjustment</source>
-        <translation type="obsolete">色彩調整</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
@@ -989,12 +834,7 @@ The comet and the stars will be sharp. This process is twice longer.</source>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="297"/>
         <source>FITS Files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="318"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br/&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">將中介檔存為FITS格式FITS檔</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="341"/>
@@ -1005,6 +845,11 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="381"/>
         <source>Colour Adjustment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/RawDDPSettings.ui" line="318"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1056,73 +901,6 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <location filename="../RawDDPSettings.cpp" line="92"/>
         <source>Generic</source>
         <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RawFilesTab</name>
-    <message>
-        <source>RAW Files</source>
-        <translation type="vanished">RAW檔</translation>
-    </message>
-    <message>
-        <source>Color Adjustment</source>
-        <translation type="vanished">色彩調整</translation>
-    </message>
-    <message>
-        <source>Brightness</source>
-        <translation type="vanished">亮度</translation>
-    </message>
-    <message>
-        <source>Red Scale</source>
-        <translation type="vanished">紅色比率</translation>
-    </message>
-    <message>
-        <source>Blue Scale</source>
-        <translation type="vanished">藍色比率</translation>
-    </message>
-    <message>
-        <source>White Balance</source>
-        <translation type="vanished">白平衡</translation>
-    </message>
-    <message>
-        <source>No White Balance Processing</source>
-        <translation type="vanished">沒有白平衡處理</translation>
-    </message>
-    <message>
-        <source>Use Camera White Balance</source>
-        <translation type="vanished">使用相機白平衡</translation>
-    </message>
-    <message>
-        <source>Bayer Matrix Transformation</source>
-        <translation type="vanished">Bayer矩陣轉換</translation>
-    </message>
-    <message>
-        <source>Bilinear Interpolation</source>
-        <translation type="vanished">雙線性內插</translation>
-    </message>
-    <message>
-        <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation type="vanished">自調適均質性導向(AHD)內插法</translation>
-    </message>
-    <message>
-        <source>Use Bayer Drizzle algorithm (no interpolation, no debayerization)</source>
-        <translation type="vanished">使用Bayer Drizzle (無內插，不解譯Bayer矩陣)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation type="vanished">本選項不對Bayer矩陣作任何更動與內插，每個像元只取Bayer矩陣中原有的顏色。</translation>
-    </message>
-    <message>
-        <source>Create super- pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation type="vanished">自原始Bayer矩陣產生大像元 (無內插)</translation>
-    </message>
-    <message>
-        <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation type="vanished">本選項將以Bayer矩陣中每四個GRGB像元合併成一個大像元，因此產生的影像長寬將各減半。</translation>
-    </message>
-    <message>
-        <source>Set the black point to 0</source>
-        <translation type="vanished">設定黑色值為0</translation>
     </message>
 </context>
 <context>
@@ -1325,15 +1103,6 @@ The comet and the stars will be sharp. This process is twice longer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ui/StackRecap.ui" line="20"/>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ui/StackRecap.ui" line="31"/>
         <source>Recommended Settings ...</source>
         <translation type="unfinished"></translation>
@@ -1344,19 +1113,19 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="56"/>
+        <location filename="../StackingTasks.h" line="643"/>
         <source>%L1 kB</source>
         <comment>IDS_RECAP_KILOBYTES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="59"/>
+        <location filename="../StackingTasks.h" line="646"/>
         <source>%L1 MB</source>
         <comment>IDS_RECAP_MEGABYTES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.h" line="62"/>
+        <location filename="../StackingTasks.h" line="649"/>
         <source>%L1 GB</source>
         <comment>IDS_RECAP_GIGABYTES</comment>
         <translation type="unfinished"></translation>
@@ -1642,21 +1411,6 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="511"/>
-        <location filename="../StackRecap.cpp" line="581"/>
-        <source>Warning: ISO speed does not match that of the Light frames</source>
-        <comment>IDS_RECAP_ISOWARNING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="521"/>
-        <location filename="../StackRecap.cpp" line="591"/>
-        <location filename="../StackRecap.cpp" line="707"/>
-        <source>Warning: Gain does not match that of the Light frames</source>
-        <comment>IDS_RECAP_GAINWARNING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackRecap.cpp" line="532"/>
         <source>-&gt; No Offset</source>
         <comment>IDS_RECAP_NOOFFSET</comment>
@@ -1687,33 +1441,43 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackRecap.cpp" line="643"/>
-        <source>Warning: ISO speed does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="653"/>
-        <source>Warning: Gain does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackRecap.cpp" line="661"/>
-        <source>Warning: Exposure does not match that of the Flat frames</source>
-        <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackRecap.cpp" line="673"/>
         <source>-&gt;Flat: %1 frames(%2: %3) exposure : %4</source>
         <comment>IDS_RECAP_FLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../StackRecap.cpp" line="511"/>
+        <location filename="../StackRecap.cpp" line="581"/>
         <location filename="../StackRecap.cpp" line="697"/>
         <source>Warning: ISO speed does not match that of the light frames</source>
         <comment>IDS_RECAP_ISOWARNING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="521"/>
+        <location filename="../StackRecap.cpp" line="591"/>
+        <location filename="../StackRecap.cpp" line="707"/>
+        <source>Warning: Gain does not match that of the light frames</source>
+        <comment>IDS_RECAP_GAINWARNING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="643"/>
+        <source>Warning: ISO speed does not match that of the flat frames</source>
+        <comment>IDS_RECAP_ISOWARNINGDARKFLAT</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="653"/>
+        <source>Warning: Gain does not match that of the flat frames</source>
+        <comment>IDS_RECAP_GAINWARNINGDARKFLAT</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackRecap.cpp" line="661"/>
+        <source>Warning: Exposure does not match that of the flat frames</source>
+        <comment>IDS_RECAP_EXPOSUREWARNINGDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1800,7 +1564,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackSettings.cpp" line="170"/>
+        <location filename="../StackSettings.cpp" line="169"/>
         <source>Select Temporary Files Folder</source>
         <comment>IDS_RECAP_SELECTTEMPFOLDER</comment>
         <translation type="unfinished"></translation>
@@ -1808,51 +1572,6 @@ p, li { white-space: pre-wrap; }
 </context>
 <context>
     <name>StackingParameters</name>
-    <message>
-        <source>Stacking</source>
-        <translation type="vanished">疊合中</translation>
-    </message>
-    <message>
-        <source>Stacking Mode</source>
-        <translation type="vanished">疊合方式</translation>
-    </message>
-    <message>
-        <source>Average</source>
-        <translation type="vanished">平均</translation>
-    </message>
-    <message>
-        <source>Median</source>
-        <translation type="vanished">中位數</translation>
-    </message>
-    <message>
-        <source>Median Kappa-Sigma clipping</source>
-        <translation type="vanished">中位數Kappa-Sigma剪去法</translation>
-    </message>
-    <message>
-        <source>Kappa-Sigma clipping</source>
-        <translation type="vanished">Kappa-Sigma剪去法</translation>
-    </message>
-    <message>
-        <source>Entropy Weighted Average
-(High Dynamic Range)</source>
-        <translation type="vanished">熵加權平均 (高動態範圍)</translation>
-    </message>
-    <message>
-        <source>Maximum</source>
-        <translation type="vanished">最大值</translation>
-    </message>
-    <message>
-        <source>Kappa:</source>
-        <translation type="vanished">Kappa值:</translation>
-    </message>
-    <message>
-        <source>Number of iterations:</source>
-        <translation type="vanished">重覆次數:</translation>
-    </message>
-    <message>
-        <source>Auto Adaptive Weighted Average</source>
-        <translation type="vanished">自動可調適式加權平均</translation>
-    </message>
     <message>
         <location filename="../StackingParameters.cpp" line="33"/>
         <source>No Background Calibration</source>
