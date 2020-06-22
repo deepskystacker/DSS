@@ -47,7 +47,7 @@
        <item>
         <widget class="QGroupBox" name="registerAndStack">
          <property name="title">
-          <string>Registering and Stacking</string>
+          <string comment="IDC_STACKING_TITLE">Registering and Stacking</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_8" stretch="7,3,4">
           <property name="spacing">
@@ -92,7 +92,7 @@
                 <string notr="true"/>
                </property>
                <property name="text">
-                <string>Open picture files...</string>
+                <string comment="IDC_STACKING_OPENFILES">Open picture files...</string>
                </property>
               </widget>
              </item>
@@ -102,7 +102,7 @@
                 <string notr="true">margin-left: 30</string>
                </property>
                <property name="text">
-                <string>dark files...</string>
+                <string comment="IDC_STACKING_OPENDARKS">dark files...</string>
                </property>
                <property name="margin">
                 <number>0</number>
@@ -115,7 +115,7 @@
                 <string notr="true">margin-left: 30</string>
                </property>
                <property name="text">
-                <string>flat files...</string>
+                <string comment="IDC_STACKING_OPENFLATS">flat files...</string>
                </property>
               </widget>
              </item>
@@ -125,7 +125,7 @@
                 <string notr="true">margin-left: 30</string>
                </property>
                <property name="text">
-                <string>dark flat files...</string>
+                <string comment="IDC_STACKING_OPENDARKFLATS">dark flat files...</string>
                </property>
               </widget>
              </item>
@@ -135,7 +135,7 @@
                 <string notr="true">margin-left: 30</string>
                </property>
                <property name="text">
-                <string>offset/bias files...</string>
+                <string comment="IDC_STACKING_OPENOFFSETS">offset/bias files...</string>
                </property>
               </widget>
              </item>
@@ -158,14 +158,14 @@
              <item>
               <widget class="QLabel" name="openFilelist">
                <property name="text">
-                <string>Open a File List...</string>
+                <string comment="IDC_STACKING_LOADLIST">Open a File List...</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="saveFilelist">
                <property name="text">
-                <string>Save the File List...</string>
+                <string comment="IDC_STACKING_SAVELIST">Save the File List...</string>
                </property>
               </widget>
              </item>
@@ -188,7 +188,7 @@
              <item>
               <widget class="QLabel" name="clearList">
                <property name="text">
-                <string>Clear List</string>
+                <string comment="IDC_STACKING_CLEARLIST">Clear List</string>
                </property>
               </widget>
              </item>
@@ -219,21 +219,21 @@
              <item>
               <widget class="QLabel" name="checkAll">
                <property name="text">
-                <string>Check all</string>
+                <string comment="IDC_STACKING_CHECKALL">Check all</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="checkAbove">
                <property name="text">
-                <string>Check above a threshold...</string>
+                <string comment="IDC_STACKING_CHECKABOVE">Check above a threshold...</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="unCheckAll">
                <property name="text">
-                <string>Uncheck all</string>
+                <string comment="IDC_STACKING_UNCHECKALL">Uncheck all</string>
                </property>
               </widget>
              </item>
@@ -264,28 +264,28 @@
              <item>
               <widget class="QLabel" name="registerChecked">
                <property name="text">
-                <string>Register checked pictures...</string>
+                <string comment="IDC_REGISTERING_REGISTERCHECKED">Register checked pictures...</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="computeOffsets">
                <property name="text">
-                <string>Compute offsets...</string>
+                <string comment="IDC_STACKING_COMPUTEOFFSETS">Compute offsets...</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="stackChecked">
                <property name="text">
-                <string>Stack checked pictures...</string>
+                <string comment="IDC_STACKING_STACKCHECKED">Stack checked pictures...</string>
                </property>
               </widget>
              </item>
              <item>
               <widget class="QLabel" name="batchStacking">
                <property name="text">
-                <string>Batch stacking...</string>
+                <string comment="IDC_STACKING_BATCHSTACK">Batch stacking...</string>
                </property>
               </widget>
              </item>
@@ -298,7 +298,7 @@
        <item>
         <widget class="QGroupBox" name="processing">
          <property name="title">
-          <string>Processing</string>
+          <string comment="IDC_PROCESSING_TITLE">Processing</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <property name="spacing">
@@ -319,28 +319,28 @@
           <item>
            <widget class="QLabel" name="openPicture">
             <property name="text">
-             <string>Open picture file...</string>
+             <string comment="IDC_PROCESSING_OPENFILE">Open picture file...</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="copyPicture">
             <property name="text">
-             <string>Copy current picture to clipboard</string>
+             <string comment="IDC_PROCESSING_COPYTOCLIPBOARD">Copy current picture to clipboard</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="doStarMask">
             <property name="text">
-             <string>Create a Star Mask...</string>
+             <string comment="IDC_PROCESSING_CREATESTARMASK">Create a Star Mask...</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="savePicture">
             <property name="text">
-             <string>Save picture to file...</string>
+             <string comment="IDC_PROCESSING_SAVEFILE">Save picture to file...</string>
             </property>
            </widget>
           </item>
@@ -350,7 +350,7 @@
        <item>
         <widget class="QGroupBox" name="options">
          <property name="title">
-          <string>Options</string>
+          <string comment="IDC_OPTIONS_TITLE">Options</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="spacing">
@@ -371,7 +371,7 @@
           <item>
            <widget class="QLabel" name="settings">
             <property name="text">
-             <string>Settings...</string>
+             <string comment="IDC_OPTIONS_SETTINGS">Settings...</string>
             </property>
            </widget>
           </item>
@@ -381,7 +381,7 @@
              <string notr="true">margin-left: 30</string>
             </property>
             <property name="text">
-             <string>Raw/FITS DDP Settings...</string>
+             <string comment="IDC_OPTIONS_RAWDDPSETTINGS">Raw/FITS DDP Settings...</string>
             </property>
            </widget>
           </item>
@@ -391,7 +391,7 @@
              <string notr="true">margin-left: 30</string>
             </property>
             <property name="text">
-             <string>Load...</string>
+             <string comment="IDC_OPTIONS_LOADSETTINGS">Load...</string>
             </property>
            </widget>
           </item>
@@ -401,7 +401,7 @@
              <string notr="true">margin-left: 30</string>
             </property>
             <property name="text">
-             <string>Save...</string>
+             <string comment="IDC_OPTIONS_SAVESETTINGS">Save...</string>
             </property>
            </widget>
           </item>
@@ -411,21 +411,21 @@
              <string notr="true">margin-left: 30</string>
             </property>
             <property name="text">
-             <string>Recommended...</string>
+             <string comment="IDC_OPTIONS_RECOMMANDEDSETTINGS">Recommended...</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="about">
             <property name="text">
-             <string>About DeepSkyStacker...</string>
+             <string comment="IDC_ABOUT">About DeepSkyStacker...</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="help">
             <property name="text">
-             <string>DeepSkyStacker's Help...</string>
+             <string comment="IDC_CONTEXTHELP">DeepSkyStacker's Help...</string>
             </property>
            </widget>
           </item>
