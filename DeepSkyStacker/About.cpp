@@ -4,8 +4,8 @@ using std::max;
 
 #define _WIN32_WINNT _WIN32_WINNT_WINXP
 #include <afx.h>
-//#include <afxcmn.h>
-//#include <afxcview.h>
+#include <afxcmn.h>
+#include <afxcview.h>
 #include <afxwin.h>
 
 #include <ZExcept.h>
@@ -15,11 +15,20 @@ using std::max;
 #include <QString>
 #include <QDebug>
 #include <QTranslator>
+#include <QShowEvent>
 
 #include "About.h"
 #include "ui/ui_About.h"
 
+#include "..\QHTML_Static\QHTM\QHTM.h"   // Remove once we convert "Recommanded" settings
+
+extern bool		g_bShowRefStars;
+
+
 #include "DeepSkyStacker.h"
+#include "DSSCommon.h"
+#include "commonresource.h"
+#include "DeepStackerDlg.h"
 #include "DSSVersion.h"
 #include <fitsio.h>
 #include <tiffio.h>
@@ -30,8 +39,11 @@ using std::max;
 
 About::About(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::About)
+    ui(new Ui::About),
+	initialised(false)
 {
+	QSettings settings;
+
     QString strHTML("<body link=#0000ff></body><img valign=top align=right src=\"qrc:///logo.png\">");
     QString strText;
     QString copyright(DSSVER_COPYRIGHT);
@@ -95,8 +107,8 @@ About::About(QWidget *parent) :
         langName[0] = langName[0].toUpper();
         ui->comboBox->addItem(langName, lang);
     }
-    setLanguage(QSettings().value("Language", "").toString());
-    ui->cbCheckUpdate->setChecked(QSettings().value("InternetCheck", false).toBool());
+    setLanguage(settings.value("Language", "").toString());
+    ui->cbCheckUpdate->setChecked(settings.value("InternetCheck", false).toBool());
     ui->html->setText(strHTML);
 
     strHTML  = "<img valign=center src=\"qrc:///flags/spanish.png\">&nbsp;&nbsp;";
@@ -145,11 +157,55 @@ About::About(QWidget *parent) :
 
     ui->credits->setText(strHTML);
 
+
 }
 
 About::~About()
 {
     delete ui;
+}
+
+void About::showEvent(QShowEvent *event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitDialog();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
+}
+
+void About::onInitDialog()
+{
+	QSettings settings;
+
+	//
+	// Restore Window position etc..
+	//
+	QByteArray ba = settings.value("Dialogs/About/geometry").toByteArray();
+	if (!ba.isEmpty())
+	{
+		restoreGeometry(ba);
+	}
+	else
+	{
+		//
+		// Get NATIVE windows ultimate parent
+		//
+		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
+		RECT r;
+		GetWindowRect(hParent, &r);
+
+		QSize size = this->size();
+
+		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
+		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		move(left, top);
+	}
 }
 
 void About::setInternetCheck(bool check)
@@ -190,6 +246,9 @@ void About::aboutQt()
 void About::storeSettings()
 {
     QSettings settings;
+
+	settings.setValue("Dialogs/About/geometry", saveGeometry());
+
     settings.setValue("Language", m_Language);
 
 	CDeepSkyStackerApp * theApp(GetDSSApp());

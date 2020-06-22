@@ -408,7 +408,26 @@ void RawDDPSettings::onInitDialog()
 	//
 	// Restore Window position etc..
 	//
-	restoreGeometry(settings.value("Dialogs/RawDDPSettings/geometry").toByteArray());
+	QByteArray ba = settings.value("Dialogs/RawDDPSettings/geometry").toByteArray();
+	if (!ba.isEmpty())
+	{
+		restoreGeometry(ba);
+	}
+	else
+	{
+		//
+		// Get NATIVE windows ultimate parent
+		//
+		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
+		RECT r;
+		GetWindowRect(hParent, &r);
+
+		QSize size = this->size();
+
+		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
+		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		move(left, top);
+	}
 
 	//
 	// First initialise the controls on the Raw Files tab

@@ -32,7 +32,7 @@ extern bool	g_bShowRefStars;
 #include "Multitask.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
-#include "RecommandedSettings.h"
+#include "RecommendedSettings.h"
 #include "Registry.h"
 #include "DeepStackerDlg.h"
 
@@ -89,7 +89,26 @@ void StackRecap::onInitDialog()
 	//
 	// Restore Window position etc..
 	//
-	restoreGeometry(settings.value("Dialogs/StackingSteps/geometry").toByteArray());
+	QByteArray ba = settings.value("Dialogs/StackingSteps/geometry").toByteArray();
+	if (!ba.isEmpty())
+	{
+		restoreGeometry(ba);
+	}
+	else
+	{
+		//
+		// Get NATIVE windows ultimate parent
+		//
+		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
+		RECT r;
+		GetWindowRect(hParent, &r);
+
+		QSize size = this->size();
+
+		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
+		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		move(left, top);
+	}
 
 	fillWithAllTasks();
 };

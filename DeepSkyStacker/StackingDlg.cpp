@@ -1001,11 +1001,9 @@ void CStackingDlg::LoadList()
 			menu.LoadMenu(IDR_FILELISTS);
 			popup = menu.GetSubMenu(0);
 
-			CRect				rc;
-
-			GetDeepStackerDlg(this)->GetExplorerBar().m_Stacking_LoadList.GetWindowRect(&rc);
-			pt.x = rc.left;
-			pt.y = rc.bottom;
+			QPoint point = QCursor::pos();
+			pt.x = point.x();
+			pt.y = point.y();
 
 			lStartID = ID_FILELIST_FIRSTMRU+1;
 			for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)

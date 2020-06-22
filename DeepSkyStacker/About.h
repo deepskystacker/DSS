@@ -13,6 +13,9 @@ class About : public QDialog
     Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged);
     Q_PROPERTY(bool internetCheck READ internetCheck WRITE setInternetCheck NOTIFY internetCheckChanged);
 
+typedef QDialog
+		Inherited;
+
 public:
     explicit About(QWidget *parent = 0);
     ~About();
@@ -44,8 +47,14 @@ private slots:
 
 private:
     Ui::About *ui;
+
+	bool initialised;
     QString m_Language;
     bool m_InternetCheck;
+
+	void showEvent(QShowEvent *event) override;
+
+	void onInitDialog();
 };
 
 #endif // ABOUT_H

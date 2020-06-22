@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
-#include "RecommandedSettings.h"
+#include "RecommendedSettings.h"
 #include "Multitask.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"

@@ -4,6 +4,9 @@ using std::max;
 
 #define _WIN32_WINNT _WIN32_WINNT_WINXP
 #include <afx.h>
+#include <afxcmn.h>
+#include <afxcview.h>
+#include <afxwin.h>
 
 #include <QFileDialog>
 #include <QSettings>
@@ -12,9 +15,20 @@ using std::max;
 #include <ZExcept.h>
 #include <Ztrace.h>
 
+extern bool		g_bShowRefStars;
+
+#include "..\QHTML_Static\QHTM\QHTM.h"   // Remove once we convert "Recommanded" settings
+
+#include "DSSCommon.h"
+#include "commonresource.h"
+#include "DSSVersion.h"
+#include "DeepSkyStacker.h"
+#include "DeepStackerDlg.h"
+#include "Workspace.h"
+
 #include "StackSettings.h"
 #include "ui/ui_StackSettings.h"
-#include "Workspace.h"
+
 
 StackSettings::StackSettings(QWidget *parent) :
 	QDialog(parent),
@@ -87,7 +101,26 @@ void StackSettings::onInitDialog()
 	//
 	// Restore Window position etc..
 	//
-	restoreGeometry(settings.value("Dialogs/StackSettings/geometry").toByteArray());
+	QByteArray ba = settings.value("Dialogs/StackSettings/geometry").toByteArray();
+	if (!ba.isEmpty())
+	{
+		restoreGeometry(ba);
+	}
+	else
+	{
+		//
+		// Get NATIVE windows ultimate parent
+		//
+		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
+		RECT r;
+		GetWindowRect(hParent, &r);
+
+		QSize size = this->size();
+
+		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
+		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		move(left, top);
+	}
 
 	//
 	// Get number of processors we're allowed to use.   Normally this is the number of
