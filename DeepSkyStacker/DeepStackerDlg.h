@@ -158,6 +158,8 @@ public :
 #include "ExplorerBar.h"
 #include "afxwin.h"
 
+#include "qwinwidget.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
 
@@ -177,7 +179,8 @@ private :
 
 	CDeepStack				m_DeepStack;
 	CDSSSettings			m_Settings;
-	CExplorerBar			m_ExplorerBar;
+	QWinWidget *			widget;
+	ExplorerBar *			explorerBar;
 	DWORD					m_dwCurrentTab;
 	CString					m_strStartFileList;
 	CString					m_strBaseTitle;
@@ -187,6 +190,15 @@ private :
 // Construction
 public:
 	CDeepStackerDlg(CWnd* pParent = nullptr);   // standard constructor
+
+	~CDeepStackerDlg()
+	{
+		if (explorerBar)
+			delete explorerBar;
+		if (widget)
+			delete widget;
+	};
+
 	void	ChangeTab(DWORD dwTabID);
 	DWORD	GetCurrentTab()
 	{
@@ -198,20 +210,20 @@ public:
 		m_strStartFileList = szStartFileList;
 	};
 
-	void disableSubDialogs()
+	inline void disableSubDialogs()
 	{
 		m_dlgStacking.EnableWindow(false);
 		m_dlgProcessing.EnableWindow(false);
 		m_dlgLibrary.EnableWindow(false);
-		m_ExplorerBar.EnableWindow(false);
+		explorerBar->setEnabled(false);
 	};
 
-	void enableSubDialogs()
+	inline void enableSubDialogs()
 	{
 		m_dlgStacking.EnableWindow(true);
 		m_dlgProcessing.EnableWindow(true);
 		m_dlgLibrary.EnableWindow(true);
-		m_ExplorerBar.EnableWindow(true);
+		explorerBar->setEnabled(true);
 	};
 
 // Dialog Data
@@ -244,9 +256,9 @@ public:
 	};
 
 
-	CExplorerBar & GetExplorerBar()
+	ExplorerBar & GetExplorerBar()
 	{
-		return m_ExplorerBar;
+		return *explorerBar;
 	};
 
 	void	SetCurrentFileInTitle(LPCTSTR szFileName);

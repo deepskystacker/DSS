@@ -108,9 +108,6 @@
     <ClCompile Include="PostCalibration.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="RecommandedSettings.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
     <ClCompile Include="ResultParameters.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -336,6 +333,9 @@
     <ClCompile Include="BackgroundLoading.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="RecommendedSettings.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -412,9 +412,6 @@
     <ClInclude Include="DeepStackerDlg.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="ExplorerBar.h">
-      <Filter>Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="FileProperty.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
@@ -431,9 +428,6 @@
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="DropFilesDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="RecommandedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="StackingDlg.h">
@@ -693,6 +687,9 @@
     </ClInclude>
     <ClInclude Include="BackgroundLoading.h">
       <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="RecommendedSettings.h">
+      <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1149,6 +1146,9 @@
     </QtMoc>
     <QtMoc Include="RawDDPSettings.h">
       <Filter>Dialogs\Settings</Filter>
+    </QtMoc>
+    <QtMoc Include="ExplorerBar.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-// DeepStackerDlg.cpp : implementation file
+F// DeepStackerDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -134,8 +134,7 @@ CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepStackerDlg::IDD, pParent),
 	m_dlgStacking(this),
 	m_dlgProcessing(this),
-	m_dlgLibrary(this),
-	m_ExplorerBar(this)
+	m_dlgLibrary(this)
 {
 	//{{AFX_DATA_INIT(CDeepStackerDlg)
 		// NOTE: the ClassWizard will add member initialization here
@@ -195,7 +194,7 @@ void CDeepStackerDlg::UpdateTab()
 		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
 	};
-	m_ExplorerBar.InvalidateRect(nullptr);
+	explorerBar->update();
 };
 
 /* ------------------------------------------------------------------- */
@@ -211,15 +210,15 @@ void CDeepStackerDlg::UpdateSizes()
 {
 	// Resize the tab control
 	CRect			rcDlg;
-	CRect			rcExplorerBar;
+	QRect			rcExplorerBar;
 
 	GetClientRect(&rcDlg);
 
 	if (m_dlgStacking.m_hWnd)
 	{
-		rcExplorerBar = rcDlg;
+		rcExplorerBar = QRect(rcDlg.left, rcDlg.top, rcDlg.Width(), rcDlg.Height());
 		rcDlg.left += 220;
-		rcExplorerBar.right = rcDlg.left;
+		rcExplorerBar.setRight(rcDlg.left);
 
 		if (m_dlgStacking.m_hWnd)
 			m_dlgStacking.MoveWindow(&rcDlg);
@@ -227,8 +226,10 @@ void CDeepStackerDlg::UpdateSizes()
 			m_dlgProcessing.MoveWindow(&rcDlg);
 		if (m_dlgLibrary.m_hWnd)
 			m_dlgLibrary.MoveWindow(&rcDlg);
-		if (m_ExplorerBar.m_hWnd)
-			m_ExplorerBar.MoveWindow(&rcExplorerBar);
+		//if (m_ExplorerBar.m_hWnd)
+		//	m_ExplorerBar.MoveWindow(&rcExplorerBar);
+		widget->setGeometry(rcExplorerBar);
+		explorerBar->setGeometry(rcExplorerBar);
 	};
 };
 
@@ -257,6 +258,9 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	ZTRACE_RUNTIME("Initializing Main Dialog - ok");
 
+	widget = new QWinWidget(this);
+	widget->showCentered();
+	explorerBar = new ExplorerBar(widget);
 
 	CString			strMask;
 	CString			strTitle;
@@ -272,9 +276,9 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	SetWindowText(strTitle);
 	m_strBaseTitle = strTitle;
 
-	ZTRACE_RUNTIME("Creating Left Panel");
-	m_ExplorerBar.Create(IDD_EXPLORERBAR, this);
-	ZTRACE_RUNTIME("Creating Left Panel - ok");
+	//ZTRACE_RUNTIME("Creating Left Panel");
+	//m_ExplorerBar.Create(IDD_EXPLORERBAR, this);
+	//ZTRACE_RUNTIME("Creating Left Panel - ok");
 
 	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), true);
 	m_dlgStacking.SetStartingFileList(m_strStartFileList);
@@ -440,8 +444,8 @@ LRESULT CDeepStackerDlg::OnHTMLHelp(WPARAM, LPARAM)
 
 void CDeepStackerDlg::OnHelp()
 {
-	if (m_ExplorerBar.m_hWnd)
-		m_ExplorerBar.CallHelp();
+	//if (m_ExplorerBar.m_hWnd)
+		explorerBar->onHelp();
 };
 
 /* ------------------------------------------------------------------- */

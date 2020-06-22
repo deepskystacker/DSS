@@ -441,7 +441,12 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
-    <ClCompile Include="ExplorerBar.cpp" />
+    <ClCompile Include="ExplorerBar.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="FileProperty.cpp" />
     <ClCompile Include="Filters.cpp" />
     <ClCompile Include="FITSUtil.cpp" />
@@ -498,7 +503,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RAWUtils.cpp" />
-    <ClCompile Include="RecommandedSettings.cpp" />
+    <ClCompile Include="RecommendedSettings.cpp" />
     <ClCompile Include="RegisterEngine.cpp" />
     <ClCompile Include="RegisterSettings.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -628,7 +633,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="DSSTools.h" />
     <ClInclude Include="DSSVersion.h" />
     <ClInclude Include="EntropyInfo.h" />
-    <ClInclude Include="ExplorerBar.h" />
+    <QtMoc Include="ExplorerBar.h" />
     <ClInclude Include="FileProperty.h" />
     <ClInclude Include="Filters.h" />
     <ClInclude Include="FITSUtil.h" />
@@ -659,7 +664,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <ClInclude Include="RAWUtils.h" />
-    <ClInclude Include="RecommandedSettings.h" />
+    <ClInclude Include="RecommendedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
     <QtMoc Include="RegisterSettings.h" />
     <ClInclude Include="Resource.h" />
