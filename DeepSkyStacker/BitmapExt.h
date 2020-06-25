@@ -340,7 +340,7 @@ inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG
 		strText = QCoreApplication::translate("StackRecap", "Median", "IDS_RECAP_MEDIAN");
 		break;
 	case MBP_MAXIMUM:
-		strText = QCoreApplication::translate("StackRecap", "", "IDS_RECAP_MAXIMUM");
+		strText = QCoreApplication::translate("StackRecap", "Maximum", "IDS_RECAP_MAXIMUM");
 		break;
 	case MBP_SIGMACLIP:
 		strText = QCoreApplication::translate("StackRecap", "Kappa-Sigma (Kappa = %1, Iterations = %2)",

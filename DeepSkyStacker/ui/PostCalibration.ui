@@ -24,7 +24,7 @@
    <item>
     <widget class="QGroupBox" name="cleanHotPixels">
      <property name="title">
-      <string>Detect and Clean remaining Hot Pixels</string>
+      <string comment="IDC_DETECTCLEANHOT">Detect and Clean remaining Hot Pixels</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -62,7 +62,7 @@
              </size>
             </property>
             <property name="text">
-             <string>&lt;small&gt;Effect weak&lt;/small&gt;</string>
+             <string comment="IDC_WEAK1">&lt;small&gt;Effect weak&lt;/small&gt;</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -72,7 +72,7 @@
           <item>
            <widget class="QLabel" name="strong1">
             <property name="text">
-             <string>&lt;small&gt;Strong&lt;/small&gt;</string>
+             <string comment="IDC_STRONG1">&lt;small&gt;Strong&lt;/small&gt;</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
@@ -157,7 +157,7 @@
    <item>
     <widget class="QGroupBox" name="cleanColdPixels">
      <property name="title">
-      <string>Detect and Clean remaining Cold Pixels</string>
+      <string comment="IDC_DETECTCLEANCOLD">Detect and Clean remaining Cold Pixels</string>
      </property>
      <property name="checkable">
       <bool>true</bool>
@@ -189,7 +189,7 @@
              </size>
             </property>
             <property name="text">
-             <string>&lt;small&gt;Effect weak&lt;/small&gt;</string>
+             <string comment="IDC_WEAK1">&lt;small&gt;Effect weak&lt;/small&gt;</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
@@ -199,7 +199,7 @@
           <item>
            <widget class="QLabel" name="strong2">
             <property name="text">
-             <string>&lt;small&gt;Strong&lt;/small&gt;</string>
+             <string comment="IDC_STRONG1">&lt;small&gt;Strong&lt;/small&gt;</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
@@ -286,7 +286,7 @@
      <item>
       <widget class="QLabel" name="label_14">
        <property name="text">
-        <string>Replace pixel value with</string>
+        <string comment="IDC_REPLACETEXT">Replace pixel value with</string>
        </property>
       </widget>
      </item>
@@ -297,7 +297,7 @@
 text-align:left</string>
        </property>
        <property name="text">
-        <string/>
+        <string notr="true"/>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -324,7 +324,7 @@ text-align:left</string>
 text-align:left</string>
        </property>
        <property name="text">
-        <string>Test on first frame...</string>
+        <string comment="IDC_TESTCOSMETIC">Test on first frame...</string>
        </property>
        <property name="flat">
         <bool>true</bool>
@@ -336,7 +336,7 @@ text-align:left</string>
    <item>
     <widget class="QCheckBox" name="saveDeltaImage">
      <property name="text">
-      <string>Save an image showing the cleaned pixels for each light frame</string>
+      <string comment="IDC_SAVEDELTAIMAGE">Save an image showing the cleaned pixels for each light frame</string>
      </property>
     </widget>
    </item>

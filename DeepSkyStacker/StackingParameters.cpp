@@ -122,7 +122,7 @@ StackingParameters & StackingParameters::createActions()
 	connect(rgbbgCal, &QAction::triggered, this,
 		[=]() { ui->backgroundCalibration->setText(rgbbgCalString); });
 
-	bgCalOptions = new QAction(tr("Options..."), this);
+	bgCalOptions = new QAction(tr("Options...", "ID_CALIBRATIONMENU_OPTIONS"), this);
 	connect(bgCalOptions, SIGNAL(triggered()), this, SLOT(backgroundCalibrationOptions()));
 
 	return *this;

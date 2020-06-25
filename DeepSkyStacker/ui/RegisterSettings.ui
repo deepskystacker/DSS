@@ -23,7 +23,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Stacking Settings...</string>
+      <string comment="IDC_STACKINGPARAMETERS">Stacking Settings...</string>
      </property>
     </widget>
    </item>
@@ -43,7 +43,7 @@
       </size>
      </property>
      <property name="text">
-      <string>Recommended Settings...</string>
+      <string comment="IDC_RECOMMANDEDSETTINGS">Recommended Settings...</string>
      </property>
      <property name="flat">
       <bool>false</bool>
@@ -53,7 +53,7 @@
    <item row="0" column="0" colspan="2">
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="actionsTab">
       <attribute name="title">
@@ -63,7 +63,7 @@
        <item>
         <widget class="QCheckBox" name="forceRegister">
          <property name="text">
-          <string>Register already registered pictures</string>
+          <string comment="IDC_FORCEREGISTER">Register already registered pictures</string>
          </property>
         </widget>
        </item>
@@ -83,7 +83,7 @@
        <item>
         <widget class="QCheckBox" name="hotPixels">
          <property name="text">
-          <string>Automatic detection of hot pixels</string>
+          <string comment="IDC_HOTPIXELS">Automatic detection of hot pixels</string>
          </property>
         </widget>
        </item>
@@ -109,7 +109,7 @@
           </size>
          </property>
          <property name="title">
-          <string>Stack after registering</string>
+          <string comment="IDC_STACK">Stack after registering</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -271,7 +271,7 @@
          <item>
           <widget class="QPushButton" name="computeDetectedStars">
            <property name="text">
-            <string>Compute the number of detected stars</string>
+            <string comment="IDC_COMPUTEDETECTEDSTARS">Compute the number of detected stars</string>
            </property>
           </widget>
          </item>
@@ -314,7 +314,7 @@
          <item>
           <widget class="QCheckBox" name="medianFilter">
            <property name="text">
-            <string>Reduce noise by using a median filter</string>
+            <string comment="IDC_MEDIANFILTER">Reduce noise by using a median filter</string>
            </property>
           </widget>
          </item>

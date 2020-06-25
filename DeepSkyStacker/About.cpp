@@ -137,7 +137,7 @@ About::About(QWidget *parent) :
 
     strHTML += "<img valign=center src=\"qrc:///flags/taiwan.png\">&nbsp;&nbsp;";
     strHTML += tr("Traditional Chinese version:", "IDS_ABOUT_LANG_CHINESET") + " ";
-    strHTML += QString("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%1</a><br>").arg("Wei-Hao Wang");
+    strHTML += QString("<a href=\"http://www.aoc.nrao.edu/~whwang/\">%1</a><br>").arg("王為豪 (Wei-Hao Wang)");
 
     strHTML += "<img valign=center src=\"qrc:///flags/portugal.png\">&nbsp;<img valign=center src=\"qrc:///flags/brazil.png\">&nbsp;&nbsp;";
     strHTML += tr("Portuguese version:", "IDS_ABOUT_LANG_PORTUGUESE") + " ";
@@ -149,11 +149,11 @@ About::About(QWidget *parent) :
 
     strHTML += "<img valign=center src=\"qrc:///flags/russian.png\">&nbsp;&nbsp;";
     strHTML += tr("Russian version:", "IDS_ABOUT_LANG_RUSSIAN") + " ";
-    strHTML += QString("<a href=\"http://oleg.milantiev.com/\">%1</a><br>").arg("Oleg Milantiev");
+    strHTML += QString("<a href=\"http://oleg.milantiev.com/\">%1</a><br>").arg("Олег Милантьев (Oleg Milantiev)");
 
     strHTML += "<img valign=center src=\"qrc:///flags/turkish.png\">&nbsp;&nbsp;";
     strHTML += tr("Turkish version:", "IDS_ABOUT_LANG_TURKISH") + " ";
-    strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br>").arg("Rasid Tugral");
+    strHTML += QString("<a href=\"http://www.physics.metu.edu.tr/\">%1</a><br>").arg("Raþid Tuðral (Rasid Tugral)");
 
     ui->credits->setText(strHTML);
 
