@@ -11,6 +11,7 @@ using std::max;
 #include <ZExcept.h>
 #include <Ztrace.h>
 #include <QDir>
+#include <QLibraryInfo>
 #include <QSettings>
 #include <QString>
 #include <QDebug>
@@ -272,6 +273,12 @@ void About::storeSettings()
 		theApp->appTranslator = nullptr;
 	}
 
+	if (nullptr != theApp->qtTranslator)
+	{
+		delete theApp->qtTranslator;
+		theApp->qtTranslator = nullptr;
+	}
+
 	theApp->appTranslator = new QTranslator(qApp);
 
 	//
@@ -282,6 +289,14 @@ void About::storeSettings()
 		QCoreApplication::instance()->installTranslator(theApp->appTranslator);
 	}
 
+	//
+	// Install the system language ...
+	// 
+	QString translatorFileName = QLatin1String("qt_");
+	translatorFileName += language;
+	theApp->qtTranslator = new QTranslator(qApp);
+	if (theApp->qtTranslator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+		qApp->installTranslator(theApp->qtTranslator);
 
     settings.setValue("InternetCheck", m_InternetCheck);
 }
