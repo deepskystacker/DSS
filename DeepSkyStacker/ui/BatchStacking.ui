@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>476</width>
-    <height>347</height>
+    <width>443</width>
+    <height>362</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>This dialog is used to launch the stacking process from existing image lists.
+      <string comment="IDC_STATIC">This dialog is used to launch the stacking process from existing image lists.
 
 Add the file lists you want to stack and click OK to start the stacking processes.</string>
      </property>
@@ -29,9 +29,9 @@ Add the file lists you want to stack and click OK to start the stacking processe
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="addLists">
        <property name="text">
-        <string>Add File Lists...</string>
+        <string comment="IDC_ADDLISTS">Add File Lists...</string>
        </property>
       </widget>
      </item>
@@ -49,16 +49,23 @@ Add the file lists you want to stack and click OK to start the stacking processe
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="clearLists">
        <property name="text">
-        <string>Clear List</string>
+        <string comment="IDC_CLEARLIST">Clear List</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="QListView" name="listView"/>
+    <widget class="QListView" name="fileLists">
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::DragDrop</enum>
+     </property>
+     <property name="viewMode">
+      <enum>QListView::IconMode</enum>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -81,8 +88,8 @@ Add the file lists you want to stack and click OK to start the stacking processe
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>257</x>
+     <y>352</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -97,8 +104,8 @@ Add the file lists you want to stack and click OK to start the stacking processe
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>325</x>
+     <y>352</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -106,5 +113,41 @@ Add the file lists you want to stack and click OK to start the stacking processe
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>addLists</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchStacking</receiver>
+   <slot>addLists()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>50</x>
+     <y>66</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>221</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clearLists</sender>
+   <signal>clicked()</signal>
+   <receiver>BatchStacking</receiver>
+   <slot>clearLists()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>395</x>
+     <y>66</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>221</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
+ <slots>
+  <slot>addLists()</slot>
+  <slot>clearLists()</slot>
+ </slots>
 </ui>

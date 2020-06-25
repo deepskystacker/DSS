@@ -1,38 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>DropFilesDlg</class>
  <widget class="QDialog" name="DropFilesDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>299</width>
+    <height>212</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Add files ...</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>30</x>
-     <y>240</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="dropFiles">
+     <property name="title">
+      <string comment="IDC_DROPFILESTEXT">Add %1 file(s) as</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QRadioButton" name="lightFrames">
+        <property name="text">
+         <string comment="IDC_LIGHTFRAMES">Light Frames</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="darkFrames">
+        <property name="text">
+         <string comment="IDC_DARKFRAMES">Dark Frames</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="flatFrames">
+        <property name="text">
+         <string comment="IDC_FLATFRAMES">Flat Frames</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="darkFlatFrames">
+        <property name="text">
+         <string comment="IDC_DARKFLATFRAMES">Dark Flat Frames</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="biasFrames">
+        <property name="text">
+         <string>Bias Frames</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
- <pixmapfunction/>
  <resources/>
  <connections>
   <connection>
@@ -42,12 +79,12 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>227</x>
+     <y>194</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
-     <y>274</y>
+     <y>211</y>
     </hint>
    </hints>
   </connection>
@@ -58,14 +95,101 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>289</x>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
-     <y>274</y>
+     <y>211</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lightFrames</sender>
+   <signal>clicked()</signal>
+   <receiver>DropFilesDlg</receiver>
+   <slot>onLights()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>43</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>darkFrames</sender>
+   <signal>clicked()</signal>
+   <receiver>DropFilesDlg</receiver>
+   <slot>onDarks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>69</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>flatFrames</sender>
+   <signal>clicked()</signal>
+   <receiver>DropFilesDlg</receiver>
+   <slot>onFlats()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>95</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>darkFlatFrames</sender>
+   <signal>clicked()</signal>
+   <receiver>DropFilesDlg</receiver>
+   <slot>onDarkFlats()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>biasFrames</sender>
+   <signal>clicked()</signal>
+   <receiver>DropFilesDlg</receiver>
+   <slot>onBias()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>149</x>
+     <y>147</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>149</x>
+     <y>105</y>
     </hint>
    </hints>
   </connection>
  </connections>
+ <slots>
+  <slot>onLights()</slot>
+  <slot>onDarks()</slot>
+  <slot>onFlats()</slot>
+  <slot>onDarkFlats()</slot>
+  <slot>onBias()</slot>
+ </slots>
 </ui>
