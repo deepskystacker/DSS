@@ -44,7 +44,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="text">
-           <string>Use the following language at next startup</string>
+           <string>Select language:</string>
           </property>
          </widget>
         </item>
