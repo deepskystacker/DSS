@@ -138,7 +138,7 @@ void RecommendedSettings::reject()
 
 	settings.setValue("Dialogs/Recommended/geometry", saveGeometry());
 
-	workspace->Pop();		// 
+	workspace->Pop();		// Restore status-quo ante
 
 	Inherited::reject();
 }
