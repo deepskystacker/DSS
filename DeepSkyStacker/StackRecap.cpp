@@ -23,8 +23,6 @@ using std::max;
 
 extern bool	g_bShowRefStars;
 
-#include "..\QHTML_Static\qhtm\QHTM.h"
-
 #include "commonresource.h"
 #include "DeepSkyStacker.h"
 #include "StackRecap.h"
@@ -119,14 +117,9 @@ void	StackRecap::insertHeader(QString & strHTML)
 {
 	QPalette palette;
 	QColor	colour = palette.color(QPalette::Window);
-	int r = 0, g = 0, b = 0;
 
-	colour.getRgb(&r, &g, &b);
-
-	QString strText = QString("<body link=#0000ff bgcolor=#%1%2%3></body>")
-		.arg(r, 2, 16, QLatin1Char('0'))
-		.arg(g, 2, 16, QLatin1Char('0'))
-		.arg(b, 2, 16, QLatin1Char('0'));
+	QString strText = QString("<body link=#0000ff bgcolor=%1></body>")
+		.arg(colour.name());
 
 	strHTML += strText;
 };
@@ -164,19 +157,13 @@ void	StackRecap::insertHTML(QString & strHTML, const QString& szText, QColor col
 			.arg(strInputText);
 		strInputText = strText;
 	};
-	{
-		int r, g, b = 0;
 
-		colour.getRgb(&r, &g, &b);
+	strText = QString("<font color = %1>%2</font>")
+		.arg(colour.name())
+		.arg(strInputText);
 
-		strText = QString("<font color = #%1%2%3>%4</font>")
-			.arg(r, 2, 16, QLatin1Char('0'))
-			.arg(g, 2, 16, QLatin1Char('0'))
-			.arg(b, 2, 16, QLatin1Char('0'))
-			.arg(strInputText);
+	strInputText = strText;
 
-		strInputText = strText;
-	};
 	strHTML += strInputText;
 };
 
@@ -838,10 +825,10 @@ void StackRecap::on_stackSettings_clicked()
 
 void StackRecap::on_recommended_clicked()
 {
-	CRecommendedSettings		dlg;
+	RecommendedSettings		dlg;
 
 	dlg.setStackingTasks(pStackingTasks);
-	if ((dlg.DoModal()==IDOK) && pStackingTasks)
+	if (dlg.exec() && pStackingTasks)
 	{
 		pStackingTasks->UpdateTasksMethods();
 		fillWithAllTasks();

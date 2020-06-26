@@ -154,7 +154,7 @@ public :
 
 #include "StackingDlg.h"
 #include "ProcessingDlg.h"
-#include "LibraryDlg.h"
+//#include "LibraryDlg.h"
 #include "ExplorerBar.h"
 #include "afxwin.h"
 
@@ -175,7 +175,7 @@ class CDeepStackerDlg : public CDialog
 private :
 	CStackingDlg			m_dlgStacking;
 	CProcessingDlg			m_dlgProcessing;
-	CLibraryDlg				m_dlgLibrary;
+	//CLibraryDlg				m_dlgLibrary;
 
 	CDeepStack				m_DeepStack;
 	CDSSSettings			m_Settings;
@@ -214,7 +214,7 @@ public:
 	{
 		m_dlgStacking.EnableWindow(false);
 		m_dlgProcessing.EnableWindow(false);
-		m_dlgLibrary.EnableWindow(false);
+		//m_dlgLibrary.EnableWindow(false);
 		explorerBar->setEnabled(false);
 	};
 
@@ -222,7 +222,7 @@ public:
 	{
 		m_dlgStacking.EnableWindow(true);
 		m_dlgProcessing.EnableWindow(true);
-		m_dlgLibrary.EnableWindow(true);
+		//m_dlgLibrary.EnableWindow(true);
 		explorerBar->setEnabled(true);
 	};
 

@@ -133,8 +133,8 @@ UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage(_T("TaskbarButtonCreate
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepStackerDlg::IDD, pParent),
 	m_dlgStacking(this),
-	m_dlgProcessing(this),
-	m_dlgLibrary(this)
+	m_dlgProcessing(this)
+	//m_dlgLibrary(this)
 {
 	//{{AFX_DATA_INIT(CDeepStackerDlg)
 		// NOTE: the ClassWizard will add member initialization here
@@ -181,17 +181,17 @@ void CDeepStackerDlg::UpdateTab()
 	case IDD_STACKING :
 		m_dlgStacking.ShowWindow(SW_SHOW);
 		m_dlgProcessing.ShowWindow(SW_HIDE);
-		m_dlgLibrary.ShowWindow(SW_HIDE);
+//		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
-	case IDD_LIBRARY :
-		m_dlgStacking.ShowWindow(SW_HIDE);
-		m_dlgProcessing.ShowWindow(SW_HIDE);
-		m_dlgLibrary.ShowWindow(SW_SHOW);
-		break;
+	//case IDD_LIBRARY :
+	//	m_dlgStacking.ShowWindow(SW_HIDE);
+	//	m_dlgProcessing.ShowWindow(SW_HIDE);
+	//	m_dlgLibrary.ShowWindow(SW_SHOW);
+	//	break;
 	case IDD_PROCESSING :
 		m_dlgStacking.ShowWindow(SW_HIDE);
 		m_dlgProcessing.ShowWindow(SW_SHOW);
-		m_dlgLibrary.ShowWindow(SW_HIDE);
+//		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
 	};
 	explorerBar->update();
@@ -224,8 +224,8 @@ void CDeepStackerDlg::UpdateSizes()
 			m_dlgStacking.MoveWindow(&rcDlg);
 		if (m_dlgProcessing.m_hWnd)
 			m_dlgProcessing.MoveWindow(&rcDlg);
-		if (m_dlgLibrary.m_hWnd)
-			m_dlgLibrary.MoveWindow(&rcDlg);
+		//if (m_dlgLibrary.m_hWnd)
+		//	m_dlgLibrary.MoveWindow(&rcDlg);
 		//if (m_ExplorerBar.m_hWnd)
 		//	m_ExplorerBar.MoveWindow(&rcExplorerBar);
 		widget->setGeometry(rcExplorerBar);
@@ -241,10 +241,10 @@ void CDeepStackerDlg::ChangeTab(DWORD dwTabID)
 {
 	if (dwTabID == IDD_REGISTERING)
 		dwTabID = IDD_STACKING;
-#ifdef DSSBETA
-	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
-		dwTabID = IDD_LIBRARY;
-#endif
+//#ifdef DSSBETA
+//	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
+//		dwTabID = IDD_LIBRARY;
+//#endif
 	m_dwCurrentTab = dwTabID;
 	UpdateTab();
 };
@@ -288,7 +288,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	ZTRACE_RUNTIME("Creating Processing Panel");
 	m_dlgProcessing.Create(IDD_PROCESSING, this);
 	ZTRACE_RUNTIME("Creating Processing Panel - ok");
-	m_dlgLibrary.Create(IDD_LIBRARY, this);
+	//m_dlgLibrary.Create(IDD_LIBRARY, this);
 
 	ZTRACE_RUNTIME("Restoring Window Position");
 	RestoreWindowPosition(this, "Position");

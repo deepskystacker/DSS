@@ -239,14 +239,6 @@ BOOL CDeepSkyStackerApp::InitInstance( )
 	FTA.RegSetAllInfo();
 	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS - ok\n");
 
-
-	ZTRACE_RUNTIME("Initialized QHTM\n");
-	QHTM_Initialize( AfxGetInstanceHandle() );
-	ZTRACE_RUNTIME("Initialized QHTM - ok\n");
-	ZTRACE_RUNTIME("Initialized QHTM Cooltips\n");
-	QHTM_EnableCooltips();
-	ZTRACE_RUNTIME("Initialized QHTM Cooltips - ok\n");
-
 	return bResult;
 };
 
@@ -460,9 +452,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	GdiplusShutdown(gdiplusToken);
 	ZTRACE_RUNTIME("Shutting down GDI+ - ok");
 	#endif
-
-	ZTRACE_RUNTIME("Shutting down QHTM");
-	QHTM_Uninitialize();
 
 	OleUninitialize();
 

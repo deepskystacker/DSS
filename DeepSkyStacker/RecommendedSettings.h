@@ -1,223 +1,235 @@
-#pragma once
+#ifndef RECOMMENDEDSETTINGS_H
+#define RECOMMENDEDSETTINGS_H
+#include <memory>
+#include <vector>
 
-#include "afxcmn.h"
+class CWorkspace;
+class QAbstractButton;
+class QUrl;
+
+#include <QString>
+#include <QDialog>
+
+#include "DSSCommon.h"
 #include "StackingTasks.h"
 #include "Workspace.h"
-#include <ControlPos.h>
-#include "EasySize.h"
-#include <QString>
-#include <QVariant>
 
-// CRecommendedSettings dialog
 
-/* ------------------------------------------------------------------- */
-
-class CRecommendationItem
+class RecommendationItem
 {
-public :
-	WORKSPACESETTINGVECTOR				m_vSettings;
-	LONG								m_lLinkID;
-	CString								m_strRecommendation;
+public:
+	WORKSPACESETTINGVECTOR				vSettings;
+	LONG								linkID;
+	QString								recommendation;
 
-
-private:
-	void	CopyFrom(const CRecommendationItem & right)
-	{
-		m_vSettings			= right.m_vSettings;
-		m_strRecommendation = right.m_strRecommendation;
-		m_lLinkID			= right.m_lLinkID;
-	};
 
 public:
-	CRecommendationItem()
-	{
-		m_lLinkID = 0;
-	};
-	~CRecommendationItem()
+	RecommendationItem() :
+		linkID(0)
 	{
 	};
 
-	CRecommendationItem(const CRecommendationItem & right)
+	~RecommendationItem()
 	{
-		CopyFrom(right);
 	};
 
-	CRecommendationItem & operator = (const CRecommendationItem & right)
+	RecommendationItem(const RecommendationItem & rhs) :
+		vSettings(rhs.vSettings),
+		linkID(rhs.linkID),
+		recommendation(rhs.recommendation)
+	{}
+
+	RecommendationItem & operator = (const RecommendationItem & rhs)
 	{
-		CopyFrom(right);
-		return (*this);
+		vSettings = rhs.vSettings;
+		linkID = rhs.linkID;
+		recommendation = rhs.recommendation;
+	}
+
+	void	clear()
+	{
+		vSettings.clear();
+		linkID = 0;
+		recommendation.clear();
 	};
 
-	void	Clear()
-	{
-		m_vSettings.clear();
-		m_lLinkID = 0;
-		m_strRecommendation.Empty();
-	};
-
-	bool	IsDifferent()
+	bool	differsFromWorkspace()
 	{
 		bool					bResult = false;
 		CWorkspace				workspace;
 
 		// Check that the current values are (or not)
-		for (LONG i = 0;i<m_vSettings.size() && !bResult;i++)
+		for (const auto setting : vSettings)
 		{
-			CString				strValue;
 			QString				keyName;
-			CString				strCurrentValue;
-			QString	temp;
+			QVariant			value;
+			QVariant			currentValue;
 
-			keyName = m_vSettings[i].key();
 
-			temp = workspace.value(keyName).toString();
-			strCurrentValue = CString((LPCTSTR)temp.utf16());
-			temp = m_vSettings[i].value().toString();
-			strValue = CString((LPCTSTR)temp.utf16());
+			keyName = setting.key();
 
-			bResult = (strCurrentValue != strValue);
+			currentValue = workspace.value(keyName);
+			value = setting.value();
+
+			switch (value.type())
+			{
+			case QMetaType::Bool:
+				bResult = value.toBool() != currentValue.toBool();
+				break;
+			case QMetaType::Double:
+				bResult = value.toDouble() != currentValue.toDouble();
+				break;
+			default:
+				bResult = value.toString() != currentValue.toString();
+			}
+
+			//
+			// If different, no need to check any more
+			//
+			if (bResult) break;
 		};
-
 		return bResult;
 	};
 
-	void	ApplySettings()
+	void	applySettings()
 	{
 		CWorkspace				workspace;
 
-		for (LONG i = 0;i<m_vSettings.size();i++)
+		for (LONG i = 0; i < vSettings.size(); i++)
 		{
 			QString				keyName;
 			QVariant			value;
 
-			keyName = m_vSettings[i].key();
-			value = m_vSettings[i].value();
+			keyName = vSettings[i].key();
+			value = vSettings[i].value();
 
 			workspace.setValue(keyName, value);
 		};
 	};
 
-	void	SetRecommendation(DWORD dwID)
+	void	setRecommendation(QString text)
 	{
-		CString				strText;
-
-		strText.LoadString(dwID);
-		SetRecommendation(strText);
+		recommendation = text;
 	};
 
-	void	SetRecommendation(LPCTSTR szText)
+	void	addSetting(QString keyName, QVariant value)
 	{
-		m_strRecommendation = szText;
-	};
-	void	AddSetting(QString keyName, QVariant value)
-	{
-		m_vSettings.emplace_back(keyName, value);
+		vSettings.emplace_back(keyName, value);
 	};
 };
 
-typedef std::vector<CRecommendationItem>			RECOMMENDATIONITEMVECTOR;
+typedef std::vector<RecommendationItem>			RECOMMENDATIONITEMVECTOR;
 
 /* ------------------------------------------------------------------- */
 
-class CRecommendation
+class Recommendation
 {
 public:
-	RECOMMENDATIONITEMVECTOR			m_vRecommendations;
-	bool								m_bApplicable;
-	bool								m_bImportant;
-	bool								m_bBreakBefore;
-	CString								m_strText;
-
-	void	CopyFrom(const CRecommendation & right)
-	{
-		m_bApplicable		= right.m_bApplicable;
-		m_bBreakBefore		= right.m_bBreakBefore;
-		m_bImportant		= right.m_bImportant;
-		m_strText			= right.m_strText;
-		m_vRecommendations	= right.m_vRecommendations;
-	};
+	RECOMMENDATIONITEMVECTOR			vRecommendations;
+	bool								isApplicable;
+	bool								isImportant;
+	bool								breakBefore;
+	QString								text;
 
 public:
-	CRecommendation()
-	{
-		m_bApplicable = true;
-		m_bImportant  = true;
-		m_bBreakBefore= false;
-	};
-	~CRecommendation()
+	Recommendation() :
+		isApplicable(true),
+		isImportant(true),
+		breakBefore(false)
 	{
 	};
 
-	CRecommendation(const CRecommendation & right)
+	~Recommendation()
 	{
-		CopyFrom(right);
 	};
 
-	CRecommendation & operator = (const CRecommendation & right)
+	Recommendation(const Recommendation & rhs) :
+		vRecommendations(rhs.vRecommendations),
+		isApplicable(rhs.isApplicable),
+		isImportant(rhs.isImportant),
+		breakBefore(rhs.breakBefore),
+		text(rhs.text)
+	{}
+
+	Recommendation & operator = (const Recommendation & rhs)
 	{
-		CopyFrom(right);
-		return (*this);
+		vRecommendations = rhs.vRecommendations;
+		isApplicable = rhs.isApplicable;
+		isImportant = rhs.isImportant;
+		breakBefore = rhs.breakBefore;
+		text = rhs.text;
+	}
+
+	void	setText(const QString& t)
+	{
+		text = t;
 	};
 
-	bool	IsApplicable()
+	void	addItem(const RecommendationItem & ri)
 	{
-		return m_bApplicable;
-	};
-
-	bool	IsBreakBefore()
-	{
-		return m_bBreakBefore;
-	};
-
-	void	SetText(DWORD dwID)
-	{
-		CString				strText;
-
-		strText.LoadString(dwID);
-		SetText(strText);
-	};
-
-	void	SetText(LPCTSTR szText)
-	{
-		m_strText = szText;
-	};
-
-	void	AddItem(const CRecommendationItem & ri)
-	{
-		m_vRecommendations.push_back(ri);
+		vRecommendations.push_back(ri);
 	};
 };
 
+typedef std::vector<Recommendation>	RECOMMENDATIONVECTOR;
+typedef RECOMMENDATIONVECTOR::iterator	RECOMMENDATIONITERATOR;
 
-typedef std::vector<CRecommendation>	RECOMMANDATIONVECTOR;
-typedef RECOMMANDATIONVECTOR::iterator	RECOMMANDATIONITERATOR;
+// RecommendedSettings dialog
+
+namespace Ui {
+	class RecommendedSettings;
+}
+
+class RecommendedSettings : public QDialog
+{
+	Q_OBJECT
+
+typedef QDialog
+		Inherited;
+public:
+	explicit RecommendedSettings(QWidget *parent = nullptr);
+	~RecommendedSettings();
+
+	inline void setStackingTasks(CAllStackingTasks * stackingTasks) noexcept
+	{
+		pStackingTasks = stackingTasks;
+	};
+
+
+private slots:
+	void accept() override;
+	void reject() override;
+	void on_textBrowser_anchorClicked(const QUrl &);
+
+private:
+	Ui::RecommendedSettings *ui;
+	std::unique_ptr<CWorkspace> workspace;
+	RECOMMENDATIONVECTOR vRecommendations;
+	CAllStackingTasks stackingTasks;
+	CAllStackingTasks *pStackingTasks;
+	bool	initialised;
+
+	void	clearText();
+
+	void	insertHeader();
+	void	insertHTML(const QString& html, QColor colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, LONG lLinkID = -1);
+	void	fillWithRecommendedSettings();
+
+	void	setSetting(LONG lID = 0);
+
+
+	void showEvent(QShowEvent *event) override;
+	void onInitDialog();
+};;;
 
 /* ------------------------------------------------------------------- */
 
+/* ------------------------------------------------------------------- */
+
+#if (0)
 class CRecommendedSettings : public CDialog
 {
-	DECLARE_DYNAMIC(CRecommendedSettings)
-	DECLARE_EASYSIZE
 
-public:
-	CRecommendedSettings(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CRecommendedSettings();
-
-	void		setStackingTasks(CAllStackingTasks * pStackingTasks)
-	{
-		m_pStackingTasks = pStackingTasks;
-	};
-
-// Dialog Data
-	enum { IDD = IDD_RECOMMENDEDSETTINGS };
-
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	virtual void OnSize(UINT nType, int cx, int cy);
-	virtual void OnSizing(UINT nSide, LPRECT lpRect);
-
-	DECLARE_MESSAGE_MAP()
 private :
 	void	ClearText();
 	void	InsertHeader();
@@ -226,12 +238,9 @@ private :
 	void	SetSetting(LONG lID = 0);
 
 private:
-	CQhtmWnd								m_RecommendedSettingsHTML;
-	CButton									m_ShowAll;
-	CAllStackingTasks *						m_pStackingTasks;
-	RECOMMANDATIONVECTOR					m_vRecommendations;
-	CAllStackingTasks						m_StackingTasks;
-	CScrollBar								m_Gripper;
+	CAllStackingTasks *						pStackingTasks;
+	RECOMMENDATIONVECTOR					vRecommendations;
+	CAllStackingTasks						stackingTasks;
 
 	afx_msg void OnQHTMHyperlink(NMHDR*nmh, LRESULT*);
 
@@ -240,5 +249,7 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 };
+#endif
 
 /* ------------------------------------------------------------------- */
+#endif

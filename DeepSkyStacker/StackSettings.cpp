@@ -17,8 +17,6 @@ using std::max;
 
 extern bool		g_bShowRefStars;
 
-#include "..\QHTML_Static\QHTM\QHTM.h"   // Remove once we convert "Recommanded" settings
-
 #include "DSSCommon.h"
 #include "commonresource.h"
 #include "DSSVersion.h"

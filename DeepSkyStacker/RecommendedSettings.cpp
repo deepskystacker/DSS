@@ -1,319 +1,372 @@
-// StackRecap.cpp : implementation file
+﻿// RecommendedSettings.cpp : implementation file
 //
 
-#include "stdafx.h"
+#include <algorithm>
+using std::min;
+using std::max;
+#include <vector>
+
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#include <afx.h>
+#include <afxcview.h>
+#include <afxwin.h>
+
+#include <ZExcept.h>
+#include <Ztrace.h>
+
+#include <QColor>
+#include <QMessageBox>
+#include <QPalette>
+#include <QSettings>
+#include <QShowEvent>
+#include <QTextBrowser>
+#include <Qt>
+#include <QUrl>
+#include <QWidget>
+
+extern bool	g_bShowRefStars;
+
+#include "commonresource.h"
+#include "DSSCommon.h"
 #include "DeepSkyStacker.h"
-#include "RecommendedSettings.h"
 #include "Multitask.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "DeepStackerDlg.h"
 
-// CRecommendedSettings dialog
-
 /* ------------------------------------------------------------------- */
 
-IMPLEMENT_DYNAMIC(CRecommendedSettings, CDialog)
+#include "RecommendedSettings.h"
+#include "ui/ui_RecommendedSettings.h"
 
-CRecommendedSettings::CRecommendedSettings(CWnd* pParent /*=nullptr*/)
-	: CDialog(CRecommendedSettings::IDD, pParent)
+// RecommendedSettings dialog
+
+RecommendedSettings::RecommendedSettings(QWidget *parent) :
+	QDialog(parent),
+	ui(new Ui::RecommendedSettings),
+	workspace(new CWorkspace()),
+	pStackingTasks(nullptr),
+	initialised(false)
 {
-	m_pStackingTasks = nullptr;
+	ui->setupUi(this);
+	//
+	// Don't want the TextBrowser to try to follow links, we handle that in an AnchorClicked slot
+	//
+	ui->textBrowser->setOpenLinks(false);
 }
 
-/* ------------------------------------------------------------------- */
-
-CRecommendedSettings::~CRecommendedSettings()
+RecommendedSettings::~RecommendedSettings()
 {
+	delete ui;
 }
 
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::DoDataExchange(CDataExchange* pDX)
+void RecommendedSettings::showEvent(QShowEvent *event)
 {
-	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_RECOMMANDEDSETTINGSHTML, m_RecommendedSettingsHTML);
-	DDX_Control(pDX, IDC_SHOWALL, m_ShowAll);
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitDialog();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
 }
 
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CRecommendedSettings, CDialog)
-	ON_BN_CLICKED(IDC_SHOWALL, &CRecommendedSettings::OnBnClickedShowAll)
-	ON_NOTIFY( QHTMN_HYPERLINK, IDC_RECOMMANDEDSETTINGSHTML, OnQHTMHyperlink )
-	ON_BN_CLICKED(IDOK, &CRecommendedSettings::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CRecommendedSettings::OnBnClickedCancel)
-	ON_WM_SIZE()
-	ON_WM_SIZING()
-END_MESSAGE_MAP()
-
-BEGIN_EASYSIZE_MAP(CRecommendedSettings)
-    EASYSIZE(IDC_SHOWALL,ES_BORDER,ES_KEEPSIZE,ES_KEEPSIZE,ES_BORDER,0)
-    EASYSIZE(IDC_RECOMMANDEDSETTINGSHTML,ES_BORDER,ES_BORDER,ES_BORDER,ES_BORDER,0)
-    EASYSIZE(IDOK,ES_KEEPSIZE,ES_KEEPSIZE,ES_BORDER,ES_BORDER,0)
-    EASYSIZE(IDCANCEL,ES_KEEPSIZE, ES_KEEPSIZE,ES_BORDER,ES_BORDER,0)
-    EASYSIZE(AFX_IDW_SIZE_BOX,ES_KEEPSIZE,ES_KEEPSIZE, ES_BORDER,ES_BORDER,0)
-END_EASYSIZE_MAP
-
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CStackSettings message handlers
-
-#define GRIPPIE_SQUARE_SIZE 15
-
-/* ------------------------------------------------------------------- */
-
-BOOL CRecommendedSettings::OnInitDialog()
+void RecommendedSettings::onInitDialog()
 {
-	CDialog::OnInitDialog();
+	QSettings settings;
 
-	CWorkspace				workspace;
-
-    CRect			rcClient;
-    GetClientRect(&rcClient);
-
-    CRect			rcGrip;
-
-
-    rcGrip.right	= rcClient.right;
-    rcGrip.bottom	= rcClient.bottom;
-    rcGrip.left		= rcClient.right-GRIPPIE_SQUARE_SIZE;
-    rcGrip.top		= rcClient.bottom-GRIPPIE_SQUARE_SIZE;
-
-	m_Gripper.Create(WS_CHILD|WS_VISIBLE|SBS_SIZEGRIP|WS_CLIPSIBLINGS, rcGrip, this, AFX_IDW_SIZE_BOX);
-
-	INIT_EASYSIZE;
-
-	RestoreWindowPosition(this, "Dialogs/Recommended/Position", true);
-
-	workspace.Push();
-
-	if (!m_pStackingTasks)
+	//
+	// Restore Window position etc..
+	//
+	QByteArray ba = settings.value("Dialogs/Recommended/geometry").toByteArray();
+	if (!ba.isEmpty())
 	{
-		GetStackingDlg(this).FillTasks(m_StackingTasks);
-		m_pStackingTasks = &m_StackingTasks;
-	};
-
-	m_RecommendedSettingsHTML.SetToolTips(false);
-
-	FillWithRecommendedSettings();
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::OnSize(UINT nType, int cx, int cy)
-{
-	CDialog::OnSize(nType, cx, cy);
-
-	UPDATE_EASYSIZE;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::OnSizing(UINT nSide, LPRECT lpRect)
-{
-	CDialog::OnSizing(nSide, lpRect);
-
-	EASYSIZE_MINSIZE(280,250,nSide,lpRect);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::ClearText()
-{
-	CString					strText;
-	COLORREF				crColor = ::GetSysColor(COLOR_WINDOW);
-
-	strText.Format(_T("<body link=#0000ff bgcolor=#%02x%02x%02x></body>"),
-		GetRValue(crColor), GetGValue(crColor), GetBValue(crColor));
-	m_vRecommendations.clear();
-	m_RecommendedSettingsHTML.SetWindowText(strText);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::InsertHeader()
-{
-	CString					strText;
-	CString					strHTML;
-
-	strHTML = _T("<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>");
-	strHTML += _T("<td>");
-
-	strText.LoadString(IDS_RECO_DISCLAIMER);
-	strText.Replace(_T("\n"), _T("<BR>"));
-	strHTML += strText;
-	strHTML += _T("<BR><BR>");
-	strText.LoadString(IDS_RECO_CLICKTOSET);
-	strText.Replace(_T("\n"), _T("<BR>"));
-	strHTML += strText;
-	strHTML += _T("<BR>");
-	strText.LoadString(IDS_RECO_ALREADYSET);
-	strText.Replace(_T("\n"), _T("<BR>"));
-
-	strHTML += _T("<font color=\"86, 170, 86\">");
-	strHTML += strText;;
-	strHTML += _T("</font>");
-	strHTML += _T("</td></tr></table><BR>");
-
-	m_RecommendedSettingsHTML.AddHTML(strHTML, false);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::InsertText(LPCTSTR szText, COLORREF crColor, bool bBold, bool bItalic, LONG lLinkID)
-{
-	CString					strText;
-	CString					strInputText = szText;
-
-	strInputText.Replace(_T("\n"), _T("<BR>"));
-	if (lLinkID)
-	{
-		strText.Format(_T("<a href = \"%ld\">%s</a>"), lLinkID, (LPCTSTR)strInputText);
-		strInputText = strText;
-	};
-	if (bBold)
-	{
-		strText.Format(_T("<b>%s</b>"), (LPCTSTR)strInputText);
-		strInputText = strText;
-	};
-	if (bItalic)
-	{
-		strText.Format(_T("<i>%s</i>"), (LPCTSTR)strInputText);
-		strInputText = strText;
-	};
-	{
-		strText.Format(_T("<font color = #%02x%02x%02x>%s</font>"),
-			GetRValue(crColor),GetGValue(crColor),GetBValue(crColor),(LPCTSTR)strInputText);
-		strInputText = strText;
-	};
-
-	m_RecommendedSettingsHTML.AddHTML(strInputText, false);
-};
-
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-
-static void AddRAWNarrowBandRecommendation(RECOMMANDATIONVECTOR & vRecommendations, bool bFITS)
-{
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
-
-	strText.LoadString(IDS_RECO_RAWNARROWBAND_REASON);
-	strText.Replace(_T(" Ha"), _T(" H<font face='Symbol'>a</font>"));
-
-	rec.SetText(strText);
-	ri.SetRecommendation(IDS_RECO_RAWNARROWBAND_TEXT);
-
-	if (bFITS)
-	{
-		ri.AddSetting("FitsDDP/Interpolation", "SuperPixels");
+		restoreGeometry(ba);
 	}
 	else
 	{
-		ri.AddSetting("RawDDP/SuperPixels", true);
-		ri.AddSetting("RawDDP/RawBayer", false);
-		ri.AddSetting("RawDDP/AHD", false);
+		//
+		// Get NATIVE windows ultimate parent
+		//
+		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
+		RECT r;
+		GetWindowRect(hParent, &r);
+
+		QSize size = this->size();
+
+		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
+		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		move(left, top);
+	}
+
+	workspace->Push();
+
+	ui->checkBox->setVisible(false);
+
+	if (!pStackingTasks)
+	{
+		GetStackingDlg(nullptr).FillTasks(stackingTasks);
+		pStackingTasks = &stackingTasks;
 	};
-	rec.m_bImportant = false;
-	rec.AddItem(ri);
+
+	fillWithRecommendedSettings();
+};
+
+void RecommendedSettings::on_textBrowser_anchorClicked(const QUrl &url)
+{
+	setSetting(url.toString().toInt());
+}
+
+void RecommendedSettings::accept()
+{
+	QSettings settings;
+
+	settings.setValue("Dialogs/Recommended/geometry", saveGeometry());
+
+	workspace->Pop(false);
+	workspace->saveSettings();
+
+	Inherited::accept();
+}
+
+void RecommendedSettings::reject()
+{
+	QSettings settings;
+
+	settings.setValue("Dialogs/Recommended/geometry", saveGeometry());
+
+	workspace->Pop();		// 
+
+	Inherited::reject();
+}
+
+/* ------------------------------------------------------------------- */
+
+void RecommendedSettings::clearText()
+{
+	QPalette palette;
+	QColor	colour = palette.color(QPalette::Window);
+
+	QString strText = QString("<body link=#0000ff bgcolor=%1></body>")
+		.arg(colour.name());
+	vRecommendations.clear();
+	ui->textBrowser->setHtml(strText);
+};
+
+/* ------------------------------------------------------------------- */
+
+void RecommendedSettings::insertHeader()
+{
+	QString					strHTML;
+
+	strHTML = "<table border=1 align=center cellpadding=4 cellspacing=4 bgcolortop=#ececec bgcolorbottom=\"white\" width=\"100%%\"><tr>";
+	strHTML += "<td>";
+
+	strHTML += tr("These are recommended settings.<br>"
+		"They may not work in all the situations but they are often a good starting point.", "IDS_RECO_DISCLAIMER");
+	strHTML += "<br><br>";
+
+	strHTML += tr("Click on the proposed link to change the setting accordingly", "IDS_RECO_CLICKTOSET");
+	strHTML += "<br>";
+
+	strHTML += "<font color=" + QColor(qRgb(86, 170, 86)).name() + ">";
+	strHTML += tr("Settings that are already set are shown in green", "IDS_RECO_ALREADYSET");
+	strHTML += "</font>";
+
+	strHTML += "</td></tr></table><br>";
+
+	ui->textBrowser->insertHtml(strHTML);
+};
+
+/* ------------------------------------------------------------------- */
+
+void RecommendedSettings::insertHTML(const QString& html, QColor colour, bool bBold, bool bItalic, LONG lLinkID)
+
+{
+	QString					strText;
+	QString					strInputText(html);
+
+	if (bBold && bItalic)
+	{
+		strText = QString("<b><i>%1</i></b>")
+			.arg(strInputText);
+		strInputText = strText;
+	}
+	else if (bBold)
+	{
+		strText = QString("<b>%1</b>")
+			.arg(strInputText);
+		strInputText = strText;
+	}
+	else if (bItalic)
+	{
+		strText = QString("<i>%1</i>")
+			.arg(strInputText);
+		strInputText = strText;
+	}
+	
+	if (-1 != lLinkID)
+	{
+		strText = QString("<a href = \"%1\">%2</a>")
+			.arg(lLinkID)
+			.arg(strInputText);
+		strInputText = strText;
+	};
+
+	strText = QString("<font color = %1>%2</font>")
+		.arg(colour.name())
+		.arg(strInputText);
+
+	strInputText = strText;
+
+	ui->textBrowser->insertHtml(strInputText);
+};
+
+/* ------------------------------------------------------------------- */
+/* ------------------------------------------------------------------- */
+
+static void AddRAWNarrowBandRecommendation(RECOMMENDATIONVECTOR & vRecommendations, bool bFITS)
+{
+	RecommendationItem			ri;
+	Recommendation				rec;
+
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"If you are processing narrowband images (especially H%1)",
+		"IDS_RECO_RAWNARROWBAND_REASON")
+		.arg("\xce\xb1"));			// Greek letter lower case alpha (α)
+
+	ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+		"Use super-pixel mode",
+		"IDS_RECO_RAWNARROWBAND_TEXT"));
+
+	if (bFITS)
+	{
+		ri.addSetting("FitsDDP/Interpolation", "SuperPixels");
+	}
+	else
+	{
+		ri.addSetting("RawDDP/SuperPixels", true);
+		ri.addSetting("RawDDP/RawBayer", false);
+		ri.addSetting("RawDDP/AHD", false);
+	};
+	rec.isImportant = false;
+	rec.addItem(ri);
 
 	vRecommendations.push_back(rec);
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddNarrowBandPerChannelBackgroundCalibration(RECOMMANDATIONVECTOR & vRecommendations)
+static void AddNarrowBandPerChannelBackgroundCalibration(RECOMMENDATIONVECTOR & vRecommendations)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.LoadString(IDS_RECO_RAWNARROWBAND_REASON);
-	strText.Replace(_T(" Ha"), _T(" H<font face='Symbol'>a</font>"));
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"If you are processing narrowband images (especially H%1)",
+		"IDS_RECO_RAWNARROWBAND_REASON")
+		.arg("\xce\xb1"));			// Greek letter lower case alpha (α)
 
-	rec.SetText(strText);
-	ri.SetRecommendation(IDS_RECO_USEPERCHANNEL);
+	ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+		"Use Per Channel background calibration",
+		"IDS_RECO_USEPERCHANNEL"));
 
-	rec.m_bImportant = false;
+	rec.isImportant = false;
 
-	ri.AddSetting("Stacking/BackgroundCalibration", false);
-	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", true);
+	ri.addSetting("Stacking/BackgroundCalibration", false);
+	ri.addSetting("Stacking/PerChannelBackgroundCalibration", true);
 
-	rec.AddItem(ri);
+	rec.addItem(ri);
 	vRecommendations.push_back(rec);
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddRAWDebayering(RECOMMANDATIONVECTOR & vRecommendations, double fExposureTime, bool bFITS)
+static void AddRAWDebayering(RECOMMENDATIONVECTOR & vRecommendations, double fExposureTime, bool bFITS)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
 	if (fExposureTime > 4*60.0)
 	{
-		rec.SetText(IDS_RECO_RAWHIGHSNR_REASON);
-		ri.SetRecommendation(IDS_RECO_RAWHIGHSNR_TEXT);
+		rec.setText(QCoreApplication::translate("RecommendedSettings",
+			"You are processing long exposure and possibly good SNR images",
+			"IDS_RECO_RAWHIGHSNR_REASON"));
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use AHD debayering",
+			"IDS_RECO_RAWHIGHSNR_TEXT"));
 	}
 	else
 	{
-		rec.SetText(IDS_RECO_RAWLOWSNR_REASON);
-		ri.SetRecommendation(IDS_RECO_RAWLOWSNR_TEXT);
+		rec.setText(QCoreApplication::translate("RecommendedSettings",
+			"You are processing short exposure and probably low SNR images",
+			"IDS_RECO_RAWLOWSNR_REASON"));
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Bilinear debayering",
+			"IDS_RECO_RAWLOWSNR_TEXT"));
 	};
 
 	if (bFITS)
 	{
 		if (fExposureTime > 4*60.0)
-			ri.AddSetting("FitsDDP/Interpolation", "AHD");
+			ri.addSetting("FitsDDP/Interpolation", "AHD");
 		else
-			ri.AddSetting("FitsDDP/Interpolation", "Bilinear");
+			ri.addSetting("FitsDDP/Interpolation", "Bilinear");
 	}
 	else
 	{
 		if (fExposureTime > 4*60.0)
 		{
-			ri.AddSetting("RawDDP/SuperPixels", false);
-			ri.AddSetting("RawDDP/RawBayer", false);
-			ri.AddSetting("RawDDP/Interpolation", "AHD");
-			ri.AddSetting("RawDDP/AHD", true);
+			ri.addSetting("RawDDP/SuperPixels", false);
+			ri.addSetting("RawDDP/RawBayer", false);
+			ri.addSetting("RawDDP/Interpolation", "AHD");
+			ri.addSetting("RawDDP/AHD", true);
 		}
 		else
 		{
-			ri.AddSetting("RawDDP/SuperPixels", false);
-			ri.AddSetting("RawDDP/RawBayer", false);
-			ri.AddSetting("RawDDP/Interpolation", "Bilinear");
-			ri.AddSetting("RawDDP/AHD", false);
+			ri.addSetting("RawDDP/SuperPixels", false);
+			ri.addSetting("RawDDP/RawBayer", false);
+			ri.addSetting("RawDDP/Interpolation", "Bilinear");
+			ri.addSetting("RawDDP/AHD", false);
 		};
 	};
 
-	rec.AddItem(ri);
+	rec.addItem(ri);
 	vRecommendations.push_back(rec);
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddRAWBlackPoint(RECOMMANDATIONVECTOR & vRecommendations, bool bFlat, bool bBias)
+static void AddRAWBlackPoint(RECOMMENDATIONVECTOR & vRecommendations, bool bFlat, bool bBias)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
 	if (bBias)
 	{
-		rec.SetText(IDS_RECO_RAWSETBP_REASON);
-		ri.SetRecommendation(IDS_RECO_RAWSETBP_TEXT);
-		ri.AddSetting("RawDDP/BlackPointTo0", true);
-		rec.AddItem(ri);
+		rec.setText(QCoreApplication::translate("RecommendedSettings",
+			"You are using bias frames",
+			"IDS_RECO_RAWSETBP_REASON"));
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Set the black point to 0 to improve the calibration",
+			"IDS_RECO_RAWSETBP_TEXT"));
+		ri.addSetting("RawDDP/BlackPointTo0", true);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	}
 	else if (bFlat)
 	{
-		rec.SetText(IDS_RECO_RAWCLEARBP_REASON);
-		ri.SetRecommendation(IDS_RECO_RAWCLEARBP_TEXT);
-		ri.AddSetting("RawDDP/BlackPointTo0", false);
-		rec.AddItem(ri);
+		rec.setText(QCoreApplication::translate("RecommendedSettings",
+			"You are using flat frames without bias frames",
+			"IDS_RECO_RAWCLEARBP_REASON"));
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Don't set the black point to 0",
+			"IDS_RECO_RAWCLEARBP_TEXT"));
+		ri.addSetting("RawDDP/BlackPointTo0", false);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	};
 
@@ -321,10 +374,10 @@ static void AddRAWBlackPoint(RECOMMANDATIONVECTOR & vRecommendations, bool bFlat
 
 /* ------------------------------------------------------------------- */
 
-static void AddRegisterUseOfMedianFilter(RECOMMANDATIONVECTOR & vRecommendations)
+static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR & vRecommendations)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
+	RecommendationItem			ri;
+	Recommendation				rec;
 	CWorkspace					workspace;
 	DWORD						dwThreshold;
 
@@ -332,52 +385,60 @@ static void AddRegisterUseOfMedianFilter(RECOMMANDATIONVECTOR & vRecommendations
 
 	if (dwThreshold <= 5)
 	{
-		rec.SetText(IDS_RECO_MEDIANFILTER_REASON);
-		ri.SetRecommendation(IDS_RECO_MEDIANFILTER_TEXT);
-		ri.AddSetting("Register/ApplyMedianFilter", true);
+		rec.setText(QCoreApplication::translate("RecommendedSettings",
+			"You are using a low star detection threshold",
+			"IDS_RECO_MEDIANFILTER_REASON"));
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Apply a Median Filter before registering the images to reduce the noise and improve the star detection",
+			"IDS_RECO_MEDIANFILTER_TEXT"));
+		ri.addSetting("Register/ApplyMedianFilter", true);
 
-		rec.AddItem(ri);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddModdedDSLR(RECOMMANDATIONVECTOR & vRecommendations, bool bFITS)
+static void AddModdedDSLR(RECOMMENDATIONVECTOR & vRecommendations, bool bFITS)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	rec.SetText(IDS_RECO_MODDEDDSLR_REASON);
-	ri.SetRecommendation(IDS_RECO_MODDEDDSLR_TEXT);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"If you are using a modified DSLR",
+		"IDS_RECO_MODDEDDSLR_REASON"));
+	ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+		"Reset all white balance settings",
+		"IDS_RECO_MODDEDDSLR_TEXT"));
 
 	if (bFITS)
 	{
-		ri.AddSetting("FitsDDP/Brightness", 1.0);
-		ri.AddSetting("FitsDDP/RedScale", 1.0);
-		ri.AddSetting("FitsDDP/BlueScale", 1.0);
+		ri.addSetting("FitsDDP/Brightness", 1.0);
+		ri.addSetting("FitsDDP/RedScale", 1.0);
+		ri.addSetting("FitsDDP/BlueScale", 1.0);
 	}
 	else
 	{
-		ri.AddSetting("RawDDP/NoWB", false);
-		ri.AddSetting("RawDDP/CameraWB", false);
-		ri.AddSetting("RawDDP/Brightness", 1.0);
-		ri.AddSetting("RawDDP/RedScale", 1.0);
-		ri.AddSetting("RawDDP/BlueScale", 1.0);
+		ri.addSetting("RawDDP/NoWB", false);
+		ri.addSetting("RawDDP/CameraWB", false);
+		ri.addSetting("RawDDP/Brightness", 1.0);
+		ri.addSetting("RawDDP/RedScale", 1.0);
+		ri.addSetting("RawDDP/BlueScale", 1.0);
 	};
 
-	rec.m_bImportant = false;
+	rec.isImportant = false;
 
-	rec.AddItem(ri);
+	rec.addItem(ri);
 	vRecommendations.push_back(rec);
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddCometStarTrails(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrLightFrames)
+static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrLightFrames)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
+	RecommendationItem			ri;
+	Recommendation				rec;
 	CWorkspace					workspace;
 	DWORD						dwCometMode;
 
@@ -385,434 +446,419 @@ static void AddCometStarTrails(RECOMMANDATIONVECTOR & vRecommendations, LONG lNr
 
 	if (dwCometMode == CSM_COMETONLY)
 	{
-		rec.SetText(IDS_RECO_COMETSTARTRAILS_REASON);
-		ri.SetRecommendation(IDS_RECO_USEAVERAGECOMBINE);
-		ri.AddSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
+		rec.setText(QCoreApplication::translate("RecommendedSettings",
+			"You are trying to create a comet image with star trails",
+			"IDS_RECO_COMETSTARTRAILS_REASON"));
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Average combination method",
+			"IDS_RECO_USEAVERAGECOMBINE"));
 
-		rec.AddItem(ri);
+		ri.addSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
+
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	}
 	else if (dwCometMode == CSM_COMETSTAR)
 	{
-		CString					strText;
+		rec.setText(QCoreApplication::translate("RecommendedSettings",
+			"You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)",
+			"IDS_RECO_COMETSTARSMANY_REASON")
+			.arg(lNrLightFrames));
 
-		strText.Format(IDS_RECO_COMETSTARSMANY_REASON, lNrLightFrames);
 		if (lNrLightFrames>15)
 		{
-			rec.SetText(strText);
-			ri.SetRecommendation(IDS_RECO_USESIGMACLIPPING);
-			ri.AddSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
+			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+				"Use Kappa-Sigma clipping combination method",
+				"IDS_RECO_USESIGMACLIPPING"));
+
+			ri.addSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
 		}
 		else
 		{
-			rec.SetText(strText);
-			ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-			ri.AddSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
+			ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+				"Use Median combination method",
+				"IDS_RECO_USEMEDIAN"));
+
+			ri.addSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
 		};
-		rec.AddItem(ri);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddLightMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddLightMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.Format(IDS_RECO_LIGHT_REASON, lNrFrames);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"You are stacking %1 light frame(s)",
+		"IDS_RECO_LIGHT_REASON")
+		.arg(lNrFrames));
 
 	if (lNrFrames > 15)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USESIGMACLIPPING);
-		ri.AddSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
-		rec.AddItem(ri);
-		ri.Clear();
-		ri.SetRecommendation(IDS_RECO_USEAUTOADAPTIVEAVERAGE);
-		ri.AddSetting("Stacking/Light_Method", (uint)MBP_AUTOADAPTIVE);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Kappa-Sigma clipping combination method",
+			"IDS_RECO_USESIGMACLIPPING"));
+
+		ri.addSetting("Stacking/Light_Method", (uint)MBP_SIGMACLIP);
+		rec.addItem(ri);
+
+		ri.clear();
+
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Auto Adaptive Weighted Average combination method",
+			"IDS_RECO_USEAUTOADAPTIVEAVERAGE"));
+
+		ri.addSetting("Stacking/Light_Method", (uint)MBP_AUTOADAPTIVE);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	}
 	else if (lNrFrames > 1)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USEAVERAGECOMBINE);
-		ri.AddSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
-		rec.AddItem(ri);
-		ri.Clear();
-		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Average combination method",
+			"IDS_RECO_USEAVERAGECOMBINE"));
+		ri.addSetting("Stacking/Light_Method", (uint)MBP_AVERAGE);
+		rec.addItem(ri);
+
+		ri.clear();
+
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Median combination method",
+			"IDS_RECO_USEMEDIAN"));
+		ri.addSetting("Stacking/Light_Method", (uint)MBP_MEDIAN);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddDarkMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddDarkMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.Format(IDS_RECO_DARK_REASON, lNrFrames);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"You are creating a master dark from %1 dark frame(s)",
+		"IDS_RECO_DARK_REASON")
+		.arg(lNrFrames));
 
 	if (lNrFrames > 15)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USESIGMAMEDIAN);
-		ri.AddSetting("Stacking/Dark_Method", (uint)MBP_MEDIANSIGMACLIP);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Median Kappa-Sigma clipping combination method",
+			"IDS_RECO_USESIGMAMEDIAN"));
+		ri.addSetting("Stacking/Dark_Method", (uint)MBP_MEDIANSIGMACLIP);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	}
 	else if (lNrFrames > 1)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Median combination method",
+			"IDS_RECO_USEMEDIAN"));
+		ri.addSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddBiasMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddBiasMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.Format(IDS_RECO_BIAS_REASON, lNrFrames);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"You are creating a master bias from %ld bias frame(s)",
+		"IDS_RECO_BIAS_REASON")
+		.arg(lNrFrames));
 
 	if (lNrFrames > 15)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USESIGMAMEDIAN);
-		ri.AddSetting("Stacking/Offset_Method", (uint)MBP_MEDIANSIGMACLIP);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Median Kappa-Sigma clipping combination method",
+			"IDS_RECO_USESIGMAMEDIAN"));
+		ri.addSetting("Stacking/Offset_Method", (uint)MBP_MEDIANSIGMACLIP);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	}
 	else if (lNrFrames > 1)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Median combination method",
+			"IDS_RECO_USEMEDIAN"));
+		ri.addSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddFlatMethod(RECOMMANDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddFlatMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.Format(IDS_RECO_FLAT_REASON, lNrFrames);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"You are creating a master flat from %ld flat frame(s)",
+		"IDS_RECO_FLAT_REASON")
+		.arg(lNrFrames));
 
 	if (lNrFrames > 15)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USESIGMAMEDIAN);
-		ri.AddSetting("Stacking/Flat_Method", (uint)MBP_MEDIANSIGMACLIP);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Median Kappa-Sigma clipping combination method",
+			"IDS_RECO_USESIGMAMEDIAN"));
+		ri.addSetting("Stacking/Flat_Method", (uint)MBP_MEDIANSIGMACLIP);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	}
 	else if (lNrFrames > 1)
 	{
-		rec.SetText(strText);
-		ri.SetRecommendation(IDS_RECO_USEMEDIAN);
-		ri.AddSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN);
-		rec.AddItem(ri);
+		ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+			"Use Median combination method",
+			"IDS_RECO_USEMEDIAN"));
+		ri.addSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN);
+		rec.addItem(ri);
 		vRecommendations.push_back(rec);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddPerChannelBackgroundCalibration(RECOMMANDATIONVECTOR & vRecommendations)
+static void AddPerChannelBackgroundCalibration(RECOMMENDATIONVECTOR & vRecommendations)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.Format(IDS_RECO_PERCHANNELCALIBRATION_REASON);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"If the resulting images look too gray",
+		"IDS_RECO_PERCHANNELCALIBRATION_REASON"));
+	ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+		"Use Per Channel background calibration",
+		"IDS_RECO_USEPERCHANNEL"));
 
-	rec.SetText(strText);
-	ri.SetRecommendation(IDS_RECO_USEPERCHANNEL);
+	ri.addSetting("Stacking/BackgroundCalibration", false);
+	ri.addSetting("Stacking/PerChannelBackgroundCalibration", true);
 
-	ri.AddSetting("Stacking/BackgroundCalibration", false);
-	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", true);
+	rec.isImportant = false;
 
-	rec.m_bImportant = false;
-
-	rec.AddItem(ri);
+	rec.addItem(ri);
 	vRecommendations.push_back(rec);
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddRGBChannelBackgroundCalibration(RECOMMANDATIONVECTOR & vRecommendations)
+static void AddRGBChannelBackgroundCalibration(RECOMMENDATIONVECTOR & vRecommendations)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.Format(IDS_RECO_RGBCALIBRATION_REASON);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"If the color balance in the resulting images is hard to fix in post-processing",
+		"IDS_RECO_RGBCALIBRATION_REASON"));
+	ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+		"Use RGB background calibration",
+		"IDS_RECO_USERGBCALIBRATION"));
 
-	rec.SetText(strText);
-	ri.SetRecommendation(IDS_RECO_USERGBCALIBRATION);
+	ri.addSetting("Stacking/BackgroundCalibration", true);
+	ri.addSetting("Stacking/PerChannelBackgroundCalibration", false);
 
-	ri.AddSetting("Stacking/BackgroundCalibration", true);
-	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", false);
+	rec.isImportant = false;
 
-	rec.m_bImportant = false;
-
-	rec.AddItem(ri);
+	rec.addItem(ri);
 	vRecommendations.push_back(rec);
 };
 
 /* ------------------------------------------------------------------- */
 
-static void AddPerChannelBackgroundCalibrationGray(RECOMMANDATIONVECTOR & vRecommendations)
+static void AddPerChannelBackgroundCalibrationGray(RECOMMENDATIONVECTOR & vRecommendations)
 {
-	CRecommendationItem			ri;
-	CRecommendation				rec;
-	CString						strText;
+	RecommendationItem			ri;
+	Recommendation				rec;
 
-	strText.Format(IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON);
+	rec.setText(QCoreApplication::translate("RecommendedSettings",
+		"You are stacking grayscale images and they may have slightly different background values",
+		"IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON"));
+	ri.setRecommendation(QCoreApplication::translate("RecommendedSettings",
+		"Use Per Channel background calibration",
+		"IDS_RECO_USEPERCHANNEL"));
 
-	rec.SetText(strText);
-	ri.SetRecommendation(IDS_RECO_USEPERCHANNEL);
+	ri.addSetting("Stacking/BackgroundCalibration", false);
+	ri.addSetting("Stacking/PerChannelBackgroundCalibration", true);
 
-	ri.AddSetting("Stacking/BackgroundCalibration", false);
-	ri.AddSetting("Stacking/PerChannelBackgroundCalibration", true);
-
-	rec.AddItem(ri);
+	rec.addItem(ri);
 	vRecommendations.push_back(rec);
 };
 
 /* ------------------------------------------------------------------- */
 
-void CRecommendedSettings::FillWithRecommendedSettings()
+void RecommendedSettings::fillWithRecommendedSettings()
 {
-	int						nScrollPos;
+	QPalette palette;
+	QColor windowTextColour = palette.color(QPalette::WindowText);
 
-	nScrollPos = QHTM_GetScrollPos(m_RecommendedSettingsHTML.GetSafeHwnd());
-
-	m_RecommendedSettingsHTML.SetRedraw(false);
-	ClearText();
-	if (m_pStackingTasks && m_pStackingTasks->GetNrLightFrames())
+	clearText();
+	if (pStackingTasks && pStackingTasks->GetNrLightFrames())
 	{
 		LONG					lPosition;
 
-		InsertHeader();
-		AddRegisterUseOfMedianFilter(m_vRecommendations);
+		insertHeader();
+		AddRegisterUseOfMedianFilter(vRecommendations);
 
-		lPosition = (LONG)m_vRecommendations.size();
+		lPosition = (LONG)vRecommendations.size();
 
-		if (m_pStackingTasks->AreBayerImageUsed())
+		if (pStackingTasks->AreBayerImageUsed())
 		{
-			AddRAWDebayering(m_vRecommendations, m_pStackingTasks->GetMaxExposureTime(), m_pStackingTasks->AreFITSImageUsed());
-			AddModdedDSLR(m_vRecommendations, m_pStackingTasks->AreFITSImageUsed());
-			AddRAWNarrowBandRecommendation(m_vRecommendations, m_pStackingTasks->AreFITSImageUsed());
-			if (!m_pStackingTasks->AreFITSImageUsed())
-				AddRAWBlackPoint(m_vRecommendations, m_pStackingTasks->AreFlatUsed(), m_pStackingTasks->AreBiasUsed());
+			AddRAWDebayering(vRecommendations, pStackingTasks->GetMaxExposureTime(), pStackingTasks->AreFITSImageUsed());
+			AddModdedDSLR(vRecommendations, pStackingTasks->AreFITSImageUsed());
+			AddRAWNarrowBandRecommendation(vRecommendations, pStackingTasks->AreFITSImageUsed());
+			if (!pStackingTasks->AreFITSImageUsed())
+				AddRAWBlackPoint(vRecommendations, pStackingTasks->AreFlatUsed(), pStackingTasks->AreBiasUsed());
 		};
 
-		if (m_pStackingTasks->AreColorImageUsed())
-			AddNarrowBandPerChannelBackgroundCalibration(m_vRecommendations);
+		if (pStackingTasks->AreColorImageUsed())
+			AddNarrowBandPerChannelBackgroundCalibration(vRecommendations);
 
-		if (m_vRecommendations.size()!=lPosition)
-			m_vRecommendations[lPosition].m_bBreakBefore = true;
-		lPosition = (LONG)m_vRecommendations.size();
+		if (vRecommendations.size()!=lPosition)
+			vRecommendations[lPosition].breakBefore = true;
+		lPosition = (LONG)vRecommendations.size();
 
-		if (m_pStackingTasks->IsCometAvailable())
+		if (pStackingTasks->IsCometAvailable())
 		{
-			AddCometStarTrails(m_vRecommendations, m_pStackingTasks->GetNrLightFrames());
+			AddCometStarTrails(vRecommendations, pStackingTasks->GetNrLightFrames());
 		};
 
-		if (m_vRecommendations.size()!=lPosition)
-			m_vRecommendations[lPosition].m_bBreakBefore = true;
-		lPosition = (LONG)m_vRecommendations.size();
+		if (vRecommendations.size()!=lPosition)
+			vRecommendations[lPosition].breakBefore = true;
+		lPosition = (LONG)vRecommendations.size();
 
-		AddLightMethod(m_vRecommendations, m_pStackingTasks->GetNrLightFrames());
+		AddLightMethod(vRecommendations, pStackingTasks->GetNrLightFrames());
 
-		if (m_pStackingTasks->GetNrBiasFrames())
-			AddBiasMethod(m_vRecommendations, m_pStackingTasks->GetNrBiasFrames());
+		if (pStackingTasks->GetNrBiasFrames())
+			AddBiasMethod(vRecommendations, pStackingTasks->GetNrBiasFrames());
 
-		if (max(m_pStackingTasks->GetNrDarkFrames(), m_pStackingTasks->GetNrDarkFlatFrames()))
-			AddDarkMethod(m_vRecommendations, max(m_pStackingTasks->GetNrDarkFrames(), m_pStackingTasks->GetNrDarkFlatFrames()));
+		if (max(pStackingTasks->GetNrDarkFrames(), pStackingTasks->GetNrDarkFlatFrames()))
+			AddDarkMethod(vRecommendations, max(pStackingTasks->GetNrDarkFrames(), pStackingTasks->GetNrDarkFlatFrames()));
 
-		if (m_pStackingTasks->GetNrFlatFrames())
-			AddFlatMethod(m_vRecommendations, m_pStackingTasks->GetNrFlatFrames());
+		if (pStackingTasks->GetNrFlatFrames())
+			AddFlatMethod(vRecommendations, pStackingTasks->GetNrFlatFrames());
 
-		if (m_vRecommendations.size()!=lPosition)
-			m_vRecommendations[lPosition].m_bBreakBefore = true;
-		lPosition = (LONG)m_vRecommendations.size();
+		if (vRecommendations.size()!=lPosition)
+			vRecommendations[lPosition].breakBefore = true;
+		lPosition = (LONG)vRecommendations.size();
 
-		if (m_pStackingTasks->AreColorImageUsed())
+		if (pStackingTasks->AreColorImageUsed())
 		{
-			AddPerChannelBackgroundCalibration(m_vRecommendations);
-			AddRGBChannelBackgroundCalibration(m_vRecommendations);
+			AddPerChannelBackgroundCalibration(vRecommendations);
+			AddRGBChannelBackgroundCalibration(vRecommendations);
 		}
 		else
 		{
-			AddPerChannelBackgroundCalibrationGray(m_vRecommendations);
+			AddPerChannelBackgroundCalibrationGray(vRecommendations);
 		};
 
-		if (m_vRecommendations.size()!=lPosition)
-			m_vRecommendations[lPosition].m_bBreakBefore = true;
-		lPosition = (LONG)m_vRecommendations.size();
+		if (vRecommendations.size()!=lPosition)
+			vRecommendations[lPosition].breakBefore = true;
+		lPosition = (LONG)vRecommendations.size();
 
 		LONG					lLastLinkID = 0;
-		CString					strOr;
+		
+		QString strOr(tr("or", "IDS_OR"));
 
-		strOr.LoadString(IDS_OR);
-
-		for (LONG i = 0;i<m_vRecommendations.size();i++)
+		for (auto& recommendation : vRecommendations)
 		{
-			COLORREF			crColor;
+			QColor			crColor;
 			bool				bDifferent = false;
 
-			if (m_vRecommendations[i].IsBreakBefore())
-				InsertText(_T("<hr>"));
-			for (LONG j = 0;j<m_vRecommendations[i].m_vRecommendations.size() && !bDifferent;j++)
+			if (recommendation.breakBefore)
+				insertHTML("<hr>");
+			for (LONG j = 0;j<recommendation.vRecommendations.size() && !bDifferent;j++)
 			{
-				bDifferent = m_vRecommendations[i].m_vRecommendations[j].IsDifferent();
+				bDifferent = recommendation.vRecommendations[j].differsFromWorkspace();
 			};
 
 			if (bDifferent)
 			{
-				if (m_vRecommendations[i].m_bImportant)
-					crColor = RGB(128, 0, 0);
+				if (recommendation.isImportant)
+					crColor = Qt::darkRed;
 				else
-					crColor = RGB(0, 0, 192);
+					crColor = QColor(qRgb(0, 0, 192));
 			}
 			else
-				crColor = RGB(128, 128, 128);
-
-			InsertText(m_vRecommendations[i].m_strText, crColor);
-			InsertText(_T("\n"));
-
-			for (LONG j = 0;j<m_vRecommendations[i].m_vRecommendations.size();j++)
 			{
-				CRecommendationItem &	ri = m_vRecommendations[i].m_vRecommendations[j];
+				crColor = windowTextColour;
+			}
+
+			insertHTML(recommendation.text, crColor);
+			insertHTML("<br>");
+
+			for (LONG j = 0;j<recommendation.vRecommendations.size();j++)
+			{
+				RecommendationItem &	ri = recommendation.vRecommendations[j];
 				bool					bAlreadySet;
 				LONG					lLinkID = 0;
 
-				bAlreadySet = !ri.IsDifferent();
+				bAlreadySet = !ri.differsFromWorkspace();
 
 				if (j)
 				{
-					InsertText(_T("    "));
-					InsertText(strOr+"\n", RGB(0, 0, 0), false, true);
+					insertHTML("    ");
+					insertHTML(strOr+"<br>", windowTextColour, false, true);
 				};
 
-				InsertText(_T("->  "));
+				insertHTML("->  ");
 				if (bAlreadySet)
 				{
-					InsertText(ri.m_strRecommendation, RGB(86, 170, 86));
+					insertHTML(ri.recommendation, qRgb(86, 170, 86));
 				}
 				else
 				{
 					lLastLinkID++;
 					lLinkID = lLastLinkID;
-					InsertText(ri.m_strRecommendation, RGB(0, 0, 128), false, false, lLinkID);
+					insertHTML(ri.recommendation, Qt::darkBlue , false, false, lLinkID);
 				};
-				ri.m_lLinkID = lLinkID;
+				ri.linkID = lLinkID;
 			};
-			InsertText(_T("\n\n"));
+			insertHTML("<br><br>");
 		};
 	}
 	else
 	{
-		CString				strText;
-
-		strText.LoadString(IDS_RECO_PREREQUISITES);
-		InsertText(strText, RGB(255, 0, 0), true);
+		insertHTML(tr("You must first add images to the list and check them.", "IDS_RECO_PREREQUISITES"), Qt::red, true);
 	};
-
-	QHTM_SetScrollPos(m_RecommendedSettingsHTML.GetSafeHwnd(), nScrollPos);
-	m_RecommendedSettingsHTML.SetRedraw(true);
-	m_RecommendedSettingsHTML.Invalidate(true);
 };
 
 /* ------------------------------------------------------------------- */
 
-void CRecommendedSettings::SetSetting(LONG lID)
+void RecommendedSettings::setSetting(LONG lID)
 {
 	bool					bFound = false;
 
-	for (LONG i = 0;i<m_vRecommendations.size() && !bFound;i++)
+	for (LONG i = 0;i<vRecommendations.size() && !bFound;i++)
 	{
-		for (LONG j = 0;j<m_vRecommendations[i].m_vRecommendations.size() && !bFound;j++)
+		for (LONG j = 0;j<vRecommendations[i].vRecommendations.size() && !bFound;j++)
 		{
-			CRecommendationItem &	ri = m_vRecommendations[i].m_vRecommendations[j];
+			RecommendationItem &	ri = vRecommendations[i].vRecommendations[j];
 
-			if (ri.m_lLinkID == lID)
+			if (ri.linkID == lID)
 			{
 				bFound = true;
-				ri.ApplySettings();
+				ri.applySettings();
 			};
 		};
 	};
 
 	if (bFound)
-		FillWithRecommendedSettings();
+		fillWithRecommendedSettings();
 };
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::OnQHTMHyperlink(NMHDR*nmh, LRESULT*)
-{
-	LPNMQHTM pnm = reinterpret_cast<LPNMQHTM>( nmh );
-	if( pnm->pcszLinkText )
-	{
-		pnm->resReturnValue = false;
-		LONG				lLinkID;
-
-		lLinkID = _ttol(pnm->pcszLinkText);
-		SetSetting(lLinkID);
-	}
-}
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::OnBnClickedShowAll()
-{
-	FillWithRecommendedSettings();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::OnBnClickedOk()
-{
-	SaveWindowPosition(this, "Dialogs/Recommended/Position");
-
-	CWorkspace				workspace;
-
-	workspace.Pop(false);
-	workspace.saveSettings();
-	OnOK();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CRecommendedSettings::OnBnClickedCancel()
-{
-	SaveWindowPosition(this, "Dialogs/Recommended/Position");
-
-	CWorkspace				workspace;
-
-	workspace.Pop();
-	OnCancel();
-}
 
 /* ------------------------------------------------------------------- */

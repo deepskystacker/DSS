@@ -461,7 +461,6 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Library.cpp" />
-    <ClCompile Include="LibraryDlg.cpp" />
     <ClCompile Include="LuminanceTab.cpp" />
     <ClCompile Include="MasterFrames.cpp" />
     <ClCompile Include="MatchingStars.cpp" />
@@ -503,7 +502,12 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="RAWUtils.cpp" />
-    <ClCompile Include="RecommendedSettings.cpp" />
+    <ClCompile Include="RecommendedSettings.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="RegisterEngine.cpp" />
     <ClCompile Include="RegisterSettings.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -644,7 +648,6 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="ImageSinks.h" />
     <QtMoc Include="IntermediateFiles.h" />
     <ClInclude Include="Library.h" />
-    <ClInclude Include="LibraryDlg.h" />
     <ClInclude Include="LuminanceTab.h" />
     <ClInclude Include="MasterFrames.h" />
     <ClInclude Include="MatchingStars.h" />
@@ -664,7 +667,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <ClInclude Include="RAWUtils.h" />
-    <ClInclude Include="RecommendedSettings.h" />
+    <QtMoc Include="RecommendedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
     <QtMoc Include="RegisterSettings.h" />
     <ClInclude Include="Resource.h" />
@@ -805,21 +808,6 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ProjectReference Include="..\LibTiff\libtiff.vcxproj">
       <Project>{d5fb2402-a821-4474-91e7-07f0dd5866f0}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\QHTML_Static\datasource\datasource.vcxproj">
-      <Project>{f601e087-97a7-40a5-9536-0cfcb66b33c2}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\QHTML_Static\debughlp\DebugHlp.vcxproj">
-      <Project>{afe2867b-eabf-4820-9c05-0db3c4eb30a7}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\QHTML_Static\guitools\guitools.vcxproj">
-      <Project>{39e3b29d-d9b3-4352-bb7e-ed135fc13e30}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\QHTML_Static\imglib\imglib.vcxproj">
-      <Project>{2fedb691-b909-4549-bb60-609ab6aa6bec}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\QHTML_Static\qhtm\qhtm.vcxproj">
-      <Project>{4575815d-1eff-4aff-b21c-0707e3c51a8d}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
@@ -859,6 +847,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
+    <QtUic Include="ui\RecommendedSettings.ui" />
     <QtUic Include="ui\RegisterSettings.ui" />
     <QtUic Include="ui\ResultParameters.ui" />
     <QtUic Include="ui\StackingParameters.ui" />

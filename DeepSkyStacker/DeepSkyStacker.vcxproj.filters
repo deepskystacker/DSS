@@ -31,9 +31,6 @@
     <Filter Include="Dialogs\ImageSinks">
       <UniqueIdentifier>{1c172764-f817-483b-9fe6-5b07e4b4a8c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Dialogs\Library">
-      <UniqueIdentifier>{21049e2e-dbf4-480e-8bd2-2ec4ce5984f6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools">
       <UniqueIdentifier>{6aebba41-4852-4f3b-bca2-bf409674cd6d}</UniqueIdentifier>
     </Filter>
@@ -161,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="SaveEditChanges.cpp">
       <Filter>Dialogs\ImageSinks</Filter>
-    </ClCompile>
-    <ClCompile Include="LibraryDlg.cpp">
-      <Filter>Dialogs\Library</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\BitmapSlider.cpp">
       <Filter>Tools</Filter>
@@ -466,9 +460,6 @@
     <ClInclude Include="SaveEditChanges.h">
       <Filter>Dialogs\ImageSinks</Filter>
     </ClInclude>
-    <ClInclude Include="LibraryDlg.h">
-      <Filter>Dialogs\Library</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\BitmapSlider.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -687,9 +678,6 @@
     </ClInclude>
     <ClInclude Include="BackgroundLoading.h">
       <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="RecommendedSettings.h">
-      <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1103,6 +1091,9 @@
     <QtUic Include="ui\StackRecap.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\RecommendedSettings.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1149,6 +1140,9 @@
     </QtMoc>
     <QtMoc Include="ExplorerBar.h">
       <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="RecommendedSettings.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

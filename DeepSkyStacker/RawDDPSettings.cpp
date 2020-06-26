@@ -27,8 +27,6 @@ using std::max;
 #include "RawDDPSettings.h"
 #include "ui/ui_RawDDPSettings.h"
 
-#include "..\QHTML_Static\QHTM\QHTM.h"   // Remove once we convert "Recommanded" settings
-
 extern bool		g_bShowRefStars;
 
 #include "DSSCommon.h"

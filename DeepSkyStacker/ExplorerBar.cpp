@@ -17,8 +17,6 @@ using std::max;
 
 extern bool		g_bShowRefStars;
 
-#include "..\QHTML_Static\QHTM\QHTM.h"
-
 #include "DSSCommon.h"
 #include "commonresource.h"
 #include "About.h"
@@ -495,9 +493,9 @@ void ExplorerBar::onSaveSettings()
 
 void ExplorerBar::onRecommendedSettings()
 {
-	CRecommendedSettings		dlg;
+	RecommendedSettings		dlg(this);
 
-	dlg.DoModal();
+	dlg.exec();
 }
 
 /************************************************************************************/

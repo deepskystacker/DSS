@@ -23,8 +23,6 @@ using std::max;
 
 extern bool	g_bShowRefStars;
 
-#include "..\QHTML_Static\qhtm\QHTM.h"
-
 #include "resource.h"
 #include "commonresource.h"
 #include "BitmapExt.h"

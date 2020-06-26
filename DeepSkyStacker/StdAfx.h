@@ -68,7 +68,6 @@ extern bool		g_bShowRefStars;
 #include "resource.h"
 #include "commonresource.h"
 #include <afxdlgs.h>
-#include "..\QHTML_Static\QHTM\QHTM.h"
 
 #include "BitmapExt.h"
 #include "DeepStackerDlg.h"

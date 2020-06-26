@@ -21,10 +21,7 @@ using std::max;
 #include "About.h"
 #include "ui/ui_About.h"
 
-#include "..\QHTML_Static\QHTM\QHTM.h"   // Remove once we convert "Recommanded" settings
-
 extern bool		g_bShowRefStars;
-
 
 #include "DeepSkyStacker.h"
 #include "DSSCommon.h"

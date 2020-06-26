@@ -24,8 +24,6 @@ using std::max;
 #include "RegisterSettings.h"
 #include "ui/ui_RegisterSettings.h"
 
-#include "..\QHTML_Static\QHTM\QHTM.h"   // Remove once we convert "Recommanded" settings
-
 extern bool		g_bShowRefStars;
 
 #include "DSSCommon.h"
@@ -274,11 +272,11 @@ void RegisterSettings::on_medianFilter_stateChanged(int state)
 
 void RegisterSettings::on_recommendedSettings_clicked()
 {
-	CRecommendedSettings		dlg;
+	RecommendedSettings		dlg;
 
 	dlg.setStackingTasks(pStackingTasks);
 
-	if (dlg.DoModal() == IDOK)
+	if (dlg.exec())
 	{
 		if (pStackingTasks)
 			pStackingTasks->UpdateTasksMethods();
