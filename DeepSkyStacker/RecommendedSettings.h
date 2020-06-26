@@ -220,36 +220,6 @@ private:
 
 	void showEvent(QShowEvent *event) override;
 	void onInitDialog();
-};;;
-
-/* ------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------- */
-
-#if (0)
-class CRecommendedSettings : public CDialog
-{
-
-private :
-	void	ClearText();
-	void	InsertHeader();
-	void	InsertText(LPCTSTR szText, COLORREF crColor = RGB(0, 0, 0), bool bBold = false, bool bItalic = false, LONG lLinkID = 0);
-	void	FillWithRecommendedSettings();
-	void	SetSetting(LONG lID = 0);
-
-private:
-	CAllStackingTasks *						pStackingTasks;
-	RECOMMENDATIONVECTOR					vRecommendations;
-	CAllStackingTasks						stackingTasks;
-
-	afx_msg void OnQHTMHyperlink(NMHDR*nmh, LRESULT*);
-
-	afx_msg void OnBnClickedShowAll();
-public:
-	afx_msg void OnBnClickedOk();
-	afx_msg void OnBnClickedCancel();
 };
-#endif
-
 /* ------------------------------------------------------------------- */
 #endif
