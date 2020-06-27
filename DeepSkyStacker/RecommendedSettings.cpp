@@ -576,7 +576,7 @@ static void AddBiasMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrame
 	Recommendation				rec;
 
 	rec.setText(QCoreApplication::translate("RecommendedSettings",
-		"You are creating a master bias from %ld bias frame(s)",
+		"You are creating a master bias from %1 bias frame(s)",
 		"IDS_RECO_BIAS_REASON")
 		.arg(lNrFrames));
 
@@ -608,7 +608,7 @@ static void AddFlatMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrame
 	Recommendation				rec;
 
 	rec.setText(QCoreApplication::translate("RecommendedSettings",
-		"You are creating a master flat from %ld flat frame(s)",
+		"You are creating a master flat from %1 flat frame(s)",
 		"IDS_RECO_FLAT_REASON")
 		.arg(lNrFrames));
 
@@ -811,7 +811,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 
 				if (j)
 				{
-					insertHTML("    ");
+					insertHTML("&nbsp;&nbsp;");
 					insertHTML(strOr+"<br>", windowTextColour, false, true);
 				};
 
