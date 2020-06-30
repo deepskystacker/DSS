@@ -258,16 +258,20 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	ZTRACE_RUNTIME("Initializing Main Dialog - ok");
 
+	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
 	widget = new QWinWidget(this);
 	widget->showCentered();
 	explorerBar = new ExplorerBar(widget);
+	ZTRACE_RUNTIME("Creating Explorer bar - ok");
 
 	CString			strMask;
 	CString			strTitle;
 
 	//
 	// The call to CWnd::DragAcceptFiles() was moved here from DeepSkyStacker.cpp because it can only be called once
-	// the HWND for the dialog is valid (not nullptr).  This is only true once CDialog::OnInitDialog() above has been called.
+	// the HWND for the dialog is valid (not nullptr).
+	//
+	// This HWND is only valid once CDialog::OnInitDialog() above has been called.
 	//
 	this->DragAcceptFiles(true);
 
@@ -275,10 +279,6 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	strTitle.Format(strMask, _T(VERSION_DEEPSKYSTACKER));
 	SetWindowText(strTitle);
 	m_strBaseTitle = strTitle;
-
-	//ZTRACE_RUNTIME("Creating Left Panel");
-	//m_ExplorerBar.Create(IDD_EXPLORERBAR, this);
-	//ZTRACE_RUNTIME("Creating Left Panel - ok");
 
 	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), true);
 	m_dlgStacking.SetStartingFileList(m_strStartFileList);
