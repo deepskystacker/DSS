@@ -6,7 +6,7 @@
 #include <limits>
 #include <memory>
 #include <map>
-#include "Registry.h"
+
 #include "Workspace.h"
 #include <QSettings>
 #include <QString>

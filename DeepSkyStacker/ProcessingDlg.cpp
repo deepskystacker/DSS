@@ -8,7 +8,7 @@
 #include "ProgressDlg.h"
 #include <algorithm>
 #include "SettingsDlg.h"
-#include "Registry.h"
+
 #include "SavePicture.h"
 #include "StarMask.h"
 #include "FITSUtil.h"

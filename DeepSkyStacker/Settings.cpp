@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "StackingTasks.h"
-#include "Registry.h"
+
 #include "DSSTools.h"
 #include "BitmapExt.h"
 #include "DSSProgress.h"

@@ -6,7 +6,7 @@
 #include "PictureListCtrl.h"
 #include "FileProperty.h"
 #include "DeepStack.h"
-#include "Registry.h"
+
 #include <QSettings>
 
 #define _USE_MATH_DEFINES

@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "DarkFrame.h"
-#include "Registry.h"
+
 #include "DSSProgress.h"
 #include "Histogram.h"
 #include <set>

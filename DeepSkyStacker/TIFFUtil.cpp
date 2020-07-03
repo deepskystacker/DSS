@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "TIFFUtil.h"
-#include "Registry.h"
+
 #include "zlib.h"
 #include <iostream>
 #include <QSettings>

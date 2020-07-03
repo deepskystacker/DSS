@@ -6,7 +6,7 @@
 #include "DarkFrame.h"
 #include "StackingTasks.h"
 #include "Stars.h"
-#include "Registry.h"
+
 #include "Workspace.h"
 
 class CMasterFrames

@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "StackingEngine.h"
-#include "Registry.h"
+
 #include "MasterFrames.h"
 #include "MatchingStars.h"
 #include "PixelTransform.h"

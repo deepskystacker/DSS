@@ -1,7 +1,6 @@
 #ifndef __SETTINGS_H__
 #define __SETTINGS_H__
 
-#include <Registry.h>
 #include <set>
 #include "Workspace.h"
 #include <QChar>

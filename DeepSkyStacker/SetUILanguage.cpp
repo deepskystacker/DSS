@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "SetUILanguage.h"
-#include "Registry.h"
+
 #include "DSS-VersionHelpers.h"
 #include <QCoreApplication>
 #include <QLocale>

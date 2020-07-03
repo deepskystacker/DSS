@@ -4,7 +4,7 @@
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "FrameInfo.h"
-#include "Registry.h"
+
 
 /* ------------------------------------------------------------------- */
 

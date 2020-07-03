@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "StarMaskDlg.h"
-#include "Registry.h"
+
 #include <QSettings>
 
 

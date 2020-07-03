@@ -5,7 +5,7 @@
 #include "DeepSkyStacker.h"
 #include "DeepStack.h"
 #include "DeepStackerDlg.h"
-#include "Registry.h"
+
 #include <gdiplus.h>
 using namespace Gdiplus;
 #include <afxinet.h>

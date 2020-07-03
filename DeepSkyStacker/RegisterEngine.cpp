@@ -1,7 +1,7 @@
 
 #include <stdafx.h>
 #include "RegisterEngine.h"
-#include "Registry.h"
+
 #include "MasterFrames.h"
 #include "BackgroundCalibration.h"
 #include "PixelTransform.h"

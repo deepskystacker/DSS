@@ -31,7 +31,7 @@ extern bool	g_bShowRefStars;
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "RecommendedSettings.h"
-#include "Registry.h"
+
 #include "DeepStackerDlg.h"
 
 const LONG					SSTAB_RESULT = 0;

@@ -6,7 +6,7 @@
 #include "DSSTools.h"
 #include "BitmapExt.h"
 #include "FrameInfo.h"
-#include "Registry.h"
+
 #include "StackingTasks.h"
 #include "DSSTools.h"
 #include "MatchingStars.h"

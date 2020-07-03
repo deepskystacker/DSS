@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "StackingTasks.h"
-#include "Registry.h"
+
 #include "TIFFUtil.h"
 #include <set>
 #include "Settings.h"

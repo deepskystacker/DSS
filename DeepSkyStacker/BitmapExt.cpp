@@ -3,7 +3,7 @@
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
-#include "Registry.h"
+
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "RAWUtils.h"

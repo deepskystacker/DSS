@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "SaveEditChanges.h"
-#include "Registry.h"
+
 #include <QSettings>
 
 /* ------------------------------------------------------------------- */

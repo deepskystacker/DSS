@@ -2,7 +2,7 @@
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
-#include "Registry.h"
+
 #include "RAWUtils.h"
 #include <set>
 #include <list>

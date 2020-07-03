@@ -1,6 +1,6 @@
 #include <stdafx.h>
 #include "Workspace.h"
-#include "Registry.h"
+
 #include "BitmapExt.h"
 #include "DSSProgress.h"
 #include "DSSTools.h"

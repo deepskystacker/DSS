@@ -1,7 +1,7 @@
 #include <stdafx.h>
 
 #include "Multitask.h"
-#include "Registry.h"
+
 #include <QSettings>
 /* ------------------------------------------------------------------- */
 
