@@ -17,7 +17,7 @@ class QNetworkReply;
 #include "Label.h"
 #include "StackingTasks.h"
 #include "DeepStack.h"
-#include <BitmapSlider.h>
+//#include <BitmapSlider.h>
 #include <CustomTabCtrl.h>
 #include "StackingEngine.h"
 #include "BackgroundLoading.h"

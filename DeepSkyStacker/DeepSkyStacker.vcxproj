@@ -483,6 +483,12 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessSettingsSheet.cpp" />
     <ClCompile Include="ProgressDlg.cpp" />
+    <ClCompile Include="QLinearGradientCtrl.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="qmfcapp.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -663,6 +669,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="ProcessingDlg.h" />
     <ClInclude Include="ProcessSettingsSheet.h" />
     <ClInclude Include="ProgressDlg.h" />
+    <QtMoc Include="QLinearGradientCtrl.h" />
     <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
@@ -731,7 +738,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <Image Include="openfile.ico" />
     <Image Include="redo.bmp" />
     <Image Include="redo.ico" />
-    <Image Include="res\4Corners.bmp" />
+    <Image Include="res\4Corners.png" />
     <Image Include="res\asinh.bmp" />
     <Image Include="res\bmp00001.bmp" />
     <Image Include="res\brazil.png" />
@@ -853,6 +860,7 @@ $(QTDIR)\bin\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\StackingParameters.ui" />
     <QtUic Include="ui\StackRecap.ui" />
     <QtUic Include="ui\StackSettings.ui" />
+    <QtUic Include="StackingDlg.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

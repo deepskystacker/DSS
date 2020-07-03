@@ -366,9 +366,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 
 		if (!IsExpired())
 		{
-//			#ifndef DSSBETA
 			AskForVersionChecking();
-//			#endif
 			if (bFirstInstance)
 				CheckRemainingTempFiles();
 

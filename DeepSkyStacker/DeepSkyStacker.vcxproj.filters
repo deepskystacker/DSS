@@ -330,6 +330,9 @@
     <ClCompile Include="RecommendedSettings.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
+    <ClCompile Include="QLinearGradientCtrl.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -681,9 +684,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\4Corners.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="app.ico">
       <Filter>Resource Files</Filter>
     </Image>
@@ -975,6 +975,9 @@
     <Image Include="res\Turkish.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\4Corners.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h">
@@ -1094,6 +1097,9 @@
     <QtUic Include="ui\RecommendedSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="StackingDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1143,6 +1149,9 @@
     </QtMoc>
     <QtMoc Include="RecommendedSettings.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="QLinearGradientCtrl.h">
+      <Filter>Tools</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

@@ -36,6 +36,7 @@
     <file alias="intersectionmode.bmp">../res/intersectionmode.bmp</file>
     <file alias="mosaicmode.bmp">../res/mosaicmode.bmp</file>
 	<file alias="custommode.bmp">../res/custommode.bmp</file>
+	<file alias="4corners.png">../res/4Corners.png</file>
 </qresource>
 <qresource prefix="rawddpsettings">
     <file alias="Pattern_BGGR.bmp">../res/Pattern_BGGR.bmp</file>
