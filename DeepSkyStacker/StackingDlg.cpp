@@ -8,7 +8,7 @@
 #include "DeepStack.h"
 #include "ProgressDlg.h"
 #include "CheckAbove.h"
-#include "Registry.h"
+
 #include "RegisterSettings.h"
 #include "StackRecap.h"
 #include "TIFFUtil.h"
@@ -1968,7 +1968,9 @@ void CStackingDlg::retrieveLatestVersionInfo()
 		QObject::connect(networkManager, &QNetworkAccessManager::finished,
 			[this](QNetworkReply * reply) { this->versionInfoReceived(reply); });
 
-		networkManager->get(QNetworkRequest(QUrl("http://deepskystacker.free.fr/download/CurrentVersion.txt")));
+		QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/master/CurrentVersion.txt"));
+		req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+		networkManager->get(req);
 	}
 #endif
 }
