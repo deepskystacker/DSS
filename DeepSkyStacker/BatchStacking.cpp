@@ -167,7 +167,7 @@ void CBatchStacking::OnBnClickedAddLists()
 		};
 		EndWaitCursor();
 
-		settings.setValue("ListFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+		settings.setValue("ListFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
 	};
 	UpdateListBoxWidth();
 };

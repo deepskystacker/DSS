@@ -15,7 +15,7 @@ void	CMRUList::readSettings()
 
 	m_vLists.clear();
 
-	QString keyName((QChar *)m_strBasePath.GetBuffer());
+	QString keyName(QString::fromWCharArray(m_strBasePath.GetString()));
 	keyName += "/NrMRU";
 
 	dwNrValues = settings.value(keyName, 0).toUInt();
@@ -23,7 +23,7 @@ void	CMRUList::readSettings()
 	for (LONG i = 0;i<dwNrValues;i++)
 	{
 		QString keyName = QString("%1/MRU%2")
-			.arg((QChar *)m_strBasePath.GetBuffer()).arg(i);
+			.arg(QString::fromWCharArray(m_strBasePath.GetString())).arg(i);
 
 		QString temp = settings.value(keyName).toString();
 		CString strValue((LPCTSTR)temp.utf16());
@@ -45,7 +45,7 @@ void	CMRUList::saveSettings()
 {
 	QSettings	settings;
 
-	QString keyName(QString::fromWCharArray(m_strBasePath.GetBuffer()));
+	QString keyName(QString::fromWCharArray(m_strBasePath.GetString()));
 
 	// Clear all the entries first
 	settings.remove(keyName);
@@ -56,8 +56,8 @@ void	CMRUList::saveSettings()
 	for (LONG i = 0;i<m_vLists.size();i++)
 	{
 		QString keyName = QString("%1/MRU%2")
-			.arg(QString::fromWCharArray(m_strBasePath.GetBuffer())).arg(i);
-		QString value((QChar *)m_vLists[i].GetBuffer());
+			.arg(QString::fromWCharArray(m_strBasePath.GetString())).arg(i);
+		QString value(QString::fromWCharArray(m_vLists[i].GetString()));
 
 		settings.setValue(keyName, value);
 	};

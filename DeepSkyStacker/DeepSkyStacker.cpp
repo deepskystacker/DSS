@@ -13,7 +13,7 @@ using namespace Gdiplus;
 #include "StackRecap.h"
 #include "cgfiltyp.h"
 #include "SetUILanguage.h"
-#include <zexcept.h>
+#include <ZExcept.h>
 
 #include "qmfcapp.h"
 

@@ -20,6 +20,7 @@
 #include "BatchStacking.h"
 #include "DSSVersion.h"
 
+#include <QMessageBox>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QSettings>
@@ -618,8 +619,8 @@ void CStackingDlg::OnAdddarks()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddDarkFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddDarkExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddDarkFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+		settings.setValue("Folders/AddDarkExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 		settings.setValue("Folders/AddDarkIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -695,8 +696,8 @@ void CStackingDlg::OnAddDarkFlats()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddDarkFlatFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddDarkFlatExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddDarkFlatFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+		settings.setValue("Folders/AddDarkFlatExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 		settings.setValue("Folders/AddDarkFlatIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -773,8 +774,8 @@ void CStackingDlg::OnAddFlats()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddFlatFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddFlatExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddFlatFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+		settings.setValue("Folders/AddFlatExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 		settings.setValue("Folders/AddFlatIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -850,8 +851,8 @@ void CStackingDlg::OnAddOffsets()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddOffsetFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddOffsetExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddOffsetFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+		settings.setValue("Folders/AddOffsetExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 		settings.setValue("Folders/AddOffsetIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -923,8 +924,8 @@ void CStackingDlg::OnAddpictures()
 		m_Pictures.RefreshList();
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-		settings.setValue("Folders/AddPictureFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
-		settings.setValue("Folders/AddPictureExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/AddPictureFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+		settings.setValue("Folders/AddPictureExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 		settings.setValue("Folders/AddPictureIndex", (uint)dwFilterIndex);
 
 		UpdateGroupTabs();
@@ -1926,28 +1927,42 @@ void CStackingDlg::OnBnClicked4corners()
 
 void CStackingDlg::versionInfoReceived(QNetworkReply * reply)
 {
-	QString string(reply->read(reply->bytesAvailable()));
-
-	if (string.startsWith("DeepSkyStackerVersion="))
+	QNetworkReply::NetworkError error = reply->error();
+	if (QNetworkReply::NoError == error)
 	{
-		QString verStr = string.section('=', 1, 1);
-		int version = verStr.section('.', 0, 0).toInt();
-		int release = verStr.section('.', 1, 1).toInt();
-		int mod = verStr.section('.', 2, 2).toInt();
+		QString string(reply->read(reply->bytesAvailable()));
 
-		if ((version > DSSVER_MAJOR) ||
-			(version == DSSVER_MAJOR && release > DSSVER_MINOR) ||
-			(version == DSSVER_MAJOR && release == DSSVER_MINOR && mod > DSSVER_SUB)
-			)
+		if (string.startsWith("DeepSkyStackerVersion="))
 		{
-			CString	strNewVersion;
+			QString verStr = string.section('=', 1, 1);
+			int version = verStr.section('.', 0, 0).toInt();
+			int release = verStr.section('.', 1, 1).toInt();
+			int mod = verStr.section('.', 2, 2).toInt();
 
-			strNewVersion.Format(IDS_VERSIONAVAILABLE, CString((wchar_t *)verStr.utf16()));
-			m_Infos.SetTextColor(RGB(255, 0, 0));
-			m_Infos.SetText(strNewVersion);
-			m_Infos.SetLink(true, false);
-			m_Infos.SetHyperLink("https://github.com/deepskystacker/DSS/releases/latest");
-		};
+			if ((version > DSSVER_MAJOR) ||
+				(version == DSSVER_MAJOR && release > DSSVER_MINOR) ||
+				(version == DSSVER_MAJOR && release == DSSVER_MINOR && mod > DSSVER_SUB)
+				)
+			{
+				CString	strNewVersion;
+
+				strNewVersion.Format(IDS_VERSIONAVAILABLE, CString((wchar_t *)verStr.utf16()));
+				m_Infos.SetTextColor(RGB(255, 0, 0));
+				m_Infos.SetText(strNewVersion);
+				m_Infos.SetLink(true, false);
+				m_Infos.SetHyperLink("https://github.com/deepskystacker/DSS/releases/latest");
+			};
+		}
+	}
+	else
+	{
+		CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
+		CString title;
+		pDlg->GetWindowText(title);
+		QMessageBox::warning(nullptr, QString::fromWCharArray(title.GetString()),
+			QCoreApplication::translate("StackingDlg", "Internet version check error:\n%1")
+			.arg(reply->errorString()), QMessageBox::Ok );
+
 	}
 	reply->deleteLater();
 	networkManager->deleteLater();

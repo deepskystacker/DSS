@@ -1909,9 +1909,9 @@ void CPictureListCtrl::SaveList(CMRUList & MRUList, CString & strFileList)
 			strBaseExtension = szExt;
 
 			dwFilterIndex = dlgSave.m_ofn.nFilterIndex;
-			settings.setValue("Folders/ListFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+			settings.setValue("Folders/ListFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
 			settings.setValue("Folders/ListIndex", (uint)dwFilterIndex);
-			settings.setValue("Folders/ListExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+			settings.setValue("Folders/ListExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 
 			SaveListToFile(strFile);
 			strFileList = strFile;
@@ -1981,9 +1981,9 @@ void CPictureListCtrl::LoadList(CMRUList & MRUList, CString & strFileList)
 
 		dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
 
-		settings.setValue("Folders/ListFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+		settings.setValue("Folders/ListFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
 		settings.setValue("Folders/ListIndex", (uint)dwFilterIndex);
-		settings.setValue("Folders/ListExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+		settings.setValue("Folders/ListExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 	};
 }
 

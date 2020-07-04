@@ -607,7 +607,7 @@ void CProcessingDlg::OnLoaddsi()
 				strBaseDirectory = szDrive;
 				strBaseDirectory += szDir;
 
-				settings.setValue("Folders/SaveDSIFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
+				settings.setValue("Folders/SaveDSIFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
 
 				UpdateMonochromeControls();
 				UpdateInfos();
@@ -718,8 +718,8 @@ void CProcessingDlg::SaveDSImage()
 			strBaseExtension = szExt;
 
 			filterIndex = dlgOpen.m_ofn.nFilterIndex;
-			settings.setValue("Folders/SaveDSIFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
-			settings.setValue("Folders/SaveDSIExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+			settings.setValue("Folders/SaveDSIFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+			settings.setValue("Folders/SaveDSIExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 			settings.setValue("Folders/SaveDSIIndex", filterIndex);
 
 			EndWaitCursor();
@@ -914,8 +914,8 @@ bool CProcessingDlg::SavePictureToFile()
 				strBaseExtension = szExt;
 
 				dwFilterIndex = dlgOpen.m_ofn.nFilterIndex;
-				settings.setValue("Folders/SavePictureFolder", QString::fromWCharArray(strBaseDirectory.GetBuffer()));
-				settings.setValue("Folders/SavePictureExtension", QString::fromWCharArray(strBaseExtension.GetBuffer()));
+				settings.setValue("Folders/SavePictureFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
+				settings.setValue("Folders/SavePictureExtension", QString::fromWCharArray(strBaseExtension.GetString()));
 				settings.setValue("Folders/SavePictureIndex", (uint)dwFilterIndex);
 				settings.setValue("Folders/SaveApplySetting", bApply);
 				settings.setValue("Folders/SaveCompression", (uint)Compression);

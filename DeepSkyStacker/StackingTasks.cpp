@@ -2016,7 +2016,7 @@ QString CAllStackingTasks::GetTemporaryFilesFolder()
 		GetTempPath(sizeof(szTempPath)/sizeof(TCHAR), szTempPath);
 
 		CString temp(szTempPath);
-		strTemp = QString::fromWCharArray(temp.GetBuffer());
+		strTemp = QString::fromWCharArray(temp.GetString());
 	};
 
 	return strTemp;

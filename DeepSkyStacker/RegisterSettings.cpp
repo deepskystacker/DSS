@@ -124,7 +124,7 @@ void RegisterSettings::onInitDialog()
 	{
 		CString temp;
 		stackingDlg.m_Pictures.GetFirstCheckedLightFrame(temp);
-		firstLightFrame = QString::fromWCharArray(temp.GetBuffer());
+		firstLightFrame = QString::fromWCharArray(temp.GetString());
 
 		forceRegister = !stackingDlg.m_Pictures.GetNrUnregisteredCheckedLightFrames();
 		noDarks = !stackingDlg.m_Pictures.GetNrCheckedDarks();
