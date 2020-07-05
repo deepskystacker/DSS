@@ -1235,7 +1235,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 					// What colour will this pixel become
 					const int colour = rawProcessor.COLOR(row, col);
 
-					const register float val = scale_mul[colour] *
+					const float val = scale_mul[colour] *
 						(float)(RAW(row, col));
 					RAW(row, col) = max(0, min(int(val), 65535));
 				}

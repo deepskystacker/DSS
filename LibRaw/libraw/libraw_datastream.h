@@ -112,14 +112,14 @@ protected:
 };
 
 #ifdef WIN32
-template class DllDef std::auto_ptr<std::streambuf>;
+template class DllDef std::shared_ptr<std::streambuf>;
 #endif
 
 class DllDef LibRaw_file_datastream : public LibRaw_abstract_datastream
 {
 protected:
-  std::auto_ptr<std::streambuf> f;       /* will close() automatically through dtor */
-  std::auto_ptr<std::streambuf> saved_f; /* when *f is a subfile, *saved_f is the master file */
+  std::shared_ptr<std::streambuf> f;       /* will close() automatically through dtor */
+  std::shared_ptr<std::streambuf> saved_f; /* when *f is a subfile, *saved_f is the master file */
   std::string filename;
   INT64 _fsize;
 #ifdef WIN32
