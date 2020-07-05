@@ -117,7 +117,7 @@ QColor QLinearGradientCtrl::colourFromPoint(const QPoint & point)
 		testPoint = QPoint(gradientRect.top() + 1, xPos);
 	}
 	ZTRACE_RUNTIME("colourFromPoint testPoint x=%ld y=&ld", testPoint.x(), testPoint.y());
-	QPixmap qPix = QPixmap::grabWidget(this);
+	QPixmap qPix = grab();
 	QImage image(qPix.toImage());
 	return(image.pixel(testPoint));
 }
