@@ -74,7 +74,6 @@ BOOL CRecommendedSettings::OnInitDialog()
 
     CRect			rcGrip;
 
-
     rcGrip.right	= rcClient.right;
     rcGrip.bottom	= rcClient.bottom;
     rcGrip.left		= rcClient.right-GRIPPIE_SQUARE_SIZE;
@@ -209,7 +208,7 @@ static void AddRAWNarrowBandRecommendation(RECOMMANDATIONVECTOR & vRecommendatio
 
 	if (bFITS)
 	{
-		ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "SuperPixels");
+		ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), _T("SuperPixels"));
 	}
 	else
 	{
@@ -267,9 +266,9 @@ static void AddRAWDebayering(RECOMMANDATIONVECTOR & vRecommendations, double fEx
 	if (bFITS)
 	{
 		if (fExposureTime > 4*60.0)
-			ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "AHD");
+			ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), _T("AHD"));
 		else
-			ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), "Bilinear");
+			ri.AddSetting(REGENTRY_BASEKEY_FITSSETTINGS, _T("Interpolation"), _T("Bilinear"));
 	}
 	else
 	{
@@ -277,14 +276,14 @@ static void AddRAWDebayering(RECOMMANDATIONVECTOR & vRecommendations, double fEx
 		{
 			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), false);
 			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false);
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), "AHD");
+			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), _T("AHD"));
 			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), true);
 		}
 		else
 		{
 			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), false);
 			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), false);
-			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), "Bilinear");
+			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), _T("Bilinear"));
 			ri.AddSetting(REGENTRY_BASEKEY_RAWSETTINGS, _T("AHD"), false);
 		};
 	};
