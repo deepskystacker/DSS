@@ -189,7 +189,6 @@ public :
 };
 
 typedef std::vector<CListBitmap>		LISTBITMAPVECTOR;
-typedef std::vector<CListBitmap *>		LISTPBITMAPVECTOR;
 
 /* ------------------------------------------------------------------- */
 

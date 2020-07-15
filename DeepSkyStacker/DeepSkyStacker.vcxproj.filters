@@ -427,9 +427,6 @@
     <ClInclude Include="DropFilesDlg.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
-    <ClInclude Include="StackingDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="AskRegistering.h">
       <Filter>Dialogs\Registering</Filter>
     </ClInclude>
@@ -680,6 +677,9 @@
       <Filter>Qt Porting</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundLoading.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="group.h">
       <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1097,7 +1097,7 @@
     <QtUic Include="ui\RecommendedSettings.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
-    <QtUic Include="StackingDlg.ui">
+    <QtUic Include="ui\StackingDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
   </ItemGroup>
@@ -1152,6 +1152,9 @@
     </QtMoc>
     <QtMoc Include="QLinearGradientCtrl.h">
       <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="StackingDlg.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

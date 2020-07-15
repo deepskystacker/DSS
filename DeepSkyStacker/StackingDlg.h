@@ -10,6 +10,9 @@
 class QNetworkAccessManager;
 class QNetworkReply;
 
+#include <QWidget>
+#include <QString>
+
 #include <CtrlCache.h>
 #include <WndImage.h>
 #include <BtnST.h>
@@ -21,30 +24,40 @@ class QNetworkReply;
 #include <CustomTabCtrl.h>
 #include "StackingEngine.h"
 #include "BackgroundLoading.h"
-#include "GradientCtrl.h"
+#include "QLinearGradientCtrl.h"
 #include "SplitterControl.h"
 
 #include "ImageSinks.h"
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
-// CStackingDlg dialog
+// StackingDlg dialog
 
-class CStackingDlg : public CDialog,
+namespace Ui {
+	class StackingDlg;
+}
+
+class StackingDlg : public QWidget,
 					 public CButtonToolbarSink
 {
+	Q_OBJECT
+
+typedef QWidget
+	Inherited;
+
 private :
+	Ui::StackingDlg* ui;
 	CSplitterControl		m_Splitter;
-	CString					m_strShowFile;
-	CButtonToolbar			m_ButtonToolbar;
-	CSelectRectSink			m_SelectRectSink;
-	CEditStarsSink			m_EditStarSink;
+	QString					m_strShowFile;
+	QToolbar				m_ButtonToolbar;
+	// CSelectRectSink			m_SelectRectSink;
+	// CEditStarsSink			m_EditStarSink;
 	CMRUList				m_MRUList;
-	CString					m_strStartingFileList;
+	QString					m_strStartingFileList;
 	CBackgroundLoading		m_BackgroundLoading;
 	CLoadedImage			m_LoadedImage;
 	CGammaTransformation	m_GammaTransformation;
-	CString					m_strCurrentFileList;
+	QString					m_strCurrentFileList;
 	QNetworkAccessManager *   networkManager;			// deleted using QObject::deleteLater();
 
 	// These values dictate how resizing should work.
@@ -52,11 +65,11 @@ private :
 	static const int sm_nMinListHeight = 120;
 	static const int sm_nMinImageHeight = 200;
 
-	CCtrlCache m_cCtrlCache;
+	//CCtrlCache m_cCtrlCache;
 
 // Construction
 public:
-	CStackingDlg(CWnd* pParent = nullptr);   // standard constructor
+	explicit StackingDlg(QWidget * parent = nullptr);   // standard constructor
 
 	bool	SaveOnClose();
 
@@ -75,18 +88,17 @@ public:
 	void	BatchStack();
 
 // Dialog Data
-	//{{AFX_DATA(CStackingDlg)
 	enum { IDD = IDD_STACKING };
 	CPictureListCtrl	m_Pictures;
 	CStatic				m_PictureStatic;
 	CLabel				m_Infos;
 	CLabel				m_ListInfo;
 	//CBitmapSlider		m_Gamma;
-	CGradientCtrl		m_Gamma;
+	QLinearGradientCtrl		m_Gamma;
 	CCustomTabCtrl		m_GroupTab;
-	CCustomTabCtrl		m_JobTab;
+	// CCustomTabCtrl		m_JobTab;
 	CLabel				m_ShowHideJobs;
-	CButtonST			m_4Corners;
+	// CButtonST			m_4Corners;
 	//}}AFX_DATA
 	CWndImage			m_Picture;
 
@@ -125,7 +137,7 @@ public :
 
 	void		FillTasks(CAllStackingTasks & tasks);
 
-private :
+private:
 	void		UncheckNonStackablePictures();
 	void		UpdateCheckedAndOffsets(CStackingEngine & StackingEngine);
 	void		DoStacking(CAllStackingTasks & tasks, double fPercent = 100.0);
@@ -135,13 +147,6 @@ private :
 	void		UpdateLayout();
 	void		versionInfoReceived(QNetworkReply * reply);
 	void		retrieveLatestVersionInfo();
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CStackingDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
@@ -164,12 +169,24 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
+private:
+	std::unique_ptr<CWorkspace> workspace;
+	bool	initialised;
+
+	void showEvent(QShowEvent* event) override;
+	void onInitDialog();
+
+
 public :
 	CWndImageSink *	GetCurrentSink();
 	virtual void ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar);
 	virtual void ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar);
 	virtual void ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToolbar);
 	afx_msg void OnBnClicked4corners();
+
+private slots:
+	void on_pictures_itemClicked(QTreeWidgetItem* item, int column);
+
 };
 
 //{{AFX_INSERT_LOCATION}}

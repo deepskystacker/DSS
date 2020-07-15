@@ -1910,6 +1910,15 @@ La comète et les étoiles seront nettes. Ce processus est deux fois plus long.<
     </message>
 </context>
 <context>
+    <name>StackingDlg</name>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1963"/>
+        <source>Internet version check error code %1:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StackingParameters</name>
     <message>
         <location filename="../StackingParameters.cpp" line="33"/>
@@ -2079,6 +2088,19 @@ par rapport à l&apos;écart moyen (%1).</translation>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation>Facteur de multiplication du noir :</translation>
+    </message>
+</context>
+<context>
+    <name>StackingingDlg</name>
+    <message>
+        <location filename="../StackingDlg.ui" line="171"/>
+        <source>Tab 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.ui" line="176"/>
+        <source>Tab 2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

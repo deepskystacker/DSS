@@ -1907,6 +1907,15 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     </message>
 </context>
 <context>
+    <name>StackingDlg</name>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1963"/>
+        <source>Internet version check error code %1:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StackingParameters</name>
     <message>
         <location filename="../StackingParameters.cpp" line="33"/>

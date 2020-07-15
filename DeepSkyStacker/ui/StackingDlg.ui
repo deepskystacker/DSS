@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>StackingingDlg</class>
- <widget class="QWidget" name="StackingingDlg">
+ <class>StackingDlg</class>
+ <widget class="QWidget" name="StackingDlg">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -53,10 +53,22 @@
          </item>
          <item>
           <widget class="QToolButton" name="fourCorners">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>38</width>
              <height>38</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -66,7 +78,7 @@
             <string notr="true">...</string>
            </property>
            <property name="icon">
-            <iconset resource="ui/resources.qrc">
+            <iconset resource="resources.qrc">
              <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png</iconset>
            </property>
            <property name="iconSize">
@@ -99,32 +111,42 @@
         </layout>
        </item>
        <item>
-        <widget class="QLabel" name="label">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>300</height>
-          </size>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::Box</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Sunken</enum>
-         </property>
-         <property name="lineWidth">
-          <number>2</number>
-         </property>
-         <property name="text">
-          <string notr="true"/>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="picture">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>300</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>1080</width>
+             <height>720</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="lineWidth">
+            <number>2</number>
+           </property>
+           <property name="text">
+            <string notr="true"/>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </widget>
@@ -147,7 +169,13 @@
         </widget>
        </item>
        <item>
-        <widget class="QListWidget" name="listWidget"/>
+        <widget class="QTreeWidget" name="pictures">
+         <column>
+          <property name="text">
+           <string notr="true">1</string>
+          </property>
+         </column>
+        </widget>
        </item>
        <item>
         <widget class="QTabWidget" name="groupTab">
@@ -166,14 +194,17 @@
          <property name="tabPosition">
           <enum>QTabWidget::South</enum>
          </property>
+         <property name="currentIndex">
+          <number>1</number>
+         </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
-           <string>Tab 1</string>
+           <string notr="true">Tab 1</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="tab_2">
           <attribute name="title">
-           <string>Tab 2</string>
+           <string notr="true">Tab 2</string>
           </attribute>
          </widget>
         </widget>
@@ -185,7 +216,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="ui/resources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>

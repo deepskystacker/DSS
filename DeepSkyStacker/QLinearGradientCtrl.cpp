@@ -8,7 +8,9 @@ using std::max;
 #include <QLinearGradient>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPoint>
 #include <QRect>
+#include <QRegion>
 #include <QWidget>
 
 #include <Ztrace.h>
@@ -523,6 +525,11 @@ void QLinearGradientCtrl::paintEvent(QPaintEvent *event)
 
 	// Draw it all here ...
 
+	//
+	// Erase the area that's been invalidated
+	// 
+	painter.eraseRect(event->rect());
+
 	//----- Draw the Palette -----//
 	drawGradient(painter);
 
@@ -646,7 +653,6 @@ void QLinearGradientCtrl::mousePressEvent(QMouseEvent *event)
 		emit pegSelChanged(selectedPeg);
 
 		setFocus();
-
 	}
 	Inherited::mousePressEvent(event);
 }
@@ -657,12 +663,12 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 	{
 		QPoint point(event->pos());
 		QPoint tippoint;
+		QRegion oldRegion, newRegion, eraseRegion;
 		//QString tiptext;
 		bool vertical = isVertical();
 		int selpegpos;
 
 		//----- Prepare -----//
-		QPainter painter(this);
 		float pos;
 
 		//----- Checks to see if the mouse is far enough away to "drop out" -----//
@@ -680,11 +686,8 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 			else
 				selpegpos = m_MouseDown.x();
 		}
-
-
-		//----- A brush for thebackground -----//
-		QColor	background(QPalette().color(QPalette::Window));	// get background colour 
-		QBrush	brush(background);
+		// Get old region
+		oldRegion = getPegRegion();
 
 		//----- Continue -----//
 		pos = posFromPoint(selpegpos);
@@ -692,11 +695,12 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 		selectedPeg = setPeg(selectedPeg, stops[selectedPeg].second, pos);
 		m_Gradient.setStops(stops);
 
-		//----- Draw the peg -----//
-		drawPegs(painter);
-		drawEndPegs(painter);
-		drawSelPeg(painter, selectedPeg);
-		drawGradient(painter);
+		// Get new region
+		newRegion = getPegRegion();
+
+		//----- Get the region for the changed pegs and erase them -----//
+		eraseRegion = oldRegion - newRegion;
+		update(eraseRegion);			// Erase the old pegs.
 
 		m_LastPos = selpegpos;
 
@@ -746,18 +750,12 @@ void QLinearGradientCtrl::mouseReleaseEvent(QMouseEvent *event)
 			bool vertical = isVertical();
 			//int selpegpos = vertical ? point.y-5 : point.x-5;
 
-			//----- Update the pegs -----//
-			QPainter painter(this);
 			if (vertical)
-				painter.eraseRect(QRect(getDrawWidth(), 0, clientRect.right()+1,
+				update(QRect(getDrawWidth(), 0, clientRect.right()+1,
 					clientRect.bottom()+1)); //Erase the old ones
 			else
-				painter.eraseRect(QRect(0, 0, clientRect.right()+1,
+				update(QRect(0, 0, clientRect.right()+1,
 					clientRect.bottom()+1 - getDrawWidth())); //Erase the old ones
-
-			drawPegs(painter);
-			drawEndPegs(painter); //Draw the new ones
-			drawSelPeg(painter, selectedPeg);
 
 			//m_Impl->DestroyTooltip();
 
@@ -777,7 +775,6 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 		float pos;
 		QPoint point(event->pos());
 		QRect pegrect;
-		QPainter painter(this);
 		bool edit = false;
 		int drawwidth = getDrawWidth();
 
@@ -794,6 +791,7 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 				getPegRect(i, &pegrect, true);
 				if (pegrect.contains(point))
 				{
+					update(pegrect);
 					setSelectedIndex(i);
 					edit = true;
 					break;
@@ -805,6 +803,7 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 				getPegRect(i, &pegrect, false);
 				if (pegrect.contains(point))
 				{
+					update(pegrect);
 					setSelectedIndex(i);
 					edit = true;
 					break;
@@ -819,9 +818,8 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 		pegrect.setRight(drawwidth + 15), pegrect.setBottom(11);
 		if (pegrect.contains(point))
 		{
-			drawSelPeg(painter, selectedPeg); //Erase the last selectedPeg
+			update(pegrect);
 			selectedPeg = STARTPEG;
-			drawSelPeg(painter, selectedPeg); //Draw the new one
 			edit = true;
 		}
 
@@ -829,9 +827,8 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 		pegrect.setRight(drawwidth + 15), pegrect.setBottom(clientRect.bottom() + 1 - 4);
 		if (pegrect.contains(point))
 		{
-			drawSelPeg(painter, selectedPeg); //Erase the last selectedPeg
+			update(pegrect);
 			selectedPeg = ENDPEG;
-			drawSelPeg(painter, selectedPeg);
 			edit = true;
 		}
 
@@ -1071,8 +1068,8 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 int QLinearGradientCtrl::setSelectedIndex(int iSel)
 {
 	int oldsel = selectedPeg;
-	assert(iSel >= STARTPEG); //Nothing smaller than -1 ok?
-	assert(iSel < stops.size()); //Make sure things are in range
+	assert(iSel >= STARTPEG); //Nothing smaller than -3 ok?
+	assert(iSel < endPegStop); //Make sure things are in range
 
 	selectedPeg = iSel;
 
@@ -1299,6 +1296,154 @@ void QLinearGradientCtrl::getPegRect(int index, QRect *rect, bool right)
 	}
 }
 
+QRegion QLinearGradientCtrl::getPegRegion()
+{
+	QRegion result;
+	QPoint pegpoint;
+	int drawwidth = getDrawWidth();
+	bool vertical = isVertical();
+	int colcount = (int)m_LeftDownSide + (int)m_RightUpSide;
+
+	if (colcount == 0)
+	{
+		return result;			// Return the empty region
+	}
+
+
+	QVector<QPoint> points(4);
+	//----- End pegs -----//
+	if (vertical)
+	{
+		if (m_RightUpSide)
+		{
+			points.push_back(QPoint(drawwidth - 15, 4));
+			points.push_back(QPoint(drawwidth - 15, 11));
+			points.push_back(QPoint(drawwidth - 8, 11));
+			points.push_back(QPoint(drawwidth - 8, 4));
+			result += QRegion(QPolygon(points));
+			points.empty();
+
+			points.push_back(QPoint(drawwidth - 15, clientRect.bottom()+1 - 4));
+			points.push_back(QPoint(drawwidth - 15, clientRect.bottom()+1 - 11));
+			points.push_back(QPoint(drawwidth - 8, clientRect.bottom()+1 - 11));
+			points.push_back(QPoint(drawwidth - 8, clientRect.bottom()+1 - 4));
+			result += QRegion(QPolygon(points));
+			points.empty();
+		}
+
+		if (m_LeftDownSide)
+		{
+			points.push_back(QPoint(8, 4));
+			points.push_back(QPoint(8, 11));
+			points.push_back(QPoint(15, 11));
+			points.push_back(QPoint(15, 4));
+			result += QRegion(QPolygon(points));
+			points.empty();
+
+			points.push_back(QPoint(8, clientRect.bottom()+1 - 4));
+			points.push_back(QPoint(8, clientRect.bottom()+1 - 11));
+			points.push_back(QPoint(15, clientRect.bottom()+1 - 11));
+			points.push_back(QPoint(15, clientRect.bottom()+1 - 4));
+			result += QRegion(QPolygon(points));
+			points.empty();
+		}
+	}
+	else
+	{
+		if (m_RightUpSide)
+		{
+			points.push_back(QPoint(4, clientRect.bottom()+1 - drawwidth + 8));
+			points.push_back(QPoint(11, clientRect.bottom()+1 - drawwidth + 8));
+			points.push_back(QPoint(11, clientRect.bottom()+1 - drawwidth + 15));
+			points.push_back(QPoint(4, clientRect.bottom()+1 - drawwidth + 15));
+			result += QRegion(QPolygon(points));
+			points.empty();
+
+			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - drawwidth + 8));
+			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - drawwidth + 8));
+			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - drawwidth + 15));
+			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - drawwidth + 15));
+			result += QRegion(QPolygon(points));
+			points.empty();
+		}
+
+		if (m_LeftDownSide)
+		{
+			points.push_back(QPoint(4, clientRect.bottom()+1 - 8));
+			points.push_back(QPoint(11, clientRect.bottom()+1 - 8));
+			points.push_back(QPoint(11, clientRect.bottom()+1 - 15));
+			points.push_back(QPoint(4, clientRect.bottom()+1 - 15));
+			result += QRegion(QPolygon(points));
+			points.empty();
+
+			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - 8));
+			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - 8));
+			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - 15));
+			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - 15));
+			result += QRegion(QPolygon(points));
+			points.empty();
+		}
+	}
+
+	//----- Main pegs -----//
+	for (int i = 1; i < endPegStop-1; i++)
+	{
+		if (vertical)
+		{
+			pegpoint.ry() = pointFromPos(stops[i].first);
+
+			if (m_LeftDownSide)
+			{
+				pegpoint.rx() = 23 - getPegIndent(i) * 11;
+
+				points.push_back(QPoint(pegpoint.x(), pegpoint.y() + 1));
+				points.push_back(QPoint(pegpoint.x() - 10, pegpoint.y() - 4));
+				points.push_back(QPoint(pegpoint.x() - 10, pegpoint.y() + 6));
+				result += QRegion(QPolygon(points));
+				points.empty();
+			}
+
+			if (m_RightUpSide)
+			{
+				pegpoint.rx() = getPegIndent(i) * 11 + drawwidth - 23;
+
+				points.push_back(QPoint(pegpoint.x(), pegpoint.y() + 1));
+				points.push_back(QPoint(pegpoint.x() + 10, pegpoint.y() - 4));
+				points.push_back(QPoint(pegpoint.x() + 10, pegpoint.y() + 6));
+				result += QRegion(QPolygon(points));
+				points.empty();
+			}
+		}
+		else
+		{
+			pegpoint.rx() = pointFromPos(stops[i].first);
+
+			if (m_LeftDownSide)
+			{
+				pegpoint.ry() = clientRect.bottom()+1 - 23 + getPegIndent(i) * 11;
+
+				points.push_back(QPoint(pegpoint.x() + 1, pegpoint.y() - 1));
+				points.push_back(QPoint(pegpoint.x() - 4, pegpoint.y() + 10));
+				points.push_back(QPoint(pegpoint.x() + 7, pegpoint.y() + 10));
+				result += QRegion(QPolygon(points));
+				points.empty();
+			}
+
+			if (m_RightUpSide)
+			{
+				pegpoint.ry() = clientRect.bottom()+1 - getPegIndent(i) * 11 - drawwidth + 22;
+
+				points.push_back(QPoint(pegpoint.x() + 1, pegpoint.y() + 1));
+				points.push_back(QPoint(pegpoint.x() - 4, pegpoint.y() - 9));
+				points.push_back(QPoint(pegpoint.x() + 6, pegpoint.y() - 9));
+				result += QRegion(QPolygon(points));
+				points.empty();
+			}
+		}
+	}
+
+	return result;
+}
 //void QLinearGradientCtrl::showEvent(QShowEvent *event)
 //{
 //	if (!event->spontaneous())

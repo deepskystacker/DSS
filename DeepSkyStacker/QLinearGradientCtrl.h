@@ -139,6 +139,7 @@ protected:
 	qreal	posFromPoint(int point);
 	int		getDrawWidth();
 	void	getPegRect(int index, QRect *rect, bool right);
+	QRegion getPegRegion();
 	int		getPegIndent(int index);
 	int		setPeg(int index, QColor colour, qreal position);
 
