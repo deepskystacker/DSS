@@ -7,6 +7,7 @@
 #include <set>
 #include <list>
 #include <iostream>
+#include <locale>
 #include <map>
 #include <stdexcept>
 #include <utility>
@@ -591,8 +592,8 @@ public :
 
         if (m_isRawFile)
         {
-            m_strMake = P1.make;
-            m_strModel = P1.model;
+            m_strMake = P1.normalized_make;
+            m_strModel = P1.normalized_model;
             m_lHeight = S.iheight;
             m_lWidth = S.iwidth;
             m_lISOSpeed = P2.iso_speed;
@@ -753,7 +754,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 {
 	bool result = false;
 	CStringA strModelA(strModel);
-	const char * camera = static_cast<LPCSTR>(strModelA);
+	const char * camera = static_cast<LPCSTR>(strModelA.MakeUpper());
 
 	static std::set<std::string> checkedCameras;
 
@@ -775,6 +776,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		const char **cameraList = rawProcessor.cameraList();
 		const size_t count = rawProcessor.cameraCount();
 		supportedCameras.reserve(count);
+		std::string temp;
 
 		//
 		// Copy LibRaw's supported camera list
@@ -783,7 +785,10 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		{
 			if (nullptr != cameraList[i])
 			{
-				supportedCameras.push_back(cameraList[i]);
+				temp = cameraList[i];
+				std::transform(temp.begin(), temp.end(), temp.begin(),
+					[](unsigned char c) { return std::toupper(c, std::locale()); });
+				supportedCameras.push_back(temp);
 			}
 		}
 		//
@@ -794,7 +799,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	//
 	// The camera type hasn't already been checked, so search the LibRaw supported camera list
 	//
-	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
+	result = std::binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
 		[](const std::string &lhs, const std::string &rhs) noexcept
 	{
 		const char* pclhs = lhs.c_str();
@@ -803,7 +808,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		const size_t szrhs = strlen(pcrhs);
 		// choose the shorter length
 		len = (len > szrhs) ? szrhs : len;
-		const int result = _strnicmp(pclhs, pcrhs, len);
+		const int result = strncmp(pclhs, pcrhs, len);
 		return (result < 0) ? true : false;
 	}
 		);

@@ -14,6 +14,14 @@ what kinds of DNG files you want to decode via Adobe code, see below).
 To build LibRaw with DNG SDK specify USE_DNGSDK in defines and adjust 
 include/linker path settings to point to DNG SDK's include and library folders.
 
+DNG SDK Version compatibility:
+ - Since LibRaw 0.20, DNG SDK 1.4 is required (DNG SDK 1.5 may work too, but 
+   have not tested w LibRaw).
+ - There are several DNG SDK 1.4 versions circulated, the oldest known is 
+   dated May 2012, you'll need the last one (dated June 2015).
+ - This version is available from Adobe site: 
+    http://download.adobe.com/pub/adobe/dng/dng_sdk_1_4.zip
+
 In your application
  
  * create dng_host object (or derived object, e.g. with multithreaded) entity in your program;

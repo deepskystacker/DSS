@@ -297,10 +297,10 @@ BOOL CFITSReader::Open()
 	{
 		fits_get_errstatus(status, error_text);
 		CString errorMessage;
-		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is \"%s\""),
+		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
 			m_strFileName,
 			status,
-			error_text);
+			CString(error_text));
 
 		ZTRACE_RUNTIME(CT2CA(errorMessage));
 
