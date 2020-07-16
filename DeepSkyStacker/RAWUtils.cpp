@@ -776,7 +776,6 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		const char **cameraList = rawProcessor.cameraList();
 		const size_t count = rawProcessor.cameraCount();
 		supportedCameras.reserve(count);
-		//std::string temp;
 
 		//
 		// Copy LibRaw's supported camera list
@@ -785,10 +784,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		{
 			if (nullptr != cameraList[i])
 			{
-				//temp = cameraList[i];
-				//std::transform(temp.begin(), temp.end(), temp.begin(),
-				//	[](unsigned char c) { return std::toupper(c, std::locale()); });
-				supportedCameras.push_back(cameraList[i]);
+				supportedCameras.emplace_back(cameraList[i]);
 			}
 		}
 		//
