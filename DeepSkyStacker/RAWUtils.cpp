@@ -754,7 +754,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 {
 	bool result = false;
 	CStringA strModelA(strModel);
-	const char * camera = static_cast<LPCSTR>(strModelA.MakeUpper());
+	const char * camera = static_cast<LPCSTR>(strModelA);
 
 	static std::set<std::string> checkedCameras;
 
@@ -776,7 +776,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		const char **cameraList = rawProcessor.cameraList();
 		const size_t count = rawProcessor.cameraCount();
 		supportedCameras.reserve(count);
-		std::string temp;
+		//std::string temp;
 
 		//
 		// Copy LibRaw's supported camera list
@@ -785,15 +785,23 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		{
 			if (nullptr != cameraList[i])
 			{
-				temp = cameraList[i];
-				std::transform(temp.begin(), temp.end(), temp.begin(),
-					[](unsigned char c) { return std::toupper(c, std::locale()); });
-				supportedCameras.push_back(temp);
+				//temp = cameraList[i];
+				//std::transform(temp.begin(), temp.end(), temp.begin(),
+				//	[](unsigned char c) { return std::toupper(c, std::locale()); });
+				supportedCameras.push_back(cameraList[i]);
 			}
 		}
 		//
-		// sort the names using std::sort
-		sort(supportedCameras.begin(), supportedCameras.end());
+		// Sort the camera names using std::sort and a case independent comparison lambda function
+		// See: https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
+		//
+			sort(supportedCameras.begin(), supportedCameras.end(), 
+				[](const auto& lhs, const auto& rhs) 
+			{ 
+				const auto result = mismatch(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
+					[](const auto& lhs, const auto& rhs) {return tolower(lhs) == tolower(rhs); });
+				return result.second != rhs.cend() && (result.first == lhs.cend() || tolower(*result.first) < tolower(*result.second));
+			});
 	}
 
 	//
@@ -808,7 +816,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		const size_t szrhs = strlen(pcrhs);
 		// choose the shorter length
 		len = (len > szrhs) ? szrhs : len;
-		const int result = strncmp(pclhs, pcrhs, len);
+		const int result = _strnicmp(pclhs, pcrhs, len);
 		return (result < 0) ? true : false;
 	}
 		);
