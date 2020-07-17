@@ -3464,7 +3464,8 @@ private :
         m_fExposure = 0.0;
         m_fAperture = 0.0;
         m_bFITS16bit = FALSE;
-        m_DateTime.wYear = 0;
+		m_DateTime = { 0 };
+		m_InfoTime = { 0 };
 		m_xBayerOffset = 0;
 		m_yBayerOffset = 0;
     }

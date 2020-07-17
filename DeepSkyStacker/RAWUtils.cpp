@@ -1355,19 +1355,22 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
-	BOOL			bIsTiff = FALSE;
 	TCHAR			szExt[_MAX_EXT];
 	CString			strExt;
 
-	// Check the extension - a tiff of tif file is not to be
-	// considered as a RAW file
+	//
+	// Check the extension - a file with the following extensions
+	// are definitely not considered to be a RAW file
+	// 
+	// .tiff .tif		TIFF files
+	// .jpg .jpeg .jpe	JPEG files
+	//
 	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
-	if ((strExt == _T(".TIF")) || (strExt == _T(".TIFF")))
-		bIsTiff = TRUE;
 
-	if (!bIsTiff)
+	if ((strExt != _T(".TIF")) && (strExt != _T(".TIFF")) && 
+		strExt != _T(".JPG") && strExt != _T(".JPEG") && strExt != _T(".JPE"))
 	{
 		CRawDecod		dcr(szFileName);
 
