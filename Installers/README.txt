@@ -1,4 +1,4 @@
-﻿Welcome to DeepSkyStacker 4.2.4 Beta 4
+﻿Welcome to DeepSkyStacker 4.2.4 Beta 5
 The main changes in this release are:
 
 1. Fix to display Exposure, f-Stop, and ISO setting from EXIF tags in TIFF files.
@@ -26,6 +26,16 @@ The main changes in this release are:
 12. Display the FITS FILTER name in the picture list control, for information only at present.
 
 13. Change the text used in the language selection ComboBox to always use Latin characters.  This is a work around a problem with DLGINIT processing and Unicode characters.
+
+14. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).   CR3 file extension added to list of raw file types.
+
+15. Fix to correct problem where jpeg files were incorrectly identified as raw.
+
+16. When FITS file auto-detection is used, the CFA Yes/No display was incorrect - now fixed.
+
+17. Recommended Setting for Interpolation was incorrect.
+
+18. Fix for crash while attempting to select comet.
 
 Welcome to DeepSkyStacker 4.2.3
 
