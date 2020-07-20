@@ -14,8 +14,6 @@
 
 #include <omp.h>
 
-const LONG				STARMAXSIZE = 50;
-
 /* ------------------------------------------------------------------- */
 
 class CStarAxisInfo
@@ -985,30 +983,40 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 	m_vStars.clear();
 	m_sStars.clear();
 
+#if defined(_OPENMP)
+	auto num_threads = omp_get_num_threads();
+#pragma omp parallel for default(none) shared(num_threads)
+#endif
 	for (j = STARMAXSIZE;j<Bitmap.Height()-STARMAXSIZE;j+=lSubRectHeight/2)
 	{
 		for (i = STARMAXSIZE; i < Bitmap.Width() - STARMAXSIZE; i += lSubRectWidth / 2)
 		{
 			CRect			rcSubRect;
+			CString			strText;
 
-			rcSubRect.left = i;	rcSubRect.right = min(Bitmap.Width() - STARMAXSIZE, i + lSubRectWidth);
-			rcSubRect.top = j;	rcSubRect.bottom = min(Bitmap.Height() - STARMAXSIZE, j + lSubRectHeight);
+			rcSubRect.left = i;	rcSubRect.right = min(Bitmap.Width() - (LONG)STARMAXSIZE, i + lSubRectWidth);
+			rcSubRect.top = j;	rcSubRect.bottom = min(Bitmap.Height() - (LONG)STARMAXSIZE, j + lSubRectHeight);
 
 			RegisterSubRect(&Bitmap, rcSubRect);
 
-			if (m_pProgress)
+#if defined (_OPENMP)
+			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
-				CString			strText;
-
-				++lProgress;
-				if (0 == lProgress % 25)
-				{
-					strText.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, m_vStars.size());
-					m_pProgress->Progress2(strText, lProgress);
-				}
-			};
-
+				lProgress += num_threads;
+				strText.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, m_vStars.size());
+				m_pProgress->Progress2(strText, lProgress);
+			}
+#else
+			++lProgress;
+			if (0 == lProgress % 25)
+			{
+				strText.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, m_vStars.size());
+				m_pProgress->Progress2(strText, lProgress);
+			}
+#endif
 		};
+
+
 	};
 	m_sStars.clear();
 

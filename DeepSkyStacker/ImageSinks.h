@@ -181,8 +181,6 @@ private :
 	CQualityGrid				m_QualityGrid;
 
 private :
-	static constexpr unsigned int	STARMAXSIZE = 50;
-	static constexpr unsigned int 	RCCHECKSIZE = (5 * STARMAXSIZE) + 2; // 252
 
 	BOOL	IsRefStarVoted(LONG lStar)
 	{
