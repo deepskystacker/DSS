@@ -1,35 +1,25 @@
 ﻿Welcome to DeepSkyStacker 4.2.4 Beta 5
 The main changes in this release are:
 
-1. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).
-   CR3 file extension added to list of raw file types.
+1. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).   CR3 file extension added to list of raw file types.
    
-   ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING *****
-	LibRaw 0.20 has introduced a change that primarily affects users of "older" Canon DSLR cameras and FujiFilm X-Trans series cameras
-	(older includes the EOS 60D and 60Da)!
+***** WARNING ***** WARNING ***** WARNING ***** WARNING *****
+ LibRaw 0.20 has introduced a change that primarily affects users of "older" Canon DSLR cameras and FujiFilm X-Trans series cameras (older includes the EOS 60D and 60Da)!
 	
-	The change is to increase the size of the frame area of the image that surrounds the "user area" so that top and left margins are
-	an even number of pixels.   The resultant image that DSS extracts from the RAW file will be reduced in width, height or both by
-	one pixel.   As result the Bayer Pattern (CFA) used for de-Bayering the image also has to change.
+The change is to increase the size of the frame area of the image that surrounds the "user area" so that top and left margins are an even number of pixels.   The resultant image that DSS extracts from the RAW file will be reduced in width, height or both by one pixel.   As result the Bayer Pattern (CFA) used for de-Bayering the image also has to change.
 	
-	Unfortunately the LibRaw developers won't say exactly which cameras this change applies to save to say that it is not a large 
-	number.
+Unfortunately the LibRaw developers won't say exactly which cameras this change applies to save to say that it is not a large number.
 	
-	If your camera is one of those affected, you will not be able to use any existing master frames produced with DeepSkyStacker
-	4.2.4 Beta 4 or earlier releases as they will not be compatible.   You will need to delete and re-create your master frames from
-	the original darks, flats etc..   
+If your camera is one of those affected, you will not be able to use any existing master frames produced with DeepSkyStacker 4.2.4 Beta 4 or earlier releases as they will not be compatible.   You will need to delete and re-create your master frames from the original darks, flats etc..   
 	
-	I am sorry that this has happened, but it is outwith my control, and the LibRaw developers were not prepared to revert the change
-	(they wouldn't even explain why they made the change).   If there were another library I could use to decode raw images I would 
-	migrate to that but after researching it over the last several days I have come up with no viable alternative.
-   ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING *****
+I am sorry that this has happened, but it is outwith my control, and the LibRaw developers were not prepared to revert the change (they wouldn't even explain why they made the change).   If there were another library I could use to decode raw images I would migrate to that but after researching it over the last several days I have come up with no viable alternative.
+***** WARNING ***** WARNING ***** WARNING ***** WARNING *****
 
 2. Fix to display Exposure, f-Stop, and ISO setting from EXIF tags in TIFF files.
 
 3. Update libtiff to 4.1.0
 
-4. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).   The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.   If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic
-   detection will be used.  You can override this by selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
+4. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).   The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.   If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic detection will be used.  You can override this by selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
 
 5. The exposure time is now correctly displayed for FITS files with the exposure time in microseconds (keyword EXPOINUS).
 
