@@ -1,33 +1,55 @@
 ﻿Welcome to DeepSkyStacker 4.2.4 Beta 5
 The main changes in this release are:
 
-1. Fix to display Exposure, f-Stop, and ISO setting from EXIF tags in TIFF files.
+1. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).
+   CR3 file extension added to list of raw file types.
+   
+   ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING *****
+	LibRaw 0.20 has introduced a change that primarily affects users of "older" Canon DSLR cameras and FujiFilm X-Trans series cameras
+	(older includes the EOS 60D and 60Da)!
+	
+	The change is to increase the size of the frame area of the image that surrounds the "user area" so that top and left margins are
+	an even number of pixels.   The resultant image that DSS extracts from the RAW file will be reduced in width, height or both by
+	one pixel.   As result the Bayer Pattern (CFA) used for de-Bayering the image also has to change.
+	
+	Unfortunately the LibRaw developers won't say exactly which cameras this change applies to save to say that it is not a large 
+	number.
+	
+	If your camera is one of those affected, you will not be able to use any existing master frames produced with DeepSkyStacker
+	4.2.4 Beta 4 or earlier releases as they will not be compatible.   You will need to delete and re-create your master frames from
+	the original darks, flats etc..   
+	
+	I am sorry that this has happened, but it is outwith my control, and the LibRaw developers were not prepared to revert the change
+	(they wouldn't even explain why they made the change).   If there were another library I could use to decode raw images I would 
+	migrate to that but after researching it over the last several days I have come up with no viable alternative.
+   ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING ***** WARNING *****
 
-2. Update libtiff to  4.1.0
+2. Fix to display Exposure, f-Stop, and ISO setting from EXIF tags in TIFF files.
 
-3. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).  The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.  If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic detection will be used.  You can override this by selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
+3. Update libtiff to 4.1.0
 
-4. The exposure time is now correctly displayed for FITS files with the exposure time in microseconds (keyword EXPOINUS).
+4. Automatic detection of CFA matrix based upon FITS keywords such as BAYERPAT, COLORTYP, and MOSAIC (for Meade DSI colour cameras).   The FITS File tab of the Raw/FITS DDP Settings dialogue has changed.   If you de-select the tick box for: "Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera", then automatic
+   detection will be used.  You can override this by selecting this option and manually selecting the CFA pattern to be used.    All the other settings on that tab are now always available for modification.
 
-5. Display a warning message saying that DeepSkyStacker won't de-Bayer 8-bit FITS images.
+5. The exposure time is now correctly displayed for FITS files with the exposure time in microseconds (keyword EXPOINUS).
 
-6. Change code to read TIFF files in strips instead of by scanline.  This can reduce the time to read the image by as much as a factor of 3.
+6. Display a warning message saying that DeepSkyStacker won't de-Bayer 8-bit FITS images.
 
-7. Refactor the code to decode the TIFF file we just read and also use OpenMP.  Time to decode the image reduced by about 4-5 times.
+7. Change code to read TIFF files in strips instead of by scanline.  This can reduce the time to read the image by as much as a factor of 3.
 
-8. Refactor the code that writes TIFF files and use OpenMP to speed it up.  Also write the output file in strips rather than scanlines.  Substantial performance increase.
+8. Refactor the code to decode the TIFF file we just read and also use OpenMP.  Time to decode the image reduced by about 4-5 times.
 
-9. Refactor the code that reads FITS files to make it easier to understand and also use OpenMP.  Only a marginal performance benefit.
+9. Refactor the code that writes TIFF files and use OpenMP to speed it up.  Also write the output file in strips rather than scanlines.  Substantial performance increase.
 
-10. Major bug fix - calibration frames were either not applied or incorrectly applied when using Super-Pixel mode.
+10. Refactor the code that reads FITS files to make it easier to understand and also use OpenMP.  Only a marginal performance benefit.
 
-11. Change DeepSkyStackerLive so that the choice of using the Dark Theme is controlled by the user settings.
+11. Major bug fix - calibration frames were either not applied or incorrectly applied when using Super-Pixel mode.
 
-12. Display the FITS FILTER name in the picture list control, for information only at present.
+12. Change DeepSkyStackerLive so that the choice of using the Dark Theme is controlled by the user settings.
 
-13. Change the text used in the language selection ComboBox to always use Latin characters.  This is a work around a problem with DLGINIT processing and Unicode characters.
+13. Display the FITS FILTER name in the picture list control, for information only at present.
 
-14. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).   CR3 file extension added to list of raw file types.
+14. Change the text used in the language selection ComboBox to always use Latin characters.  This is a work around a problem with DLGINIT processing and Unicode characters.
 
 15. Fix to correct problem where jpeg files were incorrectly identified as raw.
 
@@ -36,6 +58,8 @@ The main changes in this release are:
 17. Recommended Setting for Interpolation was incorrect.
 
 18. Fix for crash while attempting to select comet.
+
+19. Speed up registration by using OpenMP.
 
 Welcome to DeepSkyStacker 4.2.3
 
