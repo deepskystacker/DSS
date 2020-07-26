@@ -8,7 +8,15 @@ The main changes in this release are:
 	
 The change is to increase the size of the frame area of the image that surrounds the "user area" so that top and left margins are an even number of pixels.   The resultant image that DSS extracts from the RAW file will be reduced in width, height or both by one pixel.   As result the Bayer Pattern (CFA) used for de-Bayering the image also has to change.
 	
-Unfortunately the LibRaw developers won't say exactly which cameras this change applies to save to say that it is not a large number.
+Unfortunately the LibRaw developers won't say exactly which cameras this change applies to save to say that it is not a large number.  Other have reported that at least the following cameras are definitely impacted by this change:
+
+EOS 1D Mark IV
+EOS 5D Mark II
+EOS 7D
+EOS 60D
+EOS 550D
+EOS 600D
+EOS 1200D
 	
 If your camera is one of those affected, you will not be able to use any existing master frames produced with DeepSkyStacker 4.2.4 Beta 4 or earlier releases as they will not be compatible.   You will need to delete and re-create your master frames from the original darks, flats etc..   
 	
