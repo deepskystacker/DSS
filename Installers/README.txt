@@ -1,4 +1,4 @@
-﻿Welcome to DeepSkyStacker 4.2.4 Beta 5
+﻿Welcome to DeepSkyStacker 4.2.4 Beta 6
 The main changes in this release are:
 
 1. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).   CR3 file extension added to list of raw file types.

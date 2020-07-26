@@ -34,7 +34,7 @@ SetCompressor /SOLID lzma
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
 !define DSS_VERSION        "4.2.4"                                  # For control panel
-!define DSS_VERSION_SUFFIX " Beta 4"                                # For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION_SUFFIX " Beta 6"                                # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
