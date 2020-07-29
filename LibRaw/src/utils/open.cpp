@@ -593,6 +593,7 @@ int LibRaw::open_datastream(LibRaw_abstract_datastream *stream)
 			  else
 				  parse_fuji_compressed_header();
 		  }
+#if !defined(LIBRAW_19_MARGINS)
 		  if (imgdata.idata.filters == 9)
 		  {
 			  // Adjust top/left margins for X-Trans
@@ -614,7 +615,9 @@ int LibRaw::open_datastream(LibRaw_abstract_datastream *stream)
 						  imgdata.idata.xtrans[c1][c2] = imgdata.idata.xtrans_abs[c1][c2];
 			  }
 		  }
+#endif
 	  }
+#if !defined(LIBRAW_19_MARGINS)
 	  if (!libraw_internal_data.internal_output_params.fuji_width
 		  && imgdata.idata.filters >= 1000
 		  && ((imgdata.sizes.top_margin % 2) || (imgdata.sizes.left_margin % 2)))
@@ -638,6 +641,7 @@ int LibRaw::open_datastream(LibRaw_abstract_datastream *stream)
 			  filt |= FC((c >> 1) + (crop[1]), (c & 1) + (crop[0])) << c * 2;
 		  imgdata.idata.filters = filt;
 	  }
+#endif
 
 #ifdef USE_DNGSDK
 	  if (
