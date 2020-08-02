@@ -422,9 +422,9 @@ BEGIN
     CONTROL         "Interpolation Bilinéaire",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,85,10
     CONTROL         "Interpolation Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10
-    LTEXT           "Cette option utilise la matrice de Bayer pour créer un super-pixel à partir de chaque groupe de 4 pixels (RGBG). La taille de l'image résultante est divisée par deux.",IDC_STATIC,26,149,225,25
-    LTEXT           "Cette option utilise la matrice de Bayer telle quelle. Aucune interpolation n'est effectuée et chaque pixel a uniquement des couleurs primaires issues de la matrice.",IDC_STATIC,26,193,225,24
-    CONTROL         "Utiliser Bayer Drizzle (pas d'interpolation, pas de débayerisation)",IDC_RAWBAYER,
+    LTEXT           "Cette option utilise la matrice de Bayer pour créer un super-pixel à partir de chaque groupe de 4 pixels (RGBG). La taille de l'image résultante est divisée par deux.",IDC_STATIC,26,193,225,24
+    LTEXT           "Cette option utilise la matrice de Bayer telle quelle. Aucune interpolation n'est effectuée et chaque pixel a uniquement des couleurs primaires issues de la matrice.",IDC_STATIC,26,149,225,25
+	CONTROL         "Utiliser Bayer Drizzle (pas d'interpolation, pas de débayerisation)",IDC_RAWBAYER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,135,215,10
     CONTROL         "Créer des super- pixels à partir de la matrice de Bayer (pas d'interpolation)",IDC_SUPERPIXELS,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,179,245,10
