@@ -909,7 +909,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS or DeepSkyStacker Image|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Ficheiros Fotograficos|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Ficheiros Fotograficos|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.cr3;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|JPEG or PNG Files|*.jpg;*.jpeg;*.png|TIFF Files (.tif)|*.tif;*.tiff|RAW Files|*.cr2;*.cr3;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|FITS Files|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "TIFF Imagem (16 bit/ch)|*.TIF|TIFF Imagem (32 bit/ch - integer)|*.TIF|TIFF Imagem (32 bit/ch - rational)|*.TIF|FITS Imagem (16 bit/ch)|*.FTS|FITS Imagem (32 bit/ch - integer)|*.FTS|FITS Imagem (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Lista de Ficheiros (*.txt)|*.txt|Lista de Ficheiros (*.dssfilelist)|*.dssfilelist|Todos Ficheiros|*.*||"
     IDS_FILTER_MASK         "TIFF Imagem|*.tif;*.tiff|FITS Imagem|*.fits;*.fts;*.fit||"

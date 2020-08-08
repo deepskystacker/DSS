@@ -422,9 +422,9 @@ BEGIN
     CONTROL         "Interpolation Bilinéaire",IDC_BILINEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,91,85,10
     CONTROL         "Interpolation Adaptive Homogeneity-Directed (AHD)",IDC_AHD,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,112,178,10
-    LTEXT           "Cette option utilise la matrice de Bayer pour créer un super-pixel à partir de chaque groupe de 4 pixels (RGBG). La taille de l'image résultante est divisée par deux.",IDC_STATIC,26,149,225,25
-    LTEXT           "Cette option utilise la matrice de Bayer telle quelle. Aucune interpolation n'est effectuée et chaque pixel a uniquement des couleurs primaires issues de la matrice.",IDC_STATIC,26,193,225,24
-    CONTROL         "Utiliser Bayer Drizzle (pas d'interpolation, pas de débayerisation)",IDC_RAWBAYER,
+    LTEXT           "Cette option utilise la matrice de Bayer pour créer un super-pixel à partir de chaque groupe de 4 pixels (RGBG). La taille de l'image résultante est divisée par deux.",IDC_STATIC,26,193,225,24
+    LTEXT           "Cette option utilise la matrice de Bayer telle quelle. Aucune interpolation n'est effectuée et chaque pixel a uniquement des couleurs primaires issues de la matrice.",IDC_STATIC,26,149,225,25
+	CONTROL         "Utiliser Bayer Drizzle (pas d'interpolation, pas de débayerisation)",IDC_RAWBAYER,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,135,215,10
     CONTROL         "Créer des super- pixels à partir de la matrice de Bayer (pas d'interpolation)",IDC_SUPERPIXELS,
                     "Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,15,179,245,10
@@ -1294,7 +1294,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS ou image DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fit;*.fts;*.fits||"
-    IDS_FILTER_INPUT        "Fichiers Image|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|Fichiers JPEG ou PNG|*.jpg;*.jpeg;*.png|Fichiers TIFF (.tif)|*.tif;*.tiff|Fichiers RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Fichiers FITS|*.fit;*.fits;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Fichiers Image|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.cr3;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Windows Bitmaps (.bmp)|*.bmp|Fichiers JPEG ou PNG|*.jpg;*.jpeg;*.png|Fichiers TIFF (.tif)|*.tif;*.tiff|Fichiers RAW|*.cr2;*.cr3;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Fichiers FITS|*.fit;*.fits;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "Image TIFF (16 bit/ch)|*.TIF|Image TIFF (32 bit/ch - entier)|*.TIF|Image TIFF (32 bit/ch - réel)|*.TIF|Image FITS (16 bit/ch)|*.FTS|Image FITS (32 bit/ch - entier)|*.FTS|Image FITS (32 bit/ch - réel)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Liste de fichier (*.txt)|*.txt|Liste de fichier (*.dssfilelist)|*.dssfilelist|Tous les fichiers|*.*||"
     IDS_FILTER_MASK         "Image TIFF|*.tif;*.tiff|Image FITS|*.fits;*.fts;*.fit||"

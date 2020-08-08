@@ -10,6 +10,7 @@
 
 BOOL	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 {
+	ZFUNCTRACE_RUNTIME();
 	BOOL				bResult = FALSE;
 
 	if (Type == PICTURETYPE_REFLIGHTFRAME)

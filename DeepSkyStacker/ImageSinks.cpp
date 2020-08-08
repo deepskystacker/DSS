@@ -624,10 +624,9 @@ void	CEditStarsSink::InitGrayBitmap(CRect & rc)
 };
 
 /* ------------------------------------------------------------------- */
-
 void	CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECTOR & vStars)
 {
-	// Create a 61x61 rectangle centered on the point
+	// Create a 3*STARMAXSIZE + 1 square rectangle centered on the point
 	vStars.clear();
 	if (m_pImage)
 	{
@@ -664,8 +663,8 @@ void	CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECT
 		CRegisteredFrame		regFrame;
 		CRect					rcReg;
 
-		rcReg.left = 20;		rcReg.right  = rcCheck.Width()-21;
-		rcReg.top  = 20;		rcReg.bottom = rcCheck.Height()-21;
+		rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
+		rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
 
 		regFrame.m_fBackground = m_fBackground;
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg);

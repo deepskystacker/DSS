@@ -163,7 +163,7 @@ BOOL CStarMaskDlg::OnInitDialog()
 
 	m_StarThreshold.SetRange(2, 100);
 	m_MinSize.SetRange(2, 10);
-	m_MaxSize.SetRange(10, 100);
+	m_MaxSize.SetRange(10, 2*STARMAXSIZE);
 	m_Percent.SetRange(10, 200);
 	m_Pixels.SetRange(0, 10);
 

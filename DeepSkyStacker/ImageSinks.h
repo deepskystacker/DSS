@@ -181,7 +181,6 @@ private :
 	CQualityGrid				m_QualityGrid;
 
 private :
-	static const LONG			RCCHECKSIZE = 110;
 
 	BOOL	IsRefStarVoted(LONG lStar)
 	{

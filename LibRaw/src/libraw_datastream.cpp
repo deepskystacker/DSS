@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * File: libraw_datastream.cpp
- * Copyright 2008-2018 LibRaw LLC (info@libraw.org)
+ * Copyright 2008-2020 LibRaw LLC (info@libraw.org)
  *
  * LibRaw C++ interface (implementation)
 
@@ -15,7 +15,7 @@
 
 */
 
-#ifdef WIN32
+#ifdef _WIN32
 #ifdef __MINGW32__
 #define _WIN32_WINNT 0x0500
 #include <stdexcept>
@@ -23,8 +23,8 @@
 #endif
 
 #define LIBRAW_LIBRARY_BUILD
-#include "libraw/libraw_types.h"
 #include "libraw/libraw.h"
+#include "libraw/libraw_types.h"
 #include "libraw/libraw_datastream.h"
 #include <sys/stat.h>
 #ifdef USE_JASPER
@@ -34,24 +34,124 @@
 #endif
 #ifdef USE_JPEG
 #include <jpeglib.h>
+#include <jerror.h>
 #else
 #define NO_JPEG
 #endif
 
-int LibRaw_abstract_datastream::tempbuffer_open(void *buf, size_t size)
+#ifdef USE_JPEG
+
+typedef struct
 {
-  if (substream)
-    return EBUSY;
-  substream = new LibRaw_buffer_datastream(buf, size);
-  return substream ? 0 : EINVAL;
+    struct jpeg_source_mgr pub; /* public fields */
+    LibRaw_abstract_datastream *instream;            /* source stream */
+    JOCTET *buffer;             /* start of buffer */
+    boolean start_of_file;      /* have we gotten any data yet? */
+} lr_jpg_source_mgr;
+
+typedef lr_jpg_source_mgr *lr_jpg_src_ptr;
+
+#define LR_JPEG_INPUT_BUF_SIZE 16384 
+
+static void f_init_source(j_decompress_ptr cinfo)
+{
+    lr_jpg_src_ptr src = (lr_jpg_src_ptr)cinfo->src;
+    src->start_of_file = TRUE;
 }
 
-void LibRaw_abstract_datastream::tempbuffer_close()
+#ifdef ERREXIT
+#undef ERREXIT
+#endif
+
+#define ERREXIT(cinfo, code)                                                   \
+  ((cinfo)->err->msg_code = (code),                                            \
+   (*(cinfo)->err->error_exit)((j_common_ptr)(cinfo)))
+
+static boolean lr_fill_input_buffer(j_decompress_ptr cinfo)
 {
-  if (substream)
-    delete substream;
-  substream = NULL;
+    lr_jpg_src_ptr src = (lr_jpg_src_ptr)cinfo->src;
+    size_t nbytes;
+
+    nbytes = src->instream->read((void*)src->buffer, 1, LR_JPEG_INPUT_BUF_SIZE);
+
+    if (nbytes <= 0)
+    {
+        if (src->start_of_file) /* Treat empty input file as fatal error */
+            ERREXIT(cinfo, JERR_INPUT_EMPTY);
+        WARNMS(cinfo, JWRN_JPEG_EOF);
+        /* Insert a fake EOI marker */
+        src->buffer[0] = (JOCTET)0xFF;
+        src->buffer[1] = (JOCTET)JPEG_EOI;
+        nbytes = 2;
+    }
+
+    src->pub.next_input_byte = src->buffer;
+    src->pub.bytes_in_buffer = nbytes;
+    src->start_of_file = FALSE;
+    return TRUE;
 }
+
+static void lr_skip_input_data(j_decompress_ptr cinfo, long num_bytes)
+{
+    struct jpeg_source_mgr *src = cinfo->src;
+    if (num_bytes > 0)
+    {
+        while (num_bytes > (long)src->bytes_in_buffer)
+        {
+            num_bytes -= (long)src->bytes_in_buffer;
+            (void)(*src->fill_input_buffer)(cinfo);
+            /* note we assume that fill_input_buffer will never return FALSE,
+             * so suspension need not be handled.
+             */
+        }
+        src->next_input_byte += (size_t)num_bytes;
+        src->bytes_in_buffer -= (size_t)num_bytes;
+    }
+}
+
+static void lr_term_source(j_decompress_ptr cinfo) {}
+
+static void lr_jpeg_src(j_decompress_ptr cinfo, LibRaw_abstract_datastream *inf)
+{
+    lr_jpg_src_ptr src;
+    if (cinfo->src == NULL)
+    { /* first time for this JPEG object? */
+        cinfo->src = (struct jpeg_source_mgr *)(*cinfo->mem->alloc_small)(
+            (j_common_ptr)cinfo, JPOOL_PERMANENT, sizeof(lr_jpg_source_mgr));
+        src = (lr_jpg_src_ptr)cinfo->src;
+        src->buffer = (JOCTET *)(*cinfo->mem->alloc_small)(
+            (j_common_ptr)cinfo, JPOOL_PERMANENT,
+            LR_JPEG_INPUT_BUF_SIZE * sizeof(JOCTET));
+    }
+    else if (cinfo->src->init_source != f_init_source)
+    {
+        ERREXIT(cinfo, JERR_BUFFER_SIZE);
+    }
+
+    src = (lr_jpg_src_ptr)cinfo->src;
+    src->pub.init_source = f_init_source;
+    src->pub.fill_input_buffer = lr_fill_input_buffer;
+    src->pub.skip_input_data = lr_skip_input_data;
+    src->pub.resync_to_restart = jpeg_resync_to_restart; /* use default method */
+    src->pub.term_source = lr_term_source;
+    src->instream = inf;
+    src->pub.bytes_in_buffer = 0;    /* forces fill_input_buffer on first read */
+    src->pub.next_input_byte = NULL; /* until buffer loaded */
+}
+#endif
+
+int LibRaw_abstract_datastream::jpeg_src(void *jpegdata)
+{
+#ifdef NO_JPEG
+    return -1;
+#else
+    j_decompress_ptr cinfo = (j_decompress_ptr)jpegdata;
+    buffering_off();
+    lr_jpeg_src(cinfo, this);
+    return 0; // OK
+#endif
+}
+
 
 // == LibRaw_file_datastream ==
 
@@ -63,7 +163,7 @@ LibRaw_file_datastream::~LibRaw_file_datastream()
 
 LibRaw_file_datastream::LibRaw_file_datastream(const char *fname)
     : filename(fname), _fsize(0)
-#ifdef WIN32
+#ifdef LIBRAW_WIN32_UNICODEPATHS
       ,
       wfilename()
 #endif
@@ -72,7 +172,7 @@ LibRaw_file_datastream::LibRaw_file_datastream(const char *fname)
 {
   if (filename.size() > 0)
   {
-#ifndef WIN32
+#ifndef LIBRAW_WIN32_CALLS
     struct stat st;
     if (!stat(filename.c_str(), &st))
       _fsize = st.st_size;
@@ -81,16 +181,23 @@ LibRaw_file_datastream::LibRaw_file_datastream(const char *fname)
     if (!_stati64(filename.c_str(), &st))
       _fsize = st.st_size;
 #endif
-
+#ifdef LIBRAW_USE_AUTOPTR
     std::auto_ptr<std::filebuf> buf(new std::filebuf());
+#else
+    std::unique_ptr<std::filebuf> buf(new std::filebuf());
+#endif
     buf->open(filename.c_str(), std::ios_base::in | std::ios_base::binary);
     if (buf->is_open())
     {
+#ifdef LIBRAW_USE_AUTOPTR
       f = buf;
+#else
+      f = std::move(buf);
+#endif
     }
   }
 }
-#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) && (_MSC_VER > 1310)
+#ifdef LIBRAW_WIN32_UNICODEPATHS
 LibRaw_file_datastream::LibRaw_file_datastream(const wchar_t *fname)
     : filename(), wfilename(fname), jas_file(NULL), _fsize(0)
 {
@@ -99,53 +206,59 @@ LibRaw_file_datastream::LibRaw_file_datastream(const wchar_t *fname)
     struct _stati64 st;
     if (!_wstati64(wfilename.c_str(), &st))
       _fsize = st.st_size;
+#ifdef LIBRAW_USE_AUTOPTR
     std::auto_ptr<std::filebuf> buf(new std::filebuf());
+#else
+    std::unique_ptr<std::filebuf> buf(new std::filebuf());
+#endif
     buf->open(wfilename.c_str(), std::ios_base::in | std::ios_base::binary);
     if (buf->is_open())
     {
+#ifdef LIBRAW_USE_AUTOPTR
       f = buf;
-    }
+#else
+      f = std::move(buf);
+#endif
+	}
   }
 }
-const wchar_t *LibRaw_file_datastream::wfname() { return wfilename.size() > 0 ? wfilename.c_str() : NULL; }
+const wchar_t *LibRaw_file_datastream::wfname()
+{
+  return wfilename.size() > 0 ? wfilename.c_str() : NULL;
+}
 #endif
 
 int LibRaw_file_datastream::valid() { return f.get() ? 1 : 0; }
 
-#define LR_STREAM_CHK()                                                                                                \
-  do                                                                                                                   \
-  {                                                                                                                    \
-    if (!f.get())                                                                                                      \
-      throw LIBRAW_EXCEPTION_IO_EOF;                                                                                   \
+#define LR_STREAM_CHK()                                                        \
+  do                                                                           \
+  {                                                                            \
+    if (!f.get())                                                              \
+      throw LIBRAW_EXCEPTION_IO_EOF;                                           \
   } while (0)
 
 int LibRaw_file_datastream::read(void *ptr, size_t size, size_t nmemb)
 {
-  if (substream)
-    return substream->read(ptr, size, nmemb);
-
 /* Visual Studio 2008 marks sgetn as insecure, but VS2010 does not. */
 #if defined(WIN32SECURECALLS) && (_MSC_VER < 1600)
   LR_STREAM_CHK();
-  return int(f->_Sgetn_s(static_cast<char *>(ptr), nmemb * size, nmemb * size) / (size > 0 ? size : 1));
+  return int(f->_Sgetn_s(static_cast<char *>(ptr), nmemb * size, nmemb * size) /
+             (size > 0 ? size : 1));
 #else
   LR_STREAM_CHK();
-  return int(f->sgetn(static_cast<char *>(ptr), std::streamsize(nmemb * size)) / (size > 0 ? size : 1));
+  return int(f->sgetn(static_cast<char *>(ptr), std::streamsize(nmemb * size)) /
+             (size > 0 ? size : 1));
 #endif
 }
 
 int LibRaw_file_datastream::eof()
 {
-  if (substream)
-    return substream->eof();
   LR_STREAM_CHK();
   return f->sgetc() == EOF;
 }
 
 int LibRaw_file_datastream::seek(INT64 o, int whence)
 {
-  if (substream)
-    return substream->seek(o, whence);
   LR_STREAM_CHK();
   std::ios_base::seekdir dir;
   switch (whence)
@@ -167,16 +280,12 @@ int LibRaw_file_datastream::seek(INT64 o, int whence)
 
 INT64 LibRaw_file_datastream::tell()
 {
-  if (substream)
-    return substream->tell();
   LR_STREAM_CHK();
   return f->pubseekoff(0, std::ios_base::cur);
 }
 
 char *LibRaw_file_datastream::gets(char *str, int sz)
 {
-  if (substream)
-    return substream->gets(str, sz);
   LR_STREAM_CHK();
   std::istream is(f.get());
   is.getline(str, sz);
@@ -187,8 +296,6 @@ char *LibRaw_file_datastream::gets(char *str, int sz)
 
 int LibRaw_file_datastream::scanf_one(const char *fmt, void *val)
 {
-  if (substream)
-    return substream->scanf_one(fmt, val);
   LR_STREAM_CHK();
 
   std::istream is(f.get());
@@ -214,60 +321,9 @@ int LibRaw_file_datastream::scanf_one(const char *fmt, void *val)
   return 1;
 }
 
-const char *LibRaw_file_datastream::fname() { return filename.size() > 0 ? filename.c_str() : NULL; }
-
-/* You can't have a "subfile" and a "tempfile" at the same time. */
-int LibRaw_file_datastream::subfile_open(const char *fn)
+const char *LibRaw_file_datastream::fname()
 {
-  LR_STREAM_CHK();
-  if (saved_f.get())
-    return EBUSY;
-  saved_f = f;
-  std::auto_ptr<std::filebuf> buf(new std::filebuf());
-
-  buf->open(fn, std::ios_base::in | std::ios_base::binary);
-  if (!buf->is_open())
-  {
-    f = saved_f;
-    return ENOENT;
-  }
-  else
-  {
-    f = buf;
-  }
-
-  return 0;
-}
-
-#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) && (_MSC_VER > 1310)
-int LibRaw_file_datastream::subfile_open(const wchar_t *fn)
-{
-  LR_STREAM_CHK();
-  if (saved_f.get())
-    return EBUSY;
-  saved_f = f;
-  std::auto_ptr<std::filebuf> buf(new std::filebuf());
-
-  buf->open(fn, std::ios_base::in | std::ios_base::binary);
-  if (!buf->is_open())
-  {
-    f = saved_f;
-    return ENOENT;
-  }
-  else
-  {
-    f = buf;
-  }
-
-  return 0;
-}
-#endif
-
-void LibRaw_file_datastream::subfile_close()
-{
-  if (!saved_f.get())
-    return;
-  f = saved_f;
+  return filename.size() > 0 ? filename.c_str() : NULL;
 }
 
 #undef LR_STREAM_CHK
@@ -277,7 +333,7 @@ void *LibRaw_file_datastream::make_jas_stream()
 #ifdef NO_JASPER
   return NULL;
 #else
-#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) && (_MSC_VER > 1310)
+#ifdef LIBRAW_WIN32_UNICODEPATHS
   if (wfname())
   {
     jas_file = _wfopen(wfname(), L"rb");
@@ -288,37 +344,6 @@ void *LibRaw_file_datastream::make_jas_stream()
   {
     return jas_stream_fopen(fname(), "rb");
   }
-#endif
-}
-
-int LibRaw_file_datastream::jpeg_src(void *jpegdata)
-{
-#ifdef NO_JPEG
-  return -1; // not supported
-#else
-  if (jas_file)
-  {
-    fclose(jas_file);
-    jas_file = NULL;
-  }
-#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) && (_MSC_VER > 1310)
-  if (wfname())
-  {
-    jas_file = _wfopen(wfname(), L"rb");
-  }
-  else
-#endif
-  {
-    jas_file = fopen(fname(), "rb");
-  }
-  if (jas_file)
-  {
-    fseek(jas_file, tell(), SEEK_SET);
-    j_decompress_ptr cinfo = (j_decompress_ptr)jpegdata;
-    jpeg_stdio_src(cinfo, jas_file);
-    return 0; // OK
-  }
-  return -1;
 #endif
 }
 
@@ -334,8 +359,6 @@ LibRaw_buffer_datastream::~LibRaw_buffer_datastream() {}
 
 int LibRaw_buffer_datastream::read(void *ptr, size_t sz, size_t nmemb)
 {
-  if (substream)
-    return substream->read(ptr, sz, nmemb);
   size_t to_read = sz * nmemb;
   if (to_read > streamsize - streampos)
     to_read = streamsize - streampos;
@@ -348,8 +371,6 @@ int LibRaw_buffer_datastream::read(void *ptr, size_t sz, size_t nmemb)
 
 int LibRaw_buffer_datastream::seek(INT64 o, int whence)
 {
-  if (substream)
-    return substream->seek(o, whence);
   switch (whence)
   {
   case SEEK_SET:
@@ -391,19 +412,16 @@ int LibRaw_buffer_datastream::seek(INT64 o, int whence)
 
 INT64 LibRaw_buffer_datastream::tell()
 {
-  if (substream)
-    return substream->tell();
   return INT64(streampos);
 }
 
 char *LibRaw_buffer_datastream::gets(char *s, int sz)
 {
-  if (substream)
-    return substream->gets(s, sz);
   unsigned char *psrc, *pdest, *str;
   str = (unsigned char *)s;
   psrc = buf + streampos;
   pdest = str;
+  if(streampos >= streamsize) return NULL;
   while ((size_t(psrc - buf) < streamsize) && ((pdest - str) < sz))
   {
     *pdest = *psrc;
@@ -422,8 +440,6 @@ char *LibRaw_buffer_datastream::gets(char *s, int sz)
 
 int LibRaw_buffer_datastream::scanf_one(const char *fmt, void *val)
 {
-  if (substream)
-    return substream->scanf_one(fmt, val);
   int scanf_res;
   if (streampos > streamsize)
     return 0;
@@ -439,7 +455,8 @@ int LibRaw_buffer_datastream::scanf_one(const char *fmt, void *val)
     {
       streampos++;
       xcnt++;
-      if (buf[streampos] == 0 || buf[streampos] == ' ' || buf[streampos] == '\t' || buf[streampos] == '\n' || xcnt > 24)
+      if (buf[streampos] == 0 || buf[streampos] == ' ' ||
+          buf[streampos] == '\t' || buf[streampos] == '\n' || xcnt > 24)
         break;
     }
   }
@@ -448,8 +465,6 @@ int LibRaw_buffer_datastream::scanf_one(const char *fmt, void *val)
 
 int LibRaw_buffer_datastream::eof()
 {
-  if (substream)
-    return substream->eof();
   return streampos >= streamsize;
 }
 int LibRaw_buffer_datastream::valid() { return buf ? 1 : 0; }
@@ -479,14 +494,14 @@ int LibRaw_buffer_datastream::jpeg_src(void *jpegdata)
 // == LibRaw_bigfile_datastream
 LibRaw_bigfile_datastream::LibRaw_bigfile_datastream(const char *fname)
     : filename(fname)
-#ifdef WIN32
+#ifdef LIBRAW_WIN32_UNICODEPATHS
       ,
       wfilename()
 #endif
 {
   if (filename.size() > 0)
   {
-#ifndef WIN32
+#ifndef LIBRAW_WIN32_CALLS
     struct stat st;
     if (!stat(filename.c_str(), &st))
       _fsize = st.st_size;
@@ -508,11 +523,11 @@ LibRaw_bigfile_datastream::LibRaw_bigfile_datastream(const char *fname)
     filename = std::string();
     f = 0;
   }
-  sav = 0;
 }
 
-#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) && (_MSC_VER > 1310)
-LibRaw_bigfile_datastream::LibRaw_bigfile_datastream(const wchar_t *fname) : filename(), wfilename(fname)
+#ifdef LIBRAW_WIN32_UNICODEPATHS
+LibRaw_bigfile_datastream::LibRaw_bigfile_datastream(const wchar_t *fname)
+    : filename(), wfilename(fname)
 {
   if (wfilename.size() > 0)
   {
@@ -531,77 +546,77 @@ LibRaw_bigfile_datastream::LibRaw_bigfile_datastream(const wchar_t *fname) : fil
     wfilename = std::wstring();
     f = 0;
   }
-  sav = 0;
 }
-const wchar_t *LibRaw_bigfile_datastream::wfname() { return wfilename.size() > 0 ? wfilename.c_str() : NULL; }
+const wchar_t *LibRaw_bigfile_datastream::wfname()
+{
+  return wfilename.size() > 0 ? wfilename.c_str() : NULL;
+}
 #endif
 
 LibRaw_bigfile_datastream::~LibRaw_bigfile_datastream()
 {
   if (f)
     fclose(f);
-  if (sav)
-    fclose(sav);
 }
 int LibRaw_bigfile_datastream::valid() { return f ? 1 : 0; }
 
-#define LR_BF_CHK()                                                                                                    \
-  do                                                                                                                   \
-  {                                                                                                                    \
-    if (!f)                                                                                                            \
-      throw LIBRAW_EXCEPTION_IO_EOF;                                                                                   \
+#define LR_BF_CHK()                                                            \
+  do                                                                           \
+  {                                                                            \
+    if (!f)                                                                    \
+      throw LIBRAW_EXCEPTION_IO_EOF;                                           \
   } while (0)
 
 int LibRaw_bigfile_datastream::read(void *ptr, size_t size, size_t nmemb)
 {
   LR_BF_CHK();
-  return substream ? substream->read(ptr, size, nmemb) : int(fread(ptr, size, nmemb, f));
+  return int(fread(ptr, size, nmemb, f));
 }
 
 int LibRaw_bigfile_datastream::eof()
 {
   LR_BF_CHK();
-  return substream ? substream->eof() : feof(f);
+  return feof(f);
 }
 
 int LibRaw_bigfile_datastream::seek(INT64 o, int whence)
 {
   LR_BF_CHK();
-#if defined(WIN32)
+#if defined(_WIN32)
 #ifdef WIN32SECURECALLS
-  return substream ? substream->seek(o, whence) : _fseeki64(f, o, whence);
+  return _fseeki64(f, o, whence);
 #else
-  return substream ? substream->seek(o, whence) : fseek(f, (long)o, whence);
+  return fseek(f, (long)o, whence);
 #endif
 #else
-  return substream ? substream->seek(o, whence) : fseeko(f, o, whence);
+  return fseeko(f, o, whence);
 #endif
 }
 
 INT64 LibRaw_bigfile_datastream::tell()
 {
   LR_BF_CHK();
-#if defined(WIN32)
+#if defined(_WIN32)
 #ifdef WIN32SECURECALLS
-  return substream ? substream->tell() : _ftelli64(f);
+  return _ftelli64(f);
 #else
-  return substream ? substream->tell() : ftell(f);
+  return ftell(f);
 #endif
 #else
-  return substream ? substream->tell() : ftello(f);
+  return ftello(f);
 #endif
 }
 
 char *LibRaw_bigfile_datastream::gets(char *str, int sz)
 {
   LR_BF_CHK();
-  return substream ? substream->gets(str, sz) : fgets(str, sz, f);
+  return fgets(str, sz, f);
 }
 
 int LibRaw_bigfile_datastream::scanf_one(const char *fmt, void *val)
 {
   LR_BF_CHK();
-  return substream ? substream->scanf_one(fmt, val) :
+  return 
 #ifndef WIN32SECURECALLS
                    fscanf(f, fmt, val)
 #else
@@ -610,57 +625,11 @@ int LibRaw_bigfile_datastream::scanf_one(const char *fmt, void *val)
       ;
 }
 
-const char *LibRaw_bigfile_datastream::fname() { return filename.size() > 0 ? filename.c_str() : NULL; }
+const char *LibRaw_bigfile_datastream::fname()
+{
+  return filename.size() > 0 ? filename.c_str() : NULL;
+}
 
-int LibRaw_bigfile_datastream::subfile_open(const char *fn)
-{
-  if (sav)
-    return EBUSY;
-  sav = f;
-#ifndef WIN32SECURECALLS
-  f = fopen(fn, "rb");
-#else
-  fopen_s(&f, fn, "rb");
-#endif
-  if (!f)
-  {
-    f = sav;
-    sav = NULL;
-    return ENOENT;
-  }
-  else
-    return 0;
-}
-#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) && (_MSC_VER > 1310)
-int LibRaw_bigfile_datastream::subfile_open(const wchar_t *fn)
-{
-  if (sav)
-    return EBUSY;
-  sav = f;
-#ifndef WIN32SECURECALLS
-  f = _wfopen(fn, L"rb");
-#else
-  _wfopen_s(&f, fn, L"rb");
-#endif
-  if (!f)
-  {
-    f = sav;
-    sav = NULL;
-    return ENOENT;
-  }
-  else
-    return 0;
-}
-#endif
-
-void LibRaw_bigfile_datastream::subfile_close()
-{
-  if (!sav)
-    return;
-  fclose(f);
-  f = sav;
-  sav = 0;
-}
 
 void *LibRaw_bigfile_datastream::make_jas_stream()
 {
@@ -671,26 +640,15 @@ void *LibRaw_bigfile_datastream::make_jas_stream()
 #endif
 }
 
-int LibRaw_bigfile_datastream::jpeg_src(void *jpegdata)
-{
-#ifdef NO_JPEG
-  return -1;
-#else
-  if (!f)
-    return -1;
-  j_decompress_ptr cinfo = (j_decompress_ptr)jpegdata;
-  jpeg_stdio_src(cinfo, f);
-  return 0; // OK
-#endif
-}
 
 // == LibRaw_windows_datastream
-#ifdef WIN32
+#ifdef LIBRAW_WIN32_CALLS
 
 LibRaw_windows_datastream::LibRaw_windows_datastream(const TCHAR *sFile)
     : LibRaw_buffer_datastream(NULL, 0), hMap_(0), pView_(NULL)
 {
-  HANDLE hFile = CreateFile(sFile, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
+  HANDLE hFile = CreateFile(sFile, GENERIC_READ, 0, 0, OPEN_EXISTING,
+                            FILE_ATTRIBUTE_NORMAL, 0);
   if (hFile == INVALID_HANDLE_VALUE)
     throw std::runtime_error("failed to open the file");
 
@@ -704,11 +662,13 @@ LibRaw_windows_datastream::LibRaw_windows_datastream(const TCHAR *sFile)
     throw;
   }
 
-  CloseHandle(hFile); // windows will defer the actual closing of this handle until the hMap_ is closed
+  CloseHandle(hFile); // windows will defer the actual closing of this handle
+                      // until the hMap_ is closed
   reconstruct_base();
 }
 
-// ctor: construct with a file handle - caller is responsible for closing the file handle
+// ctor: construct with a file handle - caller is responsible for closing the
+// file handle
 LibRaw_windows_datastream::LibRaw_windows_datastream(HANDLE hFile)
     : LibRaw_buffer_datastream(NULL, 0), hMap_(0), pView_(NULL)
 {

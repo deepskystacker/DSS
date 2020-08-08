@@ -21,6 +21,9 @@
 #define REGENTRY_BASEKEY_DEEPSKYSTACKER_BATCH_POSITION	_T("Software\\DeepSkyStacker\\DeepSkyStacker\\Dialogs\\Batch\\Position")
 #define REGENTRY_BASEKEY_LIVE_POSITION					_T("Software\\DeepSkyStacker\\DeepSkyStackerLive\\Position")
 
+constexpr unsigned int	STARMAXSIZE = 50;
+constexpr unsigned int 	RCCHECKSIZE = (5 * STARMAXSIZE) + 2; // 252
+
 typedef enum PICTURETYPE
 {
 	PICTURETYPE_UNKNOWN		= 0,

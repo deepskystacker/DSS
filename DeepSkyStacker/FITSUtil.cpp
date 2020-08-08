@@ -296,17 +296,24 @@ BOOL CFITSReader::Open()
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
-		CStringA errMsg;
-		errMsg.Format(
-			"fits_open_diskfile returned a status of %d, error text is \"%s\"",
+		CString errorMessage;
+		errorMessage.Format(_T("fits_open_diskfile %s\nreturned a status of %d, error text is:\n\"%s\""),
+			m_strFileName,
 			status,
-			error_text);
+			CString(error_text));
 
-		ZException exc(errMsg, status, ZException::unrecoverable);
-		exc.addLocation(ZEXCEPTION_LOCATION());
-		exc.logExceptionData();
-		throw exc;
+		ZTRACE_RUNTIME(CT2CA(errorMessage));
+
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
+#endif
+
 	}
+
+
+
 
 
 	if (m_fits)

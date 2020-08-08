@@ -7,6 +7,7 @@
 #include <set>
 #include <list>
 #include <iostream>
+#include <locale>
 #include <map>
 #include <stdexcept>
 #include <utility>
@@ -591,8 +592,8 @@ public :
 
         if (m_isRawFile)
         {
-            m_strMake = P1.make;
-            m_strModel = P1.model;
+            m_strMake = P1.normalized_make;
+            m_strModel = P1.normalized_model;
             m_lHeight = S.iheight;
             m_lWidth = S.iwidth;
             m_lISOSpeed = P2.iso_speed;
@@ -783,18 +784,26 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 		{
 			if (nullptr != cameraList[i])
 			{
-				supportedCameras.push_back(cameraList[i]);
+				supportedCameras.emplace_back(cameraList[i]);
 			}
 		}
 		//
-		// sort the names using std::sort
-		sort(supportedCameras.begin(), supportedCameras.end());
+		// Sort the camera names using std::sort and a case independent comparison lambda function
+		// See: https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings
+		//
+			sort(supportedCameras.begin(), supportedCameras.end(), 
+				[](const auto& lhs, const auto& rhs) 
+			{ 
+				const auto result = mismatch(lhs.cbegin(), lhs.cend(), rhs.cbegin(), rhs.cend(),
+					[](const auto& lhs, const auto& rhs) {return tolower(lhs) == tolower(rhs); });
+				return result.second != rhs.cend() && (result.first == lhs.cend() || tolower(*result.first) < tolower(*result.second));
+			});
 	}
 
 	//
 	// The camera type hasn't already been checked, so search the LibRaw supported camera list
 	//
-	result = binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
+	result = std::binary_search(supportedCameras.begin(), supportedCameras.end(), camera,
 		[](const std::string &lhs, const std::string &rhs) noexcept
 	{
 		const char* pclhs = lhs.c_str();
@@ -819,7 +828,7 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 	if (false == result)
 	{
 		CString errorMessage;
-		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, camera);
+		errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, strModel);
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
 #else
@@ -1346,19 +1355,22 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
-	BOOL			bIsTiff = FALSE;
 	TCHAR			szExt[_MAX_EXT];
 	CString			strExt;
 
-	// Check the extension - a tiff of tif file is not to be
-	// considered as a RAW file
+	//
+	// Check the extension - a file with the following extensions
+	// are definitely not considered to be a RAW file
+	// 
+	// .tiff .tif		TIFF files
+	// .jpg .jpeg .jpe	JPEG files
+	//
 	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 	strExt = szExt;
 	strExt.MakeUpper();
-	if ((strExt == _T(".TIF")) || (strExt == _T(".TIFF")))
-		bIsTiff = TRUE;
 
-	if (!bIsTiff)
+	if ((strExt != _T(".TIF")) && (strExt != _T(".TIFF")) && 
+		strExt != _T(".JPG") && strExt != _T(".JPEG") && strExt != _T(".JPE"))
 	{
 		CRawDecod		dcr(szFileName);
 

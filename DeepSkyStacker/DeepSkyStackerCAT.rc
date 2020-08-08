@@ -1178,7 +1178,7 @@ END
 STRINGTABLE 
 BEGIN
     IDS_FILTER_DSIIMAGETIFF "TIFF, FITS o Imatge DeepSkyStacker|*.DSImage;*.tif;*.tiff;*.fts;*.fit;*.fits||"
-    IDS_FILTER_INPUT        "Arxius d'Imatge|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Bitmaps de Windows (.bmp)|*.bmp| Arxiu JPEG o PNG|*.jpg;*.jpeg;*.png|Arxiu TIFF (.tif)|*.tif;*.tiff|Arxiu RAW|*.cr2;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Arxiu FITS|*.fits;*.fit;*.fts|All Files|*.*||"
+    IDS_FILTER_INPUT        "Arxius d'Imatge|*.bmp;*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.fit;*.fits;*.fts;*.cr2;*.cr3;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Bitmaps de Windows (.bmp)|*.bmp| Arxiu JPEG o PNG|*.jpg;*.jpeg;*.png|Arxiu TIFF (.tif)|*.tif;*.tiff|Arxiu RAW|*.cr2;*.cr3;*.crw;*.nef;*.mrw;*.orf;*.raf;*.pef;*.x3f;*.dcr;*.kdc;*.srf;*.arw;*.raw;*.dng;*.ia;*.rw2|Arxiu FITS|*.fits;*.fit;*.fts|All Files|*.*||"
     IDS_FILTER_OUTPUT       "Imatge TIFF (16 bit/ch)|*.TIF|Imatge TIFF (32 bit/ch - integer)|*.TIF|Imatge TIFF (32 bit/ch - rational)|*.TIF|Imatge FITS (16 bit/ch)|*.FTS|Imatge FITS (32 bit/ch - integer)|*.FTS|Imatge FITS (32 bit/ch -rational)|*.FTS||"
     IDS_LISTFILTER_OUTPUT   "Llista d'Arxius (*.txt)|*.txt|Llista d'Arxius (*.dssfilelist)|*.dssfilelist|Tots Els Arxius|*.*||"
     IDS_FILTER_MASK         "Imatge TIFF|*.tif;*.tiff|Imatge FITS|*.fits;*.fts;*.fit||"

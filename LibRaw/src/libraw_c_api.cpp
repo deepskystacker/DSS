@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * File: libraw_c_api.cpp
- * Copyright 2008-2018 LibRaw LLC (info@libraw.org)
+ * Copyright 2008-2020 LibRaw LLC (info@libraw.org)
  * Created: Sat Mar  8 , 2008
  *
  * LibRaw C interface
@@ -34,7 +34,7 @@ extern "C"
     {
       ret = new LibRaw(flags);
     }
-    catch (std::bad_alloc)
+    catch (const std::bad_alloc& )
     {
       return NULL;
     }
@@ -43,7 +43,10 @@ extern "C"
 
   unsigned libraw_capabilities() { return LibRaw::capabilities(); }
   const char *libraw_version() { return LibRaw::version(); }
-  const char *libraw_strprogress(enum LibRaw_progress p) { return LibRaw::strprogress(p); }
+  const char *libraw_strprogress(enum LibRaw_progress p)
+  {
+    return LibRaw::strprogress(p);
+  }
   int libraw_versionNumber() { return LibRaw::versionNumber(); }
   const char **libraw_cameraList() { return LibRaw::cameraList(); }
   int libraw_cameraCount() { return LibRaw::cameraCount(); }
@@ -99,7 +102,8 @@ extern "C"
     LibRaw *ip = (LibRaw *)lr->parent_class;
     return ip->open_file(file, sz);
   }
-#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) && (_MSC_VER > 1310)
+#if defined(_WIN32) && !defined(__MINGW32__) && defined(_MSC_VER) &&           \
+    (_MSC_VER > 1310)
   int libraw_open_wfile(libraw_data_t *lr, const wchar_t *file)
   {
     if (!lr)
@@ -159,7 +163,8 @@ extern "C"
     delete ip;
   }
 
-  void libraw_set_exifparser_handler(libraw_data_t *lr, exif_parser_callback cb, void *data)
+  void libraw_set_exifparser_handler(libraw_data_t *lr, exif_parser_callback cb,
+                                     void *data)
   {
     if (!lr)
       return;
@@ -167,21 +172,24 @@ extern "C"
     ip->set_exifparser_handler(cb, data);
   }
 
-  void libraw_set_memerror_handler(libraw_data_t *lr, memory_callback cb, void *data)
+  void libraw_set_memerror_handler(libraw_data_t *lr, memory_callback cb,
+                                   void *data)
   {
     if (!lr)
       return;
     LibRaw *ip = (LibRaw *)lr->parent_class;
     ip->set_memerror_handler(cb, data);
   }
-  void libraw_set_dataerror_handler(libraw_data_t *lr, data_callback func, void *data)
+  void libraw_set_dataerror_handler(libraw_data_t *lr, data_callback func,
+                                    void *data)
   {
     if (!lr)
       return;
     LibRaw *ip = (LibRaw *)lr->parent_class;
     ip->set_dataerror_handler(func, data);
   }
-  void libraw_set_progress_handler(libraw_data_t *lr, progress_callback cb, void *data)
+  void libraw_set_progress_handler(libraw_data_t *lr, progress_callback cb,
+                                   void *data)
   {
     if (!lr)
       return;
@@ -218,7 +226,8 @@ extern "C"
     LibRaw *ip = (LibRaw *)lr->parent_class;
     return ip->dcraw_process();
   }
-  libraw_processed_image_t *libraw_dcraw_make_mem_image(libraw_data_t *lr, int *errc)
+  libraw_processed_image_t *libraw_dcraw_make_mem_image(libraw_data_t *lr,
+                                                        int *errc)
   {
     if (!lr)
     {
@@ -229,7 +238,8 @@ extern "C"
     LibRaw *ip = (LibRaw *)lr->parent_class;
     return ip->dcraw_make_mem_image(errc);
   }
-  libraw_processed_image_t *libraw_dcraw_make_mem_thumb(libraw_data_t *lr, int *errc)
+  libraw_processed_image_t *libraw_dcraw_make_mem_thumb(libraw_data_t *lr,
+                                                        int *errc)
   {
     if (!lr)
     {
@@ -241,7 +251,10 @@ extern "C"
     return ip->dcraw_make_mem_thumb(errc);
   }
 
-  void libraw_dcraw_clear_mem(libraw_processed_image_t *p) { LibRaw::dcraw_clear_mem(p); }
+  void libraw_dcraw_clear_mem(libraw_processed_image_t *p)
+  {
+    LibRaw::dcraw_clear_mem(p);
+  }
 
   int libraw_raw2image(libraw_data_t *lr)
   {
@@ -295,6 +308,14 @@ extern "C"
       return;
     LibRaw *ip = (LibRaw *)lr->parent_class;
     ip->imgdata.params.output_bps = value;
+  }
+
+  	DllDef void libraw_set_output_tif(libraw_data_t *lr, int value)
+  {
+    if (!lr)
+      return;
+    LibRaw *ip = (LibRaw *)lr->parent_class;
+    ip->imgdata.params.output_tiff = value;
   }
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))

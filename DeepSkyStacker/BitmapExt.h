@@ -1722,7 +1722,7 @@ private :
 
 	inline void	CheckXY(LONG x, LONG y)
 	{
-		ZASSERT(x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
+		ZASSERTSTATE(x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	};
 
 	inline bool	IsXYOk(LONG x, LONG y)
@@ -3067,7 +3067,7 @@ public :
 private :
 	inline void	CheckXY(LONG x, LONG y)
 	{
-		ZASSERT (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
+		ZASSERTSTATE (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight);
 	};
 	size_t	GetOffset(LONG x, LONG y)
 	{
@@ -3464,7 +3464,8 @@ private :
         m_fExposure = 0.0;
         m_fAperture = 0.0;
         m_bFITS16bit = FALSE;
-        m_DateTime.wYear = 0;
+		m_DateTime = { 0 };
+		m_InfoTime = { 0 };
 		m_xBayerOffset = 0;
 		m_yBayerOffset = 0;
     }

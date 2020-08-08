@@ -554,6 +554,7 @@ void CPictureListCtrl::RefreshList()
 
 void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType, BOOL bCheck, int nItem)
 {
+	ZFUNCTRACE_RUNTIME();
 	CString				strFile = szFile;
 	TCHAR				szDrive[1+_MAX_DRIVE];
 	TCHAR				szDir[1+_MAX_DIR];
@@ -693,6 +694,7 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const
 					else if (PictureType == PICTURETYPE_OFFSETFRAME)
 						lb.m_strType.LoadString(IDS_TYPE_MASTEROFFSET);
 				};
+
 
 				if (lb.GetCFAType() != CFATYPE_NONE)
 					strText.LoadString(IDS_YES);

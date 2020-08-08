@@ -3,6 +3,7 @@ AC_INIT([LibRaw], m4_esyscmd([./version.sh]), [info@libraw.org], [], [http://www
 AM_INIT_AUTOMAKE([foreign no-define])
 #AM_SILENT_RULES([yes])
 AC_CONFIG_MACRO_DIR([m4])
+AC_CANONICAL_HOST
 
 # Tools to use
 AC_PROG_CXX
@@ -83,7 +84,24 @@ if test x$jasper = xtrue; then
         )
 fi
 
+# check if we want zlib support
+AC_ARG_ENABLE([zlib],
+	[  --enable-zlib    Enable zlib support for deflate compressed DNG files],
+	[case "${enableval}" in
+		yes)	zlib=true ;;
+		no)		zlib=false ;;
+		*)		AC_MSG_ERROR([bad value ${enableval} for --enable-zlib]) ;;
+	esac],[zlib=true])
 
+if test x$zlib = xtrue; then
+	PKG_CHECK_MODULES([ZLIB],[zlib],[
+		CPPFLAGS="$CPPFLAGS $ZLIB_CFLAGS -DUSE_ZLIB"
+		LIBS="$LIBS $ZLIB_LIBS"
+		AC_SUBST([PACKAGE_REQUIRES],[zlib])
+	],
+		AC_MSG_WARN([zlib support cannot be enabled])
+	)
+fi
 
 # check if we want LCMS support
 AC_ARG_ENABLE([lcms],
@@ -121,6 +139,10 @@ AC_ARG_ENABLE([examples],
 AM_CONDITIONAL([EXAMPLES], [test x$examples = xtrue])
 
 LIBS="$LIBS -lm"
+
+case "${host_os}" in
+	*mingw32*) LIBS="$LIBS -lws2_32" ;;
+esac
 
 AC_SUBST([LIBRAW_SHLIB_VERSION],m4_esyscmd([./shlib-version.sh]))
 AC_SUBST([LIBRAW_RELEASE_VERSION],m4_esyscmd([./version.sh]))

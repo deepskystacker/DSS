@@ -171,7 +171,18 @@ public :
 	CFATYPE	GetCFAType() const
 	{
 		if (m_bFITS16bit)
-			return m_CFAType = GetFITSCFATYPE();
+		{
+			//
+			// On the old days this was always determined by the values read from the 
+			// workspace by GetFITSCFATYPE().  Now however GetFITSInfo() may auto-detect
+			// the CFA pattern and pre-populate CFAType, which we should now use.  If it's
+			// not set the do it the old way.
+			//
+			if (m_CFAType != CFATYPE_NONE)
+				return m_CFAType;
+			else
+				return m_CFAType = GetFITSCFATYPE();
+		}
 		else
 			return m_CFAType;
 	};
