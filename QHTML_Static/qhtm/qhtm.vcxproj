@@ -372,9 +372,6 @@
     <Image Include="res\noimage.bmp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="QHTM.rc">
-      <ShowProgress Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ShowProgress>
-    </ResourceCompile>
     <ResourceCompile Include="version.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
