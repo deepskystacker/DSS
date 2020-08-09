@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A71D2131-F425-381F-8A9A-29D60132A046}</ProjectGuid>
+    <ProjectGuid>{767E57ED-6D37-32A1-B51E-C39E7C1CD02A}</ProjectGuid>
     <RootNamespace>libraw</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
     <WindowsTargetPlatformMinVersion>10.0.18362.0</WindowsTargetPlatformMinVersion>

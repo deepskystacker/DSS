@@ -1,8 +1,12 @@
 #ifndef _BITMAPEXT_H__
 #define _BITMAPEXT_H__
 
+#include <QCoreApplication> 
+#include <QString>
+
 #include "Multitask.h"
 #include <zexcept.h>
+#include "resource.h"
 
 #ifndef DSSFILEDECODING
 #define DSSFILEDECODING 1
@@ -13,11 +17,11 @@
 /* ------------------------------------------------------------------- */
 
 #if DSSFILEDECODING==1
-BOOL	IsFITSRawBayer();		// From FITSUtil.h
-BOOL	IsFITSSuperPixels();	// From FITSUtil.h
+bool	IsFITSRawBayer();		// From FITSUtil.h
+bool	IsFITSSuperPixels();	// From FITSUtil.h
 #else
-inline BOOL	IsFITSRawBayer()	{ return FALSE; };	// From FITSUtil.h
-inline BOOL	IsFITSSuperPixels() { return FALSE; };	// From FITSUtil.h
+inline bool	IsFITSRawBayer()	{ return false; };	// From FITSUtil.h
+inline bool	IsFITSSuperPixels() { return false; };	// From FITSUtil.h
 #endif // !DSSFILEDECODING
 
 /* ------------------------------------------------------------------- */
@@ -291,18 +295,6 @@ inline double ClampPixel(double fValue)
 
 class CMemoryBitmap;
 
-typedef enum
-{
-	MBP_AVERAGE		= 1,
-	MBP_MEDIAN	    = 2,
-	MBP_MAXIMUM		= 3,
-	MBP_SIGMACLIP	= 4,
-	MBP_ENTROPYAVERAGE	= 5,
-	MBP_AUTOADAPTIVE	= 6,
-	MBP_MEDIANSIGMACLIP = 7,
-	MBP_FASTAVERAGE		= 8
-}MULTIBITMAPPROCESSMETHOD;
-
 /* ------------------------------------------------------------------- */
 
 inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
@@ -332,6 +324,49 @@ inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method,
 	case MBP_MEDIANSIGMACLIP :
 		strText.Format(IDS_RECAP_MEDIANSIGMACLIP, fKappa, lNrIterations);
 	};
+};
+
+inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
+{
+	QString strText;
+
+	switch (Method)
+	{
+	case MBP_FASTAVERAGE:
+	case MBP_AVERAGE:
+		strText = QCoreApplication::translate("StackRecap", "Average", "IDS_RECAP_AVERAGE");
+		break;
+	case MBP_MEDIAN:
+		strText = QCoreApplication::translate("StackRecap", "Median", "IDS_RECAP_MEDIAN");
+		break;
+	case MBP_MAXIMUM:
+		strText = QCoreApplication::translate("StackRecap", "Maximum", "IDS_RECAP_MAXIMUM");
+		break;
+	case MBP_SIGMACLIP:
+		strText = QCoreApplication::translate("StackRecap", "Kappa-Sigma (Kappa = %1, Iterations = %2)",
+				"IDS_RECAP_KAPPASIGMA")
+			.arg(fKappa, 0, 'f', 2)
+			.arg(lNrIterations);
+		break;
+	case MBP_AUTOADAPTIVE:
+		strText = QCoreApplication::translate("StackRecap",
+				"Auto Adaptive Weighted Average (Iterations = %1)",
+				"IDS_RECAP_AUTOADAPTIVE")
+			.arg(lNrIterations);
+		break;
+	case MBP_ENTROPYAVERAGE:
+		strText = QCoreApplication::translate("StackRecap",
+			"Entropy Weighted Average",
+			"IDS_RECAP_ENTROPYAVERAGE");
+		break;
+	case MBP_MEDIANSIGMACLIP:
+		strText = QCoreApplication::translate("StackRecap", 
+				"Median Kappa-Sigma (Kappa = %1, Iterations = %2)",
+				"IDS_RECAP_MEDIANSIGMACLIP")
+			.arg(fKappa, 0, 'f', 2)
+			.arg(lNrIterations);
+	};
+	return strText;
 };
 
 /* ------------------------------------------------------------------- */
@@ -396,8 +431,8 @@ protected :
 	BITMAPPARTFILEVECTOR		m_vFiles;
 	LONG						m_lWidth,
 								m_lHeight;
-	BOOL						m_bInitDone;
-	BOOL						m_bHomogenization;
+	bool						m_bInitDone;
+	bool						m_bHomogenization;
 	double						m_fMaxWeight;
 	std::vector<LONG>			m_vImageOrder;
 
@@ -407,7 +442,7 @@ private :
 	void	SmoothOut(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppOutBitmap);
 
 public :
-	virtual BOOL	SetScanLines(CMemoryBitmap * pBitmap, LONG lLine, const std::vector<void*>	& vScanLines) = 0;
+	virtual bool	SetScanLines(CMemoryBitmap * pBitmap, LONG lLine, const std::vector<void*>	& vScanLines) = 0;
 
 public :
 	CMultiBitmap()
@@ -415,9 +450,9 @@ public :
 		m_lNrBitmaps = 0;
 		m_lWidth	 = 0;
 		m_lHeight	 = 0;
-		m_bInitDone	 = FALSE;
+		m_bInitDone	 = false;
 		m_lNrAddedBitmaps = 0;
-		m_bHomogenization = FALSE;
+		m_bHomogenization = false;
 		m_fMaxWeight	  = 0;
         m_Method = MULTIBITMAPPROCESSMETHOD(0);
         m_fKappa = 0.0f;
@@ -430,8 +465,8 @@ public :
 	};
 
 	void			SetBitmapModel(CMemoryBitmap * pBitmap);
-	virtual BOOL	CreateNewMemoryBitmap(CMemoryBitmap ** ppBitmap) = 0;
-	virtual BOOL	CreateOutputMemoryBitmap(CMemoryBitmap ** ppBitmap) = 0;
+	virtual bool	CreateNewMemoryBitmap(CMemoryBitmap ** ppBitmap) = 0;
+	virtual bool	CreateOutputMemoryBitmap(CMemoryBitmap ** ppBitmap) = 0;
 
 	virtual void	SetNrBitmaps(LONG lNrBitmaps)
 	{
@@ -453,8 +488,8 @@ public :
 		m_vImageOrder = vImageOrder;
 	};
 
-	virtual BOOL	AddBitmap(CMemoryBitmap * pMemoryBitmap, CDSSProgress * pProgress = nullptr);
-	virtual BOOL	GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	virtual bool	AddBitmap(CMemoryBitmap * pMemoryBitmap, CDSSProgress * pProgress = nullptr);
+	virtual bool	GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
 	virtual LONG	GetNrChannels() = 0;
 	virtual LONG	GetNrBytesPerChannel() = 0;
 
@@ -465,7 +500,7 @@ public :
 		m_lNrIterations = lNrIterations;
 	};
 
-	void	SetHomogenization(BOOL bSet)
+	void	SetHomogenization(bool bSet)
 	{
 		m_bHomogenization = bSet;
 	};
@@ -491,42 +526,42 @@ inline LONG	CMYGZeroIndex(BAYERCOLOR Color)
 	return Color-BAYER_CYAN;
 };
 
-typedef enum CFATYPE
+enum CFATYPE : unsigned long
 {
-	CFATYPE_NONE		= 0,
-	CFATYPE_BGGR		= 1,
-	CFATYPE_GRBG		= 2,
-	CFATYPE_GBRG		= 3,
-	CFATYPE_RGGB		= 4,
+	CFATYPE_NONE = 0,
+	CFATYPE_BGGR = 1,
+	CFATYPE_GRBG = 2,
+	CFATYPE_GBRG = 3,
+	CFATYPE_RGGB = 4,
 
 	// A = Cyan		B = Green		C = Magenta		D = Yellow
-	CFATYPE_CGMY		= 0xABCD,
-	CFATYPE_CGYM		= 0xABDC,
-	CFATYPE_CMGY		= 0xACBD,
-	CFATYPE_CMYG		= 0xACDB,
-	CFATYPE_CYMG		= 0xADCB,
-	CFATYPE_CYGM		= 0xADBC,
+	CFATYPE_CGMY = 0xABCD,
+	CFATYPE_CGYM = 0xABDC,
+	CFATYPE_CMGY = 0xACBD,
+	CFATYPE_CMYG = 0xACDB,
+	CFATYPE_CYMG = 0xADCB,
+	CFATYPE_CYGM = 0xADBC,
 
-	CFATYPE_GCMY		= 0xBACD,
-	CFATYPE_GCYM		= 0xBADC,
-	CFATYPE_GMCY		= 0xBCAD,
-	CFATYPE_GMYC		= 0xBCDA,
-	CFATYPE_GYCM		= 0xBDAC,
-	CFATYPE_GYMC		= 0xBDCA,
+	CFATYPE_GCMY = 0xBACD,
+	CFATYPE_GCYM = 0xBADC,
+	CFATYPE_GMCY = 0xBCAD,
+	CFATYPE_GMYC = 0xBCDA,
+	CFATYPE_GYCM = 0xBDAC,
+	CFATYPE_GYMC = 0xBDCA,
 
-	CFATYPE_MCGY		= 0xCABD,
-	CFATYPE_MCYG		= 0xCADB,
-	CFATYPE_MGYC		= 0xCBDA,
-	CFATYPE_MGCY		= 0xCBAD,
-	CFATYPE_MYGC		= 0xCDBA,
-	CFATYPE_MYCG		= 0xCDAB,
+	CFATYPE_MCGY = 0xCABD,
+	CFATYPE_MCYG = 0xCADB,
+	CFATYPE_MGYC = 0xCBDA,
+	CFATYPE_MGCY = 0xCBAD,
+	CFATYPE_MYGC = 0xCDBA,
+	CFATYPE_MYCG = 0xCDAB,
 
-	CFATYPE_YCGM		= 0xDABC,
-	CFATYPE_YCMG		= 0xDACB,
-	CFATYPE_YGMC		= 0xDBCA,
-	CFATYPE_YGCM		= 0xDBAC,
-	CFATYPE_YMCG		= 0xDCAB,
-	CFATYPE_YMGC		= 0xDCBA,
+	CFATYPE_YCGM = 0xDABC,
+	CFATYPE_YCMG = 0xDACB,
+	CFATYPE_YGMC = 0xDBCA,
+	CFATYPE_YGCM = 0xDBAC,
+	CFATYPE_YMCG = 0xDCAB,
+	CFATYPE_YMGC = 0xDCBA,
 
 	CFATYPE_CYMGCYGM = 0xADCBADBC,
 	CFATYPE_YCGMYCMG = 0xDABCDACB,
@@ -547,14 +582,14 @@ typedef enum CFATYPE
 	CFATYPE_YCGMCYGM = 0xDABCADBC,
 	CFATYPE_YCMGCYMG = 0xDACBADCB,
 	CFATYPE_CYGMYCGM = 0xADBCDABC
-}CFATYPE;
+};
 
-inline BOOL IsCYMGType(CFATYPE Type)
+inline bool IsCYMGType(CFATYPE Type)
 {
 	return ((Type & 0xFFFFFFF0) != 0);
 }
 
-inline BOOL IsSimpleCYMG(CFATYPE Type)
+inline bool IsSimpleCYMG(CFATYPE Type)
 {
 	return !(Type & 0xFFFF0000);
 };
@@ -576,7 +611,7 @@ public :
 
 	virtual ~CMedianFilterEngine() {};
 
-	virtual BOOL	GetFilteredImage(CMemoryBitmap ** ppBitmap, LONG lFilterSize, CDSSProgress * pProgress) = 0;
+	virtual bool	GetFilteredImage(CMemoryBitmap ** ppBitmap, LONG lFilterSize, CDSSProgress * pProgress) = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -623,7 +658,7 @@ public :
 	};
 };
 
-BOOL	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitmap);
+bool	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitmap);
 
 /* ------------------------------------------------------------------- */
 
@@ -671,9 +706,9 @@ public :
 	SYSTEMTIME			m_DateTime;
 
 protected :
-	BOOL				m_bTopDown;
-	BOOL				m_bMaster;
-	BOOL				m_bCFA;
+	bool				m_bTopDown;
+	bool				m_bMaster;
+	bool				m_bCFA;
 	double				m_fExposure;
 	double				m_fAperture;
 	LONG				m_lISOSpeed;
@@ -702,9 +737,9 @@ protected :
 public :
 	CMemoryBitmap()
 	{
-		m_bMaster  = FALSE;
-		m_bTopDown = FALSE;
-		m_bCFA	   = FALSE;
+		m_bMaster  = false;
+		m_bTopDown = false;
+		m_bCFA	   = false;
 		m_fExposure = 0.0;
 		m_fAperture = 0.0;
 		m_lISOSpeed = 0;
@@ -795,7 +830,7 @@ public :
 		return m_filterName;
 	}
 
-	virtual BOOL	Init(LONG lWidth, LONG lHeight) = 0;
+	virtual bool	Init(LONG lWidth, LONG lHeight) = 0;
 
 	virtual void	SetPixel(LONG i, LONG j, double fRed, double fGreen, double fBlue)  =0;
 	virtual void	SetPixel(LONG i, LONG j, double fGray)  =0;
@@ -807,8 +842,8 @@ public :
 	virtual void	SetValue(LONG i, LONG j, double fGray) {};
 	virtual void	GetValue(LONG i, LONG j, double & fGray) {};
 
-	virtual BOOL	GetScanLine(LONG j, void * pScanLine) = 0;
-	virtual BOOL	SetScanLine(LONG j, void * pScanLine) = 0;
+	virtual bool	GetScanLine(LONG j, void * pScanLine) = 0;
+	virtual bool	SetScanLine(LONG j, void * pScanLine) = 0;
 
 	virtual void	GetPixel16(LONG i, LONG j, COLORREF16 & crResult)
 	{
@@ -840,29 +875,29 @@ public :
 		return Height();
 	};
 
-	void	SetOrientation(BOOL bTopDown)
+	void	SetOrientation(bool bTopDown)
 	{
 		m_bTopDown = bTopDown;
 	};
 
-	virtual BOOL	IsMonochrome() = 0;
+	virtual bool	IsMonochrome() = 0;
 
-	virtual void	SetMaster(BOOL bMaster)
+	virtual void	SetMaster(bool bMaster)
 	{
 		m_bMaster = bMaster;
 	};
 
-	virtual BOOL	IsMaster()
+	virtual bool	IsMaster()
 	{
 		return m_bMaster;
 	};
 
-	virtual void	SetCFA(BOOL bCFA)
+	virtual void	SetCFA(bool bCFA)
 	{
 		m_bCFA = bCFA;
 	};
 
-	virtual BOOL	IsCFA()
+	virtual bool	IsCFA()
 	{
 		return m_bCFA;
 	};
@@ -872,12 +907,12 @@ public :
 		return BAYER_UNKNOWN;
 	};
 
-	BOOL	IsOk()
+	bool	IsOk()
 	{
 		return (Width() > 0) && (Height() > 0);
 	};
 
-	virtual CMemoryBitmap *	Clone(BOOL bEmpty = FALSE) = 0;
+	virtual CMemoryBitmap *	Clone(bool bEmpty = false) = 0;
 
 	virtual CMultiBitmap * CreateEmptyMultiBitmap() = 0;
 	virtual void	AverageBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress) {};
@@ -893,10 +928,10 @@ typedef CSmartPtr<CMemoryBitmap::CPixelIterator>	PixelIterator;
 
 /* ------------------------------------------------------------------- */
 
-BOOL Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
-BOOL Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr);
-BOOL ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fXShift = 0, double fYShift = 0);
-BOOL Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress = nullptr);
+bool Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
+bool Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr);
+bool ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fXShift = 0, double fYShift = 0);
+bool Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 
@@ -917,7 +952,7 @@ public :
 		m_pInBitmap = pInBitmap;
 	};
 
-	virtual BOOL	GetFilteredImage(CMemoryBitmap ** ppBitmap, LONG lFilterSize, CDSSProgress * pProgress);
+	virtual bool	GetFilteredImage(CMemoryBitmap ** ppBitmap, LONG lFilterSize, CDSSProgress * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1056,31 +1091,31 @@ inline BAYERCOLOR GetBayerColor(LONG baseX, LONG baseY, CFATYPE CFAType, LONG xO
 //
 // Add parameter yOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-inline BOOL	IsBayerBlueLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
+inline bool	IsBayerBlueLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
 {
 	LONG y = baseY + yOffset;
 
 	if ((CFAType == CFATYPE_GRBG) || (CFAType == CFATYPE_RGGB))
-		return (y & 1) ? TRUE : FALSE;
+		return (y & 1) ? true : false;
 	else
-		return (y & 1) ? FALSE : TRUE;
+		return (y & 1) ? false : true;
 };
 
 //
 // Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-inline BOOL IsBayerBlueColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
+inline bool IsBayerBlueColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
 {
 	LONG x = baseX + xOffset;
 
 	if ((CFAType == CFATYPE_GBRG) || (CFAType == CFATYPE_RGGB))
-		return (x & 1) ? TRUE : FALSE;
+		return (x & 1) ? true : false;
 	else
-		return (x & 1) ? FALSE : TRUE;
+		return (x & 1) ? false : true;
 };
 
 
-inline BOOL IsBayerRedLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
+inline bool IsBayerRedLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
 {
 	return !IsBayerBlueLine(baseY, CFAType, yOffset);
 };
@@ -1088,7 +1123,7 @@ inline BOOL IsBayerRedLine(LONG baseY, CFATYPE CFAType, LONG yOffset = 0)
 //
 // Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-inline BOOL IsBayerRedColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
+inline bool IsBayerRedColumn(LONG baseX, CFATYPE CFAType, LONG xOffset = 0)
 {
 	return !IsBayerBlueColumn(baseX, CFAType, xOffset);
 };
@@ -1189,12 +1224,12 @@ class CCFABitmapInfo
 protected :
 	CFATRANSFORMATION	m_CFATransform;
 	CFATYPE				m_CFAType;
-	BOOL				m_bCYMG;
+	bool				m_bCYMG;
 	LONG				m_xBayerOffset;
 	LONG				m_yBayerOffset;
 
 protected :
-	virtual void SetCFA(BOOL bCFA) = 0;
+	virtual void SetCFA(bool bCFA) = 0;
 
 public :
 	void	InitFrom(CCFABitmapInfo * pCFABitmapInfo)
@@ -1211,7 +1246,7 @@ public :
 	{
 		m_CFATransform = CFAT_NONE;
 		m_CFAType	   = CFATYPE_NONE;
-		m_bCYMG		   = FALSE;
+		m_bCYMG		   = false;
 		m_xBayerOffset = 0;
 		m_yBayerOffset = 0;
 	};
@@ -1250,45 +1285,45 @@ public :
 		return m_CFAType;
 	};
 
-	void	UseSuperPixels(BOOL bUse)
+	void	UseSuperPixels(bool bUse)
 	{
 		if (bUse)
 		{
 			m_CFATransform = CFAT_SUPERPIXEL;
-			SetCFA(TRUE);
+			SetCFA(true);
 		}
 		else
 			m_CFATransform = CFAT_NONE;
 	};
 
-	void	UseRawBayer(BOOL bUse)
+	void	UseRawBayer(bool bUse)
 	{
 		if (bUse)
 		{
 			m_CFATransform = CFAT_RAWBAYER;
-			SetCFA(TRUE);
+			SetCFA(true);
 		}
 		else
 			m_CFATransform = CFAT_NONE;
 	};
 
-	void	UseBilinear(BOOL bUse)
+	void	UseBilinear(bool bUse)
 	{
 		if (bUse)
 		{
 			m_CFATransform = CFAT_BILINEAR;
-			SetCFA(TRUE);
+			SetCFA(true);
 		}
 		else
 			m_CFATransform = CFAT_NONE;
 	};
 
-	void	UseAHD(BOOL bUse)
+	void	UseAHD(bool bUse)
 	{
 		if (bUse)
 		{
 			m_CFATransform = CFAT_AHD;
-			SetCFA(TRUE);
+			SetCFA(true);
 		}
 		else
 			m_CFATransform = CFAT_NONE;
@@ -1306,7 +1341,7 @@ template <typename TType, typename TTypeOutput = TType>
 class CGrayMultiBitmapT : public CMultiBitmap
 {
 protected :
-	virtual BOOL	CreateNewMemoryBitmap(CMemoryBitmap ** ppBitmap)
+	virtual bool	CreateNewMemoryBitmap(CMemoryBitmap ** ppBitmap)
 	{
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 
@@ -1316,7 +1351,7 @@ protected :
 
 			m_pBitmapModel->GetCharacteristics(bc);
 			if (bc.m_lNrChannels == 1)
-				pBitmap.Attach(m_pBitmapModel->Clone(TRUE));
+				pBitmap.Attach(m_pBitmapModel->Clone(true));
 			else
 			{
 				bc.m_lNrChannels = 1;
@@ -1329,7 +1364,7 @@ protected :
 		return pBitmap.CopyTo(ppBitmap);
 	};
 
-	virtual BOOL	CreateOutputMemoryBitmap(CMemoryBitmap ** ppBitmap)
+	virtual bool	CreateOutputMemoryBitmap(CMemoryBitmap ** ppBitmap)
 	{
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 
@@ -1351,9 +1386,9 @@ protected :
 		return pBitmap.CopyTo(ppBitmap);
 	};
 
-	virtual BOOL	SetScanLines(CMemoryBitmap * pBitmap, LONG lLine, const std::vector<void*> & vScanLines)
+	virtual bool	SetScanLines(CMemoryBitmap * pBitmap, LONG lLine, const std::vector<void*> & vScanLines)
 	{
-		BOOL						bResult = FALSE;
+		bool						bResult = false;
 		// Each scan line consist of lWidth TType values
 		LONG						lWidth;
 		TTypeOutput *				pOutputScanLine;
@@ -1449,7 +1484,7 @@ protected :
 
 		pBitmap->SetScanLine(lLine, pOutputScanLine);
 		free(pOutputScanLine);
-		bResult = TRUE;
+		bResult = true;
 
 		return bResult;
 	};
@@ -1599,12 +1634,12 @@ public :
 			m_pProgress = pProgress;
 		};
 
-		virtual BOOL	DoTask(HANDLE hEvent)
+		virtual bool	DoTask(HANDLE hEvent)
 		{
-			BOOL				bResult = TRUE;
+			bool				bResult = true;
 
 			LONG					i, j;
-			BOOL					bEnd = FALSE;
+			bool					bEnd = false;
 			MSG						msg;
 			LONG					lWidth = m_pBitmap->Width();
 			std::vector<size_t>		vHotOffsets;
@@ -1629,12 +1664,12 @@ public :
 							vOffsets[3] = m_pBitmap->GetOffset(i, j-1);
 
 							TType				fValue = m_pBitmap->m_vPixels[lOffset];
-							BOOL				bHot = TRUE;
+							bool				bHot = true;
 
 							for (LONG k = 0;k<4 && bHot;k++)
 							{
 								if (fValue <= 4.0 * m_pBitmap->m_vPixels[vOffsets[k]])
-									bHot = FALSE;
+									bHot = false;
 							};
 
 							if (bHot)
@@ -1648,7 +1683,7 @@ public :
 					SetEvent(hEvent);
 				}
 				else if (msg.message == WM_MT_STOP)
-					bEnd = TRUE;
+					bEnd = true;
 			};
 
 			// Add the vHotOffsets vector to the main one
@@ -1656,12 +1691,12 @@ public :
 			for (i = 0;i<vHotOffsets.size();i++)
 				m_vHotOffsets.push_back(vHotOffsets[i]);
 			m_CriticalSection.Unlock();
-			return TRUE;
+			return true;
 		};
 
-		virtual BOOL	Process()
+		virtual bool	Process()
 		{
-			BOOL				bResult = TRUE;
+			bool				bResult = true;
 			LONG				lHeight = m_pBitmap->Height()-4;
 			LONG				i = 2;
 			LONG				lStep;
@@ -1712,7 +1747,7 @@ private :
 	double				m_fMultiplier;
 
 private :
-	BOOL	InitInternals()
+	bool	InitInternals()
 	{
 		m_vPixels.clear();
 		m_vPixels.resize(m_lWidth * m_lHeight);
@@ -1737,9 +1772,9 @@ private :
 		return (size_t)m_lWidth * (size_t)y + (size_t)x;
 	};
 
-	virtual BOOL	IsMonochrome()
+	virtual bool	IsMonochrome()
 	{
-		return TRUE;
+		return true;
 	};
 
 	TType	GetPrimary(LONG x, LONG y, const COLORREF16 & crColor)
@@ -1973,7 +2008,7 @@ private :
 	};
 
 protected :
-	virtual void SetCFA(BOOL bCFA)
+	virtual void SetCFA(bool bCFA)
 	{
 		m_bCFA = bCFA;
 	};
@@ -2002,14 +2037,14 @@ public :
 		m_fMultiplier = fMultiplier;
 	};
 
-	virtual BOOL	Init(LONG lWidth, LONG lHeight)
+	virtual bool	Init(LONG lWidth, LONG lHeight)
 	{
 		m_lWidth	= lWidth;
 		m_lHeight	= lHeight;
 		return InitInternals();
 	};
 
-	virtual CMemoryBitmap *	Clone(BOOL bEmpty = FALSE)
+	virtual CMemoryBitmap *	Clone(bool bEmpty = false)
 	{
 		CGrayBitmapT<TType> *	pResult;
 
@@ -2236,27 +2271,27 @@ public :
 		return;
 	};
 
-	virtual BOOL	GetScanLine(LONG j, void * pScanLine)
+	virtual bool	GetScanLine(LONG j, void * pScanLine)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (j<m_lHeight)
 		{
 			memcpy(pScanLine, &(m_vPixels[j*m_lWidth]), sizeof(TType)*m_lWidth);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	virtual BOOL	SetScanLine(LONG j, void * pScanLine)
+	virtual bool	SetScanLine(LONG j, void * pScanLine)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (j<m_lHeight)
 		{
 			memcpy(&(m_vPixels[j*m_lWidth]), pScanLine, sizeof(TType)*m_lWidth);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -2308,12 +2343,12 @@ public :
 				vOffsets.push_back(GetOffset(i, j-1));
 
 				TType				fValue = m_vPixels[lOffset];
-				BOOL				bHot = TRUE;
+				bool				bHot = true;
 
 				for (LONG k = 0;k<vOffsets.size() && bHot;k++)
 				{
 					if (fValue <= 4.0 * m_vPixels[vOffsets[k]])
-						bHot = FALSE;
+						bHot = false;
 				};
 
 				if (bHot)
@@ -2532,10 +2567,10 @@ public :
         return hBitmap;
 	};
 
-	BOOL	InitFrom(CMemoryBitmap * pBitmap);
-	BOOL	CopyToClipboard();
+	bool	InitFrom(CMemoryBitmap * pBitmap);
+	bool	CopyToClipboard();
 
-	BOOL	IsEmpty()
+	bool	IsEmpty()
 	{
 		return (m_hBitmap == nullptr);
 	};
@@ -2632,13 +2667,13 @@ public :
 	void		InitTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint);
 	void		InitTransformation(double fGamma);
 
-	BOOL		IsInitialized()
+	bool		IsInitialized()
 	{
 		return (m_vTransformation.size() == 65537);
 	};
 };
 
-BOOL	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CMemoryBitmap * pInBitmap, CGammaTransformation & gammatrans);
+bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CMemoryBitmap * pInBitmap, CGammaTransformation & gammatrans);
 #endif // DSSFILEDECODING
 
 /* ------------------------------------------------------------------- */
@@ -2647,7 +2682,7 @@ template <typename TType, typename TTypeOutput = TType>
 class CColorMultiBitmapT : public CMultiBitmap
 {
 protected :
-	virtual BOOL	CreateNewMemoryBitmap(CMemoryBitmap ** ppBitmap)
+	virtual bool	CreateNewMemoryBitmap(CMemoryBitmap ** ppBitmap)
 	{
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 
@@ -2657,7 +2692,7 @@ protected :
 
 			m_pBitmapModel->GetCharacteristics(bc);
 			if (bc.m_lNrChannels == 3)
-				pBitmap.Attach(m_pBitmapModel->Clone(TRUE));
+				pBitmap.Attach(m_pBitmapModel->Clone(true));
 			else
 			{
 				bc.m_lNrChannels = 3;
@@ -2670,7 +2705,7 @@ protected :
 		return pBitmap.CopyTo(ppBitmap);
 	};
 
-	virtual BOOL	CreateOutputMemoryBitmap(CMemoryBitmap ** ppBitmap)
+	virtual bool	CreateOutputMemoryBitmap(CMemoryBitmap ** ppBitmap)
 	{
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 
@@ -2679,9 +2714,9 @@ protected :
 		return pBitmap.CopyTo(ppBitmap);
 	};
 
-	virtual BOOL	SetScanLines(CMemoryBitmap * pBitmap, LONG lLine, const std::vector<void*> & vScanLines)
+	virtual bool	SetScanLines(CMemoryBitmap * pBitmap, LONG lLine, const std::vector<void*> & vScanLines)
 	{
-		BOOL						bResult = FALSE;
+		bool						bResult = false;
 		// Each scan line consist of lWidth TType values
 		LONG						lWidth;
 		TTypeOutput *				pOutputScanLine;
@@ -2852,7 +2887,7 @@ protected :
 
 		pBitmap->SetScanLine(lLine, pOutputScanLine);
 		free(pOutputScanLine);
-		bResult = TRUE;
+		bResult = true;
 
 		return bResult;
 	};
@@ -2895,7 +2930,7 @@ public :
 		m_pInBitmap = pInBitmap;
 	};
 
-	virtual BOOL	GetFilteredImage(CMemoryBitmap ** ppBitmap, LONG lFilterSize, CDSSProgress * pProgress);
+	virtual bool	GetFilteredImage(CMemoryBitmap ** ppBitmap, LONG lFilterSize, CDSSProgress * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
@@ -3053,10 +3088,10 @@ public :
 private :
 	LONG					m_lHeight;
 	LONG					m_lWidth;
-	BOOL					m_bWord;
-	BOOL					m_bDouble;
-	BOOL					m_bDWord;
-	BOOL					m_bFloat;
+	bool					m_bWord;
+	bool					m_bDouble;
+	bool					m_bDWord;
+	bool					m_bFloat;
 	double					m_fMultiplier;
 
 public :
@@ -3087,7 +3122,7 @@ public :
 		m_bDouble  = (typeid(TType) == typeid(double));
 		m_bDWord   = (typeid(TType) == typeid(DWORD));
 		m_bFloat   = (typeid(TType) == typeid(float)) ;
-		m_bTopDown = TRUE;
+		m_bTopDown = true;
 
 		m_fMultiplier = 1.0;
 		if (m_bWord || m_bDouble || m_bFloat)
@@ -3101,7 +3136,7 @@ public :
 	};
 	virtual ~CColorBitmapT() {};
 
-	virtual CMemoryBitmap *	Clone(BOOL bEmpty = FALSE)
+	virtual CMemoryBitmap *	Clone(bool bEmpty = false)
 	{
 		CColorBitmapT<TType> *	pResult;
 
@@ -3145,9 +3180,9 @@ public :
 		return m_lHeight;
 	};
 
-	virtual BOOL	Init(LONG lWidth, LONG lHeight)
+	virtual bool	Init(LONG lWidth, LONG lHeight)
 	{
-		BOOL			bResult = TRUE;
+		bool			bResult = true;
 
 		m_lWidth  = lWidth;
 		m_lHeight = lHeight;
@@ -3159,9 +3194,9 @@ public :
 		return bResult;
 	};
 
-	virtual BOOL	IsMonochrome()
+	virtual bool	IsMonochrome()
 	{
-		return FALSE;
+		return false;
 	};
 
 	virtual void SetValue(LONG i, LONG j, double fRed, double fGreen, double fBlue)
@@ -3245,9 +3280,9 @@ public :
 		return;
 	};
 
-	virtual BOOL	GetScanLine(LONG j, void * pScanLine)
+	virtual bool	GetScanLine(LONG j, void * pScanLine)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (j<m_lHeight)
 		{
@@ -3258,15 +3293,15 @@ public :
 			memcpy(pTempScan, &(m_Green.m_vPixels[(size_t)j*(size_t)m_lWidth]), sizeof(TType)*(size_t)m_lWidth);
 			pTempScan += sizeof(TType)*m_lWidth;
 			memcpy(pTempScan, &(m_Blue.m_vPixels[(size_t)j*(size_t)m_lWidth]), sizeof(TType)*(size_t)m_lWidth);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	virtual BOOL	SetScanLine(LONG j, void * pScanLine)
+	virtual bool	SetScanLine(LONG j, void * pScanLine)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (j<m_lHeight)
 		{
@@ -3277,7 +3312,7 @@ public :
 			memcpy(&(m_Green.m_vPixels[(size_t)j*(size_t)m_lWidth]), pTempScan, sizeof(TType)*(size_t)m_lWidth);
 			pTempScan += sizeof(TType)*m_lWidth;
 			memcpy(&(m_Blue.m_vPixels[(size_t)j*(size_t)m_lWidth]), pTempScan, sizeof(TType)*(size_t)m_lWidth);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -3408,11 +3443,11 @@ public :
 	LONG				m_lHeight;
 	LONG				m_lBitPerChannel;
 	LONG				m_lNrChannels;
-	BOOL				m_bCanLoad;
-	BOOL				m_bFloat;
+	bool				m_bCanLoad;
+	bool				m_bFloat;
 	CFATYPE				m_CFAType;
-	BOOL				m_bMaster;
-	BOOL				m_bFITS16bit;
+	bool				m_bMaster;
+	bool				m_bFITS16bit;
 	CString				m_strDateTime;
 	SYSTEMTIME			m_DateTime;
 	SYSTEMTIME			m_InfoTime;
@@ -3455,15 +3490,15 @@ private :
         m_lHeight = 0;
         m_lBitPerChannel = 0;
         m_lNrChannels = 0;
-        m_bCanLoad = FALSE;
+        m_bCanLoad = false;
         m_CFAType = CFATYPE_NONE;
-        m_bMaster = FALSE;
-        m_bFloat = FALSE;
+        m_bMaster = false;
+        m_bFloat = false;
         m_lISOSpeed = 0;
         m_lGain = -1;
         m_fExposure = 0.0;
         m_fAperture = 0.0;
-        m_bFITS16bit = FALSE;
+        m_bFITS16bit = false;
 		m_DateTime = { 0 };
 		m_InfoTime = { 0 };
 		m_xBayerOffset = 0;
@@ -3503,17 +3538,17 @@ public :
 	{
 	};
 
-	BOOL	CanLoad()
+	bool	CanLoad()
 	{
 		return m_bCanLoad;
 	};
 
-	BOOL	IsCFA()
+	bool	IsCFA()
 	{
 		return (m_CFAType != CFATYPE_NONE);
 	};
 
-	BOOL	IsMaster()
+	bool	IsMaster()
 	{
 		return m_bMaster;
 	};
@@ -3525,7 +3560,7 @@ public :
 			strDescription.Format(_T("%s (%s)"), (LPCTSTR)m_strFileType, (LPCTSTR)m_strModel);
 	};
 
-	BOOL	IsInitialized()
+	bool	IsInitialized()
 	{
 		return m_lWidth && m_lHeight;
 	};
@@ -3568,7 +3603,7 @@ inline bool CompareBitmapInfoDateTime (const CBitmapInfo & bi1, const CBitmapInf
 class	CAllDepthBitmap
 {
 public :
-	BOOL						m_bDontUseAHD;
+	bool						m_bDontUseAHD;
 
 public :
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
@@ -3602,7 +3637,7 @@ public :
 		m_pWndBitmap.Release();
 	};
 
-	void	SetDontUseAHD(BOOL bSet)
+	void	SetDontUseAHD(bool bSet)
 	{
 		m_bDontUseAHD = bSet;
 	};
@@ -3610,26 +3645,26 @@ public :
 
 void	CopyBitmapToClipboard(HBITMAP hBitmap);
 
-BOOL	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+bool	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 //HBITMAP LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap = nullptr);
-BOOL	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress = nullptr);
-BOOL	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress);
+bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress = nullptr);
+bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress);
 
 #endif // DSSFILEDECODING
-BOOL	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+bool	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
 
-BOOL	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 
-BOOL	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress = nullptr);
+bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 
-inline BOOL	IsCFA(CMemoryBitmap * pBitmap)
+inline bool	IsCFA(CMemoryBitmap * pBitmap)
 {
 	if (pBitmap)
 		return pBitmap->IsCFA();
 	else
-		return FALSE;
+		return false;
 };
 
 /* ------------------------------------------------------------------- */
@@ -3638,12 +3673,12 @@ CFATYPE	GetCFAType(CMemoryBitmap * pBitmap);
 
 /* ------------------------------------------------------------------- */
 
-inline BOOL IsMonochrome(CMemoryBitmap * pBitmap)
+inline bool IsMonochrome(CMemoryBitmap * pBitmap)
 {
 	if (pBitmap)
 		return pBitmap->IsMonochrome();
 	else
-		return FALSE;
+		return false;
 };
 
 /* ------------------------------------------------------------------- */
