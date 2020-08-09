@@ -8,12 +8,6 @@
 #include <math.h>
 #include <algorithm>
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 IMPLEMENT_SERIAL(CGradient, CObject, 0)
 
 UINT CPeg::uniqueID = 250000;

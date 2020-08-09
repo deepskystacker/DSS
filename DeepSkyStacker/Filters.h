@@ -64,8 +64,8 @@ public :
 class CMedianImageFilter : public CImageFilter
 {
 private :
-	BOOL						m_bMonochrome;
-	BOOL						m_bCFA;
+	bool						m_bMonochrome;
+	bool						m_bCFA;
 	LONG						m_lWidth,
 								m_lHeight;
 	CSmartPtr<CMemoryBitmap>	m_pInBitmap;
@@ -83,8 +83,8 @@ public :
 public :
 	CMedianImageFilter()
 	{
-		m_bMonochrome	= FALSE;
-		m_bCFA			= FALSE;
+		m_bMonochrome	= false;
+		m_bCFA			= false;
 		m_lFilterSize	= 1;
         m_lWidth        = 0;
         m_lHeight       = 0;
@@ -99,12 +99,12 @@ public :
 		m_lFilterSize = lFilterSize;
 	};
 
-	BOOL	IsMonochrome()
+	bool	IsMonochrome()
 	{
 		return m_bMonochrome;
 	};
 
-	BOOL	IsCFA()
+	bool	IsCFA()
 	{
 		return m_bCFA;
 	};
@@ -129,31 +129,31 @@ public :
 class CExtendedMedianImageFilter : public CImageFilter
 {
 private :
-	BOOL				m_bFilterHot;
-	BOOL				m_bFilterCold;
-	BOOL				m_bRecursive;
+	bool				m_bFilterHot;
+	bool				m_bFilterCold;
+	bool				m_bRecursive;
 	double				m_fHotThreshold;
 	double				m_fColdThreshold;
 	double				m_fRejectHotThreshold;
 	double				m_fRejectColdThreshold;
-	BOOL				m_bUseRejectThreshold;
+	bool				m_bUseRejectThreshold;
 	EXCLUDEDPIXELVECTOR	m_vExcludedPixels;
 
 private :
-	void	AnalyzeImage(CMemoryBitmap * pInBitmap, BOOL bComputeThresholds);
+	void	AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds);
 	void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap * pOutBitmap, CDSSProgress * pProgress = nullptr);
 
 public :
 	CExtendedMedianImageFilter()
 	{
-		m_bFilterHot		 = TRUE;
-		m_bFilterCold		 = TRUE;
-		m_bRecursive		 = FALSE;
+		m_bFilterHot		 = true;
+		m_bFilterCold		 = true;
+		m_bRecursive		 = false;
 		m_fHotThreshold		 = 0.0;
 		m_fColdThreshold	 = 0.0;
 		m_fRejectHotThreshold  = 0;
 		m_fRejectColdThreshold = 0;
-		m_bUseRejectThreshold  = FALSE;
+		m_bUseRejectThreshold  = false;
 	};
 
 	virtual ~CExtendedMedianImageFilter() {};
@@ -162,10 +162,10 @@ public :
 	{
 		m_fRejectColdThreshold = fRejectColdThreshold;
 		m_fRejectHotThreshold  = fRejectHotThreshold;
-		m_bUseRejectThreshold  = TRUE;
+		m_bUseRejectThreshold  = true;
 	};
 
-	void	SetUseRecursive(BOOL bSet)
+	void	SetUseRecursive(bool bSet)
 	{
 		m_bRecursive = bSet;
 	};
@@ -174,7 +174,7 @@ public :
 	{
 		m_fColdThreshold = fColdThreshold;
 		m_fHotThreshold  = fHotThreshold;
-		m_bUseRejectThreshold  = FALSE;
+		m_bUseRejectThreshold  = false;
 	};
 
 	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress = nullptr);
@@ -188,7 +188,7 @@ private :
 	double						m_fAngle;
 	double						m_lSize;
 	CSmartPtr<CMemoryBitmap>	m_pInBitmap;
-	BOOL						m_bMonochrome;
+	bool						m_bMonochrome;
 
 private :
 	void	GetValuesAlongAngle(LONG x, LONG y, double fAngle, std::vector<double> & vValues);
@@ -200,7 +200,7 @@ public :
 	{
 		m_fAngle = 0;
 		m_lSize  = 1;
-        m_bMonochrome = FALSE;
+        m_bMonochrome = false;
 	};
 	~CDirectionalImageFilter() {};
 

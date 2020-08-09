@@ -1,18 +1,17 @@
 #include <stdafx.h>
 
 #include "Multitask.h"
-#include "Registry.h"
 
+#include <QSettings>
 /* ------------------------------------------------------------------- */
 
-LONG	CMultitask::GetNrProcessors(BOOL bReal)
+LONG	CMultitask::GetNrProcessors(bool bReal)
 {
 	LONG				lResult = 1;
-	CRegistry			reg;
+	QSettings			settings;
 	SYSTEM_INFO			SysInfo;
-	DWORD				dwMaxProcessors  =0;
-
-	reg.LoadKey(REGENTRY_BASEKEY, _T("MaxProcessors"), dwMaxProcessors);
+	
+	DWORD dwMaxProcessors = settings.value("MaxProcessors", (uint)0).toUInt();
 
 	GetSystemInfo(&SysInfo);
 	lResult		= SysInfo.dwNumberOfProcessors;
@@ -24,38 +23,33 @@ LONG	CMultitask::GetNrProcessors(BOOL bReal)
 
 /* ------------------------------------------------------------------- */
 
-void	CMultitask::SetUseAllProcessors(BOOL bUseAll)
+void	CMultitask::SetUseAllProcessors(bool bUseAll)
 {
-	CRegistry			reg;
+	QSettings			settings;
 
 	if (bUseAll)
-		reg.SaveKey(REGENTRY_BASEKEY, _T("MaxProcessors"), (DWORD)0);
+		settings.setValue("MaxProcessors", (uint)0);
 	else
-		reg.SaveKey(REGENTRY_BASEKEY, _T("MaxProcessors"), (DWORD)1);
+		settings.setValue("MaxProcessors", (uint)1);
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CMultitask::GetReducedThreadsPriority()
+bool	CMultitask::GetReducedThreadsPriority()
 {
-	CRegistry			reg;
-	DWORD				dwReduced  =0;
+	QSettings			settings;
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("ReducedThreadPriority"), dwReduced);
+	return settings.value("ReducedThreadPriority", true).toBool();
 
-	return dwReduced;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CMultitask::SetReducedThreadsPriority(BOOL bReduced)
+void	CMultitask::SetReducedThreadsPriority(bool bReduced)
 {
-	CRegistry			reg;
+	QSettings			settings;
 
-	if (bReduced)
-		reg.SaveKey(REGENTRY_BASEKEY, _T("ReducedThreadPriority"), (DWORD)1);
-	else
-		reg.SaveKey(REGENTRY_BASEKEY, _T("ReducedThreadPriority"), (DWORD)0);
+	settings.setValue("ReducedThreadPriority", bReduced);
 };
 
 /* ------------------------------------------------------------------- */
@@ -78,7 +72,7 @@ HANDLE	CMultitask::GetAvailableThread()
 	HANDLE				hResult = nullptr;
 	DWORD				dwResult;
 
-	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), FALSE, INFINITE);
+	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), false, INFINITE);
 	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+(DWORD)m_vEvents.size()))
 	{
 		// An event was triggered
@@ -97,7 +91,7 @@ DWORD	CMultitask::GetAvailableThreadId()
 	DWORD				hResult = 0;
 	DWORD				dwResult;
 
-	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), FALSE, INFINITE);
+	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), false, INFINITE);
 	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+m_vEvents.size()))
 	{
 		// An event was triggered
@@ -126,7 +120,7 @@ void	CMultitask::StartThreads(LONG lNrThreads)
 		HANDLE			hEvent;
 		HANDLE			hThread;
 
-		hEvent	= CreateEvent(nullptr, TRUE, FALSE, nullptr);
+		hEvent	= CreateEvent(nullptr, true, false, nullptr);
 		if (hEvent)
 		{
 			m_vEvents.push_back(hEvent);
@@ -155,14 +149,14 @@ void	CMultitask::CloseAllThreads()
 {
 	if (m_vThreads.size())
 	{
-		WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), TRUE, INFINITE);
+		WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), true, INFINITE);
 
 		for (LONG i = 0;i<m_vThreads.size();i++)
 		{
 			PostThreadMessage(m_vThreadIds[i], WM_MT_STOP, 0, 0);
 		};
 
-		WaitForMultipleObjects((DWORD)m_vThreads.size(), &(m_vThreads[0]), TRUE, INFINITE);
+		WaitForMultipleObjects((DWORD)m_vThreads.size(), &(m_vThreads[0]), true, INFINITE);
 
 		for (LONG i = 0;i<m_vThreads.size();i++)
 		{

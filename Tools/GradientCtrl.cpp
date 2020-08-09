@@ -5,12 +5,6 @@
 #include "GradientCtrl.h"
 #include "GradientCtrlImpl.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define GRADIENTCTRL_CLASSNAME _T("MFCGradientCtrl")
 
 

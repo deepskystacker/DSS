@@ -5,10 +5,10 @@
 
 /* ------------------------------------------------------------------- */
 
-BOOL CMasterFrames::LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pProgress)
+bool CMasterFrames::LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	if (pStackingInfo->m_pOffsetTask)
 		bResult = GetTaskResult(pStackingInfo->m_pOffsetTask, pProgress, &m_pMasterOffset);
@@ -104,7 +104,7 @@ void	CMasterFrames::ApplyAllMasters(CMemoryBitmap * pBitmap, STARVECTOR * pStars
 	CDeBloom			debloom;
 	bool				bDebloom = false;
 
-	if (m_dwDebloom)
+	if (m_fDebloom)
 		bDebloom = debloom.CreateBloomMask(pBitmap, pProgress);
 
 	ApplyMasterOffset(pBitmap, pProgress);

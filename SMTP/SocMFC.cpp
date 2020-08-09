@@ -81,12 +81,6 @@ to maintain a single distribution point for the source code.
 
 /////////////////// Macros / Defines //////////////////////////////////////////
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #ifndef __AFXPRIV_H__
 #pragma message("To avoid this message please put afxpriv.h in your PCH (normally stdafx.h)")
 #include <afxpriv.h>

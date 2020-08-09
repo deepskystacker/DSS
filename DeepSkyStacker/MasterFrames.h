@@ -6,7 +6,7 @@
 #include "DarkFrame.h"
 #include "StackingTasks.h"
 #include "Stars.h"
-#include "Registry.h"
+
 #include "Workspace.h"
 
 class CMasterFrames
@@ -15,15 +15,14 @@ private :
 	CSmartPtr<CMemoryBitmap>	m_pMasterOffset;
 	CDarkFrame					m_MasterDark;
 	CFlatFrame					m_MasterFlat;
-	DWORD						m_dwDebloom;
+	bool						m_fDebloom;
 
 public :
 	CMasterFrames()
 	{
 		CWorkspace			workspace;
 
-		m_dwDebloom = 0;
-		workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Debloom"), m_dwDebloom);
+		m_fDebloom = workspace.value("Stacking/Debloom", false).toBool();
 	};
 
 	virtual ~CMasterFrames()
@@ -36,7 +35,7 @@ public :
 	void	ApplyHotPixelInterpolation(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
 	void	ApplyAllMasters(CMemoryBitmap * pBitmap, STARVECTOR * pStars, CDSSProgress * pProgress);
 
-	BOOL	LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pProgress);
+	bool	LoadMasters(CStackingInfo * pStackingInfo, CDSSProgress * pProgress);
 };
 
 #endif // __MASTERFRAMES_H__

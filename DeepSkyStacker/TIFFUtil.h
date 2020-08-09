@@ -77,7 +77,7 @@ public :
 	virtual ~CTIFFHeader() {};
 
 public :
-	BOOL	IsCFA()
+	bool	IsCFA()
 	{
 		return cfa;
 	};
@@ -87,12 +87,12 @@ public :
 		return (CFATYPE)cfatype;
 	};
 
-	BOOL	IsMaster()
+	bool	IsMaster()
 	{
 		return master;
 	};
 
-	BOOL	IsFloat()
+	bool	IsFloat()
 	{
 		return (sampleformat == SAMPLEFORMAT_IEEEFP) && (bps == 32);
 	};
@@ -152,22 +152,22 @@ public :
 		return w;
 	};
 
-	BOOL	IsGray()
+	bool	IsGray()
 	{
 		return (spp == 1);
 	};
 
-	BOOL	Is8Bits()
+	bool	Is8Bits()
 	{
 		return (bps == 8);
 	};
 
-	BOOL	Is16Bits()
+	bool	Is16Bits()
 	{
 		return (bps == 16);
 	};
 
-	BOOL	Is32Bits()
+	bool	Is32Bits()
 	{
 		return (bps == 32);
 	};
@@ -216,15 +216,15 @@ public :
 		Close();
 	};
 
-	BOOL	Open();
-	BOOL	Read();
-	BOOL	Close();
+	bool	Open();
+	bool	Read();
+	bool	Close();
 
 	// bool getInfo();
 
-	virtual BOOL	OnOpen() { return TRUE; };
+	virtual bool	OnOpen() { return true; };
 	virtual void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return;};
-	virtual BOOL	OnClose() { return TRUE; };
+	virtual bool	OnClose() { return true; };
 };
 
 /* ------------------------------------------------------------------- */
@@ -239,7 +239,7 @@ public :
 	TIFFFORMAT				m_Format;
 
 protected :
-	void	SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, BOOL bMaster);
+	void	SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster);
 	void	SetCompression(TIFFCOMPRESSION tiffcomp)
 	{
 		compression = COMPRESSION_NONE;
@@ -280,29 +280,29 @@ public :
 		SetCompression(TIFFCompression);
 	};
 
-	BOOL	Open();
-	BOOL	Write();
-	BOOL	Close();
+	bool	Open();
+	bool	Write();
+	bool	Close();
 
-	virtual BOOL	OnOpen() { return TRUE; };
+	virtual bool	OnOpen() { return true; };
 	virtual void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
-	virtual BOOL	OnClose() { return TRUE; };
+	virtual bool	OnClose() { return true; };
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
+bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+bool	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
 			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture);
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress,
 			TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
 
-BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+bool	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 int		LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
 
 /* ------------------------------------------------------------------- */

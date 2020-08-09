@@ -1,32 +1,60 @@
-#pragma once
+#ifndef ABOUT_H
+#define ABOUT_H
 
-#include "afxwin.h"
-#include "label.h"
+#include <QDialog>
 
-// CAbout dialog
+namespace Ui {
+class About;
+}
 
-class CAbout : public CDialog
+class About : public QDialog
 {
-	DECLARE_DYNAMIC(CAbout)
+    Q_OBJECT
+    Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged);
+    Q_PROPERTY(bool internetCheck READ internetCheck WRITE setInternetCheck NOTIFY internetCheckChanged);
+
+typedef QDialog
+		Inherited;
 
 public:
-	CAbout(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CAbout();
+    explicit About(QWidget *parent = 0);
+    ~About();
 
-// Dialog Data
-	enum { IDD = IDD_ABOUT };
+    QString language()
+    {
+        return m_Language;
+    }
 
-private :
-	CButton			m_CheckVersion;
-	CComboBox		m_Language;
-	CQhtmWnd		m_Credits;
-	CQhtmWnd		m_LanguageCredits;
+    void setLanguage(QString lang);
+
+    bool internetCheck()
+    {
+        return m_InternetCheck;
+    }
+
+    void setInternetCheck(bool);
+
+signals:
+    void languageChanged(QString);
+    void internetCheckChanged();
+
+private slots:
+    void storeSettings();
+    void selectLanguage(int);
+    void setCheck(bool);
+	void aboutQt();
 
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
+private:
+    Ui::About *ui;
 
-	DECLARE_MESSAGE_MAP()
-	virtual void OnOK();
+	bool initialised;
+    QString m_Language;
+    bool m_InternetCheck;
+
+	void showEvent(QShowEvent *event) override;
+
+	void onInitDialog();
 };
+
+#endif // ABOUT_H

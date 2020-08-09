@@ -349,7 +349,7 @@ void CSelectRectSink::GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDriz
 
 BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (m_bInSelecting)
 	{
@@ -360,7 +360,7 @@ BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
 		m_fXEnd = lX;	m_fYEnd = lY;
 		m_pImage->ScreenToBitmap(m_fXEnd, m_fYEnd);
 		UpdateSelectRect();
-		bResult = TRUE;
+		bResult = true;
 	}
 	else
 	{
@@ -381,7 +381,7 @@ BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
 
 BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	// Start drawing the rectangle
 	m_Mode = GetModeFromPosition(lX, lY);
@@ -394,8 +394,8 @@ BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 	m_fXEnd = m_fXStart ;	m_fYEnd = m_fYStart;
 	m_rcStart = m_rcSelect;
 	UpdateSelectRect();
-	m_bInSelecting = TRUE;
-	bResult = TRUE;
+	m_bInSelecting = true;
+	bResult = true;
 
 	return bResult;
 };
@@ -404,7 +404,7 @@ BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (m_bInSelecting)
 	{
@@ -414,9 +414,9 @@ BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
 
 		if (m_rcSelect.Width()<=2 || m_rcSelect.Height()<=2)
 			m_rcSelect.SetRectEmpty();
-		m_bInSelecting = FALSE;
+		m_bInSelecting = false;
 		m_Mode = SRM_NONE;
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -530,7 +530,7 @@ void	CEditStarsSink::SetLightFrame(LPCTSTR szFileName)
 	CLightFrameInfo		bmpInfo;
 
 	m_QualityGrid.Clear();
-	bmpInfo.SetBitmap(szFileName, FALSE);
+	bmpInfo.SetBitmap(szFileName, false);
 	if (bmpInfo.m_bInfoOk)
 	{
 		// Get the stars back
@@ -545,7 +545,7 @@ void	CEditStarsSink::SetLightFrame(LPCTSTR szFileName)
 		m_vStars.clear();
 
 	m_strFileName = szFileName;
-	m_bDirty = FALSE;
+	m_bDirty = false;
 	ComputeOverallQuality();
 };
 
@@ -562,7 +562,7 @@ void	CEditStarsSink::ComputeBackgroundValue()
 		BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 		BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
 		BackgroundCalibration.SetMultiplier(1.0);
-		BackgroundCalibration.ComputeBackgroundCalibration(m_pBitmap, TRUE, nullptr);
+		BackgroundCalibration.ComputeBackgroundCalibration(m_pBitmap, true, nullptr);
 		fResult = BackgroundCalibration.m_fTgtRedBk/256.0/256.0;
 
 		m_fBackground = fResult;
@@ -604,7 +604,7 @@ void	CEditStarsSink::SaveRegisterSettings()
 
 		regFrame.SaveRegisteringInfo(strInfoFileName);
 
-		m_bDirty = FALSE;
+		m_bDirty = false;
 	};
 };
 
@@ -678,7 +678,7 @@ void	CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECT
 
 BOOL	CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (m_pBitmap)
 	{
@@ -689,13 +689,13 @@ BOOL	CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
 			pt.y>=0 && pt.y<m_pImage->GetImgSizeY())
 		{
 			// The point is in the image
-			bResult = TRUE; // Refresh the overlay
+			bResult = true; // Refresh the overlay
 			m_ptCursor = pt;
 		}
 		else if (m_ptCursor.X >=0)
 		{
 			m_ptCursor.X = m_ptCursor.Y = -1;
-			bResult = TRUE;
+			bResult = true;
 		};
 	};
 
@@ -706,12 +706,12 @@ BOOL	CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
 
 BOOL	CEditStarsSink::Image_OnMouseLeave()
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (m_ptCursor.X >= 0)
 	{
 		m_ptCursor.X = m_ptCursor.Y = -1;
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -721,7 +721,7 @@ BOOL	CEditStarsSink::Image_OnMouseLeave()
 
 BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	{
 		if (m_Action != ESA_NONE)
@@ -731,13 +731,13 @@ BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 				m_vStars.push_back(m_AddedStar);
 				std::sort(m_vStars.begin(), m_vStars.end());
 				if (m_bRemoveComet)
-					m_bComet = FALSE;
+					m_bComet = false;
 				ComputeOverallQuality();
 				m_QualityGrid.InitGrid(m_vStars, m_pImage->GetImgSizeX(), m_pImage->GetImgSizeY());
 			}
 			else if (m_Action == ESA_REMOVESTAR)
 			{
-				m_vStars[m_lRemovedIndice].m_bRemoved = TRUE;
+				m_vStars[m_lRemovedIndice].m_bRemoved = true;
 				m_vStars.erase(m_vStars.begin()+m_lRemovedIndice);
 				ComputeOverallQuality();
 				m_QualityGrid.InitGrid(m_vStars, m_pImage->GetImgSizeX(), m_pImage->GetImgSizeY());
@@ -746,22 +746,22 @@ BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 			{
 				if (m_lRemovedIndice >= 0)
 				{
-					m_vStars[m_lRemovedIndice].m_bRemoved = TRUE;
+					m_vStars[m_lRemovedIndice].m_bRemoved = true;
 					m_vStars.erase(m_vStars.begin()+m_lRemovedIndice);
 					ComputeOverallQuality();
 					m_QualityGrid.InitGrid(m_vStars, m_pImage->GetImgSizeX(), m_pImage->GetImgSizeY());
 				};
 				m_fXComet = m_AddedStar.m_fX;
 				m_fYComet = m_AddedStar.m_fY;
-				m_bComet  = TRUE;
+				m_bComet  = true;
 			}
 			else if (m_Action == ESA_RESETCOMET)
 			{
-				m_bComet = FALSE;
+				m_bComet = false;
 			};
 
-			bResult = TRUE;
-			m_bDirty = TRUE;
+			bResult = true;
+			m_bDirty = true;
 
 			if (m_pImage)
 				m_pImage->NotifyModeChange();
@@ -775,7 +775,7 @@ BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 BOOL	CEditStarsSink::Image_OnLButtonUp(LONG lX, LONG lY)
 {
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 
 	return bResult;
 };
@@ -1057,16 +1057,16 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				STARVECTOR				vStars;
 				LONG					lNearestNewStar;
 				double					fNearestNewStarDistance;
-				BOOL					bInNewStar;
+				bool					bInNewStar;
 
 				LONG					lNearestOldStar;
 				double					fNearestOldStarDistance;
-				BOOL					bInOldStar;
+				bool					bInOldStar;
 
-				BOOL					bAdd = TRUE;
-				BOOL					bShowAction = FALSE;
+				bool					bAdd = true;
+				bool					bShowAction = false;
 				CStar					star;
-				BOOL					bForceHere = FALSE;
+				bool					bForceHere = false;
 
 				bForceHere = (GetAsyncKeyState(VK_SHIFT) & 0x8000);
 
@@ -1078,27 +1078,27 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, m_vStars, bInOldStar, fNearestOldStarDistance);
 
 				m_lRemovedIndice = -1;
-				m_bRemoveComet	 = FALSE;
+				m_bRemoveComet	 = false;
 				if (m_bCometMode)
 				{
 					if (lNearestNewStar>=0 || lNearestOldStar>=0)
 					{
-						BOOL		bRemoveComet = FALSE;
+						bool		bRemoveComet = false;
 						if (m_bComet)
 						{
 							// Check for comet removal
 							if ((lNearestNewStar>=0) &&
 								vStars[lNearestNewStar].IsInRadius(m_fXComet-rcCheck.left, m_fYComet-rcCheck.top))
-								bRemoveComet = TRUE;
+								bRemoveComet = true;
 							else if ((lNearestOldStar>0) &&
   								     m_vStars[lNearestOldStar].IsInRadius(m_fXComet, m_fYComet))
-								bRemoveComet = TRUE;
+								bRemoveComet = true;
 							if (bRemoveComet)
 							{
 								star.m_fX = m_fXComet;
 								star.m_fY = m_fYComet;
-								bShowAction = TRUE;
-								bAdd = FALSE;
+								bShowAction = true;
+								bAdd = false;
 							};
 						};
 						if (!bRemoveComet)
@@ -1106,18 +1106,18 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 							// Check to add the comet
 							if ((lNearestOldStar>=0) && (lNearestNewStar < 0))
 							{
-								bAdd = TRUE;
+								bAdd = true;
 								m_lRemovedIndice = lNearestOldStar;
 								star = m_vStars[lNearestOldStar];
-								bShowAction = TRUE;
+								bShowAction = true;
 							}
 							else if ((lNearestOldStar < 0) && (lNearestNewStar >= 0))
 							{
-								bAdd = TRUE;
+								bAdd = true;
 								star = vStars[lNearestNewStar];
 								star.m_fX += rcCheck.left;
 								star.m_fY += rcCheck.top;
-								bShowAction = TRUE;
+								bShowAction = true;
 							}
 							else // Both new and old star nearest
 							{
@@ -1132,24 +1132,24 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 									m_lRemovedIndice = lNearestOldStar;
 									star = m_vStars[lNearestOldStar];
 								};
-								bAdd = TRUE;
-								bShowAction = TRUE;
+								bAdd = true;
+								bShowAction = true;
 							};
 							if (bForceHere)
 							{
-								bAdd = TRUE;
+								bAdd = true;
 								star.m_fX = m_ptCursor.X;
 								star.m_fY = m_ptCursor.Y;
-								bShowAction = TRUE;
+								bShowAction = true;
 							}
 						}
 					}
 					else if (bForceHere)
 					{
-						bAdd = TRUE;
+						bAdd = true;
 						star.m_fX = m_ptCursor.X;
 						star.m_fY = m_ptCursor.Y;
-						bShowAction = TRUE;
+						bShowAction = true;
 					};
 					if (bAdd && m_lRemovedIndice<0)
 					{
@@ -1166,25 +1166,25 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 					{
 						if (bInOldStar || lNearestNewStar < 0)
 						{
-							bAdd = FALSE;
-							bShowAction = TRUE;
+							bAdd = false;
+							bShowAction = true;
 						}
 						else if ((lNearestOldStar < 0) && (lNearestNewStar >= 0))
 						{
-							bAdd = TRUE;
-							bShowAction = TRUE;
+							bAdd = true;
+							bShowAction = true;
 						}
 						else // Both new and old star nearest
 						{
 							// If the new star is in an old star - remove
 							CPoint		pt(vStars[lNearestNewStar].m_fX + rcCheck.left, vStars[lNearestNewStar].m_fY + rcCheck.top);
 							if (m_vStars[lNearestOldStar].IsInRadius(pt))
-								bAdd = FALSE;
+								bAdd = false;
 							else if (fNearestNewStarDistance >= fNearestOldStarDistance*1.10)
-								bAdd = FALSE;
+								bAdd = false;
 							else
-								bAdd = TRUE;
-							bShowAction = TRUE;
+								bAdd = true;
+							bShowAction = true;
 						};
 					};
 					if (bShowAction)
@@ -1196,7 +1196,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 							star.m_fY += rcCheck.top;
 
 							if (m_bComet && star.IsInRadius(m_fXComet, m_fYComet))
-								m_bRemoveComet = TRUE;
+								m_bRemoveComet = true;
 						}
 						else
 							star = m_vStars[lNearestOldStar];

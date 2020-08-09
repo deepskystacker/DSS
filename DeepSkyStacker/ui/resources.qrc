@@ -1,0 +1,50 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file alias="logo.png">../res/logo.png</file>
+</qresource>
+<qresource prefix="calibration">
+    <file alias="rational.bmp">../res/Calibration_Rational.bmp</file>
+    <file alias="linear.bmp">../res/Calibration_Linear.bmp</file>
+</qresource>
+<qresource prefix="rgbcalibration">
+    <file alias="none.bmp">../res/RGBCalibration_None.bmp</file>
+    <file alias="middle.bmp">../res/RGBCalibration_Middle.bmp</file>
+    <file alias="minimum.bmp">../res/RGBCalibration_Minimum.bmp</file>
+    <file alias="maximum.bmp">../res/RGBCalibration_Maximum.bmp</file>
+</qresource>
+<qresource prefix="comet">
+    <file alias="normal.bmp">../res/Comet_Normal.bmp</file>
+    <file alias="freeze.bmp">../res/Comet_Freeze.bmp</file>
+    <file alias="trails.bmp">../res/Comet_Trails.bmp</file>
+</qresource>
+<qresource prefix="flags">
+    <file alias="brazil.png">../res/Brazil.png</file>
+    <file alias="catalan.png">../res/Catalan.png</file>
+    <file alias="czech.png">../res/Czech.png</file>
+    <file alias="dutch.png">../res/Dutch.png</file>
+    <file alias="german.png">../res/German.png</file>
+    <file alias="italian.png">../res/Italian.png</file>
+    <file alias="portugal.png">../res/Portugal.png</file>
+    <file alias="romanian.png">../res/Romanian.png</file>
+    <file alias="russian.png">../res/Russian.png</file>
+    <file alias="spanish.png">../res/Spanish.png</file>
+    <file alias="taiwan.png">../res/Taiwan.png</file>
+    <file alias="turkish.png">../res/Turkish.png</file>
+</qresource>
+<qresource prefix="stacking">
+    <file alias="normalmode.bmp">../res/normalmode.bmp</file>
+    <file alias="intersectionmode.bmp">../res/intersectionmode.bmp</file>
+    <file alias="mosaicmode.bmp">../res/mosaicmode.bmp</file>
+	<file alias="custommode.bmp">../res/custommode.bmp</file>
+	<file alias="4corners.png">../res/4Corners.png</file>
+</qresource>
+<qresource prefix="rawddpsettings">
+    <file alias="Pattern_BGGR.bmp">../res/Pattern_BGGR.bmp</file>
+    <file alias="Pattern_GBRG.bmp">../res/Pattern_GBRG.bmp</file>
+    <file alias="Pattern_GRBG.bmp">../res/Pattern_GRBG.bmp</file>
+    <file alias="Pattern_RGGB.bmp">../res/Pattern_RGGB.bmp</file>
+    <file alias="Pattern_CYGMCYMG.bmp">../res/Pattern_CYGMCYMG.bmp</file>
+</qresource>
+
+
+</RCC>

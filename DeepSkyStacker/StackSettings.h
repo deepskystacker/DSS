@@ -1,121 +1,152 @@
-#pragma once
+#ifndef STACKSETTINGS_H
+#define STACKSETTINGS_H
 
 
-// CStackSettings dialog
-#include "StackingParameters.h"
+#include <QDialog>
 #include "ResultParameters.h"
-#include "AlignmentParameters.h"
-#include "IntermediateFiles.h"
 #include "CometStacking.h"
 #include "PostCalibration.h"
 #include "OutputTab.h"
-#include "afxwin.h"
-#include <RichToolTipCtrl.h>
+#include "IntermediateFiles.h"
+#include "AlignmentParameters.h"
+#include "StackingParameters.h"
+#include "StackingTasks.h"
 
-const LONG					SSTAB_RESULT			= 1;
-const LONG					SSTAB_LIGHT				= 2;
-const LONG					SSTAB_DARK				= 3;
-const LONG					SSTAB_FLAT				= 4;
-const LONG					SSTAB_OFFSET			= 5;
-const LONG					SSTAB_ALIGNMENT			= 6;
-const LONG					SSTAB_INTERMEDIATE		= 7;
-const LONG					SSTAB_COMET				= 8;
-const LONG					SSTAB_POSTCALIBRATION	= 9;
-const LONG					SSTAB_OUTPUT			= 10;
+namespace Ui {
+class StackSettings;
+}
 
-class CStackSettings : public CDialog
+class StackSettings : public QDialog
 {
-	DECLARE_DYNAMIC(CStackSettings)
+	friend class StackingParameters;
+	friend class PostCalibration;
 
-private :
-	CPropertySheet			m_Sheet;
-	CResultParameters		m_tabResult;
-	CStackingParameters		m_tabLightFrames;
-	CStackingParameters		m_tabDarkFrames;
-	CStackingParameters		m_tabFlatFrames;
-	CStackingParameters		m_tabOffsetFrames;
-	CAlignmentParameters	m_tabAlignment;
-	CIntermediateFiles		m_tabIntermediate;
-	CCometStacking			m_tabComet;
-	CPostCalibration		m_tabPostCalibration;
-	COutputTab				m_tabOutput;
-	CStatic					m_TabRect;
-	CStatic					m_TempFolder;
-	CButton					m_UseAllProcessors;
-	CButton					m_ReducePriority;
-	CButton					m_OK;
-	LONG					m_lStartingTab;
-	BOOL					m_bRegisteringOnly;
-	BOOL					m_bEnableCustomRectangle;
-	BOOL					m_bUseCustomRectangle;
-	BOOL					m_bEnableCometStacking;
-	BOOL					m_bEnableDark;
-	BOOL					m_bEnableFlat;
-	BOOL					m_bEnableBias;
-	BOOL					m_bEnableAll;
-	CAllStackingTasks *		m_pStackingTasks;
+	typedef QDialog
+		Inherited;
+
+	Q_OBJECT
 
 public:
-	CStackSettings(CWnd* pParent = nullptr);   // standard constructor
-	virtual ~CStackSettings();
+    explicit StackSettings(QWidget *parent = nullptr);
+    ~StackSettings();
 
-	void		UpdateControls();
+	void accept() override;
+	void reject() override;
 
-	void		SetCustomRectangleAvailability(BOOL bEnabled, BOOL bUsed = FALSE)
+	inline StackSettings & setStartingTab(LONG lStartingTab) noexcept
 	{
-		m_bEnableCustomRectangle	= bEnabled;
-		m_bUseCustomRectangle		= bUsed;
+		startingTab = lStartingTab;
+		return *this;
 	};
 
-	BOOL		IsCustomRectangleUsed()
+	inline StackSettings & setRegisteringOnly(bool bRegisteringOnly) noexcept
 	{
-		return m_bEnableCustomRectangle && m_bUseCustomRectangle;
+		registeringOnly = bRegisteringOnly;
+		updateControls();
+		return *this;
 	};
 
-	void		SetStartingTab(LONG lStartingTab)
+	inline StackSettings & enableCometStacking(bool value) noexcept
 	{
-		m_lStartingTab = lStartingTab;
+		cometStacking = value;
+		updateControls();
+		return *this;
 	};
 
-	void		SetRegisteringOnly(BOOL bRegisteringOnly)
+	inline StackSettings & setStackingTasks(CAllStackingTasks * tasks) noexcept
 	{
-		m_bRegisteringOnly = bRegisteringOnly;
+		pStackingTasks = tasks;
+		return *this;
 	};
 
-	void		EnableCometStacking(BOOL bEnable)
+	inline StackSettings & setTabVisibility(bool bDark, bool bFlat, bool bBias) noexcept
 	{
-		m_bEnableCometStacking = bEnable;
+		enableDark = bDark;
+		enableFlat = bFlat;
+		enableBias = bBias;
+		updateControls();
+		return *this;
 	};
 
-	void		SetStackingTasks(CAllStackingTasks * pStackingTasks)
+	inline StackSettings & setEnableAll(bool value) noexcept
 	{
-		m_pStackingTasks = pStackingTasks;
+		enableAll = value;
+		updateControls();
+		return *this;
 	};
 
-	void		SetDarkFlatBiasTabsVisibility(BOOL bDark, BOOL bFlat, BOOL bBias)
+	inline StackSettings & enableCustomRectangle(bool value) noexcept
 	{
-		m_bEnableDark = bDark;
-		m_bEnableFlat = bFlat;
-		m_bEnableBias = bBias;
+		customRectangleEnabled = value;
+		return *this;
+	}
+
+	inline StackSettings & selectCustomRectangle(bool value) noexcept
+	{
+		customRectangleSelected = value;
+		return *this;
+	}
+
+	inline bool isCustomRectangleEnabled() noexcept
+	{
+		return customRectangleEnabled;
+	}
+
+	inline bool isCustomRectangleSelected() noexcept
+	{
+		return customRectangleSelected;
+	}
+
+	inline bool	useCustomRectangle() noexcept
+	{
+		return (customRectangleEnabled && customRectangleSelected);
 	};
 
-	void		SetEnableAll(BOOL bEnableAll)
-	{
-		m_bEnableAll = bEnableAll;
-	};
+private:
+    Ui::StackSettings *ui;
+	bool initialised;
+    ResultParameters * m_resultParameters;
+    CometStacking * m_cometStacking;
+    AlignmentParameters * m_alignmentParameters;
+    IntermediateFiles * m_intermediateFiles;
+    PostCalibration * m_postCalibration;
+    OutputTab * m_outputTab;
+    StackingParameters * m_lightFrames;
+    StackingParameters * m_darkFrames;
+    StackingParameters * m_flatFrames;
+	StackingParameters * m_biasFrames;
 
-// Dialog Data
-	enum { IDD = IDD_STACKSETTINGS };
+	int	resultTab;
+	int cometTab;
+	int lightTab;
+	int darkTab;
+	int flatTab;
+	int biasTab;
+	int alignmentTab;
+	int intermediateTab;
+	int postCalibrationTab;
+	int outputTab;
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	void updateControls();
 
-	virtual BOOL OnInitDialog();
-	BOOL	CheckTabControls(CStackingParameters * pTab);
+	LONG					startingTab;
+	bool					registeringOnly;
+	bool					cometStacking;
+	bool					enableDark;
+	bool					enableFlat;
+	bool					enableBias;
+	bool					enableAll;
+	bool					customRectangleSelected;
+	bool					customRectangleEnabled;
+	CAllStackingTasks *		pStackingTasks;
 
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedOk();
-public:
-	afx_msg void OnBnClickedChangetempfolder();
+	void showEvent(QShowEvent *event) override;
+	void changeEvent(QEvent *event) override;
+
+	void onInitDialog();
+
+private slots:
+	void tabChanged(int tab);
+	void on_chooseFolder_clicked(bool value);
 };
+#endif // STACKSETTINGS_H

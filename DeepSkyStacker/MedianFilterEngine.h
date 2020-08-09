@@ -37,11 +37,11 @@ public :
 			m_pProgress = pProgress;
 		};
 
-		virtual BOOL	DoTask(HANDLE hEvent)
+		virtual bool	DoTask(HANDLE hEvent)
 		{
-			BOOL					bResult = TRUE;
+			bool					bResult = true;
 			LONG					i, j;
-			BOOL					bEnd = FALSE;
+			bool					bEnd = false;
 			MSG						msg;
 			LONG					lWidth  = m_pEngine->m_lWidth,
 									lHeight = m_pEngine->m_lHeight,
@@ -146,15 +146,15 @@ public :
 					SetEvent(hEvent);
 				}
 				else if (msg.message == WM_MT_STOP)
-					bEnd = TRUE;
+					bEnd = true;
 			};
 
-			return TRUE;
+			return true;
 		};
 
-		virtual BOOL	Process()
+		virtual bool	Process()
 		{
-			BOOL				bResult = TRUE;
+			bool				bResult = true;
 			LONG				lHeight = m_pEngine->m_lHeight;
 			LONG				i = 0;
 			LONG				lStep;
@@ -199,15 +199,15 @@ public :
     };
 	virtual ~CInternalMedianFilterEngineT() {};
 
-	BOOL	ApplyFilter(CDSSProgress * pProgress);
+	bool	ApplyFilter(CDSSProgress * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pProgress)
+inline bool CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pProgress)
 {
-	BOOL					bResult = TRUE;
+	bool					bResult = true;
 
 	if (pProgress)
 		pProgress->Start2(nullptr, m_lHeight);
@@ -324,9 +324,9 @@ inline BOOL CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
+inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	// Create Output Bitmap from Input Bitmap
 	if (m_pInBitmap)
@@ -367,9 +367,9 @@ inline BOOL	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** p
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
+inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	// Create Output Bitmap from Input Bitmap
 	if (m_pInBitmap)

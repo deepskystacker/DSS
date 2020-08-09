@@ -427,10 +427,6 @@ my explicit written consent.
 
 //////////////// Macros / Locals /////////////////////////////////////
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 const int PJNSMTP_MAXLINE = 76;
 
 #pragma comment(lib, "wsock32.lib") //Automatically link in the Winsock dll

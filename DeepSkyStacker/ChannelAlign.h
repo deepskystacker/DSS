@@ -9,7 +9,7 @@
 class CChannelAlign
 {
 private :
-	BOOL	AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CPixelTransform & PixTransform, CDSSProgress * pProgress);
+	bool	AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CPixelTransform & PixTransform, CDSSProgress * pProgress);
 	void	CopyBitmap(CMemoryBitmap * pSrcBitmap, CMemoryBitmap * pTgtBitmap);
 
 public:
@@ -24,7 +24,7 @@ public:
 
 	}
 
-	BOOL	AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
+	bool	AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
 };
 
 #endif __CHANNELALIGN_H__

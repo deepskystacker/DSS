@@ -41,7 +41,7 @@ void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHi
 {
 	ZFUNCTRACE_RUNTIME();
 	tgtHisto.Clear();
-	BOOL				bMonochrome;
+	bool				bMonochrome;
 
 	bMonochrome = m_StackedBitmap.IsMonochrome();
 
@@ -82,10 +82,10 @@ void CDeepStack::SaveStackedInfo(LPCTSTR szStackedInfoFile, LPRECT pRect)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CDeepStack::LoadStackedInfo(LPCTSTR szStackedInfoFile)
+bool CDeepStack::LoadStackedInfo(LPCTSTR szStackedInfoFile)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult;
+	bool				bResult;
 
 	bResult = m_StackedBitmap.Load(szStackedInfoFile, m_pProgress);
 

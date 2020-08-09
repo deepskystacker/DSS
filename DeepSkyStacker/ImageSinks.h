@@ -24,10 +24,10 @@ private :
 	SELECTRECTMODE	m_Mode;
 	CRect			m_rcSelect;
 	CRect			m_rcStart;
-	BOOL			m_bInSelecting;
+	bool			m_bInSelecting;
 	double			m_fXStart, m_fYStart;
 	double			m_fXEnd, m_fYEnd;
-	BOOL			m_bShowDrizzle;
+	bool			m_bShowDrizzle;
 
 private :
 	void	UpdateSelectRect();
@@ -40,9 +40,9 @@ public :
 	CSelectRectSink()
 	{
 		m_rcSelect.SetRectEmpty();
-		m_bInSelecting	= FALSE;
+		m_bInSelecting	= false;
 		m_Mode			= SRM_NONE;
-		m_bShowDrizzle	= FALSE;
+		m_bShowDrizzle	= false;
         m_fXStart       = 0;
         m_fYStart       = 0;
         m_fXEnd         = 0;
@@ -50,7 +50,7 @@ public :
 	};
 	virtual ~CSelectRectSink() {};
 
-	void	ShowDrizzleRectangles(BOOL bShow = TRUE)
+	void	ShowDrizzleRectangles(bool bShow = true)
 	{
 		m_bShowDrizzle = bShow;
 	};
@@ -61,7 +61,7 @@ public :
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 
-	BOOL	GetSelectRect(CRect & rcSelect)
+	bool	GetSelectRect(CRect & rcSelect)
 	{
 		rcSelect = m_rcSelect;
 
@@ -168,12 +168,12 @@ private :
 	EDITSTARACTION				m_Action;
 	CStar						m_AddedStar;
 	LONG						m_lRemovedIndice;
-	BOOL						m_bRemoveComet;
-	BOOL						m_bCometMode;
+	bool						m_bRemoveComet;
+	bool						m_bCometMode;
 	double						m_fXComet, m_fYComet;
-	BOOL						m_bComet;
+	bool						m_bComet;
 	double						m_fLightBkgd;
-	BOOL						m_bDirty;
+	bool						m_bDirty;
 	double						m_fScore;
 	LONG						m_lNrStars;
 	double						m_fFWHM;
@@ -182,9 +182,9 @@ private :
 
 private :
 
-	BOOL	IsRefStarVoted(LONG lStar)
+	bool	IsRefStarVoted(LONG lStar)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (g_bShowRefStars)
 		{
@@ -193,21 +193,21 @@ private :
 				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_RefStar)
-						bResult = TRUE;
+						bResult = true;
 				};
 			}
 			else
-				bResult = TRUE;
+				bResult = true;
 		}
 		else
-			bResult = TRUE;
+			bResult = true;
 
 		return bResult;
 	};
 
-	BOOL	IsTgtStarVoted(LONG lStar)
+	bool	IsTgtStarVoted(LONG lStar)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (g_bShowRefStars)
 		{
@@ -216,14 +216,14 @@ private :
 				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_TgtStar)
-						bResult = TRUE;
+						bResult = true;
 				};
 			}
 			else
-				bResult = TRUE;
+				bResult = true;
 		}
 		else
-			bResult = TRUE;
+			bResult = true;
 
 		return bResult;
 	};
@@ -256,9 +256,9 @@ public :
 	CEditStarsSink()
 	{
 		m_Action		= ESA_NONE;
-		m_bDirty		= FALSE;
-		m_bCometMode	= FALSE;
-		m_bComet		= FALSE;
+		m_bDirty		= false;
+		m_bCometMode	= false;
+		m_bComet		= false;
 		m_fLightBkgd	= 0;
 		m_fScore		= 0;
 		m_lNrStars		= 0;
@@ -275,7 +275,7 @@ public :
 	{
 		m_pBitmap = pBitmap;
 		m_GrayBitmap.Init(RCCHECKSIZE+1, RCCHECKSIZE+1);
-		m_bDirty = FALSE;
+		m_bDirty = false;
 		m_fBackground = 0;
 		if (m_pBitmap)
 			ComputeBackgroundValue();
@@ -308,12 +308,12 @@ public :
 		};
 	};
 
-	void	SetCometMode(BOOL bCometMode)
+	void	SetCometMode(bool bCometMode)
 	{
 		m_bCometMode = bCometMode;
 	};
 
-	BOOL	IsDirty()
+	bool	IsDirty()
 	{
 		return m_bDirty;
 	};

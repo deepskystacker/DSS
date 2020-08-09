@@ -1,7 +1,7 @@
 
 #include <stdafx.h>
 #include "RegisterEngine.h"
-#include "Registry.h"
+
 #include "MasterFrames.h"
 #include "BackgroundCalibration.h"
 #include "PixelTransform.h"
@@ -65,9 +65,9 @@ inline	void NormalizeAngle(LONG & lAngle)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
+bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 {
-	BOOL						bResult = FALSE;
+	bool						bResult = false;
 	std::vector<CStarAxisInfo>	vStarAxises;
 	double						fMaxHalfRadius = 0.0;
 	double						fMaxCumulated  = 0.0;
@@ -129,7 +129,7 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	star.m_fMajorAxisAngle = lMaxHalfRadiusAngle;
 
 	LONG			lSearchAngle;
-	BOOL			bFound = FALSE;
+	bool			bFound = false;
 
 	lSearchAngle = lMaxHalfRadiusAngle + 180;
 	NormalizeAngle(lSearchAngle);
@@ -138,12 +138,12 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	{
 		if (vStarAxises[i].m_lAngle == lSearchAngle)
 		{
-			bFound = TRUE;
+			bFound = true;
 			star.m_fSmallMajorAxis = vStarAxises[i].m_fRadius;
 		};
 	};
 
-	bFound		 = FALSE;
+	bFound		 = false;
 	lSearchAngle = lMaxHalfRadiusAngle + 90;
 	NormalizeAngle(lSearchAngle);
 
@@ -151,12 +151,12 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	{
 		if (vStarAxises[i].m_lAngle == lSearchAngle)
 		{
-			bFound = TRUE;
+			bFound = true;
 			star.m_fLargeMinorAxis = vStarAxises[i].m_fRadius;
 		};
 	};
 
-	bFound		 = FALSE;
+	bFound		 = false;
 	lSearchAngle = lMaxHalfRadiusAngle + 210;
 	NormalizeAngle(lSearchAngle);
 
@@ -164,7 +164,7 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	{
 		if (vStarAxises[i].m_lAngle == lSearchAngle)
 		{
-			bFound = TRUE;
+			bFound = true;
 			star.m_fSmallMinorAxis = vStarAxises[i].m_fRadius;
 		};
 	};
@@ -174,9 +174,9 @@ BOOL	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius)
+bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	LONG				i, j;
 	double				fSumX = 0,
 						fSumY = 0;
@@ -320,8 +320,8 @@ public :
 class CPixelDirections
 {
 public :
-	BOOL			bBrighterPixel;
-	BOOL			bMainOk;
+	bool			bBrighterPixel;
+	bool			bMainOk;
 	double			fMaxRadius;
 	double			m_fBackground;
 	double			fIntensity;
@@ -329,17 +329,17 @@ public :
 public :
 	CPixelDirections()
 	{
-		bBrighterPixel = FALSE;
-		bMainOk		   = TRUE;
+		bBrighterPixel = false;
+		bMainOk		   = true;
 		fMaxRadius	   = 0;
         m_fBackground  = 0;
         fIntensity     = 0;
 	};
-	BOOL	FillPixelDirection(double fX, double fY, CGrayBitmap & Bitmap, std::vector<CPixelDirection> & vPixels)
+	bool	FillPixelDirection(double fX, double fY, CGrayBitmap & Bitmap, std::vector<CPixelDirection> & vPixels)
 	{
 		LONG			k;
 
-		bMainOk = TRUE;
+		bMainOk = true;
 		fMaxRadius = 0;
 
 		for (k = 0;k<8;k++)
@@ -358,7 +358,7 @@ public :
 				Bitmap.GetPixel(fX+ldX+0.5, fY+ldY+0.5, vPixels[k].m_fIntensity);
 			};
 
-			bMainOk = FALSE;
+			bMainOk = false;
 			for (k = 0;(k<8) && !bBrighterPixel;k++)
 			{
 				if (vPixels[k].m_Ok)
@@ -370,11 +370,11 @@ public :
 						fMaxRadius = max(fMaxRadius, static_cast<double>(r));
 					}
 					else if (vPixels[k].m_fIntensity > fIntensity)
-						bBrighterPixel = TRUE;
+						bBrighterPixel = true;
 				};
 
 				if (vPixels[k].m_Ok)
-					bMainOk = TRUE;
+					bMainOk = true;
 			};
 		};
 
@@ -447,7 +447,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 					if (fIntensity >= m_fMinLuminancy+m_fBackground)
 					{
 						// Check that this pixel is not already used in a wanabee star
-						BOOL		bNew = TRUE;
+						bool		bNew = true;
 						POINT		ptTest;
 
 						ptTest.x = i;	ptTest.y = j;
@@ -459,7 +459,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 							while (it != m_sStars.end() && bNew)
 							{
 								if ((*it).IsInRadius(ptTest))
-									bNew = FALSE;
+									bNew = false;
 								else if ((*it).m_fX > ptTest.x + STARMAXSIZE)
 									it = m_sStars.end();
 								else
@@ -481,8 +481,8 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 							vPixels.emplace_back(-1, 1);
 							vPixels.emplace_back(-1, -1);
 
-							BOOL			bBrighterPixel = FALSE;
-							BOOL			bMainOk = TRUE;
+							bool			bBrighterPixel = false;
+							bool			bMainOk = true;
 							LONG			lMaxRadius = 0;
 							LONG			lNrBrighterPixels = 0;
 
@@ -502,7 +502,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 									pBitmap->GetPixel(i+ldX, j+ldY, vPixels[k].m_fIntensity);
 								};
 
-								bMainOk = FALSE;
+								bMainOk = false;
 								for (k = 0;(k<8) && !bBrighterPixel;k++)
 								{
 									if (vPixels[k].m_Ok)
@@ -514,15 +514,15 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 											lMaxRadius = max(lMaxRadius, r);
 										}
 										else if (vPixels[k].m_fIntensity > 1.05*fIntensity)
-											bBrighterPixel = TRUE;
+											bBrighterPixel = true;
 										else if (vPixels[k].m_fIntensity > fIntensity)
 											vPixels[k].m_lNrBrighterPixels++;
 									};
 
 									if (vPixels[k].m_Ok)
-										bMainOk = TRUE;
+										bMainOk = true;
 									if (vPixels[k].m_lNrBrighterPixels>2)
-										bBrighterPixel = TRUE;
+										bBrighterPixel = true;
 								};
 							};
 
@@ -533,7 +533,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 								//if (i>=1027 && i<=1035 && j>=2365 && j<=2372)
 								//	DebugBreak();
 
-								BOOL			bWanabeeStarOk = TRUE;
+								bool			bWanabeeStarOk = true;
 								LONG			k1, k2;
 								double			fMeanRadius1 = 0.0,
 												fMeanRadius2 = 0.0;
@@ -543,7 +543,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 									for (k2 = 0;(k2 < 4) && bWanabeeStarOk;k2++)
 									{
 										if ((k1 != k2) && labs(vPixels[k2].m_fRadius-vPixels[k1].m_fRadius) > fDeltaRadius)
-											bWanabeeStarOk = FALSE;
+											bWanabeeStarOk = false;
 									};
 								};
 								for (k1 = 4;(k1 <8) && bWanabeeStarOk;k1++)
@@ -551,7 +551,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 									for (k2 = 4;(k2 < 8) && bWanabeeStarOk;k2++)
 									{
 										if ((k1 != k2) && labs(vPixels[k2].m_fRadius-vPixels[k1].m_fRadius) > fDeltaRadius)
-											bWanabeeStarOk = FALSE;
+											bWanabeeStarOk = false;
 									};
 								};
 
@@ -564,7 +564,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 								fMeanRadius2 *= sqrt(2.0);
 
 								//if (fabs(fMeanRadius1 - fMeanRadius2) > fDeltaRadius - 1)
-								//	bWanabeeStarOk = FALSE;
+								//	bWanabeeStarOk = false;
 
 								CRect			rcStar;
 								LONG			lLeftRadius = 0;
@@ -613,7 +613,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 											while (it != m_sStars.end() && bWanabeeStarOk)
 											{
 												if (Distance(CPointExt(ms.m_fX, ms.m_fY), CPointExt((*it).m_fX, (*it).m_fY)) < (ms.m_fMeanRadius + (*it).m_fMeanRadius)*2.35/1.5)
-													bWanabeeStarOk = FALSE;
+													bWanabeeStarOk = false;
 												else if ((*it).m_fX > ms.m_fX + ms.m_fMeanRadius*2.35/1.5 + STARMAXSIZE)
 													it = m_sStars.end();
 												else
@@ -625,7 +625,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 										if (m_bComet)
 										{
 											if (ms.IsInRadius(m_fXComet, m_fYComet))
-												bWanabeeStarOk = FALSE;
+												bWanabeeStarOk = false;
 										};
 
 										if (bWanabeeStarOk)
@@ -652,9 +652,9 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
+bool	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	FILE *				hFile;
 
 	hFile = _tfopen(szInfoFileName, _T("wt+"));
@@ -686,7 +686,7 @@ BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 																	  m_vStars[i].m_fSmallMinorAxis);
 		};
 		fclose(hFile);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -694,9 +694,9 @@ BOOL	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 
 /* ------------------------------------------------------------------- */
 
-static BOOL GetNextValue(FILE * hFile, CString & strVariable, CString & strValue)
+static bool GetNextValue(FILE * hFile, CString & strVariable, CString & strValue)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	CHAR				szText[2000];
 	CString				strText;
 	int					nPos;
@@ -722,7 +722,7 @@ static BOOL GetNextValue(FILE * hFile, CString & strVariable, CString & strValue
 			strVariable.TrimLeft();
 			strVariable.TrimRight();
 		};
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -730,10 +730,10 @@ static BOOL GetNextValue(FILE * hFile, CString & strVariable, CString & strValue
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
+bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	FILE *				hFile;
 
 	// Try to open the file as a text file
@@ -743,9 +743,9 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		CString			strVariable;
 		CString			strValue;
 		LONG			lNrStars = 0;
-		BOOL			bEnd = FALSE;
+		bool			bEnd = false;
 
-		m_bComet = FALSE;
+		m_bComet = false;
 
 		// Read overall quality
 		while (!bEnd)
@@ -772,7 +772,7 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 				strY.TrimLeft();
 				strY.TrimRight();
 				m_fYComet = _ttof(strY);
-				m_bComet = TRUE;
+				m_bComet = true;
 			}
 			/*else if (!strVariable.CompareNoCase(_T("Width")))
 				m_lWidth = _ttol(strValue);
@@ -791,16 +791,16 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 			else if (!strVariable.CompareNoCase(_T("NrStars")))
 			{
 				lNrStars = _ttol(strValue);
-				bEnd = TRUE;
+				bEnd = true;
 			};
 		};
 
 		// Jump the first [Star#]
 		GetNextValue(hFile, strVariable, strValue);
-		bEnd = FALSE;
+		bEnd = false;
 		for (LONG i = 0;i<lNrStars && !bEnd;i++)
 		{
-			BOOL			bNextStar = FALSE;
+			bool			bNextStar = false;
 			CStar			ms;
 
 			ms.m_fPercentage  = 0;
@@ -924,11 +924,11 @@ BOOL	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 
 		ComputeFWHM();
 
-		m_bInfoOk = TRUE;
-		bResult = TRUE;
+		m_bInfoOk = true;
+		bResult = true;
 	}
 	else
-		m_bInfoOk = FALSE;
+		m_bInfoOk = false;
 
 	return bResult;
 };
@@ -944,7 +944,7 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 	BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 	BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
 	BackgroundCalibration.SetMultiplier(256.0);
-	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, TRUE, m_pProgress);
+	BackgroundCalibration.ComputeBackgroundCalibration(&Bitmap, true, m_pProgress);
 	fResult = BackgroundCalibration.m_fTgtRedBk/256.0;
 
 	return fResult;
@@ -1059,19 +1059,19 @@ public :
 		m_pProgress				 = pProgress;
 	};
 
-	virtual BOOL	DoTask(HANDLE hEvent);
-	virtual BOOL	Process();
+	virtual bool	DoTask(HANDLE hEvent);
+	virtual bool	Process();
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CComputeLuminanceTask::DoTask(HANDLE hEvent)
+bool	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	LONG				i, j;
-	BOOL				bEnd = FALSE;
+	bool				bEnd = false;
 	MSG					msg;
 	LONG				lWidth = m_pBitmap->Width();
 
@@ -1096,18 +1096,18 @@ BOOL	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 			SetEvent(hEvent);
 		}
 		else if (msg.message == WM_MT_STOP)
-			bEnd = TRUE;
+			bEnd = true;
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CComputeLuminanceTask::Process()
+bool	CComputeLuminanceTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 	LONG				lHeight = m_pBitmap->Height();
 	LONG				i = 0;
 	LONG				lStep;
@@ -1201,10 +1201,10 @@ void	CLightFrameInfo::RegisterPicture(CMemoryBitmap * pBitmap)
 
 /* ------------------------------------------------------------------- */
 
-BOOL CLightFrameInfo::ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift)
+bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift)
 {
 	// Compute star center for blue and red
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 	LONG				i, j;
 	double				fSumRedX = 0,
 						fSumRedY = 0;
@@ -1343,7 +1343,7 @@ void CLightFrameInfo::RegisterPicture()
 {
 	ZFUNCTRACE_RUNTIME();
 	CBitmapInfo			bmpInfo;
-	BOOL				bLoaded;
+	bool				bLoaded;
 
 	if (GetPictureInfo(m_strFileName, bmpInfo) && bmpInfo.CanLoad())
 	{
@@ -1375,7 +1375,7 @@ void CLightFrameInfo::RegisterPicture()
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, BOOL bRemoveHotPixels, BOOL bApplyMedianFilter, CDSSProgress * pProgress)
+void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	Reset();
@@ -1393,7 +1393,7 @@ void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, BO
 
 /* ------------------------------------------------------------------- */
 
-BOOL CLightFrameInfo::ReadInfoFileName()
+bool CLightFrameInfo::ReadInfoFileName()
 {
 	return LoadRegisteringInfo(m_strInfoFileName);
 };
@@ -1407,7 +1407,7 @@ void CLightFrameInfo::SaveRegisteringInfo()
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, BOOL bProcessIfNecessary, BOOL bForceRegister)
+void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, bool bProcessIfNecessary, bool bForceRegister)
 {
 	TCHAR				szDrive[1+_MAX_DRIVE];
 	TCHAR				szDir[1+_MAX_DIR];
@@ -1416,7 +1416,7 @@ void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, BOOL bProcessIfNecessary, BOOL
 	TCHAR				szInfoName[1+_MAX_PATH];
 
 	Reset();
-	m_bInfoOk = FALSE;
+	m_bInfoOk = false;
 	m_strFileName = szBitmap;
 	_tsplitpath(m_strFileName, szDrive, szDir, szFile, szExt);
 	_tmakepath(szInfoName, szDrive, szDir, szFile, _T(".Info.txt"));
@@ -1433,9 +1433,9 @@ void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, BOOL bProcessIfNecessary, BOOL
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile)
+bool	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile)
 {
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (lfi.m_strFileName.GetLength() && pBitmap)
 	{
@@ -1481,7 +1481,7 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 		{
 			CFATransform = pCFABitmapInfo->GetCFATransformation();
 			if (CFATransform == CFAT_SUPERPIXEL)
-				pCFABitmapInfo->UseBilinear(TRUE);
+				pCFABitmapInfo->UseBilinear(true);
 		};
 
 		if (pProgress)
@@ -1498,7 +1498,7 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 			bResult = WriteFITS(strOutputFile, pOutBitmap, pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
 
 		if (CFATransform == CFAT_SUPERPIXEL)
-			pCFABitmapInfo->UseSuperPixels(TRUE);
+			pCFABitmapInfo->UseSuperPixels(true);
 
 		if (pProgress)
 			pProgress->End2();
@@ -1509,10 +1509,10 @@ BOOL	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 
 /* ------------------------------------------------------------------- */
 
-BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce, CDSSProgress * pProgress)
+bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL					bResult = TRUE;
+	bool					bResult = true;
 	LONG					i, j;
 	CString					strText;
 	LONG					lTotalRegistered = 0;
@@ -1530,13 +1530,13 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 
 	strText.LoadString(IDS_REGISTERING);
 	if (pProgress)
-		pProgress->Start(strText, lTotalRegistered, TRUE);
+		pProgress->Start(strText, lTotalRegistered, true);
 
 	bResult = tasks.DoAllPreTasks(pProgress);
 
 	// Do it again in case pretasks change the progress
 	if (pProgress)
-		pProgress->Start(strText, lTotalRegistered, TRUE);
+		pProgress->Start(strText, lTotalRegistered, true);
 
 	for (i = 0;i<tasks.m_vStacks.size() && bResult;i++)
 	{
@@ -1559,7 +1559,7 @@ BOOL CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, BOOL bForce
 				ZTRACE_RUNTIME("Register %s", (LPCTSTR)pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName);
 
 				lfi.SetProgress(pProgress);
-				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName, FALSE, FALSE);
+				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName, false, false);
 				lNrRegistered++;
 
 				if (pProgress)

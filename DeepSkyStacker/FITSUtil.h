@@ -55,12 +55,12 @@ public :
 		return m_lNrChannels;
 	};
 
-	inline BOOL	IsFloat() noexcept
+	inline bool	IsFloat() noexcept
 	{
 		return m_bFloat;
 	};
 
-	inline BOOL	IsCFA() noexcept
+	inline bool	IsCFA() noexcept
 	{
 		return (m_CFAType != CFATYPE_NONE);
 	};
@@ -70,9 +70,9 @@ public :
 		return m_CFAType;
 	};
 
-	inline BOOL	IsMaster() noexcept
+	inline bool	IsMaster() noexcept
 	{
-		return FALSE;
+		return false;
 	};
 
 	inline double	GetExposureTime() noexcept
@@ -120,13 +120,13 @@ protected :
 	double					m_fRedRatio;
 	double					m_fBlueRatio;
 	double					m_fBrightnessRatio;
-	BOOL					m_bDSI;
+	bool					m_bDSI;
 
 private :
-	BOOL	ReadKey(LPSTR szKey, double & fValue, CString & strComment);
-	BOOL	ReadKey(LPSTR szKey, double & fValue);
-	BOOL	ReadKey(LPSTR szKey, LONG & lValue);
-	BOOL	ReadKey(LPSTR szKey, CString & strValue);
+	bool	ReadKey(LPSTR szKey, double & fValue, CString & strComment);
+	bool	ReadKey(LPSTR szKey, double & fValue);
+	bool	ReadKey(LPSTR szKey, LONG & lValue);
+	bool	ReadKey(LPSTR szKey, CString & strValue);
 	void	ReadAllKeys();
 
 public :
@@ -138,7 +138,7 @@ public :
 		m_fGreenRatio = 1.0;
 		m_fRedRatio   = 1.0;
 		m_fBlueRatio  = 1.0;
-		m_bDSI		  = FALSE;
+		m_bDSI		  = false;
         m_fBrightnessRatio = 0;
 	};
 
@@ -147,13 +147,13 @@ public :
 		Close();
 	};
 
-	BOOL	Open();
-	BOOL	Read();
-	virtual BOOL	Close();
+	bool	Open();
+	bool	Read();
+	virtual bool	Close();
 
-	virtual BOOL	OnOpen() { return TRUE; };
-	virtual BOOL	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return FALSE;};
-	virtual BOOL	OnClose() { return TRUE; };
+	virtual bool	OnOpen() { return true; };
+	virtual bool	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) { return false;};
+	virtual bool	OnClose() { return true; };
 };
 
 /* ------------------------------------------------------------------- */
@@ -167,9 +167,9 @@ public :
 	CString					m_strDescription;
 
 private :
-	BOOL	WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);
-	BOOL	WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment = nullptr);
-	BOOL	WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = nullptr);
+	bool	WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);
+	bool	WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment = nullptr);
+	bool	WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = nullptr);
 	void	WriteAllKeys();
 
 protected :
@@ -199,28 +199,28 @@ public :
 		m_Format = FITSFormat;
 	};
 
-	BOOL	Open();
-	BOOL	Write();
-	BOOL	Close();
+	bool	Open();
+	bool	Write();
+	bool	Close();
 
-	virtual BOOL	OnOpen() { return TRUE; };
-	virtual BOOL	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
-	virtual BOOL	OnClose() { return TRUE; };
+	virtual bool	OnOpen() { return true; };
+	virtual bool	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) = 0;
+	virtual bool	OnClose() { return true; };
 };
 
 /* ------------------------------------------------------------------- */
 
 CFATYPE GetFITSCFATYPE();
-BOOL	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-BOOL	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
+bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+bool	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
+bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure);
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescriptionL,
+bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
+bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescriptionL,
 			LONG lISOSpeed, LONG lGain, double fExposure);
-BOOL	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
+bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
 
-BOOL	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
+bool	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 int		LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
 
 void	GetFITSExtension(LPCTSTR szFileName, CString & strExtension);

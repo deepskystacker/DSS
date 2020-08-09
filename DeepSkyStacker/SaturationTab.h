@@ -19,7 +19,7 @@ class CSaturationTab : public CChildPropertyPage
 {
 	DECLARE_DYNCREATE(CSaturationTab)
 private :
-	BOOL				m_bFirstActivation ;
+	bool				m_bFirstActivation ;
 
 // Construction
 public:

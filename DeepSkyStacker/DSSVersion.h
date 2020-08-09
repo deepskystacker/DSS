@@ -1,17 +1,17 @@
 #ifndef __DSSVERSION_H_
 #define __DSSVERSION_H_
 
-//#define DSSBETA
+#define DSSBETA
 
 #ifdef DSSBETA
-#define DSSBETARELEASE 6
-constexpr long DSSBETAEXPIREYEAR = 2020L;
-constexpr long DSSBETAEXPIREMONTH = 10L;
+#define DSSBETARELEASE 1
+constexpr long DSSBETAEXPIREYEAR = 2021L;
+constexpr long DSSBETAEXPIREMONTH = 3L;
 #endif
 
-#define DSSVER_MAJOR			4
-#define DSSVER_MINOR			2
-#define DSSVER_SUB				4
+#define DSSVER_MAJOR			5
+#define DSSVER_MINOR			1
+#define DSSVER_SUB				0
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
@@ -40,8 +40,8 @@ constexpr long DSSBETAEXPIREMONTH = 10L;
 #define DSSVER_FILEVERSION		VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
-#define DSSVER_COPYRIGHT "Copyright © 2006-2019 Luc Coiffier;\n\
-	Copyright © 2018-2020 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow, Tomas Tatara";
+#define DSSVER_COPYRIGHT "Copyright \xc2\xa9 2006-2019 Luc Coiffier;\n\
+	Copyright \xc2\xa9 2018-2020 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow, Tomas Tatara, Michal Schulz"
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
 #define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker Live"

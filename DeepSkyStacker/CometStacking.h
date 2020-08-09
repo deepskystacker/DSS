@@ -1,58 +1,47 @@
-#pragma once
+#ifndef COMETSTACKING_H
+#define COMETSTACKING_H
+#include <memory>
 
+class QPixmap;
 
-// CCometStacking dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
-#include "StackingTasks.h"
+#include "DSSCommon.h"
+#include <QWidget>
 
+namespace Ui {
+class CometStacking;
+}
 
-class CCometStacking : public CChildPropertyPage
+class CWorkspace;
+
+class CometStacking : public QWidget
 {
-	DECLARE_DYNAMIC(CCometStacking)
+    Q_OBJECT
 
+typedef QWidget
+		Inherited;
 public:
-	CCometStacking();
-	virtual ~CCometStacking();
+    explicit CometStacking(QWidget *parent = nullptr);
+    ~CometStacking();
 
-	void	SetCometStackingMode(COMETSTACKINGMODE CometStackingMode)
-	{
-		m_CometStackingMode = CometStackingMode;
-		UpdateControls();
-	};
+	void setCometStackingMode(COMETSTACKINGMODE);
 
-	COMETSTACKINGMODE	GetCometStackingMode()
-	{
-		return m_CometStackingMode;
-	};
+public slots:
+	void onSetActive();
 
-// Dialog Data
-	enum { IDD = IDD_STACKINGCOMET };
+private slots:
+    void on_modeStandard_clicked();
+	void on_modeComet_clicked();
+	void on_modeAdvanced_clicked();
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+private:
+    Ui::CometStacking *ui;
+	std::unique_ptr<CWorkspace> workspace;
+    COMETSTACKINGMODE m_CometStackingMode;
+	QPixmap standardPix;
+	QPixmap cometPix;
+	QPixmap advancedPix;
 
-public:
-	virtual BOOL OnSetActive();
-
-	DECLARE_MESSAGE_MAP()
-
-private :
-	BOOL				m_bFirstActivation;
-
-	void				UpdateControls();
-
-	afx_msg void OnBnClickedStandardStacking();
-	afx_msg void OnBnClickedCometStacking();
-	afx_msg void OnBnClickedAdvancedStacking();
-
-public :
-	CLabel				m_Title;
-	CButton				m_StandardStacking;
-	CButton				m_CometStacking;
-	CButton				m_AdvancedStacking;
-	CStatic				m_Preview;
-
-	COMETSTACKINGMODE	m_CometStackingMode;
+    void updateImage();
 };
+
+#endif // COMETSTACKING_H

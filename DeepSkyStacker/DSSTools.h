@@ -8,9 +8,9 @@
 
 /* ------------------------------------------------------------------- */
 
-inline BOOL	GetFileCreationDateTime(LPCTSTR szFileName, FILETIME & FileTime)
+inline bool	GetFileCreationDateTime(LPCTSTR szFileName, FILETIME & FileTime)
 {
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 	HANDLE			hFind;
 	WIN32_FIND_DATA	FindData;
 
@@ -19,7 +19,7 @@ inline BOOL	GetFileCreationDateTime(LPCTSTR szFileName, FILETIME & FileTime)
 	{
 		FileTime = FindData.ftLastWriteTime;
 		FindClose(hFind);
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -257,12 +257,12 @@ public :
 		return (X < pt.X);
 	};
 
-	BOOL	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
+	bool	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
 	{
 		return (X>=fLeft) && (X <= fRight) && (Y>=fTop) && (Y<=fBottom);
 	};
 
-	BOOL	IsNear(const CPointExt & ptTest)
+	bool	IsNear(const CPointExt & ptTest)
 	{
 		return (fabs(X-ptTest.X) <= 3) && (fabs(Y-ptTest.Y) <= 3);
 	};
@@ -583,7 +583,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	double					fAverage = 0;
 	double					fTotalVariation = 0;
 
-	BOOL					bInFlatPart = FALSE;
+	bool					bInFlatPart = false;
 	CFlatPart				fp;
 	std::vector<double>		vVariations;
 	std::vector<double>		vAbsVariations;
@@ -637,7 +637,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 						// Start again - a little later
 						i = fp.m_lStart+1;
 					};
-					bInFlatPart = FALSE;
+					bInFlatPart = false;
 				}
 				else
 				{
@@ -655,7 +655,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 				fp.m_lStart = i;
 				fp.m_lEnd   = i;
 				fSummedVariation = 0;//vVariations[i];
-				bInFlatPart = TRUE;
+				bInFlatPart = true;
 				fp.m_fAverage			= vValues[i];
 				fp.m_fAverageVariation  = 0;//fabs(vVariations[i]);
 				fp.m_fAbsAverageVariation = 0;
@@ -668,7 +668,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 			fp.m_fAverageVariation /= fp.Length();
 			fp.m_fAbsAverageVariation /= fp.Length();
 			vFlatParts.push_back(fp);
-			bInFlatPart		 = FALSE;
+			bInFlatPart		 = false;
 			fSummedVariation = 0;
 		};
 	};
@@ -676,7 +676,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	if (vValues.size())
 	{
 		// Check that at least one flat part is below the average
-		BOOL				bFound = FALSE;
+		bool				bFound = false;
 
 		for (LONG i = 0;i<vFlatParts.size() && !bFound;i++)
 			bFound = (vFlatParts[i].m_fAverage <= fAverage);
@@ -694,7 +694,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-T Minimum(std::vector<T>& values, BOOL ignoreZeros)
+T Minimum(std::vector<T>& values, bool ignoreZeros)
 {
     T result = 0;
 
@@ -741,7 +741,7 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 		// Use only the minimum value for each channel
 		T						fMinimum;
 
-		fMinimum = Minimum(vValues, TRUE);
+		fMinimum = Minimum(vValues, true);
 
 		vValues.resize(1);		vValues[0] = fMinimum;
 	};
@@ -863,9 +863,9 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 								f2Minimum,
 								f3Minimum;
 
-		f1Minimum = Minimum(v1Values, TRUE);
-		f2Minimum = Minimum(v2Values, TRUE);
-		f3Minimum = Minimum(v3Values, TRUE);
+		f1Minimum = Minimum(v1Values, true);
+		f2Minimum = Minimum(v2Values, true);
+		f3Minimum = Minimum(v3Values, true);
 
 		v1Values.resize(1);		v1Values[0] = f1Minimum;
 		v2Values.resize(1);		v2Values[0] = f2Minimum;
@@ -882,7 +882,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 {
 	if (vValues.size()>3)
 	{
-		BOOL				bEnd = FALSE;
+		bool				bEnd = false;
 		LONG				i;
 
 		std::sort(vValues.begin(), vValues.end());
@@ -958,7 +958,7 @@ template <class T> inline
 double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T> & vAuxValues)
 {
 	double			Result = 0;
-	BOOL			bEnd = FALSE;
+	bool			bEnd = false;
 	CDynamicStats	DynStats;
 
 	//
@@ -1252,9 +1252,9 @@ private :
 	};
 
 private :
-	BOOL	GetNextParameter(CString & strParameters, double & fValue)
+	bool	GetNextParameter(CString & strParameters, double & fValue)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 		int				nPos;
 		CString			strValue;
 
@@ -1268,7 +1268,7 @@ private :
 
 			fValue = _ttof((LPCTSTR)strValue);	// Change _ttof to _ttof for Unicode
 			strParameters = strParameters.Right(max(0, strParameters.GetLength()-strValue.GetLength()-1));
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -1347,9 +1347,9 @@ public :
 		};
 	};
 
-	BOOL	FromText(LPCTSTR szText)
+	bool	FromText(LPCTSTR szText)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 		CString			strText = szText;
 		int				nPos1,
 						nPos2;

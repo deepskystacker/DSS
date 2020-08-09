@@ -3,19 +3,14 @@
 
 #include "stdafx.h"
 #include "deepskystacker.h"
-#include "Registry.h"
+
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "ProgressDlg.h"
 #include "TIFFUtil.h"
 #include "BatchStacking.h"
 #include "DeepStackerDlg.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include <QSettings>
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -90,13 +85,13 @@ BOOL CBatchStacking::OnInitDialog()
 
 	INIT_EASYSIZE;
 
-	RestoreWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_BATCH_POSITION, true);
+	RestoreWindowPosition(this, "Dialogs/Batch/Position", true);
 
 	for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)
 		m_Lists.AddString(m_MRUList.m_vLists[i]);
 
 	UpdateListBoxWidth();
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -122,12 +117,12 @@ void CBatchStacking::OnSizing(UINT nSide, LPRECT lpRect)
 void CBatchStacking::OnBnClickedAddLists()
 {
 	ZFUNCTRACE_RUNTIME();
-	CRegistry			reg;
+	QSettings			settings;
 	CString				strBaseDirectory;
 
-	reg.LoadKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
+	strBaseDirectory = CString((LPCTSTR)settings.value("Folders/ListFolder", "").toString().utf16());
 
-	CFileDialog			dlgOpen(TRUE,
+	CFileDialog			dlgOpen(true,
 								_T(".txt"),
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -163,7 +158,7 @@ void CBatchStacking::OnBnClickedAddLists()
 				int				nIndex;
 
 				nIndex = m_Lists.AddString(strFile);
-				m_Lists.SetCheck(nIndex, TRUE);
+				m_Lists.SetCheck(nIndex, true);
 			};
 
 			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
@@ -172,7 +167,7 @@ void CBatchStacking::OnBnClickedAddLists()
 		};
 		EndWaitCursor();
 
-		reg.SaveKey(REGENTRY_BASEKEY_FOLDERS, _T("ListFolder"), strBaseDirectory);
+		settings.setValue("ListFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
 	};
 	UpdateListBoxWidth();
 };
@@ -214,10 +209,10 @@ void CBatchStacking::UpdateListBoxWidth()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
+bool CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 	CWorkspace			workspace;
 	CAllStackingTasks	tasks;
 	CFrameList			list;
@@ -229,7 +224,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 
 	if (tasks.m_vStacks.size())
 	{
-		BOOL						bContinue = TRUE;
+		bool						bContinue = true;
 		CDSSProgressDlg				dlg;
 		CStackingEngine				StackingEngine;
 		CSmartPtr<CMemoryBitmap>	pBitmap;
@@ -240,7 +235,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 		{
 			CRegisterEngine	RegisterEngine;
 
-			bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
+			bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
 		};
 
 		if (bContinue)
@@ -259,9 +254,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 
 				strFileName = szFileName;
 
-				DWORD					iff;
-
-				workspace.GetValue(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("IntermediateFileFormat"), iff);
+				DWORD iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
 
 				if (StackingEngine.GetDefaultOutputFileName(strFileName, szList, (iff==IFF_TIFF)))
 				{
@@ -305,7 +298,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 void CBatchStacking::OnOK()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bContinue  = TRUE;
+	bool			bContinue  = true;
 	LONG			lNrProcessedLists = 0;
 
 	for (LONG i = 0;i<m_Lists.GetCount() && bContinue;i++)
@@ -318,15 +311,15 @@ void CBatchStacking::OnOK()
 			CString			strOutputFile;
 
 			bContinue = ProcessList(strFile, strOutputFile);
-			m_Lists.SetCheck(i, FALSE);
+			m_Lists.SetCheck(i, false);
 			if (bContinue)
 			{
 				CString			strText;
 
 				strText.Format(_T("->%s"), (LPCTSTR)strOutputFile);
 				m_Lists.InsertString(i, strText);
-				m_Lists.SetCheck(i, FALSE);
-				m_Lists.Enable(i, FALSE);
+				m_Lists.SetCheck(i, false);
+				m_Lists.Enable(i, false);
 				m_Lists.DeleteString(i+1);
 				UpdateListBoxWidth();
 			};
@@ -336,7 +329,7 @@ void CBatchStacking::OnOK()
 
 	if (!lNrProcessedLists)
 	{
-		SaveWindowPosition(this, REGENTRY_BASEKEY_DEEPSKYSTACKER_BATCH_POSITION);
+		SaveWindowPosition(this, "Dialogs/Batch/Position");
 		CDialog::OnOK();
 	};
 }

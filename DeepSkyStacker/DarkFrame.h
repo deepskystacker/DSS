@@ -261,10 +261,10 @@ public :
 class CDarkFrame
 {
 private :
-	BOOL						m_bDarkOptimization;
-	BOOL						m_bHotPixelsDetection;
-	BOOL						m_bHotPixelDetected;
-	BOOL						m_bBadLinesDetection;
+	bool						m_bDarkOptimization;
+	bool						m_bHotPixelsDetection;
+	bool						m_bHotPixelDetected;
+	bool						m_bBadLinesDetection;
 	double						m_fDarkFactor;
 	CSmartPtr<CMemoryBitmap>	m_pMasterDark;
 	CSmartPtr<CMemoryBitmap>	m_pAmpGlow;
@@ -281,7 +281,7 @@ private :
 		m_bHotPixelsDetection	= CAllStackingTasks::GetHotPixelsDetection();
 		m_bBadLinesDetection	= CAllStackingTasks::GetBadLinesDetection();
 		m_fDarkFactor			= CAllStackingTasks::GetDarkFactor();
-		m_bHotPixelDetected		= FALSE;
+		m_bHotPixelDetected		= false;
 		m_pMasterDark.Release();
 		m_vHotPixels.clear();
 	};
@@ -296,7 +296,7 @@ protected :
 	void	ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, CDSSProgress * pProgress);
 	void	ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, CDSSProgress * pProgress);
 	void	ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor);
-	void	RemoveContiguousHotPixels(BOOL bCFA);
+	void	RemoveContiguousHotPixels(bool bCFA);
 	void	FindHotPixels(CDSSProgress * pProgress);
 	void	FindBadVerticalLines(CDSSProgress * pProgress);
 
@@ -317,11 +317,11 @@ public :
 		m_pMasterDark = pMasterDark;
 	};
 
-	BOOL	Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
+	bool	Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
 
 	void	InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = nullptr);
 
-	BOOL	IsOk()
+	bool	IsOk()
 	{
 		return (m_pMasterDark != nullptr);
 	};

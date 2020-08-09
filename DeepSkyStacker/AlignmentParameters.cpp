@@ -1,188 +1,92 @@
-// ResultParameters.cpp : implementation file
-//
-
-#include "stdafx.h"
-#include "DeepSkyStacker.h"
 #include "AlignmentParameters.h"
-#include "StackSettings.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
+#include "ui/ui_AlignmentParameters.h"
 
-// CAlignmentParameters dialog
+#include <ZExcept.h>
+#include <Ztrace.h>
 
-IMPLEMENT_DYNAMIC(CAlignmentParameters, CChildPropertyPage)
+#include "DSSCommon.h"
+#include "Workspace.h"
 
-/* ------------------------------------------------------------------- */
-
-CAlignmentParameters::CAlignmentParameters()
-	: CChildPropertyPage(CAlignmentParameters::IDD)
+AlignmentParameters::AlignmentParameters(QWidget *parent) :
+	QWidget(parent),
+	ui(new Ui::AlignmentParameters),
+	workspace(new CWorkspace())
 {
-	m_bFirstActivation = TRUE;
-	m_Alignment = 0;
+    ui->setupUi(this);
+	m_Alignment = workspace->value("Stacking/AlignmentTransformation", uint(1)).toUInt();
 }
 
-/* ------------------------------------------------------------------- */
-
-CAlignmentParameters::~CAlignmentParameters()
+AlignmentParameters::~AlignmentParameters()
 {
+    delete ui;
 }
 
-/* ------------------------------------------------------------------- */
-
-void CAlignmentParameters::DoDataExchange(CDataExchange* pDX)
+void AlignmentParameters::onSetActive()
 {
-	CChildPropertyPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_AUTO, m_Automatic);
-	DDX_Control(pDX, IDC_BISQUARED, m_Bisquared);
-	DDX_Control(pDX, IDC_BICUBIC, m_Bicubic);
-	DDX_Control(pDX, IDC_BILINEAR, m_Bilinear);
-	DDX_Control(pDX, IDC_NOALIGNMENT, m_NoAlignment);
-	DDX_Control(pDX, IDC_ALIGNMENTTEXT, m_Explanation);
-	DDX_Control(pDX, IDC_TITLE, m_Title);
+	updateControls();
 }
 
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CAlignmentParameters, CChildPropertyPage)
-	ON_BN_CLICKED(IDC_AUTO, &CAlignmentParameters::OnBnClickedAutomatic)
-	ON_BN_CLICKED(IDC_BILINEAR, &CAlignmentParameters::OnBnClickedBilinear)
-	ON_BN_CLICKED(IDC_BISQUARED, &CAlignmentParameters::OnBnClickedBisquared)
-	ON_BN_CLICKED(IDC_BICUBIC, &CAlignmentParameters::OnBnClickedBicubic)
-	ON_BN_CLICKED(IDC_NOALIGNMENT, &CAlignmentParameters::OnBnClickedNoAlignment)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-
-void CAlignmentParameters::UpdateControls()
+void AlignmentParameters::updateControls()
 {
-	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-
-	if (m_Automatic.GetCheck())
-		m_Alignment = 0;
-	else if (m_Bilinear.GetCheck())
-		m_Alignment = 2;
-	else if (m_Bisquared.GetCheck())
-		m_Alignment = 3;
-	else if (m_Bicubic.GetCheck())
-		m_Alignment = 4;
-	else if (m_NoAlignment.GetCheck())
-		m_Alignment = 5;
-
-	CString				strText;
-
-	switch (m_Alignment)
-	{
-	case 0 :
-	case 1 :
-		strText.LoadString(IDS_ALIGNMENT_AUTO);
-		break;
-	case 2 :
-		strText.LoadString(IDS_ALIGNMENT_BILINEAR);
-		break;
-	case 3 :
-		strText.LoadString(IDS_ALIGNMENT_BISQUARED);
-		break;
-	case 4 :
-		strText.LoadString(IDS_ALIGNMENT_BICUBIC);
-		break;
-	};
-
-	m_Explanation.SetWindowText(strText);
-
-	if (pDialog)
-		pDialog->UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL CAlignmentParameters::OnSetActive()
-{
-	if (m_bFirstActivation)
-	{
-		m_Automatic.SetCheck(m_Alignment == 0);
-		m_Bilinear.SetCheck(m_Alignment == 2);
-		m_Bisquared.SetCheck(m_Alignment == 3);
-		m_Bicubic.SetCheck(m_Alignment == 4);
-		m_NoAlignment.SetCheck(m_Alignment == 5);
-		UpdateControls();
-		m_bFirstActivation = FALSE;
-
-		m_Title.SetTextColor(RGB(0, 0, 0));
-		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-	};
-
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-// CAlignmentParameters message handlers
-
-void CAlignmentParameters::OnBnClickedAutomatic()
-{
-	if (m_Automatic.GetCheck())
-	{
-		m_Bilinear.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
-		UpdateControls();
-	};
+    switch (m_Alignment)
+    {
+        case 0:
+            /* Passthrough */
+        case ALIGN_AUTO:
+            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Automatic\n\nThe alignment method is automatically selected depending on the number of available stars."));
+			ui->alignAuto->setChecked(true);
+            break;
+        case ALIGN_BILINEAR:
+            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bilinear Alignment\n\nThe Bilinear Alignment is used in all cases."));
+			ui->alignBilinear->setChecked(true);
+			break;
+        case ALIGN_BISQUARED:
+            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bisquared Alignment\n\nThe Bisquared Alignment is used when at least 25 stars are available, else the Bilinear Alignment method is used."));
+			ui->alignBisquared->setChecked(true);
+			break;
+        case ALIGN_BICUBIC:
+            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bicubic Alignment\n\nThe Bicubic method is used when at least 40 stars are available, then the Bisquared method is used if 25 to 39 stars are available, then the Bilinear method is used when less than 25 stars are available."));
+			ui->alignBicubic->setChecked(true);
+			break;
+        case ALIGN_NONE:
+            ui->text->setText("");
+			ui->alignNone->setChecked(true);
+            break;
+    }
 }
 
-/* ------------------------------------------------------------------- */
-
-void CAlignmentParameters::OnBnClickedBilinear()
+void AlignmentParameters::setAlignment(uint wAlignment)
 {
-	if (m_Bilinear.GetCheck())
+	if (m_Alignment != wAlignment)
 	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
-		UpdateControls();
-	};
+		m_Alignment = wAlignment;
+		workspace->setValue("Stacking/AlignmentTransformation", uint(m_Alignment));
+		updateControls();
+	}
+};
+
+
+void AlignmentParameters::on_alignAuto_clicked()
+{
+    setAlignment(ALIGN_AUTO);
 }
 
-/* ------------------------------------------------------------------- */
-
-void CAlignmentParameters::OnBnClickedBisquared()
+void AlignmentParameters::on_alignBilinear_clicked()
 {
-	if (m_Bisquared.GetCheck())
-	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bilinear.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
-		UpdateControls();
-	};
-};
+    setAlignment(ALIGN_BILINEAR);
+}
 
-/* ------------------------------------------------------------------- */
-
-void CAlignmentParameters::OnBnClickedBicubic()
+void AlignmentParameters::on_alignBisquared_clicked()
 {
-	if (m_Bicubic.GetCheck())
-	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bilinear.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_NoAlignment.SetCheck(FALSE);
-		UpdateControls();
-	};
-};
+    setAlignment(ALIGN_BISQUARED);
+}
 
-/* ------------------------------------------------------------------- */
-
-void CAlignmentParameters::OnBnClickedNoAlignment()
+void AlignmentParameters::on_alignBicubic_clicked()
 {
-	if (m_NoAlignment.GetCheck())
-	{
-		m_Automatic.SetCheck(FALSE);
-		m_Bilinear.SetCheck(FALSE);
-		m_Bisquared.SetCheck(FALSE);
-		m_Bicubic.SetCheck(FALSE);
-		UpdateControls();
-	};
-};
+    setAlignment(ALIGN_BICUBIC);
+}
 
-/* ------------------------------------------------------------------- */
+void AlignmentParameters::on_alignNone_clicked()
+{
+    setAlignment(ALIGN_NONE);
+}

@@ -1,489 +1,541 @@
-// StackingParameters.cpp : implementation file
-//
+﻿#include <algorithm>
+using std::min;
+using std::max;
 
-#include "stdafx.h"
-#include "DeepSkyStacker.h"
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#include <afx.h>
+
 #include "StackingParameters.h"
-#include "StackSettings.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
+#include "ui/ui_StackingParameters.h"
+
+#include <QAction>
+#include <QCursor>
+#include <QDoubleValidator>
+#include <QIntValidator>
+#include <QMenu>
+#include <QSettings>
+
+#include <ZExcept.h>
+#include <Ztrace.h>
+
 #include "BackgroundOptions.h"
+#include "DSSCommon.h"
+#include "StackSettings.h"
+#include "StackingTasks.h"
+#include "Workspace.h"
 
-// CStackingParameters dialog
-
-IMPLEMENT_DYNAMIC(CStackingParameters, CChildPropertyPage)
-
-/* ------------------------------------------------------------------- */
-
-CStackingParameters::CStackingParameters()
-	: CChildPropertyPage(CStackingParameters::IDD)
+StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
+    QWidget(parent),
+    ui(new Ui::StackingParameters),
+	workspace(new CWorkspace()),
+	pStackSettings(dynamic_cast<StackSettings *>(parent)),
+	type(theType),
+	nobgCalString(tr("No Background Calibration", "ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION")),
+	pcbgCalString(tr("Per Channel Background Calibration", "ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION")),
+	rgbbgCalString(tr("RGB Channels Background Calibration", "ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION"))
 {
-	m_bFirstActivation = TRUE;
-    m_BackgroundCalibrationMode = BACKGROUNDCALIBRATIONMODE(0);
-}
-
-/* ------------------------------------------------------------------- */
-
-CStackingParameters::~CStackingParameters()
-{
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::DoDataExchange(CDataExchange* pDX)
-{
-	CChildPropertyPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_AVERAGE, m_Average);
-	DDX_Control(pDX, IDC_MEDIAN, m_Median);
-	DDX_Control(pDX, IDC_MAXIMUM, m_Maximum);
-	DDX_Control(pDX, IDC_SIGMACLIPPING, m_SigmaClipping);
-	DDX_Control(pDX, IDC_MEDIANSIGMACLIPPING, m_MedianSigmaClipping);
-	DDX_Control(pDX, IDC_ENTROPYAVERAGE, m_EntropyAverage);
-	DDX_Control(pDX, IDC_AUTOADAPTIVEAVERAGE, m_WeightedAverage);
-	DDX_Control(pDX, IDC_KAPPA, m_Kappa);
-	DDX_Control(pDX, IDC_ITERATION, m_Iteration);
-	DDX_Control(pDX, IDC_STATICKAPPA, m_KappaStatic);
-	DDX_Control(pDX, IDC_KAPPAFRAME, m_KappaFrame);
-	DDX_Control(pDX, IDC_AUTOADAPTIVEFRAME, m_WeightedFrame);
-	DDX_Control(pDX, IDC_STATICITERATION, m_IterationStatic);
-	DDX_Control(pDX, IDC_TITLE, m_Title);
-	DDX_Control(pDX, IDC_BACKGROUNDCALIBRATION, m_BackgroundCalibration);
-	DDX_Control(pDX, IDC_DARKOPTIMIZATION, m_DarkOptimization);
-	DDX_Control(pDX, IDC_HOTPIXELS, m_HotPixels);
-	DDX_Control(pDX, IDC_BADCOLUMNREMOVAL, m_BadColumns);
-	DDX_Control(pDX, IDC_USEDARKFACTOR, m_UseDarkFactor);
-	DDX_Control(pDX, IDC_DARKMULTIPLICATIONFACTOR, m_DarkFactor);
-	DDX_Control(pDX, IDC_DEBLOOM, m_Debloom);
-//	DDX_Control(pDX, IDC_DEBLOOMSETTINGS, m_DebloomSettings);
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CStackingParameters, CChildPropertyPage)
-	ON_BN_CLICKED(IDC_AVERAGE, &CStackingParameters::OnBnClickedAverage)
-	ON_BN_CLICKED(IDC_MEDIAN, &CStackingParameters::OnBnClickedMedian)
-	ON_BN_CLICKED(IDC_MAXIMUM, &CStackingParameters::OnBnClickedMaximum)
-	ON_BN_CLICKED(IDC_SIGMACLIPPING, &CStackingParameters::OnBnClickedSigmaclipping)
-	ON_BN_CLICKED(IDC_MEDIANSIGMACLIPPING, &CStackingParameters::OnBnClickedMedianSigmaclipping)
-	ON_EN_CHANGE(IDC_KAPPA, &CStackingParameters::OnEnChangeKappa)
-	ON_EN_CHANGE(IDC_ITERATION, &CStackingParameters::OnEnChangeIteration)
-	ON_BN_CLICKED(IDC_ENTROPYAVERAGE, &CStackingParameters::OnBnClickedEntropyaverage)
-	ON_BN_CLICKED(IDC_AUTOADAPTIVEAVERAGE, &CStackingParameters::OnBnClickedAutoadaptiveaverage)
-	ON_BN_CLICKED(IDC_USEDARKFACTOR, &CStackingParameters::OnBnClickedUseDarkFactor)
-	ON_BN_CLICKED(IDC_DARKOPTIMIZATION, &CStackingParameters::OnBnClickedDarkOptimization)
-	ON_BN_CLICKED(IDC_DEBLOOM, &CStackingParameters::OnBnClickedDebloom)
-	ON_BN_CLICKED(IDC_DEBLOOMSETTINGS, &CStackingParameters::OnBnClickedDebloomSettings)
-	ON_EN_CHANGE(IDC_DARKMULTIPLICATIONFACTOR, &CStackingParameters::OnEnChangeDarkFactor)
-	ON_NOTIFY(NM_LINKCLICK, IDC_BACKGROUNDCALIBRATION, OnBackgroundCalibration)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::UpdateControls()
-{
-	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-
-	if (m_WeightedAverage.GetCheck())
+	if (nullptr == pStackSettings)
 	{
-		m_Kappa.EnableWindow(FALSE);
-		m_KappaStatic.EnableWindow(FALSE);
-		m_Iteration.EnableWindow(TRUE);
-		m_IterationStatic.EnableWindow(TRUE);
-		m_WeightedFrame.ShowWindow(SW_SHOW);
-		m_KappaFrame.ShowWindow(SW_HIDE);
+		delete ui;
+		ZASSERTSTATE(nullptr != pStackSettings);
 	}
-	else if (m_SigmaClipping.GetCheck() || m_MedianSigmaClipping.GetCheck())
-	{
-		m_Kappa.EnableWindow(TRUE);
-		m_KappaStatic.EnableWindow(TRUE);
-		m_Iteration.EnableWindow(TRUE);
-		m_IterationStatic.EnableWindow(TRUE);
-		m_WeightedFrame.ShowWindow(SW_HIDE);
-		m_KappaFrame.ShowWindow(SW_SHOW);
-	}
-	else
-	{
-		m_Kappa.EnableWindow(FALSE);
-		m_KappaStatic.EnableWindow(FALSE);
-		m_Iteration.EnableWindow(FALSE);
-		m_IterationStatic.EnableWindow(FALSE);
-		m_WeightedFrame.ShowWindow(SW_HIDE);
-		m_KappaFrame.ShowWindow(SW_HIDE);
-	};
 
-	if (pDialog)
-		pDialog->UpdateControls();
-};
+    ui->setupUi(this);
 
-/* ------------------------------------------------------------------- */
+//	connect(ui->backgroundCalibration, SIGNAL(linkActivated(const QString &)), this, SLOT(on_backgroundCalibration_linkActivated(const QString &)));
+	//
+	// Make all the "optional" controls invisible
+	// 
+	// First the light settings
+	//
+	ui->backgroundCalibration->setVisible(false);
+	ui->debloom->setVisible(false);
+	ui->deBloomSettings->setVisible(false);
+	//
+	// Then the dark settings
+	//
+	ui->hotPixels->setVisible(false);
+	ui->badColumns->setVisible(false);
+	ui->darkOptimisation->setVisible(false);
+	ui->useDarkFactor->setVisible(false);
+	ui->darkMultiplicationFactor->setVisible(false);
 
-BOOL CStackingParameters::OnSetActive()
-{
-	if (m_bFirstActivation)
-	{
-		m_Tooltips.Create(this);
-		m_Title.SetTextColor(RGB(0, 0, 0));
-		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-		UpdateControls();
-		m_bFirstActivation = FALSE;
+	//
+	// Set up the validators for the input fields
+	//
+	darkFactorValidator = new QDoubleValidator(0.0, 5.0, 4, this);
+	ui->darkMultiplicationFactor->setValidator(darkFactorValidator);
+	iterationValidator = new QIntValidator(0, 5, this);
+	ui->iterations->setValidator(iterationValidator);
+	kappaValidator = new QDoubleValidator(0.0, 5.0, 2, this);
+	ui->kappa->setValidator(kappaValidator);
 
-		CString			strText;
+	//
+	// Set the tooltip text
+	//
+	kappaSigmaTip = tr("The pixels outside the range:\n[Mean-%1*%2, Mean+%1*%2]\n"
+		"are iteratively removed.\n\nThe remaining pixels are averaged.",
+		"IDS_TOOLTIP_KAPPASIGMA")
+		// Greek character kappa (κ) = \xce\xba UTF8, Greek character sigma (σ) = \xcf\x83 UTF8
+		.arg("\xce\xba").arg("\xcf\x83");		
+	ui->modeKS->setToolTip(kappaSigmaTip);
+	ui->staticKappa->setToolTip(kappaSigmaTip);
+	ui->kappa->setToolTip(kappaSigmaTip);
 
-		strText.LoadString(IDS_TOOLTIP_KAPPASIGMA);
-		strText.Replace(_T("\n"), _T("<br>"));
-		strText.Replace(_T("[sigma]"), _T("<font face='Symbol'>s</font>"));
-		strText.Replace(_T("[kappa]"), _T("<font face='Symbol'>k</font>"));
-		m_Tooltips.AddTool(GetDlgItem(IDC_SIGMACLIPPING), strText);
-		m_Tooltips.AddTool(GetDlgItem(IDC_KAPPA), strText);
-		m_Tooltips.AddTool(GetDlgItem(IDC_STATICKAPPA), strText);
+	medianKappaSigmaTip = tr("The pixels outside the range:\n[Mean-%1*%2, Mean+%1*%2]\n"
+		"are iteratively replaced by the median value.\n\nThe pixels are then averaged.",
+		"IDS_TOOLTIP_MEDIANKAPPASIGMA")
+		// Greek character kappa (κ) = \xce\xba UTF8, Greek character sigma (σ) = \xcf\x83 UTF8
+		.arg("\xce\xba").arg("\xcf\x83");
+	ui->modeMKS->setToolTip(medianKappaSigmaTip);
 
-		strText.LoadString(IDS_TOOLTIP_MEDIANKAPPASIGMA);
-		strText.Replace(_T("\n"), _T("<br>"));
-		strText.Replace(_T("[sigma]"), _T("<font face='Symbol'>s</font>"));
-		strText.Replace(_T("[kappa]"), _T("<font face='Symbol'>k</font>"));
-		m_Tooltips.AddTool(GetDlgItem(IDC_MEDIANSIGMACLIPPING), strText);
+	QString text = tr("The <b>weighted average</b> is obtained by\niteratively weighting each pixel\n"
+		"based on its deviation from the mean\ncompared to the standard deviation (%1).",
+		"IDS_TOOLTIP_AUTOADAPTIVE")
+		// Greek character sigma (σ) = \xcf\x83 UTF8
+		.arg("\xcf\x83");
+	ui->modeAAWA->setToolTip(text);
 
-		strText.LoadString(IDS_TOOLTIP_AUTOADAPTIVE);
-		strText.Replace(_T("\n"), _T("<br>"));
-		strText.Replace(_T("[sigma]"), _T("<font face='Symbol'>s</font>"));
-		strText.Replace(_T("[kappa]"), _T("<font face='Symbol'>k</font>"));
-		m_Tooltips.AddTool(GetDlgItem(IDC_AUTOADAPTIVEAVERAGE), strText);
+	createActions().createMenus();
 
-		m_Tooltips.Activate(TRUE);
-
-		m_BackgroundCalibration.SetLink(TRUE, TRUE);
-		m_BackgroundCalibration.SetTransparent(TRUE);
-		m_BackgroundCalibration.SetTextColor(RGB(0, 0, 128));
-
-		UpdateCalibrationMode();
-	};
-
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::SetControls(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lIteration)
-{
-	switch (Method)
-	{
-	case MBP_AVERAGE :
-		m_Average.SetCheck(TRUE);
-		break;
-	case MBP_MEDIAN :
-		m_Median.SetCheck(TRUE);
-		break;
-	case MBP_MAXIMUM :
-		m_Maximum.SetCheck(TRUE);
-		break;
-	case MBP_SIGMACLIP :
-		m_SigmaClipping.SetCheck(TRUE);
-		break;
-	case MBP_MEDIANSIGMACLIP :
-		m_MedianSigmaClipping.SetCheck(TRUE);
-		break;
-	case MBP_AUTOADAPTIVE :
-		m_WeightedAverage.SetCheck(TRUE);
-		break;
-	case MBP_ENTROPYAVERAGE :
-		m_EntropyAverage.SetCheck(TRUE);
-		break;
-	};
-
-	CString			strValue;
-
-	strValue.Format(_T("%.2f"), fKappa);
-	m_Kappa.SetWindowText(strValue);
-
-	strValue.Format(_T("%ld"), lIteration);
-	m_Iteration.SetWindowText(strValue);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::GetControls(MULTIBITMAPPROCESSMETHOD & Method, double & fKappa, LONG & lIteration)
-{
-	if (m_Average.GetCheck())
-		Method = MBP_AVERAGE;
-	else if (m_Median.GetCheck())
-		Method = MBP_MEDIAN;
-	else if (m_Maximum.GetCheck())
-		Method = MBP_MAXIMUM;
-	else if (m_SigmaClipping.GetCheck())
-		Method = MBP_SIGMACLIP;
-	else if (m_MedianSigmaClipping.GetCheck())
-		Method = MBP_MEDIANSIGMACLIP;
-	else if (m_EntropyAverage.GetCheck())
-		Method = MBP_ENTROPYAVERAGE;
-	else if (m_WeightedAverage.GetCheck())
-		Method = MBP_AUTOADAPTIVE;
-
-	CString			strValue;
-
-	m_Kappa.GetWindowText(strValue);
-	fKappa = _ttof(strValue);
-
-	m_Iteration.GetWindowText(strValue);
-	lIteration = _ttol(strValue);
-};
-
-/* ------------------------------------------------------------------- */
-// CStackingParameters message handlers
-
-void CStackingParameters::OnBnClickedAverage()
-{
-	if (m_Average.GetCheck())
-	{
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
-		UpdateControls();
-	};
+	connect(this, SIGNAL(methodChanged(MULTIBITMAPPROCESSMETHOD)),
+		this, SLOT(updateControls(MULTIBITMAPPROCESSMETHOD)));
 }
 
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedMedian()
+StackingParameters & StackingParameters::createActions()
 {
-	if (m_Median.GetCheck())
+	nobgCal = new QAction(nobgCalString, this);
+	connect(nobgCal, &QAction::triggered, this,
+		[=]() { this->setBackgroundCalibration(BCM_NONE); });
+	connect(nobgCal, &QAction::triggered, this,
+		[=]() { ui->backgroundCalibration->setText(nobgCalString); });
+
+	pcbgCal = new QAction(pcbgCalString, this);
+	connect(pcbgCal, &QAction::triggered, this,
+		[=]() { this->setBackgroundCalibration(BCM_PERCHANNEL); });
+	connect(pcbgCal, &QAction::triggered, this,
+		[=]() { ui->backgroundCalibration->setText(pcbgCalString); });
+
+	rgbbgCal = new QAction(rgbbgCalString, this);
+	connect(rgbbgCal, &QAction::triggered, this,
+		[=]() { this->setBackgroundCalibration(BCM_RGB); });
+	connect(rgbbgCal, &QAction::triggered, this,
+		[=]() { ui->backgroundCalibration->setText(rgbbgCalString); });
+
+	bgCalOptions = new QAction(tr("Options...", "ID_CALIBRATIONMENU_OPTIONS"), this);
+	connect(bgCalOptions, SIGNAL(triggered()), this, SLOT(backgroundCalibrationOptions()));
+
+	return *this;
+}
+
+StackingParameters & StackingParameters::createMenus()
+{
+	QMenu * menu = new QMenu(this);
+	menu->addAction(nobgCal);
+	menu->addAction(pcbgCal);
+	menu->addAction(rgbbgCal);
+	menu->addSeparator();
+	menu->addAction(bgCalOptions);
+
+	backgroundCalibrationMenu = menu;
+
+	return *this;
+}
+
+StackingParameters::~StackingParameters()
+{
+	delete ui; ui = nullptr;
+}
+
+void StackingParameters::onSetActive()
+{
+	method = MBP_AVERAGE;
+	mode = BCM_NONE;
+	double value = 0.0;
+	bool isChecked;
+	QString string;
+
+	switch (type)
 	{
-		m_Average.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
-		UpdateControls();
-	};
-}
+	case PICTURETYPE_LIGHTFRAME:
+		ui->stackedWidget->setCurrentIndex((int)type - 1);
+		// Make the Light frame specific controls visible
+		ui->backgroundCalibration->setVisible(true);
 
-/* ------------------------------------------------------------------- */
+		method = static_cast<MULTIBITMAPPROCESSMETHOD>
+			(workspace->value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt());
+		iteration = workspace->value("Stacking/Light_Iteration", (uint)5).toUInt();
+		kappa = workspace->value("Stacking/Light_Kappa", "2.0").toDouble();
+		setControls();
 
-void CStackingParameters::OnBnClickedMaximum()
-{
-	if (m_Maximum.GetCheck())
-	{
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
-		UpdateControls();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedSigmaclipping()
-{
-	if (m_SigmaClipping.GetCheck())
-	{
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
-		UpdateControls();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedMedianSigmaclipping()
-{
-	if (m_MedianSigmaClipping.GetCheck())
-	{
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_SigmaClipping.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
-		UpdateControls();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnEnChangeKappa()
-{
-	UpdateControls();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnEnChangeIteration()
-{
-	UpdateControls();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnEnChangeDarkFactor()
-{
-	UpdateControls();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedEntropyaverage()
-{
-	if (m_EntropyAverage.GetCheck())
-	{
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_WeightedAverage.SetCheck(FALSE);
-		UpdateControls();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedAutoadaptiveaverage()
-{
-	if (m_WeightedAverage.GetCheck())
-	{
-		m_SigmaClipping.SetCheck(FALSE);
-		m_MedianSigmaClipping.SetCheck(FALSE);
-		m_Average.SetCheck(FALSE);
-		m_Median.SetCheck(FALSE);
-		m_Maximum.SetCheck(FALSE);
-		m_EntropyAverage.SetCheck(FALSE);
-		UpdateControls();
-	};
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedUseDarkFactor()
-{
-	if (m_UseDarkFactor.GetCheck())
-		m_DarkOptimization.SetCheck(FALSE);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedDarkOptimization()
-{
-	if (m_DarkOptimization.GetCheck())
-		m_UseDarkFactor.SetCheck(FALSE);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedDebloom()
-{
-/*	if (m_Debloom.GetCheck())
-		m_DebloomSettings.ShowWindow(SW_SHOW);
-	else
-		m_DebloomSettings.ShowWindow(SW_HIDE);*/
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBnClickedDebloomSettings()
-{
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::OnBackgroundCalibration( NMHDR * pNotifyStruct, LRESULT * result )
-{
-	CPoint				pt;
-	CMenu				menu;
-	CMenu *				popup;
-	int					nResult;
-
-	menu.LoadMenu(IDR_CALIBRATION);
-	popup = menu.GetSubMenu(0);
-
-	CRect				rc;
-
-	m_BackgroundCalibration.GetWindowRect(&rc);
-	pt.x = rc.left;
-	pt.y = rc.bottom;
-
-	if (m_BackgroundCalibrationMode == BCM_RGB)
-		popup->CheckMenuItem(ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION, MF_BYCOMMAND | MF_CHECKED);
-	else if (m_BackgroundCalibrationMode == BCM_PERCHANNEL)
-		popup->CheckMenuItem(ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION, MF_BYCOMMAND | MF_CHECKED);
-	else
-		popup->CheckMenuItem(ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION, MF_BYCOMMAND | MF_CHECKED);
-
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
-
-	switch (nResult)
-	{
-	case ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION :
-		m_BackgroundCalibrationMode = BCM_NONE;
-		UpdateCalibrationMode();
-		break;
-	case ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION :
-		m_BackgroundCalibrationMode = BCM_PERCHANNEL;
-		UpdateCalibrationMode();
-		break;
-	case ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION :
-		m_BackgroundCalibrationMode = BCM_RGB;
-		UpdateCalibrationMode();
-		break;
-	case ID_CALIBRATIONMENU_OPTIONS :
+		//
+		// Use our friendship with StackSettings to get at pStackingTasks pointer
+		//
+		if ((nullptr == pStackSettings->pStackingTasks) ||
+			(!pStackSettings->pStackingTasks->AreBayerImageUsed() &&
+				!pStackSettings->pStackingTasks->AreColorImageUsed()))
 		{
-			CBackgroundOptions		dlg;
-
-			dlg.SetBackgroundCalibrationMode(m_BackgroundCalibrationMode);
-			if (dlg.DoModal() == IDOK)
-			{
-				m_BackgroundCalibrationMode = dlg.GetBackgroundCalibrationMode();
-				UpdateCalibrationMode();
-			};
+			ui->debloom->setVisible(true);
+			// ui->deBloomSettings->setVisible(false); 
+			ui->debloom->setChecked(workspace->value("Stacking/Debloom", false).toBool());
 		};
+
+		//
+		// Set up the background calibration control
+		//
+		mode =
+			CAllStackingTasks::GetBackgroundCalibrationMode();
+
+		//
+		// Set the text colour as for a Hyper-Link
+		// 
+		ui->backgroundCalibration->setForegroundRole(QPalette::Link);
+
+		//
+		// Set the text of the control depending on the calibration mode.
+		//
+		switch (mode)
+		{
+		case BCM_NONE:
+			string = nobgCalString;
+			break;
+		case BCM_PERCHANNEL:
+			string = pcbgCalString;
+			break;
+		case BCM_RGB:
+			string = rgbbgCalString;
+			break;
+		}
+		ui->backgroundCalibration->setText(string);
+
+		break;
+
+
+	case PICTURETYPE_DARKFRAME:
+		ui->stackedWidget->setCurrentIndex((int)type - 1);
+
+		// Make the Dark frame specific controls visible
+		ui->hotPixels->setVisible(true);
+		ui->darkOptimisation->setVisible(true);
+		ui->useDarkFactor->setVisible(true);
+		ui->darkMultiplicationFactor->setVisible(true);
+
+		//
+		// Disable Entropy-Weighted Average
+		//
+		ui->modeEWA->setEnabled(false);
+
+		method = static_cast<MULTIBITMAPPROCESSMETHOD>
+			(workspace->value("Stacking/Dark_Method", (uint)MBP_AVERAGE).toUInt());
+		iteration = workspace->value("Stacking/Dark_Iteration", (uint)5).toUInt();
+		kappa = workspace->value("Stacking/Dark_Kappa", "2.0").toDouble();
+		setControls();
+
+		isChecked = workspace->value("Stacking/DarkOptimization", false).toBool();
+		ui->darkOptimisation->setChecked(isChecked);
+
+		isChecked = workspace->value("Stacking/UseDarkFactor", false).toBool();
+		ui->useDarkFactor->setChecked(isChecked);
+
+		value = workspace->value("Stacking/DarkFactor", "1.0").toDouble();
+		ui->darkMultiplicationFactor->setText(QString("%L1").arg(value, 0, 'f', 4));
+
+		isChecked = workspace->value("Stacking/HotPixelsDetection", true).toBool();
+		ui->hotPixels->setChecked(isChecked);
+
+		//
+		// Use our friendship with StackSettings to get at pStackingTasks pointer
+		//
+		if ((nullptr == pStackSettings->pStackingTasks) ||
+			(!pStackSettings->pStackingTasks->AreBayerImageUsed() &&
+				!pStackSettings->pStackingTasks->AreColorImageUsed()))
+		{
+			ui->badColumns->setVisible(true);
+			isChecked = workspace->value("Stacking/BadLinesDetection").toBool();
+			ui->badColumns->setChecked(isChecked);
+		};
+
+		break;
+
+	case PICTURETYPE_FLATFRAME:
+		method = static_cast<MULTIBITMAPPROCESSMETHOD>
+			(workspace->value("Stacking/Flat_Method", (uint)MBP_AVERAGE).toUInt());
+		iteration = workspace->value("Stacking/Flat_Iteration", (uint)5).toUInt();
+		kappa = workspace->value("Stacking/Flat_Kappa", "2.0").toDouble();
+		setControls();
+
+		//
+		// Disable Entropy-Weighted Average
+		//
+		ui->modeEWA->setEnabled(false);
+		break;
+
+	case PICTURETYPE_OFFSETFRAME:
+		method = static_cast<MULTIBITMAPPROCESSMETHOD>
+			(workspace->value("Stacking/Offset_Method", (uint)MBP_AVERAGE).toUInt());
+		iteration = workspace->value("Stacking/Offset_Iteration", (uint)5).toUInt();
+		kappa = workspace->value("Stacking/FlatOffset_Kappa", "2.0").toDouble();
+		setControls();
+
+		//
+		// Disable Entropy-Weighted Average
+		//
+		ui->modeEWA->setEnabled(false);
 		break;
 	};
-};
+	updateControls(method);
+}
 
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::UpdateCalibrationMode()
+StackingParameters & StackingParameters::setControls()
 {
-	CMenu				menu;
-	CMenu *				popup;
-	CString				strText;
-
-	menu.LoadMenu(IDR_CALIBRATION);
-	popup = menu.GetSubMenu(0);
-
-	switch (m_BackgroundCalibrationMode)
+	QString text;
+	switch (method)
 	{
-	case BCM_NONE :
-		popup->GetMenuString(ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION, strText, MF_BYCOMMAND);
+	case MBP_AVERAGE:
+		ui->modeAverage->setChecked(true);
 		break;
-	case BCM_PERCHANNEL :
-		popup->GetMenuString(ID_CALIBRATIONMENU_PERCHANNELBACKGROUNDCALIBRATION, strText, MF_BYCOMMAND);
+	case MBP_MEDIAN:
+		ui->modeMedian->setChecked(true);
 		break;
-	default :
-		popup->GetMenuString(ID_CALIBRATIONMENU_RGBBACKGROUNDCALIBRATION, strText, MF_BYCOMMAND);
+	case MBP_MAXIMUM:
+		ui->modeMaximum->setChecked(true);
+		break;
+	case MBP_SIGMACLIP:
+		ui->modeKS->setChecked(true);
+		ui->modeKS->setToolTip(kappaSigmaTip);
+		ui->staticKappa->setToolTip(kappaSigmaTip);
+		ui->kappa->setToolTip(kappaSigmaTip);
+		break;
+	case MBP_MEDIANSIGMACLIP:
+		ui->modeMKS->setChecked(true);
+		ui->modeMKS->setToolTip(medianKappaSigmaTip);
+		ui->staticKappa->setToolTip(medianKappaSigmaTip);
+		ui->kappa->setToolTip(medianKappaSigmaTip);
+		break;
+	case MBP_AUTOADAPTIVE:
+		ui->modeAAWA->setChecked(true);
+		break;
+	case MBP_ENTROPYAVERAGE:
+		ui->modeEWA->setChecked(true);
 		break;
 	};
 
-	m_BackgroundCalibration.SetText(strText);
-};
+	QString string;
+	ui->kappa->setText(QString("%L1").arg(kappa, 0, 'f', 2));
+	ui->iterations->setText(QString("%L1").arg(iteration));
+	return *this;
+}
 
-/* ------------------------------------------------------------------- */
-
-void CStackingParameters::SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode)
+void	StackingParameters::on_backgroundCalibration_clicked()
 {
-	m_BackgroundCalibrationMode	= Mode;
+	//
+	// Show the popup menu 
+	//
+	backgroundCalibrationMenu->exec(QCursor::pos());
+}
 
-	if (m_BackgroundCalibration.m_hWnd)
-		UpdateCalibrationMode();
-};
+void StackingParameters::setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE rhs)
+{
+	mode = rhs;
+	switch (mode)
+	{
+	case BCM_NONE:
+		workspace->setValue("Stacking/BackgroundCalibration", false);
+		workspace->setValue("Stacking/PerChannelBackgroundCalibration", false);
+		break;
+	case BCM_PERCHANNEL:
+		workspace->setValue("Stacking/BackgroundCalibration", false);
+		workspace->setValue("Stacking/PerChannelBackgroundCalibration", true);
+		break;
+	case BCM_RGB:
+		workspace->setValue("Stacking/BackgroundCalibration", true);
+		workspace->setValue("Stacking/PerChannelBackgroundCalibration", false);
+		break;
+	}
+}
 
-/* ------------------------------------------------------------------- */
+void StackingParameters::backgroundCalibrationOptions()
+{
+	//
+	// Show the background calibration options dialog
+	// 
+	BackgroundOptions dlg(this);
+
+	dlg.SetBackgroundCalibrationMode(mode);
+	if (dlg.exec() == QDialog::Accepted)
+	{
+		setBackgroundCalibration(dlg.GetBackgroundCalibrationMode());
+	};
+}
+
+void StackingParameters::updateControls(MULTIBITMAPPROCESSMETHOD newMethod)
+{
+	if (MBP_AUTOADAPTIVE == newMethod)
+	{
+		ui->staticKappa->setEnabled(false);
+		ui->kappa->setEnabled(false);
+		ui->staticIterations->setEnabled(true);
+		ui->iterations->setEnabled(true);
+	}
+	else if (MBP_SIGMACLIP == newMethod || MBP_MEDIANSIGMACLIP == newMethod)
+	{
+		ui->staticKappa->setEnabled(true);
+		ui->kappa->setEnabled(true);;
+		ui->staticIterations->setEnabled(true);
+		ui->iterations->setEnabled(true);
+	}
+	else
+	{
+		ui->staticKappa->setEnabled(false);
+		ui->kappa->setEnabled(false);
+		ui->staticIterations->setEnabled(false);
+		ui->iterations->setEnabled(false);
+	}
+}
+
+void StackingParameters::setMethod(MULTIBITMAPPROCESSMETHOD rhs)
+{
+	if (method != rhs)
+	{
+		method = rhs;
+		switch (type)
+		{
+		case PICTURETYPE_LIGHTFRAME:
+			workspace->setValue("Stacking/Light_Method", (uint)method);
+			break;
+		case PICTURETYPE_DARKFRAME:
+			workspace->setValue("Stacking/Dark_Method", (uint)method);
+			break;
+		case PICTURETYPE_FLATFRAME:
+			workspace->setValue("Stacking/Flat_Method", (uint)method);
+			break;
+		case PICTURETYPE_OFFSETFRAME:
+			workspace->setValue("Stacking/Offset_Method", (uint)method);
+			break;
+		}
+		emit methodChanged(method);
+	}
+}
+
+void StackingParameters::on_modeAverage_clicked()
+{
+	setMethod(MBP_AVERAGE);
+}
+
+void StackingParameters::on_modeMedian_clicked()
+{
+	setMethod(MBP_MEDIAN);
+}
+
+void StackingParameters::on_modeKS_clicked()
+{
+	setMethod(MBP_SIGMACLIP);
+}
+
+void StackingParameters::on_modeMKS_clicked()
+{
+	setMethod(MBP_MEDIANSIGMACLIP);
+}
+
+void StackingParameters::on_modeAAWA_clicked()
+{
+	setMethod(MBP_AUTOADAPTIVE);
+}
+
+void StackingParameters::on_modeEWA_clicked()
+{
+	setMethod(MBP_ENTROPYAVERAGE);
+}
+
+void StackingParameters::on_modeMaximum_clicked()
+{
+	setMethod(MBP_MAXIMUM);
+}
+
+void StackingParameters::on_debloom_stateChanged(int state)
+{
+	//
+	// If it's checked then set Debloom to true
+	//
+	workspace->setValue("Stacking/Debloom", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_hotPixels_stateChanged(int state)
+{
+	//
+	// If it's checked then set Hot Pixel detection to true
+	//
+	workspace->setValue("Stacking/HotPixelsDetection", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_badColumns_stateChanged(int state)
+{
+	//
+	// If it's checked then set Bad Column detection to true
+	//
+	workspace->setValue("Stacking/BadLinesDetection", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_darkOptimisation_stateChanged(int state)
+{
+	//
+	// If it's checked then set Dark Optimisation to true
+	//
+	workspace->setValue("Stacking/DarkOptimization", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_useDarkFactor_stateChanged(int state)
+{
+	//
+	// If it's checked then want to use a user specified value for Dark Factor
+	//
+	workspace->setValue("Stacking/UseDarkFactor", (Qt::Checked == state) ? true : false);
+}
+
+void StackingParameters::on_darkMultiplicationFactor_textEdited(const QString &text)
+{
+	workspace->setValue("Stacking/DarkFactor", text);
+}
+
+void StackingParameters::on_iterations_textEdited(const QString &text)
+{
+	bool convertedOK = false;
+	uint value = text.toUInt(&convertedOK);
+	
+	ZASSERTSTATE(convertedOK);
+
+	switch (type)
+	{
+	case PICTURETYPE_LIGHTFRAME:
+		workspace->setValue("Stacking/Light_Iteration", value);
+		break;
+	case PICTURETYPE_DARKFRAME:
+		workspace->setValue("Stacking/Dark_Iteration", value);
+		break;
+	case PICTURETYPE_FLATFRAME:
+		workspace->setValue("Stacking/Flat_Iteration", value);
+		break;
+	case PICTURETYPE_OFFSETFRAME:
+		workspace->setValue("Stacking/Offset_Iteration", value);
+		break;
+	}
+}
+
+void StackingParameters::on_kappa_textEdited(const QString &text)
+{
+	switch (type)
+	{
+	case PICTURETYPE_LIGHTFRAME:
+		workspace->setValue("Stacking/Light_Kappa", text);
+		break;
+	case PICTURETYPE_DARKFRAME:
+		workspace->setValue("Stacking/Dark_Kappa", text);
+		break;
+	case PICTURETYPE_FLATFRAME:
+		workspace->setValue("Stacking/Flat_Kappa", text);
+		break;
+	case PICTURETYPE_OFFSETFRAME:
+		workspace->setValue("Stacking/Offset_Kappa", text);
+		break;
+	}
+}

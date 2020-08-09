@@ -1,121 +1,48 @@
-#pragma once
+#ifndef RESULTPARAMETERS_H
+#define RESULTPARAMETERS_H
+#include <memory>
 
+#include <QWidget>
+#include <QPicture>
 
-// CResultParameters dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
-#include "StackingTasks.h"
+class CWorkspace;
+class StackSettings;
 
+namespace Ui {
+class ResultParameters;
+}
 
-class CResultParameters : public CChildPropertyPage
+class ResultParameters : public QWidget
 {
-	DECLARE_DYNAMIC(CResultParameters)
+	Q_OBJECT
+
+typedef QWidget
+		Inherited;
 
 public:
-	CResultParameters();
-	virtual ~CResultParameters();
+	explicit ResultParameters(QWidget *parent = nullptr);
+	~ResultParameters();
 
-// Dialog Data
-	enum { IDD = IDD_RESULTSETTINGS };
+public slots:
+	void onSetActive();
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+private:
+	Ui::ResultParameters *ui;
+	std::unique_ptr<CWorkspace> workspace;
+	StackSettings * pStackSettings;
+	QPixmap normalPix;
+	QPixmap mosaicPix;
+	QPixmap intersectionPix;
+	QPixmap customPix;
 
-public:
-	virtual BOOL OnSetActive();
+private slots:
+	void	on_normalMode_clicked();
+	void	on_mosaicMode_clicked();
+	void	on_intersectionMode_clicked();
+	void	on_customMode_clicked();
+	void	on_drizzle2x_clicked();
+	void	on_drizzle3x_clicked();
+	void	on_alignRGB_clicked();
 
-	void	SetResultMode(STACKINGMODE Mode)
-	{
-		m_Mosaic.SetCheck(Mode == SM_MOSAIC);
-		m_Normal.SetCheck(Mode == SM_NORMAL);
-		m_Intersection.SetCheck(Mode==SM_INTERSECTION);
-		m_Custom.SetCheck(FALSE);
-		m_ResultMode = Mode;
-		UpdateControls();
-	};
-
-	STACKINGMODE	GetResultMode()
-	{
-		return m_ResultMode;
-	};
-
-	void	SetCustom(BOOL bEnable, BOOL bUse)
-	{
-		if (bUse)
-			bEnable = TRUE;
-
-		m_bEnableCustom = bEnable;
-		m_bUseCustom    = bUse;
-
-		m_Custom.EnableWindow(bEnable);
-
-		if (bUse)
-		{
-			m_Mosaic.SetCheck(FALSE);
-			m_Normal.SetCheck(FALSE);
-			m_Intersection.SetCheck(FALSE);
-			m_Custom.SetCheck(TRUE);
-		};
-		UpdateControls();
-	};
-
-	BOOL	GetCustom()
-	{
-		return m_bUseCustom;
-	};
-
-	void	SetDrizzle(LONG lDrizzle)
-	{
-		m_lDrizzle = lDrizzle;
-		UpdateControls();
-	};
-
-	LONG	GetDrizzle()
-	{
-		return m_lDrizzle;
-	};
-
-	void	SetAlignChannels(BOOL bAlignChannels)
-	{
-		m_bAlignChannels = bAlignChannels;
-		UpdateControls();
-	};
-
-	BOOL	GetAlignChannels()
-	{
-		return m_bAlignChannels;
-	};
-
-	DECLARE_MESSAGE_MAP()
-
-private :
-	BOOL				m_bFirstActivation;
-
-	void				UpdateControls();
-
-	afx_msg void OnBnClickedNormal();
-	afx_msg void OnBnClickedMosaic();
-	afx_msg void OnBnClickedCustom();
-	afx_msg void OnBnClickedIntersection();
-	afx_msg void OnBnClicked2xDrizzle();
-	afx_msg void OnBnClicked3xDrizzle();
-
-public :
-	CButton				m_Normal;
-	CButton				m_Mosaic;
-	CButton				m_Custom;
-	CStatic				m_ModeText;
-	CButton				m_Intersection;
-	CStatic				m_Preview;
-	CButton				m_Drizzlex2;
-	CButton				m_Drizzlex3;
-	CButton				m_AlignChannels;
-
-	STACKINGMODE		m_ResultMode;
-	BOOL				m_bEnableCustom;
-	BOOL				m_bUseCustom;
-	LONG				m_lDrizzle;
-	BOOL				m_bAlignChannels;
-	afx_msg void OnBnClickedAlignchannels();
 };
+#endif // RESULTPARAMETERS_H

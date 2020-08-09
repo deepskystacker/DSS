@@ -1,8 +1,9 @@
 #include <stdafx.h>
 #include "TIFFUtil.h"
-#include "Registry.h"
+
 #include "zlib.h"
 #include <iostream>
+#include <QSettings>
 
 #include <omp.h>
 
@@ -11,29 +12,29 @@
 static const TIFFFieldInfo DSStiffFieldInfo[NRCUSTOMTIFFTAGS] =
 {
     { TIFFTAG_DSS_NRFRAMES,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSNumberOfFrames" },
+      false,	false,	"DSSNumberOfFrames" },
     { TIFFTAG_DSS_TOTALEXPOSUREOLD, 1, 1, TIFF_LONG, FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSTotalExposureOld" },
+      false,	false,	"DSSTotalExposureOld" },
     { TIFFTAG_DSS_TOTALEXPOSURE, 1, 1, TIFF_FLOAT, FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSTotalExposure" },
+      false,	false,	"DSSTotalExposure" },
     { TIFFTAG_DSS_ISO,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSISO" },
+      false,	false,	"DSSISO" },
     { TIFFTAG_DSS_GAIN,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSGain" },
+      false,	false,	"DSSGain" },
     { TIFFTAG_DSS_SETTINGSAPPLIED,	1, 1, TIFF_LONG,	FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSSettingsApplied" },
+      false,	false,	"DSSSettingsApplied" },
     { TIFFTAG_DSS_BEZIERSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSBezierSettings" },
+      false,	false,	"DSSBezierSettings" },
     { TIFFTAG_DSS_ADJUSTSETTINGS,	-1,-1, TIFF_ASCII, FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSAdjustSettings" },
+      false,	false,	"DSSAdjustSettings" },
     { TIFFTAG_DSS_CFA,	1, 1, TIFF_LONG, FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSCFA" },
+      false,	false,	"DSSCFA" },
     { TIFFTAG_DSS_MASTER,	1, 1, TIFF_LONG, FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSMaster" },
+      false,	false,	"DSSMaster" },
     { TIFFTAG_DSS_CFATYPE,	1, 1, TIFF_LONG, FIELD_CUSTOM,
-      FALSE,	FALSE,	"DSSCFATYPE" },
+      false,	false,	"DSSCFATYPE" },
 	{ TIFFTAG_DSS_APERTURE, 1, 1, TIFF_FLOAT, FIELD_CUSTOM,
-	  FALSE,	FALSE,	"DSSAperture" },
+	  false,	false,	"DSSAperture" },
 
 };
 
@@ -70,14 +71,14 @@ void DSSTIFFInitialize()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFReader::Open()
+bool CTIFFReader::Open()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
-	CRegistry		reg;
+	bool			bResult = false;
+	QSettings		settings;
 	DWORD			dwSkipExifInfo = 0;
 
-	reg.LoadKey(REGENTRY_BASEKEY, _T("SkipTIFFExifInfo"), dwSkipExifInfo);
+	dwSkipExifInfo = settings.value("SkipTIFFExifInfo", uint(0)).toUInt();
 
 	//
 	// Quietly attempt to open the putative TIFF file 
@@ -270,14 +271,14 @@ BOOL CTIFFReader::Open()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFReader::Read()
+bool CTIFFReader::Read()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (m_tiff) do
 	{
-		bResult = TRUE;
+		bResult = true;
 		tmsize_t		scanLineSize;
 		tdata_t			buff = nullptr, curr = nullptr;
 
@@ -296,7 +297,7 @@ BOOL CTIFFReader::Read()
 		curr = buff = (tdata_t)malloc(h * scanLineSize);
 		if (nullptr == buff)
 		{
-			bResult = FALSE;
+			bResult = false;
 			break;
 		}
 		tdata_t limit = (byte*)buff + (1 + (h*scanLineSize));		// One past end of buffer
@@ -314,7 +315,7 @@ BOOL CTIFFReader::Read()
 			if (-1 == count)
 			{
 				ZTRACE_RUNTIME("TIFFReadEncodedStrip returned an error");
-				bResult = FALSE;
+				bResult = false;
 				break;
 			}
 			curr = static_cast<byte*>(curr) + count;		// Increment current buffer pointer
@@ -437,10 +438,10 @@ BOOL CTIFFReader::Read()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFReader::Close()
+bool CTIFFReader::Close()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 	if (m_tiff)
 	{
 		bResult = OnClose();
@@ -456,7 +457,7 @@ BOOL CTIFFReader::Close()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriter::SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, BOOL bMaster)
+void CTIFFWriter::SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster)
 {
 	cfatype = CFAType;
 	if (CFAType != CFATYPE_NONE)
@@ -522,10 +523,10 @@ void CTIFFWriter::SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CF
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriter::Open()
+bool CTIFFWriter::Open()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_UTF8), "w");
 	if (m_tiff)
@@ -627,10 +628,10 @@ BOOL CTIFFWriter::Open()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriter::Write()
+bool CTIFFWriter::Write()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL		bResult = FALSE;
+	bool		bResult = false;
 	bool		bError = false;
 
 
@@ -814,7 +815,7 @@ BOOL CTIFFWriter::Write()
 			if (m_pProgress)
 				m_pProgress->End2();
 		};
-		bResult = (!bError) ? TRUE : FALSE;
+		bResult = (!bError) ? true : false;
 	};
 
 	return bResult;
@@ -822,10 +823,10 @@ BOOL CTIFFWriter::Write()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriter::Close()
+bool CTIFFWriter::Close()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 
 	if (m_tiff)
 	{
@@ -863,11 +864,11 @@ public :
 		Close();
 	};
 
-	virtual BOOL Close() { return OnClose(); };
+	virtual bool Close() { return OnClose(); };
 
-	virtual BOOL	OnOpen();
+	virtual bool	OnOpen();
 	void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) override;
-	virtual BOOL	OnClose();
+	virtual bool	OnClose();
 };
 
 /* ------------------------------------------------------------------- */
@@ -906,13 +907,13 @@ TIFFFORMAT	CTIFFWriteFromMemoryBitmap::GetBestTiffFormat(CMemoryBitmap * pBitmap
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriteFromMemoryBitmap::OnOpen()
+bool CTIFFWriteFromMemoryBitmap::OnOpen()
 {
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 	LONG			lWidth,
 					lHeight;
 	CFATYPE			CFAType = CFATYPE_NONE;
-	BOOL			bMaster;
+	bool			bMaster;
 
 	lWidth  = m_pMemoryBitmap->Width();
 	lHeight = m_pMemoryBitmap->Height();
@@ -937,7 +938,7 @@ BOOL CTIFFWriteFromMemoryBitmap::OnOpen()
 		if (!nrframes)
 			nrframes = m_pMemoryBitmap->GetNrFrames();
 		m_DateTime = m_pMemoryBitmap->m_DateTime;
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;
@@ -990,9 +991,9 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFWriteFromMemoryBitmap::OnClose()
+bool CTIFFWriteFromMemoryBitmap::OnClose()
 {
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 
 	return bResult;
 };
@@ -1000,11 +1001,11 @@ BOOL CTIFFWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (pBitmap)
 	{
@@ -1041,7 +1042,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription,
 			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
@@ -1049,11 +1050,11 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
 			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (pBitmap)
 	{
@@ -1083,7 +1084,7 @@ BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-BOOL	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
+bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription,
 			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
@@ -1107,19 +1108,19 @@ public :
 
 	virtual ~CTIFFReadInMemoryBitmap() { Close(); };
 
-	virtual BOOL Close() { return OnClose(); };
+	virtual bool Close() { return OnClose(); };
 
-	virtual BOOL	OnOpen();
+	virtual bool	OnOpen();
 	void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) override;
-	virtual BOOL	OnClose();
+	virtual bool	OnClose();
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFReadInMemoryBitmap::OnOpen()
+bool CTIFFReadInMemoryBitmap::OnOpen()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (spp == 1)
 	{
@@ -1244,14 +1245,14 @@ void CTIFFReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGree
 
 /* ------------------------------------------------------------------- */
 
-BOOL CTIFFReadInMemoryBitmap::OnClose()
+bool CTIFFReadInMemoryBitmap::OnClose()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	if (m_pBitmap)
 	{
-		bResult = TRUE;
+		bResult = true;
 		m_pBitmap.CopyTo(m_ppBitmap);
 	};
 
@@ -1260,10 +1261,10 @@ BOOL CTIFFReadInMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
+bool	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 	CTIFFReadInMemoryBitmap	tiff(szFileName, ppBitmap, pProgress);
 
 	if (ppBitmap)
@@ -1280,10 +1281,10 @@ BOOL	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pPro
 
 /* ------------------------------------------------------------------- */
 
-BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL					bResult = FALSE;
+	bool					bResult = false;
 	CTIFFReader				tiff(szFileName, nullptr);
 
 	if (tiff.Open())
@@ -1304,7 +1305,7 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_bFloat			= tiff.IsFloat();
 		BitmapInfo.m_CFAType		= tiff.GetCFAType();
 		BitmapInfo.m_bMaster		= tiff.IsMaster();
-		BitmapInfo.m_bCanLoad		= TRUE;
+		BitmapInfo.m_bCanLoad		= true;
 		BitmapInfo.m_lISOSpeed		= tiff.GetISOSpeed();
 		BitmapInfo.m_lGain		= tiff.GetGain();
 		BitmapInfo.m_fExposure		= tiff.GetExposureTime();
@@ -1318,7 +1319,7 @@ BOOL	GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetTIFFInfo(szFileName, BitmapInfo);
@@ -1326,7 +1327,7 @@ BOOL	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+int	LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	int		result = -1;		// -1 means not a TIFF file.
@@ -1346,13 +1347,13 @@ BOOL	LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap
 				if (pGrayBitmap)
 				{
 					if (IsSuperPixels())
-						pGrayBitmap->UseSuperPixels(TRUE);
+						pGrayBitmap->UseSuperPixels(true);
 					else if (IsRawBayer())
-						pGrayBitmap->UseRawBayer(TRUE);
+						pGrayBitmap->UseRawBayer(true);
 					else  if (IsRawBilinear())
-						pGrayBitmap->UseBilinear(TRUE);
+						pGrayBitmap->UseBilinear(true);
 					else if (IsRawAHD())
-						pGrayBitmap->UseAHD(TRUE);
+						pGrayBitmap->UseAHD(true);
 				};
 			};
 			pBitmap.CopyTo(ppBitmap);

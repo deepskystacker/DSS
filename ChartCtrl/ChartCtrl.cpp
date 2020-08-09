@@ -41,14 +41,6 @@
 #include "ChartPointsSerie.h"
 #include "ChartSurfaceSerie.h"
 
-
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 #define CHARTCTRL_CLASSNAME    "ChartCtrl"  // Window class name
 
 

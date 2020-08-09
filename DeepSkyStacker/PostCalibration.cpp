@@ -1,276 +1,338 @@
-// ResultParameters.cpp : implementation file
-//
+#include <algorithm>
+using std::min;
+using std::max;
 
-#include "stdafx.h"
-#include "DeepSkyStacker.h"
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#include <afx.h>
+#include <afxcmn.h>
+#include <afxcview.h>
+#include <afxwin.h>
+
+#include <ZExcept.h>
+#include <Ztrace.h>
+
+#include <QAction>
+#include <QMenu>
+#include <QPalette>
+#include <QSettings>
+#include <QString>
+#include <QSlider>
+
 #include "PostCalibration.h"
-#include "StackSettings.h"
-#include "DSSTools.h"
+#include "ui/ui_PostCalibration.h"
+
+extern bool	g_bShowRefStars;
+
+#include "resource.h"
+#include "commonresource.h"
+#include "BitmapExt.h"
+#include "DeepStackerDlg.h"
+#include "CosmeticEngine.h"
+#include "MasterFrames.h"
 #include "DSSProgress.h"
 #include "ProgressDlg.h"
-#include "MasterFrames.h"
-#include "CosmeticEngine.h"
+#include "StackSettings.h"
+#include "StackingTasks.h"
+#include "Workspace.h"
 
-// CPostCalibration dialog
-
-IMPLEMENT_DYNAMIC(CPostCalibration, CChildPropertyPage)
-
-/* ------------------------------------------------------------------- */
-
-CPostCalibration::CPostCalibration()
-	: CChildPropertyPage(CPostCalibration::IDD)
+PostCalibration::PostCalibration(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::PostCalibration),
+	workspace(new CWorkspace()),
+	pStackSettings(dynamic_cast<StackSettings *>(parent)),
+	medianString(tr("the median", "ID_COSMETICMETHOD_MEDIAN")),
+	gaussianString(tr("a gaussian filter", "ID_COSMETICMETHOD_GAUSSIAN"))
 {
-	m_bFirstActivation = TRUE;
-    m_pStackingTasks = NULL;
-}
-
-/* ------------------------------------------------------------------- */
-
-CPostCalibration::~CPostCalibration()
-{
-}
-
-/* ------------------------------------------------------------------- */
-
-void CPostCalibration::DoDataExchange(CDataExchange* pDX)
-{
-	CChildPropertyPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_TITLE, m_Title);
-
-	DDX_Control(pDX, IDC_DETECTCLEANHOT, m_DetectCleanHot);
-	DDX_Control(pDX, IDC_HOTFILTERSTATIC, m_HotFilterText);
-	DDX_Control(pDX, IDC_HOTFILTER, m_HotFilter);
-	DDX_Control(pDX, IDC_HOTDETECTIONSTATIC, m_HotDetectionText);
-	DDX_Control(pDX, IDC_HOTDETECTION, m_HotDetection);
-
-	DDX_Control(pDX, IDC_DETECTCLEANCOLD, m_DetectCleanCold);
-	DDX_Control(pDX, IDC_COLDFILTERSTATIC, m_ColdFilterText);
-	DDX_Control(pDX, IDC_COLDFILTER, m_ColdFilter);
-	DDX_Control(pDX, IDC_COLDDETECTIONSTATIC, m_ColdDetectionText);
-	DDX_Control(pDX, IDC_COLDDETECTION, m_ColdDetection);
-
-	DDX_Control(pDX, IDC_STRONG1, m_Strong1);
-	DDX_Control(pDX, IDC_STRONG2, m_Strong2);
-	DDX_Control(pDX, IDC_WEAK1, m_Weak1);
-	DDX_Control(pDX, IDC_WEAK2, m_Weak2);
-
-	DDX_Control(pDX, IDC_SAVEDELTAIMAGE, m_SaveDelta);
-
-	DDX_Control(pDX, IDC_REPLACETEXT, m_ReplaceText);
-	DDX_Control(pDX, IDC_REPLACEMETHOD, m_ReplaceMethod);
-	DDX_Control(pDX, IDC_TESTCOSMETIC, m_Test);
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CPostCalibration, CChildPropertyPage)
-	ON_WM_HSCROLL()
-	ON_BN_CLICKED(IDC_DETECTCLEANHOT, &CPostCalibration::OnBnClickedDetectCleanHotCold)
-	ON_BN_CLICKED(IDC_DETECTCLEANCOLD, &CPostCalibration::OnBnClickedDetectCleanHotCold)
-	ON_BN_CLICKED(IDC_SAVEDELTAIMAGE, &CPostCalibration::OnBnClickedDetectCleanHotCold)
-	ON_NOTIFY(NM_LINKCLICK, IDC_REPLACEMETHOD, OnCosmeticMethod)
-	ON_NOTIFY(NM_LINKCLICK, IDC_TESTCOSMETIC, OnTest)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-
-static void	MakeSmallLabel(CLabel & label)
-{
-	CFont *				pFont;
-	LOGFONT				lf;
-
-	pFont = label.GetFont();
-	pFont->GetLogFont(&lf);
-
-	lf.lfHeight += 3;
-	label.SetFont(lf);
-
-	label.SetTransparent(TRUE);
-};
-
-/* ------------------------------------------------------------------- */
-
-static void	GetMethodText(COSMETICREPLACE cr, CString & strText)
-{
-	CMenu				menu;
-	CMenu *				popup;
-
-	menu.LoadMenu(IDR_COSMETICMETHOD);
-	popup = menu.GetSubMenu(0);
-
-	if (cr == CR_GAUSSIAN)
-		popup->GetMenuString(ID_COSMETICMETHOD_GAUSSIAN, strText, MF_BYCOMMAND);
-	else
-		popup->GetMenuString(ID_COSMETICMETHOD_MEDIAN, strText, MF_BYCOMMAND);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CPostCalibration::UpdateControls()
-{
-	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	BOOL				bEnableHot  = m_DetectCleanHot.GetCheck(),
-						bEnableCold = m_DetectCleanCold.GetCheck();
-
-	m_HotFilterText.EnableWindow(bEnableHot);
-	m_HotFilter.EnableWindow(bEnableHot);
-	m_HotDetectionText.EnableWindow(bEnableHot);
-	m_HotDetection.EnableWindow(bEnableHot);
-	m_Weak1.SetTextColor(GetSysColor(bEnableHot ? COLOR_WINDOWTEXT : COLOR_GRAYTEXT));
-	m_Strong1.SetTextColor(GetSysColor(bEnableHot ? COLOR_WINDOWTEXT : COLOR_GRAYTEXT));
-
-	m_ColdFilterText.EnableWindow(bEnableCold);
-	m_ColdFilter.EnableWindow(bEnableCold);
-	m_ColdDetectionText.EnableWindow(bEnableCold);
-	m_ColdDetection.EnableWindow(bEnableCold);
-	m_Weak2.SetTextColor(GetSysColor(bEnableCold ? COLOR_WINDOWTEXT : COLOR_GRAYTEXT));
-	m_Strong2.SetTextColor(GetSysColor(bEnableCold ? COLOR_WINDOWTEXT : COLOR_GRAYTEXT));
-
-	m_ReplaceText.EnableWindow(bEnableHot || bEnableCold);
-	m_ReplaceMethod.EnableWindow(bEnableHot || bEnableCold);
-	m_Test.EnableWindow(bEnableHot || bEnableCold);
-	m_SaveDelta.EnableWindow(bEnableHot || bEnableCold);
-
-	m_ReplaceMethod.SetTextColor(bEnableHot || bEnableCold ? RGB(0, 0, 128) : GetSysColor(COLOR_GRAYTEXT));
-	m_Test.SetTextColor(bEnableHot || bEnableCold ? RGB(0, 0, 128) : GetSysColor(COLOR_GRAYTEXT));
-
-
-	if (pDialog)
-		pDialog->UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CPostCalibration::UpdateSettingsTexts()
-{
-	CString			strText;
-	LONG			lValue;
-	double			fValue;
-
-	lValue = m_Settings.m_lHotFilter;
-	strText.Format(m_strPixelMask, lValue);
-	m_HotFilterText.SetWindowText(strText);
-
-	fValue = m_Settings.m_fHotDetection;
-	strText.Format(m_strPercentMask, fValue);
-	m_HotDetectionText.SetWindowText(strText);
-
-	lValue = m_Settings.m_lColdFilter;
-	strText.Format(m_strPixelMask, lValue);
-	m_ColdFilterText.SetWindowText(strText);
-
-	fValue = m_Settings.m_fColdDetection;
-	strText.Format(m_strPercentMask, fValue);
-	m_ColdDetectionText.SetWindowText(strText);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CPostCalibration::UpdateControlsFromSettings()
-{
-	m_DetectCleanHot.SetCheck(m_Settings.m_bHot);
-	m_HotFilter.SetPos(m_Settings.m_lHotFilter);
-	m_HotDetection.SetPos(1000-m_Settings.m_fHotDetection*10.0);
-
-	m_DetectCleanCold.SetCheck(m_Settings.m_bCold);
-	m_ColdFilter.SetPos(m_Settings.m_lColdFilter);
-	m_ColdDetection.SetPos(1000-m_Settings.m_fColdDetection*10.0);
-
-	m_SaveDelta.SetCheck(m_Settings.m_bSaveDeltaImage);
-
-	CString				strText;
-
-	GetMethodText(m_Settings.m_Replace, strText);
-	m_ReplaceMethod.SetText(strText);
-
-	UpdateSettingsTexts();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CPostCalibration::UpdateSettingsFromControls()
-{
-	m_Settings.m_bHot			= m_DetectCleanHot.GetCheck();
-	m_Settings.m_lHotFilter		= m_HotFilter.GetPos();
-	m_Settings.m_fHotDetection	= 100.0-(double)m_HotDetection.GetPos()/10.0;
-
-	m_Settings.m_bCold			= m_DetectCleanCold.GetCheck();
-	m_Settings.m_lColdFilter	= m_ColdFilter.GetPos();
-	m_Settings.m_fColdDetection	= 100.0-(double)m_ColdDetection.GetPos()/10.0;
-
-	m_Settings.m_bSaveDeltaImage = m_SaveDelta.GetCheck();
-
-	UpdateSettingsTexts();
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL CPostCalibration::OnSetActive()
-{
-	if (m_bFirstActivation)
+	if (nullptr == pStackSettings)
 	{
-		m_Title.SetTextColor(RGB(0, 0, 0));
-		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+		delete ui;
+		ZASSERTSTATE(nullptr != pStackSettings);
+	}
 
-		m_HotFilterText.GetWindowText(m_strPixelMask);
-		m_HotDetectionText.GetWindowText(m_strPercentMask);
+    ui->setupUi(this);
 
-		m_HotFilter.SetRange(1, 6);
-		m_HotDetection.SetRange(10, 990);
+	int value = workspace->value("Stacking/PCS_ReplaceMethod", (int)CR_MEDIAN).toInt();
+	switch (value)
+	{
+	case CR_MEDIAN:
+		ui->replacementMethod->setText(medianString);
+		break;
+	case CR_GAUSSIAN:
+		ui->replacementMethod->setText(gaussianString);
+		break;
+	}
 
-		m_ColdFilter.SetRange(1, 6);
-		m_ColdDetection.SetRange(10, 990);
+	createActions().createMenus();
+}
 
-		MakeSmallLabel(m_Strong1);
-		MakeSmallLabel(m_Strong2);
-		MakeSmallLabel(m_Weak1);
-		MakeSmallLabel(m_Weak2);
+PostCalibration & PostCalibration::createActions()
+{
+	onMedian = new QAction(medianString, this);
+	connect(onMedian, &QAction::triggered, this,
+		[=]() { this->setReplacementMethod(CR_MEDIAN); });
+	connect(onMedian, &QAction::triggered, this,
+		[=]() { ui->replacementMethod->setText(medianString); });
 
-		m_ReplaceText.SetTransparent(TRUE);
-		m_ReplaceMethod.SetTransparent(TRUE);
-		m_Test.SetTransparent(TRUE);
+	onGaussian = new QAction(gaussianString, this);
+	connect(onGaussian, &QAction::triggered, this,
+		[=]() { this->setReplacementMethod(CR_GAUSSIAN); });
+	connect(onGaussian, &QAction::triggered, this,
+		[=]() { ui->replacementMethod->setText(gaussianString); });
 
-		m_ReplaceMethod.SetLink(TRUE, TRUE);
+	return *this;
+}
 
-		if (m_pStackingTasks)
-			m_Test.SetLink(TRUE, TRUE);
+PostCalibration & PostCalibration::createMenus()
+{
+	QMenu * menu = new QMenu(this);
+	menu->addAction(onMedian);
+	menu->addAction(onGaussian);
+
+	replacementMenu = menu;
+
+	return *this;
+}
+
+PostCalibration::~PostCalibration()
+{
+    delete ui;
+}
+
+void PostCalibration::onSetActive()
+{
+	CAllStackingTasks::GetPostCalibrationSettings(pcs);
+
+	// Use our friendship with StackSettings to get at the stacking tasks pointer
+	pStackingTasks = pStackSettings->pStackingTasks;
+
+	ui->cleanHotPixels->setChecked(pcs.m_bHot);
+	ui->hotFilterSize->setEnabled(pcs.m_bHot);
+	ui->hotFilter->setEnabled(pcs.m_bHot);
+	ui->weak1->setEnabled(pcs.m_bHot);
+	ui->strong1->setEnabled(pcs.m_bHot);
+	ui->hotThresholdPercent->setEnabled(pcs.m_bHot);
+	ui->hotThreshold->setEnabled(pcs.m_bHot);
+
+	ui->hotFilterSize->setText(QString("%L1").arg(pcs.m_lHotFilter));
+	ui->hotFilter->setSliderPosition(pcs.m_lHotFilter);
+	//
+	// Display the Hot filter Detection Threshold in the user's Locale with one digit
+	// after the decimal point
+	//
+	ui->hotThresholdPercent->setText(QString("%L1%").arg(pcs.m_fHotDetection, 0, 'f', 1));
+	ui->hotThreshold->setSliderPosition(1000 - pcs.m_fHotDetection*10.0);
+
+	ui->cleanColdPixels->setChecked(pcs.m_bCold);
+	ui->coldFilterSize->setEnabled(pcs.m_bCold);
+	ui->coldFilter->setEnabled(pcs.m_bCold);
+	ui->weak2->setEnabled(pcs.m_bCold);
+	ui->strong2->setEnabled(pcs.m_bCold);
+	ui->coldThresholdPercent->setEnabled(pcs.m_bCold);
+	ui->coldThreshold->setEnabled(pcs.m_bCold);
+
+	ui->coldFilterSize->setText(QString("%L1").arg(pcs.m_lColdFilter));
+	ui->coldFilter->setSliderPosition(pcs.m_lColdFilter);
+	//
+	// Display the Cold filter Detection Threshold in the user's Locale with one digit
+	// after the decimal point
+	//
+	ui->coldThresholdPercent->setText(QString("%L1%").arg(pcs.m_fColdDetection, 0, 'f', 1));
+	ui->coldThreshold->setSliderPosition(1000 - pcs.m_fColdDetection*10.0);
+
+	//
+	// Set the text colour as for a Hyper-Link
+	// 
+	ui->replacementMethod->setForegroundRole(QPalette::Link);
+
+	//
+	// Enable/Disable the test cosmetics settings depending on whether we're stacking 
+	// of just setting the settings.
+	//
+	if (nullptr != pStackingTasks && (pcs.m_bHot || pcs.m_bCold))
+	{
+		ui->testCosmetic->setVisible(true);
+	}
+	else
+	{
+		ui->testCosmetic->setVisible(false);
+	}
+
+	ui->saveDeltaImage->setChecked(pcs.m_bSaveDeltaImage);
+}
+
+void PostCalibration::on_cleanHotPixels_toggled(bool onOff)
+{
+	if (onOff != pcs.m_bHot)
+	{
+		//
+		// Value has changed, so set the the new value
+		//
+		pcs.m_bHot = onOff;
+		workspace->setValue("Stacking/PCS_DetectCleanHot", onOff);
+
+		//
+		// Set enabled state of controls accordingly
+		//
+		ui->hotFilterSize->setEnabled(onOff);
+		ui->hotFilter->setEnabled(onOff);
+		ui->weak1->setEnabled(onOff);
+		ui->strong1->setEnabled(onOff);
+		ui->hotThresholdPercent->setEnabled(onOff);
+		ui->hotThreshold->setEnabled(onOff);
+
+		//
+		// Enable/Disable the test cosmetics settings depending on whether we're stacking 
+		// of just setting the settings.
+		//
+		if (nullptr != pStackingTasks && (pcs.m_bHot || pcs.m_bCold))
+		{
+			ui->testCosmetic->setVisible(true);
+		}
 		else
-			m_Test.ShowWindow(SW_HIDE);
+		{
+			ui->testCosmetic->setVisible(false);
+		}
+	}
+}
 
-		UpdateControlsFromSettings();
-		UpdateControls();
-		m_bFirstActivation = FALSE;
-	};
-
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-// CPostCalibration message handlers
-
-void CPostCalibration::OnBnClickedDetectCleanHotCold()
+void PostCalibration::on_hotFilter_valueChanged(int newValue)
 {
-	UpdateSettingsFromControls();
-	UpdateControls();
-};
+	if (pcs.m_lHotFilter != newValue)
+	{
+		//
+		// Value has changed
+		//
+		pcs.m_lHotFilter = newValue;
+		workspace->setValue("Stacking/PCS_HotFilter", newValue);
 
-/* ------------------------------------------------------------------- */
+		//
+		// Display the new value
+		//
+		ui->hotFilterSize->setText(QString("%L1").arg(newValue));
+	}
+}
 
-void CPostCalibration::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void PostCalibration::on_hotThreshold_valueChanged(int value)
 {
-	UpdateSettingsFromControls();
-	CChildPropertyPage::OnHScroll(nSBCode, nPos, pScrollBar);
-};
+	double newValue = 100.0 - (double)value / 10.0;
+	if (pcs.m_fHotDetection != newValue)
+	{
+		//
+		// Value has changed
+		//
+		pcs.m_fHotDetection = newValue;
+		workspace->setValue("Stacking/PCS_HotDetection", newValue*10.0);
+		//
+		// Display the new value
+		//
+		ui->hotThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
+	}
 
-/* ------------------------------------------------------------------- */
+}
 
-void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
+void PostCalibration::on_cleanColdPixels_toggled(bool onOff)
+{
+	if (onOff != pcs.m_bCold)
+	{
+		//
+		// Value has changed, so set the the new value
+		//
+		pcs.m_bCold = onOff;
+		workspace->setValue("Stacking/PCS_DetectCleanCold", onOff);
+
+		//
+		// Set enabled state of controls accordingly
+		//
+		ui->coldFilterSize->setEnabled(onOff);
+		ui->coldFilter->setEnabled(onOff);
+		ui->weak2->setEnabled(onOff);
+		ui->strong2->setEnabled(onOff);
+		ui->coldThresholdPercent->setEnabled(onOff);
+		ui->coldThreshold->setEnabled(onOff);
+
+		//
+		// Enable/Disable the test cosmetics settings depending on whether we're stacking 
+		// of just setting the settings.
+		//
+		if (nullptr != pStackingTasks && (pcs.m_bHot || pcs.m_bCold))
+		{
+			ui->testCosmetic->setVisible(true);
+		}
+		else
+		{
+			ui->testCosmetic->setVisible(false);
+		}
+	}
+}
+
+void PostCalibration::on_coldFilter_valueChanged(int newValue)
+{
+	if (pcs.m_lColdFilter != newValue)
+	{
+		//
+		// Value has changed
+		//
+		pcs.m_lColdFilter = newValue;
+		workspace->setValue("Stacking/PCS_ColdFilter", newValue);
+		//
+		// Display the new value
+		//
+		ui->coldFilterSize->setText(QString("%L1").arg(newValue));
+	}
+}
+
+void PostCalibration::on_coldThreshold_valueChanged(int value)
+{
+	double newValue = 100.0 - (double)value / 10.0;
+	if (pcs.m_fColdDetection != newValue)
+	{
+		//
+		// Value has changed
+		//
+		pcs.m_fColdDetection = newValue;
+		workspace->setValue("Stacking/PCS_ColdDetection", newValue*10.0);
+
+		//
+		// Display the new value
+		//
+		ui->coldThresholdPercent->setText(QString("%L1%").arg(newValue, 0, 'f', 1));
+	}
+}
+
+PostCalibration& PostCalibration::setReplacementMethod(int value)
+{
+	if (pcs.m_Replace != value)
+	{
+		pcs.m_Replace = static_cast<COSMETICREPLACE>(value);
+		workspace->setValue("Stacking/PCS_ReplaceMethod", value);
+	}
+	return *this;
+}
+
+void PostCalibration::on_saveDeltaImage_toggled(bool onOff)
+{
+	if (pcs.m_bSaveDeltaImage != onOff)
+	{
+		pcs.m_bSaveDeltaImage = onOff;
+		workspace->setValue("Stacking/PCS_SaveDeltaImage", onOff);
+	}
+}
+
+void PostCalibration::on_replacementMethod_clicked()
+{
+	//
+	// Show the popup menu 
+	//
+	replacementMenu->exec(QCursor::pos());
+}
+
+void PostCalibration::on_testCosmetic_clicked()
 {
 	ZFUNCTRACE_RUNTIME();
 	// Load the reference light frame
-	if (m_pStackingTasks)
+	if (pStackingTasks)
 	{
-		CAllStackingTasks			tasks = *(m_pStackingTasks);
+		CAllStackingTasks			tasks = *(pStackingTasks);
 
 		// Retrieve the first light frame
 		tasks.ResolveTasks();
@@ -292,23 +354,23 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 				CMasterFrames	MasterFrames;
 
 				// Disable all the tasks except the one used by StackingInfo
-				for (LONG i = 0;i<tasks.m_vTasks.size();i++)
-					tasks.m_vTasks[i].m_bDone = TRUE;
+				for (LONG i = 0; i < tasks.m_vTasks.size(); i++)
+					tasks.m_vTasks[i].m_bDone = true;
 				if (StackingInfo.m_pDarkFlatTask)
-					StackingInfo.m_pDarkFlatTask->m_bDone = FALSE;
+					StackingInfo.m_pDarkFlatTask->m_bDone = false;
 				if (StackingInfo.m_pOffsetTask)
-					StackingInfo.m_pOffsetTask->m_bDone = FALSE;
+					StackingInfo.m_pOffsetTask->m_bDone = false;
 				if (StackingInfo.m_pDarkTask)
-					StackingInfo.m_pDarkTask->m_bDone = FALSE;
+					StackingInfo.m_pDarkTask->m_bDone = false;
 				if (StackingInfo.m_pFlatTask)
-					StackingInfo.m_pFlatTask->m_bDone = FALSE;
+					StackingInfo.m_pFlatTask->m_bDone = false;
 				if (StackingInfo.m_pLightTask)
-					StackingInfo.m_pLightTask->m_bDone = FALSE;
+					StackingInfo.m_pLightTask->m_bDone = false;
 
 				strText.LoadString(IDS_COMPUTINGCOSMETICSTATS);
-				dlg.Start(strText, 0, FALSE);
+				dlg.Start(strText, 0, false);
 
-				dlg.SetJointProgress(TRUE);
+				dlg.SetJointProgress(true);
 				tasks.DoAllPreTasks(&dlg);
 				MasterFrames.LoadMasters(&StackingInfo, &dlg);
 
@@ -322,7 +384,7 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 
 					bmpInfo.GetDescription(strDescription);
 
-					if (bmpInfo.m_lNrChannels==3)
+					if (bmpInfo.m_lNrChannels == 3)
 						strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)strFileName);
 					else
 						strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)strFileName);
@@ -336,13 +398,13 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 						// Then simulate the cosmetic on this image
 						CCosmeticStats			Stats;
 
-						SimulateCosmetic(pBitmap, m_Settings, Stats, &dlg);
+						SimulateCosmetic(pBitmap, pcs, Stats, &dlg);
 
 						// Show the results
-						double					fHotPct = (double)Stats.m_lNrDetectedHotPixels/Stats.m_lNrTotalPixels * 100.0,
-												fColdPct= (double)Stats.m_lNrDetectedColdPixels/Stats.m_lNrTotalPixels * 100.0;
+						double	fHotPct = (double)Stats.m_lNrDetectedHotPixels / Stats.m_lNrTotalPixels * 100.0,
+							fColdPct = (double)Stats.m_lNrDetectedColdPixels / Stats.m_lNrTotalPixels * 100.0;
 
-						CString					strCosmeticStat;
+						CString	strCosmeticStat;
 
 						strCosmeticStat.Format(IDS_COSMETICSTATS, Stats.m_lNrDetectedHotPixels, fHotPct, Stats.m_lNrDetectedColdPixels, fColdPct);
 
@@ -355,46 +417,3 @@ void CPostCalibration::OnTest( NMHDR * pNotifyStruct, LRESULT * result )
 		};
 	};
 };
-
-/* ------------------------------------------------------------------- */
-
-void CPostCalibration::OnCosmeticMethod( NMHDR * pNotifyStruct, LRESULT * result )
-{
-	ZFUNCTRACE_RUNTIME();
-	CPoint				pt;
-	CMenu				menu;
-	CMenu *				popup;
-	int					nResult;
-
-	menu.LoadMenu(IDR_COSMETICMETHOD);
-	popup = menu.GetSubMenu(0);
-
-	CRect				rc;
-	CString				strText;
-
-	m_ReplaceMethod.GetWindowRect(&rc);
-	pt.x = rc.left;
-	pt.y = rc.bottom;
-
-	if (m_Settings.m_Replace == CR_MEDIAN)
-		popup->CheckMenuItem(ID_COSMETICMETHOD_MEDIAN, MF_BYCOMMAND | MF_CHECKED);
-	else
-		popup->CheckMenuItem(ID_COSMETICMETHOD_GAUSSIAN, MF_BYCOMMAND | MF_CHECKED);
-
-	nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);
-
-	if (nResult == ID_COSMETICMETHOD_MEDIAN)
-	{
-		popup->GetMenuString(ID_COSMETICMETHOD_MEDIAN, strText, MF_BYCOMMAND);
-		m_ReplaceMethod.SetText(strText);
-		m_Settings.m_Replace = CR_MEDIAN;
-	}
-	else if (nResult == ID_COSMETICMETHOD_GAUSSIAN)
-	{
-		popup->GetMenuString(ID_COSMETICMETHOD_GAUSSIAN, strText, MF_BYCOMMAND);
-		m_ReplaceMethod.SetText(strText);
-		m_Settings.m_Replace = CR_GAUSSIAN;
-	};
-};
-
-/* ------------------------------------------------------------------- */

@@ -1,144 +1,108 @@
-// ResultParameters.cpp : implementation file
-//
+#include <algorithm>
+using std::min;
+using std::max;
 
-#include "stdafx.h"
-#include "DeepSkyStacker.h"
-#include "ResultParameters.h"
-#include "StackSettings.h"
-#include "DSSTools.h"
-#include "DSSProgress.h"
+#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#include <afx.h>
 
-// CIntermediateFiles dialog
+#include "IntermediateFiles.h"
+#include "ui/ui_IntermediateFiles.h"
 
-IMPLEMENT_DYNAMIC(CIntermediateFiles, CChildPropertyPage)
+#include <ZExcept.h>
+#include <Ztrace.h>
 
-/* ------------------------------------------------------------------- */
+#include "DSSCommon.h"
+#include "Workspace.h"
 
-CIntermediateFiles::CIntermediateFiles()
-	: CChildPropertyPage(CIntermediateFiles::IDD)
+
+IntermediateFiles::IntermediateFiles(QWidget *parent, bool regOnly) :
+	QWidget(parent),
+	registerOnly(regOnly),
+	ui(new Ui::IntermediateFiles),
+	workspace(new CWorkspace())
 {
-	m_bFirstActivation = TRUE;
-	m_bRegisteringOnly = FALSE;
-    m_bCreateIntermediates = false;
-    m_bSaveCalibrated = false;
-    m_bSaveDebayered = false;
-    m_lSaveFormat = INTERMEDIATEFILEFORMAT(0);
+	ui->setupUi(this);
 }
 
-/* ------------------------------------------------------------------- */
-
-CIntermediateFiles::~CIntermediateFiles()
+void IntermediateFiles::onSetActive()
 {
+	bool	value = false;
+	uint	fileFormat;
+
+	value = workspace->value("Stacking/SaveCalibrated", false).toBool();
+	ui->saveCalibrated->setChecked(value);
+	ui->saveDebayered->setEnabled(value);
+
+	value = workspace->value("Stacking/SaveCalibratedDebayered", false).toBool();
+	ui->saveDebayered->setChecked(value);
+
+	value = workspace->value("Stacking/CreateIntermediates", false).toBool();
+	ui->saveIntermediate->setChecked(value);
+	ui->saveIntermediate->setDisabled(registerOnly);
+
+	fileFormat = workspace->value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
+
+	switch (fileFormat)
+	{
+	case IFF_TIFF:
+		ui->formatTIFF->setChecked(true);
+		ui->formatFITS->setChecked(false);
+		break;
+	case IFF_FITS:
+		ui->formatTIFF->setChecked(false);
+		ui->formatFITS->setChecked(true);
+		break;
+	}
 }
 
-/* ------------------------------------------------------------------- */
-
-void CIntermediateFiles::DoDataExchange(CDataExchange* pDX)
+IntermediateFiles::~IntermediateFiles()
 {
-	CChildPropertyPage::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_CREATEINTERMEDIATE, m_CreateIntermediates);
-	DDX_Control(pDX, IDC_SAVECALIBRATED, m_SaveCalibrated);
-	DDX_Control(pDX, IDC_SAVEDEBAYERED, m_SaveDebayered);
-	DDX_Control(pDX, IDC_SAVEASTIFF, m_SaveAsTIFF);
-	DDX_Control(pDX, IDC_SAVEASFITS, m_SaveAsFITS);
-	DDX_Control(pDX, IDC_TITLE, m_Title);
+    delete ui;
 }
 
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CIntermediateFiles, CChildPropertyPage)
-	ON_BN_CLICKED(IDC_CREATEINTERMEDIATE, &CIntermediateFiles::OnBnClickedCreateIntermediates)
-	ON_BN_CLICKED(IDC_SAVECALIBRATED, &CIntermediateFiles::OnBnClickedSaveCalibrated)
-	ON_BN_CLICKED(IDC_SAVEDEBAYERED, &CIntermediateFiles::OnBnClickedSaveDebayered)
-	ON_BN_CLICKED(IDC_SAVEASTIFF, &CIntermediateFiles::OnBnClickedSaveAsTIFF)
-	ON_BN_CLICKED(IDC_SAVEASFITS, &CIntermediateFiles::OnBnClickedSaveAsFITS)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-
-void CIntermediateFiles::UpdateControls()
+void IntermediateFiles::on_formatFITS_clicked()
 {
-	CStackSettings *	pDialog = dynamic_cast<CStackSettings *>(GetParent()->GetParent());
-	BOOL				bEnable;
-
-	bEnable = m_SaveCalibrated.GetCheck() || m_CreateIntermediates.GetCheck();
-
-	m_SaveAsTIFF.EnableWindow(TRUE);
-	m_SaveAsFITS.EnableWindow(TRUE);
-	m_SaveDebayered.EnableWindow(m_SaveCalibrated.GetCheck());
-
-	if (pDialog)
-		pDialog->UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL CIntermediateFiles::OnSetActive()
+	workspace->setValue("Stacking/IntermediateFileFormat", (uint)IFF_FITS);
+}
+void IntermediateFiles::on_formatTIFF_clicked()
 {
-	if (m_bFirstActivation)
+	workspace->setValue("Stacking/IntermediateFileFormat", (uint)IFF_TIFF);
+}
+
+void IntermediateFiles::on_saveCalibrated_stateChanged(int state)
+{
+	switch (state)
 	{
-		m_Title.SetTextColor(RGB(0, 0, 0));
-		m_Title.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-
-		m_CreateIntermediates.SetCheck(m_bCreateIntermediates);
-		m_SaveCalibrated.SetCheck(m_bSaveCalibrated);
-		m_SaveDebayered.SetCheck(m_bSaveDebayered);
-
-		m_CreateIntermediates.EnableWindow(!m_bRegisteringOnly);
-		UpdateControls();
-		m_bFirstActivation = FALSE;
-	};
-
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-// CIntermediateFiles message handlers
-
-void CIntermediateFiles::OnBnClickedCreateIntermediates()
+	case Qt::Unchecked:
+		workspace->setValue("Stacking/SaveCalibrated", false);
+		break;
+	case Qt::Checked:
+		workspace->setValue("Stacking/SaveCalibrated", true);
+		break;
+	}
+}
+void IntermediateFiles::on_saveDebayered_stateChanged(int state)
 {
-	m_bCreateIntermediates = m_CreateIntermediates.GetCheck();
-	UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CIntermediateFiles::OnBnClickedSaveCalibrated()
-{
-	m_bSaveCalibrated = m_SaveCalibrated.GetCheck();
-	UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CIntermediateFiles::OnBnClickedSaveDebayered()
-{
-	m_bSaveDebayered = m_SaveDebayered.GetCheck();
-	UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CIntermediateFiles::OnBnClickedSaveAsTIFF()
-{
-	if (m_SaveAsTIFF.GetCheck())
+	switch (state)
 	{
-		m_lSaveFormat = IFF_TIFF;
-		m_SaveAsFITS.SetCheck(FALSE);
-	};
-	UpdateControls();
-};
+	case Qt::Unchecked:
+		workspace->setValue("Stacking/SaveCalibratedDebayered", false);
+		break;
+	case Qt::Checked:
+		workspace->setValue("Stacking/SaveCalibratedDebayered", true);
+		break;
+	}		
 
-/* ------------------------------------------------------------------- */
-
-void CIntermediateFiles::OnBnClickedSaveAsFITS()
+}
+void IntermediateFiles::on_saveIntermediate_stateChanged(int state)
 {
-	if (m_SaveAsFITS.GetCheck())
+	switch (state)
 	{
-		m_lSaveFormat = IFF_FITS;
-		m_SaveAsTIFF.SetCheck(FALSE);
-	};
-	UpdateControls();
-};
-
-/* ------------------------------------------------------------------- */
+	case Qt::Unchecked:
+		workspace->setValue("Stacking/CreateIntermediates", false);
+		break;
+	case Qt::Checked:
+		workspace->setValue("Stacking/CreateIntermediates", true);
+		break;
+	}
+}

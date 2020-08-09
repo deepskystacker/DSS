@@ -11,11 +11,6 @@ using namespace Gdiplus;
 #include "registry.h"
 #include "SetUILanguage.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 // CDeepSkyStackerLiveApp
 
 BEGIN_MESSAGE_MAP(CDeepSkyStackerLiveApp, CWinApp)

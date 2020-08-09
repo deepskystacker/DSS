@@ -13,12 +13,12 @@ private :
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
 	CSmartPtr<CMemoryBitmap>	m_pMedian;
 	CSmartPtr<CMemoryBitmap>	m_pDelta;
-	BOOL						m_bHot;
+	bool						m_bHot;
 	double						m_fThreshold;
 	CDSSProgress *				m_pProgress;
-	BOOL						m_bSimulate;
+	bool						m_bSimulate;
 	CCosmeticStats				m_Stats;
-	BOOL						m_bInitDelta;
+	bool						m_bInitDelta;
 
 private :
 	double	Normalize(double fValue)
@@ -26,9 +26,9 @@ private :
 		return pow(fValue/256.0, 2);
 	};
 
-	BOOL	AdjustHotPixel(double & fValue, double fMedian)
+	bool	AdjustHotPixel(double & fValue, double fMedian)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		double	fPercent;// = (fValue-fMedian)/fValue/sqrt((fMedian+1)/256.0);
 
@@ -36,15 +36,15 @@ private :
 		if (fPercent>m_fThreshold)
 		{
 			fValue	 = fMedian;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	AdjustColdPixel(double & fValue, double fMedian)
+	bool	AdjustColdPixel(double & fValue, double fMedian)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		double	fPercent;// = (fMedian-fValue)/fMedian/sqrt((fValue+1)/256.0);
 
@@ -52,15 +52,15 @@ private :
 		if (fPercent > m_fThreshold)
 		{
 			fValue  = fMedian;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	AdjustPixel(double & fValue, double fMedian)
+	bool	AdjustPixel(double & fValue, double fMedian)
 	{
-		BOOL		bResult = FALSE;
+		bool		bResult = false;
 
 		if (m_bHot)
 		{
@@ -79,8 +79,8 @@ private :
 public :
 	CDetectCosmeticTask()
 	{
-		m_bSimulate		= FALSE;
-		m_bInitDelta	= FALSE;
+		m_bSimulate		= false;
+		m_bInitDelta	= false;
         m_bHot          = false;
         m_fThreshold    = 0;
         m_pProgress     = nullptr;
@@ -90,12 +90,12 @@ public :
 	{
 	};
 
-	void	SetSimulate(BOOL bSimulate)
+	void	SetSimulate(bool bSimulate)
 	{
 		m_bSimulate = bSimulate;
 	};
 
-	void	SetInitDelta(BOOL bInitDelta)
+	void	SetInitDelta(bool bInitDelta)
 	{
 		m_bInitDelta = bInitDelta;
 	};
@@ -108,7 +108,7 @@ public :
 			cs.m_lNrDetectedColdPixels = m_Stats.m_lNrDetectedColdPixels;
 	};
 
-	void	Init(CMemoryBitmap * pBitmap, CMemoryBitmap * pMedian, CMemoryBitmap * pDelta, BOOL bHot, double fThreshold, CDSSProgress * pProgress)
+	void	Init(CMemoryBitmap * pBitmap, CMemoryBitmap * pMedian, CMemoryBitmap * pDelta, bool bHot, double fThreshold, CDSSProgress * pProgress)
 	{
 		m_pBitmap		= pBitmap;
 		m_pMedian		= pMedian;
@@ -118,16 +118,16 @@ public :
 		m_pProgress		= pProgress;
 	};
 
-	virtual BOOL	DoTask(HANDLE hEvent)
+	virtual bool	DoTask(HANDLE hEvent)
 	{
 		ZFUNCTRACE_RUNTIME();
-		BOOL					bResult = TRUE;
+		bool					bResult = true;
 		LONG					i, j;
-		BOOL					bEnd = FALSE;
+		bool					bEnd = false;
 		MSG						msg;
 		LONG					lWidth  = m_pBitmap->RealWidth(),
 								lHeight = m_pBitmap->RealHeight();
-		BOOL					bMonochrome = m_pBitmap->IsMonochrome();
+		bool					bMonochrome = m_pBitmap->IsMonochrome();
 		LONG					lNrHotPixels = 0,
 								lNrColdPixels = 0;
 
@@ -142,7 +142,7 @@ public :
 				{
 					for (i = 0;i<lWidth;i++)
 					{
-						BOOL				bChanged = FALSE;
+						bool				bChanged = false;
 
 						if (bMonochrome)
 						{
@@ -183,20 +183,20 @@ public :
 				SetEvent(hEvent);
 			}
 			else if (msg.message == WM_MT_STOP)
-				bEnd = TRUE;
+				bEnd = true;
 		};
 
 		m_CriticalSection.Lock();
 		m_Stats.m_lNrDetectedHotPixels	+= lNrHotPixels;
 		m_Stats.m_lNrDetectedColdPixels += lNrColdPixels;
 		m_CriticalSection.Unlock();
-		return TRUE;
+		return true;
 	};
 
-	virtual BOOL	Process()
+	virtual bool	Process()
 	{
 		ZFUNCTRACE_RUNTIME();
-		BOOL				bResult = TRUE;
+		bool				bResult = true;
 		LONG				lHeight = m_pBitmap->RealHeight();
 		LONG				i = 0;
 		LONG				lStep;
@@ -242,14 +242,14 @@ private :
 	CPostCalibrationSettings    m_pcs;
 	LONG						m_lWidth,
 								m_lHeight;
-	BOOL						m_bMonochrome;
-	BOOL						m_bCFA;
+	bool						m_bMonochrome;
+	bool						m_bCFA;
 	CFATYPE						m_CFAType;
 	LONG						m_lColdFilterSize,
 								m_lHotFilterSize;
 
 private :
-	BOOL	IsOkValue(double fDelta)
+	bool	IsOkValue(double fDelta)
 	{
 		return (fDelta > 100) && (fDelta < 200);
 	};
@@ -332,15 +332,15 @@ public :
 		};
 	};
 
-	virtual BOOL	DoTask(HANDLE hEvent)
+	virtual bool	DoTask(HANDLE hEvent)
 	{
 		ZFUNCTRACE_RUNTIME();
-		BOOL					bResult = TRUE;
+		bool					bResult = true;
 		LONG					i, j;
-		BOOL					bEnd = FALSE;
+		bool					bEnd = false;
 		MSG						msg;
-		BOOL					bMonochrome = m_pOutBitmap->IsMonochrome();
-		BOOL					bCFA = m_pOutBitmap->IsCFA();
+		bool					bMonochrome = m_pOutBitmap->IsMonochrome();
+		bool					bCFA = m_pOutBitmap->IsCFA();
 
 		// Create a message queue and signal the event
 		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
@@ -353,7 +353,7 @@ public :
 				{
 					for (i = 0;i<m_lWidth;i++)
 					{
-						BOOL				bChanged = FALSE;
+						bool				bChanged = false;
 						double				fDelta;
 
 						m_pDelta->GetPixel(i, j, fDelta);
@@ -374,16 +374,16 @@ public :
 				SetEvent(hEvent);
 			}
 			else if (msg.message == WM_MT_STOP)
-				bEnd = TRUE;
+				bEnd = true;
 		};
 
-		return TRUE;
+		return true;
 	};
 
-	virtual BOOL	Process()
+	virtual bool	Process()
 	{
 		ZFUNCTRACE_RUNTIME();
-		BOOL				bResult = TRUE;
+		bool				bResult = true;
 		LONG				i = 0;
 		LONG				lStep;
 		LONG				lRemaining;
@@ -434,7 +434,7 @@ void	CCleanCosmeticTask::ComputeMedian(LONG x, LONG y, LONG lFilterSize, double 
 		for (LONG j = max(0L, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
 		{
 			// Check that this is a normal pixel
-			BOOL				bAdd = TRUE;
+			bool				bAdd = true;
 			if (m_CFAType != CFAT_NONE)
 				bAdd = (GetBayerColor(i, j, m_CFAType) == BayerColor);
 
@@ -532,7 +532,7 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 		for (LONG j = max(0L, y-lFilterSize);j<=min(m_lHeight-1, y+lFilterSize);j++)
 		{
 			// Check that this is a normal pixel
-			BOOL				bAdd = TRUE;
+			bool				bAdd = true;
 			if (m_CFAType != CFAT_NONE)
 				bAdd = (GetBayerColor(i, j, m_CFAType) == BayerColor);
 
@@ -626,10 +626,10 @@ void	CCleanCosmeticTask::ComputeGaussian(LONG x, LONG y, LONG lFilterSize, doubl
 
 /* ------------------------------------------------------------------- */
 
-BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress)
+bool	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (ppDeltaBitmap)
 		*ppDeltaBitmap = nullptr;
@@ -664,8 +664,8 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 
 				CDetectCosmeticTask		CosmeticTask;
 
-				CosmeticTask.SetInitDelta(TRUE);
-				CosmeticTask.Init(pBitmap, pMedian, pDelta, TRUE, pcs.m_fHotDetection/100.0, pProgress);
+				CosmeticTask.SetInitDelta(true);
+				CosmeticTask.Init(pBitmap, pMedian, pDelta, true, pcs.m_fHotDetection/100.0, pProgress);
 				CosmeticTask.StartThreads();
 				CosmeticTask.Process();
 
@@ -698,7 +698,7 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 				CDetectCosmeticTask		CosmeticTask;
 
 				CosmeticTask.SetInitDelta(!pcs.m_bHot);
-				CosmeticTask.Init(pBitmap, pMedian, pDelta, FALSE, pcs.m_fColdDetection/100.0, pProgress);
+				CosmeticTask.Init(pBitmap, pMedian, pDelta, false, pcs.m_fColdDetection/100.0, pProgress);
 				CosmeticTask.StartThreads();
 				CosmeticTask.Process();
 
@@ -731,7 +731,7 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 				pDelta.CopyTo(ppDeltaBitmap);
 		};
 
-		bResult = TRUE;
+		bResult = true;
 
 	};
 
@@ -740,10 +740,10 @@ BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 
 /* ------------------------------------------------------------------- */
 
-BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & pcs, CCosmeticStats & cs, CDSSProgress * pProgress)
+bool	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & pcs, CCosmeticStats & cs, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = FALSE;
+	bool				bResult = false;
 
 	if (pBitmap)
 	{
@@ -772,8 +772,8 @@ BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 
 				CDetectCosmeticTask		CosmeticTask;
 
-				CosmeticTask.SetSimulate(TRUE);
-				CosmeticTask.Init(pBitmap, pMedian, nullptr, TRUE, pcs.m_fHotDetection/100.0, pProgress);
+				CosmeticTask.SetSimulate(true);
+				CosmeticTask.Init(pBitmap, pMedian, nullptr, true, pcs.m_fHotDetection/100.0, pProgress);
 				CosmeticTask.StartThreads();
 				CosmeticTask.Process();
 
@@ -805,8 +805,8 @@ BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 
 				CDetectCosmeticTask		CosmeticTask;
 
-				CosmeticTask.SetSimulate(TRUE);
-				CosmeticTask.Init(pBitmap, pMedian, nullptr, FALSE, pcs.m_fColdDetection/100.0, pProgress);
+				CosmeticTask.SetSimulate(true);
+				CosmeticTask.Init(pBitmap, pMedian, nullptr, false, pcs.m_fColdDetection/100.0, pProgress);
 				CosmeticTask.StartThreads();
 				CosmeticTask.Process();
 
@@ -817,7 +817,7 @@ BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 			};
 		};
 
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	return bResult;

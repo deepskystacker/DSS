@@ -5,12 +5,6 @@
 #include "deepskystacker.h"
 #include "ProgressDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 /////////////////////////////////////////////////////////////////////////////
 // CProgressDlg dialog
 
@@ -26,7 +20,7 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 {
 	//{{AFX_DATA_INIT(CProgressDlg)
 	//}}AFX_DATA_INIT
-	m_bCancelled = FALSE;
+	m_bCancelled = false;
 }
 
 
@@ -57,14 +51,14 @@ END_MESSAGE_MAP()
 
 void CProgressDlg::OnCancel()
 {
-	m_bCancelled	= TRUE;
+	m_bCancelled	= true;
 	//CDialog::OnCancel();
 }
 
 void CProgressDlg::OnStop()
 {
-	m_bCancelled	= TRUE;
-	m_Cancel.EnableWindow(FALSE);
+	m_bCancelled	= true;
+	m_Cancel.EnableWindow(false);
 }
 
 

@@ -5,11 +5,6 @@
 #include "EmailSettings.h"
 #include <..\SMTP\PJNSMTP.h>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 // CEmailSettings dialog
 
 

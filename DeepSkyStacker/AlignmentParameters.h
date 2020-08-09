@@ -1,62 +1,46 @@
-#pragma once
+#ifndef ALIGNMENTPARAMETERS_H
+#define ALIGNMENTPARAMETERS_H
 
+#include <QWidget>
 
-// CAlignmentParameters dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
+class CWorkspace;
 
+namespace Ui {
+class AlignmentParameters;
+}
 
-class CAlignmentParameters : public CChildPropertyPage
+class AlignmentParameters : public QWidget
 {
-	DECLARE_DYNAMIC(CAlignmentParameters)
+    Q_OBJECT
+
+typedef QWidget
+		Inherited;
 
 public:
-	CAlignmentParameters();
-	virtual ~CAlignmentParameters();
+    explicit AlignmentParameters(QWidget *parent = 0);
+    ~AlignmentParameters();
 
-// Dialog Data
-	enum { IDD = IDD_ALIGNMENTSETTINGS };
+public slots:
+	void onSetActive();
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+private:
+	Ui::AlignmentParameters *ui;
+	std::unique_ptr<CWorkspace> workspace;
+	uint m_Alignment;
 
-public:
-	virtual BOOL OnSetActive();
+	void updateControls();
 
-	void	SetAlignment(WORD wAlignment)
-	{
-		m_Alignment = wAlignment;
-		UpdateControls();
-	};
+	void setAlignment(uint wAlignment);
 
-	WORD	GetAlignment()
-	{
-		return m_Alignment;
-	};
+private slots:
+    void on_alignAuto_clicked();
+    void on_alignBilinear_clicked();
+    void on_alignBisquared_clicked();
+    void on_alignBicubic_clicked();
+    void on_alignNone_clicked();
 
 
-	DECLARE_MESSAGE_MAP()
-
-private :
-	BOOL				m_bFirstActivation;
-
-	void				UpdateControls();
-
-	afx_msg void OnBnClickedAutomatic();
-	afx_msg void OnBnClickedBilinear();
-	afx_msg void OnBnClickedBisquared();
-	afx_msg void OnBnClickedBicubic();
-	afx_msg void OnBnClickedNoAlignment();
-
-public :
-	CButton				m_Automatic;
-	CButton				m_Bilinear;
-	CButton				m_Bicubic;
-	CButton				m_Bisquared;
-	CButton				m_NoAlignment;
-	CStatic				m_Explanation;
-	CLabel				m_Title;
-
-	WORD				m_Alignment;
+private:
 };
+
+#endif // ALIGNMENTPARAMETERS_H

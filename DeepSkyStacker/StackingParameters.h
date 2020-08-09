@@ -1,90 +1,92 @@
-#pragma once
+#ifndef STACKINGPARAMETERS_H
+#define STACKINGPARAMETERS_H
 
+#include <QWidget>
 
-// CStackingParameters dialog
-#include <ChildProp.h>
-#include "BitmapExt.h"
-#include <Label.h>
-#include <RichToolTipCtrl.h>
-#include "StackingTasks.h"
+class CWorkspace;
+class StackSettings;
+class QAction;
+class QMenu;
+class QValidator;
 
-class CStackingParameters : public CChildPropertyPage
+#include "DSSCommon.h"
+
+namespace Ui {
+class StackingParameters;
+}
+
+class StackingParameters : public QWidget
 {
-	DECLARE_DYNAMIC(CStackingParameters)
+    Q_OBJECT
+
+typedef QWidget
+		Inherited;
 
 public:
-	CStackingParameters();
-	virtual ~CStackingParameters();
+    explicit StackingParameters(QWidget *parent = nullptr, PICTURETYPE = PICTURETYPE_UNKNOWN);
+    ~StackingParameters();
 
-// Dialog Data
-	enum { IDD = IDD_STACKINGPARAMETERS };
+public slots:
+	void onSetActive();
 
-protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+private:
+    Ui::StackingParameters *ui;
+	std::unique_ptr<CWorkspace> workspace;
+	StackSettings * pStackSettings;
+	PICTURETYPE type;
+	BACKGROUNDCALIBRATIONMODE mode;
+	MULTIBITMAPPROCESSMETHOD method;
+	double	kappa;
+	uint	iteration;
+	QString kappaSigmaTip;
+	QString medianKappaSigmaTip;
+	QString nobgCalString;
+	QString pcbgCalString;
+	QString rgbbgCalString;
+	QAction * nobgCal;
+	QAction * pcbgCal;
+	QAction * rgbbgCal;
+	QAction * bgCalOptions;
+	QMenu   * backgroundCalibrationMenu;
 
-	virtual BOOL PreTranslateMessage(MSG* pMsg)
-	{
-		m_Tooltips.RelayEvent(pMsg);
+	QValidator * darkFactorValidator;
+	QValidator * iterationValidator;
+	QValidator * kappaValidator;
 
-		return 0;
-	};
+	StackingParameters & setControls();
+	StackingParameters & createActions();
+	StackingParameters & createMenus();
 
+	void setMethod(MULTIBITMAPPROCESSMETHOD method);
+	void setBackgroundCalibration(BACKGROUNDCALIBRATIONMODE mode);
 
-public:
-	virtual BOOL OnSetActive();
-	void	SetControls(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lIteration);
-	void	GetControls(MULTIBITMAPPROCESSMETHOD & Method, double & fKappa, LONG & lIteration);
+signals:
+	void methodChanged(MULTIBITMAPPROCESSMETHOD newMethod);
 
-	void	SetBackgroundCalibrationMode(BACKGROUNDCALIBRATIONMODE Mode);
+private slots:
+	void on_modeAverage_clicked();
+	void on_modeMedian_clicked();
+	void on_modeKS_clicked();
+	void on_modeMKS_clicked();
+	void on_modeAAWA_clicked();
+	void on_modeEWA_clicked();
+	void on_modeMaximum_clicked();
 
-	DECLARE_MESSAGE_MAP()
+	void on_backgroundCalibration_clicked();
+	void backgroundCalibrationOptions();
 
-private :
-	BOOL				m_bFirstActivation;
-	CRichToolTipCtrl	m_Tooltips;
+	void on_iterations_textEdited(const QString &text);
+	void on_kappa_textEdited(const QString &text);
 
-	void				UpdateControls();
-	void				UpdateCalibrationMode();
+	void on_debloom_stateChanged(int);
+	void on_hotPixels_stateChanged(int);
+	void on_badColumns_stateChanged(int);
+	void on_darkOptimisation_stateChanged(int);
+	void on_useDarkFactor_stateChanged(int);
+	void on_darkMultiplicationFactor_textEdited(const QString &text);
 
-	afx_msg void OnBnClickedAverage();
-	afx_msg void OnBnClickedMedian();
-	afx_msg void OnBnClickedMaximum();
-	afx_msg void OnBnClickedSigmaclipping();
-	afx_msg void OnBnClickedMedianSigmaclipping();
-	afx_msg void OnEnChangeKappa();
-	afx_msg void OnEnChangeIteration();
-	afx_msg void OnBnClickedEntropyaverage();
-	afx_msg void OnBnClickedAutoadaptiveaverage();
-	afx_msg void OnBnClickedUseDarkFactor();
-	afx_msg void OnBnClickedDarkOptimization();
-	afx_msg void OnBnClickedDebloom();
-	afx_msg void OnBnClickedDebloomSettings();
-	afx_msg void OnEnChangeDarkFactor();
-	afx_msg void OnBackgroundCalibration( NMHDR * pNotifyStruct, LRESULT * result );
+	void updateControls(MULTIBITMAPPROCESSMETHOD newMethod);
 
-public :
-	CButton				m_Average;
-	CButton				m_Median;
-	CButton				m_Maximum;
-	CButton				m_SigmaClipping;
-	CButton				m_MedianSigmaClipping;
-	CButton				m_EntropyAverage;
-	CButton				m_WeightedAverage;
-	CEdit				m_Kappa;
-	CEdit				m_Iteration;
-	CStatic				m_KappaStatic;
-	CStatic				m_IterationStatic;
-	CLabel				m_Title;
-	CStatic				m_KappaFrame;
-	CStatic				m_WeightedFrame;
-	CLabel				m_BackgroundCalibration;
-	CButton				m_DarkOptimization;
-	CButton				m_HotPixels;
-	CButton				m_BadColumns;
-	CButton				m_UseDarkFactor;
-	CEdit				m_DarkFactor;
-	CButton				m_Debloom;
-//	CButton				m_DebloomSettings;
-
-	BACKGROUNDCALIBRATIONMODE	m_BackgroundCalibrationMode;
 };
+
+#endif // STACKINGPARAMETERS_H

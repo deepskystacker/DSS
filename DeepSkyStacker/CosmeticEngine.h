@@ -39,7 +39,7 @@ public :
 	};
 };
 
-BOOL	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** pDeltaBitmap, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress);
-BOOL	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & pcs, CCosmeticStats & cs, CDSSProgress * pProgress);
+bool	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** pDeltaBitmap, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress);
+bool	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & pcs, CCosmeticStats & cs, CDSSProgress * pProgress);
 
 #endif

@@ -96,7 +96,7 @@ public :
 
 	void	ClearList();
 	void	BackgroundLoad();
-	BOOL	LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C32BitsBitmap ** pphBitmap);
+	bool	LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C32BitsBitmap ** pphBitmap);
 };
 
 /* ------------------------------------------------------------------- */

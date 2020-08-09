@@ -30,7 +30,7 @@ public:
 	CStatic			m_NrProcessors;
 	//}}AFX_DATA
 
-	BOOL			m_bCancelled;
+	bool			m_bCancelled;
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -92,8 +92,8 @@ private :
 						m_dwLastTime;
 	LONG				m_lLastTotal1,
 						m_lLastTotal2;
-	BOOL				m_bFirstProgress;
-	BOOL				m_bEnableCancel;
+	bool				m_bFirstProgress;
+	bool				m_bEnableCancel;
 	CDeepStackerDlg *   m_pDeepStackerDlg;
 
 private :
@@ -116,7 +116,7 @@ private :
 				m_pDeepStackerDlg->disableSubDialogs();
 
 			// Re-enable this window
-			m_dlg.EnableWindow(TRUE);
+			m_dlg.EnableWindow(true);
 			m_dlg.ShowWindow(SW_SHOW);
 		};
 	};
@@ -171,7 +171,7 @@ public :
 			m_dlg.m_Text2.GetWindowText(strText);
 	};
 
-	virtual	void	Start(LPCTSTR szTitle, LONG lTotal1, BOOL bEnableCancel = TRUE)
+	virtual	void	Start(LPCTSTR szTitle, LONG lTotal1, bool bEnableCancel = true)
 	{
 		CString			strTitle = szTitle;
 
@@ -181,7 +181,7 @@ public :
 		m_lTotal1 = lTotal1;
 		m_dwStartTime = GetTickCount();
 		m_dwLastTime  = m_dwStartTime;
-		m_bFirstProgress = TRUE;
+		m_bFirstProgress = true;
 		m_bEnableCancel = bEnableCancel;
 		m_dlg.m_Cancel.EnableWindow(bEnableCancel);
 		if (strTitle.GetLength())
@@ -205,7 +205,7 @@ public :
 
 		if (m_bFirstProgress || ((double)(lAchieved1-m_lLastTotal1) > (m_lTotal1 / 100.0)) || ((dwCurrentTime - m_dwLastTime) > 1000))
 		{
-			m_bFirstProgress = FALSE;
+			m_bFirstProgress = false;
 			m_lLastTotal1 = lAchieved1;
 			m_dwLastTime  = dwCurrentTime;
 			m_dlg.m_Progress1.SetPos(lAchieved1);
@@ -307,23 +307,23 @@ public :
 		m_dlg.m_Text2.ShowWindow(SW_HIDE);
 	};
 
-	virtual BOOL	IsCanceled()
+	virtual bool	IsCanceled()
 	{
 		return m_dlg.m_bCancelled;
 	};
-	virtual BOOL	Close()
+	virtual bool	Close()
 	{
 		m_dlg.PeekAndPump();
 		// Prevent failure if mdlg is no longer a valid window
-		if (nullptr != m_dlg.m_hWnd) m_dlg.EndDialog(TRUE);
+		if (nullptr != m_dlg.m_hWnd) m_dlg.EndDialog(true);
 
 		if (m_pDeepStackerDlg)
 			m_pDeepStackerDlg->enableSubDialogs();
 
-		return TRUE;
+		return true;
 	};
 
-	virtual BOOL	Warning(LPCTSTR szText)
+	virtual bool	Warning(LPCTSTR szText)
 	{
 		int				nResult;
 

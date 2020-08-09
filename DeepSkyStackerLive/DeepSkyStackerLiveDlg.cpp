@@ -5,11 +5,6 @@
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
 // CDeepSkyStackerLiveDlg dialog
 
 

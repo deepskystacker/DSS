@@ -52,7 +52,7 @@ public :
 			return false;
 	};
 
-	BOOL	Load(FILE * hFile)
+	bool	Load(FILE * hFile)
 	{
 		LONG		lNameSize;
 		TCHAR		szName[2000];
@@ -63,7 +63,7 @@ public :
 		return m_BezierAdjust.Load(hFile) && m_HistoAdjust.Load(hFile);
 	};
 
-	BOOL	Save(FILE * hFile)
+	bool	Save(FILE * hFile)
 	{
 		LONG		lNameSize = m_strName.GetLength()+1;
 		fwrite(&lNameSize, sizeof(lNameSize), 1, hFile);
@@ -80,30 +80,30 @@ class CDSSSettings
 {
 private :
 	std::list<CDSSSetting>	m_lSettings;
-	BOOL					m_bLoaded;
+	bool					m_bLoaded;
 
 public :
 	CDSSSettings()
 	{
-		m_bLoaded = FALSE;
+		m_bLoaded = false;
 	};
 	virtual ~CDSSSettings() {};
 
-	BOOL	IsLoaded()
+	bool	IsLoaded()
 	{
 		return m_bLoaded;
 	};
-	BOOL	Load(LPCTSTR szFile = nullptr);
-	BOOL	Save(LPCTSTR szFile = nullptr);
+	bool	Load(LPCTSTR szFile = nullptr);
+	bool	Save(LPCTSTR szFile = nullptr);
 
 	LONG	Count()
 	{
 		return (LONG)m_lSettings.size();
 	};
 
-	BOOL	GetItem(LONG lIndice, CDSSSetting & cds)
+	bool	GetItem(LONG lIndice, CDSSSetting & cds)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (lIndice < m_lSettings.size())
 		{
@@ -117,21 +117,21 @@ public :
 			};
 
 			cds = (*it);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	Add(const CDSSSetting & cds)
+	bool	Add(const CDSSSetting & cds)
 	{
 		m_lSettings.push_back(cds);
-		return TRUE;
+		return true;
 	};
 
-	BOOL	Remove(LONG lIndice)
+	bool	Remove(LONG lIndice)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 
 		if (lIndice < m_lSettings.size())
 		{
@@ -145,7 +145,7 @@ public :
 			};
 
 			m_lSettings.erase(it);
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
@@ -154,9 +154,11 @@ public :
 
 #include "StackingDlg.h"
 #include "ProcessingDlg.h"
-#include "LibraryDlg.h"
+//#include "LibraryDlg.h"
 #include "ExplorerBar.h"
 #include "afxwin.h"
+
+#include "qwinwidget.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
@@ -173,11 +175,12 @@ class CDeepStackerDlg : public CDialog
 private :
 	CStackingDlg			m_dlgStacking;
 	CProcessingDlg			m_dlgProcessing;
-	CLibraryDlg				m_dlgLibrary;
+	//CLibraryDlg				m_dlgLibrary;
 
 	CDeepStack				m_DeepStack;
 	CDSSSettings			m_Settings;
-	CExplorerBar			m_ExplorerBar;
+	QWinWidget *			widget;
+	ExplorerBar *			explorerBar;
 	DWORD					m_dwCurrentTab;
 	CString					m_strStartFileList;
 	CString					m_strBaseTitle;
@@ -187,6 +190,15 @@ private :
 // Construction
 public:
 	CDeepStackerDlg(CWnd* pParent = nullptr);   // standard constructor
+
+	~CDeepStackerDlg()
+	{
+		if (explorerBar)
+			delete explorerBar;
+		if (widget)
+			delete widget;
+	};
+
 	void	ChangeTab(DWORD dwTabID);
 	DWORD	GetCurrentTab()
 	{
@@ -198,20 +210,20 @@ public:
 		m_strStartFileList = szStartFileList;
 	};
 
-	void disableSubDialogs()
+	inline void disableSubDialogs()
 	{
 		m_dlgStacking.EnableWindow(false);
 		m_dlgProcessing.EnableWindow(false);
-		m_dlgLibrary.EnableWindow(false);
-		m_ExplorerBar.EnableWindow(false);
+		//m_dlgLibrary.EnableWindow(false);
+		explorerBar->setEnabled(false);
 	};
 
-	void enableSubDialogs()
+	inline void enableSubDialogs()
 	{
 		m_dlgStacking.EnableWindow(true);
 		m_dlgProcessing.EnableWindow(true);
-		m_dlgLibrary.EnableWindow(true);
-		m_ExplorerBar.EnableWindow(true);
+		//m_dlgLibrary.EnableWindow(true);
+		explorerBar->setEnabled(true);
 	};
 
 // Dialog Data
@@ -244,9 +256,9 @@ public:
 	};
 
 
-	CExplorerBar & GetExplorerBar()
+	ExplorerBar & GetExplorerBar()
 	{
-		return m_ExplorerBar;
+		return *explorerBar;
 	};
 
 	void	SetCurrentFileInTitle(LPCTSTR szFileName);
@@ -359,8 +371,8 @@ inline void	SetCurrentFileInTitle(LPCTSTR szFileName)
 
 /* ------------------------------------------------------------------- */
 
-void	SaveWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath);
-void	RestoreWindowPosition(CWnd * pWnd, LPCTSTR szRegistryPath, bool bCenter = false);
+void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath);
+void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter = false);
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

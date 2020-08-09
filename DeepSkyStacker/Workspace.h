@@ -1,237 +1,83 @@
 #ifndef __WORKSPACE_H__
 #define __WORKSPACE_H__
+#include <memory>
+#include <QString>
+#include <QVariant>
 
-typedef enum tagDSSSETTINGTYPE
-{
-	DST_STRING		= 1,
-	DST_DWORD		= 2,
-	DST_BOOL		= 3,
-	DST_DOUBLE		= 4
-}DSSSETTINGTYPE;
+class CWorkspaceSettings;
 
 class CWorkspaceSetting
 {
 private :
-	DSSSETTINGTYPE			m_Type;
-	CString					m_strPath;
-	CString					m_strName;
-	CString					m_strValue;
-	DWORD					m_dwValue;
-	double					m_fValue;
-	bool					m_bValue;
-	BOOL					m_bDirty;
-
-private :
-	void	CopyFrom(const CWorkspaceSetting & s)
-	{
-		m_Type		= s.m_Type;
-		m_strPath	= s.m_strPath;
-		m_strName	= s.m_strName;
-		m_strValue	= s.m_strValue;
-		m_dwValue	= s.m_dwValue;
-		m_fValue	= s.m_fValue;
-		m_bValue	= s.m_bValue;
-		m_bDirty	= s.m_bDirty;
-	};
-
-    void Initialize()
-    {
-        m_Type		= DST_STRING;
-		m_bDirty	= FALSE;
-        m_dwValue   = 0;
-        m_fValue    = 0;
-        m_bValue    = FALSE;
-    }
+	QString					keyName;
+	QVariant				Value;
+	bool					dirty;
 
 public :
-	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName)
+	CWorkspaceSetting(const QString& name, const QVariant& value = QVariant())
+		: keyName(name), Value(value), dirty(true)
 	{
-        Initialize();
-
-        m_Type      = DST_DWORD;
-		m_strPath	= szPath;
-		m_strName	= szName;
 	};
 
-	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, LPCTSTR szDefValue)
+	CWorkspaceSetting & operator = (const CWorkspaceSetting & rhs)
 	{
-        Initialize();
-
-        m_Type      = DST_STRING;
-		m_strPath	= szPath;
-		m_strName	= szName;
-		m_strValue	= szDefValue;
-	};
-
-	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, DWORD dwValue)
-	{
-        Initialize();
-
-        m_Type      = DST_DWORD;
-		m_strPath	= szPath;
-		m_strName	= szName;
-		m_dwValue   = dwValue;
-	};
-
-	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, bool bValue)
-	{
-        Initialize();
-
-        m_Type      = DST_BOOL;
-		m_strPath	= szPath;
-		m_strName	= szName;
-		m_bValue	= bValue;
-	};
-
-	CWorkspaceSetting(LPCTSTR szPath, LPCTSTR szName, double fValue)
-	{
-        Initialize();
-
-        m_Type      = DST_DOUBLE;
-		m_strPath	= szPath;
-		m_strName	= szName;
-		m_fValue	= fValue;
-	};
-
-	CWorkspaceSetting(const CWorkspaceSetting & s)
-	{
-		CopyFrom(s);
-	};
-
-	CWorkspaceSetting & operator = (const CWorkspaceSetting & s)
-	{
-		CopyFrom(s);
+		keyName = rhs.keyName;
+		Value = rhs.Value;
+		dirty = rhs.dirty;
 		return (*this);
 	};
 
 	bool operator < (const CWorkspaceSetting & s) const
 	{
-		if (m_strPath < s.m_strPath)
+		if (keyName < s.keyName)
 			return true;
-		else if (m_strPath > s.m_strPath)
+		else if (keyName > s.keyName)
 			return false;
 		else
-			return m_strName < s.m_strName;
+			return keyName < s.keyName;
 	};
 
 	bool operator != (const CWorkspaceSetting & s) const
 	{
-		return (m_strPath!=s.m_strPath) || (m_strName!=s.m_strName);
+		return (keyName != s.keyName);
 	};
 
-	void	ReadFromRegistry();
-	void	SaveToRegistry() const;
+	CWorkspaceSetting &	readSetting();
+	CWorkspaceSetting &	saveSetting();
 
-	BOOL	IsDirty(BOOL bClear)
+	bool	isDirty(bool bClear)
 	{
-		BOOL			bResult = m_bDirty;
+		bool result = dirty;
 
 		if (bClear)
-			m_bDirty = FALSE;
+			dirty = false;
 
-		return bResult;
+		return result;
 	};
 
-	void	GetPath(CString & strPath) const
+	inline QString key() const
 	{
-		strPath = m_strPath;
+		return keyName;
 	};
 
-	void	GetName(CString & strName) const
+	CWorkspaceSetting &	setValue(const CWorkspaceSetting & ws);
+	CWorkspaceSetting &	setValue(const QVariant& value);
+
+	inline QVariant value() const
 	{
-		strName = m_strName;
+		return Value;
 	};
-
-	bool	SetValue(const CWorkspaceSetting & ws);
-	void	SetValue(LPCTSTR szValue);
-	void	SetValue(bool bValue);
-	void	SetValue(DWORD dwValue);
-	void	SetValue(double fValue);
-
-	void	GetValue(CString & strValue) const;
-	void	GetValue(bool & bValue) const;
-	void	GetValue(DWORD & dwValue) const;
-	void	GetValue(double & fValue) const;
-
 };
+
+/* ------------------------------------------------------------------- */
 
 typedef std::vector<CWorkspaceSetting>				WORKSPACESETTINGVECTOR;
 typedef WORKSPACESETTINGVECTOR::iterator			WORKSPACESETTINGITERATOR;
 
-/* ------------------------------------------------------------------- */
-
-class CWorkspaceSettingsInternal
-{
-public :
-	WORKSPACESETTINGVECTOR				m_vSettings;
-
-protected :
-	void	CopyFrom(const CWorkspaceSettingsInternal & ws)
-	{
-		m_vSettings = ws.m_vSettings;
-	};
-
-	void	InitToDefault(WORKSPACESETTINGVECTOR & vSettings);
-	void	Init();
-
-public :
-	CWorkspaceSettingsInternal()
-	{
-		Init();
-	};
-	virtual ~CWorkspaceSettingsInternal() {};
-
-	CWorkspaceSettingsInternal & operator = (const CWorkspaceSettingsInternal & ws)
-	{
-		CopyFrom(ws);
-		return (*this);
-	};
-
-    CWorkspaceSettingsInternal(CWorkspaceSettingsInternal const& other)
-    {
-        CopyFrom(other);
-    }
-
-	void	InitFrom(const CWorkspaceSettingsInternal & ws)
-	{
-		CopyFrom(ws);
-	};
-
-	WORKSPACESETTINGITERATOR	FindSetting(LPCTSTR szPath, LPCTSTR szName);
-	BOOL	IsDirty();
-	void	ResetDirty();
-	WORKSPACESETTINGITERATOR	end()
-	{
-		return m_vSettings.end();
-	};
-
-	void	ReadFromRegistry();
-	void	SaveToRegistry();
-	void	ReadFromFile(FILE * hFile);
-	void	ReadFromFile(LPCTSTR szFile);
-	void	SaveToFile(FILE * hFile);
-	void	SaveToFile(LPCTSTR szFile);
-	BOOL	ReadFromString(LPCTSTR szString);
-	void	ResetToDefault();
-};
-
-/* ------------------------------------------------------------------- */
-
-class CWorkspaceSettings : public CWorkspaceSettingsInternal,
-						   public CRefCount
-{
-public :
-	CWorkspaceSettings() {};
-	virtual ~CWorkspaceSettings() {};
-};
-
-/* ------------------------------------------------------------------- */
-
 class CWorkspace
 {
-private :
-	CSmartPtr<CWorkspaceSettings>		m_pSettings;
-
+private:
+	std::shared_ptr <CWorkspaceSettings > pSettings;
 public:
 	CWorkspace();
 
@@ -239,26 +85,20 @@ public:
 	{
 	};
 
-	void	SetValue(LPCTSTR szPath, LPCTSTR szName, LPCTSTR szValue);
-	void	SetValue(LPCTSTR szPath, LPCTSTR szName, bool bValue);
-	void	SetValue(LPCTSTR szPath, LPCTSTR szName, DWORD dwValue);
-	void	SetValue(LPCTSTR szPath, LPCTSTR szName, double fValue);
+	void	setValue(const QString& key, const QVariant& value);
 
-	void	GetValue(LPCTSTR szPath, LPCTSTR szName, CString & strValue);
-	void	GetValue(LPCTSTR szPath, LPCTSTR szName, bool & bValue);
-	void	GetValue(LPCTSTR szPath, LPCTSTR szName, DWORD & dwValue);
-	void	GetValue(LPCTSTR szPath, LPCTSTR szName, double & fValue);
+	QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
 
-	BOOL	IsDirty();
-	void	ResetDirty();
+	bool	isDirty();
+	void	setDirty();
 
-	void	ReadFromRegistry();
-	void	SaveToRegistry();
+	void	readSettings();
+	void	saveSettings();
 	void	ReadFromFile(FILE * hFile);
 	void	ReadFromFile(LPCTSTR szFile);
 	void	SaveToFile(FILE * hFile);
 	void	SaveToFile(LPCTSTR szFile);
-	BOOL	ReadFromString(LPCTSTR szString);
+	bool	ReadFromString(LPCTSTR szString);
 	void	ResetToDefault();
 
 	void	Push();

@@ -21,9 +21,9 @@ private :
 
     CPictureListCtrl*   m_imageList;
 	std::unordered_map<int, CListBitmap*> m_bitmaps;
-	BOOL				m_bChangeType;
-	BOOL				m_bChangeISOSpeed;
-	BOOL				m_bChangeExposure;
+	bool				m_bChangeType;
+	bool				m_bChangeISOSpeed;
+	bool				m_bChangeExposure;
 
 
 public:

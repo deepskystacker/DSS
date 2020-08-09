@@ -45,7 +45,7 @@
 
 #else  // __cplusplus
 
-#define VERSIONHELPERAPI FORCEINLINE BOOL
+#define VERSIONHELPERAPI FORCEINLINE bool
 
 #endif // __cplusplus
 
@@ -64,7 +64,7 @@ IsWindowsVersionOrGreater(WORD wMajorVersion, WORD wMinorVersion, WORD wServiceP
     osvi.dwMinorVersion = wMinorVersion;
     osvi.wServicePackMajor = wServicePackMajor;
 
-    return VerifyVersionInfoW(&osvi, VER_MAJORVERSION | VER_MINORVERSION | VER_SERVICEPACKMAJOR, dwlConditionMask) != FALSE;
+    return VerifyVersionInfoW(&osvi, VER_MAJORVERSION | VER_MINORVERSION | VER_SERVICEPACKMAJOR, dwlConditionMask) != false;
 }
 
 VERSIONHELPERAPI

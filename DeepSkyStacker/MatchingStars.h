@@ -231,12 +231,12 @@ public :
 		CopyFrom(vp);
 	};
 
-	BOOL	IsActive() const
+	bool	IsActive() const
 	{
 		return (m_Flags & VPFLAG_ACTIVE);
 	};
 
-	void	SetActive(BOOL bActive)
+	void	SetActive(bool bActive)
 	{
 		if (bActive)
 			m_Flags |= VPFLAG_ACTIVE;
@@ -244,17 +244,17 @@ public :
 			m_Flags &=~VPFLAG_ACTIVE;
 	};
 
-	BOOL	IsCorner() const
+	bool	IsCorner() const
 	{
 		return (m_Flags & VPFLAG_CORNER_MASK);
 	};
 
-	BOOL	IsUsed() const
+	bool	IsUsed() const
 	{
 		return (m_Flags & VPFLAG_USED);
 	};
 
-	void	SetUsed(BOOL bUsed)
+	void	SetUsed(bool bUsed)
 	{
 		if (bUsed)
 			m_Flags |= VPFLAG_USED;
@@ -262,12 +262,12 @@ public :
 			m_Flags &=~VPFLAG_USED;
 	};
 
-	BOOL	IsLocked() const
+	bool	IsLocked() const
 	{
 		return (m_Flags & VPFLAG_LOCKED);
 	};
 
-	void	SetLocked(BOOL bLocked)
+	void	SetLocked(bool bLocked)
 	{
 		if (bLocked)
 			m_Flags |= VPFLAG_LOCKED;
@@ -275,12 +275,12 @@ public :
 			m_Flags &=~VPFLAG_LOCKED;
 	};
 
-	BOOL	IsPossible() const
+	bool	IsPossible() const
 	{
 		return (m_Flags & VPFLAG_POSSIBLE);
 	};
 
-	void	SetPossible(BOOL bPossible)
+	void	SetPossible(bool bPossible)
 	{
 		if (bPossible)
 			m_Flags |= VPFLAG_POSSIBLE;
@@ -354,13 +354,13 @@ private :
 	void	ComputeTriangles(const POINTEXTVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles);
 
 	double	ValidateTransformation(const VOTINGPAIRVECTOR & vVotingPairs, const CBilinearParameters & BilinearParameters);
-	BOOL	ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
-	BOOL	ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
-	BOOL	ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
-	BOOL	ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool	ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool	ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool	ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
+	bool	ComputeMedianTransformation(const VOTINGPAIRVECTOR & vVotingPairs, CBilinearParameters & BilinearParameters, TRANSFORMATIONTYPE TType);
 
-	BOOL	ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters);
-	BOOL	ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters);
+	bool	ComputeMatchingTriangleTransformation(CBilinearParameters & BilinearParameters);
+	bool	ComputeLargeTriangleTransformation(CBilinearParameters & BilinearParameters);
 
 	void	AdjustSize();
 
@@ -385,7 +385,7 @@ public :
 		m_vTgtStars.emplace_back(fX, fY);
 	};
 
-	BOOL	IsReferenceSet()
+	bool	IsReferenceSet()
 	{
 		return (m_vRefStars.size() > 0);
 	};
@@ -414,7 +414,7 @@ public :
 		m_lHeight	= lHeight;
 	};
 
-	BOOL	ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters);
+	bool	ComputeCoordinateTransformation(CBilinearParameters & BilinearParameters);
 	void	GetVotedPairs(VOTINGPAIRVECTOR & vPairs)
 	{
 		vPairs = m_vVotedPairs;

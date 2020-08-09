@@ -1,133 +1,93 @@
-#if !defined(AFX_REGISTERSETTINGS_H__ADADF4EE_1999_4E95_A37D_886007272EBE__INCLUDED_)
-#define AFX_REGISTERSETTINGS_H__ADADF4EE_1999_4E95_A37D_886007272EBE__INCLUDED_
+#ifndef REGISTERSETTINGS_H
+#define REGISTERSETTINGS_H
+#include <memory>
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-// RegisterSettings.h : header file
-//
+class CWorkspace;
+class CAllStackingTasks;
+class QValidator;
 
-#include <Label.h>
-#include "RegisterSettings_Actions.h"
-#include "RegisterSettings_Advanced.h"
-#include "StackingTasks.h"
+#include "DSSCommon.h"
+#include <QDialog>
 
-/////////////////////////////////////////////////////////////////////////////
-// CRegisterSettings dialog
+namespace Ui {
+	class RegisterSettings;
+}
 
-class CRegisterSettings : public CDialog
+class CWorkspace;
+
+class RegisterSettings : public QDialog
 {
-// Construction
+	Q_OBJECT
+
+typedef QDialog
+		Inherited;
 public:
-	CRegisterSettings(CWnd* pParent = nullptr);   // standard constructor
+	explicit RegisterSettings(QWidget *parent = nullptr);
+	~RegisterSettings();
 
-// Dialog Data
-	//{{AFX_DATA(CRegisterSettings)
-	enum { IDD = IDD_REGISTERSETTINGS };
-	//}}AFX_DATA
-
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CRegisterSettings)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-
-
-// Implementation
-protected :
-	CRegisterSettings_Actions		m_tabActions;
-	CRegisterSettings_Advanced		m_tabAdvanced;
-	CPropertySheet					m_Sheet;
-	CStatic							m_Rect;
-	CButton							m_OK;
-
-	BOOL							m_bForceRegister;
-	bool							m_bStack;
-	double							m_fPercentStack;
-	BOOL							m_bNoDark;
-	BOOL							m_bNoFlat;
-	BOOL							m_bNoOffset;
-	DWORD							m_dwDetectionThreshold;
-	DWORD							m_bMedianFilter;
-	CString							m_strFirstLightFrame;
-	CAllStackingTasks *				m_pStackingTasks;
-	BOOL							m_bSettingsOnly;
-
-	void	UpdateControls();
-
-public :
-	BOOL	GetForceRegister()
+	inline void	setSettingsOnly(bool bSettingsOnly) noexcept
 	{
-		return m_bForceRegister;
+		settingsOnly = bSettingsOnly;
 	};
 
-	void	SetForceRegister(BOOL bForce)
+	inline bool	isForceRegister() noexcept
 	{
-		m_bForceRegister = bForce;
+		return forceRegister;
 	};
 
-	void		SetStackingTasks(CAllStackingTasks * pStackingTasks)
+	inline bool	isStackAfter(double & fPercent) noexcept
 	{
-		m_pStackingTasks = pStackingTasks;
+		fPercent = (double)percentStack;
+
+		return stackAfter;
 	};
 
-	BOOL	IsStackAfter(double & fPercent)
+	inline RegisterSettings& setStackingTasks(CAllStackingTasks * ptr) noexcept
 	{
-		fPercent	= m_fPercentStack;
-
-		return m_bStack;
+		pStackingTasks = ptr;
+		return *this;
 	};
+	   
+private slots:
 
-	LONG	GetDetectionThreshold()
-	{
-		return m_dwDetectionThreshold;
-	};
+	void on_recommendedSettings_clicked();
+	void on_stackingSettings_clicked();
 
-	void	SetNoDark(BOOL bNoDark)
-	{
-		m_bNoDark = bNoDark;
-	};
+	void accept() override;
+	void reject() override;
 
-	void	SetNoFlat(BOOL bNoFlat)
-	{
-		m_bNoFlat = bNoFlat;
-	};
+	void on_forceRegister_stateChanged(int);
+	void on_hotPixels_stateChanged(int);
+	void on_stackAfter_clicked();
+	void on_percentStack_textEdited(const QString &text);
 
-	void	SetNoOffset(BOOL bNoOffset)
-	{
-		m_bNoOffset = bNoOffset;
-	};
+	void on_luminanceThreshold_valueChanged(int);
+	void on_computeDetectedStars_clicked();
+	void on_medianFilter_stateChanged(int);
 
-	void	SetFirstLightFrame(LPCTSTR szFile)
-	{
-		m_strFirstLightFrame = szFile;
-	};
 
-	void	SetSettingsOnly(BOOL bSettingsOnly)
-	{
-		m_bSettingsOnly = bSettingsOnly;
-	};
 
-protected:
+private:
+	Ui::RegisterSettings *ui;
+	std::unique_ptr<CWorkspace> workspace;
 
-	// Generated message map functions
-	//{{AFX_MSG(CRegisterSettings)
-	virtual BOOL	OnInitDialog();
-	virtual void	OnOK();
-	afx_msg void	OnStack();
-	afx_msg void	OnHotPixels();
-	afx_msg void	OnRawddpsettings();
-	afx_msg void	OnStackingParameters();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-public:
-	afx_msg void OnBnClickedRecommandedsettings();
+	bool					initialised;
+	bool					forceRegister;
+	bool					stackAfter;
+	uint 					percentStack;
+	bool					noDarks;
+	bool					noFlats;
+	bool					noOffsets;
+	uint					detectionThreshold;
+	bool					medianFilter;
+	QString					firstLightFrame;
+	CAllStackingTasks *		pStackingTasks;
+	bool					settingsOnly;
+	QValidator *			perCentValidator;
+
+	void showEvent(QShowEvent *event) override;
+
+	void onInitDialog();
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_REGISTERSETTINGS_H__ADADF4EE_1999_4E95_A37D_886007272EBE__INCLUDED_)
+#endif // REGISTERSETTINGS_H

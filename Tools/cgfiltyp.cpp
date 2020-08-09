@@ -18,10 +18,6 @@
 #undef THIS_FILE
 static char THIS_FILE[] = "CGFILTYP.CPP";
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 IMPLEMENT_DYNAMIC(CGCFileTypeAccess, CObject)
 
 CGCFileTypeAccess::CGCFileTypeAccess()

@@ -10,7 +10,7 @@ public :
 	double					m_fXShift,
 							m_fYShift;
 	LONG					m_lPixelSizeMultiplier;
-	BOOL					m_bUseCometShift;
+	bool					m_bUseCometShift;
 	double					m_fXCometShift,
 							m_fYCometShift;
 
@@ -32,7 +32,7 @@ public :
 		m_fXShift = m_fYShift = 0;
 		m_fXCometShift = m_fYCometShift = 0;
 		m_lPixelSizeMultiplier = 1;
-		m_bUseCometShift = FALSE;
+		m_bUseCometShift = false;
 	};
 
 	CPixelTransform(const CBilinearParameters & transform)
@@ -41,7 +41,7 @@ public :
 		m_fXShift = m_fYShift = 0;
 		m_fXCometShift = m_fYCometShift = 0;
 		m_lPixelSizeMultiplier = 1;
-        m_bUseCometShift = FALSE;
+        m_bUseCometShift = false;
 	};
 
 	void	SetShift(double fXShift, double fYShift)
@@ -50,7 +50,7 @@ public :
 		m_fYShift = fYShift;
 	};
 
-	void	ComputeCometShift(double fXOrgComet, double fYOrgComet, double fXTgtComet, double fYTgtComet, BOOL bDoNotUse, BOOL bAlreadyTransformed)
+	void	ComputeCometShift(double fXOrgComet, double fYOrgComet, double fXTgtComet, double fYTgtComet, bool bDoNotUse, bool bAlreadyTransformed)
 	{
 		CPointExt		ptComet(fXTgtComet, fYTgtComet);
 

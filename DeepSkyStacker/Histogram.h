@@ -278,7 +278,7 @@ public :
 		return fResult;
 	};
 
-	BOOL	Load(FILE * hFile)
+	bool	Load(FILE * hFile)
 	{
 		fread(&m_fMin, sizeof(m_fMin), 1, hFile);
 		fread(&m_fMax, sizeof(m_fMax), 1, hFile);
@@ -288,10 +288,10 @@ public :
 		fread(&m_fUsedMin, sizeof(m_fUsedMin), 1, hFile);
 		fread(&m_fUsedMax, sizeof(m_fUsedMax), 1, hFile);
 		fread(&m_HAT, sizeof(m_HAT), 1, hFile);
-		return TRUE;
+		return true;
 	};
 
-	BOOL	Save(FILE * hFile) const
+	bool	Save(FILE * hFile) const
 	{
 		fwrite(&m_fMin, sizeof(m_fMin), 1, hFile);
 		fwrite(&m_fMax, sizeof(m_fMax), 1, hFile);
@@ -301,7 +301,7 @@ public :
 		fwrite(&m_fUsedMin, sizeof(m_fUsedMin), 1, hFile);
 		fwrite(&m_fUsedMax, sizeof(m_fUsedMax), 1, hFile);
 		fwrite(&m_HAT, sizeof(m_HAT), 1, hFile);
-		return TRUE;
+		return true;
 	};
 
 	void	ToText(CString & strParameters) const
@@ -410,11 +410,11 @@ public :
 		return m_BlueAdjust;
 	};
 
-	BOOL	Load(FILE * hFile)
+	bool	Load(FILE * hFile)
 	{
 		return m_RedAdjust.Load(hFile) && m_GreenAdjust.Load(hFile) && m_BlueAdjust.Load(hFile);
 	};
-	BOOL	Save(FILE * hFile) const
+	bool	Save(FILE * hFile) const
 	{
 		return m_RedAdjust.Save(hFile) && m_GreenAdjust.Save(hFile) && m_BlueAdjust.Save(hFile);
 	};
@@ -457,7 +457,7 @@ private :
 	double					m_fSum;
 	double					m_fPowSum;
 	LONG					m_lNrValues;
-	BOOL					m_bInitOk;
+	bool					m_bInitOk;
 
 public :
 	CHistogram()
@@ -468,7 +468,7 @@ public :
 		m_lMax		= 0;
 		m_fMax		= 0;
 		m_fMin		= -1;
-		m_bInitOk	= FALSE;
+		m_bInitOk	= false;
         m_fAbsMax   = 0;
         m_fStep     = 0;
 	};
@@ -479,13 +479,13 @@ public :
 	{
 		LONG		lNrValues = 0;
 
-		m_bInitOk = FALSE;
+		m_bInitOk = false;
 		Clear();
 		lNrValues = (LONG)(m_fAbsMax/m_fStep+1);
 
 		m_vValues.resize(lNrValues);
 
-		m_bInitOk = TRUE;
+		m_bInitOk = true;
 	};
 
 	void	Clear()
@@ -656,7 +656,7 @@ public :
 		m_BlueHisto.Clear();
 	};
 
-	BOOL	IsInitialized()
+	bool	IsInitialized()
 	{
 		return m_RedHisto.GetSize() && m_GreenHisto.GetSize() && m_BlueHisto.GetSize();
 	};

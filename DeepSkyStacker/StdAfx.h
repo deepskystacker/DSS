@@ -22,7 +22,7 @@
 
 // Visual Leak Detector
 //
-//#include <vld.h>
+#include <vld.h>
 
 #include <afx.h>
 #include <afxwin.h>         // MFC core and standard components
@@ -37,7 +37,7 @@
 
 #include <stdlib.h>
 #ifndef NDEBUG
-#include <crtdbg.h>
+//#include <crtdbg.h>
 #endif
 
 #include <windows.h>
@@ -60,9 +60,7 @@ extern CString OUTPUTLIST_FILTERS;
 extern CString SETTINGFILE_FILTERS;
 extern CString STARMASKFILE_FILTERS;
 
-extern BOOL		g_bShowRefStars;
-
-BOOL CheckVersion(CString & strVersion);
+extern bool		g_bShowRefStars;
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
@@ -70,7 +68,6 @@ BOOL CheckVersion(CString & strVersion);
 #include "resource.h"
 #include "commonresource.h"
 #include <afxdlgs.h>
-#include "..\QHTML_Static\QHTM\QHTM.h"
 
 #include "BitmapExt.h"
 #include "DeepStackerDlg.h"

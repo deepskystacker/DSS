@@ -14,7 +14,7 @@ class CCheckAbove : public CDialog
 {
 private :
 	double				m_fThreshold;
-	BOOL				m_bPercent;
+	bool				m_bPercent;
 
 // Construction
 public:
@@ -24,7 +24,7 @@ public:
 		return m_fThreshold;
 	};
 
-	BOOL		IsPercent()
+	bool		IsPercent()
 	{
 		return m_bPercent;
 	};

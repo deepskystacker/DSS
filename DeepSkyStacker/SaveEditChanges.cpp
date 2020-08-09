@@ -3,13 +3,8 @@
 
 #include "stdafx.h"
 #include "SaveEditChanges.h"
-#include "Registry.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
+#include <QSettings>
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -54,25 +49,23 @@ END_MESSAGE_MAP()
 
 BOOL CSaveEditChanges::OnInitDialog()
 {
-	CRegistry			reg;
-
 	CDialog::OnInitDialog();
 
 	switch (GetSaveEditMode())
 	{
 	case SECM_SAVEDONTASK :
-		m_SaveDontAsk.SetCheck(TRUE);
+		m_SaveDontAsk.SetCheck(true);
 		break;
 	case SECM_DONTSAVEDONTASK :
-		m_DontSaveDontAsk.SetCheck(TRUE);
+		m_DontSaveDontAsk.SetCheck(true);
 		break;
 	case SECM_ASKALWAYS :
-		m_AskAlways.SetCheck(TRUE);
+		m_AskAlways.SetCheck(true);
 		break;
 	};
 
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	return true;  // return true unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return false
 }
 
 /* ------------------------------------------------------------------- */
@@ -118,8 +111,8 @@ void CSaveEditChanges::OnAskAlways()
 {
 	if (m_AskAlways.GetCheck())
 	{
-		m_SaveDontAsk.SetCheck(FALSE);
-		m_DontSaveDontAsk.SetCheck(FALSE);
+		m_SaveDontAsk.SetCheck(false);
+		m_DontSaveDontAsk.SetCheck(false);
 	};
 }
 
@@ -129,8 +122,8 @@ void CSaveEditChanges::OnSaveDontAsk()
 {
 	if (m_SaveDontAsk.GetCheck())
 	{
-		m_AskAlways.SetCheck(FALSE);
-		m_DontSaveDontAsk.SetCheck(FALSE);
+		m_AskAlways.SetCheck(false);
+		m_DontSaveDontAsk.SetCheck(false);
 	};
 }
 
@@ -140,8 +133,8 @@ void CSaveEditChanges::OnDontSaveDontAsk()
 {
 	if (m_DontSaveDontAsk.GetCheck())
 	{
-		m_AskAlways.SetCheck(FALSE);
-		m_SaveDontAsk.SetCheck(FALSE);
+		m_AskAlways.SetCheck(false);
+		m_SaveDontAsk.SetCheck(false);
 	};
 }
 
@@ -149,36 +142,34 @@ void CSaveEditChanges::OnDontSaveDontAsk()
 
 void	SetSaveEditMode(SAVEEDITCHANGESMODE Mode)
 {
-	CRegistry			reg;
-	LONG				lValue = Mode;
+	QSettings settings;
+	uint	value = Mode;
 
-	reg.SaveKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), lValue);
+	settings.setValue("EditStars/AutoSave", value);
 };
 
 /* ------------------------------------------------------------------- */
 
 SAVEEDITCHANGESMODE	GetSaveEditMode()
 {
-	CRegistry			reg;
-	DWORD				dwValue = 0;
+	QSettings settings;
 
-	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), dwValue);
+	uint value = settings.value("EditStars/AutoSave", (uint)0).toUInt();
 
-	return (SAVEEDITCHANGESMODE)dwValue;
+	return (SAVEEDITCHANGESMODE)value;
 };
 
 /* ------------------------------------------------------------------- */
 
 LONG	AskSaveEditChangesMode()
 {
-	CRegistry			reg;
-	DWORD				dwValue = 0;
+	QSettings settings;
 
-	reg.LoadKey(REGENTRY_BASEKEY_EDITSTARS, _T("AutoSave"), dwValue);
+	int value = settings.value("EditStars/AutoSave", 0).toInt();
 
-	if (dwValue == SECM_SAVEDONTASK)
+	if (value == SECM_SAVEDONTASK)
 		return IDYES;
-	else if (dwValue == SECM_DONTSAVEDONTASK)
+	else if (value == SECM_DONTSAVEDONTASK)
 		return IDNO;
 	else
 	{

@@ -1,9 +1,11 @@
 #ifndef __SETTINGS_H__
 #define __SETTINGS_H__
 
-#include <Registry.h>
 #include <set>
 #include "Workspace.h"
+#include <QChar>
+#include <QString>
+
 
 class CSetting
 {
@@ -50,9 +52,9 @@ public :
 			return false;
 	};
 
-	BOOL	Read(LPCTSTR szLine)
+	bool	Read(LPCTSTR szLine)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 		CString			strLine = szLine;
 		int				nPos;
 
@@ -64,15 +66,15 @@ public :
 			m_strVariable.Trim();
 			m_strValue.TrimRight(_T("\n"));
 			m_strValue.Trim();
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	Read(FILE * hFile)
+	bool	Read(FILE * hFile)
 	{
-		BOOL			bResult = FALSE;
+		bool			bResult = false;
 		CHAR			szBuffer[2000];
 
 		if (fgets(szBuffer, sizeof(szBuffer), hFile))
@@ -81,9 +83,9 @@ public :
 		return bResult;
 	};
 
-	BOOL	Write(FILE * hFile)
+	bool	Write(FILE * hFile)
 	{
-		BOOL		bResult = TRUE;
+		bool		bResult = true;
 
 		fprintf(hFile, "%s=%s\n", (LPCSTR)CT2CA(m_strVariable), (LPCSTR)CT2CA(m_strValue));
 
@@ -104,12 +106,13 @@ protected :
 	std::vector<CString>	m_vFiles;
 
 protected :
-	BOOL	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szVariable, LPCTSTR szDefault, LPCTSTR szPrefix = nullptr)
+	bool	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szDefault, LPCTSTR szPrefix = nullptr)
 	{
 		CWorkspace		workspace;
 		CString			strValue;
+		QString		keyName((QChar *)szKey);
 
-		workspace.GetValue(szKey, szVariable, strValue);
+		strValue = (LPCTSTR)workspace.value(keyName).toString().utf16();
 
 		if (!strValue.GetLength())
 			strValue = szDefault;
@@ -117,14 +120,14 @@ protected :
 		CSetting		s;
 
 		if (szPrefix)
-			s.m_strVariable.Format(_T("%s.%s"), szPrefix, szVariable);
+			s.m_strVariable.Format(_T("%s.%s"), szPrefix, szKey);
 		else
-			s.m_strVariable = szVariable;
+			s.m_strVariable = szKey;
 		s.m_strValue	= strValue;
 
 		m_sSettings.insert(s);
 
-		return TRUE;
+		return true;
 	};
 
 	void	AddVariable(LPCTSTR szVariable, LONG lValue)
@@ -164,23 +167,23 @@ protected :
 
 	void	AddRAWSettings()
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), _T("1.0"), _T("Raw"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), _T("0"), _T("Raw"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), _T("0"), _T("Raw"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace(_T("RawDDP/Brightness"), _T("1.0"), _T("Raw"));
+		ReadVariableFromWorkspace(_T("RawDDP/RedScale"), _T("1.0"), _T("Raw"));
+		ReadVariableFromWorkspace(_T("RawDDP/BlueScale"), _T("1.0"), _T("Raw"));
+		ReadVariableFromWorkspace(_T("RawDDP/NoWB"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace(_T("RawDDP/CameraWB"), _T("0"), _T("Raw"));
+		ReadVariableFromWorkspace(_T("RawDDP/BlackPointTo0"), _T("0"), _T("Raw"));
 	};
 
 	void	AddFITSSettings()
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("FITSisRAW"), _T("0"), _T("Fits"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("Brighness"), _T("1.0"), _T("Fits"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("RedScale"), _T("1.0"), _T("Fits"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("BlueScale"), _T("1.0"), _T("Fits"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("DSLR"), _T(""), _T("Fits"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("BayerPattern"), _T("4"), _T("Fits"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_FITSSETTINGS, _T("ForceUnsigned"), _T("0"), _T("Fits"));
+		ReadVariableFromWorkspace(_T("FitsDDP/FITSisRAW"), _T("0"), _T("Fits"));
+		ReadVariableFromWorkspace(_T("FitsDDP/Brightness"), _T("1.0"), _T("Fits"));
+		ReadVariableFromWorkspace(_T("FitsDDP/RedScale"), _T("1.0"), _T("Fits"));
+		ReadVariableFromWorkspace(_T("FitsDDP/BlueScale"), _T("1.0"), _T("Fits"));
+		ReadVariableFromWorkspace(_T("FitsDDP/DSLR"), _T(""), _T("Fits"));
+		ReadVariableFromWorkspace(_T("FitsDDP/BayerPattern"), _T("4"), _T("Fits"));
+		ReadVariableFromWorkspace(_T("FitsDDP/ForceUnsigned"), _T("0"), _T("Fits"));
 	};
 
 public :
@@ -192,8 +195,8 @@ public :
 	{
 	};
 
-	BOOL	ReadFromFile(LPCTSTR szFile);
-	BOOL	InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile);
+	bool	ReadFromFile(LPCTSTR szFile);
+	bool	InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile);
 	void	WriteToFile(LPCTSTR szFile);
 
 	virtual void	ReadFromRegistry() {};
@@ -211,9 +214,9 @@ public :
 
 	virtual void	ReadFromRegistry()
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Method"), _T("0"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Iteration"), _T("5"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Dark_Kappa"), _T("2.0"));
+		ReadVariableFromWorkspace(_T("Stacking/Dark_Method"), _T("0"));
+		ReadVariableFromWorkspace(_T("Stacking/Dark_Iteration"), _T("5"));
+		ReadVariableFromWorkspace(_T("Stacking/Dark_Kappa"), _T("2.0"));
 	};
 
 	void	SetMasterOffset(CTaskInfo * pTask)
@@ -233,9 +236,9 @@ public :
 
 	virtual void	ReadFromRegistry()
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Method"), _T("0"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Iteration"), _T("5"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Flat_Kappa"), _T("2.0"));
+		ReadVariableFromWorkspace(_T("Stacking/Flat_Method"), _T("0"));
+		ReadVariableFromWorkspace(_T("Stacking/Flat_Iteration"), _T("5"));
+		ReadVariableFromWorkspace(_T("Stacking/Flat_Kappa"), _T("2.0"));
 	};
 
 	void	SetMasterOffset(CTaskInfo * pTask)
@@ -260,9 +263,9 @@ public :
 
 	virtual void	ReadFromRegistry()
 	{
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Method"), _T("0"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Iteration"), _T("5"));
-		ReadVariableFromWorkspace(REGENTRY_BASEKEY_STACKINGSETTINGS, _T("Offset_Kappa"), _T("2.0"));
+		ReadVariableFromWorkspace(_T("Stacking/Offset_Method"), _T("0"));
+		ReadVariableFromWorkspace(_T("Stacking/Offset_Iteration"), _T("5"));
+		ReadVariableFromWorkspace(_T("Stacking/Offset_Kappa"), _T("2.0"));
 	};
 };
 

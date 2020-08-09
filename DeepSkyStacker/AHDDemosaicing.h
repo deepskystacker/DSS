@@ -30,9 +30,9 @@ public :
 	CAHDTaskVariables() {};
 	virtual ~CAHDTaskVariables() {};
 
-	BOOL		Init()
+	bool		Init()
 	{
-		BOOL				bResult;
+		bool				bResult;
 
 		pWindowV.Attach(new C48BitColorBitmap);
 		pWindowH.Attach(new C48BitColorBitmap);
@@ -76,11 +76,11 @@ public :
 
 	virtual ~CAHDTask() {};
 
-	BOOL	Init(CGrayBitmapT<TType> * pGrayBitmap, CDSSProgress * pProgress);
+	bool	Init(CGrayBitmapT<TType> * pGrayBitmap, CDSSProgress * pProgress);
 
-	virtual BOOL	Process();
+	virtual bool	Process();
 	virtual void	DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType> & var);
-	virtual BOOL	DoTask(HANDLE hEvent);
+	virtual bool	DoTask(HANDLE hEvent);
 
 	virtual void	InterpolateBorders();
 };
@@ -88,9 +88,9 @@ public :
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL	CAHDTask<TType>::Init(CGrayBitmapT<TType> * pGrayBmp, CDSSProgress * pPgs)
+inline bool	CAHDTask<TType>::Init(CGrayBitmapT<TType> * pGrayBmp, CDSSProgress * pPgs)
 {
-	BOOL						bResult;
+	bool						bResult;
 
 	pProgress		= pPgs;
 	pGrayBitmap		= pGrayBmp;
@@ -108,9 +108,9 @@ inline BOOL	CAHDTask<TType>::Init(CGrayBitmapT<TType> * pGrayBmp, CDSSProgress *
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL	CAHDTask<TType>::Process()
+inline bool	CAHDTask<TType>::Process()
 {
-	BOOL			bResult = TRUE;
+	bool			bResult = true;
 	LONG			lNrWindows;
 	LONG			lNrWindowsWidth,
 					lNrWindowsHeight;
@@ -319,7 +319,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 	};
 	// End of green interpolation
 
-	BOOL						bBlueLine;
+	bool						bBlueLine;
 
 	bBlueLine = IsBayerBlueLine(y, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 
@@ -716,10 +716,10 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL	CAHDTask<TType>::DoTask(HANDLE hEvent)
+inline bool	CAHDTask<TType>::DoTask(HANDLE hEvent)
 {
 	LONG						x, y;
-	BOOL						bEnd = FALSE;
+	bool						bEnd = false;
 	MSG							msg;
 	CAHDTaskVariables<TType>	var;
 
@@ -738,11 +738,11 @@ inline BOOL	CAHDTask<TType>::DoTask(HANDLE hEvent)
 				SetEvent(hEvent);
 			}
 			else if (msg.message == WM_MT_STOP)
-				bEnd = TRUE;
+				bEnd = true;
 		};
 	};
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -761,7 +761,7 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 	TType *							pOutputBluePixel2;
 	LONG							x1 = 0,
 									x2 = lWidth-1;
-	BOOL							bBlueLine;
+	bool							bBlueLine;
 
 	pGrayPixel1			= pGrayBitmap->GetGrayPixel(0, 1);
 	pGrayPixel2			= pGrayBitmap->GetGrayPixel(lWidth-1, 1);
@@ -847,7 +847,7 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 
 	LONG								y1 = 0,
 										y2 = lHeight-1;
-	BOOL								bBlueLine1,
+	bool								bBlueLine1,
 										bBlueLine2;
 
 	pGrayPixel1			= pGrayBitmap->GetGrayPixel(1, 0);
@@ -968,9 +968,9 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL	AHDDemosaicing(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** ppColorBitmap, CDSSProgress * pProgress)
+inline bool	AHDDemosaicing(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** ppColorBitmap, CDSSProgress * pProgress)
 {
-	BOOL									bResult;
+	bool									bResult;
 	CAHDTask<TType>							AHDTask;
 
 	bResult = AHDTask.Init(pGrayBitmap, pProgress);
@@ -990,9 +990,9 @@ inline BOOL	AHDDemosaicing(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** p
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** ppColorBitmap, CDSSProgress * pProgress)
+inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** ppColorBitmap, CDSSProgress * pProgress)
 {
-	BOOL									bResult = FALSE;
+	bool									bResult = false;
 	CSmartPtr<CColorBitmapT<TType> >		pColorBitmap;
 	CSmartPtr<CMemoryBitmap>				pOutputBitmap;
 	LONG									lWidth = pGrayBitmap->Width();
@@ -1206,7 +1206,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 				};
 				// End of green interpolation
 
-				BOOL						bBlueLine;
+				bool						bBlueLine;
 
 				bBlueLine = IsBayerBlueLine(y, pGrayBitmap->GetCFAType(), pGrayBitmap->yOffset());
 
@@ -1625,7 +1625,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 			TType *							pOutputBluePixel2;
 			LONG							x1 = 0,
 											x2 = lWidth-1;
-			BOOL							bBlueLine;
+			bool							bBlueLine;
 
 			pGrayPixel1			= pGrayBitmap->GetGrayPixel(0, 1);
 			pGrayPixel2			= pGrayBitmap->GetGrayPixel(lWidth-1, 1);
@@ -1711,7 +1711,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 
 			LONG								y1 = 0,
 												y2 = lHeight-1;
-			BOOL								bBlueLine1,
+			bool								bBlueLine1,
 												bBlueLine2;
 
 			pGrayPixel1			= pGrayBitmap->GetGrayPixel(1, 0);
@@ -1832,7 +1832,7 @@ inline BOOL	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 		if (pProgress)
 			pProgress->End2();
 
-		bResult = TRUE;
+		bResult = true;
 	};
 
 	if (bResult)

@@ -10,14 +10,14 @@
 
 IMPLEMENT_DYNAMIC(CSavePicture, CFileDialog)
 
-CSavePicture::CSavePicture(BOOL bOpenFileDialog, LPCTSTR lpszDefExt, LPCTSTR lpszFileName,
+CSavePicture::CSavePicture(bool bOpenFileDialog, LPCTSTR lpszDefExt, LPCTSTR lpszFileName,
 		DWORD dwFlags, LPCTSTR lpszFilter, CWnd* pParentWnd) :
-		CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd, 0, FALSE)
+		CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd, 0, false)
 {
 	SetTemplate(IDD_SAVEPICTURE, IDD_SAVEPICTURE);
-	m_bApplied = FALSE;
-	m_bEnableUseRect = FALSE;
-	m_bUseRect = FALSE;
+	m_bApplied = false;
+	m_bEnableUseRect = false;
+	m_bUseRect = false;
 	m_ofn.FlagsEx = OFN_EX_NOPLACESBAR;
 
 	m_Compression = TC_NONE;
@@ -64,23 +64,23 @@ BOOL CSavePicture::OnInitDialog()
 
 	if (m_bApplied)
 	{
-		m_Applied.SetCheck(TRUE);
-		m_Embedded.SetCheck(FALSE);
+		m_Applied.SetCheck(true);
+		m_Embedded.SetCheck(false);
 	}
 	else
 	{
-		m_Applied.SetCheck(FALSE);
-		m_Embedded.SetCheck(TRUE);
+		m_Applied.SetCheck(false);
+		m_Embedded.SetCheck(true);
 	};
 
 	if (m_bEnableUseRect)
 	{
-		m_UseRect.EnableWindow(TRUE);
+		m_UseRect.EnableWindow(true);
 		m_UseRect.SetCheck(m_bUseRect);
 	}
 	else
 	{
-		m_UseRect.EnableWindow(FALSE);
+		m_UseRect.EnableWindow(false);
 	};
 
 	m_Embedded.GetWindowText(m_strSaveEmbed);
@@ -101,7 +101,7 @@ BOOL CSavePicture::OnInitDialog()
 	EnableToolTips();
 	EnableTrackingToolTips();
 
-	return TRUE;
+	return true;
 }
 
 /* ------------------------------------------------------------------- */
@@ -110,8 +110,8 @@ void CSavePicture::OnApplied()
 {
 	if (m_Applied.GetCheck())
 	{
-		m_Embedded.SetCheck(FALSE);
-		m_bApplied = TRUE;
+		m_Embedded.SetCheck(false);
+		m_bApplied = true;
 	};
 };
 
@@ -121,8 +121,8 @@ void CSavePicture::OnEmbedded()
 {
 	if (m_Embedded.GetCheck())
 	{
-		m_Applied.SetCheck(FALSE);
-		m_bApplied = FALSE;
+		m_Applied.SetCheck(false);
+		m_bApplied = false;
 	};
 };
 
@@ -140,8 +140,8 @@ void CSavePicture::OnCompressionNone()
 	if (m_CompressionNone.GetCheck())
 	{
 		m_Compression = TC_NONE;
-		m_CompressionZIP.SetCheck(FALSE);
-		m_CompressionLZW.SetCheck(FALSE);
+		m_CompressionZIP.SetCheck(false);
+		m_CompressionLZW.SetCheck(false);
 	};
 };
 
@@ -152,8 +152,8 @@ void CSavePicture::OnCompressionZIP()
 	if (m_CompressionZIP.GetCheck())
 	{
 		m_Compression = TC_DEFLATE;
-		m_CompressionNone.SetCheck(FALSE);
-		m_CompressionLZW.SetCheck(FALSE);
+		m_CompressionNone.SetCheck(false);
+		m_CompressionLZW.SetCheck(false);
 	};
 };
 
@@ -164,8 +164,8 @@ void CSavePicture::OnCompressionLZW()
 	if (m_CompressionLZW.GetCheck())
 	{
 		m_Compression = TC_LZW;
-		m_CompressionNone.SetCheck(FALSE);
-		m_CompressionZIP.SetCheck(FALSE);
+		m_CompressionNone.SetCheck(false);
+		m_CompressionZIP.SetCheck(false);
 	};
 };
 
@@ -176,11 +176,11 @@ void CSavePicture::UpdateControls()
 	if (m_ofn.nFilterIndex>3)
 	{
 		m_Compression = TC_NONE;
-		m_CompressionNone.SetCheck(TRUE);
-		m_CompressionLZW.SetCheck(FALSE);
-		m_CompressionZIP.SetCheck(FALSE);
-		m_CompressionLZW.EnableWindow(FALSE);
-		m_CompressionZIP.EnableWindow(FALSE);
+		m_CompressionNone.SetCheck(true);
+		m_CompressionLZW.SetCheck(false);
+		m_CompressionZIP.SetCheck(false);
+		m_CompressionLZW.EnableWindow(false);
+		m_CompressionZIP.EnableWindow(false);
 		CString			strText;
 
 		strText.LoadString(IDS_SAVENOADJUSTMENT);
@@ -188,8 +188,8 @@ void CSavePicture::UpdateControls()
 	}
 	else
 	{
-		m_CompressionLZW.EnableWindow(TRUE);
-		m_CompressionZIP.EnableWindow(TRUE);
+		m_CompressionLZW.EnableWindow(true);
+		m_CompressionZIP.EnableWindow(true);
 		m_Embedded.SetWindowText(m_strSaveEmbed);
 	};
 };

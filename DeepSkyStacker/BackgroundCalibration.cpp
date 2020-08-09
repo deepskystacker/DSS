@@ -43,8 +43,8 @@ public :
 		m_vBlueHisto.resize((LONG)MAXWORD+1);
 	};
 
-	virtual BOOL	DoTask(HANDLE hEvent);
-	virtual BOOL	Process();
+	virtual bool	DoTask(HANDLE hEvent);
+	virtual bool	Process();
 };
 
 /* ------------------------------------------------------------------- */
@@ -63,13 +63,13 @@ void	CBackgroundCalibrationTask::AddToMainHistograms(const std::vector<LONG> & v
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
+bool	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 
 	LONG				i, j;
-	BOOL				bEnd = FALSE;
+	bool				bEnd = false;
 	MSG					msg;
 	LONG				lWidth = m_pBitmap->Width();
 	double				fMultiplier = m_pBackgroundCalibration->m_fMultiplier;
@@ -113,20 +113,20 @@ BOOL	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 			SetEvent(hEvent);
 		}
 		else if (msg.message == WM_MT_STOP)
-			bEnd = TRUE;
+			bEnd = true;
 	};
 
 	AddToMainHistograms(vRedHisto, vGreenHisto, vBlueHisto);
 
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CBackgroundCalibrationTask::Process()
+bool	CBackgroundCalibrationTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bResult = TRUE;
+	bool				bResult = true;
 	LONG				lHeight = m_pBitmap->Height();
 	LONG				i = 0;
 	LONG				lStep;
@@ -181,7 +181,7 @@ BOOL	CBackgroundCalibrationTask::Process()
 
 /* ------------------------------------------------------------------- */
 
-void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitmap, BOOL bFirst, CDSSProgress * pProgress)
+void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitmap, bool bFirst, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CBackgroundCalibrationTask		task;
@@ -331,7 +331,7 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	if (pProgress)
 		pProgress->End2();
 
-	m_bInitOk = TRUE;
+	m_bInitOk = true;
 };
 
 /* ------------------------------------------------------------------- */
