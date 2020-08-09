@@ -1988,7 +1988,7 @@ void StackingDlg::retrieveLatestVersionInfo()
 		QObject::connect(networkManager, &QNetworkAccessManager::finished,
 			[this](QNetworkReply * reply) { this->versionInfoReceived(reply); });
 
-		QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/master/CurrentVersion.txt"));
+		QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/release/CurrentVersion.txt"));
 		req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 		networkManager->get(req);
 	}
