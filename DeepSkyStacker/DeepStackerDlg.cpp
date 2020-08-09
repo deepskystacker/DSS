@@ -132,7 +132,8 @@ UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage(_T("TaskbarButtonCreate
 
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepStackerDlg::IDD, pParent),
-	m_dlgStacking(this),
+	m_dlgStacking(),	// was m_dlgStacking(this) but needs a QWidget as parent.
+	// CLEAN THIS UP
 	m_dlgProcessing(this)
 	//m_dlgLibrary(this)
 {
@@ -179,7 +180,7 @@ void CDeepStackerDlg::UpdateTab()
 	{
 	case IDD_REGISTERING :
 	case IDD_STACKING :
-		m_dlgStacking.ShowWindow(SW_SHOW);
+		m_dlgStacking.setVisible(true);
 		m_dlgProcessing.ShowWindow(SW_HIDE);
 //		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
@@ -189,7 +190,7 @@ void CDeepStackerDlg::UpdateTab()
 	//	m_dlgLibrary.ShowWindow(SW_SHOW);
 	//	break;
 	case IDD_PROCESSING :
-		m_dlgStacking.ShowWindow(SW_HIDE);
+		m_dlgStacking.setVisible(false);
 		m_dlgProcessing.ShowWindow(SW_SHOW);
 //		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;

@@ -9,9 +9,11 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
+class QTreeWidgetItem;
 
 #include <QWidget>
 #include <QString>
+#include <QToolBar>
 
 #include <CtrlCache.h>
 #include <WndImage.h>
@@ -49,7 +51,7 @@ private :
 	Ui::StackingDlg* ui;
 	CSplitterControl		m_Splitter;
 	QString					m_strShowFile;
-	QToolbar				m_ButtonToolbar;
+	QToolBar				m_ButtonToolbar;
 	// CSelectRectSink			m_SelectRectSink;
 	// CEditStarsSink			m_EditStarSink;
 	CMRUList				m_MRUList;
@@ -131,7 +133,7 @@ public :
 	void		DropFiles(HDROP hDropInfo);
 	void		SetStartingFileList(LPCTSTR szFileList)
 	{
-		m_strStartingFileList = szFileList;
+		m_strStartingFileList = QString::fromWCharArray((wchar_t *)szFileList);
 	};
 	void		OpenFileList(LPCTSTR szFileList);
 

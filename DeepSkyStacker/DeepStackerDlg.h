@@ -173,7 +173,7 @@ enum DeepStackerDlgMessages
 class CDeepStackerDlg : public CDialog
 {
 private :
-	CStackingDlg			m_dlgStacking;
+	StackingDlg				m_dlgStacking;
 	CProcessingDlg			m_dlgProcessing;
 	//CLibraryDlg				m_dlgLibrary;
 
@@ -212,7 +212,7 @@ public:
 
 	inline void disableSubDialogs()
 	{
-		m_dlgStacking.EnableWindow(false);
+		m_dlgStacking.setEnabled(false);
 		m_dlgProcessing.EnableWindow(false);
 		//m_dlgLibrary.EnableWindow(false);
 		explorerBar->setEnabled(false);
@@ -220,7 +220,7 @@ public:
 
 	inline void enableSubDialogs()
 	{
-		m_dlgStacking.EnableWindow(true);
+		m_dlgStacking.setEnabled(true);
 		m_dlgProcessing.EnableWindow(true);
 		//m_dlgLibrary.EnableWindow(true);
 		explorerBar->setEnabled(true);
@@ -245,7 +245,7 @@ public:
 		return m_Settings;
 	};
 
-	CStackingDlg & GetStackingDlg()
+	StackingDlg & GetStackingDlg()
 	{
 		return m_dlgStacking;
 	};
@@ -342,7 +342,7 @@ inline CDSSSettings & GetDSSSettings(CWnd * pDialog)
 
 /* ------------------------------------------------------------------- */
 
-inline CStackingDlg & GetStackingDlg(CWnd * pDialog)
+inline StackingDlg & GetStackingDlg(CWnd * pDialog)
 {
 	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(pDialog);
 
