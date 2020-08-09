@@ -687,7 +687,6 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const
 						lb.m_strType.LoadString(IDS_TYPE_MASTEROFFSET);
 				};
 
-
 				if (lb.GetCFAType() != CFATYPE_NONE)
 					strText.LoadString(IDS_YES);
 				else

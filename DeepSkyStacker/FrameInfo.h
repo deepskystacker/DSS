@@ -176,7 +176,7 @@ public :
 			// On the old days this was always determined by the values read from the 
 			// workspace by GetFITSCFATYPE().  Now however GetFITSInfo() may auto-detect
 			// the CFA pattern and pre-populate CFAType, which we should now use.  If it's
-			// not set the do it the old way.
+			// not set then do it the old way.
 			//
 			if (m_CFAType != CFATYPE_NONE)
 				return m_CFAType;

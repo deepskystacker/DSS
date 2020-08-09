@@ -2,7 +2,7 @@
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
-#include "Registry.h"
+
 #include "RAWUtils.h"
 #include <set>
 #include <list>
@@ -34,8 +34,8 @@ float timerend()
 class CRAWSettings
 {
 public :
-	BOOL		m_bRawBayer;
-	BOOL		m_bSuperPixel;
+	bool		m_bRawBayer;
+	bool		m_bSuperPixel;
 
 private :
 	void	CopyFrom(const CRAWSettings & rs) noexcept
@@ -47,8 +47,8 @@ private :
 public :
 	CRAWSettings() noexcept
 	{
-		m_bRawBayer		= FALSE;
-		m_bSuperPixel	= FALSE;
+		m_bRawBayer		= false;
+		m_bSuperPixel	= false;
 	};
 
 	CRAWSettings(const CRAWSettings & rs)
@@ -69,33 +69,33 @@ RAWSETTINGSSTACK		g_RawSettingsStack;
 
 /* ------------------------------------------------------------------- */
 
-static BOOL IsRegistrySuperPixels()
+static bool IsRegistrySuperPixels()
 {
-	DWORD		bResult = FALSE;
+	DWORD		bResult = false;
 	CWorkspace	workspace;
 
-	workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("SuperPixels"), bResult);
+	bResult = workspace.value("RawDDP/SuperPixels", false).toBool();
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-static BOOL IsRegistryRawBayer()
+static bool IsRegistryRawBayer()
 {
-	DWORD		bResult = FALSE;
+	bool		bResult = false;
 	CWorkspace	workspace;
 
-	workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RawBayer"), bResult);
+	bResult = workspace.value("RawDDP/RawBayer", false).toBool();
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL IsSuperPixels()
+bool IsSuperPixels()
 {
-	DWORD		bResult = FALSE;
+	DWORD		bResult = false;
 
 	if (g_RawSettingsStack.size())
 		bResult = g_RawSettingsStack.back().m_bSuperPixel;
@@ -107,9 +107,9 @@ BOOL IsSuperPixels()
 
 /* ------------------------------------------------------------------- */
 
-BOOL IsRawBayer()
+bool IsRawBayer()
 {
-	DWORD		bResult = FALSE;
+	DWORD		bResult = false;
 
 	if (g_RawSettingsStack.size())
 		bResult = g_RawSettingsStack.back().m_bRawBayer;
@@ -121,31 +121,31 @@ BOOL IsRawBayer()
 
 /* ------------------------------------------------------------------- */
 
-BOOL IsRawBilinear()
+bool IsRawBilinear()
 {
 	CWorkspace	workspace;
-	CString		strInterpolation;
+	QString		strInterpolation;
 
-	workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), strInterpolation);
+	strInterpolation = workspace.value("RawDDP/Interpolation", "").toString();
 
-	return !strInterpolation.GetLength() || (strInterpolation == _T("Bilinear"));
+	return strInterpolation.isEmpty() || (strInterpolation == "Bilinear");
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL IsRawAHD()
+bool IsRawAHD()
 {
 	CWorkspace	workspace;
-	CString		strInterpolation;
+	QString		strInterpolation;
 
-	workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Interpolation"), strInterpolation);
+	workspace.value("RawDDP/Interpolation", strInterpolation);
 
-	return !strInterpolation.GetLength() || (strInterpolation == _T("AHD")) || (strInterpolation == _T("VNG"));
+	return (strInterpolation.isEmpty() || (strInterpolation == "AHD"));
 };
 
 /* ------------------------------------------------------------------- */
 
-void	PushRAWSettings(BOOL bSuperPixel, BOOL bRawBayer)
+void	PushRAWSettings(bool bSuperPixel, bool bRawBayer)
 {
 	CRAWSettings		rs;
 
@@ -179,7 +179,7 @@ class BitMapFiller
 
 private:
 	CDSSProgress *			m_pProgress;
-	BOOL					m_bStarted;
+	bool					m_bStarted;
 	CFATYPE					m_CFAType;
 	CMemoryBitmap *			m_pBitmap;
 	DWORD					m_dwPos;
@@ -194,7 +194,7 @@ private:
 							m_lHeight,
 							m_lMaxColors;
 	LONG					m_lBytePerChannel;
-	BOOL					m_bGrey;
+	bool					m_bGrey;
 	double					m_fRedScale,
 							m_fGreenScale,
 							m_fBlueScale;
@@ -256,7 +256,7 @@ private:
 		BYTE *				pWrite = m_pBuffer;
 		BYTE *				pRead = m_pBuffer;
 		LONG				lToRead;
-		BOOL				bEnd = FALSE;
+		bool				bEnd = false;
 
 		pWrite += m_dwBufferWritePos;
 		pRead += m_dwBufferReadPos;
@@ -265,7 +265,7 @@ private:
 
 		while (!bEnd)
 		{
-			bEnd = TRUE;
+			bEnd = true;
 			lToRead = m_dwBufferWritePos - m_dwBufferReadPos;
 			// Read pixels
 			{
@@ -313,7 +313,7 @@ private:
 						(*m_PixelIt)++;
 						m_dwCurrentX++;
 
-						bEnd = FALSE;
+						bEnd = false;
 					};
 				}
 				else
@@ -356,7 +356,7 @@ private:
 						m_dwCurrentX++;
 						(*m_PixelIt)++;
 
-						bEnd = FALSE;
+						bEnd = false;
 					};
 				};
 			}
@@ -383,7 +383,7 @@ public:
     {
         m_pBitmap = pBitmap;
         m_pProgress = pProgress;
-        m_bStarted = FALSE;
+        m_bStarted = false;
         m_fRedScale = 1.0;
         m_fGreenScale = 1.0;
         m_fBlueScale = 1.0;
@@ -420,7 +420,7 @@ public:
 		m_CFAType = CFAType;
 	};
 
-	void	setGrey(BOOL grey) noexcept
+	void	setGrey(bool grey) noexcept
 	{
 		m_bGrey = grey;
 	};
@@ -446,7 +446,7 @@ public:
 		//
 		// Do initialisation not done by ctor
 		//
-		m_bStarted = TRUE;
+		m_bStarted = true;
 		m_pBuffer = nullptr;
 		m_dwBufferSize = 0;
 		m_dwBufferReadPos = 0;
@@ -550,7 +550,7 @@ private :
 	double			m_fAperture;
 	LONG			m_lHeight,
 					m_lWidth;
-	BOOL			m_bColorRAW;
+	bool			m_bColorRAW;
 	CFATYPE			m_CFAType;
 	SYSTEMTIME		m_DateTime;
     bool            m_isRawFile;
@@ -579,7 +579,7 @@ public :
 		m_strFileName(szFile)
     {
         ZFUNCTRACE_RUNTIME();
-        m_bColorRAW = FALSE;
+        m_bColorRAW = false;
         m_CFAType = CFATYPE_NONE;
         m_DateTime.wYear = 0;
         m_lISOSpeed = 0;
@@ -637,7 +637,7 @@ public :
                 //
                 if (1 == P1.filters) ZTRACE_RUNTIME("Image is from a Leaf Catchlight");
                 else ZTRACE_RUNTIME("Image is from a Fujitsu X-Trans Sensor");
-                m_bColorRAW = TRUE;
+                m_bColorRAW = true;
             }
 
             m_CFAType = GetCurrentCFAType();
@@ -650,13 +650,13 @@ public :
 		rawProcessor.recycle();
 	};
 
-	BOOL	IsRawFile() const;
-	BOOL	LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = nullptr, BOOL bThumb = FALSE);
+	bool	IsRawFile() const;
+	bool	LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = nullptr, bool bThumb = false);
 
-	BOOL	GetModel(CString & strModel)
+	bool	GetModel(CString & strModel)
 	{
 		strModel = m_strMake + _T(" ") + m_strModel;
-		return TRUE;
+		return true;
 	};
 
 	void checkCameraSupport(const CString& strModel);
@@ -686,7 +686,7 @@ public :
 		return m_lHeight;
 	};
 
-	BOOL	IsColorRAW() noexcept
+	bool	IsColorRAW() noexcept
 	{
 		return m_bColorRAW;
 	};
@@ -840,10 +840,10 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 };
 /* ------------------------------------------------------------------- */
 
-BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, BOOL bThumb)
+bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, bool bThumb)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL		bResult = TRUE;
+	bool		bResult = true;
 	BitMapFiller *		pFiller = nullptr;
 	int			ret = 0;
 
@@ -876,16 +876,16 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 	//DWORD		bSuperPixels;
 	//DWORD		bRawBayer;
-	//BOOL		bBilinear;
-	//BOOL		bAHD;
+	//bool		bBilinear;
+	//bool		bAHD;
 	DWORD		bBlackPointTo0 = 0;
 	DWORD		bValue = 0;
 
 	do	// Do once!
 	{
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("Brighness"), fBrightness);
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("RedScale"), fRedScale);
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlueScale"), fBlueScale);
+		fBrightness = workspace.value("RawDDP/Brightness").toDouble();
+		fRedScale = workspace.value("RawDDP/RedScale").toDouble();
+		fBlueScale = workspace.value("RawDDP/BlueScale").toDouble();
 
 		fGreenScale = fBrightness;
 		fRedScale *= fBrightness;
@@ -902,8 +902,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		//
 		// Do we disable all White Balance processing?
 		//
-		bValue = false;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("NoWB"), bValue);
+		bValue = workspace.value("RawDDP/NoWB", false).toBool();
 		if (bValue)
 		{
 			// Yes, so set the user white balance multipliers to 1.0
@@ -915,8 +914,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			O.user_mul[0] = O.user_mul[1] = O.user_mul[2] = O.user_mul[3] = 0.0;
 		}
 
-		bValue = false;
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("CameraWB"), bValue);
+		bValue = workspace.value("RawDDP/CameraWB", false).toBool();
 		O.use_camera_wb = bValue ? 1 : 0;
 
 		// Don't stretch or rotate raw pixels (equivalent to dcraw -j)
@@ -932,7 +930,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		argv[argc] = _T("0");
 		argc++;*/
 
-		workspace.GetValue(REGENTRY_BASEKEY_RAWSETTINGS, _T("BlackPointTo0"), bBlackPointTo0);
+		bBlackPointTo0 = workspace.value("RawDDP/BlackPointTo0", false).toBool();
 		O.user_black = bBlackPointTo0 ? 0 : -1;
 
 		// Output is 16 bits (equivalent of dcraw flag -4)
@@ -944,7 +942,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 		ZTRACE_RUNTIME("Calling LibRaw::unpack()");
 		if ((ret = rawProcessor.unpack()) != LIBRAW_SUCCESS)
 		{
-			bResult = FALSE;
+			bResult = false;
 			ZTRACE_RUNTIME("Cannot unpack %s: %s", m_strFileName, libraw_strerror(ret));
 		}
 		if (!bResult) break;
@@ -1061,7 +1059,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			// Either way we should now be processing a regular greyscale 16-bit
 			// pixel array which has an associated Bayer Matrix
 			//
-			pFiller->setGrey(TRUE);
+			pFiller->setGrey(true);
 			pFiller->setWidth(S.width);
 			pFiller->setHeight(S.height);
 			pFiller->setMaxColors((1 << 16) - 1);
@@ -1246,7 +1244,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 					// What colour will this pixel become
 					const int colour = rawProcessor.COLOR(row, col);
 
-					const register float val = scale_mul[colour] *
+					const float val = scale_mul[colour] *
 						(float)(RAW(row, col));
 					RAW(row, col) = max(0, min(int(val), 65535));
 				}
@@ -1284,7 +1282,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			{
 				ZTRACE_RUNTIME("Cannot do postprocessing on %s: %s", m_strFileName, libraw_strerror(ret));
 				if (LIBRAW_FATAL_ERROR(ret))
-					bResult = FALSE;
+					bResult = false;
 			}
 			if (!bResult) break;
 
@@ -1298,7 +1296,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 			rawProcessor.setBitMapFiller(pFiller);
 			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_ppm_tiff_writer("")))
 			{
-				bResult = FALSE;
+				bResult = false;
 				ZTRACE_RUNTIME("Cannot write image data to bitmap %s", libraw_strerror(ret));
 			}
 		}
@@ -1323,7 +1321,7 @@ BOOL CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, B
 
 /* ------------------------------------------------------------------- */
 
-BOOL CRawDecod::IsRawFile() const
+bool CRawDecod::IsRawFile() const
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1334,10 +1332,10 @@ BOOL CRawDecod::IsRawFile() const
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
+bool	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
     CRawDecod		dcr(szFileName);
 
@@ -1351,10 +1349,10 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CString & strModel)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	bool			bResult = FALSE;
 	TCHAR			szExt[_MAX_EXT];
 	CString			strExt;
 
@@ -1388,7 +1386,7 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			BitmapInfo.m_lHeight		 = dcr.Height();
 			BitmapInfo.m_lBitPerChannel  = 16;
 			BitmapInfo.m_lNrChannels	 = dcr.IsColorRAW() ? 3 : 1;
-			BitmapInfo.m_bCanLoad		 = TRUE;
+			BitmapInfo.m_bCanLoad		 = true;
 			dcr.GetModel(BitmapInfo.m_strModel);
 			BitmapInfo.m_lISOSpeed		 = dcr.GetISOSpeed();
 			BitmapInfo.m_fExposure		 = dcr.GetExposureTime();
@@ -1402,16 +1400,16 @@ BOOL	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bResult = FALSE;
+	bool			bResult = false;
 
 	CRawDecod		dcr(szFileName);
 
     if (dcr.IsRawFile() && ppBitmap)
     {
-        BOOL						bColorRAW;
+        bool						bColorRAW;
         CSmartPtr<CMemoryBitmap>	pBitmap;
 
         bColorRAW = dcr.IsColorRAW();
@@ -1437,13 +1435,13 @@ BOOL	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress 
             if (pGrayBitmap)
             {
                 if (IsSuperPixels())
-                    pGrayBitmap->UseSuperPixels(TRUE);
+                    pGrayBitmap->UseSuperPixels(true);
                 else if (IsRawBayer())
-                    pGrayBitmap->UseRawBayer(TRUE);
+                    pGrayBitmap->UseRawBayer(true);
                 else if (IsRawBilinear())
-                    pGrayBitmap->UseBilinear(TRUE);
+                    pGrayBitmap->UseBilinear(true);
                 else if (IsRawAHD())
-                    pGrayBitmap->UseAHD(TRUE);
+                    pGrayBitmap->UseAHD(true);
             };
             pBitmap.CopyTo(ppBitmap);
         };
