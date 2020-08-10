@@ -57,6 +57,8 @@ I am sorry that this has happened, but it is outwith my control, and the LibRaw 
 
 18. Fix for crash while attempting to select comet.
 
+19. Fix for Nikon Z 6, Z 7, and Z 50 being reported as unsupported.
+
 Welcome to DeepSkyStacker 4.2.3
 
 ************** IF YOU INSTALLED 4.2.3 BETA 1 **************
