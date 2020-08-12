@@ -16,15 +16,16 @@ Copyright (c) 2018-2020, David C. Partridge, Tony Cook, Mat Draper,
 					
 Building DeepSkyStacker:
 
-You will need to install Visual Studio 2017, Qt 5.12.8 and Qt VS Tools 2.4.3
+You will need to install Visual Studio 2019 (16.7.1), Qt 5.15.0 and Qt VS Tools 2.5.2 for
+VS2019.
 
 You will need to use QT VS Tools Options dialog to set up two named Qt Installations:
 
-	1. Called 5.12.8x86 pointing to msvc2017 sub-directory of your Qt install
-		for example C:\Qt\5.12.8\msvc2017
-	2. Called 5.12.8x64 pointing to the msvc2017_64 sub-directory of your Qt install
-		for example C:\Qt\5.12.8\msvc2017_64
+	1. Called 5.15.0x86 pointing to msvc2019 sub-directory of your Qt install
+		for example C:\Qt\5.15.0\msvc2019
+	2. Called 5.15.0x64 pointing to the msvc2019_64 sub-directory of your Qt install
+		for example C:\Qt\5.15.0\msvc2019_64
 		
-In addition you will need to set an environment variable called QtInstallDir set to the
-value C:\Qt\5.12.8\msvc2017_64 (assuming you are running on 64-bit Windows).
+In addition you will need to set an environment variable called QtInstDir set to the
+value C:\Qt\5.15.0\msvc2019_64 (assuming you are running on 64-bit Windows).
 
