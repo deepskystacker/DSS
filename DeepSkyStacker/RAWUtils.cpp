@@ -172,7 +172,7 @@ void	PopRAWSettings()
 #include <io.h>
 #include <fcntl.h>
 #include <share.h>
-#include <typeinfo.h>
+#include <typeinfo>
 
 class BitMapFiller
 {
