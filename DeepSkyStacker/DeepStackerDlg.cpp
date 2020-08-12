@@ -5,6 +5,7 @@ F// DeepStackerDlg.cpp : implementation file
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
 #include "DSS-versionhelpers.h"
+#include <QRect>
 #include <QSettings>
 
 /* ------------------------------------------------------------------- */
