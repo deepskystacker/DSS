@@ -1153,8 +1153,5 @@
     <QtMoc Include="QLinearGradientCtrl.h">
       <Filter>Tools</Filter>
     </QtMoc>
-    <QtMoc Include="StackingDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
   </ItemGroup>
 </Project>

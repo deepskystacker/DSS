@@ -5,7 +5,7 @@
 using std::min;
 using std::max;
 
-#define _WIN32_WINNT _WIN32_WINNT_WINXP
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
 #include <afx.h>
 #include <afxcmn.h>
 #include <afxcview.h>
@@ -491,7 +491,7 @@ void RawDDPSettings::onInitDialog()
 
 	for (std::vector<CDSLR>::size_type i = 0; i < vector_DSLRs.size(); i++)
 	{
-		ui->DSLRs->addItem(vector_DSLRs[i].m_strName, vector_DSLRs[i].m_CFAType);
+		ui->DSLRs->addItem(vector_DSLRs[i].m_strName, static_cast<uint>(vector_DSLRs[i].m_CFAType));
 	};
 
 	string = workspace->value("FitsDDP/DSLR", "").toString();

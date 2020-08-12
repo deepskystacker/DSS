@@ -181,7 +181,7 @@ void CDeepStackerDlg::UpdateTab()
 	{
 	case IDD_REGISTERING :
 	case IDD_STACKING :
-		m_dlgStacking.setVisible(true);
+		m_dlgStacking.ShowWindow(true);
 		m_dlgProcessing.ShowWindow(SW_HIDE);
 //		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
@@ -191,7 +191,7 @@ void CDeepStackerDlg::UpdateTab()
 	//	m_dlgLibrary.ShowWindow(SW_SHOW);
 	//	break;
 	case IDD_PROCESSING :
-		m_dlgStacking.setVisible(false);
+		m_dlgStacking.ShowWindow(false);
 		m_dlgProcessing.ShowWindow(SW_SHOW);
 //		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
