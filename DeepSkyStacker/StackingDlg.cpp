@@ -7,11 +7,9 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QTreeWidget>
+#include <QShowEvent>
 #include <QSettings>
 #include <QUrl>
-
-#include "qmfcapp.h"
-#include "qwinwidget.h"
 
 #include "DeepSkyStacker.h"
 #include "StackingDlg.h"
@@ -19,7 +17,7 @@
 #include "DeepStack.h"
 #include "ProgressDlg.h"
 #include "CheckAbove.h"
-
+#include "Registry.h"
 #include "RegisterSettings.h"
 #include "StackRecap.h"
 #include "TIFFUtil.h"
@@ -31,12 +29,14 @@
 #include "BatchStacking.h"
 #include "DSSVersion.h"
 
-#include "group.h"
-
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-uint DSS::Group::nextIndex = 0;
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 const		DWORD					IDC_EDIT_SELECT = 1;
 const		DWORD					IDC_EDIT_STAR   = 2;
@@ -46,24 +46,42 @@ const		DWORD					IDC_EDIT_SAVE   = 4;
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
-// StackingDlg dialog
+// CStackingDlg dialog
 
 
-StackingDlg::StackingDlg(QWidget* parent /*=nullptr*/) :
-	Inherited(parent),
-	m_cCtrlCache(this),
-	networkManager(nullptr)
+CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
+	: CDialog(CStackingDlg::IDD, pParent),
+	m_cCtrlCache(this)
 {
+	//{{AFX_DATA_INIT(CStackingDlg)
+		// NOTE: the ClassWizard will add member initialization here
+	//}}AFX_DATA_INIT
 	m_MRUList.readSettings();
 }
 
 
 /* ------------------------------------------------------------------- */
 
+void CStackingDlg::DoDataExchange(CDataExchange* pDX)
+{
+	CDialog::DoDataExchange(pDX);
+	//{{AFX_DATA_MAP(CStackingDlg)
+	DDX_Control(pDX, IDC_PICTURES, m_Pictures);
+	DDX_Control(pDX, IDC_PICTURE, m_PictureStatic);
+	DDX_Control(pDX, IDC_INFOS, m_Infos);
+	DDX_Control(pDX, IDC_LISTINFO, m_ListInfo);
+	DDX_Control(pDX, IDC_GAMMA, m_Gamma);
+	DDX_Control(pDX, IDC_GROUPTAB, m_GroupTab);
+	DDX_Control(pDX, IDC_JOBTAB, m_JobTab);
+	DDX_Control(pDX, IDC_SHOWHIDEJOBS, m_ShowHideJobs);
+	DDX_Control(pDX, IDC_4CORNERS, m_4Corners);
+	//}}AFX_DATA_MAP
+}
+
 /* ------------------------------------------------------------------- */
 
-BEGIN_MESSAGE_MAP(StackingDlg, CDialog)
-	//{{AFX_MSG_MAP(StackingDlg)
+BEGIN_MESSAGE_MAP(CStackingDlg, CDialog)
+	//{{AFX_MSG_MAP(CStackingDlg)
 	ON_NOTIFY(NM_CLICK, IDC_PICTURES, OnClickPictures)
 	ON_NOTIFY(NM_NOTIFYMODECHANGE, IDC_PICTURE, OnPictureChange)
 	ON_MESSAGE(WM_CHECKITEM, OnCheckItem)
@@ -77,31 +95,14 @@ BEGIN_MESSAGE_MAP(StackingDlg, CDialog)
 	ON_NOTIFY(NM_LINKCLICK, IDC_SHOWHIDEJOBS, OnShowHideJobs)
 	ON_NOTIFY(SPN_SIZED, IDC_SPLITTER, OnSplitter)
 //}}AFX_MSG_MAP
-ON_BN_CLICKED(IDC_4CORNERS, &StackingDlg::OnBnClicked4corners)
+ON_BN_CLICKED(IDC_4CORNERS, &CStackingDlg::OnBnClicked4corners)
 END_MESSAGE_MAP()
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
-// StackingDlg message handlers
+// CStackingDlg message handlers
 
-void StackingDlg::showEvent(QShowEvent* event)
-{
-	if (!event->spontaneous())
-	{
-		if (!initialised)
-		{
-			initialised = true;
-			onInitDialog();
-		}
-	}
-	// Invoke base class showEvent()
-	return Inherited::showEvent(event);
-}
-
-void StackingDlg::onInitDialog()
-{
-}
-BOOL StackingDlg::OnInitDialog()
+BOOL CStackingDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -143,19 +144,19 @@ BOOL StackingDlg::OnInitDialog()
 	m_ButtonToolbar.AddButton(IDC_EDIT_SAVE,	MBI(SAVE), IDB_BUTTONBASE_MASK, strTooltip);
 
 	m_ButtonToolbar.Check(IDC_EDIT_SELECT);
-	m_ButtonToolbar.Enable(IDC_EDIT_SAVE, false);
+	m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
 
-	m_Picture.EnableZoom(true);
+	m_Picture.EnableZoom(TRUE);
 	m_Picture.SetButtonToolbar(&m_ButtonToolbar);
 	m_SelectRectSink.ShowDrizzleRectangles();
 	m_Picture.SetImageSink(&m_SelectRectSink);
 	m_ButtonToolbar.SetSink(this);
 
 	m_Gamma.SetBackgroundColor(GetSysColor(COLOR_3DFACE));
-	m_Gamma.ShowTooltips(false);
+	m_Gamma.ShowTooltips(FALSE);
 	m_Gamma.SetOrientation(CGradientCtrl::ForceHorizontal);
-	m_Gamma.SetPegSide(true, false);
-	m_Gamma.SetPegSide(false, true);
+	m_Gamma.SetPegSide(TRUE, FALSE);
+	m_Gamma.SetPegSide(FALSE, TRUE);
 	m_Gamma.GetGradient().SetStartPegColour(RGB(0, 0, 0));
 	m_Gamma.GetGradient().AddPeg(RGB(0, 0, 0), 0.0, 0);
 	m_Gamma.GetGradient().AddPeg(RGB(128, 128, 128), sqrt(0.5), 1);
@@ -166,13 +167,14 @@ BOOL StackingDlg::OnInitDialog()
 
 
 	m_4Corners.SetBitmaps(IDB_4CORNERS, RGB(255,0, 255));
-	m_4Corners.SetFlat(true);
-	//m_4Corners.DrawTransparent(true);
+	m_4Corners.SetFlat(TRUE);
+	//m_4Corners.DrawTransparent(TRUE);
 
 	QSettings			settings;
 	bool checkVersion = settings.value("InternetCheck", false).toBool();
 	if (checkVersion)
 		retrieveLatestVersionInfo();   // will update ui asynchronously
+
 
 	{
 		m_GroupTab.ModifyStyle(0, CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
@@ -181,10 +183,10 @@ BOOL StackingDlg::OnInitDialog()
 	};
 
 /*
-	m_ShowHideJobs.SetLink(true, true);
-	m_ShowHideJobs.SetTransparent(true);
+	m_ShowHideJobs.SetLink(TRUE, TRUE);
+	m_ShowHideJobs.SetTransparent(TRUE);
 	m_ShowHideJobs.SetLinkCursor(LoadCursor(nullptr,MAKEINTRESOURCE(IDC_HAND)));
-	m_ShowHideJobs.SetFont3D(false);
+	m_ShowHideJobs.SetFont3D(FALSE);
 	m_ShowHideJobs.SetTextColor(RGB(0, 0, 192));
 	m_ShowHideJobs.SetWindowText("Show/Hide Jobs");
 	{
@@ -201,13 +203,13 @@ BOOL StackingDlg::OnInitDialog()
 
 	m_BackgroundLoading.SetWindow(m_hWnd);
 
-	return true;  // return true unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return false
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::UpdateLayout()
+void CStackingDlg::UpdateLayout()
 {
 	// No controls present, nothing to do!
 	if (GetDlgItem(IDC_PICTURE) == nullptr)
@@ -324,7 +326,7 @@ void StackingDlg::UpdateLayout()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::UpdateGroupTabs()
+void CStackingDlg::UpdateGroupTabs()
 {
 	DWORD			dwLastGroupID;
 	LONG			lNrFrames;
@@ -367,7 +369,7 @@ void StackingDlg::UpdateGroupTabs()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
+void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	if (pResult)
 		*pResult = 1;
@@ -385,7 +387,7 @@ void StackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 		fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
 		fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
 		fWhitePoint = Gradient.GetPeg(Gradient.IndexFromId(2)).position;
-		bool				bAdjust = false;
+		BOOL				bAdjust = FALSE;
 
 		switch (pPegNMHDR->peg.id)
 		{
@@ -394,12 +396,12 @@ void StackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			if (fBlackPoint>fWhitePoint-0.02)
 			{
 				fBlackPoint = fWhitePoint-0.02;
-				bAdjust = true;
+				bAdjust = TRUE;
 			};
 			if (fBlackPoint>fGrayPoint-0.01)
 			{
 				fGrayPoint = fBlackPoint+0.01;
-				bAdjust = true;
+				bAdjust = TRUE;
 			};
 			break;
 		case 1 :
@@ -407,12 +409,12 @@ void StackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			if (fGrayPoint<fBlackPoint+0.01)
 			{
 				fGrayPoint = fBlackPoint+0.01;
-				bAdjust = true;
+				bAdjust = TRUE;
 			};
 			if (fGrayPoint>fWhitePoint-0.01)
 			{
 				fGrayPoint = fWhitePoint-0.01;
-				bAdjust = true;
+				bAdjust = TRUE;
 			};
 			break;
 		case 2 :
@@ -420,12 +422,12 @@ void StackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 			if (fWhitePoint<fBlackPoint+0.02)
 			{
 				fWhitePoint = fBlackPoint+0.02;
-				bAdjust = true;
+				bAdjust = TRUE;
 			};
 			if (fWhitePoint < fGrayPoint+0.01)
 			{
 				fGrayPoint = fWhitePoint-0.01;
-				bAdjust = true;
+				bAdjust = TRUE;
 			};
 			break;
 		};
@@ -447,16 +449,16 @@ void StackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 		{
 			ApplyGammaTransformation(m_LoadedImage.m_hBitmap, m_LoadedImage.m_pBitmap, m_GammaTransformation);
 			// Refresh
-			m_Picture.Invalidate(true);
+			m_Picture.Invalidate(TRUE);
 		};
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-bool StackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
+BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 {
-	bool				bResult = false;
+	BOOL				bResult = FALSE;
 	__int64				ulFlatSpace = 0,
 						ulDarkSpace = 0,
 						ulOffsetSpace = 0;
@@ -518,21 +520,21 @@ bool StackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 
 		strMessage.Format(IDS_ERROR_NOTENOUGHFREESPACE, lNeededSpace, lFreeSpace, strDrive);
 		if (AfxMessageBox(strMessage, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION)==IDYES)
-			bResult = true;
+			bResult = TRUE;
 		else
-			bResult = false;
+			bResult = FALSE;
 	}
 	else
-		bResult = true;
+		bResult = TRUE;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-bool StackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
+bool CStackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 {
-	bool					bResult = true;
+	bool					bResult = TRUE;
 	std::vector<CString>	vFolders;
 
 	if (!tasks.CheckReadOnlyStatus(vFolders))
@@ -549,7 +551,7 @@ bool StackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 		strText.Format(IDS_WARNINGREADONLY, strFolders);
 
 		AfxMessageBox(strText, MB_OK | MB_ICONSTOP);
-		bResult = false;
+		bResult = FALSE;
 	};
 
 	return bResult;
@@ -557,7 +559,7 @@ bool StackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnAdddarks()
+void CStackingDlg::OnAdddarks()
 {
 	QSettings			settings;
 	CString				strBaseDirectory;
@@ -583,11 +585,11 @@ void StackingDlg::OnAdddarks()
 		strBaseExtension = _T(".bmp");
 
 	CFileDialog			dlgOpen(true,
-								strBaseExtension,
-								nullptr,
-								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								INPUTFILE_FILTERS,
-								this);
+		strBaseExtension,
+		nullptr,
+		OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
+		INPUTFILE_FILTERS,
+		this);
 
 	if (strBaseDirectory.GetLength())
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -597,7 +599,7 @@ void StackingDlg::OnAdddarks()
 	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer)/sizeof(szBigBuffer[0]);
+	dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -608,9 +610,9 @@ void StackingDlg::OnAdddarks()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
+			TCHAR		szDir[1 + _MAX_DIR];
+			TCHAR		szDrive[1 + _MAX_DRIVE];
+			TCHAR		szExt[1 + _MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFRAME, true);
@@ -632,9 +634,10 @@ void StackingDlg::OnAdddarks()
 	UpdateListInfo();
 }
 
+
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnAddDarkFlats()
+void CStackingDlg::OnAddDarkFlats()
 {
 	QSettings			settings;
 	CString				strBaseDirectory;
@@ -660,11 +663,11 @@ void StackingDlg::OnAddDarkFlats()
 		strBaseExtension = _T(".bmp");
 
 	CFileDialog			dlgOpen(true,
-								strBaseExtension,
-								nullptr,
-								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								INPUTFILE_FILTERS,
-								this);
+		strBaseExtension,
+		nullptr,
+		OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
+		INPUTFILE_FILTERS,
+		this);
 
 	if (strBaseDirectory.GetLength())
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -674,7 +677,7 @@ void StackingDlg::OnAddDarkFlats()
 	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
+	dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -685,9 +688,9 @@ void StackingDlg::OnAddDarkFlats()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
+			TCHAR		szDir[1 + _MAX_DIR];
+			TCHAR		szDrive[1 + _MAX_DRIVE];
+			TCHAR		szExt[1 + _MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_DARKFLATFRAME, true);
@@ -711,7 +714,7 @@ void StackingDlg::OnAddDarkFlats()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnAddFlats()
+void CStackingDlg::OnAddFlats()
 {
 	QSettings			settings;
 	CString				strBaseDirectory;
@@ -737,11 +740,11 @@ void StackingDlg::OnAddFlats()
 		strBaseExtension = _T(".bmp");
 
 	CFileDialog			dlgOpen(true,
-								strBaseExtension,
-								nullptr,
-								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								INPUTFILE_FILTERS,
-								this);
+		strBaseExtension,
+		nullptr,
+		OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
+		INPUTFILE_FILTERS,
+		this);
 
 	if (strBaseDirectory.GetLength())
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -751,7 +754,7 @@ void StackingDlg::OnAddFlats()
 	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
+	dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -763,9 +766,9 @@ void StackingDlg::OnAddFlats()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
+			TCHAR		szDir[1 + _MAX_DIR];
+			TCHAR		szDrive[1 + _MAX_DRIVE];
+			TCHAR		szExt[1 + _MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_FLATFRAME, true);
@@ -787,9 +790,10 @@ void StackingDlg::OnAddFlats()
 	UpdateListInfo();
 }
 
+
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnAddOffsets()
+void CStackingDlg::OnAddOffsets()
 {
 	QSettings			settings;
 	CString				strBaseDirectory;
@@ -815,11 +819,11 @@ void StackingDlg::OnAddOffsets()
 		strBaseExtension = _T(".bmp");
 
 	CFileDialog			dlgOpen(true,
-								strBaseExtension,
-								nullptr,
-								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								INPUTFILE_FILTERS,
-								this);
+		strBaseExtension,
+		nullptr,
+		OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
+		INPUTFILE_FILTERS,
+		this);
 
 	if (strBaseDirectory.GetLength())
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -829,7 +833,7 @@ void StackingDlg::OnAddOffsets()
 	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
+	dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	if (dlgOpen.DoModal() == IDOK)
 	{
@@ -840,9 +844,9 @@ void StackingDlg::OnAddOffsets()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
+			TCHAR		szDir[1 + _MAX_DIR];
+			TCHAR		szDrive[1 + _MAX_DRIVE];
+			TCHAR		szExt[1 + _MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), PICTURETYPE_OFFSETFRAME, true);
@@ -864,9 +868,10 @@ void StackingDlg::OnAddOffsets()
 	UpdateListInfo();
 }
 
+
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnAddpictures()
+void CStackingDlg::OnAddpictures()
 {
 	ZFUNCTRACE_RUNTIME();
 	QSettings			settings;
@@ -887,11 +892,11 @@ void StackingDlg::OnAddpictures()
 		strBaseExtension = _T(".bmp");
 
 	CFileDialog			dlgOpen(true,
-								strBaseExtension,
-								nullptr,
-								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
-								INPUTFILE_FILTERS,
-								this);
+		strBaseExtension,
+		nullptr,
+		OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST,
+		INPUTFILE_FILTERS,
+		this);
 
 	if (strBaseDirectory.GetLength())
 		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -901,7 +906,7 @@ void StackingDlg::OnAddpictures()
 	TCHAR				szBigBuffer[20000] = _T("");
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
+	dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
 
 	ZTRACE_RUNTIME("About to show file open dlg");
 	if (dlgOpen.DoModal() == IDOK)
@@ -913,9 +918,9 @@ void StackingDlg::OnAddpictures()
 		while (pos)
 		{
 			CString		strFile;
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
+			TCHAR		szDir[1 + _MAX_DIR];
+			TCHAR		szDrive[1 + _MAX_DRIVE];
+			TCHAR		szExt[1 + _MAX_EXT];
 
 			strFile = dlgOpen.GetNextPathName(pos);
 			m_Pictures.AddFile(strFile, m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID());
@@ -937,9 +942,10 @@ void StackingDlg::OnAddpictures()
 	UpdateListInfo();
 }
 
+
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::DropFiles(HDROP hDropInfo)
+void CStackingDlg::DropFiles(HDROP hDropInfo)
 {
 	CDropFilesDlg			dlg;
 
@@ -952,7 +958,7 @@ void StackingDlg::DropFiles(HDROP hDropInfo)
 		dlg.GetDroppedFiles(vFiles);
 
 		for (LONG i = 0;i<vFiles.size();i++)
-			m_Pictures.AddFile(vFiles[i], m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), dlg.GetDropType(), true);
+			m_Pictures.AddFile(vFiles[i], m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), dlg.GetDropType(), TRUE);
 		m_Pictures.RefreshList();
 		UpdateGroupTabs();
 		UpdateListInfo();
@@ -962,7 +968,7 @@ void StackingDlg::DropFiles(HDROP hDropInfo)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OpenFileList(LPCTSTR szFileList)
+void CStackingDlg::OpenFileList(LPCTSTR szFileList)
 {
 	CString					strList = szFileList;
 
@@ -987,11 +993,11 @@ void StackingDlg::OpenFileList(LPCTSTR szFileList)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::LoadList()
+void CStackingDlg::LoadList()
 {
 	if (CheckWorkspaceChanges())
 	{
-		bool			bOpenAnother = true;
+		BOOL			bOpenAnother = TRUE;
 
 		if (m_MRUList.m_vLists.size())
 		{
@@ -1001,10 +1007,12 @@ void StackingDlg::LoadList()
 			int					nResult;
 			UINT				lStartID;
 
-			bOpenAnother = false;
+			bOpenAnother = FALSE;
 
 			menu.LoadMenu(IDR_FILELISTS);
 			popup = menu.GetSubMenu(0);
+
+			CRect				rc;
 
 			QPoint point = QCursor::pos();
 			pt.x = point.x();
@@ -1030,7 +1038,7 @@ void StackingDlg::LoadList()
 			nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
 
 			if (nResult == ID_FILELIST_OPENANOTHERFILELIST)
-				bOpenAnother = true;
+				bOpenAnother = TRUE;
 			else if (nResult > ID_FILELIST_FIRSTMRU)
 			{
 				CString			strList;
@@ -1057,7 +1065,7 @@ void StackingDlg::LoadList()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::SaveList()
+void CStackingDlg::SaveList()
 {
 	m_Pictures.SaveList(m_MRUList, m_strCurrentFileList);
 	SetCurrentFileInTitle(m_strCurrentFileList);
@@ -1065,16 +1073,16 @@ void StackingDlg::SaveList()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult)
+void CStackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	// Here check if the new image is dirty
 	if (m_EditStarSink.IsDirty())
-		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, true);
+		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, TRUE);
 };
 
 /* ------------------------------------------------------------------- */
 
-CWndImageSink *	StackingDlg::GetCurrentSink()
+CWndImageSink *	CStackingDlg::GetCurrentSink()
 {
 	if (m_ButtonToolbar.IsChecked(IDC_EDIT_STAR))
 		return &m_EditStarSink;
@@ -1088,13 +1096,13 @@ CWndImageSink *	StackingDlg::GetCurrentSink()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::CheckAskRegister()
+void CStackingDlg::CheckAskRegister()
 {
 	// Check that the current light frame is registered (or not)
 	// and ask accordingly
 	CLightFrameInfo			lfi;
 
-	lfi.SetBitmap(m_strShowFile, false, false);
+	lfi.SetBitmap(m_strShowFile, FALSE, FALSE);
 	if (!lfi.IsRegistered())
 	{
 		CAskRegistering		dlg;
@@ -1104,14 +1112,14 @@ void StackingDlg::CheckAskRegister()
 			if (dlg.GetAction()==ARA_ONE)
 			{
 				// Register only this light frame
-				m_Pictures.CheckAllLights(false);
-				m_Pictures.CheckImage(m_strShowFile, true);
+				m_Pictures.CheckAllLights(FALSE);
+				m_Pictures.CheckImage(m_strShowFile, TRUE);
 				RegisterCheckedImage();
 			}
 			else if (dlg.GetAction()==ARA_ALL)
 			{
 				// Register all the checked light frames
-				m_Pictures.CheckImage(m_strShowFile, true);
+				m_Pictures.CheckImage(m_strShowFile, TRUE);
 				RegisterCheckedImage();
 			};
 		};
@@ -1120,7 +1128,7 @@ void StackingDlg::CheckAskRegister()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar)
+void CStackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar)
 {
 	switch (dwID)
 	{
@@ -1128,9 +1136,9 @@ void StackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonTool
 		if (pButtonToolbar->IsChecked(dwID))
 		{
 			CheckAskRegister();
-			pButtonToolbar->Check(IDC_EDIT_STAR, false);
-			pButtonToolbar->Check(IDC_EDIT_SELECT, false);
-			m_EditStarSink.SetCometMode(true);
+			pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
+			pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
+			m_EditStarSink.SetCometMode(TRUE);
 			m_Picture.SetImageSink(&m_EditStarSink);
 		};
 		break;
@@ -1138,17 +1146,17 @@ void StackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonTool
 		if (pButtonToolbar->IsChecked(dwID))
 		{
 			CheckAskRegister();
-			pButtonToolbar->Check(IDC_EDIT_COMET, false);
-			pButtonToolbar->Check(IDC_EDIT_SELECT, false);
-			m_EditStarSink.SetCometMode(false);
+			pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
+			pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
+			m_EditStarSink.SetCometMode(FALSE);
 			m_Picture.SetImageSink(&m_EditStarSink);
 		};
 		break;
 	case IDC_EDIT_SELECT :
 		if (pButtonToolbar->IsChecked(dwID))
 		{
-			pButtonToolbar->Check(IDC_EDIT_COMET, false);
-			pButtonToolbar->Check(IDC_EDIT_STAR, false);
+			pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
+			pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
 			m_Picture.SetImageSink(&m_SelectRectSink);
 		};
 		break;
@@ -1157,12 +1165,12 @@ void StackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonTool
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar)
+void CStackingDlg::ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar)
 {
 	if (dwID == IDC_EDIT_SAVE)
 	{
 		m_EditStarSink.SaveRegisterSettings();
-		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, false);
+		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
 		// Update the list with the new info
 		m_Pictures.UpdateItemScores(m_strShowFile);
 	};
@@ -1170,7 +1178,7 @@ void StackingDlg::ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonTool
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToolbar)
+void CStackingDlg::ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToolbar)
 {
 	if (dwID == IDC_EDIT_SAVE)
 	{
@@ -1209,7 +1217,7 @@ void StackingDlg::ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToo
 
 /* ------------------------------------------------------------------- */
 
-void	StackingDlg::UpdateListInfo()
+void	CStackingDlg::UpdateListInfo()
 {
 	CString					strText;
 
@@ -1237,9 +1245,9 @@ void	StackingDlg::UpdateListInfo()
 
 /* ------------------------------------------------------------------- */
 
-bool StackingDlg::CheckWorkspaceChanges()
+BOOL CStackingDlg::CheckWorkspaceChanges()
 {
-	bool						bResult = false;
+	BOOL						bResult = FALSE;
 
 	if (m_strCurrentFileList.GetLength() || m_Pictures.GetNrFrames())
 	{
@@ -1266,19 +1274,19 @@ bool StackingDlg::CheckWorkspaceChanges()
 			bResult = (nResult != IDCANCEL);
 		}
 		else
-			bResult = true;
+			bResult = TRUE;
 	}
 	else
-		bResult = true;
+		bResult = TRUE;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-bool StackingDlg::CheckEditChanges()
+BOOL CStackingDlg::CheckEditChanges()
 {
-	bool						bResult = false;
+	BOOL						bResult = FALSE;
 
 	if (m_EditStarSink.IsDirty())
 	{
@@ -1289,24 +1297,24 @@ bool StackingDlg::CheckEditChanges()
 		if (nResult == IDYES)
 		{
 			// Save the changes
-			bResult = true;
+			bResult = TRUE;
 			m_EditStarSink.SaveRegisterSettings();
-			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, false);
+			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
 			// Update the list with the new info
 			m_Pictures.UpdateItemScores(m_strShowFile);
 		}
 		else if (nResult == IDNO)
-			bResult = true;
+			bResult = TRUE;
 	}
 	else
-		bResult = true;
+		bResult = TRUE;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-LRESULT StackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
+LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
 {
 	CSmartPtr<CMemoryBitmap>	pBitmap;
 	CSmartPtr<C32BitsBitmap>	phBitmap;
@@ -1367,7 +1375,7 @@ LRESULT StackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::on_pictures_itemClicked(QTreeWidgetItem* item, int column)
+void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	CString				strFileName;
 
@@ -1381,7 +1389,7 @@ void StackingDlg::on_pictures_itemClicked(QTreeWidgetItem* item, int column)
 				BeginWaitCursor();
 				m_Infos.SetTextColor(RGB(0, 0, 0));
 				m_Infos.SetText(strFileName);
-				m_Infos.SetLink(false, false);
+				m_Infos.SetLink(FALSE, FALSE);
 				m_strShowFile = strFileName;
 				OnBackgroundImageLoaded(0, 0);
 			};
@@ -1390,7 +1398,7 @@ void StackingDlg::on_pictures_itemClicked(QTreeWidgetItem* item, int column)
 	else
 	{
 		m_Infos.SetTextColor(RGB(0, 0, 0));
-		m_Infos.SetLink(false, false);
+		m_Infos.SetLink(FALSE, FALSE);
 		m_Infos.SetText("");
 	};
 
@@ -1399,7 +1407,7 @@ void StackingDlg::on_pictures_itemClicked(QTreeWidgetItem* item, int column)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::ReloadCurrentImage()
+void CStackingDlg::ReloadCurrentImage()
 {
 	if (m_strShowFile.GetLength())
 	{
@@ -1409,33 +1417,33 @@ void StackingDlg::ReloadCurrentImage()
 		EndWaitCursor();
 	};
 
-	m_Pictures.Invalidate(false);
+	m_Pictures.Invalidate(FALSE);
 };
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnSelChangeGroup(NMHDR* pNMHDR, LRESULT* pResult)
+void CStackingDlg::OnSelChangeGroup(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	m_Pictures.SetCurrentGroupID(m_GroupTab.GetCurSel());
 };
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnSelChangeJob(NMHDR* pNMHDR, LRESULT* pResult)
+void CStackingDlg::OnSelChangeJob(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	//m_Pictures.SetCurrentGroupID(m_GroupTab.GetCurSel());
 };
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnShowHideJobs( NMHDR * pNotifyStruct, LRESULT * result )
+void CStackingDlg::OnShowHideJobs( NMHDR * pNotifyStruct, LRESULT * result )
 {
 	//
 };
 
 /* ------------------------------------------------------------------- */
 
-LRESULT StackingDlg::OnCheckItem(WPARAM, LPARAM)
+LRESULT CStackingDlg::OnCheckItem(WPARAM, LPARAM)
 {
 	UpdateListInfo();
 
@@ -1444,7 +1452,7 @@ LRESULT StackingDlg::OnCheckItem(WPARAM, LPARAM)
 
 /* ------------------------------------------------------------------- */
 
-LRESULT StackingDlg::OnSelectItem(WPARAM, LPARAM)
+LRESULT CStackingDlg::OnSelectItem(WPARAM, LPARAM)
 {
 	LRESULT				lResult;
 
@@ -1455,7 +1463,7 @@ LRESULT StackingDlg::OnSelectItem(WPARAM, LPARAM)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnSize(UINT nType, int cx, int cy)
+void CStackingDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 	if (!(cx == 0 && cy == 0))
@@ -1464,7 +1472,7 @@ void StackingDlg::OnSize(UINT nType, int cx, int cy)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnSplitter(NMHDR* pNMHDR, LRESULT* pResult)
+void CStackingDlg::OnSplitter(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	SPC_NMHDR* pHdr = reinterpret_cast<SPC_NMHDR*>(pNMHDR);
 
@@ -1480,14 +1488,14 @@ void StackingDlg::OnSplitter(NMHDR* pNMHDR, LRESULT* pResult)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::UncheckNonStackablePictures()
+void CStackingDlg::UncheckNonStackablePictures()
 {
 	m_Pictures.UnCheckNonStackable();
 };
 
 /* ------------------------------------------------------------------- */
 
-bool StackingDlg::ShowRecap(CAllStackingTasks & tasks)
+bool CStackingDlg::ShowRecap(CAllStackingTasks& tasks)
 {
 	QWinWidget	widget(this->GetParent());
 	widget.showCentered();
@@ -1497,9 +1505,10 @@ bool StackingDlg::ShowRecap(CAllStackingTasks & tasks)
 	return dlg.exec();
 };
 
+
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
+void CStackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
 {
 	LIGHTFRAMEINFOVECTOR &	vBitmaps = StackingEngine.LightFrames();
 
@@ -1520,10 +1529,10 @@ void StackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
+void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bContinue = true;
+	BOOL				bContinue = TRUE;
 	CDSSProgressDlg		dlg;
 	DWORD				dwStartTime = GetTickCount();
 	DWORD				dwElapsedTime;
@@ -1618,23 +1627,23 @@ void StackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 
 /* ------------------------------------------------------------------- */
 
-bool StackingDlg::CheckStacking(CAllStackingTasks & tasks)
+bool CStackingDlg::CheckStacking(CAllStackingTasks & tasks)
 {
-	bool				bResult = false;
+	bool				bResult = FALSE;
 
 	if (!m_Pictures.AreCheckedPictureCompatible())
 		AfxMessageBox(IDS_ERROR_NOTCOMPATIBLE, MB_OK | MB_ICONSTOP);
 	else if (!m_Pictures.GetNrCheckedFrames())
 		AfxMessageBox(IDS_ERROR_NOTLIGHTCHECKED, MB_OK | MB_ICONSTOP);
 	else
-		bResult = true;
+		bResult = TRUE;
 
 	return bResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::FillTasks(CAllStackingTasks & tasks)
+void CStackingDlg::FillTasks(CAllStackingTasks & tasks)
 {
 	m_Pictures.FillTasks(tasks);
 	tasks.ResolveTasks();
@@ -1642,11 +1651,11 @@ void StackingDlg::FillTasks(CAllStackingTasks & tasks)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::StackCheckedImage()
+void CStackingDlg::StackCheckedImage()
 {
 	if (CheckEditChanges())
 	{
-		bool				bContinue;
+		BOOL				bContinue;
 		CAllStackingTasks	tasks;
 		CRect				rcSelect;
 
@@ -1671,7 +1680,7 @@ void StackingDlg::StackCheckedImage()
 					CDSSProgressDlg	dlg;
 
 					m_Pictures.BlankCheckedItemScores();
-					bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+					bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
 					m_Pictures.UpdateCheckedItemScores();
 					dlg.Close();
 				};
@@ -1687,7 +1696,7 @@ void StackingDlg::StackCheckedImage()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::BatchStack()
+void CStackingDlg::BatchStack()
 {
 	CBatchStacking			dlg;
 
@@ -1697,7 +1706,7 @@ void StackingDlg::BatchStack()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::CheckAbove()
+void CStackingDlg::CheckAbove()
 {
 	if (CheckEditChanges())
 	{
@@ -1718,25 +1727,25 @@ void StackingDlg::CheckAbove()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::CheckAll()
+void CStackingDlg::CheckAll()
 {
-	m_Pictures.CheckAll(true);
-	m_Pictures.CheckAllDarks(true);
+	m_Pictures.CheckAll(TRUE);
+	m_Pictures.CheckAllDarks(TRUE);
 	UpdateListInfo();
 };
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::UncheckAll()
+void CStackingDlg::UncheckAll()
 {
-	m_Pictures.CheckAll(false);
-	m_Pictures.CheckAllDarks(false);
+	m_Pictures.CheckAll(FALSE);
+	m_Pictures.CheckAllDarks(FALSE);
 	UpdateListInfo();
 };
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::ClearList()
+void CStackingDlg::ClearList()
 {
 	if (CheckEditChanges() && CheckWorkspaceChanges())
 	{
@@ -1758,7 +1767,7 @@ void StackingDlg::ClearList()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::CheckBests(double fPercent)
+void CStackingDlg::CheckBests(double fPercent)
 {
 	if (CheckEditChanges())
 		m_Pictures.CheckBest(fPercent);
@@ -1766,12 +1775,12 @@ void StackingDlg::CheckBests(double fPercent)
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::ComputeOffsets()
+void CStackingDlg::ComputeOffsets()
 {
 
 	if (CheckEditChanges() && (m_Pictures.GetNrCheckedFrames() > 0))
 	{
-		bool					bContinue = true;
+		BOOL					bContinue = TRUE;
 		CAllStackingTasks		tasks;
 
 		m_Pictures.FillTasks(tasks);
@@ -1783,7 +1792,7 @@ void StackingDlg::ComputeOffsets()
 			CDSSProgressDlg	dlg;
 
 			m_Pictures.BlankCheckedItemScores();
-			bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+			bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
 			m_Pictures.UpdateCheckedItemScores();
 			dlg.Close();
 		};
@@ -1810,7 +1819,7 @@ void StackingDlg::ComputeOffsets()
 
 /* ------------------------------------------------------------------- */
 
-bool StackingDlg::SaveOnClose()
+BOOL CStackingDlg::SaveOnClose()
 {
 	m_Pictures.SaveState();
 	m_MRUList.saveSettings();
@@ -1820,7 +1829,7 @@ bool StackingDlg::SaveOnClose()
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::RegisterCheckedImage()
+void CStackingDlg::RegisterCheckedImage()
 {
 	CDSSProgressDlg			dlg;
 	RegisterSettings		dlgSettings;
@@ -1860,7 +1869,7 @@ void StackingDlg::RegisterCheckedImage()
 			bool				bStackAfter = false;
 
 			bForceRegister = dlgSettings.isForceRegister();
-			
+
 			bStackAfter = dlgSettings.isStackAfter(fPercent);
 
 			if (CheckReadOnlyFolders(tasks))
@@ -1881,7 +1890,7 @@ void StackingDlg::RegisterCheckedImage()
 
 				if (bContinue)
 				{
-                    GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
 
 					CRegisterEngine	RegisterEngine;
 
@@ -1910,7 +1919,7 @@ void StackingDlg::RegisterCheckedImage()
 					dwEndTime = GetTickCount();
 				};
 
-                GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
+				GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
 			};
 		};
 	}
@@ -1920,16 +1929,17 @@ void StackingDlg::RegisterCheckedImage()
 	};
 };
 
+
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::OnBnClicked4corners()
+void CStackingDlg::OnBnClicked4corners()
 {
 	m_Picture.Set4CornersMode(!m_Picture.Get4CornersMode());
 }
 
 /* ------------------------------------------------------------------- */
 
-void StackingDlg::versionInfoReceived(QNetworkReply * reply)
+void CStackingDlg::versionInfoReceived(QNetworkReply* reply)
 {
 	QNetworkReply::NetworkError error = reply->error();
 	if (QNetworkReply::NoError == error)
@@ -1950,7 +1960,7 @@ void StackingDlg::versionInfoReceived(QNetworkReply * reply)
 			{
 				CString	strNewVersion;
 
-				strNewVersion.Format(IDS_VERSIONAVAILABLE, CString((wchar_t *)verStr.utf16()));
+				strNewVersion.Format(IDS_VERSIONAVAILABLE, CString((wchar_t*)verStr.utf16()));
 				m_Infos.SetTextColor(RGB(255, 0, 0));
 				m_Infos.SetText(strNewVersion);
 				m_Infos.SetLink(true, false);
@@ -1960,22 +1970,22 @@ void StackingDlg::versionInfoReceived(QNetworkReply * reply)
 	}
 	else
 	{
-		CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
+		CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
 		CString title;
 		pDlg->GetWindowText(title);
 		QMessageBox::warning(nullptr, QString::fromWCharArray(title.GetString()),
 			QCoreApplication::translate("StackingDlg", "Internet version check error code %1:\n%2")
 			.arg(error)
-			.arg(reply->errorString()), QMessageBox::Ok );
+			.arg(reply->errorString()), QMessageBox::Ok);
 
 	}
 	reply->deleteLater();
 	networkManager->deleteLater();
 };
 
-void StackingDlg::retrieveLatestVersionInfo()
+void CStackingDlg::retrieveLatestVersionInfo()
 {
-//#ifndef DSSBETA
+	//#ifndef DSSBETA
 	ZFUNCTRACE_RUNTIME();
 
 	QSettings			settings;
@@ -1986,11 +1996,11 @@ void StackingDlg::retrieveLatestVersionInfo()
 		networkManager = new QNetworkAccessManager();
 
 		QObject::connect(networkManager, &QNetworkAccessManager::finished,
-			[this](QNetworkReply * reply) { this->versionInfoReceived(reply); });
+			[this](QNetworkReply* reply) { this->versionInfoReceived(reply); });
 
 		QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/release/CurrentVersion.txt"));
 		req.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
 		networkManager->get(req);
 	}
-//#endif
+	//#endif
 }

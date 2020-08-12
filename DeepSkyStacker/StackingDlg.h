@@ -9,11 +9,6 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
-class QTreeWidgetItem;
-
-#include <QWidget>
-#include <QString>
-#include <QToolBar>
 
 #include <CtrlCache.h>
 #include <WndImage.h>
@@ -22,58 +17,49 @@ class QTreeWidgetItem;
 #include "Label.h"
 #include "StackingTasks.h"
 #include "DeepStack.h"
-//#include <BitmapSlider.h>
+#include <BitmapSlider.h>
 #include <CustomTabCtrl.h>
 #include "StackingEngine.h"
 #include "BackgroundLoading.h"
-#include "QLinearGradientCtrl.h"
+#include "GradientCtrl.h"
 #include "SplitterControl.h"
 
 #include "ImageSinks.h"
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
-// StackingDlg dialog
+// CStackingDlg dialog
 
-namespace Ui {
-	class StackingDlg;
-}
-
-class StackingDlg : public QWidget,
+class CStackingDlg : public CDialog,
 					 public CButtonToolbarSink
 {
-	Q_OBJECT
-
-typedef QWidget
-	Inherited;
-
 private :
-	Ui::StackingDlg* ui;
 	CSplitterControl		m_Splitter;
-	QString					m_strShowFile;
-	QToolBar				m_ButtonToolbar;
-	// CSelectRectSink			m_SelectRectSink;
-	// CEditStarsSink			m_EditStarSink;
+	CString					m_strShowFile;
+	CButtonToolbar			m_ButtonToolbar;
+	CSelectRectSink			m_SelectRectSink;
+	CEditStarsSink			m_EditStarSink;
 	CMRUList				m_MRUList;
-	QString					m_strStartingFileList;
+	CString					m_strStartingFileList;
 	CBackgroundLoading		m_BackgroundLoading;
 	CLoadedImage			m_LoadedImage;
 	CGammaTransformation	m_GammaTransformation;
-	QString					m_strCurrentFileList;
-	QNetworkAccessManager *   networkManager;			// deleted using QObject::deleteLater();
+	CString					m_strCurrentFileList;
+	QNetworkAccessManager* networkManager;			// deleted using QObject::deleteLater();
+
 
 	// These values dictate how resizing should work.
 	static const int sm_nMinListWidth = 500;
 	static const int sm_nMinListHeight = 120;
 	static const int sm_nMinImageHeight = 200;
 
-	//CCtrlCache m_cCtrlCache;
+	CCtrlCache m_cCtrlCache;
 
 // Construction
 public:
-	explicit StackingDlg(QWidget * parent = nullptr);   // standard constructor
+	CStackingDlg(CWnd* pParent = nullptr);   // standard constructor
 
-	bool	SaveOnClose();
+	BOOL	SaveOnClose();
 
 	void	ClearStackList()
 	{
@@ -90,17 +76,18 @@ public:
 	void	BatchStack();
 
 // Dialog Data
+	//{{AFX_DATA(CStackingDlg)
 	enum { IDD = IDD_STACKING };
 	CPictureListCtrl	m_Pictures;
 	CStatic				m_PictureStatic;
 	CLabel				m_Infos;
 	CLabel				m_ListInfo;
 	//CBitmapSlider		m_Gamma;
-	QLinearGradientCtrl		m_Gamma;
+	CGradientCtrl		m_Gamma;
 	CCustomTabCtrl		m_GroupTab;
-	// CCustomTabCtrl		m_JobTab;
+	CCustomTabCtrl		m_JobTab;
 	CLabel				m_ShowHideJobs;
-	// CButtonST			m_4Corners;
+	CButtonST			m_4Corners;
 	//}}AFX_DATA
 	CWndImage			m_Picture;
 
@@ -109,8 +96,8 @@ private :
 	void		UpdateListInfo();
 
 public :
-	bool		CheckDiskSpace(CAllStackingTasks & tasks);
-	bool		CheckWorkspaceChanges();
+	BOOL		CheckDiskSpace(CAllStackingTasks & tasks);
+	BOOL		CheckWorkspaceChanges();
 	void		CheckAskRegister();
 	void		RegisterCheckedImage();
 	void		CheckAll();
@@ -125,7 +112,7 @@ public :
 	void		ComputeOffsets();
 	void		LoadList();
 	void		SaveList();
-	void		ShowStars(bool bShow);
+	void		ShowStars(BOOL bShow);
 	bool		ShowRecap(CAllStackingTasks & tasks);
 	bool		CheckStacking(CAllStackingTasks & tasks);
 	bool		CheckReadOnlyFolders(CAllStackingTasks & tasks);
@@ -133,22 +120,29 @@ public :
 	void		DropFiles(HDROP hDropInfo);
 	void		SetStartingFileList(LPCTSTR szFileList)
 	{
-		m_strStartingFileList = QString::fromWCharArray((wchar_t *)szFileList);
+		m_strStartingFileList = szFileList;
 	};
 	void		OpenFileList(LPCTSTR szFileList);
 
 	void		FillTasks(CAllStackingTasks & tasks);
 
-private:
+private :
 	void		UncheckNonStackablePictures();
 	void		UpdateCheckedAndOffsets(CStackingEngine & StackingEngine);
 	void		DoStacking(CAllStackingTasks & tasks, double fPercent = 100.0);
 
 	void		UpdateGroupTabs();
-	bool		CheckEditChanges();
+	BOOL		CheckEditChanges();
 	void		UpdateLayout();
-	void		versionInfoReceived(QNetworkReply * reply);
+	void		versionInfoReceived(QNetworkReply* reply);
 	void		retrieveLatestVersionInfo();
+
+// Overrides
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CStackingDlg)
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
@@ -171,24 +165,12 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-private:
-	std::unique_ptr<CWorkspace> workspace;
-	bool	initialised;
-
-	void showEvent(QShowEvent* event) override;
-	void onInitDialog();
-
-
 public :
 	CWndImageSink *	GetCurrentSink();
 	virtual void ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar);
 	virtual void ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar);
 	virtual void ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToolbar);
 	afx_msg void OnBnClicked4corners();
-
-private slots:
-	void on_pictures_itemClicked(QTreeWidgetItem* item, int column);
-
 };
 
 //{{AFX_INSERT_LOCATION}}
