@@ -2086,10 +2086,10 @@ public :
 
 	virtual void GetValue(LONG i, LONG j, double & fGray)
 	{
-		if (CFAT_SUPERPIXEL == m_CFATransform)
-		{
-			i *= 2; j *= 2;
-		}
+		//if (CFAT_SUPERPIXEL == m_CFATransform)  Bug fix 15th August 2020
+		//{
+		//	i *= 2; j *= 2;
+		//}
 		CheckXY(i, j);
 		fGray = m_vPixels[GetOffset(i, j)];
 
