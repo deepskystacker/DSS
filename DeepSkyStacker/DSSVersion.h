@@ -11,7 +11,7 @@ constexpr long DSSBETAEXPIREMONTH = 10L;
 
 #define DSSVER_MAJOR			4
 #define DSSVER_MINOR			2
-#define DSSVER_SUB				4
+#define DSSVER_SUB				5
 
 #ifdef DSSBETA
 #define DSSVER_BUILD			DSSBETARELEASE
