@@ -1,6 +1,12 @@
 ﻿Welcome to DeepSkyStacker 4.2.5
 
-I've issued this release to resolve a problem that arises from what I believe to be long standing bug in Photoshop.   DeepSkyStacker now doesn't use TIFF predictive compression when writing TIFF files as Photoshop would read the file and then write TIFF files that were unreadable by other software.
+Here are the main changes that were made for DeepSkyStacker 4.2.5
+
+1. Remove use of predictive compression for TIFF files.  Use of this revealed a long standing bug in Photoshop which was able to read the files created by DSS, but then wrote corrupt TIFF files.
+
+2. Correct a problem where DSS failed to read files whose path contained accented characters.
+
+3. Fix for a problem where DSS incorrectly reported master calibration frames from earlier releases as being incompatible when a user specified CFA pattern was used for FITS files.
 
 PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20
 
