@@ -614,6 +614,29 @@ BOOL CFITSReader::Open()
 				};
 				m_filterName = filterName;
 			};
+
+			//
+			// If the user has explicitly set that this FITS file is a Bayer format RAW file,
+			// then the user will also have explicitly set the Bayer pattern that's to be used.
+			// In this case we use that and set the Bayer offsets (if any) to zero
+			//
+			bool isRaw = IsFITSRaw();
+
+			if ((m_lNrChannels == 1) &&
+				((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
+			{
+				ZTRACE_RUNTIME("Using user supplied override for Bayer pattern.");
+				if (isRaw)
+				{
+					m_CFAType = GetFITSCFATYPE();
+					m_xBayerOffset = 0;
+					m_yBayerOffset = 0;
+				}
+				//
+				// If user hasn't said it's a FITS format RAW, then use the CFA we've already
+				// retrieved from the FITS header if set.
+				//				
+			}
 		}
 		else
 			bResult = FALSE;
@@ -946,27 +969,12 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_CFAType = CFATYPE_NONE;
 
 		//
-		// If the user has explicitly set that this FITS file is a Bayer format RAW file,
-		// then the user will also have explicitly set the Bayer pattern that's to be used.
-		// In this case we use that and set the Bayer offsets (if any) to zero
+		// If this file is an eight bit FITS, and purports to have a Bayer pattern (or the user has
+		// explicitly specifed one), inform the the user that we aren't going to play
 		//
-		bool isRaw = IsFITSRaw();
-		
 		if ((m_lNrChannels == 1) &&
-			((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
-		{
-			if (isRaw)
-			{
-				m_CFAType = GetFITSCFATYPE();
-					m_xBayerOffset = 0;
-					m_yBayerOffset = 0;
-			}
-			//
-			// If user hasn't said it's a FITS format RAW, then use the CFA we've already
-			// retrieved from the FITS header if set.
-			//				
-		}
-		else
+			(m_lBitsPerPixel == 8) &&
+			(m_CFAType != CFATYPE_NONE))
 		{
 			// 
 			// Set CFA type to none even if the FITS header specified a value
@@ -974,9 +982,7 @@ BOOL CFITSReadInMemoryBitmap::OnOpen()
 			m_CFAType = CFATYPE_NONE;
 
 			static bool eightBitWarningIssued = false;
-			if (!eightBitWarningIssued &&
-				(m_lNrChannels == 1) &&
-				(m_lBitsPerPixel == 8))
+			if (!eightBitWarningIssued)
 			{
 				CString errorMessage;
 				errorMessage.Format(IDS_8BIT_FITS_NODEBAYER);
