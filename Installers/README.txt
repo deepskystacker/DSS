@@ -1,5 +1,7 @@
 ﻿Welcome to DeepSkyStacker 4.2.5
 
+PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20
+
 Here are the main changes that were made for DeepSkyStacker 4.2.5
 
 1. Remove use of predictive compression for TIFF files.  Use of this revealed a long standing bug in Photoshop which was able to read the files created by DSS, but then wrote corrupt TIFF files.
@@ -8,7 +10,7 @@ Here are the main changes that were made for DeepSkyStacker 4.2.5
 
 3. Fix for a problem where DSS incorrectly reported master calibration frames from earlier releases as being incompatible when a user specified CFA pattern was used for FITS files.
 
-PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20
+4. Fix a bug introduced in 4.2.3 which causes the code to crash when moving the sliders on the processing page.
 
 Here are the changes that were made for DeepSkyStacker 4.2.4.
 
