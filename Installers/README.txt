@@ -1,6 +1,6 @@
 ﻿Welcome to DeepSkyStacker 4.2.5
 
-PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20
+PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20.   Please note that version 5.1.0 of DeepSkyStacker will not run on 32 bit systems or Windows XP.
 
 Here are the main changes that were made for DeepSkyStacker 4.2.5
 
@@ -12,7 +12,7 @@ Here are the main changes that were made for DeepSkyStacker 4.2.5
 
 4. Fix a bug introduced in 4.2.3 which causes the code to crash when moving the sliders on the processing page.
 
-5. Apply a development fix to the LibRaW code which was looping forever attempting to open corrupt CR3 files.
+5. Apply a development fix to the LibRaw code which was looping forever attempting to open corrupt CR3 files.
 
 Here are the changes that were made for DeepSkyStacker 4.2.4.
 
