@@ -1332,7 +1332,7 @@ void LibRaw::GetNormalizedModel()
   {
     if (makeIs(LIBRAW_CAMERAMAKER_Samsung))
     {
-      if ((ilm.LensMount == LIBRAW_MOUNT_Samsung_NX) && (strlen(xmpdata) > 9) &&
+      if ((ilm.LensMount == LIBRAW_MOUNT_Samsung_NX) && xmpdata && (strlen(xmpdata) > 9) &&
           (ps = strstr(xmpdata, "LensID=\"(")))
       {
         ilm.LensID = atoi(ps + 9);
@@ -1354,10 +1354,6 @@ void LibRaw::GetNormalizedModel()
     if (ilm.LensID == LIBRAW_LENS_NOT_SET) ilm.LensMount = LIBRAW_MOUNT_IL_UM;
     else ilm.LensMount = ilm.CameraMount;
     }
-
-  if (normalized_model[0] && !CM_found)
-    CM_found = adobe_coeff(maker_index, normalized_model);
-
 }
 
 void LibRaw::SetStandardIlluminants (unsigned makerIdx, const char* normModel) {
