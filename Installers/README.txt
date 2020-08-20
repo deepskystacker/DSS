@@ -12,6 +12,8 @@ Here are the main changes that were made for DeepSkyStacker 4.2.5
 
 4. Fix a bug introduced in 4.2.3 which causes the code to crash when moving the sliders on the processing page.
 
+5. Apply a development fix to the LibRaW code which was looping forever attempting to open corrupt CR3 files.
+
 Here are the changes that were made for DeepSkyStacker 4.2.4.
 
 1. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).   CR3 file extension added to list of raw file types.
