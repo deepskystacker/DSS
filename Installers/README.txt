@@ -1,5 +1,20 @@
-﻿Welcome to DeepSkyStacker 4.2.4
-The main changes in this release are:
+﻿Welcome to DeepSkyStacker 4.2.5
+
+PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20.   Please note that version 5.1.0 of DeepSkyStacker will not run on 32 bit systems or Windows XP.
+
+Here are the main changes that were made for DeepSkyStacker 4.2.5
+
+1. Remove use of predictive compression for TIFF files.  Use of this revealed a long standing bug in Photoshop which was able to read the files created by DSS, but then wrote corrupt TIFF files.
+
+2. Correct a problem where DSS failed to read files whose path contained accented characters.
+
+3. Fix for a problem where DSS incorrectly reported master calibration frames from earlier releases as being incompatible when a user specified CFA pattern was used for FITS files.
+
+4. Fix a bug introduced in 4.2.3 which causes the code to crash when moving the sliders on the processing page.
+
+5. Apply a development fix to the LibRaw code which was looping forever attempting to open corrupt CR3 files.
+
+Here are the changes that were made for DeepSkyStacker 4.2.4.
 
 1. LibRaw updated to 0.20 providing support for over 1300 cameras including Canon Eos R (.CR3 files).   CR3 file extension added to list of raw file types.
    
@@ -37,7 +52,7 @@ I am sorry that this has happened, but it is outwith my control, and the LibRaw 
 
 8. Refactor the code to decode the TIFF file we just read and also use OpenMP.  Time to decode the image reduced by about 4-5 times.
 
-9. Refactor the code that writes TIFF files and use OpenMP to speed it up.  Also write the output file in strips rather than scanlines.  Substantial performance increase.
+9. Refactor the code that writes TIFF files and use OpenMP to speed it up.  Also write the output file in strips rather than scanlines and use TIFF predictive compression.  Substantial performance increase.
 
 10. Refactor the code that reads FITS files to make it easier to understand and also use OpenMP.  Only a marginal performance benefit.
 
@@ -56,6 +71,8 @@ I am sorry that this has happened, but it is outwith my control, and the LibRaw 
 17. Recommended Setting for Interpolation was incorrect.
 
 18. Fix for crash while attempting to select comet.
+
+19. Fix for Nikon Z 6, Z 7, and Z 50 being reported as unsupported.
 
 Welcome to DeepSkyStacker 4.2.3
 
