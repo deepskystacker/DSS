@@ -85,13 +85,13 @@ bool CTIFFReader::Open()
 	//
 	TIFFErrorHandler	oldHandler = TIFFSetErrorHandler(nullptr);
 	TIFFErrorHandlerExt	oldHandlerExt = TIFFSetErrorHandlerExt(nullptr);
-	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_UTF8), "r");
+	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_ACP), "r");
 	TIFFSetErrorHandler(oldHandler);
 	TIFFSetErrorHandlerExt(oldHandlerExt);
 
 	if (m_tiff)
 	{
-		ZTRACE_RUNTIME("Opened %s", (LPCSTR)CT2CA(m_strFileName, CP_UTF8));
+		ZTRACE_RUNTIME("Opened %s", (LPCSTR)CT2CA(m_strFileName, CP_ACP));
 
 		cfa = 0;
 		master = 0;
@@ -550,7 +550,10 @@ bool CTIFFWriter::Open()
 			TIFFSetField(m_tiff, TIFFTAG_ORIENTATION, ORIENTATION_TOPLEFT);
 			TIFFSetField(m_tiff, TIFFTAG_SAMPLEFORMAT, sampleformat);
 
-			if (IsFloat()) TIFFSetField(m_tiff, TIFFTAG_PREDICTOR, PREDICTOR_FLOATINGPOINT);
+			//
+			// Following line commented out as enabling this broke Photoshop (16 August 2020)
+			//
+			//if (IsFloat()) TIFFSetField(m_tiff, TIFFTAG_PREDICTOR, PREDICTOR_FLOATINGPOINT);
 
 			if (samplemax-samplemin)
 			{
@@ -766,14 +769,14 @@ bool CTIFFWriter::Write()
 			//
 			// Write the image out as Strips (i.e. not scanline by scanline)
 			// 
-			const unsigned long STRIP_SIZE_DEFAULT = 262144UL;		// 256kB
+			const unsigned long STRIP_SIZE_DEFAULT = 4'194'304UL;		// 4MB unsigned long STRIP_SIZE_DEFAULT = 262144UL;		// 256kB
 
 			//
-			// Work out how many scanlines fit into 256K
+			// Work out how many scanlines fit into the default strip
 			//
 			unsigned long rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
 			//
-			// Handle the case where the scanline is longer the 256kB
+			// Handle the case where the scanline is longer than the default strip size
 			//
 			if (0 == rowsPerStrip) rowsPerStrip = 1; 
 			TIFFSetField(m_tiff, TIFFTAG_ROWSPERSTRIP, rowsPerStrip);
