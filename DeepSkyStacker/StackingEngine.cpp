@@ -152,8 +152,8 @@ void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & s
 		FileTimeToSystemTime(&FileTime, &SystemTime);
 		SystemTimeToTzSpecificLocalTime(nullptr, &SystemTime, &SystemTime);
 
-		GetDateFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szDate, sizeof(szDate));
-		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szTime, sizeof(szTime));
+		GetDateFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szDate, sizeof(szDate)/sizeof(TCHAR));
+		GetTimeFormat(LOCALE_USER_DEFAULT, 0, &SystemTime, nullptr, szTime, sizeof(szTime)/sizeof(TCHAR));
 
 		strInfoFileName.Format(_T("%s%s%s.Info.txt [%s %s]"), szDrive, szDir, szName, szDate, szTime);
 	}

@@ -1084,8 +1084,8 @@ bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 			GetSystemTime(&BitmapInfo.m_InfoTime);
 
-			GetDateFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szDate, sizeof(szDate));
-			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szTime, sizeof(szTime));
+			GetDateFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szDate, sizeof(szDate)/sizeof(TCHAR));
+			GetTimeFormat(LOCALE_USER_DEFAULT, 0, &BitmapInfo.m_DateTime, nullptr, szTime, sizeof(szTime)/sizeof(TCHAR));
 
 			BitmapInfo.m_strDateTime.Format(_T("%s %s"), szDate, szTime);
 
