@@ -17,7 +17,7 @@ static bool	GetDefaultSettingsFileName(CString & strFile)
 	TCHAR			szDrive[1+_MAX_DRIVE];
 	TCHAR			szDir[1+_MAX_DIR];
 
-	GetModuleFileName(nullptr, szFileName, sizeof(szFileName));
+	GetModuleFileName(nullptr, szFileName, sizeof(szFileName)/sizeof(TCHAR));
 	strBase = szFileName;
 	_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
 
