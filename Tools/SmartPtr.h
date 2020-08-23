@@ -4,12 +4,12 @@
 class CRefCount
 {
 protected :
-	LONG		m_lRefCount;
+	std::atomic<long> m_lRefCount;
 
 public :
-	CRefCount()
+	CRefCount() :
+		m_lRefCount{ 0 }
 	{
-		m_lRefCount = 0;
 	};
 
 	virtual ~CRefCount()
@@ -18,23 +18,14 @@ public :
 
 	void	AddRef()
 	{
-		#if defined(_WINDOWS_)
-		InterlockedIncrement(&m_lRefCount);
-		#else
 		m_lRefCount++;
-		#endif
 	};
 
 	void	Release()
 	{
-		#if defined(_WINDOWS_)
-		if (!InterlockedDecrement(&m_lRefCount))
-			delete this;
-		#else
 		m_lRefCount--;
 		if (!m_lRefCount)
 			delete this;
-		#endif
 	};
 };
 
