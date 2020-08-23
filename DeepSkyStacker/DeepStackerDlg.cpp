@@ -1,4 +1,4 @@
-F// DeepStackerDlg.cpp : implementation file
+// DeepStackerDlg.cpp : implementation file
 //
 
 #include "stdafx.h"
