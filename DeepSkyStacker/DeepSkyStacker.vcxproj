@@ -484,6 +484,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="SettingsDlg.h" />
     <ClInclude Include="SetUILanguage.h" />
     <ClInclude Include="StackedBitmap.h" />
+    <ClInclude Include="StackingDlg.h" />
     <ClInclude Include="StackingEngine.h" />
     <QtMoc Include="StackingParameters.h" />
     <ClInclude Include="StackingTasks.h" />

@@ -682,6 +682,9 @@
     <ClInclude Include="group.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="StackingDlg.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">
