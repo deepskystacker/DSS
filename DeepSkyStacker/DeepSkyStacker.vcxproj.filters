@@ -333,6 +333,9 @@
     <ClCompile Include="QLinearGradientCtrl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="DSSImageView.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -1155,6 +1158,9 @@
     </QtMoc>
     <QtMoc Include="QLinearGradientCtrl.h">
       <Filter>Tools</Filter>
+    </QtMoc>
+    <QtMoc Include="DSSImageView.h">
+      <Filter>Kernel</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
