@@ -37,6 +37,7 @@
 class QKeyEvent;
 class QMouseEvent;
 class QResizeEvent;
+class QToolBar;
 class QWheelEvent;
 
 #include <QtWidgets/QWidget>
@@ -50,6 +51,7 @@ typedef QWidget
 public:
     DSSImageView(QPixmap& p, QWidget* parent = Q_NULLPTR);
     QSize sizeHint() const noexcept override { return QSize(500, 500); };
+    inline void setToolBar(QToolBar* p) noexcept { m_pToolBar = p; };
 
 public slots:
     void setPixmap(const QPixmap&);
@@ -71,8 +73,8 @@ private:
     qreal m_scale, m_zoom;
     QPointF m_origin;
     QPixmap& m_pixmap;
-    QPixmap m_drawingPixmap;
     QPointF m_pointInPixmap;
+    QToolBar* m_pToolBar;
     void zoom(QPointF mouseLocation, qreal steps);
     bool m_fourCorners;
     void paintFourCorners(QPainter& painter);
@@ -86,6 +88,4 @@ private:
             (y >= oy) &&
             (y <= oy + (m_pixmap.height() * m_scale)));
     };
-
 };
-

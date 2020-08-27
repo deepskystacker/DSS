@@ -37,13 +37,15 @@
 #include <cmath>
 #include <iostream>
 
-#include "DSSImageView.h"
+#include "dssimageview.h"
 
 #include <QCursor>
 #include <QDebug>
+#include <QGuiApplication>
 #include <QPainter>
 #include <QKeyEvent>
 #include <QMouseEvent>
+#include <QToolBar>
 #include <QResizeEvent>
 #if QT_CONFIG(wheelevent)
 #include <QWheelEvent>
@@ -57,11 +59,10 @@ DSSImageView::DSSImageView(QPixmap& p, QWidget* parent)
     m_zoom(1.0),
     m_origin(0.0, 0.0),
     m_pixmap(p),
+    m_pToolBar(nullptr),
     m_pointInPixmap((m_pixmap.width() / 2), (m_pixmap.height() / 2)),
     m_fourCorners(false)
 {
-    setBackgroundRole(QPalette::Dark);      // A darker background please
-    setAutoFillBackground(true);
     setAttribute(Qt::WA_MouseTracking);
     setFocusPolicy(Qt::StrongFocus);
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -75,7 +76,6 @@ void DSSImageView::mousePressEvent(QMouseEvent* e)
 void DSSImageView::resizeEvent(QResizeEvent* e)
 {
     const QSize sz = e->size();
-    m_drawingPixmap = QPixmap(sz);  // this is what we draw onto
 
     const qreal pixWidth = m_pixmap.width();
     const qreal pixHeight = m_pixmap.height();
@@ -95,17 +95,28 @@ void DSSImageView::resizeEvent(QResizeEvent* e)
     }
     m_origin = QPointF(xoffset, yoffset);
 
+    if (m_pToolBar)
+    {
+        qreal width(m_pToolBar->width());
+        qreal height(m_pToolBar->height());
+        QPoint point(sz.width() - width - 1 , sz.height() - height - 1);
+        qDebug() << "width" << width << "height" << height;
+        m_pToolBar->move(point);
+    }
+
     update();
     Inherited::resizeEvent(e);
 }
 
 void DSSImageView::paintEvent(QPaintEvent* event)
 {
-    QPainter pixPainter(&m_drawingPixmap);
-    pixPainter.begin(this);
-    pixPainter.setRenderHint(QPainter::Antialiasing);
-    pixPainter.setRenderHint(QPainter::SmoothPixmapTransform);
-    pixPainter.eraseRect(rect());
+    QPainter painter(this);
+    QPalette palette{ QGuiApplication::palette() };
+    QBrush brush{ palette.dark() };
+
+    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint(QPainter::SmoothPixmapTransform);
+    painter.fillRect(rect(), brush);
 
     //
     // Calculate the rectangle we're interested in that is centred on the point in the pixmap
@@ -128,33 +139,29 @@ void DSSImageView::paintEvent(QPaintEvent* event)
     //
     sourceRect &= m_pixmap.rect();
 
-    pixPainter.save();
-    pixPainter.translate(m_origin);
-    pixPainter.scale(m_zoom * m_scale, m_zoom * m_scale);
-    pixPainter.translate(-m_origin);
+    painter.save();
+    painter.translate(m_origin);
+    painter.scale(m_zoom * m_scale, m_zoom * m_scale);
+    painter.translate(-m_origin);
 
     //
     // Finally draw the clipped rectangle of interest at the origin location
     //
-    pixPainter.drawPixmap(m_origin, m_pixmap, sourceRect);
-    pixPainter.restore();
+    painter.drawPixmap(m_origin, m_pixmap, sourceRect);
+    painter.restore();
 
     //
     // Has the user enabled four corners mode?
     // 
     if (m_fourCorners)
     {
-        paintFourCorners(pixPainter);
+        paintFourCorners(painter);
     }
     else
     {
         // do the overlay image
     }
 
-    pixPainter.end();
-
-    QPainter painter(this);
-    painter.drawPixmap(0, 0, m_drawingPixmap);
     painter.end();
 }
 
@@ -349,4 +356,3 @@ void DSSImageView::keyPressEvent(QKeyEvent* e)
     if (!handled)
         Inherited::keyPressEvent(e);
 }
-
