@@ -336,6 +336,9 @@
     <ClCompile Include="DSSImageView.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="dsseditstars.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -1208,6 +1211,9 @@
       <Filter>Tools</Filter>
     </QtMoc>
     <QtMoc Include="DSSImageView.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="dsseditstars.h">
       <Filter>Kernel</Filter>
     </QtMoc>
   </ItemGroup>

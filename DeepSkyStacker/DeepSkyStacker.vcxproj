@@ -261,6 +261,10 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="DeepStackerDlg.cpp" />
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
+    <ClCompile Include="dsseditstars.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="DSSImageView.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -434,6 +438,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="DSS-winpackagefamily.h" />
     <ClInclude Include="DSSCommon.h" />
     <QtMoc Include="DSSImageView.h" />
+    <QtMoc Include="dsseditstars.h" />
     <ClInclude Include="DSSMemory.h" />
     <ClInclude Include="DSSProgress.h" />
     <ClInclude Include="DSSTools.h" />
