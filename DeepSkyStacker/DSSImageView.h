@@ -77,7 +77,7 @@ private:
     bool m_fourCorners;
     void paintFourCorners(QPainter& painter);
 
-    inline bool mouseOverImage(QPointF loc)
+    inline bool mouseOverImage(QPointF loc) const
     {
         const qreal x = loc.x(), y = loc.y(), ox = m_origin.x(), oy = m_origin.y();
         return (
