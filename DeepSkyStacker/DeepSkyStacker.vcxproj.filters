@@ -984,6 +984,54 @@
     <Image Include="res\4Corners.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Buttons\ButtonComet_Disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonComet_Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonComet_Hot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonComet_Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Hot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSave_Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Hot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonSelect_Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Down.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Hot.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Buttons\ButtonStar_Up.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h">

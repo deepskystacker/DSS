@@ -515,21 +515,37 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <Image Include="Buttons\ButtonBase_mask.bmp" />
     <Image Include="Buttons\ButtonBase_up.bmp" />
     <Image Include="Buttons\ButtonComet_Disabled.bmp" />
+    <Image Include="Buttons\ButtonComet_Disabled.png" />
     <Image Include="Buttons\ButtonComet_Down.bmp" />
+    <Image Include="Buttons\ButtonComet_Down.png" />
     <Image Include="Buttons\ButtonComet_Hot.bmp" />
+    <Image Include="Buttons\ButtonComet_Hot.png" />
     <Image Include="Buttons\ButtonComet_Up.bmp" />
+    <Image Include="Buttons\ButtonComet_Up.png" />
     <Image Include="Buttons\ButtonSave_Disabled.bmp" />
+    <Image Include="Buttons\ButtonSave_Disabled.png" />
     <Image Include="Buttons\ButtonSave_Down.bmp" />
+    <Image Include="Buttons\ButtonSave_Down.png" />
     <Image Include="Buttons\ButtonSave_Hot.bmp" />
+    <Image Include="Buttons\ButtonSave_Hot.png" />
     <Image Include="Buttons\ButtonSave_Up.bmp" />
+    <Image Include="Buttons\ButtonSave_Up.png" />
     <Image Include="Buttons\ButtonSelect_Disabled.bmp" />
+    <Image Include="Buttons\ButtonSelect_Disabled.png" />
     <Image Include="Buttons\ButtonSelect_Down.bmp" />
+    <Image Include="Buttons\ButtonSelect_Down.png" />
     <Image Include="Buttons\ButtonSelect_Hot.bmp" />
+    <Image Include="Buttons\ButtonSelect_Hot.png" />
     <Image Include="Buttons\ButtonSelect_Up.bmp" />
+    <Image Include="Buttons\ButtonSelect_Up.png" />
     <Image Include="Buttons\ButtonStar_Disabled.bmp" />
+    <Image Include="Buttons\ButtonStar_Disabled.png" />
     <Image Include="Buttons\ButtonStar_Down.bmp" />
+    <Image Include="Buttons\ButtonStar_Down.png" />
     <Image Include="Buttons\ButtonStar_Hot.bmp" />
+    <Image Include="Buttons\ButtonStar_Hot.png" />
     <Image Include="Buttons\ButtonStar_Up.bmp" />
+    <Image Include="Buttons\ButtonStar_Up.png" />
     <Image Include="filelist.ico" />
     <Image Include="open.bmp" />
     <Image Include="openfile.ico" />
@@ -663,6 +679,9 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
   </ImportGroup>
+  <PropertyGroup Condition="'$(Language)'=='C++'">
+    <CAExcludePath>$(QTDIR)\include;.\GeneratedFiles;$(CAExcludePath)</CAExcludePath>
+  </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
   <ProjectExtensions>
