@@ -85,6 +85,12 @@ public :
 			a1 = 0;
 		b1 = y1 - a1*x1;
 	};
+
+	float getParameterXm() const { return static_cast<float>(this->xm); }
+	float getParameterA0() const { return static_cast<float>(this->a0); }
+	float getParameterA1() const { return static_cast<float>(this->a1); }
+	float getParameterB0() const { return static_cast<float>(this->b0); }
+	float getParameterB1() const { return static_cast<float>(this->b1); }
 };
 
 /*
@@ -169,6 +175,12 @@ public :
 		fMin = min(min(y0, y1), y2);
 		fMax = max(max(y0, y1), y2);
 	};
+
+	float getParameterA() const { return static_cast<float>(this->a); }
+	float getParameterB() const { return static_cast<float>(this->b); }
+	float getParameterC() const { return static_cast<float>(this->c); }
+	float getParameterMin() const { return static_cast<float>(this->fMin); }
+	float getParameterMax() const { return static_cast<float>(this->fMax); }
 };
 
 /*

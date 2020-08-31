@@ -504,6 +504,21 @@ public :
 	{
 		m_bHomogenization = bSet;
 	};
+
+	bool GetHomogenization() const
+	{
+		return m_bHomogenization;
+	}
+
+	int GetProcessingMethod() const
+	{
+		return m_Method;
+	}
+
+	auto GetProcessingParameters() const
+	{
+		return std::make_tuple(m_fKappa, m_lNrIterations);
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -891,6 +906,11 @@ public :
 	{
 		return m_bMaster;
 	};
+
+	virtual bool isTopDown()
+	{
+		return m_bTopDown;
+	}
 
 	virtual void	SetCFA(bool bCFA)
 	{

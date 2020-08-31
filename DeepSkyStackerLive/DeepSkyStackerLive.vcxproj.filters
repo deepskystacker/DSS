@@ -222,6 +222,15 @@
     <ClCompile Include="..\SMTP\SocMFC.cpp">
       <Filter>Tools\SMTP</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_output.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
@@ -460,6 +469,15 @@
     </ClInclude>
     <ClInclude Include="..\SMTP\SocMFC.h">
       <Filter>Tools\SMTP</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_avg.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_output.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include "Multitask.h"
+#include "avx_output.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -225,6 +226,8 @@ bool	CCombineTask::DoTask(HANDLE hEvent)
 	{
 		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
+			AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, m_pBitmap);
+
 			if (msg.message == WM_MT_PROCESS)
 			{
 				for (i = msg.wParam; i < msg.wParam + msg.lParam && !bEnd; i++)
@@ -247,7 +250,13 @@ bool	CCombineTask::DoTask(HANDLE hEvent)
 					};
 
 					if (!bEnd)
-						m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
+					{
+						// First try AVX accelerated code, if not supported -> run conventional code.
+						if (avxOutputComposition.compose(i, vScanLines) != 0)
+						{
+							m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
+						}
+					}
 				};
 
 				SetEvent(hEvent);

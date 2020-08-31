@@ -111,6 +111,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />
     <ClCompile Include="..\DeepSkyStacker\ChannelAlign.cpp" />
@@ -145,6 +148,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DeepSkyStacker\AHDDemosaicing.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_avg.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_output.h" />
     <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />
     <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />

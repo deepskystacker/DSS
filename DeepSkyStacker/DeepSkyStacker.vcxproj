@@ -239,6 +239,9 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AskRegistering.cpp" />
+    <ClCompile Include="avx.cpp" />
+    <ClCompile Include="avx_avg.cpp" />
+    <ClCompile Include="avx_output.cpp" />
     <ClCompile Include="BackgroundCalibration.cpp" />
     <ClCompile Include="BackgroundLoading.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
@@ -414,6 +417,9 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="AHDDemosaicing.h" />
     <QtMoc Include="AlignmentParameters.h" />
     <ClInclude Include="AskRegistering.h" />
+    <ClInclude Include="avx.h" />
+    <ClInclude Include="avx_avg.h" />
+    <ClInclude Include="avx_output.h" />
     <ClInclude Include="BackgroundCalibration.h" />
     <ClInclude Include="BackgroundLoading.h" />
     <QtMoc Include="BackgroundOptions.h" />

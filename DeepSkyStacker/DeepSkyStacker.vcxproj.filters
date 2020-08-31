@@ -339,6 +339,15 @@
     <ClCompile Include="dsseditstars.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="avx.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="avx_avg.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="avx_output.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -690,6 +699,15 @@
     </ClInclude>
     <ClInclude Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="avx.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_avg.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_output.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

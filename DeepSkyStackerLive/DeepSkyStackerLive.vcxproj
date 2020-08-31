@@ -136,6 +136,9 @@
     <ClCompile Include="..\ChartCtrl\ChartSurfaceSerie.cpp" />
     <ClCompile Include="..\ChartCtrl\ChartTitle.cpp" />
     <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />
     <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp" />
@@ -212,6 +215,9 @@
     <ClInclude Include="..\ChartCtrl\ChartSurfaceSerie.h" />
     <ClInclude Include="..\ChartCtrl\ChartTitle.h" />
     <ClInclude Include="..\DeepSkyStacker\AHDDemosaicing.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_avg.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_output.h" />
     <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />
     <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />
