@@ -367,7 +367,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 	ZFUNCTRACE_RUNTIME();
 	FILE *			hFile;
 	CString			strText;
-	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8);  // in UTF-8
+	LPCSTR			strFile = CT2CA(szStackedFile, CP_ACP);  
 
 	printf("Saving Stacked Bitmap in %s\n", strFile);
 	ZTRACE_RUNTIME("Saving Stacked Bitmap in %s", strFile);
