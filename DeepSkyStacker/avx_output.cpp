@@ -8,43 +8,45 @@
 
 AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap* pOut) :
 	inputBitmap{ mBitmap },
-	pOutput{ pOut }
+	pOutputBitmap{ dynamic_cast<C96BitFloatColorBitmap*>(pOut) },
+	avxReady{ pOutputBitmap != nullptr }
 {
+	if (!AvxStacking::checkCpuFeatures())
+		avxReady = false;
+	// Homogenization not implemented with AVX
+	if (inputBitmap.GetHomogenization())
+		avxReady = false;
+	// Input must be a RGB color bitmap with unsigned shorts
+	if (inputBitmap.GetNrChannels() != 3 || inputBitmap.GetNrBytesPerChannel() != 2)
+		avxReady = false;
+	// We cannot consider more than 65536 bitmaps, because 16 bit unsigned short is used for N.
+	if (inputBitmap.GetNrAddedBitmaps() > 0x0ffff)
+		avxReady = false;
+	// Output must be float values
+	if (pOut->BitPerSample() != 32 || !pOut->IsFloat() || !pOut->isTopDown())
+		avxReady = false;
 }
 
 int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (!AvxStacking::checkCpuFeatures())
-		return 1;
-	// Homogenization not implemented with AVX
-	if (inputBitmap.GetHomogenization())
-		return 1;
-	// Input must be a RGB color bitmap with unsigned shorts
-	if (inputBitmap.GetNrChannels() != 3 || inputBitmap.GetNrBytesPerChannel() != 2)
-		return 1;
-	// We cannot consider more than 65536 bitmaps
-	if (inputBitmap.GetNrAddedBitmaps() > 0x0ffff)
-		return 1;
-	// Output must be float values
-	if (pOutput->BitPerSample() != 32 || !pOutput->IsFloat() || !pOutput->isTopDown())
+	if (!avxReady)
 		return 1;
 
-	C96BitFloatColorBitmap* const pOutputBitmap = dynamic_cast<C96BitFloatColorBitmap*>(pOutput);
-	if (pOutputBitmap == nullptr)
-		return 1;
-
-	if (inputBitmap.GetProcessingMethod() == MBP_SIGMACLIP) {
-		return processKappaSigma(line, lineAddresses, pOutputBitmap);
+	switch (inputBitmap.GetProcessingMethod())
+	{
+		case MBP_SIGMACLIP: return processKappaSigma(line, lineAddresses);
+//		case MBP_AUTOADAPTIVE: return processAutoAdaptiveWeightedAverage(line, lineAddresses);
+		default: return 2;
 	}
 
 	return 2;
 }
 
-int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> const& lineAddresses, C96BitFloatColorBitmap* const pOutputBitmap)
+int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
 	const auto parameters = inputBitmap.GetProcessingParameters();
 
-	const int width = pOutput->RealWidth();
+	const int width = pOutputBitmap->RealWidth();
 	const int nrVectors = width / 16;
 	const size_t nrLightframes = lineAddresses.size();
 
@@ -173,5 +175,9 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 	kappaSigmaLoop(&pOutputBitmap->m_Blue.m_vPixels[0], width * 2);
 
 	return 0;
+}
+
+int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses)
+{
 }
 #endif

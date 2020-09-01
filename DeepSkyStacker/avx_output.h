@@ -9,7 +9,8 @@ class AvxOutputComposition
 {
 private:
 	CMultiBitmap& inputBitmap;
-	CMemoryBitmap* pOutput;
+	C96BitFloatColorBitmap *const pOutputBitmap;
+	bool avxReady;
 public:
 	AvxOutputComposition() = delete;
 	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap* pOut);
@@ -19,7 +20,8 @@ public:
 
 	int compose(const int line, std::vector<void*> const& lineAddresses);
 private:
-	int processKappaSigma(const int line, std::vector<void*> const& lineAddresses, C96BitFloatColorBitmap* const pOutputBitmap);
+	int processKappaSigma(const int line, std::vector<void*> const& lineAddresses);
+	int processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses);
 };
 
 #else
