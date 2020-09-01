@@ -2,6 +2,8 @@
 #include "avx_avg.h"
 #include "avx.h"
 
+#if defined(AVX_INTRINSICS) && defined(_M_X64)
+
 #include <immintrin.h>
 
 AvxAccumulation::AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, C48BitColorBitmap* pTemp, C96BitFloatColorBitmap* pOut) :
@@ -105,3 +107,4 @@ int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 
 	return 1;
 }
+#endif

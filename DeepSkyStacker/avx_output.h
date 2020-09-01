@@ -1,5 +1,10 @@
 #pragma once
 
+#include "BitmapExt.h"
+#include <vector>
+
+
+#if defined(AVX_INTRINSICS) && defined(_M_X64)
 class AvxOutputComposition
 {
 private:
@@ -16,3 +21,17 @@ public:
 private:
 	int processKappaSigma(const int line, std::vector<void*> const& lineAddresses, C96BitFloatColorBitmap* const pOutputBitmap);
 };
+
+#else
+
+class AvxOutputComposition
+{
+public:
+	AvxOutputComposition(CMultiBitmap&, CMemoryBitmap*) {}
+	int compose(const int, std::vector<void*> const&)
+	{
+		return 1;
+	}
+};
+
+#endif

@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "avx_output.h"
-#include "BitmapExt.h"
 #include "avx.h"
 
-#include <immintrin.h>
+#if defined(AVX_INTRINSICS) && defined(_M_X64)
 
+#include <immintrin.h>
 
 AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap* pOut) :
 	inputBitmap{ mBitmap },
@@ -174,3 +174,4 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 
 	return 0;
 }
+#endif

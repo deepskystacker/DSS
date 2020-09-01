@@ -1,7 +1,8 @@
 #include "StdAfx.h"
 #include "avx.h"
 
-#include <vector>
+#if defined(AVX_INTRINSICS) && defined(_M_X64)
+
 #include <immintrin.h>
 
 AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& bm, const CRect& resultRect) :
@@ -635,3 +636,4 @@ int AvxStacking::pixelDispatchAndAccumulate(C48BitColorBitmap* pBitmap, C48BitCo
 
 	return 0;
 }
+#endif

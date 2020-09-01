@@ -5,7 +5,10 @@
 #include "BackgroundCalibration.h"
 #include "BitmapExt.h"
 
-class AvxAccumulation {
+
+#if defined(AVX_INTRINSICS) && defined(_M_X64)
+class AvxAccumulation
+{
 	int resultWidth, resultHeight;
 	C48BitColorBitmap* const pTempBitmap;
 	C96BitFloatColorBitmap* const pOutput;
@@ -22,3 +25,17 @@ private:
 	template <typename T>
 	static bool checkBitmap(CColorBitmapT<T>* const pBitmap, const int nrBits);
 };
+
+#else
+
+class AvxAccumulation
+{
+public:
+	AvxAccumulation(const CRect&, const CTaskInfo&, C48BitColorBitmap*, C96BitFloatColorBitmap*) {}
+	int accumulate(const int)
+	{
+		return 1;
+	}
+};
+
+#endif
