@@ -31,11 +31,14 @@ int AvxOutputComposition::compose(const int line, std::vector<void*> const& line
 {
 	if (!avxReady)
 		return 1;
+	// If this is not equal, something went wrong and we cannot continue without risking access violations.
+	if (lineAddresses.size() != inputBitmap.GetNrAddedBitmaps())
+		return 1;
 
 	switch (inputBitmap.GetProcessingMethod())
 	{
 		case MBP_SIGMACLIP: return processKappaSigma(line, lineAddresses);
-//		case MBP_AUTOADAPTIVE: return processAutoAdaptiveWeightedAverage(line, lineAddresses);
+		case MBP_AUTOADAPTIVE: return processAutoAdaptiveWeightedAverage(line, lineAddresses);
 		default: return 2;
 	}
 
@@ -48,7 +51,6 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 
 	const int width = pOutputBitmap->RealWidth();
 	const int nrVectors = width / 16;
-	const size_t nrLightframes = lineAddresses.size();
 
 	const auto ps2epu16 = [](const __m256 x1, const __m256 x2) -> __m256i
 	{
@@ -83,7 +85,8 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 
 	const auto kappaSigmaLoop = [&](float* pOut, const int colorOffset) -> void
 	{
-		for (int counter = 0; counter < nrVectors; ++counter, pOut += 16) {
+		for (int counter = 0; counter < nrVectors; ++counter, pOut += 16)
+		{
 			__m256i lowerBound = _mm256_set1_epi16(unsigned short(1)); // Values of zero are ignored.
 			__m256i upperBound = _mm256_set1_epi16(std::numeric_limits<WORD>::max());
 			__m256 my1, my2;
@@ -100,7 +103,7 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 				// Loop over the light frames
 				for (auto frameAddress : lineAddresses)
 				{
-					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16 + colorOffset;
+					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
 					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
 					const __m256i outOfRangeMask = _mm256_or_si256(cmpGtEpu16(lowerBound, colorValue), cmpGtEpu16(colorValue, upperBound)); // 16 x 16 bit mask. One where value out of range.
 					const __m256i effectiveValue = _mm256_andnot_si256(outOfRangeMask, colorValue); // Zero if outside (µ +- kappa*sigma).
@@ -132,8 +135,8 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 				lowerBound = _mm256_blendv_epi8(ps2epu16(lower1, lower2), _mm256_set1_epi16(unsigned short(1)), noValuesMask); // Set 1 where N==0.
 				upperBound = _mm256_blendv_epi8(ps2epu16(upper1, upper2), _mm256_setzero_si256(), noValuesMask); // Set 0 where N==0.
 			}
-			_mm256_storeu_ps(pOut + line * pOutputBitmap->Width(), my1);
-			_mm256_storeu_ps(pOut + line * pOutputBitmap->Width() + 8, my2);
+			_mm256_storeu_ps(pOut + static_cast<size_t>(line) * pOutputBitmap->Width(), my1);
+			_mm256_storeu_ps(pOut + static_cast<size_t>(line) * pOutputBitmap->Width() + 8, my2);
 		}
 		// Rest of line
 		for (int n = nrVectors * 16; n < width; ++n, ++pOut)
@@ -166,7 +169,7 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 				lowerBound = static_cast<unsigned short>(my - sigmakappa);
 				upperBound = static_cast<unsigned short>(my + sigmakappa);
 			}
-			*(pOut + line * pOutputBitmap->Width()) = my;
+			*(pOut + static_cast<size_t>(line) * pOutputBitmap->Width()) = my;
 		}
 	};
 
@@ -179,5 +182,128 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 
 int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses)
 {
+	const int nIterations = std::get<1>(inputBitmap.GetProcessingParameters());
+	const int width = pOutputBitmap->RealWidth();
+	const int nrVectors = width / 16;
+	const __m256 N = _mm256_set1_ps(static_cast<float>(lineAddresses.size()));
+
+	const auto autoAdaptLoop = [&](float* pOut, const int colorOffset) -> void
+	{
+		// Loop over the pixels of the row, process 16 at a time.
+		for (int counter = 0; counter < nrVectors; ++counter, pOut += 16)
+		{
+			__m256 my1 = _mm256_setzero_ps();
+			__m256 my2 = _mm256_setzero_ps();
+
+			// Calculate initial (unweighted) mean.
+			for (auto frameAddress : lineAddresses)
+			{
+				const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
+				const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
+				my1 = _mm256_add_ps(my1, AvxStacking::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0)));
+				my2 = _mm256_add_ps(my2, AvxStacking::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1)));
+			}
+			my1 = _mm256_div_ps(my1, N);
+			my2 = _mm256_div_ps(my2, N);
+
+			for (int iteration = 0; iteration < nIterations; ++iteration)
+			{
+				__m256 S1 = _mm256_setzero_ps();
+				__m256 S2 = _mm256_setzero_ps();
+
+				// Calculate sigma² related to µ of last iteration.
+				for (auto frameAddress : lineAddresses)
+				{
+					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
+					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
+					const __m256 d1 = _mm256_sub_ps(AvxStacking::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0)), my1);
+					const __m256 d2 = _mm256_sub_ps(AvxStacking::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1)), my2);
+					S1 = _mm256_fmadd_ps(d1, d1, S1); // Sum of (x-µ)²
+					S2 = _mm256_fmadd_ps(d2, d2, S2);
+				}
+				const __m256 sigmaSq1 = _mm256_div_ps(S1, N); // sigma² = sum(x-µ)² / N
+				const __m256 sigmaSq2 = _mm256_div_ps(S2, N);
+
+				// Calculate new µ using current sigma².
+				__m256 W1 = _mm256_setzero_ps();
+				__m256 W2 = _mm256_setzero_ps();
+				S1 = _mm256_setzero_ps();
+				S2 = _mm256_setzero_ps();
+				for (auto frameAddress : lineAddresses)
+				{
+					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
+					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
+					const __m256 lo8 = AvxStacking::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0));
+					const __m256 hi8 = AvxStacking::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1));
+					const __m256 d1 = _mm256_sub_ps(lo8, my1); // x-µ
+					const __m256 d2 = _mm256_sub_ps(hi8, my2);
+					const __m256 denominator1 = _mm256_fmadd_ps(d1, d1, sigmaSq1); // sigma² + (x-µ)²
+					const __m256 denominator2 = _mm256_fmadd_ps(d2, d2, sigmaSq2);
+					const __m256 weight1 = _mm256_blendv_ps(_mm256_div_ps(sigmaSq1, denominator1), _mm256_set1_ps(1.0f), _mm256_cmp_ps(denominator1, _mm256_setzero_ps(), 0)); // sigma² / (sigma² + (x-µ)²) = 1 / (1 + (x-µ)²/sigma²)
+					const __m256 weight2 = _mm256_blendv_ps(_mm256_div_ps(sigmaSq2, denominator2), _mm256_set1_ps(1.0f), _mm256_cmp_ps(denominator2, _mm256_setzero_ps(), 0)); // Set weight to 1 when sigma==0.
+					W1 = _mm256_add_ps(W1, weight1); // W = sum(weights)
+					W2 = _mm256_add_ps(W2, weight2);
+					S1 = _mm256_fmadd_ps(lo8, weight1, S1); // S = sum(x * weight)
+					S2 = _mm256_fmadd_ps(hi8, weight2, S2);
+				}
+
+				my1 = _mm256_div_ps(S1, W1); // W=sum(weights) == 0 cannot happen.
+				my2 = _mm256_div_ps(S2, W2);
+			}
+			_mm256_storeu_ps(pOut + static_cast<size_t>(line) * pOutputBitmap->Width(), my1);
+			_mm256_storeu_ps(pOut + static_cast<size_t>(line) * pOutputBitmap->Width() + 8, my2);
+		}
+
+		// Rest of line
+		const float N = static_cast<float>(lineAddresses.size());
+		for (int n = nrVectors * 16; n < width; ++n, ++pOut)
+		{
+			float my{ 0.0f };
+			// Calculate initial (unweighted) mean.
+			for (auto frameAddress : lineAddresses)
+			{
+				const WORD* pColor = static_cast<WORD*>(frameAddress) + n + colorOffset;
+				my += static_cast<float>(*pColor);
+			}
+			my /= N;
+
+			for (int iteration = 0; iteration < nIterations; ++iteration)
+			{
+				float S{ 0.0f };
+
+				// Calculate sigma² related to µ of last iteration.
+				for (auto frameAddress : lineAddresses)
+				{
+					const WORD* pColor = static_cast<WORD*>(frameAddress) + n + colorOffset;
+					const float d = static_cast<float>(*pColor) - my;
+					S += (d * d);
+				}
+				const float sigmaSq = S / N;
+
+				// Calculate new µ using current sigma².
+				float W{ 0.0f };
+				S = 0.0f;
+				for (auto frameAddress : lineAddresses)
+				{
+					const WORD* pColor = static_cast<WORD*>(frameAddress) + n + colorOffset;
+					const float color = static_cast<float>(*pColor);
+					const float d = color - my;
+					const float denominator = sigmaSq + d * d;
+					const float w = denominator == 0.0f ? 1.0f : (sigmaSq / denominator);
+					W += w;
+					S += color * w;
+				}
+				my = S / W; // W cannot be zero.
+			}
+
+			*(pOut + static_cast<size_t>(line) * pOutputBitmap->Width()) = my;
+		}
+	};
+
+	autoAdaptLoop(&pOutputBitmap->m_Red.m_vPixels[0], 0);
+	autoAdaptLoop(&pOutputBitmap->m_Green.m_vPixels[0], width);
+	autoAdaptLoop(&pOutputBitmap->m_Blue.m_vPixels[0], width * 2);
+
+	return 0;
 }
 #endif
