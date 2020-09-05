@@ -423,6 +423,7 @@ static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMem
 
 void	CMultiBitmap::SmoothOut(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppOutBitmap)
 {
+	ZFUNCTRACE_RUNTIME();
 	if (m_pHomBitmap)
 	{
 		CSmartPtr<CMemoryBitmap>	pOutBitmap;
