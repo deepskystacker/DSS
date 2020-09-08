@@ -9,11 +9,11 @@ class AvxOutputComposition
 {
 private:
 	CMultiBitmap& inputBitmap;
-	C96BitFloatColorBitmap *const pOutputBitmap;
+	CMemoryBitmap& outputBitmap;
 	bool avxReady;
 public:
 	AvxOutputComposition() = delete;
-	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap* pOut);
+	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm);
 	AvxOutputComposition(const AvxOutputComposition&) = delete;
 	AvxOutputComposition(AvxOutputComposition&&) = delete;
 	AvxOutputComposition& AvxOutputComposition::operator=(const AvxOutputComposition&) = delete;
@@ -29,7 +29,7 @@ private:
 class AvxOutputComposition
 {
 public:
-	AvxOutputComposition(CMultiBitmap&, CMemoryBitmap*) {}
+	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) {}
 	int compose(const int, std::vector<void*> const&)
 	{
 		return 1;

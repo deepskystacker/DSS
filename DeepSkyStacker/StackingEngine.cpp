@@ -1806,14 +1806,12 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 	SetEvent(hEvent);
 	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
-		AvxStacking avxStacking(msg.wParam, msg.wParam + msg.lParam, *m_pBitmap, m_rcResult);
-		C48BitColorBitmap *const pColorBitmap = dynamic_cast<C48BitColorBitmap*>(m_pBitmap.m_p);
-		C48BitColorBitmap *const pTempBitmap = dynamic_cast<C48BitColorBitmap*>(m_pTempBitmap.m_p);
+		AvxStacking avxStacking(msg.wParam, msg.wParam + msg.lParam, *m_pBitmap, *m_pTempBitmap, m_rcResult);
 
 		if (msg.message == WM_MT_PROCESS)
 		{
 			// First try AVX accelerated code, if not supported -> run conventional code.
-			if (avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, pColorBitmap, pTempBitmap, m_lPixelSizeMultiplier) != 0)
+			if (avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_lPixelSizeMultiplier) != 0)
 			{
 				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 				{
@@ -2182,9 +2180,7 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
 			};
 
-			C48BitColorBitmap* const pTempBitmap = dynamic_cast<C48BitColorBitmap*>(StackTask.m_pTempBitmap.m_p);
-			C96BitFloatColorBitmap* const pOutput = dynamic_cast<C96BitFloatColorBitmap*>(m_pOutput.m_p);
-			AvxAccumulation avxAccumulation(m_rcResult, *m_pLightTask, pTempBitmap, pOutput);
+			AvxAccumulation avxAccumulation(m_rcResult, *m_pLightTask, *StackTask.m_pTempBitmap, *m_pOutput);
 
 			if (m_pLightTask->m_Method == MBP_FASTAVERAGE)
 			{

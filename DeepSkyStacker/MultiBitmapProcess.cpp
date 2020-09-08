@@ -224,10 +224,10 @@ bool	CCombineTask::DoTask(HANDLE hEvent)
 	SetEvent(hEvent);
 	try
 	{
+		AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
+
 		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 		{
-			AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, m_pBitmap);
-
 			if (msg.message == WM_MT_PROCESS)
 			{
 				for (i = msg.wParam; i < msg.wParam + msg.lParam && !bEnd; i++)
