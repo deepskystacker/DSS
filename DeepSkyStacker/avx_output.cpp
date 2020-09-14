@@ -11,23 +11,22 @@ AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap&
 	outputBitmap{ outputbm },
 	avxReady{ true }
 {
-	if (!AvxStacking::checkCpuFeatures())
+	if (!AvxSupport::checkCpuFeatures())
 		avxReady = false;
 	// Homogenization not implemented with AVX
 	if (inputBitmap.GetHomogenization())
 		avxReady = false;
-	// Input must be of type unsigned shorts, and output type must be float.
-	if (dynamic_cast<CColorMultiBitmapT<WORD, float>*>(&inputBitmap) == nullptr && dynamic_cast<CGrayMultiBitmapT<WORD, float>*>(&inputBitmap) == nullptr)
-		avxReady = false;
-	// We cannot consider more than 65536 bitmaps, because 16 bit unsigned short is used for N.
-	if (inputBitmap.GetNrAddedBitmaps() > 0x0ffff)
-		avxReady = false;
 	// Output must be float values
-	if (outputBitmap.BitPerSample() != 32 || !outputBitmap.IsFloat())
+	if (AvxSupport{outputBitmap}.bitmapHasCorrectType<float>() == false)
 		avxReady = false;
-	// Color bitmaps could theoretically be bottom-up. We don't support that with AVX code.
-	if (dynamic_cast<C96BitFloatColorBitmap*>(&outputBitmap) != nullptr && !outputBitmap.isTopDown())
-		avxReady = false;
+}
+
+template <class INPUTTYPE, class OUTPUTTYPE>
+static bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept
+{
+	return
+		(dynamic_cast<const CColorMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr) ||
+		(dynamic_cast<const CGrayMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr);
 }
 
 int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
@@ -53,15 +52,32 @@ int AvxOutputComposition::compose(const int line, std::vector<void*> const& line
 
 int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
+	if (doProcessKappaSigma<WORD>(line, lineAddresses) == 0)
+		return 0;
+	if (doProcessKappaSigma<std::uint32_t>(line, lineAddresses) == 0)
+		return 0;
+	if (doProcessKappaSigma<float>(line, lineAddresses) == 0)
+		return 0;
+	return 1;
+}
+
+template <class T>
+int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*> const& lineAddresses)
+{
+	// CMultiBitmap - template<TType, TTypeOutput>: Input must be of type T, and output type must be float.
+	if (bitmapColorOrGray<T, float>(inputBitmap) == false)
+		return 1;
+
 	const auto parameters = inputBitmap.GetProcessingParameters();
 
 	const int width = outputBitmap.RealWidth();
 	const int nrVectors = width / 16;
 
-	const auto ps2epu16 = [](const __m256 x1, const __m256 x2) noexcept -> __m256i
+/*	const auto ps2epu16 = [](const __m256 x1, const __m256 x2) noexcept -> __m256i
 	{
 		return _mm256_permute4x64_epi64(_mm256_packus_epi32(_mm256_cvtps_epi32(x1), _mm256_cvtps_epi32(x2)), 0xd8);
 	};
+*/
 	const auto accumulateSquared = [](const __m256d accumulator, const __m128 colorValue) noexcept -> __m256d
 	{
 		const __m256d pd = _mm256_cvtps_pd(colorValue);
@@ -79,15 +95,12 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 		const __m256 sigmaSqN = _mm256_insertf128_ps(_mm256_castps128_ps256(_mm256_cvtpd_ps(sigmaSqLoN)), _mm256_cvtpd_ps(sigmaSqHiN), 1);
 		return _mm256_sqrt_ps(_mm256_div_ps(sigmaSqN, N));
 	};
-	const auto sigmakappa = [&parameters](const __m256 sigma) noexcept -> __m256
+/*	const auto sigmakappa = [&parameters](const __m256 sigma) noexcept -> __m256
 	{
 		return _mm256_mul_ps(sigma, _mm256_set1_ps(static_cast<float>(std::get<0>(parameters))));
 	};
-	const auto cmpGtEpu16 = [](const __m256i a, const __m256i b) noexcept -> __m256i
-	{
-		const __m256i highBit = _mm256_set1_epi16(WORD{0x8000});
-		return _mm256_cmpgt_epi16(_mm256_xor_si256(a, highBit), _mm256_xor_si256(b, highBit));
-	};
+*/
+	const __m256 kappa = _mm256_set1_ps(static_cast<float>(std::get<0>(parameters)));
 
 	const auto kappaSigmaLoop = [&](float* pOut, const int colorOffset) -> void
 	{
@@ -95,8 +108,12 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 
 		for (int counter = 0; counter < nrVectors; ++counter, pOut += 16)
 		{
-			__m256i lowerBound = _mm256_set1_epi16(WORD{1}); // Values of zero are ignored.
-			__m256i upperBound = _mm256_set1_epi16(std::numeric_limits<WORD>::max());
+//			__m256i lowerBound = _mm256_set1_epi16(WORD{1}); // Values of zero are ignored.
+//			__m256i upperBound = _mm256_set1_epi16(std::numeric_limits<WORD>::max());
+			__m256 lowerBound1{ _mm256_setzero_ps() };
+			__m256 lowerBound2{ _mm256_setzero_ps() };
+			__m256 upperBound1{ _mm256_set1_ps(static_cast<float>(std::numeric_limits<T>::max())) };
+			__m256 upperBound2{ _mm256_set1_ps(static_cast<float>(std::numeric_limits<T>::max())) };
 			__m256 my1{ _mm256_undefined_ps() };
 			__m256 my2{ _mm256_undefined_ps() };
 
@@ -104,7 +121,9 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 			{
 				__m256 sum1 = _mm256_setzero_ps();
 				__m256 sum2 = _mm256_setzero_ps();
-				__m256i N = _mm256_setzero_si256();
+//				__m256i N = _mm256_setzero_si256();
+				__m256 N1{ _mm256_setzero_ps() };
+				__m256 N2{ _mm256_setzero_ps() };
 				__m256d sumSq1 = _mm256_setzero_pd();
 				__m256d sumSq2 = _mm256_setzero_pd();
 				__m256d sumSq3 = _mm256_setzero_pd();
@@ -112,37 +131,53 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 				// Loop over the light frames
 				for (auto frameAddress : lineAddresses)
 				{
-					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
+					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
+					auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+					const __m256 outOfRange1 = _mm256_or_ps(_mm256_cmp_ps(lo8, lowerBound1, 17), _mm256_cmp_ps(lo8, upperBound1, 30)); // 17: _CMP_LT_OQ, 30: _CMP_GT_OQ (x < lo OR x > hi)
+					const __m256 outOfRange2 = _mm256_or_ps(_mm256_cmp_ps(hi8, lowerBound2, 17), _mm256_cmp_ps(hi8, upperBound2, 30));
+					lo8 = _mm256_andnot_ps(outOfRange1, lo8);
+					hi8 = _mm256_andnot_ps(outOfRange2, hi8);
+
+/*					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
 					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
-					const __m256i outOfRangeMask = _mm256_or_si256(cmpGtEpu16(lowerBound, colorValue), cmpGtEpu16(colorValue, upperBound)); // 16 x 16 bit mask. One where value out of range.
+					const __m256i outOfRangeMask = _mm256_or_si256(AvxSupport::cmpGtEpu16(lowerBound, colorValue), AvxSupport::cmpGtEpu16(colorValue, upperBound)); // 16 x 16 bit mask. One where value out of range.
 					const __m256i effectiveValue = _mm256_andnot_si256(outOfRangeMask, colorValue); // Zero if outside (µ +- kappa*sigma).
 					const __m256 lo8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(effectiveValue, 0));
 					const __m256 hi8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(effectiveValue, 1));
+*/
 					sum1 = _mm256_add_ps(sum1, lo8);
 					sum2 = _mm256_add_ps(sum2, hi8);
 					sumSq1 = accumulateSquared(sumSq1, _mm256_extractf128_ps(lo8, 0));
 					sumSq2 = accumulateSquared(sumSq2, _mm256_extractf128_ps(lo8, 1));
 					sumSq3 = accumulateSquared(sumSq3, _mm256_extractf128_ps(hi8, 0));
 					sumSq4 = accumulateSquared(sumSq4, _mm256_extractf128_ps(hi8, 1));
-					N = _mm256_adds_epu16(N, _mm256_blendv_epi8(_mm256_set1_epi16((short)1), _mm256_setzero_si256(), outOfRangeMask));
+					N1 = _mm256_add_ps(N1, _mm256_blendv_ps(_mm256_set1_ps(1.0f), _mm256_setzero_ps(), outOfRange1));
+					N2 = _mm256_add_ps(N2, _mm256_blendv_ps(_mm256_set1_ps(1.0f), _mm256_setzero_ps(), outOfRange2));
+//					N = _mm256_adds_epu16(N, _mm256_blendv_epi8(_mm256_set1_epi16(short{1}), _mm256_setzero_si256(), outOfRangeMask));
 				}
 				// Calc the new averages
-				const __m256 N1 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(N, 0));
-				const __m256 N2 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(N, 1));
-				my1 = _mm256_blendv_ps(_mm256_div_ps(sum1, N1), _mm256_setzero_ps(), _mm256_cmp_ps(N1, _mm256_setzero_ps(), 0)); // Low 8 floats. Set 0 where N==0.
-				my2 = _mm256_blendv_ps(_mm256_div_ps(sum2, N2), _mm256_setzero_ps(), _mm256_cmp_ps(N2, _mm256_setzero_ps(), 0)); // Hi 8 floats. Set 0 where N==0.
+//				const __m256 N1 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(N, 0));
+//				const __m256 N2 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(N, 1));
+				const __m256 noValuesMask1 = _mm256_cmp_ps(N1, _mm256_setzero_ps(), 0);
+				const __m256 noValuesMask2 = _mm256_cmp_ps(N2, _mm256_setzero_ps(), 0);
+				my1 = _mm256_blendv_ps(_mm256_div_ps(sum1, N1), _mm256_setzero_ps(), noValuesMask1); // Low 8 floats. Set 0 where N==0.
+				my2 = _mm256_blendv_ps(_mm256_div_ps(sum2, N2), _mm256_setzero_ps(), noValuesMask2); // Hi 8 floats. Set 0 where N==0.
 				// Update lower and upper bound with new µ +- kappa * sigma
 				const __m256 sigma1 = sigma(sum1, sumSq1, sumSq2, N1);
 				const __m256 sigma2 = sigma(sum2, sumSq3, sumSq4, N2);
-				const __m256 sigmakappa1 = sigmakappa(sigma1);
-				const __m256 sigmakappa2 = sigmakappa(sigma2);
-				const __m256 upper1 = _mm256_add_ps(my1, sigmakappa1); // µ + sigma * kappa
-				const __m256 upper2 = _mm256_add_ps(my2, sigmakappa2);
-				const __m256 lower1 = _mm256_sub_ps(my1, sigmakappa1); // µ - sigma * kappa
-				const __m256 lower2 = _mm256_sub_ps(my2, sigmakappa2);
-				const __m256i noValuesMask = _mm256_cmpeq_epi16(N, _mm256_setzero_si256()); // 16 x 16 bit mask. One where N==0.
-				lowerBound = _mm256_blendv_epi8(ps2epu16(lower1, lower2), _mm256_set1_epi16(unsigned short(1)), noValuesMask); // Set 1 where N==0.
-				upperBound = _mm256_blendv_epi8(ps2epu16(upper1, upper2), _mm256_setzero_si256(), noValuesMask); // Set 0 where N==0.
+//				const __m256 sigmakappa1 = sigmakappa(sigma1);
+//				const __m256 sigmakappa2 = sigmakappa(sigma2);
+//				const __m256 upper1 = _mm256_add_ps(my1, sigmakappa1); // µ + sigma * kappa
+//				const __m256 upper2 = _mm256_add_ps(my2, sigmakappa2);
+//				const __m256 lower1 = _mm256_sub_ps(my1, sigmakappa1); // µ - sigma * kappa
+//				const __m256 lower2 = _mm256_sub_ps(my2, sigmakappa2);
+//				const __m256i noValuesMask = _mm256_cmpeq_epi16(N, _mm256_setzero_si256()); // 16 x 16 bit mask. One where N==0.
+//				lowerBound = _mm256_blendv_epi8(ps2epu16(lower1, lower2), _mm256_set1_epi16(WORD{1}), noValuesMask); // Set 1 where N==0.
+//				upperBound = _mm256_blendv_epi8(ps2epu16(upper1, upper2), _mm256_setzero_si256(), noValuesMask); // Set 0 where N==0.
+				upperBound1 = _mm256_blendv_ps(_mm256_fmadd_ps(sigma1, kappa, my1), _mm256_setzero_ps(), noValuesMask1); // Set 0 where N==0.
+				upperBound2 = _mm256_blendv_ps(_mm256_fmadd_ps(sigma2, kappa, my2), _mm256_setzero_ps(), noValuesMask2);
+				lowerBound1 = _mm256_blendv_ps(_mm256_fnmadd_ps(sigma1, kappa, my1), _mm256_set1_ps(1.0f), noValuesMask1); // Set 1 where N==0.
+				lowerBound2 = _mm256_blendv_ps(_mm256_fnmadd_ps(sigma2, kappa, my2), _mm256_set1_ps(1.0f), noValuesMask2);
 			}
 			_mm256_storeu_ps(pOut     + static_cast<size_t>(line) * outputWidth, my1);
 			_mm256_storeu_ps(pOut + 8 + static_cast<size_t>(line) * outputWidth, my2);
@@ -150,23 +185,23 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 		// Rest of line
 		for (int n = nrVectors * 16; n < width; ++n, ++pOut)
 		{
-			auto lowerBound = WORD{1};
-			auto upperBound = std::numeric_limits<WORD>::max();
+			float lowerBound{ 1.0f };
+			float upperBound{ static_cast<float>(std::numeric_limits<T>::max()) };
 			float my{ 0.0f };
 
 			for (int iteration = 0; iteration < std::get<1>(parameters); ++iteration)
 			{
-				float sum = 0.0f;
-				float N = 0.0f;
-				float sumSq = 0.0f;
+				float sum{ 0.0f };
+				float N{ 0.0f };
+				float sumSq{ 0.0f };
 				for (auto frameAddress : lineAddresses)
 				{
-					const WORD *const pColor = static_cast<WORD*>(frameAddress) + n + colorOffset;
-					const WORD colorValue = *pColor;
-					if (colorValue >= lowerBound && colorValue <= upperBound) {
-						const float value = static_cast<float>(colorValue);
-						sum += value;
-						sumSq += value * value;
+					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
+					const float colorValue = static_cast<float>(*pColor);
+					if (colorValue >= lowerBound && colorValue <= upperBound)
+					{
+						sum += colorValue;
+						sumSq += colorValue * colorValue;
 						++N;
 					}
 				}
@@ -175,8 +210,8 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 					break;
 				const float sigma = sqrtf(sumSq / N - my * my);
 				const float sigmakappa = sigma * static_cast<float>(std::get<0>(parameters));
-				lowerBound = static_cast<unsigned short>(my - sigmakappa);
-				upperBound = static_cast<unsigned short>(my + sigmakappa);
+				lowerBound = my - sigmakappa;
+				upperBound = my + sigmakappa;
 			}
 			*(pOut + static_cast<size_t>(line) * outputWidth) = my;
 		}
@@ -199,8 +234,25 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 	return 1;
 }
 
+
 int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses)
 {
+	if (doProcessAutoAdaptiveWeightedAverage<WORD>(line, lineAddresses) == 0)
+		return 0;
+	if (doProcessAutoAdaptiveWeightedAverage<std::uint32_t>(line, lineAddresses) == 0)
+		return 0;
+	if (doProcessAutoAdaptiveWeightedAverage<float>(line, lineAddresses) == 0)
+		return 0;
+	return 1;
+}
+
+template <class T>
+int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses)
+{
+	// CMultiBitmap - template<TType, TTypeOutput>: Input must be of type T, and output type must be float.
+	if (bitmapColorOrGray<T, float>(inputBitmap) == false)
+		return 1;
+
 	const int nIterations = std::get<1>(inputBitmap.GetProcessingParameters());
 	const int width = outputBitmap.RealWidth();
 	const int nrVectors = width / 16;
@@ -218,12 +270,16 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 			// Calculate initial (unweighted) mean.
 			for (auto frameAddress : lineAddresses)
 			{
-				const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
-				const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
+				const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
+/*				const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
 				my1 = _mm256_add_ps(my1, AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0)));
 				my2 = _mm256_add_ps(my2, AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1)));
+*/
+				const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+				my1 = _mm256_add_ps(my1, lo8);
+				my2 = _mm256_add_ps(my2, hi8);
 			}
-			my1 = _mm256_div_ps(my1, N);
+			my1 = _mm256_div_ps(my1, N); // N != 0 guaranteed
 			my2 = _mm256_div_ps(my2, N);
 
 			for (int iteration = 0; iteration < nIterations; ++iteration)
@@ -234,10 +290,14 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 				// Calculate sigma² related to µ of last iteration.
 				for (auto frameAddress : lineAddresses)
 				{
-					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
-					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
+					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
+/*					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
 					const __m256 d1 = _mm256_sub_ps(AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0)), my1);
 					const __m256 d2 = _mm256_sub_ps(AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1)), my2);
+*/
+					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+					const __m256 d1 = _mm256_sub_ps(lo8, my1);
+					const __m256 d2 = _mm256_sub_ps(hi8, my2);
 					S1 = _mm256_fmadd_ps(d1, d1, S1); // Sum of (x-µ)²
 					S2 = _mm256_fmadd_ps(d2, d2, S2);
 				}
@@ -251,10 +311,11 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 				S2 = _mm256_setzero_ps();
 				for (auto frameAddress : lineAddresses)
 				{
-					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
-					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
-					const __m256 lo8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0));
-					const __m256 hi8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1));
+					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
+//					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
+//					const __m256 lo8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0));
+//					const __m256 hi8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1));
+					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
 					const __m256 d1 = _mm256_sub_ps(lo8, my1); // x-µ
 					const __m256 d2 = _mm256_sub_ps(hi8, my2);
 					const __m256 denominator1 = _mm256_fmadd_ps(d1, d1, sigmaSq1); // sigma² + (x-µ)²
@@ -267,7 +328,7 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 					S2 = _mm256_fmadd_ps(hi8, weight2, S2);
 				}
 
-				my1 = _mm256_div_ps(S1, W1); // W=sum(weights) == 0 cannot happen.
+				my1 = _mm256_div_ps(S1, W1); // W == 0 (sum of weights) cannot happen.
 				my2 = _mm256_div_ps(S2, W2);
 			}
 			_mm256_storeu_ps(pOut     + static_cast<size_t>(line) * outputWidth, my1);
@@ -282,7 +343,7 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 			// Calculate initial (unweighted) mean.
 			for (auto frameAddress : lineAddresses)
 			{
-				const WORD* pColor = static_cast<WORD*>(frameAddress) + n + colorOffset;
+				const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
 				my += static_cast<float>(*pColor);
 			}
 			my /= N;
@@ -294,7 +355,7 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 				// Calculate sigma² related to µ of last iteration.
 				for (auto frameAddress : lineAddresses)
 				{
-					const WORD* pColor = static_cast<WORD*>(frameAddress) + n + colorOffset;
+					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
 					const float d = static_cast<float>(*pColor) - my;
 					S += (d * d);
 				}
@@ -305,7 +366,7 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 				S = 0.0f;
 				for (auto frameAddress : lineAddresses)
 				{
-					const WORD* pColor = static_cast<WORD*>(frameAddress) + n + colorOffset;
+					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
 					const float color = static_cast<float>(*pColor);
 					const float d = color - my;
 					const float denominator = sigmaSq + d * d;

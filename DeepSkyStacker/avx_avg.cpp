@@ -6,22 +6,44 @@
 
 #include <immintrin.h>
 
-AvxAccumulation::AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm) :
+AvxAccumulation::AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm) noexcept :
 	resultWidth{ resultRect.Width() }, resultHeight{ resultRect.Height() },
 	tempBitmap{ tempbm },
 	outputBitmap{ outbm },
 	taskInfo{ tInfo }
 {}
 
+// *********************************************************************************************
+// Sept. 2020: Only works for output bitmaps of type float (which is currently always the case).
+// There is a static type check below.
+// *********************************************************************************************
+
 int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 {
-	const AvxSupport avxSupport{ tempBitmap };
+	if (!AvxSupport::checkCpuFeatures())
+		return 1;
 
-	if (!AvxStacking::checkCpuFeatures())
+	if (doAccumulate<WORD, float>(nrStackedBitmaps) == 0)
+		return 0;
+	if (doAccumulate<std::uint32_t, float>(nrStackedBitmaps) == 0)
+		return 0;
+	if (doAccumulate<float, float>(nrStackedBitmaps) == 0)
+		return 0;
+	return 1;
+}
+
+template <class T_IN, class T_OUT>
+int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
+{
+	// Output bitmap is always float
+	if constexpr (!std::is_same<T_OUT, float>::value)
 		return 1;
-	if (!avxSupport.isBitmapOfType<WORD>())
+
+	const AvxSupport avxTempBitmap{ tempBitmap };
+
+	if (!avxTempBitmap.bitmapHasCorrectType<T_IN>())
 		return 1;
-	if (!AvxSupport{outputBitmap}.isBitmapOfType<float>())
+	if (!AvxSupport{outputBitmap}.bitmapHasCorrectType<T_OUT>())
 		return 1;
 
 	const int nrVectors = resultWidth / 16;
@@ -31,26 +53,22 @@ int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 		const __m256 nrStacked = _mm256_set1_ps(static_cast<float>(nrStackedBitmaps));
 		const __m256 nrStacked1 = _mm256_set1_ps(static_cast<float>(nrStackedBitmaps + 1));
 
-		const auto accumulate = [&nrStacked, &nrStacked1](const WORD* pIn, float* pOut) -> void
+		const auto accumulate = [&nrStacked, &nrStacked1](const T_IN* pIn, T_OUT* pOut) -> void
 		{
-			const __m256i color = _mm256_loadu_si256((const __m256i*)pIn); // 16 unsigned short with color
-
-			__m256 oldColor = _mm256_loadu_ps(pOut); // first 8 float with old color
-			__m256 newColor = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(color, 0));
-			_mm256_storeu_ps(pOut, _mm256_div_ps(_mm256_fmadd_ps(oldColor, nrStacked, newColor), nrStacked1)); // (oldColor * nrStacked + newColor) / (nrStacked + 1)
-
-			oldColor = _mm256_loadu_ps(pOut + 8); // next 8 float with old color
-			newColor = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(color, 1));
-			_mm256_storeu_ps(pOut + 8, _mm256_div_ps(_mm256_fmadd_ps(oldColor, nrStacked, newColor), nrStacked1));
+			const auto [newColorLo8, newColorHi8] = AvxSupport::read16PackedSingle(pIn);
+			const auto [oldColorLo8, oldColorHi8] = AvxSupport::read16PackedSingle(pOut);
+			// If T_OUT != float, then we need to change these lines (below too).
+			_mm256_storeu_ps(pOut,     _mm256_div_ps(_mm256_fmadd_ps(oldColorLo8, nrStacked, newColorLo8), nrStacked1)); // (oldColor * nrStacked + newColor) / (nrStacked + 1)
+			_mm256_storeu_ps(pOut + 8, _mm256_div_ps(_mm256_fmadd_ps(oldColorHi8, nrStacked, newColorHi8), nrStacked1));
 		};
 
-		if (avxSupport.isColorBitmap())
+		if (avxTempBitmap.isColorBitmap())
 		{
-			const WORD *pRed{ &*avxSupport.redPixels().begin() }, *pGreen{ &*avxSupport.greenPixels().begin() }, *pBlue{ &*avxSupport.bluePixels().begin() };
-			auto *const pOutput = dynamic_cast<C96BitFloatColorBitmap*>(&outputBitmap);
+			const T_IN *pRed{ &*avxTempBitmap.redPixels<T_IN>().begin() }, *pGreen{ &*avxTempBitmap.greenPixels<T_IN>().begin() }, *pBlue{ &*avxTempBitmap.bluePixels<T_IN>().begin() };
+			auto *const pOutput = dynamic_cast<CColorBitmapT<T_OUT>*>(&outputBitmap);
 			if (pOutput == nullptr)
 				return 1;
-			float *pOutRed{ &*pOutput->m_Red.m_vPixels.begin() }, *pOutGreen{ &*pOutput->m_Green.m_vPixels.begin() }, *pOutBlue{ &*pOutput->m_Blue.m_vPixels.begin() };
+			T_OUT *pOutRed{ &*pOutput->m_Red.m_vPixels.begin() }, *pOutGreen{ &*pOutput->m_Green.m_vPixels.begin() }, *pOutBlue{ &*pOutput->m_Blue.m_vPixels.begin() };
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
@@ -70,13 +88,13 @@ int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 			}
 			return 0;
 		}
-		if (avxSupport.isMonochromeBitmap())
+		if (avxTempBitmap.isMonochromeBitmap())
 		{
-			const WORD* pGray{ &*avxSupport.grayPixels().begin() };
-			auto* const pOutput = dynamic_cast<CGrayBitmapT<float>*>(&outputBitmap);
+			const T_IN* pGray{ &*avxTempBitmap.grayPixels<T_IN>().begin() };
+			auto *const pOutput = dynamic_cast<CGrayBitmapT<T_OUT>*>(&outputBitmap);
 			if (pOutput == nullptr)
 				return 1;
-			float* pOut{ &*pOutput->m_vPixels.begin() };
+			T_OUT* pOut{ &*pOutput->m_vPixels.begin() };
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
@@ -92,24 +110,21 @@ int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 	}
 	else if (taskInfo.m_Method == MBP_MAXIMUM)
 	{
-		const auto maximum = [](const WORD* pIn, float* pOut) -> void
+		const auto maximum = [](const T_IN* pIn, T_OUT* pOut) -> void
 		{
-			const __m256i color = _mm256_loadu_si256((const __m256i*)pIn); // 16 unsigned short with color
-
-			__m256 oldColor = _mm256_loadu_ps(pOut); // first 8 float with old color
-			_mm256_storeu_ps(pOut, _mm256_max_ps(oldColor, AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(color, 0))));
-
-			oldColor = _mm256_loadu_ps(pOut + 8); // next 8 float with old color
-			_mm256_storeu_ps(pOut + 8, _mm256_max_ps(oldColor, AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(color, 1))));
+			const auto [newColorLo8, newColorHi8] = AvxSupport::read16PackedSingle(pIn);
+			const auto [oldColorLo8, oldColorHi8] = AvxSupport::read16PackedSingle(pOut);
+			_mm256_storeu_ps(pOut,     _mm256_max_ps(oldColorLo8, newColorLo8));
+			_mm256_storeu_ps(pOut + 8, _mm256_max_ps(oldColorHi8, newColorHi8));
 		};
 
-		if (avxSupport.isColorBitmap())
+		if (avxTempBitmap.isColorBitmap())
 		{
-			const WORD *pRed{ &*avxSupport.redPixels().begin() }, *pGreen{ &*avxSupport.greenPixels().begin() }, *pBlue{ &*avxSupport.bluePixels().begin() };
-			auto *const pOutput = dynamic_cast<C96BitFloatColorBitmap*>(&outputBitmap);
+			const T_IN *pRed{ &*avxTempBitmap.redPixels<T_IN>().begin() }, *pGreen{ &*avxTempBitmap.greenPixels<T_IN>().begin() }, *pBlue{ &*avxTempBitmap.bluePixels<T_IN>().begin() };
+			auto* const pOutput = dynamic_cast<CColorBitmapT<T_OUT>*>(&outputBitmap);
 			if (pOutput == nullptr)
 				return 1;
-			float *pOutRed{ &*pOutput->m_Red.m_vPixels.begin() }, *pOutGreen{ &*pOutput->m_Green.m_vPixels.begin() }, *pOutBlue{ &*pOutput->m_Blue.m_vPixels.begin() };
+			T_OUT *pOutRed{ &*pOutput->m_Red.m_vPixels.begin() }, *pOutGreen{ &*pOutput->m_Green.m_vPixels.begin() }, *pOutBlue{ &*pOutput->m_Blue.m_vPixels.begin() };
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
@@ -129,13 +144,13 @@ int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 			}
 			return 0;
 		}
-		if (avxSupport.isMonochromeBitmap())
+		if (avxTempBitmap.isMonochromeBitmap())
 		{
-			const WORD* pGray{ &*avxSupport.grayPixels().begin() };
-			auto *const pOutput = dynamic_cast<CGrayBitmapT<float>*>(&outputBitmap);
+			const T_IN* pGray{ &*avxTempBitmap.grayPixels<T_IN>().begin() };
+			auto *const pOutput = dynamic_cast<CGrayBitmapT<T_OUT>*>(&outputBitmap);
 			if (pOutput == nullptr)
 				return 1;
-			float* pOut{ &*pOutput->m_vPixels.begin() };
+			T_OUT* pOut{ &*pOutput->m_vPixels.begin() };
 
 			for (int row = 0; row < resultHeight; ++row)
 			{
