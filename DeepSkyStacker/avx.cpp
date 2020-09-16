@@ -362,14 +362,50 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef) {
 template <class T>
 int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef)
 {
-	if (backgroundCalibrationDef.m_BackgroundCalibrationMode == BCM_NONE)
-		return 0;
-
 	// We calculate vectors with 16 pixels each, so this is the number of vectors to process.
 	const int nrVectors = width / 16;
 	const AvxSupport avxSupport{ inputBitmap };
 
-	if (backgroundCalibrationDef.m_BackgroundInterpolation == BCI_RATIONAL)
+	if (backgroundCalibrationDef.m_BackgroundCalibrationMode == BCM_NONE)
+	{
+		// Just copy color values as they are, pixel by pixel.
+		const auto loop = [this, nrVectors](const auto& pixels, std::vector<float>& result) -> void
+		{
+			for (int row = 0; row < this->height; ++row)
+			{
+				const T* pColor = &pixels.at((this->lineStart + row) * this->width);
+				float* pResult = &result.at(row * this->width);
+				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+				{
+					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
+					_mm256_storeu_ps(pResult, lo8);
+					_mm256_storeu_ps(pResult + 8, hi8);
+				}
+				// Remaining pixels of line
+				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pResult)
+				{
+					*pResult = static_cast<float>(*pColor);
+				}
+			}
+		};
+
+		if (avxSupport.isColorBitmapOfType<T>())
+		{
+			loop(avxSupport.redPixels<T>(), redPixels);
+			loop(avxSupport.greenPixels<T>(), greenPixels);
+			loop(avxSupport.bluePixels<T>(), bluePixels);
+			return 0;
+		}
+
+		if (avxSupport.isMonochromeBitmapOfType<T>())
+		{
+			loop(avxSupport.grayPixels<T>(), redPixels);
+			return 0;
+		}
+
+		return 1;
+	}
+	else if (backgroundCalibrationDef.m_BackgroundInterpolation == BCI_RATIONAL)
 	{
 		const auto loop = [this, nrVectors](const auto& pixels, const auto& params, std::vector<float>& result) -> void
 		{
