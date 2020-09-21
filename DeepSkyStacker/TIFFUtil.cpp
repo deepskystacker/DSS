@@ -2,6 +2,7 @@
 #include "TIFFUtil.h"
 #include "Registry.h"
 #include "zlib.h"
+#include <limits>
 #include <iostream>
 
 #include <omp.h>
@@ -633,6 +634,11 @@ BOOL CTIFFWriter::Write()
 	BOOL		bResult = FALSE;
 	bool		bError = false;
 
+	//
+    // Muultipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
+	// pixel being written with a value of zero because the value overflowed the data type 
+	// which was being stored.   Change the code to use UCHAR_MAX and USHRT_MAX
+	//
 
 	if (m_tiff)
 	{
@@ -710,13 +716,13 @@ BOOL CTIFFWriter::Write()
 						switch (spp)
 						{
 						case 1:
-							shortBuff[index] = fGrey * 256.0;
+							shortBuff[index] = fGrey * UCHAR_MAX;
 							break;
 						case 3:
 						case 4:
-							shortBuff[index] = fRed * 256.0;
-							shortBuff[index + 1] = fGreen * 256.0;
-							shortBuff[index + 2] = fBlue * 256.0;
+							shortBuff[index] = fRed * UCHAR_MAX;
+							shortBuff[index + 1] = fGreen * UCHAR_MAX;
+							shortBuff[index + 2] = fBlue * UCHAR_MAX;
 							break;
 						}
 						break;
@@ -725,25 +731,24 @@ BOOL CTIFFWriter::Write()
 							switch (spp)
 							{
 							case 1:
-								floatBuff[index] = fGrey / 256.0 * (samplemax - samplemin) + samplemin;
+								floatBuff[index] = fGrey / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
 								break;
 							case 3:
 							case 4:
-								floatBuff[index] = fRed / 256.0 * (samplemax - samplemin) + samplemin;
-								floatBuff[index + 1] = fGreen / 256.0 * (samplemax - samplemin) + samplemin;
-								floatBuff[index + 2] = fBlue / 256.0 * (samplemax - samplemin) + samplemin;
-								break;
+								floatBuff[index] = fRed / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
+								floatBuff[index + 1] = fGreen / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
+								floatBuff[index + 2] = fBlue / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
 							}
 						else switch (spp)	// unsigned long == DWORD
 						{
 						case 1:
-							longBuff[index] = fGrey * 256.0 * 65536.0;
+							longBuff[index] = fGrey * UCHAR_MAX * USHRT_MAX;
 							break;
 						case 3:
 						case 4:
-							longBuff[index] = fRed * 256.0 * 65536.0;
-							longBuff[index + 1] = fGreen * 256.0 * 65536.0;
-							longBuff[index + 2] = fBlue * 256.0 * 65536.0;
+							longBuff[index] = fRed * UCHAR_MAX * USHRT_MAX;
+							longBuff[index + 1] = fGreen * UCHAR_MAX * USHRT_MAX;
+							longBuff[index + 2] = fBlue * UCHAR_MAX * USHRT_MAX;
 							break;
 
 						}

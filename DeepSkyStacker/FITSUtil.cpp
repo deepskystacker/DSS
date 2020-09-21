@@ -1456,6 +1456,11 @@ BOOL CFITSWriter::Write()
 {
 	BOOL			bResult = FALSE;
 
+	//
+	// Muultipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
+	// pixel being written with a value of zero because the value overflowed the data type 
+	// which was being stored.   Change the code to use UCHAR_MAX and USHRT_MAX
+	//
 
 	if (m_fits)
 	{
@@ -1543,19 +1548,19 @@ BOOL CFITSWriter::Write()
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							(*(pWORDLine)) = fGray * 256.0;
+							(*(pWORDLine)) = fGray * UCHAR_MAX;
 							pWORDLine ++;
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								(*(pFLOATLine)) = fGray / 256.0;
+								(*(pFLOATLine)) = fGray / (1.0 + UCHAR_MAX);
 								pFLOATLine ++;
 							}
 							else
 							{
-								(*(pDWORDLine)) = fGray * 256.0 *65536.0;
+								(*(pDWORDLine)) = fGray * UCHAR_MAX * USHRT_MAX;
 								pDWORDLine ++;
 							};
 						};
@@ -1599,9 +1604,9 @@ BOOL CFITSWriter::Write()
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							(*(pWORDLineRed))	= fRed *256.0;
-							(*(pWORDLineGreen)) = fGreen *256.0;
-							(*(pWORDLineBlue))	= fBlue *256.0;
+							(*(pWORDLineRed))	= fRed * UCHAR_MAX;
+							(*(pWORDLineGreen)) = fGreen * UCHAR_MAX;
+							(*(pWORDLineBlue))	= fBlue * UCHAR_MAX;
 							pWORDLineRed++;
 							pWORDLineGreen++;
 							pWORDLineBlue++;
@@ -1610,18 +1615,18 @@ BOOL CFITSWriter::Write()
 						{
 							if (m_bFloat)
 							{
-								(*(pFLOATLineRed))	= fRed / 256.0;
-								(*(pFLOATLineGreen))= fGreen / 256.0;
-								(*(pFLOATLineBlue)) = fBlue / 256.0;
+								(*(pFLOATLineRed))	= fRed / (1.0 + UCHAR_MAX);
+								(*(pFLOATLineGreen))= fGreen / (1.0 + UCHAR_MAX);
+								(*(pFLOATLineBlue)) = fBlue / (1.0 + UCHAR_MAX);
 								pFLOATLineRed++;
 								pFLOATLineGreen++;
 								pFLOATLineBlue++;
 							}
 							else
 							{
-								(*(pDWORDLineRed))  = fRed * 256.0 * 65536.0;
-								(*(pDWORDLineGreen))= fGreen * 256.0 * 65536.0;
-								(*(pDWORDLineBlue)) = fBlue * 256.0 *65536.0;
+								(*(pDWORDLineRed))  = fRed * UCHAR_MAX * USHRT_MAX;
+								(*(pDWORDLineGreen))= fGreen * UCHAR_MAX * USHRT_MAX;
+								(*(pDWORDLineBlue)) = fBlue * UCHAR_MAX *USHRT_MAX;
 								pDWORDLineRed ++;
 								pDWORDLineGreen ++;
 								pDWORDLineBlue ++;
