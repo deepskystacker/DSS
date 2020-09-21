@@ -46,6 +46,14 @@ void CStackedBitmap::GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, do
 	else
 		fGreen = fBlue = fRed;
 
+	//
+	// Ensure pixel values don't exceed USHRT_MAX
+	// 
+	constexpr double limit{ USHRT_MAX };
+	fRed = std::min(limit, fRed);
+	fGreen = std::min(limit, fGreen);
+	fBlue = std::min(limit, fBlue);
+
 	if (bApplySettings)
 	{
 		m_HistoAdjust.Adjust(fRed, fGreen, fBlue);
@@ -53,13 +61,6 @@ void CStackedBitmap::GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, do
 		fRed	/= 256.0;
 		fGreen	/= 256.0;
 		fBlue	/= 256.0;
-
-		if (fRed > 255)
-			fRed = 255;
-		if (fGreen > 255)
-			fGreen = 255;
-		if (fBlue > 255)
-			fBlue = 255;
 
 		ToHSL(fRed, fGreen, fBlue, H, S, L);
 

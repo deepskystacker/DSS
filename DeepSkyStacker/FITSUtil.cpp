@@ -602,6 +602,29 @@ bool CFITSReader::Open()
 				};
 				m_filterName = filterName;
 			};
+			
+			//
+			// If the user has explicitly set that this FITS file is a Bayer format RAW file,
+			// then the user will also have explicitly set the Bayer pattern that's to be used.
+			// In this case we use that and set the Bayer offsets (if any) to zero
+			//
+			bool isRaw = IsFITSRaw();
+
+			if ((m_lNrChannels == 1) &&
+				((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
+			{
+				ZTRACE_RUNTIME("Using user supplied override for Bayer pattern.");
+				if (isRaw)
+				{
+					m_CFAType = GetFITSCFATYPE();
+					m_xBayerOffset = 0;
+					m_yBayerOffset = 0;
+				}
+				//
+				// If user hasn't said it's a FITS format RAW, then use the CFA we've already
+				// retrieved from the FITS header if set.
+				//				
+			}
 		}
 		else
 			bResult = false;
@@ -934,27 +957,12 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 			m_CFAType = CFATYPE_NONE;
 
 		//
-		// If the user has explicitly set that this FITS file is a Bayer format RAW file,
-		// then the user will also have explicitly set the Bayer pattern that's to be used.
-		// In this case we use that and set the Bayer offsets (if any) to zero
+		// If this file is an eight bit FITS, and purports to have a Bayer pattern (or the user has
+		// explicitly specifed one), inform the the user that we aren't going to play
 		//
-		bool isRaw = IsFITSRaw();
-		
 		if ((m_lNrChannels == 1) &&
-			((m_lBitsPerPixel == 16) || (m_lBitsPerPixel == 32)))
-		{
-			if (isRaw)
-			{
-				m_CFAType = GetFITSCFATYPE();
-					m_xBayerOffset = 0;
-					m_yBayerOffset = 0;
-			}
-			//
-			// If user hasn't said it's a FITS format RAW, then use the CFA we've already
-			// retrieved from the FITS header if set.
-			//				
-		}
-		else
+			(m_lBitsPerPixel == 8) &&
+			(m_CFAType != CFATYPE_NONE))
 		{
 			// 
 			// Set CFA type to none even if the FITS header specified a value
@@ -962,9 +970,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 			m_CFAType = CFATYPE_NONE;
 
 			static bool eightBitWarningIssued = false;
-			if (!eightBitWarningIssued &&
-				(m_lNrChannels == 1) &&
-				(m_lBitsPerPixel == 8))
+			if (!eightBitWarningIssued)
 			{
 				CString errorMessage;
 				errorMessage.Format(IDS_8BIT_FITS_NODEBAYER);
@@ -1364,7 +1370,7 @@ bool CFITSWriter::Open()
 	int				nStatus = 0;
 
 	DeleteFile((LPCTSTR)strFileName);
-	fits_create_diskfile(&m_fits, (LPCSTR)CT2A(strFileName, CP_UTF8), &nStatus);
+	fits_create_diskfile(&m_fits, (LPCSTR)CT2A(strFileName, CP_ACP), &nStatus);
 	if (m_fits && !nStatus)
 	{
 		bResult = OnOpen();
@@ -1438,6 +1444,11 @@ bool CFITSWriter::Write()
 {
 	bool			bResult = false;
 
+	//
+	// Multipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
+	// pixel being written with a value of zero because the value overflowed the data type 
+	// which was being stored.   Change the code to use UCHAR_MAX and USHRT_MAX
+	//
 
 	if (m_fits)
 	{
@@ -1525,19 +1536,19 @@ bool CFITSWriter::Write()
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							(*(pWORDLine)) = fGray * 256.0;
+							(*(pWORDLine)) = fGray * UCHAR_MAX;
 							pWORDLine ++;
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								(*(pFLOATLine)) = fGray / 256.0;
+								(*(pFLOATLine)) = fGray / (1.0 + UCHAR_MAX);
 								pFLOATLine ++;
 							}
 							else
 							{
-								(*(pDWORDLine)) = fGray * 256.0 *65536.0;
+								(*(pDWORDLine)) = fGray * UCHAR_MAX * USHRT_MAX;
 								pDWORDLine ++;
 							};
 						};
@@ -1581,9 +1592,9 @@ bool CFITSWriter::Write()
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							(*(pWORDLineRed))	= fRed *256.0;
-							(*(pWORDLineGreen)) = fGreen *256.0;
-							(*(pWORDLineBlue))	= fBlue *256.0;
+							(*(pWORDLineRed))	= fRed * UCHAR_MAX;
+							(*(pWORDLineGreen)) = fGreen * UCHAR_MAX;
+							(*(pWORDLineBlue))	= fBlue * UCHAR_MAX;
 							pWORDLineRed++;
 							pWORDLineGreen++;
 							pWORDLineBlue++;
@@ -1592,18 +1603,18 @@ bool CFITSWriter::Write()
 						{
 							if (m_bFloat)
 							{
-								(*(pFLOATLineRed))	= fRed / 256.0;
-								(*(pFLOATLineGreen))= fGreen / 256.0;
-								(*(pFLOATLineBlue)) = fBlue / 256.0;
+								(*(pFLOATLineRed))	= fRed / (1.0 + UCHAR_MAX);
+								(*(pFLOATLineGreen))= fGreen / (1.0 + UCHAR_MAX);
+								(*(pFLOATLineBlue)) = fBlue / (1.0 + UCHAR_MAX);
 								pFLOATLineRed++;
 								pFLOATLineGreen++;
 								pFLOATLineBlue++;
 							}
 							else
 							{
-								(*(pDWORDLineRed))  = fRed * 256.0 * 65536.0;
-								(*(pDWORDLineGreen))= fGreen * 256.0 * 65536.0;
-								(*(pDWORDLineBlue)) = fBlue * 256.0 *65536.0;
+								(*(pDWORDLineRed))  = fRed * UCHAR_MAX * USHRT_MAX;
+								(*(pDWORDLineGreen))= fGreen * UCHAR_MAX * USHRT_MAX;
+								(*(pDWORDLineBlue)) = fBlue * UCHAR_MAX * USHRT_MAX;
 								pDWORDLineRed ++;
 								pDWORDLineGreen ++;
 								pDWORDLineBlue ++;
