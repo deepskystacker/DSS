@@ -19,6 +19,9 @@ private:
 	std::vector<float> redPixels;
 	std::vector<float> greenPixels;
 	std::vector<float> bluePixels;
+	std::vector<WORD> redCfaPixels;
+	std::vector<WORD> greenCfaPixels;
+	std::vector<WORD> blueCfaPixels;
 	CMemoryBitmap& inputBitmap;
 	CMemoryBitmap& tempBitmap;
 public:
@@ -39,7 +42,9 @@ private:
 	int backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef);
 
 	template <bool ISRGB, class T>
-	int pixelDispatchAndAccumulate();
+	int pixelPartitioning();
+
+	int interpolateGrayCFA2Color();
 };
 
 #else
@@ -83,6 +88,8 @@ public:
 	bool isMonochromeBitmap() const;
 	template <class T>
 	bool isMonochromeBitmapOfType() const;
+	template <class T>
+	bool isMonochromeCfaBitmapOfType() const;
 
 	template <class T>
 	const std::vector<T>& redPixels() const { return getColorPtr<T>()->m_Red.m_vPixels; }
