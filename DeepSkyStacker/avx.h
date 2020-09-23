@@ -38,6 +38,9 @@ private:
 
 	int pixelTransform(const CPixelTransform& pixelTransformDef);
 
+	template <class T, class LoopFunction, class InterpolParam>
+	int backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams);
+
 	template <class T>
 	int backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef);
 

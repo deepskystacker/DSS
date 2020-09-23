@@ -75,7 +75,7 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 
 /*	const auto ps2epu16 = [](const __m256 x1, const __m256 x2) noexcept -> __m256i
 	{
-		return _mm256_permute4x64_epi64(_mm256_packus_epi32(_mm256_cvtps_epi32(x1), _mm256_cvtps_epi32(x2)), 0xd8);
+		return _mm256_permute4x64_epi64(_mm256_packus_epi32(_mm256_cvtps_epi32(x1), _mm256_cvtps_epi32(x2)), 0xd8); // Be careful with rounding mode used by cvtps_epi32.
 	};
 */
 	const auto accumulateSquared = [](const __m256d accumulator, const __m128 colorValue) noexcept -> __m256d
@@ -95,11 +95,6 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 		const __m256 sigmaSqN = _mm256_insertf128_ps(_mm256_castps128_ps256(_mm256_cvtpd_ps(sigmaSqLoN)), _mm256_cvtpd_ps(sigmaSqHiN), 1);
 		return _mm256_sqrt_ps(_mm256_div_ps(sigmaSqN, N));
 	};
-/*	const auto sigmakappa = [&parameters](const __m256 sigma) noexcept -> __m256
-	{
-		return _mm256_mul_ps(sigma, _mm256_set1_ps(static_cast<float>(std::get<0>(parameters))));
-	};
-*/
 	const __m256 kappa = _mm256_set1_ps(static_cast<float>(std::get<0>(parameters)));
 
 	const auto kappaSigmaLoop = [&](float* pOut, const int colorOffset) -> void
@@ -108,8 +103,6 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 
 		for (int counter = 0; counter < nrVectors; ++counter, pOut += 16)
 		{
-//			__m256i lowerBound = _mm256_set1_epi16(WORD{1}); // Values of zero are ignored.
-//			__m256i upperBound = _mm256_set1_epi16(std::numeric_limits<WORD>::max());
 			__m256 lowerBound1{ _mm256_setzero_ps() };
 			__m256 lowerBound2{ _mm256_setzero_ps() };
 			__m256 upperBound1{ _mm256_set1_ps(static_cast<float>(std::numeric_limits<T>::max())) };
@@ -121,7 +114,6 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 			{
 				__m256 sum1 = _mm256_setzero_ps();
 				__m256 sum2 = _mm256_setzero_ps();
-//				__m256i N = _mm256_setzero_si256();
 				__m256 N1{ _mm256_setzero_ps() };
 				__m256 N2{ _mm256_setzero_ps() };
 				__m256d sumSq1 = _mm256_setzero_pd();
@@ -138,13 +130,6 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 					lo8 = _mm256_andnot_ps(outOfRange1, lo8);
 					hi8 = _mm256_andnot_ps(outOfRange2, hi8);
 
-/*					const WORD* pColor = static_cast<WORD*>(frameAddress) + counter * 16ULL + colorOffset;
-					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
-					const __m256i outOfRangeMask = _mm256_or_si256(AvxSupport::cmpGtEpu16(lowerBound, colorValue), AvxSupport::cmpGtEpu16(colorValue, upperBound)); // 16 x 16 bit mask. One where value out of range.
-					const __m256i effectiveValue = _mm256_andnot_si256(outOfRangeMask, colorValue); // Zero if outside (µ +- kappa*sigma).
-					const __m256 lo8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(effectiveValue, 0));
-					const __m256 hi8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(effectiveValue, 1));
-*/
 					sum1 = _mm256_add_ps(sum1, lo8);
 					sum2 = _mm256_add_ps(sum2, hi8);
 					sumSq1 = accumulateSquared(sumSq1, _mm256_extractf128_ps(lo8, 0));
@@ -153,11 +138,8 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 					sumSq4 = accumulateSquared(sumSq4, _mm256_extractf128_ps(hi8, 1));
 					N1 = _mm256_add_ps(N1, _mm256_blendv_ps(_mm256_set1_ps(1.0f), _mm256_setzero_ps(), outOfRange1));
 					N2 = _mm256_add_ps(N2, _mm256_blendv_ps(_mm256_set1_ps(1.0f), _mm256_setzero_ps(), outOfRange2));
-//					N = _mm256_adds_epu16(N, _mm256_blendv_epi8(_mm256_set1_epi16(short{1}), _mm256_setzero_si256(), outOfRangeMask));
 				}
 				// Calc the new averages
-//				const __m256 N1 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(N, 0));
-//				const __m256 N2 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(N, 1));
 				const __m256 noValuesMask1 = _mm256_cmp_ps(N1, _mm256_setzero_ps(), 0);
 				const __m256 noValuesMask2 = _mm256_cmp_ps(N2, _mm256_setzero_ps(), 0);
 				my1 = _mm256_blendv_ps(_mm256_div_ps(sum1, N1), _mm256_setzero_ps(), noValuesMask1); // Low 8 floats. Set 0 where N==0.
@@ -165,15 +147,6 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 				// Update lower and upper bound with new µ +- kappa * sigma
 				const __m256 sigma1 = sigma(sum1, sumSq1, sumSq2, N1);
 				const __m256 sigma2 = sigma(sum2, sumSq3, sumSq4, N2);
-//				const __m256 sigmakappa1 = sigmakappa(sigma1);
-//				const __m256 sigmakappa2 = sigmakappa(sigma2);
-//				const __m256 upper1 = _mm256_add_ps(my1, sigmakappa1); // µ + sigma * kappa
-//				const __m256 upper2 = _mm256_add_ps(my2, sigmakappa2);
-//				const __m256 lower1 = _mm256_sub_ps(my1, sigmakappa1); // µ - sigma * kappa
-//				const __m256 lower2 = _mm256_sub_ps(my2, sigmakappa2);
-//				const __m256i noValuesMask = _mm256_cmpeq_epi16(N, _mm256_setzero_si256()); // 16 x 16 bit mask. One where N==0.
-//				lowerBound = _mm256_blendv_epi8(ps2epu16(lower1, lower2), _mm256_set1_epi16(WORD{1}), noValuesMask); // Set 1 where N==0.
-//				upperBound = _mm256_blendv_epi8(ps2epu16(upper1, upper2), _mm256_setzero_si256(), noValuesMask); // Set 0 where N==0.
 				upperBound1 = _mm256_blendv_ps(_mm256_fmadd_ps(sigma1, kappa, my1), _mm256_setzero_ps(), noValuesMask1); // Set 0 where N==0.
 				upperBound2 = _mm256_blendv_ps(_mm256_fmadd_ps(sigma2, kappa, my2), _mm256_setzero_ps(), noValuesMask2);
 				lowerBound1 = _mm256_blendv_ps(_mm256_fnmadd_ps(sigma1, kappa, my1), _mm256_set1_ps(1.0f), noValuesMask1); // Set 1 where N==0.
