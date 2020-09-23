@@ -239,8 +239,12 @@ inline double			distance(double x1, double y1, double x2, double y2)
 
 static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CPointExt & pt, bool bNoBloom = false)
 {
-	double				x0 = floor(pt.X-0.5),
-						y0 = floor(pt.Y-0.5);
+	LONG				x0 = floor(pt.X - 0.5), x1 = 1 + x0,
+						y0 = floor(pt.Y - 0.5), y1 = 1 + y0;
+
+	LONG				width = pBitmap->Width(),
+						height = pBitmap->Height();
+
 
 	double				fd00 = distance(x0+0.5, y0+0.5, pt.X, pt.Y),
 						fd10 = distance(x0+1.5, y0+0.5, pt.X, pt.Y),
@@ -251,32 +255,57 @@ static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * p
 						fv10 = -1.0,
 						fv01 = -1.0,
 						fv11 = -1.0;
-	double				fMask;
+	double				fMask = -1.0;
+
 	bool				bBloom = false;
 
-	pMask->GetPixel(x0, y0, fMask);
-	if (!IsBloomedValue(fMask))
-		pBitmap->GetPixel(x0, y0, fv00);
-	else
-		bBloom = true;
+	//
+	// Make sure we ask for a valid pixel's value (i.e. one that is in the image)
+	//
+	if (x0 >= 0 && x0 < (width - 1) && y0 >= 0 && y0 < (height - 1))
+	{
+		pMask->GetPixel(x0, y0, fMask);
+		if (!IsBloomedValue(fMask))
+			pBitmap->GetPixel(x0, y0, fv00);
+		else
+			bBloom = true;
+	}
 
-	pMask->GetPixel(x0, y0+1.0, fMask);
-	if (!IsBloomedValue(fMask))
-		pBitmap->GetPixel(x0, y0+1.0, fv01);
-	else
-		bBloom = true;
+	//
+	// Make sure we ask for a valid pixel's value 
+	//
+	if (x0 >= 0 && x0 < (width - 1) && y1 >= 0 && y1 < (height - 1))
+	{
+		pMask->GetPixel(x0, y1, fMask);
+		if (!IsBloomedValue(fMask))
+			pBitmap->GetPixel(x0, y1, fv01);
+		else
+			bBloom = true;
+	}
 
-	pMask->GetPixel(x0+1.0, y0, fMask);
-	if (!IsBloomedValue(fMask))
-		pBitmap->GetPixel(x0+1.0, y0, fv10);
-	else
-		bBloom = true;
+	//
+	// Make sure we ask for a valid pixel's value 
+	//
+	if (x1 >= 0 && x1 < (width - 1) && y0 >= 0 && y0 < (height - 1))
+	{
+		pMask->GetPixel(x1, y0, fMask);
+		if (!IsBloomedValue(fMask))
+			pBitmap->GetPixel(x1, y0, fv10);
+		else
+			bBloom = true;
+	}
 
-	pMask->GetPixel(x0+1.0, y0+1.0, fMask);
-	if (!IsBloomedValue(fMask))
-		pBitmap->GetPixel(x0+1.0, y0+1.0, fv11);
-	else
-		bBloom = true;
+	//
+	// Make sure we ask for a valid pixel's value 
+	//
+	if (x1 >= 0 && x1 < (width - 1) && y1 >= 0 && y1 < (height - 1))
+	{
+		pMask->GetPixel(x1, y1, fMask);
+		if (!IsBloomedValue(fMask))
+			pBitmap->GetPixel(x1, y1, fv11);
+		else
+			bBloom = true;
+	}
 
 	double				fWeight = 0,
 						fSum    = 0;
@@ -653,7 +682,7 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 						fRadiusRight = -1.0;
 	double				fBloomLeft   = -1.0,
 						fBloomRight  = -1.0;
-	double				fBloom;
+	double				fBloom = 0.0;
 
 	//	|     |     |     |     |     |     |     |     |
 	//     i                  x
@@ -804,14 +833,25 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, LONG x, LONG y, std::v
 		bool					bBloomed = true;
 		std::vector<CPointExt>	vTests;
 
-		vTests.emplace_back(x-1, y-1);
-		vTests.emplace_back(x-1, y-0);
-		vTests.emplace_back(x-1, y+1);
-		vTests.emplace_back(x-0, y-1);
-		vTests.emplace_back(x-0, y+1);
-		vTests.emplace_back(x+1, y-1);
-		vTests.emplace_back(x+1, y-0);
-		vTests.emplace_back(x+1, y+1);
+		// 
+		// Add tests to make sure we don't refer to invalid pixel locations
+		//
+		if (x > 0)
+		{
+			if (y > 0) vTests.emplace_back(x - 1, y - 1);
+			vTests.emplace_back(x - 1, y - 0);
+			if (y < (m_lHeight - 1)) vTests.emplace_back(x - 1, y + 1);
+		}
+
+		if (y > 0) vTests.emplace_back(x - 0, y - 1);
+		if (y < (m_lHeight - 1)) vTests.emplace_back(x-0, y+1);
+
+		if (x < (m_lWidth - 1))
+		{
+			if (y > 0) vTests.emplace_back(x + 1, y - 1);
+			vTests.emplace_back(x + 1, y - 0);
+			if (y < (m_lHeight - 1)) vTests.emplace_back(x + 1, y + 1);
+		}
 
 		for (LONG i = 0;i<vTests.size() && bBloomed;i++)
 		{
@@ -866,7 +906,7 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	while (!bEnd);
 	bEnd = false;
 	//
-	for (LONG j = y;j>=0 && !bEnd;j--)
+	for (LONG j = y; j >= 0 && !bEnd; j--)
 	{
 		double				fGray;
 		double				fMask;
