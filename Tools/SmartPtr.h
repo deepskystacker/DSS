@@ -1,5 +1,6 @@
 #ifndef	_SMARTPTR_H_
 #define	_SMARTPTR_H_
+#include <atomic>
 
 class CRefCount
 {
