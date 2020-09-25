@@ -568,9 +568,9 @@ RawDDPSettings & RawDDPSettings::updateBayerPattern()
 
 RawDDPSettings & RawDDPSettings::updateControls()
 {
-	bool isFITSRaw = ui->isFITSRaw->isChecked();
+	const bool isFITSRaw = ui->isFITSRaw->isChecked();
 
-	size_t index = ui->DSLRs->currentIndex();
+	const size_t index = ui->DSLRs->currentIndex();
 	if (isFITSRaw && index >= 0 && index < vector_DSLRs.size())
 	{
 		bool		bCYMG;
