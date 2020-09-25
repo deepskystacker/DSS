@@ -47,14 +47,14 @@ public:
 	CFATYPE				m_CFAType;
 
 private:
-	void	CopyFrom(const CDSLR & cd)
+	void	CopyFrom(const CDSLR & cd) noexcept
 	{
 		m_strName = cd.m_strName;
 		m_CFAType = cd.m_CFAType;
 	};
 
 public:
-	CDSLR(QString name, CFATYPE CFAType) :
+	CDSLR(QString name, CFATYPE CFAType) noexcept :
 		m_strName(name),
 		m_CFAType(CFAType)
 	{
@@ -91,9 +91,9 @@ void	RawDDPSettings::fillDSLRList(std::vector<CDSLR> & vDSLRs)
 	vDSLRs.emplace_back(string + " CYMG (01)", CFATYPE_CYGMCYMG);
 	vDSLRs.emplace_back(string + " CYMG (02)", CFATYPE_GMCYMGCY);
 	vDSLRs.emplace_back(string + " CYMG (03)", CFATYPE_CYMGCYGM);
-	vDSLRs.emplace_back(string + " CYMG (04)", CFATYPE_MGCYGMCY);	//*
+	vDSLRs.emplace_back(string + " CYMG (04)", CFATYPE_MGCYGMCY);
 	vDSLRs.emplace_back(string + " CYMG (05)", CFATYPE_GMYCGMCY);
-	vDSLRs.emplace_back(string + " CYMG (06)", CFATYPE_YCGMCYGM);	//*
+	vDSLRs.emplace_back(string + " CYMG (06)", CFATYPE_YCGMCYGM);
 	vDSLRs.emplace_back(string + " CYMG (07)", CFATYPE_GMCYGMYC);
 	vDSLRs.emplace_back(string + " CYMG (08)", CFATYPE_CYGMYCGM);
 	vDSLRs.emplace_back(string + " CYMG (09)", CFATYPE_YCGMYCMG);
@@ -383,7 +383,7 @@ RawDDPSettings::~RawDDPSettings()
 	delete ui;
 }
 
-void RawDDPSettings::showEvent(QShowEvent *event)
+void RawDDPSettings::showEvent(QShowEvent * event)
 {
 	if (!event->spontaneous())
 	{
@@ -422,8 +422,8 @@ void RawDDPSettings::onInitDialog()
 
 		QSize size = this->size();
 
-		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
-		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		const int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
+		const int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
 		move(left, top);
 	}
 
@@ -516,10 +516,10 @@ RawDDPSettings & RawDDPSettings::updateBayerPattern()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	int index = ui->DSLRs->currentIndex();
+	size_t index = ui->DSLRs->currentIndex();
 	if (-1 != index)
 	{
-		CFATYPE type = (CFATYPE)ui->DSLRs->currentData().toUInt();
+		CFATYPE type = static_cast<CFATYPE>(ui->DSLRs->currentData().toUInt());
 		switch (type)
 		{
 		case CFATYPE_BGGR:
@@ -615,7 +615,7 @@ RawDDPSettings & RawDDPSettings::updateControls()
 void RawDDPSettings::on_brightness_textEdited(const QString& string)
 {
 	bool OK = false;
-	double value = string.toDouble(&OK);
+	const double value{ string.toDouble(&OK) };
 	ZASSERTSTATE(OK);
 	workspace->setValue("RawDDP/Brightness", value);
 }
@@ -623,7 +623,7 @@ void RawDDPSettings::on_brightness_textEdited(const QString& string)
 void RawDDPSettings::on_redScale_textEdited(const QString& string)
 {
 	bool OK = false;
-	double value = string.toDouble(&OK);
+	const double value{ string.toDouble(&OK) };
 	ZASSERTSTATE(OK);
 	workspace->setValue("RawDDP/RedScale", value);
 }
@@ -631,7 +631,7 @@ void RawDDPSettings::on_redScale_textEdited(const QString& string)
 void RawDDPSettings::on_blueScale_textEdited(const QString& string)
 {
 	bool OK = false;
-	double value = string.toDouble(&OK);
+	const double value{ string.toDouble(&OK) };
 	ZASSERTSTATE(OK);
 	workspace->setValue("RawDDP/BlueScale", value);
 }
@@ -695,7 +695,7 @@ void RawDDPSettings::on_DSLRs_currentIndexChanged(int)
 void RawDDPSettings::on_brightness_2_textEdited(const QString& string)
 {
 	bool OK = false;
-	double value = string.toDouble(&OK);
+	const double value{ string.toDouble(&OK) };
 	ZASSERTSTATE(OK);
 	workspace->setValue("FitsDDP/Brightness", value);
 
@@ -704,7 +704,7 @@ void RawDDPSettings::on_brightness_2_textEdited(const QString& string)
 void RawDDPSettings::on_redScale_2_textEdited(const QString& string)
 {
 	bool OK = false;
-	double value = string.toDouble(&OK);
+	const double value{ string.toDouble(&OK) };
 	ZASSERTSTATE(OK);
 	workspace->setValue("FitsDDP/RedScale", value);
 }
@@ -712,7 +712,7 @@ void RawDDPSettings::on_redScale_2_textEdited(const QString& string)
 void RawDDPSettings::on_blueScale_2_textEdited(const QString& string)
 {
 	bool OK = false;
-	double value = string.toDouble(&OK);
+	const double value{ string.toDouble(&OK) };
 	ZASSERTSTATE(OK);
 	workspace->setValue("FitsDDP/BlueScale", value);
 }
@@ -722,7 +722,7 @@ void RawDDPSettings::on_blueScale_2_textEdited(const QString& string)
 /*                                                                                */
 /*   The following four slots that process the Bayer Matrix Transformation Radio  */  
 /* Buttons of the FITS Files tab all set the value of "RawDDP/SuperPixels" in the */
-/* workspace (which is what the original pre-Qt code did).                                                                     */
+/* workspace (which is what the original pre-Qt code did).                        */
 /*                                                                                */
 /*               AS FAR AS I CAN DETERMINE THIS IS NOT A BUG                      */
 /*                                                                                */
