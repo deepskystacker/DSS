@@ -625,7 +625,7 @@ inline const Type& SSMAX(const Type& arg1, const Type& arg2)
 		// Make sure ASSERT and verify are defined
 
 		#ifndef ASSERT
-			#include <crtdbg.h>
+			//#include <crtdbg.h>
 			#define ASSERT(f) _ASSERTE((f))
 		#endif
 		#ifndef VERIFY

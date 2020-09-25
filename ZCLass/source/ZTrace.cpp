@@ -60,9 +60,6 @@
 
 #if defined(_WIN32)
 # include <windows.h>
-# if !defined(NDEBUG)
-#  include <crtdbg.h>
-# endif
 
 #elif defined(__MVS__)
 # include <css.h>

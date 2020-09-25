@@ -15,9 +15,6 @@
 #include "CGFILTYP.H"	//	CGCFileTypeAccess
 #endif
 
-#undef THIS_FILE
-static char THIS_FILE[] = "CGFILTYP.CPP";
-
 IMPLEMENT_DYNAMIC(CGCFileTypeAccess, CObject)
 
 CGCFileTypeAccess::CGCFileTypeAccess()

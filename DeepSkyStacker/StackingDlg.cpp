@@ -32,12 +32,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
 const		DWORD					IDC_EDIT_SELECT = 1;
 const		DWORD					IDC_EDIT_STAR   = 2;
 const		DWORD					IDC_EDIT_COMET  = 3;
