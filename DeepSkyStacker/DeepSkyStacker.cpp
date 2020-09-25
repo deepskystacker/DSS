@@ -140,7 +140,7 @@ void	CheckRemainingTempFiles()
 		if (msgBox.exec())
 		{
 			QFile file;
-			for (LONG i = 0; i < vFiles.size(); i++)
+			for (size_t i = 0; i < vFiles.size(); i++)
 			{
 				file.setFileName(vFiles[i]);
 				file.remove();

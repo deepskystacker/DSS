@@ -68,7 +68,8 @@ protected :
 		m_bMaster		  = false;
 		m_bFITS16bit	  = false;
 		m_bSuperPixel	  = false;
-		m_DateTime.wYear  = 0;
+		m_DateTime = { 0 };
+		m_FileTime = { 0 };
 		m_ExtraInfo.Clear();
         m_lWidth = 0;
         m_lHeight = 0;

@@ -54,10 +54,10 @@ private:
 	};
 
 public:
-	CDSLR(QString name, CFATYPE CFAType)
+	CDSLR(QString name, CFATYPE CFAType) :
+		m_strName(name),
+		m_CFAType(CFAType)
 	{
-		m_strName = name;
-		m_CFAType = CFAType;
 	};
 
 	CDSLR(const CDSLR & cd)
@@ -499,7 +499,8 @@ void RawDDPSettings::onInitDialog()
 		ui->DSLRs->setCurrentIndex(0);
 	else
 	{
-		if (int row = ui->DSLRs->findText(string) != -1)
+		const int row = ui->DSLRs->findText(string);
+		if (row != -1)
 		{
 			ui->DSLRs->setCurrentIndex(row);
 		}
@@ -569,7 +570,7 @@ RawDDPSettings & RawDDPSettings::updateControls()
 {
 	bool isFITSRaw = ui->isFITSRaw->isChecked();
 
-	int index = ui->DSLRs->currentIndex();
+	size_t index = ui->DSLRs->currentIndex();
 	if (isFITSRaw && index >= 0 && index < vector_DSLRs.size())
 	{
 		bool		bCYMG;

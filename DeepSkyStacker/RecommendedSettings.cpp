@@ -183,7 +183,7 @@ void RecommendedSettings::insertHeader()
 
 /* ------------------------------------------------------------------- */
 
-void RecommendedSettings::insertHTML(const QString& html, QColor colour, bool bBold, bool bItalic, LONG lLinkID)
+void RecommendedSettings::insertHTML(const QString& html, const QColor& colour, bool bBold, bool bItalic, LONG lLinkID)
 
 {
 	QString					strText;
@@ -709,12 +709,12 @@ void RecommendedSettings::fillWithRecommendedSettings()
 	clearText();
 	if (pStackingTasks && pStackingTasks->GetNrLightFrames())
 	{
-		LONG					lPosition;
+		size_t					lPosition;
 
 		insertHeader();
 		AddRegisterUseOfMedianFilter(vRecommendations);
 
-		lPosition = (LONG)vRecommendations.size();
+		lPosition = vRecommendations.size();
 
 		if (pStackingTasks->AreBayerImageUsed())
 		{
@@ -730,7 +730,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 
 		if (vRecommendations.size()!=lPosition)
 			vRecommendations[lPosition].breakBefore = true;
-		lPosition = (LONG)vRecommendations.size();
+		lPosition = vRecommendations.size();
 
 		if (pStackingTasks->IsCometAvailable())
 		{
@@ -739,7 +739,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 
 		if (vRecommendations.size()!=lPosition)
 			vRecommendations[lPosition].breakBefore = true;
-		lPosition = (LONG)vRecommendations.size();
+		lPosition = vRecommendations.size();
 
 		AddLightMethod(vRecommendations, pStackingTasks->GetNrLightFrames());
 
@@ -754,7 +754,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 
 		if (vRecommendations.size()!=lPosition)
 			vRecommendations[lPosition].breakBefore = true;
-		lPosition = (LONG)vRecommendations.size();
+		lPosition = vRecommendations.size();
 
 		if (pStackingTasks->AreColorImageUsed())
 		{
@@ -768,7 +768,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 
 		if (vRecommendations.size()!=lPosition)
 			vRecommendations[lPosition].breakBefore = true;
-		lPosition = (LONG)vRecommendations.size();
+		lPosition = vRecommendations.size();
 
 		LONG					lLastLinkID = 0;
 		
@@ -781,7 +781,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 
 			if (recommendation.breakBefore)
 				insertHTML("<hr>");
-			for (LONG j = 0;j<recommendation.vRecommendations.size() && !bDifferent;j++)
+			for (size_t j = 0;j<recommendation.vRecommendations.size() && !bDifferent;j++)
 			{
 				bDifferent = recommendation.vRecommendations[j].differsFromWorkspace();
 			};
@@ -801,7 +801,7 @@ void RecommendedSettings::fillWithRecommendedSettings()
 			insertHTML(recommendation.text, crColor);
 			insertHTML("<br>");
 
-			for (LONG j = 0;j<recommendation.vRecommendations.size();j++)
+			for (size_t j = 0;j<recommendation.vRecommendations.size();j++)
 			{
 				RecommendationItem &	ri = recommendation.vRecommendations[j];
 				bool					bAlreadySet;
@@ -843,9 +843,9 @@ void RecommendedSettings::setSetting(LONG lID)
 {
 	bool					bFound = false;
 
-	for (LONG i = 0;i<vRecommendations.size() && !bFound;i++)
+	for (size_t i = 0;i<vRecommendations.size() && !bFound;i++)
 	{
-		for (LONG j = 0;j<vRecommendations[i].vRecommendations.size() && !bFound;j++)
+		for (size_t j = 0;j<vRecommendations[i].vRecommendations.size() && !bFound;j++)
 		{
 			RecommendationItem &	ri = vRecommendations[i].vRecommendations[j];
 
