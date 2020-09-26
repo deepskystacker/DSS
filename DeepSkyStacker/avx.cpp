@@ -559,23 +559,14 @@ int AvxStacking::pixelPartitioning()
 	const __m256i resultWidthVec = _mm256_set1_epi32(this->resultWidth);
 	const __m256i resultHeightVec = _mm256_set1_epi32(this->resultHeight);
 
-	const auto accumulateAVX = [&resultWidthVec, &resultHeightVec, &accumulateSingle](const __m256i outNdx, const __m256 newColor, const __m256i col, const __m256i row, T* pOutputBitmap) -> void
+	const auto accumulateAVX = [&](const __m256i outNdx, const __m256i mask, const __m256 colorValue, const __m256 fraction, const __m256i col, const __m256i row, T* pOutputBitmap, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
 	{
-		const __m256i columnMask = _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), col), _mm256_cmpgt_epi32(resultWidthVec, col)); // !(0 > x) and (width > x) == (x >= 0) and (x < width)
-		const __m256i mask = _mm256_and_si256(columnMask, _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), row), _mm256_cmpgt_epi32(resultHeightVec, row))); // Same for y.
-		// Check if two adjacent indices are equal: Subtract the x-coordinates horizontally and check if any of the results equals zero. If so -> adjacent x-coordinates are equal.
-		const bool equalIndex = (0 == _mm256_testc_si256(_mm256_setzero_si256(), _mm256_cmpeq_epi32(_mm256_setzero_si256(), _mm256_hsub_epi32(outNdx, _mm256_permutevar8x32_epi32(outNdx, _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 0))))));
-		if (equalIndex) // If so, we cannot use AVX.
-			return accumulateSingle(newColor, col, row, mask, pOutputBitmap);
-		const __m256 limitedColor = AvxSupport::accumulateColorValues(outNdx, newColor, mask, pOutputBitmap);
+		if (twoNdxEqual) // If so, we cannot use AVX.
+			return accumulateSingle(_mm256_mul_ps(colorValue, fraction), col, row, mask, pOutputBitmap);
 
-		for (int n = 0, iMask = _mm256_movemask_epi8(mask); n < 8; ++n, iMask >>= 4)
-		{
-			if ((iMask & 0x01) != 0) {
-				const int ndx = outNdx.m256i_i32[n];
-				pOutputBitmap[ndx] = static_cast<T>(limitedColor.m256_f32[n]);
-			}
-		}
+		// Read from pOutputBitmap[outNdx[0:7]], and add (colorValue*fraction)[0:7]
+		const __m256 limitedColor = AvxSupport::accumulateColorValues(outNdx, colorValue, fraction, mask, pOutputBitmap, fastLoadAndStore);
+		AvxSupport::storeColorValue(outNdx, limitedColor, mask, pOutputBitmap, fastLoadAndStore);
 	};
 
 	const __m256i outWidthVec = _mm256_set1_epi32(outWidth);
@@ -595,16 +586,29 @@ int AvxStacking::pixelPartitioning()
 	};
 	const auto accumulateRGBorMono = [&](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction, const __m256i xCoord, const __m256i yCoord) -> void
 	{
-		const __m256i outNdx = _mm256_add_epi32(_mm256_mullo_epi32(outWidthVec, yCoord), xCoord);
+		const __m256i outNdx = _mm256_add_epi32(_mm256_mullo_epi32(outWidthVec, yCoord), xCoord); // ndx = y * width + x
+		const __m256i columnMask = _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), xCoord), _mm256_cmpgt_epi32(resultWidthVec, xCoord)); // !(0 > x) and (width > x) == (x >= 0) and (x < width)
+		const __m256i mask = _mm256_and_si256(columnMask, _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), yCoord), _mm256_cmpgt_epi32(resultHeightVec, yCoord))); // Same for y.
+
+		// Check if two adjacent indices are equal: Subtract the x-coordinates horizontally and check if any of the results equals zero. If so -> adjacent x-coordinates are equal.
+
+		// (a & b) == 0 -> ZF=1, (~a & b) == 0 -> CF=1; testc: return CF; testz: return ZF; testnzc: IF (ZF == 0 && CF == 0) return 1;
+		const __m256i ndxMask = _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0);
+		const __m256i indexDiff = _mm256_sub_epi32(outNdx, _mm256_permutevar8x32_epi32(outNdx, _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 0))); // -1 where ndx[i+1] == 1 + ndx[i]
+		const bool allNdxEquidistant = (1 == _mm256_testc_si256(indexDiff, ndxMask));
+		const bool twoNdxEqual = (0 == _mm256_testz_si256(_mm256_cmpeq_epi32(_mm256_setzero_si256(), indexDiff), ndxMask));
+		const bool allNdxValid = (1 == _mm256_testc_si256(mask, _mm256_set1_epi32(-1)));
+		const bool fastLoadAndStore = allNdxEquidistant && allNdxValid;
+
 		if constexpr (ISRGB)
 		{
-			accumulateAVX(outNdx, _mm256_mul_ps(red, fraction), xCoord, yCoord, &*avxTempBitmap.redPixels<T>().begin());
-			accumulateAVX(outNdx, _mm256_mul_ps(green, fraction), xCoord, yCoord, &*avxTempBitmap.greenPixels<T>().begin());
-			accumulateAVX(outNdx, _mm256_mul_ps(blue, fraction), xCoord, yCoord, &*avxTempBitmap.bluePixels<T>().begin());
+			accumulateAVX(outNdx, mask, red, fraction, xCoord, yCoord, &*avxTempBitmap.redPixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, green, fraction, xCoord, yCoord, &*avxTempBitmap.greenPixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, blue, fraction, xCoord, yCoord, &*avxTempBitmap.bluePixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
 		}
 		else
 		{
-			accumulateAVX(outNdx, _mm256_mul_ps(red, fraction), xCoord, yCoord, &*avxTempBitmap.grayPixels<T>().begin());
+			accumulateAVX(outNdx, mask, red, fraction, xCoord, yCoord, &*avxTempBitmap.grayPixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
 		}
 	};
 
@@ -619,40 +623,41 @@ int AvxStacking::pixelPartitioning()
 
 		for (int counter = 0; counter < nrVectors; ++counter, pXLine += 8, pYLine += 8)
 		{
-			const __m256 fxline = _mm256_loadu_ps(pXLine);
-			const __m256 fyline = _mm256_loadu_ps(pYLine);
-			const __m256 xi = _mm256_floor_ps(fxline);
-			const __m256 yi = _mm256_floor_ps(fyline);
-			const __m256 xr = _mm256_sub_ps(fxline, xi);
-			const __m256 yr = _mm256_sub_ps(fyline, yi);
-			const __m256 xr1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), xr);
-			const __m256 yr1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), yr);
+			const __m256 xcoord = _mm256_loadu_ps(pXLine);
+			const __m256 ycoord = _mm256_loadu_ps(pYLine);
+			const __m256 xtruncated = _mm256_floor_ps(xcoord); // trunc(coordinate)
+			const __m256 ytruncated = _mm256_floor_ps(ycoord);
+			const __m256 xfractional = _mm256_sub_ps(xcoord, xtruncated); // fractional_part(coordinate)
+			const __m256 yfractional = _mm256_sub_ps(ycoord, ytruncated);
+			const __m256 xfrac1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), xfractional); // 1 - fractional_part
+			const __m256 yfrac1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), yfractional);
 
 			const __m256 red = _mm256_loadu_ps(pRed);
 			const __m256 green = colorValue(pGreen);
 			const __m256 blue = colorValue(pBlue);
 
 			// Different pixels of the vector can have different number of fractions. So we always need to consider all 4 fractions.
+			// Note: We have to process the 4 fractions one by one, because the same pixels can be involved. Otherwise accumulation would be wrong.
 
-			// 1.Fraction at (xi, yi)
-			__m256 fraction = _mm256_mul_ps(xr1, yr1);
-			__m256i xii = _mm256_cvtps_epi32(xi); // Rounding mode irrelevant, because xi was result of floor().
-			__m256i yii = _mm256_cvtps_epi32(yi);
+			// 1.Fraction at (xtruncated, ytruncated)
+			__m256 fraction = _mm256_mul_ps(xfrac1, yfrac1);
+			__m256i xii = _mm256_cvtps_epi32(xtruncated); // Rounding mode irrelevant, because xtruncated was result of floor().
+			__m256i yii = _mm256_cvtps_epi32(ytruncated);
 			accumulateRGBorMono(red, green, blue, fraction, xii, yii);
 
-			// 2.Fraction at (xi+1, yi)
-			fraction = _mm256_mul_ps(xr, yr1);
+			// 2.Fraction at (xtruncated+1, ytruncated)
+			fraction = _mm256_mul_ps(xfractional, yfrac1);
 			xii = _mm256_add_epi32(xii, _mm256_set1_epi32(1));
 			accumulateRGBorMono(red, green, blue, fraction, xii, yii);
 
-			// 4.Fraction at (xi+1, yi+1)
-			fraction = _mm256_mul_ps(xr, yr);
+			// 4.Fraction at (xtruncated+1, ytruncated+1)
+			fraction = _mm256_mul_ps(xfractional, yfractional);
 			yii = _mm256_add_epi32(yii, _mm256_set1_epi32(1));
 			accumulateRGBorMono(red, green, blue, fraction, xii, yii);
 
-			// 3.Fraction at (xi, yi+1)
-			fraction = _mm256_mul_ps(xr1, yr);
-			xii = _mm256_cvtps_epi32(xi);
+			// 3.Fraction at (xtruncated, ytruncated+1)
+			fraction = _mm256_mul_ps(xfrac1, yfractional);
+			xii = _mm256_cvtps_epi32(xtruncated);
 			accumulateRGBorMono(red, green, blue, fraction, xii, yii);
 
 			pRed += 8;
@@ -1037,26 +1042,84 @@ bool AvxSupport::checkCpuFeatures() noexcept {
 	return (FMAsupported && AVX2supported);
 }
 
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 newColor, const __m256i mask, const std::uint16_t* const pOutputBitmap) noexcept
+inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint16_t* const pOutputBitmap, const bool fastload) noexcept
 {
-	// Gather with scale factor of 2 -> outNdx points to WORDs. Load these 8 WORDs and interpret them as epi32.
-	const __m256i tempColorAsI16 = _mm256_mask_i32gather_epi32(_mm256_setzero_si256(), reinterpret_cast<const int*>(pOutputBitmap), outNdx, mask, 2);
-	const __m256i tempColor = _mm256_and_si256(tempColorAsI16, _mm256_set1_epi32(0x0000ffff));
-	const __m256 accumulatedColor = _mm256_add_ps(_mm256_cvtepi32_ps(tempColor), newColor); // tempColor = 8 int in the range [0, 65535]
+	__m256i tempColor = _mm256_undefined_si256();
+	if (fastload)
+		tempColor = _mm256_cvtepu16_epi32(_mm_loadu_si128(reinterpret_cast<const __m128i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0))));
+	else
+	{
+		// Gather with scale factor of 2 -> outNdx points to WORDs. Load these 8 WORDs and interpret them as epi32.
+		const __m256i tempColorAsI16 = _mm256_mask_i32gather_epi32(_mm256_setzero_si256(), reinterpret_cast<const int*>(pOutputBitmap), outNdx, mask, 2);
+		tempColor = _mm256_and_si256(tempColorAsI16, _mm256_set1_epi32(0x0000ffff));
+	}
+	const __m256 accumulatedColor = _mm256_fmadd_ps(colorValue, fraction, _mm256_cvtepi32_ps(tempColor)); // tempColor = 8 int in the range [0, 65535]
 	return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0x0000ffff)));
 }
 
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 newColor, const __m256i mask, const std::uint32_t *const pOutputBitmap) noexcept
+inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint32_t *const pOutputBitmap, const bool fastload) noexcept
 {
-	const __m256i tempColor = _mm256_mask_i32gather_epi32(_mm256_setzero_si256(), reinterpret_cast<const int*>(pOutputBitmap), outNdx, mask, 4);
-	const __m256 accumulatedColor = _mm256_add_ps(cvtEpu32Ps(tempColor), newColor);
+	const __m256i tempColor = fastload
+		? _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0)))
+		: _mm256_mask_i32gather_epi32(_mm256_setzero_si256(), reinterpret_cast<const int*>(pOutputBitmap), outNdx, mask, 4);
+	const __m256 accumulatedColor = _mm256_fmadd_ps(colorValue, fraction, cvtEpu32Ps(tempColor));
 	return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0xffffffffU)));
 }
 
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 newColor, const __m256i mask, const float *const pOutputBitmap) noexcept
+inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const float *const pOutputBitmap, const bool fastload) noexcept
 {
-	const __m256 tempColor = _mm256_mask_i32gather_ps(_mm256_setzero_ps(), pOutputBitmap, outNdx, _mm256_castsi256_ps(mask), 4);
-	return _mm256_add_ps(tempColor, newColor);
+	const __m256 tempColor = fastload
+		? _mm256_loadu_ps(pOutputBitmap + _mm256_extract_epi32(outNdx, 0))
+		: _mm256_mask_i32gather_ps(_mm256_setzero_ps(), pOutputBitmap, outNdx, _mm256_castsi256_ps(mask), 4);
+	return _mm256_fmadd_ps(colorValue, fraction, tempColor);
+}
+
+inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint16_t *const pOutputBitmap, const bool faststore) noexcept
+{
+	if (faststore)
+		_mm_storeu_si128(reinterpret_cast<__m128i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0)), cvtPsEpu16(colorValue));
+	else
+	{
+		for (int n = 0, iMask = _mm256_movemask_epi8(mask); n < 8; ++n, iMask >>= 4)
+		{
+			if ((iMask & 0x01) != 0) {
+				const int ndx = outNdx.m256i_i32[n];
+				pOutputBitmap[ndx] = static_cast<std::uint16_t>(colorValue.m256_f32[n]);
+			}
+		}
+	}
+}
+
+inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint32_t *const pOutputBitmap, const bool faststore) noexcept
+{
+	if (faststore)
+		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0)), _mm256_cvtps_epi32(colorValue));
+	else
+	{
+		for (int n = 0, iMask = _mm256_movemask_epi8(mask); n < 8; ++n, iMask >>= 4)
+		{
+			if ((iMask & 0x01) != 0) {
+				const int ndx = outNdx.m256i_i32[n];
+				pOutputBitmap[ndx] = static_cast<std::uint32_t>(colorValue.m256_f32[n]);
+			}
+		}
+	}
+}
+
+inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, float *const pOutputBitmap, const bool faststore) noexcept
+{
+	if (faststore)
+		_mm256_storeu_ps(pOutputBitmap + _mm256_extract_epi32(outNdx, 0), colorValue);
+	else
+	{
+		for (int n = 0, iMask = _mm256_movemask_epi8(mask); n < 8; ++n, iMask >>= 4)
+		{
+			if ((iMask & 0x01) != 0) {
+				const int ndx = outNdx.m256i_i32[n];
+				pOutputBitmap[ndx] = colorValue.m256_f32[n];
+			}
+		}
+	}
 }
 
 template <class T>

@@ -132,6 +132,13 @@ public:
 		return _mm256_blendv_ps(ps, corr, _mm256_castsi256_ps(mask)); // Take (UINTMAX - x) where x < 0
 	}
 
+	inline static __m128i cvtPsEpu16(const __m256 x) noexcept
+	{
+		const __m256i epi32 = _mm256_cvtps_epi32(x);
+		const __m256i epu16 = _mm256_packus_epi32(epi32, _mm256_permute2x128_si256(epi32, epi32, 1)); // (a3, a2, a1, a0, a7, a6, a5, a4, a7, a6, a5, a4, a3, a2, a1, a0)
+		return _mm256_castsi256_si128(epu16);
+	}
+
 	inline static __m256i cmpGtEpu16(const __m256i a, const __m256i b) noexcept
 	{
 		const __m256i highBit = _mm256_set1_epi16(WORD{ 0x8000 });
@@ -159,9 +166,14 @@ public:
 	}
 
 	// Accumulate packed single newColor to T* oldColor
-	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 newColor, const __m256i mask, const std::uint16_t *const pOutputBitmap) noexcept;
-	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 newColor, const __m256i mask, const std::uint32_t* const pOutputBitmap) noexcept;
-	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 newColor, const __m256i mask, const float *const pOutputBitmap) noexcept;
+	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint16_t *const pOutputBitmap, const bool fastload) noexcept;
+	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint32_t* const pOutputBitmap, const bool fastload) noexcept;
+	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const float *const pOutputBitmap, const bool fastload) noexcept;
+
+	// Store accumulated color
+	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint16_t *const pOutputBitmap, const bool faststore) noexcept;
+	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint32_t *const pOutputBitmap, const bool faststore) noexcept;
+	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, float *const pOutputBitmap, const bool faststore) noexcept;
 
 	template <class T>
 	static float accumulateSingleColorValue(const size_t outNdx, const float newColor, const int mask, const T* const pOutputBitmap) noexcept;
