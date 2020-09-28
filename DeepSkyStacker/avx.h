@@ -31,8 +31,12 @@ public:
 	AvxStacking(AvxStacking&&) = delete;
 	AvxStacking& AvxStacking::operator=(const AvxStacking&) = delete;
 
+	void init(const long lStart, const long lEnd);
+
 	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier);
 private:
+	void resizeColorVectors(const size_t nrPixels);
+
 	template <class T>
 	int doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier);
 

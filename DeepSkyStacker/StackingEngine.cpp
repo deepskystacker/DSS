@@ -1800,13 +1800,14 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 	PIXELDISPATCHVECTOR		vPixels;
 
 	vPixels.reserve(16);
+	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult);
 
 	// Create a message queue and signal the event
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
 	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
-		AvxStacking avxStacking(msg.wParam, msg.wParam + msg.lParam, *m_pBitmap, *m_pTempBitmap, m_rcResult);
+		avxStacking.init(msg.wParam, msg.wParam + msg.lParam);
 
 		if (msg.message == WM_MT_PROCESS)
 		{

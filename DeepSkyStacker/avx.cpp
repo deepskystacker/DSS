@@ -24,13 +24,29 @@ AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemory
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
 
+	resizeColorVectors(static_cast<size_t>(width) * static_cast<size_t>(height));
+}
+
+void AvxStacking::init(const long lStart, const long lEnd)
+{
+	lineStart = lStart;
+	lineEnd = lEnd;
+	height = lineEnd - lineStart;
 	const size_t nrPixels = static_cast<size_t>(width) * static_cast<size_t>(height);
-	if (AvxSupport{tempBitmap}.isColorBitmap())
+	xCoordinates.resize(nrPixels);
+	yCoordinates.resize(nrPixels);
+	redPixels.resize(nrPixels);
+	resizeColorVectors(nrPixels);
+}
+
+void AvxStacking::resizeColorVectors(const size_t nrPixels)
+{
+	if (AvxSupport{ tempBitmap }.isColorBitmap())
 	{
 		greenPixels.resize(nrPixels);
 		bluePixels.resize(nrPixels);
 	}
-	if (AvxSupport{inputBitmap}.isMonochromeCfaBitmapOfType<WORD>())
+	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
 	{
 		redCfaPixels.resize(nrPixels);
 		greenCfaPixels.resize(nrPixels);
