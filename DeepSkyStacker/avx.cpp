@@ -615,7 +615,8 @@ int AvxStacking::pixelPartitioning()
 	};
 	const auto fastAccumulateWordRGBorMono = [&](const __m256 color, const __m256 fraction1, const __m256 fraction2, std::uint16_t *const pOutput) -> void
 	{
-		const __m256i colorVector = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutput));
+		const __m256i colorVector = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vmovdqu ymm, m256
+//		const __m256i colorVector = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vlddqu ymm, m256
 		const __m256i f1 = _mm256_set_m128i(_mm_setzero_si128(), AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction1, color)));
 		const __m256i f2 = _mm256_castsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction2, color)));
 		const __m256i f2Left1 = _mm256_slli_si256(f2, 2); // 2 Bytes left = 1 WORD left
@@ -896,107 +897,103 @@ int AvxStacking::interpolateGrayCFA2Color()
 		_mm256_storeu_si256((__m256i*)pBlue, blue);
 	};
 
-	if (true)
+	const WORD* pCFA{ &avxSupport.grayPixels<WORD>().at(lineStart * width) };
+	const WORD* pCFAnext{ lineStart == (inputHeight - 1) ? (pCFA - width) : (pCFA + width) };
+	const WORD* pCFAprev{ lineStart == 0 ? pCFAnext : (pCFA - width) };
+	WORD* pRed{ &*redCfaPixels.begin() };
+	WORD* pGreen{ &*greenCfaPixels.begin() };
+	WORD* pBlue{ &*blueCfaPixels.begin() };
+
+	const auto advanceCFApointersAndVectors = [&pCFA, &pCFAnext, &pCFAprev, &pRed, &pGreen, &pBlue, &advanceVectorsEpu16]() -> void
 	{
-		const WORD* pCFA{ &avxSupport.grayPixels<WORD>().at(lineStart * width) };
-		const WORD* pCFAnext{ lineStart == (inputHeight - 1) ? (pCFA - width) : (pCFA + width) };
-		const WORD* pCFAprev{ lineStart == 0 ? pCFAnext : (pCFA - width) };
-		WORD* pRed{ &*redCfaPixels.begin() };
-		WORD* pGreen{ &*greenCfaPixels.begin() };
-		WORD* pBlue{ &*blueCfaPixels.begin() };
-
-		const auto advanceCFApointersAndVectors = [&pCFA, &pCFAnext, &pCFAprev, &pRed, &pGreen, &pBlue, &advanceVectorsEpu16]() -> void
+		std::advance(pCFA, 16);
+		std::advance(pCFAnext, 16);
+		std::advance(pCFAprev, 16);
+		advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
+		std::advance(pRed, 16);
+		std::advance(pGreen, 16);
+		std::advance(pBlue, 16);
+	};
+	const auto lastVectorsOfLine = [&]() -> void
+	{
+		if (nrVectors * 16 == this->colEnd) // No pixels left to process at the end of the line
 		{
-			std::advance(pCFA, 16);
-			std::advance(pCFAnext, 16);
-			std::advance(pCFAprev, 16);
-			advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
-			std::advance(pRed, 16);
-			std::advance(pGreen, 16);
-			std::advance(pBlue, 16);
-		};
-		const auto lastVectorsOfLine = [&]() -> void
+			thisLineNext = _mm256_setzero_si256();
+			nextLineNext = _mm256_setzero_si256();
+			prevLineNext = _mm256_setzero_si256();
+		}
+		// otherwise the 3 "next"-Vectors have those line-end-pixels loaded.
+	};
+	const auto storeRemainingPixels = [&pRed, &pGreen, &pBlue, &pCFA, nrVectors, this](const __m256i red, const __m256i green, const __m256i blue) -> void
+	{
+		for (int n = nrVectors * 16, ndx = 0; n < this->colEnd; ++n, ++ndx, ++pRed, ++pGreen, ++pBlue, ++pCFA)
 		{
-			if (nrVectors * 16 == this->colEnd) // No pixels left to process at the end of the line
-			{
-				thisLineNext = _mm256_setzero_si256();
-				nextLineNext = _mm256_setzero_si256();
-				prevLineNext = _mm256_setzero_si256();
-			}
-			// otherwise the 3 "next"-Vectors have those line-end-pixels loaded.
-		};
-		const auto storeRemainingPixels = [&pRed, &pGreen, &pBlue, &pCFA, nrVectors, this](const __m256i red, const __m256i green, const __m256i blue) -> void
+			*pRed = red.m256i_u16[ndx];
+			*pGreen = green.m256i_u16[ndx];
+			*pBlue = blue.m256i_u16[ndx];
+		}
+	};
+
+	for (int row = 0, lineNdx = lineStart; row < height; ++row, ++lineNdx)
+	{
+		thisLineCurrent = load16Pixels(pCFA);
+		thisLineNext = load16Pixels(pCFA + 16);
+		thisLinePrev = _mm256_setzero_si256();
+
+		nextLineCurrent = load16Pixels(pCFAnext);
+		nextLineNext = load16Pixels(pCFAnext + 16);
+		nextLinePrev = _mm256_setzero_si256();
+
+		prevLineCurrent = load16Pixels(pCFAprev);
+		prevLineNext = load16Pixels(pCFAprev + 16);
+		prevLinePrev = _mm256_setzero_si256();
+
+		if ((lineNdx & 0x01) == 0)
 		{
-			for (int n = nrVectors * 16, ndx = 0; n < this->colEnd; ++n, ++ndx, ++pRed, ++pGreen, ++pBlue, ++pCFA)
+			for (int counter = 0; counter < nrVectors - 1; ++counter)
 			{
-				*pRed = red.m256i_u16[ndx];
-				*pGreen = green.m256i_u16[ndx];
-				*pBlue = blue.m256i_u16[ndx];
+				const auto [r, g, b] = interpolateRGlineEpu16();
+				storeRGBvectorsEpu16(r, g, b, pRed, pGreen, pBlue);
+				advanceCFApointersAndVectors();
 			}
-		};
-
-		for (int row = 0, lineNdx = lineStart; row < height; ++row, ++lineNdx)
+			// Last vector
+			lastVectorsOfLine();
+			const auto [red, green, blue] = interpolateRGlineEpu16();
+			storeRGBvectorsEpu16(red, green, blue, pRed, pGreen, pBlue);
+			// Remaining pixels of line (R, G, ...)
+			if (nrVectors * 16 < colEnd)
+			{
+				advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
+				const auto [r, g, b] = interpolateRGlineEpu16();
+				storeRemainingPixels(r, g, b);
+			}
+		}
+		else
 		{
-			thisLineCurrent = load16Pixels(pCFA);
-			thisLineNext = load16Pixels(pCFA + 16);
-			thisLinePrev = _mm256_setzero_si256();
-
-			nextLineCurrent = load16Pixels(pCFAnext);
-			nextLineNext = load16Pixels(pCFAnext + 16);
-			nextLinePrev = _mm256_setzero_si256();
-
-			prevLineCurrent = load16Pixels(pCFAprev);
-			prevLineNext = load16Pixels(pCFAprev + 16);
-			prevLinePrev = _mm256_setzero_si256();
-
-			if ((lineNdx & 0x01) == 0)
+			for (int counter = 0; counter < nrVectors - 1; ++counter)
 			{
-				for (int counter = 0; counter < nrVectors - 1; ++counter)
-				{
-					const auto [r, g, b] = interpolateRGlineEpu16();
-					storeRGBvectorsEpu16(r, g, b, pRed, pGreen, pBlue);
-					advanceCFApointersAndVectors();
-				}
-				// Last vector
-				lastVectorsOfLine();
-				const auto [red, green, blue] = interpolateRGlineEpu16();
-				storeRGBvectorsEpu16(red, green, blue, pRed, pGreen, pBlue);
-				// Remaining pixels of line (R, G, ...)
-				if (nrVectors * 16 < colEnd)
-				{
-					advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
-					const auto [r, g, b] = interpolateRGlineEpu16();
-					storeRemainingPixels(r, g, b);
-				}
+				const auto [r, g, b] = interpolateGBlineEpu16();
+				storeRGBvectorsEpu16(r, g, b, pRed, pGreen, pBlue);
+				advanceCFApointersAndVectors();
 			}
-			else
+			// Last vector
+			lastVectorsOfLine();
+			const auto [red, green, blue] = interpolateGBlineEpu16();
+			storeRGBvectorsEpu16(red, green, blue, pRed, pGreen, pBlue);
+			// Remaining pixels of line (G, B, ...)
+			if (nrVectors * 16 < colEnd)
 			{
-				for (int counter = 0; counter < nrVectors - 1; ++counter)
-				{
-					const auto [r, g, b] = interpolateGBlineEpu16();
-					storeRGBvectorsEpu16(r, g, b, pRed, pGreen, pBlue);
-					advanceCFApointersAndVectors();
-				}
-				// Last vector
-				lastVectorsOfLine();
-				const auto [red, green, blue] = interpolateGBlineEpu16();
-				storeRGBvectorsEpu16(red, green, blue, pRed, pGreen, pBlue);
-				// Remaining pixels of line (G, B, ...)
-				if (nrVectors * 16 < colEnd)
-				{
-					advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
-					const auto [r, g, b] = interpolateGBlineEpu16();
-					storeRemainingPixels(r, g, b);
-				}
+				advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
+				const auto [r, g, b] = interpolateGBlineEpu16();
+				storeRemainingPixels(r, g, b);
 			}
-
-			pCFAprev = pCFA - width;
-			if (lineNdx == inputHeight - 2) // Next round will be the last line of bitmap -> next_line = previous_line (then the interpolation is correct)
-				pCFAnext = pCFAprev;
-			else
-				pCFAnext = pCFA + width;
 		}
 
+		pCFAprev = pCFA - width;
+		if (lineNdx == inputHeight - 2) // Next round will be the last line of bitmap -> next_line = previous_line (then the interpolation is correct)
+			pCFAnext = pCFAprev;
+		else
+			pCFAnext = pCFA + width;
 	}
 
 	return 0;
