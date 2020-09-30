@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "avx_filter.h"
+#include "avx.h"
 #include <tuple>
 
 template <>
@@ -18,6 +19,8 @@ template <class T>
 int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 {
 	if constexpr (!std::is_same<T, double>::value)
+		return 1;
+	if (!AvxSupport::checkCpuFeatures())
 		return 1;
 	if (filterEngine == nullptr)
 		return 1;
