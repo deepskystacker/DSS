@@ -117,6 +117,9 @@
     <ClCompile Include="..\DeepSkyStacker\avx_output.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_filter.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProgressConsole.h">
@@ -237,6 +240,9 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\avx_output.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_filter.h">
       <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>

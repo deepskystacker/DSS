@@ -348,6 +348,9 @@
     <ClCompile Include="avx_output.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="avx_filter.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -707,6 +710,9 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="avx_output.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_filter.h">
       <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>

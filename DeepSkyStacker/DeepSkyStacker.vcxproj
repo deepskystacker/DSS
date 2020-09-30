@@ -241,6 +241,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="AskRegistering.cpp" />
     <ClCompile Include="avx.cpp" />
     <ClCompile Include="avx_avg.cpp" />
+    <ClCompile Include="avx_filter.cpp" />
     <ClCompile Include="avx_output.cpp" />
     <ClCompile Include="BackgroundCalibration.cpp" />
     <ClCompile Include="BackgroundLoading.cpp" />
@@ -419,6 +420,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="AskRegistering.h" />
     <ClInclude Include="avx.h" />
     <ClInclude Include="avx_avg.h" />
+    <ClInclude Include="avx_filter.h" />
     <ClInclude Include="avx_output.h" />
     <ClInclude Include="BackgroundCalibration.h" />
     <ClInclude Include="BackgroundLoading.h" />
