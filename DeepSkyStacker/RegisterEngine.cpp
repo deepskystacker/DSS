@@ -8,6 +8,7 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "Filters.h"
+#include "avx_luminance.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -1075,6 +1076,8 @@ bool	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 	MSG					msg;
 	LONG				lWidth = m_pBitmap->Width();
 
+	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
+
 	// Create a message queue and signal the event
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
@@ -1082,16 +1085,19 @@ bool	CComputeLuminanceTask::DoTask(HANDLE hEvent)
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
-			for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
+			if (avxLuminance.computeLuminanceBitmap(msg.wParam, msg.wParam + msg.lParam) != 0)
 			{
-				for (i = 0;i<lWidth;i++)
+				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 				{
-					COLORREF16			crColor;
+					for (i = 0; i < lWidth; i++)
+					{
+						COLORREF16			crColor;
 
-					m_pBitmap->GetPixel16(i, j, crColor);
-					m_pGrayBitmap->SetPixel(i, j, GetLuminance(crColor));
+						m_pBitmap->GetPixel16(i, j, crColor);
+						m_pGrayBitmap->SetPixel(i, j, GetLuminance(crColor));
+					};
 				};
-			};
+			}
 
 			SetEvent(hEvent);
 		}

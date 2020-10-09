@@ -1807,11 +1807,10 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 	SetEvent(hEvent);
 	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
 	{
-		avxStacking.init(msg.wParam, msg.wParam + msg.lParam);
-
 		if (msg.message == WM_MT_PROCESS)
 		{
 			// First try AVX accelerated code, if not supported -> run conventional code.
+			avxStacking.init(msg.wParam, msg.wParam + msg.lParam);
 			if (avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_lPixelSizeMultiplier) != 0)
 			{
 				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
