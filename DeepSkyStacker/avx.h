@@ -1,5 +1,6 @@
 #pragma once
 
+#include "avx_cfa.h"
 #include "PixelTransform.h"
 #include "StackingTasks.h"
 #include "BackgroundCalibration.h"
@@ -9,7 +10,9 @@
 
 
 #if defined(AVX_INTRINSICS) && defined(_M_X64)
-class AvxStacking {
+
+class AvxStacking
+{
 private:
 	long lineStart, lineEnd, colEnd;
 	int width, height;
@@ -19,11 +22,9 @@ private:
 	std::vector<float> redPixels;
 	std::vector<float> greenPixels;
 	std::vector<float> bluePixels;
-	std::vector<WORD> redCfaPixels;
-	std::vector<WORD> greenCfaPixels;
-	std::vector<WORD> blueCfaPixels;
 	CMemoryBitmap& inputBitmap;
 	CMemoryBitmap& tempBitmap;
+	AvxCfaProcessing avxCfa;
 public:
 	AvxStacking() = delete;
 	AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect);
@@ -50,8 +51,6 @@ private:
 
 	template <bool ISRGB, class T>
 	int pixelPartitioning();
-
-	int interpolateGrayCFA2Color();
 };
 
 #else
@@ -60,7 +59,8 @@ class AvxStacking
 {
 public:
 	AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect) {}
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier)
+	void init(const long, const long) {}
+	int stack(const CPixelTransform&, const CTaskInfo&, const CBackgroundCalibration&, const long)
 	{
 		return 1;
 	}
@@ -128,12 +128,45 @@ public:
 		return _mm256_cvtepi32_ps(_mm256_cvtepu16_epi32(x));
 	}
 
+	inline static std::tuple<__m256d, __m256d, __m256d, __m256d> wordToPackedDouble(const __m256i x) noexcept
+	{
+		const __m256i i1 = _mm256_cvtepu16_epi32(_mm256_castsi256_si128(x)); // cvt
+		const __m256i i2 = _mm256_cvtepu16_epi32(_mm256_extracti128_si256(x, 1)); // extract, cvt
+		return {
+			_mm256_cvtepi32_pd(_mm256_castsi256_si128(i1)), // cvt
+			_mm256_cvtepi32_pd(_mm256_extracti128_si256(i1, 1)), // extract, cvt
+			_mm256_cvtepi32_pd(_mm256_castsi256_si128(i2)), // cvt
+			_mm256_cvtepi32_pd(_mm256_extracti128_si256(i2, 1)) // extract, cvt
+		};
+	}
+
 	inline static __m256 cvtEpu32Ps(const __m256i x) noexcept
 	{
 		const __m256i mask = _mm256_cmpgt_epi32(_mm256_setzero_si256(), x); // 0 > x (= x < 0)
 		const __m256 ps = _mm256_cvtepi32_ps(x);
-		const __m256 corr = _mm256_add_ps(_mm256_set1_ps(static_cast<float>(0xffffffffU)), ps); // UINTMAX - x
+		const __m256 corr = _mm256_add_ps(_mm256_set1_ps(static_cast<float>(0x100000000ULL)), ps); // UINTMAX - x (Note: 'add_ps' is correct!)
 		return _mm256_blendv_ps(ps, corr, _mm256_castsi256_ps(mask)); // Take (UINTMAX - x) where x < 0
+	}
+
+	inline static std::tuple<__m256d, __m256d> cvtEpu32Pd(const __m256i x) noexcept
+	{
+		const __m256i mask = _mm256_cmpgt_epi32(_mm256_setzero_si256(), x); // 0 > x (= x < 0)
+		const __m256d d1 = _mm256_cvtepi32_pd(_mm256_castsi256_si128(x));
+		const __m256d d2 = _mm256_cvtepi32_pd(_mm256_extracti128_si256(x, 1));
+		const __m256d corr1 = _mm256_add_pd(_mm256_set1_pd(static_cast<double>(0x100000000ULL)), d1); // UINTMAX - x (Note: 'add_ps' is correct!)
+		const __m256d corr2 = _mm256_add_pd(_mm256_set1_pd(static_cast<double>(0x100000000ULL)), d2);
+		return {
+			_mm256_blendv_pd(d1, corr1, _mm256_cmp_pd(d1, _mm256_setzero_pd(), 17)), // 17: OP := _CMP_LT_OQ
+			_mm256_blendv_pd(d2, corr2, _mm256_cmp_pd(d2, _mm256_setzero_pd(), 17)) // Take (UINTMAX - x) where x < 0
+		};
+	}
+
+	inline static std::tuple<__m256d, __m256d> cvtPsPd(const __m256 x) noexcept
+	{
+		return {
+			_mm256_cvtps_pd(_mm256_castps256_ps128(x)),
+			_mm256_cvtps_pd(_mm256_extractf128_ps(x, 1))
+		};
 	}
 
 	inline static __m128i cvtPsEpu16(const __m256 x) noexcept

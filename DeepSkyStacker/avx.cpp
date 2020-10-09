@@ -15,11 +15,9 @@ AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemory
 	redPixels(width >= 0 && height >= 0 ? width * height : 0),
 	greenPixels{},
 	bluePixels{},
-	redCfaPixels{},
-	greenCfaPixels{},
-	blueCfaPixels{},
 	inputBitmap{ inputbm },
-	tempBitmap{ tempbm }
+	tempBitmap{ tempbm },
+	avxCfa{ lStart, lEnd, inputbm }
 {
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
@@ -48,13 +46,12 @@ void AvxStacking::resizeColorVectors(const size_t nrPixels)
 	}
 	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
 	{
-		redCfaPixels.resize(nrPixels);
-		greenCfaPixels.resize(nrPixels);
-		blueCfaPixels.resize(nrPixels);
+		avxCfa.init(lineStart, lineEnd);
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier) {
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier)
+{
 	if (!AvxSupport::checkCpuFeatures())
 		return 1;
 
@@ -87,7 +84,7 @@ int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskIn
 	if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
 		return 1;
 
-	if (avxInputSupport.isMonochromeCfaBitmapOfType<WORD>() && interpolateGrayCFA2Color() != 0)
+	if (avxInputSupport.isMonochromeCfaBitmapOfType<WORD>() && avxCfa.interpolate(lineStart, lineEnd, pixelSizeMultiplier) != 0)
 		return 1;
 	if (pixelTransform(pixelTransformDef) != 0)
 		return 1;
@@ -101,7 +98,8 @@ int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskIn
 	return 0;
 };
 
-int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef) {
+int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
+{
 	const CBilinearParameters& bilinearParams = pixelTransformDef.m_BilinearParameters;
 
 	// Number of vectors with 8 pixels each to process.
@@ -401,9 +399,9 @@ int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class A
 	{
 		if (avxSupport.isMonochromeCfaBitmapOfType<T>())
 		{
-			loopFunc(&*redCfaPixels.begin(), redParams, redPixels);
-			loopFunc(&*greenCfaPixels.begin(), greenParams, greenPixels);
-			loopFunc(&*blueCfaPixels.begin(), blueParams, bluePixels);
+			loopFunc(avxCfa.redCfaPixels<T>(0), redParams, redPixels);
+			loopFunc(avxCfa.greenCfaPixels<T>(0), greenParams, greenPixels);
+			loopFunc(avxCfa.blueCfaPixels<T>(0), blueParams, bluePixels);
 			return 0;
 		}
 	}
@@ -775,229 +773,6 @@ int AvxStacking::pixelPartitioning()
 	return 0;
 }
 
-int AvxStacking::interpolateGrayCFA2Color()
-{
-	typedef std::tuple<__m256i, __m256i, __m256i> ColorVector16; // <R, G, B>: get<0>() returns Red, ...
-
-	if (auto *const p{ dynamic_cast<CGrayBitmapT<WORD>*>(&inputBitmap) })
-	{
-		if (!p->IsCFA())
-			return 1;
-	}
-	else
-		return 1;
-
-	const int inputHeight = inputBitmap.Height();
-	// AVX makes no sense for super-small arrays.
-	if (width < 64 || inputHeight < 8)
-		return 1;
-
-	const auto avg2Epu16 = [](const __m256i a, const __m256i b) -> __m256i
-	{
-		return _mm256_avg_epu16(a, b); // 17 bit temp = 1 + a(i) + b(i); return (temp >> 1);
-	};
-	const auto avg4Epu16 = [](const __m256i a, const __m256i b, const __m256i c, const __m256i d) -> __m256i
-	{
-		return _mm256_avg_epu16(_mm256_avg_epu16(a, b), _mm256_avg_epu16(c, d));
-	};
-	const auto shiftOnePixelRightEpu16 = [](const __m256i currentVector, const __m256i previousVector) -> __m256i
-	{
-		const __m256i right1 = _mm256_slli_si256(currentVector, 2);
-		const __m256i b = _mm256_permute2x128_si256(currentVector, previousVector, 0x03);
-		const __m256i left7 = _mm256_srli_si256(b, 14);
-		return _mm256_or_si256(right1, left7);
-	};
-	const auto shiftOnePixelLeftEpu16 = [](const __m256i currentVector, const __m256i nextVector) -> __m256i
-	{
-		const __m256i left1 = _mm256_srli_si256(currentVector, 2);
-		const __m256i b = _mm256_permute2x128_si256(currentVector, nextVector, 0x21);
-		const __m256i right7 = _mm256_slli_si256(b, 14);
-		return _mm256_or_si256(left1, right7);
-	};
-	const auto load16Pixels = [](const WORD* const p) -> __m256i
-	{
-		return _mm256_loadu_si256(reinterpret_cast<const __m256i*>(p));
-	};
-
-	const int nrVectors = width / 16;
-	const AvxSupport avxSupport{ inputBitmap };
-
-	// 3 x 16 pixel vectors - current line
-	__m256i thisLineCurrent = _mm256_undefined_si256();
-	__m256i thisLineNext = _mm256_undefined_si256(); // Next 16 pixels
-	__m256i thisLinePrev = _mm256_undefined_si256(); // Previous 16 pixels
-	// 3 x 16 pixel vectors - next line
-	__m256i nextLineCurrent = _mm256_undefined_si256();
-	__m256i nextLineNext = _mm256_undefined_si256();
-	__m256i nextLinePrev = _mm256_undefined_si256();
-	// 3 x 16 pixel vectors - previous line
-	__m256i prevLineCurrent = _mm256_undefined_si256();
-	__m256i prevLineNext = _mm256_undefined_si256();
-	__m256i prevLinePrev = _mm256_undefined_si256();
-
-	// R, G, R, G, ...: each is epu16
-	const auto interpolateRGlineEpu16 = [&]() noexcept -> ColorVector16
-	{
-		const __m256i onePixelRight = shiftOnePixelRightEpu16(thisLineCurrent, thisLinePrev);
-		const __m256i onePixelLeft = shiftOnePixelLeftEpu16(thisLineCurrent, thisLineNext);
-		const __m256i interpolated = avg2Epu16(onePixelRight, onePixelLeft);
-		// Red color
-		const __m256i red = _mm256_blend_epi16(thisLineCurrent, interpolated, 0xaa);
-		// Green color
-		const __m256i green = _mm256_blend_epi16(thisLineCurrent, interpolated, 0x55);
-		// Blue color
-		const __m256i gColumn = avg2Epu16(prevLineCurrent, nextLineCurrent);
-		const __m256i prevOneRight = shiftOnePixelRightEpu16(prevLineCurrent, prevLinePrev);
-		const __m256i prevOneLeft = shiftOnePixelLeftEpu16(prevLineCurrent, prevLineNext);
-		const __m256i nextOneRight = shiftOnePixelRightEpu16(nextLineCurrent, nextLinePrev);
-		const __m256i nextOneLeft = shiftOnePixelLeftEpu16(nextLineCurrent, nextLineNext);
-		const __m256i rColumn = avg4Epu16(prevOneRight, prevOneLeft, nextOneRight, nextOneLeft);
-		const __m256i blue = _mm256_blend_epi16(rColumn, gColumn, 0xaa);
-		return { red, green, blue };
-	};
-	// G, B, G, B, ...: each is epu16
-	const auto interpolateGBlineEpu16 = [&]() noexcept -> ColorVector16
-	{
-		// Red color
-		const __m256i gColumn = avg2Epu16(prevLineCurrent, nextLineCurrent);
-		const __m256i prevOneRight = shiftOnePixelRightEpu16(prevLineCurrent, prevLinePrev);
-		const __m256i prevOneLeft = shiftOnePixelLeftEpu16(prevLineCurrent, prevLineNext);
-		const __m256i nextOneRight = shiftOnePixelRightEpu16(nextLineCurrent, nextLinePrev);
-		const __m256i nextOneLeft = shiftOnePixelLeftEpu16(nextLineCurrent, nextLineNext);
-		const __m256i bColumn = avg4Epu16(prevOneRight, prevOneLeft, nextOneRight, nextOneLeft);
-		const __m256i red = _mm256_blend_epi16(gColumn, bColumn, 0xaa);
-		// Green color
-		const __m256i onePixelRight = shiftOnePixelRightEpu16(thisLineCurrent, thisLinePrev);
-		const __m256i onePixelLeft = shiftOnePixelLeftEpu16(thisLineCurrent, thisLineNext);
-		const __m256i gInterpolated = avg4Epu16(prevLineCurrent, nextLineCurrent, onePixelRight, onePixelLeft);
-		const __m256i green = _mm256_blend_epi16(thisLineCurrent, gInterpolated, 0xaa);
-		// Blue color
-		const __m256i bInterpolated = avg2Epu16(onePixelRight, onePixelLeft);
-		const __m256i blue = _mm256_blend_epi16(thisLineCurrent, bInterpolated, 0x55);
-		return { red, green, blue };
-	};
-	const auto advanceVectorsEpu16 = [&](const WORD *const pCFA, const WORD *const pCFAnext, const WORD *const pCFAprev) -> void
-	{
-		thisLinePrev = thisLineCurrent;
-		thisLineCurrent = thisLineNext;
-		thisLineNext = load16Pixels(pCFA + 16);
-
-		nextLinePrev = nextLineCurrent;
-		nextLineCurrent = nextLineNext;
-		nextLineNext = load16Pixels(pCFAnext + 16);
-
-		prevLinePrev = prevLineCurrent;
-		prevLineCurrent = prevLineNext;
-		prevLineNext = load16Pixels(pCFAprev + 16);
-	};
-	const auto storeRGBvectorsEpu16 = [](const __m256i red, const __m256i green, const __m256i blue, WORD *const pRed, WORD *const pGreen, WORD *const pBlue) -> void
-	{
-		_mm256_storeu_si256((__m256i*)pRed, red);
-		_mm256_storeu_si256((__m256i*)pGreen, green);
-		_mm256_storeu_si256((__m256i*)pBlue, blue);
-	};
-
-	const WORD* pCFA{ &avxSupport.grayPixels<WORD>().at(lineStart * width) };
-	const WORD* pCFAnext{ lineStart == (inputHeight - 1) ? (pCFA - width) : (pCFA + width) };
-	const WORD* pCFAprev{ lineStart == 0 ? pCFAnext : (pCFA - width) };
-	WORD* pRed{ &*redCfaPixels.begin() };
-	WORD* pGreen{ &*greenCfaPixels.begin() };
-	WORD* pBlue{ &*blueCfaPixels.begin() };
-
-	const auto advanceCFApointersAndVectors = [&pCFA, &pCFAnext, &pCFAprev, &pRed, &pGreen, &pBlue, &advanceVectorsEpu16]() -> void
-	{
-		std::advance(pCFA, 16);
-		std::advance(pCFAnext, 16);
-		std::advance(pCFAprev, 16);
-		advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
-		std::advance(pRed, 16);
-		std::advance(pGreen, 16);
-		std::advance(pBlue, 16);
-	};
-	const auto lastVectorsOfLine = [&]() -> void
-	{
-		if (nrVectors * 16 == this->colEnd) // No pixels left to process at the end of the line
-		{
-			thisLineNext = _mm256_setzero_si256();
-			nextLineNext = _mm256_setzero_si256();
-			prevLineNext = _mm256_setzero_si256();
-		}
-		// otherwise the 3 "next"-Vectors have those line-end-pixels loaded.
-	};
-	const auto storeRemainingPixels = [&pRed, &pGreen, &pBlue, &pCFA, nrVectors, this](const __m256i red, const __m256i green, const __m256i blue) -> void
-	{
-		for (int n = nrVectors * 16, ndx = 0; n < this->colEnd; ++n, ++ndx, ++pRed, ++pGreen, ++pBlue, ++pCFA)
-		{
-			*pRed = red.m256i_u16[ndx];
-			*pGreen = green.m256i_u16[ndx];
-			*pBlue = blue.m256i_u16[ndx];
-		}
-	};
-
-	for (int row = 0, lineNdx = lineStart; row < height; ++row, ++lineNdx)
-	{
-		thisLineCurrent = load16Pixels(pCFA);
-		thisLineNext = load16Pixels(pCFA + 16);
-		thisLinePrev = _mm256_setzero_si256();
-
-		nextLineCurrent = load16Pixels(pCFAnext);
-		nextLineNext = load16Pixels(pCFAnext + 16);
-		nextLinePrev = _mm256_setzero_si256();
-
-		prevLineCurrent = load16Pixels(pCFAprev);
-		prevLineNext = load16Pixels(pCFAprev + 16);
-		prevLinePrev = _mm256_setzero_si256();
-
-		if ((lineNdx & 0x01) == 0)
-		{
-			for (int counter = 0; counter < nrVectors - 1; ++counter)
-			{
-				const auto [r, g, b] = interpolateRGlineEpu16();
-				storeRGBvectorsEpu16(r, g, b, pRed, pGreen, pBlue);
-				advanceCFApointersAndVectors();
-			}
-			// Last vector
-			lastVectorsOfLine();
-			const auto [red, green, blue] = interpolateRGlineEpu16();
-			storeRGBvectorsEpu16(red, green, blue, pRed, pGreen, pBlue);
-			// Remaining pixels of line (R, G, ...)
-			if (nrVectors * 16 < colEnd)
-			{
-				advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
-				const auto [r, g, b] = interpolateRGlineEpu16();
-				storeRemainingPixels(r, g, b);
-			}
-		}
-		else
-		{
-			for (int counter = 0; counter < nrVectors - 1; ++counter)
-			{
-				const auto [r, g, b] = interpolateGBlineEpu16();
-				storeRGBvectorsEpu16(r, g, b, pRed, pGreen, pBlue);
-				advanceCFApointersAndVectors();
-			}
-			// Last vector
-			lastVectorsOfLine();
-			const auto [red, green, blue] = interpolateGBlineEpu16();
-			storeRGBvectorsEpu16(red, green, blue, pRed, pGreen, pBlue);
-			// Remaining pixels of line (G, B, ...)
-			if (nrVectors * 16 < colEnd)
-			{
-				advanceVectorsEpu16(pCFA, pCFAnext, pCFAprev);
-				const auto [r, g, b] = interpolateGBlineEpu16();
-				storeRemainingPixels(r, g, b);
-			}
-		}
-
-		pCFAprev = pCFA - width;
-		if (lineNdx == inputHeight - 2) // Next round will be the last line of bitmap -> next_line = previous_line (then the interpolation is correct)
-			pCFAnext = pCFAprev;
-		else
-			pCFAnext = pCFA + width;
-	}
-
-	return 0;
-}
 
 // *********************************
 //    AVX Support
@@ -1185,5 +960,10 @@ inline float AvxSupport::accumulateSingleColorValue(const size_t outNdx, const f
 template bool AvxSupport::bitmapHasCorrectType<WORD>() const;
 template bool AvxSupport::bitmapHasCorrectType<std::uint32_t>() const;
 template bool AvxSupport::bitmapHasCorrectType<float>() const;
+template bool AvxSupport::bitmapHasCorrectType<double>() const;
+
+template bool AvxSupport::isMonochromeCfaBitmapOfType<WORD>() const;
+template bool AvxSupport::isMonochromeCfaBitmapOfType<std::uint32_t>() const;
+template bool AvxSupport::isMonochromeCfaBitmapOfType<float>() const;
 
 #endif
