@@ -48,6 +48,9 @@ private:
 
 class AvxLuminance
 {
+public:
+	AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) {}
+	int computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd) { return 1; }
 };
 
 #endif
