@@ -105,9 +105,9 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 		const __m128 hi = _mm256_cvtpd_ps(_mm256_loadu_pd(pd + 4));
 		return _mm256_set_m128(hi, lo);
 	};
-	const auto getPrevAndNext = [](const __m256 vector, const double* const p, __m256& prev, __m256& next) -> void
+	const auto getPrevAndNext = [](const __m256 vector, const double* const p, __m256& prev, __m256& next, const __m128i elementIndices) -> void
 	{
-		const __m128 newElements = _mm256_cvtpd_ps(_mm256_i32gather_pd(p, _mm_setr_epi32(-1, 0, 0, 8), 8));
+		const __m128 newElements = _mm256_cvtpd_ps(_mm256_i32gather_pd(p, elementIndices, 8));
 //		const __m128 prevElement = _mm256_cvtpd_ps(_mm256_broadcast_sd(p - 1));
 //		const __m128 nextElement = _mm256_cvtpd_ps(_mm256_broadcast_sd(p + 8));
 		const __m256 shiftedLeft = _mm256_permutevar8x32_ps(vector, _mm256_setr_epi32(0, 0, 1, 2, 3, 4, 5, 6));
@@ -115,7 +115,7 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 		prev = _mm256_blend_ps(shiftedLeft, _mm256_castps128_ps256(newElements), 0x01);
 		next = _mm256_blend_ps(shiftedRight, _mm256_insertf128_ps(_mm256_setzero_ps(), newElements, 1), 0x80);
 	};
-	const auto advancePointersAndVectors = [&](const size_t n) -> void
+	const auto advancePointersAndVectors = [&](const size_t n, const __m128i elementIndices) -> void
 	{
 		std::advance(pIn, n);
 		std::advance(pInPrev, n);
@@ -123,74 +123,62 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 		std::advance(pOut, n);
 
 		thisLine = load8Ps(pIn);
-		getPrevAndNext(thisLine, pIn, thisLinePrev, thisLineNext);
-//		thisLinePrev = load8Ps(pIn - 1);
-//		thisLineNext = load8Ps(pIn + 1);
+		getPrevAndNext(thisLine, pIn, thisLinePrev, thisLineNext, elementIndices);
 
 		prevLine = load8Ps(pInPrev);
-		getPrevAndNext(prevLine, pInPrev, prevLinePrev, prevLineNext);
-//		prevLinePrev = load8Ps(pInPrev - 1);
-//		prevLineNext = load8Ps(pInPrev + 1);
+		getPrevAndNext(prevLine, pInPrev, prevLinePrev, prevLineNext, elementIndices);
 
 		nextLine = load8Ps(pInNext);
-		getPrevAndNext(nextLine, pInNext, nextLinePrev, nextLineNext);
-//		nextLinePrev = load8Ps(pInNext - 1);
-//		nextLineNext = load8Ps(pInNext + 1);
+		getPrevAndNext(nextLine, pInNext, nextLinePrev, nextLineNext, elementIndices);
 	};
 	const auto storeMedian = [&pOut](const __m256 median) -> void
 	{
 		_mm256_storeu_pd(pOut, _mm256_cvtps_pd(_mm256_castps256_ps128(median)));
 		_mm256_storeu_pd(pOut + 4, _mm256_cvtps_pd(_mm256_extractf128_ps(median, 1)));
 	};
-	const auto lastVectorsOfLine = [&]() -> void
-	{
-		if (nrVectors * 8 == width)
-		{
-			thisLineNext = thisLine;
-			prevLineNext = prevLine;
-			nextLineNext = nextLine;
-		}
-	};
 
 	for (size_t row = lineStart; row < lineEnd; ++row)
 	{
+		// First column
 		thisLine = load8Ps(pIn);
-		thisLinePrev = thisLine;
-		thisLineNext = load8Ps(pIn + 1);
+		getPrevAndNext(thisLine, pIn, thisLinePrev, thisLineNext, _mm_setr_epi32(0, 0, 0, 8));
 		prevLine = load8Ps(pInPrev);
-		prevLinePrev = prevLine;
-		prevLineNext = load8Ps(pInPrev + 1);
+		getPrevAndNext(prevLine, pInPrev, prevLinePrev, prevLineNext, _mm_setr_epi32(0, 0, 0, 8));
 		nextLine = load8Ps(pInNext);
-		nextLinePrev = nextLine;
-		nextLineNext = load8Ps(pInNext + 1);
+		getPrevAndNext(nextLine, pInNext, nextLinePrev, nextLineNext, _mm_setr_epi32(0, 0, 0, 8));
 
-		for (size_t counter = 0; counter < nrVectors - 1; ++counter)
-		{
-			const __m256 median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
-			storeMedian(median);
-			advancePointersAndVectors(8);
-		}
-		// Last vector
-		lastVectorsOfLine();
-		const __m256 median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
+		__m256 median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
 		storeMedian(median);
 
-		const size_t remainingPixels = width - nrVectors * 8;
-		if (remainingPixels > 0)
+		// Main loop
+		for (size_t counter = 1; counter < nrVectors - 1; ++counter)
 		{
-			advancePointersAndVectors(remainingPixels);
-			const __m256 median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
-			for (size_t n = nrVectors * 8, ndx = 0; n < width; ++n, ++ndx, ++pOut)
-				pOut[n] = static_cast<double>(median.m256_f32[ndx]);
+			advancePointersAndVectors(8, _mm_setr_epi32(-1, 0, 0, 8));
+			median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
+			storeMedian(median);
+		}
+
+		const size_t remainingPixels = width - nrVectors * 8;
+
+		// Last vector
+		const __m128i lastIndex = remainingPixels != 0 ? _mm_setr_epi32(-1, 0, 0, 8) : _mm_setr_epi32(-1, 0, 0, 7); // Load following pixel only if there is one.
+		advancePointersAndVectors(8, lastIndex);
+		median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
+		storeMedian(median);
+
+		// Last few pixels
+		if (remainingPixels != 0)
+		{
+			advancePointersAndVectors(remainingPixels, _mm_setr_epi32(-1, 0, 0, 7));
+			median = median9(prevLinePrev, prevLine, prevLineNext, thisLinePrev, thisLine, thisLineNext, nextLinePrev, nextLine, nextLineNext);
+			for (size_t n = 8 - remainingPixels; n < 8; ++n)
+				pOut[n] = static_cast<double>(median.m256_f32[n]);
 		}
 
 		pOut = filterEngine->m_pvOutValues + (row + 1) * width;
 		pInPrev = filterEngine->m_pvInValues + row * width;
 		pIn = pInPrev + width;
-		if (row == height - 2) // Next round will be the last line of the bitmap
-			pInNext = pIn;
-		else
-			pInNext = pIn + width;
+		pInNext = (row == height - 2) ? pIn : (pIn + width); // If next round will be the last line of the bitmap -> pNext = pIn
 	}
 
 	return 0;
