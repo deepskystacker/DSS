@@ -22,6 +22,7 @@ public:
 
 #else
 
+template <class T>
 class AvxImageFilter
 {
 public:

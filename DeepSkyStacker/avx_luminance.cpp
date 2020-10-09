@@ -3,6 +3,8 @@
 #include "avx_cfa.h"
 #include "avx.h"
 
+#if defined(AVX_INTRINSICS) && defined(_M_X64)
+
 AvxLuminance::AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) noexcept :
 	inputBitmap{ inputbm },
 	outputBitmap{ outbm },
@@ -204,3 +206,5 @@ std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::greyLuminance(const
 	const auto [d3, d4] = AvxSupport::cvtPsPd(_mm256_loadu_ps(pGrey + 8));
 	return { d1, d2, d3, d4 };
 }
+
+#endif

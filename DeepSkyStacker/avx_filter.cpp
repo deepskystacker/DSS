@@ -3,6 +3,8 @@
 #include "avx.h"
 #include <tuple>
 
+#if defined(AVX_INTRINSICS) && defined(_M_X64)
+
 template <>
 AvxImageFilter<double>::AvxImageFilter(CInternalMedianFilterEngineT<double>* filEng) :
 	filterEngine{ filEng }
@@ -190,3 +192,5 @@ template AvxImageFilter<unsigned short>;
 template AvxImageFilter<unsigned long>;
 template AvxImageFilter<float>;
 template AvxImageFilter<double>;
+
+#endif
