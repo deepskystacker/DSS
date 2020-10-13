@@ -91,6 +91,13 @@
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QCheckBox" name="useSimd">
+         <property name="text">
+          <string>SIMD vectorization</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>

@@ -22,7 +22,7 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 {
 	if constexpr (!std::is_same<T, double>::value)
 		return 1;
-	if (!AvxSupport::checkCpuFeatures())
+	if (!AvxSupport::checkSimdAvailability())
 		return 1;
 	if (filterEngine == nullptr)
 		return 1;

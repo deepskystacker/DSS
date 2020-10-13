@@ -121,7 +121,7 @@ public:
 	template <class T>
 	bool bitmapHasCorrectType() const;
 
-	static bool checkCpuFeatures() noexcept;
+	static bool checkSimdAvailability() noexcept;
 
 	inline static __m256 wordToPackedFloat(const __m128i x) noexcept
 	{

@@ -52,6 +52,16 @@ void	CMultitask::SetReducedThreadsPriority(bool bReduced)
 	settings.setValue("ReducedThreadPriority", bReduced);
 };
 
+bool CMultitask::GetUseSimd()
+{
+	return QSettings{}.value("UseSimd", true).toBool();
+}
+
+void CMultitask::SetUseSimd(const bool bUseSimd)
+{
+	QSettings{}.setValue("UseSimd", bUseSimd);
+}
+
 /* ------------------------------------------------------------------- */
 
 DWORD	WINAPI	StartThreadProc(LPVOID lpParameter)

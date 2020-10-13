@@ -20,7 +20,7 @@ AvxAccumulation::AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo
 
 int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 {
-	if (!AvxSupport::checkCpuFeatures())
+	if (!AvxSupport::checkSimdAvailability())
 		return 1;
 
 	if (doAccumulate<WORD, float>(nrStackedBitmaps) == 0)

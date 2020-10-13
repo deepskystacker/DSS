@@ -10,7 +10,7 @@ AvxLuminance::AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) noexcep
 	outputBitmap{ outbm },
 	avxReady{ true }
 {
-	if (!AvxSupport::checkCpuFeatures())
+	if (!AvxSupport::checkSimdAvailability())
 		avxReady = false;
 
 	// Check output bitmap (must be monochrome-double).

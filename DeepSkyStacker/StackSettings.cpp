@@ -136,6 +136,9 @@ void StackSettings::onInitDialog()
 	else
 		ui->useAllProcessors->setDisabled(true);
 
+	// Check if we're allowed to use SIMD vectorized code.
+	ui->useSimd->setChecked(CMultitask::GetUseSimd());
+
 	//
 	// Get the temporary files folder
 	//
@@ -230,6 +233,9 @@ void StackSettings::accept()
 	if (CMultitask::GetNrProcessors(true) > 1)
 		CMultitask::SetUseAllProcessors(ui->useAllProcessors->isChecked());
 	CMultitask::SetReducedThreadsPriority(ui->reducePriority->isChecked());
+
+	// Save wether to use SIMD vectorized code.
+	CMultitask::SetUseSimd(ui->useSimd->isChecked());
 
 	//
 	// Save the temporary files folder

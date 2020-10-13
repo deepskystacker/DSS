@@ -52,7 +52,7 @@ void AvxStacking::resizeColorVectors(const size_t nrPixels)
 
 int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier)
 {
-	if (!AvxSupport::checkCpuFeatures())
+	if (!AvxSupport::checkSimdAvailability())
 		return 1;
 
 	if (doStack<WORD>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
@@ -849,7 +849,11 @@ bool AvxSupport::bitmapHasCorrectType() const
 	return (isColorBitmapOfType<T>() || isMonochromeBitmapOfType<T>());
 }
 
-bool AvxSupport::checkCpuFeatures() noexcept {
+bool AvxSupport::checkSimdAvailability() noexcept {
+	// Has user disabled SIMD vectorization?
+	if (!CMultitask::GetUseSimd())
+		return false;
+
 	int cpuid[4] = { -1 };
 	// FMA Flag
 	__cpuidex(cpuid, 1, 0);
