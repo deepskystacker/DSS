@@ -84,7 +84,7 @@ int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskIn
 	if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
 		return 1;
 
-	if (avxInputSupport.isMonochromeCfaBitmapOfType<WORD>() && avxCfa.interpolate(lineStart, lineEnd, pixelSizeMultiplier) != 0)
+	if (avxInputSupport.isMonochromeCfaBitmapOfType<T>() && avxCfa.interpolate(lineStart, lineEnd, pixelSizeMultiplier) != 0)
 		return 1;
 	if (pixelTransform(pixelTransformDef) != 0)
 		return 1;
