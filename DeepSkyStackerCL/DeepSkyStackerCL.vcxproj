@@ -115,6 +115,7 @@
     <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_filter.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_luminance.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="..\DeepSkyStacker\avx_avg.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_cfa.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_filter.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_histogram.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_luminance.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_output.h" />
     <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />

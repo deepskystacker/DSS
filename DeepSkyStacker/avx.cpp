@@ -625,7 +625,8 @@ int AvxStacking::pixelPartitioning()
 		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutput), colorPlusBothFractions);
 	};
 	// Accumulates with fraction1 for (x, y) and fraction2 for (x+1, y)
-	const auto accumulateTwoFractions = [&](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, __m256i xCoord, const __m256i yCoord) -> void
+	const __m256i allOnes = _mm256_set1_epi32(-1); // All bits '1' == all int elements -1
+	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, __m256i xCoord, const __m256i yCoord) -> void
 	{
 		const __m256i outNdx = _mm256_add_epi32(_mm256_mullo_epi32(outWidthVec, yCoord), xCoord); // ndx = y * width + x
 		const __m256i indexDiff = _mm256_sub_epi32(outNdx, _mm256_permutevar8x32_epi32(outNdx, _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 0))); // -1 where ndx[i+1] == 1 + ndx[i]
@@ -636,20 +637,20 @@ int AvxStacking::pixelPartitioning()
 		// Check if two adjacent indices are equal: Subtract the x-coordinates horizontally and check if any of the results equals zero. If so -> adjacent x-coordinates are equal.
 		// (a & b) == 0 -> ZF=1, (~a & b) == 0 -> CF=1; testc: return CF; testz: return ZF; testnzc: IF (ZF == 0 && CF == 0) return 1;
 		const __m256i ndxMask = _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0);
-		const bool allNdxEquidistant = (1 == _mm256_testc_si256(indexDiff, ndxMask));
+		const bool allNdxEquidistant = (1 == _mm256_testc_si256(indexDiff, ndxMask)); // 'testc' returns 1 if all bits are '1' -> 0xffffffff == -1 -> ndx[i] - ndx[i+1] == -1
 		const bool twoNdxEqual = (0 == _mm256_testz_si256(_mm256_cmpeq_epi32(_mm256_setzero_si256(), indexDiff), ndxMask));
-		const bool allNdxValid1 = (1 == _mm256_testc_si256(mask1, _mm256_set1_epi32(-1)));
+		const bool allNdxValid1 = (1 == _mm256_testc_si256(mask1, allOnes));
 
-		xCoord = _mm256_add_epi32(xCoord, _mm256_set1_epi32(1)); // x+1
+		xCoord = _mm256_sub_epi32(xCoord, allOnes); // x-(-1) = x+1: We subtract -1 instead of add 1 so that we don't need another constant (+1).
 		columnMask = _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), xCoord), _mm256_cmpgt_epi32(resultWidthVec, xCoord));
 		const __m256i mask2 = _mm256_and_si256(columnMask, rowMask);
-		const bool allNdxValid2 = (1 == _mm256_testc_si256(mask2, _mm256_set1_epi32(-1)));
+		const bool allNdxValid2 = (1 == _mm256_testc_si256(mask2, allOnes));
 
-		if (allNdxEquidistant && allNdxValid1 && allNdxValid2)
+		if constexpr (std::is_same<T, WORD>::value)
 		{
-			if constexpr (std::is_same<T, WORD>::value)
+			if (allNdxEquidistant && allNdxValid1 && allNdxValid2)
 			{
-				const size_t startNdx = _mm256_extract_epi32(outNdx, 0);
+				const size_t startNdx = _mm256_cvtsi256_si32(outNdx); //_mm256_extract_epi32(outNdx, 0);
 				if constexpr (ISRGB)
 				{
 					fastAccumulateWordRGBorMono(red, fraction1, fraction2, &avxTempBitmap.redPixels<T>()[startNdx]);
@@ -665,7 +666,7 @@ int AvxStacking::pixelPartitioning()
 		}
 
 		accumulateRGBorMono(red, green, blue, fraction1, outNdx, mask1, twoNdxEqual, allNdxEquidistant && allNdxValid1); // x, y, fraction1
-		accumulateRGBorMono(red, green, blue, fraction2, _mm256_add_epi32(outNdx, _mm256_set1_epi32(1)), mask2, twoNdxEqual, allNdxEquidistant && allNdxValid2); // x+1, y, fraction2
+		accumulateRGBorMono(red, green, blue, fraction2, _mm256_sub_epi32(outNdx, allOnes), mask2, twoNdxEqual, allNdxEquidistant && allNdxValid2); // x+1, y, fraction2
 	};
 
 	for (int row = 0; row < height; ++row)
@@ -707,7 +708,7 @@ int AvxStacking::pixelPartitioning()
 			// 4.Fraction at (xtruncated+1, ytruncated+1)
 			fraction1 = _mm256_mul_ps(xfrac1, yfractional);
 			fraction2 = _mm256_mul_ps(xfractional, yfractional);
-			accumulateTwoFractions(red, green, blue, fraction1, fraction2, xii, _mm256_add_epi32(yii, _mm256_set1_epi32(1))); // (x, y+1), (x+1, y+1)
+			accumulateTwoFractions(red, green, blue, fraction1, fraction2, xii, _mm256_sub_epi32(yii, _mm256_set1_epi32(-1))); // (x, y+1), (x+1, y+1)
 
 			pRed += 8;
 			if constexpr (ISRGB)
@@ -838,6 +839,11 @@ bool AvxSupport::isMonochromeCfaBitmapOfType() const
 	else
 		return false;
 };
+
+bool AvxSupport::isColorBitmapOrCfa() const
+{
+	return isColorBitmap() || isMonochromeCfaBitmapOfType<WORD>();
+}
 
 const int AvxSupport::width() const {
 	return bitmap.Width();

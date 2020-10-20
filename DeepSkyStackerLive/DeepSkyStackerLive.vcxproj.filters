@@ -240,6 +240,9 @@
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
@@ -495,6 +498,9 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\avx_cfa.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_histogram.h">
       <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>

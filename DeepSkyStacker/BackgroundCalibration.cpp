@@ -4,6 +4,7 @@
 #include "BackgroundCalibration.h"
 #include "DSSProgress.h"
 #include "Multitask.h"
+#include "avx_histogram.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -81,6 +82,8 @@ bool	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 	vGreenHisto.resize((LONG)MAXWORD+1);
 	vBlueHisto.resize((LONG)MAXWORD+1);
 
+	AvxHistogram avxHistogram(*m_pBitmap);
+
 	// Create a message queue and signal the event
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
 	SetEvent(hEvent);
@@ -88,25 +91,28 @@ bool	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
-			for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
+			if (avxHistogram.calcHistogram(msg.wParam, msg.wParam + msg.lParam) != 0)
 			{
-				for (i = 0;i<lWidth;i++)
+				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 				{
-					COLORREF16		crColor;
-					double			fRed, fGreen, fBlue;
+					for (i = 0; i < lWidth; i++)
+					{
+						COLORREF16		crColor;
+						double			fRed, fGreen, fBlue;
 
-					m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-					fRed   *= fMultiplier * 256.0;
-					fGreen *= fMultiplier * 256.0;
-					fBlue  *= fMultiplier * 256.0;
+						m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
+						fRed *= fMultiplier * 256.0;
+						fGreen *= fMultiplier * 256.0;
+						fBlue *= fMultiplier * 256.0;
 
-					crColor.red = min(fRed, static_cast<double>(MAXWORD));
-					crColor.blue = min(fBlue, static_cast<double>(MAXWORD));
-					crColor.green = min(fGreen, static_cast<double>(MAXWORD));
+						crColor.red = min(fRed, static_cast<double>(MAXWORD));
+						crColor.blue = min(fBlue, static_cast<double>(MAXWORD));
+						crColor.green = min(fGreen, static_cast<double>(MAXWORD));
 
-					vRedHisto[crColor.red]++;
-					vGreenHisto[crColor.green]++;
-					vBlueHisto[crColor.blue]++;
+						vRedHisto[crColor.red]++;
+						vGreenHisto[crColor.green]++;
+						vBlueHisto[crColor.blue]++;
+					};
 				};
 			};
 
@@ -116,7 +122,14 @@ bool	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 			bEnd = true;
 	};
 
-	AddToMainHistograms(vRedHisto, vGreenHisto, vBlueHisto);
+	int rval = 1;
+	if (avxHistogram.histogramSuccessful())
+	#pragma omp critical(HistoMergeOmpLock)
+	{
+		rval = avxHistogram.mergeHistograms(m_vRedHisto, m_vGreenHisto, m_vBlueHisto);
+	}
+	if (rval != 0)
+		AddToMainHistograms(vRedHisto, vGreenHisto, vBlueHisto);
 
 	return true;
 };

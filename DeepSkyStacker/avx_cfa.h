@@ -15,7 +15,7 @@ private:
 public:
 	AvxCfaProcessing() = delete;
 	AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, CMemoryBitmap& inputbm);
-	AvxCfaProcessing(const AvxCfaProcessing&) = delete;
+	AvxCfaProcessing(const AvxCfaProcessing&) = default;
 	AvxCfaProcessing(AvxCfaProcessing&&) = delete;
 	AvxCfaProcessing& operator=(const AvxCfaProcessing&) = delete;
 
