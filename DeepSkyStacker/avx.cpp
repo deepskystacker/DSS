@@ -10,9 +10,9 @@ AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemory
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.Width() }, resultHeight{ resultRect.Height() },
-	xCoordinates(width >= 0 && height >= 0 ? width * height : 0),
-	yCoordinates(width >= 0 && height >= 0 ? width * height : 0),
-	redPixels(width >= 0 && height >= 0 ? width * height : 0),
+	xCoordinates(width >= 0 && height >= 0 ? numberOfAvxPsVectors(width) * height : 0),
+	yCoordinates(width >= 0 && height >= 0 ? numberOfAvxPsVectors(width) * height : 0),
+	redPixels(width >= 0 && height >= 0 ? numberOfAvxPsVectors(width) * height : 0),
 	greenPixels{},
 	bluePixels{},
 	inputBitmap{ inputbm },
@@ -22,7 +22,7 @@ AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemory
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
 
-	resizeColorVectors(static_cast<size_t>(width) * static_cast<size_t>(height));
+	resizeColorVectors(numberOfAvxPsVectors(width) * height);
 }
 
 void AvxStacking::init(const long lStart, const long lEnd)
@@ -30,19 +30,24 @@ void AvxStacking::init(const long lStart, const long lEnd)
 	lineStart = lStart;
 	lineEnd = lEnd;
 	height = lineEnd - lineStart;
-	const size_t nrPixels = static_cast<size_t>(width) * static_cast<size_t>(height);
-	xCoordinates.resize(nrPixels);
-	yCoordinates.resize(nrPixels);
-	redPixels.resize(nrPixels);
-	resizeColorVectors(nrPixels);
+	const size_t nrVectors = numberOfAvxPsVectors(width) * height;
+	xCoordinates.resize(nrVectors);
+	yCoordinates.resize(nrVectors);
+	redPixels.resize(nrVectors);
+	resizeColorVectors(nrVectors);
 }
 
-void AvxStacking::resizeColorVectors(const size_t nrPixels)
+inline size_t AvxStacking::numberOfAvxPsVectors(const size_t width)
+{
+	return width == 0 ? 0 : (width - 1) / 8 + 1;
+}
+
+void AvxStacking::resizeColorVectors(const size_t nrVectors)
 {
 	if (AvxSupport{ tempBitmap }.isColorBitmap())
 	{
-		greenPixels.resize(nrPixels);
-		bluePixels.resize(nrPixels);
+		greenPixels.resize(nrVectors);
+		bluePixels.resize(nrVectors);
 	}
 	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
 	{
@@ -103,7 +108,7 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 	const CBilinearParameters& bilinearParams = pixelTransformDef.m_BilinearParameters;
 
 	// Number of vectors with 8 pixels each to process.
-	const int nrVectors = width / 8;
+	const size_t nrVectors = numberOfAvxPsVectors(width);
 	const float fxShift = static_cast<float>(pixelTransformDef.m_fXShift);
 	const float fyShift = static_cast<float>(pixelTransformDef.m_fYShift);
 	const __m256 fxShiftVec = _mm256_set1_ps(fxShift);
@@ -118,23 +123,17 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 	{
 		for (int row = 0; row < height; ++row)
 		{
-			const float yShifted = static_cast<float>(lineStart + row) + fyShift;
-			float* pXLine = &xCoordinates.at(row * width);
-			float* pYLine = &yCoordinates.at(row * width);
+			const __m256 fyShiftVec = _mm256_set1_ps(static_cast<float>(lineStart + row) + fyShift);
+			__m256* pXLine = &xCoordinates.at(row * nrVectors);
+			__m256* pYLine = &yCoordinates.at(row * nrVectors);
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (int counter = 0; counter < nrVectors; ++counter, pXLine += 8, pYLine += 8)
+			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
 			{
 				const __m256 fxline = _mm256_cvtepi32_ps(xline);
 				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
-				_mm256_storeu_ps(pXLine, _mm256_add_ps(fxline, fxShiftVec));
-				_mm256_storeu_ps(pYLine, _mm256_set1_ps(yShifted));
-			}
-			// Remaining pixels after last complete vector.
-			for (int n = nrVectors * 8; n < colEnd; ++n, ++pXLine, ++pYLine)
-			{
-				*pXLine = static_cast<float>(n) + fxShift;
-				*pYLine = yShifted;
+				_mm256_store_ps((float*)pXLine, _mm256_add_ps(fxline, fxShiftVec));
+				_mm256_store_ps((float*)pYLine, fyShiftVec);
 			}
 		}
 		return 0;
@@ -175,12 +174,12 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 		{
 			const float y = static_cast<float>(lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
 			const __m256 vy = _mm256_set1_ps(y);
-			float* pXLine = &xCoordinates.at(row * width);
-			float* pYLine = &yCoordinates.at(row * width);
+			__m256* pXLine = &xCoordinates.at(row * nrVectors);
+			__m256* pYLine = &yCoordinates.at(row * nrVectors);
 			// Vector with x-indices of the current 8 pixels of the line.
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (int counter = 0; counter < nrVectors; ++counter, pXLine += 8, pYLine += 8)
+			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
 				// Indices of the next 8 pixels.
@@ -192,15 +191,8 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 yr = linearTransformY(vx, vy, xy);
 
 				// Save result.
-				_mm256_storeu_ps(pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec)); // xr * fxWidth + fxShift
-				_mm256_storeu_ps(pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec)); // yr * fyWidth + fyShift
-			}
-			// Remaining pixels of the line.
-			for (int n = nrVectors * 8; n < colEnd; ++n, ++pXLine, ++pYLine)
-			{
-				const float x = static_cast<float>(n) / static_cast<float>(bilinearParams.fXWidth);
-				*pXLine = static_cast<float>(bilinearParams.fXWidth) * (fa0 + fa1 * x + fa2 * y + fa3 * x * y) + fxShift;
-				*pYLine = static_cast<float>(bilinearParams.fYWidth) * (fb0 + fb1 * x + fb2 * y + fb3 * x * y) + fyShift;
+				_mm256_store_ps((float*)pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec)); // xr * fxWidth + fxShift
+				_mm256_store_ps((float*)pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec)); // yr * fyWidth + fyShift
 			}
 		}
 		return 0;
@@ -239,14 +231,15 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 	if (bilinearParams.Type == TT_BISQUARED)
 	{
 
-		for (int row = 0; row < height; ++row) {
+		for (int row = 0; row < height; ++row)
+		{
 			const float y = static_cast<float>(lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
 			const __m256 vy = _mm256_set1_ps(y);
-			float* pXLine = &xCoordinates.at(row * width);
-			float* pYLine = &yCoordinates.at(row * width);
+			__m256* pXLine = &xCoordinates.at(row * nrVectors);
+			__m256* pYLine = &yCoordinates.at(row * nrVectors);
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (int counter = 0; counter < nrVectors; ++counter, pXLine += 8, pYLine += 8)
+			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
 				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
@@ -267,15 +260,8 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 xr = squaredTransformX(rlx, x2, y2, x2y, xy2, x2y2);
 				const __m256 yr = squaredTransformY(rly, x2, y2, x2y, xy2, x2y2);
 
-				_mm256_storeu_ps(pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
-				_mm256_storeu_ps(pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
-			}
-			// Remaining pixels of the line.
-			for (int n = nrVectors * 8; n < colEnd; ++n, ++pXLine, ++pYLine)
-			{
-				const float x = static_cast<float>(n) / static_cast<float>(bilinearParams.fXWidth);
-				*pXLine = static_cast<float>(bilinearParams.fXWidth) * (fa0 + fa1 * x + fa2 * y + fa3 * x * y + fa4 * x * x + fa5 * y * y + fa6 * x * x * y + fa7 * x * y * y + fa8 * x * x * y * y) + fxShift;
-				*pYLine = static_cast<float>(bilinearParams.fYWidth) * (fb0 + fb1 * x + fb2 * y + fb3 * x * y + fb4 * x * x + fb5 * y * y + fb6 * x * x * y + fb7 * x * y * y + fb8 * x * x * y * y) + fyShift;
+				_mm256_store_ps((float*)pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
+				_mm256_store_ps((float*)pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
 			}
 		}
 		return 0;
@@ -324,16 +310,16 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 	};
 
 	if (bilinearParams.Type == TT_BICUBIC)
-    {
+	{
 		for (int row = 0; row < height; ++row)
 		{
 			const float y = static_cast<float>(lineStart + row) / static_cast<float>(bilinearParams.fYWidth);
 			const __m256 vy = _mm256_set1_ps(y);
-			float* pXLine = &xCoordinates.at(row * width);
-			float* pYLine = &yCoordinates.at(row * width);
+			__m256* pXLine = &xCoordinates.at(row * nrVectors);
+			__m256* pYLine = &yCoordinates.at(row * nrVectors);
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
-			for (int counter = 0; counter < nrVectors; ++counter, pXLine += 8, pYLine += 8)
+			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
 				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
@@ -365,17 +351,8 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 xr = cubicTransformX(rsx, x3, y3, x3y, xy3, x3y2, x2y3, x3y3);
 				const __m256 yr = cubicTransformY(rsy, x3, y3, x3y, xy3, x3y2, x2y3, x3y3);
 
-				_mm256_storeu_ps(pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
-				_mm256_storeu_ps(pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
-			}
-			// Remaining pixels of the line
-			for (int n = nrVectors * 8; n < colEnd; ++n, ++pXLine, ++pYLine)
-			{
-				const float x = static_cast<float>(n) / static_cast<float>(bilinearParams.fXWidth);
-				*pXLine = static_cast<float>(bilinearParams.fXWidth) * (fa0 + fa1 * x + fa2 * y + fa3 * x * y + fa4 * x * x + fa5 * y * y + fa6 * x * x * y + fa7 * x * y * y + fa8 * x * x * y * y +
-					fa9 * x * x * x + fa10 * y * y * y + fa11 * x * x * x * y + fa12 * x * y * y * y + fa13 * x * x * x * y * y + fa14 * x * x * y * y * y + fa15 * x * x * x * y * y * y) + fxShift;
-				*pYLine = static_cast<float>(bilinearParams.fYWidth) * (fb0 + fb1 * x + fb2 * y + fb3 * x * y + fb4 * x * x + fb5 * y * y + fb6 * x * x * y + fb7 * x * y * y + fb8 * x * x * y * y +
-					fb9 * x * x * x + fb10 * y * y * y + fb11 * x * x * x * y + fb12 * x * y * y * y + fb13 * x * x * x * y * y + fb14 * x * x * y * y * y + fb15 * x * x * x * y * y * y) + fyShift;
+				_mm256_store_ps((float*)pXLine, _mm256_fmadd_ps(xr, xWidth, fxShiftVec));
+				_mm256_store_ps((float*)pYLine, _mm256_fmadd_ps(yr, yWidth, fyShiftVec));
 			}
 		}
 		return 0;
@@ -385,19 +362,19 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 };
 
 template <class T, class LoopFunction, class InterpolParam>
-int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
+int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class AvxSupport& avxInputSupport, const InterpolParam& redParams, const InterpolParam& greenParams, const InterpolParam& blueParams)
 {
-	if (avxSupport.isColorBitmapOfType<T>())
+	if (avxInputSupport.isColorBitmapOfType<T>())
 	{
 		const size_t startNdx = static_cast<size_t>(lineStart) * static_cast<size_t>(width);
-		loopFunc(&avxSupport.redPixels<T>().at(startNdx), redParams, redPixels);
-		loopFunc(&avxSupport.greenPixels<T>().at(startNdx), greenParams, greenPixels);
-		loopFunc(&avxSupport.bluePixels<T>().at(startNdx), blueParams, bluePixels);
+		loopFunc(&avxInputSupport.redPixels<T>().at(startNdx), redParams, redPixels);
+		loopFunc(&avxInputSupport.greenPixels<T>().at(startNdx), greenParams, greenPixels);
+		loopFunc(&avxInputSupport.bluePixels<T>().at(startNdx), blueParams, bluePixels);
 		return 0;
 	}
 	if constexpr (std::is_same<T, WORD>::value)
 	{
-		if (avxSupport.isMonochromeCfaBitmapOfType<T>())
+		if (avxInputSupport.isMonochromeCfaBitmapOfType<T>())
 		{
 			loopFunc(avxCfa.redCfaPixels<T>(0), redParams, redPixels);
 			loopFunc(avxCfa.greenCfaPixels<T>(0), greenParams, greenPixels);
@@ -405,10 +382,10 @@ int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class A
 			return 0;
 		}
 	}
-	if (avxSupport.isMonochromeBitmapOfType<T>())
+	if (avxInputSupport.isMonochromeBitmapOfType<T>())
 	{
 		const size_t startNdx = static_cast<size_t>(lineStart) * static_cast<size_t>(width);
-		loopFunc(&avxSupport.grayPixels<T>().at(startNdx), redParams, redPixels);
+		loopFunc(&avxInputSupport.grayPixels<T>().at(startNdx), redParams, redPixels);
 		return 0;
 	}
 	return 1;
@@ -419,36 +396,38 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 {
 	// We calculate vectors with 16 pixels each, so this is the number of vectors to process.
 	const int nrVectors = width / 16;
-	const AvxSupport avxSupport{ inputBitmap };
+	const AvxSupport avxInputSupport{ inputBitmap };
 
 	if (backgroundCalibrationDef.m_BackgroundCalibrationMode == BCM_NONE)
 	{
 		// Just copy color values as they are, pixel by pixel.
-		const auto loop = [this, nrVectors](const T *const pPixels, const auto&, std::vector<float>& result) -> void
+		const auto loop = [this, nrVectors](const T* const pPixels, const auto&, std::vector<__m256>& result) -> void
 		{
+			const size_t internalBufferNrVectors = numberOfAvxPsVectors(this->width);
 			for (int row = 0; row < this->height; ++row)
 			{
 				const T* pColor = pPixels + row * this->width;
-				float* pResult = &result.at(row * this->width);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+				__m256* pResult = &result.at(row * internalBufferNrVectors);
+				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 2)
 				{
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_storeu_ps(pResult, lo8);
-					_mm256_storeu_ps(pResult + 8, hi8);
+					_mm256_store_ps((float*)pResult, lo8);
+					_mm256_store_ps((float*)(pResult + 1), hi8);
 				}
 				// Remaining pixels of line
-				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pResult)
+				float* pRemaining = reinterpret_cast<float*>(pResult);
+				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
-					*pResult = static_cast<float>(*pColor);
+					*pRemaining = static_cast<float>(*pColor);
 				}
 			}
 		};
 
-		return backgroundCalibLoop<T>(loop, avxSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
+		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
 	}
 	else if (backgroundCalibrationDef.m_BackgroundInterpolation == BCI_RATIONAL)
 	{
-		const auto loop = [this, nrVectors](const T* const pPixels, const auto& params, std::vector<float>& result) -> void
+		const auto loop = [this, nrVectors](const T* const pPixels, const auto& params, std::vector<__m256>& result) -> void
 		{
 			const __m256 a = _mm256_set1_ps(params.getParameterA());
 			const __m256 b = _mm256_set1_ps(params.getParameterB());
@@ -466,32 +445,35 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				return _mm256_max_ps(_mm256_min_ps(_mm256_blendv_ps(division, xplusa, mask), fmax), fmin); // blend: mask==1 ? b : a;
 			};
 
+			const size_t internalBufferNrVectors = numberOfAvxPsVectors(this->width);
+
 			for (int row = 0; row < this->height; ++row)
 			{
 				const T* pColor = pPixels + row * this->width;
-				float* pResult = &result.at(row * this->width);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+				__m256* pResult = &result.at(row * internalBufferNrVectors);
+				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 2)
 				{
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_storeu_ps(pResult, interpolate(lo8));
-					_mm256_storeu_ps(pResult + 8, interpolate(hi8));
+					_mm256_store_ps((float*)pResult, interpolate(lo8));
+					_mm256_store_ps((float*)(pResult + 1), interpolate(hi8));
 				}
 				// Remaining pixels of line
-				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pResult)
+				float* pRemaining = reinterpret_cast<float*>(pResult);
+				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
 					const float fcolor = static_cast<float>(*pColor);
 					const float denom = b.m256_f32[0] * fcolor + c.m256_f32[0];
 					const float xplusa = fcolor + a.m256_f32[0];
-					*pResult = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), fmax.m256_f32[0]), fmin.m256_f32[0]);
+					*pRemaining = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), fmax.m256_f32[0]), fmin.m256_f32[0]);
 				}
 			}
 		};
 
-		return backgroundCalibLoop<T>(loop, avxSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
+		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_riRed, backgroundCalibrationDef.m_riGreen, backgroundCalibrationDef.m_riBlue);
 	}
 	else // LINEAR
 	{
-		const auto loop = [this, nrVectors](const T* const pPixels, const auto& params, std::vector<float>& result) -> void
+		const auto loop = [this, nrVectors](const T* const pPixels, const auto& params, std::vector<__m256>& result) -> void
 		{
 			const __m256 a0 = _mm256_set1_ps(params.getParameterA0());
 			const __m256 a1 = _mm256_set1_ps(params.getParameterA1());
@@ -508,26 +490,29 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				return _mm256_fmadd_ps(x, aSelected, bSelected); // x * a + b
 			};
 
+			const size_t internalBufferNrVectors = numberOfAvxPsVectors(this->width);
+
 			for (int row = 0; row < this->height; ++row)
 			{
 				const T* pColor = pPixels + row * this->width;
-				float* pResult = &result.at(row * this->width);
-				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 16)
+				__m256* pResult = &result.at(row * internalBufferNrVectors);
+				for (int counter = 0; counter < nrVectors; ++counter, pColor += 16, pResult += 2)
 				{
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
-					_mm256_storeu_ps(pResult, interpolate(lo8));
-					_mm256_storeu_ps(pResult + 8, interpolate(hi8));
+					_mm256_store_ps((float*)pResult, interpolate(lo8));
+					_mm256_store_ps((float*)(pResult + 1), interpolate(hi8));
 				}
 				// Remaining pixels of line
-				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pResult)
+				float* pRemaining = reinterpret_cast<float*>(pResult);
+				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
 					const float fcolor = static_cast<float>(*pColor);
-					*pResult = fcolor < xm.m256_f32[0] ? (fcolor * a0.m256_f32[0] + b0.m256_f32[0]) : (fcolor * a1.m256_f32[0] + b1.m256_f32[0]);
+					*pRemaining = fcolor < xm.m256_f32[0] ? (fcolor * a0.m256_f32[0] + b0.m256_f32[0]) : (fcolor * a1.m256_f32[0] + b1.m256_f32[0]);
 				}
 			}
 		};
 
-		return backgroundCalibLoop<T>(loop, avxSupport, backgroundCalibrationDef.m_liRed, backgroundCalibrationDef.m_liGreen, backgroundCalibrationDef.m_liBlue);
+		return backgroundCalibLoop<T>(loop, avxInputSupport, backgroundCalibrationDef.m_liRed, backgroundCalibrationDef.m_liGreen, backgroundCalibrationDef.m_liBlue);
 	}
 
 	return 0;
@@ -547,7 +532,7 @@ int AvxStacking::pixelPartitioning()
 			return 1;
 	}
 
-	const int nrVectors = width / 8;
+	const size_t nrVectors = numberOfAvxPsVectors(width);
 	const int outWidth = avxTempBitmap.width();
 	if (outWidth <= 0)
 		return 1;
@@ -557,39 +542,47 @@ int AvxStacking::pixelPartitioning()
 
 	// Non-vectorized accumulation for the case of 2 (or more) x-coordinates being identical.
 	// Vectorized version would be incorrect in that case.
-	const auto accumulateSingle = [](const __m256 newColor, const __m256i outNdx, const __m256i mask, T* pOutputBitmap) -> void
+	const auto accumulateSingle = [](const __m256 newColor, const __m256i outNdx, const __m256i mask, T* const pOutputBitmap) -> void
 	{
-		// This needs to be done pixel by pixel of the vector, because neighboring pixels have identical indices (due to prior pixel transform step).
-		for (int n = 0; n < 8; ++n)
+		const auto conditionalAccumulate = [pOutputBitmap](const int m, const size_t ndx, const float color) -> void
 		{
-			if (mask.m256i_i32[n] != 0)
-			{
-				const size_t ndx = outNdx.m256i_i32[n];
-				pOutputBitmap[ndx] = static_cast<T>(AvxSupport::accumulateSingleColorValue<T>(ndx, newColor.m256_f32[n], mask.m256i_i32[n], pOutputBitmap));
-			}
-		}
+			if (m != 0)
+				pOutputBitmap[ndx] = static_cast<T>(AvxSupport::accumulateSingleColorValue<T>(ndx, color, m, pOutputBitmap));
+		};
+
+		// This needs to be done pixel by pixel of the vector, because neighboring pixels have identical indices (due to prior pixel transform step).
+		__m128 color = _mm256_castps256_ps128(newColor);
+		conditionalAccumulate(_mm256_cvtsi256_si32(mask), _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color));
+		conditionalAccumulate(_mm256_extract_epi32(mask, 1), _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
+		conditionalAccumulate(_mm256_extract_epi32(mask, 2), _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
+		conditionalAccumulate(_mm256_extract_epi32(mask, 3), _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
+		color = _mm256_extractf128_ps(newColor, 1);
+		conditionalAccumulate(_mm256_extract_epi32(mask, 4), _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
+		conditionalAccumulate(_mm256_extract_epi32(mask, 5), _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
+		conditionalAccumulate(_mm256_extract_epi32(mask, 6), _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
+		conditionalAccumulate(_mm256_extract_epi32(mask, 7), _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
 	};
 
 	const __m256i resultWidthVec = _mm256_set1_epi32(this->resultWidth);
 	const __m256i resultHeightVec = _mm256_set1_epi32(this->resultHeight);
 
 	const __m256i outWidthVec = _mm256_set1_epi32(outWidth);
-	const auto getColorPointer = [](const std::vector<float>& colorPixels, const size_t offset) -> const float*
+	const auto getColorPointer = [](const std::vector<__m256>& colorPixels, const size_t offset) -> const __m256*
 	{
 		if constexpr (ISRGB)
 			return &*colorPixels.begin() + offset;
 		else
 			return nullptr;
 	};
-	const auto getColorValue = [](const float *const pColor) -> __m256
+	const auto getColorValue = [](const __m256* const pColor) -> __m256
 	{
 		if constexpr (ISRGB)
-			return _mm256_loadu_ps(pColor);
+			return _mm256_load_ps((const float*)pColor);
 		else
 			return _mm256_undefined_ps();
 	};
 
-	const auto accumulateAVX = [&](const __m256i outNdx, const __m256i mask, const __m256 colorValue, const __m256 fraction, T* pOutputBitmap, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
+	const auto accumulateAVX = [&](const __m256i outNdx, const __m256i mask, const __m256 colorValue, const __m256 fraction, T* const pOutputBitmap, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
 	{
 		if (twoNdxEqual) // If so, we cannot use AVX.
 			return accumulateSingle(_mm256_mul_ps(colorValue, fraction), outNdx, mask, pOutputBitmap);
@@ -611,7 +604,7 @@ int AvxStacking::pixelPartitioning()
 			accumulateAVX(outNdx, mask, r, fraction, &*avxTempBitmap.grayPixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
 		}
 	};
-	const auto fastAccumulateWordRGBorMono = [&](const __m256 color, const __m256 fraction1, const __m256 fraction2, std::uint16_t *const pOutput) -> void
+	const auto fastAccumulateWordRGBorMono = [&](const __m256 color, const __m256 fraction1, const __m256 fraction2, std::uint16_t* const pOutput) -> void
 	{
 		const __m256i colorVector = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vmovdqu ymm, m256
 //		const __m256i colorVector = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vlddqu ymm, m256
@@ -650,7 +643,7 @@ int AvxStacking::pixelPartitioning()
 		{
 			if (allNdxEquidistant && allNdxValid1 && allNdxValid2)
 			{
-				const size_t startNdx = _mm256_cvtsi256_si32(outNdx); //_mm256_extract_epi32(outNdx, 0);
+				const size_t startNdx = _mm256_cvtsi256_si32(outNdx); // outNdx[0]
 				if constexpr (ISRGB)
 				{
 					fastAccumulateWordRGBorMono(red, fraction1, fraction2, &avxTempBitmap.redPixels<T>()[startNdx]);
@@ -671,17 +664,17 @@ int AvxStacking::pixelPartitioning()
 
 	for (int row = 0; row < height; ++row)
 	{
-		const size_t offset = static_cast<size_t>(row) * static_cast<size_t>(width);
-		const float* pXLine = &*xCoordinates.begin() + offset;
-		const float* pYLine = &*yCoordinates.begin() + offset;
-		const float* pRed = &*redPixels.begin() + offset;
-		const float* pGreen = getColorPointer(greenPixels, offset);
-		const float* pBlue = getColorPointer(bluePixels, offset);
+		const size_t offset = row * nrVectors;
+		const __m256* pXLine = &*xCoordinates.begin() + offset;
+		const __m256* pYLine = &*yCoordinates.begin() + offset;
+		const __m256* pRed = &*redPixels.begin() + offset;
+		const __m256* pGreen = getColorPointer(greenPixels, offset);
+		const __m256* pBlue = getColorPointer(bluePixels, offset);
 
-		for (int counter = 0; counter < nrVectors; ++counter, pXLine += 8, pYLine += 8)
+		for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine, ++pRed)
 		{
-			const __m256 xcoord = _mm256_loadu_ps(pXLine);
-			const __m256 ycoord = _mm256_loadu_ps(pYLine);
+			const __m256 xcoord = _mm256_load_ps((const float*)pXLine);
+			const __m256 ycoord = _mm256_load_ps((const float*)pYLine);
 			const __m256 xtruncated = _mm256_floor_ps(xcoord); // trunc(coordinate)
 			const __m256 ytruncated = _mm256_floor_ps(ycoord);
 			const __m256 xfractional = _mm256_sub_ps(xcoord, xtruncated); // fractional_part(coordinate)
@@ -689,7 +682,7 @@ int AvxStacking::pixelPartitioning()
 			const __m256 xfrac1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), xfractional); // 1 - fractional_part
 			const __m256 yfrac1 = _mm256_sub_ps(_mm256_set1_ps(1.0f), yfractional);
 
-			const __m256 red = _mm256_loadu_ps(pRed);
+			const __m256 red = _mm256_load_ps((const float*)pRed);
 			const __m256 green = getColorValue(pGreen);
 			const __m256 blue = getColorValue(pBlue);
 
@@ -710,64 +703,11 @@ int AvxStacking::pixelPartitioning()
 			fraction2 = _mm256_mul_ps(xfractional, yfractional);
 			accumulateTwoFractions(red, green, blue, fraction1, fraction2, xii, _mm256_sub_epi32(yii, _mm256_set1_epi32(-1))); // (x, y+1), (x+1, y+1)
 
-			pRed += 8;
 			if constexpr (ISRGB)
 			{
-				pGreen += 8;
-				pBlue += 8;
+				++pGreen;
+				++pBlue;
 			}
-		}
-
-		// Rest of line
-		const auto accumulate1 = [outWidth, this](const float fraction, const size_t col, const size_t row, T* pOutputBitmap, const float* pColor) -> void
-		{
-			if (const int mask = (col >= 0 && col < this->resultWidth && row >= 0 && row < this->resultHeight) ? 0xffffffff : 0)
-			{
-				const size_t ndx = row * outWidth + col;
-				pOutputBitmap[ndx] = static_cast<T>(AvxSupport::accumulateSingleColorValue<T>(ndx, *pColor * fraction, mask, pOutputBitmap));
-			}
-		};
-		const auto accumulate_1_RGBorMono = [&](const float fraction, const int xCoord, const int yCoord, const float* pRed, const float* pGreen, const float* pBlue) -> void
-		{
-			if constexpr (ISRGB)
-			{
-				accumulate1(fraction, xCoord, yCoord, &*avxTempBitmap.redPixels<T>().begin(), pRed);
-				accumulate1(fraction, xCoord, yCoord, &*avxTempBitmap.greenPixels<T>().begin(), pGreen);
-				accumulate1(fraction, xCoord, yCoord, &*avxTempBitmap.bluePixels<T>().begin(), pBlue);
-			}
-			else
-			{
-				accumulate1(fraction, xCoord, yCoord, &*avxTempBitmap.grayPixels<T>().begin(), pRed);
-			}
-		};
-
-		for (int n = nrVectors * 8; n < colEnd; ++n, ++pXLine, ++pYLine, ++pRed, ++pGreen, ++pBlue)
-		{
-			const float fx = *pXLine;
-			const float fy = *pYLine;
-			const float xi = std::floorf(fx);
-			const float yi = std::floorf(fy);
-			const float xr = fx - xi;
-			const float yr = fy - yi;
-			const float xr1 = 1.0f - xr;
-			const float yr1 = 1.0f - yr;
-
-			float fraction = xr1 * yr1;
-			int xii = static_cast<int>(xi);
-			int yii = static_cast<int>(yi);
-			accumulate_1_RGBorMono(fraction, xii, yii, pRed, pGreen, pBlue);
-
-			fraction = xr * yr1;
-			++xii;
-			accumulate_1_RGBorMono(fraction, xii, yii, pRed, pGreen, pBlue);
-
-			fraction = xr * yr;
-			++yii;
-			accumulate_1_RGBorMono(fraction, xii, yii, pRed, pGreen, pBlue);
-
-			fraction = xr1 * yr;
-			xii = static_cast<int>(xi);
-			accumulate_1_RGBorMono(fraction, xii, yii, pRed, pGreen, pBlue);
 		}
 	}
 
@@ -798,7 +738,7 @@ bool AvxSupport::isColorBitmap() const
 template <class T>
 bool AvxSupport::isColorBitmapOfType() const
 {
-	auto *const p = const_cast<AvxSupport*>(this)->getColorPtr<T>();
+	auto* const p = const_cast<AvxSupport*>(this)->getColorPtr<T>();
 	const bool isColor = p != nullptr && p->isTopDown();
 	if constexpr (std::is_same<T, float>::value)
 		return isColor && p->IsFloat();
@@ -814,7 +754,7 @@ bool AvxSupport::isMonochromeBitmap() const
 template <class T>
 bool AvxSupport::isMonochromeBitmapOfType() const
 {
-	if (auto *const p = const_cast<AvxSupport*>(this)->getGrayPtr<T>())
+	if (auto* const p = const_cast<AvxSupport*>(this)->getGrayPtr<T>())
 	{
 		// Note that Monochrome bitmaps are always topdown -> no extra check required! CF. CGrayBitmap::GetOffset().
 		if constexpr (std::is_same<T, float>::value)
@@ -832,7 +772,7 @@ bool AvxSupport::isMonochromeCfaBitmapOfType() const
 	// CFA only supported for T=WORD
 	if constexpr (std::is_same<T, WORD>::value)
 	{
-		auto *const pGray = const_cast<AvxSupport*>(this)->getGrayPtr<T>();
+		auto* const pGray = const_cast<AvxSupport*>(this)->getGrayPtr<T>();
 		// We support CFA only for RGGB Bayer matrices with BILINEAR interpolation and no offsets.
 		return (pGray != nullptr && pGray->IsCFA() && pGray->GetCFATransformation() == CFAT_BILINEAR && pGray->GetCFAType() == CFATYPE_RGGB && pGray->xOffset() == 0 && pGray->yOffset() == 0);
 	}
@@ -889,7 +829,7 @@ inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m2
 	return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0x0000ffff)));
 }
 
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint32_t *const pOutputBitmap, const bool fastload) noexcept
+inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint32_t* const pOutputBitmap, const bool fastload) noexcept
 {
 	const __m256i tempColor = fastload
 		? _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0)))
@@ -898,7 +838,7 @@ inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m2
 	return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0xffffffffU)));
 }
 
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const float *const pOutputBitmap, const bool fastload) noexcept
+inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const float* const pOutputBitmap, const bool fastload) noexcept
 {
 	const __m256 tempColor = fastload
 		? _mm256_loadu_ps(pOutputBitmap + _mm256_extract_epi32(outNdx, 0))
@@ -906,51 +846,78 @@ inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m2
 	return _mm256_fmadd_ps(colorValue, fraction, tempColor);
 }
 
-inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint16_t *const pOutputBitmap, const bool faststore) noexcept
+inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint16_t* const pOutputBitmap, const bool faststore) noexcept
 {
 	if (faststore)
-		_mm_storeu_si128(reinterpret_cast<__m128i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0)), cvtPsEpu16(colorValue));
+		_mm_storeu_si128(reinterpret_cast<__m128i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx)), cvtPsEpu16(colorValue));
 	else
 	{
-		for (int n = 0, iMask = _mm256_movemask_epi8(mask); n < 8; ++n, iMask >>= 4)
+		const int iMask = _mm256_movemask_epi8(mask);
+		const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
 		{
-			if ((iMask & 0x01) != 0) {
-				const int ndx = outNdx.m256i_i32[n];
-				pOutputBitmap[ndx] = static_cast<std::uint16_t>(colorValue.m256_f32[n]);
-			}
-		}
+			if ((iMask & mask) != 0)
+				pOutputBitmap[ndx] = static_cast<std::uint16_t>(color);
+		};
+		__m128 color = _mm256_castps256_ps128(colorValue);
+		checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
+		checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
+		checkWrite(1 << 8, _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
+		checkWrite(1 << 12, _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
+		color = _mm256_extractf128_ps(colorValue, 1);
+		checkWrite(1 << 16, _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
+		checkWrite(1 << 20, _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
+		checkWrite(1 << 24, _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
+		checkWrite(1 << 28, _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
 	}
 }
 
-inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint32_t *const pOutputBitmap, const bool faststore) noexcept
+inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint32_t* const pOutputBitmap, const bool faststore) noexcept
 {
 	if (faststore)
-		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0)), _mm256_cvtps_epi32(colorValue));
+		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx)), _mm256_cvtps_epi32(colorValue));
 	else
 	{
-		for (int n = 0, iMask = _mm256_movemask_epi8(mask); n < 8; ++n, iMask >>= 4)
+		const int iMask = _mm256_movemask_epi8(mask);
+		const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
 		{
-			if ((iMask & 0x01) != 0) {
-				const int ndx = outNdx.m256i_i32[n];
-				pOutputBitmap[ndx] = static_cast<std::uint32_t>(colorValue.m256_f32[n]);
-			}
-		}
+			if ((iMask & mask) != 0)
+				pOutputBitmap[ndx] = static_cast<std::uint32_t>(color);
+		};
+		__m128 color = _mm256_castps256_ps128(colorValue);
+		checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
+		checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
+		checkWrite(1 << 8, _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
+		checkWrite(1 << 12, _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
+		color = _mm256_extractf128_ps(colorValue, 1);
+		checkWrite(1 << 16, _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
+		checkWrite(1 << 20, _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
+		checkWrite(1 << 24, _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
+		checkWrite(1 << 28, _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
 	}
 }
 
-inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, float *const pOutputBitmap, const bool faststore) noexcept
+inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, float* const pOutputBitmap, const bool faststore) noexcept
 {
 	if (faststore)
-		_mm256_storeu_ps(pOutputBitmap + _mm256_extract_epi32(outNdx, 0), colorValue);
+		_mm256_storeu_ps(pOutputBitmap + _mm256_cvtsi256_si32(outNdx), colorValue);
 	else
 	{
-		for (int n = 0, iMask = _mm256_movemask_epi8(mask); n < 8; ++n, iMask >>= 4)
+		const int iMask = _mm256_movemask_epi8(mask);
+		const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
 		{
-			if ((iMask & 0x01) != 0) {
-				const int ndx = outNdx.m256i_i32[n];
-				pOutputBitmap[ndx] = colorValue.m256_f32[n];
-			}
-		}
+			if ((iMask & mask) != 0)
+				pOutputBitmap[ndx] = color;
+		};
+		__m128 color = _mm256_castps256_ps128(colorValue);
+		checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
+		checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
+		checkWrite(1 << 8, _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
+		checkWrite(1 << 12, _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
+		color = _mm256_extractf128_ps(colorValue, 1);
+		checkWrite(1 << 16, _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
+		checkWrite(1 << 20, _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
+		checkWrite(1 << 24, _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
+		checkWrite(1 << 28, _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
 	}
 }
 

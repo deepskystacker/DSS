@@ -17,11 +17,11 @@ private:
 	long lineStart, lineEnd, colEnd;
 	int width, height;
 	int resultWidth, resultHeight;
-	std::vector<float> xCoordinates;
-	std::vector<float> yCoordinates;
-	std::vector<float> redPixels;
-	std::vector<float> greenPixels;
-	std::vector<float> bluePixels;
+	std::vector<__m256> xCoordinates;
+	std::vector<__m256> yCoordinates;
+	std::vector<__m256> redPixels;
+	std::vector<__m256> greenPixels;
+	std::vector<__m256> bluePixels;
 	CMemoryBitmap& inputBitmap;
 	CMemoryBitmap& tempBitmap;
 	AvxCfaProcessing avxCfa;
@@ -36,7 +36,8 @@ public:
 
 	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier);
 private:
-	void resizeColorVectors(const size_t nrPixels);
+	static size_t numberOfAvxPsVectors(const size_t width);
+	void resizeColorVectors(const size_t nrVectors);
 
 	template <class T>
 	int doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier);
@@ -288,6 +289,15 @@ public:
 	inline static __m256i rotateRightEpi32(const __m256i x) noexcept
 	{
 		return rotateRightEpi8<4 * N>(x);
+	}
+
+	// Extract for PS has a strange signature (returns int), so we write an own version.
+	template <int NDX>
+	inline static float extractPs(const __m128 ps)
+	{
+		static_assert(NDX >= 0 && NDX < 4);
+		const int extracted = _mm_extract_ps(ps, NDX); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
+		return reinterpret_cast<const float&>(extracted);
 	}
 };
 
