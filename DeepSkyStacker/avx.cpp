@@ -608,11 +608,9 @@ int AvxStacking::pixelPartitioning()
 	{
 		const __m256i colorVector = _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vmovdqu ymm, m256
 //		const __m256i colorVector = _mm256_lddqu_si256(reinterpret_cast<const __m256i*>(pOutput)); // vlddqu ymm, m256
-		const __m256i f1 = _mm256_set_m128i(_mm_setzero_si128(), AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction1, color)));
-		const __m256i f2 = _mm256_castsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction2, color)));
-		const __m256i f2Left1 = _mm256_slli_si256(f2, 2); // 2 Bytes left = 1 WORD left
-		const __m256i f2Right7 = _mm256_srli_si256(f2, 14); // 14 Bytes right = 7 WORD right
-		const __m256i f2ShiftedLeft = _mm256_permute2x128_si256(f2Left1, f2Right7, 0x20); // 0x20: take (b0, a0)
+		const __m256i f1 = _mm256_zextsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction1, color))); // Upper 128 bits are zeroed.
+		const __m256i f2 = _mm256_zextsi128_si256(AvxSupport::cvtPsEpu16(_mm256_mul_ps(fraction2, color)));
+		const __m256i f2ShiftedLeft = AvxSupport::shiftLeftEpi8<2>(f2);
 		const __m256i colorPlusFraction1 = _mm256_adds_epu16(colorVector, f1);
 		const __m256i colorPlusBothFractions = _mm256_adds_epu16(colorPlusFraction1, f2ShiftedLeft);
 		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutput), colorPlusBothFractions);
@@ -818,7 +816,7 @@ inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m2
 {
 	__m256i tempColor = _mm256_undefined_si256();
 	if (fastload)
-		tempColor = _mm256_cvtepu16_epi32(_mm_loadu_si128(reinterpret_cast<const __m128i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0))));
+		tempColor = _mm256_cvtepu16_epi32(_mm_loadu_si128(reinterpret_cast<const __m128i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx))));
 	else
 	{
 		// Gather with scale factor of 2 -> outNdx points to WORDs. Load these 8 WORDs and interpret them as epi32.
@@ -832,7 +830,7 @@ inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m2
 inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint32_t* const pOutputBitmap, const bool fastload) noexcept
 {
 	const __m256i tempColor = fastload
-		? _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutputBitmap + _mm256_extract_epi32(outNdx, 0)))
+		? _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx)))
 		: _mm256_mask_i32gather_epi32(_mm256_setzero_si256(), reinterpret_cast<const int*>(pOutputBitmap), outNdx, mask, 4);
 	const __m256 accumulatedColor = _mm256_fmadd_ps(colorValue, fraction, cvtEpu32Ps(tempColor));
 	return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0xffffffffU)));
@@ -841,7 +839,7 @@ inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m2
 inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const float* const pOutputBitmap, const bool fastload) noexcept
 {
 	const __m256 tempColor = fastload
-		? _mm256_loadu_ps(pOutputBitmap + _mm256_extract_epi32(outNdx, 0))
+		? _mm256_loadu_ps(pOutputBitmap + _mm256_cvtsi256_si32(outNdx))
 		: _mm256_mask_i32gather_ps(_mm256_setzero_ps(), pOutputBitmap, outNdx, _mm256_castsi256_ps(mask), 4);
 	return _mm256_fmadd_ps(colorValue, fraction, tempColor);
 }

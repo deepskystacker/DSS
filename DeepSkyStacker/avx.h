@@ -271,6 +271,12 @@ public:
 	}
 
 	template <int N>
+	inline static __m256i shiftLeftEpi8(const __m256i x) noexcept
+	{
+		static_assert(N >= 0 && N <= 16);
+		return _mm256_alignr_epi8(x, _mm256_permute2x128_si256(x, x, 8), 16 - N);
+	}
+	template <int N>
 	inline static __m256i shiftLeftEpi32(const __m256i x) noexcept
 	{
 		static_assert(N == 1);
