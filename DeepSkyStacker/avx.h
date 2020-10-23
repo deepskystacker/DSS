@@ -302,8 +302,12 @@ public:
 	inline static float extractPs(const __m128 ps)
 	{
 		static_assert(NDX >= 0 && NDX < 4);
-		const int extracted = _mm_extract_ps(ps, NDX); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
-		return reinterpret_cast<const float&>(extracted);
+		return _mm_cvtss_f32(_mm_castsi128_ps(_mm_srli_si128(_mm_castps_si128(ps), NDX * 4)));
+	}
+	template <>
+	inline static float extractPs<0>(const __m128 ps)
+	{
+		return _mm_cvtss_f32(ps);
 	}
 };
 
