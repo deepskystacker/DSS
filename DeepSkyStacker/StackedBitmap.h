@@ -186,7 +186,7 @@ public :
 
 	bool	Allocate(LONG lWidth, LONG lHeight, bool bMonochrome)
 	{
-		LONG			lSize;
+		size_t			lSize;
 
 		m_lWidth  = lWidth;
 		m_lHeight = lHeight;
@@ -239,7 +239,7 @@ public :
 
 	void		SetPixel(LONG X, LONG Y, double fRed, double fGreen, double fBlue)
 	{
-		LONG		lOffset = m_lWidth * Y + X;
+		size_t		lOffset = m_lWidth * Y + X;
 
 		m_vRedPlane[lOffset]	= fRed * m_lNrBitmaps;
 		if (!m_bMonochrome)
@@ -253,19 +253,19 @@ public :
 
 	double		GetRedValue(LONG X, LONG Y)
 	{
-		return m_vRedPlane[m_lWidth * Y + X]/m_lNrBitmaps*255.0;
+		return m_vRedPlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
 	};
 	double		GetGreenValue(LONG X, LONG Y)
 	{
 		if (!m_bMonochrome)
-			return m_vGreenPlane[m_lWidth * Y + X]/m_lNrBitmaps*255.0;
+			return m_vGreenPlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
 		else
 			return GetRedValue(X, Y);
 	};
 	double		GetBlueValue(LONG X, LONG Y)
 	{
 		if (!m_bMonochrome)
-			return m_vBluePlane[m_lWidth * Y + X]/m_lNrBitmaps*255.0;
+			return m_vBluePlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
 		else
 			return GetRedValue(X, Y);
 	};

@@ -140,7 +140,7 @@ void	CheckRemainingTempFiles()
 		if (msgBox.exec())
 		{
 			QFile file;
-			for (LONG i = 0; i < vFiles.size(); i++)
+			for (size_t i = 0; i < vFiles.size(); i++)
 			{
 				file.setFileName(vFiles[i]);
 				file.remove();
@@ -266,7 +266,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	HANDLE			hMutex;
 	bool			bFirstInstance = true;
 
-	_CrtSetDbgFlag(0);
+	//
+	// Silence the MFC memory leak dump as we use Visual Leak Detector.
+	//
+	_CrtSetDbgFlag(0); AfxEnableMemoryLeakDump(false);
 
 	ZTRACE_RUNTIME("Checking Mutex");
 

@@ -44,6 +44,7 @@ public:
 		vSettings = rhs.vSettings;
 		linkID = rhs.linkID;
 		recommendation = rhs.recommendation;
+		return *this;
 	}
 
 	void	clear()
@@ -95,7 +96,7 @@ public:
 	{
 		CWorkspace				workspace;
 
-		for (LONG i = 0; i < vSettings.size(); i++)
+		for (size_t i = 0; i < vSettings.size(); i++)
 		{
 			QString				keyName;
 			QVariant			value;
@@ -158,6 +159,7 @@ public:
 		isImportant = rhs.isImportant;
 		breakBefore = rhs.breakBefore;
 		text = rhs.text;
+		return *this;
 	}
 
 	void	setText(const QString& t)
@@ -212,7 +214,7 @@ private:
 	void	clearText();
 
 	void	insertHeader();
-	void	insertHTML(const QString& html, QColor colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, LONG lLinkID = -1);
+	void	insertHTML(const QString& html, const QColor& colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, LONG lLinkID = -1);
 	void	fillWithRecommendedSettings();
 
 	void	setSetting(LONG lID = 0);
