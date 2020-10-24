@@ -265,7 +265,11 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="DSSImageView.cpp">
+    <ClCompile Include="dssimageview.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="dssselectrect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -280,7 +284,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="FlatFrame.cpp" />
     <ClCompile Include="FrameInfo.cpp" />
     <ClCompile Include="FrameList.cpp" />
-    <ClCompile Include="ImageSinks.cpp" />
     <ClCompile Include="IntermediateFiles.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -309,6 +312,10 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="qmfcapp.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="qwinhost.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -409,8 +416,8 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="..\Tools\ThemeUtil.h" />
     <ClInclude Include="..\Tools\Tmschema.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
-    <ClInclude Include="..\Tools\WndImage.h" />
     <QtMoc Include="About.h" />
+    <ClInclude Include="..\Tools\WndImage.h" />
     <ClInclude Include="AHDDemosaicing.h" />
     <QtMoc Include="AlignmentParameters.h" />
     <ClInclude Include="AskRegistering.h" />
@@ -437,10 +444,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="DSS-winapifamily.h" />
     <ClInclude Include="DSS-winpackagefamily.h" />
     <ClInclude Include="DSSCommon.h" />
-    <QtMoc Include="DSSImageView.h" />
+    <QtMoc Include="dssimageview.h" />
     <QtMoc Include="dsseditstars.h" />
     <ClInclude Include="DSSMemory.h" />
     <ClInclude Include="DSSProgress.h" />
+    <QtMoc Include="dssselectrect.h" />
+    <QtMoc Include="dsstoolbar.h" />
     <ClInclude Include="DSSTools.h" />
     <ClInclude Include="DSSVersion.h" />
     <ClInclude Include="EntropyInfo.h" />
@@ -453,7 +462,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="FrameList.h" />
     <ClInclude Include="group.h" />
     <ClInclude Include="Histogram.h" />
-    <ClInclude Include="ImageSinks.h" />
     <QtMoc Include="IntermediateFiles.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="LuminanceTab.h" />
@@ -475,6 +483,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
+    <QtMoc Include="qwinhost.h" />
     <ClInclude Include="RAWUtils.h" />
     <QtMoc Include="RecommendedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
@@ -652,6 +661,8 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <None Include="i18n\DSS.tr_TR.ts" />
     <None Include="i18n\DSS.zh_TW.ts" />
     <None Include="QMfcApp" />
+    <None Include="QWinHost" />
+    <None Include="QWinWidget" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />

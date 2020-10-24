@@ -153,9 +153,6 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="ImageSinks.cpp">
-      <Filter>Dialogs\ImageSinks</Filter>
-    </ClCompile>
     <ClCompile Include="SaveEditChanges.cpp">
       <Filter>Dialogs\ImageSinks</Filter>
     </ClCompile>
@@ -217,9 +214,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ToolTipButton.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\WndImage.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="AHDDemosaicing.cpp">
@@ -333,11 +327,20 @@
     <ClCompile Include="QLinearGradientCtrl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="DSSImageView.cpp">
+    <ClCompile Include="dssimageview.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="dsseditstars.cpp">
       <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="dssselectrect.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\WndImage.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="qwinhost.cpp">
+      <Filter>Qt Porting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -460,9 +463,6 @@
     <ClInclude Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
     </ClInclude>
-    <ClInclude Include="ImageSinks.h">
-      <Filter>Dialogs\ImageSinks</Filter>
-    </ClInclude>
     <ClInclude Include="SaveEditChanges.h">
       <Filter>Dialogs\ImageSinks</Filter>
     </ClInclude>
@@ -536,9 +536,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ToolTipButton.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\WndImage.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="AHDDemosaicing.h">
@@ -690,6 +687,9 @@
     </ClInclude>
     <ClInclude Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\WndImage.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1084,6 +1084,12 @@
     <None Include="i18n\DSS.zh_TW.ts">
       <Filter>Qt\i18n</Filter>
     </None>
+    <None Include="QWinHost">
+      <Filter>Qt Porting</Filter>
+    </None>
+    <None Include="QWinWidget">
+      <Filter>Qt Porting</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
@@ -1210,11 +1216,20 @@
     <QtMoc Include="QLinearGradientCtrl.h">
       <Filter>Tools</Filter>
     </QtMoc>
-    <QtMoc Include="DSSImageView.h">
+    <QtMoc Include="dssimageview.h">
       <Filter>Kernel</Filter>
     </QtMoc>
     <QtMoc Include="dsseditstars.h">
       <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="dssselectrect.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="dsstoolbar.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="qwinhost.h">
+      <Filter>Qt Porting</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
