@@ -476,6 +476,8 @@ public :
         m_fStep     = 0;
 	};
 
+	CHistogram& operator=(const CHistogram&) = default;
+
 	virtual ~CHistogram() {};
 
 	void	Init()
@@ -491,6 +493,13 @@ public :
 
 		m_bInitOk = true;
 	};
+	void Init(const size_t size)
+	{
+		m_bInitOk = false;
+		Clear();
+		m_vValues.resize(size);
+		m_bInitOk = true;
+	}
 
 	void	Clear()
 	{
@@ -524,7 +533,7 @@ public :
 		m_fAbsMax	= fMax;
 		m_fStep = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (lNrValues - 1));
 
-		Init();
+		Init(lNrValues);
 	};
 
 	LONG	GetSize()
