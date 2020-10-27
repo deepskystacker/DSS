@@ -130,7 +130,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <Command>cd i18n &amp;&amp; for %%f in (*.ts) do (C:\Qt\5.15.0\msvc2019_64\bin\lrelease %%f)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
-      <Outputs>i18n\DSS.ca_ES.qm;i18n\DSS.cs_CZ.qm;i18n\DSS.de_DE.qm;i18n\DSS.en_GB.qm;i18n\DSS.es_ES.qm;i18n\DSS.fr_FR.qm;i18n\DSS.it_IT.qm;i18n\DSS.nl_NL.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro_RO.qm;i18n\DSS.ru_RU.qm;i18n\DSS.tr_TR.qm;i18n\DSS.zh_TW.qm</Outputs>
+      <Outputs>i18n\DSS.ca.qm;i18n\DSS.cs.qm;i18n\DSS.de.qm;i18n\DSS.en.qm;i18n\DSS.es.qm;i18n\DSS.fr.qm;i18n\DSS.it.qm;i18n\DSS.nl.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro.qm;i18n\DSS.ru.qm;i18n\DSS.tr.qm;i18n\DSS.zh_TW.qm</Outputs>
     </CustomBuildStep>
     <QtMoc>
       <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
@@ -186,7 +186,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     </Manifest>
     <CustomBuildStep>
       <Command>cd i18n &amp;&amp; for %%f in (*.ts) do (C:\Qt\5.15.0\msvc2019_64\bin\lrelease %%f)</Command>
-      <Outputs>i18n\DSS.ca_ES.qm;i18n\DSS.cs_CZ.qm;i18n\DSS.de_DE.qm;i18n\DSS.en_GB.qm;i18n\DSS.es_ES.qm;i18n\DSS.fr_FR.qm;i18n\DSS.it_IT.qm;i18n\DSS.nl_NL.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro_RO.qm;i18n\DSS.ru_RU.qm;i18n\DSS.tr_TR.qm;i18n\DSS.zh_TW.qm</Outputs>
+      <Outputs>i18n\DSS.ca.qm;i18n\DSS.cs.qm;i18n\DSS.de.qm;i18n\DSS.en.qm;i18n\DSS.es.qm;i18n\DSS.fr.qm;i18n\DSS.it.qm;i18n\DSS.nl.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro.qm;i18n\DSS.ru.qm;i18n\DSS.tr.qm;i18n\DSS.zh_TW.qm</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
@@ -284,6 +284,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="FlatFrame.cpp" />
     <ClCompile Include="FrameInfo.cpp" />
     <ClCompile Include="FrameList.cpp" />
+    <ClCompile Include="ImageSinks.cpp" />
     <ClCompile Include="IntermediateFiles.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -435,7 +436,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="CosmeticEngine.h" />
     <ClInclude Include="DarkFrame.h" />
     <ClInclude Include="DeBloom.h" />
-    <ClInclude Include="DeepSkyStacker.h" />
+    <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="DeepStack.h" />
     <ClInclude Include="DeepStackerDlg.h" />
     <ClInclude Include="Delaunay.h" />
@@ -461,8 +462,10 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="FrameInfo.h" />
     <ClInclude Include="FrameList.h" />
     <ClInclude Include="group.h" />
+    <ClInclude Include="dss_settings.h" />
     <ClInclude Include="Histogram.h" />
     <QtMoc Include="IntermediateFiles.h" />
+    <ClInclude Include="ImageSinks.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="LuminanceTab.h" />
     <ClInclude Include="MasterFrames.h" />
@@ -647,18 +650,18 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="i18n\DSS.ca_ES.ts" />
-    <None Include="i18n\DSS.cs_CZ.ts" />
-    <None Include="i18n\DSS.de_DE.ts" />
-    <None Include="i18n\DSS.en_GB.ts" />
-    <None Include="i18n\DSS.es_ES.ts" />
-    <None Include="i18n\DSS.fr_FR.ts" />
-    <None Include="i18n\DSS.it_IT.ts" />
-    <None Include="i18n\DSS.nl_NL.ts" />
+    <None Include="i18n\DSS.ca.ts" />
+    <None Include="i18n\DSS.cs.ts" />
+    <None Include="i18n\DSS.de.ts" />
+    <None Include="i18n\DSS.en.ts" />
+    <None Include="i18n\DSS.es.ts" />
+    <None Include="i18n\DSS.fr.ts" />
+    <None Include="i18n\DSS.it.ts" />
+    <None Include="i18n\DSS.nl.ts" />
     <None Include="i18n\DSS.pt_BR.ts" />
-    <None Include="i18n\DSS.ro_RO.ts" />
-    <None Include="i18n\DSS.ru_RU.ts" />
-    <None Include="i18n\DSS.tr_TR.ts" />
+    <None Include="i18n\DSS.ro.ts" />
+    <None Include="i18n\DSS.ru.ts" />
+    <None Include="i18n\DSS.tr.ts" />
     <None Include="i18n\DSS.zh_TW.ts" />
     <None Include="QMfcApp" />
     <None Include="QWinHost" />
