@@ -23,25 +23,11 @@ private:
 	template <class T>
 	int doComputeLuminance(const size_t lineStart, const size_t lineEnd);
 
-	inline static std::tuple<__m256d, __m256d, __m256d, __m256d> multiplyPd(const std::tuple<__m256d, __m256d, __m256d, __m256d> x, const double factor) noexcept
-	{
-		const __m256d f = _mm256_set1_pd(factor);
-		return {
-			_mm256_mul_pd(std::get<0>(x), f),
-			_mm256_mul_pd(std::get<1>(x), f),
-			_mm256_mul_pd(std::get<2>(x), f),
-			_mm256_mul_pd(std::get<3>(x), f)
-		};
-	}
-
 	template <class T>
 	static std::tuple<__m256d, __m256d, __m256d, __m256d> colorLuminance(const T *const pRed, const T *const pGreen, const T *const pBlue);
 
 	template <class T>
-	static std::tuple<__m256d, __m256d, __m256d, __m256d> greyLuminance(const T* const pGrey);
-
-	template <class T>
-	static constexpr double normalizationFactor() noexcept;
+	static std::tuple<__m256d, __m256d, __m256d, __m256d> greyLuminance(const T* const pGray);
 };
 
 #else

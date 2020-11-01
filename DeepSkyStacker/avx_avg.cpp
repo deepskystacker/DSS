@@ -25,7 +25,7 @@ int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 
 	if (doAccumulate<WORD, float>(nrStackedBitmaps) == 0)
 		return 0;
-	if (doAccumulate<std::uint32_t, float>(nrStackedBitmaps) == 0)
+	if (doAccumulate<unsigned long, float>(nrStackedBitmaps) == 0)
 		return 0;
 	if (doAccumulate<float, float>(nrStackedBitmaps) == 0)
 		return 0;

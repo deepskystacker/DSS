@@ -36,7 +36,6 @@ public:
 
 	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier);
 private:
-	static size_t numberOfAvxPsVectors(const size_t width);
 	void resizeColorVectors(const size_t nrVectors);
 
 	template <class T>
@@ -122,6 +121,15 @@ public:
 
 	static bool checkSimdAvailability() noexcept;
 
+	template <size_t ElementSize>
+	inline static size_t numberOfAvxVectors(const size_t width)
+	{
+		static_assert(ElementSize == 1 || ElementSize == 2 || ElementSize == 4 || ElementSize == 8);
+		return width == 0 ? 0 : (width - 1) * ElementSize / sizeof(__m256i) + 1;
+	}
+
+	// SIMD functions
+
 	inline static __m256 wordToPackedFloat(const __m128i x) noexcept
 	{
 		return _mm256_cvtepi32_ps(_mm256_cvtepu16_epi32(x));
@@ -129,13 +137,13 @@ public:
 
 	inline static std::tuple<__m256d, __m256d, __m256d, __m256d> wordToPackedDouble(const __m256i x) noexcept
 	{
-		const __m256i i1 = _mm256_cvtepu16_epi32(_mm256_castsi256_si128(x)); // cvt
-		const __m256i i2 = _mm256_cvtepu16_epi32(_mm256_extracti128_si256(x, 1)); // extract, cvt
+		const __m256i i1 = _mm256_cvtepu16_epi32(_mm256_castsi256_si128(x));
+		const __m256i i2 = _mm256_cvtepu16_epi32(_mm256_extracti128_si256(x, 1));
 		return {
-			_mm256_cvtepi32_pd(_mm256_castsi256_si128(i1)), // cvt
-			_mm256_cvtepi32_pd(_mm256_extracti128_si256(i1, 1)), // extract, cvt
-			_mm256_cvtepi32_pd(_mm256_castsi256_si128(i2)), // cvt
-			_mm256_cvtepi32_pd(_mm256_extracti128_si256(i2, 1)) // extract, cvt
+			_mm256_cvtepi32_pd(_mm256_castsi256_si128(i1)),
+			_mm256_cvtepi32_pd(_mm256_extracti128_si256(i1, 1)),
+			_mm256_cvtepi32_pd(_mm256_castsi256_si128(i2)),
+			_mm256_cvtepi32_pd(_mm256_extracti128_si256(i2, 1))
 		};
 	}
 
@@ -152,7 +160,7 @@ public:
 		const __m256i mask = _mm256_cmpgt_epi32(_mm256_setzero_si256(), x); // 0 > x (= x < 0)
 		const __m256d d1 = _mm256_cvtepi32_pd(_mm256_castsi256_si128(x));
 		const __m256d d2 = _mm256_cvtepi32_pd(_mm256_extracti128_si256(x, 1));
-		const __m256d corr1 = _mm256_add_pd(_mm256_set1_pd(static_cast<double>(0x100000000ULL)), d1); // UINTMAX - x (Note: 'add_ps' is correct!)
+		const __m256d corr1 = _mm256_add_pd(_mm256_set1_pd(static_cast<double>(0x100000000ULL)), d1); // UINTMAX - x (Note: 'add_pd' is correct!)
 		const __m256d corr2 = _mm256_add_pd(_mm256_set1_pd(static_cast<double>(0x100000000ULL)), d2);
 		return {
 			_mm256_blendv_pd(d1, corr1, _mm256_cmp_pd(d1, _mm256_setzero_pd(), 17)), // 17: OP := _CMP_LT_OQ
@@ -181,6 +189,14 @@ public:
 		return cvtEpi32Epu16(epi32);
 	}
 
+	inline static __m256i cvtPsEpu32(const __m256 x) noexcept
+	{
+		// x >= INTMAX + 1
+		const __m256 mask = _mm256_cmp_ps(x, _mm256_set1_ps(2147483648.0f), 29); // 29 = _CMP_GE_OQ (greater or equal, ordered, quiet)
+		const __m256 corr = _mm256_sub_ps(x, _mm256_set1_ps(4294967296.0f));
+		return _mm256_cvttps_epi32(_mm256_blendv_ps(x, corr, mask));
+	}
+
 	inline static __m256i cmpGtEpu16(const __m256i a, const __m256i b) noexcept
 	{
 		const __m256i highBit = _mm256_set1_epi16(WORD{ 0x8000 });
@@ -195,16 +211,21 @@ public:
 		const __m256 hi8 = wordToPackedFloat(_mm256_extracti128_si256(icolor, 1));
 		return { lo8, hi8 };
 	};
-	inline static std::tuple<__m256, __m256> read16PackedSingle(const float *const pColor) noexcept
-	{
-		return { _mm256_loadu_ps(pColor), _mm256_loadu_ps(pColor + 8) };
-	}
 	inline static std::tuple<__m256, __m256> read16PackedSingle(const std::uint32_t* const pColor) noexcept
 	{
 		return {
 			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_epi32(pColor), 16)), // Shift 16 bits right while shifting in zeros.
 			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_epi32(pColor + 8), 16))
 		};
+	}
+	inline static std::tuple<__m256, __m256> read16PackedSingle(const unsigned long* const pColor) noexcept
+	{
+		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+		return read16PackedSingle(reinterpret_cast<const std::uint32_t*>(pColor));
+	}
+	inline static std::tuple<__m256, __m256> read16PackedSingle(const float* const pColor) noexcept
+	{
+		return { _mm256_loadu_ps(pColor), _mm256_loadu_ps(pColor + 8) };
 	}
 
 	inline static __m256i cvt2xEpi32Epu16(const __m256i lo, const __m256i hi)
@@ -223,35 +244,75 @@ public:
 		const __m256i hi = _mm256_srli_epi32(_mm256_loadu_epi32(pColor + 8), 16);
 		return cvt2xEpi32Epu16(lo, hi);
 	}
+	inline static __m256i read16PackedShort(const unsigned long* const pColor)
+	{
+		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+		return read16PackedShort(reinterpret_cast<const std::uint32_t*>(pColor));
+	}
 	inline static __m256i read16PackedShort(const float* const pColor)
 	{
-		const __m256i lo = _mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor)), _mm256_set1_epi32(0x0ffff));
-		const __m256i hi = _mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor + 8)), _mm256_set1_epi32(0x0ffff));
-		return cvt2xEpi32Epu16(lo, hi);
+		// Min with 65536 not needed, because cvt2xEpi32Epu16 applies unsigned saturation to 16 bits.
+//		const __m256i lo = _mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor)), _mm256_set1_epi32(0x0ffff));
+//		const __m256i hi = _mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor + 8)), _mm256_set1_epi32(0x0ffff));
+		const __m256i loEpi32 = _mm256_cvtps_epi32(_mm256_loadu_ps(pColor));
+		const __m256i hiEpi32 = _mm256_cvtps_epi32(_mm256_loadu_ps(pColor + 8));
+		return cvt2xEpi32Epu16(loEpi32, hiEpi32);
 	}
 
-	// Read color values from T* and return 8 x packed int
-	inline static __m256i read8PackedInt(const WORD* const pColor)
+	// Read color values from T* and return 2 x 8 x packed int
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const WORD* const pColor)
 	{
-		return _mm256_cvtepu16_epi32(_mm_loadu_epi16(pColor));
+		const __m256i epi16 = _mm256_loadu_si256((const __m256i*)pColor);
+		return {
+			_mm256_cvtepu16_epi32(_mm256_castsi256_si128(epi16)),
+			_mm256_cvtepu16_epi32(_mm256_extracti128_si256(epi16, 1))
+		};
 	}
-	inline static __m256i read8PackedInt(const std::uint32_t* const pColor)
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const std::uint32_t* const pColor)
 	{
-		return _mm256_srli_epi32(_mm256_loadu_epi32(pColor), 16); // Shift 16 bits right while shifting in zeros.
+		return {
+			_mm256_srli_epi32(_mm256_loadu_si256((const __m256i*)pColor), 16), // Shift 16 bits right while shifting in zeros (divide by 65536).
+			_mm256_srli_epi32(_mm256_loadu_si256(((const __m256i*)pColor) + 1), 16)
+		};
 	}
-	inline static __m256i read8PackedInt(const float* const pColor)
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const unsigned long* const pColor)
 	{
-		return _mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor)), _mm256_set1_epi32(0x0ffff));
+		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+		return read16PackedInt(reinterpret_cast<const std::uint32_t*>(pColor));
+	}
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const float* const pColor)
+	{
+		return {
+			_mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor)), _mm256_set1_epi32(0x0000ffff)),
+			_mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor + 8)), _mm256_set1_epi32(0x0000ffff))
+		};
+	}
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double* const pColor)
+	{
+		throw std::runtime_error("Not implemented");
+	}
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double* const pColor, const __m256d scalingFactor)
+	{
+		const __m128i lo1 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor), scalingFactor));
+		const __m128i hi1 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 4), scalingFactor));
+
+		const __m128i lo2 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 8), scalingFactor));
+		const __m128i hi2 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 12), scalingFactor));
+
+		return {
+			_mm256_min_epi32(_mm256_set_m128i(hi1, lo1), _mm256_set1_epi32(0x0000ffff)),
+			_mm256_min_epi32(_mm256_set_m128i(hi2, lo2), _mm256_set1_epi32(0x0000ffff))
+		};
 	}
 
 	// Accumulate packed single newColor to T* oldColor
 	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint16_t *const pOutputBitmap, const bool fastload) noexcept;
-	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint32_t* const pOutputBitmap, const bool fastload) noexcept;
+	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const unsigned long* const pOutputBitmap, const bool fastload) noexcept;
 	static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const float *const pOutputBitmap, const bool fastload) noexcept;
 
 	// Store accumulated color
 	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint16_t *const pOutputBitmap, const bool faststore) noexcept;
-	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint32_t *const pOutputBitmap, const bool faststore) noexcept;
+	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, unsigned long *const pOutputBitmap, const bool faststore) noexcept;
 	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, float *const pOutputBitmap, const bool faststore) noexcept;
 
 	template <class T>

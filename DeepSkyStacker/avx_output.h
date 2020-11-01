@@ -23,6 +23,9 @@ private:
 	template <class INPUTTYPE, class OUTPUTTYPE>
 	static bool bitmapColorOrGray(const CMultiBitmap& bitmap)  noexcept;
 
+	template <class T>
+	static float convertToFloat(const T value) noexcept;
+
 	int processKappaSigma(const int line, std::vector<void*> const& lineAddresses);
 	template <class T>
 	int doProcessKappaSigma(const int line, std::vector<void*> const& lineAddresses);

@@ -29,6 +29,15 @@ static bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) 
 		(dynamic_cast<const CGrayMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr);
 }
 
+template <class T>
+inline static float AvxOutputComposition::convertToFloat(const T value) noexcept
+{
+	if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type
+		return static_cast<float>(value >> 16);
+	else
+		return static_cast<float>(value);
+}
+
 int AvxOutputComposition::compose(const int line, std::vector<void*> const& lineAddresses)
 {
 	if (!avxReady)
@@ -54,7 +63,7 @@ int AvxOutputComposition::processKappaSigma(const int line, std::vector<void*> c
 {
 	if (doProcessKappaSigma<WORD>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessKappaSigma<std::uint32_t>(line, lineAddresses) == 0)
+	if (doProcessKappaSigma<unsigned long>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessKappaSigma<float>(line, lineAddresses) == 0)
 		return 0;
@@ -170,7 +179,7 @@ int AvxOutputComposition::doProcessKappaSigma(const int line, std::vector<void*>
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
-					const float colorValue = static_cast<float>(*pColor);
+					const float colorValue = convertToFloat(*pColor);
 					if (colorValue >= lowerBound && colorValue <= upperBound)
 					{
 						sum += colorValue;
@@ -212,7 +221,7 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 {
 	if (doProcessAutoAdaptiveWeightedAverage<WORD>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessAutoAdaptiveWeightedAverage<std::uint32_t>(line, lineAddresses) == 0)
+	if (doProcessAutoAdaptiveWeightedAverage<unsigned long>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessAutoAdaptiveWeightedAverage<float>(line, lineAddresses) == 0)
 		return 0;
@@ -244,10 +253,6 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 			for (auto frameAddress : lineAddresses)
 			{
 				const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
-/*				const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
-				my1 = _mm256_add_ps(my1, AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0)));
-				my2 = _mm256_add_ps(my2, AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1)));
-*/
 				const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
 				my1 = _mm256_add_ps(my1, lo8);
 				my2 = _mm256_add_ps(my2, hi8);
@@ -264,10 +269,6 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
-/*					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
-					const __m256 d1 = _mm256_sub_ps(AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0)), my1);
-					const __m256 d2 = _mm256_sub_ps(AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1)), my2);
-*/
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
 					const __m256 d1 = _mm256_sub_ps(lo8, my1);
 					const __m256 d2 = _mm256_sub_ps(hi8, my2);
@@ -285,9 +286,6 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + counter * 16ULL + colorOffset;
-//					const __m256i colorValue = _mm256_loadu_si256((const __m256i*)pColor);
-//					const __m256 lo8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 0));
-//					const __m256 hi8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(colorValue, 1));
 					const auto [lo8, hi8] = AvxSupport::read16PackedSingle(pColor);
 					const __m256 d1 = _mm256_sub_ps(lo8, my1); // x-µ
 					const __m256 d2 = _mm256_sub_ps(hi8, my2);
@@ -317,7 +315,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 			for (auto frameAddress : lineAddresses)
 			{
 				const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
-				my += static_cast<float>(*pColor);
+				my += convertToFloat(*pColor);
 			}
 			my /= N;
 
@@ -329,7 +327,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
-					const float d = static_cast<float>(*pColor) - my;
+					const float d = convertToFloat(*pColor) - my;
 					S += (d * d);
 				}
 				const float sigmaSq = S / N;
@@ -340,7 +338,7 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 				for (auto frameAddress : lineAddresses)
 				{
 					const T *const pColor = static_cast<T*>(frameAddress) + n + colorOffset;
-					const float color = static_cast<float>(*pColor);
+					const float color = convertToFloat(*pColor);
 					const float d = color - my;
 					const float denominator = sigmaSq + d * d;
 					const float w = denominator == 0.0f ? 1.0f : (sigmaSq / denominator);

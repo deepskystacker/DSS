@@ -38,9 +38,11 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
 
 	if (doCalcHistogram<WORD>(lineStart, lineEnd) == 0)
 		return rval(0);
-	if (doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0)
+	if (doCalcHistogram<unsigned long>(lineStart, lineEnd) == 0)
 		return rval(0);
 	if (doCalcHistogram<float>(lineStart, lineEnd) == 0)
+		return rval(0);
+	if (doCalcHistogram<double>(lineStart, lineEnd) == 0)
 		return rval(0);
 
 	return rval(1);
@@ -54,7 +56,7 @@ int AvxHistogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
 	if (!avxInputSupport.isColorBitmapOfType<T>() && !avxInputSupport.isMonochromeBitmapOfType<T>()) // Monochrome includes CFA
 		return 1;
 
-	constexpr size_t vectorLen = 8;
+	constexpr size_t vectorLen = 16;
 	const size_t width = inputBitmap.Width();
 	const size_t nrVectors = width / vectorLen;
 
@@ -88,58 +90,31 @@ int AvxHistogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
 		if ((bitMask & (1 << 28)) == 0)
 			histogram[_mm_extract_epi32(colorHiLane, 3)] = _mm_extract_epi32(histoHiLane, 3);
 	};
-/*
-	const auto calcHistoOfVectorEpi16 = [](const T* const pColor, auto& histogram) -> void
+	const auto calcHistoOfTwoVectorsEpi32 = [&calcHistoOfVectorEpi32](const std::tuple<__m256i, __m256i>& twoVectors, auto& histogram) -> void
 	{
-		const __m256i colorVec = AvxSupport::read16PackedShort(pColor);
-		const auto [nrEqualColors, bitMask] = detectConflictsEpi16(colorVec);
-
-		const __m256i loHisto = _mm256_i32gather_epi32((const int*)&*histogram.begin(), _mm256_cvtepu16_epi32(_mm256_castsi256_si128(colorVec)), 4);
-		const __m256i hiHisto = _mm256_i32gather_epi32((const int*)&*histogram.begin(), _mm256_cvtepu16_epi32(_mm256_extracti128_si256(colorVec, 1)), 4);
-		const __m256i loUpdated = _mm256_add_epi32(loHisto, _mm256_cvtepu16_epi32(_mm256_castsi256_si128(nrEqualColors)));
-		const __m256i hiUpdated = _mm256_add_epi32(hiHisto, _mm256_cvtepu16_epi32(_mm256_extracti128_si256(nrEqualColors, 1)));
-
-		if ((bitMask & 1) == 0) // no conflict
-			histogram[_mm256_extract_epi16(colorVec, 0)] = _mm256_cvtsi256_si32(loUpdated);
-		if ((bitMask & (1 << 2)) == 0)
-			histogram[_mm256_extract_epi16(colorVec, 1)] = _mm256_extract_epi32(loUpdated, 1);
-		if ((bitMask & (1 << 4)) == 0)
-			histogram[_mm256_extract_epi16(colorVec, 2)] = _mm256_extract_epi32(loUpdated, 2);
-		if ((bitMask & (1 << 6)) == 0)
-			histogram[_mm256_extract_epi16(colorVec, 3)] = _mm256_extract_epi32(loUpdated, 3);
-		__m128i histoHiLane = _mm256_extracti128_si256(loUpdated, 1);
-		if ((bitMask & (1 << 8)) == 0)
-			histogram[_mm256_extract_epi16(colorVec, 4)] = _mm_cvtsi128_si32(histoHiLane);
-		if ((bitMask & (1 << 10)) == 0)
-			histogram[_mm256_extract_epi16(colorVec, 5)] = _mm_extract_epi32(histoHiLane, 1);
-		if ((bitMask & (1 << 12)) == 0)
-			histogram[_mm256_extract_epi16(colorVec, 6)] = _mm_extract_epi32(histoHiLane, 2);
-		if ((bitMask & (1 << 14)) == 0)
-			histogram[_mm256_extract_epi16(colorVec, 7)] = _mm_extract_epi32(histoHiLane, 3);
-		const __m128i colorHiLane = _mm256_extracti128_si256(colorVec, 1);
-		if ((bitMask & (1 << 16)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 0)] = _mm256_cvtsi256_si32(hiUpdated);
-		if ((bitMask & (1 << 18)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 1)] = _mm256_extract_epi32(hiUpdated, 1);
-		if ((bitMask & (1 << 20)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 2)] = _mm256_extract_epi32(hiUpdated, 2);
-		if ((bitMask & (1 << 22)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 3)] = _mm256_extract_epi32(hiUpdated, 3);
-		histoHiLane = _mm256_extracti128_si256(hiUpdated, 1);
-		if ((bitMask & (1 << 24)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 4)] = _mm_cvtsi128_si32(histoHiLane);
-		if ((bitMask & (1 << 26)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 5)] = _mm_extract_epi32(histoHiLane, 1);
-		if ((bitMask & (1 << 28)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 6)] = _mm_extract_epi32(histoHiLane, 2);
-		if ((bitMask & (1 << 30)) == 0)
-			histogram[_mm_extract_epi16(colorHiLane, 7)] = _mm_extract_epi32(histoHiLane, 3);
+		const auto [lo, hi] = twoVectors;
+		calcHistoOfVectorEpi32(lo, histogram);
+		calcHistoOfVectorEpi32(hi, histogram);
 	};
-*/
+
+	const auto addToHisto = [](auto& histo, T grayValue) -> void
+	{
+		if constexpr (std::is_same<T, double>::value)
+			grayValue *= 256.0;
+		if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type
+			grayValue >>= 16;
+		++histo[static_cast<size_t>(grayValue)];
+	};
+
 	const bool isCFA = avxInputSupport.isMonochromeCfaBitmapOfType<T>();
 
+	// Color bitmap (incl. CFA)
+	// ------------------------
 	if (avxInputSupport.isColorBitmapOfType<T>() || isCFA)
 	{
+		if constexpr (std::is_same<T, double>::value) // color-double not supported.
+			return 1;
+
 		AvxCfaProcessing avxCfa{ 0, 0, inputBitmap };
 		if (isCFA)
 		{
@@ -147,40 +122,47 @@ int AvxHistogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
 			avxCfa.interpolate(lineStart, lineEnd, 1);
 		}
 
-		for (size_t row = 0, lineNdx = lineStart; lineNdx < lineEnd; ++row, ++lineNdx)
+		for (size_t row = lineStart, lineNdx = 0; row < lineEnd; ++row, ++lineNdx)
 		{
-			const T* pRedPixels = isCFA ? avxCfa.redCfaPixels<T>(row * width) : &avxInputSupport.redPixels<T>().at(lineNdx * width);
-			const T* pGreenPixels = isCFA ? avxCfa.greenCfaPixels<T>(row * width) : &avxInputSupport.greenPixels<T>().at(lineNdx * width);
-			const T* pBluePixels = isCFA ? avxCfa.blueCfaPixels<T>(row * width) : &avxInputSupport.bluePixels<T>().at(lineNdx * width);
+			const T* pRedPixels = isCFA ? avxCfa.redCfaLine<T>(lineNdx) : &avxInputSupport.redPixels<T>().at(row * width);
+			const T* pGreenPixels = isCFA ? avxCfa.greenCfaLine<T>(lineNdx) : &avxInputSupport.greenPixels<T>().at(row * width);
+			const T* pBluePixels = isCFA ? avxCfa.blueCfaLine<T>(lineNdx) : &avxInputSupport.bluePixels<T>().at(row * width);
 
 			for (size_t counter = 0; counter < nrVectors; ++counter, pRedPixels += vectorLen, pGreenPixels += vectorLen, pBluePixels += vectorLen)
 			{
-				calcHistoOfVectorEpi32(AvxSupport::read8PackedInt(pRedPixels), redHisto);
-				calcHistoOfVectorEpi32(AvxSupport::read8PackedInt(pGreenPixels), greenHisto);
-				calcHistoOfVectorEpi32(AvxSupport::read8PackedInt(pBluePixels), blueHisto);
+				calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pRedPixels), redHisto);
+				calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGreenPixels), greenHisto);
+				calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pBluePixels), blueHisto);
 			}
 			for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pRedPixels, ++pGreenPixels, ++pBluePixels)
 			{
-				++redHisto[static_cast<size_t>(*pRedPixels)];
-				++greenHisto[static_cast<size_t>(*pGreenPixels)];
-				++blueHisto[static_cast<size_t>(*pBluePixels)];
+				addToHisto(redHisto, *pRedPixels);
+				addToHisto(greenHisto, *pGreenPixels);
+				addToHisto(blueHisto, *pBluePixels);
 			}
 		}
 		return 0;
 	}
 
+	// Note:
+	// Gray input bitmaps of type double use a fix scaling factor of 256.
+	// This is for the histogram in the registering process, where the color values come from the luminance calculation. They are in the range [0, 256).
+	// Thus, they need up-scaling by a factor of 256.
 	if (avxInputSupport.isMonochromeBitmapOfType<T>())
 	{
-		for (size_t lineNdx = lineStart; lineNdx < lineEnd; ++lineNdx)
+		for (size_t row = lineStart; row < lineEnd; ++row)
 		{
-			const T* pGrayPixels = &avxInputSupport.grayPixels<T>().at(lineNdx * width);
+			const T* pGrayPixels = &avxInputSupport.grayPixels<T>().at(row * width);
 			for (size_t counter = 0; counter < nrVectors; ++counter, pGrayPixels += vectorLen)
 			{
-				calcHistoOfVectorEpi32(AvxSupport::read8PackedInt(pGrayPixels), redHisto);
+				if constexpr (std::is_same<T, double>::value)
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels, _mm256_set1_pd(256.0)), redHisto);
+				else
+					calcHistoOfTwoVectorsEpi32(AvxSupport::read16PackedInt(pGrayPixels), redHisto);
 			}
 			for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pGrayPixels)
 			{
-				++redHisto[static_cast<size_t>(*pGrayPixels)];
+				addToHisto(redHisto, *pGrayPixels);
 			}
 		}
 		return 0;

@@ -10,21 +10,22 @@ AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd,
 	redPixels{},
 	greenPixels{},
 	bluePixels{},
-	inputBitmap{ inputbm }
+	inputBitmap{ inputbm },
+	vectorsPerLine{ 0 }
 {
 	init(lineStart, lineEnd);
 }
 
 void AvxCfaProcessing::init(const size_t lineStart, const size_t lineEnd) // You should be sure that lineEnd >= lineStart!
 {
-	const size_t width = inputBitmap.Width();
 	const size_t height = lineEnd - lineStart;
-	const size_t nrPixels = width * height;
-	if (nrPixels != 0 && AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
+	vectorsPerLine = AvxSupport::numberOfAvxVectors<sizeof(WORD)>(inputBitmap.Width());
+	const size_t nrVectors = vectorsPerLine * height;
+	if (nrVectors != 0 && AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
 	{
-		redPixels.resize(nrPixels);
-		greenPixels.resize(nrPixels);
-		bluePixels.resize(nrPixels);
+		redPixels.resize(nrVectors);
+		greenPixels.resize(nrVectors);
+		bluePixels.resize(nrVectors);
 	}
 }
 
@@ -62,10 +63,6 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 	const auto avg2Epu16 = [](const __m256i a, const __m256i b) -> __m256i
 	{
 		return _mm256_avg_epu16(a, b); // 17 bit temp = 1 + a(i) + b(i); return (temp >> 1);
-//		return _mm256_adds_epu16(_mm256_srli_epi16(a, 1), _mm256_srli_epi16(b, 1));
-//		const __m128i lo = AvxSupport::cvtPsEpu16(_mm256_mul_ps(_mm256_add_ps(_mm256_cvtepi32_ps(_mm256_cvtepu16_epi32(_mm256_castsi256_si128(a))), _mm256_cvtepi32_ps(_mm256_cvtepu16_epi32(_mm256_castsi256_si128(b)))), _mm256_set1_ps(0.5f)));
-//		const __m128i hi = AvxSupport::cvtPsEpu16(_mm256_mul_ps(_mm256_add_ps(_mm256_cvtepi32_ps(_mm256_cvtepu16_epi32(_mm256_extracti128_si256(a, 1))), _mm256_cvtepi32_ps(_mm256_cvtepu16_epi32(_mm256_extracti128_si256(b, 1)))), _mm256_set1_ps(0.5f)));
-//		return _mm256_set_m128i(hi, lo);
 	};
 	const auto avg4Epu16 = [&avg2Epu16](const __m256i a, const __m256i b, const __m256i c, const __m256i d) -> __m256i
 	{
@@ -175,9 +172,9 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 	const WORD* pCFA{ &avxSupport.grayPixels<WORD>().at(lineStart * width) };
 	const WORD* pCFAnext{ lineStart == (inputHeight - 1) ? (pCFA - width) : (pCFA + width) };
 	const WORD* pCFAprev{ lineStart == 0 ? pCFAnext : (pCFA - width) };
-	WORD* pRed{ &*redPixels.begin() };
-	WORD* pGreen{ &*greenPixels.begin() };
-	WORD* pBlue{ &*bluePixels.begin() };
+	WORD* pRed{ redCfaLine(0) };
+	WORD* pGreen{ greenCfaLine(0) };
+	WORD* pBlue{ blueCfaLine(0) };
 
 	const auto advanceCFApointers = [&]() -> void
 	{
@@ -234,6 +231,10 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 		prevLineCurrent = load16Pixels(pCFAprev);
 		prevLineNext = load16Pixels(pCFAprev + 16);
 		prevLinePrev = _mm256_setzero_si256();
+
+		pRed = redCfaLine(row);
+		pGreen = greenCfaLine(row);
+		pBlue = blueCfaLine(row);
 
 		if ((lineNdx & 0x01) == 0)
 		{
