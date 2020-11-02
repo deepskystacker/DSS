@@ -740,7 +740,7 @@ bool AvxSupport::isColorBitmapOfType() const
 	auto* const p = const_cast<AvxSupport*>(this)->getColorPtr<T>();
 	const bool isColor = p != nullptr && p->isTopDown();
 	if constexpr (std::is_same<T, float>::value)
-		return isColor && p->IsFloat();
+		return isColor && p->IsFloat() && p->GetMultiplier() == 256.0;
 	else
 		return isColor;
 }
@@ -757,7 +757,7 @@ bool AvxSupport::isMonochromeBitmapOfType() const
 	{
 		// Note that Monochrome bitmaps are always topdown -> no extra check required! CF. CGrayBitmap::GetOffset().
 		if constexpr (std::is_same<T, float>::value)
-			return (p->IsFloat() && !p->IsCFA());
+			return (p->IsFloat() && !p->IsCFA() && p->GetMultiplier() == 256.0);
 		if constexpr (std::is_same<T, WORD>::value)
 			return (!p->IsCFA() || isMonochromeCfaBitmapOfType<WORD>());
 		return !p->IsCFA();
