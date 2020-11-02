@@ -14,7 +14,7 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
+**   * Neither the name of DeepSkyStacker nor the names of its
 **     contributors may be used to endorse or promote products derived
 **     from this software without specific prior written permission.
 **
@@ -38,30 +38,56 @@
 
 #include "dsseditstars.h"
 
-void DSSEditStars::mousePressEvent(QMouseEvent* e)
+DSSEditStars::DSSEditStars(QWidget* parent) :
+	QWidget(parent)
+{
+	imageView = dynamic_cast<DSSImageView*>(parent);
+	Q_ASSERT(nullptr != imageView);
+	setAttribute(Qt::WA_TransparentForMouseEvents);
+	setAttribute(Qt::WA_NoSystemBackground);
+	setAttribute(Qt::WA_WState_ExplicitShowHide);
+}
+
+
+void DSSEditStars::mousePressEvent([[maybe_unused]] QMouseEvent* e)
 {
 	qDebug() << "mouse pressed";
 }
 
-void DSSEditStars::mouseMoveEvent(QMouseEvent* e)
+void DSSEditStars::mouseMoveEvent([[maybe_unused]] QMouseEvent* e)
 {
 
 }
 
-void DSSEditStars::mouseReleaseEvent(QMouseEvent* e)
+void DSSEditStars::mouseReleaseEvent([[maybe_unused]] QMouseEvent* e)
 {
 
 }
 
+void DSSEditStars::rectButtonChecked()
+{
+	//
+	// No longer interested in signals from the imageView object
+	//
+	imageView->disconnect(this, nullptr);
+}
 
 void DSSEditStars::starsButtonChecked()
 {
 	qDebug() << "stars checked";
+	connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
+	connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+	connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
+	connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
 }
 
 void DSSEditStars::cometButtonChecked()
 {
 	qDebug() << "comet checked";
+	connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
+	connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+	connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
+	connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
 }
 
 void DSSEditStars::saveButtonPressed()

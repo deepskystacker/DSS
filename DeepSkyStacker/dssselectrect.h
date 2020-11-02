@@ -35,28 +35,38 @@
 **
 ****************************************************************************/
 class QMouseEvent;
+class DSSImageView;
 
+#include <QObject>
 #include <QWidget>
+#include <QRect>
+#include <QString>
 
-#include "dssimageview.h"
+enum class SelectionMode : quint8;
 
-class DSSEditStars :
+class DSSSelectRect :
     public QWidget
 {
     Q_OBJECT
 
 typedef QWidget
-        Inherited;
+    Inherited;
 
 public:
-    explicit DSSEditStars(QWidget* parent);
+explicit DSSSelectRect(QWidget * parent);
 
-    virtual ~DSSEditStars() {};
+void setGeometry(const QRect& r);
+
+protected:
+    void paintEvent(QPaintEvent*) override;
+    void changeEvent(QEvent*) override;
+    void showEvent(QShowEvent*) override;
 
 public slots:
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void mouseReleaseEvent(QMouseEvent* e);
+    void resizeEvent(QResizeEvent* e);
 
     void rectButtonChecked();
     void starsButtonChecked();
@@ -64,5 +74,21 @@ public slots:
     void saveButtonPressed();
 
 private:
+    SelectionMode mode;
     DSSImageView* imageView;
+    QRectF  selectRect;             // In image coordinates
+    QRectF  startRect;              // In image coordinates
+    bool    selecting;
+    QPointF startPos;
+    QPointF endPos;
+    QRegion clipping;
+    static inline QString x2Text{ "x2" };
+    static inline QString x3Text{ "x3" };
+
+    SelectionMode modeFromPosition(const QPointF&);
+    Qt::CursorShape cursorFromMode(SelectionMode);
+
+    void updateSelection();
+    void getDrizzleRectangles(QRectF& rect2xDrizzle, QRectF& rect3xDrizzle) noexcept;
 };
+
