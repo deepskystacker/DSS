@@ -153,9 +153,6 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="ImageSinks.cpp">
-      <Filter>Dialogs\ImageSinks</Filter>
-    </ClCompile>
     <ClCompile Include="SaveEditChanges.cpp">
       <Filter>Dialogs\ImageSinks</Filter>
     </ClCompile>
@@ -217,9 +214,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ToolTipButton.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\WndImage.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="AHDDemosaicing.cpp">
@@ -333,11 +327,23 @@
     <ClCompile Include="QLinearGradientCtrl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="DSSImageView.cpp">
+    <ClCompile Include="dssimageview.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="dsseditstars.cpp">
       <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="dssselectrect.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Tools\WndImage.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="qwinhost.cpp">
+      <Filter>Qt Porting</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSinks.cpp">
+      <Filter>Dialogs\ImageSinks</Filter>
     </ClCompile>
     <ClCompile Include="avx.cpp">
       <Filter>Kernel</Filter>
@@ -412,9 +418,6 @@
     <ClInclude Include="commonresource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeepSkyStacker.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -480,9 +483,6 @@
     </ClInclude>
     <ClInclude Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageSinks.h">
-      <Filter>Dialogs\ImageSinks</Filter>
     </ClInclude>
     <ClInclude Include="SaveEditChanges.h">
       <Filter>Dialogs\ImageSinks</Filter>
@@ -557,9 +557,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ToolTipButton.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\WndImage.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="AHDDemosaicing.h">
@@ -711,6 +708,15 @@
     </ClInclude>
     <ClInclude Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\WndImage.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageSinks.h">
+      <Filter>Dialogs\ImageSinks</Filter>
+    </ClInclude>
+    <ClInclude Include="dss_settings.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="avx.h">
       <Filter>Kernel</Filter>
@@ -1087,43 +1093,49 @@
     <None Include="QMfcApp">
       <Filter>Qt Porting</Filter>
     </None>
-    <None Include="i18n\DSS.ca_ES.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.cs_CZ.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.de_DE.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.en_GB.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.es_ES.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.fr_FR.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.it_IT.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.nl_NL.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
     <None Include="i18n\DSS.pt_BR.ts">
       <Filter>Qt\i18n</Filter>
     </None>
-    <None Include="i18n\DSS.ro_RO.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.ru_RU.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
-    <None Include="i18n\DSS.tr_TR.ts">
-      <Filter>Qt\i18n</Filter>
-    </None>
     <None Include="i18n\DSS.zh_TW.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="QWinHost">
+      <Filter>Qt Porting</Filter>
+    </None>
+    <None Include="QWinWidget">
+      <Filter>Qt Porting</Filter>
+    </None>
+    <None Include="i18n\DSS.ca.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.cs.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.de.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.en.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.es.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.fr.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.it.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.nl.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.ro.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.ru.ts">
+      <Filter>Qt\i18n</Filter>
+    </None>
+    <None Include="i18n\DSS.tr.ts">
       <Filter>Qt\i18n</Filter>
     </None>
   </ItemGroup>
@@ -1252,11 +1264,23 @@
     <QtMoc Include="QLinearGradientCtrl.h">
       <Filter>Tools</Filter>
     </QtMoc>
-    <QtMoc Include="DSSImageView.h">
+    <QtMoc Include="dssimageview.h">
       <Filter>Kernel</Filter>
     </QtMoc>
     <QtMoc Include="dsseditstars.h">
       <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="dssselectrect.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="dsstoolbar.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="qwinhost.h">
+      <Filter>Qt Porting</Filter>
+    </QtMoc>
+    <QtMoc Include="DeepSkyStacker.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>

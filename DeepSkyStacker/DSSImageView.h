@@ -2,7 +2,7 @@
 /****************************************************************************
 **
 ** Copyright (C) 2020 David C. Partridge
-* **
+**
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
 **
@@ -15,7 +15,7 @@
 **     notice, this list of conditions and the following disclaimer in
 **     the documentation and/or other materials provided with the
 **     distribution.
-**   * Neither the name of The Qt Company Ltd nor the names of its
+**   * Neither the name of DeepSkyStacker nor the names of its
 **     contributors may be used to endorse or promote products derived
 **     from this software without specific prior written permission.
 **
@@ -37,33 +37,93 @@
 class QKeyEvent;
 class QMouseEvent;
 class QResizeEvent;
+class QRubberBand;
 class QToolBar;
 class QWheelEvent;
 
 #include <QtWidgets/QWidget>
+#include <QDebug>
 
 class DSSImageView : public QWidget
 {
+    friend class DSSSelectRect;
+    friend class DSSEditStars;
     Q_OBJECT
 
 typedef QWidget
         Inherited;
 public:
-    DSSImageView(QPixmap& p, QWidget* parent = Q_NULLPTR);
+    DSSImageView(QWidget* parent = Q_NULLPTR);
     QSize sizeHint() const noexcept override { return QSize(500, 500); };
     inline void setToolBar(QToolBar* p) noexcept { m_pToolBar = p; };
+    inline qreal scale() { return m_scale; }
+    inline qreal zoom() { return m_zoom; }
+
+    inline QPointF imageToScreen(const QPointF& pt) noexcept
+    {
+        return (pt * m_zoom * m_scale) + m_origin - (rectOfInterest.topLeft() * m_zoom * m_scale);
+    };
+
+    inline void	imageToScreen(qreal& fX, qreal& fY) noexcept
+    {
+        fX = (fX * m_zoom * m_scale) + m_origin.x() - (rectOfInterest.topLeft().x() * m_zoom * m_scale);
+        fY = (fY * m_zoom * m_scale) + m_origin.y() - (rectOfInterest.topLeft().y() * m_zoom * m_scale);
+    };
+
+    inline QRectF imageToScreen(const QRectF& rc) noexcept
+    {
+        return QRectF(
+            (rc.topLeft() * m_zoom * m_scale) + m_origin - (rectOfInterest.topLeft() * m_zoom * m_scale),
+            rc.size() * m_zoom * m_scale
+            );
+    };
+
+    inline qreal imageHeight() noexcept
+    {
+        return (nullptr == pPixmap) ? 0.0 : pPixmap->height();
+    }
+
+    inline qreal imageWidth() noexcept
+    {
+        return (nullptr == pPixmap) ? 0.0 : pPixmap->width();
+    }
+
+    inline QPointF screenToImage(const QPointF& pt) noexcept
+    {
+        return ((pt - m_origin)/(m_zoom * m_scale)) + rectOfInterest.topLeft();
+    };
+
+    inline void	screenToImage(qreal& fX, qreal& fY) noexcept
+    {
+        fX = (fX - m_origin.x()) / (m_zoom * m_scale) + rectOfInterest.topLeft().x();
+        fY = (fY - m_origin.y()) / (m_zoom * m_scale) + rectOfInterest.topLeft().y();
+    };
+
+    inline QRectF screenToImage(const QRectF& rc)
+    {
+        return QRectF(
+            (rc.topLeft() - m_origin) / (m_zoom * m_scale) + rectOfInterest.topLeft(),
+            rc.size() / (m_zoom * m_scale)
+        );
+    };
 
 public slots:
-    void setPixmap(const QPixmap&);
+    void setPixmap(const std::shared_ptr<QPixmap>&);
+    void setOverlayPixmap(const std::shared_ptr<QPixmap>&);
 
 signals:
     void Image_mousePressEvent(QMouseEvent* e);
+    void Image_mouseMoveEvent(QMouseEvent* e);
+    void Image_mouseReleaseEvent(QMouseEvent* e);
+    void Image_resizeEvent(QResizeEvent* e);
 
 protected:
-
+    bool event(QEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
     void mousePressEvent(QMouseEvent* e) override;
+    void mouseMoveEvent(QMouseEvent* e) override;
+    void mouseReleaseEvent(QMouseEvent* e) override;
     void resizeEvent(QResizeEvent* e) override;
 #if QT_CONFIG(wheelevent)
     void wheelEvent(QWheelEvent*) override;
@@ -72,20 +132,17 @@ protected:
 private:
     qreal m_scale, m_zoom;
     QPointF m_origin;
-    QPixmap& m_pixmap;
-    QPointF m_pointInPixmap;
+    std::shared_ptr<QPixmap> pPixmap;
+    std::shared_ptr<QPixmap> pOverlayPixmap;
+    QPixmap m_drawingPixmap;
+    QRectF rectOfInterest;
     QToolBar* m_pToolBar;
-    void zoom(QPointF mouseLocation, qreal steps);
+    QRectF displayRect;
     bool m_fourCorners;
+    bool m_enableZoomImage;
+    uint m_tipShowCount;
+    void zoom(const QPointF& mouseLocation, qreal steps);
+    void drawOnPixmap();
     void paintFourCorners(QPainter& painter);
-
-    inline bool mouseOverImage(QPointF loc) const
-    {
-        const qreal x = loc.x(), y = loc.y(), ox = m_origin.x(), oy = m_origin.y();
-        return (
-            (x >= ox) &&
-            (x <= ox + (m_pixmap.width() * m_scale)) &&
-            (y >= oy) &&
-            (y <= oy + (m_pixmap.height() * m_scale)));
-    };
+    void paintZoomImage(QPainter& painter);
 };
