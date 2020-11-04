@@ -178,7 +178,7 @@ public:
 
 	inline static __m128i cvtEpi32Epu16(const __m256i epi32) noexcept
 	{
-		const __m256i epu16 = _mm256_packus_epi32(epi32, _mm256_permute2x128_si256(epi32, epi32, 1)); // (a3, a2, a1, a0, a7, a6, a5, a4, a7, a6, a5, a4, a3, a2, a1, a0)
+		const __m256i epu16 = _mm256_packus_epi32(epi32, _mm256_castsi128_si256(_mm256_extracti128_si256(epi32, 1))); // (?, ?, ?, ?, a7, a6, a5, a4, a7, a6, a5, a4, a3, a2, a1, a0)
 		// Upper lane is now wrong and useless.
 		return _mm256_castsi256_si128(epu16);
 	}

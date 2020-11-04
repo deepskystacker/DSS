@@ -441,7 +441,8 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				const __m256 denom = _mm256_fmadd_ps(b, color, c); // b * color + c
 				const __m256 mask = _mm256_cmp_ps(denom, _mm256_setzero_ps(), 0); // cmp: denom==0 ? 1 : 0
 				const __m256 xplusa = _mm256_add_ps(color, a);
-				const __m256 division = _mm256_div_ps(xplusa, denom);
+//				const __m256 division = _mm256_div_ps(xplusa, denom);
+				const __m256 division = _mm256_mul_ps(xplusa, _mm256_rcp_ps(denom)); // RCP is accurate enough.
 				// If denominator == 0 => use (x+a) else use (x+a)/denominator, then do the max and min.
 				return _mm256_max_ps(_mm256_min_ps(_mm256_blendv_ps(division, xplusa, mask), fmax), fmin); // blend: mask==1 ? b : a;
 			};
@@ -583,6 +584,11 @@ int AvxStacking::pixelPartitioning()
 			return _mm256_undefined_ps();
 	};
 
+	T* const pRedOut = constexpr (ISRGB) ? &*avxTempBitmap.redPixels<T>().begin() : nullptr;
+	T* const pGreenOut = constexpr (ISRGB) ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
+	T* const pBlueOut = constexpr (ISRGB) ? &*avxTempBitmap.bluePixels<T>().begin() : nullptr;
+	T* const pGrayOut = constexpr (ISRGB) ? nullptr : &*avxTempBitmap.grayPixels<T>().begin();
+
 	const auto accumulateAVX = [&](const __m256i outNdx, const __m256i mask, const __m256 colorValue, const __m256 fraction, T* const pOutputBitmap, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
 	{
 		if (twoNdxEqual) // If so, we cannot use AVX.
@@ -596,13 +602,13 @@ int AvxStacking::pixelPartitioning()
 	{
 		if constexpr (ISRGB)
 		{
-			accumulateAVX(outNdx, mask, r, fraction, &*avxTempBitmap.redPixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
-			accumulateAVX(outNdx, mask, g, fraction, &*avxTempBitmap.greenPixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
-			accumulateAVX(outNdx, mask, b, fraction, &*avxTempBitmap.bluePixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, r, fraction, pRedOut, twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, g, fraction, pGreenOut, twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, b, fraction, pBlueOut, twoNdxEqual, fastLoadAndStore);
 		}
 		else
 		{
-			accumulateAVX(outNdx, mask, r, fraction, &*avxTempBitmap.grayPixels<T>().begin(), twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, r, fraction, pGrayOut, twoNdxEqual, fastLoadAndStore);
 		}
 	};
 	const auto fastAccumulateWordRGBorMono = [&](const __m256 color, const __m256 fraction1, const __m256 fraction2, std::uint16_t* const pOutput) -> void
@@ -616,49 +622,37 @@ int AvxStacking::pixelPartitioning()
 		const __m256i colorPlusBothFractions = _mm256_adds_epu16(colorPlusFraction1, f2ShiftedLeft);
 		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutput), colorPlusBothFractions);
 	};
+
+	const auto getColumnOrRowMask = [](const __m256i coord, const __m256i resultWidthOrHeight) -> __m256i
+	{
+		return _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), coord), _mm256_cmpgt_epi32(resultWidthOrHeight, coord)); // !(0 > x) and (width > x) == (x >= 0) and (x < width). Same for y with height.
+	};
+
 	// Accumulates with fraction1 for (x, y) and fraction2 for (x+1, y)
 	const __m256i allOnes = _mm256_set1_epi32(-1); // All bits '1' == all int elements -1
-	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, __m256i xCoord, const __m256i yCoord) -> void
+	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, const __m256i outIndex,
+		__m256i mask1, const __m256i mask2, const bool twoNdxEqual, const bool allNdxValid1, const bool allNdxValid2) -> void
 	{
-		const __m256i outNdx = _mm256_add_epi32(_mm256_mullo_epi32(outWidthVec, yCoord), xCoord); // ndx = y * width + x
-		const __m256i indexDiff = _mm256_sub_epi32(outNdx, _mm256_permutevar8x32_epi32(outNdx, _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 0))); // -1 where ndx[i+1] == 1 + ndx[i]
-		__m256i columnMask = _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), xCoord), _mm256_cmpgt_epi32(resultWidthVec, xCoord)); // !(0 > x) and (width > x) == (x >= 0) and (x < width)
-		const __m256i rowMask = _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), yCoord), _mm256_cmpgt_epi32(resultHeightVec, yCoord)); // Same for y.
-		const __m256i mask1 = _mm256_and_si256(columnMask, rowMask);
-
-		// Check if two adjacent indices are equal: Subtract the x-coordinates horizontally and check if any of the results equals zero. If so -> adjacent x-coordinates are equal.
-		// (a & b) == 0 -> ZF=1, (~a & b) == 0 -> CF=1; testc: return CF; testz: return ZF; testnzc: IF (ZF == 0 && CF == 0) return 1;
-		const __m256i ndxMask = _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0);
-		const bool allNdxEquidistant = (1 == _mm256_testc_si256(indexDiff, ndxMask)); // 'testc' returns 1 if all bits are '1' -> 0xffffffff == -1 -> ndx[i] - ndx[i+1] == -1
-		const bool twoNdxEqual = (0 == _mm256_testz_si256(_mm256_cmpeq_epi32(_mm256_setzero_si256(), indexDiff), ndxMask));
-		const bool allNdxValid1 = (1 == _mm256_testc_si256(mask1, allOnes));
-
-		xCoord = _mm256_sub_epi32(xCoord, allOnes); // x-(-1) = x+1: We subtract -1 instead of add 1 so that we don't need another constant (+1).
-		columnMask = _mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), xCoord), _mm256_cmpgt_epi32(resultWidthVec, xCoord));
-		const __m256i mask2 = _mm256_and_si256(columnMask, rowMask);
-		const bool allNdxValid2 = (1 == _mm256_testc_si256(mask2, allOnes));
-
 		if constexpr (std::is_same<T, WORD>::value)
 		{
-			if (allNdxEquidistant && allNdxValid1 && allNdxValid2)
+			if (allNdxValid1 && allNdxValid2)
 			{
-				const size_t startNdx = _mm256_cvtsi256_si32(outNdx); // outNdx[0]
+				const size_t startNdx = _mm256_cvtsi256_si32(outIndex); // outIndex[0]
 				if constexpr (ISRGB)
 				{
-					fastAccumulateWordRGBorMono(red, fraction1, fraction2, &avxTempBitmap.redPixels<T>()[startNdx]);
-					fastAccumulateWordRGBorMono(green, fraction1, fraction2, &avxTempBitmap.greenPixels<T>()[startNdx]);
-					fastAccumulateWordRGBorMono(blue, fraction1, fraction2, &avxTempBitmap.bluePixels<T>()[startNdx]);
+					fastAccumulateWordRGBorMono(red, fraction1, fraction2, pRedOut + startNdx);
+					fastAccumulateWordRGBorMono(green, fraction1, fraction2, pGreenOut + startNdx);
+					fastAccumulateWordRGBorMono(blue, fraction1, fraction2, pBlueOut + startNdx);
 				}
 				else
-				{
-					fastAccumulateWordRGBorMono(red, fraction1, fraction2, &avxTempBitmap.grayPixels<T>()[startNdx]);
-				}
+					fastAccumulateWordRGBorMono(red, fraction1, fraction2, pGrayOut + startNdx);
+
 				return;
 			}
 		}
 
-		accumulateRGBorMono(red, green, blue, fraction1, outNdx, mask1, twoNdxEqual, allNdxEquidistant && allNdxValid1); // x, y, fraction1
-		accumulateRGBorMono(red, green, blue, fraction2, _mm256_sub_epi32(outNdx, allOnes), mask2, twoNdxEqual, allNdxEquidistant && allNdxValid2); // x+1, y, fraction2
+		accumulateRGBorMono(red, green, blue, fraction1, outIndex, mask1, twoNdxEqual, allNdxValid1); // x, y, fraction1
+		accumulateRGBorMono(red, green, blue, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2); // x+1, y, fraction2
 	};
 
 	for (int row = 0; row < height; ++row)
@@ -694,13 +688,37 @@ int AvxStacking::pixelPartitioning()
 			__m256 fraction2 = _mm256_mul_ps(xfractional, yfrac1);
 			const __m256i xii = _mm256_cvttps_epi32(xtruncated);
 			const __m256i yii = _mm256_cvttps_epi32(ytruncated);
-			accumulateTwoFractions(red, green, blue, fraction1, fraction2, xii, yii); // (x, y), (x+1, y)
+			const __m256i columnMask1 = getColumnOrRowMask(xii, resultWidthVec);
+			const __m256i columnMask2 = getColumnOrRowMask(_mm256_sub_epi32(xii, allOnes), resultWidthVec);
+			__m256i rowMask = getColumnOrRowMask(yii, resultHeightVec);
+			__m256i outIndex = _mm256_add_epi32(_mm256_mullo_epi32(outWidthVec, yii), xii);
+
+			// Check if two adjacent indices are equal: Subtract the x-coordinates horizontally and check if any of the results equals zero. If so -> adjacent x-coordinates are equal.
+			// (a & b) == 0 -> ZF=1, (~a & b) == 0 -> CF=1; testc: return CF; testz: return ZF; testnzc: IF (ZF == 0 && CF == 0) return 1;
+			const __m256i indexDiff = _mm256_sub_epi32(outIndex, _mm256_permutevar8x32_epi32(outIndex, _mm256_setr_epi32(1, 2, 3, 4, 5, 6, 7, 0))); // -1 where ndx[i+1] == 1 + ndx[i]
+			const bool allNdxEquidistant = (1 == _mm256_testc_si256(indexDiff, _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0))); // 'testc' returns 1 if all bits are '1' -> 0xffffffff == -1 -> ndx[i] - ndx[i+1] == -1
+			const bool twoNdxEqual = (0 == _mm256_testz_si256(_mm256_cmpeq_epi32(_mm256_setzero_si256(), indexDiff), _mm256_setr_epi32(-1, -1, -1, -1, -1, -1, -1, 0)));
+
+			__m256i mask1 = _mm256_and_si256(columnMask1, rowMask);
+			__m256i mask2 = _mm256_and_si256(columnMask2, rowMask);
+			bool allNdxValid1 = allNdxEquidistant && (1 == _mm256_testc_si256(mask1, allOnes));
+			bool allNdxValid2 = allNdxEquidistant && (1 == _mm256_testc_si256(mask2, allOnes));
+
+			accumulateTwoFractions(red, green, blue, fraction1, fraction2, outIndex, mask1, mask2, twoNdxEqual, allNdxValid1, allNdxValid2); // (x, y), (x+1, y)
+
 
 			// 3.Fraction at (xtruncated, ytruncated+1)
 			// 4.Fraction at (xtruncated+1, ytruncated+1)
 			fraction1 = _mm256_mul_ps(xfrac1, yfractional);
 			fraction2 = _mm256_mul_ps(xfractional, yfractional);
-			accumulateTwoFractions(red, green, blue, fraction1, fraction2, xii, _mm256_sub_epi32(yii, _mm256_set1_epi32(-1))); // (x, y+1), (x+1, y+1)
+			rowMask = getColumnOrRowMask(_mm256_sub_epi32(yii, allOnes), resultHeightVec);
+			mask1 = _mm256_and_si256(columnMask1, rowMask);
+			mask2 = _mm256_and_si256(columnMask2, rowMask);
+			allNdxValid1 = allNdxEquidistant && (1 == _mm256_testc_si256(mask1, allOnes));
+			allNdxValid2 = allNdxEquidistant && (1 == _mm256_testc_si256(mask2, allOnes));
+			outIndex = _mm256_add_epi32(outIndex, outWidthVec);
+
+			accumulateTwoFractions(red, green, blue, fraction1, fraction2, outIndex, mask1, mask2, twoNdxEqual, allNdxValid1, allNdxValid2); // (x, y+1), (x+1, y+1)
 
 			if constexpr (ISRGB)
 			{

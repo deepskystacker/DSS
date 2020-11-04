@@ -239,13 +239,19 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="AskRegistering.cpp" />
-    <ClCompile Include="avx.cpp" />
-    <ClCompile Include="avx_avg.cpp" />
+    <ClCompile Include="avx.cpp">
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <ClCompile Include="avx_avg.cpp">
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
     <ClCompile Include="avx_cfa.cpp" />
     <ClCompile Include="avx_filter.cpp" />
     <ClCompile Include="avx_histogram.cpp" />
     <ClCompile Include="avx_luminance.cpp" />
-    <ClCompile Include="avx_output.cpp" />
+    <ClCompile Include="avx_output.cpp">
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
     <ClCompile Include="BackgroundCalibration.cpp" />
     <ClCompile Include="BackgroundLoading.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
