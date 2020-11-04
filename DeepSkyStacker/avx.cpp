@@ -316,6 +316,10 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 			__m256* pYLine = &yCoordinates.at(row * nrVectors);
 			__m256i xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
+			// Do it in 2 steps, so that the loops get smaller, and the compiler can better keep data in CPU registers.
+			// (1) Linear and squared part.
+			// (2) Cubic part.
+
 			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
 			{
 				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
@@ -335,6 +339,22 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 rsx = squaredTransformX(rlx, x2, y2, x2y, xy2, x2y2);
 				const __m256 rsy = squaredTransformY(rly, x2, y2, x2y, xy2, x2y2);
 
+				_mm256_store_ps((float*)pXLine, rsx);
+				_mm256_store_ps((float*)pYLine, rsy);
+			}
+
+			pXLine = &xCoordinates.at(row * nrVectors);
+			pYLine = &yCoordinates.at(row * nrVectors);
+			xline = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
+
+			for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine)
+			{
+				const __m256 vx = _mm256_div_ps(_mm256_cvtepi32_ps(xline), xWidth);
+				xline = _mm256_add_epi32(xline, _mm256_set1_epi32(8));
+
+				const __m256 x2 = _mm256_mul_ps(vx, vx);
+				const __m256 y2 = _mm256_mul_ps(vy, vy);
+
 				// Cubic parameters
 				const __m256 x3 = _mm256_mul_ps(x2, vx);
 				const __m256 y3 = _mm256_mul_ps(y2, vy);
@@ -343,6 +363,10 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 				const __m256 x3y2 = _mm256_mul_ps(x3, y2);
 				const __m256 x2y3 = _mm256_mul_ps(x2, y3);
 				const __m256 x3y3 = _mm256_mul_ps(x3, y3);
+
+				// Load the squared part (has been calculated in previous step).
+				const __m256 rsx = _mm256_load_ps((const float*)pXLine);
+				const __m256 rsy = _mm256_load_ps((const float*)pYLine);
 
 				// The bicubic transformation
 				const __m256 xr = cubicTransformX(rsx, x3, y3, x3y, xy3, x3y2, x2y3, x3y3);
