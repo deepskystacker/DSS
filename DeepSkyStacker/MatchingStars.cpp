@@ -24,7 +24,9 @@ static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 	if (dwAlignmentTransformation > TT_LAST)
 		dwAlignmentTransformation = 0;
 
-	if (!dwAlignmentTransformation)
+	// 0 was used in older versions of DSS and might still be saved in the registry. If so, 0 will be returned by workspace.value().
+	// 1 is the returned value in case the user actively selects "Automatic" in the settings dialog.
+	if (dwAlignmentTransformation == 0 || dwAlignmentTransformation == 1)
 	{
 		// Automatic - no forcing
 		if (lNrVotingPairs >= MINPAIRSTOBICUBIC)
@@ -45,8 +47,8 @@ static TRANSFORMATIONTYPE	GetTransformationType(LONG lNrVotingPairs = 2000)
 		else if (dwAlignmentTransformation >= 2)
 			TTResult = TT_BILINEAR;
 		else
-			TTResult = TT_LINEAR;
-
+//			TTResult = TT_LINEAR;
+			TTResult = TT_BILINEAR; // Bug fix, MT, 06-Nov-2020: TT_LINEAR does not work, it is not even an option the user can select.
 	};
 
 	return TTResult;
@@ -1026,13 +1028,6 @@ bool	CMatchingStars::ComputeMatchingTriangleTransformation(CBilinearParameters &
 		TType = GetTransformationType((LONG)vVotingPairs.size());
 
 		bResult = ComputeSigmaClippingTransformation(vVotingPairs, BilinearParameters, TType);
-
-		if (bResult && (TType == TT_LINEAR))
-		{
-			// This is a pure linear function -- Alter coefficients
-			BilinearParameters.a3 = 0;
-			BilinearParameters.b3 = 0;
-		};
 	};
 
 	return bResult;
@@ -1198,13 +1193,6 @@ bool	CMatchingStars::ComputeLargeTriangleTransformation(CBilinearParameters & Bi
 		TType = GetTransformationType((LONG)vVotingPairs.size());
 
 		bResult = ComputeSigmaClippingTransformation(vVotingPairs, BilinearParameters, TType);
-
-		if (bResult && (TType == TT_LINEAR))
-		{
-			// This is a pure linear function -- Alter coefficients
-			BilinearParameters.a3 = 0;
-			BilinearParameters.b3 = 0;
-		};
 	};
 
 	return bResult;
