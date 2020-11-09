@@ -385,7 +385,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
+void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars)
 {
 	double				fMaxIntensity = 0;
 	LONG				i, j, k;
@@ -456,13 +456,13 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 						{
 							STARSETITERATOR	it;
 
-							it = m_sStars.lower_bound(CStar(ptTest.x-STARMAXSIZE, 0));
-							while (it != m_sStars.end() && bNew)
+							it = stars.lower_bound(CStar(ptTest.x-STARMAXSIZE, 0));
+							while (it != stars.end() && bNew)
 							{
 								if ((*it).IsInRadius(ptTest))
 									bNew = false;
 								else if ((*it).m_fX > ptTest.x + STARMAXSIZE)
-									it = m_sStars.end();
+									it = stars.end();
 								else
 									it++;
 							};
@@ -610,13 +610,13 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 										{
 											STARSETITERATOR	it;
 
-											it = m_sStars.lower_bound(CStar(ms.m_fX-ms.m_fMeanRadius*2.35/1.5-STARMAXSIZE, 0));
-											while (it != m_sStars.end() && bWanabeeStarOk)
+											it = stars.lower_bound(CStar(ms.m_fX-ms.m_fMeanRadius*2.35/1.5-STARMAXSIZE, 0));
+											while (it != stars.end() && bWanabeeStarOk)
 											{
 												if (Distance(CPointExt(ms.m_fX, ms.m_fY), CPointExt((*it).m_fX, (*it).m_fY)) < (ms.m_fMeanRadius + (*it).m_fMeanRadius)*2.35/1.5)
 													bWanabeeStarOk = false;
 												else if ((*it).m_fX > ms.m_fX + ms.m_fMeanRadius*2.35/1.5 + STARMAXSIZE)
-													it = m_sStars.end();
+													it = stars.end();
 												else
 													it++;
 											};
@@ -634,8 +634,7 @@ void	CRegisteredFrame::RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc)
 											ms.m_fQuality	  = (10 - fDeltaRadius) + fIntensity - ms.m_fMeanRadius;
 
 											FindStarShape(pBitmap, ms);
-											m_vStars.push_back(ms);
-											m_sStars.insert(ms);
+											stars.insert(ms);
 										};
 									};
 								};
@@ -960,7 +959,6 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 	LONG					lSubRectWidth,
 							lSubRectHeight;
 	LONG					lNrSubRects;
-	LONG					i, j;
 	LONG					lProgress = 0;
 
 	// First computed median value
@@ -984,50 +982,98 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 	m_vStars.clear();
 	m_sStars.clear();
 
-//#if defined(_OPENMP)
-//	auto num_threads = omp_get_num_threads();
-//#pragma omp parallel for default(none) shared(num_threads)
-//#endif
-	for (j = STARMAXSIZE;j<Bitmap.Height()-STARMAXSIZE;j+=lSubRectHeight/2)
+	constexpr int rectSize = 5 * STARMAXSIZE;
+	constexpr int stepSize = rectSize / 2;
+	constexpr int Separation = 3;
+	const int calcHeight = Bitmap.Height() - 2 * STARMAXSIZE;
+	const int nrSubrectsY = (calcHeight - 1) / stepSize + 1;
+	const int nrEnabledThreads = CMultitask::GetNrProcessors(false); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+
+	const auto processSubrects = [this, &Bitmap, stepSize, rectSize, nrEnabledThreads, Separation](const int lowerBound, const int upperBound, STARSET& stars, const LONG processedSubrects, const LONG multiplier) -> void
 	{
-		for (i = STARMAXSIZE; i < Bitmap.Width() - STARMAXSIZE; i += lSubRectWidth / 2)
+		const int calcWidth = Bitmap.Width() - 2 * STARMAXSIZE;
+		const int nrSubrectsX = (calcWidth - 1) / stepSize + 1;
+		const int rightmostColumn = static_cast<int>(Bitmap.Width() - STARMAXSIZE);
+		STARSET stars3{ stars };
+		int nrSubrects = 0;
+
+		const auto progress = [processedSubrects, multiplier, this, &nrSubrects](const size_t nStars) -> void
 		{
-			CRect			rcSubRect;
-			CString			strText;
-
-			rcSubRect.left = i;	rcSubRect.right = min(Bitmap.Width() - (LONG)STARMAXSIZE, i + lSubRectWidth);
-			rcSubRect.top = j;	rcSubRect.bottom = min(Bitmap.Height() - (LONG)STARMAXSIZE, j + lSubRectHeight);
-
-			RegisterSubRect(&Bitmap, rcSubRect);
-
-//#if defined (_OPENMP)
-//			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-//			{
-//				lProgress += num_threads;
-//				strText.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, m_vStars.size());
-//				m_pProgress->Progress2(strText, lProgress);
-//			}
-//#else
-			++lProgress;
-			if (0 == lProgress % 25)
-			{
-				strText.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, m_vStars.size());
-				m_pProgress->Progress2(strText, lProgress);
-			}
-//#endif
+			if (multiplier == 0 || this->m_pProgress == nullptr)
+				return;
+			CString str;
+			str.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, nStars);
+			m_pProgress->Progress2(str, processedSubrects + nrSubrects * multiplier);
 		};
 
+#pragma omp parallel for default(none) schedule(static) if(nrEnabledThreads - 1)
+		for (int i = 0; i < 2; ++i)
+		{
+			// Left band.
+			if (i == 0)
+				for (int rowNdx = lowerBound; rowNdx < upperBound; ++rowNdx, nrSubrects += (nrSubrectsX - Separation))
+				{
+					const int top = STARMAXSIZE + rowNdx * stepSize;
+					const int bottom = std::min(static_cast<int>(Bitmap.Height() - STARMAXSIZE), top + rectSize);
+					if ((rowNdx % 4) == 0)
+						progress(stars3.size());
 
+					for (int colNdx = 0, rightBound = (nrSubrectsX - Separation) / 2; colNdx < rightBound; ++colNdx)
+						RegisterSubRect(&Bitmap, CRect(STARMAXSIZE + colNdx * stepSize, top, min(rightmostColumn, (int)STARMAXSIZE + colNdx * stepSize + rectSize), bottom), stars3);
+				}
+
+			// Right band.
+			if (i == 1)
+				for (int rowNdx = lowerBound; rowNdx < upperBound; ++rowNdx)
+				{
+					const int top = STARMAXSIZE + rowNdx * stepSize;
+					const int bottom = std::min(static_cast<int>(Bitmap.Height() - STARMAXSIZE), top + rectSize);
+
+					for (int colNdx = (nrSubrectsX - Separation) / 2 + Separation; colNdx < nrSubrectsX; ++colNdx)
+						RegisterSubRect(&Bitmap, CRect(STARMAXSIZE + colNdx * stepSize, top, min(rightmostColumn, (int)STARMAXSIZE + colNdx * stepSize + rectSize), bottom), stars);
+				}
+		}
+
+		stars.insert(stars3.cbegin(), stars3.cend());
+		progress(stars.size());
+
+		// Middle band.
+		for (int rowNdx = lowerBound; rowNdx < upperBound; ++rowNdx, nrSubrects += Separation)
+		{
+			const int top = STARMAXSIZE + rowNdx * stepSize;
+			const int bottom = std::min(static_cast<int>(Bitmap.Height() - STARMAXSIZE), top + rectSize);
+
+			for (int colNdx = (nrSubrectsX - Separation) / 2, rightBound = (nrSubrectsX - Separation) / 2 + Separation; colNdx < rightBound; ++colNdx)
+				RegisterSubRect(&Bitmap, CRect(STARMAXSIZE + colNdx * stepSize, top, min(rightmostColumn, (int)STARMAXSIZE + colNdx * stepSize + rectSize), bottom), stars);
+		}
+		progress(stars.size());
 	};
-	m_sStars.clear();
+
+	STARSET stars1, stars3;
+	omp_set_nested(1);
+#pragma omp parallel for default(none) schedule(static) if(nrEnabledThreads - 1)
+	for (int i = 0; i < 2; ++i)
+	{
+		// First band.
+		if (i == 0)
+			processSubrects(0, (nrSubrectsY - Separation) / 2, stars1, 0, 2);
+		// Third band, no overlap with first band.
+		if (i == 1)
+			processSubrects((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, stars3, 0, 0);
+	}
+
+	stars1.insert(stars3.cbegin(), stars3.cend());
+
+	// Middle band, overlaps with first and third.
+	processSubrects((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, stars1, lNrSubRects - Separation * Bitmap.Width() / stepSize, 1);
+
+	m_vStars.assign(stars1.cbegin(), stars1.cend());
 
 	// Compute overall quality
 	ComputeOverallQuality();
 
 	// Compute FWHM
 	ComputeFWHM();
-
-	std::sort(m_vStars.begin(), m_vStars.end());
 
 	if (m_pProgress)
 		m_pProgress->End2();

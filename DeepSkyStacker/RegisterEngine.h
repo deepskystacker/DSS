@@ -241,7 +241,7 @@ public :
 
 //	void	RegisterPicture(CMemoryBitmap * pBitmap);
 	bool	ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius);
-	void	RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc);
+	void	RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
 	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);
