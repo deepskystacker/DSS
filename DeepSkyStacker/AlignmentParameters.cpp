@@ -30,8 +30,6 @@ void AlignmentParameters::updateControls()
 {
     switch (m_Alignment)
     {
-        case 0:
-            /* Passthrough */
         case ALIGN_AUTO:
             ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Automatic\n\nThe alignment method is automatically selected depending on the number of available stars."));
 			ui->alignAuto->setChecked(true);
