@@ -120,7 +120,6 @@ class CRegisteredFrame
 {
 public :
 	STARVECTOR		m_vStars;
-	STARSET			m_sStars;
 	double			m_fRoundnessTolerance;
 	double			m_fMinLuminancy;
 	bool			m_bApplyMedianFilter;
@@ -137,7 +136,6 @@ protected :
 	void	CopyFrom(const CRegisteredFrame & rf)
 	{
 		m_vStars				= rf.m_vStars;
-		m_sStars				= rf.m_sStars;
 		m_fRoundnessTolerance	= rf.m_fRoundnessTolerance;
 		m_fMinLuminancy			= rf.m_fMinLuminancy;
 		m_bApplyMedianFilter	= rf.m_bApplyMedianFilter;
@@ -157,7 +155,6 @@ protected :
 		DWORD				dwThreshold = 10;
 
 		m_vStars.clear();
-		m_sStars.clear();
 
 		m_fRoundnessTolerance = 2.0;
 		m_bInfoOk = false;
@@ -241,7 +238,7 @@ public :
 
 //	void	RegisterPicture(CMemoryBitmap * pBitmap);
 	bool	ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius);
-	void	RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
+	size_t	RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
 	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);
