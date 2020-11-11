@@ -1187,7 +1187,7 @@ double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterati
 
 typedef enum TRANSFORMATIONTYPE
 {
-	TT_AUTOMATIC	= 0,
+	TT_LINEAR		= 0,
 	TT_BILINEAR		= 1,
 	TT_BISQUARED	= 2,
 	TT_BICUBIC		= 3,

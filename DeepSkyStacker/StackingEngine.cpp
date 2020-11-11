@@ -410,7 +410,7 @@ TRANSFORMATIONTYPE CStackingEngine::GetTransformationType()
 	switch (dwAlignmentTransformation)
 	{
 	case 1:
-		TTResult = TT_AUTOMATIC;
+		TTResult = TT_LINEAR;
 		break;
 	case 2:
 		TTResult = TT_BILINEAR;
