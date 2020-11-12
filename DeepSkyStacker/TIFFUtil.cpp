@@ -761,13 +761,10 @@ bool CTIFFWriter::Write()
 				}
 #if defined (_OPENMP)
 				if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-				{
-					rowProgress += omp_get_num_threads();
-					m_pProgress->Progress2(nullptr, rowProgress);
-				}
+					m_pProgress->Progress2(nullptr, row / 2);
 #else
 				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, ++rowProgress);
+					m_pProgress->Progress2(nullptr, row / 2);
 #endif
 			};
 
@@ -818,6 +815,9 @@ bool CTIFFWriter::Write()
 				}
 				curr += result;
 				bytesRemaining -= result;
+
+				if (m_pProgress != nullptr)
+					m_pProgress->Progress2(nullptr, h / 2 + (h * strip) / (2 * numStrips));
 			}
 
 			free(buff);
