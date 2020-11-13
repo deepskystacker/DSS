@@ -26,6 +26,7 @@ extern bool		g_bShowRefStars;
 
 #include "StackSettings.h"
 #include "ui/ui_StackSettings.h"
+#include "avx.h"
 
 
 StackSettings::StackSettings(QWidget *parent) :
@@ -137,7 +138,9 @@ void StackSettings::onInitDialog()
 		ui->useAllProcessors->setDisabled(true);
 
 	// Check if we're allowed to use SIMD vectorized code.
-	ui->useSimd->setChecked(CMultitask::GetUseSimd());
+	const bool cpuSupportsAvx2 = AvxSupport::checkAvx2CpuSupport();
+	ui->useSimd->setChecked(cpuSupportsAvx2 && CMultitask::GetUseSimd());
+	ui->useSimd->setDisabled(!cpuSupportsAvx2);
 
 	//
 	// Get the temporary files folder

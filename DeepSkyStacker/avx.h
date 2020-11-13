@@ -101,6 +101,7 @@ public:
 	template <class T>
 	bool bitmapHasCorrectType() const;
 
+	static bool checkAvx2CpuSupport() noexcept;
 	static bool checkSimdAvailability() noexcept;
 
 	template <size_t ElementSize>
@@ -271,7 +272,7 @@ public:
 	}
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double* const pColor)
 	{
-		throw std::runtime_error("Not implemented");
+		throw "read16PackedInt(const double*) is not implemented!";
 	}
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double* const pColor, const __m256d scalingFactor)
 	{

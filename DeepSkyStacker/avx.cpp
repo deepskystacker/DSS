@@ -833,11 +833,8 @@ bool AvxSupport::bitmapHasCorrectType() const
 	return (isColorBitmapOfType<T>() || isMonochromeBitmapOfType<T>());
 }
 
-bool AvxSupport::checkSimdAvailability() noexcept {
-	// Has user disabled SIMD vectorisation?
-	if (!CMultitask::GetUseSimd())
-		return false;
-
+bool AvxSupport::checkAvx2CpuSupport() noexcept
+{
 	int cpuid[4] = { -1 };
 	// FMA Flag
 	__cpuidex(cpuid, 1, 0);
@@ -850,6 +847,12 @@ bool AvxSupport::checkSimdAvailability() noexcept {
 	//const bool BMI2supported = ((cpuid[1] & 0x0100) != 0);
 
 	return (FMAsupported && AVX2supported);
+};
+
+bool AvxSupport::checkSimdAvailability() noexcept
+{
+	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
+	return CMultitask::GetUseSimd() && checkAvx2CpuSupport();
 }
 
 inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint16_t* const pOutputBitmap, const bool fastload) noexcept
