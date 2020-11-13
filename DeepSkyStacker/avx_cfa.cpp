@@ -1,9 +1,6 @@
 #include "StdAfx.h"
 #include "avx_cfa.h"
 #include "avx.h"
-
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 #include <immintrin.h>
 
 AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, CMemoryBitmap& inputbm) :
@@ -300,5 +297,3 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 
 	return 0;
 }
-
-#endif

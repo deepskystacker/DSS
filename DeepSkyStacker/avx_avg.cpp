@@ -1,9 +1,6 @@
 #include "StdAfx.h"
 #include "avx_avg.h"
 #include "avx.h"
-
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 #include <immintrin.h>
 
 AvxAccumulation::AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm) noexcept :
@@ -167,4 +164,3 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 
 	return 1;
 }
-#endif

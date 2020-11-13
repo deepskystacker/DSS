@@ -1,9 +1,6 @@
 #include "StdAfx.h"
 #include "avx_output.h"
 #include "avx.h"
-
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 #include <immintrin.h>
 
 AvxOutputComposition::AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) :
@@ -368,4 +365,3 @@ int AvxOutputComposition::doProcessAutoAdaptiveWeightedAverage(const int line, s
 	// Neither gray (1 float) nor color (3 floats).
 	return 1;
 }
-#endif

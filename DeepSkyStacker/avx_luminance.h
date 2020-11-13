@@ -3,8 +3,6 @@
 #include "BitmapExt.h"
 #include <tuple>
 
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 class AvxLuminance
 {
 private:
@@ -29,14 +27,3 @@ private:
 	template <class T>
 	static std::tuple<__m256d, __m256d, __m256d, __m256d> greyLuminance(const T* const pGray);
 };
-
-#else
-
-class AvxLuminance
-{
-public:
-	AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) {}
-	int computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd) { return 1; }
-};
-
-#endif

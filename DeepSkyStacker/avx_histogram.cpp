@@ -2,9 +2,6 @@
 #include "avx_histogram.h"
 #include "avx.h"
 #include "avx_cfa.h"
-
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 #include <immintrin.h>
 
 AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
@@ -292,5 +289,3 @@ bool AvxHistogram::histogramSuccessful() const
 {
 	return allRunsSuccessful;
 };
-
-#endif

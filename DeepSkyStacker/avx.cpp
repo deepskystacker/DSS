@@ -1,8 +1,5 @@
 #include "StdAfx.h"
 #include "avx.h"
-
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 #include <immintrin.h>
 
 
@@ -1002,5 +999,3 @@ template bool AvxSupport::isMonochromeCfaBitmapOfType<WORD>() const;
 template bool AvxSupport::isMonochromeCfaBitmapOfType<std::uint32_t>() const;
 template bool AvxSupport::isMonochromeCfaBitmapOfType<float>() const;
 template bool AvxSupport::isMonochromeCfaBitmapOfType<double>() const;
-
-#endif

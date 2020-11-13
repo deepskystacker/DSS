@@ -3,8 +3,6 @@
 #include "BitmapExt.h"
 #include <vector>
 
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 class AvxCfaProcessing
 {
 private:
@@ -62,15 +60,3 @@ private:
 	WORD* greenCfaLine(const size_t rowIndex) { return const_cast<WORD*>(static_cast<const AvxCfaProcessing*>(this)->greenCfaLine<WORD>(rowIndex)); }
 	WORD* blueCfaLine(const size_t rowIndex) { return const_cast<WORD*>(static_cast<const AvxCfaProcessing*>(this)->blueCfaLine<WORD>(rowIndex)); }
 };
-
-#else
-
-class AvxCfaProcessing
-{
-public:
-	AvxCfaProcessing(const size_t, const size_t, CMemoryBitmap&) {}
-	void init(const size_t, const size_t) {}
-	int interpolate(const size_t, const size_t, const long) { return 1; }
-};
-
-#endif

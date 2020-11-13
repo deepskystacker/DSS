@@ -3,8 +3,6 @@
 #include "BitmapExt.h"
 #include <vector>
 
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 class AvxHistogram
 {
 public:
@@ -35,17 +33,3 @@ private:
 	static std::tuple<__m256i, std::uint32_t> detectConflictsEpi32(const __m256i a) noexcept;
 	static std::tuple<__m256i, std::uint32_t> detectConflictsEpi16(const __m256i a) noexcept;
 };
-
-#else
-
-class AvxHistogram
-{
-public:
-	AvxHistogram(CMemoryBitmap& inputbm) {}
-	AvxHistogram(const AvxHistogram&) = default;
-	int calcHistogram(const size_t lineStart, const size_t lineEnd) { return 1; }
-	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue) { return 1; }
-	bool histogramSuccessful() const { return false; }
-};
-
-#endif

@@ -6,7 +6,6 @@
 #include "BitmapExt.h"
 
 
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
 class AvxAccumulation
 {
 	int resultWidth, resultHeight;
@@ -25,17 +24,3 @@ private:
 	template <class T_IN, class T_OUT>
 	int doAccumulate(const int nrStackedBitmaps);
 };
-
-#else
-
-class AvxAccumulation
-{
-public:
-	AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm) {}
-	int accumulate(const int)
-	{
-		return 1;
-	}
-};
-
-#endif

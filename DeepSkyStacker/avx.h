@@ -9,8 +9,6 @@
 #include <tuple>
 
 
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 class AvxStacking
 {
 private:
@@ -53,22 +51,6 @@ private:
 	int pixelPartitioning();
 };
 
-#else
-
-class AvxStacking
-{
-public:
-	AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect) {}
-	void init(const long, const long) {}
-	int stack(const CPixelTransform&, const CTaskInfo&, const CBackgroundCalibration&, const long)
-	{
-		return 1;
-	}
-};
-#endif
-
-
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
 
 class AvxSupport
 {
@@ -371,5 +353,3 @@ public:
 		return _mm_cvtss_f32(ps);
 	}
 };
-
-#endif

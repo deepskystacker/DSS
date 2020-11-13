@@ -3,8 +3,6 @@
 #include "avx_cfa.h"
 #include "avx.h"
 
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
-
 AvxLuminance::AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) noexcept :
 	inputBitmap{ inputbm },
 	outputBitmap{ outbm },
@@ -138,74 +136,9 @@ std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::colorLuminance(cons
 	return AvxSupport::wordToPackedDouble(minMaxAvg);
 }
 
-/*
-template <>
-inline std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::colorLuminance(const std::uint32_t* const pRed, const std::uint32_t* const pGreen, const std::uint32_t* const pBlue)
-{
-	__m256i red = _mm256_loadu_si256((const __m256i*)pRed);
-	__m256i green = _mm256_loadu_si256((const __m256i*)pGreen);
-	__m256i blue = _mm256_loadu_si256((const __m256i*)pBlue);
-	__m256i minColor = _mm256_min_epu32(_mm256_min_epu32(red, green), blue);
-	__m256i maxColor = _mm256_max_epu32(_mm256_max_epu32(red, green), blue);
-	const auto [d1, d2] = AvxSupport::cvtEpu32Pd(_mm256_add_epi32(_mm256_srli_epi32(minColor, 1), _mm256_srli_epi32(maxColor, 1))); // Note: add_epi32(epi32, epi32) is identical result to add_epu32(epu32, epu32)
-
-	red = _mm256_loadu_si256((const __m256i*)(pRed + 8));
-	green = _mm256_loadu_si256((const __m256i*)(pGreen + 8));
-	blue = _mm256_loadu_si256((const __m256i*)(pBlue + 8));
-	minColor = _mm256_min_epu32(_mm256_min_epu32(red, green), blue);
-	maxColor = _mm256_max_epu32(_mm256_max_epu32(red, green), blue);
-	const auto [d3, d4] = AvxSupport::cvtEpu32Pd(_mm256_add_epi32(_mm256_srli_epi32(minColor, 1), _mm256_srli_epi32(maxColor, 1)));
-
-	return multiplyPd({d1, d2, d3, d4}, normalizationFactor<std::uint32_t>());
-}
-*/
-/*
-template <>
-inline std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::colorLuminance(const float* const pRed, const float* const pGreen, const float* const pBlue)
-{
-	const auto averageColors = [](const __m256i red, const __m256i green, const __m256i blue) -> __m256
-	{
-		const __m256i minColor = _mm256_min_epi32(_mm256_min_epi32(red, green), blue);
-		const __m256i maxColor = _mm256_max_epi32(_mm256_max_epi32(red, green), blue);
-		const __m256 sum = _mm256_cvtepi32_ps(_mm256_add_epi32(minColor, maxColor));
-//		return _mm256_fmadd_ps(maxColor, _mm256_set1_ps(0.5f), _mm256_fmadd_ps(minColor, _mm256_set1_ps(0.5f), _mm256_setzero_ps()));
-		return _mm256_mul_ps(sum, _mm256_set1_ps(0.5f));
-	};
-
-	__m256i red = _mm256_cvttps_epi32(_mm256_loadu_ps(pRed));
-	__m256i green = _mm256_cvttps_epi32(_mm256_loadu_ps(pGreen));
-	__m256i blue = _mm256_cvttps_epi32(_mm256_loadu_ps(pBlue));
-	const auto [d1, d2] = AvxSupport::cvtPsPd(averageColors(red, green, blue));
-
-	red = _mm256_cvttps_epi32(_mm256_loadu_ps(pRed + 8));
-	green = _mm256_cvttps_epi32(_mm256_loadu_ps(pGreen + 8));
-	blue = _mm256_cvttps_epi32(_mm256_loadu_ps(pBlue + 8));
-	const auto [d3, d4] = AvxSupport::cvtPsPd(averageColors(red, green, blue));
-
-	return { d1, d2, d3, d4 };
-}
-*/
 template <class T>
 std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::greyLuminance(const T* const pGray)
 {
 	const __m256i gray = AvxSupport::read16PackedShort(pGray);
 	return AvxSupport::wordToPackedDouble(gray);
 }
-/*
-template <>
-inline std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::greyLuminance(const std::uint32_t* const pGrey)
-{
-	const auto [d1, d2] = AvxSupport::cvtEpu32Pd(_mm256_loadu_si256((const __m256i*)pGrey));
-	const auto [d3, d4] = AvxSupport::cvtEpu32Pd(_mm256_loadu_si256((const __m256i*)(pGrey + 8)));
-	return multiplyPd({ d1, d2, d3, d4 }, normalizationFactor<std::uint32_t>());
-}
-
-template <>
-inline std::tuple<__m256d, __m256d, __m256d, __m256d> AvxLuminance::greyLuminance(const float* const pGrey)
-{
-	const auto [d1, d2] = AvxSupport::cvtPsPd(_mm256_loadu_ps(pGrey));
-	const auto [d3, d4] = AvxSupport::cvtPsPd(_mm256_loadu_ps(pGrey + 8));
-	return { d1, d2, d3, d4 };
-}
-*/
-#endif

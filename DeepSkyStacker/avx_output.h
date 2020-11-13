@@ -4,7 +4,6 @@
 #include <vector>
 
 
-#if defined(AVX_INTRINSICS) && defined(_M_X64)
 class AvxOutputComposition
 {
 private:
@@ -34,17 +33,3 @@ private:
 	template <class T>
 	int doProcessAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses);
 };
-
-#else
-
-class AvxOutputComposition
-{
-public:
-	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm) {}
-	int compose(const int, std::vector<void*> const&)
-	{
-		return 1;
-	}
-};
-
-#endif
