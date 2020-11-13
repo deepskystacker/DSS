@@ -56,7 +56,7 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 
 	if (!m_StackedBitmap.IsMonochrome())
 	{
-#pragma omp sections
+#pragma omp parallel sections default(none) shared(redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 		{
 #pragma omp section
 			for (const auto& color: redPixels)
