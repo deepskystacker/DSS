@@ -996,27 +996,35 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 		}
 	};
 
-#pragma omp parallel for default(none) shared(stars1, stars2, stars3, stars4) schedule(static) if(nrEnabledThreads - 1)
-	for (int i = 0; i < 4; ++i)
+#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4) if(nrEnabledThreads - 1)
+{
+#pragma omp sections
 	{
 		// Upper left area
-		if (i == 0)
-			processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1);
+#pragma omp section
+		processDisjointArea(0, (nrSubrectsY - Separation) / 2, 0, (nrSubrectsX - Separation) / 2, stars1);
 		// Upper right area
-		if (i == 1)
-			processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2);
+#pragma omp section
+		processDisjointArea(0, (nrSubrectsY - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars2);
 		// Lower left area
-		if (i == 2)
-			processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3);
+#pragma omp section
+		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, 0, (nrSubrectsX - Separation) / 2, stars3);
 		// Lower right area
-		if (i == 3)
-			processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4);
+#pragma omp section
+		processDisjointArea((nrSubrectsY - Separation) / 2 + Separation, nrSubrectsY, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars4);
 	}
 
-	stars1.merge(stars2);
-	stars1.merge(stars3);
-	stars1.merge(stars4);
+#pragma omp sections
+	{
+#pragma omp section
+		stars1.merge(stars2);
+#pragma omp section
+		stars3.merge(stars4);
+	}
 
+#pragma omp single
+{
+	stars1.merge(stars3);
 	// Remaining areas, all are overlapping with at least one other.
 	// Vertically middle band, full height
 	processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1);
@@ -1026,12 +1034,17 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 	processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1);
 
 	m_vStars.assign(stars1.cbegin(), stars1.cend());
+}
 
-	// Compute overall quality
+#pragma omp sections
+{
+#pragma omp section
 	ComputeOverallQuality();
-
-	// Compute FWHM
+#pragma omp section
 	ComputeFWHM();
+}
+
+}
 
 	if (m_pProgress)
 		m_pProgress->End2();
