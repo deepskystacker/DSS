@@ -94,7 +94,7 @@
        <item>
         <widget class="QCheckBox" name="useSimd">
          <property name="text">
-          <string>SIMD vectorization</string>
+          <string>SIMD vectorisation</string>
          </property>
         </widget>
        </item>

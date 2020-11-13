@@ -834,7 +834,7 @@ bool AvxSupport::bitmapHasCorrectType() const
 }
 
 bool AvxSupport::checkSimdAvailability() noexcept {
-	// Has user disabled SIMD vectorization?
+	// Has user disabled SIMD vectorisation?
 	if (!CMultitask::GetUseSimd())
 		return false;
 
