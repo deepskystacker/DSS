@@ -48,19 +48,12 @@ CFITSHeader::~CFITSHeader()
 
 /* ------------------------------------------------------------------- */
 
-inline double AdjustColor(double fColor)
+inline double AdjustColor(const double fColor)
 {
-	if (_finite(fColor) && !_isnan(fColor))
-	{
-		if (fColor < 0)
-			return 0;
-		else if (fColor > 255)
-			return 255;
-		else
-			return fColor;
-	}
+	if (std::isfinite(fColor))
+		return std::clamp(fColor, 0.0, 255.0);
 	else
-		return 0;
+		return 0.0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -648,11 +641,14 @@ bool CFITSReader::Open()
 
 bool CFITSReader::Read()
 {
+	constexpr double scaleFactorInt16 = double{ 1 + UCHAR_MAX };
+	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHORT_MAX);
+
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
 	char error_text[31] = "";			// Error text for FITS errors.
 	
-	int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
+	const int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
 
 	double		fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
 
@@ -671,11 +667,8 @@ bool CFITSReader::Read()
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
 		LONGLONG nElements = m_lWidth * m_lHeight * colours;
-
-		auto buff = std::make_unique<double []>(nElements);
-
-		double * doubleBuff = (double *)buff.get();
-
+		auto buff = std::make_unique<double[]>(nElements);
+		double* const doubleBuff = buff.get();
 		int status = 0;			// used for result of fits_read_pixll call
 
 		//
@@ -697,41 +690,35 @@ bool CFITSReader::Read()
 			throw exc;
 		}
 
+		const int nrProcessors = CMultitask::GetNrProcessors(false); // Returns 1, if the user de-selected multi-threading, # CPUs else.
+
 		//
 		// Step 1: If the image is in float format, need to extract the minimum and maximum pixel values.
 		//
 		if (m_bFloat)
 		{
 			double localMin = 0, localMax = 0;
-#if defined(_OPENMP)
-#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax)
+#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors - 1)
 			{
-#pragma omp for
-#endif
+#pragma omp for schedule(dynamic, 10000)
 				for (LONGLONG element = 0; element < nElements; ++element)
 				{
-					double	fValue = 0.0;
-					
-					fValue = doubleBuff[element];	// Long (8 byte) floating point
-
-					if (!_isnan(fValue))
+					const double fValue = doubleBuff[element];	// Long (8 byte) floating point
+					if (!std::isnan(fValue))
 					{
-						localMin = min(localMin, fValue);
-						localMax = max(localMax, fValue);
+						localMin = std::min(localMin, fValue);
+						localMax = std::max(localMax, fValue);
 					};
 				}
-#if defined(_OPENMP)
 #pragma omp critical
-#endif
 				{
-					fMin = localMin < fMin ? localMin : fMin; // For non-OMP case this is equal to fMin = localMin
-					fMax = localMax > fMax ? localMax : fMax; // For non-OMP case this is equal to fMax = localMax
+					fMin = std::min(localMin, fMin); // For non-OMP case this is equal to fMin = localMin
+					fMax = std::max(localMax, fMax); // For non-OMP case this is equal to fMax = localMax
 				}
 #if defined(_OPENMP)
 			}
 #endif
-			double		fZero,
-				fScale;
+			double		fZero, fScale;
 
 			if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))
 			{
@@ -759,21 +746,25 @@ bool CFITSReader::Read()
 		//
 		// Step 2: Process the image pixels
 		//
-		ptrdiff_t greenOffset = m_lWidth * m_lHeight;		// index into buffer of the green image
+		ptrdiff_t greenOffset = ptrdiff_t{ m_lWidth } * m_lHeight;		// index into buffer of the green image
 		ptrdiff_t blueOffset = 2 * greenOffset;				// index into buffer of the blue image
 
 		long	rowProgress = 0;
 
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
+		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
+		{
+			constexpr double scaleFactor = double{ USHORT_MAX } / 256.0;
+			const double normalizationFactor = scaleFactor / (fMax - fMin);
+			return (value - fMin) * normalizationFactor;
+		};
+
+#pragma omp parallel for default(none) schedule(dynamic, 10) if(nrProcessors - 1)
 		for (long row = 0; row < m_lHeight; ++row)
 		{
 			for (long col = 0; col < m_lWidth; ++col)
 			{
 				double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
-
-				long index = col + (row * m_lWidth);	// index into the image for this plane
+				const long index = col + (row * m_lWidth);	// index into the image for this plane
 
 				if (1 == colours)
 				{
@@ -798,43 +789,34 @@ bool CFITSReader::Read()
 					break;
 				case SHORT_IMG:
 				case USHORT_IMG:
-					fRed /= 256.0;
-					fGreen /= 256.0;
-					fBlue /= 256.0;
+					fRed /= scaleFactorInt16;
+					fGreen /= scaleFactorInt16;
+					fBlue /= scaleFactorInt16;
 					break;
 				case LONG_IMG:
 				case ULONG_IMG:
-					fRed = fRed / 256.0 / 65536.0;
-					fGreen = fGreen / 256.0 / 65536.0;
-					fBlue = fBlue / 256.0 / 65536.0;
+					fRed /= scaleFactorInt32;
+					fGreen /= scaleFactorInt32;
+					fBlue /= scaleFactorInt32;
 					break;
 				case LONGLONG_IMG:
-					fRed = fRed / 256.0 / 65536.0;
-					fGreen = fGreen / 256.0 / 65536.0;
-					fBlue = fBlue / 256.0 / 65536.0;
+					fRed /= scaleFactorInt32;
+					fGreen /= scaleFactorInt32;
+					fBlue /= scaleFactorInt32;
 					break;
 				case FLOAT_IMG:
 				case DOUBLE_IMG:
-					fRed = (fRed - fMin) / (fMax - fMin) * 256.0;
-					fGreen = (fGreen - fMin) / (fMax - fMin) * 256.0;
-					fBlue = (fBlue - fMin) / (fMax - fMin) * 256.0;
+					fRed = normalizeFloatValue(fRed);
+					fGreen = normalizeFloatValue(fGreen);
+					fBlue = normalizeFloatValue(fBlue);
 					break;
 				}
 
 				OnRead(col, row, AdjustColor(fRed), AdjustColor(fGreen), AdjustColor(fBlue));
-
 			}
 
-#if defined (_OPENMP)
-			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-			{
-				rowProgress += omp_get_num_threads();
-				m_pProgress->Progress2(nullptr, rowProgress);
-			}
-#else
-			if (m_pProgress)
-				m_pProgress->Progress2(nullptr, ++rowProgress);
-#endif
+			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
+				m_pProgress->Progress2(nullptr, row);
 		}
 
 	} while (false);
