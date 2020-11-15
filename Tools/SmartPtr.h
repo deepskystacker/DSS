@@ -4,10 +4,10 @@
 
 class CRefCount
 {
-protected :
+protected:
 	std::atomic<long> m_lRefCount;
 
-public :
+public:
 	CRefCount() :
 		m_lRefCount{ 0 }
 	{
@@ -24,8 +24,7 @@ public :
 
 	void	Release()
 	{
-		m_lRefCount--;
-		if (!m_lRefCount)
+		if (m_lRefCount.fetch_sub(1) == 1) // If it was previously one (is now zero), delete the object.
 			delete this;
 	};
 };
@@ -33,34 +32,29 @@ public :
 template <class T>
 class CSmartPtr
 {
-public :
-	T *			m_p;
+public:
+	T* m_p;
 
-public :
-	CSmartPtr()
-	{
-		m_p = nullptr;
-	};
+public:
+	CSmartPtr() : m_p{ nullptr }
+	{};
 
-	CSmartPtr(T * p)
+	CSmartPtr(T* p) : m_p{ p }
 	{
 		if (p)
 			p->AddRef();
-		m_p = p;
 	};
 
-	CSmartPtr(const CSmartPtr<T> & p)
+	CSmartPtr(const CSmartPtr<T>& p) : m_p{ p.m_p }
 	{
 		if (p.m_p)
 			p.m_p->AddRef();
-		m_p = p.m_p;
 	};
 
-	void Attach(T * p)
+	void Attach(T* p)
 	{
 		if (p)
 			p->AddRef();
-
 		if (m_p)
 			m_p->Release();
 		m_p = p;
@@ -74,7 +68,7 @@ public :
 		Attach(new T);
 	};
 
-	BOOL	CopyTo(T ** pp)
+	BOOL	CopyTo(T** pp)
 	{
 		BOOL		bResult = FALSE;
 		if (pp)
@@ -92,7 +86,7 @@ public :
 
 	void	Release()
 	{
-		T *		pTemp = m_p;
+		T* pTemp = m_p;
 		if (pTemp)
 		{
 			m_p = nullptr;
@@ -105,12 +99,12 @@ public :
 		Release();
 	};
 
-	T & operator * () const
+	T& operator*() const
 	{
 		return *m_p;
 	};
 
-	T ** operator & ()
+	T** operator&()
 	{
 		if (m_p)
 		{
@@ -121,17 +115,17 @@ public :
 		return &m_p;
 	};
 
-	T * operator ->()
+	T* operator->()
 	{
 		return m_p;
 	};
 
-	operator T*() const
+	operator T* () const
 	{
 		return m_p;
 	}
 
-	T * operator = (T * lp)
+	T* operator=(T* lp)
 	{
 		if (lp != m_p)
 			Attach(lp);
@@ -139,7 +133,7 @@ public :
 		return (*this);
 	};
 
-	T * operator = (const CSmartPtr<T> & p)
+	T* operator=(const CSmartPtr<T>& p)
 	{
 		if (p.m_p != m_p)
 			Attach(p.m_p);
@@ -147,27 +141,24 @@ public :
 		return (*this);
 	};
 
-	bool operator !()
+	bool operator!() const
 	{
-		if (m_p)
-			return false;
-		else
-			return true;
+		return m_p == nullptr ? true : false;
 	};
 
-	bool operator < (const CSmartPtr<T> & p) const
+	bool operator<(const CSmartPtr<T>& p) const
 	{
 		return (uintptr_t)m_p < (uintptr_t)p.m_p;
 	};
-	bool operator < (const T * p) const
+	bool operator<(const T* p) const
 	{
 		return (uintptr_t)m_p < (uintptr_t)p;
 	};
-	bool operator != (const T * p) const
+	bool operator!=(const T* p) const
 	{
 		return m_p != p;
 	};
-	bool operator == (const T * p) const
+	bool operator==(const T* p) const
 	{
 		return m_p == p;
 	};
