@@ -871,11 +871,6 @@ public :
 		crResult.blue = (WORD)(fBlue * 256.0);
 	};
 
-	virtual void SetPixel16(LONG i, LONG j, const COLORREF16 & crColor)
-	{
-		SetPixel(i, j, (double)crColor.red/256.0, (double)crColor.green/256.0, (double)crColor.blue/256.0);
-	};
-
 	virtual LONG	Width() = 0;
 	virtual LONG	Height() = 0;
 	virtual LONG	BitPerSample() = 0;
@@ -2661,18 +2656,6 @@ public :
 			*(LPDWORD)pPixel = *(LPDWORD)(&rgbq);
 		};
 	};
-
-	virtual void	SetPixel16(LONG i, LONG j, const COLORREF16 &crColor16)
-	{
-		COLORREF			crColor;
-
-		crColor = RGB((BYTE)(crColor16.red/256.0), (BYTE)(crColor16.green/256.0),(BYTE)(crColor16.blue/256.0));
-
-		SetPixel(i, j, crColor);
-
-		return;
-	};
-
 };
 
 class	CGammaTransformation
