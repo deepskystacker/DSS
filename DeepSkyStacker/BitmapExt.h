@@ -860,15 +860,17 @@ public :
 	virtual bool	GetScanLine(LONG j, void * pScanLine) = 0;
 	virtual bool	SetScanLine(LONG j, void * pScanLine) = 0;
 
-	virtual void	GetPixel16(LONG i, LONG j, COLORREF16 & crResult)
+	void GetPixel16(const LONG i, const LONG j, COLORREF16& crResult)
 	{
+		constexpr double scalingFactor = double{ 1 + std::numeric_limits<unsigned char>::max() };
+		constexpr double maxValue = double{ std::numeric_limits<unsigned short>::max() };
 		// Use get pixel
 		double fRed, fGreen, fBlue;
 		GetPixel(i, j, fRed, fGreen, fBlue);
 
-		crResult.red = (WORD)(fRed * 256.0);
-		crResult.green = (WORD)(fGreen * 256.0);
-		crResult.blue = (WORD)(fBlue * 256.0);
+		crResult.red = static_cast<WORD>(std::min(fRed * scalingFactor, maxValue));
+		crResult.green = static_cast<WORD>(std::min(fGreen * scalingFactor, maxValue));
+		crResult.blue = static_cast<WORD>(std::min(fBlue * scalingFactor, maxValue));
 	};
 
 	virtual LONG	Width() = 0;
