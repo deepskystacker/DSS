@@ -57,8 +57,6 @@
   <PropertyGroup>
     <_ProjectFileVersion>15.0.27413.0</_ProjectFileVersion>
   </PropertyGroup>
-  
-  
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <QtInstall>5.15.0x64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network</QtModules>
@@ -86,7 +84,8 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x040c</Culture>
@@ -145,7 +144,8 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <OpenMPSupport>true</OpenMPSupport>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
-    <MultiProcessorCompilation>true</MultiProcessorCompilation></ClCompile>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x040c</Culture>
@@ -687,6 +687,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
   </ImportGroup>
   <PropertyGroup Condition="'$(Language)'=='C++'">
     <CAExcludePath>$(QTDIR)\include;.\GeneratedFiles;$(CAExcludePath)</CAExcludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
