@@ -87,7 +87,7 @@
 QWinHost::QWinHost(QWidget *parent, Qt::WindowFlags f)
 : QWidget(parent, f), wndproc(0),own_hwnd(false), hwnd(0)
 {
-    setAttribute(Qt::WA_NoBackground);
+    setAttribute(Qt::WA_OpaquePaintEvent);
     setAttribute(Qt::WA_NoSystemBackground);
 }
 
