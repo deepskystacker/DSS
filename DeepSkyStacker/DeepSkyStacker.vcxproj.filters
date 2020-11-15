@@ -685,9 +685,6 @@
     <ClInclude Include="group.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="StackingDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\WndImage.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -1239,6 +1236,9 @@
     </QtMoc>
     <QtMoc Include="DeepSkyStacker.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StackingDlg.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
