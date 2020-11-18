@@ -269,7 +269,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	//
 	// Silence the MFC memory leak dump as we use Visual Leak Detector.
 	//
-	_CrtSetDbgFlag(0); AfxEnableMemoryLeakDump(false);
+	_CrtSetDbgFlag(0); 
+#if !defined(NDEBUG)
+	AfxEnableMemoryLeakDump(false);
+#endif
 
 	ZTRACE_RUNTIME("Checking Mutex");
 

@@ -14,7 +14,7 @@
     <ProjectName>DeepSkyStacker</ProjectName>
     <ProjectGuid>{90721C24-BC43-450A-ADED-3417280D075B}</ProjectGuid>
     <RootNamespace>DeepSkyStacker</RootNamespace>
-    <Keyword>QtVS_v302</Keyword>
+    <Keyword>QtVS_v303</Keyword>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -23,6 +23,9 @@
     <PlatformToolset>v142</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PreferredToolArchitecture>
+    </PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -30,6 +33,8 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PreferredToolArchitecture>
+    </PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
@@ -38,6 +43,18 @@
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
   </Target>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtInstall>5.15.0x64</QtInstall>
+    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
+    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtInstall>5.15.0x64</QtInstall>
+    <QtModules>core;gui;gui-private;widgets;network</QtModules>
+    <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
+    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
+  </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
   </ImportGroup>
@@ -57,33 +74,6 @@
   <PropertyGroup>
     <_ProjectFileVersion>15.0.27413.0</_ProjectFileVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64)</LibraryPath>
-    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\</OutDir>
-    <IntDir>.\$(PlatformTarget)\$(Configuration)\</IntDir>
-    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(VC_LibraryPath_x64);$(WindowsSdk_71A_LibraryPath_x64)</LibraryPath>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <CustomBuildAfterTargets>
-    </CustomBuildAfterTargets>
-    <CustomBuildBeforeTargets>QtPrepare</CustomBuildBeforeTargets>
-  </PropertyGroup>
-  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtInstall>5.15.0x64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
-    <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
-    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
-  </PropertyGroup>
-  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>5.15.0x64</QtInstall>
-    <QtModules>core;gui;gui-private;widgets;network</QtModules>
-    <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
-    <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
@@ -99,6 +89,7 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -127,7 +118,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
     <CustomBuildStep>
-      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do (C:\Qt\5.15.0\msvc2019_64\bin\lrelease %%f)</Command>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtToolsPath)\lrelease %%f)</Command>
     </CustomBuildStep>
     <CustomBuildStep>
       <Outputs>i18n\DSS.ca.qm;i18n\DSS.cs.qm;i18n\DSS.de.qm;i18n\DSS.en.qm;i18n\DSS.es.qm;i18n\DSS.fr.qm;i18n\DSS.it.qm;i18n\DSS.nl.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro.qm;i18n\DSS.ru.qm;i18n\DSS.tr.qm;i18n\DSS.zh_TW.qm</Outputs>
@@ -158,6 +149,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <OpenMPSupport>true</OpenMPSupport>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -185,7 +177,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
     <CustomBuildStep>
-      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do (C:\Qt\5.15.0\msvc2019_64\bin\lrelease %%f)</Command>
+      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtToolsPath)\lrelease %%f)</Command>
       <Outputs>i18n\DSS.ca.qm;i18n\DSS.cs.qm;i18n\DSS.de.qm;i18n\DSS.en.qm;i18n\DSS.es.qm;i18n\DSS.fr.qm;i18n\DSS.it.qm;i18n\DSS.nl.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro.qm;i18n\DSS.ru.qm;i18n\DSS.tr.qm;i18n\DSS.zh_TW.qm</Outputs>
     </CustomBuildStep>
     <PostBuildEvent>
@@ -506,7 +498,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="SettingsDlg.h" />
     <ClInclude Include="SetUILanguage.h" />
     <ClInclude Include="StackedBitmap.h" />
-    <ClInclude Include="StackingDlg.h" />
+    <QtMoc Include="StackingDlg.h" />
     <ClInclude Include="StackingEngine.h" />
     <QtMoc Include="StackingParameters.h" />
     <ClInclude Include="StackingTasks.h" />
@@ -700,6 +692,14 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
   </ImportGroup>
   <PropertyGroup Condition="'$(Language)'=='C++'">
     <CAExcludePath>$(QTDIR)\include;.\GeneratedFiles;$(CAExcludePath)</CAExcludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
+    <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
