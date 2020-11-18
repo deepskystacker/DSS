@@ -2845,7 +2845,17 @@ protected :
 					vGreenValues.resize(0);
 					vBlueValues.resize(0);
 				};
-			};
+			}
+			else
+			{
+				if constexpr (sizeof(TType) == 4 && std::is_integral<TType>::value)
+				{
+
+					for (auto& x : vRedValues) x >>= 16;
+					for (auto& x : vGreenValues) x >>= 16;
+					for (auto& x : vBlueValues) x >>= 16;
+				}
+			}
 
 			// Process the value
 			if (m_Method == MBP_MEDIAN)
