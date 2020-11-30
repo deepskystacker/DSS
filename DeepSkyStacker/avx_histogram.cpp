@@ -100,7 +100,7 @@ int AvxHistogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
 			grayValue *= 256.0;
 		if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type
 			grayValue >>= 16;
-		++histo[static_cast<size_t>(grayValue)];
+		++histo[std::min(static_cast<size_t>(grayValue), size_t{ USHORT_MAX })];
 	};
 
 	const bool isCFA = avxInputSupport.isMonochromeCfaBitmapOfType<T>();
