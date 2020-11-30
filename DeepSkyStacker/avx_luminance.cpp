@@ -93,7 +93,7 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 				const T blue = readColorValue(pBluePixels);
 				const T minColor = std::min(std::min(red, green), blue);
 				const T maxColor = std::max(std::max(red, green), blue);
-				*pOut = static_cast<double>(minColor) + static_cast<double>(maxColor) * (0.5 / 255.0);
+				*pOut = (static_cast<double>(minColor) + static_cast<double>(maxColor)) * (0.5 / 255.0);
 			}
 		}
 		return 0;
