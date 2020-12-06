@@ -369,12 +369,12 @@ void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direc
 	// Get foreground colour (window text) and create a pen to draw a one pixel boundary
 	// in that colour
 	//
-	auto oldPen = painter.pen();
+	auto& oldPen = painter.pen();
 	QColor	foreground(QPalette().color(QPalette::WindowText));	// get foreground colour 
 	QPen	pen(foreground);
 	painter.setPen(pen);
 
-	auto oldBrush = painter.brush();
+	auto& oldBrush = painter.brush();
 	QBrush brush;			// create a null brush so background isn't filled
 	painter.setBrush(brush);
 
@@ -434,12 +434,12 @@ void QLinearGradientCtrl::drawSelPeg(QPainter & painter, int peg)
 	// Get foreground colour (window text) and create a pen to draw a one pixel boundary
 	// in that colour
 	//
-	auto oldPen = painter.pen();
+	auto& oldPen = painter.pen();
 	QColor	foreground(QPalette().color(QPalette::WindowText));	// get foreground colour 
 	QPen	pen(foreground);
 	painter.setPen(pen);
 
-	auto oldBrush = painter.brush();
+	auto& oldBrush = painter.brush();
 	QBrush brush;			// create a null brush so background isn't filled
 	painter.setBrush(brush);
 
