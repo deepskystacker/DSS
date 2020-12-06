@@ -260,23 +260,29 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
 /* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF crColor)
 {
+	constexpr double scalingFactor = 1.0 / 256.0;
+
 	const unsigned red = GetRValue(crColor);
 	const unsigned green = GetGValue(crColor);
 	const unsigned blue = GetBValue(crColor);
 
-	const unsigned minval = min(red, min(green, blue));
-	const unsigned maxval = max(red, max(green, blue));
+	const unsigned minval = std::min(red, std::min(green, blue));
+	const unsigned maxval = std::max(red, std::max(green, blue));
 	const unsigned msum = maxval + minval;
-	return ((double)msum / 510.0);
+
+	return static_cast<double>(msum) * (0.5 * scalingFactor);
 };
 
 /* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF16 & crColor)
 {
-	const unsigned minval = min(crColor.red, min(crColor.green, crColor.blue));
-	const unsigned maxval = max(crColor.red, max(crColor.green, crColor.blue));
+	constexpr double scalingFactor = 1.0 / 256.0;
+
+	const unsigned minval = std::min(crColor.red, std::min(crColor.green, crColor.blue));
+	const unsigned maxval = std::max(crColor.red, std::max(crColor.green, crColor.blue));
 	const unsigned msum = maxval + minval;
-	return (((double)msum / 256.0) / 510.0);
+
+	return static_cast<double>(msum) * (0.5 * scalingFactor * scalingFactor); // (((double)msum / 256.0) / 510.0);
 };
 
 /* ------------------------------------------------------------------- */

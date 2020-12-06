@@ -31,6 +31,7 @@ int AvxLuminance::computeLuminanceBitmap(const size_t lineStart, const size_t li
 template <class T>
 int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEnd)
 {
+	constexpr double scalingFactor = 1.0 / 256.0;
 	if (!avxReady)
 		return 1;
 
@@ -45,13 +46,13 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 	constexpr size_t vectorLen = 16;
 	const size_t nrVectors = width / vectorLen;
 
-	const auto scaleAndStoreLuminance = [](const __m256d d0, const __m256d d1, const __m256d d2, const __m256d d3, double *const pOut) -> void
+	const auto scaleAndStoreLuminance = [scalingFactor](const __m256d d0, const __m256d d1, const __m256d d2, const __m256d d3, double *const pOut) -> void
 	{
-		const __m256d scalingFactor = _mm256_set1_pd(1.0 / 255.0);
-		_mm256_storeu_pd(pOut, _mm256_mul_pd(d0, scalingFactor));
-		_mm256_storeu_pd(pOut + 4, _mm256_mul_pd(d1, scalingFactor));
-		_mm256_storeu_pd(pOut + 8, _mm256_mul_pd(d2, scalingFactor));
-		_mm256_storeu_pd(pOut + 12, _mm256_mul_pd(d3, scalingFactor));
+		const __m256d vScalingFactor = _mm256_set1_pd(scalingFactor);
+		_mm256_storeu_pd(pOut, _mm256_mul_pd(d0, vScalingFactor));
+		_mm256_storeu_pd(pOut + 4, _mm256_mul_pd(d1, vScalingFactor));
+		_mm256_storeu_pd(pOut + 8, _mm256_mul_pd(d2, vScalingFactor));
+		_mm256_storeu_pd(pOut + 12, _mm256_mul_pd(d3, vScalingFactor));
 	};
 
 	const auto readColorValue = [](const T* const pColor) -> T
@@ -93,7 +94,7 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 				const T blue = readColorValue(pBluePixels);
 				const T minColor = std::min(std::min(red, green), blue);
 				const T maxColor = std::max(std::max(red, green), blue);
-				*pOut = (static_cast<double>(minColor) + static_cast<double>(maxColor)) * (0.5 / 255.0);
+				*pOut = (static_cast<double>(minColor) + static_cast<double>(maxColor)) * (0.5 * scalingFactor);
 			}
 		}
 		return 0;
@@ -115,7 +116,7 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 			for (size_t n = nrVectors * vectorLen; n < width; ++n, ++pGreyPixels, ++pOut)
 			{
 				const T grey = readColorValue(pGreyPixels);
-				*pOut = static_cast<double>(grey) * (1.0 / 255.0);
+				*pOut = static_cast<double>(grey) * scalingFactor;
 			}
 		}
 		return 0;
