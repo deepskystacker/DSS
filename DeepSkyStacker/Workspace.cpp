@@ -145,21 +145,21 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.clear();
 	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", "2.0"));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", double(2.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Debloom", false));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Kappa", "2.0"));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Kappa", 2.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Kappa", "2.0"));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Kappa", 2.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Kappa", "2.0"));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Kappa", 2.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/BackgroundCalibration", false));
 	vSettings.push_back(CWorkspaceSetting("Stacking/PerChannelBackgroundCalibration", true));
@@ -170,7 +170,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.push_back(CWorkspaceSetting("Stacking/DarkOptimization", false));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/UseDarkFactor", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/DarkFactor", "1.0"));
+	vSettings.push_back(CWorkspaceSetting("Stacking/DarkFactor", 1.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/HotPixelsDetection", true));
 

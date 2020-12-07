@@ -165,7 +165,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Light_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/Light_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/Light_Kappa", 2.0).toDouble();
 		setControls();
 
 		//
@@ -228,7 +228,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Dark_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Dark_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/Dark_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/Dark_Kappa", 2.0).toDouble();
 		setControls();
 
 		isChecked = workspace->value("Stacking/DarkOptimization", false).toBool();
@@ -237,7 +237,7 @@ void StackingParameters::onSetActive()
 		isChecked = workspace->value("Stacking/UseDarkFactor", false).toBool();
 		ui->useDarkFactor->setChecked(isChecked);
 
-		value = workspace->value("Stacking/DarkFactor", "1.0").toDouble();
+		value = workspace->value("Stacking/DarkFactor", 1.0).toDouble();
 		ui->darkMultiplicationFactor->setText(QString("%L1").arg(value, 0, 'f', 4));
 
 		isChecked = workspace->value("Stacking/HotPixelsDetection", true).toBool();
@@ -261,7 +261,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Flat_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Flat_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/Flat_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/Flat_Kappa", 2.0).toDouble();
 		setControls();
 
 		//
@@ -274,7 +274,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Offset_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Offset_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/FlatOffset_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/FlatOffset_Kappa", 2.0).toDouble();
 		setControls();
 
 		//
