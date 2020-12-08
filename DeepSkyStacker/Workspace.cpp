@@ -145,7 +145,7 @@ void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSetting
 	vSettings.clear();
 	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
 	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", double(2.0));
+	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", 2.0));
 
 	vSettings.push_back(CWorkspaceSetting("Stacking/Debloom", false));
 
