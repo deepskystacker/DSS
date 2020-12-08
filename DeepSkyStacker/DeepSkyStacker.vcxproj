@@ -169,6 +169,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <MapExports>false</MapExports>
       <AdditionalOptions>
       </AdditionalOptions>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
