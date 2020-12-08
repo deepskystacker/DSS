@@ -1493,7 +1493,7 @@ bool CStackingDlg::ShowRecap(CAllStackingTasks& tasks)
 {
 	QWinWidget	widget(this->GetParent());
 	widget.showCentered();
-	StackRecap	dlg;
+	StackRecap	dlg(&widget);
 
 	dlg.setStackingTasks(&tasks);
 	return dlg.exec();
@@ -1825,8 +1825,10 @@ BOOL CStackingDlg::SaveOnClose()
 
 void CStackingDlg::RegisterCheckedImage()
 {
+	QWinWidget	widget(this->GetParent());
+	widget.showCentered();
 	CDSSProgressDlg			dlg;
-	RegisterSettings		dlgSettings;
+	RegisterSettings		dlgSettings(&widget);
 	bool					bContinue = true;
 
 	bool					bFound = false;

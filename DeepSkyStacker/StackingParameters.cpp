@@ -165,7 +165,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Light_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/Light_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/Light_Kappa", 2.0).toDouble();
 		setControls();
 
 		//
@@ -228,7 +228,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Dark_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Dark_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/Dark_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/Dark_Kappa", 2.0).toDouble();
 		setControls();
 
 		isChecked = workspace->value("Stacking/DarkOptimization", false).toBool();
@@ -237,7 +237,7 @@ void StackingParameters::onSetActive()
 		isChecked = workspace->value("Stacking/UseDarkFactor", false).toBool();
 		ui->useDarkFactor->setChecked(isChecked);
 
-		value = workspace->value("Stacking/DarkFactor", "1.0").toDouble();
+		value = workspace->value("Stacking/DarkFactor", 1.0).toDouble();
 		ui->darkMultiplicationFactor->setText(QString("%L1").arg(value, 0, 'f', 4));
 
 		isChecked = workspace->value("Stacking/HotPixelsDetection", true).toBool();
@@ -261,7 +261,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Flat_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Flat_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/Flat_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/Flat_Kappa", 2.0).toDouble();
 		setControls();
 
 		//
@@ -274,7 +274,7 @@ void StackingParameters::onSetActive()
 		method = static_cast<MULTIBITMAPPROCESSMETHOD>
 			(workspace->value("Stacking/Offset_Method", (uint)MBP_AVERAGE).toUInt());
 		iteration = workspace->value("Stacking/Offset_Iteration", (uint)5).toUInt();
-		kappa = workspace->value("Stacking/FlatOffset_Kappa", "2.0").toDouble();
+		kappa = workspace->value("Stacking/FlatOffset_Kappa", 2.0).toDouble();
 		setControls();
 
 		//
@@ -494,6 +494,11 @@ void StackingParameters::on_useDarkFactor_stateChanged(int state)
 
 void StackingParameters::on_darkMultiplicationFactor_textEdited(const QString &text)
 {
+	double factor(0.0);
+	QLocale locale;
+
+	factor = locale.toDouble(text);
+
 	workspace->setValue("Stacking/DarkFactor", text);
 }
 
@@ -523,19 +528,23 @@ void StackingParameters::on_iterations_textEdited(const QString &text)
 
 void StackingParameters::on_kappa_textEdited(const QString &text)
 {
+	double kappa(0.0);
+	QLocale locale;
+
+	kappa = locale.toDouble(text);
 	switch (type)
 	{
 	case PICTURETYPE_LIGHTFRAME:
-		workspace->setValue("Stacking/Light_Kappa", text);
+		workspace->setValue("Stacking/Light_Kappa", kappa);
 		break;
 	case PICTURETYPE_DARKFRAME:
-		workspace->setValue("Stacking/Dark_Kappa", text);
+		workspace->setValue("Stacking/Dark_Kappa", kappa);
 		break;
 	case PICTURETYPE_FLATFRAME:
-		workspace->setValue("Stacking/Flat_Kappa", text);
+		workspace->setValue("Stacking/Flat_Kappa", kappa);
 		break;
 	case PICTURETYPE_OFFSETFRAME:
-		workspace->setValue("Stacking/Offset_Kappa", text);
+		workspace->setValue("Stacking/Offset_Kappa", kappa);
 		break;
 	}
 }
