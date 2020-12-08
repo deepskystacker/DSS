@@ -1651,7 +1651,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 	if (dwMethod)
 		LightMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
 	lLightIteration = workspace.value("Stacking/Light_Iteration", (uint)5).toUInt();
-	fLightKappa = workspace.value("Stacking/Light_Kappa" "2.0").toDouble();
+	fLightKappa = workspace.value("Stacking/Light_Kappa", "2.0").toDouble();
 
 
 	dwMethod = workspace.value("Stacking/Dark_Method", (uint)MBP_MEDIAN).toUInt();
