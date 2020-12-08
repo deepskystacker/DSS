@@ -2096,7 +2096,7 @@ double	CAllStackingTasks::GetDarkFactor()
 
 	if (workspace.value("Stacking/UseDarkFactor", false).toBool())
 	{
-		value = workspace.value("Stacking/DarkFactor").toDouble();
+		value = workspace.value("Stacking/DarkFactor", 1.0).toDouble();
 	};
 
 	return value;
