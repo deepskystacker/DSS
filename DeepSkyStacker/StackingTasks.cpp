@@ -1651,26 +1651,26 @@ void CAllStackingTasks::UpdateTasksMethods()
 	if (dwMethod)
 		LightMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
 	lLightIteration = workspace.value("Stacking/Light_Iteration", (uint)5).toUInt();
-	fLightKappa = workspace.value("Stacking/Light_Kappa", "2.0").toDouble();
+	fLightKappa = workspace.value("Stacking/Light_Kappa", 2.0).toDouble();
 
 
 	dwMethod = workspace.value("Stacking/Dark_Method", (uint)MBP_MEDIAN).toUInt();
 	if (dwMethod)
 		DarkMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
 	lDarkIteration = workspace.value("Stacking/Dark_Iteration", (uint)5).toUInt();
-	fDarkKappa = workspace.value("Stacking/Dark_Kappa", "2.0").toDouble();
+	fDarkKappa = workspace.value("Stacking/Dark_Kappa", 2.0).toDouble();
 
 	dwMethod = workspace.value("Stacking/Flat_Method", (uint)MBP_MEDIAN).toUInt();
 	if (dwMethod)
 		FlatMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
 	lFlatIteration = workspace.value("Stacking/Flat_Iteration", (uint)5).toUInt();
-	fFlatKappa = workspace.value("Stacking/Flat_Kappa", "2.0").toDouble();
+	fFlatKappa = workspace.value("Stacking/Flat_Kappa", 2.0).toDouble();
 
 	dwMethod = workspace.value("Stacking/Offset_Method", (uint)MBP_MEDIAN).toUInt();
 	if (dwMethod)
 		OffsetMethod = (MULTIBITMAPPROCESSMETHOD)dwMethod;
 	lOffsetIteration = workspace.value("Stacking/Offset_Iteration", (uint)5).toUInt();
-	fOffsetKappa = workspace.value("Stacking/Offset_Kappa", "2.0").toDouble();
+	fOffsetKappa = workspace.value("Stacking/Offset_Kappa", 2.0).toDouble();
 
 	for (i = 0;i<m_vStacks.size();i++)
 	{
@@ -2096,7 +2096,7 @@ double	CAllStackingTasks::GetDarkFactor()
 
 	if (workspace.value("Stacking/UseDarkFactor", false).toBool())
 	{
-		value = workspace.value("Stacking/DarkFactor").toDouble();
+		value = workspace.value("Stacking/DarkFactor", 1.0).toDouble();
 	};
 
 	return value;
