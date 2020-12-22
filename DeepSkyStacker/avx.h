@@ -211,6 +211,42 @@ public:
 		return { _mm256_loadu_ps(pColor), _mm256_loadu_ps(pColor + 8) };
 	}
 
+
+	// Read 16 color values from T* with stride 
+	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const WORD* const pColor, const int stride) noexcept
+	{
+		const __m256i ndx = _mm256_mullo_epi32(_mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7), _mm256_set1_epi32(stride));
+		const __m256i v1 = _mm256_i32gather_epi32((const int*)pColor, ndx, 2);
+		const __m256i v2 = _mm256_i32gather_epi32((const int*)pColor, _mm256_add_epi32(ndx, _mm256_set1_epi32(8 * stride)), 2); // 8, 9, 10, 11, 12, 13, 14, 15 
+		return {
+			_mm256_cvtepi32_ps(_mm256_blend_epi16(v1, _mm256_setzero_si256(), 0xaa)),
+			_mm256_cvtepi32_ps(_mm256_blend_epi16(v2, _mm256_setzero_si256(), 0xaa))
+		};
+	}
+	// Note: ***** DOES NOT SHIFT 16 BITS RIGHT! ***** 
+	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const std::uint32_t* const pColor, const int stride) noexcept
+	{
+		const __m256i ndx = _mm256_mullo_epi32(_mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7), _mm256_set1_epi32(stride));
+		const __m256i v1 = _mm256_i32gather_epi32((const int*)pColor, ndx, 4);
+		const __m256i v2 = _mm256_i32gather_epi32((const int*)pColor, _mm256_add_epi32(ndx, _mm256_set1_epi32(8 * stride)), 4);
+		return {
+			_mm256_cvtepi32_ps(v1),
+			_mm256_cvtepi32_ps(v2)
+		};
+	}
+	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const unsigned long* const pColor, const int stride) noexcept
+	{
+		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+		return read16PackedSingleStride(reinterpret_cast<const std::uint32_t*>(pColor), stride);
+	}
+	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const float* const pColor, const int stride) noexcept
+	{
+		const __m256i ndx1 = _mm256_mullo_epi32(_mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7), _mm256_set1_epi32(stride));
+		const __m256i ndx2 = _mm256_add_epi32(ndx1, _mm256_set1_epi32(8 * stride));
+		return { _mm256_i32gather_ps(pColor, ndx1, 4), _mm256_i32gather_ps(pColor, ndx2, 4) };
+	}
+
+
 	inline static __m256i cvt2xEpi32Epu16(const __m256i lo, const __m256i hi)
 	{
 		return _mm256_packus_epi32(_mm256_permute2x128_si256(lo, hi, 0x20), _mm256_permute2x128_si256(lo, hi, 0x31));

@@ -434,6 +434,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="avx_filter.h" />
     <ClInclude Include="avx_histogram.h" />
     <ClInclude Include="avx_luminance.h" />
+    <ClInclude Include="avx_median.h" />
     <ClInclude Include="avx_output.h" />
     <ClInclude Include="BackgroundCalibration.h" />
     <ClInclude Include="BackgroundLoading.h" />

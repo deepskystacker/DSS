@@ -5,6 +5,7 @@
 #include <numeric>
 #include <float.h>
 #include <math.h>
+#include "avx_median.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -412,8 +413,10 @@ double Median(std::vector<T>& values)
     if (values.empty())
         return 0;
 
-    auto size = values.size();
+    const int size = static_cast<int>(values.size());
 
+	return qMedian(values.data(), size, size / 2);
+/*
     // benchmarked: at around 40 elements, partial sort stars becoming faster
     // O(N) or O(2*N) for even count vs O(N*log(N))
     if (size > 40)
@@ -447,6 +450,7 @@ double Median(std::vector<T>& values)
             return (values[n] + values[n - 1]) / 2;
         }
     }
+*/
 }
 
 /* ------------------------------------------------------------------- */

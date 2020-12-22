@@ -736,6 +736,9 @@
     <ClInclude Include="avx_histogram.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="avx_median.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">
