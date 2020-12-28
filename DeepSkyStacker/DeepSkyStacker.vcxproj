@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
@@ -241,6 +241,9 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="avx_cfa.cpp">
       <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
+    <ClCompile Include="avx_entropy.cpp">
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
     <ClCompile Include="avx_filter.cpp">
       <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -439,6 +442,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="avx.h" />
     <ClInclude Include="avx_avg.h" />
     <ClInclude Include="avx_cfa.h" />
+    <ClInclude Include="avx_entropy.h" />
     <ClInclude Include="avx_filter.h" />
     <ClInclude Include="avx_histogram.h" />
     <ClInclude Include="avx_luminance.h" />

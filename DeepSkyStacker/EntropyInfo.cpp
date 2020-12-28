@@ -1,8 +1,7 @@
 #include <stdafx.h>
 #include "EntropyInfo.h"
 #include "DSSProgress.h"
-#include <omp.h>
-
+#include "avx_entropy.h"
 /* ------------------------------------------------------------------- */
 
 void CEntropyInfo::InitSquareEntropies()
@@ -26,36 +25,40 @@ void CEntropyInfo::InitSquareEntropies()
 	if (m_pProgress)
 		m_pProgress->Start2(nullptr, m_lNrSquaresX);
 
-	for (long i = 0;i<m_lNrSquaresX;i++)
+	AvxEntropy avxEntropy(*m_pBitmap);
+	if (avxEntropy.calcEntropies(lSquareSize, m_lNrSquaresX, m_lNrSquaresY, m_vRedEntropies, m_vGreenEntropies, m_vBlueEntropies) != 0)
 	{
-		LONG			lMinX,
-						lMaxX;
-
-		lMinX = i * lSquareSize;
-		lMaxX = min((i+1) * lSquareSize -1, m_pBitmap->Width()-1);
-
-		for (long j = 0;j<m_lNrSquaresY;j++)
+		for (long i = 0; i < m_lNrSquaresX; i++)
 		{
-			LONG		lMinY,
-						lMaxY;
-			double		fRedEntropy,
-						fGreenEntropy,
-						fBlueEntropy;
+			LONG			lMinX,
+				lMaxX;
 
-			lMinY = j * lSquareSize;
-			lMaxY = min((j+1) * lSquareSize -1, m_pBitmap->Height()-1);
-			// Compute the entropy for this square
-			ComputeEntropies(lMinX, lMinY, lMaxX, lMaxY, fRedEntropy, fGreenEntropy, fBlueEntropy);
+			lMinX = i * lSquareSize;
+			lMaxX = min((i + 1) * lSquareSize - 1, m_pBitmap->Width() - 1);
 
-			m_vRedEntropies[i+j*m_lNrSquaresX]		= fRedEntropy;
-			m_vGreenEntropies[i+j*m_lNrSquaresX]	= fGreenEntropy;
-			m_vBlueEntropies[i+j*m_lNrSquaresX]		= fBlueEntropy;
+			for (long j = 0; j < m_lNrSquaresY; j++)
+			{
+				LONG		lMinY,
+					lMaxY;
+				double		fRedEntropy,
+					fGreenEntropy,
+					fBlueEntropy;
+
+				lMinY = j * lSquareSize;
+				lMaxY = min((j + 1) * lSquareSize - 1, m_pBitmap->Height() - 1);
+				// Compute the entropy for this square
+				ComputeEntropies(lMinX, lMinY, lMaxX, lMaxY, fRedEntropy, fGreenEntropy, fBlueEntropy);
+
+				m_vRedEntropies[i + j * m_lNrSquaresX] = fRedEntropy;
+				m_vGreenEntropies[i + j * m_lNrSquaresX] = fGreenEntropy;
+				m_vBlueEntropies[i + j * m_lNrSquaresX] = fBlueEntropy;
+			};
+
+			if (m_pProgress)
+				if (0 == i % m_lWindowSize)
+					m_pProgress->Progress2(nullptr, 1 + i);
 		};
-
-		if (m_pProgress)
-			if (0 == i%m_lWindowSize)
-				m_pProgress->Progress2(nullptr, 1+i);
-	};
+	}
 	if (m_pProgress)
 		m_pProgress->End2();
 

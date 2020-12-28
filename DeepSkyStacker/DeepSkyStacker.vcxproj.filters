@@ -366,6 +366,9 @@
     <ClCompile Include="avx_histogram.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="avx_entropy.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -737,6 +740,9 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="avx_median.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="avx_entropy.h">
       <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
