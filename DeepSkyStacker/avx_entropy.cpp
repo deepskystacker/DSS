@@ -69,7 +69,6 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 
 		const float N = static_cast<float>(nx * (ymax - ymin));
 		const float lnN = std::log(N);
-		const float f = 1.0f / (N * std::log(2.0f));
 		float entropy = 0.0f;
 
 		for (int y = ymin; y < ymax; ++y)
@@ -78,11 +77,11 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 			for (int x = xmin; x < xmax; ++x, ++p)
 			{
 				const float d = getDistribution(histogram, *p);
-				entropy += f * d * (lnN - std::log(d));
+				entropy += d * (lnN - std::log(d));
 			}
 		}
 
-		return entropy;
+		return entropy / (N * std::log(2.0f));
 	};
 
 	const auto calcEntropy = [nSquaresX, nSquaresY, &calcEntropyOfSquare](const T* const pColor, EntropyVectorType& entropyVector) -> void
