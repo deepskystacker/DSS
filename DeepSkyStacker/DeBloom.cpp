@@ -833,28 +833,22 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, LONG x, LONG y, std::v
 		bool					bBloomed = true;
 		std::vector<CPointExt>	vTests;
 
-		// 
-		// Add tests to make sure we don't refer to invalid pixel locations
-		//
-		if (x > 0)
-		{
-			if (y > 0) vTests.emplace_back(x - 1, y - 1);
-			vTests.emplace_back(x - 1, y - 0);
-			if (y < (m_lHeight - 1)) vTests.emplace_back(x - 1, y + 1);
-		}
-
-		if (y > 0) vTests.emplace_back(x - 0, y - 1);
-		if (y < (m_lHeight - 1)) vTests.emplace_back(x-0, y+1);
-
-		if (x < (m_lWidth - 1))
-		{
-			if (y > 0) vTests.emplace_back(x + 1, y - 1);
-			vTests.emplace_back(x + 1, y - 0);
-			if (y < (m_lHeight - 1)) vTests.emplace_back(x + 1, y + 1);
-		}
+		vTests.emplace_back(x - 1, y - 1);
+		vTests.emplace_back(x - 1, y - 0);
+		vTests.emplace_back(x - 1, y + 1);
+		vTests.emplace_back(x - 0, y - 1);
+		vTests.emplace_back(x - 0, y + 1);
+		vTests.emplace_back(x + 1, y - 1);
+		vTests.emplace_back(x + 1, y - 0);
+		vTests.emplace_back(x + 1, y + 1);
 
 		for (LONG i = 0;i<vTests.size() && bBloomed;i++)
 		{
+			//
+			// Don't attempt to check Pixel values that are out of bounds
+			//
+			if (false == (vTests[i].X >= 0 && vTests[i].X < m_lWidth && vTests[i].Y >= 0 && vTests[i].Y < m_lHeight))
+				continue;
 			double				fMask;
 
 			pMask->GetPixel(vTests[i].X, vTests[i].Y, fMask);
