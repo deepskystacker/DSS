@@ -111,6 +111,4 @@ public:
 			grayValue >>= 16;
 		++histo[std::min(static_cast<size_t>(grayValue), size_t{ USHORT_MAX })];
 	};
-
-
 };

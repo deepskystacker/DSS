@@ -4,6 +4,7 @@
 #include "StackingTasks.h"
 #include "BackgroundCalibration.h"
 #include "BitmapExt.h"
+#include "avx_entropy.h"
 
 
 class AvxAccumulation
@@ -12,9 +13,10 @@ class AvxAccumulation
 	CMemoryBitmap& tempBitmap;
 	CMemoryBitmap& outputBitmap;
 	const CTaskInfo& taskInfo;
+	AvxEntropy& avxEntropy;
 public:
 	AvxAccumulation() = delete;
-	AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm) noexcept;
+	AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept;
 	AvxAccumulation(const AvxAccumulation&) = delete;
 	AvxAccumulation(AvxAccumulation&&) = delete;
 	AvxAccumulation& AvxAccumulation::operator=(const AvxAccumulation&) = delete;

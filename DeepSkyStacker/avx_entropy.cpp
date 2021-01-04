@@ -6,10 +6,25 @@
 #include <immintrin.h> 
 #include <omp.h> 
 
-AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm) :
+AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm, CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
 	inputBitmap{ inputbm },
+	entropyInfo{ entrinfo },
+	pEntropyCoverage{ entropycov },
 	avxReady{ AvxSupport::checkSimdAvailability() }
-{}
+{
+	if (pEntropyCoverage != nullptr && avxReady)
+	{
+		const size_t width = pEntropyCoverage->Width();
+		const size_t height = pEntropyCoverage->Height();
+		const size_t nrVectors = AvxSupport::numberOfAvxVectors<sizeof(float)>(width);
+		redEntropyLayer.resize(height * nrVectors);
+		if (AvxSupport{ *pEntropyCoverage }.isColorBitmap())
+		{
+			greenEntropyLayer.resize(height * nrVectors);
+			blueEntropyLayer.resize(height * nrVectors);
+		}
+	}
+}
 
 int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies)
 {
@@ -52,7 +67,7 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 		const int ymin = row * squareSize;
 		const int ymax = std::min(ymin + squareSize, height);
 		const int nrVectors = nx / vectorLen;
-		memset(&histogram[0], 0, histogram.size() * sizeof(histogram[0]));
+		memset(histogram.data(), 0, histogram.size() * sizeof(histogram[0]));
 
 		for (int y = ymin; y < ymax; ++y)
 		{
@@ -63,6 +78,7 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 				AvxHistogram::calcHistoOfVectorEpi32(lo, histogram);
 				AvxHistogram::calcHistoOfVectorEpi32(hi, histogram);
 			}
+			// Rest of line
 			for (int x = xmin + nrVectors * vectorLen; x < xmax; ++x, ++p)
 				AvxHistogram::addToHisto(histogram, *p);
 		}
@@ -70,17 +86,31 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 		const float N = static_cast<float>(nx * (ymax - ymin));
 		const float lnN = std::log(N);
 		float entropy = 0.0f;
+		__m256 avxEntropy = _mm256_setzero_ps();
+		const int* const pHisto = histogram.data();
 
 		for (int y = ymin; y < ymax; ++y)
 		{
 			const T* p = pColor + y * width + xmin;
-			for (int x = xmin; x < xmax; ++x, ++p)
+			for (int n = 0; n < nrVectors; ++n, p += vectorLen)
+			{
+				const auto [lo, hi] = AvxSupport::read16PackedInt(p);
+				const __m256 lh = _mm256_cvtepi32_ps(_mm256_i32gather_epi32(pHisto, lo, 4));
+				const __m256 hh = _mm256_cvtepi32_ps(_mm256_i32gather_epi32(pHisto, hi, 4));
+				const __m256 r0 = _mm256_fmadd_ps(lh, _mm256_sub_ps(_mm256_set1_ps(lnN), _mm256_log_ps(lh)), avxEntropy);
+				avxEntropy = _mm256_fmadd_ps(hh, _mm256_sub_ps(_mm256_set1_ps(lnN), _mm256_log_ps(hh)), r0);
+			}
+			// Rest of line adds to float entropy.
+			for (int x = xmin + nrVectors * vectorLen; x < xmax; ++x, ++p)
 			{
 				const float d = getDistribution(histogram, *p);
 				entropy += d * (lnN - std::log(d));
 			}
 		}
-
+		// Accumulate float entropy and horizontal sum of avxEntropy.
+		const __m256 r0 = _mm256_hadd_ps(_mm256_hadd_ps(avxEntropy, _mm256_setzero_ps()), _mm256_setzero_ps()); // ., ., ., e4+e5+e6+e7, ., ., ., e0+e1+e2+e3
+		entropy += _mm_cvtss_f32(_mm_add_ps(_mm256_castps256_ps128(r0), _mm256_extractf128_ps(r0, 1)));
+		
 		return entropy / (N * std::log(2.0f));
 	};
 

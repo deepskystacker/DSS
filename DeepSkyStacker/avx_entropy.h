@@ -1,17 +1,34 @@
 #pragma once 
 
 #include "BitmapExt.h" 
-#include <vector> 
+#include "EntropyInfo.h"
+#include <vector>
+
+/*
+* Class for
+* 1. Calculation of the entropy data of the squares,
+* 2. Managing the entropy coverage (the coverage bitmap itself is calculated while stacking with the class AvxStacking).
+*/
 
 class AvxEntropy
 {
 private:
+	friend class AvxStacking;
+	friend class AvxAccumulation;
+
 	typedef std::vector<float> EntropyVectorType;
+	typedef std::vector<__m256> EntropyLayerVectorType;
+
 	CMemoryBitmap& inputBitmap;
+	CEntropyInfo& entropyInfo;
+	CMemoryBitmap* pEntropyCoverage;
+	EntropyLayerVectorType redEntropyLayer;
+	EntropyLayerVectorType greenEntropyLayer;
+	EntropyLayerVectorType blueEntropyLayer;
 	bool avxReady;
 public:
 	AvxEntropy() = delete;
-	AvxEntropy(CMemoryBitmap& inputbm);
+	AvxEntropy(CMemoryBitmap& inputbm, CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);
 	AvxEntropy(const AvxEntropy&) = default;
 	AvxEntropy(AvxEntropy&&) = delete;
 	AvxEntropy& operator=(const AvxEntropy&) = delete;

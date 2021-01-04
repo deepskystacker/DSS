@@ -1,6 +1,7 @@
 #pragma once
 
 #include "avx_cfa.h"
+#include "avx_entropy.h"
 #include "PixelTransform.h"
 #include "StackingTasks.h"
 #include "BackgroundCalibration.h"
@@ -23,9 +24,10 @@ private:
 	CMemoryBitmap& inputBitmap;
 	CMemoryBitmap& tempBitmap;
 	AvxCfaProcessing avxCfa;
+	AvxEntropy& entropyData;
 public:
 	AvxStacking() = delete;
-	AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect);
+	AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat);
 	AvxStacking(const AvxStacking&) = default;
 	AvxStacking(AvxStacking&&) = delete;
 	AvxStacking& AvxStacking::operator=(const AvxStacking&) = delete;
@@ -47,8 +49,11 @@ private:
 	template <class T>
 	int backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef);
 
-	template <bool ISRGB, class T>
+	template <bool ISRGB, bool ENTROPY, class T>
 	int pixelPartitioning();
+
+	template <bool ISRGB>
+	void getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const int row, const int counter);
 };
 
 
@@ -302,8 +307,8 @@ public:
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const float* const pColor)
 	{
 		return {
-			_mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor)), _mm256_set1_epi32(0x0000ffff)),
-			_mm256_min_epi32(_mm256_cvtps_epi32(_mm256_loadu_ps(pColor + 8)), _mm256_set1_epi32(0x0000ffff))
+			_mm256_min_epi32(_mm256_cvttps_epi32(_mm256_loadu_ps(pColor)), _mm256_set1_epi32(0x0000ffff)),
+			_mm256_min_epi32(_mm256_cvttps_epi32(_mm256_loadu_ps(pColor + 8)), _mm256_set1_epi32(0x0000ffff))
 		};
 	}
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double* const pColor)
@@ -312,11 +317,11 @@ public:
 	}
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const double* const pColor, const __m256d scalingFactor)
 	{
-		const __m128i lo1 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor), scalingFactor));
-		const __m128i hi1 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 4), scalingFactor));
+		const __m128i lo1 = _mm256_cvttpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor), scalingFactor));
+		const __m128i hi1 = _mm256_cvttpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 4), scalingFactor));
 
-		const __m128i lo2 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 8), scalingFactor));
-		const __m128i hi2 = _mm256_cvtpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 12), scalingFactor));
+		const __m128i lo2 = _mm256_cvttpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 8), scalingFactor));
+		const __m128i hi2 = _mm256_cvttpd_epi32(_mm256_mul_pd(_mm256_loadu_pd(pColor + 12), scalingFactor));
 
 		return {
 			_mm256_min_epi32(_mm256_set_m128i(hi1, lo1), _mm256_set1_epi32(0x0000ffff)),
@@ -335,7 +340,7 @@ public:
 	static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, float *const pOutputBitmap, const bool faststore) noexcept;
 
 	template <class T>
-	static float accumulateSingleColorValue(const size_t outNdx, const float newColor, const int mask, const T* const pOutputBitmap) noexcept;
+	static T accumulateSingleColorValue(const size_t outNdx, const float newColor, const int mask, const T* const pOutputBitmap) noexcept;
 
 	// Shift and rotate for whole AVX vectors.
 

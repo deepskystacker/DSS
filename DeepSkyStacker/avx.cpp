@@ -3,7 +3,7 @@
 #include <immintrin.h>
 
 
-AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect) :
+AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat) :
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.Width() }, resultHeight{ resultRect.Height() },
@@ -14,7 +14,8 @@ AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemory
 	bluePixels{},
 	inputBitmap{ inputbm },
 	tempBitmap{ tempbm },
-	avxCfa{ lStart, lEnd, inputbm }
+	avxCfa{ lStart, lEnd, inputbm },
+	entropyData{ entrdat }
 {
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
@@ -79,20 +80,30 @@ int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskIn
 	if (!avxTempSupport.isColorBitmapOfType<T>() && !avxTempSupport.isMonochromeBitmapOfType<T>())
 		return 1;
 
-	// Entropy not yet supported.
-	if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
-		return 1;
-
 	if (avxInputSupport.isMonochromeCfaBitmapOfType<T>() && avxCfa.interpolate(lineStart, lineEnd, pixelSizeMultiplier) != 0)
 		return 1;
 	if (pixelTransform(pixelTransformDef) != 0)
 		return 1;
 	if (backgroundCalibration<T>(backgroundCalibrationDef) != 0)
 		return 1;
-	if (avxTempSupport.isColorBitmap() && pixelPartitioning<true, T>() != 0)
-		return 1;
-	if (avxTempSupport.isMonochromeBitmap() && pixelPartitioning<false, T>() != 0)
-		return 1;
+
+	// Pixel partitioning
+	// Has 4 things to distinguish: Color/Monochrome, Entropy yes/no
+	const bool isColor = avxTempSupport.isColorBitmap();
+	if (taskInfo.m_Method == MBP_ENTROPYAVERAGE)
+	{
+		if (isColor && pixelPartitioning<true, true, T>() != 0)
+			return 1;
+		if (!isColor && pixelPartitioning<false, true, T>() != 0)
+			return 1;
+	}
+	else // No entropy average
+	{
+		if (isColor && pixelPartitioning<true, false, T>() != 0)
+			return 1;
+		if (!isColor && pixelPartitioning<false, false, T>() != 0)
+			return 1;
+	}
 
 	return 0;
 };
@@ -541,7 +552,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 	return 0;
 }
 
-template <bool ISRGB, class T>
+template <bool ISRGB, bool ENTROPY, class T>
 int AvxStacking::pixelPartitioning()
 {
 	AvxSupport avxTempBitmap{ tempBitmap };
@@ -565,12 +576,12 @@ int AvxStacking::pixelPartitioning()
 
 	// Non-vectorized accumulation for the case of 2 (or more) x-coordinates being identical.
 	// Vectorized version would be incorrect in that case.
-	const auto accumulateSingle = [](const __m256 newColor, const __m256i outNdx, const __m256i mask, T* const pOutputBitmap) -> void
+	const auto accumulateSingle = [](const __m256 newColor, const __m256i outNdx, const __m256i mask, auto* const pOutputBitmap) -> void
 	{
 		const auto conditionalAccumulate = [pOutputBitmap](const int m, const size_t ndx, const float color) -> void
 		{
 			if (m != 0)
-				pOutputBitmap[ndx] = static_cast<T>(AvxSupport::accumulateSingleColorValue<T>(ndx, color, m, pOutputBitmap));
+				pOutputBitmap[ndx] = AvxSupport::accumulateSingleColorValue(ndx, color, m, pOutputBitmap);
 		};
 
 		// This needs to be done pixel by pixel of the vector, because neighboring pixels have identical indices (due to prior pixel transform step).
@@ -585,6 +596,18 @@ int AvxStacking::pixelPartitioning()
 		conditionalAccumulate(_mm256_extract_epi32(mask, 6), _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
 		conditionalAccumulate(_mm256_extract_epi32(mask, 7), _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
 	};
+
+	// Vectorized or non-vectorized accumulation
+	const auto accumulateAVX = [&](const __m256i outNdx, const __m256i mask, const __m256 colorValue, const __m256 fraction, auto* const pOutputBitmap, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
+	{
+		if (twoNdxEqual) // If so, we cannot use AVX.
+			return accumulateSingle(_mm256_mul_ps(colorValue, fraction), outNdx, mask, pOutputBitmap);
+
+		// Read from pOutputBitmap[outNdx[0:7]], and add (colorValue*fraction)[0:7]
+		const __m256 limitedColor = AvxSupport::accumulateColorValues(outNdx, colorValue, fraction, mask, pOutputBitmap, fastLoadAndStore);
+		AvxSupport::storeColorValue(outNdx, limitedColor, mask, pOutputBitmap, fastLoadAndStore);
+	};
+
 
 	const __m256i resultWidthVec = _mm256_set1_epi32(this->resultWidth);
 	const __m256i resultHeightVec = _mm256_set1_epi32(this->resultHeight);
@@ -605,20 +628,47 @@ int AvxStacking::pixelPartitioning()
 			return _mm256_undefined_ps();
 	};
 
+	// -------------------------------
+	// Entropy data
+
+	float *pRedEntropyLayer, *pGreenEntropyLayer, *pBlueEntropyLayer;
+	if constexpr (ENTROPY)
+	{
+		AvxSupport avxEntropySupport{ *this->entropyData.pEntropyCoverage };
+		if (ISRGB && !avxEntropySupport.isColorBitmapOfType<float>())
+			return 1;
+		if (!ISRGB && !avxEntropySupport.isMonochromeBitmapOfType<float>())
+			return 1;
+		if (this->entropyData.redEntropyLayer.empty()) // Something is wrong here!
+			return 1;
+		pRedEntropyLayer = reinterpret_cast<float*>(this->entropyData.redEntropyLayer.data());
+		pGreenEntropyLayer = constexpr (ISRGB) ? reinterpret_cast<float*>(this->entropyData.greenEntropyLayer.data()) : nullptr;
+		pBlueEntropyLayer = constexpr (ISRGB) ? reinterpret_cast<float*>(this->entropyData.blueEntropyLayer.data()) : nullptr;
+	}
+
+	const auto accumulateEntropyRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
+	{
+		if constexpr (!ENTROPY)
+			return;
+
+		if constexpr (ISRGB)
+		{
+			accumulateAVX(outNdx, mask, r, fraction, pRedEntropyLayer, twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, g, fraction, pGreenEntropyLayer, twoNdxEqual, fastLoadAndStore);
+			accumulateAVX(outNdx, mask, b, fraction, pBlueEntropyLayer, twoNdxEqual, fastLoadAndStore);
+		}
+		else
+		{
+			accumulateAVX(outNdx, mask, r, fraction, pRedEntropyLayer, twoNdxEqual, fastLoadAndStore);
+		}
+	};
+	// -------------------------------
+
 	T* const pRedOut = constexpr (ISRGB) ? &*avxTempBitmap.redPixels<T>().begin() : nullptr;
 	T* const pGreenOut = constexpr (ISRGB) ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
 	T* const pBlueOut = constexpr (ISRGB) ? &*avxTempBitmap.bluePixels<T>().begin() : nullptr;
 	T* const pGrayOut = constexpr (ISRGB) ? nullptr : &*avxTempBitmap.grayPixels<T>().begin();
 
-	const auto accumulateAVX = [&](const __m256i outNdx, const __m256i mask, const __m256 colorValue, const __m256 fraction, T* const pOutputBitmap, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
-	{
-		if (twoNdxEqual) // If so, we cannot use AVX.
-			return accumulateSingle(_mm256_mul_ps(colorValue, fraction), outNdx, mask, pOutputBitmap);
-
-		// Read from pOutputBitmap[outNdx[0:7]], and add (colorValue*fraction)[0:7]
-		const __m256 limitedColor = AvxSupport::accumulateColorValues(outNdx, colorValue, fraction, mask, pOutputBitmap, fastLoadAndStore);
-		AvxSupport::storeColorValue(outNdx, limitedColor, mask, pOutputBitmap, fastLoadAndStore);
-	};
 	const auto accumulateRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
 	{
 		if constexpr (ISRGB)
@@ -726,7 +776,13 @@ int AvxStacking::pixelPartitioning()
 			bool allNdxValid2 = allNdxEquidistant && (1 == _mm256_testc_si256(mask2, allOnes));
 
 			accumulateTwoFractions(red, green, blue, fraction1, fraction2, outIndex, mask1, mask2, twoNdxEqual, allNdxValid1, allNdxValid2); // (x, y), (x+1, y)
-
+			__m256 redEntropy, greenEntropy, blueEntropy;
+			if constexpr (ENTROPY)
+			{
+				getAvxEntropy<ISRGB>(redEntropy, greenEntropy, blueEntropy, row, static_cast<int>(counter));
+				accumulateEntropyRGBorMono(redEntropy, greenEntropy, blueEntropy, fraction1, outIndex, mask1, twoNdxEqual, allNdxValid1);
+				accumulateEntropyRGBorMono(redEntropy, greenEntropy, blueEntropy, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2);
+			}
 
 			// 3.Fraction at (xtruncated, ytruncated+1)
 			// 4.Fraction at (xtruncated+1, ytruncated+1)
@@ -740,6 +796,11 @@ int AvxStacking::pixelPartitioning()
 			outIndex = _mm256_add_epi32(outIndex, outWidthVec);
 
 			accumulateTwoFractions(red, green, blue, fraction1, fraction2, outIndex, mask1, mask2, twoNdxEqual, allNdxValid1, allNdxValid2); // (x, y+1), (x+1, y+1)
+			if constexpr (ENTROPY)
+			{
+				accumulateEntropyRGBorMono(redEntropy, greenEntropy, blueEntropy, fraction1, outIndex, mask1, twoNdxEqual, allNdxValid1);
+				accumulateEntropyRGBorMono(redEntropy, greenEntropy, blueEntropy, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2);
+			}
 
 			if constexpr (ISRGB)
 			{
@@ -751,6 +812,26 @@ int AvxStacking::pixelPartitioning()
 
 	return 0;
 }
+
+template <bool ISRGB>
+void AvxStacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const int row, const int counter)
+{
+	double dr, dg, db;
+	COLORREF16 crcol;
+	for (int n = 0; n < 8; ++n)
+	{
+		this->entropyData.entropyInfo.GetPixel(counter * 8 + n, lineStart + row, dr, dg, db, crcol);
+		if constexpr (ISRGB)
+		{
+			redEntropy.m256_f32[n] = static_cast<float>(dr);
+			greenEntropy.m256_f32[n] = static_cast<float>(dg);
+			blueEntropy.m256_f32[n] = static_cast<float>(db);
+		}
+		else
+			redEntropy.m256_f32[n] = static_cast<float>(dr);
+	}
+}
+
 
 
 // *********************************
@@ -974,21 +1055,21 @@ inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 color
 }
 
 template <class T>
-inline float AvxSupport::accumulateSingleColorValue(const size_t outNdx, const float newColor, const int mask, const T* const pOutputBitmap) noexcept
+inline T AvxSupport::accumulateSingleColorValue(const size_t outNdx, const float newColor, const int mask, const T* const pOutputBitmap) noexcept
 {
 	if (mask == 0)
-		return 0.0f;
+		return T{ 0 };
 
 	if constexpr (std::is_same<T, WORD>::value)
 	{
 		const float accumulatedColor = static_cast<float>(pOutputBitmap[outNdx]) + newColor;
-		return std::min(accumulatedColor, static_cast<float>(std::numeric_limits<T>::max()));
+		return static_cast<WORD>(std::min(accumulatedColor, static_cast<float>(std::numeric_limits<T>::max())));
 	}
 
 	if constexpr (std::is_same<T, unsigned long>::value)
 	{
 		const float accumulatedColor = static_cast<float>(pOutputBitmap[outNdx]) + newColor * 65536.0f;
-		return std::min(accumulatedColor, 4294967040.0f); // The next lower float value below UINTMAX.
+		return static_cast<unsigned long>(std::min(accumulatedColor, 4294967040.0f)); // The next lower float value below UINTMAX.
 	}
 
 	if constexpr (std::is_same<T, float>::value)

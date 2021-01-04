@@ -25,7 +25,7 @@ void CEntropyInfo::InitSquareEntropies()
 	if (m_pProgress)
 		m_pProgress->Start2(nullptr, m_lNrSquaresX);
 
-	AvxEntropy avxEntropy(*m_pBitmap);
+	AvxEntropy avxEntropy(*m_pBitmap, *this, nullptr);
 	if (avxEntropy.calcEntropies(lSquareSize, m_lNrSquaresX, m_lNrSquaresY, m_vRedEntropies, m_vGreenEntropies, m_vBlueEntropies) != 0)
 	{
 		for (long i = 0; i < m_lNrSquaresX; i++)
@@ -59,9 +59,9 @@ void CEntropyInfo::InitSquareEntropies()
 					m_pProgress->Progress2(nullptr, 1 + i);
 		};
 	}
+
 	if (m_pProgress)
 		m_pProgress->End2();
-
 };
 
 /* ------------------------------------------------------------------- */

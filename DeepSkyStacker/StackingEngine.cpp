@@ -1760,6 +1760,7 @@ public :
 	LONG						m_lPixelSizeMultiplier;
 	CSmartPtr<CMemoryBitmap>	m_pOutput;
 	CSmartPtr<CMemoryBitmap>	m_pEntropyCoverage;
+	AvxEntropy*					m_pAvxEntropy;
 
 public :
 	CStackTask()
@@ -1800,7 +1801,7 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 	PIXELDISPATCHVECTOR		vPixels;
 
 	vPixels.reserve(16);
-	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult);
+	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
 
 	// Create a message queue and signal the event
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
@@ -2155,6 +2156,8 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			if (m_pProgress)
 				m_pProgress->Start2(strStart2, lHeight);
 
+			AvxEntropy avxEntropy(*pBitmap, StackTask.m_EntropyWindow, m_pEntropyCoverage);
+
 			StackTask.m_PixTransform			= PixTransform;
 			StackTask.m_pLightTask				= m_pLightTask;
 			StackTask.m_bColor					= bColor;
@@ -2163,6 +2166,7 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			StackTask.m_lPixelSizeMultiplier	= m_lPixelSizeMultiplier;
 			StackTask.m_pOutput					= m_pOutput;
 			StackTask.m_pEntropyCoverage		= m_pEntropyCoverage;
+			StackTask.m_pAvxEntropy				= &avxEntropy;
 			StackTask.StartThreads();
 			StackTask.Process();
 
@@ -2180,12 +2184,13 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
 			};
 
-			AvxAccumulation avxAccumulation(m_rcResult, *m_pLightTask, *StackTask.m_pTempBitmap, *m_pOutput);
+			// First try AVX accelerated code, if not supported -> run conventional code.
+			AvxAccumulation avxAccumulation(m_rcResult, *m_pLightTask, *StackTask.m_pTempBitmap, *m_pOutput, avxEntropy);
+			const int avxResult = avxAccumulation.accumulate(m_lNrStacked);
 
 			if (m_pLightTask->m_Method == MBP_FASTAVERAGE)
 			{
-				// First try AVX accelerated code, if not supported -> run conventional code.
-				if (avxAccumulation.accumulate(m_lNrStacked) != 0)
+				if (avxResult != 0) // AVX code didn't run.
 				{
 					// Use the result to average
 					for (j = 0; j < m_rcResult.Height(); j++)
@@ -2220,8 +2225,7 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			}
 			else if (m_pLightTask->m_Method == MBP_MAXIMUM)
 			{
-				// First try AVX accelerated code, if not supported -> run conventional code.
-				if (avxAccumulation.accumulate(m_lNrStacked) != 0)
+				if (avxResult != 0)
 				{
 					// Use the result to maximize
 					for (j = 0; j < m_rcResult.Height(); j++)
@@ -2254,7 +2258,8 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 					};
 				};
 			}
-			else if ((m_pLightTask->m_Method != MBP_ENTROPYAVERAGE) && m_pMasterLight && StackTask.m_pTempBitmap) {
+			else if ((m_pLightTask->m_Method != MBP_ENTROPYAVERAGE) && m_pMasterLight && StackTask.m_pTempBitmap)
+			{
 				m_pMasterLight->AddBitmap(StackTask.m_pTempBitmap, m_pProgress);
 			}
 
