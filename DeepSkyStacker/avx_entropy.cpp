@@ -6,7 +6,7 @@
 #include <immintrin.h> 
 #include <omp.h> 
 
-AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm, CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
+AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov) :
 	inputBitmap{ inputbm },
 	entropyInfo{ entrinfo },
 	pEntropyCoverage{ entropycov },

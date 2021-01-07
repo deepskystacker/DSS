@@ -734,6 +734,9 @@ int AvxStacking::pixelPartitioning()
 		const __m256* pRed = &*redPixels.begin() + offset;
 		const __m256* pGreen = getColorPointer(greenPixels, offset);
 		const __m256* pBlue = getColorPointer(bluePixels, offset);
+		__m256i vIndex;
+		if constexpr (ENTROPY)
+			vIndex = _mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7);
 
 		for (size_t counter = 0; counter < nrVectors; ++counter, ++pXLine, ++pYLine, ++pRed)
 		{
@@ -779,7 +782,8 @@ int AvxStacking::pixelPartitioning()
 			__m256 redEntropy, greenEntropy, blueEntropy;
 			if constexpr (ENTROPY)
 			{
-				getAvxEntropy<ISRGB>(redEntropy, greenEntropy, blueEntropy, row, static_cast<int>(counter));
+				getAvxEntropy<ISRGB>(redEntropy, greenEntropy, blueEntropy, vIndex, row);
+				vIndex = _mm256_add_epi32(vIndex, _mm256_set1_epi32(8));
 				accumulateEntropyRGBorMono(redEntropy, greenEntropy, blueEntropy, fraction1, outIndex, mask1, twoNdxEqual, allNdxValid1);
 				accumulateEntropyRGBorMono(redEntropy, greenEntropy, blueEntropy, fraction2, _mm256_sub_epi32(outIndex, allOnes), mask2, twoNdxEqual, allNdxValid2);
 			}
@@ -814,22 +818,164 @@ int AvxStacking::pixelPartitioning()
 }
 
 template <bool ISRGB>
-void AvxStacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const int row, const int counter)
+inline void AvxStacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const __m256i xIndex, const int row)
 {
+	const int windowSize = entropyData.entropyInfo.windowSize();
+	const int squareSize = 2 * windowSize + 1;
+
+	const __m256 vx = _mm256_cvtepi32_ps(xIndex);
+	const __m256 vy = _mm256_set1_ps(static_cast<float>(lineStart + row));
+	const __m256 vsquareSize = _mm256_set1_ps(static_cast<float>(squareSize));
+	const __m256i vsquareNdxY = _mm256_set1_epi32((lineStart + row) / squareSize);
+	const __m256 xndx = _mm256_floor_ps(_mm256_div_ps(vx, vsquareSize));
+	const __m256i vsquareNdxX = _mm256_cvttps_epi32(xndx);
+	const __m256 vsquareCenterX = _mm256_fmadd_ps(xndx, vsquareSize, _mm256_set1_ps(static_cast<float>(windowSize))); //_mm256_add_epi32(_mm256_mullo_epi32(vsquareNdxX, vsquareSize), _mm256_set1_epi32(windowSize));
+	const __m256 vsquareCenterY = _mm256_fmadd_ps(_mm256_cvtepi32_ps(vsquareNdxY), vsquareSize, _mm256_set1_ps(static_cast<float>(windowSize))); //_mm256_add_epi32(_mm256_mullo_epi32(vsquareNdxY, vsquareSize), _mm256_set1_epi32(windowSize));
+	const __m256i vnrSquaresX = _mm256_set1_epi32(entropyData.entropyInfo.nrSquaresX());
+	const __m256i vnrSquaresY = _mm256_set1_epi32(entropyData.entropyInfo.nrSquaresY());
+
+	const auto vdistanceTo = [&vx, &vy](const __m256 vcenterX, const __m256 vcenterY) -> __m256
+	{
+		const __m256 x = _mm256_sub_ps(vx, vcenterX);
+		const __m256 y = _mm256_sub_ps(vy, vcenterY);
+		return _mm256_sqrt_ps(_mm256_fmadd_ps(y, y, _mm256_mul_ps(x, x)));
+//		return _mm256_hypot_ps(_mm256_cvtepi32_ps(_mm256_sub_epi32(vx, vcenterX)), _mm256_cvtepi32_ps(_mm256_sub_epi32(vy, vcenterY)));
+	};
+
+	const auto vgetEntropy = [&vnrSquaresX,
+		pRedEntropy = entropyData.entropyInfo.redEntropyData(),
+		pGreenEntropy = entropyData.entropyInfo.greenEntropyData(),
+		pBlueEntropy = entropyData.entropyInfo.blueEntropyData()](const __m256i x, const __m256i y, const __m256 mask)
+	{
+		const __m256i index = _mm256_add_epi32(_mm256_mullo_epi32(y, vnrSquaresX), x);
+		if constexpr (ISRGB)
+		{
+			return std::make_tuple(
+				_mm256_mask_i32gather_ps(mask, pRedEntropy, index, mask, 4), // where mask==0 -> gather returns mask, i.e. it returns zero.
+				_mm256_mask_i32gather_ps(mask, pGreenEntropy, index, mask, 4),
+				_mm256_mask_i32gather_ps(mask, pBlueEntropy, index, mask, 4)
+			);
+		}
+		else
+		{
+			return _mm256_mask_i32gather_ps(mask, pRedEntropy, index, mask, 4);
+		}
+	};
+
+	// Square 0
+	const __m256 vd0 = vdistanceTo(vsquareCenterX, vsquareCenterY);
+	// Square 1
+	const __m256i usePreviousSquare = _mm256_castps_si256(_mm256_cmp_ps(vsquareCenterX, vx, 30)); // IF x left of square center -> take previous square ELSE take next square.
+	const __m256i vndxX = _mm256_add_epi32(vsquareNdxX, _mm256_blendv_epi8(_mm256_set1_epi32(1), usePreviousSquare, usePreviousSquare)); // square index + or - 1 depending on above condition.
+	const __m256 mask1 = _mm256_castsi256_ps(_mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), vndxX), _mm256_cmpgt_epi32(vnrSquaresX, vndxX))); // square index not < 0 and < nr_squares.
+	const __m256 vd1 = _mm256_blendv_ps( // distance to new square center. Set to large value if x == old square center or new square index out of bounds.
+		_mm256_set1_ps(3e5f),
+		vdistanceTo(_mm256_blendv_ps(_mm256_add_ps(vsquareCenterX, vsquareSize), _mm256_sub_ps(vsquareCenterX, vsquareSize), _mm256_castsi256_ps(usePreviousSquare)), vsquareCenterY),
+		_mm256_andnot_ps(_mm256_cmp_ps(vx, vsquareCenterX, 0), mask1)
+	);
+	// Square 2
+	const __m256i useUpperSquare = _mm256_castps_si256(_mm256_cmp_ps(vsquareCenterY, vy, 30)); // IF y above square center -> take upper square ELSE take lower square.
+	const __m256i vndxY = _mm256_add_epi32(vsquareNdxY, _mm256_blendv_epi8(_mm256_set1_epi32(1), useUpperSquare, useUpperSquare));
+	const __m256 mask2 = _mm256_castsi256_ps(_mm256_andnot_si256(_mm256_cmpgt_epi32(_mm256_setzero_si256(), vndxY), _mm256_cmpgt_epi32(vnrSquaresY, vndxY))); // Check bounds of new square index.
+	const __m256 vd2 = _mm256_blendv_ps(
+		_mm256_set1_ps(3e5f),
+		vdistanceTo(vsquareCenterX, _mm256_blendv_ps(_mm256_add_ps(vsquareCenterY, vsquareSize), _mm256_sub_ps(vsquareCenterY, vsquareSize), _mm256_castsi256_ps(useUpperSquare))),
+		_mm256_andnot_ps(_mm256_cmp_ps(vy, vsquareCenterY, 0), mask2)
+	);
+
+	const __m256 vw0 = _mm256_mul_ps(vd1, vd2); // (1/d0)/(1/d0+1/d1+1/d2) = d1d2/(d1d2+d0d2+d0d1)
+	const __m256 vw1 = _mm256_mul_ps(vd0, vd2);
+	const __m256 vw2 = _mm256_mul_ps(vd0, vd1);
+	const __m256 vdenom = _mm256_add_ps(_mm256_add_ps(vw0, vw1), vw2);
+
+	if constexpr (ISRGB)
+	{
+		// Entropies of square0, square1, square2
+		const auto [vr0, vg0, vb0] = vgetEntropy(vsquareNdxX, vsquareNdxY, _mm256_castsi256_ps(_mm256_set1_epi32(0xffffffff)));
+		const auto [vr1, vg1, vb1] = vgetEntropy(vndxX, vsquareNdxY, mask1);
+		const auto [vr2, vg2, vb2] = vgetEntropy(vsquareNdxX, vndxY, mask2);
+		redEntropy = _mm256_div_ps(_mm256_fmadd_ps(vw0, vr0, _mm256_fmadd_ps(vw1, vr1, _mm256_mul_ps(vw2, vr2))), vdenom);
+		greenEntropy = _mm256_div_ps(_mm256_fmadd_ps(vw0, vg0, _mm256_fmadd_ps(vw1, vg1, _mm256_mul_ps(vw2, vg2))), vdenom);
+		blueEntropy = _mm256_div_ps(_mm256_fmadd_ps(vw0, vb0, _mm256_fmadd_ps(vw1, vb1, _mm256_mul_ps(vw2, vb2))), vdenom);
+	}
+	else
+	{
+		// Entropies of square0, square1, square2
+		const __m256 vr0 = vgetEntropy(vsquareNdxX, vsquareNdxY, _mm256_castsi256_ps(_mm256_set1_epi32(0xffffffff)));
+		const __m256 vr1 = vgetEntropy(vndxX, vsquareNdxY, mask1);
+		const __m256 vr2 = vgetEntropy(vsquareNdxX, vndxY, mask2);
+		redEntropy = _mm256_div_ps(_mm256_fmadd_ps(vw0, vr0, _mm256_fmadd_ps(vw1, vr1, _mm256_mul_ps(vw2, vr2))), vdenom);
+	}
+/*
+	const auto getEntropies = [nrSquaresX = entropyData.entropyInfo.nrSquaresX(),
+		nrSquaresY = entropyData.entropyInfo.nrSquaresY(),
+		redSquareEntropies = entropyData.entropyInfo.redEntropyData(),
+		greenSquareEntropies = entropyData.entropyInfo.greenEntropyData(),
+		blueSquareEntropies = entropyData.entropyInfo.blueEntropyData()](const int x, const int y) -> std::tuple<float, float, float>
+	{
+		return (x >= 0 && x < nrSquaresX && y >= 0 && y < nrSquaresY)
+			? (constexpr (ISRGB)
+				? std::make_tuple(redSquareEntropies[y * nrSquaresX + x], greenSquareEntropies[y * nrSquaresX + x], blueSquareEntropies[y * nrSquaresX + x])
+				: std::make_tuple(redSquareEntropies[y * nrSquaresX + x], 0.0f, 0.0f))
+			: std::make_tuple(-1.0f, -1.0f, -1.0f);
+	};
+
+	const int y = lineStart + row;
+	const int squareNdxY = y / squareSize;
+	for (int n = 0; n < 8; ++n)
+	{
+		const int x = counter * 8 + n;
+		const int squareNdxX = x / squareSize;
+		const int squareCenterX = squareNdxX * squareSize + windowSize;
+		const int squareCenterY = squareNdxY * squareSize + windowSize;
+
+		const auto distanceTo = [x, y](const int centerX, const int centerY) -> float
+		{
+			const auto square = [](const int x) { return static_cast<float>(x * x); };
+			return sqrtf(square(x - centerX) + square(y - centerY));
+		};
+
+		// Square 0
+		const auto [re0, ge0, be0] = getEntropies(squareNdxX, squareNdxY);
+		const float d0 = distanceTo(squareCenterX, squareCenterY);
+		// Square 1
+		int ndxX = x >= squareCenterX ? (squareNdxX + 1) : (squareNdxX - 1);
+		int ndxY = squareNdxY;
+		const auto [re1, ge1, be1] = getEntropies(ndxX, ndxY);
+		const float d1 = (re1 < 0.0f || x == squareCenterX) ? 1e5f : distanceTo(squareCenterX + (x >= squareCenterX ? squareSize : -squareSize), squareCenterY);
+		// Square 2
+		ndxX = squareNdxX;
+		ndxY = y >= squareCenterY ? (squareNdxY + 1) : (squareNdxY - 1);
+		const auto [re2, ge2, be2] = getEntropies(ndxX, ndxY);
+		const float d2 = (re2 < 0.0f || y == squareCenterY) ? 1e5f : distanceTo(squareCenterX, squareCenterY + (y >= squareCenterY ? squareSize : -squareSize));
+
+		const float denom = d1 * d2 + d0 * (d1 + d2);
+		const float w0 = d1 * d2;
+		const float w1 = d0 * d2;
+		const float w2 = d0 * d1;
+
+		redEntropy.m256_f32[n] = (w0 * re0 + w1 * re1 + w2 * re2) / denom;
+		if constexpr (ISRGB)
+		{
+			greenEntropy.m256_f32[n] = (w0 * ge0 + w1 * ge1 + w2 * ge2) / denom;
+			blueEntropy.m256_f32[n] = (w0 * be0 + w1 * be1 + w2 * be2) / denom;
+		}
+	}
+*/
+/*
 	double dr, dg, db;
 	COLORREF16 crcol;
 	for (int n = 0; n < 8; ++n)
 	{
-		this->entropyData.entropyInfo.GetPixel(counter * 8 + n, lineStart + row, dr, dg, db, crcol);
-		if constexpr (ISRGB)
+		const_cast<CEntropyInfo&>(entropyData.entropyInfo).GetPixel(xIndex.m256i_i32[n], lineStart + row, dr, dg, db, crcol);
+		if (fabsf(redEntropy.m256_f32[n] - static_cast<float>(dr)) > 0.01f)
 		{
-			redEntropy.m256_f32[n] = static_cast<float>(dr);
-			greenEntropy.m256_f32[n] = static_cast<float>(dg);
-			blueEntropy.m256_f32[n] = static_cast<float>(db);
+			wchar_t s[256];
+			swprintf_s(s, L"x/y=%d/%d, soll=%f, ist=%f", xIndex.m256i_i32[n], lineStart+row, static_cast<float>(dr), redEntropy.m256_f32[n]);
+			MessageBox(0, s, L"", 0);
 		}
-		else
-			redEntropy.m256_f32[n] = static_cast<float>(dr);
 	}
+*/
 }
 
 
@@ -929,6 +1075,9 @@ bool AvxSupport::checkAvx2CpuSupport() noexcept
 
 	//const bool BMI1supported = ((cpuid[1] & 0x04) != 0);
 	//const bool BMI2supported = ((cpuid[1] & 0x0100) != 0);
+
+	// Additionally set flush to zero and denormals to zero.
+	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
 
 	return (FMAsupported && AVX2supported && OSXSAVEsupported && AVXenabledInOS);
 

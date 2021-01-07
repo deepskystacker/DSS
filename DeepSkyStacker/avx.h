@@ -53,7 +53,7 @@ private:
 	int pixelPartitioning();
 
 	template <bool ISRGB>
-	void getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const int row, const int counter);
+	void getAvxEntropy(__m256& redEntropy, __m256& greenEntropy, __m256& blueEntropy, const __m256i xIndex, const int row);
 };
 
 

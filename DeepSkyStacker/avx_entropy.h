@@ -20,7 +20,7 @@ private:
 	typedef std::vector<__m256> EntropyLayerVectorType;
 
 	CMemoryBitmap& inputBitmap;
-	CEntropyInfo& entropyInfo;
+	const CEntropyInfo& entropyInfo;
 	CMemoryBitmap* pEntropyCoverage;
 	EntropyLayerVectorType redEntropyLayer;
 	EntropyLayerVectorType greenEntropyLayer;
@@ -28,7 +28,7 @@ private:
 	bool avxReady;
 public:
 	AvxEntropy() = delete;
-	AvxEntropy(CMemoryBitmap& inputbm, CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);
+	AvxEntropy(CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMemoryBitmap* entropycov);
 	AvxEntropy(const AvxEntropy&) = default;
 	AvxEntropy(AvxEntropy&&) = delete;
 	AvxEntropy& operator=(const AvxEntropy&) = delete;
