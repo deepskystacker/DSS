@@ -181,7 +181,7 @@ int AvxImageFilter<T>::filter(const size_t lineStart, const size_t lineEnd)
 		pInNext = (row == height - 2) ? pIn : (pIn + width); // If next round will be the last line of the bitmap -> pNext = pIn
 	}
 
-	return 0;
+	return AvxSupport::zeroUpper(0);
 }
 
 // Explicit template instantiation for the types we need.

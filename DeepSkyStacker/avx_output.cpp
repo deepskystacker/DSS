@@ -47,16 +47,17 @@ int AvxOutputComposition::compose(const int line, std::vector<void*> const& line
 	if (lineAddresses.empty())
 		return 1;
 
+	int rval = 2;
 	switch (inputBitmap.GetProcessingMethod())
 	{
-		case MBP_MEDIAN: return processMedianKappaSigma<MedianOnly>(line, lineAddresses);
-		case MBP_SIGMACLIP: return processMedianKappaSigma<KappaSigma>(line, lineAddresses);
-		case MBP_AUTOADAPTIVE: return processAutoAdaptiveWeightedAverage(line, lineAddresses);
-		case MBP_MEDIANSIGMACLIP: return processMedianKappaSigma<MedianKappaSigma>(line, lineAddresses);
-		default: return 2;
+		case MBP_MEDIAN: rval = processMedianKappaSigma<MedianOnly>(line, lineAddresses); break;
+		case MBP_SIGMACLIP: rval = processMedianKappaSigma<KappaSigma>(line, lineAddresses); break;
+		case MBP_AUTOADAPTIVE: rval = processAutoAdaptiveWeightedAverage(line, lineAddresses); break;
+		case MBP_MEDIANSIGMACLIP: rval = processMedianKappaSigma<MedianKappaSigma>(line, lineAddresses); break;
+		default: rval = 2; break;
 	}
 
-	return 2;
+	return AvxSupport::zeroUpper(rval);
 }
 
 template <AvxOutputComposition::MethodSelection Method>

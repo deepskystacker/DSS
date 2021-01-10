@@ -18,22 +18,23 @@ AvxLuminance::AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) noexcep
 
 int AvxLuminance::computeLuminanceBitmap(const size_t lineStart, const size_t lineEnd)
 {
-	if (doComputeLuminance<WORD>(lineStart, lineEnd) == 0)
-		return 0;
-	if (doComputeLuminance<unsigned long>(lineStart, lineEnd) == 0)
-		return 0;
-	if (doComputeLuminance<float>(lineStart, lineEnd) == 0)
-		return 0;
+	if (!avxReady)
+		return 1;
 
-	return 1;
+	int rval = 1;
+	if (doComputeLuminance<WORD>(lineStart, lineEnd) == 0
+		|| doComputeLuminance<unsigned long>(lineStart, lineEnd) == 0
+		|| doComputeLuminance<float>(lineStart, lineEnd) == 0)
+	{
+		rval = 0;
+	}
+	return AvxSupport::zeroUpper(rval);
 }
 
 template <class T>
 int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEnd)
 {
 	constexpr double scalingFactor = 1.0 / 256.0;
-	if (!avxReady)
-		return 1;
 
 	// Check input bitmap.
 	const AvxSupport avxInputSupport{ inputBitmap };

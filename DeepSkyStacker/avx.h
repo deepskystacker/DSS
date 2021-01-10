@@ -116,6 +116,16 @@ public:
 		return width == 0 ? 0 : (width - 1) * ElementSize / sizeof(__m256i) + 1;
 	}
 
+	// When returning from AVX-code to non-AVX-code we should zero the upper 128 bits of all ymm registers. 
+	// Otherwise old Intel CPUs could suffer from performance degradations. 
+	template <class T>
+	inline static T zeroUpper(const T returnValue)
+	{
+		static_assert(std::is_integral<T>::value);
+		_mm256_zeroupper();
+		return returnValue;
+	}
+
 	// SIMD functions
 
 	inline static __m256 wordToPackedFloat(const __m128i x) noexcept

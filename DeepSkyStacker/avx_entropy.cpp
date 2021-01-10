@@ -30,14 +30,15 @@ int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const i
 {
 	if (!avxReady)
 		return 1;
-	if (doCalcEntropies<WORD>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0)
-		return 0;
-	if (doCalcEntropies<unsigned long>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0)
-		return 0;
-	if (doCalcEntropies<float>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0)
-		return 0;
 
-	return 1;
+	int rval = 1;
+	if (doCalcEntropies<WORD>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
+		|| doCalcEntropies<unsigned long>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
+		|| doCalcEntropies<float>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0)
+	{
+		rval = 0;
+	}
+	return AvxSupport::zeroUpper(rval);
 }
 
 template <class T>

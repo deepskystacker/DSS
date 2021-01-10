@@ -33,16 +33,15 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
 	if (!avxReady)
 		return rval(1);
 
-	if (doCalcHistogram<WORD>(lineStart, lineEnd) == 0)
-		return rval(0);
-	if (doCalcHistogram<unsigned long>(lineStart, lineEnd) == 0)
-		return rval(0);
-	if (doCalcHistogram<float>(lineStart, lineEnd) == 0)
-		return rval(0);
-	if (doCalcHistogram<double>(lineStart, lineEnd) == 0)
-		return rval(0);
-
-	return rval(1);
+	int rv = 1;
+	if (doCalcHistogram<WORD>(lineStart, lineEnd) == 0
+		|| doCalcHistogram<unsigned long>(lineStart, lineEnd) == 0
+		|| doCalcHistogram<float>(lineStart, lineEnd) == 0
+		|| doCalcHistogram<double>(lineStart, lineEnd) == 0)
+	{
+		rv = 0;
+	}
+	return AvxSupport::zeroUpper(rval(rv));
 }
 
 template <class T>
@@ -165,7 +164,7 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 	mergeHisto(green, greenHisto.empty() ? redHisto : greenHisto);
 	mergeHisto(blue, blueHisto.empty() ? redHisto : blueHisto);
 
-	return 0;
+	return AvxSupport::zeroUpper(0);
 }
 
 bool AvxHistogram::histogramSuccessful() const

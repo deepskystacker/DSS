@@ -21,13 +21,14 @@ int AvxAccumulation::accumulate(const int nrStackedBitmaps)
 	if (!AvxSupport::checkSimdAvailability())
 		return 1;
 
-	if (doAccumulate<WORD, float>(nrStackedBitmaps) == 0)
-		return 0;
-	if (doAccumulate<unsigned long, float>(nrStackedBitmaps) == 0)
-		return 0;
-	if (doAccumulate<float, float>(nrStackedBitmaps) == 0)
-		return 0;
-	return 1;
+	int rval = 1;
+	if (doAccumulate<WORD, float>(nrStackedBitmaps) == 0
+		|| doAccumulate<unsigned long, float>(nrStackedBitmaps) == 0
+		|| doAccumulate<float, float>(nrStackedBitmaps) == 0)
+	{
+		rval = 0;
+	}
+	return AvxSupport::zeroUpper(rval);
 }
 
 template <class T_IN, class T_OUT>

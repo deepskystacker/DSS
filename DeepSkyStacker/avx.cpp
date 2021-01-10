@@ -55,13 +55,14 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 	if (!AvxSupport::checkSimdAvailability())
 		return 1;
 
-	if (doStack<WORD>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
-		return 0;
-	if (doStack<unsigned long>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
-		return 0;
-	if (doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
-		return 0;
-	return 1;
+	int rval = 1;
+	if (doStack<WORD>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
+		|| doStack<unsigned long>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
+		|| doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
+	{
+		rval = 0;
+	}
+	return AvxSupport::zeroUpper(rval);
 }
 
 template <class T>
