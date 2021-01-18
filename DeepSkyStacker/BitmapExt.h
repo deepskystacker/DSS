@@ -1,10 +1,8 @@
 #ifndef _BITMAPEXT_H__
 #define _BITMAPEXT_H__
 
-#if !defined(NO_QT)
 #include <QCoreApplication> 
 #include <QString>
-#endif
 
 #include "Multitask.h"
 #include <zexcept.h>

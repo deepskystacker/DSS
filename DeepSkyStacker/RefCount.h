@@ -4,27 +4,24 @@
 
 class CRefCount
 {
-protected:
-	std::atomic<long> m_lRefCount;
+private:
+	std::atomic<int> m_lRefCount;
 
 public:
-	CRefCount() :
-		m_lRefCount{ 0 }
-	{
-	};
+	CRefCount() : m_lRefCount{ 0 }
+	{}
 
 	virtual ~CRefCount()
-	{
-	};
+	{}
 
-	void	AddRef()
+	void AddRef()
 	{
 		m_lRefCount++;
 	};
 
-	void	Release()
+	void Release()
 	{
 		if (m_lRefCount.fetch_sub(1) == 1) // If it was previously one (is now zero), delete the object.
 			delete this;
-	};
+	}
 };
