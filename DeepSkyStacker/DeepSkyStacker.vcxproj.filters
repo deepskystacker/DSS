@@ -757,6 +757,9 @@
     <ClInclude Include="avx_support.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="BitMapFiller.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">

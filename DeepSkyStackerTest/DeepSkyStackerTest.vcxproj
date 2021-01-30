@@ -152,6 +152,7 @@
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_support.cpp" />
     <ClCompile Include="AvxCfaTest.cpp" />
+    <ClCompile Include="BitMapFillerTest.cpp" />
     <ClCompile Include="DeepSkyStackerTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

@@ -457,6 +457,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="BitmapExt.h" />
+    <ClInclude Include="BitMapFiller.h" />
     <ClInclude Include="ChannelAlign.h" />
     <ClInclude Include="CheckAbove.h" />
     <QtMoc Include="CometStacking.h" />
