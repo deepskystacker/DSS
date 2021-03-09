@@ -638,7 +638,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 		//
 		// Get our endian-ness so we can swap bytes if needed (always on Windows).
 		//
-		const bool littleEndian = htons(0x55aa) != 0x55aa;
+		const bool littleEndian = htons(0x55aa) != 0x55aa; // big_endian = htons(host_byte_order)
 
 		unsigned short *raw_image = nullptr;
 		void * buffer = nullptr;		// Used for debugging only (memory window)
@@ -945,7 +945,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 			{
 				buffer = &RAW(row, 0);
 				// Write raw pixel data into our private bitmap format
-				pFiller->Write(buffer, sizeof(unsigned short), S.width);
+				pFiller->Write(buffer, sizeof(unsigned short), S.width); // Gray, 16 bits per pixel.
 			}
 		}
 		else
@@ -1257,7 +1257,7 @@ void DSSLibRaw::write_ppm_tiff()
 		// Instead of writing the bitmap data to an output file
 		// send it to our Bitmap loader class
 		//
-		pDSSBitMapFiller->Write(ppm, colors*output_bps / 8, width);
+		pDSSBitMapFiller->Write(ppm, colors*output_bps / 8, width); // Gray or color, 8 or 16 bits per sample.
 	}
 	free(ppm);
 }
