@@ -35,6 +35,90 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		REQUIRE(avxCfaProcessing.interpolate(0, 1, 2) == 1);
 	}
 
+	SECTION("Interpolate fails if CFA type is NONE")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		REQUIRE(pGray != nullptr);
+		pGray->UseBilinear(true);
+		pGray->SetCFAType(CFATYPE_NONE);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
+	SECTION("Interpolate fails if CFA type is BGGR")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		REQUIRE(pGray != nullptr);
+		pGray->UseBilinear(true);
+		pGray->SetCFAType(CFATYPE_BGGR);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
+	SECTION("Interpolate fails if CFA type is GRBG")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		REQUIRE(pGray != nullptr);
+		pGray->UseBilinear(true);
+		pGray->SetCFAType(CFATYPE_GRBG);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
+	SECTION("Interpolate fails if CFA type is GBRG")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		REQUIRE(pGray != nullptr);
+		pGray->UseBilinear(true);
+		pGray->SetCFAType(CFATYPE_GBRG);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
+	SECTION("Interpolate fails if CFA transform is superpixel although CFA type is RGGB")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		REQUIRE(pGray != nullptr);
+		pGray->UseSuperPixels(true);
+		pGray->SetCFAType(CFATYPE_RGGB);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
+	SECTION("Interpolate fails if CFA transform is rawbayer although CFA type is RGGB")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		REQUIRE(pGray != nullptr);
+		pGray->UseRawBayer(true);
+		pGray->SetCFAType(CFATYPE_RGGB);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
+	SECTION("Interpolate fails if CFA transform is AHD although CFA type is RGGB")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		REQUIRE(pGray != nullptr);
+		pGray->UseAHD(true);
+		pGray->SetCFAType(CFATYPE_RGGB);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
 	SECTION("Interpolate zeros gives zeros")
 	{
 		const bool b = pBitmap->Init(64, 8);
