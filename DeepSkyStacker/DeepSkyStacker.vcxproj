@@ -238,6 +238,9 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="avx_avg.cpp">
       <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
+    <ClCompile Include="avx_bitmap_filler.cpp">
+      <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
     <ClCompile Include="avx_cfa.cpp">
       <EnableEnhancedInstructionSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -265,6 +268,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="BatchStacking.cpp" />
     <ClCompile Include="BitmapExt.cpp" />
+    <ClCompile Include="BitMapFiller.cpp" />
     <ClCompile Include="ChannelAlign.cpp" />
     <ClCompile Include="CheckAbove.cpp" />
     <ClCompile Include="CometStacking.cpp">
@@ -442,6 +446,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="AskRegistering.h" />
     <ClInclude Include="avx.h" />
     <ClInclude Include="avx_avg.h" />
+    <ClInclude Include="avx_bitmap_filler.h" />
     <ClInclude Include="avx_cfa.h" />
     <ClInclude Include="avx_entropy.h" />
     <ClInclude Include="avx_filter.h" />

@@ -149,8 +149,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_support.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp" />
+    <ClCompile Include="AvxBitmapFillerTest.cpp" />
     <ClCompile Include="AvxCfaTest.cpp" />
     <ClCompile Include="BitMapFillerTest.cpp" />
     <ClCompile Include="DeepSkyStackerTest.cpp" />

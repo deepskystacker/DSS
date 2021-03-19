@@ -133,6 +133,12 @@ public:
 		return cvtEpi32Epu16(epi32);
 	}
 
+	inline static __m128i cvtTruncatePsEpu16(const __m256 x) noexcept
+	{
+		const __m256i epi32 = _mm256_cvttps_epi32(x);
+		return cvtEpi32Epu16(epi32);
+	}
+
 	inline static __m256i cvtPsEpu32(const __m256 x) noexcept
 	{
 		// x >= INTMAX + 1

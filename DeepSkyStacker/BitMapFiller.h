@@ -2,16 +2,35 @@
 
 #include "BitmapBase.h"
 #include "DSSProgress.h"
+#include <memory>
 
 
-class BitMapFiller
+class BitmapFillerInterface
 {
+protected:
+	CDSSProgress* pProgress;
+	CMemoryBitmap* pBitmap;
+public:
+	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress);
+	BitmapFillerInterface(CMemoryBitmap* pB, CDSSProgress* pP);
+	template <class... Args> BitmapFillerInterface(Args&&...) = delete;
+	virtual ~BitmapFillerInterface() {}
 
+	virtual void SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale) = 0;
+	virtual void SetCFAType(CFATYPE CFAType) = 0;
+	virtual void setGrey(bool grey) = 0;
+	virtual void setWidth(LONG width) = 0;
+	virtual void setHeight(LONG height) = 0;
+	virtual void setMaxColors(LONG maxcolors) = 0;
+	virtual size_t Write(const void* source, size_t size, size_t count) = 0;
+};
+
+
+class BitMapFiller : public BitmapFillerInterface
+{
 private:
-	CDSSProgress* m_pProgress;
 	bool m_bStarted;
 	CFATYPE m_CFAType;
-	CMemoryBitmap* m_pBitmap;
 	DWORD m_dwPos;
 	PixelIterator m_PixelIt;
 	DWORD m_dwCurrentX, m_dwCurrentY;
@@ -213,24 +232,22 @@ private:
 		//
 		// If the bitmap is a 16-bit grayscale bitmap, then set the CFA type
 		//
-		if (auto* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(m_pBitmap))
+		if (auto* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap))
 			pGray16Bitmap->SetCFAType(m_CFAType);
 		//
 		// Initialise the progress dialog
 		//
-		if (m_pProgress)
-			m_pProgress->Start2(nullptr, m_pBitmap->Height());
+		if (pProgress)
+			pProgress->Start2(nullptr, pBitmap->Height());
 
-		m_pBitmap->GetIterator(&m_PixelIt);
+		pBitmap->GetIterator(&m_PixelIt);
 
 		return 0;
 	};
 
 public:
-	BitMapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+	BitMapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) : BitmapFillerInterface{pBitmap, pProgress}
 	{
-		m_pBitmap = pBitmap;
-		m_pProgress = pProgress;
 		m_bStarted = false;
 		m_fRedScale = 1.0;
 		m_fGreenScale = 1.0;
@@ -299,8 +316,8 @@ public:
 
 		AddToBuffer(strText.GetBuffer(10000), nResult);
 
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, m_dwPos);
+		if (pProgress)
+			pProgress->Progress2(nullptr, m_dwPos);
 
 		return nResult;
 	};
@@ -309,8 +326,8 @@ public:
 	size_t Write(const void* source, size_t size, size_t count)
 	{
 		AddToBuffer(source, static_cast<DWORD>(size * count));
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, m_dwPos);
+		if (pProgress)
+			pProgress->Progress2(nullptr, m_dwPos);
 
 		return count;
 	};
