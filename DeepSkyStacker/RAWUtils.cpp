@@ -181,7 +181,8 @@ class DSSLibRaw : public LibRaw
 public:
 	DSSLibRaw() noexcept {};
 	~DSSLibRaw() {};
-	void setBitMapFiller(BitMapFiller * pFiller) noexcept
+
+	void setBitMapFiller(BitmapFillerInterface* pFiller) noexcept
 	{
 		pDSSBitMapFiller = pFiller;
 	};
@@ -199,8 +200,7 @@ protected:
 	void        write_ppm_tiff();
 
 private:
-	BitMapFiller * pDSSBitMapFiller = nullptr;
-
+	BitmapFillerInterface* pDSSBitMapFiller = nullptr;
 };
 
 #define Thread   __declspec( thread )
@@ -519,9 +519,10 @@ void CRawDecod::checkCameraSupport(const CString& strModel)
 bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, bool bThumb)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool		bResult = true;
-	BitMapFiller *		pFiller = nullptr;
-	int			ret = 0;
+
+	bool bResult = true;
+	std::unique_ptr<BitmapFillerInterface> pFiller;
+	int ret = 0;
 
 	pBitmap->Init(m_lWidth, m_lHeight);
 	pBitmap->SetISOSpeed(m_lISOSpeed);
@@ -626,7 +627,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 		//
 		// Create the class that populates the bitmap
 		//
-		pFiller = new BitMapFiller(pBitmap, pProgress);
+		pFiller = BitmapFillerInterface::makeBitmapFiller(pBitmap, pProgress);
 		pFiller->SetWhiteBalance(fRedScale, fGreenScale, fBlueScale);
 		// Get the Colour Filter Array type and set into the bitmap filler
 		m_CFAType = GetCurrentCFAType();
@@ -969,7 +970,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 			// Set up the intercept code to write the image data to our bitmap instead of
 			// to an external file, and invoke the overridden dcraw_ppm_tiff_writer()
 			//
-			rawProcessor.setBitMapFiller(pFiller);
+			rawProcessor.setBitMapFiller(pFiller.get());
 			if (LIBRAW_SUCCESS != (ret = rawProcessor.dcraw_ppm_tiff_writer("")))
 			{
 				bResult = false;
@@ -981,16 +982,13 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 		// If we allocated memory for an image, release it.
 		if (nullptr != raw_image)
 		{
-			free(raw_image); raw_image = nullptr;
+			free(raw_image);
+			raw_image = nullptr;
 		}
 
 	} while (0);
 
 	g_Progress = nullptr;
-
-	if (pFiller)
-		delete pFiller;
-	pFiller = nullptr;
 
 	return bResult;
 };
