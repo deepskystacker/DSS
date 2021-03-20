@@ -338,3 +338,64 @@ TEST_CASE("AVX BitMapFiller color", "[BitMap][AvxBitMapFiller][color]")
 		REQUIRE(correct == true);
 	}
 }
+
+
+// ---------------
+// Progress
+// ---------------
+
+class MyProgress : public CDSSProgress
+{
+public:
+	int nrCallsStart2 = 0;
+	int nrCallsProgress2 = 0;
+	LONG argumentStart2 = -1;
+	std::vector<LONG> argumentsAchieved2;
+public:
+	void GetStartText(CString& strText) {}
+	void GetStart2Text(CString& strText) {}
+	void Start(LPCTSTR szTitle, LONG lTotal1, bool bEnableCancel = true) {}
+	void Progress1(LPCTSTR szText, LONG lAchieved1) {}
+	void Start2(LPCTSTR szText, LONG lTotal2) {
+		++nrCallsStart2;
+		argumentStart2 = lTotal2;
+	}
+	void Progress2(LPCTSTR szText, LONG lAchieved2) {
+		++nrCallsProgress2;
+		argumentsAchieved2.push_back(lAchieved2);
+	}
+	void End2() {}
+	bool IsCanceled() { return false; }
+	bool Close() { return true; }
+};
+
+TEST_CASE("AVX BitmapFiller progress check", "[BitMap][AvxBitMapFiller][progress]")
+{
+	CSmartPtr<CMemoryBitmap> pBitmap;
+	pBitmap.Attach(new CGrayBitmapT<WORD>);
+	MyProgress prg{};
+	auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, &prg);
+	filler->setGrey(true);
+
+	SECTION("Write 64 lines and check if progress was called twice")
+	{
+		constexpr size_t H = 64;
+		pBitmap->Init(4, H);
+		filler->setMaxColors(255);
+		filler->setWidth(4);
+		filler->setHeight(H);
+		std::uint8_t inputData[H * 4];
+
+		for (size_t i = 0; i < sizeof(inputData); ++i)
+			inputData[i] = i % 256;
+
+		auto* pD = inputData;
+		for (size_t i = 0; i < H; ++i, pD += 4)
+			filler->Write(pD, 1, 4);
+
+		REQUIRE(prg.nrCallsStart2 == 1);
+		REQUIRE(prg.nrCallsProgress2 == 2);
+		REQUIRE(prg.argumentStart2 == H);
+		REQUIRE(prg.argumentsAchieved2 == std::vector<LONG>{ 32, 64 });
+	}
+}

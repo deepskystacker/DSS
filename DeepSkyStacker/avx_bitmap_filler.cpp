@@ -278,5 +278,7 @@ size_t AvxBitmapFiller::Write(const void* source, size_t bytesPerPixel, size_t n
 	}
 
 	++this->nrLinesWritten;
+	if ((this->nrLinesWritten % 32) == 0 && this->pProgress != nullptr)
+		this->pProgress->Progress2(nullptr, static_cast<LONG>(this->nrLinesWritten));
 	return nrPixels;
 }
