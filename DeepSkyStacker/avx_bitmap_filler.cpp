@@ -5,16 +5,16 @@
 #include <immintrin.h>
 
 
-AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, CDSSProgress* pP) :
+AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, CDSSProgress* pP, const double redWb, const double greenWb, const double blueWb) :
 	BitmapFillerInterface{ pB, pP },
-	redScale{ 1.0f },
-	greenScale{ 1.0f },
-	blueScale{ 1.0f },
+	redScale{ static_cast<float>(redWb) },
+	greenScale{ static_cast<float>(greenWb) },
+	blueScale{ static_cast<float>(blueWb) },
+
 	cfaType{ CFATYPE_NONE },
 	isGray{ true },
 	width{ 0 },
 	height{ 0 },
-	nrLinesWritten{ 0 },
 	bytesPerChannel{ 0 },
 	redBuffer{},
 	greenBuffer{},
@@ -23,12 +23,11 @@ AvxBitmapFiller::AvxBitmapFiller(CMemoryBitmap* pB, CDSSProgress* pP) :
 	sourceBuffer{}
 {}
 
-void AvxBitmapFiller::SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale)
+bool AvxBitmapFiller::isThreadSafe() const { return true; }
+
+std::unique_ptr<BitmapFillerInterface> AvxBitmapFiller::clone()
 {
-	this->redScale = static_cast<float>(fRedScale);
-	this->greenScale = static_cast<float>(fGreenScale);
-	this->blueScale = static_cast<float>(fBlueScale);
-	setCfaFactors();
+	return std::make_unique<AvxBitmapFiller>(*this);
 }
 
 void AvxBitmapFiller::SetCFAType(CFATYPE cfaTp)
@@ -89,7 +88,7 @@ void AvxBitmapFiller::setMaxColors(LONG maxcolors)
 	this->bytesPerChannel = maxcolors > 255 ? 2 : 1;
 }
 
-size_t AvxBitmapFiller::Write(const void* source, size_t bytesPerPixel, size_t nrPixels)
+size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, const size_t nrPixels, const size_t rowIndex)
 {
 	const auto adjustColor = [](const float color, const float adjustFactor) -> float
 	{
@@ -127,24 +126,24 @@ size_t AvxBitmapFiller::Write(const void* source, size_t bytesPerPixel, size_t n
 		}
 		else
 		{
-			const std::uint16_t* pData = static_cast<const std::uint16_t*>(source);
-			for (size_t n = 0; n < nrVectors; ++n, pData += 16, pBuf += 16)
+			const __m256i* const pData = static_cast<const __m256i*>(source);
+			for (size_t n = 0; n < nrVectors; ++n)
 			{
-				const __m256i epu16_be = _mm256_loadu_si256((const __m256i*)pData); // Load 16 pixels (each 16 bits big endian)
+				const __m256i epu16_be = _mm256_loadu_si256(pData + n); // Load 16 pixels (each 16 bits big endian)
 				const __m256i epu16_le = _mm256_shuffle_epi8(epu16_be,
 					_mm256_set_epi32(0x0e0f0c0d, 0x0a0b0809, 0x06070405, 0x02030001, 0x0e0f0c0d, 0x0a0b0809, 0x06070405, 0x02030001)); // big endian -> little endian
 				const __m256 lo8 = AvxSupport::wordToPackedFloat(_mm256_castsi256_si128(epu16_le));
 				const __m256 hi8 = AvxSupport::wordToPackedFloat(_mm256_extracti128_si256(epu16_le, 1));
-				_mm256_storeu_ps(pBuf, lo8);
-				_mm256_storeu_ps(pBuf + 8, hi8);
+				_mm256_storeu_ps(pBuf + n*16, lo8);
+				_mm256_storeu_ps(pBuf + n*16 + 8, hi8);
 			}
-			for (size_t i = nrVectors * vectorLen; i < nrPixels; ++i, ++pData, ++pBuf) // Remaining pixels of line
-				*pBuf = static_cast<float>(_load_be_u16(pData)); // Load an convert to little endian
+			for (size_t i = nrVectors * vectorLen; i < nrPixels; ++i) // Remaining pixels of line
+				pBuf[i] = static_cast<float>(_load_be_u16((std::uint16_t*)source + i)); // Load an convert to little endian
 		}
 
 		if (this->isRgbBayerPattern())
 		{
-			const size_t y = 2 * (this->nrLinesWritten % 2); // 0, 2, 0, 2, ...
+			const size_t y = 2 * (rowIndex % 2); // 0, 2, 0, 2, ...
 			const float adjustFactors[2] = { this->cfaFactors[y], this->cfaFactors[y + 1] }; // {0, 1} or {2, 3}, depending on the line number.
 			const __m256 adjustFactorsVec = _mm256_setr_ps(cfaFactors[y], cfaFactors[y + 1], cfaFactors[y], cfaFactors[y + 1], cfaFactors[y], cfaFactors[y + 1], cfaFactors[y], cfaFactors[y + 1]);
 			pBuf = redBuffer.data();
@@ -162,7 +161,7 @@ size_t AvxBitmapFiller::Write(const void* source, size_t bytesPerPixel, size_t n
 		auto* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap);
 		ZASSERTSTATE(pGray16Bitmap != nullptr);
 		pBuf = redBuffer.data();
-		std::uint16_t* pOut = pGray16Bitmap->m_vPixels.data() + this->nrLinesWritten * nrPixels;
+		std::uint16_t* pOut = pGray16Bitmap->m_vPixels.data() + rowIndex * nrPixels;
 		for (size_t i = 0; i < nrPixels / 8; ++i, pBuf += 8, pOut += 8)
 			_mm_storeu_si128((__m128i*)pOut, AvxSupport::cvtTruncatePsEpu16(_mm256_loadu_ps(pBuf)));
 		for (size_t i = (nrPixels / 8) * 8; i < nrPixels; ++i, ++pBuf, ++pOut) // Remaining pixels of line
@@ -257,9 +256,9 @@ size_t AvxBitmapFiller::Write(const void* source, size_t bytesPerPixel, size_t n
 
 		auto* pColor16Bitmap = dynamic_cast<C48BitColorBitmap*>(pBitmap);
 		ZASSERTSTATE(pColor16Bitmap != nullptr);
-		std::uint16_t* pOutRed = pColor16Bitmap->m_Red.m_vPixels.data() + this->nrLinesWritten * nrPixels;
-		std::uint16_t* pOutGreen = pColor16Bitmap->m_Green.m_vPixels.data() + this->nrLinesWritten * nrPixels;
-		std::uint16_t* pOutBlue = pColor16Bitmap->m_Blue.m_vPixels.data() + this->nrLinesWritten * nrPixels;
+		std::uint16_t* pOutRed = pColor16Bitmap->m_Red.m_vPixels.data() + rowIndex * nrPixels;
+		std::uint16_t* pOutGreen = pColor16Bitmap->m_Green.m_vPixels.data() + rowIndex * nrPixels;
+		std::uint16_t* pOutBlue = pColor16Bitmap->m_Blue.m_vPixels.data() + rowIndex * nrPixels;
 		pRed = redBuffer.data();
 		pGreen = greenBuffer.data();
 		pBlue = blueBuffer.data();
@@ -277,9 +276,8 @@ size_t AvxBitmapFiller::Write(const void* source, size_t bytesPerPixel, size_t n
 		}
 	}
 
-	++this->nrLinesWritten;
-	if ((this->nrLinesWritten % 32) == 0 && this->pProgress != nullptr)
-		this->pProgress->Progress2(nullptr, static_cast<LONG>(this->nrLinesWritten));
+	//if (((rowIndex + 1) % 32) == 0 && this->pProgress != nullptr)
+	//	this->pProgress->Progress2(nullptr, static_cast<LONG>(rowIndex + 1));
 
 	return AvxSupport::zeroUpper(nrPixels);
 }

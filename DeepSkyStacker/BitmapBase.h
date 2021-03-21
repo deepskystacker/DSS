@@ -4,6 +4,7 @@
 #undef min
 
 #include <vector>
+#include <memory>
 #include "RefCount.h"
 #include "../Tools/SmartPtr.h"
 #include "Multitask.h"
@@ -2936,3 +2937,23 @@ typedef CColorBitmapT<BYTE>			C24BitColorBitmap;
 typedef CColorBitmapT<WORD>			C48BitColorBitmap;
 typedef CColorBitmapT<DWORD>		C96BitColorBitmap;
 typedef CColorBitmapT<float>		C96BitFloatColorBitmap;
+
+
+template <class T>
+class CopyableSmartPtr final
+{
+private:
+	std::unique_ptr<T> p;
+public:
+	template <class OTHER> CopyableSmartPtr(std::unique_ptr<OTHER>&) = delete;
+	CopyableSmartPtr() = delete;
+	CopyableSmartPtr& operator=(const CopyableSmartPtr&) = delete;
+
+	template <class OTHER>
+	CopyableSmartPtr(std::unique_ptr<OTHER>&& rhs) : p{ std::move(rhs) } {}
+
+	CopyableSmartPtr(const CopyableSmartPtr& rhs) : p{ rhs->clone() } {}
+
+	typename std::unique_ptr<T>::pointer get() const noexcept { return p.get(); }
+	typename std::unique_ptr<T>::pointer operator->() const noexcept { return this->get(); }
+};

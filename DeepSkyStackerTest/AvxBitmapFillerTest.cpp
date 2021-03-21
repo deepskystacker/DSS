@@ -18,7 +18,7 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 {
 	CSmartPtr<CMemoryBitmap> pBitmap;
 	pBitmap.Attach(new CGrayBitmapT<WORD>);
-	auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr);
+	CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr, 1.0, 1.0, 1.0);
 	filler->setGrey(true);
 
 	SECTION("Write 1 line 8 bps")
@@ -29,7 +29,7 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 		std::uint8_t inputData[18] = { 19, 45, 243, 65, 200, 110, 99, 225,  120, 121, 122, 123, 124, 125, 126, 127,  195, 196 };
 		pBitmap->Init(18, 1);
 
-		filler->Write(inputData, 1, 18);
+		filler->Write(inputData, 1, 18, 0);
 
 		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
 		WORD data[18];
@@ -47,7 +47,7 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 		be2le(inputData, inputData); // Make it big endian
 		pBitmap->Init(19, 1);
 
-		filler->Write(inputData, 2, 19);
+		filler->Write(inputData, 2, 19, 0);
 
 		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
 		WORD data[19];
@@ -63,8 +63,8 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 		std::uint16_t inputData[16] = { 1000, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007 };
 		pBitmap->Init(8, 2);
 
-		filler->Write(inputData, 2, 8);
-		filler->Write(inputData + 8, 2, 8);
+		filler->Write(inputData, 2, 8, 0);
+		filler->Write(inputData + 8, 2, 8, 1);
 
 		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
 		WORD data[16];
@@ -76,18 +76,18 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 	SECTION("2 lines 16 bps and adjust RGGB (this must set the CFA type of the MemoryBitmap")
 	{
 		constexpr size_t W = 17;
+		auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr, 2.0, 3.0, 4.0);
 		filler->setMaxColors(65535);
 		filler->setWidth(W);
 		filler->setHeight(2);
-		filler->SetWhiteBalance(2.0, 3.0, 4.0);
 		filler->SetCFAType(CFATYPE_RGGB);
 		std::uint16_t inputData[W*2] = { 256, 257, 258, 1003, 1075, 2328, 32767, 20000, 5000, 6000, 7000, 9002, 9003, 9004, 10010, 10100, 10101,
 			8245, 8255, 8256, 8257, 8258, 8259, 8295, 8296, 6928, 6129, 1293, 1294, 1299, 6002, 6001, 6007, 3333 };
 		be2le(inputData, inputData);
 		pBitmap->Init(W, 2);
 
-		filler->Write(inputData, 2, W);
-		filler->Write(inputData + W, 2, W);
+		filler->Write(inputData, 2, W, 0);
+		filler->Write(inputData + W, 2, W, 1);
 
 		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
 		WORD data[W*2];
@@ -106,17 +106,17 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 	SECTION("2 lines 16 bps with one call fails")
 	{
 		constexpr size_t W = 17;
+		auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr, 2.0, 3.0, 4.0);
 		filler->setMaxColors(65535);
 		filler->setWidth(W);
 		filler->setHeight(2);
-		filler->SetWhiteBalance(2.0, 3.0, 4.0);
 		filler->SetCFAType(CFATYPE_RGGB);
 		std::uint16_t inputData[W * 2] = { 256, 257, 258, 1003, 1075, 2328, 32767, 20000, 5000, 6000, 7000, 9002, 9003, 9004, 10010, 10100, 10101,
 			8245, 8255, 8256, 8257, 8258, 8259, 8295, 8296, 6928, 6129, 1293, 1294, 1299, 6002, 6001, 6007, 3333 };
 		be2le(inputData, inputData);
 		pBitmap->Init(W, 2);
 
-		filler->Write(inputData, 2, 2*W);
+		filler->Write(inputData, 2, 2*W, 0);
 
 		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
 		WORD data[W * 2];
@@ -132,25 +132,24 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 	{
 		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
 
-		const auto testCfaType = [&pBitmap, pGray](const CFATYPE cfaType, WORD wb0, WORD wb1, WORD wb2, WORD wb3) -> int
+		const auto testCfaType = [&pBitmap, pGray, &filler](const CFATYPE cfaType, WORD wb0, WORD wb1, WORD wb2, WORD wb3) -> int
 		{
 			constexpr size_t W = 17;
 			std::uint16_t inputData[W * 2] = { 256, 257, 258, 1003, 1075, 2328, 32767, 20000, 5000, 6000, 7000, 9002, 9003, 9004, 10010, 10100, 10101,
 				8245, 8255, 8256, 8257, 8258, 8259, 8295, 8296, 6928, 6129, 1293, 1294, 1299, 6002, 6001, 6007, 3333 };
-			auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr);
-			filler->setGrey(true);
-			filler->setMaxColors(65535);
-			filler->setWidth(W);
-			filler->setHeight(2);
-			filler->SetWhiteBalance(2.0, 3.0, 4.0);
-			filler->SetCFAType(cfaType);
+			auto fil = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr, 2.0, 3.0, 4.0);
+			fil->setGrey(true);
+			fil->setMaxColors(65535);
+			fil->setWidth(W);
+			fil->setHeight(2);
+			fil->SetCFAType(cfaType);
 
 			std::uint16_t beData[W * 2];
 			be2le(beData, inputData);
 			pBitmap->Init(W, 2);
 
-			filler->Write(beData, 2, W);
-			filler->Write(beData + W, 2, W);
+			fil->Write(beData, 2, W, 0);
+			fil->Write(beData + W, 2, W, 1);
 
 			WORD wb[2][2] = { {wb0, wb1}, {wb2, wb3} };
 			WORD expected[W*2];
@@ -173,16 +172,16 @@ TEST_CASE("AVX BitMapFiller gray", "[BitMap][AvxBitMapFiller][gray]")
 	SECTION("1 line 16 bps adjust green color and limit to maximum")
 	{
 		constexpr size_t W = 17;
+		auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr, 2.0, 10.0, 1.0); // Green factor = 10.
 		filler->setMaxColors(65535);
 		filler->setWidth(W);
 		filler->setHeight(1);
-		filler->SetWhiteBalance(2.0, 10.0, 1.0); // Green factor = 10
 		filler->SetCFAType(CFATYPE_RGGB);
 		std::uint16_t inputData[W] = { 2560, 3249, 29265, 50000, 5, 50002, 6, 7000, 7, 6000, 8, 9000, 9, 10000, 10, 10005, 11 }; // R, G, R, G, ..., R
 		be2le(inputData, inputData);
 		pBitmap->Init(W, 1);
 
-		filler->Write(inputData, 2, W);
+		filler->Write(inputData, 2, W, 0);
 		constexpr WORD MAXIMUM = 65534; // For some strange reason, the BitMapFiller limits this to MAXWORD - 1
 		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
 		WORD data[W] = { 2560*2, 3249*10, 29265*2, MAXIMUM, 5*2, MAXIMUM, 6*2, MAXIMUM, 7*2, 6000*10, 8*2, MAXIMUM, 9*2, MAXIMUM, 10*2, MAXIMUM, 11*2 };
@@ -198,7 +197,7 @@ TEST_CASE("AVX BitMapFiller color", "[BitMap][AvxBitMapFiller][color]")
 {
 	CSmartPtr<CMemoryBitmap> pBitmap;
 	pBitmap.Attach(new CColorBitmapT<WORD>);
-	auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr);
+	CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr, 1.0, 1.0, 1.0);
 	filler->setGrey(false);
 
 	SECTION("Write 1 line 8 bps")
@@ -211,7 +210,7 @@ TEST_CASE("AVX BitMapFiller color", "[BitMap][AvxBitMapFiller][color]")
 			190, 200, 210,  50, 60, 70,  231, 241, 251,  152, 162, 172,  203, 201, 202,  104, 114, 124,  95, 105, 101,  225, 226, 227,  100, 86, 77 }; // r,g,b, r,g,b, ...
 		pBitmap->Init(W, 1);
 
-		filler->Write(inputData, 3, W);
+		filler->Write(inputData, 3, W, 0);
 
 		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.m_p);
 		const WORD* pRed = pGray->m_Red.m_vPixels.data();
@@ -242,7 +241,7 @@ TEST_CASE("AVX BitMapFiller color", "[BitMap][AvxBitMapFiller][color]")
 			10058, 8658, 7758,  85, 58, 137 };
 		pBitmap->Init(W, 1);
 
-		filler->Write(inputData, 3*sizeof(std::uint16_t), W);
+		filler->Write(inputData, 3*sizeof(std::uint16_t), W, 0);
 
 		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.m_p);
 		const WORD* pRed = pGray->m_Red.m_vPixels.data();
@@ -280,8 +279,8 @@ TEST_CASE("AVX BitMapFiller color", "[BitMap][AvxBitMapFiller][color]")
 
 		pBitmap->Init(W, 2);
 
-		filler->Write(inputData, 3*2, W);
-		filler->Write(inputData + W*3, 3*2, W);
+		filler->Write(inputData, 3*2, W, 0);
+		filler->Write(inputData + W*3, 3*2, W, 1);
 
 		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.m_p);
 		const WORD* pRed = pGray->m_Red.m_vPixels.data();
@@ -307,8 +306,9 @@ TEST_CASE("AVX BitMapFiller color", "[BitMap][AvxBitMapFiller][color]")
 	SECTION("Write 1 line 16 bps and adjust colors")
 	{
 		constexpr size_t W = 18;
+		auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, nullptr, 0.3, 0.24, 1.18);
+		filler->setGrey(false);
 		filler->setMaxColors(65535);
-		filler->SetWhiteBalance(0.3, 0.24, 1.18);
 		filler->setWidth(W);
 		filler->setHeight(1);
 		std::uint16_t inputData[W * 3] = { 1000, 1001, 1002,  255, 256, 257,  243, 244, 245,  2002, 2003, 2004,  16540, 16796, 17052,  11110, 11111, 11112,  9900, 9901, 9902,  24325, 24326, 24327,
@@ -318,7 +318,7 @@ TEST_CASE("AVX BitMapFiller color", "[BitMap][AvxBitMapFiller][color]")
 
 		std::uint16_t beData[W * 3];
 		be2le(beData, inputData);
-		filler->Write(beData, 3*2, W);
+		filler->Write(beData, 3*2, W, 0);
 
 		auto* pGray = dynamic_cast<CColorBitmapT<WORD>*>(pBitmap.m_p);
 		const WORD* pRed = pGray->m_Red.m_vPixels.data();
@@ -374,10 +374,10 @@ TEST_CASE("AVX BitmapFiller progress check", "[BitMap][AvxBitMapFiller][progress
 	CSmartPtr<CMemoryBitmap> pBitmap;
 	pBitmap.Attach(new CGrayBitmapT<WORD>);
 	MyProgress prg{};
-	auto filler = std::make_unique<AvxBitmapFiller>(pBitmap, &prg);
+	CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<AvxBitmapFiller>(pBitmap, &prg, 1.0, 1.0, 1.0);
 	filler->setGrey(true);
 
-	SECTION("Write 64 lines and check if progress was called twice")
+	SECTION("Write 64 lines and check progress calls")
 	{
 		constexpr size_t H = 64;
 		pBitmap->Init(4, H);
@@ -391,11 +391,10 @@ TEST_CASE("AVX BitmapFiller progress check", "[BitMap][AvxBitMapFiller][progress
 
 		auto* pD = inputData;
 		for (size_t i = 0; i < H; ++i, pD += 4)
-			filler->Write(pD, 1, 4);
+			filler->Write(pD, 1, 4, i);
 
 		REQUIRE(prg.nrCallsStart2 == 1);
-		REQUIRE(prg.nrCallsProgress2 == 2);
+		REQUIRE(prg.nrCallsProgress2 == 0); // AVX BitmapFiller doesn't make progress callbacks anymore.
 		REQUIRE(prg.argumentStart2 == H);
-		REQUIRE(prg.argumentsAchieved2 == std::vector<LONG>{ 32, 64 });
 	}
 }

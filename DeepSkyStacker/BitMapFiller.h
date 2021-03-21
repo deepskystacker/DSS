@@ -11,18 +11,20 @@ protected:
 	CDSSProgress* pProgress;
 	CMemoryBitmap* pBitmap;
 public:
-	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress);
+	static std::unique_ptr<BitmapFillerInterface> makeBitmapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, const double redWb, const double greenWb, const double blueWb);
 	BitmapFillerInterface(CMemoryBitmap* pB, CDSSProgress* pP);
 	template <class... Args> BitmapFillerInterface(Args&&...) = delete;
 	virtual ~BitmapFillerInterface() {}
 
-	virtual void SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale) = 0;
+	virtual bool isThreadSafe() const;
+	virtual std::unique_ptr<BitmapFillerInterface> clone() = 0;
+
 	virtual void SetCFAType(CFATYPE CFAType) = 0;
 	virtual void setGrey(bool grey) = 0;
 	virtual void setWidth(LONG width) = 0;
 	virtual void setHeight(LONG height) = 0;
 	virtual void setMaxColors(LONG maxcolors) = 0;
-	virtual size_t Write(const void* source, size_t size, size_t count) = 0;
+	virtual size_t Write(const void* source, const size_t size, const size_t count, const size_t rowIndex) = 0;
 };
 
 
@@ -41,7 +43,7 @@ private:
 	LONG m_lWidth, m_lHeight, m_lMaxColors;
 	LONG m_lBytePerChannel;
 	bool m_bGrey;
-	double m_fRedScale, m_fGreenScale, m_fBlueScale;
+	const double m_fRedScale, m_fGreenScale, m_fBlueScale;
 
 private:
 	void AdjustColor(double& fColor, const double fAdjust) noexcept
@@ -246,12 +248,13 @@ private:
 	};
 
 public:
-	BitMapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) : BitmapFillerInterface{pBitmap, pProgress}
+	BitMapFiller(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, const double redWb, const double greenWb, const double blueWb) :
+		BitmapFillerInterface{ pBitmap, pProgress },
+		m_fRedScale{ redWb },
+		m_fGreenScale{ greenWb },
+		m_fBlueScale{ blueWb }
 	{
 		m_bStarted = false;
-		m_fRedScale = 1.0;
-		m_fGreenScale = 1.0;
-		m_fBlueScale = 1.0;
 		m_lBytePerChannel = 2;				// Never going to handle 8 bit data !!
 		m_lHeight = 0;
 		m_lWidth = 0;
@@ -267,40 +270,40 @@ public:
 		m_bGrey = false;
 	}
 
+	BitMapFiller(const BitMapFiller&) = default; // For cloning for OpenMP.
+
 	virtual ~BitMapFiller()
 	{
 		if (m_pBuffer)
 			free(m_pBuffer);
 	};
 
-	void	SetWhiteBalance(double fRedScale, double fGreenScale, double fBlueScale) noexcept
+	std::unique_ptr<BitmapFillerInterface> clone() override
 	{
-		m_fRedScale = fRedScale;
-		m_fGreenScale = fGreenScale;
-		m_fBlueScale = fBlueScale;
-	};
+		return std::make_unique<BitMapFiller>(*this);
+	}
 
-	void	SetCFAType(CFATYPE CFAType) noexcept
+	void	SetCFAType(CFATYPE CFAType) noexcept override
 	{
 		m_CFAType = CFAType;
 	};
 
-	void	setGrey(bool grey) noexcept
+	void	setGrey(bool grey) noexcept override
 	{
 		m_bGrey = grey;
 	};
 
-	void	setWidth(LONG width) noexcept
+	void	setWidth(LONG width) noexcept override
 	{
 		m_lWidth = width;
 	};
 
-	void	setHeight(LONG height) noexcept
+	void	setHeight(LONG height) noexcept override
 	{
 		m_lHeight = height;
 	};
 
-	void	setMaxColors(LONG maxcolors) noexcept
+	void	setMaxColors(LONG maxcolors) noexcept override
 	{
 		m_lMaxColors = maxcolors;
 	};
@@ -323,7 +326,7 @@ public:
 	};
 #endif
 
-	size_t Write(const void* source, size_t size, size_t count)
+	size_t Write(const void* source, const size_t size, const size_t count, const size_t) override
 	{
 		AddToBuffer(source, static_cast<DWORD>(size * count));
 		if (pProgress)
