@@ -561,6 +561,8 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 
 	do	// Do once!
 	{
+		const int numberOfProcessors = CMultitask::GetNrProcessors(false);
+
 		fBrightness = workspace.value("RawDDP/Brightness").toDouble();
 		fRedScale = workspace.value("RawDDP/RedScale").toDouble();
 		fBlueScale = workspace.value("RawDDP/BlueScale").toDouble();
@@ -633,16 +635,12 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 		m_CFAType = GetCurrentCFAType();
 		pFiller->SetCFAType(m_CFAType);
 
-#define RAW(row,col) \
-	raw_image[(row)*S.width+(col)]
+#define RAW(row,col) raw_image[(row) * S.width + (col)]
 
 		//
 		// Get our endian-ness so we can swap bytes if needed (always on Windows).
 		//
 		const bool littleEndian = htons(0x55aa) != 0x55aa; // big_endian = htons(host_byte_order)
-
-		unsigned short *raw_image = nullptr;
-		void * buffer = nullptr;		// Used for debugging only (memory window)
 
 		if (!m_bColorRAW)
 		{
@@ -660,13 +658,15 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 			// 2) will be copied from the image portion of Rawdata.raw_image
 			//    excluding the frame (Top margin, Left Margin).
 			//
-			raw_image =
-				(unsigned short *)calloc(static_cast<size_t>(S.height)*static_cast<size_t>(S.width), sizeof(unsigned short));
-			if (nullptr == raw_image)
-			{
+			std::vector<std::uint16_t> dataBuffer;
+			try {
+				dataBuffer.resize(static_cast<size_t>(S.height) * static_cast<size_t>(S.width), 0);
+			} catch (...) {
 				ZOutOfMemory e("Could not allocate storage for RAW image");
 				ZTHROW(e);
 			}
+			std::uint16_t* raw_image = dataBuffer.data();
+			void* buffer = nullptr; // Used for debugging only (memory window)
 
 			const int fuji_width = rawProcessor.is_fuji_rotated();
 			const unsigned fuji_layout = rawProcessor.get_fuji_layout();
@@ -676,7 +676,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 			{
 				ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
 
-#pragma omp parallel for default(none)
+#pragma omp parallel for default(none) if(numberOfProcessors > 1)
 				for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
 				{
 					for (int col = 0; col < fuji_width << int(!fuji_layout); col++)
@@ -694,8 +694,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 							c = row + ((col + 1) >> 1);
 						}
 						if (r < S.height && c < S.width)
-							RAW(r, c)
-							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+							RAW(r, c) = RawData.raw_image[(row + S.top_margin) * S.raw_pitch / 2 + (col + S.left_margin)];
 					}
 				}
 			}
@@ -711,13 +710,12 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 				//
 				buffer = raw_image;
 
-#pragma omp parallel for default(none)
+#pragma omp parallel for default(none) if(numberOfProcessors > 1)
 				for (int row = 0; row < S.height; row++)
 				{
 					for (int col = 0; col < S.width; col++)
 					{
-						RAW(row, col)
-							= RawData.raw_image[(row + S.top_margin)*S.raw_pitch / 2 + (col + S.left_margin)];
+						RAW(row, col) = RawData.raw_image[(row + S.top_margin) * S.raw_pitch / 2 + (col + S.left_margin)];
 					}
 				}
 			}
@@ -774,47 +772,48 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 				C.cblack[4], C.cblack[5],
 				C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
 
+			const int size = static_cast<int>(S.height) * static_cast<int>(S.width);
+
 			if (!rawProcessor.is_phaseone_compressed() &&
 				(C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
 			{
-				int cblk[4], i;
-				for (i = 0; i < 4; i++)
+				int cblk[4];
+				for (int i = 0; i < 4; i++)
 					cblk[i] = C.cblack[i];
 
-				const int size = S.height * S.width;
 				int dmax = 0;	// Maximum value of pixels in entire image.
 				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
 				if (C.cblack[4] && C.cblack[5])
 				{
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 					{
 #pragma omp for
-						for (i = 0; i < size; i++)
+						for (int i = 0; i < size; i++)
 						{
 							int val = raw_image[i];
 							val -= C.cblack[6 + i / S.width % C.cblack[4] * C.cblack[5] + i % S.width % C.cblack[5]];
 							val -= cblk[i & 3];
-							raw_image[i] = max(0, min(val, 65535));
-							lmax = val > lmax ? val : lmax;
+							raw_image[i] = static_cast<std::uint16_t>(std::clamp(val, 0, 65535));
+							lmax = std::max(val, lmax);
 						}
 #pragma omp critical
-						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+						dmax = std::max(lmax, dmax); // For non-OMP case this is equal to dmax = lmax.
 					}
 				}
 				else
 				{
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 					{
 #pragma omp for
-						for (i = 0; i < size; i++)
+						for (int i = 0; i < size; i++)
 						{
 							int val = raw_image[i];
 							val -= cblk[i & 3];
-							raw_image[i] = max(0, min(val, 65535));
-							lmax = val > lmax ? val : lmax;
+							raw_image[i] = static_cast<std::uint16_t>(std::clamp(val, 0, 65535));
+							lmax = std::max(val, lmax);
 						}
 #pragma omp critical
-						dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+						dmax = std::max(lmax, dmax); // For non-OMP case this is equal to dmax = lmax.
 					}
 				}
 				C.data_maximum = dmax & 0xffff;
@@ -828,14 +827,14 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 				// only calculate channel maximum;
 				int dmax = 0;	// Maximum value of pixels in entire image.
 				int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
-#pragma omp parallel default(none) shared(dmax) firstprivate(lmax)
+#pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 				{
 #pragma omp for
-					for (int i = 0; i < S.height * S.width; i++)
+					for (int i = 0; i < size; i++)
 						if (lmax < raw_image[i])
 							lmax = raw_image[i];
 #pragma omp critical
-					dmax = lmax > dmax ? lmax : dmax; // For non-OMP case this is equal to dmax = lmax.
+					dmax = std::max(lmax, dmax); // For non-OMP case this is equal to dmax = lmax.
 				}
 
 				C.data_maximum = dmax;
@@ -872,57 +871,41 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 			// than the saturation level).
 			//
 
-			double dmin, dmax; int c = 0;
-
-			for (dmin = DBL_MAX, dmax = c = 0; c < 4; c++)
-			{
-				if (dmin > pre_mul[c])
-					dmin = pre_mul[c];
-				if (dmax < pre_mul[c])
-					dmax = pre_mul[c];
-			}
+			const double dmax = *std::max_element(&pre_mul[0], &pre_mul[4]);
+			const double dmin = *std::min_element(&pre_mul[0], &pre_mul[4]);
 
 			float scale_mul[4];
-
-			for (c = 0; c < 4; c++)	scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
+			for (int c = 0; c < 4; c++)
+				scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
 
 			ZTRACE_RUNTIME("Maximum value pixel has value %d", C.data_maximum);
 			ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
 			ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
 				scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
-#pragma omp parallel for default(none) schedule(dynamic, 10) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
+#pragma omp parallel for default(none) schedule(dynamic, 10) if(numberOfProcessors > 1) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
 			for (int row = 0; row < S.height; row++)
 			{
 				for (int col = 0; col < S.width; col++)
 				{
 					// What colour will this pixel become
 					const int colour = rawProcessor.COLOR(row, col);
-
-					const float val = scale_mul[colour] *
-						(float)(RAW(row, col));
-					RAW(row, col) = max(0, min(int(val), 65535));
+					const float val = scale_mul[colour] * static_cast<float>(RAW(row, col));
+					RAW(row, col) = static_cast<std::uint16_t>(std::clamp(static_cast<int>(val), 0, 65535));
 				}
 			}
 
 			// Convert raw data to big-endian
 			if (littleEndian)
-#if defined(_OPENMP)
-#pragma omp parallel for default(none) schedule(dynamic, 1000)
-				for (int i = 0; i < S.height * S.width; i++)
+#pragma omp parallel for default(none) schedule(dynamic, 1000) if(numberOfProcessors > 1)
+				for (int i = 0; i < size; i++)
 				{
 					raw_image[i] = _byteswap_ushort(raw_image[i]);
 				}
-#else
-				_swab(
-					(char*)(raw_image),
-					(char*)(raw_image),
-					S.height*S.width*sizeof(unsigned short));		// Use number of rows times row width in BYTES!!
-#endif
 
 			const int imageWidth = S.width;
 			const int imageHeight = S.height;
-#pragma omp parallel for default(none) schedule(static) firstprivate(pFiller) if(CMultitask::GetNrProcessors(false) > 1 && pFiller->isThreadSafe())
+#pragma omp parallel for default(none) schedule(static) firstprivate(pFiller) if(numberOfProcessors > 1 && pFiller->isThreadSafe())
 			for (int row = 0; row < imageHeight; ++row)
 			{
 				// Write raw pixel data into our private bitmap format
@@ -941,7 +924,8 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 				if (LIBRAW_FATAL_ERROR(ret))
 					bResult = false;
 			}
-			if (!bResult) break;
+			if (!bResult)
+				break;
 
 			ZTRACE_RUNTIME("Processing Foveon or Fuji X-Trans raw image data");
 			//
@@ -958,13 +942,6 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 			}
 		}
 #undef RAW
-		//
-		// If we allocated memory for an image, release it.
-		if (nullptr != raw_image)
-		{
-			free(raw_image);
-			raw_image = nullptr;
-		}
 
 	} while (0);
 
