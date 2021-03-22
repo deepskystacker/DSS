@@ -251,6 +251,10 @@ public :
 
 	void		GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, double & fBlue, bool bApplySettings);
 
+	const auto& getRedPixels() const { return this->m_vRedPlane; }
+	const auto& getGreenPixels() const { return this->m_vGreenPlane; }
+	const auto& getBluePixels() const { return this->m_vBluePlane; }
+
 	double		GetRedValue(LONG X, LONG Y)
 	{
 		return m_vRedPlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;

@@ -133,6 +133,9 @@ private :
 
 	double	AdjustValue(double fValue) const
 	{
+		if (!std::isfinite(fValue))
+			return 0;
+
 		switch (m_HAT)
 		{
 		case HAT_CUBEROOT :
@@ -473,6 +476,8 @@ public :
         m_fStep     = 0;
 	};
 
+	CHistogram& operator=(const CHistogram&) = default;
+
 	virtual ~CHistogram() {};
 
 	void	Init()
@@ -481,12 +486,20 @@ public :
 
 		m_bInitOk = false;
 		Clear();
-		lNrValues = (LONG)(m_fAbsMax/m_fStep+1);
+		const double numberOfSteps = m_fAbsMax / m_fStep;
+		lNrValues = std::isfinite(numberOfSteps) ? (static_cast<LONG>(numberOfSteps) + 1) : 1;
 
 		m_vValues.resize(lNrValues);
 
 		m_bInitOk = true;
 	};
+	void Init(const size_t size)
+	{
+		m_bInitOk = false;
+		Clear();
+		m_vValues.resize(size);
+		m_bInitOk = true;
+	}
 
 	void	Clear()
 	{
@@ -518,9 +531,9 @@ public :
 	void	SetSize(double fMax, LONG lNrValues)
 	{
 		m_fAbsMax	= fMax;
-		m_fStep		= fMax/(lNrValues-1);
+		m_fStep = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (lNrValues - 1));
 
-		Init();
+		Init(lNrValues);
 	};
 
 	LONG	GetSize()
