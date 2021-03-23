@@ -260,23 +260,29 @@ inline void ToRGB(double H, double S, double L, double & Red, double & Green, do
 /* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF crColor)
 {
+	constexpr double scalingFactor = 1.0 / 256.0;
+
 	const unsigned red = GetRValue(crColor);
 	const unsigned green = GetGValue(crColor);
 	const unsigned blue = GetBValue(crColor);
 
-	const unsigned minval = min(red, min(green, blue));
-	const unsigned maxval = max(red, max(green, blue));
+	const unsigned minval = std::min(red, std::min(green, blue));
+	const unsigned maxval = std::max(red, std::max(green, blue));
 	const unsigned msum = maxval + minval;
-	return ((double)msum / 510.0);
+
+	return static_cast<double>(msum) * (0.5 * scalingFactor);
 };
 
 /* Return the HSL luminance value. */
 inline double GetLuminance(const COLORREF16 & crColor)
 {
-	const unsigned minval = min(crColor.red, min(crColor.green, crColor.blue));
-	const unsigned maxval = max(crColor.red, max(crColor.green, crColor.blue));
+	constexpr double scalingFactor = 1.0 / 256.0;
+
+	const unsigned minval = std::min(crColor.red, std::min(crColor.green, crColor.blue));
+	const unsigned maxval = std::max(crColor.red, std::max(crColor.green, crColor.blue));
 	const unsigned msum = maxval + minval;
-	return (((double)msum / 256.0) / 510.0);
+
+	return static_cast<double>(msum) * (0.5 * scalingFactor * scalingFactor); // (((double)msum / 256.0) / 510.0);
 };
 
 /* ------------------------------------------------------------------- */
@@ -504,6 +510,21 @@ public :
 	{
 		m_bHomogenization = bSet;
 	};
+
+	bool GetHomogenization() const
+	{
+		return m_bHomogenization;
+	}
+
+	int GetProcessingMethod() const
+	{
+		return m_Method;
+	}
+
+	auto GetProcessingParameters() const
+	{
+		return std::make_tuple(m_fKappa, m_lNrIterations);
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -845,20 +866,17 @@ public :
 	virtual bool	GetScanLine(LONG j, void * pScanLine) = 0;
 	virtual bool	SetScanLine(LONG j, void * pScanLine) = 0;
 
-	virtual void	GetPixel16(LONG i, LONG j, COLORREF16 & crResult)
+	void GetPixel16(const LONG i, const LONG j, COLORREF16& crResult)
 	{
+		constexpr double scalingFactor = double{ 1 + std::numeric_limits<unsigned char>::max() };
+		constexpr double maxValue = double{ std::numeric_limits<unsigned short>::max() };
 		// Use get pixel
 		double fRed, fGreen, fBlue;
 		GetPixel(i, j, fRed, fGreen, fBlue);
 
-		crResult.red = (WORD)(fRed * 256.0);
-		crResult.green = (WORD)(fGreen * 256.0);
-		crResult.blue = (WORD)(fBlue * 256.0);
-	};
-
-	virtual void SetPixel16(LONG i, LONG j, const COLORREF16 & crColor)
-	{
-		SetPixel(i, j, (double)crColor.red/256.0, (double)crColor.green/256.0, (double)crColor.blue/256.0);
+		crResult.red = static_cast<WORD>(std::min(fRed * scalingFactor, maxValue));
+		crResult.green = static_cast<WORD>(std::min(fGreen * scalingFactor, maxValue));
+		crResult.blue = static_cast<WORD>(std::min(fBlue * scalingFactor, maxValue));
 	};
 
 	virtual LONG	Width() = 0;
@@ -891,6 +909,11 @@ public :
 	{
 		return m_bMaster;
 	};
+
+	virtual bool isTopDown()
+	{
+		return m_bTopDown;
+	}
 
 	virtual void	SetCFA(bool bCFA)
 	{
@@ -2641,18 +2664,6 @@ public :
 			*(LPDWORD)pPixel = *(LPDWORD)(&rgbq);
 		};
 	};
-
-	virtual void	SetPixel16(LONG i, LONG j, const COLORREF16 &crColor16)
-	{
-		COLORREF			crColor;
-
-		crColor = RGB((BYTE)(crColor16.red/256.0), (BYTE)(crColor16.green/256.0),(BYTE)(crColor16.blue/256.0));
-
-		SetPixel(i, j, crColor);
-
-		return;
-	};
-
 };
 
 class	CGammaTransformation
@@ -2840,7 +2851,17 @@ protected :
 					vGreenValues.resize(0);
 					vBlueValues.resize(0);
 				};
-			};
+			}
+			else
+			{
+				if constexpr (sizeof(TType) == 4 && std::is_integral<TType>::value)
+				{
+
+					for (auto& x : vRedValues) x >>= 16;
+					for (auto& x : vGreenValues) x >>= 16;
+					for (auto& x : vBlueValues) x >>= 16;
+				}
+			}
 
 			// Process the value
 			if (m_Method == MBP_MEDIAN)

@@ -273,14 +273,17 @@ bool CTIFFReader::Open()
 
 bool CTIFFReader::Read()
 {
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
+	constexpr double scaleFactorInt16 = double{ 1 + UCHAR_MAX };
+	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHORT_MAX);
 
-	if (m_tiff) do
+	ZFUNCTRACE_RUNTIME();
+
+	if (!m_tiff)
+		return false;
+
+	try
 	{
-		bResult = true;
 		tmsize_t		scanLineSize;
-		tdata_t			buff = nullptr, curr = nullptr;
 
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, h);
@@ -294,13 +297,7 @@ bool CTIFFReader::Read()
 		//
 		tmsize_t buffSize = scanLineSize * h;
 		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
-		curr = buff = (tdata_t)malloc(h * scanLineSize);
-		if (nullptr == buff)
-		{
-			bResult = false;
-			break;
-		}
-		tdata_t limit = (byte*)buff + (1 + (h*scanLineSize));		// One past end of buffer
+		auto buffer = std::make_unique<unsigned char[]>(buffSize);
 		//
 		// The code used to read scan line by scan line and decode each individually
 		// Now try to inhale the whole image in as few calls as possible using
@@ -309,131 +306,117 @@ bool CTIFFReader::Read()
 		auto stripCount = TIFFNumberOfStrips(m_tiff);
 		ZTRACE_RUNTIME("Number of strips is %u", stripCount);
 
-		for (int i = 0; i < stripCount; i++)
+		unsigned char* curr = buffer.get();
+		for (unsigned int i = 0; i < stripCount; i++)
 		{
-			auto count = TIFFReadEncodedStrip(m_tiff, i, curr, -1);
+			const auto count = TIFFReadEncodedStrip(m_tiff, i, curr, -1);
 			if (-1 == count)
 			{
 				ZTRACE_RUNTIME("TIFFReadEncodedStrip returned an error");
-				bResult = false;
-				break;
+				return false;
 			}
-			curr = static_cast<byte*>(curr) + count;		// Increment current buffer pointer
+			curr += count; // Increment current buffer pointer
+			if (m_pProgress != nullptr)
+				m_pProgress->Progress2(nullptr, (this->h / 2 * i) / stripCount);
 		}
 
-		if (!bResult) break;
+		BYTE* byteBuff = buffer.get();
+		WORD* shortBuff = reinterpret_cast<WORD*>(byteBuff);
+		DWORD* longBuff = reinterpret_cast<DWORD*>(byteBuff);
+		float* floatBuff = reinterpret_cast<float*>(byteBuff);
 
-		BYTE *  byteBuff = (BYTE *)buff;
-		WORD *	shortBuff = (WORD *)buff;
-		DWORD * longBuff = (DWORD *)buff;
-		float *	floatBuff = (float *)buff;
-
-		int	rowProgress = 0;
-
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
-		for (long row = 0; row < h; row++)
+		const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
 		{
-
-			for (long col = 0; col < w; col++)
-			{
-				double fRed = 0;
-				double fGreen = 0;
-				double fBlue = 0;
-
-				long index = (row * w * spp) + (col * spp);
-
-				switch (bps)	// Bits per sample
-				{
-				case 8:			// One byte 
-					switch (spp)
-					{
-					case 1:
-						fRed	= fGreen = fBlue = byteBuff[index];
-						break;
-					case 3:
-					case 4:
-						fRed	= byteBuff[index];
-						fGreen	= byteBuff[index + 1];
-						fBlue	= byteBuff[index + 2];
-						break;
-					}
-					break;
-				case 16:		// Unsigned short == WORD 
-					switch (spp)
-					{
-					case 1:
-						fRed	= (double)(shortBuff[index]);
-						fRed	= fGreen = fBlue = fRed / 256.0;
-						break;
-					case 3:
-					case 4:
-						fRed	= (double)(shortBuff[index]) / 256.0;
-						fGreen	= (double)(shortBuff[index + 1]) / 256.0;
-						fBlue	= (double)(shortBuff[index + 2]) / 256.0;
-						break;
-					}
-					break;
-				case 32:		// Unsigned long or 32 bit floating point 
-					if (sampleformat == SAMPLEFORMAT_IEEEFP)
-					switch (spp)
-					{
-					case 1:
-						fRed	= (double)(floatBuff[index]);
-						fRed	= fGreen = fBlue = (fRed - samplemin) / (samplemax - samplemin) * 256.0;
-						break;
-					case 3:
-					case 4:
-						fRed	= (double)(floatBuff[index]);
-						fGreen	= (double)(floatBuff[index + 1]);
-						fBlue	= (double)(floatBuff[index + 2]);
-
-						fRed	= (fRed - samplemin) / (samplemax - samplemin) * 256.0;
-						fGreen	= (fGreen - samplemin) / (samplemax - samplemin) * 256.0;
-						fBlue	= (fBlue - samplemin) / (samplemax - samplemin) * 256.0;
-						break;
-					}
-					else switch (spp)	// unsigned long == DWORD
-					{
-					case 1:
-						fRed	= (double)(longBuff[index]);
-						fRed	= fGreen = fBlue = fRed / 256.0 / 65536.0;
-						break;
-					case 3:
-					case 4:
-						fRed	= (double)(longBuff[index]);
-						fGreen	= (double)(longBuff[index + 1]);
-						fBlue	= (double)(longBuff[index + 2]);
-
-						fRed	= fRed / 256.0 / 65536.0;
-						fGreen  = fGreen / 256.0 / 65536.0;
-						fBlue	= fBlue / 256.0 / 65536.0;
-						break;
-
-					}
-				}
-
-				OnRead(col, row, fRed, fGreen, fBlue);
-			};
-#if defined (_OPENMP)
-			if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-			{
-				rowProgress += omp_get_num_threads();
-				m_pProgress->Progress2(nullptr, rowProgress);
-			}
-#else
-			if (m_pProgress)
-				m_pProgress->Progress2(nullptr, ++rowProgress);
-#endif
-
+			constexpr double scaleFactor = double{ USHORT_MAX } / 256.0;
+			const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
+			return (static_cast<double>(value) - sampleMin) * normalizationFactor;
 		};
-		free(buff);
+
+		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const auto& function) -> void
+		{
+			int progressCounter = 0;
+#pragma omp parallel for default(none) schedule(dynamic, 10) if (CMultitask::GetNrProcessors(false) - 1) // GetNrProcessors(false) returns 1, if user selected single-thread.
+			for (int row = 0; row < height; ++row)
+			{
+				for (int col = 0; col < width; ++col)
+					function(col, row);
+				if (progress != nullptr && omp_get_thread_num() == 0 && (progressCounter++ % 25) == 0)
+					progress->Progress2(nullptr, (height + row) / 2);
+			}
+		};
+
+		if (sampleformat == SAMPLEFORMAT_IEEEFP)
+		{
+			assert(bps == 32);
+
+			if (spp == 1)
+				loopOverPixels([&](const LONG x, const LONG y) {
+					const double gray = normalizeFloatValue(floatBuff[y * w + x]);
+					OnRead(x, y, gray, gray, gray);
+				});
+			else
+				loopOverPixels([&](const LONG x, const LONG y) {
+					const LONG index = (y * w + x) * spp;
+					const double red = normalizeFloatValue(floatBuff[index]);
+					const double green = normalizeFloatValue(floatBuff[index + 1]);
+					const double blue = normalizeFloatValue(floatBuff[index + 2]);
+					OnRead(x, y, red, green, blue);
+				});
+		}
+		else
+		{
+			if (spp == 1)
+				switch (bps)
+				{
+				case 8: loopOverPixels([&](const LONG x, const LONG y) {
+					const double fGray = byteBuff[y * w + x];
+					OnRead(x, y, fGray, fGray, fGray);
+				}); break;
+				case 16: loopOverPixels([&](const LONG x, const LONG y) {
+					const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
+					OnRead(x, y, fGray, fGray, fGray);
+				}); break;
+				case 32: loopOverPixels([&](const LONG x, const LONG y) {
+					const double fGray = longBuff[y * w + x] / scaleFactorInt32;
+					OnRead(x, y, fGray, fGray, fGray);
+				}); break;
+				}
+			else
+				switch (bps)
+				{
+				case 8: loopOverPixels([&](const LONG x, const LONG y) {
+					const LONG index = (y * w + x) * spp;
+					const double fRed = byteBuff[index];
+					const double fGreen = byteBuff[index + 1];
+					const double fBlue = byteBuff[index + 2];
+					OnRead(x, y, fRed, fGreen, fBlue);
+				}); break;
+				case 16: loopOverPixels([&](const LONG x, const LONG y) {
+					const LONG index = (y * w + x) * spp;
+					const double fRed = shortBuff[index] / scaleFactorInt16;
+					const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
+					const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
+					OnRead(x, y, fRed, fGreen, fBlue);
+				}); break;
+				case 32: loopOverPixels([&](const LONG x, const LONG y) {
+					const LONG index = (y * w + x) * spp;
+					const double fRed = longBuff[index] / scaleFactorInt32;
+					const double fGreen = longBuff[index + 1] / scaleFactorInt32;
+					const double fBlue = longBuff[index + 2] / scaleFactorInt32;
+					OnRead(x, y, fRed, fGreen, fBlue);
+				}); break;
+				}
+		}
+
 		if (m_pProgress)
 			m_pProgress->End2();
-	} while (false);
+	}
+	catch (...)
+	{
+		return false;
+	}
 
-	return bResult;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
@@ -761,13 +744,10 @@ bool CTIFFWriter::Write()
 				}
 #if defined (_OPENMP)
 				if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-				{
-					rowProgress += omp_get_num_threads();
-					m_pProgress->Progress2(nullptr, rowProgress);
-				}
+					m_pProgress->Progress2(nullptr, row / 2);
 #else
 				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, ++rowProgress);
+					m_pProgress->Progress2(nullptr, row / 2);
 #endif
 			};
 
@@ -818,6 +798,9 @@ bool CTIFFWriter::Write()
 				}
 				curr += result;
 				bytesRemaining -= result;
+
+				if (m_pProgress != nullptr)
+					m_pProgress->Progress2(nullptr, h / 2 + (h * strip) / (2 * numStrips));
 			}
 
 			free(buff);

@@ -1143,7 +1143,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 						{
 							int val = raw_image[i];
 							val -= cblk[i & 3];
-							raw_image[i] = max(0, min(val, 65535)); ;
+							raw_image[i] = max(0, min(val, 65535));
 							lmax = val > lmax ? val : lmax;
 						}
 #if defined(_OPENMP)
@@ -1235,7 +1235,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 				scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
 #if defined(_OPENMP)
-#pragma omp parallel for default(none)
+#pragma omp parallel for default(none) schedule(dynamic, 10) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
 #endif
 			for (int row = 0; row < S.height; row++)
 			{
@@ -1253,7 +1253,7 @@ bool CRawDecod::LoadRawFile(CMemoryBitmap * pBitmap, CDSSProgress * pProgress, b
 			// Convert raw data to big-endian
 			if (littleEndian)
 #if defined(_OPENMP)
-#pragma omp parallel for default(none)
+#pragma omp parallel for default(none) schedule(dynamic, 1000)
 				for (int i = 0; i < S.height * S.width; i++)
 				{
 					raw_image[i] = _byteswap_ushort(raw_image[i]);
