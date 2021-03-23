@@ -14,6 +14,9 @@
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"
 #include <iostream>
+#include "avx.h"
+#include "avx_avg.h"
+
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -1757,6 +1760,7 @@ public :
 	LONG						m_lPixelSizeMultiplier;
 	CSmartPtr<CMemoryBitmap>	m_pOutput;
 	CSmartPtr<CMemoryBitmap>	m_pEntropyCoverage;
+	AvxEntropy*					m_pAvxEntropy;
 
 public :
 	CStackTask()
@@ -1797,6 +1801,7 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 	PIXELDISPATCHVECTOR		vPixels;
 
 	vPixels.reserve(16);
+	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
 
 	// Create a message queue and signal the event
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
@@ -1805,95 +1810,100 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
-			for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
+			// First try AVX accelerated code, if not supported -> run conventional code.
+			avxStacking.init(msg.wParam, msg.wParam + msg.lParam);
+			if (avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_lPixelSizeMultiplier) != 0)
 			{
-				for (i = 0;i<lWidth;i++)
+				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 				{
-					CPointExt	pt(i, j);
-					CPointExt	ptOut;
-
-					ptOut = m_PixTransform.Transform(pt);
-
-					COLORREF16		crColor;
-					float			Red,
-									Green,
-									Blue;
-					double			fRedEntropy = 1.0,
-									fGreenEntropy = 1.0,
-									fBlueEntropy = 1.0;
-
-					if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
-						m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
-					else
-						m_pBitmap->GetPixel16(i, j, crColor);
-
-					Red		= crColor.red;
-					Green	= crColor.green;
-					Blue	= crColor.blue;
-
-					if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
-						m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
-
-					if ((Red || Green || Blue) && ptOut.IsInRect(0, 0, m_rcResult.Width()-1, m_rcResult.Height()-1))
+					for (i = 0; i < lWidth; i++)
 					{
-						vPixels.resize(0);
-						ComputePixelDispatch(ptOut, m_lPixelSizeMultiplier, vPixels);
+						CPointExt	pt(i, j);
+						CPointExt	ptOut;
 
-						for (LONG k = 0;k<vPixels.size();k++)
+						ptOut = m_PixTransform.Transform(pt);
+
+						COLORREF16		crColor;
+						float			Red,
+							Green,
+							Blue;
+						double			fRedEntropy = 1.0,
+							fGreenEntropy = 1.0,
+							fBlueEntropy = 1.0;
+
+						if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
+							m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
+						else
+							m_pBitmap->GetPixel16(i, j, crColor);
+
+						Red = crColor.red;
+						Green = crColor.green;
+						Blue = crColor.blue;
+
+						if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
+							m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
+
+						if ((Red || Green || Blue) && ptOut.IsInRect(0, 0, m_rcResult.Width() - 1, m_rcResult.Height() - 1))
 						{
-							CPixelDispatch &		Pixel = vPixels[k];
+							vPixels.resize(0);
+							ComputePixelDispatch(ptOut, m_lPixelSizeMultiplier, vPixels);
 
-							// For each plane adjust the values
-							if (Pixel.m_lX >= 0 && Pixel.m_lX < m_rcResult.Width() &&
-								Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.Height())
+							for (LONG k = 0; k < vPixels.size(); k++)
 							{
-								// Special case for entropy average
-								if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
+								CPixelDispatch& Pixel = vPixels[k];
+
+								// For each plane adjust the values
+								if (Pixel.m_lX >= 0 && Pixel.m_lX < m_rcResult.Width() &&
+									Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.Height())
 								{
-									if (m_bColor)
+									// Special case for entropy average
+									if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
 									{
-										double				fOldRed,
-															fOldGreen,
-															fOldBlue;
+										if (m_bColor)
+										{
+											double				fOldRed,
+												fOldGreen,
+												fOldBlue;
 
-										m_pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-										fOldRed   += Pixel.m_fPercentage*fRedEntropy;
-										fOldGreen += Pixel.m_fPercentage*fGreenEntropy;
-										fOldBlue  += Pixel.m_fPercentage*fBlueEntropy;
-										m_pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+											m_pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+											fOldRed += Pixel.m_fPercentage * fRedEntropy;
+											fOldGreen += Pixel.m_fPercentage * fGreenEntropy;
+											fOldBlue += Pixel.m_fPercentage * fBlueEntropy;
+											m_pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
 
-										m_pOutput->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
-										fOldRed   += Red*Pixel.m_fPercentage*fRedEntropy;
-										fOldGreen += Green*Pixel.m_fPercentage*fGreenEntropy;
-										fOldBlue  += Blue*Pixel.m_fPercentage*fBlueEntropy;
-										m_pOutput->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+											m_pOutput->GetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+											fOldRed += Red * Pixel.m_fPercentage * fRedEntropy;
+											fOldGreen += Green * Pixel.m_fPercentage * fGreenEntropy;
+											fOldBlue += Blue * Pixel.m_fPercentage * fBlueEntropy;
+											m_pOutput->SetValue(Pixel.m_lX, Pixel.m_lY, fOldRed, fOldGreen, fOldBlue);
+										}
+										else
+										{
+											double				fOldGray;
+
+											m_pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+											fOldGray += Pixel.m_fPercentage * fRedEntropy;
+											m_pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+
+											m_pOutput->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+											fOldGray += Red * Pixel.m_fPercentage * fRedEntropy;
+											m_pOutput->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+										};
 									}
-									else
-									{
-										double				fOldGray;
 
-										m_pEntropyCoverage->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-										fOldGray   += Pixel.m_fPercentage*fRedEntropy;
-										m_pEntropyCoverage->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
+									double		fPreviousRed,
+										fPreviousGreen,
+										fPreviousBlue;
 
-										m_pOutput->GetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-										fOldGray   += Red*Pixel.m_fPercentage*fRedEntropy;
-										m_pOutput->SetValue(Pixel.m_lX, Pixel.m_lY, fOldGray);
-									};
-								}
-
-								double		fPreviousRed,
-											fPreviousGreen,
-											fPreviousBlue;
-
-								m_pTempBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
-								fPreviousRed   += (double)Red/256.0 * Pixel.m_fPercentage;
-								fPreviousGreen += (double)Green/256.0 * Pixel.m_fPercentage;
-								fPreviousBlue  += (double)Blue/256.0 * Pixel.m_fPercentage;
-								fPreviousRed   = min(fPreviousRed, 255.0);
-								fPreviousGreen = min(fPreviousGreen, 255.0);
-								fPreviousBlue  = min(fPreviousBlue, 255.0);
-								m_pTempBitmap->SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
+									m_pTempBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
+									fPreviousRed += (double)Red / 256.0 * Pixel.m_fPercentage;
+									fPreviousGreen += (double)Green / 256.0 * Pixel.m_fPercentage;
+									fPreviousBlue += (double)Blue / 256.0 * Pixel.m_fPercentage;
+									fPreviousRed = min(fPreviousRed, 255.0);
+									fPreviousGreen = min(fPreviousGreen, 255.0);
+									fPreviousBlue = min(fPreviousBlue, 255.0);
+									m_pTempBitmap->SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousRed, fPreviousGreen, fPreviousBlue);
+								};
 							};
 						};
 					};
@@ -2146,6 +2156,8 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			if (m_pProgress)
 				m_pProgress->Start2(strStart2, lHeight);
 
+			AvxEntropy avxEntropy(*pBitmap, StackTask.m_EntropyWindow, m_pEntropyCoverage);
+
 			StackTask.m_PixTransform			= PixTransform;
 			StackTask.m_pLightTask				= m_pLightTask;
 			StackTask.m_bColor					= bColor;
@@ -2154,6 +2166,7 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			StackTask.m_lPixelSizeMultiplier	= m_lPixelSizeMultiplier;
 			StackTask.m_pOutput					= m_pOutput;
 			StackTask.m_pEntropyCoverage		= m_pEntropyCoverage;
+			StackTask.m_pAvxEntropy				= &avxEntropy;
 			StackTask.StartThreads();
 			StackTask.Process();
 
@@ -2171,69 +2184,84 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 				//WriteTIFF("E:\\AfterCometSubtraction.tiff", StackTask.m_pTempBitmap, m_pProgress, nullptr);
 			};
 
+			// First try AVX accelerated code, if not supported -> run conventional code.
+			AvxAccumulation avxAccumulation(m_rcResult, *m_pLightTask, *StackTask.m_pTempBitmap, *m_pOutput, avxEntropy);
+			const int avxResult = avxAccumulation.accumulate(m_lNrStacked);
+
 			if (m_pLightTask->m_Method == MBP_FASTAVERAGE)
 			{
-				// Use the result to average
-				for (j = 0;j<m_rcResult.Height();j++)
-					for (i = 0;i<m_rcResult.Width();i++)
+				if (avxResult != 0) // AVX code didn't run.
+				{
+					// Use the result to average
+					for (j = 0; j < m_rcResult.Height(); j++)
 					{
-						if (bColor)
+						for (i = 0; i < m_rcResult.Width(); i++)
 						{
-							double			fOutRed, fOutGreen, fOutBlue;
-							double			fNewRed, fNewGreen, fNewBlue;
+							if (bColor)
+							{
+								double			fOutRed, fOutGreen, fOutBlue;
+								double			fNewRed, fNewGreen, fNewBlue;
 
-							m_pOutput->GetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
-							StackTask.m_pTempBitmap->GetPixel(i, j, fNewRed, fNewGreen, fNewBlue);
-							fOutRed		= (fOutRed * m_lNrStacked + fNewRed)/(double)(m_lNrStacked+1);
-							fOutGreen	= (fOutGreen * m_lNrStacked + fNewGreen)/(double)(m_lNrStacked+1);
-							fOutBlue	= (fOutBlue * m_lNrStacked + fNewBlue)/(double)(m_lNrStacked+1);
-							m_pOutput->SetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
-						}
-						else
-						{
-							double			fOutGray;
-							double			fNewGray;
+								m_pOutput->GetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
+								StackTask.m_pTempBitmap->GetPixel(i, j, fNewRed, fNewGreen, fNewBlue);
+								fOutRed = (fOutRed * m_lNrStacked + fNewRed) / (double)(m_lNrStacked + 1);
+								fOutGreen = (fOutGreen * m_lNrStacked + fNewGreen) / (double)(m_lNrStacked + 1);
+								fOutBlue = (fOutBlue * m_lNrStacked + fNewBlue) / (double)(m_lNrStacked + 1);
+								m_pOutput->SetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
+							}
+							else
+							{
+								double			fOutGray;
+								double			fNewGray;
 
-							m_pOutput->GetPixel(i, j, fOutGray);
-							StackTask.m_pTempBitmap->GetPixel(i, j, fNewGray);
-							fOutGray	= (fOutGray * m_lNrStacked + fNewGray)/(double)(m_lNrStacked+1);
-							m_pOutput->SetPixel(i, j, fOutGray);
+								m_pOutput->GetPixel(i, j, fOutGray);
+								StackTask.m_pTempBitmap->GetPixel(i, j, fNewGray);
+								fOutGray = (fOutGray * m_lNrStacked + fNewGray) / (double)(m_lNrStacked + 1);
+								m_pOutput->SetPixel(i, j, fOutGray);
+							};
 						};
 					};
+				};
 			}
 			else if (m_pLightTask->m_Method == MBP_MAXIMUM)
 			{
-				// Use the result to maximize
-				for (j = 0;j<m_rcResult.Height();j++)
-					for (i = 0;i<m_rcResult.Width();i++)
+				if (avxResult != 0)
+				{
+					// Use the result to maximize
+					for (j = 0; j < m_rcResult.Height(); j++)
 					{
-						if (bColor)
+						for (i = 0; i < m_rcResult.Width(); i++)
 						{
-							double			fOutRed, fOutGreen, fOutBlue;
-							double			fNewRed, fNewGreen, fNewBlue;
+							if (bColor)
+							{
+								double			fOutRed, fOutGreen, fOutBlue;
+								double			fNewRed, fNewGreen, fNewBlue;
 
-							m_pOutput->GetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
-							StackTask.m_pTempBitmap->GetPixel(i, j, fNewRed, fNewGreen, fNewBlue);
-							fOutRed		= max(fOutRed, fNewRed);
-							fOutGreen	= max(fOutGreen, fNewGreen);
-							fOutBlue	= max(fOutBlue, fNewBlue);;
-							m_pOutput->SetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
-						}
-						else
-						{
-							double			fOutGray;
-							double			fNewGray;
+								m_pOutput->GetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
+								StackTask.m_pTempBitmap->GetPixel(i, j, fNewRed, fNewGreen, fNewBlue);
+								fOutRed = max(fOutRed, fNewRed);
+								fOutGreen = max(fOutGreen, fNewGreen);
+								fOutBlue = max(fOutBlue, fNewBlue);;
+								m_pOutput->SetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
+							}
+							else
+							{
+								double			fOutGray;
+								double			fNewGray;
 
-							m_pOutput->GetPixel(i, j, fOutGray);
-							StackTask.m_pTempBitmap->GetPixel(i, j, fNewGray);
-							fOutGray	= max(fOutGray, fNewGray);
-							m_pOutput->SetPixel(i, j, fOutGray);
+								m_pOutput->GetPixel(i, j, fOutGray);
+								StackTask.m_pTempBitmap->GetPixel(i, j, fNewGray);
+								fOutGray = max(fOutGray, fNewGray);
+								m_pOutput->SetPixel(i, j, fOutGray);
+							};
 						};
 					};
+				};
 			}
-			else if ((m_pLightTask->m_Method != MBP_ENTROPYAVERAGE) &&
-				      m_pMasterLight && StackTask.m_pTempBitmap)
+			else if ((m_pLightTask->m_Method != MBP_ENTROPYAVERAGE) && m_pMasterLight && StackTask.m_pTempBitmap)
+			{
 				m_pMasterLight->AddBitmap(StackTask.m_pTempBitmap, m_pProgress);
+			}
 
 			if (m_bSaveIntermediate && !m_bCreateCometImage)
 			{

@@ -100,6 +100,13 @@ public :
 	{
 	};
 
+	const float* redEntropyData() const { return m_vRedEntropies.data(); }
+	const float* greenEntropyData() const { return m_vGreenEntropies.data(); }
+	const float* blueEntropyData() const { return m_vBlueEntropies.data(); }
+	const int nrSquaresX() const { return m_lNrSquaresX; }
+	const int nrSquaresY() const { return m_lNrSquaresY; }
+	const int windowSize() const { return m_lWindowSize; }
+
 	void	Init(CMemoryBitmap * pBitmap, LONG lWindowSize = 10, CDSSProgress * pProgress = nullptr)
 	{
 		m_pBitmap.Attach(pBitmap);

@@ -662,15 +662,15 @@ void	CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECT
 
 		CRegisteredFrame		regFrame;
 		CRect					rcReg;
+		STARSET stars;
 
 		rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
 		rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
 
 		regFrame.m_fBackground = m_fBackground;
-		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg);
+		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
 
-		vStars = regFrame.m_vStars;
-		std::sort(vStars.begin(), vStars.end());
+		vStars.assign(stars.cbegin(), stars.cend());
 	};
 };
 

@@ -1,6 +1,8 @@
 #ifndef __MEDIANFILTERENGINE_H__
 #define __MEDIANFILTERENGINE_H__
 
+#include "avx_filter.h"
+
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
@@ -51,6 +53,7 @@ public :
 			std::vector<TType>		vValues;
 
 			vValues.reserve((m_pEngine->m_lFilterSize*2+1)*(m_pEngine->m_lFilterSize*2+1));
+			AvxImageFilter avxFilter(m_pEngine);
 
 			// Create a message queue and signal the event
 			PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
@@ -59,86 +62,89 @@ public :
 			{
 				if (msg.message == WM_MT_PROCESS)
 				{
-					if (CFAType != CFATYPE_NONE)
+					if (avxFilter.filter(msg.wParam, msg.wParam + msg.lParam) != 0)
 					{
-						TType *				pOutValues = m_pEngine->m_pvOutValues;
-
-						pOutValues += msg.wParam * lWidth;
-
-						for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
+						if (CFAType != CFATYPE_NONE)
 						{
-							for (i = 0;i<lWidth;i++)
+							TType* pOutValues = m_pEngine->m_pvOutValues;
+
+							pOutValues += msg.wParam * lWidth;
+
+							for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 							{
-								// Compute the min and max values in X and Y
-								LONG			lXMin, lXMax,
-												lYMin, lYMax;
-								BAYERCOLOR		BayerColor = GetBayerColor(i, j, CFAType);
-
-								lXMin = max(0L, i-lFilterSize);
-								lXMax = min(i+lFilterSize, lWidth-1);
-								lYMin = max(0L, j-lFilterSize);
-								lYMax = min(j+lFilterSize, lHeight-1);
-
-								// Fill the array with the values
-								TType *			pInLine   = m_pEngine->m_pvInValues;
-								pInLine += lXMin + (lYMin * lWidth);
-								vValues.resize(0);
-								for (LONG k = lYMin;k<=lYMax;k++)
+								for (i = 0; i < lWidth; i++)
 								{
-									TType *		pInValues = pInLine;
+									// Compute the min and max values in X and Y
+									LONG			lXMin, lXMax,
+										lYMin, lYMax;
+									BAYERCOLOR		BayerColor = GetBayerColor(i, j, CFAType);
 
-									for (LONG l = lXMin;l<=lXMax;l++)
+									lXMin = max(0L, i - lFilterSize);
+									lXMax = min(i + lFilterSize, lWidth - 1);
+									lYMin = max(0L, j - lFilterSize);
+									lYMax = min(j + lFilterSize, lHeight - 1);
+
+									// Fill the array with the values
+									TType* pInLine = m_pEngine->m_pvInValues;
+									pInLine += lXMin + (lYMin * lWidth);
+									vValues.resize(0);
+									for (LONG k = lYMin; k <= lYMax; k++)
 									{
-										if (GetBayerColor(l, k, CFAType) == BayerColor)
-											vValues.push_back(*pInValues);
-										pInValues++;
+										TType* pInValues = pInLine;
+
+										for (LONG l = lXMin; l <= lXMax; l++)
+										{
+											if (GetBayerColor(l, k, CFAType) == BayerColor)
+												vValues.push_back(*pInValues);
+											pInValues++;
+										};
+										pInLine += lWidth;
 									};
-									pInLine   += lWidth;
+
+									TType			fMedian = Median(vValues);
+
+									*pOutValues = fMedian;
+									pOutValues++;
 								};
-
-								TType			fMedian = Median(vValues);
-
-								*pOutValues = fMedian;
-								pOutValues++;
 							};
-						};
-					}
-					else
-					{
-						TType *				pOutValues = m_pEngine->m_pvOutValues;
-
-						pOutValues += msg.wParam * lWidth;
-
-						for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
+						}
+						else
 						{
-							for (i = 0;i<lWidth;i++)
+							TType* pOutValues = m_pEngine->m_pvOutValues;
+
+							pOutValues += msg.wParam * lWidth;
+
+							for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 							{
-								// Compute the min and max values in X and Y
-								LONG			lXMin, lXMax,
-												lYMin, lYMax;
-
-								lXMin = max(0L, i-lFilterSize);
-								lXMax = min(i+lFilterSize, lWidth-1);
-								lYMin = max(0L, j-lFilterSize);
-								lYMax = min(j+lFilterSize, lHeight-1);
-
-								vValues.resize((lXMax-lXMin+1)*(lYMax-lYMin+1));
-
-								// Fill the array with the values
-								TType *			pInValues   = m_pEngine->m_pvInValues;
-								TType *			pAreaValues = &(vValues[0]);
-								pInValues += lXMin + (lYMin * lWidth);
-								for (LONG k = lYMin;k<=lYMax;k++)
+								for (i = 0; i < lWidth; i++)
 								{
-									memcpy(pAreaValues, pInValues, sizeof(TType) * (lXMax-lXMin+1));
-									pInValues   += lWidth;
-									pAreaValues += lXMax-lXMin+1;
+									// Compute the min and max values in X and Y
+									LONG			lXMin, lXMax,
+										lYMin, lYMax;
+
+									lXMin = max(0L, i - lFilterSize);
+									lXMax = min(i + lFilterSize, lWidth - 1);
+									lYMin = max(0L, j - lFilterSize);
+									lYMax = min(j + lFilterSize, lHeight - 1);
+
+									vValues.resize((lXMax - lXMin + 1) * (lYMax - lYMin + 1));
+
+									// Fill the array with the values
+									TType* pInValues = m_pEngine->m_pvInValues;
+									TType* pAreaValues = &(vValues[0]);
+									pInValues += lXMin + (lYMin * lWidth);
+									for (LONG k = lYMin; k <= lYMax; k++)
+									{
+										memcpy(pAreaValues, pInValues, sizeof(TType) * (lXMax - lXMin + 1));
+										pInValues += lWidth;
+										pAreaValues += lXMax - lXMin + 1;
+									};
+
+									TType			fMedian = Median(vValues);
+
+									*pOutValues = fMedian;
+									pOutValues++;
 								};
-
-								TType			fMedian = Median(vValues);
-
-								*pOutValues = fMedian;
-								pOutValues ++;
 							};
 						};
 					};
