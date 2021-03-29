@@ -323,7 +323,7 @@ public :
 		m_fUsedMin = ExtractValue(szParameters, _T("MinUsed"));
 		m_fUsedMax = ExtractValue(szParameters, _T("MaxUsed"));
 
-		LONG				lValue;
+		int				lValue;
 
 		lValue = ExtractValue(szParameters, _T("HAT"));
 		m_HAT = (HISTOADJUSTTYPE)lValue;
@@ -452,14 +452,14 @@ class CHistogram
 {
 private :
 	std::vector<DWORD>		m_vValues;
-	LONG					m_lMax;
+	int					m_lMax;
 	double					m_fAbsMax;
 	double					m_fMax;
 	double					m_fMin;
 	double					m_fStep;
 	double					m_fSum;
 	double					m_fPowSum;
-	LONG					m_lNrValues;
+	int					m_lNrValues;
 	bool					m_bInitOk;
 
 public :
@@ -482,12 +482,12 @@ public :
 
 	void	Init()
 	{
-		LONG		lNrValues = 0;
+		int		lNrValues = 0;
 
 		m_bInitOk = false;
 		Clear();
 		const double numberOfSteps = m_fAbsMax / m_fStep;
-		lNrValues = std::isfinite(numberOfSteps) ? (static_cast<LONG>(numberOfSteps) + 1) : 1;
+		lNrValues = std::isfinite(numberOfSteps) ? (static_cast<int>(numberOfSteps) + 1) : 1;
 
 		m_vValues.resize(lNrValues);
 
@@ -513,9 +513,9 @@ public :
 
 		if (m_bInitOk)
 		{
-			LONG		lNrValues;
+			int		lNrValues;
 
-			lNrValues = (LONG)(m_fAbsMax/m_fStep+1);
+			lNrValues = (int)(m_fAbsMax/m_fStep+1);
 			m_vValues.resize(lNrValues);
 		};
 	};
@@ -528,7 +528,7 @@ public :
 		Init();
 	};
 
-	void	SetSize(double fMax, LONG lNrValues)
+	void	SetSize(double fMax, int lNrValues)
 	{
 		m_fAbsMax	= fMax;
 		m_fStep = fMax == 0.0 ? std::numeric_limits<double>::min() : (fMax / (lNrValues - 1));
@@ -536,16 +536,16 @@ public :
 		Init(lNrValues);
 	};
 
-	LONG	GetSize()
+	int	GetSize()
 	{
-		return (LONG)m_vValues.size();
+		return (int)m_vValues.size();
 	};
 
-	void	AddValue(double fValue, LONG lNrValues = 1)
+	void	AddValue(double fValue, int lNrValues = 1)
 	{
-		LONG		lNrStep;
+		int		lNrStep;
 
-		lNrStep = (LONG)(fValue/m_fStep);
+		lNrStep = (int)(fValue/m_fStep);
 
 		if (lNrStep < m_vValues.size())
 		{
@@ -553,7 +553,7 @@ public :
 			m_lNrValues+=lNrValues;
 			m_fPowSum += (fValue*fValue)*lNrValues;
 			m_fSum	  += fValue * lNrValues;
-			m_lMax	  = max(m_lMax, static_cast<long>(m_vValues[lNrStep]));
+			m_lMax	  = max(m_lMax, static_cast<int>(m_vValues[lNrStep]));
 
 			m_fMax = max(m_fMax, fValue);
 			if (m_fMin < 0)
@@ -565,29 +565,29 @@ public :
 
 	void	AddValues(const CHistogram & Histogram)
 	{
-		for (LONG i = 0;i<Histogram.m_vValues.size();i++)
+		for (int i = 0;i<Histogram.m_vValues.size();i++)
 		{
 			if (Histogram.m_vValues[i])
 				AddValue(i*m_fStep, Histogram.m_vValues[i]);
 		};
 	};
 
-	LONG	GetNrValues()
+	int	GetNrValues()
 	{
-		return (LONG)m_vValues.size();
+		return (int)m_vValues.size();
 	};
 
-	LONG	GetValue(double fValue)
+	int	GetValue(double fValue)
 	{
-		return m_vValues[(LONG)(fValue/m_fStep)];
+		return m_vValues[(int)(fValue/m_fStep)];
 	};
 
-	LONG	GetValue(LONG lValue)
+	int	GetValue(int lValue)
 	{
 		return m_vValues[lValue];
 	};
 
-	double	GetComponentValue(LONG lIndice)
+	double	GetComponentValue(int lIndice)
 	{
 		return (double)lIndice * m_fStep;
 	};
@@ -628,8 +628,8 @@ public :
 
 		if (m_lNrValues)
 		{
-			LONG		lCount = 0;
-			LONG		i = 0;
+			int		lCount = 0;
+			int		i = 0;
 
 			while ((lCount + m_vValues[i]) <= m_lNrValues/2)
 			{
@@ -643,7 +643,7 @@ public :
 		return fResult;
 	};
 
-	LONG	GetMaximumNrValues()
+	int	GetMaximumNrValues()
 	{
 		return m_lMax;
 	};
@@ -674,7 +674,7 @@ public :
 		return m_RedHisto.GetSize() && m_GreenHisto.GetSize() && m_BlueHisto.GetSize();
 	};
 
-	LONG	GetSize()
+	int	GetSize()
 	{
 		return m_RedHisto.GetSize();
 	};
@@ -686,7 +686,7 @@ public :
 		m_BlueHisto.SetSize(fMax, fStep);
 	};
 
-	void	SetSize(double fMax, LONG lNrValues)
+	void	SetSize(double fMax, int lNrValues)
 	{
 		m_RedHisto.SetSize(fMax, lNrValues);
 		m_GreenHisto.SetSize(fMax, lNrValues);
@@ -707,7 +707,7 @@ public :
 		m_BlueHisto.AddValues(RGBHistogram.m_BlueHisto);
 	};
 
-	void	GetValues(LONG lValue, LONG & lNrReds, LONG & lNrGreens, LONG & lNrBlues)
+	void	GetValues(int lValue, int & lNrReds, int & lNrGreens, int & lNrBlues)
 	{
 		lNrReds		= m_RedHisto.GetValue(lValue);
 		lNrGreens	= m_GreenHisto.GetValue(lValue);

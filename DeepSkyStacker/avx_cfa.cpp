@@ -26,7 +26,7 @@ void AvxCfaProcessing::init(const size_t lineStart, const size_t lineEnd) // You
 	}
 }
 
-int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const long pixelSizeMultiplier)
+int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier)
 {
 	if (!AvxSupport::checkSimdAvailability())
 		return 1;

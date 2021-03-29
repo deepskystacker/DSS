@@ -230,7 +230,7 @@ bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 		{
 			// Transform the gray scale image to color image
 			CSmartPtr<C48BitColorBitmap>	pColorBitmap;
-			LONG							lWidth = pInBitmap->Width(),
+			int							lWidth = pInBitmap->Width(),
 											lHeight = pInBitmap->Height();
 			PixelIterator					it;
 
@@ -241,9 +241,9 @@ bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 //#if defined(_OPENMP)	Don't use OpenMP here - doesn't mix with Pixel Iterator
 //#pragma omp parallel for default(none)
 //#endif
-			for (LONG j = 0;j<lHeight;j++)
+			for (int j = 0;j<lHeight;j++)
 			{
-				for (LONG i = 0;i<lWidth;i++)
+				for (int i = 0;i<lWidth;i++)
 				{
 					double			fRed, fGreen, fBlue;
 
@@ -299,7 +299,7 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 				{
 					// Transform the gray scale image to color image
 					CSmartPtr<C48BitColorBitmap>	pColorBitmap;
-					LONG							lWidth = pBitmap->Width(),
+					int							lWidth = pBitmap->Width(),
 						lHeight = pBitmap->Height();
 
 					pColorBitmap.Create();
@@ -308,9 +308,9 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
-					for (LONG j = 0; j < lHeight; j++)
+					for (int j = 0; j < lHeight; j++)
 					{
-						for (LONG i = 0; i < lWidth; i++)
+						for (int i = 0; i < lWidth; i++)
 						{
 							double			fRed, fGreen, fBlue;
 
@@ -401,8 +401,8 @@ bool	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 		if (pBitmap)
 		{
-			LONG					lWidth  = pSrcBitmap->GetWidth();
-			LONG					lHeight = pSrcBitmap->GetHeight();
+			int					lWidth  = pSrcBitmap->GetWidth();
+			int					lHeight = pSrcBitmap->GetHeight();
 			Rect					rc(0, 0, lWidth-1, lHeight-1);
 			BitmapData 				bitmapData;
 
@@ -418,11 +418,11 @@ bool	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 				BYTE *				pGreenPixel = pBitmap->GetGreenPixel(0, 0);
 				BYTE *				pBluePixel	= pBitmap->GetBluePixel(0, 0);
 
-				for (LONG j = 0;j<lHeight;j++)
+				for (int j = 0;j<lHeight;j++)
 				{
 					BYTE *			pPixel = pBasePixels;
 
-					for (LONG i = 0;i<lWidth;i++)
+					for (int i = 0;i<lWidth;i++)
 					{
 						*pBluePixel = *pPixel;
 						pPixel++;
@@ -695,8 +695,8 @@ bool	C32BitsBitmap::CopyToClipboard()
 			bmpInfo.bmiHeader.biBitCount= 32;
 			bmpInfo.bmiHeader.biCompression= BI_RGB;
 			bmpInfo.bmiHeader.biSizeImage= 0;
-			bmpInfo.bmiHeader.biXPelsPerMeter = (LONG)(96*100.0/2.54);
-			bmpInfo.bmiHeader.biYPelsPerMeter = (LONG)(96*100.0/2.54);
+			bmpInfo.bmiHeader.biXPelsPerMeter = (int)(96*100.0/2.54);
+			bmpInfo.bmiHeader.biYPelsPerMeter = (int)(96*100.0/2.54);
 			bmpInfo.bmiHeader.biClrUsed = 0;
 			bmpInfo.bmiHeader.biClrImportant = 0;
 
@@ -731,7 +731,7 @@ bool	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	LONG			i, j;
+	int			i, j;
 
 	Free();
 	if (pBitmap)
@@ -805,7 +805,7 @@ bool	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 void CGammaTransformation::InitTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG				lBlackPoint = 65535.0*fBlackPoint,
+	int				lBlackPoint = 65535.0*fBlackPoint,
 						lWhitePoint = 65535.0*fWhitePoint;
 
 
@@ -816,7 +816,7 @@ void CGammaTransformation::InitTransformation(double fBlackPoint, double fGrayPo
 	ri.Initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 
 	// Perform rational interpolation
-	for (LONG i = 0;i<m_vTransformation.size();i++)
+	for (int i = 0;i<m_vTransformation.size();i++)
 	{
 		if (i<=lBlackPoint)
 			m_vTransformation[i] = 0;
@@ -854,7 +854,7 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> *
 	if (pInBitmap && gammatrans.IsInitialized())
 	{
 		bool			bContinue;
-		LONG const		lWidth = pInBitmap->Width(),
+		int const		lWidth = pInBitmap->Width(),
 						lHeight = pInBitmap->Height();
 
 		if (pOutBitmap->IsEmpty())
@@ -874,7 +874,7 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> *
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
-			for (LONG j =  0;j<lHeight;j++)
+			for (int j =  0;j<lHeight;j++)
 			{
 				// Init iterators
 				TType *			pRed = pInBitmap->GetRedPixel(0, j);
@@ -883,7 +883,7 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> *
 
 				LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
 				LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
-				for (LONG i = 0;i<lWidth;i++)
+				for (int i = 0;i<lWidth;i++)
 				{
 					pOutPixel->rgbRed   = gammatrans.m_vTransformation[*pRed/fMultiplier];
 					pOutPixel->rgbGreen = gammatrans.m_vTransformation[*pGreen/fMultiplier];
@@ -913,7 +913,7 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * 
 	if (pInBitmap && gammatrans.IsInitialized())
 	{
 		bool			bContinue;
-		LONG const		lWidth = pInBitmap->Width(),
+		int const		lWidth = pInBitmap->Width(),
 						lHeight = pInBitmap->Height();
 
 		if (pOutBitmap->IsEmpty())
@@ -933,14 +933,14 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * 
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
-			for (LONG j =  0;j<lHeight;j++)
+			for (int j =  0;j<lHeight;j++)
 			{
 				// Init iterators
 				TType *			pGray = pInBitmap->GetGrayPixel(0, j);
 
 				LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
 				LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
-				for (LONG i = 0;i<lWidth;i++)
+				for (int i = 0;i<lWidth;i++)
 				{
 
 					pOutPixel->rgbRed   = gammatrans.m_vTransformation[*pGray/fMultiplier];
@@ -1333,11 +1333,11 @@ public :
 bool	CSubtractTask::DoTask(HANDLE hEvent)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG			i, j;
+	int			i, j;
 	bool			bEnd = false;
 	MSG				msg;
-	LONG			lWidth = m_pTarget->RealWidth();
-	LONG			lExtraWidth = 0;
+	int			lWidth = m_pTarget->RealWidth();
+	int			lExtraWidth = 0;
 
 	PixelIterator	PixelItTgt;
 	PixelIterator 	PixelItSrc;
@@ -1358,7 +1358,7 @@ bool	CSubtractTask::DoTask(HANDLE hEvent)
 	{
 		if (msg.message == WM_MT_PROCESS)
 		{
-			LONG			lTgtStartX = 0,
+			int			lTgtStartX = 0,
 							lTgtStartY = msg.wParam,
 							lSrcStartX = 0,
 							lSrcStartY = msg.wParam;
@@ -1450,10 +1450,10 @@ bool CSubtractTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
-	LONG			lHeight = m_pTarget->RealHeight();
-	LONG			lStep;
-	LONG			lRemaining;
-	LONG			i = 0;
+	int			lHeight = m_pTarget->RealHeight();
+	int			lStep;
+	int			lRemaining;
+	int			i = 0;
 
 	if (m_fYShift)
 		lHeight -= fabs(m_fYShift)+0.5;
@@ -1465,13 +1465,13 @@ bool CSubtractTask::Process()
 	};
 
 	bResult = true;
-	lStep = max(1L, lHeight/50);
+	lStep = std::max(1, lHeight / 50);
 	lRemaining = lHeight;
 
 	while (i<lHeight)
 	{
 		DWORD			dwThreadId;
-		LONG			lAdd = min(lStep, lRemaining);
+		int			lAdd = min(lStep, lRemaining);
 
 		dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
@@ -1654,10 +1654,10 @@ public :
 bool	CMultiplyTask::DoTask(HANDLE hEvent)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG			i, j;
+	int			i, j;
 	bool			bEnd = false;
 	MSG				msg;
-	LONG			lWidth = m_pTarget->RealWidth();
+	int			lWidth = m_pTarget->RealWidth();
 
 	PixelIterator	PixelItTgt;
 
@@ -1712,10 +1712,10 @@ bool CMultiplyTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
-	LONG			lHeight = m_pTarget->RealHeight();
-	LONG			lStep;
-	LONG			lRemaining;
-	LONG			i = 0;
+	int			lHeight = m_pTarget->RealHeight();
+	int			lStep;
+	int			lRemaining;
+	int			i = 0;
 
 	if (m_pProgress)
 	{
@@ -1724,13 +1724,13 @@ bool CMultiplyTask::Process()
 	};
 
 	bResult = true;
-	lStep = max(1L, lHeight/50);
+	lStep = std::max(1, lHeight / 50);
 	lRemaining = lHeight;
 
 	while (i<lHeight)
 	{
 		DWORD			dwThreadId;
-		LONG			lAdd = min(lStep, lRemaining);
+		int			lAdd = min(lStep, lRemaining);
 
 		dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
@@ -1794,7 +1794,7 @@ CFATYPE	GetCFAType(CMemoryBitmap * pBitmap)
 
 /* ------------------------------------------------------------------- */
 
-bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
+bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, int lFilterSize, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;

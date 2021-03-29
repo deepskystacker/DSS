@@ -34,7 +34,7 @@ int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const i
 
 	int rval = 1;
 	if (doCalcEntropies<WORD>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
-		|| doCalcEntropies<unsigned long>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
+		|| doCalcEntropies<unsigned int>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
 		|| doCalcEntropies<float>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0)
 	{
 		rval = 0;

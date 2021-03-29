@@ -34,7 +34,7 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
 
 	int rv = 1;
 	if (doCalcHistogram<WORD>(lineStart, lineEnd) == 0
-		|| doCalcHistogram<unsigned long>(lineStart, lineEnd) == 0
+		|| doCalcHistogram<unsigned int>(lineStart, lineEnd) == 0
 		|| doCalcHistogram<float>(lineStart, lineEnd) == 0
 		|| doCalcHistogram<double>(lineStart, lineEnd) == 0)
 	{

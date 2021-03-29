@@ -108,14 +108,12 @@ bool AvxSupport::checkSimdAvailability() noexcept
 }
 
 // Explicit template instantiation for the types we need.
-template bool AvxSupport::bitmapHasCorrectType<WORD>() const;
+template bool AvxSupport::bitmapHasCorrectType<std::uint16_t>() const;
 template bool AvxSupport::bitmapHasCorrectType<std::uint32_t>() const;
-template bool AvxSupport::bitmapHasCorrectType<unsigned long>() const;
 template bool AvxSupport::bitmapHasCorrectType<float>() const;
 template bool AvxSupport::bitmapHasCorrectType<double>() const;
 
-template bool AvxSupport::isMonochromeCfaBitmapOfType<WORD>() const;
+template bool AvxSupport::isMonochromeCfaBitmapOfType<std::uint16_t>() const;
 template bool AvxSupport::isMonochromeCfaBitmapOfType<std::uint32_t>() const;
-template bool AvxSupport::isMonochromeCfaBitmapOfType<unsigned long>() const;
 template bool AvxSupport::isMonochromeCfaBitmapOfType<float>() const;
 template bool AvxSupport::isMonochromeCfaBitmapOfType<double>() const;

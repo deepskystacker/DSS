@@ -4,7 +4,7 @@
 #include <immintrin.h>
 
 
-AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat) :
+AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat) :
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.Width() }, resultHeight{ resultRect.Height() },
@@ -24,7 +24,7 @@ AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemory
 	resizeColorVectors(AvxSupport::numberOfAvxVectors<float, __m256>(width) * height);
 }
 
-void AvxStacking::init(const long lStart, const long lEnd)
+void AvxStacking::init(const int lStart, const int lEnd)
 {
 	lineStart = lStart;
 	lineEnd = lEnd;
@@ -49,16 +49,16 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier)
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
 {
-	static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
 	if (!AvxSupport::checkSimdAvailability())
 		return 1;
 
 	int rval = 1;
 	if (doStack<WORD>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
-		|| doStack<unsigned long>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
+		|| doStack<unsigned int>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
 		|| doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
 	{
 		rval = 0;
@@ -67,7 +67,7 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 }
 
 template <class T>
-int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier)
+int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
 {
 	if (pixelSizeMultiplier != 1 || pixelTransformDef.m_lPixelSizeMultiplier != 1)
 		return 1;

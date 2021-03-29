@@ -288,7 +288,7 @@ private :
 
 
 	void	FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
-	void	GetValidNeighbors(LONG lX, LONG lY, HOTPIXELVECTOR & vPixels, LONG lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
+	void	GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
 
 protected :
 	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, CDSSProgress * pProgress);

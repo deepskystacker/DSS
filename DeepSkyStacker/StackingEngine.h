@@ -12,7 +12,7 @@ class CComputeOffsetTask;
 class	CImageCometShift
 {
 public :
-	LONG						m_lImageIndex;
+	int						m_lImageIndex;
 	double						m_fXShift,
 								m_fYShift;
 
@@ -25,7 +25,7 @@ private :
 	};
 
 public :
-	CImageCometShift(LONG lIndex = 0, double fXShift = 0, double fYShift = 0)
+	CImageCometShift(int lIndex = 0, double fXShift = 0, double fYShift = 0)
 	{
 		m_lImageIndex	= lIndex;
 		m_fXShift		= fXShift;
@@ -142,11 +142,11 @@ private :
 	CDSSProgress *				m_pProgress;
 	bool						m_bOffsetComputed;
 	CString						m_strReferenceFrame;
-	LONG						m_lNrCurrentStackable;
-	LONG						m_lNrStackable;
-	LONG						m_lNrCometStackable;
-	LONG						m_lISOSpeed;
-	LONG						m_lGain;
+	int						m_lNrCurrentStackable;
+	int						m_lNrStackable;
+	int						m_lNrCometStackable;
+	int						m_lISOSpeed;
+	int						m_lGain;
 	SYSTEMTIME					m_DateTime;
 	CBitmapExtraInfo			m_ExtraInfo;
 	CRect						m_rcResult;
@@ -160,14 +160,14 @@ private :
 	CBackgroundCalibration		m_BackgroundCalibration;
 	CSmartPtr<CMultiBitmap>		m_pMasterLight;
 	CTaskInfo *					m_pLightTask;
-	LONG						m_lNrStacked;
+	int						m_lNrStacked;
 	double						m_fKeptPercentage;
 	bool						m_bSaveCalibrated;
 	bool						m_bSaveIntermediate;
 	bool						m_bSaveCalibratedDebayered;
 	CString						m_strCurrentLightFrame;
 	CFATYPE						m_InputCFAType;
-	LONG						m_lPixelSizeMultiplier;
+	int						m_lPixelSizeMultiplier;
 	INTERMEDIATEFILEFORMAT		m_IntermediateFileFormat;
 	bool						m_bCometStacking;
 	bool						m_bCometInterpolating;
@@ -181,7 +181,7 @@ private :
 
 private :
 	bool	AddLightFramesToList(CAllStackingTasks & tasks);
-	bool	ComputeLightFrameOffset(LONG lBitmapIndice, CMatchingStars & MatchingStars);
+	bool	ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars & MatchingStars);
 	bool	ComputeMissingCometPositions();
 	bool	ComputeOffsets();
 	bool	IsLightFrameStackable(LPCTSTR szFile);
@@ -192,7 +192,7 @@ private :
 	void	GetResultExtraInfo();
 	void	ComputeLargestRectangle(CRect & rc);
 	bool	ComputeSmallestRectangle(CRect & rc);
-	LONG	FindBitmapIndice(LPCTSTR szFile);
+	int	FindBitmapIndice(LPCTSTR szFile);
 	bool	ComputeBitmap();
 	bool	CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bool bColor, CMultiBitmap ** ppMultiBitmap);
 	bool	StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBitmap);

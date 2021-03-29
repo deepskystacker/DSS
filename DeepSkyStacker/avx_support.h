@@ -168,11 +168,6 @@ public:
 			_mm256_cvtepi32_ps(_mm256_srli_epi32(_mm256_loadu_epi32(pColor + 8), 16))
 		};
 	}
-	inline static std::tuple<__m256, __m256> read16PackedSingle(const unsigned long* const pColor) noexcept
-	{
-		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
-		return read16PackedSingle(reinterpret_cast<const std::uint32_t*>(pColor));
-	}
 	inline static std::tuple<__m256, __m256> read16PackedSingle(const float* const pColor) noexcept
 	{
 		return { _mm256_loadu_ps(pColor), _mm256_loadu_ps(pColor + 8) };
@@ -200,11 +195,6 @@ public:
 			_mm256_cvtepi32_ps(v2)
 		};
 	}
-	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const unsigned long* const pColor, const int stride) noexcept
-	{
-		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
-		return read16PackedSingleStride(reinterpret_cast<const std::uint32_t*>(pColor), stride);
-	}
 	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const float* const pColor, const int stride) noexcept
 	{
 		const __m256i ndx1 = _mm256_mullo_epi32(_mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7), _mm256_set1_epi32(stride));
@@ -227,11 +217,6 @@ public:
 		const __m256i lo = _mm256_srli_epi32(_mm256_loadu_epi32(pColor), 16); // Shift 16 bits right while shifting in zeros.
 		const __m256i hi = _mm256_srli_epi32(_mm256_loadu_epi32(pColor + 8), 16);
 		return cvt2xEpi32Epu16(lo, hi);
-	}
-	inline static __m256i read16PackedShort(const unsigned long* const pColor)
-	{
-		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
-		return read16PackedShort(reinterpret_cast<const std::uint32_t*>(pColor));
 	}
 	inline static __m256i read16PackedShort(const float* const pColor)
 	{
@@ -258,11 +243,6 @@ public:
 			_mm256_srli_epi32(_mm256_loadu_si256((const __m256i*)pColor), 16), // Shift 16 bits right while shifting in zeros (divide by 65536).
 			_mm256_srli_epi32(_mm256_loadu_si256(((const __m256i*)pColor) + 1), 16)
 		};
-	}
-	inline static std::tuple<__m256i, __m256i> read16PackedInt(const unsigned long* const pColor)
-	{
-		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
-		return read16PackedInt(reinterpret_cast<const std::uint32_t*>(pColor));
 	}
 	inline static std::tuple<__m256i, __m256i> read16PackedInt(const float* const pColor)
 	{
@@ -306,9 +286,9 @@ public:
 		return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0x0000ffff)));
 	}
 
-	inline static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const unsigned long* const pOutputBitmap, const bool fastload) noexcept
+	inline static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const unsigned int* const pOutputBitmap, const bool fastload) noexcept
 	{
-		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+		static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
 		const __m256 scalingFactor = _mm256_set1_ps(65536.0f);
 
@@ -354,9 +334,9 @@ public:
 		}
 	}
 
-	inline static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, unsigned long* const pOutputBitmap, const bool faststore) noexcept
+	inline static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, unsigned int* const pOutputBitmap, const bool faststore) noexcept
 	{
-		static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+		static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
 		if (faststore)
 			_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx)), cvtPsEpu32(colorValue));
@@ -418,10 +398,10 @@ public:
 			return static_cast<WORD>(std::min(accumulatedColor, static_cast<float>(std::numeric_limits<T>::max())));
 		}
 
-		if constexpr (std::is_same<T, unsigned long>::value)
+		if constexpr (std::is_same<T, unsigned int>::value)
 		{
 			const float accumulatedColor = static_cast<float>(pOutputBitmap[outNdx]) + newColor * 65536.0f;
-			return static_cast<unsigned long>(std::min(accumulatedColor, 4294967040.0f)); // The next lower float value below UINTMAX.
+			return static_cast<unsigned int>(std::min(accumulatedColor, 4294967040.0f)); // The next lower float value below UINTMAX.
 		}
 
 		if constexpr (std::is_same<T, float>::value)

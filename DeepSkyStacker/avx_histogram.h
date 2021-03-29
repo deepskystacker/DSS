@@ -6,7 +6,7 @@
 class AvxHistogram
 {
 public:
-	typedef std::vector<long> HistogramVectorType;
+	typedef std::vector<int> HistogramVectorType;
 private:
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;

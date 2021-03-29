@@ -33,7 +33,7 @@ void CMultiBitmap::SetBitmapModel(CMemoryBitmap * pBitmap)
 
 void CMultiBitmap::DestroyTempFiles()
 {
-	for (LONG i = 0;i<m_vFiles.size();i++)
+	for (int i = 0;i<m_vFiles.size();i++)
 	{
 		if (m_vFiles[i].m_strFile.GetLength())
 			DeleteFile(m_vFiles[i].m_strFile);
@@ -47,12 +47,12 @@ void CMultiBitmap::DestroyTempFiles()
 void CMultiBitmap::InitParts()
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG				lNrLinesPerFile;
-	LONG				lNrLines;
-	LONG				lNrParts;
-	LONG				lLineSize;
-	LONG				lNrRemainingLines;
-	LONG				lNrOffsetLine = 0;
+	int				lNrLinesPerFile;
+	int				lNrLines;
+	int				lNrParts;
+	int				lLineSize;
+	int				lNrRemainingLines;
+	int				lNrOffsetLine = 0;
 
 	// make files a maximum of 50 Mb
 
@@ -71,8 +71,8 @@ void CMultiBitmap::InitParts()
 
 	m_vFiles.clear();
 
-	LONG			lStartRow = -1;
-	LONG			lEndRow	  = -1;
+	int			lStartRow = -1;
+	int			lEndRow	  = -1;
 
 	while (lEndRow <m_lHeight-1)
 	{
@@ -87,7 +87,7 @@ void CMultiBitmap::InitParts()
 			lEndRow++;
 			lNrRemainingLines--;
 		};
-		lEndRow = min(lEndRow, m_lHeight-1);
+		lEndRow = std::min(lEndRow, m_lHeight-1);
 
 		CBitmapPartFile		bp(strFile, lStartRow, lEndRow);
 
@@ -116,7 +116,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 	{
 		// Save the bitmap to the file
 		void *				pScanLine = nullptr;
-		LONG				lScanLineSize;
+		int				lScanLineSize;
 
 		lScanLineSize = (pBitmap->BitPerSample() * (pBitmap->IsMonochrome() ? 1 : 3) * m_lWidth/8);
 
@@ -127,7 +127,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 		if (pProgress)
 			pProgress->Start2(nullptr, m_lHeight);
 
-		for (LONG k = 0;k<m_vFiles.size() && bResult;k++)
+		for (int k = 0;k<m_vFiles.size() && bResult;k++)
 		{
 			FILE *				hFile;
 
@@ -137,7 +137,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 				bResult = true;
 				fseek(hFile, 0, SEEK_END);
 			};
-			for (LONG j = m_vFiles[k].m_lStartRow;j<=m_vFiles[k].m_lEndRow && bResult;j++)
+			for (int j = m_vFiles[k].m_lStartRow;j<=m_vFiles[k].m_lEndRow && bResult;j++)
 			{
 				pBitmap->GetScanLine(j, pScanLine);
 				bResult = (fwrite(pScanLine, lScanLineSize, 1, hFile) == 1);
@@ -165,9 +165,9 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 class CCombineTask : public CMultitask
 {
 private :
-	LONG						m_lStartRow;
-	LONG						m_lEndRow;
-	LONG						m_lScanLineSize;
+	int						m_lStartRow;
+	int						m_lEndRow;
+	int						m_lScanLineSize;
 	CDSSProgress *				m_pProgress;
 	CMultiBitmap *				m_pMultiBitmap;
 	void *						m_pBuffer;
@@ -189,7 +189,7 @@ public :
 	{
 	};
 
-	void	Init(LONG lStartRow, LONG lEndRow, LONG lScanLineSize, void * pBuffer, CDSSProgress * pProgress, CMultiBitmap * pMultiBitmap, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap = nullptr)
+	void	Init(int lStartRow, int lEndRow, int lScanLineSize, void * pBuffer, CDSSProgress * pProgress, CMultiBitmap * pMultiBitmap, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap = nullptr)
 	{
 		m_lStartRow		= lStartRow;
 		m_lEndRow		= lEndRow;
@@ -212,10 +212,10 @@ bool	CCombineTask::DoTask(HANDLE hEvent)
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
 
-	LONG				i;
+	int				i;
 	bool				bEnd = false;
 	MSG					msg;
-	LONG				lNrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
+	int				lNrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
 	std::vector<void *>	vScanLines;
 
 	vScanLines.reserve(lNrBitmaps);
@@ -236,9 +236,9 @@ bool	CCombineTask::DoTask(HANDLE hEvent)
 
 					vScanLines.resize(0);
 
-					for (LONG k = 0; k < lNrBitmaps && !bEnd; k++)
+					for (int k = 0; k < lNrBitmaps && !bEnd; k++)
 					{
-						LONG			lOffset;
+						int			lOffset;
 
 						lOffset = k * (m_lEndRow - m_lStartRow + 1) * m_lScanLineSize
 							+ (i - m_lStartRow) * m_lScanLineSize;
@@ -324,19 +324,19 @@ bool	CCombineTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
-	LONG			i = m_lStartRow;
-	LONG			lStep;
-	LONG			lRemaining;
+	int			i = m_lStartRow;
+	int			lStep;
+	int			lRemaining;
 
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1L, (m_lEndRow-m_lStartRow+1)/50);
+	lStep		= max(1, (m_lEndRow-m_lStartRow+1)/50);
 	lRemaining	= m_lEndRow-m_lStartRow+1;
 
 	while (i<=m_lEndRow && bResult)
 	{
 		DWORD			dwThreadId;
-		LONG			lAdd = min(lStep, lRemaining);
+		int			lAdd = min(lStep, lRemaining);
 
 		dwThreadId = GetAvailableThreadId();
 
@@ -362,21 +362,21 @@ bool	CCombineTask::Process()
 
 /* ------------------------------------------------------------------- */
 
-static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap, CMemoryBitmap * pOutBitmap)
+static	void ComputeWeightedAverage(int x, int y, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap, CMemoryBitmap * pOutBitmap)
 {
 	//ZFUNCTRACE_RUNTIME();
 	bool			bColor = pBitmap->IsMonochrome();
-	LONG			lWidth = pBitmap->Width();
-	LONG			lHeight = pBitmap->Height();
+	int			lWidth = pBitmap->Width();
+	int			lHeight = pBitmap->Height();
 
 	if (bColor)
 	{
 		double		fRed = 0, fGreen = 0, fBlue = 0;
 		double		fWRed = 0, fWGreen = 0, fWBlue = 0;
 
-		for (LONG i = max(0L, x-5);i<=min(lWidth-1, x+5);i++)
+		for (int i = std::max(0, x-5);i<=min(lWidth-1, x+5);i++)
 		{
-			for (LONG j = max(0L, y-5);j<=min(lHeight-1, y+5);j++)
+			for (int j = std::max(0, y-5);j<=min(lHeight-1, y+5);j++)
 			{
 				double		fRed1, fGreen1, fBlue1;
 				double		fWRed1, fWGreen1, fWBlue1;
@@ -405,9 +405,9 @@ static	void ComputeWeightedAverage(LONG x, LONG y, CMemoryBitmap * pBitmap, CMem
 		double		fGray = 0;
 		double		fWGray = 0;
 
-		for (LONG i = max(0L, x-5);i<=min(lWidth-1, x+5);i++)
+		for (int i = std::max(0, x-5);i<=min(lWidth-1, x+5);i++)
 		{
-			for (LONG j = max(0L, y-5);j<=min(lHeight-1, y+5);j++)
+			for (int j = std::max(0, y-5);j<=min(lHeight-1, y+5);j++)
 			{
 				double		fGray1;
 				double		fWGray1;
@@ -437,9 +437,9 @@ void	CMultiBitmap::SmoothOut(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppOutBitm
 
 		pOutBitmap.Attach(pBitmap->Clone());
 
-		for (LONG i = 0;i<m_lWidth;i++)
+		for (int i = 0;i<m_lWidth;i++)
 		{
-			for (LONG j = 0;j<m_lHeight;j++)
+			for (int j = 0;j<m_lHeight;j++)
 			{
 				// Compute the weighted average of a 11x11 area around each pixel
 				// It can be lengthy!
@@ -458,10 +458,10 @@ bool CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 {
 	ZFUNCTRACE_RUNTIME();
 	bool						bResult = false;
-	LONG						lScanLineSize;
-	LONG						/*i, k, */l;
+	int						lScanLineSize;
+	int						/*i, k, */l;
 	CSmartPtr<CMemoryBitmap>	pBitmap;
-	LONG						lBufferSize = 0;
+	int						lBufferSize = 0;
 	void *						pBuffer = nullptr;
 
 	if (m_bInitDone && m_vFiles.size())
@@ -494,7 +494,7 @@ bool CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 		for (l = 0;l<m_vFiles.size() && bResult;l++)
 		{
 			// Read the full bitmap in memory
-			LONG					lFileSize;
+			int					lFileSize;
 			FILE *					hFile;
 
 			lFileSize = lScanLineSize * m_lNrAddedBitmaps*

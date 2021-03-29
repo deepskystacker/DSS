@@ -16,9 +16,9 @@ private :
 	CBackgroundCalibration *		m_pBackgroundCalibration;
 
 public :
-	std::vector<LONG>				m_vRedHisto;
-	std::vector<LONG>				m_vGreenHisto;
-	std::vector<LONG>				m_vBlueHisto;
+	std::vector<int>				m_vRedHisto;
+	std::vector<int>				m_vGreenHisto;
+	std::vector<int>				m_vBlueHisto;
 
 public :
 	CBackgroundCalibrationTask()
@@ -31,7 +31,7 @@ public :
 	{
 	};
 
-	void	AddToMainHistograms(const std::vector<LONG> & vRedHisto, const std::vector<LONG> & vGreenHisto, const std::vector<LONG> & vBlueHisto);
+	void	AddToMainHistograms(const std::vector<int> & vRedHisto, const std::vector<int> & vGreenHisto, const std::vector<int> & vBlueHisto);
 
 	void	Init(CBackgroundCalibration * pBackgroundCalibration, CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 	{
@@ -39,9 +39,9 @@ public :
 		m_pBitmap				 = pBitmap;
 		m_pProgress				 = pProgress;
 
-		m_vRedHisto.resize((LONG)MAXWORD+1);
-		m_vGreenHisto.resize((LONG)MAXWORD+1);
-		m_vBlueHisto.resize((LONG)MAXWORD+1);
+		m_vRedHisto.resize((int)MAXWORD+1);
+		m_vGreenHisto.resize((int)MAXWORD+1);
+		m_vBlueHisto.resize((int)MAXWORD+1);
 	};
 
 	virtual bool	DoTask(HANDLE hEvent);
@@ -50,10 +50,10 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-void	CBackgroundCalibrationTask::AddToMainHistograms(const std::vector<LONG> & vRedHisto, const std::vector<LONG> & vGreenHisto, const std::vector<LONG> & vBlueHisto)
+void	CBackgroundCalibrationTask::AddToMainHistograms(const std::vector<int> & vRedHisto, const std::vector<int> & vGreenHisto, const std::vector<int> & vBlueHisto)
 {
 	m_CriticalSection.Lock();
-	for (LONG i = 0;i<m_vRedHisto.size();i++)
+	for (int i = 0;i<m_vRedHisto.size();i++)
 	{
 		m_vRedHisto[i]		+= vRedHisto[i];
 		m_vGreenHisto[i]	+= vGreenHisto[i];
@@ -69,18 +69,18 @@ bool	CBackgroundCalibrationTask::DoTask(HANDLE hEvent)
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
 
-	LONG				i, j;
+	int				i, j;
 	bool				bEnd = false;
 	MSG					msg;
-	LONG				lWidth = m_pBitmap->Width();
+	int				lWidth = m_pBitmap->Width();
 	double				fMultiplier = m_pBackgroundCalibration->m_fMultiplier;
-	std::vector<LONG>	vRedHisto;
-	std::vector<LONG>	vGreenHisto;
-	std::vector<LONG>	vBlueHisto;
+	std::vector<int>	vRedHisto;
+	std::vector<int>	vGreenHisto;
+	std::vector<int>	vBlueHisto;
 
-	vRedHisto.resize((LONG)MAXWORD+1);
-	vGreenHisto.resize((LONG)MAXWORD+1);
-	vBlueHisto.resize((LONG)MAXWORD+1);
+	vRedHisto.resize((int)MAXWORD+1);
+	vGreenHisto.resize((int)MAXWORD+1);
+	vBlueHisto.resize((int)MAXWORD+1);
 
 	AvxHistogram avxHistogram(*m_pBitmap);
 
@@ -140,19 +140,19 @@ bool	CBackgroundCalibrationTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
-	LONG				lHeight = m_pBitmap->Height();
-	LONG				i = 0;
-	LONG				lStep;
-	LONG				lRemaining;
+	int				lHeight = m_pBitmap->Height();
+	int				i = 0;
+	int				lStep;
+	int				lRemaining;
 
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1L, lHeight/50);
+	lStep		= std::max(1, lHeight / 50);
 	lRemaining	= lHeight;
 
 	while (i<lHeight)
 	{
-		LONG			lAdd = min(lStep, lRemaining);
+		int			lAdd = min(lStep, lRemaining);
 		DWORD			dwThreadId;
 
 		dwThreadId = GetAvailableThreadId();
@@ -171,20 +171,20 @@ bool	CBackgroundCalibrationTask::Process()
 
 	double				fMax = 0;
 
-	for (i = (LONG)m_vRedHisto.size()-1;i>=0 && !fMax;i--)
+	for (i = (int)m_vRedHisto.size()-1;i>=0 && !fMax;i--)
 		if (m_vRedHisto[i])
 			fMax = i;
 
 	m_pBackgroundCalibration->m_fSrcRedMax = fMax;
 
 	fMax = 0;
-	for (i = (LONG)m_vGreenHisto.size()-1;i>=0 && !fMax;i--)
+	for (i = (int)m_vGreenHisto.size()-1;i>=0 && !fMax;i--)
 		if (m_vGreenHisto[i])
 			fMax = i;
 	m_pBackgroundCalibration->m_fSrcGreenMax = fMax;
 
 	fMax = 0;
-	for (i = (LONG)m_vBlueHisto.size()-1;i>=0 && !fMax;i--)
+	for (i = (int)m_vBlueHisto.size()-1;i>=0 && !fMax;i--)
 		if (m_vBlueHisto[i])
 			fMax = i;
 	m_pBackgroundCalibration->m_fSrcBlueMax = fMax;
@@ -211,18 +211,18 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	task.Process();
 
 /*
-	LONG				i, j;
-	std::vector<LONG>	vRedHisto;
-	std::vector<LONG>	vGreenHisto;
-	std::vector<LONG>	vBlueHisto;
+	int				i, j;
+	std::vector<int>	vRedHisto;
+	std::vector<int>	vGreenHisto;
+	std::vector<int>	vBlueHisto;
 
 	ZTRACE_RUNTIME("Compute Background Calibration\n");
 
 
 
-	vRedHisto.resize((LONG)MAXWORD+1);
-	vGreenHisto.resize((LONG)MAXWORD+1);
-	vBlueHisto.resize((LONG)MAXWORD+1);
+	vRedHisto.resize((int)MAXWORD+1);
+	vGreenHisto.resize((int)MAXWORD+1);
+	vBlueHisto.resize((int)MAXWORD+1);
 
 	if (pProgress)
 		pProgress->Start2(nullptr, pBitmap->Height());
@@ -258,9 +258,9 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	};
 */
 	// Find median value in each histogram
-	LONG			lNrTotalValues;
-	LONG			lNrValues;
-	LONG			lIndice;
+	int			lNrTotalValues;
+	int			lNrValues;
+	int			lIndice;
 
 	lNrTotalValues = pBitmap->Width() * pBitmap->Height();
 	lNrTotalValues /= 2;

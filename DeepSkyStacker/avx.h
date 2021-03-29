@@ -13,7 +13,7 @@
 class AvxStacking
 {
 private:
-	long lineStart, lineEnd, colEnd;
+	int lineStart, lineEnd, colEnd;
 	int width, height;
 	int resultWidth, resultHeight;
 	std::vector<__m256> xCoordinates;
@@ -27,19 +27,19 @@ private:
 	AvxEntropy& entropyData;
 public:
 	AvxStacking() = delete;
-	AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat);
+	AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat);
 	AvxStacking(const AvxStacking&) = default;
 	AvxStacking(AvxStacking&&) = delete;
 	AvxStacking& operator=(const AvxStacking&) = delete;
 
-	void init(const long lStart, const long lEnd);
+	void init(const int lStart, const int lEnd);
 
-	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier);
+	int stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier);
 private:
 	void resizeColorVectors(const size_t nrVectors);
 
 	template <class T>
-	int doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier);
+	int doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier);
 
 	int pixelTransform(const CPixelTransform& pixelTransformDef);
 

@@ -189,7 +189,7 @@ bool CFITSReader::ReadKey(LPSTR szKey, double & fValue)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPSTR szKey, LONG & lValue)
+bool CFITSReader::ReadKey(LPSTR szKey, int & lValue)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -240,7 +240,7 @@ void CFITSReader::ReadAllKeys()
 
 
 		fits_get_hdrspace(m_fits, &nKeywords, nullptr, &nStatus);
-		for (LONG i = 1;i<=nKeywords;i++)
+		for (int i = 1;i<=nKeywords;i++)
 		{
 			CHAR			szKeyName[FLEN_CARD];
 			CHAR			szValue[FLEN_VALUE];
@@ -304,8 +304,8 @@ bool CFITSReader::Open()
 
 		// File ok - move to the first image HDU
 		CString			strSimple;
-		LONG			lNrAxis = 0;
-		LONG			lWidth  = 0,
+		int			lNrAxis = 0;
+		int			lWidth  = 0,
 						lHeight = 0,
 						lNrChannels = 0;
 		double			fExposureTime = 0;
@@ -313,8 +313,8 @@ bool CFITSReader::Open()
 		CString			strISOSpeed;
 		CString			CFAPattern("");
 		CString			filterName("");
-		LONG			lISOSpeed = 0;
-		LONG			lGain = -1;
+		int			lISOSpeed = 0;
+		int			lGain = -1;
 		double			xBayerOffset = 0.0, yBayerOffset = 0.0;
 
 		m_bDSI = false;
@@ -703,7 +703,7 @@ bool CFITSReader::Read()
 #pragma omp for schedule(dynamic, 10000)
 				for (LONGLONG element = 0; element < nElements; ++element)
 				{
-					const double fValue = doubleBuff[element];	// Long (8 byte) floating point
+					const double fValue = doubleBuff[element];	// int (8 byte) floating point
 					if (!std::isnan(fValue))
 					{
 						localMin = std::min(localMin, fValue);
@@ -749,7 +749,7 @@ bool CFITSReader::Read()
 		ptrdiff_t greenOffset = ptrdiff_t{ m_lWidth } * m_lHeight;		// index into buffer of the green image
 		ptrdiff_t blueOffset = 2 * greenOffset;				// index into buffer of the blue image
 
-		long	rowProgress = 0;
+		int	rowProgress = 0;
 
 		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
 		{
@@ -759,12 +759,12 @@ bool CFITSReader::Read()
 		};
 
 #pragma omp parallel for default(none) schedule(dynamic, 10) if(nrProcessors - 1)
-		for (long row = 0; row < m_lHeight; ++row)
+		for (int row = 0; row < m_lHeight; ++row)
 		{
-			for (long col = 0; col < m_lWidth; ++col)
+			for (int col = 0; col < m_lWidth; ++col)
 			{
 				double fRed = 0.0, fGreen = 0.0, fBlue = 0.0;
-				const long index = col + (row * m_lWidth);	// index into the image for this plane
+				const int index = col + (row * m_lWidth);	// index into the image for this plane
 
 				if (1 == colours)
 				{
@@ -867,7 +867,7 @@ public :
 	virtual bool Close() { return OnClose(); };
 
 	virtual bool	OnOpen();
-	virtual bool	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
+	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue);
 	virtual bool	OnClose();
 };
 
@@ -1022,7 +1022,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-bool CFITSReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
+bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
 	//
 	// Define maximal scaled pixel value of 255 (will be multiplied up later)
@@ -1199,7 +1199,7 @@ bool	CFITSWriter::WriteKey(LPSTR szKey, double fValue, LPSTR szComment)
 
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment)
+bool	CFITSWriter::WriteKey(LPSTR szKey, int lValue, LPSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -1238,7 +1238,7 @@ void	CFITSWriter::WriteAllKeys()
 	bool				bFound = false;
 
 	// Check if DATE-OBS is already in the list of Extra Info
-	for (LONG i = 0;i<m_ExtraInfo.m_vExtras.size() && !bFound;i++)
+	for (int i = 0;i<m_ExtraInfo.m_vExtras.size() && !bFound;i++)
 	{
 		CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
 
@@ -1263,7 +1263,7 @@ void	CFITSWriter::WriteAllKeys()
 		int				nStatus = 0;
 
 
-		for (LONG i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
+		for (int i = 0;i<m_ExtraInfo.m_vExtras.size();i++)
 		{
 			CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
 			CHAR			szValue[FLEN_VALUE];
@@ -1291,7 +1291,7 @@ void	CFITSWriter::WriteAllKeys()
 
 /* ------------------------------------------------------------------- */
 
-void CFITSWriter::SetFormat(LONG lWidth, LONG lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType)
+void CFITSWriter::SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType)
 {
 	ZFUNCTRACE_RUNTIME();
 	m_CFAType	= CFAType;
@@ -1359,9 +1359,9 @@ bool CFITSWriter::Open()
 		if (bResult)
 		{
 			// Create the image
-			long		nAxes[3];
-			long		nAxis;
-			long		nBitPixels;
+			long nAxes[3];
+			int	 nAxis;
+			int	 nBitPixels;
 
 			nAxes[0] = m_lWidth;
 			nAxes[1] = m_lHeight;
@@ -1400,7 +1400,7 @@ bool CFITSWriter::Open()
 					bResult = bResult && WriteKey("EXPOSURE", m_fExposureTime, "Exposure time (in seconds)");
 				};
 				if ((m_lNrChannels == 1) && (m_CFAType != CFATYPE_NONE))
-					bResult = bResult && WriteKey("DSSCFATYPE", (LONG)m_CFAType);
+					bResult = bResult && WriteKey("DSSCFATYPE", (int)m_CFAType);
 
 				CString			strSoftware = "DeepSkyStacker ";
 				strSoftware += VERSION_DEEPSKYSTACKER;
@@ -1424,7 +1424,7 @@ bool CFITSWriter::Open()
 
 bool CFITSWriter::Write()
 {
-	bool			bResult = false;
+	bool bResult = false;
 
 	//
 	// Multipliers of 256.0 and 65536.0 were not correct and resulted in a fully saturated
@@ -1432,26 +1432,25 @@ bool CFITSWriter::Write()
 	// which was being stored.   Change the code to use UCHAR_MAX and USHRT_MAX
 	//
 
-	if (m_fits)
+	if (m_fits != nullptr)
 	{
-		LONG			lScanLineSize;
-		VOID *			pScanLine = nullptr;
-		VOID *			pScanLineRed = nullptr;
-		VOID *			pScanLineGreen = nullptr;
-		VOID *			pScanLineBlue = nullptr;
+		int lScanLineSize;
+		std::unique_ptr<std::uint8_t[]> redBuffer;
+		std::unique_ptr<std::uint8_t[]> greenBuffer;
+		std::unique_ptr<std::uint8_t[]> blueBuffer;
 
-		lScanLineSize = m_lWidth * m_lBitsPerPixel/8;
+		lScanLineSize = m_lWidth * (m_lBitsPerPixel / 8);
 		if (m_lNrChannels == 1)
 		{
-			pScanLine = (VOID *)malloc(lScanLineSize);
+			redBuffer = std::make_unique<std::uint8_t[]>(lScanLineSize);
 		}
 		else
 		{
-			pScanLineRed   = (VOID *)malloc(lScanLineSize);
-			pScanLineGreen = (VOID *)malloc(lScanLineSize);
-			pScanLineBlue  = (VOID *)malloc(lScanLineSize);
+			redBuffer = std::make_unique<std::uint8_t[]>(lScanLineSize);
+			greenBuffer = std::make_unique<std::uint8_t[]>(lScanLineSize);
+			blueBuffer = std::make_unique<std::uint8_t[]>(lScanLineSize);
 		};
-		if (pScanLine || (pScanLineRed && pScanLineGreen && pScanLineBlue))
+		// If we ran out of memory here, an exception was thrown, just let it crash.
 		{
 			bResult = true;
 			int			datatype = 0;
@@ -1479,18 +1478,18 @@ bool CFITSWriter::Write()
 			if (m_pProgress)
 				m_pProgress->Start2(nullptr, m_lHeight);
 
-			for (LONG j = 0;j<m_lHeight;j++)
+			for (int j = 0; j < m_lHeight; j++)
 			{
-				LONG		pfPixel[3];
+				long pfPixel[3];
 
 				if (m_lNrChannels == 1)
 				{
-					BYTE *  pBYTELine	= (BYTE *)pScanLine;
-					WORD *	pWORDLine	= (WORD *)pScanLine;
-					DWORD * pDWORDLine	= (DWORD *)pScanLine;
-					float *	pFLOATLine	= (float *)pScanLine;
+					BYTE* pBYTELine = redBuffer.get();
+					WORD* pWORDLine = reinterpret_cast<WORD*>(redBuffer.get());
+					DWORD* pDWORDLine = reinterpret_cast<DWORD*>(redBuffer.get());
+					float* pFLOATLine = reinterpret_cast<float*>(redBuffer.get());
 
-					for (LONG i = 0;i<m_lWidth;i++)
+					for (int i = 0;i<m_lWidth;i++)
 					{
 						double		fRed, fGreen, fBlue;
 
@@ -1537,94 +1536,79 @@ bool CFITSWriter::Write()
 					};
 
 					pfPixel[0] = 1;
-					pfPixel[1] = j+1;
+					pfPixel[1] = j + 1;
 					pfPixel[2] = 1;
 
-					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, pScanLine, &nStatus);
+					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, redBuffer.get(), &nStatus);
 				}
 				else
 				{
-					BYTE *  pBYTELineRed	= (BYTE *)pScanLineRed;
-					WORD *	pWORDLineRed	= (WORD *)pScanLineRed;
-					DWORD * pDWORDLineRed	= (DWORD *)pScanLineRed;
-					float *	pFLOATLineRed	= (float *)pScanLineRed;
-					BYTE *  pBYTELineGreen	= (BYTE *)pScanLineGreen;
-					WORD *	pWORDLineGreen	= (WORD *)pScanLineGreen;
-					DWORD * pDWORDLineGreen	= (DWORD *)pScanLineGreen;
-					float *	pFLOATLineGreen	= (float *)pScanLineGreen;
-					BYTE *  pBYTELineBlue	= (BYTE *)pScanLineBlue;
-					WORD *	pWORDLineBlue	= (WORD *)pScanLineBlue;
-					DWORD * pDWORDLineBlue	= (DWORD *)pScanLineBlue;
-					float *	pFLOATLineBlue	= (float *)pScanLineBlue;
+					BYTE* pBYTELineRed = redBuffer.get();
+					WORD* pWORDLineRed = reinterpret_cast<WORD*>(redBuffer.get());
+					DWORD* pDWORDLineRed = reinterpret_cast<DWORD*>(redBuffer.get());
+					float* pFLOATLineRed = reinterpret_cast<float*>(redBuffer.get());
 
-					for (LONG i = 0;i<m_lWidth;i++)
+					BYTE* pBYTELineGreen = greenBuffer.get();
+					WORD* pWORDLineGreen = reinterpret_cast<WORD*>(greenBuffer.get());
+					DWORD* pDWORDLineGreen = reinterpret_cast<DWORD*>(greenBuffer.get());
+					float* pFLOATLineGreen = reinterpret_cast<float*>(greenBuffer.get());
+
+					BYTE* pBYTELineBlue = blueBuffer.get();
+					WORD* pWORDLineBlue = reinterpret_cast<WORD*>(blueBuffer.get());
+					DWORD* pDWORDLineBlue = reinterpret_cast<DWORD*>(blueBuffer.get());
+					float* pFLOATLineBlue = reinterpret_cast<float*>(blueBuffer.get());
+
+					for (int i = 0; i < m_lWidth; i++)
 					{
-						double		fRed, fGreen, fBlue;
+						double fRed, fGreen, fBlue;
 
 						OnWrite(i, j, fRed, fGreen, fBlue);
 
 						if (m_lBitsPerPixel == 8)
 						{
-							*(pBYTELineRed)		= fRed;
-							*(pBYTELineGreen)	= fGreen;
-							*(pBYTELineBlue)	= fBlue;
-							pBYTELineRed ++;
-							pBYTELineGreen ++;
-							pBYTELineBlue ++;
+							*pBYTELineRed++ = fRed;
+							*pBYTELineGreen++ = fGreen;
+							*pBYTELineBlue++ = fBlue;
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							(*(pWORDLineRed))	= fRed * UCHAR_MAX;
-							(*(pWORDLineGreen)) = fGreen * UCHAR_MAX;
-							(*(pWORDLineBlue))	= fBlue * UCHAR_MAX;
-							pWORDLineRed++;
-							pWORDLineGreen++;
-							pWORDLineBlue++;
+							constexpr double m = double{ UCHAR_MAX };
+							*pWORDLineRed++ = fRed * m;
+							*pWORDLineGreen++ = fGreen * m;
+							*pWORDLineBlue++ = fBlue * m;
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								(*(pFLOATLineRed))	= fRed / (1.0 + UCHAR_MAX);
-								(*(pFLOATLineGreen))= fGreen / (1.0 + UCHAR_MAX);
-								(*(pFLOATLineBlue)) = fBlue / (1.0 + UCHAR_MAX);
-								pFLOATLineRed++;
-								pFLOATLineGreen++;
-								pFLOATLineBlue++;
+								constexpr double m = 1.0 + double{ UCHAR_MAX };
+								*pFLOATLineRed++ = fRed / m;
+								*pFLOATLineGreen++ = fGreen / m;
+								*pFLOATLineBlue++ = fBlue / m;
 							}
 							else
 							{
-								(*(pDWORDLineRed))  = fRed * UCHAR_MAX * USHRT_MAX;
-								(*(pDWORDLineGreen))= fGreen * UCHAR_MAX * USHRT_MAX;
-								(*(pDWORDLineBlue)) = fBlue * UCHAR_MAX * USHRT_MAX;
-								pDWORDLineRed ++;
-								pDWORDLineGreen ++;
-								pDWORDLineBlue ++;
+								constexpr double m = double{ UCHAR_MAX } * double{ USHRT_MAX };
+								*pDWORDLineRed++ = fRed * m;
+								*pDWORDLineGreen++ = fGreen * m;
+								*pDWORDLineBlue++ = fBlue * m;
 							};
 						};
 					};
 
 					pfPixel[0] = 1;
-					pfPixel[1] = j+1;
+					pfPixel[1] = j + 1;
 					pfPixel[2] = 1;
-					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, pScanLineRed, &nStatus);
+					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, redBuffer.get(), &nStatus);
 					pfPixel[2] = 2;
-					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, pScanLineGreen, &nStatus);
+					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, greenBuffer.get(), &nStatus);
 					pfPixel[2] = 3;
-					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, pScanLineBlue, &nStatus);
+					fits_write_pix(m_fits, datatype, pfPixel, m_lWidth, blueBuffer.get(), &nStatus);
 				};
 
 				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, j+1);
+					m_pProgress->Progress2(nullptr, j + 1);
 			};
-			if (pScanLine)
-				free(pScanLine);
-			if (pScanLineRed)
-				free(pScanLineRed);
-			if (pScanLineGreen)
-				free(pScanLineGreen);
-			if (pScanLineBlue)
-				free(pScanLineBlue);
 
 			if (m_pProgress)
 				m_pProgress->End2();
@@ -1680,7 +1664,7 @@ public :
 	};
 
 	virtual bool	OnOpen();
-	virtual bool	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue);
+	virtual bool	OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue);
 	virtual bool	OnClose();
 };
 
@@ -1725,7 +1709,7 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
-	LONG			lWidth,
+	int			lWidth,
 					lHeight;
 
 	lWidth  = m_pMemoryBitmap->Width();
@@ -1761,7 +1745,7 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-bool CFITSWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
+bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
 	try
 	{
@@ -1815,7 +1799,7 @@ bool CFITSWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 
 bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
-			LONG lISOSpeed, LONG lGain, double fExposure)
+			int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -1857,7 +1841,7 @@ bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 /* ------------------------------------------------------------------- */
 
 bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
-			LONG lISOSpeed, LONG lGain, double fExposure)
+			int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;

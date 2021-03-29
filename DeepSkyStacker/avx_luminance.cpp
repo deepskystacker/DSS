@@ -23,7 +23,7 @@ int AvxLuminance::computeLuminanceBitmap(const size_t lineStart, const size_t li
 
 	int rval = 1;
 	if (doComputeLuminance<WORD>(lineStart, lineEnd) == 0
-		|| doComputeLuminance<unsigned long>(lineStart, lineEnd) == 0
+		|| doComputeLuminance<unsigned int>(lineStart, lineEnd) == 0
 		|| doComputeLuminance<float>(lineStart, lineEnd) == 0)
 	{
 		rval = 0;

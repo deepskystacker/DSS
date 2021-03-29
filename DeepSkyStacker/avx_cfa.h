@@ -22,7 +22,7 @@ public:
 	AvxCfaProcessing& operator=(const AvxCfaProcessing&) = delete;
 
 	void init(const size_t lineStart, const size_t lineEnd);
-	int interpolate(const size_t lineStart, const size_t lineEnd, const long pixelSizeMultiplier);
+	int interpolate(const size_t lineStart, const size_t lineEnd, const int pixelSizeMultiplier);
 
 	inline size_t nrVectorsPerLine() const { return this->vectorsPerLine; }
 

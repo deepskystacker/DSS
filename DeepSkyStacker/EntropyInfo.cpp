@@ -7,7 +7,7 @@
 void CEntropyInfo::InitSquareEntropies()
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG		lSquareSize;
+	int		lSquareSize;
 
 	lSquareSize = m_lWindowSize * 2 + 1;
 
@@ -28,17 +28,17 @@ void CEntropyInfo::InitSquareEntropies()
 	AvxEntropy avxEntropy(*m_pBitmap, *this, nullptr);
 	if (avxEntropy.calcEntropies(lSquareSize, m_lNrSquaresX, m_lNrSquaresY, m_vRedEntropies, m_vGreenEntropies, m_vBlueEntropies) != 0)
 	{
-		for (long i = 0; i < m_lNrSquaresX; i++)
+		for (int i = 0; i < m_lNrSquaresX; i++)
 		{
-			LONG			lMinX,
+			int			lMinX,
 				lMaxX;
 
 			lMinX = i * lSquareSize;
-			lMaxX = min((i + 1) * lSquareSize - 1, m_pBitmap->Width() - 1);
+			lMaxX = std::min((i + 1) * lSquareSize - 1, m_pBitmap->Width() - 1);
 
-			for (long j = 0; j < m_lNrSquaresY; j++)
+			for (int j = 0; j < m_lNrSquaresY; j++)
 			{
-				LONG		lMinY,
+				int		lMinY,
 					lMaxY;
 				double		fRedEntropy,
 					fGreenEntropy,
@@ -66,22 +66,22 @@ void CEntropyInfo::InitSquareEntropies()
 
 /* ------------------------------------------------------------------- */
 
-void CEntropyInfo::ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy)
+void CEntropyInfo::ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy)
 {
-	LONG						i, j;
+	int						i, j;
 	std::vector<WORD>			vRedHisto;
 	std::vector<WORD>			vGreenHisto;
 	std::vector<WORD>			vBlueHisto;
-	LONG						lNrPixels;
+	int						lNrPixels;
 
 	fRedEntropy = 0.0;
 	fGreenEntropy = 0.0;
 	fBlueEntropy = 0.0;
 
 	lNrPixels = (lMaxX-lMinX+1)*(lMaxY-lMinY+1);
-	vRedHisto.resize((LONG)MAXWORD+1);
-	vGreenHisto.resize((LONG)MAXWORD+1);
-	vBlueHisto.resize((LONG)MAXWORD+1);
+	vRedHisto.resize((int)MAXWORD+1);
+	vGreenHisto.resize((int)MAXWORD+1);
+	vBlueHisto.resize((int)MAXWORD+1);
 
 	COLORREF16		crColor;
 	for (i = lMinX;i<=lMaxX;i++)

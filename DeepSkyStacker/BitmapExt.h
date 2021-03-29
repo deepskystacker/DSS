@@ -117,7 +117,7 @@ class CMemoryBitmap;
 
 /* ------------------------------------------------------------------- */
 
-inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
+inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 {
 	strText.Empty();
 	switch (Method)
@@ -146,7 +146,7 @@ inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method,
 	};
 };
 
-inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
+inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 {
 	QString strText;
 
@@ -315,7 +315,7 @@ class C32BitsBitmap : public CRefCount
 private :
 	HBITMAP				m_hBitmap;
 	VOID *				m_lpBits;
-	LONG				m_lWidth,
+	int				m_lWidth,
 						m_lHeight;
 	LPBYTE*				m_pLine;
 	DWORD				m_dwByteWidth;
@@ -334,9 +334,9 @@ private :
 		}
 
 		m_dwByteWidth   = (((m_lWidth * 32 + 31) & ~31) >> 3);
-		LONG			y = m_lHeight - 1;
+		int			y = m_lHeight - 1;
 
-		for( LONG i = 0; y >= 0; y--, i++ )
+		for( int i = 0; y >= 0; y--, i++ )
 		{
 			m_pLine[i] = (LPBYTE)m_lpBits + y * m_dwByteWidth;
 		}
@@ -363,27 +363,27 @@ public :
 		return m_lpBits;
 	};
 
-	virtual LONG	Width()
+	virtual int	Width()
 	{
 		return m_lWidth;
 	};
 
-	virtual LONG	Height()
+	virtual int	Height()
 	{
 		return m_lHeight;
 	};
 
-	LONG	ByteWidth()
+	int	ByteWidth()
 	{
 		return m_dwByteWidth;
 	};
 
-	virtual void	Init(LONG lWidth, LONG lHeight)
+	virtual void	Init(int lWidth, int lHeight)
 	{
 		Create(lWidth, lHeight);
 	};
 
-	HBITMAP	Create(LONG lWidth, LONG lHeight)
+	HBITMAP	Create(int lWidth, int lHeight)
 	{
 		Free();
 
@@ -399,8 +399,8 @@ public :
         bmpInfo.bmiHeader.biBitCount= 32;
         bmpInfo.bmiHeader.biCompression= BI_RGB;
         bmpInfo.bmiHeader.biSizeImage= 0;
-        bmpInfo.bmiHeader.biXPelsPerMeter = (LONG)(96*100.0/2.54);
-        bmpInfo.bmiHeader.biYPelsPerMeter = (LONG)(96*100.0/2.54);
+        bmpInfo.bmiHeader.biXPelsPerMeter = (int)(96*100.0/2.54);
+        bmpInfo.bmiHeader.biYPelsPerMeter = (int)(96*100.0/2.54);
         bmpInfo.bmiHeader.biClrUsed = 0;
         bmpInfo.bmiHeader.biClrImportant = 0;
 
@@ -457,7 +457,7 @@ public :
 		return hResult;
 	};
 
-	COLORREF	GetPixel(LONG x, LONG y)
+	COLORREF	GetPixel(int x, int y)
 	{
 		COLORREF			crColor = RGB(0, 0, 0);
 
@@ -475,12 +475,12 @@ public :
 		return crColor;
 	};
 
-	LPBYTE		GetPixelBase(LONG x, LONG y)
+	LPBYTE		GetPixelBase(int x, int y)
 	{
 		return m_pLine[y] + x * 4;
 	};
 
-	void		SetPixel(LONG x, LONG y, COLORREF crColor)
+	void		SetPixel(int x, int y, COLORREF crColor)
 	{
 		if( (x >= 0) && (x < m_lWidth) && (y >=0) && (y < m_lHeight))
 		{
@@ -530,14 +530,14 @@ public :
 	CString				m_strFileName;
 	CString				m_strFileType;
 	CString				m_strModel;
-	LONG				m_lISOSpeed;
-	LONG				m_lGain;
+	int				m_lISOSpeed;
+	int				m_lGain;
 	double				m_fExposure;
 	double				m_fAperture;
-	LONG				m_lWidth;
-	LONG				m_lHeight;
-	LONG				m_lBitPerChannel;
-	LONG				m_lNrChannels;
+	int				m_lWidth;
+	int				m_lHeight;
+	int				m_lBitPerChannel;
+	int				m_lNrChannels;
 	bool				m_bCanLoad;
 	bool				m_bFloat;
 	CFATYPE				m_CFAType;
@@ -547,8 +547,8 @@ public :
 	SYSTEMTIME			m_DateTime;
 	SYSTEMTIME			m_InfoTime;
 	CBitmapExtraInfo	m_ExtraInfo;
-	LONG				m_xBayerOffset;
-	LONG				m_yBayerOffset;
+	int				m_xBayerOffset;
+	int				m_yBayerOffset;
 	CString				m_filterName;
 
 private :
@@ -750,7 +750,7 @@ bool	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 
 bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 
-bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress = nullptr);
+bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, int lFilterSize, CDSSProgress * pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 

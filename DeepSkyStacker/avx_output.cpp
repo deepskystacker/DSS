@@ -65,7 +65,7 @@ int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<vo
 {
 	if (doProcessMedianKappaSigma<WORD, Method>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessMedianKappaSigma<unsigned long, Method>(line, lineAddresses) == 0)
+	if (doProcessMedianKappaSigma<unsigned int, Method>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessMedianKappaSigma<float, Method>(line, lineAddresses) == 0)
 		return 0;
@@ -417,7 +417,7 @@ int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std
 {
 	if (doProcessAutoAdaptiveWeightedAverage<WORD>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessAutoAdaptiveWeightedAverage<unsigned long>(line, lineAddresses) == 0)
+	if (doProcessAutoAdaptiveWeightedAverage<unsigned int>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessAutoAdaptiveWeightedAverage<float>(line, lineAddresses) == 0)
 		return 0;

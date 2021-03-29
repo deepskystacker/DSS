@@ -9,50 +9,45 @@ template <typename TType>
 class CInternalMedianFilterEngineT
 {
 public :
-	TType *						m_pvInValues;
-	TType *						m_pvOutValues;
-	LONG						m_lWidth;
-	LONG						m_lHeight;
-	CFATYPE						m_CFAType;
-	LONG						m_lFilterSize;
+	TType* m_pvInValues;
+	TType* m_pvOutValues;
+	int m_lWidth;
+	int m_lHeight;
+	CFATYPE m_CFAType;
+	int m_lFilterSize;
 
 	template <typename TType>
 	class CFilterTask : public CMultitask
 	{
 	private :
-		CInternalMedianFilterEngineT<TType> *	m_pEngine;
-		CDSSProgress *							m_pProgress;
-
+		CInternalMedianFilterEngineT<TType>* m_pEngine;
+		CDSSProgress* m_pProgress;
 
 	public :
 		CFilterTask()
-		{
-		};
+		{}
 
 		virtual ~CFilterTask()
-		{
-		};
+		{}
 
-		void	Init(CInternalMedianFilterEngineT<TType> * pEngine, CDSSProgress * pProgress)
+		void Init(CInternalMedianFilterEngineT<TType>* pEngine, CDSSProgress* pProgress)
 		{
-			m_pEngine	= pEngine;
+			m_pEngine = pEngine;
 			m_pProgress = pProgress;
-		};
+		}
 
-		virtual bool	DoTask(HANDLE hEvent)
+		virtual bool DoTask(HANDLE hEvent) override
 		{
-			bool					bResult = true;
-			LONG					i, j;
-			bool					bEnd = false;
-			MSG						msg;
-			LONG					lWidth  = m_pEngine->m_lWidth,
-									lHeight = m_pEngine->m_lHeight,
-									lFilterSize = m_pEngine->m_lFilterSize;
-			CFATYPE					CFAType = m_pEngine->m_CFAType;
+			bool bResult = true;
+			bool bEnd = false;
+			MSG msg;
+			const int lWidth = m_pEngine->m_lWidth;
+			const int lHeight = m_pEngine->m_lHeight;
+			const int lFilterSize = m_pEngine->m_lFilterSize;
+			const CFATYPE CFAType = m_pEngine->m_CFAType;
 
-			std::vector<TType>		vValues;
-
-			vValues.reserve((m_pEngine->m_lFilterSize*2+1)*(m_pEngine->m_lFilterSize*2+1));
+			std::vector<TType> vValues;
+			vValues.reserve((m_pEngine->m_lFilterSize * 2 + 1) * (m_pEngine->m_lFilterSize * 2 + 1));
 			AvxImageFilter avxFilter(m_pEngine);
 
 			// Create a message queue and signal the event
@@ -70,29 +65,28 @@ public :
 
 							pOutValues += msg.wParam * lWidth;
 
-							for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
+							for (int j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 							{
-								for (i = 0; i < lWidth; i++)
+								for (int i = 0; i < lWidth; i++)
 								{
 									// Compute the min and max values in X and Y
-									LONG			lXMin, lXMax,
-										lYMin, lYMax;
-									BAYERCOLOR		BayerColor = GetBayerColor(i, j, CFAType);
+									int lXMin, lXMax, lYMin, lYMax;
+									BAYERCOLOR BayerColor = GetBayerColor(i, j, CFAType);
 
-									lXMin = max(0L, i - lFilterSize);
-									lXMax = min(i + lFilterSize, lWidth - 1);
-									lYMin = max(0L, j - lFilterSize);
-									lYMax = min(j + lFilterSize, lHeight - 1);
+									lXMin = std::max(0, i - lFilterSize);
+									lXMax = std::min(i + lFilterSize, lWidth - 1);
+									lYMin = std::max(0, j - lFilterSize);
+									lYMax = std::min(j + lFilterSize, lHeight - 1);
 
 									// Fill the array with the values
 									TType* pInLine = m_pEngine->m_pvInValues;
 									pInLine += lXMin + (lYMin * lWidth);
 									vValues.resize(0);
-									for (LONG k = lYMin; k <= lYMax; k++)
+									for (int k = lYMin; k <= lYMax; k++)
 									{
 										TType* pInValues = pInLine;
 
-										for (LONG l = lXMin; l <= lXMax; l++)
+										for (int l = lXMin; l <= lXMax; l++)
 										{
 											if (GetBayerColor(l, k, CFAType) == BayerColor)
 												vValues.push_back(*pInValues);
@@ -114,18 +108,17 @@ public :
 
 							pOutValues += msg.wParam * lWidth;
 
-							for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
+							for (int j = msg.wParam; j < msg.wParam + msg.lParam; j++)
 							{
-								for (i = 0; i < lWidth; i++)
+								for (int i = 0; i < lWidth; i++)
 								{
 									// Compute the min and max values in X and Y
-									LONG			lXMin, lXMax,
-										lYMin, lYMax;
+									int lXMin, lXMax, lYMin, lYMax;
 
-									lXMin = max(0L, i - lFilterSize);
-									lXMax = min(i + lFilterSize, lWidth - 1);
-									lYMin = max(0L, j - lFilterSize);
-									lYMax = min(j + lFilterSize, lHeight - 1);
+									lXMin = std::max(0, i - lFilterSize);
+									lXMax = std::min(i + lFilterSize, lWidth - 1);
+									lYMin = std::max(0, j - lFilterSize);
+									lYMax = std::min(j + lFilterSize, lHeight - 1);
 
 									vValues.resize((lXMax - lXMin + 1) * (lYMax - lYMin + 1));
 
@@ -133,16 +126,14 @@ public :
 									TType* pInValues = m_pEngine->m_pvInValues;
 									TType* pAreaValues = &(vValues[0]);
 									pInValues += lXMin + (lYMin * lWidth);
-									for (LONG k = lYMin; k <= lYMax; k++)
+									for (int k = lYMin; k <= lYMax; k++)
 									{
 										memcpy(pAreaValues, pInValues, sizeof(TType) * (lXMax - lXMin + 1));
 										pInValues += lWidth;
 										pAreaValues += lXMax - lXMin + 1;
 									};
 
-									TType			fMedian = Median(vValues);
-
-									*pOutValues = fMedian;
+									*pOutValues = Median(vValues);
 									pOutValues++;
 								};
 							};
@@ -158,29 +149,27 @@ public :
 			return true;
 		};
 
-		virtual bool	Process()
+		virtual bool Process() override
 		{
-			bool				bResult = true;
-			LONG				lHeight = m_pEngine->m_lHeight;
-			LONG				i = 0;
-			LONG				lStep;
-			LONG				lRemaining;
+			bool bResult = true;
+			const int lHeight = m_pEngine->m_lHeight;
+			int i = 0;
+			int lStep;
+			int lRemaining;
 
 			if (m_pProgress)
 				m_pProgress->SetNrUsedProcessors(GetNrThreads());
-			lStep		= max(1L, lHeight/50);
-			lRemaining	= lHeight;
+			lStep = std::max(1, lHeight / 50);
+			lRemaining = lHeight;
 
-			while (i<lHeight)
+			while (i < lHeight)
 			{
-				LONG			lAdd = min(lStep, lRemaining);
-				DWORD			dwThreadId;
-
-				dwThreadId = GetAvailableThreadId();
+				const int lAdd = std::min(lStep, lRemaining);
+				const DWORD dwThreadId = GetAvailableThreadId();
 				PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
-				i			+=lAdd;
-				lRemaining	-= lAdd;
+				i += lAdd;
+				lRemaining -= lAdd;
 				if (m_pProgress)
 					m_pProgress->Progress2(nullptr, i);
 			};
@@ -239,12 +228,12 @@ inline bool CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 	{
 		TType *				pOutValues = m_pvOutValues;
 
-		for (LONG j = 0;j<m_lHeight;j++)
+		for (int j = 0;j<m_lHeight;j++)
 		{
-			for (LONG i = 0;i<m_lWidth;i++)
+			for (int i = 0;i<m_lWidth;i++)
 			{
 				// Compute the min and max values in X and Y
-				LONG			lXMin, lXMax,
+				int			lXMin, lXMax,
 								lYMin, lYMax;
 				BAYERCOLOR		BayerColor = GetBayerColor(i, j, m_CFAType);
 
@@ -257,11 +246,11 @@ inline bool CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 				TType *			pInLine   = m_pvInValues;
 				pInLine += lXMin + (lYMin * m_lWidth);
 				vValues.resize(0);
-				for (LONG k = lYMin;k<=lYMax;k++)
+				for (int k = lYMin;k<=lYMax;k++)
 				{
 					TType *		pInValues = pInLine;
 
-					for (LONG l = lXMin;l<=lXMax;l++)
+					for (int l = lXMin;l<=lXMax;l++)
 					{
 						if (GetBayerColor(l, k, m_CFAType) == BayerColor)
 							vValues.push_back(*pInValues);
@@ -284,12 +273,12 @@ inline bool CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 	{
 		TType *				pOutValues = m_pvOutValues;
 
-		for (LONG j = 0;j<m_lHeight;j++)
+		for (int j = 0;j<m_lHeight;j++)
 		{
-			for (LONG i = 0;i<m_lWidth;i++)
+			for (int i = 0;i<m_lWidth;i++)
 			{
 				// Compute the min and max values in X and Y
-				LONG			lXMin, lXMax,
+				int			lXMin, lXMax,
 								lYMin, lYMax;
 
 				lXMin = max(0, i-m_lFilterSize);
@@ -303,7 +292,7 @@ inline bool CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 				TType *			pInValues   = m_pvInValues;
 				TType *			pAreaValues = &(vValues[0]);
 				pInValues += lXMin + (lYMin * m_lWidth);
-				for (LONG k = lYMin;k<=lYMax;k++)
+				for (int k = lYMin;k<=lYMax;k++)
 				{
 					memcpy(pAreaValues, pInValues, sizeof(TType) * (lXMax-lXMin+1));
 					pInValues   += m_lWidth;
@@ -330,16 +319,15 @@ inline bool CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pPro
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
+inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, int lFilterSize, CDSSProgress * pProgress)
 {
-	bool				bResult = false;
+	bool bResult = false;
 
 	// Create Output Bitmap from Input Bitmap
-	if (m_pInBitmap)
+	if (m_pInBitmap != nullptr)
 	{
-		CSmartPtr<CGrayBitmapT<TType> >		pOutBitmap;
-
-		pOutBitmap.Attach(dynamic_cast<CGrayBitmapT<TType> *> (m_pInBitmap->Clone()));
+		CSmartPtr<CGrayBitmapT<TType>> pOutBitmap;
+		pOutBitmap.Attach(dynamic_cast<CGrayBitmapT<TType>*>(m_pInBitmap->Clone()));
 
 		if (pOutBitmap)
 		{
@@ -358,10 +346,8 @@ inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** p
 
 			if (bResult)
 			{
-				CSmartPtr<CMemoryBitmap>	pOutBitmap2;
-
+				CSmartPtr<CMemoryBitmap> pOutBitmap2;
 				pOutBitmap2 = pOutBitmap;
-
 				pOutBitmap2.CopyTo(ppOutBitmap);
 			};
 		};
@@ -373,15 +359,14 @@ inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** p
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
+inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap** ppOutBitmap, int lFilterSize, CDSSProgress* pProgress)
 {
-	bool				bResult = false;
+	bool bResult = false;
 
 	// Create Output Bitmap from Input Bitmap
-	if (m_pInBitmap)
+	if (m_pInBitmap != nullptr)
 	{
-		CSmartPtr<CColorBitmapT<TType> >		pOutBitmap;
-
+		CSmartPtr<CColorBitmapT<TType>> pOutBitmap;
 		pOutBitmap.Attach(dynamic_cast<CColorBitmapT<TType> *> (m_pInBitmap->Clone()));
 
 		if (pOutBitmap)
@@ -407,10 +392,8 @@ inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** 
 
 			if (bResult)
 			{
-				CSmartPtr<CMemoryBitmap>	pOutBitmap2;
-
+				CSmartPtr<CMemoryBitmap> pOutBitmap2;
 				pOutBitmap2 = pOutBitmap;
-
 				pOutBitmap2.CopyTo(ppOutBitmap);
 			};
 		};
