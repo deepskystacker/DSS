@@ -451,7 +451,7 @@ public :
 class CHistogram
 {
 private :
-	std::vector<DWORD>		m_vValues;
+	std::vector<std::uint32_t>		m_vValues;
 	int					m_lMax;
 	double					m_fAbsMax;
 	double					m_fMax;

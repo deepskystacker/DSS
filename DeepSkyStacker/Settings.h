@@ -130,7 +130,7 @@ protected :
 		return true;
 	};
 
-	void	AddVariable(LPCTSTR szVariable, LONG lValue)
+	void	AddVariable(LPCTSTR szVariable, int lValue)
 	{
 		CSetting		s;
 

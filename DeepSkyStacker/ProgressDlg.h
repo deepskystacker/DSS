@@ -86,11 +86,11 @@ class CDSSProgressDlg : public CDSSProgress
 {
 private :
 	CProgressDlg		m_dlg;
-	LONG				m_lTotal1,
+	int				m_lTotal1,
 						m_lTotal2;
 	DWORD				m_dwStartTime,
 						m_dwLastTime;
-	LONG				m_lLastTotal1,
+	int				m_lLastTotal1,
 						m_lLastTotal2;
 	bool				m_bFirstProgress;
 	bool				m_bEnableCancel;
@@ -141,7 +141,7 @@ public :
 		Close();
 	};
 
-	virtual void	SetNrUsedProcessors(LONG lNrProcessors=1)
+	virtual void	SetNrUsedProcessors(int lNrProcessors=1) override
 	{
 		if (m_dlg.m_hWnd)
 		{
@@ -157,21 +157,21 @@ public :
 		};
 	};
 
-	virtual void	GetStartText(CString & strText)
+	virtual void	GetStartText(CString & strText) override
 	{
 		strText.Empty();
 		if (m_dlg.m_hWnd)
 			m_dlg.m_Text1.GetWindowText(strText);
 	};
 
-	virtual void	GetStart2Text(CString & strText)
+	virtual void	GetStart2Text(CString & strText) override
 	{
 		strText.Empty();
 		if (m_dlg.m_hWnd)
 			m_dlg.m_Text2.GetWindowText(strText);
 	};
 
-	virtual	void	Start(LPCTSTR szTitle, LONG lTotal1, bool bEnableCancel = true)
+	virtual	void	Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel = true) override
 	{
 		CString			strTitle = szTitle;
 
@@ -195,7 +195,7 @@ public :
 
 		m_dlg.PeekAndPump();
 	};
-	virtual void	Progress1(LPCTSTR szText, LONG lAchieved1)
+	virtual void	Progress1(LPCTSTR szText, int lAchieved1) override
 	{
 		CString			strText = szText;
 		DWORD			dwCurrentTime = GetTickCount();
@@ -248,7 +248,7 @@ public :
 		};
 	};
 
-	virtual void	Start2(LPCTSTR szText, LONG lTotal2)
+	virtual void	Start2(LPCTSTR szText, int lTotal2) override
 	{
 		CString			strText = szText;
 
@@ -282,7 +282,7 @@ public :
 		m_dlg.PeekAndPump();
 	};
 
-	virtual void	Progress2(LPCTSTR szText, LONG lAchieved2)
+	virtual void	Progress2(LPCTSTR szText, int lAchieved2) override
 	{
 		if ((double)(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0))
 		{
@@ -301,17 +301,17 @@ public :
 			Progress1(szText, lAchieved2);
 	};
 
-	virtual void	End2()
+	virtual void	End2() override
 	{
 		m_dlg.m_Progress2.ShowWindow(SW_HIDE);
 		m_dlg.m_Text2.ShowWindow(SW_HIDE);
 	};
 
-	virtual bool	IsCanceled()
+	virtual bool	IsCanceled() override
 	{
 		return m_dlg.m_bCancelled;
 	};
-	virtual bool	Close()
+	virtual bool	Close() override
 	{
 		m_dlg.PeekAndPump();
 		// Prevent failure if mdlg is no longer a valid window
@@ -323,7 +323,7 @@ public :
 		return true;
 	};
 
-	virtual bool	Warning(LPCTSTR szText)
+	virtual bool	Warning(LPCTSTR szText) override
 	{
 		int				nResult;
 

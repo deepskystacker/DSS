@@ -222,10 +222,10 @@ private :
 	CString			m_strFileName;
 	CString			m_strModel;
 	CString			m_strMake;
-	LONG			m_lISOSpeed;
+	int			m_lISOSpeed;
 	double			m_fExposureTime;
 	double			m_fAperture;
-	LONG			m_lHeight,
+	int			m_lHeight,
 					m_lWidth;
 	bool			m_bColorRAW;
 	CFATYPE			m_CFAType;
@@ -338,7 +338,7 @@ public :
 
 	void checkCameraSupport(const CString& strModel);
 
-	LONG	GetISOSpeed() noexcept
+	int	GetISOSpeed() noexcept
 	{
 		return m_lISOSpeed;
 	};
@@ -353,12 +353,12 @@ public :
 		return m_fAperture;
 	};
 
-	LONG	Width() noexcept
+	int	Width() noexcept
 	{
 		return m_lWidth;
 	};
 
-	LONG	Height() noexcept
+	int	Height() noexcept
 	{
 		return m_lHeight;
 	};

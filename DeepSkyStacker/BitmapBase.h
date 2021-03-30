@@ -1753,7 +1753,7 @@ public:
 		m_lHeight{ 0 },
 		m_bWord{ std::is_same_v<TType, WORD> },
 		m_bDouble{ std::is_same_v<TType, double> },
-		m_bDWord{ std::is_same_v<TType, DWORD> },
+		m_bDWord{ std::is_same_v<TType, std::uint32_t> },
 		m_bFloat{ std::is_same_v<TType, float> },
 		m_fMultiplier{ 1.0 }
 	{
@@ -2528,7 +2528,7 @@ public:
 		m_bDouble{ std::is_same_v<TType, double> },
 		m_bDWord{ std::is_same_v<TType, std::uint32_t> },
 		m_bFloat{ std::is_same_v<TType, float> },
-		m_fMultiplier{ (std::is_same_v<TType, WORD> || std::is_same_v<TType, double> || std::is_same_v<TType, float>) ? 256.0 : (std::is_same_v<TType, DWORD> ? 256.0 * 65536.0 : 1.0) }
+		m_fMultiplier{ (std::is_same_v<TType, WORD> || std::is_same_v<TType, double> || std::is_same_v<TType, float>) ? 256.0 : (std::is_same_v<TType, std::uint32_t> ? 256.0 * 65536.0 : 1.0) }
 	{
 		m_bTopDown = true;
 		m_Red.AddRef();

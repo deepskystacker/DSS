@@ -58,10 +58,10 @@ bool	CFlatDivideTask::DoTask(HANDLE hEvent)
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
 
-	LONG			i, j;
+	int			i, j;
 	bool			bEnd = false;
 	MSG				msg;
-	LONG			lWidth = m_pTarget->RealWidth();
+	int			lWidth = m_pTarget->RealWidth();
 
 	// Create a message queue and signal the event
 	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
@@ -114,10 +114,10 @@ bool	CFlatDivideTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = true;
-	LONG			lHeight = m_pTarget->RealHeight();
-	LONG			lStep;
-	LONG			lRemaining;
-	LONG			i = 0;
+	int			lHeight = m_pTarget->RealHeight();
+	int			lStep;
+	int			lRemaining;
+	int			i = 0;
 
 	if (m_pProgress)
 	{
@@ -125,13 +125,13 @@ bool	CFlatDivideTask::Process()
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 	};
 
-	lStep		= max(1L, lHeight/50);
+	lStep		= std::max(1, lHeight / 50);
 	lRemaining	= lHeight;
 
 	bResult = true;
 	while (i<lHeight)
 	{
-		LONG			lAdd = min(lStep, lRemaining);
+		int			lAdd = std::min(lStep, lRemaining);
 		DWORD			dwThreadId;
 
 		dwThreadId = GetAvailableThreadId();
@@ -205,9 +205,9 @@ bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
-			for (LONG i = 0;i<pTarget->RealWidth();i++)
+			for (int i = 0;i<pTarget->RealWidth();i++)
 			{
-				for (LONG j = 0;j<pTarget->RealHeight();j++)
+				for (int j = 0;j<pTarget->RealHeight();j++)
 				{
 					if (bUseGray)
 					{
@@ -292,7 +292,7 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 						fMeanCyan   = 0,
 						fMeanMagenta= 0,
 						fMeanGreen2 = 0;
-		LONG			lNrGrays	= 0,
+		int			lNrGrays	= 0,
 						lNrReds		= 0,
 						lNrGreens	= 0,
 						lNrBlues	= 0,
@@ -303,9 +303,9 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 		bool			bCFA;
 
 		bCFA = ::IsCFA(m_pFlatFrame);
-		for (LONG j = 0;j<m_pFlatFrame->RealHeight();j++)
+		for (int j = 0;j<m_pFlatFrame->RealHeight();j++)
 		{
-			for (LONG i = 0;i<m_pFlatFrame->RealWidth();i++)
+			for (int i = 0;i<m_pFlatFrame->RealWidth();i++)
 			{
 				double			fGray,
 								fRed,

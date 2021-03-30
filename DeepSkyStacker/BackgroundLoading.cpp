@@ -56,7 +56,7 @@ void CBackgroundLoading::LoadCurrentImage()
 	m_CriticalSection.Lock();
 	// Check that the image is not already available
 	CString						strImage = m_strToLoad;
-	for (LONG i = 0;i<m_vLoadedImages.size() && !bLoaded;i++)
+	for (int i = 0;i<m_vLoadedImages.size() && !bLoaded;i++)
 	{
 		if (!m_vLoadedImages[i].m_strName.CompareNoCase(m_strToLoad))
 			bLoaded = true;
@@ -172,7 +172,7 @@ bool	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C
 	if (pphBitmap)
 		*pphBitmap = nullptr;
 	m_CriticalSection.Lock();
-	for (LONG i = 0;i<m_vLoadedImages.size();i++)
+	for (int i = 0;i<m_vLoadedImages.size();i++)
 	{
 		if (!m_vLoadedImages[i].m_strName.CompareNoCase(szImage))
 		{

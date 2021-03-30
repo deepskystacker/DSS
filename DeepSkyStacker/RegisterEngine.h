@@ -19,7 +19,7 @@
 class CRegisterInfo
 {
 public :
-	LONG			m_lNrStars;
+	int			m_lNrStars;
 	double			m_fMinLuminancy;
 	double			m_fOverallQuality;
 

@@ -236,12 +236,12 @@ static void BuildMasterFileNames(CTaskInfo *pTaskInfo, TCHAR const *pszType, boo
 	CString *pstrMasterFile, CString *pstrMasterInfoFile)
 {
 	TCHAR const *pszISOGain = pTaskInfo->HasISOSpeed() ? _T("ISO") : _T("Gain");
-	LONG const lISOGain = pTaskInfo->HasISOSpeed() ? pTaskInfo->m_lISOSpeed : pTaskInfo->m_lGain;
+	int const lISOGain = pTaskInfo->HasISOSpeed() ? pTaskInfo->m_lISOSpeed : pTaskInfo->m_lGain;
 
 	CString strFileName;
 	if (bExposure)
 		strFileName.Format(_T("%s%s%s_%s%ld_%lds"),
-			pszDrive, pszDir, pszType, pszISOGain, lISOGain, (LONG)pTaskInfo->m_fExposure);
+			pszDrive, pszDir, pszType, pszISOGain, lISOGain, (int)pTaskInfo->m_fExposure);
 	else
 		strFileName.Format(_T("%s%s%s_%s%ld"),
 			pszDrive, pszDir, pszType, pszISOGain, lISOGain);
@@ -321,14 +321,14 @@ bool	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 		{
 			// Else create the master offset
 			CString			strText;
-			LONG			i = 0;
-			LONG			lNrOffsets = 0;
+			int			i = 0;
+			int			lNrOffsets = 0;
 
 			strText.LoadString(IDS_CREATEMASTEROFFSET);
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pOffsetTask->m_vBitmaps.size(), true);
+				pProgress->Start(strText, (int)m_pOffsetTask->m_vBitmaps.size(), true);
 
 			for (i = 0;i<m_pOffsetTask->m_vBitmaps.size() && bResult;i++)
 			{
@@ -430,7 +430,7 @@ bool	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 			TCHAR			szDir[1+_MAX_DIR];
 			CString			strMasterDark;
 			CString			strMasterDarkInfo;
-			LONG			lExposure = m_pDarkTask->m_fExposure;
+			int			lExposure = m_pDarkTask->m_fExposure;
 
 			_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
@@ -483,15 +483,15 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 		{
 			// Else create the master dark
 			CString						strText;
-			LONG						i;
-			LONG						lNrDarks = 0;
+			int						i;
+			int						lNrDarks = 0;
 			CSmartPtr<CMemoryBitmap>	pMasterOffset;
 
 			strText.LoadString(IDS_CREATEMASTERDARK);
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pDarkTask->m_vBitmaps.size(), true);
+				pProgress->Start(strText, (int)m_pDarkTask->m_vBitmaps.size(), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
@@ -567,7 +567,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 					TCHAR			szDrive[1+_MAX_DRIVE];
 					TCHAR			szDir[1+_MAX_DIR];
 					CString			strInfo;
-					LONG			lExposure = m_pDarkTask->m_fExposure;
+					int			lExposure = m_pDarkTask->m_fExposure;
 
 					strInfo.Format(IDS_MEDIANDARKINFO, m_pDarkTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
@@ -619,7 +619,7 @@ bool	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 			TCHAR			szDir[1+_MAX_DIR];
 			CString			strMasterDarkFlat;
 			CString			strMasterDarkFlatInfo;
-			LONG			lExposure = m_pDarkFlatTask->m_fExposure;
+			int			lExposure = m_pDarkFlatTask->m_fExposure;
 
 			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
@@ -672,15 +672,15 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 		{
 			// Else create the master dark flat
 			CString						strText;
-			LONG						i;
-			LONG						lNrDarks = 0;
+			int						i;
+			int						lNrDarks = 0;
 			CSmartPtr<CMemoryBitmap>	pMasterOffset;
 
 			strText.LoadString(IDS_CREATEMASTERDARKFLAT);
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pDarkFlatTask->m_vBitmaps.size(), true);
+				pProgress->Start(strText, (int)m_pDarkFlatTask->m_vBitmaps.size(), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
@@ -757,7 +757,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 					TCHAR			szDrive[1+_MAX_DRIVE];
 					TCHAR			szDir[1+_MAX_DIR];
 					CString			strInfo;
-					LONG			lExposure = m_pDarkFlatTask->m_fExposure;
+					int			lExposure = m_pDarkFlatTask->m_fExposure;
 
 					strInfo.Format(IDS_MEDIANDARKFLATINFO, m_pDarkFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
@@ -800,7 +800,7 @@ class CRunningStatistics
 public :
 	double				m_fSum;
 	double				m_fPowSum;
-	LONG				m_lNrValues;
+	int				m_lNrValues;
 
 	mutable double		m_fMean;
 	mutable double		m_fStdDev;
@@ -935,9 +935,9 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap * pBitmap, CDSS
 		pProgress->Start2(nullptr, pBitmap->RealWidth());
 	};
 
-	for (LONG i = 0;i<pBitmap->RealWidth();i++)
+	for (int i = 0;i<pBitmap->RealWidth();i++)
 	{
-		for (LONG j = 0;j<pBitmap->RealHeight();j++)
+		for (int j = 0;j<pBitmap->RealHeight();j++)
 		{
 			if (pBitmap->IsMonochrome())
 			{
@@ -987,17 +987,17 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 		pProgress->Start2(nullptr, pBitmap->RealWidth());
 	};
 
-	for (LONG i = 0;i<pBitmap->RealWidth();i++)
+	for (int i = 0;i<pBitmap->RealWidth();i++)
 	{
-		for (LONG j = 0;j<pBitmap->RealHeight();j++)
+		for (int j = 0;j<pBitmap->RealHeight();j++)
 		{
 			if (pBitmap->IsMonochrome())
 			{
 				double			fGray;
 
 				pBitmap->GetPixel(i, j, fGray);
-				fGray = fcp.m_vStats[(LONG)pBitmap->GetBayerColor(i, j)].Normalize(fGray);
-				fGray = m_vStats[(LONG)pBitmap->GetBayerColor(i, j)].NormalizeInvert(fGray);
+				fGray = fcp.m_vStats[(int)pBitmap->GetBayerColor(i, j)].Normalize(fGray);
+				fGray = m_vStats[(int)pBitmap->GetBayerColor(i, j)].NormalizeInvert(fGray);
 				AdjustValue(fGray);
 				pBitmap->SetPixel(i, j, fGray);
 			}
@@ -1006,12 +1006,12 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 				double			fRed, fGreen, fBlue;
 
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-				fRed	= fcp.m_vStats[(LONG)BAYER_RED].Normalize(fRed);
-				fGreen	= fcp.m_vStats[(LONG)BAYER_GREEN].Normalize(fGreen);
-				fBlue	= fcp.m_vStats[(LONG)BAYER_BLUE].Normalize(fBlue);
-				fRed	= m_vStats[(LONG)BAYER_RED].NormalizeInvert(fRed);
-				fGreen	= m_vStats[(LONG)BAYER_GREEN].NormalizeInvert(fGreen);
-				fBlue	= m_vStats[(LONG)BAYER_BLUE].NormalizeInvert(fBlue);
+				fRed	= fcp.m_vStats[(int)BAYER_RED].Normalize(fRed);
+				fGreen	= fcp.m_vStats[(int)BAYER_GREEN].Normalize(fGreen);
+				fBlue	= fcp.m_vStats[(int)BAYER_BLUE].Normalize(fBlue);
+				fRed	= m_vStats[(int)BAYER_RED].NormalizeInvert(fRed);
+				fGreen	= m_vStats[(int)BAYER_GREEN].NormalizeInvert(fGreen);
+				fBlue	= m_vStats[(int)BAYER_BLUE].NormalizeInvert(fBlue);
 				AdjustValue(fRed);
 				AdjustValue(fGreen);
 				AdjustValue(fBlue);
@@ -1099,8 +1099,8 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 		{
 			// Else create the master flat
 			CString		strText;
-			LONG		i;
-			LONG		lNrFlats = 0;
+			int		i;
+			int		lNrFlats = 0;
 			CSmartPtr<CMemoryBitmap>	pMasterOffset;
 			CSmartPtr<CMemoryBitmap>	pMasterDarkFlat;
 			CFlatCalibrationParameters	fcpBase;
@@ -1109,7 +1109,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 			if (pProgress)
-				pProgress->Start(strText, (LONG)m_pFlatTask->m_vBitmaps.size(), true);
+				pProgress->Start(strText, (int)m_pFlatTask->m_vBitmaps.size(), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
@@ -1288,7 +1288,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 
 	bool			bFound = false;
 
-	for (LONG i = 0;i<m_vTasks.size() && !bFound;i++)
+	for (int i = 0;i<m_vTasks.size() && !bFound;i++)
 	{
 		if ((m_vTasks[i].m_TaskType == FrameInfo.m_PictureType) &&
 			(m_vTasks[i].m_dwGroupID == dwGroupID))
@@ -1308,7 +1308,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGrou
 		// Create a new task for this file
 		CTaskInfo			ti;
 
-		ti.m_dwTaskID  = (LONG)m_vTasks.size()+1;
+		ti.m_dwTaskID  = (int)m_vTasks.size()+1;
 		ti.m_dwGroupID = dwGroupID;
 		ti.m_fExposure = FrameInfo.m_fExposure;
 		ti.m_fAperture = FrameInfo.m_fAperture;
@@ -1365,7 +1365,7 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 	ZFUNCTRACE_RUNTIME();
 
 	CTaskInfo *			pResult = nullptr;
-	LONG				j;
+	int				j;
 	bool				bExposureFirst = (TaskType == PICTURETYPE_DARKFRAME);
 
 	if (bExposureFirst)
@@ -1554,7 +1554,7 @@ void CAllStackingTasks::ResolveTasks()
 	ZFUNCTRACE_RUNTIME();
 
 	m_vStacks.clear();
-	for (LONG i = 0;i<m_vTasks.size();i++)
+	for (int i = 0;i<m_vTasks.size();i++)
 	{
 		if (m_vTasks[i].m_TaskType == PICTURETYPE_LIGHTFRAME)
 		{
@@ -1597,16 +1597,16 @@ void CAllStackingTasks::ResolveTasks()
 
 void CAllStackingTasks::ResetTasksStatus()
 {
-	for (LONG i = 0;i<m_vTasks.size();i++)
+	for (int i = 0;i<m_vTasks.size();i++)
 		m_vTasks[i].m_bDone = false;
 };
 
 /* ------------------------------------------------------------------- */
 
-LONG CAllStackingTasks::FindStackID(LPCTSTR szLightFrame)
+int CAllStackingTasks::FindStackID(LPCTSTR szLightFrame)
 {
-	LONG			lResult = 0;
-	LONG			i, j;
+	int			lResult = 0;
+	int			i, j;
 
 	// Find in which stack this light frame is located
 	for (i = 0;(i<m_vStacks.size()) && !lResult;i++)
@@ -1630,7 +1630,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	LONG						i;
+	int						i;
 	CWorkspace					workspace;
 	MULTIBITMAPPROCESSMETHOD	LightMethod = MBP_AVERAGE;
 	double						fLightKappa = 2.0;
@@ -1695,7 +1695,7 @@ bool CAllStackingTasks::DoOffsetTasks(CDSSProgress * pProgress)
 	bool				bResult = true;
 
 	// 1. create all the offset masters
-	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
+	for (int i = 0;i<m_vStacks.size() && bResult;i++)
 	{
 		if (m_vStacks[i].m_pOffsetTask)
 		{
@@ -1721,7 +1721,7 @@ bool CAllStackingTasks::DoDarkTasks(CDSSProgress * pProgress)
 	bool				bResult = true;
 
 	// 2. create all the dark masters (using the offset master if necessary)
-	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
+	for (int i = 0;i<m_vStacks.size() && bResult;i++)
 	{
 		if (m_vStacks[i].m_pDarkTask)
 		{
@@ -1756,7 +1756,7 @@ bool CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
 	bool				bResult = true;
 
 	// 2. create all the dark masters (using the offset master if necessary)
-	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
+	for (int i = 0;i<m_vStacks.size() && bResult;i++)
 	{
 		if (m_vStacks[i].m_pDarkFlatTask)
 		{
@@ -1791,7 +1791,7 @@ bool CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 	bool				bResult = true;
 
 	// 3. create all the flat masters (using the offset master if necessary)
-	for (LONG i = 0;i<m_vStacks.size() && bResult;i++)
+	for (int i = 0;i<m_vStacks.size() && bResult;i++)
 	{
 		if (m_vStacks[i].m_pFlatTask)
 		{
@@ -1825,9 +1825,9 @@ bool CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
 	std::set<CString>			sFolders;
 	std::set<CString>::iterator	it;
 
-	for (LONG i = 0;i<m_vTasks.size();i++)
+	for (int i = 0;i<m_vTasks.size();i++)
 	{
-		for (LONG j = 0;j<m_vTasks[i].m_vBitmaps.size();j++)
+		for (int j = 0;j<m_vTasks[i].m_vBitmaps.size();j++)
 		{
 			CString		strFileName;
 
@@ -1896,9 +1896,9 @@ __int64	CAllStackingTasks::ComputeNecessaryDiskSpace(CRect & rcOutput)
 	ulPixelSize = GetPixelSizeMultiplier();
 	ulPixelSize *= ulPixelSize;
 
-	for (LONG i = 0;i<m_vStacks.size();i++)
+	for (int i = 0;i<m_vStacks.size();i++)
 	{
-		LONG			lWidth,
+		int			lWidth,
 						lHeight,
 						lNrChannels,
 						lNrBytesPerChannel;
@@ -2186,11 +2186,11 @@ WORD	CAllStackingTasks::GetAlignmentMethod()
 
 /* ------------------------------------------------------------------- */
 
-LONG	CAllStackingTasks::GetPixelSizeMultiplier()
+int	CAllStackingTasks::GetPixelSizeMultiplier()
 {
 	CWorkspace			workspace;
 
-	LONG value = workspace.value("Stacking/PixelSizeMultiplier", 1).toUInt();
+	int value = workspace.value("Stacking/PixelSizeMultiplier", 1).toUInt();
 
 	return value;
 };

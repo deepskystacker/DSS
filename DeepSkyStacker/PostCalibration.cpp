@@ -354,8 +354,9 @@ void PostCalibration::on_testCosmetic_clicked()
 				CMasterFrames	MasterFrames;
 
 				// Disable all the tasks except the one used by StackingInfo
-				for (LONG i = 0; i < tasks.m_vTasks.size(); i++)
-					tasks.m_vTasks[i].m_bDone = true;
+				for (auto& task : tasks.m_vTasks) {
+					task.m_bDone = true;
+				}
 				if (StackingInfo.m_pDarkFlatTask)
 					StackingInfo.m_pDarkFlatTask->m_bDone = false;
 				if (StackingInfo.m_pOffsetTask)

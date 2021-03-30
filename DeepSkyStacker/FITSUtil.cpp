@@ -1486,7 +1486,7 @@ bool CFITSWriter::Write()
 				{
 					BYTE* pBYTELine = redBuffer.get();
 					WORD* pWORDLine = reinterpret_cast<WORD*>(redBuffer.get());
-					DWORD* pDWORDLine = reinterpret_cast<DWORD*>(redBuffer.get());
+					std::uint32_t* pDWORDLine = reinterpret_cast<std::uint32_t*>(redBuffer.get());
 					float* pFLOATLine = reinterpret_cast<float*>(redBuffer.get());
 
 					for (int i = 0;i<m_lWidth;i++)
@@ -1545,17 +1545,17 @@ bool CFITSWriter::Write()
 				{
 					BYTE* pBYTELineRed = redBuffer.get();
 					WORD* pWORDLineRed = reinterpret_cast<WORD*>(redBuffer.get());
-					DWORD* pDWORDLineRed = reinterpret_cast<DWORD*>(redBuffer.get());
+					std::uint32_t* pDWORDLineRed = reinterpret_cast<std::uint32_t*>(redBuffer.get());
 					float* pFLOATLineRed = reinterpret_cast<float*>(redBuffer.get());
 
 					BYTE* pBYTELineGreen = greenBuffer.get();
 					WORD* pWORDLineGreen = reinterpret_cast<WORD*>(greenBuffer.get());
-					DWORD* pDWORDLineGreen = reinterpret_cast<DWORD*>(greenBuffer.get());
+					std::uint32_t* pDWORDLineGreen = reinterpret_cast<std::uint32_t*>(greenBuffer.get());
 					float* pFLOATLineGreen = reinterpret_cast<float*>(greenBuffer.get());
 
 					BYTE* pBYTELineBlue = blueBuffer.get();
 					WORD* pWORDLineBlue = reinterpret_cast<WORD*>(blueBuffer.get());
-					DWORD* pDWORDLineBlue = reinterpret_cast<DWORD*>(blueBuffer.get());
+					std::uint32_t* pDWORDLineBlue = reinterpret_cast<std::uint32_t*>(blueBuffer.get());
 					float* pFLOATLineBlue = reinterpret_cast<float*>(blueBuffer.get());
 
 					for (int i = 0; i < m_lWidth; i++)

@@ -298,24 +298,23 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 void CBatchStacking::OnOK()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bContinue  = true;
-	LONG			lNrProcessedLists = 0;
+	bool bContinue  = true;
+	int lNrProcessedLists = 0;
 
-	for (LONG i = 0;i<m_Lists.GetCount() && bContinue;i++)
+	for (int i = 0; i < m_Lists.GetCount() && bContinue; i++)
 	{
-		CString				strFile;
+		CString strFile;
 
 		if (m_Lists.GetCheck(i))
 		{
 			m_Lists.GetText(i, strFile);
-			CString			strOutputFile;
+			CString strOutputFile;
 
 			bContinue = ProcessList(strFile, strOutputFile);
 			m_Lists.SetCheck(i, false);
 			if (bContinue)
 			{
-				CString			strText;
-
+				CString strText;
 				strText.Format(_T("->%s"), (LPCTSTR)strOutputFile);
 				m_Lists.InsertString(i, strText);
 				m_Lists.SetCheck(i, false);

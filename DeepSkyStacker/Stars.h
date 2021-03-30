@@ -149,14 +149,14 @@ typedef STARVECTOR::iterator	STARITERATOR;
 typedef std::set<CStar>			STARSET;
 typedef STARSET::iterator		STARSETITERATOR;
 
-inline LONG	FindNearestStar(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
+inline int	FindNearestStar(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
 {
-	LONG			lResult = -1;
+	int			lResult = -1;
 	double			fMinDistance = -1;
 
 	bIn = false;
 	fDistance = -1.0;
-	for (LONG i = 0;i<vStars.size();i++)
+	for (int i = 0;i<vStars.size();i++)
 	{
 		// Compute the distance
 		if (!vStars[i].m_bRemoved)
@@ -181,9 +181,9 @@ inline LONG	FindNearestStar(double fX, double fY, STARVECTOR & vStars, bool & bI
 	return lResult;
 };
 
-inline LONG	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
+inline int	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vStars, bool & bIn, double & fDistance)
 {
-	LONG			lResult = -1;
+	int			lResult = -1;
 	double			fMinDistance = -1;
 	STARITERATOR	it;
 

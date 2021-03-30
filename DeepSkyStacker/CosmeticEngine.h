@@ -6,9 +6,9 @@
 class CCosmeticStats
 {
 public :
-	LONG			m_lNrTotalPixels;
-	LONG			m_lNrDetectedHotPixels;
-	LONG			m_lNrDetectedColdPixels;
+	int			m_lNrTotalPixels;
+	int			m_lNrDetectedHotPixels;
+	int			m_lNrDetectedColdPixels;
 
 private :
 	void		CopyFrom(const CCosmeticStats & cs)

@@ -1984,7 +1984,7 @@ bool	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bo
 	if (bColor)
 	{
 		if (p96BitColorBitmap || p32BitGrayBitmap)
-			pMultiBitmap.Attach(new CColorMultiBitmapT<DWORD, float>);
+			pMultiBitmap.Attach(new CColorMultiBitmapT<std::uint32_t, float>);
 		else if (p96BitFloatColorBitmap || p32BitFloatGrayBitmap)
 			pMultiBitmap.Attach(new CColorMultiBitmapT<float, float>);
 		else
@@ -1993,7 +1993,7 @@ bool	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bo
 	else
 	{
 		if (p96BitColorBitmap || p32BitGrayBitmap)
-			pMultiBitmap.Attach(new CGrayMultiBitmapT<DWORD, float>);
+			pMultiBitmap.Attach(new CGrayMultiBitmapT<std::uint32_t, float>);
 		else if (p96BitFloatColorBitmap || p32BitFloatGrayBitmap)
 			pMultiBitmap.Attach(new CGrayMultiBitmapT<float, float>);
 		else

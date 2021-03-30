@@ -15,7 +15,7 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 	ZFUNCTRACE_RUNTIME();
 	double fMax = 0;
 	const size_t width = GetWidth();
-	const LONG height = GetHeight();
+	const int height = GetHeight();
 	const int nrEnabledThreads = CMultitask::GetNrProcessors(false); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 	float maxValue = 0;
 	const float scalingFactor = 255.0f / m_StackedBitmap.GetNrStackedFrames();
@@ -28,7 +28,7 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 #pragma omp parallel default(none) firstprivate(maxValue) shared(fMax, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 	{
 #pragma omp for schedule(guided, 1)
-		for (LONG row = 0; row < height; ++row)
+		for (int row = 0; row < height; ++row)
 		{
 			size_t ndx = row * width;
 			if (m_StackedBitmap.IsMonochrome())
@@ -88,7 +88,7 @@ void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHi
 
 	bMonochrome = m_StackedBitmap.IsMonochrome();
 
-	for (LONG i = 0;i<srcHisto.GetSize();i++)
+	for (int i = 0;i<srcHisto.GetSize();i++)
 	{
 		double			fRed,
 						fGreen,

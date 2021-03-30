@@ -12,13 +12,12 @@
 bool CGlobalSettings::operator == (const CGlobalSettings & gs) const
 {
 	bool				bResult = false;
-	LONG				i;
 
 	if (m_vFiles.size() == gs.m_vFiles.size())
 	{
 		// Check that this is the same files
 		bResult = true;
-		for (i = 0;i<m_vFiles.size() && bResult;i++)
+		for (size_t i = 0; i < m_vFiles.size() && bResult; i++)
 			bResult = !m_vFiles[i].CompareNoCase(gs.m_vFiles[i]);
 	};
 
@@ -104,7 +103,7 @@ void	CGlobalSettings::WriteToFile(LPCTSTR szFile)
 
 		// Then write the file list
 		fprintf(hFile, "----FileList----\n");
-		for (LONG i = 0;i<m_vFiles.size();i++)
+		for (size_t i = 0; i < m_vFiles.size(); i++)
 			fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vFiles[i], CP_UTF8));
 
 		fclose(hFile);
@@ -127,14 +126,13 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 		ReadFromRegistry();
 		bool				bFITS = false;
 		bool				bRAW  = false;
-		LONG				lWidth = 0,
+		int				lWidth = 0,
 							lHeight = 0,
 							lBitPerChannels = 0,
 							lNrChannels = 0;
-		LONG				i;
 
 
-		for (i = 0;i<pTask->m_vBitmaps.size();i++)
+		for (size_t i = 0; i < pTask->m_vBitmaps.size(); i++)
 		{
 			CString			strFile;
 

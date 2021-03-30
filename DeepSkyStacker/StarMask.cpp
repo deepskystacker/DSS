@@ -44,10 +44,10 @@ bool CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 				CString			strText;
 
 				strText.LoadString(IDS_CREATINGSTARMASK);
-				pProgress->Start2(strText, (LONG)vStars.size());
+				pProgress->Start2(strText, static_cast<int>(vStars.size()));
 			};
 
-			for (LONG k = 0;k<vStars.size();k++)
+			for (size_t k = 0; k < vStars.size(); k++)
 			{
 				double			fRadius = vStars[k].m_fMeanRadius*2.35/1.5;
 				double &		fXCenter = vStars[k].m_fX;
@@ -86,7 +86,7 @@ bool CStarMaskEngine::CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** 
 				};
 
 				if (pProgress)
-					pProgress->Progress2(nullptr, k+1);
+					pProgress->Progress2(nullptr, static_cast<int>(k+1));
 			};
 
 			if (pProgress)

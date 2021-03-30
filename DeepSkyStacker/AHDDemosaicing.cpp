@@ -17,7 +17,7 @@ CRGBToLab::CRGBToLab()
 	if (!g_vLUT.size())
 	{
 		g_vLUT.reserve(0x10000);
-		for (LONG i = 0;i<0x10000;i++)
+		for (int i = 0;i<0x10000;i++)
 		{
 			float		r = float(i) / 65535.0f;
 			float		f = r > 0.008856f ? pow((float)r, (float)1.0/3.0f) : 7.787f*r + 16.0/116.0f;

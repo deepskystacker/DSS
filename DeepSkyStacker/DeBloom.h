@@ -165,28 +165,28 @@ class CDeBloom
 private :
 	double						m_fBloomThreshold;
 	BLOOMEDSTARVECTOR			m_vBloomedStars;
-	LONG						m_lWidth,
+	int						m_lWidth,
 								m_lHeight;
 	CSmartPtr<C8BitGrayBitmap>	m_pMask;
 	CDSSProgress *				m_pProgress;
 	double						m_fBackground;
 
-	bool	IsLeftEdge(CMemoryBitmap * pBitmap, LONG x, LONG y);
-	bool	IsRightEdge(CMemoryBitmap * pBitmap, LONG x, LONG y);
-	bool	IsTopEdge(CMemoryBitmap * pBitmap, LONG x, LONG y);
-	bool	IsBottomEdge(CMemoryBitmap * pBitmap, LONG x, LONG y);
+	bool	IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y);
+	bool	IsRightEdge(CMemoryBitmap * pBitmap, int x, int y);
+	bool	IsTopEdge(CMemoryBitmap * pBitmap, int x, int y);
+	bool	IsBottomEdge(CMemoryBitmap * pBitmap, int x, int y);
 
 	void	ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
 
-	void	ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, LONG x, LONG y);
+	void	ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y);
 	bool	CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask);
 
 	void	AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
-	double	ComputeValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, LONG x, LONG y, bool & bDone);
+	double	ComputeValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y, bool & bDone);
 	void	DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask);
 	void    SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask);
-	void	MarkBloomBorder(CMemoryBitmap * pMask, LONG x, LONG y, std::vector<CPointExt> & vBorders);
-	void	MarkBorderAsBloomed(CMemoryBitmap * pMask, LONG x, LONG y, std::vector<CPoint> & vBloomed);
+	void	MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<CPointExt> & vBorders);
+	void	MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<CPoint> & vBloomed);
 
 	double	ComputeBackgroundValue(CMemoryBitmap * pBitmap);
 	double	ComputeStarGradient(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStarGradient & bsg, double fRadius);

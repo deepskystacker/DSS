@@ -317,7 +317,7 @@ inline double	Distance(double fX1, double fY1, double fX2, double fY2)
 class	CDynamicStats
 {
 public :
-	LONG			m_lNrValues;
+	int			m_lNrValues;
 	double			m_fSum;
 	double			m_fPowSum;
 	double			m_fMin,
@@ -334,7 +334,7 @@ public :
 	};
 	virtual ~CDynamicStats() {};
 
-	void	AddValue(double fValue, LONG lNrValues = 1)
+	void	AddValue(double fValue, int lNrValues = 1)
 	{
 		if (!m_lNrValues)
 		{
@@ -350,7 +350,7 @@ public :
 		m_fSum	  += fValue*lNrValues;
 	};
 
-	void	RemoveValue(double fValue, LONG lNrValues = 1)
+	void	RemoveValue(double fValue, int lNrValues = 1)
 	{
 		m_lNrValues-=lNrValues;
 		m_fPowSum -= (fValue*fValue)*lNrValues;
@@ -519,7 +519,7 @@ double CalculateSigmaFromAverage(const std::vector<T>& values, const double targ
 template <class T> inline
 void	FillDynamicStat(const std::vector<T> & vValues, CDynamicStats & DynStats)
 {
-	for (LONG i = 0;i<vValues.size();i++)
+	for (int i = 0;i<vValues.size();i++)
 		DynStats.AddValue(vValues[i]);
 };
 
@@ -528,7 +528,7 @@ void	FillDynamicStat(const std::vector<T> & vValues, CDynamicStats & DynStats)
 class CFlatPart
 {
 public :
-	LONG			m_lStart,
+	int			m_lStart,
 					m_lEnd;
 	double			m_fAverage;
 	double			m_fAverageVariation;
@@ -565,7 +565,7 @@ public :
 		return (*this);
 	};
 
-	LONG	Length() const
+	int	Length() const
 	{
 		return m_lEnd-m_lStart+1;
 	};
@@ -610,7 +610,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	vVariations.reserve(vValues.size());
 	vAbsVariations.reserve(vValues.size());
 
-	for (LONG i = 0;i<vValues.size();i++)
+	for (int i = 0;i<vValues.size();i++)
 	{
 		if (!i)
 		{
@@ -635,7 +635,7 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 	for (double fThreshold = 0.05;fThreshold<=0.20;fThreshold+=0.05)
 	{
 		fSummedVariation = 0;
-		for (LONG i = 0;i<vValues.size();i++)
+		for (int i = 0;i<vValues.size();i++)
 		{
 			if (bInFlatPart)
 			{
@@ -695,9 +695,9 @@ void	DetectFlatParts(std::vector<T> & vValues, double fMaximum, std::vector<CFla
 		// Check that at least one flat part is below the average
 		bool				bFound = false;
 
-		for (LONG i = 0;i<vFlatParts.size() && !bFound;i++)
+		for (int i = 0;i<vFlatParts.size() && !bFound;i++)
 			bFound = (vFlatParts[i].m_fAverage <= fAverage);
-		for (LONG i = 0;i<vFlatParts.size() && bFound;i++)
+		for (int i = 0;i<vFlatParts.size() && bFound;i++)
 		{
 			if (vFlatParts[i].m_fAverage > fAverage)
 			{
@@ -747,7 +747,7 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 
 		vAuxValues.reserve(vFlatParts[0].Length());
 
-		for (LONG i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
+		for (int i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
 			vAuxValues.push_back(vValues[i]);
 
 		vValues = vAuxValues;
@@ -771,22 +771,22 @@ double	Homogenize(std::vector<T> & vValues, double fMaximum)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double Homogenize3(std::vector<T> & vValues, LONG lNrSubStacks)
+double Homogenize3(std::vector<T> & vValues, int lNrSubStacks)
 {
 	double						fResult = 1.0;
 	std::vector<double>			vStackValues;
 	std::vector<T>				vWork;
 	std::vector<T>				vSubStack;
-	LONG						lNrValues = vValues.size();
+	int						lNrValues = vValues.size();
 
 	vStackValues.reserve(lNrSubStacks);
 	vSubStack.reserve(lNrValues/lNrSubStacks+1);
 	vWork.reserve(lNrValues / lNrSubStacks + 1);
 
-	for (LONG j = 0;j<lNrSubStacks;j++)
+	for (int j = 0;j<lNrSubStacks;j++)
 	{
 		vSubStack.clear();
-		for (LONG i = j;i<lNrValues;i+=lNrSubStacks)
+		for (int i = j;i<lNrValues;i+=lNrSubStacks)
 			vSubStack.push_back(vValues[i]);
 
 		vStackValues.push_back(KappaSigmaClip(vSubStack, 1.5, 3, vWork));
@@ -802,7 +802,7 @@ double Homogenize3(std::vector<T> & vValues, LONG lNrSubStacks)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double Homogenize3(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vector<T> & v3Values, LONG lNrSubStacks)
+double Homogenize3(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vector<T> & v3Values, int lNrSubStacks)
 {
 	Homogenize3(v1Values, lNrSubStacks);
 	Homogenize3(v2Values, lNrSubStacks);
@@ -821,7 +821,7 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 
 	vValues.reserve(v1Values.size());
 
-	for (LONG i = 0;i<v1Values.size();i++)
+	for (int i = 0;i<v1Values.size();i++)
 		vValues.push_back(double(v1Values[i]+v2Values[i]+v3Values[i])/3.0);
 
 /*
@@ -840,9 +840,9 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 
 	vFlatParts.reserve(v1FlatParts.size()+v2FlatParts.size()+v3FlatParts.size());
 	vFlatParts = v1FlatParts;
-	for (LONG i = 0;i<v2FlatParts.size();i++)
+	for (int i = 0;i<v2FlatParts.size();i++)
 		vFlatParts.push_back(v2FlatParts[i]);
-	for (LONG i = 0;i<v3FlatParts.size();i++)
+	for (int i = 0;i<v3FlatParts.size();i++)
 		vFlatParts.push_back(v3FlatParts[i]);
 */
 	std::vector<CFlatPart> 		vFlatParts;
@@ -862,7 +862,7 @@ double	Homogenize(std::vector<T> & v1Values, std::vector<T> & v2Values, std::vec
 		v2AuxValues.reserve(vFlatParts[0].Length());
 		v3AuxValues.reserve(vFlatParts[0].Length());
 
-		for (LONG i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
+		for (int i = vFlatParts[0].m_lStart;i<=vFlatParts[0].m_lEnd;i++)
 		{
 			v1AuxValues.push_back(v1Values[i]);
 			v2AuxValues.push_back(v2Values[i]);
@@ -900,7 +900,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 	if (vValues.size()>3)
 	{
 		bool				bEnd = false;
-		LONG				i;
+		int				i;
 
 		std::sort(vValues.begin(), vValues.end());
 		// Compute the distance between the line and each point
@@ -910,7 +910,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 							fMax  = vValues[vValues.size()-1];
 			double			fSteep = (fMax-fMin)/vValues.size();
 			double			fMaxDistance = 0;
-			LONG			lIndice1;
+			int			lIndice1;
 
 			for (i = 0;i<vValues.size();i++)
 			{
@@ -928,7 +928,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 
 			// Compute the second indice based on the variation
 			// between the minimum and the current value
-			LONG			lIndice2 = -1;
+			int			lIndice2 = -1;
 			for (i = 0;i<vValues.size() && (lIndice2<0);i++)
 			{
 				double		fIncrease;
@@ -941,7 +941,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 			if (lIndice1>=0 || lIndice2>=0)
 			{
 				// Cut at this position
-				LONG		lIndice = std::min(lIndice1==-1 ? 10000 : lIndice1,
+				int		lIndice = std::min(lIndice1==-1 ? 10000 : lIndice1,
 										  lIndice2==-1 ? 10000 : lIndice2);
 				vValues.resize(lIndice+1);
 			}
@@ -972,7 +972,7 @@ void	Homogenize2(std::vector<T> & vValues, double fMaximum)
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T> & vAuxValues)
+double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, int lIteration, std::vector<T> & vAuxValues)
 {
 	double			Result = 0;
 	bool			bEnd = false;
@@ -987,12 +987,12 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 
 	FillDynamicStat(vAuxValues, DynStats);
 
-	for (LONG i = 0;i<lIteration && !bEnd;i++)
+	for (int i = 0;i<lIteration && !bEnd;i++)
 	{
 		double			fAverage;
 		double			fSigma;
-		LONG			lCurrentIndice = 0;
-		LONG			j = 0;
+		int			lCurrentIndice = 0;
+		int			j = 0;
 		double			fMin,
 						fMax;
 
@@ -1020,7 +1020,7 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 			j++;
 		};
 
-/*		for (LONG j = 0;j<vAuxValues.size();j++)
+/*		for (int j = 0;j<vAuxValues.size();j++)
 		{
 			if (((double)vAuxValues[j]>= (fAverage - fKappa*fSigma)) &&
 				((double)vAuxValues[j]<= (fAverage + fKappa*fSigma)))
@@ -1043,7 +1043,7 @@ double	KappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lItera
 /* ------------------------------------------------------------------- */
 
 template <class T> inline
-double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
+double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, int lIteration, std::vector<T>& vWorkingBuffer1, std::vector<T>& vWorkingBuffer2)
 {
 	double			Result = 0;
 
@@ -1057,7 +1057,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 	// Initial copy into the working set to start us off.
 	vWorkingBuffer1 = vValues;
-	for (LONG i = 0;i<lIteration;i++)
+	for (int i = 0;i<lIteration;i++)
 	{
 		double			fAverage;
 		double			fSigma;
@@ -1068,7 +1068,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 
 		// Go through and populate the temp buffer according to the values.
 		vecTempBuffer.clear();
-		for (LONG j = 0;j< vecCurrentPass.size();j++)
+		for (int j = 0;j< vecCurrentPass.size();j++)
 		{
 			if (((double)vecCurrentPass[j]>= (fAverage - fKappa*fSigma)) &&
 				((double)vecCurrentPass[j]<= (fAverage + fKappa*fSigma)))
@@ -1092,7 +1092,7 @@ double	MedianKappaSigmaClip(const std::vector<T> & vValues, double fKappa, LONG 
 /* ------------------------------------------------------------------- */
 
 template <typename T>
-double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, long lIterations, std::vector<double> & vWeights)
+double AutoAdaptiveWeightedAverage(const std::vector<T> & vValues, int lIterations, std::vector<double> & vWeights)
 {
 	// Computes the auto-adaptive weighted average of a set of numbers
 	// (intended to be the values of the same pixel in different stacked images).
@@ -1515,7 +1515,7 @@ public :
 		return ptResult;
 	};
 
-	double	Angle(LONG lWidth) const
+	double	Angle(int lWidth) const
 	{
 		double		fAngle;
 		CPointExt	pt1 (0, 0),

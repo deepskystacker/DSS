@@ -19,11 +19,11 @@ class	CPostCalibrationSettings
 {
 public :
 	bool				m_bHot;
-	LONG				m_lHotFilter;
+	int				m_lHotFilter;
 	double				m_fHotDetection;
 
 	bool				m_bCold;
-	LONG				m_lColdFilter;
+	int				m_lColdFilter;
 	double				m_fColdDetection;
 
 	bool				m_bSaveDeltaImage;
@@ -136,8 +136,8 @@ public :
 	DWORD						m_dwTaskID;
 	DWORD						m_dwGroupID;
 	PICTURETYPE					m_TaskType;
-	LONG						m_lISOSpeed;
-	LONG						m_lGain;
+	int						m_lISOSpeed;
+	int						m_lGain;
 	double						m_fExposure;
 	double						m_fAperture;
 	bool						m_bUnmodified;
@@ -146,7 +146,7 @@ public :
 	FRAMEINFOVECTOR				m_vBitmaps;
 	MULTIBITMAPPROCESSMETHOD	m_Method;
 	double						m_fKappa;
-	LONG						m_lNrIterations;
+	int						m_lNrIterations;
 	CSmartPtr<CMultiBitmap>		m_pMaster;
 
 private :
@@ -201,7 +201,7 @@ public :
 	{
 	};
 
-	void	SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
+	void	SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 	{
 		m_Method	= Method;
 		m_fKappa	= fKappa;
@@ -211,7 +211,7 @@ public :
 	void	CreateEmptyMaster(CMemoryBitmap * pBitmap)
 	{
 		m_pMaster.Attach(pBitmap->CreateEmptyMultiBitmap());
-		m_pMaster->SetNrBitmaps((LONG)m_vBitmaps.size());
+		m_pMaster->SetNrBitmaps((int)m_vBitmaps.size());
 		m_pMaster->SetProcessingMethod(m_Method, m_fKappa, m_lNrIterations);
 	};
 
@@ -329,11 +329,11 @@ private :
 	bool						m_bFlatUsed;
 	bool						m_bUsingBayer;
 	bool						m_bUsingColorImages;
-	LONG						m_lNrLightFrames;
-	LONG						m_lNrBiasFrames;
-	LONG						m_lNrDarkFrames;
-	LONG						m_lNrDarkFlatFrames;
-	LONG						m_lNrFlatFrames;
+	int						m_lNrLightFrames;
+	int						m_lNrBiasFrames;
+	int						m_lNrDarkFrames;
+	int						m_lNrDarkFlatFrames;
+	int						m_lNrFlatFrames;
 	double						m_fMaxExposureTime;
 
 public :
@@ -473,23 +473,23 @@ public :
 		return m_bBiasUsed;
 	};
 
-	LONG	GetNrLightFrames()
+	int	GetNrLightFrames()
 	{
 		return m_lNrLightFrames;
 	};
-	LONG	GetNrBiasFrames()
+	int	GetNrBiasFrames()
 	{
 		return m_lNrBiasFrames;
 	};
-	LONG	GetNrDarkFrames()
+	int	GetNrDarkFrames()
 	{
 		return m_lNrDarkFrames;
 	};
-	LONG	GetNrFlatFrames()
+	int	GetNrFlatFrames()
 	{
 		return m_lNrFlatFrames;
 	};
-	LONG	GetNrDarkFlatFrames()
+	int	GetNrDarkFlatFrames()
 	{
 		return m_lNrDarkFlatFrames;
 	};
@@ -538,7 +538,7 @@ public :
 	void	ResetTasksStatus();
 	void	UpdateTasksMethods();
 
-	LONG	FindStackID(LPCTSTR szLightFrame);
+	int	FindStackID(LPCTSTR szLightFrame);
 
 	STACKINGMODE	GetStackingMode()
 	{
@@ -588,7 +588,7 @@ public :
 	static  bool	GetSaveCalibratedDebayered();
 	static	void	ClearCache();
 	static  WORD	GetAlignmentMethod();
-	static  LONG	GetPixelSizeMultiplier();
+	static  int	GetPixelSizeMultiplier();
 	static  bool	GetChannelAlign();
 	static  bool	GetSaveIntermediateCometImages();
 	static  bool	GetApplyMedianFilterToCometImage();

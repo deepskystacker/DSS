@@ -5,18 +5,18 @@
 #include <QSettings>
 /* ------------------------------------------------------------------- */
 
-LONG	CMultitask::GetNrProcessors(bool bReal)
+int CMultitask::GetNrProcessors(bool bReal)
 {
-	LONG				lResult = 1;
-	QSettings			settings;
-	SYSTEM_INFO			SysInfo;
+	int lResult = 1;
+	QSettings settings;
+	SYSTEM_INFO SysInfo;
 	
-	DWORD dwMaxProcessors = settings.value("MaxProcessors", (uint)0).toUInt();
+	unsigned int dwMaxProcessors = settings.value("MaxProcessors", (uint)0).toUInt();
 
 	GetSystemInfo(&SysInfo);
-	lResult		= SysInfo.dwNumberOfProcessors;
+	lResult = SysInfo.dwNumberOfProcessors;
 	if (!bReal && dwMaxProcessors)
-		lResult = min(static_cast<long>(dwMaxProcessors), lResult);
+		lResult = std::min(static_cast<int>(dwMaxProcessors), lResult);
 
 	return lResult;
 };
@@ -86,7 +86,7 @@ HANDLE	CMultitask::GetAvailableThread()
 	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+(DWORD)m_vEvents.size()))
 	{
 		// An event was triggered
-		LONG			lIndice = dwResult-WAIT_OBJECT_0;
+		int			lIndice = dwResult-WAIT_OBJECT_0;
 
 		ResetEvent(m_vEvents[lIndice]);
 		hResult = m_vThreads[lIndice];
@@ -105,7 +105,7 @@ DWORD	CMultitask::GetAvailableThreadId()
 	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+m_vEvents.size()))
 	{
 		// An event was triggered
-		LONG			lIndice = dwResult-WAIT_OBJECT_0;
+		int			lIndice = dwResult-WAIT_OBJECT_0;
 
 		ResetEvent(m_vEvents[lIndice]);
 		hResult = m_vThreadIds[lIndice];
@@ -116,9 +116,9 @@ DWORD	CMultitask::GetAvailableThreadId()
 
 /* ------------------------------------------------------------------- */
 
-void	CMultitask::StartThreads(LONG lNrThreads)
+void	CMultitask::StartThreads(int lNrThreads)
 {
-	LONG				i;
+	int				i;
 
 	if (!lNrThreads)
 		lNrThreads = GetNrProcessors();
@@ -161,14 +161,14 @@ void	CMultitask::CloseAllThreads()
 	{
 		WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), true, INFINITE);
 
-		for (LONG i = 0;i<m_vThreads.size();i++)
+		for (int i = 0;i<m_vThreads.size();i++)
 		{
 			PostThreadMessage(m_vThreadIds[i], WM_MT_STOP, 0, 0);
 		};
 
 		WaitForMultipleObjects((DWORD)m_vThreads.size(), &(m_vThreads[0]), true, INFINITE);
 
-		for (LONG i = 0;i<m_vThreads.size();i++)
+		for (int i = 0;i<m_vThreads.size();i++)
 		{
 			CloseHandle(m_vThreads[i]);
 			CloseHandle(m_vEvents[i]);

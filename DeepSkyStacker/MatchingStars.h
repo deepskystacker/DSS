@@ -190,23 +190,23 @@ typedef STARDISTVECTOR::iterator		STARDISTITERATOR;
 
 /* ------------------------------------------------------------------- */
 
-const	LONG			VPFLAG_ACTIVE			  = 0x00000001;
-const	LONG			VPFLAG_CORNER_TOPLEFT	  = 0x00000010;
-const	LONG			VPFLAG_CORNER_TOPRIGHT    = 0x00000020;
-const	LONG			VPFLAG_CORNER_BOTTOMLEFT  = 0x00000040;
-const	LONG			VPFLAG_CORNER_BOTTOMRIGHT = 0x00000080;
-const	LONG			VPFLAG_CORNER_MASK		  = 0x000000F0;
-const	LONG			VPFLAG_USED				  = 0x00000100;
-const	LONG			VPFLAG_LOCKED			  = 0x00000200;
-const	LONG			VPFLAG_POSSIBLE			  = 0x00000400;
+const	int			VPFLAG_ACTIVE			  = 0x00000001;
+const	int			VPFLAG_CORNER_TOPLEFT	  = 0x00000010;
+const	int			VPFLAG_CORNER_TOPRIGHT    = 0x00000020;
+const	int			VPFLAG_CORNER_BOTTOMLEFT  = 0x00000040;
+const	int			VPFLAG_CORNER_BOTTOMRIGHT = 0x00000080;
+const	int			VPFLAG_CORNER_MASK		  = 0x000000F0;
+const	int			VPFLAG_USED				  = 0x00000100;
+const	int			VPFLAG_LOCKED			  = 0x00000200;
+const	int			VPFLAG_POSSIBLE			  = 0x00000400;
 
 class CVotingPair
 {
 public :
 	__int8					m_RefStar,
 							m_TgtStar;
-	LONG					m_lNrVotes;
-	LONG					m_Flags;
+	int					m_lNrVotes;
+	int					m_Flags;
 
 private :
 	void	CopyFrom(const CVotingPair & vp)
@@ -318,15 +318,15 @@ private :
 	STARTRIANGLEVECTOR		m_vRefTriangles;
 	STARTRIANGLEVECTOR		m_vTgtTriangles;
 
-	std::vector<LONG>		m_vRefStarIndices;
-	std::vector<LONG>		m_vTgtStarIndices;
+	std::vector<int>		m_vRefStarIndices;
+	std::vector<int>		m_vTgtStarIndices;
 
 	STARDISTVECTOR			m_vRefStarDistances;
 	STARDISTVECTOR			m_vTgtStarDistances;
 
 	VOTINGPAIRVECTOR		m_vVotedPairs;
-	LONG					m_lWidth;
-	LONG					m_lHeight;
+	int					m_lWidth;
+	int					m_lHeight;
 
 	POINTEXTVECTOR			m_vRefCorners;
 	POINTEXTVECTOR			m_vTgtCorners;
@@ -349,7 +349,7 @@ private :
 	};
 
 	void	InitVotingGrid(VOTINGPAIRVECTOR & vVotingPairs);
-	void	AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTINGPAIRVECTOR & vOutVotingPairs, LONG lNrTgtStars);
+	void	AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTINGPAIRVECTOR & vOutVotingPairs, int lNrTgtStars);
 	void	ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDISTVECTOR & vStarDist);
 	void	ComputeTriangles(const POINTEXTVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles);
 
@@ -408,7 +408,7 @@ public :
 		m_vTgtStarIndices.clear();
 	};
 
-	void	SetSizes(LONG lWidth, LONG lHeight)
+	void	SetSizes(int lWidth, int lHeight)
 	{
 		m_lWidth	= lWidth;
 		m_lHeight	= lHeight;

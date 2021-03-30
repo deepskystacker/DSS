@@ -16,7 +16,7 @@ public :
 	CString						m_strName;
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
 	CSmartPtr<C32BitsBitmap>	m_hBitmap;
-	LONG						m_lLastUse;
+	int						m_lLastUse;
 
 private :
 	void	CopyFrom(const CLoadedImage & li)

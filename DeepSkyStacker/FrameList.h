@@ -21,7 +21,7 @@ class CMRUList
 public :
 	CString					m_strBasePath;
 	std::vector<CString>	m_vLists;
-	LONG					m_lMaxLists;
+	int					m_lMaxLists;
 
 private :
 	void	CopyFrom(const CMRUList & ml)
@@ -91,7 +91,7 @@ public :
 	bool					m_bCompatible;
 	CBilinearParameters		m_Transformation;
 	VOTINGPAIRVECTOR		m_vVotedPairs;
-	LONG					m_lNrStars;
+	int					m_lNrStars;
 	bool					m_bComet;
 
 
@@ -271,7 +271,7 @@ public :
 		if (dwID == GUID_NULL)
 			::CoCreateGuid(&dwID);
 
-		for (LONG i = 0;i<m_vJobs.size();i++)
+		for (int i = 0;i<m_vJobs.size();i++)
 		{
 			if (m_vJobs[i].m_ID == dwID)
 				bFound = true;
@@ -291,9 +291,9 @@ public :
 
 	CJob & GetJob(LPCTSTR szName)
 	{
-		LONG			lIndice = -1;
+		int			lIndice = -1;
 
-		for (LONG i = 0;i<m_vJobs.size() && lIndice<0;i++)
+		for (int i = 0;i<m_vJobs.size() && lIndice<0;i++)
 		{
 			if (!m_vJobs[i].m_strName.CompareNoCase(szName))
 				lIndice = i;
@@ -304,9 +304,9 @@ public :
 
 	CJob & GetJob(GUID const& dwID)
 	{
-		LONG			lIndice = -1;
+		int			lIndice = -1;
 
-		for (LONG i = 0;i<m_vJobs.size() && lIndice<0;i++)
+		for (int i = 0;i<m_vJobs.size() && lIndice<0;i++)
 		{
 			if (m_vJobs[i].m_ID == dwID)
 				lIndice = i;
@@ -317,8 +317,8 @@ public :
 
 	bool	RemoveJob(GUID const& dwID)
 	{
-		LONG			lIndice = -1;
-		for (LONG i = 0;i<m_vJobs.size() && lIndice<0;i++)
+		int			lIndice = -1;
+		for (int i = 0;i<m_vJobs.size() && lIndice<0;i++)
 		{
 			if (m_vJobs[i].m_ID == dwID)
 				lIndice = i;
@@ -375,7 +375,7 @@ public :
 
 	void	FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID = MAINJOBID);
 	bool	GetReferenceFrame(CString & strReferenceFrame);
-	LONG	GetNrUnregisteredCheckedLightFrames(LONG lGroupID = -1);
+	int	GetNrUnregisteredCheckedLightFrames(int lGroupID = -1);
 
 	bool	IsDirty(bool bReset = false)
 	{

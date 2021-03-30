@@ -81,19 +81,19 @@ void BitmapFillerBase::setGrey(bool grey)
 	this->isGray = grey;
 }
 
-void BitmapFillerBase::setWidth(LONG width)
+void BitmapFillerBase::setWidth(int width)
 {
 	this->width = width;
 }
 
-void BitmapFillerBase::setHeight(LONG height)
+void BitmapFillerBase::setHeight(int height)
 {
 	this->height = height;
 	if (pProgress != nullptr)
 		pProgress->Start2(nullptr, pBitmap->Height());
 }
 
-void BitmapFillerBase::setMaxColors(LONG maxcolors)
+void BitmapFillerBase::setMaxColors(int maxcolors)
 {
 	this->bytesPerChannel = maxcolors > 255 ? 2 : 1;
 }
@@ -200,7 +200,7 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 	}
 
 	//if (((rowIndex + 1) % 32) == 0 && this->pProgress != nullptr)
-	//	this->pProgress->Progress2(nullptr, static_cast<LONG>(rowIndex + 1));
+	//	this->pProgress->Progress2(nullptr, static_cast<int>(rowIndex + 1));
 
 	return nrPixels;
 }

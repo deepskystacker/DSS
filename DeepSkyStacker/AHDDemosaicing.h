@@ -13,7 +13,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-static const LONG							AHDWS = 256;
+static const int							AHDWS = 256;
 
 template <typename TType>
 class CAHDTaskVariables
@@ -61,8 +61,8 @@ public :
 	CSmartPtr<CGrayBitmapT<TType> >			pGrayBitmap;
 	CSmartPtr<CColorBitmapT<TType> >		pColorBitmap;
 	CSmartPtr<CMemoryBitmap>				pOutputBitmap;
-	LONG									lWidth;
-	LONG									lHeight;
+	int									lWidth;
+	int									lHeight;
 
 	double									fMultiplier;
 
@@ -79,7 +79,7 @@ public :
 	bool	Init(CGrayBitmapT<TType> * pGrayBitmap, CDSSProgress * pProgress);
 
 	virtual bool	Process();
-	virtual void	DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType> & var);
+	virtual void	DoSubWindow(int x, int y, CAHDTaskVariables<TType> & var);
 	virtual bool	DoTask(HANDLE hEvent);
 
 	virtual void	InterpolateBorders();
@@ -111,10 +111,10 @@ template <typename TType>
 inline bool	CAHDTask<TType>::Process()
 {
 	bool			bResult = true;
-	LONG			lNrWindows;
-	LONG			lNrWindowsWidth,
+	int			lNrWindows;
+	int			lNrWindowsWidth,
 					lNrWindowsHeight;
-	LONG			x, y;
+	int			x, y;
 
 	lNrWindowsWidth = lWidth/(AHDWS-4);
 	if (lWidth % (AHDWS-4))
@@ -162,10 +162,10 @@ inline bool	CAHDTask<TType>::Process()
 /* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType> & var)
+inline void	CAHDTask<TType>::DoSubWindow(int x, int y, CAHDTaskVariables<TType> & var)
 {
 	// Iterate through the window
-	LONG						wx, wy;
+	int						wx, wy;
 	TType *						pBaseGrayPixel;
 	TType *						pVBaseGreenPixel;
 	TType *						pHBaseGreenPixel;
@@ -590,7 +590,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 
 		for (wx = x;wx<lWidth && wx <x+AHDWS;wx++)
 		{
-			LONG				i;
+			int				i;
 
 			*pHHomoPixel = *pVHomoPixel = 0;
 
@@ -675,7 +675,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 
 		for (wx = x+1;wx<lWidth-1 && wx <x+AHDWS-1;wx++)
 		{
-			LONG			hmV,
+			int			hmV,
 							hmH;
 
 			hmV = *(pVHomoPixel) + (*(pVHomoPixel-1)) + (*(pVHomoPixel+1)) +
@@ -718,7 +718,7 @@ inline void	CAHDTask<TType>::DoSubWindow(LONG x, LONG y, CAHDTaskVariables<TType
 template <typename TType>
 inline bool	CAHDTask<TType>::DoTask(HANDLE hEvent)
 {
-	LONG						x, y;
+	int						x, y;
 	bool						bEnd = false;
 	MSG							msg;
 	CAHDTaskVariables<TType>	var;
@@ -750,7 +750,7 @@ inline bool	CAHDTask<TType>::DoTask(HANDLE hEvent)
 template <typename TType>
 inline void	CAHDTask<TType>::InterpolateBorders()
 {
-	LONG							x, y;
+	int							x, y;
 	TType *							pGrayPixel1;
 	TType *							pGrayPixel2;
 	TType *							pOutputRedPixel1;
@@ -759,7 +759,7 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 	TType *							pOutputGreenPixel2;
 	TType *							pOutputBluePixel1;
 	TType *							pOutputBluePixel2;
-	LONG							x1 = 0,
+	int							x1 = 0,
 									x2 = lWidth-1;
 	bool							bBlueLine;
 
@@ -845,7 +845,7 @@ inline void	CAHDTask<TType>::InterpolateBorders()
 		bBlueLine = !bBlueLine;
 	};
 
-	LONG								y1 = 0,
+	int								y1 = 0,
 										y2 = lHeight-1;
 	bool								bBlueLine1,
 										bBlueLine2;
@@ -995,10 +995,10 @@ inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 	bool									bResult = false;
 	CSmartPtr<CColorBitmapT<TType> >		pColorBitmap;
 	CSmartPtr<CMemoryBitmap>				pOutputBitmap;
-	LONG									lWidth = pGrayBitmap->Width();
-	LONG									lHeight = pGrayBitmap->Height();
+	int									lWidth = pGrayBitmap->Width();
+	int									lHeight = pGrayBitmap->Height();
 
-	const LONG								AHDWS = 256;
+	const int								AHDWS = 256;
 	double									fMultiplier = 65536.0;
 
 	CSmartPtr<CColorBitmapT<TType> >		pWindowV;
@@ -1028,10 +1028,10 @@ inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 	if (bResult)
 	{
 		CRGBToLab							RGBToLab;
-		LONG								x, y;
+		int								x, y;
 
-		LONG								lNrWindows;
-		LONG								lNrWindowsWidth,
+		int								lNrWindows;
+		int								lNrWindowsWidth,
 											lNrWindowsHeight;
 
 		lNrWindowsWidth = lWidth/(AHDWS-4);
@@ -1054,7 +1054,7 @@ inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 			for (x= 0;x<lWidth;x+=AHDWS-4)
 			{
 				// Iterate through the window
-				LONG						wx, wy;
+				int						wx, wy;
 				TType *						pBaseGrayPixel;
 				TType *						pVBaseGreenPixel;
 				TType *						pHBaseGreenPixel;
@@ -1502,7 +1502,7 @@ inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 
 					for (wx = x;wx<lWidth && wx <x+AHDWS;wx++)
 					{
-						LONG				i;
+						int				i;
 
 						*pHHomoPixel = *pVHomoPixel = 0;
 
@@ -1570,7 +1570,7 @@ inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 
 					for (wx = x+1;wx<lWidth-1 && wx <x+AHDWS-1;wx++)
 					{
-						LONG			hmV,
+						int			hmV,
 										hmH;
 
 						hmV = *(pVHomoPixel) + (*(pVHomoPixel-1)) + (*(pVHomoPixel+1)) +
@@ -1623,7 +1623,7 @@ inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 			TType *							pOutputGreenPixel2;
 			TType *							pOutputBluePixel1;
 			TType *							pOutputBluePixel2;
-			LONG							x1 = 0,
+			int							x1 = 0,
 											x2 = lWidth-1;
 			bool							bBlueLine;
 
@@ -1709,7 +1709,7 @@ inline bool	AHDDemosaicing2(CGrayBitmapT<TType> * pGrayBitmap, CMemoryBitmap ** 
 				bBlueLine = !bBlueLine;
 			};
 
-			LONG								y1 = 0,
+			int								y1 = 0,
 												y2 = lHeight-1;
 			bool								bBlueLine1,
 												bBlueLine2;

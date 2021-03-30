@@ -19,7 +19,7 @@ bool	CLibrary::IsInLibrary(const CLibraryEntry & le)
 {
 	bool				bResult = false;
 
-	for (LONG i = 0;i<m_vEntries.size() && !bResult;i++)
+	for (int i = 0;i<m_vEntries.size() && !bResult;i++)
 	{
 		if (le == m_vEntries[i])
 			bResult = true;

@@ -85,16 +85,16 @@ public:
 	bool	Load(LPCTSTR szFile = nullptr);
 	bool	Save(LPCTSTR szFile = nullptr);
 
-	LONG	Count()
+	int	Count()
 	{
-		return (LONG)m_lSettings.size();
+		return static_cast<int>(m_lSettings.size());
 	};
 
-	bool	GetItem(LONG lIndice, CDSSSetting& cds)
+	bool	GetItem(int lIndice, CDSSSetting& cds)
 	{
 		bool			bResult = false;
 
-		if (lIndice < m_lSettings.size())
+		if (lIndice < static_cast<int>(m_lSettings.size()))
 		{
 			DSSSETTINGITERATOR	it;
 
@@ -118,11 +118,11 @@ public:
 		return true;
 	};
 
-	bool	Remove(LONG lIndice)
+	bool	Remove(int lIndice)
 	{
 		bool			bResult = false;
 
-		if (lIndice < m_lSettings.size())
+		if (lIndice < static_cast<int>(m_lSettings.size()))
 		{
 			DSSSETTINGITERATOR	it;
 

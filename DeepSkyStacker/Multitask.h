@@ -13,9 +13,9 @@ protected :
 	std::vector<HANDLE>		m_vEvents;
 
 protected :
-	LONG	GetNrThreads()
+	int GetNrThreads()
 	{
-		return (LONG)m_vThreads.size();
+		return static_cast<int>(m_vThreads.size());
 	};
 
 public :
@@ -28,7 +28,7 @@ public :
 		CloseAllThreads();
 	};
 
-	static LONG	GetNrProcessors(bool bReal = false);
+	static int	GetNrProcessors(bool bReal = false);
 	static void	SetUseAllProcessors(bool bUseAll);
 	static bool	GetReducedThreadsPriority();
 	static void	SetReducedThreadsPriority(bool bReduced);
@@ -49,7 +49,7 @@ public :
 	};
 
 	void	CloseAllThreads();
-	void	StartThreads(LONG lNrThreads = 0);
+	void	StartThreads(int lNrThreads = 0);
 	HANDLE	GetAvailableThread();
 	DWORD	GetAvailableThreadId();
 

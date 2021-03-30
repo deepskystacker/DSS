@@ -322,7 +322,7 @@ bool CTIFFReader::Read()
 
 		BYTE* byteBuff = buffer.get();
 		WORD* shortBuff = reinterpret_cast<WORD*>(byteBuff);
-		DWORD* longBuff = reinterpret_cast<DWORD*>(byteBuff);
+		std::uint32_t* u32Buff = reinterpret_cast<std::uint32_t*>(byteBuff);
 		float* floatBuff = reinterpret_cast<float*>(byteBuff);
 
 		const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
@@ -377,7 +377,7 @@ bool CTIFFReader::Read()
 					OnRead(x, y, fGray, fGray, fGray);
 				}); break;
 				case 32: loopOverPixels([&](const int x, const int y) {
-					const double fGray = longBuff[y * w + x] / scaleFactorInt32;
+					const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
 					OnRead(x, y, fGray, fGray, fGray);
 				}); break;
 				}
@@ -400,9 +400,9 @@ bool CTIFFReader::Read()
 				}); break;
 				case 32: loopOverPixels([&](const int x, const int y) {
 					const int index = (y * w + x) * spp;
-					const double fRed = longBuff[index] / scaleFactorInt32;
-					const double fGreen = longBuff[index + 1] / scaleFactorInt32;
-					const double fBlue = longBuff[index + 2] / scaleFactorInt32;
+					const double fRed = u32Buff[index] / scaleFactorInt32;
+					const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
+					const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
 					OnRead(x, y, fRed, fGreen, fBlue);
 				}); break;
 				}
@@ -641,7 +641,7 @@ bool CTIFFWriter::Write()
 
 			BYTE *  byteBuff = (BYTE *)buff;
 			WORD *	shortBuff = (WORD *)buff;
-			DWORD * longBuff = (DWORD *)buff;
+			std::uint32_t* u32Buff = (std::uint32_t*)buff;
 			float *	floatBuff = (float *)buff;
 
 			int	rowProgress = 0;
@@ -721,13 +721,13 @@ bool CTIFFWriter::Write()
 						else switch (spp)	// unsigned int == DWORD
 						{
 						case 1:
-							longBuff[index] = fGrey * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index] = fGrey * UCHAR_MAX * USHRT_MAX;
 							break;
 						case 3:
 						case 4:
-							longBuff[index] = fRed * UCHAR_MAX * USHRT_MAX;
-							longBuff[index + 1] = fGreen * UCHAR_MAX * USHRT_MAX;
-							longBuff[index + 2] = fBlue * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index] = fRed * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index + 1] = fGreen * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index + 2] = fBlue * UCHAR_MAX * USHRT_MAX;
 							break;
 
 						}

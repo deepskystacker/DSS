@@ -8,15 +8,15 @@ class CFrameInfo
 {
 public :
 	CString				m_strFileName;
-	LONG				m_lWidth,
+	int				m_lWidth,
 						m_lHeight;
-	LONG				m_lISOSpeed;
-	LONG				m_lGain;
+	int				m_lISOSpeed;
+	int				m_lGain;
 	double				m_fExposure;
 	double				m_fAperture;
 	PICTURETYPE			m_PictureType;
-	LONG				m_lBitPerChannels;
-	LONG				m_lNrChannels;
+	int				m_lBitPerChannels;
+	int				m_lNrChannels;
 	SYSTEMTIME			m_FileTime;
 	CString				m_strDateTime;
 	SYSTEMTIME			m_DateTime;
@@ -121,17 +121,17 @@ public :
 		return m_bMaster;
 	};
 
-	LONG	RenderedWidth()
+	int	RenderedWidth()
 	{
 		return m_lWidth/(m_bSuperPixel ? 2 : 1);
 	};
 
-	LONG	RenderedHeight()
+	int	RenderedHeight()
 	{
 		return m_lHeight/(m_bSuperPixel ? 2 : 1);
 	};
 
-	bool	IsCompatible(LONG lWidth, LONG lHeight, LONG lBitPerChannels, LONG lNrChannels, CFATYPE CFAType)
+	bool	IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType)
 	{
 		bool			bResult;
 
@@ -216,7 +216,7 @@ inline void	ExposureToString(double fExposure, CString & strText)
 	// DELETE THIS ONE DAY
 	if (fExposure)
 	{
-		LONG			lExposure;
+		int			lExposure;
 
 		if (fExposure >= 1)
 		{
@@ -297,7 +297,7 @@ inline QString exposureToString(double fExposure)
 
 /* ------------------------------------------------------------------- */
 
-inline void	ISOToString(LONG lISOSpeed, CString & strText)
+inline void	ISOToString(int lISOSpeed, CString & strText)
 {
 	if (lISOSpeed)
 		strText.Format(_T("%ld"), lISOSpeed);
@@ -307,7 +307,7 @@ inline void	ISOToString(LONG lISOSpeed, CString & strText)
 
 /* ------------------------------------------------------------------- */
 
-inline void	GainToString(LONG lGain, CString & strText)
+inline void	GainToString(int lGain, CString & strText)
 {
 	if (lGain >= 0)
 		strText.Format(_T("%ld"), lGain);

@@ -16,9 +16,9 @@ public:
 
 	virtual void SetCFAType(CFATYPE CFAType) = 0;
 	virtual void setGrey(bool grey) = 0;
-	virtual void setWidth(LONG width) = 0;
-	virtual void setHeight(LONG height) = 0;
-	virtual void setMaxColors(LONG maxcolors) = 0;
+	virtual void setWidth(int width) = 0;
+	virtual void setHeight(int height) = 0;
+	virtual void setMaxColors(int maxcolors) = 0;
 	virtual size_t Write(const void* source, const size_t size, const size_t count, const size_t rowIndex) = 0;
 };
 
@@ -45,9 +45,9 @@ public:
 
 	virtual void SetCFAType(CFATYPE cfaType) override;
 	virtual void setGrey(bool grey) override;
-	virtual void setWidth(LONG width) override;
-	virtual void setHeight(LONG height) override;
-	virtual void setMaxColors(LONG maxcolors) override;
+	virtual void setWidth(int width) override;
+	virtual void setHeight(int height) override;
+	virtual void setMaxColors(int maxcolors) override;
 protected:
 	void setCfaFactors();
 	bool isRgbBayerPattern() const;
