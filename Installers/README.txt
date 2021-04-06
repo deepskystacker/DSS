@@ -1,4 +1,22 @@
-﻿Welcome to DeepSkyStacker 4.2.5
+﻿Welcome to DeepSkyStacker 4.2.6 Beta 1
+
+Here are the main changes since DeepSkyStacker 4.2.5
+
+1. Fix for oversaturated pixels wrapping to black (centre of stars or galaxies are black).
+
+2. Fix De-bloom procesing code to prevent assertion failures in GetPixel() code.
+
+3. Upgrade LibRaw to snapshot 202101 (new camera support).
+
+4. Fix to prevent crash when processing FITS file that is not monochrome but has BAYERPAT keyword in the header that isn't NONE (force CFAType to none).
+
+5. Fix TIFF code handling of accented characters in file path (fix in 4.2.5 was incomplete).
+
+6. Add code to check that it is possible to write files to the output directory and terminate processing with an error message if not.
+
+
+
+Welcome to DeepSkyStacker 4.2.5
 
 PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20.   Please note that version 5.1.0 of DeepSkyStacker will not run on 32 bit systems or Windows XP.
 

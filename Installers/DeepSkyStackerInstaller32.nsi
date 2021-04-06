@@ -33,8 +33,8 @@ SetCompressor /SOLID lzma
 !define DSS_RUNTIME_MSVC   "msvcrt.dll"
 
 !define DSS_PRODUCT        "DeepSkyStacker${NAMESUFFIX}"            # For start menu
-!define DSS_VERSION        "4.2.5"                                  # For control panel
-!define DSS_VERSION_SUFFIX "" 		                               	# For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION        "4.2.6"                                  # For control panel
+!define DSS_VERSION_SUFFIX " Beta 1"                               	# For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker${NAMESUFFIX}"
