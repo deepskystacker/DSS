@@ -192,7 +192,7 @@ BOOL CStackingDlg::OnInitDialog()
 				m_Infos.SetTextColor(RGB(255, 0, 0));
 				m_Infos.SetText(strNewVersion);
 				m_Infos.SetLink(TRUE, FALSE);
-				m_Infos.SetHyperLink("http://deepskystacker.free.fr");
+				m_Infos.SetHyperLink("https://github.com/deepskystacker/DSS/releases/latest/");
 			};
 		};
 	};
