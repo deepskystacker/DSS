@@ -533,10 +533,6 @@ static void free_camf_entry(camf_entry_t *entry)
     if (DEH->identifier == X3F_SECp)
     {
       x3f_property_list_t *PL = &DEH->data_subsection.property_list;
-      if (PL)
-      {
-        int i;
-      }
       FREE(PL->property_table.element);
       FREE(PL->data);
     }

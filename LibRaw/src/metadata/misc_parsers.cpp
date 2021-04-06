@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw uses code from dcraw.c -- Dave Coffin's raw photo decoder,
  dcraw.c is copyright 1997-2018 by Dave Coffin, dcoffin a cybercom o net.
@@ -45,10 +45,11 @@ void LibRaw::nikon_3700()
   {
     int bits;
     char t_make[12], t_model[15];
-  } table[] = {{0x00, "Pentax", "Optio 33WR"},
-               {0x03, "Nikon", "E3200"},
-               {0x32, "Nikon", "E3700"},
-               {0x33, "Olympus", "C-740UZ"}};
+    int t_maker_idx;
+  } table[] = {{0x00, "Pentax", "Optio 33WR", LIBRAW_CAMERAMAKER_Pentax},
+               {0x03, "Nikon", "E3200", LIBRAW_CAMERAMAKER_Nikon},
+               {0x32, "Nikon", "E3700", LIBRAW_CAMERAMAKER_Nikon},
+               {0x33, "Olympus", "C-740UZ", LIBRAW_CAMERAMAKER_Olympus}};
 
   fseek(ifp, 3072, SEEK_SET);
   fread(dp, 1, 24, ifp);
@@ -57,6 +58,7 @@ void LibRaw::nikon_3700()
     if (bits == table[i].bits)
     {
       strcpy(make, table[i].t_make);
+      maker_index = table[i].t_maker_idx;
       strcpy(model, table[i].t_model);
     }
 }
@@ -90,6 +92,7 @@ int LibRaw::canon_s2is()
   return 0;
 }
 
+#ifdef LIBRAW_OLD_VIDEO_SUPPORT
 void LibRaw::parse_redcine()
 {
   unsigned i, len, rdvo;
@@ -121,6 +124,7 @@ void LibRaw::parse_redcine()
     data_offset = get4();
   }
 }
+#endif
 
 void LibRaw::parse_cine()
 {
@@ -302,6 +306,7 @@ void LibRaw::parse_rollei()
     line[0] = 0;
     if (!fgets(line, 128, ifp))
       break;
+    line[127] = 0;
     if(!line[0]) break; // zero-length
     if ((val = strchr(line, '=')))
       *val++ = 0;
@@ -502,8 +507,7 @@ void LibRaw::parse_broadcom()
   header.bayer_order = 0;
   fseek(ifp, 0xb0 - 0x20, SEEK_CUR);
   fread(&header, 1, sizeof(header), ifp);
-  /* load_flags is not used in broadcom loader, so reuse it for raw_stride */
-  load_flags =
+  raw_stride =
       ((((((header.uwidth + header.padding_right) * 5) + 3) >> 2) + 0x1f) &
        (~0x1f));
   raw_width = width = header.uwidth;

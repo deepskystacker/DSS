@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * File: dcraw_emu.cpp
- * Copyright 2008-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2008-2021 LibRaw LLC (info@libraw.org)
  * Created: Sun Mar 23,   2008
  *
  * LibRaw simple C++ API sample: almost complete dcraw emulator
@@ -91,7 +91,7 @@ void usage(const char *prog)
          "-m <num>  Apply a 3x3 median filter to R-G and B-G\n"
          "-s [0..N-1] Select one raw image from input file\n"
          "-4        Linear 16-bit, same as \"-6 -W -g 1 1\n"
-         "-6        Write 16-bit linear instead of 8-bit with gamma\n"
+         "-6        Write 16-bit output\n"
          "-g pow ts Set gamma curve to gamma pow and toe slope ts (default = "
          "2.222 4.5)\n"
          "-T        Write TIFF instead of PPM\n"
@@ -124,6 +124,7 @@ void usage(const char *prog)
          "-dngsdk   Use Adobe DNG SDK for DNG decode\n"
          "-dngflags N set DNG decoding options to value N\n"
 #endif
+         "-doutputflags N set params.output_flags to N\n"
   );
   exit(1);
 }
@@ -241,7 +242,7 @@ int main(int argc, char *argv[])
   LibRaw RawProcessor;
   int i, arg, c, ret;
   char opm, opt, *cp, *sp;
-  int use_bigfile = 0, use_timing = 0, use_mem = 0, use_mmap = 0;
+  int use_timing = 0, use_mem = 0, use_mmap = 0;
   char *outext = NULL;
 #ifdef USE_DNGSDK
   dng_host *dnghost = NULL;
@@ -252,6 +253,7 @@ int main(int argc, char *argv[])
 #undef OUT
 #endif
 #define OUT RawProcessor.imgdata.params
+#define OUTR RawProcessor.imgdata.rawparams
 
   argv[argc] = (char *)"";
   for (arg = 1; (((opm = argv[arg][0]) - 2) | 2) == '+';)
@@ -265,8 +267,10 @@ int main(int argc, char *argv[])
           fprintf(stderr, "Non-numeric argument to \"-%c\"\n", opt);
           return 1;
         }
-    if (!strchr("ftdeam", opt) && argv[arg - 1][2])
+    if (!strchr("ftdeam", opt) && argv[arg - 1][2]) {
       fprintf(stderr, "Unknown option \"%s\".\n", argv[arg - 1]);
+      continue;
+    }
     switch (opt)
     {
     case 'v':
@@ -312,7 +316,7 @@ int main(int argc, char *argv[])
       OUT.user_sat = atoi(argv[arg++]);
       break;
     case 'R':
-      OUT.raw_processing_options = atoi(argv[arg++]);
+      OUTR.options = atoi(argv[arg++]);
       break;
     case 't':
       if (!strcmp(optstr, "-timing"))
@@ -387,11 +391,11 @@ int main(int argc, char *argv[])
       }
       else if (!strcmp(optstr, "-apentax4shot"))
       {
-        OUT.raw_processing_options |= LIBRAW_PROCESSING_PENTAX_PS_ALLFRAMES;
+        OUTR.options |= LIBRAW_RAWOPTIONS_PENTAX_PS_ALLFRAMES;
       }
       else if (!strcmp(optstr, "-apentax4shotorder"))
       {
-        strncpy(OUT.p4shot_order, argv[arg++], 5);
+        strncpy(OUTR.p4shot_order, argv[arg++], 5);
       }
       else if (!argv[arg - 1][2])
         OUT.use_auto_wb = 1;
@@ -418,30 +422,29 @@ int main(int argc, char *argv[])
     case '6':
       OUT.output_bps = 16;
       break;
-    case 'F':
-      use_bigfile = 1;
-      break;
     case 'Z':
       outext = strdup(argv[arg++]);
       break;
     case 'd':
       if (!strcmp(optstr, "-dcbi"))
         OUT.dcb_iterations = atoi(argv[arg++]);
+      else if (!strcmp(optstr, "-doutputflags"))
+        OUT.output_flags = atoi(argv[arg++]);
       else if (!strcmp(optstr, "-disars"))
-        OUT.use_rawspeed = 0;
+        OUTR.use_rawspeed = 0;
       else if (!strcmp(optstr, "-disinterp"))
         OUT.no_interpolation = 1;
       else if (!strcmp(optstr, "-dcbe"))
         OUT.dcb_enhance_fl = 1;
       else if (!strcmp(optstr, "-dsrawrgb1"))
       {
-        OUT.raw_processing_options |= LIBRAW_PROCESSING_SRAW_NO_RGB;
-        OUT.raw_processing_options &= ~LIBRAW_PROCESSING_SRAW_NO_INTERPOLATE;
+        OUTR.specials |= LIBRAW_RAWSPECIAL_SRAW_NO_RGB;
+        OUTR.specials &= ~LIBRAW_RAWSPECIAL_SRAW_NO_INTERPOLATE;
       }
       else if (!strcmp(optstr, "-dsrawrgb2"))
       {
-        OUT.raw_processing_options &= ~LIBRAW_PROCESSING_SRAW_NO_RGB;
-        OUT.raw_processing_options |= LIBRAW_PROCESSING_SRAW_NO_INTERPOLATE;
+        OUTR.specials &= ~LIBRAW_RAWSPECIAL_SRAW_NO_RGB;
+        OUTR.specials |= LIBRAW_RAWSPECIAL_SRAW_NO_INTERPOLATE;
       }
 #ifdef USE_DNGSDK
       else if (!strcmp(optstr, "-dngsdk"))
@@ -451,7 +454,7 @@ int main(int argc, char *argv[])
       }
       else if (!strcmp(optstr, "-dngflags"))
       {
-        OUT.use_dngsdk = atoi(argv[arg++]);
+        OUTR.use_dngsdk = atoi(argv[arg++]);
       }
 #endif
       else
@@ -459,7 +462,7 @@ int main(int argc, char *argv[])
       break;
     default:
       fprintf(stderr, "Unknown option \"-%c\".\n", opt);
-      return 1;
+      break;
     }
   }
 #ifndef LIBRAW_WIN32_CALLS
@@ -485,6 +488,8 @@ int main(int argc, char *argv[])
     printf("Using %d threads\n", omp_get_max_threads());
 #endif
 
+  int done = 0;
+  int total = argc - arg;
   for (; arg < argc; arg++)
   {
     char outfn[1024];
@@ -555,10 +560,6 @@ int main(int argc, char *argv[])
     }
     else
     {
-      if (use_bigfile)
-        // force open_file switch to bigfile processing
-        ret = RawProcessor.open_file(argv[arg], 1);
-      else
         ret = RawProcessor.open_file(argv[arg]);
 
       if (ret != LIBRAW_SUCCESS)
@@ -634,6 +635,8 @@ int main(int argc, char *argv[])
 
     if (LIBRAW_SUCCESS != (ret = RawProcessor.dcraw_ppm_tiff_writer(outfn)))
       fprintf(stderr, "Cannot write %s: %s\n", outfn, libraw_strerror(ret));
+    else
+      done++;
 
 	RawProcessor.recycle(); // just for show this call
 
@@ -649,5 +652,9 @@ int main(int argc, char *argv[])
   if (dnghost)
     delete dnghost;
 #endif
+  if (total == 0)
+    return 1;
+  if (done < total)
+    return 2;
   return 0;
 }

@@ -11,6 +11,9 @@ LDADD+=-lz
 CFLAGS=-DLIBRAW_USE_AUTOPTR
 CFLAGS+= -g -I. -pedantic -Wno-long-long -Wno-overflow -O3
 
+# macOS dual arch
+# CFLAGS+=-arch x86_64 -arch arm64
+
 # RawSpeed Support
 # CFLAGS+=-DUSE_RAWSPEED -I../RawSpeed -I/opt/local/include/libxml2
 # LDADD+=-L../RawSpeed/RawSpeed/release -lrawspeed -L/opt/local/include -ljpeg -lxml2
@@ -28,6 +31,10 @@ CFLAGS+= -g -I. -pedantic -Wno-long-long -Wno-overflow -O3
 # Jasper support for RedCine
 #CFLAGS+=-DUSE_JASPER -I/opt/local/include
 #LDADD+=-L/opt/local/lib -ljasper
+
+# ZLIB support (FP dng)
+CFLAGS+=-DUSE_ZLIB
+LDADD+=-lz
 
 # JPEG support for DNG and Kodak
 CFLAGS+=-DUSE_JPEG -I/usr/local/include
