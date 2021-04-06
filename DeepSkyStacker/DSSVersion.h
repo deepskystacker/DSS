@@ -5,7 +5,7 @@
 
 #ifdef DSSBETA
 #define DSSBETARELEASE 1
-constexpr long DSSBETAEXPIREYEAR = 2020L;
+constexpr long DSSBETAEXPIREYEAR = 2021L;
 constexpr long DSSBETAEXPIREMONTH = 10L;
 #endif
 
