@@ -312,10 +312,6 @@ BOOL CFITSReader::Open()
 
 	}
 
-
-
-
-
 	if (m_fits)
 	{
 		CStringA fileName(m_strFileName);
@@ -615,6 +611,14 @@ BOOL CFITSReader::Open()
 				m_filterName = filterName;
 			};
 
+			//
+			// Force CFA to null if not single channel
+			//
+			if (m_lNrChannels != 1 && m_CFAType != CFATYPE_NONE)
+			{
+				ZTRACE_RUNTIME("Number of channels > 1 and CFAType not CFATYPE_NONE - forcing CFATYPE_NONE");
+				m_CFAType = CFATYPE_NONE;
+			}
 			//
 			// If the user has explicitly set that this FITS file is a Bayer format RAW file,
 			// then the user will also have explicitly set the Bayer pattern that's to be used.
