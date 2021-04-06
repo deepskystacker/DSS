@@ -1343,6 +1343,7 @@ BEGIN
                             "Ud. debe seleccionar light frames para registrarlos."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "La creación de los Maestros (dark, flat, offset) necesitó %ld Kb.\nSolo %ld Kb hay disponibles en su unidad %s\n¿Desea proceder de todos modos?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker no puede escribir archivos en el directorio %s"
 END
 
 STRINGTABLE

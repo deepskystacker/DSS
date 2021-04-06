@@ -1140,6 +1140,7 @@ BEGIN
     IDS_ERROR_NOTLIGHTCHECKED2 "Bitte Lightframes zum Registrieren auswählen!"
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "Die Erstellung der Masters (Dark, Flat, Offset) benötigt %ld KB.\nEs sind nur %ld KB auf dem Laufwerk verfügbar %s\nWollen Sie trotzdem fortfahren?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker kann keine Dateien in das Verzeichnis %s schreiben"
 END
 
 STRINGTABLE 

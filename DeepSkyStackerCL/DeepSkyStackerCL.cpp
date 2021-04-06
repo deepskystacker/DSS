@@ -356,7 +356,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 			StackingEngine.SetSaveIntermediate(g_bSaveIntermediate);
 			StackingEngine.SetSaveCalibrated(g_bSaveCalibrated);
-			bContinue = StackingEngine.StackLightFrames(tasks, &progress, &pBitmap);
+			bContinue = StackingEngine.StackLightFrames(tasks, &progress, &pBitmap, g_strListFile);
+
 			if (bContinue)
 			{
 				if (StackingEngine.GetDefaultOutputFileName(g_strOutputFile, g_strListFile, !g_bFITSOutput))

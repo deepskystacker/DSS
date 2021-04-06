@@ -964,6 +964,7 @@ BEGIN
                             "Trebuie sa selectati cadre Light pentru a le inregistra."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "Crearea masterurilor (Dark, Flat, offset) necesita %ld Kb.\nSunt disponibili doar %ld Kb pe discul %s\nDoriti sa continuati?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker nu poate scrie fisiere in directorul %s"
 END
 
 STRINGTABLE

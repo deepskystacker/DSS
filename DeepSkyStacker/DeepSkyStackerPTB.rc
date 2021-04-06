@@ -966,6 +966,7 @@ BEGIN
                             "Tem que verificar fotogramas-luz para registar."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "OS Masters (dark, flat, offset) criados requerem %ld Kb.\nApenas %ld Kb estao disponiveis drive %s\nQualquer das formas quer continuar?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker não pode gravar arquivos no diretório %s"
 END
 
 STRINGTABLE

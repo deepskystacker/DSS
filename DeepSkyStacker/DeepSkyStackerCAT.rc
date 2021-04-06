@@ -1233,6 +1233,8 @@ BEGIN
     IDS_ERROR_NOTLIGHTCHECKED2 "Vè. ha de seleccionar light frames per a registrar-los."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "La creació dels Mestres (dark, flat, offset) necessita %ld Kb.\n Només %ld Kb hi ha disponibles en la seva unitat %s\n Desitja continuar de totes maneres?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker no pot escriure fitxers al directori %s" 
+
 END
 
 STRINGTABLE 

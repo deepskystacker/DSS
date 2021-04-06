@@ -1147,6 +1147,7 @@ BEGIN
                             "Devi selezionare le immagini per poterle combinare."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "La creazione dei Masters (dark, flat, offset) richiede %ld Kb.\nSolo %ld Kb sono disponibili sul drive %s\nVuoi procedere comunque?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker non può scrivere file nella directory %s"
 END
 
 STRINGTABLE

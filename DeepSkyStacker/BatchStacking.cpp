@@ -248,7 +248,7 @@ BOOL CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 			if (list.GetReferenceFrame(strReferenceFrame))
 				StackingEngine.SetReferenceFrame(strReferenceFrame);
 
-			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, &pBitmap);
+			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, &pBitmap, szList);
 			if (bContinue)
 			{
 				CString				strFileName;

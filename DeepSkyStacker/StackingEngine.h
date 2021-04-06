@@ -259,7 +259,7 @@ public :
 		m_fKeptPercentage = fPercent;
 	};
 	BOOL	ComputeOffsets(CAllStackingTasks & tasks, CDSSProgress * pProgress);
-	BOOL	StackLightFrames(CAllStackingTasks & tasks, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap);
+	BOOL	StackLightFrames(CAllStackingTasks & tasks, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap, LPCTSTR szFileList);
 
 	LIGHTFRAMEINFOVECTOR & LightFrames()
 	{

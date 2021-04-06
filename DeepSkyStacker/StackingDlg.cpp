@@ -1575,7 +1575,7 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 			StackingEngine.SetReferenceFrame(strReferenceFrame);
 
 		StackingEngine.SetKeptPercentage(fPercent);
-		bContinue = StackingEngine.StackLightFrames(tasks, &dlg, &pBitmap);
+		bContinue = StackingEngine.StackLightFrames(tasks, &dlg, &pBitmap, m_strCurrentFileList);
 		dwElapsedTime = GetTickCount()-dwStartTime;
 		UpdateCheckedAndOffsets(StackingEngine);
 		if (bContinue)

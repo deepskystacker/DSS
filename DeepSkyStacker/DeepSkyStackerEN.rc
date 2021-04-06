@@ -1086,6 +1086,7 @@ BEGIN
     IDS_ERROR_NOTLIGHTCHECKED2 "You must check light frames to register them."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "The Masters (dark, flat, offset) creation required %ld Kb.\nOnly %ld Kb are available on drive %s\nDo you want to proceed anyway?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker cannot write files to directory %s"
 END
 
 STRINGTABLE

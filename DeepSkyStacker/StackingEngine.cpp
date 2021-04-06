@@ -2589,7 +2589,7 @@ BOOL	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CStackingEngine::StackLightFrames(CAllStackingTasks & tasks, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
+BOOL	CStackingEngine::StackLightFrames(CAllStackingTasks & tasks, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap, LPCTSTR szFileList)
 {
 	ZFUNCTRACE_RUNTIME();
 	BOOL						bResult = FALSE;
@@ -2619,6 +2619,88 @@ BOOL	CStackingEngine::StackLightFrames(CAllStackingTasks & tasks, CDSSProgress *
 		strText += strContinue;
 		bContinue = m_pProgress->Warning((LPCTSTR)strText);
 	};
+
+	//
+	// Determine the output folder that will be used (code duplicated from GetDefaultOutputFileName)
+	//
+	COutputSettings		OutputSettings;
+
+	CAllStackingTasks::GetOutputSettings(OutputSettings);
+
+	bResult = OutputSettings.m_bOutput;
+
+	TCHAR				szDrive[1 + _MAX_DRIVE];
+	TCHAR				szDir[1 + _MAX_DIR];
+	CString				strOutputFolder;
+	CString				strFileList = szFileList;
+
+
+	// By default use the folder of the first light frame
+	if (m_vBitmaps.size())
+	{
+		// Use the folder of the first light frame
+		_tsplitpath(m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+
+		strOutputFolder = szDrive;
+		strOutputFolder += szDir;
+	};
+
+	if (OutputSettings.m_bOtherFolder && OutputSettings.m_strFolder.GetLength())
+	{
+		strOutputFolder = OutputSettings.m_strFolder;
+	};
+
+	if (OutputSettings.m_bFileListFolder && strFileList.GetLength())
+	{
+		_tsplitpath(strFileList, szDrive, szDir, nullptr, nullptr);
+
+		strOutputFolder = szDrive;
+		strOutputFolder += szDir;
+	};
+
+	// Can we write to the output directory
+	{
+		CString			strBasePath;
+		TCHAR			szTempFileName[1 + _MAX_PATH];
+		FILE *			hFile;
+		bool			dirOk = true;
+
+
+		strBasePath = strOutputFolder;
+		// Add trailing backslash
+		if (strBasePath.Right(1) != _T("\\") && strBasePath.Right(1) != _T("/"))
+			strBasePath += _T("\\");
+
+		GetTempFileName(strBasePath, _T("DSS"), 0, szTempFileName);
+
+		hFile = _tfopen(szTempFileName, _T("wt"));
+		if (hFile)
+		{
+			int			nResult;
+
+			nResult = fprintf(hFile, "DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
+			if (nResult <= 0)
+				dirOk = false;
+			fclose(hFile);
+			DeleteFile(szTempFileName);
+		}
+		else
+			dirOk = false;
+
+		// Bitch if we can't write to the output directory
+		if (!dirOk)
+		{
+			CString			strText;
+
+			strText.Format(IDS_ERROR_CANT_WRITE_DIRECTORY, strBasePath);
+#if defined(_CONSOLE)
+			std::cerr << strText << std::endl;
+#else
+			AfxMessageBox(strText, MB_OK | MB_ICONSTOP);
+#endif
+			return  false;
+		}
+	}
 
 	if (bContinue)
 	{
@@ -2768,7 +2850,10 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 		strOutputFolder = szDrive;
 		strOutputFolder += szDir;
 	};
-
+	
+	//
+	// Code to check that the output directory can be written is in StackLightFrames() above
+	//
 	if (!strBaseName.GetLength())
 	{
 		CString			strFileList = szFileList;

@@ -1351,6 +1351,7 @@ BEGIN
                             "Vous devez cocher des images avant de procéder à l'enregistrement."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "La création des masters (dark, flat, offset) nécessite %ld Ko.\nIl ne reste que %ld Ko de libre sur le disque %s\nVoulez-vous continuer quand même ?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker ne peut pas écrire des fichiers dans le répertoire %s"
 END
 
 STRINGTABLE 

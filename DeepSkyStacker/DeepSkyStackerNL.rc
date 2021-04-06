@@ -1100,6 +1100,7 @@ BEGIN
                             "U moet licht platen aanvinken om te registreren."
     IDS_ERROR_NOTENOUGHFREESPACE 
                             "Het maken van de Hoofd (donker, plat, compensatie) heeft %ld Kb nodig.\nEr is %ld Kb beschikbaar op schijf %s\nWilt u toch doorgaan?"
+	IDS_ERROR_CANT_WRITE_DIRECTORY "DeepSkyStacker kan geen bestanden naar directory %s schrijven"
 END
 
 STRINGTABLE
