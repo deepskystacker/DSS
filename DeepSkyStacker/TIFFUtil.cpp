@@ -528,7 +528,7 @@ BOOL CTIFFWriter::Open()
 	ZFUNCTRACE_RUNTIME();
 	BOOL			bResult = FALSE;
 
-	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_UTF8), "w");
+	m_tiff = TIFFOpen(CT2CA(m_strFileName, CP_ACP), "w");
 	if (m_tiff)
 	{
 		photo = PHOTOMETRIC_RGB;
