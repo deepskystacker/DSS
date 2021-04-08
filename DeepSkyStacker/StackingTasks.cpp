@@ -104,13 +104,13 @@ bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 class CTaskBitmapCache
 {
 public :
-	DWORD						m_dwOffsetTaskID;
+	std::uint32_t				m_dwOffsetTaskID;
 	CSmartPtr<CMemoryBitmap>	m_pOffsetBitmap;
-	DWORD						m_dwDarkTaskID;
+	std::uint32_t				m_dwDarkTaskID;
 	CSmartPtr<CMemoryBitmap>	m_pDarkBitmap;
-	DWORD						m_dwDarkFlatTaskID;
+	std::uint32_t				m_dwDarkFlatTaskID;
 	CSmartPtr<CMemoryBitmap>	m_pDarkFlatBitmap;
-	DWORD						m_dwFlatTaskID;
+	std::uint32_t				m_dwFlatTaskID;
 	CSmartPtr<CMemoryBitmap>	m_pFlatBitmap;
 
 public :
@@ -1282,7 +1282,7 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGroupID)
+void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, std::uint32_t dwGroupID)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1634,18 +1634,18 @@ void CAllStackingTasks::UpdateTasksMethods()
 	CWorkspace					workspace;
 	MULTIBITMAPPROCESSMETHOD	LightMethod = MBP_AVERAGE;
 	double						fLightKappa = 2.0;
-	DWORD						lLightIteration = 5;
+	unsigned int				lLightIteration = 5;
 	MULTIBITMAPPROCESSMETHOD	DarkMethod	= MBP_MEDIAN;
 	double						fDarkKappa	= 2.0;
-	DWORD						lDarkIteration = 5;
+	unsigned int				lDarkIteration = 5;
 	MULTIBITMAPPROCESSMETHOD	FlatMethod	= MBP_MEDIAN;
 	double						fFlatKappa	= 2.0;
-	DWORD						lFlatIteration = 5;
+	unsigned int				lFlatIteration = 5;
 	MULTIBITMAPPROCESSMETHOD	OffsetMethod	= MBP_MEDIAN;
 	double						fOffsetKappa	= 2.0;
-	DWORD						lOffsetIteration = 5;
+	unsigned int				lOffsetIteration = 5;
 
-	DWORD						dwMethod;
+	unsigned int				dwMethod;
 
 	dwMethod = workspace.value("Stacking/Light_Method", (uint)MBP_AVERAGE).toUInt();
 	if (dwMethod)

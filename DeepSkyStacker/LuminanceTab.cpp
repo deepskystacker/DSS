@@ -103,7 +103,7 @@ BOOL CLuminanceTab::OnSetActive()
 void CLuminanceTab::UpdateTexts()
 {
 	CString			strText;
-	LONG			lPos1, lPos2;
+	int			lPos1, lPos2;
 
 	lPos1 = m_DarkAngle.GetPos();
 	lPos2 = m_DarkPower.GetPos();

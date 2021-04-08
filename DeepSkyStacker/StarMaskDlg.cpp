@@ -126,7 +126,7 @@ void CStarMaskDlg::UpdateStarShapePreview()
 void CStarMaskDlg::UpdateTexts()
 {
 	// Update all the texts
-	LONG				lPos;
+	int				lPos;
 	CString				strText;
 
 	lPos = m_StarThreshold.GetPos();
@@ -170,25 +170,25 @@ BOOL CStarMaskDlg::OnInitDialog()
 
 	QSettings	settings;
 
-	DWORD dwStarShape = settings.value("StarMask/StarShape", 0).toUInt();
+	const auto dwStarShape = settings.value("StarMask/StarShape", 0).toUInt();
 	m_StarShape.SetCurSel(dwStarShape);
 
 	bool bHotPixels = settings.value("StarMask/DetectHotPixels", false).toBool();
 	m_HotPixels.SetCheck(bHotPixels);
 
-	DWORD dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
+	const auto dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
 	m_StarThreshold.SetPos(dwThreshold);
 
-	DWORD dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
+	const auto dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
 	m_Percent.SetPos(dwPercent);
 
-	DWORD dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
+	const auto dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
 	m_Pixels.SetPos(dwPixel);
 
-	DWORD dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
+	const auto dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
 	m_MinSize.SetPos(dwMinSize);
 
-	DWORD dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
+	const auto dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
 	m_MaxSize.SetPos(dwMaxSize);
 
 	UpdateTexts();
@@ -206,7 +206,7 @@ bool CStarMaskDlg::AskOutputFile()
 	CString					strTitle;
 	QSettings				settings;
 
-	DWORD dwFileType = settings.value("StarMask/FileType", 0).toUInt();
+	auto dwFileType = settings.value("StarMask/FileType", 0).toUInt();
 
 	strTitle.LoadString(IDS_TITLE_MASK);
 

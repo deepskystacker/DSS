@@ -1,9 +1,9 @@
 #include <stdafx.h>
 #include "BackgroundLoading.h"
 
-const DWORD				WM_BL_LOAD		= WM_USER+1;
-const DWORD				WM_BL_ABORT		= WM_USER+2;
-const DWORD				WM_BL_STOP		= WM_USER+3;
+constexpr unsigned int WM_BL_LOAD	= WM_USER + 1;
+constexpr unsigned int WM_BL_ABORT	= WM_USER + 2;
+constexpr unsigned int WM_BL_STOP	= WM_USER + 3;
 
 /* ------------------------------------------------------------------- */
 
@@ -36,13 +36,12 @@ void	CBackgroundLoading::ClearList()
 
 DWORD	WINAPI	BackgroundLoadingThreadProc(LPVOID lpParameter)
 {
-	DWORD						dwResult = 0;
 	CBackgroundLoading *		pBackgroundLoading = reinterpret_cast<CBackgroundLoading *>(lpParameter);
 
 	if (pBackgroundLoading)
 		pBackgroundLoading->BackgroundLoad();
 
-	return dwResult;
+	return 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -121,7 +120,7 @@ void CBackgroundLoading::LoadImageInBackground(LPCTSTR szImage)
 		m_hEvent	= CreateEvent(nullptr, true, false, nullptr);
 		if (m_hEvent)
 		{
-			m_hThread = CreateThread(nullptr, 0, BackgroundLoadingThreadProc, (LPVOID)this, CREATE_SUSPENDED, &m_dwThreadID);
+			m_hThread = CreateThread(nullptr, 0, BackgroundLoadingThreadProc, this, CREATE_SUSPENDED, &m_dwThreadID);
 			if (m_hThread)
 			{
 				SetThreadPriority(m_hThread, THREAD_PRIORITY_BELOW_NORMAL);

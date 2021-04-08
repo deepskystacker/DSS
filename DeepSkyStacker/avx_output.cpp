@@ -63,9 +63,9 @@ int AvxOutputComposition::compose(const int line, std::vector<void*> const& line
 template <AvxOutputComposition::MethodSelection Method>
 int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (doProcessMedianKappaSigma<WORD, Method>(line, lineAddresses) == 0)
+	if (doProcessMedianKappaSigma<std::uint16_t, Method>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessMedianKappaSigma<unsigned int, Method>(line, lineAddresses) == 0)
+	if (doProcessMedianKappaSigma<std::uint32_t, Method>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessMedianKappaSigma<float, Method>(line, lineAddresses) == 0)
 		return 0;
@@ -146,7 +146,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 		const T currentMedian = static_cast<T>(currMedian);
 		T* const pData = medianData.data() + pixelIndex * nrLightframes;
 
-		if constexpr (std::is_same<T, WORD>::value)
+		if constexpr (std::is_same<T, std::uint16_t>::value)
 		{
 			for (int n = 0; n < N / 8; ++n)
 			{
@@ -219,7 +219,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 	const auto initialUpperBound = []() -> float
 	{
 		if constexpr (std::is_integral<T>::value)
-			return static_cast<float>(std::numeric_limits<WORD>::max()); // We use 65535 for int16 and int32.
+			return static_cast<float>(std::numeric_limits<std::uint16_t>::max()); // We use 65535 for int16 and int32.
 		else if constexpr (std::is_same<T, float>::value)
 			return std::numeric_limits<float>::max();
 		else
@@ -415,9 +415,9 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (doProcessAutoAdaptiveWeightedAverage<WORD>(line, lineAddresses) == 0)
+	if (doProcessAutoAdaptiveWeightedAverage<std::uint16_t>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessAutoAdaptiveWeightedAverage<unsigned int>(line, lineAddresses) == 0)
+	if (doProcessAutoAdaptiveWeightedAverage<std::uint32_t>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessAutoAdaptiveWeightedAverage<float>(line, lineAddresses) == 0)
 		return 0;

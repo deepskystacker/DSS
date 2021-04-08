@@ -2,17 +2,17 @@
 #define _RAWUTILS_H__
 
 #if DSSFILEDECODING==1
-bool	IsSuperPixels();
-bool	IsRawBayer();
-bool	IsRawAHD();
-bool	IsRawBilinear();
+bool IsSuperPixels();
+bool IsRawBayer();
+bool IsRawAHD();
+bool IsRawBilinear();
 
-void	PushRAWSettings(bool bSuperPixel, bool bRawBayer);
-void	PopRAWSettings();
+void PushRAWSettings(bool bSuperPixel, bool bRawBayer);
+void PopRAWSettings();
 
-bool	IsRAWPicture(LPCTSTR szFileName, CString & strModel);
-bool	IsRAWPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-bool	LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+bool IsRAWPicture(LPCTSTR szFileName, CString& strModel);
+bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
+bool LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress);
 
 #else
 inline bool	IsSuperPixels()		{ return false; };

@@ -61,9 +61,7 @@ static void	GetFilesInFolder(LPCTSTR szFolder, std::vector<CString>	& vFiles)
 			strFile += "\\";
 			strFile += FindData.cFileName;
 
-			DWORD			dwAttributes;
-
-			dwAttributes = GetFileAttributes(strFile);
+			const auto dwAttributes = GetFileAttributes(strFile);
 			if (!(dwAttributes & FILE_ATTRIBUTE_DIRECTORY))
 				vFiles.push_back(strFile);
 		}
@@ -93,15 +91,15 @@ BOOL CDropFilesDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 
 	CString					strText;
-	LONG					lNrFiles = 0;
 	std::vector<CString>	vMasters;
+	unsigned int lNrFiles = 0;
 
 	m_Text.GetWindowText(strText);
 
 	if (m_hDropInfo)
 	{
 		lNrFiles = DragQueryFile(m_hDropInfo, 0xFFFFFFFF, nullptr, 0);
-		for (LONG i = 0;i<lNrFiles;i++)
+		for (unsigned int i = 0; i < lNrFiles; i++)
 		{
 			TCHAR			szFile[1+_MAX_PATH];
 			CString			strFile;
@@ -109,16 +107,14 @@ BOOL CDropFilesDlg::OnInitDialog()
 			DragQueryFile(m_hDropInfo, i, szFile, sizeof(szFile)/sizeof(TCHAR));
 
 			// If it's a folder, get all the files in the folder
-			DWORD			dwAttributes;
-
-			dwAttributes = GetFileAttributes(szFile);
+			const auto dwAttributes = GetFileAttributes(szFile);
 
 			if (dwAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			{
 				std::vector<CString>	vFiles;
 
 				GetFilesInFolder(szFile, vFiles);
-				for (LONG j = 0;j<vFiles.size();j++)
+				for (size_t j = 0; j < vFiles.size(); j++)
 				{
 					if (IsMasterFile(vFiles[j]))
 						vMasters.push_back(vFiles[j]);
@@ -139,7 +135,7 @@ BOOL CDropFilesDlg::OnInitDialog()
 		DragFinish(m_hDropInfo);
 		if (!m_vFiles.size())
 			m_vFiles = std::move(vMasters);
-		lNrFiles = (LONG)m_vFiles.size();
+		lNrFiles = static_cast<unsigned int>(m_vFiles.size());
 	};
 
 	strText.Format(strText, lNrFiles);

@@ -152,7 +152,6 @@ protected :
 	void	Reset()
 	{
 		CWorkspace			workspace;
-		DWORD				dwThreshold = 10;
 
 		m_vStars.clear();
 
@@ -377,39 +376,38 @@ private :
 
 class CScoredLightFrame
 {
-public :
-	DWORD				m_dwIndice;
-	double				m_fScore;
+public:
+	std::uint32_t	m_dwIndice;
+	double			m_fScore;
 
-private :
-	void	CopyFrom(const CScoredLightFrame & slf)
+private:
+	void CopyFrom(const CScoredLightFrame& slf)
 	{
 		m_dwIndice = slf.m_dwIndice;
 		m_fScore   = slf.m_fScore;
-	};
+	}
 
-public :
-	CScoredLightFrame(DWORD dwIndice, double fScore)
-	{
-		m_dwIndice = dwIndice;
-		m_fScore   = fScore;
-	};
+public:
+	CScoredLightFrame(std::uint32_t dwIndice, double fScore) :
+		m_dwIndice{ dwIndice },
+		m_fScore{ fScore }
+	{}
 
-	CScoredLightFrame(const CScoredLightFrame & slf)
+	CScoredLightFrame(const CScoredLightFrame& slf)
 	{
 		CopyFrom(slf);
-	};
+	}
 
-	const CScoredLightFrame & operator = (const CScoredLightFrame & slf)
+	const CScoredLightFrame& operator=(const CScoredLightFrame& slf)
 	{
 		CopyFrom(slf);
 		return (*this);
-	};
+	}
 
-	bool operator < (const CScoredLightFrame & slf) const
+	bool operator<(const CScoredLightFrame& slf) const
 	{
 		return (m_fScore > slf.m_fScore);
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */

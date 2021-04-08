@@ -755,7 +755,7 @@ public:
 	int m_lNrChannels;
 	int m_lBitsPerPixel;
 	bool m_bFloat;
-	DWORD m_dwWidth, m_dwHeight;
+	std::uint32_t m_dwWidth, m_dwHeight;
 
 private:
 	void	CopyFrom(const CBitmapCharacteristics& bc)

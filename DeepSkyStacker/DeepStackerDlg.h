@@ -54,8 +54,8 @@ public :
 
 	bool	Load(FILE * hFile)
 	{
-		LONG		lNameSize;
-		TCHAR		szName[2000];
+		int		lNameSize;
+		TCHAR	szName[2000] = { _T('\0') };
 
 		fread(&lNameSize, sizeof(lNameSize), 1, hFile);
 		fread(szName, sizeof(TCHAR), lNameSize, hFile);
@@ -65,7 +65,7 @@ public :
 
 	bool	Save(FILE * hFile)
 	{
-		LONG		lNameSize = m_strName.GetLength()+1;
+		int lNameSize = m_strName.GetLength() + 1;
 		fwrite(&lNameSize, sizeof(lNameSize), 1, hFile);
 		fwrite((LPCTSTR)m_strName, sizeof(TCHAR), lNameSize, hFile);
 
@@ -96,12 +96,12 @@ public :
 	bool	Load(LPCTSTR szFile = nullptr);
 	bool	Save(LPCTSTR szFile = nullptr);
 
-	LONG	Count()
+	int Count()
 	{
-		return (LONG)m_lSettings.size();
+		return static_cast<int>(m_lSettings.size());
 	};
 
-	bool	GetItem(LONG lIndice, CDSSSetting & cds)
+	bool	GetItem(int lIndice, CDSSSetting & cds)
 	{
 		bool			bResult = false;
 
@@ -129,7 +129,7 @@ public :
 		return true;
 	};
 
-	bool	Remove(LONG lIndice)
+	bool	Remove(int lIndice)
 	{
 		bool			bResult = false;
 
@@ -181,7 +181,7 @@ private :
 	CDSSSettings			m_Settings;
 	QWinWidget *			widget;
 	ExplorerBar *			explorerBar;
-	DWORD					m_dwCurrentTab;
+	std::uint32_t			m_dwCurrentTab;
 	CString					m_strStartFileList;
 	CString					m_strBaseTitle;
     ITaskbarList3*          m_taskbarList;
@@ -199,8 +199,8 @@ public:
 			delete widget;
 	};
 
-	void	ChangeTab(DWORD dwTabID);
-	DWORD	GetCurrentTab()
+	void	ChangeTab(std::uint32_t dwTabID);
+	std::uint32_t GetCurrentTab()
 	{
 		return m_dwCurrentTab;
 	};

@@ -29,24 +29,24 @@ public:
 	template <class T>
 	inline const T* redCfaLine(const size_t rowIndex) const
 	{
-		if constexpr (std::is_same<T, WORD>::value)
-			return reinterpret_cast<const WORD*>(&this->redPixels[rowIndex * vectorsPerLine]);
+		if constexpr (std::is_same<T, std::uint16_t>::value)
+			return reinterpret_cast<const std::uint16_t*>(&this->redPixels[rowIndex * vectorsPerLine]);
 		else
 			return nullptr;
 	}
 	template <class T>
 	inline const T* greenCfaLine(const size_t rowIndex) const
 	{
-		if constexpr (std::is_same<T, WORD>::value)
-			return reinterpret_cast<const WORD*>(&this->greenPixels[rowIndex * vectorsPerLine]);
+		if constexpr (std::is_same<T, std::uint16_t>::value)
+			return reinterpret_cast<const std::uint16_t*>(&this->greenPixels[rowIndex * vectorsPerLine]);
 		else
 			return nullptr;
 	}
 	template <class T>
 	inline const T* blueCfaLine(const size_t rowIndex) const
 	{
-		if constexpr (std::is_same<T, WORD>::value)
-			return reinterpret_cast<const WORD*>(&this->bluePixels[rowIndex * vectorsPerLine]);
+		if constexpr (std::is_same<T, std::uint16_t>::value)
+			return reinterpret_cast<const std::uint16_t*>(&this->bluePixels[rowIndex * vectorsPerLine]);
 		else
 			return nullptr;
 	}
@@ -56,7 +56,7 @@ public:
 	inline const VectorElementType* blueCfaBlock() const { return &*this->bluePixels.begin(); }
 private:
 	int interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd);
-	WORD* redCfaLine(const size_t rowIndex) { return const_cast<WORD*>(static_cast<const AvxCfaProcessing*>(this)->redCfaLine<WORD>(rowIndex)); }
-	WORD* greenCfaLine(const size_t rowIndex) { return const_cast<WORD*>(static_cast<const AvxCfaProcessing*>(this)->greenCfaLine<WORD>(rowIndex)); }
-	WORD* blueCfaLine(const size_t rowIndex) { return const_cast<WORD*>(static_cast<const AvxCfaProcessing*>(this)->blueCfaLine<WORD>(rowIndex)); }
+	std::uint16_t* redCfaLine(const size_t rowIndex) { return const_cast<std::uint16_t*>(static_cast<const AvxCfaProcessing*>(this)->redCfaLine<std::uint16_t>(rowIndex)); }
+	std::uint16_t* greenCfaLine(const size_t rowIndex) { return const_cast<std::uint16_t*>(static_cast<const AvxCfaProcessing*>(this)->greenCfaLine<std::uint16_t>(rowIndex)); }
+	std::uint16_t* blueCfaLine(const size_t rowIndex) { return const_cast<std::uint16_t*>(static_cast<const AvxCfaProcessing*>(this)->blueCfaLine<std::uint16_t>(rowIndex)); }
 };

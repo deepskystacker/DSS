@@ -43,7 +43,7 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 		greenPixels.resize(nrVectors);
 		bluePixels.resize(nrVectors);
 	}
-	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
+	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 	{
 		avxCfa.init(lineStart, lineEnd);
 	}
@@ -57,8 +57,8 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 		return 1;
 
 	int rval = 1;
-	if (doStack<WORD>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
-		|| doStack<unsigned int>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
+	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
+		|| doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
 		|| doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
 	{
 		rval = 0;
@@ -404,7 +404,7 @@ int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class A
 		loopFunc(&avxInputSupport.bluePixels<T>().at(startNdx), w, blueParams, bluePixels);
 		return 0;
 	}
-	if constexpr (std::is_same<T, WORD>::value)
+	if constexpr (std::is_same<T, std::uint16_t>::value)
 	{
 		if (avxInputSupport.isMonochromeCfaBitmapOfType<T>())
 		{
@@ -706,7 +706,7 @@ int AvxStacking::pixelPartitioning()
 	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, const __m256i outIndex,
 		__m256i mask1, const __m256i mask2, const bool twoNdxEqual, const bool allNdxValid1, const bool allNdxValid2) -> void
 	{
-		if constexpr (std::is_same<T, WORD>::value)
+		if constexpr (std::is_same<T, std::uint16_t>::value)
 		{
 			if (allNdxValid1 && allNdxValid2)
 			{

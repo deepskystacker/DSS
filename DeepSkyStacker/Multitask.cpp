@@ -1,21 +1,18 @@
 #include <stdafx.h>
-
 #include "Multitask.h"
-
 #include <QSettings>
-/* ------------------------------------------------------------------- */
+
 
 int CMultitask::GetNrProcessors(bool bReal)
 {
-	int lResult = 1;
 	QSettings settings;
 	SYSTEM_INFO SysInfo;
 	
-	unsigned int dwMaxProcessors = settings.value("MaxProcessors", (uint)0).toUInt();
+	const auto dwMaxProcessors = settings.value("MaxProcessors", (uint)0).toUInt();
 
 	GetSystemInfo(&SysInfo);
-	lResult = SysInfo.dwNumberOfProcessors;
-	if (!bReal && dwMaxProcessors)
+	int lResult = SysInfo.dwNumberOfProcessors;
+	if (!bReal && dwMaxProcessors != 0)
 		lResult = std::min(static_cast<int>(dwMaxProcessors), lResult);
 
 	return lResult;
@@ -23,33 +20,27 @@ int CMultitask::GetNrProcessors(bool bReal)
 
 /* ------------------------------------------------------------------- */
 
-void	CMultitask::SetUseAllProcessors(bool bUseAll)
+void CMultitask::SetUseAllProcessors(bool bUseAll)
 {
-	QSettings			settings;
-
+	QSettings settings;
 	if (bUseAll)
-		settings.setValue("MaxProcessors", (uint)0);
+		settings.setValue("MaxProcessors", uint{ 0 });
 	else
-		settings.setValue("MaxProcessors", (uint)1);
+		settings.setValue("MaxProcessors", uint{ 1 });
 };
 
 /* ------------------------------------------------------------------- */
 
-bool	CMultitask::GetReducedThreadsPriority()
+bool CMultitask::GetReducedThreadsPriority()
 {
-	QSettings			settings;
-
-	return settings.value("ReducedThreadPriority", true).toBool();
-
+	return QSettings{}.value("ReducedThreadPriority", true).toBool();
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CMultitask::SetReducedThreadsPriority(bool bReduced)
+void CMultitask::SetReducedThreadsPriority(bool bReduced)
 {
-	QSettings			settings;
-
-	settings.setValue("ReducedThreadPriority", bReduced);
+	QSettings{}.setValue("ReducedThreadPriority", bReduced);
 };
 
 bool CMultitask::GetUseSimd()
@@ -64,78 +55,61 @@ void CMultitask::SetUseSimd(const bool bUseSimd)
 
 /* ------------------------------------------------------------------- */
 
-DWORD	WINAPI	StartThreadProc(LPVOID lpParameter)
+DWORD WINAPI StartThreadProc(LPVOID lpParameter)
 {
-	DWORD				dwResult = 0;
-	CMultitask *		pMultitask = reinterpret_cast<CMultitask *>(lpParameter);
-
-	if (pMultitask)
+	if (CMultitask* pMultitask = reinterpret_cast<CMultitask*>(lpParameter))
 		pMultitask->DoTask(pMultitask->GetThreadEvent(GetCurrentThreadId()));
-
-	return dwResult;
+	return 0;
 };
 
 /* ------------------------------------------------------------------- */
 
-HANDLE	CMultitask::GetAvailableThread()
+HANDLE CMultitask::GetAvailableThread()
 {
-	HANDLE				hResult = nullptr;
-	DWORD				dwResult;
-
-	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), false, INFINITE);
-	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+(DWORD)m_vEvents.size()))
+	const auto dwResult = WaitForMultipleObjects(static_cast<std::uint32_t>(m_vEvents.size()), m_vEvents.data(), false, INFINITE);
+	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0 + static_cast<decltype(dwResult)>(m_vEvents.size())))
 	{
 		// An event was triggered
-		int			lIndice = dwResult-WAIT_OBJECT_0;
+		const ptrdiff_t lIndice = dwResult - WAIT_OBJECT_0;
 
 		ResetEvent(m_vEvents[lIndice]);
-		hResult = m_vThreads[lIndice];
+		return m_vThreads[lIndice];
 	};
 
-	return hResult;
+	return nullptr;
 };
 /* ------------------------------------------------------------------- */
 
-DWORD	CMultitask::GetAvailableThreadId()
+DWORD CMultitask::GetAvailableThreadId()
 {
-	DWORD				hResult = 0;
-	DWORD				dwResult;
-
-	dwResult = WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), false, INFINITE);
+	const auto dwResult = WaitForMultipleObjects(static_cast<std::uint32_t>(m_vEvents.size()), m_vEvents.data(), false, INFINITE);
 	if ((dwResult >= WAIT_OBJECT_0) && (dwResult < WAIT_OBJECT_0+m_vEvents.size()))
 	{
 		// An event was triggered
-		int			lIndice = dwResult-WAIT_OBJECT_0;
+		const ptrdiff_t lIndice = dwResult - WAIT_OBJECT_0;
 
 		ResetEvent(m_vEvents[lIndice]);
-		hResult = m_vThreadIds[lIndice];
+		return m_vThreadIds[lIndice];
 	};
 
-	return hResult;
+	return 0;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CMultitask::StartThreads(int lNrThreads)
+void CMultitask::StartThreads(int lNrThreads)
 {
-	int				i;
-
-	if (!lNrThreads)
+	if (lNrThreads == 0)
 		lNrThreads = GetNrProcessors();
 
-	for (i = 0;i<lNrThreads;i++)
+	for (int i = 0; i < lNrThreads; i++)
 	{
 		// Create a thread for each task
-		DWORD			dwThreadID;
-		HANDLE			hEvent;
-		HANDLE			hThread;
-
-		hEvent	= CreateEvent(nullptr, true, false, nullptr);
-		if (hEvent)
+		if (void* hEvent = CreateEvent(nullptr, true, false, nullptr))
 		{
 			m_vEvents.push_back(hEvent);
-			hThread = CreateThread(nullptr, 0, StartThreadProc, (LPVOID)this, CREATE_SUSPENDED, &dwThreadID);
-			if (hThread)
+			DWORD dwThreadID;
+			if (void* hThread = CreateThread(nullptr, 0, StartThreadProc, (LPVOID)this, CREATE_SUSPENDED, &dwThreadID))
 			{
 				m_vThreads.push_back(hThread);
 				m_vThreadIds.push_back(dwThreadID);
@@ -145,30 +119,31 @@ void	CMultitask::StartThreads(int lNrThreads)
 
 	if (GetReducedThreadsPriority())
 	{
-		for (i = 0;i<lNrThreads;i++)
+		for (int i = 0; i < lNrThreads; i++)
 			SetThreadPriority(m_vThreads[i], THREAD_PRIORITY_BELOW_NORMAL);
 	};
 
-	for (i = 0;i<lNrThreads;i++)
+	for (int i = 0; i < lNrThreads; i++)
 		ResumeThread(m_vThreads[i]);
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CMultitask::CloseAllThreads()
+void CMultitask::CloseAllThreads()
 {
-	if (m_vThreads.size())
+	if (!m_vThreads.empty())
 	{
-		WaitForMultipleObjects((DWORD)m_vEvents.size(), &(m_vEvents[0]), true, INFINITE);
+		WaitForMultipleObjects(static_cast<std::uint32_t>(m_vEvents.size()), m_vEvents.data(), true, INFINITE);
 
-		for (int i = 0;i<m_vThreads.size();i++)
+		//for (int i = 0;i<m_vThreads.size();i++)
+		for (const auto threadId : m_vThreadIds)
 		{
-			PostThreadMessage(m_vThreadIds[i], WM_MT_STOP, 0, 0);
+			PostThreadMessage(threadId, WM_MT_STOP, 0, 0);
 		};
 
-		WaitForMultipleObjects((DWORD)m_vThreads.size(), &(m_vThreads[0]), true, INFINITE);
+		WaitForMultipleObjects(static_cast<std::uint32_t>(m_vThreads.size()), m_vThreads.data(), true, INFINITE);
 
-		for (int i = 0;i<m_vThreads.size();i++)
+		for (size_t i = 0; i < m_vThreads.size(); i++)
 		{
 			CloseHandle(m_vThreads[i]);
 			CloseHandle(m_vEvents[i]);

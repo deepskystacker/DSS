@@ -165,7 +165,7 @@ public :
 			while (i < lHeight)
 			{
 				const int lAdd = std::min(lStep, lRemaining);
-				const DWORD dwThreadId = GetAvailableThreadId();
+				const auto dwThreadId = GetAvailableThreadId();
 				PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
 				i += lAdd;

@@ -1100,7 +1100,7 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 	int					lNrCovered = 0;
 	double					fSumHot    = 0,
 							fSumMedian = 0;
-	DWORD					dwCovered1 = 0,
+	std::uint32_t			dwCovered1 = 0,
 							dwCovered2 = 0;
 
 	std::sort(vHots.begin(), vHots.end());
@@ -1795,9 +1795,8 @@ public :
 		while (i<lHeight)
 		{
 			int			lAdd = std::min(lStep, lRemaining);
-			DWORD			dwThreadId;
 
-			dwThreadId = GetAvailableThreadId();
+			const auto dwThreadId = GetAvailableThreadId();
 			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
 			i			+=lAdd;

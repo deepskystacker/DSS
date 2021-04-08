@@ -265,21 +265,21 @@ COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 
 #pragma pack(push, HDSTACKEDBITMAP, 2)
 
-const DWORD			HDSTACKEDBITMAP_MAGIC = 0x878A56E6L;
+constexpr std::uint32_t HDSTACKEDBITMAP_MAGIC = 0x878A56E6U;
 
 typedef struct tagHDSTACKEDBITMAPHEADER
 {
-	DWORD			dwMagic;		// Magic number (always HDSTACKEDBITMAP_MAGIC)
-	DWORD			dwHeaderSize;	// Always sizeof(HDSTACKEDBITMAPHEADER);
+	std::uint32_t dwMagic;		// Magic number (always HDSTACKEDBITMAP_MAGIC)
+	std::uint32_t dwHeaderSize;	// Always sizeof(HDSTACKEDBITMAPHEADER);
 	int			lWidth;			// Width
 	int			lHeight;		// Height
 	int			lNrBitmaps;		// Number of bitmaps
-	DWORD			dwFlags;		// Flags
+	std::uint32_t dwFlags;		// Flags
 	int			lTotalTime;		// Total Time
-	WORD			lISOSpeed;		// ISO Speed of each frame
+	std::uint16_t lISOSpeed;		// ISO Speed of each frame
 	int			lGain;		// Camera gain of each frame
 	int			Reserved[22];	// Reserved (set to 0)
-}HDSTACKEDBITMAPHEADER;
+} HDSTACKEDBITMAPHEADER;
 
 #pragma pack(pop, HDSTACKEDBITMAP)
 
@@ -388,9 +388,9 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 		if (pRect)
 		{
 			pRect->left		= std::max(0L, pRect->left);
-			pRect->right = std::min(LONG{ m_lWidth }, pRect->right);
+			pRect->right = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
 			pRect->top		= std::max(0L, pRect->top);
-			pRect->bottom = std::min(LONG{ m_lHeight }, pRect->bottom);
+			pRect->bottom = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
 
 			lWidth			= (pRect->right-pRect->left);
 			lHeight			= (pRect->bottom-pRect->top);
@@ -528,8 +528,8 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 		{
 			lXMin	= std::max(0L, pRect->left);
 			lYMin	= std::max(0L, pRect->top);
-			lXMax = std::min(LONG{ m_lWidth }, pRect->right);
-			lYMax = std::min(LONG{ m_lHeight }, pRect->bottom);
+			lXMax = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
+			lYMax = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
 		};
 
 		/*PIXELSET		sPixels;
@@ -915,9 +915,9 @@ bool CTIFFWriterStacker::OnOpen()
 		else
 		{
 			m_lprc->left	= std::max(0L, m_lprc->left);
-			m_lprc->right = std::min(LONG{ lWidth }, m_lprc->right);
+			m_lprc->right = std::min(decltype(tagRECT::right){ lWidth }, m_lprc->right);
 			m_lprc->top		= std::max(0L, m_lprc->top);
-			m_lprc->bottom = std::min(LONG{ lHeight }, m_lprc->bottom);
+			m_lprc->bottom = std::min(decltype(tagRECT::bottom){ lHeight }, m_lprc->bottom);
 
 			lWidth			= (m_lprc->right-m_lprc->left);
 			lHeight			= (m_lprc->bottom-m_lprc->top);
@@ -1111,9 +1111,9 @@ bool CFITSWriterStacker::OnOpen()
 		else
 		{
 			m_lprc->left	= std::max(0L, m_lprc->left);
-			m_lprc->right = std::min(LONG{ lWidth }, m_lprc->right);
+			m_lprc->right = std::min(decltype(tagRECT::right){ lWidth }, m_lprc->right);
 			m_lprc->top		= std::max(0L, m_lprc->top);
-			m_lprc->bottom = std::min(LONG{ lHeight }, m_lprc->bottom);
+			m_lprc->bottom = std::min(decltype(tagRECT::bottom){ lHeight }, m_lprc->bottom);
 
 			lWidth			= (m_lprc->right-m_lprc->left);
 			lHeight			= (m_lprc->bottom-m_lprc->top);

@@ -128,9 +128,8 @@ BOOL CSaturationTab::OnSetActive()
 void CSaturationTab::UpdateTexts()
 {
 	CString				strText;
-	LONG				lPos;
 
-	lPos = m_Saturation.GetPos();
+	auto lPos = m_Saturation.GetPos();
 	strText.Format(_T("%ld %%"), lPos-50);
 
 	m_ST_Saturation.SetText(strText);

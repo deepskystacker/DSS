@@ -123,7 +123,7 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 		fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
 		for (int j = 0;j<m_Jobs.m_vJobs.size();j++)
 		{
-			DWORD						dwGroupID = 0;
+			std::uint32_t dwGroupID = 0;
 
 			if ((m_Jobs.m_vJobs[j].m_ID != MAINJOBID) ||
 				(m_Jobs.m_vJobs[j].m_RefID != GUID_NULL))
@@ -270,7 +270,7 @@ static bool ParseLine(LPCTSTR szLine, int & lChecked, CString & strType, CString
 
 /* ------------------------------------------------------------------- */
 
-static bool	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
+static bool	IsChangeGroupLine(LPCTSTR szLine, std::uint32_t& dwGroupID)
 {
 	bool				bResult = false;
 	CString				strLine = szLine;
@@ -298,7 +298,7 @@ static bool	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
 void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 {
 	FILE *				hFile;
-	DWORD				dwGroupID = 0;
+	std::uint32_t		dwGroupID = 0;
 	GUID				dwJobID = MAINJOBID;
 
 	SetCursor(::LoadCursor(nullptr, IDC_WAIT));
@@ -429,7 +429,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 											lb.m_bRegistered = true;
 											lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
 											lb.m_fFWHM			 = bmpInfo.m_fFWHM;
-											lb.m_lNrStars		 = (DWORD)bmpInfo.m_vStars.size();
+											lb.m_lNrStars		 = static_cast<decltype(CListBitmap::m_lNrStars)>(bmpInfo.m_vStars.size());
 											lb.m_bComet			 = bmpInfo.m_bComet;
 											lb.m_SkyBackground	 = bmpInfo.m_SkyBackground;
 										}

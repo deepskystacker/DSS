@@ -70,7 +70,7 @@ class CListBitmap : public CFrameInfo
 {
 public :
 	bool					m_bRemoved;
-	DWORD					m_dwGroupID;
+	std::uint32_t			m_dwGroupID;
 	GUID					m_JobID;
 	bool					m_bUseAsStarting;
 	CString					m_strType;
@@ -368,7 +368,7 @@ public :
 		return m_Jobs;
 	};
 
-	virtual bool	AddFile(LPCTSTR szFile, DWORD dwGroupID = 0, GUID dwJobID = GUID_NULL, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
+	virtual bool AddFile(LPCTSTR szFile, std::uint32_t dwGroupID = 0, GUID dwJobID = GUID_NULL, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
 	{
 		return false;
 	};

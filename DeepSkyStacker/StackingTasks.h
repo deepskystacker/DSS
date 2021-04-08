@@ -132,12 +132,12 @@ public:
 
 class CTaskInfo
 {
-public :
-	DWORD						m_dwTaskID;
-	DWORD						m_dwGroupID;
+public:
+	std::uint32_t				m_dwTaskID;
+	std::uint32_t				m_dwGroupID;
 	PICTURETYPE					m_TaskType;
-	int						m_lISOSpeed;
-	int						m_lGain;
+	int							m_lISOSpeed;
+	int							m_lGain;
 	double						m_fExposure;
 	double						m_fAperture;
 	bool						m_bUnmodified;
@@ -146,10 +146,10 @@ public :
 	FRAMEINFOVECTOR				m_vBitmaps;
 	MULTIBITMAPPROCESSMETHOD	m_Method;
 	double						m_fKappa;
-	int						m_lNrIterations;
+	int							m_lNrIterations;
 	CSmartPtr<CMultiBitmap>		m_pMaster;
 
-private :
+private:
 	void	CopyFrom(const CTaskInfo & ti)
 	{
 		m_dwTaskID		= ti.m_dwTaskID;
@@ -169,7 +169,7 @@ private :
 		m_pMaster		= ti.m_pMaster;
 	};
 
-public :
+public:
 	CTaskInfo()
 	{
 		m_dwTaskID  = 0;
@@ -186,20 +186,18 @@ public :
         m_TaskType = PICTURETYPE(0);
 	};
 
-	CTaskInfo(const CTaskInfo & ti)
+	CTaskInfo(const CTaskInfo& ti)
 	{
 		CopyFrom(ti);
 	};
 
-	const CTaskInfo & operator = (const CTaskInfo & ti)
+	const CTaskInfo& operator=(const CTaskInfo & ti)
 	{
 		CopyFrom(ti);
 		return (*this);
 	};
 
-	virtual ~CTaskInfo()
-	{
-	};
+	virtual ~CTaskInfo() = default;
 
 	void	SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 	{
@@ -208,20 +206,20 @@ public :
 		m_lNrIterations = lNrIterations;
 	};
 
-	void	CreateEmptyMaster(CMemoryBitmap * pBitmap)
+	void	CreateEmptyMaster(CMemoryBitmap* pBitmap)
 	{
 		m_pMaster.Attach(pBitmap->CreateEmptyMultiBitmap());
 		m_pMaster->SetNrBitmaps((int)m_vBitmaps.size());
 		m_pMaster->SetProcessingMethod(m_Method, m_fKappa, m_lNrIterations);
 	};
 
-	void	AddToMaster(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+	void	AddToMaster(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 	{
 		if (m_pMaster)
 			m_pMaster->AddBitmap(pBitmap, pProgress);
 	};
 
-	bool	GetMaster(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+	bool	GetMaster(CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 	{
 		bool			bResult = false;
 
@@ -329,11 +327,11 @@ private :
 	bool						m_bFlatUsed;
 	bool						m_bUsingBayer;
 	bool						m_bUsingColorImages;
-	int						m_lNrLightFrames;
-	int						m_lNrBiasFrames;
-	int						m_lNrDarkFrames;
-	int						m_lNrDarkFlatFrames;
-	int						m_lNrFlatFrames;
+	int							m_lNrLightFrames;
+	int							m_lNrBiasFrames;
+	int							m_lNrDarkFrames;
+	int							m_lNrDarkFlatFrames;
+	int							m_lNrFlatFrames;
 	double						m_fMaxExposureTime;
 
 public :
@@ -405,9 +403,7 @@ public :
 		return (*this);
 	};
 
-	~CAllStackingTasks()
-	{
-	};
+	~CAllStackingTasks() = default;
 
 	void	Clear()
 	{
@@ -498,7 +494,7 @@ public :
 		return m_fMaxExposureTime;
 	};
 
-	void	AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGroupID = 0);
+	void	AddFileToTask(const CFrameInfo & FrameInfo, std::uint32_t dwGroupID = 0);
 	void	SetCustomRectangle(const CRect & rcCustom)
 	{
 		if (rcCustom.IsRectEmpty())

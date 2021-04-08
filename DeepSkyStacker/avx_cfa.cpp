@@ -16,9 +16,9 @@ AvxCfaProcessing::AvxCfaProcessing(const size_t lineStart, const size_t lineEnd,
 void AvxCfaProcessing::init(const size_t lineStart, const size_t lineEnd) // You should be sure that lineEnd >= lineStart!
 {
 	const size_t height = lineEnd - lineStart;
-	vectorsPerLine = AvxSupport::numberOfAvxVectors<WORD, VectorElementType>(inputBitmap.Width());
+	vectorsPerLine = AvxSupport::numberOfAvxVectors<std::uint16_t, VectorElementType>(inputBitmap.Width());
 	const size_t nrVectors = vectorsPerLine * height;
-	if (nrVectors != 0 && AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
+	if (nrVectors != 0 && AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 	{
 		redPixels.resize(nrVectors);
 		greenPixels.resize(nrVectors);
@@ -32,7 +32,7 @@ int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, 
 		return 1;
 	if (pixelSizeMultiplier != 1)
 		return 1;
-	if (!AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
+	if (!AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 		return 1;
 
 	return interpolateGrayCFA2Color(lineStart, lineEnd);
@@ -42,7 +42,7 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 {
 	typedef std::tuple<__m256i, __m256i, __m256i> ColorVector16; // <R, G, B>: get<0>() returns Red, ...
 
-	if (auto* const p{ dynamic_cast<CGrayBitmapT<WORD>*>(&inputBitmap) })
+	if (auto* const p{ dynamic_cast<CGrayBitmapT<std::uint16_t>*>(&inputBitmap) })
 	{
 		if (!p->IsCFA())
 			return 1;
@@ -79,7 +79,7 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 		const __m256i right7 = _mm256_slli_si256(b, 14);
 		return _mm256_or_si256(left1, right7);
 	};
-	const auto load16Pixels = [](const WORD* const p) -> __m256i
+	const auto load16Pixels = [](const std::uint16_t* const p) -> __m256i
 	{
 		return _mm256_loadu_si256(reinterpret_cast<const __m256i*>(p));
 	};
@@ -142,7 +142,7 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 		const __m256i blue = _mm256_blend_epi16(thisLineCurrent, bInterpolated, 0x55);
 		return { red, green, blue };
 	};
-	const auto advanceVectorsEpu16 = [&](const WORD* const pCFA, const WORD* const pCFAnext, const WORD* const pCFAprev, const bool loadCurrent, const bool loadNext, const bool loadPrev) -> void
+	const auto advanceVectorsEpu16 = [&](const std::uint16_t* const pCFA, const std::uint16_t* const pCFAnext, const std::uint16_t* const pCFAprev, const bool loadCurrent, const bool loadNext, const bool loadPrev) -> void
 	{
 		thisLinePrev = thisLineCurrent;
 		thisLineCurrent = thisLineNext;
@@ -159,19 +159,19 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 		if (loadPrev)
 			prevLineNext = load16Pixels(pCFAprev + 16);
 	};
-	const auto storeRGBvectorsEpu16 = [](const __m256i red, const __m256i green, const __m256i blue, WORD* const pRed, WORD* const pGreen, WORD* const pBlue) -> void
+	const auto storeRGBvectorsEpu16 = [](const __m256i red, const __m256i green, const __m256i blue, std::uint16_t* const pRed, std::uint16_t* const pGreen, std::uint16_t* const pBlue) -> void
 	{
 		_mm256_storeu_si256((__m256i*)pRed, red);
 		_mm256_storeu_si256((__m256i*)pGreen, green);
 		_mm256_storeu_si256((__m256i*)pBlue, blue);
 	};
 
-	const WORD* pCFA{ &avxSupport.grayPixels<WORD>().at(lineStart * width) };
-	const WORD* pCFAnext{ lineStart == (inputHeight - 1) ? (pCFA - width) : (pCFA + width) };
-	const WORD* pCFAprev{ lineStart == 0 ? pCFAnext : (pCFA - width) };
-	WORD* pRed{ redCfaLine(0) };
-	WORD* pGreen{ greenCfaLine(0) };
-	WORD* pBlue{ blueCfaLine(0) };
+	const std::uint16_t* pCFA{ &avxSupport.grayPixels<std::uint16_t>().at(lineStart * width) };
+	const std::uint16_t* pCFAnext{ lineStart == (inputHeight - 1) ? (pCFA - width) : (pCFA + width) };
+	const std::uint16_t* pCFAprev{ lineStart == 0 ? pCFAnext : (pCFA - width) };
+	std::uint16_t* pRed{ redCfaLine(0) };
+	std::uint16_t* pGreen{ greenCfaLine(0) };
+	std::uint16_t* pBlue{ blueCfaLine(0) };
 
 	const auto advanceCFApointers = [&]() -> void
 	{
@@ -182,7 +182,7 @@ int AvxCfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const siz
 		std::advance(pGreen, 16);
 		std::advance(pBlue, 16);
 	};
-	const auto loadLastVector = [remainingPixels](__m256i& vector, const WORD* const pPixels) -> void
+	const auto loadLastVector = [remainingPixels](__m256i& vector, const std::uint16_t* const pPixels) -> void
 	{
 		if (remainingPixels == 0)
 			return;

@@ -149,12 +149,12 @@ public:
 
 	inline static __m256i cmpGtEpu16(const __m256i a, const __m256i b) noexcept
 	{
-		const __m256i highBit = _mm256_set1_epi16(WORD{ 0x8000 });
+		const __m256i highBit = _mm256_set1_epi16(std::uint16_t{ 0x8000 });
 		return _mm256_cmpgt_epi16(_mm256_xor_si256(a, highBit), _mm256_xor_si256(b, highBit));
 	};
 
 	// Read color values from T* and return 2 x 8 packed single.
-	inline static std::tuple<__m256, __m256> read16PackedSingle(const WORD* const pColor) noexcept
+	inline static std::tuple<__m256, __m256> read16PackedSingle(const std::uint16_t* const pColor) noexcept
 	{
 		const __m256i icolor = _mm256_loadu_si256((const __m256i*)pColor);
 		const __m256 lo8 = wordToPackedFloat(_mm256_castsi256_si128(icolor));
@@ -174,7 +174,7 @@ public:
 	}
 
 	// Read 16 color values from T* with stride
-	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const WORD* const pColor, const int stride) noexcept
+	inline static std::tuple<__m256, __m256> read16PackedSingleStride(const std::uint16_t* const pColor, const int stride) noexcept
 	{
 		const __m256i ndx = _mm256_mullo_epi32(_mm256_setr_epi32(0, 1, 2, 3, 4, 5, 6, 7), _mm256_set1_epi32(stride));
 		const __m256i v1 = _mm256_i32gather_epi32((const int*)pColor, ndx, 2);
@@ -208,7 +208,7 @@ public:
 	}
 
 	// Read color values from T* and return 16 x packed short
-	inline static __m256i read16PackedShort(const WORD* const pColor)
+	inline static __m256i read16PackedShort(const std::uint16_t* const pColor)
 	{
 		return _mm256_loadu_epi16(pColor);
 	}
@@ -229,7 +229,7 @@ public:
 	}
 
 	// Read color values from T* and return 2 x 8 x packed int
-	inline static std::tuple<__m256i, __m256i> read16PackedInt(const WORD* const pColor)
+	inline static std::tuple<__m256i, __m256i> read16PackedInt(const std::uint16_t* const pColor)
 	{
 		const __m256i epi16 = _mm256_loadu_si256((const __m256i*)pColor);
 		return {
@@ -286,7 +286,7 @@ public:
 		return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0x0000ffff)));
 	}
 
-	inline static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const unsigned int* const pOutputBitmap, const bool fastload) noexcept
+	inline static __m256 accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint32_t* const pOutputBitmap, const bool fastload) noexcept
 	{
 		static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
@@ -334,7 +334,7 @@ public:
 		}
 	}
 
-	inline static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, unsigned int* const pOutputBitmap, const bool faststore) noexcept
+	inline static void storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint32_t* const pOutputBitmap, const bool faststore) noexcept
 	{
 		static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
@@ -392,16 +392,16 @@ public:
 		if (mask == 0)
 			return T{ 0 };
 
-		if constexpr (std::is_same<T, WORD>::value)
+		if constexpr (std::is_same<T, std::uint16_t>::value)
 		{
 			const float accumulatedColor = static_cast<float>(pOutputBitmap[outNdx]) + newColor;
-			return static_cast<WORD>(std::min(accumulatedColor, static_cast<float>(std::numeric_limits<T>::max())));
+			return static_cast<std::uint16_t>(std::min(accumulatedColor, static_cast<float>(std::numeric_limits<T>::max())));
 		}
 
-		if constexpr (std::is_same<T, unsigned int>::value)
+		if constexpr (std::is_same<T, std::uint32_t>::value)
 		{
 			const float accumulatedColor = static_cast<float>(pOutputBitmap[outNdx]) + newColor * 65536.0f;
-			return static_cast<unsigned int>(std::min(accumulatedColor, 4294967040.0f)); // The next lower float value below UINTMAX.
+			return static_cast<std::uint32_t>(std::min(accumulatedColor, 4294967040.0f)); // The next lower float value below UINTMAX.
 		}
 
 		if constexpr (std::is_same<T, float>::value)

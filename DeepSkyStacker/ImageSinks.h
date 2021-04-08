@@ -167,7 +167,7 @@ private :
 	CGrayBitmap					m_GrayBitmap;
 	EDITSTARACTION				m_Action;
 	CStar						m_AddedStar;
-	LONG						m_lRemovedIndice;
+	int							m_lRemovedIndice;
 	bool						m_bRemoveComet;
 	bool						m_bCometMode;
 	double						m_fXComet, m_fYComet;
@@ -175,7 +175,7 @@ private :
 	double						m_fLightBkgd;
 	bool						m_bDirty;
 	double						m_fScore;
-	LONG						m_lNrStars;
+	int							m_lNrStars;
 	double						m_fFWHM;
 	double						m_fBackground;
 	CQualityGrid				m_QualityGrid;
@@ -190,7 +190,7 @@ private :
 		{
 			if (m_vVotedPairs.size())
 			{
-				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
+				for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_RefStar)
 						bResult = true;
@@ -213,7 +213,7 @@ private :
 		{
 			if (m_vVotedPairs.size())
 			{
-				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
+				for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_TgtStar)
 						bResult = true;
@@ -236,7 +236,7 @@ private :
 		m_fScore	= 0.0;
 		m_lNrStars	= 0;
 		m_fFWHM		= 0;
-		for (LONG i = 0;i<m_vStars.size();i++)
+		for (size_t i = 0; i < m_vStars.size(); i++)
 		{
 			if (!m_vStars[i].m_bRemoved)
 			{

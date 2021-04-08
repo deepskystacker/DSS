@@ -33,8 +33,8 @@ int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const i
 		return 1;
 
 	int rval = 1;
-	if (doCalcEntropies<WORD>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
-		|| doCalcEntropies<unsigned int>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
+	if (doCalcEntropies<std::uint16_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
+		|| doCalcEntropies<std::uint32_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
 		|| doCalcEntropies<float>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0)
 	{
 		rval = 0;
@@ -118,7 +118,7 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 
 	const auto calcEntropy = [nSquaresX, nSquaresY, &calcEntropyOfSquare](const T* const pColor, EntropyVectorType& entropyVector) -> void
 	{
-		const int nrEnabledThreads = CMultitask::GetNrProcessors(false); // Returns 1 if multithreading disabled by user, otherwise # HW threads 
+		const int nrEnabledThreads = CMultitask::GetNrProcessors(false); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		constexpr size_t HistoSize = std::numeric_limits<std::uint16_t>::max() + size_t{ 1 };
 		std::vector<int> histogram(HistoSize, 0);
 

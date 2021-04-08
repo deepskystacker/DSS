@@ -86,23 +86,23 @@ class CDSSProgressDlg : public CDSSProgress
 {
 private :
 	CProgressDlg		m_dlg;
-	int				m_lTotal1,
-						m_lTotal2;
-	DWORD				m_dwStartTime,
-						m_dwLastTime;
-	int				m_lLastTotal1,
-						m_lLastTotal2;
+	int					m_lTotal1;
+	int					m_lTotal2;
+	unsigned long long	m_dwStartTime;
+	unsigned long long	m_dwLastTime;
+	int					m_lLastTotal1;
+	int					m_lLastTotal2;
 	bool				m_bFirstProgress;
 	bool				m_bEnableCancel;
-	CDeepStackerDlg *   m_pDeepStackerDlg;
+	CDeepStackerDlg*	m_pDeepStackerDlg;
 
-private :
-	void				CreateProgressDialog()
+private:
+	void CreateProgressDialog()
 	{
 
 		if (!m_dlg.m_hWnd)
 		{
-			CWnd *pMainWnd = AfxGetMainWnd();
+			CWnd* pMainWnd = AfxGetMainWnd();
 
 			m_dlg.Create(IDD_PROGRESS);
 
@@ -121,65 +121,63 @@ private :
 		};
 	};
 
-public :
+public:
     CDSSProgressDlg(CWnd* pParent = nullptr) :
-		m_dlg(pParent)
-    {
-        m_bEnableCancel = false;
-        m_lTotal1 = 0;
-        m_lTotal2 = 0;
-        m_dwStartTime = 0;
-        m_dwLastTime = 0;
-        m_lLastTotal1 = 0;
-        m_lLastTotal2 = 0;
-        m_bFirstProgress = false;
-		m_pDeepStackerDlg = GetDeepStackerDlg(nullptr);
-    }
+		m_dlg(pParent),
+		m_bEnableCancel{ false },
+		m_lTotal1{ 0 },
+		m_lTotal2{ 0 },
+		m_dwStartTime{ 0 },
+		m_dwLastTime{ 0 },
+		m_lLastTotal1{ 0 },
+		m_lLastTotal2{ 0 },
+		m_bFirstProgress{ false },
+		m_pDeepStackerDlg{ GetDeepStackerDlg(nullptr) }
+	{}
 
 	virtual ~CDSSProgressDlg()
 	{
 		Close();
 	};
 
-	virtual void	SetNrUsedProcessors(int lNrProcessors=1) override
+	virtual void SetNrUsedProcessors(int lNrProcessors = 1) override
 	{
 		if (m_dlg.m_hWnd)
 		{
-			if (lNrProcessors>1)
+			if (lNrProcessors > 1)
 			{
-				CString			strText;
-
+				CString strText;
 				strText.Format(IDS_NRPROCESSORS, lNrProcessors);
 				m_dlg.m_NrProcessors.SetWindowText(strText);
 			}
 			else
 				m_dlg.m_NrProcessors.SetWindowText(_T(""));
 		};
-	};
+	}
 
-	virtual void	GetStartText(CString & strText) override
+	virtual void GetStartText(CString & strText) override
 	{
 		strText.Empty();
 		if (m_dlg.m_hWnd)
 			m_dlg.m_Text1.GetWindowText(strText);
 	};
 
-	virtual void	GetStart2Text(CString & strText) override
+	virtual void GetStart2Text(CString & strText) override
 	{
 		strText.Empty();
 		if (m_dlg.m_hWnd)
 			m_dlg.m_Text2.GetWindowText(strText);
 	};
 
-	virtual	void	Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel = true) override
+	virtual	void Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel = true) override
 	{
-		CString			strTitle = szTitle;
+		CString strTitle = szTitle;
 
 		CreateProgressDialog();
 
 		m_lLastTotal1 = 0;
 		m_lTotal1 = lTotal1;
-		m_dwStartTime = GetTickCount();
+		m_dwStartTime = GetTickCount64();
 		m_dwLastTime  = m_dwStartTime;
 		m_bFirstProgress = true;
 		m_bEnableCancel = bEnableCancel;
@@ -194,16 +192,17 @@ public :
 		m_dlg.SetFocus();
 
 		m_dlg.PeekAndPump();
-	};
-	virtual void	Progress1(LPCTSTR szText, int lAchieved1) override
+	}
+
+	virtual void Progress1(LPCTSTR szText, int lAchieved1) override
 	{
-		CString			strText = szText;
-		DWORD			dwCurrentTime = GetTickCount();
+		CString strText = szText;
+		unsigned long long dwCurrentTime = GetTickCount64();
 
 		if (strText.GetLength())
 			m_dlg.m_Text1.SetWindowText(szText);
 
-		if (m_bFirstProgress || ((double)(lAchieved1-m_lLastTotal1) > (m_lTotal1 / 100.0)) || ((dwCurrentTime - m_dwLastTime) > 1000))
+		if (m_bFirstProgress || (static_cast<double>(lAchieved1 - m_lLastTotal1) > (m_lTotal1 / 100.0)) || ((dwCurrentTime - m_dwLastTime) > 1000))
 		{
 			m_bFirstProgress = false;
 			m_lLastTotal1 = lAchieved1;
@@ -214,25 +213,20 @@ public :
 
 			if (m_lTotal1 > 1 && lAchieved1 > 1)
 			{
-				DWORD			dwRemainingTime;
-				DWORD			dwHour,
-								dwMin,
-								dwSec;
-
-				dwRemainingTime = (DWORD)((double)(dwCurrentTime-m_dwStartTime) / (double)(lAchieved1-1) * (double)(m_lTotal1-lAchieved1+1));
+				std::uint32_t dwRemainingTime = static_cast<std::uint32_t>(static_cast<double>(dwCurrentTime - m_dwStartTime) / static_cast<double>(lAchieved1 - 1) * static_cast<double>(m_lTotal1 - lAchieved1 + 1));
 				dwRemainingTime /= 1000;
 
-				dwHour = dwRemainingTime / 3600;
+				const std::uint32_t dwHour = dwRemainingTime / 3600;
 				dwRemainingTime -= dwHour * 3600;
-				dwMin = dwRemainingTime / 60;
+				const std::uint32_t dwMin = dwRemainingTime / 60;
 				dwRemainingTime -= dwMin * 60;
-				dwSec = dwRemainingTime;
+				const std::uint32_t dwSec = dwRemainingTime;
 
-				if (dwHour)
+				if (dwHour != 0)
 					strText.Format(IDS_ESTIMATED3, dwHour, dwMin, dwSec);
-				else if (dwMin)
+				else if (dwMin != 0)
 					strText.Format(IDS_ESTIMATED2, dwMin, dwSec);
-				else if (dwSec)
+				else if (dwSec != 0)
 					strText.Format(IDS_ESTIMATED1, dwSec);
 				else
 					strText.Format(IDS_ESTIMATED0);
@@ -246,21 +240,20 @@ public :
 
 			m_dlg.PeekAndPump();
 		};
-	};
+	}
 
-	virtual void	Start2(LPCTSTR szText, int lTotal2) override
+	virtual void Start2(LPCTSTR szText, int lTotal2) override
 	{
-		CString			strText = szText;
-
 		CreateProgressDialog();
 
+		CString strText = szText;
 		m_lLastTotal2 = 0;
 		if (strText.GetLength())
 			m_dlg.m_Text2.SetWindowText(strText);
 
 		m_dlg.m_Progress2.SetRange32(0, lTotal2);
 		m_lTotal2 = lTotal2;
-		if (!lTotal2)
+		if (lTotal2 == 0)
 		{
 			m_dlg.m_Progress2.ShowWindow(SW_HIDE);
 			m_dlg.m_Text2.ShowWindow(SW_HIDE);
@@ -280,16 +273,15 @@ public :
 		};
 
 		m_dlg.PeekAndPump();
-	};
+	}
 
-	virtual void	Progress2(LPCTSTR szText, int lAchieved2) override
+	virtual void Progress2(LPCTSTR szText, int lAchieved2) override
 	{
-		if ((double)(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0))
+		if (static_cast<double>(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0))
 		{
-			CString			strText = szText;
-
 			m_lLastTotal2 = lAchieved2;
 
+			CString strText = szText;
 			if (strText.GetLength())
 				m_dlg.m_Text2.SetWindowText(strText);
 
@@ -299,38 +291,37 @@ public :
 
 		if (m_bJointProgress)
 			Progress1(szText, lAchieved2);
-	};
+	}
 
-	virtual void	End2() override
+	virtual void End2() override
 	{
 		m_dlg.m_Progress2.ShowWindow(SW_HIDE);
 		m_dlg.m_Text2.ShowWindow(SW_HIDE);
-	};
+	}
 
-	virtual bool	IsCanceled() override
+	virtual bool IsCanceled() override
 	{
 		return m_dlg.m_bCancelled;
-	};
-	virtual bool	Close() override
+	}
+
+	virtual bool Close() override
 	{
 		m_dlg.PeekAndPump();
 		// Prevent failure if mdlg is no longer a valid window
-		if (nullptr != m_dlg.m_hWnd) m_dlg.EndDialog(true);
+		if (nullptr != m_dlg.m_hWnd)
+			m_dlg.EndDialog(true);
 
-		if (m_pDeepStackerDlg)
+		if (m_pDeepStackerDlg != nullptr)
 			m_pDeepStackerDlg->enableSubDialogs();
 
 		return true;
-	};
-
-	virtual bool	Warning(LPCTSTR szText) override
-	{
-		int				nResult;
-
-		nResult = AfxMessageBox(szText, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING);
-		return (nResult == IDYES);
 	}
 
+	virtual bool Warning(LPCTSTR szText) override
+	{
+		const int nResult = AfxMessageBox(szText, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING);
+		return (nResult == IDYES);
+	}
 };
 
 //{{AFX_INSERT_LOCATION}}

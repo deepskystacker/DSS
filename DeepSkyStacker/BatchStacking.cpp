@@ -87,7 +87,7 @@ BOOL CBatchStacking::OnInitDialog()
 
 	RestoreWindowPosition(this, "Dialogs/Batch/Position", true);
 
-	for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)
+	for (size_t i = 0; i < m_MRUList.m_vLists.size(); i++)
 		m_Lists.AddString(m_MRUList.m_vLists[i]);
 
 	UpdateListBoxWidth();
@@ -184,7 +184,7 @@ void CBatchStacking::OnBnClickedClearList()
 
 void CBatchStacking::UpdateListBoxWidth()
 {
-	LONG				lWidth = 0;
+	int				lWidth = 0;
     CClientDC			dc(&m_Lists);
 	CRect				rcClient;
 
@@ -193,7 +193,7 @@ void CBatchStacking::UpdateListBoxWidth()
     CFont * f = m_Lists.GetFont();
     dc.SelectObject(f);
 
-	for (LONG i = 0;i<m_Lists.GetCount();i++)
+	for (int i = 0; i < m_Lists.GetCount(); i++)
 	{
 		CString			strText;
 
@@ -201,7 +201,7 @@ void CBatchStacking::UpdateListBoxWidth()
 		CSize			sz = dc.GetTextExtent(strText);
 		sz.cx += 3 * ::GetSystemMetrics(SM_CXBORDER)+20;
 
-		lWidth = max(lWidth, sz.cx);
+		lWidth = std::max(lWidth, static_cast<int>(sz.cx));
 	};
 
 	m_Lists.SetHorizontalExtent(lWidth);
@@ -254,16 +254,16 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 
 				strFileName = szFileName;
 
-				DWORD iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
+				const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
 
-				if (StackingEngine.GetDefaultOutputFileName(strFileName, szList, (iff==IFF_TIFF)))
+				if (StackingEngine.GetDefaultOutputFileName(strFileName, szList, iff == IFF_TIFF))
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
 					strText.Format(IDS_SAVINGFINAL, strFileName);
 					dlg.Start2(strText, 0);
 
-					if (iff==IFF_TIFF)
+					if (iff == IFF_TIFF)
 					{
 						if (pBitmap->IsMonochrome())
 							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);

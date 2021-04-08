@@ -43,8 +43,8 @@ bool AvxSupport::isMonochromeBitmapOfType() const
 		// Note that Monochrome bitmaps are always topdown -> no extra check required! CF. CGrayBitmap::GetOffset().
 		if constexpr (std::is_same<T, float>::value)
 			return (p->IsFloat() && !p->IsCFA() && p->GetMultiplier() == 256.0);
-		if constexpr (std::is_same<T, WORD>::value)
-			return (!p->IsCFA() || isMonochromeCfaBitmapOfType<WORD>());
+		if constexpr (std::is_same<T, std::uint16_t>::value)
+			return (!p->IsCFA() || isMonochromeCfaBitmapOfType<std::uint16_t>());
 		return !p->IsCFA();
 	}
 	return false;
@@ -53,8 +53,8 @@ bool AvxSupport::isMonochromeBitmapOfType() const
 template <class T>
 bool AvxSupport::isMonochromeCfaBitmapOfType() const
 {
-	// CFA only supported for T=WORD
-	if constexpr (std::is_same<T, WORD>::value)
+	// CFA only supported for T=16 bits unsigned
+	if constexpr (std::is_same<T, std::uint16_t>::value)
 	{
 		auto* const pGray = const_cast<AvxSupport*>(this)->getGrayPtr<T>();
 		// We support CFA only for RGGB Bayer matrices with BILINEAR interpolation and no offsets.
@@ -66,7 +66,7 @@ bool AvxSupport::isMonochromeCfaBitmapOfType() const
 
 bool AvxSupport::isColorBitmapOrCfa() const
 {
-	return isColorBitmap() || isMonochromeCfaBitmapOfType<WORD>();
+	return isColorBitmap() || isMonochromeCfaBitmapOfType<std::uint16_t>();
 }
 
 const int AvxSupport::width() const {

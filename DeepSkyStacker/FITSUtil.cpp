@@ -645,19 +645,19 @@ bool CFITSReader::Read()
 	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHORT_MAX);
 
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
+	bool bResult = true;
 	char error_text[31] = "";			// Error text for FITS errors.
 	
 	const int colours = (m_lNrChannels >= 3) ? 3 : 1;		// 3 ==> RGB, 1 ==> Mono
 
-	double		fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
+	double fMin = 0.0, fMax = 0.0;		// minimum and maximum pixel values for floating point images
 
 	if (m_lNrChannels > 3)
 		ZTRACE_RUNTIME("Number of colour channels is %d, only 3 will be used.", m_lNrChannels);
 
-	if (m_fits) do
+	if (m_fits != nullptr) do
 	{
-		double	dNULL = 0;
+		double dNULL = 0;
 
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, m_lHeight);
@@ -666,7 +666,7 @@ bool CFITSReader::Read()
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
-		LONGLONG nElements = m_lWidth * m_lHeight * colours;
+		const LONGLONG nElements = static_cast<LONGLONG>(m_lWidth) * m_lHeight * colours;
 		auto buff = std::make_unique<double[]>(nElements);
 		double* const doubleBuff = buff.get();
 		int status = 0;			// used for result of fits_read_pixll call
@@ -698,7 +698,7 @@ bool CFITSReader::Read()
 		if (m_bFloat)
 		{
 			double localMin = 0, localMax = 0;
-#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors - 1)
+#pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
 			{
 #pragma omp for schedule(dynamic, 10000)
 				for (LONGLONG element = 0; element < nElements; ++element)
@@ -758,7 +758,7 @@ bool CFITSReader::Read()
 			return (value - fMin) * normalizationFactor;
 		};
 
-#pragma omp parallel for default(none) schedule(dynamic, 10) if(nrProcessors - 1)
+#pragma omp parallel for default(none) schedule(dynamic, 10) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
 			for (int col = 0; col < m_lWidth; ++col)
@@ -864,11 +864,11 @@ public :
 
 	virtual ~CFITSReadInMemoryBitmap() { Close(); };
 
-	virtual bool Close() { return OnClose(); };
+	virtual bool Close() override { return OnClose(); };
 
-	virtual bool	OnOpen();
-	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue);
-	virtual bool	OnClose();
+	virtual bool OnOpen() override;
+	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1027,7 +1027,7 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	//
 	// Define maximal scaled pixel value of 255 (will be multiplied up later)
 	//
-	double maxValue = 255.;
+	constexpr double maxValue = 255.0;
 	
 	try
 	{
@@ -1093,7 +1093,7 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 bool CFITSReadInMemoryBitmap::OnClose()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
+	bool bResult = false;
 
 	if (m_pBitmap)
 	{
@@ -1146,12 +1146,14 @@ bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			!strExt.CompareNoCase(_T(".PNG")) ||
 			!strExt.CompareNoCase(_T(".TIF")) ||
 			!strExt.CompareNoCase(_T(".TIFF")))
+		{
 			bContinue = false;
+		}
 	}
 	if (bContinue && fits.Open())
 	{
 		if (fits.m_strMake.GetLength()) 
-			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), (LPCTSTR)fits.m_strMake);
+			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), fits.m_strMake.GetString());
 		else 
 			BitmapInfo.m_strFileType	= _T("FITS");
 		BitmapInfo.m_strFileName	= szFileName;
@@ -1235,15 +1237,16 @@ bool	CFITSWriter::WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment)
 
 void	CFITSWriter::WriteAllKeys()
 {
-	bool				bFound = false;
+	bool bFound = false;
 
 	// Check if DATE-OBS is already in the list of Extra Info
-	for (int i = 0;i<m_ExtraInfo.m_vExtras.size() && !bFound;i++)
+	for (const CExtraInfo& extraInfo : m_ExtraInfo.m_vExtras)
 	{
-		CExtraInfo &ei = m_ExtraInfo.m_vExtras[i];
-
-		if (ei.m_strName.CompareNoCase(_T("DATE-OBS")))
+		if (extraInfo.m_strName.CompareNoCase(_T("DATE-OBS")))
+		{
 			bFound = true;
+			break;
+		}
 	};
 
 	if (!bFound && m_DateTime.wYear)
@@ -1351,9 +1354,9 @@ bool CFITSWriter::Open()
 	// Create a new fits file
 	int				nStatus = 0;
 
-	DeleteFile((LPCTSTR)strFileName);
+	DeleteFile(strFileName.GetString());
 	fits_create_diskfile(&m_fits, (LPCSTR)CT2A(strFileName, CP_ACP), &nStatus);
-	if (m_fits && !nStatus)
+	if (m_fits && nStatus == 0)
 	{
 		bResult = OnOpen();
 		if (bResult)
@@ -1384,7 +1387,7 @@ bool CFITSWriter::Open()
 			};
 
 			fits_create_img(m_fits, nBitPixels, nAxis, nAxes, &nStatus);
-			if (!nStatus)
+			if (nStatus == 0)
 			{
 				bResult = true;
 
@@ -1405,7 +1408,7 @@ bool CFITSWriter::Open()
 				CString			strSoftware = "DeepSkyStacker ";
 				strSoftware += VERSION_DEEPSKYSTACKER;
 
-				WriteKey("SOFTWARE", (LPCTSTR)strSoftware);
+				WriteKey("SOFTWARE", strSoftware.GetString());
 				WriteAllKeys();
 			};
 
@@ -1484,53 +1487,51 @@ bool CFITSWriter::Write()
 
 				if (m_lNrChannels == 1)
 				{
-					BYTE* pBYTELine = redBuffer.get();
-					WORD* pWORDLine = reinterpret_cast<WORD*>(redBuffer.get());
+					std::uint8_t* pBYTELine = redBuffer.get();
+					std::uint16_t* pWORDLine = reinterpret_cast<std::uint16_t*>(redBuffer.get());
 					std::uint32_t* pDWORDLine = reinterpret_cast<std::uint32_t*>(redBuffer.get());
 					float* pFLOATLine = reinterpret_cast<float*>(redBuffer.get());
 
-					for (int i = 0;i<m_lWidth;i++)
+					for (int i = 0; i < m_lWidth; i++)
 					{
-						double		fRed, fGreen, fBlue;
-
+						double fRed, fGreen, fBlue;
 						OnWrite(i, j, fRed, fGreen, fBlue);
 
-						double			fGray;
-
+						double fGray;
 						if (m_CFAType != CFATYPE_NONE)
 						{
-							fGray = max(fRed, max(fGreen, fBlue));
+							fGray = std::max(fRed, std::max(fGreen, fBlue));
 							// 2 out of 3 should be 0
 						}
 						else
 						{
+							constexpr double scalingFactor = 255.0;
 							// Convert to gray scale
-							double		H, S, L;
+							double H, S, L;
 							ToHSL(fRed, fGreen, fBlue, H, S, L);
-							fGray = L*255.0;
+							fGray = L * scalingFactor;
 						};
 
 						if (m_lBitsPerPixel == 8)
 						{
-							*(pBYTELine) = fGray;
-							pBYTELine ++;
+							*pBYTELine++ = static_cast<std::uint8_t>(fGray);
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							(*(pWORDLine)) = fGray * UCHAR_MAX;
-							pWORDLine ++;
+							constexpr double scalingFactor = double{ UCHAR_MAX };
+							*pWORDLine++ = static_cast<std::uint16_t>(fGray * scalingFactor);
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								(*(pFLOATLine)) = fGray / (1.0 + UCHAR_MAX);
-								pFLOATLine ++;
+								constexpr double scalingFactor = 1.0 + double{ UCHAR_MAX };
+								*pFLOATLine++ = static_cast<float>(fGray / scalingFactor);
 							}
 							else
 							{
-								(*(pDWORDLine)) = fGray * UCHAR_MAX * USHRT_MAX;
-								pDWORDLine ++;
+								constexpr double scalingFactor = double{ UCHAR_MAX } *double{ USHRT_MAX };
+								*pDWORDLine++ = static_cast<std::uint32_t>(fGray * scalingFactor);
 							};
 						};
 					};
@@ -1543,18 +1544,18 @@ bool CFITSWriter::Write()
 				}
 				else
 				{
-					BYTE* pBYTELineRed = redBuffer.get();
-					WORD* pWORDLineRed = reinterpret_cast<WORD*>(redBuffer.get());
+					std::uint8_t* pBYTELineRed = redBuffer.get();
+					std::uint16_t* pWORDLineRed = reinterpret_cast<std::uint16_t*>(redBuffer.get());
 					std::uint32_t* pDWORDLineRed = reinterpret_cast<std::uint32_t*>(redBuffer.get());
 					float* pFLOATLineRed = reinterpret_cast<float*>(redBuffer.get());
 
-					BYTE* pBYTELineGreen = greenBuffer.get();
-					WORD* pWORDLineGreen = reinterpret_cast<WORD*>(greenBuffer.get());
+					std::uint8_t* pBYTELineGreen = greenBuffer.get();
+					std::uint16_t* pWORDLineGreen = reinterpret_cast<std::uint16_t*>(greenBuffer.get());
 					std::uint32_t* pDWORDLineGreen = reinterpret_cast<std::uint32_t*>(greenBuffer.get());
 					float* pFLOATLineGreen = reinterpret_cast<float*>(greenBuffer.get());
 
-					BYTE* pBYTELineBlue = blueBuffer.get();
-					WORD* pWORDLineBlue = reinterpret_cast<WORD*>(blueBuffer.get());
+					std::uint8_t* pBYTELineBlue = blueBuffer.get();
+					std::uint16_t* pWORDLineBlue = reinterpret_cast<std::uint16_t*>(blueBuffer.get());
 					std::uint32_t* pDWORDLineBlue = reinterpret_cast<std::uint32_t*>(blueBuffer.get());
 					float* pFLOATLineBlue = reinterpret_cast<float*>(blueBuffer.get());
 
@@ -1566,32 +1567,32 @@ bool CFITSWriter::Write()
 
 						if (m_lBitsPerPixel == 8)
 						{
-							*pBYTELineRed++ = fRed;
-							*pBYTELineGreen++ = fGreen;
-							*pBYTELineBlue++ = fBlue;
+							*pBYTELineRed++ = static_cast<std::uint8_t>(fRed);
+							*pBYTELineGreen++ = static_cast<std::uint8_t>(fGreen);
+							*pBYTELineBlue++ = static_cast<std::uint8_t>(fBlue);
 						}
 						else if (m_lBitsPerPixel == 16)
 						{
-							constexpr double m = double{ UCHAR_MAX };
-							*pWORDLineRed++ = fRed * m;
-							*pWORDLineGreen++ = fGreen * m;
-							*pWORDLineBlue++ = fBlue * m;
+							constexpr double scalingFactor = double{ UCHAR_MAX };
+							*pWORDLineRed++ = static_cast<std::uint16_t>(fRed * scalingFactor);
+							*pWORDLineGreen++ = static_cast<std::uint16_t>(fGreen * scalingFactor);
+							*pWORDLineBlue++ = static_cast<std::uint16_t>(fBlue * scalingFactor);
 						}
 						else if (m_lBitsPerPixel == 32)
 						{
 							if (m_bFloat)
 							{
-								constexpr double m = 1.0 + double{ UCHAR_MAX };
-								*pFLOATLineRed++ = fRed / m;
-								*pFLOATLineGreen++ = fGreen / m;
-								*pFLOATLineBlue++ = fBlue / m;
+								constexpr double scalingFactor = 1.0 + double{ UCHAR_MAX };
+								*pFLOATLineRed++ = static_cast<float>(fRed / scalingFactor);
+								*pFLOATLineGreen++ = static_cast<float>(fGreen / scalingFactor);
+								*pFLOATLineBlue++ = static_cast<float>(fBlue / scalingFactor);
 							}
 							else
 							{
-								constexpr double m = double{ UCHAR_MAX } * double{ USHRT_MAX };
-								*pDWORDLineRed++ = fRed * m;
-								*pDWORDLineGreen++ = fGreen * m;
-								*pDWORDLineBlue++ = fBlue * m;
+								constexpr double scalingFactor = double{ UCHAR_MAX } * double{ USHRT_MAX };
+								*pDWORDLineRed++ = static_cast<std::uint32_t>(fRed * scalingFactor);
+								*pDWORDLineGreen++ = static_cast<std::uint32_t>(fGreen * scalingFactor);
+								*pDWORDLineBlue++ = static_cast<std::uint32_t>(fBlue * scalingFactor);
 							};
 						};
 					};
@@ -1644,63 +1645,56 @@ bool CFITSWriter::Close()
 class CFITSWriteFromMemoryBitmap : public CFITSWriter
 {
 private :
-	CMemoryBitmap *			m_pMemoryBitmap;
+	CMemoryBitmap*			m_pMemoryBitmap;
 
 private :
-	FITSFORMAT	GetBestFITSFormat(CMemoryBitmap * pBitmap);
+	FITSFORMAT	GetBestFITSFormat(CMemoryBitmap* pBitmap);
 
 public :
-	CFITSWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress) :
-	   CFITSWriter(szFileName, pProgress)
-	{
-		m_pMemoryBitmap = pBitmap;
-	};
+	CFITSWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
+	   CFITSWriter(szFileName, pProgress),
+		m_pMemoryBitmap{ pBitmap }
+	{}
 
-	virtual bool Close() { return OnClose(); }
+	virtual bool Close()
+	{
+		return OnClose();
+	}
 
 	virtual ~CFITSWriteFromMemoryBitmap()
 	{
 		Close();
 	};
 
-	virtual bool	OnOpen();
-	virtual bool	OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue);
-	virtual bool	OnClose();
+	virtual bool OnOpen() override;
+	virtual bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
 
-FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap)
+FITSFORMAT CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	FITSFORMAT						Result = FF_UNKNOWN;
-	C24BitColorBitmap *			p24Color = dynamic_cast<C24BitColorBitmap *>(pBitmap);
-	C48BitColorBitmap *			p48Color = dynamic_cast<C48BitColorBitmap *>(pBitmap);
-	C96BitColorBitmap *			p96Color = dynamic_cast<C96BitColorBitmap *>(pBitmap);
-	C96BitFloatColorBitmap*		p96FloatColor = dynamic_cast<C96BitFloatColorBitmap*>(pBitmap);
-	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);
-	C16BitGrayBitmap *				p16Gray = dynamic_cast<C16BitGrayBitmap *>(pBitmap);
-	C32BitGrayBitmap *				p32Gray = dynamic_cast<C32BitGrayBitmap *>(pBitmap);
-	C32BitFloatGrayBitmap *			p32FloatGray = dynamic_cast<C32BitFloatGrayBitmap *>(pBitmap);
 
-	if (p24Color)
-		Result = FF_8BITRGB;
-	else if (p48Color)
-		Result = FF_16BITRGB;
-	else if (p96Color)
-		Result = FF_32BITRGB;
-	else if (p96FloatColor)
-		Result = FF_32BITRGBFLOAT;
-	else if (p8Gray)
-		Result = FF_8BITGRAY;
-	else if (p16Gray)
-		Result = FF_16BITGRAY;
-	else if (p32Gray)
-		Result = FF_32BITGRAY;
-	else if (p32FloatGray)
-		Result = FF_32BITGRAYFLOAT;
+	if (dynamic_cast<C24BitColorBitmap*>(pBitmap) != nullptr)
+		return FF_8BITRGB;
+	if (dynamic_cast<C48BitColorBitmap*>(pBitmap) != nullptr)
+		return FF_16BITRGB;
+	if (dynamic_cast<C96BitColorBitmap*>(pBitmap) != nullptr)
+		return FF_32BITRGB;
+	if (dynamic_cast<C96BitFloatColorBitmap*>(pBitmap) != nullptr)
+		return FF_32BITRGBFLOAT;
+	if (dynamic_cast<C8BitGrayBitmap*>(pBitmap) != nullptr)
+		return FF_8BITGRAY;
+	if (dynamic_cast<C16BitGrayBitmap*>(pBitmap) != nullptr)
+		return FF_16BITGRAY;
+	if (dynamic_cast<C32BitGrayBitmap*>(pBitmap) != nullptr)
+		return FF_32BITGRAY;
+	if (dynamic_cast<C32BitFloatGrayBitmap*>(pBitmap) != nullptr)
+		return FF_32BITGRAYFLOAT;
 
-	return Result;
+	return FF_UNKNOWN;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1708,12 +1702,10 @@ FITSFORMAT	CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap
 bool CFITSWriteFromMemoryBitmap::OnOpen()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
-	int			lWidth,
-					lHeight;
 
-	lWidth  = m_pMemoryBitmap->Width();
-	lHeight = m_pMemoryBitmap->Height();
+	const int lWidth  = m_pMemoryBitmap->Width();
+	const int lHeight = m_pMemoryBitmap->Height();
+
 	m_DateTime		= m_pMemoryBitmap->m_DateTime;
 	m_lBitsPerPixel = m_pMemoryBitmap->BitPerSample();
 	m_lNrChannels   = m_pMemoryBitmap->IsMonochrome() ? 1 : 3;
@@ -1732,20 +1724,18 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 			m_lISOSpeed = m_pMemoryBitmap->GetISOSpeed();
 		if (m_lGain < 0)
 			m_lGain = m_pMemoryBitmap->GetGain();
-		if ((m_pMemoryBitmap->filterName() != _T("")) && 
-			(m_filterName == _T("")))
+		if ((m_pMemoryBitmap->filterName() != _T("")) && (m_filterName == _T("")))
 			m_filterName = m_pMemoryBitmap->filterName();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();
-		bResult = true;
 	};
 
-	return bResult;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
+bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue)
 {
 	try
 	{
@@ -1754,7 +1744,8 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 			if (m_lNrChannels == 1)
 			{
 				m_pMemoryBitmap->GetPixel(lX, lY, fRed);
-				fGreen = fBlue = fRed;
+				fGreen = fRed;
+				fBlue = fRed;
 			}
 			else
 				m_pMemoryBitmap->GetPixel(lX, lY, fRed, fGreen, fBlue);
@@ -1783,7 +1774,6 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 		exit(1);
 	}
 
-
 	return true;
 };
 
@@ -1791,22 +1781,19 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 
 bool CFITSWriteFromMemoryBitmap::OnClose()
 {
-	bool			bResult = true;
-
-	return bResult;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
-			int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
+	bool bResult = false;
 
 	if (pBitmap)
 	{
-		CFITSWriteFromMemoryBitmap	fits(szFileName, pBitmap, pProgress);
+		CFITSWriteFromMemoryBitmap fits(szFileName, pBitmap, pProgress);
 
 		fits.m_ExtraInfo = pBitmap->m_ExtraInfo;
 		fits.m_DateTime  = pBitmap->m_DateTime;
@@ -1832,7 +1819,7 @@ bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription,
 			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
@@ -1840,15 +1827,14 @@ bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
-			int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
+	bool bResult = false;
 
 	if (pBitmap)
 	{
-		CFITSWriteFromMemoryBitmap	fits(szFileName, pBitmap, pProgress);
+		CFITSWriteFromMemoryBitmap fits(szFileName, pBitmap, pProgress);
 
 		fits.m_ExtraInfo = pBitmap->m_ExtraInfo;
 		fits.m_DateTime  = pBitmap->m_DateTime;
@@ -1872,7 +1858,7 @@ bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, szDescription,
 			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
@@ -1880,7 +1866,7 @@ bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-bool	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	return GetFITSInfo(szFileName, BitmapInfo);
@@ -1888,22 +1874,20 @@ bool	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	int		result = -1;		// -1 means not a FITS file.
+	int result = -1;		// -1 means not a FITS file.
 
 	if (GetFITSInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
-		CSmartPtr<CMemoryBitmap>	pBitmap;
+		CSmartPtr<CMemoryBitmap> pBitmap;
 
 		if (ReadFITS(szFileName, &pBitmap, pProgress))
 		{
 			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
 			{
-				C16BitGrayBitmap *	pGrayBitmap;
-
-				pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pBitmap.m_p);
+				C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.m_p);
 				if (IsSuperPixels())
 					pGrayBitmap->UseSuperPixels(true);
 				else if (IsRawBayer())
@@ -1925,10 +1909,10 @@ int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap 
 
 /* ------------------------------------------------------------------- */
 
-void	GetFITSExtension(LPCTSTR szFileName, CString & strExtension)
+void GetFITSExtension(LPCTSTR szFileName, CString& strExtension)
 {
-	TCHAR			szExt[1+_MAX_EXT];
-	CString			strExt;
+	TCHAR szExt[1 + _MAX_EXT];
+	CString strExt;
 
 	_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 

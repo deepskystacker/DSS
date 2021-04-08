@@ -18,7 +18,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-const DWORD			WM_INITNEWPICTURE = WM_USER+1;
+constexpr UINT WM_INITNEWPICTURE = WM_USER + 1;
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -444,7 +444,7 @@ void CProcessingDlg::UpdateInfos()
 
 		if (lTotalTime)
 		{
-			DWORD			dwHour,
+			std::uint32_t	dwHour,
 							dwMin,
 							dwSec;
 
@@ -829,7 +829,6 @@ bool CProcessingDlg::SavePictureToFile()
 	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
-	DWORD				dwFilterIndex = 0;
 	bool				applied = false;
 	uint				dwCompression;
 	CRect				rcSelect;
@@ -838,7 +837,7 @@ bool CProcessingDlg::SavePictureToFile()
 	{
 		strBaseDirectory = (LPCTSTR)settings.value("Folders/SavePictureFolder").toString().utf16();
 		strBaseExtension = (LPCTSTR)settings.value("Folders/SavePictureExtension").toString().utf16();
-		dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
+		auto dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
 		applied = settings.value("Folders/SaveApplySetting", false).toBool();
 		dwCompression = settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt();
 

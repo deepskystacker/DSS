@@ -582,7 +582,7 @@ void	CEditStarsSink::SaveRegisterSettings()
 		regFrame.m_fXComet = m_fXComet;
 		regFrame.m_fYComet = m_fYComet;
 		regFrame.m_SkyBackground.m_fLight = m_fLightBkgd;
-		for (LONG i = 0;i<m_vStars.size();i++)
+		for (size_t i = 0; i < m_vStars.size(); i++)
 		{
 			if (!m_vStars[i].m_bRemoved)
 				vStars.push_back(m_vStars[i]);
@@ -613,13 +613,13 @@ void	CEditStarsSink::SaveRegisterSettings()
 void	CEditStarsSink::InitGrayBitmap(CRect & rc)
 {
 	m_GrayBitmap.SetMultiplier(1.0);
-	for (LONG i = rc.left;i<=rc.right;i++)
-		for (LONG j = rc.top;j<=rc.bottom;j++)
+	for (int i = rc.left; i <= rc.right; i++)
+		for (int j = rc.top; j <= rc.bottom; j++)
 		{
 			double			fGray;
 
 			m_pBitmap->GetPixel(i, j, fGray);
-			m_GrayBitmap.SetPixel(i-rc.left, j-rc.top, fGray/256.0);
+			m_GrayBitmap.SetPixel(i - rc.left, j - rc.top, fGray / 256.0);
 		};
 };
 
@@ -791,8 +791,8 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 {
 	// Find the first top/left point in the image
 	bool					bDraw = true;
-	LONG					x1, x2,
-							y1, y2;
+	decltype(tagPOINT::x)	x1, x2;
+	decltype(tagPOINT::y)	y1, y2;
 
 	CPoint		pt(rcClient.left, rcClient.top);
 
@@ -831,7 +831,7 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 	if (bDraw)
 	{
 		pGraphics->SetSmoothingMode(SmoothingModeHighQuality);
-		for (LONG i = 0;i< m_QualityGrid.m_vTriangles.size();i++)
+		for (size_t i = 0; i < m_QualityGrid.m_vTriangles.size(); i++)
 		{
 			CDelaunayTriangle &		tr = m_QualityGrid.m_vTriangles[i];
 			CRect					rc1(x1, y1, x2, y2),
@@ -896,7 +896,6 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 		if (pResult)
 		{
 			Graphics		graphics(pResult);
-			LONG			i = 0;
 
 			graphics.SetSmoothingMode(SmoothingModeHighQuality);
 
@@ -908,7 +907,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 			if (g_bShowRefStars && !m_bCometMode)
 			{
-				for (i = 0;i<m_vRefStars.size();i++)
+				for (int i = 0; i < m_vRefStars.size(); i++)
 				{
 					if (IsRefStarVoted(i))
 					{
@@ -946,7 +945,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				};
 			};
 
-			for (i = 0;i<m_vStars.size();i++)
+			for (int i = 0; i < m_vStars.size(); i++)
 			{
 				if (IsTgtStarVoted(i) && !m_vStars[i].m_bRemoved)
 				{
@@ -1055,11 +1054,9 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 			{
 				CRect					rcCheck;
 				STARVECTOR				vStars;
-				LONG					lNearestNewStar;
 				double					fNearestNewStarDistance;
 				bool					bInNewStar;
 
-				LONG					lNearestOldStar;
 				double					fNearestOldStarDistance;
 				bool					bInOldStar;
 
@@ -1072,10 +1069,10 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 				DetectStars(m_ptCursor, rcCheck, vStars);
 
-				lNearestNewStar = FindNearestStar(m_ptCursor.X - rcCheck.left, m_ptCursor.Y - rcCheck.top, vStars, bInNewStar, fNearestNewStarDistance);
+				auto lNearestNewStar = FindNearestStar(m_ptCursor.X - rcCheck.left, m_ptCursor.Y - rcCheck.top, vStars, bInNewStar, fNearestNewStarDistance);
 
 				fNearestOldStarDistance = 50;
-				lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, m_vStars, bInOldStar, fNearestOldStarDistance);
+				auto lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, m_vStars, bInOldStar, fNearestOldStarDistance);
 
 				m_lRemovedIndice = -1;
 				m_bRemoveComet	 = false;
@@ -1205,7 +1202,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 
 				// Draw all the potentially registrable stars
-				for (i = 0;i<vStars.size();i++)
+				for (int i = 0; i < vStars.size(); i++)
 				{
 					CPoint		pt;
 					CRect		rc;
@@ -1409,7 +1406,7 @@ void	CQualityGrid::InitGrid(STARVECTOR & vStars, LONG lWidth, LONG lHeight)
 
 	if (vStars.size())
 	{
-		for (LONG i = 0;i<vStars.size();i++)
+		for (size_t i = 0; i < vStars.size(); i++)
 		{
 			CStar &					star = vStars[i];
 

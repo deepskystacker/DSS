@@ -1146,9 +1146,7 @@ bool	CComputeLuminanceTask::Process()
 	while (i<lHeight)
 	{
 		int			lAdd = std::min(lStep, lRemaining);
-		DWORD			dwThreadId;
-
-		dwThreadId = GetAvailableThreadId();
+		const auto dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
 		i			+=lAdd;

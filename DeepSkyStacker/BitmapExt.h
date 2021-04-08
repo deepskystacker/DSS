@@ -312,16 +312,16 @@ public :
 
 class C32BitsBitmap : public CRefCount
 {
-private :
-	HBITMAP				m_hBitmap;
-	VOID *				m_lpBits;
-	int				m_lWidth,
-						m_lHeight;
-	LPBYTE*				m_pLine;
-	DWORD				m_dwByteWidth;
+private:
+	HBITMAP m_hBitmap;
+	VOID* m_lpBits;
+	int m_lWidth;
+	int m_lHeight;
+	LPBYTE* m_pLine;
+	std::uint32_t m_dwByteWidth;
 
-private :
-	void	InitInternals()
+private:
+	void InitInternals()
 	{
 		if (m_pLine)
 			free(m_pLine);
@@ -342,7 +342,7 @@ private :
 		}
 	};
 
-public :
+public:
 	C32BitsBitmap()
 	{
 		m_hBitmap	= nullptr;
@@ -358,7 +358,7 @@ public :
 		Free();
 	};
 
-	VOID *	GetBits()
+	VOID*	GetBits()
 	{
 		return m_lpBits;
 	};
@@ -378,7 +378,7 @@ public :
 		return m_dwByteWidth;
 	};
 
-	virtual void	Init(int lWidth, int lHeight)
+	virtual void Init(int lWidth, int lHeight)
 	{
 		Create(lWidth, lHeight);
 	};
@@ -421,10 +421,10 @@ public :
         return hBitmap;
 	};
 
-	bool	InitFrom(CMemoryBitmap * pBitmap);
-	bool	CopyToClipboard();
+	bool InitFrom(CMemoryBitmap * pBitmap);
+	bool CopyToClipboard();
 
-	bool	IsEmpty()
+	bool IsEmpty()
 	{
 		return (m_hBitmap == nullptr);
 	};
@@ -434,7 +434,7 @@ public :
 		return m_hBitmap;
 	};
 
-	void	Free()
+	void Free()
 	{
 		if (m_hBitmap)
 		{
@@ -447,7 +447,7 @@ public :
 		m_pLine = nullptr;
 	};
 
-	HBITMAP	Detach()
+	HBITMAP Detach()
 	{
 		HBITMAP		hResult = m_hBitmap;
 
@@ -457,17 +457,15 @@ public :
 		return hResult;
 	};
 
-	COLORREF	GetPixel(int x, int y)
+	COLORREF GetPixel(int x, int y)
 	{
-		COLORREF			crColor = RGB(0, 0, 0);
+		COLORREF crColor = RGB(0, 0, 0);
 
-		if( (x >= 0) && (x < m_lWidth) && (y >=0) && (y < m_lHeight))
+		if( (x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
 		{
-			LPBYTE		pPixel = m_pLine[y] + ((x * 32) >> 3);
-			DWORD		dwPixel;
-
-			dwPixel = *(LPDWORD)pPixel;
-			RGBQUAD		rgbq = *(LPRGBQUAD)&dwPixel;
+			LPBYTE pPixel = m_pLine[y] + ((x * 32) >> 3);
+			const auto dwPixel = *reinterpret_cast<LPDWORD>(pPixel);
+			RGBQUAD rgbq = *(LPRGBQUAD)&dwPixel;
 
 			crColor = RGB(rgbq.rgbRed,rgbq.rgbGreen,rgbq.rgbBlue);
 		};
@@ -475,12 +473,12 @@ public :
 		return crColor;
 	};
 
-	LPBYTE		GetPixelBase(int x, int y)
+	LPBYTE GetPixelBase(int x, int y)
 	{
 		return m_pLine[y] + x * 4;
 	};
 
-	void		SetPixel(int x, int y, COLORREF crColor)
+	void SetPixel(int x, int y, COLORREF crColor)
 	{
 		if( (x >= 0) && (x < m_lWidth) && (y >=0) && (y < m_lHeight))
 		{
@@ -526,7 +524,7 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CMemoryBitmap * pInBit
 
 class CBitmapInfo
 {
-public :
+public:
 	CString				m_strFileName;
 	CString				m_strFileType;
 	CString				m_strModel;
@@ -551,7 +549,7 @@ public :
 	int				m_yBayerOffset;
 	CString				m_filterName;
 
-private :
+private:
 	void	CopyFrom(const CBitmapInfo & bi)
 	{
 		m_strFileName	=bi.m_strFileName	;
@@ -600,7 +598,7 @@ private :
 		m_yBayerOffset = 0;
     }
 
-public :
+public:
 	CBitmapInfo()
 	{
         Init();
@@ -624,10 +622,15 @@ public :
 		return (*this);
 	};
 
-	bool operator < (const CBitmapInfo & bi) const
+	bool operator<(const CBitmapInfo& other) const
 	{
-		return (m_strFileName.CompareNoCase(bi.m_strFileName) < 0);
+		return (m_strFileName.CompareNoCase(other.m_strFileName) < 0);
 	};
+
+	bool operator==(const CBitmapInfo& other) const
+	{
+		return this->m_strFileName.CompareNoCase(other.m_strFileName) == 0;
+	}
 
 	virtual ~CBitmapInfo()
 	{

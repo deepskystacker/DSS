@@ -6,35 +6,34 @@
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "..\CFitsio\fitsio.h"
+
 #pragma comment(lib, "cfitsio.lib")
 
 class CFITSHeader
 {
-public :
-	int				m_lWidth,
-						m_lHeight;
+public:
+	int				m_lWidth;
+	int				m_lHeight;
 	int				m_lBitsPerPixel;
 	int				m_lNrChannels;
-	double				m_fExposureTime;
+	double			m_fExposureTime;
 	int				m_lISOSpeed;
 	int				m_lGain;
-	bool				m_bFloat;
-	bool				m_bSigned;
-	CString				m_strMake;
-	CFATYPE				m_CFAType;
-	FITSFORMAT			m_Format;
+	bool			m_bFloat;
+	bool			m_bSigned;
+	CString			m_strMake;
+	CFATYPE			m_CFAType;
+	FITSFORMAT		m_Format;
 	CBitmapExtraInfo	m_ExtraInfo;
-	SYSTEMTIME			m_DateTime;
+	SYSTEMTIME		m_DateTime;
 	int				m_xBayerOffset;
 	int				m_yBayerOffset;
 	int				m_bitPix;
-	CString				m_filterName;
+	CString			m_filterName;
 
-public :
 	CFITSHeader();
 	virtual ~CFITSHeader();
 
-public :
 	inline int	Height() noexcept
 	{
 		return m_lHeight;
@@ -110,98 +109,99 @@ public :
 
 class CFITSReader : public CFITSHeader
 {
-public :
-	fitsfile *				m_fits;
+public:
+	fitsfile*				m_fits;
 	CString					m_strFileName;
-	CDSSProgress *			m_pProgress;
+	CDSSProgress*			m_pProgress;
 
-protected :
+protected:
 	double					m_fGreenRatio;
 	double					m_fRedRatio;
 	double					m_fBlueRatio;
 	double					m_fBrightnessRatio;
 	bool					m_bDSI;
 
-private :
-	bool	ReadKey(LPSTR szKey, double & fValue, CString & strComment);
-	bool	ReadKey(LPSTR szKey, double & fValue);
-	bool	ReadKey(LPSTR szKey, int & lValue);
-	bool	ReadKey(LPSTR szKey, CString & strValue);
-	void	ReadAllKeys();
+private:
+	bool ReadKey(LPSTR szKey, double & fValue, CString & strComment);
+	bool ReadKey(LPSTR szKey, double & fValue);
+	bool ReadKey(LPSTR szKey, int & lValue);
+	bool ReadKey(LPSTR szKey, CString & strValue);
+	void ReadAllKeys();
 
-public :
-	CFITSReader(LPCTSTR szFileName, CDSSProgress *	pProgress)
-	{
-		m_fits		  = nullptr;
-		m_strFileName = szFileName;
-		m_pProgress   = pProgress;
-		m_fGreenRatio = 1.0;
-		m_fRedRatio   = 1.0;
-		m_fBlueRatio  = 1.0;
-		m_bDSI		  = false;
-        m_fBrightnessRatio = 0;
-	};
+public:
+	CFITSReader(LPCTSTR szFileName, CDSSProgress *	pProgress) :
+		CFITSHeader(),
+		m_fits{ nullptr },
+		m_strFileName{ szFileName },
+		m_pProgress{ pProgress },
+		m_fGreenRatio{ 1.0 },
+		m_fRedRatio{ 1.0 },
+		m_fBlueRatio{ 1.0 },
+		m_bDSI{ false },
+		m_fBrightnessRatio{ 0 }
+	{}
 
 	virtual ~CFITSReader()
 	{
 		Close();
-	};
+	}
 
-	bool	Open();
-	bool	Read();
-	virtual bool	Close();
+	bool Open();
+	bool Read();
+	virtual bool Close();
 
-	virtual bool	OnOpen() { return true; };
-	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) { return false;};
-	virtual bool	OnClose() { return true; };
+	virtual bool OnOpen() { return true; }
+	virtual bool OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) { return false; }
+	virtual bool OnClose() { return true; }
 };
 
 /* ------------------------------------------------------------------- */
 
 class CFITSWriter : public CFITSHeader
 {
-public :
-	fitsfile *				m_fits;
+public:
+	fitsfile*				m_fits;
 	CString					m_strFileName;
-	CDSSProgress *			m_pProgress;
+	CDSSProgress*			m_pProgress;
 	CString					m_strDescription;
 
-private :
-	bool	WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);
-	bool	WriteKey(LPSTR szKey, int lValue, LPSTR szComment = nullptr);
-	bool	WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = nullptr);
-	void	WriteAllKeys();
+private:
+	bool WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);
+	bool WriteKey(LPSTR szKey, int lValue, LPSTR szComment = nullptr);
+	bool WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = nullptr);
+	void WriteAllKeys();
 
-protected :
-	void	SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType);
+protected:
+	void SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType);
 
-public :
-	CFITSWriter(LPCTSTR szFileName, CDSSProgress *	pProgress)
+public:
+	CFITSWriter(LPCTSTR szFileName, CDSSProgress*	pProgress) :
+		CFITSHeader(),
+		m_fits{ nullptr },
+		m_strFileName{ szFileName },
+		m_pProgress{ pProgress }
 	{
-		m_fits		  = nullptr;
-		m_strFileName = szFileName;
-		m_pProgress   = pProgress;
-		m_Format	  = FF_UNKNOWN;
-	};
+		m_Format = FF_UNKNOWN;
+	}
 
 	virtual ~CFITSWriter()
 	{
 		Close();
 	};
 
-	void	SetDescription(LPCTSTR szDescription)
+	void SetDescription(LPCTSTR szDescription)
 	{
 		m_strDescription = szDescription;
 	};
 
-	void	SetFormat(FITSFORMAT FITSFormat)
+	void SetFormat(FITSFORMAT FITSFormat)
 	{
 		m_Format = FITSFormat;
 	};
 
-	bool	Open();
-	bool	Write();
-	bool	Close();
+	bool Open();
+	bool Write();
+	bool Close();
 
 	virtual bool OnOpen() { return true; };
 	virtual bool OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) = 0;
@@ -211,18 +211,16 @@ public :
 /* ------------------------------------------------------------------- */
 
 CFATYPE GetFITSCFATYPE();
-bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-bool	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress);
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
-			int lISOSpeed, int lGain, double fExposure);
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescriptionL,
-			int lISOSpeed, int lGain, double fExposure);
-bool	WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
-
-bool	IsFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
-int		LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
-
-void	GetFITSExtension(LPCTSTR szFileName, CString & strExtension);
+bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
+bool ReadFITS(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress*	pProgress);
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
+			   int lISOSpeed, int lGain, double fExposure);
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescriptionL,
+			   int lISOSpeed, int lGain, double fExposure);
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription);
+bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
+int LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress);
+void GetFITSExtension(LPCTSTR szFileName, CString& strExtension);
 
 #endif // __FITSUTIL_H__

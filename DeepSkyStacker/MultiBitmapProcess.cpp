@@ -335,10 +335,9 @@ bool	CCombineTask::Process()
 
 	while (i<=m_lEndRow && bResult)
 	{
-		DWORD			dwThreadId;
 		int			lAdd = min(lStep, lRemaining);
 
-		dwThreadId = GetAvailableThreadId();
+		const auto dwThreadId = GetAvailableThreadId();
 
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 

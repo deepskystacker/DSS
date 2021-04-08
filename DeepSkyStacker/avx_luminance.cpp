@@ -22,8 +22,8 @@ int AvxLuminance::computeLuminanceBitmap(const size_t lineStart, const size_t li
 		return 1;
 
 	int rval = 1;
-	if (doComputeLuminance<WORD>(lineStart, lineEnd) == 0
-		|| doComputeLuminance<unsigned int>(lineStart, lineEnd) == 0
+	if (doComputeLuminance<std::uint16_t>(lineStart, lineEnd) == 0
+		|| doComputeLuminance<std::uint32_t>(lineStart, lineEnd) == 0
 		|| doComputeLuminance<float>(lineStart, lineEnd) == 0)
 	{
 		rval = 0;
@@ -68,7 +68,7 @@ int AvxLuminance::doComputeLuminance(const size_t lineStart, const size_t lineEn
 
 	if (avxInputSupport.isColorBitmapOfType<T>() || isCFA)
 	{
-		AvxCfaProcessing avxCfa{0, 0, inputBitmap};
+		AvxCfaProcessing avxCfa{ 0, 0, inputBitmap };
 		if (isCFA)
 		{
 			avxCfa.init(lineStart, lineEnd);

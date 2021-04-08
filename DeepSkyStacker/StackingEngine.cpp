@@ -39,16 +39,14 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 	m_strReferenceFrame = szReferenceFrame;
 	m_strStackingFileInfo.Format(_T("%s%s%s.stackinfo.txt"), szDrive, szDir, szName);
 
-	DWORD					dwAlignmentTransformation = 2;
-	CWorkspace				workspace;
+	unsigned int dwAlignmentTransformation = 2;
+	CWorkspace workspace;
 
 	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 
 	// Init from the file
-	FILE *				hFile;
-
 	m_vLightFrameStackingInfo.clear();
-	hFile = _tfopen((LPCTSTR)m_strStackingFileInfo, _T("rt"));
+	FILE* hFile = _tfopen((LPCTSTR)m_strStackingFileInfo, _T("rt"));
 	if (hFile)
 	{
 		bool			bEnd = false;
@@ -131,7 +129,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & strInfoFileName)
+void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString& strInfoFileName)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -166,22 +164,20 @@ void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString & s
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBilinearParameters & bp)
+void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBilinearParameters& bp)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	CLightFrameStackingInfo			lfsi(szLightFrame);
-	LIGHTFRAMESTACKINGINFOITERATOR	it;
-	CString							strInfoFileName;
+	CLightFrameStackingInfo lfsi(szLightFrame);
+	CString strInfoFileName;
 
 	GetInfoFileName(szLightFrame, strInfoFileName);
-	it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), lfsi);
-	if (it != m_vLightFrameStackingInfo.end() &&
-		!(*it).m_strFileName.CompareNoCase(szLightFrame))
+	LIGHTFRAMESTACKINGINFOITERATOR it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), lfsi);
+	if (it != m_vLightFrameStackingInfo.end() && !it->m_strFileName.CompareNoCase(szLightFrame))
 	{
 		// There is already this light frame
-		(*it).m_strInfoFileName		= strInfoFileName;
-		(*it).m_BilinearParameters	= bp;
+		it->m_strInfoFileName = strInfoFileName;
+		it->m_BilinearParameters = bp;
 	}
 	else
 	{
@@ -196,23 +192,20 @@ void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBiline
 
 /* ------------------------------------------------------------------- */
 
-bool	CLightFramesStackingInfo::GetParameters(LPCTSTR szLightFrame, CBilinearParameters & bp)
+bool CLightFramesStackingInfo::GetParameters(LPCTSTR szLightFrame, CBilinearParameters& bp)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool							bResult = false;
-	LIGHTFRAMESTACKINGINFOITERATOR	it;
+	bool bResult = false;
 
-	it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), CLightFrameStackingInfo(szLightFrame));
-	if (it != m_vLightFrameStackingInfo.end() &&
-		!(*it).m_strFileName.CompareNoCase(szLightFrame))
+	LIGHTFRAMESTACKINGINFOITERATOR it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), CLightFrameStackingInfo(szLightFrame));
+	if (it != m_vLightFrameStackingInfo.end() && !it->m_strFileName.CompareNoCase(szLightFrame))
 	{
-		CString						strInfoFileName;
-
+		CString strInfoFileName;
 		GetInfoFileName(szLightFrame, strInfoFileName);
 
-		if (!strInfoFileName.CompareNoCase((*it).m_strInfoFileName))
+		if (!strInfoFileName.CompareNoCase(it->m_strInfoFileName))
 		{
-			bp = (*it).m_BilinearParameters;
+			bp = it->m_BilinearParameters;
 			bResult = true;
 		};
 	};
@@ -222,37 +215,34 @@ bool	CLightFramesStackingInfo::GetParameters(LPCTSTR szLightFrame, CBilinearPara
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFramesStackingInfo::Save()
+void CLightFramesStackingInfo::Save()
 {
 	ZFUNCTRACE_RUNTIME();
 
 	if (m_strReferenceFrame.GetLength() && m_strStackingFileInfo.GetLength())
 	{
-		FILE *				hFile;
-
-		hFile = _tfopen((LPCTSTR)m_strStackingFileInfo, _T("wt"));
+		FILE* hFile = _tfopen((LPCTSTR)m_strStackingFileInfo, _T("wt"));
 		if (hFile)
 		{
 			// Save the alignment transformation used
-			DWORD					dwAlignmentTransformation = 2;
-			CWorkspace				workspace;
+			unsigned int dwAlignmentTransformation = 2;
+			CWorkspace workspace;
 
 			dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 			fprintf(hFile,"%ld\n", dwAlignmentTransformation);
 
-			CString					strInfoFileName;
-
+			CString strInfoFileName;
 			GetInfoFileName((LPCTSTR)m_strReferenceFrame, strInfoFileName);
 			fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strInfoFileName, CP_UTF8));
 
-			for (int i = 0;i<m_vLightFrameStackingInfo.size();i++)
+			for (const auto& stackingInfo : m_vLightFrameStackingInfo)
 			{
-				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vLightFrameStackingInfo[i].m_strInfoFileName, CP_UTF8));
-				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(m_vLightFrameStackingInfo[i].m_strFileName, CP_UTF8));
+				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(stackingInfo.m_strInfoFileName, CP_UTF8));
+				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(stackingInfo.m_strFileName, CP_UTF8));
 
 				CString			strParameters;
 
-				m_vLightFrameStackingInfo[i].m_BilinearParameters.ToText(strParameters);
+				stackingInfo.m_BilinearParameters.ToText(strParameters);
 				fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strParameters, CP_UTF8));
 			};
 
@@ -264,37 +254,36 @@ void	CLightFramesStackingInfo::Save()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	RemoveStars(CMemoryBitmap * pBitmap,CPixelTransform & PixTransform, const STARVECTOR & vStars)
+void RemoveStars(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, const STARVECTOR& vStars)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	if (pBitmap)
+	if (pBitmap != nullptr)
 	{
-		double				fWidth	= pBitmap->Width();
-		double				fHeight = pBitmap->Height();
-		bool				bMonochrome = pBitmap->IsMonochrome();
+		const double fWidth = pBitmap->Width();
+		const double fHeight = pBitmap->Height();
+		const bool bMonochrome = pBitmap->IsMonochrome();
 
-		for (int k = 0;k<vStars.size();k++)
+		//for (int k = 0; k < vStars.size(); k++)
+		for (const auto& star : vStars)
 		{
-			double			fRadius = vStars[k].m_fMeanRadius*2.35*1.0;// /1.5;
-			CPointExt		ptCenter(vStars[k].m_fX, vStars[k].m_fY);
+			double			fRadius = star.m_fMeanRadius * 2.35 * 1.0;// /1.5;
+			CPointExt		ptCenter(star.m_fX, star.m_fY);
 			//double			fIntensity = 0;
 			//int			lNrIntensities = 0;
 
 			ptCenter = PixTransform.Transform(ptCenter);
 
-			for (double i = max(0.0, ptCenter.X - 2.0*fRadius);i<=min(ptCenter.X + 2.0*fRadius, fWidth-1);i++)
+			for (double i = std::max(0.0, ptCenter.X - 2.0 * fRadius); i <= std::min(ptCenter.X + 2.0 * fRadius, fWidth - 1); i++)
 			{
-				for (double j = max(0.0, ptCenter.Y - 2.0*fRadius);j<=min(ptCenter.Y + 2.0*fRadius, fHeight-1);j++)
+				for (double j = std::max(0.0, ptCenter.Y - 2.0 * fRadius); j <= std::min(ptCenter.Y + 2.0 * fRadius, fHeight - 1); j++)
 				{
 					// Compute the distance to the center
-					double		fDistance;
-					double		fXDistance = fabs(i-ptCenter.X);
-					double		fYDistance = fabs(j-ptCenter.Y);
+					const double fXDistance = fabs(i - ptCenter.X);
+					const double fYDistance = fabs(j - ptCenter.Y);
+					const double fDistance = sqrt(fXDistance * fXDistance + fYDistance * fYDistance);
 
-					fDistance = sqrt(fXDistance * fXDistance + fYDistance * fYDistance);
-
-					if (fDistance<=fRadius)
+					if (fDistance <= fRadius)
 					{
 						/*
 						if (fDistance<=fRadius/2)
@@ -305,7 +294,7 @@ void	RemoveStars(CMemoryBitmap * pBitmap,CPixelTransform & PixTransform, const S
 							fIntensity += fGray;
 							lNrIntensities ++;
 						};*/
-						pBitmap->SetPixel(i+0.5, j+0.5, 0.0);
+						pBitmap->SetPixel(i + 0.5, j + 0.5, 0.0);
 					};
 				};
 			};
@@ -404,9 +393,9 @@ TRANSFORMATIONTYPE CStackingEngine::GetTransformationType()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
-	DWORD					dwAlignmentTransformation = 2;
-	CWorkspace				workspace;
+	TRANSFORMATIONTYPE TTResult = TT_BILINEAR;
+	unsigned int dwAlignmentTransformation = 2;
+	CWorkspace workspace;
 
 	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 
@@ -434,32 +423,30 @@ TRANSFORMATIONTYPE CStackingEngine::GetTransformationType()
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::AddLightFramesToList(CAllStackingTasks & tasks)
+bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	int				i, j;
-	bool				bReferenceFrameFound;
-
+	bool bReferenceFrameFound;
 	if (m_strReferenceFrame.GetLength())
 		bReferenceFrameFound = false;
 	else
 		bReferenceFrameFound = true;
 
 	m_vBitmaps.clear();
-	for (i = 0;i<tasks.m_vTasks.size();i++)
+	//for (i = 0; i < tasks.m_vTasks.size(); i++)
+	for (auto& task : tasks.m_vTasks)
 	{
-		if (tasks.m_vTasks[i].m_TaskType == PICTURETYPE_LIGHTFRAME)
+		if (task.m_TaskType == PICTURETYPE_LIGHTFRAME)
 		{
-			for (j = 0;j<tasks.m_vTasks[i].m_vBitmaps.size();j++)
+			for (auto& bitmap : task.m_vBitmaps)
 			{
-				CLightFrameInfo			lfi;
-
-				lfi.SetBitmap(tasks.m_vTasks[i].m_vBitmaps[j].m_strFileName, false, false);
+				CLightFrameInfo lfi;
+				lfi.SetBitmap(bitmap.m_strFileName, false, false);
 
 				if (lfi.IsRegistered())
 				{
-					lfi = tasks.m_vTasks[i].m_vBitmaps[j];
+					lfi = bitmap;
 					lfi.RefreshSuperPixel();
 
 					if (!m_strReferenceFrame.CompareNoCase(lfi.m_strFileName))
@@ -511,7 +498,7 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars 
 	if (bResult)
 	{
 		BilinearParameters.Offsets(m_vBitmaps[lBitmapIndice].m_fXOffset, m_vBitmaps[lBitmapIndice].m_fYOffset);
-		m_vBitmaps[lBitmapIndice].m_fAngle   = BilinearParameters.Angle(m_vBitmaps[lBitmapIndice].RenderedWidth());
+		m_vBitmaps[lBitmapIndice].m_fAngle = BilinearParameters.Angle(m_vBitmaps[lBitmapIndice].RenderedWidth());
 		m_vBitmaps[lBitmapIndice].m_BilinearParameters = BilinearParameters;
 	}
 	else if (GetTransformationType() == TT_NONE)
@@ -531,7 +518,6 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars 
 
 		STARVECTOR &		vStarsOrg = m_vBitmaps[0].m_vStars;
 		STARVECTOR &		vStarsDst = m_vBitmaps[lBitmapIndice].m_vStars;
-		int				i;
 		CMatchingStars		MatchingStars;
 
 		m_CriticalSection.Lock();
@@ -546,11 +532,11 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars 
 
 			fXRatio = (double)m_vBitmaps[lBitmapIndice].RenderedWidth()/(double)m_vBitmaps[0].RenderedWidth();
 			fYRatio = (double)m_vBitmaps[lBitmapIndice].RenderedHeight()/(double)m_vBitmaps[0].RenderedHeight();
-			for (i = 0; i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
-				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX*fXRatio, vStarsOrg[i].m_fY*fYRatio);
+			for (size_t i = 0; i < std::min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX * fXRatio, vStarsOrg[i].m_fY * fYRatio);
 		};
 		MatchingStars.ClearTarget();
-		for (i = 0; i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+		for (size_t i = 0; i < std::min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100)); i++)
 			MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 
 		MatchingStars.SetSizes(m_vBitmaps[lBitmapIndice].RenderedWidth(), m_vBitmaps[lBitmapIndice].RenderedHeight());
@@ -577,54 +563,50 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars 
 class CComputeOffsetTask : public CMultitask
 {
 private :
-	CStackingEngine *	m_pStackingEngine;
-	int				m_lLast;
+	CStackingEngine* m_pStackingEngine;
+	int m_lLast;
 
 public :
-	CComputeOffsetTask()
-	{
-        m_pStackingEngine = nullptr;
-        m_lLast = 0;
-	};
+	CComputeOffsetTask() :
+		m_pStackingEngine{ nullptr },
+		m_lLast{ 0 }
+	{}
 
 	virtual ~CComputeOffsetTask()
-	{
-	};
+	{}
 
-	void	Init(int lLast, CStackingEngine * pStackingEngine)
+	void Init(int lLast, CStackingEngine* pStackingEngine)
 	{
-		m_lLast			  = lLast;
+		m_lLast = lLast;
 		m_pStackingEngine = pStackingEngine;
 	};
 
-	virtual bool	Process();
-	virtual bool	DoTask(HANDLE hEvent);
+	virtual bool Process() override;
+	virtual bool DoTask(HANDLE hEvent) override;
 };
 
 /* ------------------------------------------------------------------- */
 
-bool	CComputeOffsetTask::Process()
+bool CComputeOffsetTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool			bStop = false;
-	CString			strText;
+	bool bStop = false;
 
 	if (m_pStackingEngine->m_pProgress)
 		m_pStackingEngine->m_pProgress->SetNrUsedProcessors(GetNrThreads());
 
-	for (int i = 1;i<m_lLast && !bStop;i++)
+	for (int i = 1; i < m_lLast && !bStop; i++)
 	{
 		if (m_pStackingEngine->m_pProgress)
 		{
+			CString strText;
 			strText.Format(IDS_COMPUTINGSTACKINGINFO, (LPCTSTR)m_pStackingEngine->m_vBitmaps[i].m_strFileName);
-			m_pStackingEngine->m_pProgress->Progress1(strText, i+1);
+			m_pStackingEngine->m_pProgress->Progress1(strText, i + 1);
 			bStop = m_pStackingEngine->m_pProgress->IsCanceled();
 		};
 
-		DWORD			dwThreadId;
-
-		dwThreadId = GetAvailableThreadId();
+		const auto dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, 0, i);
 	};
 
@@ -638,13 +620,13 @@ bool	CComputeOffsetTask::Process()
 
 /* ------------------------------------------------------------------- */
 
-bool	CComputeOffsetTask::DoTask(HANDLE hEvent)
+bool CComputeOffsetTask::DoTask(HANDLE hEvent)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool			bResult = true;
-	bool			bEnd = false;
-	MSG				msg;
+	bool bResult = true;
+	bool bEnd = false;
+	MSG	 msg;
 
 	{
 		CMatchingStars  MatchingStars;
@@ -734,38 +716,37 @@ inline bool CompareLightFrameDate (const CLightFrameInfo * plfi1, const CLightFr
 	return CompareDateTime(plfi2->m_DateTime, plfi1->m_DateTime);
 };
 
-bool	CStackingEngine::ComputeMissingCometPositions()
+bool CStackingEngine::ComputeMissingCometPositions()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = true;
+	bool bResult = true;
 
-	if (m_lNrCometStackable>=2)
+	if (m_lNrCometStackable >= 2)
 	{
 		// Add all the valid light frames to a vector
-		std::vector<CLightFrameInfo *>	vpLightFrames;
+		std::vector<CLightFrameInfo*> vpLightFrames;
 
-		for (int i = 0;i<m_vBitmaps.size();i++)
+		for (auto& bitmap : m_vBitmaps)
 		{
-			if (!m_vBitmaps[i].m_bDisabled)
-				vpLightFrames.push_back(&(m_vBitmaps[i]));
+			if (!bitmap.m_bDisabled)
+				vpLightFrames.push_back(&bitmap);
 		};
 
 		// Now sort the list by ascending date/time
 		std::sort(vpLightFrames.begin(), vpLightFrames.end(), CompareLightFrameDate);
 
-		std::vector<int>				vNewComet;
+		std::vector<int> vNewComet;
 
-		for (int i = 1;i<vpLightFrames.size()-1;i++)
+		for (size_t i = 1; !vpLightFrames.empty() && i < vpLightFrames.size() - 1; i++)
 		{
 			//if (!vpLightFrames[i]->m_bComet)
 			{
-				CLightFrameInfo *				pPreviousComet = nullptr;
-				CLightFrameInfo *				pNextComet = nullptr;
-				int							lPreviousIndex,
-												lNextIndex;
+				CLightFrameInfo* pPreviousComet = nullptr;
+				CLightFrameInfo* pNextComet = nullptr;
+				ptrdiff_t lPreviousIndex, lNextIndex;
 
-				for (int j = i-1;j>=0 && !pPreviousComet;j--)
+				for (ptrdiff_t j = i - 1; j >= 0 && pPreviousComet == nullptr; j--)
 				{
 					if (vpLightFrames[j]->m_bComet)
 					{
@@ -774,7 +755,7 @@ bool	CStackingEngine::ComputeMissingCometPositions()
 					};
 				};
 
-				for (int j = i+1;j<vpLightFrames.size() && !pNextComet;j++)
+				for (size_t j = i + 1; j < vpLightFrames.size() && pNextComet == nullptr; j++)
 				{
 					if (vpLightFrames[j]->m_bComet)
 					{
@@ -783,23 +764,23 @@ bool	CStackingEngine::ComputeMissingCometPositions()
 					};
 				};
 
-				if (pPreviousComet && pNextComet)
+				if (pPreviousComet != nullptr && pNextComet != nullptr)
 				{
 					// Try to find another previous and/or next computed comet position
 					// so that the elapsed time between the two is less than 12 hours
-					bool				bContinue = false;
+					bool bContinue = false;
 					do
 					{
-						bool			bFound = false;
-						double			fElapsed;
+						bool bFound = false;
+						double fElapsed;
 
 						bContinue = false;
-						for (int j = lPreviousIndex-1;j>=0 && !bFound;j--)
+						for (ptrdiff_t j = lPreviousIndex - 1; j >= 0 && !bFound; j--)
 						{
 							if (vpLightFrames[j]->m_bComet)
 							{
 								fElapsed = ElapsedTime(vpLightFrames[j]->m_DateTime, pNextComet->m_DateTime);
-								if (fElapsed/3600 < 12)
+								if (fElapsed / 3600 < 12)
 								{
 									bFound = true;
 									bContinue = true;
@@ -809,22 +790,21 @@ bool	CStackingEngine::ComputeMissingCometPositions()
 							};
 						};
 						bFound = false;
-						for (int j = lNextIndex+1;j<vpLightFrames.size() && !bFound;j++)
+						for (size_t j = lNextIndex + 1; j < vpLightFrames.size() && !bFound; j++)
 						{
 							if (vpLightFrames[j]->m_bComet)
 							{
 								fElapsed = ElapsedTime(pPreviousComet->m_DateTime, vpLightFrames[j]->m_DateTime);
-								if (fElapsed/3600 < 12)
+								if (fElapsed / 3600 < 12)
 								{
-									bFound     = true;
-									bContinue  = true;
+									bFound = true;
+									bContinue = true;
 									pNextComet = vpLightFrames[j];
 									lNextIndex = j;
 								};
 							};
 						};
-					}
-					while (bContinue);
+					} while (bContinue);
 
 					// Compute the comet position in the two frames
 					CPointExt			ptPreviousComet = CPointExt(pPreviousComet->m_fXComet, pPreviousComet->m_fYComet);
@@ -848,7 +828,7 @@ bool	CStackingEngine::ComputeMissingCometPositions()
 						ptCurrentComet.Y = ptPreviousComet.Y + fAdvance * (ptNextComet.Y - ptPreviousComet.Y);
 
 						// Set the comet position - already shifted
-						vNewComet.push_back(i);
+						vNewComet.push_back(static_cast<int>(i));
 						vpLightFrames[i]->m_bTransformedCometPosition = true;
 						vpLightFrames[i]->m_fXComet = ptCurrentComet.X;
 						vpLightFrames[i]->m_fYComet = ptCurrentComet.Y;
@@ -859,12 +839,13 @@ bool	CStackingEngine::ComputeMissingCometPositions()
 
 					/*CPointExt			ptTestComet = CPointExt(vpLightFrames[i]->m_fXComet, vpLightFrames[i]->m_fYComet);
 					vpLightFrames[i]->m_BilinearParameters.Transform(ptTestComet);*/
-				};
-			};
-		};
-		for (int i = 0;i<vNewComet.size();i++)
-			vpLightFrames[vNewComet[i]]->m_bComet = true;
-	};
+				}
+			}
+		}
+
+		for (const int cometIndex : vNewComet)
+			vpLightFrames[cometIndex]->m_bComet = true;
+	}
 
 	return bResult;
 };
@@ -872,46 +853,44 @@ bool	CStackingEngine::ComputeMissingCometPositions()
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::ComputeOffsets()
+bool CStackingEngine::ComputeOffsets()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = false;
-	int				i;
-	int				lTotalStacked = 1;
-	int				lNrStacked = 0;
-	CString				strText;
-	bool				bStop = false;
-	int				lLast;
+	bool bResult = false;
+	int lTotalStacked = 1;
+	int lNrStacked = 0;
+	CString strText;
+	bool bStop = false;
 
 	std::sort(m_vBitmaps.begin(), m_vBitmaps.end());
 
-	if (m_vBitmaps.size())
+	if (!m_vBitmaps.empty())
 	{
 		if (m_vBitmaps[0].m_bDisabled)
 			m_lNrStackable = 0;
 		else
-			m_lNrStackable = std::min((int)m_vBitmaps.size(), 1);
+			m_lNrStackable = std::min(static_cast<int>(m_vBitmaps.size()), 1);
 		m_lNrCometStackable = 0;
 		strText.LoadString(IDS_COMPUTINGOFFSETS);
 
-		lLast = m_vBitmaps.size()*m_fKeptPercentage/100.0;
+		const int lLast = static_cast<int>(m_vBitmaps.size() * m_fKeptPercentage / 100.0);
 		if (m_pProgress)
 			m_pProgress->Start(strText, lLast, false);
 
 		// The first bitmap is the best one
 		if (m_vBitmaps.size() > 1)
 		{
-			std::sort(m_vBitmaps[0].m_vStars.begin(), m_vBitmaps[0].m_vStars.end());
+			auto& bitmapZero = m_vBitmaps[0];
+			std::sort(bitmapZero.m_vStars.begin(), bitmapZero.m_vStars.end());
 
-			for (i = 1;i<m_vBitmaps.size();i++)
-				m_vBitmaps[i].m_bDisabled = true;
+			std::for_each(m_vBitmaps.begin() + 1, m_vBitmaps.end(), [](auto& bitmap) { bitmap.m_bDisabled = true; });
 
-			if (m_vBitmaps[0].m_bComet)
+			if (bitmapZero.m_bComet)
 				m_lNrCometStackable++;
 
-			m_StackingInfo.SetReferenceFrame(m_vBitmaps[0].m_strFileName);
-			CComputeOffsetTask		ComputeOffsetTask;
+			m_StackingInfo.SetReferenceFrame(bitmapZero.m_strFileName);
+			CComputeOffsetTask ComputeOffsetTask;
 
 			ComputeOffsetTask.Init(lLast, this);
 			ComputeOffsetTask.StartThreads();
@@ -953,20 +932,18 @@ bool	CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks & tasks)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = false;
-	int				i, j;
+	bool bResult = false;
 
-	for (i = 0;i<tasks.m_vTasks.size();i++)
+	for (CTaskInfo& LightTask : tasks.m_vTasks)
 	{
-		if (tasks.m_vTasks[i].m_TaskType == PICTURETYPE_LIGHTFRAME)
+		if (LightTask.m_TaskType == PICTURETYPE_LIGHTFRAME)
 		{
-			CTaskInfo &			LightTask = tasks.m_vTasks[i];
-			FRAMEINFOVECTOR		vNewList;
-
-			for (j = 0;j<LightTask.m_vBitmaps.size();j++)
+			FRAMEINFOVECTOR vNewList;
+			//for (j = 0; j < LightTask.m_vBitmaps.size(); j++)
+			for (const auto& bitmap : LightTask.m_vBitmaps)
 			{
-				if (IsLightFrameStackable(LightTask.m_vBitmaps[j].m_strFileName))
-					vNewList.push_back(LightTask.m_vBitmaps[j]);
+				if (IsLightFrameStackable(bitmap.m_strFileName))
+					vNewList.push_back(bitmap);
 			};
 
 			// Remove non stackable light frames from the list
@@ -974,7 +951,7 @@ bool	CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks & tasks)
 				LightTask.m_vBitmaps = vNewList;
 
 			// If the list is empty - consider that the task is done
-			if (!vNewList.size())
+			if (vNewList.empty())
 				LightTask.m_bDone = true;
 		};
 	};
@@ -1171,16 +1148,15 @@ int CStackingEngine::FindBitmapIndice(LPCTSTR szFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	int				lResult = -1;
-	int				i;
-
-	for (i = 0;i<m_vBitmaps.size() && (lResult == -1);i++)
+	for (size_t i = 0; i < m_vBitmaps.size(); i++)
 	{
-		if (!m_vBitmaps[i].m_strFileName.CompareNoCase(szFile))
-			lResult = i;
+		if (m_vBitmaps[i].m_strFileName.CompareNoCase(szFile) == 0)
+		{
+			return static_cast<int>(i);
+		}
 	};
 
-	return lResult;
+	return -1;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1190,18 +1166,17 @@ bool CStackingEngine::ComputeBitmap()
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
 
-	if (m_pMasterLight &&  m_pMasterLight->GetNrAddedBitmaps())
+	if (m_pMasterLight && m_pMasterLight->GetNrAddedBitmaps())
 	{
 		CSmartPtr<CMemoryBitmap>	pBitmap;
 
-		if (m_pProgress)
+		if (m_pProgress != nullptr)
 		{
-			CString						strText;
-			CString						strMethod;
-
+			CString strMethod;
 			FormatFromMethod(strMethod, m_pLightTask->m_Method, m_pLightTask->m_fKappa, m_pLightTask->m_lNrIterations);
 
-			strText.Format(IDS_COMPUTINGMEDIANLIGHT, (LPCTSTR)strMethod);
+			CString strText;
+			strText.Format(IDS_COMPUTINGMEDIANLIGHT, strMethod.GetString());
 
 			m_pProgress->Start(strText, 1, true);
 			m_pProgress->Progress1(strText, 0);
@@ -1209,21 +1184,22 @@ bool CStackingEngine::ComputeBitmap()
 		};
 
 		ZTRACE_RUNTIME("Compute resulting bitmap");
-		if (m_vCometShifts.size())
+		if (!m_vCometShifts.empty())
 		{
-			std::vector<int>		vImageOrder;
-
 			std::sort(m_vCometShifts.begin(), m_vCometShifts.end());
-			for (int i = 0;i<m_vCometShifts.size();i++)
-				vImageOrder.push_back(m_vCometShifts[i].m_lImageIndex);
+
+			std::vector<int> vImageOrder;
+			std::transform(m_vCometShifts.cbegin(), m_vCometShifts.cend(), std::back_inserter(vImageOrder), [](const auto& cometShift) -> int { return cometShift.m_lImageIndex; });
+/*			for (int i = 0;i<m_vCometShifts.size();i++)
+				vImageOrder.push_back(m_vCometShifts[i].m_lImageIndex); */
 			m_pMasterLight->SetImageOrder(vImageOrder);
 
-			double					fX1 = m_vCometShifts[0].m_fXShift,
-									fY1 = m_vCometShifts[0].m_fYShift,
-									fX2 = m_vCometShifts[m_vCometShifts.size()-1].m_fXShift,
-									fY2 = m_vCometShifts[m_vCometShifts.size()-1].m_fYShift;
-			m_fStarTrailsAngle = atan2(fY2-fY1, fX2-fX1);
-		};
+			const double	fX1 = m_vCometShifts.cbegin()->m_fXShift, // First one
+							fY1 = m_vCometShifts.cbegin()->m_fYShift,
+							fX2 = m_vCometShifts.crbegin()->m_fXShift, // Last one
+							fY2 = m_vCometShifts.crbegin()->m_fYShift;
+			m_fStarTrailsAngle = atan2(fY2 - fY1, fX2 - fX1);
+		}
 		bResult = m_pMasterLight->GetResult(&pBitmap, m_pProgress);
 
 		if (m_pProgress)
@@ -1248,14 +1224,11 @@ bool	CStackingEngine::AdjustEntropyCoverage()
 	{
 		ZTRACE_RUNTIME("Adjust Entropy Coverage");
 
-		int		i, j;
-		bool		bColor;
+		const bool bColor = !m_pEntropyCoverage->IsMonochrome();
 
-		bColor = !m_pEntropyCoverage->IsMonochrome();
-
-		for (j = 0;j<m_pEntropyCoverage->Height();j++)
+		for (int j = 0; j < m_pEntropyCoverage->Height(); j++)
 		{
-			for (i = 0;i<m_pEntropyCoverage->Width();i++)
+			for (int i = 0; i < m_pEntropyCoverage->Width(); i++)
 			{
 				if (bColor)
 				{
@@ -1303,26 +1276,24 @@ bool	CStackingEngine::AdjustBayerDrizzleCoverage()
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
 
-	if (m_vPixelTransforms.size())
+	if (!m_vPixelTransforms.empty())
 	{
-
 		ZTRACE_RUNTIME("Adjust Bayer Drizzle Coverage");
 
-		int		i, j, k,
-					lNrBitmaps;
-		double		fMaxCoverage = 0;
-		int		lProgress = 0;
-		CString		strText;
-		CSmartPtr<C96BitFloatColorBitmap>	pCover;
+		int i, j, k;
+		double fMaxCoverage = 0;
+		int lProgress = 0;
+		CString strText;
+		CSmartPtr<C96BitFloatColorBitmap> pCover;
 
 		pCover.Attach(new C96BitFloatColorBitmap());
 		pCover->Init(m_rcResult.Width(), m_rcResult.Height());
 
 		strText.LoadString(IDS_STACKING_COMPUTINGADJUSTMENT);
 		if (m_pProgress)
-			m_pProgress->Start(strText, (int)m_vPixelTransforms.size(), false);
+			m_pProgress->Start(strText, static_cast<int>(m_vPixelTransforms.size()), false);
 
-		for (lNrBitmaps = 0;lNrBitmaps<m_vPixelTransforms.size();lNrBitmaps++)
+		for (int lNrBitmaps = 0; lNrBitmaps < m_vPixelTransforms.size(); lNrBitmaps++)
 		{
 			CPixelTransform	&	PixTransform = m_vPixelTransforms[lNrBitmaps];
 
@@ -1330,7 +1301,6 @@ bool	CStackingEngine::AdjustBayerDrizzleCoverage()
 
 			if (m_pProgress)
 			{
-
 				strText.Format(IDS_COMPUTINGADJUSTMENT, lNrBitmaps+1, m_vPixelTransforms.size());
 				m_pProgress->Progress1(strText, lNrBitmaps+1);
 				m_pProgress->Start2(_T(" "), m_rcResult.Width() * m_rcResult.Height());
@@ -1782,8 +1752,8 @@ public :
 		m_pProgress = pProgress;
 	};
 
-	virtual bool	DoTask(HANDLE hEvent);
-	virtual bool	Process();
+	virtual bool DoTask(HANDLE hEvent) override;
+	virtual bool Process() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1794,11 +1764,10 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 
 	bool					bResult = true;
 
-	int					i, j;
-	bool					bEnd = false;
-	MSG						msg;
-	int					lWidth = m_pBitmap->Width();
-	PIXELDISPATCHVECTOR		vPixels;
+	bool bEnd = false;
+	MSG msg;
+	const int lWidth = m_pBitmap->Width();
+	PIXELDISPATCHVECTOR vPixels;
 
 	vPixels.reserve(16);
 	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
@@ -1814,31 +1783,26 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 			avxStacking.init(msg.wParam, msg.wParam + msg.lParam);
 			if (avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_lPixelSizeMultiplier) != 0)
 			{
-				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
+				for (int j = static_cast<int>(msg.wParam); j < static_cast<int>(msg.wParam + msg.lParam); j++)
 				{
-					for (i = 0; i < lWidth; i++)
+					for (int i = 0; i < lWidth; i++)
 					{
 						CPointExt	pt(i, j);
 						CPointExt	ptOut;
 
 						ptOut = m_PixTransform.Transform(pt);
 
-						COLORREF16		crColor;
-						float			Red,
-							Green,
-							Blue;
-						double			fRedEntropy = 1.0,
-							fGreenEntropy = 1.0,
-							fBlueEntropy = 1.0;
+						COLORREF16 crColor;
+						double fRedEntropy = 1.0, fGreenEntropy = 1.0, fBlueEntropy = 1.0;
 
 						if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
 							m_EntropyWindow.GetPixel(i, j, fRedEntropy, fGreenEntropy, fBlueEntropy, crColor);
 						else
 							m_pBitmap->GetPixel16(i, j, crColor);
 
-						Red = crColor.red;
-						Green = crColor.green;
-						Blue = crColor.blue;
+						float Red = crColor.red;
+						float Green = crColor.green;
+						float Blue = crColor.blue;
 
 						if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 							m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
@@ -1848,10 +1812,8 @@ bool	CStackTask::DoTask(HANDLE hEvent)
 							vPixels.resize(0);
 							ComputePixelDispatch(ptOut, m_lPixelSizeMultiplier, vPixels);
 
-							for (int k = 0; k < vPixels.size(); k++)
+							for (CPixelDispatch& Pixel : vPixels)
 							{
-								CPixelDispatch& Pixel = vPixels[k];
-
 								// For each plane adjust the values
 								if (Pixel.m_lX >= 0 && Pixel.m_lX < m_rcResult.Width() &&
 									Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.Height())
@@ -1925,28 +1887,24 @@ bool	CStackTask::Process()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = true;
-	int				lHeight = m_pBitmap->Height();
-	int				i = 0;
-	int				lStep;
-	int				lRemaining;
+	bool bResult = true;
+	const int lHeight = m_pBitmap->Height();
+	int i = 0;
 
 	if (m_pProgress)
 		m_pProgress->SetNrUsedProcessors(GetNrThreads());
 
-	lStep		= std::max(1, lHeight / 50);
-	lRemaining	= lHeight;
+	const int lStep = std::max(1, lHeight / 50);
+	int lRemaining	= lHeight;
 
-	while (i<lHeight)
+	while (i < lHeight)
 	{
-		int			lAdd = min(lStep, lRemaining);
-		DWORD			dwThreadId;
-
-		dwThreadId = GetAvailableThreadId();
+		const int lAdd = std::min(lStep, lRemaining);
+		const auto dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
-		i			+=lAdd;
-		lRemaining	-= lAdd;
+		i += lAdd;
+		lRemaining -= lAdd;
 		if (m_pProgress)
 			m_pProgress->Progress2(nullptr, i);
 	};
@@ -1962,25 +1920,24 @@ bool	CStackTask::Process()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bool bColor, CMultiBitmap ** ppMultiBitmap)
+bool	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap* pInBitmap, bool bColor, CMultiBitmap** ppMultiBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool						bResult = false;
-	CSmartPtr<CMultiBitmap>		pMultiBitmap;
+	bool bResult = false;
 
-	C24BitColorBitmap * p24BitColorBitmap = dynamic_cast<C24BitColorBitmap *>(pInBitmap);
-	C48BitColorBitmap * p48BitColorBitmap = dynamic_cast<C48BitColorBitmap *>(pInBitmap);
-	C96BitColorBitmap * p96BitColorBitmap = dynamic_cast<C96BitColorBitmap *>(pInBitmap);
-	C96BitFloatColorBitmap * p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap *>(pInBitmap);
+	C24BitColorBitmap* p24BitColorBitmap = dynamic_cast<C24BitColorBitmap*>(pInBitmap);
+	C48BitColorBitmap* p48BitColorBitmap = dynamic_cast<C48BitColorBitmap*>(pInBitmap);
+	C96BitColorBitmap* p96BitColorBitmap = dynamic_cast<C96BitColorBitmap*>(pInBitmap);
+	C96BitFloatColorBitmap* p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap*>(pInBitmap);
 
-	CGrayBitmap *		pGrayBitmap  = dynamic_cast<CGrayBitmap *>(pInBitmap);
-	C8BitGrayBitmap *	p8BitGrayBitmap  = dynamic_cast<C8BitGrayBitmap *>(pInBitmap);
-	C16BitGrayBitmap *	p16BitGrayBitmap  = dynamic_cast<C16BitGrayBitmap *>(pInBitmap);
-	C32BitGrayBitmap *	p32BitGrayBitmap  = dynamic_cast<C32BitGrayBitmap *>(pInBitmap);
-	C32BitFloatGrayBitmap * p32BitFloatGrayBitmap  = dynamic_cast<C32BitFloatGrayBitmap *>(pInBitmap);
+	CGrayBitmap* pGrayBitmap = dynamic_cast<CGrayBitmap*>(pInBitmap);
+	C8BitGrayBitmap* p8BitGrayBitmap = dynamic_cast<C8BitGrayBitmap*>(pInBitmap);
+	C16BitGrayBitmap* p16BitGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
+	C32BitGrayBitmap* p32BitGrayBitmap = dynamic_cast<C32BitGrayBitmap*>(pInBitmap);
+	C32BitFloatGrayBitmap* p32BitFloatGrayBitmap = dynamic_cast<C32BitFloatGrayBitmap*>(pInBitmap);
 
-
+	CSmartPtr<CMultiBitmap> pMultiBitmap;
 	if (bColor)
 	{
 		if (p96BitColorBitmap || p32BitGrayBitmap)
@@ -1988,7 +1945,7 @@ bool	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bo
 		else if (p96BitFloatColorBitmap || p32BitFloatGrayBitmap)
 			pMultiBitmap.Attach(new CColorMultiBitmapT<float, float>);
 		else
-			pMultiBitmap.Attach(new CColorMultiBitmapT<WORD, float>);
+			pMultiBitmap.Attach(new CColorMultiBitmapT<std::uint16_t, float>);
 	}
 	else
 	{
@@ -1997,7 +1954,7 @@ bool	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bo
 		else if (p96BitFloatColorBitmap || p32BitFloatGrayBitmap)
 			pMultiBitmap.Attach(new CGrayMultiBitmapT<float, float>);
 		else
-			pMultiBitmap.Attach(new CGrayMultiBitmapT<WORD, float>);
+			pMultiBitmap.Attach(new CGrayMultiBitmapT<std::uint16_t, float>);
 	};
 
 	bResult = pMultiBitmap.CopyTo(ppMultiBitmap);
@@ -2007,30 +1964,28 @@ bool	CStackingEngine::CreateMasterLightMultiBitmap(CMemoryBitmap * pInBitmap, bo
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform & PixTransform, double fExposure, bool bComet)
+bool	CStackingEngine::StackLightFrame(CMemoryBitmap* pInBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool						bResult = false;
-	int						lWidth,
-								lHeight;
-	bool						bColor = true;
-	bool						bComputeCoverage = false;
-	CString						strStart2;
-	CString						strText;
-	bool						bFirst = !m_lNrStacked;
-	bool						bEntropyCoverage = false;
-	int						i, j;
-	CSmartPtr<CMemoryBitmap>	pBitmap;
+	bool bResult = false;
+	bool bColor = true;
+	bool bComputeCoverage = false;
+	CString strStart2;
+	CString strText;
+	bool bFirst = !m_lNrStacked;
+	bool bEntropyCoverage = false;
+	int i, j;
+	CSmartPtr<CMemoryBitmap> pBitmap;
 
 	// Two cases : Bayer Drizzle or not Bayer Drizzle - that is the question
-	if (pInBitmap && m_pLightTask)
+	if (pInBitmap != nullptr && m_pLightTask != nullptr)
 	{
 		if (m_pProgress)
 			m_pProgress->GetStart2Text(strStart2);
 
-		C16BitGrayBitmap *	pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pInBitmap);
-		if (pGrayBitmap && (pGrayBitmap->GetCFATransformation() == CFAT_AHD))
+		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
+		if (pGrayBitmap != nullptr && pGrayBitmap->GetCFATransformation() == CFAT_AHD)
 		{
 			// Start by demosaicing the input bitmap
 			if (m_pProgress)
@@ -2045,24 +2000,22 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 		else
 			pBitmap = pInBitmap;
 
-		CStackTask		StackTask;
-
+		CStackTask StackTask;
 		StackTask.Init(pBitmap, m_pProgress);
 
 		// Create the output bitmap
-		lWidth = pBitmap->Width();
-		lHeight = pBitmap->Height();
+		const int lHeight = pBitmap->Height();
 
 		bColor = !pBitmap->IsMonochrome() || pBitmap->IsCFA();
 
-		if (pGrayBitmap && (m_pLightTask->m_Method == MBP_FASTAVERAGE))
+		if (pGrayBitmap != nullptr && m_pLightTask->m_Method == MBP_FASTAVERAGE)
 		{
 			if (pGrayBitmap->GetCFATransformation() == CFAT_RAWBAYER)
 			{
 				// A coverage is needed with Bayer Drizzle
 				m_InputCFAType = pGrayBitmap->GetCFAType();
 				m_vPixelTransforms.push_back(PixTransform);
-			};
+			}
 		}
 		else if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
 		{
@@ -2078,12 +2031,11 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 			};
 		};
 
-
 		// Compute entropy window info
 
 		if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
 		{
-			if (m_pProgress)
+			if (m_pProgress != nullptr)
 			{
 				strText.LoadString(IDS_COMPUTINGENTROPY);
 				m_pProgress->Start2(strText, 0);
@@ -2095,7 +2047,7 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 		// information
 		if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 		{
-			if (m_pProgress)
+			if (m_pProgress != nullptr)
 			{
 				strText.LoadString(IDS_COMPUTINGBACKGROUNDCALIBRATION);
 				m_pProgress->Start2(strText, 0);
@@ -2151,7 +2103,7 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap * pInBitmap, CPixelTransform
 
 		if (StackTask.m_pTempBitmap)
 		{
-			int				lProgress = 0;
+			int lProgress = 0;
 
 			if (m_pProgress)
 				m_pProgress->Start2(strStart2, lHeight);
@@ -2307,7 +2259,6 @@ bool	CStackingEngine::StackAll(CAllStackingTasks & tasks, CMemoryBitmap ** ppBit
 	m_vCometShifts.clear();
 	try
 	{
-
 		switch (tasks.GetStackingMode())
 		{
 		case SM_MOSAIC:
@@ -2963,9 +2914,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks & tasks, LPCTSTR szOutp
 			fprintf(hFile, "%s<br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 
 			// Drizzle ?
-			DWORD				dwDrizzle;
-
-			dwDrizzle = tasks.GetPixelSizeMultiplier();
+			const int dwDrizzle = tasks.GetPixelSizeMultiplier();
 			if (dwDrizzle > 1)
 			{
 				strText.Format(IDS_RECAP_DRIZZLE, dwDrizzle);

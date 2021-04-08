@@ -1,27 +1,25 @@
 #ifndef __MULTITASK_H__
 #define __MULTITASK_H__
 
-const DWORD				WM_MT_PROCESS	= WM_USER+1;
-const DWORD				WM_MT_STOP		= WM_USER+2;
+constexpr UINT WM_MT_PROCESS	= WM_USER + 1;
+constexpr UINT WM_MT_STOP		= WM_USER + 2;
 
 class CMultitask
 {
-protected :
+protected:
 	CComAutoCriticalSection	m_CriticalSection;
 	std::vector<HANDLE>		m_vThreads;
 	std::vector<DWORD>		m_vThreadIds;
 	std::vector<HANDLE>		m_vEvents;
 
-protected :
+protected:
 	int GetNrThreads()
 	{
 		return static_cast<int>(m_vThreads.size());
 	};
 
-public :
-	CMultitask()
-	{
-	};
+public:
+	CMultitask() = default;
 
 	virtual ~CMultitask()
 	{
@@ -35,26 +33,23 @@ public :
 	static bool GetUseSimd();
 	static void SetUseSimd(const bool bUseSimd);
 
-	HANDLE	GetThreadEvent(DWORD dwThreadId)
+	HANDLE GetThreadEvent(DWORD dwThreadId)
 	{
-		HANDLE			hResult = nullptr;
-
-		for (size_t i = 0;(i<m_vThreadIds.size()) && !hResult;i++)
+		for (size_t i = 0; i < m_vThreadIds.size(); i++)
 		{
 			if (dwThreadId == m_vThreadIds[i])
-				hResult = m_vEvents[i];
+				return m_vEvents[i];
 		};
-
-		return hResult;
+		return nullptr;
 	};
 
-	void	CloseAllThreads();
-	void	StartThreads(int lNrThreads = 0);
-	HANDLE	GetAvailableThread();
-	DWORD	GetAvailableThreadId();
+	void CloseAllThreads();
+	void StartThreads(int lNrThreads = 0);
+	HANDLE GetAvailableThread();
+	DWORD GetAvailableThreadId();
 
-	virtual bool	DoTask(HANDLE hEvent)   = 0;
-	virtual bool	Process() = 0;
+	virtual bool DoTask(HANDLE hEvent) = 0;
+	virtual bool Process() = 0;
 };
 
 #endif // __MULTITASK_H__

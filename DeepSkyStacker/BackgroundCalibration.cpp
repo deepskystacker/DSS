@@ -152,13 +152,11 @@ bool	CBackgroundCalibrationTask::Process()
 
 	while (i<lHeight)
 	{
-		int			lAdd = min(lStep, lRemaining);
-		DWORD			dwThreadId;
-
-		dwThreadId = GetAvailableThreadId();
+		const int lAdd = std::min(lStep, lRemaining);
+		const auto dwThreadId = GetAvailableThreadId();
 		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
 
-		i			+=lAdd;
+		i			+= lAdd;
 		lRemaining	-= lAdd;
 		if (m_pProgress)
 			m_pProgress->Progress2(nullptr, i);

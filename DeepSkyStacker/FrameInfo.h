@@ -221,8 +221,8 @@ inline void	ExposureToString(double fExposure, CString & strText)
 		if (fExposure >= 1)
 		{
 			lExposure = fExposure;
-			DWORD			dwRemainingTime = lExposure;
-			DWORD			dwHour,
+			std::uint32_t	dwRemainingTime = lExposure;
+			std::uint32_t	dwHour,
 							dwMin,
 							dwSec;
 

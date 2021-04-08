@@ -138,9 +138,7 @@ inline bool	CAHDTask<TType>::Process()
 	{
 		for (x= 0;x<lWidth;x+=AHDWS-4)
 		{
-			DWORD			dwThreadId;
-
-			dwThreadId = GetAvailableThreadId();
+			const auto dwThreadId = GetAvailableThreadId();
 			PostThreadMessage(dwThreadId, WM_MT_PROCESS, x, y);
 
 			lNrWindows++;

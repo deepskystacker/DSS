@@ -1210,11 +1210,11 @@ typedef enum TRANSFORMATIONTYPE
 	TT_BICUBIC		= 3,
 	TT_NONE			= 4,
 	TT_LAST			= 5
-}TRANSFORMATIONTYPE;
+} TRANSFORMATIONTYPE;
 
 class CBilinearParameters
 {
-public :
+public:
 	TRANSFORMATIONTYPE		Type;
 	double					a0, a1, a2, a3;
 	double					a4, a5, a6, a7, a8;
@@ -1223,53 +1223,10 @@ public :
 	double					b4, b5, b6, b7, b8;
 	double					b9, b10, b11, b12, b13, b14, b15;
 
-	double					fXWidth,
-							fYWidth;
+	double					fXWidth, fYWidth;
 
-private :
-	void	CopyFrom(const CBilinearParameters & bp)
-	{
-		Type    = bp.Type;
-		a0 = bp.a0;
-		a1 = bp.a1;
-		a2 = bp.a2;
-		a3 = bp.a3;
-		a4 = bp.a4;
-		a5 = bp.a5;
-		a6 = bp.a6;
-		a7 = bp.a7;
-		a8 = bp.a8;
-		a9 = bp.a9;
-		a10 = bp.a10;
-		a11 = bp.a11;
-		a12 = bp.a12;
-		a13 = bp.a13;
-		a14 = bp.a14;
-		a15 = bp.a15;
-
-		b0 = bp.b0;
-		b1 = bp.b1;
-		b2 = bp.b2;
-		b3 = bp.b3;
-		b4 = bp.b4;
-		b5 = bp.b5;
-		b6 = bp.b6;
-		b7 = bp.b7;
-		b8 = bp.b8;
-		b9 = bp.b9;
-		b10 = bp.b10;
-		b11 = bp.b11;
-		b12 = bp.b12;
-		b13 = bp.b13;
-		b14 = bp.b14;
-		b15 = bp.b15;
-
-		fXWidth = bp.fXWidth;
-		fYWidth = bp.fYWidth;
-	};
-
-private :
-	bool	GetNextParameter(CString & strParameters, double & fValue)
+private:
+	bool GetNextParameter(CString& strParameters, double& fValue) const
 	{
 		bool			bResult = false;
 		int				nPos;
@@ -1278,13 +1235,13 @@ private :
 		if (strParameters.GetLength())
 		{
 			nPos = strParameters.Find(_T(","));
-			if (nPos>=0)
+			if (nPos >= 0)
 				strValue = strParameters.Left(nPos);
 			else
 				strValue = strParameters;
 
 			fValue = _ttof((LPCTSTR)strValue);	// Change _ttof to _ttof for Unicode
-			strParameters = strParameters.Right(std::max(0, strParameters.GetLength()-strValue.GetLength()-1));
+			strParameters = strParameters.Right(std::max(0, strParameters.GetLength() - strValue.GetLength() - 1));
 			bResult = true;
 		};
 
@@ -1295,20 +1252,13 @@ public :
 	CBilinearParameters()
 	{
 		Clear();
-	};
+	}
 
-	CBilinearParameters(const CBilinearParameters & bp)
-	{
-		CopyFrom(bp);
-	};
+	CBilinearParameters(const CBilinearParameters& bp) = default;
 
-	const CBilinearParameters & operator = (const CBilinearParameters & bp)
-	{
-		CopyFrom(bp);
-		return (*this);
-	};
+	CBilinearParameters& operator=(const CBilinearParameters& bp) = default;
 
-	void	Clear()
+	void Clear()
 	{
 		Type = TT_BILINEAR;
 		a0 = a1 = a2 = a3 = a4 = a5 = a6 = a7 = a8 = 0.0;
@@ -1319,9 +1269,9 @@ public :
 		b2 = 1.0;	// to have y' = y
 
 		fXWidth = fYWidth = 1.0;
-	};
+	}
 
-	void	ToText(CString & strText)
+	void ToText(CString& strText) const
 	{
 		if (Type == TT_NONE)
 		{
@@ -1362,9 +1312,9 @@ public :
 										b0, b1, b2, b3,
 										fXWidth, fYWidth);
 		};
-	};
+	}
 
-	bool	FromText(LPCTSTR szText)
+	bool FromText(LPCTSTR szText)
 	{
 		bool			bResult = false;
 		CString			strText = szText;
@@ -1466,11 +1416,11 @@ public :
 		};
 
 		return bResult;
-	};
+	}
 
-	CPointExt Transform(const CPointExt & pt) const
+	CPointExt Transform(const CPointExt& pt) const
 	{
-		CPointExt	ptResult;
+		CPointExt ptResult;
 
 		if (Type == TT_BICUBIC)
 		{
@@ -1513,9 +1463,9 @@ public :
 		ptResult.Y *= fYWidth;
 
 		return ptResult;
-	};
+	}
 
-	double	Angle(int lWidth) const
+	double Angle(int lWidth) const
 	{
 		double		fAngle;
 		CPointExt	pt1 (0, 0),
@@ -1527,15 +1477,15 @@ public :
 		fAngle = atan2(pt2.Y - pt1.Y, pt2.X - pt1.X);
 
 		return fAngle;
-	};
+	}
 
-	void	Offsets(double & dX, double & dY)
+	void Offsets(double& dX, double& dY) const
 	{
 		dX = a0 * fXWidth;
 		dY = b0 * fYWidth;
-	};
+	}
 
-	void	Footprint(CPointExt & pt1, CPointExt & pt2, CPointExt & pt3, CPointExt & pt4)
+	void Footprint(CPointExt& pt1, CPointExt& pt2, CPointExt& pt3, CPointExt& pt4) const
 	{
 		pt1.X = pt1.Y = 0;
 		pt2.X = fXWidth;	pt2.Y = 0;
@@ -1546,7 +1496,7 @@ public :
 		pt2 = Transform(pt2);
 		pt3 = Transform(pt3);
 		pt4 = Transform(pt4);
-	};
+	}
 };
 
 #endif // __DSSTOOLS_H__

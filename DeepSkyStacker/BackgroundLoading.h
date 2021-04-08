@@ -7,8 +7,8 @@
 #include "DSSProgress.h"
 #include "BitmapExt.h"
 
-const	DWORD					MAXIMAGESINCACHE		 = 2;
-const	DWORD					WM_BACKGROUNDIMAGELOADED = (WM_USER+100);
+constexpr size_t MAXIMAGESINCACHE = 2;
+constexpr UINT WM_BACKGROUNDIMAGELOADED = WM_USER + 100;
 
 class CLoadedImage
 {
@@ -71,7 +71,7 @@ typedef	LOADEDIMAGEVECTOR::iterator			LOADEDIMAGEITERATOR;
 
 class CBackgroundLoading
 {
-private :
+private:
 	CComAutoCriticalSection	m_CriticalSection;
 	LOADEDIMAGEVECTOR		m_vLoadedImages;
 	CString					m_strToLoad;
@@ -80,19 +80,19 @@ private :
 	HANDLE					m_hEvent;
 	HWND					m_hWnd;
 
-private :
+private:
 	void	CloseThread();
 	void	LoadImageInBackground(LPCTSTR szImage);
 	void	LoadCurrentImage();
 
-public :
+public:
 	CBackgroundLoading();
 	virtual ~CBackgroundLoading();
 
 	void	SetWindow(HWND hWnd)
 	{
 		m_hWnd = hWnd;
-	};
+	}
 
 	void	ClearList();
 	void	BackgroundLoad();

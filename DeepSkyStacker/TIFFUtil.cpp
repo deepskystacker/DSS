@@ -76,9 +76,8 @@ bool CTIFFReader::Open()
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
 	QSettings		settings;
-	DWORD			dwSkipExifInfo = 0;
 
-	dwSkipExifInfo = settings.value("SkipTIFFExifInfo", uint(0)).toUInt();
+	const auto dwSkipExifInfo = settings.value("SkipTIFFExifInfo", uint(0)).toUInt();
 
 	//
 	// Quietly attempt to open the putative TIFF file 
@@ -320,8 +319,8 @@ bool CTIFFReader::Read()
 				m_pProgress->Progress2(nullptr, (this->h / 2 * i) / stripCount);
 		}
 
-		BYTE* byteBuff = buffer.get();
-		WORD* shortBuff = reinterpret_cast<WORD*>(byteBuff);
+		std::uint8_t* byteBuff = buffer.get();
+		std::uint16_t* shortBuff = reinterpret_cast<std::uint16_t*>(byteBuff);
 		std::uint32_t* u32Buff = reinterpret_cast<std::uint32_t*>(byteBuff);
 		float* floatBuff = reinterpret_cast<float*>(byteBuff);
 
@@ -335,7 +334,7 @@ bool CTIFFReader::Read()
 		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const auto& function) -> void
 		{
 			int progressCounter = 0;
-#pragma omp parallel for default(none) schedule(dynamic, 10) if (CMultitask::GetNrProcessors(false) - 1) // GetNrProcessors(false) returns 1, if user selected single-thread.
+#pragma omp parallel for default(none) schedule(dynamic, 10) if(CMultitask::GetNrProcessors(false) - 1) // GetNrProcessors(false) returns 1, if user selected single-thread.
 			for (int row = 0; row < height; ++row)
 			{
 				for (int col = 0; col < width; ++col)
@@ -1094,9 +1093,9 @@ public :
 
 	virtual bool Close() { return OnClose(); };
 
-	virtual bool	OnOpen();
-	void	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
-	virtual bool	OnClose();
+	virtual bool OnOpen() override;
+	virtual void OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
