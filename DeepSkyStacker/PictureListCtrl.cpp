@@ -1138,7 +1138,7 @@ void CPictureListCtrl::CopyToClipboard()
 		CString		strItem;
 
 		if (j)
-			strClipboard += "\t";
+			strClipboard += _T("\t)	";
 		hdrItem.mask = HDI_TEXT;
 		hdrItem.cchTextMax = sizeof(szItem)/sizeof(TCHAR);
 		hdrItem.pszText    = szItem;
@@ -1148,14 +1148,14 @@ void CPictureListCtrl::CopyToClipboard()
 	};
 	for (i = 0;i<GetItemCount();i++)
 	{
-		strClipboard += "\n";
+		strClipboard += _T("\n");
 		for (j = 0;j<GetColumnCount();j++)
 		{
 			CString			strSubItem;
 
 			strSubItem = GetItemText(i, j);
 			if (j)
-				strClipboard+="\t";
+				strClipboard+=_T("\t");
 			strClipboard += strSubItem;
 		};
 	};
@@ -1169,7 +1169,7 @@ void CPictureListCtrl::CopyToClipboard()
 
 		hMem = GlobalAlloc(GMEM_MOVEABLE | GMEM_DDESHARE, strClipboard.GetLength()+1);
 		lpMem = (LPVOID)GlobalLock(hMem);
-		memcpy(lpMem, (LPCTSTR)strClipboard, strClipboard.GetLength()+1);
+		memcpy(lpMem, CT2A(strClipboard), strClipboard.GetLength()+1);
 		GlobalUnlock(hMem);
 		EmptyClipboard();
 		SetClipboardData(CF_TEXT, hMem);
