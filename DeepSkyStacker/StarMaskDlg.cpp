@@ -274,34 +274,27 @@ void CStarMaskDlg::OnOK()
 	if (AskOutputFile())
 	{
 		QSettings			settings;
-		DWORD				dwStarShape = 0;
-		bool				bHotPixels = 0;
-		DWORD				dwThreshold = 10;
-		DWORD				dwPercent = 100;
-		DWORD				dwPixel = 0;
-		DWORD				dwMinSize = 2;
-		DWORD				dwMaxSize = 25;
 
-		dwStarShape = m_StarShape.GetCurSel();
-		settings.setValue("StarMask/StarShape", (uint)dwStarShape);
+		const auto dwStarShape = m_StarShape.GetCurSel();
+		settings.setValue("StarMask/StarShape", static_cast<uint>(dwStarShape));
 
-		bHotPixels = m_HotPixels.GetCheck() ? 1 : 0;
+		const bool bHotPixels = m_HotPixels.GetCheck() ? 1 : 0;
 		settings.setValue("StarMask/DetectHotPixels", bHotPixels);
 
-		dwThreshold = m_StarThreshold.GetPos();
-		settings.setValue("StarMask/DetectionThreshold", (uint)dwThreshold);
+		const auto dwThreshold = m_StarThreshold.GetPos();
+		settings.setValue("StarMask/DetectionThreshold", static_cast<uint>(dwThreshold));
 
-		dwPercent = m_Percent.GetPos();
-		settings.setValue("StarMask/PercentRadius", (uint)dwPercent);
+		const auto dwPercent = m_Percent.GetPos();
+		settings.setValue("StarMask/PercentRadius", static_cast<uint>(dwPercent));
 
-		dwPixel = m_Pixels.GetPos();
-		settings.setValue("StarMask/PixelIncrease", (uint)dwPixel);
+		const auto dwPixel = m_Pixels.GetPos();
+		settings.setValue("StarMask/PixelIncrease", static_cast<uint>(dwPixel));
 
-		dwMinSize = m_MinSize.GetPos();
-		settings.setValue("StarMask/MinSize", (uint)dwMinSize);
+		const auto dwMinSize = m_MinSize.GetPos();
+		settings.setValue("StarMask/MinSize", static_cast<uint>(dwMinSize));
 
-		dwMaxSize = m_MaxSize.GetPos();
-		settings.setValue("StarMask/MaxSize", (uint)dwMaxSize);
+		const auto dwMaxSize = m_MaxSize.GetPos();
+		settings.setValue("StarMask/MaxSize", static_cast<uint>(dwMaxSize));
 
 		CDialog::OnOK();
 	};

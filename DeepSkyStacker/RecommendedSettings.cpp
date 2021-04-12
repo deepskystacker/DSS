@@ -431,7 +431,7 @@ static void AddModdedDSLR(RECOMMENDATIONVECTOR & vRecommendations, bool bFITS)
 
 /* ------------------------------------------------------------------- */
 
-static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrLightFrames)
+static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, int lNrLightFrames)
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
@@ -483,7 +483,7 @@ static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, LONG lNr
 
 /* ------------------------------------------------------------------- */
 
-static void AddLightMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddLightMethod(RECOMMENDATIONVECTOR & vRecommendations, int lNrFrames)
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
@@ -533,7 +533,7 @@ static void AddLightMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFram
 
 /* ------------------------------------------------------------------- */
 
-static void AddDarkMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddDarkMethod(RECOMMENDATIONVECTOR & vRecommendations, int lNrFrames)
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
@@ -565,7 +565,7 @@ static void AddDarkMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrame
 
 /* ------------------------------------------------------------------- */
 
-static void AddBiasMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddBiasMethod(RECOMMENDATIONVECTOR & vRecommendations, int lNrFrames)
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
@@ -597,7 +597,7 @@ static void AddBiasMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrame
 
 /* ------------------------------------------------------------------- */
 
-static void AddFlatMethod(RECOMMENDATIONVECTOR & vRecommendations, LONG lNrFrames)
+static void AddFlatMethod(RECOMMENDATIONVECTOR & vRecommendations, int lNrFrames)
 {
 	RecommendationItem			ri;
 	Recommendation				rec;

@@ -161,7 +161,7 @@ SAVEEDITCHANGESMODE	GetSaveEditMode()
 
 /* ------------------------------------------------------------------- */
 
-LONG	AskSaveEditChangesMode()
+int AskSaveEditChangesMode()
 {
 	QSettings settings;
 
