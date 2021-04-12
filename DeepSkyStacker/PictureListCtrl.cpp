@@ -1138,7 +1138,7 @@ void CPictureListCtrl::CopyToClipboard()
 		CString		strItem;
 
 		if (j)
-			strClipboard += _T("\t)	";
+			strClipboard += _T("\t");
 		hdrItem.mask = HDI_TEXT;
 		hdrItem.cchTextMax = sizeof(szItem)/sizeof(TCHAR);
 		hdrItem.pszText    = szItem;
