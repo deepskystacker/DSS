@@ -192,7 +192,7 @@ bool	CBackgroundCalibrationTask::Process()
 
 /* ------------------------------------------------------------------- */
 
-void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitmap, bool bFirst, CDSSProgress * pProgress)
+void CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitmap, bool bFirst, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CBackgroundCalibrationTask		task;
@@ -208,53 +208,6 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 	task.StartThreads();
 	task.Process();
 
-/*
-	int				i, j;
-	std::vector<int>	vRedHisto;
-	std::vector<int>	vGreenHisto;
-	std::vector<int>	vBlueHisto;
-
-	ZTRACE_RUNTIME("Compute Background Calibration\n");
-
-
-
-	vRedHisto.resize((int)MAXWORD+1);
-	vGreenHisto.resize((int)MAXWORD+1);
-	vBlueHisto.resize((int)MAXWORD+1);
-
-	if (pProgress)
-		pProgress->Start2(nullptr, pBitmap->Height());
-
-	for (j = 0;j<pBitmap->Height();j++)
-	{
-		for (i = 0;i<pBitmap->Width();i++)
-		{
-			COLORREF16		crColor;
-			double			fRed, fGreen, fBlue;
-
-			pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-			fRed   *= m_fMultiplier * 256.0;
-			fGreen *= m_fMultiplier * 256.0;
-			fBlue  *= m_fMultiplier * 256.0;
-
-			crColor.red = min(fRed, MAXWORD);
-			crColor.blue = min(fBlue, MAXWORD);
-			crColor.green = min(fGreen, MAXWORD);
-
-			//crColor = pBitmap->GetPixel16(i, j);
-
-			vRedHisto[crColor.red]++;
-			vGreenHisto[crColor.green]++;
-			vBlueHisto[crColor.blue]++;
-			m_fSrcRedMax	= max(m_fSrcRedMax, crColor.red);
-			m_fSrcGreenMax	= max(m_fSrcGreenMax, crColor.green);
-			m_fSrcBlueMax	= max(m_fSrcBlueMax, crColor.blue);
-		};
-
-		if (pProgress)
-			pProgress->Progress2(nullptr, j+1);
-	};
-*/
 	// Find median value in each histogram
 	int			lNrTotalValues;
 	int			lNrValues;
@@ -325,11 +278,9 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 				m_fTgtBlueBk = fTgtBk;
 			else
 				m_fTgtBlueBk = m_fSrcBlueBk;
-
-			//m_fTgtRedBk = m_fTgtGreenBk = m_fTgtBlueBk = fTgtBk;
-		};
+		}
 		ZTRACE_RUNTIME("Target Background : Red = %.2f - Green = %.2f - Blue = %.2f", m_fTgtRedBk/256.0, m_fTgtGreenBk/256.0, m_fTgtBlueBk/256.0);
-	};
+	}
 
 	m_riRed.Initialize(0, m_fSrcRedBk, m_fSrcRedMax, 0, m_fTgtRedBk, m_fSrcRedMax);
 	m_riGreen.Initialize(0, m_fSrcGreenBk, m_fSrcGreenMax, 0, m_fTgtGreenBk, m_fSrcGreenMax);
@@ -343,6 +294,4 @@ void	CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap * pBitma
 		pProgress->End2();
 
 	m_bInitOk = true;
-};
-
-/* ------------------------------------------------------------------- */
+}

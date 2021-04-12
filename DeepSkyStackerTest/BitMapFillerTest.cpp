@@ -351,18 +351,18 @@ class MyProgress : public CDSSProgress
 public:
 	int nrCallsStart2 = 0;
 	int nrCallsProgress2 = 0;
-	LONG argumentStart2 = -1;
-	std::vector<LONG> argumentsAchieved2;
+	int argumentStart2 = -1;
+	std::vector<int> argumentsAchieved2;
 public:
 	void GetStartText(CString& strText) {}
 	void GetStart2Text(CString& strText) {}
-	void Start(LPCTSTR szTitle, LONG lTotal1, bool bEnableCancel = true) {}
-	void Progress1(LPCTSTR szText, LONG lAchieved1) {}
-	void Start2(LPCTSTR szText, LONG lTotal2) {
+	void Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel = true) {}
+	void Progress1(LPCTSTR szText, int lAchieved1) {}
+	void Start2(LPCTSTR szText, int lTotal2) {
 		++nrCallsStart2;
 		argumentStart2 = lTotal2;
 	}
-	void Progress2(LPCTSTR szText, LONG lAchieved2) {
+	void Progress2(LPCTSTR szText, int lAchieved2) {
 		++nrCallsProgress2;
 		argumentsAchieved2.push_back(lAchieved2);
 	}

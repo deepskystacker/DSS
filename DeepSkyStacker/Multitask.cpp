@@ -5,11 +5,9 @@
 
 int CMultitask::GetNrProcessors(bool bReal)
 {
-	QSettings settings;
-	SYSTEM_INFO SysInfo;
-	
-	const auto dwMaxProcessors = settings.value("MaxProcessors", (uint)0).toUInt();
+	const auto dwMaxProcessors = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
 
+	SYSTEM_INFO SysInfo;
 	GetSystemInfo(&SysInfo);
 	int lResult = SysInfo.dwNumberOfProcessors;
 	if (!bReal && dwMaxProcessors != 0)
@@ -57,7 +55,7 @@ void CMultitask::SetUseSimd(const bool bUseSimd)
 
 DWORD WINAPI StartThreadProc(LPVOID lpParameter)
 {
-	if (CMultitask* pMultitask = reinterpret_cast<CMultitask*>(lpParameter))
+	if (CMultitask* pMultitask = static_cast<CMultitask*>(lpParameter))
 		pMultitask->DoTask(pMultitask->GetThreadEvent(GetCurrentThreadId()));
 	return 0;
 };
@@ -135,7 +133,6 @@ void CMultitask::CloseAllThreads()
 	{
 		WaitForMultipleObjects(static_cast<std::uint32_t>(m_vEvents.size()), m_vEvents.data(), true, INFINITE);
 
-		//for (int i = 0;i<m_vThreads.size();i++)
 		for (const auto threadId : m_vThreadIds)
 		{
 			PostThreadMessage(threadId, WM_MT_STOP, 0, 0);

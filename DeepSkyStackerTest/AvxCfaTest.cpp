@@ -182,7 +182,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 
 bool CMultitask::GetUseSimd() { return true; }
 void CMultitask::CloseAllThreads() {}
-void CMultitask::StartThreads(long) {}
+void CMultitask::StartThreads(int) {}
 unsigned long CMultitask::GetAvailableThreadId() { return 0; }
 
 void CMultiBitmap::DestroyTempFiles() {}
@@ -192,6 +192,6 @@ bool CMultiBitmap::GetResult(CMemoryBitmap**, CDSSProgress*) { return true; }
 
 void CYMGToRGB(double, double, double, double, double&, double&, double&) {}
 bool CreateBitmap(class CBitmapCharacteristics const&, class CMemoryBitmap**) { return true; }
-bool CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, long, class CDSSProgress*) { return true; }
+bool CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
 
-bool CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, long, class CDSSProgress*) { return true; }
+bool CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }

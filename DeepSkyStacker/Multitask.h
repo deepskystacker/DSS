@@ -33,7 +33,7 @@ public:
 	static bool GetUseSimd();
 	static void SetUseSimd(const bool bUseSimd);
 
-	HANDLE GetThreadEvent(DWORD dwThreadId)
+	HANDLE GetThreadEvent(const DWORD dwThreadId)
 	{
 		for (size_t i = 0; i < m_vThreadIds.size(); i++)
 		{
