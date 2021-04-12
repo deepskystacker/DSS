@@ -1,4 +1,4 @@
-﻿Welcome to DeepSkyStacker 4.2.6 Beta 1
+﻿Welcome to DeepSkyStacker 4.2.6 Beta 2
 
 Here are the main changes since DeepSkyStacker 4.2.5
 
@@ -14,7 +14,7 @@ Here are the main changes since DeepSkyStacker 4.2.5
 
 6. Add code to check that it is possible to write files to the output directory and terminate processing with an error message if not.
 
-
+7. Fix copy to clipboard of "Picture List".
 
 Welcome to DeepSkyStacker 4.2.5
 
