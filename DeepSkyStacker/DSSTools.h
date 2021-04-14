@@ -63,7 +63,7 @@ public :
 		return (*this);
 	};
 
-	double	Interpolate(double x)
+	double	Interpolate(double x) const
 	{
 		if (x<xm)
 			return a0*x+b0;
@@ -150,7 +150,7 @@ public :
 		return (*this);
 	};
 
-	double	Interpolate(double x)
+	double	Interpolate(double x) const
 	{
 		if (b || c)
 			return std::max(std::min((x+a)/(b*x+c), fMax), fMin);
