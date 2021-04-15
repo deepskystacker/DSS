@@ -144,6 +144,7 @@
     <ClCompile Include="..\DeepSkyStacker\avx_luminance.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />
     <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp" />
     <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="..\DeepSkyStacker\avx_output.h" />
     <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />
     <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
+    <ClInclude Include="..\DeepSkyStacker\BitmapBase.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />
     <ClInclude Include="..\DeepSkyStacker\Common.h" />
     <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h" />

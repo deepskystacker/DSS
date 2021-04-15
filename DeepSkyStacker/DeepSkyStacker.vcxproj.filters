@@ -378,6 +378,9 @@
     <ClCompile Include="BitMapFiller.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="BitmapBase.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">

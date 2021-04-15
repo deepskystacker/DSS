@@ -129,6 +129,9 @@
     <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ProgressConsole.h">
@@ -261,6 +264,9 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\avx_histogram.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BitmapBase.h">
       <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>

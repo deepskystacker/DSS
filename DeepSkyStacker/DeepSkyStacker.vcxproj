@@ -267,6 +267,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="BatchStacking.cpp" />
+    <ClCompile Include="BitmapBase.cpp" />
     <ClCompile Include="BitmapExt.cpp" />
     <ClCompile Include="BitMapFiller.cpp" />
     <ClCompile Include="ChannelAlign.cpp" />

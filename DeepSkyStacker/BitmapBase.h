@@ -446,7 +446,7 @@ public:
 
 	virtual CMultiBitmap* CreateEmptyMultiBitmap() = 0;
 	virtual void	AverageBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) {};
-	virtual void	RemoveHotPixels(CDSSProgress* pProgress = nullptr) {};
+	virtual void	RemoveHotPixels(CDSSProgress* pProgress = nullptr) = 0;
 	virtual void	GetMedianFilterEngine(CMedianFilterEngine** pMedianFilterEngine) = 0;
 
 	virtual void	GetIterator(CPixelIterator** ppIterator, int x = 0, int y = 0) = 0;
@@ -1350,120 +1350,6 @@ public:
 	};
 
 	friend CGrayPixelIterator<TType>;
-
-	template <typename TType> class CHotPixelTask : public CMultitask
-	{
-	private:
-		CGrayBitmapT<TType>* m_pBitmap;
-		CDSSProgress* m_pProgress;
-
-	public:
-		std::vector<size_t> m_vHotOffsets;
-
-	public:
-		CHotPixelTask()
-		{}
-
-		virtual ~CHotPixelTask()
-		{}
-
-		void Init(CGrayBitmapT<TType>* pBitmap, CDSSProgress* pProgress)
-		{
-			m_pBitmap = pBitmap;
-			m_pProgress = pProgress;
-		}
-
-		virtual bool DoTask(HANDLE hEvent) override
-		{
-			bool bResult = true;
-			int i, j;
-			bool bEnd = false;
-			MSG msg;
-			const int lWidth = m_pBitmap->Width();
-			std::vector<size_t> vHotOffsets;
-
-			// Create a message queue and signal the event
-			PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-			SetEvent(hEvent);
-			while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-			{
-				if (msg.message == WM_MT_PROCESS)
-				{
-					for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
-					{
-						for (i = 2; i < lWidth - 2; i++)
-						{
-							size_t lOffset = m_pBitmap->GetOffset(i, j);
-							size_t vOffsets[4];
-
-							vOffsets[0] = m_pBitmap->GetOffset(i - 1, j);
-							vOffsets[1] = m_pBitmap->GetOffset(i + 1, j);
-							vOffsets[2] = m_pBitmap->GetOffset(i, j + 1);
-							vOffsets[3] = m_pBitmap->GetOffset(i, j - 1);
-
-							const TType fValue = m_pBitmap->m_vPixels[lOffset];
-							bool bHot = true;
-
-							for (int k = 0; k < 4 && bHot; k++)
-							{
-								if (fValue <= 4.0 * m_pBitmap->m_vPixels[vOffsets[k]])
-									bHot = false;
-							};
-
-							if (bHot)
-							{
-								vHotOffsets.push_back(lOffset);
-								i++; // The next one cannot be a hot pixel
-							};
-						};
-					};
-
-					SetEvent(hEvent);
-				}
-				else if (msg.message == WM_MT_STOP)
-					bEnd = true;
-			};
-
-			// Add the vHotOffsets vector to the main one
-			m_CriticalSection.Lock();
-			for (i = 0; i < vHotOffsets.size(); i++)
-				m_vHotOffsets.push_back(vHotOffsets[i]);
-			m_CriticalSection.Unlock();
-			return true;
-		};
-
-		virtual bool Process() override
-		{
-			bool bResult = true;
-			int lHeight = m_pBitmap->Height() - 4;
-
-			if (m_pProgress)
-				m_pProgress->SetNrUsedProcessors(GetNrThreads());
-
-			const int lStep = std::max(1, lHeight / 50);
-			int lRemaining = lHeight;
-
-			int i = 2;
-			while (i < lHeight)
-			{
-				int lAdd = std::min(lStep, lRemaining);
-				PostThreadMessage(GetAvailableThreadId(), WM_MT_PROCESS, i, lAdd);
-				i += lAdd;
-				lRemaining -= lAdd;
-				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, i);
-			};
-
-			CloseAllThreads();
-
-			if (m_pProgress)
-				m_pProgress->SetNrUsedProcessors();
-
-			return bResult;
-		};
-	};
-
-	friend CHotPixelTask<TType>;
 	friend CGrayMedianFilterEngineT<TType>;
 
 public:
@@ -2017,26 +1903,7 @@ public:
 		return pResult;
 	};
 
-	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) override
-	{
-		if (pProgress != nullptr)
-		{
-			CString strText;
-			strText.Format(IDS_REMOVINGHOTPIXELS);
-			pProgress->Start2(strText, m_lHeight);
-		};
-
-		CHotPixelTask<TType> HotPixelTask;
-		HotPixelTask.Init(this, pProgress);
-		HotPixelTask.StartThreads();
-		HotPixelTask.Process();
-
-		if (pProgress != nullptr)
-			pProgress->End2();
-
-		for (const auto hotOffset : HotPixelTask.m_vHotOffsets)
-			this->m_vPixels[hotOffset] = 0;
-	};
+	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) override;
 
 	virtual void GetIterator(CPixelIterator** ppIterator, int x = 0, int y = 0) override
 	{
