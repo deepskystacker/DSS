@@ -134,8 +134,6 @@ public :
 
 class CStackingEngine
 {
-friend CComputeOffsetTask;
-
 private :
 	LIGHTFRAMEINFOVECTOR		m_vBitmaps;
 	CLightFramesStackingInfo	m_StackingInfo;
@@ -179,9 +177,13 @@ private :
 
 	CComAutoCriticalSection		m_CriticalSection;
 
+public:
+	bool ComputeLightFrameOffset(int lBitmapIndice);
+	void incStackable() { ++m_lNrStackable; }
+	void incCometStackable() { ++m_lNrCometStackable; }
+
 private :
 	bool	AddLightFramesToList(CAllStackingTasks & tasks);
-	bool	ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars & MatchingStars);
 	bool	ComputeMissingCometPositions();
 	bool	ComputeOffsets();
 	bool	IsLightFrameStackable(LPCTSTR szFile);
@@ -233,11 +235,14 @@ public :
 		m_bCometInterpolating	= false;
 
 		CAllStackingTasks::GetPostCalibrationSettings(m_PostCalibrationSettings);
-	};
+	}
 
-	virtual ~CStackingEngine()
+	CLightFrameInfo& getBitmap(const int n)
 	{
-	};
+		return this->m_vBitmaps[n];
+	}
+
+	virtual ~CStackingEngine() = default;
 
 	void	SetReferenceFrame(LPCTSTR szRefFrame)
 	{

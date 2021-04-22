@@ -16,6 +16,7 @@
 #include <iostream>
 #include "avx.h"
 #include "avx_avg.h"
+#include <omp.h>
 
 
 #define _USE_MATH_DEFINES
@@ -484,7 +485,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars & MatchingStars)
+bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -557,111 +558,6 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice, CMatchingStars 
 	return bResult;
 };
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-
-class CComputeOffsetTask : public CMultitask
-{
-private :
-	CStackingEngine* m_pStackingEngine;
-	int m_lLast;
-
-public :
-	CComputeOffsetTask() :
-		m_pStackingEngine{ nullptr },
-		m_lLast{ 0 }
-	{}
-
-	virtual ~CComputeOffsetTask()
-	{}
-
-	void Init(int lLast, CStackingEngine* pStackingEngine)
-	{
-		m_lLast = lLast;
-		m_pStackingEngine = pStackingEngine;
-	};
-
-	virtual bool Process() override;
-	virtual bool DoTask(HANDLE hEvent) override;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CComputeOffsetTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-
-	bool bStop = false;
-
-	if (m_pStackingEngine->m_pProgress)
-		m_pStackingEngine->m_pProgress->SetNrUsedProcessors(GetNrThreads());
-
-	for (int i = 1; i < m_lLast && !bStop; i++)
-	{
-		if (m_pStackingEngine->m_pProgress)
-		{
-			CString strText;
-			strText.Format(IDS_COMPUTINGSTACKINGINFO, (LPCTSTR)m_pStackingEngine->m_vBitmaps[i].m_strFileName);
-			m_pStackingEngine->m_pProgress->Progress1(strText, i + 1);
-			bStop = m_pStackingEngine->m_pProgress->IsCanceled();
-		};
-
-		const auto dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, 0, i);
-	};
-
-	CloseAllThreads();
-
-	if (m_pStackingEngine->m_pProgress)
-		m_pStackingEngine->m_pProgress->SetNrUsedProcessors();
-
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CComputeOffsetTask::DoTask(HANDLE hEvent)
-{
-	ZFUNCTRACE_RUNTIME();
-
-	bool bResult = true;
-	bool bEnd = false;
-	MSG	 msg;
-
-	{
-		CMatchingStars  MatchingStars;
-
-		// Create a message queue and signal the event
-		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-		{
-			if (msg.message == WM_MT_PROCESS)
-			{
-				if (m_pStackingEngine->ComputeLightFrameOffset(msg.lParam, MatchingStars))
-				{
-					m_pStackingEngine->m_vBitmaps[msg.lParam].m_bDisabled = false;
-					m_CriticalSection.Lock();
-					m_pStackingEngine->m_lNrStackable++;
-					if (m_pStackingEngine->m_vBitmaps[msg.lParam].m_bComet)
-						m_pStackingEngine->m_lNrCometStackable++;
-					m_CriticalSection.Unlock();
-				}
-				else
-					m_pStackingEngine->m_vBitmaps[msg.lParam].m_bDisabled = true;
-
-				SetEvent(hEvent);
-			}
-			else if (msg.message == WM_MT_STOP)
-				bEnd = true;
-		};
-	};
-
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
 inline bool CompareDateTime(const SYSTEMTIME & dt1, const SYSTEMTIME & dt2)
 {
@@ -851,7 +747,47 @@ bool CStackingEngine::ComputeMissingCometPositions()
 };
 
 
-/* ------------------------------------------------------------------- */
+void computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const pProg, const int nrBitmaps)
+{
+	ZFUNCTRACE_RUNTIME();
+	const int nrProcessors = CMultitask::GetNrProcessors();
+
+	if (pProg != nullptr)
+		pProg->SetNrUsedProcessors(nrProcessors);
+
+	bool stop = false;
+#pragma omp parallel for schedule(dynamic) default(none) shared(stop) if(nrProcessors > 1)
+	for (int i = 1; i < nrBitmaps; ++i)
+	{
+		if (omp_get_thread_num() == 0 && pProg != nullptr)
+		{
+			CString strText;
+			strText.Format(IDS_COMPUTINGSTACKINGINFO, pStackingEngine->getBitmap(i).m_strFileName.GetString());
+			pProg->Progress1(strText, i + 1);
+			stop = pProg->IsCanceled();
+		}
+
+		if (stop)
+			continue;
+
+		if (pStackingEngine->ComputeLightFrameOffset(i))
+		{
+			pStackingEngine->getBitmap(i).m_bDisabled = false;
+#pragma omp critical(OmpLockOffsetTask)
+			{
+				pStackingEngine->incStackable();
+				if (pStackingEngine->getBitmap(i).m_bComet)
+					pStackingEngine->incCometStackable();
+			}
+		}
+		else
+			pStackingEngine->getBitmap(i).m_bDisabled = true;
+	}
+
+	if (pProg != nullptr)
+		pProg->SetNrUsedProcessors();
+}
+
 
 bool CStackingEngine::ComputeOffsets()
 {
@@ -890,11 +826,8 @@ bool CStackingEngine::ComputeOffsets()
 				m_lNrCometStackable++;
 
 			m_StackingInfo.SetReferenceFrame(bitmapZero.m_strFileName);
-			CComputeOffsetTask ComputeOffsetTask;
 
-			ComputeOffsetTask.Init(lLast, this);
-			ComputeOffsetTask.StartThreads();
-			ComputeOffsetTask.Process();
+			computeOffsets(this, this->m_pProgress, lLast);
 
 			ComputeMissingCometPositions();
 			m_StackingInfo.Save();
