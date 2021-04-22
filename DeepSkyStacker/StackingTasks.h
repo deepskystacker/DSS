@@ -544,17 +544,11 @@ public :
 			return GetResultMode();
 	};
 
-	bool	DoOffsetTasks(CDSSProgress * pProgress);
-	bool	DoDarkTasks(CDSSProgress * pProgress);
-	bool	DoFlatTasks(CDSSProgress * pProgress);
-	bool	DoDarkFlatTasks(CDSSProgress * pProgress);
-	bool	DoAllPreTasks(CDSSProgress * pProgress)
-	{
-		return DoOffsetTasks(pProgress) &&
-			   DoDarkTasks(pProgress) &&
-			   DoDarkFlatTasks(pProgress) &&
-			   DoFlatTasks(pProgress);
-	};
+	bool DoOffsetTasks(CDSSProgress* pProgress);
+	bool DoDarkTasks(CDSSProgress* pProgress);
+	bool DoFlatTasks(CDSSProgress* pProgress);
+	bool DoDarkFlatTasks(CDSSProgress* pProgress);
+	bool DoAllPreTasks(CDSSProgress* pProgress);
 
 	__int64	ComputeNecessaryDiskSpace(CRect & rcOutput);
 	__int64	ComputeNecessaryDiskSpace();

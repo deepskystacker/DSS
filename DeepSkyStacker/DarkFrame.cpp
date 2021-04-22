@@ -2132,11 +2132,6 @@ bool	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 				pProgress->Start2(strText, 0);
 			};
 			ComputeDarkFactorFromMedian(pTarget, fHotDark, fAmpGlow, pProgress);
-			/*CSmartPtr<CMemoryBitmap>		pAmpGlow;
-			CSmartPtr<CMemoryBitmap>		pDarkCurrent;
-
-			pAmpGlow.Attach(m_pAmpGlow->Clone());
-			Multiply(pAmpGlow, fAmpGlow, fAmpGlow, fAmpGlow, pProgress);*/
 
 			if (pProgress)
 			{
@@ -2145,14 +2140,6 @@ bool	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 			};
 			::Subtract(pTarget, m_pAmpGlow, pProgress, fAmpGlow, fAmpGlow, fAmpGlow);
 			::Subtract(pTarget, m_pDarkCurrent, pProgress, fHotDark, fHotDark, fHotDark);
-
-			// Now check that if modified dark current is removed from
-			// the target - there is no more negative pixels
-			/*pDarkCurrent.Attach(m_pDarkCurrent->Clone());
-			Multiply(pDarkCurrent, fHotDark, fHotDark, fHotDark, pProgress);
-
-			ComputeOptimalDistributionRatio(pTarget, pDarkCurrent, fHotDark, pProgress);
-			::Subtract(pTarget, pDarkCurrent, pProgress, fHotDark, fHotDark, fHotDark);*/
 		}
 		else if (m_fDarkFactor != 1.0)
 		{

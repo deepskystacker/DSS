@@ -2446,7 +2446,7 @@ public:
 		return m_lHeight;
 	};
 
-	virtual bool Init(int lWidth, int lHeight)
+	virtual bool Init(int lWidth, int lHeight) override
 	{
 		m_lWidth = lWidth;
 		m_lHeight = lHeight;

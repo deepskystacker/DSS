@@ -1995,7 +1995,7 @@ bool	CStackingEngine::StackLightFrame(CMemoryBitmap* pInBitmap, CPixelTransform&
 				strText.LoadString(IDS_AHDDEMOSAICING);
 				m_pProgress->Start2((LPCTSTR)strText, 0);
 			};
-			AHDDemosaicing(pGrayBitmap, &pBitmap, m_pProgress);
+			AHDDemosaicing<std::uint16_t>(pGrayBitmap, &pBitmap, m_pProgress);
 		}
 		else
 			pBitmap = pInBitmap;

@@ -1748,8 +1748,6 @@ bool CAllStackingTasks::DoDarkTasks(CDSSProgress * pProgress)
 	return bResult;
 };
 
-/* ------------------------------------------------------------------- */
-
 bool CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1783,7 +1781,14 @@ bool CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
 	return bResult;
 };
 
-/* ------------------------------------------------------------------- */
+bool CAllStackingTasks::DoAllPreTasks(CDSSProgress* pProgress)
+{
+	if (!DoOffsetTasks(pProgress)) return false;
+	if (!DoDarkTasks(pProgress)) return false;
+	if (!DoDarkFlatTasks(pProgress)) return false;
+	if (!DoFlatTasks(pProgress)) return false;
+	return true;
+}
 
 bool CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 {

@@ -13,6 +13,7 @@
 #include "Workspace.h"
 #include <iostream>
 #include <zexcept.h>
+#include <omp.h>
 
 
 #include <GdiPlus.h>
@@ -1385,9 +1386,7 @@ bool	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitma
 };
 
 
-/* ------------------------------------------------------------------- */
-
-class CSubtractTask : public CMultitask
+class CSubtractTask
 {
 private :
 	CSmartPtr<CMemoryBitmap>	m_pTarget;
@@ -1404,267 +1403,208 @@ private :
 	double						m_fMinimum;
 
 public :
-    CSubtractTask()
-    {
-        m_fXShift = 0;
-        m_fYShift = 0;
-        m_bAddMode = false;
-        m_fMinimum = 0;
-        m_fRedFactor = 0;
-        m_fGreenFactor = 0;
-        m_fBlueFactor = 0;
-        m_fGrayFactor = 0;
-        m_bMonochrome = false;
-        m_pProgress = nullptr;
-    }
+    CSubtractTask() :
+		m_pTarget{},
+		m_pSource{},
+		m_fXShift{ 0 },
+        m_fYShift{ 0 },
+        m_bAddMode{ false },
+        m_fMinimum{ 0 },
+        m_fRedFactor{ 0 },
+        m_fGreenFactor{ 0 },
+        m_fBlueFactor{ 0 },
+        m_fGrayFactor{ 0 },
+        m_bMonochrome{ false },
+        m_pProgress{ nullptr }
+	{}
 
-	virtual ~CSubtractTask()
+	~CSubtractTask() = default;
+
+	void Init(CMemoryBitmap* pTarget, CMemoryBitmap* pSource, CDSSProgress* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 	{
-	};
-
-	void	Init(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
-	{
-		m_pProgress		= pProgress;
-		m_pTarget		= pTarget;
-		m_pSource		= pSource;
-		m_fRedFactor	= fRedFactor;
-		m_fGreenFactor	= fGreenFactor;
-		m_fBlueFactor	= fBlueFactor;
-
+		m_pProgress = pProgress;
+		m_pTarget = pTarget;
+		m_pSource = pSource;
+		m_fRedFactor = fRedFactor;
+		m_fGreenFactor = fGreenFactor;
+		m_fBlueFactor = fBlueFactor;
 		m_bMonochrome = pTarget->IsMonochrome();
-		m_fGrayFactor = 1.0;
+		m_fGrayFactor = m_bMonochrome ? std::max(fRedFactor, std::max(fGreenFactor, fBlueFactor)) : 1.0;
 
-		if (m_bMonochrome)
-			m_fGrayFactor = std::max(fRedFactor, std::max(fGreenFactor, fBlueFactor));
+		if (pProgress != nullptr)
+			pProgress->Start2(nullptr, pTarget->RealWidth());
+	}
 
-		if (m_pProgress)
-			m_pProgress->Start2(nullptr, pTarget->RealWidth());
-	};
-
-	CSubtractTask&	SetShift(double fXShift, double fYShift)
+	CSubtractTask&	SetShift(const double fXShift, const double fYShift)
 	{
 		m_fXShift	= fXShift;
 		m_fYShift	= fYShift;
 		return *this;
-	};
+	}
 
-	CSubtractTask&	SetAddMode(bool bSet)
+	CSubtractTask&	SetAddMode(const bool bSet)
 	{
 		m_bAddMode = bSet;
 		return *this;
-	};
+	}
 
-	CSubtractTask&	SetMinimumValue(double fValue)
+	CSubtractTask&	SetMinimumValue(const double fValue)
 	{
 		m_fMinimum = fValue;
 		return *this;
-	};
+	}
 
-	void	End()
+	void End()
 	{
-		if (m_pProgress)
+		if (m_pProgress != nullptr)
 			m_pProgress->End2();
-	};
+	}
 
-	virtual bool Process() override;
-	virtual bool DoTask(HANDLE hEvent) override;
+	void process();
 };
 
-/* ------------------------------------------------------------------- */
+template <class T> struct thread_init {
+	T& target;
+	T& source;
+	PixelIterator PixelItTgt;
+	PixelIterator PixelItSrc;
 
-bool	CSubtractTask::DoTask(HANDLE hEvent)
+	explicit thread_init(T& t, T& s) : target{ t }, source{ s } {
+		target->GetIterator(&PixelItTgt);
+		source->GetIterator(&PixelItSrc);
+	}
+	thread_init(const thread_init& rhs) : target{ rhs.target }, source{ rhs.source } {
+		target->GetIterator(&PixelItTgt);
+		source->GetIterator(&PixelItSrc);
+	}
+};
+
+void CSubtractTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	int			i, j;
-	bool			bEnd = false;
-	MSG				msg;
-	int			lWidth = m_pTarget->RealWidth();
-	int			lExtraWidth = 0;
+	const int height = m_pTarget->RealHeight() - (m_fYShift == 0 ? 0 : static_cast<int>(std::fabs(m_fYShift) + 0.5));
+	const int nrProcessors = CMultitask::GetNrProcessors(false);
 
-	PixelIterator	PixelItTgt;
-	PixelIterator 	PixelItSrc;
-
-	m_pTarget->GetIterator(&PixelItTgt);
-	m_pSource->GetIterator(&PixelItSrc);
-
-	if (m_fXShift)
+	if (m_pProgress != nullptr)
 	{
-		lExtraWidth = fabs(m_fXShift)+0.5;
-		lWidth -= lExtraWidth;
-	};
+		m_pProgress->Start2(nullptr, height);
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
+	}
 
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
+	const int extraWidth = m_fXShift == 0 ? 0 : static_cast<int>(std::fabs(m_fXShift) + 0.5);
+	const int width = m_pTarget->RealWidth() - extraWidth;
+
+	thread_init threadVars(m_pTarget, m_pSource);
+
+#pragma omp parallel for schedule(guided) default(none) firstprivate(threadVars) if(nrProcessors > 1)
+	for (int row = 0; row < height; ++row)
 	{
-		if (msg.message == WM_MT_PROCESS)
+		int lTgtStartX = 0, lTgtStartY = row, lSrcStartX = 0, lSrcStartY = row;
+
+		if (m_fXShift > 0)
 		{
-			int			lTgtStartX = 0,
-							lTgtStartY = msg.wParam,
-							lSrcStartX = 0,
-							lSrcStartY = msg.wParam;
+			// Target is moved
+			lTgtStartX += m_fXShift + 0.5;
+		}
+		else if (m_fXShift < 0)
+		{
+			// Source is moved
+			lSrcStartX += std::fabs(m_fXShift) + 0.5;
+		}
+		if (m_fYShift > 0)
+		{
+			// Target is moved
+			lTgtStartY += m_fYShift + 0.5;
+		}
+		else
+		{
+			// Source is moved
+			lSrcStartY += std::fabs(m_fYShift) + 0.5;
+		}
 
-			if (m_fXShift>0)
+		threadVars.PixelItTgt->Reset(lTgtStartX, lTgtStartY);
+		threadVars.PixelItSrc->Reset(lSrcStartX, lSrcStartY);
+
+		for (int col = 0; col < width; ++col)
+		{
+			if (m_bMonochrome)
 			{
-				// Target is moved
-				lTgtStartX += m_fXShift+0.5;
-			}
-			else if (m_fXShift<0)
-			{
-				// Source is moved
-				lSrcStartX += fabs(m_fXShift)+0.5;
-			};
-			if (m_fYShift>0)
-			{
-				// Target is moved
-				lTgtStartY += m_fYShift+0.5;
+				double fSrcGray, fTgtGray;
+				threadVars.PixelItTgt->GetPixel(fTgtGray);
+				threadVars.PixelItSrc->GetPixel(fSrcGray);
+
+				if (m_bAddMode)
+					fTgtGray = std::min(std::max(0.0, fTgtGray + fSrcGray * m_fGrayFactor), 256.0);
+				else
+					fTgtGray = std::max(m_fMinimum, fTgtGray - fSrcGray * m_fGrayFactor);
+				threadVars.PixelItTgt->SetPixel(fTgtGray);
 			}
 			else
 			{
-				// Source is moved
-				lSrcStartY += fabs(m_fYShift)+0.5;
-			};
+				double fSrcRed, fSrcGreen, fSrcBlue;
+				double fTgtRed, fTgtGreen, fTgtBlue;
+				threadVars.PixelItTgt->GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
+				threadVars.PixelItSrc->GetPixel(fSrcRed, fSrcGreen, fSrcBlue);
 
-			PixelItTgt->Reset(lTgtStartX, lTgtStartY);
-			PixelItSrc->Reset(lSrcStartX, lSrcStartY);
-
-			for (j = 0;j<msg.lParam;j++)
-			{
-				for (i = 0;i<lWidth;i++)
+				if (m_bAddMode)
 				{
-					if (m_bMonochrome)
-					{
-						double			fSrcGray,
-										fTgtGray;
+					fTgtRed = std::min(std::max(0.0, fTgtRed + fSrcRed * m_fRedFactor), 256.0);
+					fTgtGreen = std::min(std::max(0.0, fTgtGreen + fSrcGreen * m_fGreenFactor), 256.0);
+					fTgtBlue = std::min(std::max(0.0, fTgtBlue + fSrcBlue * m_fBlueFactor), 256.0);
+				}
+				else
+				{
+					fTgtRed = std::max(m_fMinimum, fTgtRed - fSrcRed * m_fRedFactor);
+					fTgtGreen = std::max(m_fMinimum, fTgtGreen - fSrcGreen * m_fGreenFactor);
+					fTgtBlue = std::max(m_fMinimum, fTgtBlue - fSrcBlue * m_fBlueFactor);
+				}
+				threadVars.PixelItTgt->SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
+			}
 
-						PixelItTgt->GetPixel(fTgtGray);
-						PixelItSrc->GetPixel(fSrcGray);
-
-						if (m_bAddMode)
-							fTgtGray = std::min(std::max(0.0, fTgtGray+fSrcGray * m_fGrayFactor), 256.0);
-						else
-							fTgtGray = std::max(m_fMinimum, fTgtGray-fSrcGray * m_fGrayFactor);
-						PixelItTgt->SetPixel(fTgtGray);
-					}
-					else
-					{
-						double			fSrcRed, fSrcGreen, fSrcBlue;
-						double			fTgtRed, fTgtGreen, fTgtBlue;
-
-						PixelItTgt->GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-						PixelItSrc->GetPixel(fSrcRed, fSrcGreen, fSrcBlue);
-						if (m_bAddMode)
-						{
-							fTgtRed		= std::min(std::max(0.0, fTgtRed + fSrcRed * m_fRedFactor), 256.0);
-							fTgtGreen	= std::min(std::max(0.0, fTgtGreen + fSrcGreen * m_fGreenFactor), 256.0);
-							fTgtBlue	= std::min(std::max(0.0, fTgtBlue + fSrcBlue * m_fBlueFactor), 256.0);
-						}
-						else
-						{
-							fTgtRed		= std::max(m_fMinimum, fTgtRed - fSrcRed * m_fRedFactor);
-							fTgtGreen	= std::max(m_fMinimum, fTgtGreen - fSrcGreen * m_fGreenFactor);
-							fTgtBlue	= std::max(m_fMinimum, fTgtBlue - fSrcBlue * m_fBlueFactor);
-						};
-						PixelItTgt->SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-					};
-
-					(*PixelItTgt)++;
-
-					(*PixelItSrc)++;
-				};
-				(*PixelItTgt)+=lExtraWidth;
-
-				(*PixelItSrc) += lExtraWidth;				
-			};
-			SetEvent(hEvent);
+			(*threadVars.PixelItTgt)++;
+			(*threadVars.PixelItSrc)++;
 		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = true;
-	};
+		(*threadVars.PixelItTgt) += extraWidth;
+		(*threadVars.PixelItSrc) += extraWidth;
 
-	return true;
-};
+		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+			m_pProgress->Progress2(nullptr, row);
+	}
 
-/* ------------------------------------------------------------------- */
-
-bool CSubtractTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
-	int			lHeight = m_pTarget->RealHeight();
-	int			lStep;
-	int			lRemaining;
-	int			i = 0;
-
-	if (m_fYShift)
-		lHeight -= fabs(m_fYShift)+0.5;
-
-	if (m_pProgress)
-	{
-		m_pProgress->Start2(nullptr, lHeight);
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	};
-
-	bResult = true;
-	lStep = std::max(1, lHeight / 50);
-	lRemaining = lHeight;
-
-	while (i<lHeight)
-	{
-		const int lAdd = std::min(lStep, lRemaining);
-		const auto dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+= lAdd;
-		lRemaining	-= lAdd;
-
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, i);
-	};
-
-	CloseAllThreads();
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 	{
 		m_pProgress->SetNrUsedProcessors();
 		m_pProgress->End2();
-	};
+	}
+}
 
-	return bResult;
-};
 
-/* ------------------------------------------------------------------- */
-
-bool Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
+bool Subtract(CMemoryBitmap* pTarget, CMemoryBitmap* pSource, CDSSProgress* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
+	bool bResult = false;
 
 	// Check and remove super pixel settings
-	CCFABitmapInfo *			pCFABitmapInfo;
-	CFATRANSFORMATION			CFATransform = CFAT_NONE;
-
-	pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
-	if (pCFABitmapInfo)
+	CFATRANSFORMATION CFATransform = CFAT_NONE;
+	CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
+	if (pCFABitmapInfo != nullptr)
 	{
 		CFATransform = pCFABitmapInfo->GetCFATransformation();
 		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseBilinear(true);
-	};
+	}
 
 	// Check that it is the same sizes
-	if (pTarget && pSource)
+	if (pTarget != nullptr && pSource != nullptr)
 	{
 		if ((pTarget->RealWidth() == pSource->RealWidth()) &&
 			(pTarget->RealHeight() == pSource->RealHeight()) &&
 			(pTarget->IsMonochrome() == pSource->IsMonochrome()))
 		{
 
-			CSubtractTask			SubtractTask;
-
+			CSubtractTask SubtractTask;
 			SubtractTask.Init(pTarget, pSource, pProgress, fRedFactor, fGreenFactor, fBlueFactor);
-			SubtractTask.StartThreads();
-			SubtractTask.Process();
+			SubtractTask.process();
 		}
 		else
 		{
@@ -1698,8 +1638,9 @@ bool ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProg
 			SubtractTask.Init(pTarget, pSource, pProgress, 1.0, 1.0, 1.0);
 			SubtractTask.SetShift(fXShift, fYShift);
 			SubtractTask.SetMinimumValue(1.0);
-			SubtractTask.StartThreads();
-			SubtractTask.Process();
+//			SubtractTask.StartThreads();
+//			SubtractTask.Process();
+			SubtractTask.process();
 		};
 	};
 
@@ -1724,189 +1665,15 @@ bool Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgr
 
 			AddTask.SetAddMode(true);
 			AddTask.Init(pTarget, pSource, pProgress, 1.0, 1.0, 1.0);
-			AddTask.StartThreads();
-			AddTask.Process();
+//			AddTask.StartThreads();
+//			AddTask.Process();
+			AddTask.process();
 		};
 	};
 
 	return bResult;
 };
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-
-class CMultiplyTask : public CMultitask
-{
-private :
-	CSmartPtr<CMemoryBitmap>	m_pTarget;
-	double						m_fRedFactor;
-	double						m_fGreenFactor;
-	double						m_fBlueFactor;
-	double						m_fGrayFactor;
-	bool						m_bMonochrome;
-	CDSSProgress *				m_pProgress;
-
-public :
-	CMultiplyTask()
-	{
-        m_fRedFactor = 0;
-        m_fGreenFactor = 0;
-        m_fBlueFactor = 0;
-        m_fGrayFactor = 0;
-        m_bMonochrome = false;
-        m_pProgress = nullptr;
-	};
-
-	virtual ~CMultiplyTask()
-	{
-	};
-
-	void	Init(CMemoryBitmap * pTarget, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
-	{
-		m_pProgress		= pProgress;
-		m_pTarget		= pTarget;
-		m_fRedFactor	= fRedFactor;
-		m_fGreenFactor	= fGreenFactor;
-		m_fBlueFactor	= fBlueFactor;
-
-		m_bMonochrome = pTarget->IsMonochrome();
-		m_fGrayFactor = 1.0;
-
-		if (m_bMonochrome)
-			m_fGrayFactor = std::max(fRedFactor, std::max(fGreenFactor, fBlueFactor));
-
-		if (m_pProgress)
-			m_pProgress->Start2(nullptr, pTarget->RealWidth());
-	};
-
-	void	End()
-	{
-		if (m_pProgress)
-			m_pProgress->End2();
-	};
-
-	virtual bool Process() override;
-	virtual bool DoTask(HANDLE hEvent) override;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CMultiplyTask::DoTask(HANDLE hEvent)
-{
-	ZFUNCTRACE_RUNTIME();
-	int			i, j;
-	bool			bEnd = false;
-	MSG				msg;
-	int			lWidth = m_pTarget->RealWidth();
-
-	PixelIterator	PixelItTgt;
-
-	m_pTarget->GetIterator(&PixelItTgt);
-
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-	{
-		if (msg.message == WM_MT_PROCESS)
-		{
-			PixelItTgt->Reset(0, msg.wParam);
-			for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-			{
-				for (i = 0;i<lWidth;i++)
-				{
-					if (m_bMonochrome)
-					{
-						double			fTgtGray;
-
-						PixelItTgt->GetPixel(fTgtGray);
-						fTgtGray = std::min(256.0, std::max(0.0, fTgtGray * m_fGrayFactor));
-						PixelItTgt->SetPixel(fTgtGray);
-					}
-					else
-					{
-						double			fTgtRed, fTgtGreen, fTgtBlue;
-
-						PixelItTgt->GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-						fTgtRed		= std::min(256.0, std::max(0.0, fTgtRed * m_fRedFactor));
-						fTgtGreen	= std::min(256.0, std::max(0.0, fTgtGreen * m_fGreenFactor));
-						fTgtBlue	= std::min(256.0, std::max(0.0, fTgtBlue * m_fBlueFactor));
-						PixelItTgt->SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-					};
-
-					(*PixelItTgt)++;
-				};
-			};
-			SetEvent(hEvent);
-		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = true;
-	};
-
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CMultiplyTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	const int lHeight = m_pTarget->RealHeight();
-
-	if (m_pProgress != nullptr)
-	{
-		m_pProgress->Start2(nullptr, lHeight);
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	}
-
-	const int lStep = std::max(1, lHeight / 50);
-	int lRemaining = lHeight;
-
-	int i = 0;
-	while (i < lHeight)
-	{
-		const int lAdd = std::min(lStep, lRemaining);
-		const auto dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+= lAdd;
-		lRemaining	-= lAdd;
-
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, i);
-	};
-
-	CloseAllThreads();
-	if (m_pProgress)
-	{
-		m_pProgress->SetNrUsedProcessors();
-		m_pProgress->End2();
-	};
-
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
-
-	if (pTarget)
-	{
-		bResult = true;
-		CMultiplyTask			MultiplyTask;
-
-		MultiplyTask.Init(pTarget, pProgress, fRedFactor, fGreenFactor, fBlueFactor);
-		MultiplyTask.StartThreads();
-		MultiplyTask.Process();
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
 
 CFATYPE	GetCFAType(CMemoryBitmap* pBitmap)
 {
@@ -1921,7 +1688,6 @@ CFATYPE	GetCFAType(CMemoryBitmap* pBitmap)
 	return Result;
 };
 
-/* ------------------------------------------------------------------- */
 
 bool GetFilteredImage(CMemoryBitmap* pInBitmap, CMemoryBitmap** ppOutBitmap, int lFilterSize, CDSSProgress* pProgress)
 {
@@ -1939,5 +1705,3 @@ bool GetFilteredImage(CMemoryBitmap* pInBitmap, CMemoryBitmap** ppOutBitmap, int
 
 	return bResult;
 };
-
-/* ------------------------------------------------------------------- */

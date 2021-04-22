@@ -101,15 +101,15 @@ inline double GetLuminance(const COLORREF16 & crColor)
 
 /* ------------------------------------------------------------------- */
 
-inline double ClampPixel(double fValue)
+inline double ClampPixel(const double fValue)
 {
-	if (fValue<0)
-		return 0;
-	else if (fValue>255.0*256.0)
-		return 255.0*256.0;
-	else
-		return fValue;
-};
+	constexpr double maxVal = 255.0 * 256.0;
+	if (fValue < 0.0)
+		return 0.0;
+	if (fValue > maxVal)
+		return maxVal;
+	return fValue;
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -194,7 +194,6 @@ inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int 
 bool Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
 bool Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr);
 bool ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fXShift = 0, double fYShift = 0);
-bool Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 
