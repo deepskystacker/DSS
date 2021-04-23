@@ -271,7 +271,7 @@ public :
 		return (X < pt.X);
 	};
 
-	bool	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
+	bool	IsInRect(double fLeft, double fTop, double fRight, double fBottom) const
 	{
 		return (X>=fLeft) && (X <= fRight) && (Y>=fTop) && (Y<=fBottom);
 	};
