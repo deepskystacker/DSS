@@ -4,111 +4,100 @@
 #include "DSSProgress.h"
 #include "CosmeticEngine.h"
 #include "Multitask.h"
+#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 
-class CDetectCosmeticTask : public CMultitask
+class CDetectCosmeticTask
 {
-private :
+private:
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
 	CSmartPtr<CMemoryBitmap>	m_pMedian;
 	CSmartPtr<CMemoryBitmap>	m_pDelta;
-	bool						m_bHot;
-	double						m_fThreshold;
-	CDSSProgress *				m_pProgress;
-	bool						m_bSimulate;
+	CDSSProgress*				m_pProgress;
 	CCosmeticStats				m_Stats;
+	double						m_fThreshold;
+	bool						m_bHot;
+	bool						m_bSimulate;
 	bool						m_bInitDelta;
 
-private :
-	double	Normalize(double fValue)
+private:
+	double Normalize(const double fValue) const
 	{
-		return pow(fValue/256.0, 2);
-	};
+		return std::pow(fValue / 256.0, 2);
+	}
 
-	bool	AdjustHotPixel(double & fValue, double fMedian)
+	bool AdjustHotPixel(double& fValue, const double fMedian) const
 	{
-		bool			bResult = false;
-
-		double	fPercent;// = (fValue-fMedian)/fValue/sqrt((fMedian+1)/256.0);
-
-		fPercent = (Normalize(fValue)-Normalize(fMedian))/Normalize(fValue);
-		if (fPercent>m_fThreshold)
-		{
-			fValue	 = fMedian;
-			bResult = true;
-		};
-
-		return bResult;
-	};
-
-	bool	AdjustColdPixel(double & fValue, double fMedian)
-	{
-		bool			bResult = false;
-
-		double	fPercent;// = (fMedian-fValue)/fMedian/sqrt((fValue+1)/256.0);
-
-		fPercent = (Normalize(fMedian)-Normalize(fValue))/Normalize(fMedian);
+		bool bResult = false;
+		const double normalizedValue = Normalize(fValue);
+		const double fPercent = (normalizedValue - Normalize(fMedian)) / normalizedValue;
 		if (fPercent > m_fThreshold)
 		{
-			fValue  = fMedian;
+			fValue = fMedian;
 			bResult = true;
-		};
-
+		}
 		return bResult;
-	};
+	}
 
-	bool	AdjustPixel(double & fValue, double fMedian)
+	bool AdjustColdPixel(double& fValue, const double fMedian) const
 	{
-		bool		bResult = false;
+		bool bResult = false;
+		const double normalizedMedian = Normalize(fMedian);
+		const double fPercent = (normalizedMedian - Normalize(fValue)) / normalizedMedian;
+		if (fPercent > m_fThreshold)
+		{
+			fValue = fMedian;
+			bResult = true;
+		}
+		return bResult;
+	}
 
+	bool AdjustPixel(double& fValue, const double fMedian) const
+	{
 		if (m_bHot)
 		{
 			if (fValue > fMedian)
-				bResult = AdjustHotPixel(fValue, fMedian);
+				return AdjustHotPixel(fValue, fMedian);
 		}
 		else
 		{
 			if (fValue < fMedian)
-				bResult = AdjustColdPixel(fValue, fMedian);
-		};
+				return AdjustColdPixel(fValue, fMedian);
+		}
+		return false;
+	}
 
-		return bResult;
-	};
+public:
+	CDetectCosmeticTask() :
+		m_bSimulate{ false },
+		m_bInitDelta{ false },
+		m_bHot{ false },
+		m_fThreshold{ 0 },
+		m_pProgress{ nullptr }
+	{}
 
-public :
-	CDetectCosmeticTask()
-	{
-		m_bSimulate		= false;
-		m_bInitDelta	= false;
-        m_bHot          = false;
-        m_fThreshold    = 0;
-        m_pProgress     = nullptr;
-	};
+	~CDetectCosmeticTask() = default;
 
-	virtual ~CDetectCosmeticTask()
-	{
-	};
-
-	void	SetSimulate(bool bSimulate)
+	void SetSimulate(bool bSimulate)
 	{
 		m_bSimulate = bSimulate;
-	};
+	}
 
-	void	SetInitDelta(bool bInitDelta)
+	void SetInitDelta(bool bInitDelta)
 	{
 		m_bInitDelta = bInitDelta;
-	};
+	}
 
-	void	FillStats(CCosmeticStats & cs)
+	void FillStats(CCosmeticStats& cs) const
 	{
 		if (m_bHot)
 			cs.m_lNrDetectedHotPixels = m_Stats.m_lNrDetectedHotPixels;
 		else
 			cs.m_lNrDetectedColdPixels = m_Stats.m_lNrDetectedColdPixels;
-	};
+	}
 
-	void	Init(CMemoryBitmap * pBitmap, CMemoryBitmap * pMedian, CMemoryBitmap * pDelta, bool bHot, double fThreshold, CDSSProgress * pProgress)
+	void Init(CMemoryBitmap* pBitmap, CMemoryBitmap* pMedian, CMemoryBitmap* pDelta, bool bHot, double fThreshold, CDSSProgress* pProgress)
 	{
 		m_pBitmap		= pBitmap;
 		m_pMedian		= pMedian;
@@ -118,152 +107,117 @@ public :
 		m_pProgress		= pProgress;
 	};
 
-	virtual bool	DoTask(HANDLE hEvent)
+	void process()
 	{
-		ZFUNCTRACE_RUNTIME();
-		bool					bResult = true;
-		int					i, j;
-		bool					bEnd = false;
-		MSG						msg;
-		int					lWidth  = m_pBitmap->RealWidth(),
-								lHeight = m_pBitmap->RealHeight();
-		bool					bMonochrome = m_pBitmap->IsMonochrome();
-		int					lNrHotPixels = 0,
-								lNrColdPixels = 0;
-
-		// Create a message queue and signal the event
-		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-		{
-			if (msg.message == WM_MT_PROCESS)
-			{
-				for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-				{
-					for (i = 0;i<lWidth;i++)
-					{
-						bool				bChanged = false;
-
-						if (bMonochrome)
-						{
-							double			fGray,
-											fMedianGray;
-
-							m_pBitmap->GetPixel(i, j, fGray);
-							m_pMedian->GetPixel(i, j, fMedianGray);
-
-							bChanged = AdjustPixel(fGray, fMedianGray);
-						}
-						else
-						{
-							double			fRed, fGreen, fBlue,
-											fMedianRed, fMedianGreen, fMedianBlue;
-
-							m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-							m_pMedian->GetPixel(i, j, fMedianRed, fMedianGreen, fMedianBlue);
-
-							bChanged = AdjustPixel(fRed, fMedianRed);
-							bChanged = AdjustPixel(fGreen, fMedianGreen) || bChanged;
-							bChanged = AdjustPixel(fBlue, fMedianBlue) || bChanged;
-						};
-
-						if (bChanged)
-						{
-							if (m_bHot)
-								lNrHotPixels++;
-							else
-								lNrColdPixels++;
-						};
-
-						if (m_pDelta && (bChanged || m_bInitDelta))
-							m_pDelta->SetPixel(i, j, bChanged ? (m_bHot ? 255 : 50) : 128);
-					};
-				};
-
-				SetEvent(hEvent);
-			}
-			else if (msg.message == WM_MT_STOP)
-				bEnd = true;
-		};
-
-		m_CriticalSection.Lock();
-		m_Stats.m_lNrDetectedHotPixels	+= lNrHotPixels;
-		m_Stats.m_lNrDetectedColdPixels += lNrColdPixels;
-		m_CriticalSection.Unlock();
-		return true;
-	};
-
-	virtual bool	Process()
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool				bResult = true;
-		int				lHeight = m_pBitmap->RealHeight();
-		int				i = 0;
-		int				lStep;
-		int				lRemaining;
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors(GetNrThreads());
-		lStep		= std::max(1, lHeight/50);
-		lRemaining	= lHeight;
-
-		while (i<lHeight)
-		{
-			int			lAdd = std::min(lStep, lRemaining);
-
-			const auto dwThreadId = GetAvailableThreadId();
-			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-			i			+=lAdd;
-			lRemaining	-= lAdd;
-			if (m_pProgress)
-				m_pProgress->Progress2(nullptr, i);
-		};
-
-		CloseAllThreads();
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors();
-
-		return bResult;
-	};
+		if (m_pBitmap->IsMonochrome())
+			doProcess<true>();
+		else
+			doProcess<false>();
+	}
+private:
+	template <bool Monochrome>
+	void doProcess();
 };
 
-/* ------------------------------------------------------------------- */
-
-class CCleanCosmeticTask : public CMultitask
+template <bool Monochrome>
+void CDetectCosmeticTask::doProcess()
 {
-private :
+	ZFUNCTRACE_RUNTIME();
+	const int height = m_pBitmap->RealHeight();
+	const int width = m_pBitmap->RealWidth();
+	const int nrProcessors = CMultitask::GetNrProcessors();
+	int nrHotPixels = 0;
+	int nrColdPixels = 0;
+	int progress = 0;
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
+
+#pragma omp parallel for schedule(guided, 100) default(none) reduction(+: nrHotPixels, nrColdPixels) if(nrProcessors > 1)
+	for (int row = 0; row < height; ++row)
+	{
+		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+			m_pProgress->Progress2(nullptr, progress += height / nrProcessors);
+
+		const auto countColdHotPixels = [&](const int col, const int row, const bool changed) -> void
+		{
+			if (changed)
+			{
+				if (m_bHot)
+					++nrHotPixels;
+				else
+					++nrColdPixels;
+			}
+			if (m_pDelta && (changed || m_bInitDelta))
+				m_pDelta->SetPixel(col, row, changed ? (m_bHot ? 255 : 50) : 128);
+		};
+
+		if constexpr (Monochrome)
+		{
+			for (int col = 0; col < width; ++col)
+			{
+				double fGray, fMedianGray;
+				m_pBitmap->GetPixel(col, row, fGray);
+				m_pMedian->GetPixel(col, row, fMedianGray);
+				const bool changed = AdjustPixel(fGray, fMedianGray);
+				countColdHotPixels(col, row, changed);
+			}
+		}
+		else
+		{
+			for (int col = 0; col < width; ++col)
+			{
+				double fRed, fGreen, fBlue, fMedianRed, fMedianGreen, fMedianBlue;
+				m_pBitmap->GetPixel(col, row, fRed, fGreen, fBlue);
+				m_pMedian->GetPixel(col, row, fMedianRed, fMedianGreen, fMedianBlue);
+				const bool b1 = AdjustPixel(fRed, fMedianRed);
+				const bool b2 = AdjustPixel(fGreen, fMedianGreen);
+				const bool b3 = AdjustPixel(fBlue, fMedianBlue);
+				countColdHotPixels(col, row, b1 || b2 || b3);
+			}
+		}
+	}
+
+	m_Stats.m_lNrDetectedHotPixels += nrHotPixels;
+	m_Stats.m_lNrDetectedColdPixels += nrColdPixels;
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors();
+}
+
+
+class CCleanCosmeticTask
+{
+private:
 	CSmartPtr<CMemoryBitmap>	m_pOutBitmap;
 	CSmartPtr<CMemoryBitmap>	m_pOrgBitmap;
 	CSmartPtr<CMemoryBitmap>	m_pDelta;
-	CDSSProgress *				m_pProgress;
+	CDSSProgress*				m_pProgress;
 	CPostCalibrationSettings    m_pcs;
-	int						m_lWidth,
-								m_lHeight;
+	int							m_lWidth;
+	int							m_lHeight;
+	int							m_lColdFilterSize;
+	int							m_lHotFilterSize;
+	CFATYPE						m_CFAType;
 	bool						m_bMonochrome;
 	bool						m_bCFA;
-	CFATYPE						m_CFAType;
-	int						m_lColdFilterSize,
-								m_lHotFilterSize;
 
-private :
-	bool	IsOkValue(double fDelta)
+private:
+	static bool IsOkValue(const double fDelta)
 	{
 		return (fDelta > 100) && (fDelta < 200);
-	};
+	}
 
-	void	ComputeMedian(int x, int y, int lFilterSize, double & fGray);
-	void	ComputeMedian(int x, int y, int lFilterSize, double & fRed, double & fGreen, double & fBlue);
-	void	ComputeGaussian(int x, int y, int lFilterSize, double & fGray);
-	void	ComputeGaussian(int x, int y, int lFilterSize, double & fRed, double & fGreen, double & fBlue);
+	void ComputeMedian(int x, int y, int lFilterSize, double& fGray);
+	void ComputeMedian(int x, int y, int lFilterSize, double& fRed, double& fGreen, double& fBlue);
+	void ComputeGaussian(int x, int y, int lFilterSize, double& fGray);
+	void ComputeGaussian(int x, int y, int lFilterSize, double& fRed, double& fGreen, double& fBlue);
 
-	void	FixPixel(int x, int y, int lFilterSize)
+	void FixPixel(const int x, const int y, const int lFilterSize)
 	{
 		if (m_bMonochrome)
 		{
-			double			fGray;
-
+			double fGray;
 			if (m_pcs.m_Replace == CR_MEDIAN)
 				ComputeMedian(x, y, lFilterSize, fGray);
 			else
@@ -272,43 +226,40 @@ private :
 		}
 		else
 		{
-			double			fRed, fGreen, fBlue;
-
+			double fRed, fGreen, fBlue;
 			if (m_pcs.m_Replace == CR_MEDIAN)
 				ComputeMedian(x, y, lFilterSize, fRed, fGreen, fBlue);
 			else
 				ComputeGaussian(x, y, lFilterSize, fRed, fGreen, fBlue);
 			m_pOutBitmap->SetPixel(x, y, fRed, fGreen, fBlue);
-		};
-	};
-	void	FixHotPixel(int x, int y)
+		}
+	}
+
+	void FixHotPixel(int x, int y)
 	{
 		FixPixel(x, y, m_lHotFilterSize);
-	};
+	}
 
-	void	FixColdPixel(int x, int y)
+	void FixColdPixel(int x, int y)
 	{
 		FixPixel(x, y, m_lColdFilterSize);
-	};
+	}
 
-public :
-    CCleanCosmeticTask()
-    {
-        m_pProgress = nullptr;
-        m_lWidth = 0;
-        m_lHeight = 0;
-        m_bMonochrome = false;
-        m_bCFA = false;
-        m_CFAType = CFATYPE_NONE;
-        m_lColdFilterSize = 0;
-        m_lHotFilterSize = 0;
-    }
+public:
+    CCleanCosmeticTask() :
+		m_pProgress{ nullptr },
+		m_lWidth{ 0 },
+		m_lHeight{ 0 },
+		m_bMonochrome{ false },
+		m_bCFA{ false },
+		m_CFAType{ CFATYPE_NONE },
+		m_lColdFilterSize{ 0 },
+		m_lHotFilterSize{ 0 }
+	{}
 
-	virtual ~CCleanCosmeticTask()
-	{
-	};
+	~CCleanCosmeticTask() = default;
 
-	void	Init(CMemoryBitmap * pOutBitmap, CMemoryBitmap * pOrgBitmap, CMemoryBitmap * pDelta, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress)
+	void Init(CMemoryBitmap* pOutBitmap, CMemoryBitmap* pOrgBitmap, CMemoryBitmap* pDelta, const CPostCalibrationSettings& pcs, CDSSProgress* pProgress)
 	{
 		m_pOutBitmap		= pOutBitmap;
 		m_pOrgBitmap		= pOrgBitmap;
@@ -328,95 +279,46 @@ public :
 		{
 			m_lColdFilterSize *= 2;
 			m_lHotFilterSize  *= 2;
-		};
-	};
+		}
+	}
 
-	virtual bool	DoTask(HANDLE hEvent)
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool					bResult = true;
-		int					i, j;
-		bool					bEnd = false;
-		MSG						msg;
-		bool					bMonochrome = m_pOutBitmap->IsMonochrome();
-		bool					bCFA = m_pOutBitmap->IsCFA();
-
-		// Create a message queue and signal the event
-		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-		{
-			if (msg.message == WM_MT_PROCESS)
-			{
-				for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-				{
-					for (i = 0;i<m_lWidth;i++)
-					{
-						bool				bChanged = false;
-						double				fDelta;
-
-						m_pDelta->GetPixel(i, j, fDelta);
-
-						if (fDelta > 200)
-						{
-							// Hot pixel to fix
-							FixHotPixel(i, j);
-						}
-						else if (fDelta < 100)
-						{
-							// Cold pixel to fix
-							FixColdPixel(i, j);
-						};
-					};
-				};
-
-				SetEvent(hEvent);
-			}
-			else if (msg.message == WM_MT_STOP)
-				bEnd = true;
-		};
-
-		return true;
-	};
-
-	virtual bool	Process()
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool				bResult = true;
-		int				i = 0;
-		int				lStep;
-		int				lRemaining;
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors(GetNrThreads());
-		lStep		= std::max(1, m_lHeight/50);
-		lRemaining	= m_lHeight;
-
-		while (i<m_lHeight)
-		{
-			int			lAdd = std::min(lStep, lRemaining);
-
-			const auto dwThreadId = GetAvailableThreadId();
-			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-			i			+=lAdd;
-			lRemaining	-= lAdd;
-			if (m_pProgress)
-				m_pProgress->Progress2(nullptr, i);
-		};
-
-		CloseAllThreads();
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors();
-
-		return bResult;
-	};
+	void process();
 };
+
+void CCleanCosmeticTask::process()
+{
+	ZFUNCTRACE_RUNTIME();
+	const int nrProcessors = CMultitask::GetNrProcessors();
+	int progress = 0;
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
+
+#pragma omp parallel for schedule(guided, 100) default(none) if(nrProcessors > 1)
+	for (int row = 0; row < m_lHeight; ++row)
+	{
+		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+			m_pProgress->Progress2(nullptr, progress += m_lHeight / nrProcessors);
+
+		for (int col = 0; col < m_lWidth; ++col)
+		{
+			bool changed = false;
+			double delta;
+			m_pDelta->GetPixel(col, row, delta);
+			if (delta > 200)
+				FixHotPixel(col, row);
+			else if (delta < 100)
+				FixColdPixel(col, row);
+		}
+	}
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors();
+}
 
 /* ------------------------------------------------------------------- */
 
-void	CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double & fGray)
+void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fGray)
 {
 	std::vector<double>			vGrays;
 	std::vector<double>			vAllGrays;
@@ -427,9 +329,9 @@ void	CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double & f
 
 	vGrays.reserve((lFilterSize+1)*2);
 	vAllGrays.reserve((lFilterSize+1)*2);
-	for (int i = std::max(0, x-lFilterSize);i<=std::min(m_lWidth-1, x+lFilterSize);i++)
+	for (int i = std::max(0, x-lFilterSize); i <= std::min(m_lWidth-1, x+lFilterSize); i++)
 	{
-		for (int j = std::max(0, y-lFilterSize);j<=std::min(m_lHeight-1, y+lFilterSize);j++)
+		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
 			// Check that this is a normal pixel
 			bool				bAdd = true;
@@ -459,7 +361,7 @@ void	CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double & f
 
 /* ------------------------------------------------------------------- */
 
-void	CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double & fRed, double & fGreen, double & fBlue)
+void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fRed, double& fGreen, double& fBlue)
 {
 	std::vector<double>			vReds;
 	std::vector<double>			vAllReds;
@@ -468,15 +370,16 @@ void	CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double & f
 	std::vector<double>			vBlues;
 	std::vector<double>			vAllBlues;
 
-	vReds.reserve((lFilterSize+1)*2);
-	vAllReds.reserve((lFilterSize+1)*2);
-	vGreens.reserve((lFilterSize+1)*2);
-	vAllGreens.reserve((lFilterSize+1)*2);
-	vBlues.reserve((lFilterSize+1)*2);
-	vAllBlues.reserve((lFilterSize+1)*2);
-	for (int i = std::max(0, x-lFilterSize);i<=std::min(m_lWidth-1, x+lFilterSize);i++)
+	const size_t vectorSize = (static_cast<size_t>(lFilterSize) + 1) * 2;
+	vReds.reserve(vectorSize);
+	vAllReds.reserve(vectorSize);
+	vGreens.reserve(vectorSize);
+	vAllGreens.reserve(vectorSize);
+	vBlues.reserve(vectorSize);
+	vAllBlues.reserve(vectorSize);
+	for (int i = std::max(0, x-lFilterSize); i <= std::min(m_lWidth-1, x+lFilterSize); i++)
 	{
-		for (int j = std::max(0, y-lFilterSize);j<=std::min(m_lHeight-1, y+lFilterSize);j++)
+		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
 			double					fRed, fGreen, fBlue;
 			double					fDelta;
@@ -512,34 +415,34 @@ void	CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double & f
 
 /* ------------------------------------------------------------------- */
 
-void	CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double & fGray)
+void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& fGray)
 {
 	double						fSumGrays = 0;
 	double						fSumAllGrays = 0;
 	BAYERCOLOR					BayerColor = BAYER_UNKNOWN;
-	double						fTotalWeight = 0,
-								fAllTotalWeight = 0;
-	int						lNrGrays = 0,
-								lNrAllGrays = 0;
+	double						fTotalWeight = 0;
+	double						fAllTotalWeight = 0;
+	int							lNrGrays = 0;
+	int							lNrAllGrays = 0;
 
 	if (m_CFAType != CFATYPE_NONE)
 		BayerColor = GetBayerColor(x, y, m_CFAType);
 
-	for (int i = std::max(0, x-lFilterSize);i<=std::min(m_lWidth-1, x+lFilterSize);i++)
+	for (int i = std::max(0, x-lFilterSize); i <= std::min(m_lWidth-1, x+lFilterSize); i++)
 	{
-		for (int j = std::max(0, y-lFilterSize);j<=std::min(m_lHeight-1, y+lFilterSize);j++)
+		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
 			// Check that this is a normal pixel
-			bool				bAdd = true;
+			bool bAdd = true;
 			if (m_CFAType != CFAT_NONE)
-				bAdd = (GetBayerColor(i, j, m_CFAType) == BayerColor);
+				bAdd = GetBayerColor(i, j, m_CFAType) == BayerColor;
 
 			if (bAdd)
 			{
-				double					fGray;
-				double					fDelta;
-				double					fDistance2 = pow((double)(i-x)/lFilterSize, 2)+pow((double)(j-y)/lFilterSize, 2);
-				double					fWeight = exp(-fDistance2/2);
+				double fGray;
+				double fDelta;
+				double fDistance2 = std::pow((i-x) / static_cast<double>(lFilterSize), 2) + std::pow((j-y) / static_cast<double>(lFilterSize), 2);
+				double fWeight = std::exp(-fDistance2/2);
 
 				m_pOrgBitmap->GetPixel(i, j, fGray);
 				m_pDelta->GetPixel(i, j, fDelta);
@@ -565,7 +468,7 @@ void	CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double &
 
 /* ------------------------------------------------------------------- */
 
-void	CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double & fRed, double & fGreen, double & fBlue)
+void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& fRed, double& fGreen, double& fBlue)
 {
 	double						fSumReds = 0;
 	double						fSumAllReds = 0;
@@ -575,18 +478,18 @@ void	CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double &
 	double						fSumAllBlues = 0;
 	double						fTotalWeight = 0,
 								fAllTotalWeight = 0;
-	int						lNrGrays = 0,
-								lNrAllGrays = 0;
+	int							lNrGrays = 0;
+	int							lNrAllGrays = 0;
 
-	for (int i = std::max(0, x-lFilterSize);i<=std::min(m_lWidth-1, x+lFilterSize);i++)
+	for (int i = std::max(0, x-lFilterSize); i <= std::min(m_lWidth-1, x+lFilterSize); i++)
 	{
-		for (int j = std::max(0, y-lFilterSize);j<=std::min(m_lHeight-1, y+lFilterSize);j++)
+		for (int j = std::max(0, y-lFilterSize); j <= std::min(m_lHeight-1, y+lFilterSize); j++)
 		{
 			// Check that this is a normal pixel
-			double					fRed, fGreen, fBlue;
-			double					fDelta;
-			double					fDistance2 = pow((double)(i-x)/lFilterSize, 2)+pow((double)(j-y)/lFilterSize, 2);
-			double					fWeight = exp(-fDistance2/2);
+			double fRed, fGreen, fBlue;
+			double fDelta;
+			double fDistance2 = std::pow((i-x)/ static_cast<double>(lFilterSize), 2) + std::pow((j-y) / static_cast<double>(lFilterSize), 2);
+			double fWeight = std::exp(-fDistance2/2);
 
 			m_pOrgBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 			m_pDelta->GetPixel(i, j, fDelta);
@@ -604,9 +507,9 @@ void	CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double &
 				fSumBlues    += fBlue*fWeight;
 				fTotalWeight += fWeight;
 				lNrGrays++;
-			};
-		};
-	};
+			}
+		}
+	}
 
 	if (lNrGrays > lNrAllGrays/3)
 	{
@@ -619,25 +522,24 @@ void	CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double &
 		fRed	= fSumAllReds/fAllTotalWeight;
 		fGreen	= fSumAllGreens/fAllTotalWeight;
 		fBlue	= fSumAllBlues/fAllTotalWeight;
-	};
-};
+	}
+}
 
-/* ------------------------------------------------------------------- */
 
-bool	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, const CPostCalibrationSettings & pcs, CDSSProgress * pProgress)
+bool ApplyCosmetic(CMemoryBitmap* pBitmap, CMemoryBitmap** ppDeltaBitmap, const CPostCalibrationSettings& pcs, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (ppDeltaBitmap)
+	if (ppDeltaBitmap != nullptr)
 		*ppDeltaBitmap = nullptr;
-	if (pBitmap)
+	if (pBitmap != nullptr)
 	{
 		if (pcs.m_bHot || pcs.m_bCold)
 		{
 			CSmartPtr<CMemoryBitmap>		pMedian;
 			CSmartPtr<CMemoryBitmap>		pDelta;
-			int							lHeight = pBitmap->RealHeight();
+			int								lHeight = pBitmap->RealHeight();
 			CString							strText;
 			CString							strCorrection;
 			CCosmeticStats 					Stats;
@@ -653,19 +555,17 @@ bool	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 					strText.LoadString(IDS_CREATINGMEDIANIMAGE);
 					strText = strCorrection+" - "+strText;
 					pProgress->Start2(strText, 0);
-				};
+				}
 
 				GetFilteredImage(pBitmap, &pMedian, pcs.m_lHotFilter, pProgress);
 
 				if (pProgress)
 					pProgress->Start2(strCorrection, lHeight);
 
-				CDetectCosmeticTask		CosmeticTask;
-
+				CDetectCosmeticTask CosmeticTask;
 				CosmeticTask.SetInitDelta(true);
 				CosmeticTask.Init(pBitmap, pMedian, pDelta, true, pcs.m_fHotDetection/100.0, pProgress);
-				CosmeticTask.StartThreads();
-				CosmeticTask.Process();
+				CosmeticTask.process();
 
 				CosmeticTask.FillStats(Stats);
 
@@ -674,7 +574,7 @@ bool	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 
 				if (pcs.m_lColdFilter != pcs.m_lHotFilter)
 					pMedian.Release();
-			};
+			}
 
 			if (pcs.m_bCold)
 			{
@@ -688,68 +588,62 @@ bool	ApplyCosmetic(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppDeltaBitmap, cons
 						pProgress->Start2(strText, 0);
 					};
 					GetFilteredImage(pBitmap, &pMedian, pcs.m_lColdFilter, pProgress);
-				};
+				}
 
 				if (pProgress)
 					pProgress->Start2(strCorrection, lHeight);
 
-				CDetectCosmeticTask		CosmeticTask;
-
+				CDetectCosmeticTask CosmeticTask;
 				CosmeticTask.SetInitDelta(!pcs.m_bHot);
 				CosmeticTask.Init(pBitmap, pMedian, pDelta, false, pcs.m_fColdDetection/100.0, pProgress);
-				CosmeticTask.StartThreads();
-				CosmeticTask.Process();
+				CosmeticTask.process();
 
 				CosmeticTask.FillStats(Stats);
 
 				if (pProgress)
 					pProgress->End2();
-			};
+			}
 
 			if (Stats.m_lNrDetectedColdPixels || Stats.m_lNrDetectedHotPixels)
 			{
 				// Now fix it - Use pDelta to retrieve the pixels that need to be fixed
-				CCleanCosmeticTask			CosmeticTask;
-				CSmartPtr<CMemoryBitmap>	pCloneBitmap;
-
+				CSmartPtr<CMemoryBitmap> pCloneBitmap;
 				pCloneBitmap.Attach(pBitmap->Clone());
 
 				if (pProgress)
 					pProgress->Start2(nullptr, lHeight);
 
+				CCleanCosmeticTask CosmeticTask;
 				CosmeticTask.Init(pBitmap, pCloneBitmap, pDelta, pcs, pProgress);
-				CosmeticTask.StartThreads();
-				CosmeticTask.Process();
+				CosmeticTask.process();
 
 				if (pProgress)
 					pProgress->End2();
-			};
+			}
 
-			if (pDelta && ppDeltaBitmap && pcs.m_bSaveDeltaImage)
+			if (pDelta && ppDeltaBitmap != nullptr && pcs.m_bSaveDeltaImage)
 				pDelta.CopyTo(ppDeltaBitmap);
-		};
+		}
 
 		bResult = true;
 
-	};
-
+	}
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-bool	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & pcs, CCosmeticStats & cs, CDSSProgress * pProgress)
+bool SimulateCosmetic(CMemoryBitmap* pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (pBitmap)
+	if (pBitmap != nullptr)
 	{
-		cs.m_lNrTotalPixels = pBitmap->RealWidth()*pBitmap->RealHeight();
+		cs.m_lNrTotalPixels = pBitmap->RealWidth() * pBitmap->RealHeight();
 		if (pcs.m_bHot || pcs.m_bCold)
 		{
 			CSmartPtr<CMemoryBitmap>		pMedian;
-			int							lHeight = pBitmap->RealHeight();
+			const int						lHeight = pBitmap->RealHeight();
 			CString							strText;
 			CString							strCorrection;
 
@@ -768,12 +662,10 @@ bool	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 				if (pProgress)
 					pProgress->Start2(strCorrection, lHeight);
 
-				CDetectCosmeticTask		CosmeticTask;
-
+				CDetectCosmeticTask CosmeticTask;
 				CosmeticTask.SetSimulate(true);
 				CosmeticTask.Init(pBitmap, pMedian, nullptr, true, pcs.m_fHotDetection/100.0, pProgress);
-				CosmeticTask.StartThreads();
-				CosmeticTask.Process();
+				CosmeticTask.process();
 
 				if (pProgress)
 					pProgress->End2();
@@ -782,7 +674,7 @@ bool	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 					pMedian.Release();
 
 				CosmeticTask.FillStats(cs);
-			};
+			}
 
 			if (pcs.m_bCold)
 			{
@@ -801,24 +693,20 @@ bool	SimulateCosmetic(CMemoryBitmap * pBitmap, const CPostCalibrationSettings & 
 				if (pProgress)
 					pProgress->Start2(strCorrection, lHeight);
 
-				CDetectCosmeticTask		CosmeticTask;
-
+				CDetectCosmeticTask CosmeticTask;
 				CosmeticTask.SetSimulate(true);
 				CosmeticTask.Init(pBitmap, pMedian, nullptr, false, pcs.m_fColdDetection/100.0, pProgress);
-				CosmeticTask.StartThreads();
-				CosmeticTask.Process();
+				CosmeticTask.process();
 
 				if (pProgress)
 					pProgress->End2();
 
 				CosmeticTask.FillStats(cs);
-			};
-		};
+			}
+		}
 
 		bResult = true;
-	};
+	}
 
 	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
+}
