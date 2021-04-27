@@ -6,6 +6,7 @@
 #include <set>
 #include <algorithm>
 #include "Filters.h"
+#include <omp.h>
 
 #include "TIFFUtil.h"
 
@@ -1694,125 +1695,86 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-class CFindHotPixelTask1 : public CMultitask
+class CFindHotPixelTask1
 {
-public :
-	CRGBHistogram				m_RGBHistogram;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	bool						m_bMonochrome;
-	CDSSProgress *				m_pProgress;
+public:
+	CRGBHistogram m_RGBHistogram;
+	CSmartPtr<CMemoryBitmap> m_pBitmap;
+	CDSSProgress* m_pProgress;
 
-public :
-	CFindHotPixelTask1()
-    {
-        m_bMonochrome = false;
-        m_pProgress = nullptr;
-    }
-	virtual ~CFindHotPixelTask1() {};
+public:
+	CFindHotPixelTask1() : m_pProgress{ nullptr }
+	{}
 
-	void	Init(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+	~CFindHotPixelTask1() = default;
+
+	void Init(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 	{
-		m_pBitmap				 = pBitmap;
-		m_pProgress				 = pProgress;
-		m_bMonochrome			 = pBitmap->IsMonochrome();
+		m_pBitmap = pBitmap;
+		m_pProgress = pProgress;
+		m_RGBHistogram.SetSize(256.0, 65535);
+	}
 
-		m_RGBHistogram.SetSize(256.0, (int)65535);
-	};
-
-	virtual bool	DoTask(HANDLE hEvent)
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool				bResult = true;
-
-		int				i, j;
-		bool				bEnd = false;
-		MSG					msg;
-		int				lWidth = m_pBitmap->RealWidth();
-
-		CRGBHistogram		RGBHistogram;
-		RGBHistogram.SetSize(256.0, (int)65535);
-
-		PixelIterator		PixelIt;
-
-		m_pBitmap->GetIterator(&PixelIt);
-
-		// Create a message queue and signal the event
-		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-		{
-			if (msg.message == WM_MT_PROCESS)
-			{
-				PixelIt->Reset(0, msg.wParam);
-				for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-				{
-					for (i = 0;i<lWidth;i++)
-					{
-						double			fRed, fGreen, fBlue, fGray;
-
-						if (m_bMonochrome)
-						{
-							PixelIt->GetPixel(fGray);
-							//m_pBitmap->GetPixel(i, j, fGray);
-							RGBHistogram.AddValues(fGray, fGray, fGray);
-						}
-						else
-						{
-							PixelIt->GetPixel(fRed, fGreen, fBlue);
-							//m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-							RGBHistogram.AddValues(fRed, fGreen, fBlue);
-						};
-						(*PixelIt)++;
-					};
-				};
-
-				SetEvent(hEvent);
-			}
-			else if (msg.message == WM_MT_STOP)
-				bEnd = true;
-		};
-
-		m_CriticalSection.Lock();
-		m_RGBHistogram.AddValues(RGBHistogram);
-		m_CriticalSection.Unlock();
-		return true;
-	};
-
-	virtual bool	Process()
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool				bResult = true;
-		int				lHeight = m_pBitmap->RealHeight();
-		int				i = 0;
-		int				lStep;
-		int				lRemaining;
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors(GetNrThreads());
-		lStep		= std::max(1, lHeight / 50);
-		lRemaining	= lHeight;
-
-		while (i<lHeight)
-		{
-			int			lAdd = std::min(lStep, lRemaining);
-
-			const auto dwThreadId = GetAvailableThreadId();
-			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-			i			+=lAdd;
-			lRemaining	-= lAdd;
-			if (m_pProgress)
-				m_pProgress->Progress2(nullptr, i);
-		};
-
-		CloseAllThreads();
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors();
-
-		return bResult;
-	};
+	void process();
 };
+
+template <class T> struct threadLocals {
+	T& bitmap;
+	PixelIterator PixelIt;
+	CRGBHistogram RGBHistogram;
+
+	explicit threadLocals(T& bm) : bitmap{ bm } {
+		bitmap->GetIterator(&PixelIt);
+		RGBHistogram.SetSize(256.0, 65535);
+	}
+	threadLocals(const threadLocals& rhs) : bitmap{ rhs.bitmap } {
+		bitmap->GetIterator(&PixelIt);
+		RGBHistogram.SetSize(256.0, 65535);
+	}
+};
+
+
+void CFindHotPixelTask1::process()
+{
+	ZFUNCTRACE_RUNTIME();
+	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int height = m_pBitmap->RealHeight();
+	const int width = m_pBitmap->RealWidth();
+	int progress = 0;
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
+
+	threadLocals threadVars(m_pBitmap);
+
+#pragma omp parallel default(none) firstprivate(threadVars) if(nrProcessors > 1)
+	{
+#pragma omp for schedule(guided, 100)
+		for (int row = 0; row < height; ++row)
+		{
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+				m_pProgress->Progress2(nullptr, progress += height / nrProcessors);
+
+			threadVars.PixelIt->Reset(0, row);
+			double r, g, b;
+
+			for (int col = 0; col < width; ++col, (*threadVars.PixelIt)++)
+			{
+				threadVars.PixelIt->GetPixel(r, g, b); // GetPixel is virtual => works for monochrome bitmaps, too.
+				threadVars.RGBHistogram.AddValues(r, g, b);
+			}
+		}
+
+#pragma omp critical(OmpLockDarkFindHot)
+		{
+			m_RGBHistogram.AddValues(threadVars.RGBHistogram);
+		}
+	} // omp parallel
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors();
+}
+
 
 /* ------------------------------------------------------------------- */
 
@@ -1875,34 +1837,9 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 			pProgress->Start2(strText, m_pMasterDark->RealHeight());
 		};
 
-		CFindHotPixelTask1	HotPixelTask1;
-
+		CFindHotPixelTask1 HotPixelTask1;
 		HotPixelTask1.Init(m_pMasterDark, pProgress);
-		HotPixelTask1.StartThreads();
-		HotPixelTask1.Process();
-
-		/*
-		RGBHistogram.SetSize(256.0, (int)65535);
-		for (j = 0;j<m_pMasterDark->RealHeight();j++)
-		{
-			for (i = 0;i<m_pMasterDark->Width();i++)
-			{
-				double			fRed, fGreen, fBlue, fGray;
-
-				if (bMonochrome)
-				{
-					m_pMasterDark->GetPixel(i, j, fGray);
-					RGBHistogram.AddValues(fGray, fGray, fGray);
-				}
-				else
-				{
-					m_pMasterDark->GetPixel(i, j, fRed, fGreen, fBlue);
-					RGBHistogram.AddValues(fRed, fGreen, fBlue);
-				};
-			};
-			if (pProgress)
-				pProgress->Progress2(nullptr, j+1);
-		};*/
+		HotPixelTask1.process();
 
 		if (pProgress)
 		{
