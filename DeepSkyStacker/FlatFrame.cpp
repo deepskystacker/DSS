@@ -6,217 +6,55 @@
 
 #include <omp.h>
 
-class CFlatDivideTask : public CMultitask
-{
-private :
-	CSmartPtr<CMemoryBitmap>	m_pTarget;
-	CDSSProgress *				m_pProgress;
-	CFlatFrame *				m_pFlatFrame;
-	bool						m_bUseGray;
-	bool						m_bUseCFA;
-
-public :
-    CFlatDivideTask()
-    {
-        m_pProgress = nullptr;
-        m_pFlatFrame = nullptr;
-        m_bUseGray = false;
-        m_bUseCFA = false;
-    }
-
-	virtual ~CFlatDivideTask()
-	{
-	};
-
-	void	Init(CMemoryBitmap * pTarget, CDSSProgress * pProgress, CFlatFrame * pFlatFrame)
-	{
-		m_pTarget		= pTarget;
-		m_pProgress		= pProgress;
-		m_pFlatFrame	= pFlatFrame;
-
-		m_bUseGray = m_pFlatFrame->m_FlatNormalization.UseGray();
-		m_bUseCFA  = m_pFlatFrame->IsCFA();
-		if (m_pProgress)
-			m_pProgress->Start2(nullptr, m_pTarget->RealWidth());
-
-	};
-
-	void	End()
-	{
-		if (m_pProgress)
-			m_pProgress->End2();
-	};
-
-	virtual bool	Process();
-	virtual bool	DoTask(HANDLE hEvent);
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CFlatDivideTask::DoTask(HANDLE hEvent)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
-
-	int			i, j;
-	bool			bEnd = false;
-	MSG				msg;
-	int			lWidth = m_pTarget->RealWidth();
-
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-	{
-		if (msg.message == WM_MT_PROCESS)
-		{
-			for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-			{
-				for (i = 0;i<lWidth;i++)
-				{
-					if (m_bUseGray)
-					{
-						double			fSrcGray;
-						double			fTgtGray;
-
-						m_pTarget->GetPixel(i, j, fTgtGray);
-						m_pFlatFrame->m_pFlatFrame->GetPixel(i, j, fSrcGray);
-						if (m_bUseCFA)
-							m_pFlatFrame->m_FlatNormalization.Normalize(fTgtGray, fSrcGray, m_pFlatFrame->m_pFlatFrame->GetBayerColor(i, j));
-						else
-							m_pFlatFrame->m_FlatNormalization.Normalize(fTgtGray, fSrcGray);
-						m_pTarget->SetPixel(i, j, fTgtGray);
-					}
-					else
-					{
-						double			fSrcRed, fSrcGreen, fSrcBlue;
-						double			fTgtRed, fTgtGreen, fTgtBlue;
-
-						m_pTarget->GetPixel(i, j, fTgtRed, fTgtGreen, fTgtBlue);
-						m_pFlatFrame->m_pFlatFrame->GetPixel(i, j, fSrcRed, fSrcGreen, fSrcBlue);
-						m_pFlatFrame->m_FlatNormalization.Normalize(fTgtRed, fTgtGreen, fTgtBlue, fSrcRed, fSrcGreen, fSrcBlue);
-						m_pTarget->SetPixel(i, j, fTgtRed, fTgtGreen, fTgtBlue);
-					};
-				};
-			};
-			SetEvent(hEvent);
-		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = true;
-	};
-
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CFlatDivideTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
-	int			lHeight = m_pTarget->RealHeight();
-	int			lStep;
-	int			lRemaining;
-	int			i = 0;
-
-	if (m_pProgress)
-	{
-		m_pProgress->Start2(nullptr, lHeight);
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	};
-
-	lStep		= std::max(1, lHeight / 50);
-	lRemaining	= lHeight;
-
-	bResult = true;
-	while (i < lHeight)
-	{
-		int			lAdd = std::min(lStep, lRemaining);
-
-		const auto dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+= lAdd;
-		lRemaining	-= lAdd;
-
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, i);
-	};
-
-	CloseAllThreads();
-	if (m_pProgress)
-	{
-		m_pProgress->SetNrUsedProcessors();
-		m_pProgress->End2();
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
 bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
-	bool			bUseGray;
-	bool			bUseCFA;
+	bool bResult = false;
 	CStringA strText;
 	strText.LoadString(IDS_APPLYINGFLAT);
 
 	// Check and remove super pixel settings
-	CCFABitmapInfo *			pCFABitmapInfo;
-	CFATRANSFORMATION			CFATransform = CFAT_NONE;
-
-	pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
-	if (pCFABitmapInfo)
+	CFATRANSFORMATION CFATransform = CFAT_NONE;
+	CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
+	if (pCFABitmapInfo != nullptr)
 	{
 		CFATransform = pCFABitmapInfo->GetCFATransformation();
 		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseBilinear(true);
-	};
+	}
 
 	// Check that it is the same sizes
-	if (pTarget && m_pFlatFrame)
+	if (pTarget != nullptr && m_pFlatFrame)
 	{
-		if ((pTarget->RealWidth() == m_pFlatFrame->RealWidth()) &&
-			(pTarget->RealHeight() == m_pFlatFrame->RealHeight()))
+		const int height = pTarget->RealHeight();
+		const int width = pTarget->RealWidth();
+		const int nrProcessors = CMultitask::GetNrProcessors();
+
+		if (width == m_pFlatFrame->RealWidth() && height == m_pFlatFrame->RealHeight())
 		{
 			ZTRACE_RUNTIME(strText);
-			/*
-			CFlatDivideTask			DivideTask;
-
-			DivideTask.Init(pTarget, pProgress, this);
-			DivideTask.StartThreads();
-			DivideTask.Process();
-			*/
-
-			bUseGray = m_FlatNormalization.UseGray();
-			bUseCFA     = IsCFA();
+			const bool bUseGray = m_FlatNormalization.UseGray();
+			const bool bUseCFA = IsCFA();
 			
-			if (pProgress)
-				pProgress->Start2(nullptr, pTarget->RealWidth());
+			if (pProgress != nullptr)
+				pProgress->Start2(nullptr, height);
 			bResult = true;
 
 			int	rowProgress = 0;
 
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
-			for (int i = 0;i<pTarget->RealWidth();i++)
+#pragma omp parallel for schedule(guided, 100) default(none) if(nrProcessors > 1)
+			for (int j = 0; j < height; j++)
 			{
-				for (int j = 0;j<pTarget->RealHeight();j++)
+				for (int i = 0; i < width; i++)
 				{
 					if (bUseGray)
 					{
-						double			fSrcGray = 0.0;
-						double			fTgtGray = 0.0;
-
-
+						double fSrcGray = 0.0;
+						double fTgtGray = 0.0;
 						pTarget->GetPixel(i, j, fTgtGray);
-
 						m_pFlatFrame->GetPixel(i, j, fSrcGray);
+
 						if (bUseCFA)
 							m_FlatNormalization.Normalize(fTgtGray, fSrcGray, m_pFlatFrame->GetBayerColor(i, j));
 						else
@@ -226,28 +64,21 @@ bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 					}
 					else
 					{
-						double			fSrcRed, fSrcGreen, fSrcBlue;
-						double			fTgtRed, fTgtGreen, fTgtBlue;
+						double fSrcRed, fSrcGreen, fSrcBlue;
+						double fTgtRed, fTgtGreen, fTgtBlue;
 
 						pTarget->GetPixel(i, j, fTgtRed, fTgtGreen, fTgtBlue);
 						m_pFlatFrame->GetPixel(i, j, fSrcRed, fSrcGreen, fSrcBlue);
 						m_FlatNormalization.Normalize(fTgtRed, fTgtGreen, fTgtBlue, fSrcRed, fSrcGreen, fSrcBlue);
 						pTarget->SetPixel(i, j, fTgtRed, fTgtGreen, fTgtBlue);
-					};
-				};
-
-#if defined (_OPENMP)
-				if (pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
-				{
-					rowProgress += omp_get_num_threads();
-					pProgress->Progress2(nullptr, rowProgress);
+					}
 				}
-#else
-				if (pProgress)
-					pProgress->Progress2(nullptr, ++rowProgress);
-#endif
-			};
-			if (pProgress)
+
+				if (omp_get_thread_num() == 0 && pProgress != nullptr)
+					pProgress->Progress2(nullptr, rowProgress += height / nrProcessors);
+			}
+
+			if (pProgress != nullptr)
 				pProgress->End2();
 		}
 		else
@@ -256,13 +87,13 @@ bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 			ZTRACE_RUNTIME("Target.RealHeight = %d, Source.RealHeight = %d", pTarget->RealHeight(), m_pFlatFrame->RealHeight());
 			ZTRACE_RUNTIME("Did not perform %s", strText);
 		}
-	};
+	}
 
 	if (CFATransform == CFAT_SUPERPIXEL)
 		pCFABitmapInfo->UseSuperPixels(true);
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
