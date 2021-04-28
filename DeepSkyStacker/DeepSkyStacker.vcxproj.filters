@@ -381,6 +381,9 @@
     <ClCompile Include="BitmapBase.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="MedianFilterEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
