@@ -195,3 +195,5 @@ bool CreateBitmap(class CBitmapCharacteristics const&, class CMemoryBitmap**) { 
 bool CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
 
 bool CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
+
+void CGrayBitmapT<unsigned short>::RemoveHotPixels(class CDSSProgress*) {}
