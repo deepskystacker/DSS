@@ -1753,7 +1753,7 @@ void CFindHotPixelTask1::process()
 		for (int row = 0; row < height; ++row)
 		{
 			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-				m_pProgress->Progress2(nullptr, progress += height / nrProcessors);
+				m_pProgress->Progress2(nullptr, progress += nrProcessors);
 
 			threadVars.PixelIt->Reset(0, row);
 			double r, g, b;

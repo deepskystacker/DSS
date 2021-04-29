@@ -137,7 +137,7 @@ void CDetectCosmeticTask::doProcess()
 	for (int row = 0; row < height; ++row)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += height / nrProcessors);
+			m_pProgress->Progress2(nullptr, progress += nrProcessors);
 
 		const auto countColdHotPixels = [&](const int col, const int row, const bool changed) -> void
 		{
@@ -298,7 +298,7 @@ void CCleanCosmeticTask::process()
 	for (int row = 0; row < m_lHeight; ++row)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += m_lHeight / nrProcessors);
+			m_pProgress->Progress2(nullptr, progress += nrProcessors);
 
 		for (int col = 0; col < m_lWidth; ++col)
 		{

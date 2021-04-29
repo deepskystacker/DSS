@@ -75,7 +75,7 @@ bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 				}
 
 				if (omp_get_thread_num() == 0 && pProgress != nullptr)
-					pProgress->Progress2(nullptr, rowProgress += height / nrProcessors);
+					pProgress->Progress2(nullptr, rowProgress += nrProcessors);
 			}
 
 			if (pProgress != nullptr)

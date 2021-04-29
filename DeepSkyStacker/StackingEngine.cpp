@@ -1687,6 +1687,7 @@ void CStackTask::process()
 	const int height = m_pBitmap->Height();
 	const int nrProcessors = CMultitask::GetNrProcessors();
 	constexpr int lineBlockSize = 20;
+	int progress = 0;
 
 	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors(nrProcessors);
@@ -1705,7 +1706,7 @@ void CStackTask::process()
 		}
 
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, row);
+			m_pProgress->Progress2(nullptr, progress += nrProcessors * lineBlockSize);
 	}
 
 	if (m_pProgress != nullptr)

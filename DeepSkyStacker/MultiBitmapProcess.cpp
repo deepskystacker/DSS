@@ -8,6 +8,7 @@
 #include <iostream>
 #include "Multitask.h"
 #include "avx_output.h"
+#include <omp.h>
 
 /* ------------------------------------------------------------------- */
 
@@ -160,204 +161,110 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
 };
 
 /* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-class CCombineTask : public CMultitask
+class CCombineTask
 {
-private :
-	int						m_lStartRow;
-	int						m_lEndRow;
-	int						m_lScanLineSize;
-	CDSSProgress *				m_pProgress;
-	CMultiBitmap *				m_pMultiBitmap;
-	void *						m_pBuffer;
+private:
+	int							m_lStartRow;
+	int							m_lEndRow;
+	size_t						m_lScanLineSize;
+	CDSSProgress*				m_pProgress;
+	CMultiBitmap*				m_pMultiBitmap;
+	void*						m_pBuffer;
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CSmartPtr<CMemoryBitmap>	m_pHomBitmap;
 
-public :
-    CCombineTask()
-    {
-        m_lStartRow = 0;
-        m_lEndRow = 0;
-        m_lScanLineSize = 0;
-        m_pProgress = nullptr;
-        m_pMultiBitmap = nullptr;
-        m_pBuffer = nullptr;
-    }
+public:
+    CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, CDSSProgress* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
+		m_lStartRow{ startRow },
+		m_lEndRow{ endRow },
+		m_lScanLineSize{ scanLineSize },
+		m_pProgress{ pProgress },
+		m_pMultiBitmap{ pMultiBitmap },
+        m_pBuffer{ pBuffer },
+		m_pBitmap{ pBitmap }
+	{}
 
-	virtual ~CCombineTask()
-	{
-	};
+	~CCombineTask() = default;
 
-	void	Init(int lStartRow, int lEndRow, int lScanLineSize, void * pBuffer, CDSSProgress * pProgress, CMultiBitmap * pMultiBitmap, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap = nullptr)
-	{
-		m_lStartRow		= lStartRow;
-		m_lEndRow		= lEndRow;
-		m_lScanLineSize	= lScanLineSize;
-		m_pProgress		= pProgress;
-		m_pMultiBitmap	= pMultiBitmap;
-		m_pBuffer		= pBuffer;
-		m_pBitmap		= pBitmap;
-		m_pHomBitmap	= pHomBitmap;
-	};
-
-	virtual bool	DoTask(HANDLE hEvent);
-	virtual bool	Process();
+	void process();
 };
 
-/* ------------------------------------------------------------------- */
-
-bool	CCombineTask::DoTask(HANDLE hEvent)
+void CCombineTask::process()
 {
-	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
+	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int nrRows = m_lEndRow - m_lStartRow + 1;
+	const size_t nrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
+	int progress = m_lStartRow;
+	bool stop = false;
 
-	int				i;
-	bool				bEnd = false;
-	MSG					msg;
-	int				lNrBitmaps = m_pMultiBitmap->GetNrAddedBitmaps();
-	std::vector<void *>	vScanLines;
+	std::vector<void*> scanLines(nrBitmaps, nullptr);
+	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-	vScanLines.reserve(lNrBitmaps);
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	try
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
+
+	const auto handleError = [](const auto& errorMessage, const auto flags) -> void
 	{
-		AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
+#if defined(_CONSOLE)
+		std::cerr << errorMessage;
+#else
+		AfxMessageBox(errorMessage, flags);
+#endif
+		exit(1);
+	};
 
-		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
+#pragma omp parallel for schedule(dynamic) default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1)
+	for (int row = m_lStartRow; row <= m_lEndRow; ++row)
+	{
+		if (stop)
+			continue;
+
+		try
 		{
-			if (msg.message == WM_MT_PROCESS)
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 			{
-				for (i = msg.wParam; i < msg.wParam + msg.lParam && !bEnd; i++)
-				{
-					void *				pScanLine;
-
-					vScanLines.resize(0);
-
-					for (int k = 0; k < lNrBitmaps && !bEnd; k++)
-					{
-						int			lOffset;
-
-						lOffset = k * (m_lEndRow - m_lStartRow + 1) * m_lScanLineSize
-							+ (i - m_lStartRow) * m_lScanLineSize;
-						pScanLine = (void*)(((BYTE*)m_pBuffer) + lOffset);
-
-						vScanLines.push_back(pScanLine);
-						if (m_pProgress)
-							bEnd = m_pProgress->IsCanceled();
-					};
-
-					if (!bEnd)
-					{
-						// First try AVX accelerated code, if not supported -> run conventional code.
-						if (avxOutputComposition.compose(i, vScanLines) != 0)
-						{
-							m_pMultiBitmap->SetScanLines(m_pBitmap, i, vScanLines);
-						}
-					}
-				};
-
-				SetEvent(hEvent);
+				stop = m_pProgress->IsCanceled();
+				m_pProgress->Progress2(nullptr, progress += nrProcessors);
 			}
-			else if (msg.message == WM_MT_STOP)
-				bEnd = true;
-		};
-	}
-	catch (std::exception & e)
-	{
-		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
-#if defined(_CONSOLE)
-		std::cerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-	}
-#ifndef _CONSOLE
-	catch (CException & e)
-	{
-		e.ReportError();
-		e.Delete();
-		exit(1);
-	}
-#endif
-	catch (ZException & ze)
-	{
-		CString errorMessage;
-		CString name(CA2CT(ze.name()));
-		CString fileName(CA2CT(ze.locationAtIndex(0)->fileName()));
-		CString functionName(CA2CT(ze.locationAtIndex(0)->functionName()));
-		CString text(CA2CT(ze.text(0)));
 
-		errorMessage.Format(
-			_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
-			name,
-			fileName,
-			functionName,
-			ze.locationAtIndex(0)->lineNumber(),
-			text);
-#if defined(_CONSOLE)
-		std::cerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-	}
-	catch (...)
-	{
-		CString errorMessage(_T("Unknown exception caught"));
-#if defined(_CONSOLE)
-		std::cerr << errorMessage;
-#else
-		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
-#endif
-		exit(1);
-	}
-	return true;
-};
+			for (size_t k = 0, offset = (row - m_lStartRow) * m_lScanLineSize; k < nrBitmaps; ++k, offset += nrRows * m_lScanLineSize)
+				scanLines[k] = static_cast<char*>(m_pBuffer) + offset;
 
-/* ------------------------------------------------------------------- */
-
-bool	CCombineTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
-	int			i = m_lStartRow;
-	int			lStep;
-	int			lRemaining;
-
-	if (m_pProgress)
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1, (m_lEndRow-m_lStartRow+1)/50);
-	lRemaining	= m_lEndRow-m_lStartRow+1;
-
-	while (i<=m_lEndRow && bResult)
-	{
-		int			lAdd = min(lStep, lRemaining);
-
-		const auto dwThreadId = GetAvailableThreadId();
-
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+= lAdd;
-		lRemaining	-= lAdd;
-
-		if (m_pProgress)
-		{
-			m_pProgress->Progress2(nullptr, i);
-			bResult = !m_pProgress->IsCanceled();
+			// First try AVX accelerated code, if not supported -> run conventional code.
+			if (avxOutputComposition.compose(row, scanLines) != 0)
+				m_pMultiBitmap->SetScanLines(m_pBitmap, row, scanLines);
 		}
-	};
+		catch (const std::exception& e)
+		{
+			CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
+			handleError(errorMessage, MB_OK | MB_ICONSTOP);
+		}
+#if !defined(_CONSOLE)
+		catch (CException& e)
+		{
+			e.ReportError();
+			e.Delete();
+			exit(1);
+		}
+#endif
+		catch (ZException& ze)
+		{
+			auto location = ze.locationAtIndex(0);
+			CString errorMessage;
+			errorMessage.Format(_T("Exception %s thrown from %s Function: %s() Line: %lu\n\n%s"),
+				CString{ CA2CT(ze.name()) }, CString{ CA2CT(location->fileName()) }, CString{ CA2CT(location->functionName()) }, location->lineNumber(), CString{ CA2CT(ze.text(0)) });
+			handleError(errorMessage, MB_OK | MB_ICONSTOP);
+		}
+		catch (...)
+		{
+			CString errorMessage(_T("Unknown exception caught"));
+			handleError(errorMessage, MB_OK | MB_ICONSTOP);
+		}
+	}
 
-	CloseAllThreads();
-
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors();
-
-	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -453,17 +360,13 @@ void	CMultiBitmap::SmoothOut(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppOutBitm
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool CMultiBitmap::GetResult(CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool						bResult = false;
-	int						lScanLineSize;
-	int						/*i, k, */l;
 	CSmartPtr<CMemoryBitmap>	pBitmap;
-	int						lBufferSize = 0;
-	void *						pBuffer = nullptr;
 
-	if (m_bInitDone && m_vFiles.size())
+	if (m_bInitDone && !m_vFiles.empty())
 	{
 		*ppBitmap = nullptr;
 		bResult = false;
@@ -482,60 +385,45 @@ bool CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 				m_pHomBitmap.Attach(new C96BitFloatColorBitmap);
 			if (m_pHomBitmap)
 				bResult = m_pHomBitmap->Init(m_lWidth, m_lHeight);
-		};
+		}
 
-		if (pProgress && bResult)
+		if (pProgress != nullptr && bResult)
 			pProgress->Start2(nullptr, m_lHeight);
 
-		lScanLineSize = (GetNrBytesPerChannel() * GetNrChannels() * m_lWidth);
+		const size_t lScanLineSize = static_cast<size_t>(m_lWidth) * GetNrBytesPerChannel() * GetNrChannels();
+		std::vector<std::uint8_t> buffer;
 
-		//lScanLineSize = m_lWidth * GetNrChannels() * GetNrBytesPerChannel();
-		for (l = 0;l<m_vFiles.size() && bResult;l++)
+		for (const auto& file : m_vFiles)
 		{
+			if (!bResult)
+				break;
+
 			// Read the full bitmap in memory
-			int					lFileSize;
-			FILE *					hFile;
+			const size_t fileSize = lScanLineSize * m_lNrAddedBitmaps * (size_t{ 1 } + file.m_lEndRow - file.m_lStartRow);
 
-			lFileSize = lScanLineSize * m_lNrAddedBitmaps*
-						(m_vFiles[l].m_lEndRow - m_vFiles[l].m_lStartRow+1);
+			if (fileSize > buffer.size())
+				buffer.resize(fileSize);
 
-			if (lFileSize > lBufferSize)
+			FILE* hFile = _tfopen(file.m_strFile, _T("rb"));
+			if (hFile != nullptr)
 			{
-				if (pBuffer)
-					free(pBuffer);
-				pBuffer = (void *)malloc(lFileSize);
-				lBufferSize = lFileSize;
-			};
-			hFile = _tfopen(m_vFiles[l].m_strFile, _T("rb"));
-			if (hFile)
-			{
-				bResult = (fread(pBuffer, 1, lFileSize, hFile) == lFileSize);
+				bResult = fread(buffer.data(), 1, fileSize, hFile) == fileSize;
 				fclose(hFile);
 			}
 			else
 				bResult = false;
 
-			{
-				CCombineTask		CombineTask;
+			if (!bResult)
+				break;
 
-				CombineTask.Init(m_vFiles[l].m_lStartRow, m_vFiles[l].m_lEndRow, lScanLineSize,
-								 pBuffer, pProgress, this, pBitmap);
-				CombineTask.StartThreads();
-				CombineTask.Process();
-			};
+			CCombineTask{ file.m_lStartRow, file.m_lEndRow, lScanLineSize, buffer.data(), pProgress, this, pBitmap }.process();
 
-			if (pProgress)
+			if (pProgress != nullptr)
 			{
 				pProgress->End2();
 				bResult = !pProgress->IsCanceled();
 			}
-		};
-
-		if (pBuffer)
-		{
-			free(pBuffer);
-			pBuffer = nullptr;
-		};
+		}
 
 		if (bResult)
 		{
@@ -547,12 +435,12 @@ bool CMultiBitmap::GetResult(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress
 			}
 			else
 				pBitmap.CopyTo(ppBitmap);
-		};
-	};
+		}
+	}
 
 	DestroyTempFiles();
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
