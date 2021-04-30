@@ -1,20 +1,22 @@
 #include <stdafx.h>
 #include "Multitask.h"
 #include <QSettings>
+#include <omp.h>
 
 
 int CMultitask::GetNrProcessors(bool bReal)
 {
-	const auto dwMaxProcessors = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
+	const auto nrProcessorsSetting = QSettings{}.value("MaxProcessors", uint{ 0 }).toUInt();
 
-	SYSTEM_INFO SysInfo;
-	GetSystemInfo(&SysInfo);
-	int lResult = SysInfo.dwNumberOfProcessors;
-	if (!bReal && dwMaxProcessors != 0)
-		lResult = std::min(static_cast<int>(dwMaxProcessors), lResult);
-
-	return lResult;
-};
+	//SYSTEM_INFO SysInfo;
+	//GetSystemInfo(&SysInfo);
+	//int lResult = SysInfo.dwNumberOfProcessors;
+	const int nrProcessors = std::max(omp_get_num_threads(), 1);
+	if (!bReal && nrProcessorsSetting != 0)
+		return std::min(static_cast<int>(nrProcessorsSetting), nrProcessors);
+	else
+		return nrProcessors;
+}
 
 void CMultitask::SetUseAllProcessors(bool bUseAll)
 {
@@ -23,17 +25,17 @@ void CMultitask::SetUseAllProcessors(bool bUseAll)
 		settings.setValue("MaxProcessors", uint{ 0 });
 	else
 		settings.setValue("MaxProcessors", uint{ 1 });
-};
+}
 
 bool CMultitask::GetReducedThreadsPriority()
 {
 	return QSettings{}.value("ReducedThreadPriority", true).toBool();
-};
+}
 
 void CMultitask::SetReducedThreadsPriority(bool bReduced)
 {
 	QSettings{}.setValue("ReducedThreadPriority", bReduced);
-};
+}
 
 bool CMultitask::GetUseSimd()
 {

@@ -12,7 +12,7 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgre
 	std::vector<int> greenLocalHist(HistogramSize());
 	std::vector<int> blueLocalHist(HistogramSize());
 	const int height = pBitmap->Height();
-	const auto nrProcessors = CMultitask::GetNrProcessors(false);
+	const auto nrProcessors = CMultitask::GetNrProcessors();
 
 	if (pProgress != nullptr)
 		pProgress->SetNrUsedProcessors(nrProcessors);

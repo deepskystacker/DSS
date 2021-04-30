@@ -496,7 +496,7 @@ namespace { // Only use in this .cpp file
 
 		do	// Do once!
 		{
-			const int numberOfProcessors = CMultitask::GetNrProcessors(false);
+			const int numberOfProcessors = CMultitask::GetNrProcessors();
 
 			fBrightness = workspace.value("RawDDP/Brightness").toDouble();
 			fRedScale = workspace.value("RawDDP/RedScale").toDouble();

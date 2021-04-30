@@ -963,7 +963,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	const int nrSubrectsY = (calcHeight - 1) / stepSize + 1;
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
 	const int nrSubrectsX = (calcWidth - 1) / stepSize + 1;
-	const int nrEnabledThreads = CMultitask::GetNrProcessors(false); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 
 	STARSET stars1, stars2, stars3, stars4;
 	std::atomic<int> nrSubrects{ 0 };

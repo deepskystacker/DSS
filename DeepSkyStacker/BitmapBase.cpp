@@ -5,7 +5,7 @@
 template <typename T>
 void CGrayBitmapT<T>::RemoveHotPixels(CDSSProgress* pProgress)
 {
-	const int nrProcessors = CMultitask::GetNrProcessors(false);
+	const int nrProcessors = CMultitask::GetNrProcessors();
 
 	if (pProgress != nullptr)
 	{

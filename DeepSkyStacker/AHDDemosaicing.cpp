@@ -768,7 +768,7 @@ bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, CMemoryBitmap** ppColorBi
 
 	if (pColorBitmap->Init(width, height) && ahdVariables.Init())
 	{
-		const auto nrProcessors = CMultitask::GetNrProcessors(false);
+		const auto nrProcessors = CMultitask::GetNrProcessors();
 		if (pProgress != nullptr)
 		{
 			pProgress->Start2(nullptr, height);

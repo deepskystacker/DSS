@@ -239,7 +239,7 @@ bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 			pColorBitmap->GetIterator(&it);
 
 //#if defined(_OPENMP)	Don't use OpenMP here - doesn't mix with Pixel Iterator
-//#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors(false) > 1)
+//#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1)
 //#endif
 			for (int j = 0;j<lHeight;j++)
 			{
@@ -305,7 +305,7 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 					pColorBitmap.Create();
 					pColorBitmap->Init(lWidth, lHeight);
 
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors(false) > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 					for (int j = 0; j < lHeight; j++)
 					{
 						for (int i = 0; i < lWidth; i++)
@@ -903,7 +903,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 		{
 			double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors(false) > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < lHeight; j++)
 			{
 				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
@@ -976,7 +976,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CColorBitmapT<TType>* p
 		{
 			const double fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors(false) > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < lHeight; j++)
 			{
 				// Init iterators
@@ -1030,7 +1030,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CGrayBitmapT<TType>* pI
 		{
 			double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors(false) > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < lHeight; j++)
 			{
 				// Init iterators
@@ -1483,7 +1483,7 @@ void CSubtractTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
 	const int height = m_pTarget->RealHeight() - (m_fYShift == 0 ? 0 : static_cast<int>(std::fabs(m_fYShift) + 0.5));
-	const int nrProcessors = CMultitask::GetNrProcessors(false);
+	const int nrProcessors = CMultitask::GetNrProcessors();
 
 	if (m_pProgress != nullptr)
 	{

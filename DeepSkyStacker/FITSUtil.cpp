@@ -690,7 +690,7 @@ bool CFITSReader::Read()
 			throw exc;
 		}
 
-		const int nrProcessors = CMultitask::GetNrProcessors(false); // Returns 1, if the user de-selected multi-threading, # CPUs else.
+		const int nrProcessors = CMultitask::GetNrProcessors(); // Returns 1, if the user de-selected multi-threading, # CPUs else.
 
 		//
 		// Step 1: If the image is in float format, need to extract the minimum and maximum pixel values.
