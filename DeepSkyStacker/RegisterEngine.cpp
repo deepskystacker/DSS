@@ -928,31 +928,30 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
+void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
-	int					lSubRectWidth,
-							lSubRectHeight;
-	int					lNrSubRects;
-	int					lProgress = 0;
+	int lSubRectWidth;
+	int lSubRectHeight;
+	int lProgress = 0;
 
 	// First computed median value
 	m_fBackground = ComputeMedianValue(Bitmap);
 
 	m_SkyBackground.m_fLight = m_fBackground;
 
-	lSubRectWidth	= STARMAXSIZE * 5;
-	lSubRectHeight	= STARMAXSIZE * 5;
+	lSubRectWidth = STARMAXSIZE * 5;
+	lSubRectHeight = STARMAXSIZE * 5;
 
-	lNrSubRects		= ((Bitmap.Width()-STARMAXSIZE*2) / lSubRectWidth * 2) * ((Bitmap.Height()-STARMAXSIZE*2) / lSubRectHeight * 2);
+	const int lNrSubRects = ((Bitmap.Width() - STARMAXSIZE * 2) / lSubRectWidth * 2) * ((Bitmap.Height() - STARMAXSIZE * 2) / lSubRectHeight * 2);
 
 	if (m_pProgress != nullptr)
 	{
 		CString			strText;
 		strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)m_strFileName);
 		m_pProgress->Start2(strText, lNrSubRects);
-	};
+	}
 
 	m_vStars.clear();
 
@@ -1025,206 +1024,147 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 	}
 
 #pragma omp single
-{
-	stars1.merge(stars3);
-	// Remaining areas, all are overlapping with at least one other.
-	// Vertically middle band, full height
-	processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1);
-	// Middle left
-	processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1);
-	// Middle right
-	processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1);
+	{
+		stars1.merge(stars3);
+		// Remaining areas, all are overlapping with at least one other.
+		// Vertically middle band, full height
+		processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1);
+		// Middle left
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1);
+		// Middle right
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1);
 
-	m_vStars.assign(stars1.cbegin(), stars1.cend());
-}
+		m_vStars.assign(stars1.cbegin(), stars1.cend());
+	}
 
 #pragma omp sections
-{
+	{
 #pragma omp section
-	ComputeOverallQuality();
+		ComputeOverallQuality();
 #pragma omp section
-	ComputeFWHM();
-}
-
-}
+		ComputeFWHM();
+	}
+} // omp parallel
 
 	if (m_pProgress)
 		m_pProgress->End2();
-};
+}
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-class CComputeLuminanceTask : public CMultitask
+class CComputeLuminanceTask
 {
-public :
+public:
 	CSmartPtr<CGrayBitmap>		m_pGrayBitmap;
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CDSSProgress *				m_pProgress;
+	CDSSProgress*				m_pProgress;
 
-public :
-	CComputeLuminanceTask()
-	{
-        m_pProgress = nullptr;
-	};
+public:
+	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, CDSSProgress* pPrg) :
+		m_pGrayBitmap{ pGb },
+		m_pBitmap{ pBm },
+		m_pProgress{ pPrg }
+	{}
 
-	virtual ~CComputeLuminanceTask()
-	{
-	};
-
-	void	Init(CMemoryBitmap * pBitmap, CGrayBitmap * pGrayBitmap, CDSSProgress * pProgress)
-	{
-		m_pBitmap				 = pBitmap;
-		m_pGrayBitmap		     = pGrayBitmap;
-		m_pProgress				 = pProgress;
-	};
-
-	virtual bool	DoTask(HANDLE hEvent);
-	virtual bool	Process();
+	~CComputeLuminanceTask() = default;
+	void process();
+private:
+	void processNonAvx(const int lineStart, const int lineEnd);
 };
 
-/* ------------------------------------------------------------------- */
-
-bool	CComputeLuminanceTask::DoTask(HANDLE hEvent)
+void CComputeLuminanceTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
+	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int height = m_pBitmap->Height();
+	int progress = 0;
+	constexpr int lineBlockSize = 20;
 
-	int				i, j;
-	bool				bEnd = false;
-	MSG					msg;
-	int				lWidth = m_pBitmap->Width();
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
 	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
+#pragma omp parallel for schedule(dynamic) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
+	for (int row = 0; row < height; row += lineBlockSize)
 	{
-		if (msg.message == WM_MT_PROCESS)
+		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+			m_pProgress->Progress2(nullptr, progress += nrProcessors * lineBlockSize);
+
+		const int endRow = std::min(row + lineBlockSize, height);
+		if (avxLuminance.computeLuminanceBitmap(row, endRow) != 0)
 		{
-			if (avxLuminance.computeLuminanceBitmap(msg.wParam, msg.wParam + msg.lParam) != 0)
-			{
-				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
-				{
-					for (i = 0; i < lWidth; i++)
-					{
-						COLORREF16			crColor;
-
-						m_pBitmap->GetPixel16(i, j, crColor);
-						m_pGrayBitmap->SetPixel(i, j, GetLuminance(crColor));
-					};
-				};
-			}
-
-			SetEvent(hEvent);
+			processNonAvx(row, endRow);
 		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = true;
-	};
+	}
 
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CComputeLuminanceTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
-	int				lHeight = m_pBitmap->Height();
-	int				i = 0;
-	int				lStep;
-	int				lRemaining;
-
-	if (m_pProgress)
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= std::max(1, lHeight / 50);
-	lRemaining	= lHeight;
-
-	while (i<lHeight)
-	{
-		int			lAdd = std::min(lStep, lRemaining);
-		const auto dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+=lAdd;
-		lRemaining	-= lAdd;
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, i);
-	};
-
-	CloseAllThreads();
-
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors();
+}
 
-	return bResult;
-};
+void CComputeLuminanceTask::processNonAvx(const int lineStart, const int lineEnd)
+{
+	const int width = m_pBitmap->Width();
+	for (int row = lineStart; row < lineEnd; ++row)
+	{
+		for (int col = 0; col < width; ++col)
+		{
+			COLORREF16 crColor;
+			m_pBitmap->GetPixel16(col, row, crColor);
+			m_pGrayBitmap->SetPixel(col, row, GetLuminance(crColor));
+		}
+	}
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap * pBitmap, CGrayBitmap ** ppGrayBitmap)
+void CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap, CGrayBitmap** ppGrayBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	CSmartPtr<CGrayBitmap>		pGrayBitmap;
+	CSmartPtr<CGrayBitmap> pGrayBitmap;
 
-	m_lWidth	= pBitmap->Width();
-	m_lHeight	= pBitmap->Height();
+	m_lWidth = pBitmap->Width();
+	m_lHeight = pBitmap->Height();
 
 	if (m_bRemoveHotPixels)
 		pBitmap->RemoveHotPixels(m_pProgress);
 
 	// Try to find star by studying the variation of luminosity
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 	{
-		CString			strText;
-
+		CString strText;
 		strText.Format(IDS_COMPUTINGLUMINANCE, (LPCTSTR)m_strFileName);
 		m_pProgress->Start2(strText, pBitmap->Height());
-	};
+	}
 
 	pGrayBitmap.Attach(new CGrayBitmap);
 	ZTRACE_RUNTIME("Creating Gray memory bitmap %p (luminance)", pGrayBitmap.m_p);
 	pGrayBitmap->Init(pBitmap->Width(), pBitmap->Height());
 
-	CComputeLuminanceTask		ComputeLuminanceTask;
-
-	ComputeLuminanceTask.Init(pBitmap, pGrayBitmap, m_pProgress);
-	ComputeLuminanceTask.StartThreads();
-	ComputeLuminanceTask.Process();
+	CComputeLuminanceTask{ pBitmap, pGrayBitmap, m_pProgress }.process();
 
 	if (m_bApplyMedianFilter)
 	{
-		CMedianImageFilter			filter;
-		CSmartPtr<CMemoryBitmap>	pFiltered;
-		CSmartPtr<CGrayBitmap>		pFilteredGray;
+		CSmartPtr<CMemoryBitmap> pFiltered;
+		CMedianImageFilter{}.ApplyFilter(pGrayBitmap, &pFiltered, m_pProgress);
 
-		filter.ApplyFilter(pGrayBitmap, &pFiltered, m_pProgress);
-
-		pFilteredGray.Attach(dynamic_cast<CGrayBitmap *>(pFiltered.m_p));
+		CSmartPtr<CGrayBitmap> pFilteredGray;
+		pFilteredGray.Attach(dynamic_cast<CGrayBitmap*>(pFiltered.m_p));
 		pFilteredGray.CopyTo(ppGrayBitmap);
 	}
 	else
 		pGrayBitmap.CopyTo(ppGrayBitmap);
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-void	CLightFrameInfo::RegisterPicture(CMemoryBitmap * pBitmap)
+void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	CSmartPtr<CGrayBitmap>		pGrayBitmap;
+	CSmartPtr<CGrayBitmap> pGrayBitmap;
 
 	ComputeLuminanceBitmap(pBitmap, &pGrayBitmap);
 	if (pGrayBitmap)
 		RegisterPicture(*pGrayBitmap);
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift)
+bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, double& fRedXShift, double& fRedYShift, double& fBlueXShift, double& fBlueYShift)
 {
 	// Compute star center for blue and red
 	bool				bResult = false;
