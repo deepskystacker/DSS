@@ -11,7 +11,7 @@ int CMultitask::GetNrProcessors(bool bReal)
 	//SYSTEM_INFO SysInfo;
 	//GetSystemInfo(&SysInfo);
 	//int lResult = SysInfo.dwNumberOfProcessors;
-	const int nrProcessors = std::max(omp_get_num_threads(), 1);
+	const int nrProcessors = std::max(omp_get_num_procs(), 1);
 	if (!bReal && nrProcessorsSetting != 0)
 		return std::min(static_cast<int>(nrProcessorsSetting), nrProcessors);
 	else
