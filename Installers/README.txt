@@ -1,4 +1,4 @@
-﻿Welcome to DeepSkyStacker 4.2.6 Beta 2
+﻿Welcome to DeepSkyStacker 4.2.6
 
 Here are the main changes since DeepSkyStacker 4.2.5
 
