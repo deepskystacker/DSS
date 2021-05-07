@@ -272,9 +272,9 @@ void CCombineTask::process()
 static	void ComputeWeightedAverage(int x, int y, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap, CMemoryBitmap * pOutBitmap)
 {
 	//ZFUNCTRACE_RUNTIME();
-	bool			bColor = pBitmap->IsMonochrome();
-	int			lWidth = pBitmap->Width();
-	int			lHeight = pBitmap->Height();
+	bool bColor = !pBitmap->IsMonochrome();
+	int lWidth = pBitmap->Width();
+	int lHeight = pBitmap->Height();
 
 	if (bColor)
 	{
