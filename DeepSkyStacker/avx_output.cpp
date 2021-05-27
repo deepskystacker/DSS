@@ -124,7 +124,9 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 			for (int n = 0; n < nPixels; ++n) // nPixels is 1..16
 			{
 				auto& N = sizes[n];
-				const T element = std::is_same_v<T, std::uint32_t> ? (pT[n] >> 16) : pT[n]; // First divide by scaling factor, then compare with zero.
+				T element = pT[n];
+				if constexpr (std::is_same_v<T, std::uint32_t>) // First divide by scaling factor, then compare with zero.
+					element >>= 16;
 				if (element != zero) // Copy all lightframe values that are != 0.
 					medianData[n * nrLightframes + (N++)] = element;
 			}
