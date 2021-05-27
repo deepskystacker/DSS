@@ -75,6 +75,8 @@ int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<vo
 template <class T, AvxOutputComposition::MethodSelection Method>
 int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
+	static_assert(!std::is_integral<T>::value || std::is_unsigned<T>::value);
+
 	// CMultiBitmap - template<TType, TTypeOutput>: Input must be of type T, and output type must be float.
 	if (bitmapColorOrGray<T, float>(inputBitmap) == false)
 		return 1;
@@ -117,20 +119,14 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 		std::for_each(lineAddresses.cbegin(), lineAddresses.cend(), [&medianData, &sizes, offset, nPixels, nrLightframes](const void* const p)
 		{
-			const T* const pT = static_cast<const T*>(p);
+			constexpr T zero = T{ 0 };
+			const T* const pT = static_cast<const T*>(p) + offset;
 			for (int n = 0; n < nPixels; ++n) // nPixels is 1..16
 			{
-				constexpr T zero = T{ 0 };
-				const T element = *(pT + offset + n);
 				auto& N = sizes[n];
+				const T element = std::is_same_v<T, std::uint32_t> ? (pT[n] >> 16) : pT[n]; // First divide by scaling factor, then compare with zero.
 				if (element != zero) // Copy all lightframe values that are != 0.
-				{
-					static_assert(!std::is_integral<T>::value || std::is_unsigned<T>::value);
-					if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type
-						medianData[n * nrLightframes + (N++)] = (element >> 16);
-					else
-						medianData[n * nrLightframes + (N++)] = element;
-				}
+					medianData[n * nrLightframes + (N++)] = element;
 			}
 		});
 	};
