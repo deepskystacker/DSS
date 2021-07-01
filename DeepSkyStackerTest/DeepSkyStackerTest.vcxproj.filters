@@ -39,6 +39,12 @@
     <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AvxHistogramTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="catch.h">
