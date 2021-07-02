@@ -2,7 +2,7 @@
 #define __ENTROPYINFO_H__
 
 #include "DSSTools.h"
-#include "BitmapExt.h"
+#include "BitmapBase.h"
 #include "zexcept.h"
 
 /* ------------------------------------------------------------------- */

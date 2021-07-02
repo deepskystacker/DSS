@@ -56,9 +56,10 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 
 	const auto getDistribution = [](const auto& histogram, T value) -> float
 	{
+		constexpr size_t Unsigned_short_max = size_t{ std::numeric_limits<std::uint16_t>::max() };
 		if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type 
 			value >>= 16;
-		return static_cast<float>(histogram[std::min(static_cast<size_t>(value), size_t{ USHORT_MAX })]);
+		return static_cast<float>(histogram[std::min(static_cast<size_t>(value), Unsigned_short_max)]);
 	};
 
 	const auto calcEntropyOfSquare = [squareSize, width, height, vectorLen, &getDistribution](const int col, const int row, const T* const pColor, auto& histogram) -> EntropyVectorType::value_type

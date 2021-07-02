@@ -45,7 +45,7 @@ void CEntropyInfo::InitSquareEntropies()
 					fBlueEntropy;
 
 				lMinY = j * lSquareSize;
-				lMaxY = min((j + 1) * lSquareSize - 1, m_pBitmap->Height() - 1);
+				lMaxY = std::min((j + 1) * lSquareSize - 1, m_pBitmap->Height() - 1);
 				// Compute the entropy for this square
 				ComputeEntropies(lMinX, lMinY, lMaxX, lMaxY, fRedEntropy, fGreenEntropy, fBlueEntropy);
 
