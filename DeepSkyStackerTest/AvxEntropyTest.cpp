@@ -201,6 +201,55 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 		REQUIRE(compare(std::vector<int>(squareSize * (37 - squareSize), 1), redEnt[2]) == 0); // Third "square".
 		REQUIRE(compare(std::vector<int>((40 - squareSize) * (37 - squareSize), 1), redEnt[3]) == 0); // Fourth "square".
 	}
+
+	SECTION("Most values different RGB")
+	{
+		constexpr int windowSize = 10;
+		constexpr int squareSize = 2 * windowSize + 1;
+		CSmartPtr<CMemoryBitmap> pBitmap;
+		pBitmap.Attach(new CColorBitmapT<std::uint16_t>);
+		REQUIRE(pBitmap->Init(24, 22) == true);
+
+		auto* pGray = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		// Set values
+		std::uint16_t v = 3;
+		std::for_each(pGray->m_Red.m_vPixels.begin(), pGray->m_Red.m_vPixels.end(), [&v](auto& elem) { elem = v++; });
+		std::for_each(pGray->m_Green.m_vPixels.begin(), pGray->m_Green.m_vPixels.end(), [&v](auto& elem) { elem = v++; });
+		pGray->m_Green.m_vPixels[3] = pGray->m_Green.m_vPixels[20];
+		std::for_each(pGray->m_Blue.m_vPixels.begin(), pGray->m_Blue.m_vPixels.end(), [&v](auto& elem) { elem = v++; });
+
+		const int nSqX = 1 + (pBitmap->Width() - 1) / squareSize;
+		const int nSqY = 1 + (pBitmap->Height() - 1) / squareSize;
+		std::vector<float> redEnt(nSqX * nSqY), greenEnt(nSqX * nSqY), blueEnt(nSqX * nSqY);
+
+		CEntropyInfo entropyInfo;
+		entropyInfo.Init(pBitmap, windowSize, nullptr);
+		AvxEntropy avxEntropy(*pBitmap, entropyInfo, nullptr);
+		avxEntropy.calcEntropies(squareSize, nSqX, nSqY, redEnt, greenEnt, blueEnt);
+
+		const auto compare = [&](const std::vector<int> incidences, const float calculatedEntropy) {
+			const auto [entropyAvx, entropyExact] = calcEntropy(incidences);
+			REQUIRE(roundSig(calculatedEntropy, 1e4f) == roundSig(entropyAvx, 1e4f));
+			REQUIRE(roundSig(entropyAvx, 1e4f) == roundSig(entropyExact, 1e4f)); // Some decimal digits need to be identical.
+		};
+
+		compare(std::vector<int>(squareSize * squareSize, 1), redEnt[0]); // First square.
+		compare(std::vector<int>((24 - squareSize) * squareSize, 1), redEnt[1]); // Second "square".
+		compare(std::vector<int>(squareSize * (22 - squareSize), 1), redEnt[2]); // Third "square".
+		compare(std::vector<int>((24 - squareSize) * (22 - squareSize), 1), redEnt[3]); // Fourth "square".
+
+		std::vector<int> inci(squareSize * squareSize, 1);
+		inci[3] = inci[20] = 2;
+		compare(inci, greenEnt[0]);
+		compare(std::vector<int>((24 - squareSize) * squareSize, 1), greenEnt[1]);
+		compare(std::vector<int>(squareSize * (22 - squareSize), 1), greenEnt[2]);
+		compare(std::vector<int>((24 - squareSize) * (22 - squareSize), 1), greenEnt[3]);
+
+		compare(std::vector<int>(squareSize * squareSize, 1), blueEnt[0]);
+		compare(std::vector<int>((24 - squareSize) * squareSize, 1), blueEnt[1]);
+		compare(std::vector<int>(squareSize * (22 - squareSize), 1), blueEnt[2]);
+		compare(std::vector<int>((24 - squareSize) * (22 - squareSize), 1), blueEnt[3]);
+	}
 }
 
 int CMultitask::GetNrProcessors(bool) { return 1; }
