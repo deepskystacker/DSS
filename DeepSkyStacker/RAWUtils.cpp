@@ -840,7 +840,8 @@ namespace { // Only use in this .cpp file
 
 				const int imageWidth = S.width;
 				const int imageHeight = S.height;
-#pragma omp parallel for default(none) schedule(static) firstprivate(pFiller) if(numberOfProcessors > 1 && pFiller->isThreadSafe())
+				const bool bitmapFillerIsThreadSafe = pFiller->isThreadSafe();
+#pragma omp parallel for default(none) schedule(static) firstprivate(pFiller) if(numberOfProcessors > 1 && bitmapFillerIsThreadSafe)
 				for (int row = 0; row < imageHeight; ++row)
 				{
 					// Write raw pixel data into our private bitmap format
