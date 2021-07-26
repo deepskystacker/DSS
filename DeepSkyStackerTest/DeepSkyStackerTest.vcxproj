@@ -138,6 +138,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../zclass</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,23 +150,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_support.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp" />
+    <ClCompile Include="AvxAccumulateTest.cpp" />
     <ClCompile Include="AvxCfaTest.cpp" />
     <ClCompile Include="AvxEntropyTest.cpp" />
     <ClCompile Include="AvxHistogramTest.cpp" />
     <ClCompile Include="BitMapFillerTest.cpp" />
     <ClCompile Include="DeepSkyStackerTest.cpp" />
+    <ClCompile Include="OpenMpTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AvxAccumulateTest.h" />
     <ClInclude Include="catch.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
