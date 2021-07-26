@@ -775,6 +775,12 @@
     <ClInclude Include="avx_bitmap_filler.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="TaskInfo.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameInfoSupport.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">

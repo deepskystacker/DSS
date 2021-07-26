@@ -12,6 +12,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#include "FrameInfoSupport.h"
+
 // Change the list version each time a new column is added
 constexpr int	LISTVERSION	    = 3;
 

@@ -497,6 +497,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="FITSUtil.h" />
     <ClInclude Include="FlatFrame.h" />
     <ClInclude Include="FrameInfo.h" />
+    <ClInclude Include="FrameInfoSupport.h" />
     <ClInclude Include="FrameList.h" />
     <ClInclude Include="group.h" />
     <ClInclude Include="dss_settings.h" />
@@ -554,6 +555,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="StarMaskDlg.h" />
     <ClInclude Include="Stars.h" />
     <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="TaskInfo.h" />
     <ClInclude Include="TIFFUtil.h" />
     <ClInclude Include="Workspace.h" />
   </ItemGroup>

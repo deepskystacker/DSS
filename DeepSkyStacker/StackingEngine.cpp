@@ -14,6 +14,7 @@
 #include "CosmeticEngine.h"
 #include "ChannelAlign.h"
 #include <iostream>
+#include "FrameInfoSupport.h"
 #include "avx.h"
 #include "avx_avg.h"
 #include <omp.h>

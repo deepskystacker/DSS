@@ -31,8 +31,8 @@ extern bool	g_bShowRefStars;
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "RecommendedSettings.h"
-
 #include "DeepStackerDlg.h"
+#include "FrameInfoSupport.h"
 
 constexpr int SSTAB_RESULT = 0;
 constexpr int SSTAB_COMET = 1;
@@ -45,7 +45,6 @@ constexpr int SSTAB_INTERMEDIATE = 7;
 constexpr int SSTAB_POSTCALIBRATION = 9;
 constexpr int SSTAB_OUTPUT = 10;
 
-#include "StackRecap.h"
 #include "ui/ui_StackRecap.h"
 
 StackRecap::StackRecap(QWidget *parent) :
