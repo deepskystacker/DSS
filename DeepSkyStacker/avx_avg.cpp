@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "avx_avg.h"
 #include "avx_support.h"
+#include "TaskInfo.h"
 #include <immintrin.h>
 
 AvxAccumulation::AvxAccumulation(const CRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
@@ -81,9 +82,18 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 				// Rest of line
 				for (int n = nrVectors * vectorLen; n < resultWidth; ++n, ++pRed, ++pGreen, ++pBlue, ++pOutRed, ++pOutGreen, ++pOutBlue)
 				{
-					*pOutRed = (*pOutRed * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pRed)) / static_cast<float>(nrStackedBitmaps + 1);
-					*pOutGreen = (*pOutGreen * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pGreen)) / static_cast<float>(nrStackedBitmaps + 1);
-					*pOutBlue = (*pOutBlue * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pBlue)) / static_cast<float>(nrStackedBitmaps + 1);
+					if constexpr (std::is_same_v<T_IN, std::uint32_t>)
+					{
+						*pOutRed = (*pOutRed * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pRed >> 16)) / static_cast<float>(nrStackedBitmaps + 1);
+						*pOutGreen = (*pOutGreen * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pGreen >> 16)) / static_cast<float>(nrStackedBitmaps + 1);
+						*pOutBlue = (*pOutBlue * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pBlue >> 16)) / static_cast<float>(nrStackedBitmaps + 1);
+					}
+					else
+					{
+						*pOutRed = (*pOutRed * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pRed)) / static_cast<float>(nrStackedBitmaps + 1);
+						*pOutGreen = (*pOutGreen * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pGreen)) / static_cast<float>(nrStackedBitmaps + 1);
+						*pOutBlue = (*pOutBlue * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pBlue)) / static_cast<float>(nrStackedBitmaps + 1);
+					}
 				}
 			}
 			return 0;
@@ -102,7 +112,10 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 					accumulate(pGray, pOut);
 				// Rest of line
 				for (int n = nrVectors * vectorLen; n < resultWidth; ++n, ++pGray, ++pOut)
-					*pOut = (*pOut * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pGray)) / static_cast<float>(nrStackedBitmaps + 1);
+					if constexpr (std::is_same_v<T_IN, std::uint32_t>)
+						*pOut = (*pOut * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pGray >> 16)) / static_cast<float>(nrStackedBitmaps + 1);
+					else
+						*pOut = (*pOut * static_cast<float>(nrStackedBitmaps) + static_cast<float>(*pGray)) / static_cast<float>(nrStackedBitmaps + 1);
 			}
 			return 0;
 		}
@@ -137,9 +150,18 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 				// Rest of line
 				for (int n = nrVectors * vectorLen; n < resultWidth; ++n, ++pRed, ++pGreen, ++pBlue, ++pOutRed, ++pOutGreen, ++pOutBlue)
 				{
-					*pOutRed = std::max(*pOutRed, static_cast<float>(*pRed));
-					*pOutGreen = std::max(*pOutGreen, static_cast<float>(*pGreen));
-					*pOutBlue = std::max(*pOutBlue, static_cast<float>(*pBlue));
+					if constexpr (std::is_same_v<T_IN, std::uint32_t>)
+					{
+						*pOutRed = std::max(*pOutRed, static_cast<float>(*pRed >> 16));
+						*pOutGreen = std::max(*pOutGreen, static_cast<float>(*pGreen >> 16));
+						*pOutBlue = std::max(*pOutBlue, static_cast<float>(*pBlue >> 16));
+					}
+					else
+					{
+						*pOutRed = std::max(*pOutRed, static_cast<float>(*pRed));
+						*pOutGreen = std::max(*pOutGreen, static_cast<float>(*pGreen));
+						*pOutBlue = std::max(*pOutBlue, static_cast<float>(*pBlue));
+					}
 				}
 			}
 			return 0;
@@ -158,7 +180,10 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 					maximum(pGray, pOut);
 				// Rest of line
 				for (int n = nrVectors * vectorLen; n < resultWidth; ++n, ++pGray, ++pOut)
-					*pOut = std::max(*pOut, static_cast<float>(*pGray));
+					if constexpr (std::is_same_v<T_IN, std::uint32_t>)
+						*pOut = std::max(*pOut, static_cast<float>(*pGray >> 16));
+					else
+						*pOut = std::max(*pOut, static_cast<float>(*pGray));
 			}
 			return 0;
 		}
@@ -217,9 +242,18 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 					*pEntropyCovRed += *pEntropyRed; // EntropyCoverage += Entropy
 					*pEntropyCovGreen += *pEntropyGreen;
 					*pEntropyCovBlue += *pEntropyBlue;
-					*pOutRed += static_cast<float>(*pRed) * *pEntropyRed; // OutputBitmap += Color * Entropy
-					*pOutGreen += static_cast<float>(*pGreen) * *pEntropyGreen;
-					*pOutBlue += static_cast<float>(*pBlue) * *pEntropyBlue;
+					if constexpr (std::is_same_v<T_IN, std::uint32_t>)
+					{
+						*pOutRed += static_cast<float>(*pRed >> 16) * *pEntropyRed; // OutputBitmap += Color * Entropy
+						*pOutGreen += static_cast<float>(*pGreen >> 16) * *pEntropyGreen;
+						*pOutBlue += static_cast<float>(*pBlue >> 16) * *pEntropyBlue;
+					}
+					else
+					{
+						*pOutRed += static_cast<float>(*pRed) * *pEntropyRed; // OutputBitmap += Color * Entropy
+						*pOutGreen += static_cast<float>(*pGreen) * *pEntropyGreen;
+						*pOutBlue += static_cast<float>(*pBlue) * *pEntropyBlue;
+					}
 				}
 			}
 			return 0;
@@ -243,7 +277,10 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 				for (int n = nrVectors * vectorLen; n < resultWidth; ++n, ++pGray, ++pOut, ++pEntropy, ++pEntropyCov)
 				{
 					*pEntropyCov += *pEntropy;
-					*pOut += static_cast<float>(*pGray) * *pEntropy;
+					if constexpr (std::is_same_v<T_IN, std::uint32_t>)
+						*pOut += static_cast<float>(*pGray >> 16) * *pEntropy;
+					else
+						*pOut += static_cast<float>(*pGray) * *pEntropy;
 				}
 			}
 			return 0;
