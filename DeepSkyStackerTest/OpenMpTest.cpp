@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "catch.h"
+#include "../DeepSkyStacker/avx_bitmap_filler.h"
 #include <omp.h>
 
 TEST_CASE("OpenMP parallelization", "[OpenMP]")
@@ -170,5 +171,25 @@ TEST_CASE("OpenMP parallelization", "[OpenMP]")
 
 		REQUIRE(omp_get_num_procs() > 1);
 		REQUIRE(memcmp(glob.data(), expected.data(), glob.size() * sizeof(int)) == 0);
+	}
+
+	SECTION("Firstprivate with BitmapFiller")
+	{
+		CSmartPtr<CMemoryBitmap> pBitmap;
+		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		pBitmap->Init(3, 2);
+		CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<NonAvxBitmapFiller>(pBitmap, nullptr, 1.0, 1.0, 1.0);
+		filler->setGrey(true);
+		const bool isThreadSafe = filler->isThreadSafe();
+//#pragma omp parallel firstprivate(filler) if(filler->isThreadSafe()) // Visual Studio 2019, V 16.10.4: Access violation here
+#pragma omp parallel for firstprivate(filler) if(isThreadSafe)
+		for (int line = 0; line < 2; ++line)
+		{
+			filler->setMaxColors(255);
+			filler->setWidth(3);
+			filler->setHeight(2);
+			std::uint8_t inputData[3] = { 19, 45, 243 };
+			REQUIRE(filler->Write(inputData, 1, 3, line) == 3);
+		}
 	}
 }
