@@ -192,4 +192,34 @@ TEST_CASE("OpenMP parallelization", "[OpenMP]")
 			REQUIRE(filler->Write(inputData, 1, 3, line) == 3);
 		}
 	}
+
+	class OmpTest
+	{
+		std::vector<float> v;
+		size_t width;
+	public:
+		OmpTest(const size_t w, const size_t h) : v(w * h, 0.0f), width{ w } {}
+		OmpTest(const OmpTest& rhs) : v{ rhs.v }, width{ rhs.width } {}
+		~OmpTest() = default;
+		virtual bool isThreadSafe() const { return true; }
+		size_t process(const int line, const std::uint8_t* p)
+		{
+			for (size_t n = line * width; n < (line + 1) * width; ++n)
+				v[n] = static_cast<float>(*p++);
+			return width;
+		}
+	};
+
+	SECTION("Firstprivate with class")
+	{
+		OmpTest tc(3, 2);
+		const bool isThreadSafe = tc.isThreadSafe();
+//#pragma omp parallel for firstprivate(tc) if(tc.isThreadSafe()) // Crashes in VS 2019 V 16.10.4
+#pragma omp parallel for firstprivate(tc) if(isThreadSafe)
+		for (int line = 0; line < 2; ++line)
+		{
+			std::uint8_t data[3] = { 17 + line, 29 + 2 * line, 51 + 3 * line };
+			REQUIRE(tc.process(line, data) == 3);
+		}
+	}
 }
