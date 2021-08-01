@@ -32,6 +32,9 @@ public:
 	AvxEntropy(const AvxEntropy&) = default;
 	AvxEntropy(AvxEntropy&&) = delete;
 	AvxEntropy& operator=(const AvxEntropy&) = delete;
+#if defined(UNIT_TESTS)
+	float* getRedEntropyLayer() { return reinterpret_cast<float*>(redEntropyLayer.data()); }
+#endif
 
 	int calcEntropies(const int squareSize, const int nSquaresX, const int nSquaresY, EntropyVectorType& redEntropies, EntropyVectorType& greenEntropies, EntropyVectorType& blueEntropies);
 private:

@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "catch.h"
+
+#define UNIT_TESTS
+
 #include "AvxAccumulateTest.h"
 #include "../DeepSkyStacker/BitmapBase.h"
 #include "../DeepSkyStacker/avx_avg.h"
@@ -356,26 +359,25 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 		REQUIRE(memcmp(pOut->m_Blue.m_vPixels.data(), expectedBlue.data(), expectedBlue.size() * sizeof(float)) == 0);
 	}
 }
-/*
+
 TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 {
 	CTaskInfo taskInfo;
 	taskInfo.SetMethod(MBP_ENTROPYAVERAGE, 0, 0);
 
-	SECTION("One gray frame with identical values int16")
+	SECTION("One gray frame with identical values int32")
 	{
 		constexpr int W = 256 + 7;
 		constexpr int H = 16 * 21 + 11;
 		constexpr int windowSize = 10;
-		constexpr int squareSize = 2 * windowSize + 1;
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
 		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		pTempBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
 		REQUIRE(pTempBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.m_p);
-		pGray->m_vPixels.assign(W * H, 4938);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.m_p);
+		pGray->m_vPixels.assign(W * H, 4938 << 16);
 
 		CSmartPtr<CMemoryBitmap> pOutBitmap;
 		pOutBitmap.Attach(new CGrayBitmapT<float>);
@@ -385,21 +387,28 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 		CSmartPtr<CMemoryBitmap> pEntropyCoverage;
 		pEntropyCoverage.Attach(new CGrayBitmapT<float>);
 		REQUIRE(pEntropyCoverage->Init(W, H) == true);
-		const int nSqX = 1 + (W - 1) / squareSize;
-		const int nSqY = 1 + (H - 1) / squareSize;
 
 		CEntropyInfo entropyInfo;
 		entropyInfo.Init(pTempBitmap, windowSize, nullptr);
 		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage);
 
+		float* pRedEntropy = avxEntropy.getRedEntropyLayer();
+		for (int i = 0; i < W * H; ++i)
+			pRedEntropy[i] = static_cast<float>(i);
+
 		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
 		REQUIRE(avxAccumulation.accumulate(0) == 0);
 
-		std::vector<float> expected(W * H, 0.0f);
+		const auto* pEntCov = dynamic_cast<CGrayBitmapT<float>*>(pEntropyCoverage.m_p);
+		REQUIRE(memcmp(pEntCov->m_vPixels.data(), pRedEntropy, W * H * sizeof(float)) == 0);
+
+		std::vector<float> expected(W * H);
+		for (int i = 0; i < W * H; ++i)
+			expected[i] = static_cast<float>(pGray->m_vPixels[i] >> 16) * pRedEntropy[i];
 		REQUIRE(memcmp(pOut->m_vPixels.data(), expected.data(), expected.size() * sizeof(float)) == 0);
 	}
 }
-*/
+
 BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode() { return BCM_RGB; }
 BACKGROUNDCALIBRATIONINTERPOLATION GetBackgroundCalibrationInterpolation() { return BCI_RATIONAL; }
 RGBBACKGROUNDCALIBRATIONMETHOD GetRGBBackgroundCalibrationMethod() { return RBCM_MIDDLE; }
