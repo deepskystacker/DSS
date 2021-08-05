@@ -2,6 +2,7 @@
 #include "avx_support.h"
 #include "avx.h"
 #include <immintrin.h>
+#include <stdexcept>
 
 
 AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat) :
@@ -425,6 +426,10 @@ int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class A
 	return 1;
 }
 
+inline float readColorValue(const std::uint16_t c) { return static_cast<float>(c); }
+inline float readColorValue(const std::uint32_t c) { return static_cast<float>(c >> 16); }
+inline float readColorValue(const float c) { return c; }
+
 template <class T>
 int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef)
 {
@@ -453,7 +458,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				float* pRemaining = reinterpret_cast<float*>(pResult);
 				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
-					*pRemaining = static_cast<float>(*pColor);
+					*pRemaining = readColorValue(*pColor);
 				}
 			}
 		};
@@ -497,7 +502,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				float* pRemaining = reinterpret_cast<float*>(pResult);
 				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
-					const float fcolor = static_cast<float>(*pColor);
+					const float fcolor = readColorValue(*pColor);
 					const float denom = b.m256_f32[0] * fcolor + c.m256_f32[0];
 					const float xplusa = fcolor + a.m256_f32[0];
 					*pRemaining = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), fmax.m256_f32[0]), fmin.m256_f32[0]);
@@ -542,7 +547,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				float* pRemaining = reinterpret_cast<float*>(pResult);
 				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
-					const float fcolor = static_cast<float>(*pColor);
+					const float fcolor = readColorValue(*pColor);
 					*pRemaining = fcolor < xm.m256_f32[0] ? (fcolor * a0.m256_f32[0] + b0.m256_f32[0]) : (fcolor * a1.m256_f32[0] + b1.m256_f32[0]);
 				}
 			}
@@ -644,8 +649,8 @@ int AvxStacking::pixelPartitioning()
 		if (this->entropyData.redEntropyLayer.empty()) // Something is wrong here!
 			return 1;
 		pRedEntropyLayer = reinterpret_cast<float*>(this->entropyData.redEntropyLayer.data());
-		pGreenEntropyLayer = constexpr (ISRGB) ? reinterpret_cast<float*>(this->entropyData.greenEntropyLayer.data()) : nullptr;
-		pBlueEntropyLayer = constexpr (ISRGB) ? reinterpret_cast<float*>(this->entropyData.blueEntropyLayer.data()) : nullptr;
+		pGreenEntropyLayer = ISRGB ? reinterpret_cast<float*>(this->entropyData.greenEntropyLayer.data()) : nullptr;
+		pBlueEntropyLayer = ISRGB ? reinterpret_cast<float*>(this->entropyData.blueEntropyLayer.data()) : nullptr;
 	}
 
 	const auto accumulateEntropyRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
@@ -666,10 +671,10 @@ int AvxStacking::pixelPartitioning()
 	};
 	// -------------------------------
 
-	T* const pRedOut = constexpr (ISRGB) ? &*avxTempBitmap.redPixels<T>().begin() : nullptr;
-	T* const pGreenOut = constexpr (ISRGB) ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
-	T* const pBlueOut = constexpr (ISRGB) ? &*avxTempBitmap.bluePixels<T>().begin() : nullptr;
-	T* const pGrayOut = constexpr (ISRGB) ? nullptr : &*avxTempBitmap.grayPixels<T>().begin();
+	T* const pRedOut = ISRGB ? &*avxTempBitmap.redPixels<T>().begin() : nullptr;
+	T* const pGreenOut =  ISRGB ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
+	T* const pBlueOut = ISRGB ? &*avxTempBitmap.bluePixels<T>().begin() : nullptr;
+	T* const pGrayOut = ISRGB ? nullptr : &*avxTempBitmap.grayPixels<T>().begin();
 
 	const auto accumulateRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
 	{
