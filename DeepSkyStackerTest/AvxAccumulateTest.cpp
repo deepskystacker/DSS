@@ -377,7 +377,8 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 		pTempBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.m_p);
-		pGray->m_vPixels.assign(W * H, 4938 << 16);
+		for (int i = 0; i < W * H; ++i)
+			pGray->m_vPixels[i] = ((W + 5) * (H + 11) - i) << 16;
 
 		CSmartPtr<CMemoryBitmap> pOutBitmap;
 		pOutBitmap.Attach(new CGrayBitmapT<float>);
