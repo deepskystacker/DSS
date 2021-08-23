@@ -154,7 +154,7 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 		}
 		else // Why do we get here?
 		{
-			for (size_t n = 0; n < targetHisto.size(); ++n) // Let's hope, the targetHisto is larger in size than the sourceHisto.
+			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is larger in size than the sourceHisto.
 				targetHisto[n] += sourceHisto[n];
 		}
 	};
