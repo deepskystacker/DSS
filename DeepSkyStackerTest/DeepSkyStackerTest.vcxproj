@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\DeepSkyStacker\avx.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="AvxCfaTest.cpp" />
     <ClCompile Include="AvxEntropyTest.cpp" />
     <ClCompile Include="AvxHistogramTest.cpp" />
+    <ClCompile Include="AvxStackingTest.cpp" />
     <ClCompile Include="BitMapFillerTest.cpp" />
     <ClCompile Include="DeepSkyStackerTest.cpp" />
     <ClCompile Include="OpenMpTest.cpp" />

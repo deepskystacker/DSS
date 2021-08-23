@@ -253,4 +253,26 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 }
 
 int CMultitask::GetNrProcessors(bool) { return 1; }
-void CEntropyInfo::InitSquareEntropies() {}
+void CEntropyInfo::InitSquareEntropies()
+{
+	const int yoff = m_lWindowSize == 10 ? 100 : 10;
+	const int xoff = m_lWindowSize == 10 ? 1 : 10;
+	m_lWindowSize = 10;
+	const int lSquareSize = m_lWindowSize * 2 + 1;
+
+	m_lNrSquaresX = m_pBitmap->Width() / lSquareSize;
+	m_lNrSquaresY = m_pBitmap->Height() / lSquareSize;
+
+	if (m_pBitmap->RealWidth() % lSquareSize)
+		m_lNrSquaresX++;
+	if (m_pBitmap->RealHeight() % lSquareSize)
+		m_lNrSquaresY++;
+
+	m_vRedEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
+	m_vGreenEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
+	m_vBlueEntropies.resize(m_lNrSquaresX * m_lNrSquaresY);
+
+	for (int y = 0; y < m_lNrSquaresY; ++y)
+		for (int x = 0; x < m_lNrSquaresX; ++x)
+			m_vRedEntropies[y * m_lNrSquaresX + x] = m_vGreenEntropies[y * m_lNrSquaresX + x] = m_vBlueEntropies[y * m_lNrSquaresX + x] = static_cast<float>(y * yoff + x + xoff);
+}

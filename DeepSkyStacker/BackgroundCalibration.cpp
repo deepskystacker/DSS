@@ -5,6 +5,14 @@
 #include "DSSProgress.h"
 #include "avx_histogram.h"
 
+CBackgroundCalibration::CBackgroundCalibration() :
+	m_bInitOk{ false },
+	m_fMultiplier{ 1.0 },
+	m_BackgroundCalibrationMode{ CAllStackingTasks::GetBackgroundCalibrationMode() },
+	m_BackgroundInterpolation{ CAllStackingTasks::GetBackgroundCalibrationInterpolation() },
+	m_RGBBackgroundMethod{ CAllStackingTasks::GetRGBBackgroundCalibrationMethod() }
+{}
+
 void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
 {
 	AvxHistogram avxHistogram(*pBitmap);

@@ -32,13 +32,7 @@ public:
 	CLinearInterpolation	m_liBlue;
 
 public:
-	CBackgroundCalibration() :
-		m_bInitOk{ false },
-		m_fMultiplier{ 1.0 },
-		m_BackgroundCalibrationMode{ CAllStackingTasks::GetBackgroundCalibrationMode() },
-		m_BackgroundInterpolation{ CAllStackingTasks::GetBackgroundCalibrationInterpolation() },
-		m_RGBBackgroundMethod{ CAllStackingTasks::GetRGBBackgroundCalibrationMethod() }
-	{}
+	CBackgroundCalibration();
 
 	CBackgroundCalibration(const CBackgroundCalibration& bc) = default;
 
