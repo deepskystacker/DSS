@@ -153,8 +153,8 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		REQUIRE(avxCfaProcessing.interpolate(0, 8, 1) == 0);
 
 		REQUIRE(compare(avxCfaProcessing.redCfaLine<WORD>(2), { 128, 129, 130, 131, 132, 133 }) == 0);
-		REQUIRE(compare(avxCfaProcessing.greenCfaLine<WORD>(2), { 65, 129, 130, 131, 132, 133 }) == 0);
-		REQUIRE(compare(avxCfaProcessing.blueCfaLine<WORD>(2), { 65, 129, 130, 131, 132, 133 }) == 0);
+		REQUIRE(compare(avxCfaProcessing.greenCfaLine<WORD>(2), { (129 + 0 + 1) / 2, 129, 130, 131, 132, 133 }) == 0);
+		REQUIRE(compare(avxCfaProcessing.blueCfaLine<WORD>(2), { ((65 + 1) / 2 + (193 + 1) / 2 + 1) / 2, 129, 130, 131, 132, 133 }) == 0);
 	}
 
 	SECTION("Interpolate a GBGB line")
@@ -171,9 +171,9 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		avxCfaProcessing.init(0, 8);
 		REQUIRE(avxCfaProcessing.interpolate(0, 8, 1) == 0);
 
-		REQUIRE(compare(avxCfaProcessing.redCfaLine<WORD>(3), { 192, 193, 194, 195, 196, 197 }) == 0);
+		REQUIRE(compare(avxCfaProcessing.redCfaLine<WORD>(3), { (128 + 256 + 1) / 2, 193, 194, 195, 196, 197 }) == 0);
 		REQUIRE(compare(avxCfaProcessing.greenCfaLine<WORD>(3), { 192, 193, 194, 195, 196, 197 }) == 0);
-		REQUIRE(compare(avxCfaProcessing.blueCfaLine<WORD>(3), { 97, 193, 194, 195, 196, 197 }) == 0);
+		REQUIRE(compare(avxCfaProcessing.blueCfaLine<WORD>(3), { (193 + 1) / 2, 193, 194, 195, 196, 197 }) == 0);
 	}
 }
 
