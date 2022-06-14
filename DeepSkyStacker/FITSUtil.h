@@ -123,10 +123,10 @@ protected :
 	bool					m_bDSI;
 
 private :
-	bool	ReadKey(LPSTR szKey, double & fValue, CString & strComment);
-	bool	ReadKey(LPSTR szKey, double & fValue);
-	bool	ReadKey(LPSTR szKey, LONG & lValue);
-	bool	ReadKey(LPSTR szKey, CString & strValue);
+	bool	ReadKey(LPCSTR szKey, double & fValue, CString & strComment);
+	bool	ReadKey(LPCSTR szKey, double & fValue);
+	bool	ReadKey(LPCSTR szKey, LONG & lValue);
+	bool	ReadKey(LPCSTR szKey, CString & strValue);
 	void	ReadAllKeys();
 
 public :
@@ -167,9 +167,9 @@ public :
 	CString					m_strDescription;
 
 private :
-	bool	WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);
-	bool	WriteKey(LPSTR szKey, LONG lValue, LPSTR szComment = nullptr);
-	bool	WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = nullptr);
+	bool	WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment = nullptr);
+	bool	WriteKey(LPCSTR szKey, LONG lValue, LPCSTR szComment = nullptr);
+	bool	WriteKey(LPCSTR szKey, LPCTSTR szValue, LPCSTR szComment = nullptr);
 	void	WriteAllKeys();
 
 protected :
