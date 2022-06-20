@@ -237,7 +237,7 @@ inline double			distance(double x1, double y1, double x2, double y2)
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 };
 
-static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CPointExt & pt, bool bNoBloom = false)
+static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, const CPointExt & pt, bool bNoBloom = false)
 {
 	int				x0 = floor(pt.X - 0.5), x1 = 1 + x0,
 						y0 = floor(pt.Y - 0.5), y1 = 1 + y0;

@@ -154,7 +154,7 @@ void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
 
 /* ------------------------------------------------------------------- */
 
-bool CFITSReader::ReadKey(LPSTR szKey, double & fValue, CString & strComment)
+bool CFITSReader::ReadKey(LPCSTR szKey, double & fValue, CString & strComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -174,7 +174,7 @@ bool CFITSReader::ReadKey(LPSTR szKey, double & fValue, CString & strComment)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPSTR szKey, double & fValue)
+bool CFITSReader::ReadKey(LPCSTR szKey, double & fValue)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -204,7 +204,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, int& lValue)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPSTR szKey, CString & strValue)
+bool CFITSReader::ReadKey(LPCSTR szKey, CString & strValue)
 {
 	bool				bResult = false;
 	CHAR				szValue[2000];
@@ -1184,7 +1184,7 @@ bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPSTR szKey, double fValue, LPSTR szComment)
+bool	CFITSWriter::WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -1218,7 +1218,7 @@ bool	CFITSWriter::WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment)
 
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment)
+bool	CFITSWriter::WriteKey(LPCSTR szKey, LPCTSTR szValue, LPCSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;

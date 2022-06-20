@@ -208,7 +208,9 @@ void StackRecap::fillWithAllTasks()
 		bool				bSaveIntermediates;
 
 		ulNeededSpace = pStackingTasks->ComputeNecessaryDiskSpace();
-		ulFreeSpace = pStackingTasks->AvailableDiskSpace(CString((wchar_t*)strDrive.utf16()));
+		CString				strDriveCString;
+		strDriveCString = CString((wchar_t*)strDrive.utf16());
+		ulFreeSpace = pStackingTasks->AvailableDiskSpace(strDriveCString);
 		ResultMode = pStackingTasks->GetStackingMode();
 		bSaveIntermediates = pStackingTasks->GetCreateIntermediates();
 
