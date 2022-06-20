@@ -34,27 +34,27 @@ void	SetUILanguage(LANGID LangID)
 		{
 			// Set the preferred languages
 			WCHAR			szPrefLanguages[2000];
-			WCHAR *			szEnglish = L"en-US";
-			WCHAR *			szFrench  = L"fr-FR";
-			WCHAR *			szCzech   = L"cs-CZ";
-			WCHAR *			szSpanish = L"es-ES";
-			WCHAR *			szItalian = L"it-IT";
-			WCHAR *			szCatalan = L"ca-ES";	// Catalan - Espana
-			WCHAR *			szGerman  = L"de-DE";
-			WCHAR *			szDutch   = L"nl-NL";
-			WCHAR *			szChinese = L"zh-TW";	// Traditional Chinese or zh-Hant
-			//WCHAR *			szChinese = L"zh-CN";	// Simplified Chinese or zh-Hans
-			WCHAR *			szPortuguese = L"pt-BR";	// Portuguese/Brazilian
-			WCHAR *			szRomanian = L"ro-RO";	// Romanian
-			WCHAR *			szRussian = L"ru-RU";	// Russian
-			WCHAR *			szTurkish = L"tr-TR";	// Turkish
+			const WCHAR *			szEnglish = L"en-US";
+			const WCHAR *			szFrench  = L"fr-FR";
+			const WCHAR *			szCzech   = L"cs-CZ";
+			const WCHAR *			szSpanish = L"es-ES";
+			const WCHAR *			szItalian = L"it-IT";
+			const WCHAR *			szCatalan = L"ca-ES";	// Catalan - Espana
+			const WCHAR *			szGerman  = L"de-DE";
+			const WCHAR *			szDutch   = L"nl-NL";
+			const WCHAR *			szChinese = L"zh-TW";	// Traditional Chinese or zh-Hant
+			//const WCHAR *			szChinese = L"zh-CN";	// Simplified Chinese or zh-Hans
+			const WCHAR *			szPortuguese = L"pt-BR";	// Portuguese/Brazilian
+			const WCHAR *			szRomanian = L"ro-RO";	// Romanian
+			const WCHAR *			szRussian = L"ru-RU";	// Russian
+			const WCHAR *			szTurkish = L"tr-TR";	// Turkish
 			ULONG			lNumLang = 5;
 
-			WCHAR *			szLang1;
-			WCHAR *			szLang2;
-			WCHAR *			szLang3;
-			WCHAR *			szLang4;
-			WCHAR *			szLang5;
+			const WCHAR *			szLang1;
+			const WCHAR *			szLang2;
+			const WCHAR *			szLang3;
+			const WCHAR *			szLang4;
+			const WCHAR *			szLang5;
 
 			switch (PRIMARYLANGID(LangID))
 			{
