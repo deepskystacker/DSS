@@ -11,7 +11,7 @@ private:
 public:
 	AvxImageFilter() = delete;
 	AvxImageFilter(CInternalMedianFilterEngineT<T>* filEng);
-	AvxImageFilter(const AvxImageFilter&) = delete;
+	AvxImageFilter(const AvxImageFilter&) = default;
 	AvxImageFilter(AvxImageFilter&&) = delete;
 	AvxImageFilter& operator=(const AvxImageFilter&) = delete;
 

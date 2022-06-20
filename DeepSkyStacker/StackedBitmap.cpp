@@ -30,9 +30,9 @@ CStackedBitmap::CStackedBitmap()
 
 /* ------------------------------------------------------------------- */
 
-void CStackedBitmap::GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, double & fBlue, bool bApplySettings)
+void CStackedBitmap::GetPixel(int X, int Y, double& fRed, double& fGreen, double& fBlue, bool bApplySettings)
 {
-	LONG				lOffset = m_lWidth * Y + X;
+	int				lOffset = m_lWidth * Y + X;
 
 	double		H, S, L;
 
@@ -49,7 +49,7 @@ void CStackedBitmap::GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, do
 	//
 	// Ensure pixel values don't exceed USHRT_MAX
 	// 
-	constexpr double limit{ USHRT_MAX };
+	constexpr double limit{ std::numeric_limits<std::uint16_t>::max() };
 	fRed = std::min(limit, fRed);
 	fGreen = std::min(limit, fGreen);
 	fBlue = std::min(limit, fBlue);
@@ -131,9 +131,9 @@ COLORREF CStackedBitmap::GetPixel(float fRed, float fGreen, float fBlue, bool bA
 
 /* ------------------------------------------------------------------- */
 
-COLORREF CStackedBitmap::GetPixel(LONG X, LONG Y, bool bApplySettings)
+COLORREF CStackedBitmap::GetPixel(int X, int Y, bool bApplySettings)
 {
-	LONG				lOffset = m_lWidth * Y + X;
+	int				lOffset = m_lWidth * Y + X;
 
 	if (m_bMonochrome)
 		return GetPixel(m_vRedPlane[lOffset], m_vRedPlane[lOffset], m_vRedPlane[lOffset], bApplySettings);
@@ -143,11 +143,11 @@ COLORREF CStackedBitmap::GetPixel(LONG X, LONG Y, bool bApplySettings)
 
 /* ------------------------------------------------------------------- */
 
-COLORREF16	CStackedBitmap::GetPixel16(LONG X, LONG Y, bool bApplySettings)
+COLORREF16	CStackedBitmap::GetPixel16(int X, int Y, bool bApplySettings)
 {
 	COLORREF16			crResult;
 
-	LONG				lOffset = m_lWidth * Y + X;
+	int				lOffset = m_lWidth * Y + X;
 	double				Red, Green, Blue;
 
 	double		H, S, L;
@@ -203,11 +203,11 @@ COLORREF16	CStackedBitmap::GetPixel16(LONG X, LONG Y, bool bApplySettings)
 
 /* ------------------------------------------------------------------- */
 
-COLORREF32	CStackedBitmap::GetPixel32(LONG X, LONG Y, bool bApplySettings)
+COLORREF32	CStackedBitmap::GetPixel32(int X, int Y, bool bApplySettings)
 {
 	COLORREF32			crResult;
 
-	LONG				lOffset = m_lWidth * Y + X;
+	int				lOffset = m_lWidth * Y + X;
 	double				Red, Green, Blue;
 
 	double		H, S, L;
@@ -265,21 +265,21 @@ COLORREF32	CStackedBitmap::GetPixel32(LONG X, LONG Y, bool bApplySettings)
 
 #pragma pack(push, HDSTACKEDBITMAP, 2)
 
-const DWORD			HDSTACKEDBITMAP_MAGIC = 0x878A56E6L;
+constexpr std::uint32_t HDSTACKEDBITMAP_MAGIC = 0x878A56E6U;
 
 typedef struct tagHDSTACKEDBITMAPHEADER
 {
-	DWORD			dwMagic;		// Magic number (always HDSTACKEDBITMAP_MAGIC)
-	DWORD			dwHeaderSize;	// Always sizeof(HDSTACKEDBITMAPHEADER);
-	LONG			lWidth;			// Width
-	LONG			lHeight;		// Height
-	LONG			lNrBitmaps;		// Number of bitmaps
-	DWORD			dwFlags;		// Flags
-	LONG			lTotalTime;		// Total Time
-	WORD			lISOSpeed;		// ISO Speed of each frame
-	LONG			lGain;		// Camera gain of each frame
-	LONG			Reserved[22];	// Reserved (set to 0)
-}HDSTACKEDBITMAPHEADER;
+	std::uint32_t dwMagic;		// Magic number (always HDSTACKEDBITMAP_MAGIC)
+	std::uint32_t dwHeaderSize;	// Always sizeof(HDSTACKEDBITMAPHEADER);
+	int			lWidth;			// Width
+	int			lHeight;		// Height
+	int			lNrBitmaps;		// Number of bitmaps
+	std::uint32_t dwFlags;		// Flags
+	int			lTotalTime;		// Total Time
+	std::uint16_t lISOSpeed;		// ISO Speed of each frame
+	int			lGain;		// Camera gain of each frame
+	int			Reserved[22];	// Reserved (set to 0)
+} HDSTACKEDBITMAPHEADER;
 
 #pragma pack(pop, HDSTACKEDBITMAP)
 
@@ -301,7 +301,7 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 	if (hFile)
 	{
 		HDSTACKEDBITMAPHEADER	Header;
-		LONG					lProgress = 0;
+		int					lProgress = 0;
 
 		if (pProgress)
 		{
@@ -325,7 +325,7 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 			if (pProgress)
 				pProgress->Start(nullptr, m_lWidth * m_lHeight, false);
 
-			for (LONG i = 0;i<m_vRedPlane.size();i++)
+			for (int i = 0;i<m_vRedPlane.size();i++)
 			{
 				lProgress++;
 				if (pProgress)
@@ -377,20 +377,20 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 	{
 		HDSTACKEDBITMAPHEADER	Header;
 
-		LONG		lWidth,
+		int		lWidth,
 					lHeight;
-		LONG		lStartX,
+		int		lStartX,
 					lStartY;
-		LONG		i, j;
+		int		i, j;
 
-		LONG		lProgress = 0;
+		int		lProgress = 0;
 
 		if (pRect)
 		{
-			pRect->left		= max(0L, pRect->left);
-			pRect->right	= min(m_lWidth, pRect->right);
-			pRect->top		= max(0L, pRect->top);
-			pRect->bottom	= min(m_lHeight, pRect->bottom);
+			pRect->left		= std::max(0L, pRect->left);
+			pRect->right = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
+			pRect->top		= std::max(0L, pRect->top);
+			pRect->bottom = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
 
 			lWidth			= (pRect->right-pRect->left);
 			lHeight			= (pRect->bottom-pRect->top);
@@ -519,17 +519,17 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 	if (!Bitmap.IsEmpty())
 	{
-		LONG		lXMin = 0,
+		int		lXMin = 0,
 					lYMin = 0,
 					lXMax = m_lWidth,
 					lYMax = m_lHeight;
 
 		if (pRect)
 		{
-			lXMin	= max(0L, pRect->left);
-			lYMin	= max(0L, pRect->top);
-			lXMax	= min(m_lWidth, pRect->right);
-			lYMax	= min(m_lHeight, pRect->bottom);
+			lXMin	= std::max(0L, pRect->left);
+			lYMin	= std::max(0L, pRect->top);
+			lXMax = std::min(decltype(tagRECT::right){ m_lWidth }, pRect->right);
+			lYMax = std::min(decltype(tagRECT::bottom){ m_lHeight }, pRect->bottom);
 		};
 
 		/*PIXELSET		sPixels;
@@ -549,7 +549,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 #if defined (_OPENMP)
 #pragma omp parallel for default(none) shared(lYMin)
 #endif
-		for (LONG j = lYMin;j<lYMax;j++)
+		for (int j = lYMin;j<lYMax;j++)
 		{
 			LPBYTE			lpOut = Bitmap.GetPixelBase(lXMin, j);
 			LPRGBQUAD &		lpOutPixel = (LPRGBQUAD &)lpOut;
@@ -566,7 +566,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
 				pBluePixel  = pBaseBluePixel + (m_lWidth * (j - lYMin));
 			};
-			for (LONG i = lXMin;i<lXMax;i++)
+			for (int i = lXMin;i<lXMax;i++)
 			{
 				COLORREF		crColor;
 
@@ -597,7 +597,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 			};
 		};
 
-		/*LONG				lNrPixels = sPixels.size();
+		/*int				lNrPixels = sPixels.size();
 		printf("%ld", lNrPixels);*/
 	};
 
@@ -634,7 +634,7 @@ bool CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 
 	if (pBitmap)
 	{
-		LONG		lXMin = 0,
+		int		lXMin = 0,
 			lYMin = 0,
 			lXMax = m_lWidth,
 			lYMax = m_lHeight;
@@ -662,7 +662,7 @@ bool CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 #if defined (_OPENMP)
 #pragma omp parallel for default(none) shared(lYMin)
 #endif
-		for (LONG j = lYMin; j < lYMax; j++)
+		for (int j = lYMin; j < lYMax; j++)
 		{
 			float * pRedPixel = nullptr;
 			float * pGreenPixel = nullptr;
@@ -677,7 +677,7 @@ bool CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
 				pBluePixel = pBaseBluePixel + (m_lWidth * (j - lYMin));
 			};
-			for (LONG i = lXMin; i < lXMax; i++)
+			for (int i = lXMin; i < lXMax; i++)
 			{
 				COLORREF		crColor;
 
@@ -853,7 +853,7 @@ private :
 	bool				m_bApplySettings;
 	TIFFFORMAT			m_TiffFormat;
 	TIFFCOMPRESSION		m_TiffComp;
-	LONG				m_lXStart,
+	int				m_lXStart,
 						m_lYStart;
 
 public :
@@ -889,9 +889,9 @@ public :
 		m_TiffComp   = TiffComp;
 	};
 
-	virtual bool	OnOpen();
-	void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) override;
-	virtual bool	OnClose();
+	virtual bool OnOpen() override;
+	void OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -900,7 +900,7 @@ bool CTIFFWriterStacker::OnOpen()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	LONG			lWidth,
+	int			lWidth,
 					lHeight;
 
 	if (m_pStackedBitmap)
@@ -914,10 +914,10 @@ bool CTIFFWriterStacker::OnOpen()
 		}
 		else
 		{
-			m_lprc->left	= max(0L, m_lprc->left);
-			m_lprc->right	= min(lWidth, m_lprc->right);
-			m_lprc->top		= max(0L, m_lprc->top);
-			m_lprc->bottom	= min(lHeight, m_lprc->bottom);
+			m_lprc->left	= std::max(0L, m_lprc->left);
+			m_lprc->right = std::min(decltype(tagRECT::right){ lWidth }, m_lprc->right);
+			m_lprc->top		= std::max(0L, m_lprc->top);
+			m_lprc->bottom = std::min(decltype(tagRECT::bottom){ lHeight }, m_lprc->bottom);
 
 			lWidth			= (m_lprc->right-m_lprc->left);
 			lHeight			= (m_lprc->bottom-m_lprc->top);
@@ -949,7 +949,7 @@ bool CTIFFWriterStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
+void CTIFFWriterStacker::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
 	bool			bResult = true;
 
@@ -1052,7 +1052,7 @@ private :
 	CStackedBitmap *	m_pStackedBitmap;
 	bool				m_bApplySettings;
 	FITSFORMAT			m_FitsFormat;
-	LONG				m_lXStart,
+	int				m_lXStart,
 						m_lYStart;
 
 public :
@@ -1086,9 +1086,9 @@ public :
 		m_FitsFormat = FitsFormat;
 	};
 
-	virtual bool	OnOpen();
-	virtual bool	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue);
-	virtual bool	OnClose();
+	virtual bool OnOpen() override;
+	virtual bool OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue) override;
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1097,8 +1097,7 @@ bool CFITSWriterStacker::OnOpen()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	LONG			lWidth,
-					lHeight;
+	int			lWidth, lHeight;
 
 	if (m_pStackedBitmap)
 	{
@@ -1111,10 +1110,10 @@ bool CFITSWriterStacker::OnOpen()
 		}
 		else
 		{
-			m_lprc->left	= max(0L, m_lprc->left);
-			m_lprc->right	= min(lWidth, m_lprc->right);
-			m_lprc->top		= max(0L, m_lprc->top);
-			m_lprc->bottom	= min(lHeight, m_lprc->bottom);
+			m_lprc->left	= std::max(0L, m_lprc->left);
+			m_lprc->right = std::min(decltype(tagRECT::right){ lWidth }, m_lprc->right);
+			m_lprc->top		= std::max(0L, m_lprc->top);
+			m_lprc->bottom = std::min(decltype(tagRECT::bottom){ lHeight }, m_lprc->bottom);
 
 			lWidth			= (m_lprc->right-m_lprc->left);
 			lHeight			= (m_lprc->bottom-m_lprc->top);
@@ -1145,7 +1144,7 @@ bool CFITSWriterStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-bool CFITSWriterStacker::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
+bool CFITSWriterStacker::OnWrite(int lX, int lY, double& fRed, double& fGreen, double& fBlue)
 {
 	bool			bResult = true;
 
@@ -1265,7 +1264,7 @@ public :
 	};
 
 	virtual bool	OnOpen();
-	void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) override;
+	void	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
 	virtual bool	OnClose();
 };
 
@@ -1301,7 +1300,7 @@ bool CTIFFReadStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
+void CTIFFReadStacker::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
 	bool			bResult = true;
 
@@ -1362,7 +1361,7 @@ public :
 	};
 
 	virtual bool	OnOpen();
-	virtual bool	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue);
+	virtual bool	OnRead(int lX, int lY, double fRed, double fGreen, double fBlue);
 	virtual bool	OnClose();
 };
 
@@ -1398,7 +1397,7 @@ bool CFITSReadStacker::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-bool CFITSReadStacker::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
+bool CFITSReadStacker::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
 	bool			bResult = true;
 

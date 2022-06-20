@@ -19,7 +19,7 @@ class RecommendationItem
 {
 public:
 	WORKSPACESETTINGVECTOR				vSettings;
-	LONG								linkID;
+	int								linkID;
 	QString								recommendation;
 
 
@@ -214,10 +214,10 @@ private:
 	void	clearText();
 
 	void	insertHeader();
-	void	insertHTML(const QString& html, const QColor& colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, LONG lLinkID = -1);
+	void	insertHTML(const QString& html, const QColor& colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, int lLinkID = -1);
 	void	fillWithRecommendedSettings();
 
-	void	setSetting(LONG lID = 0);
+	void	setSetting(int lID = 0);
 
 
 	void showEvent(QShowEvent *event) override;

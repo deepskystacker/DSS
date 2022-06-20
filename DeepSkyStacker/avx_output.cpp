@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "avx_output.h"
-#include "avx.h"
+#include "avx_support.h"
 #include "avx_median.h"
 #include <immintrin.h>
 
@@ -63,9 +63,9 @@ int AvxOutputComposition::compose(const int line, std::vector<void*> const& line
 template <AvxOutputComposition::MethodSelection Method>
 int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (doProcessMedianKappaSigma<WORD, Method>(line, lineAddresses) == 0)
+	if (doProcessMedianKappaSigma<std::uint16_t, Method>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessMedianKappaSigma<unsigned long, Method>(line, lineAddresses) == 0)
+	if (doProcessMedianKappaSigma<std::uint32_t, Method>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessMedianKappaSigma<float, Method>(line, lineAddresses) == 0)
 		return 0;
@@ -75,6 +75,8 @@ int AvxOutputComposition::processMedianKappaSigma(const int line, std::vector<vo
 template <class T, AvxOutputComposition::MethodSelection Method>
 int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<void*> const& lineAddresses)
 {
+	static_assert(!std::is_integral<T>::value || std::is_unsigned<T>::value);
+
 	// CMultiBitmap - template<TType, TTypeOutput>: Input must be of type T, and output type must be float.
 	if (bitmapColorOrGray<T, float>(inputBitmap) == false)
 		return 1;
@@ -117,20 +119,16 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 		std::for_each(lineAddresses.cbegin(), lineAddresses.cend(), [&medianData, &sizes, offset, nPixels, nrLightframes](const void* const p)
 		{
-			const T* const pT = static_cast<const T*>(p);
+			constexpr T zero = T{ 0 };
+			const T* const pT = static_cast<const T*>(p) + offset;
 			for (int n = 0; n < nPixels; ++n) // nPixels is 1..16
 			{
-				constexpr T zero = T{ 0 };
-				const T element = *(pT + offset + n);
 				auto& N = sizes[n];
+				T element = pT[n];
+				if constexpr (std::is_same_v<T, std::uint32_t>) // First divide by scaling factor, then compare with zero.
+					element >>= 16;
 				if (element != zero) // Copy all lightframe values that are != 0.
-				{
-					static_assert(!std::is_integral<T>::value || std::is_unsigned<T>::value);
-					if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type
-						medianData[n * nrLightframes + (N++)] = (element >> 16);
-					else
-						medianData[n * nrLightframes + (N++)] = element;
-				}
+					medianData[n * nrLightframes + (N++)] = element;
 			}
 		});
 	};
@@ -146,7 +144,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 		const T currentMedian = static_cast<T>(currMedian);
 		T* const pData = medianData.data() + pixelIndex * nrLightframes;
 
-		if constexpr (std::is_same<T, WORD>::value)
+		if constexpr (std::is_same<T, std::uint16_t>::value)
 		{
 			for (int n = 0; n < N / 8; ++n)
 			{
@@ -219,7 +217,7 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 	const auto initialUpperBound = []() -> float
 	{
 		if constexpr (std::is_integral<T>::value)
-			return static_cast<float>(std::numeric_limits<WORD>::max()); // We use 65535 for int16 and int32.
+			return static_cast<float>(std::numeric_limits<std::uint16_t>::max()); // We use 65535 for int16 and int32.
 		else if constexpr (std::is_same<T, float>::value)
 			return std::numeric_limits<float>::max();
 		else
@@ -415,9 +413,9 @@ int AvxOutputComposition::doProcessMedianKappaSigma(const int line, std::vector<
 
 int AvxOutputComposition::processAutoAdaptiveWeightedAverage(const int line, std::vector<void*> const& lineAddresses)
 {
-	if (doProcessAutoAdaptiveWeightedAverage<WORD>(line, lineAddresses) == 0)
+	if (doProcessAutoAdaptiveWeightedAverage<std::uint16_t>(line, lineAddresses) == 0)
 		return 0;
-	if (doProcessAutoAdaptiveWeightedAverage<unsigned long>(line, lineAddresses) == 0)
+	if (doProcessAutoAdaptiveWeightedAverage<std::uint32_t>(line, lineAddresses) == 0)
 		return 0;
 	if (doProcessAutoAdaptiveWeightedAverage<float>(line, lineAddresses) == 0)
 		return 0;

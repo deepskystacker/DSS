@@ -47,12 +47,11 @@ bool	IsExpired()
 	ZTRACE_RUNTIME("Check beta expiration\n");
 
 	SYSTEMTIME			SystemTime;
-	LONG				lMaxYear = DSSBETAEXPIREYEAR;
-	LONG				lMaxMonth = DSSBETAEXPIREMONTH;
+	constexpr auto		lMaxYear = DSSBETAEXPIREYEAR;
+	constexpr auto		lMaxMonth = DSSBETAEXPIREMONTH;
 
 	GetSystemTime(&SystemTime);
-	if ((SystemTime.wYear>lMaxYear) ||
-		((SystemTime.wYear==lMaxYear) && (SystemTime.wMonth>lMaxMonth)))
+	if ((SystemTime.wYear > lMaxYear) || ((SystemTime.wYear == lMaxYear) && (SystemTime.wMonth > lMaxMonth)))
 	{
 		AfxMessageBox(_T("This beta version has expired\nYou can probably get another one or download the final release from the web site."), MB_OK | MB_ICONSTOP);
 		bResult = true;
@@ -120,7 +119,7 @@ void	CheckRemainingTempFiles()
 	}
 	ZTRACE_RUNTIME("Check remaining temp files - ok\n");
 
-	if (vFiles.size())
+	if (!vFiles.empty())
 	{
 		QString			strMsg;
 		QString			strSize;

@@ -44,12 +44,12 @@ public :
 		m_bNewStackedBitmap = false;
 	};
 
-	LONG	GetWidth()
+	int	GetWidth()
 	{
 		return m_StackedBitmap.GetWidth();
 	};
 
-	LONG	GetHeight()
+	int	GetHeight()
 	{
 		return m_StackedBitmap.GetHeight();
 	};

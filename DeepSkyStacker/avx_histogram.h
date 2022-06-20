@@ -1,13 +1,12 @@
 #pragma once
 
-#include "BitmapExt.h"
-#include "avx.h" 
+#include "avx_support.h" 
 #include <vector>
 
 class AvxHistogram
 {
 public:
-	typedef std::vector<long> HistogramVectorType;
+	typedef std::vector<int> HistogramVectorType;
 private:
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
@@ -109,6 +108,7 @@ public:
 			grayValue *= 256.0;
 		if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type 
 			grayValue >>= 16;
-		++histo[std::min(static_cast<size_t>(grayValue), size_t{ USHORT_MAX })];
+		constexpr size_t Unsigned_short_max = size_t{ std::numeric_limits<std::uint16_t>::max() };
+		++histo[std::min(static_cast<size_t>(grayValue), Unsigned_short_max)];
 	};
 };

@@ -6,10 +6,10 @@
 #include "PictureListCtrl.h"
 #include "FileProperty.h"
 
-const LONG				MINISOSPEED = 25;
-const LONG				MINEXPOSURE = 1;
-const LONG				MAXISOSPEED = 10000;
-const LONG				MAXEXPOSURE = 5000;
+constexpr int				MINISOSPEED = 25;
+constexpr int				MINEXPOSURE = 1;
+constexpr int				MAXISOSPEED = 10000;
+constexpr int				MAXEXPOSURE = 5000;
 
 /* ------------------------------------------------------------------- */
 // CFileProperty dialog
@@ -82,7 +82,7 @@ void CFileProperty::InitControls()
 	CString				strDepth;
 	CString				strInfo;
 	CString				strCFA;
-	LONG				lISOSpeed = -1;
+	int				lISOSpeed = -1;
 	CString				strISOSpeed;
 	double				fExposure = -1;
 	CString				strExposure;
@@ -164,7 +164,7 @@ void CFileProperty::InitControls()
 
 	if (fExposure>=1)
 	{
-		LONG			lExposure = fExposure;
+		auto lExposure = static_cast<int>(fExposure);
 		strExposure.Format(_T("%ld"), lExposure);
 		m_Exposure.SetWindowText(strExposure);
 	};
@@ -220,7 +220,7 @@ void CFileProperty::UpdateControls()
 		m_ISOSpeed.GetWindowText(strISOSpeed);
 		if (strISOSpeed.GetLength())
 		{
-			LONG	lISOSpeed = _ttol(strISOSpeed);
+			auto	lISOSpeed = _ttol(strISOSpeed);
 
 			if ((lISOSpeed < MINISOSPEED) || (lISOSpeed > MAXISOSPEED))
 				bOk = false;
@@ -234,9 +234,9 @@ void CFileProperty::UpdateControls()
 		m_Exposure.GetWindowText(strExposure);
 		if (strExposure.GetLength())
 		{
-			LONG		lExposure = _ttol(strExposure);
+			auto		lExposure = _ttol(strExposure);
 
-			if ((lExposure <MINEXPOSURE) || (lExposure > MAXEXPOSURE))
+			if ((lExposure < MINEXPOSURE) || (lExposure > MAXEXPOSURE))
 				bOk = false;
 		};
 	};
@@ -285,7 +285,7 @@ void CFileProperty::ApplyChanges()
 		m_ISOSpeed.GetWindowText(strISOSpeed);
 		if (strISOSpeed.GetLength())
 		{
-			LONG	lISOSpeed = _ttol(strISOSpeed);
+			auto	lISOSpeed = _ttol(strISOSpeed);
 
 			if ((lISOSpeed >= MINISOSPEED) && (lISOSpeed <= MAXISOSPEED))
 			{
@@ -302,7 +302,7 @@ void CFileProperty::ApplyChanges()
 		m_Exposure.GetWindowText(strExposure);
 		if (strExposure.GetLength())
 		{
-			LONG		lExposure = _ttol(strExposure);
+			auto		lExposure = _ttol(strExposure);
 
 			if ((lExposure >= MINEXPOSURE) && (lExposure <= MAXEXPOSURE))
 			{

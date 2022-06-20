@@ -23,7 +23,7 @@ class CFilterMatrix
 {
 public :
 	std::vector<double>			m_vMatrix;
-	LONG						m_lSize;
+	int						m_lSize;
 
 private :
 	void	CopyFrom(const CFilterMatrix & fm)
@@ -51,7 +51,7 @@ public :
 		return (*this);
 	};
 
-	void	Init(LONG lSize)
+	void	Init(int lSize)
 	{
 		m_lSize = lSize;
 		m_vMatrix.resize((lSize*2)+1);
@@ -66,19 +66,19 @@ class CMedianImageFilter : public CImageFilter
 private :
 	bool						m_bMonochrome;
 	bool						m_bCFA;
-	LONG						m_lWidth,
+	int						m_lWidth,
 								m_lHeight;
 	CSmartPtr<CMemoryBitmap>	m_pInBitmap;
 	CSmartPtr<CMemoryBitmap>	m_pOutBitmap;
-	LONG						m_lFilterSize;
+	int						m_lFilterSize;
 	std::vector<double>			m_vGrayPixelValues;
 	std::vector<double>			m_vRedPixelValues;
 	std::vector<double>			m_vGreenPixelValues;
 	std::vector<double>			m_vBluePixelValues;
 
 public :
-	void	ComputeMedianAt(LONG x, LONG y, double & fGrayValue, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
-	void	ComputeMedianAt(LONG x, LONG y, double & fRedValue, double & fGreenValue, double & fBlueValue);
+	void	ComputeMedianAt(int x, int y, double & fGrayValue, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
+	void	ComputeMedianAt(int x, int y, double & fRedValue, double & fGreenValue, double & fBlueValue);
 
 public :
 	CMedianImageFilter()
@@ -94,7 +94,7 @@ public :
 	{
 	};
 
-	void	SetFilterSize(LONG lFilterSize)
+	void	SetFilterSize(int lFilterSize)
 	{
 		m_lFilterSize = lFilterSize;
 	};
@@ -191,8 +191,8 @@ private :
 	bool						m_bMonochrome;
 
 private :
-	void	GetValuesAlongAngle(LONG x, LONG y, double fAngle, std::vector<double> & vValues);
-	void	GetValuesAlongAngle(LONG x, LONG y, double fAngle, std::vector<double> & vRedValues, std::vector<double> & vGreenValues, std::vector<double> & vBlueValues);
+	void	GetValuesAlongAngle(int x, int y, double fAngle, std::vector<double> & vValues);
+	void	GetValuesAlongAngle(int x, int y, double fAngle, std::vector<double> & vRedValues, std::vector<double> & vGreenValues, std::vector<double> & vBlueValues);
 	void	InitFilterMatrix(CFilterMatrix & fm);
 
 public :
@@ -204,7 +204,7 @@ public :
 	};
 	~CDirectionalImageFilter() {};
 
-	void			SetAngle(double fAngle, LONG lSize)
+	void			SetAngle(double fAngle, int lSize)
 	{
 		m_fAngle = fAngle;
 		m_lSize  = lSize;

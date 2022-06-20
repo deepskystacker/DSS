@@ -1,6 +1,6 @@
 #pragma once
 
-#include "BitmapExt.h"
+#include "BitmapBase.h"
 #include <vector>
 
 
@@ -13,7 +13,7 @@ private:
 public:
 	AvxOutputComposition() = delete;
 	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm);
-	AvxOutputComposition(const AvxOutputComposition&) = delete;
+	AvxOutputComposition(const AvxOutputComposition&) = default;
 	AvxOutputComposition(AvxOutputComposition&&) = delete;
 	AvxOutputComposition& AvxOutputComposition::operator=(const AvxOutputComposition&) = delete;
 

@@ -48,7 +48,7 @@ private:
 	//void	clearText();
 
 	void	insertHeader(QString & strHTML);
-	void	insertHTML(QString & strHTML, const QString& szText, QColor colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, LONG lLinkID = -1);
+	void	insertHTML(QString & strHTML, const QString& szText, QColor colour = QColor(Qt::black), bool bBold = false, bool bItalic = false, int lLinkID = -1);
 	void	fillWithAllTasks();
 
 	void showEvent(QShowEvent *event) override;

@@ -32,16 +32,16 @@ static bool	GetDefaultSettingsFileName(CString & strFile)
 
 #pragma pack(push, HDSETTINGS, 2)
 
-const DWORD			HDSSETTINGS_MAGIC = 0x7ABC6F10L;
+constexpr std::uint32_t HDSSETTINGS_MAGIC = 0x7ABC6F10U;
 
 typedef struct tagHDSETTINGSHEADER
 {
-	DWORD			dwMagic;		// Magic number (always HDSSETTINGS_MAGIC)
-	DWORD			dwHeaderSize;	// Always sizeof(HDSETTINGSHEADER);
-	LONG			lNrSettings;	// Number of settings
-	DWORD			dwFlags;		// Flags
+	std::uint32_t	dwMagic;		// Magic number (always HDSSETTINGS_MAGIC)
+	std::uint32_t	dwHeaderSize;	// Always sizeof(HDSETTINGSHEADER);
+	int				lNrSettings;	// Number of settings
+	std::uint32_t	dwFlags;		// Flags
 	char			Reserved[32];	// Reserved (set to 0)
-}HDSETTINGSHEADER;
+} HDSETTINGSHEADER;
 
 #pragma pack(pop, HDSETTINGS)
 
@@ -60,17 +60,14 @@ bool	CDSSSettings::Load(LPCTSTR szFile)
 	if (hFile)
 	{
 		HDSETTINGSHEADER		Header;
-		LONG					i;
 
 		fread(&Header, sizeof(Header), 1, hFile);
-		if ((Header.dwMagic == HDSSETTINGS_MAGIC) &&
-			(Header.dwHeaderSize == sizeof(Header)))
+		if ((Header.dwMagic == HDSSETTINGS_MAGIC) && (Header.dwHeaderSize == sizeof(Header)))
 		{
 			m_lSettings.clear();
-			for (i = 0;i<Header.lNrSettings;i++)
+			for (int i = 0; i < Header.lNrSettings; i++)
 			{
-				CDSSSetting		cds;
-
+				CDSSSetting cds;
 				cds.Load(hFile);
 				m_lSettings.push_back(cds);
 			};
@@ -104,17 +101,16 @@ bool	CDSSSettings::Save(LPCTSTR szFile)
 		m_lSettings.sort();
 
 		HDSETTINGSHEADER		Header;
-		DSSSETTINGITERATOR		it;
 
 		memset(&Header, 0, sizeof(Header));
 
 		Header.dwMagic = HDSSETTINGS_MAGIC;
 		Header.dwHeaderSize = sizeof(Header);
-		Header.lNrSettings  = (LONG)m_lSettings.size();
+		Header.lNrSettings  = static_cast<int>(m_lSettings.size());
 
 		fwrite(&Header, sizeof(Header), 1, hFile);
-		for (it = m_lSettings.begin(); it != m_lSettings.end();it++)
-			(*it).Save(hFile);
+		for (auto it = m_lSettings.begin(); it != m_lSettings.end(); ++it)
+			it->Save(hFile);
 
 		fclose(hFile);
 		bResult = true;
@@ -239,7 +235,7 @@ void CDeepStackerDlg::UpdateSizes()
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg message handlers
 
-void CDeepStackerDlg::ChangeTab(DWORD dwTabID)
+void CDeepStackerDlg::ChangeTab(std::uint32_t dwTabID)
 {
 	if (dwTabID == IDD_REGISTERING)
 		dwTabID = IDD_STACKING;
@@ -456,11 +452,11 @@ void CDeepStackerDlg::OnHelp()
 void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath)
 {
 	ZFUNCTRACE_RUNTIME();
-	DWORD		dwMaximized = 0;
-	DWORD		dwTop = 0;
-	DWORD		dwLeft = 0;
-	DWORD		dwWidth = 0;
-	DWORD		dwHeight = 0;
+	std::uint32_t dwMaximized = 0;
+	std::uint32_t dwTop = 0;
+	std::uint32_t dwLeft = 0;
+	std::uint32_t dwWidth = 0;
+	std::uint32_t dwHeight = 0;
 
 	QSettings	settings;
 
@@ -501,11 +497,11 @@ void	SaveWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath)
 void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter)
 {
 	ZFUNCTRACE_RUNTIME();
-	DWORD		dwMaximized = 0;
-	DWORD		dwTop = 0;
-	DWORD		dwLeft = 0;
-	DWORD		dwWidth = 0;
-	DWORD		dwHeight = 0;
+	std::uint32_t dwMaximized = 0;
+	std::uint32_t dwTop = 0;
+	std::uint32_t dwLeft = 0;
+	std::uint32_t dwWidth = 0;
+	std::uint32_t dwHeight = 0;
 
 	QSettings   settings;
 

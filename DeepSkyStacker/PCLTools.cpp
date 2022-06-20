@@ -29,9 +29,9 @@ bool	LoadPCLImageInMemoryBitmap(CMemoryBitmap * pBitmap, PCLImage * pImage, int 
 	bool					bResult = true;
 	bool					bGray = (NrChannels == 1);
 
-	for (LONG i = 0;i<pBitmap->Width();i++)
+	for (int i = 0;i<pBitmap->Width();i++)
 	{
-		for (LONG j = 0;j<pBitmap->Height();j++)
+		for (int j = 0;j<pBitmap->Height();j++)
 		{
 			if (bGray)
 			{
@@ -192,7 +192,7 @@ bool CreatePCLImage(CMemoryBitmap * pBitmap, pcl::Generic2DImage<P> & image, dou
 {
 	bool				bResult = false;
 	pcl::String			id;
-	LONG				i, j;
+	int				i, j;
 
 	try
 	{

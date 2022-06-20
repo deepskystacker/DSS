@@ -1,15 +1,17 @@
 #include "StdAfx.h"
+#include "avx_support.h"
 #include "avx.h"
 #include <immintrin.h>
+#include <stdexcept>
 
 
-AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat) :
+AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat) :
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.Width() }, resultHeight{ resultRect.Height() },
-	xCoordinates(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<4>(width) * height : 0),
-	yCoordinates(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<4>(width) * height : 0),
-	redPixels(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<4>(width) * height : 0),
+	xCoordinates(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<float, __m256>(width) * height : 0),
+	yCoordinates(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<float, __m256>(width) * height : 0),
+	redPixels(width >= 0 && height >= 0 ? AvxSupport::numberOfAvxVectors<float, __m256>(width) * height : 0),
 	greenPixels{},
 	bluePixels{},
 	inputBitmap{ inputbm },
@@ -20,15 +22,15 @@ AvxStacking::AvxStacking(long lStart, long lEnd, CMemoryBitmap& inputbm, CMemory
 	if (width < 0 || height < 0)
 		throw std::invalid_argument("End index smaller than start index for line or column of AvxStacking");
 
-	resizeColorVectors(AvxSupport::numberOfAvxVectors<4>(width) * height);
+	resizeColorVectors(AvxSupport::numberOfAvxVectors<float, __m256>(width) * height);
 }
 
-void AvxStacking::init(const long lStart, const long lEnd)
+void AvxStacking::init(const int lStart, const int lEnd)
 {
 	lineStart = lStart;
 	lineEnd = lEnd;
 	height = lineEnd - lineStart;
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<4>(width) * height;
+	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width) * height;
 	xCoordinates.resize(nrVectors);
 	yCoordinates.resize(nrVectors);
 	redPixels.resize(nrVectors);
@@ -42,22 +44,22 @@ void AvxStacking::resizeColorVectors(const size_t nrVectors)
 		greenPixels.resize(nrVectors);
 		bluePixels.resize(nrVectors);
 	}
-	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<WORD>())
+	if (AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 	{
 		avxCfa.init(lineStart, lineEnd);
 	}
 }
 
-int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier)
+int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
 {
-	static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
+	static_assert(sizeof(unsigned int) == sizeof(std::uint32_t));
 
 	if (!AvxSupport::checkSimdAvailability())
 		return 1;
 
 	int rval = 1;
-	if (doStack<WORD>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
-		|| doStack<unsigned long>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
+	if (doStack<std::uint16_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
+		|| doStack<std::uint32_t>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0
 		|| doStack<float>(pixelTransformDef, taskInfo, backgroundCalibrationDef, pixelSizeMultiplier) == 0)
 	{
 		rval = 0;
@@ -66,7 +68,7 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 }
 
 template <class T>
-int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const long pixelSizeMultiplier)
+int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
 {
 	if (pixelSizeMultiplier != 1 || pixelTransformDef.m_lPixelSizeMultiplier != 1)
 		return 1;
@@ -114,7 +116,7 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 	const CBilinearParameters& bilinearParams = pixelTransformDef.m_BilinearParameters;
 
 	// Number of vectors with 8 pixels each to process.
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<4>(width);
+	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width);
 	const float fxShift = static_cast<float>(pixelTransformDef.m_fXShift);
 	const float fyShift = static_cast<float>(pixelTransformDef.m_fYShift);
 	const __m256 fxShiftVec = _mm256_set1_ps(fxShift);
@@ -403,7 +405,7 @@ int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class A
 		loopFunc(&avxInputSupport.bluePixels<T>().at(startNdx), w, blueParams, bluePixels);
 		return 0;
 	}
-	if constexpr (std::is_same<T, WORD>::value)
+	if constexpr (std::is_same<T, std::uint16_t>::value)
 	{
 		if (avxInputSupport.isMonochromeCfaBitmapOfType<T>())
 		{
@@ -424,6 +426,10 @@ int AvxStacking::backgroundCalibLoop(const LoopFunction& loopFunc, const class A
 	return 1;
 }
 
+inline float readColorValue(const std::uint16_t c) { return static_cast<float>(c); }
+inline float readColorValue(const std::uint32_t c) { return static_cast<float>(c >> 16); }
+inline float readColorValue(const float c) { return c; }
+
 template <class T>
 int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundCalibrationDef)
 {
@@ -436,7 +442,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 		// Just copy color values as they are, pixel by pixel.
 		const auto loop = [this, nrVectors](const auto* const pPixels, const size_t nrElementsPerLine, const auto&, std::vector<__m256>& result) -> void
 		{
-			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<4>(this->width);
+			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(this->width);
 
 			for (int row = 0; row < this->height; ++row)
 			{
@@ -452,7 +458,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				float* pRemaining = reinterpret_cast<float*>(pResult);
 				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
-					*pRemaining = static_cast<float>(*pColor);
+					*pRemaining = readColorValue(*pColor);
 				}
 			}
 		};
@@ -480,7 +486,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				return _mm256_max_ps(_mm256_min_ps(_mm256_blendv_ps(division, xplusa, mask), fmax), fmin); // blend: mask==1 ? b : a;
 			};
 
-			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<4>(this->width);
+			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(this->width);
 
 			for (int row = 0; row < this->height; ++row)
 			{
@@ -496,7 +502,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				float* pRemaining = reinterpret_cast<float*>(pResult);
 				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
-					const float fcolor = static_cast<float>(*pColor);
+					const float fcolor = readColorValue(*pColor);
 					const float denom = b.m256_f32[0] * fcolor + c.m256_f32[0];
 					const float xplusa = fcolor + a.m256_f32[0];
 					*pRemaining = std::max(std::min(denom == 0.0f ? xplusa : (xplusa / denom), fmax.m256_f32[0]), fmin.m256_f32[0]);
@@ -525,7 +531,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				return _mm256_fmadd_ps(x, aSelected, bSelected); // x * a + b
 			};
 
-			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<4>(this->width);
+			const size_t internalBufferNrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(this->width);
 
 			for (int row = 0; row < this->height; ++row)
 			{
@@ -541,7 +547,7 @@ int AvxStacking::backgroundCalibration(const CBackgroundCalibration& backgroundC
 				float* pRemaining = reinterpret_cast<float*>(pResult);
 				for (int n = nrVectors * 16; n < this->colEnd; ++n, ++pColor, ++pRemaining)
 				{
-					const float fcolor = static_cast<float>(*pColor);
+					const float fcolor = readColorValue(*pColor);
 					*pRemaining = fcolor < xm.m256_f32[0] ? (fcolor * a0.m256_f32[0] + b0.m256_f32[0]) : (fcolor * a1.m256_f32[0] + b1.m256_f32[0]);
 				}
 			}
@@ -567,7 +573,7 @@ int AvxStacking::pixelPartitioning()
 			return 1;
 	}
 
-	const size_t nrVectors = AvxSupport::numberOfAvxVectors<4>(width);
+	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width);
 	const int outWidth = avxTempBitmap.width();
 	if (outWidth <= 0)
 		return 1;
@@ -643,8 +649,8 @@ int AvxStacking::pixelPartitioning()
 		if (this->entropyData.redEntropyLayer.empty()) // Something is wrong here!
 			return 1;
 		pRedEntropyLayer = reinterpret_cast<float*>(this->entropyData.redEntropyLayer.data());
-		pGreenEntropyLayer = constexpr (ISRGB) ? reinterpret_cast<float*>(this->entropyData.greenEntropyLayer.data()) : nullptr;
-		pBlueEntropyLayer = constexpr (ISRGB) ? reinterpret_cast<float*>(this->entropyData.blueEntropyLayer.data()) : nullptr;
+		pGreenEntropyLayer = ISRGB ? reinterpret_cast<float*>(this->entropyData.greenEntropyLayer.data()) : nullptr;
+		pBlueEntropyLayer = ISRGB ? reinterpret_cast<float*>(this->entropyData.blueEntropyLayer.data()) : nullptr;
 	}
 
 	const auto accumulateEntropyRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
@@ -665,10 +671,10 @@ int AvxStacking::pixelPartitioning()
 	};
 	// -------------------------------
 
-	T* const pRedOut = constexpr (ISRGB) ? &*avxTempBitmap.redPixels<T>().begin() : nullptr;
-	T* const pGreenOut = constexpr (ISRGB) ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
-	T* const pBlueOut = constexpr (ISRGB) ? &*avxTempBitmap.bluePixels<T>().begin() : nullptr;
-	T* const pGrayOut = constexpr (ISRGB) ? nullptr : &*avxTempBitmap.grayPixels<T>().begin();
+	T* const pRedOut = ISRGB ? &*avxTempBitmap.redPixels<T>().begin() : nullptr;
+	T* const pGreenOut =  ISRGB ? &*avxTempBitmap.greenPixels<T>().begin() : nullptr;
+	T* const pBlueOut = ISRGB ? &*avxTempBitmap.bluePixels<T>().begin() : nullptr;
+	T* const pGrayOut = ISRGB ? nullptr : &*avxTempBitmap.grayPixels<T>().begin();
 
 	const auto accumulateRGBorMono = [&](const __m256 r, const __m256 g, const __m256 b, const __m256 fraction, const __m256i outNdx, const __m256i mask, const bool twoNdxEqual, const bool fastLoadAndStore) -> void
 	{
@@ -705,7 +711,7 @@ int AvxStacking::pixelPartitioning()
 	const auto accumulateTwoFractions = [&, allOnes](const __m256 red, const __m256 green, const __m256 blue, const __m256 fraction1, const __m256 fraction2, const __m256i outIndex,
 		__m256i mask1, const __m256i mask2, const bool twoNdxEqual, const bool allNdxValid1, const bool allNdxValid2) -> void
 	{
-		if constexpr (std::is_same<T, WORD>::value)
+		if constexpr (std::is_same<T, std::uint16_t>::value)
 		{
 			if (allNdxValid1 && allNdxValid2)
 			{
@@ -978,262 +984,3 @@ inline void AvxStacking::getAvxEntropy(__m256& redEntropy, __m256& greenEntropy,
 	}
 */
 }
-
-
-
-// *********************************
-//    AVX Support
-// *********************************
-
-AvxSupport::AvxSupport(CMemoryBitmap& b) noexcept :
-	bitmap{ b }
-{};
-
-int AvxSupport::getNrChannels() const
-{
-	CBitmapCharacteristics bitmapCharacteristics;
-	const_cast<CMemoryBitmap&>(bitmap).GetCharacteristics(bitmapCharacteristics);
-	return bitmapCharacteristics.m_lNrChannels;
-};
-
-bool AvxSupport::isColorBitmap() const
-{
-	return getNrChannels() == 3;
-};
-
-template <class T>
-bool AvxSupport::isColorBitmapOfType() const
-{
-	auto* const p = const_cast<AvxSupport*>(this)->getColorPtr<T>();
-	const bool isColor = p != nullptr && p->isTopDown();
-	if constexpr (std::is_same<T, float>::value)
-		return isColor && p->IsFloat() && p->GetMultiplier() == 256.0;
-	else
-		return isColor;
-}
-
-bool AvxSupport::isMonochromeBitmap() const
-{
-	return getNrChannels() == 1;
-};
-
-template <class T>
-bool AvxSupport::isMonochromeBitmapOfType() const
-{
-	if (auto* const p = const_cast<AvxSupport*>(this)->getGrayPtr<T>())
-	{
-		// Note that Monochrome bitmaps are always topdown -> no extra check required! CF. CGrayBitmap::GetOffset().
-		if constexpr (std::is_same<T, float>::value)
-			return (p->IsFloat() && !p->IsCFA() && p->GetMultiplier() == 256.0);
-		if constexpr (std::is_same<T, WORD>::value)
-			return (!p->IsCFA() || isMonochromeCfaBitmapOfType<WORD>());
-		return !p->IsCFA();
-	}
-	return false;
-}
-
-template <class T>
-bool AvxSupport::isMonochromeCfaBitmapOfType() const
-{
-	// CFA only supported for T=WORD
-	if constexpr (std::is_same<T, WORD>::value)
-	{
-		auto* const pGray = const_cast<AvxSupport*>(this)->getGrayPtr<T>();
-		// We support CFA only for RGGB Bayer matrices with BILINEAR interpolation and no offsets.
-		return (pGray != nullptr && pGray->IsCFA() && pGray->GetCFATransformation() == CFAT_BILINEAR && pGray->GetCFAType() == CFATYPE_RGGB && pGray->xOffset() == 0 && pGray->yOffset() == 0);
-	}
-	else
-		return false;
-};
-
-bool AvxSupport::isColorBitmapOrCfa() const
-{
-	return isColorBitmap() || isMonochromeCfaBitmapOfType<WORD>();
-}
-
-const int AvxSupport::width() const {
-	return bitmap.Width();
-}
-
-template <class T>
-bool AvxSupport::bitmapHasCorrectType() const
-{
-	return (isColorBitmapOfType<T>() || isMonochromeBitmapOfType<T>());
-}
-
-bool AvxSupport::checkAvx2CpuSupport() noexcept
-{
-	int cpuid[4] = { -1 };
-	// FMA Flag
-	__cpuidex(cpuid, 1, 0);
-	const bool FMAsupported = ((cpuid[2] & 0x01000) != 0);
-	// OS supports AVX (YMM registers) 
-	const bool OSXSAVEsupported = ((cpuid[2] & (1 << 27)) != 0);
-	const bool AVXenabledInOS = ((_xgetbv(0) & 6) == 6); // 6 = SSE (0x2) + YMM (0x4) 
-	// AVX2 Flag
-	__cpuidex(cpuid, 7, 0);
-	const bool AVX2supported = ((cpuid[1] & 0x020) != 0);
-
-	//const bool BMI1supported = ((cpuid[1] & 0x04) != 0);
-	//const bool BMI2supported = ((cpuid[1] & 0x0100) != 0);
-
-	// Additionally set flush to zero and denormals to zero.
-	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
-
-	return (FMAsupported && AVX2supported && OSXSAVEsupported && AVXenabledInOS);
-
-};
-
-bool AvxSupport::checkSimdAvailability() noexcept
-{
-	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
-	return CMultitask::GetUseSimd() && checkAvx2CpuSupport();
-}
-
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const std::uint16_t* const pOutputBitmap, const bool fastload) noexcept
-{
-	__m256i tempColor = _mm256_undefined_si256();
-	if (fastload)
-		tempColor = _mm256_cvtepu16_epi32(_mm_loadu_si128(reinterpret_cast<const __m128i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx))));
-	else
-	{
-		// Gather with scale factor of 2 -> outNdx points to WORDs. Load these 8 WORDs and interpret them as epi32.
-		const __m256i tempColorAsI16 = _mm256_mask_i32gather_epi32(_mm256_setzero_si256(), reinterpret_cast<const int*>(pOutputBitmap), outNdx, mask, 2);
-		// The high words of each epi32 color value are wrong -> we null them out.
-		tempColor = _mm256_blend_epi16(tempColorAsI16, _mm256_setzero_si256(), 0xaa);
-	}
-	const __m256 accumulatedColor = _mm256_fmadd_ps(colorValue, fraction, _mm256_cvtepi32_ps(tempColor)); // tempColor = 8 int in the range [0, 65535]
-	return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(static_cast<float>(0x0000ffff)));
-}
-
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const unsigned long* const pOutputBitmap, const bool fastload) noexcept
-{
-	static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
-
-	const __m256 scalingFactor = _mm256_set1_ps(65536.0f);
-
-	const __m256i tempColor = fastload
-		? _mm256_loadu_si256(reinterpret_cast<const __m256i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx)))
-		: _mm256_mask_i32gather_epi32(_mm256_setzero_si256(), reinterpret_cast<const int*>(pOutputBitmap), outNdx, mask, 4);
-	const __m256 accumulatedColor = _mm256_fmadd_ps(colorValue, _mm256_mul_ps(fraction, scalingFactor), cvtEpu32Ps(tempColor));
-	return _mm256_min_ps(accumulatedColor, _mm256_set1_ps(4294967040.0f)); // This constant is the next lower float value below UINTMAX.
-}
-
-inline __m256 AvxSupport::accumulateColorValues(const __m256i outNdx, const __m256 colorValue, const __m256 fraction, const __m256i mask, const float* const pOutputBitmap, const bool fastload) noexcept
-{
-	const __m256 tempColor = fastload
-		? _mm256_loadu_ps(pOutputBitmap + _mm256_cvtsi256_si32(outNdx))
-		: _mm256_mask_i32gather_ps(_mm256_setzero_ps(), pOutputBitmap, outNdx, _mm256_castsi256_ps(mask), 4);
-	return _mm256_fmadd_ps(colorValue, fraction, tempColor);
-}
-
-inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, std::uint16_t* const pOutputBitmap, const bool faststore) noexcept
-{
-	if (faststore)
-		_mm_storeu_si128(reinterpret_cast<__m128i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx)), cvtPsEpu16(colorValue));
-	else
-	{
-		const int iMask = _mm256_movemask_epi8(mask);
-		const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-		{
-			if ((iMask & mask) != 0)
-				pOutputBitmap[ndx] = static_cast<std::uint16_t>(color);
-		};
-		__m128 color = _mm256_castps256_ps128(colorValue);
-		checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
-		checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
-		checkWrite(1 << 8, _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
-		checkWrite(1 << 12, _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
-		color = _mm256_extractf128_ps(colorValue, 1);
-		checkWrite(1 << 16, _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
-		checkWrite(1 << 20, _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
-		checkWrite(1 << 24, _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
-		checkWrite(1 << 28, _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
-	}
-}
-
-inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, unsigned long* const pOutputBitmap, const bool faststore) noexcept
-{
-	static_assert(sizeof(unsigned long) == sizeof(std::uint32_t));
-
-	if (faststore)
-		_mm256_storeu_si256(reinterpret_cast<__m256i*>(pOutputBitmap + _mm256_cvtsi256_si32(outNdx)), cvtPsEpu32(colorValue));
-	else
-	{
-		const int iMask = _mm256_movemask_epi8(mask);
-		const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-		{
-			if ((iMask & mask) != 0)
-				pOutputBitmap[ndx] = static_cast<std::uint32_t>(color);
-		};
-		__m128 color = _mm256_castps256_ps128(colorValue);
-		checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color));
-		checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
-		checkWrite(1 << 8, _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
-		checkWrite(1 << 12, _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
-		color = _mm256_extractf128_ps(colorValue, 1);
-		checkWrite(1 << 16, _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
-		checkWrite(1 << 20, _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
-		checkWrite(1 << 24, _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
-		checkWrite(1 << 28, _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
-	}
-}
-
-inline void AvxSupport::storeColorValue(const __m256i outNdx, const __m256 colorValue, const __m256i mask, float* const pOutputBitmap, const bool faststore) noexcept
-{
-	if (faststore)
-		_mm256_storeu_ps(pOutputBitmap + _mm256_cvtsi256_si32(outNdx), colorValue);
-	else
-	{
-		const int iMask = _mm256_movemask_epi8(mask);
-		const auto checkWrite = [pOutputBitmap, iMask](const int mask, const size_t ndx, const float color) -> void
-		{
-			if ((iMask & mask) != 0)
-				pOutputBitmap[ndx] = color;
-		};
-		__m128 color = _mm256_castps256_ps128(colorValue);
-		checkWrite(1, _mm256_cvtsi256_si32(outNdx), AvxSupport::extractPs<0>(color)); // Note: extract_ps(x, i) returns the bits of the i-th float as int.
-		checkWrite(1 << 4, _mm256_extract_epi32(outNdx, 1), AvxSupport::extractPs<1>(color));
-		checkWrite(1 << 8, _mm256_extract_epi32(outNdx, 2), AvxSupport::extractPs<2>(color));
-		checkWrite(1 << 12, _mm256_extract_epi32(outNdx, 3), AvxSupport::extractPs<3>(color));
-		color = _mm256_extractf128_ps(colorValue, 1);
-		checkWrite(1 << 16, _mm256_extract_epi32(outNdx, 4), AvxSupport::extractPs<0>(color));
-		checkWrite(1 << 20, _mm256_extract_epi32(outNdx, 5), AvxSupport::extractPs<1>(color));
-		checkWrite(1 << 24, _mm256_extract_epi32(outNdx, 6), AvxSupport::extractPs<2>(color));
-		checkWrite(1 << 28, _mm256_extract_epi32(outNdx, 7), AvxSupport::extractPs<3>(color));
-	}
-}
-
-template <class T>
-inline T AvxSupport::accumulateSingleColorValue(const size_t outNdx, const float newColor, const int mask, const T* const pOutputBitmap) noexcept
-{
-	if (mask == 0)
-		return T{ 0 };
-
-	if constexpr (std::is_same<T, WORD>::value)
-	{
-		const float accumulatedColor = static_cast<float>(pOutputBitmap[outNdx]) + newColor;
-		return static_cast<WORD>(std::min(accumulatedColor, static_cast<float>(std::numeric_limits<T>::max())));
-	}
-
-	if constexpr (std::is_same<T, unsigned long>::value)
-	{
-		const float accumulatedColor = static_cast<float>(pOutputBitmap[outNdx]) + newColor * 65536.0f;
-		return static_cast<unsigned long>(std::min(accumulatedColor, 4294967040.0f)); // The next lower float value below UINTMAX.
-	}
-
-	if constexpr (std::is_same<T, float>::value)
-		return pOutputBitmap[outNdx] + newColor;
-}
-
-// Explicit template instantiation for the types we need.
-template bool AvxSupport::bitmapHasCorrectType<WORD>() const;
-template bool AvxSupport::bitmapHasCorrectType<std::uint32_t>() const;
-template bool AvxSupport::bitmapHasCorrectType<unsigned long>() const;
-template bool AvxSupport::bitmapHasCorrectType<float>() const;
-template bool AvxSupport::bitmapHasCorrectType<double>() const;
-
-template bool AvxSupport::isMonochromeCfaBitmapOfType<WORD>() const;
-template bool AvxSupport::isMonochromeCfaBitmapOfType<std::uint32_t>() const;
-template bool AvxSupport::isMonochromeCfaBitmapOfType<float>() const;
-template bool AvxSupport::isMonochromeCfaBitmapOfType<double>() const;

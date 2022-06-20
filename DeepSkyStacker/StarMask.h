@@ -221,20 +221,20 @@ public :
 
 		bool bHotPixels = settings.value("StarMask/DetectHotPixels", false).toBool();
 		m_bRemoveHotPixels = bHotPixels;
-		DWORD dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
+		const auto dwThreshold = settings.value("StarMask/DetectionThreshold", 10).toUInt();
 		m_fMinLuminancy = (double)dwThreshold/100.0;
 
-		DWORD dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
+		const auto dwPercent = settings.value("StarMask/PercentRadius", 100).toUInt();
 		m_fPercentIncrease = (double)dwPercent/100.0;
-		DWORD dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
+		const auto dwPixel = settings.value("StarMask/PixelIncrease", 0).toUInt();
 		m_fPixelIncrease = (double)dwPixel;
 
-		DWORD dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
+		const auto dwMinSize = settings.value("StarMask/MinSize", 2).toUInt();
 		m_fMinSize = (double)dwMinSize;
-		DWORD dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
+		const auto dwMaxSize = settings.value("StarMask/MaxSize", 25).toUInt();
 		m_fMaxSize = (double)dwMaxSize;
 
-		DWORD dwStarShape = settings.value("StarMask/StarShape", 1).toUInt();
+		const auto dwStarShape = settings.value("StarMask/StarShape", 1).toUInt();
 		m_StarShape = (STARMASKSTYLE)dwStarShape;
 	};
 

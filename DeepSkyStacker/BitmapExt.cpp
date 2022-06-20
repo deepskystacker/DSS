@@ -7,13 +7,13 @@
 #include "TIFFUtil.h"
 #include "FITSUtil.h"
 #include "RAWUtils.h"
-#include <set>
 #include <list>
 #include <float.h>
 #include "Multitask.h"
 #include "Workspace.h"
 #include <iostream>
 #include <zexcept.h>
+#include <omp.h>
 
 
 #include <GdiPlus.h>
@@ -47,9 +47,9 @@ void	CYMGToRGB12(double fCyan, double fYellow, double fMagenta, double fGreen2, 
 //	fGreen = (Y-0.39465*U-0.5806*V)*255.0;
 //	fBlue  = (Y+2.03211*U)*255.0;
 
-	fRed = max(0.0, min (255.0, fRed));
-	fGreen = max(0.0, min (255.0, fGreen));
-	fBlue = max(0.0, min (255.0, fBlue));
+	fRed = std::max(0.0, std::min (255.0, fRed));
+	fGreen = std::max(0.0, std::min (255.0, fGreen));
+	fBlue = std::max(0.0, std::min (255.0, fBlue));
 };
 
 
@@ -66,9 +66,9 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	// R = (M+Y-C)/2
 	// G = (Y+C-M)/2
 	// B = (M+C-Y)/2
-	fRed   = max(0.0, fMagenta+fYellow-fCyan)/2.0;
-	fGreen = max(0.0, fYellow+fCyan-fMagenta)/2.0;
-	fBlue  = max(0.0 ,fMagenta+fCyan-fYellow)/2.0;
+	fRed   = std::max(0.0, fMagenta+fYellow-fCyan)/2.0;
+	fGreen = std::max(0.0, fYellow+fCyan-fMagenta)/2.0;
+	fBlue  = std::max(0.0 ,fMagenta+fCyan-fYellow)/2.0;
 
 /*	if (fGreen2)
 	{
@@ -76,9 +76,9 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 		fBlue *= fGreen2/fGreen;
 		fGreen = fGreen2;
 	};
-	fRed = min(fRed, 255);
-	fBlue = min(fBlue, 255);
-	fGreen = min(fGreen, 255);*/
+	fRed = std::min(fRed, 255);
+	fBlue = std::min(fBlue, 255);
+	fGreen = std::min(fGreen, 255);*/
 
 	// RGB from CYG
 	// G = G
@@ -117,9 +117,9 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	fGreen	= -0.409754*R + 1.31042 *G  - 0.523692*B;
 	fBlue	= 0.110277*R  - 0.339351*G + 2.45812*B;
 
-	fRed = max(0.0, min (255.0, fRed));
-	fGreen = max(0.0, min (255.0, fGreen));
-	fBlue = max(0.0, min (255.0, fBlue));
+	fRed = std::max(0.0, std::min (255.0, fRed));
+	fGreen = std::max(0.0, std::min (255.0, fGreen));
+	fBlue = std::max(0.0, std::min (255.0, fBlue));
 };
 
 
@@ -230,7 +230,7 @@ bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 		{
 			// Transform the gray scale image to color image
 			CSmartPtr<C48BitColorBitmap>	pColorBitmap;
-			LONG							lWidth = pInBitmap->Width(),
+			int							lWidth = pInBitmap->Width(),
 											lHeight = pInBitmap->Height();
 			PixelIterator					it;
 
@@ -239,11 +239,11 @@ bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 			pColorBitmap->GetIterator(&it);
 
 //#if defined(_OPENMP)	Don't use OpenMP here - doesn't mix with Pixel Iterator
-//#pragma omp parallel for default(none)
+//#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1)
 //#endif
-			for (LONG j = 0;j<lHeight;j++)
+			for (int j = 0;j<lHeight;j++)
 			{
-				for (LONG i = 0;i<lWidth;i++)
+				for (int i = 0;i<lWidth;i++)
 				{
 					double			fRed, fGreen, fBlue;
 
@@ -299,18 +299,16 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 				{
 					// Transform the gray scale image to color image
 					CSmartPtr<C48BitColorBitmap>	pColorBitmap;
-					LONG							lWidth = pBitmap->Width(),
+					int							lWidth = pBitmap->Width(),
 						lHeight = pBitmap->Height();
 
 					pColorBitmap.Create();
 					pColorBitmap->Init(lWidth, lHeight);
 
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
-					for (LONG j = 0; j < lHeight; j++)
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+					for (int j = 0; j < lHeight; j++)
 					{
-						for (LONG i = 0; i < lWidth; i++)
+						for (int i = 0; i < lWidth; i++)
 						{
 							double			fRed, fGreen, fBlue;
 
@@ -387,57 +385,50 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 
 /* ------------------------------------------------------------------- */
 
-bool	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool							bResult = false;
 	CSmartPtr<C24BitColorBitmap>	pBitmap;
-	Bitmap	*						pSrcBitmap;
 
-	pSrcBitmap = new Bitmap(CComBSTR(szFileName));
-	if (pSrcBitmap)
+	std::unique_ptr<Gdiplus::Bitmap> pSrcBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
+	if (pSrcBitmap.get() != nullptr) // This is actually useless, because make_unique throws on out-of-memory.
 	{
 		pBitmap.Attach(new C24BitColorBitmap());
 		ZTRACE_RUNTIME("Creating 8 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
 		if (pBitmap)
 		{
-			LONG					lWidth  = pSrcBitmap->GetWidth();
-			LONG					lHeight = pSrcBitmap->GetHeight();
-			Rect					rc(0, 0, lWidth-1, lHeight-1);
-			BitmapData 				bitmapData;
+			const int lWidth = static_cast<int>(pSrcBitmap->GetWidth());
+			const int lHeight = static_cast<int>(pSrcBitmap->GetHeight());
+
+			Gdiplus::Rect rc(0, 0, lWidth - 1, lHeight - 1);
+			Gdiplus::BitmapData bitmapData;
 
 			if (pProgress)
 				pProgress->Start2(nullptr, lHeight);
 			pBitmap->Init(lWidth, lHeight);
 
-			if (pSrcBitmap->LockBits(&rc, ImageLockModeRead, PixelFormat24bppRGB, &bitmapData) == Ok)
+			if (pSrcBitmap->LockBits(&rc, Gdiplus::ImageLockModeRead, PixelFormat24bppRGB, &bitmapData) == Gdiplus::Status::Ok)
 			{
-				BYTE *				pBasePixels = (BYTE*)bitmapData.Scan0;
+				std::uint8_t* pBasePixels = static_cast<std::uint8_t*>(bitmapData.Scan0);
+					  
+				std::uint8_t* pRedPixel	= pBitmap->GetRedPixel(0, 0);
+				std::uint8_t* pGreenPixel = pBitmap->GetGreenPixel(0, 0);
+				std::uint8_t* pBluePixel	= pBitmap->GetBluePixel(0, 0);
 
-				BYTE *				pRedPixel	= pBitmap->GetRedPixel(0, 0);
-				BYTE *				pGreenPixel = pBitmap->GetGreenPixel(0, 0);
-				BYTE *				pBluePixel	= pBitmap->GetBluePixel(0, 0);
-
-				for (LONG j = 0;j<lHeight;j++)
+				for (int j = 0; j < lHeight; j++)
 				{
-					BYTE *			pPixel = pBasePixels;
+					std::uint8_t* pPixel = pBasePixels;
 
-					for (LONG i = 0;i<lWidth;i++)
+					for (int i = 0; i < lWidth; i++)
 					{
-						*pBluePixel = *pPixel;
-						pPixel++;
-						*pGreenPixel = *pPixel;
-						pPixel++;
-						*pRedPixel = *pPixel;
-						pPixel++;
-
-						pRedPixel++;
-						pGreenPixel++;
-						pBluePixel++;
+						*pBluePixel++ = *pPixel++;
+						*pGreenPixel++ = *pPixel++;
+						*pRedPixel++ = *pPixel++;
 					};
 					if (pProgress)
 						pProgress->Progress2(nullptr, j+1);
-					pBasePixels += labs(bitmapData.Stride);
+					pBasePixels += std::abs(bitmapData.Stride);
 				};
 
 				if (pProgress)
@@ -445,20 +436,17 @@ bool	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 
 				pSrcBitmap->UnlockBits(&bitmapData);
 
-				C24BitColorBitmap *	p24Bitmap;
-
+				C24BitColorBitmap* p24Bitmap;
 				pBitmap.CopyTo(&p24Bitmap);
-				*ppBitmap = dynamic_cast<CMemoryBitmap *>(p24Bitmap);
+				*ppBitmap = dynamic_cast<CMemoryBitmap*>(p24Bitmap);
 
-				CBitmapInfo				bmpInfo;
+				CBitmapInfo bmpInfo;
 				if (RetrieveEXIFInfo(szFileName, bmpInfo))
 					pBitmap->m_DateTime = bmpInfo.m_DateTime;
 
 				bResult = true;
 			};
 		};
-
-		delete pSrcBitmap;
 	};
 
 	return bResult;
@@ -466,45 +454,104 @@ bool	LoadOtherPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgres
 
 /* ------------------------------------------------------------------- */
 
-bool	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
+bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
+	bool bResult = false;
 
-	if (pBitmap)
+	const auto getExifItem = [pBitmap, &bResult](const PROPID propertyId, const unsigned short type, auto& field) -> void
 	{
-		UINT			dwPropertySize;
-
-		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
-		if (dwPropertySize)
+		const UINT dwPropertySize = pBitmap->GetPropertyItemSize(propertyId);
+		if (dwPropertySize != 0)
 		{
+			auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
+			Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
+
+			if (propertyItem->type == type && pBitmap->GetPropertyItem(propertyId, dwPropertySize, propertyItem) == Gdiplus::Status::Ok)
+			{
+				if (propertyItem->type == PropertyTagTypeRational)
+				{
+					const std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
+					const std::uint32_t dwNumerator = *pValues;
+					const std::uint32_t dwDenominator = *(pValues + 1);
+					if (dwDenominator != 0)
+					{
+						if constexpr (std::is_same_v<decltype(field), double&>)
+						{
+							field = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
+							bResult = true;
+						}
+					}
+				}
+				else if (propertyItem->type == PropertyTagTypeShort)
+				{
+					if constexpr (std::is_same_v<decltype(field), int&>)
+					{
+						const std::uint16_t* pValue = static_cast<std::uint16_t*>(propertyItem->value);
+						field = static_cast<int>(*pValue);
+						bResult = true;
+					}
+				}
+				else if (propertyItem->type == PropertyTagTypeASCII)
+				{
+					if constexpr (std::is_same_v<decltype(field), CString&>)
+					{
+						field = static_cast<char*>(propertyItem->value);
+						bResult = true;
+					}
+				}
+			}
+		}
+	};
+
+	if (pBitmap != nullptr)
+	{
+		getExifItem(PropertyTagExifExposureTime, PropertyTagTypeRational, BitmapInfo.m_fExposure);
+		getExifItem(PropertyTagExifFNumber, PropertyTagTypeRational, BitmapInfo.m_fAperture);
+		getExifItem(PropertyTagExifISOSpeed, PropertyTagTypeShort, BitmapInfo.m_lISOSpeed);
+
+		getExifItem(PropertyTagEquipModel, PropertyTagTypeASCII, BitmapInfo.m_strModel);
+		BitmapInfo.m_strModel.TrimRight();
+		BitmapInfo.m_strModel.TrimLeft();
+
+		CString strDateTime;
+		getExifItem(PropertyTagDateTime, PropertyTagTypeASCII, strDateTime);
+		// Parse the string : YYYY/MM/DD hh:mm:ss
+		//                    0123456789012345678
+		BitmapInfo.m_DateTime.wYear = _ttol(strDateTime.Left(4));
+		BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+		BitmapInfo.m_DateTime.wDay = _ttol(strDateTime.Mid(8, 2));
+		BitmapInfo.m_DateTime.wHour = _ttol(strDateTime.Mid(11, 2));
+		BitmapInfo.m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
+		BitmapInfo.m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
+
+/*		UINT dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
+		if (dwPropertySize != 0)
+		{
+			auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
 			// PropertyTagTypeRational
-			PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
+			Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
 
 			if (pBitmap->GetPropertyItem(PropertyTagExifExposureTime, dwPropertySize, propertyItem) == Ok)
 			{
 				if(propertyItem->type == PropertyTagTypeRational)
 				{
-					DWORD *			pValues = (DWORD*)propertyItem->value;
-					DWORD			dwNumerator,
-									dwDenominator;
+					std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
+					std::uint32_t dwNumerator, dwDenominator;
 
 					dwNumerator = *pValues;
-					pValues++;
-					dwDenominator = *pValues;
+					dwDenominator = *(pValues + 1);
 
-					if (dwDenominator)
+					if (dwDenominator != 0)
 					{
-						BitmapInfo.m_fExposure = (double)dwNumerator/(double)dwDenominator;
+						BitmapInfo.m_fExposure = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
 						bResult = true;
 					};
 				};
 			};
-
-			free(propertyItem);
 		};
-
-		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifFNumber);
+*/
+/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifFNumber);
 		if (dwPropertySize)
 		{
 			// PropertyTagTypeRational
@@ -514,8 +561,8 @@ bool	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 			{
 				if (propertyItem->type == PropertyTagTypeRational)
 				{
-					DWORD *			pValues = (DWORD*)propertyItem->value;
-					DWORD			dwNumerator,
+					UINT *			pValues = (UINT*)propertyItem->value;
+					UINT			dwNumerator,
 						dwDenominator;
 
 					dwNumerator = *pValues;
@@ -532,8 +579,8 @@ bool	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 			free(propertyItem);
 		};
-
-		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifISOSpeed);
+*/
+/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifISOSpeed);
 		if (dwPropertySize)
 		{
 			// PropertyTagTypeShort
@@ -550,8 +597,8 @@ bool	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 			free(propertyItem);
 		};
-
-		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagEquipModel);
+*/
+/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagEquipModel);
 		if (dwPropertySize)
 		{
 			// PropertyTagTypeASCII
@@ -569,8 +616,8 @@ bool	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 			free(propertyItem);
 		};
-
-		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagDateTime);
+*/
+/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagDateTime);
 		if (dwPropertySize)
 		{
 			// PropertyTagTypeASCII
@@ -596,6 +643,7 @@ bool	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 			free(propertyItem);
 		};
+*/
 	};
 
 	return bResult;
@@ -603,36 +651,24 @@ bool	RetrieveEXIFInfo(Bitmap * pBitmap, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
-	Bitmap *				pBitmap;
-
-	pBitmap = new Bitmap(CComBSTR(szFileName));
-
-	if (pBitmap)
-	{
-		bResult = RetrieveEXIFInfo(pBitmap, BitmapInfo);
-		delete pBitmap;
-	};
-
-	return bResult;
+	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
+	return RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
 };
 
 /* ------------------------------------------------------------------- */
 
-bool	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool IsOtherPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
-	Bitmap *				pBitmap;
+	bool bResult = false;
+	auto pBitmap = std::make_unique<Gdiplus::Bitmap>(CComBSTR(szFileName));
 
-	pBitmap = new Bitmap(CComBSTR(szFileName));
-
-	if (pBitmap)
+	if (pBitmap.get() != nullptr) // Useless, because make_unique (same as operator new) throws on out-of-memory.
 	{
-		GUID				rawformat;
+		GUID rawformat;
 
 		if ((pBitmap->GetType() == ImageTypeBitmap) &&
 			(pBitmap->GetRawFormat(&rawformat) == Ok))
@@ -649,7 +685,7 @@ bool	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 			else
 				bResult = false;
 
-			RetrieveEXIFInfo(pBitmap, BitmapInfo);
+			RetrieveEXIFInfo(pBitmap.get(), BitmapInfo);
 
 			if (bResult)
 			{
@@ -662,8 +698,6 @@ bool	IsOtherPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 				BitmapInfo.m_bCanLoad		= true;
 			};
 		};
-
-		delete pBitmap;
 	};
 
 	return bResult;
@@ -675,7 +709,7 @@ bool	C32BitsBitmap::CopyToClipboard()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	DWORD			dwSize = 16+sizeof(BITMAPINFO)+m_dwByteWidth*m_lHeight;
+	const size_t dwSize = sizeof(BITMAPINFO) + 16 + static_cast<size_t>(m_dwByteWidth) * m_lHeight;
 
 	HGLOBAL			hGlobal;
 	char *			pGlobal;
@@ -695,8 +729,8 @@ bool	C32BitsBitmap::CopyToClipboard()
 			bmpInfo.bmiHeader.biBitCount= 32;
 			bmpInfo.bmiHeader.biCompression= BI_RGB;
 			bmpInfo.bmiHeader.biSizeImage= 0;
-			bmpInfo.bmiHeader.biXPelsPerMeter = (LONG)(96*100.0/2.54);
-			bmpInfo.bmiHeader.biYPelsPerMeter = (LONG)(96*100.0/2.54);
+			bmpInfo.bmiHeader.biXPelsPerMeter = (int)(96*100.0/2.54);
+			bmpInfo.bmiHeader.biYPelsPerMeter = (int)(96*100.0/2.54);
 			bmpInfo.bmiHeader.biClrUsed = 0;
 			bmpInfo.bmiHeader.biClrImportant = 0;
 
@@ -731,7 +765,7 @@ bool	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	LONG			i, j;
+	int			i, j;
 
 	Free();
 	if (pBitmap)
@@ -755,9 +789,9 @@ bool	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 						double			fRed, fGreen, fBlue;
 						pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
-						lpOutPixel->rgbRed		= min(max(0.0, fRed), 255.0);
-						lpOutPixel->rgbGreen	= min(max(0.0, fGreen), 255.0);
-						lpOutPixel->rgbBlue		= min(max(0.0, fBlue), 255.0);
+						lpOutPixel->rgbRed		= std::min(std::max(0.0, fRed), 255.0);
+						lpOutPixel->rgbGreen	= std::min(std::max(0.0, fGreen), 255.0);
+						lpOutPixel->rgbBlue		= std::min(std::max(0.0, fBlue), 255.0);
 						lpOutPixel->rgbReserved	= 0;
 
 						lpOut += 4;
@@ -783,9 +817,9 @@ bool	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 						double			fRed, fGreen, fBlue;
 						it->GetPixel(fRed, fGreen, fBlue);
 
-						lpOutPixel->rgbRed		= min(max(0.0, fRed), 255.0);
-						lpOutPixel->rgbGreen	= min(max(0.0, fGreen), 255.0);
-						lpOutPixel->rgbBlue		= min(max(0.0, fBlue), 255.0);
+						lpOutPixel->rgbRed		= std::min(std::max(0.0, fRed), 255.0);
+						lpOutPixel->rgbGreen	= std::min(std::max(0.0, fGreen), 255.0);
+						lpOutPixel->rgbBlue		= std::min(std::max(0.0, fBlue), 255.0);
 						lpOutPixel->rgbReserved	= 0;
 
 						lpOut += 4;
@@ -805,26 +839,25 @@ bool	C32BitsBitmap::InitFrom(CMemoryBitmap * pBitmap)
 void CGammaTransformation::InitTransformation(double fBlackPoint, double fGrayPoint, double fWhitePoint)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG				lBlackPoint = 65535.0*fBlackPoint,
-						lWhitePoint = 65535.0*fWhitePoint;
+	const int lBlackPoint = static_cast<int>(65535.0 * fBlackPoint);
+	const int lWhitePoint = static_cast<int>(65535.0 * fWhitePoint);
 
+	constexpr int TransformSize = 65537;
+	m_vTransformation.resize(TransformSize);
 
-	m_vTransformation.resize(65537L);
-
-	CRationalInterpolation		ri;
-
+	CRationalInterpolation ri;
 	ri.Initialize(fBlackPoint, fGrayPoint, fWhitePoint, 0, 0.5, 1.0);
 
 	// Perform rational interpolation
-	for (LONG i = 0;i<m_vTransformation.size();i++)
+	for (int i = 0; i < TransformSize; i++)
 	{
-		if (i<=lBlackPoint)
+		if (i <= lBlackPoint)
 			m_vTransformation[i] = 0;
-		else if (i>=lWhitePoint)
+		else if (i >= lWhitePoint)
 			m_vTransformation[i] = 255;
 		else
 		{
-			double			fValue = ri.Interpolate(i/65535.0);
+			const double fValue = ri.Interpolate(i / 65535.0);
 			m_vTransformation[i] = 255.0 * fValue;//pow(fValue, fGamma);
 		};
 	};
@@ -839,23 +872,23 @@ void CGammaTransformation::InitTransformation(double fGamma)
 						fWhitePoint = 1.0,
 						fGrayPoint	= 0.5;
 
-	fGrayPoint = pow(0.5, 1.0/fGamma);
+	fGrayPoint = pow(0.5, 1.0 / fGamma);
 	InitTransformation(fBlackPoint, fGrayPoint, fWhitePoint);
 };
 
 /* ------------------------------------------------------------------- */
 
-template <class TType>
-bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> * pInBitmap, CGammaTransformation & gammatrans)
+template <template<class> class BitmapClass, class T>
+bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitmap, CGammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (pInBitmap && gammatrans.IsInitialized())
+	if (pInBitmap != nullptr && gammatrans.IsInitialized())
 	{
-		bool			bContinue;
-		LONG const		lWidth = pInBitmap->Width(),
-						lHeight = pInBitmap->Height();
+		bool bContinue;
+		const int lWidth = pInBitmap->Width();
+		const int lHeight = pInBitmap->Height();
 
 		if (pOutBitmap->IsEmpty())
 		{
@@ -864,30 +897,100 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> *
 		};
 
 		// Check that the output bitmap size is matching the input bitmap
-		bContinue = (pOutBitmap->Width() == lWidth) &&
-				    (pOutBitmap->Height() == lHeight);
+		bContinue = (pOutBitmap->Width() == lWidth) && (pOutBitmap->Height() == lHeight);
 
 		if (bContinue)
 		{
-			double const fMultiplier = pInBitmap->GetMultiplier()/256.0;
+			double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
-			for (LONG j =  0;j<lHeight;j++)
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+			for (int j = 0; j < lHeight; j++)
+			{
+				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
+				{
+					// Init iterators
+					T* pRed = pInBitmap->GetRedPixel(0, j);
+					T* pGreen = pInBitmap->GetGreenPixel(0, j);
+					T* pBlue = pInBitmap->GetBluePixel(0, j);
+
+					LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
+					LPRGBQUAD& pOutPixel = (LPRGBQUAD&)pOut;
+					for (int i = 0; i < lWidth; i++)
+					{
+						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pRed / fMultiplier];
+						pOutPixel->rgbGreen = gammatrans.m_vTransformation[*pGreen / fMultiplier];
+						pOutPixel->rgbBlue = gammatrans.m_vTransformation[*pBlue / fMultiplier];
+						pOutPixel->rgbReserved = 0;
+						pRed++;
+						pGreen++;
+						pBlue++;
+						pOut += 4;
+					}
+				}
+				if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
+				{
+					// Init iterators
+					T* pGray = pInBitmap->GetGrayPixel(0, j);
+
+					LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
+					LPRGBQUAD& pOutPixel = (LPRGBQUAD&)pOut;
+					for (int i = 0; i < lWidth; i++)
+					{
+						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pGray / fMultiplier];
+						pOutPixel->rgbBlue = pOutPixel->rgbRed;
+						pOutPixel->rgbGreen = pOutPixel->rgbRed;
+						pOutPixel->rgbReserved = 0;
+						pGray++;
+						pOut += 4;
+					}
+				}
+			}
+			bResult = true;
+		}
+	}
+	return bResult;
+}
+/*
+template <class TType>
+bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CColorBitmapT<TType>* pInBitmap, CGammaTransformation& gammatrans)
+{
+	ZFUNCTRACE_RUNTIME();
+	bool bResult = false;
+
+	if (pInBitmap != nullptr && gammatrans.IsInitialized())
+	{
+		bool bContinue;
+		const int lWidth = pInBitmap->Width();
+		const int lHeight = pInBitmap->Height();
+
+		if (pOutBitmap->IsEmpty())
+		{
+			// Create the Bitmap
+			pOutBitmap->Init(lWidth, lHeight);
+		};
+
+		// Check that the output bitmap size is matching the input bitmap
+		bContinue = (pOutBitmap->Width() == lWidth) && (pOutBitmap->Height() == lHeight);
+
+		if (bContinue)
+		{
+			const double fMultiplier = pInBitmap->GetMultiplier() / 256.0;
+
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+			for (int j = 0; j < lHeight; j++)
 			{
 				// Init iterators
-				TType *			pRed = pInBitmap->GetRedPixel(0, j);
-				TType *			pGreen = pInBitmap->GetGreenPixel(0, j);
-				TType *			pBlue = pInBitmap->GetBluePixel(0, j);
+				TType*			pRed = pInBitmap->GetRedPixel(0, j);
+				TType*			pGreen = pInBitmap->GetGreenPixel(0, j);
+				TType*			pBlue = pInBitmap->GetBluePixel(0, j);
 
 				LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
-				LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
-				for (LONG i = 0;i<lWidth;i++)
+				LPRGBQUAD&		pOutPixel = (LPRGBQUAD&)pOut;
+				for (int i = 0; i < lWidth; i++)
 				{
-					pOutPixel->rgbRed   = gammatrans.m_vTransformation[*pRed/fMultiplier];
-					pOutPixel->rgbGreen = gammatrans.m_vTransformation[*pGreen/fMultiplier];
-					pOutPixel->rgbBlue  = gammatrans.m_vTransformation[*pBlue/fMultiplier];
+					pOutPixel->rgbRed   = gammatrans.m_vTransformation[*pRed / fMultiplier];
+					pOutPixel->rgbGreen = gammatrans.m_vTransformation[*pGreen / fMultiplier];
+					pOutPixel->rgbBlue  = gammatrans.m_vTransformation[*pBlue / fMultiplier];
 					pOutPixel->rgbReserved = 0;
 					pRed++;
 					pGreen++;
@@ -902,19 +1005,17 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CColorBitmapT<TType> *
 	return bResult;
 };
 
-/* ------------------------------------------------------------------- */
-
 template <class TType>
-bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * pInBitmap, CGammaTransformation & gammatrans)
+bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CGrayBitmapT<TType>* pInBitmap, CGammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (pInBitmap && gammatrans.IsInitialized())
+	if (pInBitmap != nullptr && gammatrans.IsInitialized())
 	{
-		bool			bContinue;
-		LONG const		lWidth = pInBitmap->Width(),
-						lHeight = pInBitmap->Height();
+		bool bContinue;
+		const int lWidth = pInBitmap->Width();
+		const int lHeight = pInBitmap->Height();
 
 		if (pOutBitmap->IsEmpty())
 		{
@@ -923,28 +1024,25 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * 
 		};
 
 		// Check that the output bitmap size is matching the input bitmap
-		bContinue = (pOutBitmap->Width() == lWidth) &&
-				    (pOutBitmap->Height() == lHeight);
+		bContinue = (pOutBitmap->Width() == lWidth) && (pOutBitmap->Height() == lHeight);
 
 		if (bContinue)
 		{
-			double const fMultiplier = pInBitmap->GetMultiplier()/256.0;
+			double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 
-#if defined(_OPENMP)
-#pragma omp parallel for default(none)
-#endif
-			for (LONG j =  0;j<lHeight;j++)
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+			for (int j = 0; j < lHeight; j++)
 			{
 				// Init iterators
 				TType *			pGray = pInBitmap->GetGrayPixel(0, j);
 
 				LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
 				LPRGBQUAD &		pOutPixel = (LPRGBQUAD &)pOut;
-				for (LONG i = 0;i<lWidth;i++)
+				for (int i = 0; i < lWidth; i++)
 				{
-
-					pOutPixel->rgbRed   = gammatrans.m_vTransformation[*pGray/fMultiplier];
-					pOutPixel->rgbBlue  = pOutPixel->rgbGreen = pOutPixel->rgbRed;
+					pOutPixel->rgbRed   = gammatrans.m_vTransformation[*pGray / fMultiplier];
+					pOutPixel->rgbBlue  = pOutPixel->rgbRed;
+					pOutPixel->rgbGreen = pOutPixel->rgbRed;
 					pOutPixel->rgbReserved = 0;
 					pGray++;
 					pOut += 4;
@@ -956,41 +1054,41 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CGrayBitmapT<TType> * 
 
 	return bResult;
 };
-
+*/
 /* ------------------------------------------------------------------- */
 
-bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CMemoryBitmap * pInBitmap, CGammaTransformation & gammatrans)
+bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
-	C24BitColorBitmap * p24BitColorBitmap = dynamic_cast<C24BitColorBitmap *>(pInBitmap);
-	C48BitColorBitmap * p48BitColorBitmap = dynamic_cast<C48BitColorBitmap *>(pInBitmap);
-	C96BitColorBitmap * p96BitColorBitmap = dynamic_cast<C96BitColorBitmap *>(pInBitmap);
-	C96BitFloatColorBitmap * p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap *>(pInBitmap);
+	bool bResult = false;
+	C24BitColorBitmap* p24BitColorBitmap = dynamic_cast<C24BitColorBitmap*>(pInBitmap);
+	C48BitColorBitmap* p48BitColorBitmap = dynamic_cast<C48BitColorBitmap*>(pInBitmap);
+	C96BitColorBitmap* p96BitColorBitmap = dynamic_cast<C96BitColorBitmap*>(pInBitmap);
+	C96BitFloatColorBitmap* p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap*>(pInBitmap);
 
-	CGrayBitmap *		pGrayBitmap  = dynamic_cast<CGrayBitmap *>(pInBitmap);
-	C8BitGrayBitmap *	p8BitGrayBitmap  = dynamic_cast<C8BitGrayBitmap *>(pInBitmap);
-	C16BitGrayBitmap *	p16BitGrayBitmap  = dynamic_cast<C16BitGrayBitmap *>(pInBitmap);
-	C32BitGrayBitmap *	p32BitGrayBitmap  = dynamic_cast<C32BitGrayBitmap *>(pInBitmap);
-	C32BitFloatGrayBitmap * p32BitFloatGrayBitmap  = dynamic_cast<C32BitFloatGrayBitmap *>(pInBitmap);
+	CGrayBitmap* pGrayBitmap = dynamic_cast<CGrayBitmap*>(pInBitmap);
+	C8BitGrayBitmap* p8BitGrayBitmap = dynamic_cast<C8BitGrayBitmap*>(pInBitmap);
+	C16BitGrayBitmap* p16BitGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
+	C32BitGrayBitmap* p32BitGrayBitmap = dynamic_cast<C32BitGrayBitmap*>(pInBitmap);
+	C32BitFloatGrayBitmap* p32BitFloatGrayBitmap = dynamic_cast<C32BitFloatGrayBitmap*>(pInBitmap);
 
-	if (p24BitColorBitmap)
+	if (p24BitColorBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p24BitColorBitmap, gammatrans);
-	else if (p48BitColorBitmap)
+	else if (p48BitColorBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p48BitColorBitmap, gammatrans);
-	else if (p96BitColorBitmap)
+	else if (p96BitColorBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p96BitColorBitmap, gammatrans);
-	else if (p96BitFloatColorBitmap)
+	else if (p96BitFloatColorBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p96BitFloatColorBitmap, gammatrans);
-	else if (pGrayBitmap)
+	else if (pGrayBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, pGrayBitmap, gammatrans);
-	else if (p8BitGrayBitmap)
+	else if (p8BitGrayBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p8BitGrayBitmap, gammatrans);
-	else if (p16BitGrayBitmap)
+	else if (p16BitGrayBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p16BitGrayBitmap, gammatrans);
-	else if (p32BitGrayBitmap)
+	else if (p32BitGrayBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p32BitGrayBitmap, gammatrans);
-	else if (p32BitFloatGrayBitmap)
+	else if (p32BitFloatGrayBitmap != nullptr)
 		bResult = ApplyGammaTransformation(pOutBitmap, p32BitFloatGrayBitmap, gammatrans);
 
 	return bResult;
@@ -1001,23 +1099,63 @@ bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CMemoryBitmap * pInBit
 #endif // DSSFILEDECODING
 
 /* ------------------------------------------------------------------- */
+#pragma warning( push )
+#pragma warning( disable: 4996 )
 
-static		std::set<CBitmapInfo>			g_sBitmapInfoCache;
-static		SYSTEMTIME						g_BitmapInfoTime;
+#include <concurrent_unordered_set.h>
+#include <shared_mutex>
 
+#pragma warning( pop )
+
+namespace {
+	//
+	// Fowler/Noll/Vo hash
+	// Do not copyright this code. This code is in the public domain.
+	// www.isthe.com/chongo/tech/comp/fnv
+	//
+	inline size_t fnv1a_hash(const unsigned char* const pData, const size_t nBytes)
+	{
+		static_assert(sizeof(size_t) == 8);
+		size_t digest = 14695981039346656037ULL;
+		for (size_t i = 0; i < nBytes; ++i)
+		{
+			digest ^= static_cast<size_t>(pData[i]);
+			digest *= 1099511628211ULL;
+		}
+		return digest;
+	}
+
+	template <class T> struct BitmapInfoHash;
+	template<>
+	struct BitmapInfoHash<CBitmapInfo>
+	{
+		size_t operator()(const CBitmapInfo& other) const
+		{
+			const auto& str = other.m_strFileName;
+			return fnv1a_hash((const unsigned char*)(LPCWSTR)str, str.GetLength() * sizeof(CString::XCHAR));
+		}
+	};
+
+	//typedef std::set<CBitmapInfo> InfoCache;
+	// We absolutely must use a thread-safe cache, otherwise GetPictureInfo() crashes if used concurrently (e.g. with OpenMP).
+	typedef concurrency::concurrent_unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>> InfoCache;
+	InfoCache g_sBitmapInfoCache;
+	SYSTEMTIME g_BitmapInfoTime;
+	std::shared_mutex bitmapInfoMutex;
+}
 /* ------------------------------------------------------------------- */
 
-bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
 #if DSSFILEDECODING==0
 	if (IsPCLPicture(szFileName, BitmapInfo))
 		bResult = true;
 #else
 	// First try to find the info in the cache
-	if (g_sBitmapInfoCache.size())
+	if (!g_sBitmapInfoCache.empty())
 	{
 		// Check that the cache is not old (more than 5 minutes)
 		SYSTEMTIME			st;
@@ -1029,29 +1167,32 @@ bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		SystemTimeToFileTime(&g_BitmapInfoTime, &ft1);
 		SystemTimeToFileTime(&st, &ft2);
 
-		__int64				diff;
-
 		ulft1.LowPart = ft1.dwLowDateTime;
 		ulft1.HighPart = ft1.dwHighDateTime;
 
 		ulft2.LowPart = ft2.dwLowDateTime;
 		ulft2.HighPart = ft2.dwHighDateTime;
 
-		diff = ulft2.QuadPart-ulft1.QuadPart;
+		const std::int64_t diff = ulft2.QuadPart - ulft1.QuadPart;
 
 		// diff is in 100 of nanoseconds (1e6 millisecond = 1 nanosecond)
-		if (diff > 10000.0*1000.0*60.0*5.0)
-			g_sBitmapInfoCache.clear();
-
-		std::set<CBitmapInfo>::iterator		it;
-
-		it = g_sBitmapInfoCache.find(CBitmapInfo(szFileName));
-		if (it != g_sBitmapInfoCache.end())
+		constexpr std::int64_t MaxDiff = std::int64_t{ 10000 } * 1000 * 60 * 5;
+		if (diff > MaxDiff)
 		{
-			BitmapInfo = *it;
-			bResult = true;
-		};
-	};
+			std::lock_guard<std::shared_mutex> writeLock(bitmapInfoMutex); // clear() is NOT thread-safe => need a write-lock.
+			g_sBitmapInfoCache.clear();
+		}
+		else
+		{
+			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
+			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(szFileName));
+			if (it != g_sBitmapInfoCache.cend())
+			{
+				BitmapInfo = *it;
+				bResult = true;
+			}
+		}
+	}
 
 	if (!bResult)
 	{
@@ -1089,7 +1230,8 @@ bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 			BitmapInfo.m_strDateTime.Format(_T("%s %s"), szDate, szTime);
 
-			if (!g_sBitmapInfoCache.size())
+			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
+			if (g_sBitmapInfoCache.empty())
 				GetSystemTime(&g_BitmapInfoTime);
 			g_sBitmapInfoCache.insert(BitmapInfo);
 		};
@@ -1101,17 +1243,15 @@ bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool LoadPicture(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (ppBitmap)
+	if (ppBitmap != nullptr)
 	{
-		CBitmapInfo					BitmapInfo;
-		CSmartPtr<CMemoryBitmap>	pBitmap;
+		CSmartPtr<CMemoryBitmap> pBitmap;
 		*ppBitmap = nullptr;
-		int loadResult = 0;
 
 #if DSSFILEDECODING==0
 		if (IsPCLPicture(szFileName, BitmapInfo))
@@ -1119,6 +1259,9 @@ bool	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 #else
 		do  // Once only 
 		{
+			CBitmapInfo BitmapInfo;
+			int loadResult = 0;
+
 			if (IsRAWPicture(szFileName, BitmapInfo))
 				bResult = LoadRAWPicture(szFileName, &pBitmap, pProgress);
 			if (bResult)
@@ -1166,7 +1309,7 @@ bool	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * p
 
 		if (bResult)
 			pBitmap.CopyTo(ppBitmap);
-	};
+	}
 
 	return bResult;
 };
@@ -1243,9 +1386,7 @@ bool	CreateBitmap(const CBitmapCharacteristics & bc, CMemoryBitmap ** ppOutBitma
 };
 
 
-/* ------------------------------------------------------------------- */
-
-class CSubtractTask : public CMultitask
+class CSubtractTask
 {
 private :
 	CSmartPtr<CMemoryBitmap>	m_pTarget;
@@ -1262,269 +1403,208 @@ private :
 	double						m_fMinimum;
 
 public :
-    CSubtractTask()
-    {
-        m_fXShift = 0;
-        m_fYShift = 0;
-        m_bAddMode = false;
-        m_fMinimum = 0;
-        m_fRedFactor = 0;
-        m_fGreenFactor = 0;
-        m_fBlueFactor = 0;
-        m_fGrayFactor = 0;
-        m_bMonochrome = false;
-        m_pProgress = nullptr;
-    }
+    CSubtractTask() :
+		m_pTarget{},
+		m_pSource{},
+		m_fXShift{ 0 },
+        m_fYShift{ 0 },
+        m_bAddMode{ false },
+        m_fMinimum{ 0 },
+        m_fRedFactor{ 0 },
+        m_fGreenFactor{ 0 },
+        m_fBlueFactor{ 0 },
+        m_fGrayFactor{ 0 },
+        m_bMonochrome{ false },
+        m_pProgress{ nullptr }
+	{}
 
-	virtual ~CSubtractTask()
+	~CSubtractTask() = default;
+
+	void Init(CMemoryBitmap* pTarget, CMemoryBitmap* pSource, CDSSProgress* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 	{
-	};
-
-	void	Init(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
-	{
-		m_pProgress		= pProgress;
-		m_pTarget		= pTarget;
-		m_pSource		= pSource;
-		m_fRedFactor	= fRedFactor;
-		m_fGreenFactor	= fGreenFactor;
-		m_fBlueFactor	= fBlueFactor;
-
+		m_pProgress = pProgress;
+		m_pTarget = pTarget;
+		m_pSource = pSource;
+		m_fRedFactor = fRedFactor;
+		m_fGreenFactor = fGreenFactor;
+		m_fBlueFactor = fBlueFactor;
 		m_bMonochrome = pTarget->IsMonochrome();
-		m_fGrayFactor = 1.0;
+		m_fGrayFactor = m_bMonochrome ? std::max(fRedFactor, std::max(fGreenFactor, fBlueFactor)) : 1.0;
 
-		if (m_bMonochrome)
-			m_fGrayFactor = max(fRedFactor, max(fGreenFactor, fBlueFactor));
+		if (pProgress != nullptr)
+			pProgress->Start2(nullptr, pTarget->RealWidth());
+	}
 
-		if (m_pProgress)
-			m_pProgress->Start2(nullptr, pTarget->RealWidth());
-	};
-
-	CSubtractTask&	SetShift(double fXShift, double fYShift)
+	CSubtractTask&	SetShift(const double fXShift, const double fYShift)
 	{
 		m_fXShift	= fXShift;
 		m_fYShift	= fYShift;
 		return *this;
-	};
+	}
 
-	CSubtractTask&	SetAddMode(bool bSet)
+	CSubtractTask&	SetAddMode(const bool bSet)
 	{
 		m_bAddMode = bSet;
 		return *this;
-	};
+	}
 
-	CSubtractTask&	SetMinimumValue(double fValue)
+	CSubtractTask&	SetMinimumValue(const double fValue)
 	{
 		m_fMinimum = fValue;
 		return *this;
-	};
+	}
 
-	void	End()
+	void End()
 	{
-		if (m_pProgress)
+		if (m_pProgress != nullptr)
 			m_pProgress->End2();
-	};
+	}
 
-	virtual bool	Process();
-	virtual bool	DoTask(HANDLE hEvent);
+	void process();
 };
 
-/* ------------------------------------------------------------------- */
+template <class T> struct thread_init {
+	T& target;
+	T& source;
+	PixelIterator PixelItTgt;
+	PixelIterator PixelItSrc;
 
-bool	CSubtractTask::DoTask(HANDLE hEvent)
+	explicit thread_init(T& t, T& s) : target{ t }, source{ s } {
+		target->GetIterator(&PixelItTgt);
+		source->GetIterator(&PixelItSrc);
+	}
+	thread_init(const thread_init& rhs) : target{ rhs.target }, source{ rhs.source } {
+		target->GetIterator(&PixelItTgt);
+		source->GetIterator(&PixelItSrc);
+	}
+};
+
+void CSubtractTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG			i, j;
-	bool			bEnd = false;
-	MSG				msg;
-	LONG			lWidth = m_pTarget->RealWidth();
-	LONG			lExtraWidth = 0;
+	const int height = m_pTarget->RealHeight() - (m_fYShift == 0 ? 0 : static_cast<int>(std::fabs(m_fYShift) + 0.5));
+	const int nrProcessors = CMultitask::GetNrProcessors();
 
-	PixelIterator	PixelItTgt;
-	PixelIterator 	PixelItSrc;
-
-	m_pTarget->GetIterator(&PixelItTgt);
-	m_pSource->GetIterator(&PixelItSrc);
-
-	if (m_fXShift)
+	if (m_pProgress != nullptr)
 	{
-		lExtraWidth = fabs(m_fXShift)+0.5;
-		lWidth -= lExtraWidth;
-	};
+		m_pProgress->Start2(nullptr, height);
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
+	}
 
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
+	const int extraWidth = m_fXShift == 0 ? 0 : static_cast<int>(std::fabs(m_fXShift) + 0.5);
+	const int width = m_pTarget->RealWidth() - extraWidth;
+
+	thread_init threadVars(m_pTarget, m_pSource);
+
+#pragma omp parallel for schedule(guided) default(none) firstprivate(threadVars) if(nrProcessors > 1)
+	for (int row = 0; row < height; ++row)
 	{
-		if (msg.message == WM_MT_PROCESS)
+		int lTgtStartX = 0, lTgtStartY = row, lSrcStartX = 0, lSrcStartY = row;
+
+		if (m_fXShift > 0)
 		{
-			LONG			lTgtStartX = 0,
-							lTgtStartY = msg.wParam,
-							lSrcStartX = 0,
-							lSrcStartY = msg.wParam;
+			// Target is moved
+			lTgtStartX += m_fXShift + 0.5;
+		}
+		else if (m_fXShift < 0)
+		{
+			// Source is moved
+			lSrcStartX += std::fabs(m_fXShift) + 0.5;
+		}
+		if (m_fYShift > 0)
+		{
+			// Target is moved
+			lTgtStartY += m_fYShift + 0.5;
+		}
+		else
+		{
+			// Source is moved
+			lSrcStartY += std::fabs(m_fYShift) + 0.5;
+		}
 
-			if (m_fXShift>0)
+		threadVars.PixelItTgt->Reset(lTgtStartX, lTgtStartY);
+		threadVars.PixelItSrc->Reset(lSrcStartX, lSrcStartY);
+
+		for (int col = 0; col < width; ++col)
+		{
+			if (m_bMonochrome)
 			{
-				// Target is moved
-				lTgtStartX += m_fXShift+0.5;
-			}
-			else if (m_fXShift<0)
-			{
-				// Source is moved
-				lSrcStartX += fabs(m_fXShift)+0.5;
-			};
-			if (m_fYShift>0)
-			{
-				// Target is moved
-				lTgtStartY += m_fYShift+0.5;
+				double fSrcGray, fTgtGray;
+				threadVars.PixelItTgt->GetPixel(fTgtGray);
+				threadVars.PixelItSrc->GetPixel(fSrcGray);
+
+				if (m_bAddMode)
+					fTgtGray = std::min(std::max(0.0, fTgtGray + fSrcGray * m_fGrayFactor), 256.0);
+				else
+					fTgtGray = std::max(m_fMinimum, fTgtGray - fSrcGray * m_fGrayFactor);
+				threadVars.PixelItTgt->SetPixel(fTgtGray);
 			}
 			else
 			{
-				// Source is moved
-				lSrcStartY += fabs(m_fYShift)+0.5;
-			};
+				double fSrcRed, fSrcGreen, fSrcBlue;
+				double fTgtRed, fTgtGreen, fTgtBlue;
+				threadVars.PixelItTgt->GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
+				threadVars.PixelItSrc->GetPixel(fSrcRed, fSrcGreen, fSrcBlue);
 
-			PixelItTgt->Reset(lTgtStartX, lTgtStartY);
-			PixelItSrc->Reset(lSrcStartX, lSrcStartY);
-
-			for (j = 0;j<msg.lParam;j++)
-			{
-				for (i = 0;i<lWidth;i++)
+				if (m_bAddMode)
 				{
-					if (m_bMonochrome)
-					{
-						double			fSrcGray,
-										fTgtGray;
+					fTgtRed = std::min(std::max(0.0, fTgtRed + fSrcRed * m_fRedFactor), 256.0);
+					fTgtGreen = std::min(std::max(0.0, fTgtGreen + fSrcGreen * m_fGreenFactor), 256.0);
+					fTgtBlue = std::min(std::max(0.0, fTgtBlue + fSrcBlue * m_fBlueFactor), 256.0);
+				}
+				else
+				{
+					fTgtRed = std::max(m_fMinimum, fTgtRed - fSrcRed * m_fRedFactor);
+					fTgtGreen = std::max(m_fMinimum, fTgtGreen - fSrcGreen * m_fGreenFactor);
+					fTgtBlue = std::max(m_fMinimum, fTgtBlue - fSrcBlue * m_fBlueFactor);
+				}
+				threadVars.PixelItTgt->SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
+			}
 
-						PixelItTgt->GetPixel(fTgtGray);
-						PixelItSrc->GetPixel(fSrcGray);
-
-						if (m_bAddMode)
-							fTgtGray = min(max(0.0, fTgtGray+fSrcGray * m_fGrayFactor), 256.0);
-						else
-							fTgtGray = max(m_fMinimum, fTgtGray-fSrcGray * m_fGrayFactor);
-						PixelItTgt->SetPixel(fTgtGray);
-					}
-					else
-					{
-						double			fSrcRed, fSrcGreen, fSrcBlue;
-						double			fTgtRed, fTgtGreen, fTgtBlue;
-
-						PixelItTgt->GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-						PixelItSrc->GetPixel(fSrcRed, fSrcGreen, fSrcBlue);
-						if (m_bAddMode)
-						{
-							fTgtRed		= min(max(0.0, fTgtRed + fSrcRed * m_fRedFactor), 256.0);
-							fTgtGreen	= min(max(0.0, fTgtGreen + fSrcGreen * m_fGreenFactor), 256.0);
-							fTgtBlue	= min(max(0.0, fTgtBlue + fSrcBlue * m_fBlueFactor), 256.0);
-						}
-						else
-						{
-							fTgtRed		= max(m_fMinimum, fTgtRed - fSrcRed * m_fRedFactor);
-							fTgtGreen	= max(m_fMinimum, fTgtGreen - fSrcGreen * m_fGreenFactor);
-							fTgtBlue	= max(m_fMinimum, fTgtBlue - fSrcBlue * m_fBlueFactor);
-						};
-						PixelItTgt->SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-					};
-
-					(*PixelItTgt)++;
-
-					(*PixelItSrc)++;
-				};
-				(*PixelItTgt)+=lExtraWidth;
-
-				(*PixelItSrc) += lExtraWidth;				
-			};
-			SetEvent(hEvent);
+			(*threadVars.PixelItTgt)++;
+			(*threadVars.PixelItSrc)++;
 		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = true;
-	};
+		(*threadVars.PixelItTgt) += extraWidth;
+		(*threadVars.PixelItSrc) += extraWidth;
 
-	return true;
-};
+		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+			m_pProgress->Progress2(nullptr, row);
+	}
 
-/* ------------------------------------------------------------------- */
-
-bool CSubtractTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
-	LONG			lHeight = m_pTarget->RealHeight();
-	LONG			lStep;
-	LONG			lRemaining;
-	LONG			i = 0;
-
-	if (m_fYShift)
-		lHeight -= fabs(m_fYShift)+0.5;
-
-	if (m_pProgress)
-	{
-		m_pProgress->Start2(nullptr, lHeight);
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	};
-
-	bResult = true;
-	lStep = max(1L, lHeight/50);
-	lRemaining = lHeight;
-
-	while (i<lHeight)
-	{
-		DWORD			dwThreadId;
-		LONG			lAdd = min(lStep, lRemaining);
-
-		dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+= lAdd;
-		lRemaining	-= lAdd;
-
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, i);
-	};
-
-	CloseAllThreads();
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 	{
 		m_pProgress->SetNrUsedProcessors();
 		m_pProgress->End2();
-	};
+	}
+}
 
-	return bResult;
-};
 
-/* ------------------------------------------------------------------- */
-
-bool Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
+bool Subtract(CMemoryBitmap* pTarget, CMemoryBitmap* pSource, CDSSProgress* pProgress, const double fRedFactor, const double fGreenFactor, const double fBlueFactor)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
+	bool bResult = false;
 
 	// Check and remove super pixel settings
-	CCFABitmapInfo *			pCFABitmapInfo;
-	CFATRANSFORMATION			CFATransform = CFAT_NONE;
-
-	pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
-	if (pCFABitmapInfo)
+	CFATRANSFORMATION CFATransform = CFAT_NONE;
+	CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
+	if (pCFABitmapInfo != nullptr)
 	{
 		CFATransform = pCFABitmapInfo->GetCFATransformation();
 		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseBilinear(true);
-	};
+	}
 
 	// Check that it is the same sizes
-	if (pTarget && pSource)
+	if (pTarget != nullptr && pSource != nullptr)
 	{
 		if ((pTarget->RealWidth() == pSource->RealWidth()) &&
 			(pTarget->RealHeight() == pSource->RealHeight()) &&
 			(pTarget->IsMonochrome() == pSource->IsMonochrome()))
 		{
 
-			CSubtractTask			SubtractTask;
-
+			CSubtractTask SubtractTask;
 			SubtractTask.Init(pTarget, pSource, pProgress, fRedFactor, fGreenFactor, fBlueFactor);
-			SubtractTask.StartThreads();
-			SubtractTask.Process();
+			SubtractTask.process();
 		}
 		else
 		{
@@ -1558,8 +1638,9 @@ bool ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProg
 			SubtractTask.Init(pTarget, pSource, pProgress, 1.0, 1.0, 1.0);
 			SubtractTask.SetShift(fXShift, fYShift);
 			SubtractTask.SetMinimumValue(1.0);
-			SubtractTask.StartThreads();
-			SubtractTask.Process();
+//			SubtractTask.StartThreads();
+//			SubtractTask.Process();
+			SubtractTask.process();
 		};
 	};
 
@@ -1584,226 +1665,39 @@ bool Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgr
 
 			AddTask.SetAddMode(true);
 			AddTask.Init(pTarget, pSource, pProgress, 1.0, 1.0, 1.0);
-			AddTask.StartThreads();
-			AddTask.Process();
+//			AddTask.StartThreads();
+//			AddTask.Process();
+			AddTask.process();
 		};
 	};
 
 	return bResult;
 };
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-class CMultiplyTask : public CMultitask
-{
-private :
-	CSmartPtr<CMemoryBitmap>	m_pTarget;
-	double						m_fRedFactor;
-	double						m_fGreenFactor;
-	double						m_fBlueFactor;
-	double						m_fGrayFactor;
-	bool						m_bMonochrome;
-	CDSSProgress *				m_pProgress;
-
-public :
-	CMultiplyTask()
-	{
-        m_fRedFactor = 0;
-        m_fGreenFactor = 0;
-        m_fBlueFactor = 0;
-        m_fGrayFactor = 0;
-        m_bMonochrome = false;
-        m_pProgress = nullptr;
-	};
-
-	virtual ~CMultiplyTask()
-	{
-	};
-
-	void	Init(CMemoryBitmap * pTarget, CDSSProgress * pProgress, double fRedFactor, double fGreenFactor, double fBlueFactor)
-	{
-		m_pProgress		= pProgress;
-		m_pTarget		= pTarget;
-		m_fRedFactor	= fRedFactor;
-		m_fGreenFactor	= fGreenFactor;
-		m_fBlueFactor	= fBlueFactor;
-
-		m_bMonochrome = pTarget->IsMonochrome();
-		m_fGrayFactor = 1.0;
-
-		if (m_bMonochrome)
-			m_fGrayFactor = max(fRedFactor, max(fGreenFactor, fBlueFactor));
-
-		if (m_pProgress)
-			m_pProgress->Start2(nullptr, pTarget->RealWidth());
-	};
-
-	void	End()
-	{
-		if (m_pProgress)
-			m_pProgress->End2();
-	};
-
-	virtual bool	Process();
-	virtual bool	DoTask(HANDLE hEvent);
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CMultiplyTask::DoTask(HANDLE hEvent)
+CFATYPE	GetCFAType(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG			i, j;
-	bool			bEnd = false;
-	MSG				msg;
-	LONG			lWidth = m_pTarget->RealWidth();
+	CFATYPE Result = CFATYPE_NONE;
 
-	PixelIterator	PixelItTgt;
-
-	m_pTarget->GetIterator(&PixelItTgt);
-
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-	{
-		if (msg.message == WM_MT_PROCESS)
-		{
-			PixelItTgt->Reset(0, msg.wParam);
-			for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-			{
-				for (i = 0;i<lWidth;i++)
-				{
-					if (m_bMonochrome)
-					{
-						double			fTgtGray;
-
-						PixelItTgt->GetPixel(fTgtGray);
-						fTgtGray = min(256.0, max(0.0, fTgtGray * m_fGrayFactor));
-						PixelItTgt->SetPixel(fTgtGray);
-					}
-					else
-					{
-						double			fTgtRed, fTgtGreen, fTgtBlue;
-
-						PixelItTgt->GetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-						fTgtRed		= min(256.0, max(0.0, fTgtRed * m_fRedFactor));
-						fTgtGreen	= min(256.0, max(0.0, fTgtGreen * m_fGreenFactor));
-						fTgtBlue	= min(256.0, max(0.0, fTgtBlue * m_fBlueFactor));
-						PixelItTgt->SetPixel(fTgtRed, fTgtGreen, fTgtBlue);
-					};
-
-					(*PixelItTgt)++;
-				};
-			};
-			SetEvent(hEvent);
+	if (pBitmap != nullptr && pBitmap->IsCFA()) {
+		if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pBitmap)) {
+			Result = pCFABitmapInfo->GetCFAType();
 		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = true;
-	};
-
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CMultiplyTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool			bResult = true;
-	LONG			lHeight = m_pTarget->RealHeight();
-	LONG			lStep;
-	LONG			lRemaining;
-	LONG			i = 0;
-
-	if (m_pProgress)
-	{
-		m_pProgress->Start2(nullptr, lHeight);
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	};
-
-	bResult = true;
-	lStep = max(1L, lHeight/50);
-	lRemaining = lHeight;
-
-	while (i<lHeight)
-	{
-		DWORD			dwThreadId;
-		LONG			lAdd = min(lStep, lRemaining);
-
-		dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+= lAdd;
-		lRemaining	-= lAdd;
-
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, i);
-	};
-
-	CloseAllThreads();
-	if (m_pProgress)
-	{
-		m_pProgress->SetNrUsedProcessors();
-		m_pProgress->End2();
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool Multiply(CMemoryBitmap * pTarget, double fRedFactor, double fGreenFactor, double fBlueFactor, CDSSProgress * pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
-
-	if (pTarget)
-	{
-		bResult = true;
-		CMultiplyTask			MultiplyTask;
-
-		MultiplyTask.Init(pTarget, pProgress, fRedFactor, fGreenFactor, fBlueFactor);
-		MultiplyTask.StartThreads();
-		MultiplyTask.Process();
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-CFATYPE	GetCFAType(CMemoryBitmap * pBitmap)
-{
-	ZFUNCTRACE_RUNTIME();
-	CFATYPE					Result = CFATYPE_NONE;
-
-	if (pBitmap)
-	{
-		if (pBitmap->IsCFA())
-		{
-			CCFABitmapInfo *			pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pBitmap);
-
-			if (pCFABitmapInfo)
-				Result = pCFABitmapInfo->GetCFAType();
-		};
 	}
 	return Result;
 };
 
-/* ------------------------------------------------------------------- */
 
-bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
+bool GetFilteredImage(CMemoryBitmap* pInBitmap, CMemoryBitmap** ppOutBitmap, int lFilterSize, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
+	bool bResult = false;
 
 	*ppOutBitmap = nullptr;
-	if (pInBitmap)
+	if (pInBitmap != nullptr)
 	{
-		CSmartPtr<CMedianFilterEngine>	pMedianFilterEngine;
-
+		CSmartPtr<CMedianFilterEngine> pMedianFilterEngine;
 		pInBitmap->GetMedianFilterEngine(&pMedianFilterEngine);
 
 		bResult = pMedianFilterEngine->GetFilteredImage(ppOutBitmap, lFilterSize, pProgress);
@@ -1811,5 +1705,3 @@ bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, L
 
 	return bResult;
 };
-
-/* ------------------------------------------------------------------- */

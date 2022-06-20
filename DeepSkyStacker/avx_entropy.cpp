@@ -1,6 +1,6 @@
 #include "StdAfx.h" 
 #include "avx_entropy.h" 
-#include "avx.h" 
+#include "avx_support.h" 
 #include "avx_cfa.h" 
 #include "avx_histogram.h" 
 #include <immintrin.h> 
@@ -16,7 +16,8 @@ AvxEntropy::AvxEntropy(CMemoryBitmap& inputbm, const CEntropyInfo& entrinfo, CMe
 	{
 		const size_t width = pEntropyCoverage->Width();
 		const size_t height = pEntropyCoverage->Height();
-		const size_t nrVectors = AvxSupport::numberOfAvxVectors<sizeof(float)>(width);
+		static_assert(std::is_same_v<EntropyLayerVectorType::value_type, __m256> && std::is_same_v<EntropyVectorType::value_type, float>);
+		const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width);
 		redEntropyLayer.resize(height * nrVectors);
 		if (AvxSupport{ *pEntropyCoverage }.isColorBitmap())
 		{
@@ -32,8 +33,8 @@ int AvxEntropy::calcEntropies(const int squareSize, const int nSquaresX, const i
 		return 1;
 
 	int rval = 1;
-	if (doCalcEntropies<WORD>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
-		|| doCalcEntropies<unsigned long>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
+	if (doCalcEntropies<std::uint16_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
+		|| doCalcEntropies<std::uint32_t>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0
 		|| doCalcEntropies<float>(squareSize, nSquaresX, nSquaresY, redEntropies, greenEntropies, blueEntropies) == 0)
 	{
 		rval = 0;
@@ -55,9 +56,10 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 
 	const auto getDistribution = [](const auto& histogram, T value) -> float
 	{
+		constexpr size_t Unsigned_short_max = size_t{ std::numeric_limits<std::uint16_t>::max() };
 		if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type 
 			value >>= 16;
-		return static_cast<float>(histogram[std::min(static_cast<size_t>(value), size_t{ USHORT_MAX })]);
+		return static_cast<float>(histogram[std::min(static_cast<size_t>(value), Unsigned_short_max)]);
 	};
 
 	const auto calcEntropyOfSquare = [squareSize, width, height, vectorLen, &getDistribution](const int col, const int row, const T* const pColor, auto& histogram) -> EntropyVectorType::value_type
@@ -117,7 +119,7 @@ int AvxEntropy::doCalcEntropies(const int squareSize, const int nSquaresX, const
 
 	const auto calcEntropy = [nSquaresX, nSquaresY, &calcEntropyOfSquare](const T* const pColor, EntropyVectorType& entropyVector) -> void
 	{
-		const int nrEnabledThreads = CMultitask::GetNrProcessors(false); // Returns 1 if multithreading disabled by user, otherwise # HW threads 
+		const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		constexpr size_t HistoSize = std::numeric_limits<std::uint16_t>::max() + size_t{ 1 };
 		std::vector<int> histogram(HistoSize, 0);
 

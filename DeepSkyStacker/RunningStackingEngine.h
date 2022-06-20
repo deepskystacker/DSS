@@ -13,7 +13,7 @@ private :
 	CSmartPtr<CMemoryBitmap>		m_pStackedBitmap;
 	CSmartPtr<CMemoryBitmap>		m_pPublicBitmap;
 	CBackgroundCalibration			m_BackgroundCalibration;
-	LONG							m_lNrStacked;
+	int							m_lNrStacked;
 	double							m_fTotalExposure;
 	CMatchingStars					m_MatchingStars;
 
@@ -39,7 +39,7 @@ public :
 		return bResult;
 	};
 
-	LONG	GetNrStackedImages()
+	int	GetNrStackedImages()
 	{
 		return m_lNrStacked;
 	};

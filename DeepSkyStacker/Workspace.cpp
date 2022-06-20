@@ -278,7 +278,7 @@ bool CWorkspaceSettingsInternal::isDirty()
 {
 	bool						bResult = false;
 
-	for (LONG i = 0;i<m_vSettings.size() && !bResult;i++)
+	for (size_t i = 0; i < m_vSettings.size() && !bResult; i++)
 		bResult = m_vSettings[i].isDirty(false);
 
 	return bResult;
@@ -288,7 +288,7 @@ bool CWorkspaceSettingsInternal::isDirty()
 
 void	CWorkspaceSettingsInternal::setDirty()
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
+	for (size_t i = 0; i < m_vSettings.size(); i++)
 		m_vSettings[i].isDirty(true);
 };
 
@@ -296,7 +296,7 @@ void	CWorkspaceSettingsInternal::setDirty()
 
 void	CWorkspaceSettingsInternal::readSettings()
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
+	for (size_t i = 0; i < m_vSettings.size(); i++)
 		m_vSettings[i].readSetting();
 };
 
@@ -304,7 +304,7 @@ void	CWorkspaceSettingsInternal::readSettings()
 
 void	CWorkspaceSettingsInternal::saveSettings()
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
+	for (size_t i = 0; i < m_vSettings.size(); i++)
 		m_vSettings[i].saveSetting();
 };
 
@@ -336,7 +336,7 @@ void	CWorkspaceSettingsInternal::ReadFromFile(LPCTSTR szFile)
 
 void	CWorkspaceSettingsInternal::SaveToFile(FILE * hFile)
 {
-	for (LONG i = 0;i<m_vSettings.size();i++)
+	for (size_t i = 0; i < m_vSettings.size(); i++)
 	{
 		QVariant value = m_vSettings[i].value();
 
@@ -452,7 +452,7 @@ void	CWorkspaceSettingsInternal::ResetToDefault()
 
 	if (vDefaults.size() == m_vSettings.size())
 	{
-		for (LONG i = 0;i<m_vSettings.size();i++)
+		for (size_t i = 0; i < m_vSettings.size(); i++)
 			m_vSettings[i].setValue(vDefaults[i]);
 	};
 };

@@ -76,9 +76,8 @@ bool CTIFFReader::Open()
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
 	QSettings		settings;
-	DWORD			dwSkipExifInfo = 0;
 
-	dwSkipExifInfo = settings.value("SkipTIFFExifInfo", uint(0)).toUInt();
+	const auto dwSkipExifInfo = settings.value("SkipTIFFExifInfo", uint(0)).toUInt();
 
 	//
 	// Quietly attempt to open the putative TIFF file 
@@ -139,7 +138,7 @@ bool CTIFFReader::Open()
 			aperture = 0.0;
 		if (!TIFFGetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSURE, &exposureTime))
 		{
-			LONG			lExposure;
+			int			lExposure;
 			if (TIFFGetField(m_tiff, TIFFTAG_DSS_TOTALEXPOSUREOLD, &lExposure))
 				exposureTime = lExposure;
 		};
@@ -320,9 +319,9 @@ bool CTIFFReader::Read()
 				m_pProgress->Progress2(nullptr, (this->h / 2 * i) / stripCount);
 		}
 
-		BYTE* byteBuff = buffer.get();
-		WORD* shortBuff = reinterpret_cast<WORD*>(byteBuff);
-		DWORD* longBuff = reinterpret_cast<DWORD*>(byteBuff);
+		std::uint8_t* byteBuff = buffer.get();
+		std::uint16_t* shortBuff = reinterpret_cast<std::uint16_t*>(byteBuff);
+		std::uint32_t* u32Buff = reinterpret_cast<std::uint32_t*>(byteBuff);
 		float* floatBuff = reinterpret_cast<float*>(byteBuff);
 
 		const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
@@ -335,7 +334,7 @@ bool CTIFFReader::Read()
 		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const auto& function) -> void
 		{
 			int progressCounter = 0;
-#pragma omp parallel for default(none) schedule(dynamic, 10) if (CMultitask::GetNrProcessors(false) - 1) // GetNrProcessors(false) returns 1, if user selected single-thread.
+#pragma omp parallel for default(none) schedule(dynamic, 10) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
 			for (int row = 0; row < height; ++row)
 			{
 				for (int col = 0; col < width; ++col)
@@ -350,13 +349,13 @@ bool CTIFFReader::Read()
 			assert(bps == 32);
 
 			if (spp == 1)
-				loopOverPixels([&](const LONG x, const LONG y) {
+				loopOverPixels([&](const int x, const int y) {
 					const double gray = normalizeFloatValue(floatBuff[y * w + x]);
 					OnRead(x, y, gray, gray, gray);
 				});
 			else
-				loopOverPixels([&](const LONG x, const LONG y) {
-					const LONG index = (y * w + x) * spp;
+				loopOverPixels([&](const int x, const int y) {
+					const int index = (y * w + x) * spp;
 					const double red = normalizeFloatValue(floatBuff[index]);
 					const double green = normalizeFloatValue(floatBuff[index + 1]);
 					const double blue = normalizeFloatValue(floatBuff[index + 2]);
@@ -368,41 +367,41 @@ bool CTIFFReader::Read()
 			if (spp == 1)
 				switch (bps)
 				{
-				case 8: loopOverPixels([&](const LONG x, const LONG y) {
+				case 8: loopOverPixels([&](const int x, const int y) {
 					const double fGray = byteBuff[y * w + x];
 					OnRead(x, y, fGray, fGray, fGray);
 				}); break;
-				case 16: loopOverPixels([&](const LONG x, const LONG y) {
+				case 16: loopOverPixels([&](const int x, const int y) {
 					const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
 					OnRead(x, y, fGray, fGray, fGray);
 				}); break;
-				case 32: loopOverPixels([&](const LONG x, const LONG y) {
-					const double fGray = longBuff[y * w + x] / scaleFactorInt32;
+				case 32: loopOverPixels([&](const int x, const int y) {
+					const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
 					OnRead(x, y, fGray, fGray, fGray);
 				}); break;
 				}
 			else
 				switch (bps)
 				{
-				case 8: loopOverPixels([&](const LONG x, const LONG y) {
-					const LONG index = (y * w + x) * spp;
+				case 8: loopOverPixels([&](const int x, const int y) {
+					const int index = (y * w + x) * spp;
 					const double fRed = byteBuff[index];
 					const double fGreen = byteBuff[index + 1];
 					const double fBlue = byteBuff[index + 2];
 					OnRead(x, y, fRed, fGreen, fBlue);
 				}); break;
-				case 16: loopOverPixels([&](const LONG x, const LONG y) {
-					const LONG index = (y * w + x) * spp;
+				case 16: loopOverPixels([&](const int x, const int y) {
+					const int index = (y * w + x) * spp;
 					const double fRed = shortBuff[index] / scaleFactorInt16;
 					const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
 					const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
 					OnRead(x, y, fRed, fGreen, fBlue);
 				}); break;
-				case 32: loopOverPixels([&](const LONG x, const LONG y) {
-					const LONG index = (y * w + x) * spp;
-					const double fRed = longBuff[index] / scaleFactorInt32;
-					const double fGreen = longBuff[index + 1] / scaleFactorInt32;
-					const double fBlue = longBuff[index + 2] / scaleFactorInt32;
+				case 32: loopOverPixels([&](const int x, const int y) {
+					const int index = (y * w + x) * spp;
+					const double fRed = u32Buff[index] / scaleFactorInt32;
+					const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
+					const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
 					OnRead(x, y, fRed, fGreen, fBlue);
 				}); break;
 				}
@@ -440,18 +439,12 @@ bool CTIFFReader::Close()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriter::SetFormat(LONG lWidth, LONG lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster)
+void CTIFFWriter::SetFormat(int lWidth, int lHeight, TIFFFORMAT TiffFormat, CFATYPE CFAType, bool bMaster)
 {
 	cfatype = CFAType;
-	if (CFAType != CFATYPE_NONE)
-		cfa = 1;
-	else
-		cfa = 0;
+	cfa = CFAType == CFATYPE_NONE ? 0 : 1;
 
-	if (bMaster)
-		master = 1;
-	else
-		master = 0;
+	master = bMaster ? 1 : 0;
 
 	w = lWidth;
 	h = lHeight;
@@ -571,10 +564,8 @@ bool CTIFFWriter::Open()
 			};
 
 			/* It is good to set resolutions too (but it is not nesessary) */
-			float		xres = 100,
-						yres = 100;
-			TIFFSetField(m_tiff, TIFFTAG_XRESOLUTION, xres);
-			TIFFSetField(m_tiff, TIFFTAG_YRESOLUTION, yres);
+			TIFFSetField(m_tiff, TIFFTAG_XRESOLUTION, 100.0f);
+			TIFFSetField(m_tiff, TIFFTAG_YRESOLUTION, 100.0f);
 			TIFFSetField(m_tiff, TIFFTAG_RESOLUTIONUNIT, RESUNIT_INCH);
 
 			if (cfa)
@@ -649,7 +640,7 @@ bool CTIFFWriter::Write()
 
 			BYTE *  byteBuff = (BYTE *)buff;
 			WORD *	shortBuff = (WORD *)buff;
-			DWORD * longBuff = (DWORD *)buff;
+			std::uint32_t* u32Buff = (std::uint32_t*)buff;
 			float *	floatBuff = (float *)buff;
 
 			int	rowProgress = 0;
@@ -657,11 +648,11 @@ bool CTIFFWriter::Write()
 #if defined(_OPENMP)
 #pragma omp parallel for default(none)
 #endif
-			for (LONG row = 0; row < h; row++)
+			for (int row = 0; row < h; row++)
 			{
-				for (LONG col = 0; col < w; col++)
+				for (int col = 0; col < w; col++)
 				{
-					long index = (row * w * spp) + (col * spp);
+					int index = (row * w * spp) + (col * spp);
 
 					double		fRed = 0, fGreen = 0, fBlue = 0, fGrey = 0;
 
@@ -712,7 +703,7 @@ bool CTIFFWriter::Write()
 							break;
 						}
 						break;
-					case 32:		// Unsigned long or 32 bit floating point 
+					case 32:		// Unsigned int or 32 bit floating point 
 						if (sampleformat == SAMPLEFORMAT_IEEEFP)
 							switch (spp)
 							{
@@ -726,16 +717,16 @@ bool CTIFFWriter::Write()
 								floatBuff[index + 2] = fBlue / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
 								break;
 							}
-						else switch (spp)	// unsigned long == DWORD
+						else switch (spp)	// unsigned int == DWORD
 						{
 						case 1:
-							longBuff[index] = fGrey * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index] = fGrey * UCHAR_MAX * USHRT_MAX;
 							break;
 						case 3:
 						case 4:
-							longBuff[index] = fRed * UCHAR_MAX * USHRT_MAX;
-							longBuff[index + 1] = fGreen * UCHAR_MAX * USHRT_MAX;
-							longBuff[index + 2] = fBlue * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index] = fRed * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index + 1] = fGreen * UCHAR_MAX * USHRT_MAX;
+							u32Buff[index + 2] = fBlue * UCHAR_MAX * USHRT_MAX;
 							break;
 
 						}
@@ -754,12 +745,12 @@ bool CTIFFWriter::Write()
 			//
 			// Write the image out as Strips (i.e. not scanline by scanline)
 			// 
-			const unsigned long STRIP_SIZE_DEFAULT = 4'194'304UL;		// 4MB
+			const unsigned int STRIP_SIZE_DEFAULT = 4'194'304UL;		// 4MB
 
 			//
 			// Work out how many scanlines fit into the default strip
 			//
-			unsigned long rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
+			unsigned int rowsPerStrip = STRIP_SIZE_DEFAULT / scanLineSize;
 			
 			//
 			// Handle the case where the scanline is longer the default strip size
@@ -770,7 +761,7 @@ bool CTIFFWriter::Write()
 			//
 			// From that we derive the number of strips
 			//
-			long numStrips = h / rowsPerStrip;
+			int numStrips = h / rowsPerStrip;
 			//
 			// If it wasn't an exact division (IOW there's a remainder), add one
 			// for the final (short) strip.
@@ -784,7 +775,7 @@ bool CTIFFWriter::Write()
 			tsize_t stripSize = rowsPerStrip * scanLineSize;
 			tsize_t bytesRemaining = h * scanLineSize;
 			tsize_t size = stripSize;
-			for (long strip = 0; strip < numStrips; strip++)
+			for (int strip = 0; strip < numStrips; strip++)
 			{
 				if (bytesRemaining < stripSize)
 					size = bytesRemaining;
@@ -859,7 +850,7 @@ public :
 	virtual bool Close() { return OnClose(); };
 
 	virtual bool	OnOpen();
-	void	OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue) override;
+	void	OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
 	virtual bool	OnClose();
 };
 
@@ -902,7 +893,7 @@ TIFFFORMAT	CTIFFWriteFromMemoryBitmap::GetBestTiffFormat(CMemoryBitmap * pBitmap
 bool CTIFFWriteFromMemoryBitmap::OnOpen()
 {
 	bool			bResult = true;
-	LONG			lWidth,
+	int			lWidth,
 					lHeight;
 	CFATYPE			CFAType = CFATYPE_NONE;
 	bool			bMaster;
@@ -938,7 +929,7 @@ bool CTIFFWriteFromMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFWriteFromMemoryBitmap::OnWrite(LONG lX, LONG lY, double & fRed, double & fGreen, double & fBlue)
+void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue)
 {
 
 	try
@@ -994,7 +985,7 @@ bool CTIFFWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 
 bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
-			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture)
+			int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
@@ -1043,7 +1034,7 @@ bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 /* ------------------------------------------------------------------- */
 
 bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
-			LONG lISOSpeed, LONG lGain, double fExposure, double fAperture)
+			int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
@@ -1102,9 +1093,9 @@ public :
 
 	virtual bool Close() { return OnClose(); };
 
-	virtual bool	OnOpen();
-	void	OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue) override;
-	virtual bool	OnClose();
+	virtual bool OnOpen() override;
+	virtual void OnRead(int lX, int lY, double fRed, double fGreen, double fBlue) override;
+	virtual bool OnClose() override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -1173,10 +1164,8 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 		m_pBitmap->SetCFA(cfa);
 		if (cfatype)
 		{
-			C16BitGrayBitmap *		pGray16Bitmap = dynamic_cast<C16BitGrayBitmap *>(m_pBitmap.m_p);
-
-			if (pGray16Bitmap)
-				pGray16Bitmap->SetCFAType((CFATYPE)cfatype);
+			if (C16BitGrayBitmap* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(m_pBitmap.m_p))
+				pGray16Bitmap->SetCFAType(static_cast<CFATYPE>(cfatype));
 		};
 		m_pBitmap->SetMaster(master);
 		m_pBitmap->SetISOSpeed(isospeed);
@@ -1198,7 +1187,7 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 
 /* ------------------------------------------------------------------- */
 
-void CTIFFReadInMemoryBitmap::OnRead(LONG lX, LONG lY, double fRed, double fGreen, double fBlue)
+void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen, double fBlue)
 {
 
 	try
