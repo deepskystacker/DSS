@@ -189,7 +189,7 @@ bool CFITSReader::ReadKey(LPCSTR szKey, double & fValue)
 	return bResult;
 };
 
-bool CFITSReader::ReadKey(LPSTR szKey, int & lValue)
+bool CFITSReader::ReadKey(LPCSTR szKey, int& lValue)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -1201,7 +1201,7 @@ bool	CFITSWriter::WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment)
 
 /* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPSTR szKey, int lValue, LPSTR szComment)
+bool	CFITSWriter::WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;

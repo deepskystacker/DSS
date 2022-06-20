@@ -124,7 +124,7 @@ protected:
 private :
 	bool	ReadKey(LPCSTR szKey, double & fValue, CString & strComment);
 	bool	ReadKey(LPCSTR szKey, double & fValue);
-	bool	ReadKey(LPCSTR szKey, LONG & lValue);
+	bool	ReadKey(LPCSTR szKey, int& lValue);
 	bool	ReadKey(LPCSTR szKey, CString & strValue);
 	void	ReadAllKeys();
 
@@ -167,7 +167,7 @@ public:
 
 private :
 	bool	WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment = nullptr);
-	bool	WriteKey(LPCSTR szKey, LONG lValue, LPCSTR szComment = nullptr);
+	bool	WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment = nullptr);
 	bool	WriteKey(LPCSTR szKey, LPCTSTR szValue, LPCSTR szComment = nullptr);
 	void	WriteAllKeys();
 
