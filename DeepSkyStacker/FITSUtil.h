@@ -121,12 +121,12 @@ protected:
 	double					m_fBrightnessRatio;
 	bool					m_bDSI;
 
-private:
-	bool ReadKey(LPSTR szKey, double & fValue, CString & strComment);
-	bool ReadKey(LPSTR szKey, double & fValue);
-	bool ReadKey(LPSTR szKey, int & lValue);
-	bool ReadKey(LPSTR szKey, CString & strValue);
-	void ReadAllKeys();
+private :
+	bool	ReadKey(LPCSTR szKey, double & fValue, CString & strComment);
+	bool	ReadKey(LPCSTR szKey, double & fValue);
+	bool	ReadKey(LPCSTR szKey, int& lValue);
+	bool	ReadKey(LPCSTR szKey, CString & strValue);
+	void	ReadAllKeys();
 
 public:
 	CFITSReader(LPCTSTR szFileName, CDSSProgress *	pProgress) :
@@ -165,11 +165,11 @@ public:
 	CDSSProgress*			m_pProgress;
 	CString					m_strDescription;
 
-private:
-	bool WriteKey(LPSTR szKey, double fValue, LPSTR szComment = nullptr);
-	bool WriteKey(LPSTR szKey, int lValue, LPSTR szComment = nullptr);
-	bool WriteKey(LPSTR szKey, LPCTSTR szValue, LPSTR szComment = nullptr);
-	void WriteAllKeys();
+private :
+	bool	WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment = nullptr);
+	bool	WriteKey(LPCSTR szKey, int lValue, LPCSTR szComment = nullptr);
+	bool	WriteKey(LPCSTR szKey, LPCTSTR szValue, LPCSTR szComment = nullptr);
+	void	WriteAllKeys();
 
 protected:
 	void SetFormat(int lWidth, int lHeight, FITSFORMAT FITSFormat, CFATYPE CFAType);
