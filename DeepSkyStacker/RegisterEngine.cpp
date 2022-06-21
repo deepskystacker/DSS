@@ -20,7 +20,7 @@
 class CStarAxisInfo
 {
 public :
-	LONG					m_lAngle;
+	int					m_lAngle;
 	double					m_fRadius;
 	double					m_fSum;
 
@@ -56,7 +56,7 @@ public :
 	};
 };
 
-inline	void NormalizeAngle(LONG & lAngle)
+inline	void NormalizeAngle(int & lAngle)
 {
 	while (lAngle >= 360)
 		lAngle -= 360;
@@ -72,8 +72,8 @@ bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	std::vector<CStarAxisInfo>	vStarAxises;
 	double						fMaxHalfRadius = 0.0;
 	double						fMaxCumulated  = 0.0;
-	LONG						lMaxHalfRadiusAngle = 0.0;
-	LONG						lAngle;
+	int						lMaxHalfRadiusAngle = 0.0;
+	int						lAngle;
 
 	// Preallocate the vector for the inner loop.
 	PIXELDISPATCHVECTOR		vPixels;
@@ -98,7 +98,7 @@ bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 			vPixels.resize(0);
 			ComputePixelDispatch(CPointExt(fX, fY), vPixels);
 
-			for (LONG k = 0;k<vPixels.size();k++)
+			for (int k = 0;k<vPixels.size();k++)
 			{
 				double				fValue;
 
@@ -129,13 +129,13 @@ bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	star.m_fLargeMajorAxis = fMaxHalfRadius;
 	star.m_fMajorAxisAngle = lMaxHalfRadiusAngle;
 
-	LONG			lSearchAngle;
+	int			lSearchAngle;
 	bool			bFound = false;
 
 	lSearchAngle = lMaxHalfRadiusAngle + 180;
 	NormalizeAngle(lSearchAngle);
 
-	for (LONG i = 0;i<vStarAxises.size() && !bFound;i++)
+	for (int i = 0;i<vStarAxises.size() && !bFound;i++)
 	{
 		if (vStarAxises[i].m_lAngle == lSearchAngle)
 		{
@@ -148,7 +148,7 @@ bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	lSearchAngle = lMaxHalfRadiusAngle + 90;
 	NormalizeAngle(lSearchAngle);
 
-	for (LONG i = 0;i<vStarAxises.size() && !bFound;i++)
+	for (int i = 0;i<vStarAxises.size() && !bFound;i++)
 	{
 		if (vStarAxises[i].m_lAngle == lSearchAngle)
 		{
@@ -161,7 +161,7 @@ bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 	lSearchAngle = lMaxHalfRadiusAngle + 210;
 	NormalizeAngle(lSearchAngle);
 
-	for (LONG i = 0;i<vStarAxises.size() && !bFound;i++)
+	for (int i = 0;i<vStarAxises.size() && !bFound;i++)
 	{
 		if (vStarAxises[i].m_lAngle == lSearchAngle)
 		{
@@ -178,7 +178,7 @@ bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius)
 {
 	bool				bResult = false;
-	LONG				i, j;
+	int				i, j;
 	double				fSumX = 0,
 						fSumY = 0;
 	double				fNrValuesX = 0,
@@ -187,7 +187,7 @@ bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, d
 						fAverageY = 0;
 
 
-	LONG				lNrLines = 0;
+	int				lNrLines = 0;
 	for (j = fY-fRadius;j<=fY+fRadius;j++)
 	{
 		fSumX = 0;
@@ -208,7 +208,7 @@ bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, d
 	};
 	fAverageX /= (double)lNrLines;
 
-	LONG				lNrColumns = 0;
+	int				lNrColumns = 0;
 	for (j = fX-fRadius;j<=fX+fRadius;j++)
 	{
 		fSumY = 0;
@@ -240,7 +240,7 @@ bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, d
 	{
 		double			fValue;
 		pBitmap->GetPixel(i, fY, fValue);
-		fValue = max(0.0, fValue - m_fBackground);
+		fValue = std::max(0.0, fValue - m_fBackground);
 		fSumX		+= fValue * i;
 		fSquareSumX += pow(i - fX, 2)* fValue;
 		fNrValuesX	+= fValue;
@@ -255,7 +255,7 @@ bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, d
 	{
 		double			fValue;
 		pBitmap->GetPixel(fX, i, fValue);
-		fValue = max(0.0, fValue - m_fBackground);
+		fValue = std::max(0.0, fValue - m_fBackground);
 		fSumY		+= fValue * i;
 		fSquareSumY += pow(i - fY, 2)*fValue;
 		fNrValuesY	+= fValue;
@@ -273,12 +273,12 @@ bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, d
 class CPixelDirection
 {
 public :
-	LONG				m_Ok;
+	int				m_Ok;
 	double				m_fIntensity;
-	LONG				m_lXDir;
-	LONG				m_lYDir;
+	int				m_lXDir;
+	int				m_lYDir;
 	double				m_fRadius;
-	LONG				m_lNrBrighterPixels;
+	int				m_lNrBrighterPixels;
 
 private :
 	void	CopyFrom(const CPixelDirection & pd)
@@ -292,7 +292,7 @@ private :
 	};
 
 public :
-	CPixelDirection(LONG lXDir = 0, LONG lYDir = 0)
+	CPixelDirection(int lXDir = 0, int lYDir = 0)
 	{
 		m_Ok = 2;
 		m_fIntensity = 0;
@@ -302,7 +302,7 @@ public :
 		m_lNrBrighterPixels = 0;
 	};
 
-	CPixelDirection(const LONG xd, const LONG yd, const LONG ok, const double r) :
+	CPixelDirection(const int xd, const int yd, const int ok, const double r) :
 		m_Ok{ ok },
 		m_fIntensity{ 0.0 },
 		m_lXDir{ xd },
@@ -347,7 +347,7 @@ public :
 	};
 	bool	FillPixelDirection(double fX, double fY, CGrayBitmap & Bitmap, std::vector<CPixelDirection> & vPixels)
 	{
-		LONG			k;
+		int			k;
 
 		bMainOk = true;
 		fMaxRadius = 0;
@@ -358,12 +358,12 @@ public :
 			vPixels[k].m_fRadius = 0;
 		};
 
-		for (LONG r = 1;(r<STARMAXSIZE) && (bMainOk) && !bBrighterPixel;r++)
+		for (int r = 1;(r<STARMAXSIZE) && (bMainOk) && !bBrighterPixel;r++)
 		{
 			for (k = 0;k<8;k++)
 			{
-				LONG		ldX = vPixels[k].m_lXDir*r;
-				LONG		ldY = vPixels[k].m_lYDir*r;
+				int		ldX = vPixels[k].m_lXDir*r;
+				int		ldY = vPixels[k].m_lYDir*r;
 
 				Bitmap.GetPixel(fX+ldX+0.5, fY+ldY+0.5, vPixels[k].m_fIntensity);
 			};
@@ -377,7 +377,7 @@ public :
 					{
 						vPixels[k].m_fRadius = r;
 						vPixels[k].m_Ok--;
-						fMaxRadius = max(fMaxRadius, static_cast<double>(r));
+						fMaxRadius = std::max(fMaxRadius, static_cast<double>(r));
 					}
 					else if (vPixels[k].m_fIntensity > fIntensity)
 						bBrighterPixel = true;
@@ -397,17 +397,17 @@ public :
 size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars)
 {
 	double				fMaxIntensity = 0;
-	LONG				i, j, k;
-	std::vector<LONG>	vHistogram;
+	int				i, j, k;
+	std::vector<int>	vHistogram;
 	size_t nStars{ 0 };
 
 	// Work with a local buffer. Copy the pixel values for the rect.
-	const LONG width = (rc.right - rc.left);
+	const int width = (rc.right - rc.left);
 	std::vector<double> values(width * (rc.bottom - rc.top));
-	for (LONG j = rc.top, ndx = 0; j < rc.bottom; ++j)
-		for (LONG i = rc.left; i < rc.right; ++i, ++ndx)		
+	for (int j = rc.top, ndx = 0; j < rc.bottom; ++j)
+		for (int i = rc.left; i < rc.right; ++i, ++ndx)		
 			pBitmap->GetPixel(i, j, values[ndx]);
-	const auto getValue = [&values, rc, width](const LONG x, const LONG y) -> double
+	const auto getValue = [&values, rc, width](const int x, const int y) -> double
 	{
 		return values[(y - rc.top) * width + x - rc.left];
 	};
@@ -416,16 +416,18 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 	// First find the top luminance
 	if (m_fBackground == 0.0)
 	{
-		vHistogram.resize(static_cast<LONG>(MAXWORD) + 1);
+		constexpr size_t Maxsize = size_t{ MAXWORD } + 1;
+		constexpr double Maxvalue = double{ MAXWORD };
+		vHistogram.resize(Maxsize);
 		for (const auto value : values)
 		{
 			fMaxIntensity = std::max(fMaxIntensity, value);
-			++vHistogram[std::min(value * 256.0, static_cast<double>(MAXWORD))];
+			++vHistogram[std::min(value * 256.0, Maxvalue)];
 		}
 
-		const LONG lNrTotalValues = ((rc.Width() - 1) * (rc.Height() - 1)) / 2;
-		LONG lNrValues = 0;
-		LONG lIndice = 0;
+		const int lNrTotalValues = ((rc.Width() - 1) * (rc.Height() - 1)) / 2;
+		int lNrValues = 0;
+		int lIndice = 0;
 		while (lNrValues < lNrTotalValues)
 		{
 			lNrValues += vHistogram[lIndice];
@@ -472,10 +474,10 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 
 							bool			bBrighterPixel = false;
 							bool			bMainOk = true;
-							LONG			lMaxRadius = 0;
-							LONG			lNrBrighterPixels = 0;
+							int			lMaxRadius = 0;
+							int			lNrBrighterPixels = 0;
 
-							for (LONG r = 1; r < STARMAXSIZE && bMainOk && !bBrighterPixel; r++)
+							for (int r = 1; r < STARMAXSIZE && bMainOk && !bBrighterPixel; r++)
 							{
 								for (auto& pixel : vPixels)
 								{
@@ -491,7 +493,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 										{
 											vPixels[k].m_fRadius = r;
 											--vPixels[k].m_Ok;
-											lMaxRadius = max(lMaxRadius, r);
+											lMaxRadius = std::max(lMaxRadius, r);
 										}
 										else if (vPixels[k].m_fIntensity > 1.05 * fIntensity)
 											bBrighterPixel = true;
@@ -514,7 +516,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 								//	DebugBreak();
 
 								bool			bWanabeeStarOk = true;
-								LONG			k1, k2;
+								int			k1, k2;
 								double			fMeanRadius1 = 0.0,
 												fMeanRadius2 = 0.0;
 
@@ -547,21 +549,21 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 								//	bWanabeeStarOk = false;
 
 								CRect			rcStar;
-								LONG			lLeftRadius = 0;
-								LONG			lRightRadius = 0;
-								LONG			lTopRadius = 0;
-								LONG			lBottomRadius = 0;
+								int			lLeftRadius = 0;
+								int			lRightRadius = 0;
+								int			lTopRadius = 0;
+								int			lBottomRadius = 0;
 
 								for (k = 0; k < 8; k++)
 								{
 									if (vPixels[k].m_lXDir < 0)
-										lLeftRadius = max(lLeftRadius, static_cast<long>(vPixels[k].m_fRadius));
+										lLeftRadius = std::max(lLeftRadius, static_cast<int>(vPixels[k].m_fRadius));
 									else if (vPixels[k].m_lXDir > 0)
-										lRightRadius = max(lRightRadius, static_cast<long>(vPixels[k].m_fRadius));
+										lRightRadius = std::max(lRightRadius, static_cast<int>(vPixels[k].m_fRadius));
 									if (vPixels[k].m_lYDir < 0)
-										lTopRadius = max(lTopRadius, static_cast<long>(vPixels[k].m_fRadius));
+										lTopRadius = std::max(lTopRadius, static_cast<int>(vPixels[k].m_fRadius));
 									else if (vPixels[k].m_lYDir > 0)
-										lBottomRadius = max(lBottomRadius, static_cast<long>(vPixels[k].m_fRadius));
+										lBottomRadius = std::max(lBottomRadius, static_cast<int>(vPixels[k].m_fRadius));
 								};
 
 								rcStar.left   = ptTest.x - lLeftRadius;
@@ -645,7 +647,7 @@ bool	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 			fprintf(hFile, "Comet = %.2f, %.2f\n", m_fXComet, m_fYComet);
 		fprintf(hFile, "SkyBackground = %.4f\n", m_SkyBackground.m_fLight);
 		fprintf(hFile, "NrStars = %zu\n", m_vStars.size());
-		for (LONG i = 0; i<m_vStars.size();i++)
+		for (int i = 0; i<m_vStars.size();i++)
 		{
 			fprintf(hFile, "Star# = %ld\n", i);
 			fprintf(hFile, "Intensity = %.2f\n", m_vStars[i].m_fIntensity);
@@ -716,7 +718,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 	{
 		CString			strVariable;
 		CString			strValue;
-		LONG			lNrStars = 0;
+		int			lNrStars = 0;
 		bool			bEnd = false;
 
 		m_bComet = false;
@@ -772,7 +774,7 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 		// Jump the first [Star#]
 		GetNextValue(hFile, strVariable, strValue);
 		bEnd = false;
-		for (LONG i = 0;i<lNrStars && !bEnd;i++)
+		for (int i = 0;i<lNrStars && !bEnd;i++)
 		{
 			bool			bNextStar = false;
 			CStar			ms;
@@ -926,31 +928,30 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 
 /* ------------------------------------------------------------------- */
 
-void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
+void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
-	LONG					lSubRectWidth,
-							lSubRectHeight;
-	LONG					lNrSubRects;
-	LONG					lProgress = 0;
+	int lSubRectWidth;
+	int lSubRectHeight;
+	int lProgress = 0;
 
 	// First computed median value
 	m_fBackground = ComputeMedianValue(Bitmap);
 
 	m_SkyBackground.m_fLight = m_fBackground;
 
-	lSubRectWidth	= STARMAXSIZE * 5;
-	lSubRectHeight	= STARMAXSIZE * 5;
+	lSubRectWidth = STARMAXSIZE * 5;
+	lSubRectHeight = STARMAXSIZE * 5;
 
-	lNrSubRects		= ((Bitmap.Width()-STARMAXSIZE*2) / lSubRectWidth * 2) * ((Bitmap.Height()-STARMAXSIZE*2) / lSubRectHeight * 2);
+	const int lNrSubRects = ((Bitmap.Width() - STARMAXSIZE * 2) / lSubRectWidth * 2) * ((Bitmap.Height() - STARMAXSIZE * 2) / lSubRectHeight * 2);
 
 	if (m_pProgress != nullptr)
 	{
 		CString			strText;
 		strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)m_strFileName);
 		m_pProgress->Start2(strText, lNrSubRects);
-	};
+	}
 
 	m_vStars.clear();
 
@@ -962,7 +963,7 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 	const int nrSubrectsY = (calcHeight - 1) / stepSize + 1;
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
 	const int nrSubrectsX = (calcWidth - 1) / stepSize + 1;
-	const int nrEnabledThreads = CMultitask::GetNrProcessors(false); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
 
 	STARSET stars1, stars2, stars3, stars4;
 	std::atomic<int> nrSubrects{ 0 };
@@ -992,7 +993,7 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 			const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
 
 			for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
-				nStars += RegisterSubRect(&Bitmap, CRect(StarMaxSize + colNdx * stepSize, top, min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+				nStars += RegisterSubRect(&Bitmap, CRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
 		}
 	};
 
@@ -1023,212 +1024,151 @@ void	CLightFrameInfo::RegisterPicture(CGrayBitmap & Bitmap)
 	}
 
 #pragma omp single
-{
-	stars1.merge(stars3);
-	// Remaining areas, all are overlapping with at least one other.
-	// Vertically middle band, full height
-	processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1);
-	// Middle left
-	processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1);
-	// Middle right
-	processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1);
+	{
+		stars1.merge(stars3);
+		// Remaining areas, all are overlapping with at least one other.
+		// Vertically middle band, full height
+		processDisjointArea(0, nrSubrectsY, (nrSubrectsX - Separation) / 2, (nrSubrectsX - Separation) / 2 + Separation, stars1);
+		// Middle left
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, 0, (nrSubrectsX - Separation) / 2, stars1);
+		// Middle right
+		processDisjointArea((nrSubrectsY - Separation) / 2, (nrSubrectsY - Separation) / 2 + Separation, (nrSubrectsX - Separation) / 2 + Separation, nrSubrectsX, stars1);
 
-	m_vStars.assign(stars1.cbegin(), stars1.cend());
-}
+		m_vStars.assign(stars1.cbegin(), stars1.cend());
+	}
 
 #pragma omp sections
-{
+	{
 #pragma omp section
-	ComputeOverallQuality();
+		ComputeOverallQuality();
 #pragma omp section
-	ComputeFWHM();
-}
-
-}
+		ComputeFWHM();
+	}
+} // omp parallel
 
 	if (m_pProgress)
 		m_pProgress->End2();
-};
+}
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-class CComputeLuminanceTask : public CMultitask
+class CComputeLuminanceTask
 {
-public :
+public:
 	CSmartPtr<CGrayBitmap>		m_pGrayBitmap;
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CDSSProgress *				m_pProgress;
+	CDSSProgress*				m_pProgress;
 
-public :
-	CComputeLuminanceTask()
-	{
-        m_pProgress = nullptr;
-	};
+public:
+	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, CDSSProgress* pPrg) :
+		m_pGrayBitmap{ pGb },
+		m_pBitmap{ pBm },
+		m_pProgress{ pPrg }
+	{}
 
-	virtual ~CComputeLuminanceTask()
-	{
-	};
-
-	void	Init(CMemoryBitmap * pBitmap, CGrayBitmap * pGrayBitmap, CDSSProgress * pProgress)
-	{
-		m_pBitmap				 = pBitmap;
-		m_pGrayBitmap		     = pGrayBitmap;
-		m_pProgress				 = pProgress;
-	};
-
-	virtual bool	DoTask(HANDLE hEvent);
-	virtual bool	Process();
+	~CComputeLuminanceTask() = default;
+	void process();
+private:
+	void processNonAvx(const int lineStart, const int lineEnd);
 };
 
-/* ------------------------------------------------------------------- */
-
-bool	CComputeLuminanceTask::DoTask(HANDLE hEvent)
+void CComputeLuminanceTask::process()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
+	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int height = m_pBitmap->Height();
+	int progress = 0;
+	constexpr int lineBlockSize = 20;
 
-	LONG				i, j;
-	bool				bEnd = false;
-	MSG					msg;
-	LONG				lWidth = m_pBitmap->Width();
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
 	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
-	// Create a message queue and signal the event
-	PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-	SetEvent(hEvent);
-	while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
+#pragma omp parallel for schedule(dynamic) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
+	for (int row = 0; row < height; row += lineBlockSize)
 	{
-		if (msg.message == WM_MT_PROCESS)
+		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+			m_pProgress->Progress2(nullptr, progress += nrProcessors * lineBlockSize);
+
+		const int endRow = std::min(row + lineBlockSize, height);
+		if (avxLuminance.computeLuminanceBitmap(row, endRow) != 0)
 		{
-			if (avxLuminance.computeLuminanceBitmap(msg.wParam, msg.wParam + msg.lParam) != 0)
-			{
-				for (j = msg.wParam; j < msg.wParam + msg.lParam; j++)
-				{
-					for (i = 0; i < lWidth; i++)
-					{
-						COLORREF16			crColor;
-
-						m_pBitmap->GetPixel16(i, j, crColor);
-						m_pGrayBitmap->SetPixel(i, j, GetLuminance(crColor));
-					};
-				};
-			}
-
-			SetEvent(hEvent);
+			processNonAvx(row, endRow);
 		}
-		else if (msg.message == WM_MT_STOP)
-			bEnd = true;
-	};
+	}
 
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CComputeLuminanceTask::Process()
-{
-	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
-	LONG				lHeight = m_pBitmap->Height();
-	LONG				i = 0;
-	LONG				lStep;
-	LONG				lRemaining;
-
-	if (m_pProgress)
-		m_pProgress->SetNrUsedProcessors(GetNrThreads());
-	lStep		= max(1L, lHeight/50);
-	lRemaining	= lHeight;
-
-	while (i<lHeight)
-	{
-		LONG			lAdd = min(lStep, lRemaining);
-		DWORD			dwThreadId;
-
-		dwThreadId = GetAvailableThreadId();
-		PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-		i			+=lAdd;
-		lRemaining	-= lAdd;
-		if (m_pProgress)
-			m_pProgress->Progress2(nullptr, i);
-	};
-
-	CloseAllThreads();
-
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors();
+}
 
-	return bResult;
-};
+void CComputeLuminanceTask::processNonAvx(const int lineStart, const int lineEnd)
+{
+	const int width = m_pBitmap->Width();
+	for (int row = lineStart; row < lineEnd; ++row)
+	{
+		for (int col = 0; col < width; ++col)
+		{
+			COLORREF16 crColor;
+			m_pBitmap->GetPixel16(col, row, crColor);
+			m_pGrayBitmap->SetPixel(col, row, GetLuminance(crColor));
+		}
+	}
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap * pBitmap, CGrayBitmap ** ppGrayBitmap)
+void CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap, CGrayBitmap** ppGrayBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	CSmartPtr<CGrayBitmap>		pGrayBitmap;
+	CSmartPtr<CGrayBitmap> pGrayBitmap;
 
-	m_lWidth	= pBitmap->Width();
-	m_lHeight	= pBitmap->Height();
+	m_lWidth = pBitmap->Width();
+	m_lHeight = pBitmap->Height();
 
 	if (m_bRemoveHotPixels)
 		pBitmap->RemoveHotPixels(m_pProgress);
 
 	// Try to find star by studying the variation of luminosity
-	if (m_pProgress)
+	if (m_pProgress != nullptr)
 	{
-		CString			strText;
-
+		CString strText;
 		strText.Format(IDS_COMPUTINGLUMINANCE, (LPCTSTR)m_strFileName);
 		m_pProgress->Start2(strText, pBitmap->Height());
-	};
+	}
 
 	pGrayBitmap.Attach(new CGrayBitmap);
 	ZTRACE_RUNTIME("Creating Gray memory bitmap %p (luminance)", pGrayBitmap.m_p);
 	pGrayBitmap->Init(pBitmap->Width(), pBitmap->Height());
 
-	CComputeLuminanceTask		ComputeLuminanceTask;
-
-	ComputeLuminanceTask.Init(pBitmap, pGrayBitmap, m_pProgress);
-	ComputeLuminanceTask.StartThreads();
-	ComputeLuminanceTask.Process();
+	CComputeLuminanceTask{ pBitmap, pGrayBitmap, m_pProgress }.process();
 
 	if (m_bApplyMedianFilter)
 	{
-		CMedianImageFilter			filter;
-		CSmartPtr<CMemoryBitmap>	pFiltered;
-		CSmartPtr<CGrayBitmap>		pFilteredGray;
+		CSmartPtr<CMemoryBitmap> pFiltered;
+		CMedianImageFilter{}.ApplyFilter(pGrayBitmap, &pFiltered, m_pProgress);
 
-		filter.ApplyFilter(pGrayBitmap, &pFiltered, m_pProgress);
-
-		pFilteredGray.Attach(dynamic_cast<CGrayBitmap *>(pFiltered.m_p));
+		CSmartPtr<CGrayBitmap> pFilteredGray;
+		pFilteredGray.Attach(dynamic_cast<CGrayBitmap*>(pFiltered.m_p));
 		pFilteredGray.CopyTo(ppGrayBitmap);
 	}
 	else
 		pGrayBitmap.CopyTo(ppGrayBitmap);
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-void	CLightFrameInfo::RegisterPicture(CMemoryBitmap * pBitmap)
+void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	CSmartPtr<CGrayBitmap>		pGrayBitmap;
+	CSmartPtr<CGrayBitmap> pGrayBitmap;
 
 	ComputeLuminanceBitmap(pBitmap, &pGrayBitmap);
 	if (pGrayBitmap)
 		RegisterPicture(*pGrayBitmap);
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift)
+bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, double& fRedXShift, double& fRedYShift, double& fBlueXShift, double& fBlueYShift)
 {
 	// Compute star center for blue and red
 	bool				bResult = false;
-	LONG				i, j;
+	int				i, j;
 	double				fSumRedX = 0,
 						fSumRedY = 0;
 	double				fNrValuesRedX = 0,
@@ -1243,8 +1183,8 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, d
 						fAverageBlueY = 0;
 
 
-	LONG				lNrBlueLines = 0;
-	LONG				lNrRedLines = 0;
+	int				lNrBlueLines = 0;
+	int				lNrRedLines = 0;
 	for (j = star.m_rcStar.top;j<=star.m_rcStar.bottom;j++)
 	{
 		fSumRedX = 0;
@@ -1277,8 +1217,8 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, d
 	if (lNrBlueLines)
 		fAverageBlueX /= (double)lNrBlueLines;
 
-	LONG				lNrRedColumns = 0;
-	LONG				lNrBlueColumns = 0;
+	int				lNrRedColumns = 0;
+	int				lNrBlueColumns = 0;
 	for (j = star.m_rcStar.left;j<=star.m_rcStar.right;j++)
 	{
 		fSumRedY = 0;
@@ -1325,8 +1265,8 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, d
 /*
 void CLightFrameInfo::ComputeRedBlueShifting(CMemoryBitmap * pBitmap)
 {
-	LONG				i = 0;
-	LONG				lNrShifts = 0;
+	int				i = 0;
+	int				lNrShifts = 0;
 
 	m_fRedXShift	  = 0;
 	m_fRedYShift	  = 0;
@@ -1536,10 +1476,10 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = true;
-	LONG					i, j;
+	int					i, j;
 	CString					strText;
-	LONG					lTotalRegistered = 0;
-	LONG					lNrRegistered = 0;
+	int					lTotalRegistered = 0;
+	int					lNrRegistered = 0;
 
 	for (i = 0;i<tasks.m_vStacks.size();i++)
 	{
@@ -1548,7 +1488,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce
 		if (tasks.m_vStacks[i].m_pLightTask)
 			pStackingInfo = &(tasks.m_vStacks[i]);
 		if (pStackingInfo)
-			lTotalRegistered += (LONG)pStackingInfo->m_pLightTask->m_vBitmaps.size();
+			lTotalRegistered += (int)pStackingInfo->m_pLightTask->m_vBitmaps.size();
 	};
 
 	strText.LoadString(IDS_REGISTERING);

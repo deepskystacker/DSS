@@ -8,22 +8,22 @@
 #define bool				bool
 #define true				true
 #define false				false
-#define LONG				int32
+#define int				int32
 #define DWORD				uint32
 #define WORD				uint16
 #define INT					int
 #define BYTE				char
 
 typedef struct tagPOINT {
-   LONG x;
-   LONG y;
+   int x;
+   int y;
 } POINT;
 
 typedef struct tagRECT {
-  LONG left;
-  LONG top;
-  LONG right;
-  LONG bottom;
+  int left;
+  int top;
+  int right;
+  int bottom;
 } RECT, *PRECT, *LPRECT;
 
 typedef const RECT *		LPCRECT;
@@ -51,11 +51,11 @@ typedef DWORD *				LPCOLORREF;
 class CPoint
 {
 public :
-	LONG	x;
-	LONG	y;
+	int	x;
+	int	y;
 
 public :
-	CPoint(LONG x0 = 0, LONG y0 = 0)
+	CPoint(int x0 = 0, int y0 = 0)
 	{
 		x = x0;
 		y = y0;
@@ -89,14 +89,14 @@ class CRect : public tagRECT
 {
 #ifndef _WINDOWS_
 public :
-    LONG    left;
-    LONG    top;
-    LONG    right;
-    LONG    bottom;
+    int    left;
+    int    top;
+    int    right;
+    int    bottom;
 #endif
 
 public :
-	CRect(LONG l = 0, LONG t = 0, LONG r = 0, LONG b = 0)
+	CRect(int l = 0, int t = 0, int r = 0, int b = 0)
 	{
 		left	= min(l, r);
 		top		= min(t, b);
@@ -132,12 +132,12 @@ public :
 		return this;
 	};
 
-	LONG	Width() const
+	int	Width() const
 	{
 		return right-left;
 	};
 
-	LONG	Height() const
+	int	Height() const
 	{
 		return bottom-top;
 	};

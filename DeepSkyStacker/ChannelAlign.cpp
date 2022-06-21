@@ -10,7 +10,7 @@ void	CChannelAlign::CopyBitmap(CMemoryBitmap * pSrcBitmap, CMemoryBitmap * pTgtB
 	ZFUNCTRACE_RUNTIME();
 	PixelIterator				itSrc;
 	PixelIterator				itTgt;
-	LONG						lHeight = pSrcBitmap->Height(),
+	int						lHeight = pSrcBitmap->Height(),
 								lWidth = pSrcBitmap->Width();
 
 	pSrcBitmap->GetIterator(&itSrc);
@@ -40,7 +40,7 @@ bool	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 	bool						bResult = false;
 	CSmartPtr<CMemoryBitmap>	pOutBitmap;
 	CString						strText;
-	LONG						lWidth = pBitmap->Width(),
+	int						lWidth = pBitmap->Width(),
 								lHeight = pBitmap->Height();
 	PIXELDISPATCHVECTOR			vPixels;
 
@@ -55,9 +55,9 @@ bool	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 		pProgress->Start2(strText, lHeight);
 	};
 
-	for (LONG j = 0;j<lHeight;j++)
+	for (int j = 0;j<lHeight;j++)
 	{
-		for (LONG i = 0;i<lWidth;i++)
+		for (int i = 0;i<lWidth;i++)
 		{
 			double		fGray;
 			CPointExt	pt(i, j);
@@ -71,7 +71,7 @@ bool	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBit
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, 1.0, vPixels);
 
-				for (LONG k = 0;k<vPixels.size();k++)
+				for (int k = 0;k<vPixels.size();k++)
 				{
 					CPixelDispatch &		Pixel = vPixels[k];
 
@@ -196,7 +196,7 @@ bool	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 
 				std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
 
-				for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
+				for (int i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
 					MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 			};
 
@@ -205,7 +205,7 @@ bool	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 
 				std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
 
-				for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
+				for (int i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
 					MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 			};
 
@@ -219,7 +219,7 @@ bool	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgr
 
 				MatchingStars.ClearTarget();
 
-				for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
+				for (int i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
 					MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 
 				bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pThird->m_BilinearParameters);

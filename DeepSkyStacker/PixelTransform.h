@@ -9,7 +9,7 @@ public :
 	CBilinearParameters		m_BilinearParameters;
 	double					m_fXShift,
 							m_fYShift;
-	LONG					m_lPixelSizeMultiplier;
+	int					m_lPixelSizeMultiplier;
 	bool					m_bUseCometShift;
 	double					m_fXCometShift,
 							m_fYCometShift;
@@ -62,7 +62,7 @@ public :
 		m_bUseCometShift = !bDoNotUse;
 	};
 
-	void	SetPixelSizeMultiplier(LONG lPixelSizeMultiplier)
+	void	SetPixelSizeMultiplier(int lPixelSizeMultiplier)
 	{
 		m_lPixelSizeMultiplier = lPixelSizeMultiplier;
 	};
@@ -109,7 +109,7 @@ typedef std::vector<CPixelTransform>		PIXELTRANSFORMVECTOR;
 class CPixelDispatch
 {
 public :
-	LONG			m_lX,
+	int			m_lX,
 					m_lY;
 	double			m_fPercentage;
 
@@ -122,7 +122,7 @@ private :
 	};
 
 public :
-	CPixelDispatch(LONG lX = 0, LONG lY = 0, double fPercentage = 0.0)
+	CPixelDispatch(int lX = 0, int lY = 0, double fPercentage = 0.0)
 	{
 		m_lX = lX;
 		m_lY = lY;
@@ -147,7 +147,7 @@ typedef std::vector<CPixelDispatch>			PIXELDISPATCHVECTOR;
 
 inline void ComputePixelDispatch(const CPointExt & pt, PIXELDISPATCHVECTOR & vPixels)
 {
-	LONG			lX,
+	int			lX,
 					lY;
 	double			fRemainX,
 					fRemainY;
@@ -189,7 +189,7 @@ inline void ComputePixelDispatch(const CPointExt & pt, PIXELDISPATCHVECTOR & vPi
 //  2 = pt(-0.5, -0.5) - pt(-0.5, 0.5) - pt(0.5, -0.5) - pt (0.5, 0.5) - 4 pixels
 //  3 = pt(-1, -1) - ... - pt (0, 0) - ... - pt (1, 1) - 9 pixels
 //  4 = pt(-1.5, -1.5) - ... - pt(1.5, 1.5) - 16 pixels
-inline void ComputePixelDispatch(const CPointExt & pt, LONG lPixelSize, PIXELDISPATCHVECTOR & vPixels)
+inline void ComputePixelDispatch(const CPointExt & pt, int lPixelSize, PIXELDISPATCHVECTOR & vPixels)
 {
 	double			fStart = (double)(lPixelSize-1)/2.0;
 

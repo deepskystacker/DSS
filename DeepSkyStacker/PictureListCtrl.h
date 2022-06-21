@@ -15,21 +15,21 @@
 /////////////////////////////////////////////////////////////////////////////
 // CPictureListCtrl window
 
-const DWORD				WM_CHECKITEM = (WM_USER + 1);
-const DWORD				WM_LISTITEMCHANGED = (WM_USER + 2);
-const DWORD				WM_SELECTITEM = (WM_USER + 3);
+constexpr UINT WM_CHECKITEM = (WM_USER + 1);
+constexpr UINT WM_LISTITEMCHANGED = (WM_USER + 2);
+constexpr UINT WM_SELECTITEM = (WM_USER + 3);
 
 class CPictureListCtrl : public CListCtrlEx,
 					     public CFrameList
 {
 private :
-	LONG				m_lSortColumn;
+	int					m_lSortColumn;
 	bool				m_bAscending;
 	CDSSProgress *		m_pProgress;
 	CImageList			m_ImageList;
-	DWORD				m_dwCurrentGroupID;
+	std::uint32_t		m_dwCurrentGroupID;
 	GUID				m_dwCurrentJobID;
-	std::vector<LONG>	m_vVisibles;
+	std::vector<int>	m_vVisibles;
 	bool				m_bRefreshNeeded;
 	CBitmap				m_bmpGrayScale;
 	CBitmap				m_bmpCFACYMG;
@@ -48,14 +48,14 @@ public:
 // Operations
 public:
 	void	Initialize();
-	void	AddFileToList(LPCTSTR szFile, DWORD dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
-	virtual bool AddFile(LPCTSTR szFile, DWORD dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
+	void	AddFileToList(LPCTSTR szFile, std::uint32_t dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
+	virtual bool AddFile(LPCTSTR szFile, std::uint32_t dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false) override
 	{
 		AddFileToList(szFile, dwGroupID, dwJobID, PictureType, bCheck);
 		return true;
 	};
 
-	void	SetCurrentGroupID(DWORD dwGroupID)
+	void	SetCurrentGroupID(std::uint32_t dwGroupID)
 	{
 		if (m_dwCurrentGroupID != dwGroupID)
 		{
@@ -75,7 +75,7 @@ public:
 		};
 	};
 
-	DWORD	GetCurrentGroupID()
+	std::uint32_t GetCurrentGroupID()
 	{
 		return m_dwCurrentGroupID;
 	};
@@ -85,24 +85,24 @@ public:
 		return m_dwCurrentJobID;
 	};
 
-	DWORD	GetLastGroupID()
+	std::uint32_t GetLastGroupID()
 	{
-		DWORD			dwResult = 0;
+		std::uint32_t dwResult = 0;
 
-		for (LONG i = 0;i<m_vFiles.size();i++)
+		for (const auto& file : m_vFiles)
 		{
-			if (!m_vFiles[i].m_bRemoved)
-				dwResult = max(dwResult, m_vFiles[i].m_dwGroupID);
+			if (!file.m_bRemoved)
+				dwResult = std::max(dwResult, file.m_dwGroupID);
 		};
 
 		return dwResult;
 	};
 
-	int		CompareItems(LONG lItem1, LONG lItem2);
+	int		CompareItems(int lItem1, int lItem2);
 	bool	GetSelectedFileName(CString & strFileName);
 	bool	GetItemFileName(int nItem, CString & strFileName);
 	bool	GetFirstCheckedLightFrame(CString & strFileName);
-	bool	GetItemISOSpeedGainAndExposure(int nItem, LONG & lISOSpeed, LONG & lGain, double & fExposure);
+	bool	GetItemISOSpeedGainAndExposure(int nItem, int& lISOSpeed, int& lGain, double & fExposure);
 	void	UpdateOffset(LPCTSTR szFileName, double fdX, double fdY, double fAngle, const CBilinearParameters & Transformation, const VOTINGPAIRVECTOR & vVotedPairs);
 	void	ClearOffset(LPCTSTR szFileName);
 	int		FindIndice(LPCTSTR szFileName);
@@ -123,21 +123,19 @@ public:
 	void	UnCheckNonStackable();
 
 	bool	AreCheckedPictureCompatible();
-	bool	GetPictureSizes(int nItem, LONG & lWidth, LONG & lHeight, LONG & lNrChannels);
+	bool	GetPictureSizes(int nItem, int& lWidth, int& lHeight, int& lNrChannels);
 
 	bool	SaveState();
 
-	LONG	GetNrCheckedFrames(LONG lGroupID = -1);
-	LONG	GetNrCheckedDarks(LONG lGroupID = -1);
-	LONG	GetNrCheckedDarkFlats(LONG lGroupID = -1);
-	LONG	GetNrCheckedFlats(LONG lGroupID = -1);
-	LONG	GetNrCheckedOffsets(LONG lGroupID = -1);
-	LONG	GetNrFrames(LONG lGroupID = -1);
+	int	GetNrCheckedFrames(int lGroupID = -1);
+	int	GetNrCheckedDarks(int lGroupID = -1);
+	int	GetNrCheckedDarkFlats(int lGroupID = -1);
+	int	GetNrCheckedFlats(int lGroupID = -1);
+	int	GetNrCheckedOffsets(int lGroupID = -1);
+	int	GetNrFrames(int lGroupID = -1);
 	bool	IsChecked(int nItem)
 	{
-		LONG		lIndice = m_vVisibles[nItem];
-
-		return m_vFiles[lIndice].m_bChecked;
+		return m_vFiles[m_vVisibles[nItem]].m_bChecked;
 	};
 
 	bool	IsChecked(LPCTSTR szFileName)
@@ -187,22 +185,20 @@ public:
 	//{{AFX_VIRTUAL(CPictureListCtrl)
 	//}}AFX_VIRTUAL
 
-// Implementation
-private :
+private:
 	//void	UpdateOffset(int nItem);
 
-
-	void	PostItemChanged()
+	void PostItemChanged()
 	{
 		PostMessage(WM_LISTITEMCHANGED);
 	};
 
-	void	ToggleCheckBox(int nItem)
+	void ToggleCheckBox(int nItem)
 	{
 		//Change check box
-		LONG			lIndice = m_vVisibles[nItem];
+		auto& file = m_vFiles[m_vVisibles[nItem]];
 
-		m_vFiles[lIndice].m_bChecked = !m_vFiles[lIndice].m_bChecked;
+		file.m_bChecked = !file.m_bChecked;
 
 		//And redraw
 		RedrawItems(nItem, nItem);

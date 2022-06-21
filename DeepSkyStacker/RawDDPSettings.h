@@ -6,7 +6,7 @@ class CWorkspace;
 class QAbstractButton;
 class QValidator;
 class CDSLR;
-enum CFATYPE : unsigned long;
+enum CFATYPE : unsigned int;
 
 #include "DSSCommon.h"
 #include <QDialog>

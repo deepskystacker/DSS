@@ -56,7 +56,7 @@ typedef enum tagSAVEEDITCHANGESMODE
 	SECM_DONTSAVEDONTASK = 2
 }SAVEEDITCHANGESMODE;
 
-LONG	AskSaveEditChangesMode();
+int AskSaveEditChangesMode();
 void	SetSaveEditMode(SAVEEDITCHANGESMODE Mode);
 SAVEEDITCHANGESMODE	GetSaveEditMode();
 

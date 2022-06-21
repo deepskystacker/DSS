@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "avx_histogram.h"
-#include "avx.h"
 #include "avx_cfa.h"
 #include <immintrin.h>
 
@@ -34,8 +33,8 @@ int AvxHistogram::calcHistogram(const size_t lineStart, const size_t lineEnd)
 		return rval(1);
 
 	int rv = 1;
-	if (doCalcHistogram<WORD>(lineStart, lineEnd) == 0
-		|| doCalcHistogram<unsigned long>(lineStart, lineEnd) == 0
+	if (doCalcHistogram<std::uint16_t>(lineStart, lineEnd) == 0
+		|| doCalcHistogram<std::uint32_t>(lineStart, lineEnd) == 0
 		|| doCalcHistogram<float>(lineStart, lineEnd) == 0
 		|| doCalcHistogram<double>(lineStart, lineEnd) == 0)
 	{
@@ -155,7 +154,7 @@ int AvxHistogram::mergeHistograms(HistogramVectorType& red, HistogramVectorType&
 		}
 		else // Why do we get here?
 		{
-			for (size_t n = 0; n < targetHisto.size(); ++n) // Let's hope, the targetHisto is larger in size than the sourceHisto.
+			for (size_t n = 0; n < sourceHisto.size(); ++n) // Let's hope, the targetHisto is larger in size than the sourceHisto.
 				targetHisto[n] += sourceHisto[n];
 		}
 	};

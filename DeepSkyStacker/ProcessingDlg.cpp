@@ -18,7 +18,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-const DWORD			WM_INITNEWPICTURE = WM_USER+1;
+constexpr UINT WM_INITNEWPICTURE = WM_USER + 1;
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -412,10 +412,10 @@ void CProcessingDlg::OnSize(UINT nType, int cx, int cy)
 
 void CProcessingDlg::UpdateInfos()
 {
-	LONG		lISOSpeed;
-	LONG		lGain;
-	LONG		lTotalTime;
-	LONG		lNrFrames;
+	int		lISOSpeed;
+	int		lGain;
+	int		lTotalTime;
+	int		lNrFrames;
 	CString		strText;
 
 	strText.LoadString(IDS_NOINFO);
@@ -444,7 +444,7 @@ void CProcessingDlg::UpdateInfos()
 
 		if (lTotalTime)
 		{
-			DWORD			dwHour,
+			std::uint32_t	dwHour,
 							dwMin,
 							dwSec;
 
@@ -829,7 +829,6 @@ bool CProcessingDlg::SavePictureToFile()
 	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
-	DWORD				dwFilterIndex = 0;
 	bool				applied = false;
 	uint				dwCompression;
 	CRect				rcSelect;
@@ -838,7 +837,7 @@ bool CProcessingDlg::SavePictureToFile()
 	{
 		strBaseDirectory = (LPCTSTR)settings.value("Folders/SavePictureFolder").toString().utf16();
 		strBaseExtension = (LPCTSTR)settings.value("Folders/SavePictureExtension").toString().utf16();
-		dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
+		auto dwFilterIndex = settings.value("Folders/SavePictureIndex", 0).toUInt();
 		applied = settings.value("Folders/SaveApplySetting", false).toBool();
 		dwCompression = settings.value("Folders/SaveCompression", (uint)TC_NONE).toUInt();
 
@@ -1012,7 +1011,7 @@ class CColorOrder
 {
 public :
 	COLORREF		m_crColor;
-	LONG			m_lSize;
+	int			m_lSize;
 
 private :
 	void	CopyFrom(const CColorOrder & co)
@@ -1027,7 +1026,7 @@ public :
         m_crColor = 0;
         m_lSize = 0;
     }
-	CColorOrder(COLORREF crColor, LONG lSize)
+	CColorOrder(COLORREF crColor, int lSize)
 	{
 		m_crColor	= crColor;
 		m_lSize		= lSize;
@@ -1050,11 +1049,11 @@ public :
 	};
 };
 
-void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGreens, LONG lNrBlues, LONG X, LONG lHeight)
+void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight)
 {
 	HPEN						hOldPen	= nullptr;
 	std::vector<CColorOrder>	vColors;
-	LONG						lLastHeight = 0;
+	int						lLastHeight = 0;
 
 	vColors.emplace_back(RGB(255,0,0), lNrReds);
 	vColors.emplace_back(RGB(0,255,0), lNrGreens);
@@ -1062,19 +1061,19 @@ void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGr
 
 	std::sort(vColors.begin(), vColors.end());
 
-	for (LONG i = 0;i<vColors.size();i++)
+	for (int i = 0;i<vColors.size();i++)
 	{
 		if (vColors[i].m_lSize > lLastHeight)
 		{
 			// Create a color from the remaining values
 			double			fRed, fGreen, fBlue;
-			LONG			lNrColors = 1;
+			int			lNrColors = 1;
 
 			fRed   = GetRValue(vColors[i].m_crColor);
 			fGreen = GetGValue(vColors[i].m_crColor);
 			fBlue  = GetBValue(vColors[i].m_crColor);
 
-			for (LONG j = i+1;j<vColors.size();j++)
+			for (int j = i+1;j<vColors.size();j++)
 			{
 				fRed   += GetRValue(vColors[j].m_crColor);
 				fGreen += GetGValue(vColors[j].m_crColor);
@@ -1103,7 +1102,7 @@ void CProcessingDlg::DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGr
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::DrawBezierCurve(Graphics * pGraphics, LONG lWidth, LONG lHeight)
+void CProcessingDlg::DrawBezierCurve(Graphics * pGraphics, int lWidth, int lHeight)
 {
 	CBezierAdjust		BezierAdjust;
 	POINT				pt;
@@ -1132,20 +1131,20 @@ void CProcessingDlg::DrawBezierCurve(Graphics * pGraphics, LONG lWidth, LONG lHe
 		vPoints.emplace_back(pt.x, pt.y);
 	};
 
-	pGraphics->DrawLines(&BlackPen, &vPoints[0], (LONG)vPoints.size());
+	pGraphics->DrawLines(&BlackPen, &vPoints[0], (int)vPoints.size());
 };
 
 /* ------------------------------------------------------------------- */
 
-void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histogram, LONG lWidth, LONG lHeight)
+void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histogram, int lWidth, int lHeight)
 {
-	LONG				lNrValues;
+	int				lNrValues;
 	double				fAverage[3] = {0, 0, 0};
 	double				fStdDev[3] = {0, 0, 0};
 	double				fSum[3] = {0, 0, 0};
 	double				fSquareSum[3] = {0, 0, 0};
 	double				fTotalPixels[3] = {0, 0, 0};
-	LONG				i;
+	int				i;
 
 	lNrValues = Histogram.GetRedHistogram().GetNrValues();
 
@@ -1153,9 +1152,9 @@ void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histo
 	{
 		for (i = 0;i<lNrValues;i++)
 		{
-			LONG			lNrReds;
-			LONG			lNrGreens;
-			LONG			lNrBlues;
+			int			lNrReds;
+			int			lNrGreens;
+			int			lNrBlues;
 
 			Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
 
@@ -1173,9 +1172,9 @@ void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histo
 
 		for (i = 0;i<lNrValues;i++)
 		{
-			LONG			lNrReds;
-			LONG			lNrGreens;
-			LONG			lNrBlues;
+			int			lNrReds;
+			int			lNrGreens;
+			int			lNrBlues;
 
 			Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
 
@@ -1230,9 +1229,9 @@ void CProcessingDlg::DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histo
 
 		if (bShow)
 		{
-			pGraphics->DrawLines(&RedPen, &vReds[0], (LONG)vReds.size());
-			pGraphics->DrawLines(&GreenPen, &vGreens[0], (LONG)vGreens.size());
-			pGraphics->DrawLines(&BluePen, &vBlues[0], (LONG)vBlues.size());
+			pGraphics->DrawLines(&RedPen, &vReds[0], (int)vReds.size());
+			pGraphics->DrawLines(&GreenPen, &vGreens[0], (int)vGreens.size());
+			pGraphics->DrawLines(&BluePen, &vBlues[0], (int)vBlues.size());
 		};
 	};
 };
@@ -1262,8 +1261,8 @@ void CProcessingDlg::ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogr
 	if (pGraphics)
 	{
 		pGraphics->SetSmoothingMode(SmoothingModeAntiAlias);
-		LONG				lNrValues;
-		LONG				lMaxValue = 0;
+		int				lNrValues;
+		int				lMaxValue = 0;
 
 		lMaxValue = max(lMaxValue, Histogram.GetRedHistogram().GetMaximumNrValues());
 		lMaxValue = max(lMaxValue, Histogram.GetGreenHistogram().GetMaximumNrValues());
@@ -1281,11 +1280,11 @@ void CProcessingDlg::ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogr
 					bLog = false;
 			};
 
-			for (LONG i = 0;i<lNrValues;i++)
+			for (int i = 0;i<lNrValues;i++)
 			{
-				LONG			lNrReds;
-				LONG			lNrGreens;
-				LONG			lNrBlues;
+				int			lNrReds;
+				int			lNrGreens;
+				int			lNrBlues;
 
 				Histogram.GetValues(i, lNrReds, lNrGreens, lNrBlues);
 
@@ -1399,7 +1398,7 @@ void CProcessingDlg::ShowOriginalHistogram(bool bLog)
 
 	m_OriginalHistogram.GetClientRect(&rcClient);
 
-	Histo.SetSize(65535.0, (LONG)rcClient.Width());
+	Histo.SetSize(65535.0, (int)rcClient.Width());
 
 	CGradient &			RedGradient = m_tabRGB.m_RedGradient.GetGradient();
 	double				fMinRed = m_fGradientOffset+RedGradient.GetPeg(RedGradient.IndexFromId(0)).position * m_fGradientRange,

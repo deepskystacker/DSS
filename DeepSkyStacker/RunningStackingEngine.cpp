@@ -28,7 +28,7 @@ void	CRunningStackingEngine::CreatePublicBitmap()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bMonochrome;
-	LONG					lWidth,
+	int					lWidth,
 							lHeight;
 
 	if (m_pStackedBitmap && m_lNrStacked)
@@ -53,8 +53,8 @@ void	CRunningStackingEngine::CreatePublicBitmap()
 		m_pPublicBitmap->GetIterator(&itOut);
 		m_pStackedBitmap->GetIterator(&itIn);
 
-		for (LONG j = 0;j<lHeight;j++)
-			for (LONG i = 0;i<lWidth;i++)
+		for (int j = 0;j<lHeight;j++)
+			for (int i = 0;i<lWidth;i++)
 			{
 				if (bMonochrome)
 				{
@@ -86,7 +86,7 @@ bool	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
-	LONG				lWidth,
+	int				lWidth,
 						lHeight;
 	bool				bColor;
 
@@ -136,9 +136,9 @@ bool	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 
 		if (pProgress)
 			pProgress->Start2(strText, lHeight);
-		for (LONG j = 0;j<lHeight;j++)
+		for (int j = 0;j<lHeight;j++)
 		{
-			for (LONG i = 0;i<lWidth;i++)
+			for (int i = 0;i<lWidth;i++)
 			{
 				double		fRed, fGreen, fBlue;
 				CPointExt	pt(i, j);
@@ -155,7 +155,7 @@ bool	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 					vPixels.resize(0);
 					ComputePixelDispatch(ptOut, 1.0, vPixels);
 
-					for (LONG k = 0;k<vPixels.size();k++)
+					for (int k = 0;k<vPixels.size();k++)
 					{
 						CPixelDispatch &		Pixel = vPixels[k];
 
@@ -193,7 +193,7 @@ bool	CRunningStackingEngine::AddImage(CLightFrameInfo & lfi, CDSSProgress * pPro
 
 		std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
 
-		for (LONG i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
+		for (int i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
 			m_MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
 	};
 
@@ -218,7 +218,7 @@ bool	CRunningStackingEngine::ComputeOffset(CLightFrameInfo & lfi)
 
 		std::sort(vStarsDst.begin(), vStarsDst.end(), CompareStarLuminancy);
 
-		for (LONG i = 0;i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100));i++)
+		for (int i = 0;i<min(vStarsDst.size(), static_cast<STARVECTOR::size_type>(100));i++)
 			m_MatchingStars.AddTargetedStar(vStarsDst[i].m_fX, vStarsDst[i].m_fY);
 
 		m_MatchingStars.SetSizes(lfi.RenderedWidth(), lfi.RenderedHeight());

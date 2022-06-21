@@ -1,22 +1,30 @@
 #ifndef __FRAMEINFO_H__
 #define __FRAMEINFO_H__
 
+//#include "RAWUtils.h"
+
 // From FITSUtils.h/.cpp
 CFATYPE GetFITSCFATYPE();
+
+bool IsSuperPixels();
+bool IsRawBayer();
+bool IsFITSRawBayer();
+bool IsFITSSuperPixels();
+
 
 class CFrameInfo
 {
 public :
 	CString				m_strFileName;
-	LONG				m_lWidth,
+	int				m_lWidth,
 						m_lHeight;
-	LONG				m_lISOSpeed;
-	LONG				m_lGain;
+	int				m_lISOSpeed;
+	int				m_lGain;
 	double				m_fExposure;
 	double				m_fAperture;
 	PICTURETYPE			m_PictureType;
-	LONG				m_lBitPerChannels;
-	LONG				m_lNrChannels;
+	int				m_lBitPerChannels;
+	int				m_lNrChannels;
 	SYSTEMTIME			m_FileTime;
 	CString				m_strDateTime;
 	SYSTEMTIME			m_DateTime;
@@ -121,17 +129,17 @@ public :
 		return m_bMaster;
 	};
 
-	LONG	RenderedWidth()
+	int	RenderedWidth()
 	{
 		return m_lWidth/(m_bSuperPixel ? 2 : 1);
 	};
 
-	LONG	RenderedHeight()
+	int	RenderedHeight()
 	{
 		return m_lHeight/(m_bSuperPixel ? 2 : 1);
 	};
 
-	bool	IsCompatible(LONG lWidth, LONG lHeight, LONG lBitPerChannels, LONG lNrChannels, CFATYPE CFAType)
+	bool	IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType)
 	{
 		bool			bResult;
 
@@ -209,112 +217,5 @@ public :
 typedef std::vector<CFrameInfo>				FRAMEINFOVECTOR;
 typedef std::vector<CFrameInfo *>			PFRAMEINFOVECTOR;
 
-/* ------------------------------------------------------------------- */
-
-inline void	ExposureToString(double fExposure, CString & strText)
-{
-	// DELETE THIS ONE DAY
-	if (fExposure)
-	{
-		LONG			lExposure;
-
-		if (fExposure >= 1)
-		{
-			lExposure = fExposure;
-			DWORD			dwRemainingTime = lExposure;
-			DWORD			dwHour,
-							dwMin,
-							dwSec;
-
-			dwHour = dwRemainingTime / 3600;
-			dwRemainingTime -= dwHour * 3600;
-			dwMin = dwRemainingTime / 60;
-			dwRemainingTime -= dwMin * 60;
-			dwSec = dwRemainingTime;
-
-			if (dwHour)
-				strText.Format(IDS_EXPOSURETIME3, dwHour, dwMin, dwSec);
-			else if (dwMin)
-				strText.Format(IDS_EXPOSURETIME2, dwMin, dwSec);
-			else
-				strText.Format(IDS_EXPOSURETIME1, dwSec);
-		}
-		else
-		{
-			lExposure = 1.0/fExposure+0.5;
-			strText.Format(IDS_EXPOSUREFORMAT_INF, lExposure);
-		};
-	}
-	else
-		strText = "-";
-};
-
-inline QString exposureToString(double fExposure)
-{
-	QString strText;
-
-	if (fExposure)
-	{
-		qint64			exposure;
-
-		if (fExposure >= 1)
-		{
-			exposure = fExposure;
-			qint64			remainingTime = exposure;
-			qint64			hours, mins, secs;
-
-			hours = remainingTime / 3600;
-			remainingTime -= hours * 3600;
-			mins = remainingTime / 60;
-			remainingTime -= mins * 60;
-			secs = remainingTime;
-
-			if (hours)
-				strText = QString(QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s ", "IDS_EXPOSURETIME3"))
-					.arg(hours)
-					.arg(mins)
-					.arg(secs);
-			else if (mins)
-				strText = QString(QCoreApplication::translate("StackRecap", "%1 mn %2 s ", "IDS_EXPOSURETIME2"))
-					.arg(mins)
-					.arg(secs);
-			else
-				strText = QString(QCoreApplication::translate("StackRecap", "%1 s ", "IDS_EXPOSURETIME1"))
-					.arg(secs);
-		}
-		else
-		{
-			exposure = 1.0 / fExposure + 0.5;
-			strText = QString(QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF"))
-				.arg(exposure);
-		};
-	}
-	else
-		strText = "-";
-
-	return strText;
-};
-
-/* ------------------------------------------------------------------- */
-
-inline void	ISOToString(LONG lISOSpeed, CString & strText)
-{
-	if (lISOSpeed)
-		strText.Format(_T("%ld"), lISOSpeed);
-	else
-		strText = "-";
-};
-
-/* ------------------------------------------------------------------- */
-
-inline void	GainToString(LONG lGain, CString & strText)
-{
-	if (lGain >= 0)
-		strText.Format(_T("%ld"), lGain);
-	else
-		strText = "-";
-};
-
-/* ------------------------------------------------------------------- */
 
 #endif // __FRAMEINFO_H__

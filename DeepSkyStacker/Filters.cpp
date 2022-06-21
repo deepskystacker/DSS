@@ -29,7 +29,7 @@ inline double	GetMedianPosition(std::vector<double> & vValues, double fValue)
 void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG				lWidth = pInBitmap->Width(),
+	int				lWidth = pInBitmap->Width(),
 						lHeight = pInBitmap->Height();
 	bool				bMonochrome = pInBitmap->IsMonochrome();
 
@@ -43,15 +43,15 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bC
 	vGreens.resize(8);
 	vBlues.resize(8);
 
-	std::vector<LONG>		vHotPixels,
+	std::vector<int>		vHotPixels,
 							vColdPixels;
 
 	vHotPixels.resize(1001);
 	vColdPixels.resize(1001);
 
-	for (LONG j= 1;j<lHeight-1;j++)
+	for (int j= 1;j<lHeight-1;j++)
 	{
-		for (LONG i = 1;i<lWidth-1;i++)
+		for (int i = 1;i<lWidth-1;i++)
 		{
 			double				fPosition = 0;
 			if (bMonochrome)
@@ -109,11 +109,11 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bC
 
 	if (bComputeThresholds)
 	{
-		LONG	lNrPixels = lWidth*lHeight;
-		LONG	lNrRejectedHotPixels = lNrPixels * m_fRejectHotThreshold;
-		LONG	lNrRejectedColdPixels = lNrPixels * m_fRejectColdThreshold;
+		int	lNrPixels = lWidth*lHeight;
+		int	lNrRejectedHotPixels = lNrPixels * m_fRejectHotThreshold;
+		int	lNrRejectedColdPixels = lNrPixels * m_fRejectColdThreshold;
 
-		LONG	lThreshold;
+		int	lThreshold;
 
 		lThreshold = 1000;
 		while ((lNrRejectedHotPixels>0) && (lThreshold>0))
@@ -135,7 +135,7 @@ void	CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bC
 
 /* ------------------------------------------------------------------- */
 
-inline void	CheckPixel(LONG X, LONG Y, EXCLUDEDPIXELVECTOR &vExcluded, EXCLUDEDPIXELVECTOR & vOkPixels)
+inline void	CheckPixel(int X, int Y, EXCLUDEDPIXELVECTOR &vExcluded, EXCLUDEDPIXELVECTOR & vOkPixels)
 {
 	CExcludedPixel		TestPixel(X, Y);
 
@@ -150,7 +150,7 @@ void	CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryB
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcluded = m_vExcludedPixels;
-	LONG					lNrOkNeighbors = 8;
+	int					lNrOkNeighbors = 8;
 	bool					bMonochrome = pInBitmap->IsMonochrome();
 
 	std::sort(vExcluded.begin(), vExcluded.end());
@@ -159,9 +159,9 @@ void	CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryB
 		// Check that at least 8 pixels are ok
 		EXCLUDEDPIXELVECTOR		vAuxExcluded;
 
-		for (LONG k = 0;k<vExcluded.size();k++)
+		for (int k = 0;k<vExcluded.size();k++)
 		{
-			LONG				lNrNeighbors = 0;
+			int				lNrNeighbors = 0;
 			CExcludedPixel &	Pixel = vExcluded[k];
 			CExcludedPixel		TestPixel;
 			EXCLUDEDPIXELVECTOR	vOkPixels;
@@ -183,7 +183,7 @@ void	CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryB
 								fSumGreen= 0,
 								fSumBlue = 0;
 
-				for (LONG l = 0;l<vOkPixels.size();l++)
+				for (int l = 0;l<vOkPixels.size();l++)
 				{
 					CExcludedPixel	&	OkPixel = vOkPixels[l];
 
@@ -249,16 +249,16 @@ void	CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryB
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	CMedianImageFilter::ComputeMedianAt(LONG x, LONG y, double & fGrayValue, BAYERCOLOR BayerColor)
+void	CMedianImageFilter::ComputeMedianAt(int x, int y, double & fGrayValue, BAYERCOLOR BayerColor)
 {
 	std::vector<double>			vValues;
 
 	m_vGrayPixelValues.resize(0);
 	if (m_bCFA && BayerColor != BAYER_UNKNOWN)
 	{
-		for (LONG i = max(0L, x-2*m_lFilterSize);i<min(m_lWidth-1, x+2*m_lFilterSize);i++)
+		for (int i = std::max(0, x - 2 * m_lFilterSize); i < std::min(m_lWidth - 1,  x + 2 * m_lFilterSize); i++)
 		{
-			for (LONG j = max(0L, y-2*m_lFilterSize);j<min(m_lHeight-1, y+2*m_lFilterSize);j++)
+			for (int j = std::max(0, y - 2 * m_lFilterSize); j < std::min(m_lHeight - 1, y + 2 * m_lFilterSize); j++)
 			{
 				if (m_pInBitmap->GetBayerColor(i, j) == BayerColor)
 				{
@@ -273,9 +273,9 @@ void	CMedianImageFilter::ComputeMedianAt(LONG x, LONG y, double & fGrayValue, BA
 	}
 	else
 	{
-		for (LONG i = max(0L, x-m_lFilterSize);i<min(m_lWidth-1, x+m_lFilterSize);i++)
+		for (int i = std::max(0, x - m_lFilterSize); i < std::min(m_lWidth - 1, x + m_lFilterSize); i++)
 		{
-			for (LONG j = max(0L, y-m_lFilterSize);j<min(m_lHeight-1, y+m_lFilterSize);j++)
+			for (int j = std::max(0, y - m_lFilterSize); j < std::min(m_lHeight - 1, y + m_lFilterSize); j++)
 			{
 				double			fGray;
 
@@ -289,15 +289,15 @@ void	CMedianImageFilter::ComputeMedianAt(LONG x, LONG y, double & fGrayValue, BA
 
 /* ------------------------------------------------------------------- */
 
-void	CMedianImageFilter::ComputeMedianAt(LONG x, LONG y, double & fRedValue, double & fGreenValue, double & fBlueValue)
+void	CMedianImageFilter::ComputeMedianAt(int x, int y, double & fRedValue, double & fGreenValue, double & fBlueValue)
 {
 	m_vRedPixelValues.resize(0);
 	m_vGreenPixelValues.resize(0);
 	m_vBluePixelValues.resize(0);
 
-	for (LONG i = max(0L, x-m_lFilterSize);i<min(m_lWidth-1, x+m_lFilterSize);i++)
+	for (int i = std::max(0, x - m_lFilterSize); i < std::min(m_lWidth - 1, x + m_lFilterSize); i++)
 	{
-		for (LONG j = max(0L, y-m_lFilterSize);j<min(m_lHeight-1, y+m_lFilterSize);j++)
+		for (int j = std::max(0, y - m_lFilterSize); j < std::min(m_lHeight - 1, y + m_lFilterSize); j++)
 		{
 			double				fRed, fGreen, fBlue;
 
@@ -322,11 +322,11 @@ void	CMedianImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap **
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	CDirectionalImageFilter::GetValuesAlongAngle(LONG x, LONG y, double fAngle, std::vector<double> & vValues)
+void	CDirectionalImageFilter::GetValuesAlongAngle(int x, int y, double fAngle, std::vector<double> & vValues)
 {
-	for (LONG l = -m_lSize;l<=m_lSize;l++)
+	for (int l = -m_lSize;l<=m_lSize;l++)
 	{
-		LONG				i, j;
+		int				i, j;
 
 		i = (double)x + (double)l * cos(fAngle) + 0.5;
 		j = (double)y + (double)l * sin(fAngle) + 0.5;
@@ -342,11 +342,11 @@ void	CDirectionalImageFilter::GetValuesAlongAngle(LONG x, LONG y, double fAngle,
 
 /* ------------------------------------------------------------------- */
 
-void	CDirectionalImageFilter::GetValuesAlongAngle(LONG x, LONG y, double fAngle, std::vector<double> & vRedValues, std::vector<double> & vGreenValues, std::vector<double> & vBlueValues)
+void	CDirectionalImageFilter::GetValuesAlongAngle(int x, int y, double fAngle, std::vector<double> & vRedValues, std::vector<double> & vGreenValues, std::vector<double> & vBlueValues)
 {
-	for (LONG l = -m_lSize;l<=m_lSize;l++)
+	for (int l = -m_lSize;l<=m_lSize;l++)
 	{
-		LONG				i, j;
+		int				i, j;
 
 		i = (double)x + (double)l * cos(fAngle) + 0.5;
 		j = (double)y + (double)l * sin(fAngle) + 0.5;
@@ -383,7 +383,7 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 
 	if (pInBitmap)
 	{
-		LONG							lWidth = pInBitmap->Width(),
+		int							lWidth = pInBitmap->Width(),
 										lHeight = pInBitmap->Height();
 		m_pInBitmap = pInBitmap;
 		m_bMonochrome = pInBitmap->IsMonochrome();
@@ -392,9 +392,9 @@ void	CDirectionalImageFilter::ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitm
 		if (pProgress)
 			pProgress->Start2(nullptr, lWidth);
 
-		for (LONG i  =0;i<lWidth;i++)
+		for (int i  =0;i<lWidth;i++)
 		{
-			for (LONG j = 0;j<lHeight;j++)
+			for (int j = 0;j<lHeight;j++)
 			{
 				if (m_bMonochrome)
 				{

@@ -33,7 +33,7 @@ public:
 	void accept() override;
 	void reject() override;
 
-	inline StackSettings & setStartingTab(LONG lStartingTab) noexcept
+	inline StackSettings & setStartingTab(int lStartingTab) noexcept
 	{
 		startingTab = lStartingTab;
 		return *this;
@@ -129,7 +129,7 @@ private:
 
 	void updateControls();
 
-	LONG					startingTab;
+	int					startingTab;
 	bool					registeringOnly;
 	bool					cometStacking;
 	bool					enableDark;

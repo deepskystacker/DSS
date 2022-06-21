@@ -32,10 +32,10 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-const		DWORD					IDC_EDIT_SELECT = 1;
-const		DWORD					IDC_EDIT_STAR   = 2;
-const		DWORD					IDC_EDIT_COMET  = 3;
-const		DWORD					IDC_EDIT_SAVE   = 4;
+constexpr	DWORD					IDC_EDIT_SELECT = 1;
+constexpr	DWORD					IDC_EDIT_STAR   = 2;
+constexpr	DWORD					IDC_EDIT_COMET  = 3;
+constexpr	DWORD					IDC_EDIT_SAVE   = 4;
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -309,7 +309,7 @@ void CStackingDlg::UpdateLayout()
 	// Because we've resized things, we need to update the max splitter range accordingly.
 	// This is not quite right - couple of pixels out - but not sure why.
 	int nMinY = m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y + sm_nMinImageHeight;
-	int nMaxY = max(nMinY + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height(), rcCurrentDlgSize.Height() - (sm_nMinListHeight + m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height() + m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height() + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height()));
+	int nMaxY = std::max(nMinY + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height(), rcCurrentDlgSize.Height() - (sm_nMinListHeight + m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height() + m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height() + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height()));
 	m_Splitter.SetRange(nMinY, nMaxY);
 
 	// Update everything.
@@ -322,17 +322,11 @@ void CStackingDlg::UpdateLayout()
 
 void CStackingDlg::UpdateGroupTabs()
 {
-	DWORD			dwLastGroupID;
-	LONG			lNrFrames;
-	LONG			lCurrentGroup;
-
-	dwLastGroupID = m_Pictures.GetLastGroupID();
-
-	lNrFrames = m_Pictures.GetNrFrames(dwLastGroupID);
-	if (lNrFrames)
+	int dwLastGroupID = static_cast<int>(m_Pictures.GetLastGroupID());
+	if (m_Pictures.GetNrFrames(dwLastGroupID) != 0)
 		dwLastGroupID++;
 
-	lCurrentGroup = max(0, m_GroupTab.GetCurSel());
+	const auto lCurrentGroup = std::max(0, m_GroupTab.GetCurSel());
 
 	m_GroupTab.DeleteAllItems();
 
@@ -344,7 +338,7 @@ void CStackingDlg::UpdateGroupTabs()
 
 	strGroup.LoadString(IDS_GROUPIDMASK);
 
-	for (LONG i = 1;i<=dwLastGroupID;i++)
+	for (int i = 1; i <= dwLastGroupID; i++)
 	{
 		CString			strName;
 
@@ -458,9 +452,9 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 						ulOffsetSpace = 0;
 	__int64				ulNeededSpace = 0;
 
-	for (LONG i = 0;i<tasks.m_vStacks.size();i++)
+	for (size_t i = 0; i < tasks.m_vStacks.size(); i++)
 	{
-		LONG			lWidth,
+		int			lWidth,
 						lHeight,
 						lNrChannels,
 						lNrBytesPerChannel;
@@ -484,7 +478,7 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 	};
 
 	ulNeededSpace = max(ulFlatSpace, max(ulOffsetSpace, ulDarkSpace));
-	ulNeededSpace *= 1.10;
+	ulNeededSpace += ulNeededSpace / 10;
 
 	// Get available space from drive
 	TCHAR			szTempPath[1+_MAX_PATH];
@@ -503,8 +497,8 @@ BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
 		ulFreeSpace.QuadPart /= 1024;
 		ulNeededSpace /= 1024;
 
-		LONG			lNeededSpace = ulNeededSpace;
-		LONG			lFreeSpace = ulFreeSpace.LowPart;
+		int			lNeededSpace = static_cast<int>(ulNeededSpace);
+		auto			lFreeSpace = ulFreeSpace.LowPart;
 		CString			strDrive;
 
 		strDrive = szTempPath;
@@ -536,7 +530,7 @@ bool CStackingDlg::CheckReadOnlyFolders(CAllStackingTasks & tasks)
 		CString				strText;
 		CString				strFolders;
 
-		for (LONG i = 0;i<vFolders.size();i++)
+		for (size_t i = 0; i < vFolders.size(); i++)
 		{
 			strFolders += vFolders[i];
 			strFolders += "\n";
@@ -558,7 +552,6 @@ void CStackingDlg::OnAdddarks()
 	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
-	DWORD				dwFilterIndex = 0;
 	CString				strTitle;
 
 	strTitle.LoadString(IDS_TITLE_OPENDARKFRAMES);
@@ -571,7 +564,7 @@ void CStackingDlg::OnAdddarks()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	dwFilterIndex = settings.value("Folders/AddDarkIndex", uint(0)).toUInt();
+	auto dwFilterIndex = settings.value("Folders/AddDarkIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
 		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
@@ -636,7 +629,6 @@ void CStackingDlg::OnAddDarkFlats()
 	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
-	DWORD				dwFilterIndex = 0;
 	CString				strTitle;
 
 	strTitle.LoadString(IDS_TITLE_OPENDARKFLATFRAMES);
@@ -649,7 +641,7 @@ void CStackingDlg::OnAddDarkFlats()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	dwFilterIndex = settings.value("Folders/AddDarkFlatIndex", uint(0)).toUInt();
+	auto dwFilterIndex = settings.value("Folders/AddDarkFlatIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
 		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
@@ -713,7 +705,6 @@ void CStackingDlg::OnAddFlats()
 	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
-	DWORD				dwFilterIndex = 0;
 	CString				strTitle;
 
 	strTitle.LoadString(IDS_TITLE_OPENFLATFRAMES);
@@ -726,7 +717,7 @@ void CStackingDlg::OnAddFlats()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	dwFilterIndex = settings.value("Folders/AddFlatIndex", uint(0)).toUInt();
+	auto dwFilterIndex = settings.value("Folders/AddFlatIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
 		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
@@ -792,7 +783,6 @@ void CStackingDlg::OnAddOffsets()
 	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
-	DWORD				dwFilterIndex = 0;
 	CString				strTitle;
 
 	strTitle.LoadString(IDS_TITLE_OPENBIASFRAMES);
@@ -805,7 +795,7 @@ void CStackingDlg::OnAddOffsets()
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	dwFilterIndex = settings.value("Folders/AddOffsetIndex", uint(0)).toUInt();
+	auto dwFilterIndex = settings.value("Folders/AddOffsetIndex", uint(0)).toUInt();
 	if (!dwFilterIndex)
 		dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
@@ -871,7 +861,6 @@ void CStackingDlg::OnAddpictures()
 	QSettings			settings;
 	CString				strBaseDirectory;
 	CString				strBaseExtension;
-	DWORD				dwFilterIndex = 0;
 	CString				strTitle;
 
 	strTitle.LoadString(IDS_TITLE_OPENLIGHTFRAMES);
@@ -880,7 +869,7 @@ void CStackingDlg::OnAddpictures()
 
 	strBaseExtension = CString((LPCTSTR)settings.value("Folders/AddPictureExtension").toString().utf16());
 
-	dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
+	auto dwFilterIndex = settings.value("Folders/AddPictureIndex", uint(0)).toUInt();
 
 	if (!strBaseExtension.GetLength())
 		strBaseExtension = _T(".bmp");
@@ -951,8 +940,9 @@ void CStackingDlg::DropFiles(HDROP hDropInfo)
 		BeginWaitCursor();
 		dlg.GetDroppedFiles(vFiles);
 
-		for (LONG i = 0;i<vFiles.size();i++)
+		for (size_t i = 0; i < vFiles.size(); i++)
 			m_Pictures.AddFile(vFiles[i], m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), dlg.GetDropType(), TRUE);
+
 		m_Pictures.RefreshList();
 		UpdateGroupTabs();
 		UpdateListInfo();
@@ -1013,7 +1003,7 @@ void CStackingDlg::LoadList()
 			pt.y = point.y();
 
 			lStartID = ID_FILELIST_FIRSTMRU+1;
-			for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)
+			for (size_t i = 0; i < m_MRUList.m_vLists.size(); i++)
 			{
 				TCHAR				szDrive[1+_MAX_DRIVE];
 				TCHAR				szDir[1+_MAX_DIR];
@@ -1224,7 +1214,7 @@ void	CStackingDlg::UpdateListInfo()
 
 	m_ListInfo.SetText(strText);
 
-	for (LONG i = 0;i<m_GroupTab.GetItemCount();i++)
+	for (int i = 0; i < m_GroupTab.GetItemCount(); i++)
 	{
 		strText.Format(IDS_LISTINFO2,
 					   m_Pictures.GetNrCheckedFrames(i),
@@ -1507,7 +1497,7 @@ void CStackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
 	LIGHTFRAMEINFOVECTOR &	vBitmaps = StackingEngine.LightFrames();
 
 	m_Pictures.ClearOffsets();
-	for (LONG i = 0;i<vBitmaps.size();i++)
+	for (size_t i = 0; i < vBitmaps.size(); i++)
 	{
 		if (vBitmaps[i].m_bDisabled)
 			m_Pictures.ClearOffset(vBitmaps[i].m_strFileName);
@@ -1528,8 +1518,7 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 	ZFUNCTRACE_RUNTIME();
 	BOOL				bContinue = TRUE;
 	CDSSProgressDlg		dlg;
-	DWORD				dwStartTime = GetTickCount();
-	DWORD				dwElapsedTime;
+	const auto			dwStartTime = GetTickCount64();
 
 	if (!tasks.m_vStacks.size())
 	{
@@ -1555,25 +1544,24 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 
 		StackingEngine.SetKeptPercentage(fPercent);
 		bContinue = StackingEngine.StackLightFrames(tasks, &dlg, &pBitmap);
-		dwElapsedTime = GetTickCount()-dwStartTime;
+		const auto dwElapsedTime = GetTickCount64() - dwStartTime;
 		UpdateCheckedAndOffsets(StackingEngine);
 		if (bContinue)
 		{
 			CString					strFileName;
 			CString					strText;
-			DWORD					iff;
 			CWorkspace				workspace;
 
-			iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
+			const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
 
-			if (StackingEngine.GetDefaultOutputFileName(strFileName, m_strCurrentFileList, (iff==IFF_TIFF)))
+			if (StackingEngine.GetDefaultOutputFileName(strFileName, m_strCurrentFileList, (iff == IFF_TIFF)))
 			{
 				StackingEngine.WriteDescription(tasks, strFileName);
 
 				strText.Format(IDS_SAVINGFINAL, strFileName);
 				dlg.Start2(strText, 0);
 
-				if (iff==IFF_TIFF)
+				if (iff == IFF_TIFF)
 				{
 					if (pBitmap->IsMonochrome())
 						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
@@ -1859,8 +1847,6 @@ void CStackingDlg::RegisterCheckedImage()
 		{
 			double				fMinLuminancy = 0.10;
 			bool				bForceRegister = false;
-			LONG				lCount = 0;
-			LONG				lMaxCount = 0;
 			double				fPercent = 20.0;
 			bool				bStackAfter = false;
 
@@ -1880,9 +1866,6 @@ void CStackingDlg::RegisterCheckedImage()
 				{
 					bContinue = CheckStacking(tasks);
 				};
-
-				DWORD				dwStartTime = GetTickCount();
-				DWORD				dwEndTime;
 
 				if (bContinue)
 				{
@@ -1912,7 +1895,6 @@ void CStackingDlg::RegisterCheckedImage()
 				if (bContinue && bStackAfter)
 				{
 					DoStacking(tasks, fPercent);
-					dwEndTime = GetTickCount();
 				};
 
 				GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
