@@ -2,7 +2,7 @@
 #define __ENTROPYINFO_H__
 
 #include "DSSTools.h"
-#include "BitmapExt.h"
+#include "BitmapBase.h"
 #include "zexcept.h"
 
 /* ------------------------------------------------------------------- */
@@ -60,9 +60,9 @@ class CEntropyInfo
 {
 private :
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	LONG						m_lWindowSize;
-	LONG						m_lNrPixels;
-	LONG						m_lNrSquaresX,
+	int						m_lWindowSize;
+	int						m_lNrPixels;
+	int						m_lNrSquaresX,
 								m_lNrSquaresY;
 	std::vector<float>			m_vRedEntropies;
 	std::vector<float>			m_vGreenEntropies;
@@ -71,14 +71,14 @@ private :
 
 private :
 	void	InitSquareEntropies();
-	void	ComputeEntropies(LONG lMinX, LONG lMinY, LONG lMaxX, LONG lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy);
-	void	GetSquareCenter(LONG lX, LONG lY, CPointExt & ptCenter)
+	void	ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy);
+	void	GetSquareCenter(int lX, int lY, CPointExt & ptCenter)
 	{
 		ptCenter.X = lX * (m_lWindowSize * 2 + 1) + m_lWindowSize;
 		ptCenter.Y = lY * (m_lWindowSize * 2 + 1) + m_lWindowSize;
 	};
 
-	void	AddSquare(CEntropySquare &Square, LONG lX, LONG lY)
+	void	AddSquare(CEntropySquare &Square, int lX, int lY)
 	{
 		GetSquareCenter(lX, lY, Square.m_ptCenter);
 		Square.m_fRedEntropy	= m_vRedEntropies[lX + lY * m_lNrSquaresX];
@@ -100,7 +100,14 @@ public :
 	{
 	};
 
-	void	Init(CMemoryBitmap * pBitmap, LONG lWindowSize = 10, CDSSProgress * pProgress = nullptr)
+	const float* redEntropyData() const { return m_vRedEntropies.data(); }
+	const float* greenEntropyData() const { return m_vGreenEntropies.data(); }
+	const float* blueEntropyData() const { return m_vBlueEntropies.data(); }
+	const int nrSquaresX() const { return m_lNrSquaresX; }
+	const int nrSquaresY() const { return m_lNrSquaresY; }
+	const int windowSize() const { return m_lWindowSize; }
+
+	void	Init(CMemoryBitmap * pBitmap, int lWindowSize = 10, CDSSProgress * pProgress = nullptr)
 	{
 		m_pBitmap.Attach(pBitmap);
 		m_lWindowSize = lWindowSize;
@@ -108,9 +115,9 @@ public :
 		InitSquareEntropies();
 	};
 
-	void	GetPixel(LONG x, LONG y, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy, COLORREF16 & crResult)
+	void	GetPixel(int x, int y, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy, COLORREF16 & crResult)
 	{
-		LONG			lSquareX,
+		int			lSquareX,
 						lSquareY;
 
 		m_pBitmap->GetPixel16(x, y, crResult);

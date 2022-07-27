@@ -12,9 +12,9 @@
 class	CHotPixel
 {
 public :
-	LONG				m_lX,
+	int				m_lX,
 						m_lY;
-	LONG				m_lWeight;
+	int				m_lWeight;
 
 private :
 	void	CopyFrom(const CHotPixel & hp)
@@ -25,7 +25,7 @@ private :
 	};
 
 public :
-	CHotPixel(LONG X = 0, LONG Y = 0, LONG lWeight = 1)
+	CHotPixel(int X = 0, int Y = 0, int lWeight = 1)
 	{
 		m_lX = X;
 		m_lY = Y;
@@ -57,7 +57,7 @@ public :
 			return (m_lY < hp.m_lY);
 	};
 
-	void	SetPixel(LONG lX, LONG lY)
+	void	SetPixel(int lX, int lY)
 	{
 		m_lX = lX;
 		m_lY = lY;
@@ -105,8 +105,8 @@ public :
 class CExcludedPixel
 {
 public :
-	LONG			X;
-	LONG			Y;
+	int			X;
+	int			Y;
 
 private :
 	void	CopyFrom(const CExcludedPixel & ep)
@@ -116,7 +116,7 @@ private :
 	};
 
 public :
-	CExcludedPixel(LONG lX = 0, LONG lY = 0)
+	CExcludedPixel(int lX = 0, int lY = 0)
 	{
 		X = lX;
 		Y = lY;
@@ -176,7 +176,7 @@ public :
 	std::vector<double>			m_vMedianColdest;
 	double						m_fMedianHotest;
 	double						m_fGrayValue;
-	LONG						m_lColdestIndice;
+	int						m_lColdestIndice;
 
 private :
 	void	CopyFrom(const CDarkAmpGlowParameters & dagp)
@@ -189,19 +189,18 @@ private :
 		m_lColdestIndice	= dagp.m_lColdestIndice;
 	};
 
-	void	GetRectAroundPoint(LONG lWidth, LONG lHeight, LONG lSize, const CHotPixel & px, CRect & rc)
+	void	GetRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px, CRect & rc)
 	{
-		rc.left		= max(0L, px.m_lX-lSize);
-		rc.right	= min(lWidth-1, px.m_lX+lSize);
-		rc.top		= max(0L, px.m_lY-lSize);
-		rc.bottom	= min(lHeight-1, px.m_lY+lSize);
+		rc.left		= std::max(0, px.m_lX - lSize);
+		rc.right	= std::min(lWidth - 1, px.m_lX + lSize);
+		rc.top		= std::max(0, px.m_lY - lSize);
+		rc.bottom	= std::min(lHeight - 1, px.m_lY + lSize);
 	};
 
-	void	GetBorderRects(LONG lWidth, LONG lHeight, std::vector<CRect> & vRects)
+	void	GetBorderRects(int lWidth, int lHeight, std::vector<CRect> & vRects)
 	{
-		LONG		lSize = min(50L, min(lWidth/10, lHeight/10))/2;
-
-		CRect		rc;
+		const int lSize = std::min(50, std::min(lWidth / 10, lHeight / 10)) / 2;
+		CRect rc;
 
 		// Left side
 		rc.SetRect(0, 0, 2*lSize-1, 2*lSize-1);
@@ -250,7 +249,7 @@ public :
 
 	void	ComputeParametersFromPoints(CMemoryBitmap * pBitmap);
 	void	FindPointsAndComputeParameters(CMemoryBitmap * pBitmap);
-	void	ComputeParametersFromIndice(LONG lIndice)
+	void	ComputeParametersFromIndice(int lIndice)
 	{
 		m_fGrayValue = m_fMedianHotest - m_vMedianColdest[lIndice];
 	};
@@ -288,7 +287,7 @@ private :
 
 
 	void	FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
-	void	GetValidNeighbors(LONG lX, LONG lY, HOTPIXELVECTOR & vPixels, LONG lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
+	void	GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
 
 protected :
 	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, CDSSProgress * pProgress);

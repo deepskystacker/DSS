@@ -138,10 +138,10 @@ void	CSelectRectSink::UpdateSelectRect()
 	switch (m_Mode)
 	{
 	case SRM_CREATE	:
-		m_rcSelect.left  = max(min(m_fXStart, m_fXEnd), 0.0);
-		m_rcSelect.right = min(max(m_fXStart, m_fXEnd), static_cast<double>(m_pImage->GetImgSizeX()));
-		m_rcSelect.top   = max(min(m_fYStart, m_fYEnd), 0.0);
-		m_rcSelect.bottom= min(max(m_fYStart, m_fYEnd), static_cast<double>(m_pImage->GetImgSizeY()));
+		m_rcSelect.left  = std::max(std::min(m_fXStart, m_fXEnd), 0.0);
+		m_rcSelect.right = std::min(std::max(m_fXStart, m_fXEnd), static_cast<double>(m_pImage->GetImgSizeX()));
+		m_rcSelect.top   = std::max(std::min(m_fYStart, m_fYEnd), 0.0);
+		m_rcSelect.bottom= std::min(std::max(m_fYStart, m_fYEnd), static_cast<double>(m_pImage->GetImgSizeY()));
 		break;
 	case SRM_MOVE :
 		if (fDeltaX<0) // Move to the left - check left first
@@ -175,76 +175,76 @@ void	CSelectRectSink::UpdateSelectRect()
 		if (fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = m_rcSelect.Height()-1;
 		m_rcSelect.top += fDeltaY;
-		m_rcSelect.top = max(0L, m_rcSelect.top);
+		m_rcSelect.top = std::max(0L, m_rcSelect.top);
 		break;
 	case SRM_MOVEBOTTOM	:
 		// Only fDeltaY is used
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
+		m_rcSelect.bottom = std::min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	case SRM_MOVELEFT :
 		// Only fDeltaX is used
 		if (fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = m_rcSelect.Width()-1;
 		m_rcSelect.left += fDeltaX;
-		m_rcSelect.left = max(0L, m_rcSelect.left);
+		m_rcSelect.left = std::max(0L, m_rcSelect.left);
 		break;
 	case SRM_MOVERIGHT :
 		// Only fDeltaX is used
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
+		m_rcSelect.right = std::min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		break;
 	case SRM_MOVETOPLEFT :
 		// Only fDeltaY is used
 		if (fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = m_rcSelect.Height()-1;
 		m_rcSelect.top += fDeltaY;
-		m_rcSelect.top = max(0L, m_rcSelect.top);
+		m_rcSelect.top = std::max(0L, m_rcSelect.top);
 		// Only fDeltaX is used
 		if (fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = m_rcSelect.Width()-1;
 		m_rcSelect.left += fDeltaX;
-		m_rcSelect.left = max(0L, m_rcSelect.left);
+		m_rcSelect.left = std::max(0L, m_rcSelect.left);
 		break;
 	case SRM_MOVETOPRIGHT :
 		// Only fDeltaY is used
 		if (fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = m_rcSelect.Height()-1;
 		m_rcSelect.top += fDeltaY;
-		m_rcSelect.top = max(0L, m_rcSelect.top);
+		m_rcSelect.top = std::max(0L, m_rcSelect.top);
 		// Only fDeltaX is used
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
+		m_rcSelect.right = std::min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		break;
 	case SRM_MOVEBOTTOMLEFT :
 		// Only fDeltaX is used
 		if (fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = m_rcSelect.Width()-1;
 		m_rcSelect.left += fDeltaX;
-		m_rcSelect.left = max(0L, m_rcSelect.left);
+		m_rcSelect.left = std::max(0L, m_rcSelect.left);
 		// Only fDeltaY is used
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
+		m_rcSelect.bottom = std::min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	case SRM_MOVEBOTTOMRIGHT :
 		// Only fDeltaX is used
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
+		m_rcSelect.right = std::min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		// Only fDeltaY is used
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
+		m_rcSelect.bottom = std::min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	};
 
@@ -582,7 +582,7 @@ void	CEditStarsSink::SaveRegisterSettings()
 		regFrame.m_fXComet = m_fXComet;
 		regFrame.m_fYComet = m_fYComet;
 		regFrame.m_SkyBackground.m_fLight = m_fLightBkgd;
-		for (LONG i = 0;i<m_vStars.size();i++)
+		for (size_t i = 0; i < m_vStars.size(); i++)
 		{
 			if (!m_vStars[i].m_bRemoved)
 				vStars.push_back(m_vStars[i]);
@@ -613,13 +613,13 @@ void	CEditStarsSink::SaveRegisterSettings()
 void	CEditStarsSink::InitGrayBitmap(CRect & rc)
 {
 	m_GrayBitmap.SetMultiplier(1.0);
-	for (LONG i = rc.left;i<=rc.right;i++)
-		for (LONG j = rc.top;j<=rc.bottom;j++)
+	for (int i = rc.left; i <= rc.right; i++)
+		for (int j = rc.top; j <= rc.bottom; j++)
 		{
 			double			fGray;
 
 			m_pBitmap->GetPixel(i, j, fGray);
-			m_GrayBitmap.SetPixel(i-rc.left, j-rc.top, fGray/256.0);
+			m_GrayBitmap.SetPixel(i - rc.left, j - rc.top, fGray / 256.0);
 		};
 };
 
@@ -662,15 +662,15 @@ void	CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECT
 
 		CRegisteredFrame		regFrame;
 		CRect					rcReg;
+		STARSET stars;
 
 		rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
 		rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
 
 		regFrame.m_fBackground = m_fBackground;
-		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg);
+		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
 
-		vStars = regFrame.m_vStars;
-		std::sort(vStars.begin(), vStars.end());
+		vStars.assign(stars.cbegin(), stars.cend());
 	};
 };
 
@@ -733,14 +733,14 @@ BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 				if (m_bRemoveComet)
 					m_bComet = false;
 				ComputeOverallQuality();
-				m_QualityGrid.InitGrid(m_vStars, m_pImage->GetImgSizeX(), m_pImage->GetImgSizeY());
+				m_QualityGrid.InitGrid(m_vStars);
 			}
 			else if (m_Action == ESA_REMOVESTAR)
 			{
 				m_vStars[m_lRemovedIndice].m_bRemoved = true;
 				m_vStars.erase(m_vStars.begin()+m_lRemovedIndice);
 				ComputeOverallQuality();
-				m_QualityGrid.InitGrid(m_vStars, m_pImage->GetImgSizeX(), m_pImage->GetImgSizeY());
+				m_QualityGrid.InitGrid(m_vStars);
 			}
 			else if (m_Action == ESA_SETCOMET)
 			{
@@ -749,7 +749,7 @@ BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 					m_vStars[m_lRemovedIndice].m_bRemoved = true;
 					m_vStars.erase(m_vStars.begin()+m_lRemovedIndice);
 					ComputeOverallQuality();
-					m_QualityGrid.InitGrid(m_vStars, m_pImage->GetImgSizeX(), m_pImage->GetImgSizeY());
+					m_QualityGrid.InitGrid(m_vStars);
 				};
 				m_fXComet = m_AddedStar.m_fX;
 				m_fYComet = m_AddedStar.m_fY;
@@ -782,17 +782,12 @@ BOOL	CEditStarsSink::Image_OnLButtonUp(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-inline bool	PointInRect(PointF & pt, LONG x1, LONG y1, LONG x2, LONG y2)
-{
-	return (pt.X>=x1) && (pt.X <= x2) && (pt.Y >= y1) && (pt.Y <= y2);
-};
-
 void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 {
 	// Find the first top/left point in the image
 	bool					bDraw = true;
-	LONG					x1, x2,
-							y1, y2;
+	decltype(tagPOINT::x)	x1, x2;
+	decltype(tagPOINT::y)	y1, y2;
 
 	CPoint		pt(rcClient.left, rcClient.top);
 
@@ -831,17 +826,17 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 	if (bDraw)
 	{
 		pGraphics->SetSmoothingMode(SmoothingModeHighQuality);
-		for (LONG i = 0;i< m_QualityGrid.m_vTriangles.size();i++)
+		for (size_t i = 0; i < m_QualityGrid.m_vTriangles.size(); i++)
 		{
 			CDelaunayTriangle &		tr = m_QualityGrid.m_vTriangles[i];
 			CRect					rc1(x1, y1, x2, y2),
 									rc2,
 									rc3;
 
-			rc2.left    = min(tr.pt1.X, min(tr.pt2.X, tr.pt3.X));
-			rc2.top     = min(tr.pt1.Y, min(tr.pt2.Y, tr.pt3.Y));
-			rc2.right   = max(tr.pt1.X, max(tr.pt2.X, tr.pt3.X));
-			rc2.bottom  = max(tr.pt1.Y, max(tr.pt2.Y, tr.pt3.Y));
+			rc2.left    = std::min(tr.pt1.X, std::min(tr.pt2.X, tr.pt3.X));
+			rc2.top     = std::min(tr.pt1.Y, std::min(tr.pt2.Y, tr.pt3.Y));
+			rc2.right   = std::max(tr.pt1.X, std::max(tr.pt2.X, tr.pt3.X));
+			rc2.bottom  = std::max(tr.pt1.Y, std::max(tr.pt2.Y, tr.pt3.Y));
 
 			if (rc3.IntersectRect(&rc1, &rc2))
 			{
@@ -896,19 +891,18 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 		if (pResult)
 		{
 			Graphics		graphics(pResult);
-			LONG			i = 0;
 
 			graphics.SetSmoothingMode(SmoothingModeHighQuality);
 
 			if (m_QualityGrid.Empty() && m_vStars.size())
-				m_QualityGrid.InitGrid(m_vStars, m_pImage->GetImgSizeX(), m_pImage->GetImgSizeY());
+				m_QualityGrid.InitGrid(m_vStars);
 
 			//if (!m_QualityGrid.Empty())
 			//	DrawQualityGrid(&graphics, rcClient);
 
 			if (g_bShowRefStars && !m_bCometMode)
 			{
-				for (i = 0;i<m_vRefStars.size();i++)
+				for (int i = 0; i < m_vRefStars.size(); i++)
 				{
 					if (IsRefStarVoted(i))
 					{
@@ -946,7 +940,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 				};
 			};
 
-			for (i = 0;i<m_vStars.size();i++)
+			for (int i = 0; i < m_vStars.size(); i++)
 			{
 				if (IsTgtStarVoted(i) && !m_vStars[i].m_bRemoved)
 				{
@@ -1055,11 +1049,9 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 			{
 				CRect					rcCheck;
 				STARVECTOR				vStars;
-				LONG					lNearestNewStar;
 				double					fNearestNewStarDistance;
 				bool					bInNewStar;
 
-				LONG					lNearestOldStar;
 				double					fNearestOldStarDistance;
 				bool					bInOldStar;
 
@@ -1072,10 +1064,10 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 				DetectStars(m_ptCursor, rcCheck, vStars);
 
-				lNearestNewStar = FindNearestStar(m_ptCursor.X - rcCheck.left, m_ptCursor.Y - rcCheck.top, vStars, bInNewStar, fNearestNewStarDistance);
+				auto lNearestNewStar = FindNearestStar(m_ptCursor.X - rcCheck.left, m_ptCursor.Y - rcCheck.top, vStars, bInNewStar, fNearestNewStarDistance);
 
 				fNearestOldStarDistance = 50;
-				lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, m_vStars, bInOldStar, fNearestOldStarDistance);
+				auto lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, m_vStars, bInOldStar, fNearestOldStarDistance);
 
 				m_lRemovedIndice = -1;
 				m_bRemoveComet	 = false;
@@ -1205,7 +1197,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 
 				// Draw all the potentially registrable stars
-				for (i = 0;i<vStars.size();i++)
+				for (int i = 0; i < vStars.size(); i++)
 				{
 					CPoint		pt;
 					CRect		rc;
@@ -1380,113 +1372,85 @@ inline Color SolveColor(double fValue, double fMean, double fStdDev)
 		green = 255;
 	else if (fValue<0)
 	{
-		red   = max(0.0, 255.0-max(0.0, 3.0-fabs(fValue))*255.0/3.0);
-		green = max(0.0, max(0.0, 3.0-fabs(fValue))*255.0/3.0);
+		red   = std::max(0.0, 255.0-std::max(0.0, 3.0-fabs(fValue))*255.0/3.0);
+		green = std::max(0.0, std::max(0.0, 3.0-fabs(fValue))*255.0/3.0);
 	}
 	else
 	{
-		blue  = max(0.0, 255.0-max(0.0, 3.0-fabs(fValue))*255.0/3.0);
-		green = max(0.0, max(0.0, 3.0-fabs(fValue))*255.0/3.0);
+		blue  = std::max(0.0, 255.0-std::max(0.0, 3.0-fabs(fValue))*255.0/3.0);
+		green = std::max(0.0, std::max(0.0, 3.0-fabs(fValue))*255.0/3.0);
 	};
 
 	return Color(0.3*255, red, green, blue);
 };
 
-inline double StarValue(CStar & star)
+inline double StarValue(const CStar& star)
 {
-	return (star.m_fLargeMinorAxis+star.m_fSmallMinorAxis)/(star.m_fLargeMajorAxis+star.m_fSmallMajorAxis);
+	return (star.m_fLargeMinorAxis + star.m_fSmallMinorAxis) / (star.m_fLargeMajorAxis + star.m_fSmallMajorAxis);
 };
 
-void	CQualityGrid::InitGrid(STARVECTOR & vStars, LONG lWidth, LONG lHeight)
+void CQualityGrid::InitGrid(STARVECTOR& vStars)
 {
-	std::vector<LONG>			vNrValues;
-	double						fPowSum;
-	vertexSet					sVertices;
+	double fPowSum = 0.0;
+	vertexSet sVertices;
 
 	m_fMean = 0;
-	fPowSum = 0;
 	m_vTriangles.clear();
 
-	if (vStars.size())
+	if (!vStars.empty())
 	{
-		for (LONG i = 0;i<vStars.size();i++)
+		for (auto& star : vStars)
 		{
-			CStar &					star = vStars[i];
-
 			if (!star.m_bRemoved)
 			{
-				vertex					v((REAL)(star.m_fX), (REAL)(star.m_fY));
+				vertex v(static_cast<decltype(Gdiplus::PointF::X)>(star.m_fX), static_cast<decltype(Gdiplus::PointF::Y)>(star.m_fY));
 
 				star.m_fX = v.GetX();
 				star.m_fY = v.GetY();
 
 				sVertices.insert(v);
 
-				double					fValue;
-
-				fValue = StarValue(star);
+				const double fValue = StarValue(star);
 
 				m_fMean += fValue;
-				fPowSum += fValue*fValue;
-			};
-		};
+				fPowSum += fValue * fValue;
+			}
+		}
 
-		if (sVertices.size())
+		if (!sVertices.empty())
 		{
-			m_fStdDev	= sqrt(fPowSum/sVertices.size() - pow(m_fMean/sVertices.size(), 2));
+			m_fStdDev = sqrt(fPowSum / sVertices.size() - pow(m_fMean / sVertices.size(), 2));
 			m_fMean /= sVertices.size();
 		};
 
-		// Add the corners
-		/*sVertices.insert(vertex(0, 0));
-		sVertices.insert(vertex(lWidth-1, 0));
-		sVertices.insert(vertex(lWidth-1, lHeight-1));
-		sVertices.insert(vertex(0, lHeight-1));*/
-
-		Delaunay					delaunay;
-		triangleSet					sTriangles;
-		tIterator					it;
+		Delaunay delaunay;
+		triangleSet sTriangles;
 
 		delaunay.Triangulate(sVertices, sTriangles);
 
 		m_vTriangles.reserve(sTriangles.size());
 
-		for (it = sTriangles.begin();it!=sTriangles.end();it++)
+		for (ctIterator cit = sTriangles.cbegin(); cit != sTriangles.cend(); ++cit)
 		{
-			CDelaunayTriangle		tr;
-
-			tr.pt1 = it->GetVertex(0)->GetPoint();
-			tr.pt2 = it->GetVertex(1)->GetPoint();
-			tr.pt3 = it->GetVertex(2)->GetPoint();
+			CDelaunayTriangle tr;
+			tr.pt1 = cit->GetVertex(0)->GetPoint();
+			tr.pt2 = cit->GetVertex(1)->GetPoint();
+			tr.pt3 = cit->GetVertex(2)->GetPoint();
 
 			// Find the value for each point
-			double					fValue;
-			STARITERATOR			it;
+			const auto solve = [mean = this->m_fMean, stdev = this->m_fStdDev, &vStars](const Gdiplus::REAL x, const Gdiplus::REAL y) -> Gdiplus::Color
+			{
+				const auto it = lower_bound(vStars.cbegin(), vStars.cend(), CStar(x, y));
+				return SolveColor(it != vStars.cend() ? StarValue(*it) : mean, mean, stdev);
+			};
 
-			it = lower_bound(vStars.begin(), vStars.end(), CStar(tr.pt1.X, tr.pt1.Y));
-			if (it!=vStars.end())
-				fValue = StarValue(*it);
-			else
-				fValue = m_fMean;
-			tr.cr1 = SolveColor(fValue, m_fMean, m_fStdDev);
-
-			it = lower_bound(vStars.begin(), vStars.end(), CStar(tr.pt2.X, tr.pt2.Y));
-			if (it!=vStars.end())
-				fValue = StarValue(*it);
-			else
-				fValue = m_fMean;
-			tr.cr2 = SolveColor(fValue, m_fMean, m_fStdDev);
-
-			it = lower_bound(vStars.begin(), vStars.end(), CStar(tr.pt3.X, tr.pt3.Y));
-			if (it!=vStars.end())
-				fValue = StarValue(*it);
-			else
-				fValue = m_fMean;
-			tr.cr3 = SolveColor(fValue, m_fMean, m_fStdDev);
+			tr.cr1 = solve(tr.pt1.X, tr.pt1.Y);
+			tr.cr2 = solve(tr.pt2.X, tr.pt2.Y);
+			tr.cr3 = solve(tr.pt3.X, tr.pt3.Y);
 
 			m_vTriangles.push_back(tr);
-		};
-	};
-};
+		}
+	}
+}
 
 /* ------------------------------------------------------------------- */

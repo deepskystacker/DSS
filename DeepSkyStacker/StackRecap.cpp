@@ -31,21 +31,20 @@ extern bool	g_bShowRefStars;
 #include "DSSTools.h"
 #include "DSSProgress.h"
 #include "RecommendedSettings.h"
-
 #include "DeepStackerDlg.h"
+#include "FrameInfoSupport.h"
 
-const LONG					SSTAB_RESULT = 0;
-const LONG					SSTAB_COMET = 1;
-const LONG					SSTAB_LIGHT = 2;
-const LONG					SSTAB_DARK = 3;
-const LONG					SSTAB_FLAT = 4;
-const LONG					SSTAB_OFFSET = 5;
-const LONG					SSTAB_ALIGNMENT = 6;
-const LONG					SSTAB_INTERMEDIATE = 7;
-const LONG					SSTAB_POSTCALIBRATION = 9;
-const LONG					SSTAB_OUTPUT = 10;
+constexpr int SSTAB_RESULT = 0;
+constexpr int SSTAB_COMET = 1;
+constexpr int SSTAB_LIGHT = 2;
+constexpr int SSTAB_DARK = 3;
+constexpr int SSTAB_FLAT = 4;
+constexpr int SSTAB_OFFSET = 5;
+constexpr int SSTAB_ALIGNMENT = 6;
+constexpr int SSTAB_INTERMEDIATE = 7;
+constexpr int SSTAB_POSTCALIBRATION = 9;
+constexpr int SSTAB_OUTPUT = 10;
 
-#include "StackRecap.h"
 #include "ui/ui_StackRecap.h"
 
 StackRecap::StackRecap(QWidget *parent) :
@@ -126,7 +125,7 @@ void	StackRecap::insertHeader(QString & strHTML)
 
 /* ------------------------------------------------------------------- */
 
-void	StackRecap::insertHTML(QString & strHTML, const QString& szText, QColor colour, bool bBold, bool bItalic, LONG lLinkID)
+void	StackRecap::insertHTML(QString & strHTML, const QString& szText, QColor colour, bool bBold, bool bItalic, int lLinkID)
 {
 	QString					strText;
 	QString					strInputText = szText;
@@ -198,8 +197,8 @@ void StackRecap::fillWithAllTasks()
 		QString				strISOGainText;
 		QString				strISOText(tr("ISO", "IDS_ISO"));
 		QString				strGainText(tr("Gain", "IDS_GAIN"));
-		LONG				i, j;
-		LONG				lTotalExposure = 0;
+		int				i, j;
+		int				lTotalExposure = 0;
 		__int64				ulNeededSpace;
 		__int64				ulFreeSpace;
 		QString				strDrive;
@@ -209,7 +208,9 @@ void StackRecap::fillWithAllTasks()
 		bool				bSaveIntermediates;
 
 		ulNeededSpace = pStackingTasks->ComputeNecessaryDiskSpace();
-		ulFreeSpace = pStackingTasks->AvailableDiskSpace(CString((wchar_t*)strDrive.utf16()));
+		CString				strDriveCString;
+		strDriveCString = CString((wchar_t*)strDrive.utf16());
+		ulFreeSpace = pStackingTasks->AvailableDiskSpace(strDriveCString);
 		ResultMode = pStackingTasks->GetStackingMode();
 		bSaveIntermediates = pStackingTasks->GetCreateIntermediates();
 
@@ -308,8 +309,7 @@ void StackRecap::fillWithAllTasks()
 
 		insertHTML(strHTML, strText, QColor(Qt::darkBlue), false, false, SSTAB_RESULT);
 
-		DWORD				dwAlignment;
-		dwAlignment = pStackingTasks->GetAlignmentMethod();
+		const auto dwAlignment = pStackingTasks->GetAlignmentMethod();
 
 		strText = tr("Alignment method: ", "IDS_RECAP_ALIGNMENT");
 		strHTML += "</td><td width='48%'>";
@@ -339,9 +339,7 @@ void StackRecap::fillWithAllTasks()
 		strHTML += "</td>";
 		strHTML += "</tr></table><br>";
 
-		DWORD				dwDrizzle;
-
-		dwDrizzle = pStackingTasks->GetPixelSizeMultiplier();
+		const auto dwDrizzle = pStackingTasks->GetPixelSizeMultiplier();
 		if (dwDrizzle > 1)
 		{
 			strText = tr("Drizzle x%1 enabled", "IDS_RECAP_DRIZZLE")
@@ -357,12 +355,10 @@ void StackRecap::fillWithAllTasks()
 			};
 		};
 
-		LONG				lNrProcessors;
-
-		lNrProcessors = CMultitask::GetNrProcessors(true);
-		if (lNrProcessors>1)
+		const auto lNrProcessors = CMultitask::GetNrProcessors(true);
+		if (lNrProcessors > 1)
 		{
-			if (CMultitask::GetNrProcessors()>1)
+			if (CMultitask::GetNrProcessors() > 1)
 				strText = tr("%1 processors detected and used", "IDS_RECAP_DETECTEDANDUSEDPROCESSORS")
 				.arg(lNrProcessors);
 			else
@@ -430,7 +426,7 @@ void StackRecap::fillWithAllTasks()
 				strHTML +=
 					"<table border='1px' bgcolorleft=#fff9fa bgcolorright=#f9fbff bgcolor=#fafafa bordercolordark=#fafafa"
 					"bordercolor=#c0c0c0 bordercolorlight=#c0c0c0  cellspacing=0 cellpadding=5 width='100%'><tr><td>";
-				LONG			lTaskExposure = 0;
+				int			lTaskExposure = 0;
 
 				for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
 					lTaskExposure += si.m_pLightTask->m_vBitmaps[j].m_fExposure;

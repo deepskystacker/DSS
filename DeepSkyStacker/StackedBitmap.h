@@ -74,13 +74,13 @@ typedef PIXELINFOVECTOR				CPixelVector;
 
 
 /*
-const	LONG	PIXELVECTORBLOCKSIZE = 100000L;
+const	int	PIXELVECTORBLOCKSIZE = 100000L;
 
 class CPixelVector
 {
 private :
-	LONG							m_lSize;
-	LONG							m_lNrBlocks;
+	int							m_lSize;
+	int							m_lNrBlocks;
 	std::vector<PIXELINFOVECTOR>	m_vBlocks;
 
 public :
@@ -91,7 +91,7 @@ public :
 	};
 	virtual ~CPixelVector() {};
 
-	LONG	size()
+	int	size()
 	{
 		return m_lSize;
 	};
@@ -103,10 +103,10 @@ public :
 		m_lNrBlocks = 0;
 	};
 
-	void	resize(LONG lSize)
+	void	resize(int lSize)
 	{
-		LONG			lLastBlockSize;
-		LONG			i;
+		int			lLastBlockSize;
+		int			i;
 
 		m_lNrBlocks = lSize / PIXELVECTORBLOCKSIZE;
 
@@ -125,10 +125,10 @@ public :
 		m_lSize = lSize;
 	};
 
-	CPixelInfo & operator [] (LONG lIndice)
+	CPixelInfo & operator [] (int lIndice)
 	{
-		LONG			lBlock = lIndice / PIXELVECTORBLOCKSIZE;
-		LONG			lIndiceInBlock = lIndice - lBlock * PIXELVECTORBLOCKSIZE;
+		int			lBlock = lIndice / PIXELVECTORBLOCKSIZE;
+		int			lIndiceInBlock = lIndice - lBlock * PIXELVECTORBLOCKSIZE;
 		return m_vBlocks[lBlock][lIndiceInBlock];
 	};
 };
@@ -145,17 +145,17 @@ class CFITSWriter;
 class CStackedBitmap
 {
 private :
-	LONG						m_lWidth;
-	LONG						m_lHeight;
-	LONG						m_lOutputWidth,
+	int						m_lWidth;
+	int						m_lHeight;
+	int						m_lOutputWidth,
 								m_lOutputHeight;
-	LONG						m_lNrBitmaps;
+	int						m_lNrBitmaps;
 	CPixelVector				m_vRedPlane;
 	CPixelVector				m_vGreenPlane;
 	CPixelVector				m_vBluePlane;
-	LONG						m_lISOSpeed;
-	LONG						m_lGain;
-	LONG						m_lTotalTime;
+	int						m_lISOSpeed;
+	int						m_lGain;
+	int						m_lTotalTime;
 	bool						m_bMonochrome;
 
 	CBezierAdjust				m_BezierAdjust;
@@ -178,13 +178,13 @@ public :
 	CStackedBitmap() ;
 	virtual ~CStackedBitmap() {};
 
-	void	SetOutputSizes(LONG lWidth, LONG lHeight)
+	void	SetOutputSizes(int lWidth, int lHeight)
 	{
 		m_lOutputWidth  = lWidth;
 		m_lOutputHeight = lHeight;
 	};
 
-	bool	Allocate(LONG lWidth, LONG lHeight, bool bMonochrome)
+	bool	Allocate(int lWidth, int lHeight, bool bMonochrome)
 	{
 		size_t			lSize;
 
@@ -232,12 +232,12 @@ public :
 		HistoAdjust = m_HistoAdjust;
 	};
 
-	COLORREF	GetPixel(LONG X, LONG Y, bool bApplySettings = true);
-	COLORREF16	GetPixel16(LONG X, LONG Y, bool bApplySettings = true);
-	COLORREF32	GetPixel32(LONG X, LONG Y, bool bApplySettings = true);
+	COLORREF	GetPixel(int X, int Y, bool bApplySettings = true);
+	COLORREF16	GetPixel16(int X, int Y, bool bApplySettings = true);
+	COLORREF32	GetPixel32(int X, int Y, bool bApplySettings = true);
 
 
-	void		SetPixel(LONG X, LONG Y, double fRed, double fGreen, double fBlue)
+	void		SetPixel(int X, int Y, double fRed, double fGreen, double fBlue)
 	{
 		size_t		lOffset = m_lWidth * Y + X;
 
@@ -249,20 +249,24 @@ public :
 		};
 	};
 
-	void		GetPixel(LONG X, LONG Y, double & fRed, double & fGreen, double & fBlue, bool bApplySettings);
+	void		GetPixel(int X, int Y, double & fRed, double & fGreen, double & fBlue, bool bApplySettings);
 
-	double		GetRedValue(LONG X, LONG Y)
+	const auto& getRedPixels() const { return this->m_vRedPlane; }
+	const auto& getGreenPixels() const { return this->m_vGreenPlane; }
+	const auto& getBluePixels() const { return this->m_vBluePlane; }
+
+	double		GetRedValue(int X, int Y)
 	{
 		return m_vRedPlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
 	};
-	double		GetGreenValue(LONG X, LONG Y)
+	double		GetGreenValue(int X, int Y)
 	{
 		if (!m_bMonochrome)
 			return m_vGreenPlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
 		else
 			return GetRedValue(X, Y);
 	};
-	double		GetBlueValue(LONG X, LONG Y)
+	double		GetBlueValue(int X, int Y)
 	{
 		if (!m_bMonochrome)
 			return m_vBluePlane[static_cast<size_t>(m_lWidth * Y + X)]/m_lNrBitmaps*255.0;
@@ -270,7 +274,7 @@ public :
 			return GetRedValue(X, Y);
 	};
 
-	void	SetISOSpeed(LONG lISOSpeed)
+	void	SetISOSpeed(int lISOSpeed)
 	{
 		m_lISOSpeed = lISOSpeed;
 	};
@@ -280,22 +284,22 @@ public :
 		return (WORD)m_lISOSpeed;
 	};
 
-	void	SetGain(LONG lGain)
+	void	SetGain(int lGain)
 	{
 		m_lGain = lGain;
 	};
 
-	LONG	GetGain()
+	int	GetGain()
 	{
 		return m_lGain;
 	};
 
-	LONG	GetTotalTime()
+	int	GetTotalTime()
 	{
 		return m_lTotalTime;
 	};
 
-	LONG	GetNrStackedFrames()
+	int	GetNrStackedFrames()
 	{
 		return m_lNrBitmaps;
 	};
@@ -326,12 +330,12 @@ public :
 		m_lGain  = -1;
 	};
 
-	LONG	GetWidth()
+	int	GetWidth()
 	{
 		return m_lWidth;
 	};
 
-	LONG	GetHeight()
+	int	GetHeight()
 	{
 		return m_lHeight;
 	};

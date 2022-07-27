@@ -13,26 +13,69 @@
 void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 {
 	ZFUNCTRACE_RUNTIME();
-	double				fMax = 0;
-	LONG				i, j;
+	double fMax = 0;
+	const size_t width = GetWidth();
+	const int height = GetHeight();
+	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+	float maxValue = 0;
+	const float scalingFactor = 255.0f / m_StackedBitmap.GetNrStackedFrames();
+	const auto& redPixels = m_StackedBitmap.getRedPixels();
+	const auto& greenPixels = m_StackedBitmap.getGreenPixels();
+	const auto& bluePixels = m_StackedBitmap.getBluePixels();
 
 	Histo.Clear();
 
-	for (i = 0;i<GetWidth();i++)
-		for (j = 0;j<GetHeight();j++)
+#pragma omp parallel default(none) firstprivate(maxValue) shared(fMax, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
+	{
+#pragma omp for schedule(guided, 1)
+		for (int row = 0; row < height; ++row)
 		{
-			fMax = max(fMax, m_StackedBitmap.GetRedValue(i, j));
-			fMax = max(fMax, m_StackedBitmap.GetGreenValue(i, j));
-			fMax = max(fMax, m_StackedBitmap.GetBlueValue(i, j));
+			size_t ndx = row * width;
+			if (m_StackedBitmap.IsMonochrome())
+			{
+				for (size_t col = 0; col < width; ++col, ++ndx)
+					maxValue = std::max(maxValue, redPixels[ndx]);
+			}
+			else
+			{
+				for (size_t col = 0; col < width; ++col, ++ndx)
+				{
+					const float red = redPixels[ndx];
+					const float green = greenPixels[ndx];
+					const float blue = bluePixels[ndx];
+					maxValue = std::max(maxValue, std::max(red, std::max(green, blue)));
+				};
+			};
 		};
 
-	Histo.SetSize(fMax, (LONG)65535);
+#pragma omp critical(OrigHistoCalcOmpCrit)
+		fMax = std::max(fMax, static_cast<double>(maxValue * scalingFactor));
+	}
 
-	for (i = 0;i<GetWidth();i++)
-		for (j = 0;j<GetHeight();j++)
-			Histo.AddValues(m_StackedBitmap.GetRedValue(i, j),
-							m_StackedBitmap.GetGreenValue(i, j),
-							m_StackedBitmap.GetBlueValue(i, j));
+	Histo.SetSize(fMax, 65535L);
+
+	if (!m_StackedBitmap.IsMonochrome())
+	{
+#pragma omp parallel sections default(none) shared(Histo, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
+		{
+#pragma omp section
+			for (const auto& color: redPixels)
+				Histo.GetRedHistogram().AddValue(color * scalingFactor);
+#pragma omp section
+			for (const auto& color: greenPixels)
+				Histo.GetGreenHistogram().AddValue(color * scalingFactor);
+#pragma omp section
+			for (const auto& color: bluePixels)
+				Histo.GetBlueHistogram().AddValue(color * scalingFactor);
+		}
+	}
+	else
+	{
+		for (const auto& color: redPixels)
+			Histo.GetRedHistogram().AddValue(color * scalingFactor);
+		Histo.GetGreenHistogram() = Histo.GetRedHistogram();
+		Histo.GetBlueHistogram() = Histo.GetRedHistogram();
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -45,7 +88,7 @@ void CDeepStack::AdjustHistogram(CRGBHistogram & srcHisto, CRGBHistogram & tgtHi
 
 	bMonochrome = m_StackedBitmap.IsMonochrome();
 
-	for (LONG i = 0;i<srcHisto.GetSize();i++)
+	for (int i = 0;i<srcHisto.GetSize();i++)
 	{
 		double			fRed,
 						fGreen,

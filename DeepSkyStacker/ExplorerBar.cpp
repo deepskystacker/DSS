@@ -353,7 +353,7 @@ void ExplorerBar::onLoadSettings()
 		pt.y = rc.bottom;
 
 		lStartID = ID_LOADSETTINGS_FIRSTMRU + 1;
-		for (LONG i = 0; i < m_MRUSettings.m_vLists.size(); i++)
+		for (int i = 0; i < m_MRUSettings.m_vLists.size(); i++)
 		{
 			TCHAR				szDrive[1 + _MAX_DRIVE];
 			TCHAR				szDir[1 + _MAX_DIR];
@@ -438,7 +438,7 @@ void ExplorerBar::onSaveSettings()
 		pt.y = rc.bottom;
 
 		lStartID = ID_SAVESETTINGS_FIRSTMRU + 1;
-		for (LONG i = 0; i < m_MRUSettings.m_vLists.size(); i++)
+		for (int i = 0; i < m_MRUSettings.m_vLists.size(); i++)
 		{
 			TCHAR				szDrive[1 + _MAX_DRIVE];
 			TCHAR				szDir[1 + _MAX_DIR];
@@ -649,11 +649,10 @@ void ExplorerBar::mousePressEvent(QMouseEvent *event)
 	if (Qt::LeftButton == event->buttons())
 	{
 		CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-		DWORD				dwTabID = 0;
 
 		if (pDlg)
 		{
-			dwTabID = pDlg->GetCurrentTab();
+			const auto dwTabID = pDlg->GetCurrentTab();
 			if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
 			{
 				// Change tab to stacking

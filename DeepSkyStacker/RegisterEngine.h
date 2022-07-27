@@ -19,7 +19,7 @@
 class CRegisterInfo
 {
 public :
-	LONG			m_lNrStars;
+	int			m_lNrStars;
 	double			m_fMinLuminancy;
 	double			m_fOverallQuality;
 
@@ -120,7 +120,6 @@ class CRegisteredFrame
 {
 public :
 	STARVECTOR		m_vStars;
-	STARSET			m_sStars;
 	double			m_fRoundnessTolerance;
 	double			m_fMinLuminancy;
 	bool			m_bApplyMedianFilter;
@@ -137,7 +136,6 @@ protected :
 	void	CopyFrom(const CRegisteredFrame & rf)
 	{
 		m_vStars				= rf.m_vStars;
-		m_sStars				= rf.m_sStars;
 		m_fRoundnessTolerance	= rf.m_fRoundnessTolerance;
 		m_fMinLuminancy			= rf.m_fMinLuminancy;
 		m_bApplyMedianFilter	= rf.m_bApplyMedianFilter;
@@ -154,10 +152,8 @@ protected :
 	void	Reset()
 	{
 		CWorkspace			workspace;
-		DWORD				dwThreshold = 10;
 
 		m_vStars.clear();
-		m_sStars.clear();
 
 		m_fRoundnessTolerance = 2.0;
 		m_bInfoOk = false;
@@ -241,7 +237,7 @@ public :
 
 //	void	RegisterPicture(CMemoryBitmap * pBitmap);
 	bool	ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius);
-	void	RegisterSubRect(CMemoryBitmap * pBitmap, CRect & rc);
+	size_t	RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
 	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);
@@ -380,39 +376,38 @@ private :
 
 class CScoredLightFrame
 {
-public :
-	DWORD				m_dwIndice;
-	double				m_fScore;
+public:
+	std::uint32_t	m_dwIndice;
+	double			m_fScore;
 
-private :
-	void	CopyFrom(const CScoredLightFrame & slf)
+private:
+	void CopyFrom(const CScoredLightFrame& slf)
 	{
 		m_dwIndice = slf.m_dwIndice;
 		m_fScore   = slf.m_fScore;
-	};
+	}
 
-public :
-	CScoredLightFrame(DWORD dwIndice, double fScore)
-	{
-		m_dwIndice = dwIndice;
-		m_fScore   = fScore;
-	};
+public:
+	CScoredLightFrame(std::uint32_t dwIndice, double fScore) :
+		m_dwIndice{ dwIndice },
+		m_fScore{ fScore }
+	{}
 
-	CScoredLightFrame(const CScoredLightFrame & slf)
+	CScoredLightFrame(const CScoredLightFrame& slf)
 	{
 		CopyFrom(slf);
-	};
+	}
 
-	const CScoredLightFrame & operator = (const CScoredLightFrame & slf)
+	const CScoredLightFrame& operator=(const CScoredLightFrame& slf)
 	{
 		CopyFrom(slf);
 		return (*this);
-	};
+	}
 
-	bool operator < (const CScoredLightFrame & slf) const
+	bool operator<(const CScoredLightFrame& slf) const
 	{
 		return (m_fScore > slf.m_fScore);
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */

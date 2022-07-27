@@ -131,7 +131,7 @@ public :
 		m_fStdDev	= 0.0;
 	};
 
-	void	InitGrid(STARVECTOR & vStars, LONG lWidth, LONG lHeight);
+	void	InitGrid(STARVECTOR & vStars);
 	void	Clear()
 	{
 		m_vTriangles.clear();
@@ -156,7 +156,7 @@ typedef enum tagEDITSTARACTION
 
 class CEditStarsSink : public CWndImageSink
 {
-private :
+private:
 	CString						m_strFileName;
 	STARVECTOR					m_vStars;
 	STARVECTOR					m_vRefStars;
@@ -167,7 +167,7 @@ private :
 	CGrayBitmap					m_GrayBitmap;
 	EDITSTARACTION				m_Action;
 	CStar						m_AddedStar;
-	LONG						m_lRemovedIndice;
+	int							m_lRemovedIndice;
 	bool						m_bRemoveComet;
 	bool						m_bCometMode;
 	double						m_fXComet, m_fYComet;
@@ -175,26 +175,60 @@ private :
 	double						m_fLightBkgd;
 	bool						m_bDirty;
 	double						m_fScore;
-	LONG						m_lNrStars;
+	int							m_lNrStars;
 	double						m_fFWHM;
 	double						m_fBackground;
 	CQualityGrid				m_QualityGrid;
 
-private :
-
-	bool	IsRefStarVoted(LONG lStar)
+private:
+	template <bool Refstar>
+	bool isStarVoted(const int star)
 	{
-		bool			bResult = false;
+		bool bResult = false;
+		if (g_bShowRefStars)
+		{
+			if (!m_vVotedPairs.empty())
+			{
+				//for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
+				for (const auto& votedPair : m_vVotedPairs)
+				{
+					if constexpr (Refstar)
+						if (star == votedPair.m_RefStar)
+						{
+							bResult = true;
+							break;
+						}
+					else
+						if (star == votedPair.m_TgtStar)
+						{
+							bResult = true;
+							break;
+						}
+				}
+			}
+			else
+				bResult = true;
+		}
+		else
+			bResult = true;
+
+		return bResult;
+	}
+
+	bool IsRefStarVoted(const int lStar)
+	{
+		return this->isStarVoted<true>(lStar);
+/*		bool bResult = false;
 
 		if (g_bShowRefStars)
 		{
-			if (m_vVotedPairs.size())
+			if (!m_vVotedPairs.empty())
 			{
-				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
+				for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_RefStar)
 						bResult = true;
-				};
+				}
 			}
 			else
 				bResult = true;
@@ -202,22 +236,23 @@ private :
 		else
 			bResult = true;
 
-		return bResult;
-	};
+		return bResult;*/
+	}
 
-	bool	IsTgtStarVoted(LONG lStar)
+	bool IsTgtStarVoted(const int lStar)
 	{
-		bool			bResult = false;
+		return this->isStarVoted<false>(lStar);
+/*		bool bResult = false;
 
 		if (g_bShowRefStars)
 		{
-			if (m_vVotedPairs.size())
+			if (!m_vVotedPairs.empty())
 			{
-				for (LONG i = 0;i<m_vVotedPairs.size() && !bResult;i++)
+				for (size_t i = 0; i < m_vVotedPairs.size() && !bResult; i++)
 				{
 					if (lStar == m_vVotedPairs[i].m_TgtStar)
 						bResult = true;
-				};
+				}
 			}
 			else
 				bResult = true;
@@ -225,8 +260,8 @@ private :
 		else
 			bResult = true;
 
-		return bResult;
-	};
+		return bResult;*/
+	}
 
 	void	InitGrayBitmap(CRect & rc);
 	void	DetectStars(const CPointExt & pt, CRect & rc, STARVECTOR & vStars);
@@ -236,7 +271,7 @@ private :
 		m_fScore	= 0.0;
 		m_lNrStars	= 0;
 		m_fFWHM		= 0;
-		for (LONG i = 0;i<m_vStars.size();i++)
+		for (size_t i = 0; i < m_vStars.size(); i++)
 		{
 			if (!m_vStars[i].m_bRemoved)
 			{

@@ -1,176 +1,142 @@
 #ifndef	_SMARTPTR_H_
 #define	_SMARTPTR_H_
-#include <atomic>
-
-class CRefCount
-{
-protected :
-	std::atomic<long> m_lRefCount;
-
-public :
-	CRefCount() :
-		m_lRefCount{ 0 }
-	{
-	};
-
-	virtual ~CRefCount()
-	{
-	};
-
-	void	AddRef()
-	{
-		m_lRefCount++;
-	};
-
-	void	Release()
-	{
-		m_lRefCount--;
-		if (!m_lRefCount)
-			delete this;
-	};
-};
 
 template <class T>
 class CSmartPtr
 {
-public :
-	T *			m_p;
+public:
+	T* m_p;
 
-public :
-	CSmartPtr()
-	{
-		m_p = nullptr;
-	};
+public:
+	CSmartPtr() : m_p{ nullptr }
+	{}
 
-	CSmartPtr(T * p)
+	CSmartPtr(T* p) : m_p{ p }
 	{
-		if (p)
+		if (p != nullptr)
 			p->AddRef();
-		m_p = p;
-	};
+	}
 
-	CSmartPtr(const CSmartPtr<T> & p)
+	CSmartPtr(const CSmartPtr<T>& p) : m_p{ p.m_p }
 	{
-		if (p.m_p)
+		if (p.m_p != nullptr)
 			p.m_p->AddRef();
-		m_p = p.m_p;
-	};
+	}
 
-	void Attach(T * p)
+	void Attach(T* p)
 	{
-		if (p)
+		if (p != nullptr)
 			p->AddRef();
-
-		if (m_p)
+		if (m_p != nullptr)
 			m_p->Release();
 		m_p = p;
-	};
+	}
 
-	void	Create()
+	void Create()
 	{
-		if (m_p)
+		if (m_p != nullptr)
 			m_p->Release();
 		m_p = nullptr;
 		Attach(new T);
-	};
+	}
 
-	BOOL	CopyTo(T ** pp)
+	bool CopyTo(T** pp)
 	{
-		BOOL		bResult = FALSE;
-		if (pp)
+		bool bResult = false;
+		if (pp != nullptr)
 		{
 			*pp = m_p;
-			if (m_p)
+			if (m_p != nullptr)
 			{
 				m_p->AddRef();
-				bResult = TRUE;
-			};
-		};
+				bResult = true;
+			}
+		}
 
 		return bResult;
-	};
+	}
 
-	void	Release()
+	void Release()
 	{
-		T *		pTemp = m_p;
-		if (pTemp)
+		T* pTemp = m_p;
+		if (pTemp != nullptr)
 		{
 			m_p = nullptr;
 			pTemp->Release();
-		};
-	};
+		}
+	}
 
 	virtual ~CSmartPtr()
 	{
 		Release();
-	};
+	}
 
-	T & operator * () const
+	T& operator*() const
 	{
 		return *m_p;
-	};
+	}
 
-	T ** operator & ()
+	T** operator&()
 	{
-		if (m_p)
+		if (m_p != nullptr)
 		{
 			// To avoid memory leak
 			m_p->Release();
 			m_p = nullptr;
-		};
+		}
 		return &m_p;
-	};
+	}
 
-	T * operator ->()
+	T* operator->()
 	{
 		return m_p;
-	};
+	}
 
 	operator T*() const
 	{
 		return m_p;
 	}
 
-	T * operator = (T * lp)
+	T* operator=(T* lp)
 	{
 		if (lp != m_p)
 			Attach(lp);
 
-		return (*this);
-	};
+		return *this;
+	}
 
-	T * operator = (const CSmartPtr<T> & p)
+	T* operator=(const CSmartPtr<T>& p)
 	{
 		if (p.m_p != m_p)
 			Attach(p.m_p);
 
-		return (*this);
-	};
+		return *this;
+	}
 
-	bool operator !()
+	bool operator!() const
 	{
-		if (m_p)
-			return false;
-		else
-			return true;
-	};
+		return m_p == nullptr;
+	}
 
-	bool operator < (const CSmartPtr<T> & p) const
+	bool operator<(const CSmartPtr<T>& p) const
 	{
-		return (uintptr_t)m_p < (uintptr_t)p.m_p;
-	};
-	bool operator < (const T * p) const
+		return static_cast<std::uintptr_t>(m_p) < static_cast<std::uintptr_t>(p.m_p);
+	}
+
+	bool operator<(const T* p) const
 	{
-		return (uintptr_t)m_p < (uintptr_t)p;
-	};
-	bool operator != (const T * p) const
+		return static_cast<std::uintptr_t>(m_p) < static_cast<std::uintptr_t>(p);
+	}
+
+	bool operator!=(const T* p) const
 	{
 		return m_p != p;
-	};
-	bool operator == (const T * p) const
+	}
+
+	bool operator==(const T* p) const
 	{
 		return m_p == p;
-	};
+	}
 };
 
 #endif		//	_SMARTPTR_H_

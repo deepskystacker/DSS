@@ -54,7 +54,7 @@ public:
 	{
 		bool				bResult = m_vFiles.size() == right.m_vFiles.size();
 
-		for (LONG i = 0;i<m_vFiles.size() && bResult;i++)
+		for (int i = 0;i<m_vFiles.size() && bResult;i++)
 		{
 			bResult = !m_vFiles[i].CompareNoCase(right.m_vFiles[i]);
 		};

@@ -10,17 +10,17 @@
 
 void	CMRUList::readSettings()
 {
-	QSettings			settings;
-	DWORD				dwNrValues = 0;
+	QSettings settings;
+	int dwNrValues = 0;
 
 	m_vLists.clear();
 
 	QString keyName(QString::fromWCharArray(m_strBasePath.GetString()));
 	keyName += "/NrMRU";
 
-	dwNrValues = settings.value(keyName, 0).toUInt();
+	dwNrValues = static_cast<int>(settings.value(keyName, 0).toUInt());
 
-	for (LONG i = 0;i<dwNrValues;i++)
+	for (int i = 0; i < dwNrValues; i++)
 	{
 		QString keyName = QString("%1/MRU%2")
 			.arg(QString::fromWCharArray(m_strBasePath.GetString())).arg(i);
@@ -53,7 +53,7 @@ void	CMRUList::saveSettings()
 	keyName += "/NrMRU";
 	
 	settings.setValue(keyName, (uint)m_vLists.size());
-	for (LONG i = 0;i<m_vLists.size();i++)
+	for (int i = 0;i<m_vLists.size();i++)
 	{
 		QString keyName = QString("%1/MRU%2")
 			.arg(QString::fromWCharArray(m_strBasePath.GetString())).arg(i);
@@ -69,9 +69,9 @@ void	CMRUList::saveSettings()
 void	CMRUList::Add(LPCTSTR szList)
 {
 	bool				bFound = false;
-	LONG				lFoundIndice = -1;
+	int				lFoundIndice = -1;
 
-	for (LONG i = 0;i<m_vLists.size() && !bFound;i++)
+	for (int i = 0;i<m_vLists.size() && !bFound;i++)
 	{
 		if (!m_vLists[i].CompareNoCase(szList))
 		{
@@ -121,9 +121,9 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 
 		fprintf(hFile, "DSS file list\n");
 		fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
-		for (LONG j = 0;j<m_Jobs.m_vJobs.size();j++)
+		for (int j = 0;j<m_Jobs.m_vJobs.size();j++)
 		{
-			DWORD						dwGroupID = 0;
+			std::uint32_t dwGroupID = 0;
 
 			if ((m_Jobs.m_vJobs[j].m_ID != MAINJOBID) ||
 				(m_Jobs.m_vJobs[j].m_RefID != GUID_NULL))
@@ -143,10 +143,10 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 					(LPCSTR)CT2CA(m_Jobs.m_vJobs[j].m_strName, CP_UTF8),
 					(LPCSTR)CT2CA(strRefGUID, CP_UTF8));
 			};
-			for (LONG i = 0;i<m_vFiles.size();i++)
+			for (int i = 0;i<m_vFiles.size();i++)
 			{
-				LONG		lItem = i;
-				LONG		lChecked = 0;
+				int		lItem = i;
+				int		lChecked = 0;
 				CString		strType;
 
 				if (!m_vFiles[lItem].m_bRemoved &&
@@ -219,12 +219,12 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-static bool ParseLine(LPCTSTR szLine, LONG & lChecked, CString & strType, CString & strFile)
+static bool ParseLine(LPCTSTR szLine, int & lChecked, CString & strType, CString & strFile)
 {
 	bool				bResult = false;
 	LPCTSTR				szPos = szLine;
-	LONG				lPos = 0;
-	LONG				lTab1 = -1,
+	int				lPos = 0;
+	int				lTab1 = -1,
 						lTab2 = -1,
 						lEnd  = -1;
 
@@ -270,7 +270,7 @@ static bool ParseLine(LPCTSTR szLine, LONG & lChecked, CString & strType, CStrin
 
 /* ------------------------------------------------------------------- */
 
-static bool	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
+static bool	IsChangeGroupLine(LPCTSTR szLine, std::uint32_t& dwGroupID)
 {
 	bool				bResult = false;
 	CString				strLine = szLine;
@@ -298,7 +298,7 @@ static bool	IsChangeGroupLine(LPCTSTR szLine, DWORD & dwGroupID)
 void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 {
 	FILE *				hFile;
-	DWORD				dwGroupID = 0;
+	std::uint32_t		dwGroupID = 0;
 	GUID				dwJobID = MAINJOBID;
 
 	SetCursor(::LoadCursor(nullptr, IDC_WAIT));
@@ -353,7 +353,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 			while (fgets(szLine, sizeof(szLine), hFile))
 			{
-				LONG			lChecked;
+				int			lChecked;
 				CString			strType;
 				CString			strFile;
 				CString			strLine((LPCTSTR)CA2CTEX<sizeof(szLine)>(szLine, CP_UTF8));
@@ -388,7 +388,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 					if (Type != PICTURETYPE_UNKNOWN)
 					{
-						long	length = 0;
+						int	length = 0;
 						TCHAR*	pszAbsoluteFile = nullptr;
 
 						//
@@ -429,7 +429,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 											lb.m_bRegistered = true;
 											lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
 											lb.m_fFWHM			 = bmpInfo.m_fFWHM;
-											lb.m_lNrStars		 = (DWORD)bmpInfo.m_vStars.size();
+											lb.m_lNrStars		 = static_cast<decltype(CListBitmap::m_lNrStars)>(bmpInfo.m_vStars.size());
 											lb.m_bComet			 = bmpInfo.m_bComet;
 											lb.m_SkyBackground	 = bmpInfo.m_SkyBackground;
 										}
@@ -465,7 +465,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
 {
-	LONG				lNrComets = 0;
+	int				lNrComets = 0;
 	bool				bReferenceFrameHasComet = false;
 	bool				bReferenceFrameSet = false;
 	double				fMaxScore = -1.0;
@@ -476,7 +476,7 @@ void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
 
 		if (!Job.IsNullJob())
 		{
-			for (LONG i = 0;i<m_vFiles.size();i++)
+			for (int i = 0;i<m_vFiles.size();i++)
 			{
 				if (!m_vFiles[i].m_bRemoved &&
 					m_vFiles[i].m_bChecked &&
@@ -514,7 +514,7 @@ bool CFrameList::GetReferenceFrame(CString & strReferenceFrame)
 	// First search for a reference frame
 	bool				bResult = false;
 
-	for (LONG i = 0;i<m_vFiles.size() && !bResult;i++)
+	for (int i = 0;i<m_vFiles.size() && !bResult;i++)
 	{
 		if (!m_vFiles[i].m_bRemoved &&
 			m_vFiles[i].IsLightFrame())
@@ -532,11 +532,11 @@ bool CFrameList::GetReferenceFrame(CString & strReferenceFrame)
 
 /* ------------------------------------------------------------------- */
 
-LONG CFrameList::GetNrUnregisteredCheckedLightFrames(LONG lGroupID)
+int CFrameList::GetNrUnregisteredCheckedLightFrames(int lGroupID)
 {
-	LONG				lResult = 0;
+	int				lResult = 0;
 
-	for (LONG i = 0;i<m_vFiles.size();i++)
+	for (int i = 0;i<m_vFiles.size();i++)
 	{
 		if (!m_vFiles[i].m_bRemoved &&
 			m_vFiles[i].IsLightFrame() &&

@@ -65,9 +65,9 @@ public :
 class CProcessRect
 {
 private :
-	LONG						m_lWidth;
-	LONG						m_lHeight;
-	LONG						m_lSize;
+	int						m_lWidth;
+	int						m_lHeight;
+	int						m_lSize;
 	std::vector<CValuedRect>	m_vRects;
 	std::vector<bool>			m_vProcessed;
 	bool						m_bToProcess;
@@ -103,9 +103,9 @@ public :
 	};
 	virtual ~CProcessRect() {};
 
-	void	Init(LONG lWidth, LONG lHeight, LONG lRectSize)
+	void	Init(int lWidth, int lHeight, int lRectSize)
 	{
-		LONG			i, j;
+		int			i, j;
 
 		m_lWidth	= lWidth;
 		m_lHeight	= lHeight;
@@ -140,7 +140,7 @@ public :
 
 	void	Reset()
 	{
-		for (LONG i = 0;i<m_vProcessed.size();i++)
+		for (int i = 0;i<m_vProcessed.size();i++)
 			m_vProcessed[i] = false;
 		m_bToProcess = true;
 	};
@@ -162,7 +162,7 @@ public :
 			}
 			else
 			{
-				for (LONG i = 0;i<m_vProcessed.size() && !bResult;i++)
+				for (int i = 0;i<m_vProcessed.size() && !bResult;i++)
 				{
 					if (!m_vProcessed[i])
 					{
@@ -205,7 +205,7 @@ class CProcessParamsList
 {
 public :
 	PROCESSPARAMLIST		m_lParams;
-	LONG					m_lCurrent;
+	int					m_lCurrent;
 
 public :
 	CProcessParamsList()
@@ -216,12 +216,12 @@ public :
 	{
 	};
 
-	LONG size()
+	int size()
 	{
-		return (LONG)m_lParams.size();
+		return (int)m_lParams.size();
 	};
 
-	LONG current()
+	int current()
 	{
 		return m_lCurrent;
 	};
@@ -269,7 +269,7 @@ public :
 		return GetParams(m_lCurrent, pp);
 	};
 
-	bool	GetParams(LONG lIndice, CDSSSetting & pp)
+	bool	GetParams(int lIndice, CDSSSetting & pp)
 	{
 		bool					bResult = false;
 		PROCESSPARAMITERATOR    it;
@@ -295,7 +295,7 @@ public :
 		if ((m_lCurrent >=0) && (m_lCurrent < size()-1))
 		{
 			PROCESSPARAMITERATOR	it;
-			LONG					lIndice = m_lCurrent+1;
+			int					lIndice = m_lCurrent+1;
 
 			for (it = m_lParams.begin(); it != m_lParams.end() && lIndice>0; it++, lIndice--);
 			
@@ -371,14 +371,14 @@ private :
 	void	ProcessAndShow(bool bSaveUndo = true);
 
 	void	ResetSliders();
-	void	DrawHistoBar(Graphics * pGraphics, LONG lNrReds, LONG lNrGreens, LONG lNrBlues, LONG X, LONG lHeight);
+	void	DrawHistoBar(Graphics * pGraphics, int lNrReds, int lNrGreens, int lNrBlues, int X, int lHeight);
 	void	ShowHistogram(CWndImage & wndImage, CRGBHistogram & Histogram, bool bLog = false);
 	void	ShowOriginalHistogram(bool bLog = false);
 
-	void	DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histogram, LONG lWidth, LONG lHeight);
+	void	DrawGaussCurves(Graphics * pGraphics, CRGBHistogram & Histogram, int lWidth, int lHeight);
 
 	void	UpdateHistogramAdjust();
-	void	DrawBezierCurve(Graphics * pGraphics, LONG lWidth, LONG lHeight);
+	void	DrawBezierCurve(Graphics * pGraphics, int lWidth, int lHeight);
 
 	void	UpdateControls();
 	void	UpdateControlsFromParams();

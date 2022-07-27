@@ -1,346 +1,72 @@
 #ifndef __MEDIANFILTERENGINE_H__
 #define __MEDIANFILTERENGINE_H__
 
-/* ------------------------------------------------------------------- */
 
 template <typename TType>
 class CInternalMedianFilterEngineT
 {
 public :
-	TType *						m_pvInValues;
-	TType *						m_pvOutValues;
-	LONG						m_lWidth;
-	LONG						m_lHeight;
-	CFATYPE						m_CFAType;
-	LONG						m_lFilterSize;
+	TType* m_pvInValues;
+	TType* m_pvOutValues;
+	int m_lWidth;
+	int m_lHeight;
+	CFATYPE m_CFAType;
+	int m_lFilterSize;
 
-	template <typename TType>
-	class CFilterTask : public CMultitask
+
+	class CFilterTask
 	{
 	private :
-		CInternalMedianFilterEngineT<TType> *	m_pEngine;
-		CDSSProgress *							m_pProgress;
-
+		CInternalMedianFilterEngineT<TType>* m_pEngine = nullptr;
+		CDSSProgress* m_pProgress = nullptr;
 
 	public :
-		CFilterTask()
-		{
-		};
+		CFilterTask(CInternalMedianFilterEngineT<TType>* peng, CDSSProgress* pprg) :
+			m_pEngine{ peng },
+			m_pProgress{ pprg }
+		{}
 
-		virtual ~CFilterTask()
-		{
-		};
+		~CFilterTask() = default;
 
-		void	Init(CInternalMedianFilterEngineT<TType> * pEngine, CDSSProgress * pProgress)
-		{
-			m_pEngine	= pEngine;
-			m_pProgress = pProgress;
-		};
-
-		virtual bool	DoTask(HANDLE hEvent)
-		{
-			bool					bResult = true;
-			LONG					i, j;
-			bool					bEnd = false;
-			MSG						msg;
-			LONG					lWidth  = m_pEngine->m_lWidth,
-									lHeight = m_pEngine->m_lHeight,
-									lFilterSize = m_pEngine->m_lFilterSize;
-			CFATYPE					CFAType = m_pEngine->m_CFAType;
-
-			std::vector<TType>		vValues;
-
-			vValues.reserve((m_pEngine->m_lFilterSize*2+1)*(m_pEngine->m_lFilterSize*2+1));
-
-			// Create a message queue and signal the event
-			PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-			SetEvent(hEvent);
-			while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-			{
-				if (msg.message == WM_MT_PROCESS)
-				{
-					if (CFAType != CFATYPE_NONE)
-					{
-						TType *				pOutValues = m_pEngine->m_pvOutValues;
-
-						pOutValues += msg.wParam * lWidth;
-
-						for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-						{
-							for (i = 0;i<lWidth;i++)
-							{
-								// Compute the min and max values in X and Y
-								LONG			lXMin, lXMax,
-												lYMin, lYMax;
-								BAYERCOLOR		BayerColor = GetBayerColor(i, j, CFAType);
-
-								lXMin = max(0L, i-lFilterSize);
-								lXMax = min(i+lFilterSize, lWidth-1);
-								lYMin = max(0L, j-lFilterSize);
-								lYMax = min(j+lFilterSize, lHeight-1);
-
-								// Fill the array with the values
-								TType *			pInLine   = m_pEngine->m_pvInValues;
-								pInLine += lXMin + (lYMin * lWidth);
-								vValues.resize(0);
-								for (LONG k = lYMin;k<=lYMax;k++)
-								{
-									TType *		pInValues = pInLine;
-
-									for (LONG l = lXMin;l<=lXMax;l++)
-									{
-										if (GetBayerColor(l, k, CFAType) == BayerColor)
-											vValues.push_back(*pInValues);
-										pInValues++;
-									};
-									pInLine   += lWidth;
-								};
-
-								TType			fMedian = Median(vValues);
-
-								*pOutValues = fMedian;
-								pOutValues++;
-							};
-						};
-					}
-					else
-					{
-						TType *				pOutValues = m_pEngine->m_pvOutValues;
-
-						pOutValues += msg.wParam * lWidth;
-
-						for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-						{
-							for (i = 0;i<lWidth;i++)
-							{
-								// Compute the min and max values in X and Y
-								LONG			lXMin, lXMax,
-												lYMin, lYMax;
-
-								lXMin = max(0L, i-lFilterSize);
-								lXMax = min(i+lFilterSize, lWidth-1);
-								lYMin = max(0L, j-lFilterSize);
-								lYMax = min(j+lFilterSize, lHeight-1);
-
-								vValues.resize((lXMax-lXMin+1)*(lYMax-lYMin+1));
-
-								// Fill the array with the values
-								TType *			pInValues   = m_pEngine->m_pvInValues;
-								TType *			pAreaValues = &(vValues[0]);
-								pInValues += lXMin + (lYMin * lWidth);
-								for (LONG k = lYMin;k<=lYMax;k++)
-								{
-									memcpy(pAreaValues, pInValues, sizeof(TType) * (lXMax-lXMin+1));
-									pInValues   += lWidth;
-									pAreaValues += lXMax-lXMin+1;
-								};
-
-								TType			fMedian = Median(vValues);
-
-								*pOutValues = fMedian;
-								pOutValues ++;
-							};
-						};
-					};
-
-					SetEvent(hEvent);
-				}
-				else if (msg.message == WM_MT_STOP)
-					bEnd = true;
-			};
-
-			return true;
-		};
-
-		virtual bool	Process()
-		{
-			bool				bResult = true;
-			LONG				lHeight = m_pEngine->m_lHeight;
-			LONG				i = 0;
-			LONG				lStep;
-			LONG				lRemaining;
-
-			if (m_pProgress)
-				m_pProgress->SetNrUsedProcessors(GetNrThreads());
-			lStep		= max(1L, lHeight/50);
-			lRemaining	= lHeight;
-
-			while (i<lHeight)
-			{
-				LONG			lAdd = min(lStep, lRemaining);
-				DWORD			dwThreadId;
-
-				dwThreadId = GetAvailableThreadId();
-				PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-				i			+=lAdd;
-				lRemaining	-= lAdd;
-				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, i);
-			};
-
-			CloseAllThreads();
-
-			if (m_pProgress)
-				m_pProgress->SetNrUsedProcessors();
-
-			return bResult;
-		};
+		void process();
+	private:
+		void processNonAvx(const int lineStart, const int lineEnd, std::vector<TType>& vValues);
 	};
 
-	friend CFilterTask<TType>;
 
-public :
+	friend CFilterTask;
+
+public:
 	CInternalMedianFilterEngineT()
     {
         m_lWidth = 0;
         m_lHeight = 0;
         m_lFilterSize = 0;
-    };
+    }
+
 	virtual ~CInternalMedianFilterEngineT() {};
 
-	bool	ApplyFilter(CDSSProgress * pProgress);
+	bool ApplyFilter(CDSSProgress* pProgress);
 };
 
-/* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline bool CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress * pProgress)
+inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap** ppOutBitmap, int lFilterSize, CDSSProgress* pProgress)
 {
-	bool					bResult = true;
-
-	if (pProgress)
-		pProgress->Start2(nullptr, m_lHeight);
-
-	CFilterTask<TType>		FilterTask;
-
-	FilterTask.Init(this, pProgress);
-	FilterTask.StartThreads();
-	FilterTask.Process();
-
-	if (pProgress)
-		pProgress->End2();
-
-/*
-	std::vector<TType>		vValues;
-
-	vValues.reserve((m_lFilterSize*2+1)*(m_lFilterSize*2+1));
-
-	if (pProgress)
-		pProgress->Start2(nullptr, m_lHeight);
-
-	if (m_CFAType != CFATYPE_NONE)
-	{
-		TType *				pOutValues = m_pvOutValues;
-
-		for (LONG j = 0;j<m_lHeight;j++)
-		{
-			for (LONG i = 0;i<m_lWidth;i++)
-			{
-				// Compute the min and max values in X and Y
-				LONG			lXMin, lXMax,
-								lYMin, lYMax;
-				BAYERCOLOR		BayerColor = GetBayerColor(i, j, m_CFAType);
-
-				lXMin = max(0, i-m_lFilterSize);
-				lXMax = min(i+m_lFilterSize, m_lWidth-1);
-				lYMin = max(0, j-m_lFilterSize);
-				lYMax = min(j+m_lFilterSize, m_lHeight-1);
-
-				// Fill the array with the values
-				TType *			pInLine   = m_pvInValues;
-				pInLine += lXMin + (lYMin * m_lWidth);
-				vValues.resize(0);
-				for (LONG k = lYMin;k<=lYMax;k++)
-				{
-					TType *		pInValues = pInLine;
-
-					for (LONG l = lXMin;l<=lXMax;l++)
-					{
-						if (GetBayerColor(l, k, m_CFAType) == BayerColor)
-							vValues.push_back(*pInValues);
-						pInValues++;
-					};
-					pInLine   += m_lWidth;
-				};
-
-				TType			fMedian = Median(vValues);
-
-				*pOutValues = fMedian;
-				pOutValues++;
-			};
-
-			if (pProgress)
-				pProgress->Progress2(nullptr, j+1);
-		};
-	}
-	else
-	{
-		TType *				pOutValues = m_pvOutValues;
-
-		for (LONG j = 0;j<m_lHeight;j++)
-		{
-			for (LONG i = 0;i<m_lWidth;i++)
-			{
-				// Compute the min and max values in X and Y
-				LONG			lXMin, lXMax,
-								lYMin, lYMax;
-
-				lXMin = max(0, i-m_lFilterSize);
-				lXMax = min(i+m_lFilterSize, m_lWidth-1);
-				lYMin = max(0, j-m_lFilterSize);
-				lYMax = min(j+m_lFilterSize, m_lHeight-1);
-
-				vValues.resize((lXMax-lXMin+1)*(lYMax-lYMin+1));
-
-				// Fill the array with the values
-				TType *			pInValues   = m_pvInValues;
-				TType *			pAreaValues = &(vValues[0]);
-				pInValues += lXMin + (lYMin * m_lWidth);
-				for (LONG k = lYMin;k<=lYMax;k++)
-				{
-					memcpy(pAreaValues, pInValues, sizeof(TType) * (lXMax-lXMin+1));
-					pInValues   += m_lWidth;
-					pAreaValues += lXMax-lXMin+1;
-				};
-
-				TType			fMedian = Median(vValues);
-
-				*pOutValues = fMedian;
-				pOutValues ++;
-			};
-
-			if (pProgress)
-				pProgress->Progress2(nullptr, j+1);
-		};
-	};
-
-	if (pProgress)
-		pProgress->End2();
-*/
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-template <typename TType>
-inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
-{
-	bool				bResult = false;
+	bool bResult = false;
 
 	// Create Output Bitmap from Input Bitmap
-	if (m_pInBitmap)
+	if (m_pInBitmap != nullptr)
 	{
-		CSmartPtr<CGrayBitmapT<TType> >		pOutBitmap;
-
-		pOutBitmap.Attach(dynamic_cast<CGrayBitmapT<TType> *> (m_pInBitmap->Clone()));
+		CSmartPtr<CGrayBitmapT<TType>> pOutBitmap;
+		pOutBitmap.Attach(dynamic_cast<CGrayBitmapT<TType>*>(m_pInBitmap->Clone()));
 
 		if (pOutBitmap)
 		{
 			CInternalMedianFilterEngineT<TType>	InternalFilter;
 
-			InternalFilter.m_pvInValues  = &(m_pInBitmap->m_vPixels[0]);
-			InternalFilter.m_pvOutValues = &(pOutBitmap->m_vPixels[0]);
+			InternalFilter.m_pvInValues  = m_pInBitmap->m_vPixels.data();
+			InternalFilter.m_pvOutValues = pOutBitmap->m_vPixels.data();
 			InternalFilter.m_lWidth      = m_pInBitmap->m_lWidth;
 			InternalFilter.m_lHeight	 = m_pInBitmap->m_lHeight;
 			InternalFilter.m_CFAType	 = m_pInBitmap->m_CFAType;
@@ -352,30 +78,26 @@ inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** p
 
 			if (bResult)
 			{
-				CSmartPtr<CMemoryBitmap>	pOutBitmap2;
-
+				CSmartPtr<CMemoryBitmap> pOutBitmap2;
 				pOutBitmap2 = pOutBitmap;
-
 				pOutBitmap2.CopyTo(ppOutBitmap);
-			};
-		};
-	};
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 template <typename TType>
-inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** ppOutBitmap, LONG lFilterSize, CDSSProgress * pProgress)
+inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap** ppOutBitmap, int lFilterSize, CDSSProgress* pProgress)
 {
-	bool				bResult = false;
+	bool bResult = false;
 
 	// Create Output Bitmap from Input Bitmap
-	if (m_pInBitmap)
+	if (m_pInBitmap != nullptr)
 	{
-		CSmartPtr<CColorBitmapT<TType> >		pOutBitmap;
-
+		CSmartPtr<CColorBitmapT<TType>> pOutBitmap;
 		pOutBitmap.Attach(dynamic_cast<CColorBitmapT<TType> *> (m_pInBitmap->Clone()));
 
 		if (pOutBitmap)
@@ -387,32 +109,28 @@ inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap ** 
 			InternalFilter.m_lFilterSize = lFilterSize;
 			InternalFilter.m_CFAType	 = CFATYPE_NONE;
 
-			InternalFilter.m_pvInValues  = &(m_pInBitmap->m_Red.m_vPixels[0]);
-			InternalFilter.m_pvOutValues = &(pOutBitmap->m_Red.m_vPixels[0]);
+			InternalFilter.m_pvInValues = m_pInBitmap->m_Red.m_vPixels.data();
+			InternalFilter.m_pvOutValues = pOutBitmap->m_Red.m_vPixels.data();
 			bResult = InternalFilter.ApplyFilter(pProgress);
 
-			InternalFilter.m_pvInValues  = &(m_pInBitmap->m_Green.m_vPixels[0]);
-			InternalFilter.m_pvOutValues = &(pOutBitmap->m_Green.m_vPixels[0]);
+			InternalFilter.m_pvInValues  = m_pInBitmap->m_Green.m_vPixels.data();
+			InternalFilter.m_pvOutValues = pOutBitmap->m_Green.m_vPixels.data();
 			bResult = InternalFilter.ApplyFilter(pProgress);
 
-			InternalFilter.m_pvInValues  = &(m_pInBitmap->m_Blue.m_vPixels[0]);
-			InternalFilter.m_pvOutValues = &(pOutBitmap->m_Blue.m_vPixels[0]);
+			InternalFilter.m_pvInValues  = m_pInBitmap->m_Blue.m_vPixels.data();
+			InternalFilter.m_pvOutValues = pOutBitmap->m_Blue.m_vPixels.data();
 			bResult = InternalFilter.ApplyFilter(pProgress);
 
 			if (bResult)
 			{
-				CSmartPtr<CMemoryBitmap>	pOutBitmap2;
-
+				CSmartPtr<CMemoryBitmap> pOutBitmap2;
 				pOutBitmap2 = pOutBitmap;
-
 				pOutBitmap2.CopyTo(ppOutBitmap);
-			};
-		};
-	};
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
-
-#endif // __MEDIANFILTERENGINE_H__
+#endif

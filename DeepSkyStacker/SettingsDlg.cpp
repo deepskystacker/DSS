@@ -58,23 +58,19 @@ void CSettingsDlg::UpdateControls()
 	if (strText.GetLength())
 	{
 		// Check that the name is not already in the list
-		LONG			lNrSettings;
-		LONG			i;
-
-		lNrSettings = m_pSettings->Count();
+		const int lNrSettings = m_pSettings->Count();
 
 		bAdd = true;
 
-		for (i = 0;i<lNrSettings && bAdd;i++)
+		for (int i = 0; i < lNrSettings && bAdd; i++)
 		{
-			CDSSSetting		cds;
-
+			CDSSSetting cds;
 			m_pSettings->GetItem(i, cds);
 
 			if (!cds.m_strName.CompareNoCase(strText))
 				bAdd = false;
-		};
-	};
+		}
+	}
 
 	if (m_List.GetCurSel() >= 0)
 		bLoad = true;
@@ -103,9 +99,7 @@ void CSettingsDlg::OnAdd()
 
 void CSettingsDlg::OnDelete()
 {
-	LONG				lCurSel;
-
-	lCurSel = m_List.GetCurSel();
+	const int lCurSel = m_List.GetCurSel();
 	if (lCurSel >= 0)
 	{
 		CString			strText;
@@ -128,9 +122,7 @@ void CSettingsDlg::OnDelete()
 
 void CSettingsDlg::OnLoad()
 {
-	LONG				lCurSel;
-
-	lCurSel = m_List.GetCurSel();
+	const int lCurSel = m_List.GetCurSel();
 	if (lCurSel >= 0)
 	{
 		m_pSettings->GetItem(lCurSel, m_CurrentSetting);
@@ -167,21 +159,17 @@ BOOL CSettingsDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	if (m_pSettings)
+	if (m_pSettings != nullptr)
 	{
-		LONG			lNrSettings;
-		LONG			i;
+		const int lNrSettings = m_pSettings->Count();
 
-		lNrSettings = m_pSettings->Count();
-
-		for (i = 0;i<lNrSettings;i++)
+		for (int i = 0; i < lNrSettings; i++)
 		{
-			CDSSSetting		cds;
-
+			CDSSSetting cds;
 			if (m_pSettings->GetItem(i, cds))
 				m_List.AddString(cds.m_strName);
-		};
-	};
+		}
+	}
 
 	UpdateControls();
 

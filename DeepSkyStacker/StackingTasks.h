@@ -5,7 +5,7 @@
 
 #include "BitmapExt.h"
 #include "FrameInfo.h"
-//#include "FrameList.h"
+#include "TaskInfo.h"
 
 
 /* ------------------------------------------------------------------- */
@@ -19,11 +19,11 @@ class	CPostCalibrationSettings
 {
 public :
 	bool				m_bHot;
-	LONG				m_lHotFilter;
+	int				m_lHotFilter;
 	double				m_fHotDetection;
 
 	bool				m_bCold;
-	LONG				m_lColdFilter;
+	int				m_lColdFilter;
 	double				m_fColdDetection;
 
 	bool				m_bSaveDeltaImage;
@@ -130,128 +130,6 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-class CTaskInfo
-{
-public :
-	DWORD						m_dwTaskID;
-	DWORD						m_dwGroupID;
-	PICTURETYPE					m_TaskType;
-	LONG						m_lISOSpeed;
-	LONG						m_lGain;
-	double						m_fExposure;
-	double						m_fAperture;
-	bool						m_bUnmodified;
-	bool						m_bDone;
-	CString						m_strOutputFile;
-	FRAMEINFOVECTOR				m_vBitmaps;
-	MULTIBITMAPPROCESSMETHOD	m_Method;
-	double						m_fKappa;
-	LONG						m_lNrIterations;
-	CSmartPtr<CMultiBitmap>		m_pMaster;
-
-private :
-	void	CopyFrom(const CTaskInfo & ti)
-	{
-		m_dwTaskID		= ti.m_dwTaskID;
-		m_dwGroupID		= ti.m_dwGroupID;
-		m_TaskType		= ti.m_TaskType;
-		m_lISOSpeed		= ti.m_lISOSpeed;
-		m_lGain			= ti.m_lGain;
-		m_fExposure		= ti.m_fExposure;
-		m_fAperture     = ti.m_fAperture;
-		m_vBitmaps		= ti.m_vBitmaps;
-		m_bDone			= ti.m_bDone;
-		m_bUnmodified	= ti.m_bUnmodified;
-		m_strOutputFile	= ti.m_strOutputFile;
-		m_Method		= ti.m_Method;
-		m_fKappa		= ti.m_fKappa;
-		m_lNrIterations	= ti.m_lNrIterations;
-		m_pMaster		= ti.m_pMaster;
-	};
-
-public :
-	CTaskInfo()
-	{
-		m_dwTaskID  = 0;
-		m_dwGroupID = 0;
-		m_lISOSpeed = 0;
-		m_lGain     = -1;
-		m_fExposure = 0.0;
-		m_fAperture = 0.0;
-		m_bDone	    = false;
-		m_Method	= MBP_MEDIAN;
-		m_fKappa	= 2.0;
-		m_lNrIterations = 5;
-		m_bUnmodified = false;
-        m_TaskType = PICTURETYPE(0);
-	};
-
-	CTaskInfo(const CTaskInfo & ti)
-	{
-		CopyFrom(ti);
-	};
-
-	const CTaskInfo & operator = (const CTaskInfo & ti)
-	{
-		CopyFrom(ti);
-		return (*this);
-	};
-
-	virtual ~CTaskInfo()
-	{
-	};
-
-	void	SetMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, LONG lNrIterations)
-	{
-		m_Method	= Method;
-		m_fKappa	= fKappa;
-		m_lNrIterations = lNrIterations;
-	};
-
-	void	CreateEmptyMaster(CMemoryBitmap * pBitmap)
-	{
-		m_pMaster.Attach(pBitmap->CreateEmptyMultiBitmap());
-		m_pMaster->SetNrBitmaps((LONG)m_vBitmaps.size());
-		m_pMaster->SetProcessingMethod(m_Method, m_fKappa, m_lNrIterations);
-	};
-
-	void	AddToMaster(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
-	{
-		if (m_pMaster)
-			m_pMaster->AddBitmap(pBitmap, pProgress);
-	};
-
-	bool	GetMaster(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
-	{
-		bool			bResult = false;
-
-		if (ppBitmap)
-		{
-			CSmartPtr<CMemoryBitmap>	pBitmap;
-
-			*ppBitmap = nullptr;
-			if (m_pMaster && m_pMaster->GetNrBitmaps() > 1)
-			{
-				bResult = m_pMaster->GetResult(&pBitmap, pProgress);
-				if (pBitmap)
-					pBitmap->SetMaster(true);
-			};
-			m_pMaster.Release();;
-			bResult = pBitmap.CopyTo(ppBitmap);
-		};
-
-		return bResult;
-	};
-
-	bool 	HasISOSpeed() const
-	{
-		// Has valid ISOSpeed value or no valid Gain value.
-		return m_lISOSpeed != 0 || m_lGain < 0;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
 bool	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap);
 void	ClearTaskCache();
 
@@ -329,11 +207,11 @@ private :
 	bool						m_bFlatUsed;
 	bool						m_bUsingBayer;
 	bool						m_bUsingColorImages;
-	LONG						m_lNrLightFrames;
-	LONG						m_lNrBiasFrames;
-	LONG						m_lNrDarkFrames;
-	LONG						m_lNrDarkFlatFrames;
-	LONG						m_lNrFlatFrames;
+	int							m_lNrLightFrames;
+	int							m_lNrBiasFrames;
+	int							m_lNrDarkFrames;
+	int							m_lNrDarkFlatFrames;
+	int							m_lNrFlatFrames;
 	double						m_fMaxExposureTime;
 
 public :
@@ -405,9 +283,7 @@ public :
 		return (*this);
 	};
 
-	~CAllStackingTasks()
-	{
-	};
+	~CAllStackingTasks() = default;
 
 	void	Clear()
 	{
@@ -473,23 +349,23 @@ public :
 		return m_bBiasUsed;
 	};
 
-	LONG	GetNrLightFrames()
+	int	GetNrLightFrames()
 	{
 		return m_lNrLightFrames;
 	};
-	LONG	GetNrBiasFrames()
+	int	GetNrBiasFrames()
 	{
 		return m_lNrBiasFrames;
 	};
-	LONG	GetNrDarkFrames()
+	int	GetNrDarkFrames()
 	{
 		return m_lNrDarkFrames;
 	};
-	LONG	GetNrFlatFrames()
+	int	GetNrFlatFrames()
 	{
 		return m_lNrFlatFrames;
 	};
-	LONG	GetNrDarkFlatFrames()
+	int	GetNrDarkFlatFrames()
 	{
 		return m_lNrDarkFlatFrames;
 	};
@@ -498,7 +374,7 @@ public :
 		return m_fMaxExposureTime;
 	};
 
-	void	AddFileToTask(const CFrameInfo & FrameInfo, DWORD dwGroupID = 0);
+	void	AddFileToTask(const CFrameInfo & FrameInfo, std::uint32_t dwGroupID = 0);
 	void	SetCustomRectangle(const CRect & rcCustom)
 	{
 		if (rcCustom.IsRectEmpty())
@@ -538,7 +414,7 @@ public :
 	void	ResetTasksStatus();
 	void	UpdateTasksMethods();
 
-	LONG	FindStackID(LPCTSTR szLightFrame);
+	int	FindStackID(LPCTSTR szLightFrame);
 
 	STACKINGMODE	GetStackingMode()
 	{
@@ -548,17 +424,11 @@ public :
 			return GetResultMode();
 	};
 
-	bool	DoOffsetTasks(CDSSProgress * pProgress);
-	bool	DoDarkTasks(CDSSProgress * pProgress);
-	bool	DoFlatTasks(CDSSProgress * pProgress);
-	bool	DoDarkFlatTasks(CDSSProgress * pProgress);
-	bool	DoAllPreTasks(CDSSProgress * pProgress)
-	{
-		return DoOffsetTasks(pProgress) &&
-			   DoDarkTasks(pProgress) &&
-			   DoDarkFlatTasks(pProgress) &&
-			   DoFlatTasks(pProgress);
-	};
+	bool DoOffsetTasks(CDSSProgress* pProgress);
+	bool DoDarkTasks(CDSSProgress* pProgress);
+	bool DoFlatTasks(CDSSProgress* pProgress);
+	bool DoDarkFlatTasks(CDSSProgress* pProgress);
+	bool DoAllPreTasks(CDSSProgress* pProgress);
 
 	__int64	ComputeNecessaryDiskSpace(CRect & rcOutput);
 	__int64	ComputeNecessaryDiskSpace();
@@ -588,7 +458,7 @@ public :
 	static  bool	GetSaveCalibratedDebayered();
 	static	void	ClearCache();
 	static  WORD	GetAlignmentMethod();
-	static  LONG	GetPixelSizeMultiplier();
+	static  int	GetPixelSizeMultiplier();
 	static  bool	GetChannelAlign();
 	static  bool	GetSaveIntermediateCometImages();
 	static  bool	GetApplyMedianFilterToCometImage();

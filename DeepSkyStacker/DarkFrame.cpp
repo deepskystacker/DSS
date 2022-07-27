@@ -6,6 +6,7 @@
 #include <set>
 #include <algorithm>
 #include "Filters.h"
+#include <omp.h>
 
 #include "TIFFUtil.h"
 
@@ -19,7 +20,7 @@ class CValuePair
 public :
 	WORD		m_wLightValue;
 	WORD		m_wDarkValue;
-	LONG		m_lCount;
+	int		m_lCount;
 
 private :
 	void	CopyFrom(const CValuePair & vp)
@@ -89,9 +90,9 @@ public :
 	void	SplitValuePairs(VALUEPAIRSET & sValuePairs)
 	{
 		ZFUNCTRACE_RUNTIME();
-		LONG				lNrValues = 0;
-		LONG				lNrThreshold;
-		LONG				lNrAdded = 0;
+		int				lNrValues = 0;
+		int				lNrThreshold;
+		int				lNrAdded = 0;
 		VALUEPAIRITERATOR	it;
 
 		for (it = sValuePairs.begin();it != sValuePairs.end();it++)
@@ -136,10 +137,10 @@ H(X) = 1/2 (1+ log(2*PI*(sigma*sigma)))
 static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG				lSize = (LONG)sValuePairs.size();
+	int				lSize = static_cast<int>(sValuePairs.size());
 	double				fMinEntropy = -1.0;
 	double				fSelectedk	= 0.0;
-	const LONG			MINNEGATIVE = 128;
+	constexpr int			MINNEGATIVE = 128;
 	std::vector<double>	vValues;
 
 	for (double k = 0.00;k<=5.0;k+=0.01)
@@ -147,16 +148,16 @@ static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 		// Compute cumulated entropy
 		VALUEPAIRITERATOR		it;
 		std::vector<WORD>		vHisto;
-		LONG					lNrPixels = 0;
+		int					lNrPixels = 0;
 
-		vHisto.resize((LONG)MINNEGATIVE*2+1);
+		vHisto.resize(MINNEGATIVE * 2 + 1);
 
 		for (it = sValuePairs.begin(); it != sValuePairs.end();it++)
 		{
 			if ((*it).m_wLightValue + MINNEGATIVE >= (double)(*it).m_wDarkValue * k)
 			{
-				LONG			lIndice = (double)(*it).m_wLightValue - (double)(*it).m_wDarkValue * k;
-				lIndice /= ((LONG)MAXWORD+1)/MINNEGATIVE;
+				int			lIndice = (double)(*it).m_wLightValue - (double)(*it).m_wDarkValue * k;
+				lIndice /= ((int)MAXWORD+1)/MINNEGATIVE;
 				lIndice += MINNEGATIVE;
 
 				if (lIndice >= 0)
@@ -169,7 +170,7 @@ static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 		// Compute Entropy
 		double					fEntropy = 0;
 
-		for (LONG i = 0;i<vHisto.size();i++)
+		for (int i = 0;i<vHisto.size();i++)
 		{
 			if (vHisto[i])
 			{
@@ -203,10 +204,10 @@ inline bool IsInStdDev(double fValue, double fMean, double fStdDev)
 static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG				lSize = (LONG)sValuePairs.size();
+	int				lSize = (int)sValuePairs.size();
 	double				fMinRMS = -1.0;
 	double				fSelectedk	= 0.0;
-	const LONG			MINNEGATIVE = MAXWORD;
+	constexpr int			MINNEGATIVE = MAXWORD;
 	std::vector<double>	vValues;
 	std::vector<double>	vEntropies;
 	double				fDarkMean = 0.0;
@@ -220,7 +221,7 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 		double					fDarkPowSum = 0.0;
 		double					fLightSum = 0.0;
 		double					fLightPowSum = 0.0;
-		LONG					lNrValues = 0;
+		int					lNrValues = 0;
 
 		for (it = sValuePairs.begin();it != sValuePairs.end();it++)
 		{
@@ -245,7 +246,7 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 		VALUEPAIRITERATOR		it;
 		double					fPowSum = 0.0;
 		double					fSum = 0.0;
-		LONG					lNrValues = 0;
+		int					lNrValues = 0;
 		double					fMaxValue = 0.0;
 
 		for (it = sValuePairs.begin(); it != sValuePairs.end();it++)
@@ -260,7 +261,7 @@ static double ComputeMinimumRMSFactor(VALUEPAIRSET & sValuePairs)
 						lNrValues += (*it).m_lCount;
 						fPowSum += (fValue*fValue)*(*it).m_lCount;
 						fSum	+= fValue * (*it).m_lCount;
-						fMaxValue = max(fMaxValue, fValue);
+						fMaxValue = std::max(fMaxValue, fValue);
 					};
 				};
 			}
@@ -295,7 +296,7 @@ static void	RetrictValues(VALUEPAIRSET & sValuePairs)
 	VALUEPAIRITERATOR		it;
 	double					fSum = 0.0;
 	double					fPowSum = 0.0;
-	LONG					lNrValues = 0;
+	int					lNrValues = 0;
 
 	for (it = sValuePairs.begin(); it != sValuePairs.end();it++)
 	{
@@ -369,7 +370,7 @@ class CSubSquares
 {
 public :
 	std::vector<CSubSquare>	m_vSubSquares;
-	LONG					m_lNrPixels;
+	int					m_lNrPixels;
 
 public :
 	CSubSquares()
@@ -381,15 +382,15 @@ public :
 	{
 	};
 
-	void	Init(LONG lWidth, LONG lHeight)
+	void	Init(int lWidth, int lHeight)
 	{
-		LONG		lSize = min(lWidth, lHeight);
+		int		lSize = std::min(lWidth, lHeight);
 
-		lSize = min(100L, lSize/10);
+		lSize = std::min(100, lSize / 10);
 		m_lNrPixels = 0;
 
-		for (LONG i = lSize;i<lWidth-2*lSize;i+=lSize)
-			for (LONG j = lSize;j<lHeight-2*lSize;j+=lSize)
+		for (int i = lSize;i<lWidth-2*lSize;i+=lSize)
+			for (int j = lSize;j<lHeight-2*lSize;j+=lSize)
 		{
 			CSubSquare			sq;
 
@@ -404,7 +405,7 @@ public :
 		};
 	};
 
-	LONG	GetNrPixels()
+	int GetNrPixels()
 	{
 		return m_lNrPixels;
 	};
@@ -416,7 +417,7 @@ void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR 
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELSET			sExcludedPixels;
-	LONG						i;
+	int						i;
 
 	vExcludedPixels.clear();
 	// First add hot pixels if any
@@ -434,8 +435,8 @@ void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR 
 		{
 			CRect &			rcStar = (*pStars)[i].m_rcStar;
 
-			for (LONG x = rcStar.left;x<=rcStar.right;x++)
-				for (LONG y = rcStar.top;y<=rcStar.bottom;y++)
+			for (int x = rcStar.left;x<=rcStar.right;x++)
+				for (int y = rcStar.top;y<=rcStar.bottom;y++)
 				{
 					CExcludedPixel	ep(x, y);
 
@@ -459,9 +460,9 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
-	LONG					i, j;
-	LONG					lWidth = pBitmap->RealWidth(),
-							lHeight = pBitmap->RealHeight();
+	int i, j;
+	int lWidth = pBitmap->RealWidth();
+	int lHeight = pBitmap->RealHeight();
 
 	VALUEPAIRSET			sRedValuePairs;
 	VALUEPAIRSET			sGreenValuePairs;
@@ -565,22 +566,22 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 								GreenStats,
 								BlueStats;
 
-		LONG					lNrNegativeReds = 0;
-		LONG					lNrNegativeBlues = 0;
-		LONG					lNrNegativeGreens = 0;
+		int					lNrNegativeReds = 0;
+		int					lNrNegativeBlues = 0;
+		int					lNrNegativeGreens = 0;
 
 
 		for (it = sRedValuePairs.begin();it != sRedValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				RedStats.AddValue(max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				RedStats.AddValue(std::max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		for (it = sGreenValuePairs.begin();it != sGreenValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				GreenStats.AddValue(max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				GreenStats.AddValue(std::max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		for (it = sBlueValuePairs.begin();it != sBlueValuePairs.end();it++)
 			if ((*it).m_lCount && (*it).m_wLightValue && (*it).m_wDarkValue)
-				BlueStats.AddValue(max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
+				BlueStats.AddValue(std::max(0.0, (double)(*it).m_wLightValue - fRatio * (*it).m_wDarkValue), (*it).m_lCount);
 
 		double					fSigmaRed	= RedStats.Sigma(),
 								fSigmaGreen = GreenStats.Sigma(),
@@ -631,7 +632,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
-	LONG					i, j, k;
+	int					i, j, k;
 
 	FillExcludedPixelList(pStars, vExcludedPixels);
 
@@ -649,9 +650,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 	};
 
 	CSubSquares				SubSquares;
-	LONG					lBestSquare = -1;
+	int					lBestSquare = -1;
 	double					fMinMean = 0.0;
-	LONG					lNrPixels = 0;
+	int					lNrPixels = 0;
 	CSubSquare				SubSquare;
 
 	SubSquares.Init(pBitmap->RealWidth(), pBitmap->RealHeight());
@@ -664,7 +665,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		CSubSquare &		sq = SubSquares.m_vSubSquares[k];
 		double				fSum = 0.0;
 		double				fPowSum = 0.0;
-		LONG				lNrValues = 0;
+		int				lNrValues = 0;
 
 		for (i = sq.m_rcSquare.left;i<=sq.m_rcSquare.right;i++)
 			for (j = sq.m_rcSquare.top;j<=sq.m_rcSquare.bottom;j++)
@@ -1001,12 +1002,12 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-IMAGEREGION	GetPixelRegion(LONG lX, LONG lY, LONG lWidth, LONG lHeight)
+IMAGEREGION	GetPixelRegion(int lX, int lY, int lWidth, int lHeight)
 {
 	IMAGEREGION				Result = IR_NONE;
-	LONG					lPosition;
+	int					lPosition;
 
-	lPosition = (10*max(1L, min(3L, lX*3/lWidth+1))+max(1L, min(3L, lY*3/lHeight+1)));
+	lPosition = (10 * std::max(1, std::min(3, lX * 3 / lWidth + 1)) + std::max(1, std::min(3, lY * 3 / lHeight + 1)));
 	switch (lPosition)
 	{
 	case 11 :
@@ -1047,7 +1048,7 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 {
 	ZFUNCTRACE_RUNTIME();
 	CMedianImageFilter		Filter;
-	LONG					lWidth = pBitmap->RealWidth(),
+	int					lWidth = pBitmap->RealWidth(),
 							lHeight = pBitmap->RealHeight();
 
 	std::vector<CHotCheckPixel>	vHots;
@@ -1055,10 +1056,10 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 	Filter.SetBitmap(pBitmap);
 	Filter.SetFilterSize(2);
 
-	for (LONG i = 0;i<vHotPixels.size();i++)
+	for (int i = 0;i<vHotPixels.size();i++)
 	{
 		// Compute the median around each hot pixel
-		LONG			X = vHotPixels[i].m_lX,
+		int			X = vHotPixels[i].m_lX,
 						Y = vHotPixels[i].m_lY;
 		IMAGEREGION		Region = GetPixelRegion(X, Y, lWidth, lHeight);
 
@@ -1097,14 +1098,14 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 		};
 	};
 
-	LONG					lNrCovered = 0;
+	int					lNrCovered = 0;
 	double					fSumHot    = 0,
 							fSumMedian = 0;
-	DWORD					dwCovered1 = 0,
+	std::uint32_t			dwCovered1 = 0,
 							dwCovered2 = 0;
 
 	std::sort(vHots.begin(), vHots.end());
-	for (LONG i = 0;i<vHots.size() && (lNrCovered!=18);i++)
+	for (int i = 0;i<vHots.size() && (lNrCovered!=18);i++)
 	{
 		if (!(dwCovered1 & vHots[i].m_Region) ||
 			!(dwCovered2 & vHots[i].m_Region))
@@ -1133,14 +1134,14 @@ void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXE
 void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	LONG			lWidth	= pBitmap->RealWidth(),
+	int			lWidth	= pBitmap->RealWidth(),
 					lHeight = pBitmap->RealHeight();
 	double			m_fMedianColdest = -1;
 
 	m_fMedianHotest = ComputeMedianValueInRect(pBitmap, m_rcHotest);
 	m_vMedianColdest.clear();
 
-	for (LONG k = 0;k<m_vrcColdest.size();k++)
+	for (int k = 0;k<m_vrcColdest.size();k++)
 	{
 		double		fValue;
 		fValue = ComputeMedianValueInRect(pBitmap, m_vrcColdest[k]);
@@ -1165,10 +1166,10 @@ double	CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap * pBitmap,
 	bool				bMonochrome = pBitmap->IsMonochrome();
 	bool				bCFA = pBitmap->IsCFA();
 
-	RGBHistogram.SetSize(256.0, (LONG)65536);
-	for (LONG i = rc.left;i<=rc.right;i++)
+	RGBHistogram.SetSize(256.0, 65536);
+	for (int i = rc.left; i <= rc.right; i++)
 	{
-		for (LONG j = rc.top;j<=rc.bottom;j++)
+		for (int j = rc.top; j <= rc.bottom; j++)
 		{
 			if (bCFA)
 			{
@@ -1225,10 +1226,10 @@ void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBit
 	ZFUNCTRACE_RUNTIME();
 	bool				bMonochrome = pBitmap->IsMonochrome();
 	bool				bCFA = pBitmap->IsCFA();
-	LONG				lWidth = pBitmap->RealWidth(),
+	int				lWidth = pBitmap->RealWidth(),
 						lHeight = pBitmap->RealHeight();
 
-	std::vector<LONG>	vColumns;
+	std::vector<int>	vColumns;
 
 	vColumns.reserve(6);
 
@@ -1251,9 +1252,9 @@ void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBit
 						pxMaxBlue;
 
 	// Inspect the 3 columns on each side to find the brighest pixel (in each color)
-	for (LONG j = 1;j<lHeight-1;j++)
+	for (int j = 1;j<lHeight-1;j++)
 	{
-		for (LONG i = 0;i<vColumns.size();i++)
+		for (int i = 0;i<vColumns.size();i++)
 		{
 			if (bMonochrome)
 			{
@@ -1346,7 +1347,7 @@ void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBit
 
 		double			fMax;
 
-		fMax = max(fMaxRed, max(fMaxGreen, fMaxBlue));
+		fMax = std::max(fMaxRed, std::max(fMaxGreen, fMaxBlue));
 		if (fMax == fMaxRed)
 		{
 			m_rcHotest = rcMaxRed;
@@ -1373,7 +1374,7 @@ void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBit
 	m_vrcColdest = vRects;
 	m_vMedianColdest.clear();
 
-	for (LONG k = 0;k<vRects.size();k++)
+	for (int k = 0;k<vRects.size();k++)
 	{
 		double			fValue;
 
@@ -1465,11 +1466,11 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 
 		if (LightAmpGlowParameters.m_fGrayValue>0 &&
 			m_AmpglowParameters.m_fGrayValue>0)
-			fAmpGlow = min(LightAmpGlowParameters.m_fGrayValue/m_AmpglowParameters.m_fGrayValue, 1.0);
+			fAmpGlow = std::min(LightAmpGlowParameters.m_fGrayValue/m_AmpglowParameters.m_fGrayValue, 1.0);
 		else
 			fAmpGlow = 1.0;
 
-		//fAmpGlow = min(fAmpGlow, fHotDark);
+		//fAmpGlow = std::min(fAmpGlow, fHotDark);
 	};
 };
 
@@ -1480,7 +1481,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 	ZFUNCTRACE_RUNTIME();
 
 	HOTPIXELVECTOR				vHotPixels;
-	LONG						i;
+	int						i;
 
 	fRedFactor	 = 1.0;
 	fGreenFactor = 1.0;
@@ -1497,8 +1498,8 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			{
 				CRect &			rcStar = (*pStars)[i].m_rcStar;
 
-				for (LONG x = rcStar.left;x<=rcStar.right;x++)
-					for (LONG y = rcStar.top;y<=rcStar.bottom;y++)
+				for (int x = rcStar.left;x<=rcStar.right;x++)
+					for (int y = rcStar.top;y<=rcStar.bottom;y++)
 					{
 						CExcludedPixel	ep(x, y);
 
@@ -1603,22 +1604,22 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bMonochrome = m_pMasterDark->IsMonochrome();
-	LONG				i, j;
+	int				i, j;
 
 	if (bMonochrome)
 	{
 		// Create an image holding the vertical averaged pixels
-		LONG						lWidth = m_pMasterDark->RealWidth(),
+		int						lWidth = m_pMasterDark->RealWidth(),
 									lHeight = m_pMasterDark->RealHeight();
 
 		for (i = 1;i<lWidth-1;i++)
 		{
 			bool					bLineInProgress = false;
 			bool					bLighterLine = false;
-			LONG					lStartY = 0;
-			LONG					lNrPixels = 0;
-			LONG					lNrOutPixels = 0;
-			LONG					lNrConsecutiveOutPixels = 0;
+			int					lStartY = 0;
+			int					lNrPixels = 0;
+			int					lNrOutPixels = 0;
+			int					lNrConsecutiveOutPixels = 0;
 
 			for (j = 0;j<lHeight;j++)
 			{
@@ -1656,7 +1657,7 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 							bLineInProgress = false;
 							if (lNrPixels > 10)
 							{
-								for (LONG k = lStartY;k<lStartY+lNrPixels-lNrConsecutiveOutPixels;k++)
+								for (int k = lStartY;k<lStartY+lNrPixels-lNrConsecutiveOutPixels;k++)
 								{
 									CHotPixel		hp(i, k);
 									m_vHotPixels.push_back(hp);
@@ -1680,7 +1681,7 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 			{
 				if (lNrPixels > 10)
 				{
-					for (LONG k = lStartY;k<lStartY+lNrPixels-lNrConsecutiveOutPixels;k++)
+					for (int k = lStartY;k<lStartY+lNrPixels-lNrConsecutiveOutPixels;k++)
 					{
 						CHotPixel		hp(i, k);
 						m_vHotPixels.push_back(hp);
@@ -1694,126 +1695,86 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-class CFindHotPixelTask1 : public CMultitask
+class CFindHotPixelTask1
 {
-public :
-	CRGBHistogram				m_RGBHistogram;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	bool						m_bMonochrome;
-	CDSSProgress *				m_pProgress;
+public:
+	CRGBHistogram m_RGBHistogram;
+	CSmartPtr<CMemoryBitmap> m_pBitmap;
+	CDSSProgress* m_pProgress;
 
-public :
-	CFindHotPixelTask1()
-    {
-        m_bMonochrome = false;
-        m_pProgress = nullptr;
-    }
-	virtual ~CFindHotPixelTask1() {};
+public:
+	CFindHotPixelTask1() : m_pProgress{ nullptr }
+	{}
 
-	void	Init(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+	~CFindHotPixelTask1() = default;
+
+	void Init(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 	{
-		m_pBitmap				 = pBitmap;
-		m_pProgress				 = pProgress;
-		m_bMonochrome			 = pBitmap->IsMonochrome();
+		m_pBitmap = pBitmap;
+		m_pProgress = pProgress;
+		m_RGBHistogram.SetSize(256.0, 65535);
+	}
 
-		m_RGBHistogram.SetSize(256.0, (LONG)65535);
-	};
-
-	virtual bool	DoTask(HANDLE hEvent)
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool				bResult = true;
-
-		LONG				i, j;
-		bool				bEnd = false;
-		MSG					msg;
-		LONG				lWidth = m_pBitmap->RealWidth();
-
-		CRGBHistogram		RGBHistogram;
-		RGBHistogram.SetSize(256.0, (LONG)65535);
-
-		PixelIterator		PixelIt;
-
-		m_pBitmap->GetIterator(&PixelIt);
-
-		// Create a message queue and signal the event
-		PeekMessage(&msg, nullptr, 0, 0, PM_NOREMOVE);
-		SetEvent(hEvent);
-		while (!bEnd && GetMessage(&msg, nullptr, 0, 0))
-		{
-			if (msg.message == WM_MT_PROCESS)
-			{
-				PixelIt->Reset(0, msg.wParam);
-				for (j = msg.wParam;j<msg.wParam+msg.lParam;j++)
-				{
-					for (i = 0;i<lWidth;i++)
-					{
-						double			fRed, fGreen, fBlue, fGray;
-
-						if (m_bMonochrome)
-						{
-							PixelIt->GetPixel(fGray);
-							//m_pBitmap->GetPixel(i, j, fGray);
-							RGBHistogram.AddValues(fGray, fGray, fGray);
-						}
-						else
-						{
-							PixelIt->GetPixel(fRed, fGreen, fBlue);
-							//m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
-							RGBHistogram.AddValues(fRed, fGreen, fBlue);
-						};
-						(*PixelIt)++;
-					};
-				};
-
-				SetEvent(hEvent);
-			}
-			else if (msg.message == WM_MT_STOP)
-				bEnd = true;
-		};
-
-		m_CriticalSection.Lock();
-		m_RGBHistogram.AddValues(RGBHistogram);
-		m_CriticalSection.Unlock();
-		return true;
-	};
-
-	virtual bool	Process()
-	{
-		ZFUNCTRACE_RUNTIME();
-		bool				bResult = true;
-		LONG				lHeight = m_pBitmap->RealHeight();
-		LONG				i = 0;
-		LONG				lStep;
-		LONG				lRemaining;
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors(GetNrThreads());
-		lStep		= max(1L, lHeight/50);
-		lRemaining	= lHeight;
-
-		while (i<lHeight)
-		{
-			LONG			lAdd = min(lStep, lRemaining);
-			DWORD			dwThreadId;
-
-			dwThreadId = GetAvailableThreadId();
-			PostThreadMessage(dwThreadId, WM_MT_PROCESS, i, lAdd);
-
-			i			+=lAdd;
-			lRemaining	-= lAdd;
-			if (m_pProgress)
-				m_pProgress->Progress2(nullptr, i);
-		};
-
-		CloseAllThreads();
-
-		if (m_pProgress)
-			m_pProgress->SetNrUsedProcessors();
-
-		return bResult;
-	};
+	void process();
 };
+
+template <class T> struct threadLocals {
+	T& bitmap;
+	PixelIterator PixelIt;
+	CRGBHistogram RGBHistogram;
+
+	explicit threadLocals(T& bm) : bitmap{ bm } {
+		bitmap->GetIterator(&PixelIt);
+		RGBHistogram.SetSize(256.0, 65535);
+	}
+	threadLocals(const threadLocals& rhs) : bitmap{ rhs.bitmap } {
+		bitmap->GetIterator(&PixelIt);
+		RGBHistogram.SetSize(256.0, 65535);
+	}
+};
+
+
+void CFindHotPixelTask1::process()
+{
+	ZFUNCTRACE_RUNTIME();
+	const int nrProcessors = CMultitask::GetNrProcessors();
+	const int height = m_pBitmap->RealHeight();
+	const int width = m_pBitmap->RealWidth();
+	int progress = 0;
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors(nrProcessors);
+
+	threadLocals threadVars(m_pBitmap);
+
+#pragma omp parallel default(none) firstprivate(threadVars) if(nrProcessors > 1)
+	{
+#pragma omp for schedule(guided, 100)
+		for (int row = 0; row < height; ++row)
+		{
+			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
+				m_pProgress->Progress2(nullptr, progress += nrProcessors);
+
+			threadVars.PixelIt->Reset(0, row);
+			double r, g, b;
+
+			for (int col = 0; col < width; ++col, (*threadVars.PixelIt)++)
+			{
+				threadVars.PixelIt->GetPixel(r, g, b); // GetPixel is virtual => works for monochrome bitmaps, too.
+				threadVars.RGBHistogram.AddValues(r, g, b);
+			}
+		}
+
+#pragma omp critical(OmpLockDarkFindHot)
+		{
+			m_RGBHistogram.AddValues(threadVars.RGBHistogram);
+		}
+	} // omp parallel
+
+	if (m_pProgress != nullptr)
+		m_pProgress->SetNrUsedProcessors();
+}
+
 
 /* ------------------------------------------------------------------- */
 
@@ -1821,13 +1782,13 @@ void	CDarkFrame::RemoveContiguousHotPixels(bool bCFA)
 {
 	ZFUNCTRACE_RUNTIME();
 	HOTPIXELVECTOR			vNewHotPixels;
-	LONG					lStep = bCFA ? 2 : 1;
-	LONG					lNrDiscarded = 0;
+	int					lStep = bCFA ? 2 : 1;
+	int					lNrDiscarded = 0;
 
-	for (LONG i = 0;i<m_vHotPixels.size();i++)
+	for (int i = 0;i<m_vHotPixels.size();i++)
 	{
 		CHotPixel &			hp = m_vHotPixels[i];
-		LONG				lNrHotNeighbors = 0;
+		int				lNrHotNeighbors = 0;
 
 		if (std::binary_search(m_vHotPixels.begin(), m_vHotPixels.end(), CHotPixel(hp.m_lX-lStep, hp.m_lY-lStep)))
 			lNrHotNeighbors++;
@@ -1865,7 +1826,7 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 	if (m_pMasterDark)
 	{
 		CRGBHistogram		RGBHistogram;
-		LONG				i, j;
+		int				i, j;
 		bool				bMonochrome = m_pMasterDark->IsMonochrome();
 
 		if (pProgress)
@@ -1876,34 +1837,9 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 			pProgress->Start2(strText, m_pMasterDark->RealHeight());
 		};
 
-		CFindHotPixelTask1	HotPixelTask1;
-
+		CFindHotPixelTask1 HotPixelTask1;
 		HotPixelTask1.Init(m_pMasterDark, pProgress);
-		HotPixelTask1.StartThreads();
-		HotPixelTask1.Process();
-
-		/*
-		RGBHistogram.SetSize(256.0, (LONG)65535);
-		for (j = 0;j<m_pMasterDark->RealHeight();j++)
-		{
-			for (i = 0;i<m_pMasterDark->Width();i++)
-			{
-				double			fRed, fGreen, fBlue, fGray;
-
-				if (bMonochrome)
-				{
-					m_pMasterDark->GetPixel(i, j, fGray);
-					RGBHistogram.AddValues(fGray, fGray, fGray);
-				}
-				else
-				{
-					m_pMasterDark->GetPixel(i, j, fRed, fGreen, fBlue);
-					RGBHistogram.AddValues(fRed, fGreen, fBlue);
-				};
-			};
-			if (pProgress)
-				pProgress->Progress2(nullptr, j+1);
-		};*/
+		HotPixelTask1.process();
 
 		if (pProgress)
 		{
@@ -1922,8 +1858,8 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 		fGreenThreshold = HotPixelTask1.m_RGBHistogram.GetGreenHistogram().GetMedian()+16.0 * HotPixelTask1.m_RGBHistogram.GetGreenHistogram().GetStdDeviation();
 		fBlueThreshold = HotPixelTask1.m_RGBHistogram.GetBlueHistogram().GetMedian()+16.0 * HotPixelTask1.m_RGBHistogram.GetBlueHistogram().GetStdDeviation();
 
-		LONG				lWidth  = m_pMasterDark->RealWidth();
-		LONG				lHeight = m_pMasterDark->RealHeight();
+		int				lWidth  = m_pMasterDark->RealWidth();
+		int				lHeight = m_pMasterDark->RealHeight();
 		PixelIterator		PixelIt;
 
 		m_pMasterDark->GetIterator(&PixelIt);
@@ -1977,16 +1913,16 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::GetValidNeighbors(LONG lX, LONG lY, HOTPIXELVECTOR & vPixels, LONG lRadius, BAYERCOLOR BayerColor)
+void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor)
 {
 	vPixels.clear();
-	for (LONG i = max(0L, lX-lRadius);i<=min(m_pMasterDark->RealWidth()-1,lX+lRadius);i++)
+	for (int i = std::max(0, lX - lRadius); i <= std::min(m_pMasterDark->RealWidth() - 1, lX + lRadius); i++)
 	{
-		for (LONG j = max(0L, lY-lRadius);j<=min(m_pMasterDark->RealHeight()-1, lY+lRadius);j++)
+		for (int j = std::max(0, lY - lRadius); j <= std::min(m_pMasterDark->RealHeight() - 1, lY + lRadius); j++)
 		{
 			if ((i != lX) || (j != lY))
 			{
-				LONG				lWeight;
+				int				lWeight;
 				bool				bAdd = false;
 
 				lWeight = labs(1+lRadius-labs(lX - i)) + labs(1+lRadius-labs(lY - j));
@@ -2011,7 +1947,7 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 	ZFUNCTRACE_RUNTIME();
 	if (pBitmap && m_vHotPixels.size())
 	{
-		LONG			i, j;
+		int			i, j;
 
 		// First set hot pixels to 0
 		for (i = 0;i<m_vHotPixels.size();i++)
@@ -2041,7 +1977,7 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 				HOTPIXELVECTOR		vPixels;
 				BAYERCOLOR			BayerColor = BAYER_UNKNOWN;
 				double				fValue = 0.0;
-				LONG				lTotalWeight = 0;
+				int				lTotalWeight = 0;
 
 				if (bCFA)
 					BayerColor = pBitmap->GetBayerColor(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY);
@@ -2071,7 +2007,7 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 				double				fRedValue	= 0.0,
 									fGreenValue = 0.0,
 									fBlueValue  = 0.0;
-				LONG				lTotalWeight = 0;
+				int				lTotalWeight = 0;
 
 				GetValidNeighbors(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY, vPixels, 1);
 				for (j = 0;j<vPixels.size();j++)
@@ -2133,11 +2069,6 @@ bool	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 				pProgress->Start2(strText, 0);
 			};
 			ComputeDarkFactorFromMedian(pTarget, fHotDark, fAmpGlow, pProgress);
-			/*CSmartPtr<CMemoryBitmap>		pAmpGlow;
-			CSmartPtr<CMemoryBitmap>		pDarkCurrent;
-
-			pAmpGlow.Attach(m_pAmpGlow->Clone());
-			Multiply(pAmpGlow, fAmpGlow, fAmpGlow, fAmpGlow, pProgress);*/
 
 			if (pProgress)
 			{
@@ -2146,14 +2077,6 @@ bool	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 			};
 			::Subtract(pTarget, m_pAmpGlow, pProgress, fAmpGlow, fAmpGlow, fAmpGlow);
 			::Subtract(pTarget, m_pDarkCurrent, pProgress, fHotDark, fHotDark, fHotDark);
-
-			// Now check that if modified dark current is removed from
-			// the target - there is no more negative pixels
-			/*pDarkCurrent.Attach(m_pDarkCurrent->Clone());
-			Multiply(pDarkCurrent, fHotDark, fHotDark, fHotDark, pProgress);
-
-			ComputeOptimalDistributionRatio(pTarget, pDarkCurrent, fHotDark, pProgress);
-			::Subtract(pTarget, pDarkCurrent, pProgress, fHotDark, fHotDark, fHotDark);*/
 		}
 		else if (m_fDarkFactor != 1.0)
 		{
