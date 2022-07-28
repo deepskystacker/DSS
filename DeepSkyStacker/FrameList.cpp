@@ -121,92 +121,70 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 
 		fprintf(hFile, "DSS file list\n");
 		fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
-		for (int j = 0;j<m_Jobs.m_vJobs.size();j++)
+		uint16_t groupId = 0;
+
+		for (LONG i = 0;i<m_vFiles.size();i++)
 		{
-			std::uint32_t dwGroupID = 0;
+			LONG		lItem = i;
+			LONG		lChecked = 0;
+			CString		strType;
 
-			if ((m_Jobs.m_vJobs[j].m_ID != MAINJOBID) ||
-				(m_Jobs.m_vJobs[j].m_RefID != GUID_NULL))
-
+			if (!m_vFiles[lItem].m_bRemoved)
 			{
-				CString			strGUID;
-				CString			strRefGUID;
-				CComBSTR		szGUID;
-				CComBSTR		szRefGUID;
-
-				StringFromCLSID(m_Jobs.m_vJobs[j].m_ID, &szGUID);
-				strGUID = szGUID;
-				StringFromCLSID(m_Jobs.m_vJobs[j].m_RefID, &szRefGUID);
-				strRefGUID = szRefGUID;
-				fprintf(hFile, "#JOBID#%s#%s#%s\n",
-                    (LPCSTR)CT2CA(strGUID, CP_UTF8),
-					(LPCSTR)CT2CA(m_Jobs.m_vJobs[j].m_strName, CP_UTF8),
-					(LPCSTR)CT2CA(strRefGUID, CP_UTF8));
-			};
-			for (int i = 0;i<m_vFiles.size();i++)
-			{
-				int		lItem = i;
-				int		lChecked = 0;
-				CString		strType;
-
-				if (!m_vFiles[lItem].m_bRemoved &&
-					(m_vFiles[lItem].m_JobID == m_Jobs.m_vJobs[j].m_ID))
+				if (groupId != m_vFiles[lItem].m_groupId)
 				{
-					if (dwGroupID != m_vFiles[lItem].m_dwGroupID)
-					{
-						dwGroupID = m_vFiles[lItem].m_dwGroupID;
-						fprintf(hFile, "#GROUPID#%ld\n", dwGroupID);
-					};
-					lChecked = m_vFiles[lItem].m_bChecked;
-					if (m_vFiles[lItem].IsLightFrame())
-					{
-						if (m_vFiles[lItem].m_bUseAsStarting)
-							strType = "reflight";
-						else
-							strType = "light";
-					}
-					else if (m_vFiles[lItem].IsDarkFrame())
-						strType = "dark";
-					else if (m_vFiles[lItem].IsDarkFlatFrame())
-						strType = "darkflat";
-					else if (m_vFiles[lItem].IsOffsetFrame())
-						strType = "offset";
-					else if (m_vFiles[lItem].IsFlatFrame())
-						strType = "flat";
-
-					//
-					// Check if this file is on the same drive as the file-list file
-					// if not we can't use relative paths and will need to save the
-					// absolute path the the file-list
-					//
-					TCHAR		szItemDrive[1 + _MAX_DRIVE];
-					_tsplitpath(m_vFiles[lItem].m_strFileName, szItemDrive, nullptr, nullptr, nullptr);
-
-					if (!_tcscmp(szDrive, szItemDrive))
-					{
-						//
-						// Convert m_strFileName to a relative path
-						//
-						PathRelativePathTo(szRelPath,
-							(LPCTSTR)strBaseDirectory,
-							FILE_ATTRIBUTE_DIRECTORY,
-							(LPCTSTR)(m_vFiles[lItem].m_strFileName),
-							FILE_ATTRIBUTE_NORMAL);
-
-						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
-                            (LPCSTR)CT2CA(strType, CP_UTF8),
-                            (LPCSTR)CT2CA(szRelPath, CP_UTF8));
-					}
-					else
-					{
-						fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
-							(LPCSTR)CT2CA(strType, CP_UTF8),
-							(LPCSTR)CT2CA(m_vFiles[lItem].m_strFileName, CP_UTF8));
-					}
+					groupId = m_vFiles[lItem].m_groupId;
+					fprintf(hFile, "#GROUPID#%hu\n", groupId);
 				};
+				lChecked = m_vFiles[lItem].m_bChecked;
+				if (m_vFiles[lItem].IsLightFrame())
+				{
+					if (m_vFiles[lItem].m_bUseAsStarting)
+						strType = "reflight";
+					else
+						strType = "light";
+				}
+				else if (m_vFiles[lItem].IsDarkFrame())
+					strType = "dark";
+				else if (m_vFiles[lItem].IsDarkFlatFrame())
+					strType = "darkflat";
+				else if (m_vFiles[lItem].IsOffsetFrame())
+					strType = "offset";
+				else if (m_vFiles[lItem].IsFlatFrame())
+					strType = "flat";
+
+				//
+				// Check if this file is on the same drive as the file-list file
+				// if not we can't use relative paths and will need to save the
+				// absolute path the the file-list
+				//
+				TCHAR		szItemDrive[1 + _MAX_DRIVE];
+				_tsplitpath(m_vFiles[lItem].m_strFileName, szItemDrive, nullptr, nullptr, nullptr);
+
+				if (!_tcscmp(szDrive, szItemDrive))
+				{
+					//
+					// Convert m_strFileName to a relative path
+					//
+					PathRelativePathTo(szRelPath,
+						(LPCTSTR)strBaseDirectory,
+						FILE_ATTRIBUTE_DIRECTORY,
+						(LPCTSTR)(m_vFiles[lItem].m_strFileName),
+						FILE_ATTRIBUTE_NORMAL);
+
+					fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
+                        (LPCSTR)CT2CA(strType, CP_UTF8),
+                        (LPCSTR)CT2CA(szRelPath, CP_UTF8));
+				}
+				else
+				{
+					fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
+						(LPCSTR)CT2CA(strType, CP_UTF8),
+						(LPCSTR)CT2CA(m_vFiles[lItem].m_strFileName, CP_UTF8));
+				}
 			};
 		};
-
+		
 		CWorkspace				workspace;
 
 		workspace.SaveToFile(hFile);
@@ -219,7 +197,7 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-static bool ParseLine(LPCTSTR szLine, int & lChecked, CString & strType, CString & strFile)
+static bool ParseLine(LPCTSTR szLine, std::int32_t & lChecked, CString & strType, CString & strFile)
 {
 	bool				bResult = false;
 	LPCTSTR				szPos = szLine;
@@ -270,7 +248,7 @@ static bool ParseLine(LPCTSTR szLine, int & lChecked, CString & strType, CString
 
 /* ------------------------------------------------------------------- */
 
-static bool	IsChangeGroupLine(LPCTSTR szLine, std::uint32_t& dwGroupID)
+static bool	IsChangeGroupLine(LPCTSTR szLine, DWORD & groupId)
 {
 	bool				bResult = false;
 	CString				strLine = szLine;
@@ -286,7 +264,7 @@ static bool	IsChangeGroupLine(LPCTSTR szLine, std::uint32_t& dwGroupID)
 			strGroup += *szPos;
 			szPos++;
 		};
-		dwGroupID = _ttol(strGroup);
+		groupId = _ttol(strGroup);
 		bResult = true;
 	};
 
@@ -298,8 +276,7 @@ static bool	IsChangeGroupLine(LPCTSTR szLine, std::uint32_t& dwGroupID)
 void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 {
 	FILE *				hFile;
-	std::uint32_t		dwGroupID = 0;
-	GUID				dwJobID = MAINJOBID;
+	DWORD				groupId = 0;
 
 	SetCursor(::LoadCursor(nullptr, IDC_WAIT));
 	hFile = _tfopen(szFileList, _T("rt"));
@@ -353,7 +330,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 			while (fgets(szLine, sizeof(szLine), hFile))
 			{
-				int			lChecked;
+				std::int32_t checkState(Qt::Unchecked);
 				CString			strType;
 				CString			strFile;
 				CString			strLine((LPCTSTR)CA2CTEX<sizeof(szLine)>(szLine, CP_UTF8));
@@ -363,10 +340,10 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 				if (workspace.ReadFromString(strLine))
 				{
 				}
-				else if (IsChangeGroupLine(strLine, dwGroupID))
+				else if (IsChangeGroupLine(strLine, groupId))
 				{
 				}
-				else if (ParseLine(strLine, lChecked, strType, strFile))
+				else if (ParseLine(strLine, checkState, strType, strFile))
 				{
 					PICTURETYPE		Type = PICTURETYPE_UNKNOWN;
 
@@ -409,15 +386,15 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 						{
 							fclose(hTemp);
 
-							CListBitmap			lb;
+							ListBitMap			lb;
 
 							if (lb.InitFromFile(pszAbsoluteFile, Type))
 							{
-								lb.m_dwGroupID = dwGroupID;
-								if (!AddFile(pszAbsoluteFile, dwGroupID, dwJobID, Type, lChecked))
+								lb.m_groupId = groupId;
+								if (!AddFile(pszAbsoluteFile, groupId, Type, (checkState == Qt::Checked)))
 								{
 									// Add to the list
-									lb.m_bChecked = lChecked;
+									lb.m_bChecked = static_cast<Qt::CheckState>(checkState);
 									if (lb.m_PictureType == PICTURETYPE_LIGHTFRAME)
 									{
 										lb.m_bUseAsStarting = bUseAsStarting;
@@ -429,7 +406,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 											lb.m_bRegistered = true;
 											lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
 											lb.m_fFWHM			 = bmpInfo.m_fFWHM;
-											lb.m_lNrStars		 = static_cast<decltype(CListBitmap::m_lNrStars)>(bmpInfo.m_vStars.size());
+											lb.m_lNrStars		 = static_cast<decltype(ListBitMap::m_lNrStars)>(bmpInfo.m_vStars.size());
 											lb.m_bComet			 = bmpInfo.m_bComet;
 											lb.m_SkyBackground	 = bmpInfo.m_SkyBackground;
 										}
@@ -463,48 +440,37 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 
 /* ------------------------------------------------------------------- */
 
-void CFrameList::FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID)
+void CFrameList::FillTasks(CAllStackingTasks & tasks)
 {
 	int				lNrComets = 0;
 	bool				bReferenceFrameHasComet = false;
 	bool				bReferenceFrameSet = false;
 	double				fMaxScore = -1.0;
 
-	if (m_vFiles.size())
+
+	for (LONG i = 0;i<m_vFiles.size();i++)
 	{
-		CJob &				Job = m_Jobs.GetJob(dwJobID);
-
-		if (!Job.IsNullJob())
+		if (!m_vFiles[i].m_bRemoved &&
+			m_vFiles[i].m_bChecked == Qt::Checked)
 		{
-			for (int i = 0;i<m_vFiles.size();i++)
+			if (m_vFiles[i].m_bUseAsStarting)
 			{
-				if (!m_vFiles[i].m_bRemoved &&
-					m_vFiles[i].m_bChecked &&
-					(m_vFiles[i].m_JobID == dwJobID))
-				{
-					if (m_vFiles[i].m_bUseAsStarting)
-					{
-						bReferenceFrameSet = true;
-						bReferenceFrameHasComet = m_vFiles[i].m_bComet;
-					}
-					if (!bReferenceFrameSet && (m_vFiles[i].m_fOverallQuality > fMaxScore))
-					{
-						fMaxScore = m_vFiles[i].m_fOverallQuality;
-						bReferenceFrameHasComet = m_vFiles[i].m_bComet;
-					};
-					tasks.AddFileToTask(m_vFiles[i], m_vFiles[i].m_dwGroupID);
-					if (m_vFiles[i].m_bComet)
-						lNrComets++;
-				};
+				bReferenceFrameSet = true;
+				bReferenceFrameHasComet = m_vFiles[i].m_bComet;
+			}
+			if (!bReferenceFrameSet && (m_vFiles[i].m_fOverallQuality > fMaxScore))
+			{
+				fMaxScore = m_vFiles[i].m_fOverallQuality;
+				bReferenceFrameHasComet = m_vFiles[i].m_bComet;
 			};
-
-			if (lNrComets>1 && bReferenceFrameHasComet)
-				tasks.SetCometAvailable(true);
-
-			tasks.m_dwJobID = Job.m_ID;
-			tasks.m_strJob  = Job.m_strName;
+			tasks.AddFileToTask(m_vFiles[i], m_vFiles[i].m_groupId);
+			if (m_vFiles[i].m_bComet)
+				lNrComets++;
 		};
 	};
+
+	if (lNrComets>1 && bReferenceFrameHasComet)
+		tasks.SetCometAvailable(true);
 };
 
 /* ------------------------------------------------------------------- */
@@ -540,10 +506,10 @@ int CFrameList::GetNrUnregisteredCheckedLightFrames(int lGroupID)
 	{
 		if (!m_vFiles[i].m_bRemoved &&
 			m_vFiles[i].IsLightFrame() &&
-			m_vFiles[i].m_bChecked &&
+			m_vFiles[i].m_bChecked == Qt::Checked &&
 			!m_vFiles[i].m_bRegistered)
 		{
-			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_dwGroupID))
+			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_groupId))
 				lResult++;
 		};
 	};

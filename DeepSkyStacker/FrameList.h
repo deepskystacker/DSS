@@ -7,10 +7,6 @@
 #include "DSSTools.h"
 #include "MatchingStars.h"
 
-// {89AEE9BB-89E3-47ef-BEB5-A0819D957C77}
-const GUID MAINJOBID =
-{ 0x89aee9bb, 0x89e3, 0x47ef, { 0xbe, 0xb5, 0xa0, 0x81, 0x9d, 0x95, 0x7c, 0x77 } };
-
 #include "StackingTasks.h"
 #include "RegisterEngine.h"
 
@@ -66,18 +62,17 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-class CListBitmap : public CFrameInfo
+class ListBitMap : public CFrameInfo
 {
 public :
 	bool					m_bRemoved;
-	std::uint32_t			m_dwGroupID;
-	GUID					m_JobID;
+	uint16_t				m_groupId;
 	bool					m_bUseAsStarting;
 	CString					m_strType;
 	CString					m_strPath;
 	CString					m_strFile;
 	bool					m_bRegistered;
-	bool					m_bChecked;
+	Qt::CheckState			m_bChecked;
 	double					m_fOverallQuality;
 	double					m_fFWHM;
 	double					m_dX;
@@ -96,13 +91,11 @@ public :
 
 
 protected :
-	void	CopyFrom(const CListBitmap & lb)
+	void	CopyFrom(const ListBitMap & lb)
 	{
 		CFrameInfo::CopyFrom(lb);
 
-		m_dwGroupID			= lb.m_dwGroupID;
-		m_JobID				= lb.m_JobID;
-		m_strFile			= lb.m_strFile;
+		m_groupId			= lb.m_groupId;
 		m_bRemoved			= lb.m_bRemoved;
 		m_bUseAsStarting	= lb.m_bUseAsStarting;
 		m_strType			= lb.m_strType;
@@ -128,14 +121,13 @@ protected :
 	};
 
 public :
-	CListBitmap()
+	ListBitMap()
 	{
-		m_dwGroupID			= 0;
-		m_JobID				= MAINJOBID;
+		m_groupId			= 0;
 		m_bRemoved			= false;
 		m_bUseAsStarting	= false;
 		m_bRegistered		= false;
-		m_bChecked			= false;
+		m_bChecked			= Qt::Unchecked;
 		m_fOverallQuality	= 0;
 		m_fFWHM				= 0;
 		m_dX				= 0;
@@ -147,12 +139,12 @@ public :
 		m_bComet			= 0;
 	};
 
-	CListBitmap(const CListBitmap & lb)
+	ListBitMap(const ListBitMap & lb)
 	{
 		CopyFrom(lb);
 	};
 
-	CListBitmap & operator = (const CListBitmap & lb)
+	ListBitMap & operator = (const ListBitMap & lb)
 	{
 		CopyFrom(lb);
 		return (*this);
@@ -167,6 +159,16 @@ public :
 	{
 		return m_bDeltaComputed;
 	};
+
+	inline bool operator ==(const ListBitMap& rhs) const
+	{
+		return (m_strPath == rhs.m_strPath && m_strFile == rhs.m_strFile);
+	}
+
+	inline bool operator !=(const ListBitMap& rhs) const
+	{
+		return !(*this == rhs);
+	}
 
 	void	EraseFile()
 	{
@@ -188,157 +190,7 @@ public :
 	};
 };
 
-typedef std::vector<CListBitmap>		LISTBITMAPVECTOR;
-
-/* ------------------------------------------------------------------- */
-
-class CJob
-{
-public :
-	CString					m_strName;
-	GUID					m_ID;
-	GUID					m_RefID;
-
-private :
-	void	CopyFrom(const CJob & j)
-	{
-		m_strName	= j.m_strName;
-		m_ID		= j.m_ID;
-		m_RefID		= j.m_RefID;
-	};
-
-public :
-	CJob()
-	{
-		m_strName.Empty();
-		m_ID	= GUID_NULL;
-		m_RefID = GUID_NULL;
-	};
-
-	~CJob() {};
-
-	CJob(const CJob & j)
-	{
-		CopyFrom(j);
-	};
-
-	CJob & operator = (const CJob & j)
-	{
-		CopyFrom(j);
-		return (*this);
-	};
-
-	bool	IsNullJob()
-	{
-		return (m_ID == GUID_NULL);
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-class CJobList
-{
-public :
-	std::vector<CJob>		m_vJobs;
-	CJob					m_NullJob;
-
-private :
-	void		CopyFrom(const CJobList & jl)
-	{
-		m_vJobs = jl.m_vJobs;
-	};
-
-public :
-	CJobList() {};
-	~CJobList() {};
-
-	CJobList(const CJobList & jl)
-	{
-		CopyFrom(jl);
-	};
-
-	CJobList & operator = (const CJobList & jl)
-	{
-		CopyFrom(jl);
-		return (*this);
-	};
-
-	CJob &	AddJob(LPCTSTR szName, GUID dwID = GUID_NULL)
-	{
-		// Check if the ID already exists
-		bool				bFound = false;
-
-		if (dwID == GUID_NULL)
-			::CoCreateGuid(&dwID);
-
-		for (int i = 0;i<m_vJobs.size();i++)
-		{
-			if (m_vJobs[i].m_ID == dwID)
-				bFound = true;
-		};
-		if (bFound)
-			::CoCreateGuid(&dwID);
-
-		CJob		job;
-
-		job.m_strName = szName;
-		job.m_ID	  = dwID;
-
-		m_vJobs.push_back(job);
-
-		return m_vJobs[m_vJobs.size()-1];
-	};
-
-	CJob & GetJob(LPCTSTR szName)
-	{
-		int			lIndice = -1;
-
-		for (int i = 0;i<m_vJobs.size() && lIndice<0;i++)
-		{
-			if (!m_vJobs[i].m_strName.CompareNoCase(szName))
-				lIndice = i;
-		};
-
-		return lIndice>=0 ? m_vJobs[lIndice] : m_NullJob;
-	};
-
-	CJob & GetJob(GUID const& dwID)
-	{
-		int			lIndice = -1;
-
-		for (int i = 0;i<m_vJobs.size() && lIndice<0;i++)
-		{
-			if (m_vJobs[i].m_ID == dwID)
-				lIndice = i;
-		};
-
-		return lIndice>=0 ? m_vJobs[lIndice] : m_NullJob;
-	};
-
-	bool	RemoveJob(GUID const& dwID)
-	{
-		int			lIndice = -1;
-		for (int i = 0;i<m_vJobs.size() && lIndice<0;i++)
-		{
-			if (m_vJobs[i].m_ID == dwID)
-				lIndice = i;
-		};
-
-		if (lIndice>=0)
-		{
-			std::vector<CJob>::iterator it = m_vJobs.begin();
-			it+=lIndice;
-			m_vJobs.erase(it);
-		};
-
-		return lIndice>=0 ? true : false;
-	};
-
-	void	AddMainJob()
-	{
-		AddJob(nullptr, MAINJOBID);
-	};
-};
+typedef std::vector<ListBitMap>		LISTBITMAPVECTOR;
 
 /* ------------------------------------------------------------------- */
 
@@ -346,34 +198,35 @@ class CFrameList
 {
 public :
 	LISTBITMAPVECTOR	m_vFiles;
-	CJobList			m_Jobs;
 	bool				m_bDirty;
+	std::uint16_t		m_groupId;
 
 public :
-	CFrameList()
+	CFrameList() :
+		m_bDirty(false),
+		m_groupId(0)
 	{
-		m_Jobs.AddMainJob();
-		m_bDirty = false;
 	};
 
 	virtual ~CFrameList()
 	{
 	};
 
+	std::uint16_t	currentGroupId()
+	{
+		return m_groupId;
+	}
+
 	void	SaveListToFile(LPCTSTR szFile);
 	void	LoadFilesFromList(LPCTSTR szFileList);
 
-	CJobList & GetJobs()
+	bool	AddFile(LPCTSTR szFile, uint16_t groupId = 0, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
 	{
-		return m_Jobs;
+		//AddFileToList(szFile, groupId, PictureType, bCheck);
+		return true;
 	};
 
-	virtual bool AddFile(LPCTSTR szFile, std::uint32_t dwGroupID = 0, GUID dwJobID = GUID_NULL, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
-	{
-		return false;
-	};
-
-	void	FillTasks(CAllStackingTasks & tasks, GUID const& dwJobID = MAINJOBID);
+	void	FillTasks(CAllStackingTasks & tasks);
 	bool	GetReferenceFrame(CString & strReferenceFrame);
 	int	GetNrUnregisteredCheckedLightFrames(int lGroupID = -1);
 
