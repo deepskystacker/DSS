@@ -73,6 +73,9 @@ public slots:
     void cometButtonChecked();
     void saveButtonPressed();
 
+signals:
+    void selectRectChanged(QRectF rect);
+
 private:
     SelectionMode mode;
     DSSImageView* imageView;

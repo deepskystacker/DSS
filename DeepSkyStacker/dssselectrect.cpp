@@ -39,8 +39,24 @@
 #include <QPainter>
 #include <QPen>
 
+#include <algorithm>
+using std::min;
+using std::max;
+
+#define _WIN32_WINNT _WIN32_WINNT_WIN7
+#include <afx.h>
+#include <afxcmn.h>
+#include <afxcview.h>
+
+#include "ZTrace.h"
+
+extern bool		g_bShowRefStars;
+
 #include "dssimageview.h"
 #include "dssselectrect.h"
+#include "DSSCommon.h"
+#include "commonresource.h"
+#include "DeepStackerDlg.h"
 
 enum class SelectionMode : quint8
 {
@@ -67,6 +83,15 @@ DSSSelectRect::DSSSelectRect(QWidget* parent) :
     setAttribute(Qt::WA_TransparentForMouseEvents);
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_WState_ExplicitShowHide);
+    CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
+    StackingDlg* pStackingDlg(nullptr);
+
+    if (pDlg)
+    {
+        pStackingDlg = &(pDlg->GetStackingDlg());
+        connect(this, SIGNAL(selectRectChanged(QRectF)),
+            pStackingDlg, SLOT(setSelectionRect(QRectF)));
+    };
 }
 
 /*!
@@ -591,6 +616,7 @@ void DSSSelectRect::updateSelection()
             selectRect.setBottom(rect3xDrizzle.bottom());
         };
     };
+    emit selectRectChanged(selectRect);
 }
 
 void DSSSelectRect::getDrizzleRectangles(QRectF& rect2xDrizzle, QRectF& rect3xDrizzle) noexcept
