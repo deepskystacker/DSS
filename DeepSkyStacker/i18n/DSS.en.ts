@@ -178,28 +178,28 @@ Copyright NASA</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../AlignmentParameters.cpp" line="36"/>
+        <location filename="../AlignmentParameters.cpp" line="34"/>
         <source>Automatic
 
 The alignment method is automatically selected depending on the number of available stars.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../AlignmentParameters.cpp" line="40"/>
+        <location filename="../AlignmentParameters.cpp" line="38"/>
         <source>Bilinear Alignment
 
 The Bilinear Alignment is used in all cases.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../AlignmentParameters.cpp" line="44"/>
+        <location filename="../AlignmentParameters.cpp" line="42"/>
         <source>Bisquared Alignment
 
 The Bisquared Alignment is used when at least 25 stars are available, else the Bilinear Alignment method is used.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../AlignmentParameters.cpp" line="48"/>
+        <location filename="../AlignmentParameters.cpp" line="46"/>
         <source>Bicubic Alignment
 
 The Bicubic method is used when at least 40 stars are available, then the Bisquared method is used if 25 to 39 stars are available, then the Bilinear method is used when less than 25 stars are available.</source>
@@ -370,6 +370,17 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>DSSImageView</name>
+    <message>
+        <location filename="../dssimageview.cpp" line="72"/>
+        <source>Ctrl++ or Ctrl+= to zoom in
+Ctrl+- to zoom out
+ or use the mouse wheel to zoom
+Ctrl+4 to toggle 4-Corners mode</source>
         <translation></translation>
     </message>
 </context>
@@ -1486,25 +1497,25 @@ The comet and the stars will be sharp. This process takes twice as long.</source
         <translation></translation>
     </message>
     <message>
-        <location filename="../FrameInfo.h" line="261"/>
+        <location filename="../FrameInfo.h" line="273"/>
         <source>%1 hr %2 mn %3 s </source>
         <comment>IDS_EXPOSURETIME3</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FrameInfo.h" line="266"/>
+        <location filename="../FrameInfo.h" line="278"/>
         <source>%1 mn %2 s </source>
         <comment>IDS_EXPOSURETIME2</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FrameInfo.h" line="270"/>
+        <location filename="../FrameInfo.h" line="282"/>
         <source>%1 s </source>
         <comment>IDS_EXPOSURETIME1</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../FrameInfo.h" line="276"/>
+        <location filename="../FrameInfo.h" line="288"/>
         <source>1/%1 s</source>
         <comment>IDS_EXPOSUREFORMAT_INF</comment>
         <translation></translation>
@@ -1892,10 +1903,86 @@ The comet and the stars will be sharp. This process takes twice as long.</source
 <context>
     <name>StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="1963"/>
+        <location filename="../StackingDlg.cpp" line="99"/>
+        <location filename="../StackingDlg.cpp" line="1071"/>
+        <source>Open Light Frames...</source>
+        <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="104"/>
+        <location filename="../StackingDlg.cpp" line="1076"/>
+        <source>Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="105"/>
+        <location filename="../StackingDlg.cpp" line="1077"/>
+        <source>Windows Bitmaps (*.bmp)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="106"/>
+        <location filename="../StackingDlg.cpp" line="1078"/>
+        <source>JPEG or PNG Files (*.jpg *.jpeg *.png)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="107"/>
+        <location filename="../StackingDlg.cpp" line="1079"/>
+        <source>TIFF Files (*.tif *.tiff)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="108"/>
+        <location filename="../StackingDlg.cpp" line="1080"/>
+        <source>RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="109"/>
+        <location filename="../StackingDlg.cpp" line="1081"/>
+        <source>FITS Files (*.fits *.fit *.fts)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="110"/>
+        <location filename="../StackingDlg.cpp" line="1082"/>
+        <source>All Files (*)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="180"/>
+        <source>DeepSkyStacker version %1 is available for download.</source>
+        <comment>IDS_VERSIONAVAILABLE</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="199"/>
+        <location filename="../StackingDlg.cpp" line="2166"/>
         <source>Internet version check error code %1:
 %2</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingDlg.ui" line="163"/>
+        <source>Tab 1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/StackingDlg.ui" line="173"/>
+        <source>Tab 2</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../group.h" line="29"/>
+        <source>Main Group</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../group.h" line="33"/>
+        <source>Group %1</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -2056,19 +2143,6 @@ compared to the standard deviation (%1).</source>
         <source>Dark Multiplication Factor</source>
         <comment>IDC_USEDARKFACTOR</comment>
         <translation></translation>
-    </message>
-</context>
-<context>
-    <name>StackingingDlg</name>
-    <message>
-        <location filename="../StackingDlg.ui" line="171"/>
-        <source>Tab 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.ui" line="176"/>
-        <source>Tab 2</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
