@@ -1519,7 +1519,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce
 				// Register this bitmap
 				CLightFrameInfo		lfi;
 
-				ZTRACE_RUNTIME("Register %s", (LPCTSTR)pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName);
+				ZTRACE_RUNTIME("Register %s", CT2CA((LPCTSTR)pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName));
 
 				lfi.SetProgress(pProgress);
 				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName, false, false);
