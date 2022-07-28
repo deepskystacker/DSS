@@ -12,7 +12,7 @@ class QUrl;
 
 #include "DSSCommon.h"
 #include "StackingTasks.h"
-#include "Workspace.h"
+#include "CWorkspace.h"
 
 
 class RecommendationItem
