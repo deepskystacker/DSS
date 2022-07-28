@@ -130,6 +130,8 @@ public:
 
 /* ------------------------------------------------------------------- */
 
+/* ------------------------------------------------------------------- */
+
 bool	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap);
 void	ClearTaskCache();
 
@@ -217,8 +219,6 @@ private :
 public :
 	std::vector<CTaskInfo>		m_vTasks;
 	std::vector<CStackingInfo>	m_vStacks;
-	GUID						m_dwJobID;
-	CString						m_strJob;
 
 private :
 	CTaskInfo *	FindBestMatchingTask(const CTaskInfo & ti, PICTURETYPE TaskType);
@@ -232,8 +232,6 @@ private :
 		m_rcCustom			= tasks.m_rcCustom;
 		m_vTasks			= tasks.m_vTasks;
 		m_vStacks			= tasks.m_vStacks;
-		m_dwJobID			= tasks.m_dwJobID;
-		m_strJob			= tasks.m_strJob;
 		m_bUsingBayer		= tasks.m_bUsingBayer;
 		m_bUsingColorImages = tasks.m_bUsingColorImages;
 
@@ -257,7 +255,6 @@ public :
 		m_bUsingFITS   = false;
 		m_bUseCustomRectangle = false;
 		m_bCometAvailable	  = false;
-		m_dwJobID		= GUID_NULL;
 		m_bDarkUsed		= false;
 		m_bBiasUsed		= false;
 		m_bFlatUsed		= false;
@@ -374,7 +371,7 @@ public :
 		return m_fMaxExposureTime;
 	};
 
-	void	AddFileToTask(const CFrameInfo & FrameInfo, std::uint32_t dwGroupID = 0);
+	void	AddFileToTask(const CFrameInfo & FrameInfo, uint16_t dwGroupID = 0);
 	void	SetCustomRectangle(const CRect & rcCustom)
 	{
 		if (rcCustom.IsRectEmpty())

@@ -30,7 +30,7 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 
 /* ------------------------------------------------------------------- */
 
-bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
+bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress, CMemoryBitmap** ppBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1261,20 +1261,20 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 	if (pCurrentTask)
 	{
-		if (pCurrentTask->m_dwGroupID)
+		if (pCurrentTask->m_groupID)
 		{
-			if (pNewTask->m_dwGroupID == pCurrentTask->m_dwGroupID)
+			if (pNewTask->m_groupID == pCurrentTask->m_groupID)
 				bResult = true;
 		}
 		else
 		{
-			if ((pNewTask->m_dwGroupID == BaseTask.m_dwGroupID) ||
-				 !pNewTask->m_dwGroupID)
+			if ((pNewTask->m_groupID == BaseTask.m_groupID) ||
+				 !pNewTask->m_groupID)
 				bResult = true;
 		};
 	}
-	else if ((pNewTask->m_dwGroupID == BaseTask.m_dwGroupID) ||
-		     !pNewTask->m_dwGroupID)
+	else if ((pNewTask->m_groupID == BaseTask.m_groupID) ||
+		     !pNewTask->m_groupID)
 		bResult = true;
 
 	return bResult;
@@ -1282,7 +1282,7 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, std::uint32_t dwGroupID)
+void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, uint16_t dwGroupID)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1291,7 +1291,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, std::uint32_
 	for (int i = 0;i<m_vTasks.size() && !bFound;i++)
 	{
 		if ((m_vTasks[i].m_TaskType == FrameInfo.m_PictureType) &&
-			(m_vTasks[i].m_dwGroupID == dwGroupID))
+			(m_vTasks[i].m_groupID == dwGroupID))
 		{
 			// Check ISO, gain and exposure time
 			if ((m_vTasks[i].HasISOSpeed() ? (m_vTasks[i].m_lISOSpeed == FrameInfo.m_lISOSpeed) : (m_vTasks[i].m_lGain == FrameInfo.m_lGain)) &&
@@ -1309,7 +1309,7 @@ void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, std::uint32_
 		CTaskInfo			ti;
 
 		ti.m_dwTaskID  = (int)m_vTasks.size()+1;
-		ti.m_dwGroupID = dwGroupID;
+		ti.m_groupID = dwGroupID;
 		ti.m_fExposure = FrameInfo.m_fExposure;
 		ti.m_fAperture = FrameInfo.m_fAperture;
 		ti.m_lISOSpeed = FrameInfo.m_lISOSpeed;
@@ -1383,7 +1383,7 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 					{
 						if (pResult)
 						{
-							if ((pResult->m_dwGroupID == m_vTasks[j].m_dwGroupID) &&
+							if ((pResult->m_groupID == m_vTasks[j].m_groupID) &&
 								     (pResult->m_vBitmaps.size() < m_vTasks[j].m_vBitmaps.size()))
 								pResult = &m_vTasks[j];
 						}
@@ -1703,7 +1703,7 @@ bool CAllStackingTasks::DoOffsetTasks(CDSSProgress * pProgress)
 			{
 				ZTRACE_RUNTIME("------------------------------\nCreate Master Offset");
 				bResult = m_vStacks[i].DoOffsetTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCTSTR)m_vStacks[i].m_pOffsetTask->m_strOutputFile);
+				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1731,14 +1731,14 @@ bool CAllStackingTasks::DoDarkTasks(CDSSProgress * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCTSTR)m_vStacks[i].m_pOffsetTask->m_strOutputFile);
+					ZTRACE_RUNTIME("Load Master Offset: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkTask;
 
 				bResult = m_vStacks[i].DoDarkTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCTSTR)m_vStacks[i].m_pDarkTask->m_strOutputFile);
+				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pDarkTask->m_strOutputFile,CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1764,14 +1764,14 @@ bool CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCTSTR)m_vStacks[i].m_pOffsetTask->m_strOutputFile);
+					ZTRACE_RUNTIME("Load Master Offset: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile,CP_ACP));
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkFlatTask;
 
 				bResult = m_vStacks[i].DoDarkFlatTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCTSTR)m_vStacks[i].m_pDarkFlatTask->m_strOutputFile);
+				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pDarkFlatTask->m_strOutputFile, CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1806,14 +1806,14 @@ bool CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCTSTR)m_vStacks[i].m_pOffsetTask->m_strOutputFile);
+					ZTRACE_RUNTIME("Load Master Offset: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pFlatTask;
 
 				bResult = m_vStacks[i].DoFlatTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCTSTR)m_vStacks[i].m_pFlatTask->m_strOutputFile);
+				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pFlatTask->m_strOutputFile, CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
