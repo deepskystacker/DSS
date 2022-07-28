@@ -27,7 +27,7 @@ private :
 	bool				m_bAscending;
 	CDSSProgress *		m_pProgress;
 	CImageList			m_ImageList;
-	std::uint32_t		m_dwCurrentGroupID;
+	uint16_t			currentGroupId;
 	GUID				m_dwCurrentJobID;
 	std::vector<int>	m_vVisibles;
 	bool				m_bRefreshNeeded;
@@ -48,54 +48,39 @@ public:
 // Operations
 public:
 	void	Initialize();
-	void	AddFileToList(LPCTSTR szFile, std::uint32_t dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
-	virtual bool AddFile(LPCTSTR szFile, std::uint32_t dwGroupID, GUID dwJobID, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false) override
+	void	AddFileToList(LPCTSTR szFile, uint16_t groupId, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1);
+	virtual bool AddFile(LPCTSTR szFile, uint16_t groupId, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
 	{
-		AddFileToList(szFile, dwGroupID, dwJobID, PictureType, bCheck);
+		AddFileToList(szFile, groupId, PictureType, bCheck);
 		return true;
 	};
 
-	void	SetCurrentGroupID(std::uint32_t dwGroupID)
+	void	SetCurrentGroupID(uint16_t groupId)
 	{
-		if (m_dwCurrentGroupID != dwGroupID)
+		if (currentGroupId != groupId)
 		{
-			m_dwCurrentGroupID = dwGroupID;
+			currentGroupId = groupId;
 			SetItemCount(0);
 			RefreshList();
 		};
 	};
 
-	void	SetCurrentJobID(GUID const& dwJobID)
+	uint16_t	GetCurrentGroupID()
 	{
-		if (m_dwCurrentJobID != dwJobID)
+		return currentGroupId;
+	};
+
+	uint16_t	GetLastGroupID()
+	{
+		uint16_t			result = 0;
+
+		for (LONG i = 0;i<m_vFiles.size();i++)
 		{
-			m_dwCurrentJobID = dwJobID;
-			SetItemCount(0);
-			RefreshList();
-		};
-	};
-
-	std::uint32_t GetCurrentGroupID()
-	{
-		return m_dwCurrentGroupID;
-	};
-
-	GUID	GetCurrentJobID()
-	{
-		return m_dwCurrentJobID;
-	};
-
-	std::uint32_t GetLastGroupID()
-	{
-		std::uint32_t dwResult = 0;
-
-		for (const auto& file : m_vFiles)
-		{
-			if (!file.m_bRemoved)
-				dwResult = std::max(dwResult, file.m_dwGroupID);
+			if (!m_vFiles[i].m_bRemoved)
+				result = max(result, m_vFiles[i].m_groupId);
 		};
 
-		return dwResult;
+		return result;
 	};
 
 	int		CompareItems(int lItem1, int lItem2);
@@ -145,7 +130,7 @@ public:
 
 		nIndice = FindIndice(szFileName);
 		if (nIndice>=0)
-			bResult = m_vFiles[nIndice].m_bChecked;
+			bResult = m_vFiles[nIndice].m_bChecked == Qt::Checked;
 
 		return bResult;
 	};
@@ -198,7 +183,14 @@ private:
 		//Change check box
 		auto& file = m_vFiles[m_vVisibles[nItem]];
 
-		file.m_bChecked = !file.m_bChecked;
+		if (file.m_bChecked == Qt::Checked)
+		{
+			file.m_bChecked = Qt::Unchecked;
+		}
+		else
+		{
+			file.m_bChecked = Qt::Checked;
+		}
 
 		//And redraw
 		RedrawItems(nItem, nItem);
@@ -211,14 +203,14 @@ public:
 
 	void	SortList(int nSubItem);
 	void	UpdateItemScores(LPCTSTR szFileName);
-	void	UpdateCheckedItemScores();
+	void	updateCheckedItemScores();
 	void	BlankCheckedItemScores();
 	void	ClearOffsets();
 
 	void	SaveList(CMRUList & MRUList, CString & strFileList);
 	void	LoadList(CMRUList & MRUList, CString & strFileList);
 
-	const CListBitmap & GetItem(int nIndice);
+	const ListBitMap & GetItem(int nIndice);
 
 	// Generated message map functions
 protected:

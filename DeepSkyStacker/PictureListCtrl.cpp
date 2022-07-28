@@ -93,10 +93,8 @@ CPictureListCtrl::CPictureListCtrl()
 	m_lSortColumn		= -1;
 	m_bAscending		= false;
 	m_pProgress			= nullptr;
-	m_dwCurrentGroupID	= 0;
+	currentGroupId	= 0;
 	m_bRefreshNeeded	= false;
-
-	m_dwCurrentJobID	= MAINJOBID;
 }
 
 CPictureListCtrl::~CPictureListCtrl()
@@ -124,7 +122,7 @@ static int	GetListVersion()
 {
 	QSettings			settings;
 
-	return settings.value("ListVersion", (uint)0).toUInt();
+	return settings.value("ListVersion", (uint)(0)).toInt();
 };
 
 static void SetListVersion(int lVersion = LISTVERSION)
@@ -277,7 +275,7 @@ int	CPictureListCtrl::CompareItems(int lItem1, int lItem2)
 {
 	int lResult = 0;
 
-	if (m_vFiles[lItem1].m_dwGroupID == m_vFiles[lItem2].m_dwGroupID)
+	if (m_vFiles[lItem1].m_groupId == m_vFiles[lItem2].m_groupId)
 	{
 		switch (m_lSortColumn)
 		{
@@ -419,7 +417,7 @@ int	CPictureListCtrl::CompareItems(int lItem1, int lItem2)
 			break;
 		};
 	}
-	else if (m_vFiles[lItem1].m_dwGroupID < m_vFiles[lItem2].m_dwGroupID)
+	else if (m_vFiles[lItem1].m_groupId < m_vFiles[lItem2].m_groupId)
 		lResult = -1;
 	else
 		lResult = 1;
@@ -457,7 +455,7 @@ void CPictureListCtrl::SortList(int nSubItem)
 	else
 		SetSortColumn(-(m_lSortColumn+1));
 
-	RefreshList();
+	// Tell the TableView the data has changed.
 };
 
 /* ------------------------------------------------------------------- */
@@ -497,7 +495,7 @@ void CPictureListCtrl::RefreshList()
 	// Get Item count for current group
 	for (int i = 0; i < m_vFiles.size(); i++)
 	{
-		if (!m_vFiles[i].m_bRemoved && (m_vFiles[i].m_dwGroupID == m_dwCurrentGroupID))
+		if (!m_vFiles[i].m_bRemoved && (m_vFiles[i].m_groupId == currentGroupId))
 		{
 			lItemCount++;
 			m_vVisibles.push_back(i);
@@ -548,7 +546,7 @@ void CPictureListCtrl::RefreshList()
 
 /* ------------------------------------------------------------------- */
 
-void CPictureListCtrl::AddFileToList(LPCTSTR szFile, std::uint32_t dwGroupID, GUID const& dwJobID, PICTURETYPE PictureType, bool bCheck, int nItem)
+void CPictureListCtrl::AddFileToList(LPCTSTR szFile, uint16_t groupId, PICTURETYPE PictureType, bool bCheck, int nItem)
 {
 	ZFUNCTRACE_RUNTIME();
 	CString				strFile = szFile;
@@ -577,10 +575,9 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, std::uint32_t dwGroupID, GU
 
 	if (bAdd || bUpdate)
 	{
-		CListBitmap			lb;
+		ListBitMap			lb;
 
-		lb.m_dwGroupID = dwGroupID;
-		lb.m_JobID   = dwJobID;
+		lb.m_groupId = groupId;
 
 		if (lb.InitFromFile(szFile, PictureType))
 		{
@@ -614,7 +611,7 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, std::uint32_t dwGroupID, GU
 			{
 				//nItem = InsertItem(GetItemCount(), "", nImage);
 				if (bCheck)
-					lb.m_bChecked = true;
+					lb.m_bChecked = Qt::Checked;
 					//SetCheck(nItem, true);
 			}
 			else
@@ -644,7 +641,7 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, std::uint32_t dwGroupID, GU
 					lb.m_bRegistered = true;
 					lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
 					lb.m_fFWHM			 = bmpInfo.m_fFWHM;
-					lb.m_lNrStars		 = static_cast<decltype(CListBitmap::m_lNrStars)>(bmpInfo.m_vStars.size());
+					lb.m_lNrStars		 = static_cast<decltype(ListBitMap::m_lNrStars)>(bmpInfo.m_vStars.size());
 					lb.m_bComet			 = bmpInfo.m_bComet;
 					lb.m_SkyBackground	 = bmpInfo.m_SkyBackground;
 					lb.m_bUseAsStarting	 = (PictureType == PICTURETYPE_REFLIGHTFRAME);
@@ -713,8 +710,13 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, std::uint32_t dwGroupID, GU
 
 void CPictureListCtrl::ChangePictureType(int nItem, PICTURETYPE PictureType)
 {
-	const CString& strFileName = m_vFiles[m_vVisibles[nItem]].m_strFileName;
-	AddFileToList(strFileName, m_dwCurrentGroupID, m_dwCurrentJobID, PictureType, false, nItem);
+	LONG			lIndice;
+	CString			strFileName;
+
+	lIndice = m_vVisibles[nItem];
+	strFileName = m_vFiles[lIndice].m_strFileName;
+
+	AddFileToList(strFileName, currentGroupId, PictureType, false, nItem);
 };
 
 /* ------------------------------------------------------------------- */
@@ -929,7 +931,7 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 			else
 			{
 				if (file.m_bDeltaComputed)
-					strValue.Format(_T("%.2f °"), rad2Deg(file.m_fAngle));
+					strValue.Format(_T("%.2f ï¿½"), rad2Deg(file.m_fAngle));
 				else
 					strValue = _T("NC");
 			};
@@ -1017,7 +1019,7 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
         pItem->mask |= LVIF_STATE;
         pItem->stateMask = LVIS_STATEIMAGEMASK;
 
-		if(file.m_bChecked)
+		if(file.m_bChecked == Qt::Checked)
         {
             //Turn check box on
             pItem->state = INDEXTOSTATEIMAGEMASK(2);
@@ -1054,18 +1056,6 @@ bool CPictureListCtrl::GetTransformation(LPCTSTR szFile, CBilinearParameters& Tr
 
 /* ------------------------------------------------------------------- */
 
-void CPictureListCtrl::FillJobs(CAllStackingJobs& jobs)
-{
-	for (const CJob& job : m_Jobs.m_vJobs)
-	{
-		CAllStackingTasks tasks;
-		FillTasks(tasks, job.m_ID);
-		jobs.m_vStackingTasks.push_back(tasks);
-	}
-}
-
-/* ------------------------------------------------------------------- */
-
 void CPictureListCtrl::CheckBest(double fPercent)
 {
 	std::vector<CScoredLightFrame> vLightFrames;
@@ -1080,8 +1070,8 @@ void CPictureListCtrl::CheckBest(double fPercent)
 	const int lLast = static_cast<int>(fPercent * vLightFrames.size() / 100.0);
 	std::sort(vLightFrames.begin(), vLightFrames.end());
 
-	for (int i = 0; i < vLightFrames.size(); i++)
-		m_vFiles[vLightFrames[i].m_dwIndice].m_bChecked = (i <= lLast);
+	for (size_t i = 0;i<vLightFrames.size();i++)
+		m_vFiles[vLightFrames[i].m_dwIndice].m_bChecked = (i<=lLast) ? Qt::Checked : Qt::Unchecked;
 
 	m_bDirty = true;
 	RefreshList();
@@ -1093,10 +1083,12 @@ void CPictureListCtrl::UnCheckNonStackable()
 {
 	for (auto& file : m_vFiles)
 	{
-		if (!file.m_bRemoved && file.m_bChecked && file.IsLightFrame())
+		if (!file.m_bRemoved &&
+			file.m_bChecked == Qt::Checked &&
+			  file.IsLightFrame())
 		{
 			if (!file.IsDeltaComputed())
-				file.m_bChecked = false;
+				file.m_bChecked = Qt::Unchecked;
 		};
 	};
 
@@ -1231,11 +1223,11 @@ void CPictureListCtrl::OnRButtonDown( UINT nFlags, CPoint pt)
 				m_bDirty = true;
 				break;
 			case IDM_CHECK :
-				m_vFiles[lIndice].m_bChecked = true;
+				m_vFiles[lIndice].m_bChecked = Qt::Checked;
 				m_bDirty = true;
 				break;
 			case IDM_UNCHECK :
-				m_vFiles[lIndice].m_bChecked = false;
+				m_vFiles[lIndice].m_bChecked = Qt::Unchecked;
 				m_bDirty = true;
 				break;
 			case IDM_CHANGETOFRAME :
@@ -1341,7 +1333,7 @@ bool CPictureListCtrl::GetFirstCheckedLightFrame(CString& strFileName)
 	for (size_t i = 0; i < m_vFiles.size() && !bResult; i++)
 	{
 		const auto& file = m_vFiles[i];
-		if (!file.m_bRemoved && file.IsLightFrame() && file.m_bChecked)
+		if (!file.m_bRemoved && file.IsLightFrame() && file.m_bChecked == Qt::Checked)
 		{
 			strFileName = file.m_strFileName;
 			bResult = true;
@@ -1381,7 +1373,7 @@ int	CPictureListCtrl::FindIndice(LPCTSTR szFileName)
 
 /* ------------------------------------------------------------------- */
 
-const CListBitmap& CPictureListCtrl::GetItem(int nIndice)
+const ListBitMap & CPictureListCtrl::GetItem(int nIndice)
 {
 	return m_vFiles[m_vVisibles[nIndice]];
 };
@@ -1413,8 +1405,8 @@ void CPictureListCtrl::CheckAbove(double fThreshold)
 	for (auto& file : m_vFiles)
 	{
 		if (!file.m_bRemoved && file.IsLightFrame())
-			file.m_bChecked = file.m_fOverallQuality >= fThreshold;
-	}
+			file.m_bChecked = (file.m_fOverallQuality >= fThreshold) ? Qt::Checked : Qt::Unchecked;
+	};
 
 	m_bDirty = true;
 	RefreshList();
@@ -1427,8 +1419,8 @@ void CPictureListCtrl::CheckAll(bool bCheck)
 	for (auto& file : m_vFiles)
 	{
 		if (!file.m_bRemoved)
-			file.m_bChecked = bCheck;
-	}
+			file.m_bChecked = bCheck ? Qt::Checked : Qt::Unchecked;
+	};
 
 	m_bDirty = true;
 	RefreshList();
@@ -1441,8 +1433,8 @@ void CPictureListCtrl::CheckAllDarks(bool bCheck)
 	for (auto& file : m_vFiles)
 	{
 		if (!file.m_bRemoved && file.IsDarkFrame())
-			file.m_bChecked = bCheck;
-	}
+			file.m_bChecked = bCheck ? Qt::Checked : Qt::Unchecked;
+	};
 	m_bDirty = true;
 	RefreshList();
 };
@@ -1454,8 +1446,8 @@ void CPictureListCtrl::CheckAllFlats(bool bCheck)
 	for (auto& file : m_vFiles)
 	{
 		if (!file.m_bRemoved && file.IsFlatFrame())
-			file.m_bChecked = bCheck;
-	}
+			file.m_bChecked = bCheck ? Qt::Checked : Qt::Unchecked;
+	};
 
 	m_bDirty = true;
 	RefreshList();
@@ -1468,8 +1460,8 @@ void CPictureListCtrl::CheckAllOffsets(bool bCheck)
 	for (auto& file : m_vFiles)
 	{
 		if (!file.m_bRemoved && file.IsOffsetFrame())
-			file.m_bChecked = bCheck;
-	}
+			file.m_bChecked = bCheck ? Qt::Checked : Qt::Unchecked;
+	};
 
 	m_bDirty = true;
 	RefreshList();
@@ -1482,8 +1474,8 @@ void CPictureListCtrl::CheckAllLights(bool bCheck)
 	for (auto& file : m_vFiles)
 	{
 		if (!file.m_bRemoved && file.IsLightFrame())
-			file.m_bChecked = bCheck;
-	}
+			file.m_bChecked = bCheck ? Qt::Checked : Qt::Unchecked;
+	};
 
 	m_bDirty = true;
 	RefreshList();
@@ -1496,7 +1488,7 @@ void CPictureListCtrl::CheckImage(LPCTSTR szImage, bool bCheck)
 	const int lIndice = FindIndice(szImage);
 	if (lIndice >= 0)
 	{
-		m_vFiles[lIndice].m_bChecked = bCheck;
+		m_vFiles[lIndice].m_bChecked = bCheck ? Qt::Checked : Qt::Unchecked;
 		RefreshList();
 	}
 	m_bDirty = true;
@@ -1580,11 +1572,13 @@ void CPictureListCtrl::UpdateItemScores(LPCTSTR szFileName)
 
 /* ------------------------------------------------------------------- */
 
-void CPictureListCtrl::UpdateCheckedItemScores()
+void CPictureListCtrl::updateCheckedItemScores()
 {
 	for (auto& file : m_vFiles)
 	{
-		if (!file.m_bRemoved && file.m_bChecked && file.IsLightFrame())
+		if (!file.m_bRemoved &&
+			file.m_bChecked == Qt::Checked &&
+			file.IsLightFrame())
 		{
 			CLightFrameInfo bmpInfo;
 			bmpInfo.SetBitmap(file.m_strFileName, false, false);
@@ -1611,16 +1605,6 @@ void CPictureListCtrl::UpdateCheckedItemScores()
 
 /* ------------------------------------------------------------------- */
 
-void CPictureListCtrl::BlankCheckedItemScores()
-{
-	for (auto& file : m_vFiles)
-	{
-		if (!file.m_bRemoved && file.m_bChecked && file.IsLightFrame())
-			file.m_bRegistered = false;
-	}
-
-	RefreshList();
-}
 
 /* ------------------------------------------------------------------- */
 
@@ -1629,9 +1613,11 @@ int CPictureListCtrl::GetNrCheckedFrames(int lGroupID)
 	int lResult = 0;
 	for (const auto& file : m_vFiles)
 	{
-		if (!file.m_bRemoved && file.IsLightFrame() && file.m_bChecked)
+		if (!file.m_bRemoved &&
+			file.IsLightFrame() &&
+			file.m_bChecked == Qt::Checked)
 		{
-			if ((lGroupID < 0) || (lGroupID == file.m_dwGroupID))
+			if ((lGroupID < 0) || (lGroupID == file.m_groupId))
 				lResult++;
 		}
 	}
@@ -1646,9 +1632,11 @@ int CPictureListCtrl::GetNrCheckedDarks(int lGroupID)
 	int lResult = 0;
 	for (const auto& file : m_vFiles)
 	{
-		if (!file.m_bRemoved && file.IsDarkFrame() && file.m_bChecked)
+		if (!file.m_bRemoved &&
+			file.IsDarkFrame() &&
+			file.m_bChecked == Qt::Checked)
 		{
-			if ((lGroupID < 0) || (lGroupID == file.m_dwGroupID))
+			if ((lGroupID < 0) || (lGroupID == file.m_groupId))
 				lResult++;
 		}
 	}
@@ -1663,9 +1651,11 @@ int CPictureListCtrl::GetNrCheckedFlats(int lGroupID)
 	int lResult = 0;
 	for (const auto& file : m_vFiles)
 	{
-		if (!file.m_bRemoved && file.IsFlatFrame() && file.m_bChecked)
+		if (!file.m_bRemoved &&
+			file.IsFlatFrame() &&
+			file.m_bChecked == Qt::Checked)
 		{
-			if ((lGroupID < 0) || (lGroupID == file.m_dwGroupID))
+			if ((lGroupID < 0) || (lGroupID == file.m_groupId))
 				lResult++;
 		}
 	}
@@ -1680,9 +1670,11 @@ int CPictureListCtrl::GetNrCheckedDarkFlats(int lGroupID)
 	int lResult = 0;
 	for (const auto& file : m_vFiles)
 	{
-		if (!file.m_bRemoved && file.IsDarkFlatFrame() && file.m_bChecked)
+		if (!file.m_bRemoved &&
+			file.IsDarkFlatFrame() &&
+			file.m_bChecked == Qt::Checked)
 		{
-			if ((lGroupID < 0) || (lGroupID == file.m_dwGroupID))
+			if ((lGroupID < 0) || (lGroupID == file.m_groupId))
 				lResult++;
 		}
 	}
@@ -1697,9 +1689,11 @@ int CPictureListCtrl::GetNrCheckedOffsets(int lGroupID)
 	int lResult = 0;
 	for (const auto& file : m_vFiles)
 	{
-		if (!file.m_bRemoved && file.IsOffsetFrame() && file.m_bChecked)
+		if (!file.m_bRemoved &&
+			file.IsOffsetFrame() &&
+			file.m_bChecked == Qt::Checked)
 		{
-			if ((lGroupID < 0) || (lGroupID == file.m_dwGroupID))
+			if ((lGroupID < 0) || (lGroupID == file.m_groupId))
 				lResult++;
 		}
 	}
@@ -1716,7 +1710,7 @@ int CPictureListCtrl::GetNrFrames(int lGroupID)
 	{
 		if (!file.m_bRemoved)
 		{
-			if ((lGroupID < 0) || (lGroupID == file.m_dwGroupID))
+			if ((lGroupID < 0) || (lGroupID == file.m_groupId))
 				lResult++;
 		}
 	}
@@ -1730,12 +1724,11 @@ bool CPictureListCtrl::AreCheckedPictureCompatible()
 {
 	bool				bResult = true;
 	bool				bFirst = true;
-	CListBitmap			lb;
+	ListBitMap			lb;
 
-	for (size_t i = 0; i < m_vFiles.size() && bResult; i++)
+	for (const auto& file : m_vFiles)
 	{
-		const auto& file = m_vFiles[i];
-		if (!file.m_bRemoved && file.m_bChecked)
+		if (!file.m_bRemoved && file.m_bChecked  == Qt::Checked)
 		{
 			if (bFirst)
 			{
