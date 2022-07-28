@@ -1,12 +1,15 @@
 #ifndef __WORKSPACE_H__
 #define __WORKSPACE_H__
+
+#include <filesystem>
 #include <memory>
 #include <QString>
 #include <QVariant>
+namespace fs = std::filesystem;
 
-class CWorkspaceSettings;
+class WorkSpaceSettings;
 
-class CWorkspaceSetting
+class WorkSpaceSetting
 {
 private :
 	QString					keyName;
@@ -14,12 +17,12 @@ private :
 	bool					dirty;
 
 public :
-	CWorkspaceSetting(const QString& name, const QVariant& value = QVariant())
+	WorkSpaceSetting(const QString& name, const QVariant& value = QVariant())
 		: keyName(name), Value(value), dirty(true)
 	{
 	};
 
-	CWorkspaceSetting & operator = (const CWorkspaceSetting & rhs)
+	WorkSpaceSetting & operator = (const WorkSpaceSetting & rhs)
 	{
 		keyName = rhs.keyName;
 		Value = rhs.Value;
@@ -27,7 +30,7 @@ public :
 		return (*this);
 	};
 
-	bool operator < (const CWorkspaceSetting & s) const
+	bool operator < (const WorkSpaceSetting & s) const
 	{
 		if (keyName < s.keyName)
 			return true;
@@ -37,13 +40,13 @@ public :
 			return keyName < s.keyName;
 	};
 
-	bool operator != (const CWorkspaceSetting & s) const
+	bool operator != (const WorkSpaceSetting & s) const
 	{
 		return (keyName != s.keyName);
 	};
 
-	CWorkspaceSetting &	readSetting();
-	CWorkspaceSetting &	saveSetting();
+	WorkSpaceSetting &	readSetting();
+	WorkSpaceSetting &	saveSetting();
 
 	bool	isDirty(bool bClear)
 	{
@@ -60,8 +63,8 @@ public :
 		return keyName;
 	};
 
-	CWorkspaceSetting &	setValue(const CWorkspaceSetting & ws);
-	CWorkspaceSetting &	setValue(const QVariant& value);
+	WorkSpaceSetting &	setValue(const WorkSpaceSetting & ws);
+	WorkSpaceSetting &	setValue(const QVariant& value);
 
 	inline QVariant value() const
 	{
@@ -71,13 +74,13 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-typedef std::vector<CWorkspaceSetting>				WORKSPACESETTINGVECTOR;
+typedef std::vector<WorkSpaceSetting>				WORKSPACESETTINGVECTOR;
 typedef WORKSPACESETTINGVECTOR::iterator			WORKSPACESETTINGITERATOR;
 
 class CWorkspace
 {
 private:
-	std::shared_ptr <CWorkspaceSettings > pSettings;
+	std::shared_ptr <WorkSpaceSettings > pSettings;
 public:
 	CWorkspace();
 
@@ -95,9 +98,9 @@ public:
 	void	readSettings();
 	void	saveSettings();
 	void	ReadFromFile(FILE * hFile);
-	void	ReadFromFile(LPCTSTR szFile);
+	void	ReadFromFile(const fs::path& fileName);
 	void	SaveToFile(FILE * hFile);
-	void	SaveToFile(LPCTSTR szFile);
+	void	SaveToFile(const fs::path& fileName);
 	bool	ReadFromString(LPCTSTR szString);
 	void	ResetToDefault();
 
