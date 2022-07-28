@@ -29,7 +29,6 @@ using namespace Gdiplus;
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
-CString INPUTFILE_FILTERS;
 CString OUTPUTFILE_FILTERS;
 CString	OUTPUTLIST_FILTERS;
 CString SETTINGFILE_FILTERS;
@@ -336,7 +335,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 		QCoreApplication::setOrganizationName("DeepSkyStacker");
 		QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 		QCoreApplication::setApplicationName("DeepSkyStacker5");
+
+		// High DPI support
 		QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
 		QApplication* app = qApp;
 
@@ -362,8 +364,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 
 		ZTRACE_RUNTIME("Set UI Language - ok");
 
-
-		INPUTFILE_FILTERS.LoadString(IDS_FILTER_INPUT);
 		OUTPUTFILE_FILTERS.LoadString(IDS_FILTER_OUTPUT);
 		OUTPUTLIST_FILTERS.LoadString(IDS_LISTFILTER_OUTPUT);
 		SETTINGFILE_FILTERS.LoadString(IDS_FILTER_SETTINGFILE);
