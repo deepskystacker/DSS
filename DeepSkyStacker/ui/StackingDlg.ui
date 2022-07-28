@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>632</width>
+    <width>711</width>
     <height>870</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>801</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
@@ -30,7 +36,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="QLabel" name="Information">
+          <widget class="QLabel" name="information">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -113,7 +119,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="QLabel" name="picture">
+          <widget class="DSSImageView" name="picture" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -126,24 +132,6 @@
              <height>300</height>
             </size>
            </property>
-           <property name="maximumSize">
-            <size>
-             <width>1080</width>
-             <height>720</height>
-            </size>
-           </property>
-           <property name="frameShape">
-            <enum>QFrame::Box</enum>
-           </property>
-           <property name="frameShadow">
-            <enum>QFrame::Sunken</enum>
-           </property>
-           <property name="lineWidth">
-            <number>2</number>
-           </property>
-           <property name="text">
-            <string notr="true"/>
-           </property>
           </widget>
          </item>
         </layout>
@@ -151,13 +139,13 @@
       </layout>
      </widget>
      <widget class="QWidget" name="layoutWidget_2">
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
         <widget class="QLabel" name="listInfo">
          <property name="minimumSize">
           <size>
            <width>0</width>
-           <height>17</height>
+           <height>25</height>
           </size>
          </property>
          <property name="styleSheet">
@@ -168,43 +156,59 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QTreeWidget" name="pictures">
-         <column>
-          <property name="text">
-           <string notr="true">1</string>
-          </property>
-         </column>
+       <item row="1" column="0">
+        <widget class="QTableView" name="tableView">
+         <property name="dragDropMode">
+          <enum>QAbstractItemView::DropOnly</enum>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::ExtendedSelection</enum>
+         </property>
+         <property name="selectionBehavior">
+          <enum>QAbstractItemView::SelectRows</enum>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+         <attribute name="verticalHeaderVisible">
+          <bool>false</bool>
+         </attribute>
         </widget>
        </item>
-       <item>
-        <widget class="QTabWidget" name="groupTab">
+       <item row="2" column="0">
+        <widget class="QTabWidget" name="tabWidget">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>20</height>
+           <height>25</height>
           </size>
          </property>
          <property name="tabPosition">
           <enum>QTabWidget::South</enum>
          </property>
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
-           <string notr="true">Tab 1</string>
+           <string>Tab 1</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="tab_2">
           <attribute name="title">
-           <string notr="true">Tab 2</string>
+           <string>Tab 2</string>
           </attribute>
          </widget>
         </widget>
@@ -215,6 +219,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DSSImageView</class>
+   <extends>QWidget</extends>
+   <header location="global">dssimageview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
