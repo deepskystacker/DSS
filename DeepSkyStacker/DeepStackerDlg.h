@@ -1,9 +1,7 @@
-#if !defined(AFX_DEEPSTACKERDLG_H__C02E1779_4790_4F52_89BD_FD816B7D1C7D__INCLUDED_)
-#define AFX_DEEPSTACKERDLG_H__C02E1779_4790_4F52_89BD_FD816B7D1C7D__INCLUDED_
 
-#if _MSC_VER > 1000
+
 #pragma once
-#endif // _MSC_VER > 1000
+
 // DeepStackerDlg.h : header file
 //
 
@@ -151,11 +149,14 @@ public :
 		return bResult;
 	};
 };
-
+class QSplitter;
+class QStackedWidget;
+#include "ExplorerBar.h"
 #include "StackingDlg.h"
+
 #include "ProcessingDlg.h"
 //#include "LibraryDlg.h"
-#include "ExplorerBar.h"
+
 #include "afxwin.h"
 
 #include "qwinwidget.h"
@@ -173,15 +174,18 @@ enum DeepStackerDlgMessages
 class CDeepStackerDlg : public CDialog
 {
 private :
-	CStackingDlg			m_dlgStacking;
-	CProcessingDlg			m_dlgProcessing;
+	QWinWidget*		widget;
+	QSplitter*		splitter;
+	ExplorerBar*	explorerBar;
+	QStackedWidget* stackedWidget;
+	StackingDlg*	stackingDlg;
+
+	CProcessingDlg	m_dlgProcessing;
 	//CLibraryDlg				m_dlgLibrary;
 
 	CDeepStack				m_DeepStack;
 	CDSSSettings			m_Settings;
-	QWinWidget *			widget;
-	ExplorerBar *			explorerBar;
-	std::uint32_t			m_dwCurrentTab;
+	std::uint32_t			CurrentTab;
 	CString					m_strStartFileList;
 	CString					m_strBaseTitle;
     ITaskbarList3*          m_taskbarList;
@@ -195,6 +199,8 @@ public:
 	{
 		if (explorerBar)
 			delete explorerBar;
+		if (stackingDlg)
+			delete stackingDlg;
 		if (widget)
 			delete widget;
 	};
@@ -202,7 +208,7 @@ public:
 	void	ChangeTab(std::uint32_t dwTabID);
 	std::uint32_t GetCurrentTab()
 	{
-		return m_dwCurrentTab;
+		return CurrentTab;
 	};
 
 	void	SetStartingFileList(LPCTSTR szStartFileList)
@@ -212,7 +218,7 @@ public:
 
 	inline void disableSubDialogs()
 	{
-		m_dlgStacking.EnableWindow(false);
+		stackingDlg->setEnabled(false);
 		m_dlgProcessing.EnableWindow(false);
 		//m_dlgLibrary.EnableWindow(false);
 		explorerBar->setEnabled(false);
@@ -220,7 +226,7 @@ public:
 
 	inline void enableSubDialogs()
 	{
-		m_dlgStacking.EnableWindow(true);
+		stackingDlg->setEnabled(true);
 		m_dlgProcessing.EnableWindow(true);
 		//m_dlgLibrary.EnableWindow(true);
 		explorerBar->setEnabled(true);
@@ -245,9 +251,9 @@ public:
 		return m_Settings;
 	};
 
-	CStackingDlg & GetStackingDlg()
+	StackingDlg & GetStackingDlg()
 	{
-		return m_dlgStacking;
+		return *stackingDlg;
 	};
 
 	CProcessingDlg & GetProcessingDlg()
@@ -286,7 +292,7 @@ protected:
 
 private :
 	void	UpdateTab();
-	void	UpdateSizes();
+	// void	UpdateSizes();
 	afx_msg void OnOK();
 	afx_msg void OnClose();
 	afx_msg void OnBnClickedCancel();
@@ -342,7 +348,7 @@ inline CDSSSettings & GetDSSSettings(CWnd * pDialog)
 
 /* ------------------------------------------------------------------- */
 
-inline CStackingDlg & GetStackingDlg(CWnd * pDialog)
+inline StackingDlg & GetStackingDlg(CWnd * pDialog)
 {
 	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(pDialog);
 
@@ -376,6 +382,3 @@ void	RestoreWindowPosition(CWnd * pWnd, LPCSTR szRegistryPath, bool bCenter = fa
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-
-#endif // !defined(AFX_DEEPSTACKERDLG_H__C02E1779_4790_4F52_89BD_FD816B7D1C7D__INCLUDED_)
