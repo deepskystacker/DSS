@@ -490,8 +490,26 @@ BOOL CWndImage::CreateBufferBitmap()
 		{
 			Graphics		graphics(m_pBufferImage);
 
+			REAL left(rcClient.left), top(rcClient.top), width(rcClient.Width()), height(rcClient.Height());
+			
+			const RectF destRect(left, top, rcClient.Width(), rcClient.Height());
+
+
 			// Draw the internal Bitmap
 			graphics.DrawImage(m_pBaseImage, 0, 0);
+			graphics.DrawImage(
+				m_pBaseImage,
+				destRect,
+				left,		// X
+				top,		// Y
+				width,
+				height,
+				UnitPixel,
+				nullptr,
+				nullptr,
+				nullptr
+			);
+
 
 			if (m_4Corners)
 				Draw4Corners(&graphics);
