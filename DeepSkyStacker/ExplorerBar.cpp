@@ -11,6 +11,7 @@ using std::max;
 #include <QMenu>
 #include <QAction>
 #include <QMouseEvent>
+#include <QStandardPaths>
 
 #include <Ztrace.h>
 #include <zexcept.h>
@@ -113,7 +114,7 @@ void ExplorerBar::onOpenLights()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().OnAddpictures();
+		pDlg->GetStackingDlg().onAddPictures();
 	};
 }
 void ExplorerBar::onOpenDarks()
@@ -122,7 +123,7 @@ void ExplorerBar::onOpenDarks()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().OnAdddarks();
+		pDlg->GetStackingDlg().onAddDarks();
 	};
 }
 void ExplorerBar::onOpenFlats()
@@ -131,7 +132,7 @@ void ExplorerBar::onOpenFlats()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().OnAddFlats();
+		pDlg->GetStackingDlg().onAddFlats();
 	};
 }
 void ExplorerBar::onOpenDarkFlats()
@@ -140,7 +141,7 @@ void ExplorerBar::onOpenDarkFlats()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().OnAddDarkFlats();
+		pDlg->GetStackingDlg().onAddDarkFlats();
 	};
 }
 void ExplorerBar::onOpenBias()
@@ -149,7 +150,7 @@ void ExplorerBar::onOpenBias()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().OnAddOffsets();
+		pDlg->GetStackingDlg().onAddOffsets();
 	};
 }
 
@@ -161,7 +162,7 @@ void ExplorerBar::onOpenFilelist()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().LoadList();
+		pDlg->GetStackingDlg().loadList();
 	};
 }
 void ExplorerBar::onSaveFilelist()
@@ -170,7 +171,7 @@ void ExplorerBar::onSaveFilelist()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().SaveList();
+		pDlg->GetStackingDlg().saveList();
 	};
 }
 void ExplorerBar::onClearList()
@@ -179,28 +180,28 @@ void ExplorerBar::onClearList()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().ClearList();
+		pDlg->GetStackingDlg().clearList();
 	};
 }
 
 /************************************************************************************/
 
+void ExplorerBar::onCheckAbove()
+{
+	CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
+
+	if (pDlg)
+	{
+		pDlg->GetStackingDlg().checkAbove();
+	};
+}
 void ExplorerBar::onCheckAll()
 {
 	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().CheckAll();
-	};
-}
-void ExplorerBar::onCheckAbove()
-{
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().CheckAbove();
+		pDlg->GetStackingDlg().checkAll();
 	};
 }
 void ExplorerBar::onUncheckAll()
@@ -209,7 +210,7 @@ void ExplorerBar::onUncheckAll()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().UncheckAll();
+		pDlg->GetStackingDlg().unCheckAll();
 	};
 }
 
@@ -221,7 +222,7 @@ void ExplorerBar::onRegisterChecked()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().RegisterCheckedImage();
+		pDlg->GetStackingDlg().eegisterCheckedImages();
 	};
 }
 void ExplorerBar::onComputeOffsets()
@@ -239,7 +240,7 @@ void ExplorerBar::onStackChecked()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().StackCheckedImage();
+		pDlg->GetStackingDlg().stackCheckedImages();
 	};
 }
 void ExplorerBar::onBatchStacking()
@@ -330,165 +331,119 @@ void ExplorerBar::onDDPSettings()
 
 void ExplorerBar::onLoadSettings()
 {
-#if (0)
-	bool			bOpenAnother = true;
+	ZFUNCTRACE_RUNTIME();
+	CWorkspace	workspace;
+	QMenu menu(this);
 
+	if (mruPath.paths.size() != 0)
 	{
-		CPoint				pt;
-		CMenu				menu;
-		CMenu *				popup;
-		int					nResult;
-		UINT				lStartID;
-		CWorkspace			workspace;
-
-		bOpenAnother = false;
-
-		menu.LoadMenu(IDR_LOADSETTINGS);
-		popup = menu.GetSubMenu(0);
-
-		CRect				rc;
-
-		m_Options_LoadSettings.GetWindowRect(&rc);
-		pt.x = rc.left;
-		pt.y = rc.bottom;
-
-		lStartID = ID_LOADSETTINGS_FIRSTMRU + 1;
-		for (int i = 0; i < m_MRUSettings.m_vLists.size(); i++)
+		for (size_t i = 0; i != mruPath.paths.size(); i++)
 		{
-			TCHAR				szDrive[1 + _MAX_DRIVE];
-			TCHAR				szDir[1 + _MAX_DIR];
-			TCHAR				szName[1 + _MAX_FNAME];
-			CString				strItem;
-
-			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, nullptr);
-			strItem = szName;
-
-			popup->InsertMenu(ID_LOADSETTINGS_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
-			lStartID++;
-		};
-
-		popup->DeleteMenu(ID_LOADSETTINGS_FIRSTMRU, MF_BYCOMMAND);
-		if (!m_MRUSettings.m_vLists.size())
-		{
-			// Remove the separator in first position
-			popup->DeleteMenu(0, MF_BYPOSITION);
-		};
-
-		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
-
-		if (nResult == ID_LOADSETTINGS_LOAD)
-			bOpenAnother = true;
-		else if (nResult == ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS)
-		{
-			// Load the DSSLive setting file
-			TCHAR				szPath[1 + _MAX_PATH];
-			CString				strPath;
-
-			SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
-
-			strPath = szPath;
-			strPath += "\\DeepSkyStacker\\DSSLive.settings";
-			workspace.ReadFromFile(strPath);
-			workspace.saveSettings();
+			menu.addAction(QString::fromStdU16String(mruPath.paths[i].generic_u16string()));
 		}
-		else if (nResult == ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS)
+		menu.addSeparator();
+	}
+
+	QAction* restoreSettings =
+		menu.addAction(tr("Restore Default settings", "ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS"));
+	QAction* loadLiveSettings =
+		menu.addAction(tr("Load DeepSkyStacker Live settings", "ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS"));
+
+	menu.addSeparator();
+	QAction* loadAnother =
+		menu.addAction(tr("Load...", "ID_LOADSETTINGS_LOAD"));
+
+	QPoint point(ui->settings->mapToGlobal(QPoint(0, 2 + ui->loadSettings->height())));
+	QAction* a = menu.exec(point);
+	if (a != nullptr)
+	{
+		if (a == restoreSettings)
 		{
+			ZTRACE_RUNTIME("Restoring default settings.");
 			workspace.ResetToDefault();
 			workspace.saveSettings();
 		}
-		else if (nResult > ID_LOADSETTINGS_FIRSTMRU)
+		else if (a == loadLiveSettings)
 		{
-			CString			strFile;
-
-			strFile = m_MRUSettings.m_vLists[nResult - ID_LOADSETTINGS_FIRSTMRU - 1];
-
-			workspace.ReadFromFile(strFile);
+			// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker
+			fs::path fileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdU16String());
+			fileName /= "DSSLive.settings";		// Append the filename with a path separator
+			ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string());
+			workspace.ReadFromFile(fileName);
 			workspace.saveSettings();
-			m_MRUSettings.Add(strFile);
-			m_MRUSettings.saveSettings();
-		};
-	};
-
-	if (bOpenAnother)
-		LoadSettingFile();
-#endif
+		}
+		else if (a == loadAnother)
+		{
+			ZTRACE_RUNTIME("Invoking dialog to load another settings file.");
+			LoadSettingFile();
+		}
+		else
+		{
+			ZTRACE_RUNTIME("Loading settings file: %s", a->text.toLocal8Bit());
+			//
+			// One of the paths in the mruPath must have been selected
+			// In which case the action's text string is the fully qualified name of the file to load
+			//
+			fs::path fileName(a->text().toStdU16String());
+			workspace.ReadFromFile(fileName);
+			workspace.saveSettings();
+			mruPath.Add(fileName);
+			mruPath.saveSettings();
+		}
+	}
 }
 void ExplorerBar::onSaveSettings()
 {
-#if (0)
-	bool			bSaveAnother = true;
+	ZFUNCTRACE_RUNTIME();
+	CWorkspace	workspace;
+	QMenu menu(this);
 
+	if (mruPath.paths.size() != 0)
 	{
-		CPoint				pt;
-		CMenu				menu;
-		CMenu *				popup;
-		int					nResult;
-		UINT				lStartID;
-		CWorkspace			workspace;
-
-		bSaveAnother = false;
-
-		menu.LoadMenu(IDR_SAVESETTINGS);
-		popup = menu.GetSubMenu(0);
-
-		CRect				rc;
-
-		m_Options_SaveSettings.GetWindowRect(&rc);
-		pt.x = rc.left;
-		pt.y = rc.bottom;
-
-		lStartID = ID_SAVESETTINGS_FIRSTMRU + 1;
-		for (int i = 0; i < m_MRUSettings.m_vLists.size(); i++)
+		for (size_t i = 0; i != mruPath.paths.size(); i++)
 		{
-			TCHAR				szDrive[1 + _MAX_DRIVE];
-			TCHAR				szDir[1 + _MAX_DIR];
-			TCHAR				szName[1 + _MAX_FNAME];
-			CString				strItem;
-
-			_tsplitpath((LPCTSTR)m_MRUSettings.m_vLists[i], szDrive, szDir, szName, nullptr);
-			strItem = szName;
-
-			popup->InsertMenu(ID_SAVESETTINGS_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
-			lStartID++;
-		};
-
-		popup->DeleteMenu(ID_SAVESETTINGS_FIRSTMRU, MF_BYCOMMAND);
-		if (!m_MRUSettings.m_vLists.size())
-		{
-			// Remove the separator in first position
-			popup->DeleteMenu(0, MF_BYPOSITION);
-		};
-
-		nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
-
-		if (nResult == ID_SAVESETTINGS_SAVEAS)
-			bSaveAnother = true;
-		else if (nResult == ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS)
-		{
-			// Sace the DSSLive setting file
-			TCHAR				szPath[1 + _MAX_PATH];
-			CString				strPath;
-
-			SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
-
-			strPath = szPath;
-			strPath += "\\DeepSkyStacker\\DSSLive.settings";
-			workspace.SaveToFile(strPath);
+			menu.addAction(QString::fromStdU16String(mruPath.paths[i].generic_u16string()));
 		}
-		else if (nResult > ID_SAVESETTINGS_FIRSTMRU)
+		menu.addSeparator();
+	}
+
+	QAction* saveLiveSettings =
+		menu.addAction(tr("Save as DeepSkyStacker Live settings", "ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS"));
+
+	menu.addSeparator();
+	QAction* saveAnother =
+		menu.addAction(tr("Save as...", "ID_SAVESETTINGS_SAVEAS"));
+
+	QPoint point(ui->settings->mapToGlobal(QPoint(0, 2 + ui->loadSettings->height())));
+	QAction* a = menu.exec(point);
+	if (a != nullptr)
+	{
+		if (a == saveLiveSettings)
 		{
-			CString			strFile;
-
-			strFile = m_MRUSettings.m_vLists[nResult - ID_SAVESETTINGS_FIRSTMRU - 1];
-
-			workspace.SaveToFile(strFile);
-			m_MRUSettings.Add(strFile);
-		};
-	};
-
-	if (bSaveAnother)
-		SaveSettingFile();
-#endif
+			// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker
+			fs::path fileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdU16String());
+			fileName /= "DSSLive.settings";		// Append the filename with a path separator
+			ZTRACE_RUNTIME("Saving DSSLive settings to: %s", fileName.generic_string());
+			workspace.SaveToFile(fileName);
+		}
+		else if (a == saveAnother)
+		{
+			ZTRACE_RUNTIME("Invoking dialog to load another settings file.");
+			SaveSettingFile();
+		}
+		else
+		{
+			ZTRACE_RUNTIME("Saving settings to file: %s", a->text.toLocal8Bit());
+			//
+			// One of the paths in the mruPath must have been selected
+			// In which case the action's text string is the fully qualified name of the file to load
+			//
+			fs::path fileName(a->text().toStdU16String());
+			workspace.SaveToFile(fileName);
+			mruPath.Add(fileName);
+			mruPath.saveSettings();
+		}
+	}
 }
 
 void ExplorerBar::onRecommendedSettings()
@@ -520,113 +475,89 @@ void ExplorerBar::onHelp()
 
 void ExplorerBar::LoadSettingFile()
 {
-#if (0)
-	CString						strBaseDirectory;
-	CString						strTitle;
-	DWORD						dwFilterIndex = 0;
-	CString						strBaseExtension;
+	ZFUNCTRACE_RUNTIME();
+	QFileDialog			fileDialog;
+	CWorkspace			workspace;
+	QString				directory;
+	QString				extension("settings");
+	bool				fileLoaded(false);
 
-	TCHAR						szPath[1 + _MAX_PATH];
+	directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
-	SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
+	fileDialog.setWindowTitle(tr("Load DeepSkyStacker Settings", "IDS_TITLE_LOADSETTINGS"));
+	fileDialog.setDefaultSuffix(extension);
+	fileDialog.setFileMode(QFileDialog::ExistingFile);
 
-	strBaseDirectory = szPath;
-	strBaseDirectory += "\\DeepSkyStacker";
+	fileDialog.setNameFilter(tr("DSS Settings Files (*.settings *.dsssettings *.txt)"));
+	fileDialog.selectFile(QString());		// No file(s) selected
+	fileDialog.setDirectory(directory);
 
-	// Check that the path exists, else create it
-	CreateDirectory(strBaseDirectory, nullptr);
-
-	strBaseExtension = _T(".dsssettings");
-	strTitle.LoadString(IDS_TITLE_LOADSETTINGS);
-
-	CFileDialog			dlgOpen(true,
-		strBaseExtension,
-		nullptr,
-		OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
-		SETTINGFILE_FILTERS,
-		this);
-
-	dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-	dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
-	dlgOpen.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
-
-	TCHAR				szBigBuffer[20000] = _T("");
-
-	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
-
-	if (dlgOpen.DoModal() == IDOK)
+	ZTRACE_RUNTIME("About to show file open dlg");
+	if (QDialog::Accepted == fileDialog.exec())
 	{
-		POSITION		pos;
+		QStringList files = fileDialog.selectedFiles();
 
-		pos = dlgOpen.GetStartPosition();
-		while (pos)
+		if (files.size() != 0)
 		{
-			CString		strFile;
-			CWorkspace	workspace;
+			fs::path fileName(files.at(0).toStdU16String());		// as UTF-16
+			if (status(fileName).type() == fs::file_type::regular)
+			{
+				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string());
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-			strFile = dlgOpen.GetNextPathName(pos);
-
-			workspace.ReadFromFile(strFile);
-			workspace.saveSettings();
-
-			m_MRUSettings.Add(strFile);
-			m_MRUSettings.saveSettings();
-		};
-	};
-#endif
-};
+				workspace.ReadFromFile(fileName);
+				workspace.saveSettings();
+				mruPath.Add(fileName);
+				mruPath.saveSettings();
+				fileLoaded = true;
+				QGuiApplication::restoreOverrideCursor();
+			}
+		}
+	}
+	if (!fileLoaded) ZTRACE_RUNTIME("No settings file selected to load");
+}
 
 void ExplorerBar::SaveSettingFile()
 {
-#if (0)
-	CString						strBaseDirectory;
-	CString						strBaseExtension;
-	CString						strTitle;
-	DWORD						dwFilterIndex = 0;
+	ZFUNCTRACE_RUNTIME();
+	QFileDialog			fileDialog;
+	CWorkspace			workspace;
+	QString				directory;
+	QString				extension("settings");
+	bool				fileSaved(false);
 
-	TCHAR						szPath[1 + _MAX_PATH];
+	directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
 
-	SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
+	fileDialog.setWindowTitle(tr("Save DeepSkyStacker Settings", "IDS_TITLE_SAVESETTINGS"));
+	fileDialog.setDefaultSuffix(extension);
+	fileDialog.setFileMode(QFileDialog::AnyFile);
 
-	strBaseDirectory = szPath;
-	strBaseDirectory += "\\DeepSkyStacker";
+	fileDialog.setNameFilter(tr("DSS Settings Files (*.settings *.dsssettings *.txt)"));
+	fileDialog.setDirectory(directory);
 
-	// Check that the path exists, else create it
-	CreateDirectory(strBaseDirectory, nullptr);
-
-	strBaseExtension = _T(".dsssettings");
-	strTitle.LoadString(IDS_TITLE_SAVESETTINGS);
-
-	CFileDialog					dlgSave(false,
-		strBaseExtension,
-		nullptr,
-		OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING | OFN_DONTADDTORECENT,
-		SETTINGFILE_FILTERS,
-		this);
-
-	dlgSave.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-	dlgSave.m_ofn.nFilterIndex = dwFilterIndex;
-	dlgSave.m_ofn.lpstrTitle = strTitle.GetBuffer(200);
-
-	if (dlgSave.DoModal() == IDOK)
+	ZTRACE_RUNTIME("About to show file open dlg");
+	if (QDialog::Accepted == fileDialog.exec())
 	{
-		POSITION		pos;
+		QString file = fileDialog.selectedFiles()[0];
 
-		pos = dlgSave.GetStartPosition();
-		if (pos)
+		if (!file.isEmpty())
 		{
-			CString		strFile;
-			CWorkspace	workspace;
+			fs::path fileName(file.toStdU16String());		// as UTF-16
+			if (status(fileName).type() == fs::file_type::regular)
+			{
+				ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string());
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-			strFile = dlgSave.GetNextPathName(pos);
-
-			workspace.SaveToFile(strFile);
-			m_MRUSettings.Add(strFile);
-		};
-	};
-#endif
-};
+				workspace.SaveToFile(fileName);
+				mruPath.Add(fileName);
+				mruPath.saveSettings();
+				fileSaved = true;
+				QGuiApplication::restoreOverrideCursor();
+			}
+		}
+	}
+	if (!fileSaved) ZTRACE_RUNTIME("No file specified to save settings");
+}
 
 void ExplorerBar::changeEvent(QEvent* event)
 {
