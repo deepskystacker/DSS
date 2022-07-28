@@ -90,7 +90,7 @@ void CFileProperty::InitControls()
 
 	for (auto const& pair : m_bitmaps)
 	{
-		if (CListBitmap* bitmap = pair.second)
+		if (ListBitMap* bitmap = pair.second)
 		{
 			if (bFirst)
 			{
