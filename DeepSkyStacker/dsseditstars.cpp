@@ -37,6 +37,7 @@
 #include <QMouseEvent>
 
 #include "dsseditstars.h"
+#include "dssimageview.h"
 
 DSSEditStars::DSSEditStars(QWidget* parent) :
 	QWidget(parent)

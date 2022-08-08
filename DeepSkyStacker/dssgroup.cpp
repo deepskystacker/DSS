@@ -63,16 +63,6 @@ namespace DSS
 		TCHAR				szExt[1 + _MAX_EXT];
 		LONG				lIndice = -1;
 
-		// First check that the file is not already in the list
-		for (auto it = model.cbegin();
-				it != model.cend();
-				++it)
-		{
-			if (!strFile.CompareNoCase(it->m_strFileName))
-			{
-				return;
-			};
-		};
 
 		ListBitMap			lb;
 
@@ -107,7 +97,7 @@ namespace DSS
 			_tsplitpath(strFile, szDrive, szDir, szFileName, szExt);
 
 			if (bCheck)
-				lb.m_bChecked = true;
+				lb.m_bChecked = Qt::Checked;
 
 			lb.m_strPath = szDrive;
 			lb.m_strPath += szDir;

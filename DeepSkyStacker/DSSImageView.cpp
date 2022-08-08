@@ -405,16 +405,16 @@ void DSSImageView::paintZoomImage(QPainter& painter)
 
 }
 
-void DSSImageView::setPixmap(const std::shared_ptr<QPixmap>& p)
+void DSSImageView::setPixmap(const QPixmap& p)
 {
-    pPixmap = p;
+    pPixmap.reset(new QPixmap(p));
     drawOnPixmap();
     update();
 }
 
-void DSSImageView::setOverlayPixmap(const std::shared_ptr<QPixmap>& p)
+void DSSImageView::setOverlayPixmap(const QPixmap& p)
 {
-    pOverlayPixmap = p;
+    pOverlayPixmap.reset(new QPixmap(p));
     drawOnPixmap();
     update();
 }
@@ -540,10 +540,7 @@ void DSSImageView::keyPressEvent(QKeyEvent* e)
         // Handle Ctrl+4 to toggle Four Corners mode
         if (e->modifiers() & Qt::ControlModifier)
         {
-            if (m_fourCorners)
-                m_fourCorners = false;
-            else
-                m_fourCorners = true;
+            m_fourCorners = !m_fourCorners;
             drawOnPixmap();
             update();
             handled = true;

@@ -13,7 +13,7 @@ class LoadedImage
 public:
 	QString						fileName;
 	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
-	std::shared_ptr<C32BitsBitmap>	m_hBitmap;
+	std::shared_ptr<QImage>	m_Image;
 	int						lastUse;
 
 private:
@@ -21,7 +21,7 @@ private:
 	{
 		fileName = li.fileName;
 		m_pBitmap = li.m_pBitmap;
-		m_hBitmap = li.m_hBitmap;
+		m_Image = li.m_Image;
 		lastUse = li.lastUse;
 	};
 
@@ -53,7 +53,7 @@ public:
 
 	void	reset()
 	{
-		m_hBitmap.reset();
+		m_Image.reset();
 		m_pBitmap.reset();
 	};
 
@@ -77,7 +77,7 @@ public:
 	{}
 
 	void	clearCache();
-	bool	load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap>& phBitmap);
+	bool	load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage);
 
 signals:
 	void imageLoaded();

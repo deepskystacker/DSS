@@ -51,7 +51,7 @@ void ThreadLoader::run()
 
 	   		LoadedImage			li;
 
-			li.m_hBitmap = adb.m_pWndBitmap;
+			li.m_Image = adb.m_Image;
 			li.m_pBitmap = adb.m_pBitmap;
 			li.fileName = imageLoader->fileToLoad;
 			li.lastUse = 0;
@@ -67,7 +67,7 @@ void ImageLoader::clearCache()
 	imageVector.clear();
 }
 
-bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap>& phBitmap)
+bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<QImage>& pImage)
 {
 	bool found(false), result(false);
 	ZFUNCTRACE_RUNTIME();
@@ -81,7 +81,7 @@ bool ImageLoader::load(QString fileName, std::shared_ptr<CMemoryBitmap>& pBitmap
 		if (image.fileName == fileName)
 		{
 			pBitmap = image.m_pBitmap;		// Return the pointer stored in the shared ptr
-			phBitmap = image.m_hBitmap;		// Return the pointer stored in the shared ptr
+			pImage = image.m_Image;		// Return the pointer stored in the shared ptr
 			found = true;
 		}
 		else
