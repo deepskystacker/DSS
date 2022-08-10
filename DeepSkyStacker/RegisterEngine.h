@@ -152,6 +152,7 @@ protected :
 	void	Reset()
 	{
 		CWorkspace			workspace;
+		DWORD				dwThreshold = 10;
 
 		m_vStars.clear();
 

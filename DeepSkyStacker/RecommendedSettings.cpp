@@ -108,7 +108,7 @@ void RecommendedSettings::onInitDialog()
 
 	if (!pStackingTasks)
 	{
-		GetStackingDlg(nullptr).FillTasks(stackingTasks);
+		GetStackingDlg(nullptr).fillTasks(stackingTasks);
 		pStackingTasks = &stackingTasks;
 	};
 
@@ -378,6 +378,8 @@ static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR & vRecommendations
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
+	CWorkspace					workspace;
+	DWORD						dwThreshold;
 
 	if (CWorkspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
 	{
@@ -436,6 +438,7 @@ static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, int lNrL
 	RecommendationItem			ri;
 	Recommendation				rec;
 	CWorkspace					workspace;
+	DWORD						dwCometMode;
 
 	const auto dwCometMode = workspace.value("Stacking/CometStackingMode").toUInt();
 

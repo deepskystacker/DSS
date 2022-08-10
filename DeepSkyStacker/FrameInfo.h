@@ -139,7 +139,7 @@ public :
 		return m_lHeight/(m_bSuperPixel ? 2 : 1);
 	};
 
-	bool	IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType)
+	bool	IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType) const
 	{
 		bool			bResult;
 
@@ -170,7 +170,7 @@ public :
 		return  bResult;
 	};
 
-	bool	IsCompatible(const CFrameInfo & cfi)
+	bool	IsCompatible(const CFrameInfo & cfi) const
 	{
 		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitPerChannels, cfi.m_lNrChannels, cfi.m_CFAType);
 	};

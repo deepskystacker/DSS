@@ -20,7 +20,7 @@ private :
 	CButton				m_OK;
 
     CPictureListCtrl*   m_imageList;
-	std::unordered_map<int, CListBitmap*> m_bitmaps;
+	std::unordered_map<int, ListBitMap*> m_bitmaps;
 	bool				m_bChangeType;
 	bool				m_bChangeISOSpeed;
 	bool				m_bChangeExposure;
@@ -30,7 +30,7 @@ public:
 	CFileProperty(CWnd* pParent = nullptr);   // standard constructor
 	virtual ~CFileProperty();
 
-	void AddBitmap(int itemId, CListBitmap* bitmap)
+	void AddBitmap(int itemId, ListBitMap* bitmap)
 	{
         m_bitmaps[itemId] = bitmap;
 	};

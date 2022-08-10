@@ -15,9 +15,9 @@ constexpr int		MINPAIRSTOBICUBIC	= 40;
 
 static TRANSFORMATIONTYPE	GetTransformationType(int lNrVotingPairs = 2000)
 {
-	TRANSFORMATIONTYPE TTResult = TT_BILINEAR;
-	unsigned int dwAlignmentTransformation = 2;
-	CWorkspace workspace;
+	std::uint32_t dwAlignmentTransformation = 2;
+	TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
+	CWorkspace				workspace;
 
 	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 

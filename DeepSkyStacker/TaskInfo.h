@@ -7,7 +7,7 @@ class CTaskInfo
 {
 public:
 	std::uint32_t				m_dwTaskID;
-	std::uint32_t				m_dwGroupID;
+	std::uint32_t				m_groupID;
 	PICTURETYPE					m_TaskType;
 	int							m_lISOSpeed;
 	int							m_lGain;
@@ -26,7 +26,7 @@ private:
 	void	CopyFrom(const CTaskInfo& ti)
 	{
 		m_dwTaskID = ti.m_dwTaskID;
-		m_dwGroupID = ti.m_dwGroupID;
+		m_groupID = ti.m_groupID;
 		m_TaskType = ti.m_TaskType;
 		m_lISOSpeed = ti.m_lISOSpeed;
 		m_lGain = ti.m_lGain;
@@ -46,7 +46,7 @@ public:
 	CTaskInfo()
 	{
 		m_dwTaskID = 0;
-		m_dwGroupID = 0;
+		m_groupID = 0;
 		m_lISOSpeed = 0;
 		m_lGain = -1;
 		m_fExposure = 0.0;

@@ -10,15 +10,15 @@ class CBatchStacking : public CDialog
 
 private :
 	CCheckListBox			m_Lists;
-	CMRUList				m_MRUList;
+	const MRUPath	*		mruPath;
 	CScrollBar				m_Gripper;
 
 // Construction
 public:
 	CBatchStacking(CWnd* pParent = nullptr);   // standard constructor
-	void	SetMRUList(const CMRUList & MRUList)
+	void	setMRUPath(const MRUPath* mru)
 	{
-		m_MRUList = MRUList;
+		mruPath = mru;
 	};
 
 // Dialog Data

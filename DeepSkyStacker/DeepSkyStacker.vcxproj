@@ -20,7 +20,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -29,16 +29,18 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PreferredToolArchitecture>
-    </PreferredToolArchitecture>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
     <QtMsBuild>$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <PropertyGroup>
+    <QtDependsOn>$(QtDependsOn);QtTranslation</QtDependsOn>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -117,12 +119,8 @@
 $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
-    <CustomBuildStep>
-      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtToolsPath)\lrelease %%f)</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
-      <Outputs>i18n\DSS.ca.qm;i18n\DSS.cs.qm;i18n\DSS.de.qm;i18n\DSS.en.qm;i18n\DSS.es.qm;i18n\DSS.fr.qm;i18n\DSS.it.qm;i18n\DSS.nl.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro.qm;i18n\DSS.ru.qm;i18n\DSS.tr.qm;i18n\DSS.zh_TW.qm</Outputs>
-    </CustomBuildStep>
+    <CustomBuildStep />
+    <CustomBuildStep />
     <QtMoc>
       <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
     </QtMoc>
@@ -132,6 +130,10 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <QtUic>
       <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
     </QtUic>
+    <QtTranslation>
+      <BuildAction>lrelease</BuildAction>
+      <QmOutputDir>%(RelativeDir)</QmOutputDir>
+    </QtTranslation>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -150,6 +152,8 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalOptions>
+      </AdditionalOptions>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -177,10 +181,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
-    <CustomBuildStep>
-      <Command>cd i18n &amp;&amp; for %%f in (*.ts) do ($(QtToolsPath)\lrelease %%f)</Command>
-      <Outputs>i18n\DSS.ca.qm;i18n\DSS.cs.qm;i18n\DSS.de.qm;i18n\DSS.en.qm;i18n\DSS.es.qm;i18n\DSS.fr.qm;i18n\DSS.it.qm;i18n\DSS.nl.qm;i18n\DSS.pt_BR.qm;i18n\DSS.ro.qm;i18n\DSS.ru.qm;i18n\DSS.tr.qm;i18n\DSS.zh_TW.qm</Outputs>
-    </CustomBuildStep>
+    <CustomBuildStep />
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
 
@@ -198,6 +199,11 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic>
       <QtUicDir>.\GeneratedFiles\%(RelativeDir)</QtUicDir>
     </QtUic>
+    <QtTranslation>
+      <BuildAction>lrelease</BuildAction>
+      <OutputDir>.\%(RelativeDir)</OutputDir>
+      <QmOutputDir>%(RelativeDir)</QmOutputDir>
+    </QtTranslation>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Tools\BitmapSlider.cpp" />
@@ -261,7 +267,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="avx_support.cpp" />
     <ClCompile Include="BackgroundCalibration.cpp" />
-    <ClCompile Include="BackgroundLoading.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -279,12 +284,21 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="CosmeticEngine.cpp" />
     <ClCompile Include="DarkFrame.cpp" />
     <ClCompile Include="DeBloom.cpp" />
-    <ClCompile Include="DeepSkyStacker.cpp" />
+    <ClCompile Include="DeepSkyStacker.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </AdditionalOptions>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="DeepStackerDlg.cpp" />
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="dsseditstars.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="dssgroup.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -307,6 +321,22 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="FlatFrame.cpp" />
     <ClCompile Include="FrameInfo.cpp" />
     <ClCompile Include="FrameList.cpp" />
+    <ClCompile Include="ImageListModel.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="imageloader.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="ImageSinks.cpp" />
     <ClCompile Include="IntermediateFiles.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -458,7 +488,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="avx_output.h" />
     <ClInclude Include="avx_support.h" />
     <ClInclude Include="BackgroundCalibration.h" />
-    <ClInclude Include="BackgroundLoading.h" />
     <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BatchStacking.h" />
     <ClInclude Include="BezierAdjust.h" />
@@ -499,10 +528,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="FrameInfo.h" />
     <ClInclude Include="FrameInfoSupport.h" />
     <ClInclude Include="FrameList.h" />
-    <ClInclude Include="group.h" />
+    <ClInclude Include="dssgroup.h" />
     <ClInclude Include="dss_settings.h" />
     <ClInclude Include="Histogram.h" />
     <QtMoc Include="IntermediateFiles.h" />
+    <QtMoc Include="ImageListModel.h" />
+    <QtMoc Include="imageloader.h" />
     <ClInclude Include="ImageSinks.h" />
     <ClInclude Include="Library.h" />
     <ClInclude Include="LuminanceTab.h" />
@@ -510,6 +541,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="MatchingStars.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="MedianFilterEngine.h" />
+    <ClInclude Include="mrupath.h" />
     <ClInclude Include="MultiBitmapProcess.h" />
     <ClInclude Include="Multitask.h" />
     <QtMoc Include="OutputTab.h" />
@@ -690,19 +722,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="i18n\DSS.ca.ts" />
-    <None Include="i18n\DSS.cs.ts" />
-    <None Include="i18n\DSS.de.ts" />
-    <None Include="i18n\DSS.en.ts" />
-    <None Include="i18n\DSS.es.ts" />
-    <None Include="i18n\DSS.fr.ts" />
-    <None Include="i18n\DSS.it.ts" />
-    <None Include="i18n\DSS.nl.ts" />
-    <None Include="i18n\DSS.pt_BR.ts" />
-    <None Include="i18n\DSS.ro.ts" />
-    <None Include="i18n\DSS.ru.ts" />
-    <None Include="i18n\DSS.tr.ts" />
-    <None Include="i18n\DSS.zh_TW.ts" />
     <None Include="QMfcApp" />
     <None Include="QWinHost" />
     <None Include="QWinWidget" />
@@ -719,10 +738,10 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\BatchStacking.ui" />
     <QtUic Include="ui\CheckAbove.ui" />
     <QtUic Include="ui\CometStacking.ui" />
-    <QtUic Include="ui\DeepStackerDlg.ui" />
     <QtUic Include="ui\DropFilesDlg.ui" />
     <QtUic Include="ui\ExplorerBar.ui" />
     <QtUic Include="ui\IntermediateFiles.ui" />
+    <QtUic Include="ui\MainWindow.ui" />
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
@@ -734,6 +753,21 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\StackRecap.ui" />
     <QtUic Include="ui\StackSettings.ui" />
   </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="i18n\DSS.ca.ts" />
+    <QtTranslation Include="i18n\DSS.cs.ts" />
+    <QtTranslation Include="i18n\DSS.de.ts" />
+    <QtTranslation Include="i18n\DSS.en.ts" />
+    <QtTranslation Include="i18n\DSS.es.ts" />
+    <QtTranslation Include="i18n\DSS.fr.ts" />
+    <QtTranslation Include="i18n\DSS.it.ts" />
+    <QtTranslation Include="i18n\DSS.nl.ts" />
+    <QtTranslation Include="i18n\DSS.pt_BR.ts" />
+    <QtTranslation Include="i18n\DSS.ro.ts" />
+    <QtTranslation Include="i18n\DSS.ru.ts" />
+    <QtTranslation Include="i18n\DSS.tr.ts" />
+    <QtTranslation Include="i18n\DSS.zh_TW.ts" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />
@@ -742,12 +776,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <CAExcludePath>$(QTDIR)\include;.\GeneratedFiles;$(CAExcludePath)</CAExcludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(QtInstallDir)\include;$(QtInstallDir)\include\QtWidgets;$(QtInstallDir)\include\QtGui;$(QtInstallDir)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <CustomBuildBeforeTargets>PreBuildEvent</CustomBuildBeforeTargets>
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(QtInstallDir)\include;$(QtInstallDir)\include\QtWidgets;$(QtInstallDir)\include\QtGui;$(QtInstallDir)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

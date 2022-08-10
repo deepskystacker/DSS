@@ -4,6 +4,7 @@
 #include "DSSProgress.h"
 
 #include "RAWUtils.h"
+#include <chrono>
 #include <set>
 #include <list>
 #include <iostream>
@@ -20,39 +21,58 @@
 #include "libraw/libraw.h"
 
 namespace {
+	class Timer
+	{
+	private:
+		std::chrono::steady_clock::time_point last;
+	public:
+		Timer()
+			: last{ std::chrono::steady_clock::now() } {
+		}
+		void printDiff(const std::string& msg = "Timer diff: ") {
+			auto now{ std::chrono::steady_clock::now() };
+			std::chrono::duration<double, std::milli> diff{ now - last };
+			ZTRACE_RUNTIME("%s\t%fms", msg.c_str(), diff.count());
+			last = std::chrono::steady_clock::now();
+		}
+		void reset()
+		{
+			last = std::chrono::steady_clock::now();
+		}
+	};
 
 	class CRAWSettings
 	{
-	public:
-		bool		m_bRawBayer;
-		bool		m_bSuperPixel;
-
-	private:
-		void CopyFrom(const CRAWSettings& rs) noexcept
-		{
-			m_bRawBayer = rs.m_bRawBayer;
-			m_bSuperPixel = rs.m_bSuperPixel;
-		}
-
-	public:
-		CRAWSettings() noexcept
-		{
-			m_bRawBayer = false;
-			m_bSuperPixel = false;
-		}
-		CRAWSettings(const bool rawBay, const bool superPix) :
-			m_bRawBayer{ rawBay },
-			m_bSuperPixel{ superPix }
-		{}
-
-		CRAWSettings(const CRAWSettings& rs) = default;
-
-		const CRAWSettings& operator=(const CRAWSettings& rs)
-		{
-			CopyFrom(rs);
-			return (*this);
-		}
-	};
+		public :
+			bool		m_bRawBayer;
+			bool		m_bSuperPixel;
+	
+		private:
+			void CopyFrom(const CRAWSettings& rs) noexcept
+			{
+				m_bRawBayer = rs.m_bRawBayer;
+				m_bSuperPixel = rs.m_bSuperPixel;
+			}
+	
+		public:
+			CRAWSettings() noexcept
+			{
+				m_bRawBayer = false;
+				m_bSuperPixel = false;
+			}
+			CRAWSettings(const bool rawBay, const bool superPix) :
+				m_bRawBayer{ rawBay },
+				m_bSuperPixel{ superPix }
+			{}
+	
+			CRAWSettings(const CRAWSettings& rs) = default;
+	
+			const CRAWSettings& operator=(const CRAWSettings& rs)
+			{
+				CopyFrom(rs);
+				return (*this);
+			}
+		};
 
 	std::list<CRAWSettings> g_RawSettingsStack;
 
@@ -408,6 +428,7 @@ namespace { // Only use in this .cpp file
 					supportedCameras.emplace_back(cameraList[i]);
 				}
 			}
+
 			//
 			// Sort the camera names using std::sort and a case independent comparison lambda function
 			// See: https://stackoverflow.com/questions/33379846/case-insensitive-sorting-of-an-array-of-strings

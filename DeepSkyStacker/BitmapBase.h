@@ -359,20 +359,20 @@ public:
 
 	virtual bool	Init(int lWidth, int lHeight) = 0;
 
-	virtual void	SetPixel(int i, int j, double fRed, double fGreen, double fBlue) = 0;
-	virtual void	SetPixel(int i, int j, double fGray) = 0;
-	virtual void	GetPixel(int i, int j, double& fRed, double& fGreen, double& fBlue) = 0;
-	virtual void	GetPixel(int i, int j, double& fGray) = 0;
+	virtual void	SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) = 0;
+	virtual void	SetPixel(size_t i, size_t j, double fGray) = 0;
+	virtual void	GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) = 0;
+	virtual void	GetPixel(size_t i, size_t j, double& fGray) = 0;
 
-	virtual void	SetValue(int i, int j, double fRed, double fGreen, double fBlue) {};
-	virtual void	GetValue(int i, int j, double& fRed, double& fGreen, double& fBlue) {};
-	virtual void	SetValue(int i, int j, double fGray) {};
-	virtual void	GetValue(int i, int j, double& fGray) {};
+	virtual void	SetValue(size_t i, size_t j, double fRed, double fGreen, double fBlue) {};
+	virtual void	GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) {};
+	virtual void	SetValue(size_t i, size_t j, double fGray) {};
+	virtual void	GetValue(size_t i, size_t j, double& fGray) {};
 
-	virtual bool	GetScanLine(int j, void* pScanLine) = 0;
-	virtual bool	SetScanLine(int j, void* pScanLine) = 0;
+	virtual bool	GetScanLine(size_t j, void* pScanLine) = 0;
+	virtual bool	SetScanLine(size_t j, void* pScanLine) = 0;
 
-	void GetPixel16(const int i, const int j, COLORREF16& crResult)
+	void GetPixel16(const size_t i, const size_t j, COLORREF16& crResult)
 	{
 		constexpr double scalingFactor = double{ 1 + std::numeric_limits<unsigned char>::max() };
 		constexpr double maxValue = double{ std::numeric_limits<unsigned short>::max() };
@@ -543,10 +543,10 @@ inline int CMYGZeroIndex(BAYERCOLOR Color)
 };
 
 
-inline BAYERCOLOR GetBayerColor(int baseX, int baseY, CFATYPE CFAType, int xOffset = 0, int yOffset = 0)
+inline BAYERCOLOR GetBayerColor(size_t baseX, size_t baseY, CFATYPE CFAType, int xOffset = 0, int yOffset = 0)
 {
-	const int x = baseX + xOffset;		// Apply the X Bayer offset if supplied
-	const int y = baseY + yOffset;		// Apply the Y Bayer offset if supplied
+	const size_t x = baseX + xOffset;		// Apply the X Bayer offset if supplied
+	const size_t y = baseY + yOffset;		// Apply the Y Bayer offset if supplied
 
 	switch (CFAType)
 	{
@@ -678,9 +678,9 @@ inline BAYERCOLOR GetBayerColor(int baseX, int baseY, CFATYPE CFAType, int xOffs
 //
 // Add parameter yOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-inline bool	IsBayerBlueLine(int baseY, CFATYPE CFAType, int yOffset = 0)
+inline bool	IsBayerBlueLine(size_t baseY, CFATYPE CFAType, int yOffset = 0)
 {
-	int y = baseY + yOffset;
+	size_t y = baseY + yOffset;
 
 	if ((CFAType == CFATYPE_GRBG) || (CFAType == CFATYPE_RGGB))
 		return (y & 1) ? true : false;
@@ -691,9 +691,9 @@ inline bool	IsBayerBlueLine(int baseY, CFATYPE CFAType, int yOffset = 0)
 //
 // Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-inline bool IsBayerBlueColumn(int baseX, CFATYPE CFAType, int xOffset = 0)
+inline bool IsBayerBlueColumn(size_t baseX, CFATYPE CFAType, int xOffset = 0)
 {
-	int x = baseX + xOffset;
+	size_t x = baseX + xOffset;
 
 	if ((CFAType == CFATYPE_GBRG) || (CFAType == CFATYPE_RGGB))
 		return (x & 1) ? true : false;
@@ -701,7 +701,7 @@ inline bool IsBayerBlueColumn(int baseX, CFATYPE CFAType, int xOffset = 0)
 		return (x & 1) ? false : true;
 };
 
-inline bool IsBayerRedLine(int baseY, CFATYPE CFAType, int yOffset = 0)
+inline bool IsBayerRedLine(size_t baseY, CFATYPE CFAType, int yOffset = 0)
 {
 	return !IsBayerBlueLine(baseY, CFAType, yOffset);
 };
@@ -709,7 +709,7 @@ inline bool IsBayerRedLine(int baseY, CFATYPE CFAType, int yOffset = 0)
 //
 // Add parameter xOffset to specify CFA Matrix offset to be applied (for FITS files)
 //
-inline bool IsBayerRedColumn(int baseX, CFATYPE CFAType, int xOffset = 0)
+inline bool IsBayerRedColumn(size_t baseX, CFATYPE CFAType, int xOffset = 0)
 {
 	return !IsBayerBlueColumn(baseX, CFAType, xOffset);
 };
@@ -1374,17 +1374,17 @@ private:
 		return true; // Otherwise m_vPixels.resize() would have thrown bad_alloc.
 	};
 
-	inline void	CheckXY(int x, int y)
+	inline void	CheckXY(size_t x, size_t y)
 	{
 		ZASSERTSTATE(IsXYOk(x, y));
 	};
 
-	inline bool	IsXYOk(int x, int y)
+	inline bool	IsXYOk(size_t x, size_t y)
 	{
 		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	};
 
-	size_t GetOffset(int x, int y)
+	size_t GetOffset(size_t x, size_t y)
 	{
 		CheckXY(x, y);
 		return static_cast<size_t>(m_lWidth) * static_cast<size_t>(y) + static_cast<size_t>(x);
@@ -1413,7 +1413,7 @@ private:
 		return 0;
 	};
 
-	double GetPrimary(int x, int y, double fRed, double fGreen, double fBlue)
+	double GetPrimary(size_t x, size_t y, double fRed, double fGreen, double fBlue)
 	{
 		switch (::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset))
 		{
@@ -1431,7 +1431,7 @@ private:
 		return 0;
 	};
 
-	double InterpolateGreen(int x, int y, TType* pValue = nullptr)
+	double InterpolateGreen(size_t x, size_t y, TType* pValue = nullptr)
 	{
 		double fResult = 0.0;
 		int lNrValues = 0;
@@ -1463,7 +1463,7 @@ private:
 		return fResult / lNrValues;
 	};
 
-	double InterpolateBlue(int x, int y, TType* pValue = nullptr)
+	double InterpolateBlue(size_t x, size_t y, TType* pValue = nullptr)
 	{
 		double fResult = 0.0;
 		int lNrValues = 0;
@@ -1527,7 +1527,7 @@ private:
 		return fResult / lNrValues;
 	};
 
-	double InterpolateRed(int x, int y, TType* pValue = nullptr)
+	double InterpolateRed(size_t x, size_t y, TType* pValue = nullptr)
 	{
 		double fResult = 0.0;
 		int lNrValues = 0;
@@ -1591,25 +1591,25 @@ private:
 		return fResult / lNrValues;
 	};
 
-	void InterpolateAll(double* pfValues, int x, int y)
+	void InterpolateAll(double* pfValues, size_t x, size_t y)
 	{
-		int lIndice;
-		int lNrValues[4] = { 0 };
+		size_t lIndice;
+		size_t lNrValues[4] = { 0 };
 
 		pfValues[0] = pfValues[1] = pfValues[2] = pfValues[3] = 0;
 
-		for (int i = std::max(0, x - 1); i <= std::min(m_lWidth - 1, x + 1); i++)
-			for (int j = std::max(0, y - 1); j <= std::min(m_lHeight - 1, y + 1); j++)
+		for (size_t i = std::max(static_cast<size_t>(0), x - 1); i <= std::min(static_cast<size_t>(m_lWidth - 1), x + 1); i++)
+			for (size_t j = std::max(static_cast<size_t>(0), y - 1); j <= std::min(static_cast<size_t>(m_lHeight - 1), y + 1); j++)
 			{
 				lIndice = CMYGZeroIndex(::GetBayerColor(i, j, m_CFAType, m_xBayerOffset, m_yBayerOffset));
 				pfValues[lIndice] += m_vPixels[GetOffset(i, j)];
 				lNrValues[lIndice] ++;
 			};
 
-		pfValues[0] /= std::max(1, lNrValues[0]);
-		pfValues[1] /= std::max(1, lNrValues[1]);
-		pfValues[2] /= std::max(1, lNrValues[2]);
-		pfValues[3] /= std::max(1, lNrValues[3]);
+		pfValues[0] /= std::max(static_cast<size_t>(1), lNrValues[0]);
+		pfValues[1] /= std::max(static_cast<size_t>(1), lNrValues[1]);
+		pfValues[2] /= std::max(static_cast<size_t>(1), lNrValues[2]);
+		pfValues[3] /= std::max(static_cast<size_t>(1), lNrValues[3]);
 
 		/*
 				// It's used only for CYMG - so cut it down to the basic
@@ -1725,13 +1725,13 @@ public:
 		return m_lWidth;
 	};
 
-	virtual void SetValue(int i, int j, double fGray) override
+	virtual void SetValue(size_t i, size_t j, double fGray) override
 	{
 		CheckXY(i, j);
 		m_vPixels[GetOffset(i, j)] = fGray;
 	};
 
-	virtual void GetValue(int i, int j, double& fGray) override
+	virtual void GetValue(size_t i, size_t j, double& fGray) override
 	{
 		//if (CFAT_SUPERPIXEL == m_CFATransform)  Bug fix 15th August 2020
 		//{
@@ -1741,7 +1741,7 @@ public:
 		fGray = m_vPixels[GetOffset(i, j)];
 	};
 
-	virtual void SetPixel(int i, int j, double fRed, double fGreen, double fBlue) override
+	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override
 	{
 		if (m_CFATransform == CFAT_SUPERPIXEL)
 		{
@@ -1756,12 +1756,12 @@ public:
 			SetPixel(i, j, GetPrimary(i, j, fRed, fGreen, fBlue));
 	};
 
-	inline virtual void SetPixel(int i, int j, double fGray) override
+	inline virtual void SetPixel(size_t i, size_t j, double fGray) override
 	{
 		SetValue(i, j, fGray * m_fMultiplier);
 	};
 
-	virtual void GetPixel(int i, int j, double& fRed, double& fGreen, double& fBlue) override
+	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override
 	{
 		CheckXY(i, j);
 		fRed = fGreen = fBlue = 0.0;
@@ -1864,13 +1864,13 @@ public:
 		};
 	};
 
-	virtual void inline GetPixel(int i, int j, double& fGray) override
+	virtual void inline GetPixel(size_t i, size_t j, double& fGray) override
 	{
 		GetValue(i, j, fGray);
 		fGray /= m_fMultiplier;
 	};
 
-	virtual bool GetScanLine(int j, void* pScanLine) override
+	virtual bool GetScanLine(size_t j, void* pScanLine) override
 	{
 		bool bResult = false;
 
@@ -1883,7 +1883,7 @@ public:
 		return bResult;
 	};
 
-	virtual bool SetScanLine(int j, void* pScanLine) override
+	virtual bool SetScanLine(size_t j, void* pScanLine) override
 	{
 		bool bResult = false;
 
@@ -2373,18 +2373,18 @@ public:
 	CGrayBitmapT<TType> m_Blue;
 
 private:
-	inline void CheckXY(int x, int y)
+	inline void CheckXY(size_t x, size_t y)
 	{
 		ZASSERTSTATE(x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	};
 
-	size_t GetOffset(int x, int y)
+	size_t GetOffset(size_t x, size_t y)
 	{
 		CheckXY(x, y);
 		if (m_bTopDown)
-			return static_cast<size_t>(m_lWidth) * static_cast<size_t>(y) + static_cast<size_t>(x);
+			return static_cast<size_t>(m_lWidth) * y + x;
 		else
-			return static_cast<size_t>(m_lWidth) * (static_cast<size_t>(m_lHeight) - 1 - static_cast<size_t>(y)) + static_cast<size_t>(x);
+			return static_cast<size_t>(m_lWidth) * (static_cast<size_t>(m_lHeight) - 1 - y) + x;
 	};
 
 public:
@@ -2460,7 +2460,7 @@ public:
 		return false;
 	};
 
-	virtual void SetValue(int i, int j, double fRed, double fGreen, double fBlue) override
+	virtual void SetValue(size_t i, size_t j, double fRed, double fGreen, double fBlue) override
 	{
 		CheckXY(i, j);
 
@@ -2471,7 +2471,7 @@ public:
 		m_Blue.m_vPixels[lOffset] = fBlue;
 	};
 
-	virtual void GetValue(int i, int j, double& fRed, double& fGreen, double& fBlue) override
+	virtual void GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override
 	{
 		CheckXY(i, j);
 
@@ -2482,7 +2482,7 @@ public:
 		fBlue = m_Blue.m_vPixels[lOffset];
 	};
 
-	virtual void SetPixel(int i, int j, double fRed, double fGreen, double fBlue) override
+	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override
 	{
 		CheckXY(i, j);
 
@@ -2492,7 +2492,7 @@ public:
 		m_Blue.m_vPixels[lOffset] = fBlue * m_fMultiplier;
 	};
 
-	virtual void SetPixel(int i, int j, double fGray) override
+	virtual void SetPixel(size_t i, size_t j, double fGray) override
 	{
 
 		CheckXY(i, j);		// Throw if not
@@ -2504,7 +2504,7 @@ public:
 		m_Blue.m_vPixels[lOffset] = value;
 	};
 
-	virtual void GetPixel(int i, int j, double& fRed, double& fGreen, double& fBlue) override
+	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override
 	{
 		fRed = fGreen = fBlue = 0.0;
 
@@ -2517,7 +2517,7 @@ public:
 		fBlue = m_Blue.m_vPixels[lOffset] / m_fMultiplier;
 	};
 
-	virtual void GetPixel(int i, int j, double& fGray) override
+	virtual void GetPixel(size_t i, size_t j, double& fGray) override
 	{
 		double fRed, fGreen, fBlue;
 		fGray = 0.0;
@@ -2529,7 +2529,7 @@ public:
 		fGray = L * 255.0;
 	};
 
-	virtual bool GetScanLine(int j, void* pScanLine) override
+	virtual bool GetScanLine(size_t j, void* pScanLine) override
 	{
 		bool bResult = false;
 
@@ -2548,7 +2548,7 @@ public:
 		return bResult;
 	};
 
-	virtual bool SetScanLine(int j, void* pScanLine) override
+	virtual bool SetScanLine(size_t j, void* pScanLine) override
 	{
 		bool bResult = false;
 

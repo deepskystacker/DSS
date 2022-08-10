@@ -108,8 +108,8 @@ public:
     };
 
 public slots:
-    void setPixmap(const std::shared_ptr<QPixmap>&);
-    void setOverlayPixmap(const std::shared_ptr<QPixmap>&);
+    void setPixmap(const QPixmap&);
+    void setOverlayPixmap(const QPixmap&);
 
 signals:
     void Image_mousePressEvent(QMouseEvent* e);
@@ -132,8 +132,8 @@ protected:
 private:
     qreal m_scale, m_zoom;
     QPointF m_origin;
-    std::shared_ptr<QPixmap> pPixmap;
-    std::shared_ptr<QPixmap> pOverlayPixmap;
+    std::unique_ptr<QPixmap> pPixmap;
+    std::unique_ptr<QPixmap> pOverlayPixmap;
     QPixmap m_drawingPixmap;
     QRectF rectOfInterest;
     QToolBar* m_pToolBar;

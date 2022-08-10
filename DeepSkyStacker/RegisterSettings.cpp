@@ -115,21 +115,21 @@ void RegisterSettings::onInitDialog()
 	ui->medianFilter->
 		setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
 
-	CStackingDlg & stackingDlg = GetStackingDlg(nullptr);
+	StackingDlg & stackingDlg = GetStackingDlg(nullptr);
 	//
 	// If there are any stackable light frames, set up the 
 	// stacking related stuff
 	//
-	if (stackingDlg.m_Pictures.GetNrCheckedFrames() > 0)
+	if (stackingDlg.checkedImageCount(PICTURETYPE_LIGHTFRAME) > 0)
 	{
 		CString temp;
 		stackingDlg.m_Pictures.GetFirstCheckedLightFrame(temp);
 		firstLightFrame = QString::fromWCharArray(temp.GetString());
 
 		forceRegister = !stackingDlg.m_Pictures.GetNrUnregisteredCheckedLightFrames();
-		noDarks = !stackingDlg.m_Pictures.GetNrCheckedDarks();
-		noFlats = !stackingDlg.m_Pictures.GetNrCheckedFlats();
-		noOffsets = !stackingDlg.m_Pictures.GetNrCheckedOffsets();
+		noDarks = !stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME);
+		noFlats = !stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME);;
+		noOffsets = !stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME);;
 	}
 
 	// Enable the computeDetected Stars button if there's a stackable light frame

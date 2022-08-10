@@ -513,6 +513,7 @@ public :
 };
 
 bool	ApplyGammaTransformation(C32BitsBitmap * pOutBitmap, CMemoryBitmap * pInBitmap, CGammaTransformation & gammatrans);
+bool	ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans);
 #endif // DSSFILEDECODING
 
 /* ------------------------------------------------------------------- */
@@ -705,6 +706,7 @@ public :
 public :
 	CSmartPtr<CMemoryBitmap>	m_pBitmap;
 	CSmartPtr<C32BitsBitmap>	m_pWndBitmap;
+	std::shared_ptr<QImage>		m_Image;
 
 private :
 	void	CopyFrom(const CAllDepthBitmap & adb)
@@ -712,6 +714,7 @@ private :
 		m_bDontUseAHD	= adb.m_bDontUseAHD;
 		m_pBitmap		= adb.m_pBitmap;
 		m_pWndBitmap	= adb.m_pWndBitmap;
+		m_Image			= adb.m_Image;
 	};
 
 public :
@@ -732,12 +735,15 @@ public :
 	{
 		m_pBitmap.Release();
 		m_pWndBitmap.Release();
+		m_Image.reset();
 	};
 
 	void	SetDontUseAHD(bool bSet)
 	{
 		m_bDontUseAHD = bSet;
 	};
+
+	bool initQImage();
 };
 
 void	CopyBitmapToClipboard(HBITMAP hBitmap);

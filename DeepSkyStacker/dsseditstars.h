@@ -38,7 +38,7 @@ class QMouseEvent;
 
 #include <QWidget>
 
-#include "dssimageview.h"
+class DSSImageView;
 
 class DSSEditStars :
     public QWidget

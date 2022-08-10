@@ -87,8 +87,11 @@ BOOL CBatchStacking::OnInitDialog()
 
 	RestoreWindowPosition(this, "Dialogs/Batch/Position", true);
 
-	for (size_t i = 0; i < m_MRUList.m_vLists.size(); i++)
-		m_Lists.AddString(m_MRUList.m_vLists[i]);
+	if (mruPath)
+	{
+		for (size_t i = 0; i != mruPath->paths.size(); i++)
+			m_Lists.AddString(mruPath->paths[i].c_str());		// fs::path::c_str return as a null terminated char* or wchar*
+	}
 
 	UpdateListBoxWidth();
 	return true;

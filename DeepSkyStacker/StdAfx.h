@@ -54,7 +54,6 @@ using std::max;
 #include "DSSMemory.h"
 #include "Ztrace.h"
 
-extern CString INPUTFILE_FILTERS;
 extern CString OUTPUTFILE_FILTERS;
 extern CString OUTPUTLIST_FILTERS;
 extern CString SETTINGFILE_FILTERS;

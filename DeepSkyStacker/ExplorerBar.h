@@ -1,9 +1,8 @@
 #ifndef EXPLORERBAR_H
 #define EXPLORERBAR_H
 
-class CMRUList;
-
 #include <QWidget>
+#include "mrupath.h"
 //#include "ClickLabel.h"
 
 namespace Ui {
@@ -62,7 +61,7 @@ private slots:
 
 private:
     Ui::ExplorerBar *ui;
-	CMRUList	m_MRUSettings;
+	MRUPath	mruPath;
 
 	void	LoadSettingFile();
 	void	SaveSettingFile();

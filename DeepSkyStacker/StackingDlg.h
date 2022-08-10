@@ -1,15 +1,11 @@
-#if !defined(AFX_STACKINGDLG_H__04779310_B6E7_4523_BB0C_90ACAC6C1522__INCLUDED_)
-#define AFX_STACKINGDLG_H__04779310_B6E7_4523_BB0C_90ACAC6C1522__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 // StackingDlg.h : header file
 //
+#include <filesystem>
 
-class QNetworkAccessManager;
-class QNetworkReply;
+namespace fs = std::filesystem;
 
+#include "mrupath.h"
 #include <CtrlCache.h>
 #include <WndImage.h>
 #include <BtnST.h>
@@ -20,12 +16,121 @@ class QNetworkReply;
 #include <BitmapSlider.h>
 #include <CustomTabCtrl.h>
 #include "StackingEngine.h"
-#include "BackgroundLoading.h"
+#include "imageloader.h"
+
 #include "GradientCtrl.h"
 #include "SplitterControl.h"
 
 #include "ImageSinks.h"
 
+class QNetworkAccessManager;
+class QNetworkReply;
+
+#include <QDialog>
+#include <QFileDialog>
+
+namespace DSS
+{
+	class Group;
+}
+
+namespace Ui
+{
+	class StackingDlg;
+}
+
+class StackingDlg : public QDialog
+{
+	typedef QDialog
+		Inherited;
+
+	Q_OBJECT
+
+public slots:
+	void setSelectionRect(QRectF rect);
+	void tableViewItemClickedEvent(const QModelIndex&);
+	void imageLoaded();
+
+public:
+	explicit StackingDlg(QWidget* parent = nullptr);
+	~StackingDlg();
+
+	inline std::uint16_t	currentGroupId() const
+	{
+		return groupId;
+	}
+
+	void		onAddPictures();
+	void		onAddDarks();
+	void		onAddDarkFlats();
+	void		onAddFlats();
+	void		onAddOffsets();
+
+	//
+	// dssfilelist operations
+	//
+	void		clearList();
+	void		loadList();
+	void		saveList();
+
+	//
+	// Check marks
+	//
+	void		checkAbove();
+	void		checkAll();
+	void		unCheckAll();
+
+private:
+	Ui::StackingDlg* ui;
+	std::unique_ptr<CWorkspace> workspace;
+	bool initialised;
+	std::uint16_t	groupId;		// Initially zero - is the group we are currently working with
+	CString			m_strShowFile;
+
+	QRectF	selectRect;
+
+	//QFileDialog			fileDialog;
+	std::vector<DSS::Group>	imageGroups;
+
+	MRUPath			mruPath;
+	QNetworkAccessManager* networkManager;			// deleted using QObject::deleteLater();
+
+	ImageLoader		imageLoader;
+	LoadedImage		m_LoadedImage;
+
+
+	void showEvent(QShowEvent* event) override;
+
+	void onInitDialog();
+
+	void versionInfoReceived(QNetworkReply* reply);
+	void retrieveLatestVersionInfo();
+
+	void registerCheckedImages();
+	void stackCheckedImages();
+
+	bool checkEditChanges();
+
+	size_t checkedImageCount(PICTURETYPE, int16_t group = -1);
+	void fillTasks(CAllStackingTasks& tasks);
+
+	bool CheckReadOnlyFolders(CAllStackingTasks& tasks);
+
+	bool CheckStacking(CAllStackingTasks& tasks);
+
+	bool areCheckedImagesCompatible();
+
+	bool showRecap(CAllStackingTasks& tasks);
+
+	void blankCheckedItemScores();
+
+	void updateCheckedItemScores();
+
+public slots:
+	void imageLoad();
+};
+
+#if (0)
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
 // CStackingDlg dialog
@@ -35,16 +140,14 @@ class CStackingDlg : public CDialog,
 {
 private :
 	CSplitterControl		m_Splitter;
-	CString					m_strShowFile;
 	CButtonToolbar			m_ButtonToolbar;
 	CSelectRectSink			m_SelectRectSink;
 	CEditStarsSink			m_EditStarSink;
 	CMRUList				m_MRUList;
 	CString					m_strStartingFileList;
-	CBackgroundLoading		m_BackgroundLoading;
-	CLoadedImage			m_LoadedImage;
 	CGammaTransformation	m_GammaTransformation;
 	CString					m_strCurrentFileList;
+	//QFileDialog			    fileDialog;
 	QNetworkAccessManager* networkManager;			// deleted using QObject::deleteLater();
 
 
@@ -72,7 +175,6 @@ public:
 	};
 
 	void	CheckBests(double fPercent);
-	void	StackCheckedImage();
 	void	BatchStack();
 
 // Dialog Data
@@ -104,18 +206,10 @@ public :
 	void		UncheckAll();
 	void		ClearList();
 	void		CheckAbove();
-	void		OnAdddarks();
-	void		OnAddDarkFlats();
-	void		OnAddFlats();
-	void		OnAddOffsets();
-	void		OnAddpictures();
 	void		ComputeOffsets();
 	void		LoadList();
 	void		SaveList();
 	void		ShowStars(BOOL bShow);
-	bool		ShowRecap(CAllStackingTasks & tasks);
-	bool		CheckStacking(CAllStackingTasks & tasks);
-	bool		CheckReadOnlyFolders(CAllStackingTasks & tasks);
 	void		ReloadCurrentImage();
 	void		DropFiles(HDROP hDropInfo);
 	void		SetStartingFileList(LPCTSTR szFileList)
@@ -124,18 +218,16 @@ public :
 	};
 	void		OpenFileList(LPCTSTR szFileList);
 
-	void		FillTasks(CAllStackingTasks & tasks);
-
 private :
 	void		UncheckNonStackablePictures();
 	void		UpdateCheckedAndOffsets(CStackingEngine & StackingEngine);
 	void		DoStacking(CAllStackingTasks & tasks, double fPercent = 100.0);
 
 	void		UpdateGroupTabs();
-	BOOL		CheckEditChanges();
 	void		UpdateLayout();
-	void		versionInfoReceived(QNetworkReply* reply);
-	void		retrieveLatestVersionInfo();
+	void versionInfoReceived(QNetworkReply* reply);
+	void retrieveLatestVersionInfo();
+
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -172,9 +264,4 @@ public :
 	virtual void ButtonToolbar_OnRClick(DWORD dwID, CButtonToolbar * pButtonToolbar);
 	afx_msg void OnBnClicked4corners();
 };
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-/* ------------------------------------------------------------------- */
-
-#endif // !defined(AFX_STACKINGDLG_H__04779310_B6E7_4523_BB0C_90ACAC6C1522__INCLUDED_)
+#endif

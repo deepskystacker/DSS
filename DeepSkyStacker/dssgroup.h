@@ -1,8 +1,8 @@
 #pragma once
 /****************************************************************************
 **
-** Copyright (C) 2020 David C. Partridge
-* **
+** Copyright (C) 2021 David C. Partridge
+**
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
 **
@@ -34,64 +34,76 @@
 **
 **
 ****************************************************************************/
-class QMouseEvent;
-class DSSImageView;
 
-#include <QObject>
-#include <QWidget>
-#include <QRect>
+#include <memory>
+
+#include <QCoreApplication>
 #include <QString>
+#include "ImageListModel.h" 
 
-enum class SelectionMode : quint8;
-
-class DSSSelectRect :
-    public QWidget
+namespace DSS
 {
-    Q_OBJECT
+	class Group
+	{
+	private:
+		//
+		// Initial group id is zero
+		//
+		inline static std::uint16_t nextIndex{ 0 };
 
-typedef QWidget
-    Inherited;
+	public:
 
-public:
-explicit DSSSelectRect(QWidget * parent);
+		//
+		// Qt Table Model class derived from QAbstractTableModel
+		//
+		ImageListModel	model;
 
-void setGeometry(const QRect& r);
+		explicit Group::Group() :
+			Index(nextIndex++) 			// First group is Main Group with Index of 0
+		{
+			if (0 == Index)
+			{
+				Name = QCoreApplication::translate("StackingDlg", "Main Group");
+			}
+			else
+			{
+				Name = QCoreApplication::translate("StackingDlg", "Group %1").arg(Index);
+			}
+		}
 
-protected:
-    void paintEvent(QPaintEvent*) override;
-    void changeEvent(QEvent*) override;
-    void showEvent(QShowEvent*) override;
+		//
+		// This is a very simple class so we can let the compiler synthesise the copy ctor 
+		// and operator =
+		//
 
-public slots:
-    void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void resizeEvent(QResizeEvent* e);
+		//
+		// Accessors
+		//
+		QString name() const noexcept { return Name; };
+		Group& setName(QString const& name) noexcept { Name = name; return *this; };
 
-    void rectButtonChecked();
-    void starsButtonChecked();
-    void cometButtonChecked();
-    void saveButtonPressed();
+		uint index() const noexcept { return Index; };
 
-signals:
-    void selectRectChanged(QRectF rect);
+		//
+		// Will call addImage() internally
+		//
+ 		void AddFile(LPCTSTR szFile, uint16_t groupId = 0, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false);
 
-private:
-    SelectionMode mode;
-    DSSImageView* imageView;
-    QRectF  selectRect;             // In image coordinates
-    QRectF  startRect;              // In image coordinates
-    bool    selecting;
-    QPointF startPos;
-    QPointF endPos;
-    QRegion clipping;
-    static inline QString x2Text{ "x2" };
-    static inline QString x3Text{ "x3" };
+		//
+		// Add an image (row) to the table
+		//
+		void addImage(ListBitMap image)
+		{
+			model.addImage(image);
+		}
 
-    SelectionMode modeFromPosition(const QPointF&);
-    Qt::CursorShape cursorFromMode(SelectionMode);
+	protected:
+		uint16_t Index;		// This group's number
+		//
+		// Every group has a name - initially "Main Group" or Group n"
+		//
+		QString Name;
 
-    void updateSelection();
-    void getDrizzleRectangles(QRectF& rect2xDrizzle, QRectF& rect3xDrizzle) noexcept;
-};
 
+	};
+}

@@ -13,13 +13,13 @@
 #include <QMutex>
 #include <QSettings>
 
-class CWorkspaceSettingsInternal
+class WorkSpaceSettingsInternal
 {
 public:
 	WORKSPACESETTINGVECTOR				m_vSettings;
 
 protected:
-	void	CopyFrom(const CWorkspaceSettingsInternal & ws)
+	void	CopyFrom(const WorkSpaceSettingsInternal & ws)
 	{
 		m_vSettings = ws.m_vSettings;
 	};
@@ -28,24 +28,24 @@ protected:
 	void	Init();
 
 public:
-	CWorkspaceSettingsInternal()
+	WorkSpaceSettingsInternal()
 	{
 		Init();
 	};
-	virtual ~CWorkspaceSettingsInternal() {};
+	virtual ~WorkSpaceSettingsInternal() {};
 
-	CWorkspaceSettingsInternal & operator = (const CWorkspaceSettingsInternal & ws)
+	WorkSpaceSettingsInternal & operator = (const WorkSpaceSettingsInternal & ws)
 	{
 		CopyFrom(ws);
 		return (*this);
 	};
 
-	CWorkspaceSettingsInternal(CWorkspaceSettingsInternal const& other)
+	WorkSpaceSettingsInternal(WorkSpaceSettingsInternal const& other)
 	{
 		CopyFrom(other);
 	}
 
-	void	InitFrom(const CWorkspaceSettingsInternal & ws)
+	void	InitFrom(const WorkSpaceSettingsInternal & ws)
 	{
 		CopyFrom(ws);
 	};
@@ -61,27 +61,27 @@ public:
 	void	readSettings();
 	void	saveSettings();
 	void	ReadFromFile(FILE * hFile);
-	void	ReadFromFile(LPCTSTR szFile);
+	void	ReadFromFile(const fs::path& fileName);
 	void	SaveToFile(FILE * hFile);
-	void	SaveToFile(LPCTSTR szFile);
+	void	SaveToFile(const fs::path& fileName);
 	bool	ReadFromString(LPCTSTR szString);
 	void	ResetToDefault();
 };
 
 /* ------------------------------------------------------------------- */
 
-class CWorkspaceSettings : public CWorkspaceSettingsInternal,
+class WorkSpaceSettings : public WorkSpaceSettingsInternal,
 	public CRefCount
 {
 public:
-	CWorkspaceSettings() {};
-	virtual ~CWorkspaceSettings() {};
+	WorkSpaceSettings() {};
+	virtual ~WorkSpaceSettings() {};
 
 };
 
 /* ------------------------------------------------------------------- */
 
-CWorkspaceSetting & CWorkspaceSetting::readSetting()
+WorkSpaceSetting & WorkSpaceSetting::readSetting()
 {
 	QSettings settings;
 
@@ -98,7 +98,7 @@ CWorkspaceSetting & CWorkspaceSetting::readSetting()
 
 /* ------------------------------------------------------------------- */
 
-CWorkspaceSetting & CWorkspaceSetting::saveSetting()
+WorkSpaceSetting & WorkSpaceSetting::saveSetting()
 {
 	if (dirty)
 	{
@@ -113,7 +113,7 @@ CWorkspaceSetting & CWorkspaceSetting::saveSetting()
 
 /* ------------------------------------------------------------------- */
 
-CWorkspaceSetting & CWorkspaceSetting::setValue(const CWorkspaceSetting & ws)
+WorkSpaceSetting & WorkSpaceSetting::setValue(const WorkSpaceSetting & ws)
 {
 
 	if (Value != ws.Value)
@@ -126,7 +126,7 @@ CWorkspaceSetting & CWorkspaceSetting::setValue(const CWorkspaceSetting & ws)
 
 /* ------------------------------------------------------------------- */
 
-CWorkspaceSetting & CWorkspaceSetting::setValue(const QVariant& value)
+WorkSpaceSetting & WorkSpaceSetting::setValue(const QVariant& value)
 {
 	if (Value != value)
 	{
@@ -140,103 +140,103 @@ CWorkspaceSetting & CWorkspaceSetting::setValue(const QVariant& value)
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
+void	WorkSpaceSettingsInternal::InitToDefault(WORKSPACESETTINGVECTOR & vSettings)
 {
 	vSettings.clear();
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Light_Kappa", 2.0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Light_Method", (uint)MBP_AVERAGE));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Light_Iteration", (uint)5));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Light_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Debloom", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Debloom", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Dark_Kappa", 2.0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Dark_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Dark_Iteration", (uint)5));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Dark_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Flat_Kappa", 2.0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Flat_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Flat_Iteration", (uint)5));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Flat_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Iteration", (uint)5));
-	vSettings.push_back(CWorkspaceSetting("Stacking/Offset_Kappa", 2.0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Offset_Method", (uint)MBP_MEDIAN));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Offset_Iteration", (uint)5));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Offset_Kappa", 2.0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/BackgroundCalibration", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PerChannelBackgroundCalibration", true));
+	vSettings.push_back(WorkSpaceSetting("Stacking/BackgroundCalibration", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PerChannelBackgroundCalibration", true));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/BackgroundCalibrationInterpolation", (uint)BCI_RATIONAL));
-	vSettings.push_back(CWorkspaceSetting("Stacking/RGBBackgroundCalibrationMethod", (uint)RBCM_MAXIMUM));
+	vSettings.push_back(WorkSpaceSetting("Stacking/BackgroundCalibrationInterpolation", (uint)BCI_RATIONAL));
+	vSettings.push_back(WorkSpaceSetting("Stacking/RGBBackgroundCalibrationMethod", (uint)RBCM_MAXIMUM));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/DarkOptimization", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/DarkOptimization", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/UseDarkFactor", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/DarkFactor", 1.0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/UseDarkFactor", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/DarkFactor", 1.0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/HotPixelsDetection", true));
+	vSettings.push_back(WorkSpaceSetting("Stacking/HotPixelsDetection", true));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/BadLinesDetection", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/BadLinesDetection", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/Mosaic", (uint)0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/Mosaic", (uint)0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/CreateIntermediates", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/SaveCalibrated", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/SaveCalibratedDebayered", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/CreateIntermediates", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/SaveCalibrated", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/SaveCalibratedDebayered", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/AlignmentTransformation", (uint)0));
-	vSettings.push_back(CWorkspaceSetting("Stacking/LockCorners", true));
+	vSettings.push_back(WorkSpaceSetting("Stacking/AlignmentTransformation", (uint)0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/LockCorners", true));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/PixelSizeMultiplier", (uint)1));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PixelSizeMultiplier", (uint)1));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/AlignChannels", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/AlignChannels", false));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/CometStackingMode", (uint)0));
+	vSettings.push_back(WorkSpaceSetting("Stacking/CometStackingMode", (uint)0));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/SaveCometImages", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/ApplyFilterToCometImages", true));
+	vSettings.push_back(WorkSpaceSetting("Stacking/SaveCometImages", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/ApplyFilterToCometImages", true));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/IntermediateFileFormat", (uint)1));
+	vSettings.push_back(WorkSpaceSetting("Stacking/IntermediateFileFormat", (uint)1));
 
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_DetectCleanHot", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_HotFilter", (uint)1));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_HotDetection", (uint)500));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_DetectCleanCold", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ColdFilter", (uint)1));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ColdDetection", (uint)500));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_SaveDeltaImage", false));
-	vSettings.push_back(CWorkspaceSetting("Stacking/PCS_ReplaceMethod", (uint)1));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_DetectCleanHot", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_HotFilter", (uint)1));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_HotDetection", (uint)500));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_DetectCleanCold", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_ColdFilter", (uint)1));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_ColdDetection", (uint)500));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_SaveDeltaImage", false));
+	vSettings.push_back(WorkSpaceSetting("Stacking/PCS_ReplaceMethod", (uint)1));
 
-	vSettings.push_back(CWorkspaceSetting("Register/PercentStack", (uint)80));
-  	vSettings.push_back(CWorkspaceSetting("Register/StackAfter", true));
-  	vSettings.push_back(CWorkspaceSetting("Register/DetectHotPixels", true));
-  	vSettings.push_back(CWorkspaceSetting("Register/DetectionThreshold", (uint)10));
-	vSettings.push_back(CWorkspaceSetting("Register/ApplyMedianFilter", false));
+	vSettings.push_back(WorkSpaceSetting("Register/PercentStack", (uint)80));
+  	vSettings.push_back(WorkSpaceSetting("Register/StackAfter", true));
+  	vSettings.push_back(WorkSpaceSetting("Register/DetectHotPixels", true));
+  	vSettings.push_back(WorkSpaceSetting("Register/DetectionThreshold", (uint)10));
+	vSettings.push_back(WorkSpaceSetting("Register/ApplyMedianFilter", false));
 
-	vSettings.push_back(CWorkspaceSetting("RawDDP/Brightness", 1.0));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/RedScale", 1.0));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/BlueScale", 1.0));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/NoWB", false));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/CameraWB", false));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/BlackPointTo0", false));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/Interpolation", "Bilinear"));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/SuperPixels", false));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/RawBayer", false));
-	vSettings.push_back(CWorkspaceSetting("RawDDP/AHD", false));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/Brightness", 1.0));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/RedScale", 1.0));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/BlueScale", 1.0));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/NoWB", false));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/CameraWB", false));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/BlackPointTo0", false));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/Interpolation", "Bilinear"));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/SuperPixels", false));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/RawBayer", false));
+	vSettings.push_back(WorkSpaceSetting("RawDDP/AHD", false));
 
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/FITSisRAW", false));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/Brightness", 1.0));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/RedScale", 1.0));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/BlueScale", 1.0));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/DSLR", ""));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/BayerPattern", (uint)4));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/Interpolation", "Bilinear"));
-	vSettings.push_back(CWorkspaceSetting("FitsDDP/ForceUnsigned", false));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/FITSisRAW", false));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/Brightness", 1.0));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/RedScale", 1.0));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/BlueScale", 1.0));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/DSLR", ""));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/BayerPattern", (uint)4));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/Interpolation", "Bilinear"));
+	vSettings.push_back(WorkSpaceSetting("FitsDDP/ForceUnsigned", false));
 
 	std::sort(vSettings.begin(), vSettings.end());
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::Init()
+void	WorkSpaceSettingsInternal::Init()
 {
 	InitToDefault(m_vSettings);		// Set up default values for all the main settings, and mark all as dirty
 	//
@@ -257,10 +257,10 @@ void	CWorkspaceSettingsInternal::Init()
 
 /* ------------------------------------------------------------------- */
 
-WORKSPACESETTINGITERATOR	CWorkspaceSettingsInternal::findSetting(const QString& key)
+WORKSPACESETTINGITERATOR	WorkSpaceSettingsInternal::findSetting(const QString& key)
 {
 	WORKSPACESETTINGITERATOR	it;
-	CWorkspaceSetting					s(key);
+	WorkSpaceSetting					s(key);
 
 	it = lower_bound(m_vSettings.begin(), m_vSettings.end(), s);
 	if (it != m_vSettings.end())
@@ -274,7 +274,7 @@ WORKSPACESETTINGITERATOR	CWorkspaceSettingsInternal::findSetting(const QString& 
 
 /* ------------------------------------------------------------------- */
 
-bool CWorkspaceSettingsInternal::isDirty()
+bool WorkSpaceSettingsInternal::isDirty()
 {
 	bool						bResult = false;
 
@@ -286,7 +286,7 @@ bool CWorkspaceSettingsInternal::isDirty()
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::setDirty()
+void	WorkSpaceSettingsInternal::setDirty()
 {
 	for (size_t i = 0; i < m_vSettings.size(); i++)
 		m_vSettings[i].isDirty(true);
@@ -294,7 +294,7 @@ void	CWorkspaceSettingsInternal::setDirty()
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::readSettings()
+void	WorkSpaceSettingsInternal::readSettings()
 {
 	for (size_t i = 0; i < m_vSettings.size(); i++)
 		m_vSettings[i].readSetting();
@@ -302,7 +302,7 @@ void	CWorkspaceSettingsInternal::readSettings()
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::saveSettings()
+void	WorkSpaceSettingsInternal::saveSettings()
 {
 	for (size_t i = 0; i < m_vSettings.size(); i++)
 		m_vSettings[i].saveSetting();
@@ -310,7 +310,7 @@ void	CWorkspaceSettingsInternal::saveSettings()
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::ReadFromFile(FILE * hFile)
+void	WorkSpaceSettingsInternal::ReadFromFile(FILE * hFile)
 {
 	CHAR				szString[1000];
 
@@ -320,11 +320,11 @@ void	CWorkspaceSettingsInternal::ReadFromFile(FILE * hFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::ReadFromFile(LPCTSTR szFile)
+void	WorkSpaceSettingsInternal::ReadFromFile(const fs::path& fileName)
 {
 	FILE *				hFile;
 
-	hFile = _tfopen(szFile, _T("rt"));
+	hFile = fopen(fileName.generic_string().c_str(), "wt");
 	if (hFile)
 	{
 		ReadFromFile(hFile);
@@ -334,7 +334,7 @@ void	CWorkspaceSettingsInternal::ReadFromFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::SaveToFile(FILE * hFile)
+void	WorkSpaceSettingsInternal::SaveToFile(FILE * hFile)
 {
 	for (size_t i = 0; i < m_vSettings.size(); i++)
 	{
@@ -346,11 +346,11 @@ void	CWorkspaceSettingsInternal::SaveToFile(FILE * hFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::SaveToFile(LPCTSTR szFile)
+void	WorkSpaceSettingsInternal::SaveToFile(const fs::path& fileName)
 {
 	FILE *				hFile;
 
-	hFile = _tfopen(szFile, _T("wt"));
+	hFile = fopen(fileName.generic_string().c_str(), "wt");
 	if (hFile)
 	{
 		SaveToFile(hFile);
@@ -360,7 +360,7 @@ void	CWorkspaceSettingsInternal::SaveToFile(LPCTSTR szFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
+bool	WorkSpaceSettingsInternal::ReadFromString(LPCTSTR szString)
 {
 	bool				bResult = false;
 
@@ -444,7 +444,7 @@ bool	CWorkspaceSettingsInternal::ReadFromString(LPCTSTR szString)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspaceSettingsInternal::ResetToDefault()
+void	WorkSpaceSettingsInternal::ResetToDefault()
 {
 	WORKSPACESETTINGVECTOR		vDefaults;
 
@@ -461,9 +461,9 @@ void	CWorkspaceSettingsInternal::ResetToDefault()
 /* ------------------------------------------------------------------- */
 Q_GLOBAL_STATIC(QMutex, theLock);
 
-std::shared_ptr <CWorkspaceSettings> g_pSettings;
+std::shared_ptr <WorkSpaceSettings> g_pSettings;
 
-static std::deque<CWorkspaceSettingsInternal>	g_WSStack;
+static std::deque<WorkSpaceSettingsInternal>	g_WSStack;
 
 /* ------------------------------------------------------------------- */
 
@@ -472,7 +472,7 @@ CWorkspace::CWorkspace()
 	theLock->lock();
 	if (nullptr == g_pSettings)
 	{
-		g_pSettings = std::make_shared <CWorkspaceSettings>();
+		g_pSettings = std::make_shared <WorkSpaceSettings>();
 	}
 	theLock->unlock();
 
@@ -543,9 +543,9 @@ void	CWorkspace::ReadFromFile(FILE * hFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspace::ReadFromFile(LPCTSTR szFile)
+void	CWorkspace::ReadFromFile(const fs::path& fileName)
 {
-	pSettings->ReadFromFile(szFile);
+	pSettings->ReadFromFile(fileName);
 };
 
 /* ------------------------------------------------------------------- */
@@ -557,9 +557,9 @@ void	CWorkspace::SaveToFile(FILE * hFile)
 
 /* ------------------------------------------------------------------- */
 
-void	CWorkspace::SaveToFile(LPCTSTR szFile)
+void	CWorkspace::SaveToFile(const fs::path& fileName)
 {
-	pSettings->SaveToFile(szFile);
+	pSettings->SaveToFile(fileName);
 };
 
 /* ------------------------------------------------------------------- */
@@ -587,7 +587,7 @@ void CWorkspace::ResetToDefault()
 
 void CWorkspace::Pop(bool bRestore)
 {
-	CWorkspaceSettingsInternal		wsi;
+	WorkSpaceSettingsInternal		wsi;
 
 	if (g_WSStack.size())
 	{

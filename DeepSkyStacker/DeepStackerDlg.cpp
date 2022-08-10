@@ -5,8 +5,17 @@
 #include "DeepSkyStacker.h"
 #include "DeepStackerDlg.h"
 #include "DSS-versionhelpers.h"
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QSplitter>
+#include <QtWidgets/QStackedWidget>
+#include <QtWidgets/QWidget>
 #include <QRect>
+#include <QScreen>
 #include <QSettings>
+
+#include "ExplorerBar.h"
+#include "StackingDlg.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -129,7 +138,7 @@ UINT WM_TASKBAR_BUTTON_CREATED = ::RegisterWindowMessage(_T("TaskbarButtonCreate
 
 CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	: CDialog(CDeepStackerDlg::IDD, pParent),
-	m_dlgStacking(),	// was m_dlgStacking(this) but needs a QWidget as parent.
+	CurrentTab(0),
 	// CLEAN THIS UP
 	m_dlgProcessing(this)
 	//m_dlgLibrary(this)
@@ -137,7 +146,7 @@ CDeepStackerDlg::CDeepStackerDlg(CWnd* pParent /*=nullptr*/)
 	//{{AFX_DATA_INIT(CDeepStackerDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
-	m_dwCurrentTab = 0;
+
     m_taskbarList = nullptr;
     m_progress = false;
 }
@@ -173,21 +182,21 @@ END_MESSAGE_MAP()
 
 void CDeepStackerDlg::UpdateTab()
 {
-	switch (m_dwCurrentTab)
+	switch (CurrentTab)
 	{
 	case IDD_REGISTERING :
 	case IDD_STACKING :
-		m_dlgStacking.ShowWindow(true);
+		stackedWidget->setCurrentIndex(0);
 		m_dlgProcessing.ShowWindow(SW_HIDE);
 //		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
 	//case IDD_LIBRARY :
-	//	m_dlgStacking.ShowWindow(SW_HIDE);
+	//	stackingDlg.ShowWindow(SW_HIDE);
 	//	m_dlgProcessing.ShowWindow(SW_HIDE);
 	//	m_dlgLibrary.ShowWindow(SW_SHOW);
 	//	break;
 	case IDD_PROCESSING :
-		m_dlgStacking.ShowWindow(false);
+		stackedWidget->setVisible(false);
 		m_dlgProcessing.ShowWindow(SW_SHOW);
 //		m_dlgLibrary.ShowWindow(SW_HIDE);
 		break;
@@ -204,6 +213,7 @@ BOOL CDeepStackerDlg::OnEraseBkgnd(CDC * pDC)
 
 /* ------------------------------------------------------------------- */
 
+#if (0)
 void CDeepStackerDlg::UpdateSizes()
 {
 	// Resize the tab control
@@ -212,24 +222,28 @@ void CDeepStackerDlg::UpdateSizes()
 
 	GetClientRect(&rcDlg);
 
-	if (m_dlgStacking.m_hWnd)
+	if (stackingDlg.m_hWnd)
 	{
-		rcExplorerBar = QRect(rcDlg.left, rcDlg.top, rcDlg.Width(), rcDlg.Height());
-		rcDlg.left += 220;
-		rcExplorerBar.setRight(rcDlg.left);
+		auto screen = QGuiApplication::screenAt(QPoint(rcDlg.left, rcDlg.top));
+		auto devicePixelRatio = screen->devicePixelRatio();
+		int width = explorerBar->width();
+		rcExplorerBar = QRect(rcDlg.left, rcDlg.top, width, rcDlg.Height());
+		rcDlg.left += width;
+		//rcExplorerBar.setRight(rcDlg.left);
 
-		if (m_dlgStacking.m_hWnd)
-			m_dlgStacking.MoveWindow(&rcDlg);
+		if (stackingDlg.m_hWnd)
+			stackingDlg.MoveWindow(&rcDlg);
 		if (m_dlgProcessing.m_hWnd)
 			m_dlgProcessing.MoveWindow(&rcDlg);
 		//if (m_dlgLibrary.m_hWnd)
 		//	m_dlgLibrary.MoveWindow(&rcDlg);
 		//if (m_ExplorerBar.m_hWnd)
 		//	m_ExplorerBar.MoveWindow(&rcExplorerBar);
-		widget->setGeometry(rcExplorerBar);
+		//widget->setGeometry(rcDlg);
 		explorerBar->setGeometry(rcExplorerBar);
 	};
 };
+#endif
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -243,7 +257,7 @@ void CDeepStackerDlg::ChangeTab(std::uint32_t dwTabID)
 //	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
 //		dwTabID = IDD_LIBRARY;
 //#endif
-	m_dwCurrentTab = dwTabID;
+	CurrentTab = dwTabID;
 	UpdateTab();
 };
 
@@ -256,11 +270,28 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	ZTRACE_RUNTIME("Initializing Main Dialog - ok");
 
-	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
 	widget = new QWinWidget(this);
 	widget->showCentered();
+
+	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
 	explorerBar = new ExplorerBar(widget);
 	ZTRACE_RUNTIME("Creating Explorer bar - ok");
+
+	ZTRACE_RUNTIME("Creating Stacking Panel");
+	stackingDlg = new StackingDlg(widget);
+	ZTRACE_RUNTIME("Creating Stacking Panel - ok");
+
+	ZTRACE_RUNTIME("Creating stackedWidget");
+	stackedWidget = new QStackedWidget(widget);
+
+	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
+	stackedWidget->addWidget(stackingDlg);
+
+	ZTRACE_RUNTIME("Creating Horizontal Splitter");
+	splitter = new QSplitter(Qt::Horizontal, widget);
+	splitter->addWidget(explorerBar);
+	splitter->addWidget(stackedWidget);
+	splitter->setStretchFactor(1, 1);		// Want Stacking part to take any spare space.
 
 	CString			strMask;
 	CString			strTitle;
@@ -279,10 +310,8 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	m_strBaseTitle = strTitle;
 
 	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), true);
-	m_dlgStacking.SetStartingFileList(m_strStartFileList);
-	ZTRACE_RUNTIME("Creating Stacking Panel");
-	m_dlgStacking.Create(IDD_STACKING, this);
-	ZTRACE_RUNTIME("Creating Stacking Panel - ok");
+	//stackingDlg->SetStartingFileList(m_strStartFileList);	// TODO: re-enable
+
 	ZTRACE_RUNTIME("Creating Processing Panel");
 	m_dlgProcessing.Create(IDD_PROCESSING, this);
 	ZTRACE_RUNTIME("Creating Processing Panel - ok");
@@ -292,12 +321,12 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	RestoreWindowPosition(this, "Position");
 	ZTRACE_RUNTIME("Restoring Window Position - ok");
 
-	m_dwCurrentTab = IDD_REGISTERING;
+	CurrentTab = IDD_REGISTERING;
 	ZTRACE_RUNTIME("Updating All Panels");
 	UpdateTab();
 	ZTRACE_RUNTIME("Updating All Panels - ok");
 	ZTRACE_RUNTIME("Updating Sizes");
-	UpdateSizes();
+	//UpdateSizes();
 	ZTRACE_RUNTIME("Updating Sizes - ok");
 
 	return true;  // return true unless you set the focus to a control
@@ -330,13 +359,13 @@ void CDeepStackerDlg::SetCurrentFileInTitle(LPCTSTR szFile)
 
 void CDeepStackerDlg::OnDropFiles(HDROP hDropInfo)
 {
-	if (hDropInfo && m_dlgStacking.m_hWnd)
-	{
-		SetForegroundWindow();
-		BringWindowToTop();
-		SetActiveWindow();
-		m_dlgStacking.DropFiles(hDropInfo);
-	};
+	//if (hDropInfo && stackingDlg.m_hWnd)
+	//{
+	//	SetForegroundWindow();
+	//	BringWindowToTop();
+	//	SetActiveWindow();
+	//	stackingDlg.DropFiles(hDropInfo);
+	//};
 };
 
 LRESULT CDeepStackerDlg::OnTaskbarButtonCreated(WPARAM /*wParam*/, LPARAM /*lParam*/)
@@ -398,7 +427,7 @@ void CDeepStackerDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 
-	UpdateSizes();
+	//UpdateSizes();
 	// Resize all dialogs
 }
 
@@ -406,7 +435,7 @@ void CDeepStackerDlg::OnSize(UINT nType, int cx, int cy)
 
 void CDeepStackerDlg::OnClose()
 {
-	if (m_dlgStacking.SaveOnClose() &&
+	if (// stackingDlg.SaveOnClose() &&
 		m_dlgProcessing.SaveOnClose())
 	{
 		SaveWindowPosition(this, "Position");

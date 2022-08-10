@@ -262,11 +262,73 @@ bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDS
 };
 
 /* ------------------------------------------------------------------- */
+bool	CAllDepthBitmap::initQImage()
+{
+	ZFUNCTRACE_RUNTIME();
+	bool			bResult = false;
+	int64_t		i, j;
+	size_t			width = m_pBitmap->Width(), height = m_pBitmap->Height();
+	const int numberOfProcessors = CMultitask::GetNrProcessors();
 
+	m_Image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
+	//
+	// Point to the first RGB quad in the QImage
+	//
+	QRgb* pOutPixel = (QRgb*)(m_Image->bits());
+
+	if (m_pBitmap->IsMonochrome() && m_pBitmap->IsCFA())
+	{
+		ZTRACE_RUNTIME("Slow Bitmap Copy to Qimage");
+		// Slow Method
+#pragma omp parallel for default(none) if(numberOfProcessors > 1)
+		for (j = 0; j < height; j++)
+		{
+			for (i = 0; i < width; i++)
+			{
+				double			fRed, fGreen, fBlue;
+				m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
+
+				*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
+					std::clamp(fGreen, 0.0, 255.0),
+					std::clamp(fBlue, 0.0, 255.0));
+
+			};
+		};
+	}
+	else
+	{
+		ZTRACE_RUNTIME("Fast Bitmap Copy to QImage");
+		// Fast Method
+		PixelIterator			it;
+		m_pBitmap->GetIterator(&it);
+
+#pragma omp parallel for default(none) if(numberOfProcessors > 1)
+		for (j = 0; j < height; j++)
+		{
+			it->Reset(0, j);
+			for (i = 0; i < width; i++)
+			{
+				double			fRed, fGreen, fBlue;
+				it->GetPixel(fRed, fGreen, fBlue);
+
+				*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
+					std::clamp(fGreen, 0.0, 255.0),
+					std::clamp(fBlue, 0.0, 255.0));
+				(*it)++;
+			};
+		};
+	};
+	bResult = true;
+
+	return bResult;
+};
+
+/* ------------------------------------------------------------------- */
 bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool						bResult = false;
+	size_t lWidth, lHeight;
 
 	try
 	{
@@ -277,6 +339,9 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 			C16BitGrayBitmap *			pGrayBitmap;
 			CSmartPtr<CMemoryBitmap>	pBitmap = AllDepthBitmap.m_pBitmap;
 			CCFABitmapInfo *			pCFABitmapInfo;
+
+			lWidth = pBitmap->Width(),
+			lHeight = pBitmap->Height();
 
 			pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(AllDepthBitmap.m_pBitmap.m_p);
 			pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pBitmap.m_p);
@@ -299,11 +364,9 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 				{
 					// Transform the gray scale image to color image
 					CSmartPtr<C48BitColorBitmap>	pColorBitmap;
-					int							lWidth = pBitmap->Width(),
-						lHeight = pBitmap->Height();
 
 					pColorBitmap.Create();
-					pColorBitmap->Init(lWidth, lHeight);
+					pColorBitmap->Init((int)lWidth, (int)lHeight);
 
 #pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 					for (int j = 0; j < lHeight; j++)
@@ -321,8 +384,17 @@ bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgr
 				};
 			};
 
+			//
+			// Create a Windows bitmap for display purposes (wrapped in a C32BitsBitmap class).
+			// (TODO) Delete this when Qt porting is done.
+			//
 			AllDepthBitmap.m_pWndBitmap.Create();
 			AllDepthBitmap.m_pWndBitmap->InitFrom(AllDepthBitmap.m_pBitmap);
+
+			//
+			// Create a QImage from the raw data
+			//
+			AllDepthBitmap.initQImage();
 
 			bResult = true;
 		};
@@ -879,6 +951,67 @@ void CGammaTransformation::InitTransformation(double fGamma)
 /* ------------------------------------------------------------------- */
 
 template <template<class> class BitmapClass, class T>
+bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaTransformation& gammatrans)
+{
+	ZFUNCTRACE_RUNTIME();
+	bool bResult = false;
+
+	if (pInBitmap != nullptr && gammatrans.IsInitialized())
+	{
+		const size_t width = pInBitmap->Width();
+		const size_t height = pInBitmap->Height();
+
+		// Check that the output bitmap size is matching the input bitmap
+		ZASSERTSTATE ((pImage->Width() == width) && (pImage->Height() == height));
+
+		double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
+		//
+		// Point to the first RGB quad in the QImage
+		//
+		QRgb* pOutPixel = (QRgb*)(m_Image->bits());
+
+#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+		for (int j = 0; j < lHeight; j++)
+		{
+			if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
+			{
+				// Init iterators
+				T* pRed = pInBitmap->GetRedPixel(0, j);
+				T* pGreen = pInBitmap->GetGreenPixel(0, j);
+				T* pBlue = pInBitmap->GetBluePixel(0, j);
+
+				for (int i = 0; i < lWidth; i++)
+				{
+					*pOutPixel++ = qRgb(gammatrans.m_vTransformation[*pRed / fMultiplier],
+										gammatrans.m_vTransformation[*pGreen / fMultiplier],
+										gammatrans.m_vTransformation[*pBlue / fMultiplier]);
+					pRed++;
+					pGreen++;
+					pBlue++;
+				}
+			}
+			if constexpr (std::is_same_v<BitmapClass<T>, CGrayBitmapT<T>>)
+			{
+				// Init iterators
+				T* pGray = pInBitmap->GetGrayPixel(0, j);
+				unsigned char value = 0;
+
+				for (int i = 0; i < lWidth; i++)
+				{
+					value = gammatrans.m_vTransformation[*pGray / fMultiplier];
+					*pOutPixel++ = qRgb(value, value, value);
+					pGray++;
+				}
+			}
+		}
+		bResult = true;
+	}
+	return bResult;
+}
+
+/* ------------------------------------------------------------------- */
+
+template <template<class> class BitmapClass, class T>
 bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitmap, CGammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1056,7 +1189,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CGrayBitmapT<TType>* pI
 };
 */
 /* ------------------------------------------------------------------- */
-
+/*
 bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1093,6 +1226,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitma
 
 	return bResult;
 };
+*/
 
 /* ------------------------------------------------------------------- */
 
