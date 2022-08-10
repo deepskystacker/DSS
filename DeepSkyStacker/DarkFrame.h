@@ -9,45 +9,25 @@
 
 /* ------------------------------------------------------------------- */
 
-class	CHotPixel
+class CHotPixel
 {
-public :
-	int				m_lX,
-						m_lY;
-	int				m_lWeight;
-
-private :
-	void	CopyFrom(const CHotPixel & hp)
-	{
-		m_lX = hp.m_lX;
-		m_lY = hp.m_lY;
-		m_lWeight = hp.m_lWeight;
-	};
+public:
+	int m_lX;
+	int m_lY;
+	int m_lWeight;
 
 public :
-	CHotPixel(int X = 0, int Y = 0, int lWeight = 1)
-	{
-		m_lX = X;
-		m_lY = Y;
-		m_lWeight = lWeight;
-	};
+	CHotPixel(int X = 0, int Y = 0, int lWeight = 1) :
+		m_lX{ X },
+		m_lY{ Y },
+		m_lWeight{ lWeight }
+	{}
 
-	CHotPixel(const CHotPixel & hp)
-	{
-		CopyFrom(hp);
-	};
+	CHotPixel(const CHotPixel&) = default;
+	CHotPixel& operator=(const CHotPixel&) = default;
+	virtual ~CHotPixel() = default;
 
-	const CHotPixel & operator = (const CHotPixel & hp)
-	{
-		CopyFrom(hp);
-		return (*this);
-	};
-
-	virtual ~CHotPixel()
-	{
-	};
-
-	bool operator < (const CHotPixel & hp) const
+	bool operator<(const CHotPixel& hp) const
 	{
 		if (m_lX < hp.m_lX)
 			return true;
@@ -55,17 +35,17 @@ public :
 			return false;
 		else
 			return (m_lY < hp.m_lY);
-	};
+	}
 
-	void	SetPixel(int lX, int lY)
+	void SetPixel(int lX, int lY)
 	{
 		m_lX = lX;
 		m_lY = lY;
-	};
+	}
 };
 
-typedef std::vector<CHotPixel>		HOTPIXELVECTOR;
-typedef HOTPIXELVECTOR::iterator	HOTPIXELITERATOR;
+typedef std::vector<CHotPixel> HOTPIXELVECTOR;
+typedef HOTPIXELVECTOR::iterator HOTPIXELITERATOR;
 
 /* ------------------------------------------------------------------- */
 
@@ -156,14 +136,14 @@ typedef EXCLUDEDPIXELSET::iterator			EXCLUDEDPIXELITERATOR;
 
 class CDarkFrameHotParameters
 {
-public :
-	double						m_fGrayValue;
+public:
+	double m_fGrayValue;
 
-public :
-	CDarkFrameHotParameters() : m_fGrayValue(0) {};
+public:
+	CDarkFrameHotParameters() : m_fGrayValue{ 0 } {};
 	virtual ~CDarkFrameHotParameters() {};
 
-	void	ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXELVECTOR & vHotPixels);
+	void ComputeParameters(const CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels);
 };
 
 /* ------------------------------------------------------------------- */
@@ -225,7 +205,7 @@ private :
 		vRects.push_back(rc);
 	};
 
-	double	ComputeMedianValueInRect(CMemoryBitmap * pBitmap, CRect & rc);
+	double ComputeMedianValueInRect(const CMemoryBitmap* pBitmap, CRect& rc);
 
 public :
 	CDarkAmpGlowParameters()
@@ -248,7 +228,7 @@ public :
 	virtual ~CDarkAmpGlowParameters() {};
 
 	void	ComputeParametersFromPoints(CMemoryBitmap * pBitmap);
-	void	FindPointsAndComputeParameters(CMemoryBitmap * pBitmap);
+	void FindPointsAndComputeParameters(const CMemoryBitmap* pBitmap);
 	void	ComputeParametersFromIndice(int lIndice)
 	{
 		m_fGrayValue = m_fMedianHotest - m_vMedianColdest[lIndice];
@@ -265,25 +245,25 @@ private :
 	bool						m_bHotPixelDetected;
 	bool						m_bBadLinesDetection;
 	double						m_fDarkFactor;
-	CSmartPtr<CMemoryBitmap>	m_pMasterDark;
-	CSmartPtr<CMemoryBitmap>	m_pAmpGlow;
-	CSmartPtr<CMemoryBitmap>	m_pDarkCurrent;
+	std::shared_ptr<CMemoryBitmap> m_pMasterDark;
+	std::shared_ptr<CMemoryBitmap> m_pAmpGlow;
+	std::shared_ptr<CMemoryBitmap> m_pDarkCurrent;
 	HOTPIXELVECTOR				m_vHotPixels;
 	EXCLUDEDPIXELVECTOR			m_vExcludedPixels;
 
 	CDarkFrameHotParameters		m_HotParameters;
 	CDarkAmpGlowParameters		m_AmpglowParameters;
 
-	void	Reset()
+	void Reset(std::shared_ptr<CMemoryBitmap> pMaster)
 	{
 		m_bDarkOptimization		= CAllStackingTasks::GetDarkOptimization();
 		m_bHotPixelsDetection	= CAllStackingTasks::GetHotPixelsDetection();
 		m_bBadLinesDetection	= CAllStackingTasks::GetBadLinesDetection();
 		m_fDarkFactor			= CAllStackingTasks::GetDarkFactor();
 		m_bHotPixelDetected		= false;
-		m_pMasterDark.Release();
+		m_pMasterDark = pMaster;
 		m_vHotPixels.clear();
-	};
+	}
 
 
 	void	FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
@@ -300,30 +280,28 @@ protected :
 	void	FindBadVerticalLines(CDSSProgress * pProgress);
 
 public :
-	CDarkFrame(CMemoryBitmap * pMasterDark = nullptr)
+	CDarkFrame(std::shared_ptr<CMemoryBitmap> pMaster = std::shared_ptr<CMemoryBitmap>{})
 	{
-		Reset();
-		m_pMasterDark = pMasterDark;
-	};
+		Reset(pMaster);
+	}
 
 	virtual ~CDarkFrame()
+	{}
+
+	void SetMasterDark(std::shared_ptr<CMemoryBitmap> pMaster)
 	{
-	};
+		Reset(pMaster);
+		//m_pMasterDark = pMaster; // pMaster.Addref(); m_pMasterDark.m_p->Release(); m_pMasterDark.m_p = pMaster;
+	}
 
-	void	SetMasterDark(CMemoryBitmap * pMasterDark)
+	bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress * pProgress = nullptr);
+	void InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress = nullptr);
+
+	bool IsOk() const
 	{
-		Reset();
-		m_pMasterDark = pMasterDark;
-	};
-
-	bool	Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
-
-	void	InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress = nullptr);
-
-	bool	IsOk()
-	{
-		return (m_pMasterDark != nullptr);
-	};
+//#		return (m_pMasterDark != nullptr);
+		return static_cast<bool>(this->m_pMasterDark);
+	}
 };
 
 #endif // __DARKFRAME_H__

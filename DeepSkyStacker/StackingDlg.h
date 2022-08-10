@@ -221,7 +221,7 @@ public :
 private :
 	void		UncheckNonStackablePictures();
 	void		UpdateCheckedAndOffsets(CStackingEngine & StackingEngine);
-	void		DoStacking(CAllStackingTasks & tasks, double fPercent = 100.0);
+	void DoStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
 
 	void		UpdateGroupTabs();
 	void		UpdateLayout();

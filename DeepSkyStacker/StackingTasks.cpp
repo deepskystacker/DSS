@@ -30,54 +30,53 @@ bool	AreExposureEquals(double fExposure1, double fExposure2)
 
 /* ------------------------------------------------------------------- */
 
-bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress, CMemoryBitmap** ppBitmap)
+bool LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool			bResult = false;
-
-	CBitmapInfo			bmpInfo;
+	bool bResult = false;
+	CBitmapInfo bmpInfo;
 
 	if (GetPictureInfo(szFile, bmpInfo) && bmpInfo.CanLoad())
 	{
-		CSmartPtr<CMemoryBitmap>	pBitmap;
-		CString						strText;
-		CString						strDescription;
-		bool						bOverrideRAW = true;
+		CString strText;
+		CString strDescription;
+		bool bOverrideRAW = true;
 
 		bmpInfo.GetDescription(strDescription);
+		const auto pDescription = static_cast<LPCTSTR>(strDescription);
 
 		switch (PictureType)
 		{
 		case PICTURETYPE_DARKFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText.Format(IDS_LOADRGBDARK, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADRGBDARK, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			else
-				strText.Format(IDS_LOADGRAYDARK, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADGRAYDARK, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			break;
 		case PICTURETYPE_DARKFLATFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText.Format(IDS_LOADRGBDARKFLAT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADRGBDARKFLAT, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			else
-				strText.Format(IDS_LOADGRAYDARKFLAT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADGRAYDARKFLAT, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			break;
 		case PICTURETYPE_OFFSETFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText.Format(IDS_LOADRGBOFFSET, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADRGBOFFSET, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			else
-				strText.Format(IDS_LOADGRAYOFFSET, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADGRAYOFFSET, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			break;
 		case PICTURETYPE_FLATFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText.Format(IDS_LOADRGBFLAT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADRGBFLAT, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			else
-				strText.Format(IDS_LOADGRAYFLAT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADGRAYFLAT, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			break;
 		case PICTURETYPE_LIGHTFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			else
-				strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFile);
+				strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, pDescription, szFile);
 			bOverrideRAW = false;
 			break;
 		};
@@ -87,8 +86,10 @@ bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 
 		if (bOverrideRAW)
 			PushRAWSettings(false, true); // Allways use Raw Bayer for dark, offset, and flat frames
-		if (::LoadPicture(szFile, &pBitmap, pProgress))
-			bResult = pBitmap.CopyTo(ppBitmap);
+
+		bResult = ::FetchPicture(szFile, rpBitmap, pProgress);
+//#			bResult = pBitmap.CopyTo(ppBitmap); // *ppBitmap = pBitmap.m_p; pBitmap.m_p->Addref();
+
 		if (bOverrideRAW)
 			PopRAWSettings();
 
@@ -105,13 +106,13 @@ class CTaskBitmapCache
 {
 public :
 	std::uint32_t				m_dwOffsetTaskID;
-	CSmartPtr<CMemoryBitmap>	m_pOffsetBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pOffsetBitmap;
 	std::uint32_t				m_dwDarkTaskID;
-	CSmartPtr<CMemoryBitmap>	m_pDarkBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pDarkBitmap;
 	std::uint32_t				m_dwDarkFlatTaskID;
-	CSmartPtr<CMemoryBitmap>	m_pDarkFlatBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pDarkFlatBitmap;
 	std::uint32_t				m_dwFlatTaskID;
-	CSmartPtr<CMemoryBitmap>	m_pFlatBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pFlatBitmap;
 
 public :
 	CTaskBitmapCache()
@@ -129,24 +130,51 @@ public :
 		m_dwDarkTaskID   = 0;
 		m_dwDarkFlatTaskID   = 0;
 		m_dwFlatTaskID   = 0;
-		m_pOffsetBitmap.Release();
-		m_pDarkBitmap.Release();
-		m_pDarkFlatBitmap.Release();
-		m_pFlatBitmap.Release();
+		m_pOffsetBitmap.reset();
+		m_pDarkBitmap.reset();
+		m_pDarkFlatBitmap.reset();
+		m_pFlatBitmap.reset();
 	};
 
-	bool	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
+	bool GetTaskResult(const CTaskInfo* pTaskInfo, CDSSProgress* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 	{
 		ZFUNCTRACE_RUNTIME();
-		bool					bResult = false;
+		bool bResult = false;
 
-		*ppBitmap = nullptr;
-		if (pTaskInfo && pTaskInfo->m_strOutputFile.GetLength())
+		const auto checkFrame = [&rpBitmap, pTaskInfo, pProgress](std::uint32_t& taskId, std::shared_ptr<CMemoryBitmap>& pSrcBitmap) -> bool
+		{
+			if (taskId == pTaskInfo->m_dwTaskID && static_cast<bool>(pSrcBitmap))
+			{
+				rpBitmap = pSrcBitmap;
+				return true;
+			}
+			else
+			{
+				pSrcBitmap.reset();
+				if (LoadFrame(pTaskInfo->m_strOutputFile, pTaskInfo->m_TaskType, pProgress, pSrcBitmap))
+				{
+					taskId = pTaskInfo->m_dwTaskID;
+					rpBitmap = pSrcBitmap;
+					return true;
+				}
+				else
+				{
+					taskId = 0;
+					return false;
+				}
+			}
+		};
+
+//#		*ppBitmap = nullptr;
+		rpBitmap.reset();
+		if (pTaskInfo != nullptr && pTaskInfo->m_strOutputFile.GetLength() != 0)
 		{
 			switch (pTaskInfo->m_TaskType)
 			{
 			case PICTURETYPE_OFFSETFRAME :
-				if ((m_dwOffsetTaskID == pTaskInfo->m_dwTaskID) && m_pOffsetBitmap)
+				bResult = checkFrame(this->m_dwOffsetTaskID, this->m_pOffsetBitmap);
+				break;
+/*				if ((m_dwOffsetTaskID == pTaskInfo->m_dwTaskID) && m_pOffsetBitmap)
 					bResult = m_pOffsetBitmap.CopyTo(ppBitmap);
 				else
 				{
@@ -158,11 +186,13 @@ public :
 						bResult = m_pOffsetBitmap.CopyTo(ppBitmap);
 					}
 					else
-						m_dwDarkTaskID = 0;
+						m_dwDarkTaskID = 0; // ### BUG! m_dwOffsetTaskID ###
 				};
-				break;
+				break;*/
 			case PICTURETYPE_DARKFRAME :
-				if ((m_dwDarkTaskID == pTaskInfo->m_dwTaskID) && m_pDarkBitmap)
+				bResult = checkFrame(this->m_dwDarkTaskID, this->m_pDarkBitmap);
+				break;
+/*				if ((m_dwDarkTaskID == pTaskInfo->m_dwTaskID) && m_pDarkBitmap)
 					bResult = m_pDarkBitmap.CopyTo(ppBitmap);
 				else
 				{
@@ -176,9 +206,11 @@ public :
 					else
 						m_dwDarkTaskID = 0;
 				};
-				break;
+				break;*/
 			case PICTURETYPE_DARKFLATFRAME :
-				if ((m_dwDarkFlatTaskID == pTaskInfo->m_dwTaskID) && m_pDarkFlatBitmap)
+				bResult = checkFrame(this->m_dwDarkFlatTaskID, this->m_pDarkFlatBitmap);
+				break;
+/*				if ((m_dwDarkFlatTaskID == pTaskInfo->m_dwTaskID) && m_pDarkFlatBitmap)
 					bResult = m_pDarkFlatBitmap.CopyTo(ppBitmap);
 				else
 				{
@@ -192,9 +224,11 @@ public :
 					else
 						m_dwDarkFlatTaskID = 0;
 				};
-				break;
+				break;*/
 			case PICTURETYPE_FLATFRAME :
-				if ((m_dwFlatTaskID == pTaskInfo->m_dwTaskID) && m_pFlatBitmap)
+				bResult = checkFrame(this->m_dwFlatTaskID, this->m_pFlatBitmap);
+				break;
+/*				if ((m_dwFlatTaskID == pTaskInfo->m_dwTaskID) && m_pFlatBitmap)
 					bResult = m_pFlatBitmap.CopyTo(ppBitmap);
 				else
 				{
@@ -208,27 +242,27 @@ public :
 					else
 						m_dwFlatTaskID = 0;
 				};
-				break;
-			};
-		};
+				break;*/
+			}
+		}
 
 		return bResult;
-	};
+	}
 };
 
-static	CTaskBitmapCache		g_BitmapCache;
+static CTaskBitmapCache g_BitmapCache;
 
 /* ------------------------------------------------------------------- */
 
-bool	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap)
+bool GetTaskResult(const CTaskInfo* pTaskInfo, CDSSProgress* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
-	return g_BitmapCache.GetTaskResult(pTaskInfo, pProgress, ppBitmap);
-};
+	return ::g_BitmapCache.GetTaskResult(pTaskInfo, pProgress, rpBitmap);
+}
 
-void	ClearTaskCache()
+void ClearTaskCache()
 {
 	g_BitmapCache.ClearCache();
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -298,7 +332,7 @@ bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
+bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = true;
@@ -320,9 +354,7 @@ bool	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 		else
 		{
 			// Else create the master offset
-			CString			strText;
-			int			i = 0;
-			int			lNrOffsets = 0;
+			CString strText;
 
 			strText.LoadString(IDS_CREATEMASTEROFFSET);
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
@@ -330,90 +362,85 @@ bool	CStackingInfo::DoOffsetTask(CDSSProgress * pProgress)
 			if (pProgress)
 				pProgress->Start(strText, (int)m_pOffsetTask->m_vBitmaps.size(), true);
 
-			for (i = 0;i<m_pOffsetTask->m_vBitmaps.size() && bResult;i++)
+			for (size_t i = 0; i < m_pOffsetTask->m_vBitmaps.size() && bResult; i++)
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				lNrOffsets++;
-				strText.Format(IDS_ADDOFFSET, lNrOffsets, m_pOffsetTask->m_vBitmaps.size());
+				strText.Format(IDS_ADDOFFSET, static_cast<int>(i), m_pOffsetTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 				if (pProgress)
-					pProgress->Progress1(strText, lNrOffsets);
+					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pOffsetTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_OFFSETFRAME, pProgress, &pBitmap))
+				if (::LoadFrame(m_pOffsetTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_OFFSETFRAME, pProgress, pBitmap))
 				{
 					// Load the bitmap
 					if (!m_pOffsetTask->m_pMaster)
-						m_pOffsetTask->CreateEmptyMaster(pBitmap);
+						m_pOffsetTask->CreateEmptyMaster(pBitmap.get());
 
-					m_pOffsetTask->AddToMaster(pBitmap, pProgress);
+					m_pOffsetTask->AddToMaster(pBitmap.get(), pProgress);
 				};
 
 				if (pProgress)
 					bResult = !pProgress->IsCanceled();
-			};
+			}
 
 			if (bResult)
 			{
 				// Save the resulting master offset
-				CSmartPtr<CMemoryBitmap>	pOffsetBitmap;
-				CString						strMasterOffset;
-				CString						strMasterOffsetInfo;
-				CString						strMethod;
-
+				CString strMasterOffset;
+				CString strMasterOffsetInfo;
+				CString strMethod;
 				FormatFromMethod(strMethod, m_pOffsetTask->m_Method, m_pOffsetTask->m_fKappa, m_pOffsetTask->m_lNrIterations);
 				strText.Format(IDS_COMPUTINGMEDIANOFFSET, (LPCTSTR)strMethod);
 				ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
-				if (pProgress)
+				if (pProgress != nullptr)
 				{
 					pProgress->Start(strText, 1, false);
 					pProgress->Progress1(strText, 0);
 					pProgress->SetJointProgress(true);
-				};
-				m_pOffsetTask->GetMaster(&pOffsetBitmap, pProgress);
-				if (pProgress)
+				}
+
+				std::shared_ptr<CMemoryBitmap> pOffsetBitmap = m_pOffsetTask->GetMaster(pProgress);
+				if (pProgress != nullptr)
 					pProgress->SetJointProgress(false);
-				if (pOffsetBitmap)
+				if (static_cast<bool>(pOffsetBitmap))
 				{
-					TCHAR			szDrive[1+_MAX_DRIVE];
-					TCHAR			szDir[1+_MAX_DIR];
-					CString			strInfo;
-
+					TCHAR szDrive[1+_MAX_DRIVE];
+					TCHAR szDir[1+_MAX_DIR];
+					CString strInfo;
 					strInfo.Format(IDS_MEDIANOFFSETINFO, m_pOffsetTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
-
 					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
-					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */ false, szDrive, szDir,
-						&strMasterOffset, &strMasterOffsetInfo);
+					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */false, szDrive, szDir, &strMasterOffset, &strMasterOffsetInfo);
 
 					strText.LoadString(IDS_SAVINGMASTEROFFSET);
 					ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
-					if (pProgress)
+					if (pProgress != nullptr)
 					{
 						pProgress->Start(strText, 1, false);
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterOffset, 0);
-					};
-					WriteMasterTIFF(strMasterOffset, pOffsetBitmap, pProgress, strInfo, m_pOffsetTask);
+					}
+
+					WriteMasterTIFF(strMasterOffset, pOffsetBitmap.get(), pProgress, strInfo, m_pOffsetTask);
 
 					m_pOffsetTask->m_strOutputFile = strMasterOffset;
 					m_pOffsetTask->m_bDone = true;
 
 					// Save the description
-					COffsetSettings		s;
-
+					COffsetSettings s;
 					s.InitFromCurrent(m_pOffsetTask, strMasterOffset);
 					s.WriteToFile(strMasterOffsetInfo);
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -459,7 +486,7 @@ bool	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
+bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -482,10 +509,8 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 		else
 		{
 			// Else create the master dark
-			CString						strText;
-			int						i;
-			int						lNrDarks = 0;
-			CSmartPtr<CMemoryBitmap>	pMasterOffset;
+			CString strText;
+			std::shared_ptr<CMemoryBitmap> pMasterOffset;
 
 			strText.LoadString(IDS_CREATEMASTERDARK);
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
@@ -495,45 +520,43 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
-				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, &pMasterOffset);
+				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
 
 			// First Add Dark frame
-			for (i = 0;i<m_pDarkTask->m_vBitmaps.size() && bResult;i++)
+			for (size_t i = 0; i < m_pDarkTask->m_vBitmaps.size() && bResult; i++)
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				lNrDarks++;
-				strText.Format(IDS_ADDDARK, lNrDarks, m_pDarkTask->m_vBitmaps.size());
+				strText.Format(IDS_ADDDARK, static_cast<int>(i), m_pDarkTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 				if (pProgress)
-					pProgress->Progress1(strText, lNrDarks);
+					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pDarkTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_DARKFRAME, pProgress, &pBitmap))
+				if (::LoadFrame(m_pDarkTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_DARKFRAME, pProgress, pBitmap))
 				{
 					if (!m_pDarkTask->m_pMaster)
-						m_pDarkTask->CreateEmptyMaster(pBitmap);
+						m_pDarkTask->CreateEmptyMaster(pBitmap.get());
 
 					// Subtract the offset frame from the dark frame
-					if (pMasterOffset && !pBitmap->IsMaster())
+					if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 					{
-						CString			strStart2;
-						if (pProgress)
+						CString strStart2;
+						if (pProgress != nullptr)
 						{
-							CString			strText;
-
+							CString strText;
 							pProgress->GetStart2Text(strStart2);
 							strText.LoadString(IDS_SUBSTRACTINGOFFSET);
 							ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 							pProgress->Start2(strText, 0);
-						};
+						}
 						Subtract(pBitmap, pMasterOffset, pProgress);
 						if (pProgress)
 							pProgress->Start2(strStart2, 0);
 					};
 
 					// Add the dark frame
-					m_pDarkTask->AddToMaster(pBitmap, pProgress);
+					m_pDarkTask->AddToMaster(pBitmap.get(), pProgress);
 				};
 
 				if (pProgress)
@@ -543,34 +566,30 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 			if (bResult)
 			{
 				// Save Master Dark Frame
-				CSmartPtr<CMemoryBitmap>	pDarkBitmap;
-				CString						strMasterDark;
-				CString						strMasterDarkInfo;
-				CString						strMethod;
-
+				CString strMasterDark;
+				CString strMasterDarkInfo;
+				CString strMethod;
 				FormatFromMethod(strMethod, m_pDarkTask->m_Method, m_pDarkTask->m_fKappa, m_pDarkTask->m_lNrIterations);
 				strText.Format(IDS_COMPUTINGMEDIANDARK, (LPCTSTR)strMethod);
 				ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
-				if (pProgress)
+				if (pProgress != nullptr)
 				{
 					pProgress->Start(strText, 1, false);
 					pProgress->Progress1(strText, 0);
 					pProgress->SetJointProgress(true);
 					pProgress->Start2(strText, 0);
-				};
-				m_pDarkTask->GetMaster(&pDarkBitmap, pProgress);
-				if (pProgress)
+				}
+				std::shared_ptr<CMemoryBitmap> pDarkBitmap = m_pDarkTask->GetMaster(pProgress);
+				if (pProgress != nullptr)
 					pProgress->SetJointProgress(false);
-				if (pDarkBitmap)
+				if (static_cast<bool>(pDarkBitmap))
 				{
-					TCHAR			szDrive[1+_MAX_DRIVE];
-					TCHAR			szDir[1+_MAX_DIR];
-					CString			strInfo;
-					int			lExposure = m_pDarkTask->m_fExposure;
+					TCHAR szDrive[1+_MAX_DRIVE];
+					TCHAR szDir[1+_MAX_DIR];
+					CString strInfo;
 
 					strInfo.Format(IDS_MEDIANDARKINFO, m_pDarkTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
-
 					_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
@@ -578,30 +597,30 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress * pProgress)
 					strText.LoadString(IDS_SAVINGMASTERDARK);
 					ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
-					if (pProgress)
+					if (pProgress != nullptr)
 					{
 						pProgress->Start(strText, 1, false);
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterDark, 0);
-					};
-					WriteMasterTIFF(strMasterDark, pDarkBitmap, pProgress, strInfo, m_pDarkTask);
+					}
+
+					WriteMasterTIFF(strMasterDark, pDarkBitmap.get(), pProgress, strInfo, m_pDarkTask);
 
 					m_pDarkTask->m_strOutputFile = strMasterDark;
 					m_pDarkTask->m_bDone = true;
 
 					// Save the description
-					CDarkSettings		s;
-
+					CDarkSettings s;
 					s.InitFromCurrent(m_pDarkTask, strMasterDark);
 					s.SetMasterOffset(m_pOffsetTask);
 					s.WriteToFile(strMasterDarkInfo);
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -648,11 +667,11 @@ bool	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
+bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = true;
+	bool bResult = true;
 
 	if (!m_pDarkFlatTask->m_bDone)
 	{
@@ -671,10 +690,8 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 		else
 		{
 			// Else create the master dark flat
-			CString						strText;
-			int						i;
-			int						lNrDarks = 0;
-			CSmartPtr<CMemoryBitmap>	pMasterOffset;
+			CString strText;
+			std::shared_ptr<CMemoryBitmap> pMasterOffset;
 
 			strText.LoadString(IDS_CREATEMASTERDARKFLAT);
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
@@ -684,56 +701,53 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
-				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, &pMasterOffset);
+				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
 
 			// First Add Dark flat frame
-			for (i = 0;i<m_pDarkFlatTask->m_vBitmaps.size() && bResult;i++)
+			for (size_t i = 0; i < m_pDarkFlatTask->m_vBitmaps.size() && bResult; i++)
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				lNrDarks++;
-				strText.Format(IDS_ADDDARKFLAT, lNrDarks, m_pDarkFlatTask->m_vBitmaps.size());
+				strText.Format(IDS_ADDDARKFLAT, static_cast<int>(i), m_pDarkFlatTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 				if (pProgress)
-					pProgress->Progress1(strText, lNrDarks);
+					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pDarkFlatTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_DARKFLATFRAME, pProgress, &pBitmap))
+				if (::LoadFrame(m_pDarkFlatTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_DARKFLATFRAME, pProgress, pBitmap))
 				{
 					if (!m_pDarkFlatTask->m_pMaster)
-						m_pDarkFlatTask->CreateEmptyMaster(pBitmap);
+						m_pDarkFlatTask->CreateEmptyMaster(pBitmap.get());
 
 					// Subtract the offset frame from the dark frame
-					if (pMasterOffset && !pBitmap->IsMaster())
+					if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 					{
-						CString			strStart2;
-						if (pProgress)
+						CString strStart2;
+						if (pProgress != nullptr)
 						{
-							CString			strText;
-
+							CString strText;
 							pProgress->GetStart2Text(strStart2);
 							strText.LoadString(IDS_SUBSTRACTINGOFFSET);
 							ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 							pProgress->Start2(strText, 0);
-						};
+						}
 						Subtract(pBitmap, pMasterOffset, pProgress);
 						if (pProgress)
 							pProgress->Start2(strStart2, 0);
-					};
+					}
 
 					// Add the dark frame
-					m_pDarkFlatTask->AddToMaster(pBitmap, pProgress);
-				};
+					m_pDarkFlatTask->AddToMaster(pBitmap.get(), pProgress);
+				}
 
 				if (pProgress)
 					bResult = !pProgress->IsCanceled();
-			};
+			}
 
 			if (bResult)
 			{
 				// Save Master Dark Frame
-				CSmartPtr<CMemoryBitmap>	pDarkFlatBitmap;
 				CString						strMasterDarkFlat;
 				CString						strMasterDarkFlatInfo;
 				CString						strMethod;
@@ -749,15 +763,14 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 					pProgress->SetJointProgress(true);
 					pProgress->Start2(strText, 0);
 				};
-				m_pDarkFlatTask->GetMaster(&pDarkFlatBitmap, pProgress);
+				std::shared_ptr<CMemoryBitmap> pDarkFlatBitmap = m_pDarkFlatTask->GetMaster(pProgress);
 				if (pProgress)
 					pProgress->SetJointProgress(false);
-				if (pDarkFlatBitmap)
+				if (static_cast<bool>(pDarkFlatBitmap))
 				{
 					TCHAR			szDrive[1+_MAX_DRIVE];
 					TCHAR			szDir[1+_MAX_DIR];
 					CString			strInfo;
-					int			lExposure = m_pDarkFlatTask->m_fExposure;
 
 					strInfo.Format(IDS_MEDIANDARKFLATINFO, m_pDarkFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
@@ -774,7 +787,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress * pProgress)
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterDarkFlat, 0);
 					};
-					WriteMasterTIFF(strMasterDarkFlat, pDarkFlatBitmap, pProgress, strInfo, m_pDarkFlatTask);
+					WriteMasterTIFF(strMasterDarkFlat, pDarkFlatBitmap.get(), pProgress, strInfo, m_pDarkFlatTask);
 
 					m_pDarkFlatTask->m_strOutputFile = strMasterDarkFlat;
 					m_pDarkFlatTask->m_bDone = true;
@@ -913,13 +926,13 @@ public :
 		return m_bInitialized;
 	};
 
-	void	ComputeParameters(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
+	void	ComputeParameters(const CMemoryBitmap* pBitmap, CDSSProgress * pProgress);
 	void	ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, CDSSProgress * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+void	CFlatCalibrationParameters::ComputeParameters(const CMemoryBitmap* pBitmap, CDSSProgress * pProgress)
 {
 	CString			strStart2;
 
@@ -1075,7 +1088,7 @@ bool	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
+bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1098,92 +1111,89 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 		else
 		{
 			// Else create the master flat
-			CString		strText;
-			int		i;
-			int		lNrFlats = 0;
-			CSmartPtr<CMemoryBitmap>	pMasterOffset;
-			CSmartPtr<CMemoryBitmap>	pMasterDarkFlat;
-			CFlatCalibrationParameters	fcpBase;
+			CString strText;
+			std::shared_ptr<CMemoryBitmap> pMasterOffset;
+			std::shared_ptr<CMemoryBitmap> pMasterDarkFlat;
+			CFlatCalibrationParameters fcpBase;
 
 			strText.LoadString(IDS_CREATEMASTERFLAT);
 			ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
-			if (pProgress)
-				pProgress->Start(strText, (int)m_pFlatTask->m_vBitmaps.size(), true);
+			if (pProgress != nullptr)
+				pProgress->Start(strText, static_cast<int>(m_pFlatTask->m_vBitmaps.size()), true);
 
 			// First load the master offset if available
 			if (m_pOffsetTask)
-				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, &pMasterOffset);
+				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
 			if (m_pDarkFlatTask)
-				g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, &pMasterDarkFlat);
+				g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat);
 
-			for (i = 0;i<m_pFlatTask->m_vBitmaps.size() && bResult;i++)
+			for (size_t i = 0; i < m_pFlatTask->m_vBitmaps.size() && bResult; i++)
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				lNrFlats++;
-				strText.Format(IDS_ADDFLAT, lNrFlats, m_pFlatTask->m_vBitmaps.size());
+				strText.Format(IDS_ADDFLAT, static_cast<int>(i), m_pFlatTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
 				if (pProgress)
-					pProgress->Progress1(strText, lNrFlats);
+					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pFlatTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_FLATFRAME, pProgress, &pBitmap))
+				if (::LoadFrame(m_pFlatTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_FLATFRAME, pProgress, pBitmap))
 				{
-					CFlatCalibrationParameters		fcpBitmap;
+					CFlatCalibrationParameters fcpBitmap;
 					if (!m_pFlatTask->m_pMaster)
-						m_pFlatTask->CreateEmptyMaster(pBitmap);
+						m_pFlatTask->CreateEmptyMaster(pBitmap.get());
 
 					// Subtract the offset frame from the dark frame
-					if (pMasterOffset && !pBitmap->IsMaster())
+					if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 					{
-						CString			strText;
-						CString			strStart2;
+						CString strText;
+						CString strStart2;
 
 						strText.LoadString(IDS_SUBSTRACTINGOFFSET);
 						ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
-						if (pProgress)
+						if (pProgress != nullptr)
 						{
 							pProgress->GetStart2Text(strStart2);
 							pProgress->Start2(strText, 0);
-						};
+						}
 						Subtract(pBitmap, pMasterOffset, pProgress);
-						if (pProgress)
+						if (pProgress != nullptr)
 							pProgress->Start2(strStart2, 0);
-					};
+					}
 
-					if (pMasterDarkFlat && !pBitmap->IsMaster())
+					if (static_cast<bool>(pMasterDarkFlat) && !pBitmap->IsMaster())
 					{
-						CString			strText;
-						CString			strStart2;
+						CString strText;
+						CString strStart2;
 
 						strText.LoadString(IDS_SUBSTRACTINGDARK);
 						ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 
-						if (pProgress)
+						if (pProgress != nullptr)
 						{
 							pProgress->GetStart2Text(strStart2);
 							pProgress->Start2(strText, 0);
-						};
+						}
 						Subtract(pBitmap, pMasterDarkFlat, pProgress);
-						if (pProgress)
+						if (pProgress != nullptr)
 							pProgress->Start2(strStart2, 0);
-					};
+					}
 
 					if (!fcpBase.IsInitialized())
 					{
 						// This is the first flat
-						fcpBase.ComputeParameters(pBitmap, pProgress);
+						fcpBase.ComputeParameters(pBitmap.get(), pProgress);
 					}
 					else
 					{
-						fcpBitmap.ComputeParameters(pBitmap, pProgress);
-						fcpBase.ApplyParameters(pBitmap, fcpBitmap, pProgress);
-					};
+						fcpBitmap.ComputeParameters(pBitmap.get(), pProgress);
+						fcpBase.ApplyParameters(pBitmap.get(), fcpBitmap, pProgress);
+					}
 
 					// Add the dark frame
-					m_pFlatTask->AddToMaster(pBitmap, pProgress);
+					m_pFlatTask->AddToMaster(pBitmap.get(), pProgress);
 				};
 
 				if (pProgress)
@@ -1193,7 +1203,6 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 			if (bResult)
 			{
 				// Save Master Flat Frame
-				CSmartPtr<CMemoryBitmap>	pFlatBitmap;
 				CString						strMasterFlat;
 				CString						strMasterFlatInfo;
 				CString						strMethod;
@@ -1208,11 +1217,11 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 					pProgress->Progress1(strText, 0);
 					pProgress->SetJointProgress(true);
 				};
-				m_pFlatTask->GetMaster(&pFlatBitmap, pProgress);
+				std::shared_ptr<CMemoryBitmap> pFlatBitmap = m_pFlatTask->GetMaster(pProgress);
 				if (pProgress)
 					pProgress->SetJointProgress(false);
 
-				if (pFlatBitmap)
+				if (static_cast<bool>(pFlatBitmap))
 				{
 					TCHAR			szDrive[1+_MAX_DRIVE];
 					TCHAR			szDir[1+_MAX_DIR];
@@ -1233,7 +1242,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress * pProgress)
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(strMasterFlat, 0);
 					};
-					WriteMasterTIFF(strMasterFlat, pFlatBitmap, pProgress, strInfo, m_pFlatTask);
+					WriteMasterTIFF(strMasterFlat, pFlatBitmap.get(), pProgress, strInfo, m_pFlatTask);
 
 					m_pFlatTask->m_strOutputFile = strMasterFlat;
 					m_pFlatTask->m_bDone = true;
@@ -1554,52 +1563,52 @@ void CAllStackingTasks::ResolveTasks()
 	ZFUNCTRACE_RUNTIME();
 
 	m_vStacks.clear();
-	for (int i = 0;i<m_vTasks.size();i++)
+	for (auto& task : this->m_vTasks)
 	{
-		if (m_vTasks[i].m_TaskType == PICTURETYPE_LIGHTFRAME)
+		if (task.m_TaskType == PICTURETYPE_LIGHTFRAME)
 		{
 			// Create a new stacking info
 			CStackingInfo		si;
 
-			si.m_pLightTask = &(m_vTasks[i]);
+			si.m_pLightTask = std::addressof(task);
 
 			// Try to find the best offset task for this task
 			// same ISO (gain) if possible
 			// else the closest ISO (gain), else 0
 			// (tie breaker is number of frames in the offset task)
-			si.m_pOffsetTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_OFFSETFRAME);
+			si.m_pOffsetTask = FindBestMatchingTask(task, PICTURETYPE_OFFSETFRAME);
 
 			// Try to find the best dark task for this task
 			// same ISO (gain) and exposure, else same ISO (gain) and closest exposure
 			// else no ISO (gain) and closest exposure
 			// (tie breaker is number of frames in the dark task)
-			si.m_pDarkTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_DARKFRAME);
+			si.m_pDarkTask = FindBestMatchingTask(task, PICTURETYPE_DARKFRAME);
 
 			// Try to find the best dark flat task for this task
 			// same ISO (gain) and exposure, else same ISO (gain) and closest exposure
 			// else no ISO (gain) and closest exposure
 			// (tie breaker is number of frames in the dark task)
-			si.m_pDarkFlatTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_DARKFLATFRAME);
+			si.m_pDarkFlatTask = FindBestMatchingTask(task, PICTURETYPE_DARKFLATFRAME);
 
 			// Try to find the best flat task for this task
 			// same ISO (gain) if possible, else the closest ISO (gain), else 0
 			// (tie breaker is number of frames in the flat task)
-			si.m_pFlatTask = FindBestMatchingTask(m_vTasks[i], PICTURETYPE_FLATFRAME);
+			si.m_pFlatTask = FindBestMatchingTask(task, PICTURETYPE_FLATFRAME);
 
 			m_vStacks.push_back(si);
-		};
-	};
+		}
+	}
 
 	UpdateTasksMethods();
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 void CAllStackingTasks::ResetTasksStatus()
 {
-	for (int i = 0;i<m_vTasks.size();i++)
-		m_vTasks[i].m_bDone = false;
-};
+	for (auto& task : m_vTasks)
+		task.m_bDone = false;
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1630,7 +1639,6 @@ void CAllStackingTasks::UpdateTasksMethods()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	int						i;
 	CWorkspace					workspace;
 	MULTIBITMAPPROCESSMETHOD	LightMethod = MBP_AVERAGE;
 	double						fLightKappa = 2.0;
@@ -1672,20 +1680,20 @@ void CAllStackingTasks::UpdateTasksMethods()
 	lOffsetIteration = workspace.value("Stacking/Offset_Iteration", (uint)5).toUInt();
 	fOffsetKappa = workspace.value("Stacking/Offset_Kappa", 2.0).toDouble();
 
-	for (i = 0;i<m_vStacks.size();i++)
+	for (auto& stack : this->m_vStacks)
 	{
-		if (m_vStacks[i].m_pLightTask)
-			m_vStacks[i].m_pLightTask->SetMethod(LightMethod, fLightKappa, lLightIteration);
-		if (m_vStacks[i].m_pDarkTask)
-			m_vStacks[i].m_pDarkTask->SetMethod(DarkMethod, fDarkKappa, lDarkIteration);
-		if (m_vStacks[i].m_pDarkFlatTask)
-			m_vStacks[i].m_pDarkFlatTask->SetMethod(DarkMethod, fDarkKappa, lDarkIteration);
-		if (m_vStacks[i].m_pOffsetTask)
-			m_vStacks[i].m_pOffsetTask->SetMethod(OffsetMethod, fOffsetKappa, lOffsetIteration);
-		if (m_vStacks[i].m_pFlatTask)
-			m_vStacks[i].m_pFlatTask->SetMethod(FlatMethod, fFlatKappa, lFlatIteration);
-	};
-};
+		if (stack.m_pLightTask)
+			stack.m_pLightTask->SetMethod(LightMethod, fLightKappa, lLightIteration);
+		if (stack.m_pDarkTask)
+			stack.m_pDarkTask->SetMethod(DarkMethod, fDarkKappa, lDarkIteration);
+		if (stack.m_pDarkFlatTask)
+			stack.m_pDarkFlatTask->SetMethod(DarkMethod, fDarkKappa, lDarkIteration);
+		if (stack.m_pOffsetTask)
+			stack.m_pOffsetTask->SetMethod(OffsetMethod, fOffsetKappa, lOffsetIteration);
+		if (stack.m_pFlatTask)
+			stack.m_pFlatTask->SetMethod(FlatMethod, fFlatKappa, lFlatIteration);
+	}
+}
 
 /* ------------------------------------------------------------------- */
 

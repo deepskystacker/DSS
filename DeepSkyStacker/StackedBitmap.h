@@ -313,9 +313,9 @@ public :
 #if !defined(PCL_PROJECT) && !defined(_CONSOLE)
 	HBITMAP	GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect = nullptr);
 #endif
-	bool	GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	std::shared_ptr<CMemoryBitmap> GetBitmap(CDSSProgress* const pProgress = nullptr);
 
-	void	Clear()
+	void Clear()
 	{
 		m_lNrBitmaps = 0;
 		m_lHeight = 0;

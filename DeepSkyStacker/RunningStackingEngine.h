@@ -5,58 +5,48 @@
 #include "PixelTransform.h"
 #include "BackgroundCalibration.h"
 
-/* ------------------------------------------------------------------- */
-
 class CRunningStackingEngine
 {
-private :
-	CSmartPtr<CMemoryBitmap>		m_pStackedBitmap;
-	CSmartPtr<CMemoryBitmap>		m_pPublicBitmap;
-	CBackgroundCalibration			m_BackgroundCalibration;
-	int							m_lNrStacked;
-	double							m_fTotalExposure;
-	CMatchingStars					m_MatchingStars;
+private:
+	std::shared_ptr<CMemoryBitmap> m_pStackedBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pPublicBitmap;
+	CBackgroundCalibration m_BackgroundCalibration;
+	int m_lNrStacked;
+	double m_fTotalExposure;
+	CMatchingStars m_MatchingStars;
 
 private:
-	void	CreatePublicBitmap();
+	void CreatePublicBitmap();
 
-public :
+public:
 	CRunningStackingEngine();
-	~CRunningStackingEngine();
+	~CRunningStackingEngine() = default;
 
-	bool	ComputeOffset(CLightFrameInfo & lfi);
-	bool	AddImage(CLightFrameInfo & lfi, CDSSProgress * pProgress);
-	bool	GetStackedImage(CMemoryBitmap ** ppBitmap)
+	bool ComputeOffset(CLightFrameInfo& lfi);
+	bool AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgress);
+	bool GetStackedImage(std::shared_ptr<CMemoryBitmap>& rpBitmap)
 	{
-		bool			bResult = false;
+		rpBitmap = m_pPublicBitmap;
+		return static_cast<bool>(m_pPublicBitmap);
+	}
 
-		if (ppBitmap)
-			*ppBitmap = nullptr;
-
-		if (ppBitmap && m_pPublicBitmap)
-			bResult = m_pPublicBitmap.CopyTo(ppBitmap);
-
-		return bResult;
-	};
-
-	int	GetNrStackedImages()
+	int	GetNrStackedImages() const
 	{
 		return m_lNrStacked;
-	};
+	}
 
-	double	GetTotalExposure()
+	double GetTotalExposure() const
 	{
 		return m_fTotalExposure;
-	};
+	}
 
-	void	Clear()
+	void Clear()
 	{
-		m_pStackedBitmap.Release();
-		m_pPublicBitmap.Release();
+		m_pStackedBitmap.reset();
+		m_pPublicBitmap.reset();
 		m_lNrStacked = 0;
 		m_fTotalExposure = 0;
-	};
+	}
 };
 
-
-#endif // __RUNNINGSTACKINGENGINE_H__
+#endif

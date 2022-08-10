@@ -7,7 +7,7 @@
 #include <omp.h>
 
 
-bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
+bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -16,7 +16,7 @@ bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 
 	// Check and remove super pixel settings
 	CFATRANSFORMATION CFATransform = CFAT_NONE;
-	CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pTarget);
+	CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pTarget.get());
 	if (pCFABitmapInfo != nullptr)
 	{
 		CFATransform = pCFABitmapInfo->GetCFATransformation();
@@ -25,7 +25,7 @@ bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 	}
 
 	// Check that it is the same sizes
-	if (pTarget != nullptr && m_pFlatFrame)
+	if (static_cast<bool>(pTarget) && static_cast<bool>(m_pFlatFrame))
 	{
 		const int height = pTarget->RealHeight();
 		const int width = pTarget->RealWidth();
@@ -97,7 +97,7 @@ bool CFlatFrame::ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
+void CFlatFrame::ComputeFlatNormalization(CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (IsOk() && !m_bComputed)
@@ -130,17 +130,14 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress * pProgress)
 						lNrMagentas	= 0,
 						lNrCyans	= 0,
 						lNrGreen2s	= 0;
-		bool			bCFA;
 
-		bCFA = ::IsCFA(m_pFlatFrame);
-		for (int j = 0;j<m_pFlatFrame->RealHeight();j++)
+		const bool bCFA = this->IsCFA();
+
+		for (int j = 0; j < m_pFlatFrame->RealHeight(); j++)
 		{
-			for (int i = 0;i<m_pFlatFrame->RealWidth();i++)
+			for (int i = 0; i < m_pFlatFrame->RealWidth(); i++)
 			{
-				double			fGray,
-								fRed,
-								fGreen,
-								fBlue;
+				double fGray, fRed, fGreen, fBlue;
 
 				if (m_pFlatFrame->IsMonochrome())
 				{

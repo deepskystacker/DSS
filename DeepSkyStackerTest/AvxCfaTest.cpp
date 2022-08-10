@@ -9,8 +9,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		return memcmp(pColor, data.begin(), data.size() * sizeof(WORD));
 	};
 
-	CSmartPtr<CMemoryBitmap> pBitmap;
-	pBitmap.Attach(new CGrayBitmapT<WORD>);
+	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<WORD>>();
 	AvxCfaProcessing avxCfaProcessing(0, 0, *pBitmap);
 
 	SECTION("Init initializes the object and sets nrVectorsPerLine properly")
@@ -38,7 +37,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate fails if CFA type is NONE")
 	{
 		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		REQUIRE(pGray != nullptr);
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_NONE);
@@ -50,7 +49,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate fails if CFA type is BGGR")
 	{
 		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		REQUIRE(pGray != nullptr);
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_BGGR);
@@ -62,7 +61,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate fails if CFA type is GRBG")
 	{
 		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		REQUIRE(pGray != nullptr);
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_GRBG);
@@ -74,7 +73,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate fails if CFA type is GBRG")
 	{
 		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		REQUIRE(pGray != nullptr);
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_GBRG);
@@ -86,7 +85,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate fails if CFA transform is superpixel although CFA type is RGGB")
 	{
 		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		REQUIRE(pGray != nullptr);
 		pGray->UseSuperPixels(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
@@ -98,7 +97,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate fails if CFA transform is rawbayer although CFA type is RGGB")
 	{
 		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		REQUIRE(pGray != nullptr);
 		pGray->UseRawBayer(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
@@ -110,7 +109,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate fails if CFA transform is AHD although CFA type is RGGB")
 	{
 		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		REQUIRE(pGray != nullptr);
 		pGray->UseAHD(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
@@ -123,7 +122,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	{
 		const bool b = pBitmap->Init(64, 8);
 		REQUIRE(b == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
 		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
@@ -141,7 +140,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate a RGRG line")
 	{
 		REQUIRE(pBitmap->Init(64, 8) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
 		WORD v = 0;
@@ -160,7 +159,7 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 	SECTION("Interpolate a GBGB line")
 	{
 		REQUIRE(pBitmap->Init(64, 8) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
 		pGray->UseBilinear(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
 		WORD v = 0;
@@ -183,14 +182,14 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 bool CMultitask::GetUseSimd() { return true; }
 
 void CMultiBitmap::DestroyTempFiles() {}
-void CMultiBitmap::SetBitmapModel(CMemoryBitmap*) {}
-bool CMultiBitmap::AddBitmap(CMemoryBitmap*, CDSSProgress*) { return true; }
-bool CMultiBitmap::GetResult(CMemoryBitmap**, CDSSProgress*) { return true; }
+void CMultiBitmap::SetBitmapModel(const CMemoryBitmap*) {}
+bool CMultiBitmap::AddBitmap(const CMemoryBitmap*, CDSSProgress*) { return true; }
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(CDSSProgress*) { return std::shared_ptr<CMemoryBitmap>{}; }
 
 void CYMGToRGB(double, double, double, double, double&, double&, double&) {}
-bool CreateBitmap(class CBitmapCharacteristics const&, class CMemoryBitmap**) { return true; }
-bool CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
+std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics&) { return std::shared_ptr<CMemoryBitmap>{}; }
+std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 
-bool CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
+std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 
 void CGrayBitmapT<unsigned short>::RemoveHotPixels(class CDSSProgress*) {}

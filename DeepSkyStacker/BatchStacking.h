@@ -39,7 +39,7 @@ public:
 
 // Implementation
 private :
-	bool	ProcessList(LPCTSTR szList, CString & strOutputFile);
+	bool ProcessList(LPCTSTR szList, CString& strOutputFile);
 	void	UpdateListBoxWidth();
 
 protected:

@@ -212,15 +212,14 @@ public:
 
 CFATYPE GetFITSCFATYPE();
 bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-bool ReadFITS(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress*	pProgress);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
+bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress*	pProgress);
+bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
 			   int lISOSpeed, int lGain, double fExposure);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescriptionL,
-			   int lISOSpeed, int lGain, double fExposure);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription);
+bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
+bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescriptionL, int lISOSpeed, int lGain, double fExposure);
+bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription);
 bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-int LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress);
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress);
 void GetFITSExtension(LPCTSTR szFileName, CString& strExtension);
 
-#endif // __FITSUTIL_H__
+#endif

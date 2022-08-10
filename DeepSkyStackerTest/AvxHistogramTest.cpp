@@ -6,12 +6,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 {
 	SECTION("Gray pixels same value")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 100
 		pGray->m_vPixels.assign(256 * 32, 100);
 
@@ -29,12 +28,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("All pixels same value, final histogram has different size")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 1000
 		pGray->m_vPixels.assign(256 * 32, 1000);
 
@@ -52,12 +50,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("RGB pixels same value")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CColorBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CColorBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pColor = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pColor = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 55, 66, 77
 		pColor->m_Red.m_vPixels.assign(256 * 32, 55);
 		pColor->m_Green.m_vPixels.assign(256 * 32, 66);
@@ -79,12 +76,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("No calculation for too small arrays")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(16, 4) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 287
 		pGray->m_vPixels.assign(16 * 4, 287);
 
@@ -94,12 +90,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("Gray pixels, calc 32 lines as 2 x 16")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram1(*pBitmap), avxHistogram2(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 793
 		pGray->m_vPixels.assign(256 * 32, 793);
 
@@ -120,11 +115,10 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("Gray pixels, calc 32 lines one by one")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 348
 		pGray->m_vPixels.assign(256 * 32, 348);
 
@@ -148,12 +142,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("RGB pixels all possible value")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CColorBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CColorBitmapT<std::uint16_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 256) == true);
 
-		auto* pColor = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pColor = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set values
 		std::uint16_t i = 0;
 		std::for_each(pColor->m_Red.m_vPixels.begin(), pColor->m_Red.m_vPixels.end(), [&i](auto& v) { v = i++; });
@@ -175,12 +168,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("Gray pixels float, values are truncated and limited to 65535")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<float>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pBitmap.get());
 		// Set values
 		pGray->m_vPixels.assign(256 * 32, 236.99f); // 236.99 should be truncated to 236.
 		pGray->m_vPixels[1000] = 1e5f; // 100000 should be limited to 65535.
@@ -200,12 +192,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("RGB pixels float, 1, 2, and 3 are repeated.")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CColorBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CColorBitmapT<float>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pColor = dynamic_cast<CColorBitmapT<float>*>(pBitmap.m_p);
+		auto* pColor = dynamic_cast<CColorBitmapT<float>*>(pBitmap.get());
 		// Set values
 		int i = 0;
 		std::for_each(pColor->m_Red.m_vPixels.begin(), pColor->m_Red.m_vPixels.end(), [&i](auto& v) { v = static_cast<float>(i++); i %= 3; }); // 0, 1, 2, 0, 1, 2, ...
@@ -236,12 +227,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("Gray pixels int32, values are shifted right by 16 bits")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint32_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 256) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pBitmap.get());
 		// Set values
 		std::uint32_t i = 0;
 		std::for_each(pGray->m_vPixels.begin(), pGray->m_vPixels.end(), [&i](auto& v) { v = i; i += 65536; });
@@ -265,12 +255,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("Gray pixels int32, number of columns is no multiple of 16")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint32_t>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(271, 200) == true); // 271 is 16 * 16 + 15
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pBitmap.get());
 		// Set values
 		std::uint32_t i = 0;
 		std::for_each(pGray->m_vPixels.begin(), pGray->m_vPixels.end(), [&i](auto& v) { v = i; i += 65536; });
@@ -295,12 +284,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 
 	SECTION("Gray pixels double, values are multiplied by 256, truncated, and limited to 65535.")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<double>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<double>>();
 		AvxHistogram avxHistogram(*pBitmap);
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<double>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<double>*>(pBitmap.get());
 		// Set values
 		pGray->m_vPixels.assign(256 * 32, 202.01133); // 202.01133 should become trunc(202.01133 * 256.0) = trunc(51714.90) = 51714.
 		pGray->m_vPixels[1000] = 260.0; // 260.0 should be limited to 65535.
@@ -320,11 +308,11 @@ TEST_CASE("AVX Histogram", "[AVX][Histogram]")
 }
 
 void CGrayBitmapT<float>::RemoveHotPixels(class CDSSProgress*) {}
-bool CGrayMedianFilterEngineT<float>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
-bool CColorMedianFilterEngineT<float>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
+std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<float>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<float>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 
 void CGrayBitmapT<std::uint32_t>::RemoveHotPixels(class CDSSProgress*) {}
-bool CGrayMedianFilterEngineT<std::uint32_t>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
+std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<std::uint32_t>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 
 void CGrayBitmapT<double>::RemoveHotPixels(class CDSSProgress*) {}
-bool CGrayMedianFilterEngineT<double>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
+std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<double>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }

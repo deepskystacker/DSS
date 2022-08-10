@@ -22,17 +22,15 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.get());
 		// Set to 127
 		pGray->m_vPixels.assign(W * H, 127);
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>); // July 2021: Output bitmap must be float.
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		CEntropyInfo entropyInfo;
 		entropyInfo.Init(pTempBitmap, 10, nullptr);
@@ -52,17 +50,15 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 2; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.m_p);
+			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.get());
 			pGray->m_vPixels.assign(W * H, 100 + i * 3000);
 
 			CEntropyInfo entropyInfo;
@@ -84,17 +80,15 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CGrayBitmapT<float>> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 3; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint32_t>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.m_p);
+			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.get());
 			pGray->m_vPixels.assign(W * H, (303 + i * 4200) << 16);
 
 			CEntropyInfo entropyInfo;
@@ -116,17 +110,15 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 4; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CGrayBitmapT<float>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<float>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pTempBitmap.m_p);
+			auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pTempBitmap.get());
 			pGray->m_vPixels.assign(W * H, 16000.0f + i * 17.35f);
 			pGray->m_vPixels[15] = i == 0 ? 0.0f : 1.263e7f;
 
@@ -150,17 +142,15 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CColorBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CColorBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CColorBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CColorBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 3; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CColorBitmapT<std::uint32_t>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CColorBitmapT<std::uint32_t>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pColor = dynamic_cast<CColorBitmapT<std::uint32_t>*>(pTempBitmap.m_p);
+			auto* pColor = dynamic_cast<CColorBitmapT<std::uint32_t>*>(pTempBitmap.get());
 			pColor->m_Red.m_vPixels.assign(W * H, (303 + i * 4200) << 16);
 			pColor->m_Green.m_vPixels.assign(W * H, (304 + i * 4201) << 16);
 			pColor->m_Blue.m_vPixels.assign(W * H, (305 + i * 4202) << 16);
@@ -194,17 +184,15 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.get());
 		// Set to 127
 		pGray->m_vPixels.assign(W * H, 4938);
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		CEntropyInfo entropyInfo;
 		entropyInfo.Init(pTempBitmap, 10, nullptr);
@@ -224,17 +212,15 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 2; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.m_p);
+			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pTempBitmap.get());
 			pGray->m_vPixels.assign(W * H, 100 + i * 3000);
 
 			CEntropyInfo entropyInfo;
@@ -256,17 +242,15 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 3; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint32_t>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.m_p);
+			auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.get());
 			pGray->m_vPixels.assign(W * H, (303 + i * 4200) << 16);
 
 			CEntropyInfo entropyInfo;
@@ -288,17 +272,15 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 4; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CGrayBitmapT<float>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<float>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pTempBitmap.m_p);
+			auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pTempBitmap.get());
 			pGray->m_vPixels.assign(W * H, 16000.0f + i * 17.35f);
 			pGray->m_vPixels[15] = i == 1 ? 1.263e7f : 1e7f;
 
@@ -322,17 +304,15 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CColorBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CColorBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CColorBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CColorBitmapT<float>*>(pOutBitmap.get());
 
 		for (int i = 0; i < 3; ++i)
 		{
-			CSmartPtr<CMemoryBitmap> pTempBitmap;
-			pTempBitmap.Attach(new CColorBitmapT<std::uint32_t>);
+			std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CColorBitmapT<std::uint32_t>>();
 			REQUIRE(pTempBitmap->Init(W, H) == true);
-			auto* pColor = dynamic_cast<CColorBitmapT<std::uint32_t>*>(pTempBitmap.m_p);
+			auto* pColor = dynamic_cast<CColorBitmapT<std::uint32_t>*>(pTempBitmap.get());
 			pColor->m_Red.m_vPixels.assign(W * H, (303 + i * 4200) << 16);
 			pColor->m_Green.m_vPixels.assign(W * H, (304 + i * 4201) << 16);
 			pColor->m_Blue.m_vPixels.assign(W * H, (305 + i * 4202) << 16);
@@ -373,25 +353,22 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint32_t>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pTempBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = ((W + 5) * (H + 11) - i) << 16;
 
-		CSmartPtr<CMemoryBitmap> pOutBitmap;
-		pOutBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
-		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.m_p);
+		const auto* pOut = dynamic_cast<CGrayBitmapT<float>*>(pOutBitmap.get());
 
-		CSmartPtr<CMemoryBitmap> pEntropyCoverage;
-		pEntropyCoverage.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pEntropyCoverage = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pEntropyCoverage->Init(W, H) == true);
 
 		CEntropyInfo entropyInfo;
 		entropyInfo.Init(pTempBitmap, windowSize, nullptr);
-		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage);
+		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage.get());
 
 		float* pRedEntropy = avxEntropy.getRedEntropyLayer();
 		for (int i = 0; i < W * H; ++i)
@@ -400,7 +377,7 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 		AvxAccumulation avxAccumulation(rect, taskInfo, *pTempBitmap, *pOutBitmap, avxEntropy);
 		REQUIRE(avxAccumulation.accumulate(0) == 0);
 
-		const auto* pEntCov = dynamic_cast<CGrayBitmapT<float>*>(pEntropyCoverage.m_p);
+		const auto* pEntCov = dynamic_cast<CGrayBitmapT<float>*>(pEntropyCoverage.get());
 		REQUIRE(memcmp(pEntCov->m_vPixels.data(), pRedEntropy, W * H * sizeof(float)) == 0);
 
 		std::vector<float> expected(W * H);
@@ -414,4 +391,4 @@ BACKGROUNDCALIBRATIONMODE GetBackgroundCalibrationMode() { return BCM_RGB; }
 BACKGROUNDCALIBRATIONINTERPOLATION GetBackgroundCalibrationInterpolation() { return BCI_RATIONAL; }
 RGBBACKGROUNDCALIBRATIONMETHOD GetRGBBackgroundCalibrationMethod() { return RBCM_MIDDLE; }
 
-bool CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(class CMemoryBitmap**, int, class CDSSProgress*) { return true; }
+std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned int>::GetFilteredImage(int lFilterSize, CDSSProgress* pProgress) const { return std::shared_ptr<CMemoryBitmap>{}; }
