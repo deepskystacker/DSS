@@ -1177,21 +1177,10 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-FileCache<CMemoryBitmap> fileCache{ size_t{ 1024 } * 1024 * 1024 * 3 };
-//FileCache<CMemoryBitmap> fileCache{ 1024 };
-
 bool FetchPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
-
-	// Check cache
-	auto accessor = fileCache.find(szFileName);
-	if (accessor.isValid())
-	{
-		rpBitmap = accessor.data()->Clone(false);
-		return true;
-	}
 
 #if DSSFILEDECODING==0
 	if (IsPCLPicture(szFileName, BitmapInfo))
@@ -1244,9 +1233,6 @@ bool FetchPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, 
 	} while (false);
 
 #endif
-
-	if (bResult)
-		fileCache.insert(szFileName, rpBitmap->Clone(false));
 
 	return bResult;
 }

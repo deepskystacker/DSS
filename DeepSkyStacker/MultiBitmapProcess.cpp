@@ -340,28 +340,16 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(const CMemoryBitmap* pBit
 	{
 		std::shared_ptr<CMemoryBitmap> pOutBitmap{ pBitmap->Clone() };
 
-		for (int i = 0;i<m_lWidth;i++)
+		for (int i = 0; i < m_lWidth; ++i)
 		{
-			for (int j = 0;j<m_lHeight;j++)
+			for (int j = 0; j < m_lHeight; ++j)
 			{
 				// Compute the weighted average of a 11x11 area around each pixel
 				// It can be lengthy!
-				ComputeWeightedAverage(i, j, pBitmap, m_pHomBitmap, pOutBitmap);
-			};
-		};
-
-		if (avx != 0)
-		{
-			for (int i = 0; i < m_lWidth; i++)
-			{
-				for (int j = 0; j < m_lHeight; j++)
-				{
-					// Compute the weighted average of a 11x11 area around each pixel
-					// It can be lengthy!
-					ComputeWeightedAverage(i, j, pBitmap, m_pHomBitmap.get(), pOutBitmap.get());
-				}
+				ComputeWeightedAverage(i, j, pBitmap, m_pHomBitmap.get(), pOutBitmap.get());
 			}
 		}
+
 		return pOutBitmap;
 	}
 	return std::shared_ptr<CMemoryBitmap>{};
