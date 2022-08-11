@@ -39,59 +39,62 @@
 #include "dsseditstars.h"
 #include "dssimageview.h"
 
-DSSEditStars::DSSEditStars(QWidget* parent) :
-	QWidget(parent)
+namespace DSS
 {
-	imageView = dynamic_cast<DSSImageView*>(parent);
-	Q_ASSERT(nullptr != imageView);
-	setAttribute(Qt::WA_TransparentForMouseEvents);
-	setAttribute(Qt::WA_NoSystemBackground);
-	setAttribute(Qt::WA_WState_ExplicitShowHide);
-}
+	EditStars::EditStars(QWidget* parent) :
+		QWidget(parent)
+	{
+		imageView = dynamic_cast<DSSImageView*>(parent);
+		Q_ASSERT(nullptr != imageView);
+		setAttribute(Qt::WA_TransparentForMouseEvents);
+		setAttribute(Qt::WA_NoSystemBackground);
+		setAttribute(Qt::WA_WState_ExplicitShowHide);
+	}
 
 
-void DSSEditStars::mousePressEvent([[maybe_unused]] QMouseEvent* e)
-{
-	qDebug() << "mouse pressed";
-}
+	void EditStars::mousePressEvent([[maybe_unused]] QMouseEvent* e)
+	{
+		qDebug() << "mouse pressed";
+	}
 
-void DSSEditStars::mouseMoveEvent([[maybe_unused]] QMouseEvent* e)
-{
+	void EditStars::mouseMoveEvent([[maybe_unused]] QMouseEvent* e)
+	{
 
-}
+	}
 
-void DSSEditStars::mouseReleaseEvent([[maybe_unused]] QMouseEvent* e)
-{
+	void EditStars::mouseReleaseEvent([[maybe_unused]] QMouseEvent* e)
+	{
 
-}
+	}
 
-void DSSEditStars::rectButtonChecked()
-{
-	//
-	// No longer interested in signals from the imageView object
-	//
-	imageView->disconnect(this, nullptr);
-}
+	void EditStars::rectButtonChecked()
+	{
+		//
+		// No longer interested in signals from the imageView object
+		//
+		imageView->disconnect(this, nullptr);
+	}
 
-void DSSEditStars::starsButtonChecked()
-{
-	qDebug() << "stars checked";
-	connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-	connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-	connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-	connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
-}
+	void EditStars::starsButtonChecked()
+	{
+		qDebug() << "stars checked";
+		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
+		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
+		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
+	}
 
-void DSSEditStars::cometButtonChecked()
-{
-	qDebug() << "comet checked";
-	connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
-	connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
-	connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-	connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
-}
+	void EditStars::cometButtonChecked()
+	{
+		qDebug() << "comet checked";
+		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
+		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
+		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
+		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
+	}
 
-void DSSEditStars::saveButtonPressed()
-{
-	qDebug() << "save pressed";
+	void EditStars::saveButtonPressed()
+	{
+		qDebug() << "save pressed";
+	}
 }

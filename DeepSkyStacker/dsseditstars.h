@@ -40,29 +40,32 @@ class QMouseEvent;
 
 class DSSImageView;
 
-class DSSEditStars :
-    public QWidget
+namespace DSS
 {
-    Q_OBJECT
+    class EditStars :
+        public QWidget
+    {
+        Q_OBJECT
 
-typedef QWidget
-        Inherited;
+            typedef QWidget
+            Inherited;
 
-public:
-    explicit DSSEditStars(QWidget* parent);
+    public:
+        explicit EditStars(QWidget* parent);
 
-    virtual ~DSSEditStars() {};
+        virtual ~EditStars() {};
 
-public slots:
-    void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
+    public slots:
+        void mousePressEvent(QMouseEvent* e);
+        void mouseMoveEvent(QMouseEvent* e);
+        void mouseReleaseEvent(QMouseEvent* e);
 
-    void rectButtonChecked();
-    void starsButtonChecked();
-    void cometButtonChecked();
-    void saveButtonPressed();
+        void rectButtonChecked();
+        void starsButtonChecked();
+        void cometButtonChecked();
+        void saveButtonPressed();
 
-private:
-    DSSImageView* imageView;
-};
+    private:
+        DSSImageView* imageView;
+    };
+}
