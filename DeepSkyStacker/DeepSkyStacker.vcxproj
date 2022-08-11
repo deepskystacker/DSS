@@ -267,6 +267,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="avx_support.cpp" />
     <ClCompile Include="BackgroundCalibration.cpp" />
+    <ClCompile Include="BackgroundLoading.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -489,6 +490,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="avx_support.h" />
     <ClInclude Include="BackgroundCalibration.h" />
     <QtMoc Include="BackgroundOptions.h" />
+    <ClInclude Include="BackgroundLoading.h" />
     <ClInclude Include="BatchStacking.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
@@ -604,37 +606,21 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <Image Include="Buttons\ButtonBase_mask.bmp" />
     <Image Include="Buttons\ButtonBase_up.bmp" />
     <Image Include="Buttons\ButtonComet_Disabled.bmp" />
-    <Image Include="Buttons\ButtonComet_Disabled.png" />
     <Image Include="Buttons\ButtonComet_Down.bmp" />
-    <Image Include="Buttons\ButtonComet_Down.png" />
     <Image Include="Buttons\ButtonComet_Hot.bmp" />
-    <Image Include="Buttons\ButtonComet_Hot.png" />
     <Image Include="Buttons\ButtonComet_Up.bmp" />
-    <Image Include="Buttons\ButtonComet_Up.png" />
     <Image Include="Buttons\ButtonSave_Disabled.bmp" />
-    <Image Include="Buttons\ButtonSave_Disabled.png" />
     <Image Include="Buttons\ButtonSave_Down.bmp" />
-    <Image Include="Buttons\ButtonSave_Down.png" />
     <Image Include="Buttons\ButtonSave_Hot.bmp" />
-    <Image Include="Buttons\ButtonSave_Hot.png" />
     <Image Include="Buttons\ButtonSave_Up.bmp" />
-    <Image Include="Buttons\ButtonSave_Up.png" />
     <Image Include="Buttons\ButtonSelect_Disabled.bmp" />
-    <Image Include="Buttons\ButtonSelect_Disabled.png" />
     <Image Include="Buttons\ButtonSelect_Down.bmp" />
-    <Image Include="Buttons\ButtonSelect_Down.png" />
     <Image Include="Buttons\ButtonSelect_Hot.bmp" />
-    <Image Include="Buttons\ButtonSelect_Hot.png" />
     <Image Include="Buttons\ButtonSelect_Up.bmp" />
-    <Image Include="Buttons\ButtonSelect_Up.png" />
     <Image Include="Buttons\ButtonStar_Disabled.bmp" />
-    <Image Include="Buttons\ButtonStar_Disabled.png" />
     <Image Include="Buttons\ButtonStar_Down.bmp" />
-    <Image Include="Buttons\ButtonStar_Down.png" />
     <Image Include="Buttons\ButtonStar_Hot.bmp" />
-    <Image Include="Buttons\ButtonStar_Hot.png" />
     <Image Include="Buttons\ButtonStar_Up.bmp" />
-    <Image Include="Buttons\ButtonStar_Up.png" />
     <Image Include="filelist.ico" />
     <Image Include="open.bmp" />
     <Image Include="openfile.ico" />
@@ -644,6 +630,22 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <Image Include="res\asinh.bmp" />
     <Image Include="res\bmp00001.bmp" />
     <Image Include="res\brazil.png" />
+    <Image Include="res\ButtonComet_Disabled.png" />
+    <Image Include="res\ButtonComet_Down.png" />
+    <Image Include="res\ButtonComet_Hot.png" />
+    <Image Include="res\ButtonComet_Up.png" />
+    <Image Include="res\ButtonSave_Disabled.png" />
+    <Image Include="res\ButtonSave_Down.png" />
+    <Image Include="res\ButtonSave_Hot.png" />
+    <Image Include="res\ButtonSave_Up.png" />
+    <Image Include="res\ButtonSelect_Disabled.png" />
+    <Image Include="res\ButtonSelect_Down.png" />
+    <Image Include="res\ButtonSelect_Hot.png" />
+    <Image Include="res\ButtonSelect_Up.png" />
+    <Image Include="res\ButtonStar_Disabled.png" />
+    <Image Include="res\ButtonStar_Down.png" />
+    <Image Include="res\ButtonStar_Hot.png" />
+    <Image Include="res\ButtonStar_Up.png" />
     <Image Include="res\Calibration_Linear.bmp" />
     <Image Include="res\Calibration_Rational.bmp" />
     <Image Include="res\Catalan.png" />

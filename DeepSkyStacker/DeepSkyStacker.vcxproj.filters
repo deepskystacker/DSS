@@ -390,6 +390,9 @@
     <ClCompile Include="imageloader.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="BackgroundLoading.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -787,6 +790,9 @@
     <ClInclude Include="dssgroup.h">
       <Filter>Kernel</Filter>
     </ClInclude>
+    <ClInclude Include="BackgroundLoading.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">
@@ -1083,52 +1089,52 @@
     <Image Include="res\4Corners.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Disabled.png">
+    <Image Include="res\ButtonComet_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Down.png">
+    <Image Include="res\ButtonComet_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Hot.png">
+    <Image Include="res\ButtonComet_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Up.png">
+    <Image Include="res\ButtonComet_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Disabled.png">
+    <Image Include="res\ButtonSave_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Down.png">
+    <Image Include="res\ButtonSave_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Hot.png">
+    <Image Include="res\ButtonSave_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Up.png">
+    <Image Include="res\ButtonSave_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Disabled.png">
+    <Image Include="res\ButtonSelect_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Down.png">
+    <Image Include="res\ButtonSelect_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Hot.png">
+    <Image Include="res\ButtonSelect_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Up.png">
+    <Image Include="res\ButtonSelect_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Disabled.png">
+    <Image Include="res\ButtonStar_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Down.png">
+    <Image Include="res\ButtonStar_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Hot.png">
+    <Image Include="res\ButtonStar_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Up.png">
+    <Image Include="res\ButtonStar_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
