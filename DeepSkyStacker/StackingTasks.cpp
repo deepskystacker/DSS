@@ -1973,58 +1973,50 @@ __int64	CAllStackingTasks::ComputeNecessaryDiskSpace()
 
 __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 {
-	QString			strTempPath(GetTemporaryFilesFolder());
+	fs::path path{ GetTemporaryFilesFolder().toStdU16String() };
+	
+	auto [cap, _, avail] = std::filesystem::space(path);
 
-	ULARGE_INTEGER			ulFreeSpace;
-	ULARGE_INTEGER			ulTotal;
-	ULARGE_INTEGER			ulTotalFree;
+	strDrive = CString((LPCTSTR)path.root_name().wstring().c_str());
 
-	strDrive = CString((LPCTSTR)strTempPath.utf16());
-	strDrive = strDrive.Left(2);
-
-	GetDiskFreeSpaceEx(CString((LPCTSTR)strTempPath.utf16()), &ulFreeSpace, &ulTotal, &ulTotalFree);
-
-	return ulFreeSpace.QuadPart;
+	return avail;
 };
 
 /* ------------------------------------------------------------------- */
 
 QString CAllStackingTasks::GetTemporaryFilesFolder()
 {
-
+	ZFUNCTRACE_RUNTIME();
 	QSettings	settings;
 
-	QString strTemp = settings.value("Stacking/TemporaryFilesFolder", QString("")).toString();
-	if (strTemp.length())
+	fs::path path{ settings.value("Stacking/TemporaryFilesFolder", QString("")).toString().toStdU16String() };
+
+	//
+	// If it is a directory, check we can write a file to it and return its name if so.
+	//
+	if (fs::file_type::directory == status(path).type())
 	{
-		// Check that the folder exists by creating an file in it
-		FILE *			hFile;
-		QString			strFile;
+		// Check that we can write to it
+		auto file = path / "Temp.txt";
 
-		strFile = strTemp;
-		strFile += "Temp.txt";
-
-		hFile = _tfopen((LPCTSTR)strFile.utf16(), _T("wb"));
-		if (hFile)
+		if (std::FILE* f = 
+#if defined _WINDOWS
+			_wfopen(file.c_str(), L"wb")
+#else
+			std::fopen(file.c_str(), "wb")
+#endif
+			)
 		{
-			fclose(hFile);
-			DeleteFile((LPCTSTR)strFile.utf16());
+			fclose(f);
+			fs::remove(file);
+			return QString::fromStdU16String(path.u16string());
 		}
-		else
-			strTemp = "";
-	};
-
-	if (strTemp.isEmpty())
-	{
-		TCHAR			szTempPath[1+_MAX_PATH] = _T("");
-
-		GetTempPath(sizeof(szTempPath)/sizeof(TCHAR), szTempPath);
-
-		CString temp(szTempPath);
-		strTemp = QString::fromWCharArray(temp.GetString());
-	};
-
-	return strTemp;
+	}
+	//
+	// If it's not a directory or we can't write to it return the default
+	// system temp directory
+	//
+	return QString::fromStdU16String(fs::temp_directory_path().u16string());
 };
 
 /* ------------------------------------------------------------------- */
@@ -2032,12 +2024,9 @@ QString CAllStackingTasks::GetTemporaryFilesFolder()
 void CAllStackingTasks::SetTemporaryFilesFolder(QString strFolder)
 {
 	ZFUNCTRACE_RUNTIME();
-
 	QSettings settings;
-
-	if ((strFolder.right(1) != "\\") && (strFolder.right(1) != "/"))
-		strFolder += "\\";
-
+	fs::path path{ strFolder.toStdU16String() };
+	ZASSERT(fs::file_type::directory == status(path).type());
 	settings.setValue("Stacking/TemporaryFilesFolder", strFolder);
 };
 
