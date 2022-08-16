@@ -56,7 +56,7 @@ namespace DSS
 		//
 		// Qt Table Model class derived from QAbstractTableModel
 		//
-		ImageListModel	model;
+		ImageListModel	pictures;
 
 		explicit Group::Group() :
 			Index(nextIndex++) 			// First group is Main Group with Index of 0
@@ -72,9 +72,10 @@ namespace DSS
 		}
 
 		//
-		// This is a very simple class so we can let the compiler synthesise the copy ctor 
-		// and operator =
+		// Don't intend this to be copied or assigned.
 		//
+		Group(const Group&) = delete;
+		Group& operator = (const Group&) = delete;
 
 		//
 		// Accessors
@@ -94,7 +95,7 @@ namespace DSS
 		//
 		void addImage(ListBitMap image)
 		{
-			model.addImage(image);
+			pictures.addImage(image);
 		}
 
 	protected:

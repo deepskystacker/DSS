@@ -393,6 +393,9 @@
     <ClCompile Include="BackgroundLoading.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="dsstoolbar.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">

@@ -49,15 +49,16 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-typedef enum tagSAVEEDITCHANGESMODE
+enum class EditSaveMode
 {
 	SECM_ASKALWAYS = 0,
 	SECM_SAVEDONTASK = 1,
 	SECM_DONTSAVEDONTASK = 2
-}SAVEEDITCHANGESMODE;
+};
+
 
 int AskSaveEditChangesMode();
-void	SetSaveEditMode(SAVEEDITCHANGESMODE Mode);
-SAVEEDITCHANGESMODE	GetSaveEditMode();
+void	SetSaveEditMode(EditSaveMode Mode);
+EditSaveMode GetSaveEditMode();
 
 #endif // __SAVEEDITCHANGES_H__

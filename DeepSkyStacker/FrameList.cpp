@@ -25,13 +25,17 @@ void	CMRUList::readSettings()
 		QString keyName = QString("%1/MRU%2")
 			.arg(QString::fromWCharArray(m_strBasePath.GetString())).arg(i);
 
-		QString temp = settings.value(keyName).toString();
-		CString strValue((LPCTSTR)temp.utf16());
+		QString fileName = settings.value(keyName).toString();
+		CString strValue(fileName.toStdWString().c_str());
 
 		FILE *			hFile;
 
-		hFile = _tfopen((LPCTSTR)strValue, _T("rt"));
-		if (hFile)
+		if (std::FILE* hFile =
+#if defined _WINDOWS
+			_wfopen(fileName.toStdWString().c_str(), L"rt")
+#else
+			std::fopen(fileName.toStdString().c_str(), "rt")
+#endif
 		{
 			m_vLists.push_back(strValue);
 			fclose(hFile);

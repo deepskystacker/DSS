@@ -109,11 +109,62 @@ namespace DSS
         //
         // return the filename held in the base FrameInfo object
         //
-        CString selectedFileName(int row) const
+        QString selectedFileName(int row) const
         {
-            return mydata[row].m_strFileName;
+            return QString::fromWCharArray(mydata[row].m_strFileName.GetString());
         }
 
+        //
+        // Check if a loaded image is a light frame
+        //
+        bool isLightFrame(QString name)
+        {
+            for (auto const& data : mydata)
+            {
+                if (data.m_strFileName == name.toStdWString().c_str())
+                {
+                    if (data.IsLightFrame()) return true;
+                    else return false;
+                 }
+            }
+
+            return false;
+        }
+
+        //
+        // Check if a loaded image is a light frame
+        //
+        bool isChecked(QString name)
+        {
+            for (auto const& data : mydata)
+            {
+                if (data.m_strFileName == name.toStdWString().c_str())
+                {
+                    if (data.IsLightFrame()) return true;
+                    else return false;
+                }
+            }
+
+            return false;
+        }
+
+        //
+        // Get the transformation if any
+        //
+        bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs)
+        {
+             for (auto const& data : mydata)
+            {
+                if (data.IsLightFrame() && data.m_strFileName == name.toStdWString().c_str())
+                {
+                    transformation = data.m_Transformation;
+                    vVotedPairs = data.m_vVotedPairs;
+                    return true;
+                };
+            };
+
+            return false;
+        }
     };
 };
 

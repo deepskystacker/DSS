@@ -311,6 +311,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="dsstoolbar.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
