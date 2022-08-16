@@ -162,29 +162,29 @@ public:
 
 class CDeBloom
 {
-private :
-	double						m_fBloomThreshold;
-	BLOOMEDSTARVECTOR			m_vBloomedStars;
-	int						m_lWidth,
-								m_lHeight;
-	CSmartPtr<C8BitGrayBitmap>	m_pMask;
-	CDSSProgress *				m_pProgress;
-	double						m_fBackground;
+private:
+	double m_fBloomThreshold;
+	BLOOMEDSTARVECTOR m_vBloomedStars;
+	int m_lWidth;
+	int m_lHeight;
+	std::shared_ptr<C8BitGrayBitmap> m_pMask;
+	CDSSProgress* m_pProgress;
+	double m_fBackground;
 
-	bool	IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y);
-	bool	IsRightEdge(CMemoryBitmap * pBitmap, int x, int y);
-	bool	IsTopEdge(CMemoryBitmap * pBitmap, int x, int y);
-	bool	IsBottomEdge(CMemoryBitmap * pBitmap, int x, int y);
+	bool	IsLeftEdge(const CMemoryBitmap * pBitmap, int x, int y);
+	bool	IsRightEdge(const CMemoryBitmap * pBitmap, int x, int y);
+	bool	IsTopEdge(const CMemoryBitmap * pBitmap, int x, int y);
+	bool	IsBottomEdge(const CMemoryBitmap * pBitmap, int x, int y);
 
 	void	ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
 
-	void	ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y);
-	bool	CreateMask(CMemoryBitmap * pBitmap, C8BitGrayBitmap ** ppMask);
+	void	ExpandBloomedArea(const CMemoryBitmap* pBitmap, C8BitGrayBitmap * pMask, int x, int y);
+	std::shared_ptr<C8BitGrayBitmap> CreateMask(const CMemoryBitmap* pBitmap);
 
-	void	AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
-	double	ComputeValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y, bool & bDone);
-	void	DeBloom(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask);
-	void    SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask);
+	void	AddStar(CMemoryBitmap * pBitmap, const C8BitGrayBitmap * pMask, CBloomedStar & bs);
+	double	ComputeValue(CMemoryBitmap * pBitmap, const C8BitGrayBitmap * pMask, int x, int y, bool & bDone);
+	void	DeBloom(CMemoryBitmap * pBitmap, std::shared_ptr<C8BitGrayBitmap> pMask);
+	void    SmoothMaskBorders(CMemoryBitmap * pBitmap, const C8BitGrayBitmap * pMask);
 	void	MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<CPointExt> & vBorders);
 	void	MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<CPoint> & vBloomed);
 
@@ -193,7 +193,7 @@ private :
 	void	RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
 	void	RefineStarCenter2(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs);
 
-public :
+public:
 	CDeBloom()
 	{
 		m_fBloomThreshold = 0.85;
@@ -205,8 +205,8 @@ public :
 
 	virtual ~CDeBloom() {};
 
-	bool	CreateBloomMask(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
-	void	DeBloomImage(CMemoryBitmap * pBitmap, CDSSProgress * pProgress);
+	void CreateBloomMask(const CMemoryBitmap* pBitmap, CDSSProgress* pProgress);
+	void DeBloomImage(CMemoryBitmap* pBitmap, CDSSProgress* pProgress);
 };
 
-#endif // __DEBLOOM_H__
+#endif

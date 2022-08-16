@@ -25,10 +25,10 @@ static void GetTempFileName(CString & strFile)
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void CMultiBitmap::SetBitmapModel(CMemoryBitmap * pBitmap)
+void CMultiBitmap::SetBitmapModel(const CMemoryBitmap* pBitmap)
 {
-	m_pBitmapModel.Attach(pBitmap->Clone(true));
-};
+	m_pBitmapModel = pBitmap->Clone(true);
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -100,7 +100,7 @@ void CMultiBitmap::InitParts()
 
 /* ------------------------------------------------------------------- */
 
-bool CMultiBitmap::AddBitmap(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+bool CMultiBitmap::AddBitmap(const CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -171,7 +171,7 @@ private:
 	CDSSProgress*				m_pProgress;
 	CMultiBitmap*				m_pMultiBitmap;
 	void*						m_pBuffer;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
+	CMemoryBitmap* m_pBitmap;
 
 public:
     CCombineTask(int startRow, int endRow, size_t scanLineSize, void* pBuffer, CDSSProgress* pProgress, CMultiBitmap* pMultiBitmap, CMemoryBitmap* pBitmap) :
@@ -269,7 +269,7 @@ void CCombineTask::process()
 
 /* ------------------------------------------------------------------- */
 
-static	void ComputeWeightedAverage(int x, int y, CMemoryBitmap * pBitmap, CMemoryBitmap * pHomBitmap, CMemoryBitmap * pOutBitmap)
+static void ComputeWeightedAverage(int x, int y, const CMemoryBitmap* pBitmap, const CMemoryBitmap* pHomBitmap, CMemoryBitmap* pOutBitmap)
 {
 	//ZFUNCTRACE_RUNTIME();
 	bool bColor = !pBitmap->IsMonochrome();
@@ -334,46 +334,38 @@ static	void ComputeWeightedAverage(int x, int y, CMemoryBitmap * pBitmap, CMemor
 	};
 };
 
-/* ------------------------------------------------------------------- */
-
-void	CMultiBitmap::SmoothOut(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppOutBitmap)
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(const CMemoryBitmap* pBitmap) const
 {
-	if (m_pHomBitmap)
+	if (static_cast<bool>(m_pHomBitmap))
 	{
-		CSmartPtr<CMemoryBitmap>	pOutBitmap;
+		std::shared_ptr<CMemoryBitmap> pOutBitmap{ pBitmap->Clone() };
 
-		pOutBitmap.Attach(pBitmap->Clone());
-
-		for (int i = 0;i<m_lWidth;i++)
+		for (int i = 0; i < m_lWidth; ++i)
 		{
-			for (int j = 0;j<m_lHeight;j++)
+			for (int j = 0; j < m_lHeight; ++j)
 			{
 				// Compute the weighted average of a 11x11 area around each pixel
 				// It can be lengthy!
-				ComputeWeightedAverage(i, j, pBitmap, m_pHomBitmap, pOutBitmap);
-			};
-		};
+				ComputeWeightedAverage(i, j, pBitmap, m_pHomBitmap.get(), pOutBitmap.get());
+			}
+		}
 
-		pOutBitmap.CopyTo(ppOutBitmap);
-	};
-};
+		return pOutBitmap;
+	}
+	return std::shared_ptr<CMemoryBitmap>{};
+}
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-
-bool CMultiBitmap::GetResult(CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool						bResult = false;
-	CSmartPtr<CMemoryBitmap>	pBitmap;
+	std::shared_ptr<CMemoryBitmap> pBitmap;
 
 	if (m_bInitDone && !m_vFiles.empty())
 	{
-		*ppBitmap = nullptr;
-		bResult = false;
+		bool bResult = false;
 
-		CreateOutputMemoryBitmap(&pBitmap);
-		if (pBitmap)
+		pBitmap = CreateOutputMemoryBitmap();
+		if (static_cast<bool>(pBitmap))
 			bResult = pBitmap->Init(m_lWidth, m_lHeight);
 
 		if (m_bHomogenization)
@@ -381,10 +373,10 @@ bool CMultiBitmap::GetResult(CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 			// Create the bitmap that will contain the standard deviation/average for each pixel
 			// to remove remaining star trails from the comet only image
 			if (pBitmap->IsMonochrome())
-				m_pHomBitmap.Attach(new C32BitFloatGrayBitmap);
+				m_pHomBitmap = std::make_shared<C32BitFloatGrayBitmap>();
 			else
-				m_pHomBitmap.Attach(new C96BitFloatColorBitmap);
-			if (m_pHomBitmap)
+				m_pHomBitmap = std::make_shared<C96BitFloatColorBitmap>();
+			if (static_cast<bool>(m_pHomBitmap))
 				bResult = m_pHomBitmap->Init(m_lWidth, m_lHeight);
 		}
 
@@ -417,7 +409,7 @@ bool CMultiBitmap::GetResult(CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 			if (!bResult)
 				break;
 
-			CCombineTask{ file.m_lStartRow, file.m_lEndRow, lScanLineSize, buffer.data(), pProgress, this, pBitmap }.process();
+			CCombineTask{ file.m_lStartRow, file.m_lEndRow, lScanLineSize, buffer.data(), pProgress, this, pBitmap.get() }.process();
 
 			if (pProgress != nullptr)
 			{
@@ -426,22 +418,13 @@ bool CMultiBitmap::GetResult(CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
 			}
 		}
 
-		if (bResult)
+		if (bResult && static_cast<bool>(m_pHomBitmap))
 		{
-			if (m_pHomBitmap)
-			{
-				// At this point the m_pHomBitmap might be used to smooth out any remaining
-				// star trails with a large filter
-				SmoothOut(pBitmap, ppBitmap);
-			}
-			else
-				pBitmap.CopyTo(ppBitmap);
+			// At this point the m_pHomBitmap might be used to smooth out any remaining
+			// star trails with a large filter
+			return SmoothOut(pBitmap.get());
 		}
 	}
-
 	DestroyTempFiles();
-
-	return bResult;
+	return pBitmap;
 }
-
-/* ------------------------------------------------------------------- */

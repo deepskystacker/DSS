@@ -18,14 +18,12 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		pGray->m_vPixels.assign(W * H, 60003);
 
 		CEntropyInfo entropyInfo;
@@ -41,7 +39,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 		// Output should be identical to input.
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		REQUIRE(memcmp(pGray->m_vPixels.data(), pOut->m_vPixels.data(), W * H * sizeof(T)) == 0);
 	}
@@ -54,14 +52,12 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = (10000 + i / 16) << 16;
 
@@ -77,7 +73,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		REQUIRE(pOut->m_vPixels[262] == (10016 << 16));
 		std::vector<T> expected(W * H);
@@ -94,14 +90,12 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 1732.498307f - i * i * 1e-6f;
 
@@ -118,7 +112,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 		// Output should be identical to input.
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		REQUIRE(memcmp(pGray->m_vPixels.data(), pOut->m_vPixels.data(), W * H * sizeof(T)) == 0);
 	}
@@ -134,14 +128,12 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 2632.598002f - i * i * 1e-6f;
 
@@ -158,7 +150,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		std::vector<T> expected(W * H);
 		for (int y = 0; y < H; ++y)
@@ -181,14 +173,12 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 36032.598087f - i * i * 1e-6f;
 
@@ -206,7 +196,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		std::vector<T> expected(W * H);
 		for (int y = 0; y < H; ++y)
@@ -231,14 +221,12 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 106052.598087f - i * i * 4e-1f;
 
@@ -256,7 +244,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		std::vector<T> expected(W * H);
 		const auto calcFrac = [&](const float xc, const float yc, const int xn, const int yn, const int x, const int y) -> void
@@ -296,14 +284,12 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 146052.598087f - i * i * 1e-3f;
 
@@ -319,7 +305,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		std::vector<T> expected(W * H);
 		for (int y = 0; y < H; ++y)
@@ -336,14 +322,12 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 106052.598087f - i * i * 1e-4f;
 
@@ -364,7 +348,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 		REQUIRE(avxStacking.stack(pixTransform, taskInfo, backgroundCalib, 1) == 0);
 
-		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.m_p);
+		auto* pOut = dynamic_cast<CGrayBitmapT<T>*>(pTempBitmap.get());
 		REQUIRE(pOut != nullptr);
 		std::vector<T> expected(W * H);
 		bool OK = true;
@@ -391,24 +375,21 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = 100.0f;
 
-		CSmartPtr<CMemoryBitmap> pEntropyCoverage;
-		pEntropyCoverage.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pEntropyCoverage = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pEntropyCoverage->Init(W, H) == true);
 
 		CEntropyInfo entropyInfo;
 		entropyInfo.Init(pTempBitmap, 10, nullptr);
-		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage);
+		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage.get());
 
 		CPixelTransform pixTransform;
 		CTaskInfo taskInfo; // Determines if method is ENTROPY or not.
@@ -447,19 +428,16 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 
 		CRect rect(0, 0, W, H); // left, top, right, bottom
 
-		CSmartPtr<CMemoryBitmap> pTempBitmap;
-		pTempBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
 
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<T>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pBitmap->Init(W, H) == true);
-		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<T>*>(pBitmap.get());
 		for (int i = 0; i < W * H; ++i)
 			pGray->m_vPixels[i] = (9967 + i) << 16;
 
-		CSmartPtr<CMemoryBitmap> pEntropyCoverage;
-		pEntropyCoverage.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pEntropyCoverage = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pEntropyCoverage->Init(W, H) == true);
 
 		CPixelTransform pixTransform;
@@ -469,7 +447,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		backgroundCalib.SetMode(BCM_NONE, BCI_LINEAR, RBCM_MAXIMUM);
 
 		CEntropyInfo entropyInfo;
-		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage);
+		AvxEntropy avxEntropy(*pTempBitmap, entropyInfo, pEntropyCoverage.get());
 		AvxStacking avxStacking(0, H, *pBitmap, *pTempBitmap, rect, avxEntropy);
 
 		for (int img = 0; img < 2; ++img)

@@ -156,9 +156,9 @@ public :
 
 class		CStarMaskFunction_Quadratic : public CStarMaskFunction
 {
-protected :
+protected:
 
-public :
+public:
 	CStarMaskFunction_Quadratic()
 	{
 	};
@@ -170,12 +170,11 @@ public :
 
 	virtual double	Compute(double fValue)
 	{
-		fValue /= 3.0*m_fRadius;
-		return max(0.0, 1.0-fValue*fValue*fValue*fValue);
-	};
+		fValue /= 3.0 * m_fRadius;
+		return max(0.0, 1.0 - fValue * fValue * fValue * fValue);
+	}
 };
 
-/* ------------------------------------------------------------------- */
 
 class CStarMaskEngine
 {
@@ -188,33 +187,22 @@ private :
 						m_fMaxSize;
 	STARMASKSTYLE		m_StarShape;
 
-private :
-	void	GetShapeFunction(CStarMaskFunction ** ppStarMaskFunction)
+private:
+	std::unique_ptr<CStarMaskFunction> GetShapeFunction()
 	{
 		switch (m_StarShape)
 		{
-		case SMS_BELL :
-			*ppStarMaskFunction = new CStarMaskFunction_Bell;
-			break;
-		case SMS_TRUNCATEDBELL :
-			*ppStarMaskFunction = new CStarMaskFunction_BellTruncated;
-			break;
-		case SMS_LINEAR	:
-			*ppStarMaskFunction = new CStarMaskFunction_Linear;
-			break;
-		case SMS_TRUNCATEDLINEAR	:
-			*ppStarMaskFunction = new CStarMaskFunction_LinearTruncated;
-			break;
-		case SMS_CUBIC :
-			*ppStarMaskFunction = new CStarMaskFunction_Cubic;
-			break;
-		case SMS_QUADRATIC :
-			*ppStarMaskFunction = new CStarMaskFunction_Quadratic;
-			break;
-		};
-	};
+		case SMS_BELL: return std::make_unique<CStarMaskFunction_Bell>(); break;
+		case SMS_TRUNCATEDBELL: return std::make_unique<CStarMaskFunction_BellTruncated>(); break;
+		case SMS_LINEAR: return std::make_unique<CStarMaskFunction_Linear>(); break;
+		case SMS_TRUNCATEDLINEAR: return std::make_unique<CStarMaskFunction_LinearTruncated>(); break;
+		case SMS_CUBIC: return std::make_unique<CStarMaskFunction_Cubic>(); break;
+		case SMS_QUADRATIC: return std::make_unique<CStarMaskFunction_Quadratic>(); break;
+		}
+		return std::unique_ptr<CStarMaskFunction>{};
+	}
 
-public :
+public:
 	CStarMaskEngine()
 	{
 		QSettings			settings;
@@ -236,22 +224,22 @@ public :
 
 		const auto dwStarShape = settings.value("StarMask/StarShape", 1).toUInt();
 		m_StarShape = (STARMASKSTYLE)dwStarShape;
-	};
+	}
 
-	virtual ~CStarMaskEngine() {};
+	virtual ~CStarMaskEngine() {}
 
 	void	SetDetectionThreshold(double fMinLuminancy)
 	{
 		m_fMinLuminancy = fMinLuminancy;
-	};
+	}
 
 	void	SetHotPixelRemoval(bool bHotPixels)
 	{
 		m_bRemoveHotPixels = bHotPixels;
-	};
+	}
 
-	bool	CreateStarMask(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
-	bool	CreateStarMask2(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+//	bool CreateStarMask(CMemoryBitmap* pBitmap, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress = nullptr);
+	std::shared_ptr<CMemoryBitmap> CreateStarMask2(CMemoryBitmap* pBitmap, CDSSProgress* pProgress = nullptr);
 };
 
 #endif // __STARMASK_H__

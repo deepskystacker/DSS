@@ -984,33 +984,33 @@ bool IsRAWPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 
 /* ------------------------------------------------------------------- */
 
-bool LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
+bool LoadRAWPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
 	CRawDecod dcr(szFileName);
-    if (dcr.IsRawFile() && ppBitmap != nullptr)
+    if (dcr.IsRawFile())
     {
-        CSmartPtr<CMemoryBitmap> pBitmap;
+        std::shared_ptr<CMemoryBitmap> pBitmap;
         bool bColorRAW = dcr.IsColorRAW();
 
         if ((IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()) && !bColorRAW)
         {
-            pBitmap.Attach(new C16BitGrayBitmap);
-            ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.m_p, szFileName);
+			pBitmap = std::make_shared<C16BitGrayBitmap>();
+            ZTRACE_RUNTIME("Creating 16 bit gray memory bitmap %p (%s)", pBitmap.get(), szFileName);
         }
         else
         {
-            pBitmap.Attach(new C48BitColorBitmap);
-            ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.m_p, szFileName);
-        };
+			pBitmap = std::make_shared<C48BitColorBitmap>();
+            ZTRACE_RUNTIME("Creating 16 bit RGB memory bitmap %p (%s)", pBitmap.get(), szFileName);
+        }
 
-        bResult = dcr.LoadRawFile(pBitmap, pProgress);
+        bResult = dcr.LoadRawFile(pBitmap.get(), pProgress);
 
         if (bResult)
         {
-            if (C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.m_p))
+            if (C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get()))
             {
                 if (IsSuperPixels())
                     pGrayBitmap->UseSuperPixels(true);
@@ -1020,11 +1020,10 @@ bool LoadRAWPicture(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress* 
                     pGrayBitmap->UseBilinear(true);
                 else if (IsRawAHD())
                     pGrayBitmap->UseAHD(true);
-            };
-            pBitmap.CopyTo(ppBitmap);
+            }
+			rpBitmap = pBitmap;
         }
     }
-
 	return bResult;
 }
 

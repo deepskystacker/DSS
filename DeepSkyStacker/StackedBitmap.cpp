@@ -608,78 +608,53 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 
 /* ------------------------------------------------------------------- */
 
-bool CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	*ppBitmap = nullptr;
 
-	CSmartPtr<CMemoryBitmap>	pBitmap;
-
+	std::shared_ptr<CMemoryBitmap> pBitmap;
 	if (m_bMonochrome)
-	{
-		CSmartPtr<C32BitFloatGrayBitmap>	pTempBitmap;
-
-		pTempBitmap.Attach(new C32BitFloatGrayBitmap);
-		pTempBitmap->Init(m_lWidth, m_lHeight);
-		pBitmap = pTempBitmap;
-	}
+		pBitmap = std::make_shared<C32BitFloatGrayBitmap>();
 	else
+		pBitmap = std::make_shared<C96BitFloatColorBitmap>();
+	pBitmap->Init(m_lWidth, m_lHeight);
+
+	if (static_cast<bool>(pBitmap))
 	{
-		CSmartPtr<C96BitFloatColorBitmap>	pTempBitmap;
+		const int lXMin = 0, lYMin = 0, lXMax = m_lWidth, lYMax = m_lHeight;
 
-		pTempBitmap.Attach(new C96BitFloatColorBitmap);
-		pTempBitmap->Init(m_lWidth, m_lHeight);
-		pBitmap = pTempBitmap;
-	};
+		float* pBaseRedPixel;
+		float* pBaseGreenPixel = nullptr;
+		float* pBaseBluePixel = nullptr;
+		int iProgress = 0;
 
-	if (pBitmap)
-	{
-		int		lXMin = 0,
-			lYMin = 0,
-			lXMax = m_lWidth,
-			lYMax = m_lHeight;
-
-		float *				pBaseRedPixel;
-		float *				pBaseGreenPixel = nullptr;
-		float *				pBaseBluePixel = nullptr;
-		int					iProgress = 0;
-
-		if (pProgress)
+		if (pProgress != nullptr)
 		{
 			CString			strText;
-
 			strText.LoadString(IDS_PROCESSINGIMAGE);
 			pProgress->Start2(strText, lYMax - lYMin);
-		};
+		}
 
-		pBaseRedPixel = &(m_vRedPlane[m_lWidth * lYMin + lXMin]);
+		pBaseRedPixel = m_vRedPlane.data() + (m_lWidth * lYMin + lXMin);
 		if (!m_bMonochrome)
 		{
-			pBaseGreenPixel = &(m_vGreenPlane[m_lWidth * lYMin + lXMin]);
-			pBaseBluePixel = &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
-		};
+			pBaseGreenPixel = m_vGreenPlane.data() + (m_lWidth * lYMin + lXMin);
+			pBaseBluePixel = m_vBluePlane.data() + (m_lWidth * lYMin + lXMin);
+		}
 
-#if defined (_OPENMP)
-#pragma omp parallel for default(none) shared(lYMin)
-#endif
+#pragma omp parallel for default(none) schedule(static, 100)
 		for (int j = lYMin; j < lYMax; j++)
 		{
-			float * pRedPixel = nullptr;
-			float * pGreenPixel = nullptr;
-			float * pBluePixel = nullptr;
-
 			//
 			// pxxxPixel = pBasexxxPixel + 0, + m_lWidth, +m_lWidth * 2, etc..
 			//
-			pRedPixel = pBaseRedPixel + (m_lWidth * (j - lYMin));
-			if (!m_bMonochrome)
-			{
-				pGreenPixel = pBaseGreenPixel + (m_lWidth * (j - lYMin));
-				pBluePixel = pBaseBluePixel + (m_lWidth * (j - lYMin));
-			};
+			float* pRedPixel = pBaseRedPixel + (m_lWidth * (j - lYMin));
+			float* pGreenPixel = m_bMonochrome ? pRedPixel : pBaseGreenPixel + (m_lWidth * (j - lYMin));
+			float* pBluePixel = m_bMonochrome ? pRedPixel : pBaseBluePixel + (m_lWidth * (j - lYMin));
+
 			for (int i = lXMin; i < lXMax; i++)
 			{
-				COLORREF		crColor;
+				COLORREF crColor;
 
 				if (!m_bMonochrome)
 				{
@@ -690,34 +665,23 @@ bool CStackedBitmap::GetBitmap(CMemoryBitmap ** ppBitmap, CDSSProgress * pProgre
 				{
 					crColor = GetPixel(*pRedPixel, *pRedPixel, *pRedPixel, true);
 					pBitmap->SetPixel(i, j, GetRValue(crColor));
-				};
-
+				}
 
 				pRedPixel++;
-				if (!m_bMonochrome)
-				{
-					pGreenPixel++;
-					pBluePixel++;
-				};
-			};
-#if defined (_OPENMP)
-			if (pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+				pGreenPixel++; // Incrementing the pointers is harmless, even if we don't use them due to monochrome image.
+				pBluePixel++;
+			}
+			if (pProgress != nullptr && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
 				iProgress += omp_get_num_threads();
 				pProgress->Progress2(nullptr, iProgress);
 			}
-#else
-			if (pProgress)
-				pProgress->Progress2(nullptr, ++iProgress);
-#endif
-		};
-
-		if (pProgress)
+		}
+		if (pProgress != nullptr)
 			pProgress->End2();
-	};
-
-	return pBitmap.CopyTo(ppBitmap);
-};
+	}
+	return pBitmap;
+}
 
 /* ------------------------------------------------------------------- */
 

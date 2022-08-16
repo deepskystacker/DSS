@@ -87,15 +87,15 @@ public :
 		return m_StackedBitmap.GetBitmap(m_Bitmap, &rcProcess);
 	};
 
-	CStackedBitmap & GetStackedBitmap()
+	CStackedBitmap& GetStackedBitmap()
 	{
 		return m_StackedBitmap;
-	};
+	}
 
-	C32BitsBitmap & GetBitmap()
+	C32BitsBitmap& GetBitmap()
 	{
 		return m_Bitmap;
-	};
+	}
 
 	void AdjustOriginalHistogram(CRGBHistogram & Histo, const CRGBHistogramAdjust & HistogramAdjust)
 	{

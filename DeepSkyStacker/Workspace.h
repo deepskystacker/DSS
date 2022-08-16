@@ -74,38 +74,35 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-typedef std::vector<WorkSpaceSetting>				WORKSPACESETTINGVECTOR;
-typedef WORKSPACESETTINGVECTOR::iterator			WORKSPACESETTINGITERATOR;
+typedef std::vector<CWorkspaceSetting> WORKSPACESETTINGVECTOR;
+typedef WORKSPACESETTINGVECTOR::iterator WORKSPACESETTINGITERATOR;
 
 class CWorkspace
 {
 private:
-	std::shared_ptr <WorkSpaceSettings > pSettings;
+	std::shared_ptr<CWorkspaceSettings > pSettings;
 public:
 	CWorkspace();
+	~CWorkspace() = default;
 
-	~CWorkspace()
-	{
-	};
+	void setValue(const QString& key, const QVariant& value);
 
-	void	setValue(const QString& key, const QVariant& value);
+	QVariant value(const QString& key, const QVariant& defaultValue = QVariant{}) const;
 
-	QVariant value(const QString& key, const QVariant& defaultValue = QVariant()) const;
+	bool isDirty();
+	void setDirty();
 
-	bool	isDirty();
-	void	setDirty();
+	void readSettings();
+	void saveSettings();
+	void ReadFromFile(FILE* hFile);
+	void ReadFromFile(LPCTSTR szFile);
+	void SaveToFile(FILE* hFile);
+	void SaveToFile(LPCTSTR szFile);
+	bool ReadFromString(LPCTSTR szString);
+	void ResetToDefault();
 
-	void	readSettings();
-	void	saveSettings();
-	void	ReadFromFile(FILE * hFile);
-	void	ReadFromFile(const fs::path& fileName);
-	void	SaveToFile(FILE * hFile);
-	void	SaveToFile(const fs::path& fileName);
-	bool	ReadFromString(LPCTSTR szString);
-	void	ResetToDefault();
-
-	void	Push();
-	void	Pop(bool bRestore = true);
+	void Push();
+	void Pop(bool bRestore = true);
 };
 
 #endif // __WORKSPACE_H__

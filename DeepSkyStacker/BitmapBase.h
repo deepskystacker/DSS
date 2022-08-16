@@ -5,8 +5,6 @@
 
 #include <vector>
 #include <memory>
-#include "RefCount.h"
-#include "../Tools/SmartPtr.h"
 #include "Multitask.h"
 #include "DSSCommon.h"
 #include "DSSProgress.h"
@@ -193,56 +191,23 @@ public:
 };
 
 
-class CMemoryBitmap : public CRefCount
+class CMemoryBitmap
 {
 public:
-	class CPixelIterator : public CRefCount
-	{
-	protected:
-		int m_lX, m_lY;
-	public:
-		CPixelIterator() : m_lX{ -1 }, m_lY{ -1 }
-		{}
-
-		~CPixelIterator() {};
-
-		virtual void Reset(int x, int y) = 0;
-
-		virtual void GetPixel(double& fRed, double& fGreen, double& fBlue) = 0;
-		virtual void GetPixel(double& fGray) = 0;
-		virtual void SetPixel(double fRed, double fGreen, double fBlue) = 0;
-		virtual void SetPixel(double fGray) {};
-
-		virtual void operator++(int) = 0;
-		virtual void operator+=(int lIncrement)
-		{
-			while (lIncrement > 0)
-			{
-				operator++(0);
-				lIncrement--;
-			}
-		};
-
-		bool end()
-		{
-			return (m_lX == -1) && (m_lY == -1);
-		};
-	};
-public:
-	CBitmapExtraInfo	m_ExtraInfo;
-	SYSTEMTIME			m_DateTime;
+	CBitmapExtraInfo m_ExtraInfo;
+	SYSTEMTIME m_DateTime;
 
 protected:
-	bool				m_bTopDown;
-	bool				m_bMaster;
-	bool				m_bCFA;
-	double				m_fExposure;
-	double				m_fAperture;
-	int					m_lISOSpeed;
-	int					m_lGain;
-	int					m_lNrFrames;
-	CString				m_strDescription;
-	CString				m_filterName;
+	bool m_bTopDown;
+	bool m_bMaster;
+	bool m_bCFA;
+	double m_fExposure;
+	double m_fAperture;
+	int m_lISOSpeed;
+	int m_lGain;
+	int m_lNrFrames;
+	CString m_strDescription;
+	CString m_filterName;
 
 protected:
 	void			CopyFrom(const CMemoryBitmap& mb)
@@ -259,7 +224,7 @@ protected:
 		m_strDescription = mb.m_strDescription;
 		m_DateTime = mb.m_DateTime;
 		m_filterName = mb.m_filterName;
-	};
+	}
 
 public:
 	CMemoryBitmap() :
@@ -383,7 +348,7 @@ public:
 		crResult.red = static_cast<WORD>(std::min(fRed * scalingFactor, maxValue));
 		crResult.green = static_cast<WORD>(std::min(fGreen * scalingFactor, maxValue));
 		crResult.blue = static_cast<WORD>(std::min(fBlue * scalingFactor, maxValue));
-	};
+	}
 
 	virtual int Width() = 0;
 	virtual int Height() = 0;
@@ -393,29 +358,29 @@ public:
 	virtual int RealWidth()
 	{
 		return Width();
-	};
+	}
 
 	virtual int RealHeight()
 	{
 		return Height();
-	};
+	}
 
 	void	SetOrientation(bool bTopDown)
 	{
 		m_bTopDown = bTopDown;
-	};
+	}
 
 	virtual bool	IsMonochrome() = 0;
 
 	virtual void	SetMaster(bool bMaster)
 	{
 		m_bMaster = bMaster;
-	};
+	}
 
 	virtual bool	IsMaster()
 	{
 		return m_bMaster;
-	};
+	}
 
 	virtual bool isTopDown()
 	{
@@ -425,36 +390,40 @@ public:
 	virtual void	SetCFA(bool bCFA)
 	{
 		m_bCFA = bCFA;
-	};
+	}
 
 	virtual bool	IsCFA()
 	{
 		return m_bCFA;
-	};
+	}
 
 	virtual BAYERCOLOR GetBayerColor(int x, int y)
 	{
 		return BAYER_UNKNOWN;
-	};
+	}
 
 	bool	IsOk()
 	{
 		return (Width() > 0) && (Height() > 0);
-	};
+	}
 
-	virtual CMemoryBitmap* Clone(bool bEmpty = false) = 0;
+	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const = 0;
 
-	virtual CMultiBitmap* CreateEmptyMultiBitmap() = 0;
-	virtual void	AverageBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) {};
-	virtual void	RemoveHotPixels(CDSSProgress* pProgress = nullptr) = 0;
-	virtual void	GetMedianFilterEngine(CMedianFilterEngine** pMedianFilterEngine) = 0;
+	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const = 0;
+	virtual void AverageBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) {};
+	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) = 0;
+	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const = 0;
 
-	virtual void	GetIterator(CPixelIterator** ppIterator, int x = 0, int y = 0) = 0;
-	virtual double	GetMaximumValue() = 0;
-	virtual void	GetCharacteristics(CBitmapCharacteristics& bc) = 0;
+	virtual double GetMaximumValue() const = 0;
+	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const = 0;
+
+	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) = 0;
+	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const = 0;
+	virtual std::tuple<double, double, double> ConvertValue3(const void* pRed, const void* pGreen, const void* pBlue) const = 0;
+	virtual double ConvertValue1(const void* pRed, const void* pGreen, const void* pBlue) const = 0;
+	virtual void ReceiveValue(void* pRed, void* pGreen, void* pBlue, const double gray) const = 0;
+	virtual void ReceiveValue(void* pRed, void* pGreen, void* pBlue, const double red, const double green, const double blue) const = 0;
 };
-
-typedef CSmartPtr<CMemoryBitmap::CPixelIterator> PixelIterator;
 
 
 enum CFATYPE : std::uint32_t
@@ -790,7 +759,7 @@ public:
 };
 
 
-bool CreateBitmap(const CBitmapCharacteristics& bc, CMemoryBitmap** ppOutBitmap);
+std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics& bc);
 
 
 class CCFABitmapInfo
@@ -956,11 +925,11 @@ public:
 typedef std::vector<CBitmapPartFile> BITMAPPARTFILEVECTOR;
 
 
-class CMultiBitmap : public CRefCount
+class CMultiBitmap
 {
 protected:
-	CSmartPtr<CMemoryBitmap> m_pBitmapModel;
-	CSmartPtr<CMemoryBitmap> m_pHomBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pBitmapModel;
+	mutable std::shared_ptr<CMemoryBitmap> m_pHomBitmap;
 	MULTIBITMAPPROCESSMETHOD m_Method;
 	double m_fKappa;
 	int m_lNrIterations;
@@ -977,7 +946,7 @@ protected:
 private:
 	void	DestroyTempFiles();
 	void	InitParts();
-	void	SmoothOut(CMemoryBitmap* pBitmap, CMemoryBitmap** ppOutBitmap);
+	std::shared_ptr<CMemoryBitmap> SmoothOut(const CMemoryBitmap* pBitmap) const;
 
 public:
 	CMultiBitmap() :
@@ -998,10 +967,10 @@ public:
 		DestroyTempFiles();
 	};
 
-	void			SetBitmapModel(CMemoryBitmap* pBitmap);
-	virtual bool	SetScanLines(CMemoryBitmap* pBitmap, int lLine, const std::vector<void*>& vScanLines) = 0;
-	virtual bool	CreateNewMemoryBitmap(CMemoryBitmap** ppBitmap) = 0;
-	virtual bool	CreateOutputMemoryBitmap(CMemoryBitmap** ppBitmap) = 0;
+	void SetBitmapModel(const CMemoryBitmap* pBitmap);
+	virtual bool SetScanLines(CMemoryBitmap* pBitmap, int lLine, const std::vector<void*>& vScanLines) = 0;
+	virtual std::shared_ptr<CMemoryBitmap> CreateNewMemoryBitmap() const = 0;
+	virtual std::shared_ptr<CMemoryBitmap> CreateOutputMemoryBitmap() const = 0;
 
 	virtual void	SetNrBitmaps(int lNrBitmaps)
 	{
@@ -1023,10 +992,15 @@ public:
 		m_vImageOrder = vImageOrder;
 	};
 
-	virtual bool AddBitmap(CMemoryBitmap* pMemoryBitmap, CDSSProgress* pProgress = nullptr);
-	virtual bool GetResult(CMemoryBitmap** ppBitmap, CDSSProgress* pProgress = nullptr);
-	virtual int GetNrChannels() = 0;
-	virtual int GetNrBytesPerChannel() = 0;
+	const std::vector<int>& GetImageOrder() const
+	{
+		return this->m_vImageOrder;
+	}
+
+	virtual bool AddBitmap(const CMemoryBitmap* pMemoryBitmap, CDSSProgress* pProgress = nullptr);
+	virtual std::shared_ptr<CMemoryBitmap> GetResult(CDSSProgress* pProgress = nullptr);
+	virtual int GetNrChannels() const = 0;
+	virtual int GetNrBytesPerChannel() const = 0;
 
 	void SetProcessingMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 	{
@@ -1045,6 +1019,13 @@ public:
 		return m_bHomogenization;
 	}
 
+	CMemoryBitmap* GetHomogenBitmap() const
+	{
+		if (static_cast<bool>(this->m_pHomBitmap))
+			return m_pHomBitmap.get();
+		return nullptr;
+	}
+
 	int GetProcessingMethod() const
 	{
 		return m_Method;
@@ -1061,47 +1042,44 @@ template <typename TType, typename TTypeOutput = TType>
 class CGrayMultiBitmapT : public CMultiBitmap
 {
 protected:
-	virtual bool CreateNewMemoryBitmap(CMemoryBitmap** ppBitmap) override
+	virtual std::shared_ptr<CMemoryBitmap> CreateNewMemoryBitmap() const override
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		if (m_pBitmapModel)
+		std::shared_ptr<CMemoryBitmap> pBitmap;
+		if (static_cast<bool>(m_pBitmapModel))
 		{
 			CBitmapCharacteristics bc;
 			m_pBitmapModel->GetCharacteristics(bc);
 			if (bc.m_lNrChannels == 1)
-				pBitmap.Attach(m_pBitmapModel->Clone(true));
+				return m_pBitmapModel->Clone(true);
 			else
 			{
 				bc.m_lNrChannels = 1;
-				CreateBitmap(bc, &pBitmap);
-			};
+				return CreateBitmap(bc);
+			}
 		}
 		else
-			pBitmap.Attach(new CGrayBitmapT<TType>);
+			return std::make_shared<CGrayBitmapT<TType>>();
+	}
 
-		return pBitmap.CopyTo(ppBitmap);
-	};
-
-	virtual bool CreateOutputMemoryBitmap(CMemoryBitmap** ppBitmap) override
+	virtual std::shared_ptr<CMemoryBitmap> CreateOutputMemoryBitmap() const override
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<TTypeOutput>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<TTypeOutput>>();
 
-		if (pBitmap && m_pBitmapModel)
+		if (static_cast<bool>(pBitmap) && static_cast<bool>(m_pBitmapModel))
 		{
 			CCFABitmapInfo* pSrc;
 			CCFABitmapInfo* pDst;
 
 			pBitmap->SetCFA(m_pBitmapModel->IsCFA());
-			pSrc = dynamic_cast<CCFABitmapInfo*>(m_pBitmapModel.m_p);
-			pDst = dynamic_cast<CCFABitmapInfo*>(pBitmap.m_p);
+			pSrc = dynamic_cast<const CCFABitmapInfo*>(m_pBitmapModel.get());
+			pDst = dynamic_cast<CCFABitmapInfo*>(pBitmap.get());
 
 			if (pSrc != nullptr && pDst != nullptr)
 				pDst->InitFrom(pSrc);
-		};
+		}
 
-		return pBitmap.CopyTo(ppBitmap);
-	};
+		return pBitmap;
+	}
 
 	virtual bool SetScanLines(CMemoryBitmap* pBitmap, int lLine, const std::vector<void*>& vScanLines) override
 	{
@@ -1150,14 +1128,12 @@ protected:
 			// Process the value
 			if (m_bHomogenization)
 			{
-				//	if ((i==559) && (lLine==154))
-				//		DebugBreak();
-				if (m_pHomBitmap)
+				if (static_cast<bool>(m_pHomBitmap))
 				{
 					double fAverage;
 					const double fSigma = Sigma2(vValues, fAverage);
 					m_pHomBitmap->SetPixel(i, lLine, fSigma / std::max(1.0, fAverage) * 256.0);
-				};
+				}
 
 				if (!m_vImageOrder.empty())
 				{
@@ -1221,7 +1197,7 @@ public:
 };
 
 
-class CMedianFilterEngine : public CRefCount
+class CMedianFilterEngine
 {
 protected:
 	int m_lFilterSize;
@@ -1235,7 +1211,7 @@ public:
 
 	virtual ~CMedianFilterEngine() {};
 
-	virtual bool GetFilteredImage(CMemoryBitmap** ppBitmap, int lFilterSize, CDSSProgress* pProgress) = 0;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, CDSSProgress* pProgress) const = 0;
 };
 
 
@@ -1243,116 +1219,28 @@ template <typename TType>
 class CGrayMedianFilterEngineT : public CMedianFilterEngine
 {
 private:
-	CGrayBitmapT<TType>* m_pInBitmap;
+	const CGrayBitmapT<TType>* m_pInBitmap;
 
 public:
 	CGrayMedianFilterEngineT() {};
 	virtual ~CGrayMedianFilterEngineT() {};
 
-	void SetInputBitmap(CGrayBitmapT<TType>* pInBitmap)
+	void SetInputBitmap(const CGrayBitmapT<TType>* pInBitmap)
 	{
 		m_pInBitmap = pInBitmap;
-	};
+	}
 
-	virtual bool GetFilteredImage(CMemoryBitmap** ppBitmap, int lFilterSize, CDSSProgress* pProgress) override;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(const int lFilterSize, CDSSProgress* pProgress) const override;
 };
 
 
 template <typename TType>
 class CGrayBitmapT : public CMemoryBitmap, public CCFABitmapInfo
 {
-	friend CColorBitmapT<TType>;
-
 public:
-	template <typename TType> class CGrayPixelIterator : public CPixelIterator
-	{
-	private:
-		CSmartPtr<CGrayBitmapT<TType>> m_pBitmap;
-		TType* m_pValue;
-		double m_fMultiplier;
-		int m_lWidth, m_lHeight;
-
-	public:
-		CGrayPixelIterator() :
-			CPixelIterator{},
-			m_pValue{ nullptr },
-			m_fMultiplier{ 1.0 },
-			m_lWidth{ 0 },
-			m_lHeight{ 0 }
-		{}
-
-		~CGrayPixelIterator() {};
-
-		virtual void Reset(int x, int y) override
-		{
-			m_lX = x;
-			m_lY = y;
-			const size_t lOffset = m_pBitmap->GetOffset(x, y);
-			m_pValue = &(m_pBitmap->m_vPixels[lOffset]);
-		};
-
-		void Init(int x, int y, CGrayBitmapT<TType>* pBitmap)
-		{
-			m_pBitmap = pBitmap;
-			m_fMultiplier = pBitmap->m_fMultiplier;
-			m_lWidth = pBitmap->m_lWidth;
-			m_lHeight = pBitmap->m_lHeight;
-			Reset(x, y);
-		};
-
-		virtual void GetPixel(double& fRed, double& fGreen, double& fBlue) override
-		{
-			if (m_pValue)
-				fRed = fGreen = fBlue = (double)(*m_pValue) / m_fMultiplier;
-			else
-				fRed = fGreen = fBlue = 0.0;
-		};
-
-		virtual void GetPixel(double& fGray) override
-		{
-			if (m_pValue)
-				fGray = (double)(*m_pValue) / m_fMultiplier;
-			else
-				fGray = 0.0;
-		};
-
-		virtual void SetPixel(double fRed, double fGreen, double fBlue) override
-		{}
-
-		virtual void SetPixel(double fGray) override
-		{
-			if (m_pValue != nullptr)
-				*m_pValue = fGray * m_fMultiplier;
-		};
-
-		virtual void operator++(int) override
-		{
-			if (m_pValue != nullptr)
-			{
-				if (m_lX < m_lWidth - 1)
-					m_lX++;
-				else if (m_lY < m_lHeight - 1)
-				{
-					m_lY++;
-					m_lX = 0;
-				}
-				else
-				{
-					// End of iteration
-					m_lX = -1;
-					m_lY = -1;
-					m_pValue = nullptr;
-				};
-				if (m_pValue != nullptr)
-					m_pValue++;
-			};
-		};
-	};
-
-	friend CGrayPixelIterator<TType>;
+	friend CColorBitmapT<TType>;
 	friend CGrayMedianFilterEngineT<TType>;
 
-public:
 	std::vector<TType>	m_vPixels;
 
 private:
@@ -1372,28 +1260,32 @@ private:
 		m_vPixels.resize(nrPixels);
 
 		return true; // Otherwise m_vPixels.resize() would have thrown bad_alloc.
-	};
+	}
 
 	inline void	CheckXY(size_t x, size_t y)
 	{
 		ZASSERTSTATE(IsXYOk(x, y));
-	};
+	}
 
 	inline bool	IsXYOk(size_t x, size_t y)
 	{
 		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
-	};
+	}
 
-	size_t GetOffset(size_t x, size_t y)
+	size_t GetOffset(const size_t x, const size_t y) const
+	{
+		return static_cast<size_t>(m_lWidth) * y + x;
+	}
+	size_t GetOffset(int x, int y) const
 	{
 		CheckXY(x, y);
-		return static_cast<size_t>(m_lWidth) * static_cast<size_t>(y) + static_cast<size_t>(x);
-	};
+		return GetOffset(static_cast<size_t>(x), static_cast<size_t>(y));
+	}
 
 	virtual bool IsMonochrome() override
 	{
 		return true;
-	};
+	}
 
 	TType GetPrimary(int x, int y, const COLORREF16& crColor)
 	{
@@ -1663,9 +1555,9 @@ public:
 		return InitInternals();
 	};
 
-	virtual CMemoryBitmap* Clone(bool bEmpty = false) override
+	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const override
 	{
-		CGrayBitmapT<TType>* const pResult = new CGrayBitmapT<TType>;
+		auto pResult = std::make_unique<CGrayBitmapT<TType>>();
 		if (!bEmpty)
 		{
 			pResult->m_vPixels = m_vPixels;
@@ -1682,22 +1574,22 @@ public:
 		pResult->CopyFrom(*this);
 
 		return pResult;
-	};
+	}
 
 	virtual BAYERCOLOR GetBayerColor(int x, int y) override
 	{
 		return ::GetBayerColor(x, y, m_CFAType, m_xBayerOffset, m_yBayerOffset);
-	};
+	}
 
 	virtual int BitPerSample() override
 	{
 		return sizeof(TType) * 8;
-	};
+	}
 
 	virtual int IsFloat() override
 	{
 		return m_bFloat;
-	};
+	}
 
 	virtual int Width() override
 	{
@@ -1705,7 +1597,7 @@ public:
 			return m_lWidth / 2;
 		else
 			return m_lWidth;
-	};
+	}
 
 	virtual int Height() override
 	{
@@ -1713,23 +1605,23 @@ public:
 			return m_lHeight / 2;
 		else
 			return m_lHeight;
-	};
+	}
 
 	virtual int RealHeight() override
 	{
 		return m_lHeight;
-	};
+	}
 
 	virtual int RealWidth() override
 	{
 		return m_lWidth;
-	};
+	}
 
 	virtual void SetValue(size_t i, size_t j, double fGray) override
 	{
 		CheckXY(i, j);
 		m_vPixels[GetOffset(i, j)] = fGray;
-	};
+	}
 
 	virtual void GetValue(size_t i, size_t j, double& fGray) override
 	{
@@ -1739,7 +1631,7 @@ public:
 		//}
 		CheckXY(i, j);
 		fGray = m_vPixels[GetOffset(i, j)];
-	};
+	}
 
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override
 	{
@@ -1754,12 +1646,12 @@ public:
 			SetPixel(i, j, fRed);
 		else
 			SetPixel(i, j, GetPrimary(i, j, fRed, fGreen, fBlue));
-	};
+	}
 
 	inline virtual void SetPixel(size_t i, size_t j, double fGray) override
 	{
 		SetValue(i, j, fGray * m_fMultiplier);
-	};
+	}
 
 	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override
 	{
@@ -1861,14 +1753,14 @@ public:
 		else
 		{
 			fRed = fBlue = fGreen = m_vPixels[GetOffset(i, j)] / m_fMultiplier;
-		};
-	};
+		}
+	}
 
 	virtual void inline GetPixel(size_t i, size_t j, double& fGray) override
 	{
 		GetValue(i, j, fGray);
 		fGray /= m_fMultiplier;
-	};
+	}
 
 	virtual bool GetScanLine(size_t j, void* pScanLine) override
 	{
@@ -1881,7 +1773,7 @@ public:
 		};
 
 		return bResult;
-	};
+	}
 
 	virtual bool SetScanLine(size_t j, void* pScanLine) override
 	{
@@ -1894,54 +1786,42 @@ public:
 		};
 
 		return bResult;
-	};
+	}
 
-	virtual CMultiBitmap* CreateEmptyMultiBitmap() override
+	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override
 	{
-		CMultiBitmap* const pResult = new CGrayMultiBitmapT<TType>();
+		std::shared_ptr<CGrayMultiBitmapT<TType>> pResult = std::make_shared<CGrayMultiBitmapT<TType>>();
 		pResult->SetBitmapModel(this);
 		return pResult;
-	};
+	}
 
 	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) override;
 
-	virtual void GetIterator(CPixelIterator** ppIterator, int x = 0, int y = 0) override
-	{
-		CSmartPtr<CPixelIterator> pResult;
-		CGrayPixelIterator<TType>* pIterator = new CGrayPixelIterator<TType>;
-
-		pResult.Attach(pIterator);
-		pIterator->Init(x, y, this);
-
-		pResult.CopyTo(ppIterator);
-	};
-
 	TType* GetGrayPixel(int i, int j)
 	{
-		return &(m_vPixels[GetOffset(i, j)]);
-	};
+		return m_vPixels.data() + GetOffset(i, j);
+	}
+	const TType* GetGrayPixel(const int i, const int j) const
+	{
+		return m_vPixels.data() + GetOffset(i, j);
+	}
 
 	double GetMultiplier() const
 	{
 		return m_fMultiplier;
-	};
+	}
 
-	virtual void GetMedianFilterEngine(CMedianFilterEngine** ppMedianFilterEngine) override
+	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const override
 	{
-		CSmartPtr<CGrayMedianFilterEngineT<TType>> pMedianFilterEngine;
-		CSmartPtr<CMedianFilterEngine> pMedianFilterEngine2;
+		std::shared_ptr<CGrayMedianFilterEngineT<TType>> pFilter = std::make_shared<CGrayMedianFilterEngineT<TType>>();
+		pFilter->SetInputBitmap(this);
+		return pFilter;
+	}
 
-		pMedianFilterEngine.Attach(new CGrayMedianFilterEngineT<TType>);
-		pMedianFilterEngine->SetInputBitmap(this);
-
-		pMedianFilterEngine2 = pMedianFilterEngine;
-		pMedianFilterEngine2.CopyTo(ppMedianFilterEngine);
-	};
-
-	virtual double GetMaximumValue() override
+	virtual double GetMaximumValue() const override
 	{
 		return m_fMultiplier * 256.0;
-	};
+	}
 
 	virtual void GetCharacteristics(CBitmapCharacteristics& bc) override
 	{
@@ -1950,10 +1830,41 @@ public:
 		bc.m_dwWidth = m_lWidth;
 		bc.m_lNrChannels = 1;
 		bc.m_lBitsPerPixel = BitPerSample();
-	};
+	}
+
+	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) override
+	{
+		pRed = static_cast<void*>(this->m_vPixels.data() + GetOffset(x, y));
+		pGreen = pRed;
+		pBlue = pRed;
+		elementSize = sizeof(TType);
+	}
+	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const override
+	{
+		pRed = static_cast<const void*>(this->m_vPixels.data() + GetOffset(x, y));
+		pGreen = pRed;
+		pBlue = pRed;
+		elementSize = sizeof(TType);
+	}
+
+	virtual std::tuple<double, double, double> ConvertValue3(const void* pRed, const void*, const void*) const override
+	{
+		const double value = static_cast<double>(*static_cast<const TType*>(pRed)) / this->m_fMultiplier;
+		return { value, value, value };
+	}
+	virtual double ConvertValue1(const void* pRed, const void*, const void*) const override
+	{
+		return static_cast<double>(*static_cast<const TType*>(pRed)) / this->m_fMultiplier;
+	}
+
+	virtual void ReceiveValue(void*, void*, void*, const double, const double, const double) const override
+	{}
+	virtual void ReceiveValue(void* pRed, void*, void*, const double gray) const override
+	{
+		*static_cast<TType*>(pRed) = static_cast<TType>(gray * this->m_fMultiplier);
+	}
 };
 
-/* ------------------------------------------------------------------- */
 
 typedef CGrayBitmapT<double> CGrayBitmap;
 typedef CGrayBitmapT<std::uint8_t> C8BitGrayBitmap;
@@ -1966,35 +1877,28 @@ template <typename TType, typename TTypeOutput = TType>
 class CColorMultiBitmapT : public CMultiBitmap
 {
 protected:
-	virtual bool CreateNewMemoryBitmap(CMemoryBitmap** ppBitmap) override
+	virtual std::shared_ptr<CMemoryBitmap> CreateNewMemoryBitmap() const override
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-
-		if (m_pBitmapModel)
+		if (static_cast<bool>(m_pBitmapModel))
 		{
 			CBitmapCharacteristics bc;
 			m_pBitmapModel->GetCharacteristics(bc);
 			if (bc.m_lNrChannels == 3)
-				pBitmap.Attach(m_pBitmapModel->Clone(true));
+				return m_pBitmapModel->Clone(true);
 			else
 			{
 				bc.m_lNrChannels = 3;
-				CreateBitmap(bc, &pBitmap);
-			};
+				return CreateBitmap(bc);
+			}
 		}
 		else
-			pBitmap.Attach(new CColorBitmapT<TType>);
+			return std::make_shared<CColorBitmapT<TType>>();
+	}
 
-		return pBitmap.CopyTo(ppBitmap);
-	};
-
-	virtual bool CreateOutputMemoryBitmap(CMemoryBitmap** ppBitmap) override
+	virtual std::shared_ptr<CMemoryBitmap> CreateOutputMemoryBitmap() const override
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CColorBitmapT<TTypeOutput>);
-
-		return pBitmap.CopyTo(ppBitmap);
-	};
+		return std::make_shared<CColorBitmapT<TTypeOutput>>();
+	}
 
 	virtual bool SetScanLines(CMemoryBitmap* pBitmap, int lLine, const std::vector<void*>& vScanLines) override
 	{
@@ -2062,7 +1966,7 @@ protected:
 				//	if ((i==843) && (lLine==934))
 				//		DebugBreak();
 
-				if (m_pHomBitmap)
+				if (static_cast<bool>(m_pHomBitmap))
 				{
 					double fAverage, fSigma;
 					double fRed, fGreen, fBlue;
@@ -2075,7 +1979,7 @@ protected:
 					fBlue = fSigma / std::max(1.0, fAverage) * 256.0;
 
 					m_pHomBitmap->SetPixel(i, lLine, fRed, fGreen, fBlue);
-				};
+				}
 
 				if (!m_vImageOrder.empty())
 				{
@@ -2105,14 +2009,14 @@ protected:
 					Homogenize(vRedValues, fMaximum);
 					Homogenize(vGreenValues, fMaximum);
 					Homogenize(vBlueValues, fMaximum);
-				};
+				}
 
 				if (vRedValues.empty() || vGreenValues.empty() || vBlueValues.empty())
 				{
 					vRedValues.resize(0);
 					vGreenValues.resize(0);
 					vBlueValues.resize(0);
-				};
+				}
 			}
 			else
 			{
@@ -2199,18 +2103,18 @@ template <typename TType>
 class CColorMedianFilterEngineT : public CMedianFilterEngine
 {
 private:
-	CColorBitmapT<TType>* m_pInBitmap;
+	const CColorBitmapT<TType>* m_pInBitmap;
 
 public:
 	CColorMedianFilterEngineT() {};
 	virtual ~CColorMedianFilterEngineT() {};
 
-	void SetInputBitmap(CColorBitmapT<TType>* pInBitmap)
+	void SetInputBitmap(const CColorBitmapT<TType>* pInBitmap)
 	{
 		m_pInBitmap = pInBitmap;
-	};
+	}
 
-	virtual bool GetFilteredImage(CMemoryBitmap** ppBitmap, int lFilterSize, CDSSProgress* pProgress) override;
+	virtual std::shared_ptr<CMemoryBitmap> GetFilteredImage(int lFilterSize, CDSSProgress* pProgress) const override;
 };
 
 
@@ -2227,135 +2131,12 @@ public:
 	virtual CMemoryBitmap* GetGreen() = 0;
 	virtual CMemoryBitmap* GetBlue() = 0;
 };
-/* ------------------------------------------------------------------- */
+
 
 template <typename TType>
 class CColorBitmapT : public CMemoryBitmap, public CColorBitmap
 {
-	template <typename TType> class CColorPixelIterator;
-	friend CColorPixelIterator<TType>;
-
 public:
-	template <typename TType>
-	class CColorPixelIterator : public CPixelIterator
-	{
-	private:
-		CSmartPtr<CColorBitmapT<TType>> m_pBitmap;
-		TType* m_pRedValue;
-		TType* m_pGreenValue;
-		TType* m_pBlueValue;
-		double m_fMultiplier;
-		int m_lWidth, m_lHeight;
-
-	public:
-		CColorPixelIterator() :
-			m_pRedValue{ nullptr },
-			m_pGreenValue{ nullptr },
-			m_pBlueValue{ nullptr },
-			m_fMultiplier{ 1.0 },
-			m_lWidth{ 0 },
-			m_lHeight{ 0 }
-		{}
-
-		~CColorPixelIterator() {};
-
-		virtual void Reset(int x, int y) override
-		{
-			m_lX = x;
-			m_lY = y;
-
-			const size_t lOffset = m_pBitmap->GetOffset(x, y);
-			m_pRedValue = &(m_pBitmap->m_Red.m_vPixels[lOffset]);
-			m_pGreenValue = &(m_pBitmap->m_Green.m_vPixels[lOffset]);
-			m_pBlueValue = &(m_pBitmap->m_Blue.m_vPixels[lOffset]);
-		};
-
-		void Init(int x, int y, CColorBitmapT<TType>* pBitmap)
-		{
-			m_pBitmap = pBitmap;
-			m_fMultiplier = pBitmap->m_fMultiplier;
-			m_lWidth = pBitmap->m_lWidth;
-			m_lHeight = pBitmap->m_lHeight;
-			Reset(x, y);
-		};
-
-		virtual void GetPixel(double& fRed, double& fGreen, double& fBlue) override
-		{
-			if (m_pRedValue != nullptr)
-			{
-				fRed = static_cast<double>(*m_pRedValue) / m_fMultiplier;
-				fGreen = static_cast<double>(*m_pGreenValue) / m_fMultiplier;
-				fBlue = static_cast<double>(*m_pBlueValue) / m_fMultiplier;
-			}
-			else
-				fRed = fGreen = fBlue = 0.0;
-		};
-
-		virtual void GetPixel(double& fGray) override
-		{
-			if (m_pRedValue != nullptr)
-			{
-				double H, S, L;
-
-				ToHSL(static_cast<double>(*m_pRedValue) / m_fMultiplier,
-					static_cast<double>(*m_pGreenValue) / m_fMultiplier,
-					static_cast<double>(*m_pBlueValue) / m_fMultiplier,
-					H, S, L);
-				fGray = L * 255.0;
-			}
-			else
-				fGray = 0.0;
-		};
-
-		virtual void SetPixel(double fRed, double fGreen, double fBlue) override
-		{
-			if (m_pRedValue != nullptr)
-			{
-				*m_pRedValue = fRed * m_fMultiplier;
-				*m_pGreenValue = fGreen * m_fMultiplier;
-				*m_pBlueValue = fBlue * m_fMultiplier;
-			};
-		};
-
-		virtual void SetPixel(double fGray) override
-		{
-			if (m_pRedValue != nullptr)
-			{
-				const double value = fGray * m_fMultiplier;
-				*m_pRedValue = value;
-				*m_pGreenValue = value;
-				*m_pBlueValue = value;
-			};
-		};
-
-		virtual void operator++(int) override
-		{
-			if (m_pRedValue != nullptr && m_pGreenValue != nullptr && m_pBlueValue != nullptr)
-			{
-				if (m_lX < m_lWidth - 1)
-					m_lX++;
-				else if (m_lY < m_lHeight - 1)
-				{
-					m_lY++;
-					m_lX = 0;
-				}
-				else
-				{
-					// End of iteration
-					m_lX = -1;
-					m_lY = -1;
-					m_pRedValue = m_pGreenValue = m_pBlueValue = nullptr;
-				};
-				if (m_pRedValue != nullptr)
-					m_pRedValue++;
-				if (m_pGreenValue != nullptr)
-					m_pGreenValue++;
-				if (m_pBlueValue != nullptr)
-					m_pBlueValue++;
-			};
-		};
-	};
-	friend CColorPixelIterator<TType>;
 	friend CColorMedianFilterEngineT<TType>;
 
 private:
@@ -2376,16 +2157,17 @@ private:
 	inline void CheckXY(size_t x, size_t y)
 	{
 		ZASSERTSTATE(x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
-	};
+	}
 
-	size_t GetOffset(size_t x, size_t y)
+	size_t GetOffset(const size_t x, const size_t y) const
+	{
+		return m_bTopDown ? static_cast<size_t>(m_lWidth) * y + x : static_cast<size_t>(m_lWidth) * (static_cast<size_t>(m_lHeight) - 1 - y) + x;
+	}
+	size_t GetOffset(int x, int y) const
 	{
 		CheckXY(x, y);
-		if (m_bTopDown)
-			return static_cast<size_t>(m_lWidth) * y + x;
-		else
-			return static_cast<size_t>(m_lWidth) * (static_cast<size_t>(m_lHeight) - 1 - y) + x;
-	};
+		return GetOffset(static_cast<size_t>(x), static_cast<size_t>(y));
+	}
 
 public:
 	CColorBitmapT() :
@@ -2395,27 +2177,24 @@ public:
 		m_bDouble{ std::is_same_v<TType, double> },
 		m_bDWord{ std::is_same_v<TType, std::uint32_t> },
 		m_bFloat{ std::is_same_v<TType, float> },
-		m_fMultiplier{ (std::is_same_v<TType, WORD> || std::is_same_v<TType, double> || std::is_same_v<TType, float>) ? 256.0 : (std::is_same_v<TType, std::uint32_t> ? 256.0 * 65536.0 : 1.0) }
+		m_fMultiplier{ (std::is_same_v<TType, std::uint16_t> || std::is_same_v<TType, double> || std::is_same_v<TType, float>) ? 256.0 : (std::is_same_v<TType, std::uint32_t> ? 256.0 * 65536.0 : 1.0) }
 	{
 		m_bTopDown = true;
-		m_Red.AddRef();
-		m_Green.AddRef();
-		m_Blue.AddRef();
-	};
+	}
 
-	virtual ~CColorBitmapT() {};
+	virtual ~CColorBitmapT() = default;
 
-	virtual CMemoryBitmap* Clone(bool bEmpty = false) override
+	virtual std::unique_ptr<CMemoryBitmap> Clone(bool bEmpty = false) const override
 	{
-		CColorBitmapT<TType>* const pResult = new CColorBitmapT<TType>();
+		auto pResult = std::make_unique<CColorBitmapT<TType>>();
 		if (!bEmpty)
 		{
 			pResult->m_lHeight = m_lHeight;
 			pResult->m_lWidth = m_lWidth;
-			pResult->m_Red.m_vPixels = m_Red.m_vPixels; //vRedPixel	= m_Red.m_vPixels;
-			pResult->m_Green.m_vPixels = m_Green.m_vPixels; //vRedPixel	= m_Red.m_vPixels;
-			pResult->m_Blue.m_vPixels = m_Blue.m_vPixels; //vRedPixel	= m_Red.m_vPixels;
-		};
+			pResult->m_Red.m_vPixels = m_Red.m_vPixels;
+			pResult->m_Green.m_vPixels = m_Green.m_vPixels;
+			pResult->m_Blue.m_vPixels = m_Blue.m_vPixels;
+		}
 		pResult->m_bWord = m_bWord;
 		pResult->m_bDouble = m_bDouble;
 		pResult->m_bDWord = m_bDWord;
@@ -2424,27 +2203,27 @@ public:
 		pResult->CopyFrom(*this);
 
 		return pResult;
-	};
+	}
 
 	virtual int BitPerSample() override
 	{
 		return sizeof(TType) * 8;
-	};
+	}
 
 	virtual int IsFloat() override
 	{
 		return m_bFloat;
-	};
+	}
 
 	virtual int Width() override
 	{
 		return m_lWidth;
-	};
+	}
 
 	virtual int Height() override
 	{
 		return m_lHeight;
-	};
+	}
 
 	virtual bool Init(int lWidth, int lHeight) override
 	{
@@ -2453,12 +2232,12 @@ public:
 
 		const bool bResult = m_Red.Init(lWidth, lHeight) && m_Green.Init(lWidth, lHeight) && m_Blue.Init(lWidth, lHeight);
 		return bResult;
-	};
+	}
 
 	virtual bool IsMonochrome() override
 	{
 		return false;
-	};
+	}
 
 	virtual void SetValue(size_t i, size_t j, double fRed, double fGreen, double fBlue) override
 	{
@@ -2469,7 +2248,7 @@ public:
 		m_Red.m_vPixels[lOffset] = fRed;
 		m_Green.m_vPixels[lOffset] = fGreen;
 		m_Blue.m_vPixels[lOffset] = fBlue;
-	};
+	}
 
 	virtual void GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override
 	{
@@ -2480,7 +2259,7 @@ public:
 		fRed = m_Red.m_vPixels[lOffset];
 		fGreen = m_Green.m_vPixels[lOffset];
 		fBlue = m_Blue.m_vPixels[lOffset];
-	};
+	}
 
 	virtual void SetPixel(size_t i, size_t j, double fRed, double fGreen, double fBlue) override
 	{
@@ -2490,7 +2269,7 @@ public:
 		m_Red.m_vPixels[lOffset] = fRed * m_fMultiplier;
 		m_Green.m_vPixels[lOffset] = fGreen * m_fMultiplier;
 		m_Blue.m_vPixels[lOffset] = fBlue * m_fMultiplier;
-	};
+	}
 
 	virtual void SetPixel(size_t i, size_t j, double fGray) override
 	{
@@ -2502,7 +2281,7 @@ public:
 		m_Red.m_vPixels[lOffset] = value;
 		m_Green.m_vPixels[lOffset] = value;
 		m_Blue.m_vPixels[lOffset] = value;
-	};
+	}
 
 	virtual void GetPixel(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override
 	{
@@ -2515,7 +2294,7 @@ public:
 		fRed = m_Red.m_vPixels[lOffset] / m_fMultiplier;
 		fGreen = m_Green.m_vPixels[lOffset] / m_fMultiplier;
 		fBlue = m_Blue.m_vPixels[lOffset] / m_fMultiplier;
-	};
+	}
 
 	virtual void GetPixel(size_t i, size_t j, double& fGray) override
 	{
@@ -2527,7 +2306,7 @@ public:
 
 		ToHSL(fRed, fGreen, fBlue, H, S, L);
 		fGray = L * 255.0;
-	};
+	}
 
 	virtual bool GetScanLine(size_t j, void* pScanLine) override
 	{
@@ -2543,10 +2322,10 @@ public:
 			memcpy(pTempScan + sizeof(TType) * w, &(m_Green.m_vPixels[index]), sizeof(TType) * w);
 			memcpy(pTempScan + sizeof(TType) * 2 * w, &(m_Blue.m_vPixels[index]), sizeof(TType) * w);
 			bResult = true;
-		};
+		}
 
 		return bResult;
-	};
+	}
 
 	virtual bool SetScanLine(size_t j, void* pScanLine) override
 	{
@@ -2562,10 +2341,10 @@ public:
 			memcpy(&(m_Green.m_vPixels[index]), pTempScan + sizeof(TType) * w, sizeof(TType) * w);
 			memcpy(&(m_Blue.m_vPixels[index]), pTempScan + sizeof(TType) * 2 * w, sizeof(TType) * w);
 			bResult = true;
-		};
+		}
 
 		return bResult;
-	};
+	}
 
 	void Clear()
 	{
@@ -2574,82 +2353,66 @@ public:
 		m_Red.m_vPixels.clear();
 		m_Green.m_vPixels.clear();
 		m_Blue.m_vPixels.clear();
-	};
+	}
 
-	virtual CMultiBitmap* CreateEmptyMultiBitmap() override
+	virtual std::shared_ptr<CMultiBitmap> CreateEmptyMultiBitmap() const override
 	{
-		CMultiBitmap* const pResult = new CColorMultiBitmapT<TType>();
+		std::shared_ptr<CColorMultiBitmapT<TType>> pResult = std::make_shared<CColorMultiBitmapT<TType>>();
 		pResult->SetBitmapModel(this);
 		return pResult;
-	};
+	}
 
-	virtual void GetIterator(CPixelIterator** ppIterator, int x = 0, int y = 0) override
+	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const override
 	{
-		CSmartPtr<CPixelIterator> pResult;
-		CColorPixelIterator<TType>* pIterator = new CColorPixelIterator<TType>;
-
-		pResult.Attach(pIterator);
-		pIterator->Init(x, y, this);
-
-		pResult.CopyTo(ppIterator);
-	};
-
-	virtual void GetMedianFilterEngine(CMedianFilterEngine** ppMedianFilterEngine) override
-	{
-		CSmartPtr<CColorMedianFilterEngineT<TType>> pMedianFilterEngine;
-		CSmartPtr<CMedianFilterEngine> pMedianFilterEngine2;
-
-		pMedianFilterEngine.Attach(new CColorMedianFilterEngineT<TType>);
-		pMedianFilterEngine->SetInputBitmap(this);
-
-		pMedianFilterEngine2 = pMedianFilterEngine;
-		pMedianFilterEngine2.CopyTo(ppMedianFilterEngine);
-	};
+		std::shared_ptr<CColorMedianFilterEngineT<TType>> pFilter = std::make_shared<CColorMedianFilterEngineT<TType>>();
+		pFilter->SetInputBitmap(this);
+		return pFilter;
+	}
 
 	TType* GetRedPixel(int i, int j)
 	{
-		return &(m_Red.m_vPixels[GetOffset(i, j)]);
-	};
+		return m_Red.m_vPixels.data() + GetOffset(i, j);
+	}
 	TType* GetGreenPixel(int i, int j)
 	{
-		return &(m_Green.m_vPixels[GetOffset(i, j)]);
-	};
+		return m_Green.m_vPixels.data() + GetOffset(i, j);
+	}
 	TType* GetBluePixel(int i, int j)
 	{
-		return &(m_Blue.m_vPixels[GetOffset(i, j)]);
-	};
+		return m_Blue.m_vPixels.data() + GetOffset(i, j);
+	}
 
 	virtual CMemoryBitmap* GetRed() override
 	{
 		return &m_Red;
-	};
+	}
 
 	virtual CMemoryBitmap* GetGreen() override
 	{
 		return &m_Green;
-	};
+	}
 
 	virtual CMemoryBitmap* GetBlue() override
 	{
 		return &m_Blue;
-	};
+	}
 
 	double GetMultiplier()
 	{
 		return m_fMultiplier;
-	};
+	}
 
 	virtual double GetMaximumValue() override
 	{
 		return m_fMultiplier * 256.0;
-	};
+	}
 
 	virtual void RemoveHotPixels(CDSSProgress* pProgress = nullptr) override
 	{
 		m_Red.RemoveHotPixels(pProgress);
 		m_Green.RemoveHotPixels(pProgress);
 		m_Blue.RemoveHotPixels(pProgress);
-	};
+	}
 
 	virtual void GetCharacteristics(CBitmapCharacteristics& bc) override
 	{
@@ -2658,10 +2421,57 @@ public:
 		bc.m_dwWidth = m_lWidth;
 		bc.m_lNrChannels = 3;
 		bc.m_lBitsPerPixel = BitPerSample();
-	};
+	}
+
+	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) override
+	{
+		const size_t index = GetOffset(x, y);
+		pRed = static_cast<void*>(this->m_Red.m_vPixels.data() + index);
+		pGreen = static_cast<void*>(this->m_Green.m_vPixels.data() + index);
+		pBlue = static_cast<void*>(this->m_Blue.m_vPixels.data() + index);
+		elementSize = sizeof(TType);
+	}
+	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const override
+	{
+		const size_t index = GetOffset(x, y);
+		pRed = static_cast<const void*>(this->m_Red.m_vPixels.data() + index);
+		pGreen = static_cast<const void*>(this->m_Green.m_vPixels.data() + index);
+		pBlue = static_cast<const void*>(this->m_Blue.m_vPixels.data() + index);
+		elementSize = sizeof(TType);
+	}
+
+	virtual std::tuple<double, double, double> ConvertValue3(const void* pRed, const void* pGreen, const void* pBlue) const override
+	{
+		const double r = static_cast<double>(*static_cast<const TType*>(pRed)) / this->m_fMultiplier;
+		const double g = static_cast<double>(*static_cast<const TType*>(pGreen)) / this->m_fMultiplier;
+		const double b = static_cast<double>(*static_cast<const TType*>(pBlue)) / this->m_fMultiplier;
+		return { r, g, b };
+	}
+	virtual double ConvertValue1(const void* pRed, const void* pGreen, const void* pBlue) const override
+	{
+		const double r = static_cast<double>(*static_cast<const TType*>(pRed)) / this->m_fMultiplier;
+		const double g = static_cast<double>(*static_cast<const TType*>(pGreen)) / this->m_fMultiplier;
+		const double b = static_cast<double>(*static_cast<const TType*>(pBlue)) / this->m_fMultiplier;
+		double H, S, L;
+		ToHSL(r, g, b, H, S, L);
+		return L * 255.0;
+	}
+
+	virtual void ReceiveValue(void* pRed, void* pGreen, void* pBlue, const double red, const double green, const double blue) const override
+	{
+		*static_cast<TType*>(pRed) = static_cast<TType>(red * this->m_fMultiplier);
+		*static_cast<TType*>(pGreen) = static_cast<TType>(green * this->m_fMultiplier);
+		*static_cast<TType*>(pBlue) = static_cast<TType>(blue * this->m_fMultiplier);
+	}
+	virtual void ReceiveValue(void* pRed, void* pGreen, void* pBlue, const double gray) const override
+	{
+		const TType value = static_cast<TType>(gray * this->m_fMultiplier);
+		*static_cast<TType*>(pRed) = value;
+		*static_cast<TType*>(pGreen) = value;
+		*static_cast<TType*>(pBlue) = value;
+	}
 };
 
-/* ------------------------------------------------------------------- */
 
 typedef CColorBitmapT<std::uint8_t> C24BitColorBitmap;
 typedef CColorBitmapT<std::uint16_t> C48BitColorBitmap;

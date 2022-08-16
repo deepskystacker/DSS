@@ -1624,12 +1624,12 @@ void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 
 		if (m_LoadedImage.m_hBitmap)
 		{
-			ApplyGammaTransformation(m_LoadedImage.m_hBitmap, m_LoadedImage.m_pBitmap, m_GammaTransformation);
+			ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
 			// Refresh
 			m_Picture.Invalidate(TRUE);
-		};
-	};
-};
+		}
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -2061,6 +2061,64 @@ BOOL CStackingDlg::CheckWorkspaceChanges()
 
 /* ------------------------------------------------------------------- */
 
+LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
+{
+	std::shared_ptr<CMemoryBitmap> pBitmap;
+	std::shared_ptr<C32BitsBitmap> phBitmap;
+
+	if (m_strShowFile.GetLength() && m_BackgroundLoading.LoadImage(m_strShowFile, pBitmap, phBitmap))
+	{
+		m_LoadedImage.m_hBitmap = phBitmap;
+		m_LoadedImage.m_pBitmap = pBitmap;
+		if (m_GammaTransformation.IsInitialized())
+			ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
+		m_Picture.SetImg(phBitmap->GetHBITMAP(), true);
+
+		if (m_Pictures.IsLightFrame(m_strShowFile))
+		{
+			m_Picture.SetButtonToolbar(&m_ButtonToolbar);
+			m_EditStarSink.SetLightFrame(m_strShowFile);
+			m_EditStarSink.SetBitmap(pBitmap);
+			m_Picture.SetImageSink(GetCurrentSink());
+		}
+		else
+		{
+			m_Picture.SetImageSink(nullptr);
+			m_Picture.SetButtonToolbar(nullptr);
+			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+		};
+		m_Picture.SetBltMode(CWndImage::bltFitXY);
+		m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
+
+		CBilinearParameters		Transformation;
+		VOTINGPAIRVECTOR		vVotedPairs;
+
+		if (m_Pictures.GetTransformation(m_strShowFile, Transformation, vVotedPairs))
+			m_EditStarSink.SetTransformation(Transformation, vVotedPairs);
+		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+		m_Infos.SetText(m_strShowFile);
+	}
+	else if (m_strShowFile.GetLength())
+	{
+		CString				strText;
+
+		strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strShowFile);
+		m_Infos.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
+		m_Infos.SetText(strText);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+	}
+	else
+	{
+		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+		m_Infos.SetText("");
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+	}
+	return 1;
+};
 
 /* ------------------------------------------------------------------- */
 
@@ -2206,48 +2264,51 @@ void CStackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
 
 /* ------------------------------------------------------------------- */
 
-void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
+void CStackingDlg::DoStacking(CAllStackingTasks& tasks, const double fPercent)
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL				bContinue = TRUE;
-	CDSSProgressDlg		dlg;
-	const auto			dwStartTime = GetTickCount64();
 
-	if (!tasks.m_vStacks.size())
+	bool bContinue = true;
+	CDSSProgressDlg dlg;
+	const auto dwStartTime = GetTickCount64();
+
+	if (tasks.m_vStacks.empty())
 	{
-		fillTasks(tasks);
-	};
-	if (tasks.m_vStacks.size() &&
-		tasks.m_vStacks[0].m_pLightTask &&
-		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps.size() &&
-		tasks.m_vStacks[0].m_pLightTask->m_vBitmaps[0].m_strFileName.GetLength())
+		m_Pictures.FillTasks(tasks);
+		tasks.ResolveTasks();
+	}
+
+	if (!tasks.m_vStacks.empty() && tasks.m_vStacks.cbegin()->m_pLightTask != nullptr && !tasks.m_vStacks.cbegin()->m_pLightTask->m_vBitmaps.empty()
+		&& tasks.m_vStacks.cbegin()->m_pLightTask->m_vBitmaps.cbegin()->m_strFileName.GetLength() != 0)
 	{
 		ZTRACE_RUNTIME("Start stacking process");
-	};
+	}
 
 	{
 		// Stack registered light frames
-		CStackingEngine				StackingEngine;
-		CSmartPtr<CMemoryBitmap>	pBitmap;
-		CString						strReferenceFrame;
+		CStackingEngine StackingEngine;
 
+		CString strReferenceFrame;
 		if (m_Pictures.GetReferenceFrame(strReferenceFrame))
 			StackingEngine.SetReferenceFrame(strReferenceFrame);
 
 		StackingEngine.SetKeptPercentage(fPercent);
-		bContinue = StackingEngine.StackLightFrames(tasks, &dlg, &pBitmap);
+
+		std::shared_ptr<CMemoryBitmap> pBitmap;
+		bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
 		const auto dwElapsedTime = GetTickCount64() - dwStartTime;
+
 		UpdateCheckedAndOffsets(StackingEngine);
+
 		if (bContinue)
 		{
-			CString					strFileName;
-			CString					strText;
-			DWORD					iff;
-			CWorkspace				workspace;
+			CString strFileName;
+			CString strText;
 
+			CWorkspace workspace;
 			const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
 
-			if (StackingEngine.GetDefaultOutputFileName(strFileName, m_strCurrentFileList, (iff == IFF_TIFF)))
+			if (StackingEngine.GetDefaultOutputFileName(strFileName, m_strCurrentFileList, iff == IFF_TIFF))
 			{
 				StackingEngine.WriteDescription(tasks, strFileName);
 
@@ -2257,17 +2318,17 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 				if (iff == IFF_TIFF)
 				{
 					if (pBitmap->IsMonochrome())
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+						WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
 					else
-						WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+						WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
 				}
 				else
 				{
 					if (pBitmap->IsMonochrome())
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, nullptr);
+						WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
 					else
-						WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, nullptr);
-				};
+						WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
+				}
 
 				dlg.End2();
                 dlg.Close();
@@ -2275,30 +2336,15 @@ void CStackingDlg::DoStacking(CAllStackingTasks & tasks, double fPercent)
 				GetProcessingDlg(this).LoadFile(strFileName);
 
 				// Change tab to processing
-				CDeepStackerDlg *	pDlg = GetDeepStackerDlg(this);
-
-				if (pDlg)
+				if (CDeepStackerDlg* pDlg = GetDeepStackerDlg(this))
 					pDlg->ChangeTab(IDD_PROCESSING);
-			};
-
-			// Total elapsed time
-			/*#ifdef DSSBETA
-			{
-				CString			strElapsed;
-				CString			strText;
-
-				ExposureToString((double)dwElapsedTime/1000.0, strElapsed);
-				strText.Format(_T("Total process time: %s"), (LPCTSTR)strElapsed);
-				AfxMessageBox(strText, MB_OK | MB_ICONINFORMATION);
-			};
-			#endif*/
-		};
-	};
+			}
+		}
+	}
 
 	ZTRACE_RUNTIME("------------------------------\nEnd of stacking process");
-
 	EndWaitCursor();
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -2353,6 +2399,25 @@ void CStackingDlg::UncheckAll()
 
 /* ------------------------------------------------------------------- */
 
+void CStackingDlg::ClearList()
+{
+	if (CheckEditChanges() && CheckWorkspaceChanges())
+	{
+		m_Pictures.Clear();
+		m_Picture.SetImg((CBitmap*)nullptr);
+		m_Picture.SetImageSink(nullptr);
+		m_Picture.SetButtonToolbar(nullptr);
+		m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+		m_strShowFile.Empty();
+		m_Infos.SetText(m_strShowFile);
+		m_BackgroundLoading.ClearList();
+		m_LoadedImage.Clear();
+		UpdateGroupTabs();
+		UpdateListInfo();
+		m_strCurrentFileList.Empty();
+		SetCurrentFileInTitle(m_strCurrentFileList);
+	};
+};
 
 /* ------------------------------------------------------------------- */
 

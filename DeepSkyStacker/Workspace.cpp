@@ -70,8 +70,7 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-class WorkSpaceSettings : public WorkSpaceSettingsInternal,
-	public CRefCount
+class CWorkspaceSettings : public CWorkspaceSettingsInternal
 {
 public:
 	WorkSpaceSettings() {};
@@ -461,9 +460,8 @@ void	WorkSpaceSettingsInternal::ResetToDefault()
 /* ------------------------------------------------------------------- */
 Q_GLOBAL_STATIC(QMutex, theLock);
 
-std::shared_ptr <WorkSpaceSettings> g_pSettings;
-
-static std::deque<WorkSpaceSettingsInternal>	g_WSStack;
+std::shared_ptr<CWorkspaceSettings> g_pSettings;
+static std::deque<CWorkspaceSettingsInternal> g_WSStack;
 
 /* ------------------------------------------------------------------- */
 
@@ -472,16 +470,15 @@ CWorkspace::CWorkspace()
 	theLock->lock();
 	if (nullptr == g_pSettings)
 	{
-		g_pSettings = std::make_shared <WorkSpaceSettings>();
+		g_pSettings = std::make_shared<CWorkspaceSettings>();
 	}
 	theLock->unlock();
 
 	pSettings = g_pSettings;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::setValue(const QString& key, const QVariant& value)
+void CWorkspace::setValue(const QString& key, const QVariant& value)
 {
 	WORKSPACESETTINGITERATOR				it;
 
@@ -489,101 +486,86 @@ void	CWorkspace::setValue(const QString& key, const QVariant& value)
 
 	if (it != pSettings->end())
 		it->setValue(value);
-};
+}
 
 
-/* ------------------------------------------------------------------- */
-
-QVariant	CWorkspace::value(const QString& key, const QVariant& value) const
+QVariant CWorkspace::value(const QString& key, const QVariant& value) const
 {
-	WORKSPACESETTINGITERATOR				it;
-
-	it = pSettings->findSetting(key);
+	 WORKSPACESETTINGITERATOR it = pSettings->findSetting(key);
 
 	if (it != pSettings->end())
 		return it->value();
 	else
 		return value;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
-bool	CWorkspace::isDirty()
+bool CWorkspace::isDirty()
 {
 	return pSettings->isDirty();
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::setDirty()
+void CWorkspace::setDirty()
 {
 	pSettings->setDirty();
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::readSettings()
+void CWorkspace::readSettings()
 {
 	pSettings->readSettings();
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::saveSettings()
+void CWorkspace::saveSettings()
 {
 	pSettings->saveSettings();
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::ReadFromFile(FILE * hFile)
+void CWorkspace::ReadFromFile(FILE * hFile)
 {
 	pSettings->ReadFromFile(hFile);
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::ReadFromFile(const fs::path& fileName)
+void CWorkspace::ReadFromFile(LPCTSTR szFile)
 {
-	pSettings->ReadFromFile(fileName);
-};
+	pSettings->ReadFromFile(szFile);
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::SaveToFile(FILE * hFile)
+void CWorkspace::SaveToFile(FILE * hFile)
 {
 	pSettings->SaveToFile(hFile);
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CWorkspace::SaveToFile(const fs::path& fileName)
+void CWorkspace::SaveToFile(LPCTSTR szFile)
 {
-	pSettings->SaveToFile(fileName);
-};
+	pSettings->SaveToFile(szFile);
+}
 
-/* ------------------------------------------------------------------- */
 
 bool CWorkspace::ReadFromString(LPCTSTR szString)
 {
 	return pSettings->ReadFromString(szString);
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 void CWorkspace::Push()
 {
 	g_WSStack.push_back(*(pSettings));
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 void CWorkspace::ResetToDefault()
 {
 	pSettings->ResetToDefault();
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 void CWorkspace::Pop(bool bRestore)
 {
@@ -595,7 +577,5 @@ void CWorkspace::Pop(bool bRestore)
 		g_WSStack.pop_back();
 		if (bRestore)
 			pSettings->InitFrom(wsi);
-	};
-};
-
-/* ------------------------------------------------------------------- */
+	}
+}
