@@ -187,7 +187,7 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 			};
 		};
 		
-		CWorkspace				workspace;
+		Workspace				workspace;
 
 		workspace.SaveToFile(hFile);
 		workspace.setDirty();
@@ -327,7 +327,7 @@ void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
 		if (bContinue)
 		{
 			// Read the file info
-			CWorkspace			workspace;
+			Workspace			workspace;
 			CHAR				szLine[10000];
 
 			while (fgets(szLine, sizeof(szLine), hFile))

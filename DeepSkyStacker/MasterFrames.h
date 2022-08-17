@@ -20,7 +20,7 @@ private :
 public :
 	CMasterFrames()
 	{
-		CWorkspace			workspace;
+		Workspace			workspace;
 
 		m_fDebloom = workspace.value("Stacking/Debloom", false).toBool();
 	};

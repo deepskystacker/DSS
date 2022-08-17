@@ -41,7 +41,7 @@ extern bool		g_bShowRefStars;
 RegisterSettings::RegisterSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::RegisterSettings),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	initialised(false),
 	forceRegister(false),
 	stackAfter(false),

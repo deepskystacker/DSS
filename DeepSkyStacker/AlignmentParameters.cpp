@@ -10,7 +10,7 @@
 AlignmentParameters::AlignmentParameters(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::AlignmentParameters),
-	workspace(new CWorkspace())
+	workspace(new Workspace())
 {
     ui->setupUi(this);
 	m_Alignment = workspace->value("Stacking/AlignmentTransformation", uint(1)).toUInt();

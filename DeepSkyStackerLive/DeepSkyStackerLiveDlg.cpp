@@ -186,7 +186,7 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
 
 	{
-		CWorkspace			workspace;
+		Workspace			workspace;
 
 		TCHAR				szPath[_MAX_PATH];
 		CString				strPath;

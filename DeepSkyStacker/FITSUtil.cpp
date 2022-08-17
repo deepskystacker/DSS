@@ -60,7 +60,7 @@ inline double AdjustColor(const double fColor)
 
 bool	IsFITSRaw()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	return workspace.value("FitsDDP/FITSisRAW", false).toBool();
 };
@@ -69,7 +69,7 @@ bool	IsFITSRaw()
 
 CFATYPE GetFITSCFATYPE()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool isFitsRaw = workspace.value("FitsDDP/FITSisRAW", false).toBool();
 	CFATYPE pattern = (CFATYPE)workspace.value("FitsDDP/BayerPattern", (uint)CFATYPE_NONE).toUInt();
@@ -82,7 +82,7 @@ CFATYPE GetFITSCFATYPE()
 
 bool	IsFITSRawBayer()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	interpolation = workspace.value("FitsDDP/Interpolation").toString();
@@ -94,7 +94,7 @@ bool	IsFITSRawBayer()
 
 bool	IsFITSSuperPixels()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	workspace.value("FitsDDP/Interpolation").toString();
@@ -106,7 +106,7 @@ bool	IsFITSSuperPixels()
 
 bool	IsFITSBilinear()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	workspace.value("FitsDDP/Interpolation").toString();
@@ -118,7 +118,7 @@ bool	IsFITSBilinear()
 
 bool	IsFITSAHD()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	workspace.value("FitsDDP/Interpolation").toString();
@@ -130,7 +130,7 @@ bool	IsFITSAHD()
 
 double	GetFITSBrightnessRatio()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	return workspace.value("FitsDDP/Brightness", 1.0).toDouble();
 };
@@ -139,7 +139,7 @@ double	GetFITSBrightnessRatio()
 
 void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	fGreen = workspace.value("FitsDDP/Brightness", 1.0).toDouble();
 

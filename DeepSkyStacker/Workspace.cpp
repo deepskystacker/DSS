@@ -455,7 +455,7 @@ static std::deque<WorkspaceSettings> g_WSStack;
 
 /* ------------------------------------------------------------------- */
 
-CWorkspace::CWorkspace()
+Workspace::Workspace()
 { 
 	theLock->lock();
 	if (nullptr == g_pSettings)
@@ -468,7 +468,7 @@ CWorkspace::CWorkspace()
 }
 
 
-void CWorkspace::setValue(const QString& key, const QVariant& value)
+void Workspace::setValue(const QString& key, const QVariant& value)
 {
 	WORKSPACESETTINGITERATOR				it;
 
@@ -479,7 +479,7 @@ void CWorkspace::setValue(const QString& key, const QVariant& value)
 }
 
 
-QVariant CWorkspace::value(const QString& key, const QVariant& value) const
+QVariant Workspace::value(const QString& key, const QVariant& value) const
 {
 	 WORKSPACESETTINGITERATOR it = pSettings->findSetting(key);
 
@@ -491,73 +491,73 @@ QVariant CWorkspace::value(const QString& key, const QVariant& value) const
 
 /* ------------------------------------------------------------------- */
 
-bool CWorkspace::isDirty()
+bool Workspace::isDirty()
 {
 	return pSettings->isDirty();
 }
 
 
-void CWorkspace::setDirty()
+void Workspace::setDirty()
 {
 	pSettings->setDirty();
 }
 
 
-void CWorkspace::readSettings()
+void Workspace::readSettings()
 {
 	pSettings->readSettings();
 }
 
 
-void CWorkspace::saveSettings()
+void Workspace::saveSettings()
 {
 	pSettings->saveSettings();
 }
 
 
-void CWorkspace::ReadFromFile(FILE * hFile)
+void Workspace::ReadFromFile(FILE * hFile)
 {
 	pSettings->ReadFromFile(hFile);
 }
 
 
-void CWorkspace::ReadFromFile(LPCTSTR szFile)
+void Workspace::ReadFromFile(LPCTSTR szFile)
 {
 	pSettings->ReadFromFile(szFile);
 }
 
 
-void CWorkspace::SaveToFile(FILE * hFile)
+void Workspace::SaveToFile(FILE * hFile)
 {
 	pSettings->SaveToFile(hFile);
 }
 
 
-void CWorkspace::SaveToFile(LPCTSTR szFile)
+void Workspace::SaveToFile(LPCTSTR szFile)
 {
 	pSettings->SaveToFile(szFile);
 }
 
 
-bool CWorkspace::ReadFromString(LPCTSTR szString)
+bool Workspace::ReadFromString(LPCTSTR szString)
 {
 	return pSettings->ReadFromString(szString);
 }
 
 
-void CWorkspace::Push()
+void Workspace::Push()
 {
 	g_WSStack.push_back(*(pSettings));
 }
 
 
-void CWorkspace::ResetToDefault()
+void Workspace::ResetToDefault()
 {
 	pSettings->ResetToDefault();
 }
 
 
-void CWorkspace::Pop(bool bRestore)
+void Workspace::Pop(bool bRestore)
 {
 	WorkspaceSettings		ws;
 

@@ -216,7 +216,7 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
-	CWorkspace workspace;
+	Workspace workspace;
 	CAllStackingTasks tasks;
 	CFrameList list;
 

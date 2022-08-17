@@ -42,7 +42,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 	m_strStackingFileInfo.Format(_T("%s%s%s.stackinfo.txt"), szDrive, szDir, szName);
 
 	unsigned int dwAlignmentTransformation = 2;
-	CWorkspace workspace;
+	Workspace workspace;
 
 	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 
@@ -228,7 +228,7 @@ void CLightFramesStackingInfo::Save()
 		{
 			// Save the alignment transformation used
 			unsigned int dwAlignmentTransformation = 2;
-			CWorkspace workspace;
+			Workspace workspace;
 
 			dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 			fprintf(hFile,"%ld\n", dwAlignmentTransformation);
@@ -397,7 +397,7 @@ TRANSFORMATIONTYPE CStackingEngine::GetTransformationType()
 
 	TRANSFORMATIONTYPE TTResult = TT_BILINEAR;
 	unsigned int dwAlignmentTransformation = 2;
-	CWorkspace workspace;
+	Workspace workspace;
 
 	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 

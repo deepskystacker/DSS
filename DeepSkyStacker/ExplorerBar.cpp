@@ -332,7 +332,7 @@ void ExplorerBar::onDDPSettings()
 void ExplorerBar::onLoadSettings()
 {
 	ZFUNCTRACE_RUNTIME();
-	CWorkspace	workspace;
+	Workspace	workspace;
 	QMenu menu(this);
 
 	if (mruPath.paths.size() != 0)
@@ -395,7 +395,7 @@ void ExplorerBar::onLoadSettings()
 void ExplorerBar::onSaveSettings()
 {
 	ZFUNCTRACE_RUNTIME();
-	CWorkspace	workspace;
+	Workspace	workspace;
 	QMenu menu(this);
 
 	if (mruPath.paths.size() != 0)
@@ -477,7 +477,7 @@ void ExplorerBar::LoadSettingFile()
 {
 	ZFUNCTRACE_RUNTIME();
 	QFileDialog			fileDialog;
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				directory;
 	QString				extension("settings");
 	bool				fileLoaded(false);
@@ -521,7 +521,7 @@ void ExplorerBar::SaveSettingFile()
 {
 	ZFUNCTRACE_RUNTIME();
 	QFileDialog			fileDialog;
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				directory;
 	QString				extension("settings");
 	bool				fileSaved(false);

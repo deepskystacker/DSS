@@ -2,7 +2,7 @@
 #define RAWDDPSETTINGS_H
 #include <memory>
 
-class CWorkspace;
+class Workspace;
 class QAbstractButton;
 class QValidator;
 class CDSLR;
@@ -55,7 +55,7 @@ private slots:
 	void on_superPixels_2_toggled(bool);
 private:
 	Ui::RawDDPSettings *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	std::vector<CDSLR> vector_DSLRs;
 	bool		initialised;
 	QValidator *	scaleValidator;

@@ -77,13 +77,13 @@ public :
 typedef std::vector<WorkspaceSetting> WORKSPACESETTINGVECTOR;
 typedef WORKSPACESETTINGVECTOR::iterator WORKSPACESETTINGITERATOR;
 
-class CWorkspace
+class Workspace
 {
 private:
 	std::shared_ptr<WorkspaceSettings > pSettings;
 public:
-	CWorkspace();
-	~CWorkspace() = default;
+	Workspace();
+	~Workspace() = default;
 
 	void setValue(const QString& key, const QVariant& value);
 

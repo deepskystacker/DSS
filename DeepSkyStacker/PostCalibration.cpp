@@ -38,7 +38,7 @@ extern bool	g_bShowRefStars;
 PostCalibration::PostCalibration(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PostCalibration),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent)),
 	medianString(tr("the median", "ID_COSMETICMETHOD_MEDIAN")),
 	gaussianString(tr("a gaussian filter", "ID_COSMETICMETHOD_GAUSSIAN"))

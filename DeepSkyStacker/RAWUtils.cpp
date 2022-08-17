@@ -82,14 +82,14 @@ namespace {
 
 static bool IsRegistrySuperPixels()
 {
-	return CWorkspace{}.value("RawDDP/SuperPixels", false).toBool();
+	return Workspace{}.value("RawDDP/SuperPixels", false).toBool();
 };
 
 /* ------------------------------------------------------------------- */
 
 static bool IsRegistryRawBayer()
 {
-	return CWorkspace{}.value("RawDDP/RawBayer", false).toBool();
+	return Workspace{}.value("RawDDP/RawBayer", false).toBool();
 };
 
 /* ------------------------------------------------------------------- */
@@ -116,7 +116,7 @@ bool IsRawBayer()
 
 bool IsRawBilinear()
 {
-	CWorkspace	workspace;
+	Workspace	workspace;
 	QString		strInterpolation;
 
 	strInterpolation = workspace.value("RawDDP/Interpolation", "").toString();
@@ -128,7 +128,7 @@ bool IsRawBilinear()
 
 bool IsRawAHD()
 {
-	CWorkspace	workspace;
+	Workspace	workspace;
 	QString		strInterpolation;
 
 	workspace.value("RawDDP/Interpolation", strInterpolation);
@@ -509,7 +509,7 @@ namespace { // Only use in this .cpp file
 		pBitmap->SetDescription(strDescription);
 
 		const int maxargs = 50;
-		CWorkspace workspace;
+		Workspace workspace;
 		double fBrightness = 1.0;
 		double fRedScale = 1.0;
 		double fBlueScale = 1.0;

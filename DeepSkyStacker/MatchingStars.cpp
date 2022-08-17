@@ -17,7 +17,7 @@ static TRANSFORMATIONTYPE	GetTransformationType(int lNrVotingPairs = 2000)
 {
 	std::uint32_t dwAlignmentTransformation = 2;
 	TRANSFORMATIONTYPE		TTResult = TT_BILINEAR;
-	CWorkspace				workspace;
+	Workspace				workspace;
 
 	dwAlignmentTransformation = workspace.value("Stacking/AlignmentTransformation", (uint)2).toUInt();
 
@@ -56,7 +56,7 @@ static TRANSFORMATIONTYPE	GetTransformationType(int lNrVotingPairs = 2000)
 
 static bool AreCornersLocked()
 {
-	CWorkspace				workspace;
+	Workspace				workspace;
 
 	return workspace.value("Stacking/LockCorners", true).toBool();
 };

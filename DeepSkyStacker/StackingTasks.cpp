@@ -1639,7 +1639,7 @@ void CAllStackingTasks::UpdateTasksMethods()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	CWorkspace					workspace;
+	Workspace					workspace;
 	MULTIBITMAPPROCESSMETHOD	LightMethod = MBP_AVERAGE;
 	double						fLightKappa = 2.0;
 	unsigned int				lLightIteration = 5;
@@ -2042,7 +2042,7 @@ void CAllStackingTasks::SetTemporaryFilesFolder(QString strFolder)
 
 BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool backgroundCalibration = workspace.value("Stacking/BackgroundCalibration", true).toBool();
 	bool perChannelCalibration = workspace.value("Stacking/PerChannelBackgroundCalibration", false).toBool();
@@ -2059,7 +2059,7 @@ BACKGROUNDCALIBRATIONMODE	CAllStackingTasks::GetBackgroundCalibrationMode()
 
 BACKGROUNDCALIBRATIONINTERPOLATION	CAllStackingTasks::GetBackgroundCalibrationInterpolation()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	int				interpolation = (int)BCI_RATIONAL;
 
 	interpolation = workspace.value("Stacking/BackgroundCalibrationInterpolation").toUInt();
@@ -2071,7 +2071,7 @@ BACKGROUNDCALIBRATIONINTERPOLATION	CAllStackingTasks::GetBackgroundCalibrationIn
 
 RGBBACKGROUNDCALIBRATIONMETHOD	CAllStackingTasks::GetRGBBackgroundCalibrationMethod()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	int method = workspace.value("Stacking/RGBBackgroundCalibrationMethod", (int)RBCM_MAXIMUM).toUInt();
 
@@ -2082,7 +2082,7 @@ RGBBACKGROUNDCALIBRATIONMETHOD	CAllStackingTasks::GetRGBBackgroundCalibrationMet
 
 bool	CAllStackingTasks::GetDarkOptimization()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/DarkOptimization", false).toBool();
 
@@ -2094,7 +2094,7 @@ bool	CAllStackingTasks::GetDarkOptimization()
 double	CAllStackingTasks::GetDarkFactor()
 {
 	double				value = 1.0;
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	if (workspace.value("Stacking/UseDarkFactor", false).toBool())
 	{
@@ -2108,7 +2108,7 @@ double	CAllStackingTasks::GetDarkFactor()
 
 bool CAllStackingTasks::GetHotPixelsDetection()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/HotPixelsDetection", true).toBool();
 
@@ -2119,7 +2119,7 @@ bool CAllStackingTasks::GetHotPixelsDetection()
 
 bool CAllStackingTasks::GetBadLinesDetection()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/BadLinesDetection", false).toBool();
 
@@ -2131,7 +2131,7 @@ bool CAllStackingTasks::GetBadLinesDetection()
 STACKINGMODE	CAllStackingTasks::GetResultMode()
 {
 	STACKINGMODE		Result = SM_NORMAL;
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	int value = workspace.value("Stacking/Mosaic", 0).toUInt();
 	if (value==2)
@@ -2146,7 +2146,7 @@ STACKINGMODE	CAllStackingTasks::GetResultMode()
 
 bool CAllStackingTasks::GetCreateIntermediates()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/CreateIntermediates", false).toBool();
 
@@ -2157,7 +2157,7 @@ bool CAllStackingTasks::GetCreateIntermediates()
 
 bool CAllStackingTasks::GetSaveCalibrated()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/SaveCalibrated", false).toBool();
 
@@ -2168,7 +2168,7 @@ bool CAllStackingTasks::GetSaveCalibrated()
 
 bool CAllStackingTasks::GetSaveCalibratedDebayered()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/SaveCalibratedDebayered", false).toBool();
 
@@ -2179,7 +2179,7 @@ bool CAllStackingTasks::GetSaveCalibratedDebayered()
 
 WORD	CAllStackingTasks::GetAlignmentMethod()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	WORD value = workspace.value("Stacking/AlignmentTransformation", 0).toUInt();
 
@@ -2190,7 +2190,7 @@ WORD	CAllStackingTasks::GetAlignmentMethod()
 
 int	CAllStackingTasks::GetPixelSizeMultiplier()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	int value = workspace.value("Stacking/PixelSizeMultiplier", 1).toUInt();
 
@@ -2201,7 +2201,7 @@ int	CAllStackingTasks::GetPixelSizeMultiplier()
 
 bool	CAllStackingTasks::GetChannelAlign()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	return workspace.value("Stacking/AlignChannels", false).toBool();
 };
@@ -2210,7 +2210,7 @@ bool	CAllStackingTasks::GetChannelAlign()
 
 bool	CAllStackingTasks::GetSaveIntermediateCometImages()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/SaveCometImages", false).toBool();
 
@@ -2221,7 +2221,7 @@ bool	CAllStackingTasks::GetSaveIntermediateCometImages()
 
 bool	CAllStackingTasks::GetApplyMedianFilterToCometImage()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool value = workspace.value("Stacking/ApplyFilterToCometImages", true).toBool();
 
@@ -2232,7 +2232,7 @@ bool	CAllStackingTasks::GetApplyMedianFilterToCometImage()
 
 INTERMEDIATEFILEFORMAT CAllStackingTasks::GetIntermediateFileFormat()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	int value = workspace.value("Stacking/IntermediateFileFormat", 1).toUInt();
 
@@ -2246,7 +2246,7 @@ INTERMEDIATEFILEFORMAT CAllStackingTasks::GetIntermediateFileFormat()
 
 COMETSTACKINGMODE CAllStackingTasks::GetCometStackingMode()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	int value = workspace.value("Stacking/CometStackingMode", 0).toUInt();
 
@@ -2260,7 +2260,7 @@ COMETSTACKINGMODE CAllStackingTasks::GetCometStackingMode()
 
 void CAllStackingTasks::GetPostCalibrationSettings(CPostCalibrationSettings & pcs)
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	
 	pcs.m_bHot = workspace.value("Stacking/PCS_DetectCleanHot", false).toBool();
 
@@ -2283,7 +2283,7 @@ void CAllStackingTasks::GetPostCalibrationSettings(CPostCalibrationSettings & pc
 
 void CAllStackingTasks::SetPostCalibrationSettings(const CPostCalibrationSettings & pcs)
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	workspace.setValue("Stacking/PCS_DetectCleanHot", pcs.m_bHot);
 

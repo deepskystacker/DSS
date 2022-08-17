@@ -151,7 +151,7 @@ protected :
 
 	void	Reset()
 	{
-		CWorkspace			workspace;
+		Workspace			workspace;
 		DWORD				dwThreshold = 10;
 
 		m_vStars.clear();
@@ -300,7 +300,7 @@ private :
 
 		m_bTransformedCometPosition = false;
 
-		CWorkspace			workspace;
+		Workspace			workspace;
 	
 		m_bRemoveHotPixels = workspace.value("Register/DetectHotPixels", false).toBool();
 	};

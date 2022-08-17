@@ -2,7 +2,7 @@
 #define REGISTERSETTINGS_H
 #include <memory>
 
-class CWorkspace;
+class Workspace;
 class CAllStackingTasks;
 class QValidator;
 
@@ -13,7 +13,7 @@ namespace Ui {
 	class RegisterSettings;
 }
 
-class CWorkspace;
+class Workspace;
 
 class RegisterSettings : public QDialog
 {
@@ -69,7 +69,7 @@ private slots:
 
 private:
 	Ui::RegisterSettings *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 
 	bool					initialised;
 	bool					forceRegister;
