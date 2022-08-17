@@ -7,9 +7,9 @@
 #include <QVariant>
 namespace fs = std::filesystem;
 
-class WorkSpaceSettings;
+class WorkspaceSettings;
 
-class WorkSpaceSetting
+class WorkspaceSetting
 {
 private :
 	QString					keyName;
@@ -17,12 +17,12 @@ private :
 	bool					dirty;
 
 public :
-	WorkSpaceSetting(const QString& name, const QVariant& value = QVariant())
+	WorkspaceSetting(const QString& name, const QVariant& value = QVariant())
 		: keyName(name), Value(value), dirty(true)
 	{
 	};
 
-	WorkSpaceSetting & operator = (const WorkSpaceSetting & rhs)
+	WorkspaceSetting & operator = (const WorkspaceSetting & rhs)
 	{
 		keyName = rhs.keyName;
 		Value = rhs.Value;
@@ -30,7 +30,7 @@ public :
 		return (*this);
 	};
 
-	bool operator < (const WorkSpaceSetting & s) const
+	bool operator < (const WorkspaceSetting & s) const
 	{
 		if (keyName < s.keyName)
 			return true;
@@ -40,13 +40,13 @@ public :
 			return keyName < s.keyName;
 	};
 
-	bool operator != (const WorkSpaceSetting & s) const
+	bool operator != (const WorkspaceSetting & s) const
 	{
 		return (keyName != s.keyName);
 	};
 
-	WorkSpaceSetting &	readSetting();
-	WorkSpaceSetting &	saveSetting();
+	WorkspaceSetting &	readSetting();
+	WorkspaceSetting &	saveSetting();
 
 	bool	isDirty(bool bClear)
 	{
@@ -63,8 +63,8 @@ public :
 		return keyName;
 	};
 
-	WorkSpaceSetting &	setValue(const WorkSpaceSetting & ws);
-	WorkSpaceSetting &	setValue(const QVariant& value);
+	WorkspaceSetting &	setValue(const WorkspaceSetting & ws);
+	WorkspaceSetting &	setValue(const QVariant& value);
 
 	inline QVariant value() const
 	{
@@ -74,13 +74,13 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-typedef std::vector<CWorkspaceSetting> WORKSPACESETTINGVECTOR;
+typedef std::vector<WorkspaceSetting> WORKSPACESETTINGVECTOR;
 typedef WORKSPACESETTINGVECTOR::iterator WORKSPACESETTINGITERATOR;
 
 class CWorkspace
 {
 private:
-	std::shared_ptr<CWorkspaceSettings > pSettings;
+	std::shared_ptr<WorkspaceSettings > pSettings;
 public:
 	CWorkspace();
 	~CWorkspace() = default;
