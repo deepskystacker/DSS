@@ -7,7 +7,7 @@ class CTaskInfo
 {
 public:
 	std::uint32_t m_dwTaskID;
-	std::uint32_t m_dwGroupID;
+	std::uint32_t m_groupID;
 	PICTURETYPE m_TaskType;
 	int m_lISOSpeed;
 	int m_lGain;
@@ -25,7 +25,7 @@ public:
 public:
 	CTaskInfo() :
 		m_dwTaskID{ 0 },
-		m_dwGroupID{ 0 },
+		m_groupID{ 0 },
 		m_TaskType{ PICTURETYPE(0) },
 		m_lISOSpeed{ 0 },
 		m_lGain{ -1 },
@@ -61,7 +61,7 @@ public:
 		m_pMaster->SetProcessingMethod(m_Method, m_fKappa, m_lNrIterations);
 	}
 
-	void AddToMaster(const CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+	void AddToMaster(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 	{
 		if (static_cast<bool>(m_pMaster))
 			m_pMaster->AddBitmap(pBitmap, pProgress);
