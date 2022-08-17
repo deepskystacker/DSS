@@ -830,13 +830,13 @@ bool CTIFFWriter::Close()
 class CTIFFWriteFromMemoryBitmap : public CTIFFWriter
 {
 private :
-	const CMemoryBitmap* m_pMemoryBitmap;
+	CMemoryBitmap* m_pMemoryBitmap;
 
 private :
 	TIFFFORMAT GetBestTiffFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CTIFFWriteFromMemoryBitmap(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
+	CTIFFWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
 		CTIFFWriter(szFileName, pProgress),
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -970,7 +970,7 @@ bool CTIFFWriteFromMemoryBitmap::OnClose()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1010,14 +1010,14 @@ bool WriteTIFF(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* p
 
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
 	LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -1051,7 +1051,7 @@ bool WriteTIFF(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* p
 
 /* ------------------------------------------------------------------- */
 
-bool WriteTIFF(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
 {
 	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
 }

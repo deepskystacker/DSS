@@ -10,8 +10,8 @@
 class CDetectCosmeticTask
 {
 private:
-	std::shared_ptr<const CMemoryBitmap> m_pBitmap;
-	std::shared_ptr<const CMemoryBitmap> m_pMedian;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pMedian;
 	std::shared_ptr<CMemoryBitmap> m_pDelta;
 	CDSSProgress* m_pProgress;
 	CCosmeticStats m_Stats;
@@ -68,7 +68,7 @@ private:
 	}
 
 public:
-	CDetectCosmeticTask(std::shared_ptr<const CMemoryBitmap> pB, std::shared_ptr<const CMemoryBitmap> pM, std::shared_ptr<CMemoryBitmap> pD, bool bHot, double fThr, CDSSProgress* pPr) :
+	CDetectCosmeticTask(std::shared_ptr<CMemoryBitmap> pB, std::shared_ptr<CMemoryBitmap> pM, std::shared_ptr<CMemoryBitmap> pD, bool bHot, double fThr, CDSSProgress* pPr) :
 		m_pBitmap{ pB },
 		m_pMedian{ pM },
 		m_pDelta{ pD },
@@ -176,8 +176,8 @@ class CCleanCosmeticTask
 {
 private:
 	std::shared_ptr<CMemoryBitmap> m_pOutBitmap;
-	std::shared_ptr<const CMemoryBitmap> m_pOrgBitmap;
-	std::shared_ptr<const CMemoryBitmap> m_pDelta;
+	std::shared_ptr<CMemoryBitmap> m_pOrgBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pDelta;
 	CDSSProgress* m_pProgress;
 	CPostCalibrationSettings m_pcs;
 	int m_lWidth;
@@ -232,7 +232,7 @@ private:
 	}
 
 public:
-    CCleanCosmeticTask(std::shared_ptr<CMemoryBitmap> pOut, std::shared_ptr<const CMemoryBitmap> pOrg, std::shared_ptr<const CMemoryBitmap> pD, const CPostCalibrationSettings& pcs, CDSSProgress* pPr) :
+    CCleanCosmeticTask(std::shared_ptr<CMemoryBitmap> pOut, std::shared_ptr<CMemoryBitmap> pOrg, std::shared_ptr<CMemoryBitmap> pD, const CPostCalibrationSettings& pcs, CDSSProgress* pPr) :
 		m_pOutBitmap{ pOut },
 		m_pOrgBitmap{ pOrg },
 		m_pDelta{ pD },
@@ -583,7 +583,7 @@ std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBit
 }
 
 
-void SimulateCosmetic(std::shared_ptr<const CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, CDSSProgress* const pProgress)
+void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 

@@ -207,7 +207,7 @@ void CopyBitmapToClipboard(HBITMAP hBitmap)
 /* ------------------------------------------------------------------- */
 #if DSSFILEDECODING==1
 
-bool DebayerPicture(const CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, CDSSProgress * pProgress)
+bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -215,13 +215,13 @@ bool DebayerPicture(const CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitma
 	if (pInBitmap != nullptr && pInBitmap->IsCFA())
 	{
 		std::shared_ptr<CMemoryBitmap> pOutBitmap;
-		const C16BitGrayBitmap* pGrayBitmap = dynamic_cast<const C16BitGrayBitmap *>(pInBitmap);
-		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<const CCFABitmapInfo *>(pInBitmap);
+		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap *>(pInBitmap);
+		const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pInBitmap);
 
 		if (pGrayBitmap != nullptr && pCFABitmapInfo->GetCFATransformation() == CFAT_AHD)
 		{
 			// AHD Demosaicing of the image
-			AHDDemosaicing(*pGrayBitmap, pOutBitmap, pProgress);
+			AHDDemosaicing(pGrayBitmap, pOutBitmap, pProgress);
 		}
 		else
 		{
@@ -255,6 +255,66 @@ bool DebayerPicture(const CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitma
 	return bResult;
 }
 
+/* ------------------------------------------------------------------- */
+bool	CAllDepthBitmap::initQImage()
+{
+	ZFUNCTRACE_RUNTIME();
+	bool			bResult = false;
+	int64_t		i, j;
+	size_t			width = m_pBitmap->Width(), height = m_pBitmap->Height();
+	const int numberOfProcessors = CMultitask::GetNrProcessors();
+
+	m_Image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
+	//
+	// Point to the first RGB quad in the QImage
+	//
+	QRgb* pOutPixel = (QRgb*)(m_Image->bits());
+
+	if (m_pBitmap->IsMonochrome() && m_pBitmap->IsCFA())
+	{
+		ZTRACE_RUNTIME("Slow Bitmap Copy to Qimage");
+		// Slow Method
+#pragma omp parallel for default(none) if(numberOfProcessors > 1)
+		for (j = 0; j < height; j++)
+		{
+			for (i = 0; i < width; i++)
+			{
+				double			fRed, fGreen, fBlue;
+				m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
+
+				*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
+					std::clamp(fGreen, 0.0, 255.0),
+					std::clamp(fBlue, 0.0, 255.0));
+
+			};
+		};
+	}
+	else
+	{
+		ZTRACE_RUNTIME("Fast Bitmap Copy to QImage");
+		// Fast Method
+		BitmapIterator<std::shared_ptr<CMemoryBitmap>> it{ m_pBitmap };
+
+#pragma omp parallel for default(none) if(numberOfProcessors > 1)
+		for (j = 0; j < height; j++)
+		{
+			for (i = 0; i < width; i++)
+			{
+				double			fRed, fGreen, fBlue;
+				it.GetPixel(fRed, fGreen, fBlue);
+
+				*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
+					std::clamp(fGreen, 0.0, 255.0),
+					std::clamp(fBlue, 0.0, 255.0));
+				++it;
+			};
+		};
+	};
+	bResult = true;
+
+	return bResult;
+};
+
 
 bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgress* pProgress)
 {
@@ -267,8 +327,8 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgre
 
 		if (FetchPicture(szFileName, AllDepthBitmap.m_pBitmap, pProgress))
 		{
-			const std::shared_ptr<const CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
-			const C16BitGrayBitmap* pGrayBitmap = dynamic_cast<const C16BitGrayBitmap*>(pBitmap.get());
+			std::shared_ptr<CMemoryBitmap> pBitmap = AllDepthBitmap.m_pBitmap;
+			C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.get());
 			CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(AllDepthBitmap.m_pBitmap.get());
 
 			if (pBitmap->IsCFA())
@@ -280,7 +340,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgre
 				{
 					// AHD Demosaicing of the image
 					std::shared_ptr<CMemoryBitmap> pColorBitmap;
-					AHDDemosaicing(*pGrayBitmap, pColorBitmap, nullptr);
+					AHDDemosaicing(pGrayBitmap, pColorBitmap, nullptr);
 
 					AllDepthBitmap.m_pBitmap = pColorBitmap;
 				}
@@ -307,6 +367,10 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgre
 				}
 			}
 
+			//
+			// Create a Windows bitmap for display purposes (wrapped in a C32BitsBitmap class).
+			// (TODO) Delete this when Qt porting is done.
+			//
 			AllDepthBitmap.m_pWndBitmap = std::make_shared<C32BitsBitmap>();
 			AllDepthBitmap.m_pWndBitmap->InitFrom(AllDepthBitmap.m_pBitmap.get());
 
@@ -742,7 +806,7 @@ bool C32BitsBitmap::CopyToClipboard()
 
 /* ------------------------------------------------------------------- */
 
-bool C32BitsBitmap::InitFrom(const CMemoryBitmap* pBitmap)
+bool C32BitsBitmap::InitFrom(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1026,7 +1090,6 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitma
 
 	return bResult;
 };
-*/
 
 /* ------------------------------------------------------------------- */
 
@@ -1576,14 +1639,14 @@ bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBi
 }
 
 
-CFATYPE	GetCFAType(const CMemoryBitmap* pBitmap)
+CFATYPE	GetCFAType(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	CFATYPE Result = CFATYPE_NONE;
 
 	if (pBitmap != nullptr && pBitmap->IsCFA())
 	{
-		if (const CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<const CCFABitmapInfo*>(pBitmap))
+		if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pBitmap))
 		{
 			Result = pCFABitmapInfo->GetCFAType();
 		}

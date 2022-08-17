@@ -26,7 +26,7 @@ inline double	GetMedianPosition(std::vector<double> & vValues, double fValue)
 
 /* ------------------------------------------------------------------- */
 
-void CExtendedMedianImageFilter::AnalyzeImage(const CMemoryBitmap * pInBitmap, bool bComputeThresholds)
+void CExtendedMedianImageFilter::AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds)
 {
 	ZFUNCTRACE_RUNTIME();
 	int				lWidth = pInBitmap->Width(),
@@ -232,7 +232,7 @@ void CExtendedMedianImageFilter::ApplyFilterInternal(const CMemoryBitmap* pInBit
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CExtendedMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (m_bUseRejectThreshold)
@@ -312,14 +312,14 @@ void	CMedianImageFilter::ComputeMedianAt(int x, int y, double & fRedValue, doubl
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CMedianImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CMedianImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
 {
 	return GetFilteredImage(pInBitmap, m_lFilterSize, pProgress);
 }
 
 /* ------------------------------------------------------------------- */
 
-void	CDirectionalImageFilter::GetValuesAlongAngle(const CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vValues)
+void	CDirectionalImageFilter::GetValuesAlongAngle(CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vValues)
 {
 	for (int l = -m_lSize;l<=m_lSize;l++)
 	{
@@ -339,7 +339,7 @@ void	CDirectionalImageFilter::GetValuesAlongAngle(const CMemoryBitmap* pInBitmap
 
 /* ------------------------------------------------------------------- */
 
-void	CDirectionalImageFilter::GetValuesAlongAngle(const CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vRedValues, std::vector<double>& vGreenValues, std::vector<double>& vBlueValues)
+void	CDirectionalImageFilter::GetValuesAlongAngle(CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vRedValues, std::vector<double>& vGreenValues, std::vector<double>& vBlueValues)
 {
 	for (int l = -m_lSize;l<=m_lSize;l++)
 	{
@@ -371,7 +371,7 @@ void CDirectionalImageFilter::InitFilterMatrix(CFilterMatrix & fm)
 
 /* ------------------------------------------------------------------- */
 
-std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(const CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress)
 {
 	if (pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};

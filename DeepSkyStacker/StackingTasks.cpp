@@ -926,13 +926,13 @@ public :
 		return m_bInitialized;
 	};
 
-	void	ComputeParameters(const CMemoryBitmap* pBitmap, CDSSProgress * pProgress);
+	void	ComputeParameters(CMemoryBitmap* pBitmap, CDSSProgress * pProgress);
 	void	ApplyParameters(CMemoryBitmap * pBitmap, const CFlatCalibrationParameters & fcp, CDSSProgress * pProgress);
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CFlatCalibrationParameters::ComputeParameters(const CMemoryBitmap* pBitmap, CDSSProgress * pProgress)
+void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, CDSSProgress * pProgress)
 {
 	CString			strStart2;
 
@@ -1291,7 +1291,7 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, uint16_t dwGroupID)
+void CAllStackingTasks::AddFileToTask(CFrameInfo & FrameInfo, uint16_t dwGroupID)
 {
 	ZFUNCTRACE_RUNTIME();
 

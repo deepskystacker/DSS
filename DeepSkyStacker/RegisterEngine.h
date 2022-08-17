@@ -173,7 +173,7 @@ protected :
         m_fFWHM = 0;
 	};
 
-	bool FindStarShape(const CMemoryBitmap* pBitmap, CStar& star);
+	bool FindStarShape(CMemoryBitmap* pBitmap, CStar& star);
 
 	void	ComputeOverallQuality()
 	{
@@ -235,8 +235,8 @@ public :
 		return m_bInfoOk;
 	}
 
-	bool ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
-	size_t RegisterSubRect(const CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
+	bool ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
+	size_t RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
 	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);
@@ -365,8 +365,8 @@ public:
 private:
 	bool ReadInfoFileName();
 	void RegisterPicture();
-	void RegisterPicture(const CGrayBitmap& Bitmap);
-	double ComputeMedianValue(const CGrayBitmap& Bitmap);
+	void RegisterPicture(CGrayBitmap& Bitmap);
+	double ComputeMedianValue(CGrayBitmap& Bitmap);
 	bool ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
 	std::shared_ptr<CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
 };

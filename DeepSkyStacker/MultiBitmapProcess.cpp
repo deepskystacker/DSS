@@ -100,7 +100,7 @@ void CMultiBitmap::InitParts()
 
 /* ------------------------------------------------------------------- */
 
-bool CMultiBitmap::AddBitmap(const CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -269,7 +269,7 @@ void CCombineTask::process()
 
 /* ------------------------------------------------------------------- */
 
-static void ComputeWeightedAverage(int x, int y, const CMemoryBitmap* pBitmap, const CMemoryBitmap* pHomBitmap, CMemoryBitmap* pOutBitmap)
+static void ComputeWeightedAverage(int x, int y, CMemoryBitmap* pBitmap, CMemoryBitmap* pHomBitmap, CMemoryBitmap* pOutBitmap)
 {
 	//ZFUNCTRACE_RUNTIME();
 	bool bColor = !pBitmap->IsMonochrome();
@@ -334,7 +334,7 @@ static void ComputeWeightedAverage(int x, int y, const CMemoryBitmap* pBitmap, c
 	};
 };
 
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(const CMemoryBitmap* pBitmap) const
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::SmoothOut(CMemoryBitmap* pBitmap) const
 {
 	if (static_cast<bool>(m_pHomBitmap))
 	{

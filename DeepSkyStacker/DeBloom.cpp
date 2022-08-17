@@ -42,7 +42,7 @@ inline bool IsEdge(const double pfGray[])
 }
 
 
-bool CDeBloom::IsLeftEdge(const CMemoryBitmap * pBitmap, int x, int y)
+bool CDeBloom::IsLeftEdge(CMemoryBitmap * pBitmap, int x, int y)
 {
 	double			fGray[5];
 
@@ -59,7 +59,7 @@ bool CDeBloom::IsLeftEdge(const CMemoryBitmap * pBitmap, int x, int y)
 }
 
 
-bool CDeBloom::IsRightEdge(const CMemoryBitmap * pBitmap, int x, int y)
+bool CDeBloom::IsRightEdge(CMemoryBitmap * pBitmap, int x, int y)
 {
 	double			fGray[5];
 
@@ -76,7 +76,7 @@ bool CDeBloom::IsRightEdge(const CMemoryBitmap * pBitmap, int x, int y)
 }
 
 
-bool	CDeBloom::IsTopEdge(const CMemoryBitmap * pBitmap, int x, int y)
+bool	CDeBloom::IsTopEdge(CMemoryBitmap * pBitmap, int x, int y)
 {
 	double			fGray[5];
 
@@ -93,7 +93,7 @@ bool	CDeBloom::IsTopEdge(const CMemoryBitmap * pBitmap, int x, int y)
 }
 
 
-bool CDeBloom::IsBottomEdge(const CMemoryBitmap * pBitmap, int x, int y)
+bool CDeBloom::IsBottomEdge(CMemoryBitmap * pBitmap, int x, int y)
 {
 	double			fGray[5];
 
@@ -179,7 +179,7 @@ inline double			distance(double x1, double y1, double x2, double y2)
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 };
 
-static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, const C8BitGrayBitmap * pMask, CPointExt & pt, bool bNoBloom = false)
+static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CPointExt pt, bool bNoBloom = false)
 {
 	int				x0 = floor(pt.X - 0.5), x1 = 1 + x0,
 						y0 = floor(pt.Y - 0.5), y1 = 1 + y0;
@@ -807,7 +807,7 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vec
 
 /* ------------------------------------------------------------------- */
 
-void	CDeBloom::ExpandBloomedArea(const CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y)
+void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y)
 {
 	bool						bEnd = false;
 	std::vector<CPoint>			vBloomed;
@@ -998,7 +998,7 @@ void	CDeBloom::ExpandBloomedArea(const CMemoryBitmap * pBitmap, C8BitGrayBitmap 
 }
 
 
-std::shared_ptr<C8BitGrayBitmap> CDeBloom::CreateMask(const CMemoryBitmap* pBitmap)
+std::shared_ptr<C8BitGrayBitmap> CDeBloom::CreateMask(CMemoryBitmap* pBitmap)
 {
 	std::shared_ptr<C8BitGrayBitmap> pMask;
 
@@ -1048,7 +1048,7 @@ std::shared_ptr<C8BitGrayBitmap> CDeBloom::CreateMask(const CMemoryBitmap* pBitm
 }
 
 
-double CDeBloom::ComputeValue(CMemoryBitmap* pBitmap, const C8BitGrayBitmap* pMask, int x, int y, bool& bDone)
+double CDeBloom::ComputeValue(CMemoryBitmap* pBitmap, C8BitGrayBitmap* pMask, int x, int y, bool& bDone)
 {
 	double						fResult = 255.0;
 	double						fSum = 0,
@@ -1085,7 +1085,7 @@ double CDeBloom::ComputeValue(CMemoryBitmap* pBitmap, const C8BitGrayBitmap* pMa
 
 /* ------------------------------------------------------------------- */
 
-void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, const C8BitGrayBitmap * pMask, CBloomedStar & bs)
+void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStar & bs)
 {
 	double					fFactor1;
 
@@ -1161,7 +1161,7 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, const C8BitGrayBitmap * pMask, C
 
 /* ------------------------------------------------------------------- */
 
-void    CDeBloom::SmoothMaskBorders(CMemoryBitmap * pBitmap, const C8BitGrayBitmap * pMask)
+void    CDeBloom::SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask)
 {
 	std::vector<double>		vValues;
 
@@ -1196,7 +1196,7 @@ void    CDeBloom::SmoothMaskBorders(CMemoryBitmap * pBitmap, const C8BitGrayBitm
 }
 
 
-double CDeBloom::ComputeBackgroundValue(const CMemoryBitmap* pBitmap)
+double CDeBloom::ComputeBackgroundValue(CMemoryBitmap* pBitmap)
 {
 	double					fResult = 0.0;
 	CBackgroundCalibration	BackgroundCalibration;
@@ -1330,7 +1330,7 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 }
 
 
-void CDeBloom::CreateBloomMask(const CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+void CDeBloom::CreateBloomMask(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 {
 	m_pProgress = pProgress;
 	this->m_pMask = CreateMask(pBitmap);

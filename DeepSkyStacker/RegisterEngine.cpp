@@ -66,7 +66,7 @@ inline	void NormalizeAngle(int & lAngle)
 
 /* ------------------------------------------------------------------- */
 
-bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
+bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 {
 	bool						bResult = false;
 	std::vector<CStarAxisInfo>	vStarAxises;
@@ -175,7 +175,7 @@ bool CRegisteredFrame::FindStarShape(const CMemoryBitmap* pBitmap, CStar& star)
 
 /* ------------------------------------------------------------------- */
 
-bool CRegisteredFrame::ComputeStarCenter(const CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
+bool CRegisteredFrame::ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
 {
 	bool				bResult = false;
 	int				i, j;
@@ -394,7 +394,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-size_t CRegisteredFrame::RegisterSubRect(const CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars)
+size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars)
 {
 	double				fMaxIntensity = 0;
 	int				i, j, k;
@@ -928,7 +928,7 @@ double	CLightFrameInfo::ComputeMedianValue(CGrayBitmap & Bitmap)
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::RegisterPicture(const CGrayBitmap& Bitmap)
+void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	// Try to find star by studying the variation of luminosity
@@ -1055,11 +1055,11 @@ class CComputeLuminanceTask
 {
 public:
 	CGrayBitmap* m_pGrayBitmap;
-	const CMemoryBitmap* m_pBitmap;
+	CMemoryBitmap* m_pBitmap;
 	CDSSProgress* m_pProgress;
 
 public:
-	CComputeLuminanceTask(const CMemoryBitmap* pBm, CGrayBitmap* pGb, CDSSProgress* pPrg) :
+	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, CDSSProgress* pPrg) :
 		m_pGrayBitmap{ pGb },
 		m_pBitmap{ pBm },
 		m_pProgress{ pPrg }

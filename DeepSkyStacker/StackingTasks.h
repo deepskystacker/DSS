@@ -228,7 +228,6 @@ public :
 		m_bUsingFITS{ false },
 		m_bUseCustomRectangle{ false },
 		m_bCometAvailable{ false },
-		m_dwJobID{ GUID_NULL },
 		m_bDarkUsed{ false },
 		m_bBiasUsed{ false },
 		m_bFlatUsed{ false },
@@ -335,7 +334,7 @@ public :
 		return m_fMaxExposureTime;
 	}
 
-	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint32_t dwGroupID = 0);
+	void AddFileToTask(CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
 	void SetCustomRectangle(const CRect& rcCustom)
 	{
 		if (rcCustom.IsRectEmpty())

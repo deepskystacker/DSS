@@ -330,9 +330,9 @@ public:
 	virtual void	GetPixel(size_t i, size_t j, double& fGray) = 0;
 
 	virtual void	SetValue(size_t i, size_t j, double fRed, double fGreen, double fBlue) {};
-	virtual void	GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) {};
+	virtual void	GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const {};
 	virtual void	SetValue(size_t i, size_t j, double fGray) {};
-	virtual void	GetValue(size_t i, size_t j, double& fGray) {};
+	virtual void	GetValue(size_t i, size_t j, double& fGray) const {};
 
 	virtual bool	GetScanLine(size_t j, void* pScanLine) = 0;
 	virtual bool	SetScanLine(size_t j, void* pScanLine) = 0;
@@ -350,17 +350,17 @@ public:
 		crResult.blue = static_cast<WORD>(std::min(fBlue * scalingFactor, maxValue));
 	}
 
-	virtual int Width() = 0;
-	virtual int Height() = 0;
+	virtual int Width() const = 0;
+	virtual int Height() const = 0;
 	virtual int BitPerSample() = 0;
 	virtual int IsFloat() = 0;
 
-	virtual int RealWidth()
+	virtual int RealWidth() const
 	{
 		return Width();
 	}
 
-	virtual int RealHeight()
+	virtual int RealHeight() const
 	{
 		return Height();
 	}
@@ -370,7 +370,7 @@ public:
 		m_bTopDown = bTopDown;
 	}
 
-	virtual bool	IsMonochrome() = 0;
+	virtual bool	IsMonochrome() const = 0;
 
 	virtual void	SetMaster(bool bMaster)
 	{
@@ -392,7 +392,7 @@ public:
 		m_bCFA = bCFA;
 	}
 
-	virtual bool	IsCFA()
+	virtual bool	IsCFA() const
 	{
 		return m_bCFA;
 	}
@@ -415,7 +415,7 @@ public:
 	virtual std::shared_ptr<CMedianFilterEngine> GetMedianFilterEngine() const = 0;
 
 	virtual double GetMaximumValue() const = 0;
-	virtual void GetCharacteristics(CBitmapCharacteristics& bc) const = 0;
+	virtual void GetCharacteristics(CBitmapCharacteristics& bc) = 0;
 
 	virtual void InitIterator(void*& pRed, void*& pGreen, void*& pBlue, size_t& elementSize, const size_t x, const size_t y) = 0;
 	virtual void InitIterator(const void*& pRed, const void*& pGreen, const void*& pBlue, size_t& elementSize, const size_t x, const size_t y) const = 0;
@@ -871,7 +871,7 @@ public:
 			m_CFATransform = CFAT_NONE;
 	};
 
-	CFATRANSFORMATION GetCFATransformation()
+	CFATRANSFORMATION GetCFATransformation() const
 	{
 		return m_CFATransform;
 	};
@@ -946,7 +946,7 @@ protected:
 private:
 	void	DestroyTempFiles();
 	void	InitParts();
-	std::shared_ptr<CMemoryBitmap> SmoothOut(const CMemoryBitmap* pBitmap) const;
+	std::shared_ptr<CMemoryBitmap> SmoothOut(CMemoryBitmap* pBitmap) const;
 
 public:
 	CMultiBitmap() :
@@ -997,7 +997,7 @@ public:
 		return this->m_vImageOrder;
 	}
 
-	virtual bool AddBitmap(const CMemoryBitmap* pMemoryBitmap, CDSSProgress* pProgress = nullptr);
+	virtual bool AddBitmap(CMemoryBitmap* pMemoryBitmap, CDSSProgress* pProgress = nullptr);
 	virtual std::shared_ptr<CMemoryBitmap> GetResult(CDSSProgress* pProgress = nullptr);
 	virtual int GetNrChannels() const = 0;
 	virtual int GetNrBytesPerChannel() const = 0;
@@ -1071,7 +1071,7 @@ protected:
 			CCFABitmapInfo* pDst;
 
 			pBitmap->SetCFA(m_pBitmapModel->IsCFA());
-			pSrc = dynamic_cast<const CCFABitmapInfo*>(m_pBitmapModel.get());
+			pSrc = dynamic_cast<CCFABitmapInfo*>(m_pBitmapModel.get());
 			pDst = dynamic_cast<CCFABitmapInfo*>(pBitmap.get());
 
 			if (pSrc != nullptr && pDst != nullptr)
@@ -1185,12 +1185,12 @@ public:
 	virtual ~CGrayMultiBitmapT()
 	{}
 
-	virtual int GetNrChannels() override
+	virtual int GetNrChannels() const override
 	{
 		return 1;
 	};
 
-	virtual int GetNrBytesPerChannel() override
+	virtual int GetNrBytesPerChannel() const override
 	{
 		return sizeof(TType);
 	};
@@ -1262,12 +1262,12 @@ private:
 		return true; // Otherwise m_vPixels.resize() would have thrown bad_alloc.
 	}
 
-	inline void	CheckXY(size_t x, size_t y)
+	inline void	CheckXY(size_t x, size_t y) const
 	{
 		ZASSERTSTATE(IsXYOk(x, y));
 	}
 
-	inline bool	IsXYOk(size_t x, size_t y)
+	inline bool	IsXYOk(size_t x, size_t y) const
 	{
 		return (x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	}
@@ -1282,7 +1282,7 @@ private:
 		return GetOffset(static_cast<size_t>(x), static_cast<size_t>(y));
 	}
 
-	virtual bool IsMonochrome() override
+	virtual bool IsMonochrome() const override
 	{
 		return true;
 	}
@@ -1591,7 +1591,7 @@ public:
 		return m_bFloat;
 	}
 
-	virtual int Width() override
+	virtual int Width() const override
 	{
 		if (m_CFATransform == CFAT_SUPERPIXEL)
 			return m_lWidth / 2;
@@ -1599,7 +1599,7 @@ public:
 			return m_lWidth;
 	}
 
-	virtual int Height() override
+	virtual int Height() const override
 	{
 		if (m_CFATransform == CFAT_SUPERPIXEL)
 			return m_lHeight / 2;
@@ -1607,12 +1607,12 @@ public:
 			return m_lHeight;
 	}
 
-	virtual int RealHeight() override
+	virtual int RealHeight() const override
 	{
 		return m_lHeight;
 	}
 
-	virtual int RealWidth() override
+	virtual int RealWidth() const override
 	{
 		return m_lWidth;
 	}
@@ -1623,7 +1623,7 @@ public:
 		m_vPixels[GetOffset(i, j)] = fGray;
 	}
 
-	virtual void GetValue(size_t i, size_t j, double& fGray) override
+	virtual void GetValue(size_t i, size_t j, double& fGray) const override
 	{
 		//if (CFAT_SUPERPIXEL == m_CFATransform)  Bug fix 15th August 2020
 		//{
@@ -2087,12 +2087,12 @@ public:
 	{
 	};
 
-	virtual int GetNrChannels() override
+	virtual int GetNrChannels() const override
 	{
 		return 3;
 	};
 
-	virtual int GetNrBytesPerChannel() override
+	virtual int GetNrBytesPerChannel() const override
 	{
 		return sizeof(TType);
 	};
@@ -2154,7 +2154,7 @@ public:
 	CGrayBitmapT<TType> m_Blue;
 
 private:
-	inline void CheckXY(size_t x, size_t y)
+	inline void CheckXY(size_t x, size_t y) const
 	{
 		ZASSERTSTATE(x >= 0 && x < m_lWidth && y >= 0 && y < m_lHeight);
 	}
@@ -2215,12 +2215,12 @@ public:
 		return m_bFloat;
 	}
 
-	virtual int Width() override
+	virtual int Width() const override
 	{
 		return m_lWidth;
 	}
 
-	virtual int Height() override
+	virtual int Height() const override
 	{
 		return m_lHeight;
 	}
@@ -2234,7 +2234,7 @@ public:
 		return bResult;
 	}
 
-	virtual bool IsMonochrome() override
+	virtual bool IsMonochrome() const override
 	{
 		return false;
 	}
@@ -2250,7 +2250,7 @@ public:
 		m_Blue.m_vPixels[lOffset] = fBlue;
 	}
 
-	virtual void GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) override
+	virtual void GetValue(size_t i, size_t j, double& fRed, double& fGreen, double& fBlue) const override
 	{
 		CheckXY(i, j);
 
@@ -2402,7 +2402,7 @@ public:
 		return m_fMultiplier;
 	}
 
-	virtual double GetMaximumValue() override
+	virtual double GetMaximumValue() const override
 	{
 		return m_fMultiplier * 256.0;
 	}

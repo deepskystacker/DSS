@@ -1044,7 +1044,7 @@ IMAGEREGION	GetPixelRegion(int lX, int lY, int lWidth, int lHeight)
 };
 
 
-void CDarkFrameHotParameters::ComputeParameters(const CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels)
+void CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1159,7 +1159,7 @@ void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap
 
 /* ------------------------------------------------------------------- */
 
-double CDarkAmpGlowParameters::ComputeMedianValueInRect(const CMemoryBitmap* pBitmap, CRect& rc)
+double CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap* pBitmap, CRect& rc)
 {
 	ZFUNCTRACE_RUNTIME();
 	double				fResult = 0;
@@ -1222,7 +1222,7 @@ double CDarkAmpGlowParameters::ComputeMedianValueInRect(const CMemoryBitmap* pBi
 
 /* ------------------------------------------------------------------- */
 
-void CDarkAmpGlowParameters::FindPointsAndComputeParameters(const CMemoryBitmap* pBitmap)
+void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bMonochrome = pBitmap->IsMonochrome();

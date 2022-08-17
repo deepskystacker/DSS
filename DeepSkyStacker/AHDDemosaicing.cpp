@@ -95,7 +95,7 @@ public:
 
 
 template <class T>
-void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGBToLab& rgbToLab, CSmartPtr<CGrayBitmapT<T>>& pGrayBitmap, CSmartPtr<CColorBitmapT<T>>& pColorBitmap)
+void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGBToLab& rgbToLab, std::shared_ptr<CGrayBitmapT<T>>& pGrayBitmap, std::shared_ptr<CColorBitmapT<T>>& pColorBitmap)
 {
 	const T* pBaseGrayPixel = pGrayBitmap->GetGrayPixel(x, y);
 	T* pBaseOutputRedPixel = pColorBitmap->GetRedPixel(x, y);
@@ -547,7 +547,7 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 }
 
 template <class T>
-void InterpolateBorders(CSmartPtr<CGrayBitmapT<T>>& pGrayBitmap, CSmartPtr<CColorBitmapT<T>>& pColorBitmap)
+void InterpolateBorders(std::shared_ptr<CGrayBitmapT<T>>& pGrayBitmap, std::shared_ptr<CColorBitmapT<T>>& pColorBitmap)
 {
 	const int width = pGrayBitmap->Width();
 	const int height = pGrayBitmap->Height();
@@ -750,7 +750,7 @@ void InterpolateBorders(CSmartPtr<CGrayBitmapT<T>>& pGrayBitmap, CSmartPtr<CColo
 }
 
 template <class T>
-bool AHDDemosaicing(const CGrayBitmapT<T>& grayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress)
+bool AHDDemosaicing(std::shared_ptr<const CGrayBitmapT<T> >pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress)
 {
 	const int height = grayInputBitmap.Height();
 	const int width = grayInputBitmap.Width();
@@ -777,11 +777,11 @@ bool AHDDemosaicing(const CGrayBitmapT<T>& grayInputBitmap, std::shared_ptr<CMem
 		for (int row = 0; row < height; row += AHDWS - 4)
 		{
 			for (int col = 0; col < width; col += AHDWS - 4)
-				DoSubWindow(col, row, ahdVariables, rgbToLab, pGrayBitmap, pColorBitmap);
+				DoSubWindow(col, row, ahdVariables, rgbToLab, pGrayInputBitmap, pColorBitmap);
 			progressCallback(row, omp_get_thread_num());
 		}
 
-		InterpolateBorders(pGrayBitmap, pColorBitmap);
+		InterpolateBorders(pGgrayInputBitmap, pColorBitmap);
 
 		rpColorBitmap = pColorBitmap;
 
@@ -798,4 +798,4 @@ bool AHDDemosaicing(const CGrayBitmapT<T>& grayInputBitmap, std::shared_ptr<CMem
 }
 
 
-template bool AHDDemosaicing<std::uint16_t>(const CGrayBitmapT<std::uint16_t>& grayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress);
+template bool AHDDemosaicing<std::uint16_t>(CGrayBitmapT<std::uint16_t>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress);

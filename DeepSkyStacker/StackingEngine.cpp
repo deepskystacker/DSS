@@ -1352,7 +1352,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(const CMemoryBitmap* pBitmap) const
+bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitmap) const
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1473,7 +1473,7 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::SaveDeltaImage(const CMemoryBitmap* pBitmap) const
+bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1516,7 +1516,7 @@ bool CStackingEngine::SaveDeltaImage(const CMemoryBitmap* pBitmap) const
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::SaveCometImage(const CMemoryBitmap* pBitmap) const
+bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1563,7 +1563,7 @@ bool CStackingEngine::SaveCometImage(const CMemoryBitmap* pBitmap) const
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::SaveCometlessImage(const CMemoryBitmap* pBitmap) const
+bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1622,7 +1622,7 @@ private:
 
 public:
 	CEntropyInfo m_EntropyWindow;
-	const CMemoryBitmap* m_pBitmap;
+	CMemoryBitmap* m_pBitmap;
 	CPixelTransform m_PixTransform;
 	CTaskInfo* m_pLightTask;
 	CBackgroundCalibration m_BackgroundCalibration;
@@ -1637,7 +1637,7 @@ public:
 public:
 	CStackTask() = delete;
 	~CStackTask() = default;
-	CStackTask(const CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
+	CStackTask(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
 		m_pBitmap{ pBitmap },
 		m_pProgress{ pProgress }
 	{}
@@ -1807,7 +1807,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 		if (m_pProgress != nullptr)
 			m_pProgress->GetStart2Text(strStart2);
 
-		const C16BitGrayBitmap* pGrayBitmap = dynamic_cast<const C16BitGrayBitmap*>(pInBitmap.get());
+		C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap.get());
 		if (pGrayBitmap != nullptr && pGrayBitmap->GetCFATransformation() == CFAT_AHD)
 		{
 			// Start by demosaicing the input bitmap
@@ -1817,7 +1817,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 				strText.LoadString(IDS_AHDDEMOSAICING);
 				m_pProgress->Start2((LPCTSTR)strText, 0);
 			};
-			AHDDemosaicing<std::uint16_t>(*pGrayBitmap, pBitmap, m_pProgress);
+			AHDDemosaicing<std::uint16_t>(pGrayBitmap, pBitmap, m_pProgress);
 		}
 		else
 			pBitmap = pInBitmap;

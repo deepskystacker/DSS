@@ -28,13 +28,11 @@ void	CMRUList::readSettings()
 		QString fileName = settings.value(keyName).toString();
 		CString strValue(fileName.toStdWString().c_str());
 
-		FILE *			hFile;
-
 		if (std::FILE* hFile =
 #if defined _WINDOWS
-			_wfopen(fileName.toStdWString().c_str(), L"rt")
+			_wfopen(fileName.toStdWString().c_str(), L"rt"))
 #else
-			std::fopen(fileName.toStdString().c_str(), "rt")
+			std::fopen(fileName.toStdString().c_str(), "rt"))
 #endif
 		{
 			m_vLists.push_back(strValue);

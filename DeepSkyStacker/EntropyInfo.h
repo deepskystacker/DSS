@@ -60,7 +60,7 @@ public :
 class CEntropyInfo
 {
 private:
-	std::shared_ptr<const CMemoryBitmap> m_pBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	int m_lWindowSize;
 	int m_lNrPixels;
 	int m_lNrSquaresX;
@@ -106,7 +106,7 @@ public:
 	const int nrSquaresY() const { return m_lNrSquaresY; }
 	const int windowSize() const { return m_lWindowSize; }
 
-	void Init(std::shared_ptr<const CMemoryBitmap> pBitmap, int lWindowSize = 10, CDSSProgress* pProgress = nullptr)
+	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, CDSSProgress* pProgress = nullptr)
 	{
 		m_pBitmap = pBitmap;
 		m_lWindowSize = lWindowSize;

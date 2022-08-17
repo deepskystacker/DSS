@@ -201,11 +201,11 @@ private :
 	bool	StackLightFrame(std::shared_ptr<CMemoryBitmap> pBitmap, CPixelTransform& PixTransform, double fExposure, bool bComet);
 	bool	AdjustEntropyCoverage();
 	bool	AdjustBayerDrizzleCoverage();
-	bool	SaveCalibratedAndRegisteredLightFrame(const CMemoryBitmap * pBitmap) const;
+	bool	SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap * pBitmap) const;
 	bool	SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pBitmap) const;
-	bool	SaveDeltaImage(const CMemoryBitmap* pBitmap) const;
-	bool	SaveCometImage(const CMemoryBitmap* pBitmap) const;
-	bool	SaveCometlessImage(const CMemoryBitmap* pBitmap) const;
+	bool	SaveDeltaImage(CMemoryBitmap* pBitmap) const;
+	bool	SaveCometImage(CMemoryBitmap* pBitmap) const;
+	bool	SaveCometlessImage(CMemoryBitmap* pBitmap) const;
 	TRANSFORMATIONTYPE GetTransformationType();
 
 public :

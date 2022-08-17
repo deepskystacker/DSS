@@ -143,7 +143,7 @@ public:
 	CDarkFrameHotParameters() : m_fGrayValue{ 0 } {};
 	virtual ~CDarkFrameHotParameters() {};
 
-	void ComputeParameters(const CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels);
+	void ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels);
 };
 
 /* ------------------------------------------------------------------- */
@@ -205,7 +205,7 @@ private :
 		vRects.push_back(rc);
 	};
 
-	double ComputeMedianValueInRect(const CMemoryBitmap* pBitmap, CRect& rc);
+	double ComputeMedianValueInRect(CMemoryBitmap* pBitmap, CRect& rc);
 
 public :
 	CDarkAmpGlowParameters()
@@ -228,7 +228,7 @@ public :
 	virtual ~CDarkAmpGlowParameters() {};
 
 	void	ComputeParametersFromPoints(CMemoryBitmap * pBitmap);
-	void FindPointsAndComputeParameters(const CMemoryBitmap* pBitmap);
+	void FindPointsAndComputeParameters(CMemoryBitmap* pBitmap);
 	void	ComputeParametersFromIndice(int lIndice)
 	{
 		m_fGrayValue = m_fMedianHotest - m_vMedianColdest[lIndice];

@@ -12,7 +12,7 @@ class CImageFilter
 {
 public :
 	virtual ~CImageFilter() = default;
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) = 0;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -44,7 +44,7 @@ private :
 	bool m_bCFA;
 	int m_lWidth;
 	int m_lHeight;
-	const CMemoryBitmap* m_pInBitmap;
+	CMemoryBitmap* m_pInBitmap;
 	int m_lFilterSize;
 	std::vector<double> m_vGrayPixelValues;
 	std::vector<double> m_vRedPixelValues;
@@ -83,7 +83,7 @@ public:
 		return m_bCFA;
 	}
 
-	void SetBitmap(const CMemoryBitmap* pBitmap)
+	void SetBitmap(CMemoryBitmap* pBitmap)
 	{
 		m_pInBitmap = pBitmap;
 		if (pBitmap != nullptr)
@@ -95,7 +95,7 @@ public:
 		}
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -114,7 +114,7 @@ private :
 	EXCLUDEDPIXELVECTOR	m_vExcludedPixels;
 
 private :
-	void AnalyzeImage(const CMemoryBitmap * pInBitmap, bool bComputeThresholds);
+	void AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds);
 	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, CDSSProgress* pProgress = nullptr);
 
 public :
@@ -151,7 +151,7 @@ public :
 		m_bUseRejectThreshold  = false;
 	};
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -163,8 +163,8 @@ private :
 	double m_lSize;
 
 private :
-	void GetValuesAlongAngle(const CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vValues);
-	void GetValuesAlongAngle(const CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vRedValues, std::vector<double>& vGreenValues, std::vector<double>& vBlueValues);
+	void GetValuesAlongAngle(CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vValues);
+	void GetValuesAlongAngle(CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vRedValues, std::vector<double>& vGreenValues, std::vector<double>& vBlueValues);
 	void InitFilterMatrix(CFilterMatrix & fm);
 
 public :
@@ -177,7 +177,7 @@ public :
 		m_lSize  = lSize;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(const CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
 };
 
 #endif

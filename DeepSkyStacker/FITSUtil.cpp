@@ -1160,7 +1160,7 @@ bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 }
 
 
-bool CFITSWriter::WriteKey(LPSTR szKey, double fValue, LPSTR szComment)
+bool CFITSWriter::WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -1621,13 +1621,13 @@ bool CFITSWriter::Close()
 class CFITSWriteFromMemoryBitmap : public CFITSWriter
 {
 private :
-	const CMemoryBitmap* m_pMemoryBitmap;
+	CMemoryBitmap* m_pMemoryBitmap;
 
 private :
 	FITSFORMAT GetBestFITSFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CFITSWriteFromMemoryBitmap(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
+	CFITSWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
 		CFITSWriter(szFileName, pProgress),
 		m_pMemoryBitmap{ pBitmap }
 	{}
@@ -1762,7 +1762,7 @@ bool CFITSWriteFromMemoryBitmap::OnClose()
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1795,14 +1795,14 @@ bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* p
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -1833,7 +1833,7 @@ bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress* p
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, const CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
 {
 	return WriteFITS(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
 }
