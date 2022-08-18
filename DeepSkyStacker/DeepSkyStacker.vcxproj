@@ -468,7 +468,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h" />
     <ClInclude Include="..\Tools\Schemadef.h" />
     <ClInclude Include="..\Tools\ScrollDialog.h" />
-    <ClInclude Include="..\Tools\SmartPtr.h" />
     <ClInclude Include="..\Tools\SplitterControl.h" />
     <ClInclude Include="..\Tools\ThemeUtil.h" />
     <ClInclude Include="..\Tools\Tmschema.h" />
@@ -563,7 +562,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="qwinhost.h" />
     <ClInclude Include="RAWUtils.h" />
     <QtMoc Include="RecommendedSettings.h" />
-    <ClInclude Include="RefCount.h" />
     <ClInclude Include="RegisterEngine.h" />
     <QtMoc Include="RegisterSettings.h" />
     <ClInclude Include="Resource.h" />

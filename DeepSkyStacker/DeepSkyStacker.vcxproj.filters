@@ -574,9 +574,6 @@
     <ClInclude Include="..\Tools\ScrollDialog.h">
       <Filter>Tools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\SmartPtr.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\SplitterControl.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -768,9 +765,6 @@
     </ClInclude>
     <ClInclude Include="BitmapBase.h">
       <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="RefCount.h">
-      <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="avx_support.h">
       <Filter>Kernel</Filter>

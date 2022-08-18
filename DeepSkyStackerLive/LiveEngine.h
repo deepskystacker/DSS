@@ -75,13 +75,13 @@ typedef enum tagSTACKIMAGEINFO
 
 /* ------------------------------------------------------------------- */
 
-class CLiveEngineMsg : public CRefCount
+class CLiveEngineMsg
 {
 private :
 	LIVEENGINEMSG				m_Msg;
 	CString						m_strFile;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CSmartPtr<C32BitsBitmap>	m_pWndBitmap;
+	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
+	std::shared_ptr<C32BitsBitmap>	m_pWndBitmap;
 	CString						m_strText;
 	LONG						m_lMax;
 	LONG						m_lProgress;
@@ -468,7 +468,7 @@ public :
 	};
 };
 
-typedef CSmartPtr<CLiveEngineMsg>				LIVEENGINEMSGPTR;
+typedef std::shared_ptr<CLiveEngineMsg>			LIVEENGINEMSGPTR;
 typedef std::deque<LIVEENGINEMSGPTR >			LIVEENGINEMSGLIST;
 typedef LIVEENGINEMSGLIST::iterator				LIVEENGINEMSGITERATOR;
 
