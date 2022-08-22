@@ -33,11 +33,12 @@
 #include <set>
 #include <algorithm>
 #include <math.h>
+#include "ZExcept.h"
 
 using namespace std;
 
-#include <gdiplus.h>
-using namespace Gdiplus;
+//#include <gdiplus.h>
+//using namespace Gdiplus;
 
 /*
 #ifndef _GDIPLUS_H
@@ -45,22 +46,31 @@ using namespace Gdiplus;
 // I designed this with GDI+ in mind. However, this particular code doesn't
 // use GDI+ at all, only some of it's variable types.
 // These definitions are substitutes for those of GDI+.
-typedef float REAL;
+typedef float float;
 struct PointF
 {
 	PointF() : X(0), Y(0)	{}
 	PointF(const PointF& p) : X(p.X), Y(p.Y)	{}
-	PointF(REAL x, REAL y) : X(x), Y(y)	{}
+	PointF(float x, float y) : X(x), Y(y)	{}
 	PointF operator+(const PointF& p) const	{ return PointF(X + p.X, Y + p.Y); }
 	PointF operator-(const PointF& p) const	{ return PointF(X - p.X, Y - p.Y); }
-	REAL X;
-	REAL Y;
+	float X;
+	float Y;
 };
 
-const REAL REAL_EPSILON = 1.192092896e-07F;	// = 2^-23; I've no idea why this is a good value, but GDI+ has it.
+const float REAL_EPSILON = 1.192092896e-07F;	// = 2^-23; I've no idea why this is a good value, but GDI+ has it.
 
 #endif // _GDIPLUS_H
 */
+
+//
+// changes to remove dependencies on Microsoft GDI+ 
+//
+// Change REAL to float everywhere.
+//
+// Change to use Qt's QPointF instead of PointF
+//
+
 ///////////////////
 // vertex
 
@@ -69,30 +79,30 @@ class vertex
 public:
 	vertex()					: m_Pnt(0.0F, 0.0F)			{}
 	vertex(const vertex& v)		: m_Pnt(v.m_Pnt)			{}
-	vertex(const PointF& pnt)	: m_Pnt(pnt)				{}
-	vertex(REAL x, REAL y)		: m_Pnt(x, y)				{}
-	vertex(int x, int y)		: m_Pnt((REAL) x, (REAL) y)	{}
+	vertex(const QPointF& pnt)	: m_Pnt(pnt)				{}
+	vertex(float x, float y)	: m_Pnt(x, y)				{}
+	vertex(int x, int y)		: m_Pnt((float) x, (float) y)	{}
 
 	bool operator<(const vertex& v) const
 	{
-		if (m_Pnt.X == v.m_Pnt.X) return m_Pnt.Y < v.m_Pnt.Y;
-		return m_Pnt.X < v.m_Pnt.X;
+		if (m_Pnt.x() == v.m_Pnt.x()) return m_Pnt.y() < v.m_Pnt.y();
+		return m_Pnt.x() < v.m_Pnt.x();
 	}
 
 	bool operator==(const vertex& v) const
 	{
-		return m_Pnt.X == v.m_Pnt.X && m_Pnt.Y == v.m_Pnt.Y;
+		return m_Pnt == v.m_Pnt;
 	}
 
-	REAL GetX()	const	{ return m_Pnt.X; }
-	REAL GetY() const	{ return m_Pnt.Y; }
+	float GetX() const	{ return m_Pnt.x(); }
+	float GetY() const	{ return m_Pnt.y(); }
 
-	void SetX(REAL x)		{ m_Pnt.X = x; }
-	void SetY(REAL y)		{ m_Pnt.Y = y; }
+	void SetX(float x)	{ m_Pnt.setX(x); }
+	void SetY(float y)	{ m_Pnt.setY(y); }
 
-	const PointF& GetPoint() const		{ return m_Pnt; }
+	const QPointF& GetPoint() const		{ return m_Pnt; }
 protected:
-	PointF	m_Pnt;
+	QPointF	m_Pnt;
 };
 
 typedef set<vertex> vertexSet;
@@ -138,21 +148,21 @@ public:
 
 	bool operator<(const triangle& tri) const
 	{
-		if (m_Center.X == tri.m_Center.X) return m_Center.Y < tri.m_Center.Y;
-		return m_Center.X < tri.m_Center.X;
+		if (m_Center.x() == tri.m_Center.x()) return m_Center.y() < tri.m_Center.y();
+		return m_Center.x() < tri.m_Center.x();
 	}
 
 	const vertex * GetVertex(int i) const
 	{
-		ASSERT(i >= 0);
-		ASSERT(i < 3);
+		ZASSERT(i >= 0);
+		ZASSERT(i < 3);
 		return m_Vertices[i];
 	}
 
 	bool IsLeftOf(cvIterator itVertex) const
 	{
 		// returns true if * itVertex is to the right of the triangle's circumcircle
-		return itVertex->GetPoint().X > (m_Center.X + m_R);
+		return itVertex->GetPoint().x() > (m_Center.x() + m_R);
 	}
 
 	bool CCEncompasses(cvIterator itVertex) const
@@ -165,25 +175,25 @@ public:
 		// Therefore, I've commented them out.
 
 		// First check boundary box.
-//		REAL x = itVertex->GetPoint().X;
+//		float x = itVertex->GetPoint().X;
 //
 //		if (x > (m_Center.X + m_R)) return false;
 //		if (x < (m_Center.X - m_R)) return false;
 //
-//		REAL y = itVertex->GetPoint().Y;
+//		float y = itVertex->GetPoint().Y;
 //
 //		if (y > (m_Center.Y + m_R)) return false;
 //		if (y < (m_Center.Y - m_R)) return false;
 
-		PointF dist = itVertex->GetPoint() - m_Center;		// the distance between v and the circle center
-		REAL dist2 = dist.X * dist.X + dist.Y * dist.Y;		// squared
+		QPointF dist = itVertex->GetPoint() - m_Center;		// the distance between v and the circle center
+		float dist2 = dist.x() * dist.x() + dist.y() * dist.y();		// squared
 		return dist2 <= m_R2;								// compare with squared radius
 	}
 protected:
 	const vertex * m_Vertices[3];	// the three triangle vertices
-	PointF m_Center;				// center of circumcircle
-	REAL m_R;			// radius of circumcircle
-	REAL m_R2;			// radius of circumcircle, squared
+	QPointF m_Center;				// center of circumcircle
+	float m_R;			// radius of circumcircle
+	float m_R2;			// radius of circumcircle, squared
 
 	void SetCircumCircle();
 };
