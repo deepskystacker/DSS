@@ -114,38 +114,35 @@ public :
 class CFlatFrame
 {
 public :
-	CSmartPtr<CMemoryBitmap>	m_pFlatFrame;
-	CFlatNormalization			m_FlatNormalization;
-	bool						m_bComputed;
+	std::shared_ptr<CMemoryBitmap> m_pFlatFrame;
+	CFlatNormalization m_FlatNormalization;
+	bool m_bComputed;
 
 public :
-	CFlatFrame()
+	CFlatFrame() : m_bComputed{ false }
+	{}
+
+	virtual ~CFlatFrame()
+	{}
+
+	bool IsOk() const
+	{
+		return static_cast<bool>(m_pFlatFrame) && m_pFlatFrame->IsOk();
+	}
+
+	bool IsCFA() const
+	{
+		return ::IsCFA(m_pFlatFrame.get());
+	}
+
+	void Clear()
 	{
 		m_bComputed = false;
-	};
+		m_pFlatFrame.reset();
+	}
 
-	virtual  ~CFlatFrame()
-	{
-	};
-
-	bool	IsOk()
-	{
-		return m_pFlatFrame && m_pFlatFrame->IsOk();
-	};
-
-	bool	IsCFA()
-	{
-		return ::IsCFA(m_pFlatFrame);
-	};
-
-	void	Clear()
-	{
-		m_bComputed = false;
-		m_pFlatFrame.Release();
-	};
-
-	void	ComputeFlatNormalization(CDSSProgress * pProgress = nullptr);
-	bool	ApplyFlat(CMemoryBitmap * pTarget, CDSSProgress * pProgress = nullptr);
+	void ComputeFlatNormalization(CDSSProgress* pProgress = nullptr);
+	bool ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress * pProgress = nullptr);
 };
 
 /* ------------------------------------------------------------------- */

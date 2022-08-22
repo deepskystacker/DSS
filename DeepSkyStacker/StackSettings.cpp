@@ -84,7 +84,7 @@ StackSettings::StackSettings(QWidget *parent) :
 	//
 	connect(ui->tabWidget, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
 
-	CWorkspace workspace;
+	Workspace workspace;
 	workspace.Push();
 }
 
@@ -217,7 +217,7 @@ void StackSettings::on_chooseFolder_clicked(bool value)
 void StackSettings::accept()
 {
 	QSettings settings;
-	CWorkspace workspace;
+	Workspace workspace;
 
 	settings.setValue("Dialogs/StackSettings/geometry", saveGeometry());
 
@@ -256,7 +256,7 @@ void StackSettings::accept()
 void StackSettings::reject()
 {
 	QSettings settings;
-	CWorkspace workspace;
+	Workspace workspace;
 
 	settings.setValue("Dialogs/StackSettings/geometry", saveGeometry());
 

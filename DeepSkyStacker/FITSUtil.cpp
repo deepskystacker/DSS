@@ -60,7 +60,7 @@ inline double AdjustColor(const double fColor)
 
 bool	IsFITSRaw()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	return workspace.value("FitsDDP/FITSisRAW", false).toBool();
 };
@@ -69,7 +69,7 @@ bool	IsFITSRaw()
 
 CFATYPE GetFITSCFATYPE()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	bool isFitsRaw = workspace.value("FitsDDP/FITSisRAW", false).toBool();
 	CFATYPE pattern = (CFATYPE)workspace.value("FitsDDP/BayerPattern", (uint)CFATYPE_NONE).toUInt();
@@ -82,7 +82,7 @@ CFATYPE GetFITSCFATYPE()
 
 bool	IsFITSRawBayer()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	interpolation = workspace.value("FitsDDP/Interpolation").toString();
@@ -94,7 +94,7 @@ bool	IsFITSRawBayer()
 
 bool	IsFITSSuperPixels()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	workspace.value("FitsDDP/Interpolation").toString();
@@ -106,7 +106,7 @@ bool	IsFITSSuperPixels()
 
 bool	IsFITSBilinear()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	workspace.value("FitsDDP/Interpolation").toString();
@@ -118,7 +118,7 @@ bool	IsFITSBilinear()
 
 bool	IsFITSAHD()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 	QString				interpolation;
 
 	workspace.value("FitsDDP/Interpolation").toString();
@@ -130,7 +130,7 @@ bool	IsFITSAHD()
 
 double	GetFITSBrightnessRatio()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	return workspace.value("FitsDDP/Brightness", 1.0).toDouble();
 };
@@ -139,7 +139,7 @@ double	GetFITSBrightnessRatio()
 
 void	GetFITSRatio(double & fRed, double & fGreen, double & fBlue)
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	fGreen = workspace.value("FitsDDP/Brightness", 1.0).toDouble();
 
@@ -843,24 +843,20 @@ bool CFITSReader::Close()
 	};
 
 	return bResult;
-};
+}
 
-
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
 class CFITSReadInMemoryBitmap : public CFITSReader
 {
 private :
-	CMemoryBitmap **			m_ppBitmap;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
+	std::shared_ptr<CMemoryBitmap>& m_outBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 
 public :
-	CFITSReadInMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
-		: CFITSReader(szFileName, pProgress)
-	{
-		m_ppBitmap = ppBitmap;
-	};
+	CFITSReadInMemoryBitmap(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress*	pProgress):
+		CFITSReader(szFileName, pProgress),
+		m_outBitmap{ rpBitmap }
+	{}
 
 	virtual ~CFITSReadInMemoryBitmap() { Close(); };
 
@@ -876,31 +872,31 @@ public :
 bool CFITSReadInMemoryBitmap::OnOpen()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
+	bool bResult = false;
 
 	if (m_lNrChannels == 1)
 	{
 		if (m_lBitsPerPixel == 8)
 		{
-			m_pBitmap.Attach(new C8BitGrayBitmap());
-			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C8BitGrayBitmap>();
+			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (m_lBitsPerPixel == 16)
 		{
-			m_pBitmap.Attach(new C16BitGrayBitmap());
-			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C16BitGrayBitmap>();
+			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (m_lBitsPerPixel == 32 || m_lBitsPerPixel == 64)
 		{
 			if (m_bFloat)
 			{
-				m_pBitmap.Attach(new C32BitFloatGrayBitmap());
-				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap %p", m_pBitmap.m_p);
+				m_pBitmap = std::make_shared<C32BitFloatGrayBitmap>();
+				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap %p", m_pBitmap.get());
 			}
 			else
 			{
-				m_pBitmap.Attach(new C32BitGrayBitmap());
-				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap %p", m_pBitmap.m_p);
+				m_pBitmap = std::make_shared<C32BitGrayBitmap>();
+				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap %p", m_pBitmap.get());
 			};
 		};
 	}
@@ -908,30 +904,30 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 	{
 		if (m_lBitsPerPixel == 8)
 		{
-			m_pBitmap.Attach(new C24BitColorBitmap());
-			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C24BitColorBitmap>();
+			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (m_lBitsPerPixel == 16)
 		{
-			m_pBitmap.Attach(new C48BitColorBitmap());
-			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C48BitColorBitmap>();
+			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (m_lBitsPerPixel == 32 || m_lBitsPerPixel == 64)
 		{
 			if (m_bFloat)
 			{
-				m_pBitmap.Attach(new C96BitFloatColorBitmap());
-				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap %p", m_pBitmap.m_p);
+				m_pBitmap = std::make_shared<C96BitFloatColorBitmap>();
+				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap %p", m_pBitmap.get());
 			}
 			else
 			{
-				m_pBitmap.Attach(new C96BitColorBitmap());
-				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap %p", m_pBitmap.m_p);
+				m_pBitmap = std::make_shared<C96BitColorBitmap>();
+				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap %p", m_pBitmap.get());
 			};
 		};
 	};
 
-	if (m_pBitmap)
+	if (static_cast<bool>(m_pBitmap))
 	{
 		bResult = m_pBitmap->Init(m_lWidth, m_lHeight);
 
@@ -968,10 +964,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 
 		if (m_CFAType != CFATYPE_NONE)
 		{
-			CCFABitmapInfo *		pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(m_pBitmap.m_p);
-			//C16BitGrayBitmap *		pGray16Bitmap = dynamic_cast<C16BitGrayBitmap *>(m_pBitmap.m_p);
-
-			if (pCFABitmapInfo)
+			if (CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(m_pBitmap.get()))
 			{
 				m_pBitmap->SetCFA(true);
 				pCFABitmapInfo->SetCFAType(m_CFAType);
@@ -993,7 +986,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 
 				// Retrieve ratios
 				GetFITSRatio(m_fRedRatio, m_fGreenRatio, m_fBlueRatio);
-			};
+			}
 		}
 		else
 			m_fBrightnessRatio = GetFITSBrightnessRatio();
@@ -1008,17 +1001,16 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 		m_pBitmap->setFilterName(m_filterName);
 		m_pBitmap->m_DateTime = m_DateTime;
 
-		CString			strDescription;
-
+		CString strDescription;
 		if (m_strMake.GetLength())
-			strDescription.Format(_T("FITS (%s)"), (LPCTSTR)m_strMake);
+			strDescription.Format(_T("FITS (%s)"), static_cast<LPCTSTR>(m_strMake));
 		else
 			strDescription	= _T("FITS");
 		m_pBitmap->SetDescription(strDescription);
-	};
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1031,7 +1023,7 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	
 	try
 	{
-		if (m_pBitmap)
+		if (static_cast<bool>(m_pBitmap))
 		{
 			if (m_lNrChannels == 1)
 			{
@@ -1048,19 +1040,19 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 					case BAYER_RED:
 						fRed = min(maxValue, fRed * m_fRedRatio);
 						break;
-					};
+					}
 				}
 				else
 				{
 					fRed = min(maxValue, fRed * m_fBrightnessRatio);
 					fGreen = min(maxValue, fGreen * m_fBrightnessRatio);
 					fBlue = min(maxValue, fBlue * m_fBrightnessRatio);
-				};
+				}
 				m_pBitmap->SetPixel(lX, lY, fRed);
 			}
 			else
 				m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
-		};
+		}
 	}
 	catch (ZException e)
 	{
@@ -1093,40 +1085,26 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 bool CFITSReadInMemoryBitmap::OnClose()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
-
-	if (m_pBitmap)
+	if (static_cast<bool>(m_pBitmap))
 	{
-		bResult = true;
-		m_pBitmap.CopyTo(m_ppBitmap);
 		m_pBitmap->m_ExtraInfo = m_ExtraInfo;
-	};
+		m_outBitmap = m_pBitmap;
+		return true;
+	}
+	else
+		return false;
+}
 
-	return bResult;
-};
 
-/* ------------------------------------------------------------------- */
-
-bool	ReadFITS(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
+bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress *	pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
-	CFITSReadInMemoryBitmap	fits(szFileName, ppBitmap, pProgress);
+	CFITSReadInMemoryBitmap	fits(szFileName, rpBitmap, pProgress);
+	return fits.Open() && fits.Read();
+}
 
-	if (ppBitmap)
-	{
-		bResult = fits.Open();
-		if (bResult)
-			bResult = fits.Read();
-		// if (bResult) bResult = fits.Close();
-	};
 
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
+bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = false;
@@ -1135,9 +1113,8 @@ bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 
 	// Exclude JPEG, PNG or TIFF format
 	{
-		TCHAR				szExt[1+_MAX_EXT];
-		CString				strExt;
-
+		TCHAR szExt[1+_MAX_EXT];
+		CString strExt;
 		_tsplitpath(szFileName, nullptr, nullptr, nullptr, szExt);
 		strExt = szExt;
 
@@ -1152,10 +1129,11 @@ bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	}
 	if (bContinue && fits.Open())
 	{
-		if (fits.m_strMake.GetLength()) 
+		if (fits.m_strMake.GetLength() != 0) 
 			BitmapInfo.m_strFileType.Format(_T("FITS (%s)"), fits.m_strMake.GetString());
 		else 
 			BitmapInfo.m_strFileType	= _T("FITS");
+
 		BitmapInfo.m_strFileName	= szFileName;
 		BitmapInfo.m_lWidth			= fits.Width();
 		BitmapInfo.m_lHeight		= fits.Height();
@@ -1176,15 +1154,13 @@ bool	GetFITSInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 		BitmapInfo.m_yBayerOffset	= fits.getYOffset();
 		BitmapInfo.m_filterName		= fits.m_filterName;
 		bResult = true;
-	};
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-bool	CFITSWriter::WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment)
+bool CFITSWriter::WriteKey(LPCSTR szKey, double fValue, LPCSTR szComment)
 {
 	bool				bResult = false;
 	int					nStatus = 0;
@@ -1645,14 +1621,14 @@ bool CFITSWriter::Close()
 class CFITSWriteFromMemoryBitmap : public CFITSWriter
 {
 private :
-	CMemoryBitmap*			m_pMemoryBitmap;
+	CMemoryBitmap* m_pMemoryBitmap;
 
 private :
-	FITSFORMAT	GetBestFITSFormat(CMemoryBitmap* pBitmap);
+	FITSFORMAT GetBestFITSFormat(const CMemoryBitmap* pBitmap);
 
 public :
 	CFITSWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
-	   CFITSWriter(szFileName, pProgress),
+		CFITSWriter(szFileName, pProgress),
 		m_pMemoryBitmap{ pBitmap }
 	{}
 
@@ -1673,25 +1649,25 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-FITSFORMAT CFITSWriteFromMemoryBitmap::GetBestFITSFormat(CMemoryBitmap * pBitmap)
+FITSFORMAT CFITSWriteFromMemoryBitmap::GetBestFITSFormat(const CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	if (dynamic_cast<C24BitColorBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C24BitColorBitmap*>(pBitmap) != nullptr)
 		return FF_8BITRGB;
-	if (dynamic_cast<C48BitColorBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C48BitColorBitmap*>(pBitmap) != nullptr)
 		return FF_16BITRGB;
-	if (dynamic_cast<C96BitColorBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C96BitColorBitmap*>(pBitmap) != nullptr)
 		return FF_32BITRGB;
-	if (dynamic_cast<C96BitFloatColorBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C96BitFloatColorBitmap*>(pBitmap) != nullptr)
 		return FF_32BITRGBFLOAT;
-	if (dynamic_cast<C8BitGrayBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C8BitGrayBitmap*>(pBitmap) != nullptr)
 		return FF_8BITGRAY;
-	if (dynamic_cast<C16BitGrayBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C16BitGrayBitmap*>(pBitmap) != nullptr)
 		return FF_16BITGRAY;
-	if (dynamic_cast<C32BitGrayBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C32BitGrayBitmap*>(pBitmap) != nullptr)
 		return FF_32BITGRAY;
-	if (dynamic_cast<C32BitFloatGrayBitmap*>(pBitmap) != nullptr)
+	if (dynamic_cast<const C32BitFloatGrayBitmap*>(pBitmap) != nullptr)
 		return FF_32BITGRAYFLOAT;
 
 	return FF_UNKNOWN;
@@ -1814,16 +1790,15 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgre
 	};
 
 	return bResult;
-};
+}
 
 
 /* ------------------------------------------------------------------- */
 
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription)
 {
-	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription,
-			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
-};
+	return WriteFITS(szFileName, pBitmap, pProgress, FITSFormat, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1834,7 +1809,7 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgre
 
 	if (pBitmap)
 	{
-		CFITSWriteFromMemoryBitmap fits(szFileName, pBitmap, pProgress);
+		CFITSWriteFromMemoryBitmap fits{ szFileName, pBitmap, pProgress };
 
 		fits.m_ExtraInfo = pBitmap->m_ExtraInfo;
 		fits.m_DateTime  = pBitmap->m_DateTime;
@@ -1858,13 +1833,11 @@ bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgre
 
 /* ------------------------------------------------------------------- */
 
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
 {
-	return WriteFITS(szFileName, pBitmap, pProgress, szDescription,
-			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
-};
+	return WriteFITS(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0);
+}
 
-/* ------------------------------------------------------------------- */
 
 bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 {
@@ -1872,42 +1845,36 @@ bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 	return GetFITSInfo(szFileName, BitmapInfo);
 };
 
-/* ------------------------------------------------------------------- */
 
-int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress)
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	int result = -1;		// -1 means not a FITS file.
+	int result = -1; // -1 means not a FITS file.
 
 	if (GetFITSInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-
-		if (ReadFITS(szFileName, &pBitmap, pProgress))
+		if (ReadFITS(szFileName, rpBitmap, pProgress))
 		{
 			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear()))
 			{
-				C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pBitmap.m_p);
-				if (IsSuperPixels())
-					pGrayBitmap->UseSuperPixels(true);
-				else if (IsRawBayer())
-					pGrayBitmap->UseRawBayer(true);
-				else if (IsRawBilinear())
-					pGrayBitmap->UseBilinear(true);
-			};
-			pBitmap.CopyTo(ppBitmap);
+				if (C16BitGrayBitmap* pGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(rpBitmap.get()))
+				{
+					if (IsSuperPixels())
+						pGrayBitmap->UseSuperPixels(true);
+					else if (IsRawBayer())
+						pGrayBitmap->UseRawBayer(true);
+					else if (IsRawBilinear())
+						pGrayBitmap->UseBilinear(true);
+				}
+			}
 			result = 0;
 		}
 		else
-		{
-			result = 1;		// Failed to read file
-		}
-	};
-
+			result = 1; // Failed to read file
+	}
 	return result;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 void GetFITSExtension(LPCTSTR szFileName, CString& strExtension)
 {
@@ -1923,6 +1890,4 @@ void GetFITSExtension(LPCTSTR szFileName, CString& strExtension)
 		strExtension = strExt;
 	else
 		strExtension = ".fts";
-};
-
-/* ------------------------------------------------------------------- */
+}

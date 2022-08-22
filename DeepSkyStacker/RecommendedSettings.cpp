@@ -44,7 +44,7 @@ extern bool	g_bShowRefStars;
 RecommendedSettings::RecommendedSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::RecommendedSettings),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	pStackingTasks(nullptr),
 	initialised(false)
 {
@@ -378,10 +378,10 @@ static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR & vRecommendations
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
-	CWorkspace					workspace;
+	Workspace					workspace;
 	DWORD						dwThreshold;
 
-	if (CWorkspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
+	if (Workspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
 	{
 		rec.setText(QCoreApplication::translate("RecommendedSettings",
 			"You are using a low star detection threshold",
@@ -437,7 +437,7 @@ static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, int lNrL
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
-	CWorkspace					workspace;
+	Workspace					workspace;
 	DWORD						dwCometMode;
 
 	const auto dwCometMode = workspace.value("Stacking/CometStackingMode").toUInt();

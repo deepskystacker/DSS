@@ -68,7 +68,7 @@ void CBackgroundLoading::LoadCurrentImage()
 		if (LoadPicture(strImage, adb))
 		{
 			m_CriticalSection.Lock();
-			CLoadedImage			li;
+			CLoadedImage li;
 
 			li.m_hBitmap = adb.m_pWndBitmap;
 			li.m_pBitmap = adb.m_pBitmap;
@@ -157,41 +157,36 @@ void CBackgroundLoading::CloseThread()
 	};
 };
 
-/* ------------------------------------------------------------------- */
 
-bool	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C32BitsBitmap ** pphBitmap)
+bool CBackgroundLoading::LoadImage(LPCTSTR szImage, std::shared_ptr<CMemoryBitmap>& rpBitmap, std::shared_ptr<C32BitsBitmap>& rphBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
-	bool				bFound = false;
+	bool bResult = false;
+	bool bFound = false;
 
 	// Check if the image is in the list first
-	if (ppBitmap)
-		*ppBitmap = nullptr;
-	if (pphBitmap)
-		*pphBitmap = nullptr;
 	m_CriticalSection.Lock();
-	for (int i = 0;i<m_vLoadedImages.size();i++)
+	for (int i = 0; i < m_vLoadedImages.size(); i++)
 	{
 		if (!m_vLoadedImages[i].m_strName.CompareNoCase(szImage))
 		{
-			m_vLoadedImages[i].m_pBitmap.CopyTo(ppBitmap);
-			m_vLoadedImages[i].m_hBitmap.CopyTo(pphBitmap);
+			rpBitmap = m_vLoadedImages[i].m_pBitmap;
+			rphBitmap = m_vLoadedImages[i].m_hBitmap;
 			bFound = true;
 		}
 		else
 		{
 			m_vLoadedImages[i].m_lLastUse++;
-		};
-	};
+		}
+	}
 	if (bFound)
 	{
-		if (m_vLoadedImages.size()>MAXIMAGESINCACHE)
+		if (m_vLoadedImages.size() > MAXIMAGESINCACHE)
 		{
 			// Remove the last images from the cache
 			std::sort(m_vLoadedImages.begin(), m_vLoadedImages.end());
 			m_vLoadedImages.resize(MAXIMAGESINCACHE);
-		};
+		}
 
 		bResult = true;
 	}
@@ -199,10 +194,10 @@ bool	CBackgroundLoading::LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C
 	{
 		LoadImageInBackground(szImage);
 		bResult = false;
-	};
+	}
 	m_CriticalSection.Unlock();
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */

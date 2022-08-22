@@ -5,7 +5,7 @@
 #include <QWidget>
 #include <QPicture>
 
-class CWorkspace;
+class Workspace;
 class StackSettings;
 
 namespace Ui {
@@ -28,7 +28,7 @@ public slots:
 
 private:
 	Ui::ResultParameters *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	StackSettings * pStackSettings;
 	QPixmap normalPix;
 	QPixmap mosaicPix;

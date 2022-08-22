@@ -212,46 +212,44 @@ void CBatchStacking::UpdateListBoxWidth()
 
 /* ------------------------------------------------------------------- */
 
-bool CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
+bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
-	CWorkspace			workspace;
-	CAllStackingTasks	tasks;
-	CFrameList			list;
+	bool bResult = true;
+	Workspace workspace;
+	CAllStackingTasks tasks;
+	CFrameList list;
 
 	workspace.Push();
 	list.LoadFilesFromList(szList);
 	list.FillTasks(tasks);
 	tasks.ResolveTasks();
 
-	if (tasks.m_vStacks.size())
+	if (!tasks.m_vStacks.empty())
 	{
-		bool						bContinue = true;
-		CDSSProgressDlg				dlg;
-		CStackingEngine				StackingEngine;
-		CSmartPtr<CMemoryBitmap>	pBitmap;
-		CString						strReferenceFrame;
+		bool bContinue = true;
+		CDSSProgressDlg dlg;
+		CStackingEngine StackingEngine;
+		CString strReferenceFrame;
 
 		// First check that the images are registered
-		if (list.GetNrUnregisteredCheckedLightFrames())
+		if (list.GetNrUnregisteredCheckedLightFrames() != 0)
 		{
 			CRegisterEngine	RegisterEngine;
-
 			bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
-		};
+		}
 
 		if (bContinue)
 		{
 			if (list.GetReferenceFrame(strReferenceFrame))
 				StackingEngine.SetReferenceFrame(strReferenceFrame);
 
-			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, &pBitmap);
+			std::shared_ptr<CMemoryBitmap> pBitmap;
+			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
 			if (bContinue)
 			{
-				CString				strFileName;
-				CString				strText;
-
+				CString strFileName;
+				CString strText;
 				TCHAR				szFileName[1+_MAX_FNAME];
 				_tsplitpath(szList, nullptr, nullptr, szFileName, nullptr);
 
@@ -269,32 +267,29 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString & strOutputFile)
 					if (iff == IFF_TIFF)
 					{
 						if (pBitmap->IsMonochrome())
-							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
 						else
-							WriteTIFF(strFileName, pBitmap, &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
 					}
 					else
 					{
 						if (pBitmap->IsMonochrome())
-							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITGRAYFLOAT, nullptr);
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
 						else
-							WriteFITS(strFileName, pBitmap, &dlg, FF_32BITRGBFLOAT, nullptr);
-					};
-
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
+					}
 					dlg.End2();
-				};
-
+				}
 				strOutputFile = strFileName;
-			};
-		};
+			}
+		}
 		dlg.Close();
 		bResult = bContinue;
-	};
-
+	}
 	workspace.Pop();
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 

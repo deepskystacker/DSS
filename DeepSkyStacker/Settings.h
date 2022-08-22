@@ -108,7 +108,7 @@ protected :
 protected :
 	bool	ReadVariableFromWorkspace(LPCTSTR szKey, LPCTSTR szDefault, LPCTSTR szPrefix = nullptr)
 	{
-		CWorkspace		workspace;
+		Workspace		workspace;
 		CString			strValue;
 		QString		keyName((QChar *)szKey);
 

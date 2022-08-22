@@ -44,10 +44,16 @@ class QWheelEvent;
 #include <QtWidgets/QWidget>
 #include <QDebug>
 
+namespace DSS
+{
+    class EditStars;
+    class SelectRect;
+}
+
 class DSSImageView : public QWidget
 {
-    friend class DSSSelectRect;
-    friend class DSSEditStars;
+    friend class DSS::SelectRect;
+    friend class DSS::EditStars;
     Q_OBJECT
 
 typedef QWidget

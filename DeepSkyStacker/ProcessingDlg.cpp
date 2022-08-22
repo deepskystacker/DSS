@@ -776,52 +776,48 @@ void CProcessingDlg::CopyPictureToClipboard()
 
 void CProcessingDlg::CreateStarMask()
 {
-	bool				bResult = false;
+	bool bResult = false;
 
 	if (GetDeepStack(this).IsLoaded())
 	{
 		KillTimer(1);
 
-		CStarMaskDlg				dlgStarMask;
-
+		CStarMaskDlg dlgStarMask;
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
-		if (dlgStarMask.DoModal()==IDOK)
+		if (dlgStarMask.DoModal() == IDOK)
 		{
-			CDSSProgressDlg				dlg;
-			CSmartPtr<CMemoryBitmap>	pBitmap;
-			CStarMaskEngine				starmask;
-			CSmartPtr<CMemoryBitmap>	pStarMask;
+			CDSSProgressDlg dlg;
+			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
-			GetDeepStack(this).GetStackedBitmap().GetBitmap(&pBitmap, &dlg);
-			if (starmask.CreateStarMask2(pBitmap, &pStarMask, &dlg))
+			std::shared_ptr<CMemoryBitmap> pBitmap = GetDeepStack(this).GetStackedBitmap().GetBitmap(&dlg);
+			if (std::shared_ptr<CMemoryBitmap> pStarMask = starmask.CreateStarMask2(pBitmap.get(), &dlg))
 			{
 				// Save the star mask to a file
-				CString					strFileName;
-				CString					strText;
-				bool					bFits;
-				CString					strDescription;
+				CString strFileName;
+				CString strText;
+				CString strDescription;
+				bool bFits;
 
 				strDescription.LoadString(IDS_STARMASKDESCRIPTION);
 
 				dlgStarMask.GetOutputFileName(strFileName, bFits);
 				strText.Format(IDS_SAVINGSTARMASK, (LPCTSTR)strFileName);
-				dlg.Start2((LPCTSTR)strText, 0);
+				dlg.Start2(static_cast<LPCTSTR>(strText), 0);
 				if (bFits)
-					WriteFITS((LPCTSTR)strFileName, pStarMask, &dlg, strDescription);
+					WriteFITS(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
 				else
-					WriteTIFF((LPCTSTR)strFileName, pStarMask, &dlg, strDescription);
-			};
-		};
+					WriteTIFF(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
+			}
+		}
 		SetTimer(1, 100, nullptr);
 	}
 	else
 	{
 		AfxMessageBox(IDS_MSG_NOPICTUREFORSTARMASK, MB_OK | MB_ICONSTOP);
-	};
-};
+	}
+}
 
-/* ------------------------------------------------------------------- */
 
 bool CProcessingDlg::SavePictureToFile()
 {

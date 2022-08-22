@@ -1,9 +1,6 @@
 #pragma once
 // StackingDlg.h : header file
 //
-#include <filesystem>
-
-namespace fs = std::filesystem;
 
 #include "mrupath.h"
 #include <CtrlCache.h>
@@ -32,12 +29,22 @@ class QNetworkReply;
 namespace DSS
 {
 	class Group;
+	class EditStars;
+	class SelectRect;
+	class ToolBar;
 }
 
 namespace Ui
 {
 	class StackingDlg;
 }
+
+namespace std::filesystem
+{
+	class path;
+}
+
+namespace fs = std::filesystem;
 
 class StackingDlg : public QDialog
 {
@@ -49,7 +56,7 @@ class StackingDlg : public QDialog
 public slots:
 	void setSelectionRect(QRectF rect);
 	void tableViewItemClickedEvent(const QModelIndex&);
-	void imageLoaded();
+	void imageLoad();
 
 public:
 	explicit StackingDlg(QWidget* parent = nullptr);
@@ -82,10 +89,17 @@ public:
 
 private:
 	Ui::StackingDlg* ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	bool initialised;
 	std::uint16_t	groupId;		// Initially zero - is the group we are currently working with
-	CString			m_strShowFile;
+	QString			m_strShowFile;
+	CGammaTransformation	m_GammaTransformation;
+
+	bool fileAlreadyLoaded(const fs::path& file);
+
+	std::unique_ptr<DSS::EditStars> editStarsPtr;
+	std::unique_ptr<DSS::SelectRect> selectRectPtr;
+	std::unique_ptr<DSS::ToolBar> pToolBar;
 
 	QRectF	selectRect;
 
@@ -126,8 +140,8 @@ private:
 
 	void updateCheckedItemScores();
 
-public slots:
-	void imageLoad();
+	bool saveOnClose();
+
 };
 
 #if (0)
@@ -221,7 +235,7 @@ public :
 private :
 	void		UncheckNonStackablePictures();
 	void		UpdateCheckedAndOffsets(CStackingEngine & StackingEngine);
-	void		DoStacking(CAllStackingTasks & tasks, double fPercent = 100.0);
+	void DoStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
 
 	void		UpdateGroupTabs();
 	void		UpdateLayout();

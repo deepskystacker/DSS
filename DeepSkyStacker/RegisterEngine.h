@@ -151,7 +151,7 @@ protected :
 
 	void	Reset()
 	{
-		CWorkspace			workspace;
+		Workspace			workspace;
 		DWORD				dwThreshold = 10;
 
 		m_vStars.clear();
@@ -173,7 +173,7 @@ protected :
         m_fFWHM = 0;
 	};
 
-	bool	FindStarShape(CMemoryBitmap * pBitmap, CStar & star);
+	bool FindStarShape(CMemoryBitmap* pBitmap, CStar& star);
 
 	void	ComputeOverallQuality()
 	{
@@ -202,10 +202,10 @@ public :
 		m_fRoundnessTolerance = fTolerance;
 	};
 
-	void	GetStars(STARVECTOR & vStars)
+	STARVECTOR GetStars() const
 	{
-		vStars = m_vStars;
-	};
+		return m_vStars;
+	}
 
 	void	SetStars(const STARVECTOR & vStars)
 	{
@@ -220,25 +220,23 @@ public :
 
 		// Compute FWHM
 		m_fFWHM = 0.0;
-		for (STARVECTOR::size_type i = 0;i<m_vStars.size();i++)
-			vFWHM.push_back(m_vStars[i].m_fMeanRadius * 2.35/1.5);
+		for (const auto& star : m_vStars)
+			vFWHM.push_back(star.m_fMeanRadius * (2.35 / 1.5));
 
-		if (vFWHM.size())
+		if (!vFWHM.empty())
 		{
 			// m_fFWHM = Median(vFWHM);
 			m_fFWHM = Average(vFWHM);
-		};
-	};
+		}
+	}
 
 	bool	IsRegistered()
 	{
 		return m_bInfoOk;
-	};
+	}
 
-
-//	void	RegisterPicture(CMemoryBitmap * pBitmap);
-	bool	ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius);
-	size_t	RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
+	bool ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
+	size_t RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
 	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);
@@ -302,12 +300,12 @@ private :
 
 		m_bTransformedCometPosition = false;
 
-		CWorkspace			workspace;
+		Workspace			workspace;
 	
 		m_bRemoveHotPixels = workspace.value("Register/DetectHotPixels", false).toBool();
 	};
 
-public :
+public:
 	CLightFrameInfo()
 	{
 		Reset();
@@ -360,17 +358,17 @@ public :
 			return false;
 	};
 
-	void	RegisterPicture(CMemoryBitmap * pBitmap);
-	void	RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, CDSSProgress * pProgress = nullptr);
-	void	SaveRegisteringInfo();
+	void RegisterPicture(CMemoryBitmap* pBitmap);
+	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, CDSSProgress * pProgress = nullptr);
+	void SaveRegisteringInfo();
 
-private :
-	bool	ReadInfoFileName();
-	void	RegisterPicture();
-	double	ComputeMedianValue(CGrayBitmap & Bitmap);
-	void	RegisterPicture(CGrayBitmap & Bitmap);
-	bool	ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
-	void	ComputeLuminanceBitmap(CMemoryBitmap * pBitmap, CGrayBitmap ** ppGrayBitmap);
+private:
+	bool ReadInfoFileName();
+	void RegisterPicture();
+	void RegisterPicture(CGrayBitmap& Bitmap);
+	double ComputeMedianValue(CGrayBitmap& Bitmap);
+	bool ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
+	std::shared_ptr<CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
 };
 
 /* ------------------------------------------------------------------- */
@@ -425,7 +423,7 @@ private :
 	bool						m_bSaveCalibratedDebayered;
 
 private :
-	bool	SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile);
+	bool SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile);
 
 public :
 	CRegisterEngine()

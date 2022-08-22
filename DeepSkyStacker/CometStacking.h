@@ -11,7 +11,7 @@ namespace Ui {
 class CometStacking;
 }
 
-class CWorkspace;
+class Workspace;
 
 class CometStacking : public QWidget
 {
@@ -35,7 +35,7 @@ private slots:
 
 private:
     Ui::CometStacking *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
     COMETSTACKINGMODE m_CometStackingMode;
 	QPixmap standardPix;
 	QPixmap cometPix;

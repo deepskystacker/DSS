@@ -41,7 +41,7 @@ extern bool		g_bShowRefStars;
 RegisterSettings::RegisterSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::RegisterSettings),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	initialised(false),
 	forceRegister(false),
 	stackAfter(false),
@@ -255,8 +255,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	dlg.Start(CString((wchar_t*)string.utf16()), 0, false);
 	dlg.SetJointProgress(true);
-	fi.RegisterPicture(CString((wchar_t*)firstLightFrame.utf16()),
-		(double)detectionThreshold / 100.0, true, medianFilter, &dlg);
+	fi.RegisterPicture(CString(reinterpret_cast<const wchar_t*>(firstLightFrame.utf16())), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);
 
 	string = tr("%1 star(s)", "IDC_NRSTARS").arg(fi.m_vStars.size());

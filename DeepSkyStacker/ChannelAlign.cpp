@@ -2,268 +2,234 @@
 #include "ChannelAlign.h"
 #include "RegisterEngine.h"
 #include "MatchingStars.h"
+#include "BitmapIterator.h"
 
 /* ------------------------------------------------------------------- */
 
-void	CChannelAlign::CopyBitmap(CMemoryBitmap * pSrcBitmap, CMemoryBitmap * pTgtBitmap)
+void CChannelAlign::CopyBitmap(const CMemoryBitmap* pSrcBitmap, CMemoryBitmap* pTgtBitmap) const
 {
 	ZFUNCTRACE_RUNTIME();
-	PixelIterator				itSrc;
-	PixelIterator				itTgt;
-	int						lHeight = pSrcBitmap->Height(),
-								lWidth = pSrcBitmap->Width();
 
-	pSrcBitmap->GetIterator(&itSrc);
-	pTgtBitmap->GetIterator(&itTgt);
+	const int lHeight = pSrcBitmap->Height();
+	const int lWidth = pSrcBitmap->Width();
+
+	BitmapIteratorConst<const CMemoryBitmap*> itSrc{ pSrcBitmap };
+	BitmapIterator<CMemoryBitmap*> itTgt{ pTgtBitmap };
+
+	for (int j = 0; j < lHeight; j++)
+	{
+		for (int i = 0; i < lWidth; i++, ++itSrc, ++itTgt)
+		{
+			const double fGray = std::min(itSrc.GetPixel(), 255.0);
+			itTgt.SetPixel(fGray);
+		}
+	}
+}
+
+
+std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, CDSSProgress* pProgress)
+{
+	ZFUNCTRACE_RUNTIME();
+
+	CString strText;
+	const int lWidth = pBitmap->Width();
+	const int lHeight = pBitmap->Height();
+
+	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pBitmap->Clone(true) };
+	pOutBitmap->Init(lWidth, lHeight);
+
+	PIXELDISPATCHVECTOR vPixels;
+	vPixels.reserve(16);
+
+	if (pProgress != nullptr)
+	{
+		strText.LoadString(IDS_ALIGNINGCHANNEL);
+		pProgress->Start2(strText, lHeight);
+	}
 
 	for (int j = 0; j < lHeight; j++)
 	{
 		for (int i = 0; i < lWidth; i++)
 		{
-			double				fGray;
-
-			itSrc->GetPixel(fGray);
-			fGray = min(fGray, 255.0);
-			itTgt->SetPixel(fGray);
-
-			(*itSrc)++;
-			(*itTgt)++;
-		};
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-bool	CChannelAlign::AlignChannel(CMemoryBitmap * pBitmap, CMemoryBitmap ** ppBitmap, CPixelTransform & PixTransform, CDSSProgress * pProgress)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool						bResult = false;
-	CSmartPtr<CMemoryBitmap>	pOutBitmap;
-	CString						strText;
-	int						lWidth = pBitmap->Width(),
-								lHeight = pBitmap->Height();
-	PIXELDISPATCHVECTOR			vPixels;
-
-	vPixels.reserve(16);
-
-	pOutBitmap.Attach(pBitmap->Clone(true));
-	pOutBitmap->Init(lWidth, lHeight);
-
-	if (pProgress)
-	{
-		strText.LoadString(IDS_ALIGNINGCHANNEL);
-		pProgress->Start2(strText, lHeight);
-	};
-
-	for (int j = 0;j<lHeight;j++)
-	{
-		for (int i = 0;i<lWidth;i++)
-		{
-			double		fGray;
-			CPointExt	pt(i, j);
-			CPointExt	ptOut;
+			double fGray;
+			CPointExt pt(i, j);
+			CPointExt ptOut;
 
 			ptOut = PixTransform.Transform(pt);
 			pBitmap->GetPixel(i, j, fGray);
 
-			if (fGray && ptOut.IsInRect(0, 0, lWidth-1, lHeight-1))
+			if (fGray != 0 && ptOut.IsInRect(0, 0, lWidth - 1, lHeight - 1))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, 1.0, vPixels);
 
-				for (int k = 0;k<vPixels.size();k++)
+				for (const CPixelDispatch& pixel : vPixels)
 				{
-					CPixelDispatch &		Pixel = vPixels[k];
-
 					// For each plane adjust the values
-					if (Pixel.m_lX >= 0 && Pixel.m_lX < lWidth &&
-						Pixel.m_lY >= 0 && Pixel.m_lY < lHeight)
+					if (pixel.m_lX >= 0 && pixel.m_lX < lWidth && pixel.m_lY >= 0 && pixel.m_lY < lHeight)
 					{
-						double		fPreviousGray;
-
-						pOutBitmap->GetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousGray);
-						fPreviousGray   += (double)fGray * Pixel.m_fPercentage;
-						pOutBitmap->SetPixel(Pixel.m_lX, Pixel.m_lY, fPreviousGray);
-					};
-				};
-			};
-		};
-		if (pProgress)
+						double fPreviousGray;
+						pOutBitmap->GetPixel(pixel.m_lX, pixel.m_lY, fPreviousGray);
+						pOutBitmap->SetPixel(pixel.m_lX, pixel.m_lY, fPreviousGray + fGray * pixel.m_fPercentage);
+					}
+				}
+			}
+		}
+		if (pProgress != nullptr)
 			pProgress->Progress2(nullptr, j+1);
-	};
+	}
 
-	if (pProgress)
+	if (pProgress != nullptr)
 		pProgress->End2();
 
-	pOutBitmap.CopyTo(ppBitmap);
+	return pOutBitmap;
+}
 
-	return bResult;
-};
 
-/* ------------------------------------------------------------------- */
-
-bool	CChannelAlign::AlignChannels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
 
-	if (!pBitmap->IsMonochrome())
+	if (pBitmap->IsMonochrome())
+		return true;
+
+	if (CColorBitmap* pColorBitmap = dynamic_cast<CColorBitmap*>(pBitmap))
 	{
-		CColorBitmap *		pColorBitmap = dynamic_cast<CColorBitmap*>(pBitmap);
+		CMemoryBitmap* const pRed	= pColorBitmap->GetRed();
+		CMemoryBitmap* const pGreen	= pColorBitmap->GetGreen();
+		CMemoryBitmap* const pBlue	= pColorBitmap->GetBlue();
 
-		if (pColorBitmap)
+		if (pProgress)
 		{
-			CMemoryBitmap *		pRed;
-			CMemoryBitmap *		pGreen;
-			CMemoryBitmap *		pBlue;
+			// We will advance the progress1 bar for each channel (3 of them)
+			pProgress->Start(nullptr, 3, false);
+			pProgress->Progress1(nullptr, 0);
+		}
 
-			pRed	= pColorBitmap->GetRed();
-			pGreen	= pColorBitmap->GetGreen();
-			pBlue	= pColorBitmap->GetBlue();
+		// Register each channels
+		CLightFrameInfo lfiRed;
+		CLightFrameInfo lfiGreen;
+		CLightFrameInfo lfiBlue;
 
-			if (pProgress)
+		lfiRed.SetProgress(pProgress);
+		lfiGreen.SetProgress(pProgress);
+		lfiBlue.SetProgress(pProgress);
+
+		lfiRed.RegisterPicture(pRed);
+		if (pProgress)
+			pProgress->Progress1(nullptr, 1);
+		lfiGreen.RegisterPicture(pGreen);
+		if (pProgress)
+			pProgress->Progress1(nullptr, 2);
+		lfiBlue.RegisterPicture(pBlue);
+		if (pProgress)
+			pProgress->Progress1(nullptr, 3);
+
+		// Get the best one to align the others
+		CLightFrameInfo* pReference;
+		CLightFrameInfo* pSecond;
+		CLightFrameInfo* pThird;
+
+//		CMemoryBitmap* pReferenceBitmap;
+		CMemoryBitmap* pSecondBitmap;
+		CMemoryBitmap* pThirdBitmap;
+
+		const double fMaxScore = std::max(lfiRed.m_fOverallQuality, std::max(lfiGreen.m_fOverallQuality, lfiBlue.m_fOverallQuality));
+		if (fMaxScore == lfiRed.m_fOverallQuality)
+		{
+			pReference	= &lfiRed;
+			pSecond		= &lfiGreen;
+			pThird		= &lfiBlue;
+//			pReferenceBitmap = pRed;
+			pSecondBitmap	 = pGreen;
+			pThirdBitmap	 = pBlue;
+		}
+		else if (fMaxScore == lfiGreen.m_fOverallQuality)
+		{
+			pReference	= &lfiGreen;
+			pSecond		= &lfiRed;
+			pThird		= &lfiBlue;
+//			pReferenceBitmap = pGreen;
+			pSecondBitmap	 = pRed;
+			pThirdBitmap	 = pBlue;
+		}
+		else
+		{
+			pReference	= &lfiBlue;
+			pSecond		= &lfiRed;
+			pThird		= &lfiGreen;
+//			pReferenceBitmap = pBlue;
+			pSecondBitmap	 = pRed;
+			pThirdBitmap	 = pGreen;
+		};
+
+		// Compute the transformations
+		CMatchingStars MatchingStars;
+		MatchingStars.SetSizes(pBitmap->Width(), pBitmap->Height());
+		{
+			STARVECTOR& vStarsOrg = pReference->m_vStars;
+
+			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+
+			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+				MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+		}
+
+		{
+			STARVECTOR& vStarsOrg = pSecond->m_vStars;
+
+			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+
+			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+		}
+
+		bool bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pSecond->m_BilinearParameters);
+
+		if (bTransformationsOk)
+		{
+			STARVECTOR& vStarsOrg = pThird->m_vStars;
+
+			std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
+
+			MatchingStars.ClearTarget();
+
+			for (size_t i = 0; i < min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100)); i++)
+				MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
+
+			bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pThird->m_BilinearParameters);
+		}
+
+		// Align the channels
+		if (bTransformationsOk)
+		{
+			if (pProgress != nullptr)
 			{
-				// We will advance the progress1 bar for each channel (3 of them)
-				pProgress->Start(nullptr, 3, false);
+				// Advance the progress1 bar for each alignment step (2 of them)
+				pProgress->Start(nullptr, 2, false);
 				pProgress->Progress1(nullptr, 0);
 			}
 
-			// Register each channels
-			CLightFrameInfo		lfiRed;
-			CLightFrameInfo		lfiGreen;
-			CLightFrameInfo		lfiBlue;
+			CPixelTransform pixTransform;
+			pixTransform.m_BilinearParameters = pSecond->m_BilinearParameters;
+			std::shared_ptr<CMemoryBitmap> pOutSecondBitmap = AlignChannel(pSecondBitmap, pixTransform, pProgress);
 
-			lfiRed.SetProgress(pProgress);
-			lfiGreen.SetProgress(pProgress);
-			lfiBlue.SetProgress(pProgress);
-
-			lfiRed.RegisterPicture(pRed);
-			if (pProgress)
+			if (pProgress != nullptr)
 				pProgress->Progress1(nullptr, 1);
-			lfiGreen.RegisterPicture(pGreen);
-			if (pProgress)
+
+			pixTransform.m_BilinearParameters = pThird->m_BilinearParameters;
+			std::shared_ptr<CMemoryBitmap> pOutThirdBitmap = AlignChannel(pThirdBitmap, pixTransform, pProgress);
+
+			if (pProgress != nullptr)
 				pProgress->Progress1(nullptr, 2);
-			lfiBlue.RegisterPicture(pBlue);
-			if (pProgress)
-				pProgress->Progress1(nullptr, 3);
-
-			// Get the best one to align the others
-			double				fMaxScore;
-			CLightFrameInfo *	pReference;
-			CLightFrameInfo *	pSecond;
-			CLightFrameInfo *	pThird;
-
-			CMemoryBitmap *		pReferenceBitmap;
-			CMemoryBitmap *		pSecondBitmap;
-			CMemoryBitmap *		pThirdBitmap;
-
-			fMaxScore = max(lfiRed.m_fOverallQuality, max(lfiGreen.m_fOverallQuality, lfiBlue.m_fOverallQuality));
-			if (fMaxScore == lfiRed.m_fOverallQuality)
-			{
-				pReference	= &lfiRed;
-				pSecond		= &lfiGreen;
-				pThird		= &lfiBlue;
-				pReferenceBitmap = pRed;
-				pSecondBitmap	 = pGreen;
-				pThirdBitmap	 = pBlue;
-			}
-			else if (fMaxScore == lfiGreen.m_fOverallQuality)
-			{
-				pReference	= &lfiGreen;
-				pSecond		= &lfiRed;
-				pThird		= &lfiBlue;
-				pReferenceBitmap = pGreen;
-				pSecondBitmap	 = pRed;
-				pThirdBitmap	 = pBlue;
-			}
-			else
-			{
-				pReference	= &lfiBlue;
-				pSecond		= &lfiRed;
-				pThird		= &lfiGreen;
-				pReferenceBitmap = pBlue;
-				pSecondBitmap	 = pRed;
-				pThirdBitmap	 = pGreen;
-			};
-
-			// Compute the transformations
-			CMatchingStars		MatchingStars;
-			bool				bTransformationsOk;
-
-			MatchingStars.SetSizes(pBitmap->Width(), pBitmap->Height());
-			{
-				STARVECTOR &		vStarsOrg = pReference->m_vStars;
-
-				std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
-				for (int i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
-					MatchingStars.AddReferenceStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-			};
-
-			{
-				STARVECTOR &		vStarsOrg = pSecond->m_vStars;
-
-				std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
-				for (int i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
-					MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-			};
-
-			bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pSecond->m_BilinearParameters);
-
-			if (bTransformationsOk)
-			{
-				STARVECTOR &		vStarsOrg = pThird->m_vStars;
-
-				std::sort(vStarsOrg.begin(), vStarsOrg.end(), CompareStarLuminancy);
-
-				MatchingStars.ClearTarget();
-
-				for (int i = 0;i<min(vStarsOrg.size(), static_cast<STARVECTOR::size_type>(100));i++)
-					MatchingStars.AddTargetedStar(vStarsOrg[i].m_fX, vStarsOrg[i].m_fY);
-
-				bTransformationsOk = MatchingStars.ComputeCoordinateTransformation(pThird->m_BilinearParameters);
-			};
-
-			// Align the channels
-			CSmartPtr<CMemoryBitmap>	pOutSecondBitmap;
-			CSmartPtr<CMemoryBitmap>	pOutThirdBitmap;
-
-			if (bTransformationsOk)
-			{
-				bResult = true;
-				CPixelTransform				PixTransform;
-
-				if (pProgress)
-				{
-					// Advance the progress1 bar for each alignment step (2 of them)
-					pProgress->Start(nullptr, 2, false);
-					pProgress->Progress1(nullptr, 0);
-				}
-
-				PixTransform.m_BilinearParameters = pSecond->m_BilinearParameters;
-				AlignChannel(pSecondBitmap, &pOutSecondBitmap, PixTransform, pProgress);
-				if (pProgress)
-					pProgress->Progress1(nullptr, 1);
-
-				PixTransform.m_BilinearParameters = pThird->m_BilinearParameters;
-				AlignChannel(pThirdBitmap, &pOutThirdBitmap, PixTransform, pProgress);
-				if (pProgress)
-					pProgress->Progress1(nullptr, 2);
-			};
 
 			// Dump the resulting modified channels in the image
-			if (bResult)
-			{
-				CopyBitmap(pOutSecondBitmap, pSecondBitmap);
-				CopyBitmap(pOutThirdBitmap, pThirdBitmap);
-			};
-		};
+			CopyBitmap(pOutSecondBitmap.get(), pSecondBitmap);
+			CopyBitmap(pOutThirdBitmap.get(), pThirdBitmap);
+
+			return true;
+		}
 	}
-	else
-		bResult = true;
 
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
+	return false;
+}

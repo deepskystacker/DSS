@@ -10,8 +10,8 @@
 
 /* ------------------------------------------------------------------- */
 
-bool	LoadFrame(LPCTSTR szFile, PICTURETYPE PistureType, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap);
-bool	AreExposureEquals(double fExposure1, double fExposure2);
+bool LoadFrame(LPCTSTR szFile, PICTURETYPE PistureType, CDSSProgress * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */
 
@@ -130,10 +130,8 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-/* ------------------------------------------------------------------- */
-
-bool	GetTaskResult(CTaskInfo * pTaskInfo, CDSSProgress * pProgress, CMemoryBitmap ** ppBitmap);
-void	ClearTaskCache();
+bool GetTaskResult(const CTaskInfo* pTaskInfo, CDSSProgress* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+void ClearTaskCache();
 
 /* ------------------------------------------------------------------- */
 
@@ -187,10 +185,10 @@ public :
 		return (*this);
 	};
 
-	bool	DoOffsetTask(CDSSProgress * pProgress);
-	bool	DoDarkTask(CDSSProgress * pProgress);
-	bool	DoFlatTask(CDSSProgress * pProgress);
-	bool	DoDarkFlatTask(CDSSProgress * pProgress);
+	bool	DoOffsetTask(CDSSProgress* const pProgress);
+	bool	DoDarkTask(CDSSProgress* const pProgress);
+	bool	DoFlatTask(CDSSProgress* const pProgress);
+	bool	DoDarkFlatTask(CDSSProgress* const pProgress);
 };
 
 /* ------------------------------------------------------------------- */
@@ -221,65 +219,30 @@ public :
 	std::vector<CStackingInfo>	m_vStacks;
 
 private :
-	CTaskInfo *	FindBestMatchingTask(const CTaskInfo & ti, PICTURETYPE TaskType);
-	void		CopyFrom(const CAllStackingTasks & tasks)
-	{
-		m_bCalibrating		= tasks.m_bCalibrating;
-		m_bUsingJPEG		= tasks.m_bUsingJPEG;
-		m_bUsingFITS		= tasks.m_bUsingFITS;
-		m_bUseCustomRectangle = tasks.m_bUseCustomRectangle;
-		m_bCometAvailable	= tasks.m_bCometAvailable;
-		m_rcCustom			= tasks.m_rcCustom;
-		m_vTasks			= tasks.m_vTasks;
-		m_vStacks			= tasks.m_vStacks;
-		m_bUsingBayer		= tasks.m_bUsingBayer;
-		m_bUsingColorImages = tasks.m_bUsingColorImages;
-
-		m_lNrLightFrames	= tasks.m_lNrLightFrames;
-		m_lNrBiasFrames		= tasks.m_lNrBiasFrames;
-		m_lNrDarkFrames		= tasks.m_lNrDarkFrames;
-		m_lNrDarkFlatFrames	= tasks.m_lNrDarkFlatFrames;
-		m_lNrFlatFrames		= tasks.m_lNrFlatFrames;
-		m_fMaxExposureTime	= tasks.m_fMaxExposureTime;
-
-        m_bDarkUsed         = tasks.m_bDarkUsed;
-        m_bBiasUsed         = tasks.m_bBiasUsed;
-        m_bFlatUsed         = tasks.m_bFlatUsed;
-	};
+	CTaskInfo*	FindBestMatchingTask(const CTaskInfo& ti, PICTURETYPE TaskType);
 
 public :
-	CAllStackingTasks()
-	{
-		m_bCalibrating = false;
-		m_bUsingJPEG   = false;
-		m_bUsingFITS   = false;
-		m_bUseCustomRectangle = false;
-		m_bCometAvailable	  = false;
-		m_bDarkUsed		= false;
-		m_bBiasUsed		= false;
-		m_bFlatUsed		= false;
-		m_bUsingBayer	= false;
-		m_bUsingColorImages = false;
+	CAllStackingTasks() :
+		m_bCalibrating{ false },
+		m_bUsingJPEG{ false },
+		m_bUsingFITS{ false },
+		m_bUseCustomRectangle{ false },
+		m_bCometAvailable{ false },
+		m_bDarkUsed{ false },
+		m_bBiasUsed{ false },
+		m_bFlatUsed{ false },
+		m_bUsingBayer{ false },
+		m_bUsingColorImages{ false },
+		m_lNrLightFrames{ 0 },
+		m_lNrBiasFrames{ 0 },
+		m_lNrDarkFrames{ 0 },
+		m_lNrDarkFlatFrames{ 0 },
+		m_lNrFlatFrames{ 0 },
+		m_fMaxExposureTime{ 0 }
+	{}
 
-		m_lNrLightFrames	= 0;
-		m_lNrBiasFrames		= 0;
-		m_lNrDarkFrames		= 0;
-		m_lNrDarkFlatFrames	= 0;
-		m_lNrFlatFrames		= 0;
-		m_fMaxExposureTime  = 0;
-	};
-
-	CAllStackingTasks(const CAllStackingTasks & tasks)
-	{
-		CopyFrom(tasks);
-	};
-
-	CAllStackingTasks & operator = (const CAllStackingTasks & tasks)
-	{
-		CopyFrom(tasks);
-		return (*this);
-	};
-
+	CAllStackingTasks(const CAllStackingTasks&) = default;
+	CAllStackingTasks& operator=(const CAllStackingTasks&) = default;
 	~CAllStackingTasks() = default;
 
 	void	Clear()
@@ -299,80 +262,80 @@ public :
 		m_lNrDarkFlatFrames	= 0;
 		m_lNrFlatFrames		= 0;
 		m_fMaxExposureTime	= 0;
-	};
+	}
 
-	bool	AreCalibratingJPEGFiles()
+	bool AreCalibratingJPEGFiles() const
 	{
 		return m_bCalibrating && m_bUsingJPEG;
-	};
+	}
 
-	bool	AreBayerImageUsed()
+	bool AreBayerImageUsed() const
 	{
 		return m_bUsingBayer;
-	};
+	}
 
-	bool	AreFITSImageUsed()
+	bool AreFITSImageUsed() const
 	{
 		return m_bUsingFITS;
-	};
+	}
 
-	bool	AreColorImageUsed()
+	bool AreColorImageUsed() const
 	{
 		return m_bUsingColorImages;
-	};
+	}
 
-	void	SetCometAvailable(bool bSet)
+	void SetCometAvailable(bool bSet)
 	{
 		m_bCometAvailable = bSet;
-	};
+	}
 
-	bool	IsCometAvailable()
+	bool IsCometAvailable() const
 	{
 		return m_bCometAvailable;
-	};
+	}
 
-	bool	AreDarkUsed()
+	bool AreDarkUsed() const
 	{
 		return m_bDarkUsed;
-	};
+	}
 
-	bool	AreFlatUsed()
+	bool AreFlatUsed() const
 	{
 		return m_bFlatUsed;
-	};
+	}
 
-	bool	AreBiasUsed()
+	bool AreBiasUsed() const
 	{
 		return m_bBiasUsed;
-	};
+	}
 
-	int	GetNrLightFrames()
+	int GetNrLightFrames() const
 	{
 		return m_lNrLightFrames;
-	};
-	int	GetNrBiasFrames()
+	}
+	int GetNrBiasFrames() const
 	{
 		return m_lNrBiasFrames;
-	};
-	int	GetNrDarkFrames()
+	}
+	int GetNrDarkFrames() const
 	{
 		return m_lNrDarkFrames;
-	};
-	int	GetNrFlatFrames()
+	}
+	int GetNrFlatFrames() const
 	{
 		return m_lNrFlatFrames;
-	};
-	int	GetNrDarkFlatFrames()
+	}
+	int GetNrDarkFlatFrames() const
 	{
 		return m_lNrDarkFlatFrames;
-	};
-	double	GetMaxExposureTime()
+	}
+	double GetMaxExposureTime() const
 	{
 		return m_fMaxExposureTime;
-	};
+	}
 
-	void	AddFileToTask(const CFrameInfo & FrameInfo, uint16_t dwGroupID = 0);
-	void	SetCustomRectangle(const CRect & rcCustom)
+	void AddFileToTask(CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
+	void SetCustomRectangle(const CRect& rcCustom)
 	{
 		if (rcCustom.IsRectEmpty())
 		{
@@ -382,44 +345,42 @@ public :
 		{
 			m_bUseCustomRectangle = true;
 			m_rcCustom = rcCustom;
-		};
-	};
+		}
+	}
 
-	void	UseCustomRectangle(bool bUse)
+	void UseCustomRectangle(bool bUse)
 	{
 		if (!m_rcCustom.IsRectEmpty())
 			m_bUseCustomRectangle = bUse;
 		else
 			m_bUseCustomRectangle = false;
-	};
+	}
 
-	bool	GetCustomRectangle(CRect & rcCustom)
+	bool GetCustomRectangle(CRect& rcCustom) const
 	{
-		bool			bResult = !m_rcCustom.IsRectEmpty();
-
+		const bool bResult = !m_rcCustom.IsRectEmpty();
 		rcCustom = m_rcCustom;
-
 		return bResult;
-	};
+	}
 
-	bool	IsCustomRectangleUsed()
+	bool IsCustomRectangleUsed() const
 	{
 		return m_bUseCustomRectangle;
-	};
+	}
 
-	void	ResolveTasks();
-	void	ResetTasksStatus();
-	void	UpdateTasksMethods();
+	void ResolveTasks();
+	void ResetTasksStatus();
+	void UpdateTasksMethods();
 
-	int	FindStackID(LPCTSTR szLightFrame);
+	int FindStackID(LPCTSTR szLightFrame);
 
-	STACKINGMODE	GetStackingMode()
+	STACKINGMODE GetStackingMode() const
 	{
 		if (m_bUseCustomRectangle)
 			return SM_CUSTOM;
 		else
 			return GetResultMode();
-	};
+	}
 
 	bool DoOffsetTasks(CDSSProgress* pProgress);
 	bool DoDarkTasks(CDSSProgress* pProgress);

@@ -393,6 +393,9 @@
     <ClCompile Include="BackgroundLoading.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="dsstoolbar.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -569,9 +572,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ScrollDialog.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\SmartPtr.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\SplitterControl.h">
@@ -766,9 +766,6 @@
     <ClInclude Include="BitmapBase.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="RefCount.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="avx_support.h">
       <Filter>Kernel</Filter>
     </ClInclude>
@@ -792,6 +789,9 @@
     </ClInclude>
     <ClInclude Include="BackgroundLoading.h">
       <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapIterator.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1297,13 +1297,13 @@
     <QtMoc Include="DeepSkyStacker.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="StackingDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </QtMoc>
     <QtMoc Include="ImageListModel.h">
       <Filter>Kernel</Filter>
     </QtMoc>
     <QtMoc Include="imageloader.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StackingDlg.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

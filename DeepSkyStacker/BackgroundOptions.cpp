@@ -125,7 +125,7 @@ void BackgroundOptions::on_rbMaximum_clicked()
 
 void BackgroundOptions::accept()
 {
-	CWorkspace			workspace;
+	Workspace			workspace;
 
 	if (ui->rbLinear->isChecked())
 		m_CalibrationInterpolation = BCI_LINEAR;

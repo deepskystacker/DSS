@@ -55,9 +55,9 @@ public :
 		m_bShowDrizzle = bShow;
 	};
 
-	virtual BOOL	Image_OnMouseMove(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonDown(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonUp(LONG lX, LONG lY);
+	virtual bool	Image_OnMouseMove(LONG lX, LONG lY) override;
+	virtual bool	Image_OnLButtonDown(LONG lX, LONG lY) override;
+	virtual bool	Image_OnLButtonUp(LONG lX, LONG lY) override;
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 
@@ -162,9 +162,9 @@ private:
 	STARVECTOR					m_vRefStars;
 	CBilinearParameters			m_Transformation;
 	VOTINGPAIRVECTOR			m_vVotedPairs;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	CPointExt					m_ptCursor;
-	CGrayBitmap					m_GrayBitmap;
+	CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
 	EDITSTARACTION				m_Action;
 	CStar						m_AddedStar;
 	int							m_lRemovedIndice;
@@ -306,15 +306,15 @@ public :
 	};
 	virtual ~CEditStarsSink() {};
 
-	void	SetBitmap(CMemoryBitmap * pBitmap)
+	void SetBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
 	{
 		m_pBitmap = pBitmap;
 		m_GrayBitmap.Init(RCCHECKSIZE+1, RCCHECKSIZE+1);
 		m_bDirty = false;
 		m_fBackground = 0;
-		if (m_pBitmap)
+		if (static_cast<bool>(m_pBitmap))
 			ComputeBackgroundValue();
-	};
+	}
 
 	void	SetRefStars(STARVECTOR const& Stars)
 	{
@@ -354,10 +354,10 @@ public :
 	};
 
 	// Message handling
-	virtual BOOL	Image_OnMouseLeave();
-	virtual BOOL	Image_OnMouseMove(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonDown(LONG lX, LONG lY);
-	virtual BOOL	Image_OnLButtonUp(LONG lX, LONG lY);
+	virtual bool	Image_OnMouseLeave() override;
+	virtual bool	Image_OnMouseMove(LONG lX, LONG lY) override;
+	virtual bool	Image_OnLButtonDown(LONG lX, LONG lY) override;
+	virtual bool	Image_OnLButtonUp(LONG lX, LONG lY);
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 };

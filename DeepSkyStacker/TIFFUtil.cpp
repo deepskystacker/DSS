@@ -830,62 +830,50 @@ bool CTIFFWriter::Close()
 class CTIFFWriteFromMemoryBitmap : public CTIFFWriter
 {
 private :
-	CMemoryBitmap *			m_pMemoryBitmap;
+	CMemoryBitmap* m_pMemoryBitmap;
 
 private :
-	TIFFFORMAT	GetBestTiffFormat(CMemoryBitmap * pBitmap);
+	TIFFFORMAT GetBestTiffFormat(const CMemoryBitmap* pBitmap);
 
 public :
-	CTIFFWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress) :
-	   CTIFFWriter(szFileName, pProgress)
-	{
-		m_pMemoryBitmap = pBitmap;
-	};
+	CTIFFWriteFromMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
+		CTIFFWriter(szFileName, pProgress),
+		m_pMemoryBitmap{ pBitmap }
+	{}
 
 	virtual ~CTIFFWriteFromMemoryBitmap()
 	{
 		Close();
-	};
+	}
 
-	virtual bool Close() { return OnClose(); };
+	virtual bool Close() { return OnClose(); }
 
-	virtual bool	OnOpen();
-	void	OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
-	virtual bool	OnClose();
+	virtual bool OnOpen();
+	void OnWrite(int lX, int lY, double & fRed, double & fGreen, double & fBlue) override;
+	virtual bool OnClose();
 };
 
 /* ------------------------------------------------------------------- */
 
-TIFFFORMAT	CTIFFWriteFromMemoryBitmap::GetBestTiffFormat(CMemoryBitmap * pBitmap)
+TIFFFORMAT CTIFFWriteFromMemoryBitmap::GetBestTiffFormat(const CMemoryBitmap* pBitmap)
 {
-	TIFFFORMAT						Result = TF_UNKNOWN;
-	C24BitColorBitmap *			p24Color = dynamic_cast<C24BitColorBitmap *>(pBitmap);
-	C48BitColorBitmap *			p48Color = dynamic_cast<C48BitColorBitmap *>(pBitmap);
-	C96BitColorBitmap *			p96Color = dynamic_cast<C96BitColorBitmap *>(pBitmap);
-	C96BitFloatColorBitmap*		p96FloatColor = dynamic_cast<C96BitFloatColorBitmap*>(pBitmap);
-	C8BitGrayBitmap*				p8Gray	= dynamic_cast<C8BitGrayBitmap*>(pBitmap);
-	C16BitGrayBitmap *				p16Gray = dynamic_cast<C16BitGrayBitmap *>(pBitmap);
-	C32BitGrayBitmap *				p32Gray = dynamic_cast<C32BitGrayBitmap *>(pBitmap);
-	C32BitFloatGrayBitmap *			p32FloatGray = dynamic_cast<C32BitFloatGrayBitmap *>(pBitmap);
-
-	if (p24Color)
-		Result = TF_8BITRGB;
-	else if (p48Color)
-		Result = TF_16BITRGB;
-	else if (p96Color)
-		Result = TF_32BITRGB;
-	else if (p96FloatColor)
-		Result = TF_32BITRGBFLOAT;
-	else if (p8Gray)
-		Result = TF_8BITGRAY;
-	else if (p16Gray)
-		Result = TF_16BITGRAY;
-	else if (p32Gray)
-		Result = TF_32BITGRAY;
-	else if (p32FloatGray)
-		Result = TF_32BITGRAYFLOAT;
-
-	return Result;
+	if (dynamic_cast<const C24BitColorBitmap*>(pBitmap) != nullptr)
+		return TF_8BITRGB;
+	else if (dynamic_cast<const C48BitColorBitmap*>(pBitmap) != nullptr)
+		return TF_16BITRGB;
+	else if (dynamic_cast<const C96BitColorBitmap*>(pBitmap) != nullptr)
+		return TF_32BITRGB;
+	else if (dynamic_cast<const C96BitFloatColorBitmap*>(pBitmap) != nullptr)
+		return TF_32BITRGBFLOAT;
+	else if (dynamic_cast<const C8BitGrayBitmap*>(pBitmap) != nullptr)
+		return TF_8BITGRAY;
+	else if (dynamic_cast<const C16BitGrayBitmap*>(pBitmap) != nullptr)
+		return TF_16BITGRAY;
+	else if (dynamic_cast<const C32BitGrayBitmap*>(pBitmap) != nullptr)
+		return TF_32BITGRAY;
+	else if (dynamic_cast<const C32BitFloatGrayBitmap*>(pBitmap) != nullptr)
+		return TF_32BITGRAYFLOAT;
+	return TF_UNKNOWN;
 };
 
 /* ------------------------------------------------------------------- */
@@ -976,23 +964,20 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 
 bool CTIFFWriteFromMemoryBitmap::OnClose()
 {
-	bool			bResult = true;
-
-	return bResult;
-};
+	return true;
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription,
-			int lISOSpeed, int lGain, double fExposure, double fAperture)
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (pBitmap)
+	if (pBitmap != nullptr)
 	{
-		CTIFFWriteFromMemoryBitmap	tiff(szFileName, pBitmap, pProgress);
+		CTIFFWriteFromMemoryBitmap tiff{ szFileName, pBitmap, pProgress };
 
 		if (szDescription)
 			tiff.SetDescription(szDescription);
@@ -1025,23 +1010,22 @@ bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription)
 {
-	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription,
-			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
-};
+	return WriteTIFF(szFileName, pBitmap, pProgress, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
+}
 
 /* ------------------------------------------------------------------- */
 
-bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription,
-			int lISOSpeed, int lGain, double fExposure, double fAperture)
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression,
+	LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
 	if (pBitmap)
 	{
-		CTIFFWriteFromMemoryBitmap	tiff(szFileName, pBitmap, pProgress);
+		CTIFFWriteFromMemoryBitmap tiff(szFileName, pBitmap, pProgress);
 
 		if (szDescription)
 			tiff.SetDescription(szDescription);
@@ -1067,27 +1051,24 @@ bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProg
 
 /* ------------------------------------------------------------------- */
 
-bool	WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription)
 {
-	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription,
-			/*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
-};
+	return WriteTIFF(szFileName, pBitmap, pProgress, TIFFFormat, TIFFCompression, szDescription, /*lISOSpeed*/ 0, /*lGain*/ -1, /*fExposure*/ 0.0, /*fAperture*/ 0.0);
+}
 
-/* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
 class CTIFFReadInMemoryBitmap : public CTIFFReader
 {
 private :
-	CMemoryBitmap **			m_ppBitmap;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
+	std::shared_ptr<CMemoryBitmap>& m_outBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 
 public :
-	CTIFFReadInMemoryBitmap(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
-		: CTIFFReader(szFileName, pProgress)
-	{
-		m_ppBitmap = ppBitmap;
-	};
+	CTIFFReadInMemoryBitmap(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress):
+		CTIFFReader(szFileName, pProgress),
+		m_outBitmap{ rpBitmap }
+	{}
 
 	virtual ~CTIFFReadInMemoryBitmap() { Close(); };
 
@@ -1098,75 +1079,74 @@ public :
 	virtual bool OnClose() override;
 };
 
-/* ------------------------------------------------------------------- */
-
 bool CTIFFReadInMemoryBitmap::OnOpen()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
+	bool bResult = false;
 
 	if (spp == 1)
 	{
 		if (bps == 8)
 		{
-			m_pBitmap.Attach(new C8BitGrayBitmap());
-			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C8BitGrayBitmap>();
+			ZTRACE_RUNTIME("Creating 8 Gray bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (bps == 16)
 		{
-			m_pBitmap.Attach(new C16BitGrayBitmap());
-			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C16BitGrayBitmap>();
+			ZTRACE_RUNTIME("Creating 16 Gray bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (bps == 32)
 		{
 			if (sampleformat == SAMPLEFORMAT_IEEEFP)
 			{
-				m_pBitmap.Attach(new C32BitFloatGrayBitmap());
-				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap %p", m_pBitmap.m_p);
+				m_pBitmap = std::make_shared<C32BitFloatGrayBitmap>();
+				ZTRACE_RUNTIME("Creating 32 float Gray bit memory bitmap %p", m_pBitmap.get());
 			}
 			else
 			{
-				m_pBitmap.Attach(new C32BitGrayBitmap());
-				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap %p", m_pBitmap.m_p);
-			};
-		};
+				m_pBitmap = std::make_shared<C32BitGrayBitmap>();
+				ZTRACE_RUNTIME("Creating 32 Gray bit memory bitmap %p", m_pBitmap.get());
+			}
+		}
 	}
 	else if ((spp == 3) || (spp == 4))
 	{
 		if (bps == 8)
 		{
-			m_pBitmap.Attach(new C24BitColorBitmap());
-			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C24BitColorBitmap>();
+			ZTRACE_RUNTIME("Creating 8 RGB bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (bps == 16)
 		{
-			m_pBitmap.Attach(new C48BitColorBitmap());
-			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", m_pBitmap.m_p);
+			m_pBitmap = std::make_shared<C48BitColorBitmap>();
+			ZTRACE_RUNTIME("Creating 16 RGB bit memory bitmap %p", m_pBitmap.get());
 		}
 		else if (bps == 32)
 		{
 			if (sampleformat == SAMPLEFORMAT_IEEEFP)
 			{
-				m_pBitmap.Attach(new C96BitFloatColorBitmap());
-				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap %p", m_pBitmap.m_p);
+				m_pBitmap = std::make_shared<C96BitFloatColorBitmap>();
+				ZTRACE_RUNTIME("Creating 32 float RGB bit memory bitmap %p", m_pBitmap.get());
 			}
 			else
 			{
-				m_pBitmap.Attach(new C96BitColorBitmap());
-				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap %p", m_pBitmap.m_p);
-			};
-		};
-	};
+				m_pBitmap = std::make_shared<C96BitColorBitmap>();
+				ZTRACE_RUNTIME("Creating 32 RGB bit memory bitmap %p", m_pBitmap.get());
+			}
+		}
+	}
 
-	if (m_pBitmap)
+	if (static_cast<bool>(m_pBitmap))
 	{
 		bResult = m_pBitmap->Init(w, h);
 		m_pBitmap->SetCFA(cfa);
-		if (cfatype)
+		if (cfatype != 0)
 		{
-			if (C16BitGrayBitmap* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(m_pBitmap.m_p))
+			if (C16BitGrayBitmap* pGray16Bitmap = dynamic_cast<C16BitGrayBitmap*>(m_pBitmap.get()))
 				pGray16Bitmap->SetCFAType(static_cast<CFATYPE>(cfatype));
-		};
+		}
+
 		m_pBitmap->SetMaster(master);
 		m_pBitmap->SetISOSpeed(isospeed);
 		m_pBitmap->SetGain(gain);
@@ -1174,16 +1154,16 @@ bool CTIFFReadInMemoryBitmap::OnOpen()
 		m_pBitmap->SetAperture(aperture);
 		m_pBitmap->m_DateTime = m_DateTime;
 
-		CString		strDescription;
-		if (strMakeModel.GetLength())
-			strDescription.Format(_T("TIFF (%s)"), (LPCTSTR)strMakeModel);
+		CString strDescription;
+		if (strMakeModel.GetLength() != 0)
+			strDescription.Format(_T("TIFF (%s)"), static_cast<LPCTSTR>(strMakeModel));
 		else
 			strDescription	= "TIFF";
 		m_pBitmap->SetDescription(strDescription);
-	};
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1192,7 +1172,7 @@ void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 
 	try
 	{
-		if (m_pBitmap)
+		if (static_cast<bool>(m_pBitmap))
 		{
 			m_pBitmap->SetPixel(lX, lY, fRed, fGreen, fBlue);
 		}
@@ -1222,43 +1202,31 @@ void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 	}
 
 	return;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 bool CTIFFReadInMemoryBitmap::OnClose()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
 
-	if (m_pBitmap)
+	if (static_cast<bool>(m_pBitmap))
 	{
-		bResult = true;
-		m_pBitmap.CopyTo(m_ppBitmap);
-	};
-
-	return bResult;
-};
+		m_outBitmap = m_pBitmap;
+		return true;
+	}
+	else
+		return false;
+}
 
 /* ------------------------------------------------------------------- */
 
-bool	ReadTIFF(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress *	pProgress)
+bool ReadTIFF(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress *	pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = false;
-	CTIFFReadInMemoryBitmap	tiff(szFileName, ppBitmap, pProgress);
-
-	if (ppBitmap)
-	{
-		bResult = tiff.Open();
-		if (bResult)
-			bResult = tiff.Read();
-		//if (bResult)
-		//	bResult = tiff.Close();
-	};
-
-	return bResult;
-};
+	CTIFFReadInMemoryBitmap	tiff(szFileName, rpBitmap, pProgress);
+	return tiff.Open() && tiff.Read();
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1306,26 +1274,19 @@ bool	IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo)
 	return GetTIFFInfo(szFileName, BitmapInfo);
 };
 
-/* ------------------------------------------------------------------- */
 
-int	LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+int LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	int		result = -1;		// -1 means not a TIFF file.
+	int result = -1;		// -1 means not a TIFF file.
 
 	if (GetTIFFInfo(szFileName, BitmapInfo) && BitmapInfo.CanLoad())
 	{
-		CSmartPtr<CMemoryBitmap>	pBitmap;
-
-		if (ReadTIFF(szFileName, &pBitmap, pProgress))
+		if (ReadTIFF(szFileName, rpBitmap, pProgress))
 		{
 			if (BitmapInfo.IsCFA() && (IsSuperPixels() || IsRawBayer() || IsRawBilinear() || IsRawAHD()))
 			{
-				CCFABitmapInfo *	pGrayBitmap;
-
-				pGrayBitmap = dynamic_cast<CCFABitmapInfo *>(pBitmap.m_p);
-
-				if (pGrayBitmap)
+				if (CCFABitmapInfo* pGrayBitmap = dynamic_cast<CCFABitmapInfo*>(rpBitmap.get()))
 				{
 					if (IsSuperPixels())
 						pGrayBitmap->UseSuperPixels(true);
@@ -1335,18 +1296,12 @@ int	LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo, CMemoryBitmap 
 						pGrayBitmap->UseBilinear(true);
 					else if (IsRawAHD())
 						pGrayBitmap->UseAHD(true);
-				};
-			};
-			pBitmap.CopyTo(ppBitmap);
+				}
+			}
 			result = 0;
 		}
 		else
-		{
-			result = 1;		// Failed to load file
-		}
-	};
-
+			result = 1; // Failed to load file
+	}
 	return result;
-};
-
-/* ------------------------------------------------------------------- */
+}

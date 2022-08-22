@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class CWorkspace;
+class Workspace;
 
 namespace Ui {
 class IntermediateFiles;
@@ -26,7 +26,7 @@ public slots:
 private:
 	bool registerOnly;
     Ui::IntermediateFiles *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 
 
 private slots:

@@ -348,7 +348,7 @@ void	RawDDPSettings::fillDSLRList(std::vector<CDSLR> & vDSLRs)
 RawDDPSettings::RawDDPSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::RawDDPSettings),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	initialised(false)
 {
 	ui->setupUi(this);

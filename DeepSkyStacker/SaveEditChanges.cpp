@@ -53,13 +53,13 @@ BOOL CSaveEditChanges::OnInitDialog()
 
 	switch (GetSaveEditMode())
 	{
-	case SECM_SAVEDONTASK :
+	case EditSaveMode::SECM_SAVEDONTASK :
 		m_SaveDontAsk.SetCheck(true);
 		break;
-	case SECM_DONTSAVEDONTASK :
+	case EditSaveMode::SECM_DONTSAVEDONTASK :
 		m_DontSaveDontAsk.SetCheck(true);
 		break;
-	case SECM_ASKALWAYS :
+	case EditSaveMode::SECM_ASKALWAYS :
 		m_AskAlways.SetCheck(true);
 		break;
 	};
@@ -72,12 +72,12 @@ BOOL CSaveEditChanges::OnInitDialog()
 
 void CSaveEditChanges::SaveSettings()
 {
-	SAVEEDITCHANGESMODE	Mode = SECM_ASKALWAYS;
+	EditSaveMode	Mode = EditSaveMode::SECM_ASKALWAYS;
 
 	if (m_SaveDontAsk.GetCheck())
-		Mode = SECM_SAVEDONTASK;
+		Mode = EditSaveMode::SECM_SAVEDONTASK;
 	else if (m_DontSaveDontAsk.GetCheck())
-		Mode = SECM_DONTSAVEDONTASK;
+		Mode = EditSaveMode::SECM_DONTSAVEDONTASK;
 
 	SetSaveEditMode(Mode);
 };
@@ -140,23 +140,23 @@ void CSaveEditChanges::OnDontSaveDontAsk()
 
 /* ------------------------------------------------------------------- */
 
-void	SetSaveEditMode(SAVEEDITCHANGESMODE Mode)
+void	SetSaveEditMode(EditSaveMode Mode)
 {
 	QSettings settings;
-	uint	value = Mode;
+	uint	value = static_cast<uint>(Mode);
 
 	settings.setValue("EditStars/AutoSave", value);
 };
 
 /* ------------------------------------------------------------------- */
 
-SAVEEDITCHANGESMODE	GetSaveEditMode()
+EditSaveMode GetSaveEditMode()
 {
 	QSettings settings;
 
 	uint value = settings.value("EditStars/AutoSave", (uint)0).toUInt();
 
-	return (SAVEEDITCHANGESMODE)value;
+	return static_cast<EditSaveMode>(value);
 };
 
 /* ------------------------------------------------------------------- */
@@ -167,9 +167,9 @@ int AskSaveEditChangesMode()
 
 	int value = settings.value("EditStars/AutoSave", 0).toInt();
 
-	if (value == SECM_SAVEDONTASK)
+	if (value == static_cast<int>(EditSaveMode::SECM_SAVEDONTASK))
 		return IDYES;
-	else if (value == SECM_DONTSAVEDONTASK)
+	else if (value == static_cast<int>(EditSaveMode::SECM_DONTSAVEDONTASK))
 		return IDNO;
 	else
 	{

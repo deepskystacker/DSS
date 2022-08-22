@@ -191,9 +191,9 @@ inline QString formatMethod(MULTIBITMAPPROCESSMETHOD Method, double fKappa, int 
 
 /* ------------------------------------------------------------------- */
 
-bool Subtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
-bool Add(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr);
-bool ShiftAndSubtract(CMemoryBitmap * pTarget, CMemoryBitmap * pSource, CDSSProgress * pProgress = nullptr, double fXShift = 0, double fYShift = 0);
+bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, CDSSProgress* pProgress = nullptr, double fRedFactor = 1.0, double fGreenFactor = 1.0, double fBlueFactor = 1.0);
+bool Add(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, CDSSProgress* pProgress = nullptr);
+bool ShiftAndSubtract(std::shared_ptr<CMemoryBitmap> pTarget, std::shared_ptr<const CMemoryBitmap> pSource, CDSSProgress* pProgress = nullptr, double fXShift = 0, double fYShift = 0);
 
 /* ------------------------------------------------------------------- */
 
@@ -277,39 +277,36 @@ inline void	CYMGToRGB3(double fCyan, double fYellow, double fMagenta, double fGr
 /* ------------------------------------------------------------------- */
 
 #if DSSFILEDECODING==1
-class CWindowsBitmap : public CRefCount
+class CWindowsBitmap
 {
 private :
-	HBITMAP				m_hBitmap;
+	HBITMAP m_hBitmap;
 
 public :
-	CWindowsBitmap()
-	{
-		m_hBitmap = nullptr;
-	};
+	CWindowsBitmap() : m_hBitmap{ nullptr } {}
 
 	~CWindowsBitmap()
 	{
 		if (m_hBitmap)
 			::DeleteObject(m_hBitmap);
-	};
+	}
 
-	HBITMAP		GetHBitmap()
+	HBITMAP GetHBitmap()
 	{
 		return m_hBitmap;
-	};
+	}
 
-	void		SetHBitmap(HBITMAP hBitmap)
+	void SetHBitmap(HBITMAP hBitmap)
 	{
 		if (m_hBitmap)
 			::DeleteObject(m_hBitmap);
 		m_hBitmap = hBitmap;
-	};
+	}
 };
 
 /* ------------------------------------------------------------------- */
 
-class C32BitsBitmap : public CRefCount
+class C32BitsBitmap
 {
 private:
 	HBITMAP m_hBitmap;
@@ -420,7 +417,7 @@ public:
         return hBitmap;
 	};
 
-	bool InitFrom(CMemoryBitmap * pBitmap);
+	bool InitFrom( CMemoryBitmap* pBitmap);
 	bool CopyToClipboard();
 
 	bool IsEmpty()
@@ -698,50 +695,32 @@ inline bool CompareBitmapInfoDateTime (const CBitmapInfo & bi1, const CBitmapInf
 
 #if DSSFILEDECODING==1
 
-class	CAllDepthBitmap
+class CAllDepthBitmap
 {
-public :
-	bool						m_bDontUseAHD;
-
-public :
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CSmartPtr<C32BitsBitmap>	m_pWndBitmap;
+public:
+	bool m_bDontUseAHD;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
+	std::shared_ptr<C32BitsBitmap> m_pWndBitmap;
 	std::shared_ptr<QImage>		m_Image;
 
-private :
-	void	CopyFrom(const CAllDepthBitmap & adb)
-	{
-		m_bDontUseAHD	= adb.m_bDontUseAHD;
-		m_pBitmap		= adb.m_pBitmap;
-		m_pWndBitmap	= adb.m_pWndBitmap;
-		m_Image			= adb.m_Image;
-	};
 
-public :
+
     CAllDepthBitmap() : m_bDontUseAHD(false) {};
 	~CAllDepthBitmap() {};
-	CAllDepthBitmap(const CAllDepthBitmap & adb)
-	{
-		CopyFrom(adb);
-	};
+	CAllDepthBitmap(const CAllDepthBitmap& adb) = default;
+	CAllDepthBitmap& operator=(const CAllDepthBitmap& adb) = default;
 
-	CAllDepthBitmap & operator = (const CAllDepthBitmap & adb)
+	void Clear()
 	{
-		CopyFrom(adb);
-		return (*this);
-	};
-
-	void	Clear()
-	{
-		m_pBitmap.Release();
-		m_pWndBitmap.Release();
+		m_pBitmap.reset();
+		m_pWndBitmap.reset();
 		m_Image.reset();
-	};
+	}
 
-	void	SetDontUseAHD(bool bSet)
+	void SetDontUseAHD(bool bSet)
 	{
 		m_bDontUseAHD = bSet;
-	};
+	}
 
 	bool initQImage();
 };
@@ -751,24 +730,21 @@ void	CopyBitmapToClipboard(HBITMAP hBitmap);
 bool	RetrieveEXIFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 //HBITMAP LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap = nullptr);
 bool	LoadPicture(LPCTSTR szFileName, CAllDepthBitmap & AllDepthBitmap, CDSSProgress * pProgress = nullptr);
-bool	DebayerPicture(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress);
+bool	DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rpOutBitmap, CDSSProgress * pProgress);
 
 #endif // DSSFILEDECODING
-bool	LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress);
+bool FetchPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* const pProgress);
 
 bool	GetPictureInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 
-bool	GetFilteredImage(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, int lFilterSize, CDSSProgress * pProgress = nullptr);
+std::shared_ptr<CMemoryBitmap> GetFilteredImage(const CMemoryBitmap* pInBitmap, const int lFilterSize, CDSSProgress* pProgress = nullptr);
 
 /* ------------------------------------------------------------------- */
 
-inline bool	IsCFA(CMemoryBitmap * pBitmap)
+inline bool	IsCFA(const CMemoryBitmap* pBitmap)
 {
-	if (pBitmap)
-		return pBitmap->IsCFA();
-	else
-		return false;
-};
+	return pBitmap != nullptr && pBitmap->IsCFA();
+}
 
 /* ------------------------------------------------------------------- */
 

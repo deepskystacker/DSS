@@ -175,10 +175,9 @@ TEST_CASE("OpenMP parallelization", "[OpenMP]")
 
 	SECTION("Firstprivate with BitmapFiller")
 	{
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		pBitmap->Init(3, 2);
-		CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<NonAvxBitmapFiller>(pBitmap, nullptr, 1.0, 1.0, 1.0);
+		CopyableSmartPtr<BitmapFillerInterface> filler = std::make_unique<NonAvxBitmapFiller>(pBitmap.get(), nullptr, 1.0, 1.0, 1.0);
 		filler->setGrey(true);
 		const bool isThreadSafe = filler->isThreadSafe();
 //#pragma omp parallel firstprivate(filler) if(filler->isThreadSafe()) // Visual Studio 2019, V 16.10.4: Access violation here
