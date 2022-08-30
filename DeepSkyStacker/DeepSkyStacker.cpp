@@ -135,7 +135,7 @@ void	CheckRemainingTempFiles()
 
 		msgBox.setDefaultButton(QMessageBox::Yes);
 
-		if (msgBox.exec())
+		if (QMessageBox::Yes == msgBox.exec())
 		{
 			QFile file;
 			for (size_t i = 0; i < vFiles.size(); i++)
