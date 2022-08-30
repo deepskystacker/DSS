@@ -31,8 +31,8 @@ using std::max;
 #include <resource.h>
 #include <ztrace.h>
 
-#include <StdString.h>
-#define CString			CStdString
+//#include <StdString.h>
+//#define CString			CStdString
 
 #define TRACE0(x)
 #define TRACE1(x, y)
