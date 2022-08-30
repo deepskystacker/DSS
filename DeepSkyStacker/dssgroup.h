@@ -50,6 +50,10 @@ namespace DSS
 		// Initial group id is zero
 		//
 		inline static std::uint16_t nextIndex{ 0 };
+		//
+		// Map of files to group id - used to check which group refers to a file (maybe none)
+		//
+		inline static std::map<fs::path, uint16_t> pathToGroup{};
 
 	public:
 
@@ -59,7 +63,8 @@ namespace DSS
 		ImageListModel	pictures;
 
 		explicit Group::Group() :
-			Index(nextIndex++) 			// First group is Main Group with Index of 0
+			Index(nextIndex++),		// First group is Main Group with Index of 0
+			Dirty(false)
 		{
 			if (0 == Index)
 			{
@@ -80,15 +85,17 @@ namespace DSS
 		//
 		// Accessors
 		//
-		QString name() const noexcept { return Name; };
-		Group& setName(QString const& name) noexcept { Name = name; return *this; };
+		inline QString name() const noexcept { return Name; };
+		inline Group& setName(QString const& name) noexcept { Name = name; return *this; };
+		inline bool dirty() const noexcept { return Dirty; };
+		inline Group& setDirty(bool value) noexcept { Dirty = value; return *this; };
 
 		uint index() const noexcept { return Index; };
 
 		//
 		// Will call addImage() internally
 		//
- 		void AddFile(LPCTSTR szFile, uint16_t groupId = 0, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false);
+ 		void addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int32_t nItem = -1);
 
 		//
 		// Add an image (row) to the table
@@ -96,6 +103,26 @@ namespace DSS
 		void addImage(ListBitMap image)
 		{
 			pictures.addImage(image);
+			Dirty = true;
+		}
+
+		static int16_t whichGroupContains(const fs::path& path)
+		{
+			int16_t result = -1;	// no group
+			if (auto iter = pathToGroup.find(path); iter != pathToGroup.end())
+				result = iter->second;
+
+			return result;
+		}
+
+		static int32_t fileCount()
+		{
+			return static_cast<int32_t>(pathToGroup.size());
+		}
+
+		static void clearMap()
+		{
+			pathToGroup.clear();
 		}
 
 	protected:
@@ -104,6 +131,8 @@ namespace DSS
 		// Every group has a name - initially "Main Group" or Group n"
 		//
 		QString Name;
+		bool Dirty;
+
 
 
 	};
