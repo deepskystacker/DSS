@@ -1429,9 +1429,15 @@ void CQualityGrid::InitGrid(STARVECTOR& vStars)
 		for (ctIterator cit = sTriangles.cbegin(); cit != sTriangles.cend(); ++cit)
 		{
 			CDelaunayTriangle tr;
-			tr.pt1 = cit->GetVertex(0)->GetPoint();
-			tr.pt2 = cit->GetVertex(1)->GetPoint();
-			tr.pt3 = cit->GetVertex(2)->GetPoint();
+			
+			QPointF temp;
+			
+			temp = cit->GetVertex(0)->GetPoint();
+			tr.pt1 = PointF(temp.x(), temp.y());
+			temp = cit->GetVertex(1)->GetPoint();
+			tr.pt2 = PointF(temp.x(), temp.y());
+			temp = cit->GetVertex(2)->GetPoint();
+			tr.pt3 = PointF(temp.x(), temp.y());
 
 			// Find the value for each point
 			const auto solve = [mean = this->m_fMean, stdev = this->m_fStdDev, &vStars](const Gdiplus::REAL x, const Gdiplus::REAL y) -> Gdiplus::Color
