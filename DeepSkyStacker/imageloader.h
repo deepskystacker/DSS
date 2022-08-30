@@ -53,8 +53,10 @@ public:
 
 	void	reset()
 	{
+		fileName.clear();
 		m_Image.reset();
 		m_pBitmap.reset();
+		lastUse = 0;
 	};
 
 };
