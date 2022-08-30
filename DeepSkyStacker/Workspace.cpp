@@ -65,6 +65,7 @@ public:
 	void	SaveToFile(FILE * hFile);
 	void	SaveToFile(const fs::path& fileName);
 	bool	ReadFromString(LPCTSTR szString);
+	bool	ReadFromString(const QString& theString);
 	void	ResetToDefault();
 };
 
@@ -349,14 +350,10 @@ void	WorkspaceSettings::SaveToFile(const fs::path& fileName)
 
 /* ------------------------------------------------------------------- */
 
-bool	WorkspaceSettings::ReadFromString(LPCTSTR szString)
+bool	WorkspaceSettings::ReadFromString(const QString& theString)
 {
 	bool				bResult = false;
 
-	//
-	// Convert the line to a QString and strip leading and trailing white space
-	//
-	QString	theString = QString::fromWCharArray(szString).trimmed();
 	QString keyName, value;
 
 	static std::map<QString, QString> keyMap;
@@ -391,7 +388,7 @@ bool	WorkspaceSettings::ReadFromString(LPCTSTR szString)
 		//
 		if ("Brighness" == name)
 			name = "Brightness";
-		
+
 		value = nameAndValue.section("=", 1);
 
 		auto keyIter = keyMap.find(regKey);
@@ -429,6 +426,18 @@ bool	WorkspaceSettings::ReadFromString(LPCTSTR szString)
 	}
 
 	return bResult;
+};
+
+/* ------------------------------------------------------------------- */
+bool	WorkspaceSettings::ReadFromString(LPCTSTR szString)
+{
+	//
+	// Convert the line to a QString and strip leading and trailing white space
+	//
+	QString	theString = QString::fromWCharArray(szString).trimmed();
+	
+	return ReadFromString(theString);
+
 };
 
 /* ------------------------------------------------------------------- */
@@ -544,6 +553,10 @@ bool Workspace::ReadFromString(LPCTSTR szString)
 	return pSettings->ReadFromString(szString);
 }
 
+bool Workspace::ReadFromString(const QString& string)
+{
+	return pSettings->ReadFromString(string);
+}
 
 void Workspace::Push()
 {

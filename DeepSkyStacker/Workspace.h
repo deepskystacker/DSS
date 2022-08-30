@@ -99,6 +99,7 @@ public:
 	void SaveToFile(FILE* hFile);
 	void SaveToFile(LPCTSTR szFile);
 	bool ReadFromString(LPCTSTR szString);
+	bool ReadFromString(const QString& string);
 	void ResetToDefault();
 
 	void Push();
