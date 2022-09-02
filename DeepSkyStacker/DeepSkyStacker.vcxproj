@@ -730,7 +730,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />
-    <QtRcc Include="ui\resources.qrc" />
+    <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\About.ui" />

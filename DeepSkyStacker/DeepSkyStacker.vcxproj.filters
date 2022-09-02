@@ -1158,7 +1158,7 @@
     <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
     </QtRcc>
-    <QtRcc Include="ui\resources.qrc">
+    <QtRcc Include="resources.qrc">
       <Filter>Qt\ui</Filter>
     </QtRcc>
   </ItemGroup>
