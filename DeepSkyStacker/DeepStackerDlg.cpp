@@ -292,6 +292,8 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	splitter->addWidget(explorerBar);
 	splitter->addWidget(stackedWidget);
 	splitter->setStretchFactor(1, 1);		// Want Stacking part to take any spare space.
+	stackedWidget->show();
+	splitter->show();
 
 	CString			strMask;
 	CString			strTitle;

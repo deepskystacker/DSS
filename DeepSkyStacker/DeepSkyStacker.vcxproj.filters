@@ -1304,7 +1304,7 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="StackingDlg.h">
-      <Filter>Header Files</Filter>
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

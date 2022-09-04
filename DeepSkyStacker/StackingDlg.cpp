@@ -111,16 +111,13 @@ namespace DSS
 	StackingDlg::StackingDlg(QWidget* parent) :
 		QDialog(parent),
 		ui(new Ui::StackingDlg),
-		editStarsPtr{ std::make_unique<EditStars>(this) },
-		selectRectPtr{ std::make_unique<SelectRect>(this) },
-		pToolBar{ std::make_unique<ToolBar>(this, editStarsPtr.get(), selectRectPtr.get()) },
 		initialised(false)
 	{
+		ui->setupUi(this);
+
 		mruPath.readSettings();
 		connect(ui->tableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableViewItemClickedEvent(const QModelIndex&)));
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
-		ui->picture->setToolBar(pToolBar.get());
-		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 	}
 
 	StackingDlg::~StackingDlg()
@@ -149,6 +146,13 @@ namespace DSS
 
 	void StackingDlg::onInitDialog()
 	{
+		editStarsPtr = std::make_unique<EditStars>(ui->picture);
+		selectRectPtr = std::make_unique<SelectRect>(ui->picture);
+		pToolBar = std::make_unique<ToolBar>(this, editStarsPtr.get(), selectRectPtr.get());
+
+		ui->picture->setToolBar(pToolBar.get());
+		pToolBar->setVisible(false); pToolBar->setEnabled(false);
+
 		if (!startingFileList.isEmpty())
 			openFileList(startingFileList);
 	}

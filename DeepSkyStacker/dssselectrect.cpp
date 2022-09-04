@@ -86,13 +86,12 @@ namespace DSS
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);
         CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
-        StackingDlg* pStackingDlg(nullptr);
 
         if (pDlg)
         {
-            pStackingDlg = &(pDlg->GetStackingDlg());
+            StackingDlg& stackingDlg{ pDlg->GetStackingDlg() };
             connect(this, SIGNAL(selectRectChanged(QRectF)),
-                pStackingDlg, SLOT(setSelectionRect(QRectF)));
+                &stackingDlg, SLOT(setSelectionRect(QRectF)));
         };
     }
 
