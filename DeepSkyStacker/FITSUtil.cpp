@@ -593,7 +593,7 @@ bool CFITSReader::Open()
 					bResult = false;
 					break;
 				};
-				m_filterName = filterName;
+				m_filterName = QString::fromStdWString(filterName.GetString());
 			};
 			
 			//
@@ -1372,7 +1372,7 @@ bool CFITSWriter::Open()
 				if (m_lGain >= 0)
 					bResult = bResult && WriteKey("GAIN", m_lGain);
 				if (m_filterName != _T(""))
-					bResult = bResult && WriteKey("FILTER", m_filterName);
+					bResult = bResult && WriteKey("FILTER", m_filterName.toStdWString().c_str());
 				if (m_fExposureTime)
 				{
 					bResult = bResult && WriteKey("EXPTIME", m_fExposureTime, "Exposure time (in seconds)");
@@ -1888,6 +1888,18 @@ void GetFITSExtension(LPCTSTR szFileName, CString& strExtension)
 		strExtension = strExt;
 	else if (!strExt.CompareNoCase(_T(".FIT")))
 		strExtension = strExt;
+	else
+		strExtension = ".fts";
+}
+
+void GetFITSExtension(fs::path path, CString& strExtension)
+{
+	fs::path ext = path.extension();
+
+	if (!ext.compare(".fits"))
+		strExtension = ext.c_str();
+	else if (!ext.compare(".fit"))
+		strExtension = ext.c_str();
 	else
 		strExtension = ".fts";
 }

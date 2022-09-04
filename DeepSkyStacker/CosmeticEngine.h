@@ -40,6 +40,6 @@ public :
 };
 
 std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CDSSProgress* const pProgress);
-void SimulateCosmetic(std::shared_ptr<const CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, CDSSProgress* const pProgress);
+void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, CDSSProgress* const pProgress);
 
 #endif

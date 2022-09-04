@@ -54,7 +54,14 @@ namespace DSS
     public:
         explicit ToolBar(QWidget* parent, DSS::EditStars* ed, DSS::SelectRect* sel);
 
+        
         ~ToolBar() {};
+
+        // No assignment of or copy construction of this
+        ToolBar(const ToolBar& rhs) = delete;
+        ToolBar& operator = (const ToolBar& rhs) = delete;
+
+
 
         inline void setOpacity(qreal opacity, bool upd)
         {
@@ -83,8 +90,8 @@ namespace DSS
 
     private:
 
-        DSS::EditStars* editor;
-        DSS::SelectRect* selectRect;
+        EditStars* editor;
+        SelectRect* selectRect;
 
         QIcon selRect;
         QIcon selStars;
@@ -103,8 +110,8 @@ namespace DSS
         QAction* onAskAlways;
         QMenu* saveMenu;
 
-        DSS::ToolBar& createActions();
-        DSS::ToolBar& createMenus();
+        ToolBar& createActions();
+        ToolBar& createMenus();
 
     private slots:
 

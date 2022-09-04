@@ -37,13 +37,90 @@
 class QMouseEvent;
 
 #include <QWidget>
+#include "DSSCommon.h"
+#include "DSSTools.h"
 
 class DSSImageView;
+class CMemoryBitmap;
 
 namespace DSS
 {
-    class EditStars :
-        public QWidget
+	enum class EditStarAction
+	{
+		None = 0,
+		AddStar = 1,
+		RemoveStar = 2,
+		SetComet = 3,
+		ResetComet = 4
+	};
+
+	class DelaunayTriangle
+	{
+	public:
+		QPointF			pt1, pt2, pt3;
+		QRgb			cr1, cr2, cr3;
+
+	public:
+		DelaunayTriangle()
+		{
+		};
+		~DelaunayTriangle()
+		{
+		};
+
+		DelaunayTriangle(const DelaunayTriangle& rhs) = default;
+		DelaunayTriangle(DelaunayTriangle&& rhs) = default;
+
+		DelaunayTriangle& operator = (const DelaunayTriangle& rhs) = default;
+		DelaunayTriangle& operator = (DelaunayTriangle&& rhs) = default;
+
+		QPointF inCentre()
+		{
+			const qreal a{ hypotf(pt1.x() - pt2.x(), pt1.y() - pt2.y()) };
+			const qreal b{ hypotf(pt2.x() - pt3.x(), pt2.y() - pt3.y()) };
+			const qreal c{ hypotf(pt3.x() - pt1.x(), pt3.y() - pt1.y()) };
+
+			const qreal x{ (a * pt1.x() + b * pt2.x() + c * pt3.x()) /
+				(a + b + c) };
+			const qreal y{ (a * pt1.y() + b * pt2.y() + c * pt3.y()) /
+				(a + b + c) };
+
+			return QPointF(x, y);
+		}
+
+	};
+
+	typedef std::vector<DelaunayTriangle>	DelaunayTriangleVector;
+
+	class QualityGrid
+	{
+	public:
+		DelaunayTriangleVector	triangles;
+		double					mean;
+		double					stdDev;
+
+	private:
+	public:
+		QualityGrid() :
+			mean{ 0.0 },
+			stdDev{ 0.0 }
+		{
+		};
+
+		void	InitGrid(STARVECTOR& vStars);
+
+		void	clear()
+		{
+			triangles.clear();
+		};
+
+		bool	empty()
+		{
+			return triangles.empty();
+		};
+	};
+
+    class EditStars : public QWidget
     {
         Q_OBJECT
 
@@ -51,21 +128,176 @@ namespace DSS
             Inherited;
 
     public:
-        explicit EditStars(QWidget* parent);
+		explicit EditStars(QWidget* parent);
+
+        // No assignment of or copy construction of this
+        EditStars(const EditStars& rhs) = delete;
+        EditStars& operator = (const EditStars& rhs) = delete;
 
         virtual ~EditStars() {};
+
+        void setTransformation(const CBilinearParameters& Tr, const VOTINGPAIRVECTOR& vVP)
+        {
+            if (g_bShowRefStars)
+            {
+                transformation = Tr;
+                vVotedPairs = vVP;
+            };
+        };
+
+		void SetBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
+		{
+			m_pBitmap = pBitmap;
+			m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
+			m_bDirty = false;
+			m_fBackground = 0;
+			if (static_cast<bool>(m_pBitmap))
+				computeBackgroundValue();
+		}
+
+
 
     public slots:
         void mousePressEvent(QMouseEvent* e);
         void mouseMoveEvent(QMouseEvent* e);
         void mouseReleaseEvent(QMouseEvent* e);
+		void resizeEvent(QResizeEvent* e);
 
         void rectButtonChecked();
         void starsButtonChecked();
         void cometButtonChecked();
         void saveButtonPressed();
 
+        void setLightFrame(QString name);
+
+        void setBitmap(std::shared_ptr<CMemoryBitmap> bmp)
+		{
+			m_pBitmap = bmp;
+			m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
+			m_bDirty = false;
+			m_fBackground = 0;
+			if (static_cast<bool>(m_pBitmap))
+				computeBackgroundValue();
+		}
+
+		void setRefStars(STARVECTOR const& Stars)
+		{
+			if (g_bShowRefStars)
+			{
+				refStars = Stars;
+				std::sort(refStars.begin(), refStars.end(), CompareStarLuminancy);
+			};
+		};
+
+		void	clearRefStars()
+		{
+			refStars.clear();
+		};
+
+
+	protected:
+		bool event(QEvent* event) override;
+		void keyPressEvent(QKeyEvent* event) override;
+		void paintEvent(QPaintEvent*) override;
+
     private:
         DSSImageView* imageView;
+        QString fileName;
+        STARVECTOR	stars;
+        STARVECTOR	refStars;
+        std::shared_ptr<CMemoryBitmap> m_pBitmap;
+        CBilinearParameters transformation;
+        VOTINGPAIRVECTOR vVotedPairs;
+		CPointExt					m_ptCursor;
+		CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
+		EditStarAction				m_Action;
+		QPixmap pixmap;
+		CStar						m_AddedStar;
+		int							m_lRemovedIndice;
+		bool						m_bRemoveComet;
+		bool						m_bCometMode;
+		double						m_fXComet, m_fYComet;
+		bool						m_bComet;
+		double						m_fLightBkgd;
+		bool						m_bDirty;
+		double						m_fScore;
+		int							m_lNrStars;
+		double						m_fFWHM;
+		double						m_fBackground;
+		QualityGrid					m_QualityGrid;
+		bool forceHere;
+		bool displayGrid;
+		uint m_tipShowCount;
+
+       	template <bool Refstar>
+		bool isStarVoted(const int star)
+		{
+			bool bResult = false;
+			if (g_bShowRefStars)
+			{
+				if (!vVotedPairs.empty())
+				{
+					for (const auto& votedPair : vVotedPairs)
+					{
+						if constexpr (Refstar)
+							if (star == votedPair.m_RefStar)
+							{
+								bResult = true;
+								break;
+							}
+						else
+							if (star == votedPair.m_TgtStar)
+							{
+								bResult = true;
+								break;
+							}
+					}
+				}
+				else
+					bResult = true;
+			}
+			else
+				bResult = true;
+
+			return bResult;
+		}
+
+		bool isRefStarVoted(const int lStar)
+		{
+			return this->isStarVoted<true>(lStar);
+		}
+
+		bool isTgtStarVoted(const int lStar)
+		{
+			return this->isStarVoted<false>(lStar);
+		}
+
+		void initGrayBitmap(const QRect& rc);
+		void detectStars(const CPointExt& pt, QRect& rc, STARVECTOR& vStars);
+
+		void computeOverallQuality()
+		{
+			m_fScore = 0.0;
+			m_lNrStars = 0;
+			m_fFWHM = 0;
+			for (size_t i = 0; i < stars.size(); i++)
+			{
+				if (!stars[i].m_bRemoved)
+				{
+					m_fScore += stars[i].m_fQuality;
+					m_lNrStars++;
+					m_fFWHM += stars[i].m_fMeanRadius * 2.35 / 1.5;
+				};
+			};
+			if (m_lNrStars)
+				m_fFWHM /= m_lNrStars;
+		};
+
+		void computeBackgroundValue();
+
+		void drawOnPixmap();
+
+		void drawQualityGrid(QPainter& painter, const QRect& rcClient);
+
     };
 }

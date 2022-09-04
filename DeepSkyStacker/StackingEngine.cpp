@@ -444,14 +444,14 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 			for (auto& bitmap : task.m_vBitmaps)
 			{
 				CLightFrameInfo lfi;
-				lfi.SetBitmap(bitmap.m_strFileName, false, false);
+				lfi.SetBitmap(bitmap.filePath.c_str(), false, false);
 
 				if (lfi.IsRegistered())
 				{
 					lfi = bitmap;
 					lfi.RefreshSuperPixel();
 
-					if (!m_strReferenceFrame.CompareNoCase(lfi.m_strFileName))
+					if (!m_strReferenceFrame.CompareNoCase(lfi.filePath.c_str()))
 					{
 						lfi.m_bStartingFrame = true;
 						bReferenceFrameFound = true;
@@ -467,10 +467,10 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 		// Look for the reference frame and add it to the list
 		CLightFrameInfo			lfi;
 		CFrameInfo				fi;
-
-		if (fi.InitFromFile(m_strReferenceFrame, PICTURETYPE_LIGHTFRAME))
+		fs::path path { m_strReferenceFrame.GetString() };
+		if (fi.InitFromFile(path, PICTURETYPE_LIGHTFRAME))
 		{
-			lfi.SetBitmap(m_strReferenceFrame, false, false);
+			lfi.SetBitmap(path , false, false);
 			if (lfi.IsRegistered())
 			{
 				lfi = fi;
@@ -494,7 +494,7 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 	CBilinearParameters	BilinearParameters;
 
 	m_CriticalSection.Lock();
-	bResult = m_StackingInfo.GetParameters(m_vBitmaps[lBitmapIndice].m_strFileName, BilinearParameters);
+	bResult = m_StackingInfo.GetParameters(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
 	m_CriticalSection.Unlock();
 
 	if (bResult)
@@ -507,7 +507,7 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 	{
 		// Automatic acknowledgment of the transformation
 		m_CriticalSection.Lock();
-		m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].m_strFileName, BilinearParameters);
+		m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
 		m_CriticalSection.Unlock();
 
 		bResult = true;
@@ -551,7 +551,7 @@ bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 			m_vBitmaps[lBitmapIndice].m_BilinearParameters = BilinearParameters;
 			MatchingStars.GetVotedPairs(m_vBitmaps[lBitmapIndice].m_vVotedPairs);
 			m_CriticalSection.Lock();
-			m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].m_strFileName, BilinearParameters);
+			m_StackingInfo.AddLightFrame(m_vBitmaps[lBitmapIndice].filePath.c_str(), BilinearParameters);
 			m_CriticalSection.Unlock();
 		};
 	};
@@ -763,7 +763,7 @@ void computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const 
 		if (omp_get_thread_num() == 0 && pProg != nullptr)
 		{
 			CString strText;
-			strText.Format(IDS_COMPUTINGSTACKINGINFO, pStackingEngine->getBitmap(i).m_strFileName.GetString());
+			strText.Format(IDS_COMPUTINGSTACKINGINFO, pStackingEngine->getBitmap(i).filePath.c_str());
 			pProg->Progress1(strText, i + 1);
 			stop = pProg->IsCanceled();
 		}
@@ -826,7 +826,7 @@ bool CStackingEngine::ComputeOffsets()
 			if (bitmapZero.m_bComet)
 				m_lNrCometStackable++;
 
-			m_StackingInfo.SetReferenceFrame(bitmapZero.m_strFileName);
+			m_StackingInfo.SetReferenceFrame(bitmapZero.filePath.c_str());
 
 			computeOffsets(this, this->m_pProgress, lLast);
 
@@ -850,7 +850,7 @@ bool	CStackingEngine::IsLightFrameStackable(LPCTSTR szFile)
 
 	for (int i = 0;i<m_vBitmaps.size() && !bResult;i++)
 	{
-		if (!m_vBitmaps[i].m_strFileName.CompareNoCase(szFile))
+		if (!m_vBitmaps[i].filePath.compare(szFile))
 		{
 			if (!m_vBitmaps[i].m_bDisabled)
 				bResult = true;
@@ -876,7 +876,7 @@ bool	CStackingEngine::RemoveNonStackableLightFrames(CAllStackingTasks & tasks)
 			//for (j = 0; j < LightTask.m_vBitmaps.size(); j++)
 			for (const auto& bitmap : LightTask.m_vBitmaps)
 			{
-				if (IsLightFrameStackable(bitmap.m_strFileName))
+				if (IsLightFrameStackable(bitmap.filePath.c_str()))
 					vNewList.push_back(bitmap);
 			};
 
@@ -1084,7 +1084,7 @@ int CStackingEngine::FindBitmapIndice(LPCTSTR szFile)
 
 	for (size_t i = 0; i < m_vBitmaps.size(); i++)
 	{
-		if (m_vBitmaps[i].m_strFileName.CompareNoCase(szFile) == 0)
+		if (m_vBitmaps[i].filePath.compare(szFile) == 0)
 		{
 			return static_cast<int>(i);
 		}
@@ -2151,7 +2151,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 			bool bStop = false;
 			CString strText;
 
-			int lFirstTaskID = m_vBitmaps.empty() ? 0 : tasks.FindStackID(m_vBitmaps.cbegin()->m_strFileName);
+			int lFirstTaskID = m_vBitmaps.empty() ? 0 : tasks.FindStackID(m_vBitmaps.cbegin()->filePath.c_str());
 
 			while (!bEnd)
 			{
@@ -2193,7 +2193,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 					for (size_t i = 0; i < pStackingInfo->m_pLightTask->m_vBitmaps.size() && !bStop; i++)
 					{
 						// Stack this bitmap
-						const int lIndice = FindBitmapIndice(pStackingInfo->m_pLightTask->m_vBitmaps[i].m_strFileName);
+						const int lIndice = FindBitmapIndice(pStackingInfo->m_pLightTask->m_vBitmaps[i].filePath.c_str());
 						if (lIndice >= 0)
 						{
 							const CLightFrameInfo& lfInfo = m_vBitmaps[lIndice];
@@ -2224,7 +2224,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 								if (bStack)
 								{
-									ZTRACE_RUNTIME("Stack %s", static_cast<LPCTSTR>(lfInfo.m_strFileName));
+									ZTRACE_RUNTIME("Stack %s", lfInfo.filePath.generic_string());
 
 									if (m_pProgress != nullptr)
 									{
@@ -2234,20 +2234,20 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 									std::shared_ptr<CMemoryBitmap> pBitmap;
 
-									if (::LoadFrame(lfInfo.m_strFileName, PICTURETYPE_LIGHTFRAME, m_pProgress, pBitmap))
+									if (::LoadFrame(lfInfo.filePath.c_str(), PICTURETYPE_LIGHTFRAME, m_pProgress, pBitmap))
 									{
 										const CString strDescription = lfInfo.m_strInfos;
 										if (lfInfo.m_lNrChannels == 3)
-											strText.Format(IDS_STACKRGBLIGHT, lfInfo.m_lBitPerChannels, static_cast<LPCTSTR>(strDescription), static_cast<LPCTSTR>(lfInfo.m_strFileName));
+											strText.Format(IDS_STACKRGBLIGHT, lfInfo.m_lBitPerChannels, static_cast<LPCTSTR>(strDescription), static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
 										else
-											strText.Format(IDS_STACKGRAYLIGHT, lfInfo.m_lBitPerChannels, static_cast<LPCTSTR>(strDescription), static_cast<LPCTSTR>(lfInfo.m_strFileName));
+											strText.Format(IDS_STACKGRAYLIGHT, lfInfo.m_lBitPerChannels, static_cast<LPCTSTR>(strDescription), static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
 
 										ZTRACE_RUNTIME(CT2CA(strText, CP_UTF8));
 										// First apply transformations
 										MasterFrames.ApplyAllMasters(pBitmap, std::addressof(lfInfo.m_vStars), m_pProgress);
 
 										// Here save the calibrated light frame if needed
-										m_strCurrentLightFrame = lfInfo.m_strFileName;
+										m_strCurrentLightFrame = lfInfo.filePath.c_str();
 
 										std::shared_ptr<CMemoryBitmap> pDelta = ApplyCosmetic(pBitmap, m_PostCalibrationSettings, m_pProgress);
 										if (m_bSaveCalibrated)
@@ -2520,7 +2520,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 	if (m_vBitmaps.size())
 	{
 		// Use the folder of the first light frame
-		_tsplitpath(m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+		_tsplitpath(m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 		strOutputFolder = szDrive;
 		strOutputFolder += szDir;
@@ -2574,7 +2574,7 @@ bool	CStackingEngine::GetDefaultOutputFileName(CString & strFileName, LPCTSTR sz
 		{
 			strExt = ".fit";
 			if (m_vBitmaps.size())
-				GetFITSExtension(m_vBitmaps[0].m_strFileName, strExt);
+				GetFITSExtension(m_vBitmaps[0].filePath, strExt);
 			strFileName = strBasePath+strBaseName+strExt;
 		};
 
@@ -3032,59 +3032,59 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						strText.LoadString(IDS_TYPE_LIGHT);
 						fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 						for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
-							fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pLightTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
+							fprintf(hFile, "%s<br>", si.m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
 
 						if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_OFFSET);
 							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
-							if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].m_strFileName)
+							if (si.m_pOffsetTask->m_strOutputFile != si.m_pOffsetTask->m_vBitmaps[0].filePath.c_str())
 							{
 								strText.LoadString(IDS_TYPE_MASTEROFFSET);
 								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8), (LPCSTR)CT2CA(si.m_pOffsetTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pOffsetTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pOffsetTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
+								fprintf(hFile, "%s<br>", si.m_pOffsetTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
 						};
 
 						if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_DARK);
 							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
-							if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].m_strFileName)
+							if (si.m_pDarkTask->m_strOutputFile != si.m_pDarkTask->m_vBitmaps[0].filePath.c_str())
 							{
 								strText.LoadString(IDS_TYPE_MASTERDARK);
 								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8), (LPCSTR)CT2CA(si.m_pDarkTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pDarkTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
+								fprintf(hFile, "%s<br>", si.m_pDarkTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
 						};
 
 						if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_DARKFLAT);
 							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
-							if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].m_strFileName)
+							if (si.m_pDarkFlatTask->m_strOutputFile != si.m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str())
 							{
 								strText.LoadString(IDS_TYPE_MASTERDARKFLAT);
 								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8),
 									(LPCSTR)CT2CA(si.m_pDarkFlatTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pDarkFlatTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
+								fprintf(hFile, "%s<br>", si.m_pDarkFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
 						};
 						if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
 						{
 							strText.LoadString(IDS_TYPE_FLAT);
 							fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
-							if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].m_strFileName)
+							if (si.m_pFlatTask->m_strOutputFile != si.m_pFlatTask->m_vBitmaps[0].filePath.c_str())
 							{
 								strText.LoadString(IDS_TYPE_MASTERFLAT);
 								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8),
 									(LPCSTR)CT2CA(si.m_pFlatTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", (LPCSTR)CT2CA(si.m_pFlatTask->m_vBitmaps[j].m_strFileName, CP_UTF8));
+								fprintf(hFile, "%s<br>", si.m_pFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
 						};
 					};
 				};

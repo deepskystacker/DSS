@@ -1,5 +1,6 @@
 #ifndef __FRAMEINFO_H__
 #define __FRAMEINFO_H__
+#include <filesystem>
 
 //#include "RAWUtils.h"
 
@@ -11,11 +12,12 @@ bool IsRawBayer();
 bool IsFITSRawBayer();
 bool IsFITSSuperPixels();
 
+namespace fs = std::filesystem;	
 
 class CFrameInfo
 {
 public :
-	CString				m_strFileName;
+	fs::path filePath;  // m_strFileName;
 	int				m_lWidth,
 						m_lHeight;
 	int				m_lISOSpeed;
@@ -32,7 +34,7 @@ public :
 	CString				m_strInfos;
 	bool				m_bFITS16bit;
 	CBitmapExtraInfo	m_ExtraInfo;
-	CString				m_filterName;
+	QString				m_filterName;
 
 private :
 	mutable CFATYPE			m_CFAType;
@@ -43,7 +45,7 @@ protected :
 	{
 		m_lWidth		  = cfi.m_lWidth;
 		m_lHeight		  = cfi.m_lHeight;
-		m_strFileName	  = cfi.m_strFileName;
+		filePath  = cfi.filePath;
 		m_lISOSpeed		  = cfi.m_lISOSpeed;
 		m_lGain			  = cfi.m_lGain;
 		m_fExposure		  = cfi.m_fExposure;
@@ -175,7 +177,7 @@ public :
 		return IsCompatible(cfi.m_lWidth, cfi.m_lHeight, cfi.m_lBitPerChannels, cfi.m_lNrChannels, cfi.m_CFAType);
 	};
 
-	bool	InitFromFile(LPCTSTR szFile, PICTURETYPE Type);
+	bool	InitFromFile(const fs::path& file, PICTURETYPE Type);
 
 	CFATYPE	GetCFAType() const
 	{

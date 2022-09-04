@@ -349,7 +349,7 @@ void PostCalibration::on_testCosmetic_clicked()
 				CString				strText;
 
 				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
-				strFileName = StackingInfo.m_pLightTask->m_vBitmaps[0].m_strFileName;
+				strFileName = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath.generic_wstring().c_str();
 
 				CMasterFrames	MasterFrames;
 

@@ -207,7 +207,7 @@ protected:
 	int m_lGain;
 	int m_lNrFrames;
 	CString m_strDescription;
-	CString m_filterName;
+	QString m_filterName;
 
 protected:
 	void			CopyFrom(const CMemoryBitmap& mb)
@@ -311,13 +311,13 @@ public:
 		return *this;
 	};
 
-	virtual CMemoryBitmap& setFilterName(CString& name)
+	virtual CMemoryBitmap& setFilterName(const QString& name)
 	{
 		m_filterName = name;
 		return *this;
 	}
 
-	virtual CString filterName()
+	virtual QString filterName()
 	{
 		return m_filterName;
 	}

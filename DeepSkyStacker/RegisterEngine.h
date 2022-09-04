@@ -344,7 +344,7 @@ public:
 		m_pProgress = pProgress;
 	};
 
-	void	SetBitmap(LPCTSTR szBitmap, bool bProcessIfNecessary = true, bool bForceRegister = false);
+	void	SetBitmap(fs::path path, bool bProcessIfNecessary = true, bool bForceRegister = false);
 
 	bool operator < (const CLightFrameInfo & cbi) const
 	{
@@ -408,6 +408,52 @@ public:
 		return (m_fScore > slf.m_fScore);
 	}
 };
+
+namespace DSS
+{
+	class ScoredLightFrame
+	{
+	public:
+		std::uint16_t	group;
+		std::uint32_t	index;
+		double			score;
+
+
+		//private:
+		//	void CopyFrom(const CScoredLightFrame& slf)
+		//	{
+		//		m_dwIndice = slf.m_dwIndice;
+		//		m_fScore   = slf.m_fScore;
+		//	}
+
+	public:
+		ScoredLightFrame(std::uint16_t id, std::uint32_t ndx, double value) :
+			group{ id },
+			index{ ndx },
+			score{ value }
+
+		{}
+
+		ScoredLightFrame(const ScoredLightFrame& rhs) = default;
+		ScoredLightFrame(ScoredLightFrame&& rhs) = default;
+
+		ScoredLightFrame& operator=(const ScoredLightFrame& rhs) = default;
+		ScoredLightFrame& operator=(ScoredLightFrame&& rhs) = default;
+
+		/// <summary>
+		/// Implement operator < for std::sort.  Note the what is
+		/// actually wanted is a reverse sort so we use > for the
+		/// operator.
+		/// </summary>
+		/// <param name="rhs" >The comparand</param>
+		/// <returns>true if greater than comparand </returns>
+		bool operator<(const ScoredLightFrame& rhs) const
+		{
+			return (score > rhs.score);
+		}
+	};
+
+}
 
 /* ------------------------------------------------------------------- */
 

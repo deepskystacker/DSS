@@ -47,7 +47,7 @@ void ThreadLoader::run()
 
 		if (LoadPicture((LPCTSTR)strImage.utf16(), adb))
 		{
-			std::lock_guard(imageLoader->mutex);
+			const std::lock_guard <std::mutex> lock { imageLoader->mutex };
 
 	   		LoadedImage			li;
 

@@ -307,7 +307,7 @@ bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 		CString			strMasterOffset;
 		CString			strMasterOffsetInfo;
 
-		_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+		_tsplitpath(m_pOffsetTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 		BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */ false, szDrive, szDir,
 			&strMasterOffset, &strMasterOffsetInfo);
@@ -342,7 +342,7 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 		ASSERT(m_pOffsetTask->m_TaskType == PICTURETYPE_OFFSETFRAME);
 		if (m_pOffsetTask->m_vBitmaps.size() == 1)
 		{
-			m_pOffsetTask->m_strOutputFile = m_pOffsetTask->m_vBitmaps[0].m_strFileName;
+			m_pOffsetTask->m_strOutputFile = m_pOffsetTask->m_vBitmaps[0].filePath.c_str();
 			m_pOffsetTask->m_bDone = true;
 			m_pOffsetTask->m_bUnmodified = true;
 		}
@@ -372,7 +372,7 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pOffsetTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_OFFSETFRAME, pProgress, pBitmap))
+				if (::LoadFrame(m_pOffsetTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_OFFSETFRAME, pProgress, pBitmap))
 				{
 					// Load the bitmap
 					if (!m_pOffsetTask->m_pMaster)
@@ -411,7 +411,7 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 					TCHAR szDir[1+_MAX_DIR];
 					CString strInfo;
 					strInfo.Format(IDS_MEDIANOFFSETINFO, m_pOffsetTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
-					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */false, szDrive, szDir, &strMasterOffset, &strMasterOffsetInfo);
 
@@ -459,7 +459,7 @@ bool	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
 			CString			strMasterDarkInfo;
 			int			lExposure = m_pDarkTask->m_fExposure;
 
-			_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+			_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 			BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
 				&strMasterDark, &strMasterDarkInfo);
@@ -498,7 +498,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 
 		if (m_pDarkTask->m_vBitmaps.size() == 1)
 		{
-			m_pDarkTask->m_strOutputFile = m_pDarkTask->m_vBitmaps[0].m_strFileName;
+			m_pDarkTask->m_strOutputFile = m_pDarkTask->m_vBitmaps[0].filePath.c_str();
 			m_pDarkTask->m_bDone = true;
 		}
 		else if (CheckForExistingDark(m_pDarkTask->m_strOutputFile))
@@ -533,7 +533,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pDarkTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_DARKFRAME, pProgress, pBitmap))
+				if (::LoadFrame(m_pDarkTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_DARKFRAME, pProgress, pBitmap))
 				{
 					if (!m_pDarkTask->m_pMaster)
 						m_pDarkTask->CreateEmptyMaster(pBitmap.get());
@@ -590,7 +590,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 					CString strInfo;
 
 					strInfo.Format(IDS_MEDIANDARKINFO, m_pDarkTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
-					_tsplitpath(m_pDarkTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+					_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
 						&strMasterDark, &strMasterDarkInfo);
@@ -640,7 +640,7 @@ bool	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
 			CString			strMasterDarkFlatInfo;
 			int			lExposure = m_pDarkFlatTask->m_fExposure;
 
-			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+			_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 			BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
 				&strMasterDarkFlat, &strMasterDarkFlatInfo);
@@ -679,7 +679,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 
 		if (m_pDarkFlatTask->m_vBitmaps.size() == 1)
 		{
-			m_pDarkFlatTask->m_strOutputFile = m_pDarkFlatTask->m_vBitmaps[0].m_strFileName;
+			m_pDarkFlatTask->m_strOutputFile = m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str();
 			m_pDarkFlatTask->m_bDone = true;
 		}
 		else if (CheckForExistingDarkFlat(m_pDarkFlatTask->m_strOutputFile))
@@ -714,7 +714,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pDarkFlatTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_DARKFLATFRAME, pProgress, pBitmap))
+				if (::LoadFrame(m_pDarkFlatTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_DARKFLATFRAME, pProgress, pBitmap))
 				{
 					if (!m_pDarkFlatTask->m_pMaster)
 						m_pDarkFlatTask->CreateEmptyMaster(pBitmap.get());
@@ -774,7 +774,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 
 					strInfo.Format(IDS_MEDIANDARKFLATINFO, m_pDarkFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
 						&strMasterDarkFlat, &strMasterDarkFlatInfo);
@@ -1060,7 +1060,7 @@ bool	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 			CString			strMasterFlat;
 			CString			strMasterFlatInfo;
 
-			_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+			_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 			BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
 				&strMasterFlat, &strMasterFlatInfo);
@@ -1100,7 +1100,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 
 		if (m_pFlatTask->m_vBitmaps.size() == 1)
 		{
-			m_pFlatTask->m_strOutputFile = m_pFlatTask->m_vBitmaps[0].m_strFileName;
+			m_pFlatTask->m_strOutputFile = m_pFlatTask->m_vBitmaps[0].filePath.c_str();
 			m_pFlatTask->m_bDone = true;
 		}
 		else if (CheckForExistingFlat(m_pFlatTask->m_strOutputFile))
@@ -1138,7 +1138,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pFlatTask->m_vBitmaps[i].m_strFileName, PICTURETYPE_FLATFRAME, pProgress, pBitmap))
+				if (::LoadFrame(m_pFlatTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_FLATFRAME, pProgress, pBitmap))
 				{
 					CFlatCalibrationParameters fcpBitmap;
 					if (!m_pFlatTask->m_pMaster)
@@ -1229,7 +1229,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 
 					strInfo.Format(IDS_MEDIANFLATINFO, m_pFlatTask->m_vBitmaps.size(), (LPCTSTR)strMethod);
 
-					_tsplitpath(m_pFlatTask->m_vBitmaps[0].m_strFileName, szDrive, szDir, nullptr, nullptr);
+					_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
 						&strMasterFlat, &strMasterFlatInfo);
@@ -1291,7 +1291,7 @@ inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, 
 
 /* ------------------------------------------------------------------- */
 
-void CAllStackingTasks::AddFileToTask(CFrameInfo & FrameInfo, uint16_t dwGroupID)
+void CAllStackingTasks::AddFileToTask(const CFrameInfo & FrameInfo, uint16_t dwGroupID)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1624,7 +1624,7 @@ int CAllStackingTasks::FindStackID(LPCTSTR szLightFrame)
 		{
 			for (j = 0;j<m_vStacks[i].m_pLightTask->m_vBitmaps.size() && !lResult;j++)
 			{
-				if (!m_vStacks[i].m_pLightTask->m_vBitmaps[j].m_strFileName.CompareNoCase(szLightFrame))
+				if (!m_vStacks[i].m_pLightTask->m_vBitmaps[j].filePath.compare(szLightFrame))
 					lResult = m_vStacks[i].m_pLightTask->m_dwTaskID;
 			};
 		};
@@ -1832,65 +1832,55 @@ bool CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 
 /* ------------------------------------------------------------------- */
 
-bool CAllStackingTasks::CheckReadOnlyStatus(std::vector<CString> & vFolders)
+bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 {
-	bool						bResult = false;
-	std::set<CString>			sFolders;
-	std::set<CString>::iterator	it;
+	std::set<fs::path>			sFolders;
 
 	for (int i = 0;i<m_vTasks.size();i++)
 	{
 		for (int j = 0;j<m_vTasks[i].m_vBitmaps.size();j++)
 		{
-			CString		strFileName;
+			QString		strFileName;
 
 			if (!m_vTasks[i].m_vBitmaps[j].IsMasterFrame())
 			{
-				TCHAR			szDrive[1+_MAX_DRIVE];
-				TCHAR			szDir[1+_MAX_DIR];
-				CString			strPath;
+				fs::path directory
+					{ m_vTasks[i].m_vBitmaps[j].filePath.remove_filename() };
 
-				strFileName = m_vTasks[i].m_vBitmaps[j].m_strFileName;
-				_tsplitpath(strFileName, szDrive, szDir, nullptr, nullptr);
-				strPath = szDrive;
-				strPath+= szDir;
-
-				it = sFolders.find(strPath);
-				if (it == sFolders.end())
-					sFolders.insert(strPath);
+				sFolders.insert(directory);
 			};
 		};
 	};
 
 	// Check that it is possible to write a file in all the folders
-	for (it = sFolders.begin(); it!= sFolders.end();it++)
+	for (auto it = sFolders.begin(); it != sFolders.end(); it++)
 	{
 		bool			bDirOk = true;
-		CString			strFileName;
-		FILE *			hFile;
+		fs::path dir{ *it };
+		auto file = dir / "DSS260FTR.testfile.txt";
 
-		strFileName = (*it);
-		strFileName += "DSS260FTR.testfile.txt";
-
-		hFile = _tfopen(strFileName, _T("wt"));
-		if (hFile)
+		if (std::FILE* hFile =
+#if defined _WINDOWS
+			_wfopen(file.c_str(), L"wt")
+#else
+			std::fopen(file.c_str(), "wt")
+#endif
+			)
 		{
-			int			nResult;
-
-			nResult = fprintf(hFile, "DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
-			if (nResult<=0)
+			auto result = fprintf(hFile, "DeepSkyStacker: This is a test file to check that it is possible to write in this folder");
+			if (result<=0)
 				bDirOk = false;
 			fclose(hFile);
-			DeleteFile(strFileName);
+			fs::remove(file);
 		}
 		else
 			bDirOk = false;
 
 		if (!bDirOk)
-			vFolders.push_back((*it));
+			folders.append(QString::fromStdU16String(dir.generic_u16string()));
 	};
 
-	return !vFolders.size();
+	return !folders.isEmpty();
 };
 
 /* ------------------------------------------------------------------- */

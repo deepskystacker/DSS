@@ -932,16 +932,16 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 		const size_t height = pInBitmap->Height();
 
 		// Check that the output bitmap size is matching the input bitmap
-		ZASSERTSTATE ((pImage->Width() == width) && (pImage->Height() == height));
+		ZASSERTSTATE ((pImage->width() == width) && (pImage->height() == height));
 
 		double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 		//
 		// Point to the first RGB quad in the QImage
 		//
-		QRgb* pOutPixel = (QRgb*)(m_Image->bits());
+		QRgb* pOutPixel = (QRgb*)(pImage->bits());
 
 #pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
-		for (int j = 0; j < lHeight; j++)
+		for (int j = 0; j < height; j++)
 		{
 			if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
 			{
@@ -950,7 +950,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 				T* pGreen = pInBitmap->GetGreenPixel(0, j);
 				T* pBlue = pInBitmap->GetBluePixel(0, j);
 
-				for (int i = 0; i < lWidth; i++)
+				for (int i = 0; i < width; i++)
 				{
 					*pOutPixel++ = qRgb(gammatrans.m_vTransformation[*pRed / fMultiplier],
 										gammatrans.m_vTransformation[*pGreen / fMultiplier],
@@ -966,7 +966,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 				T* pGray = pInBitmap->GetGrayPixel(0, j);
 				unsigned char value = 0;
 
-				for (int i = 0; i < lWidth; i++)
+				for (int i = 0; i < width; i++)
 				{
 					value = gammatrans.m_vTransformation[*pGray / fMultiplier];
 					*pOutPixel++ = qRgb(value, value, value);
@@ -980,6 +980,43 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 }
 
 /* ------------------------------------------------------------------- */
+bool ApplyGammaTransformation(QImage* pImage, CMemoryBitmap* pInBitmap, CGammaTransformation& gammatrans)
+{
+	ZFUNCTRACE_RUNTIME();
+	bool bResult = false;
+	C24BitColorBitmap* p24BitColorBitmap = dynamic_cast<C24BitColorBitmap*>(pInBitmap);
+	C48BitColorBitmap* p48BitColorBitmap = dynamic_cast<C48BitColorBitmap*>(pInBitmap);
+	C96BitColorBitmap* p96BitColorBitmap = dynamic_cast<C96BitColorBitmap*>(pInBitmap);
+	C96BitFloatColorBitmap* p96BitFloatColorBitmap = dynamic_cast<C96BitFloatColorBitmap*>(pInBitmap);
+
+	CGrayBitmap* pGrayBitmap = dynamic_cast<CGrayBitmap*>(pInBitmap);
+	C8BitGrayBitmap* p8BitGrayBitmap = dynamic_cast<C8BitGrayBitmap*>(pInBitmap);
+	C16BitGrayBitmap* p16BitGrayBitmap = dynamic_cast<C16BitGrayBitmap*>(pInBitmap);
+	C32BitGrayBitmap* p32BitGrayBitmap = dynamic_cast<C32BitGrayBitmap*>(pInBitmap);
+	C32BitFloatGrayBitmap* p32BitFloatGrayBitmap = dynamic_cast<C32BitFloatGrayBitmap*>(pInBitmap);
+
+	if (p24BitColorBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p24BitColorBitmap, gammatrans);
+	else if (p48BitColorBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p48BitColorBitmap, gammatrans);
+	else if (p96BitColorBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p96BitColorBitmap, gammatrans);
+	else if (p96BitFloatColorBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p96BitFloatColorBitmap, gammatrans);
+	else if (pGrayBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, pGrayBitmap, gammatrans);
+	else if (p8BitGrayBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p8BitGrayBitmap, gammatrans);
+	else if (p16BitGrayBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p16BitGrayBitmap, gammatrans);
+	else if (p32BitGrayBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p32BitGrayBitmap, gammatrans);
+	else if (p32BitFloatGrayBitmap != nullptr)
+		bResult = ApplyGammaTransformation(pImage, p32BitFloatGrayBitmap, gammatrans);
+
+	return bResult;
+};
+
 
 template <template<class> class BitmapClass, class T>
 bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitmap, CGammaTransformation& gammatrans)

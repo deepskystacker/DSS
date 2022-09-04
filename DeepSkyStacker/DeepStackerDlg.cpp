@@ -278,7 +278,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	ZTRACE_RUNTIME("Creating Explorer bar - ok");
 
 	ZTRACE_RUNTIME("Creating Stacking Panel");
-	stackingDlg = new StackingDlg(widget);
+	stackingDlg = new DSS::StackingDlg(widget);
 	ZTRACE_RUNTIME("Creating Stacking Panel - ok");
 
 	ZTRACE_RUNTIME("Creating stackedWidget");
@@ -310,7 +310,7 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	m_strBaseTitle = strTitle;
 
 	SetIcon(AfxGetApp()->LoadIcon(IDI_APP), true);
-	//stackingDlg->SetStartingFileList(m_strStartFileList);	// TODO: re-enable
+	stackingDlg->setStartingFileList(m_strStartFileList);
 
 	ZTRACE_RUNTIME("Creating Processing Panel");
 	m_dlgProcessing.Create(IDD_PROCESSING, this);

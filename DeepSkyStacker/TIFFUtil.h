@@ -295,9 +295,9 @@ bool GetTIFFInfo(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 bool ReadTIFF(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress *	pProgress);
 bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
 bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, LPCTSTR szDescription);
-bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat,
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat,
 	TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription, int lISOSpeed, int lGain, double fExposure, double fAperture);
-bool WriteTIFF(LPCTSTR szFileName, const CMemoryBitmap * pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
+bool WriteTIFF(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress * pProgress, TIFFFORMAT TIFFFormat, TIFFCOMPRESSION TIFFCompression, LPCTSTR szDescription);
 
 bool IsTIFFPicture(LPCTSTR szFileName, CBitmapInfo & BitmapInfo);
 int LoadTIFFPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress);

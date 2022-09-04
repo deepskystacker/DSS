@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <stdafx.h>
 #include "BitmapExt.h"
 #include "AHDDemosaicing.h"
 #include <vector>
@@ -95,7 +96,7 @@ public:
 
 
 template <class T>
-void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGBToLab& rgbToLab, std::shared_ptr<CGrayBitmapT<T>>& pGrayBitmap, std::shared_ptr<CColorBitmapT<T>>& pColorBitmap)
+void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGBToLab& rgbToLab, CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitmapT<T>>& pColorBitmap)
 {
 	const T* pBaseGrayPixel = pGrayBitmap->GetGrayPixel(x, y);
 	T* pBaseOutputRedPixel = pColorBitmap->GetRedPixel(x, y);
@@ -547,7 +548,7 @@ void DoSubWindow(const int x, const int y, CAHDTaskVariables<T>& var, const CRGB
 }
 
 template <class T>
-void InterpolateBorders(std::shared_ptr<CGrayBitmapT<T>>& pGrayBitmap, std::shared_ptr<CColorBitmapT<T>>& pColorBitmap)
+void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitmapT<T>>& pColorBitmap)
 {
 	const int width = pGrayBitmap->Width();
 	const int height = pGrayBitmap->Height();
@@ -750,8 +751,9 @@ void InterpolateBorders(std::shared_ptr<CGrayBitmapT<T>>& pGrayBitmap, std::shar
 }
 
 template <class T>
-bool AHDDemosaicing(std::shared_ptr<const CGrayBitmapT<T> >pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress)
+bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress)
 {
+	auto& grayInputBitmap{ *pGrayInputBitmap };
 	const int height = grayInputBitmap.Height();
 	const int width = grayInputBitmap.Width();
 
@@ -781,7 +783,7 @@ bool AHDDemosaicing(std::shared_ptr<const CGrayBitmapT<T> >pGrayInputBitmap, std
 			progressCallback(row, omp_get_thread_num());
 		}
 
-		InterpolateBorders(pGgrayInputBitmap, pColorBitmap);
+		InterpolateBorders(pGrayInputBitmap, pColorBitmap);
 
 		rpColorBitmap = pColorBitmap;
 

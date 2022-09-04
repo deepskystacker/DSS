@@ -46,7 +46,7 @@
 
 namespace DSS
 {
-    ToolBar::ToolBar(QWidget* parent, DSS::EditStars* ed, DSS::SelectRect* sel) :
+    ToolBar::ToolBar(QWidget* parent, EditStars* ed, SelectRect* sel) :
         QToolBar(parent),
         editor{ ed },
         selectRect{ sel },
@@ -85,8 +85,8 @@ namespace DSS
             "defining the part of the images you wish to stack.",
             "IDS_TOOLTIP_SELECTRECT"
         ));
-        connect(rectAction, &QAction::triggered, editor, &DSS::EditStars::rectButtonChecked);
-        connect(rectAction, &QAction::triggered, selectRect, &DSS::SelectRect::rectButtonChecked);
+        connect(rectAction, &QAction::triggered, editor, &EditStars::rectButtonChecked);
+        connect(rectAction, &QAction::triggered, selectRect, &SelectRect::rectButtonChecked);
 
         starsAction = addAction(selStars, "");
         starsAction->setToolTip(tr(
@@ -95,8 +95,8 @@ namespace DSS
             "You can add additional stars or remove incorrectly detected stars.",
             "IDS_TOOLTIP_STAR"
         ));
-        connect(starsAction, &QAction::triggered, editor, &DSS::EditStars::starsButtonChecked);
-        connect(starsAction, &QAction::triggered, selectRect, &DSS::SelectRect::starsButtonChecked);
+        connect(starsAction, &QAction::triggered, editor, &EditStars::starsButtonChecked);
+        connect(starsAction, &QAction::triggered, selectRect, &SelectRect::starsButtonChecked);
 
         cometAction = addAction(selComet, "");
         cometAction->setToolTip(tr(
@@ -105,8 +105,8 @@ namespace DSS
             "of the comet's nucleus in the image.",
             "IDS_TOOLTIP_COMET"
         ));
-        connect(cometAction, &QAction::triggered, editor, &DSS::EditStars::cometButtonChecked);
-        connect(cometAction, &QAction::triggered, selectRect, &DSS::SelectRect::cometButtonChecked);
+        connect(cometAction, &QAction::triggered, editor, &EditStars::cometButtonChecked);
+        connect(cometAction, &QAction::triggered, selectRect, &SelectRect::cometButtonChecked);
 
         saveAction = addAction(saveButton, "");
         saveAction->setToolTip(tr(
@@ -116,8 +116,8 @@ namespace DSS
             "Right Click to change behaviour.",
             "IDS_TOOLTIP_SAVE"
         ));
-        connect(saveAction, &QAction::triggered, editor, &DSS::EditStars::saveButtonPressed);
-        connect(saveAction, &QAction::triggered, selectRect, &DSS::SelectRect::saveButtonPressed);
+        connect(saveAction, &QAction::triggered, editor, &EditStars::saveButtonPressed);
+        connect(saveAction, &QAction::triggered, selectRect, &SelectRect::saveButtonPressed);
 
         rectAction->setCheckable(true);
         starsAction->setCheckable(true);

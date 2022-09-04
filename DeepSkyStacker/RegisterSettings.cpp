@@ -115,18 +115,16 @@ void RegisterSettings::onInitDialog()
 	ui->medianFilter->
 		setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
 
-	StackingDlg & stackingDlg = GetStackingDlg(nullptr);
+	DSS::StackingDlg & stackingDlg = GetStackingDlg(nullptr);
 	//
 	// If there are any stackable light frames, set up the 
 	// stacking related stuff
 	//
 	if (stackingDlg.checkedImageCount(PICTURETYPE_LIGHTFRAME) > 0)
 	{
-		CString temp;
-		stackingDlg.m_Pictures.GetFirstCheckedLightFrame(temp);
-		firstLightFrame = QString::fromWCharArray(temp.GetString());
+		QString firstLightFrame{ stackingDlg.getFirstCheckedLightFrame() };
 
-		forceRegister = !stackingDlg.m_Pictures.GetNrUnregisteredCheckedLightFrames();
+		forceRegister = !stackingDlg.unregisteredCheckedLightFrameCount();
 		noDarks = !stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME);
 		noFlats = !stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME);;
 		noOffsets = !stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME);;

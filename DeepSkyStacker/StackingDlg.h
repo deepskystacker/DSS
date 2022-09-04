@@ -46,104 +46,143 @@ namespace std::filesystem
 
 namespace fs = std::filesystem;
 
-class StackingDlg : public QDialog
+namespace DSS
 {
-	typedef QDialog
-		Inherited;
-
-	Q_OBJECT
-
-public slots:
-	void setSelectionRect(QRectF rect);
-	void tableViewItemClickedEvent(const QModelIndex&);
-	void imageLoad();
-
-public:
-	explicit StackingDlg(QWidget* parent = nullptr);
-	~StackingDlg();
-
-	inline std::uint16_t	currentGroupId() const
+	class StackingDlg : public QDialog
 	{
-		return groupId;
-	}
+		typedef QDialog
+			Inherited;
 
-	void		onAddPictures();
-	void		onAddDarks();
-	void		onAddDarkFlats();
-	void		onAddFlats();
-	void		onAddOffsets();
+		Q_OBJECT
 
-	//
-	// dssfilelist operations
-	//
-	void		clearList();
-	void		loadList();
-	void		saveList();
+	public slots:
+		void setSelectionRect(QRectF rect);
+		void tableViewItemClickedEvent(const QModelIndex&);
+		void imageLoad();
 
-	//
-	// Check marks
-	//
-	void		checkAbove();
-	void		checkAll();
-	void		unCheckAll();
+	public:
+		explicit StackingDlg(QWidget* parent = nullptr);
+		~StackingDlg();
 
-private:
-	Ui::StackingDlg* ui;
-	std::unique_ptr<Workspace> workspace;
-	bool initialised;
-	std::uint16_t	groupId;		// Initially zero - is the group we are currently working with
-	QString			m_strShowFile;
-	CGammaTransformation	m_GammaTransformation;
+		void		onAddPictures();
+		void		onAddDarks();
+		void		onAddDarkFlats();
+		void		onAddFlats();
+		void		onAddOffsets();
 
-	bool fileAlreadyLoaded(const fs::path& file);
+		//
+		// dssfilelist operations
+		//
+		void		clearList();
+		void		loadList();
+		void		saveList();
 
-	std::unique_ptr<DSS::EditStars> editStarsPtr;
-	std::unique_ptr<DSS::SelectRect> selectRectPtr;
-	std::unique_ptr<DSS::ToolBar> pToolBar;
+		//
+		// Check marks
+		//
+		void		checkAbove();
+		void		checkAll();
+		void		unCheckAll();
 
-	QRectF	selectRect;
+		void setStartingFileList(LPCTSTR szFileList)
+		{
+			startingFileList = QString::fromWCharArray(szFileList);
+		};
 
-	//QFileDialog			fileDialog;
-	std::vector<DSS::Group>	imageGroups;
+		void computeOffsets();
 
-	MRUPath			mruPath;
-	QNetworkAccessManager* networkManager;			// deleted using QObject::deleteLater();
+		void registerCheckedImages();
 
-	ImageLoader		imageLoader;
-	LoadedImage		m_LoadedImage;
+		void stackCheckedImages();
+
+		void batchStack();
+
+		inline void fillTasks(CAllStackingTasks& tasks)
+		{
+			return frameList.fillTasks(tasks);
+		}
+
+		inline size_t checkedImageCount(PICTURETYPE t)
+		{
+			return frameList.checkedImageCount(t);
+		}
+
+		inline QString getFirstCheckedLightFrame()
+		{
+			return frameList.getFirstCheckedLightFrame();
+		}
+
+		inline size_t unregisteredCheckedLightFrameCount(int id = -1) const
+		{
+			return frameList.unregisteredCheckedLightFrameCount(id);
+		}
+
+		void reloadCurrentImage();
 
 
-	void showEvent(QShowEvent* event) override;
+	private:
+		Ui::StackingDlg* ui;
+		std::unique_ptr<Workspace> workspace;
+		bool initialised;
+		QString			m_strShowFile;
+		CGammaTransformation	m_GammaTransformation;
+		fs::path		fileList;
+		FrameList		frameList;
+		CMRUList		m_MRUList;
+		QString			startingFileList;
 
-	void onInitDialog();
 
-	void versionInfoReceived(QNetworkReply* reply);
-	void retrieveLatestVersionInfo();
 
-	void registerCheckedImages();
-	void stackCheckedImages();
+		bool fileAlreadyLoaded(const fs::path& file);
 
-	bool checkEditChanges();
+		std::unique_ptr<EditStars> editStarsPtr;
+		std::unique_ptr<SelectRect> selectRectPtr;
+		std::unique_ptr<ToolBar> pToolBar;
 
-	size_t checkedImageCount(PICTURETYPE, int16_t group = -1);
-	void fillTasks(CAllStackingTasks& tasks);
+		QRectF	selectRect;
 
-	bool CheckReadOnlyFolders(CAllStackingTasks& tasks);
+		//QFileDialog			fileDialog;
 
-	bool CheckStacking(CAllStackingTasks& tasks);
+		MRUPath			mruPath;
+		QNetworkAccessManager* networkManager;			// deleted using QObject::deleteLater();
 
-	bool areCheckedImagesCompatible();
+		ImageLoader		imageLoader;
+		LoadedImage		m_LoadedImage;
 
-	bool showRecap(CAllStackingTasks& tasks);
 
-	void blankCheckedItemScores();
+		void showEvent(QShowEvent* event) override;
 
-	void updateCheckedItemScores();
+		void onInitDialog();
 
-	bool saveOnClose();
+		void versionInfoReceived(QNetworkReply* reply);
+		void retrieveLatestVersionInfo();
 
-};
+		bool checkEditChanges();
 
+		bool checkReadOnlyFolders(CAllStackingTasks& tasks);
+
+		bool CheckStacking(CAllStackingTasks& tasks);
+
+		bool showRecap(CAllStackingTasks& tasks);
+
+		bool saveOnClose();
+
+		void DoStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
+
+		void UpdateCheckedAndOffsets(CStackingEngine& StackingEngine);
+		
+		bool checkWorkspaceChanges();
+		
+		void openFileList(const QString& fileName);
+
+		void updateListInfo();
+
+		void loadList(CMRUList& MRUList, QString& strFileList);
+
+		void saveList(CMRUList& MRUList, QString& strFileList);
+
+	};
+}
 #if (0)
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -157,7 +196,6 @@ private :
 	CButtonToolbar			m_ButtonToolbar;
 	CSelectRectSink			m_SelectRectSink;
 	CEditStarsSink			m_EditStarSink;
-	CMRUList				m_MRUList;
 	CString					m_strStartingFileList;
 	CGammaTransformation	m_GammaTransformation;
 	CString					m_strCurrentFileList;
@@ -213,29 +251,25 @@ private :
 
 public :
 	BOOL		CheckDiskSpace(CAllStackingTasks & tasks);
-	BOOL		CheckWorkspaceChanges();
+
 	void		CheckAskRegister();
 	void		RegisterCheckedImage();
 	void		CheckAll();
 	void		UncheckAll();
 	void		ClearList();
 	void		CheckAbove();
-	void		ComputeOffsets();
+
 	void		LoadList();
 	void		SaveList();
 	void		ShowStars(BOOL bShow);
 	void		ReloadCurrentImage();
 	void		DropFiles(HDROP hDropInfo);
-	void		SetStartingFileList(LPCTSTR szFileList)
-	{
-		m_strStartingFileList = szFileList;
-	};
+
 	void		OpenFileList(LPCTSTR szFileList);
 
 private :
 	void		UncheckNonStackablePictures();
 	void		UpdateCheckedAndOffsets(CStackingEngine & StackingEngine);
-	void DoStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
 
 	void		UpdateGroupTabs();
 	void		UpdateLayout();

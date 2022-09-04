@@ -800,7 +800,7 @@ void RawDDPSettings::apply()
 	//
 	// Reload current image with changed settings
 	//
-	GetDeepStackerDlg(nullptr)->GetStackingDlg().ReloadCurrentImage();
+	GetDeepStackerDlg(nullptr)->GetStackingDlg().reloadCurrentImage();
 }
 
 void RawDDPSettings::reject()

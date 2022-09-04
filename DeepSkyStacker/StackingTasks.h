@@ -334,7 +334,7 @@ public :
 		return m_fMaxExposureTime;
 	}
 
-	void AddFileToTask(CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
+	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
 	void SetCustomRectangle(const CRect& rcCustom)
 	{
 		if (rcCustom.IsRectEmpty())
@@ -392,7 +392,7 @@ public :
 	__int64	ComputeNecessaryDiskSpace();
 	__int64	AvailableDiskSpace(CString & strDrive);
 
-	bool	CheckReadOnlyStatus(std::vector<CString> & vFolders);
+	bool	checkReadOnlyStatus(QStringList & folders);
 
 	static	QString GetTemporaryFilesFolder();
 	static	void SetTemporaryFilesFolder(QString strFolder);

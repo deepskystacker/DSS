@@ -38,6 +38,8 @@
 
 #include "stdafx.h"
 
+#include <QAction>
+#include <QMenu>
 #include <QMessageBox>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
@@ -74,2362 +76,2455 @@
 #include "dsstoolbar.h"
 #include "ui/ui_StackingDlg.h"
 
+#include <ZExcept.h>
+
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-constexpr	DWORD					IDC_EDIT_SELECT = 1;
-constexpr	DWORD					IDC_EDIT_STAR   = 2;
-constexpr	DWORD					IDC_EDIT_COMET  = 3;
-constexpr	DWORD					IDC_EDIT_SAVE   = 4;
-
-const QStringList INPUTFILE_FILTERS({
-	QCoreApplication::translate("StackingDlg", "Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-	QCoreApplication::translate("StackingDlg", "Windows Bitmaps (*.bmp)"),
-	QCoreApplication::translate("StackingDlg", "JPEG or PNG Files (*.jpg *.jpeg *.png)"),
-	QCoreApplication::translate("StackingDlg", "TIFF Files (*.tif *.tiff)"),
-	QCoreApplication::translate("StackingDlg", "RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-	QCoreApplication::translate("StackingDlg", "FITS Files (*.fits *.fit *.fts)"),
-	QCoreApplication::translate("StackingDlg", "All Files (*)")
-	});
-
-/////////////////////////////////////////////////////////////////////////////
-// StackingDlg dialog
-
-StackingDlg::StackingDlg(QWidget* parent) :
-	QDialog(parent),
-	ui(new Ui::StackingDlg),
-	editStarsPtr{ std::make_unique<DSS::EditStars>(new DSS::EditStars(this)) },
-	selectRectPtr{ std::make_unique<DSS::SelectRect>(new DSS::SelectRect(this)) },
-	pToolBar{ std::make_unique<DSS::ToolBar>(new DSS::ToolBar(this, editStarsPtr.get(), selectRectPtr.get())) },
-	initialised(false),
-	groupId(0)
+namespace DSS
 {
-	mruPath.readSettings();
-	connect(ui->tableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableViewItemClickedEvent(const QModelIndex&)));
-	connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
-}
+	constexpr	DWORD					IDC_EDIT_SELECT = 1;
+	constexpr	DWORD					IDC_EDIT_STAR   = 2;
+	constexpr	DWORD					IDC_EDIT_COMET  = 3;
+	constexpr	DWORD					IDC_EDIT_SAVE   = 4;
 
-StackingDlg::~StackingDlg()
-{
-	delete ui;
-}
+	const QStringList OUTPUTLIST_FILTERS({
+		QCoreApplication::translate("StackingDlg", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
+		QCoreApplication::translate("StackingDlg", "File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
+		QCoreApplication::translate("StackingDlg", "All Files (*)", "IDS_LISTFILTER_OUTPUT")
+		});
 
-void StackingDlg::setSelectionRect(QRectF rect)
-{
-	selectRect = rect;
-}
 
-void StackingDlg::showEvent(QShowEvent* event)
-{
-	if (!event->spontaneous())
+	const QStringList INPUTFILE_FILTERS({
+		QCoreApplication::translate("StackingDlg", "Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
+		QCoreApplication::translate("StackingDlg", "Windows Bitmaps (*.bmp)"),
+		QCoreApplication::translate("StackingDlg", "JPEG or PNG Files (*.jpg *.jpeg *.png)"),
+		QCoreApplication::translate("StackingDlg", "TIFF Files (*.tif *.tiff)"),
+		QCoreApplication::translate("StackingDlg", "RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
+		QCoreApplication::translate("StackingDlg", "FITS Files (*.fits *.fit *.fts)"),
+		QCoreApplication::translate("StackingDlg", "All Files (*)")
+		});
+
+	/////////////////////////////////////////////////////////////////////////////
+	// StackingDlg dialog
+
+	StackingDlg::StackingDlg(QWidget* parent) :
+		QDialog(parent),
+		ui(new Ui::StackingDlg),
+		editStarsPtr{ std::make_unique<EditStars>(this) },
+		selectRectPtr{ std::make_unique<SelectRect>(this) },
+		pToolBar{ std::make_unique<ToolBar>(this, editStarsPtr.get(), selectRectPtr.get()) },
+		initialised(false)
 	{
-		if (!initialised)
-		{
-			initialised = true;
-			onInitDialog();
-		}
+		mruPath.readSettings();
+		connect(ui->tableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableViewItemClickedEvent(const QModelIndex&)));
+		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
+		ui->picture->setToolBar(pToolBar.get());
+		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 	}
-	// Invoke base class showEvent()
-	return Inherited::showEvent(event);
-}
 
-void StackingDlg::onInitDialog()
-{
-}
-
-void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
-{
-	qDebug() << "Table View item clicked, row " << index.row();
-	QItemSelectionModel * qsm = ui->tableView->selectionModel();
-	QModelIndexList selectedRows = qsm->selectedRows();
-	//
-	// If only one row is selected, we want to know the filename
-	//
-	if (1 == selectedRows.count())
+	StackingDlg::~StackingDlg()
 	{
-		QModelIndex& index = selectedRows[0];
-		if (index.isValid())
+		delete ui;
+	}
+
+	void StackingDlg::setSelectionRect(QRectF rect)
+	{
+		selectRect = rect;
+	}
+
+	void StackingDlg::showEvent(QShowEvent* event)
+	{
+		if (!event->spontaneous())
 		{
-			QString  fileName;
-			const DSS::ImageListModel* model = dynamic_cast<const DSS::ImageListModel*>(index.model());
-			int row = index.row();
-			fileName = model->selectedFileName(row);
-			//
-			// If the filename hasn't changed but we have changes to the stars that need to be saved
-			//
-			if (fileName == m_strShowFile && checkEditChanges())
+			if (!initialised)
 			{
-				ui->information->setText(m_strShowFile);
-				ui->information->setTextFormat(Qt::PlainText);
-				ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-				ui->information->setOpenExternalLinks(false);
-				m_strShowFile = fileName;
-				imageLoad();
+				initialised = true;
+				onInitDialog();
 			}
 		}
-		else
+		// Invoke base class showEvent()
+		return Inherited::showEvent(event);
+	}
+
+	void StackingDlg::onInitDialog()
+	{
+		if (!startingFileList.isEmpty())
+			openFileList(startingFileList);
+	}
+
+	void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
+	{
+		qDebug() << "Table View item clicked, row " << index.row();
+		QItemSelectionModel * qsm = ui->tableView->selectionModel();
+		QModelIndexList selectedRows = qsm->selectedRows();
+		//
+		// If only one row is selected, we want to know the filename
+		//
+		if (1 == selectedRows.count())
 		{
-			ui->information->setText("");
-			ui->information->setTextFormat(Qt::PlainText);
-			ui->information->setTextInteractionFlags(Qt::NoTextInteraction);
-			ui->information->setOpenExternalLinks(false);
+			QModelIndex& index = selectedRows[0];
+			if (index.isValid())
+			{
+				QString  fileName;
+				const ImageListModel* model = dynamic_cast<const ImageListModel*>(index.model());
+				int row = index.row();
+				fileName = model->selectedFileName(row);
+				//
+				// If the filename hasn't changed but we have changes to the stars that need to be saved
+				//
+				if (fileName == m_strShowFile && checkEditChanges())
+				{
+					ui->information->setText(m_strShowFile);
+					ui->information->setTextFormat(Qt::PlainText);
+					ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+					ui->information->setOpenExternalLinks(false);
+					m_strShowFile = fileName;
+					imageLoad();
+				}
+			}
+			else
+			{
+				ui->information->setText("");
+				ui->information->setTextFormat(Qt::PlainText);
+				ui->information->setTextInteractionFlags(Qt::NoTextInteraction);
+				ui->information->setOpenExternalLinks(false);
+			}
 		}
 	}
-}
 
-//
-// This member function/Slot is invoked under two conditions:
-//
-// 1. To request the loading of an image file which may or may not already be loaded,
-//    by invoking imageLoader.load().
-// 
-//    If the image was previously loaded is still available in the image cache then the result will be true and 
-//    both pBitMap and pImage will be set.
-//
-//    If the image is not in the cache, then the result will be false, and imageLoader.load will load the image
-//    into the cache in a background thread running in the default Qt threadpool.
-//
-// 2. On completion of image loading by the background thread.  In this case the image will now be available in 
-//    the cache, so invoking imageLoader.load() will now return true.
-//
-void StackingDlg::imageLoad()
-{
-	std::shared_ptr<CMemoryBitmap>	pBitmap;
-	std::shared_ptr<QImage>	pImage;
-
-	if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
+	//
+	// This member function/Slot is invoked under two conditions:
+	//
+	// 1. To request the loading of an image file which may or may not already be loaded,
+	//    by invoking imageLoader.load().
+	// 
+	//    If the image was previously loaded is still available in the image cache then the result will be true and 
+	//    both pBitMap and pImage will be set.
+	//
+	//    If the image is not in the cache, then the result will be false, and imageLoader.load will load the image
+	//    into the cache in a background thread running in the default Qt threadpool.
+	//
+	// 2. On completion of image loading by the background thread.  In this case the image will now be available in 
+	//    the cache, so invoking imageLoader.load() will now return true.
+	//
+	void StackingDlg::imageLoad()
 	{
-		//
-		// The image we want is available in the cache
-		//
-		m_LoadedImage.m_Image = pImage;
-		m_LoadedImage.m_pBitmap = pBitmap;
-		if (m_GammaTransformation.IsInitialized())
-			ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-		ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
+		std::shared_ptr<CMemoryBitmap>	pBitmap;
+		std::shared_ptr<QImage>	pImage;
 
-		if (imageGroups[groupId].pictures.isLightFrame(m_strShowFile))
+		if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
 		{
-			ui->picture->setToolBar(pToolBar.get());
-			m_EditStarSink.SetLightFrame(m_strShowFile);
-			m_EditStarSink.SetBitmap(pBitmap);
+			//
+			// The image we want is available in the cache
+			//
+			m_LoadedImage.m_Image = pImage;
+			m_LoadedImage.m_pBitmap = pBitmap;
+			if (m_GammaTransformation.IsInitialized())
+				ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
+			ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
+
+			if (frameList.isLightFrame(m_strShowFile))
+			{
+				editStarsPtr->setLightFrame(m_strShowFile);
+				editStarsPtr->setBitmap(pBitmap);
+				pToolBar->setVisible(true); pToolBar->setEnabled(true);
+			}
+			else
+			{
+				pToolBar->setVisible(false); pToolBar->setEnabled(false);
+				editStarsPtr->setBitmap(nullptr);
+			};
+
+			CBilinearParameters		Transformation;
+			VOTINGPAIRVECTOR		vVotedPairs;
+
+			if (frameList.getTransformation(m_strShowFile, Transformation, vVotedPairs))
+				editStarsPtr->setTransformation(Transformation, vVotedPairs);
+			ui->information->setStyleSheet(
+					"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+					"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
+			ui->information->setText(m_strShowFile);
+		}
+		else if (!m_strShowFile.isEmpty())
+		{
+			//
+			// Display the "Loading filename" with red background gradient while loading in background
+			//
+			ui->information->setStyleSheet(
+				"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
+				"stop:0 rgb(252, 251, 222), stop:1 rgb(255, 151, 154)) }");
+			ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
+				.arg(m_strShowFile));
+			//
+			// No longer interested in signals from the imageView object
+			//
+			ui->picture->disconnect(editStarsPtr.get(), nullptr);
+			ui->picture->disconnect(selectRectPtr.get(), nullptr);
+
+			pToolBar->setVisible(false); pToolBar->setEnabled(false);
+			editStarsPtr->setBitmap(nullptr);
 		}
 		else
 		{
-			ui->picture->setToolBar(nullptr);
-			m_EditStarSink.SetBitmap(nullptr);
-		};
-
-		CBilinearParameters		Transformation;
-		VOTINGPAIRVECTOR		vVotedPairs;
-
-		if (imageGroups[groupId].pictures.getTransformation(m_strShowFile, Transformation, vVotedPairs))
-			m_EditStarSink.SetTransformation(Transformation, vVotedPairs);
-		ui->information->setStyleSheet(
+			//
+			// Display the blue gradient with no text
+			//
+			ui->information->setStyleSheet(
 				"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
 				"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
-		ui->information->setText(m_strShowFile);
-	}
-	else if (!m_strShowFile.isEmpty())
-	{
-		//
-		// Display the "Loading filename" with red background gradient while loading in background
-		//
-		ui->information->setStyleSheet(
-			"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-			"stop:0 rgb(252, 251, 222), stop:1 rgb(255, 151, 154)) }");
-		ui->information->setText(tr("Loading %1", "IDS_LOADPICTURE")
-			.arg(m_strShowFile));
-		m_Picture.SetImageSink(nullptr);
-		m_Picture.SetButtonToolbar(nullptr);
-		m_EditStarSink.SetBitmap(nullptr);
-	}
-	else
-	{
-		//
-		// Display the blue gradient with no text
-		//
-		ui->information->setStyleSheet(
-			"QLabel { background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1,"
-			"stop:0 rgb(224, 244, 252), stop:1 rgb(138, 185, 242)) }");
-		ui->information->setText("");
-		m_Picture.SetImageSink(nullptr);
-		m_Picture.SetButtonToolbar(nullptr);
-		m_EditStarSink.SetBitmap(nullptr);
+			ui->information->setText("");
+			//
+			// No longer interested in signals from the imageView object
+			//
+			ui->picture->disconnect(editStarsPtr.get(), nullptr);
+			ui->picture->disconnect(selectRectPtr.get(), nullptr);
+		
+			pToolBar->setVisible(false); pToolBar->setEnabled(false);
+			editStarsPtr->setBitmap(nullptr);
+		};
 	};
-};
 
-bool StackingDlg::fileAlreadyLoaded(const fs::path& file)
-{
-	//
-	// Check all groups to see if this file has already been loaded
-	//
-	for (auto const& g : imageGroups)
+	bool StackingDlg::fileAlreadyLoaded(const fs::path& file)
 	{
-		for (auto it = g.pictures.cbegin(); it != g.pictures.cend(); ++it)
+		//
+		// Check all groups to see if this file has already been loaded
+		//
+		if (auto groupId = Group::whichGroupContains(file); groupId != -1)
 		{
-			if (it->m_strFileName.Compare(file.wstring().c_str()))
-			{
 				//
 				// If the file has already been loaded complain
 				//
-				QString errorMessage(tr("File %1 has already been loaded in group %2 (%3)"
-					.arg(file.string().c_str())
-					.arg(g.index())
-					.arg(g.name())));
+				QString errorMessage(tr("File %1 has already been loaded in group %2 (%3)")
+					.arg(file.generic_string().c_str())
+					.arg(groupId)
+					.arg(frameList.groupName(groupId)));
 
-#if defined(_CONSOLE)
+	#if defined(_CONSOLE)
 				std::cerr << errorMessage;
-#else
+	#else
 				int ret = QMessageBox::warning(this, "DeepSkyStacker",
 					errorMessage,
 					QMessageBox::Ok);
-#endif
+	#endif
 				return true;
-			};
 		}
+		return false;
 	}
-	return false;
-}
 
-void StackingDlg::onAddPictures()
-{
-	ZFUNCTRACE_RUNTIME();
-	QFileDialog			fileDialog;
-	QSettings			settings;
-	QString				directory;
-	QString				extension;
-	uint				filterIndex = 0;
-	QString				strTitle;
-
-	directory = settings.value("Folders/AddPictureFolder").toString();
-
-	extension = settings.value("Folders/AddPictureExtension").toString();
-
-	filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-	if (extension.isEmpty())
-		extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-	fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
-	fileDialog.setDefaultSuffix(extension);
-	fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-	fileDialog.setNameFilters(INPUTFILE_FILTERS);
-	fileDialog.selectFile(QString());		// No file(s) selected
-	if (!directory.isEmpty())
-		fileDialog.setDirectory(directory);
-
-	//
-	// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-	// In that case we'll choose to use the first one to start things off.
-	// 
-	// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-	// This means that the index must be decremented to index into the list of name filters.
-	//
-	if (0 == filterIndex) filterIndex = 1;
-	filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-	fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-	
-	ZTRACE_RUNTIME("About to show file open dlg");
-	if (QDialog::Accepted == fileDialog.exec())
+	void StackingDlg::onAddPictures()
 	{
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		QStringList files = fileDialog.selectedFiles();
-		for (int i = 0; i < files.size(); i++)
-		{
-			fs::path file(files.at(i).toStdU16String());		// as UTF-16
+		ZFUNCTRACE_RUNTIME();
+		QFileDialog			fileDialog;
+		QSettings			settings;
+		QString				directory;
+		QString				extension;
+		uint				filterIndex = 0;
+		QString				strTitle;
 
-			if (!fileAlreadyLoaded(file))
+		directory = settings.value("Folders/AddPictureFolder").toString();
+
+		extension = settings.value("Folders/AddPictureExtension").toString();
+
+		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
+
+		if (extension.isEmpty())
+			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
+
+		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::ExistingFiles);
+
+		fileDialog.setNameFilters(INPUTFILE_FILTERS);
+		fileDialog.selectFile(QString());		// No file(s) selected
+		if (!directory.isEmpty())
+			fileDialog.setDirectory(directory);
+
+		//
+		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
+		// In that case we'll choose to use the first one to start things off.
+		// 
+		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
+		// This means that the index must be decremented to index into the list of name filters.
+		//
+		if (0 == filterIndex) filterIndex = 1;
+		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
+		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
+	
+		ZTRACE_RUNTIME("About to show file open dlg");
+		if (QDialog::Accepted == fileDialog.exec())
+		{
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
+
+			//
+			// Before attempting to add the files prune out those that have already been loaded
+			// and issue an error message
+			//
+			auto it = std::remove_if(files.begin(), files.end(), 
+				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
+			files.erase(it, files.end());
+
+			//
+			// Now add the images to the end of the current group in the frame list remembering
+			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
+			// endInsertRows(), so the table model is informed of the new rows
+			//
+			frameList.beginInsertRows(files.size());
+			for (int i = 0; i < files.size(); i++)
 			{
-				imageGroups[groupId].AddFile((LPCTSTR)file.generic_wstring().c_str(),
-					currentGroupId());
+				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+
+				frameList.addFile(file);
 				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
+			frameList.endInsertRows();
+			
+			QGuiApplication::restoreOverrideCursor();
+			//frameList.RefreshList();
+
+			//
+			// What filter has the user actually selected, or has been auto-selected?
+			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+			// 
+			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
+			filterIndex++;
+			settings.setValue("Folders/AddPictureFolder", directory);
+			settings.setValue("Folders/AddPictureExtension", extension);
+			settings.setValue("Folders/AddPictureIndex", filterIndex);
+
+			//UpdateGroupTabs();
 		};
-		QGuiApplication::restoreOverrideCursor();
-		//pictures.RefreshList();
+		//updateListInfo();
+	}
+
+	void StackingDlg::onAddDarks()
+	{
+		ZFUNCTRACE_RUNTIME();
+		QFileDialog			fileDialog;
+		QSettings			settings;
+		QString				directory;
+		QString				extension;
+		uint				filterIndex = 0;
+		QString				strTitle;
+
+		directory = settings.value("Folders/AddDarkFolder").toString();
+		if (directory.isEmpty())
+			directory = settings.value("Folders/AddPictureFolder").toString();
+
+		extension = settings.value("Folders/AddDarkExtension").toString();
+		if (extension.isEmpty())
+			extension = settings.value("Folders/AddPictureExtension").toString();
+
+		filterIndex = settings.value("Folders/AddDarkIndex", 0U).toUInt();
+		if (!filterIndex)
+			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
+
+		if (extension.isEmpty())
+			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
+
+		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::ExistingFiles);
+
+		fileDialog.setNameFilters(INPUTFILE_FILTERS);
+		fileDialog.selectFile(QString());		// No file(s) selected
+		if (!directory.isEmpty())
+			fileDialog.setDirectory(directory);
 
 		//
-		// What filter has the user actually selected, or has been auto-selected?
-		// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
+		// In that case we'll choose to use the first one to start things off.
 		// 
-		filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-		filterIndex++;
-		settings.setValue("Folders/AddPictureFolder", directory);
-		settings.setValue("Folders/AddPictureExtension", extension);
-		settings.setValue("Folders/AddPictureIndex", filterIndex);
+		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
+		// This means that the index must be decremented to index into the list of name filters.
+		//
+		if (0 == filterIndex) filterIndex = 1;
+		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
+		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
 
-		//UpdateGroupTabs();
-	};
-	//UpdateListInfo();
-}
-
-void StackingDlg::onAddDarks()
-{
-	ZFUNCTRACE_RUNTIME();
-	QFileDialog			fileDialog;
-	QSettings			settings;
-	QString				directory;
-	QString				extension;
-	uint				filterIndex = 0;
-	QString				strTitle;
-
-	directory = settings.value("Folders/AddDarkFolder").toString();
-	if (directory.isEmpty())
-		directory = settings.value("Folders/AddPictureFolder").toString();
-
-	extension = settings.value("Folders/AddDarkExtension").toString();
-	if (extension.isEmpty())
-		extension = settings.value("Folders/AddPictureExtension").toString();
-
-	filterIndex = settings.value("Folders/AddDarkIndex", 0U).toUInt();
-	if (!filterIndex)
-		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-	if (extension.isEmpty())
-		extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-	fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
-	fileDialog.setDefaultSuffix(extension);
-	fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-	fileDialog.setNameFilters(INPUTFILE_FILTERS);
-	fileDialog.selectFile(QString());		// No file(s) selected
-	if (!directory.isEmpty())
-		fileDialog.setDirectory(directory);
-
-	//
-	// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-	// In that case we'll choose to use the first one to start things off.
-	// 
-	// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-	// This means that the index must be decremented to index into the list of name filters.
-	//
-	if (0 == filterIndex) filterIndex = 1;
-	filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-	fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-	ZTRACE_RUNTIME("About to show file open dlg");
-	if (QDialog::Accepted == fileDialog.exec())
-	{
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		QStringList files = fileDialog.selectedFiles();
-		for (int i = 0; i < files.size(); i++)
+		ZTRACE_RUNTIME("About to show file open dlg");
+		if (QDialog::Accepted == fileDialog.exec())
 		{
-			fs::path file(files.at(i).toStdU16String());		// as UTF-16
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
 
-			if (!fileAlreadyLoaded(file))
+			//
+			// Before attempting to add the files prune out those that have already been loaded
+			// and issue an error message
+			//
+			auto it = std::remove_if(files.begin(), files.end(),
+				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
+			files.erase(it, files.end());
+
+			//
+			// Now add the images to the end of the current group in the frame list remembering
+			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
+			// endInsertRows(), so the table model is informed of the new rows
+			//
+			frameList.beginInsertRows(files.size());
+			for (int i = 0; i < files.size(); i++)
 			{
-				imageGroups[groupId].AddFile((LPCTSTR)file.generic_wstring().c_str(),
-					currentGroupId(),
+				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+
+				frameList.addFile(file,
 					PICTURETYPE_DARKFRAME, true);
 				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
+			frameList.endInsertRows();
+			QGuiApplication::restoreOverrideCursor();
+			// frameList.RefreshList(); TODO
+
+			//
+			// What filter has the user actually selected, or has been auto-selected?
+			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+			// 
+			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
+			filterIndex++;
+			settings.setValue("Folders/AddDarkFolder", directory);
+			settings.setValue("Folders/AddDarkExtension", extension);
+			settings.setValue("Folders/AddDarkIndex", filterIndex);
+
+			//UpdateGroupTabs();
 		}
-		QGuiApplication::restoreOverrideCursor();
-		////pictures.RefreshList();
+		//updateListInfo();
+	}
+
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::onAddDarkFlats()
+	{
+		ZFUNCTRACE_RUNTIME();
+		QFileDialog			fileDialog;
+		QSettings			settings;
+		QString				directory;
+		QString				extension;
+		uint				filterIndex = 0;
+		QString				strTitle;
+
+		directory = settings.value("Folders/AddDarkFlatFolder").toString();
+		if (directory.isEmpty())
+			directory = settings.value("Folders/AddPictureFolder").toString();
+
+		extension = settings.value("Folders/AddDarkFlatExtension").toString();
+		if (extension.isEmpty())
+			extension = settings.value("Folders/AddPictureExtension").toString();
+
+		filterIndex = settings.value("Folders/AddDarkFlatIndex", 0U).toUInt();
+		if (!filterIndex)
+			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
+
+		if (extension.isEmpty())
+			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
+
+		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::ExistingFiles);
+
+		fileDialog.setNameFilters(INPUTFILE_FILTERS);
+		fileDialog.selectFile(QString());		// No file(s) selected
+		if (!directory.isEmpty())
+			fileDialog.setDirectory(directory);
 
 		//
-		// What filter has the user actually selected, or has been auto-selected?
-		// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
+		// In that case we'll choose to use the first one to start things off.
 		// 
-		filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-		filterIndex++;
-		settings.setValue("Folders/AddDarkFolder", directory);
-		settings.setValue("Folders/AddDarkExtension", extension);
-		settings.setValue("Folders/AddDarkIndex", filterIndex);
+		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
+		// This means that the index must be decremented to index into the list of name filters.
+		//
+		if (0 == filterIndex) filterIndex = 1;
+		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
+		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
 
-		//UpdateGroupTabs();
-	}
-	//UpdateListInfo();
-}
-
-
-/* ------------------------------------------------------------------- */
-
-void StackingDlg::onAddDarkFlats()
-{
-	ZFUNCTRACE_RUNTIME();
-	QFileDialog			fileDialog;
-	QSettings			settings;
-	QString				directory;
-	QString				extension;
-	uint				filterIndex = 0;
-	QString				strTitle;
-
-	directory = settings.value("Folders/AddDarkFlatFolder").toString();
-	if (directory.isEmpty())
-		directory = settings.value("Folders/AddPictureFolder").toString();
-
-	extension = settings.value("Folders/AddDarkFlatExtension").toString();
-	if (extension.isEmpty())
-		extension = settings.value("Folders/AddPictureExtension").toString();
-
-	filterIndex = settings.value("Folders/AddDarkFlatIndex", 0U).toUInt();
-	if (!filterIndex)
-		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-	if (extension.isEmpty())
-		extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-	fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
-	fileDialog.setDefaultSuffix(extension);
-	fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-	fileDialog.setNameFilters(INPUTFILE_FILTERS);
-	fileDialog.selectFile(QString());		// No file(s) selected
-	if (!directory.isEmpty())
-		fileDialog.setDirectory(directory);
-
-	//
-	// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-	// In that case we'll choose to use the first one to start things off.
-	// 
-	// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-	// This means that the index must be decremented to index into the list of name filters.
-	//
-	if (0 == filterIndex) filterIndex = 1;
-	filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-	fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-	ZTRACE_RUNTIME("About to show file open dlg");
-	if (QDialog::Accepted == fileDialog.exec())
-	{
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		QStringList files = fileDialog.selectedFiles();
-		for (int i = 0; i < files.size(); i++)
+		ZTRACE_RUNTIME("About to show file open dlg");
+		if (QDialog::Accepted == fileDialog.exec())
 		{
-			fs::path file(files.at(i).toStdU16String());		// as UTF-16
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
 
-			if (!fileAlreadyLoaded(file))
+			//
+			// Before attempting to add the files prune out those that have already been loaded
+			// and issue an error message
+			//
+			auto it = std::remove_if(files.begin(), files.end(),
+				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
+			files.erase(it, files.end());
+
+			//
+			// Now add the images to the end of the current group in the frame list remembering
+			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
+			// endInsertRows(), so the table model is informed of the new rows
+			//
+			frameList.beginInsertRows(files.size());
+			for (int i = 0; i < files.size(); i++)
 			{
-				imageGroups[groupId].AddFile((LPCTSTR)file.generic_wstring().c_str(),
-					currentGroupId(),
+				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+
+				frameList.addFile(file,
 					PICTURETYPE_DARKFLATFRAME, true);
 				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
+			frameList.endInsertRows();
+			QGuiApplication::restoreOverrideCursor();
+			//frameList.RefreshList();
+
+			//
+			// What filter has the user actually selected, or has been auto-selected?
+			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+			// 
+			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
+			filterIndex++;
+			settings.setValue("Folders/AddDarkFlatFolder", directory);
+			settings.setValue("Folders/AddDarkFlatExtension", extension);
+			settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
+
+			//UpdateGroupTabs();
 		}
-		QGuiApplication::restoreOverrideCursor();
-		//pictures.RefreshList();
+		//updateListInfo();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::onAddFlats()
+	{
+		ZFUNCTRACE_RUNTIME();
+		QFileDialog			fileDialog;
+		QSettings			settings;
+		QString				directory;
+		QString				extension;
+		uint				filterIndex = 0;
+		QString				strTitle;
+
+		directory = settings.value("Folders/AddFlatFolder").toString();
+		if (directory.isEmpty())
+			directory = settings.value("Folders/AddPictureFolder").toString();
+
+		extension = settings.value("Folders/AddFlatExtension").toString();
+		if (extension.isEmpty())
+			extension = settings.value("Folders/AddPictureExtension").toString();
+
+		filterIndex = settings.value("Folders/AddFlatIndex", 0U).toUInt();
+		if (!filterIndex)
+			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
+
+		if (extension.isEmpty())
+			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
+
+		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::ExistingFiles);
+
+		fileDialog.setNameFilters(INPUTFILE_FILTERS);
+		fileDialog.selectFile(QString());		// No file(s) selected
+		if (!directory.isEmpty())
+			fileDialog.setDirectory(directory);
 
 		//
-		// What filter has the user actually selected, or has been auto-selected?
-		// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
+		// In that case we'll choose to use the first one to start things off.
 		// 
-		filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-		filterIndex++;
-		settings.setValue("Folders/AddDarkFlatFolder", directory);
-		settings.setValue("Folders/AddDarkFlatExtension", extension);
-		settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
+		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
+		// This means that the index must be decremented to index into the list of name filters.
+		//
+		if (0 == filterIndex) filterIndex = 1;
+		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
+		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
 
-		//UpdateGroupTabs();
-	}
-	//UpdateListInfo();
-}
-
-/* ------------------------------------------------------------------- */
-
-void StackingDlg::onAddFlats()
-{
-	ZFUNCTRACE_RUNTIME();
-	QFileDialog			fileDialog;
-	QSettings			settings;
-	QString				directory;
-	QString				extension;
-	uint				filterIndex = 0;
-	QString				strTitle;
-
-	directory = settings.value("Folders/AddFlatFolder").toString();
-	if (directory.isEmpty())
-		directory = settings.value("Folders/AddPictureFolder").toString();
-
-	extension = settings.value("Folders/AddFlatExtension").toString();
-	if (extension.isEmpty())
-		extension = settings.value("Folders/AddPictureExtension").toString();
-
-	filterIndex = settings.value("Folders/AddFlatIndex", 0U).toUInt();
-	if (!filterIndex)
-		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-	if (extension.isEmpty())
-		extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-	fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
-	fileDialog.setDefaultSuffix(extension);
-	fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-	fileDialog.setNameFilters(INPUTFILE_FILTERS);
-	fileDialog.selectFile(QString());		// No file(s) selected
-	if (!directory.isEmpty())
-		fileDialog.setDirectory(directory);
-
-	//
-	// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-	// In that case we'll choose to use the first one to start things off.
-	// 
-	// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-	// This means that the index must be decremented to index into the list of name filters.
-	//
-	if (0 == filterIndex) filterIndex = 1;
-	filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-	fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-	ZTRACE_RUNTIME("About to show file open dlg");
-	if (QDialog::Accepted == fileDialog.exec())
-	{
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		QStringList files = fileDialog.selectedFiles();
-		for (int i = 0; i < files.size(); i++)
+		ZTRACE_RUNTIME("About to show file open dlg");
+		if (QDialog::Accepted == fileDialog.exec())
 		{
-			fs::path file(files.at(i).toStdU16String());		// as UTF-16
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
 
-			if (!fileAlreadyLoaded(file))
+			//
+			// Before attempting to add the files prune out those that have already been loaded
+			// and issue an error message
+			//
+			auto it = std::remove_if(files.begin(), files.end(),
+				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
+			files.erase(it, files.end());
+
+			//
+			// Now add the images to the end of the current group in the frame list remembering
+			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
+			// endInsertRows(), so the table model is informed of the new rows
+			//
+			frameList.beginInsertRows(files.size());
+			for (int i = 0; i < files.size(); i++)
 			{
-				imageGroups[groupId].AddFile((LPCTSTR)file.generic_wstring().c_str(),
-					currentGroupId(),
+				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+
+				frameList.addFile(file,
 					PICTURETYPE_FLATFRAME, true);
 				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
+			frameList.endInsertRows();
+			QGuiApplication::restoreOverrideCursor();
+			//frameList.RefreshList();
+
+			//
+			// What filter has the user actually selected, or has been auto-selected?
+			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+			// 
+			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
+			filterIndex++;
+			settings.setValue("Folders/AddFlatFolder", directory);
+			settings.setValue("Folders/AddFlatExtension", extension);
+			settings.setValue("Folders/AddFlatIndex", filterIndex);
+
+			//UpdateGroupTabs();
 		}
-		QGuiApplication::restoreOverrideCursor();
-		//pictures.RefreshList();
+		//updateListInfo();
+	}
+
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::onAddOffsets()
+	{
+		ZFUNCTRACE_RUNTIME();
+		QFileDialog			fileDialog;
+		QSettings			settings;
+		QString				directory;
+		QString				extension;
+		uint				filterIndex = 0;
+		QString				strTitle;
+
+		directory = settings.value("Folders/AddOffsetFolder").toString();
+		if (directory.isEmpty())
+			directory = settings.value("Folders/AddPictureFolder").toString();
+
+		extension = settings.value("Folders/AddOffsetExtension").toString();
+		if (extension.isEmpty())
+			extension = settings.value("Folders/AddPictureExtension").toString();
+
+		filterIndex = settings.value("Folders/AddOffsetIndex", 0U).toUInt();
+		if (!filterIndex)
+			filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
+
+		if (extension.isEmpty())
+			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
+
+		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::ExistingFiles);
+
+		fileDialog.setNameFilters(INPUTFILE_FILTERS);
+		fileDialog.selectFile(QString());		// No file(s) selected
+		if (!directory.isEmpty())
+			fileDialog.setDirectory(directory);
 
 		//
-		// What filter has the user actually selected, or has been auto-selected?
-		// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+		// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
+		// In that case we'll choose to use the first one to start things off.
 		// 
-		filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-		filterIndex++;
-		settings.setValue("Folders/AddFlatFolder", directory);
-		settings.setValue("Folders/AddFlatExtension", extension);
-		settings.setValue("Folders/AddFlatIndex", filterIndex);
+		// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
+		// This means that the index must be decremented to index into the list of name filters.
+		//
+		if (0 == filterIndex) filterIndex = 1;
+		filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
+		fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
 
-		//UpdateGroupTabs();
-	}
-	//UpdateListInfo();
-}
-
-
-/* ------------------------------------------------------------------- */
-
-void StackingDlg::onAddOffsets()
-{
-	ZFUNCTRACE_RUNTIME();
-	QFileDialog			fileDialog;
-	QSettings			settings;
-	QString				directory;
-	QString				extension;
-	uint				filterIndex = 0;
-	QString				strTitle;
-
-	directory = settings.value("Folders/AddOffsetFolder").toString();
-	if (directory.isEmpty())
-		directory = settings.value("Folders/AddPictureFolder").toString();
-
-	extension = settings.value("Folders/AddOffsetExtension").toString();
-	if (extension.isEmpty())
-		extension = settings.value("Folders/AddPictureExtension").toString();
-
-	filterIndex = settings.value("Folders/AddOffsetIndex", 0U).toUInt();
-	if (!filterIndex)
-		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
-
-	if (extension.isEmpty())
-		extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
-
-	fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
-	fileDialog.setDefaultSuffix(extension);
-	fileDialog.setFileMode(QFileDialog::ExistingFiles);
-
-	fileDialog.setNameFilters(INPUTFILE_FILTERS);
-	fileDialog.selectFile(QString());		// No file(s) selected
-	if (!directory.isEmpty())
-		fileDialog.setDirectory(directory);
-
-	//
-	// A value of zero for filterIndex means that the user hasn't previously chosen a name filter.
-	// In that case we'll choose to use the first one to start things off.
-	// 
-	// If the user *has* previously chosen a name filter, then that index is 1 based, not zero based.
-	// This means that the index must be decremented to index into the list of name filters.
-	//
-	if (0 == filterIndex) filterIndex = 1;
-	filterIndex = std::clamp(filterIndex, 1U, static_cast<uint>(INPUTFILE_FILTERS.size()));
-	fileDialog.selectNameFilter(INPUTFILE_FILTERS.at(filterIndex - 1));
-
-	ZTRACE_RUNTIME("About to show file open dlg");
-	if (QDialog::Accepted == fileDialog.exec())
-	{
-		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-		QStringList files = fileDialog.selectedFiles();
-		for (int i = 0; i < files.size(); i++)
+		ZTRACE_RUNTIME("About to show file open dlg");
+		if (QDialog::Accepted == fileDialog.exec())
 		{
-			fs::path file(files.at(i).toStdU16String());		// as UTF-16
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
 
-			if (!fileAlreadyLoaded(file))
+			//
+			// Before attempting to add the files prune out those that have already been loaded
+			// and issue an error message
+			//
+			auto it = std::remove_if(files.begin(), files.end(),
+				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
+			files.erase(it, files.end());
+
+			//
+			// Now add the images to the end of the current group in the frame list remembering
+			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
+			// endInsertRows(), so the table model is informed of the new rows
+			//
+			frameList.beginInsertRows(files.size());
+			for (int i = 0; i < files.size(); i++)
 			{
-				imageGroups[groupId].AddFile((LPCTSTR)file.generic_wstring().c_str(),
-					currentGroupId(),
+				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+
+				frameList.addFile(file,
 					PICTURETYPE_OFFSETFRAME, true);
 				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
+			frameList.endInsertRows();
+			QGuiApplication::restoreOverrideCursor();
+			//frameList.RefreshList();
+
+			//
+			// What filter has the user actually selected, or has been auto-selected?
+			// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
+			// 
+			filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
+			filterIndex++;
+			settings.setValue("Folders/AddOffsetFolder", directory);
+			settings.setValue("Folders/AddOffsetExtension", extension);
+			settings.setValue("Folders/AddOffsetIndex", filterIndex);
+
+			//UpdateGroupTabs();
 		}
-		QGuiApplication::restoreOverrideCursor();
-		//pictures.RefreshList();
-
-		//
-		// What filter has the user actually selected, or has been auto-selected?
-		// Note that the index value we store is 1 based, not zero based, so add one to the selected index.
-		// 
-		filterIndex = INPUTFILE_FILTERS.indexOf(fileDialog.selectedNameFilter());
-		filterIndex++;
-		settings.setValue("Folders/AddOffsetFolder", directory);
-		settings.setValue("Folders/AddOffsetExtension", extension);
-		settings.setValue("Folders/AddOffsetIndex", filterIndex);
-
-		//UpdateGroupTabs();
+		//updateListInfo();
 	}
-	//UpdateListInfo();
-}
 
-bool StackingDlg::checkEditChanges()
-{
-	return true;
-	// TODO
-	#if (0)
-	BOOL						bResult = FALSE;
-
-	if (m_EditStarSink.IsDirty())
+	bool StackingDlg::checkEditChanges()
 	{
-		int			nResult;
+		return true;
+		// TODO
+		#if (0)
+		BOOL						bResult = FALSE;
 
-		nResult = AskSaveEditChangesMode();
-
-		if (nResult == IDYES)
+		if (m_EditStarSink.IsDirty())
 		{
-			// Save the changes
-			bResult = TRUE;
-			m_EditStarSink.SaveRegisterSettings();
-			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
-			// Update the list with the new info
-			m_Pictures.UpdateItemScores(m_strShowFile);
-		}
-		else if (nResult == IDNO)
-			bResult = TRUE;
-	}
-	else
-		bResult = TRUE;
+			int			nResult;
 
-	return bResult;
-#endif
-}
+			nResult = AskSaveEditChangesMode();
 
-size_t StackingDlg::checkedImageCount(PICTURETYPE type, int16_t group)
-{
-	size_t result = 0;
-
-	// Iterate over all groups.
-	for (size_t i = 0; i != imageGroups.size(); ++i)
-	{
-		// If the group number passed in was -1 then want to count the number of
-		// checked images of the relevant type in ALL groups.  Otherwise only
-		// count checked images for the passed group number.
-		if (-1 == group || group == i)
-		{
-			for (auto it = imageGroups[i].pictures.cbegin();
-				it != imageGroups[i].pictures.cend(); ++it)
+			if (nResult == IDYES)
 			{
-				if (it->m_PictureType == type && it->m_bChecked == Qt::Checked) ++result;
+				// Save the changes
+				bResult = TRUE;
+				m_EditStarSink.SaveRegisterSettings();
+				m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+				// Update the list with the new info
+				frameList.UpdateItemScores(m_strShowFile);
 			}
+			else if (nResult == IDNO)
+				bResult = TRUE;
 		}
+		else
+			bResult = TRUE;
+
+		return bResult;
+	#endif
 	}
-	
-	return result;
-}
 
-void StackingDlg::fillTasks(CAllStackingTasks& tasks)
-{
-	size_t				comets = 0;
-	bool				bReferenceFrameHasComet = false;
-	bool				bReferenceFrameSet = false;
-	double				fMaxScore = -1.0;
+	/* ------------------------------------------------------------------- */
 
-	// Iterate over all groups.
-	for (uint16_t group = 0; group != imageGroups.size(); ++group)
+	void StackingDlg::UpdateCheckedAndOffsets(CStackingEngine& StackingEngine)
 	{
-		// and then over each image in the group
-		for (auto it = imageGroups[group].pictures.cbegin();
-			it != imageGroups[group].pictures.cend(); ++it)
+		LIGHTFRAMEINFOVECTOR& vBitmaps = StackingEngine.LightFrames();
+
+		frameList.clearOffsets();
+		for (size_t i = 0; i < vBitmaps.size(); i++)
 		{
-			if (it->m_bChecked == Qt::Checked)
+			if (vBitmaps[i].m_bDisabled)
+				frameList.clearOffset(vBitmaps[i].filePath);
+			else
 			{
-				if (it->m_bUseAsStarting)
-				{
-					bReferenceFrameSet = true;
-					bReferenceFrameHasComet = it->m_bComet;
-				}
-				if (!bReferenceFrameSet && (it->m_fOverallQuality > fMaxScore))
-				{
-					fMaxScore = it->m_fOverallQuality;
-					bReferenceFrameHasComet = it->m_bComet;
-				}
-				tasks.AddFileToTask(*it, group);
-				if (it->m_bComet)
-					comets++;
+				frameList.updateOffset(vBitmaps[i].filePath, vBitmaps[i].m_fXOffset, vBitmaps[i].m_fYOffset, vBitmaps[i].m_fAngle, vBitmaps[i].m_BilinearParameters, vBitmaps[i].m_vVotedPairs);
 			}
-		}
-	}
+		};
 
-	if (comets > 1 && bReferenceFrameHasComet)
-		tasks.SetCometAvailable(true);
-	tasks.ResolveTasks();
-};
+		if (vBitmaps.size())
+			editStarsPtr->setRefStars(vBitmaps[0].m_vStars);
+		else
+			editStarsPtr->clearRefStars();
+	};
 
-/* ------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------- */
 
-bool StackingDlg::saveOnClose()
-{
-	//m_Pictures.SaveState();
-	mruPath.saveSettings();
+	bool StackingDlg::saveOnClose()
+	{
+		//frameList.SaveState();
+		mruPath.saveSettings();
 
-	return checkEditChanges() && CheckWorkspaceChanges();
-};
+		return checkEditChanges() && checkWorkspaceChanges();
+	};
 
-/* ------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------- */
 
+	void	StackingDlg::updateListInfo()
+	{
+		QString	text{ tr("Light Frames:%ld      -      Dark Frames: %ld      -      Flat Frames:%ld      -   Dark Flat Frames: %d   -      Offset/Bias Frames: %ld",
+			"IDS_LISTINFO")
+			.arg(frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
+			};
 
-void StackingDlg::clearList()
-{
-#if(0)
-		if (checkEditChanges() && CheckWorkspaceChanges())
+		ui->listInfo->setText(text);
+
+		for (int i = 0; i < ui->tabWidget->count(); i++)
 		{
-			m_Pictures.Clear();
-			m_Picture.SetImg((CBitmap*)nullptr);
-			m_Picture.SetImageSink(nullptr);
-			m_Picture.SetButtonToolbar(nullptr);
-			m_EditStarSink.SetBitmap(nullptr);
-			m_strShowFile.Empty();
-			m_Infos.SetText(m_strShowFile);
+			text = tr("Light Frames: %ld\nDark Frames: %ld\nFlat Frames: %ld\nDark Flat Frames: %ld\nOffset/Bias Frames: %ld",
+				"IDS_LISTINFO2")
+				.arg(frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME, i))
+				.arg(frameList.checkedImageCount(PICTURETYPE_DARKFRAME, i))
+				.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME, i))
+				.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME, i))
+				.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME, i));
+			
+			ui->tabWidget->setTabToolTip(i, text);
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+
+	void StackingDlg::clearList()
+	{
+		if (checkEditChanges() && checkWorkspaceChanges())
+		{
+			frameList.clear();
+			//m_EditStarSink.SetBitmap(nullptr);
+			m_strShowFile.clear();
+			ui->information->setText(m_strShowFile);
 			imageLoader.clearCache();
-			m_LoadedImage.Clear();
-			UpdateGroupTabs();
-			UpdateListInfo();
-			m_strCurrentFileList.Empty();
-			SetCurrentFileInTitle(m_strCurrentFileList);
+			m_LoadedImage.reset();
+			//TODO: UpdateGroupTabs();
+			updateListInfo();
+			fileList.clear();
+			SetCurrentFileInTitle(fileList.generic_wstring().c_str());
 		}
-#endif
-}
+	}
 
-void StackingDlg::loadList()
-{
-#if (0)
-	if (CheckWorkspaceChanges())
+	void StackingDlg::checkAbove()
 	{
-		BOOL			bOpenAnother = TRUE;
-
-		if (m_MRUList.m_vLists.size())
+		if (checkEditChanges())
 		{
-			CPoint				pt;
-			CMenu				menu;
-			CMenu* popup;
-			int					nResult;
-			UINT				lStartID;
+			CCheckAbove		dlg;
+			double			fThreshold;
 
-			bOpenAnother = FALSE;
-
-			menu.LoadMenu(IDR_FILELISTS);
-			popup = menu.GetSubMenu(0);
-
-			CRect				rc;
-
-			QPoint point = QCursor::pos();
-			pt.x = point.x();
-			pt.y = point.y();
-
-			lStartID = ID_FILELIST_FIRSTMRU + 1;
-			for (LONG i = 0; i < m_MRUList.m_vLists.size(); i++)
+			if (dlg.DoModal() == IDOK)
 			{
-				TCHAR				szDrive[1 + _MAX_DRIVE];
-				TCHAR				szDir[1 + _MAX_DIR];
-				TCHAR				szName[1 + _MAX_FNAME];
-				CString				strItem;
-
-				_tsplitpath((LPCTSTR)m_MRUList.m_vLists[i], szDrive, szDir, szName, nullptr);
-				strItem.Format(_T("%s%s%s"), szDrive, szDir, szName);
-
-				popup->InsertMenu(ID_FILELIST_FIRSTMRU, MF_BYCOMMAND, lStartID, (LPCTSTR)strItem);
-				lStartID++;
+				fThreshold = dlg.GetThreshold();
+				if (dlg.IsPercent())
+					frameList.checkBest(fThreshold);
+				else
+					frameList.checkAbove(fThreshold);
 			};
-
-			popup->DeleteMenu(ID_FILELIST_FIRSTMRU, MF_BYCOMMAND);
-
-			nResult = popup->TrackPopupMenuEx(TPM_NONOTIFY | TPM_RETURNCMD, pt.x, pt.y, this, nullptr);;
-
-			if (nResult == ID_FILELIST_OPENANOTHERFILELIST)
-				bOpenAnother = TRUE;
-			else if (nResult > ID_FILELIST_FIRSTMRU)
-			{
-				CString			strList;
-
-				strList = m_MRUList.m_vLists[nResult - ID_FILELIST_FIRSTMRU - 1];
-
-				m_Pictures.LoadFilesFromList(strList);
-				m_Pictures.RefreshList();
-				m_MRUList.Add(strList);
-				m_strCurrentFileList = strList;
-				SetCurrentFileInTitle(m_strCurrentFileList);
-			};
+			updateListInfo();
 		};
+	};
 
-		if (bOpenAnother)
-		{
-			m_Pictures.LoadList(m_MRUList, m_strCurrentFileList);
-			SetCurrentFileInTitle(m_strCurrentFileList);
-		};
-		UpdateGroupTabs();
-		UpdateListInfo();
-	}
-#endif
-}
-
-/* ------------------------------------------------------------------- */
-
-void StackingDlg::saveList()
-{
-#if (0)
-	m_Pictures.SaveList(m_MRUList, m_strCurrentFileList);
-	SetCurrentFileInTitle(m_strCurrentFileList);
-#endif
-}
-
-
-
-void StackingDlg::versionInfoReceived(QNetworkReply* reply)
-{
-	QNetworkReply::NetworkError error = reply->error();
-	if (QNetworkReply::NoError == error)
+	/* ------------------------------------------------------------------- */	void StackingDlg::loadList()
 	{
-		QString string(reply->read(reply->bytesAvailable()));
-
-		if (string.startsWith("DeepSkyStackerVersion="))
+		ZFUNCTRACE_RUNTIME();
+		if (checkWorkspaceChanges())
 		{
-			QString verStr = string.section('=', 1, 1);
-			int version = verStr.section('.', 0, 0).toInt();
-			int release = verStr.section('.', 1, 1).toInt();
-			int mod = verStr.section('.', 2, 2).toInt();
+			bool openAnother{ false };
 
-			if ((version > DSSVER_MAJOR) ||
-				(version == DSSVER_MAJOR && release > DSSVER_MINOR) ||
-				(version == DSSVER_MAJOR && release == DSSVER_MINOR && mod > DSSVER_SUB)
-				)
+			if (m_MRUList.m_vLists.size())
 			{
-				QString	strNewVersion(tr("DeepSkyStacker version %1 is available for download.",
-										 "IDS_VERSIONAVAILABLE").arg(verStr));
+				QMenu menu(this);
 
-				ui->information->setText(
-					QString("<a href=\"https://github.com/deepskystacker/DSS/releases/latest/\" \
-								style=\"color: red;\">%1</a>")
-						.arg(strNewVersion));
-				ui->information->setTextFormat(Qt::RichText);
-				ui->information->setTextInteractionFlags(Qt::TextBrowserInteraction);
-				ui->information->setOpenExternalLinks(true);
-			};
-		}
-	}
-	else
-	{
-		CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
-		CString title;
-		pDlg->GetWindowText(title);
-		QMessageBox::warning(nullptr, QString::fromWCharArray(title.GetString()),
-			tr("Internet version check error code %1:\n%2")
-			.arg(error)
-			.arg(reply->errorString()), QMessageBox::Ok);
+				for (uint32_t i = 0; i < m_MRUList.m_vLists.size(); i++)
+				{ 
+					fs::path path{ m_MRUList.m_vLists[i].toStdU16String() };
+					// Get the fileid without the extension
+					QString name{ QString::fromStdU16String(path.stem().generic_u16string()) };
 
-	}
-	reply->deleteLater();
-	networkManager->deleteLater();
-};
+					QAction* action = menu.addAction(name);
+					action->setData(i);		// Index into the list of files
 
-void StackingDlg::retrieveLatestVersionInfo()
-{
-	//#ifndef DSSBETA
-	ZFUNCTRACE_RUNTIME();
+				};
+				menu.addSeparator();
+				QAction* loadAnother = menu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
 
-	QSettings			settings;
+				QAction* a = menu.exec(QCursor::pos());
 
-	bool checkVersion = settings.value("InternetCheck", false).toBool();
-	if (checkVersion)
-	{
-		networkManager = new QNetworkAccessManager();
-
-		QObject::connect(networkManager, &QNetworkAccessManager::finished,
-			[this](QNetworkReply* reply) { this->versionInfoReceived(reply); });
-
-		QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/release/CurrentVersion.txt"));
-		req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
-		networkManager->get(req);
-	}
-	//#endif
-}
-
-void StackingDlg::registerCheckedImages()
-{
-	CDSSProgressDlg			dlg;
-	RegisterSettings		dlgSettings(this);
-	bool					bContinue = true;
-
-	bool					bFound = false;
-
-	if (checkedImageCount(PICTURETYPE_LIGHTFRAME))
-	{
-		//CString				strFirstLightFrame;
-
-		//m_Pictures.GetFirstCheckedLightFrame(strFirstLightFrame);
-
-		//dlgSettings.SetForceRegister(!m_Pictures.GetNrUnregisteredCheckedLightFrames());
-		//dlgSettings.SetNoDark(!m_Pictures.GetNrCheckedDarks());
-		//dlgSettings.SetNoFlat(!m_Pictures.GetNrCheckedFlats());
-		//dlgSettings.SetNoOffset(!m_Pictures.GetNrCheckedOffsets());
-		//dlgSettings.SetFirstLightFrame(strFirstLightFrame);
-
-		CAllStackingTasks	tasks;
-		CRect				rcSelect;
-
-		fillTasks(tasks);
-
-		// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
-		if (!selectRect.isEmpty())
-		{
-			tasks.SetCustomRectangle(CRect(selectRect.left(), selectRect.top(), selectRect.right(), selectRect.bottom()));
-		}
-
-		dlgSettings.setStackingTasks(&tasks);
-
-		if (dlgSettings.exec())
-		{
-			double				fMinLuminancy = 0.10;
-			bool				bForceRegister = false;
-			LONG				lCount = 0;
-			LONG				lMaxCount = 0;
-			double				fPercent = 20.0;
-			bool				bStackAfter = false;
-
-			bForceRegister = dlgSettings.isForceRegister();
-
-			bStackAfter = dlgSettings.isStackAfter(fPercent);
-
-			if (CheckReadOnlyFolders(tasks))
-			{
-				if (bStackAfter)
-				{
-					bContinue = CheckStacking(tasks);
-					if (bContinue)
-						bContinue = showRecap(tasks);
-				}
+				if (loadAnother == a)
+					openAnother = true;
 				else
 				{
-					bContinue = CheckStacking(tasks);
+					QString			strList;
+
+					//
+					// Use the index we stored with the Menu Action to access the fill fileid
+					//
+					strList = m_MRUList.m_vLists[a->data().toUInt()];
+
+					frameList.loadFilesFromList(strList.toStdU16String().c_str());
+					// frameList.RefreshList(); TODO
+					m_MRUList.Add(strList);
+					fileList = strList.toStdU16String();
+					SetCurrentFileInTitle(fileList.generic_wstring().c_str());
+				}
+			}
+
+			if (openAnother)
+			{
+				QString name;
+				loadList(m_MRUList, name);
+				SetCurrentFileInTitle(name.toStdWString().c_str());
+			};
+			// TODO UpdateGroupTabs();
+			updateListInfo();
+		}
+	}
+
+	void StackingDlg::loadList(CMRUList& MRUList, QString& strFileList)
+	{
+		ZFUNCTRACE_RUNTIME();
+		QSettings settings;
+		QString directory;
+		QString	extension;
+
+		QFileDialog			fileDialog;
+		Workspace			workspace;
+
+		directory = settings.value("Folders/ListFolder").toString();
+		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
+		extension = settings.value("Folders/ListExtension").toString();
+
+		if (extension.isEmpty())
+			extension = ".dssfilelist";
+
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::ExistingFiles);
+		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
+		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[0]);
+		fileDialog.setDirectory(directory);
+
+		ZTRACE_RUNTIME("About to show file open dlg");
+		if (QDialog::Accepted == fileDialog.exec())
+		{
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
+
+			for (int i = 0; i < files.size(); i++)
+			{
+				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+
+				frameList.loadFilesFromList(file);
+				strFileList = QString::fromStdU16String(file.generic_u16string());
+				MRUList.Add(strFileList);
+
+				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+				extension = QString::fromStdU16String(file.extension().generic_u16string());
+			}
+
+			QGuiApplication::restoreOverrideCursor();
+			// frameList.RefreshList(); TODO
+
+			const auto selectedIndex = OUTPUTLIST_FILTERS.indexOf(fileDialog.selectedNameFilter());
+
+			settings.setValue("Folders/ListFolder", directory);
+			settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
+			settings.setValue("Folders/ListExtension", extension);
+		}
+	}
+
+	void StackingDlg::saveList()
+	{
+		QString name;
+
+		saveList(m_MRUList, name);
+		SetCurrentFileInTitle(name.toStdWString().c_str());
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::saveList(CMRUList& MRUList, QString& strFileList)
+	{
+		ZFUNCTRACE_RUNTIME();
+		QSettings					settings;
+		QString directory;
+		QString	extension;
+
+		QFileDialog			fileDialog;
+		Workspace			workspace;
+
+		directory = settings.value("Folders/ListFolder").toString();
+		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
+		extension = settings.value("Folders/ListExtension").toString();
+
+		if (extension.isEmpty())
+			extension = ".dssfilelist";
+
+		fileDialog.setDefaultSuffix(extension);
+		fileDialog.setFileMode(QFileDialog::AnyFile);
+		fileDialog.setAcceptMode(QFileDialog::AcceptSave);
+		fileDialog.setNameFilters(OUTPUTLIST_FILTERS);
+		fileDialog.selectNameFilter(OUTPUTLIST_FILTERS[0]);
+		fileDialog.setDirectory(directory);
+
+		ZTRACE_RUNTIME("About to show file save dlg");
+		if (QDialog::Accepted == fileDialog.exec())
+		{
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			QStringList files = fileDialog.selectedFiles();
+			const auto selectedIndex = OUTPUTLIST_FILTERS.indexOf(fileDialog.selectedNameFilter());
+
+			ZASSERTSTATE(1 == files.size());
+
+			for (int i = 0; i < files.size(); i++)
+			{
+				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				fileList = file;		// save this filelist
+				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+				extension = QString::fromStdU16String(file.extension().generic_u16string());
+
+				frameList.saveListToFile(file);
+				strFileList = QString::fromStdU16String(file.generic_u16string());
+				MRUList.Add(strFileList);
+			}
+
+			QGuiApplication::restoreOverrideCursor();
+
+			settings.setValue("Folders/ListFolder", directory);
+			settings.setValue("Folders/ListIndex", static_cast<uint>(selectedIndex));
+			settings.setValue("Folders/ListExtension", extension);
+		}
+
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::versionInfoReceived(QNetworkReply* reply)
+	{
+		QNetworkReply::NetworkError error = reply->error();
+		if (QNetworkReply::NoError == error)
+		{
+			QString string(reply->read(reply->bytesAvailable()));
+
+			if (string.startsWith("DeepSkyStackerVersion="))
+			{
+				QString verStr = string.section('=', 1, 1);
+				int version = verStr.section('.', 0, 0).toInt();
+				int release = verStr.section('.', 1, 1).toInt();
+				int mod = verStr.section('.', 2, 2).toInt();
+
+				if ((version > DSSVER_MAJOR) ||
+					(version == DSSVER_MAJOR && release > DSSVER_MINOR) ||
+					(version == DSSVER_MAJOR && release == DSSVER_MINOR && mod > DSSVER_SUB)
+					)
+				{
+					QString	strNewVersion(tr("DeepSkyStacker version %1 is available for download.",
+											 "IDS_VERSIONAVAILABLE").arg(verStr));
+
+					ui->information->setText(
+						QString("<a href=\"https://github.com/deepskystacker/DSS/releases/latest/\" \
+									style=\"color: red;\">%1</a>")
+							.arg(strNewVersion));
+					ui->information->setTextFormat(Qt::RichText);
+					ui->information->setTextInteractionFlags(Qt::TextBrowserInteraction);
+					ui->information->setOpenExternalLinks(true);
 				};
+			}
+		}
+		else
+		{
+			CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
+			CString title;
+			pDlg->GetWindowText(title);
+			QMessageBox::warning(nullptr, QString::fromWCharArray(title.GetString()),
+				tr("Internet version check error code %1:\n%2")
+				.arg(error)
+				.arg(reply->errorString()), QMessageBox::Ok);
 
-				DWORD				dwStartTime = GetTickCount();
-				DWORD				dwEndTime;
+		}
+		reply->deleteLater();
+		networkManager->deleteLater();
+	};
 
+	void StackingDlg::retrieveLatestVersionInfo()
+	{
+		//#ifndef DSSBETA
+		ZFUNCTRACE_RUNTIME();
+
+		QSettings			settings;
+
+		bool checkVersion = settings.value("InternetCheck", false).toBool();
+		if (checkVersion)
+		{
+			networkManager = new QNetworkAccessManager();
+
+			QObject::connect(networkManager, &QNetworkAccessManager::finished,
+				[this](QNetworkReply* reply) { this->versionInfoReceived(reply); });
+
+			QNetworkRequest req(QUrl("https://github.com/deepskystacker/DSS/raw/release/CurrentVersion.txt"));
+			req.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
+			networkManager->get(req);
+		}
+		//#endif
+	}
+
+	void StackingDlg::registerCheckedImages()
+	{
+		CDSSProgressDlg			dlg;
+		::RegisterSettings		dlgSettings(this);
+		bool					bContinue = true;
+
+		bool					bFound = false;
+
+		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+		{
+			//CString				strFirstLightFrame;
+
+			//frameList.GetFirstCheckedLightFrame(strFirstLightFrame);
+
+			//dlgSettings.SetForceRegister(!frameList.GetNrUnregisteredCheckedLightFrames());
+			//dlgSettings.SetNoDark(!frameList.GetNrCheckedDarks());
+			//dlgSettings.SetNoFlat(!frameList.GetNrCheckedFlats());
+			//dlgSettings.SetNoOffset(!frameList.GetNrCheckedOffsets());
+			//dlgSettings.SetFirstLightFrame(strFirstLightFrame);
+
+			CAllStackingTasks	tasks;
+			CRect				rcSelect;
+
+			frameList.fillTasks(tasks);
+
+			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
+			if (!selectRect.isEmpty())
+			{
+				tasks.SetCustomRectangle(CRect(selectRect.left(), selectRect.top(), selectRect.right(), selectRect.bottom()));
+			}
+
+			dlgSettings.setStackingTasks(&tasks);
+
+			if (dlgSettings.exec())
+			{
+				double				fMinLuminancy = 0.10;
+				bool				bForceRegister = false;
+				LONG				lCount = 0;
+				LONG				lMaxCount = 0;
+				double				fPercent = 20.0;
+				bool				bStackAfter = false;
+
+				bForceRegister = dlgSettings.isForceRegister();
+
+				bStackAfter = dlgSettings.isStackAfter(fPercent);
+
+				if (checkReadOnlyFolders(tasks))
+				{
+					if (bStackAfter)
+					{
+						bContinue = CheckStacking(tasks);
+						if (bContinue)
+							bContinue = showRecap(tasks);
+					}
+					else
+					{
+						bContinue = CheckStacking(tasks);
+					};
+
+					DWORD				dwStartTime = GetTickCount();
+					DWORD				dwEndTime;
+
+					if (bContinue)
+					{
+						GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+
+						CRegisterEngine	RegisterEngine;
+
+						imageLoader.clearCache();
+						frameList.blankCheckedItemScores();
+
+						bContinue = RegisterEngine.RegisterLightFrames(tasks, bForceRegister, &dlg);
+
+						frameList.updateCheckedItemScores();
+						// Update the current image score if necessary
+						if (!m_strShowFile.isEmpty()
+							&& frameList.isLightFrame(m_strShowFile)
+							&& frameList.isChecked(m_strShowFile))
+						{
+							// Update the registering info
+							editStarsPtr->setLightFrame(m_strShowFile);
+							ui->picture->update();
+						};
+
+						dlg.Close();
+					};
+
+					if (bContinue && bStackAfter)
+					{
+						DoStacking(tasks, fPercent);
+						dwEndTime = GetTickCount();
+					};
+
+					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
+				};
+			};
+		}
+		else
+		{
+			AfxMessageBox(IDS_ERROR_NOTLIGHTCHECKED2, MB_OK | MB_ICONSTOP);
+		};
+	};
+
+	void StackingDlg::stackCheckedImages()
+	{
+		if (checkEditChanges())
+		{
+			BOOL				bContinue;
+			CAllStackingTasks	tasks;
+			CRect				rcSelect;
+
+			frameList.fillTasks(tasks);
+
+			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
+			if (!selectRect.isEmpty())
+			{
+				tasks.SetCustomRectangle(CRect(selectRect.left(), selectRect.top(), selectRect.right(), selectRect.bottom()));
+			}
+
+			if (checkReadOnlyFolders(tasks))
+			{
+				bContinue = CheckStacking(tasks);
+				if (bContinue)
+					bContinue = showRecap(tasks);
 				if (bContinue)
 				{
 					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
 
-					CRegisterEngine	RegisterEngine;
-
 					imageLoader.clearCache();
-					blankCheckedItemScores();
-
-					bContinue = RegisterEngine.RegisterLightFrames(tasks, bForceRegister, &dlg);
-
-					updateCheckedItemScores();
-					// Update the current image score if necessary
-					if (!m_strShowFile.isEmpty()
-						&& imageGroups[groupId].pictures.isLightFrame(m_strShowFile)
-						&& imageGroups[groupId].pictures.isChecked(m_strShowFile))
+					if (frameList.unregisteredCheckedLightFrameCount())
 					{
-						// Update the registering info
-						m_EditStarSink.SetLightFrame(m_strShowFile);
-						m_Picture.Invalidate(true);
+						CRegisterEngine	RegisterEngine;
+						CDSSProgressDlg	dlg;
+
+						frameList.blankCheckedItemScores();
+						bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
+						frameList.updateCheckedItemScores();
+						dlg.Close();
 					};
 
-					dlg.Close();
-				};
+					if (bContinue)
+						DoStacking(tasks);
 
-				if (bContinue && bStackAfter)
-				{
-					DoStacking(tasks, fPercent);
-					dwEndTime = GetTickCount();
-				};
-
-				GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
-			};
-		};
-	}
-	else
-	{
-		AfxMessageBox(IDS_ERROR_NOTLIGHTCHECKED2, MB_OK | MB_ICONSTOP);
-	};
-};
-
-void StackingDlg::stackCheckedImages()
-{
-	if (checkEditChanges())
-	{
-		BOOL				bContinue;
-		CAllStackingTasks	tasks;
-		CRect				rcSelect;
-
-		fillTasks(tasks);
-
-		// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
-		if (!selectRect.isEmpty())
-		{
-			tasks.SetCustomRectangle(CRect(selectRect.left(), selectRect.top(), selectRect.right(), selectRect.bottom()));
-		}
-
-		if (CheckReadOnlyFolders(tasks))
-		{
-			bContinue = CheckStacking(tasks);
-			if (bContinue)
-				bContinue = showRecap(tasks);
-			if (bContinue)
-			{
-				GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
-
-				imageLoader.clearCache();
-				if (m_Pictures.GetNrUnregisteredCheckedLightFrames())
-				{
-					CRegisterEngine	RegisterEngine;
-					CDSSProgressDlg	dlg;
-
-					m_Pictures.BlankCheckedItemScores();
-					bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
-					m_Pictures.updateCheckedItemScores();
-					dlg.Close();
-				};
-
-				if (bContinue)
-					DoStacking(tasks);
-
-				GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
-			};
-		};
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-bool StackingDlg::CheckReadOnlyFolders(CAllStackingTasks& tasks)
-{
-	bool					bResult = TRUE;
-	std::vector<CString>	vFolders;
-
-	if (!tasks.CheckReadOnlyStatus(vFolders))
-	{
-		CString				strText;
-		CString				strFolders;
-
-		for (LONG i = 0; i < vFolders.size(); i++)
-		{
-			strFolders += vFolders[i];
-			strFolders += "\n";
-		};
-
-		strText.Format(IDS_WARNINGREADONLY, strFolders);
-
-		AfxMessageBox(strText, MB_OK | MB_ICONSTOP);
-		bResult = FALSE;
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool StackingDlg::CheckStacking(CAllStackingTasks& tasks)
-{
-	bool				bResult = FALSE;
-
-	if (!areCheckedImagesCompatible())
-		AfxMessageBox(IDS_ERROR_NOTCOMPATIBLE, MB_OK | MB_ICONSTOP);
-	else if (!checkedImageCount(PICTURETYPE_LIGHTFRAME))
-		AfxMessageBox(IDS_ERROR_NOTLIGHTCHECKED, MB_OK | MB_ICONSTOP);
-	else
-		bResult = TRUE;
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool StackingDlg::areCheckedImagesCompatible()
-{
-	bool				bResult = true;
-	bool				bFirst = true;
-	const ListBitMap*	lb;
-	LONG				lNrDarks = 0;
-	LONG				lNrDarkFlats = 0;
-	LONG				lNrFlats = 0;
-	LONG				lNrOffsets = 0;
-	bool				bMasterDark = false;
-	bool				bMasterFlat = false;
-	bool				bMasterDarkFlat = false;
-	bool				bMasterOffset = false;
-
-	// Iterate over all groups.
-	for (uint16_t group = 0; group != imageGroups.size(); ++group)
-	{
-		// and then over each image in the group
-		for (auto it = imageGroups[group].pictures.cbegin();
-			it != imageGroups[group].pictures.cend(); ++it)
-		{
-			if (it->m_bChecked == Qt::Checked)
-			{
-				if (bFirst)
-				{
-					lb = &(*it);
-					bFirst = false;
-				}
-				else
-					bResult = lb->IsCompatible(*it);
-			}
-		}
-	}
-
-	if (bResult)
-	{
-		if (bMasterDark && lNrDarks > 1)
-			bResult = false;
-		if (bMasterDarkFlat && lNrDarkFlats > 1)
-			bResult = false;
-		if (bMasterFlat && lNrFlats > 1)
-			bResult = false;
-		if (bMasterOffset && lNrOffsets > 1)
-			bResult = false;
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool StackingDlg::showRecap(CAllStackingTasks& tasks)
-{
-	StackRecap	dlg(this);
-
-	dlg.setStackingTasks(&tasks);
-	return dlg.exec();
-};
-
-
-void StackingDlg::blankCheckedItemScores()
-{
-	// Iterate over all groups.
-	for (uint16_t group = 0; group != imageGroups.size(); ++group)
-	{
-		// and then over each image in the group
-		for (auto it = imageGroups[group].pictures.begin();
-			it != imageGroups[group].pictures.end(); ++it)
-		{
-			if (it->m_bChecked == Qt::Checked && it->IsLightFrame())
-			{
-				it->m_bRegistered = false;
-			}
-		}
-	}
-
-};
-
-/* ------------------------------------------------------------------- */
-
-void StackingDlg::updateCheckedItemScores()
-{
-	int row = 0;
-
-	// Iterate over all groups.
-	for (uint16_t group = 0; group != imageGroups.size(); ++group)
-	{
-		// and then over each image in the group
-		for (auto it = imageGroups[group].pictures.begin();
-			it != imageGroups[group].pictures.end(); ++it)
-		{
-			if (it->m_bChecked == Qt::Checked &&
-				it->IsLightFrame())
-			{
-				CLightFrameInfo		bmpInfo;
-
-				bmpInfo.SetBitmap(it->m_strFileName, false, false);
-
-				//
-				// Update list information, but beware that you must use setData() for any of the columns
-				// that are defined in the DSS::ImageListModel::Column enumeration as they are used for the 
-				// QTableView.   If this isn't done, the image list view won't get updated.
-				//
-				// The "Sky Background" (Column::BackgroundCol) is a special case it's a class, not a primitive, so the model 
-				// class has a specific member function to set that.
-				//
-				// Other member of ListBitMap (e.g.) m_bRegistered and m_bComet can be updated directly.
-				//
-				if (bmpInfo.m_bInfoOk)
-				{
-					it->m_bRegistered = true;
-					imageGroups[group].pictures.setData(row, DSS::ImageListModel::Column::ScoreCol, bmpInfo.m_fOverallQuality);
-					imageGroups[group].pictures.setData(row, DSS::ImageListModel::Column::FWHMCol, bmpInfo.m_fFWHM);
-					imageGroups[group].pictures.setData(row, DSS::ImageListModel::Column::StarsCol, (int)bmpInfo.m_vStars.size());
-					it->m_bComet = bmpInfo.m_bComet;
-					imageGroups[group].pictures.setData(row, DSS::ImageListModel::Column::BackgroundCol, (int)bmpInfo.m_vStars.size());
-					imageGroups[group].pictures.setSkyBackground(row, bmpInfo.m_SkyBackground);
-
-				}
-				else
-				{
-					it->m_bRegistered = false;
+					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
 				};
 			};
-			++row;
 		};
-	}
-
-};
-
-
-/* ------------------------------------------------------------------- */
-
-#if (0)
-CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
-	: CDialog(CStackingDlg::IDD, pParent),
-	m_cCtrlCache(this)
-{
-	//{{AFX_DATA_INIT(CStackingDlg)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-	m_MRUList.readSettings();
-}
-
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CStackingDlg)
-	DDX_Control(pDX, IDC_PICTURES, m_Pictures);
-	DDX_Control(pDX, IDC_PICTURE, m_PictureStatic);
-	DDX_Control(pDX, IDC_INFOS, m_Infos);
-	DDX_Control(pDX, IDC_LISTINFO, m_ListInfo);
-	DDX_Control(pDX, IDC_GAMMA, m_Gamma);
-	DDX_Control(pDX, IDC_GROUPTAB, m_GroupTab);
-	DDX_Control(pDX, IDC_SHOWHIDEJOBS, m_ShowHideJobs);
-	DDX_Control(pDX, IDC_4CORNERS, m_4Corners);
-	//}}AFX_DATA_MAP
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CStackingDlg, CDialog)
-	//{{AFX_MSG_MAP(CStackingDlg)
-	ON_NOTIFY(NM_CLICK, IDC_PICTURES, OnClickPictures)
-	ON_NOTIFY(NM_NOTIFYMODECHANGE, IDC_PICTURE, OnPictureChange)
-	ON_MESSAGE(WM_CHECKITEM, OnCheckItem)
-	ON_MESSAGE(WM_SELECTITEM, OnSelectItem)
-	ON_WM_SIZE()
-	ON_NOTIFY(GC_PEGMOVE, IDC_GAMMA, OnChangeGamma)
-	ON_NOTIFY(GC_PEGMOVED, IDC_GAMMA, OnChangeGamma)
-	ON_NOTIFY(CTCN_SELCHANGE, IDC_GROUPTAB, OnSelChangeGroup)
-	ON_NOTIFY(CTCN_SELCHANGE, IDC_JOBTAB, OnSelChangeJob)
-	ON_NOTIFY(NM_LINKCLICK, IDC_SHOWHIDEJOBS, OnShowHideJobs)
-	ON_NOTIFY(SPN_SIZED, IDC_SPLITTER, OnSplitter)
-//}}AFX_MSG_MAP
-ON_BN_CLICKED(IDC_4CORNERS, &CStackingDlg::OnBnClicked4corners)
-END_MESSAGE_MAP()
-
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CStackingDlg message handlers
-
-BOOL CStackingDlg::OnInitDialog()
-{
-	CDialog::OnInitDialog();
-
-	m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-	m_ListInfo.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-	m_Picture.CreateFromStatic(&m_PictureStatic);
-
-	{
-		CRect				rc;
-
-		GetDlgItem(IDC_SPLITTER)->GetWindowRect(rc);
-		ScreenToClient(rc);
-		m_Splitter.Create(WS_CHILD | WS_VISIBLE, rc, this, IDC_SPLITTER);
 	};
 
-	// Add controls to the control cache - this is just a container for helping calcualte sizes and
-	// positions when resizing the dialog.
-	m_cCtrlCache.AddToCtrlCache(IDC_INFOS);
-	m_cCtrlCache.AddToCtrlCache(IDC_4CORNERS);
-	m_cCtrlCache.AddToCtrlCache(IDC_GAMMA);
-	m_cCtrlCache.AddToCtrlCache(IDC_PICTURE);
-	m_cCtrlCache.AddToCtrlCache(IDC_SPLITTER);
-	m_cCtrlCache.AddToCtrlCache(IDC_LISTINFO);
-	m_cCtrlCache.AddToCtrlCache(IDC_PICTURES);
-	m_cCtrlCache.AddToCtrlCache(IDC_GROUPTAB);
+	/* ------------------------------------------------------------------- */
 
-	m_Pictures.Initialize();
-	m_Picture.SetBltMode(CWndImage::bltFitXY);
-	m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
-	CString				strTooltip;
-
-	strTooltip.LoadString(IDS_TOOLTIP_SELECTRECT);
-	m_ButtonToolbar.AddCheck(IDC_EDIT_SELECT,	MBI(SELECT), IDB_BUTTONBASE_MASK, strTooltip);
-	strTooltip.LoadString(IDS_TOOLTIP_STAR);
-	m_ButtonToolbar.AddCheck(IDC_EDIT_STAR,	MBI(STAR), IDB_BUTTONBASE_MASK, strTooltip);
-	strTooltip.LoadString(IDS_TOOLTIP_COMET);
-	m_ButtonToolbar.AddCheck(IDC_EDIT_COMET,	MBI(COMET), IDB_BUTTONBASE_MASK, strTooltip);
-	strTooltip.LoadString(IDS_TOOLTIP_SAVE);
-	m_ButtonToolbar.AddButton(IDC_EDIT_SAVE,	MBI(SAVE), IDB_BUTTONBASE_MASK, strTooltip);
-
-	m_ButtonToolbar.Check(IDC_EDIT_SELECT);
-	m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
-
-	m_Picture.EnableZoom(TRUE);
-	m_Picture.SetButtonToolbar(&m_ButtonToolbar);
-	m_SelectRectSink.ShowDrizzleRectangles();
-	m_Picture.SetImageSink(&m_SelectRectSink);
-	m_ButtonToolbar.SetSink(this);
-
-	m_Gamma.SetBackgroundColor(GetSysColor(COLOR_3DFACE));
-	m_Gamma.ShowTooltips(FALSE);
-	m_Gamma.SetOrientation(CGradientCtrl::ForceHorizontal);
-	m_Gamma.SetPegSide(TRUE, FALSE);
-	m_Gamma.SetPegSide(FALSE, TRUE);
-	m_Gamma.GetGradient().SetStartPegColour(RGB(0, 0, 0));
-	m_Gamma.GetGradient().AddPeg(RGB(0, 0, 0), 0.0, 0);
-	m_Gamma.GetGradient().AddPeg(RGB(128, 128, 128), sqrt(0.5), 1);
-	m_Gamma.GetGradient().AddPeg(RGB(255, 255, 255), 1.0, 2);
-	m_Gamma.GetGradient().SetEndPegColour(RGB(255, 255, 255));
-	m_Gamma.GetGradient().SetBackgroundColour(RGB(255, 255, 255));
-	m_Gamma.GetGradient().SetInterpolationMethod(CGradient::Linear);
-
-
-	m_4Corners.SetBitmaps(IDB_4CORNERS, RGB(255,0, 255));
-	m_4Corners.SetFlat(TRUE);
-	//m_4Corners.DrawTransparent(TRUE);
-
-	QSettings			settings;
-	bool checkVersion = settings.value("InternetCheck", false).toBool();
-	if (checkVersion)
-		retrieveLatestVersionInfo();   // will update ui asynchronously
-
-
+	bool StackingDlg::checkReadOnlyFolders(CAllStackingTasks& tasks)
 	{
-		m_GroupTab.ModifyStyle(0, CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
+		bool result = true;
+		QStringList folders;
 
-		UpdateGroupTabs();
-	};
-
-/*
-	m_ShowHideJobs.SetLink(TRUE, TRUE);
-	m_ShowHideJobs.SetTransparent(TRUE);
-	m_ShowHideJobs.SetLinkCursor(LoadCursor(nullptr,MAKEINTRESOURCE(IDC_HAND)));
-	m_ShowHideJobs.SetFont3D(FALSE);
-	m_ShowHideJobs.SetTextColor(RGB(0, 0, 192));
-	m_ShowHideJobs.SetWindowText("Show/Hide Jobs");
-	{
-		m_JobTab.ModifyStyle(0, CTCS_RIGHT | CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
-		m_JobTab.InsertItem(0, "Main Job");
-		m_JobTab.InsertItem(1, "Red");
-		m_JobTab.InsertItem(2, "Green");
-		m_JobTab.InsertItem(3, "Blue");
-		m_JobTab.InsertItem(4, "Lum");
-	};*/
-
-	if (m_strStartingFileList.GetLength())
-		OpenFileList(m_strStartingFileList);
-
-
-	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::UpdateLayout()
-{
-	// No controls present, nothing to do!
-	if (GetDlgItem(IDC_PICTURE) == nullptr)
-		return;
-
-	// Update the cache so all the sizes and positions are correct.
-	m_cCtrlCache.UpdateCtrlCache();
-
-	CRect rcCurrentDlgSize;
-	GetClientRect(rcCurrentDlgSize);
-
-	// Cache the controls that we can scale to make things fit.
-	// Work out vertical space change.
-	int nCtrlHeightSum = 0;
-	const int nTopSpacing = min(m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y, (min(m_cCtrlCache.GetCtrlOffset(IDC_GAMMA).y, m_cCtrlCache.GetCtrlOffset(IDC_4CORNERS).y)));
-	nCtrlHeightSum += nTopSpacing;
-	nCtrlHeightSum += max(m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height(), (max(m_cCtrlCache.GetCtrlSize(IDC_GAMMA).Height(), m_cCtrlCache.GetCtrlSize(IDC_4CORNERS).Height())));
-
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y - nCtrlHeightSum;
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height();
-
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_SPLITTER).y - nCtrlHeightSum;
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height();
-
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y - nCtrlHeightSum;
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height();
-
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURES).y - nCtrlHeightSum;
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height();
-
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_GROUPTAB).y - nCtrlHeightSum;
-	nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height();
-
-	nCtrlHeightSum += nTopSpacing;
-
-	// Preferentially scale the picture first, then the list afterwards (if possible)
-	int nDiffPictureY = rcCurrentDlgSize.Height() - nCtrlHeightSum;
-	int nDiffListY = 0;
-
-	// Handle if there isn't enough space to handle the picture resizing alone.
-	if (m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() + nDiffPictureY <= sm_nMinImageHeight)
-	{
-		int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() - sm_nMinImageHeight;
-		if (nMaxMovement <= 0)
+		if (!tasks.checkReadOnlyStatus(folders))
 		{
-			nDiffListY = nDiffPictureY;
-			nDiffPictureY = 0;
-		}
+			QString message = tr("The following folder(s) are read-only:\n%1\nDeepSkyStacker needs to create files in these folders during its processing.",
+				"IDS_WARNINGREADONLY")
+				.arg(folders.join('\n'));
+
+			QMessageBox::critical(this, "DeepSkyStacker",
+				message, QMessageBox::Ok);
+			result = FALSE;
+		};
+
+		return result;
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	bool StackingDlg::CheckStacking(CAllStackingTasks& tasks)
+	{
+		bool result = false;
+
+		if (!frameList.areCheckedImagesCompatible())
+			QMessageBox::critical(this, "DeepSkyStacker",
+				tr("The checked pictures are not compatible (width, height, number of colors,"
+					" number of channels, only one master dark, offset and flat).",
+					"IDS_ERROR_NOTCOMPATIBLE"));
+		else if (!frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+			QMessageBox::critical(this, "DeepSkyStacker",
+				tr("You must check light frames to stack them.",
+					"IDS_ERROR_NOTLIGHTCHECKED"));
 		else
+			result = true;
+
+		return result;
+	};
+
+	bool StackingDlg::checkWorkspaceChanges()
+	{
+		bool						bResult = false;
+
+		if (!fileList.empty() || Group::fileCount())
 		{
-			nDiffListY = nDiffPictureY + nMaxMovement;
-			nDiffPictureY = -nMaxMovement;
-		}
-		// Handle if there isn't enough space to handle the list resizing as well.
-		if (m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() + nDiffListY <= sm_nMinListHeight)
-		{
-			int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() - sm_nMinListHeight;
-			if (nMaxMovement <= 0)
-				nDiffListY = 0;
+			Workspace				workspace;
+
+			if (frameList.dirty() || workspace.isDirty())
+			{
+				QString msg = tr("You have made some changes to the %1 file list and/or to the settings.\n\nDo you want to save the changes?",
+					"IDS_WARNING_SAVECHANGES")
+					.arg(QString::fromStdU16String(fileList.generic_u16string()));
+
+				QMessageBox msgBox(QMessageBox::Question, QString(""), msg, (QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel));
+
+				msgBox.setDefaultButton(QMessageBox::Yes);
+
+				int ret = msgBox.exec();
+
+				QString name;
+
+				switch (ret)
+				{
+					case QMessageBox::Yes:
+						if (!fileList.empty())
+						{
+							QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+							frameList.saveListToFile(fileList);
+							name = QString::fromStdU16String(fileList.generic_u16string());
+							QGuiApplication::restoreOverrideCursor();
+						}
+						else
+						{
+							saveList(m_MRUList, name);
+						}
+
+						SetCurrentFileInTitle(name.toStdWString().c_str());
+						[[fallthrough]];
+					case QMessageBox::No:
+						bResult = true;
+						break;
+					case QMessageBox::Cancel:
+						bResult = false;
+				}
+
+			}
 			else
-				nDiffListY = -nMaxMovement;
-		}
-	}
-
-	// Perform the resizing and moving of the controls.
-	if (nDiffPictureY != 0)
-	{
-		m_cCtrlCache.SizeCtrlVert(IDC_PICTURE, m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() + nDiffPictureY);
-		m_Splitter.ChangePos(&m_Splitter, 0, nDiffPictureY);
-		m_cCtrlCache.MoveCtrlVert(IDC_LISTINFO, nDiffPictureY);
-		m_cCtrlCache.MoveCtrlVert(IDC_PICTURES, nDiffPictureY);
-		m_cCtrlCache.MoveCtrlVert(IDC_GROUPTAB, nDiffPictureY);
-	}
-	if (nDiffListY != 0)
-	{
-		m_cCtrlCache.SizeCtrlVert(IDC_PICTURES, m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() + nDiffListY);
-		m_cCtrlCache.MoveCtrlVert(IDC_GROUPTAB, nDiffListY);
-	}
-
-	// Now look at the widths
-	int nCtrlWidthSum = m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).x + m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).x; // Assume same padding at either end.
-	int nDiffX = rcCurrentDlgSize.Width() - nCtrlWidthSum;
-	if (m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + nDiffX <= sm_nMinListWidth)
-	{
-		int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() - sm_nMinListWidth;
-		if (nMaxMovement <= 0)
-			nDiffX = 0;
-		else
-			nDiffX = -nMaxMovement;
-	}
-	if (nDiffX)
-	{
-		m_cCtrlCache.SizeCtrlHoriz(IDC_INFOS, m_cCtrlCache.GetCtrlSize(IDC_INFOS).Width() + nDiffX);
-		m_cCtrlCache.MoveCtrlHoriz(IDC_4CORNERS, nDiffX);
-		m_cCtrlCache.MoveCtrlHoriz(IDC_GAMMA, nDiffX);
-		m_cCtrlCache.SizeCtrlHoriz(IDC_PICTURE, m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + nDiffX);
-		m_Splitter.ChangeWidth(&m_Splitter, nDiffX);
-		m_cCtrlCache.SizeCtrlHoriz(IDC_LISTINFO, m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Width() + nDiffX);
-		m_cCtrlCache.SizeCtrlHoriz(IDC_PICTURES, m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Width() + nDiffX);
-		m_cCtrlCache.SizeCtrlHoriz(IDC_GROUPTAB, m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Width() + nDiffX);
-	}
-
-	// Because we've resized things, we need to update the max splitter range accordingly.
-	// This is not quite right - couple of pixels out - but not sure why.
-	int nMinY = m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y + sm_nMinImageHeight;
-	int nMaxY = std::max(nMinY + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height(), rcCurrentDlgSize.Height() - (sm_nMinListHeight + m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height() + m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height() + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height()));
-	m_Splitter.SetRange(nMinY, nMaxY);
-
-	// Update everything.
-	Invalidate();
-	UpdateWindow();
-	m_cCtrlCache.InvalidateCtrls();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::UpdateGroupTabs()
-{
-	int dwLastGroupID = static_cast<int>(m_Pictures.GetLastGroupID());
-	if (m_Pictures.GetNrFrames(dwLastGroupID) != 0)
-		dwLastGroupID++;
-
-	const auto lCurrentGroup = std::max(0, m_GroupTab.GetCurSel());
-
-	m_GroupTab.DeleteAllItems();
-
-	CString				strGroup;
-
-	strGroup.LoadString(IDS_MAINGROUP);
-
-	m_GroupTab.InsertItem(0, strGroup);
-
-	strGroup.LoadString(IDS_GROUPIDMASK);
-
-	for (int i = 1; i <= dwLastGroupID; i++)
-	{
-		CString			strName;
-
-		strName.Format(strGroup, i);
-		m_GroupTab.InsertItem(i, strName);
-	};
-
-	if (lCurrentGroup > dwLastGroupID)
-	{
-		m_GroupTab.SetCurSel(0);
-		m_Pictures.SetCurrentGroupID(0);
-	}
-	else
-		m_GroupTab.SetCurSel(lCurrentGroup);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	if (pResult)
-		*pResult = 1;
-
-	PegNMHDR *			pPegNMHDR = (PegNMHDR*)pNMHDR;
-	double				fBlackPoint,
-						fGrayPoint,
-						fWhitePoint;
-
-	if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
-		(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
-	{
-		// Adjust
-		CGradient &			Gradient = m_Gamma.GetGradient();
-		fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
-		fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
-		fWhitePoint = Gradient.GetPeg(Gradient.IndexFromId(2)).position;
-		BOOL				bAdjust = FALSE;
-
-		switch (pPegNMHDR->peg.id)
-		{
-		case 0 :
-			// Black point moving
-			if (fBlackPoint>fWhitePoint-0.02)
-			{
-				fBlackPoint = fWhitePoint-0.02;
-				bAdjust = TRUE;
-			};
-			if (fBlackPoint>fGrayPoint-0.01)
-			{
-				fGrayPoint = fBlackPoint+0.01;
-				bAdjust = TRUE;
-			};
-			break;
-		case 1 :
-			// Gray point moving
-			if (fGrayPoint<fBlackPoint+0.01)
-			{
-				fGrayPoint = fBlackPoint+0.01;
-				bAdjust = TRUE;
-			};
-			if (fGrayPoint>fWhitePoint-0.01)
-			{
-				fGrayPoint = fWhitePoint-0.01;
-				bAdjust = TRUE;
-			};
-			break;
-		case 2 :
-			// White point moving
-			if (fWhitePoint<fBlackPoint+0.02)
-			{
-				fWhitePoint = fBlackPoint+0.02;
-				bAdjust = TRUE;
-			};
-			if (fWhitePoint < fGrayPoint+0.01)
-			{
-				fGrayPoint = fWhitePoint-0.01;
-				bAdjust = TRUE;
-			};
-			break;
-		};
-		if (bAdjust)
-		{
-			Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
-			Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
-			Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
-			m_Gamma.InvalidateRect(nullptr);
-		};
-	};
-
-	if (pPegNMHDR->nmhdr.code == GC_PEGMOVED)
-	{
-		// Adjust Gamma
-		m_GammaTransformation.InitTransformation(fBlackPoint*fBlackPoint, fGrayPoint*fGrayPoint, fWhitePoint*fWhitePoint);
-
-		if (m_LoadedImage.m_hBitmap)
-		{
-			ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-			// Refresh
-			m_Picture.Invalidate(TRUE);
-		}
-	}
-}
-
-/* ------------------------------------------------------------------- */
-
-BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
-{
-	BOOL				bResult = FALSE;
-	__int64				ulFlatSpace = 0,
-						ulDarkSpace = 0,
-						ulOffsetSpace = 0;
-	__int64				ulNeededSpace = 0;
-
-	for (size_t i = 0; i < tasks.m_vStacks.size(); i++)
-	{
-		int			lWidth,
-						lHeight,
-						lNrChannels,
-						lNrBytesPerChannel;
-		__int64			ulSpace;
-
-		lWidth		= tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lWidth;
-		lHeight		= tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lHeight;
-		lNrChannels = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
-		lNrBytesPerChannel = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitPerChannels/8;
-
-		ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
-
-		if (tasks.m_vStacks[i].m_pOffsetTask)
-			ulOffsetSpace = max(ulOffsetSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
-
-		if (tasks.m_vStacks[i].m_pDarkTask)
-			ulDarkSpace = max(ulDarkSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
-
-		if (tasks.m_vStacks[i].m_pFlatTask)
-			ulFlatSpace = max(ulFlatSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
-	};
-
-	ulNeededSpace = max(ulFlatSpace, max(ulOffsetSpace, ulDarkSpace));
-	ulNeededSpace += ulNeededSpace / 10;
-
-	// Get available space from drive
-	TCHAR			szTempPath[1+_MAX_PATH];
-
-	szTempPath[0] = 0;
-	GetTempPath(sizeof(szTempPath)/sizeof(szTempPath[0]), szTempPath);
-
-	ULARGE_INTEGER			ulFreeSpace;
-	ULARGE_INTEGER			ulTotal;
-	ULARGE_INTEGER			ulTotalFree;
-
-	GetDiskFreeSpaceEx(szTempPath, &ulFreeSpace, &ulTotal, &ulTotalFree);
-
-	if (ulFreeSpace.QuadPart < ulNeededSpace)
-	{
-		ulFreeSpace.QuadPart /= 1024;
-		ulNeededSpace /= 1024;
-
-		int			lNeededSpace = static_cast<int>(ulNeededSpace);
-		auto			lFreeSpace = ulFreeSpace.LowPart;
-		CString			strDrive;
-
-		strDrive = szTempPath;
-		strDrive = strDrive.Left(2);
-
-		CString			strMessage;
-
-		strMessage.Format(IDS_ERROR_NOTENOUGHFREESPACE, lNeededSpace, lFreeSpace, strDrive);
-		if (AfxMessageBox(strMessage, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION)==IDYES)
-			bResult = TRUE;
-		else
-			bResult = FALSE;
-	}
-	else
-		bResult = TRUE;
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-
-
-void CStackingDlg::DropFiles(HDROP hDropInfo)
-{
-	CDropFilesDlg			dlg;
-
-	dlg.SetDropInfo(hDropInfo);
-	if (dlg.DoModal() == IDOK)
-	{
-		std::vector<CString>	vFiles;
-
-		BeginWaitCursor();
-		dlg.GetDroppedFiles(vFiles);
-
-		for (size_t i = 0; i < vFiles.size(); i++)
-			m_Pictures.AddFile(vFiles[i], m_Pictures.GetCurrentGroupID(), m_Pictures.GetCurrentJobID(), dlg.GetDropType(), TRUE);
-
-		m_Pictures.RefreshList();
-		UpdateGroupTabs();
-		UpdateListInfo();
-		EndWaitCursor();
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OpenFileList(LPCTSTR szFileList)
-{
-	CString					strList = szFileList;
-
-	// Check that the file can be opened
-	FILE *					hFile;
-
-	hFile = _tfopen(strList, _T("rt"));
-	if  (hFile)
-	{
-		fclose(hFile);
-		SetCursor(::LoadCursor(nullptr, IDC_WAIT));
-		m_Pictures.LoadFilesFromList(strList);
-		m_Pictures.RefreshList();
-		m_MRUList.Add(strList);
-		UpdateGroupTabs();
-		UpdateListInfo();
-		m_strCurrentFileList = szFileList;
-		SetCurrentFileInTitle(m_strCurrentFileList);
-		SetCursor(::LoadCursor(nullptr, IDC_ARROW));
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	// Here check if the new image is dirty
-	if (m_EditStarSink.IsDirty())
-		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, TRUE);
-};
-
-/* ------------------------------------------------------------------- */
-
-CWndImageSink *	CStackingDlg::GetCurrentSink()
-{
-	if (m_ButtonToolbar.IsChecked(IDC_EDIT_STAR))
-		return &m_EditStarSink;
-	else if (m_ButtonToolbar.IsChecked(IDC_EDIT_COMET))
-		return &m_EditStarSink;
-	else if (m_ButtonToolbar.IsChecked(IDC_EDIT_SELECT))
-		return &m_SelectRectSink;
-
-	return nullptr;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::CheckAskRegister()
-{
-	// Check that the current light frame is registered (or not)
-	// and ask accordingly
-	CLightFrameInfo			lfi;
-
-	lfi.SetBitmap(m_strShowFile, FALSE, FALSE);
-	if (!lfi.IsRegistered())
-	{
-		CAskRegistering		dlg;
-
-		if (dlg.DoModal()==IDOK)
-		{
-			if (dlg.GetAction()==ARA_ONE)
-			{
-				// Register only this light frame
-				m_Pictures.CheckAllLights(FALSE);
-				m_Pictures.CheckImage(m_strShowFile, TRUE);
-				RegisterCheckedImage();
-			}
-			else if (dlg.GetAction()==ARA_ALL)
-			{
-				// Register all the checked light frames
-				m_Pictures.CheckImage(m_strShowFile, TRUE);
-				RegisterCheckedImage();
-			};
-		};
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar)
-{
-	switch (dwID)
-	{
-	case IDC_EDIT_COMET :
-		if (pButtonToolbar->IsChecked(dwID))
-		{
-			CheckAskRegister();
-			pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
-			pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
-			m_EditStarSink.SetCometMode(TRUE);
-			m_Picture.SetImageSink(&m_EditStarSink);
-		};
-		break;
-	case IDC_EDIT_STAR :
-		if (pButtonToolbar->IsChecked(dwID))
-		{
-			CheckAskRegister();
-			pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
-			pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
-			m_EditStarSink.SetCometMode(FALSE);
-			m_Picture.SetImageSink(&m_EditStarSink);
-		};
-		break;
-	case IDC_EDIT_SELECT :
-		if (pButtonToolbar->IsChecked(dwID))
-		{
-			pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
-			pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
-			m_Picture.SetImageSink(&m_SelectRectSink);
-		};
-		break;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar)
-{
-	if (dwID == IDC_EDIT_SAVE)
-	{
-		m_EditStarSink.SaveRegisterSettings();
-		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
-		// Update the list with the new info
-		m_Pictures.UpdateItemScores(m_strShowFile);
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------- */
-
-void	CStackingDlg::UpdateListInfo()
-{
-	CString					strText;
-
-	strText.Format(IDS_LISTINFO,
-		checkedImageCount(PICTURETYPE_LIGHTFRAME),
-		checkedImageCount(PICTURETYPE_DARKFRAME),
-		checkedImageCount(PICTURETYPE_FLATFRAME),
-		checkedImageCount(PICTURETYPE_DARKFLATFRAME),
-		checkedImageCount(PICTURETYPE_OFFSETFRAME));
-
-	m_ListInfo.SetText(strText);
-
-	for (int i = 0; i < m_GroupTab.GetItemCount(); i++)
-	{
-		strText.Format(IDS_LISTINFO2,
-			checkedImageCount(PICTURETYPE_LIGHTFRAME, i),
-			checkedImageCount(PICTURETYPE_DARKFRAME, i),
-			checkedImageCount(PICTURETYPE_FLATFRAME, i),
-			checkedImageCount(PICTURETYPE_DARKFLATFRAME, i),
-			checkedImageCount(PICTURETYPE_OFFSETFRAME, i));
-		m_GroupTab.SetItemTooltipText(i, strText);
-	};
-
-};
-
-/* ------------------------------------------------------------------- */
-
-BOOL CStackingDlg::CheckWorkspaceChanges()
-{
-	BOOL						bResult = FALSE;
-
-	if (m_strCurrentFileList.GetLength() || m_Pictures.GetNrFrames())
-	{
-		Workspace				workspace;
-
-		if (m_Pictures.IsDirty() || workspace.isDirty())
-		{
-			// Ask for saving the current list.
-			CString				strText;
-			int					nResult;
-
-			strText.Format(IDS_WARNING_SAVECHANGES, (LPCTSTR)m_strCurrentFileList);
-			nResult = AfxMessageBox(strText, MB_YESNOCANCEL | MB_ICONQUESTION | MB_DEFBUTTON1);
-
-			if (nResult == IDYES)
-			{
-				if (m_strCurrentFileList.GetLength())
-					m_Pictures.SaveListToFile(m_strCurrentFileList);
-				else
-					m_Pictures.SaveList(m_MRUList, m_strCurrentFileList);
-				SetCurrentFileInTitle(m_strCurrentFileList);
-			};
-
-			bResult = (nResult != IDCANCEL);
+				bResult = true;
 		}
 		else
-			bResult = TRUE;
-	}
-	else
-		bResult = TRUE;
+			bResult = true;
 
-	return bResult;
-};
+		return bResult;
+	};
 
-/* ------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------- */
 
-
-/* ------------------------------------------------------------------- */
-
-LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
-{
-	std::shared_ptr<CMemoryBitmap> pBitmap;
-	std::shared_ptr<C32BitsBitmap> phBitmap;
-
-	if (m_strShowFile.GetLength() && m_BackgroundLoading.LoadImage(m_strShowFile, pBitmap, phBitmap))
+	void StackingDlg::reloadCurrentImage()
 	{
-		m_LoadedImage.m_hBitmap = phBitmap;
-		m_LoadedImage.m_pBitmap = pBitmap;
-		if (m_GammaTransformation.IsInitialized())
-			ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-		m_Picture.SetImg(phBitmap->GetHBITMAP(), true);
-
-		if (m_Pictures.IsLightFrame(m_strShowFile))
+		if (!m_strShowFile.isEmpty())
 		{
-			m_Picture.SetButtonToolbar(&m_ButtonToolbar);
-			m_EditStarSink.SetLightFrame(m_strShowFile);
-			m_EditStarSink.SetBitmap(pBitmap);
-			m_Picture.SetImageSink(GetCurrentSink());
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			imageLoader.clearCache();
+			imageLoad();
+			QGuiApplication::restoreOverrideCursor();
+
+		};
+
+		//frameList.Invalidate(FALSE); TODO
+	};
+
+	/* ------------------------------------------------------------------- */
+
+
+	/* ------------------------------------------------------------------- */
+
+
+	bool StackingDlg::showRecap(CAllStackingTasks& tasks)
+	{
+		StackRecap	dlg(this);
+
+		dlg.setStackingTasks(&tasks);
+		return dlg.exec();
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::DoStacking(CAllStackingTasks& tasks, const double fPercent)
+	{
+		ZFUNCTRACE_RUNTIME();
+
+		bool bContinue = true;
+		CDSSProgressDlg dlg;
+		const auto dwStartTime = GetTickCount64();
+
+		if (tasks.m_vStacks.empty())
+		{
+			frameList.fillTasks(tasks);
+			tasks.ResolveTasks();
 		}
-		else
+
+		if (!tasks.m_vStacks.empty() && tasks.m_vStacks.cbegin()->m_pLightTask != nullptr && !tasks.m_vStacks.cbegin()->m_pLightTask->m_vBitmaps.empty()
+			&& tasks.m_vStacks.cbegin()->m_pLightTask->m_vBitmaps.cbegin()->filePath.empty() != true)
 		{
-			m_Picture.SetImageSink(nullptr);
-			m_Picture.SetButtonToolbar(nullptr);
-			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-		};
-		m_Picture.SetBltMode(CWndImage::bltFitXY);
-		m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
-
-		CBilinearParameters		Transformation;
-		VOTINGPAIRVECTOR		vVotedPairs;
-
-		if (m_Pictures.GetTransformation(m_strShowFile, Transformation, vVotedPairs))
-			m_EditStarSink.SetTransformation(Transformation, vVotedPairs);
-		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-		m_Infos.SetText(m_strShowFile);
-	}
-	else if (m_strShowFile.GetLength())
-	{
-		CString				strText;
-
-		strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strShowFile);
-		m_Infos.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
-		m_Infos.SetText(strText);
-		m_Picture.SetImageSink(nullptr);
-		m_Picture.SetButtonToolbar(nullptr);
-		m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-	}
-	else
-	{
-		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-		m_Infos.SetText("");
-		m_Picture.SetImageSink(nullptr);
-		m_Picture.SetButtonToolbar(nullptr);
-		m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-	}
-	return 1;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	CString				strFileName;
-
-	UpdateListInfo();
-	if (m_Pictures.GetSelectedFileName(strFileName))
-	{
-		if (strFileName.CompareNoCase(m_strShowFile))
-		{
-			if (checkEditChanges())
-			{
-				BeginWaitCursor();
-				m_Infos.SetTextColor(RGB(0, 0, 0));
-				m_Infos.SetText(strFileName);
-				m_Infos.SetLink(FALSE, FALSE);
-				m_strShowFile = strFileName;
-				OnBackgroundImageLoaded(0, 0);
-			};
-		};
-	}
-	else
-	{
-		m_Infos.SetTextColor(RGB(0, 0, 0));
-		m_Infos.SetLink(FALSE, FALSE);
-		m_Infos.SetText("");
-	};
-
-	*pResult = 0;
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::ReloadCurrentImage()
-{
-	if (m_strShowFile.GetLength())
-	{
-		BeginWaitCursor();
-		imageLoader.clearCache();
-		OnBackgroundImageLoaded(0, 0);
-		EndWaitCursor();
-	};
-
-	m_Pictures.Invalidate(FALSE);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnSelChangeGroup(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	m_Pictures.SetCurrentGroupID(m_GroupTab.GetCurSel());
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnSelChangeJob(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	//m_Pictures.SetCurrentGroupID(m_GroupTab.GetCurSel());
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnShowHideJobs( NMHDR * pNotifyStruct, LRESULT * result )
-{
-	//
-};
-
-/* ------------------------------------------------------------------- */
-
-LRESULT CStackingDlg::OnCheckItem(WPARAM, LPARAM)
-{
-	UpdateListInfo();
-
-	return 0;
-};
-
-/* ------------------------------------------------------------------- */
-
-LRESULT CStackingDlg::OnSelectItem(WPARAM, LPARAM)
-{
-	LRESULT				lResult;
-
-	OnClickPictures(nullptr, &lResult);
-
-	return 0;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnSize(UINT nType, int cx, int cy)
-{
-	CDialog::OnSize(nType, cx, cy);
-	if (!(cx == 0 && cy == 0))
-		UpdateLayout();
-}
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::OnSplitter(NMHDR* pNMHDR, LRESULT* pResult)
-{
-	SPC_NMHDR* pHdr = reinterpret_cast<SPC_NMHDR*>(pNMHDR);
-
-	CSplitterControl::ChangeHeight(&m_Picture, pHdr->delta);
-	CSplitterControl::ChangeHeight(&m_Pictures, -pHdr->delta, CW_BOTTOMALIGN);
-	CSplitterControl::ChangePos(&m_ListInfo, 0, pHdr->delta);
-	Invalidate();
-	UpdateWindow();
-	m_Picture.Invalidate();
-	m_Pictures.Invalidate();
-	m_ListInfo.Invalidate();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::UncheckNonStackablePictures()
-{
-	m_Pictures.UnCheckNonStackable();
-};
-
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::UpdateCheckedAndOffsets(CStackingEngine & StackingEngine)
-{
-	LIGHTFRAMEINFOVECTOR &	vBitmaps = StackingEngine.LightFrames();
-
-	m_Pictures.ClearOffsets();
-	for (size_t i = 0; i < vBitmaps.size(); i++)
-	{
-		if (vBitmaps[i].m_bDisabled)
-			m_Pictures.ClearOffset(vBitmaps[i].m_strFileName);
-		else
-			m_Pictures.UpdateOffset(vBitmaps[i].m_strFileName, vBitmaps[i].m_fXOffset, vBitmaps[i].m_fYOffset, vBitmaps[i].m_fAngle, vBitmaps[i].m_BilinearParameters, vBitmaps[i].m_vVotedPairs);
-	};
-
-	if (vBitmaps.size())
-		m_EditStarSink.SetRefStars(vBitmaps[0].m_vStars);
-	else
-		m_EditStarSink.ClearRefStars();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::DoStacking(CAllStackingTasks& tasks, const double fPercent)
-{
-	ZFUNCTRACE_RUNTIME();
-
-	bool bContinue = true;
-	CDSSProgressDlg dlg;
-	const auto dwStartTime = GetTickCount64();
-
-	if (tasks.m_vStacks.empty())
-	{
-		m_Pictures.FillTasks(tasks);
-		tasks.ResolveTasks();
-	}
-
-	if (!tasks.m_vStacks.empty() && tasks.m_vStacks.cbegin()->m_pLightTask != nullptr && !tasks.m_vStacks.cbegin()->m_pLightTask->m_vBitmaps.empty()
-		&& tasks.m_vStacks.cbegin()->m_pLightTask->m_vBitmaps.cbegin()->m_strFileName.GetLength() != 0)
-	{
-		ZTRACE_RUNTIME("Start stacking process");
-	}
-
-	{
-		// Stack registered light frames
-		CStackingEngine StackingEngine;
-
-		CString strReferenceFrame;
-		if (m_Pictures.GetReferenceFrame(strReferenceFrame))
-			StackingEngine.SetReferenceFrame(strReferenceFrame);
-
-		StackingEngine.SetKeptPercentage(fPercent);
-
-		std::shared_ptr<CMemoryBitmap> pBitmap;
-		bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
-		const auto dwElapsedTime = GetTickCount64() - dwStartTime;
-
-		UpdateCheckedAndOffsets(StackingEngine);
-
-		if (bContinue)
-		{
-			CString strFileName;
-			CString strText;
-
-			Workspace workspace;
-			const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
-
-			if (StackingEngine.GetDefaultOutputFileName(strFileName, m_strCurrentFileList, iff == IFF_TIFF))
-			{
-				StackingEngine.WriteDescription(tasks, strFileName);
-
-				strText.Format(IDS_SAVINGFINAL, strFileName);
-				dlg.Start2(strText, 0);
-
-				if (iff == IFF_TIFF)
-				{
-					if (pBitmap->IsMonochrome())
-						WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
-					else
-						WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
-				}
-				else
-				{
-					if (pBitmap->IsMonochrome())
-						WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
-					else
-						WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
-				}
-
-				dlg.End2();
-                dlg.Close();
-
-				GetProcessingDlg(this).LoadFile(strFileName);
-
-				// Change tab to processing
-				if (CDeepStackerDlg* pDlg = GetDeepStackerDlg(this))
-					pDlg->ChangeTab(IDD_PROCESSING);
-			}
+			ZTRACE_RUNTIME("Start stacking process");
 		}
-	}
 
-	ZTRACE_RUNTIME("------------------------------\nEnd of stacking process");
-	EndWaitCursor();
-}
-
-/* ------------------------------------------------------------------- */
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::BatchStack()
-{
-	CBatchStacking			dlg;
-
-	dlg.SetMRUList(m_MRUList);
-	dlg.DoModal();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::CheckAbove()
-{
-	if (checkEditChanges())
-	{
-		CCheckAbove		dlg;
-		double			fThreshold;
-
-		if (dlg.DoModal() == IDOK)
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 		{
-			fThreshold = dlg.GetThreshold();
-			if (dlg.IsPercent())
-				m_Pictures.CheckBest(fThreshold);
-			else
-				m_Pictures.CheckAbove(fThreshold);
-		};
-		UpdateListInfo();
-	};
-};
+			// Stack registered light frames
+			CStackingEngine StackingEngine;
 
-/* ------------------------------------------------------------------- */
+			QString referenceFrame{ frameList.getReferenceFrame() };
+			if (!referenceFrame.isEmpty())
+				StackingEngine.SetReferenceFrame(referenceFrame.toStdWString().c_str());
 
-void CStackingDlg::CheckAll()
-{
-	m_Pictures.CheckAll(TRUE);
-	m_Pictures.CheckAllDarks(TRUE);
-	UpdateListInfo();
-};
+			StackingEngine.SetKeptPercentage(fPercent);
 
-/* ------------------------------------------------------------------- */
+			std::shared_ptr<CMemoryBitmap> pBitmap;
+			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
+			const auto dwElapsedTime = GetTickCount64() - dwStartTime;
 
-void CStackingDlg::UncheckAll()
-{
-	m_Pictures.CheckAll(FALSE);
-	m_Pictures.CheckAllDarks(FALSE);
-	UpdateListInfo();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::ClearList()
-{
-	if (CheckEditChanges() && CheckWorkspaceChanges())
-	{
-		m_Pictures.Clear();
-		m_Picture.SetImg((CBitmap*)nullptr);
-		m_Picture.SetImageSink(nullptr);
-		m_Picture.SetButtonToolbar(nullptr);
-		m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-		m_strShowFile.Empty();
-		m_Infos.SetText(m_strShowFile);
-		m_BackgroundLoading.ClearList();
-		m_LoadedImage.Clear();
-		UpdateGroupTabs();
-		UpdateListInfo();
-		m_strCurrentFileList.Empty();
-		SetCurrentFileInTitle(m_strCurrentFileList);
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::CheckBests(double fPercent)
-{
-	if (checkEditChanges())
-		m_Pictures.CheckBest(fPercent);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CStackingDlg::ComputeOffsets()
-{
-
-	if (checkEditChanges() && (checkedImageCount(PICTURETYPE_LIGHTFRAME) > 0))
-	{
-		BOOL					bContinue = TRUE;
-		CAllStackingTasks		tasks;
-
-		fillTasks(tasks);
-
-		if (m_Pictures.GetNrUnregisteredCheckedLightFrames())
-		{
-			CRegisterEngine	RegisterEngine;
-			CDSSProgressDlg	dlg;
-
-			m_Pictures.BlankCheckedItemScores();
-			bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
-			m_Pictures.updateCheckedItemScores();
-			dlg.Close();
-		};
-
-		if (bContinue)
-		{
-			CDSSProgressDlg			dlg;
-			CStackingEngine			StackingEngine;
-			CString					strReferenceFrame;
-
-			if (m_Pictures.GetReferenceFrame(strReferenceFrame))
-				StackingEngine.SetReferenceFrame(strReferenceFrame);
-
-			BeginWaitCursor();
-			StackingEngine.ComputeOffsets(tasks, &dlg);
-
-			// For each light frame - update the offset in the list
 			UpdateCheckedAndOffsets(StackingEngine);
 
+			if (bContinue)
+			{
+				CString strFileName;
+				CString strText;
+
+				Workspace workspace;
+				const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
+
+				if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList.generic_wstring().c_str(), iff == IFF_TIFF))
+				{
+					StackingEngine.WriteDescription(tasks, strFileName);
+
+					strText.Format(IDS_SAVINGFINAL, strFileName);
+					dlg.Start2(strText, 0);
+
+					if (iff == IFF_TIFF)
+					{
+						if (pBitmap->IsMonochrome())
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+						else
+							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+					}
+					else
+					{
+						if (pBitmap->IsMonochrome())
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
+						else
+							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
+					}
+
+					dlg.End2();
+					dlg.Close();
+
+					GetProcessingDlg(nullptr).LoadFile(strFileName);
+
+					// Change tab to processing
+					if (CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr))
+						pDlg->ChangeTab(IDD_PROCESSING);
+				}
+			}
+		}
+
+		ZTRACE_RUNTIME("------------------------------\nEnd of stacking process");
+		QGuiApplication::restoreOverrideCursor();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::openFileList(const QString& fileName)
+	{
+		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+		fs::path file{ fileName.toStdU16String() };
+		try
+		{
+			// Check that the file can be opened
+			if (std::FILE* hFile =
+#if defined(_WINDOWS)
+				_wfopen(file.c_str(), L"rt")
+#else
+				std::fopen(file.c_ctr(), "rt")
+#endif
+				)
+			{
+				fclose(hFile);
+				frameList.loadFilesFromList(file);
+				// frameList.RefreshList(); TODO
+				m_MRUList.Add(fileName);
+				// TODO UpdateGroupTabs();
+				updateListInfo();
+				fileList = file;
+				SetCurrentFileInTitle(file.generic_wstring().c_str());
+			};
+		}
+		catch (const fs::filesystem_error& e)
+		{
+			QString errorMessage(tr("Exception caught in function: %1\n"
+									"%2 (line %3):\n\n%4")
+				.arg(__FUNCTION__)
+				.arg(__FILE__)
+				.arg(__LINE__)
+				.arg(e.what())
+			);
+#if defined(_CONSOLE)
+			std::cerr << errorMessage;
+#else
+			int ret = QMessageBox::warning(this, "DeepSkyStacker",
+				errorMessage,
+				QMessageBox::Ok);
+#endif
+		}
+		QGuiApplication::restoreOverrideCursor();
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::computeOffsets()
+	{
+
+		if (checkEditChanges() && (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) > 0))
+		{
+			BOOL					bContinue = TRUE;
+			CAllStackingTasks		tasks;
+
+			frameList.fillTasks(tasks);
+
+			if (frameList.unregisteredCheckedLightFrameCount())
+			{
+				CRegisterEngine	RegisterEngine;
+				CDSSProgressDlg	dlg;
+
+				frameList.blankCheckedItemScores();
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
+				frameList.updateCheckedItemScores();
+				dlg.Close();
+			};
+
+			if (bContinue)
+			{
+				CDSSProgressDlg			dlg;
+				CStackingEngine			StackingEngine;
+
+				QString referenceFrame{ frameList.getReferenceFrame() };
+				if (!referenceFrame.isEmpty())
+					StackingEngine.SetReferenceFrame(referenceFrame.toStdWString().c_str());
+
+				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+				StackingEngine.ComputeOffsets(tasks, &dlg);
+
+				// For each light frame - update the offset in the list
+				UpdateCheckedAndOffsets(StackingEngine);
+
+				QGuiApplication::restoreOverrideCursor();
+
+			};
+		};
+	};
+
+	void StackingDlg::checkAll()
+	{
+		frameList.checkAll(true);
+		updateListInfo();
+	};
+
+	void StackingDlg::unCheckAll()
+	{
+		frameList.checkAll(false);
+		updateListInfo();
+	};
+
+	/* ------------------------------------------------------------------- */
+
+
+
+	void StackingDlg::batchStack()
+	{
+#if (0)
+		CBatchStacking			dlg; // TODO
+
+		dlg.SetMRUList(m_MRUList);
+		dlg.DoModal();
+#endif
+	};
+
+
+	/* ------------------------------------------------------------------- */
+
+	#if (0)
+	CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
+		: CDialog(CStackingDlg::IDD, pParent),
+		m_cCtrlCache(this)
+	{
+		//{{AFX_DATA_INIT(CStackingDlg)
+			// NOTE: the ClassWizard will add member initialization here
+		//}}AFX_DATA_INIT
+		m_MRUList.readSettings();
+	}
+
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::DoDataExchange(CDataExchange* pDX)
+	{
+		CDialog::DoDataExchange(pDX);
+		//{{AFX_DATA_MAP(CStackingDlg)
+		DDX_Control(pDX, IDC_PICTURES, frameList);
+		DDX_Control(pDX, IDC_PICTURE, m_PictureStatic);
+		DDX_Control(pDX, IDC_INFOS, m_Infos);
+		DDX_Control(pDX, IDC_LISTINFO, m_ListInfo);
+		DDX_Control(pDX, IDC_GAMMA, m_Gamma);
+		DDX_Control(pDX, IDC_GROUPTAB, m_GroupTab);
+		DDX_Control(pDX, IDC_SHOWHIDEJOBS, m_ShowHideJobs);
+		DDX_Control(pDX, IDC_4CORNERS, m_4Corners);
+		//}}AFX_DATA_MAP
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	BEGIN_MESSAGE_MAP(CStackingDlg, CDialog)
+		//{{AFX_MSG_MAP(CStackingDlg)
+		ON_NOTIFY(NM_CLICK, IDC_PICTURES, OnClickPictures)
+		ON_NOTIFY(NM_NOTIFYMODECHANGE, IDC_PICTURE, OnPictureChange)
+		ON_MESSAGE(WM_CHECKITEM, OnCheckItem)
+		ON_MESSAGE(WM_SELECTITEM, OnSelectItem)
+		ON_WM_SIZE()
+		ON_NOTIFY(GC_PEGMOVE, IDC_GAMMA, OnChangeGamma)
+		ON_NOTIFY(GC_PEGMOVED, IDC_GAMMA, OnChangeGamma)
+		ON_NOTIFY(CTCN_SELCHANGE, IDC_GROUPTAB, OnSelChangeGroup)
+		ON_NOTIFY(CTCN_SELCHANGE, IDC_JOBTAB, OnSelChangeJob)
+		ON_NOTIFY(NM_LINKCLICK, IDC_SHOWHIDEJOBS, OnShowHideJobs)
+		ON_NOTIFY(SPN_SIZED, IDC_SPLITTER, OnSplitter)
+	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_4CORNERS, &CStackingDlg::OnBnClicked4corners)
+	END_MESSAGE_MAP()
+
+	/* ------------------------------------------------------------------- */
+	/////////////////////////////////////////////////////////////////////////////
+	// CStackingDlg message handlers
+
+	BOOL CStackingDlg::OnInitDialog()
+	{
+		CDialog::OnInitDialog();
+
+		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+		m_ListInfo.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+		m_Picture.CreateFromStatic(&m_PictureStatic);
+
+		{
+			CRect				rc;
+
+			GetDlgItem(IDC_SPLITTER)->GetWindowRect(rc);
+			ScreenToClient(rc);
+			m_Splitter.Create(WS_CHILD | WS_VISIBLE, rc, this, IDC_SPLITTER);
+		};
+
+		// Add controls to the control cache - this is just a container for helping calcualte sizes and
+		// positions when resizing the dialog.
+		m_cCtrlCache.AddToCtrlCache(IDC_INFOS);
+		m_cCtrlCache.AddToCtrlCache(IDC_4CORNERS);
+		m_cCtrlCache.AddToCtrlCache(IDC_GAMMA);
+		m_cCtrlCache.AddToCtrlCache(IDC_PICTURE);
+		m_cCtrlCache.AddToCtrlCache(IDC_SPLITTER);
+		m_cCtrlCache.AddToCtrlCache(IDC_LISTINFO);
+		m_cCtrlCache.AddToCtrlCache(IDC_PICTURES);
+		m_cCtrlCache.AddToCtrlCache(IDC_GROUPTAB);
+
+		frameList.Initialize();
+		m_Picture.SetBltMode(CWndImage::bltFitXY);
+		m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
+		CString				strTooltip;
+
+		strTooltip.LoadString(IDS_TOOLTIP_SELECTRECT);
+		m_ButtonToolbar.AddCheck(IDC_EDIT_SELECT,	MBI(SELECT), IDB_BUTTONBASE_MASK, strTooltip);
+		strTooltip.LoadString(IDS_TOOLTIP_STAR);
+		m_ButtonToolbar.AddCheck(IDC_EDIT_STAR,	MBI(STAR), IDB_BUTTONBASE_MASK, strTooltip);
+		strTooltip.LoadString(IDS_TOOLTIP_COMET);
+		m_ButtonToolbar.AddCheck(IDC_EDIT_COMET,	MBI(COMET), IDB_BUTTONBASE_MASK, strTooltip);
+		strTooltip.LoadString(IDS_TOOLTIP_SAVE);
+		m_ButtonToolbar.AddButton(IDC_EDIT_SAVE,	MBI(SAVE), IDB_BUTTONBASE_MASK, strTooltip);
+
+		m_ButtonToolbar.Check(IDC_EDIT_SELECT);
+		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+
+		m_Picture.EnableZoom(TRUE);
+		m_Picture.SetButtonToolbar(&m_ButtonToolbar);
+		m_SelectRectSink.ShowDrizzleRectangles();
+		m_Picture.SetImageSink(&m_SelectRectSink);
+		m_ButtonToolbar.SetSink(this);
+
+		m_Gamma.SetBackgroundColor(GetSysColor(COLOR_3DFACE));
+		m_Gamma.ShowTooltips(FALSE);
+		m_Gamma.SetOrientation(CGradientCtrl::ForceHorizontal);
+		m_Gamma.SetPegSide(TRUE, FALSE);
+		m_Gamma.SetPegSide(FALSE, TRUE);
+		m_Gamma.GetGradient().SetStartPegColour(RGB(0, 0, 0));
+		m_Gamma.GetGradient().AddPeg(RGB(0, 0, 0), 0.0, 0);
+		m_Gamma.GetGradient().AddPeg(RGB(128, 128, 128), sqrt(0.5), 1);
+		m_Gamma.GetGradient().AddPeg(RGB(255, 255, 255), 1.0, 2);
+		m_Gamma.GetGradient().SetEndPegColour(RGB(255, 255, 255));
+		m_Gamma.GetGradient().SetBackgroundColour(RGB(255, 255, 255));
+		m_Gamma.GetGradient().SetInterpolationMethod(CGradient::Linear);
+
+
+		m_4Corners.SetBitmaps(IDB_4CORNERS, RGB(255,0, 255));
+		m_4Corners.SetFlat(TRUE);
+		//m_4Corners.DrawTransparent(TRUE);
+
+		QSettings			settings;
+		bool checkVersion = settings.value("InternetCheck", false).toBool();
+		if (checkVersion)
+			retrieveLatestVersionInfo();   // will update ui asynchronously
+
+
+		{
+			m_GroupTab.ModifyStyle(0, CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
+
+			UpdateGroupTabs();
+		};
+
+	/*
+		m_ShowHideJobs.SetLink(TRUE, TRUE);
+		m_ShowHideJobs.SetTransparent(TRUE);
+		m_ShowHideJobs.SetLinkCursor(LoadCursor(nullptr,MAKEINTRESOURCE(IDC_HAND)));
+		m_ShowHideJobs.SetFont3D(FALSE);
+		m_ShowHideJobs.SetTextColor(RGB(0, 0, 192));
+		m_ShowHideJobs.SetWindowText("Show/Hide Jobs");
+		{
+			m_JobTab.ModifyStyle(0, CTCS_RIGHT | CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
+			m_JobTab.InsertItem(0, "Main Job");
+			m_JobTab.InsertItem(1, "Red");
+			m_JobTab.InsertItem(2, "Green");
+			m_JobTab.InsertItem(3, "Blue");
+			m_JobTab.InsertItem(4, "Lum");
+		};*/
+
+		if (m_strStartingFileList.GetLength())
+			OpenFileList(m_strStartingFileList);
+
+
+		return TRUE;  // return TRUE unless you set the focus to a control
+					  // EXCEPTION: OCX Property Pages should return FALSE
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::UpdateLayout()
+	{
+		// No controls present, nothing to do!
+		if (GetDlgItem(IDC_PICTURE) == nullptr)
+			return;
+
+		// Update the cache so all the sizes and positions are correct.
+		m_cCtrlCache.UpdateCtrlCache();
+
+		CRect rcCurrentDlgSize;
+		GetClientRect(rcCurrentDlgSize);
+
+		// Cache the controls that we can scale to make things fit.
+		// Work out vertical space change.
+		int nCtrlHeightSum = 0;
+		const int nTopSpacing = min(m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y, (min(m_cCtrlCache.GetCtrlOffset(IDC_GAMMA).y, m_cCtrlCache.GetCtrlOffset(IDC_4CORNERS).y)));
+		nCtrlHeightSum += nTopSpacing;
+		nCtrlHeightSum += max(m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height(), (max(m_cCtrlCache.GetCtrlSize(IDC_GAMMA).Height(), m_cCtrlCache.GetCtrlSize(IDC_4CORNERS).Height())));
+
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y - nCtrlHeightSum;
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height();
+
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_SPLITTER).y - nCtrlHeightSum;
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height();
+
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y - nCtrlHeightSum;
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height();
+
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURES).y - nCtrlHeightSum;
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height();
+
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_GROUPTAB).y - nCtrlHeightSum;
+		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height();
+
+		nCtrlHeightSum += nTopSpacing;
+
+		// Preferentially scale the picture first, then the list afterwards (if possible)
+		int nDiffPictureY = rcCurrentDlgSize.Height() - nCtrlHeightSum;
+		int nDiffListY = 0;
+
+		// Handle if there isn't enough space to handle the picture resizing alone.
+		if (m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() + nDiffPictureY <= sm_nMinImageHeight)
+		{
+			int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() - sm_nMinImageHeight;
+			if (nMaxMovement <= 0)
+			{
+				nDiffListY = nDiffPictureY;
+				nDiffPictureY = 0;
+			}
+			else
+			{
+				nDiffListY = nDiffPictureY + nMaxMovement;
+				nDiffPictureY = -nMaxMovement;
+			}
+			// Handle if there isn't enough space to handle the list resizing as well.
+			if (m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() + nDiffListY <= sm_nMinListHeight)
+			{
+				int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() - sm_nMinListHeight;
+				if (nMaxMovement <= 0)
+					nDiffListY = 0;
+				else
+					nDiffListY = -nMaxMovement;
+			}
+		}
+
+		// Perform the resizing and moving of the controls.
+		if (nDiffPictureY != 0)
+		{
+			m_cCtrlCache.SizeCtrlVert(IDC_PICTURE, m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() + nDiffPictureY);
+			m_Splitter.ChangePos(&m_Splitter, 0, nDiffPictureY);
+			m_cCtrlCache.MoveCtrlVert(IDC_LISTINFO, nDiffPictureY);
+			m_cCtrlCache.MoveCtrlVert(IDC_PICTURES, nDiffPictureY);
+			m_cCtrlCache.MoveCtrlVert(IDC_GROUPTAB, nDiffPictureY);
+		}
+		if (nDiffListY != 0)
+		{
+			m_cCtrlCache.SizeCtrlVert(IDC_PICTURES, m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() + nDiffListY);
+			m_cCtrlCache.MoveCtrlVert(IDC_GROUPTAB, nDiffListY);
+		}
+
+		// Now look at the widths
+		int nCtrlWidthSum = m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).x + m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).x; // Assume same padding at either end.
+		int nDiffX = rcCurrentDlgSize.Width() - nCtrlWidthSum;
+		if (m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + nDiffX <= sm_nMinListWidth)
+		{
+			int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() - sm_nMinListWidth;
+			if (nMaxMovement <= 0)
+				nDiffX = 0;
+			else
+				nDiffX = -nMaxMovement;
+		}
+		if (nDiffX)
+		{
+			m_cCtrlCache.SizeCtrlHoriz(IDC_INFOS, m_cCtrlCache.GetCtrlSize(IDC_INFOS).Width() + nDiffX);
+			m_cCtrlCache.MoveCtrlHoriz(IDC_4CORNERS, nDiffX);
+			m_cCtrlCache.MoveCtrlHoriz(IDC_GAMMA, nDiffX);
+			m_cCtrlCache.SizeCtrlHoriz(IDC_PICTURE, m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + nDiffX);
+			m_Splitter.ChangeWidth(&m_Splitter, nDiffX);
+			m_cCtrlCache.SizeCtrlHoriz(IDC_LISTINFO, m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Width() + nDiffX);
+			m_cCtrlCache.SizeCtrlHoriz(IDC_PICTURES, m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Width() + nDiffX);
+			m_cCtrlCache.SizeCtrlHoriz(IDC_GROUPTAB, m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Width() + nDiffX);
+		}
+
+		// Because we've resized things, we need to update the max splitter range accordingly.
+		// This is not quite right - couple of pixels out - but not sure why.
+		int nMinY = m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y + sm_nMinImageHeight;
+		int nMaxY = std::max(nMinY + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height(), rcCurrentDlgSize.Height() - (sm_nMinListHeight + m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height() + m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height() + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height()));
+		m_Splitter.SetRange(nMinY, nMaxY);
+
+		// Update everything.
+		Invalidate();
+		UpdateWindow();
+		m_cCtrlCache.InvalidateCtrls();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::UpdateGroupTabs()
+	{
+		int dwLastGroupID = static_cast<int>(frameList.GetLastGroupID());
+		if (frameList.GetNrFrames(dwLastGroupID) != 0)
+			dwLastGroupID++;
+
+		const auto lCurrentGroup = std::max(0, m_GroupTab.GetCurSel());
+
+		m_GroupTab.DeleteAllItems();
+
+		CString				strGroup;
+
+		strGroup.LoadString(IDS_MAINGROUP);
+
+		m_GroupTab.InsertItem(0, strGroup);
+
+		strGroup.LoadString(IDS_GROUPIDMASK);
+
+		for (int i = 1; i <= dwLastGroupID; i++)
+		{
+			CString			strName;
+
+			strName.Format(strGroup, i);
+			m_GroupTab.InsertItem(i, strName);
+		};
+
+		if (lCurrentGroup > dwLastGroupID)
+		{
+			m_GroupTab.SetCurSel(0);
+			frameList.SetCurrentGroupID(0);
+		}
+		else
+			m_GroupTab.SetCurSel(lCurrentGroup);
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		if (pResult)
+			*pResult = 1;
+
+		PegNMHDR *			pPegNMHDR = (PegNMHDR*)pNMHDR;
+		double				fBlackPoint,
+							fGrayPoint,
+							fWhitePoint;
+
+		if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
+			(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
+		{
+			// Adjust
+			CGradient &			Gradient = m_Gamma.GetGradient();
+			fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
+			fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
+			fWhitePoint = Gradient.GetPeg(Gradient.IndexFromId(2)).position;
+			BOOL				bAdjust = FALSE;
+
+			switch (pPegNMHDR->peg.id)
+			{
+			case 0 :
+				// Black point moving
+				if (fBlackPoint>fWhitePoint-0.02)
+				{
+					fBlackPoint = fWhitePoint-0.02;
+					bAdjust = TRUE;
+				};
+				if (fBlackPoint>fGrayPoint-0.01)
+				{
+					fGrayPoint = fBlackPoint+0.01;
+					bAdjust = TRUE;
+				};
+				break;
+			case 1 :
+				// Gray point moving
+				if (fGrayPoint<fBlackPoint+0.01)
+				{
+					fGrayPoint = fBlackPoint+0.01;
+					bAdjust = TRUE;
+				};
+				if (fGrayPoint>fWhitePoint-0.01)
+				{
+					fGrayPoint = fWhitePoint-0.01;
+					bAdjust = TRUE;
+				};
+				break;
+			case 2 :
+				// White point moving
+				if (fWhitePoint<fBlackPoint+0.02)
+				{
+					fWhitePoint = fBlackPoint+0.02;
+					bAdjust = TRUE;
+				};
+				if (fWhitePoint < fGrayPoint+0.01)
+				{
+					fGrayPoint = fWhitePoint-0.01;
+					bAdjust = TRUE;
+				};
+				break;
+			};
+			if (bAdjust)
+			{
+				Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
+				Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
+				Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
+				m_Gamma.InvalidateRect(nullptr);
+			};
+		};
+
+		if (pPegNMHDR->nmhdr.code == GC_PEGMOVED)
+		{
+			// Adjust Gamma
+			m_GammaTransformation.InitTransformation(fBlackPoint*fBlackPoint, fGrayPoint*fGrayPoint, fWhitePoint*fWhitePoint);
+
+			if (m_LoadedImage.m_hBitmap)
+			{
+				ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
+				// Refresh
+				m_Picture.Invalidate(TRUE);
+			}
+		}
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
+	{
+		BOOL				bResult = FALSE;
+		__int64				ulFlatSpace = 0,
+							ulDarkSpace = 0,
+							ulOffsetSpace = 0;
+		__int64				ulNeededSpace = 0;
+
+		for (size_t i = 0; i < tasks.m_vStacks.size(); i++)
+		{
+			int			lWidth,
+							lHeight,
+							lNrChannels,
+							lNrBytesPerChannel;
+			__int64			ulSpace;
+
+			lWidth		= tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lWidth;
+			lHeight		= tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lHeight;
+			lNrChannels = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
+			lNrBytesPerChannel = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitPerChannels/8;
+
+			ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
+
+			if (tasks.m_vStacks[i].m_pOffsetTask)
+				ulOffsetSpace = max(ulOffsetSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
+
+			if (tasks.m_vStacks[i].m_pDarkTask)
+				ulDarkSpace = max(ulDarkSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
+
+			if (tasks.m_vStacks[i].m_pFlatTask)
+				ulFlatSpace = max(ulFlatSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
+		};
+
+		ulNeededSpace = max(ulFlatSpace, max(ulOffsetSpace, ulDarkSpace));
+		ulNeededSpace += ulNeededSpace / 10;
+
+		// Get available space from drive
+		TCHAR			szTempPath[1+_MAX_PATH];
+
+		szTempPath[0] = 0;
+		GetTempPath(sizeof(szTempPath)/sizeof(szTempPath[0]), szTempPath);
+
+		ULARGE_INTEGER			ulFreeSpace;
+		ULARGE_INTEGER			ulTotal;
+		ULARGE_INTEGER			ulTotalFree;
+
+		GetDiskFreeSpaceEx(szTempPath, &ulFreeSpace, &ulTotal, &ulTotalFree);
+
+		if (ulFreeSpace.QuadPart < ulNeededSpace)
+		{
+			ulFreeSpace.QuadPart /= 1024;
+			ulNeededSpace /= 1024;
+
+			int			lNeededSpace = static_cast<int>(ulNeededSpace);
+			auto			lFreeSpace = ulFreeSpace.LowPart;
+			CString			strDrive;
+
+			strDrive = szTempPath;
+			strDrive = strDrive.Left(2);
+
+			CString			strMessage;
+
+			strMessage.Format(IDS_ERROR_NOTENOUGHFREESPACE, lNeededSpace, lFreeSpace, strDrive);
+			if (AfxMessageBox(strMessage, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION)==IDYES)
+				bResult = TRUE;
+			else
+				bResult = FALSE;
+		}
+		else
+			bResult = TRUE;
+
+		return bResult;
+	};
+
+	/* ------------------------------------------------------------------- */
+
+
+
+	void CStackingDlg::DropFiles(HDROP hDropInfo)
+	{
+		CDropFilesDlg			dlg;
+
+		dlg.SetDropInfo(hDropInfo);
+		if (dlg.DoModal() == IDOK)
+		{
+			std::vector<CString>	vFiles;
+
+			BeginWaitCursor();
+			dlg.GetDroppedFiles(vFiles);
+
+			for (size_t i = 0; i < vFiles.size(); i++)
+				frameList.addFile(vFiles[i], frameList.groupID(), dlg.GetDropType(), true);
+
+			frameList.RefreshList();
+			UpdateGroupTabs();
+			updateListInfo();
 			EndWaitCursor();
 		};
 	};
-};
 
-/* ------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------- */
 
 
-/* ------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------- */
 
-void CStackingDlg::OnBnClicked4corners()
-{
-	m_Picture.Set4CornersMode(!m_Picture.Get4CornersMode());
+	void CStackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		// Here check if the new image is dirty
+		if (m_EditStarSink.IsDirty())
+			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, TRUE);
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	CWndImageSink *	CStackingDlg::GetCurrentSink()
+	{
+		if (m_ButtonToolbar.IsChecked(IDC_EDIT_STAR))
+			return &m_EditStarSink;
+		else if (m_ButtonToolbar.IsChecked(IDC_EDIT_COMET))
+			return &m_EditStarSink;
+		else if (m_ButtonToolbar.IsChecked(IDC_EDIT_SELECT))
+			return &m_SelectRectSink;
+
+		return nullptr;
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::CheckAskRegister()
+	{
+		// Check that the current light frame is registered (or not)
+		// and ask accordingly
+		CLightFrameInfo			lfi;
+
+		lfi.SetBitmap(m_strShowFile, FALSE, FALSE);
+		if (!lfi.IsRegistered())
+		{
+			CAskRegistering		dlg;
+
+			if (dlg.DoModal()==IDOK)
+			{
+				if (dlg.GetAction()==ARA_ONE)
+				{
+					// Register only this light frame
+					frameList.CheckAllLights(FALSE);
+					frameList.CheckImage(m_strShowFile, TRUE);
+					RegisterCheckedImage();
+				}
+				else if (dlg.GetAction()==ARA_ALL)
+				{
+					// Register all the checked light frames
+					frameList.CheckImage(m_strShowFile, TRUE);
+					RegisterCheckedImage();
+				};
+			};
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar)
+	{
+		switch (dwID)
+		{
+		case IDC_EDIT_COMET :
+			if (pButtonToolbar->IsChecked(dwID))
+			{
+				CheckAskRegister();
+				pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
+				pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
+				m_EditStarSink.SetCometMode(TRUE);
+				m_Picture.SetImageSink(&m_EditStarSink);
+			};
+			break;
+		case IDC_EDIT_STAR :
+			if (pButtonToolbar->IsChecked(dwID))
+			{
+				CheckAskRegister();
+				pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
+				pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
+				m_EditStarSink.SetCometMode(FALSE);
+				m_Picture.SetImageSink(&m_EditStarSink);
+			};
+			break;
+		case IDC_EDIT_SELECT :
+			if (pButtonToolbar->IsChecked(dwID))
+			{
+				pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
+				pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
+				m_Picture.SetImageSink(&m_SelectRectSink);
+			};
+			break;
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar)
+	{
+		if (dwID == IDC_EDIT_SAVE)
+		{
+			m_EditStarSink.SaveRegisterSettings();
+			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+			// Update the list with the new info
+			frameList.UpdateItemScores(m_strShowFile);
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	/* ------------------------------------------------------------------- */
+
+
+
+	/* ------------------------------------------------------------------- */
+
+	LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
+	{
+		std::shared_ptr<CMemoryBitmap> pBitmap;
+		std::shared_ptr<C32BitsBitmap> phBitmap;
+
+		if (m_strShowFile.GetLength() && m_BackgroundLoading.LoadImage(m_strShowFile, pBitmap, phBitmap))
+		{
+			m_LoadedImage.m_hBitmap = phBitmap;
+			m_LoadedImage.m_pBitmap = pBitmap;
+			if (m_GammaTransformation.IsInitialized())
+				ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
+			m_Picture.SetImg(phBitmap->GetHBITMAP(), true);
+
+			if (frameList.IsLightFrame(m_strShowFile))
+			{
+				m_Picture.SetButtonToolbar(&m_ButtonToolbar);
+				m_EditStarSink.SetLightFrame(m_strShowFile);
+				m_EditStarSink.SetBitmap(pBitmap);
+				m_Picture.SetImageSink(GetCurrentSink());
+			}
+			else
+			{
+				m_Picture.SetImageSink(nullptr);
+				m_Picture.SetButtonToolbar(nullptr);
+				m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+			};
+			m_Picture.SetBltMode(CWndImage::bltFitXY);
+			m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
+
+			CBilinearParameters		Transformation;
+			VOTINGPAIRVECTOR		vVotedPairs;
+
+			if (frameList.GetTransformation(m_strShowFile, Transformation, vVotedPairs))
+				m_EditStarSink.SetTransformation(Transformation, vVotedPairs);
+			m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+			m_Infos.SetText(m_strShowFile);
+		}
+		else if (m_strShowFile.GetLength())
+		{
+			CString				strText;
+
+			strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strShowFile);
+			m_Infos.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
+			m_Infos.SetText(strText);
+			m_Picture.SetImageSink(nullptr);
+			m_Picture.SetButtonToolbar(nullptr);
+			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+		}
+		else
+		{
+			m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
+			m_Infos.SetText("");
+			m_Picture.SetImageSink(nullptr);
+			m_Picture.SetButtonToolbar(nullptr);
+			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+		}
+		return 1;
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		CString				strFileName;
+
+		updateListInfo();
+		if (frameList.GetSelectedFileName(strFileName))
+		{
+			if (strFileName.CompareNoCase(m_strShowFile))
+			{
+				if (checkEditChanges())
+				{
+					BeginWaitCursor();
+					m_Infos.SetTextColor(RGB(0, 0, 0));
+					m_Infos.SetText(strFileName);
+					m_Infos.SetLink(FALSE, FALSE);
+					m_strShowFile = strFileName;
+					OnBackgroundImageLoaded(0, 0);
+				};
+			};
+		}
+		else
+		{
+			m_Infos.SetTextColor(RGB(0, 0, 0));
+			m_Infos.SetLink(FALSE, FALSE);
+			m_Infos.SetText("");
+		};
+
+		*pResult = 0;
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::ReloadCurrentImage()
+	{
+		if (m_strShowFile.GetLength())
+		{
+			BeginWaitCursor();
+			imageLoader.clearCache();
+			OnBackgroundImageLoaded(0, 0);
+			EndWaitCursor();
+		};
+
+		frameList.Invalidate(FALSE);
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnSelChangeGroup(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		frameList.SetCurrentGroupID(m_GroupTab.GetCurSel());
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnSelChangeJob(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		//frameList.SetCurrentGroupID(m_GroupTab.GetCurSel());
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnShowHideJobs( NMHDR * pNotifyStruct, LRESULT * result )
+	{
+		//
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	LRESULT CStackingDlg::OnCheckItem(WPARAM, LPARAM)
+	{
+		updateListInfo();
+
+		return 0;
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	LRESULT CStackingDlg::OnSelectItem(WPARAM, LPARAM)
+	{
+		LRESULT				lResult;
+
+		OnClickPictures(nullptr, &lResult);
+
+		return 0;
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnSize(UINT nType, int cx, int cy)
+	{
+		CDialog::OnSize(nType, cx, cy);
+		if (!(cx == 0 && cy == 0))
+			UpdateLayout();
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnSplitter(NMHDR* pNMHDR, LRESULT* pResult)
+	{
+		SPC_NMHDR* pHdr = reinterpret_cast<SPC_NMHDR*>(pNMHDR);
+
+		CSplitterControl::ChangeHeight(&m_Picture, pHdr->delta);
+		CSplitterControl::ChangeHeight(&frameList, -pHdr->delta, CW_BOTTOMALIGN);
+		CSplitterControl::ChangePos(&m_ListInfo, 0, pHdr->delta);
+		Invalidate();
+		UpdateWindow();
+		m_Picture.Invalidate();
+		frameList.Invalidate();
+		m_ListInfo.Invalidate();
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::UncheckNonStackablePictures()
+	{
+		frameList.UnCheckNonStackable();
+	};
+
+
+	/* ------------------------------------------------------------------- */
+
+
+	/* ------------------------------------------------------------------- */
+
+	/* ------------------------------------------------------------------- */
+
+	/* ------------------------------------------------------------------- */
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::CheckAbove()
+	{
+		if (checkEditChanges())
+		{
+			CCheckAbove		dlg;
+			double			fThreshold;
+
+			if (dlg.DoModal() == IDOK)
+			{
+				fThreshold = dlg.GetThreshold();
+				if (dlg.IsPercent())
+					frameList.CheckBest(fThreshold);
+				else
+					frameList.CheckAbove(fThreshold);
+			};
+			updateListInfo();
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::CheckAll()
+	{
+		frameList.CheckAll(TRUE);
+		frameList.CheckAllDarks(TRUE);
+		updateListInfo();
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::UncheckAll()
+	{
+		frameList.CheckAll(FALSE);
+		frameList.CheckAllDarks(FALSE);
+		updateListInfo();
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::ClearList()
+	{
+		if (CheckEditChanges() && checkWorkspaceChanges())
+		{
+			frameList.Clear();
+			m_Picture.SetImg((CBitmap*)nullptr);
+			m_Picture.SetImageSink(nullptr);
+			m_Picture.SetButtonToolbar(nullptr);
+			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
+			m_strShowFile.Empty();
+			m_Infos.SetText(m_strShowFile);
+			m_BackgroundLoading.ClearList();
+			m_LoadedImage.Clear();
+			UpdateGroupTabs();
+			updateListInfo();
+			m_strCurrentFileList.Empty();
+			SetCurrentFileInTitle(m_strCurrentFileList);
+		};
+	};
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::CheckBests(double fPercent)
+	{
+		if (checkEditChanges())
+			frameList.CheckBest(fPercent);
+	};
+
+	/* ------------------------------------------------------------------- */
+
+
+
+	/* ------------------------------------------------------------------- */
+
+	void CStackingDlg::OnBnClicked4corners()
+	{
+		m_Picture.Set4CornersMode(!m_Picture.Get4CornersMode());
+	}
+
+	/* ------------------------------------------------------------------- */
+
+	#endif
 }
-
-/* ------------------------------------------------------------------- */
-
-#endif

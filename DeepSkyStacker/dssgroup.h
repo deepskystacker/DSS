@@ -88,7 +88,7 @@ namespace DSS
 		inline QString name() const noexcept { return Name; };
 		inline Group& setName(QString const& name) noexcept { Name = name; return *this; };
 		inline bool dirty() const noexcept { return Dirty; };
-		inline Group& setDirty(bool value) noexcept { Dirty = value; return *this; };
+		inline Group& setDirty(bool value=true) noexcept { Dirty = value; return *this; };
 
 		uint index() const noexcept { return Index; };
 

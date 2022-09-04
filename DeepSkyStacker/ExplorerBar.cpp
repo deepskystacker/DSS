@@ -222,7 +222,7 @@ void ExplorerBar::onRegisterChecked()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().eegisterCheckedImages();
+		pDlg->GetStackingDlg().registerCheckedImages();
 	};
 }
 void ExplorerBar::onComputeOffsets()
@@ -231,7 +231,7 @@ void ExplorerBar::onComputeOffsets()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().ComputeOffsets();
+		pDlg->GetStackingDlg().computeOffsets();
 	};
 }
 void ExplorerBar::onStackChecked()
@@ -249,7 +249,7 @@ void ExplorerBar::onBatchStacking()
 
 	if (pDlg)
 	{
-		pDlg->GetStackingDlg().BatchStack();
+		pDlg->GetStackingDlg().batchStack();
 	};
 }
 
@@ -369,7 +369,7 @@ void ExplorerBar::onLoadSettings()
 			fs::path fileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdU16String());
 			fileName /= "DSSLive.settings";		// Append the filename with a path separator
 			ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string());
-			workspace.ReadFromFile(fileName);
+			workspace.ReadFromFile(fileName.generic_wstring().c_str());
 			workspace.saveSettings();
 		}
 		else if (a == loadAnother)
@@ -379,13 +379,13 @@ void ExplorerBar::onLoadSettings()
 		}
 		else
 		{
-			ZTRACE_RUNTIME("Loading settings file: %s", a->text.toLocal8Bit());
+			ZTRACE_RUNTIME("Loading settings file: %s", a->text().toLocal8Bit());
 			//
 			// One of the paths in the mruPath must have been selected
 			// In which case the action's text string is the fully qualified name of the file to load
 			//
 			fs::path fileName(a->text().toStdU16String());
-			workspace.ReadFromFile(fileName);
+			workspace.ReadFromFile(fileName.generic_wstring().c_str());
 			workspace.saveSettings();
 			mruPath.Add(fileName);
 			mruPath.saveSettings();
@@ -424,7 +424,7 @@ void ExplorerBar::onSaveSettings()
 			fs::path fileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdU16String());
 			fileName /= "DSSLive.settings";		// Append the filename with a path separator
 			ZTRACE_RUNTIME("Saving DSSLive settings to: %s", fileName.generic_string());
-			workspace.SaveToFile(fileName);
+			workspace.SaveToFile(fileName.generic_wstring().c_str());
 		}
 		else if (a == saveAnother)
 		{
@@ -433,13 +433,13 @@ void ExplorerBar::onSaveSettings()
 		}
 		else
 		{
-			ZTRACE_RUNTIME("Saving settings to file: %s", a->text.toLocal8Bit());
+			ZTRACE_RUNTIME("Saving settings to file: %s", a->text().toLocal8Bit());
 			//
 			// One of the paths in the mruPath must have been selected
 			// In which case the action's text string is the fully qualified name of the file to load
 			//
 			fs::path fileName(a->text().toStdU16String());
-			workspace.SaveToFile(fileName);
+			workspace.SaveToFile(fileName.generic_wstring().c_str());
 			mruPath.Add(fileName);
 			mruPath.saveSettings();
 		}
@@ -505,7 +505,7 @@ void ExplorerBar::LoadSettingFile()
 				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string());
 				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-				workspace.ReadFromFile(fileName);
+				workspace.ReadFromFile(fileName.generic_wstring().c_str());
 				workspace.saveSettings();
 				mruPath.Add(fileName);
 				mruPath.saveSettings();
@@ -548,7 +548,7 @@ void ExplorerBar::SaveSettingFile()
 				ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string());
 				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-				workspace.SaveToFile(fileName);
+				workspace.SaveToFile(fileName.generic_wstring().c_str());
 				mruPath.Add(fileName);
 				mruPath.saveSettings();
 				fileSaved = true;

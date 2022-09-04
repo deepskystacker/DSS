@@ -67,3 +67,4 @@ extern bool		g_bShowRefStars;
 
 #include "BitmapExt.h"
 #include "DeepStackerDlg.h"
+#include "dssgroup.h"

@@ -68,7 +68,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 
 	// First load the input bitmap
 	std::shared_ptr<CMemoryBitmap> pBitmap;
-	if (::LoadFrame(lfi.m_strFileName,PICTURETYPE_LIGHTFRAME, pProgress, pBitmap))
+	if (::LoadFrame(lfi.filePath.c_str(),PICTURETYPE_LIGHTFRAME, pProgress, pBitmap))
 	{
 		CString strText;
 		pBitmap->RemoveHotPixels(pProgress);
@@ -105,9 +105,9 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 
 		strDescription = lfi.m_strInfos;
 		if (lfi.m_lNrChannels==3)
-			strText.Format(IDS_STACKRGBLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.m_strFileName);
+			strText.Format(IDS_STACKRGBLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.filePath.c_str());
 		else
-			strText.Format(IDS_STACKGRAYLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.m_strFileName);
+			strText.Format(IDS_STACKGRAYLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.filePath.c_str());
 
 		if (pProgress != nullptr)
 			pProgress->Start2(strText, lHeight);

@@ -282,25 +282,24 @@ int	CPictureListCtrl::CompareItems(int lItem1, int lItem2)
 		case 0 :
 			break;
 		case COLUMN_PATH :
-			lResult = m_vFiles[lItem1].m_strPath.CompareNoCase(m_vFiles[lItem2].m_strPath);
+			lResult = m_vFiles[lItem1].m_strPath.compare(m_vFiles[lItem2].m_strPath, Qt::CaseInsensitive);
 			break;
 		case COLUMN_FILE :
-			lResult = m_vFiles[lItem1].m_strFileName.CompareNoCase(m_vFiles[lItem2].m_strFileName);
+			lResult = m_vFiles[lItem1].filePath.compare(m_vFiles[lItem2].filePath);
 			break;
 		case COLUMN_FTYPE :
-			lResult = m_vFiles[lItem1].m_strType.CompareNoCase(m_vFiles[lItem2].m_strType);
+			lResult = m_vFiles[lItem1].m_strType.compare(m_vFiles[lItem2].m_strType, Qt::CaseInsensitive);
 			break;
 		case COLUMN_FILTER :
-			lResult = m_vFiles[lItem1].m_filterName.CompareNoCase(m_vFiles[lItem2].m_filterName);
+			lResult = m_vFiles[lItem1].m_filterName.compare(m_vFiles[lItem2].m_filterName, Qt::CaseInsensitive);
 			break;
 		case COLUMN_INFO :
 			lResult = m_vFiles[lItem1].m_strInfos.CompareNoCase(m_vFiles[lItem2].m_strInfos);
-			break;
 		case COLUMN_DEPTH :
-			lResult = m_vFiles[lItem1].m_strDepth.CompareNoCase(m_vFiles[lItem2].m_strDepth);
+			lResult = m_vFiles[lItem1].m_strDepth.compare(m_vFiles[lItem2].m_strDepth, Qt::CaseInsensitive);
 			break;
 		case COLUMN_SIZES :
-			lResult = m_vFiles[lItem1].m_strSizes.CompareNoCase(m_vFiles[lItem2].m_strSizes);
+			lResult = m_vFiles[lItem1].m_strSizes.compare(m_vFiles[lItem2].m_strSizes, Qt::CaseInsensitive);
 			break;
 		case COLUMN_CFA :
 			if (m_vFiles[lItem1].GetCFAType() < m_vFiles[lItem2].GetCFAType())
@@ -475,10 +474,10 @@ void CPictureListCtrl::RefreshList()
 		nItem = GetNextSelectedItem(pos);
 		const auto lIndice = m_vVisibles[nItem];
 
-		vSelected.push_back(m_vFiles[lIndice].m_strFileName);
+		vSelected.push_back(m_vFiles[lIndice].filePath.c_str());
 
 		if (!strFocus.GetLength())
-			strFocus = m_vFiles[lIndice].m_strFileName;
+			strFocus = m_vFiles[lIndice].filePath.c_str();
 	};
 
 	// Retrieve the item having the focus
@@ -486,7 +485,7 @@ void CPictureListCtrl::RefreshList()
 	{
 		if (GetItemState(i, LVIF_STATE) & LVIS_FOCUSED)
 		{
-			strFocus = m_vFiles[m_vVisibles[i]].m_strFileName;
+			strFocus = m_vFiles[m_vVisibles[i]].filePath.c_str();
 			bFound = true;
 		};
 	};
@@ -522,12 +521,12 @@ void CPictureListCtrl::RefreshList()
 
 		for (size_t j = 0; j < vSelected.size() && !bFound; j++)
 		{
-			if (m_vFiles[lIndice].m_strFileName == vSelected[j])
+			if (m_vFiles[lIndice].filePath.c_str() == vSelected[j])
 				bFound = true;
 		};
 
 		SetItemState(i, bFound ? LVIS_SELECTED : 0, LVIS_SELECTED);
-		if (m_vFiles[lIndice].m_strFileName == strFocus)
+		if (m_vFiles[lIndice].filePath.c_str() == strFocus)
 		{
 			lMustBeVisible = i;
 			SetItemState(i, LVIS_FOCUSED, LVIS_FOCUSED);
@@ -549,6 +548,7 @@ void CPictureListCtrl::RefreshList()
 void CPictureListCtrl::AddFileToList(LPCTSTR szFile, uint16_t groupId, PICTURETYPE PictureType, bool bCheck, int nItem)
 {
 	ZFUNCTRACE_RUNTIME();
+#if (0)
 	CString				strFile = szFile;
 	TCHAR				szDrive[1+_MAX_DRIVE];
 	TCHAR				szDir[1+_MAX_DIR];
@@ -561,7 +561,7 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, uint16_t groupId, PICTURETY
 	// First check that the file is not already in the list
 	for (size_t i = 0; i < m_vFiles.size() && !bFound; i++)
 	{
-		if (!m_vFiles[i].m_bRemoved && strFile.CompareNoCase(m_vFiles[i].m_strFileName) == 0)
+		if (!m_vFiles[i].m_bRemoved && strFile.CompareNoCase(m_vFiles[i].filePath.c_str()) == 0)
 		{
 			bFound = true;
 			lIndice = i;
@@ -704,6 +704,7 @@ void CPictureListCtrl::AddFileToList(LPCTSTR szFile, uint16_t groupId, PICTURETY
 	};
 
 	m_bDirty = true;
+#endif
 };
 
 /* ------------------------------------------------------------------- */
@@ -714,7 +715,7 @@ void CPictureListCtrl::ChangePictureType(int nItem, PICTURETYPE PictureType)
 	CString			strFileName;
 
 	lIndice = m_vVisibles[nItem];
-	strFileName = m_vFiles[lIndice].m_strFileName;
+	strFileName = m_vFiles[lIndice].filePath.c_str();
 
 	AddFileToList(strFileName, currentGroupId, PictureType, false, nItem);
 };
@@ -849,16 +850,16 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 		switch (pItem->iSubItem)
 		{
 		case COLUMN_PATH :
-			strValue = file.m_strPath;
+			strValue = file.m_strPath.toStdWString().c_str();
 			break;
 		case COLUMN_FILE :
-			strValue = file.m_strFile;
+			strValue = file.m_strFile.toStdWString().c_str();
 			break;
 		case COLUMN_FTYPE :
-			strValue = file.m_strType;
+			strValue = file.m_strType.toStdWString().c_str();
 			break;
 		case COLUMN_FILTER :
-			strValue = file.m_filterName;
+			strValue = file.m_filterName.toStdWString().c_str();
 			break;
 		case COLUMN_SCORE :
 			if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
@@ -951,13 +952,13 @@ void CPictureListCtrl::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 			strValue = file.m_strDateTime;
 			break;
 		case COLUMN_SIZES :
-			strValue = file.m_strSizes;
+			strValue = file.m_strSizes.toStdWString().c_str();
 			break;
 		case COLUMN_CFA	:
 			strValue.LoadString((file.GetCFAType() != CFATYPE_NONE) ? IDS_YES : IDS_NO);
 			break;
 		case COLUMN_DEPTH :
-			strValue = file.m_strDepth;
+			strValue = file.m_strDepth.toStdWString().c_str();
 			break;
 		case COLUMN_INFO :
 			strValue = file.m_strInfos;
@@ -1043,7 +1044,7 @@ bool CPictureListCtrl::GetTransformation(LPCTSTR szFile, CBilinearParameters& Tr
 	for (size_t i = 0; i < m_vFiles.size() && !bResult; i++)
 	{
 		const auto& file = m_vFiles[i];
-		if (!file.m_bRemoved && file.IsLightFrame() && file.m_strFileName.CompareNoCase(szFile) == 0)
+		if (!file.m_bRemoved && file.IsLightFrame() && file.filePath.compare(szFile) == 0)
 		{
 			Transformation = file.m_Transformation;
 			vVotedPairs = file.m_vVotedPairs;
@@ -1295,7 +1296,7 @@ bool CPictureListCtrl::GetSelectedFileName(CString & strFileName)
 		if (POSITION pos = GetFirstSelectedItemPosition())
 		{
 			const auto nItem = GetNextSelectedItem(pos);
-			strFileName = m_vFiles[m_vVisibles[nItem]].m_strFileName;
+			strFileName = m_vFiles[m_vVisibles[nItem]].filePath.c_str();
 
 			bResult = true;
 		};
@@ -1321,7 +1322,7 @@ bool CPictureListCtrl::GetItemISOSpeedGainAndExposure(int nItem, int& lISOSpeed,
 
 bool CPictureListCtrl::GetItemFileName(int nItem, CString& strFileName)
 {
-	strFileName = m_vFiles[m_vVisibles[nItem]].m_strFileName;
+	strFileName = m_vFiles[m_vVisibles[nItem]].filePath.c_str();
 	return true;
 };
 
@@ -1335,7 +1336,7 @@ bool CPictureListCtrl::GetFirstCheckedLightFrame(CString& strFileName)
 		const auto& file = m_vFiles[i];
 		if (!file.m_bRemoved && file.IsLightFrame() && file.m_bChecked == Qt::Checked)
 		{
-			strFileName = file.m_strFileName;
+			strFileName = file.filePath.c_str();
 			bResult = true;
 		};
 	};
@@ -1364,7 +1365,7 @@ int	CPictureListCtrl::FindIndice(LPCTSTR szFileName)
 
 	for (int i = 0; i < m_vFiles.size() && nResult == -1; i++)
 	{
-		if (!m_vFiles[i].m_bRemoved && !strFileName.CompareNoCase(m_vFiles[i].m_strFileName))
+		if (!m_vFiles[i].m_bRemoved && !strFileName.CompareNoCase(m_vFiles[i].filePath.c_str()))
 			nResult = i;
 	};
 
@@ -1548,7 +1549,7 @@ void CPictureListCtrl::UpdateItemScores(LPCTSTR szFileName)
 		if (!m_vFiles[lIndice].m_bRemoved && m_vFiles[lIndice].IsLightFrame())
 		{
 			CLightFrameInfo bmpInfo;
-			bmpInfo.SetBitmap(m_vFiles[lIndice].m_strFileName, false, false);
+			bmpInfo.SetBitmap(m_vFiles[lIndice].filePath.c_str(), false, false);
 
 			// Update list info
 			if (bmpInfo.m_bInfoOk)
@@ -1581,7 +1582,7 @@ void CPictureListCtrl::updateCheckedItemScores()
 			file.IsLightFrame())
 		{
 			CLightFrameInfo bmpInfo;
-			bmpInfo.SetBitmap(file.m_strFileName, false, false);
+			bmpInfo.SetBitmap(file.filePath.c_str(), false, false);
 
 			// Update list info
 			if (bmpInfo.m_bInfoOk)

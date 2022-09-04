@@ -178,7 +178,7 @@ private :
 	QSplitter*		splitter;
 	ExplorerBar*	explorerBar;
 	QStackedWidget* stackedWidget;
-	StackingDlg*	stackingDlg;
+	DSS::StackingDlg*	stackingDlg;
 
 	CProcessingDlg	m_dlgProcessing;
 	//CLibraryDlg				m_dlgLibrary;
@@ -251,7 +251,7 @@ public:
 		return m_Settings;
 	};
 
-	StackingDlg & GetStackingDlg()
+	DSS::StackingDlg & GetStackingDlg()
 	{
 		return *stackingDlg;
 	};
@@ -348,7 +348,7 @@ inline CDSSSettings & GetDSSSettings(CWnd * pDialog)
 
 /* ------------------------------------------------------------------- */
 
-inline StackingDlg & GetStackingDlg(CWnd * pDialog)
+inline DSS::StackingDlg & GetStackingDlg(CWnd * pDialog)
 {
 	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(pDialog);
 

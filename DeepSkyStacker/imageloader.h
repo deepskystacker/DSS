@@ -5,7 +5,7 @@
 #include <QRunnable> 
 #include <qstring.h>
 
-class CMemoryBitMap;
+class CMemoryBitmap;
 class C32BitsBitmap;
 
 class LoadedImage

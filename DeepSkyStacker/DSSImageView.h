@@ -60,7 +60,7 @@ typedef QWidget
         Inherited;
 public:
     DSSImageView(QWidget* parent = Q_NULLPTR);
-    QSize sizeHint() const noexcept override { return QSize(500, 500); };
+    QSize sizeHint() const noexcept override { return QSize(900, 600); };
     inline void setToolBar(QToolBar* p) noexcept { m_pToolBar = p; };
     inline qreal scale() { return m_scale; }
     inline qreal zoom() { return m_zoom; }

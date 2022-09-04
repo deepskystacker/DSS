@@ -379,7 +379,6 @@ static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR & vRecommendations
 	RecommendationItem			ri;
 	Recommendation				rec;
 	Workspace					workspace;
-	DWORD						dwThreshold;
 
 	if (Workspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
 	{
@@ -438,7 +437,6 @@ static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, int lNrL
 	RecommendationItem			ri;
 	Recommendation				rec;
 	Workspace					workspace;
-	DWORD						dwCometMode;
 
 	const auto dwCometMode = workspace.value("Stacking/CometStackingMode").toUInt();
 

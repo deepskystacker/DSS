@@ -8,7 +8,7 @@
 
 /* ------------------------------------------------------------------- */
 
-bool	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
+bool	CFrameInfo::InitFromFile(const fs::path& file, PICTURETYPE Type)
 {
 	bool				bResult = false;
 
@@ -16,7 +16,7 @@ bool	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 		m_PictureType  = PICTURETYPE_LIGHTFRAME;
 	else
 		m_PictureType  = Type;
-	m_strFileName  = szFile;
+	filePath = file;
 
 	/*
 	FILETIME		FileTime;
@@ -37,7 +37,7 @@ bool	CFrameInfo::InitFromFile(LPCTSTR szFile, PICTURETYPE Type)
 
 	CBitmapInfo			bmpInfo;
 
-	bResult = GetPictureInfo(szFile ,bmpInfo);
+	bResult = GetPictureInfo(file.c_str() ,bmpInfo);
 
 	if (bResult)
 	{

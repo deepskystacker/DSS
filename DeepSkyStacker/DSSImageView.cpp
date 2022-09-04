@@ -102,7 +102,7 @@ void DSSImageView::resizeEvent(QResizeEvent* e)
     {
         const QSize sz = e->size();
         emit Image_resizeEvent(e);
-        m_drawingPixmap = QPixmap(size());
+        m_drawingPixmap = QPixmap(sz);
         const qreal pixWidth = pPixmap->width();
         const qreal pixHeight = pPixmap->height();
         const qreal hScale = static_cast<qreal>(sz.width()) / pixWidth;
@@ -198,7 +198,7 @@ void DSSImageView::paintEvent([[maybe_unused]] QPaintEvent* event)
     painter.drawPixmap(0, 0, m_drawingPixmap);
 
     //
-    // If there's actaully an amage to display and we're not if "Four Corners" mode
+    // If there's actaully an image to display and we're not in "Four Corners" mode
     // we can show the magnifying glass view
     //
     if (nullptr != pPixmap && !m_fourCorners && m_enableZoomImage)

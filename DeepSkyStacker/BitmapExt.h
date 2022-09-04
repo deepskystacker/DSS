@@ -544,7 +544,7 @@ public:
 	CBitmapExtraInfo	m_ExtraInfo;
 	int				m_xBayerOffset;
 	int				m_yBayerOffset;
-	CString				m_filterName;
+	QString				m_filterName;
 
 private:
 	void	CopyFrom(const CBitmapInfo & bi)
