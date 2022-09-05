@@ -146,6 +146,7 @@ namespace DSS
 
 	void StackingDlg::onInitDialog()
 	{
+		ZFUNCTRACE_RUNTIME();
 		editStarsPtr = std::make_unique<EditStars>(ui->picture);
 		selectRectPtr = std::make_unique<SelectRect>(ui->picture);
 		pToolBar = std::make_unique<ToolBar>(this, editStarsPtr.get(), selectRectPtr.get());
