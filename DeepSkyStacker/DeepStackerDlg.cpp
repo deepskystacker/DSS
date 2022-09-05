@@ -271,29 +271,38 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	ZTRACE_RUNTIME("Initializing Main Dialog - ok");
 
 	widget = new QWinWidget(this);
-	widget->showCentered();
-
-	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
-	explorerBar = new ExplorerBar(widget);
-	ZTRACE_RUNTIME("Creating Explorer bar - ok");
-
-	ZTRACE_RUNTIME("Creating Stacking Panel");
-	stackingDlg = new DSS::StackingDlg(widget);
-	ZTRACE_RUNTIME("Creating Stacking Panel - ok");
-
-	ZTRACE_RUNTIME("Creating stackedWidget");
-	stackedWidget = new QStackedWidget(widget);
-
-	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
-	stackedWidget->addWidget(stackingDlg);
-
+	QVBoxLayout* verticalLayout { new QVBoxLayout(widget) };
+	verticalLayout->setObjectName("verticalLayout");
 	ZTRACE_RUNTIME("Creating Horizontal Splitter");
 	splitter = new QSplitter(Qt::Horizontal, widget);
+	splitter->setObjectName("splitter");
+
+	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
+	explorerBar = new ExplorerBar(splitter);
+	
+	explorerBar->setObjectName("explorerBar");
 	splitter->addWidget(explorerBar);
+
+	ZTRACE_RUNTIME("Creating stackedWidget");
+	stackedWidget = new QStackedWidget(splitter);
+	stackedWidget->setObjectName("stackedWidget");
+
+	ZTRACE_RUNTIME("Creating Stacking Panel");
+	stackingDlg = new DSS::StackingDlg(stackedWidget);
+	
+	stackingDlg->setObjectName("stackingDlg");
+	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget"); 
+	stackedWidget->addWidget(stackingDlg);
+	stackedWidget->setCurrentWidget(stackingDlg);
 	splitter->addWidget(stackedWidget);
+
 	splitter->setStretchFactor(1, 1);		// Want Stacking part to take any spare space.
-	stackedWidget->show();
-	splitter->show();
+
+	verticalLayout->addWidget(splitter);
+
+	//stackedWidget->show();
+	//splitter->show();
+	widget->showCentered();
 
 	CString			strMask;
 	CString			strTitle;
