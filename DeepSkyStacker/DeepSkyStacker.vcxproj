@@ -26,6 +26,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>
     </PreferredToolArchitecture>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
