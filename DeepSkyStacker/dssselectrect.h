@@ -35,7 +35,6 @@
 **
 ****************************************************************************/
 class QMouseEvent;
-class DSSImageView;
 
 #include <QObject>
 #include <QWidget>
@@ -46,6 +45,8 @@ enum class SelectionMode : quint8;
 
 namespace DSS
 {
+    class ImageView;
+
     class SelectRect :
         public QWidget
     {
@@ -80,7 +81,7 @@ namespace DSS
 
     private:
         SelectionMode mode;
-        DSSImageView* imageView;
+        ImageView* imageView;
         QRectF  selectRect;             // In image coordinates
         QRectF  startRect;              // In image coordinates
         bool    selecting;

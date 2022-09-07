@@ -17,7 +17,7 @@ namespace fs = std::filesystem;
 class CFrameInfo
 {
 public :
-	fs::path filePath;  // m_strFileName;
+	fs::path filePath; 
 	int				m_lWidth,
 						m_lHeight;
 	int				m_lISOSpeed;

@@ -241,7 +241,7 @@ public:
 	}
 	virtual ~CMemoryBitmap()
 	{
-		ZTRACE_RUNTIME("Destroying memory bitmap %p", this);
+		// ZTRACE_RUNTIME("Destroying memory bitmap %p", this);
 	};
 
 	virtual double	GetExposure()

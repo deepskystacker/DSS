@@ -78,6 +78,38 @@ namespace DSS
     //
     // Initial code based on https://meetingcpp.com/blog/items/an-introduction-into-qt-part-3.html
     //
+
+    ImageListModel::ImageListModel(QObject* parent) :
+    QAbstractTableModel(parent)
+    {
+        //
+        // Populate the Icon array if it's not already been done
+        //
+        if (0 == ImageListModel::icons.size())
+        {
+            std::lock_guard lock(ImageListModel::mutex);
+            if (0 == ImageListModel::icons.size())          // check for race condtion
+            {
+                ImageListModel::icons.emplace_back(":/stacking/LightColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/LightCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/LightRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/LightGreyscale.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkGreyscale.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatGreyscale.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasGreyscale.png");
+            }
+        }
+    }
+
 	QVariant ImageListModel::data(const QModelIndex& index, int role) const
 
     {
@@ -211,7 +243,7 @@ namespace DSS
                     }
                     else
                         return QString("NC");
-                };
+                }
                 break;
 
             case Column::Background:
@@ -220,13 +252,16 @@ namespace DSS
                 else
                 {
                     if (file.m_SkyBackground.m_fLight)
-                        return QString("%1 %%").arg(file.m_SkyBackground.m_fLight * 100.0, 0, 'f', 2);
+                        return QString("%1 %").arg(file.m_SkyBackground.m_fLight * 100.0, 0, 'f', 2);
                     else
                         return QString("NC");
-                };
-                break;            }
+                }
+                break;
+
+            default:
+                return QVariant();
+            }
         }
-        return QVariant();
 
         if (role == Qt::DecorationRole)
         {
@@ -242,6 +277,8 @@ namespace DSS
             else return QVariant();
 
         }
+
+        return QVariant();
             
     }
 
@@ -305,16 +342,15 @@ namespace DSS
 
     bool ImageListModel::setData(const QModelIndex& index, const QVariant& value, int role)
     {
+        bool changed{ true };
         if (index.isValid() && !(index.row() >= mydata.size() || index.row() < 0))
         {
+            int row = index.row();
+            auto& file = mydata[row];
+
             if (role == Qt::DisplayRole || role == Qt::EditRole)
             {
-                int row = index.row();
-                bool changed{ true };
-
-                auto& file = mydata[row];
-
-                switch (Column(index.column()))
+                switch (static_cast<Column>(index.column()))
                 {
                 case Column::Path:
                     file.m_strPath = value.toString();
@@ -355,6 +391,13 @@ namespace DSS
                 if (changed) emit dataChanged(index, index);
                 return true;
             }
+            else if (Qt::CheckStateRole == role && 0 == index.column())
+            {
+                file.m_bChecked = static_cast<Qt::CheckState>(value.toInt());
+                emit dataChanged(index, index);
+                return true;
+            }
+                
         }
         return false;
     }
@@ -397,14 +440,47 @@ namespace DSS
     }
 
     //
-    // Wrk out which Icon to display based on the frame type
+    // Work out which Icon to display based on the frame type
     //
     QVariant ImageListModel::rowIcon(const ListBitMap& file) const
     {
         QVariant result;
+        PICTURETYPE type{ file.m_PictureType };
+        int16_t index{ 0 };
 
+        switch (type)
+        {
+        case PICTURETYPE_LIGHTFRAME:
+        case PICTURETYPE_REFLIGHTFRAME:
+            index = 0;
+            break;
+        case PICTURETYPE_DARKFRAME:
+        case PICTURETYPE_DARKFLATFRAME:
+            index = 1;
+            break;
+        case PICTURETYPE_FLATFRAME:
+            index = 2;
+            break;
+        case PICTURETYPE_OFFSETFRAME:
+            index = 3;
+            break;
+        default:
+            return QVariant();      // we're outta here
+        }
+
+        // if (file.m_lNrChannels == 3)
+        // index +=0;               // Use xxxxColour Icons
+        if (IsCYMGType(file.GetCFAType()))
+            index += 4;             // Use xxxxCMYG Icons
+        else if (file.GetCFAType() != CFATYPE_NONE)
+            index += 8;             // Use xxxxRGB Icons
+        else
+            index += 12;            // Use xxxxGreyscale Icons
         
-
-        return result;
+        if (ImageListModel::icons[index].isNull())
+        {
+            qDebug("null icon");
+        }
+        return ImageListModel::icons[index];
     }
 }

@@ -269,6 +269,8 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	ZTRACE_RUNTIME("Initializing Main Dialog");
 	CDialog::OnInitDialog();
 	ZTRACE_RUNTIME("Initializing Main Dialog - ok");
+	CRect rect;
+	GetWindowRect(&rect);
 
 	widget = new QWinWidget(this);
 	QVBoxLayout* verticalLayout { new QVBoxLayout(widget) };
@@ -286,23 +288,25 @@ BOOL CDeepStackerDlg::OnInitDialog()
 	ZTRACE_RUNTIME("Creating stackedWidget");
 	stackedWidget = new QStackedWidget(splitter);
 	stackedWidget->setObjectName("stackedWidget");
+	splitter->addWidget(stackedWidget);
 
 	ZTRACE_RUNTIME("Creating Stacking Panel");
 	stackingDlg = new DSS::StackingDlg(stackedWidget);
-	
 	stackingDlg->setObjectName("stackingDlg");
+
 	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget"); 
 	stackedWidget->addWidget(stackingDlg);
 	stackedWidget->setCurrentWidget(stackingDlg);
-	splitter->addWidget(stackedWidget);
 
 	splitter->setStretchFactor(1, 1);		// Want Stacking part to take any spare space.
 
 	verticalLayout->addWidget(splitter);
+	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	widget->setGeometry(0, 0, rect.Width(), rect.Height());
 
 	//stackedWidget->show();
 	//splitter->show();
-	widget->showCentered();
+	widget->show();
 
 	CString			strMask;
 	CString			strTitle;

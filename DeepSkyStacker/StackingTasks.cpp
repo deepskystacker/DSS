@@ -1842,11 +1842,16 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 		{
 			QString		strFileName;
 
+			auto& file = m_vTasks[i].m_vBitmaps[j].filePath;
 			if (!m_vTasks[i].m_vBitmaps[j].IsMasterFrame())
 			{
-				fs::path directory
-					{ m_vTasks[i].m_vBitmaps[j].filePath.remove_filename() };
+				fs::path directory;
 
+				if (file.has_parent_path())
+					directory = file.parent_path();
+				else
+					directory = file.root_path();
+				
 				sFolders.insert(directory);
 			};
 		};

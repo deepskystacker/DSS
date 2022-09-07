@@ -87,8 +87,13 @@ namespace DSS
 
 			if (bCheck)
 				lb.m_bChecked = Qt::Checked;
+			else
+				lb.m_bChecked = Qt::Unchecked;
 
-			lb.m_strPath = QString::fromStdU16String(file.remove_filename().generic_u16string());
+			if (file.has_parent_path())
+				lb.m_strPath = QString::fromStdU16String(file.parent_path().generic_u16string());
+			else
+				lb.m_strPath = QString::fromStdU16String(file.root_path().generic_u16string());
 
 			lb.m_strFile = QString::fromStdU16String(file.filename().generic_u16string());
 
@@ -114,7 +119,7 @@ namespace DSS
 			if (lb.m_lNrChannels == 3)
 				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "RGB %1 bit/ch", "IDS_FORMAT_RGB").arg(lb.m_lBitPerChannels);
 			else
-				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %ld bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
+				lb.m_strDepth = QCoreApplication::translate("DSS::Group", "Gray %1 bit", "IDS_FORMAT_GRAY").arg(lb.m_lBitPerChannels);
 
 			if (lb.IsMasterFrame())
 			{

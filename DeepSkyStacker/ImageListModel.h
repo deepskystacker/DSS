@@ -35,6 +35,7 @@
 **
 ****************************************************************************/
 
+#include <mutex>
 #include <vector>
 #include <QObject>
 #include <QAbstractTableModel>
@@ -56,12 +57,10 @@ namespace DSS
 
         friend class FrameList;
 
-        std::vector<ListBitMap> mydata;
+        static inline std::mutex mutex {};
+        static inline std::vector<QIcon> icons {};
 
-        static inline const std::vector<QIcon> icons{
-            QIcon("qrc:///stacking/DarkColour-16.png")
-            //     etc...
-        };
+        std::vector<ListBitMap> mydata;
 
     public:
         enum class Column
@@ -79,11 +78,8 @@ namespace DSS
         typedef std::vector<ListBitMap>::const_iterator const_iterator;
         typedef std::vector<ListBitMap>::iterator iterator;
 
-        explicit ImageListModel(QObject* parent = nullptr) : 
-            QAbstractTableModel(parent)
-        {
-        };
-
+        explicit ImageListModel(QObject* parent = nullptr);
+ 
         int rowCount(const QModelIndex& parent = QModelIndex()) const override
         {
             // Return number of images we know about
@@ -95,6 +91,14 @@ namespace DSS
             // Pretty simple really
             return static_cast<int>(Column::MAX_COLS);
         };
+
+
+        Qt::ItemFlags flags(const QModelIndex& index) const override
+        {
+            auto flags = Inherited::flags(index);
+            if (0 == index.column()) flags |= (Qt::ItemIsUserCheckable | Qt::ItemIsEditable);
+            return flags;
+        }
 
         virtual QVariant data(const QModelIndex& index, int role) const;
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;

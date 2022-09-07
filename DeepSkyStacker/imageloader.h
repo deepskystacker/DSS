@@ -68,7 +68,7 @@ class ImageLoader :
 	Q_OBJECT
 
     static const inline int16_t MAXIMAGESINCACHE{ 20 };
-	std::mutex	mutex;
+	static inline std::mutex mutex{};
 	QString	fileToLoad;
 	std::vector<LoadedImage>	imageVector;
 

@@ -374,7 +374,7 @@ The comet and the stars will be sharp. This process takes twice as long.</source
     </message>
 </context>
 <context>
-    <name>DSSImageView</name>
+    <name>DSS::ImageView</name>
     <message>
         <location filename="../dssimageview.cpp" line="72"/>
         <source>Ctrl++ or Ctrl+= to zoom in

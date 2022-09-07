@@ -60,21 +60,21 @@ namespace DSS
 
         QSize iconSize(iconpixels, iconpixels);
 
-        selRect.addFile("qrc:///toolbar/ButtonSelect_Up.png", iconSize, QIcon::Normal);
-        selRect.addFile("qrc:///toolbarButtonSelect_Hot.png", iconSize, QIcon::Active);
-        selRect.addFile("qrc:///toolbar/ButtonSelect_Down.png", iconSize, QIcon::Normal, QIcon::On);
+        selRect.addFile(":/toolbar/ButtonSelect_Up.png", iconSize, QIcon::Normal);
+        selRect.addFile(":/toolbarButtonSelect_Hot.png", iconSize, QIcon::Active);
+        selRect.addFile(":/toolbar/ButtonSelect_Down.png", iconSize, QIcon::Normal, QIcon::On);
 
-        selStars.addFile("qrc:///toolbar/ButtonStar_Up.png", iconSize, QIcon::Normal);
-        selStars.addFile("qrc:///toolbar/ButtonStar_Hot.png", iconSize, QIcon::Active);
-        selStars.addFile("qrc:///toolbar/ButtonStar_Down.png", iconSize, QIcon::Normal, QIcon::On);
+        selStars.addFile(":/toolbar/ButtonStar_Up.png", iconSize, QIcon::Normal);
+        selStars.addFile(":/toolbar/ButtonStar_Hot.png", iconSize, QIcon::Active);
+        selStars.addFile(":/toolbar/ButtonStar_Down.png", iconSize, QIcon::Normal, QIcon::On);
 
-        selComet.addFile("qrc:///toolbar/ButtonComet_Up.png", iconSize, QIcon::Normal);
-        selComet.addFile("qrc:///toolbar/ButtonComet_Hot.png", iconSize, QIcon::Active);
-        selComet.addFile("qrc:///toolbar/ButtonComet_Down.png", iconSize, QIcon::Normal, QIcon::On);
+        selComet.addFile(":/toolbar/ButtonComet_Up.png", iconSize, QIcon::Normal);
+        selComet.addFile(":/toolbar/ButtonComet_Hot.png", iconSize, QIcon::Active);
+        selComet.addFile(":/toolbar/ButtonComet_Down.png", iconSize, QIcon::Normal, QIcon::On);
 
-        saveButton.addFile("qrc:///toolbar/ButtonSave_Up.png", iconSize, QIcon::Normal);
-        saveButton.addFile("qrc:///toolbar/ButtonSave_Hot.png", iconSize, QIcon::Active);
-        saveButton.addFile("qrc:///toolbar/ButtonSave_Down.png", iconSize, QIcon::Selected);
+        saveButton.addFile(":/toolbar/ButtonSave_Up.png", iconSize, QIcon::Normal);
+        saveButton.addFile(":/toolbar/ButtonSave_Hot.png", iconSize, QIcon::Active);
+        saveButton.addFile(":/toolbar/ButtonSave_Down.png", iconSize, QIcon::Selected);
 
         setOrientation(Qt::Vertical);
 

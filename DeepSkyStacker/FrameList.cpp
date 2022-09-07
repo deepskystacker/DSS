@@ -780,7 +780,12 @@ namespace DSS
 #endif
 			)
 		{
-			fs::path directory = file.remove_filename();
+			fs::path directory;
+		
+			if (file.has_parent_path())
+				directory = file.parent_path();
+			else
+				directory = file.root_path();
 
 			fprintf(hFile, "DSS file list\n");
 			fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
@@ -855,7 +860,13 @@ namespace DSS
 		//
 		// Remember current directory and extract directory containing filelist
 		//
-		fs::path directory{ fileList.remove_filename() };
+		fs::path directory;
+
+		if (fileList.has_parent_path())
+			directory = fileList.parent_path();
+		else
+			directory = fileList.root_path();
+
 		fs::path oldCWD{ fs::current_path(ec) };		// Save CWD
 
 		if (ec)

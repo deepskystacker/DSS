@@ -40,11 +40,12 @@ class QMouseEvent;
 #include "DSSCommon.h"
 #include "DSSTools.h"
 
-class DSSImageView;
 class CMemoryBitmap;
 
 namespace DSS
 {
+	class ImageView;
+
 	enum class EditStarAction
 	{
 		None = 0,
@@ -201,7 +202,7 @@ namespace DSS
 		void paintEvent(QPaintEvent*) override;
 
     private:
-        DSSImageView* imageView;
+        ImageView* imageView;
         QString fileName;
         STARVECTOR	stars;
         STARVECTOR	refStars;

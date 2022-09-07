@@ -116,7 +116,7 @@
     </Manifest>
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
-
+call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
@@ -185,7 +185,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <CustomBuildStep />
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
-
+call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </PostBuildEvent>
     <PostBuildEvent>

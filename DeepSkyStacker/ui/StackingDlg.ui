@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>300</width>
-    <height>801</height>
+    <width>711</width>
+    <height>870</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -125,7 +125,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="DSSImageView" name="picture" native="true">
+          <widget class="DSS::ImageView" name="picture" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -134,8 +134,8 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>0</width>
-             <height>300</height>
+             <width>600</width>
+             <height>400</height>
             </size>
            </property>
           </widget>
@@ -222,7 +222,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSSImageView</class>
+   <class>DSS::ImageView</class>
    <extends>QWidget</extends>
    <header>dssimageview.h</header>
    <container>1</container>

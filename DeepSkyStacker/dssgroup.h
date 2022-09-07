@@ -82,6 +82,24 @@ namespace DSS
 		Group(const Group&) = delete;
 		Group& operator = (const Group&) = delete;
 
+		Group(Group&& rhs) noexcept :
+			Index { std::exchange(rhs.Index, 0) },
+			Name { std::move(rhs.Name) },
+			Dirty { std::exchange(rhs.Dirty, false) }
+		{
+		}
+
+		Group& operator = (Group&& rhs ) noexcept
+		{
+			if (this != &rhs)
+			{
+				Index = std::exchange(rhs.Index, 0);
+				Name = std::move(rhs.Name);
+				Dirty = std::exchange(rhs.Dirty, false);
+			}
+			return *this;
+		}
+
 		//
 		// Accessors
 		//

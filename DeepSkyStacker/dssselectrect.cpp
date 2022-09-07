@@ -80,7 +80,7 @@ namespace DSS
         mode(SelectionMode::None),
         selecting(false)
     {
-        imageView = dynamic_cast<DSSImageView*>(parent);
+        imageView = dynamic_cast<ImageView*>(parent);
         Q_ASSERT(nullptr != imageView);
         setAttribute(Qt::WA_TransparentForMouseEvents);
         setAttribute(Qt::WA_NoSystemBackground);

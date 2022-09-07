@@ -147,6 +147,7 @@ namespace DSS
 	void StackingDlg::onInitDialog()
 	{
 		ZFUNCTRACE_RUNTIME();
+		ui->picture->setVisible(true);
 		editStarsPtr = std::make_unique<EditStars>(ui->picture);
 		selectRectPtr = std::make_unique<SelectRect>(ui->picture);
 		pToolBar = std::make_unique<ToolBar>(this, editStarsPtr.get(), selectRectPtr.get());
@@ -156,6 +157,17 @@ namespace DSS
 
 		if (!startingFileList.isEmpty())
 			openFileList(startingFileList);
+
+		ui->tableView->setModel(frameList.currentTableModel());
+		//
+		// Reduce font size and increase weight
+		//
+		QFont font { ui->tableView->font() };
+		font.setPointSize(font.pointSize() - 1); font.setWeight(QFont::Medium);
+		ui->tableView->setFont(font);
+		font = ui->tableView->horizontalHeader()->font();
+		font.setPointSize(font.pointSize() - 1);  font.setWeight(QFont::Medium);
+		ui->tableView->horizontalHeader()->setFont(font);
 	}
 
 	void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
@@ -179,6 +191,15 @@ namespace DSS
 				// If the filename hasn't changed but we have changes to the stars that need to be saved
 				//
 				if (fileName == m_strShowFile && checkEditChanges())
+				{
+					ui->information->setText(m_strShowFile);
+					ui->information->setTextFormat(Qt::PlainText);
+					ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
+					ui->information->setOpenExternalLinks(false);
+					m_strShowFile = fileName;
+					imageLoad();
+				}
+				else if (fileName != m_strShowFile)
 				{
 					ui->information->setText(m_strShowFile);
 					ui->information->setTextFormat(Qt::PlainText);
@@ -381,7 +402,12 @@ namespace DSS
 				fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
 				frameList.addFile(file);
-				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
 			frameList.endInsertRows();
@@ -401,7 +427,7 @@ namespace DSS
 
 			//UpdateGroupTabs();
 		};
-		//updateListInfo();
+		updateListInfo();
 	}
 
 	void StackingDlg::onAddDarks()
@@ -475,7 +501,12 @@ namespace DSS
 
 				frameList.addFile(file,
 					PICTURETYPE_DARKFRAME, true);
-				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
 			frameList.endInsertRows();
@@ -494,7 +525,7 @@ namespace DSS
 
 			//UpdateGroupTabs();
 		}
-		//updateListInfo();
+		updateListInfo();
 	}
 
 
@@ -571,7 +602,12 @@ namespace DSS
 
 				frameList.addFile(file,
 					PICTURETYPE_DARKFLATFRAME, true);
-				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
 			frameList.endInsertRows();
@@ -590,7 +626,7 @@ namespace DSS
 
 			//UpdateGroupTabs();
 		}
-		//updateListInfo();
+		updateListInfo();
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -666,7 +702,12 @@ namespace DSS
 
 				frameList.addFile(file,
 					PICTURETYPE_FLATFRAME, true);
-				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
 			frameList.endInsertRows();
@@ -685,7 +726,7 @@ namespace DSS
 
 			//UpdateGroupTabs();
 		}
-		//updateListInfo();
+		updateListInfo();
 	}
 
 
@@ -762,7 +803,12 @@ namespace DSS
 
 				frameList.addFile(file,
 					PICTURETYPE_OFFSETFRAME, true);
-				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
 			frameList.endInsertRows();
@@ -781,7 +827,7 @@ namespace DSS
 
 			//UpdateGroupTabs();
 		}
-		//updateListInfo();
+		updateListInfo();
 	}
 
 	bool StackingDlg::checkEditChanges()
@@ -853,7 +899,7 @@ namespace DSS
 
 	void	StackingDlg::updateListInfo()
 	{
-		QString	text{ tr("Light Frames:%ld      -      Dark Frames: %ld      -      Flat Frames:%ld      -   Dark Flat Frames: %d   -      Offset/Bias Frames: %ld",
+		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
 			"IDS_LISTINFO")
 			.arg(frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
 			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFRAME))
@@ -866,7 +912,7 @@ namespace DSS
 
 		for (int i = 0; i < ui->tabWidget->count(); i++)
 		{
-			text = tr("Light Frames: %ld\nDark Frames: %ld\nFlat Frames: %ld\nDark Flat Frames: %ld\nOffset/Bias Frames: %ld",
+			text = tr("Light Frames: %1\nDark Frames: %2\nFlat Frames: %3\nDark Flat Frames: %4\nOffset/Bias Frames: %5",
 				"IDS_LISTINFO2")
 				.arg(frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_DARKFRAME, i))
@@ -1010,7 +1056,11 @@ namespace DSS
 				strFileList = QString::fromStdU16String(file.generic_u16string());
 				MRUList.Add(strFileList);
 
-				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 			}
 
@@ -1072,7 +1122,12 @@ namespace DSS
 			{
 				fs::path file(files.at(i).toStdU16String());		// as UTF-16
 				fileList = file;		// save this filelist
-				directory = QString::fromStdU16String(file.remove_filename().generic_u16string());
+
+				if (file.has_parent_path())
+					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+				else
+					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 
 				frameList.saveListToFile(file);

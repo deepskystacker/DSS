@@ -254,6 +254,7 @@ namespace DSS
 		FrameList() :
 			index(0)
 		{
+			imageGroups.emplace_back();
 		};
 
 		virtual ~FrameList()
@@ -323,7 +324,7 @@ namespace DSS
 		inline bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
 		{
 			return imageGroups[index].pictures.getTransformation(name, transformation, vVotedPairs);
-		}; 
+		}
 
 		FrameList& saveListToFile(fs::path file);
 		FrameList& loadFilesFromList(fs::path fileList);
@@ -334,19 +335,19 @@ namespace DSS
 			auto last{ first + count };
 			imageGroups[index].pictures.beginInsertRows(QModelIndex(), first, last);
 			return (*this);
-		};
+		}
 
 		inline FrameList& endInsertRows() noexcept
 		{
 			imageGroups[index].pictures.endInsertRows();
 			return *this;
-		};
+		}
 
 		virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1)
 		{
 			imageGroups[index].addFile(file, PictureType, bCheck);
 			return true;
-		};
+		}
 
 		void blankCheckedItemScores();
 
@@ -382,6 +383,11 @@ namespace DSS
 			};
 			return *this;
 		};
+
+		inline ImageListModel* currentTableModel()
+		{
+			return &(imageGroups[index].pictures);
+		}
 
 	};
 }

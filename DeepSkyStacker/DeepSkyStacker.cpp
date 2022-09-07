@@ -327,6 +327,10 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	}
 	else
 	{
+		// High DPI support
+		QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
 		theApp.InitInstance();
 
 		//
@@ -335,10 +339,6 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 		QCoreApplication::setOrganizationName("DeepSkyStacker");
 		QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 		QCoreApplication::setApplicationName("DeepSkyStacker5");
-
-		// High DPI support
-		QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-		QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
 		QApplication* app = qApp;
 

@@ -1300,11 +1300,11 @@
     <QtMoc Include="ImageListModel.h">
       <Filter>Kernel</Filter>
     </QtMoc>
-    <QtMoc Include="imageloader.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="imageloader.h">
+      <Filter>Kernel</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
