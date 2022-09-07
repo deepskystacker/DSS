@@ -442,7 +442,7 @@ Comet:%s</source>
         <location filename="../dsseditstars.cpp" line="858"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Evet</translation>
+        <translation>Evet</translation>
     </message>
 </context>
 <context>
@@ -451,25 +451,25 @@ Comet:%s</source>
         <location filename="../dssgroup.cpp" line="68"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished">Siyah</translation>
+        <translation>Siyah</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="72"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Siyah Düz</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="76"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished">Düz</translation>
+        <translation>Düz</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="80"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished">Ofset</translation>
+        <translation>Ofset</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="84"/>
@@ -487,7 +487,7 @@ Comet:%s</source>
         <location filename="../dssgroup.cpp" line="122"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Gri %1 bit</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="127"/>
@@ -517,7 +517,7 @@ Comet:%s</source>
         <location filename="../dssgroup.cpp" line="137"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Evet</translation>
+        <translation>Evet</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="139"/>

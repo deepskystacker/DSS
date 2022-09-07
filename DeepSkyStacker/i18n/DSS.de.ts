@@ -442,7 +442,7 @@ Comet:%s</source>
         <location filename="../dsseditstars.cpp" line="858"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Ja</translation>
+        <translation>Ja</translation>
     </message>
 </context>
 <context>
@@ -451,25 +451,25 @@ Comet:%s</source>
         <location filename="../dssgroup.cpp" line="68"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
-        <translation type="unfinished">Dark</translation>
+        <translation>Dark</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="72"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="76"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
-        <translation type="unfinished">Flat</translation>
+        <translation>Flat</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="80"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
-        <translation type="unfinished">Bias/Offset</translation>
+        <translation>Bias/Offset</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="84"/>
@@ -487,7 +487,7 @@ Comet:%s</source>
         <location filename="../dssgroup.cpp" line="122"/>
         <source>Gray %1 bit</source>
         <comment>IDS_FORMAT_GRAY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Graustufen %1 Bit</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="127"/>
@@ -517,7 +517,7 @@ Comet:%s</source>
         <location filename="../dssgroup.cpp" line="137"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
-        <translation type="unfinished">Ja</translation>
+        <translation>Ja</translation>
     </message>
     <message>
         <location filename="../dssgroup.cpp" line="139"/>
