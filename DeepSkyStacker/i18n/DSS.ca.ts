@@ -635,6 +635,17 @@ Comet:%s</source>
     </message>
 </context>
 <context>
+    <name>DSS::ImageView</name>
+    <message>
+        <location filename="../dssimageview.cpp" line="76"/>
+        <source>Ctrl++ or Ctrl+= to zoom in
+Ctrl+- to zoom out
+ or use the mouse wheel to zoom
+Ctrl+4 to toggle 4-Corners mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DSS::StackingDlg</name>
     <message>
         <location filename="../StackingDlg.cpp" line="283"/>
@@ -770,17 +781,6 @@ Right Click to change behaviour.</source>
         <location filename="../dsstoolbar.cpp" line="158"/>
         <source>Ask always</source>
         <comment>ID_SAVECONTEXT_ASKALWAYS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DSSImageView</name>
-    <message>
-        <location filename="../dssimageview.cpp" line="74"/>
-        <source>Ctrl++ or Ctrl+= to zoom in
-Ctrl+- to zoom out
- or use the mouse wheel to zoom
-Ctrl+4 to toggle 4-Corners mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
