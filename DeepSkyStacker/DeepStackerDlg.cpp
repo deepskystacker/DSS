@@ -308,7 +308,6 @@ BOOL CDeepStackerDlg::OnInitDialog()
 
 	verticalLayout->addWidget(splitter);
 	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-	widget->setGeometry(0, 0, rect.Width(), rect.Height());
 
 	//stackedWidget->show();
 	//splitter->show();
