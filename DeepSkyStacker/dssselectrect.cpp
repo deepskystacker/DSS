@@ -101,7 +101,7 @@ namespace DSS
     void SelectRect::paintEvent(QPaintEvent*)
     {
         QPainter painter(this);
-        QPen pen(Qt::red, 1.0);
+        QPen pen(Qt::red, 2.0);
         QPen drizzlePen(QColor(255, 0, 0, 128), 1.0);
         QRectF rect(imageView->imageToScreen(selectRect.normalized()));
         QFont font("Helvetica", 10, QFont::Bold);
