@@ -334,7 +334,7 @@ namespace DSS
     void ImageView::paintZoomImage(QPainter& painter)
     {
         constexpr qreal extraZoom = 5.0;
-        const qreal diameter = 175.0;
+        const qreal diameter = 176.0;
 
         const QPoint globalMouseLocation(QCursor::pos());
         const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
@@ -342,6 +342,7 @@ namespace DSS
         // If the mouse is not over the image or mouse is over the toolbar, then there's nothing to do
         if (!displayRect.contains(mouseLocation) || m_pToolBar->underMouse()) return;
 
+        //QPoint where{ static_cast<int>(mouseLocation.x() - diameter / 2), static_cast<int>(mouseLocation.y() - diameter / 2) };
         QPoint where(std::max(0.0, mouseLocation.x() - diameter), 0);
         int my = mouseLocation.y();
         if (my < 10 + diameter)
@@ -394,7 +395,7 @@ namespace DSS
 
         //
         // Draw a white circle around the zoomed area
-        QPen pen(Qt::white, 3.0);
+        QPen pen(Qt::white, 5.0);
         painter.setPen(pen);
         painter.drawEllipse(rect);
 
@@ -402,7 +403,7 @@ namespace DSS
         // Draw cross-hairs in the centre
         // 
         pen.setColor(qRgba(255, 0, 0, 170));  // Red semi transparent
-        pen.setWidth(1.0);
+        pen.setWidth(2.0);
         painter.setPen(pen);
         painter.drawLine(
             rect.left() + rect.width() / 2 - 10,
@@ -514,6 +515,7 @@ namespace DSS
         drawOnPixmap();
         update();
     }
+
     bool ImageView::event(QEvent* event)
     {
         if (nullptr != pPixmap && QEvent::ToolTip == event->type())
@@ -566,10 +568,8 @@ namespace DSS
             // Handle Ctrl+4 to toggle Four Corners mode
             if (e->modifiers() & Qt::ControlModifier)
             {
-                m_fourCorners = !m_fourCorners;
-                drawOnPixmap();
-                update();
-                handled = true;
+                on_fourCorners_clicked(true);
+                 handled = true;
             }
             break;
         default:

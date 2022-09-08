@@ -115,6 +115,12 @@ namespace DSS
     public slots:
         void setPixmap(const QPixmap&);
         void setOverlayPixmap(const QPixmap&);
+        void on_fourCorners_clicked(bool)
+        {
+            m_fourCorners = !m_fourCorners;
+            drawOnPixmap();
+            update();
+        }
 
     signals:
         void Image_mousePressEvent(QMouseEvent* e);
