@@ -117,6 +117,7 @@ namespace DSS
 
 		mruPath.readSettings();
 		connect(ui->tableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableViewItemClickedEvent(const QModelIndex&)));
+		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
 	}
 
