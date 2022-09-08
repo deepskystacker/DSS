@@ -292,7 +292,7 @@ protected:
 
 private :
 	void	UpdateTab();
-	// void	UpdateSizes();
+	void	UpdateSizes();
 	afx_msg void OnOK();
 	afx_msg void OnClose();
 	afx_msg void OnBnClickedCancel();

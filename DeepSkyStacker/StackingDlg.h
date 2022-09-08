@@ -48,9 +48,9 @@ namespace fs = std::filesystem;
 
 namespace DSS
 {
-	class StackingDlg : public QDialog
+	class StackingDlg : public QWidget
 	{
-		typedef QDialog
+		typedef QWidget
 			Inherited;
 
 		Q_OBJECT

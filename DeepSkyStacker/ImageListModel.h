@@ -96,7 +96,7 @@ namespace DSS
         Qt::ItemFlags flags(const QModelIndex& index) const override
         {
             auto flags = Inherited::flags(index);
-            if (0 == index.column()) flags |= (Qt::ItemIsUserCheckable | Qt::ItemIsEditable);
+            if (0 == index.column()) flags |= (Qt::ItemIsUserCheckable);
             return flags;
         }
 

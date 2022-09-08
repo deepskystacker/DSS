@@ -109,7 +109,7 @@ namespace DSS
 	// StackingDlg dialog
 
 	StackingDlg::StackingDlg(QWidget* parent) :
-		QDialog(parent),
+		QWidget(parent),
 		ui(new Ui::StackingDlg),
 		initialised(false)
 	{
