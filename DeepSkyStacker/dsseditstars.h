@@ -159,6 +159,7 @@ namespace DSS
 
 
     public slots:
+		void leaveEvent(QEvent* e);
         void mousePressEvent(QMouseEvent* e);
         void mouseMoveEvent(QMouseEvent* e);
         void mouseReleaseEvent(QMouseEvent* e);
@@ -200,6 +201,7 @@ namespace DSS
 		bool event(QEvent* event) override;
 		void keyPressEvent(QKeyEvent* event) override;
 		void paintEvent(QPaintEvent*) override;
+		void showEvent(QShowEvent* e);
 
     private:
         ImageView* imageView;
@@ -209,7 +211,7 @@ namespace DSS
         std::shared_ptr<CMemoryBitmap> m_pBitmap;
         CBilinearParameters transformation;
         VOTINGPAIRVECTOR vVotedPairs;
-		CPointExt					m_ptCursor;
+		QPointF					m_ptCursor;
 		CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
 		EditStarAction				m_Action;
 		QPixmap pixmap;
@@ -274,7 +276,7 @@ namespace DSS
 		}
 
 		void initGrayBitmap(const QRect& rc);
-		void detectStars(const CPointExt& pt, QRect& rc, STARVECTOR& vStars);
+		void detectStars(const QPointF& pt, QRect& rc, STARVECTOR& vStars);
 
 		void computeOverallQuality()
 		{

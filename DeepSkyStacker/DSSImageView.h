@@ -112,6 +112,8 @@ namespace DSS
             );
         };
 
+        void clear();
+
     public slots:
         void setPixmap(const QPixmap&);
         void setOverlayPixmap(const QPixmap&);
@@ -123,6 +125,7 @@ namespace DSS
         }
 
     signals:
+        void Image_leaveEvent(QEvent* e);
         void Image_mousePressEvent(QMouseEvent* e);
         void Image_mouseMoveEvent(QMouseEvent* e);
         void Image_mouseReleaseEvent(QMouseEvent* e);
@@ -131,6 +134,7 @@ namespace DSS
     protected:
         bool event(QEvent* event) override;
         void keyPressEvent(QKeyEvent* event) override;
+        void leaveEvent(QEvent* event) override;
         void paintEvent(QPaintEvent* event) override;
         void mousePressEvent(QMouseEvent* e) override;
         void mouseMoveEvent(QMouseEvent* e) override;

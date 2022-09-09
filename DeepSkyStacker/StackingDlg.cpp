@@ -152,6 +152,7 @@ namespace DSS
 		editStarsPtr = std::make_unique<EditStars>(ui->picture);
 		selectRectPtr = std::make_unique<SelectRect>(ui->picture);
 		pToolBar = std::make_unique<ToolBar>(this, editStarsPtr.get(), selectRectPtr.get());
+		pToolBar->setVisible(false);
 
 		ui->picture->setToolBar(pToolBar.get());
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
@@ -941,7 +942,9 @@ namespace DSS
 			//TODO: UpdateGroupTabs();
 			updateListInfo();
 			fileList.clear();
+			ui->picture->clear();
 			SetCurrentFileInTitle(fileList.generic_wstring().c_str());
+			update();
 		}
 	}
 

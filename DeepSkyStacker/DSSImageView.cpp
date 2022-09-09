@@ -101,6 +101,11 @@ namespace DSS
         m_drawingPixmap = QPixmap{ size() };
     }
 
+    void ImageView::leaveEvent(QEvent* e)
+    {
+        emit Image_leaveEvent(e);
+        Inherited::leaveEvent(e);
+    }
 
     void ImageView::mousePressEvent(QMouseEvent* e)
     {
@@ -136,6 +141,15 @@ namespace DSS
     void ImageView::drawOnPixmap()
     {
         ZFUNCTRACE_RUNTIME();
+
+        QPainter painter(&m_drawingPixmap);
+        QPalette palette{ QGuiApplication::palette() };
+        QBrush brush{ palette.dark() };
+
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setRenderHint(QPainter::SmoothPixmapTransform);
+        painter.fillRect(rect(), brush);
+
         if (nullptr != pPixmap)
         {
             const QSize sz = size();
@@ -166,14 +180,6 @@ namespace DSS
                 QPoint point(sz.width() - width, sz.height() - height);
                 m_pToolBar->move(point);
             }
-
-            QPainter painter(&m_drawingPixmap);
-            QPalette palette{ QGuiApplication::palette() };
-            QBrush brush{ palette.dark() };
-
-            painter.setRenderHint(QPainter::Antialiasing);
-            painter.setRenderHint(QPainter::SmoothPixmapTransform);
-            painter.fillRect(rect(), brush);
 
             painter.save();
             painter.translate(m_origin);
@@ -210,8 +216,8 @@ namespace DSS
                 painter.restore();
             }
 
-            painter.end();
         }
+        painter.end();
     }
 
     void ImageView::paintEvent([[maybe_unused]] QPaintEvent* event)
@@ -430,6 +436,22 @@ namespace DSS
             rect.top() + rect.height() / 2 + 3
         );
 
+    }
+
+    void ImageView::clear()
+    {
+        //
+        // delete the images
+        //
+        pPixmap.reset(nullptr);
+        pOverlayPixmap.reset(nullptr);
+        if (m_pToolBar)
+        {
+            m_pToolBar->setVisible(false);
+            m_pToolBar->setEnabled(false);
+        }
+        drawOnPixmap();
+        update();
     }
 
     void ImageView::setPixmap(const QPixmap& p)

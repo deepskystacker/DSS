@@ -178,17 +178,21 @@ namespace DSS
 		setAttribute(Qt::WA_TransparentForMouseEvents);
 		setAttribute(Qt::WA_NoSystemBackground);
 		setAttribute(Qt::WA_WState_ExplicitShowHide);
-		setToolTip(tr(
-			"Ctrl+G to toggle display of the Grid"
-		));
+		//setToolTip(tr(
+		//	"Ctrl+G to toggle display of the Grid"
+		//));
 	}
 
+	void EditStars::leaveEvent([[maybe_unused]] QEvent* e)
+	{
+		m_ptCursor.setX(-1); m_ptCursor.setY(-1);
+	}
 
 	void EditStars::mousePressEvent([[maybe_unused]] QMouseEvent* e)
 	{
 		if (Qt::LeftButton == e->button())
 		{
-			qDebug() << "Left mouse button pressed";
+			qDebug() << "In EditStars: Left mouse button pressed";
 			switch (m_Action)
 			{
 				case EditStarAction::AddStar:
@@ -250,33 +254,47 @@ namespace DSS
 
 	void EditStars::starsButtonChecked()
 	{
-		qDebug() << "stars checked";
+		qDebug() << "In EditStars: stars button checked";
+		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
 		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
+		show();
 	}
 
 	void EditStars::cometButtonChecked()
 	{
-		qDebug() << "comet checked";
+		qDebug() << "In EditStars: comet button checked";
+		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
 		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
+		show();
 	}
 
 	void EditStars::saveButtonPressed()
 	{
-		qDebug() << "save pressed";
+		qDebug() << "In EditStars: save pressed";
 	}
 
 	void EditStars::resizeEvent(QResizeEvent* e)
 	{
+		qDebug() << "In EditStars: resizeEvent ";
 		pixmap = QPixmap(e->size());
 		resize(e->size());
+		update();
 	}
 
+	/*!
+	\reimp
+*/
+	void EditStars::showEvent(QShowEvent* e)
+	{
+		raise();
+		e->ignore();
+	}
 
 	void EditStars::paintEvent([[maybe_unused]] QPaintEvent* event)
 	{
@@ -293,6 +311,28 @@ namespace DSS
 			forceHere = true;
 		else
 			forceHere = false;
+
+		if (static_cast<bool>(m_pBitmap))
+		{
+			//
+			// Get the mouse location and covert to image coordinates
+			//
+			QPointF pt{ static_cast<qreal>(e->x()),
+				static_cast<qreal>(e->y()) };
+			pt = imageView->screenToImage(pt);
+
+			if (pt.x() >= 0 && pt.x() < imageView->imageWidth() &&
+				pt.y() >= 0 && pt.y() < imageView->imageHeight())
+			{
+				// The point is in the image
+				m_ptCursor = pt;
+			}
+			else
+			{
+				m_ptCursor.setX(-1); m_ptCursor.setY(-1);
+			}
+		};
+
 		update();
 		Inherited::mouseMoveEvent(e);
 	}
@@ -347,9 +387,9 @@ namespace DSS
 #if defined(_OPENMP)
 #pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1)
 #endif
-		for (int64_t i = rc.left(); i <= rc.right(); i++)
-		{
-			for (int64_t j = rc.top(); j <= rc.bottom(); j++)
+		for (int64_t j = rc.top(); j <= rc.bottom(); j++)
+ 		{
+			for (int64_t i = rc.left(); i <= rc.right(); i++)
 			{
 				double fGray;
 				m_pBitmap->GetPixel(i, j, fGray);
@@ -358,14 +398,14 @@ namespace DSS
 		}
 	}
 
-	void EditStars::detectStars(const CPointExt& pt, QRect& rcCheck, STARVECTOR& vStars)
+	void EditStars::detectStars(const QPointF& pt, QRect& rcCheck, STARVECTOR& vStars)
 	{
 		// Create a 3*STARMAXSIZE + 1 square rectangle centered on the point
 		vStars.clear();
-		rcCheck.setLeft(pt.X - RCCHECKSIZE / 2);
-		rcCheck.setRight(pt.X + RCCHECKSIZE / 2);
-		rcCheck.setTop(pt.Y - RCCHECKSIZE / 2);
-		rcCheck.setBottom(pt.Y + RCCHECKSIZE / 2);
+		rcCheck.setLeft(pt.x() - RCCHECKSIZE / 2);
+		rcCheck.setRight(pt.x() + RCCHECKSIZE / 2);
+		rcCheck.setTop(pt.y() - RCCHECKSIZE / 2);
+		rcCheck.setBottom(pt.y() + RCCHECKSIZE / 2);
 
 		if (rcCheck.left() < 0)
 		{
@@ -373,9 +413,9 @@ namespace DSS
 			rcCheck.setLeft(0);
 			rcCheck.setRight(RCCHECKSIZE);
 		}
-		else if (rcCheck.right() >= pixmap.width())
+		else if (rcCheck.right() >= imageView->imageWidth())
 		{
-			rcCheck.setRight(pixmap.width() - 1);
+			rcCheck.setRight(imageView->imageWidth() - 1);
 			rcCheck.setLeft(rcCheck.right() - RCCHECKSIZE);
 		};
 
@@ -384,9 +424,9 @@ namespace DSS
 			rcCheck.setTop(0);
 			rcCheck.setBottom(RCCHECKSIZE);
 		}
-		else if (rcCheck.bottom() >= pixmap.height())
+		else if (rcCheck.bottom() >= imageView->imageHeight())
 		{
-			rcCheck.setBottom(pixmap.height() - 1);
+			rcCheck.setBottom(imageView->imageHeight() - 1);
 			rcCheck.setTop(rcCheck.bottom() - RCCHECKSIZE);
 		};
 
@@ -558,7 +598,7 @@ namespace DSS
 		};
 
 		m_Action = EditStarAction::None;
-		if (m_ptCursor.X >= 0 && m_ptCursor.Y >= 0)
+		if (m_ptCursor.x() >= 0 && m_ptCursor.y() >= 0)
 		{
 			QRect					rcCheck;
 			STARVECTOR				vStars;
@@ -574,10 +614,10 @@ namespace DSS
 
 			detectStars(m_ptCursor, rcCheck, vStars);
 
-			auto lNearestNewStar = FindNearestStar(m_ptCursor.X - rcCheck.left(), m_ptCursor.Y - rcCheck.top(), vStars, bInNewStar, fNearestNewStarDistance);
+			auto lNearestNewStar = FindNearestStar(m_ptCursor.x() - rcCheck.left(), m_ptCursor.y() - rcCheck.top(), vStars, bInNewStar, fNearestNewStarDistance);
 
 			fNearestOldStarDistance = 50;
-			auto lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, stars, bInOldStar, fNearestOldStarDistance);
+			auto lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.x(), m_ptCursor.y(), stars, bInOldStar, fNearestOldStarDistance);
 
 			m_lRemovedIndice = -1;
 			m_bRemoveComet = false;
@@ -643,8 +683,8 @@ namespace DSS
 						if (forceHere)	
 						{
 							bAdd = true;
-							star.m_fX = m_ptCursor.X;
-							star.m_fY = m_ptCursor.Y;
+							star.m_fX = m_ptCursor.x();
+							star.m_fY = m_ptCursor.y();
 							bShowAction = true;
 						}
 					}
@@ -652,8 +692,8 @@ namespace DSS
 				else if (forceHere)
 				{
 					bAdd = true;
-					star.m_fX = m_ptCursor.X;
-					star.m_fY = m_ptCursor.Y;
+					star.m_fX = m_ptCursor.x();
+					star.m_fY = m_ptCursor.y();
 					bShowAction = true;
 				};
 				if (bAdd && m_lRemovedIndice < 0)
@@ -812,13 +852,13 @@ namespace DSS
 			};
 
 			{
-				QRectF			rcText;
-				CPointExt		ptScreen = m_ptCursor;
+				QRectF rcText;
+				QPointF	ptScreen{ m_ptCursor };
 
-				imageView->imageToScreen(ptScreen.X, ptScreen.Y);
+				ptScreen = imageView->imageToScreen(ptScreen);
 
-				if ((ptScreen.X >= rcClient.right() - 150) &&
-					(ptScreen.Y <= 150))
+				if ((ptScreen.x() >= rcClient.right() - 150) &&
+					(ptScreen.y() <= 150))
 				{
 					// Draw the rectangle at the left bottom
 					rcText.setLeft(2);

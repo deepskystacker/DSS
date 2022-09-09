@@ -192,8 +192,9 @@ namespace DSS
         //
         inline void clear()
         {
-            removeRows(0, static_cast<int>(mydata.size()));
+            beginRemoveRows(QModelIndex(), 0, static_cast<int>(mydata.size()) - 1);
             mydata.clear();
+            endRemoveRows();
         }
 
         private:
