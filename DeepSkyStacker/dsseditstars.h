@@ -226,85 +226,29 @@ namespace DSS
 		bool displayGrid;
 		uint m_tipShowCount;
 
-  //     	template <bool Refstar>
-		//bool isStarVoted(const int star)
-		//{
-		//	bool bResult = false;
-		//	if (g_bShowRefStars)
-		//	{
-		//		if (!vVotedPairs.empty())
-		//		{
-		//			for (const auto& votedPair : vVotedPairs)
-		//			{
-		//				if constexpr (Refstar)
-		//					if (star == votedPair.m_RefStar)
-		//					{
-		//						bResult = true;
-		//						break;
-		//					}
-		//				else
-		//					if (star == votedPair.m_TgtStar)
-		//					{
-		//						bResult = true;
-		//						break;
-		//					}
-		//			}
-		//		}
-		//		else
-		//			bResult = true;
-		//	}
-		//	else
-		//		bResult = true;
-
-		//	return bResult;
-		//}
-
-		//bool isRefStarVoted(const int lStar)
-		//{
-		//	return this->isStarVoted<true>(lStar);
-		//}
-
-		//bool isTgtStarVoted(const int lStar)
-		//{
-		//	return this->isStarVoted<false>(lStar);
-		//}
-
-		bool isRefStarVoted(LONG lStar)
-		{
-			bool bResult = FALSE;
-
-			if (g_bShowRefStars)
-			{
-				if (vVotedPairs.size())
-				{
-					for (LONG i = 0; i < vVotedPairs.size() && !bResult; i++)
-					{
-						if (lStar == vVotedPairs[i].m_RefStar)
-							bResult = true;
-					};
-				}
-				else
-					bResult = true;
-			}
-			else
-				bResult = true;
-
-			return bResult;
-		};
-
-		bool isTgtStarVoted(LONG lStar)
+		template <bool Refstar>
+		bool isStarVoted(const int star)
 		{
 			bool bResult = false;
-
 			if (g_bShowRefStars)
 			{
-				if (vVotedPairs.size())
+				if (!vVotedPairs.empty())
 				{
-					for (LONG i = 0; i < vVotedPairs.size() && !bResult; i++)
+					for (const auto& votedPair : vVotedPairs)
 					{
-						if (lStar == vVotedPairs[i].m_TgtStar)
-							bResult = true;
-					};
+						if constexpr (Refstar)
+							if (star == votedPair.m_RefStar)
+							{
+								bResult = true;
+								break;
+							}
+						else
+							if (star == votedPair.m_TgtStar)
+							{
+								bResult = true;
+								break;
+							}
+					}
 				}
 				else
 					bResult = true;
@@ -313,7 +257,18 @@ namespace DSS
 				bResult = true;
 
 			return bResult;
-		};
+		}
+
+		bool isRefStarVoted(const int lStar)
+		{
+			return this->isStarVoted<true>(lStar);
+		}
+
+		bool isTgtStarVoted(const int lStar)
+		{
+			return this->isStarVoted<false>(lStar);
+		}
+
 
 		void initGrayBitmap(const QRect& rc);
 		void detectStars(const QPointF& pt, QRect& rc, STARVECTOR& vStars);
