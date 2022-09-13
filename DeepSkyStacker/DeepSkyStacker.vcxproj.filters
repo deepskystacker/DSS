@@ -108,9 +108,6 @@
     <ClCompile Include="ResultParameters.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
-    <ClCompile Include="StackingDlg.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
     <ClCompile Include="StackingParameters.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -395,6 +392,9 @@
     </ClCompile>
     <ClCompile Include="dsstoolbar.cpp">
       <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="StackingDlg.cpp">
+      <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1866,9 +1866,9 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 
 		if (std::FILE* hFile =
 #if defined _WINDOWS
-			_wfopen(file.c_str(), L"wt")
+			_wfopen(file.generic_wstring().c_str(), L"wt")
 #else
-			std::fopen(file.c_str(), "wt")
+			std::fopen(file.generic_string().c_str(), "wt")
 #endif
 			)
 		{
@@ -1885,7 +1885,7 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 			folders.append(QString::fromStdU16String(dir.generic_u16string()));
 	};
 
-	return !folders.isEmpty();
+	return folders.isEmpty();
 };
 
 /* ------------------------------------------------------------------- */

@@ -41,9 +41,6 @@ class QMouseEvent;
 
 namespace DSS
 {
-    class EditStars;
-    class SelectRect;
-
     class ToolBar : public QToolBar
     {
         Q_OBJECT
@@ -52,7 +49,7 @@ namespace DSS
             Inherited;
 
     public:
-        explicit ToolBar(QWidget* parent, DSS::EditStars* ed, DSS::SelectRect* sel);
+        explicit ToolBar(QWidget* parent);
 
         
         ~ToolBar() {};
@@ -61,8 +58,6 @@ namespace DSS
         ToolBar(const ToolBar& rhs) = delete;
         ToolBar& operator = (const ToolBar& rhs) = delete;
 
-
-
         inline void setOpacity(qreal opacity, bool upd)
         {
             opacityEffect.setOpacity(opacity);
@@ -70,6 +65,11 @@ namespace DSS
 
             if (upd) update();
         };
+
+        inline void setSaveEnabled(bool value)
+        {
+            saveAction->setEnabled(value);
+        }
 
     protected:
         inline void enterEvent([[maybe_unused]] QEvent* e) override
@@ -89,9 +89,6 @@ namespace DSS
         void mousePressEvent(QMouseEvent* e) override;
 
     private:
-
-        EditStars* editor;
-        SelectRect* selectRect;
 
         QIcon selRect;
         QIcon selStars;

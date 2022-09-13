@@ -39,13 +39,19 @@
 #include "stdafx.h"
 
 #include <QAction>
+#include <QDebug>
 #include <QMenu>
 #include <QMessageBox>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 #include <QTreeWidget>
+#include <QPainter>
+#include <QTextLayout>
 #include <QShowEvent>
 #include <QSettings>
+#include <QStyledItemDelegate>
+#include <QStyleOptionViewItem>
+#include <QStyleOptionButton>
 #include <QUrl>
 
 #include <filesystem>
@@ -76,10 +82,42 @@
 #include "dsstoolbar.h"
 #include "ui/ui_StackingDlg.h"
 
+
 #include <ZExcept.h>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
+
+namespace
+{
+	static QSizeF viewItemTextLayout(QTextLayout& textLayout, int lineWidth, int maxHeight = -1, int* lastVisibleLine = nullptr)
+	{
+		if (lastVisibleLine)
+			*lastVisibleLine = -1;
+		qreal height = 0;
+		qreal widthUsed = 0;
+		textLayout.beginLayout();
+		int i = 0;
+		while (true) {
+			QTextLine line = textLayout.createLine();
+			if (!line.isValid())
+				break;
+			line.setLineWidth(lineWidth);
+			line.setPosition(QPointF(0, height));
+			height += line.height();
+			widthUsed = qMax(widthUsed, line.naturalTextWidth());
+			// we assume that the height of the next line is the same as the current one
+			if (maxHeight > 0 && lastVisibleLine && height + line.height() > maxHeight) {
+				const QTextLine nextLine = textLayout.createLine();
+				*lastVisibleLine = nextLine.isValid() ? i : -1;
+				break;
+			}
+			++i;
+		}
+		textLayout.endLayout();
+		return QSizeF(widthUsed, height);
+	}
+}
 
 namespace DSS
 {
@@ -104,6 +142,171 @@ namespace DSS
 		QCoreApplication::translate("StackingDlg", "FITS Files (*.fits *.fit *.fts)"),
 		QCoreApplication::translate("StackingDlg", "All Files (*)")
 		});
+
+
+	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
+		const QFont& font, const QRect& textRect, const Qt::Alignment valign,
+		Qt::TextElideMode textElideMode, int flags,
+		bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const
+	{
+		QTextLayout textLayout(text, font);
+		textLayout.setTextOption(textOption);
+
+		// In AlignVCenter mode when more than one line is displayed and the height only allows
+		// some of the lines it makes no sense to display those. From a users perspective it makes
+		// more sense to see the start of the text instead something inbetween.
+		const bool vAlignmentOptimization = paintStartPosition && valign.testFlag(Qt::AlignVCenter);
+
+		int lastVisibleLine = -1;
+		viewItemTextLayout(textLayout, textRect.width(), vAlignmentOptimization ? textRect.height() : -1, &lastVisibleLine);
+
+		const QRectF boundingRect = textLayout.boundingRect();
+		// don't care about LTR/RTL here, only need the height
+		const QRect layoutRect = QStyle::alignedRect(Qt::LayoutDirectionAuto, valign,
+			boundingRect.size().toSize(), textRect);
+
+		if (paintStartPosition)
+			*paintStartPosition = QPointF(textRect.x(), layoutRect.top());
+
+		QString ret;
+		qreal height = 0;
+		const int lineCount = textLayout.lineCount();
+		for (int i = 0; i < lineCount; ++i) {
+			const QTextLine line = textLayout.lineAt(i);
+			height += line.height();
+
+			// above visible rect
+			if (height + layoutRect.top() <= textRect.top()) {
+				if (paintStartPosition)
+					paintStartPosition->ry() += line.height();
+				continue;
+			}
+
+			const int start = line.textStart();
+			const int length = line.textLength();
+			const bool drawElided = line.naturalTextWidth() > textRect.width();
+			bool elideLastVisibleLine = lastVisibleLine == i;
+			if (!drawElided && i + 1 < lineCount && lastVisibleLineShouldBeElided) {
+				const QTextLine nextLine = textLayout.lineAt(i + 1);
+				const int nextHeight = height + nextLine.height() / 2;
+				// elide when less than the next half line is visible
+				if (nextHeight + layoutRect.top() > textRect.height() + textRect.top())
+					elideLastVisibleLine = true;
+			}
+
+			QString text = textLayout.text().mid(start, length);
+			if (drawElided || elideLastVisibleLine) {
+				if (elideLastVisibleLine) {
+					if (text.endsWith(QChar::LineSeparator))
+						text.chop(1);
+					text += QChar(0x2026);
+				}
+				QFontMetrics fontMetrics(font);
+				ret += fontMetrics.elidedText(text, textElideMode, textRect.width());
+
+				// no newline for the last line (last visible or real)
+				// sometimes drawElided is true but no eliding is done so the text ends
+				// with QChar::LineSeparator - don't add another one. This happened with
+				// arabic text in the testcase for QTBUG-72805
+				if (i < lineCount - 1 &&
+					!ret.endsWith(QChar::LineSeparator))
+					ret += QChar::LineSeparator;
+			}
+			else {
+				ret += text;
+			}
+
+			// below visible text, can stop
+			if ((height + layoutRect.top() >= textRect.bottom()) ||
+				(lastVisibleLine >= 0 && lastVisibleLine == i))
+				break;
+		}
+		return ret;
+	}
+
+
+	void IconSizeDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+	{
+		Q_ASSERT(index.isValid());
+		QStyleOptionViewItem opt{ option };
+		initStyleOption(&opt, index);
+
+		QStyle* style = opt.widget ? opt.widget->style() : QApplication::style();
+
+		constexpr uint neededFeatures
+		{ static_cast<uint>(QStyleOptionViewItem::HasCheckIndicator |
+			QStyleOptionViewItem::HasDisplay |
+			QStyleOptionViewItem::HasDecoration) };
+
+		Q_ASSERT(neededFeatures == (opt.features & neededFeatures));
+		
+		QIcon icon = qvariant_cast<QIcon> (index.model()->data(index, Qt::DecorationRole)); 
+
+		painter->save();
+
+		QRect checkRect = style->subElementRect(QStyle::SE_ItemViewItemCheckIndicator, &opt);
+		QRect iconRect = style->subElementRect(QStyle::SE_ItemViewItemDecoration, &opt);
+		QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &opt);
+		
+		//
+		// Draw the check box normally
+		//
+		QStyleOptionButton checkBoxStyle;
+		//constexpr int size = 17;
+		constexpr int space = 6;
+		checkBoxStyle.rect = checkRect;
+		//checkBoxStyle.rect = QRect(opt.rect.x(),
+		//	opt.rect.center().y() - (size / 2),
+		//	size,
+		//	size);
+		
+		checkBoxStyle.state = (Qt::Checked == opt.checkState) ? QStyle::State_On : QStyle::State_Off;
+		style->drawPrimitive(QStyle::PE_IndicatorItemViewItemCheck, &checkBoxStyle, painter);
+
+		//
+		// Draw the icon twice as large as the default
+		//
+		QSize iconSize = opt.decorationSize;
+		iconSize.scale(2 * iconSize.width(), 2 * iconSize.height(), Qt::KeepAspectRatio);
+		iconRect.setWidth(iconSize.width()); iconRect.setHeight(iconSize.height());
+		iconRect.setTop(opt.rect.center().y() - (iconSize.height() / 2));
+		// draw the icon
+		QIcon::Mode mode = QIcon::Normal;
+		if (!(opt.state & QStyle::State_Enabled))
+			mode = QIcon::Disabled;
+		else if (opt.state & QStyle::State_Selected)
+			mode = QIcon::Selected;
+		QIcon::State state = opt.state & QStyle::State_Open ? QIcon::On : QIcon::Off;
+		opt.icon.paint(painter, iconRect, opt.decorationAlignment, mode, state);
+		//QPixmap iconPixmap{ icon.pixmap(iconSize) };
+		//painter->drawPixmap(nextRect.x(), nextRect.center().y() - (iconSize.height() / 2), iconPixmap);
+
+		//
+		// Draw the text as normal
+		//
+		textRect.setLeft(iconRect.right() + 2);
+		QFontMetrics fontMetrics(opt.font);
+		const int textMargin = style->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr) + 1;
+		textRect = textRect.adjusted(textMargin, 0, -textMargin, 0); // remove width padding
+		const bool wrapText = opt.features & QStyleOptionViewItem::WrapText;
+		QTextOption textOption;
+		textOption.setWrapMode(wrapText ? QTextOption::WordWrap : QTextOption::ManualWrap);
+		textOption.setTextDirection(opt.direction);
+		textOption.setAlignment(QStyle::visualAlignment(opt.direction, opt.displayAlignment));
+
+		QPointF paintPosition;
+		const QString newText = calculateElidedText(opt.text, textOption,
+			opt.font, textRect, opt.displayAlignment,
+			opt.textElideMode, 0,
+			true, &paintPosition);
+
+		QTextLayout textLayout(newText, opt.font);
+		textLayout.setTextOption(textOption);
+		viewItemTextLayout(textLayout, textRect.width());
+		textLayout.draw(painter, paintPosition);
+
+		painter->restore();
+	}
 
 	/////////////////////////////////////////////////////////////////////////////
 	// StackingDlg dialog
@@ -151,7 +354,8 @@ namespace DSS
 		ui->picture->setVisible(true);
 		editStarsPtr = std::make_unique<EditStars>(ui->picture);
 		selectRectPtr = std::make_unique<SelectRect>(ui->picture);
-		pToolBar = std::make_unique<ToolBar>(this, editStarsPtr.get(), selectRectPtr.get());
+		pToolBar = std::make_unique<ToolBar>(this);
+		pToolBar->setObjectName(QString::fromUtf8("toolBar"));
 		pToolBar->setVisible(false);
 
 		ui->picture->setToolBar(pToolBar.get());
@@ -161,6 +365,14 @@ namespace DSS
 			openFileList(startingFileList);
 
 		ui->tableView->setModel(frameList.currentTableModel());
+		//
+		// The default icon display is really rather small, so use a subclass
+		// of QStyledItemDelegate to handle the rendering for column zero of 
+		// the table with the icon doubled in size.
+		//
+		IconSizeDelegate* iconSizeDelegate{ new IconSizeDelegate() };
+		ui->tableView->setItemDelegateForColumn(0, iconSizeDelegate);
+
 		//
 		// Reduce font size and increase weight
 		//
@@ -312,6 +524,44 @@ namespace DSS
 			editStarsPtr->setBitmap(nullptr);
 		};
 	};
+
+	void StackingDlg::toolBar_rectButtonPressed([[maybe_unused]] bool checked)
+	{
+		qDebug() << "StackingDlg: rectButtonPressed";
+		editStarsPtr->rectButtonPressed();
+		selectRectPtr->rectButtonPressed();
+	}
+
+	void StackingDlg::toolBar_starsButtonPressed([[maybe_unused]] bool checked)
+	{
+		qDebug() << "StackingDlg: starsButtonPressed";
+		//CheckAskRegister(); TODO
+		editStarsPtr->starsButtonPressed();
+		selectRectPtr->starsButtonPressed();
+	}
+
+	void StackingDlg::toolBar_cometButtonPressed([[maybe_unused]] bool checked)
+	{
+		qDebug() << "StackingDlg: cometButtonPressed";
+		// TODO CheckAskRegister();
+		editStarsPtr->cometButtonPressed();
+		selectRectPtr->cometButtonPressed();
+	}
+
+	void StackingDlg::toolBar_saveButtonPressed([[maybe_unused]] bool checked)
+	{
+		editStarsPtr->saveRegisterSettings();
+		pToolBar->setSaveEnabled(false);
+		// Update the list with the new info
+		//frameList.updateItemScores(m_strShowFile); //TODO
+	}
+
+	void StackingDlg::pictureChanged()
+	{
+		// Here check if the new image is dirty
+		//if (editStarsPtr->isDirty())
+		pToolBar->setSaveEnabled(true);
+	}
 
 	bool StackingDlg::fileAlreadyLoaded(const fs::path& file)
 	{
@@ -934,7 +1184,7 @@ namespace DSS
 		if (checkEditChanges() && checkWorkspaceChanges())
 		{
 			frameList.clear();
-			//m_EditStarSink.SetBitmap(nullptr);
+			editStarsPtr->setBitmap(nullptr);
 			m_strShowFile.clear();
 			ui->information->setText(m_strShowFile);
 			imageLoader.clearCache();
@@ -2208,12 +2458,6 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void CStackingDlg::OnPictureChange(NMHDR* pNMHDR, LRESULT* pResult)
-	{
-		// Here check if the new image is dirty
-		if (m_EditStarSink.IsDirty())
-			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, TRUE);
-	};
 
 	/* ------------------------------------------------------------------- */
 
@@ -2262,41 +2506,6 @@ namespace DSS
 	};
 
 	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::ButtonToolbar_OnCheck(DWORD dwID, CButtonToolbar * pButtonToolbar)
-	{
-		switch (dwID)
-		{
-		case IDC_EDIT_COMET :
-			if (pButtonToolbar->IsChecked(dwID))
-			{
-				CheckAskRegister();
-				pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
-				pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
-				m_EditStarSink.SetCometMode(TRUE);
-				m_Picture.SetImageSink(&m_EditStarSink);
-			};
-			break;
-		case IDC_EDIT_STAR :
-			if (pButtonToolbar->IsChecked(dwID))
-			{
-				CheckAskRegister();
-				pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
-				pButtonToolbar->Check(IDC_EDIT_SELECT, FALSE);
-				m_EditStarSink.SetCometMode(FALSE);
-				m_Picture.SetImageSink(&m_EditStarSink);
-			};
-			break;
-		case IDC_EDIT_SELECT :
-			if (pButtonToolbar->IsChecked(dwID))
-			{
-				pButtonToolbar->Check(IDC_EDIT_COMET, FALSE);
-				pButtonToolbar->Check(IDC_EDIT_STAR, FALSE);
-				m_Picture.SetImageSink(&m_SelectRectSink);
-			};
-			break;
-		};
-	};
 
 	/* ------------------------------------------------------------------- */
 

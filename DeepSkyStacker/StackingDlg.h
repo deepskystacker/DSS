@@ -25,6 +25,7 @@ class QNetworkReply;
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QStyledItemDelegate>
 
 namespace DSS
 {
@@ -44,10 +45,37 @@ namespace std::filesystem
 	class path;
 }
 
+class QTextOption;
+
 namespace fs = std::filesystem;
 
 namespace DSS
 {
+
+	class IconSizeDelegate : public QStyledItemDelegate
+	{
+		Q_OBJECT
+
+	public:
+		using QStyledItemDelegate::QStyledItemDelegate;
+
+
+	protected:
+		void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+		//inline QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+		//{
+		//	QSize result = QStyledItemDelegate::sizeHint(option, index);
+		//	result.setHeight(result.height() * 1.2);
+		//	return result;
+		//}
+
+		QString calculateElidedText(const QString& text, const QTextOption& textOption,
+			const QFont& font, const QRect& textRect, const Qt::Alignment valign,
+			Qt::TextElideMode textElideMode, int flags,
+			bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const;
+
+	};
+
 	class StackingDlg : public QWidget
 	{
 		typedef QWidget
@@ -59,6 +87,11 @@ namespace DSS
 		void setSelectionRect(QRectF rect);
 		void tableViewItemClickedEvent(const QModelIndex&);
 		void imageLoad();
+		
+		void toolBar_rectButtonPressed(bool checked);
+		void toolBar_starsButtonPressed(bool checked);
+		void toolBar_cometButtonPressed(bool checked);
+		void toolBar_saveButtonPressed(bool checked);
 
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr);
@@ -118,6 +151,8 @@ namespace DSS
 		}
 
 		void reloadCurrentImage();
+
+		void pictureChanged();
 
 
 	private:

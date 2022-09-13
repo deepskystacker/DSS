@@ -1519,7 +1519,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 				if (pProgress)
 				{
-					strText.Format(IDS_REGISTERINGPICTURE, static_cast<int>(j), lTotalRegistered);
+					strText.Format(IDS_REGISTERINGPICTURE, static_cast<int>(j+1), lTotalRegistered);
 					pProgress->Progress1(strText, static_cast<int>(j));
 				};
 

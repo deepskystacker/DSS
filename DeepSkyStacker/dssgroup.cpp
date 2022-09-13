@@ -140,6 +140,8 @@ namespace DSS
 
 		};
 
+		pathToGroup.emplace(file, Index);
+
 		pictures.addImage(lb);
 
 

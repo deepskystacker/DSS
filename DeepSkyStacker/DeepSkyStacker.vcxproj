@@ -409,7 +409,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="SettingsDlg.cpp" />
     <ClCompile Include="SetUILanguage.cpp" />
     <ClCompile Include="StackedBitmap.cpp" />
-    <ClCompile Include="StackingDlg.cpp" />
+    <ClCompile Include="StackingDlg.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="StackingEngine.cpp" />
     <ClCompile Include="StackingParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>

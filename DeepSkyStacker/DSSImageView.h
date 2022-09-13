@@ -112,6 +112,8 @@ namespace DSS
             );
         };
 
+        void  clearOverlay();
+
         void clear();
 
     public slots:

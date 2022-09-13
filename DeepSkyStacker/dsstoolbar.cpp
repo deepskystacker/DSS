@@ -34,9 +34,11 @@
 **
 ****************************************************************************/
 #include "stdafx.h"
+#include <QDebug>
 #include <QMenu>
 #include <QMouseEvent>
 
+#include "StackingDlg.h"
 #include "dsseditstars.h"
 #include "dssselectrect.h"
 #include "dsstoolbar.h"
@@ -46,13 +48,14 @@
 
 namespace DSS
 {
-    ToolBar::ToolBar(QWidget* parent, EditStars* ed, SelectRect* sel) :
+    ToolBar::ToolBar(QWidget* parent) :
         QToolBar(parent),
-        editor{ ed },
-        selectRect{ sel },
         opacityEffect(this),
         selectionGroup(this)
     {
+        StackingDlg* stackingDlg = dynamic_cast<StackingDlg*>(parent);
+        Q_ASSERT(nullptr != stackingDlg);
+
         constexpr int iconpixels = 48;
         constexpr int radius = 27;
 
@@ -78,36 +81,49 @@ namespace DSS
 
         setOrientation(Qt::Vertical);
 
-        rectAction = addAction(selRect, "");
+        rectAction = addAction(selRect, "",
+            [=]()   {   this->rectAction->setChecked(true);
+                        this->starsAction->setChecked(false);
+                        this->cometAction->setChecked(false);
+                    });
         rectAction->setToolTip(tr(
             "Custom Rectangle Mode:\n"
             "This mode allows you to create or modify a Custom Rectangle\n"
             "defining the part of the images you wish to stack.",
             "IDS_TOOLTIP_SELECTRECT"
         ));
-        connect(rectAction, &QAction::triggered, editor, &EditStars::rectButtonChecked);
-        connect(rectAction, &QAction::triggered, selectRect, &SelectRect::rectButtonChecked);
 
-        starsAction = addAction(selStars, "");
+        StackingDlg* pStackingDlg{ dynamic_cast<StackingDlg*>(parent) };
+        ZASSERT(pStackingDlg);
+
+        connect(rectAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_rectButtonPressed);
+ 
+        starsAction = addAction(selStars, "",
+            [=]()   {   this->rectAction->setChecked(false);
+                        this->starsAction->setChecked(true);
+                        this->cometAction->setChecked(false);
+                    });     
         starsAction->setToolTip(tr(
             "Edit Stars Mode:\n"
             "This mode shows the stars that have been detected in the image.\n"
             "You can add additional stars or remove incorrectly detected stars.",
             "IDS_TOOLTIP_STAR"
         ));
-        connect(starsAction, &QAction::triggered, editor, &EditStars::starsButtonChecked);
-        connect(starsAction, &QAction::triggered, selectRect, &SelectRect::starsButtonChecked);
-
-        cometAction = addAction(selComet, "");
+        connect(starsAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_starsButtonPressed);
+ 
+        cometAction = addAction(selComet, "",
+            [=]()   {   this->rectAction->setChecked(false);
+                        this->starsAction->setChecked(false);
+                        this->cometAction->setChecked(true);
+                    });
         cometAction->setToolTip(tr(
             "Edit Comet Mode:\n"
             "This mode allows you to select and edit the location\n"
             "of the comet's nucleus in the image.",
             "IDS_TOOLTIP_COMET"
         ));
-        connect(cometAction, &QAction::triggered, editor, &EditStars::cometButtonChecked);
-        connect(cometAction, &QAction::triggered, selectRect, &SelectRect::cometButtonChecked);
-
+        connect(cometAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_cometButtonPressed);
+ 
         saveAction = addAction(saveButton, "");
         saveAction->setToolTip(tr(
             "Save changes:\n"
@@ -116,8 +132,7 @@ namespace DSS
             "Right Click to change behaviour.",
             "IDS_TOOLTIP_SAVE"
         ));
-        connect(saveAction, &QAction::triggered, editor, &EditStars::saveButtonPressed);
-        connect(saveAction, &QAction::triggered, selectRect, &SelectRect::saveButtonPressed);
+        connect(saveAction, &QAction::triggered, pStackingDlg, &StackingDlg::toolBar_saveButtonPressed);
 
         rectAction->setCheckable(true);
         starsAction->setCheckable(true);
@@ -128,6 +143,7 @@ namespace DSS
         selectionGroup.setExclusive(true);
         rectAction->setChecked(true);
         rectAction->activate(QAction::Trigger);
+        saveAction->setEnabled(false);
 
         setIconSize(iconSize);
         adjustSize();
@@ -176,7 +192,7 @@ namespace DSS
 
     void ToolBar::setSaveMode(int mode)
     {
-        SetSaveEditMode(static_cast<EditSaveMode>(mode));
+        ::SetSaveEditMode(static_cast<EditSaveMode>(mode));
     }
 
     void ToolBar::mousePressEvent(QMouseEvent* event)

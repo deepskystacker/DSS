@@ -69,11 +69,11 @@ namespace DSS
         void mousePressEvent(QMouseEvent* e);
         void mouseMoveEvent(QMouseEvent* e);
         void mouseReleaseEvent(QMouseEvent* e);
-        void resizeEvent(QResizeEvent* e);
+        void resizeMe(QResizeEvent* e);
 
-        void rectButtonChecked();
-        void starsButtonChecked();
-        void cometButtonChecked();
+        void rectButtonPressed();
+        void starsButtonPressed();
+        void cometButtonPressed();
         void saveButtonPressed();
 
     signals:

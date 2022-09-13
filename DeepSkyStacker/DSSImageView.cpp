@@ -204,16 +204,18 @@ namespace DSS
                 //
                 // Draw the overlay image in the same way that we drew the main image
                 //
-                painter.save();
-                painter.translate(m_origin);
-                painter.scale(m_zoom * m_scale, m_zoom * m_scale);
-                painter.translate(-m_origin);
+                //painter.save();
+                //painter.translate(m_origin);
+                //painter.scale(m_zoom * m_scale, m_zoom * m_scale);
+                //painter.translate(-m_origin);
 
                 //
                 // Finally draw the rectangle of interest at the origin location
                 //
-                painter.drawPixmap(m_origin, *pOverlayPixmap, rectOfInterest);
-                painter.restore();
+                //painter.drawPixmap(m_origin, *pOverlayPixmap, rectOfInterest);
+                //painter.restore();
+                painter.setBackgroundMode(Qt::TransparentMode);
+                painter.drawPixmap(0, 0, *pOverlayPixmap);
             }
 
         }
@@ -436,6 +438,13 @@ namespace DSS
             rect.top() + rect.height() / 2 + 3
         );
 
+    }
+
+    void  ImageView::clearOverlay()
+    {
+        pOverlayPixmap.reset(nullptr);
+        drawOnPixmap();
+        update();
     }
 
     void ImageView::clear()

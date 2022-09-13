@@ -169,7 +169,7 @@ namespace DSS
             painter.drawRect(rect
                 .adjusted(0, 0, -1, -1));
             size = fontMetrics.size(0, x2Text);
-            painter.drawText(rect.right() - (size.width() + 2), rect.bottom() - 2, x2Text);
+            painter.drawText(rect.right() - ((qreal)size.width() + 2), rect.bottom() - 2, x2Text);
         }
 
         if (!rect3x.isEmpty() && selecting)
@@ -178,7 +178,7 @@ namespace DSS
             painter.drawRect(rect
                 .adjusted(0, 0, -1, -1));
             size = fontMetrics.size(0, x3Text);
-            painter.drawText(rect.right() - (size.width() + 2), rect.bottom() - 2, x3Text);
+            painter.drawText(rect.right() - ((qreal)size.width() + 2), rect.bottom() - 2, x3Text);
         }
 
     }
@@ -312,21 +312,20 @@ namespace DSS
         update();
     }
 
-    void SelectRect::resizeEvent(QResizeEvent* e)
+    void SelectRect::resizeMe(QResizeEvent* e)
     {
         resize(e->size());
-
     }
 
-    void SelectRect::rectButtonChecked()
+    void SelectRect::rectButtonPressed()
     {
         connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
         connect(imageView, SIGNAL(Image_mouseReleaseEvent(QMouseEvent*)), this, SLOT(mouseReleaseEvent(QMouseEvent*)));
-        connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeEvent(QResizeEvent*)));
+        connect(imageView, SIGNAL(Image_resizeEvent(QResizeEvent*)), this, SLOT(resizeMe(QResizeEvent*)));
     }
 
-    void SelectRect::starsButtonChecked()
+    void SelectRect::starsButtonPressed()
     {
         //
         // No longer interested in signals from the imageView object
@@ -334,7 +333,7 @@ namespace DSS
         imageView->disconnect(this, nullptr);
     }
 
-    void SelectRect::cometButtonChecked()
+    void SelectRect::cometButtonPressed()
     {
         //
         // No longer interested in signals from the imageView object

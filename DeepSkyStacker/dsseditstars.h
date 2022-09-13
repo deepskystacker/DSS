@@ -146,33 +146,7 @@ namespace DSS
             };
         };
 
-		void SetBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
-		{
-			m_pBitmap = pBitmap;
-			m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
-			m_bDirty = false;
-			m_fBackground = 0;
-			if (static_cast<bool>(m_pBitmap))
-				computeBackgroundValue();
-		}
-
-
-
-    public slots:
-		void leaveEvent(QEvent* e);
-        void mousePressEvent(QMouseEvent* e);
-        void mouseMoveEvent(QMouseEvent* e);
-        void mouseReleaseEvent(QMouseEvent* e);
-		void resizeEvent(QResizeEvent* e);
-
-        void rectButtonChecked();
-        void starsButtonChecked();
-        void cometButtonChecked();
-        void saveButtonPressed();
-
-        void setLightFrame(QString name);
-
-        void setBitmap(std::shared_ptr<CMemoryBitmap> bmp)
+		void setBitmap(std::shared_ptr<CMemoryBitmap> bmp)
 		{
 			m_pBitmap = bmp;
 			m_GrayBitmap.Init(RCCHECKSIZE + 1, RCCHECKSIZE + 1);
@@ -196,6 +170,25 @@ namespace DSS
 			refStars.clear();
 		};
 
+		void saveRegisterSettings();
+
+    public slots:
+		void leaveEvent(QEvent* e);
+        void mousePressEvent(QMouseEvent* e);
+        void mouseMoveEvent(QMouseEvent* e);
+        void mouseReleaseEvent(QMouseEvent* e);
+		void resizeMe(QResizeEvent* e);
+
+        void rectButtonPressed();
+        void starsButtonPressed();
+        void cometButtonPressed();
+        void saveButtonPressed();
+
+        void setLightFrame(QString name);
+		inline void setCometMode(bool mode)
+		{
+			m_bCometMode = mode;
+		}
 
 	protected:
 		bool event(QEvent* event) override;
@@ -205,6 +198,7 @@ namespace DSS
 
     private:
         ImageView* imageView;
+		QPixmap pixmap;
         QString fileName;
         STARVECTOR	stars;
         STARVECTOR	refStars;
@@ -214,7 +208,7 @@ namespace DSS
 		QPointF					m_ptCursor;
 		CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
 		EditStarAction				m_Action;
-		QPixmap pixmap;
+		//QPixmap pixmap;
 		CStar						m_AddedStar;
 		int							m_lRemovedIndice;
 		bool						m_bRemoveComet;
@@ -232,29 +226,62 @@ namespace DSS
 		bool displayGrid;
 		uint m_tipShowCount;
 
-       	template <bool Refstar>
-		bool isStarVoted(const int star)
+  //     	template <bool Refstar>
+		//bool isStarVoted(const int star)
+		//{
+		//	bool bResult = false;
+		//	if (g_bShowRefStars)
+		//	{
+		//		if (!vVotedPairs.empty())
+		//		{
+		//			for (const auto& votedPair : vVotedPairs)
+		//			{
+		//				if constexpr (Refstar)
+		//					if (star == votedPair.m_RefStar)
+		//					{
+		//						bResult = true;
+		//						break;
+		//					}
+		//				else
+		//					if (star == votedPair.m_TgtStar)
+		//					{
+		//						bResult = true;
+		//						break;
+		//					}
+		//			}
+		//		}
+		//		else
+		//			bResult = true;
+		//	}
+		//	else
+		//		bResult = true;
+
+		//	return bResult;
+		//}
+
+		//bool isRefStarVoted(const int lStar)
+		//{
+		//	return this->isStarVoted<true>(lStar);
+		//}
+
+		//bool isTgtStarVoted(const int lStar)
+		//{
+		//	return this->isStarVoted<false>(lStar);
+		//}
+
+		bool isRefStarVoted(LONG lStar)
 		{
-			bool bResult = false;
+			bool bResult = FALSE;
+
 			if (g_bShowRefStars)
 			{
-				if (!vVotedPairs.empty())
+				if (vVotedPairs.size())
 				{
-					for (const auto& votedPair : vVotedPairs)
+					for (LONG i = 0; i < vVotedPairs.size() && !bResult; i++)
 					{
-						if constexpr (Refstar)
-							if (star == votedPair.m_RefStar)
-							{
-								bResult = true;
-								break;
-							}
-						else
-							if (star == votedPair.m_TgtStar)
-							{
-								bResult = true;
-								break;
-							}
-					}
+						if (lStar == vVotedPairs[i].m_RefStar)
+							bResult = true;
+					};
 				}
 				else
 					bResult = true;
@@ -263,17 +290,30 @@ namespace DSS
 				bResult = true;
 
 			return bResult;
-		}
+		};
 
-		bool isRefStarVoted(const int lStar)
+		bool isTgtStarVoted(LONG lStar)
 		{
-			return this->isStarVoted<true>(lStar);
-		}
+			bool bResult = false;
 
-		bool isTgtStarVoted(const int lStar)
-		{
-			return this->isStarVoted<false>(lStar);
-		}
+			if (g_bShowRefStars)
+			{
+				if (vVotedPairs.size())
+				{
+					for (LONG i = 0; i < vVotedPairs.size() && !bResult; i++)
+					{
+						if (lStar == vVotedPairs[i].m_TgtStar)
+							bResult = true;
+					};
+				}
+				else
+					bResult = true;
+			}
+			else
+				bResult = true;
+
+			return bResult;
+		};
 
 		void initGrayBitmap(const QRect& rc);
 		void detectStars(const QPointF& pt, QRect& rc, STARVECTOR& vStars);
@@ -301,6 +341,19 @@ namespace DSS
 		void drawOnPixmap();
 
 		void drawQualityGrid(QPainter& painter, const QRect& rcClient);
+
+		/*!
+        \fn void SelectRect::setGeometry(const QRect &rect)
+
+        Sets the geometry of to \a rect, specified in the coordinate system
+        of its parent widget.
+
+        \sa QWidget::geometry
+	    */
+		inline void setGeometry(const QRect& geom)
+		{
+			Inherited::setGeometry(geom);
+		}
 
     };
 }
