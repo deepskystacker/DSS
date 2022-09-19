@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
-#include "DeepStackerDlg.h"
 #include "ProcessingDlg.h"
 #include "ProgressDlg.h"
 #include <algorithm>

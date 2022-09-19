@@ -114,8 +114,8 @@ Image*	CButtonToolbar::GetImage()
 		Rect				rc(rcPosition.left-1, rcPosition.top-1+BUTTONTOOLBARSIZE/2, rcPosition.Width(), rcPosition.Height()-BUTTONTOOLBARSIZE+2);
 
 		path.AddRectangle(rc);
-		path.AddEllipse(rcPosition.left-1, rcPosition.top-1, BUTTONTOOLBARSIZE+2, BUTTONTOOLBARSIZE+2);
-		path.AddEllipse(rcPosition.left-1, rcPosition.bottom-BUTTONTOOLBARSIZE-1, BUTTONTOOLBARSIZE+2, BUTTONTOOLBARSIZE+2);
+		path.AddEllipse((INT)rcPosition.left-1, (INT)rcPosition.top-1, (INT)BUTTONTOOLBARSIZE+2, (INT)BUTTONTOOLBARSIZE+2);
+		path.AddEllipse((INT)rcPosition.left-1, (INT)rcPosition.bottom-BUTTONTOOLBARSIZE-1, (INT)BUTTONTOOLBARSIZE+2, (INT)BUTTONTOOLBARSIZE+2);
 
 		path.Flatten();
 
@@ -134,16 +134,16 @@ Image*	CButtonToolbar::GetImage()
 		switch (m_vButtons[i].m_Status)
 		{
 		case MBS_UP :
-			graphics.DrawImage(m_vButtons[i].m_pUp, rcPosition.left+1, rcPosition.top+1+i*BUTTONTOOLBARSIZE);
+			graphics.DrawImage(m_vButtons[i].m_pUp, (INT)rcPosition.left+1, (INT)rcPosition.top+1+i*BUTTONTOOLBARSIZE);
 			break;
 		case MBS_DOWN :
-			graphics.DrawImage(m_vButtons[i].m_pDown, rcPosition.left+1, rcPosition.top+1+i*BUTTONTOOLBARSIZE);
+			graphics.DrawImage(m_vButtons[i].m_pDown, (INT)rcPosition.left+1, (INT)rcPosition.top+1+i*BUTTONTOOLBARSIZE);
 			break;
 		case MBS_DISABLED :
-			graphics.DrawImage(m_vButtons[i].m_pDisabled, rcPosition.left+1, rcPosition.top+1+i*BUTTONTOOLBARSIZE);
+			graphics.DrawImage(m_vButtons[i].m_pDisabled, (INT)rcPosition.left+1, (INT)rcPosition.top+1+i*BUTTONTOOLBARSIZE);
 			break;
 		case MBS_HOT :
-			graphics.DrawImage(m_vButtons[i].m_pHot, rcPosition.left+1, rcPosition.top+1+i*BUTTONTOOLBARSIZE);
+			graphics.DrawImage(m_vButtons[i].m_pHot, (INT)rcPosition.left+1, (INT)rcPosition.top+1+i*BUTTONTOOLBARSIZE);
 			break;
 		};
 	};

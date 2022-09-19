@@ -56,7 +56,6 @@ extern bool		g_bShowRefStars;
 #include "dssselectrect.h"
 #include "DSSCommon.h"
 #include "commonresource.h"
-#include "DeepStackerDlg.h"
 
 enum class SelectionMode : quint8
 {
@@ -85,14 +84,10 @@ namespace DSS
         setAttribute(Qt::WA_TransparentForMouseEvents);
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);
-        CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
-
-        if (pDlg)
-        {
-            StackingDlg& stackingDlg{ pDlg->GetStackingDlg() };
-            connect(this, SIGNAL(selectRectChanged(QRectF)),
-                &stackingDlg, SLOT(setSelectionRect(QRectF)));
-        };
+ 
+        StackingDlg& stackingDlg{ DeepSkyStacker::theMainWindow->getStackingDlg() };
+        connect(this, SIGNAL(selectRectChanged(QRectF)),
+            &stackingDlg, SLOT(setSelectionRect(QRectF)));
     }
 
     /*!

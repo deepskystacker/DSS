@@ -62,7 +62,7 @@ namespace DSS
 		//
 		ImageListModel	pictures;
 
-		explicit Group::Group() :
+		explicit Group() :
 			Index(nextIndex++),		// First group is Main Group with Index of 0
 			Dirty(false)
 		{

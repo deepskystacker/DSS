@@ -23,7 +23,6 @@ extern bool		g_bShowRefStars;
 #include "About.h"
 #include "DSSVersion.h"
 #include "DeepSkyStacker.h"
-#include "DeepStackerDlg.h"
 
 //#include "FrameList.h"
 #include "RawDDPSettings.h"
@@ -110,186 +109,91 @@ void ExplorerBar::makeLinks()
 
 void ExplorerBar::onOpenLights()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().onAddPictures();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().onAddPictures();
 }
 void ExplorerBar::onOpenDarks()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().onAddDarks();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().onAddDarks();
 }
 void ExplorerBar::onOpenFlats()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().onAddFlats();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().onAddFlats();
 }
 void ExplorerBar::onOpenDarkFlats()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().onAddDarkFlats();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().onAddDarkFlats();
 }
 void ExplorerBar::onOpenBias()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().onAddOffsets();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().onAddOffsets();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onOpenFilelist()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().loadList();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().loadList();
 }
 void ExplorerBar::onSaveFilelist()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().saveList();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().saveList();
 }
 void ExplorerBar::onClearList()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().clearList();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().clearList();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onCheckAbove()
 {
-	CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().checkAbove();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().checkAbove();
 }
 void ExplorerBar::onCheckAll()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().checkAll();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().checkAll();
 }
 void ExplorerBar::onUncheckAll()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().unCheckAll();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().unCheckAll();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onRegisterChecked()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().registerCheckedImages();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().registerCheckedImages();
 }
 void ExplorerBar::onComputeOffsets()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().computeOffsets();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().computeOffsets();
 }
 void ExplorerBar::onStackChecked()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().stackCheckedImages();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().stackCheckedImages();
 }
 void ExplorerBar::onBatchStacking()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetStackingDlg().batchStack();
-	};
+	DeepSkyStacker::theMainWindow->getStackingDlg().batchStack();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onOpenPicture()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetProcessingDlg().OnLoaddsi();
-	};
+	DeepSkyStacker::theMainWindow->GetProcessingDlg().OnLoaddsi();
 }
 void ExplorerBar::onCopyPicture()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetProcessingDlg().CopyPictureToClipboard();
-	};
+	DeepSkyStacker::theMainWindow->GetProcessingDlg().CopyPictureToClipboard();
 }
 void ExplorerBar::onDoStarMask()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetProcessingDlg().CreateStarMask();
-	};
+	DeepSkyStacker::theMainWindow->GetProcessingDlg().CreateStarMask();
 }
 void ExplorerBar::onSavePicture()
 {
-	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-	if (pDlg)
-	{
-		pDlg->GetProcessingDlg().SavePictureToFile();
-	};
+	DeepSkyStacker::theMainWindow->GetProcessingDlg().SavePictureToFile();
 }
 
 /************************************************************************************/
@@ -579,22 +483,17 @@ void ExplorerBar::mousePressEvent(QMouseEvent *event)
 {
 	if (Qt::LeftButton == event->buttons())
 	{
-		CDeepStackerDlg *	pDlg = GetDeepStackerDlg(nullptr);
-
-		if (pDlg)
+		const auto dwTabID = DeepSkyStacker::theMainWindow->tab();
+		if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
 		{
-			const auto dwTabID = pDlg->GetCurrentTab();
-			if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
-			{
-				// Change tab to stacking
-				pDlg->ChangeTab(IDD_STACKING);
-			}
-			else if (ui->processing->underMouse() && (dwTabID != IDD_PROCESSING))
-			{
-				// Change tab to processing
-				pDlg->ChangeTab(IDD_PROCESSING);
-			};
+			// Change tab to stacking
+			DeepSkyStacker::theMainWindow->setTab(IDD_STACKING);
 		}
+		else if (ui->processing->underMouse() && (dwTabID != IDD_PROCESSING))
+		{
+			// Change tab to processing
+			DeepSkyStacker::theMainWindow->setTab(IDD_PROCESSING);
+		};
 	}
 	Inherited::mousePressEvent(event);
 }

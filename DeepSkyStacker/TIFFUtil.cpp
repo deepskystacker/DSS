@@ -547,7 +547,7 @@ bool CTIFFWriter::Open()
 
 			if (m_strDescription.GetLength())
 			{
-				CStringA temp = CT2CA(m_strDescription);
+				CStringA temp{ CT2CA(m_strDescription) };
 				TIFFSetField(m_tiff, TIFFTAG_IMAGEDESCRIPTION, (LPCSTR)temp);
 			}
 

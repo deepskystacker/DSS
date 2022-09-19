@@ -2,6 +2,7 @@
 #define __FRAMELIST_H__
 
 #include <QModelIndex>
+#include <QString>
 #include "DSSProgress.h"
 #include "BitmapExt.h"
 #include "FrameInfo.h"
@@ -10,6 +11,7 @@
 
 #include "StackingTasks.h"
 #include "RegisterEngine.h"
+#include "dssgroup.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -237,8 +239,6 @@ public :
 		return bResult;
 	};
 };
-
-#include "dssgroup.h"
 
 namespace DSS
 {

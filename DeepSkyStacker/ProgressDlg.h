@@ -94,7 +94,6 @@ private :
 	int					m_lLastTotal2;
 	bool				m_bFirstProgress;
 	bool				m_bEnableCancel;
-	CDeepStackerDlg*	m_pDeepStackerDlg;
 
 private:
 	void CreateProgressDialog()
@@ -112,8 +111,7 @@ private:
 
 			// Disable child dialogs of DeepSkyStackerDlg
 
-			if (m_pDeepStackerDlg)
-				m_pDeepStackerDlg->disableSubDialogs();
+			DeepSkyStacker::theMainWindow->disableSubDialogs();
 
 			// Re-enable this window
 			m_dlg.EnableWindow(true);
@@ -131,8 +129,7 @@ public:
 		m_dwLastTime{ 0 },
 		m_lLastTotal1{ 0 },
 		m_lLastTotal2{ 0 },
-		m_bFirstProgress{ false },
-		m_pDeepStackerDlg{ GetDeepStackerDlg(nullptr) }
+		m_bFirstProgress{ false }
 	{}
 
 	virtual ~CDSSProgressDlg()
@@ -209,7 +206,7 @@ public:
 			m_dwLastTime  = dwCurrentTime;
 			m_dlg.m_Progress1.SetPos(lAchieved1);
 
-            GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_UPDATE, lAchieved1, m_lTotal1);
+			//DeepSkyStacker::theMainWindow->PostMessage(WM_PROGRESS_UPDATE, lAchieved1, m_lTotal1); TODO
 
 			if (m_lTotal1 > 1 && lAchieved1 > 1)
 			{
@@ -311,8 +308,7 @@ public:
 		if (nullptr != m_dlg.m_hWnd)
 			m_dlg.EndDialog(true);
 
-		if (m_pDeepStackerDlg != nullptr)
-			m_pDeepStackerDlg->enableSubDialogs();
+		DeepSkyStacker::theMainWindow->enableSubDialogs();
 
 		return true;
 	}

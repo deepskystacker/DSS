@@ -5,7 +5,6 @@
 #include "DeepSkyStacker.h"
 #include "RGBTab.h"
 #include <BtnST.h>
-#include "DeepStackerDlg.h"
 #include "ProcessingDlg.h"
 
 /////////////////////////////////////////////////////////////////////////////

@@ -85,7 +85,7 @@
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;C:\boost_1_80_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -108,6 +108,8 @@
       <TargetMachine>MachineX64</TargetMachine>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalLibraryDirectories>C:\Program Files (x86)\Visual Leak Detector\lib\Win64;C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -144,7 +146,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;C:\boost_1_80_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -176,6 +178,8 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <AdditionalOptions>
       </AdditionalOptions>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -294,7 +298,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="DeepStack.cpp" />
-    <ClCompile Include="DeepStackerDlg.cpp" />
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="dsseditstars.cpp">
@@ -367,10 +370,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="ProcessSettingsSheet.cpp" />
     <ClCompile Include="ProgressDlg.cpp" />
     <ClCompile Include="QLinearGradientCtrl.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="qmfcapp.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -514,7 +513,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="DeBloom.h" />
     <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="DeepStack.h" />
-    <ClInclude Include="DeepStackerDlg.h" />
     <ClInclude Include="Delaunay.h" />
     <ClInclude Include="DropFilesDlg.h" />
     <ClInclude Include="DSS-versionhelpers.h" />
@@ -563,10 +561,10 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="ProcessSettingsSheet.h" />
     <ClInclude Include="ProgressDlg.h" />
     <QtMoc Include="QLinearGradientCtrl.h" />
-    <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="qwinhost.h" />
+    <ClInclude Include="qmfcapp.h" />
     <ClInclude Include="RAWUtils.h" />
     <QtMoc Include="RecommendedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
@@ -731,7 +729,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="QMfcApp" />
     <None Include="QWinHost" />
     <None Include="QWinWidget" />
   </ItemGroup>

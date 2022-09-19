@@ -19,11 +19,11 @@ Copyright (c) 2018-2020, David C. Partridge, Tony Cook, Mat Draper,
 Building DeepSkyStacker:
 
 You will need to install Visual Studio 2019 (16.11.18), Qt 5.15.2+ and Qt VS Tools 2.9.1 (rev 6) for
-VS2022.
+VS2019.
 
 You will need to use QT VS Tools Options dialog to set up a named Qt Installation:
 
-	Called 5.15.2x64 pointing to the msvc2022_64 sub-directory of your Qt install
+	Called 5.15.2x64 pointing to the msvc2019_64 sub-directory of your Qt install
 		for example C:\Qt\5.15.2\msvc2019_64
 		
 In addition you will need to set an environment variable (right-click on the "DeepSkyStacker" project

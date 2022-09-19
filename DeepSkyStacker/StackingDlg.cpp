@@ -38,6 +38,7 @@
 
 #include "stdafx.h"
 
+#include <chrono>
 #include <QAction>
 #include <QDebug>
 #include <QMenu>
@@ -61,8 +62,9 @@
 
 #include "DeepSkyStacker.h"
 #include "StackingDlg.h"
-#include "DeepStackerDlg.h"
+#include "ProcessingDlg.h"
 #include "DeepStack.h"
+#include "FrameInfoSupport.h"
 #include "ProgressDlg.h"
 #include "CheckAbove.h"
 #include "Registry.h"
@@ -81,6 +83,7 @@
 #include "dssselectrect.h"
 #include "dsstoolbar.h"
 #include "ui/ui_StackingDlg.h"
+#include "avx_support.h"
 
 
 #include <ZExcept.h>
@@ -370,8 +373,9 @@ namespace DSS
 		// of QStyledItemDelegate to handle the rendering for column zero of 
 		// the table with the icon doubled in size.
 		//
-		IconSizeDelegate* iconSizeDelegate{ new IconSizeDelegate() };
-		ui->tableView->setItemDelegateForColumn(0, iconSizeDelegate);
+		iconSizeDelegate = std::make_unique<IconSizeDelegate>();
+
+		ui->tableView->setItemDelegateForColumn(0, iconSizeDelegate.get());
 
 		//
 		// Reduce font size and increase weight
@@ -1436,10 +1440,7 @@ namespace DSS
 		}
 		else
 		{
-			CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
-			CString title;
-			pDlg->GetWindowText(title);
-			QMessageBox::warning(nullptr, QString::fromWCharArray(title.GetString()),
+			QMessageBox::warning(nullptr, DeepSkyStacker::theMainWindow->windowTitle(),
 				tr("Internet version check error code %1:\n%2")
 				.arg(error)
 				.arg(reply->errorString()), QMessageBox::Ok);
@@ -1476,6 +1477,8 @@ namespace DSS
 		CDSSProgressDlg			dlg;
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
+		const auto start{ std::chrono::steady_clock::now() };
+
 
 		bool					bFound = false;
 
@@ -1535,7 +1538,7 @@ namespace DSS
 
 					if (bContinue)
 					{
-						GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+						//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
 
 						CRegisterEngine	RegisterEngine;
 
@@ -1557,6 +1560,16 @@ namespace DSS
 
 						dlg.Close();
 					};
+					const auto now{ std::chrono::steady_clock::now() };
+					std::chrono::duration<double> elapsed{ now - start };
+
+					QString avxActive;
+					if (AvxSupport::checkSimdAvailability())
+						avxActive += "(SIMD)";
+					QString message{ tr("Total registering time: %1 %2")
+						.arg(exposureToString(elapsed.count()))
+						.arg(avxActive) };
+					QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 
 					if (bContinue && bStackAfter)
 					{
@@ -1564,13 +1577,14 @@ namespace DSS
 						dwEndTime = GetTickCount();
 					};
 
-					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
+					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
 				};
 			};
 		}
 		else
 		{
-			AfxMessageBox(IDS_ERROR_NOTLIGHTCHECKED2, MB_OK | MB_ICONSTOP);
+			QMessageBox::critical(this, "DeepSkyStacker", 
+				tr("You must check light frames to register them.", "IDS_ERROR_NOTLIGHTCHECKED2"));
 		};
 	};
 
@@ -1597,7 +1611,7 @@ namespace DSS
 					bContinue = showRecap(tasks);
 				if (bContinue)
 				{
-					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
 
 					imageLoader.clearCache();
 					if (frameList.unregisteredCheckedLightFrameCount())
@@ -1614,7 +1628,7 @@ namespace DSS
 					if (bContinue)
 						DoStacking(tasks);
 
-					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
+					//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
 				};
 			};
 		};
@@ -1756,7 +1770,7 @@ namespace DSS
 
 		bool bContinue = true;
 		CDSSProgressDlg dlg;
-		const auto dwStartTime = GetTickCount64();
+		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
 		{
@@ -1783,7 +1797,16 @@ namespace DSS
 
 			std::shared_ptr<CMemoryBitmap> pBitmap;
 			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
-			const auto dwElapsedTime = GetTickCount64() - dwStartTime;
+			const auto now{ std::chrono::steady_clock::now() };
+			std::chrono::duration<double> elapsed{ now - start };
+
+			QString avxActive;
+			if (AvxSupport::checkSimdAvailability())
+				avxActive += "(SIMD)";
+			QString message{ tr("Total stacking time: %1 %2")
+				.arg(exposureToString(elapsed.count()))
+				.arg(avxActive) };
+			QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 
 			UpdateCheckedAndOffsets(StackingEngine);
 
@@ -1823,9 +1846,10 @@ namespace DSS
 					GetProcessingDlg(nullptr).LoadFile(strFileName);
 
 					// Change tab to processing
-					if (CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr))
-						pDlg->ChangeTab(IDD_PROCESSING);
+					DeepSkyStacker::theMainWindow->setTab(IDD_PROCESSING);
 				}
+				// Total elapsed time
+
 			}
 		}
 

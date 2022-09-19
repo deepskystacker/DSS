@@ -165,6 +165,7 @@ namespace DSS
 		FrameList		frameList;
 		CMRUList		m_MRUList;
 		QString			startingFileList;
+		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
 
 
 

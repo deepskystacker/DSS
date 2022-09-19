@@ -238,8 +238,7 @@ namespace DSS
 			{
 				m_bDirty = true;
 			}
-			CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
-			StackingDlg& stackingDlg{ pDlg->GetStackingDlg() };
+			StackingDlg& stackingDlg{ DeepSkyStacker::theMainWindow->getStackingDlg() };
 			stackingDlg.pictureChanged();
 		};
 	}

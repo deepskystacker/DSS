@@ -57,9 +57,6 @@ struct PointF
 	float X;
 	float Y;
 };
-
-const float REAL_EPSILON = 1.192092896e-07F;	// = 2^-23; I've no idea why this is a good value, but GDI+ has it.
-
 #endif // _GDIPLUS_H
 */
 
@@ -70,6 +67,7 @@ const float REAL_EPSILON = 1.192092896e-07F;	// = 2^-23; I've no idea why this i
 //
 // Change to use Qt's QPointF instead of PointF
 //
+const float REAL_EPSILON = 1.192092896e-07F;	// = 2^-23; I've no idea why this is a good value, but GDI+ has it.
 
 ///////////////////
 // vertex
