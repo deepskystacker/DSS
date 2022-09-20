@@ -21,6 +21,7 @@ using namespace Gdiplus;
 #include "SetUILanguage.h"
 #include <ZExcept.h>
 
+#include <QApplication>
 #include <QLibraryInfo>
 #include <QDebug>
 #include <QDir>
@@ -35,7 +36,9 @@ using namespace Gdiplus;
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QWidget>
 
-#include "qwndhost.h"
+#include "QMfcApp"
+
+#include "qwinhost.h"
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -172,42 +175,27 @@ void	deleteRemainingTempFiles()
 
 };
 
-void DeepSkyStacker::closeEvent(QCloseEvent* e)
+void DeepSkyStacker::showEvent(QShowEvent* event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitialise();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
+}
+
+void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
-	QSettings settings;
-	settings.setValue("geometry", saveGeometry());
-	settings.setValue("windowState", saveState());
-};
-
-
-GdiplusStartupOutput gdiSO;
-ULONG_PTR gdiplusToken{ 0ULL };
-ULONG_PTR gdiHookToken{ 0ULL };
-
-DeepSkyStacker::DeepSkyStacker() :
-	QMainWindow(),
-	widget{ nullptr },
-	splitter{ nullptr },
-	explorerBar{ nullptr },
-	stackedWidget{ nullptr },
-	stackingDlg{ nullptr },
-	wndHost{ nullptr },
-	currTab{ 0 },
-	// m_taskbarList{ nullptr },
-	m_progress{ false }
-
-{
-	theMainWindow = this;
-	ZFUNCTRACE_RUNTIME();
-
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
 	restoreGeometry(settings.value("myWidget/geometry").toByteArray());
 	restoreState(settings.value("myWidget/windowState").toByteArray());
-
-	QRect rect;
-	GetWindowRect(&rect);
 
 	widget = new QWidget(this);
 	widget->setObjectName("centralWidget");
@@ -233,7 +221,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	stackingDlg = new DSS::StackingDlg(widget);
 	stackingDlg->setObjectName("stackingDlg");
 
-	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget"); 
+	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
 	stackedWidget->addWidget(stackingDlg);
 
 	winHost = new QWinHost(stackedWidget);
@@ -241,7 +229,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	stackedWidget->addWidget(winHost);
 
 	ZTRACE_RUNTIME("Creating Processing Panel");
-	processingDlg.Create(IDD_PROCESSING);
+	BOOL result = processingDlg.Create(IDD_PROCESSING);
+	//processingDlg.OnInitDialog();
 
 	HWND hwnd{ processingDlg.GetSafeHwnd() };
 	Q_ASSERT(NULL != hwnd);
@@ -251,9 +240,75 @@ DeepSkyStacker::DeepSkyStacker() :
 
 	horizontalLayout->addWidget(splitter);
 	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-	setWindowIcon(QIcon(":/DSSIcon.png"))
+	setWindowIcon(QIcon(":/DSSIcon.png"));
 
+	baseTitle = qApp->applicationDisplayName() + " %1";
+	baseTitle = baseTitle.arg(VERSION_DEEPSKYSTACKER);
+
+	setWindowTitle(baseTitle);
+
+	//
+	// Check to see if we were passed a filelist file to open
+	//
+	if (2 <= args.size())
+	{
+		QString name{ args[1] };
+		fs::path file{ name.toStdWString() };
+		if (fs::file_type::regular == status(file).type())
+		{
+			stackingDlg->setFileList(file); // TODO
+		}
+		else
+			QMessageBox::warning(this,
+				"DeepSkyStacker",
+				tr("%1 does not exist or is not a file").arg(name));
+	}
+
+}
+
+void DeepSkyStacker::setTitleFilename(const fs::path file)
+{
+	fs::path filename{ file.filename() };
+	if (!filename.empty())
+	{
+		setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(filename.generic_string().c_str()));
+	}
+	else
+		setWindowTitle(baseTitle);
+}
+
+
+void DeepSkyStacker::closeEvent(QCloseEvent* e)
+{
+	ZFUNCTRACE_RUNTIME();
+	QSettings settings;
+	settings.setValue("geometry", saveGeometry());
+	settings.setValue("windowState", saveState());
+};
+
+
+GdiplusStartupOutput gdiSO;
+ULONG_PTR gdiplusToken{ 0ULL };
+ULONG_PTR gdiHookToken{ 0ULL };
+
+DeepSkyStacker::DeepSkyStacker() :
+	initialised{ false },
+	QMainWindow(),
+	widget{ nullptr },
+	splitter{ nullptr },
+	explorerBar{ nullptr },
+	stackedWidget{ nullptr },
+	stackingDlg{ nullptr },
+	winHost{ nullptr },
+	currTab{ 0 },
+	args{ qApp->arguments() },
+	// m_taskbarList{ nullptr },
+	m_progress{ false }
+
+{
+	ZFUNCTRACE_RUNTIME();
 }
 
 void DeepSkyStacker::updateTab()
@@ -279,17 +334,7 @@ void DeepSkyStacker::updateTab()
 BOOL DeepSkyStackerApp::InitInstance()
 {
 	ZFUNCTRACE_RUNTIME();
-
-	//
-	// Silence the MFC memory leak dump as we use Visual Leak Detector.
-	//
-#if defined(_WINDOWS)
-	_CrtSetDbgFlag(0);
-#if !defined(NDEBUG)
-	AfxEnableMemoryLeakDump(false);
-#endif
-#endif
-	CWinApp::InitInstance();
+	BOOL result = CWinApp::InitInstance();
 
 	EnableHtmlHelp();
 
@@ -426,6 +471,16 @@ int main(int argc, char* argv[])
 	int result{ 0 };
 	bool firstInstance = true;
 
+	//
+	// Silence the MFC memory leak dump as we use Visual Leak Detector.
+	//
+#if defined(_WINDOWS)
+	_CrtSetDbgFlag(0);
+#if !defined(NDEBUG)
+	AfxEnableMemoryLeakDump(false);
+#endif
+#endif
+
 	if (hasExpired())
 		return FALSE;
 
@@ -455,6 +510,7 @@ int main(int argc, char* argv[])
 	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
+	//QMfcApp app(&theApp, argc, argv);
 	QApplication app(argc, argv);
 
 	//
@@ -483,16 +539,17 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Set UI Language - ok");
 
 	askIfVersionCheckWanted();
-	if (bFirstInstance)
+	if (firstInstance)
 		deleteRemainingTempFiles();
 
 	ZTRACE_RUNTIME("Creating Main Window");
 	try
 	{
 		DeepSkyStacker mainWindow;
-		theMainWindow = &mainWindow;
+		DeepSkyStacker::setInstance(&mainWindow);
 
 		mainWindow.show();
+		//result = app.run(&theApp);
 		result = app.exec();
 	}
 	catch (std::exception& e)
@@ -545,5 +602,95 @@ int main(int argc, char* argv[])
 	return result;
 }
 /* ------------------------------------------------------------------- */
+void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath)
+{
+	ZFUNCTRACE_RUNTIME();
+	std::uint32_t dwMaximized = 0;
+	std::uint32_t dwTop = 0;
+	std::uint32_t dwLeft = 0;
+	std::uint32_t dwWidth = 0;
+	std::uint32_t dwHeight = 0;
 
+	QSettings	settings;
 
+	WINDOWPLACEMENT		wp;
+
+	memset(&wp, 0, sizeof(wp));
+	wp.length = sizeof(wp);
+
+	pWnd->GetWindowPlacement(&wp);
+	dwMaximized = (wp.showCmd == SW_SHOWMAXIMIZED);
+	dwLeft = wp.rcNormalPosition.left;
+	dwTop = wp.rcNormalPosition.top;
+
+	dwWidth = wp.rcNormalPosition.right - wp.rcNormalPosition.left;
+	dwHeight = wp.rcNormalPosition.bottom - wp.rcNormalPosition.top;
+
+	ZTRACE_RUNTIME("Saving window position to: %s", szRegistryPath);
+	QString regBase(szRegistryPath);
+	QString key = regBase + "/Maximized";
+	settings.setValue(key, (uint)dwMaximized);
+
+	key = regBase + "/Top";
+	settings.setValue(key, (uint)dwTop);
+
+	key = regBase + "/Left";
+	settings.setValue(key, (uint)dwLeft);
+
+	key = regBase + "/Width";
+	settings.setValue(key, (uint)dwWidth);
+
+	key = regBase + "/Height";
+	settings.setValue(key, (uint)dwHeight);
+
+};
+
+/* ------------------------------------------------------------------- */
+
+void	RestoreWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath, bool bCenter)
+{
+	ZFUNCTRACE_RUNTIME();
+	std::uint32_t dwMaximized = 0;
+	std::uint32_t dwTop = 0;
+	std::uint32_t dwLeft = 0;
+	std::uint32_t dwWidth = 0;
+	std::uint32_t dwHeight = 0;
+
+	QSettings   settings;
+
+	ZTRACE_RUNTIME("Restoring window position from: %s", szRegistryPath);
+
+	QString regBase(szRegistryPath);
+	QString key = regBase + "/Maximized";
+	dwMaximized = settings.value(key).toUInt();
+
+	key = regBase + "/Top";
+	dwTop = settings.value(key).toUInt();
+
+	key = regBase + "/Left";
+	dwLeft = settings.value(key).toUInt();
+
+	key = regBase + "/Width";
+	dwWidth = settings.value(key).toUInt();
+
+	key = regBase += "/Height";
+	dwHeight = settings.value(key).toUInt();
+
+	if (dwTop && dwLeft && dwWidth && dwHeight)
+	{
+		WINDOWPLACEMENT		wp;
+
+		memset(&wp, 0, sizeof(wp));
+		wp.length = sizeof(wp);
+		wp.flags = 0;
+		wp.showCmd = dwMaximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL;
+		wp.rcNormalPosition.left = dwLeft;
+		wp.rcNormalPosition.top = dwTop;
+		wp.rcNormalPosition.right = wp.rcNormalPosition.left + dwWidth;
+		wp.rcNormalPosition.bottom = wp.rcNormalPosition.top + dwHeight;
+
+		pWnd->SetWindowPlacement(&wp);
+		if (bCenter)
+			pWnd->CenterWindow();
+	};
+};

@@ -416,11 +416,11 @@ void RawDDPSettings::onInitDialog()
 		//
 		// Get main Window rectangle
 		//
-		const QRect r{ DeepSkyStacker::theMainWindow->rect() };
+		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2));
-		int left = ((r.left() + (r.width()) / 2) - (size.width() / 2));
+		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
 		move(left, top);
 	}
 
@@ -797,7 +797,7 @@ void RawDDPSettings::apply()
 	//
 	// Reload current image with changed settings
 	//
-	DeepSkyStacker::theMainWindow->GetStackingDlg().reloadCurrentImage();
+	DeepSkyStacker::instance()->getStackingDlg().reloadCurrentImage();
 }
 
 void RawDDPSettings::reject()

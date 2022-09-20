@@ -39,6 +39,8 @@ class QMouseEvent;
 #include <QWidget>
 #include "DSSCommon.h"
 #include "DSSTools.h"
+#include "Stars.h"
+#include "MatchingStars.h"
 
 class CMemoryBitmap;
 

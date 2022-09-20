@@ -32,6 +32,7 @@ extern bool		g_bShowRefStars;
 #include "ProgressDlg.h"
 #include "RegisterEngine.h"
 #include "StackingDlg.h"
+#include "ProcessingDlg.h"
 #include "StackSettings.h"
 
 #include "Workspace.h"
@@ -87,11 +88,11 @@ void RegisterSettings::onInitDialog()
 		//
 		// Get main Window rectangle
 		//
-		const QRect r{ DeepSkyStacker::theMainWindow->rect() };
+		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top() + (r.height() / 2) - (size.height() / 2));
-		int left = ((r.left() + (r.width()) / 2) - (size.width() / 2));
+		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
 		move(left, top);
 	}
 	string = workspace->value("Register/PercentStack", "80").toString();
@@ -112,7 +113,7 @@ void RegisterSettings::onInitDialog()
 	ui->medianFilter->
 		setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
 
-	DSS::StackingDlg & stackingDlg = GetStackingDlg(nullptr);
+	DSS::StackingDlg & stackingDlg = DeepSkyStacker::instance()->getStackingDlg();
 	//
 	// If there are any stackable light frames, set up the 
 	// stacking related stuff

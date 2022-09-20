@@ -96,28 +96,7 @@ private :
 	bool				m_bEnableCancel;
 
 private:
-	void CreateProgressDialog()
-	{
-
-		if (!m_dlg.m_hWnd)
-		{
-			CWnd* pMainWnd = AfxGetMainWnd();
-
-			m_dlg.Create(IDD_PROGRESS);
-
-			// Centre on main window
-			if (pMainWnd)
-				m_dlg.CenterWindow(pMainWnd);
-
-			// Disable child dialogs of DeepSkyStackerDlg
-
-			DeepSkyStacker::theMainWindow->disableSubDialogs();
-
-			// Re-enable this window
-			m_dlg.EnableWindow(true);
-			m_dlg.ShowWindow(SW_SHOW);
-		};
-	};
+	void CreateProgressDialog();
 
 public:
     CDSSProgressDlg(CWnd* pParent = nullptr) :
@@ -206,7 +185,7 @@ public:
 			m_dwLastTime  = dwCurrentTime;
 			m_dlg.m_Progress1.SetPos(lAchieved1);
 
-			//DeepSkyStacker::theMainWindow->PostMessage(WM_PROGRESS_UPDATE, lAchieved1, m_lTotal1); TODO
+			//DeepSkyStacker::instance()->PostMessage(WM_PROGRESS_UPDATE, lAchieved1, m_lTotal1); TODO
 
 			if (m_lTotal1 > 1 && lAchieved1 > 1)
 			{
@@ -301,17 +280,7 @@ public:
 		return m_dlg.m_bCancelled;
 	}
 
-	virtual bool Close() override
-	{
-		m_dlg.PeekAndPump();
-		// Prevent failure if mdlg is no longer a valid window
-		if (nullptr != m_dlg.m_hWnd)
-			m_dlg.EndDialog(true);
-
-		DeepSkyStacker::theMainWindow->enableSubDialogs();
-
-		return true;
-	}
+	virtual bool Close() override;
 
 	virtual bool Warning(LPCTSTR szText) override
 	{

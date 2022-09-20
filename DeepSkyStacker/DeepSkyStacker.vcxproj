@@ -158,6 +158,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>
       </AdditionalOptions>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -317,6 +318,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="dsstoolbar.cpp" />
+    <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -373,6 +375,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="qmfcapp.cpp" />
     <ClCompile Include="qwinhost.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -583,6 +586,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SettingsDlg.h" />
     <ClInclude Include="SetUILanguage.h" />
+    <ClInclude Include="SkyBackground.h" />
     <ClInclude Include="StackedBitmap.h" />
     <QtMoc Include="StackingDlg.h" />
     <ClInclude Include="StackingEngine.h" />
@@ -729,6 +733,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="QMfcApp" />
     <None Include="QWinHost" />
     <None Include="QWinWidget" />
   </ItemGroup>

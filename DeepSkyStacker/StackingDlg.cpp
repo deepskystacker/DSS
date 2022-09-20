@@ -91,6 +91,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#define dssApp DeepSkyStacker::instance()
+
 namespace
 {
 	static QSizeF viewItemTextLayout(QTextLayout& textLayout, int lineWidth, int maxHeight = -1, int* lastVisibleLine = nullptr)
@@ -364,8 +366,8 @@ namespace DSS
 		ui->picture->setToolBar(pToolBar.get());
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 
-		if (!startingFileList.isEmpty())
-			openFileList(startingFileList);
+		if (!fileList.empty())
+			openFileList(fileList);
 
 		ui->tableView->setModel(frameList.currentTableModel());
 		//
@@ -1197,7 +1199,7 @@ namespace DSS
 			updateListInfo();
 			fileList.clear();
 			ui->picture->clear();
-			SetCurrentFileInTitle(fileList.generic_wstring().c_str());
+			dssApp->setTitleFilename(fileList);
 			update();
 		}
 	}
@@ -1262,7 +1264,7 @@ namespace DSS
 					// frameList.RefreshList(); TODO
 					m_MRUList.Add(strList);
 					fileList = strList.toStdU16String();
-					SetCurrentFileInTitle(fileList.generic_wstring().c_str());
+					dssApp->setTitleFilename(fileList);
 				}
 			}
 
@@ -1270,7 +1272,7 @@ namespace DSS
 			{
 				QString name;
 				loadList(m_MRUList, name);
-				SetCurrentFileInTitle(name.toStdWString().c_str());
+				dssApp->setTitleFilename(name.toStdWString().c_str());
 			};
 			// TODO UpdateGroupTabs();
 			updateListInfo();
@@ -1338,7 +1340,7 @@ namespace DSS
 		QString name;
 
 		saveList(m_MRUList, name);
-		SetCurrentFileInTitle(name.toStdWString().c_str());
+		dssApp->setTitleFilename(name.toStdWString().c_str());
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -1440,7 +1442,7 @@ namespace DSS
 		}
 		else
 		{
-			QMessageBox::warning(nullptr, DeepSkyStacker::theMainWindow->windowTitle(),
+			QMessageBox::warning(nullptr, dssApp->windowTitle(),
 				tr("Internet version check error code %1:\n%2")
 				.arg(error)
 				.arg(reply->errorString()), QMessageBox::Ok);
@@ -1713,7 +1715,7 @@ namespace DSS
 							saveList(m_MRUList, name);
 						}
 
-						SetCurrentFileInTitle(name.toStdWString().c_str());
+						dssApp->setTitleFilename(name.toStdWString().c_str());
 						[[fallthrough]];
 					case QMessageBox::No:
 						bResult = true;
@@ -1843,10 +1845,10 @@ namespace DSS
 					dlg.End2();
 					dlg.Close();
 
-					GetProcessingDlg(nullptr).LoadFile(strFileName);
+					dssApp->getProcessingDlg().LoadFile(strFileName);
 
 					// Change tab to processing
-					DeepSkyStacker::theMainWindow->setTab(IDD_PROCESSING);
+					dssApp->setTab(IDD_PROCESSING);
 				}
 				// Total elapsed time
 
@@ -1859,11 +1861,10 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::openFileList(const QString& fileName)
+	void StackingDlg::openFileList(const fs::path& file)
 	{
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-		fs::path file{ fileName.toStdU16String() };
 		try
 		{
 			// Check that the file can be opened
@@ -1878,11 +1879,10 @@ namespace DSS
 				fclose(hFile);
 				frameList.loadFilesFromList(file);
 				// frameList.RefreshList(); TODO
-				m_MRUList.Add(fileName);
+				m_MRUList.Add(QString::fromStdU16String(file.generic_u16string()));
 				// TODO UpdateGroupTabs();
 				updateListInfo();
-				fileList = file;
-				SetCurrentFileInTitle(file.generic_wstring().c_str());
+				dssApp->setTitleFilename(file);
 			};
 		}
 		catch (const fs::filesystem_error& e)
@@ -2798,7 +2798,7 @@ namespace DSS
 			UpdateGroupTabs();
 			updateListInfo();
 			m_strCurrentFileList.Empty();
-			SetCurrentFileInTitle(m_strCurrentFileList);
+			dssApp->setTitleFilename(m_strCurrentFileList);
 		};
 	};
 

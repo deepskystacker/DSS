@@ -41,7 +41,7 @@
 #include <QIcon>
 #include <QModelIndex>
 #include <QVariant>
-#include "FrameList.h"
+#include "FrameInfo.h"
 
 
 namespace DSS

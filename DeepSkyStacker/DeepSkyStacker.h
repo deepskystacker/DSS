@@ -2,148 +2,8 @@
 #pragma once
 #include <list>
 #include <QMainWindow>
+#include "commonresource.h"
 #include "DeepStack.h"
-
-class CDSSSetting
-{
-public:
-	CString				m_strName;
-	CBezierAdjust		m_BezierAdjust;
-	CRGBHistogramAdjust	m_HistoAdjust;
-
-private:
-	void	CopyFrom(const CDSSSetting& cds)
-	{
-		m_strName = cds.m_strName;
-		m_BezierAdjust = cds.m_BezierAdjust;
-		m_HistoAdjust = cds.m_HistoAdjust;
-	};
-
-public:
-	CDSSSetting() {};
-	virtual ~CDSSSetting() {};
-
-	CDSSSetting(const CDSSSetting& cds)
-	{
-		CopyFrom(cds);
-	};
-
-	CDSSSetting& operator = (const CDSSSetting& cds)
-	{
-		CopyFrom(cds);
-		return (*this);
-	};
-
-	bool operator < (const CDSSSetting& cds) const
-	{
-		int			nCompare;
-		nCompare = m_strName.CompareNoCase(cds.m_strName);
-
-		if (nCompare < 0)
-			return true;
-		else
-			return false;
-	};
-
-	bool	Load(FILE* hFile)
-	{
-		int		lNameSize;
-		TCHAR	szName[2000] = { _T('\0') };
-
-		fread(&lNameSize, sizeof(lNameSize), 1, hFile);
-		fread(szName, sizeof(TCHAR), lNameSize, hFile);
-		m_strName = szName;
-		return m_BezierAdjust.Load(hFile) && m_HistoAdjust.Load(hFile);
-	};
-
-	bool	Save(FILE* hFile)
-	{
-		int lNameSize = m_strName.GetLength() + 1;
-		fwrite(&lNameSize, sizeof(lNameSize), 1, hFile);
-		fwrite((LPCTSTR)m_strName, sizeof(TCHAR), lNameSize, hFile);
-
-		return m_BezierAdjust.Save(hFile) && m_HistoAdjust.Save(hFile);
-	};
-};
-
-typedef std::list<CDSSSetting>			DSSSETTINGLIST;
-typedef	DSSSETTINGLIST::iterator		DSSSETTINGITERATOR;
-
-class CDSSSettings
-{
-private:
-	std::list<CDSSSetting>	m_lSettings;
-	bool					m_bLoaded;
-
-public:
-	CDSSSettings()
-	{
-		m_bLoaded = false;
-	};
-	virtual ~CDSSSettings() {};
-
-	bool	IsLoaded()
-	{
-		return m_bLoaded;
-	};
-	bool	Load(LPCTSTR szFile = nullptr);
-	bool	Save(LPCTSTR szFile = nullptr);
-
-	int Count()
-	{
-		return static_cast<int>(m_lSettings.size());
-	};
-
-	bool	GetItem(int lIndice, CDSSSetting& cds)
-	{
-		bool			bResult = false;
-
-		if (lIndice < m_lSettings.size())
-		{
-			DSSSETTINGITERATOR	it;
-
-			it = m_lSettings.begin();
-			while (lIndice)
-			{
-				it++;
-				lIndice--;
-			};
-
-			cds = (*it);
-			bResult = true;
-		};
-
-		return bResult;
-	};
-
-	bool	Add(const CDSSSetting& cds)
-	{
-		m_lSettings.push_back(cds);
-		return true;
-	};
-
-	bool	Remove(int lIndice)
-	{
-		bool			bResult = false;
-
-		if (lIndice < m_lSettings.size())
-		{
-			DSSSETTINGITERATOR	it;
-
-			it = m_lSettings.begin();
-			while (lIndice)
-			{
-				it++;
-				lIndice--;
-			};
-
-			m_lSettings.erase(it);
-			bResult = true;
-		};
-
-		return bResult;
-	};
-};
 
 
 #include "ExplorerBar.h"
@@ -153,6 +13,7 @@ class QStackedWidget;
 class QWinHost;
 
 #include "ProcessingDlg.h"
+#include "dss_settings.h"
 
 class DeepSkyStacker :
 	public QMainWindow
@@ -163,6 +24,7 @@ class DeepSkyStacker :
 	Q_OBJECT
 
 private:
+	bool initialised;
 	QWidget* widget;
 	QSplitter* splitter;
 	ExplorerBar* explorerBar;
@@ -175,20 +37,38 @@ private:
 	CDeepStack				m_DeepStack;
 	CDSSSettings			m_Settings;
 	std::uint32_t			currTab;
-	CString					m_strStartFileList;
-	CString					m_strBaseTitle;
+	QStringList				args;
+	QString					baseTitle;
 	//ITaskbarList3* m_taskbarList;
 	bool                    m_progress;
 
+	void showEvent(QShowEvent* event) override;
+
+	void onInitialise();
+
 public:
 
-	static inline DeepSkyStacker* theMainWindow{ nullptr };
+
+	inline static DeepSkyStacker* instance()
+	{
+		return theMainWindow;
+	}
+
+	inline static void setInstance(DeepSkyStacker* instance)
+	{
+		ZASSERT(nullptr == theMainWindow);
+		theMainWindow = instance;
+	}
 
 	DeepSkyStacker();
 
 	~DeepSkyStacker()
 	{
+	};
 
+	CDeepStack& deepStack()
+	{
+		return m_DeepStack;
 	};
 
 	void	setTab(std::uint32_t dwTabID)
@@ -202,6 +82,13 @@ public:
 		currTab = dwTabID;
 		updateTab();
 	};
+
+	void setTitleFilename(fs::path file);
+
+	inline void setTitleFilename(char* name)
+	{
+		setTitleFilename(fs::path(name));
+	}
 
 	std::uint32_t tab()
 	{
@@ -224,12 +111,7 @@ public:
 		explorerBar->setEnabled(true);
 	};
 
-	CDeepStack& GetDeepStack()
-	{
-		return m_DeepStack;
-	};
-
-	CDSSSettings& GetDSSSettings()
+	CDSSSettings& settings()
 	{
 		if (!m_Settings.IsLoaded())
 			m_Settings.Load();
@@ -242,7 +124,7 @@ public:
 		return *stackingDlg;
 	};
 
-	CProcessingDlg& GetProcessingDlg()
+	CProcessingDlg& getProcessingDlg()
 	{
 		return processingDlg;
 	};
@@ -258,9 +140,7 @@ protected:
 
 private:
 	void updateTab();
-
-	void restoreWindowPosition(bool bCenter = false);
-
+	static inline DeepSkyStacker* theMainWindow{ nullptr };
 
 };
 
@@ -288,4 +168,9 @@ public :
 
 };
 
-DeepSkyStackerApp *		GetDSSApp();
+//
+// Temporarily left here while still have to position MFC windows
+//
+void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath);
+void	RestoreWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath, bool bCenter = false);
+

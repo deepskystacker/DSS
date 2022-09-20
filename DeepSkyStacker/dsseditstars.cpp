@@ -46,6 +46,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include "DeepSkyStacker.h"
 #include "dsseditstars.h"
 #include "dssimageview.h"
 #include "Delaunay.h"
@@ -53,6 +54,7 @@
 #include "MatchingStars.h"
 #include "RegisterEngine.h"
 #include "BackgroundCalibration.h"
+#include "StackingDlg.h"
 
 // Classes etc. private to this file
 namespace
@@ -238,7 +240,7 @@ namespace DSS
 			{
 				m_bDirty = true;
 			}
-			StackingDlg& stackingDlg{ DeepSkyStacker::theMainWindow->getStackingDlg() };
+			StackingDlg& stackingDlg{ DeepSkyStacker::instance()->getStackingDlg() };
 			stackingDlg.pictureChanged();
 		};
 	}

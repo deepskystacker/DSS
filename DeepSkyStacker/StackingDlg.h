@@ -117,9 +117,9 @@ namespace DSS
 		void		checkAll();
 		void		unCheckAll();
 
-		void setStartingFileList(LPCTSTR szFileList)
+		void setFileList(const fs::path& file)
 		{
-			startingFileList = QString::fromWCharArray(szFileList);
+			fileList = file;
 		};
 
 		void computeOffsets();
@@ -164,7 +164,6 @@ namespace DSS
 		fs::path		fileList;
 		FrameList		frameList;
 		CMRUList		m_MRUList;
-		QString			startingFileList;
 		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
 
 
@@ -209,7 +208,7 @@ namespace DSS
 		
 		bool checkWorkspaceChanges();
 		
-		void openFileList(const QString& fileName);
+		void openFileList(const fs::path& file);
 
 		void updateListInfo();
 

@@ -56,6 +56,8 @@ extern bool		g_bShowRefStars;
 #include "dssselectrect.h"
 #include "DSSCommon.h"
 #include "commonresource.h"
+#include "DeepSkyStacker.h"
+#include "StackingDlg.h"
 
 enum class SelectionMode : quint8
 {
@@ -85,7 +87,7 @@ namespace DSS
         setAttribute(Qt::WA_NoSystemBackground);
         setAttribute(Qt::WA_WState_ExplicitShowHide);
  
-        StackingDlg& stackingDlg{ DeepSkyStacker::theMainWindow->getStackingDlg() };
+        StackingDlg& stackingDlg{ DeepSkyStacker::instance()->getStackingDlg() };
         connect(this, SIGNAL(selectRectChanged(QRectF)),
             &stackingDlg, SLOT(setSelectionRect(QRectF)));
     }

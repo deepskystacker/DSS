@@ -33,6 +33,7 @@ extern bool		g_bShowRefStars;
 
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
+#define dssApp DeepSkyStacker::instance()
 
 static void makeLink(QLabel *label, QString color, QString text)
 {
@@ -109,91 +110,91 @@ void ExplorerBar::makeLinks()
 
 void ExplorerBar::onOpenLights()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().onAddPictures();
+	dssApp->getStackingDlg().onAddPictures();
 }
 void ExplorerBar::onOpenDarks()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().onAddDarks();
+	dssApp->getStackingDlg().onAddDarks();
 }
 void ExplorerBar::onOpenFlats()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().onAddFlats();
+	dssApp->getStackingDlg().onAddFlats();
 }
 void ExplorerBar::onOpenDarkFlats()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().onAddDarkFlats();
+	dssApp->getStackingDlg().onAddDarkFlats();
 }
 void ExplorerBar::onOpenBias()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().onAddOffsets();
+	dssApp->getStackingDlg().onAddOffsets();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onOpenFilelist()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().loadList();
+	dssApp->getStackingDlg().loadList();
 }
 void ExplorerBar::onSaveFilelist()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().saveList();
+	dssApp->getStackingDlg().saveList();
 }
 void ExplorerBar::onClearList()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().clearList();
+	dssApp->getStackingDlg().clearList();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onCheckAbove()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().checkAbove();
+	dssApp->getStackingDlg().checkAbove();
 }
 void ExplorerBar::onCheckAll()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().checkAll();
+	dssApp->getStackingDlg().checkAll();
 }
 void ExplorerBar::onUncheckAll()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().unCheckAll();
+	dssApp->getStackingDlg().unCheckAll();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onRegisterChecked()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().registerCheckedImages();
+	dssApp->getStackingDlg().registerCheckedImages();
 }
 void ExplorerBar::onComputeOffsets()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().computeOffsets();
+	dssApp->getStackingDlg().computeOffsets();
 }
 void ExplorerBar::onStackChecked()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().stackCheckedImages();
+	dssApp->getStackingDlg().stackCheckedImages();
 }
 void ExplorerBar::onBatchStacking()
 {
-	DeepSkyStacker::theMainWindow->getStackingDlg().batchStack();
+	dssApp->getStackingDlg().batchStack();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onOpenPicture()
 {
-	DeepSkyStacker::theMainWindow->GetProcessingDlg().OnLoaddsi();
+	dssApp->getProcessingDlg().OnLoaddsi();
 }
 void ExplorerBar::onCopyPicture()
 {
-	DeepSkyStacker::theMainWindow->GetProcessingDlg().CopyPictureToClipboard();
+	dssApp->getProcessingDlg().CopyPictureToClipboard();
 }
 void ExplorerBar::onDoStarMask()
 {
-	DeepSkyStacker::theMainWindow->GetProcessingDlg().CreateStarMask();
+	dssApp->getProcessingDlg().CreateStarMask();
 }
 void ExplorerBar::onSavePicture()
 {
-	DeepSkyStacker::theMainWindow->GetProcessingDlg().SavePictureToFile();
+	dssApp->getProcessingDlg().SavePictureToFile();
 }
 
 /************************************************************************************/
@@ -483,16 +484,16 @@ void ExplorerBar::mousePressEvent(QMouseEvent *event)
 {
 	if (Qt::LeftButton == event->buttons())
 	{
-		const auto dwTabID = DeepSkyStacker::theMainWindow->tab();
+		const auto dwTabID = dssApp->tab();
 		if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
 		{
 			// Change tab to stacking
-			DeepSkyStacker::theMainWindow->setTab(IDD_STACKING);
+			dssApp->setTab(IDD_STACKING);
 		}
 		else if (ui->processing->underMouse() && (dwTabID != IDD_PROCESSING))
 		{
 			// Change tab to processing
-			DeepSkyStacker::theMainWindow->setTab(IDD_PROCESSING);
+			dssApp->setTab(IDD_PROCESSING);
 		};
 	}
 	Inherited::mousePressEvent(event);
