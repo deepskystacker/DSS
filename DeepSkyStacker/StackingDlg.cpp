@@ -1,6 +1,6 @@
 /****************************************************************************
 **
-** Copyright (C) 2020 David C. Partridge
+** Copyright (C) 2020, 2022 David C. Partridge
 **
 ** BSD License Usage
 ** You may use this file under the terms of the BSD license as follows:
