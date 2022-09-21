@@ -244,9 +244,6 @@ void DeepSkyStacker::onInitialise()
 
 	setWindowIcon(QIcon(":/DSSIcon.png"));
 
-	baseTitle = qApp->applicationDisplayName() + " %1";
-	baseTitle = baseTitle.arg(VERSION_DEEPSKYSTACKER);
-
 	setWindowTitle(baseTitle);
 
 	//
@@ -283,6 +280,7 @@ void DeepSkyStacker::setTitleFilename(const fs::path file)
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
+	processingDlg.DestroyWindow();
 	QSettings settings;
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
@@ -305,6 +303,7 @@ DeepSkyStacker::DeepSkyStacker() :
 	currTab{ 0 },
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
+	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
 	m_progress{ false }
 
 {
