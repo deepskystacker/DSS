@@ -63,9 +63,6 @@
     <ClCompile Include="About.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="DeepStackerDlg.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="ExplorerBar.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
@@ -234,6 +231,9 @@
     <ClCompile Include="DeBloom.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="DeepSkyStacker.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
     <ClCompile Include="DeepStack.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -308,9 +308,6 @@
     </ClCompile>
     <ClCompile Include="..\Tools\CtrlCache.cpp">
       <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="qmfcapp.cpp">
-      <Filter>Qt Porting</Filter>
     </ClCompile>
     <ClCompile Include="qwinwidget.cpp">
       <Filter>Qt Porting</Filter>
@@ -396,6 +393,12 @@
     <ClCompile Include="StackingDlg.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
+    <ClCompile Include="dss_settings.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="qmfcapp.cpp">
+      <Filter>Qt Porting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -465,9 +468,6 @@
     </ClInclude>
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DeepStackerDlg.h">
-      <Filter>Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="FileProperty.h">
       <Filter>Dialogs</Filter>
@@ -724,9 +724,6 @@
     <ClInclude Include="DSS-winpackagefamily.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qmfcapp.h">
-      <Filter>Qt Porting</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\WndImage.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -791,6 +788,12 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="BitmapIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qmfcapp.h">
+      <Filter>Qt Porting</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBackground.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1144,13 +1147,13 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="QMfcApp">
-      <Filter>Qt Porting</Filter>
-    </None>
     <None Include="QWinHost">
       <Filter>Qt Porting</Filter>
     </None>
     <None Include="QWinWidget">
+      <Filter>Qt Porting</Filter>
+    </None>
+    <None Include="QMfcApp">
       <Filter>Qt Porting</Filter>
     </None>
   </ItemGroup>
@@ -1294,9 +1297,6 @@
     <QtMoc Include="qwinhost.h">
       <Filter>Qt Porting</Filter>
     </QtMoc>
-    <QtMoc Include="DeepSkyStacker.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="ImageListModel.h">
       <Filter>Kernel</Filter>
     </QtMoc>
@@ -1305,6 +1305,9 @@
     </QtMoc>
     <QtMoc Include="imageloader.h">
       <Filter>Kernel</Filter>
+    </QtMoc>
+    <QtMoc Include="DeepSkyStacker.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

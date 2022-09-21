@@ -102,7 +102,6 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="mkg3states.c" />
     <ClCompile Include="tif_aux.c" />
     <ClCompile Include="tif_close.c" />
     <ClCompile Include="tif_codec.c" />

@@ -38,6 +38,7 @@
 
 #include "stdafx.h"
 
+#include <chrono>
 #include <QAction>
 #include <QDebug>
 #include <QMenu>
@@ -61,8 +62,9 @@
 
 #include "DeepSkyStacker.h"
 #include "StackingDlg.h"
-#include "DeepStackerDlg.h"
+#include "ProcessingDlg.h"
 #include "DeepStack.h"
+#include "FrameInfoSupport.h"
 #include "ProgressDlg.h"
 #include "CheckAbove.h"
 #include "Registry.h"
@@ -81,12 +83,15 @@
 #include "dssselectrect.h"
 #include "dsstoolbar.h"
 #include "ui/ui_StackingDlg.h"
+#include "avx_support.h"
 
 
 #include <ZExcept.h>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
+
+#define dssApp DeepSkyStacker::instance()
 
 namespace
 {
@@ -361,8 +366,8 @@ namespace DSS
 		ui->picture->setToolBar(pToolBar.get());
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 
-		if (!startingFileList.isEmpty())
-			openFileList(startingFileList);
+		if (!fileList.empty())
+			openFileList(fileList);
 
 		ui->tableView->setModel(frameList.currentTableModel());
 		//
@@ -370,8 +375,9 @@ namespace DSS
 		// of QStyledItemDelegate to handle the rendering for column zero of 
 		// the table with the icon doubled in size.
 		//
-		IconSizeDelegate* iconSizeDelegate{ new IconSizeDelegate() };
-		ui->tableView->setItemDelegateForColumn(0, iconSizeDelegate);
+		iconSizeDelegate = std::make_unique<IconSizeDelegate>();
+
+		ui->tableView->setItemDelegateForColumn(0, iconSizeDelegate.get());
 
 		//
 		// Reduce font size and increase weight
@@ -1193,7 +1199,7 @@ namespace DSS
 			updateListInfo();
 			fileList.clear();
 			ui->picture->clear();
-			SetCurrentFileInTitle(fileList.generic_wstring().c_str());
+			dssApp->setTitleFilename(fileList);
 			update();
 		}
 	}
@@ -1258,7 +1264,7 @@ namespace DSS
 					// frameList.RefreshList(); TODO
 					m_MRUList.Add(strList);
 					fileList = strList.toStdU16String();
-					SetCurrentFileInTitle(fileList.generic_wstring().c_str());
+					dssApp->setTitleFilename(fileList);
 				}
 			}
 
@@ -1266,7 +1272,7 @@ namespace DSS
 			{
 				QString name;
 				loadList(m_MRUList, name);
-				SetCurrentFileInTitle(name.toStdWString().c_str());
+				dssApp->setTitleFilename(name.toStdWString().c_str());
 			};
 			// TODO UpdateGroupTabs();
 			updateListInfo();
@@ -1334,7 +1340,7 @@ namespace DSS
 		QString name;
 
 		saveList(m_MRUList, name);
-		SetCurrentFileInTitle(name.toStdWString().c_str());
+		dssApp->setTitleFilename(name.toStdWString().c_str());
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -1436,10 +1442,7 @@ namespace DSS
 		}
 		else
 		{
-			CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr);
-			CString title;
-			pDlg->GetWindowText(title);
-			QMessageBox::warning(nullptr, QString::fromWCharArray(title.GetString()),
+			QMessageBox::warning(nullptr, dssApp->windowTitle(),
 				tr("Internet version check error code %1:\n%2")
 				.arg(error)
 				.arg(reply->errorString()), QMessageBox::Ok);
@@ -1476,6 +1479,8 @@ namespace DSS
 		CDSSProgressDlg			dlg;
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
+		const auto start{ std::chrono::steady_clock::now() };
+
 
 		bool					bFound = false;
 
@@ -1535,7 +1540,7 @@ namespace DSS
 
 					if (bContinue)
 					{
-						GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+						//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
 
 						CRegisterEngine	RegisterEngine;
 
@@ -1557,6 +1562,16 @@ namespace DSS
 
 						dlg.Close();
 					};
+					const auto now{ std::chrono::steady_clock::now() };
+					std::chrono::duration<double> elapsed{ now - start };
+
+					QString avxActive;
+					if (AvxSupport::checkSimdAvailability())
+						avxActive += "(SIMD)";
+					QString message{ tr("Total registering time: %1 %2")
+						.arg(exposureToString(elapsed.count()))
+						.arg(avxActive) };
+					QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 
 					if (bContinue && bStackAfter)
 					{
@@ -1564,13 +1579,14 @@ namespace DSS
 						dwEndTime = GetTickCount();
 					};
 
-					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
+					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
 				};
 			};
 		}
 		else
 		{
-			AfxMessageBox(IDS_ERROR_NOTLIGHTCHECKED2, MB_OK | MB_ICONSTOP);
+			QMessageBox::critical(this, "DeepSkyStacker", 
+				tr("You must check light frames to register them.", "IDS_ERROR_NOTLIGHTCHECKED2"));
 		};
 	};
 
@@ -1597,7 +1613,7 @@ namespace DSS
 					bContinue = showRecap(tasks);
 				if (bContinue)
 				{
-					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT);
+					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
 
 					imageLoader.clearCache();
 					if (frameList.unregisteredCheckedLightFrameCount())
@@ -1614,7 +1630,7 @@ namespace DSS
 					if (bContinue)
 						DoStacking(tasks);
 
-					GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP);
+					//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
 				};
 			};
 		};
@@ -1699,7 +1715,7 @@ namespace DSS
 							saveList(m_MRUList, name);
 						}
 
-						SetCurrentFileInTitle(name.toStdWString().c_str());
+						dssApp->setTitleFilename(name.toStdWString().c_str());
 						[[fallthrough]];
 					case QMessageBox::No:
 						bResult = true;
@@ -1756,7 +1772,7 @@ namespace DSS
 
 		bool bContinue = true;
 		CDSSProgressDlg dlg;
-		const auto dwStartTime = GetTickCount64();
+		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
 		{
@@ -1783,7 +1799,16 @@ namespace DSS
 
 			std::shared_ptr<CMemoryBitmap> pBitmap;
 			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
-			const auto dwElapsedTime = GetTickCount64() - dwStartTime;
+			const auto now{ std::chrono::steady_clock::now() };
+			std::chrono::duration<double> elapsed{ now - start };
+
+			QString avxActive;
+			if (AvxSupport::checkSimdAvailability())
+				avxActive += "(SIMD)";
+			QString message{ tr("Total stacking time: %1 %2")
+				.arg(exposureToString(elapsed.count()))
+				.arg(avxActive) };
+			QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 
 			UpdateCheckedAndOffsets(StackingEngine);
 
@@ -1820,12 +1845,13 @@ namespace DSS
 					dlg.End2();
 					dlg.Close();
 
-					GetProcessingDlg(nullptr).LoadFile(strFileName);
+					dssApp->getProcessingDlg().LoadFile(strFileName);
 
 					// Change tab to processing
-					if (CDeepStackerDlg* pDlg = GetDeepStackerDlg(nullptr))
-						pDlg->ChangeTab(IDD_PROCESSING);
+					dssApp->setTab(IDD_PROCESSING);
 				}
+				// Total elapsed time
+
 			}
 		}
 
@@ -1835,11 +1861,10 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::openFileList(const QString& fileName)
+	void StackingDlg::openFileList(const fs::path& file)
 	{
 		QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-		fs::path file{ fileName.toStdU16String() };
 		try
 		{
 			// Check that the file can be opened
@@ -1854,11 +1879,10 @@ namespace DSS
 				fclose(hFile);
 				frameList.loadFilesFromList(file);
 				// frameList.RefreshList(); TODO
-				m_MRUList.Add(fileName);
+				m_MRUList.Add(QString::fromStdU16String(file.generic_u16string()));
 				// TODO UpdateGroupTabs();
 				updateListInfo();
-				fileList = file;
-				SetCurrentFileInTitle(file.generic_wstring().c_str());
+				dssApp->setTitleFilename(file);
 			};
 		}
 		catch (const fs::filesystem_error& e)
@@ -2774,7 +2798,7 @@ namespace DSS
 			UpdateGroupTabs();
 			updateListInfo();
 			m_strCurrentFileList.Empty();
-			SetCurrentFileInTitle(m_strCurrentFileList);
+			dssApp->setTitleFilename(m_strCurrentFileList);
 		};
 	};
 

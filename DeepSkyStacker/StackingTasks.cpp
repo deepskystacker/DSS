@@ -2265,7 +2265,7 @@ void CAllStackingTasks::GetPostCalibrationSettings(CPostCalibrationSettings & pc
 
 	pcs.m_bCold = workspace.value("Stacking/PCS_DetectCleanCold", false).toBool();
 
-	pcs.m_lColdFilter = workspace.value("Stacking/PCS_ColdFilter", 1L).toUInt();
+	pcs.m_lColdFilter = workspace.value("Stacking/PCS_ColdFilter", 1U).toUInt();
 
 	pcs.m_fColdDetection = workspace.value("Stacking/PCS_ColdDetection", 500.0).toDouble()/10.0;
 	 

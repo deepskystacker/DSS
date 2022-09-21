@@ -1,4 +1,5 @@
 #include <stdafx.h>
+
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "RegisterEngine.h"
@@ -175,7 +176,7 @@ void CFrameList::SaveListToFile(LPCTSTR szFile)
 				{
 					fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
 						(LPCSTR)CT2CA(strType, CP_UTF8),
-						m_vFiles[lItem].filePath.u8string().c_str());
+						m_vFiles[lItem].filePath.generic_string().c_str());
 				}
 			};
 		};
@@ -834,7 +835,7 @@ namespace DSS
 						fs::path path{ it->filePath.lexically_proximate(directory) };
 						fprintf(hFile, "%ld\t%s\t%s\n", checked,
 							type.toUtf8().constData(),
-							path.u8string().c_str());
+							path.generic_string().c_str());
 					};
 				}
 				g.setDirty(false);

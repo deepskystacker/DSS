@@ -3,6 +3,7 @@
 #include "BitmapBase.h"
 #include "BackgroundCalibration.h"
 #include "DSSProgress.h"
+#include "StackingTasks.h"
 #include "avx_histogram.h"
 
 CBackgroundCalibration::CBackgroundCalibration() :

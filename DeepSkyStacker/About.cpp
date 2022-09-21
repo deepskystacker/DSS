@@ -26,7 +26,6 @@ extern bool		g_bShowRefStars;
 #include "DeepSkyStacker.h"
 #include "DSSCommon.h"
 #include "commonresource.h"
-#include "DeepStackerDlg.h"
 #include "DSSVersion.h"
 #include <fitsio.h>
 #include <tiffio.h>
@@ -191,18 +190,15 @@ void About::onInitDialog()
 	}
 	else
 	{
-		//
-		// Get NATIVE windows ultimate parent
-		//
-		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
-		RECT r;
-		GetWindowRect(hParent, &r);
+        //
+        // Get main Window rectangle
+        //
+        const QRect r{ DeepSkyStacker::instance()->rect() };
+        QSize size = this->size();
 
-		QSize size = this->size();
-
-		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
-		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
-		move(left, top);
+        int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+        int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+        move(left, top);
 	}
 }
 
@@ -249,8 +245,7 @@ void About::storeSettings()
 
     settings.setValue("Language", m_Language);
 
-	CDeepSkyStackerApp * theApp(GetDSSApp());
-
+	
 	//
 	// Retrieve the Qt language name (e.g.) en_GB
 	//
@@ -264,36 +259,23 @@ void About::storeSettings()
 		language = QLocale::system().name();
 	}
 
-	if (nullptr != theApp->appTranslator)
-	{
-		delete theApp->appTranslator;
-		theApp->appTranslator = nullptr;
-	}
-
-	if (nullptr != theApp->qtTranslator)
-	{
-		delete theApp->qtTranslator;
-		theApp->qtTranslator = nullptr;
-	}
-
-	theApp->appTranslator = new QTranslator(qApp);
-
-	//
-	// Install the language if it actually exists.
-	//
-	if (theApp->appTranslator->load("DSS." + language, ":/i18n/"))
-	{
-		QCoreApplication::instance()->installTranslator(theApp->appTranslator);
-	}
+    //
+    // Install the language if it actually exists.
+    //
+    QTranslator appTranslator;
+    if (appTranslator.load("DSS." + language, ":/i18n/"))
+    {
+        QCoreApplication::instance()->installTranslator(&appTranslator);
+    }
 
 	//
 	// Install the system language ...
 	// 
-	QString translatorFileName = QLatin1String("qt_");
-	translatorFileName += language;
-	theApp->qtTranslator = new QTranslator(qApp);
-	if (theApp->qtTranslator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-		qApp->installTranslator(theApp->qtTranslator);
+    QTranslator qtTranslator;
+    QString translatorFileName = QLatin1String("qt_");
+    translatorFileName += language;
+    if (qtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        qApp->installTranslator(&qtTranslator);
 
     settings.setValue("InternetCheck", m_InternetCheck);
 }

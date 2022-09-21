@@ -35,34 +35,6 @@
 #include <math.h>
 #include "ZExcept.h"
 
-using namespace std;
-
-//#include <gdiplus.h>
-//using namespace Gdiplus;
-
-/*
-#ifndef _GDIPLUS_H
-
-// I designed this with GDI+ in mind. However, this particular code doesn't
-// use GDI+ at all, only some of it's variable types.
-// These definitions are substitutes for those of GDI+.
-typedef float float;
-struct PointF
-{
-	PointF() : X(0), Y(0)	{}
-	PointF(const PointF& p) : X(p.X), Y(p.Y)	{}
-	PointF(float x, float y) : X(x), Y(y)	{}
-	PointF operator+(const PointF& p) const	{ return PointF(X + p.X, Y + p.Y); }
-	PointF operator-(const PointF& p) const	{ return PointF(X - p.X, Y - p.Y); }
-	float X;
-	float Y;
-};
-
-const float REAL_EPSILON = 1.192092896e-07F;	// = 2^-23; I've no idea why this is a good value, but GDI+ has it.
-
-#endif // _GDIPLUS_H
-*/
-
 //
 // changes to remove dependencies on Microsoft GDI+ 
 //
@@ -70,6 +42,7 @@ const float REAL_EPSILON = 1.192092896e-07F;	// = 2^-23; I've no idea why this i
 //
 // Change to use Qt's QPointF instead of PointF
 //
+#define REAL_EPSILON 1.192092896e-07F	// = 2^-23; I've no idea why this is a good value, but GDI+ has it.
 
 ///////////////////
 // vertex
@@ -105,9 +78,9 @@ protected:
 	QPointF	m_Pnt;
 };
 
-typedef set<vertex> vertexSet;
-typedef set<vertex>::iterator vIterator;
-typedef set<vertex>::const_iterator cvIterator;
+typedef std::set<vertex> vertexSet;
+typedef std::set<vertex>::iterator vIterator;
+typedef std::set<vertex>::const_iterator cvIterator;
 
 ///////////////////
 // triangle
@@ -202,9 +175,9 @@ protected:
 // In version 1.0, I used a set, preventing the creation of multiple
 // triangles with identical center points. Therefore, more than three
 // co-circular vertices yielded incorrect results. Thanks to Roger Labbe.
-typedef multiset<triangle> triangleSet;
-typedef multiset<triangle>::iterator tIterator;
-typedef multiset<triangle>::const_iterator ctIterator;
+typedef std::multiset<triangle> triangleSet;
+typedef std::multiset<triangle>::iterator tIterator;
+typedef std::multiset<triangle>::const_iterator ctIterator;
 
 ///////////////////
 // edge
@@ -228,9 +201,9 @@ public:
 	const vertex * m_pV1;
 };
 
-typedef set<edge> edgeSet;
-typedef set<edge>::iterator edgeIterator;
-typedef set<edge>::const_iterator cedgeIterator;
+typedef std::set<edge> edgeSet;
+typedef std::set<edge>::iterator edgeIterator;
+typedef std::set<edge>::const_iterator cedgeIterator;
 
 ///////////////////
 // Delaunay

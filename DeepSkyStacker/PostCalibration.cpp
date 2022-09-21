@@ -26,7 +26,6 @@ extern bool	g_bShowRefStars;
 #include "resource.h"
 #include "commonresource.h"
 #include "BitmapExt.h"
-#include "DeepStackerDlg.h"
 #include "CosmeticEngine.h"
 #include "MasterFrames.h"
 #include "DSSProgress.h"

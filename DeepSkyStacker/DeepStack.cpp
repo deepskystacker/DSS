@@ -52,7 +52,7 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 		fMax = std::max(fMax, static_cast<double>(maxValue * scalingFactor));
 	}
 
-	Histo.SetSize(fMax, 65535L);
+	Histo.SetSize(fMax, 65535);
 
 	if (!m_StackedBitmap.IsMonochrome())
 	{

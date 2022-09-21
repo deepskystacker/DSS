@@ -15,7 +15,7 @@ public:
 	AvxOutputComposition(CMultiBitmap& mBitmap, CMemoryBitmap& outputbm);
 	AvxOutputComposition(const AvxOutputComposition&) = default;
 	AvxOutputComposition(AvxOutputComposition&&) = delete;
-	AvxOutputComposition& AvxOutputComposition::operator=(const AvxOutputComposition&) = delete;
+	AvxOutputComposition& operator=(const AvxOutputComposition&) = delete;
 
 	int compose(const int line, std::vector<void*> const& lineAddresses);
 private:

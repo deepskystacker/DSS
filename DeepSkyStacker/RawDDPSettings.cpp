@@ -29,10 +29,10 @@ using std::max;
 
 extern bool		g_bShowRefStars;
 
+#include "DeepSkyStacker.h"
 #include "DSSCommon.h"
 #include "commonresource.h"
 #include "BitmapExt.h"
-#include "DeepStackerDlg.h"
 #include "ProgressDlg.h"
 #include "RegisterEngine.h"
 #include "StackingDlg.h"
@@ -414,16 +414,13 @@ void RawDDPSettings::onInitDialog()
 	else
 	{
 		//
-		// Get NATIVE windows ultimate parent
+		// Get main Window rectangle
 		//
-		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
-		RECT r;
-		GetWindowRect(hParent, &r);
-
+		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		const int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
-		const int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
 		move(left, top);
 	}
 
@@ -800,7 +797,7 @@ void RawDDPSettings::apply()
 	//
 	// Reload current image with changed settings
 	//
-	GetDeepStackerDlg(nullptr)->GetStackingDlg().reloadCurrentImage();
+	DeepSkyStacker::instance()->getStackingDlg().reloadCurrentImage();
 }
 
 void RawDDPSettings::reject()

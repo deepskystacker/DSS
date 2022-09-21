@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "LuminanceTab.h"
-#include "DeepStackerDlg.h"
 #include "ProcessingDlg.h"
 
 /////////////////////////////////////////////////////////////////////////////

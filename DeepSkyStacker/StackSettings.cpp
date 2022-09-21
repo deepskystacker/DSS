@@ -21,7 +21,6 @@ extern bool		g_bShowRefStars;
 #include "commonresource.h"
 #include "DSSVersion.h"
 #include "DeepSkyStacker.h"
-#include "DeepStackerDlg.h"
 #include "Workspace.h"
 
 #include "StackSettings.h"
@@ -108,16 +107,13 @@ void StackSettings::onInitDialog()
 	else
 	{
 		//
-		// Get NATIVE windows ultimate parent
+		// Get main Window rectangle
 		//
-		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
-		RECT r;
-		GetWindowRect(hParent, &r);
-
+		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
-		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
 		move(left, top);
 	}
 

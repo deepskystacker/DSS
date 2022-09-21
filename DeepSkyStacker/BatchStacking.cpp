@@ -9,7 +9,6 @@
 #include "ProgressDlg.h"
 #include "TIFFUtil.h"
 #include "BatchStacking.h"
-#include "DeepStackerDlg.h"
 #include <QSettings>
 
 /* ------------------------------------------------------------------- */

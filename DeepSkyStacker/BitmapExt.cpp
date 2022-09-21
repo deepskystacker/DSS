@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include <tiffio.h>
+#include <QImage>
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"

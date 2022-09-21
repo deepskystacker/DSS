@@ -929,8 +929,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 							fY = m_vRefStars[i].m_fY+0.5;
 							m_pImage->BitmapToScreen(fX, fY);
 							pt.x = fX; pt.y = fY;
-							graphics.DrawLine(&pen, pt.x-5, pt.y, pt.x+6, pt.y);
-							graphics.DrawLine(&pen, pt.x, pt.y-5, pt.x, pt.y+6);
+							graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
+							graphics.DrawLine(&pen, (INT)pt.x, (INT)pt.y-5, (INT)pt.x, (INT)pt.y+6);
 						};
 					};
 				};
@@ -972,8 +972,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						fY = m_vStars[i].m_fY+0.5;
 						m_pImage->BitmapToScreen(fX, fY);
 						pt.x = fX; pt.y = fY;
-						graphics.DrawLine(&pen, pt.x-5, pt.y, pt.x+6, pt.y);
-						graphics.DrawLine(&pen, pt.x, pt.y-5, pt.x, pt.y+6);
+						graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
+						graphics.DrawLine(&pen, (INT)pt.x, (INT)pt.y-5, (INT)pt.x, (INT)pt.y+6);
 					};
 
 					if (g_bShowRefStars && m_vRefStars.size())
@@ -999,7 +999,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						m_pImage->BitmapToScreen(ptDst.X, ptDst.Y);
 						ptDstBmp.x = ptDst.X; ptDstBmp.y = ptDst.Y;
 
-						graphics.DrawLine(&pen, ptOrgBmp.x, ptOrgBmp.y, ptDstBmp.x, ptDstBmp.y);
+						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
 					};
 
 					if (g_bShowRefStars && m_vStars[i].m_fLargeMajorAxis > 0)
@@ -1019,7 +1019,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						ptOrgBmp.x = ptOrg.X; ptOrgBmp.y = ptOrg.Y;
 						ptDstBmp.x = ptDst.X; ptDstBmp.y = ptDst.Y;
 
-						graphics.DrawLine(&pen, ptOrgBmp.x, ptOrgBmp.y, ptDstBmp.x, ptDstBmp.y);
+						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
 					};
 				};
 			};
@@ -1226,8 +1226,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						fY = star.m_fY+0.5 + rcCheck.top;
 						m_pImage->BitmapToScreen(fX, fY);
 						pt.x = fX; pt.y = fY;
-						graphics.DrawLine(&pen, pt.x-5, pt.y, pt.x+6, pt.y);
-						graphics.DrawLine(&pen, pt.x, pt.y-5, pt.x, pt.y+6);
+						graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
+						graphics.DrawLine(&pen, (INT)pt.x, pt.y-5, pt.x, pt.y+6);
 					};
 				};
 
