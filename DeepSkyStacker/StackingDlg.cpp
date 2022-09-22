@@ -392,8 +392,36 @@ namespace DSS
 
 	void StackingDlg::dropFiles(QDropEvent* e)
 	{
+		ZFUNCTRACE_RUNTIME();
+		DropFilesDlg dlg(this);
+		dlg.setDropInfo(e);
+		if (dlg.exec())
+		{
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
+			auto files{ dlg.getFiles() };
+			auto type{ dlg.dropType() };
+			//
+			// Before attempting to add the files prune out those that have already been loaded
+			// and issue an error message
+			//
+			auto it = std::remove_if(files.begin(), files.end(),
+				[&](const fs::path& p) { return fileAlreadyLoaded(p.generic_u16string()); });
+			files.erase(it, files.end());
+
+			frameList.beginInsertRows(static_cast<int>(files.size()));
+			for (size_t i = 0; i != files.size(); ++i)
+			{
+				frameList.addFile(files[i], type, true);
+			}
+			frameList.endInsertRows();
+			//UpdateGroupTabs(); TODO
+			updateListInfo();
+			QGuiApplication::restoreOverrideCursor();
+		};
 
 	}
+
 
 	void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
 	{

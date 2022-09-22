@@ -484,9 +484,6 @@
     <ClInclude Include="CheckAbove.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
-    <ClInclude Include="DropFilesDlg.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="AskRegistering.h">
       <Filter>Dialogs\Registering</Filter>
     </ClInclude>
@@ -1308,6 +1305,9 @@
     </QtMoc>
     <QtMoc Include="DeepSkyStacker.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DropFilesDlg.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

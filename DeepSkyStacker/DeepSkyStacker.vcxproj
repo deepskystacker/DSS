@@ -519,7 +519,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="DeepStack.h" />
     <ClInclude Include="Delaunay.h" />
-    <ClInclude Include="DropFilesDlg.h" />
+    <QtMoc Include="DropFilesDlg.h" />
     <ClInclude Include="DSS-versionhelpers.h" />
     <ClInclude Include="DSS-winapifamily.h" />
     <ClInclude Include="DSS-winpackagefamily.h" />

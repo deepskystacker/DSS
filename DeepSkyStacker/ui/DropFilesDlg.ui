@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>299</width>
-    <height>212</height>
+    <height>225</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
       <item>
        <widget class="QRadioButton" name="biasFrames">
         <property name="text">
-         <string>Bias Frames</string>
+         <string comment="IDC_BIASFRAMES">Offset/Bias Frames</string>
         </property>
        </widget>
       </item>
@@ -101,86 +101,6 @@
     <hint type="destinationlabel">
      <x>286</x>
      <y>211</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lightFrames</sender>
-   <signal>clicked()</signal>
-   <receiver>DropFilesDlg</receiver>
-   <slot>onLights()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>43</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>149</x>
-     <y>105</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>darkFrames</sender>
-   <signal>clicked()</signal>
-   <receiver>DropFilesDlg</receiver>
-   <slot>onDarks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>69</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>149</x>
-     <y>105</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>flatFrames</sender>
-   <signal>clicked()</signal>
-   <receiver>DropFilesDlg</receiver>
-   <slot>onFlats()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>95</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>149</x>
-     <y>105</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>darkFlatFrames</sender>
-   <signal>clicked()</signal>
-   <receiver>DropFilesDlg</receiver>
-   <slot>onDarkFlats()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>121</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>149</x>
-     <y>105</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>biasFrames</sender>
-   <signal>clicked()</signal>
-   <receiver>DropFilesDlg</receiver>
-   <slot>onBias()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>149</x>
-     <y>147</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>149</x>
-     <y>105</y>
     </hint>
    </hints>
   </connection>
