@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>711</width>
-    <height>870</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -134,8 +134,8 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>600</width>
-             <height>400</height>
+             <width>450</width>
+             <height>300</height>
             </size>
            </property>
           </widget>
@@ -164,6 +164,12 @@
        </item>
        <item row="1" column="0">
         <widget class="QTableView" name="tableView">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>175</height>
+          </size>
+         </property>
          <property name="dragDropMode">
           <enum>QAbstractItemView::DropOnly</enum>
          </property>

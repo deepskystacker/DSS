@@ -77,7 +77,10 @@ private:
 	//ITaskbarList3* m_taskbarList;
 	bool                    m_progress;
 
+protected:
 	void showEvent(QShowEvent* event) override;
+	void dragEnterEvent(QDragEnterEvent* e);
+	void dropEvent(QDropEvent* e);
 
 	void onInitialise();
 

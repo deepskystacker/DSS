@@ -210,6 +210,21 @@ void	deleteRemainingTempFiles()
 
 };
 
+void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
+{
+	if (e->mimeData()->hasFormat("text/uri-list"))
+		e->acceptProposedAction();
+}
+
+void DeepSkyStacker::dropEvent(QDropEvent* e)
+{
+	raise();
+	show();
+	activateWindow();
+
+	stackingDlg->dropFiles(e);
+}
+
 void DeepSkyStacker::showEvent(QShowEvent* event)
 {
 	if (!event->spontaneous())
@@ -227,10 +242,6 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
-	ZTRACE_RUNTIME("Restoring Window State and Position");
-	QSettings settings;
-	restoreGeometry(settings.value("myWidget/geometry").toByteArray());
-	restoreState(settings.value("myWidget/windowState").toByteArray());
 
 	widget = new QWidget(this);
 	widget->setObjectName("centralWidget");
@@ -280,6 +291,11 @@ void DeepSkyStacker::onInitialise()
 	setWindowIcon(QIcon(":/DSSIcon.png"));
 
 	setWindowTitle(baseTitle);
+
+	ZTRACE_RUNTIME("Restoring Window State and Position");
+	QSettings settings;
+	restoreGeometry(settings.value("geometry").toByteArray());
+	restoreState(settings.value("windowState").toByteArray());
 
 	//
 	// Check to see if we were passed a filelist file to open
@@ -343,6 +359,7 @@ DeepSkyStacker::DeepSkyStacker() :
 
 {
 	ZFUNCTRACE_RUNTIME();
+	setAcceptDrops(true);
 }
 
 void DeepSkyStacker::updateTab()

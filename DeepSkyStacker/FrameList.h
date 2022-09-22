@@ -44,18 +44,18 @@ public :
 		baseKeyName = baseKey;
 	};
 
-	CMRUList(const CMRUList& ml) = delete;
-	//{
-	//	CopyFrom(ml);
-	//};
+	CMRUList(const CMRUList& ml)
+	{
+		CopyFrom(ml);
+	};
 
 	~CMRUList() {};
 
-	CMRUList& operator = (const CMRUList& ml) = delete;
-	//{
-	//	CopyFrom(ml);
-	//	return (*this);
-	//};
+	CMRUList& operator = (const CMRUList& ml)
+	{
+		CopyFrom(ml);
+		return (*this);
+	};
 
 	void	readSettings();
 	void	saveSettings();
@@ -151,6 +151,8 @@ namespace DSS
 		void checkAllOffsets(bool check);
 
 		void checkAllLights(bool check);
+
+		void checkImage(const QString& image, bool check);
 
 
 

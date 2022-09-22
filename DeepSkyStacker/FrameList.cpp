@@ -728,9 +728,6 @@ namespace DSS
 		return QString();
 	};
 
-
-
-
 	void FrameList::fillTasks(CAllStackingTasks& tasks)
 	{
 		size_t				comets = 0;
@@ -1241,17 +1238,38 @@ namespace DSS
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
+					QModelIndex start{ group.pictures.createIndex(index, 0) };
+					QModelIndex end{ group.pictures.createIndex(index, 0) };
+					QVector<int> role{ Qt::CheckStateRole };
+					group.pictures.dataChanged(start, end, role);
 				}
-				QModelIndex start{ group.pictures.createIndex(index, 0) };
-				QModelIndex end{ group.pictures.createIndex(index, 0) };
-				QVector<int> role{ Qt::CheckStateRole };
-				group.pictures.dataChanged(start, end, role);
 			}
-
 			group.setDirty();
 		}
 	}
 
+	void FrameList::checkImage(const QString & image, bool check)
+	{
+		for (int id = 0; id != imageGroups.size(); ++id)
+		{
+			auto& group = imageGroups[id];
+			for (int32_t index = 0; index < group.pictures.mydata.size(); ++index)
+			{
+				auto& file = group.pictures.mydata[index];
+				if (image == file.m_strFile && !file.m_bRemoved && file.IsLightFrame())
+				{
+					if (check) file.m_bChecked = Qt::Checked;
+					else file.m_bChecked = Qt::Unchecked;
+					group.setDirty();
+					QModelIndex start{ group.pictures.createIndex(index, 0) };
+					QModelIndex end{ group.pictures.createIndex(index, 0) };
+					QVector<int> role{ Qt::CheckStateRole };
+					group.pictures.dataChanged(start, end, role);
+					return;
+				}
+			}
+		}
+	};
 	/* ------------------------------------------------------------------- */
 
 

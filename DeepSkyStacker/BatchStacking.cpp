@@ -3,13 +3,19 @@
 
 #include "stdafx.h"
 #include "deepskystacker.h"
-
+#include "Registry.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "ProgressDlg.h"
 #include "TIFFUtil.h"
 #include "BatchStacking.h"
-#include <QSettings>
+#include "dss_settings.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -86,14 +92,11 @@ BOOL CBatchStacking::OnInitDialog()
 
 	RestoreWindowPosition(this, "Dialogs/Batch/Position", true);
 
-	if (mruPath)
-	{
-		for (size_t i = 0; i != mruPath->paths.size(); i++)
-			m_Lists.AddString(mruPath->paths[i].c_str());		// fs::path::c_str return as a null terminated char* or wchar*
-	}
+	for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)
+		m_Lists.AddString(m_MRUList.m_vLists[i].toStdWString().c_str());
 
 	UpdateListBoxWidth();
-	return true;
+	return TRUE;
 };
 
 /* ------------------------------------------------------------------- */
@@ -122,9 +125,9 @@ void CBatchStacking::OnBnClickedAddLists()
 	QSettings			settings;
 	CString				strBaseDirectory;
 
-	strBaseDirectory = CString((LPCTSTR)settings.value("Folders/ListFolder", "").toString().utf16());
+	strBaseDirectory = CString(settings.value("Folders/ListFolder", "").toString().toStdWString().c_str());
 
-	CFileDialog			dlgOpen(true,
+	CFileDialog			dlgOpen(TRUE,
 								_T(".txt"),
 								nullptr,
 								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
@@ -160,7 +163,7 @@ void CBatchStacking::OnBnClickedAddLists()
 				int				nIndex;
 
 				nIndex = m_Lists.AddString(strFile);
-				m_Lists.SetCheck(nIndex, true);
+				m_Lists.SetCheck(nIndex, TRUE);
 			};
 
 			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
@@ -186,7 +189,7 @@ void CBatchStacking::OnBnClickedClearList()
 
 void CBatchStacking::UpdateListBoxWidth()
 {
-	int				lWidth = 0;
+	LONG				lWidth = 0;
     CClientDC			dc(&m_Lists);
 	CRect				rcClient;
 
@@ -195,7 +198,7 @@ void CBatchStacking::UpdateListBoxWidth()
     CFont * f = m_Lists.GetFont();
     dc.SelectObject(f);
 
-	for (int i = 0; i < m_Lists.GetCount(); i++)
+	for (LONG i = 0;i<m_Lists.GetCount();i++)
 	{
 		CString			strText;
 
@@ -203,7 +206,7 @@ void CBatchStacking::UpdateListBoxWidth()
 		CSize			sz = dc.GetTextExtent(strText);
 		sz.cx += 3 * ::GetSystemMetrics(SM_CXBORDER)+20;
 
-		lWidth = std::max(lWidth, static_cast<int>(sz.cx));
+		lWidth = max(lWidth, sz.cx);
 	};
 
 	m_Lists.SetHorizontalExtent(lWidth);
@@ -249,7 +252,7 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 			{
 				CString strFileName;
 				CString strText;
-				TCHAR				szFileName[1+_MAX_FNAME];
+				TCHAR				szFileName[1 + _MAX_FNAME];
 				_tsplitpath(szList, nullptr, nullptr, szFileName, nullptr);
 
 				strFileName = szFileName;
@@ -288,34 +291,35 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 	workspace.Pop();
 
 	return bResult;
-}
+};
 
 /* ------------------------------------------------------------------- */
 
 void CBatchStacking::OnOK()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool bContinue  = true;
-	int lNrProcessedLists = 0;
+	BOOL			bContinue  = TRUE;
+	LONG			lNrProcessedLists = 0;
 
-	for (int i = 0; i < m_Lists.GetCount() && bContinue; i++)
+	for (LONG i = 0;i<m_Lists.GetCount() && bContinue;i++)
 	{
-		CString strFile;
+		CString				strFile;
 
 		if (m_Lists.GetCheck(i))
 		{
 			m_Lists.GetText(i, strFile);
-			CString strOutputFile;
+			CString			strOutputFile;
 
 			bContinue = ProcessList(strFile, strOutputFile);
-			m_Lists.SetCheck(i, false);
+			m_Lists.SetCheck(i, FALSE);
 			if (bContinue)
 			{
-				CString strText;
+				CString			strText;
+
 				strText.Format(_T("->%s"), (LPCTSTR)strOutputFile);
 				m_Lists.InsertString(i, strText);
-				m_Lists.SetCheck(i, false);
-				m_Lists.Enable(i, false);
+				m_Lists.SetCheck(i, FALSE);
+				m_Lists.Enable(i, FALSE);
 				m_Lists.DeleteString(i+1);
 				UpdateListBoxWidth();
 			};

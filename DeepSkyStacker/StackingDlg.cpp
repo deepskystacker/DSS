@@ -390,6 +390,11 @@ namespace DSS
 		ui->tableView->horizontalHeader()->setFont(font);
 	}
 
+	void StackingDlg::dropFiles(QDropEvent* e)
+	{
+
+	}
+
 	void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
 	{
 		qDebug() << "Table View item clicked, row " << index.row();
@@ -541,7 +546,7 @@ namespace DSS
 	void StackingDlg::toolBar_starsButtonPressed([[maybe_unused]] bool checked)
 	{
 		qDebug() << "StackingDlg: starsButtonPressed";
-		//CheckAskRegister(); TODO
+		checkAskRegister();
 		editStarsPtr->starsButtonPressed();
 		selectRectPtr->starsButtonPressed();
 	}
@@ -549,7 +554,7 @@ namespace DSS
 	void StackingDlg::toolBar_cometButtonPressed([[maybe_unused]] bool checked)
 	{
 		qDebug() << "StackingDlg: cometButtonPressed";
-		// TODO CheckAskRegister();
+		checkAskRegister();
 		editStarsPtr->cometButtonPressed();
 		selectRectPtr->cometButtonPressed();
 	}
@@ -683,7 +688,7 @@ namespace DSS
 			settings.setValue("Folders/AddPictureExtension", extension);
 			settings.setValue("Folders/AddPictureIndex", filterIndex);
 
-			//UpdateGroupTabs();
+			//UpdateGroupTabs(); TODO
 		};
 		updateListInfo();
 	}
@@ -781,7 +786,7 @@ namespace DSS
 			settings.setValue("Folders/AddDarkExtension", extension);
 			settings.setValue("Folders/AddDarkIndex", filterIndex);
 
-			//UpdateGroupTabs();
+			//UpdateGroupTabs(); TODO
 		}
 		updateListInfo();
 	}
@@ -882,7 +887,7 @@ namespace DSS
 			settings.setValue("Folders/AddDarkFlatExtension", extension);
 			settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
 
-			//UpdateGroupTabs();
+			//UpdateGroupTabs(); TODO
 		}
 		updateListInfo();
 	}
@@ -982,7 +987,7 @@ namespace DSS
 			settings.setValue("Folders/AddFlatExtension", extension);
 			settings.setValue("Folders/AddFlatIndex", filterIndex);
 
-			//UpdateGroupTabs();
+			//UpdateGroupTabs(); TODO
 		}
 		updateListInfo();
 	}
@@ -1122,7 +1127,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::UpdateCheckedAndOffsets(CStackingEngine& StackingEngine)
+	void StackingDlg::updateCheckedAndOffsets(CStackingEngine& StackingEngine)
 	{
 		LIGHTFRAMEINFOVECTOR& vBitmaps = StackingEngine.LightFrames();
 
@@ -1526,17 +1531,14 @@ namespace DSS
 				{
 					if (bStackAfter)
 					{
-						bContinue = CheckStacking(tasks);
+						bContinue = checkStacking(tasks);
 						if (bContinue)
 							bContinue = showRecap(tasks);
 					}
 					else
 					{
-						bContinue = CheckStacking(tasks);
+						bContinue = checkStacking(tasks);
 					};
-
-					DWORD				dwStartTime = GetTickCount();
-					DWORD				dwEndTime;
 
 					if (bContinue)
 					{
@@ -1575,8 +1577,7 @@ namespace DSS
 
 					if (bContinue && bStackAfter)
 					{
-						DoStacking(tasks, fPercent);
-						dwEndTime = GetTickCount();
+						doStacking(tasks, fPercent);
 					};
 
 					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
@@ -1608,7 +1609,7 @@ namespace DSS
 
 			if (checkReadOnlyFolders(tasks))
 			{
-				bContinue = CheckStacking(tasks);
+				bContinue = checkStacking(tasks);
 				if (bContinue)
 					bContinue = showRecap(tasks);
 				if (bContinue)
@@ -1628,7 +1629,7 @@ namespace DSS
 					};
 
 					if (bContinue)
-						DoStacking(tasks);
+						doStacking(tasks);
 
 					//GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_STOP); TODO
 				};
@@ -1659,7 +1660,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	bool StackingDlg::CheckStacking(CAllStackingTasks& tasks)
+	bool StackingDlg::checkStacking(CAllStackingTasks& tasks)
 	{
 		bool result = false;
 
@@ -1676,6 +1677,36 @@ namespace DSS
 			result = true;
 
 		return result;
+	};
+
+	void StackingDlg::checkAskRegister()
+	{
+		// Check that the current light frame is registered (or not)
+		// and ask accordingly
+		CLightFrameInfo			lfi;
+
+		lfi.SetBitmap(m_strShowFile.toStdU16String(), FALSE, FALSE);
+		if (!lfi.IsRegistered())
+		{
+			CAskRegistering		dlg;
+
+			if (dlg.DoModal() == IDOK)
+			{
+				if (dlg.GetAction() == ARA_ONE)
+				{
+					// Register only this light frame
+					frameList.checkAllLights(FALSE);
+					frameList.checkImage(m_strShowFile, TRUE);
+					registerCheckedImages();
+				}
+				else if (dlg.GetAction() == ARA_ALL)
+				{
+					// Register all the checked light frames (including this one).
+					frameList.checkImage(m_strShowFile, TRUE);
+					registerCheckedImages();
+				};
+			};
+		};
 	};
 
 	bool StackingDlg::checkWorkspaceChanges()
@@ -1766,7 +1797,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::DoStacking(CAllStackingTasks& tasks, const double fPercent)
+	void StackingDlg::doStacking(CAllStackingTasks& tasks, const double fPercent)
 	{
 		ZFUNCTRACE_RUNTIME();
 
@@ -1810,7 +1841,7 @@ namespace DSS
 				.arg(avxActive) };
 			QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
 
-			UpdateCheckedAndOffsets(StackingEngine);
+			updateCheckedAndOffsets(StackingEngine);
 
 			if (bContinue)
 			{
@@ -1941,7 +1972,7 @@ namespace DSS
 				StackingEngine.ComputeOffsets(tasks, &dlg);
 
 				// For each light frame - update the offset in the list
-				UpdateCheckedAndOffsets(StackingEngine);
+				updateCheckedAndOffsets(StackingEngine);
 
 				QGuiApplication::restoreOverrideCursor();
 
@@ -1963,16 +1994,12 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-
-
 	void StackingDlg::batchStack()
 	{
-#if (0)
 		CBatchStacking			dlg; // TODO
 
-		dlg.SetMRUList(m_MRUList);
+		dlg.setMRUList(m_MRUList);
 		dlg.DoModal();
-#endif
 	};
 
 
@@ -2499,117 +2526,11 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void CStackingDlg::CheckAskRegister()
-	{
-		// Check that the current light frame is registered (or not)
-		// and ask accordingly
-		CLightFrameInfo			lfi;
-
-		lfi.SetBitmap(m_strShowFile, FALSE, FALSE);
-		if (!lfi.IsRegistered())
-		{
-			CAskRegistering		dlg;
-
-			if (dlg.DoModal()==IDOK)
-			{
-				if (dlg.GetAction()==ARA_ONE)
-				{
-					// Register only this light frame
-					frameList.CheckAllLights(FALSE);
-					frameList.CheckImage(m_strShowFile, TRUE);
-					RegisterCheckedImage();
-				}
-				else if (dlg.GetAction()==ARA_ALL)
-				{
-					// Register all the checked light frames
-					frameList.CheckImage(m_strShowFile, TRUE);
-					RegisterCheckedImage();
-				};
-			};
-		};
-	};
 
 	/* ------------------------------------------------------------------- */
 
 	/* ------------------------------------------------------------------- */
 
-	void CStackingDlg::ButtonToolbar_OnClick(DWORD dwID, CButtonToolbar * pButtonToolbar)
-	{
-		if (dwID == IDC_EDIT_SAVE)
-		{
-			m_EditStarSink.SaveRegisterSettings();
-			m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
-			// Update the list with the new info
-			frameList.UpdateItemScores(m_strShowFile);
-		};
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	/* ------------------------------------------------------------------- */
-
-
-
-	/* ------------------------------------------------------------------- */
-
-	LRESULT CStackingDlg::OnBackgroundImageLoaded(WPARAM wParam, LPARAM lParam)
-	{
-		std::shared_ptr<CMemoryBitmap> pBitmap;
-		std::shared_ptr<C32BitsBitmap> phBitmap;
-
-		if (m_strShowFile.GetLength() && m_BackgroundLoading.LoadImage(m_strShowFile, pBitmap, phBitmap))
-		{
-			m_LoadedImage.m_hBitmap = phBitmap;
-			m_LoadedImage.m_pBitmap = pBitmap;
-			if (m_GammaTransformation.IsInitialized())
-				ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-			m_Picture.SetImg(phBitmap->GetHBITMAP(), true);
-
-			if (frameList.IsLightFrame(m_strShowFile))
-			{
-				m_Picture.SetButtonToolbar(&m_ButtonToolbar);
-				m_EditStarSink.SetLightFrame(m_strShowFile);
-				m_EditStarSink.SetBitmap(pBitmap);
-				m_Picture.SetImageSink(GetCurrentSink());
-			}
-			else
-			{
-				m_Picture.SetImageSink(nullptr);
-				m_Picture.SetButtonToolbar(nullptr);
-				m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-			};
-			m_Picture.SetBltMode(CWndImage::bltFitXY);
-			m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
-
-			CBilinearParameters		Transformation;
-			VOTINGPAIRVECTOR		vVotedPairs;
-
-			if (frameList.GetTransformation(m_strShowFile, Transformation, vVotedPairs))
-				m_EditStarSink.SetTransformation(Transformation, vVotedPairs);
-			m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-			m_Infos.SetText(m_strShowFile);
-		}
-		else if (m_strShowFile.GetLength())
-		{
-			CString				strText;
-
-			strText.Format(IDS_LOADPICTURE, (LPCTSTR)m_strShowFile);
-			m_Infos.SetBkColor(RGB(252, 251, 222), RGB(255, 151, 154), CLabel::Gradient);
-			m_Infos.SetText(strText);
-			m_Picture.SetImageSink(nullptr);
-			m_Picture.SetButtonToolbar(nullptr);
-			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-		}
-		else
-		{
-			m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-			m_Infos.SetText("");
-			m_Picture.SetImageSink(nullptr);
-			m_Picture.SetButtonToolbar(nullptr);
-			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-		}
-		return 1;
-	};
 
 	/* ------------------------------------------------------------------- */
 
@@ -2726,10 +2647,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void CStackingDlg::UncheckNonStackablePictures()
-	{
-		frameList.UnCheckNonStackable();
-	};
+
 
 
 	/* ------------------------------------------------------------------- */
