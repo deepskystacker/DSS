@@ -50,6 +50,7 @@
 #include <QTextLayout>
 #include <QShowEvent>
 #include <QSettings>
+#include <QSortFilterProxyModel>
 #include <QStyledItemDelegate>
 #include <QStyleOptionViewItem>
 #include <QStyleOptionButton>
@@ -238,13 +239,6 @@ namespace DSS
 
 		QStyle* style = opt.widget ? opt.widget->style() : QApplication::style();
 
-		constexpr uint neededFeatures
-		{ static_cast<uint>(QStyleOptionViewItem::HasCheckIndicator |
-			QStyleOptionViewItem::HasDisplay |
-			QStyleOptionViewItem::HasDecoration) };
-
-		Q_ASSERT(neededFeatures == (opt.features & neededFeatures));
-		
 		QIcon icon = qvariant_cast<QIcon> (index.model()->data(index, Qt::DecorationRole)); 
 
 		painter->save();
@@ -260,19 +254,15 @@ namespace DSS
 		//constexpr int size = 17;
 		constexpr int space = 6;
 		checkBoxStyle.rect = checkRect;
-		//checkBoxStyle.rect = QRect(opt.rect.x(),
-		//	opt.rect.center().y() - (size / 2),
-		//	size,
-		//	size);
 		
 		checkBoxStyle.state = (Qt::Checked == opt.checkState) ? QStyle::State_On : QStyle::State_Off;
 		style->drawPrimitive(QStyle::PE_IndicatorItemViewItemCheck, &checkBoxStyle, painter);
 
 		//
-		// Draw the icon twice as large as the default
+		// Draw the icon 2.5 times as large as the default
 		//
 		QSize iconSize = opt.decorationSize;
-		iconSize.scale(2 * iconSize.width(), 2 * iconSize.height(), Qt::KeepAspectRatio);
+		iconSize.scale(2.5 * iconSize.width(), 2.5 * iconSize.height(), Qt::KeepAspectRatio);
 		iconRect.setWidth(iconSize.width()); iconRect.setHeight(iconSize.height());
 		iconRect.setTop(opt.rect.center().y() - (iconSize.height() / 2));
 		// draw the icon
@@ -283,8 +273,6 @@ namespace DSS
 			mode = QIcon::Selected;
 		QIcon::State state = opt.state & QStyle::State_Open ? QIcon::On : QIcon::Off;
 		opt.icon.paint(painter, iconRect, opt.decorationAlignment, mode, state);
-		//QPixmap iconPixmap{ icon.pixmap(iconSize) };
-		//painter->drawPixmap(nextRect.x(), nextRect.center().y() - (iconSize.height() / 2), iconPixmap);
 
 		//
 		// Draw the text as normal
@@ -324,6 +312,7 @@ namespace DSS
 		ui->setupUi(this);
 
 		mruPath.readSettings();
+
 		connect(ui->tableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableViewItemClickedEvent(const QModelIndex&)));
 		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
@@ -368,12 +357,20 @@ namespace DSS
 
 		if (!fileList.empty())
 			openFileList(fileList);
+		//
+		// Set up a QSortFilterProxyModel to allow sorting of the table view
+		// (it sits between the actual model and the view to provide sorting
+		// capability)
+		//
+		proxyModel = std::make_unique<QSortFilterProxyModel>(this);
+		proxyModel->setSourceModel(frameList.currentTableModel());
 
-		ui->tableView->setModel(frameList.currentTableModel());
+		ui->tableView->setModel(proxyModel.get());
+		ui->tableView->setSortingEnabled(true);
 		//
 		// The default icon display is really rather small, so use a subclass
 		// of QStyledItemDelegate to handle the rendering for column zero of 
-		// the table with the icon doubled in size.
+		// the table with the icon size increased by 2.5 times.
 		//
 		iconSizeDelegate = std::make_unique<IconSizeDelegate>();
 
@@ -409,12 +406,15 @@ namespace DSS
 				[&](const fs::path& p) { return fileAlreadyLoaded(p.generic_u16string()); });
 			files.erase(it, files.end());
 
-			frameList.beginInsertRows(static_cast<int>(files.size()));
-			for (size_t i = 0; i != files.size(); ++i)
+			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
-				frameList.addFile(files[i], type, true);
+				frameList.beginInsertRows(static_cast<int>(files.size()));
+				for (size_t i = 0; i != files.size(); ++i)
+				{
+					frameList.addFile(files[i], type, true);
+				}
+				frameList.endInsertRows();
 			}
-			frameList.endInsertRows();
 			//UpdateGroupTabs(); TODO
 			updateListInfo();
 			QGuiApplication::restoreOverrideCursor();
@@ -426,6 +426,7 @@ namespace DSS
 	void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
 	{
 		qDebug() << "Table View item clicked, row " << index.row();
+
 		QItemSelectionModel * qsm = ui->tableView->selectionModel();
 		QModelIndexList selectedRows = qsm->selectedRows();
 		//
@@ -433,12 +434,21 @@ namespace DSS
 		//
 		if (1 == selectedRows.count())
 		{
-			QModelIndex& index = selectedRows[0];
-			if (index.isValid())
+			QModelIndex& ndx = selectedRows[0];
+
+			//
+			// If the QSortFilterProxyModel is being used, need to map 
+			// to the model index in the base model (our ImageListModel)
+			//
+			if (ui->tableView->model() == proxyModel.get())
+				ndx = proxyModel->mapToSource(ndx);
+
+			if (ndx.isValid())
 			{
 				QString  fileName;
-				const ImageListModel* model = dynamic_cast<const ImageListModel*>(index.model());
-				int row = index.row();
+				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
+				int row = ndx.row();
+				qDebug() << "The corresponding Model row is " << ndx.row();
 				fileName = model->selectedFileName(row);
 				//
 				// If the filename hasn't changed but we have changes to the stars that need to be saved
@@ -687,21 +697,24 @@ namespace DSS
 			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
 			// endInsertRows(), so the table model is informed of the new rows
 			//
-			frameList.beginInsertRows(files.size());
-			for (int i = 0; i < files.size(); i++)
+			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				frameList.beginInsertRows(files.size());
+				for (int i = 0; i < files.size(); i++)
+				{
+					fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
-				frameList.addFile(file);
+					frameList.addFile(file);
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+					if (file.has_parent_path())
+						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+					else
+						directory = QString::fromStdU16String(file.root_path().generic_u16string());
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+					extension = QString::fromStdU16String(file.extension().generic_u16string());
+				}
+				frameList.endInsertRows();
 			}
-			frameList.endInsertRows();
 			
 			QGuiApplication::restoreOverrideCursor();
 			//frameList.RefreshList();
@@ -785,22 +798,26 @@ namespace DSS
 			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
 			// endInsertRows(), so the table model is informed of the new rows
 			//
-			frameList.beginInsertRows(files.size());
-			for (int i = 0; i < files.size(); i++)
+			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				frameList.beginInsertRows(files.size());
+				for (int i = 0; i < files.size(); i++)
+				{
+					fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
-				frameList.addFile(file,
-					PICTURETYPE_DARKFRAME, true);
+					frameList.addFile(file,
+						PICTURETYPE_DARKFRAME, true);
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+					if (file.has_parent_path())
+						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+					else
+						directory = QString::fromStdU16String(file.root_path().generic_u16string());
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+					extension = QString::fromStdU16String(file.extension().generic_u16string());
+				}
+				frameList.endInsertRows();
 			}
-			frameList.endInsertRows();
+
 			QGuiApplication::restoreOverrideCursor();
 			// frameList.RefreshList(); TODO
 
@@ -886,22 +903,26 @@ namespace DSS
 			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
 			// endInsertRows(), so the table model is informed of the new rows
 			//
-			frameList.beginInsertRows(files.size());
-			for (int i = 0; i < files.size(); i++)
+			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				frameList.beginInsertRows(files.size());
+				for (int i = 0; i < files.size(); i++)
+				{
+					fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
-				frameList.addFile(file,
-					PICTURETYPE_DARKFLATFRAME, true);
+					frameList.addFile(file,
+						PICTURETYPE_DARKFLATFRAME, true);
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+					if (file.has_parent_path())
+						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+					else
+						directory = QString::fromStdU16String(file.root_path().generic_u16string());
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+					extension = QString::fromStdU16String(file.extension().generic_u16string());
+				}
+				frameList.endInsertRows();
 			}
-			frameList.endInsertRows();
+
 			QGuiApplication::restoreOverrideCursor();
 			//frameList.RefreshList();
 
@@ -986,22 +1007,26 @@ namespace DSS
 			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
 			// endInsertRows(), so the table model is informed of the new rows
 			//
-			frameList.beginInsertRows(files.size());
-			for (int i = 0; i < files.size(); i++)
+			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				frameList.beginInsertRows(files.size());
+				for (int i = 0; i < files.size(); i++)
+				{
+					fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
-				frameList.addFile(file,
-					PICTURETYPE_FLATFRAME, true);
+					frameList.addFile(file,
+						PICTURETYPE_FLATFRAME, true);
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+					if (file.has_parent_path())
+						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+					else
+						directory = QString::fromStdU16String(file.root_path().generic_u16string());
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+					extension = QString::fromStdU16String(file.extension().generic_u16string());
+				}
+				frameList.endInsertRows();
 			}
-			frameList.endInsertRows();
+
 			QGuiApplication::restoreOverrideCursor();
 			//frameList.RefreshList();
 
@@ -1087,22 +1112,26 @@ namespace DSS
 			// that we need to bracket the code  that adds the with beginInsertRows(rowcount) and
 			// endInsertRows(), so the table model is informed of the new rows
 			//
-			frameList.beginInsertRows(files.size());
-			for (int i = 0; i < files.size(); i++)
+			if (!files.empty())		// Never, ever attempt to add zero rows!!!
 			{
-				fs::path file(files.at(i).toStdU16String());		// as UTF-16
+				frameList.beginInsertRows(files.size());
+				for (int i = 0; i < files.size(); i++)
+				{
+					fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
-				frameList.addFile(file,
-					PICTURETYPE_OFFSETFRAME, true);
+					frameList.addFile(file,
+						PICTURETYPE_OFFSETFRAME, true);
 
-				if (file.has_parent_path())
-					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
-				else
-					directory = QString::fromStdU16String(file.root_path().generic_u16string());
+					if (file.has_parent_path())
+						directory = QString::fromStdU16String(file.parent_path().generic_u16string());
+					else
+						directory = QString::fromStdU16String(file.root_path().generic_u16string());
 
-				extension = QString::fromStdU16String(file.extension().generic_u16string());
+					extension = QString::fromStdU16String(file.extension().generic_u16string());
+				}
+				frameList.endInsertRows();
 			}
-			frameList.endInsertRows();
+
 			QGuiApplication::restoreOverrideCursor();
 			//frameList.RefreshList();
 

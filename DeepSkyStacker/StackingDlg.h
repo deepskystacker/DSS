@@ -81,6 +81,7 @@ namespace std::filesystem
 }
 
 class QTextOption;
+class QSortFilterProxyModel;
 
 namespace fs = std::filesystem;
 
@@ -110,6 +111,7 @@ namespace DSS
 			bool lastVisibleLineShouldBeElided, QPointF* paintStartPosition) const;
 
 	};
+
 
 	class StackingDlg : public QWidget
 	{
@@ -202,6 +204,7 @@ namespace DSS
 		FrameList		frameList;
 		CMRUList		m_MRUList;
 		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
+		std::unique_ptr<QSortFilterProxyModel> proxyModel;
 
 
 
