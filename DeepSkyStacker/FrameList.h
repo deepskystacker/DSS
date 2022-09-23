@@ -211,7 +211,7 @@ namespace DSS
 		inline FrameList& beginInsertRows(int count) noexcept
 		{
 			auto first{ imageGroups[index].pictures.rowCount() };	// Insert after end
-			auto last{ first + count };
+			auto last{ first + count - 1 };
 			imageGroups[index].pictures.beginInsertRows(QModelIndex(), first, last);
 			return (*this);
 		}
