@@ -424,8 +424,8 @@ namespace DSS
     //
     void ImageListModel::addImage(ListBitMap image)
     {
-        if (std::find(mydata.begin(), mydata.end(), image) != mydata.end())
-            return;
+        Q_ASSERT(std::find(mydata.begin(), mydata.end(), image) == mydata.end());
+            
         mydata.emplace_back(std::move(image));
     }
 
