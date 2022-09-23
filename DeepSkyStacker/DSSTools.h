@@ -6,7 +6,11 @@
 #include <float.h>
 //#include <math.h>
 #include <cmath>
+
+#include <QRectF>
+
 #include "avx_median.h"
+
 
 /* ------------------------------------------------------------------- */
 
@@ -207,13 +211,6 @@ public :
 	double			X;
 	double			Y;
 
-private :
-	void	CopyFrom(const CPointExt & pt)
-	{
-		X = pt.X;
-		Y = pt.Y;
-	};
-
 public :
 	CPointExt(double x = 0, double y = 0)
 	{
@@ -221,28 +218,27 @@ public :
 		Y = y;
 	};
 
-	CPointExt(const CPointExt & pt)
-	{
-		CopyFrom(pt);
-	};
+	CPointExt(const CPointExt& pt) = default;
 
-	CPointExt(const CPoint & pt)
+	CPointExt(const CPoint& pt)
 	{
 		X = pt.x;
 		Y = pt.y;
 	};
 
-	CPointExt(const CRect & rc)
+	CPointExt(const QPointF & pt)
 	{
-		X = (double)(rc.left+rc.right)/2.0;
-		Y = (double)(rc.top+rc.bottom)/2.0;
+		X = pt.x();
+		Y = pt.y();
 	};
 
-	CPointExt & operator = (const CPointExt & pt)
+	CPointExt(const QRectF & rc)
 	{
-		CopyFrom(pt);
-		return (*this);
+		X = (double)(rc.left()+rc.right())/2.0;
+		Y = (double)(rc.top()+rc.bottom())/2.0;
 	};
+
+	CPointExt& operator = (const CPointExt& pt) = default;
 
 	void	Offset(const CPointExt & pt)
 	{
@@ -250,11 +246,11 @@ public :
 		Y -= pt.Y;
 	};
 
-	void	CopyTo(CPoint & pt)
-	{
-		pt.x = X;
-		pt.y = Y;
-	};
+//	void	CopyTo(CPoint & pt)
+//	{
+//		pt.x = X;
+//		pt.y = Y;
+//	};
 
 	bool operator != (const CPointExt & pt)
 	{

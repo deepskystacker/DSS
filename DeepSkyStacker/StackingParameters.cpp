@@ -27,7 +27,7 @@ using std::max;
 StackingParameters::StackingParameters(QWidget *parent, PICTURETYPE theType) :
     QWidget(parent),
     ui(new Ui::StackingParameters),
-	workspace(std::make_unique<CWorkspace>()),
+	workspace(std::make_unique<Workspace>()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent)),
 	type(theType),
 	nobgCalString(tr("No Background Calibration", "ID_CALIBRATIONMENU_NOBACKGROUNDCALIBRATION")),

@@ -1,0 +1,100 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="logo.png">res/logo.png</file>
+        <file alias="DSSIcon.png">Icon/DSS_Icon32.png</file>
+        <file alias="DSSIcon@2x.png">Icon/DSS_Icon32@2x.png</file>
+    </qresource>
+    <qresource prefix="/calibration">
+        <file alias="rational.bmp">res/Calibration_Rational.bmp</file>
+        <file alias="linear.bmp">res/Calibration_Linear.bmp</file>
+    </qresource>
+    <qresource prefix="/rgbcalibration">
+        <file alias="none.bmp">res/RGBCalibration_None.bmp</file>
+        <file alias="middle.bmp">res/RGBCalibration_Middle.bmp</file>
+        <file alias="minimum.bmp">res/RGBCalibration_Minimum.bmp</file>
+        <file alias="maximum.bmp">res/RGBCalibration_Maximum.bmp</file>
+    </qresource>
+    <qresource prefix="/comet">
+        <file alias="normal.bmp">res/Comet_Normal.bmp</file>
+        <file alias="freeze.bmp">res/Comet_Freeze.bmp</file>
+        <file alias="trails.bmp">res/Comet_Trails.bmp</file>
+    </qresource>
+    <qresource prefix="/flags">
+        <file alias="brazil.png">res/Brazil.png</file>
+        <file alias="catalan.png">res/Catalan.png</file>
+        <file alias="czech.png">res/Czech.png</file>
+        <file alias="dutch.png">res/Dutch.png</file>
+        <file alias="german.png">res/German.png</file>
+        <file alias="italian.png">res/Italian.png</file>
+        <file alias="portugal.png">res/Portugal.png</file>
+        <file alias="romanian.png">res/Romanian.png</file>
+        <file alias="russian.png">res/Russian.png</file>
+        <file alias="spanish.png">res/Spanish.png</file>
+        <file alias="taiwan.png">res/Taiwan.png</file>
+        <file alias="turkish.png">res/Turkish.png</file>
+    </qresource>
+    <qresource prefix="/stacking">
+        <file alias="normalmode.bmp">res/normalmode.bmp</file>
+        <file alias="intersectionmode.bmp">res/intersectionmode.bmp</file>
+        <file alias="mosaicmode.bmp">res/mosaicmode.bmp</file>
+        <file alias="custommode.bmp">res/custommode.bmp</file>
+        <file alias="4corners.png">res/4Corners.png</file>
+        <file alias="BiasColour.png">res/BiasColour.png</file>
+        <file alias="BiasColour@2x.png">res/BiasColour@2x.png</file>
+        <file alias="BiasCYMG.png">res/BiasCYMG.png</file>
+        <file alias="BiasCYMG@2x.png">res/BiasCYMG@2x.png</file>
+        <file alias="BiasGreyScale.png">res/BiasGreyScale.png</file>
+        <file alias="BiasGreyScale@2x.png">res/BiasGreyScale@2x.png</file>
+        <file alias="BiasRGB.png">res/BiasRGB.png</file>
+        <file alias="BiasRGB@2x.png">res/BiasRGB@2x.png</file>
+        <file alias="DarkColour.png">res/DarkColour.png</file>
+        <file alias="DarkColour@2x.png">res/DarkColour@2x.png</file>
+        <file alias="DarkCYMG.png">res/DarkCYMG.png</file>
+        <file alias="DarkCYMG@2x.png">res/DarkCYMG@2x.png</file>
+        <file alias="DarkGreyscale.png">res/DarkGreyscale.png</file>
+        <file alias="DarkGreyscale@2x.png">res/DarkGreyscale@2x.png</file>
+        <file alias="DarkRGB.png">res/DarkRGB.png</file>
+        <file alias="DarkRGB@2x.png">res/DarkRGB@2x.png</file>
+        <file alias="FlatColour.png">res/FlatColour.png</file>
+        <file alias="FlatColour@2x.png">res/FlatColour@2x.png</file>
+        <file alias="FlatCYMG.png">res/FlatCYMG.png</file>
+        <file alias="FlatCYMG@2x.png">res/FlatCYMG@2x.png</file>
+        <file alias="FlatGreyscale.png">res/FlatGreyscale.png</file>
+        <file alias="FlatGreyscale@2x.png">res/FlatGreyscale@2x.png</file>
+        <file alias="FlatRGB.png">res/FlatRGB.png</file>
+        <file alias="FlatRGB@2x.png">res/FlatRGB@2x.png</file>
+        <file alias="LightColour.png">res/LightColour.png</file>
+        <file alias="LightColour@2x.png">res/LightColour@2x.png</file>
+        <file alias="LightCYMG.png">res/LightCYMG.png</file>
+        <file alias="LightCYMG@2x.png">res/LightCYMG@2x.png</file>
+        <file alias="LightGreyscale.png">res/LightGreyscale.png</file>
+        <file alias="LightGreyscale@2x.png">res/LightGreyscale@2x.png</file>
+        <file alias="LightRGB.png">res/LightRGB.png</file>
+        <file alias="LightRGB@2.png">res/LightRGB@2x.png</file>
+    </qresource>
+    <qresource prefix="/rawddpsettings">
+        <file alias="Pattern_BGGR.bmp">res/Pattern_BGGR.bmp</file>
+        <file alias="Pattern_GBRG.bmp">res/Pattern_GBRG.bmp</file>
+        <file alias="Pattern_GRBG.bmp">res/Pattern_GRBG.bmp</file>
+        <file alias="Pattern_RGGB.bmp">res/Pattern_RGGB.bmp</file>
+        <file alias="Pattern_CYGMCYMG.bmp">res/Pattern_CYGMCYMG.bmp</file>
+    </qresource>
+    <qresource prefix="/toolbar">
+        <file alias="ButtonComet_Disabled.png">res/ButtonComet_Disabled.png</file>
+        <file alias="ButtonComet_Down.png">res/ButtonComet_Down.png</file>
+        <file alias="ButtonComet_Hot.png">res/ButtonComet_Hot.png</file>
+        <file alias="ButtonComet_Up.png">res/ButtonComet_Up.png</file>
+        <file alias="ButtonSave_Disabled.png">res/ButtonSave_Disabled.png</file>
+        <file alias="ButtonSave_Down.png">res/ButtonSave_Down.png</file>
+        <file alias="ButtonSave_Hot.png">res/ButtonSave_Hot.png</file>
+        <file alias="ButtonSave_Up.png">res/ButtonSave_Up.png</file>
+        <file alias="ButtonSelect_Disabled.png">res/ButtonSelect_Disabled.png</file>
+        <file alias="ButtonSelect_Down.png">res/ButtonSelect_Down.png</file>
+        <file alias="ButtonSelect_Hot.png">res/ButtonSelect_Hot.png</file>
+        <file alias="ButtonSelect_Up.png">res/ButtonSelect_Up.png</file>
+        <file alias="ButtonStar_Disabled.png">res/ButtonStar_Disabled.png</file>
+        <file alias="ButtonStar_Down.png">res/ButtonStar_Down.png</file>
+        <file alias="ButtonStar_Hot.png">res/ButtonStar_Hot.png</file>
+        <file alias="ButtonStar_Up.png">res/ButtonStar_Up.png</file>
+    </qresource>
+</RCC>

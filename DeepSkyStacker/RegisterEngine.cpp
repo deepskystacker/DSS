@@ -66,7 +66,7 @@ inline	void NormalizeAngle(int & lAngle)
 
 /* ------------------------------------------------------------------- */
 
-bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
+bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 {
 	bool						bResult = false;
 	std::vector<CStarAxisInfo>	vStarAxises;
@@ -175,7 +175,7 @@ bool	CRegisteredFrame::FindStarShape(CMemoryBitmap * pBitmap, CStar & star)
 
 /* ------------------------------------------------------------------- */
 
-bool	CRegisteredFrame::ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius)
+bool CRegisteredFrame::ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius)
 {
 	bool				bResult = false;
 	int				i, j;
@@ -949,7 +949,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	if (m_pProgress != nullptr)
 	{
 		CString			strText;
-		strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)m_strFileName);
+		strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)filePath.c_str());
 		m_pProgress->Start2(strText, lNrSubRects);
 	}
 
@@ -978,7 +978,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		if (omp_get_thread_num() == 0 && (++masterCount % 25) == 0) // Only master thread
 		{
 			CString str;
-			str.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)m_strFileName, nStars.load());
+			str.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)filePath.c_str(), nStars.load());
 			m_pProgress->Progress2(str, nrSubrects.load());
 		}
 	};
@@ -1054,9 +1054,9 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 class CComputeLuminanceTask
 {
 public:
-	CSmartPtr<CGrayBitmap>		m_pGrayBitmap;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CDSSProgress*				m_pProgress;
+	CGrayBitmap* m_pGrayBitmap;
+	CMemoryBitmap* m_pBitmap;
+	CDSSProgress* m_pProgress;
 
 public:
 	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, CDSSProgress* pPrg) :
@@ -1116,10 +1116,9 @@ void CComputeLuminanceTask::processNonAvx(const int lineStart, const int lineEnd
 }
 
 
-void CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap, CGrayBitmap** ppGrayBitmap)
+std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	CSmartPtr<CGrayBitmap> pGrayBitmap;
 
 	m_lWidth = pBitmap->Width();
 	m_lHeight = pBitmap->Height();
@@ -1131,36 +1130,34 @@ void CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitmap* pBitmap, CGrayBitmap
 	if (m_pProgress != nullptr)
 	{
 		CString strText;
-		strText.Format(IDS_COMPUTINGLUMINANCE, (LPCTSTR)m_strFileName);
-		m_pProgress->Start2(strText, pBitmap->Height());
+		strText.Format(IDS_COMPUTINGLUMINANCE, (LPCTSTR)filePath.c_str());
+		m_pProgress->Start2(strText, m_lHeight);
 	}
 
-	pGrayBitmap.Attach(new CGrayBitmap);
-	ZTRACE_RUNTIME("Creating Gray memory bitmap %p (luminance)", pGrayBitmap.m_p);
+	std::shared_ptr<CGrayBitmap> pGrayBitmap = std::make_shared<CGrayBitmap>();
+	ZTRACE_RUNTIME("Creating Gray memory bitmap %p (luminance)", pGrayBitmap.get());
 	pGrayBitmap->Init(pBitmap->Width(), pBitmap->Height());
 
-	CComputeLuminanceTask{ pBitmap, pGrayBitmap, m_pProgress }.process();
+	CComputeLuminanceTask{ pBitmap, pGrayBitmap.get(), m_pProgress }.process();
 
 	if (m_bApplyMedianFilter)
 	{
-		CSmartPtr<CMemoryBitmap> pFiltered;
-		CMedianImageFilter{}.ApplyFilter(pGrayBitmap, &pFiltered, m_pProgress);
-
-		CSmartPtr<CGrayBitmap> pFilteredGray;
-		pFilteredGray.Attach(dynamic_cast<CGrayBitmap*>(pFiltered.m_p));
-		pFilteredGray.CopyTo(ppGrayBitmap);
+		std::shared_ptr<CGrayBitmap> pFiltered = std::dynamic_pointer_cast<CGrayBitmap>(CMedianImageFilter{}.ApplyFilter(pGrayBitmap.get(), m_pProgress));
+		if (static_cast<bool>(pFiltered))
+			return pFiltered;
+		else
+			throw std::runtime_error("ComputeLuminanceBitmap: Median Image Filter did not return a GrayBitmap.");
 	}
 	else
-		pGrayBitmap.CopyTo(ppGrayBitmap);
+		return pGrayBitmap;
 }
 
 void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
-	CSmartPtr<CGrayBitmap> pGrayBitmap;
 
-	ComputeLuminanceBitmap(pBitmap, &pGrayBitmap);
-	if (pGrayBitmap)
+	const std::shared_ptr<CGrayBitmap> pGrayBitmap = ComputeLuminanceBitmap(pBitmap);
+	if (static_cast<bool>(pGrayBitmap))
 		RegisterPicture(*pGrayBitmap);
 }
 
@@ -1308,41 +1305,42 @@ void CLightFrameInfo::RegisterPicture()
 	CBitmapInfo			bmpInfo;
 	bool				bLoaded;
 
-	if (GetPictureInfo(m_strFileName, bmpInfo) && bmpInfo.CanLoad())
+	if (GetPictureInfo(filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
 	{
-		CSmartPtr<CMemoryBitmap>	pBitmap;
 		CString						strText;
 		CString						strDescription;
 
 		bmpInfo.GetDescription(strDescription);
 
-		if (bmpInfo.m_lNrChannels==3)
-			strText.Format(IDS_LOADRGBPICTURE, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)m_strFileName);
+		if (bmpInfo.m_lNrChannels == 3)
+			strText.Format(IDS_LOADRGBPICTURE, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, filePath.c_str());
 		else
-			strText.Format(IDS_LOADGRAYPICTURE, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)m_strFileName);
-		if (m_pProgress)
+			strText.Format(IDS_LOADGRAYPICTURE, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, filePath.c_str());
+
+		if (m_pProgress != nullptr)
 			m_pProgress->Start2(strText, 0);
 
-		bLoaded = ::LoadPicture(m_strFileName, &pBitmap, m_pProgress);
+		std::shared_ptr<CMemoryBitmap> pBitmap;
+		bLoaded = ::FetchPicture(filePath.c_str(), pBitmap, m_pProgress);
 
-		if (m_pProgress)
+		if (m_pProgress != nullptr)
 			m_pProgress->End2();
 
 		if (bLoaded)
 		{
-			RegisterPicture(pBitmap);
+			RegisterPicture(pBitmap.get());
 //			ComputeRedBlueShifting(pBitmap);
-		};
-	};
-};
+		}
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, CDSSProgress * pProgress)
+void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	Reset();
-	m_strFileName		= szBitmap;
+	filePath = fs::path(szBitmap);
 	m_fMinLuminancy		= fMinLuminancy;
 	m_fBackground		= 0.0;
 	m_bRemoveHotPixels  = bRemoveHotPixels;
@@ -1352,7 +1350,7 @@ void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, bo
 	RegisterPicture();
 
 	m_pProgress = nullptr;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1370,7 +1368,7 @@ void CLightFrameInfo::SaveRegisteringInfo()
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, bool bProcessIfNecessary, bool bForceRegister)
+void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bForceRegister)
 {
 	TCHAR				szDrive[1+_MAX_DRIVE];
 	TCHAR				szDir[1+_MAX_DIR];
@@ -1380,8 +1378,8 @@ void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, bool bProcessIfNecessary, bool
 
 	Reset();
 	m_bInfoOk = false;
-	m_strFileName = szBitmap;
-	_tsplitpath(m_strFileName, szDrive, szDir, szFile, szExt);
+	filePath = path;
+	_tsplitpath(filePath.c_str(), szDrive, szDir, szFile, szExt);
 	_tmakepath(szInfoName, szDrive, szDir, szFile, _T(".Info.txt"));
 
 	m_strInfoFileName = szInfoName;
@@ -1390,24 +1388,23 @@ void CLightFrameInfo::SetBitmap(LPCTSTR szBitmap, bool bProcessIfNecessary, bool
 	{
 		RegisterPicture();
 		SaveRegisteringInfo();
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-bool	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile)
+bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile)
 {
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (lfi.m_strFileName.GetLength() && pBitmap)
+	if (!lfi.filePath.empty() != 0 && static_cast<bool>(pBitmap))
 	{
 		TCHAR			szDrive[1+_MAX_DRIVE];
 		TCHAR			szDir[1+_MAX_DIR];
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(lfi.m_strFileName, szDrive, szDir, szName, nullptr);
+		_tsplitpath(lfi.filePath.c_str(), szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;
@@ -1418,34 +1415,32 @@ bool	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 		{
 			CString			strExt;
 
-			GetFITSExtension(lfi.m_strFileName, strExt);
+			GetFITSExtension(lfi.filePath, strExt);
 			strOutputFile += ".cal"+strExt;
-		};
+		}
 
 		strCalibratedFile = strOutputFile;
 
-		CSmartPtr<CMemoryBitmap>		pOutBitmap;
+		std::shared_ptr<CMemoryBitmap> pOutBitmap;
 
 		if (m_bSaveCalibratedDebayered)
 		{
 			// Debayer the image
-			if (!DebayerPicture(pBitmap, &pOutBitmap, pProgress))
+			if (!DebayerPicture(pBitmap.get(), pOutBitmap, pProgress))
 				pOutBitmap = pBitmap;
 		}
 		else
 			pOutBitmap = pBitmap;
 
 		// Check and remove super pixel settings
-		CCFABitmapInfo *			pCFABitmapInfo;
-		CFATRANSFORMATION			CFATransform = CFAT_NONE;
-
-		pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pOutBitmap.m_p);
-		if (pCFABitmapInfo)
+		CFATRANSFORMATION CFATransform = CFAT_NONE;
+		CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pOutBitmap.get());
+		if (pCFABitmapInfo != nullptr)
 		{
 			CFATransform = pCFABitmapInfo->GetCFATransformation();
 			if (CFATransform == CFAT_SUPERPIXEL)
 				pCFABitmapInfo->UseBilinear(true);
-		};
+		}
 
 		if (pProgress)
 		{
@@ -1453,35 +1448,33 @@ bool	CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBit
 
 			strText.Format(IDS_SAVINGCALIBRATED, strOutputFile);
 			pProgress->Start2(strText, 0);
-		};
+		}
 
 		if (m_IntermediateFileFormat == IFF_TIFF)
-			bResult = WriteTIFF(strOutputFile, pOutBitmap, pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure, lfi.m_fAperture);
+			bResult = WriteTIFF(strOutputFile, pOutBitmap.get(), pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure, lfi.m_fAperture);
 		else
-			bResult = WriteFITS(strOutputFile, pOutBitmap, pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
+			bResult = WriteFITS(strOutputFile, pOutBitmap.get(), pProgress, _T("Calibrated light frame"), lfi.m_lISOSpeed, lfi.m_lGain, lfi.m_fExposure);
 
 		if (CFATransform == CFAT_SUPERPIXEL)
 			pCFABitmapInfo->UseSuperPixels(true);
 
 		if (pProgress)
 			pProgress->End2();
-	};
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
-bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce, CDSSProgress * pProgress)
+bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = true;
-	int					i, j;
 	CString					strText;
 	int					lTotalRegistered = 0;
-	int					lNrRegistered = 0;
 
-	for (i = 0;i<tasks.m_vStacks.size();i++)
+	for (size_t i = 0; i < tasks.m_vStacks.size(); i++)
 	{
 		CStackingInfo *		pStackingInfo = nullptr;
 
@@ -1501,7 +1494,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce
 	if (pProgress)
 		pProgress->Start(strText, lTotalRegistered, true);
 
-	for (i = 0;i<tasks.m_vStacks.size() && bResult;i++)
+	for (size_t i = 0; i < tasks.m_vStacks.size() && bResult; i++)
 	{
 		CStackingInfo *		pStackingInfo = nullptr;
 
@@ -1514,57 +1507,55 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce
 
 			MasterFrames.LoadMasters(pStackingInfo, pProgress);
 
-			for (j = 0;j<pStackingInfo->m_pLightTask->m_vBitmaps.size() && bResult;j++)
+			for (size_t j = 0; j < pStackingInfo->m_pLightTask->m_vBitmaps.size() && bResult; j++)
 			{
 				// Register this bitmap
-				CLightFrameInfo		lfi;
+				CLightFrameInfo lfi;
 
-				ZTRACE_RUNTIME("Register %s", CT2CA((LPCTSTR)pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName));
+				ZTRACE_RUNTIME("Register %s", pStackingInfo->m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
 
 				lfi.SetProgress(pProgress);
-				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].m_strFileName, false, false);
-				lNrRegistered++;
+				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].filePath.c_str(), false, false);
 
 				if (pProgress)
 				{
-					strText.Format(IDS_REGISTERINGPICTURE, lNrRegistered, lTotalRegistered);
-					pProgress->Progress1(strText, lNrRegistered);
+					strText.Format(IDS_REGISTERINGPICTURE, static_cast<int>(j+1), lTotalRegistered);
+					pProgress->Progress1(strText, static_cast<int>(j));
 				};
 
 				if (bForce || !lfi.IsRegistered())
 				{
 					CBitmapInfo		bmpInfo;
 					// Load the bitmap
-					if (GetPictureInfo(lfi.m_strFileName, bmpInfo) && bmpInfo.CanLoad())
+					if (GetPictureInfo(lfi.filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
 					{
-						CSmartPtr<CMemoryBitmap>	pBitmap;
+						
 						CString						strText;
 						CString						strDescription;
 
 						bmpInfo.GetDescription(strDescription);
 
 						if (bmpInfo.m_lNrChannels==3)
-							strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)lfi.m_strFileName);
+							strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, lfi.filePath.c_str());
 						else
-							strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)lfi.m_strFileName);
+							strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, lfi.filePath.c_str());
 						if (pProgress)
 							pProgress->Start2(strText, 0);
 
-						if (::LoadPicture(lfi.m_strFileName, &pBitmap, pProgress))
+						std::shared_ptr<CMemoryBitmap> pBitmap;
+						if (::FetchPicture(lfi.filePath.c_str(), pBitmap, pProgress))
 						{
 							// Apply offset, dark and flat to lightframe
 							MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
 
-							CString				strCalibratedFile;
+							CString strCalibratedFile;
 
-							if (m_bSaveCalibrated &&
-								(pStackingInfo->m_pDarkTask || pStackingInfo->m_pDarkFlatTask ||
-								pStackingInfo->m_pFlatTask || pStackingInfo->m_pOffsetTask))
+							if (m_bSaveCalibrated && (pStackingInfo->m_pDarkTask || pStackingInfo->m_pDarkFlatTask || pStackingInfo->m_pFlatTask || pStackingInfo->m_pOffsetTask))
 								SaveCalibratedLightFrame(lfi, pBitmap, pProgress, strCalibratedFile);
 
 							// Then register the light frame
 							lfi.SetProgress(pProgress);
-							lfi.RegisterPicture(pBitmap);
+							lfi.RegisterPicture(pBitmap.get());
 							lfi.SaveRegisteringInfo();
 
 							if (strCalibratedFile.GetLength())
@@ -1584,17 +1575,17 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks & tasks, bool bForce
 						{
 							pProgress->End2();
 							bResult = !pProgress->IsCanceled();
-						};
-					};
-				};
-			};
-		};
-	};
+						}
+					}
+				}
+			}
+		}
+	}
 
 	// Clear stuff
 	tasks.ClearCache();
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */

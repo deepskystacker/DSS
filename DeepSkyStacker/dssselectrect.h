@@ -35,7 +35,6 @@
 **
 ****************************************************************************/
 class QMouseEvent;
-class DSSImageView;
 
 #include <QObject>
 #include <QWidget>
@@ -44,54 +43,58 @@ class DSSImageView;
 
 enum class SelectionMode : quint8;
 
-class DSSSelectRect :
-    public QWidget
+namespace DSS
 {
-    Q_OBJECT
+    class ImageView;
 
-typedef QWidget
-    Inherited;
+    class SelectRect :
+        public QWidget
+    {
+        Q_OBJECT
 
-public:
-explicit DSSSelectRect(QWidget * parent);
+            typedef QWidget
+            Inherited;
 
-void setGeometry(const QRect& r);
+    public:
+        explicit SelectRect(QWidget* parent);
 
-protected:
-    void paintEvent(QPaintEvent*) override;
-    void changeEvent(QEvent*) override;
-    void showEvent(QShowEvent*) override;
+        void setGeometry(const QRect& r);
 
-public slots:
-    void mousePressEvent(QMouseEvent* e);
-    void mouseMoveEvent(QMouseEvent* e);
-    void mouseReleaseEvent(QMouseEvent* e);
-    void resizeEvent(QResizeEvent* e);
+    protected:
+        void paintEvent(QPaintEvent*) override;
+        void changeEvent(QEvent*) override;
+        void showEvent(QShowEvent*) override;
 
-    void rectButtonChecked();
-    void starsButtonChecked();
-    void cometButtonChecked();
-    void saveButtonPressed();
+    public slots:
+        void mousePressEvent(QMouseEvent* e);
+        void mouseMoveEvent(QMouseEvent* e);
+        void mouseReleaseEvent(QMouseEvent* e);
+        void resizeMe(QResizeEvent* e);
 
-signals:
-    void selectRectChanged(QRectF rect);
+        void rectButtonPressed();
+        void starsButtonPressed();
+        void cometButtonPressed();
+        void saveButtonPressed();
 
-private:
-    SelectionMode mode;
-    DSSImageView* imageView;
-    QRectF  selectRect;             // In image coordinates
-    QRectF  startRect;              // In image coordinates
-    bool    selecting;
-    QPointF startPos;
-    QPointF endPos;
-    QRegion clipping;
-    static inline QString x2Text{ "x2" };
-    static inline QString x3Text{ "x3" };
+    signals:
+        void selectRectChanged(QRectF rect);
 
-    SelectionMode modeFromPosition(const QPointF&);
-    Qt::CursorShape cursorFromMode(SelectionMode);
+    private:
+        SelectionMode mode;
+        ImageView* imageView;
+        QRectF  selectRect;             // In image coordinates
+        QRectF  startRect;              // In image coordinates
+        bool    selecting;
+        QPointF startPos;
+        QPointF endPos;
+        QRegion clipping;
+        static inline QString x2Text{ "x2" };
+        static inline QString x3Text{ "x3" };
 
-    void updateSelection();
-    void getDrizzleRectangles(QRectF& rect2xDrizzle, QRectF& rect3xDrizzle) noexcept;
-};
+        SelectionMode modeFromPosition(const QPointF&);
+        Qt::CursorShape cursorFromMode(SelectionMode);
 
+        void updateSelection();
+        void getDrizzleRectangles(QRectF& rect2xDrizzle, QRectF& rect3xDrizzle) noexcept;
+    };
+}

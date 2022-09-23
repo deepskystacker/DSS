@@ -19,7 +19,7 @@ IntermediateFiles::IntermediateFiles(QWidget *parent, bool regOnly) :
 	QWidget(parent),
 	registerOnly(regOnly),
 	ui(new Ui::IntermediateFiles),
-	workspace(new CWorkspace())
+	workspace(new Workspace())
 {
 	ui->setupUi(this);
 }

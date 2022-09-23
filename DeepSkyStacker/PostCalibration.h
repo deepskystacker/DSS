@@ -1,7 +1,7 @@
 #ifndef POSTCALIBRATION_H
 #define POSTCALIBRATION_H
 
-class CWorkspace;
+class Workspace;
 class StackSettings;
 class CAllStackingTasks;
 class QAction;
@@ -32,7 +32,7 @@ public slots:
 
 private:
     Ui::PostCalibration *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	StackSettings *		pStackSettings;
 	CPostCalibrationSettings pcs;
 	CAllStackingTasks *	pStackingTasks;

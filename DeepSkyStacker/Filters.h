@@ -11,117 +11,91 @@
 class CImageFilter
 {
 public :
-	CImageFilter() {};
-	virtual ~CImageFilter() {};
-
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr) = 0;
+	virtual ~CImageFilter() = default;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) = 0;
 };
 
 /* ------------------------------------------------------------------- */
 
 class CFilterMatrix
 {
-public :
-	std::vector<double>			m_vMatrix;
-	int						m_lSize;
+public:
+	std::vector<double> m_vMatrix;
+	int m_lSize;
 
-private :
-	void	CopyFrom(const CFilterMatrix & fm)
-	{
-		m_vMatrix	= fm.m_vMatrix;
-		m_lSize		= fm.m_lSize;
-	};
-
-public :
-	CFilterMatrix()
-	{
-        m_lSize = 0;
-	};
-
-	CFilterMatrix(const CFilterMatrix & fm)
-	{
-		CopyFrom(fm);
-	};
-
+public:
+	CFilterMatrix() : m_vMatrix{}, m_lSize{ 0 } {}
+	CFilterMatrix(const CFilterMatrix&) = default;
 	~CFilterMatrix() {};
+	CFilterMatrix& operator= (const CFilterMatrix&) = default;
 
-	CFilterMatrix & operator = (const CFilterMatrix & fm)
-	{
-		CopyFrom(fm);
-		return (*this);
-	};
-
-	void	Init(int lSize)
+	void Init(const int lSize)
 	{
 		m_lSize = lSize;
-		m_vMatrix.resize((lSize*2)+1);
-	};
-
+		m_vMatrix.resize((lSize * 2) + 1);
+	}
 };
 
-/* ------------------------------------------------------------------- */
 
 class CMedianImageFilter : public CImageFilter
 {
 private :
-	bool						m_bMonochrome;
-	bool						m_bCFA;
-	int						m_lWidth,
-								m_lHeight;
-	CSmartPtr<CMemoryBitmap>	m_pInBitmap;
-	CSmartPtr<CMemoryBitmap>	m_pOutBitmap;
-	int						m_lFilterSize;
-	std::vector<double>			m_vGrayPixelValues;
-	std::vector<double>			m_vRedPixelValues;
-	std::vector<double>			m_vGreenPixelValues;
-	std::vector<double>			m_vBluePixelValues;
+	bool m_bMonochrome;
+	bool m_bCFA;
+	int m_lWidth;
+	int m_lHeight;
+	CMemoryBitmap* m_pInBitmap;
+	int m_lFilterSize;
+	std::vector<double> m_vGrayPixelValues;
+	std::vector<double> m_vRedPixelValues;
+	std::vector<double> m_vGreenPixelValues;
+	std::vector<double> m_vBluePixelValues;
 
-public :
-	void	ComputeMedianAt(int x, int y, double & fGrayValue, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
-	void	ComputeMedianAt(int x, int y, double & fRedValue, double & fGreenValue, double & fBlueValue);
+public:
+	void ComputeMedianAt(int x, int y, double & fGrayValue, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
+	void ComputeMedianAt(int x, int y, double & fRedValue, double & fGreenValue, double & fBlueValue);
 
-public :
-	CMedianImageFilter()
-	{
-		m_bMonochrome	= false;
-		m_bCFA			= false;
-		m_lFilterSize	= 1;
-        m_lWidth        = 0;
-        m_lHeight       = 0;
-	};
+public:
+	CMedianImageFilter() :
+		m_bMonochrome{ false },
+		m_bCFA{ false },
+		m_lFilterSize{ 1 },
+		m_lWidth{ 0 },
+		m_lHeight{ 0 },
+		m_pInBitmap{ nullptr }
+	{}
 
 	virtual ~CMedianImageFilter()
-	{
-	};
+	{}
 
-	void	SetFilterSize(int lFilterSize)
+	void SetFilterSize(int lFilterSize)
 	{
 		m_lFilterSize = lFilterSize;
-	};
+	}
 
-	bool	IsMonochrome()
+	bool IsMonochrome() const
 	{
 		return m_bMonochrome;
-	};
+	}
 
-	bool	IsCFA()
+	bool IsCFA() const
 	{
 		return m_bCFA;
-	};
+	}
 
-	void	SetBitmap(CMemoryBitmap * pBitmap)
+	void SetBitmap(CMemoryBitmap* pBitmap)
 	{
 		m_pInBitmap = pBitmap;
-		if (pBitmap)
+		if (pBitmap != nullptr)
 		{
 			m_bMonochrome = pBitmap->IsMonochrome();
-			m_bCFA		  = pBitmap->IsCFA();
-			m_lWidth	  = pBitmap->Width();
-			m_lHeight	  = pBitmap->Height();
-		};
-	};
+			m_bCFA = pBitmap->IsCFA();
+			m_lWidth = pBitmap->Width();
+			m_lHeight = pBitmap->Height();
+		}
+	}
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr);
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -140,8 +114,8 @@ private :
 	EXCLUDEDPIXELVECTOR	m_vExcludedPixels;
 
 private :
-	void	AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds);
-	void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap * pOutBitmap, CDSSProgress * pProgress = nullptr);
+	void AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds);
+	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, CDSSProgress* pProgress = nullptr);
 
 public :
 	CExtendedMedianImageFilter()
@@ -177,7 +151,7 @@ public :
 		m_bUseRejectThreshold  = false;
 	};
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** ppOutBitmap, CDSSProgress * pProgress = nullptr);
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -185,34 +159,25 @@ public :
 class CDirectionalImageFilter : public CImageFilter
 {
 private :
-	double						m_fAngle;
-	double						m_lSize;
-	CSmartPtr<CMemoryBitmap>	m_pInBitmap;
-	bool						m_bMonochrome;
+	double m_fAngle;
+	double m_lSize;
 
 private :
-	void	GetValuesAlongAngle(int x, int y, double fAngle, std::vector<double> & vValues);
-	void	GetValuesAlongAngle(int x, int y, double fAngle, std::vector<double> & vRedValues, std::vector<double> & vGreenValues, std::vector<double> & vBlueValues);
-	void	InitFilterMatrix(CFilterMatrix & fm);
+	void GetValuesAlongAngle(CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vValues);
+	void GetValuesAlongAngle(CMemoryBitmap* pInBitmap, int x, int y, double fAngle, std::vector<double>& vRedValues, std::vector<double>& vGreenValues, std::vector<double>& vBlueValues);
+	void InitFilterMatrix(CFilterMatrix & fm);
 
 public :
-	CDirectionalImageFilter()
-	{
-		m_fAngle = 0;
-		m_lSize  = 1;
-        m_bMonochrome = false;
-	};
+	CDirectionalImageFilter() : m_fAngle{ 0 }, m_lSize{ 1 } {}
 	~CDirectionalImageFilter() {};
 
-	void			SetAngle(double fAngle, int lSize)
+	void SetAngle(double fAngle, int lSize)
 	{
 		m_fAngle = fAngle;
 		m_lSize  = lSize;
-	};
+	}
 
-	virtual void	ApplyFilter(CMemoryBitmap * pInBitmap, CMemoryBitmap ** pOutBitmap, CDSSProgress * pProgress = nullptr);
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
 };
 
-/* ------------------------------------------------------------------- */
-
-#endif // __FILTERS_H__
+#endif

@@ -34,14 +34,15 @@
 **
 **
 ****************************************************************************/
-
+#include <mutex>
 #include <vector>
 #include <QObject>
 #include <QAbstractTableModel>
+#include <QIcon>
 #include <QModelIndex>
 #include <QVariant>
+#include "FrameInfo.h"
 
-class ListBitMap;
 
 namespace DSS
 {
@@ -53,14 +54,20 @@ namespace DSS
         typedef QAbstractTableModel
             Inherited;
 
+        friend class FrameList;
+
+        static inline std::mutex mutex {};
+        static inline std::vector<QIcon> icons {};
+
         std::vector<ListBitMap> mydata;
+
     public:
         enum class Column
         {
-            PathCol = 0, FileCol, TypeCol, FilterCol, ScoreCol,
-            dXCol, dYCol, AngleCol, DateTimeCol, SizeCol, CFACol, DepthCol,
-            InfoCol, ISOCol, ExposureCol, ApertureCol, FWHMCol, StarsCol,
-            BackgroundCol, MAX_COLS
+            Path = 0, File, Type, Filter, Score,
+            dX, dY, Angle, FileTime, Size, CFA, Depth,
+            Info, ISO, Exposure, Aperture, FWHM, Stars,
+            Background, MAX_COLS
         };
 
 
@@ -70,21 +77,27 @@ namespace DSS
         typedef std::vector<ListBitMap>::const_iterator const_iterator;
         typedef std::vector<ListBitMap>::iterator iterator;
 
-        explicit ImageListModel(QObject* parent = 0) : QAbstractTableModel(parent)
-        {
-        };
-
-        int rowCount(const QModelIndex& parent) const
+        explicit ImageListModel(QObject* parent = nullptr);
+ 
+        int rowCount(const QModelIndex& parent = QModelIndex()) const override
         {
             // Return number of images we know about
             return static_cast<int>(mydata.size());
         };
 
-        int columnCount(const QModelIndex& parent) const
+        int columnCount(const QModelIndex& parent = QModelIndex()) const override
         {
             // Pretty simple really
             return static_cast<int>(Column::MAX_COLS);
         };
+
+
+        Qt::ItemFlags flags(const QModelIndex& index) const override
+        {
+            auto flags = Inherited::flags(index);
+            if (0 == index.column()) flags |= (Qt::ItemIsUserCheckable);
+            return flags;
+        }
 
         virtual QVariant data(const QModelIndex& index, int role) const;
         virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
@@ -109,11 +122,145 @@ namespace DSS
         //
         // return the filename held in the base FrameInfo object
         //
-        CString selectedFileName(int row) const
+        QString selectedFileName(int row) const
         {
-            return mydata[row].m_strFileName;
+            return QString::fromStdU16String(mydata[row].filePath.generic_u16string());
         }
 
+        //
+        // Check if a loaded image is a light frame
+        //
+        bool isLightFrame(QString name) const
+        {
+            for (auto const& data : mydata)
+            {
+                if (data.filePath == fs::path(name.toStdString()))
+                {
+                    if (data.IsLightFrame()) return true;
+                    else return false;
+                 }
+            }
+
+            return false;
+        }
+
+        //
+        // Check if a loaded image has been checked
+        //
+        bool isChecked(QString name) const
+        {
+            for (auto const& data : mydata)
+            {
+                if (data.filePath == fs::path(name.toStdU16String()))
+                {
+                    if (Qt::Checked == data.m_bChecked) return true;
+                    else return false;
+                }
+            }
+
+            return false;
+        }
+
+        //
+        // Get the transformation if any
+        //
+        bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
+        {
+            for (auto const& data : mydata)
+            {
+                if (data.IsLightFrame() && data.filePath == fs::path(name.toStdU16String()))
+                {
+                    transformation = data.m_Transformation;
+                    vVotedPairs = data.m_vVotedPairs;
+                    return true;
+                };
+            };
+
+            return false;
+        }
+
+        void emitChanged(int startRow, int endRow, int startColumn = 0, int endColumn = static_cast<int>(Column::MAX_COLS))
+        {
+            QModelIndex start{ createIndex(startRow, startColumn) };
+            QModelIndex end{ createIndex(endRow, endColumn) };
+            emit dataChanged(start, end);
+        }
+
+        //
+        // Delete everything
+        //
+        inline void clear()
+        {
+            beginRemoveRows(QModelIndex(), 0, static_cast<int>(mydata.size()) - 1);
+            mydata.clear();
+            endRemoveRows();
+        }
+
+        private:
+
+        inline QString exposureToString(double fExposure) const
+        {
+            QString strText;
+
+            if (fExposure)
+            {
+                qint64			exposure;
+
+                if (fExposure >= 1)
+                {
+                    exposure = fExposure;
+                    qint64			remainingTime = exposure;
+                    qint64			hours, mins, secs;
+
+                    hours = remainingTime / 3600;
+                    remainingTime -= hours * 3600;
+                    mins = remainingTime / 60;
+                    remainingTime -= mins * 60;
+                    secs = remainingTime;
+
+                    if (hours)
+                        strText = QString(QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s ", "IDS_EXPOSURETIME3"))
+                        .arg(hours)
+                        .arg(mins)
+                        .arg(secs);
+                    else if (mins)
+                        strText = QString(QCoreApplication::translate("StackRecap", "%1 mn %2 s ", "IDS_EXPOSURETIME2"))
+                        .arg(mins)
+                        .arg(secs);
+                    else
+                        strText = QString(QCoreApplication::translate("StackRecap", "%1 s ", "IDS_EXPOSURETIME1"))
+                        .arg(secs);
+                }
+                else
+                {
+                    exposure = 1.0 / fExposure + 0.5;
+                    strText = QString(QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF"))
+                        .arg(exposure);
+                };
+            }
+            else
+                strText = "-";
+
+            return strText;
+        }
+
+        inline QString isoToString(int lISOSpeed) const
+        {
+            if (lISOSpeed)
+                return QString::number(lISOSpeed);
+            else
+                return QString("-");
+        }
+
+        inline QString gainToString(int lGain) const
+        {
+            if (lGain >= 0)
+                return QString::number(lGain);
+            else
+                return QString("-");
+        }
+
+        QVariant rowIcon(const ListBitMap& file) const;
     };
 };
 

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-class CWorkspace;
+class Workspace;
 class QAbstractButton;
 class QUrl;
 
@@ -12,7 +12,7 @@ class QUrl;
 
 #include "DSSCommon.h"
 #include "StackingTasks.h"
-#include "CWorkspace.h"
+#include "Workspace.h"
 
 
 class RecommendationItem
@@ -57,7 +57,7 @@ public:
 	bool	differsFromWorkspace()
 	{
 		bool					bResult = false;
-		CWorkspace				workspace;
+		Workspace				workspace;
 
 		// Check that the current values are (or not)
 		for (const auto setting : vSettings)
@@ -94,7 +94,7 @@ public:
 
 	void	applySettings()
 	{
-		CWorkspace				workspace;
+		Workspace				workspace;
 
 		for (size_t i = 0; i < vSettings.size(); i++)
 		{
@@ -205,7 +205,7 @@ private slots:
 
 private:
 	Ui::RecommendedSettings *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	RECOMMENDATIONVECTOR vRecommendations;
 	CAllStackingTasks stackingTasks;
 	CAllStackingTasks *pStackingTasks;

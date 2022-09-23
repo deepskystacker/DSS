@@ -430,8 +430,8 @@ BOOL CWndImage::Draw4Corners(Graphics * pGraphics)
 
 		if (pCorner)
 		{
-			pGraphics->DrawImage(pCorner, rcClient.right-lWidth, rcClient.bottom-lHeight);
-			pGraphics->DrawRectangle(&pen, rcClient.right-lWidth, rcClient.bottom-lHeight, lWidth, lHeight);
+			pGraphics->DrawImage(pCorner, (INT)(rcClient.right-lWidth), (INT)(rcClient.bottom-lHeight));
+			pGraphics->DrawRectangle(&pen, (INT)(rcClient.right-lWidth), (INT)(rcClient.bottom-lHeight), (INT)lWidth, (INT)lHeight);
 
 			delete pCorner;
 		};
@@ -530,7 +530,7 @@ BOOL CWndImage::CreateBufferBitmap()
 
 				// Then the zoom if available
 				if (m_pZoomImage && m_bmp.m_hObject)
-					graphics.DrawImage(m_pZoomImage, m_rcZoom.left, m_rcZoom.top);
+					graphics.DrawImage(m_pZoomImage, (INT)m_rcZoom.left, m_rcZoom.top);
 
 				// then the toolbar
 				if (m_pToolbarImage && m_bmp.m_hObject)
@@ -577,7 +577,7 @@ BOOL CWndImage::CreateBufferBitmap()
 							// Move the rectangle
 							ptTooltip.x = rcToolbar.left - rcTooltip.Width();
 							ptTooltip.y = rcToolbar.top + rcTooltip.top;
-							graphics.DrawImage(pTooltipImage, ptTooltip.x, ptTooltip.y);
+							graphics.DrawImage(pTooltipImage, (INT)ptTooltip.x, ptTooltip.y);
 							delete pTooltipImage;
 						};
 					};

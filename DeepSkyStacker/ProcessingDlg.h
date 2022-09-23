@@ -17,6 +17,7 @@
 #include "Label.h"
 
 #include "ProcessSettingsSheet.h"
+#include "dss_settings.h"
 
 #include <gdiplus.h>
 

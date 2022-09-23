@@ -3,7 +3,7 @@
 
 
 template <typename T>
-bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, CMemoryBitmap** ppColorBitmap, CDSSProgress* pProgress);
+bool AHDDemosaicing(CGrayBitmapT<T> * pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress);
 
 
 #endif __AHDDEMOSAICING_H__

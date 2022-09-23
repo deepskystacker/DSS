@@ -10,10 +10,16 @@
     <height>870</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
-    <width>300</width>
-    <height>801</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -84,7 +90,7 @@
             <string notr="true">...</string>
            </property>
            <property name="icon">
-            <iconset resource="resources.qrc">
+            <iconset resource="../resources.qrc">
              <normaloff>:/stacking/4corners.png</normaloff>:/stacking/4corners.png</iconset>
            </property>
            <property name="iconSize">
@@ -119,7 +125,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="DSSImageView" name="picture" native="true">
+          <widget class="DSS::ImageView" name="picture" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -128,7 +134,7 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>0</width>
+             <width>450</width>
              <height>300</height>
             </size>
            </property>
@@ -158,6 +164,12 @@
        </item>
        <item row="1" column="0">
         <widget class="QTableView" name="tableView">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>175</height>
+          </size>
+         </property>
          <property name="dragDropMode">
           <enum>QAbstractItemView::DropOnly</enum>
          </property>
@@ -203,12 +215,7 @@
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
-           <string>Tab 1</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="tab_2">
-          <attribute name="title">
-           <string>Tab 2</string>
+           <string>Main Group</string>
           </attribute>
          </widget>
         </widget>
@@ -221,14 +228,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DSSImageView</class>
+   <class>DSS::ImageView</class>
    <extends>QWidget</extends>
-   <header location="global">dssimageview.h</header>
+   <header>dssimageview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

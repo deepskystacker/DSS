@@ -7,6 +7,7 @@
 #include <algorithm>
 #include "Filters.h"
 #include <omp.h>
+#include "BitmapIterator.h"
 
 #include "TIFFUtil.h"
 
@@ -1042,16 +1043,16 @@ IMAGEREGION	GetPixelRegion(int lX, int lY, int lWidth, int lHeight)
 	return Result;
 };
 
-/* ------------------------------------------------------------------- */
 
-void	CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap * pBitmap, HOTPIXELVECTOR & vHotPixels)
+void CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels)
 {
 	ZFUNCTRACE_RUNTIME();
-	CMedianImageFilter		Filter;
-	int					lWidth = pBitmap->RealWidth(),
-							lHeight = pBitmap->RealHeight();
+
+	const int lWidth = pBitmap->RealWidth();
+	const int lHeight = pBitmap->RealHeight();
 
 	std::vector<CHotCheckPixel>	vHots;
+	CMedianImageFilter Filter;
 
 	Filter.SetBitmap(pBitmap);
 	Filter.SetFilterSize(2);
@@ -1158,7 +1159,7 @@ void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap
 
 /* ------------------------------------------------------------------- */
 
-double	CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap * pBitmap, CRect & rc)
+double CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap* pBitmap, CRect& rc)
 {
 	ZFUNCTRACE_RUNTIME();
 	double				fResult = 0;
@@ -1221,7 +1222,7 @@ double	CDarkAmpGlowParameters::ComputeMedianValueInRect(CMemoryBitmap * pBitmap,
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBitmap)
+void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool				bMonochrome = pBitmap->IsMonochrome();
@@ -1393,29 +1394,28 @@ void	CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap * pBit
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, CDSSProgress * pProgress)
+void CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap* pBitmap, double& fHotDark, double& fAmpGlow, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CString					strText;
+	CString strText;
 
-	if (!m_pAmpGlow)
+	if (!static_cast<bool>(m_pAmpGlow))
 	{
-		CMedianImageFilter		Filter;
-
 		// First compute the median from the master dark
 		// This is the ampglow...
+		CMedianImageFilter Filter;
 		Filter.SetFilterSize(2);
 
-		if (pProgress)
+		if (pProgress != nullptr)
 		{
 			strText.LoadString(IDS_CREATINGMEDIANIMAGE);
 			pProgress->Start2(strText, 0);
-		};
+		}
 
-		Filter.ApplyFilter(m_pMasterDark, &m_pAmpGlow, pProgress);
+		m_pAmpGlow = Filter.ApplyFilter(m_pMasterDark.get(), pProgress);
 		//WriteTIFF("E:\\AmpGlow.tif", m_pAmpGlow, pProgress, nullptr);
 
-		m_pDarkCurrent.Attach(m_pMasterDark->Clone());
+		m_pDarkCurrent = m_pMasterDark->Clone();
 		// Then subtract this median from the master dark
 		// This is the dark signal
 
@@ -1426,53 +1426,39 @@ void	CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & f
 		// Compute the parameters from the ampglow and the dark current
 
 		// First the dark current
-		m_HotParameters.ComputeParameters(m_pMasterDark/*m_pDarkCurrent*/, m_vHotPixels);
+		m_HotParameters.ComputeParameters(m_pMasterDark.get()/*m_pDarkCurrent*/, m_vHotPixels);
 
 		// Then the Ampglow
-		m_AmpglowParameters.FindPointsAndComputeParameters(m_pAmpGlow);
-		//m_AmpglowParameters.ComputeParametersFromPoints(m_pMasterDark);//.FindPointsAndComputeParameters(m_pAmpGlow);
-	};
+		m_AmpglowParameters.FindPointsAndComputeParameters(m_pAmpGlow.get());
+	}
 
-	if (m_pAmpGlow && m_pDarkCurrent)
+	if (static_cast<bool>(m_pAmpGlow) && static_cast<bool>(m_pDarkCurrent))
 	{
 		// now this is the fun part
 		// Compute ampglow matching and dark matching
 
 		// First dark hot pixels
-		CDarkFrameHotParameters	LightHotParameters;
+		CDarkFrameHotParameters	lightHotParameters;
 
-		LightHotParameters.ComputeParameters(pBitmap, m_vHotPixels);
+		lightHotParameters.ComputeParameters(pBitmap, m_vHotPixels);
 
 		// Then compare to compute the ratio
-		if (m_HotParameters.m_fGrayValue)
-			fHotDark = LightHotParameters.m_fGrayValue/m_HotParameters.m_fGrayValue;
+		if (m_HotParameters.m_fGrayValue != 0)
+			fHotDark = lightHotParameters.m_fGrayValue / m_HotParameters.m_fGrayValue;
 		else
 			fHotDark = 1.0;
 
 		// Then Ampglow
-		CDarkAmpGlowParameters	LightAmpGlowParameters(m_AmpglowParameters);
+		CDarkAmpGlowParameters lightAmpGlowParameters(m_AmpglowParameters);
+		lightAmpGlowParameters.ComputeParametersFromPoints(pBitmap);
+		m_AmpglowParameters.ComputeParametersFromIndice(lightAmpGlowParameters.m_lColdestIndice);
 
-
-		//CMedianImageFilter		Filter;
-
-		// First compute the median from the master dark
-		// This is the ampglow...
-		/*CSmartPtr<CMemoryBitmap>	pBitmapGlow;
-		Filter.SetFilterSize(2);
-		Filter.ApplyFilter(pBitmap, &pBitmapGlow, pProgress);*/
-
-		LightAmpGlowParameters.ComputeParametersFromPoints(pBitmap);
-		m_AmpglowParameters.ComputeParametersFromIndice(LightAmpGlowParameters.m_lColdestIndice);
-
-		if (LightAmpGlowParameters.m_fGrayValue>0 &&
-			m_AmpglowParameters.m_fGrayValue>0)
-			fAmpGlow = std::min(LightAmpGlowParameters.m_fGrayValue/m_AmpglowParameters.m_fGrayValue, 1.0);
+		if (lightAmpGlowParameters.m_fGrayValue > 0 && m_AmpglowParameters.m_fGrayValue > 0)
+			fAmpGlow = std::min(lightAmpGlowParameters.m_fGrayValue / m_AmpglowParameters.m_fGrayValue, 1.0);
 		else
 			fAmpGlow = 1.0;
-
-		//fAmpGlow = std::min(fAmpGlow, fHotDark);
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1699,40 +1685,36 @@ class CFindHotPixelTask1
 {
 public:
 	CRGBHistogram m_RGBHistogram;
-	CSmartPtr<CMemoryBitmap> m_pBitmap;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	CDSSProgress* m_pProgress;
 
 public:
-	CFindHotPixelTask1() : m_pProgress{ nullptr }
-	{}
-
-	~CFindHotPixelTask1() = default;
-
-	void Init(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+	explicit CFindHotPixelTask1(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress) :
+		m_pBitmap{ pBitmap },
+		m_pProgress{ pProgress }
 	{
-		m_pBitmap = pBitmap;
-		m_pProgress = pProgress;
 		m_RGBHistogram.SetSize(256.0, 65535);
 	}
+
+	~CFindHotPixelTask1() = default;
 
 	void process();
 };
 
 template <class T> struct threadLocals {
-	T& bitmap;
-	PixelIterator PixelIt;
+	const T* bitmap;
+	BitmapIteratorConst<const CMemoryBitmap*> PixelIt;
 	CRGBHistogram RGBHistogram;
 
-	explicit threadLocals(T& bm) : bitmap{ bm } {
-		bitmap->GetIterator(&PixelIt);
+	explicit threadLocals(const T* bm) : bitmap{ bm }, PixelIt{ bm }
+	{
 		RGBHistogram.SetSize(256.0, 65535);
 	}
-	threadLocals(const threadLocals& rhs) : bitmap{ rhs.bitmap } {
-		bitmap->GetIterator(&PixelIt);
+	threadLocals(const threadLocals& rhs) : bitmap{ rhs.bitmap }, PixelIt{ rhs.bitmap }
+	{
 		RGBHistogram.SetSize(256.0, 65535);
 	}
 };
-
 
 void CFindHotPixelTask1::process()
 {
@@ -1745,7 +1727,7 @@ void CFindHotPixelTask1::process()
 	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
-	threadLocals threadVars(m_pBitmap);
+	threadLocals threadVars(m_pBitmap.get());
 
 #pragma omp parallel default(none) firstprivate(threadVars) if(nrProcessors > 1)
 	{
@@ -1755,12 +1737,12 @@ void CFindHotPixelTask1::process()
 			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 				m_pProgress->Progress2(nullptr, progress += nrProcessors);
 
-			threadVars.PixelIt->Reset(0, row);
+			threadVars.PixelIt.Reset(0, row);
 			double r, g, b;
 
-			for (int col = 0; col < width; ++col, (*threadVars.PixelIt)++)
+			for (int col = 0; col < width; ++col, ++threadVars.PixelIt)
 			{
-				threadVars.PixelIt->GetPixel(r, g, b); // GetPixel is virtual => works for monochrome bitmaps, too.
+				threadVars.PixelIt.GetPixel(r, g, b); // GetPixel is virtual => works for monochrome bitmaps, too.
 				threadVars.RGBHistogram.AddValues(r, g, b);
 			}
 		}
@@ -1819,15 +1801,14 @@ void	CDarkFrame::RemoveContiguousHotPixels(bool bCFA)
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
+void CDarkFrame::FindHotPixels(CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	m_vHotPixels.clear();
-	if (m_pMasterDark)
+	if (static_cast<bool>(m_pMasterDark))
 	{
-		CRGBHistogram		RGBHistogram;
-		int				i, j;
-		bool				bMonochrome = m_pMasterDark->IsMonochrome();
+		CRGBHistogram RGBHistogram;
+		const bool bMonochrome = m_pMasterDark->IsMonochrome();
 
 		if (pProgress)
 		{
@@ -1835,11 +1816,10 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 			strText.LoadString(IDS_DETECTINGHOTPIXELS1);
 
 			pProgress->Start2(strText, m_pMasterDark->RealHeight());
-		};
+		}
 
-		CFindHotPixelTask1 HotPixelTask1;
-		HotPixelTask1.Init(m_pMasterDark, pProgress);
-		HotPixelTask1.process();
+		CFindHotPixelTask1 hotPixelTask1{ m_pMasterDark, pProgress };
+		hotPixelTask1.process();
 
 		if (pProgress)
 		{
@@ -1848,68 +1828,47 @@ void	CDarkFrame::FindHotPixels(CDSSProgress * pProgress)
 			strText.LoadString(IDS_DETECTINGHOTPIXELS2);
 
 			pProgress->Start2(strText, m_pMasterDark->RealHeight());
-		};
+		}
 
-		double				fRedThreshold,
-							fGreenThreshold,
-							fBlueThreshold;
+		double fRedThreshold = hotPixelTask1.m_RGBHistogram.GetRedHistogram().GetMedian()+16.0 * hotPixelTask1.m_RGBHistogram.GetRedHistogram().GetStdDeviation();
+		double fGreenThreshold = hotPixelTask1.m_RGBHistogram.GetGreenHistogram().GetMedian()+16.0 * hotPixelTask1.m_RGBHistogram.GetGreenHistogram().GetStdDeviation();
+		double fBlueThreshold = hotPixelTask1.m_RGBHistogram.GetBlueHistogram().GetMedian()+16.0 * hotPixelTask1.m_RGBHistogram.GetBlueHistogram().GetStdDeviation();
 
-		fRedThreshold = HotPixelTask1.m_RGBHistogram.GetRedHistogram().GetMedian()+16.0 * HotPixelTask1.m_RGBHistogram.GetRedHistogram().GetStdDeviation();
-		fGreenThreshold = HotPixelTask1.m_RGBHistogram.GetGreenHistogram().GetMedian()+16.0 * HotPixelTask1.m_RGBHistogram.GetGreenHistogram().GetStdDeviation();
-		fBlueThreshold = HotPixelTask1.m_RGBHistogram.GetBlueHistogram().GetMedian()+16.0 * HotPixelTask1.m_RGBHistogram.GetBlueHistogram().GetStdDeviation();
+		const int lWidth  = m_pMasterDark->RealWidth();
+		const int lHeight = m_pMasterDark->RealHeight();
+		BitmapIteratorConst<std::shared_ptr<const CMemoryBitmap>> pixelIt{ m_pMasterDark };
 
-		int				lWidth  = m_pMasterDark->RealWidth();
-		int				lHeight = m_pMasterDark->RealHeight();
-		PixelIterator		PixelIt;
 
-		m_pMasterDark->GetIterator(&PixelIt);
-		for (j = 0;j<lHeight;j++)
+		for (int j = 0; j < lHeight; ++j)
 		{
-			for (i = 0;i<lWidth;i++)
+			if (bMonochrome)
 			{
-				double			fGray,
-								fRed,
-								fGreen,
-								fBlue;
-				bool			bHot = false;
-
-				if (bMonochrome)
+				for (int i = 0; i < lWidth; ++i, ++pixelIt)
+					if (pixelIt.GetPixel() > fRedThreshold) // This is a hot pixel
+						m_vHotPixels.emplace_back(CHotPixel{ i, j });
+			}
+			else
+			{
+				for (int i = 0; i < lWidth; ++i, ++pixelIt)
 				{
-					PixelIt->GetPixel(fGray);
-					//m_pMasterDark->GetPixel(i, j, fGray);
-					bHot = (fGray > fRedThreshold);
+					double fRed, fGreen, fBlue;
+					pixelIt.GetPixel(fRed, fGreen, fBlue);
+					if (fRed > fRedThreshold || fGreen > fGreenThreshold || fBlue > fBlueThreshold) // This is a hot pixel
+						m_vHotPixels.emplace_back(CHotPixel{ i, j });
 				}
-				else
-				{
-					PixelIt->GetPixel(fRed, fGreen, fBlue);
-					//m_pMasterDark->GetPixel(i, j, fRed, fGreen, fBlue);
-					bHot =	(fRed > fRedThreshold) ||
-							(fGreen> fGreenThreshold) ||
-							(fBlue > fBlueThreshold);
-				};
-				if (bHot)
-				{
-					// This is a hot pixel
-					CHotPixel		hp(i, j);
-
-					m_vHotPixels.push_back(hp);
-				};
-
-				(*PixelIt)++;
-			};
+			}
 			if (pProgress)
 				pProgress->Progress2(nullptr, j+1);
-		};
-
+		}
 		if (pProgress)
 			pProgress->End2();
 
 		std::sort(m_vHotPixels.begin(), m_vHotPixels.end());
 		RemoveContiguousHotPixels(m_pMasterDark->IsCFA());
-	};
+	}
 
 	m_bHotPixelDetected = true;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1942,25 +1901,22 @@ void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	if (pBitmap && m_vHotPixels.size())
+	if (static_cast<bool>(pBitmap) && !m_vHotPixels.empty())
 	{
-		int			i, j;
-
 		// First set hot pixels to 0
-		for (i = 0;i<m_vHotPixels.size();i++)
+		for (size_t i = 0; i < m_vHotPixels.size(); i++)
 			pBitmap->SetPixel(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY, 0.0);
 
 		// Then Interpolate Hot Pixels
 		if (pBitmap->IsMonochrome())
 		{
 			// Check and remove super pixel settings
-			CCFABitmapInfo *			pCFABitmapInfo;
-			CFATRANSFORMATION			CFATransform = CFAT_NONE;
+			CFATRANSFORMATION CFATransform = CFAT_NONE;
 
-			pCFABitmapInfo = dynamic_cast<CCFABitmapInfo *>(pBitmap);
+			CCFABitmapInfo* pCFABitmapInfo = dynamic_cast<CCFABitmapInfo*>(pBitmap.get());
 			if (pCFABitmapInfo)
 			{
 				CFATransform = pCFABitmapInfo->GetCFATransformation();
@@ -1969,23 +1925,23 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 			};
 
 			// Interpolate with neighbor pixels (level 1)
-			bool				bCFA = pBitmap->IsCFA();
+			const bool bCFA = pBitmap->IsCFA();
 
 
-			for (i = 0;i<m_vHotPixels.size();i++)
+			for (size_t i = 0; i < m_vHotPixels.size(); i++)
 			{
-				HOTPIXELVECTOR		vPixels;
-				BAYERCOLOR			BayerColor = BAYER_UNKNOWN;
-				double				fValue = 0.0;
-				int				lTotalWeight = 0;
+				HOTPIXELVECTOR vPixels;
+				BAYERCOLOR BayerColor = BAYER_UNKNOWN;
+				double fValue = 0.0;
+				int lTotalWeight = 0;
 
 				if (bCFA)
 					BayerColor = pBitmap->GetBayerColor(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY);
 
 				GetValidNeighbors(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY, vPixels, bCFA ? 2 : 1, BayerColor);
-				for (j = 0;j<vPixels.size();j++)
+				for (size_t j = 0; j < vPixels.size(); j++)
 				{
-					double			fGray;
+					double fGray;
 
 					pBitmap->GetPixel(vPixels[j].m_lX, vPixels[j].m_lY, fGray);
 					fValue += fGray * vPixels[j].m_lWeight;
@@ -2001,16 +1957,14 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 		}
 		else
 		{
-			for (i = 0;i<m_vHotPixels.size();i++)
+			for (size_t i = 0; i < m_vHotPixels.size(); i++)
 			{
-				HOTPIXELVECTOR		vPixels;
-				double				fRedValue	= 0.0,
-									fGreenValue = 0.0,
-									fBlueValue  = 0.0;
-				int				lTotalWeight = 0;
+				HOTPIXELVECTOR vPixels;
+				double fRedValue	= 0.0, fGreenValue = 0.0, fBlueValue  = 0.0;
+				int lTotalWeight = 0;
 
 				GetValidNeighbors(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY, vPixels, 1);
-				for (j = 0;j<vPixels.size();j++)
+				for (size_t j = 0; j < vPixels.size(); j++)
 				{
 					double			fRed, fGreen, fBlue;
 
@@ -2019,33 +1973,32 @@ void	CDarkFrame::InterpolateHotPixels(CMemoryBitmap * pBitmap, CDSSProgress * pP
 					fGreenValue += fGreen * vPixels[j].m_lWeight;
 					fBlueValue  += fBlue * vPixels[j].m_lWeight;
 					lTotalWeight += vPixels[j].m_lWeight;
-				};
-				if (lTotalWeight)
+				}
+				if (lTotalWeight != 0)
 				{
 					fRedValue /= lTotalWeight;
 					fGreenValue /= lTotalWeight;
 					fBlueValue /= lTotalWeight;
-				};
+				}
 				pBitmap->SetPixel(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY, fRedValue, fGreenValue, fBlueValue);
-			};
-		};
-	};
+			}
+		}
+	}
 }
 
 /* ------------------------------------------------------------------- */
 
-bool	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
+bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
 
 	if (m_pMasterDark && m_pMasterDark->IsOk())
 	{
 		CString			strText;
 
-		double			fRedDarkFactor = 1.0,
-						fGreenDarkFactor = 1.0,
-						fBlueDarkFactor = 1.0;
+		double fRedDarkFactor = 1.0;
+		double fGreenDarkFactor = 1.0;
+		double fBlueDarkFactor = 1.0;
 
 		if ((m_bHotPixelsDetection || m_bBadLinesDetection) && !m_bHotPixelDetected)
 		{
@@ -2053,52 +2006,50 @@ bool	CDarkFrame::Subtract(CMemoryBitmap * pTarget, CDSSProgress * pProgress)
 				FindHotPixels(pProgress);
 			if (m_bBadLinesDetection)
 				FindBadVerticalLines(pProgress);
-		};
+		}
 
 		if (m_bDarkOptimization)
 		{
-			double				fHotDark = 1.0,
-								fAmpGlow = 1.0;
+			double fHotDark = 1.0;
+			double fAmpGlow = 1.0;
 
 			//ComputeDistribution(pTarget, pStars);
 			//ComputeDarkFactorFromHotPixels(pTarget, pStars, );
 			//ComputeDarkFactor(pTarget, pStars, fRedDarkFactor, fGreenDarkFactor, fBlueDarkFactor, pProgress);
-			if (pProgress)
+			if (pProgress != nullptr)
 			{
 				strText.LoadString(IDS_OPTIMIZINGDARKMATCHING);
 				pProgress->Start2(strText, 0);
-			};
-			ComputeDarkFactorFromMedian(pTarget, fHotDark, fAmpGlow, pProgress);
+			}
+			ComputeDarkFactorFromMedian(pTarget.get(), fHotDark, fAmpGlow, pProgress);
 
-			if (pProgress)
+			if (pProgress != nullptr)
 			{
 				strText.LoadString(IDS_SUBSTRACTINGDARK);
 				pProgress->Start2(strText, 0);
-			};
+			}
 			::Subtract(pTarget, m_pAmpGlow, pProgress, fAmpGlow, fAmpGlow, fAmpGlow);
 			::Subtract(pTarget, m_pDarkCurrent, pProgress, fHotDark, fHotDark, fHotDark);
 		}
 		else if (m_fDarkFactor != 1.0)
 		{
-			if (pProgress)
+			if (pProgress != nullptr)
 			{
 				strText.LoadString(IDS_SUBSTRACTINGDARK);
 				pProgress->Start2(strText, 0);
-			};
+			}
 			::Subtract(pTarget, m_pMasterDark, pProgress, m_fDarkFactor, m_fDarkFactor, m_fDarkFactor);
 		}
 		else
 		{
-			if (pProgress)
+			if (pProgress != nullptr)
 			{
 				strText.LoadString(IDS_SUBSTRACTINGDARK);
 				pProgress->Start2(strText, 0);
-			};
+			}
 			::Subtract(pTarget, m_pMasterDark, pProgress);
-		};
-	};
+		}
+	}
 
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
+	return true;
+}

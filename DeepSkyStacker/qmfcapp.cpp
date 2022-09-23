@@ -38,12 +38,8 @@
 **
 ****************************************************************************/
 
-//
-// Want to support windows 7 and up
-//
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-
 // Implementation of the QMfcApp classes
+#include "stdafx.h"
 
 #ifdef QT3_SUPPORT
 #undef QT3_SUPPORT
@@ -167,12 +163,12 @@ void QMfcApp::exitModalLoop()
     memory.
 
     \code
-    bool WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpvReserved)
+    BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpvReserved)
     {
 	if (dwReason == DLL_PROCESS_ATTACH)
 	    QMfcApp::pluginInstance(hInstance);
 
-	return true;
+	return TRUE;
     }
     \endcode
 
@@ -194,7 +190,7 @@ void QMfcApp::exitModalLoop()
 bool QMfcApp::pluginInstance(Qt::HANDLE plugin)
 {
     if (qApp)
-	return false;
+	return FALSE;
 
     QT_WA({
 	hhook = SetWindowsHookExW(WH_GETMESSAGE, QtFilterProc, 0, GetCurrentThreadId());
@@ -211,7 +207,7 @@ bool QMfcApp::pluginInstance(Qt::HANDLE plugin)
 	    LoadLibraryA(filename);
     }
 
-    return true;
+    return TRUE;
 }
 
 #if QT_VERSION >= 0x050000
@@ -273,7 +269,7 @@ int QMfcApp::run(CWinApp *mfcApp)
     reimplementation of CWinApp:
 
     \code
-    bool MyMfcApp::InitInstance()
+    BOOL MyMfcApp::InitInstance()
     {
 	// standard MFC initialization
 	// ...
@@ -284,7 +280,7 @@ int QMfcApp::run(CWinApp *mfcApp)
 	// Qt GUI initialization
     }
 
-    bool MyMfcApp::Run()
+    BOOL MyMfcApp::Run()
     {
 	int result = QMfcApp::run(this);
 	delete qApp;
@@ -298,14 +294,11 @@ QApplication *QMfcApp::instance(CWinApp *mfcApp)
 {
     mfc_app = mfcApp;
     if (mfc_app) {
-#if defined(UNICODE)
-#pragma warning(push)
-#pragma warning(disable:4267)
-	QString exeName((QChar*)mfc_app->m_pszExeName, wcslen(mfc_app->m_pszExeName));
-	QString cmdLine((QChar*)mfc_app->m_lpCmdLine, wcslen(mfc_app->m_lpCmdLine));
-#pragma warning(pop)
+#if defined(_UNICODE)
+	QString exeName((QChar*)mfc_app->m_pszExeName, static_cast<int>(wcslen(mfc_app->m_pszExeName)));
+	QString cmdLine((QChar*)mfc_app->m_lpCmdLine, static_cast<int>(wcslen(mfc_app->m_lpCmdLine)));
 #else
-        QString exeName = QString::fromLocal8Bit(mfc_app->m_pszExeName);
+    QString exeName = QString::fromLocal8Bit(mfc_app->m_pszExeName);
 	QString cmdLine = QString::fromLocal8Bit(mfc_app->m_lpCmdLine);
 #endif
 	QStringList arglist = QString(exeName + " " + cmdLine).split(' ');
@@ -342,7 +335,7 @@ static bool qmfc_eventFilter(void *message)
     \code
     QMfcApp *qtApp;
 
-    bool MyMfcApp::InitInstance()
+    BOOL MyMfcApp::InitInstance()
     {
 	// standard MFC initialization
 
@@ -354,7 +347,7 @@ static bool qmfc_eventFilter(void *message)
 	// Qt GUI initialization
     }
 
-    bool MyMfcApp::Run()
+    BOOL MyMfcApp::Run()
     {
 	int result = qtApp->exec();
 	delete qtApp;
@@ -367,7 +360,7 @@ static bool qmfc_eventFilter(void *message)
     \sa instance() run()
 */
 QMfcApp::QMfcApp(CWinApp *mfcApp, int &argc, char **argv)
-: QApplication(argc, argv), idleCount(0), doIdle(false)
+: QApplication(argc, argv), idleCount(0), doIdle(FALSE)
 {
     mfc_app = mfcApp;
 #if QT_VERSION >= 0x050000
@@ -435,12 +428,12 @@ bool QMfcApp::winEventFilter(MSG *msg, long *result)
                 SendMessage(toplevel, msg->message, msg->wParam, msg->lParam);
                 widget->setFocus();
                 recursion = false;
-                return true;
+                return TRUE;
             } else if (msg->message == WM_SYSKEYDOWN && msg->wParam != VK_MENU) {
                 SendMessage(toplevel, msg->message, msg->wParam, msg->lParam);
                 SendMessage(toplevel, WM_SYSKEYUP, VK_MENU, msg->lParam);
                 recursion = false;
-                return true;
+                return TRUE;
             }
         }
     }
@@ -449,16 +442,16 @@ bool QMfcApp::winEventFilter(MSG *msg, long *result)
         MSG tmp;
         while (doIdle && !PeekMessage(&tmp, 0, 0, 0, PM_NOREMOVE)) {
             if (!mfc_app->OnIdle(idleCount++))
-                doIdle = false;
+                doIdle = FALSE;
         }
         if (mfc_app->IsIdleMessage(msg)) {
-            doIdle = true;
+            doIdle = TRUE;
             idleCount = 0;
         }
     }
     if (mfc_app && mfc_app->PreTranslateMessage(msg)) {
         recursion = false;
-	return true;
+	return TRUE;
     }
 #endif
 

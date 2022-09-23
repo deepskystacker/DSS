@@ -1,3 +1,38 @@
+/****************************************************************************
+**
+** Copyright (C) 2020, 2022 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
 // RegisterSettings.cpp : implementation file
 //
 
@@ -26,12 +61,13 @@ using std::max;
 
 extern bool		g_bShowRefStars;
 
+#include "DeepSkyStacker.h"
 #include "DSSCommon.h"
 #include "commonresource.h"
-#include "DeepStackerDlg.h"
 #include "ProgressDlg.h"
 #include "RegisterEngine.h"
 #include "StackingDlg.h"
+#include "ProcessingDlg.h"
 #include "StackSettings.h"
 
 #include "Workspace.h"
@@ -41,7 +77,7 @@ extern bool		g_bShowRefStars;
 RegisterSettings::RegisterSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::RegisterSettings),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	initialised(false),
 	forceRegister(false),
 	stackAfter(false),
@@ -85,16 +121,13 @@ void RegisterSettings::onInitDialog()
 	else
 	{
 		//
-		// Get NATIVE windows ultimate parent
+		// Get main Window rectangle
 		//
-		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
-		RECT r;
-		GetWindowRect(hParent, &r);
-
+		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
-		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
 		move(left, top);
 	}
 	string = workspace->value("Register/PercentStack", "80").toString();
@@ -115,18 +148,16 @@ void RegisterSettings::onInitDialog()
 	ui->medianFilter->
 		setChecked(workspace->value("Register/ApplyMedianFilter", false).toBool());
 
-	StackingDlg & stackingDlg = GetStackingDlg(nullptr);
+	DSS::StackingDlg & stackingDlg = DeepSkyStacker::instance()->getStackingDlg();
 	//
 	// If there are any stackable light frames, set up the 
 	// stacking related stuff
 	//
 	if (stackingDlg.checkedImageCount(PICTURETYPE_LIGHTFRAME) > 0)
 	{
-		CString temp;
-		stackingDlg.m_Pictures.GetFirstCheckedLightFrame(temp);
-		firstLightFrame = QString::fromWCharArray(temp.GetString());
+		QString firstLightFrame{ stackingDlg.getFirstCheckedLightFrame() };
 
-		forceRegister = !stackingDlg.m_Pictures.GetNrUnregisteredCheckedLightFrames();
+		forceRegister = !stackingDlg.unregisteredCheckedLightFrameCount();
 		noDarks = !stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME);
 		noFlats = !stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME);;
 		noOffsets = !stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME);;
@@ -255,8 +286,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	dlg.Start(CString((wchar_t*)string.utf16()), 0, false);
 	dlg.SetJointProgress(true);
-	fi.RegisterPicture(CString((wchar_t*)firstLightFrame.utf16()),
-		(double)detectionThreshold / 100.0, true, medianFilter, &dlg);
+	fi.RegisterPicture(CString(reinterpret_cast<const wchar_t*>(firstLightFrame.utf16())), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);
 
 	string = tr("%1 star(s)", "IDC_NRSTARS").arg(fi.m_vStars.size());

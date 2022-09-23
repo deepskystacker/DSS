@@ -26,7 +26,6 @@ extern bool	g_bShowRefStars;
 #include "resource.h"
 #include "commonresource.h"
 #include "BitmapExt.h"
-#include "DeepStackerDlg.h"
 #include "CosmeticEngine.h"
 #include "MasterFrames.h"
 #include "DSSProgress.h"
@@ -38,7 +37,7 @@ extern bool	g_bShowRefStars;
 PostCalibration::PostCalibration(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PostCalibration),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent)),
 	medianString(tr("the median", "ID_COSMETICMETHOD_MEDIAN")),
 	gaussianString(tr("a gaussian filter", "ID_COSMETICMETHOD_GAUSSIAN"))
@@ -349,7 +348,7 @@ void PostCalibration::on_testCosmetic_clicked()
 				CString				strText;
 
 				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
-				strFileName = StackingInfo.m_pLightTask->m_vBitmaps[0].m_strFileName;
+				strFileName = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath.generic_wstring().c_str();
 
 				CMasterFrames	MasterFrames;
 
@@ -380,7 +379,6 @@ void PostCalibration::on_testCosmetic_clicked()
 				// Load the bitmap
 				if (GetPictureInfo(strFileName, bmpInfo) && bmpInfo.CanLoad())
 				{
-					CSmartPtr<CMemoryBitmap>	pBitmap;
 					CString						strDescription;
 
 					bmpInfo.GetDescription(strDescription);
@@ -391,30 +389,29 @@ void PostCalibration::on_testCosmetic_clicked()
 						strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)strFileName);
 					dlg.Start2(strText, 0);
 
-					if (::LoadPicture(strFileName, &pBitmap, &dlg))
+					std::shared_ptr<CMemoryBitmap> pBitmap;
+					if (::FetchPicture(strFileName, pBitmap, &dlg))
 					{
 						// Apply offset, dark and flat to lightframe
 						MasterFrames.ApplyAllMasters(pBitmap, nullptr, &dlg);
 
 						// Then simulate the cosmetic on this image
-						CCosmeticStats			Stats;
-
+						CCosmeticStats Stats;
 						SimulateCosmetic(pBitmap, pcs, Stats, &dlg);
 
 						// Show the results
-						double	fHotPct = (double)Stats.m_lNrDetectedHotPixels / Stats.m_lNrTotalPixels * 100.0,
-							fColdPct = (double)Stats.m_lNrDetectedColdPixels / Stats.m_lNrTotalPixels * 100.0;
+						const double fHotPct = static_cast<double>(Stats.m_lNrDetectedHotPixels) / Stats.m_lNrTotalPixels * 100.0;
+						const double fColdPct = static_cast<double>(Stats.m_lNrDetectedColdPixels) / Stats.m_lNrTotalPixels * 100.0;
 
 						CString	strCosmeticStat;
-
 						strCosmeticStat.Format(IDS_COSMETICSTATS, Stats.m_lNrDetectedHotPixels, fHotPct, Stats.m_lNrDetectedColdPixels, fColdPct);
 
 						AfxMessageBox(strCosmeticStat, MB_ICONINFORMATION | MB_OK);
-					};
+					}
 
 					dlg.End2();
-				};
-			};
-		};
-	};
-};
+				}
+			}
+		}
+	}
+}

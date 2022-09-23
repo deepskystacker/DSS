@@ -12,60 +12,47 @@ constexpr UINT WM_BACKGROUNDIMAGELOADED = WM_USER + 100;
 
 class CLoadedImage
 {
-public :
-	CString						m_strName;
-	CSmartPtr<CMemoryBitmap>	m_pBitmap;
-	CSmartPtr<C32BitsBitmap>	m_hBitmap;
-	int						m_lLastUse;
+public:
+	CString m_strName;
+	std::shared_ptr<CMemoryBitmap> m_pBitmap;
+	std::shared_ptr<C32BitsBitmap> m_hBitmap;
+	int m_lLastUse;
 
-private :
-	void	CopyFrom(const CLoadedImage & li)
+private:
+	void CopyFrom(const CLoadedImage& li)
 	{
 		m_strName		= li.m_strName;
 		m_pBitmap		= li.m_pBitmap;
 		m_hBitmap		= li.m_hBitmap;
 		m_lLastUse		= li.m_lLastUse;
-	};
+	}
 
-public :
-	CLoadedImage()
-	{
-		m_hBitmap	= nullptr;
-		m_lLastUse	= 0;
-	};
+public:
+	CLoadedImage() : m_lLastUse{ 0 } {}
 
-	CLoadedImage(const CLoadedImage & li)
-	{
-		CopyFrom(li);
-	};
+	CLoadedImage(const CLoadedImage&) = default;
 
 	~CLoadedImage()
-	{
-	};
+	{}
 
-	CLoadedImage & operator = (const CLoadedImage & li)
-	{
-		CopyFrom(li);
-		return (*this);
-	};
+	CLoadedImage& operator=(const CLoadedImage& li) = default;
 
-	bool operator < (const CLoadedImage & li) const
+	bool operator< (const CLoadedImage& li) const
 	{
 		return m_lLastUse < li.m_lLastUse;
-	};
+	}
 
-	void	Clear()
+	void Clear()
 	{
-		m_hBitmap.Release();
-		m_pBitmap.Release();
-	};
-
+		m_hBitmap.reset();
+		m_pBitmap.reset();
+	}
 };
 
 /* ------------------------------------------------------------------- */
 
-typedef std::vector<CLoadedImage>			LOADEDIMAGEVECTOR;
-typedef	LOADEDIMAGEVECTOR::iterator			LOADEDIMAGEITERATOR;
+typedef std::vector<CLoadedImage> LOADEDIMAGEVECTOR;
+typedef	LOADEDIMAGEVECTOR::iterator LOADEDIMAGEITERATOR;
 
 /* ------------------------------------------------------------------- */
 
@@ -96,7 +83,7 @@ public:
 
 	void	ClearList();
 	void	BackgroundLoad();
-	bool	LoadImage(LPCTSTR szImage, CMemoryBitmap ** ppBitmap, C32BitsBitmap ** pphBitmap);
+	bool	LoadImage(LPCTSTR szImage, std::shared_ptr<CMemoryBitmap>& rpBitmap, std::shared_ptr<C32BitsBitmap>& rphBitmap);
 };
 
 /* ------------------------------------------------------------------- */

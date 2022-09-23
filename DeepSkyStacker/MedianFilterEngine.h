@@ -6,7 +6,7 @@ template <typename TType>
 class CInternalMedianFilterEngineT
 {
 public :
-	TType* m_pvInValues;
+	const TType* m_pvInValues;
 	TType* m_pvOutValues;
 	int m_lWidth;
 	int m_lHeight;
@@ -37,100 +37,81 @@ public :
 	friend CFilterTask;
 
 public:
-	CInternalMedianFilterEngineT()
-    {
-        m_lWidth = 0;
-        m_lHeight = 0;
-        m_lFilterSize = 0;
-    }
+	CInternalMedianFilterEngineT() :
+		m_lWidth{ 0 },
+		m_lHeight{ 0 },
+		m_lFilterSize{ 0 }
+	{}
 
 	virtual ~CInternalMedianFilterEngineT() {};
 
-	bool ApplyFilter(CDSSProgress* pProgress);
+	void ApplyFilter(CDSSProgress* pProgress);
 };
 
 
 template <typename TType>
-inline bool	CGrayMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap** ppOutBitmap, int lFilterSize, CDSSProgress* pProgress)
+inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilteredImage(const int lFilterSize, CDSSProgress* pProgress) const
 {
-	bool bResult = false;
+	if (m_pInBitmap == nullptr)
+		return std::shared_ptr<CMemoryBitmap>{};
 
 	// Create Output Bitmap from Input Bitmap
-	if (m_pInBitmap != nullptr)
+	std::shared_ptr<CGrayBitmapT<TType>> pOutBitmap = std::dynamic_pointer_cast<CGrayBitmapT<TType>>(static_cast<std::shared_ptr<CMemoryBitmap>>(m_pInBitmap->Clone()));
+
+	if (static_cast<bool>(pOutBitmap))
 	{
-		CSmartPtr<CGrayBitmapT<TType>> pOutBitmap;
-		pOutBitmap.Attach(dynamic_cast<CGrayBitmapT<TType>*>(m_pInBitmap->Clone()));
+		CInternalMedianFilterEngineT<TType>	InternalFilter;
 
-		if (pOutBitmap)
-		{
-			CInternalMedianFilterEngineT<TType>	InternalFilter;
+		InternalFilter.m_pvInValues  = m_pInBitmap->m_vPixels.data();
+		InternalFilter.m_pvOutValues = pOutBitmap->m_vPixels.data();
+		InternalFilter.m_lWidth      = m_pInBitmap->m_lWidth;
+		InternalFilter.m_lHeight	 = m_pInBitmap->m_lHeight;
+		InternalFilter.m_CFAType	 = m_pInBitmap->m_CFAType;
+		InternalFilter.m_lFilterSize = InternalFilter.m_CFAType != CFATYPE_NONE ? lFilterSize * 2 : lFilterSize;
 
-			InternalFilter.m_pvInValues  = m_pInBitmap->m_vPixels.data();
-			InternalFilter.m_pvOutValues = pOutBitmap->m_vPixels.data();
-			InternalFilter.m_lWidth      = m_pInBitmap->m_lWidth;
-			InternalFilter.m_lHeight	 = m_pInBitmap->m_lHeight;
-			InternalFilter.m_CFAType	 = m_pInBitmap->m_CFAType;
-			if (InternalFilter.m_CFAType != CFATYPE_NONE)
-				lFilterSize *= 2;
-			InternalFilter.m_lFilterSize = lFilterSize;
+		InternalFilter.ApplyFilter(pProgress);
 
-			bResult = InternalFilter.ApplyFilter(pProgress);
-
-			if (bResult)
-			{
-				CSmartPtr<CMemoryBitmap> pOutBitmap2;
-				pOutBitmap2 = pOutBitmap;
-				pOutBitmap2.CopyTo(ppOutBitmap);
-			}
-		}
+		return pOutBitmap;
 	}
 
-	return bResult;
+	return std::shared_ptr<CMemoryBitmap>{};
 }
 
 
 template <typename TType>
-inline bool	CColorMedianFilterEngineT<TType>::GetFilteredImage(CMemoryBitmap** ppOutBitmap, int lFilterSize, CDSSProgress* pProgress)
+inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilteredImage(int lFilterSize, CDSSProgress* pProgress) const
 {
-	bool bResult = false;
+	if (m_pInBitmap == nullptr)
+		return std::shared_ptr<CMemoryBitmap>{};
 
 	// Create Output Bitmap from Input Bitmap
-	if (m_pInBitmap != nullptr)
+	std::shared_ptr<CColorBitmapT<TType>> pOutBitmap = std::dynamic_pointer_cast<CColorBitmapT<TType>>(static_cast<std::shared_ptr<CMemoryBitmap>>(m_pInBitmap->Clone()));
+
+	if (static_cast<bool>(pOutBitmap))
 	{
-		CSmartPtr<CColorBitmapT<TType>> pOutBitmap;
-		pOutBitmap.Attach(dynamic_cast<CColorBitmapT<TType> *> (m_pInBitmap->Clone()));
+		CInternalMedianFilterEngineT<TType>	InternalFilter;
 
-		if (pOutBitmap)
-		{
-			CInternalMedianFilterEngineT<TType>	InternalFilter;
+		InternalFilter.m_lWidth      = m_pInBitmap->m_lWidth;
+		InternalFilter.m_lHeight	 = m_pInBitmap->m_lHeight;
+		InternalFilter.m_lFilterSize = lFilterSize;
+		InternalFilter.m_CFAType	 = CFATYPE_NONE;
 
-			InternalFilter.m_lWidth      = m_pInBitmap->m_lWidth;
-			InternalFilter.m_lHeight	 = m_pInBitmap->m_lHeight;
-			InternalFilter.m_lFilterSize = lFilterSize;
-			InternalFilter.m_CFAType	 = CFATYPE_NONE;
+		InternalFilter.m_pvInValues = m_pInBitmap->m_Red.m_vPixels.data();
+		InternalFilter.m_pvOutValues = pOutBitmap->m_Red.m_vPixels.data();
+		InternalFilter.ApplyFilter(pProgress);
 
-			InternalFilter.m_pvInValues = m_pInBitmap->m_Red.m_vPixels.data();
-			InternalFilter.m_pvOutValues = pOutBitmap->m_Red.m_vPixels.data();
-			bResult = InternalFilter.ApplyFilter(pProgress);
+		InternalFilter.m_pvInValues  = m_pInBitmap->m_Green.m_vPixels.data();
+		InternalFilter.m_pvOutValues = pOutBitmap->m_Green.m_vPixels.data();
+		InternalFilter.ApplyFilter(pProgress);
 
-			InternalFilter.m_pvInValues  = m_pInBitmap->m_Green.m_vPixels.data();
-			InternalFilter.m_pvOutValues = pOutBitmap->m_Green.m_vPixels.data();
-			bResult = InternalFilter.ApplyFilter(pProgress);
+		InternalFilter.m_pvInValues  = m_pInBitmap->m_Blue.m_vPixels.data();
+		InternalFilter.m_pvOutValues = pOutBitmap->m_Blue.m_vPixels.data();
+		InternalFilter.ApplyFilter(pProgress);
 
-			InternalFilter.m_pvInValues  = m_pInBitmap->m_Blue.m_vPixels.data();
-			InternalFilter.m_pvOutValues = pOutBitmap->m_Blue.m_vPixels.data();
-			bResult = InternalFilter.ApplyFilter(pProgress);
-
-			if (bResult)
-			{
-				CSmartPtr<CMemoryBitmap> pOutBitmap2;
-				pOutBitmap2 = pOutBitmap;
-				pOutBitmap2.CopyTo(ppOutBitmap);
-			}
-		}
+		return pOutBitmap;
 	}
 
-	return bResult;
+	return std::shared_ptr<CMemoryBitmap>{};
 }
 
 #endif

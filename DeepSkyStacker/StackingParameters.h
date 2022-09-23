@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class CWorkspace;
+class Workspace;
 class StackSettings;
 class QAction;
 class QMenu;
@@ -31,7 +31,7 @@ public slots:
 
 private:
     Ui::StackingParameters *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	StackSettings * pStackSettings;
 	PICTURETYPE type;
 	BACKGROUNDCALIBRATIONMODE mode;

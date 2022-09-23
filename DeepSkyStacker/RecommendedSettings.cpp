@@ -32,7 +32,6 @@ extern bool	g_bShowRefStars;
 #include "Multitask.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
-#include "DeepStackerDlg.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -44,7 +43,7 @@ extern bool	g_bShowRefStars;
 RecommendedSettings::RecommendedSettings(QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::RecommendedSettings),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	pStackingTasks(nullptr),
 	initialised(false)
 {
@@ -89,16 +88,13 @@ void RecommendedSettings::onInitDialog()
 	else
 	{
 		//
-		// Get NATIVE windows ultimate parent
+		// Get main Window rectangle
 		//
-		HWND hParent = GetDeepStackerDlg(nullptr)->m_hWnd;
-		RECT r;
-		GetWindowRect(hParent, &r);
-
+		const QRect r{ DeepSkyStacker::instance()->rect() };
 		QSize size = this->size();
 
-		int top = ((r.top + (r.bottom - r.top) / 2) - (size.height() / 2));
-		int left = ((r.left + (r.right - r.left) / 2) - (size.width() / 2));
+		int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+		int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
 		move(left, top);
 	}
 
@@ -108,7 +104,7 @@ void RecommendedSettings::onInitDialog()
 
 	if (!pStackingTasks)
 	{
-		GetStackingDlg(nullptr).fillTasks(stackingTasks);
+		DeepSkyStacker::instance()->getStackingDlg().fillTasks(stackingTasks);
 		pStackingTasks = &stackingTasks;
 	};
 
@@ -378,10 +374,9 @@ static void AddRegisterUseOfMedianFilter(RECOMMENDATIONVECTOR & vRecommendations
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
-	CWorkspace					workspace;
-	DWORD						dwThreshold;
+	Workspace					workspace;
 
-	if (CWorkspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
+	if (Workspace{}.value("Register/DetectionThreshold").toUInt() <= 5)
 	{
 		rec.setText(QCoreApplication::translate("RecommendedSettings",
 			"You are using a low star detection threshold",
@@ -437,8 +432,7 @@ static void AddCometStarTrails(RECOMMENDATIONVECTOR & vRecommendations, int lNrL
 {
 	RecommendationItem			ri;
 	Recommendation				rec;
-	CWorkspace					workspace;
-	DWORD						dwCometMode;
+	Workspace					workspace;
 
 	const auto dwCometMode = workspace.value("Stacking/CometStackingMode").toUInt();
 

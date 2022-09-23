@@ -2,7 +2,7 @@
 #define STACKRECAP_H
 #include <memory>
 
-class CWorkspace;
+class Workspace;
 class QAbstractButton;
 class QUrl;
 
@@ -39,7 +39,7 @@ private slots:
 
 private:
 	Ui::StackRecap *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	CAllStackingTasks *pStackingTasks;
 	bool	initialised;
 

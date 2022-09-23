@@ -136,7 +136,7 @@ bool	CGlobalSettings::InitFromCurrent(CTaskInfo * pTask, LPCTSTR szFile)
 		{
 			CString			strFile;
 
-			strFile.Format(_T("%s[%s]"), (LPCTSTR)(pTask->m_vBitmaps[i].m_strFileName), (LPCTSTR)pTask->m_vBitmaps[i].m_strDateTime);
+			strFile.Format(_T("%s[%s]"), (LPCTSTR)(pTask->m_vBitmaps[i].filePath.c_str()), (LPCTSTR)pTask->m_vBitmaps[i].m_strDateTime);
 			m_vFiles.push_back(strFile);
 
 			if (!bFITS && (pTask->m_vBitmaps[i].m_strInfos.Left(4) == _T("FITS")))

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-class CWorkspace;
+class Workspace;
 
 namespace Ui {
 class AlignmentParameters;
@@ -25,7 +25,7 @@ public slots:
 
 private:
 	Ui::AlignmentParameters *ui;
-	std::unique_ptr<CWorkspace> workspace;
+	std::unique_ptr<Workspace> workspace;
 	uint m_Alignment;
 
 	void updateControls();

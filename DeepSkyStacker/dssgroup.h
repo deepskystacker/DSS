@@ -50,16 +50,21 @@ namespace DSS
 		// Initial group id is zero
 		//
 		inline static std::uint16_t nextIndex{ 0 };
+		//
+		// Map of files to group id - used to check which group refers to a file (maybe none)
+		//
+		inline static std::map<fs::path, uint16_t> pathToGroup{};
 
 	public:
 
 		//
 		// Qt Table Model class derived from QAbstractTableModel
 		//
-		ImageListModel	model;
+		ImageListModel	pictures;
 
-		explicit Group::Group() :
-			Index(nextIndex++) 			// First group is Main Group with Index of 0
+		explicit Group() :
+			Index(nextIndex++),		// First group is Main Group with Index of 0
+			Dirty(false)
 		{
 			if (0 == Index)
 			{
@@ -72,29 +77,70 @@ namespace DSS
 		}
 
 		//
-		// This is a very simple class so we can let the compiler synthesise the copy ctor 
-		// and operator =
+		// Don't intend this to be copied or assigned.
 		//
+		Group(const Group&) = delete;
+		Group& operator = (const Group&) = delete;
+
+		Group(Group&& rhs) noexcept :
+			Index { std::exchange(rhs.Index, 0) },
+			Name { std::move(rhs.Name) },
+			Dirty { std::exchange(rhs.Dirty, false) }
+		{
+		}
+
+		Group& operator = (Group&& rhs ) noexcept
+		{
+			if (this != &rhs)
+			{
+				Index = std::exchange(rhs.Index, 0);
+				Name = std::move(rhs.Name);
+				Dirty = std::exchange(rhs.Dirty, false);
+			}
+			return *this;
+		}
 
 		//
 		// Accessors
 		//
-		QString name() const noexcept { return Name; };
-		Group& setName(QString const& name) noexcept { Name = name; return *this; };
+		inline QString name() const noexcept { return Name; };
+		inline Group& setName(QString const& name) noexcept { Name = name; return *this; };
+		inline bool dirty() const noexcept { return Dirty; };
+		inline Group& setDirty(bool value=true) noexcept { Dirty = value; return *this; };
 
 		uint index() const noexcept { return Index; };
 
 		//
 		// Will call addImage() internally
 		//
- 		void AddFile(LPCTSTR szFile, uint16_t groupId = 0, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false);
+ 		void addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int32_t nItem = -1);
 
 		//
 		// Add an image (row) to the table
 		//
 		void addImage(ListBitMap image)
 		{
-			model.addImage(image);
+			pictures.addImage(image);
+			Dirty = true;
+		}
+
+		static int16_t whichGroupContains(const fs::path& path)
+		{
+			int16_t result = -1;	// no group
+			if (auto iter = pathToGroup.find(path); iter != pathToGroup.end())
+				result = iter->second;
+
+			return result;
+		}
+
+		static int32_t fileCount()
+		{
+			return static_cast<int32_t>(pathToGroup.size());
+		}
+
+		static void clearMap()
+		{
+			pathToGroup.clear();
 		}
 
 	protected:
@@ -103,6 +149,8 @@ namespace DSS
 		// Every group has a name - initially "Main Group" or Group n"
 		//
 		QString Name;
+		bool Dirty;
+
 
 
 	};

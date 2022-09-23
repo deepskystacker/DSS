@@ -151,6 +151,8 @@ public :
 };
 class QSplitter;
 class QStackedWidget;
+
+
 #include "ExplorerBar.h"
 #include "StackingDlg.h"
 
@@ -160,6 +162,9 @@ class QStackedWidget;
 #include "afxwin.h"
 
 #include "qwinwidget.h"
+#include "qwinhost.h"
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CDeepStackerDlg dialog
@@ -178,9 +183,10 @@ private :
 	QSplitter*		splitter;
 	ExplorerBar*	explorerBar;
 	QStackedWidget* stackedWidget;
-	StackingDlg*	stackingDlg;
+	DSS::StackingDlg*	stackingDlg;
+	QWinHost* winHost;
 
-	CProcessingDlg	m_dlgProcessing;
+	CProcessingDlg	processingDlg;
 	//CLibraryDlg				m_dlgLibrary;
 
 	CDeepStack				m_DeepStack;
@@ -219,7 +225,7 @@ public:
 	inline void disableSubDialogs()
 	{
 		stackingDlg->setEnabled(false);
-		m_dlgProcessing.EnableWindow(false);
+		processingDlg.EnableWindow(false);
 		//m_dlgLibrary.EnableWindow(false);
 		explorerBar->setEnabled(false);
 	};
@@ -227,7 +233,7 @@ public:
 	inline void enableSubDialogs()
 	{
 		stackingDlg->setEnabled(true);
-		m_dlgProcessing.EnableWindow(true);
+		processingDlg.EnableWindow(true);
 		//m_dlgLibrary.EnableWindow(true);
 		explorerBar->setEnabled(true);
 	};
@@ -251,14 +257,14 @@ public:
 		return m_Settings;
 	};
 
-	StackingDlg & GetStackingDlg()
+	DSS::StackingDlg & GetStackingDlg()
 	{
 		return *stackingDlg;
 	};
 
 	CProcessingDlg & GetProcessingDlg()
 	{
-		return m_dlgProcessing;
+		return processingDlg;
 	};
 
 
@@ -292,7 +298,7 @@ protected:
 
 private :
 	void	UpdateTab();
-	// void	UpdateSizes();
+	void	UpdateSizes();
 	afx_msg void OnOK();
 	afx_msg void OnClose();
 	afx_msg void OnBnClickedCancel();
@@ -348,7 +354,7 @@ inline CDSSSettings & GetDSSSettings(CWnd * pDialog)
 
 /* ------------------------------------------------------------------- */
 
-inline StackingDlg & GetStackingDlg(CWnd * pDialog)
+inline DSS::StackingDlg & GetStackingDlg(CWnd * pDialog)
 {
 	CDeepStackerDlg *	pDlg = GetDeepStackerDlg(pDialog);
 

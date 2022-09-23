@@ -6,6 +6,9 @@
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "..\CFitsio\fitsio.h"
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 #pragma comment(lib, "cfitsio.lib")
 
@@ -29,7 +32,7 @@ public:
 	int				m_xBayerOffset;
 	int				m_yBayerOffset;
 	int				m_bitPix;
-	CString			m_filterName;
+	QString			m_filterName;
 
 	CFITSHeader();
 	virtual ~CFITSHeader();
@@ -212,15 +215,15 @@ public:
 
 CFATYPE GetFITSCFATYPE();
 bool GetFITSInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-bool ReadFITS(LPCTSTR szFileName, CMemoryBitmap** ppBitmap, CDSSProgress*	pProgress);
+bool ReadFITS(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress*	pProgress);
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription,
 			   int lISOSpeed, int lGain, double fExposure);
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, FITSFORMAT FITSFormat, LPCTSTR szDescription);
-bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescriptionL,
-			   int lISOSpeed, int lGain, double fExposure);
+bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescriptionL, int lISOSpeed, int lGain, double fExposure);
 bool WriteFITS(LPCTSTR szFileName, CMemoryBitmap* pBitmap, CDSSProgress* pProgress, LPCTSTR szDescription);
 bool IsFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo);
-int LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, CMemoryBitmap** ppBitmap, CDSSProgress* pProgress);
+int	LoadFITSPicture(LPCTSTR szFileName, CBitmapInfo& BitmapInfo, std::shared_ptr<CMemoryBitmap>& rpBitmap, CDSSProgress* pProgress);
 void GetFITSExtension(LPCTSTR szFileName, CString& strExtension);
+void GetFITSExtension(fs::path path, CString& strExtension);
 
-#endif // __FITSUTIL_H__
+#endif

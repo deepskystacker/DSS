@@ -1,50 +1,214 @@
 
-#if !defined(AFX_DEEPSKYSTACKER_H__DE048E44_D5E4_40E9_9454_5EFC9E73A8C3__INCLUDED_)
-#define AFX_DEEPSKYSTACKER_H__DE048E44_D5E4_40E9_9454_5EFC9E73A8C3__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+/****************************************************************************
+**
+** Copyright (C) 2020, 2022 David C. Partridge
+**
+** BSD License Usage
+** You may use this file under the terms of the BSD license as follows:
+**
+** "Redistribution and use in source and binary forms, with or without
+** modification, are permitted provided that the following conditions are
+** met:
+**   * Redistributions of source code must retain the above copyright
+**     notice, this list of conditions and the following disclaimer.
+**   * Redistributions in binary form must reproduce the above copyright
+**     notice, this list of conditions and the following disclaimer in
+**     the documentation and/or other materials provided with the
+**     distribution.
+**   * Neither the name of DeepSkyStacker nor the names of its
+**     contributors may be used to endorse or promote products derived
+**     from this software without specific prior written permission.
+**
+**
+** THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+** "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+** LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+** A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+** OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+** SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+** LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+** DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+** THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+** (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+** OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE."
+**
+**
+****************************************************************************/
+#include <list>
+#include <QMainWindow>
+#include "commonresource.h"
+#include "DeepStack.h"
 
-#include <QTranslator>
 
-class CDeepSkyStackerApp : public CWinApp
+#include "ExplorerBar.h"
+class QSplitter;
+class QStackedWidget;
+#include "StackingDlg.h"
+class QWinHost;
+
+#include "ProcessingDlg.h"
+#include "dss_settings.h"
+
+class DeepSkyStacker :
+	public QMainWindow
 {
-public :
-	CWnd *				m_pMainDlg;
-	QTranslator *		appTranslator;
-	QTranslator *		qtTranslator;
+	typedef QMainWindow
+		Inherited;
 
-public :
-	CDeepSkyStackerApp()
+	Q_OBJECT
+
+private:
+	bool initialised;
+	QWidget* widget;
+	QSplitter* splitter;
+	ExplorerBar* explorerBar;
+	QStackedWidget* stackedWidget;
+	DSS::StackingDlg* stackingDlg;
+	QWinHost* winHost;
+
+	CProcessingDlg	processingDlg;
+
+	CDeepStack				m_DeepStack;
+	CDSSSettings			m_Settings;
+	std::uint32_t			currTab;
+	QStringList				args;
+	QString					baseTitle;
+	//ITaskbarList3* m_taskbarList;
+	bool                    m_progress;
+
+protected:
+	void showEvent(QShowEvent* event) override;
+	void dragEnterEvent(QDragEnterEvent* e);
+	void dropEvent(QDropEvent* e);
+
+	void onInitialise();
+
+public:
+
+
+	inline static DeepSkyStacker* instance()
 	{
-        m_pMainDlg = nullptr;
-		appTranslator = nullptr;
-		qtTranslator = nullptr;
+		return theMainWindow;
+	}
 
-		EnableHtmlHelp();
+	inline static void setInstance(DeepSkyStacker* instance)
+	{
+		ZASSERT(nullptr == theMainWindow);
+		theMainWindow = instance;
+	}
+
+	DeepSkyStacker();
+
+	~DeepSkyStacker()
+	{
 	};
 
-	virtual ~CDeepSkyStackerApp()
+	CDeepStack& deepStack()
 	{
-		if (appTranslator)
-		{
-			delete appTranslator;
-			appTranslator = nullptr;
-		}
-		if (qtTranslator)
-		{
-			delete qtTranslator;
-			qtTranslator = nullptr;
-		}
-
+		return m_DeepStack;
 	};
 
-	virtual BOOL InitInstance( );
-	virtual BOOL Run();
+	void	setTab(std::uint32_t dwTabID)
+	{
+		if (dwTabID == IDD_REGISTERING)
+			dwTabID = IDD_STACKING;
+		//#ifdef DSSBETA
+		//	if (dwTabID == IDD_STACKING && 	(GetAsyncKeyState(VK_CONTROL) & 0x8000))
+		//		dwTabID = IDD_LIBRARY;
+		//#endif
+		currTab = dwTabID;
+		updateTab();
+	};
+
+	void setTitleFilename(fs::path file);
+
+	inline void setTitleFilename(char* name)
+	{
+		setTitleFilename(fs::path(name));
+	}
+
+	std::uint32_t tab()
+	{
+		return currTab;
+	};
+
+	inline void disableSubDialogs()
+	{
+		stackingDlg->setEnabled(false);
+		processingDlg.EnableWindow(false);
+		//m_dlgLibrary.EnableWindow(false);
+		explorerBar->setEnabled(false);
+	};
+
+	inline void enableSubDialogs()
+	{
+		stackingDlg->setEnabled(true);
+		processingDlg.EnableWindow(true);
+		//m_dlgLibrary.EnableWindow(true);
+		explorerBar->setEnabled(true);
+	};
+
+	CDSSSettings& settings()
+	{
+		if (!m_Settings.IsLoaded())
+			m_Settings.Load();
+
+		return m_Settings;
+	};
+
+	DSS::StackingDlg& getStackingDlg()
+	{
+		return *stackingDlg;
+	};
+
+	CProcessingDlg& getProcessingDlg()
+	{
+		return processingDlg;
+	};
+
+
+	ExplorerBar& GetExplorerBar()
+	{
+		return *explorerBar;
+	};
+
+protected:
+	void closeEvent(QCloseEvent* e) override;
+
+private:
+	void updateTab();
+	static inline DeepSkyStacker* theMainWindow{ nullptr };
 
 };
 
-CDeepSkyStackerApp *		GetDSSApp();
 
-#endif // !defined(AFX_DEEPSKYSTACKER_H__DE048E44_D5E4_40E9_9454_5EFC9E73A8C3__INCLUDED_)
+class DeepSkyStackerApp : public CWinApp
+{
+public :
+	CWnd *				m_pMainDlg;
+
+public :
+	DeepSkyStackerApp() :
+		m_pMainDlg{ nullptr }
+	{
+        
+	};
+
+	virtual ~DeepSkyStackerApp()
+	{
+
+	};
+
+	virtual BOOL InitInstance( ) override;
+	virtual int ExitInstance() override;
+	virtual int Run() override;
+
+};
+
+//
+// Temporarily left here while still have to position MFC windows
+//
+void	SaveWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath);
+void	RestoreWindowPosition(CWnd* pWnd, LPCSTR szRegistryPath, bool bCenter = false);
+

@@ -108,12 +108,22 @@ public :
 			return (m_fY < ms.m_fY);
 	};
 
-	bool	IsInRect(const CRect & rc)
+	bool	IsInRect(const CRect& rc)
 	{
 		return rc.PtInRect(CPoint(m_fX, m_fY));
 	};
 
-	bool	IsInRadius(const CPoint & pt) const
+	bool	IsInRadius(const CPoint& pt) const
+	{
+		return Distance(CPointExt(m_fX, m_fY), CPointExt(pt)) <= m_fMeanRadius * 2.35 / 1.5;
+	};
+
+	bool	IsInRect(const QRectF & rc)
+	{
+		return rc.contains(QPointF(m_fX, m_fY));
+	};
+
+	bool	IsInRadius(const QPointF & pt) const
 	{
 		return Distance(CPointExt(m_fX ,m_fY), CPointExt(pt))<=m_fMeanRadius*2.35/1.5;
 	};
@@ -172,7 +182,7 @@ inline int	FindNearestStar(double fX, double fY, STARVECTOR & vStars, bool & bIn
 			{
 				fMinDistance = fTestDistance;
 				lResult = i;
-				bIn = vStars[i].IsInRadius(CPoint(fX, fY));
+				bIn = vStars[i].IsInRadius(QPointF(fX, fY));
 				fDistance = fMinDistance;
 			};
 		};
@@ -209,7 +219,7 @@ inline int	FindNearestStarWithinDistance(double fX, double fY, STARVECTOR & vSta
 				{
 					fMinDistance = fTestDistance;
 					lResult = it-vStars.begin();
-					bIn = (*it).IsInRadius(CPoint(fX, fY));
+					bIn = (*it).IsInRadius(QPointF(fX, fY));
 					fDistance = fTestDistance;
 				};
 				it++;

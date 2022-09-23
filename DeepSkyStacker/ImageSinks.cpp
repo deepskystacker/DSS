@@ -347,7 +347,7 @@ void CSelectRectSink::GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDriz
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
+bool	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
 {
 	bool			bResult = false;
 
@@ -379,7 +379,7 @@ BOOL	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
+bool	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 {
 	bool			bResult = false;
 
@@ -402,7 +402,7 @@ BOOL	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
+bool	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
 {
 	bool			bResult = false;
 
@@ -424,15 +424,15 @@ BOOL	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
+Image* CSelectRectSink::GetOverlayImage(CRect& rcClient)
 {
-	Image *				pResult = nullptr;
-	HDC					hDC = GetDC(nullptr);
+	Image* pResult = nullptr;
+	HDC hDC = GetDC(nullptr);
 
 	//pResult = new Bitmap(rcClient.Width(), rcClient.Height(), PixelFormat32bppARGB);
 	pResult = new Metafile(hDC, RectF(rcClient.left, rcClient.top, rcClient.Width(), rcClient.Height()), MetafileFrameUnitPixel, EmfTypeEmfPlusOnly, nullptr);
 
-	if (pResult)
+	if (pResult != nullptr)
 	{
 		Graphics		graphics(pResult);
 		CRect			rcScreen;
@@ -520,21 +520,19 @@ Image *	CSelectRectSink::GetOverlayImage(CRect & rcClient)
 	ReleaseDC(nullptr, hDC);
 
 	return pResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
 
-void	CEditStarsSink::SetLightFrame(LPCTSTR szFileName)
+void CEditStarsSink::SetLightFrame(LPCTSTR szFileName)
 {
-	CLightFrameInfo		bmpInfo;
+	CLightFrameInfo bmpInfo;
 
 	m_QualityGrid.Clear();
 	bmpInfo.SetBitmap(szFileName, false);
 	if (bmpInfo.m_bInfoOk)
 	{
 		// Get the stars back
-		bmpInfo.GetStars(m_vStars);
+		m_vStars = bmpInfo.GetStars();
 		std::sort(m_vStars.begin(), m_vStars.end());
 		m_bComet = bmpInfo.m_bComet;
 		m_fXComet = bmpInfo.m_fXComet;
@@ -547,22 +545,21 @@ void	CEditStarsSink::SetLightFrame(LPCTSTR szFileName)
 	m_strFileName = szFileName;
 	m_bDirty = false;
 	ComputeOverallQuality();
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-void	CEditStarsSink::ComputeBackgroundValue()
+void CEditStarsSink::ComputeBackgroundValue()
 {
-	double					fResult = 0.0;
+	double fResult = 0.0;
 
-	if (m_pBitmap)
+	if (static_cast<bool>(m_pBitmap))
 	{
 		CBackgroundCalibration	BackgroundCalibration;
 
 		BackgroundCalibration.m_BackgroundCalibrationMode = BCM_PERCHANNEL;
 		BackgroundCalibration.m_BackgroundInterpolation   = BCI_LINEAR;
 		BackgroundCalibration.SetMultiplier(1.0);
-		BackgroundCalibration.ComputeBackgroundCalibration(m_pBitmap, true, nullptr);
+		BackgroundCalibration.ComputeBackgroundCalibration(m_pBitmap.get(), true, nullptr);
 		fResult = BackgroundCalibration.m_fTgtRedBk/256.0/256.0;
 
 		m_fBackground = fResult;
@@ -610,21 +607,21 @@ void	CEditStarsSink::SaveRegisterSettings()
 
 /* ------------------------------------------------------------------- */
 
-void	CEditStarsSink::InitGrayBitmap(CRect & rc)
+void CEditStarsSink::InitGrayBitmap(CRect& rc)
 {
 	m_GrayBitmap.SetMultiplier(1.0);
 	for (int i = rc.left; i <= rc.right; i++)
+	{
 		for (int j = rc.top; j <= rc.bottom; j++)
 		{
-			double			fGray;
-
+			double fGray;
 			m_pBitmap->GetPixel(i, j, fGray);
 			m_GrayBitmap.SetPixel(i - rc.left, j - rc.top, fGray / 256.0);
-		};
-};
+		}
+	}
+}
 
-/* ------------------------------------------------------------------- */
-void	CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECTOR & vStars)
+void CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECTOR & vStars)
 {
 	// Create a 3*STARMAXSIZE + 1 square rectangle centered on the point
 	vStars.clear();
@@ -671,16 +668,15 @@ void	CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECT
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
 
 		vStars.assign(stars.cbegin(), stars.cend());
-	};
-};
+	}
+}
 
-/* ------------------------------------------------------------------- */
 
-BOOL	CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
+bool CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
 {
 	bool			bResult = false;
 
-	if (m_pBitmap)
+	if (static_cast<bool>(m_pBitmap))
 	{
 		CPoint		pt(lX, lY);
 
@@ -704,7 +700,7 @@ BOOL	CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CEditStarsSink::Image_OnMouseLeave()
+bool	CEditStarsSink::Image_OnMouseLeave()
 {
 	bool			bResult = false;
 
@@ -719,7 +715,7 @@ BOOL	CEditStarsSink::Image_OnMouseLeave()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
+bool	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 {
 	bool			bResult = false;
 
@@ -773,7 +769,7 @@ BOOL	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CEditStarsSink::Image_OnLButtonUp(LONG lX, LONG lY)
+bool	CEditStarsSink::Image_OnLButtonUp(LONG lX, LONG lY)
 {
 	bool			bResult = true;
 
@@ -933,8 +929,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 							fY = m_vRefStars[i].m_fY+0.5;
 							m_pImage->BitmapToScreen(fX, fY);
 							pt.x = fX; pt.y = fY;
-							graphics.DrawLine(&pen, pt.x-5, pt.y, pt.x+6, pt.y);
-							graphics.DrawLine(&pen, pt.x, pt.y-5, pt.x, pt.y+6);
+							graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
+							graphics.DrawLine(&pen, (INT)pt.x, (INT)pt.y-5, (INT)pt.x, (INT)pt.y+6);
 						};
 					};
 				};
@@ -976,8 +972,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						fY = m_vStars[i].m_fY+0.5;
 						m_pImage->BitmapToScreen(fX, fY);
 						pt.x = fX; pt.y = fY;
-						graphics.DrawLine(&pen, pt.x-5, pt.y, pt.x+6, pt.y);
-						graphics.DrawLine(&pen, pt.x, pt.y-5, pt.x, pt.y+6);
+						graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
+						graphics.DrawLine(&pen, (INT)pt.x, (INT)pt.y-5, (INT)pt.x, (INT)pt.y+6);
 					};
 
 					if (g_bShowRefStars && m_vRefStars.size())
@@ -1003,7 +999,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						m_pImage->BitmapToScreen(ptDst.X, ptDst.Y);
 						ptDstBmp.x = ptDst.X; ptDstBmp.y = ptDst.Y;
 
-						graphics.DrawLine(&pen, ptOrgBmp.x, ptOrgBmp.y, ptDstBmp.x, ptDstBmp.y);
+						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
 					};
 
 					if (g_bShowRefStars && m_vStars[i].m_fLargeMajorAxis > 0)
@@ -1023,7 +1019,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						ptOrgBmp.x = ptOrg.X; ptOrgBmp.y = ptOrg.Y;
 						ptDstBmp.x = ptDst.X; ptDstBmp.y = ptDst.Y;
 
-						graphics.DrawLine(&pen, ptOrgBmp.x, ptOrgBmp.y, ptDstBmp.x, ptDstBmp.y);
+						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
 					};
 				};
 			};
@@ -1230,8 +1226,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						fY = star.m_fY+0.5 + rcCheck.top;
 						m_pImage->BitmapToScreen(fX, fY);
 						pt.x = fX; pt.y = fY;
-						graphics.DrawLine(&pen, pt.x-5, pt.y, pt.x+6, pt.y);
-						graphics.DrawLine(&pen, pt.x, pt.y-5, pt.x, pt.y+6);
+						graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
+						graphics.DrawLine(&pen, (INT)pt.x, pt.y-5, pt.x, pt.y+6);
 					};
 				};
 
@@ -1433,9 +1429,15 @@ void CQualityGrid::InitGrid(STARVECTOR& vStars)
 		for (ctIterator cit = sTriangles.cbegin(); cit != sTriangles.cend(); ++cit)
 		{
 			CDelaunayTriangle tr;
-			tr.pt1 = cit->GetVertex(0)->GetPoint();
-			tr.pt2 = cit->GetVertex(1)->GetPoint();
-			tr.pt3 = cit->GetVertex(2)->GetPoint();
+			
+			QPointF temp;
+			
+			temp = cit->GetVertex(0)->GetPoint();
+			tr.pt1 = PointF(temp.x(), temp.y());
+			temp = cit->GetVertex(1)->GetPoint();
+			tr.pt2 = PointF(temp.x(), temp.y());
+			temp = cit->GetVertex(2)->GetPoint();
+			tr.pt3 = PointF(temp.x(), temp.y());
 
 			// Find the value for each point
 			const auto solve = [mean = this->m_fMean, stdev = this->m_fStdDev, &vStars](const Gdiplus::REAL x, const Gdiplus::REAL y) -> Gdiplus::Color

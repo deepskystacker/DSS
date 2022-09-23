@@ -207,7 +207,7 @@ void	SetUILanguage()
 	QLocale				locale;
 	QString				language;
 
-	CDeepSkyStackerApp * theApp(GetDSSApp());
+	//CDeepSkyStackerApp * theApp(GetDSSApp());
 
 	//
 	// Retrieve the Qt language name (e.g.) en_GB
@@ -222,21 +222,13 @@ void	SetUILanguage()
 		language = QLocale::system().name();
 	}
 
-	if (nullptr != theApp->appTranslator)
-	{
-		delete theApp->appTranslator;
-		theApp->appTranslator = nullptr;
-	}
-		
-	theApp->appTranslator = new QTranslator(qApp);
-	ZASSERT(theApp->appTranslator != nullptr);
-
+	QTranslator appTranslator;
 	//
 	// Install the language if it actually exists.
 	//
-	if (theApp->appTranslator->load("DSS." + language, ":/i18n/"))
+	if (appTranslator.load("DSS." + language, ":/i18n/"))
 	{
-		QCoreApplication::instance()->installTranslator(theApp->appTranslator);
+		QCoreApplication::instance()->installTranslator(&appTranslator);
 	}
 
 	//

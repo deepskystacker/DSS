@@ -10,6 +10,7 @@
 #include "StackingTasks.h"
 #include "DSSTools.h"
 #include "MatchingStars.h"
+#include "SkyBackground.h"
 #include <set>
 #include "Stars.h"
 #include "Workspace.h"
@@ -64,55 +65,6 @@ typedef std::vector<CRegisterInfo>		REGISTERINFOVECTOR;
 
 /* ------------------------------------------------------------------- */
 
-class CSkyBackground
-{
-public :
-	double				m_fLight;
-	double				m_fRed,
-						m_fGreen,
-						m_fBlue;
-
-private:
-	void	CopyFrom(const CSkyBackground & right)
-	{
-		m_fLight	= right.m_fLight;
-		m_fRed		= right.m_fRed;
-		m_fGreen	= right.m_fGreen;
-		m_fBlue		= right.m_fBlue;
-	};
-
-public:
-	CSkyBackground()
-	{
-		m_fLight = 0;
-		m_fRed = m_fGreen = m_fBlue = 0;
-	};
-	~CSkyBackground()
-	{
-	};
-
-	CSkyBackground(const CSkyBackground & right)
-	{
-		CopyFrom(right);
-	};
-
-	CSkyBackground & operator = (const CSkyBackground & right)
-	{
-		CopyFrom(right);
-		return (*this);
-	};
-
-	bool operator < (const CSkyBackground & right) const
-	{
-		return m_fLight < right.m_fLight;
-	};
-
-	void	Reset()
-	{
-		m_fLight = 0;
-		m_fRed = m_fGreen = m_fBlue = 0;
-	};
-};
 
 /* ------------------------------------------------------------------- */
 
@@ -151,7 +103,7 @@ protected :
 
 	void	Reset()
 	{
-		CWorkspace			workspace;
+		Workspace			workspace;
 		DWORD				dwThreshold = 10;
 
 		m_vStars.clear();
@@ -173,7 +125,7 @@ protected :
         m_fFWHM = 0;
 	};
 
-	bool	FindStarShape(CMemoryBitmap * pBitmap, CStar & star);
+	bool FindStarShape(CMemoryBitmap* pBitmap, CStar& star);
 
 	void	ComputeOverallQuality()
 	{
@@ -202,10 +154,10 @@ public :
 		m_fRoundnessTolerance = fTolerance;
 	};
 
-	void	GetStars(STARVECTOR & vStars)
+	STARVECTOR GetStars() const
 	{
-		vStars = m_vStars;
-	};
+		return m_vStars;
+	}
 
 	void	SetStars(const STARVECTOR & vStars)
 	{
@@ -220,25 +172,23 @@ public :
 
 		// Compute FWHM
 		m_fFWHM = 0.0;
-		for (STARVECTOR::size_type i = 0;i<m_vStars.size();i++)
-			vFWHM.push_back(m_vStars[i].m_fMeanRadius * 2.35/1.5);
+		for (const auto& star : m_vStars)
+			vFWHM.push_back(star.m_fMeanRadius * (2.35 / 1.5));
 
-		if (vFWHM.size())
+		if (!vFWHM.empty())
 		{
 			// m_fFWHM = Median(vFWHM);
 			m_fFWHM = Average(vFWHM);
-		};
-	};
+		}
+	}
 
 	bool	IsRegistered()
 	{
 		return m_bInfoOk;
-	};
+	}
 
-
-//	void	RegisterPicture(CMemoryBitmap * pBitmap);
-	bool	ComputeStarCenter(CMemoryBitmap * pBitmap, double & fX, double & fY, double & fRadius);
-	size_t	RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
+	bool ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
+	size_t RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
 	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);
@@ -302,12 +252,12 @@ private :
 
 		m_bTransformedCometPosition = false;
 
-		CWorkspace			workspace;
+		Workspace			workspace;
 	
 		m_bRemoveHotPixels = workspace.value("Register/DetectHotPixels", false).toBool();
 	};
 
-public :
+public:
 	CLightFrameInfo()
 	{
 		Reset();
@@ -346,7 +296,7 @@ public :
 		m_pProgress = pProgress;
 	};
 
-	void	SetBitmap(LPCTSTR szBitmap, bool bProcessIfNecessary = true, bool bForceRegister = false);
+	void	SetBitmap(fs::path path, bool bProcessIfNecessary = true, bool bForceRegister = false);
 
 	bool operator < (const CLightFrameInfo & cbi) const
 	{
@@ -360,17 +310,17 @@ public :
 			return false;
 	};
 
-	void	RegisterPicture(CMemoryBitmap * pBitmap);
-	void	RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, CDSSProgress * pProgress = nullptr);
-	void	SaveRegisteringInfo();
+	void RegisterPicture(CMemoryBitmap* pBitmap);
+	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, CDSSProgress * pProgress = nullptr);
+	void SaveRegisteringInfo();
 
-private :
-	bool	ReadInfoFileName();
-	void	RegisterPicture();
-	double	ComputeMedianValue(CGrayBitmap & Bitmap);
-	void	RegisterPicture(CGrayBitmap & Bitmap);
-	bool	ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
-	void	ComputeLuminanceBitmap(CMemoryBitmap * pBitmap, CGrayBitmap ** ppGrayBitmap);
+private:
+	bool ReadInfoFileName();
+	void RegisterPicture();
+	void RegisterPicture(CGrayBitmap& Bitmap);
+	double ComputeMedianValue(CGrayBitmap& Bitmap);
+	bool ComputeStarShifts(CMemoryBitmap * pBitmap, CStar & star, double & fRedXShift, double & fRedYShift, double & fBlueXShift, double & fBlueYShift);
+	std::shared_ptr<CGrayBitmap> ComputeLuminanceBitmap(CMemoryBitmap* pBitmap);
 };
 
 /* ------------------------------------------------------------------- */
@@ -411,6 +361,52 @@ public:
 	}
 };
 
+namespace DSS
+{
+	class ScoredLightFrame
+	{
+	public:
+		std::uint16_t	group;
+		std::uint32_t	index;
+		double			score;
+
+
+		//private:
+		//	void CopyFrom(const CScoredLightFrame& slf)
+		//	{
+		//		m_dwIndice = slf.m_dwIndice;
+		//		m_fScore   = slf.m_fScore;
+		//	}
+
+	public:
+		ScoredLightFrame(std::uint16_t id, std::uint32_t ndx, double value) :
+			group{ id },
+			index{ ndx },
+			score{ value }
+
+		{}
+
+		ScoredLightFrame(const ScoredLightFrame& rhs) = default;
+		ScoredLightFrame(ScoredLightFrame&& rhs) = default;
+
+		ScoredLightFrame& operator=(const ScoredLightFrame& rhs) = default;
+		ScoredLightFrame& operator=(ScoredLightFrame&& rhs) = default;
+
+		/// <summary>
+		/// Implement operator < for std::sort.  Note the what is
+		/// actually wanted is a reverse sort so we use > for the
+		/// operator.
+		/// </summary>
+		/// <param name="rhs" >The comparand</param>
+		/// <returns>true if greater than comparand </returns>
+		bool operator<(const ScoredLightFrame& rhs) const
+		{
+			return (score > rhs.score);
+		}
+	};
+
+}
+
 /* ------------------------------------------------------------------- */
 
 typedef std::vector<CLightFrameInfo>	LIGHTFRAMEINFOVECTOR;
@@ -425,7 +421,7 @@ private :
 	bool						m_bSaveCalibratedDebayered;
 
 private :
-	bool	SaveCalibratedLightFrame(CLightFrameInfo & lfi, CMemoryBitmap * pBitmap, CDSSProgress * pProgress, CString & strCalibratedFile);
+	bool SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile);
 
 public :
 	CRegisterEngine()

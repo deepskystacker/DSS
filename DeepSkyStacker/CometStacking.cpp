@@ -15,7 +15,7 @@ using std::max;
 CometStacking::CometStacking(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CometStacking),
-	workspace(new CWorkspace())
+	workspace(new Workspace())
 {
     ui->setupUi(this);
 }

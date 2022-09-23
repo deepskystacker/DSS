@@ -69,8 +69,8 @@ using std::max;
 
 #include <Qt>
 
-#include "ImageListModel.h"
 #include "FrameList.h"
+#include "ImageListModel.h"
 
 namespace DSS
 {
@@ -78,6 +78,38 @@ namespace DSS
     //
     // Initial code based on https://meetingcpp.com/blog/items/an-introduction-into-qt-part-3.html
     //
+
+    ImageListModel::ImageListModel(QObject* parent) :
+    QAbstractTableModel(parent)
+    {
+        //
+        // Populate the Icon array if it's not already been done
+        //
+        if (0 == ImageListModel::icons.size())
+        {
+            std::lock_guard lock(ImageListModel::mutex);
+            if (0 == ImageListModel::icons.size())          // check for race condtion
+            {
+                ImageListModel::icons.emplace_back(":/stacking/LightColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasColour.png");
+                ImageListModel::icons.emplace_back(":/stacking/LightCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasCMYG.png");
+                ImageListModel::icons.emplace_back(":/stacking/LightRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasRGB.png");
+                ImageListModel::icons.emplace_back(":/stacking/LightGreyscale.png");
+                ImageListModel::icons.emplace_back(":/stacking/DarkGreyscale.png");
+                ImageListModel::icons.emplace_back(":/stacking/FlatGreyscale.png");
+                ImageListModel::icons.emplace_back(":/stacking/BiasGreyscale.png");
+            }
+        }
+    }
+
 	QVariant ImageListModel::data(const QModelIndex& index, int role) const
 
     {
@@ -89,114 +121,164 @@ namespace DSS
 
         int row = index.row();
 
+        const auto& file = mydata[row];
         if (role == Qt::DisplayRole || role == Qt::EditRole)
         {
             switch (Column(index.column()))
             {
-            case Column::PathCol:
-                return QString::fromWCharArray(mydata[row].m_strPath.GetString());
+            case Column::Path:
+                return file.m_strPath;
                 break;
-            case Column::FileCol:
-                return QString::fromWCharArray(mydata[row].m_strFile.GetString());
+            case Column::File:
+                return file.m_strFile;
                 break;
-            case Column::TypeCol:
-                return QString::fromWCharArray(mydata[row].m_strType.GetString());
+            case Column::Type:
+                return file.m_strType;
                 break;
-            case Column::FilterCol:
-                return QString::fromWCharArray(mydata[row].m_filterName.GetString());
+            case Column::Filter:
+                return file.m_filterName;
                 break;
-            case Column::ScoreCol:
-                if (mydata[row].m_PictureType != PICTURETYPE_LIGHTFRAME)
+            case Column::Score:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
                     return QString("N/A");
                 else
                 {
-                    if (mydata[row].m_bRegistered)
+                    if (file.m_bRegistered)
                     {
                         QString result;
-                        if (mydata[row].m_bUseAsStarting)
+                        if (file.m_bUseAsStarting)
                             result = "(*) %1";
                         else
                             result = "%1";
-                        return result.arg(mydata[row].m_fOverallQuality, 0, 'f', 2);
+                        return result.arg(file.m_fOverallQuality, 0, 'f', 2);
                     }
                     else
                         return QString("NC");
                 };
                 break;
-            case Column::dXCol:
-                if (mydata[row].m_PictureType != PICTURETYPE_LIGHTFRAME)
+            case Column::dX:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
                     return QString("N/A");
                 else
                 {
-                    if (mydata[row].m_bDeltaComputed)
-                        return QString("%1").arg(mydata[row].m_dX, 0, 'f', 2);
+                    if (file.m_bDeltaComputed)
+                        return QString("%1").arg(file.m_dX, 0, 'f', 2);
                     else
                         return QString("NC");
                 };
                 break;
-            case Column::dYCol:
-                if (mydata[row].m_PictureType != PICTURETYPE_LIGHTFRAME)
+            case Column::dY:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
                     return QString("N/A");
                 else
                 {
-                    if (mydata[row].m_bDeltaComputed)
-                        return QString("%1").arg(mydata[row].m_dY, 0, 'f', 2);
+                    if (file.m_bDeltaComputed)
+                        return QString("%1").arg(file.m_dY, 0, 'f', 2);
                     else
                         return QString("NC");
                 };
                 break;
-            case Column::AngleCol:
-                if (mydata[row].m_PictureType != PICTURETYPE_LIGHTFRAME)
+            case Column::Angle:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
                     return QString("N/A");
                 else
                 {
-                    if (mydata[row].m_bDeltaComputed)
-                        return QString("%1 °").arg(mydata[row].m_fAngle * 180.0 / M_PI, 0, 'f', 2);
+                    if (file.m_bDeltaComputed)
+                        return QString("%1 °").arg(file.m_fAngle * 180.0 / M_PI, 0, 'f', 2);
                     else
                         return QString("NC");
                 };
                 break;
-            case Column::DateTimeCol:
-                return QString::fromWCharArray(mydata[row].m_strDateTime.GetString());
+            case Column::FileTime:
+                return QString::fromWCharArray(file.m_strDateTime.GetString());
                 break;
-            case Column::SizeCol:
-                return QString::fromWCharArray(mydata[row].m_strSizes.GetString());
+            case Column::Size:
+                return file.m_strSizes;
                 break;
-            case Column::CFACol:
-                return mydata[row].GetCFAType() != CFATYPE_NONE) ? tr("Yes", "IDS_YES") : tr("No", "IDS_NO"));
-            case Column::DepthCol:
-                return QString::fromWCharArray(mydata[row].m_strDepth.GetString());
+            case Column::CFA:
+                return file.GetCFAType() != CFATYPE_NONE ? tr("Yes", "IDS_YES") : tr("No", "IDS_NO");
+            case Column::Depth:
+                return file.m_strDepth;
                 break;
-            case Column::InfoCol:
-                return QString::fromWCharArray(mydata[row].m_strInfos.GetString());
+            case Column::Info:
+                return QString::fromWCharArray(file.m_strInfos.GetString());
+                break;
+            case Column::ISO:
+                // ISO value, of if ISO is not available then the Gain value
+                if (file.m_lISOSpeed)
+                    return isoToString(file.m_lISOSpeed);
+                else if (file.m_lGain >= 0)
+                    return gainToString(file.m_lGain);
+                else
+                    return QString("0");
+                break;
+            case Column::Exposure:
+                return exposureToString(file.m_fExposure);
+                break;
+            case Column::Aperture:
+                return QString("%1").arg(file.m_fAperture, 0, 'f', 1);
+                break;
+            case Column::FWHM:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
+                    return QString("N/A");
+                else
+                {
+                    if (file.m_bRegistered)
+                        return QString("%1").arg(file.m_fFWHM, 0, 'f', 2);
+                    else
+                        return QString("NC");
+                };
+                break;
+            case Column::Stars:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
+                    return QString("N/A");
+                else
+                {
+                    if (file.m_bRegistered)
+                    {
+                        if (file.m_bComet)
+                            return QString("%1+(C)").arg(file.m_lNrStars);
+                        else
+                            return QString("%1").arg(file.m_lNrStars);
+                    }
+                    else
+                        return QString("NC");
+                }
                 break;
 
-            case Column::ISOCol:
-            case Column::ExposureCol:
-            case Column::ApertureCol:
-            case Column::FWHMCol:
-            case Column::StarsCol:
-            case Column::BackgroundCol:
-                return "TestData";
-                //return mydata[index.row()].getFirstname();
+            case Column::Background:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
+                    return QString("N/A");
+                else
+                {
+                    if (file.m_SkyBackground.m_fLight)
+                        return QString("%1 %").arg(file.m_SkyBackground.m_fLight * 100.0, 0, 'f', 2);
+                    else
+                        return QString("NC");
+                }
+                break;
+
+            default:
+                return QVariant();
             }
         }
-        return QVariant();
 
         if (role == Qt::DecorationRole)
         {
             if (0 == index.column())
-                return rowIcon;
+                return rowIcon(file);
             else return QVariant();
         }
 
         if (role == Qt::CheckStateRole)
         {
             if (0 == index.column())
-                return checkState;
+                return file.m_bChecked;
             else return QVariant();
 
         }
+
+        return QVariant();
             
     }
 
@@ -209,43 +291,43 @@ namespace DSS
         {
             switch (Column(section))
             {
-            case Column::PathCol:
+            case Column::Path:
                 return tr("Path");
-            case Column::FileCol:
+            case Column::File:
                 return tr("File");
-            case Column::TypeCol:
+            case Column::Type:
                 return tr("Type");
-            case Column::FilterCol:
+            case Column::Filter:
                 return tr("Filter");
-            case Column::ScoreCol:
+            case Column::Score:
                 return tr("Score");
-            case Column::dXCol:
+            case Column::dX:
                 return tr("dX");
-            case Column::dYCol:
+            case Column::dY:
                 return tr("dY");
-            case Column::AngleCol:
+            case Column::Angle:
                 return tr("Angle");
-            case Column::DateTimeCol:
+            case Column::FileTime:
                 return tr("Date/Time");
-            case Column::SizeCol:
+            case Column::Size:
                 return tr("Size");
-            case Column::CFACol:
+            case Column::CFA:
                 return tr("CFA");
-            case Column::DepthCol:
+            case Column::Depth:
                 return tr("Depth");
-            case Column::InfoCol:
+            case Column::Info:
                 return tr("Info");
-            case Column::ISOCol:
+            case Column::ISO:
                 return tr("ISO/Gain");
-            case Column::ExposureCol:
+            case Column::Exposure:
                 return tr("Exposure");
-            case Column::ApertureCol:
+            case Column::Aperture:
                 return tr("Aperture");
-            case Column::FWHMCol:
+            case Column::FWHM:
                 return tr("FWHM");
-            case Column::StarsCol:
+            case Column::Stars:
                 return tr("#Stars");
-            case Column::BackgroundCol:
+            case Column::Background:
                 return tr("Sky Background");
             }
         }
@@ -254,57 +336,75 @@ namespace DSS
 
     bool ImageListModel::setData(const int row, const Column column, const QVariant& value, int role)
     {
-        QModelIndex index(createIndex(row, (int)column));
+        QModelIndex index(createIndex(row, static_cast<int>(column)));
         return setData(index, value, role);
     }
 
     bool ImageListModel::setData(const QModelIndex& index, const QVariant& value, int role)
     {
+        bool changed{ true };
         if (index.isValid() && !(index.row() >= mydata.size() || index.row() < 0))
         {
+            int row = index.row();
+            auto& file = mydata[row];
+
             if (role == Qt::DisplayRole || role == Qt::EditRole)
             {
-                int row = index.row();
-
-                switch (Column(index.column()))
+                switch (static_cast<Column>(index.column()))
                 {
-                case Column::PathCol:
-                case Column::FileCol:
-                case Column::TypeCol:
-                    mydata[row].setType(value.toString());
+                case Column::Path:
+                    file.m_strPath = value.toString();
                     break;
-                case Column::FilterCol:
-                case Column::ScoreCol:
-                    mydata[row].m_fOverallQuality = value.toDouble();
+                case Column::File:
+                    file.m_strFile = value.toString();
                     break;
-                case Column::dXCol:
-                case Column::dYCol:
-                case Column::AngleCol:
-                case Column::DateTimeCol:
-                case Column::SizeCol:
-                case Column::CFACol:
-                case Column::DepthCol:
-                case Column::InfoCol:
-                case Column::ISOCol:
-                    mydata[row].setISO(value.toString());
+                case Column::Type:
+                    file.m_strType = value.toString();
                     break;
-                case Column::ExposureCol:
-                    mydata[row].setExposure(value.toString());
+                case Column::Filter:
+                    file.m_filterName = value.toString();
                     break;
-                case Column::ApertureCol:
-                case Column::FWHMCol:
-                case Column::StarsCol:
+                case Column::Score:
+                    file.m_fOverallQuality = value.toDouble();
+                    break;
+                case Column::dX:
+                    file.m_dX = value.toDouble();
+                    break;
+                case Column::dY:
+                    file.m_dY = value.toDouble();
+                    break;
+                case Column::Angle:
+                    file.m_fAngle = value.toDouble();
+                    break;
+                // case Column::ISO: 
+                // case Column::Exposure:
+                // case Column::Aperture:
+                case Column::FWHM:
+                    file.m_fFWHM = value.toDouble();
+                    break;
+                case Column::Stars:
+                    file.m_lNrStars = value.toUInt();
+                    break;
+                default:
+                    changed = false;
                 }
+                if (changed) emit dataChanged(index, index);
+                return true;
+            }
+            else if (Qt::CheckStateRole == role && 0 == index.column())
+            {
+                file.m_bChecked = static_cast<Qt::CheckState>(value.toInt());
                 emit dataChanged(index, index);
                 return true;
             }
+                
         }
         return false;
     }
 
     bool ImageListModel::setSkyBackground(const int row, const CSkyBackground& bg, int role)
     {
-        QModelIndex index(createIndex(row, (int)Column::BackgroundCol));
+        QModelIndex index(createIndex(row, (int)Column::Background));
         if (index.isValid() && !(index.row() >= mydata.size() || index.row() < 0))
         {
             if (role == Qt::DisplayRole || role == Qt::EditRole)
@@ -324,9 +424,9 @@ namespace DSS
     //
     void ImageListModel::addImage(ListBitMap image)
     {
-        if (std::find(mydata.begin(), mydata.end(), image) != mydata.end())
-            return;
-        mydata.push_back(std::move(image));
+        Q_ASSERT(std::find(mydata.begin(), mydata.end(), image) == mydata.end());
+            
+        mydata.emplace_back(std::move(image));
     }
 
     //
@@ -337,5 +437,50 @@ namespace DSS
     void ImageListModel::removeImage(int row)
     {
         mydata.erase(std::next(mydata.begin(), row));
+    }
+
+    //
+    // Work out which Icon to display based on the frame type
+    //
+    QVariant ImageListModel::rowIcon(const ListBitMap& file) const
+    {
+        QVariant result;
+        PICTURETYPE type{ file.m_PictureType };
+        int16_t index{ 0 };
+
+        switch (type)
+        {
+        case PICTURETYPE_LIGHTFRAME:
+        case PICTURETYPE_REFLIGHTFRAME:
+            index = 0;
+            break;
+        case PICTURETYPE_DARKFRAME:
+        case PICTURETYPE_DARKFLATFRAME:
+            index = 1;
+            break;
+        case PICTURETYPE_FLATFRAME:
+            index = 2;
+            break;
+        case PICTURETYPE_OFFSETFRAME:
+            index = 3;
+            break;
+        default:
+            return QVariant();      // we're outta here
+        }
+
+        // if (file.m_lNrChannels == 3)
+        // index +=0;               // Use xxxxColour Icons
+        if (IsCYMGType(file.GetCFAType()))
+            index += 4;             // Use xxxxCMYG Icons
+        else if (file.GetCFAType() != CFATYPE_NONE)
+            index += 8;             // Use xxxxRGB Icons
+        else
+            index += 12;            // Use xxxxGreyscale Icons
+        
+        if (ImageListModel::icons[index].isNull())
+        {
+            qDebug("null icon");
+        }
+        return ImageListModel::icons[index];
     }
 }

@@ -94,32 +94,32 @@ void CFileProperty::InitControls()
 		{
 			if (bFirst)
 			{
-				strFileName = bitmap->m_strFileName;
+				strFileName = CString(bitmap->filePath.generic_wstring().c_str());
 				PictureType = bitmap->m_PictureType;
 				strDateTime = bitmap->m_strDateTime;
-				strSizes    = bitmap->m_strSizes;
-				strDepth    = bitmap->m_strDepth;
+				strSizes    = bitmap->m_strSizes.toStdWString().c_str();
+				strDepth    = bitmap->m_strDepth.toStdWString().c_str();
 				strInfo		= bitmap->m_strInfos;
-				strCFA		= bitmap->m_strCFA;
+				strCFA		= bitmap->m_strCFA.toStdWString().c_str();
 				lISOSpeed	= bitmap->m_lISOSpeed;
 				fExposure	= bitmap->m_fExposure;
 				bFirst = false;
 			}
 			else
 			{
-				if (strFileName != bitmap->m_strFileName)
+				if (strFileName != CString(bitmap->filePath.generic_wstring().c_str()))
 					strFileName.Format(IDS_MULTIPLEFILESELECTED, m_bitmaps.size());
 				if (PictureType != bitmap->m_PictureType)
 					PictureType = PICTURETYPE_UNKNOWN;
 				if (strDateTime != bitmap->m_strDateTime)
 					strDateTime = "-";
-				if (strSizes != bitmap->m_strSizes)
+				if (strSizes != bitmap->m_strSizes.toStdWString().c_str())
 					strSizes = "-";
-				if (strDepth != bitmap->m_strDepth)
+				if (strDepth != bitmap->m_strDepth.toStdWString().c_str())
 					strDepth = "-";
 				if (strInfo != bitmap->m_strInfos)
 					strInfo = "-";
-				if (strCFA != bitmap->m_strCFA)
+				if (strCFA != bitmap->m_strCFA.toStdWString().c_str())
 					strCFA = "-";
 				if (lISOSpeed != bitmap->m_lISOSpeed)
 					lISOSpeed = 0;

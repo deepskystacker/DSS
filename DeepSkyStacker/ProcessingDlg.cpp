@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
-#include "DeepStackerDlg.h"
 #include "ProcessingDlg.h"
 #include "ProgressDlg.h"
 #include <algorithm>
@@ -19,6 +18,8 @@
 #include <cmath>
 
 constexpr UINT WM_INITNEWPICTURE = WM_USER + 1;
+
+#define dssApp DeepSkyStacker::instance()
 
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
@@ -204,7 +205,7 @@ void CProcessingDlg::UpdateControls()
 	bool			bUndo = false,
 					bRedo = false;
 
-	if (GetDeepStack(this).IsLoaded())
+	if (dssApp->deepStack().IsLoaded())
 	{
 		m_tabRGB.EnableWindow(true);
 		m_tabLuminance.EnableWindow(true);
@@ -232,11 +233,11 @@ void CProcessingDlg::UpdateControls()
 
 void CProcessingDlg::UpdateMonochromeControls()
 {
-	if (GetDeepStack(this).IsLoaded())
+	if (dssApp->deepStack().IsLoaded())
 	{
 		bool			bMonochrome;
 
-		bMonochrome = GetDeepStack(this).GetStackedBitmap().IsMonochrome();
+		bMonochrome = dssApp->deepStack().GetStackedBitmap().IsMonochrome();
 
 		m_tabRGB.m_GreenGradient.ShowWindow(bMonochrome ? SW_HIDE : SW_SHOW);
 		m_tabRGB.m_BlueGradient.ShowWindow(bMonochrome ? SW_HIDE : SW_SHOW);
@@ -381,7 +382,7 @@ void CProcessingDlg::OnRedo()
 void CProcessingDlg::OnSettings()
 {
 	CSettingsDlg			dlg;
-	CDSSSettings &			Settings = GetDSSSettings(this);
+	CDSSSettings &			Settings = dssApp->settings();
 
 	KillTimer(1);
 	dlg.SetDSSSettings(&Settings, m_ProcessParams);
@@ -420,10 +421,10 @@ void CProcessingDlg::UpdateInfos()
 
 	strText.LoadString(IDS_NOINFO);
 
-	lISOSpeed	= GetDeepStack(this).GetStackedBitmap().GetISOSpeed();
-	lGain		= GetDeepStack(this).GetStackedBitmap().GetGain();
-	lTotalTime	= GetDeepStack(this).GetStackedBitmap().GetTotalTime();
-	lNrFrames	= GetDeepStack(this).GetStackedBitmap().GetNrStackedFrames();
+	lISOSpeed	= dssApp->deepStack().GetStackedBitmap().GetISOSpeed();
+	lGain		= dssApp->deepStack().GetStackedBitmap().GetGain();
+	lTotalTime	= dssApp->deepStack().GetStackedBitmap().GetTotalTime();
+	lNrFrames	= dssApp->deepStack().GetStackedBitmap().GetNrStackedFrames();
 
 	if (lISOSpeed || lGain >= 0 || lTotalTime || lNrFrames)
 	{
@@ -484,8 +485,8 @@ LRESULT CProcessingDlg::OnInitNewPicture(WPARAM, LPARAM)
 	ShowOriginalHistogram(false);
 	ResetSliders();
 
-	int height = GetDeepStack(this).GetHeight();
-	m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height / 3);
+	int height = dssApp->deepStack().GetHeight();
+	m_ToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
 	m_lProcessParams.clear();
 	m_Picture.SetImg((HBITMAP)nullptr);
@@ -502,7 +503,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	CDialog::OnShowWindow(bShow, nStatus);
 
-	if (bShow && GetDeepStack(this).IsNewStackedBitmap(true))
+	if (bShow && dssApp->deepStack().IsNewStackedBitmap(true))
 		OnInitNewPicture(0, 0);//PostMessage(WM_INITNEWPICTURE);
 }
 
@@ -515,10 +516,10 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 	bool				bOk;
 
 	BeginWaitCursor();
-	GetDeepStack(this).Clear();
-	GetDeepStack(this).SetProgress(&dlg);
-	bOk = GetDeepStack(this).LoadStackedInfo(szFileName);
-	GetDeepStack(this).SetProgress(nullptr);
+	dssApp->deepStack().Clear();
+	dssApp->deepStack().SetProgress(&dlg);
+	bOk = dssApp->deepStack().LoadStackedInfo(szFileName);
+	dssApp->deepStack().SetProgress(nullptr);
 	EndWaitCursor();
 
 	if (bOk)
@@ -528,16 +529,16 @@ void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 		UpdateMonochromeControls();
 		UpdateInfos();
 		BeginWaitCursor();
-		GetDeepStack(this).GetStackedBitmap().GetBezierAdjust(m_ProcessParams.m_BezierAdjust);
-		GetDeepStack(this).GetStackedBitmap().GetHistogramAdjust(m_ProcessParams.m_HistoAdjust);
+		dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(m_ProcessParams.m_BezierAdjust);
+		dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(m_ProcessParams.m_HistoAdjust);
 
 		UpdateControlsFromParams();
 
 		ShowOriginalHistogram(false);
 		ResetSliders();
 
-		int height = GetDeepStack(this).GetHeight();
-		m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height / 3);
+		int height = dssApp->deepStack().GetHeight();
+		m_ToProcess.Init(dssApp->deepStack().GetWidth(), height, height / 3);
 
 		m_lProcessParams.clear();
 		m_Picture.SetImg((HBITMAP)nullptr);
@@ -589,10 +590,10 @@ void CProcessingDlg::OnLoaddsi()
 			{
 				BeginWaitCursor();
 				strFile = dlgOpen.GetNextPathName(pos);
-				GetDeepStack(this).Clear();
-				GetDeepStack(this).SetProgress(&dlg);
-				bOk = GetDeepStack(this).LoadStackedInfo(strFile);
-				GetDeepStack(this).SetProgress(nullptr);
+				dssApp->deepStack().Clear();
+				dssApp->deepStack().SetProgress(&dlg);
+				bOk = dssApp->deepStack().LoadStackedInfo(strFile);
+				dssApp->deepStack().SetProgress(nullptr);
 				EndWaitCursor();
 			};
 
@@ -612,15 +613,15 @@ void CProcessingDlg::OnLoaddsi()
 				UpdateMonochromeControls();
 				UpdateInfos();
 				BeginWaitCursor();
-				GetDeepStack(this).GetStackedBitmap().GetBezierAdjust(m_ProcessParams.m_BezierAdjust);
-				GetDeepStack(this).GetStackedBitmap().GetHistogramAdjust(m_ProcessParams.m_HistoAdjust);
+				dssApp->deepStack().GetStackedBitmap().GetBezierAdjust(m_ProcessParams.m_BezierAdjust);
+				dssApp->deepStack().GetStackedBitmap().GetHistogramAdjust(m_ProcessParams.m_HistoAdjust);
 
 				UpdateControlsFromParams();
 
 				ShowOriginalHistogram(false);
 				// ResetSliders();
-				int height = GetDeepStack(this).GetHeight();
-				m_ToProcess.Init(GetDeepStack(this).GetWidth(), height, height/3);
+				int height = dssApp->deepStack().GetHeight();
+				m_ToProcess.Init(dssApp->deepStack().GetWidth(), height, height/3);
 
 				m_lProcessParams.clear();
 				m_Picture.SetImg((HBITMAP)nullptr);
@@ -700,13 +701,13 @@ void CProcessingDlg::SaveDSImage()
 
 			BeginWaitCursor();
 			strFile = dlgOpen.GetNextPathName(pos);
-			GetDeepStack(this).SetProgress(&dlg);
+			dssApp->deepStack().SetProgress(&dlg);
 
 			if (m_SelectRectSink.GetSelectRect(rcSelect))
-				GetDeepStack(this).SaveStackedInfo(strFile, &rcSelect);
+				dssApp->deepStack().SaveStackedInfo(strFile, &rcSelect);
 			else
-				GetDeepStack(this).SaveStackedInfo(strFile);
-			GetDeepStack(this).SetProgress(nullptr);
+				dssApp->deepStack().SaveStackedInfo(strFile);
+			dssApp->deepStack().SetProgress(nullptr);
 
 			TCHAR		szDir[1+_MAX_DIR];
 			TCHAR		szDrive[1+_MAX_DRIVE];
@@ -776,52 +777,48 @@ void CProcessingDlg::CopyPictureToClipboard()
 
 void CProcessingDlg::CreateStarMask()
 {
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (GetDeepStack(this).IsLoaded())
+	if (dssApp->deepStack().IsLoaded())
 	{
 		KillTimer(1);
 
-		CStarMaskDlg				dlgStarMask;
-
+		CStarMaskDlg dlgStarMask;
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
-		if (dlgStarMask.DoModal()==IDOK)
+		if (dlgStarMask.DoModal() == IDOK)
 		{
-			CDSSProgressDlg				dlg;
-			CSmartPtr<CMemoryBitmap>	pBitmap;
-			CStarMaskEngine				starmask;
-			CSmartPtr<CMemoryBitmap>	pStarMask;
+			CDSSProgressDlg dlg;
+			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
-			GetDeepStack(this).GetStackedBitmap().GetBitmap(&pBitmap, &dlg);
-			if (starmask.CreateStarMask2(pBitmap, &pStarMask, &dlg))
+			std::shared_ptr<CMemoryBitmap> pBitmap = dssApp->deepStack().GetStackedBitmap().GetBitmap(&dlg);
+			if (std::shared_ptr<CMemoryBitmap> pStarMask = starmask.CreateStarMask2(pBitmap.get(), &dlg))
 			{
 				// Save the star mask to a file
-				CString					strFileName;
-				CString					strText;
-				bool					bFits;
-				CString					strDescription;
+				CString strFileName;
+				CString strText;
+				CString strDescription;
+				bool bFits;
 
 				strDescription.LoadString(IDS_STARMASKDESCRIPTION);
 
 				dlgStarMask.GetOutputFileName(strFileName, bFits);
 				strText.Format(IDS_SAVINGSTARMASK, (LPCTSTR)strFileName);
-				dlg.Start2((LPCTSTR)strText, 0);
+				dlg.Start2(static_cast<LPCTSTR>(strText), 0);
 				if (bFits)
-					WriteFITS((LPCTSTR)strFileName, pStarMask, &dlg, strDescription);
+					WriteFITS(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
 				else
-					WriteTIFF((LPCTSTR)strFileName, pStarMask, &dlg, strDescription);
-			};
-		};
+					WriteTIFF(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
+			}
+		}
 		SetTimer(1, 100, nullptr);
 	}
 	else
 	{
 		AfxMessageBox(IDS_MSG_NOPICTUREFORSTARMASK, MB_OK | MB_ICONSTOP);
-	};
-};
+	}
+}
 
-/* ------------------------------------------------------------------- */
 
 bool CProcessingDlg::SavePictureToFile()
 {
@@ -833,7 +830,7 @@ bool CProcessingDlg::SavePictureToFile()
 	uint				dwCompression;
 	CRect				rcSelect;
 
-	if (GetDeepStack(this).IsLoaded())
+	if (dssApp->deepStack().IsLoaded())
 	{
 		strBaseDirectory = (LPCTSTR)settings.value("Folders/SavePictureFolder").toString().utf16();
 		strBaseExtension = (LPCTSTR)settings.value("Folders/SavePictureExtension").toString().utf16();
@@ -891,17 +888,17 @@ bool CProcessingDlg::SavePictureToFile()
 				BeginWaitCursor();
 				strFile = dlgOpen.GetNextPathName(pos);
 				if (dlgOpen.m_ofn.nFilterIndex == 1)
-					GetDeepStack(this).GetStackedBitmap().SaveTIFF16Bitmap(strFile, lpRect, &dlg, bApply, Compression);
+					dssApp->deepStack().GetStackedBitmap().SaveTIFF16Bitmap(strFile, lpRect, &dlg, bApply, Compression);
 				else if (dlgOpen.m_ofn.nFilterIndex == 2)
-					GetDeepStack(this).GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, false, Compression);
+					dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, false, Compression);
 				else if (dlgOpen.m_ofn.nFilterIndex == 3)
-					GetDeepStack(this).GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, true, Compression);
+					dssApp->deepStack().GetStackedBitmap().SaveTIFF32Bitmap(strFile, lpRect, &dlg, bApply, true, Compression);
 				else if (dlgOpen.m_ofn.nFilterIndex == 4)
-					GetDeepStack(this).GetStackedBitmap().SaveFITS16Bitmap(strFile, lpRect, &dlg, bApply);
+					dssApp->deepStack().GetStackedBitmap().SaveFITS16Bitmap(strFile, lpRect, &dlg, bApply);
 				else if (dlgOpen.m_ofn.nFilterIndex == 5)
-					GetDeepStack(this).GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, false);
+					dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, false);
 				else if (dlgOpen.m_ofn.nFilterIndex == 6)
-					GetDeepStack(this).GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, true);
+					dssApp->deepStack().GetStackedBitmap().SaveFITS32Bitmap(strFile, lpRect, &dlg, bApply, true);
 
 				TCHAR		szDir[1+_MAX_DIR];
 				TCHAR		szDrive[1+_MAX_DRIVE];
@@ -947,7 +944,7 @@ void CProcessingDlg::OnProcess()
 
 void CProcessingDlg::ResetSliders()
 {
-	CRGBHistogram &		Histogram = GetDeepStack(this).GetOriginalHistogram();
+	CRGBHistogram &		Histogram = dssApp->deepStack().GetOriginalHistogram();
 
 	m_ProcessParams.m_BezierAdjust.Reset();
 
@@ -1423,7 +1420,7 @@ void CProcessingDlg::ShowOriginalHistogram(bool bLog)
 	HistoAdjust.GetBlueAdjust().SetAdjustMethod(m_tabRGB.GetBlueAdjustMethod());
 	HistoAdjust.GetBlueAdjust().SetNewValues(fMinBlue, fMaxBlue, fShiftBlue);
 
-	GetDeepStack(this).AdjustOriginalHistogram(Histo, HistoAdjust);
+	dssApp->deepStack().AdjustOriginalHistogram(Histo, HistoAdjust);
 
 	ShowHistogram(m_OriginalHistogram, Histo, bLog);
 };
@@ -1443,7 +1440,7 @@ void CProcessingDlg::OnTimer(UINT_PTR nIDEvent)
 		if (!hBitmap)
 			bInitialized = false;
 
-		hBitmap = GetDeepStack(this).PartialProcess(rcCell, m_ProcessParams.m_BezierAdjust, m_ProcessParams.m_HistoAdjust);
+		hBitmap = dssApp->deepStack().PartialProcess(rcCell, m_ProcessParams.m_BezierAdjust, m_ProcessParams.m_HistoAdjust);
 
 		if (!bInitialized)
 			m_Picture.SetImg(hBitmap, true);

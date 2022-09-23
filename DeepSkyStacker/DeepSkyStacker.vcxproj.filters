@@ -63,9 +63,6 @@
     <ClCompile Include="About.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="DeepStackerDlg.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="ExplorerBar.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
@@ -106,9 +103,6 @@
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
     <ClCompile Include="ResultParameters.cpp">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClCompile>
-    <ClCompile Include="StackingDlg.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
     <ClCompile Include="StackingParameters.cpp">
@@ -237,6 +231,9 @@
     <ClCompile Include="DeBloom.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="DeepSkyStacker.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
     <ClCompile Include="DeepStack.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -311,9 +308,6 @@
     </ClCompile>
     <ClCompile Include="..\Tools\CtrlCache.cpp">
       <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="qmfcapp.cpp">
-      <Filter>Qt Porting</Filter>
     </ClCompile>
     <ClCompile Include="qwinwidget.cpp">
       <Filter>Qt Porting</Filter>
@@ -390,6 +384,21 @@
     <ClCompile Include="imageloader.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="BackgroundLoading.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="dsstoolbar.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="StackingDlg.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="dss_settings.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="qmfcapp.cpp">
+      <Filter>Qt Porting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -460,9 +469,6 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeepStackerDlg.h">
-      <Filter>Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="FileProperty.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
@@ -476,9 +482,6 @@
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="CheckAbove.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
-    <ClInclude Include="DropFilesDlg.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
     <ClInclude Include="AskRegistering.h">
@@ -566,9 +569,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ScrollDialog.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\SmartPtr.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\SplitterControl.h">
@@ -721,9 +721,6 @@
     <ClInclude Include="DSS-winpackagefamily.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qmfcapp.h">
-      <Filter>Qt Porting</Filter>
-    </ClInclude>
     <ClInclude Include="..\Tools\WndImage.h">
       <Filter>Tools</Filter>
     </ClInclude>
@@ -763,9 +760,6 @@
     <ClInclude Include="BitmapBase.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="RefCount.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="avx_support.h">
       <Filter>Kernel</Filter>
     </ClInclude>
@@ -786,6 +780,18 @@
     </ClInclude>
     <ClInclude Include="dssgroup.h">
       <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundLoading.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="BitmapIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qmfcapp.h">
+      <Filter>Qt Porting</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyBackground.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1083,52 +1089,52 @@
     <Image Include="res\4Corners.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Disabled.png">
+    <Image Include="res\ButtonComet_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Down.png">
+    <Image Include="res\ButtonComet_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Hot.png">
+    <Image Include="res\ButtonComet_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonComet_Up.png">
+    <Image Include="res\ButtonComet_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Disabled.png">
+    <Image Include="res\ButtonSave_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Down.png">
+    <Image Include="res\ButtonSave_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Hot.png">
+    <Image Include="res\ButtonSave_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSave_Up.png">
+    <Image Include="res\ButtonSave_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Disabled.png">
+    <Image Include="res\ButtonSelect_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Down.png">
+    <Image Include="res\ButtonSelect_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Hot.png">
+    <Image Include="res\ButtonSelect_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonSelect_Up.png">
+    <Image Include="res\ButtonSelect_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Disabled.png">
+    <Image Include="res\ButtonStar_Disabled.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Down.png">
+    <Image Include="res\ButtonStar_Down.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Hot.png">
+    <Image Include="res\ButtonStar_Hot.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Buttons\ButtonStar_Up.png">
+    <Image Include="res\ButtonStar_Up.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -1138,13 +1144,13 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="QMfcApp">
-      <Filter>Qt Porting</Filter>
-    </None>
     <None Include="QWinHost">
       <Filter>Qt Porting</Filter>
     </None>
     <None Include="QWinWidget">
+      <Filter>Qt Porting</Filter>
+    </None>
+    <None Include="QMfcApp">
       <Filter>Qt Porting</Filter>
     </None>
   </ItemGroup>
@@ -1152,7 +1158,7 @@
     <QtRcc Include="i18n\translations.qrc">
       <Filter>Qt\i18n</Filter>
     </QtRcc>
-    <QtRcc Include="ui\resources.qrc">
+    <QtRcc Include="resources.qrc">
       <Filter>Qt\ui</Filter>
     </QtRcc>
   </ItemGroup>
@@ -1288,17 +1294,20 @@
     <QtMoc Include="qwinhost.h">
       <Filter>Qt Porting</Filter>
     </QtMoc>
-    <QtMoc Include="DeepSkyStacker.h">
-      <Filter>Header Files</Filter>
+    <QtMoc Include="ImageListModel.h">
+      <Filter>Kernel</Filter>
     </QtMoc>
     <QtMoc Include="StackingDlg.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="ImageListModel.h">
+    <QtMoc Include="imageloader.h">
       <Filter>Kernel</Filter>
     </QtMoc>
-    <QtMoc Include="imageloader.h">
+    <QtMoc Include="DeepSkyStacker.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DropFilesDlg.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

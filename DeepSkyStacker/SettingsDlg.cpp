@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "deepskystacker.h"
 #include "SettingsDlg.h"
+#include "dss_settings.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CSettingsDlg dialog

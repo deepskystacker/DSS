@@ -31,11 +31,10 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	{
 		constexpr int windowSize = 4;
 		constexpr int squareSize = 2 * windowSize + 1;
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pBitmap->Init(256, 32) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 100
 		pGray->m_vPixels.assign(256 * 32, 100);
 
@@ -56,11 +55,10 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	{
 		constexpr int windowSize = 10;
 		constexpr int squareSize = 2 * windowSize + 1;
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pBitmap->Init(256, 64) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set to 100
 		pGray->m_vPixels.assign(256 * 64, 555);
 		pGray->m_vPixels[2 * windowSize * 256 + 2 * windowSize] = 7000;
@@ -94,11 +92,10 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	{
 		constexpr int windowSize = 10;
 		constexpr int squareSize = 2 * windowSize + 1;
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pBitmap->Init(24, 22) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set values
 		std::uint16_t v = 3;
 		std::for_each(pGray->m_vPixels.begin(), pGray->m_vPixels.end(), [&v](auto& elem) { elem = v++; });
@@ -128,11 +125,10 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	{
 		constexpr int windowSize = 10;
 		constexpr int squareSize = 2 * windowSize + 1;
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<float>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pBitmap->Init(40, 37) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<float>*>(pBitmap.get());
 		// Set values
 		float v = 5384.6f;
 		std::for_each(pGray->m_vPixels.begin(), pGray->m_vPixels.end(), [&v](auto& elem) { elem = v++; });
@@ -167,11 +163,10 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	{
 		constexpr int windowSize = 10;
 		constexpr int squareSize = 2 * windowSize + 1;
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CGrayBitmapT<std::uint32_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<std::uint32_t>>();
 		REQUIRE(pBitmap->Init(40, 37) == true);
 
-		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CGrayBitmapT<std::uint32_t>*>(pBitmap.get());
 		// Set values
 		std::uint32_t v = 963 << 16;
 		std::for_each(pGray->m_vPixels.begin(), pGray->m_vPixels.end(), [&v](auto& elem) { elem = v; v += (1 << 16); });
@@ -206,11 +201,10 @@ TEST_CASE("AVX Entropy", "[AVX][Entropy]")
 	{
 		constexpr int windowSize = 10;
 		constexpr int squareSize = 2 * windowSize + 1;
-		CSmartPtr<CMemoryBitmap> pBitmap;
-		pBitmap.Attach(new CColorBitmapT<std::uint16_t>);
+		std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CColorBitmapT<std::uint16_t>>();
 		REQUIRE(pBitmap->Init(24, 22) == true);
 
-		auto* pGray = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.m_p);
+		auto* pGray = dynamic_cast<CColorBitmapT<std::uint16_t>*>(pBitmap.get());
 		// Set values
 		std::uint16_t v = 3;
 		std::for_each(pGray->m_Red.m_vPixels.begin(), pGray->m_Red.m_vPixels.end(), [&v](auto& elem) { elem = v++; });

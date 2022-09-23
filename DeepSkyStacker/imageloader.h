@@ -5,7 +5,7 @@
 #include <QRunnable> 
 #include <qstring.h>
 
-class CMemoryBitMap;
+class CMemoryBitmap;
 class C32BitsBitmap;
 
 class LoadedImage
@@ -53,8 +53,10 @@ public:
 
 	void	reset()
 	{
+		fileName.clear();
 		m_Image.reset();
 		m_pBitmap.reset();
+		lastUse = 0;
 	};
 
 };
@@ -66,7 +68,7 @@ class ImageLoader :
 	Q_OBJECT
 
     static const inline int16_t MAXIMAGESINCACHE{ 20 };
-	std::mutex	mutex;
+	static inline std::mutex mutex{};
 	QString	fileToLoad;
 	std::vector<LoadedImage>	imageVector;
 

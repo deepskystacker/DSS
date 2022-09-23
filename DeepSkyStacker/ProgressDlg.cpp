@@ -23,6 +23,40 @@ CProgressDlg::CProgressDlg(CWnd* pParent /*=nullptr*/)
 	m_bCancelled = false;
 }
 
+bool CDSSProgressDlg::Close()
+{
+	m_dlg.PeekAndPump();
+	// Prevent failure if mdlg is no longer a valid window
+	if (nullptr != m_dlg.m_hWnd)
+		m_dlg.EndDialog(true);
+
+	DeepSkyStacker::instance()->enableSubDialogs();
+
+	return true;
+}
+
+void CDSSProgressDlg::CreateProgressDialog()
+{
+
+	if (!m_dlg.m_hWnd)
+	{
+		CWnd* pMainWnd = AfxGetMainWnd();
+
+		m_dlg.Create(IDD_PROGRESS);
+
+		// Centre on main window
+		if (pMainWnd)
+			m_dlg.CenterWindow(pMainWnd);
+
+		// Disable child dialogs of DeepSkyStackerDlg
+
+		DeepSkyStacker::instance()->disableSubDialogs();
+
+		// Re-enable this window
+		m_dlg.EnableWindow(true);
+		m_dlg.ShowWindow(SW_SHOW);
+	};
+};
 
 void CProgressDlg::DoDataExchange(CDataExchange* pDX)
 {

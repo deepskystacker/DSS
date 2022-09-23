@@ -21,7 +21,7 @@ using std::max;
 ResultParameters::ResultParameters(QWidget *parent) :
 	QWidget(parent),
 	ui(new Ui::ResultParameters),
-	workspace(new CWorkspace()),
+	workspace(new Workspace()),
 	pStackSettings(dynamic_cast<StackSettings *>(parent))
 {
 	if (nullptr == pStackSettings)

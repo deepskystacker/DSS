@@ -119,9 +119,6 @@
     <ClCompile Include="tif_zip.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="mkg3states.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tif_lzma.c">
       <Filter>Source Files</Filter>
     </ClCompile>

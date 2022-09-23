@@ -26,6 +26,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PreferredToolArchitecture>
     </PreferredToolArchitecture>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -33,7 +34,8 @@
     <UseOfMfc>Dynamic</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+    <PreferredToolArchitecture>
+    </PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <PropertyGroup Condition="'$(QtMsBuild)'=='' or !Exists('$(QtMsBuild)\qt.targets')">
@@ -50,9 +52,10 @@
     <QtModules>core;gui;gui-private;widgets;network</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
+    <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtInstall>5.15.0x64</QtInstall>
+    <QtInstall>5.15.2_msvc2019_64</QtInstall>
     <QtModules>core;gui;gui-private;widgets;network</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
@@ -83,7 +86,7 @@
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;../libraw;C:\boost_1_80_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
@@ -95,7 +98,7 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <Culture>0x040c</Culture>
+      <Culture>0x0809</Culture>
     </ResourceCompile>
     <ProjectReference />
     <Link>
@@ -106,6 +109,9 @@
       <TargetMachine>MachineX64</TargetMachine>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <AdditionalLibraryDirectories>C:\Program Files (x86)\Visual Leak Detector\lib\Win64;C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -115,7 +121,7 @@
     </Manifest>
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
-
+call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
@@ -142,7 +148,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <HeaderFileName />
     </Midl>
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;C:\Program Files (x86)\Visual Leak Detector\include;.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;C:\boost_1_80_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -154,6 +160,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>
       </AdditionalOptions>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -174,6 +181,9 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <AdditionalOptions>
       </AdditionalOptions>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -184,7 +194,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <CustomBuildStep />
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
-
+call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
 $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
@@ -267,6 +277,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="avx_support.cpp" />
     <ClCompile Include="BackgroundCalibration.cpp" />
+    <ClCompile Include="BackgroundLoading.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -291,7 +302,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       </AdditionalOptions>
     </ClCompile>
     <ClCompile Include="DeepStack.cpp" />
-    <ClCompile Include="DeepStackerDlg.cpp" />
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
     <ClCompile Include="dsseditstars.cpp">
@@ -310,6 +320,8 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="dsstoolbar.cpp" />
+    <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -366,10 +378,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="qmfcapp.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
+    <ClCompile Include="qmfcapp.cpp" />
     <ClCompile Include="qwinhost.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -405,7 +414,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="SettingsDlg.cpp" />
     <ClCompile Include="SetUILanguage.cpp" />
     <ClCompile Include="StackedBitmap.cpp" />
-    <ClCompile Include="StackingDlg.cpp" />
+    <ClCompile Include="StackingDlg.cpp">
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
+      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
+      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
+    </ClCompile>
     <ClCompile Include="StackingEngine.cpp" />
     <ClCompile Include="StackingParameters.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -466,7 +480,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h" />
     <ClInclude Include="..\Tools\Schemadef.h" />
     <ClInclude Include="..\Tools\ScrollDialog.h" />
-    <ClInclude Include="..\Tools\SmartPtr.h" />
     <ClInclude Include="..\Tools\SplitterControl.h" />
     <ClInclude Include="..\Tools\ThemeUtil.h" />
     <ClInclude Include="..\Tools\Tmschema.h" />
@@ -489,11 +502,13 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="avx_support.h" />
     <ClInclude Include="BackgroundCalibration.h" />
     <QtMoc Include="BackgroundOptions.h" />
+    <ClInclude Include="BackgroundLoading.h" />
     <ClInclude Include="BatchStacking.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="BitmapExt.h" />
     <ClInclude Include="BitMapFiller.h" />
+    <ClInclude Include="BitmapIterator.h" />
     <ClInclude Include="ChannelAlign.h" />
     <ClInclude Include="CheckAbove.h" />
     <QtMoc Include="CometStacking.h" />
@@ -504,9 +519,8 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="DeBloom.h" />
     <QtMoc Include="DeepSkyStacker.h" />
     <ClInclude Include="DeepStack.h" />
-    <ClInclude Include="DeepStackerDlg.h" />
     <ClInclude Include="Delaunay.h" />
-    <ClInclude Include="DropFilesDlg.h" />
+    <QtMoc Include="DropFilesDlg.h" />
     <ClInclude Include="DSS-versionhelpers.h" />
     <ClInclude Include="DSS-winapifamily.h" />
     <ClInclude Include="DSS-winpackagefamily.h" />
@@ -553,13 +567,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="ProcessSettingsSheet.h" />
     <ClInclude Include="ProgressDlg.h" />
     <QtMoc Include="QLinearGradientCtrl.h" />
-    <ClInclude Include="qmfcapp.h" />
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="qwinhost.h" />
+    <ClInclude Include="qmfcapp.h" />
     <ClInclude Include="RAWUtils.h" />
     <QtMoc Include="RecommendedSettings.h" />
-    <ClInclude Include="RefCount.h" />
     <ClInclude Include="RegisterEngine.h" />
     <QtMoc Include="RegisterSettings.h" />
     <ClInclude Include="Resource.h" />
@@ -576,6 +589,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SettingsDlg.h" />
     <ClInclude Include="SetUILanguage.h" />
+    <ClInclude Include="SkyBackground.h" />
     <ClInclude Include="StackedBitmap.h" />
     <QtMoc Include="StackingDlg.h" />
     <ClInclude Include="StackingEngine.h" />
@@ -604,37 +618,21 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <Image Include="Buttons\ButtonBase_mask.bmp" />
     <Image Include="Buttons\ButtonBase_up.bmp" />
     <Image Include="Buttons\ButtonComet_Disabled.bmp" />
-    <Image Include="Buttons\ButtonComet_Disabled.png" />
     <Image Include="Buttons\ButtonComet_Down.bmp" />
-    <Image Include="Buttons\ButtonComet_Down.png" />
     <Image Include="Buttons\ButtonComet_Hot.bmp" />
-    <Image Include="Buttons\ButtonComet_Hot.png" />
     <Image Include="Buttons\ButtonComet_Up.bmp" />
-    <Image Include="Buttons\ButtonComet_Up.png" />
     <Image Include="Buttons\ButtonSave_Disabled.bmp" />
-    <Image Include="Buttons\ButtonSave_Disabled.png" />
     <Image Include="Buttons\ButtonSave_Down.bmp" />
-    <Image Include="Buttons\ButtonSave_Down.png" />
     <Image Include="Buttons\ButtonSave_Hot.bmp" />
-    <Image Include="Buttons\ButtonSave_Hot.png" />
     <Image Include="Buttons\ButtonSave_Up.bmp" />
-    <Image Include="Buttons\ButtonSave_Up.png" />
     <Image Include="Buttons\ButtonSelect_Disabled.bmp" />
-    <Image Include="Buttons\ButtonSelect_Disabled.png" />
     <Image Include="Buttons\ButtonSelect_Down.bmp" />
-    <Image Include="Buttons\ButtonSelect_Down.png" />
     <Image Include="Buttons\ButtonSelect_Hot.bmp" />
-    <Image Include="Buttons\ButtonSelect_Hot.png" />
     <Image Include="Buttons\ButtonSelect_Up.bmp" />
-    <Image Include="Buttons\ButtonSelect_Up.png" />
     <Image Include="Buttons\ButtonStar_Disabled.bmp" />
-    <Image Include="Buttons\ButtonStar_Disabled.png" />
     <Image Include="Buttons\ButtonStar_Down.bmp" />
-    <Image Include="Buttons\ButtonStar_Down.png" />
     <Image Include="Buttons\ButtonStar_Hot.bmp" />
-    <Image Include="Buttons\ButtonStar_Hot.png" />
     <Image Include="Buttons\ButtonStar_Up.bmp" />
-    <Image Include="Buttons\ButtonStar_Up.png" />
     <Image Include="filelist.ico" />
     <Image Include="open.bmp" />
     <Image Include="openfile.ico" />
@@ -644,6 +642,22 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <Image Include="res\asinh.bmp" />
     <Image Include="res\bmp00001.bmp" />
     <Image Include="res\brazil.png" />
+    <Image Include="res\ButtonComet_Disabled.png" />
+    <Image Include="res\ButtonComet_Down.png" />
+    <Image Include="res\ButtonComet_Hot.png" />
+    <Image Include="res\ButtonComet_Up.png" />
+    <Image Include="res\ButtonSave_Disabled.png" />
+    <Image Include="res\ButtonSave_Down.png" />
+    <Image Include="res\ButtonSave_Hot.png" />
+    <Image Include="res\ButtonSave_Up.png" />
+    <Image Include="res\ButtonSelect_Disabled.png" />
+    <Image Include="res\ButtonSelect_Down.png" />
+    <Image Include="res\ButtonSelect_Hot.png" />
+    <Image Include="res\ButtonSelect_Up.png" />
+    <Image Include="res\ButtonStar_Disabled.png" />
+    <Image Include="res\ButtonStar_Down.png" />
+    <Image Include="res\ButtonStar_Hot.png" />
+    <Image Include="res\ButtonStar_Up.png" />
     <Image Include="res\Calibration_Linear.bmp" />
     <Image Include="res\Calibration_Rational.bmp" />
     <Image Include="res\Catalan.png" />
@@ -728,7 +742,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc" />
-    <QtRcc Include="ui\resources.qrc" />
+    <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ui\About.ui" />
@@ -778,10 +792,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath>$(QtInstallDir)\include;$(QtInstallDir)\include\QtWidgets;$(QtInstallDir)\include\QtGui;$(QtInstallDir)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
     <IncludePath>$(QtInstallDir)\include;$(QtInstallDir)\include\QtWidgets;$(QtInstallDir)\include\QtGui;$(QtInstallDir)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
