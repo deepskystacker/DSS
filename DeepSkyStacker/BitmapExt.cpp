@@ -270,43 +270,40 @@ bool	CAllDepthBitmap::initQImage()
 	{
 		ZTRACE_RUNTIME("Slow Bitmap Copy to Qimage");
 		// Slow Method
-//#if defined(_OPENMP)
+
+		//
+		// Point to the first RGB quad in the QImage which we
+		// need to cast to QRgb* (which is unsigned int*) from
+		// unsigned char * which is what QImage::bits() returns
+		//
+		QRgb* pOutPixel = reinterpret_cast<QRgb*>(m_Image->bits());
+
 //#pragma omp parallel for default(none) if(numberOfProcessors > 1)
-//#endif
 		for (j = 0; j < height; j++)
 		{
-			//
-			// Point to the first RGB quad in the QImage scanline
-			// need to cast to QRgb* (which is unsigned int*) from
-			// unsigned char * which is what QImage::scanLine() returns
-			//
-			QRgb* pOutPixel = reinterpret_cast<QRgb*>(m_Image->scanLine(j));
-			for (i = 0; i < width; i++, ++pOutPixel)
+			for (i = 0; i < width; i++)
 			{
 				double			fRed, fGreen, fBlue;
 				m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
-				*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
+				*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
 					std::clamp(fGreen, 0.0, 255.0),
 					std::clamp(fBlue, 0.0, 255.0));
-
-			};
+			}
 		};
 	}
 	else
 	{
 		ZTRACE_RUNTIME("Fast Bitmap Copy to QImage");
 		// Fast Method
-		BitmapIteratorConst<std::shared_ptr<CMemoryBitmap>> it{ m_pBitmap };
 
-//#if defined(_OPENMP)
 //#pragma omp parallel for default(none) if(numberOfProcessors > 1)
-//#endif
 		for (j = 0; j < height; j++)
 		{
+			BitmapIteratorConst<std::shared_ptr<CMemoryBitmap>> it{ m_pBitmap };
 			it.Reset(0, j);
 			//
-			// Point to the first RGB quad in the QImage scanline
+			// Point to the first RGB quad in the scan line which we
 			// need to cast to QRgb* (which is unsigned int*) from
 			// unsigned char * which is what QImage::scanLine() returns
 			//
@@ -319,8 +316,8 @@ bool	CAllDepthBitmap::initQImage()
 				*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
 					std::clamp(fGreen, 0.0, 255.0),
 					std::clamp(fBlue, 0.0, 255.0));
-			};
-		};
+			}
+		}
 	};
 	bResult = true;
 
