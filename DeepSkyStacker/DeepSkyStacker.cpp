@@ -43,19 +43,6 @@
 using namespace boost::interprocess;
 #include <gdiplus.h>
 using namespace Gdiplus;
-
-
-#include "DeepSkyStacker.h"
-#include "DeepStack.h"
-
-
-#include <afxinet.h>
-#include "StackingTasks.h"
-#include "StackRecap.h"
-#include "cgfiltyp.h"
-#include "SetUILanguage.h"
-#include <ZExcept.h>
-
 #include <QApplication>
 #include <QLibraryInfo>
 #include <QDebug>
@@ -71,9 +58,21 @@ using namespace Gdiplus;
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QWidget>
 
-#include "QMfcApp"
+//#include "QMfcApp"
 
 #include "qwinhost.h"
+
+#include "DeepSkyStacker.h"
+#include "DeepStack.h"
+
+
+#include <afxinet.h>
+#include "StackingTasks.h"
+#include "ui_StackingDlg.h"
+#include "StackRecap.h"
+#include "cgfiltyp.h"
+#include "SetUILanguage.h"
+#include <ZExcept.h>
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -335,6 +334,8 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	QSettings settings;
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
+	settings.setValue("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState",
+		stackingDlg->ui->tableView->horizontalHeader()->saveState());
 };
 
 

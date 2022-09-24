@@ -62,6 +62,8 @@ class QNetworkReply;
 #include <QFileDialog>
 #include <QStyledItemDelegate>
 
+class DeepSkyStacker;
+
 namespace DSS
 {
 	class Group;
@@ -119,6 +121,8 @@ namespace DSS
 			Inherited;
 
 		Q_OBJECT
+
+	friend class DeepSkyStacker;
 
 	public slots:
 		void setSelectionRect(QRectF rect);
@@ -193,6 +197,12 @@ namespace DSS
 
 		void pictureChanged();
 
+	public slots:
+		void on_tableView_customContextMenuRequested(const QPoint &pos);
+
+	protected:
+		bool event(QEvent* event) override;
+		void showEvent(QShowEvent* event) override;
 
 	private:
 		Ui::StackingDlg* ui;
@@ -205,6 +215,7 @@ namespace DSS
 		CMRUList		m_MRUList;
 		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
 		std::unique_ptr<QSortFilterProxyModel> proxyModel;
+		uint m_tipShowCount;
 
 
 
@@ -226,7 +237,7 @@ namespace DSS
 
 		void checkAskRegister();
 
-		void showEvent(QShowEvent* event) override;
+
 
 		void onInitDialog();
 

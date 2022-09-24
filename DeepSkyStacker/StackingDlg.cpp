@@ -54,6 +54,8 @@
 #include <QStyledItemDelegate>
 #include <QStyleOptionViewItem>
 #include <QStyleOptionButton>
+#include <QTableWidgetItem>
+#include <QToolTip>
 #include <QUrl>
 
 #include <filesystem>
@@ -85,7 +87,6 @@
 #include "dsstoolbar.h"
 #include "ui/ui_StackingDlg.h"
 #include "avx_support.h"
-
 
 #include <ZExcept.h>
 
@@ -307,7 +308,8 @@ namespace DSS
 	StackingDlg::StackingDlg(QWidget* parent) :
 		QWidget(parent),
 		ui(new Ui::StackingDlg),
-		initialised(false)
+		initialised(false),
+		m_tipShowCount{ 0 }
 	{
 		ui->setupUi(this);
 
@@ -328,6 +330,38 @@ namespace DSS
 		selectRect = rect;
 	}
 
+
+	void tableView_horizontalHeader_geometriesChanged()
+	{
+		QSettings settings;
+	}
+
+	bool StackingDlg::event(QEvent* event)
+	{
+		if (QEvent::ToolTip == event->type())
+		{
+			//
+			// If the mouse is over the image, but not over the toolbar,
+			// get the tooltip text and if there is any, display it
+			//
+			const QPoint globalMouseLocation(QCursor::pos());
+			const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
+			if (ui->tableView->viewport()->underMouse())
+			{
+				const QString tip = toolTip();
+				if (!tip.isEmpty() && m_tipShowCount % 25 == 0)
+				{
+					QToolTip::showText(globalMouseLocation, tip, this);
+				}
+				m_tipShowCount++;
+			}
+			return true;
+		}
+		// Make sure the rest of events are handled
+		return Inherited::event(event);
+	}
+
+
 	void StackingDlg::showEvent(QShowEvent* event)
 	{
 		if (!event->spontaneous())
@@ -340,6 +374,32 @@ namespace DSS
 		}
 		// Invoke base class showEvent()
 		return Inherited::showEvent(event);
+	}
+
+	void StackingDlg::on_tableView_customContextMenuRequested(const QPoint& pos)
+	{
+		QModelIndex ndx = ui->tableView->indexAt(pos);
+		qDebug() << "Table View item clicked, row " << ndx.row();
+		//
+		// If the QSortFilterProxyModel is being used, need to map 
+		// to the model index in the base model (our ImageListModel)
+		//
+		if (ui->tableView->model() == proxyModel.get())
+			ndx = proxyModel->mapToSource(ndx);
+
+		const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
+		int row = ndx.row();
+		qDebug() << "The corresponding Model row is " << ndx.row();
+		bool indexValid = ndx.isValid();
+		QMenu menu;
+		QAction* makeReference = menu.addAction(QString(tr("Use as reference frame")));
+		if (!indexValid)
+			makeReference->setEnabled(false);
+		QAction* copyAction = menu.addAction(QString(tr("Copy to clipboard")));
+		QAction* action = menu.exec(ui->tableView->mapToGlobal(pos));
+		if (!action)
+			return;
+		qDebug() << "Selected action: " << action;
 	}
 
 	void StackingDlg::onInitDialog()
@@ -357,6 +417,10 @@ namespace DSS
 
 		if (!fileList.empty())
 			openFileList(fileList);
+
+		QSettings settings;
+		ui->tableView->horizontalHeader()->restoreState(
+			settings.value("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState").toByteArray());
 		//
 		// Set up a QSortFilterProxyModel to allow sorting of the table view
 		// (it sits between the actual model and the view to provide sorting
@@ -385,6 +449,16 @@ namespace DSS
 		font = ui->tableView->horizontalHeader()->font();
 		font.setPointSize(font.pointSize() - 1);  font.setWeight(QFont::Medium);
 		ui->tableView->horizontalHeader()->setFont(font);
+		ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+		ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+		ui->tableView->setAlternatingRowColors(true);
+		ui->tableView->setTabKeyNavigation(true);
+		ui->tableView->horizontalHeader()->setSectionsMovable(true);
+		ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+		ui->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck row\n"
+			"Delete key to delete selected items\n"
+			"Right mouse button to display the menu"));
+
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)
@@ -421,7 +495,6 @@ namespace DSS
 		};
 
 	}
-
 
 	void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
 	{
