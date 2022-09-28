@@ -5,7 +5,6 @@
 #include <QCoreApplication>
 #include <QLocale>
 #include <QSettings>
-#include <QTranslator>
 
 /* ------------------------------------------------------------------- */
 
@@ -202,12 +201,8 @@ typedef enum tagDSSLANGUAGE
 void	SetUILanguage()
 {
 	DSSLANGUAGE			DSSLanguage = DSSL_DEFAULT;
-	QSettings			settings;
-	QTranslator			translator;
-	QLocale				locale;
+	QSettings settings;
 	QString				language;
-
-	//CDeepSkyStackerApp * theApp(GetDSSApp());
 
 	//
 	// Retrieve the Qt language name (e.g.) en_GB
@@ -220,15 +215,6 @@ void	SetUILanguage()
 	if (language == "")
 	{
 		language = QLocale::system().name();
-	}
-
-	QTranslator appTranslator;
-	//
-	// Install the language if it actually exists.
-	//
-	if (appTranslator.load("DSS." + language, ":/i18n/"))
-	{
-		QCoreApplication::instance()->installTranslator(&appTranslator);
 	}
 
 	//

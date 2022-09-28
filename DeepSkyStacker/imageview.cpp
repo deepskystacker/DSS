@@ -37,7 +37,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "dssimageview.h"
+#include "imageview.h"
 
 #include <QCursor>
 #include <QDebug>

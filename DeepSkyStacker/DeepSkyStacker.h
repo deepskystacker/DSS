@@ -102,7 +102,7 @@ public:
 
 	~DeepSkyStacker()
 	{
-	};
+	}
 
 	CDeepStack& deepStack()
 	{

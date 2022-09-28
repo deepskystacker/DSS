@@ -69,9 +69,6 @@
     <ClCompile Include="FileProperty.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="PictureListCtrl.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="ProgressDlg.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
@@ -318,13 +315,13 @@
     <ClCompile Include="QLinearGradientCtrl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="dssimageview.cpp">
+    <ClCompile Include="imageview.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="dsseditstars.cpp">
+    <ClCompile Include="editstars.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="dssselectrect.cpp">
+    <ClCompile Include="selectrect.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\WndImage.cpp">
@@ -378,7 +375,7 @@
     <ClCompile Include="ImageListModel.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="dssgroup.cpp">
+    <ClCompile Include="group.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="imageloader.cpp">
@@ -387,7 +384,7 @@
     <ClCompile Include="BackgroundLoading.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="dsstoolbar.cpp">
+    <ClCompile Include="toolbar.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
     <ClCompile Include="StackingDlg.cpp">
@@ -398,6 +395,9 @@
     </ClCompile>
     <ClCompile Include="qmfcapp.cpp">
       <Filter>Qt Porting</Filter>
+    </ClCompile>
+    <ClCompile Include="mrulist.cpp">
+      <Filter>Kernel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -470,9 +470,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FileProperty.h">
-      <Filter>Dialogs</Filter>
-    </ClInclude>
-    <ClInclude Include="PictureListCtrl.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
     <ClInclude Include="ProgressDlg.h">
@@ -778,7 +775,7 @@
     <ClInclude Include="mrupath.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="dssgroup.h">
+    <ClInclude Include="group.h">
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundLoading.h">
@@ -791,6 +788,9 @@
       <Filter>Qt Porting</Filter>
     </ClInclude>
     <ClInclude Include="SkyBackground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mrulist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1279,16 +1279,16 @@
     <QtMoc Include="QLinearGradientCtrl.h">
       <Filter>Tools</Filter>
     </QtMoc>
-    <QtMoc Include="dssimageview.h">
+    <QtMoc Include="imageview.h">
       <Filter>Kernel</Filter>
     </QtMoc>
-    <QtMoc Include="dsseditstars.h">
+    <QtMoc Include="editstars.h">
       <Filter>Kernel</Filter>
     </QtMoc>
-    <QtMoc Include="dssselectrect.h">
+    <QtMoc Include="selectrect.h">
       <Filter>Kernel</Filter>
     </QtMoc>
-    <QtMoc Include="dsstoolbar.h">
+    <QtMoc Include="toolbar.h">
       <Filter>Kernel</Filter>
     </QtMoc>
     <QtMoc Include="qwinhost.h">

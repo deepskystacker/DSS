@@ -12,9 +12,8 @@
 #include "DSSProgress.h"
 #include "RegisterEngine.h"
 
-#ifndef PI
-#define PI 3.141592654
-#endif
+#undef PI
+//constexpr double PI = 3.14159265358979323846;
 
 
 /* ------------------------------------------------------------------- */

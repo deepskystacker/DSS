@@ -1,5 +1,6 @@
 #include <stdafx.h>
 
+#include <QDebug>
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "RegisterEngine.h"
@@ -7,191 +8,6 @@
 #include <direct.h>
 #include <QSettings>
 #include "ZExcept.h"
-
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-
-void	CMRUList::readSettings()
-{
-	QSettings settings;
-	uint32_t count = 0;
-
-	m_vLists.clear();
-
-	QString keyName(baseKeyName);
-	keyName += "/NrMRU";
-
-	count = settings.value(keyName, 0).toUInt();
-
-	for (int i = 0; i < count; i++)
-	{
-		QString keyName = QString("%1/MRU%2")
-			.arg(baseKeyName).arg(i);
-
-		QString value = settings.value(keyName).toString();
-
-		m_vLists.emplace_back(value);
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CMRUList::saveSettings()
-{
-	QSettings	settings;
-
-	QString keyName(baseKeyName);
-
-	// Clear all the entries first
-	settings.remove(keyName);
-
-	keyName += "/NrMRU";
-	
-	settings.setValue(keyName, (uint)m_vLists.size());
-	for (int i = 0;i<m_vLists.size();i++)
-	{
-		QString keyName = QString("%1/MRU%2")
-			.arg(baseKeyName).arg(i);
-		QString value(m_vLists[i]);
-
-		settings.setValue(keyName, value);
-	};
-};
-
-
-/* ------------------------------------------------------------------- */
-
-void	CMRUList::Add(const QString& list)
-{
-	bool				bFound = false;
-	int index = -1;
-
-	for (int i = 0; i<m_vLists.size() && !bFound; i++)
-	{
-		if (!m_vLists[i].compare(list))
-		{
-			bFound = true;
-			index = i;
-			break;
-		};
-	};
-
-	std::vector<QString>::iterator	it;
-
-	if (bFound)
-	{
-		// remove from the position if it is not 0
-		if (index)
-		{
-			it = m_vLists.begin();
-			it+= index;
-			m_vLists.erase(it);
-			m_vLists.insert(m_vLists.begin(), list);
-		};
-	}
-	else
-		m_vLists.insert(m_vLists.begin(), list);
-
-	if (m_vLists.size()>m_lMaxLists)
-		m_vLists.resize(m_lMaxLists);
-};
-
-/* ------------------------------------------------------------------- */
-/* ------------------------------------------------------------------- */
-
-void CFrameList::SaveListToFile(LPCTSTR szFile)
-{
-	FILE *						hFile;
-
-	hFile = _tfopen(szFile, _T("wt"));
-	if (hFile)
-	{
-		CString		strBaseDirectory;
-		TCHAR		szDir[1 + _MAX_DIR];
-		TCHAR		szDrive[1 + _MAX_DRIVE];
-		TCHAR		szRelPath[1 + MAX_PATH];
-
-		_tsplitpath(szFile, szDrive, szDir, nullptr, nullptr);
-		strBaseDirectory = szDrive;
-		strBaseDirectory += szDir;
-
-		fprintf(hFile, "DSS file list\n");
-		fprintf(hFile, "CHECKED\tTYPE\tFILE\n");
-		uint16_t groupId = 0;
-
-		for (LONG i = 0;i<m_vFiles.size();i++)
-		{
-			LONG		lItem = i;
-			LONG		lChecked = 0;
-			CString		strType;
-
-			if (!m_vFiles[lItem].m_bRemoved)
-			{
-				if (groupId != m_vFiles[lItem].m_groupId)
-				{
-					groupId = m_vFiles[lItem].m_groupId;
-					fprintf(hFile, "#GROUPID#%hu\n", groupId);
-				};
-				lChecked = m_vFiles[lItem].m_bChecked;
-				if (m_vFiles[lItem].IsLightFrame())
-				{
-					if (m_vFiles[lItem].m_bUseAsStarting)
-						strType = "reflight";
-					else
-						strType = "light";
-				}
-				else if (m_vFiles[lItem].IsDarkFrame())
-					strType = "dark";
-				else if (m_vFiles[lItem].IsDarkFlatFrame())
-					strType = "darkflat";
-				else if (m_vFiles[lItem].IsOffsetFrame())
-					strType = "offset";
-				else if (m_vFiles[lItem].IsFlatFrame())
-					strType = "flat";
-
-				//
-				// Check if this file is on the same drive as the file-list file
-				// if not we can't use relative paths and will need to save the
-				// absolute path the the file-list
-				//
-				TCHAR		szItemDrive[1 + _MAX_DRIVE];
-				_tsplitpath(m_vFiles[lItem].filePath.c_str(), szItemDrive, nullptr, nullptr, nullptr);
-
-				if (!_tcscmp(szDrive, szItemDrive))
-				{
-					//
-					// Convert FileName to a relative path
-					//
-					PathRelativePathTo(szRelPath,
-						(LPCTSTR)strBaseDirectory,
-						FILE_ATTRIBUTE_DIRECTORY,
-						(LPCTSTR)(m_vFiles[lItem].filePath.c_str()),
-						FILE_ATTRIBUTE_NORMAL);
-
-					fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
-                        (LPCSTR)CT2CA(strType, CP_UTF8),
-                        (LPCSTR)CT2CA(szRelPath, CP_UTF8));
-				}
-				else
-				{
-					fprintf(hFile, "%ld\t%s\t%s\n", lChecked,
-						(LPCSTR)CT2CA(strType, CP_UTF8),
-						m_vFiles[lItem].filePath.generic_string().c_str());
-				}
-			};
-		};
-		
-		Workspace				workspace;
-
-		workspace.SaveToFile(hFile);
-		workspace.setDirty();
-		m_bDirty = false;
-
-		fclose(hFile);
-	};
-};
-
-/* ------------------------------------------------------------------- */
 
 static bool ParseLine(LPCTSTR szLine, std::int32_t & lChecked, CString & strType, CString & strFile)
 {
@@ -320,250 +136,6 @@ static bool	isChangeGroupLine(QString line, uint16_t& groupId, QString& groupNam
 
 /* ------------------------------------------------------------------- */
 
-void CFrameList::LoadFilesFromList(LPCTSTR szFileList)
-{
-	FILE *				hFile;
-	DWORD				groupId = 0;
-
-	SetCursor(::LoadCursor(nullptr, IDC_WAIT));
-	hFile = _tfopen(szFileList, _T("rt"));
-	if (hFile)
-	{
-		CHAR			szBuffer[2000];
-		CString			strValue;
-		bool			bContinue = false;
-
-		CString		strBaseDirectory;
-		TCHAR		szDir[1 + _MAX_DIR];
-		TCHAR		szDrive[1 + _MAX_DRIVE];
-		LPTSTR		szOldCWD;
-
-		//
-		// Extract the directory where the file list is stored.
-		_tsplitpath(szFileList, szDrive, szDir, nullptr, nullptr);
-		strBaseDirectory = szDrive;
-		strBaseDirectory += szDir;
-
-		//
-		// Remember current directory and switch to directory containing filelist
-		//
-		szOldCWD = _tgetcwd(nullptr, 0);
-		SetCurrentDirectory(strBaseDirectory);
-
-		// Read scan line
-		if (fgets(szBuffer, sizeof(szBuffer), hFile))
-		{
-			strValue = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer, CP_UTF8);
-			if (!strValue.CompareNoCase(_T("DSS file list\n")))
-				bContinue = true;
-		}
-
-		if (bContinue)
-		{
-			bContinue = false;
-			if (fgets(szBuffer, sizeof(szBuffer), hFile))
-			{
-				strValue = (LPCTSTR)CA2CTEX<sizeof(szBuffer)>(szBuffer, CP_UTF8);
-				if (!strValue.CompareNoCase(_T("CHECKED\tTYPE\tFILE\n")))
-					bContinue = true;
-			}
-		};
-
-		if (bContinue)
-		{
-			// Read the file info
-			Workspace			workspace;
-			CHAR				szLine[10000];
-
-			while (fgets(szLine, sizeof(szLine), hFile))
-			{
-				std::int32_t checkState(Qt::Unchecked);
-				CString			strType;
-				CString			strFile;
-				CString			strLine((LPCTSTR)CA2CTEX<sizeof(szLine)>(szLine, CP_UTF8));
-
-				bool			bUseAsStarting = false;
-
-				if (workspace.ReadFromString(strLine))
-				{
-				}
-				else if (IsChangeGroupLine(strLine, groupId))
-				{
-				}
-				else if (ParseLine(strLine, checkState, strType, strFile))
-				{
-					PICTURETYPE		Type = PICTURETYPE_UNKNOWN;
-
-					if (!strType.CompareNoCase(_T("light")))
-						Type = PICTURETYPE_LIGHTFRAME;
-					else if (!strType.CompareNoCase(_T("dark")))
-						Type = PICTURETYPE_DARKFRAME;
-					else if (!strType.CompareNoCase(_T("darkflat")))
-						Type = PICTURETYPE_DARKFLATFRAME;
-					else if (!strType.CompareNoCase(_T("flat")))
-						Type = PICTURETYPE_FLATFRAME;
-					else if (!strType.CompareNoCase(_T("offset")))
-						Type = PICTURETYPE_OFFSETFRAME;
-					else if (!strType.CompareNoCase(_T("reflight")))
-					{
-						Type = PICTURETYPE_REFLIGHTFRAME;
-						bUseAsStarting = true;
-					};
-
-					if (Type != PICTURETYPE_UNKNOWN)
-					{
-						int	length = 0;
-						TCHAR*	pszAbsoluteFile = nullptr;
-
-						//
-						// Convert relative path to absolute path.
-						//
-						length = GetFullPathName(static_cast<LPCTSTR>(strFile), 0L, nullptr, nullptr);
-						pszAbsoluteFile = new TCHAR[length];
-
-						length = GetFullPathName(static_cast<LPCTSTR>(strFile), length, pszAbsoluteFile, nullptr);
-						if (0 == length)
-                            ZTRACE_RUNTIME("GetFullPathName for %s failed", (LPCSTR)CT2CA(strFile, CP_UTF8));
-
-						// Check that the file exists
-						FILE *		hTemp;
-
-						hTemp = _tfopen(pszAbsoluteFile, _T("rb"));
-						if (hTemp)
-						{
-							fclose(hTemp);
-
-							ListBitMap			lb;
-
-							if (lb.InitFromFile(pszAbsoluteFile, Type))
-							{
-								lb.m_groupId = groupId;
-								if (!AddFile(pszAbsoluteFile, groupId, Type, (checkState == Qt::Checked)))
-								{
-									// Add to the list
-									lb.m_bChecked = static_cast<Qt::CheckState>(checkState);
-									if (lb.m_PictureType == PICTURETYPE_LIGHTFRAME)
-									{
-										lb.m_bUseAsStarting = bUseAsStarting;
-										CLightFrameInfo			bmpInfo;
-
-										bmpInfo.SetBitmap(pszAbsoluteFile, false);
-										if (bmpInfo.m_bInfoOk)
-										{
-											lb.m_bRegistered = true;
-											lb.m_fOverallQuality = bmpInfo.m_fOverallQuality;
-											lb.m_fFWHM			 = bmpInfo.m_fFWHM;
-											lb.m_lNrStars		 = static_cast<decltype(ListBitMap::m_lNrStars)>(bmpInfo.m_vStars.size());
-											lb.m_bComet			 = bmpInfo.m_bComet;
-											lb.m_SkyBackground	 = bmpInfo.m_SkyBackground;
-										}
-									};
-									m_vFiles.push_back(lb);
-								};
-							};
-						};
-						delete [] pszAbsoluteFile;
-					};
-				};
-			};
-
-			workspace.setDirty();
-		};
-
-
-		fclose(hFile);
-		if (nullptr != szOldCWD)
-		{
-			//
-			// Restore working directory to status quo ante
-			//
-			SetCurrentDirectory(szOldCWD);
-			free(szOldCWD);
-		}
-	};
-	m_bDirty = false;
-	SetCursor(::LoadCursor(nullptr, IDC_ARROW));
-};
-
-/* ------------------------------------------------------------------- */
-
-void CFrameList::FillTasks(CAllStackingTasks & tasks)
-{
-	int				lNrComets = 0;
-	bool				bReferenceFrameHasComet = false;
-	bool				bReferenceFrameSet = false;
-	double				fMaxScore = -1.0;
-
-
-	for (LONG i = 0;i<m_vFiles.size();i++)
-	{
-		if (!m_vFiles[i].m_bRemoved &&
-			m_vFiles[i].m_bChecked == Qt::Checked)
-		{
-			if (m_vFiles[i].m_bUseAsStarting)
-			{
-				bReferenceFrameSet = true;
-				bReferenceFrameHasComet = m_vFiles[i].m_bComet;
-			}
-			if (!bReferenceFrameSet && (m_vFiles[i].m_fOverallQuality > fMaxScore))
-			{
-				fMaxScore = m_vFiles[i].m_fOverallQuality;
-				bReferenceFrameHasComet = m_vFiles[i].m_bComet;
-			};
-			tasks.AddFileToTask(m_vFiles[i], m_vFiles[i].m_groupId);
-			if (m_vFiles[i].m_bComet)
-				lNrComets++;
-		};
-	};
-
-	if (lNrComets>1 && bReferenceFrameHasComet)
-		tasks.SetCometAvailable(true);
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CFrameList::GetReferenceFrame(CString & strReferenceFrame)
-{
-	// First search for a reference frame
-	bool				bResult = false;
-
-	for (int i = 0;i<m_vFiles.size() && !bResult;i++)
-	{
-		if (!m_vFiles[i].m_bRemoved &&
-			m_vFiles[i].IsLightFrame())
-		{
-			if (m_vFiles[i].m_bUseAsStarting)
-			{
-				bResult = true;
-				strReferenceFrame = m_vFiles[i].filePath.c_str();
-			};
-		};
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-int CFrameList::GetNrUnregisteredCheckedLightFrames(int lGroupID)
-{
-	int				lResult = 0;
-
-	for (int i = 0;i<m_vFiles.size();i++)
-	{
-		if (!m_vFiles[i].m_bRemoved &&
-			m_vFiles[i].IsLightFrame() &&
-			m_vFiles[i].m_bChecked == Qt::Checked &&
-			!m_vFiles[i].m_bRegistered)
-		{
-			if ((lGroupID < 0) || (lGroupID == m_vFiles[i].m_groupId))
-				lResult++;
-		};
-	};
-
-	return lResult;
-};
-
 #include <QMessageBox>
 namespace DSS
 {
@@ -590,7 +162,7 @@ namespace DSS
 		return result;
 	}
 
-	size_t FrameList::unregisteredCheckedLightFrameCount(int id) const
+	size_t FrameList::countUnregisteredCheckedLightFrames(int id) const
 	{
 		size_t result = 0;
 
@@ -605,8 +177,7 @@ namespace DSS
 				for (auto it = group.pictures.cbegin();
 					it != group.pictures.cend(); ++it)
 				{
-					if (!it->m_bRemoved &&
-						it->IsLightFrame() &&
+					if (it->IsLightFrame() &&
 						it->m_bChecked == Qt::Checked &&
 						!it->m_bRegistered)	++result;
 				};
@@ -633,8 +204,8 @@ namespace DSS
 					// Tell the table view which columns have been impacted
 					//
 					imageGroups[index].pictures.emitChanged(row, row,
-						static_cast<int>(ImageListModel::Column::dX),
-						static_cast<int>(ImageListModel::Column::Angle));
+						static_cast<int>(Column::dX),
+						static_cast<int>(Column::Angle));
 				}
 				++row;
 			}
@@ -643,8 +214,8 @@ namespace DSS
 		// Tell the table view which columns have been impacted
 		//
 		imageGroups[index].pictures.emitChanged(0, imageGroups[index].pictures.rowCount(),
-			static_cast<int>(ImageListModel::Column::dX),
-			static_cast<int>(ImageListModel::Column::Angle));
+			static_cast<int>(Column::dX),
+			static_cast<int>(Column::Angle));
 	};
 
 	void FrameList::clearOffset(fs::path file)
@@ -663,8 +234,8 @@ namespace DSS
 				//
 				if (index == group)
 					imageGroups[group].pictures.emitChanged(row, row,
-						static_cast<int>(ImageListModel::Column::dX),
-						static_cast<int>(ImageListModel::Column::Angle));
+						static_cast<int>(Column::dX),
+						static_cast<int>(Column::Angle));
 				return;
 			}
 			++row;
@@ -682,9 +253,9 @@ namespace DSS
 			if (file == it->filePath)
 			{
 				it->m_bDeltaComputed = true;
-				imageGroups[group].pictures.setData(row, ImageListModel::Column::dX, xOffset);
-				imageGroups[group].pictures.setData(row, ImageListModel::Column::dY, yOffset);
-				imageGroups[group].pictures.setData(row, ImageListModel::Column::Angle, angle);
+				imageGroups[group].pictures.setData(row, Column::dX, xOffset);
+				imageGroups[group].pictures.setData(row, Column::dY, yOffset);
+				imageGroups[group].pictures.setData(row, Column::Angle, angle);
 				it->m_Transformation = transform;
 				it->m_vVotedPairs = vVotedPairs;
 
@@ -700,7 +271,7 @@ namespace DSS
 		{
 			for (auto it = group.pictures.cbegin(); it != group.pictures.cend(); ++it)
 			{
-				if (!it->m_bRemoved && it->IsLightFrame() && 
+				if (it->IsLightFrame() && 
 					it->m_bChecked == Qt::Checked &&
 					it->m_bUseAsStarting
 					)
@@ -712,13 +283,32 @@ namespace DSS
 		return QString();
 	}
 	
+	bool FrameList::getReferenceFrame(CString& string)
+	{
+		bool result = false;
+		for (const auto& group : imageGroups)
+		{
+			for (auto it = group.pictures.cbegin(); it != group.pictures.cend(); ++it)
+			{
+				if (it->IsLightFrame() &&
+					it->m_bChecked == Qt::Checked &&
+					it->m_bUseAsStarting
+					)
+				{
+					string = it->filePath.generic_wstring().c_str();
+				}
+			}
+		}
+		return result;
+	}
+
 	QString FrameList::getFirstCheckedLightFrame()
 	{
 		for (const auto& group : imageGroups)
 		{
 			for (auto it = group.pictures.cbegin(); it != group.pictures.cend(); ++it)
 			{
-				if (!it->m_bRemoved && it->IsLightFrame() && it->m_bChecked == Qt::Checked)
+				if (it->IsLightFrame() && it->m_bChecked == Qt::Checked)
 				{
 					return QString::fromStdU16String(it->filePath.generic_u16string());
 				};
@@ -800,40 +390,37 @@ namespace DSS
 					long	checked{ 0 };
 					QString type;
 
-					if (!it->m_bRemoved)
+					if (groupId != it->m_groupId)
 					{
-						if (groupId != it->m_groupId)
-						{
-							groupId = it->m_groupId;
-							fprintf(hFile, "#GROUPID#%hu\t%s\n", groupId, g.name().toUtf8().constData());
-						};
-						checked = it->m_bChecked == Qt::Checked ? 1L : 0L;
-						if (it->IsLightFrame())
-						{
-							if (it->m_bUseAsStarting)
-								type = "reflight";
-							else
-								type = "light";
-						}
-						else if (it->IsDarkFrame())
-							type = "dark";
-						else if (it->IsDarkFlatFrame())
-							type = "darkflat";
-						else if (it->IsOffsetFrame())
-							type = "offset";
-						else if (it->IsFlatFrame())
-							type = "flat";
-
-						//
-						// Convert the path to the file to one that is relative to
-						// the directory containing the file list file of that's possible.
-						// If not just leave it as the absolute path.
-						//
-						fs::path path{ it->filePath.lexically_proximate(directory) };
-						fprintf(hFile, "%ld\t%s\t%s\n", checked,
-							type.toUtf8().constData(),
-							path.generic_string().c_str());
+						groupId = it->m_groupId;
+						fprintf(hFile, "#GROUPID#%hu\t%s\n", groupId, g.name().toUtf8().constData());
 					};
+					checked = it->m_bChecked == Qt::Checked ? 1L : 0L;
+					if (it->IsLightFrame())
+					{
+						if (it->m_bUseAsStarting)
+							type = "reflight";
+						else
+							type = "light";
+					}
+					else if (it->IsDarkFrame())
+						type = "dark";
+					else if (it->IsDarkFlatFrame())
+						type = "darkflat";
+					else if (it->IsOffsetFrame())
+						type = "offset";
+					else if (it->IsFlatFrame())
+						type = "flat";
+
+					//
+					// Convert the path to the file to one that is relative to
+					// the directory containing the file list file of that's possible.
+					// If not just leave it as the absolute path.
+					//
+					fs::path path{ it->filePath.lexically_proximate(directory) };
+					fprintf(hFile, "%ld\t%s\t%s\n", checked,
+						type.toUtf8().constData(),
+						path.generic_string().c_str());
 				}
 				g.setDirty(false);
 			};
@@ -1100,7 +687,7 @@ namespace DSS
 
 					//
 					// Update list information, but beware that you must use setData() for any of the columns
-					// that are defined in the DSS::ImageListModel::Column enumeration as they are used for the 
+					// that are defined in the Column enumeration as they are used for the 
 					// QTableView.   If this isn't done, the image list view won't get updated.
 					//
 					// The "Sky Background" (Column::BackgroundCol) is a special case it's a class, not a primitive, so the model 
@@ -1111,11 +698,11 @@ namespace DSS
 					if (bmpInfo.m_bInfoOk)
 					{
 						it->m_bRegistered = true;
-						imageGroups[group].pictures.setData(row, ImageListModel::Column::Score, bmpInfo.m_fOverallQuality);
-						imageGroups[group].pictures.setData(row, ImageListModel::Column::FWHM, bmpInfo.m_fFWHM);
-						imageGroups[group].pictures.setData(row, ImageListModel::Column::Stars, (int)bmpInfo.m_vStars.size());
+						imageGroups[group].pictures.setData(row, Column::Score, bmpInfo.m_fOverallQuality);
+						imageGroups[group].pictures.setData(row, Column::FWHM, bmpInfo.m_fFWHM);
+						imageGroups[group].pictures.setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
 						it->m_bComet = bmpInfo.m_bComet;
-						imageGroups[group].pictures.setData(row, ImageListModel::Column::Background, (uint32_t)bmpInfo.m_vStars.size());
+						imageGroups[group].pictures.setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
 						imageGroups[group].pictures.setSkyBackground(row, bmpInfo.m_SkyBackground);
 
 					}
@@ -1138,11 +725,8 @@ namespace DSS
 			for (int32_t index = 0; index < group.pictures.mydata.size(); ++index)
 			{
 				auto& file = group.pictures.mydata[index];
-				if (!file.m_bRemoved)
-				{
-					if (check) file.m_bChecked = Qt::Checked;
-					else file.m_bChecked = Qt::Unchecked;
-				}
+				if (check) file.m_bChecked = Qt::Checked;
+				else file.m_bChecked = Qt::Unchecked;
 			}
 			QModelIndex start{ group.pictures.createIndex(0, 0) };
 			QModelIndex end{ group.pictures.createIndex(group.pictures.rowCount(), 0) };
@@ -1160,7 +744,7 @@ namespace DSS
 			for (int32_t index = 0; index < group.pictures.mydata.size(); ++index)
 			{
 				auto& file = group.pictures.mydata[index];
-				if (!file.m_bRemoved && file.IsDarkFrame())
+				if (file.IsDarkFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
@@ -1184,7 +768,7 @@ namespace DSS
 			for (int32_t index = 0; index < group.pictures.mydata.size(); ++index)
 			{
 				auto& file = group.pictures.mydata[index];
-				if (!file.m_bRemoved && file.IsFlatFrame())
+				if (file.IsFlatFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
@@ -1209,7 +793,7 @@ namespace DSS
 			for (int32_t index = 0; index < group.pictures.mydata.size(); ++index)
 			{
 				auto& file = group.pictures.mydata[index];
-				if (!file.m_bRemoved && file.IsOffsetFrame())
+				if (file.IsOffsetFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
@@ -1234,7 +818,7 @@ namespace DSS
 			for (int32_t index = 0; index < group.pictures.mydata.size(); ++index)
 			{
 				auto& file = group.pictures.mydata[index];
-				if (!file.m_bRemoved && file.IsLightFrame())
+				if (file.IsLightFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
@@ -1256,7 +840,7 @@ namespace DSS
 			for (int32_t index = 0; index < group.pictures.mydata.size(); ++index)
 			{
 				auto& file = group.pictures.mydata[index];
-				if (image == file.m_strFile && !file.m_bRemoved && file.IsLightFrame())
+				if (image == file.m_strFile && file.IsLightFrame())
 				{
 					if (check) file.m_bChecked = Qt::Checked;
 					else file.m_bChecked = Qt::Unchecked;
@@ -1281,8 +865,7 @@ namespace DSS
 			for (int index = 0; index != group.pictures.mydata.size(); ++index)
 			{
 				auto& file = group.pictures.mydata[index];
-				if (!file.m_bRemoved
-					&& file.IsLightFrame())
+				if (file.IsLightFrame())
 				{
 					file.m_bChecked = 
 						(file.m_fOverallQuality >= threshold) ? Qt::Checked : Qt::Unchecked;
@@ -1299,6 +882,26 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
+	void FrameList::changePictureType(int nItem, PICTURETYPE PictureType)
+	{
+		qDebug() << "In " <<
+#ifdef __FUNCSIG__
+			__FUNCSIG__;
+#elif defined(__PRETTY_FUNCTION__)
+			__PRETTY_FUNCTION__;
+#else
+			__FUNCTION__;
+#endif			
+		//LONG			lIndice;  TODO
+		//CString			strFileName;
+
+		//strFileName = m_vFiles[mItem].m_strFileName;
+		//virtual bool addFile(fs::path file, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false, int nItem = -1)
+		//addFile(strFileName, m_dwCurrentGroupID, m_dwCurrentJobID, PictureType, FALSE, nItem);
+	};
+
+	/* ------------------------------------------------------------------- */
+
 	void FrameList::checkBest(double fPercent)
 	{
 		std::vector<ScoredLightFrame> lightFrames;
@@ -1308,7 +911,7 @@ namespace DSS
 			for (size_t i = 0; i != group.pictures.mydata.size(); ++i)
 			{
 				const auto& file = group.pictures.mydata[i];
-				if (!file.m_bRemoved && file.IsLightFrame())
+				if (file.IsLightFrame())
 					lightFrames.emplace_back(group.index(),
 						static_cast<decltype(ScoredLightFrame::index)>(i),
 						file.m_fOverallQuality);
@@ -1337,8 +940,4 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-
 }
-
-
-/* ------------------------------------------------------------------- */

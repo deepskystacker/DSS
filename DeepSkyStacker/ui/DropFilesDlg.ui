@@ -17,41 +17,41 @@
    <item>
     <widget class="QGroupBox" name="dropFiles">
      <property name="title">
-      <string comment="IDC_DROPFILESTEXT">Add %1 file(s) as</string>
+      <string notr="true"/>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QRadioButton" name="lightFrames">
         <property name="text">
-         <string comment="IDC_LIGHTFRAMES">Light Frames</string>
+         <string notr="true">Light Frames</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="darkFrames">
         <property name="text">
-         <string comment="IDC_DARKFRAMES">Dark Frames</string>
+         <string notr="true">Dark Frames</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="flatFrames">
         <property name="text">
-         <string comment="IDC_FLATFRAMES">Flat Frames</string>
+         <string notr="true">Flat Frames</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="darkFlatFrames">
         <property name="text">
-         <string comment="IDC_DARKFLATFRAMES">Dark Flat Frames</string>
+         <string notr="true">Dark Flat Frames</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QRadioButton" name="biasFrames">
         <property name="text">
-         <string comment="IDC_BIASFRAMES">Offset/Bias Frames</string>
+         <string notr="true">Offset/Bias Frames</string>
         </property>
        </widget>
       </item>

@@ -1,8 +1,12 @@
 #pragma once
 
 // CFileProperty dialog
-#include "PictureListCtrl.h"
 #include <unordered_map>
+
+namespace DSS
+{
+	class FrameList;
+}
 
 class CFileProperty : public CDialog
 {
@@ -19,7 +23,7 @@ private :
 	CEdit				m_Exposure;
 	CButton				m_OK;
 
-    CPictureListCtrl*   m_imageList;
+    DSS::FrameList*   m_imageList;
 	std::unordered_map<int, ListBitMap*> m_bitmaps;
 	bool				m_bChangeType;
 	bool				m_bChangeISOSpeed;
@@ -35,7 +39,7 @@ public:
         m_bitmaps[itemId] = bitmap;
 	};
 
-    void SetImageList(CPictureListCtrl* imagelist)
+    void SetImageList(DSS::FrameList* imagelist)
     {
         m_imageList = imagelist;
     }

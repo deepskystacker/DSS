@@ -49,7 +49,7 @@ using std::max;
 #include "dsscommon.h"
 #include "framelist.h"
 
-#include "dssgroup.h"
+#include "group.h"
 
 namespace DSS
 {
