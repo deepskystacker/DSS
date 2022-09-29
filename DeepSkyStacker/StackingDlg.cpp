@@ -376,7 +376,11 @@ namespace DSS
 			{
 				QTimeEdit* editor = new QTimeEdit(parent);
 				editor->setDisplayFormat("hh:mm:ss.zzz");
-				editor->installEventFilter(const_cast<ItemEditDelegate*>(this));
+				//
+				// Commented out as parent class already sets an eventFilter up!
+				//
+				// editor->installEventFilter(const_cast<ItemEditDelegate*>(this));
+				
 				return editor;
 			}
 		break;
