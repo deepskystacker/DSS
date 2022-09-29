@@ -322,8 +322,8 @@ namespace DSS
 		{
 			QTimeEdit* timeEdit{ dynamic_cast<QTimeEdit*>(watched) };
 			QShowEvent* showEvent{ static_cast<QShowEvent*>(event) };
-			Q_ASSERT(timeEdit);
-			if (!showEvent->spontaneous())
+			if (timeEdit)
+				if (!showEvent->spontaneous())
 			{
 				QTimer::singleShot(100,
 					[timeEdit]()
