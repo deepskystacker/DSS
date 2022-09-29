@@ -330,9 +330,12 @@ namespace DSS
 				{
 					timeEdit->setSelectedSection(QDateTimeEdit::MinuteSection);
 				});
-				return true;
 			}
 		}
+		//
+		// Always call the base class event filter (even though it currently 
+		// only handles stuff for TextEdit controls)
+		//
 		return Inherited::eventFilter(watched, event);
 	}
 
