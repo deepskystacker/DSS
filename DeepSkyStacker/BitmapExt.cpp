@@ -260,15 +260,38 @@ bool	CAllDepthBitmap::initQImage()
 {
 	ZFUNCTRACE_RUNTIME();
 	bool			bResult = false;
-	int64_t		i, j;
 	size_t			width = m_pBitmap->Width(), height = m_pBitmap->Height();
 	const int numberOfProcessors = CMultitask::GetNrProcessors();
 
 	m_Image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
 
+	struct thread_vars {
+		const CMemoryBitmap* source;
+		BitmapIteratorConst<const CMemoryBitmap*> pixelItSrc;
+		explicit thread_vars(const CMemoryBitmap* s) : source{ s }, pixelItSrc{ source }
+		{}
+		thread_vars(const thread_vars& rhs) : source{ rhs.source }, pixelItSrc{ rhs.source }
+		{}
+	};
+
+	//
+	//				**** W A R N I N G ***
+	// 
+	// Calling Qimage::bits() on a non-const QImage causes a
+	// deep copy of the image data on the assumption that it's
+	// about to be changed. That's fine
+	//
+	// Unfortunately QImage::scanLine does the same thing, which
+	// means that it's not safe to use it inside openmp loops, as
+	// the deep copy code isn't thread safe.
+	// 
+	// In any case making a deep copy of the image data for every
+	// row of the image data is hugely inefficient.
+	//
+
 	if (m_pBitmap->IsMonochrome() && m_pBitmap->IsCFA())
 	{
-		ZTRACE_RUNTIME("Slow Bitmap Copy to Qimage");
+		ZTRACE_RUNTIME("Slow Bitmap Copy to QImage");
 		// Slow Method
 
 		//
@@ -276,12 +299,15 @@ bool	CAllDepthBitmap::initQImage()
 		// need to cast to QRgb* (which is unsigned int*) from
 		// unsigned char * which is what QImage::bits() returns
 		//
-		QRgb* pOutPixel = reinterpret_cast<QRgb*>(m_Image->bits());
 
-//#pragma omp parallel for default(none) if(numberOfProcessors > 1)
-		for (j = 0; j < height; j++)
+		auto pImageData = m_Image->bits();
+		auto bytes_per_line = m_Image->bytesPerLine();
+
+#pragma omp parallel for schedule(guided) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
 		{
-			for (i = 0; i < width; i++)
+			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
+			for (int i = 0; i < width; i++)
 			{
 				double			fRed, fGreen, fBlue;
 				m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
@@ -290,28 +316,41 @@ bool	CAllDepthBitmap::initQImage()
 					std::clamp(fGreen, 0.0, 255.0),
 					std::clamp(fBlue, 0.0, 255.0));
 			}
-		};
+		}
 	}
 	else
 	{
 		ZTRACE_RUNTIME("Fast Bitmap Copy to QImage");
 		// Fast Method
 
-//#pragma omp parallel for default(none) if(numberOfProcessors > 1)
-		for (j = 0; j < height; j++)
+		//
+		// Point to the first RGB quad in the QImage which we
+		// need to cast to QRgb* (which is unsigned int*) from
+		// unsigned char * which is what QImage::bits() returns
+		//
+		// Note that calling Qimage::bits() on a non-const QImage
+		// causes a deep copy of the image data on the assumption
+		// it's about to be changed.
+		//
+		// QImage::scanLine does the same thing so can't use that 
+		// with openmp inside the for j loop!!  And in any case
+		// that is hugely inefficient
+		//
+
+		auto pImageData = m_Image->bits();
+		auto bytes_per_line = m_Image->bytesPerLine();
+		thread_vars threadVars(m_pBitmap.get());
+
+#pragma omp parallel for schedule(guided) firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
+		for (int j = 0; j < height; j++)
 		{
-			BitmapIteratorConst<std::shared_ptr<CMemoryBitmap>> it{ m_pBitmap };
-			it.Reset(0, j);
-			//
-			// Point to the first RGB quad in the scan line which we
-			// need to cast to QRgb* (which is unsigned int*) from
-			// unsigned char * which is what QImage::scanLine() returns
-			//
-			QRgb* pOutPixel = reinterpret_cast<QRgb*>(m_Image->scanLine(j));
-			for (i = 0; i < width; i++, ++it, ++pOutPixel)
+			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
+			threadVars.pixelItSrc.Reset(0, j);
+
+			for (int i = 0; i < width; i++, ++threadVars.pixelItSrc, ++pOutPixel)
 			{
 				double			fRed, fGreen, fBlue;
-				it.GetPixel(fRed, fGreen, fBlue);
+				threadVars.pixelItSrc.GetPixel(fRed, fGreen, fBlue);
 
 				*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
 					std::clamp(fGreen, 0.0, 255.0),
@@ -319,6 +358,7 @@ bool	CAllDepthBitmap::initQImage()
 			}
 		}
 	};
+
 	bResult = true;
 
 	return bResult;
