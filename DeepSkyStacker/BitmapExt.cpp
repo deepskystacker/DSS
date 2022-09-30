@@ -277,7 +277,7 @@ bool	CAllDepthBitmap::initQImage()
 	//
 	//				**** W A R N I N G ***
 	// 
-	// Calling Qimage::bits() on a non-const QImage causes a
+	// Calling QImage::bits() on a non-const QImage causes a
 	// deep copy of the image data on the assumption that it's
 	// about to be changed. That's fine
 	//
@@ -327,14 +327,6 @@ bool	CAllDepthBitmap::initQImage()
 		// Point to the first RGB quad in the QImage which we
 		// need to cast to QRgb* (which is unsigned int*) from
 		// unsigned char * which is what QImage::bits() returns
-		//
-		// Note that calling Qimage::bits() on a non-const QImage
-		// causes a deep copy of the image data on the assumption
-		// it's about to be changed.
-		//
-		// QImage::scanLine does the same thing so can't use that 
-		// with openmp inside the for j loop!!  And in any case
-		// that is hugely inefficient
 		//
 
 		auto pImageData = m_Image->bits();
