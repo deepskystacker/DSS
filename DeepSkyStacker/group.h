@@ -143,6 +143,11 @@ namespace DSS
 			pathToGroup.clear();
 		}
 
+		static void removeFromMap(fs::path file)
+		{
+			pathToGroup.erase(pathToGroup.find(file));
+		}
+
 	protected:
 		uint16_t Index;		// This group's number
 		//

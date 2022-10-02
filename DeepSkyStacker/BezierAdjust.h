@@ -1,11 +1,7 @@
 #ifndef _BEZIERADJUST_H__
 #define _BEZIERADJUST_H__
-
 /* ------------------------------------------------------------------- */
-
-#ifndef PI
-#define PI 3.141592654
-#endif
+#undef PI
 
 class CBezierCurvePoint
 {

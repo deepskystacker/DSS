@@ -3,8 +3,9 @@
 
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
-#include "PictureListCtrl.h"
+#include "FrameList.h"
 #include "FileProperty.h"
+
 
 constexpr int				MINISOSPEED = 25;
 constexpr int				MINEXPOSURE = 1;
@@ -274,7 +275,7 @@ void CFileProperty::ApplyChanges()
 		if (PictureType != PICTURETYPE_UNKNOWN)
 		{
             for (auto const& pair : m_bitmaps)
-                m_imageList->ChangePictureType(pair.first, PictureType);
+                m_imageList->changePictureType(pair.first, PictureType);
 		};
 	};
 

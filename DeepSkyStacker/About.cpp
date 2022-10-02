@@ -22,6 +22,8 @@ using std::max;
 #include "ui/ui_About.h"
 
 extern bool		g_bShowRefStars;
+extern QTranslator theAppTranslator;
+extern QTranslator theQtTranslator;
 
 #include "DeepSkyStacker.h"
 #include "DSSCommon.h"
@@ -262,20 +264,18 @@ void About::storeSettings()
     //
     // Install the language if it actually exists.
     //
-    QTranslator appTranslator;
-    if (appTranslator.load("DSS." + language, ":/i18n/"))
+    if (theAppTranslator.load("DSS." + language, ":/i18n/"))
     {
-        QCoreApplication::instance()->installTranslator(&appTranslator);
+        qApp->installTranslator(&theAppTranslator);
     }
 
 	//
 	// Install the system language ...
 	// 
-    QTranslator qtTranslator;
     QString translatorFileName = QLatin1String("qt_");
     translatorFileName += language;
-    if (qtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-        qApp->installTranslator(&qtTranslator);
+    if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        qApp->installTranslator(&theQtTranslator);
 
     settings.setValue("InternetCheck", m_InternetCheck);
 }

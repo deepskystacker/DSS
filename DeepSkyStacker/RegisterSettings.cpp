@@ -157,7 +157,7 @@ void RegisterSettings::onInitDialog()
 	{
 		QString firstLightFrame{ stackingDlg.getFirstCheckedLightFrame() };
 
-		forceRegister = !stackingDlg.unregisteredCheckedLightFrameCount();
+		forceRegister = !stackingDlg.countUnregisteredCheckedLightFrames();
 		noDarks = !stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME);
 		noFlats = !stackingDlg.checkedImageCount(PICTURETYPE_FLATFRAME);;
 		noOffsets = !stackingDlg.checkedImageCount(PICTURETYPE_OFFSETFRAME);;

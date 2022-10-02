@@ -225,7 +225,6 @@ typedef std::vector<CFrameInfo *>			PFRAMEINFOVECTOR;
 class ListBitMap : public CFrameInfo
 {
 public:
-	bool					m_bRemoved;
 	uint16_t				m_groupId;
 	bool					m_bUseAsStarting;
 	QString					m_strType;
@@ -256,7 +255,6 @@ protected:
 		CFrameInfo::CopyFrom(lb);
 
 		m_groupId = lb.m_groupId;
-		m_bRemoved = lb.m_bRemoved;
 		m_bUseAsStarting = lb.m_bUseAsStarting;
 		m_strType = lb.m_strType;
 		m_strPath = lb.m_strPath;
@@ -284,7 +282,6 @@ public:
 	ListBitMap()
 	{
 		m_groupId = 0;
-		m_bRemoved = false;
 		m_bUseAsStarting = false;
 		m_bRegistered = false;
 		m_bChecked = Qt::Unchecked;

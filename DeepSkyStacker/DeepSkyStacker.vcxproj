@@ -304,23 +304,23 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
-    <ClCompile Include="dsseditstars.cpp">
+    <ClCompile Include="editstars.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="dssgroup.cpp">
+    <ClCompile Include="group.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="dssimageview.cpp">
+    <ClCompile Include="imageview.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="dssselectrect.cpp">
+    <ClCompile Include="selectrect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="dsstoolbar.cpp" />
+    <ClCompile Include="toolbar.cpp" />
     <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
     <ClCompile Include="ExplorerBar.cpp">
@@ -359,6 +359,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="MasterFrames.cpp" />
     <ClCompile Include="MatchingStars.cpp" />
     <ClCompile Include="MedianFilterEngine.cpp" />
+    <ClCompile Include="mrulist.cpp" />
     <ClCompile Include="MultiBitmapProcess.cpp" />
     <ClCompile Include="Multitask.cpp" />
     <ClCompile Include="OutputTab.cpp">
@@ -366,7 +367,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PCLTools.cpp" />
-    <ClCompile Include="PictureListCtrl.cpp" />
     <ClCompile Include="PostCalibration.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -525,12 +525,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="DSS-winapifamily.h" />
     <ClInclude Include="DSS-winpackagefamily.h" />
     <ClInclude Include="DSSCommon.h" />
-    <QtMoc Include="dssimageview.h" />
-    <QtMoc Include="dsseditstars.h" />
+    <QtMoc Include="imageview.h" />
+    <QtMoc Include="editstars.h" />
     <ClInclude Include="DSSMemory.h" />
     <ClInclude Include="DSSProgress.h" />
-    <QtMoc Include="dssselectrect.h" />
-    <QtMoc Include="dsstoolbar.h" />
+    <QtMoc Include="selectrect.h" />
+    <QtMoc Include="toolbar.h" />
     <ClInclude Include="DSSTools.h" />
     <ClInclude Include="DSSVersion.h" />
     <ClInclude Include="EntropyInfo.h" />
@@ -542,7 +542,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="FrameInfo.h" />
     <ClInclude Include="FrameInfoSupport.h" />
     <ClInclude Include="FrameList.h" />
-    <ClInclude Include="dssgroup.h" />
+    <ClInclude Include="group.h" />
     <ClInclude Include="dss_settings.h" />
     <ClInclude Include="Histogram.h" />
     <QtMoc Include="IntermediateFiles.h" />
@@ -555,12 +555,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="MatchingStars.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="MedianFilterEngine.h" />
+    <ClInclude Include="mrulist.h" />
     <ClInclude Include="mrupath.h" />
     <ClInclude Include="MultiBitmapProcess.h" />
     <ClInclude Include="Multitask.h" />
     <QtMoc Include="OutputTab.h" />
     <ClInclude Include="PCLTools.h" />
-    <ClInclude Include="PictureListCtrl.h" />
     <ClInclude Include="PixelTransform.h" />
     <QtMoc Include="PostCalibration.h" />
     <ClInclude Include="ProcessingDlg.h" />

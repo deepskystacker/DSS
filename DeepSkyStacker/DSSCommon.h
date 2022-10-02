@@ -1,6 +1,8 @@
 #ifndef __DSSCOMMON_H__
 #define __DSSCOMMON_H__
 
+constexpr auto PI = 3.14159265358979323846;
+
 #define REGENTRY_BASEKEY_LIVE_POSITION					_T("Software\\DeepSkyStacker\\DeepSkyStackerLive\\Position")
 
 constexpr unsigned int	STARMAXSIZE = 50;
@@ -118,6 +120,13 @@ typedef enum FITSFORMAT
 	FF_32BITGRAYFLOAT	= 8
 }FITSFORMAT;
 
+enum class Column
+{
+	Path = 0, File, Type, Filter, Score,
+	dX, dY, Angle, FileTime, Size, CFA, Depth,
+	Info, ISO, Exposure, Aperture, FWHM, Stars,
+	Background, MAX_COLS
+};
 // TODO: reference additional headers your program requires here
 
 #pragma warning( disable : 4244 )

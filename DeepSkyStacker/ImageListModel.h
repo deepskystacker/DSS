@@ -35,7 +35,7 @@
 **
 ****************************************************************************/
 #include <mutex>
-#include <vector>
+#include <deque>
 #include <QObject>
 #include <QAbstractTableModel>
 #include <QIcon>
@@ -55,52 +55,59 @@ namespace DSS
             Inherited;
 
         friend class FrameList;
+        friend class StackingDlg;
 
         static inline std::mutex mutex {};
         static inline std::vector<QIcon> icons {};
 
-        std::vector<ListBitMap> mydata;
+        //
+        // Change to use a deque instead of a vector as it offers O(n) insertion 
+        // and deletion of elements unlike vector.  Cost is a somewhat higher 
+        // cost in terms of storage.
+        //
+        std::deque<ListBitMap> mydata;
 
     public:
-        enum class Column
-        {
-            Path = 0, File, Type, Filter, Score,
-            dX, dY, Angle, FileTime, Size, CFA, Depth,
-            Info, ISO, Exposure, Aperture, FWHM, Stars,
-            Background, MAX_COLS
-        };
-
-
         using Inherited::beginInsertRows;
         using Inherited::endInsertRows;
 
-        typedef std::vector<ListBitMap>::const_iterator const_iterator;
-        typedef std::vector<ListBitMap>::iterator iterator;
+        typedef std::deque<ListBitMap>::const_iterator const_iterator;
+        typedef std::deque<ListBitMap>::iterator iterator;
 
         explicit ImageListModel(QObject* parent = nullptr);
  
-        int rowCount(const QModelIndex& parent = QModelIndex()) const override
+        inline int rowCount(const QModelIndex& parent = QModelIndex()) const override
         {
             // Return number of images we know about
             return static_cast<int>(mydata.size());
         };
 
-        int columnCount(const QModelIndex& parent = QModelIndex()) const override
+        inline int columnCount(const QModelIndex& parent = QModelIndex()) const override
         {
             // Pretty simple really
             return static_cast<int>(Column::MAX_COLS);
         };
 
 
-        Qt::ItemFlags flags(const QModelIndex& index) const override
+        inline Qt::ItemFlags flags(const QModelIndex& index) const override
         {
             auto flags = Inherited::flags(index);
-            if (0 == index.column()) flags |= (Qt::ItemIsUserCheckable);
+            switch (Column(index.column()))
+            {
+            case Column::Path:
+                flags |= (Qt::ItemIsUserCheckable);
+                break;
+            case Column::Type:
+            case Column::ISO:
+            case Column::Exposure:
+                flags |= (Qt::ItemIsEditable);
+                break;
+            }
             return flags;
         }
 
-        virtual QVariant data(const QModelIndex& index, int role) const;
-        virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+        QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
+        QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
         virtual bool setData(const QModelIndex& index, const QVariant& value, int role);
         bool setData(const int row, const Column column, const QVariant& value, int role = Qt::EditRole);
@@ -111,9 +118,7 @@ namespace DSS
         // endInsertRows() must be called.
         void addImage(ListBitMap image);
 
-        void removeImage(int row);
-        // bool setData(const QModelIndex& index, const QVariant& value, int role);
-        // Qt::ItemFlags flags(const QModelIndex& index) const;
+        bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
         const_iterator cbegin()const { return mydata.begin(); }
         const_iterator cend()const { return mydata.end(); }
         iterator begin() { return mydata.begin(); }
@@ -198,51 +203,7 @@ namespace DSS
 
         private:
 
-        inline QString exposureToString(double fExposure) const
-        {
-            QString strText;
-
-            if (fExposure)
-            {
-                qint64			exposure;
-
-                if (fExposure >= 1)
-                {
-                    exposure = fExposure;
-                    qint64			remainingTime = exposure;
-                    qint64			hours, mins, secs;
-
-                    hours = remainingTime / 3600;
-                    remainingTime -= hours * 3600;
-                    mins = remainingTime / 60;
-                    remainingTime -= mins * 60;
-                    secs = remainingTime;
-
-                    if (hours)
-                        strText = QString(QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s ", "IDS_EXPOSURETIME3"))
-                        .arg(hours)
-                        .arg(mins)
-                        .arg(secs);
-                    else if (mins)
-                        strText = QString(QCoreApplication::translate("StackRecap", "%1 mn %2 s ", "IDS_EXPOSURETIME2"))
-                        .arg(mins)
-                        .arg(secs);
-                    else
-                        strText = QString(QCoreApplication::translate("StackRecap", "%1 s ", "IDS_EXPOSURETIME1"))
-                        .arg(secs);
-                }
-                else
-                {
-                    exposure = 1.0 / fExposure + 0.5;
-                    strText = QString(QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF"))
-                        .arg(exposure);
-                };
-            }
-            else
-                strText = "-";
-
-            return strText;
-        }
+        QString exposureToString(double exposure) const;
 
         inline QString isoToString(int lISOSpeed) const
         {

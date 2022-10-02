@@ -38,10 +38,11 @@
 #include <QMenu>
 #include <QMouseEvent>
 
+#include "FrameList.h"
 #include "StackingDlg.h"
-#include "dsseditstars.h"
-#include "dssselectrect.h"
-#include "dsstoolbar.h"
+#include "editstars.h"
+#include "selectrect.h"
+#include "toolbar.h"
 #include "SaveEditChanges.h"
 
 #include "ZTrace.h"

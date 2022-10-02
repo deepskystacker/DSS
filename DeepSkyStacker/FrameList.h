@@ -1,5 +1,4 @@
-#ifndef __FRAMELIST_H__
-#define __FRAMELIST_H__
+#pragma once
 
 #include <QModelIndex>
 #include <QString>
@@ -11,111 +10,7 @@
 
 #include "StackingTasks.h"
 #include "RegisterEngine.h"
-#include "dssgroup.h"
-
-/* ------------------------------------------------------------------- */
-
-class CMRUList
-{
-public :
-	QString					baseKeyName;
-	std::vector<QString>	m_vLists;
-	int					m_lMaxLists;
-
-private :
-	void	CopyFrom(const CMRUList & ml)
-	{
-		m_vLists		= ml.m_vLists;
-		m_lMaxLists		= ml.m_lMaxLists;
-	};
-
-public :
-	CMRUList(char * baseKey = nullptr)
-	{
-		if (baseKey)
-			baseKeyName = baseKey;
-		else
-			baseKeyName = "FileLists";
-		m_lMaxLists = 10;
-	};
-
-	void setBasePath(const QString& baseKey)
-	{
-		baseKeyName = baseKey;
-	};
-
-	CMRUList(const CMRUList& ml)
-	{
-		CopyFrom(ml);
-	};
-
-	~CMRUList() {};
-
-	CMRUList& operator = (const CMRUList& ml)
-	{
-		CopyFrom(ml);
-		return (*this);
-	};
-
-	void	readSettings();
-	void	saveSettings();
-
-	void	Add(const QString& list);
-	inline void	Add(LPCTSTR szList)
-	{
-		QString list = QString::fromWCharArray(szList);
-	}
-};
-
-/* ------------------------------------------------------------------- */
-
-
-class CFrameList
-{
-public :
-	LISTBITMAPVECTOR	m_vFiles;
-	bool				m_bDirty;
-	std::uint16_t		m_groupId;
-
-public :
-	CFrameList() :
-		m_bDirty(false),
-		m_groupId(0)
-	{
-	};
-
-	virtual ~CFrameList()
-	{
-	};
-
-	std::uint16_t	currentGroupId()
-	{
-		return m_groupId;
-	}
-
-	void	SaveListToFile(LPCTSTR szFile);
-	void	LoadFilesFromList(LPCTSTR szFileList);
-
-	bool	AddFile(LPCTSTR szFile, uint16_t groupId = 0, PICTURETYPE PictureType = PICTURETYPE_LIGHTFRAME, bool bCheck = false)
-	{
-		//AddFileToList(szFile, groupId, PictureType, bCheck);
-		return true;
-	};
-
-	void	FillTasks(CAllStackingTasks & tasks);
-	bool	GetReferenceFrame(CString & strReferenceFrame);
-	int	GetNrUnregisteredCheckedLightFrames(int lGroupID = -1);
-
-	bool	IsDirty(bool bReset = false)
-	{
-		bool			bResult = m_bDirty;
-
-		if (bReset)
-			m_bDirty = false;
-
-		return bResult;
-	};
-};
+#include "group.h"
 
 namespace DSS
 {
@@ -138,6 +33,8 @@ namespace DSS
 		{
 		};
 
+		void changePictureType(int nItem, PICTURETYPE PictureType);
+
 		void checkAbove(double threshold);
 
 		void checkBest(double fPercent);
@@ -154,7 +51,14 @@ namespace DSS
 
 		void checkImage(const QString& image, bool check);
 
-
+		ListBitMap* getListBitMap(int row)
+		{
+			//
+			// return address of the relevant ListBitMap in the current
+			// group
+			//
+			return &imageGroups[index].pictures.mydata[row];
+		}
 
 		//
 		// Remove everything from all groups, and clear the mapping from path to group number
@@ -186,7 +90,7 @@ namespace DSS
 		}
 		size_t checkedImageCount(const PICTURETYPE type, const int16_t id = -1) const;
 
-		size_t unregisteredCheckedLightFrameCount(int id = -1) const;
+		size_t countUnregisteredCheckedLightFrames(int id = -1) const;
 
 		void fillTasks(CAllStackingTasks& tasks);
 
@@ -235,6 +139,7 @@ namespace DSS
 		void updateCheckedItemScores();
 
 		QString getReferenceFrame();
+		bool getReferenceFrame(CString& string);
 
 		void clearOffsets();
 
@@ -268,9 +173,10 @@ namespace DSS
 			return &(imageGroups[index].pictures);
 		}
 
+		inline void removeFromMap(fs::path file)
+		{
+			Group::removeFromMap(file);
+		};
+
 	};
 }
-
-/* ------------------------------------------------------------------- */
-
-#endif // __FRAMELIST_H__

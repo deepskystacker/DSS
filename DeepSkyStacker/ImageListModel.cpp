@@ -68,6 +68,7 @@ using std::max;
 #include "Ztrace.h"
 
 #include <Qt>
+#include <QTime>
 
 #include "FrameList.h"
 #include "ImageListModel.h"
@@ -213,7 +214,10 @@ namespace DSS
                     return QString("0");
                 break;
             case Column::Exposure:
-                return exposureToString(file.m_fExposure);
+                if (Qt::DisplayRole == role)
+                    return exposureToString(file.m_fExposure);
+                else
+                    return file.m_fExposure;    // For edit role, just return the number
                 break;
             case Column::Aperture:
                 return QString("%1").arg(file.m_fAperture, 0, 'f', 1);
@@ -278,6 +282,29 @@ namespace DSS
 
         }
 
+        if (Qt::ToolTipRole == role)
+            switch (static_cast<Column>(index.column()))
+            {
+            case Column::Type:
+                return QString(tr("Double click to change the type"));
+                break;
+            case Column::ISO:
+            case Column::Exposure:
+                return QString(tr("Double click to edit"));
+                break;
+            }
+
+        if (Qt::BackgroundRole == role)
+            switch (static_cast<Column>(index.column()))
+            {
+            case Column::Type:
+                return QString(tr("Double click to change the type"));
+                break;
+            case Column::ISO:
+            case Column::Exposure:
+                return QString(tr("Double click to edit"));
+                break;
+            }
         return QVariant();
             
     }
@@ -359,7 +386,36 @@ namespace DSS
                     file.m_strFile = value.toString();
                     break;
                 case Column::Type:
-                    file.m_strType = value.toString();
+                    {
+                        int index = value.toInt();
+                        switch (index)
+                        {
+                        case 0:
+                            file.m_strType = QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT");
+                            file.m_PictureType = PICTURETYPE_LIGHTFRAME;
+                            break;
+                        case 1:
+                            file.m_strType = QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK");
+                            file.m_PictureType = PICTURETYPE_DARKFRAME;
+                            file.m_bUseAsStarting = false;
+                            break;
+                        case 2:
+                            file.m_strType = QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT");
+                            file.m_PictureType = PICTURETYPE_FLATFRAME;
+                            file.m_bUseAsStarting = false;
+                            break;
+                        case 3:
+                            file.m_strType = QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT");
+                            file.m_PictureType = PICTURETYPE_DARKFLATFRAME;
+                            file.m_bUseAsStarting = false;
+                            break;
+                        case 4:
+                            file.m_strType = QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+                            file.m_PictureType = PICTURETYPE_OFFSETFRAME;
+                            file.m_bUseAsStarting = false;
+                            break;
+                        }
+                    }
                     break;
                 case Column::Filter:
                     file.m_filterName = value.toString();
@@ -376,9 +432,18 @@ namespace DSS
                 case Column::Angle:
                     file.m_fAngle = value.toDouble();
                     break;
-                // case Column::ISO: 
-                // case Column::Exposure:
-                // case Column::Aperture:
+                case Column::ISO: 
+                    if (file.m_lISOSpeed)
+                        file.m_lISOSpeed = value.toInt();
+                    else if (file.m_lGain >= 0)
+                        file.m_lGain = value.toInt();
+                    break;
+                case Column::Exposure:
+                    file.m_fExposure = value.toDouble();
+                    break;
+                case Column::Aperture:
+                    file.m_fAperture = value.toDouble();
+                    break;
                 case Column::FWHM:
                     file.m_fFWHM = value.toDouble();
                     break;
@@ -430,13 +495,20 @@ namespace DSS
     }
 
     //
-    // Remove a row from the model.  Before making calls to do so, Qt requires
-    // that beginRemoveRows() is called, and on completion of current batch of
-    // deletions, then endRemoveRows() must be called.
+    // Remove rows from the model.  Before making calls to removeRows in the
+    // base class to do so, Qt requires that beginRemoveRows() is called,
+    // and after removal, endRemoveRows() must be called.
     //
-    void ImageListModel::removeImage(int row)
+    bool ImageListModel::removeRows(int row, int count, const QModelIndex& parent)
     {
-        mydata.erase(std::next(mydata.begin(), row));
+        //
+        // Remove the rows from our backing data and then call
+        // base class removeRows()
+        //
+        auto first{ std::next(mydata.begin(), row) };
+        auto last{ first + count};
+        mydata.erase(first, last);
+        return Inherited::removeRows(row, count, parent);
     }
 
     //
@@ -483,4 +555,49 @@ namespace DSS
         }
         return ImageListModel::icons[index];
     }
+
+    QString ImageListModel::exposureToString(double exposure) const
+    {
+        QString strText;
+
+        if (exposure)
+        {
+            if (exposure > 66399.999) exposure = 86399.999;		// 24 hours less 1 ms
+            double msecs = exposure * 1000.0;
+            QTime time{ QTime(0, 0) };
+            time = time.addMSecs(msecs);
+            if (exposure >= 1.0)
+            {
+                int hours{ time.hour() };
+                int mins{ time.minute() };
+                QString secs{ time.toString("s.z") };
+
+
+                if (hours)
+                    strText = QString(QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s ", "IDS_EXPOSURETIME3"))
+                    .arg(hours)
+                    .arg(mins)
+                    .arg(secs);
+                else if (mins)
+                    strText = QString(QCoreApplication::translate("StackRecap", "%1 mn %2 s ", "IDS_EXPOSURETIME2"))
+                    .arg(mins)
+                    .arg(secs);
+                else
+                    strText = QString(QCoreApplication::translate("StackRecap", "%1 s ", "IDS_EXPOSURETIME1"))
+                    .arg(secs);
+            }
+            else
+            {
+                exposure = 1.0 / exposure;
+                strText = QString(QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF"))
+                    .arg(exposure);
+            };
+        }
+        else
+            strText = "-";
+
+        return strText;
+    }
+
+
 }

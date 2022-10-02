@@ -41,7 +41,6 @@
 #include <CtrlCache.h>
 #include <WndImage.h>
 #include <BtnST.h>
-#include "PictureListCtrl.h"
 #include "Label.h"
 #include "StackingTasks.h"
 #include "DeepStack.h"
@@ -49,6 +48,8 @@
 #include <CustomTabCtrl.h>
 #include "StackingEngine.h"
 #include "imageloader.h"
+#include "FrameList.h"
+#include "mrulist.h"
 
 #include "GradientCtrl.h"
 #include "SplitterControl.h"
@@ -60,6 +61,7 @@ class QNetworkReply;
 
 #include <QDialog>
 #include <QFileDialog>
+#include <QMenu>
 #include <QStyledItemDelegate>
 
 namespace DSS
@@ -112,6 +114,32 @@ namespace DSS
 
 	};
 
+	class ItemEditDelegate :
+		public QStyledItemDelegate
+	{
+		typedef QStyledItemDelegate
+			Inherited;
+
+		Q_OBJECT
+
+	public:
+		using QStyledItemDelegate::QStyledItemDelegate;
+
+		bool eventFilter(QObject* watched, QEvent* event) override;
+
+		QWidget* createEditor(QWidget* parent,
+			const QStyleOptionViewItem& option,
+			const QModelIndex& index) const override;
+
+		void setEditorData(QWidget* editor,
+			const QModelIndex& index) const override;
+
+		void setModelData(QWidget* editor,
+			QAbstractItemModel* model,
+			const QModelIndex& index) const override;
+
+	};
+
 
 	class StackingDlg : public QWidget
 	{
@@ -122,17 +150,20 @@ namespace DSS
 
 	public slots:
 		void setSelectionRect(QRectF rect);
-		void tableViewItemClickedEvent(const QModelIndex&);
 		void imageLoad();
 		
 		void toolBar_rectButtonPressed(bool checked);
 		void toolBar_starsButtonPressed(bool checked);
 		void toolBar_cometButtonPressed(bool checked);
 		void toolBar_saveButtonPressed(bool checked);
+		void on_tableView_customContextMenuRequested(const QPoint& pos);
+		void tableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr);
 		~StackingDlg();
+
+		bool eventFilter(QObject* watched, QEvent* event) override;
 
 		void dropFiles(QDropEvent* e);
 
@@ -163,6 +194,8 @@ namespace DSS
 
 		void computeOffsets();
 
+		void copyToClipboard();
+
 		void registerCheckedImages();
 
 		void stackCheckedImages();
@@ -184,15 +217,18 @@ namespace DSS
 			return frameList.getFirstCheckedLightFrame();
 		}
 
-		inline size_t unregisteredCheckedLightFrameCount(int id = -1) const
+		inline size_t countUnregisteredCheckedLightFrames(int id = -1) const
 		{
-			return frameList.unregisteredCheckedLightFrameCount(id);
+			return frameList.countUnregisteredCheckedLightFrames(id);
 		}
 
 		void reloadCurrentImage();
 
 		void pictureChanged();
 
+	protected:
+		bool event(QEvent* event) override;
+		void showEvent(QShowEvent* event) override;
 
 	private:
 		Ui::StackingDlg* ui;
@@ -202,9 +238,11 @@ namespace DSS
 		CGammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
 		FrameList		frameList;
-		CMRUList		m_MRUList;
+		MRUList		    m_MRUList;
 		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
+		std::unique_ptr<ItemEditDelegate> itemEditDelegate;
 		std::unique_ptr<QSortFilterProxyModel> proxyModel;
+		uint m_tipShowCount;
 
 
 
@@ -224,9 +262,24 @@ namespace DSS
 		ImageLoader		imageLoader;
 		LoadedImage		m_LoadedImage;
 
-		void checkAskRegister();
+		//
+		// Popup menu for tableview
+		//
+		QMenu menu;
+		QAction* markAsReference;
+		QAction* check;
+		QAction* uncheck;
+		QAction* toLight;
+		QAction* toDark;
+		QAction* toDarkFlat;
+		QAction* toFlat;
+		QAction* toOffset;
+		QAction* remove;
+		QAction* properties;
+		QAction* copy;
+		QAction* erase;
 
-		void showEvent(QShowEvent* event) override;
+		void checkAskRegister();
 
 		void onInitDialog();
 
@@ -257,9 +310,9 @@ namespace DSS
 
 		void updateListInfo();
 
-		void loadList(CMRUList& MRUList, QString& strFileList);
+		void loadList(MRUList& MRUList, QString& strFileList);
 
-		void saveList(CMRUList& MRUList, QString& strFileList);
+		void saveList(MRUList& MRUList, QString& strFileList);
 
 	};
 }

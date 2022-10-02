@@ -40,6 +40,8 @@
 
 #include <chrono>
 #include <QAction>
+#include <QClipboard>
+#include <QComboBox>
 #include <QDebug>
 #include <QMenu>
 #include <QMessageBox>
@@ -54,6 +56,10 @@
 #include <QStyledItemDelegate>
 #include <QStyleOptionViewItem>
 #include <QStyleOptionButton>
+#include <QTableWidgetItem>
+#include <QTimeEdit>
+#include <QTimer>
+#include <QToolTip>
 #include <QUrl>
 
 #include <filesystem>
@@ -65,6 +71,7 @@
 #include "StackingDlg.h"
 #include "ProcessingDlg.h"
 #include "DeepStack.h"
+#include "FileProperty.h"
 #include "FrameInfoSupport.h"
 #include "ProgressDlg.h"
 #include "CheckAbove.h"
@@ -79,13 +86,12 @@
 #include "AskRegistering.h"
 #include "BatchStacking.h"
 #include "DSSVersion.h"
-#include "dssgroup.h"
-#include "dsseditstars.h"
-#include "dssselectrect.h"
-#include "dsstoolbar.h"
+#include "group.h"
+#include "editstars.h"
+#include "selectrect.h"
+#include "toolbar.h"
 #include "ui/ui_StackingDlg.h"
 #include "avx_support.h"
-
 
 #include <ZExcept.h>
 
@@ -125,6 +131,15 @@ namespace
 	}
 }
 
+enum class Menuitem
+{
+	markAsReference,
+	check,
+	uncheck,
+	remove,
+	copy,
+	erase
+};
 namespace DSS
 {
 	constexpr	DWORD					IDC_EDIT_SELECT = 1;
@@ -301,19 +316,186 @@ namespace DSS
 		painter->restore();
 	}
 
+	bool ItemEditDelegate::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (QEvent::Show == event->type())
+		{
+			QTimeEdit* timeEdit{ dynamic_cast<QTimeEdit*>(watched) };
+			QShowEvent* showEvent{ static_cast<QShowEvent*>(event) };
+			if (timeEdit)
+				if (!showEvent->spontaneous())
+			{
+				QTimer::singleShot(100,
+					[timeEdit]()
+				{
+					timeEdit->setSelectedSection(QDateTimeEdit::MinuteSection);
+				});
+			}
+		}
+		//
+		// Always call the base class event filter (even though it currently 
+		// only handles stuff for TextEdit controls)
+		//
+		return Inherited::eventFilter(watched, event);
+	}
+
+	QWidget* ItemEditDelegate::createEditor(QWidget* parent,
+		const QStyleOptionViewItem& option,
+		const QModelIndex& index) const
+	{
+		static QStringList types;
+		if (types.isEmpty())
+			types << 
+				QCoreApplication::translate("DSS::Group", "Light", "IDS_TYPE_LIGHT") <<
+				QCoreApplication::translate("DSS::Group", "Dark", "IDS_TYPE_DARK") <<
+				QCoreApplication::translate("DSS::Group", "Flat", "IDS_TYPE_FLAT") <<
+				QCoreApplication::translate("DSS::Group", "Dark Flat", "IDS_TYPE_DARKFLAT") <<
+				QCoreApplication::translate("DSS::Group", "Bias/Offset", "IDS_TYPE_OFFSET");
+		static QStringList isos;
+		if (isos.isEmpty())
+			isos << "100" << "125" << "160" << "200" << "250" << "320" << "400" <<
+				"500" << "640" << "800" << "1000" << "1250" << "1600" << "3200" <<
+				"6400" << "12800";
+
+		switch (static_cast<Column>(index.column()))
+		{
+		case Column::Type:
+			{
+				QComboBox* editor = new QComboBox(parent);
+				editor->addItems(types);
+				return editor;
+			}
+			break;
+		case Column::ISO:
+			{
+				QComboBox* editor = new QComboBox(parent);
+				editor->addItems(isos);
+				editor->setEditable(true);
+				editor->setValidator(new QIntValidator(1, 256000, parent));
+				return editor;
+			}
+			break;
+		case Column::Exposure:
+			{
+				QTimeEdit* editor = new QTimeEdit(parent);
+				editor->setDisplayFormat("hh:mm:ss.zzz");
+				//
+				// Commented out as parent class already sets an eventFilter up!
+				//
+				// editor->installEventFilter(const_cast<ItemEditDelegate*>(this));
+				
+				return editor;
+			}
+		break;
+		}
+		//
+		// Not one we want to handle so return the default
+		//
+		return Inherited::createEditor(parent, option, index);
+	}
+
+	void ItemEditDelegate::setEditorData(QWidget* editor,
+		const QModelIndex& index) const
+	{
+		QComboBox* combo{ nullptr };
+		QTimeEdit* timeEdit{ nullptr };
+
+		switch (static_cast<Column>(index.column()))
+		{
+		case Column::Type:
+			{
+				QString type{ index.model()->data(index).toString() };
+				combo = qobject_cast<QComboBox*>(editor);
+				Q_ASSERT(combo);
+				combo->setCurrentIndex(combo->findText(type));
+			}
+			break;
+		case Column::ISO:
+			{
+				QString value{ index.model()->data(index, Qt::EditRole).toString() };
+				combo = qobject_cast<QComboBox*>(editor);
+				Q_ASSERT(combo);
+				if (int index = combo->findText(value))
+					combo->setCurrentIndex(index);
+				else
+					combo->setCurrentText(value);
+			}
+			break;
+
+		case Column::Exposure:
+			{
+				double secs{ index.model()->data(index, Qt::EditRole).toDouble() };
+				if (secs > 66399.999) secs = 86399.999;		// 24 hours less 1 ms
+				double msecs = secs * 1000.0;
+				timeEdit = qobject_cast<QTimeEdit*>(editor);
+				Q_ASSERT(timeEdit);
+				QTime time{ QTime(0, 0) };
+				time = time.addMSecs(msecs);
+				timeEdit->setTime(time);
+				//
+				// timeEdit->setSelectedSection(QDateTimeEdit::MinuteSection);
+				// didn't work when invoked here, so set a singleshot timer in
+				// the eventFilter (above) to do it after 100 ms
+				//
+			}
+			break;
+		default:
+			Inherited::setEditorData(editor, index);
+		}
+	}
+
+	void ItemEditDelegate::setModelData(QWidget* editor,
+		QAbstractItemModel* model,
+		const QModelIndex& index) const
+	{
+		QComboBox* combo { nullptr };
+		QTimeEdit* timeEdit { nullptr };
+		switch (static_cast<Column>(index.column()))
+		{
+		case Column::Type:
+			{
+				combo = qobject_cast<QComboBox*>(editor);
+				Q_ASSERT(combo);
+				model->setData(index, combo->currentIndex());
+			}
+			break;
+		case Column::ISO:
+			{
+				combo = qobject_cast<QComboBox*>(editor);
+				Q_ASSERT(combo);
+				model->setData(index, combo->currentText());
+			}
+			break;
+		case Column::Exposure:
+			{
+				timeEdit = qobject_cast<QTimeEdit*>(editor);
+				Q_ASSERT(timeEdit);
+				QTime time{ timeEdit->time() };
+				double secs = (time.hour() * 3600) +
+					(time.minute() * 60) +
+					(time.second() +
+					(static_cast<double>(time.msec()) / 1000.0));
+				model->setData(index, secs);
+			}
+			break;
+		default:
+			Inherited::setModelData(editor, model, index);
+		}
+	}
+
 	/////////////////////////////////////////////////////////////////////////////
 	// StackingDlg dialog
 
 	StackingDlg::StackingDlg(QWidget* parent) :
 		QWidget(parent),
 		ui(new Ui::StackingDlg),
-		initialised(false)
+		initialised(false),
+		m_tipShowCount{ 0 }
 	{
 		ui->setupUi(this);
 
 		mruPath.readSettings();
 
-		connect(ui->tableView, SIGNAL(clicked(const QModelIndex&)), this, SLOT(tableViewItemClickedEvent(const QModelIndex&)));
 		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
 	}
@@ -327,6 +509,154 @@ namespace DSS
 	{
 		selectRect = rect;
 	}
+
+	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
+	{
+		if (ui->tableView == watched)
+		{
+			if (QEvent::KeyPress == event->type())
+			{
+				int i{ 0 };
+				QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
+				const QKeySequence received(keyEvent->key() | keyEvent->modifiers());
+				QItemSelectionModel* qsm = ui->tableView->selectionModel();
+				ImageListModel* imageModel{ frameList.currentTableModel() }; 
+
+				//
+				// ifdef out this block of code as "Select All" key sequence already works 
+				// for a table view.  Leaving the code here for reference purposes.
+				//
+#if (0)
+
+				//
+				// Does the received key sequence match any of the key sequences for 
+				// "Select All"
+				//
+				const QList<QKeySequence> selectAll{ QKeySequence::keyBindings(QKeySequence::SelectAll) };
+				for (i = 0; i < selectAll.size(); i++)
+				{
+					//
+					// Does the key sequence (or single key) we received
+					// match one of the platform specific key sequences 
+					// for "Select All"
+					//
+					if (received == selectAll[i])
+					{
+						qDebug() << "Received key sequence " << received << " matched QKeySequence::SelectAll";
+						QItemSelection selection{
+							imageModel->createIndex(0, 0),
+							imageModel->createIndex(imageModel->rowCount() - 1,  imageModel->columnCount() - 1) };
+
+						qsm->select(selection, QItemSelectionModel::Select);
+						return true;
+					}
+				}
+#endif
+
+				//
+				// Was it the Space Bar?  If so toggle the checked state of all selected items
+				//
+				if (Qt::Key_Space == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+				{
+					QModelIndexList selectedRows = qsm->selectedRows();
+
+					int rowCount = selectedRows.size();
+
+					//
+					// If the QSortFilterProxyModel is being used, need to map 
+					// to the imageModel index in the base imageModel (our ImageListModel)
+					//
+					if (ui->tableView->model() == proxyModel.get())
+					{
+						for (i = 0; i < rowCount; i++)
+						{
+							selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
+						}
+					}
+
+					for (i = 0; i < rowCount; i++)
+					{
+						int row = selectedRows[i].row();
+
+						if (Qt::Checked == imageModel->mydata[row].m_bChecked)
+							imageModel->mydata[row].m_bChecked = Qt::Unchecked;
+						else
+							imageModel->mydata[row].m_bChecked = Qt::Checked;
+
+						imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
+					}
+					return true;
+				}
+
+				//
+				// Was it the Delete key? If so, remove all selected rows
+				//
+				if (Qt::Key_Delete == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
+				{
+					QModelIndexList selectedRows = qsm->selectedRows();
+
+					int rowCount = selectedRows.size();
+
+					//
+					// If the QSortFilterProxyModel is being used, need to map 
+					// to the imageModel index in the base imageModel (our ImageListModel)
+					//
+					if (ui->tableView->model() == proxyModel.get())
+					{
+						for (i = 0; i < rowCount; i++)
+						{
+							selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
+						}
+					}
+
+					//
+					// Sort the list of QModelIndex in descending order so that 
+					// when we iterate over the list we will delete the rows 
+					// with higher row numbers first.
+					//
+					std::sort(selectedRows.rbegin(), selectedRows.rend());
+
+					for (i = 0; i < rowCount; i++)
+					{
+						int row = selectedRows[i].row();
+						frameList.removeFromMap(imageModel->mydata[row].filePath);
+						imageModel->beginRemoveRows(QModelIndex(), row, row);
+						imageModel->removeRows(row, 1);
+						imageModel->endRemoveRows();
+					}
+					return true;
+				}
+			}
+		}
+		return Inherited::eventFilter(watched, event);
+	}
+	
+
+	bool StackingDlg::event(QEvent* event)
+	{
+		if (QEvent::ToolTip == event->type())
+		{
+			//
+			// If the mouse is over the image, but not over the toolbar,
+			// get the tooltip text and if there is any, display it
+			//
+			const QPoint globalMouseLocation(QCursor::pos());
+			const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
+			if (ui->tableView->viewport()->underMouse())
+			{
+				const QString tip = toolTip();
+				if (!tip.isEmpty() && m_tipShowCount % 25 == 0)
+				{
+					QToolTip::showText(globalMouseLocation, tip, this);
+				}
+				m_tipShowCount++;
+			}
+			return true;
+		}
+		// Make sure the rest of events are handled
+		return Inherited::event(event);
+	}
+
 
 	void StackingDlg::showEvent(QShowEvent* event)
 	{
@@ -342,9 +672,203 @@ namespace DSS
 		return Inherited::showEvent(event);
 	}
 
+	//
+	// Copy the Table View header and rows to the clipboard as tab delimited data
+	//
+	void StackingDlg::copyToClipboard()
+	{
+		int i{ 0 }, j{ 0 };
+		ImageListModel* model{ frameList.currentTableModel() };
+		QString str;
+
+		for (i = 0; i < model->columnCount(); i++)
+		{
+			if (i)
+				str += "\t";
+
+			str += model->headerData(i, Qt::Horizontal).toString();
+		}
+		for (i = 0; i < model->rowCount(); i++)
+		{
+			str += "\n";
+			for (j = 0; j < model->columnCount(); j++)
+			{
+				if (j)
+					str += "\t";
+				QModelIndex ndx{ model->createIndex(i, j) };
+
+				if (ui->tableView->model() == proxyModel.get())
+					ndx = proxyModel->mapFromSource(ndx);
+				str += model->data(ndx, Qt::DisplayRole).toString();
+			}
+
+		}
+
+		QApplication::clipboard()->setText(str);
+
+	}
+
+	void StackingDlg::on_tableView_customContextMenuRequested(const QPoint& pos)
+	{
+		ZFUNCTRACE_RUNTIME();
+
+		QModelIndex ndx = ui->tableView->indexAt(pos);
+		int i{ 0 };
+
+		qDebug() << "Table View item clicked, row " << ndx.row();
+		//
+		// If the QSortFilterProxyModel is being used, need to map 
+		// to the model index in the base model (our ImageListModel)
+		//
+		if (ui->tableView->model() == proxyModel.get())
+			ndx = proxyModel->mapToSource(ndx);
+
+		ImageListModel* imageModel = frameList.currentTableModel();
+		int row = ndx.row();
+		qDebug() << "The corresponding Model row is " << ndx.row();
+		bool indexValid = ndx.isValid();
+
+		if (indexValid)
+		{
+			if (imageModel->mydata[row].m_bUseAsStarting)
+				markAsReference->setChecked(true);
+			else
+				markAsReference->setChecked(false);
+
+			markAsReference->setEnabled(true);
+			check->setEnabled(true);
+			uncheck->setEnabled(true);
+			remove->setEnabled(true);
+			erase->setEnabled(true);
+		}
+		else
+		{
+			markAsReference->setEnabled(false);
+			check->setEnabled(false);
+			uncheck->setEnabled(false);
+			remove->setEnabled(false);
+			erase->setEnabled(false);
+		}
+
+
+		QAction* action = menu.exec(ui->tableView->mapToGlobal(pos));
+		if (!action)
+			return;
+		Menuitem item = static_cast<Menuitem>(action->data().toInt());
+
+		QItemSelectionModel* qsm = ui->tableView->selectionModel();
+		QModelIndexList selectedRows = qsm->selectedRows();
+
+		int rowCount = selectedRows.size();
+
+		//
+		// If the QSortFilterProxyModel is being used, need to map 
+		// to the model index in the base model (our ImageListModel)
+		//
+		if (ui->tableView->model() == proxyModel.get())
+		{
+			for (i = 0; i < rowCount; i++)
+			{
+				selectedRows[i] = proxyModel->mapToSource(selectedRows[i]);
+			}
+		}
+
+		//
+		// Sort the list of QModelIndex in descending order so that 
+		// when we iterate over the list we will delete the rows 
+		// with higher row numbers first.
+		//
+		std::sort(selectedRows.rbegin(), selectedRows.rend());
+
+		bool eraseOK = false;
+		if (Menuitem::erase == item)
+		{
+			QString message{ tr("Do you really want to permanently erase %n file(s)?\n"
+				"This operation cannot be reversed or cancelled.",
+				"IDS_WARNING_ERASEFILES", rowCount) };
+			auto result = QMessageBox::question(this, "DeepSkyStacker",
+				message, (QMessageBox::Yes | QMessageBox::No), QMessageBox::No );
+			if (QMessageBox::Yes == result)
+				eraseOK = true;
+		}
+
+		if (Menuitem::copy == item)
+		{
+			copyToClipboard();
+		}
+		else
+		{
+			//
+			// Iterate over the selected items doing whatever needs to be done
+			//
+			for (i = 0; i < rowCount; i++)
+			{
+				int row = selectedRows[i].row();
+
+				switch (item)
+				{
+				case Menuitem::markAsReference:
+					//
+					// Toggle the value
+					//
+					imageModel->mydata[row].m_bUseAsStarting ^= true;
+					imageModel->emitChanged(row, row, static_cast<int>(Column::Score), static_cast<int>(Column::Score));
+					break;
+				case Menuitem::check:
+					imageModel->mydata[row].m_bChecked = Qt::Checked;
+					imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
+					break;
+				case Menuitem::uncheck:
+					imageModel->mydata[row].m_bChecked = Qt::Unchecked;
+					imageModel->emitChanged(row, row, static_cast<int>(Column::Path), static_cast<int>(Column::Path));
+					break;
+				case Menuitem::erase:
+					if (eraseOK)
+					{
+						fs::remove(imageModel->mydata[row].filePath); // erase the file
+					}
+					break;
+				}
+			}
+
+			if (Menuitem::remove == item || Menuitem::erase == item)
+			{
+				for (i = 0; i < rowCount; i++)
+				{
+					int row = selectedRows[i].row();
+					frameList.removeFromMap(imageModel->mydata[row].filePath);
+					imageModel->beginRemoveRows(QModelIndex(), row, row);
+					imageModel->removeRows(row, 1);
+					imageModel->endRemoveRows();
+				}
+			}
+		}
+	}
+
 	void StackingDlg::onInitDialog()
 	{
 		ZFUNCTRACE_RUNTIME();
+		//
+		// Build the context menu for the tableview (list of images).
+		//
+		markAsReference = menu.addAction(QString(tr("Use as reference frame", "IDM_USEASSTARTING")));
+		markAsReference->setCheckable(true);
+		markAsReference->setData(int(Menuitem::markAsReference));
+		menu.addSeparator();
+		check = menu.addAction(QString(tr("Check", "IDM_CHECK")));
+		check->setData(int(Menuitem::check));
+		uncheck = menu.addAction(QString(tr("Uncheck", "IDM_UNCHECK")));
+		uncheck->setData(int(Menuitem::uncheck));
+		menu.addSeparator();
+		remove = menu.addAction(QString(tr("Remove from list", "IDM_REMOVEFROMLIST")));
+		remove->setData(int(Menuitem::remove));
+		menu.addSeparator();
+		copy = menu.addAction(QString(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD")));
+		copy->setData(int(Menuitem::copy));
+		menu.addSeparator();
+		erase = menu.addAction(QString(tr("Erase from disk...", "IDM_ERASEFROMDISK")));
+		erase->setData(int(Menuitem::erase));
+
 		ui->picture->setVisible(true);
 		editStarsPtr = std::make_unique<EditStars>(ui->picture);
 		selectRectPtr = std::make_unique<SelectRect>(ui->picture);
@@ -357,6 +881,10 @@ namespace DSS
 
 		if (!fileList.empty())
 			openFileList(fileList);
+
+		QSettings settings;
+		ui->tableView->horizontalHeader()->restoreState(
+			settings.value("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState").toByteArray());
 		//
 		// Set up a QSortFilterProxyModel to allow sorting of the table view
 		// (it sits between the actual model and the view to provide sorting
@@ -377,6 +905,14 @@ namespace DSS
 		ui->tableView->setItemDelegateForColumn(0, iconSizeDelegate.get());
 
 		//
+		// Create an edit
+		//
+		itemEditDelegate = std::make_unique<ItemEditDelegate>();
+		ui->tableView->setItemDelegateForColumn(static_cast<int>(Column::Type), itemEditDelegate.get());
+		ui->tableView->setItemDelegateForColumn(static_cast<int>(Column::ISO), itemEditDelegate.get());
+		ui->tableView->setItemDelegateForColumn(static_cast<int>(Column::Exposure), itemEditDelegate.get());
+
+		//
 		// Reduce font size and increase weight
 		//
 		QFont font { ui->tableView->font() };
@@ -385,6 +921,20 @@ namespace DSS
 		font = ui->tableView->horizontalHeader()->font();
 		font.setPointSize(font.pointSize() - 1);  font.setWeight(QFont::Medium);
 		ui->tableView->horizontalHeader()->setFont(font);
+		ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+		ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+		ui->tableView->setAlternatingRowColors(true);
+		ui->tableView->setTabKeyNavigation(true);
+		ui->tableView->horizontalHeader()->setSectionsMovable(true);
+		ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+		ui->tableView->installEventFilter(this);
+		ui->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
+			"Ctrl-A or equivalent to select all rows\n"
+			"Delete key to remove (not erase) selected rows\n"
+			"Right mouse button to display the menu"));
+		QItemSelectionModel* qsm = ui->tableView->selectionModel();
+		connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
+			this, SLOT(tableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)
@@ -422,19 +972,19 @@ namespace DSS
 
 	}
 
-
-	void StackingDlg::tableViewItemClickedEvent(const QModelIndex& index)
+	void StackingDlg::tableView_selectionChanged([[maybe_unused]] const QItemSelection& selected, [[maybe_unused]] const QItemSelection& deselected)
 	{
-		qDebug() << "Table View item clicked, row " << index.row();
 
 		QItemSelectionModel * qsm = ui->tableView->selectionModel();
 		QModelIndexList selectedRows = qsm->selectedRows();
+		qDebug() << "Number of selected rows: " << selectedRows.count();
 		//
 		// If only one row is selected, we want to know the filename
 		//
 		if (1 == selectedRows.count())
 		{
 			QModelIndex& ndx = selectedRows[0];
+			qDebug() << "  Selected row: " << ndx.row();
 
 			//
 			// If the QSortFilterProxyModel is being used, need to map 
@@ -448,7 +998,7 @@ namespace DSS
 				QString  fileName;
 				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
-				qDebug() << "The corresponding Model row is " << ndx.row();
+				qDebug() << "  The corresponding Model row is: " << ndx.row();
 				fileName = model->selectedFileName(row);
 				//
 				// If the filename hasn't changed but we have changes to the stars that need to be saved
@@ -504,6 +1054,12 @@ namespace DSS
 
 		if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
 		{
+			ui->tableView->setEnabled(true);
+			//
+			// Disabling the tableview resulted in it loosing focus
+			// so put the focus back
+			//
+			ui->tableView->setFocus(Qt::OtherFocusReason);
 			//
 			// The image we want is available in the cache
 			//
@@ -537,6 +1093,7 @@ namespace DSS
 		}
 		else if (!m_strShowFile.isEmpty())
 		{
+			ui->tableView->setEnabled(false);
 			//
 			// Display the "Loading filename" with red background gradient while loading in background
 			//
@@ -1341,7 +1898,7 @@ namespace DSS
 		}
 	}
 
-	void StackingDlg::loadList(CMRUList& MRUList, QString& strFileList)
+	void StackingDlg::loadList(MRUList& MRUList, QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
@@ -1407,7 +1964,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::saveList(CMRUList& MRUList, QString& strFileList)
+	void StackingDlg::saveList(MRUList& MRUList, QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings					settings;
@@ -1674,7 +2231,7 @@ namespace DSS
 					// GetDeepStackerDlg(nullptr)->PostMessage(WM_PROGRESS_INIT); TODO
 
 					imageLoader.clearCache();
-					if (frameList.unregisteredCheckedLightFrameCount())
+					if (frameList.countUnregisteredCheckedLightFrames())
 					{
 						CRegisterEngine	RegisterEngine;
 						CDSSProgressDlg	dlg;
@@ -2005,7 +2562,7 @@ namespace DSS
 
 			frameList.fillTasks(tasks);
 
-			if (frameList.unregisteredCheckedLightFrameCount())
+			if (frameList.countUnregisteredCheckedLightFrames())
 			{
 				CRegisterEngine	RegisterEngine;
 				CDSSProgressDlg	dlg;

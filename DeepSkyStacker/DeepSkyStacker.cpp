@@ -43,19 +43,6 @@
 using namespace boost::interprocess;
 #include <gdiplus.h>
 using namespace Gdiplus;
-
-
-#include "DeepSkyStacker.h"
-#include "DeepStack.h"
-
-
-#include <afxinet.h>
-#include "StackingTasks.h"
-#include "StackRecap.h"
-#include "cgfiltyp.h"
-#include "SetUILanguage.h"
-#include <ZExcept.h>
-
 #include <QApplication>
 #include <QLibraryInfo>
 #include <QDebug>
@@ -71,9 +58,21 @@ using namespace Gdiplus;
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QWidget>
 
-#include "QMfcApp"
+//#include "QMfcApp"
 
 #include "qwinhost.h"
+
+#include "DeepSkyStacker.h"
+#include "DeepStack.h"
+
+
+#include <afxinet.h>
+#include "StackingTasks.h"
+#include "ui_StackingDlg.h"
+#include "StackRecap.h"
+#include "cgfiltyp.h"
+#include "SetUILanguage.h"
+#include <ZExcept.h>
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -335,6 +334,9 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	QSettings settings;
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
+	QTableView* tableView = this->findChild<QTableView*>("tableView");
+	settings.setValue("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState",
+		tableView->horizontalHeader()->saveState());
 };
 
 
@@ -516,6 +518,9 @@ DeepSkyStackerApp *		GetDSSApp()
 
 using namespace std;
 
+QTranslator theQtTranslator;
+QTranslator theAppTranslator;
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
@@ -576,15 +581,39 @@ int main(int argc, char* argv[])
 	//
 	app.setStyle(QStyleFactory::create("Fusion"));
 
-	QTranslator qtTranslator;
 	QString translatorFileName = QLatin1String("qt_");
 	translatorFileName += QLocale::system().name();
-	if (qtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-		app.installTranslator(&qtTranslator);
+	qDebug() << "translationPath " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+		app.installTranslator(&theQtTranslator);
 
 	ZTRACE_RUNTIME("Initialize Application - ok");
 
 	ZTRACE_RUNTIME("Set UI Language");
+	//
+	// Retrieve the Qt language name (e.g.) en_GB
+	//
+	QString language = settings.value("Language").toString();
+
+	//
+	// Language was not defined in our preferences, so select the system default
+	//
+	if (language == "")
+	{
+		language = QLocale::system().name();
+	}
+
+	//
+	// Install the language if it actually exists.
+	//
+	if (theAppTranslator.load("DSS." + language, ":/i18n/"))
+	{
+		QCoreApplication::instance()->installTranslator(&theAppTranslator);
+	}
+
+	//
+	// Do the old Windows language stuff
+	//
 	SetUILanguage();
 
 	ZTRACE_RUNTIME("Set UI Language - ok");

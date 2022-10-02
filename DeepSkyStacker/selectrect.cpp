@@ -52,8 +52,8 @@ using std::max;
 
 extern bool		g_bShowRefStars;
 
-#include "dssimageview.h"
-#include "dssselectrect.h"
+#include "imageview.h"
+#include "selectrect.h"
 #include "DSSCommon.h"
 #include "commonresource.h"
 #include "DeepSkyStacker.h"

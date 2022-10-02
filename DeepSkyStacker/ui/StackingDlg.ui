@@ -230,7 +230,7 @@
   <customwidget>
    <class>DSS::ImageView</class>
    <extends>QWidget</extends>
-   <header>dssimageview.h</header>
+   <header>imageview.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

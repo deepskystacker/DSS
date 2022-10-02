@@ -2,6 +2,7 @@
 #define __BATCHSTACKING_H__
 
 #include "EasySize.h"
+#include "mrulist.h"
 
 class CBatchStacking : public CDialog
 {
@@ -10,13 +11,13 @@ class CBatchStacking : public CDialog
 
 private :
 	CCheckListBox			m_Lists;
-	CMRUList				m_MRUList;
+	MRUList				m_MRUList;
 	CScrollBar				m_Gripper;
 
 // Construction
 public:
 	CBatchStacking(CWnd* pParent = nullptr);   // standard constructor
-	void setMRUList(const CMRUList& MRUList)
+	void setMRUList(const MRUList& MRUList)
 	{
 		m_MRUList = MRUList;
 	};

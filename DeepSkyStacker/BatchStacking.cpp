@@ -220,11 +220,11 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 	bool bResult = true;
 	Workspace workspace;
 	CAllStackingTasks tasks;
-	CFrameList list;
+	DSS::FrameList list;
 
 	workspace.Push();
-	list.LoadFilesFromList(szList);
-	list.FillTasks(tasks);
+	list.loadFilesFromList(szList);
+	list.fillTasks(tasks);
 	tasks.ResolveTasks();
 
 	if (!tasks.m_vStacks.empty())
@@ -235,7 +235,7 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 		CString strReferenceFrame;
 
 		// First check that the images are registered
-		if (list.GetNrUnregisteredCheckedLightFrames() != 0)
+		if (list.countUnregisteredCheckedLightFrames() != 0)
 		{
 			CRegisterEngine	RegisterEngine;
 			bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
@@ -243,7 +243,7 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 
 		if (bContinue)
 		{
-			if (list.GetReferenceFrame(strReferenceFrame))
+			if (list.getReferenceFrame(strReferenceFrame))
 				StackingEngine.SetReferenceFrame(strReferenceFrame);
 
 			std::shared_ptr<CMemoryBitmap> pBitmap;
