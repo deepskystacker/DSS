@@ -470,12 +470,15 @@ namespace DSS
         update();
     }
 
+#if (0)
     void ImageView::setOverlayPixmap(const QPixmap& p)
     {
         pOverlayPixmap.reset(new QPixmap(p));
         drawOnPixmap();
         update();
     }
+#endif
+
 
 #if QT_CONFIG(wheelevent)
     void ImageView::wheelEvent(QWheelEvent* e)
