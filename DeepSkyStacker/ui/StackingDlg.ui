@@ -52,7 +52,7 @@
            <property name="minimumSize">
             <size>
              <width>275</width>
-             <height>30</height>
+             <height>40</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -102,21 +102,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QSlider" name="horizontalSlider">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
+          <widget class="QLinearGradientCtrl" name="gamma" native="true">
            <property name="minimumSize">
             <size>
              <width>170</width>
              <height>0</height>
             </size>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </item>
@@ -231,6 +222,12 @@
    <class>DSS::ImageView</class>
    <extends>QWidget</extends>
    <header>imageview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QLinearGradientCtrl</class>
+   <extends>QWidget</extends>
+   <header location="global">QLinearGradientCtrl.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
