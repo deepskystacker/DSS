@@ -37,7 +37,7 @@ QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor 
 	lastSelectedPeg(NONE),
 	m_LastPos(0),
 	m_showToolTips(true),
-	m_Orientation(Auto),
+	m_Orientation(Orientation::Auto),
 	startPegStop(0),
 	m_LeftDownSide(true),
 	m_RightUpSide(false)
@@ -1041,9 +1041,9 @@ QGradientStop QLinearGradientCtrl::selectedStop() const
 
 bool QLinearGradientCtrl::isVertical() const
 {
-	if (m_Orientation == ForceVertical)
+	if (m_Orientation == Orientation::ForceVertical)
 		return true;
-	else if (m_Orientation == ForceHorizontal)
+	else if (m_Orientation == Orientation::ForceHorizontal)
 		return false;
 	else
 	{

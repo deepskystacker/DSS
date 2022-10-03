@@ -65,7 +65,7 @@ class QLinearGradientCtrl : public QWidget
 	Q_OBJECT
 	Q_PROPERTY(QLinearGradient gradient READ gradient WRITE setGradient)
 	Q_PROPERTY(int gradientWidth READ orientation WRITE setGradientWidth)
-	Q_PROPERTY(QLinearGradientCtrl::Orientation orientation READ orientation WRITE setOrientation)
+	Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation)
 	Q_PROPERTY(int selectedPeg READ selected WRITE setSelected NOTIFY pegSelChanged)
 	Q_PROPERTY(QGradientStop selectedStop READ selectedStop)
 	Q_PROPERTY(bool pegsOnLeftOrBottom READ pegsOnLeftOrBottom WRITE setPegsOnLeftOrBottom)
@@ -82,7 +82,7 @@ public:
 
 	virtual ~QLinearGradientCtrl();
 
-	enum class Orientation
+	enum Orientation
 	{
 		ForceHorizontal,
 		ForceVertical,
