@@ -943,6 +943,9 @@ namespace DSS
 		// Add the Grey Point stop to the gradient 
 		//
 		ui->gamma->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
+		ui->gamma->setPegsOnLeftOrBottom(true).
+			setPegsOnRightOrTop(false).
+			setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)

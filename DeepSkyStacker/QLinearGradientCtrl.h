@@ -82,7 +82,7 @@ public:
 
 	virtual ~QLinearGradientCtrl();
 
-	enum Orientation
+	enum class Orientation
 	{
 		ForceHorizontal,
 		ForceVertical,
