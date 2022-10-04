@@ -502,6 +502,7 @@ namespace DSS
 		properties{ nullptr },
 		copy{ nullptr },
 		erase{ nullptr },
+		networkManager{ nullptr },
 		m_tipShowCount{ 0 }
 	{
 		ui->setupUi(this);
