@@ -471,7 +471,7 @@ namespace DSS
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
 				Q_ASSERT(timeEdit);
 				QTime time{ timeEdit->time() };
-				double secs = (time.hour() * 3600) +
+				double secs = (static_cast<double>(time.hour()) * 3600) +
 					(time.minute() * 60) +
 					(time.second() +
 					(static_cast<double>(time.msec()) / 1000.0));
@@ -490,6 +490,18 @@ namespace DSS
 		QWidget(parent),
 		ui(new Ui::StackingDlg),
 		initialised(false),
+		markAsReference{ nullptr },
+		check{ nullptr },
+		uncheck{ nullptr },
+		toLight{ nullptr },
+		toDark{ nullptr },
+		toDarkFlat{ nullptr },
+		toFlat{ nullptr },
+		toOffset{ nullptr },
+		remove{ nullptr },
+		properties{ nullptr },
+		copy{ nullptr },
+		erase{ nullptr },
 		m_tipShowCount{ 0 }
 	{
 		ui->setupUi(this);
