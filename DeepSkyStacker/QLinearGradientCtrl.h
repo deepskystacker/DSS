@@ -91,30 +91,45 @@ public:
 
 	// Attributes
 public:
-	QLinearGradient& gradient() { return m_Gradient; };
+	inline QLinearGradient& gradient() { return m_Gradient; };
 	QLinearGradientCtrl &
 		setGradient(QLinearGradient const& src);
 
-	int		gradientWidth() const { return m_Width; };
-	QLinearGradientCtrl &
-		setGradientWidth(int iWidth) { assert(iWidth >= 1 || iWidth == -1); m_Width = iWidth; return *this; };
+	inline int gradientWidth() const { return m_Width; };
+	inline QLinearGradientCtrl &
+		setGradientWidth(int iWidth)
+	{
+		assert(iWidth >= 1 || iWidth == -1);
+		m_Width = iWidth;
+		return *this;
+	};
 
-	Orientation orientation() const { return m_Orientation; };
-	QLinearGradientCtrl &
+	inline Orientation orientation() const { return m_Orientation; };
+	inline QLinearGradientCtrl &
 		setOrientation(Orientation orientation) { m_Orientation = orientation; return *this; };
 
-	int		selected() const { return selectedPeg; };
-	int		setSelected(int iSel);
+	inline int	selected() const { return selectedPeg; };
+	int	setSelected(int iSel);
 
 	QGradientStop selectedStop() const;
 
-	bool	pegsOnLeftOrBottom() const { return m_LeftDownSide; };
-	QLinearGradientCtrl &
-		setPegsOnLeftOrBottom(bool value) { m_LeftDownSide = value; return *this; };
+	inline bool	pegsOnLeftOrBottom() const { return m_LeftDownSide; };
+	inline QLinearGradientCtrl &
+		setPegsOnLeftOrBottom(bool value)
+	{
+		m_RightUpSide = !value;
+		m_LeftDownSide = value;
+		return *this;
+	};
 
-	bool	pegsOnRightOrTop() const {return m_RightUpSide; };
-	QLinearGradientCtrl &
-		setPegsOnRightOrTop(bool value) { m_RightUpSide = value; return *this; };
+	inline bool	pegsOnRightOrTop() const {return m_RightUpSide; };
+	inline QLinearGradientCtrl &
+		setPegsOnRightOrTop(bool value)
+	{ 
+		m_RightUpSide = value;
+		m_LeftDownSide = !value;
+	  return *this;
+	};
 
 	QString toolTipFormat() const { return m_ToolTipFormat; };
 	void	setToolTipFormat(const QString format) { m_ToolTipFormat = format; };
