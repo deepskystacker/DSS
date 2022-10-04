@@ -64,7 +64,7 @@ class QLinearGradientCtrl : public QWidget
 {
 	Q_OBJECT
 	Q_PROPERTY(QLinearGradient gradient READ gradient WRITE setGradient)
-	Q_PROPERTY(int gradientWidth READ orientation WRITE setGradientWidth)
+	Q_PROPERTY(int gradientWidth READ gradientWidth WRITE setGradientWidth)
 	Q_PROPERTY(Orientation orientation READ orientation WRITE setOrientation)
 	Q_PROPERTY(int selectedPeg READ selected WRITE setSelected NOTIFY pegSelChanged)
 	Q_PROPERTY(QGradientStop selectedStop READ selectedStop)
@@ -82,7 +82,7 @@ public:
 
 	virtual ~QLinearGradientCtrl();
 
-	enum Orientation
+	enum class Orientation
 	{
 		ForceHorizontal,
 		ForceVertical,
@@ -197,7 +197,7 @@ protected:
 	void mouseDoubleClickEvent(QMouseEvent *event) override;
 	void paintEvent(QPaintEvent *event) override;
 	void resizeEvent(QResizeEvent *event) override;
-	// void showEvent(QShowEvent *event) override;
+	//void showEvent(QShowEvent *event) override;
 
 
 };
