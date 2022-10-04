@@ -339,7 +339,7 @@ public:
 
 	void GetPixel16(const size_t i, const size_t j, COLORREF16& crResult)
 	{
-		constexpr double scalingFactor = double{ 1 + std::numeric_limits<unsigned char>::max() };
+		constexpr double scalingFactor = double{ 1. + std::numeric_limits<unsigned char>::max() };
 		constexpr double maxValue = double{ std::numeric_limits<unsigned short>::max() };
 		// Use get pixel
 		double fRed, fGreen, fBlue;
