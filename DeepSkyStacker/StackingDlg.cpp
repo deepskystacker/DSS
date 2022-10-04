@@ -944,7 +944,6 @@ namespace DSS
 		//
 		ui->gamma->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
 		ui->gamma->setPegsOnLeftOrBottom(true).
-			setPegsOnRightOrTop(false).
 			setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
 	}
 
