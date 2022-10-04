@@ -721,6 +721,7 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 
 void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 {
+	qDebug() << "In keyPressEvent()";
 	QPainter painter;
 	event->setAccepted(true);		// Set that we've handled the event.  If not default will reset
 	switch (event->key())
@@ -1289,7 +1290,7 @@ QRegion QLinearGradientCtrl::getPegRegion()
 //{
 //	if (!event->spontaneous())
 //	{
-//	
+//		setFocus();
 //	}
 //	// Invoke base class showEvent()
 //	return Inherited::showEvent(event);
