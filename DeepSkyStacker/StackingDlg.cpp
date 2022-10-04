@@ -472,7 +472,7 @@ namespace DSS
 				Q_ASSERT(timeEdit);
 				QTime time{ timeEdit->time() };
 				double secs = (static_cast<double>(time.hour()) * 3600) +
-					(time.minute() * 60) +
+					(static_cast<double>(time.minute()) * 60) +
 					(time.second() +
 					(static_cast<double>(time.msec()) / 1000.0));
 				model->setData(index, secs);
