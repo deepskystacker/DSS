@@ -75,7 +75,9 @@ using std::max;
 
 namespace DSS
 {
+#if QT_VERSION < 0x060000 
     constexpr auto M_PI = 3.14159265358979323846;
+#endif
     //
     // Initial code based on https://meetingcpp.com/blog/items/an-introduction-into-qt-part-3.html
     //

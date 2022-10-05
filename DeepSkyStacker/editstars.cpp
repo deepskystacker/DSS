@@ -43,7 +43,9 @@
 #include <QToolTip>
 #include <omp.h>
 
+#if QT_VERSION < 0x060000
 #define _USE_MATH_DEFINES
+#endif
 #include <math.h>
 
 #include "DeepSkyStacker.h"

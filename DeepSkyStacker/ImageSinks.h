@@ -154,6 +154,8 @@ typedef enum tagEDITSTARACTION
 	ESA_RESETCOMET		= 4
 }EDITSTARACTION;
 
+class CMemoryBitmap;
+
 class CEditStarsSink : public CWndImageSink
 {
 private:
