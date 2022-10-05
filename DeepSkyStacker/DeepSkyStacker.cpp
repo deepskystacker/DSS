@@ -375,7 +375,6 @@ void DeepSkyStacker::updateTab()
 		break;
 	case IDD_PROCESSING:
 		stackedWidget->setCurrentIndex(1);
-		winHost->update();
 		processingDlg.ShowWindow(SW_SHOW);
 		break;
 	};
@@ -563,8 +562,10 @@ int main(int argc, char* argv[])
 
 
 	// High DPI support
+#if QT_VERSION < 0x060000
 	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
 
 	//QMfcApp app(&theApp, argc, argv);
 	QApplication app(argc, argv);
@@ -583,8 +584,14 @@ int main(int argc, char* argv[])
 
 	QString translatorFileName = QLatin1String("qt_");
 	translatorFileName += QLocale::system().name();
+	
+#if QT_VERSION >= 0x060000
+	qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+	if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+#else
 	qDebug() << "translationPath " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+#endif
 		app.installTranslator(&theQtTranslator);
 
 	ZTRACE_RUNTIME("Initialize Application - ok");
