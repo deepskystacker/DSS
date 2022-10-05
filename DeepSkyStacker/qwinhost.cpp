@@ -305,9 +305,15 @@ bool QWinHost::event(QEvent *e)
 void QWinHost::showEvent(QShowEvent *e)
 {
     QWidget::showEvent(e);
+    //
+    // Need to scale from Qt logical pixels to physical pixels
+    // for setting the size of the native window
+    //
+    QSize size{ width(), height() };
+    size = size * devicePixelRatioF();
 
     if (hwnd)
-	SetWindowPos(hwnd, HWND_TOP, 0, 0, width(), height(), SWP_SHOWWINDOW);
+	SetWindowPos(hwnd, HWND_TOP, 0, 0, size.width(), size.height(), SWP_SHOWWINDOW);
 }
 
 /*!
@@ -327,6 +333,12 @@ void QWinHost::focusInEvent(QFocusEvent *e)
 void QWinHost::resizeEvent(QResizeEvent *e)
 {
     QWidget::resizeEvent(e);
+    //
+    // Need to scale from Qt logical pixels to physical pixels
+    // for setting the size of the native window
+    //
+    QSize size{ width(), height() };
+    size = size * devicePixelRatioF();
 
     if (hwnd)
 	SetWindowPos(hwnd, HWND_TOP, 0, 0, width(), height(), 0);
