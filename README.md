@@ -1,4 +1,4 @@
-#DeepSkyStacker
+#DeepSkyStacker#
 
 This is the github repository for all the DeepSkyStacker source code.
 
@@ -16,7 +16,7 @@ Copyright (c) 2018-2022, David C. Partridge, Tony Cook, Mat Draper,
 					Simon C. Smith, Vitali Pelenjow, Michal Schulz,
 					Martin Toeltsch
 					
-##Building DeepSkyStacker:
+##Building DeepSkyStacker:##
 
 You will need to install Visual Studio 2019 (16.11.18), Qt 6.4.0 and Qt VS Tools 2.9.1 (rev 6) for
 VS2019.   You can also use VS2022 and Qt VS Tools 2.9.1 (rev 6) for VS2022.
