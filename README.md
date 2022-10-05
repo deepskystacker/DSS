@@ -1,4 +1,5 @@
-#DeepSkyStacker#
+DeepSkyStacker
+==============
 
 This is the github repository for all the DeepSkyStacker source code.
 
@@ -16,7 +17,8 @@ Copyright (c) 2018-2022, David C. Partridge, Tony Cook, Mat Draper,
 					Simon C. Smith, Vitali Pelenjow, Michal Schulz,
 					Martin Toeltsch
 					
-##Building DeepSkyStacker:##
+Building DeepSkyStacker:
+------------------------
 
 You will need to install Visual Studio 2019 (16.11.18), Qt 6.4.0 and Qt VS Tools 2.9.1 (rev 6) for
 VS2019.   You can also use VS2022 and Qt VS Tools 2.9.1 (rev 6) for VS2022.
@@ -28,7 +30,7 @@ You will also need to install Boost 1.80.0.  Once you have done that, you need t
 variable called Boost_1_80_0 with the location of the Boost installation directory e.g.:
 C:\Boost_1_80_0
 
-You will need to use QT VS Tools Options dialog to set up a named Qt Installation:
+You will need to use *Extensions/Qt VS Tools/Qt Versions* to set up a named Qt Installation:
 
 	Called 6.4.0_msvc2019_64 pointing to the msvc2019_64 sub-directory of your Qt install
 		for example C:\Qt\6.4.0\msvc2019_64
