@@ -393,9 +393,6 @@
     <ClCompile Include="dss_settings.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="qmfcapp.cpp">
-      <Filter>Qt Porting</Filter>
-    </ClCompile>
     <ClCompile Include="mrulist.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -1148,9 +1145,6 @@
       <Filter>Qt Porting</Filter>
     </None>
     <None Include="QWinWidget">
-      <Filter>Qt Porting</Filter>
-    </None>
-    <None Include="QMfcApp">
       <Filter>Qt Porting</Filter>
     </None>
   </ItemGroup>
