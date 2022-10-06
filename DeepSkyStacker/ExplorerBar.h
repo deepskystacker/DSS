@@ -23,6 +23,10 @@ public:
 public slots:
 	void onHelp();
 
+protected:
+	void mousePressEvent(QMouseEvent*) override;
+	void showEvent(QShowEvent* event) override;
+
 private slots:
 	void onOpenLights();
 	void onOpenDarks();
@@ -61,6 +65,7 @@ private slots:
 
 private:
     Ui::ExplorerBar *ui;
+	bool initialised;
 	MRUPath	mruPath;
 
 	void	LoadSettingFile();
@@ -69,7 +74,7 @@ private:
 	void	changeEvent(QEvent *);
 	void	makeLinks();
 
-	void	mousePressEvent(QMouseEvent *);
+	void onInitDialog();
 };
 
 #endif // EXPLORERBAR_H
