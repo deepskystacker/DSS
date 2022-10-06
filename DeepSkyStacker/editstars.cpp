@@ -43,7 +43,9 @@
 #include <QToolTip>
 #include <omp.h>
 
+#if QT_VERSION < 0x060000
 #define _USE_MATH_DEFINES
+#endif
 #include <math.h>
 
 #include "DeepSkyStacker.h"
@@ -343,8 +345,12 @@ namespace DSS
 			//
 			// Get the mouse location and convert to image coordinates
 			//
+#if QT_VERSION >= 0x060000
+			QPointF pt{ e->position() };
+#else
 			QPointF pt{ static_cast<qreal>(e->x()),
 				static_cast<qreal>(e->y()) };
+#endif
 			pt = imageView->screenToImage(pt);
 
 			if (pt.x() >= 0 && pt.x() < imageView->imageWidth() &&

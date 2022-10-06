@@ -41,7 +41,7 @@ constexpr int DSSBETAEXPIREMONTH = 12;
 #define DSSVER_PRODUCTVERSION	VERFILESTRING(DSSVER_MAJOR, DSSVER_MINOR, DSSVER_SUB, DSSVER_BUILD)
 
 #define DSSVER_COPYRIGHT "Copyright \xc2\xa9 2006-2019 Luc Coiffier;\n\
-	Copyright \xc2\xa9 2018-2020 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow, Tomas Tatara, Michal Schulz, Martin Toeltsch"
+	Copyright \xc2\xa9 2018-2022 David C. Partridge, Tony Cook, Mat Draper, Simon C. Smith, Vitali Pelenjow, Tomas Tatara, Michal Schulz, Martin Toeltsch"
 #define DSSVER_PRODUCTNAME		"DeepSkyStacker"
 
 #define DSSLIVEVER_PRODUCTNAME		"DeepSkyStacker Live"

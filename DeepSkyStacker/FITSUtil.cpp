@@ -1371,7 +1371,7 @@ bool CFITSWriter::Open()
 					bResult = bResult && WriteKey("ISOSPEED", m_lISOSpeed);
 				if (m_lGain >= 0)
 					bResult = bResult && WriteKey("GAIN", m_lGain);
-				if (m_filterName != _T(""))
+				if (m_filterName != "")
 					bResult = bResult && WriteKey("FILTER", m_filterName.toStdWString().c_str());
 				if (m_fExposureTime)
 				{
@@ -1700,7 +1700,7 @@ bool CFITSWriteFromMemoryBitmap::OnOpen()
 			m_lISOSpeed = m_pMemoryBitmap->GetISOSpeed();
 		if (m_lGain < 0)
 			m_lGain = m_pMemoryBitmap->GetGain();
-		if ((m_pMemoryBitmap->filterName() != _T("")) && (m_filterName == _T("")))
+		if ((m_pMemoryBitmap->filterName() != "") && (m_filterName == ""))
 			m_filterName = m_pMemoryBitmap->filterName();
 		if (!m_fExposureTime)
 			m_fExposureTime = m_pMemoryBitmap->GetExposure();

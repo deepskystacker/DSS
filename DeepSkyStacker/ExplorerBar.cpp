@@ -47,11 +47,11 @@ static void makeLink(QLabel *label, QString color)
 
 ExplorerBar::ExplorerBar(QWidget *parent) :
 	QWidget(parent),
+	initialised{ false },
 	ui(new Ui::ExplorerBar)
 {
 	ZTRACE_RUNTIME("Creating Left Panel");
 	ui->setupUi(this);
-
 	makeLinks();
 
 	raise();
@@ -65,6 +65,56 @@ ExplorerBar::~ExplorerBar()
 	delete ui;
 }
 
+void ExplorerBar::onInitDialog()
+{
+	QFont font(ui->registerAndStack->font());
+	QFont bold{ font };
+	bold.setWeight(QFont::Bold);
+
+	ui->registerAndStack->setFont(bold);
+	ui->frame_1->setFont(font);
+	/*
+	ui->openLights->setFont(font);
+	ui->openDarks->setFont(font);
+	ui->openFlats->setFont(font);
+	ui->openDarkFlats->setFont(font);
+	ui->openBias->setFont(font);
+	ui->openFilelist->setFont(font);
+	ui->saveFilelist->setFont(font);
+	ui->clearList->setFont(font);
+	*/
+
+	ui->frame_2->setFont(font);
+	/*
+	ui->checkAll->setFont(font);
+	ui->checkAbove->setFont(font);
+	ui->unCheckAll->setFont(font);
+	*/
+
+	ui->frame_3->setFont(font);
+	/*ui->registerChecked->setFont(font);
+	ui->computeOffsets->setFont(font);
+	ui->stackChecked->setFont(font);
+	ui->batchStacking->setFont(font);
+	*/
+
+	ui->processing->setFont(bold);
+	ui->openPicture->setFont(font);
+	ui->copyPicture->setFont(font);
+	ui->doStarMask->setFont(font);
+	ui->savePicture->setFont(font);
+
+	ui->options->setFont(bold);
+	ui->settings->setFont(font);
+	ui->ddpSettings->setFont(font);
+	ui->loadSettings->setFont(font);
+	ui->saveSettings->setFont(font);
+	ui->recommendedSettings->setFont(font);
+
+	ui->about->setFont(font);
+	ui->help->setFont(font);
+
+}
 void ExplorerBar::makeLinks()
 {
 	QString defColour = palette().color(QPalette::ColorRole::WindowText).name();
@@ -480,6 +530,19 @@ void ExplorerBar::changeEvent(QEvent* event)
 	Inherited::changeEvent(event);
 }
 
+void ExplorerBar::showEvent(QShowEvent* event)
+{
+	if (!event->spontaneous())
+	{
+		if (!initialised)
+		{
+			initialised = true;
+			onInitDialog();
+		}
+	}
+	// Invoke base class showEvent()
+	return Inherited::showEvent(event);
+}
 void ExplorerBar::mousePressEvent(QMouseEvent *event)
 {
 	if (Qt::LeftButton == event->buttons())
@@ -487,11 +550,15 @@ void ExplorerBar::mousePressEvent(QMouseEvent *event)
 		const auto dwTabID = dssApp->tab();
 		if ((ui->registerAndStack->underMouse()) && (dwTabID != IDD_REGISTERING) && (dwTabID != IDD_STACKING))
 		{
+			ui->registerAndStack->setStyleSheet("background-color: lightcyan");
+			ui->processing->setStyleSheet("background-color: rgb(240, 240, 240)");
 			// Change tab to stacking
 			dssApp->setTab(IDD_STACKING);
 		}
 		else if (ui->processing->underMouse() && (dwTabID != IDD_PROCESSING))
 		{
+			ui->registerAndStack->setStyleSheet("background-color: rgb(240, 240, 240)");
+			ui->processing->setStyleSheet("background-color: lightcyan");
 			// Change tab to processing
 			dssApp->setTab(IDD_PROCESSING);
 		};

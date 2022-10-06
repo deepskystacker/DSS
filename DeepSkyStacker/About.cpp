@@ -62,7 +62,7 @@ About::About(QWidget *parent) :
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://deepskystacker.free.fr/");
     strHTML += strText;
 
-	strText = QString(tr("Qt Application Framework 5.12.8\nCopyright © 2016 The Qt Company Ltd."));
+	strText = QString(tr("Qt Application Framework 6.4.0\nCopyright © 2022 The Qt Company Ltd."));
 	strText += "<br>";
 	strText = strText.replace("\n", "<br>");
 	strHTML += strText;
@@ -274,7 +274,11 @@ void About::storeSettings()
 	// 
     QString translatorFileName = QLatin1String("qt_");
     translatorFileName += language;
+#if QT_VERSION >= 0x060000
+    if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+#else
     if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+#endif
         qApp->installTranslator(&theQtTranslator);
 
     settings.setValue("InternetCheck", m_InternetCheck);

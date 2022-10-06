@@ -158,6 +158,8 @@ namespace DSS
 		void toolBar_saveButtonPressed(bool checked);
 		void on_tableView_customContextMenuRequested(const QPoint& pos);
 		void tableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+		void gammaChanging(int peg);
+		void gammaChanged(int peg);
 
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr);

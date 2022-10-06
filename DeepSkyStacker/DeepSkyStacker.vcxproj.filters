@@ -393,9 +393,6 @@
     <ClCompile Include="dss_settings.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="qmfcapp.cpp">
-      <Filter>Qt Porting</Filter>
-    </ClCompile>
     <ClCompile Include="mrulist.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -1150,9 +1147,6 @@
     <None Include="QWinWidget">
       <Filter>Qt Porting</Filter>
     </None>
-    <None Include="QMfcApp">
-      <Filter>Qt Porting</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="i18n\translations.qrc">
@@ -1221,9 +1215,6 @@
       <Filter>Qt\ui</Filter>
     </QtUic>
     <QtUic Include="ui\StackingDlg.ui">
-      <Filter>Qt\ui</Filter>
-    </QtUic>
-    <QtUic Include="ui\MainWindow.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
   </ItemGroup>

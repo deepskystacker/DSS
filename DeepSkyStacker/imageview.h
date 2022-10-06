@@ -118,7 +118,7 @@ namespace DSS
 
     public slots:
         void setPixmap(const QPixmap&);
-        void setOverlayPixmap(const QPixmap&);
+        // void setOverlayPixmap(const QPixmap&);
         void on_fourCorners_clicked(bool)
         {
             m_fourCorners = !m_fourCorners;

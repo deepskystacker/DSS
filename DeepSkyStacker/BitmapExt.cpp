@@ -977,13 +977,18 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 
 		double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 		//
-		// Point to the first RGB quad in the QImage
+		// Point to the first RGB quad in the QImage which we
+		// need to cast to QRgb* (which is unsigned int*) from
+		// unsigned char * which is what QImage::bits() returns
 		//
-		QRgb* pOutPixel = (QRgb*)(pImage->bits());
+
+		auto pImageData = pImage->bits();
+		auto bytes_per_line = pImage->bytesPerLine();
 
 #pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		for (int j = 0; j < height; j++)
 		{
+			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
 			if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
 			{
 				// Init iterators

@@ -471,8 +471,8 @@ namespace DSS
 				timeEdit = qobject_cast<QTimeEdit*>(editor);
 				Q_ASSERT(timeEdit);
 				QTime time{ timeEdit->time() };
-				double secs = (time.hour() * 3600) +
-					(time.minute() * 60) +
+				double secs = (static_cast<double>(time.hour()) * 3600) +
+					(static_cast<double>(time.minute()) * 60) +
 					(time.second() +
 					(static_cast<double>(time.msec()) / 1000.0));
 				model->setData(index, secs);
@@ -490,6 +490,19 @@ namespace DSS
 		QWidget(parent),
 		ui(new Ui::StackingDlg),
 		initialised(false),
+		markAsReference{ nullptr },
+		check{ nullptr },
+		uncheck{ nullptr },
+		toLight{ nullptr },
+		toDark{ nullptr },
+		toDarkFlat{ nullptr },
+		toFlat{ nullptr },
+		toOffset{ nullptr },
+		remove{ nullptr },
+		properties{ nullptr },
+		copy{ nullptr },
+		erase{ nullptr },
+		networkManager{ nullptr },
 		m_tipShowCount{ 0 }
 	{
 		ui->setupUi(this);
@@ -498,6 +511,9 @@ namespace DSS
 
 		connect(ui->fourCorners, SIGNAL(clicked(bool)), ui->picture, SLOT(on_fourCorners_clicked(bool)));
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
+		connect(ui->gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
+		connect(ui->gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
+
 	}
 
 	StackingDlg::~StackingDlg()
@@ -935,6 +951,13 @@ namespace DSS
 		QItemSelectionModel* qsm = ui->tableView->selectionModel();
 		connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
 			this, SLOT(tableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
+
+		//
+		// Add the Grey Point stop to the gradient 
+		//
+		ui->gamma->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
+		ui->gamma->setPegsOnLeftOrBottom(true).
+			setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)
@@ -1054,7 +1077,7 @@ namespace DSS
 
 		if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
 		{
-			ui->tableView->setEnabled(true);
+			//ui->tableView->setEnabled(true);
 			//
 			// Disabling the tableview resulted in it loosing focus
 			// so put the focus back
@@ -1093,7 +1116,7 @@ namespace DSS
 		}
 		else if (!m_strShowFile.isEmpty())
 		{
-			ui->tableView->setEnabled(false);
+			//ui->tableView->setEnabled(false);
 			//
 			// Display the "Loading filename" with red background gradient while loading in background
 			//
@@ -2616,6 +2639,114 @@ namespace DSS
 		dlg.DoModal();
 	};
 
+	void StackingDlg::gammaChanging(int peg)
+	{
+		qDebug() << "In StackingDlg::gammaChanging(int peg)";
+		double blackPoint{ 0.0 },
+			greyPoint{ 0.0 },
+			whitePoint{ 0.0 };
+
+		QLinearGradient& gradient{ ui->gamma->gradient() };
+		QGradientStops stops{ gradient.stops() };
+
+		//
+		// Adjust stop values if necessary
+		//
+		Q_ASSERT(5 == stops.size());
+
+		blackPoint = stops[1].first;
+		greyPoint = stops[2].first;
+		whitePoint = stops[3].first;
+		bool adjust{ false };
+
+		switch (peg)
+		{
+		case 1:
+			// Black point moving
+			if (blackPoint > whitePoint - 0.02)
+			{
+				blackPoint = whitePoint - 0.02;
+				adjust = true;
+			};
+			if (blackPoint > greyPoint - 0.01)
+			{
+				greyPoint = blackPoint + 0.01;
+				adjust = true;
+			};
+			break;
+		case 2:
+			// Gray point moving
+			if (greyPoint < blackPoint + 0.01)
+			{
+				greyPoint = blackPoint + 0.01;
+				adjust = true;
+			};
+			if (greyPoint > whitePoint - 0.01)
+			{
+				greyPoint = whitePoint - 0.01;
+				adjust = true;
+			};
+			break;
+		case 3:
+			// White point moving
+			if (whitePoint < blackPoint + 0.02)
+			{
+				whitePoint = blackPoint + 0.02;
+				adjust = true;
+			};
+			if (whitePoint < greyPoint + 0.01)
+			{
+				greyPoint = whitePoint - 0.01;
+				adjust = true;
+			};
+			break;
+		};
+		if (adjust)
+		{
+			stops[1].first = blackPoint;
+			stops[2].first = greyPoint;
+			stops[3].first = whitePoint;
+			gradient.setStops(stops);
+			ui->gamma->update();
+		};
+	}
+
+	void StackingDlg::gammaChanged(int peg)
+	{
+		qDebug() << "In StackingDlg::gammaChanged(int peg)";
+		//
+		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
+		// on final time
+		//
+		gammaChanging(peg);
+
+		double blackPoint{ 0.0 },
+			greyPoint{ 0.0 },
+			whitePoint{ 0.0 };
+
+		QLinearGradient& gradient{ ui->gamma->gradient() };
+		QGradientStops stops{ gradient.stops() };
+		//
+		// Adjust stop values if necessary
+		//
+		Q_ASSERT(5 == stops.size());
+
+		blackPoint = stops[1].first;
+		greyPoint = stops[2].first;
+		whitePoint = stops[3].first;
+
+		qDebug() << "    stops: " << stops;
+
+		// Adjust Gamma
+		m_GammaTransformation.InitTransformation(blackPoint * blackPoint, greyPoint * greyPoint, whitePoint * whitePoint);
+
+		if (m_LoadedImage.m_pBitmap)
+		{
+			ApplyGammaTransformation(m_LoadedImage.m_Image.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
+			// Refresh
+			ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
+		}
+	}
 
 	/* ------------------------------------------------------------------- */
 
@@ -2931,90 +3062,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 
-	void CStackingDlg::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
-	{
-		if (pResult)
-			*pResult = 1;
 
-		PegNMHDR *			pPegNMHDR = (PegNMHDR*)pNMHDR;
-		double				fBlackPoint,
-							fGrayPoint,
-							fWhitePoint;
-
-		if ((pPegNMHDR->nmhdr.code == GC_PEGMOVE) ||
-			(pPegNMHDR->nmhdr.code == GC_PEGMOVED))
-		{
-			// Adjust
-			CGradient &			Gradient = m_Gamma.GetGradient();
-			fBlackPoint = Gradient.GetPeg(Gradient.IndexFromId(0)).position;
-			fGrayPoint  = Gradient.GetPeg(Gradient.IndexFromId(1)).position;
-			fWhitePoint = Gradient.GetPeg(Gradient.IndexFromId(2)).position;
-			BOOL				bAdjust = FALSE;
-
-			switch (pPegNMHDR->peg.id)
-			{
-			case 0 :
-				// Black point moving
-				if (fBlackPoint>fWhitePoint-0.02)
-				{
-					fBlackPoint = fWhitePoint-0.02;
-					bAdjust = TRUE;
-				};
-				if (fBlackPoint>fGrayPoint-0.01)
-				{
-					fGrayPoint = fBlackPoint+0.01;
-					bAdjust = TRUE;
-				};
-				break;
-			case 1 :
-				// Gray point moving
-				if (fGrayPoint<fBlackPoint+0.01)
-				{
-					fGrayPoint = fBlackPoint+0.01;
-					bAdjust = TRUE;
-				};
-				if (fGrayPoint>fWhitePoint-0.01)
-				{
-					fGrayPoint = fWhitePoint-0.01;
-					bAdjust = TRUE;
-				};
-				break;
-			case 2 :
-				// White point moving
-				if (fWhitePoint<fBlackPoint+0.02)
-				{
-					fWhitePoint = fBlackPoint+0.02;
-					bAdjust = TRUE;
-				};
-				if (fWhitePoint < fGrayPoint+0.01)
-				{
-					fGrayPoint = fWhitePoint-0.01;
-					bAdjust = TRUE;
-				};
-				break;
-			};
-			if (bAdjust)
-			{
-				Gradient.SetPeg(Gradient.IndexFromId(0), (float)fBlackPoint);
-				Gradient.SetPeg(Gradient.IndexFromId(1), (float)fGrayPoint);
-				Gradient.SetPeg(Gradient.IndexFromId(2), (float)fWhitePoint);
-				m_Gamma.InvalidateRect(nullptr);
-			};
-		};
-
-		if (pPegNMHDR->nmhdr.code == GC_PEGMOVED)
-		{
-			// Adjust Gamma
-			m_GammaTransformation.InitTransformation(fBlackPoint*fBlackPoint, fGrayPoint*fGrayPoint, fWhitePoint*fWhitePoint);
-
-			if (m_LoadedImage.m_hBitmap)
-			{
-				ApplyGammaTransformation(m_LoadedImage.m_hBitmap.get(), m_LoadedImage.m_pBitmap.get(), m_GammaTransformation);
-				// Refresh
-				m_Picture.Invalidate(TRUE);
-			}
-		}
-	}
 
 	/* ------------------------------------------------------------------- */
 

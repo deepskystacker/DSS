@@ -5,6 +5,7 @@ using std::min;
 using std::max;
 
 #include <QColor>
+#include <QDebug>
 #include <QLinearGradient>
 #include <QMouseEvent>
 #include <QPainter>
@@ -28,51 +29,36 @@ enum SPECIALPEGS : short
 	NONE = -1
 };
 
-QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent) :
+QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor end) :
 	QWidget(parent),
+	m_Gradient(0, 0, 1, 0),
 	m_Width(GCW_AUTO),
 	selectedPeg(NONE),
+	lastSelectedPeg(NONE),
 	m_LastPos(0),
 	m_showToolTips(true),
-	m_Orientation(Auto),
+	m_Orientation(Orientation::Auto),
 	startPegStop(0),
 	m_LeftDownSide(true),
 	m_RightUpSide(false)
 {
 	m_ToolTipFormat = "&SELPOS\nPosition: &SELPOS Colour: R &R G &G B &B\nColour: R &R G &G B &B\nColour: R &R G &G B &B\nDouble Click to Add a New Peg";
 	//m_Impl = new QLinearGradientCtrlImpl(this);
-
+	m_Gradient.setColorAt(0, start);
+	m_Gradient.setColorAt(0.005, start);
+	m_Gradient.setColorAt(0.995, end);
+	m_Gradient.setColorAt(1, end);
 	setFocusPolicy(Qt::StrongFocus);		// Make sure we get key events.
 
 	stops = m_Gradient.stops();				// Grab the gradient stops
-	addAnchorStops();						// Add Anchor stops if not already present
-}
-
-void QLinearGradientCtrl::addAnchorStops()
-{
-	//
-	// Insert additional stops at the start and end of the gradient that match the
-	// existing start and end stops (unless of course they are already present).
-	//
-	// The new first and last will be used as the fixed anchor points (square pegs), while the 
-	// second and first from last will be movable (triangular) pegs.
-	// 
-	// This only done at construction time or when the gradient is replaced by setGradient
-	//
-	if (stops[0] != stops[1])
-		stops.push_front(stops[0]);
-	auto last = stops.size() - 1;
-	if (stops[last] != stops[last - 1])
-		stops.push_back(stops[last]);
-
-	m_Gradient.setStops(stops);
-	endPegStop = last;
+	endPegStop = stops.size() - 1;
 }
 
 QLinearGradientCtrl & QLinearGradientCtrl::setGradient(QLinearGradient const& src)
 {
 	m_Gradient = src;
 	stops = m_Gradient.stops();
+	endPegStop = stops.size() - 1;
 	return *this;
 }
 
@@ -81,7 +67,15 @@ QLinearGradientCtrl::~QLinearGradientCtrl()
 	//delete m_Impl;
 }
 
-int QLinearGradientCtrl::getDrawWidth()
+void QLinearGradientCtrl::setColorAt(double pos, QColor colour)
+{
+	m_Gradient.setColorAt(pos, colour);
+	stops = m_Gradient.stops();				// Grab the gradient stops
+	endPegStop = stops.size() - 1;
+
+}
+
+int QLinearGradientCtrl::getDrawWidth() const
 {
 	return (m_Width == GCW_AUTO) ? (isVertical() ? clientRect.right()+1 :
 		clientRect.bottom()+1) : m_Width;
@@ -89,6 +83,7 @@ int QLinearGradientCtrl::getDrawWidth()
 
 QColor QLinearGradientCtrl::colourFromPoint(const QPoint & point)
 {
+	ZFUNCTRACE_DEVELOP();
 	bool vertical = isVertical();
 	int drawwidth = getDrawWidth();
 	int w = drawwidth - (m_RightUpSide ? 24 : 5) - (m_LeftDownSide ? 24 : 5);
@@ -124,46 +119,54 @@ QColor QLinearGradientCtrl::colourFromPoint(const QPoint & point)
 	return(image.pixel(testPoint));
 }
 
-void QLinearGradientCtrl::drawGradient(QPainter & painter)
+QRect QLinearGradientCtrl::gradientRect() const
 {
+	QRect result;
 	bool vertical = isVertical();
 	int drawwidth = getDrawWidth();
+	int l = (vertical ? clientRect.bottom() + 1 : clientRect.right() + 1) - 10;
 	int w = drawwidth - (m_RightUpSide ? 24 : 5) - (m_LeftDownSide ? 24 : 5);
 
-	if (clientRect.bottom()+1 < 11) return;
+	if (clientRect.bottom() + 1 < 11) return result;	// Null rect
 
-	QBrush oldBrush = painter.brush();
-	painter.setBrush(m_Gradient);
-
-	int l = (vertical ? clientRect.bottom()+1 : clientRect.right()+1) - 10;
-
-	QRect gradientRect;
 	if (vertical)
-		gradientRect = QRect((m_LeftDownSide ? 24 : 5), 5, w, l);
+		result = QRect((m_LeftDownSide ? 24 : 5), 5, w, l);
 	else
-		gradientRect = QRect(5, clientRect.bottom() + 1 - drawwidth + (m_RightUpSide ? 24 : 5), l, w);
+		result = QRect(5, clientRect.bottom() + 1 - drawwidth + (m_RightUpSide ? 24 : 5), l, w);
 
-	ZTRACE_RUNTIME("Gradient rectangle x=%ld, y=%ld, w=%ld, h=%ld",
-		gradientRect.left(), gradientRect.top(),
-		gradientRect.width(), gradientRect.height());
+	return result;
+}
 
-	painter.drawRect(gradientRect);
-	painter.setBrush(oldBrush);
+void QLinearGradientCtrl::drawGradient(QPainter & painter)
+{
+	QRect rect = gradientRect();
+	if (rect.isNull()) return;
 
-	//
-	// Now draw a line around the gradient (maybe it's already done?)
-	//
-
+	if (isVertical())
+	{
+		m_Gradient.setStart(rect.top(), rect.right());
+		m_Gradient.setFinalStop(rect.bottom(), rect.right());
+	}
+	else
+	{
+		m_Gradient.setStart(rect.left(), rect.top());
+		m_Gradient.setFinalStop(rect.right(), rect.top());
+	}
+	painter.save();
+	painter.setBrush(m_Gradient);
+	painter.drawRect(rect);
+	painter.restore();
 }
 
 void QLinearGradientCtrl::drawEndPegs(QPainter & painter)
 {
 	//
-	// Get foreground colour (window text) and create a pen to draw a one pixel boundary
+	// Get foreground colour (window text) and create a pen to draw a boundary
 	// in that colour
 	//
 	QColor	foreground(QPalette().color(QPalette::WindowText));	// get foreground colour 
 	QPen	pen(foreground);
+	painter.save();
 	painter.setPen(pen);
 
 	//
@@ -171,131 +174,48 @@ void QLinearGradientCtrl::drawEndPegs(QPainter & painter)
 	//
 	QBrush  startBrush(stops[startPegStop].second);
 	QBrush	endBrush(stops[endPegStop].second);
-
-	bool vertical = isVertical();
-	int drawwidth = getDrawWidth();
-
-	int x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-
+	QRect pegrect;
+	
 	//----- Draw the first marker -----//
 	painter.setBrush(startBrush);
-	if (m_RightUpSide)
-	{
-		if (vertical)
-		{
-			x1 = drawwidth - 15;
-			y1 = 4;
-			x2 = drawwidth - 8;
-			y2 = 11;
-		}
-		else
-		{
-			x1 = 4;
-			y1 = clientRect.bottom()+1 - drawwidth + 15;
-			x2 = 11;
-			y2 = clientRect.bottom()+1 - drawwidth + 8;
-		}
-		painter.drawRect(x1, y1, x2, y2);
-	}
-	if (m_LeftDownSide)
-	{
-		if (vertical)
-		{
-			x1 = 8;
-			y1 = 4;
-			x2 = 15;
-			y2 = 11;
-		}
-		else
-		{
-			x1 = 4;
-			y1 = clientRect.bottom()+1 - 8;
-			x2 = 11;
-			y2 = clientRect.bottom()+1 - 15;
-		}
-		painter.drawRect(x1, y1, x2, y2);
-	}
-
+	getPegRect(STARTPEG, &pegrect, m_RightUpSide);
+	painter.drawRect(pegrect);
 
 	//----- Draw the last one -----//
 	painter.setBrush(endBrush);
-
-	if (m_RightUpSide)
-	{
-		if (vertical)
-		{
-			x1 = drawwidth - 15;
-			y1 = clientRect.bottom()+1 - 4;
-			x2 = drawwidth - 8;
-			y2 = clientRect.bottom()+1 - 11;
-		}
-		else
-		{
-			x1 = clientRect.right()+1 - 4;
-			y1 = clientRect.bottom()+1 - drawwidth + 8;
-			x2 = clientRect.right()+1 - 11;
-			y2 = clientRect.bottom()+1 - drawwidth + 15;
-		}
-		painter.drawRect(x1, y1, x2, y2);
-	}
-	if (m_LeftDownSide)
-	{
-		if (vertical)
-		{
-			x1 = 8;
-			y1 = clientRect.bottom()+1 - 4;
-			x2 = 15;
-			y2 = clientRect.bottom()+1 - 11;
-		}
-		else
-		{
-			x1 = clientRect.right()+1 - 4;
-			y1 = clientRect.bottom()+1 - 15;
-			x2 = clientRect.right()+1 - 11;
-			y2 = clientRect.bottom()+1 - 8;
-		}
-		painter.drawRect(x1, y1, x2, y2);
-	}
+	getPegRect(ENDPEG, &pegrect, m_RightUpSide);
+	painter.drawRect(pegrect);
+	painter.restore();
 }
 
 void QLinearGradientCtrl::drawPegs(QPainter& painter)
 {
+	ZFUNCTRACE_DEVELOP();
 	// No stupid selection
 	if (selectedPeg > stops.size())
 		selectedPeg = -1;
 
-	int pegindent = 0;
-
-	for (int i = 1; i < stops.size()-1; i++)	// ignore starting and ending stops
+	painter.save();
+	//
+	// Get foreground colour (window text) and create a pen to draw a one pixel boundary
+	// in that colour
+	//
+	QColor	foreground(QPalette().color(QPalette::WindowText));	// get foreground colour 
+	QPen	pen(foreground);
+	painter.setPen(pen);
+	for (int i = 1; i < stops.size() - 1; i++)	// ignore starting and ending stops
 	{
-		if (m_RightUpSide)
-		{
-			//Indent if close
-			pegindent = getPegIndent(i) * 11 + getDrawWidth() - 23;
-
-			//Obvious really
-			if (isVertical())
-				drawPeg(painter, QPoint(pegindent, pointFromPos(stops[i].first)), stops[i].second, 0);
-			else
-				drawPeg(painter, QPoint(pointFromPos(stops[i].first), clientRect.bottom()+1 - pegindent - 1), stops[i].second, 1);
-		}
-
-		if (m_LeftDownSide)
-		{
-			//Indent if close
-			pegindent = 23 - getPegIndent(i) * 11;
-
-			//Obvious really
-			if (isVertical())
-				drawPeg(painter, QPoint(pegindent, pointFromPos(stops[i].first)), stops[i].second, 2);
-			else
-				drawPeg(painter, QPoint(pointFromPos(stops[i].first), clientRect.bottom()+1 - pegindent - 1), stops[i].second, 3);
-		}
+		QPolygon poly{ getPegPoly(i) };
+		QBrush brush{ stops[i].second };
+		painter.setBrush(brush);
+		painter.drawPolygon(poly);
 	}
+	painter.restore();
 }
 
 void QLinearGradientCtrl::drawPeg(QPainter & painter, QPoint point, QColor colour, int direction)
 {
+	ZFUNCTRACE_DEVELOP();
 	QBrush brush(colour);     // create a brush in the requested colour
 	QPoint points[3];
 
@@ -363,133 +283,102 @@ void QLinearGradientCtrl::drawPeg(QPainter & painter, QPoint point, QColor colou
 
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direction)
 {
-	QPoint points[3];
+	ZFUNCTRACE_DEVELOP();
 
+	QPolygon poly{ 3 };
+
+	painter.save();
 	//
 	// Get foreground colour (window text) and create a pen to draw a one pixel boundary
 	// in that colour
 	//
-	auto& oldPen = painter.pen();
 	QColor	foreground(QPalette().color(QPalette::WindowText));	// get foreground colour 
 	QPen	pen(foreground);
 	painter.setPen(pen);
 
-	auto& oldBrush = painter.brush();
 	QBrush brush;			// create a null brush so background isn't filled
 	painter.setBrush(brush);
 
 	//
-	// Preserve painter's composition mode  and set to QPainter::RasterOp_NotDestination
+	// Set composition mode to QPainter::RasterOp_NotDestination
 	//
-	auto oldMode = painter.compositionMode();
 	painter.setCompositionMode(QPainter::RasterOp_NotDestination);
 
 	//Prepare the coodrdinates
 	switch (direction)
 	{
 	case 0:
-		points[0].rx() = 8 + point.x();
-		points[0].ry() = point.y() - 2;
-		points[1].rx() = 2 + point.x();
-		points[1].ry() = point.y() + 1;
-		points[2].rx() = 8 + point.x();
-		points[2].ry() = point.y() + 4;
+		poly[0].rx() = 8 + point.x();
+		poly[0].ry() = point.y() - 3;
+		poly[1].rx() = 2 + point.x();
+		poly[1].ry() = point.y();
+		poly[2].rx() = 8 + point.x();
+		poly[2].ry() = point.y() + 3;
 		break;
 	case 1:
-		points[0].rx() = point.x() - 2;
-		points[0].ry() = point.y() - 8;
-		points[1].rx() = point.x() + 1;
-		points[1].ry() = point.y() - 2;
-		points[2].rx() = point.x() + 4;
-		points[2].ry() = point.y() - 8;
+		poly[0].rx() = point.x() - 3;
+		poly[0].ry() = point.y() - 8;
+		poly[1].rx() = point.x();
+		poly[1].ry() = point.y() - 2;
+		poly[2].rx() = point.x() + 3;
+		poly[2].ry() = point.y() - 8;
 		break;
 	case 2:
-		points[0].rx() = point.x() - 9, points[0].ry() = point.y() - 2;
-		points[1].rx() = point.x() - 3, points[1].ry() = point.y() + 1;
-		points[2].rx() = point.x() - 9, points[2].ry() = point.y() + 4;
+		poly[0].rx() = point.x() - 9, poly[0].ry() = point.y() - 3;
+		poly[1].rx() = point.x() - 3, poly[1].ry() = point.y();
+		poly[2].rx() = point.x() - 9, poly[2].ry() = point.y() + 3;
 		break;
 	default:
-		points[0].rx() = point.x() - 2;
-		points[0].ry() = point.y() + 8;
-		points[1].rx() = point.x() + 1;
-		points[1].ry() = point.y() + 2;
-		points[2].rx() = point.x() + 4;
-		points[2].ry() = point.y() + 8;
+		poly[0].rx() = point.x() - 3;
+		poly[0].ry() = point.y() + 8;
+		poly[1].rx() = point.x();
+		poly[1].ry() = point.y() + 2;
+		poly[2].rx() = point.x() + 3;
+		poly[2].ry() = point.y() + 8;
 		break;
 	}
-	painter.drawPolygon(points, 3);
+	painter.drawPolygon(poly);
 
 	//Restore the composition mode etc ...
-	painter.setCompositionMode(oldMode);
-	painter.setBrush(oldBrush);
-	painter.setPen(oldPen);
+	painter.restore();
 }
 
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, int peg)
 {
+	ZFUNCTRACE_DEVELOP();
 	int drawwidth = getDrawWidth() - 23;
 	bool vertical = isVertical();
 
+	painter.save();
 	//
 	// Get foreground colour (window text) and create a pen to draw a one pixel boundary
 	// in that colour
 	//
-	auto& oldPen = painter.pen();
 	QColor	foreground(QPalette().color(QPalette::WindowText));	// get foreground colour 
 	QPen	pen(foreground);
 	painter.setPen(pen);
 
-	auto& oldBrush = painter.brush();
 	QBrush brush;			// create a null brush so background isn't filled
 	painter.setBrush(brush);
 
 	//
-	// Preserve painter's composition mode  and set to QPainter::RasterOp_NotDestination
+	// Set painter's composition to QPainter::RasterOp_NotDestination
 	//
-	auto oldMode = painter.compositionMode();
 	painter.setCompositionMode(QPainter::RasterOp_NotDestination);
 
 	//"Select objects"//
-	if (peg == STARTPEG)
+	if (STARTPEG == peg || ENDPEG == peg)
 	{
-		if (m_RightUpSide)
-			if (vertical) 
-				painter.drawRect(drawwidth + 9, 5, drawwidth + 14, 10);
-			else 
-				painter.drawRect(5, clientRect.bottom()+1 - drawwidth - 9,
-				10, clientRect.bottom()+1 - drawwidth - 14);
-
-		if (m_LeftDownSide)
-			if (vertical)
-				painter.drawRect(9, 5, 14, 10);
-			else
-				painter.drawRect(5, clientRect.bottom()+1 - 9, 10, clientRect.bottom()+1 - 14);
-
-		return;
-	}
-
-	if (peg == ENDPEG)
-	{
-		if (m_RightUpSide)
-			if (vertical)
-				painter.drawRect(drawwidth + 9, clientRect.bottom()+1 - 10, drawwidth + 14, clientRect.bottom()+1 - 5);
-			else
-				painter.drawRect(clientRect.right()+1 - 10, clientRect.bottom()+1 - drawwidth - 9,
-				clientRect.right()+1 - 5, clientRect.bottom()+1 - drawwidth - 14);
-
-		if (m_LeftDownSide)
-			if (vertical)
-				painter.drawRect(9, clientRect.bottom()+1 - 5, 14, clientRect.bottom()+1 - 10);
-			else
-				painter.drawRect(clientRect.right()+1 - 5, clientRect.bottom()+1 - 9,
-				clientRect.right()+1 - 10, clientRect.bottom()+1 - 14);
+		QRect rect;
+		getPegRect(peg, &rect, m_RightUpSide);
+		rect.adjust(+1, +1, -1, -1);
+		painter.drawRect(rect);
+		painter.restore();
 		return;
 	}
 
 	//Restore the composition mode etc ...
-	painter.setCompositionMode(oldMode);
-	painter.setBrush(oldBrush);
-	painter.setPen(oldPen);
+	painter.restore();
 
 	if (peg > 0 && stops.size())
 	{
@@ -515,27 +404,36 @@ void QLinearGradientCtrl::drawSelPeg(QPainter & painter, int peg)
 
 void QLinearGradientCtrl::resizeEvent(QResizeEvent *event)
 {
+	ZFUNCTRACE_DEVELOP();
 	clientRect = contentsRect();
 	Inherited::resizeEvent(event);
 }
 
 void QLinearGradientCtrl::paintEvent(QPaintEvent *event)
 {
+	ZFUNCTRACE_DEVELOP();
 	QPainter painter(this);
 
 	// Draw it all here ...
-
+	QRect theRect{ event->rect() };
 	//
 	// Erase the area that's been invalidated
 	// 
-	painter.eraseRect(event->rect());
+	painter.eraseRect(theRect);
 
 	//----- Draw the Palette -----//
-	drawGradient(painter);
+	if (theRect.intersects(gradientRect()))
+		drawGradient(painter);
+
 
 	//----- Draw the marker arrows -----//
 	drawEndPegs(painter);
-	drawPegs(painter); //The order is important - Explanation: The function DrawSelPeg must be called last as the peg has already been drawn in normally by DrawPegs
+	drawPegs(painter);
+	//
+	// The order is important!
+	//    The function DrawSelPeg must be called last as the peg has 
+	// already been drawn in normally by DrawPegs
+	//
 	drawSelPeg(painter, selectedPeg);
 
 	//----- Draw a box around the palette -----//
@@ -569,10 +467,7 @@ void QLinearGradientCtrl::mousePressEvent(QMouseEvent *event)
 		QPoint point = event->pos();
 		QRect pegrect;
 
-		QPainter painter(this);
-
 		bool nowselected = false;
-
 		m_LastPos = -1;
 
 		//----- Just in case the user starts dragging -----//
@@ -583,74 +478,40 @@ void QLinearGradientCtrl::mousePressEvent(QMouseEvent *event)
 		//----- Check if the user is selecting a marker peg -----//
 		for (int i = 1; i < stops.size() -1 ; i++) // Only the movable ones please
 		{
-			if (m_RightUpSide)
+			getPegRect(i, &pegrect, m_RightUpSide);
+			if (pegrect.contains(point))
 			{
-				getPegRect(i, &pegrect, true);
-				if (pegrect.contains(point))
-				{
-					setSelectedIndex(i);
-					nowselected = true;
-					break;
-				}
-			}
-
-			if (m_LeftDownSide)
-			{
-				getPegRect(i, &pegrect, false);
-				if (pegrect.contains(point))
-				{
-					setSelectedIndex(i);
-					nowselected = true;
-					break;
-				}
+				setSelected(i);
+				nowselected = true;
+				break;
 			}
 		}
 
 		//----- Check if the user is trying to select the first or last one -----//
-
-		if (m_RightUpSide)
+		if (!nowselected)
 		{
-			getPegRect(STARTPEG, &pegrect, true);
+			getPegRect(STARTPEG, &pegrect, m_RightUpSide);
 			if (pegrect.contains(point))
 			{
-				setSelectedIndex(STARTPEG);
+				setSelected(STARTPEG);
 				nowselected = true;
 			}
 
-			getPegRect(ENDPEG, &pegrect, true);
+			getPegRect(ENDPEG, &pegrect, m_RightUpSide);
 			if (pegrect.contains(point))
 			{
-				setSelectedIndex(ENDPEG);
+				setSelected(ENDPEG);
 				nowselected = true;
 			}
 		}
-
-		if (m_LeftDownSide)
-		{
-			getPegRect(STARTPEG, &pegrect, false);
-			if (pegrect.contains(point))
-			{
-				setSelectedIndex(STARTPEG);
-				nowselected = true;
-			}
-
-			getPegRect(ENDPEG, &pegrect, false);
-			if (pegrect.contains(point))
-			{
-				setSelectedIndex(ENDPEG);
-				nowselected = true;
-			}
-		}
-
 
 		if (!nowselected)
 		{
-			drawSelPeg(painter, selectedPeg);
+			lastSelectedPeg = selectedPeg;
 			selectedPeg = NONE;
 			m_LastPos = -1;
 		}
-
-		emit pegSelChanged(selectedPeg);
+		update();
 
 		setFocus();
 	}
@@ -663,14 +524,12 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 	{
 		QPoint point(event->pos());
 		QPoint tippoint;
-		QRegion oldRegion, newRegion, eraseRegion;
 		//QString tiptext;
 		bool vertical = isVertical();
 		int selpegpos;
 
 		//----- Prepare -----//
 		float pos;
-
 		//----- Checks to see if the mouse is far enough away to "drop out" -----//
 		if (vertical)
 		{
@@ -686,21 +545,22 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 			else
 				selpegpos = m_MouseDown.x();
 		}
-		// Get old region
-		oldRegion = getPegRegion();
+		QRegion region{ getPegRegion() };
 
 		//----- Continue -----//
 		pos = posFromPoint(selpegpos);
 		//"The id of the selection may change"//
 		selectedPeg = setPeg(selectedPeg, stops[selectedPeg].second, pos);
 		m_Gradient.setStops(stops);
-
-		// Get new region
-		newRegion = getPegRegion();
-
-		//----- Get the region for the changed pegs and erase them -----//
-		eraseRegion = oldRegion - newRegion;
-		update(eraseRegion);			// Erase the old pegs.
+		region = region.united(getPegRegion());;
+		//----- Get the region for the pegs and erase them -----//
+		//
+		// Note that this uses repaint() not update()
+		// Qt docs say:
+		//
+		// We suggest only using repaint() if you need an immediate repaint, for example during animation.
+		//		
+		repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 		m_LastPos = selpegpos;
 
@@ -735,7 +595,10 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 
 		//----- Tell the world that the peg is moving -----//
 		if (STARTPEG != selectedPeg && ENDPEG != selectedPeg)
+		{
 			emit pegMove(selectedPeg);
+			emit pegChanged(selectedPeg);
+		}
 	}
 
 	Inherited::mouseMoveEvent(event);
@@ -743,10 +606,11 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 
 void QLinearGradientCtrl::mouseReleaseEvent(QMouseEvent *event)
 {
-	if (Qt::LeftButton == event->buttons() && selectedPeg > -1)
+	if (Qt::LeftButton == event->button() )
 	{
 		if (selectedPeg >= STARTPEG && selectedPeg != NONE)
 		{
+#if (0)
 			bool vertical = isVertical();
 			//int selpegpos = vertical ? point.y-5 : point.x-5;
 
@@ -758,6 +622,10 @@ void QLinearGradientCtrl::mouseReleaseEvent(QMouseEvent *event)
 					clientRect.bottom()+1 - getDrawWidth())); //Erase the old ones
 
 			//m_Impl->DestroyTooltip();
+#endif
+			QRect pegrect;
+			getPegRect(selectedPeg, &pegrect, m_RightUpSide);
+			update(pegrect);
 
 			emit pegMoved(selectedPeg);		// emit the specific peg moved signal
 			emit pegChanged(selectedPeg);	// emit the generic something changed signal
@@ -792,7 +660,7 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 				if (pegrect.contains(point))
 				{
 					update(pegrect);
-					setSelectedIndex(i);
+					lastSelectedPeg = setSelected(i);
 					edit = true;
 					break;
 				}
@@ -804,7 +672,7 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 				if (pegrect.contains(point))
 				{
 					update(pegrect);
-					setSelectedIndex(i);
+					lastSelectedPeg = setSelected(i);
 					edit = true;
 					break;
 				}
@@ -813,22 +681,19 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 
 
 		//----- Check if the user is trying to select the first or last one -----//
-
-		pegrect.setLeft(drawwidth + 8), pegrect.setTop(4);
-		pegrect.setRight(drawwidth + 15), pegrect.setBottom(11);
+		getPegRect(STARTPEG, &pegrect, m_RightUpSide);
 		if (pegrect.contains(point))
 		{
 			update(pegrect);
-			selectedPeg = STARTPEG;
+			lastSelectedPeg = setSelected(STARTPEG);
 			edit = true;
 		}
 
-		pegrect.setLeft(drawwidth + 8), pegrect.setTop(clientRect.bottom() + 1 - 11);
-		pegrect.setRight(drawwidth + 15), pegrect.setBottom(clientRect.bottom() + 1 - 4);
+		getPegRect(ENDPEG, &pegrect, m_RightUpSide);
 		if (pegrect.contains(point))
 		{
 			update(pegrect);
-			selectedPeg = ENDPEG;
+			lastSelectedPeg = setSelected(ENDPEG);
 			edit = true;
 		}
 
@@ -854,9 +719,9 @@ void QLinearGradientCtrl::mouseDoubleClickEvent(QMouseEvent *event)
 	}
 }
 
-
 void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 {
+	qDebug() << "In keyPressEvent()";
 	QPainter painter;
 	event->setAccepted(true);		// Set that we've handled the event.  If not default will reset
 	switch (event->key())
@@ -891,7 +756,7 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first = 0.0;
+			stop.first = 0.005;
 			moveSelected(stop.first, true);
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -904,7 +769,7 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
-			stop.first = 1.0;
+			stop.first = 0.995;
 			moveSelected(stop.first, true);
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -915,13 +780,13 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		break;
 
 	case Qt::Key_Left:
-	case Qt::Key_Up:
+	case Qt::Key_Down:
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
 			stop.first -= 0.005f;
-			//Make sure that the position does not stray below zero
-			stop.first = (stop.first <= 1.0f) ? stop.first : 1.0f;
+			//Make sure that the position does not stray below 0.005
+			stop.first = (stop.first <= 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
 
 			//Send parent messages
@@ -931,14 +796,13 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		break;
 
 	case Qt::Key_Right:
-	case Qt::Key_Down:
+	case Qt::Key_Up:
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
 			stop.first += 0.005f;
-			//Make sure that the position does not stray above 1
-			stop.first = (stop.first <= 1.0f) ? stop.first : 1.0f;
-			moveSelected(stop.first, true);
+			//Make sure that the position does not stray above 0.995
+			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
 
 			//Send parent messages
 			emit pegMoved(selectedPeg);
@@ -954,13 +818,13 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 
 		break;
 
-	case Qt::Key_PageUp: // Shift the peg up a big jump
+	case Qt::Key_PageDown:
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
 			stop.first -= 0.01f;
-			//Make sure that the position does not stray bellow zero
-			stop.first = (stop.first >= 0.0f) ? stop.first : 0.0f;
+			//Make sure that the position does not stray below 0.005
+			stop.first = (stop.first >= 0.005f) ? stop.first : 0.005f;
 			moveSelected(stop.first, true);
 
 			//Send parent messages
@@ -969,13 +833,13 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 		}
 		break;
 
-	case Qt::Key_PageDown:
+	case Qt::Key_PageUp: // Shift the peg up a big jump
 		if (selectedPeg > startPegStop && selectedPeg < endPegStop)
 		{
 			QGradientStop stop = selectedStop();
 			stop.first += 0.01f;
-			//Make sure that the position does not stray above 1
-			stop.first = (stop.first <= 1.0f) ? stop.first : 1.0f;
+			//Make sure that the position does not stray above 0.995
+			stop.first = (stop.first <= 0.995f) ? stop.first : 0.995f;
 			moveSelected(stop.first, true);
 
 			//Send parent messages
@@ -996,8 +860,19 @@ void QLinearGradientCtrl::keyPressEvent(QKeyEvent * event)
 	case Qt::Key_Insert:
 		if (selectedPeg >= 0 && selectedPeg < stops.size())
 		{
-			// Create a peg at the same position as the currently selected peg
-			emit createPeg(stops[selectedPeg].first, stops[selectedPeg].second);
+			//
+			// Create a peg at about the same position as the currently selected peg
+			// but not the identical location otherwise QGradient::setStops() will
+			// throw it away
+			//
+			if (stops[selectedPeg].first < 0.990f)
+			{
+				emit createPeg(stops[selectedPeg].first + 0.005f, stops[selectedPeg].second);
+			}
+			else
+			{
+				emit createPeg(stops[selectedPeg].first - 0.005f, stops[selectedPeg].second);
+			}
 		}
 		break;
 	default:
@@ -1038,6 +913,7 @@ void QLinearGradientCtrl::deleteSelected(bool bUpdate)
 
 int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 {
+	ZFUNCTRACE_DEVELOP();
 	if (position < 0) position = 0;
 	else if (position > 1) position = 1;
 
@@ -1051,6 +927,7 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 	}
 	else if (index != NONE)
 	{
+		position = std::clamp(position, 0.005, 0.995);
 		stops[index].first = position;
 		stops[index].second = colour;
 		QGradientStop temp(stops[index]);
@@ -1060,24 +937,47 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 			return lhs.first < rhs.first;
 		}
 			);
-		return stops.indexOf(temp);
+		int result = stops.indexOf(temp);
+
+		//
+		// Added code to prevent duplicates which QGradient will reject :(
+		//
+		for (int i = 0; i < stops.size()-1; i++)
+		{
+			if (i < (endPegStop-1) && stops[i].first == stops[i+1].first)
+			{
+				stops[i + 1].first += 0.005f;
+			}
+			else if (stops[i].first == stops[i + 1].first)
+			{
+				stops[i].first -= 0.005f;
+			}
+		}
+		return result;
+
 	}
 	return -1;
 }
 
-int QLinearGradientCtrl::setSelectedIndex(int iSel)
+int QLinearGradientCtrl::setSelected(int iSel)
 {
-	int oldsel = selectedPeg;
-	assert(iSel >= STARTPEG); //Nothing smaller than -3 ok?
-	assert(iSel < endPegStop); //Make sure things are in range
+	if (selectedPeg != iSel)
+	{
+		QRect lastRect, selRect;
+		Q_ASSERT(iSel >= STARTPEG); //Nothing smaller than -3 ok?
+		Q_ASSERT(iSel < endPegStop); //Make sure things are in range
+		lastSelectedPeg = selectedPeg;
+		selectedPeg = iSel;
+		emit pegSelChanged(selectedPeg);
+		update(getPegRegion());		
+	}
 
-	selectedPeg = iSel;
-
-	return oldsel;
+	return lastSelectedPeg;
 }
 
 int QLinearGradientCtrl::moveSelected(qreal newpos, bool bUpdate)
 {
+	ZFUNCTRACE_DEVELOP();
 	if (selectedPeg < 0)
 		return -1;
 
@@ -1127,8 +1027,6 @@ void QLinearGradientCtrl::setShowToolTips(bool bShow)
 	//	m_Impl->SynchronizeTooltips();
 }
 
-#pragma warning(push)
-#pragma warning(disable:4715)
 QGradientStop QLinearGradientCtrl::selectedStop() const
 {
 	QGradientStop nullStop;   // QPair(0.0, QColor())  QColor() is not a valid colour!
@@ -1138,17 +1036,15 @@ QGradientStop QLinearGradientCtrl::selectedStop() const
 		return stops[endPegStop];
 	if (selectedPeg == NONE)
 		return nullStop;
-	if (selectedPeg > startPegStop && selectedPeg < endPegStop)
-		return stops[selectedPeg];
-	else assert(false); // Some kind of stupid error
+	Q_ASSERT(selectedPeg > startPegStop && selectedPeg < endPegStop);
+	return stops[selectedPeg];
 }
-#pragma warning(pop)
 
-bool QLinearGradientCtrl::isVertical()
+bool QLinearGradientCtrl::isVertical() const
 {
-	if (m_Orientation == ForceVertical)
+	if (m_Orientation == Orientation::ForceVertical)
 		return true;
-	else if (m_Orientation == ForceHorizontal)
+	else if (m_Orientation == Orientation::ForceHorizontal)
 		return false;
 	else
 	{
@@ -1161,12 +1057,12 @@ int QLinearGradientCtrl::pointFromPos(qreal pos)
 	qreal length = isVertical() ? ((qreal)clientRect.height() - 10.0)
 		: ((qreal)clientRect.width() - 10.0);
 
-	return (int)(pos*length) + 4;
+	return (int)(pos*length) + 5;
 }
 
 qreal QLinearGradientCtrl::posFromPoint(int point)
 {
-	int length = isVertical() ? (clientRect.bottom()+1 - 9) : (clientRect.right()+1 - 9);
+	int length = isVertical() ? (clientRect.bottom() - 9) : (clientRect.right() - 9);
 	int x = point - 5;
 	qreal val;
 
@@ -1177,7 +1073,6 @@ qreal QLinearGradientCtrl::posFromPoint(int point)
 
 	return val;
 }
-
 
 int QLinearGradientCtrl::getPegIndent(int index)
 {
@@ -1201,34 +1096,42 @@ void QLinearGradientCtrl::getPegRect(int index, QRect *rect, bool right)
 	int drawwidth = getDrawWidth();
 	bool vertical = isVertical();
 
+	constexpr int lmargin = 1;
+	constexpr int rmargin = 1;
+	constexpr int tmargin = 3;
+	constexpr int bmargin = 3;
+	constexpr int size = 8;
+	constexpr QSize endsize{ size , size };
+
+
 	if (index == STARTPEG)
 	{
 		if (right)
 		{
 			if (vertical)
 			{
-				rect->setTopLeft(QPoint(drawwidth - 15, 4));
-				rect->setBottomRight(QPoint(drawwidth - 8, 11));
+				rect->setTopLeft(QPoint(drawwidth - (rmargin + size),
+					tmargin));
 			}
 			else
 			{
-				rect->setTopLeft(QPoint(4, clientRect.bottom()+1 - drawwidth + 8));
-				rect->setBottomRight(QPoint(11, clientRect.bottom()+1 - drawwidth + 15));
+				rect->setTopLeft(QPoint(lmargin,
+					clientRect.bottom() + 1 - drawwidth + tmargin));
 			}
 		}
 		else
 		{
 			if (vertical)
 			{
-				rect->setTopLeft(QPoint(8, 4));
-				rect->setBottomRight(QPoint(15, 11));
+				rect->setTopLeft(QPoint(lmargin,
+					tmargin));
 			}
 			else
 			{
-				rect->setTopLeft(QPoint(4, clientRect.bottom()+1 - 15));
-				rect->setBottomRight(QPoint(11, clientRect.bottom() + 1 - 8));
+				rect->setTopLeft(QPoint(lmargin,clientRect.bottom() + 1 - (bmargin + size)));
 			}
 		}
+		rect->setSize(endsize);
 		return;
 	}
 
@@ -1238,29 +1141,29 @@ void QLinearGradientCtrl::getPegRect(int index, QRect *rect, bool right)
 		{
 			if (vertical)
 			{
-				rect->setTopLeft(QPoint(drawwidth - 15, clientRect.bottom()+1 - 11));
-				rect->setBottomRight(QPoint(drawwidth - 8, clientRect.bottom() + 1 - 4));
+				rect->setTopLeft(QPoint(drawwidth - (rmargin + size), 
+					clientRect.bottom() + 1 - (bmargin + size)));
 			}
 			else
 			{
-				rect->setTopLeft(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - drawwidth + 8));
-				rect->setBottomRight(QPoint(clientRect.right() + 1 - 4, clientRect.bottom() + 1 - drawwidth + 15));
+				rect->setTopLeft(QPoint(clientRect.right() + 1 - (rmargin + size), 
+					clientRect.bottom() + 1 - drawwidth + (bmargin + size)));
 			}
 		}
 		else
 		{
 			if (vertical)
 			{
-				rect->setTopLeft(QPoint(8, clientRect.bottom()+1 - 11));
-				rect->setBottomRight(QPoint(15, clientRect.bottom()+1 - 4));
+				rect->setTopLeft(QPoint(lmargin,
+					clientRect.bottom() + 1 - (bmargin + size)));
 			}
 			else
 			{
-				rect->setTopLeft(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - 15));
-				rect->setBottomRight(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - 8));
+				rect->setTopLeft(QPoint(clientRect.right() + 1 - (rmargin + size),
+					clientRect.bottom() + 1 - (bmargin + size)));
 			}
 		}
-
+		rect->setSize(endsize);
 		return;
 	}
 
@@ -1268,33 +1171,92 @@ void QLinearGradientCtrl::getPegRect(int index, QRect *rect, bool right)
 	int p = pointFromPos(position);
 	int indent = getPegIndent(index) * 11;
 
-	if (right)
+	QRegion region{ getPegPoly(index) };
+	*rect = region.boundingRect();
+}
+
+QPolygon QLinearGradientCtrl::getPegPoly(int i)
+{
+	QPoint pegpoint;
+	int drawwidth = getDrawWidth();
+	bool vertical = isVertical();
+
+	Q_ASSERT(i > 0 && i < endPegStop);
+
+	QVector<QPoint> points;
+
+	if (vertical)
 	{
-		if (vertical)
+		pegpoint.ry() = pointFromPos(stops[i].first);
+
+		if (m_LeftDownSide)
 		{
-			rect->setTopLeft(QPoint(drawwidth + indent - 23, p - 3));
-			rect->setBottomRight(QPoint(drawwidth + indent - 13, p + 6));
+			pegpoint.rx() = 23 - getPegIndent(i) * 11;
+
+			points.push_back(QPoint(pegpoint.x(), pegpoint.y()));
+			points.push_back(QPoint(pegpoint.x() - 9, pegpoint.y() - 5));
+			points.push_back(QPoint(pegpoint.x() - 9, pegpoint.y() + 5));
+			return QPolygon(points);
 		}
-		else
+
+		if (m_RightUpSide)
 		{
-			rect->setTopLeft(QPoint(p - 3, clientRect.bottom()+1 - drawwidth - indent + 13));
-			rect->setBottomRight(QPoint(p + 6, clientRect.bottom()+1 - drawwidth - indent + 23));
+			pegpoint.rx() = getPegIndent(i) * 11 + drawwidth - 23;
+
+			points.push_back(QPoint(pegpoint.x(), pegpoint.y()));
+			points.push_back(QPoint(pegpoint.x() + 9, pegpoint.y() - 5));
+			points.push_back(QPoint(pegpoint.x() + 9, pegpoint.y() + 5));
+			return QPolygon(points);
 		}
 	}
 	else
 	{
-		if (vertical)
+		pegpoint.rx() = pointFromPos(stops[i].first);
+
+		if (m_LeftDownSide)
 		{
-			rect->setTopLeft(QPoint(13 - indent, p - 3));
-			rect->setBottomRight(QPoint(23 - indent, p + 6));
+			pegpoint.ry() = clientRect.bottom() + 1 - 23 + getPegIndent(i) * 11;
+
+			points.push_back(QPoint(pegpoint.x(), pegpoint.y() - 1));
+			points.push_back(QPoint(pegpoint.x() - 5, pegpoint.y() + 9));
+			points.push_back(QPoint(pegpoint.x() + 5, pegpoint.y() + 9));
+			return QPolygon(points);
 		}
-		else
+
+		if (m_RightUpSide)
 		{
-			rect->setTopLeft(QPoint(p - 3, clientRect.bottom()+1 + indent - 23));
-			rect->setBottomRight(QPoint(p + 6, clientRect.bottom()+1 + indent - 13));
+			pegpoint.ry() = clientRect.bottom() + 1 - getPegIndent(i) * 11 - drawwidth + 22;
+
+			points.push_back(QPoint(pegpoint.x(), pegpoint.y() + 1));
+			points.push_back(QPoint(pegpoint.x() - 5, pegpoint.y() - 9));
+			points.push_back(QPoint(pegpoint.x() + 5, pegpoint.y() - 9));
+			return QPolygon(points);
 		}
 	}
+	return QPolygon();		// return empty polygon
 }
+
+QRegion QLinearGradientCtrl::getPegRegion(short peg)
+{
+	QRect rect;
+
+	Q_ASSERT(peg >= STARTPEG && peg <= endPegStop);
+	if (STARTPEG == peg)
+	{
+		getPegRect(STARTPEG, &rect, m_RightUpSide);
+		return QRegion(rect);
+	}
+	else if (ENDPEG == peg)
+	{
+		getPegRect(ENDPEG, &rect, m_RightUpSide);
+		return QRegion(rect);
+	}
+	else
+	{
+		return QRegion(getPegPoly(peg));
+	}
+}
+
 
 QRegion QLinearGradientCtrl::getPegRegion()
 {
@@ -1309,137 +1271,17 @@ QRegion QLinearGradientCtrl::getPegRegion()
 		return result;			// Return the empty region
 	}
 
-
-	QVector<QPoint> points(4);
 	//----- End pegs -----//
-	if (vertical)
-	{
-		if (m_RightUpSide)
-		{
-			points.push_back(QPoint(drawwidth - 15, 4));
-			points.push_back(QPoint(drawwidth - 15, 11));
-			points.push_back(QPoint(drawwidth - 8, 11));
-			points.push_back(QPoint(drawwidth - 8, 4));
-			result += QRegion(QPolygon(points));
-			points.empty();
-
-			points.push_back(QPoint(drawwidth - 15, clientRect.bottom()+1 - 4));
-			points.push_back(QPoint(drawwidth - 15, clientRect.bottom()+1 - 11));
-			points.push_back(QPoint(drawwidth - 8, clientRect.bottom()+1 - 11));
-			points.push_back(QPoint(drawwidth - 8, clientRect.bottom()+1 - 4));
-			result += QRegion(QPolygon(points));
-			points.empty();
-		}
-
-		if (m_LeftDownSide)
-		{
-			points.push_back(QPoint(8, 4));
-			points.push_back(QPoint(8, 11));
-			points.push_back(QPoint(15, 11));
-			points.push_back(QPoint(15, 4));
-			result += QRegion(QPolygon(points));
-			points.empty();
-
-			points.push_back(QPoint(8, clientRect.bottom()+1 - 4));
-			points.push_back(QPoint(8, clientRect.bottom()+1 - 11));
-			points.push_back(QPoint(15, clientRect.bottom()+1 - 11));
-			points.push_back(QPoint(15, clientRect.bottom()+1 - 4));
-			result += QRegion(QPolygon(points));
-			points.empty();
-		}
-	}
-	else
-	{
-		if (m_RightUpSide)
-		{
-			points.push_back(QPoint(4, clientRect.bottom()+1 - drawwidth + 8));
-			points.push_back(QPoint(11, clientRect.bottom()+1 - drawwidth + 8));
-			points.push_back(QPoint(11, clientRect.bottom()+1 - drawwidth + 15));
-			points.push_back(QPoint(4, clientRect.bottom()+1 - drawwidth + 15));
-			result += QRegion(QPolygon(points));
-			points.empty();
-
-			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - drawwidth + 8));
-			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - drawwidth + 8));
-			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - drawwidth + 15));
-			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - drawwidth + 15));
-			result += QRegion(QPolygon(points));
-			points.empty();
-		}
-
-		if (m_LeftDownSide)
-		{
-			points.push_back(QPoint(4, clientRect.bottom()+1 - 8));
-			points.push_back(QPoint(11, clientRect.bottom()+1 - 8));
-			points.push_back(QPoint(11, clientRect.bottom()+1 - 15));
-			points.push_back(QPoint(4, clientRect.bottom()+1 - 15));
-			result += QRegion(QPolygon(points));
-			points.empty();
-
-			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - 8));
-			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - 8));
-			points.push_back(QPoint(clientRect.right()+1 - 11, clientRect.bottom()+1 - 15));
-			points.push_back(QPoint(clientRect.right()+1 - 4, clientRect.bottom()+1 - 15));
-			result += QRegion(QPolygon(points));
-			points.empty();
-		}
-	}
+	QRect rect;
+	getPegRect(STARTPEG, &rect, m_RightUpSide);
+	result += QRegion(rect);
+	getPegRect(ENDPEG, &rect, m_RightUpSide);
+	result += QRegion(rect);
 
 	//----- Main pegs -----//
 	for (int i = 1; i < endPegStop-1; i++)
 	{
-		if (vertical)
-		{
-			pegpoint.ry() = pointFromPos(stops[i].first);
-
-			if (m_LeftDownSide)
-			{
-				pegpoint.rx() = 23 - getPegIndent(i) * 11;
-
-				points.push_back(QPoint(pegpoint.x(), pegpoint.y() + 1));
-				points.push_back(QPoint(pegpoint.x() - 10, pegpoint.y() - 4));
-				points.push_back(QPoint(pegpoint.x() - 10, pegpoint.y() + 6));
-				result += QRegion(QPolygon(points));
-				points.empty();
-			}
-
-			if (m_RightUpSide)
-			{
-				pegpoint.rx() = getPegIndent(i) * 11 + drawwidth - 23;
-
-				points.push_back(QPoint(pegpoint.x(), pegpoint.y() + 1));
-				points.push_back(QPoint(pegpoint.x() + 10, pegpoint.y() - 4));
-				points.push_back(QPoint(pegpoint.x() + 10, pegpoint.y() + 6));
-				result += QRegion(QPolygon(points));
-				points.empty();
-			}
-		}
-		else
-		{
-			pegpoint.rx() = pointFromPos(stops[i].first);
-
-			if (m_LeftDownSide)
-			{
-				pegpoint.ry() = clientRect.bottom()+1 - 23 + getPegIndent(i) * 11;
-
-				points.push_back(QPoint(pegpoint.x() + 1, pegpoint.y() - 1));
-				points.push_back(QPoint(pegpoint.x() - 4, pegpoint.y() + 10));
-				points.push_back(QPoint(pegpoint.x() + 7, pegpoint.y() + 10));
-				result += QRegion(QPolygon(points));
-				points.empty();
-			}
-
-			if (m_RightUpSide)
-			{
-				pegpoint.ry() = clientRect.bottom()+1 - getPegIndent(i) * 11 - drawwidth + 22;
-
-				points.push_back(QPoint(pegpoint.x() + 1, pegpoint.y() + 1));
-				points.push_back(QPoint(pegpoint.x() - 4, pegpoint.y() - 9));
-				points.push_back(QPoint(pegpoint.x() + 6, pegpoint.y() - 9));
-				result += QRegion(QPolygon(points));
-				points.empty();
-			}
-		}
+		result += QRegion(getPegPoly(i));
 	}
 
 	return result;
@@ -1448,7 +1290,7 @@ QRegion QLinearGradientCtrl::getPegRegion()
 //{
 //	if (!event->spontaneous())
 //	{
-//	
+//		setFocus();
 //	}
 //	// Invoke base class showEvent()
 //	return Inherited::showEvent(event);
