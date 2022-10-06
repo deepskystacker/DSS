@@ -35,7 +35,7 @@ You will need to use *Extensions/Qt VS Tools/Qt Versions* to set up a named Qt I
 	Called 6.4.0_msvc2019_64 pointing to the msvc2019_64 sub-directory of your Qt install
 		for example C:\Qt\6.4.0\msvc2019_64
 		
-You will also need to install [Visual Leak Detector](https://github.com/Azure/vld/releases), which
+You will also need to install [Visual Leak Detector](https://github.com/oneiric/vld/releases/tag/v2.7.0), which
 the project will expect to find at C:\Program Files (x86)\Visual Leak Detector.
 In the Visual Leak Detector installation wizard, be sure to check "Add VLD directory to your environmental path".
 
