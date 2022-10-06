@@ -138,6 +138,9 @@ namespace DSS
 			QAbstractItemModel* model,
 			const QModelIndex& index) const override;
 
+	protected:
+		void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+
 	};
 
 
