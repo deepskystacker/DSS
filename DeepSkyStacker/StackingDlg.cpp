@@ -483,6 +483,26 @@ namespace DSS
 		}
 	}
 
+	void ItemEditDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+	{
+		Inherited::paint(painter, option, index);
+		QStyleOptionViewItem opt{ option };
+		initStyleOption(&opt, index);
+
+		QStyle* style = opt.widget ? opt.widget->style() : QApplication::style();
+
+		//
+		// Draw a single pixel wide rounded rectangle around the text to show this
+		// cell is editable.
+		//
+		painter->save();
+		QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &opt);
+		textRect.adjust(1,1, -1, -1);
+		painter->setPen(QPen(QColorConstants::Svg::lightblue));
+		painter->drawRect(textRect);
+		painter->restore();
+	}
+
 	/////////////////////////////////////////////////////////////////////////////
 	// StackingDlg dialog
 
