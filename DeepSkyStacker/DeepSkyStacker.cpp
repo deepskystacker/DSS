@@ -556,11 +556,6 @@ int main(int argc, char* argv[])
 	// initialize all the windows stuff we need for now
 	theApp.InitInstance();
 
-	QSettings		settings;
-
-	g_bShowRefStars = settings.value("ShowRefStars", false).toBool();
-
-
 	// High DPI support
 #if QT_VERSION < 0x060000
 	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
@@ -577,26 +572,19 @@ int main(int argc, char* argv[])
 	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 	QCoreApplication::setApplicationName("DeepSkyStacker5");
 
+	QSettings		settings;
+
+	g_bShowRefStars = settings.value("ShowRefStars", false).toBool();
+
 	//
 	// Set the Qt Application Style
 	//
 	app.setStyle(QStyleFactory::create("Fusion"));
 
-	QString translatorFileName = QLatin1String("qt_");
-	translatorFileName += QLocale::system().name();
-	
-#if QT_VERSION >= 0x060000
-	qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
-	if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-#else
-	qDebug() << "translationPath " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-#endif
-		app.installTranslator(&theQtTranslator);
-
 	ZTRACE_RUNTIME("Initialize Application - ok");
 
 	ZTRACE_RUNTIME("Set UI Language");
+
 	//
 	// Retrieve the Qt language name (e.g.) en_GB
 	//
@@ -610,12 +598,34 @@ int main(int argc, char* argv[])
 		language = QLocale::system().name();
 	}
 
+	bool installTranslatorResult{ false };
+
+	QString translatorFileName = QLatin1String("qt_");
+	translatorFileName += language;
+	qDebug() << "qt translator filename: " << translatorFileName;
+	
+#if QT_VERSION >= 0x060000
+	qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+	if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+#else
+	qDebug() << "translationPath " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+#endif
+	{
+		bool r{ app.installTranslator(&theQtTranslator) };
+		Q_ASSERT(r);
+	}
+
+	translatorFileName = QLatin1String("DSS.");
+	translatorFileName += language;
+	qDebug() << "app translator filename: " << translatorFileName;
 	//
 	// Install the language if it actually exists.
 	//
-	if (theAppTranslator.load("DSS." + language, ":/i18n/"))
+	if (theAppTranslator.load(translatorFileName, ":/i18n/"))
 	{
-		QCoreApplication::instance()->installTranslator(&theAppTranslator);
+		bool r{ app.installTranslator(&theAppTranslator) };
+		Q_ASSERT(r);
 	}
 
 	//
