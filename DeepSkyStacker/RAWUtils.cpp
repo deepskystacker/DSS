@@ -819,6 +819,18 @@ namespace { // Only use in this .cpp file
 				ZTRACE_RUNTIME("White balance co-efficients being used are %f, %f, %f, %f",
 					pre_mul[0], pre_mul[1], pre_mul[2], pre_mul[3]);
 
+#if (0)
+				qDebug() << "Colour Correction Matrix:";
+				for (int c = 0; c < 3; c++)
+				{
+					qDebug() << " "
+						<< C.ccm[c][0] << " "
+						<< C.ccm[c][1] << " "
+						<< C.ccm[c][2] << " "
+						<< C.ccm[c][3];
+				}
+#endif
+
 				if (0 == pre_mul[3]) pre_mul[3] = P1.colors < 4 ? pre_mul[1] : 1;
 
 				//
