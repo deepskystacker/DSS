@@ -60,7 +60,7 @@ void ProgressDlg::setProcessorsUsed(int lNrProcessors)
 }
 void ProgressDlg::cancelPressed()
 {
-	if (QMessageBox::question(this, "Are You Sure?", "Are you sure you wish to cancel this operation?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+	if (QMessageBox::question(this, "Are You Sure?", "Are you sure you wish to cancel this operation?", QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		m_bCancelInProgress = true;
 		ui->StopButton->setEnabled(false);
