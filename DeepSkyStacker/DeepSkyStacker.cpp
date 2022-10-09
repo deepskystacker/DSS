@@ -40,7 +40,9 @@
 
 #include <chrono>
 #include <boost/interprocess/sync/named_mutex.hpp>
-using namespace boost::interprocess;
+#include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/asio.hpp>
+namespace bip = boost::interprocess;
 #include <gdiplus.h>
 using namespace Gdiplus;
 #include <QApplication>
@@ -506,8 +508,6 @@ int DeepSkyStackerApp::Run()
 	return 0;
 }
 
-named_mutex dssMutex{ open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
-
 DeepSkyStackerApp theApp;
 
 DeepSkyStackerApp *		GetDSSApp()
@@ -523,8 +523,10 @@ QTranslator theAppTranslator;
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+
+
+
 	int result{ 0 };
-	bool firstInstance = true;
 
 	//
 	// Silence the MFC memory leak dump as we use Visual Leak Detector.
@@ -538,10 +540,6 @@ int main(int argc, char* argv[])
 
 	if (hasExpired())
 		return FALSE;
-
-	ZTRACE_RUNTIME("Checking Mutex");
-	if (!dssMutex.try_lock()) firstInstance = false;
-	ZTRACE_RUNTIME("Checking Mutex - ok");
 
 	ZTRACE_RUNTIME("Initialize MFC");
 	// initialize MFC and print and error on failure
@@ -598,8 +596,6 @@ int main(int argc, char* argv[])
 		language = QLocale::system().name();
 	}
 
-	bool installTranslatorResult{ false };
-
 	QString translatorFileName = QLatin1String("qt_");
 	translatorFileName += language;
 	qDebug() << "qt translator filename: " << translatorFileName;
@@ -612,8 +608,7 @@ int main(int argc, char* argv[])
 	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
 #endif
 	{
-		bool r{ app.installTranslator(&theQtTranslator) };
-		Q_ASSERT(r);
+		app.installTranslator(&theQtTranslator);
 	}
 
 	translatorFileName = QLatin1String("DSS.");
@@ -624,8 +619,7 @@ int main(int argc, char* argv[])
 	//
 	if (theAppTranslator.load(translatorFileName, ":/i18n/"))
 	{
-		bool r{ app.installTranslator(&theAppTranslator) };
-		Q_ASSERT(r);
+		app.installTranslator(&theAppTranslator);
 	}
 
 	//
@@ -633,17 +627,33 @@ int main(int argc, char* argv[])
 	//
 	SetUILanguage();
 
+	ZTRACE_RUNTIME("Creating Main Window");
+	DeepSkyStacker mainWindow;
+	DeepSkyStacker::setInstance(&mainWindow);
+
 	ZTRACE_RUNTIME("Set UI Language - ok");
+	boost::asio::thread_pool ioc(1);
+	boost::asio::signal_set ss(ioc, SIGINT, SIGTERM);
+	ss.async_wait([](auto ec, int s) {
+		if (ec == boost::asio::error::operation_aborted)
+			return;
+		DeepSkyStacker::instance()->close();
+	});
+
+	ZTRACE_RUNTIME("Checking Mutex");
+	bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
+	bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
+	const bool firstInstance{ lk.try_lock() };
+	ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
 
 	askIfVersionCheckWanted();
 	if (firstInstance)
 		deleteRemainingTempFiles();
 
-	ZTRACE_RUNTIME("Creating Main Window");
+	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
-		DeepSkyStacker mainWindow;
-		DeepSkyStacker::setInstance(&mainWindow);
+
 
 		mainWindow.show();
 		//result = app.run(&theApp);
@@ -695,7 +705,8 @@ int main(int argc, char* argv[])
 
 	}
 	theApp.ExitInstance();
-	dssMutex.unlock();
+	ss.cancel();
+	ioc.join();
 	return result;
 }
 /* ------------------------------------------------------------------- */
