@@ -45,8 +45,8 @@ QLinearGradientCtrl::QLinearGradientCtrl(QWidget * parent, QColor start, QColor 
 	m_ToolTipFormat = "&SELPOS\nPosition: &SELPOS Colour: R &R G &G B &B\nColour: R &R G &G B &B\nColour: R &R G &G B &B\nDouble Click to Add a New Peg";
 	//m_Impl = new QLinearGradientCtrlImpl(this);
 	m_Gradient.setColorAt(0, start);
-	m_Gradient.setColorAt(0.005, start);
-	m_Gradient.setColorAt(0.995, end);
+	m_Gradient.setColorAt(0.001, start);
+	m_Gradient.setColorAt(0.999, end);
 	m_Gradient.setColorAt(1, end);
 	setFocusPolicy(Qt::StrongFocus);		// Make sure we get key events.
 
@@ -559,7 +559,7 @@ void QLinearGradientCtrl::mouseMoveEvent(QMouseEvent *event)
 		// Qt docs say:
 		//
 		// We suggest only using repaint() if you need an immediate repaint, for example during animation.
-		//		
+		//
 		repaint(region.boundingRect());			// Erase the old pegs using repaint instead of update.
 
 		m_LastPos = selpegpos;
@@ -913,10 +913,8 @@ void QLinearGradientCtrl::deleteSelected(bool bUpdate)
 
 int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 {
-	ZFUNCTRACE_DEVELOP();
-	if (position < 0) position = 0;
-	else if (position > 1) position = 1;
-
+	if (index == NONE)
+		return -1;
 	if (index == STARTPEG)
 	{
 		stops[startPegStop].second = colour;
@@ -925,38 +923,35 @@ int QLinearGradientCtrl::setPeg(int index, QColor colour, qreal position)
 	{
 		stops[endPegStop].second = colour;
 	}
-	else if (index != NONE)
+	else
 	{
-		position = std::clamp(position, 0.005, 0.995);
+		position = std::clamp(position, 0.001, 0.999);
+		auto it = std::find_if(stops.begin(), stops.end(), [position](const auto& v) { return v.first == position; });
+		if (it != stops.end()) // moved position already exists, 'it' points to element with the identical position.
+		{
+			const qreal old_position = stops[index].first;
+			const bool direction_up = position > old_position;
+			const qreal new_position = direction_up ? position + 0.001 : position - 0.001;
+			if (std::find_if(stops.cbegin(), stops.cend(), [new_position](const auto& v) { return v.first == new_position; }) != stops.cend()) // corrected position already exists
+			{
+				position = direction_up ? (0.5 * (position + (it + 1)->first)) : (0.5 * (position + (it - 1)->first));
+			}
+			else
+			{
+				position = new_position;
+			}
+		}
 		stops[index].first = position;
 		stops[index].second = colour;
-		QGradientStop temp(stops[index]);
-		std::stable_sort(stops.begin(), stops.end(),
-			[](const QGradientStop &lhs, const QGradientStop &rhs) noexcept
-		{
+		std::stable_sort(stops.begin(), stops.end(), [](const QGradientStop& lhs, const QGradientStop& rhs) noexcept {
 			return lhs.first < rhs.first;
-		}
-			);
-		int result = stops.indexOf(temp);
-
-		//
-		// Added code to prevent duplicates which QGradient will reject :(
-		//
-		for (int i = 0; i < stops.size()-1; i++)
-		{
-			if (i < (endPegStop-1) && stops[i].first == stops[i+1].first)
-			{
-				stops[i + 1].first += 0.005f;
-			}
-			else if (stops[i].first == stops[i + 1].first)
-			{
-				stops[i].first -= 0.005f;
-			}
-		}
-		return result;
-
+		});
+		for (int i = 0; i < stops.size(); i++)
+			if (stops[i].first == position)
+				index = i;
 	}
-	return -1;
+
+	return index;
 }
 
 int QLinearGradientCtrl::setSelected(int iSel)
