@@ -68,11 +68,11 @@ namespace DSS
 		{
 			if (0 == Index)
 			{
-				Name = QCoreApplication::translate("StackingDlg", "Main Group");
+				Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
 			}
 			else
 			{
-				Name = QCoreApplication::translate("StackingDlg", "Group %1").arg(Index);
+				Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
 			}
 		}
 

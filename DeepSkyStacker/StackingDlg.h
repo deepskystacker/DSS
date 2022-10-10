@@ -138,6 +138,9 @@ namespace DSS
 			QAbstractItemModel* model,
 			const QModelIndex& index) const override;
 
+	protected:
+		void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+
 	};
 
 
@@ -229,6 +232,7 @@ namespace DSS
 		void pictureChanged();
 
 	protected:
+		void changeEvent(QEvent* e) override;
 		bool event(QEvent* event) override;
 		void showEvent(QShowEvent* event) override;
 
@@ -315,6 +319,8 @@ namespace DSS
 		void loadList(MRUList& MRUList, QString& strFileList);
 
 		void saveList(MRUList& MRUList, QString& strFileList);
+
+		void retranslateUi();
 
 	};
 }

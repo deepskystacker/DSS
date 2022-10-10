@@ -1222,7 +1222,8 @@ private:
 	const CGrayBitmapT<TType>* m_pInBitmap;
 
 public:
-	CGrayMedianFilterEngineT() {};
+	CGrayMedianFilterEngineT() : m_pInBitmap{ nullptr }
+	{};
 	virtual ~CGrayMedianFilterEngineT() {};
 
 	void SetInputBitmap(const CGrayBitmapT<TType>* pInBitmap)

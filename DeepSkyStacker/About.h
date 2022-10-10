@@ -34,6 +34,9 @@ public:
 
     void setInternetCheck(bool);
 
+protected:
+    void showEvent(QShowEvent* event) override;
+
 signals:
     void languageChanged(QString);
     void internetCheckChanged();
@@ -51,8 +54,6 @@ private:
 	bool initialised;
     QString m_Language;
     bool m_InternetCheck;
-
-	void showEvent(QShowEvent *event) override;
 
 	void onInitDialog();
 };

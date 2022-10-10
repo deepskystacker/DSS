@@ -206,7 +206,7 @@
          </property>
          <widget class="QWidget" name="tab">
           <attribute name="title">
-           <string>Main Group</string>
+           <string comment="IDS_MAINGROUP">Main Group</string>
           </attribute>
          </widget>
         </widget>

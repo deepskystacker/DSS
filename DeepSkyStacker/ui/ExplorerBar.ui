@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>712</height>
+    <width>260</width>
+    <height>763</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,7 +18,7 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>320</width>
+    <width>260</width>
     <height>430</height>
    </size>
   </property>
@@ -51,13 +51,13 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>308</width>
-        <height>700</height>
+        <width>230</width>
+        <height>751</height>
        </rect>
       </property>
       <property name="minimumSize">
        <size>
-        <width>280</width>
+        <width>230</width>
         <height>700</height>
        </size>
       </property>
@@ -69,6 +69,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: lightcyan</string>
          </property>
          <property name="title">
           <string comment="IDC_STACKING_TITLE">Registering and Stacking</string>
@@ -339,6 +342,9 @@
        </item>
        <item>
         <widget class="QGroupBox" name="processing">
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(240, 240, 240)</string>
+         </property>
          <property name="title">
           <string comment="IDC_PROCESSING_TITLE">Processing</string>
          </property>
@@ -396,6 +402,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: lightcyan</string>
          </property>
          <property name="title">
           <string comment="IDC_OPTIONS_TITLE">Options</string>
@@ -464,11 +473,37 @@
            </widget>
           </item>
           <item>
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>10</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
            <widget class="QLabel" name="about">
             <property name="text">
              <string comment="IDC_ABOUT">About DeepSkyStacker...</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>5</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
            <widget class="QLabel" name="help">

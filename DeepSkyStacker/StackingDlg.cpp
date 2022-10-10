@@ -147,22 +147,25 @@ namespace DSS
 	constexpr	DWORD					IDC_EDIT_COMET  = 3;
 	constexpr	DWORD					IDC_EDIT_SAVE   = 4;
 
-	const QStringList OUTPUTLIST_FILTERS({
-		QCoreApplication::translate("StackingDlg", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
-		QCoreApplication::translate("StackingDlg", "File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
-		QCoreApplication::translate("StackingDlg", "All Files (*)", "IDS_LISTFILTER_OUTPUT")
+	const QStringList OUTPUTLIST_FILTER_SOURCES({
+		QStringLiteral("File List (*.dssfilelist)"),
+		QStringLiteral("File List (*.txt)"),
+		QStringLiteral("All Files (*)")
 		});
 
+	QStringList OUTPUTLIST_FILTERS{};
 
-	const QStringList INPUTFILE_FILTERS({
-		QCoreApplication::translate("StackingDlg", "Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QCoreApplication::translate("StackingDlg", "Windows Bitmaps (*.bmp)"),
-		QCoreApplication::translate("StackingDlg", "JPEG or PNG Files (*.jpg *.jpeg *.png)"),
-		QCoreApplication::translate("StackingDlg", "TIFF Files (*.tif *.tiff)"),
-		QCoreApplication::translate("StackingDlg", "RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QCoreApplication::translate("StackingDlg", "FITS Files (*.fits *.fit *.fts)"),
-		QCoreApplication::translate("StackingDlg", "All Files (*)")
+	const QStringList INPUTFILE_FILTER_SOURCES({
+		QStringLiteral("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
+		QStringLiteral("Windows Bitmaps (*.bmp)"),
+		QStringLiteral("JPEG or PNG Files (*.jpg *.jpeg *.png)"),
+		QStringLiteral("TIFF Files (*.tif *.tiff)"),
+		QStringLiteral("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
+		QStringLiteral("FITS Files (*.fits *.fit *.fts)"),
+		QStringLiteral("All Files (*)")
 		});
+
+	QStringList INPUTFILE_FILTERS{};
 
 
 	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
@@ -483,6 +486,26 @@ namespace DSS
 		}
 	}
 
+	void ItemEditDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+	{
+		Inherited::paint(painter, option, index);
+		QStyleOptionViewItem opt{ option };
+		initStyleOption(&opt, index);
+
+		QStyle* style = opt.widget ? opt.widget->style() : QApplication::style();
+
+		//
+		// Draw a single pixel wide rounded rectangle around the text to show this
+		// cell is editable.
+		//
+		painter->save();
+		QRect textRect = style->subElementRect(QStyle::SE_ItemViewItemText, &opt);
+		textRect.adjust(1,1, -1, -1);
+		painter->setPen(QPen(QColorConstants::Svg::lightblue));
+		painter->drawRect(textRect);
+		painter->restore();
+	}
+
 	/////////////////////////////////////////////////////////////////////////////
 	// StackingDlg dialog
 
@@ -506,6 +529,7 @@ namespace DSS
 		m_tipShowCount{ 0 }
 	{
 		ui->setupUi(this);
+		retranslateUi();		// translate some of our stuff.
 
 		mruPath.readSettings();
 
@@ -647,6 +671,34 @@ namespace DSS
 		return Inherited::eventFilter(watched, event);
 	}
 	
+	void StackingDlg::changeEvent(QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+		{
+			ui->retranslateUi(this);
+			retranslateUi();
+		}
+
+		Inherited::changeEvent(event);
+	}
+
+	void StackingDlg::retranslateUi()
+	{
+		OUTPUTLIST_FILTERS.clear();
+		for (const QString& filter : OUTPUTLIST_FILTER_SOURCES)
+		{
+			OUTPUTLIST_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_LISTFILTER_OUTPUT"));
+		}
+		Q_ASSERT(OUTPUTLIST_FILTERS.size() == OUTPUTLIST_FILTER_SOURCES.size());
+
+		INPUTFILE_FILTERS.clear();
+		for (const QString& filter : INPUTFILE_FILTER_SOURCES)
+		{
+			INPUTFILE_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_FILTER_INPUT"));
+		}
+		Q_ASSERT(INPUTFILE_FILTERS.size() == INPUTFILE_FILTER_SOURCES.size());
+	}
+
 
 	bool StackingDlg::event(QEvent* event)
 	{
@@ -1238,7 +1290,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1339,7 +1391,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1444,7 +1496,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1548,7 +1600,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1653,7 +1705,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
