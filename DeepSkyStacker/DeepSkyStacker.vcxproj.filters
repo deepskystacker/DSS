@@ -1217,6 +1217,9 @@
     <QtUic Include="ui\StackingDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="StackingDlg2.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">

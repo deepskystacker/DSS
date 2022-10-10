@@ -159,8 +159,6 @@ void	deleteRemainingTempFiles()
 	std::vector<QString>	vFiles;
 	qint64					totalSize = 0;
 
-	ZTRACE_RUNTIME("Finding remaining temp files\n");
-
 	QString folder(CAllStackingTasks::GetTemporaryFilesFolder());
 
 	QStringList nameFilters("DSS*.tmp");
@@ -176,14 +174,13 @@ void	deleteRemainingTempFiles()
 			totalSize += item.size();
 		}
 	}
-	ZTRACE_RUNTIME("Find remaining temp files - ok\n");
 
 	if (!vFiles.empty())
 	{
 		QString			strMsg;
 		QString			strSize;
 
-		ZTRACE_RUNTIME("Remove remaining temp files\n");
+		ZTRACE_RUNTIME("Remove remaining %d temp files", vFiles.size());
 
 		SpaceToQString(totalSize, strSize);
 
@@ -205,7 +202,6 @@ void	deleteRemainingTempFiles()
 			}
 		};
 
-		ZTRACE_RUNTIME("Remove remaining temp files - ok\n");
 	};
 
 
