@@ -1020,9 +1020,9 @@ namespace DSS
 		dockTitle->setObjectName("dockTitle");
 		dockTitle->setMinimumSize(size);
 		dockTitle->resize(size);
-		dockTitle->setStyleSheet(QString::fromUtf8(
+		dockTitle->setStyleSheet(QString::fromUtf8("QLabel {"
 			"background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, "
-			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))"));
+			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))}"));
 		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
 			"IDS_LISTINFO")
 			.arg(0)
