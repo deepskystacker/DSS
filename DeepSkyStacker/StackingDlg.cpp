@@ -1012,7 +1012,10 @@ namespace DSS
 		ui->gamma->setPegsOnLeftOrBottom(true).
 			setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
 
-		
+		//
+		// Set an informative title bar on the dockable image list with a nice gradient
+		// as the background (like the old "listInfo" static control).
+		// 
 		QSize size{ 625, 25 };
 		dockTitle->setObjectName("dockTitle");
 		dockTitle->setMinimumSize(size);
