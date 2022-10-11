@@ -22,7 +22,7 @@ void CGrayBitmapT<T>::RemoveHotPixels(CDSSProgress* pProgress)
 
 #pragma omp parallel default(none) shared(hotOffsets) firstprivate(localHotOffsets) if(nrProcessors > 1)
 	{
-#pragma omp for schedule(dynamic) nowait
+#pragma omp for schedule(dynamic, 50) nowait
 		for (int row = 2; row < height - 2; ++row)
 		{
 			for (int column = 2; column < width - 2; ++column)

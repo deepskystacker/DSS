@@ -1,4 +1,4 @@
-#include <stdafx.h>
+#include "stdafx.h"
 #include "BitmapExt.h"
 #include "DSSTools.h"
 #include "DSSProgress.h"
@@ -632,7 +632,7 @@ namespace { // Only use in this .cpp file
 				{
 					ZTRACE_RUNTIME("Converting Fujitsu Super-CCD image to regular raw image");
 
-#pragma omp parallel for default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(numberOfProcessors > 1)
 					for (int row = 0; row < S.raw_height - S.top_margin * 2; row++)
 					{
 						for (int col = 0; col < fuji_width << int(!fuji_layout); col++)
@@ -666,7 +666,7 @@ namespace { // Only use in this .cpp file
 					//
 					buffer = raw_image;
 
-#pragma omp parallel for default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(numberOfProcessors > 1)
 					for (int row = 0; row < S.height; row++)
 					{
 						for (int col = 0; col < S.width; col++)
@@ -743,7 +743,7 @@ namespace { // Only use in this .cpp file
 					{
 #pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
-#pragma omp for
+#pragma omp for schedule(dynamic, 10'000) 
 							for (int i = 0; i < size; i++)
 							{
 								int val = raw_image[i];
@@ -760,7 +760,7 @@ namespace { // Only use in this .cpp file
 					{
 #pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
-#pragma omp for
+#pragma omp for schedule(dynamic, 10'000) 
 							for (int i = 0; i < size; i++)
 							{
 								int val = raw_image[i];
@@ -785,7 +785,7 @@ namespace { // Only use in this .cpp file
 					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
 #pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 					{
-#pragma omp for
+#pragma omp for schedule(dynamic, 10'000) 
 						for (int i = 0; i < size; i++)
 							if (lmax < raw_image[i])
 								lmax = raw_image[i];
@@ -851,7 +851,8 @@ namespace { // Only use in this .cpp file
 				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
 					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
-#pragma omp parallel for default(none) schedule(dynamic, 10) if(numberOfProcessors > 1) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
+				//Timer timer;
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(numberOfProcessors > 1) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
 				for (int row = 0; row < S.height; row++)
 				{
 					for (int col = 0; col < S.width; col++)
@@ -862,10 +863,11 @@ namespace { // Only use in this .cpp file
 						RAW(row, col) = static_cast<std::uint16_t>(std::clamp(static_cast<int>(val), 0, 65535));
 					}
 				}
+				//timer.printDiff(); 
 
 				// Convert raw data to big-endian
 				if (littleEndian)
-#pragma omp parallel for default(none) schedule(dynamic, 1000) if(numberOfProcessors > 1)
+#pragma omp parallel for default(none) schedule(dynamic, 10'000) if(numberOfProcessors > 1)
 					for (int i = 0; i < size; i++)
 					{
 						raw_image[i] = _byteswap_ushort(raw_image[i]);
@@ -874,7 +876,7 @@ namespace { // Only use in this .cpp file
 				const int imageWidth = S.width;
 				const int imageHeight = S.height;
 				const bool bitmapFillerIsThreadSafe = pFiller->isThreadSafe();
-#pragma omp parallel for default(none) schedule(static) firstprivate(pFiller) if(numberOfProcessors > 1 && bitmapFillerIsThreadSafe)
+#pragma omp parallel for default(none) schedule(dynamic, 50) firstprivate(pFiller) if(numberOfProcessors > 1 && bitmapFillerIsThreadSafe)
 				for (int row = 0; row < imageHeight; ++row)
 				{
 					// Write raw pixel data into our private bitmap format

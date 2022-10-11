@@ -700,7 +700,7 @@ bool CFITSReader::Read()
 			double localMin = 0, localMax = 0;
 #pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
 			{
-#pragma omp for schedule(dynamic, 10000)
+#pragma omp for schedule(dynamic, 10'000)
 				for (LONGLONG element = 0; element < nElements; ++element)
 				{
 					const double fValue = doubleBuff[element];	// int (8 byte) floating point
@@ -758,7 +758,7 @@ bool CFITSReader::Read()
 			return (value - fMin) * normalizationFactor;
 		};
 
-#pragma omp parallel for default(none) schedule(dynamic, 10) if(nrProcessors > 1)
+#pragma omp parallel for default(none) schedule(guided, 50) if(nrProcessors > 1)
 		for (int row = 0; row < m_lHeight; ++row)
 		{
 			for (int col = 0; col < m_lWidth; ++col)

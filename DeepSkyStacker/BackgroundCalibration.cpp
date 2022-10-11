@@ -29,7 +29,7 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgre
 #pragma omp parallel default(none) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram, redLocalHist, greenLocalHist, blueLocalHist) if(nrProcessors > 1)
 	{
 		constexpr int Bulksize = 10;
-#pragma omp for schedule(guided, 1)
+#pragma omp for schedule(guided, 50)
 		for (int startNdx = 0; startNdx < height; startNdx += Bulksize)
 		{
 			const int endNdx = std::min(startNdx + Bulksize, height);
