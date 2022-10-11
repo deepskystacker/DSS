@@ -510,7 +510,7 @@ namespace DSS
 	// StackingDlg dialog
 
 	StackingDlg::StackingDlg(QWidget* parent) :
-		QWidget(parent),
+		BayWindow(parent),
 		ui(new Ui::StackingDlg),
 		initialised(false),
 		markAsReference{ nullptr },
@@ -526,7 +526,8 @@ namespace DSS
 		copy{ nullptr },
 		erase{ nullptr },
 		networkManager{ nullptr },
-		m_tipShowCount{ 0 }
+		m_tipShowCount{ 0 },
+		dockTitle{ new QLabel(this) }
 	{
 		ui->setupUi(this);
 		retranslateUi();		// translate some of our stuff.
@@ -1010,6 +1011,27 @@ namespace DSS
 		ui->gamma->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
 		ui->gamma->setPegsOnLeftOrBottom(true).
 			setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
+
+		
+		QSize size{ 625, 25 };
+		dockTitle->setObjectName("dockTitle");
+		dockTitle->setMinimumSize(size);
+		dockTitle->resize(size);
+		dockTitle->setStyleSheet(QString::fromUtf8(
+			"background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, "
+			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))"));
+		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
+			"IDS_LISTINFO")
+			.arg(0)
+			.arg(0)
+			.arg(0)
+			.arg(0)
+			.arg(0)
+		};
+		dockTitle->setText(text);
+		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
+		ui->dockWidget->setTitleBarWidget(dockTitle);
+
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)
@@ -1129,7 +1151,7 @@ namespace DSS
 
 		if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
 		{
-			//ui->tableView->setEnabled(true);
+			ui->tableView->setEnabled(true);
 			//
 			// Disabling the tableview resulted in it loosing focus
 			// so put the focus back
@@ -1168,7 +1190,7 @@ namespace DSS
 		}
 		else if (!m_strShowFile.isEmpty())
 		{
-			//ui->tableView->setEnabled(false);
+			ui->tableView->setEnabled(false);
 			//
 			// Display the "Loading filename" with red background gradient while loading in background
 			//
@@ -1860,7 +1882,7 @@ namespace DSS
 			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
 			};
 
-		ui->listInfo->setText(text);
+		dockTitle->setText(text);
 
 		for (int i = 0; i < ui->tabWidget->count(); i++)
 		{

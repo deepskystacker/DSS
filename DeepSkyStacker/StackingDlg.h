@@ -63,6 +63,7 @@ class QNetworkReply;
 #include <QFileDialog>
 #include <QMenu>
 #include <QStyledItemDelegate>
+#include "baywindow.h"
 
 namespace DSS
 {
@@ -84,6 +85,7 @@ namespace std::filesystem
 
 class QTextOption;
 class QSortFilterProxyModel;
+class QLabel;
 
 namespace fs = std::filesystem;
 
@@ -144,7 +146,7 @@ namespace DSS
 	};
 
 
-	class StackingDlg : public QWidget
+	class StackingDlg : public BayWindow
 	{
 		typedef QWidget
 			Inherited;
@@ -284,6 +286,8 @@ namespace DSS
 		QAction* properties;
 		QAction* copy;
 		QAction* erase;
+
+		QLabel* dockTitle;
 
 		void checkAskRegister();
 

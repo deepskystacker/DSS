@@ -35,7 +35,7 @@
 **
 ****************************************************************************/
 
-// Class definition for DSS:BayWindow 
+// Class definition for DSS::BayWindow 
 //
 // I could have called the class DockingBay, but I couldn't resist :)
 

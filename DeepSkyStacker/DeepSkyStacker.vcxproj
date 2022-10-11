@@ -502,6 +502,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BackgroundLoading.h" />
     <ClInclude Include="BatchStacking.h" />
+    <QtMoc Include="baywindow.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="BitmapExt.h" />
@@ -742,7 +743,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtRcc Include="resources.qrc" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="StackingDlg2.ui" />
     <QtUic Include="ui\About.ui" />
     <QtUic Include="ui\AlignmentParameters.ui" />
     <QtUic Include="ui\AskRegistering.ui" />

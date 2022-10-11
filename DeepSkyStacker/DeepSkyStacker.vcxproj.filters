@@ -1217,9 +1217,6 @@
     <QtUic Include="ui\StackingDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
-    <QtUic Include="StackingDlg2.ui">
-      <Filter>Qt\ui</Filter>
-    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1302,6 +1299,9 @@
     </QtMoc>
     <QtMoc Include="DropFilesDlg.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="baywindow.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
