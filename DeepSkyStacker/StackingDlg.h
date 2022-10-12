@@ -246,7 +246,6 @@ namespace DSS
 		CGammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
 		FrameList		frameList;
-		MRUList		    m_MRUList;
 		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
 		std::unique_ptr<ItemEditDelegate> itemEditDelegate;
 		std::unique_ptr<QSortFilterProxyModel> proxyModel;
@@ -320,9 +319,9 @@ namespace DSS
 
 		void updateListInfo();
 
-		void loadList(MRUList& MRUList, QString& strFileList);
+		void loadList(MRUPath& MRUList, QString& strFileList);
 
-		void saveList(MRUList& MRUList, QString& strFileList);
+		void saveList(MRUPath& MRUList, QString& strFileList);
 
 		void retranslateUi();
 

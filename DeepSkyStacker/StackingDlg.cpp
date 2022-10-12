@@ -1946,18 +1946,19 @@ namespace DSS
 	
 	void StackingDlg::loadList()
 	{
+		bool openAnother{ true };
+
 		ZFUNCTRACE_RUNTIME();
 		if (checkWorkspaceChanges())
 		{
-			bool openAnother{ false };
-
-			if (m_MRUList.m_vLists.size())
+			if (mruPath.paths.size())
 			{
+				openAnother = false;
 				QMenu menu(this);
 
-				for (uint32_t i = 0; i < m_MRUList.m_vLists.size(); i++)
-				{ 
-					fs::path path{ m_MRUList.m_vLists[i].toStdU16String() };
+				for (uint32_t i = 0; i < mruPath.paths.size(); i++)
+				{
+					fs::path path{ mruPath.paths[i] };
 					// Get the fileid without the extension
 					QString name{ QString::fromStdU16String(path.stem().generic_u16string()) };
 
@@ -1974,33 +1975,31 @@ namespace DSS
 					openAnother = true;
 				else
 				{
-					QString			strList;
-
 					//
-					// Use the index we stored with the Menu Action to access the fill fileid
+					// Use the index we stored with the Menu Action to access the full fileid
 					//
-					strList = m_MRUList.m_vLists[a->data().toUInt()];
+					fs::path path{ mruPath.paths[a->data().toUInt()] };
 
-					frameList.loadFilesFromList(strList.toStdU16String().c_str());
+					frameList.loadFilesFromList(path);
 					// frameList.RefreshList(); TODO
-					m_MRUList.Add(strList);
-					fileList = strList.toStdU16String();
-					dssApp->setWindowFilePath(strList);
+					mruPath.Add(path);
+					fileList = path;
+					dssApp->setWindowFilePath(QString::fromStdU16String(path.generic_u16string()));
 				}
 			}
-
-			if (openAnother)
-			{
-				QString name;
-				loadList(m_MRUList, name);
-				dssApp->setWindowFilePath(name);
-			};
-			// TODO UpdateGroupTabs();
-			updateListInfo();
 		}
+
+		if (openAnother)
+		{
+			QString name;
+			loadList(mruPath, name);
+			dssApp->setWindowFilePath(name);
+		};
+		// TODO UpdateGroupTabs();
+		updateListInfo();
 	}
 
-	void StackingDlg::loadList(MRUList& MRUList, QString& strFileList)
+	void StackingDlg::loadList(MRUPath& MRUList, QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
@@ -2034,8 +2033,7 @@ namespace DSS
 				fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
 				frameList.loadFilesFromList(file);
-				strFileList = QString::fromStdU16String(file.generic_u16string());
-				MRUList.Add(strFileList);
+				MRUList.Add(file);
 
 				if (file.has_parent_path())
 					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
@@ -2060,13 +2058,13 @@ namespace DSS
 	{
 		QString name;
 
-		saveList(m_MRUList, name);
+		saveList(mruPath, name);
 		dssApp->setWindowFilePath(name);
 	};
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::saveList(MRUList& MRUList, QString& strFileList)
+	void StackingDlg::saveList(MRUPath& MRUList, QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings					settings;
@@ -2112,8 +2110,7 @@ namespace DSS
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 
 				frameList.saveListToFile(file);
-				strFileList = QString::fromStdU16String(file.generic_u16string());
-				MRUList.Add(strFileList);
+				MRUList.Add(file);
 			}
 
 			QGuiApplication::restoreOverrideCursor();
@@ -2459,7 +2456,7 @@ namespace DSS
 						}
 						else
 						{
-							saveList(m_MRUList, name);
+							saveList(mruPath, name);
 						}
 
 						dssApp->setWindowFilePath(name);
@@ -2626,7 +2623,7 @@ namespace DSS
 				fclose(hFile);
 				frameList.loadFilesFromList(file);
 				// frameList.RefreshList(); TODO
-				m_MRUList.Add(QString::fromStdU16String(file.generic_u16string()));
+				mruPath.Add(file);
 				// TODO UpdateGroupTabs();
 				updateListInfo();
 				dssApp->setWindowFilePath(QString::fromStdWString(file.generic_wstring().c_str()));
@@ -2714,7 +2711,7 @@ namespace DSS
 	{
 		CBatchStacking			dlg; // TODO
 
-		dlg.setMRUList(m_MRUList);
+		//dlg.setMRUList(mruPath); TODO use MRUPath
 		dlg.DoModal();
 	};
 
