@@ -313,18 +313,6 @@ void DeepSkyStacker::onInitialise()
 
 }
 
-void DeepSkyStacker::setTitleFilename(const fs::path file)
-{
-	fs::path filename{ file.filename() };
-	if (!filename.empty())
-	{
-		setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(filename.generic_string().c_str()));
-	}
-	else
-		setWindowTitle(baseTitle);
-}
-
-
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();

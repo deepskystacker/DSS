@@ -121,13 +121,6 @@ public:
 		updateTab();
 	};
 
-	void setTitleFilename(fs::path file);
-
-	inline void setTitleFilename(char* name)
-	{
-		setTitleFilename(fs::path(name));
-	}
-
 	std::uint32_t tab()
 	{
 		return currTab;

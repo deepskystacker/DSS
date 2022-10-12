@@ -1918,7 +1918,7 @@ namespace DSS
 			updateListInfo();
 			fileList.clear();
 			ui->picture->clear();
-			dssApp->setTitleFilename(fileList);
+			dssApp->setWindowFilePath(QString());
 			update();
 		}
 	}
@@ -1942,7 +1942,9 @@ namespace DSS
 		};
 	};
 
-	/* ------------------------------------------------------------------- */	void StackingDlg::loadList()
+	/* ------------------------------------------------------------------- */
+	
+	void StackingDlg::loadList()
 	{
 		ZFUNCTRACE_RUNTIME();
 		if (checkWorkspaceChanges())
@@ -1983,7 +1985,7 @@ namespace DSS
 					// frameList.RefreshList(); TODO
 					m_MRUList.Add(strList);
 					fileList = strList.toStdU16String();
-					dssApp->setTitleFilename(fileList);
+					dssApp->setWindowFilePath(strList);
 				}
 			}
 
@@ -1991,7 +1993,7 @@ namespace DSS
 			{
 				QString name;
 				loadList(m_MRUList, name);
-				dssApp->setTitleFilename(name.toStdWString().c_str());
+				dssApp->setWindowFilePath(name);
 			};
 			// TODO UpdateGroupTabs();
 			updateListInfo();
@@ -2059,7 +2061,7 @@ namespace DSS
 		QString name;
 
 		saveList(m_MRUList, name);
-		dssApp->setTitleFilename(name.toStdWString().c_str());
+		dssApp->setWindowFilePath(name);
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -2460,7 +2462,7 @@ namespace DSS
 							saveList(m_MRUList, name);
 						}
 
-						dssApp->setTitleFilename(name.toStdWString().c_str());
+						dssApp->setWindowFilePath(name);
 						[[fallthrough]];
 					case QMessageBox::No:
 						bResult = true;
@@ -2627,7 +2629,7 @@ namespace DSS
 				m_MRUList.Add(QString::fromStdU16String(file.generic_u16string()));
 				// TODO UpdateGroupTabs();
 				updateListInfo();
-				dssApp->setTitleFilename(file);
+				dssApp->setWindowFilePath(QString::fromStdWString(file.generic_wstring().c_str()));
 			};
 		}
 		catch (const fs::filesystem_error& e)
@@ -3455,7 +3457,7 @@ namespace DSS
 			UpdateGroupTabs();
 			updateListInfo();
 			m_strCurrentFileList.Empty();
-			dssApp->setTitleFilename(m_strCurrentFileList);
+			dssApp->setWindowFilePath(m_strCurrentFileList);
 		};
 	};
 
