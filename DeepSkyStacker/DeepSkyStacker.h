@@ -74,6 +74,7 @@ private:
 	std::uint32_t			currTab;
 	QStringList				args;
 	QString					baseTitle;
+	QString currentPathName;
 	//ITaskbarList3* m_taskbarList;
 	bool                    m_progress;
 
@@ -165,6 +166,16 @@ public:
 	{
 		return *explorerBar;
 	};
+
+	inline void setWindowFilePath(const QString& name)
+	{
+		if (currentPathName == name) return;
+		currentPathName = name;
+		if (!name.isEmpty())
+			setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(name));
+		else
+			setWindowTitle(baseTitle);
+	}
 
 protected:
 	void closeEvent(QCloseEvent* e) override;

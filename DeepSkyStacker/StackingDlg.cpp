@@ -2630,7 +2630,7 @@ namespace DSS
 				mruPath.Add(file);
 				// TODO UpdateGroupTabs();
 				updateListInfo();
-				dssApp->setWindowFilePath(QString::fromStdWString(file.generic_wstring().c_str()));
+				dssApp->setWindowFilePath(QString::fromStdU16String(file.generic_u16string().c_str()));
 			};
 		}
 		catch (const fs::filesystem_error& e)
