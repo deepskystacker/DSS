@@ -47,7 +47,7 @@ public:
 
 		count = settings.value(keyName, 0).toUInt();
 
-		for (size_t i = 0; i != paths.size(); i++)
+		for (size_t i = 0; i != count; i++)
 		{
 			keyName = QString("%1/MRU%2")
 				.arg(mruType).arg(i);

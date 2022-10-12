@@ -316,7 +316,10 @@ void DeepSkyStacker::onInitialise()
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
+	processingDlg.SaveOnClose();
 	processingDlg.DestroyWindow();
+	stackingDlg->saveOnClose();
+
 	QSettings settings;
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());

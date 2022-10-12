@@ -233,6 +233,8 @@ namespace DSS
 
 		void pictureChanged();
 
+		bool saveOnClose();
+
 	protected:
 		void changeEvent(QEvent* e) override;
 		bool event(QEvent* event) override;
@@ -306,8 +308,6 @@ namespace DSS
 		void unCheckNonStackablePictures();
 
 		bool showRecap(CAllStackingTasks& tasks);
-
-		bool saveOnClose();
 
 		void doStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
 

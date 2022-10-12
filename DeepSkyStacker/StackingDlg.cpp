@@ -1959,8 +1959,11 @@ namespace DSS
 				for (uint32_t i = 0; i < mruPath.paths.size(); i++)
 				{
 					fs::path path{ mruPath.paths[i] };
+					fs::path display{ path };
+					display.replace_extension();
 					// Get the fileid without the extension
-					QString name{ QString::fromStdU16String(path.stem().generic_u16string()) };
+
+					QString name{ QString::fromStdU16String(display.generic_u16string()) };
 
 					QAction* action = menu.addAction(name);
 					action->setData(i);		// Index into the list of files
@@ -1997,6 +2000,7 @@ namespace DSS
 		};
 		// TODO UpdateGroupTabs();
 		updateListInfo();
+		raise(); show();
 	}
 
 	void StackingDlg::loadList(MRUPath& MRUList, QString& strFileList)
