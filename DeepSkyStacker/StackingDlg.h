@@ -148,7 +148,7 @@ namespace DSS
 
 	class StackingDlg : public BayWindow
 	{
-		typedef QWidget
+		typedef BayWindow
 			Inherited;
 
 		Q_OBJECT
