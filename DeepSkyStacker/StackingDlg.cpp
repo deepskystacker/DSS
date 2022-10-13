@@ -576,16 +576,8 @@ namespace DSS
 				// Does the received key sequence match any of the key sequences for 
 				// "Select All"
 				//
-				const QList<QKeySequence> selectAll{ QKeySequence::keyBindings(QKeySequence::SelectAll) };
-				for (i = 0; i < selectAll.size(); i++)
+				if (QKeyEvent::matches(QKeySequence::keyBindings(QKeySequence::SelectAll))
 				{
-					//
-					// Does the key sequence (or single key) we received
-					// match one of the platform specific key sequences 
-					// for "Select All"
-					//
-					if (received == selectAll[i])
-					{
 						qDebug() << "Received key sequence " << received << " matched QKeySequence::SelectAll";
 						QItemSelection selection{
 							imageModel->createIndex(0, 0),
@@ -593,7 +585,6 @@ namespace DSS
 
 						qsm->select(selection, QItemSelectionModel::Select);
 						return true;
-					}
 				}
 #endif
 
@@ -794,7 +785,6 @@ namespace DSS
 		QModelIndex ndx = ui->tableView->indexAt(pos);
 		int i{ 0 };
 
-		qDebug() << "Table View item clicked, row " << ndx.row();
 		//
 		// If the QSortFilterProxyModel is being used, need to map 
 		// to the model index in the base model (our ImageListModel)
@@ -804,7 +794,6 @@ namespace DSS
 
 		ImageListModel* imageModel = frameList.currentTableModel();
 		int row = ndx.row();
-		qDebug() << "The corresponding Model row is " << ndx.row();
 		bool indexValid = ndx.isValid();
 
 		if (indexValid)
@@ -1114,14 +1103,12 @@ namespace DSS
 
 		QItemSelectionModel * qsm = ui->tableView->selectionModel();
 		QModelIndexList selectedRows = qsm->selectedRows();
-		qDebug() << "Number of selected rows: " << selectedRows.count();
 		//
 		// If only one row is selected, we want to know the filename
 		//
 		if (1 == selectedRows.count())
 		{
 			QModelIndex& ndx = selectedRows[0];
-			qDebug() << "  Selected row: " << ndx.row();
 
 			//
 			// If the QSortFilterProxyModel is being used, need to map 
@@ -1135,7 +1122,6 @@ namespace DSS
 				QString  fileName;
 				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
-				qDebug() << "  The corresponding Model row is: " << ndx.row();
 				fileName = model->selectedFileName(row);
 				//
 				// If the filename hasn't changed but we have changes to the stars that need to be saved
@@ -1933,7 +1919,6 @@ namespace DSS
 				.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME, i));
-			qDebug() << "ui->tabBar->setTabToolTip(" << i << ", " << text << ");";
 			ui->tabBar->setTabToolTip(i, text);
 		};
 	};
@@ -2758,7 +2743,6 @@ namespace DSS
 
 	void StackingDlg::gammaChanging(int peg)
 	{
-		qDebug() << "In StackingDlg::gammaChanging(int peg)";
 		double blackPoint{ 0.0 },
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
@@ -2830,7 +2814,6 @@ namespace DSS
 
 	void StackingDlg::gammaChanged(int peg)
 	{
-		qDebug() << "In StackingDlg::gammaChanged(int peg)";
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
 		// on final time
@@ -2851,8 +2834,6 @@ namespace DSS
 		blackPoint = stops[1].first;
 		greyPoint = stops[2].first;
 		whitePoint = stops[3].first;
-
-		qDebug() << "    stops: " << stops;
 
 		// Adjust Gamma
 		m_GammaTransformation.InitTransformation(blackPoint * blackPoint, greyPoint * greyPoint, whitePoint * whitePoint);
