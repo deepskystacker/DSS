@@ -305,8 +305,6 @@ namespace DSS
 
 		bool checkStacking(CAllStackingTasks& tasks);
 
-		void unCheckNonStackablePictures();
-
 		bool showRecap(CAllStackingTasks& tasks);
 
 		void doStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);

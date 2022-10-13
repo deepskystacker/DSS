@@ -1518,7 +1518,6 @@ namespace DSS
 			}
 
 			QGuiApplication::restoreOverrideCursor();
-			// frameList.RefreshList(); TODO
 
 			//
 			// What filter has the user actually selected, or has been auto-selected?
@@ -2025,7 +2024,6 @@ namespace DSS
 					fs::path path{ mruPath.paths[a->data().toUInt()] };
 
 					frameList.loadFilesFromList(path);
-					// frameList.RefreshList(); TODO
 					mruPath.Add(path);
 					fileList = path;
 					dssApp->setWindowFilePath(QString::fromStdU16String(path.generic_u16string()));
@@ -2089,7 +2087,6 @@ namespace DSS
 			}
 
 			QGuiApplication::restoreOverrideCursor();
-			// frameList.RefreshList(); TODO
 
 			const auto selectedIndex = OUTPUTLIST_FILTERS.indexOf(fileDialog.selectedNameFilter());
 
@@ -2536,7 +2533,6 @@ namespace DSS
 
 		};
 
-		//frameList.Invalidate(FALSE); TODO
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -2667,7 +2663,6 @@ namespace DSS
 			{
 				fclose(hFile);
 				frameList.loadFilesFromList(file);
-				// frameList.RefreshList(); TODO
 				mruPath.Add(file);
 				updateGroupTabs();
 				updateListInfo();

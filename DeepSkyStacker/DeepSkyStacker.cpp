@@ -303,7 +303,7 @@ void DeepSkyStacker::onInitialise()
 		fs::path file{ name.toStdWString() };
 		if (fs::file_type::regular == status(file).type())
 		{
-			stackingDlg->setFileList(file); // TODO
+			stackingDlg->setFileList(file);
 		}
 		else
 			QMessageBox::warning(this,
@@ -470,7 +470,6 @@ BOOL DeepSkyStackerApp::InitInstance()
 int DeepSkyStackerApp::ExitInstance()
 {
 	ZFUNCTRACE_RUNTIME();
-	//TODO: handle additional resources you may have added
 
 	AfxOleTerm(FALSE);
 
