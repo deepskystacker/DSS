@@ -164,8 +164,10 @@ namespace DSS
 		void on_tableView_customContextMenuRequested(const QPoint& pos);
 		void on_tabBar_customContextMenuRequested(const QPoint& pos);
 		void tableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+		void tableViewModel_dataChanged(const QModelIndex& first, const QModelIndex& last, const QList<int>& roles);
 		void gammaChanging(int peg);
 		void gammaChanged(int peg);
+		void tabBar_currentChanged(int index);
 
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr);
@@ -254,8 +256,6 @@ namespace DSS
 		std::unique_ptr<QSortFilterProxyModel> proxyModel;
 		uint m_tipShowCount;
 
-
-
 		bool fileAlreadyLoaded(const fs::path& file);
 
 		std::unique_ptr<EditStars> editStarsPtr;
@@ -299,7 +299,6 @@ namespace DSS
 
 		void retrieveLatestVersionInfo();
 
-		// void updateGroupTabs(); TODO
 		bool checkEditChanges();
 
 		bool checkReadOnlyFolders(CAllStackingTasks& tasks);
@@ -318,7 +317,11 @@ namespace DSS
 		
 		void openFileList(const fs::path& file);
 
+		void updateGroupTabs();
+
 		void updateListInfo();
+
+		void switchGroup(int);
 
 		void loadList(MRUPath& MRUList, QString& strFileList);
 

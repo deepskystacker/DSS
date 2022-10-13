@@ -538,7 +538,10 @@ namespace DSS
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
 		connect(ui->gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
 		connect(ui->gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
-
+		//
+		// If user changes tab need to switch groups and table model
+		//
+		connect(ui->tabBar, SIGNAL(currentChanged(int)), this, SLOT(tabBar_currentChanged(int)));
 	}
 
 	StackingDlg::~StackingDlg()
@@ -962,6 +965,12 @@ namespace DSS
 		ui->tableView->horizontalHeader()->restoreState(
 			settings.value("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState").toByteArray());
 		//
+		// If the model data changes let me know
+		//
+		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
+			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		
+		//
 		// Set up a QSortFilterProxyModel to allow sorting of the table view
 		// (it sits between the actual model and the view to provide sorting
 		// capability)
@@ -971,6 +980,7 @@ namespace DSS
 
 		ui->tableView->setModel(proxyModel.get());
 		ui->tableView->setSortingEnabled(true);
+
 		//
 		// The default icon display is really rather small, so use a subclass
 		// of QStyledItemDelegate to handle the rendering for column zero of 
@@ -1048,7 +1058,7 @@ namespace DSS
 		//
 		ui->tabBar->setShape(QTabBar::TriangularSouth);
 		ui->tabBar->setExpanding(false);
-		ui->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP"));
+		ui->tabBar->setCurrentIndex(ui->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
 		updateListInfo();
 	}
 
@@ -1080,11 +1090,23 @@ namespace DSS
 				}
 				frameList.endInsertRows();
 			}
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 			updateListInfo();
 			QGuiApplication::restoreOverrideCursor();
 		};
 
+	}
+
+	void StackingDlg::tableViewModel_dataChanged(const QModelIndex& first,
+		[[maybe_unused]] const QModelIndex& last, [[maybe_unused]] const QList<int>&)
+	{
+		//
+		// Only interested if the user has ticked the check box in column 0
+		//
+		if (first.isValid() && 0 == first.column())
+		{
+			updateListInfo();
+		}
 	}
 
 	void StackingDlg::tableView_selectionChanged([[maybe_unused]] const QItemSelection& selected, [[maybe_unused]] const QItemSelection& deselected)
@@ -1401,7 +1423,7 @@ namespace DSS
 			settings.setValue("Folders/AddPictureExtension", extension);
 			settings.setValue("Folders/AddPictureIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		};
 		updateListInfo();
 	}
@@ -1503,7 +1525,7 @@ namespace DSS
 			settings.setValue("Folders/AddDarkExtension", extension);
 			settings.setValue("Folders/AddDarkIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
@@ -1608,7 +1630,7 @@ namespace DSS
 			settings.setValue("Folders/AddDarkFlatExtension", extension);
 			settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
@@ -1712,7 +1734,7 @@ namespace DSS
 			settings.setValue("Folders/AddFlatExtension", extension);
 			settings.setValue("Folders/AddFlatIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
@@ -1817,7 +1839,7 @@ namespace DSS
 			settings.setValue("Folders/AddOffsetExtension", extension);
 			settings.setValue("Folders/AddOffsetIndex", filterIndex);
 
-			//UpdateGroupTabs();
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
@@ -1929,7 +1951,7 @@ namespace DSS
 			ui->information->setText(m_strShowFile);
 			imageLoader.clearCache();
 			m_LoadedImage.reset();
-			//TODO: UpdateGroupTabs();
+			updateGroupTabs();
 			updateListInfo();
 			fileList.clear();
 			ui->picture->clear();
@@ -2013,7 +2035,7 @@ namespace DSS
 			loadList(mruPath, name);
 			dssApp->setWindowFilePath(name);
 		};
-		// TODO UpdateGroupTabs();
+		updateGroupTabs();
 		updateListInfo();
 		raise(); show();
 	}
@@ -2643,7 +2665,7 @@ namespace DSS
 				frameList.loadFilesFromList(file);
 				// frameList.RefreshList(); TODO
 				mruPath.Add(file);
-				// TODO UpdateGroupTabs();
+				updateGroupTabs();
 				updateListInfo();
 				dssApp->setWindowFilePath(QString::fromStdU16String(file.generic_u16string().c_str()));
 			};
@@ -2842,6 +2864,41 @@ namespace DSS
 			ui->picture->setPixmap(QPixmap::fromImage(*(m_LoadedImage.m_Image)));
 		}
 	}
+
+	void StackingDlg::tabBar_currentChanged(int index)
+	{
+		//
+		// User has changed tabs, so switch to the corresponding group
+		// and set the table model for the table view accordingly
+		//
+		if (-1 != index)
+		{
+			switchGroup(index);
+		}
+	}
+
+	void StackingDlg::switchGroup(int index)
+	{
+		frameList.setGroup(index);
+		auto model{ frameList.currentTableModel() };
+		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
+			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		proxyModel->setSourceModel(model);
+	}
+
+	void StackingDlg::updateGroupTabs()
+	{
+		auto lastGroup{ frameList.lastGroupId() };
+		if (frameList.groupSize(lastGroup) != 0)
+		{
+			//
+			// Need to add a group
+			//
+			lastGroup = frameList.addGroup();
+			ui->tabBar->addTab(frameList.groupName(lastGroup));
+		}
+
+	};
 
 	/* ------------------------------------------------------------------- */
 
@@ -3119,41 +3176,6 @@ namespace DSS
 	}
 
 	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::UpdateGroupTabs()
-	{
-		int dwLastGroupID = static_cast<int>(frameList.GetLastGroupID());
-		if (frameList.GetNrFrames(dwLastGroupID) != 0)
-			dwLastGroupID++;
-
-		const auto lCurrentGroup = std::max(0, m_GroupTab.GetCurSel());
-
-		m_GroupTab.DeleteAllItems();
-
-		CString				strGroup;
-
-		strGroup.LoadString(IDS_MAINGROUP);
-
-		m_GroupTab.InsertItem(0, strGroup);
-
-		strGroup.LoadString(IDS_GROUPIDMASK);
-
-		for (int i = 1; i <= dwLastGroupID; i++)
-		{
-			CString			strName;
-
-			strName.Format(strGroup, i);
-			m_GroupTab.InsertItem(i, strName);
-		};
-
-		if (lCurrentGroup > dwLastGroupID)
-		{
-			m_GroupTab.SetCurSel(0);
-			frameList.SetCurrentGroupID(0);
-		}
-		else
-			m_GroupTab.SetCurSel(lCurrentGroup);
-	};
 
 	/* ------------------------------------------------------------------- */
 
