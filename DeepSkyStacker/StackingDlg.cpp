@@ -777,6 +777,13 @@ namespace DSS
 
 	}
 
+	void StackingDlg::on_tabBar_customContextMenuRequested(const QPoint& pos)
+	{
+		ZFUNCTRACE_RUNTIME();
+		qDebug() << "__FUNCTION__";
+
+	}
+
 	void StackingDlg::on_tableView_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -988,7 +995,8 @@ namespace DSS
 		font.setPointSize(font.pointSize() - 1); font.setWeight(QFont::Medium);
 		ui->tableView->setFont(font);
 		font = ui->tableView->horizontalHeader()->font();
-		font.setPointSize(font.pointSize() - 1);  font.setWeight(QFont::Medium);
+		//font.setPointSize(font.pointSize() - 1);
+		font.setWeight(QFont::Medium);
 		ui->tableView->horizontalHeader()->setFont(font);
 		ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 		ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -1035,6 +1043,13 @@ namespace DSS
 		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
 		ui->dockWidget->setTitleBarWidget(dockTitle);
 
+		//
+		// Set up the tab bar (used to be a tab widget)
+		//
+		ui->tabBar->setShape(QTabBar::TriangularSouth);
+		ui->tabBar->setExpanding(false);
+		ui->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP"));
+		updateListInfo();
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)
@@ -1887,7 +1902,7 @@ namespace DSS
 
 		dockTitle->setText(text);
 
-		for (int i = 0; i < ui->tabWidget->count(); i++)
+		for (int i = 0; i < ui->tabBar->count(); i++)
 		{
 			text = tr("Light Frames: %1\nDark Frames: %2\nFlat Frames: %3\nDark Flat Frames: %4\nOffset/Bias Frames: %5",
 				"IDS_LISTINFO2")
@@ -1896,8 +1911,8 @@ namespace DSS
 				.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME, i));
-			
-			ui->tabWidget->setTabToolTip(i, text);
+			qDebug() << "ui->tabBar->setTabToolTip(" << i << ", " << text << ");";
+			ui->tabBar->setTabToolTip(i, text);
 		};
 	};
 

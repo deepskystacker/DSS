@@ -162,6 +162,7 @@ namespace DSS
 		void toolBar_cometButtonPressed(bool checked);
 		void toolBar_saveButtonPressed(bool checked);
 		void on_tableView_customContextMenuRequested(const QPoint& pos);
+		void on_tabBar_customContextMenuRequested(const QPoint& pos);
 		void tableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 		void gammaChanging(int peg);
 		void gammaChanged(int peg);
