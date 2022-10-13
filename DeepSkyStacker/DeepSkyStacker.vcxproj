@@ -316,6 +316,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="selectrect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -574,6 +575,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="RecommendedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
     <QtMoc Include="RegisterSettings.h" />
+    <QtMoc Include="RenameGroup.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resourceCZ.h" />
     <ClInclude Include="resourceES.h" />
@@ -758,6 +760,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RecommendedSettings.ui" />
     <QtUic Include="ui\RegisterSettings.ui" />
+    <QtUic Include="ui\RenameGroup.ui" />
     <QtUic Include="ui\ResultParameters.ui" />
     <QtUic Include="ui\StackingDlg.ui" />
     <QtUic Include="ui\StackingParameters.ui" />

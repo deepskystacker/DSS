@@ -64,7 +64,6 @@
 
 #include <filesystem>
 
-#include "ui/ui_StackingDlg.h"
 #include "mrupath.h"
 
 #include "DeepSkyStacker.h"
@@ -90,8 +89,9 @@
 #include "editstars.h"
 #include "selectrect.h"
 #include "toolbar.h"
-#include "ui/ui_StackingDlg.h"
 #include "avx_support.h"
+#include "ui/ui_StackingDlg.h"
+#include "RenameGroup.h"
 
 #include <ZExcept.h>
 
@@ -774,8 +774,26 @@ namespace DSS
 	void StackingDlg::on_tabBar_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << "__FUNCTION__";
-
+		qDebug() << __FUNCTION__;
+		auto tab = ui->tabBar->tabAt(pos);
+		qDebug() << "tab for menu: " << tab;
+		if (tab > 0)
+		{
+			QMenu tabMenu;
+			QAction* rename = tabMenu.addAction(tr("Rename group"));
+			const QAction* a = tabMenu.exec(QCursor::pos());
+			if (a == rename)
+			{
+				qDebug() << "Rename requested";
+				RenameGroup dlg{ this, frameList.groupName(tab) };
+				if (dlg.exec())
+				{
+					QString newName{ dlg.lineEdit->text() };
+					frameList.setGroupName(tab, newName);
+					ui->tabBar->setTabText(tab, newName);
+				}
+			}
+		}
 	}
 
 	void StackingDlg::on_tableView_customContextMenuRequested(const QPoint& pos)
@@ -1047,6 +1065,7 @@ namespace DSS
 		//
 		ui->tabBar->setShape(QTabBar::TriangularSouth);
 		ui->tabBar->setExpanding(false);
+		ui->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
 		ui->tabBar->setCurrentIndex(ui->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
 		updateListInfo();
 	}

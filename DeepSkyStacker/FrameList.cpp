@@ -938,6 +938,18 @@ namespace DSS
 		}
 	};
 
+	// Change the name of the specified group
+	void FrameList::setGroupName(std::uint16_t id, const QString& name)
+	{
+		ZASSERTSTATE(id > -1 && id < imageGroups.size());
+		if (-1 == id) id = index;	// set to current group
+
+		imageGroups[id].setName(name);
+	}
+
 	/* ------------------------------------------------------------------- */
 
 }
+
+
+

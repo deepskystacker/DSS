@@ -196,5 +196,8 @@ namespace DSS
 			Group::removeFromMap(file);
 		};
 
+		// Change the name of the specified group
+		void setGroupName(std::uint16_t id, const QString& name);
 	};
-}
+};
+
