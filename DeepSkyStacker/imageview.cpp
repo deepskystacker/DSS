@@ -181,16 +181,17 @@ namespace DSS
                 m_pToolBar->move(point);
             }
 
-            painter.save();
-            painter.translate(m_origin);
-            painter.scale(m_zoom * m_scale, m_zoom * m_scale);
-            painter.translate(-m_origin);
+            //painter.save();
+            //painter.translate(m_origin);
+            //painter.scale(m_zoom * m_scale, m_zoom * m_scale);
+            //painter.translate(-m_origin);
 
             //
             // Draw the rectangle of interest at the origin location
             //
-            painter.drawPixmap(m_origin, *pPixmap, rectOfInterest);
-            painter.restore();
+            //painter.drawPixmap(m_origin, *pPixmap, rectOfInterest);
+            //painter.restore();
+            painter.drawPixmap(displayRect, *pPixmap, rectOfInterest);
 
             //
             // Has the user enabled four corners mode?
