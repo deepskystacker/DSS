@@ -125,10 +125,13 @@ namespace DSS
         m_enableZoomImage = true;
     }
 
-
     void ImageView::resizeEvent(QResizeEvent* e)
     {
-        m_drawingPixmap = QPixmap(e->size());
+        QSize size{ e->size() };
+        qreal ratio{ devicePixelRatio() };
+        size *= ratio;
+        m_drawingPixmap = QPixmap(size);
+        m_drawingPixmap.setDevicePixelRatio(ratio);
         if (nullptr != pPixmap)
         {
             drawOnPixmap();
