@@ -33,7 +33,7 @@ extern bool		g_bShowRefStars;
 #include "DSSCommon.h"
 #include "commonresource.h"
 #include "BitmapExt.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include "RegisterEngine.h"
 #include "StackingDlg.h"
 #include "StackSettings.h"

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include <algorithm>
 #include "SettingsDlg.h"
 
@@ -512,7 +512,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 {
 	ZFUNCTRACE_RUNTIME();
-	CDSSProgressDlg		dlg;
+	DSS::DSSProgressDlg		dlg;
 	bool				bOk;
 
 	BeginWaitCursor();
@@ -570,7 +570,7 @@ void CProcessingDlg::OnLoaddsi()
 									strFilter,
 									this);
 		TCHAR				szBigBuffer[20000] = _T("");
-		CDSSProgressDlg		dlg;
+		DSS::DSSProgressDlg		dlg;
 
 		if (strBaseDirectory.GetLength())
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -684,7 +684,7 @@ void CProcessingDlg::SaveDSImage()
 	dlgOpen.m_ofn.nFilterIndex = filterIndex;
 
 	TCHAR				szBigBuffer[20000] = _T("");
-	CDSSProgressDlg		dlg;
+	DSS::DSSProgressDlg		dlg;
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
@@ -787,7 +787,7 @@ void CProcessingDlg::CreateStarMask()
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
 		if (dlgStarMask.DoModal() == IDOK)
 		{
-			CDSSProgressDlg dlg;
+			DSS::DSSProgressDlg dlg;
 			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
@@ -860,7 +860,7 @@ bool CProcessingDlg::SavePictureToFile()
 		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
 		TCHAR				szBigBuffer[20000] = _T("");
-		CDSSProgressDlg		dlg;
+		DSS::DSSProgressDlg		dlg;
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);

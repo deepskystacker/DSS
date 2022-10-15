@@ -72,7 +72,7 @@
 #include "DeepStack.h"
 #include "FileProperty.h"
 #include "FrameInfoSupport.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include "CheckAbove.h"
 #include "Registry.h"
 #include "RegisterSettings.h"
@@ -2236,7 +2236,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		CDSSProgressDlg			dlg;
+		DSS::DSSProgressDlg			dlg;
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
 		const auto start{ std::chrono::steady_clock::now() };
@@ -2375,7 +2375,7 @@ namespace DSS
 					if (frameList.countUnregisteredCheckedLightFrames())
 					{
 						CRegisterEngine	RegisterEngine;
-						CDSSProgressDlg	dlg;
+						DSS::DSSProgressDlg	dlg;
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
@@ -2556,7 +2556,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		CDSSProgressDlg dlg;
+		DSS::DSSProgressDlg dlg;
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2704,7 +2704,7 @@ namespace DSS
 			if (frameList.countUnregisteredCheckedLightFrames())
 			{
 				CRegisterEngine	RegisterEngine;
-				CDSSProgressDlg	dlg;
+				DSS::DSSProgressDlg	dlg;
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
@@ -2714,7 +2714,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				CDSSProgressDlg			dlg;
+				DSS::DSSProgressDlg			dlg;
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };

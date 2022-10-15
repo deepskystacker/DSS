@@ -29,7 +29,7 @@ extern bool	g_bShowRefStars;
 #include "CosmeticEngine.h"
 #include "MasterFrames.h"
 #include "DSSProgress.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include "StackSettings.h"
 #include "StackingTasks.h"
 #include "Workspace.h"
@@ -337,7 +337,7 @@ void PostCalibration::on_testCosmetic_clicked()
 		tasks.ResolveTasks();
 		if (tasks.m_vStacks.size())
 		{
-			CDSSProgressDlg				dlg;
+			DSS::DSSProgressDlg				dlg;
 			CStackingInfo &				StackingInfo = tasks.m_vStacks[0];
 
 			if (StackingInfo.m_pLightTask &&

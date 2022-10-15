@@ -64,7 +64,7 @@ extern bool		g_bShowRefStars;
 #include "DeepSkyStacker.h"
 #include "DSSCommon.h"
 #include "commonresource.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include "RegisterEngine.h"
 #include "StackingDlg.h"
 #include "ProcessingDlg.h"
@@ -155,7 +155,7 @@ void RegisterSettings::onInitDialog()
 	//
 	if (stackingDlg.checkedImageCount(PICTURETYPE_LIGHTFRAME) > 0)
 	{
-		QString firstLightFrame{ stackingDlg.getFirstCheckedLightFrame() };
+		firstLightFrame = stackingDlg.getFirstCheckedLightFrame();
 
 		forceRegister = !stackingDlg.countUnregisteredCheckedLightFrames();
 		noDarks = !stackingDlg.checkedImageCount(PICTURETYPE_DARKFRAME);
@@ -276,7 +276,7 @@ void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 void RegisterSettings::on_computeDetectedStars_clicked()
 {
 	// Retrieve the first checked light frame of the list
-	CDSSProgressDlg				dlg;
+	DSS::DSSProgressDlg				dlg;
 	CLightFrameInfo				fi;
 
 	QFileInfo info(firstLightFrame);

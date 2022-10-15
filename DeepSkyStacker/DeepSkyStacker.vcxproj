@@ -316,6 +316,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="QtProgressDlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="selectrect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
@@ -373,7 +374,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessSettingsSheet.cpp" />
-    <ClCompile Include="ProgressDlg.cpp" />
     <ClCompile Include="QLinearGradientCtrl.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -565,12 +565,12 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="PostCalibration.h" />
     <ClInclude Include="ProcessingDlg.h" />
     <ClInclude Include="ProcessSettingsSheet.h" />
-    <ClInclude Include="ProgressDlg.h" />
     <QtMoc Include="QLinearGradientCtrl.h" />
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="qwinhost.h" />
     <ClInclude Include="qmfcapp.h" />
+    <QtMoc Include="QtProgressDlg.h" />
     <ClInclude Include="RAWUtils.h" />
     <QtMoc Include="RecommendedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
@@ -757,6 +757,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\IntermediateFiles.ui" />
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
+    <QtUic Include="ui\ProgressDlg.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RecommendedSettings.ui" />
     <QtUic Include="ui\RegisterSettings.ui" />
