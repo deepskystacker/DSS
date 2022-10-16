@@ -192,9 +192,6 @@
     <ClCompile Include="..\Tools\ScrollDialog.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\SplitterControl.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\ThemeUtil.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -560,9 +557,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ScrollDialog.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\SplitterControl.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ThemeUtil.h">

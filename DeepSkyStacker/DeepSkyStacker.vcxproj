@@ -238,7 +238,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp" />
     <ClCompile Include="..\Tools\RichToolTipCtrl.cpp" />
     <ClCompile Include="..\Tools\ScrollDialog.cpp" />
-    <ClCompile Include="..\Tools\SplitterControl.cpp" />
     <ClCompile Include="..\Tools\ThemeUtil.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp" />
@@ -479,7 +478,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h" />
     <ClInclude Include="..\Tools\Schemadef.h" />
     <ClInclude Include="..\Tools\ScrollDialog.h" />
-    <ClInclude Include="..\Tools\SplitterControl.h" />
     <ClInclude Include="..\Tools\ThemeUtil.h" />
     <ClInclude Include="..\Tools\Tmschema.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
