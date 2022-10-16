@@ -291,8 +291,10 @@ void DeepSkyStacker::onInitialise()
 
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
+	settings.beginGroup("MainWindow");
 	restoreGeometry(settings.value("geometry").toByteArray());
 	restoreState(settings.value("windowState").toByteArray());
+	settings.endGroup();
 
 	//
 	// Check to see if we were passed a filelist file to open
@@ -321,8 +323,13 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	stackingDlg->saveOnClose();
 
 	QSettings settings;
+	settings.beginGroup("MainWindow");
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
+	settings.endGroup();
+	settings.beginGroup("Dialogs/StackingDlg");
+	settings.setValue("windowState", stackingDlg->saveState());
+	settings.endGroup();
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
 	settings.setValue("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState",
 		tableView->horizontalHeader()->saveState());

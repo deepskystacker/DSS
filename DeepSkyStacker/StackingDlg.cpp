@@ -934,6 +934,7 @@ namespace DSS
 	void StackingDlg::onInitDialog()
 	{
 		ZFUNCTRACE_RUNTIME();
+		// 
 		//
 		// Build the context menu for the tableview (list of images).
 		//
@@ -968,7 +969,13 @@ namespace DSS
 		if (!fileList.empty())
 			openFileList(fileList);
 
+		//
+		// Restore windowState of this and the table view's horizontal header
+		//
 		QSettings settings;
+		settings.beginGroup("Dialogs/StackingDlg");
+		restoreState(settings.value("windowState").toByteArray());
+		settings.endGroup();
 		ui->tableView->horizontalHeader()->restoreState(
 			settings.value("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState").toByteArray());
 		//
