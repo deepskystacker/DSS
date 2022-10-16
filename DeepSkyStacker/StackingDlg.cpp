@@ -1143,18 +1143,9 @@ namespace DSS
 				int row = ndx.row();
 				fileName = model->selectedFileName(row);
 				//
-				// If the filename hasn't changed but we have changes to the stars that need to be saved
+				// If the filename has changed but we have changes to the stars that need to be saved
 				//
-				if (fileName == m_strShowFile && checkEditChanges())
-				{
-					ui->information->setText(m_strShowFile);
-					ui->information->setTextFormat(Qt::PlainText);
-					ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-					ui->information->setOpenExternalLinks(false);
-					m_strShowFile = fileName;
-					imageLoad();
-				}
-				else if (fileName != m_strShowFile)
+				if (fileName != m_strShowFile && checkEditChanges())
 				{
 					ui->information->setText(m_strShowFile);
 					ui->information->setTextFormat(Qt::PlainText);
@@ -1850,34 +1841,28 @@ namespace DSS
 
 	bool StackingDlg::checkEditChanges()
 	{
-		return true;
-		// TODO
-		#if (0)
-		BOOL						bResult = FALSE;
+		bool result = false;
 
-		if (m_EditStarSink.IsDirty())
+		if (editStarsPtr->isDirty())
 		{
-			int			nResult;
+			auto dlgResult { askToSaveEditChangeMode() };
 
-			nResult = AskSaveEditChangesMode();
-
-			if (nResult == IDYES)
+			if (dlgResult == QDialogButtonBox::AcceptRole)
 			{
 				// Save the changes
-				bResult = TRUE;
-				m_EditStarSink.SaveRegisterSettings();
-				m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+				result = true;
+				editStarsPtr->saveRegisterSettings();
+				pToolBar->setSaveEnabled(false);
 				// Update the list with the new info
-				frameList.UpdateItemScores(m_strShowFile);
+				frameList.updateItemScores(m_strShowFile);
 			}
-			else if (nResult == IDNO)
-				bResult = TRUE;
+			else if (dlgResult == QDialogButtonBox::DestructiveRole)
+				result = true;
 		}
 		else
-			bResult = TRUE;
+			result = true;
 
-		return bResult;
-	#endif
+		return result;
 	}
 
 	/* ------------------------------------------------------------------- */

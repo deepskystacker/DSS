@@ -700,8 +700,8 @@ namespace DSS
 						it->m_bRegistered = true;
 						imageGroups[group].pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
 						imageGroups[group].pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
+						it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
 						imageGroups[group].pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
-						it->m_bComet = bmpInfo.m_bComet;
 						imageGroups[group].pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
 						imageGroups[group].pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
 
@@ -709,13 +709,55 @@ namespace DSS
 					else
 					{
 						it->m_bRegistered = false;
-					};
-				};
+					}
+				}
 				++row;
-			};
+			}
 		}
+	}
 
-	};
+	void FrameList::updateItemScores(const QString& fileName)
+	{
+		int row = 0;
+
+		for (auto it = imageGroups[index].pictures->begin();
+			it != imageGroups[index].pictures->end(); ++it)
+		{
+			if (it->filePath == fs::path(fileName.toStdString()) && it->IsLightFrame())
+			{
+				CLightFrameInfo		bmpInfo;
+
+				bmpInfo.SetBitmap(it->filePath, false, false);
+
+				//
+				// Update list information, but beware that you must use setData() for any of the columns
+				// that are defined in the Column enumeration as they are used for the 
+				// QTableView.   If this isn't done, the image list view won't get updated.
+				//
+				// The "Sky Background" (Column::BackgroundCol) is a special case it's a class, not a primitive, so the model 
+				// class has a specific member function to set that.
+				//
+				// Other member of ListBitMap (e.g.) m_bRegistered and m_bComet can be updated directly.
+				//
+				if (bmpInfo.m_bInfoOk)
+				{
+					it->m_bRegistered = true;
+					imageGroups[index].pictures->setData(row, Column::Score, bmpInfo.m_fOverallQuality);
+					imageGroups[index].pictures->setData(row, Column::FWHM, bmpInfo.m_fFWHM);
+					it->m_bComet = bmpInfo.m_bComet;		// MUST Set this Before updating Column::Stars
+					imageGroups[index].pictures->setData(row, Column::Stars, (int)bmpInfo.m_vStars.size());
+					imageGroups[index].pictures->setData(row, Column::Background, (uint32_t)bmpInfo.m_vStars.size());
+					imageGroups[index].pictures->setSkyBackground(row, bmpInfo.m_SkyBackground);
+
+				}
+				else
+				{
+					it->m_bRegistered = false;
+				}
+			}
+			++row;
+		}
+	}
 
 	void FrameList::checkAll(bool check)
 	{

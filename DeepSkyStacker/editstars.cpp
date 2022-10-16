@@ -198,7 +198,6 @@ namespace DSS
 	{
 		if (Qt::LeftButton == e->button())
 		{
-			qDebug() << "In EditStars: Left mouse button pressed";
 			switch (m_Action)
 			{
 				case EditStarAction::AddStar:
@@ -264,7 +263,7 @@ namespace DSS
 
 	void EditStars::starsButtonPressed()
 	{
-		qDebug() << "In EditStars: stars button checked";
+		qDebug() << __FUNCTION__;
 		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
 		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
@@ -489,9 +488,6 @@ namespace DSS
 		//
 		QRect rcClient{ rect() };
 		size_t	width = rcClient.width(), height = rcClient.height();
-
-		qDebug() << "size" << size();
-		qDebug() << "rect" << rcClient;
 
 		//
 		// Fill the pixmap with transparency

@@ -141,9 +141,6 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="SaveEditChanges.cpp">
-      <Filter>Dialogs\ImageSinks</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\BitmapSlider.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -399,6 +396,9 @@
     <ClCompile Include="QtProgressDlg.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="SaveEditChanges.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -504,9 +504,6 @@
     </ClInclude>
     <ClInclude Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveEditChanges.h">
-      <Filter>Dialogs\ImageSinks</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\BitmapSlider.h">
       <Filter>Tools</Filter>
@@ -1223,6 +1220,9 @@
     <QtUic Include="ui\ProgressDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\SaveEditChanges.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1313,6 +1313,9 @@
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
     <QtMoc Include="QtProgressDlg.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="SaveEditChanges.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>

@@ -139,6 +139,11 @@ namespace DSS
 
         virtual ~EditStars() {};
 
+		inline bool isDirty()
+		{
+			return m_bDirty;
+		};
+
         void setTransformation(const CBilinearParameters& Tr, const VOTINGPAIRVECTOR& vVP)
         {
             if (g_bShowRefStars)

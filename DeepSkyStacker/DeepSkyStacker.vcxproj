@@ -585,7 +585,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="RGBTab.h" />
     <ClInclude Include="RunningStackingEngine.h" />
     <ClInclude Include="SaturationTab.h" />
-    <ClInclude Include="SaveEditChanges.h" />
+    <QtMoc Include="SaveEditChanges.h" />
     <ClInclude Include="SavePicture.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SettingsDlg.h" />
@@ -763,6 +763,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\RegisterSettings.ui" />
     <QtUic Include="ui\RenameGroup.ui" />
     <QtUic Include="ui\ResultParameters.ui" />
+    <QtUic Include="ui\SaveEditChanges.ui" />
     <QtUic Include="ui\StackingDlg.ui" />
     <QtUic Include="ui\StackingParameters.ui" />
     <QtUic Include="ui\StackRecap.ui" />

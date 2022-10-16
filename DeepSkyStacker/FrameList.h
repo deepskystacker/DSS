@@ -156,6 +156,8 @@ namespace DSS
 
 		void updateCheckedItemScores();
 
+		void updateItemScores(const QString& fileName);
+
 		QString getReferenceFrame();
 		bool getReferenceFrame(CString& string);
 
