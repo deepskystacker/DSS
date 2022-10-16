@@ -49,12 +49,6 @@
 #include "StackingEngine.h"
 #include "imageloader.h"
 #include "FrameList.h"
-#include "mrulist.h"
-
-#include "GradientCtrl.h"
-#include "SplitterControl.h"
-
-#include "ImageSinks.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;

@@ -12,6 +12,7 @@
 #include <WndImage.h>
 #include "DeepStack.h"
 #include <GradientCtrl.h>
+#include "ImageSinks.h"
 #include <algorithm>
 #include <list>
 #include "Label.h"
