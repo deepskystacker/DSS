@@ -1849,7 +1849,9 @@ namespace DSS
 
 			if (dlgResult == QDialogButtonBox::AcceptRole)
 			{
-				// Save the changes
+				//
+				// Save the changes as Save was pressed or defaulted
+				//
 				result = true;
 				editStarsPtr->saveRegisterSettings();
 				pToolBar->setSaveEnabled(false);
@@ -1857,7 +1859,13 @@ namespace DSS
 				frameList.updateItemScores(m_strShowFile);
 			}
 			else if (dlgResult == QDialogButtonBox::DestructiveRole)
+			{
+				//
+				// Discard changes as Discard was pressed or defaulted.
+				//
 				result = true;
+			}
+			// Must have pressed Cancel, so result remains as false
 		}
 		else
 			result = true;
