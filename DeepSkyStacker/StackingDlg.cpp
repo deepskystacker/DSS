@@ -774,9 +774,7 @@ namespace DSS
 	void StackingDlg::on_tabBar_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
-		qDebug() << __FUNCTION__;
 		auto tab = ui->tabBar->tabAt(pos);
-		qDebug() << "tab for menu: " << tab;
 		if (tab > 0)
 		{
 			QMenu tabMenu;
@@ -1280,7 +1278,6 @@ namespace DSS
 
 	void StackingDlg::toolBar_starsButtonPressed([[maybe_unused]] bool checked)
 	{
-		qDebug() << "StackingDlg: starsButtonPressed";
 		checkAskRegister();
 		editStarsPtr->starsButtonPressed();
 		selectRectPtr->starsButtonPressed();
@@ -1288,7 +1285,6 @@ namespace DSS
 
 	void StackingDlg::toolBar_cometButtonPressed([[maybe_unused]] bool checked)
 	{
-		qDebug() << "StackingDlg: cometButtonPressed";
 		checkAskRegister();
 		editStarsPtr->cometButtonPressed();
 		selectRectPtr->cometButtonPressed();
@@ -2896,5 +2892,12 @@ namespace DSS
 	};
 
 	/* ------------------------------------------------------------------- */
+
+	void StackingDlg::showImageList(bool visible)
+	{
+		if (ui->dockWidget->isFloating())
+			ui->dockWidget->setVisible(visible);
+	}
+
 
 }

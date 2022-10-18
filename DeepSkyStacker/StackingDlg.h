@@ -196,6 +196,8 @@ namespace DSS
 			fileList = file;
 		};
 
+		void showImageList(bool visible = true);
+
 		void computeOffsets();
 
 		void copyToClipboard();

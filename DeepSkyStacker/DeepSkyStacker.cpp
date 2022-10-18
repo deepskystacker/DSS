@@ -367,10 +367,12 @@ void DeepSkyStacker::updateTab()
 	case IDD_REGISTERING:
 	case IDD_STACKING:
 		stackedWidget->setCurrentIndex(0);
+		stackingDlg->showImageList();
 		stackingDlg->update();
 		break;
 	case IDD_PROCESSING:
 		stackedWidget->setCurrentIndex(1);
+		stackingDlg->showImageList(false);
 		processingDlg.ShowWindow(SW_SHOW);
 		break;
 	};
