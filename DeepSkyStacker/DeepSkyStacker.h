@@ -110,6 +110,11 @@ public:
 		return m_DeepStack;
 	};
 
+	qreal pixelRatio()
+	{
+		return devicePixelRatioF();
+	}
+
 	void	setTab(std::uint32_t dwTabID)
 	{
 		if (dwTabID == IDD_REGISTERING)
