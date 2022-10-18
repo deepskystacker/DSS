@@ -354,7 +354,6 @@ void CControlPos::MoveControls(void)
 		std::vector<CRect>			vRects;
 		CRect rcParentBounds;
 		GetClientRect(m_parent, &rcParentBounds);
-			<< " " << rcParentBounds.Width() << "," << rcParentBounds.Height();
 
 		for (int i = 0; i < m_awndControls.GetSize(); i++)
 		{
