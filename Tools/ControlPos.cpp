@@ -15,21 +15,21 @@
 #include <vector>
 
 //------------------------------------------------------------------------------
-// CControlPos::CControlPos
+// CControlPos::initialise
 //
-//	default constructor
+//	default class iniitalisation for the constructors
 //
 //	Access: public
 //
 //	Args:
-//		CWnd* pParent				=	pointer to parent window
+//		HWND parent	= HWND of parent window
 //
 //	Return:
 //		none
 //
-CControlPos::CControlPos(CWnd* pParent /* = nullptr */)
+void CControlPos::initialise(HWND parent)
 {
-	m_pParent = pParent;
+	m_parent = parent;
 	UpdateParentSize();
 
 	m_nOldParentHeight = 0;
@@ -67,6 +67,34 @@ CControlPos::~CControlPos()
 //	Access: public
 //
 //	Args:
+//		HWND parent	=	parent window
+//
+//	Return:
+//		none
+//
+void CControlPos::SetParent(HWND parent /* = NULL */)
+{
+	CRect rcParentOriginalSize;
+
+	m_parent = parent;
+
+	GetClientRect(parent, &rcParentOriginalSize);
+	m_nOriginalParentWidth = rcParentOriginalSize.right;
+	m_nOriginalParentHeight = rcParentOriginalSize.bottom;
+
+	UpdateParentSize();
+
+}
+
+//------------------------------------------------------------------------------
+// CControlPos::SetParent
+//
+//	This sets the parent window. It should be called from a CWnd's
+//    post-constructor function, like OnInitdialog or InitialUpdate.
+//
+//	Access: public
+//
+//	Args:
 //		CWnd* pParent	=	parent window
 //
 //	Return:
@@ -74,15 +102,49 @@ CControlPos::~CControlPos()
 //
 void CControlPos::SetParent(CWnd* pParent)
 {
-	CRect rcParentOriginalSize;
+	HWND parent = NULL;
+	if (pParent)
+	{
+		parent = pParent->GetSafeHwnd();
+	}
+	SetParent(parent);
+}
 
-	m_pParent = pParent;
+//------------------------------------------------------------------------------
+// CControlPos::AddControl
+//
+//	This adds a control to the internal list of controls in CControlPos.
+//
+//	Access: public
+//
+//	Args:
+//		HWND control				=	HWND of the control to be added
+//		const DWORD& dwStyle		=  how the window should be moved -- see #define's
+//                               in the header file
+//
+//	Return:
+//		BOOL 	=	TRUE if the control was added successfully, FALSE otherwise
+//
+BOOL CControlPos::AddControl(HWND control, const DWORD& dwStyle /* = CP_MOVE_HORIZONTAL */)
+{
+	BOOL fReturnValue = TRUE;
 
-	m_pParent->GetClientRect(rcParentOriginalSize);
-	m_nOriginalParentWidth = rcParentOriginalSize.right;
-	m_nOriginalParentHeight = rcParentOriginalSize.bottom;
+	if (control && m_parent)
+	{
+		CRect rcBounds;
+		GetWindowRect(control, &rcBounds);
+		MapWindowPoints(NULL, m_parent, (LPPOINT)&rcBounds, 2);
+		LPCONTROLDATA pstControl = new CONTROLDATA;
+		pstControl->hControl = control;
+		pstControl->dwStyle = dwStyle;
+		m_awndControls.Add(((CObject*)pstControl));
+	}
+	else
+	{
+		fReturnValue = FALSE;
+	}
 
-	UpdateParentSize();
+	return (fReturnValue);
 }
 
 //------------------------------------------------------------------------------
@@ -104,12 +166,10 @@ BOOL CControlPos::AddControl(CWnd* pControl, const DWORD& dwStyle /* = CP_MOVE_H
 {
 	BOOL fReturnValue = TRUE;
 
-	if (pControl && m_pParent)
+	if (pControl && m_parent)
 	{
-		LPCONTROLDATA pstControl = new CONTROLDATA;
-		pstControl->hControl = pControl->GetSafeHwnd();
-		pstControl->dwStyle = dwStyle;
-		m_awndControls.Add(((CObject*)pstControl));
+		HWND hControl = pControl->GetSafeHwnd();
+		AddControl(hControl, dwStyle);
 	}
 	else
 	{
@@ -136,12 +196,10 @@ BOOL CControlPos::AddControl(CWnd* pControl, const DWORD& dwStyle /* = CP_MOVE_H
 //
 BOOL CControlPos::AddControl(const UINT& unId, const DWORD& dwStyle /* = CP_MOVE_HORIZONTAL */)
 {
-	CWnd* pControl;
-
-	if (m_pParent)
+	if (m_parent)
 	{
-		pControl = m_pParent->GetDlgItem(unId);
-		return (AddControl(pControl, dwStyle));
+		HWND control{ GetDlgItem(m_parent, unId) };
+		return (AddControl(control, dwStyle));
 	}
 	else
 	{
@@ -158,13 +216,13 @@ BOOL CControlPos::AddControl(const UINT& unId, const DWORD& dwStyle /* = CP_MOVE
 //	Access: public
 //
 //	Args:
-//		CWnd* pControl	=	pointer of the window who should be removed from
-//								the internal control list [ie: will not be repositioned]
+//		HWND control =	HWND of the window who should be removed from
+//						the internal control list [ie: will not be repositioned]
 //
 //	Return:
 //		BOOL 	=	TRUE if the control was found [and deleted], FALSE otherwise
 //
-BOOL CControlPos::RemoveControl(CWnd* pControl)
+BOOL CControlPos::RemoveControl(HWND control)
 {
 	BOOL fReturnValue = FALSE;
 
@@ -172,7 +230,7 @@ BOOL CControlPos::RemoveControl(CWnd* pControl)
 	{
 		LPCONTROLDATA pstControl = ((LPCONTROLDATA)m_awndControls.GetAt(i));
 
-		if (pstControl->hControl == pControl->GetSafeHwnd())
+		if (pstControl->hControl == control)
 		{
 			m_awndControls.RemoveAt(i);
 			delete pstControl;
@@ -193,6 +251,29 @@ BOOL CControlPos::RemoveControl(CWnd* pControl)
 //	Access: public
 //
 //	Args:
+//		CWnd* pControl	=	pointer of the window who should be removed from
+//								the internal control list [ie: will not be repositioned]
+//
+//	Return:
+//		BOOL 	=	TRUE if the control was found [and deleted], FALSE otherwise
+//
+BOOL CControlPos::RemoveControl(CWnd* pControl)
+{
+	HWND control = NULL;
+	if (pControl)
+		control = pControl->GetSafeHwnd();
+	return RemoveControl(control);
+}
+
+//------------------------------------------------------------------------------
+// CControlPos::RemoveControl
+//
+//	If a client ever wants to remove a control programmatically, this
+//    function will do it.
+//
+//	Access: public
+//
+//	Args:
 //		const UINT& unId  =  ID of the control that should be removed from the
 //                         internal control list [ie: will not be repositioned]
 //
@@ -201,17 +282,16 @@ BOOL CControlPos::RemoveControl(CWnd* pControl)
 //
 BOOL CControlPos::RemoveControl(const UINT& unId)
 {
-	CWnd* pControl;
-
-	if (m_pParent)
+	if (m_parent)
 	{
-		pControl = m_pParent->GetDlgItem(unId);
-		return (RemoveControl(pControl));
+		HWND control{ GetDlgItem(m_parent, unId) };
+		return (RemoveControl(control));
 	}
 	else
 	{
 		return (FALSE);
 	}
+
 }
 
 //------------------------------------------------------------------------------
@@ -258,7 +338,7 @@ void CControlPos::ResetControls(void)
 //
 void CControlPos::MoveControls(void)
 {
-	if (m_pParent)
+	if (m_parent)
 	{
 		//--------------------------------------------------------------------
 		// for each control that has been added to our object, we want to
@@ -272,16 +352,16 @@ void CControlPos::MoveControls(void)
 		// by how much? that is why so many if's and calculations are made
 		//
 		std::vector<CRect>			vRects;
+		CRect rcParentBounds;
+		GetClientRect(m_parent, &rcParentBounds);
+			<< " " << rcParentBounds.Width() << "," << rcParentBounds.Height();
 
 		for (int i = 0; i < m_awndControls.GetSize(); i++)
 		{
 			LPCONTROLDATA pstControl = ((LPCONTROLDATA)m_awndControls.GetAt(i));
-			CRect rcParentBounds;
 			CRect rcBounds;
-			CWnd* pControl = m_pParent->FromHandle(pstControl->hControl);
 
-			pControl->GetWindowRect(rcBounds);
-			m_pParent->GetClientRect(rcParentBounds);
+			GetWindowRect(pstControl->hControl, &rcBounds);
 
 			if ((pstControl->dwStyle & (CP_RESIZE_VERTICAL)) == (CP_RESIZE_VERTICAL))
 			{
@@ -407,9 +487,14 @@ void CControlPos::MoveControls(void)
 				}
 			}
 
-			m_pParent->ScreenToClient(rcBounds);
+			//m_pParent->ScreenToClient(rcBounds);
+			MapWindowPoints(NULL, m_parent, (LPPOINT)&rcBounds, 2);
 			vRects.push_back(rcBounds);
 			//pControl->MoveWindow(rcBounds);
+			//MoveWindow(pstControl->hControl,
+				//rcBounds.left, rcBounds.top,
+				//rcBounds.Width(), rcBounds.Height(),
+				//TRUE);
 		}
 
 		BOOL				bEnableVertical   = TRUE,
@@ -426,12 +511,14 @@ void CControlPos::MoveControls(void)
 		for (int i = 0; i < m_awndControls.GetSize(); i++)
 		{
 			LPCONTROLDATA pstControl = ((LPCONTROLDATA)m_awndControls.GetAt(i));
-			CWnd* pControl = m_pParent->FromHandle(pstControl->hControl);
 			CRect			rcBounds = vRects[i];
 			CRect			rcOrgBounds;
 
-			pControl->GetWindowRect(&rcOrgBounds);
-			m_pParent->ScreenToClient(&rcOrgBounds);
+			GetWindowRect(pstControl->hControl, &rcOrgBounds);
+
+			//m_pParent->ScreenToClient(&rcOrgBounds);
+			MapWindowPoints(NULL, m_parent, (LPPOINT)&rcOrgBounds, 2);
+
 			if (!bEnableVertical)
 			{
 				rcBounds.top = rcOrgBounds.top;
@@ -443,7 +530,10 @@ void CControlPos::MoveControls(void)
 				rcBounds.right = rcOrgBounds.right;
 			};
 
-			pControl->MoveWindow(rcBounds);
+			MoveWindow(pstControl->hControl,
+				rcBounds.left, rcBounds.top,
+				rcBounds.Width(), rcBounds.Height(),
+				TRUE);
 		};
 
 		UpdateParentSize();
@@ -507,10 +597,10 @@ BOOL CControlPos::GetNegativeMoves(void) const
 //
 void CControlPos::UpdateParentSize(void)
 {
-	if (m_pParent)
+	if (m_parent)
 	{
 		CRect rcBounds;
-		m_pParent->GetClientRect(rcBounds);
+		GetClientRect(m_parent, &rcBounds);
 
 		m_nOldParentWidth = rcBounds.Width();
 		m_nOldParentHeight = rcBounds.Height();
