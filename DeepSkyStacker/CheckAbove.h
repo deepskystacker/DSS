@@ -1,59 +1,45 @@
-#if !defined(AFX_CHECKABOVE_H__E483FD70_CF10_47FD_A5B9_2A4C9905C441__INCLUDED_)
-#define AFX_CHECKABOVE_H__E483FD70_CF10_47FD_A5B9_2A4C9905C441__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
-// CheckAbove.h : header file
-//
 
-/////////////////////////////////////////////////////////////////////////////
-// CCheckAbove dialog
+#include <QDialog>
 
-class CCheckAbove : public CDialog
+namespace Ui {
+	class CheckAbove;
+}
+
+namespace DSS
 {
-private :
-	double				m_fThreshold;
-	bool				m_bPercent;
-
-// Construction
-public:
-	CCheckAbove(CWnd* pParent = nullptr);   // standard constructor
-	double		GetThreshold()
+	class CheckAbove : public QDialog
 	{
-		return m_fThreshold;
+		Q_OBJECT
+
+	typedef QDialog
+			Inherited;
+
+	public:
+		CheckAbove(QWidget* parent = nullptr);
+		virtual ~CheckAbove();
+
+
+		double		threshold() const
+		{
+			return m_fThreshold;
+		};
+
+		bool		isPercent() const
+		{
+			return m_bPercent;
+		};
+
+	private slots:
+		void accept() override;
+
+
+	private:
+		Ui::CheckAbove*		ui{ nullptr };
+		double				m_fThreshold{ 0. };
+		bool				m_bPercent{ false };
+
+	private:
+		Q_DISABLE_COPY(CheckAbove)
 	};
-
-	bool		IsPercent()
-	{
-		return m_bPercent;
-	};
-
-// Dialog Data
-	//{{AFX_DATA(CCheckAbove)
-	enum { IDD = IDD_CHECKABOVE };
-	CEdit	m_Threshold;
-	//}}AFX_DATA
-
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CCheckAbove)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:
-
-	// Generated message map functions
-	//{{AFX_MSG(CCheckAbove)
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-};
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_CHECKABOVE_H__E483FD70_CF10_47FD_A5B9_2A4C9905C441__INCLUDED_)
+}
