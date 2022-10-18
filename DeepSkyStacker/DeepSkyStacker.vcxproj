@@ -120,7 +120,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
@@ -193,7 +193,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <CustomBuildStep />
     <PostBuildEvent>
