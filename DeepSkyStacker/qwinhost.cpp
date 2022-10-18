@@ -341,7 +341,7 @@ void QWinHost::resizeEvent(QResizeEvent *e)
     size = size * devicePixelRatioF();
 
     if (hwnd)
-	SetWindowPos(hwnd, HWND_TOP, 0, 0, width(), height(), 0);
+	SetWindowPos(hwnd, HWND_TOP, 0, 0, size.width(), size.height(), 0);
 }
 
 /*!
