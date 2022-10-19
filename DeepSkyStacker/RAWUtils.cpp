@@ -599,7 +599,7 @@ namespace { // Only use in this .cpp file
 
 			if (!m_bColorRAW)
 			{
-				ZTRACE_RUNTIME("Processing Bayer pattern raw image data");
+				ZTRACE_DEVELOP("Processing Bayer pattern raw image data");
 				//
 				// The initial openmp changes were made by David Partridge, but it was
 				// Vitali Pelenjow who made it work without the critical sections
@@ -656,7 +656,7 @@ namespace { // Only use in this .cpp file
 				}
 				else
 				{
-					ZTRACE_RUNTIME("Extracting real image data (excluding the frame) from RawData.raw_image");
+					ZTRACE_DEVELOP("Extracting real image data (excluding the frame) from RawData.raw_image");
 
 					//
 					// This is a regular RAW file so no Fuji Super-CCD stuff
@@ -695,13 +695,13 @@ namespace { // Only use in this .cpp file
 
 				// Report User Black Point over-ride
 				if (0 == O.user_black)
-					ZTRACE_RUNTIME("User set Black Point to 0");
+					ZTRACE_DEVELOP("User set Black Point to 0");
 
 				//
 				// Before doing dark subtraction, normalise C.black / C.cblack[]
 				//
-				ZTRACE_RUNTIME("Before adjust_bl() C.black = %d.", C.black);
-				ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
+				ZTRACE_DEVELOP("Before adjust_bl() C.black = %d.", C.black);
+				ZTRACE_DEVELOP("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
 					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
 					C.cblack[4], C.cblack[5],
 					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
@@ -722,8 +722,8 @@ namespace { // Only use in this .cpp file
 				//
 				// While doing so collect the largest value in the image data.
 				//
-				ZTRACE_RUNTIME("Subtracting black level of C.black = %d from raw_image data.", C.black);
-				ZTRACE_RUNTIME("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
+				ZTRACE_DEVELOP("Subtracting black level of C.black = %d from raw_image data.", C.black);
+				ZTRACE_DEVELOP("First 10 C.cblack elements\n  %d, %d, %d, %d\n  %d, %d\n  %d, %d, %d, %d",
 					C.cblack[0], C.cblack[1], C.cblack[2], C.cblack[3],
 					C.cblack[4], C.cblack[5],
 					C.cblack[6], C.cblack[7], C.cblack[8], C.cblack[9]);
@@ -846,9 +846,9 @@ namespace { // Only use in this .cpp file
 				for (int c = 0; c < 4; c++)
 					scale_mul[c] = (pre_mul[c] /= dmin) * (65535.0 / C.maximum);
 
-				ZTRACE_RUNTIME("Maximum value pixel has value %d", C.data_maximum);
-				ZTRACE_RUNTIME("Saturation level is %d", C.maximum);
-				ZTRACE_RUNTIME("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
+				ZTRACE_DEVELOP("Maximum value pixel has value %d", C.data_maximum);
+				ZTRACE_DEVELOP("Saturation level is %d", C.maximum);
+				ZTRACE_DEVELOP("Applying linear stretch to raw data.  Scale values %f, %f, %f, %f",
 					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
 				//Timer timer;
