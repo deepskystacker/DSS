@@ -2326,6 +2326,8 @@ namespace DSS
 						.arg(exposureToString(elapsed.count()))
 						.arg(avxActive) };
 					emit statusMessage(message);
+					QApplication::beep();
+					ZTRACE_RUNTIME(message);
 
 					if (bContinue && bStackAfter)
 					{
@@ -2592,18 +2594,22 @@ namespace DSS
 			QString message{ tr("Total stacking time: %1 %2")
 				.arg(exposureToString(elapsed.count()))
 				.arg(avxActive) };
+			ZTRACE_RUNTIME(message);
 
 			//
 			// Get current status message and append the stacking time 
 			//
 			QString statusMsg = dssApp->statusMessage();
 			if (statusMsg.isEmpty())
+			{
 				emit statusMessage(message);
+			}
 			else
 			{
 				statusMsg.append(" : ").append(message);
 				emit statusMessage(statusMsg);
 			}
+			QApplication::beep();
 
 			updateCheckedAndOffsets(StackingEngine);
 
