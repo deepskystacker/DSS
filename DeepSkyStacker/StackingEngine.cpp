@@ -1681,7 +1681,7 @@ void CStackTask::process()
 
 void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 {
-	ZFUNCTRACE_RUNTIME();
+//	ZFUNCTRACE_RUNTIME();
 	const int width = m_pBitmap->Width();
 	PIXELDISPATCHVECTOR vPixels;
 	vPixels.reserve(16);
@@ -2224,7 +2224,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 								if (bStack)
 								{
-									ZTRACE_RUNTIME("Stack %s", lfInfo.filePath.generic_string());
+									ZTRACE_RUNTIME("Stack %s", lfInfo.filePath.generic_string().c_str());
 
 									if (m_pProgress != nullptr)
 									{
