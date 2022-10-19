@@ -2242,6 +2242,7 @@ namespace DSS
 
 		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
 		{
+			emit statusMessage("");
 			//CString				strFirstLightFrame;
 
 			//frameList.GetFirstCheckedLightFrame(strFirstLightFrame);
@@ -2324,7 +2325,7 @@ namespace DSS
 					QString message{ tr("Total registering time: %1 %2")
 						.arg(exposureToString(elapsed.count()))
 						.arg(avxActive) };
-					QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
+					emit statusMessage(message);
 
 					if (bContinue && bStackAfter)
 					{
@@ -2349,6 +2350,8 @@ namespace DSS
 			BOOL				bContinue;
 			CAllStackingTasks	tasks;
 			CRect				rcSelect;
+
+			emit statusMessage("");
 
 			frameList.fillTasks(tasks);
 
@@ -2589,7 +2592,18 @@ namespace DSS
 			QString message{ tr("Total stacking time: %1 %2")
 				.arg(exposureToString(elapsed.count()))
 				.arg(avxActive) };
-			QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
+
+			//
+			// Get current status message and append the stacking time 
+			//
+			QString statusMsg = dssApp->statusMessage();
+			if (statusMsg.isEmpty())
+				emit statusMessage(message);
+			else
+			{
+				statusMsg.append(" : ").append(message);
+				emit statusMessage(statusMsg);
+			}
 
 			updateCheckedAndOffsets(StackingEngine);
 

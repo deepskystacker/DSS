@@ -147,6 +147,9 @@ namespace DSS
 
 		Q_OBJECT
 
+	signals:
+		void statusMessage(const QString& text);
+
 	public slots:
 		void setSelectionRect(QRectF rect);
 		void imageLoad();

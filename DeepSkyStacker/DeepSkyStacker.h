@@ -37,6 +37,7 @@
 ****************************************************************************/
 #include <list>
 #include <QMainWindow>
+#include <QLabel>
 #include "commonresource.h"
 #include "DeepStack.h"
 
@@ -77,6 +78,7 @@ private:
 	QString currentPathName;
 	//ITaskbarList3* m_taskbarList;
 	bool                    m_progress;
+	QLabel*	statusBarText;
 
 protected:
 	void showEvent(QShowEvent* event) override;
@@ -103,6 +105,11 @@ public:
 
 	~DeepSkyStacker()
 	{
+	}
+
+	inline QString statusMessage()
+	{
+		return statusBarText->text();
 	}
 
 	CDeepStack& deepStack()
@@ -185,7 +192,11 @@ public:
 protected:
 	void closeEvent(QCloseEvent* e) override;
 
+protected slots:
+	void updateStatus(const QString& text);
+
 private:
+	void createStatusBar();
 	void updateTab();
 	static inline DeepSkyStacker* theMainWindow{ nullptr };
 
