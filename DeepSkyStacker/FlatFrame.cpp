@@ -43,7 +43,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress 
 
 			int	rowProgress = 0;
 
-#pragma omp parallel for schedule(guided, 100) default(none) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 100) default(none) if(nrProcessors > 1)
 			for (int j = 0; j < height; j++)
 			{
 				for (int i = 0; i < width; i++)

@@ -119,7 +119,7 @@ void CDetectCosmeticTask::doProcess()
 	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
-#pragma omp parallel for schedule(guided, 100) default(none) reduction(+: nrHotPixels, nrColdPixels) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 100) default(none) reduction(+: nrHotPixels, nrColdPixels) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
