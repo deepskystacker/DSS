@@ -136,7 +136,6 @@ static bool	isChangeGroupLine(QString line, uint16_t& groupId, QString& groupNam
 
 /* ------------------------------------------------------------------- */
 
-#include <QMessageBox>
 namespace DSS
 {
 	size_t FrameList::checkedImageCount(const PICTURETYPE type, const int16_t id) const
