@@ -695,7 +695,7 @@ namespace { // Only use in this .cpp file
 
 				// Report User Black Point over-ride
 				if (0 == O.user_black)
-					ZTRACE_DEVELOP("User set Black Point to 0");
+					ZTRACE_RUNTIME("User set Black Point to 0");
 
 				//
 				// Before doing dark subtraction, normalise C.black / C.cblack[]
