@@ -90,14 +90,14 @@
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;NDEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <OpenMPSupport>true</OpenMPSupport>
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
-      <AdditionalOptions>/wd4828</AdditionalOptions>
+      <AdditionalOptions>/openmp:experimental /wd4828</AdditionalOptions>
+      <EnableModules>false</EnableModules>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -120,7 +120,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
@@ -157,14 +157,14 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
-      <OpenMPSupport>true</OpenMPSupport>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/wd4828</AdditionalOptions>
+      <AdditionalOptions>/openmp:experimental /wd4828</AdditionalOptions>
       <ShowIncludes>false</ShowIncludes>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -176,7 +176,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX64</TargetMachine>
       <ShowProgress>NotSet</ShowProgress>
-      <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>MSVCRT;libcmt</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>
       </ImageHasSafeExceptionHandlers>
       <AdditionalLibraryDirectories>C:\Program Files (x86)\Windows Kits\8.1\Lib\winv6.3\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -193,7 +193,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <SuppressStartupBanner>true</SuppressStartupBanner>
     </Bscmake>
     <Manifest>
-      <EnableDpiAwareness>false</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
     <CustomBuildStep />
     <PostBuildEvent>
@@ -238,7 +238,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp" />
     <ClCompile Include="..\Tools\RichToolTipCtrl.cpp" />
     <ClCompile Include="..\Tools\ScrollDialog.cpp" />
-    <ClCompile Include="..\Tools\SplitterControl.cpp" />
     <ClCompile Include="..\Tools\ThemeUtil.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp" />
@@ -299,12 +298,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClCompile Include="CosmeticEngine.cpp" />
     <ClCompile Include="DarkFrame.cpp" />
     <ClCompile Include="DeBloom.cpp" />
-    <ClCompile Include="DeepSkyStacker.cpp">
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      </AdditionalOptions>
-      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </AdditionalOptions>
-    </ClCompile>
+    <ClCompile Include="DeepSkyStacker.cpp" />
     <ClCompile Include="DeepStack.cpp" />
     <ClCompile Include="Delaunay.cpp" />
     <ClCompile Include="DropFilesDlg.cpp" />
@@ -321,6 +315,8 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="QtProgressDlg.cpp" />
+    <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="selectrect.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -377,7 +373,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="ProcessingDlg.cpp" />
     <ClCompile Include="ProcessSettingsSheet.cpp" />
-    <ClCompile Include="ProgressDlg.cpp" />
     <ClCompile Include="QLinearGradientCtrl.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -483,7 +478,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <CustomBuild Include="..\Tools\RichToolTipCtrl.h" />
     <ClInclude Include="..\Tools\Schemadef.h" />
     <ClInclude Include="..\Tools\ScrollDialog.h" />
-    <ClInclude Include="..\Tools\SplitterControl.h" />
     <ClInclude Include="..\Tools\ThemeUtil.h" />
     <ClInclude Include="..\Tools\Tmschema.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
@@ -507,6 +501,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BackgroundLoading.h" />
     <ClInclude Include="BatchStacking.h" />
+    <QtMoc Include="baywindow.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="BitmapExt.h" />
@@ -568,16 +563,17 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="PostCalibration.h" />
     <ClInclude Include="ProcessingDlg.h" />
     <ClInclude Include="ProcessSettingsSheet.h" />
-    <ClInclude Include="ProgressDlg.h" />
     <QtMoc Include="QLinearGradientCtrl.h" />
     <QtMoc Include="qwinwidget.h" />
     <QtMoc Include="RawDDPSettings.h" />
     <QtMoc Include="qwinhost.h" />
     <ClInclude Include="qmfcapp.h" />
+    <QtMoc Include="QtProgressDlg.h" />
     <ClInclude Include="RAWUtils.h" />
     <QtMoc Include="RecommendedSettings.h" />
     <ClInclude Include="RegisterEngine.h" />
     <QtMoc Include="RegisterSettings.h" />
+    <QtMoc Include="RenameGroup.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="resourceCZ.h" />
     <ClInclude Include="resourceES.h" />
@@ -587,7 +583,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="RGBTab.h" />
     <ClInclude Include="RunningStackingEngine.h" />
     <ClInclude Include="SaturationTab.h" />
-    <ClInclude Include="SaveEditChanges.h" />
+    <QtMoc Include="SaveEditChanges.h" />
     <ClInclude Include="SavePicture.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="SettingsDlg.h" />
@@ -759,10 +755,13 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\IntermediateFiles.ui" />
     <QtUic Include="ui\OutputTab.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
+    <QtUic Include="ui\ProgressDlg.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />
     <QtUic Include="ui\RecommendedSettings.ui" />
     <QtUic Include="ui\RegisterSettings.ui" />
+    <QtUic Include="ui\RenameGroup.ui" />
     <QtUic Include="ui\ResultParameters.ui" />
+    <QtUic Include="ui\SaveEditChanges.ui" />
     <QtUic Include="ui\StackingDlg.ui" />
     <QtUic Include="ui\StackingParameters.ui" />
     <QtUic Include="ui\StackRecap.ui" />
@@ -792,13 +791,15 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LibraryPath>..\libs\Win64\$(Configuration)Libs;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <ExternalIncludePath>$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtCore;$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
   </PropertyGroup>
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

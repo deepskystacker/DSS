@@ -21,6 +21,7 @@ namespace DSS
 
 	private:
 		std::vector<Group>	imageGroups;
+		std::uint16_t lastGroup;
 
 	public:
 		FrameList() :
@@ -57,7 +58,7 @@ namespace DSS
 			// return address of the relevant ListBitMap in the current
 			// group
 			//
-			return &imageGroups[index].pictures.mydata[row];
+			return &imageGroups[index].pictures->mydata[row];
 		}
 
 		//
@@ -67,7 +68,7 @@ namespace DSS
 		{
 			for (auto& group : imageGroups)
 			{
-				group.pictures.clear();
+				group.pictures->clear();
 			}
 			Group::clearMap();
 		};
@@ -81,6 +82,23 @@ namespace DSS
 			index = id;
 			return *this;
 		};
+
+		inline std::uint16_t lastGroupId() const noexcept
+		{
+			return static_cast<uint16_t>(imageGroups.size() - 1);
+		}
+
+		inline std::uint16_t addGroup()
+		{
+			imageGroups.emplace_back();
+			return static_cast<uint16_t>(imageGroups.size() - 1);
+		}
+
+		inline size_t groupSize(uint16_t id) const noexcept
+		{
+			ZASSERTSTATE(id < imageGroups.size());
+			return imageGroups[id].size();
+		}
 
 		QString getFirstCheckedLightFrame();
 
@@ -96,17 +114,17 @@ namespace DSS
 
 		inline bool isLightFrame(QString name) const
 		{
-			return imageGroups[index].pictures.isLightFrame(name);
+			return imageGroups[index].pictures->isLightFrame(name);
 		};
 
 		inline bool isChecked(QString name) const
 		{
-			return imageGroups[index].pictures.isChecked(name);
+			return imageGroups[index].pictures->isChecked(name);
 		}
 
 		inline bool getTransformation(QString name, CBilinearParameters& transformation, VOTINGPAIRVECTOR& vVotedPairs) const
 		{
-			return imageGroups[index].pictures.getTransformation(name, transformation, vVotedPairs);
+			return imageGroups[index].pictures->getTransformation(name, transformation, vVotedPairs);
 		}
 
 		FrameList& saveListToFile(fs::path file);
@@ -114,15 +132,15 @@ namespace DSS
 
 		inline FrameList& beginInsertRows(int count) noexcept
 		{
-			auto first{ imageGroups[index].pictures.rowCount() };	// Insert after end
+			auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
 			auto last{ first + count - 1 };
-			imageGroups[index].pictures.beginInsertRows(QModelIndex(), first, last);
+			imageGroups[index].pictures->beginInsertRows(QModelIndex(), first, last);
 			return (*this);
 		}
 
 		inline FrameList& endInsertRows() noexcept
 		{
-			imageGroups[index].pictures.endInsertRows();
+			imageGroups[index].pictures->endInsertRows();
 			return *this;
 		}
 
@@ -137,6 +155,8 @@ namespace DSS
 		bool areCheckedImagesCompatible();
 
 		void updateCheckedItemScores();
+
+		void updateItemScores(const QString& fileName);
 
 		QString getReferenceFrame();
 		bool getReferenceFrame(CString& string);
@@ -170,7 +190,7 @@ namespace DSS
 
 		inline ImageListModel* currentTableModel()
 		{
-			return &(imageGroups[index].pictures);
+			return imageGroups[index].pictures.get();
 		}
 
 		inline void removeFromMap(fs::path file)
@@ -178,5 +198,8 @@ namespace DSS
 			Group::removeFromMap(file);
 		};
 
+		// Change the name of the specified group
+		void setGroupName(std::uint16_t id, const QString& name);
 	};
-}
+};
+

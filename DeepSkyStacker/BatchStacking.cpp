@@ -6,7 +6,7 @@
 #include "Registry.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include "TIFFUtil.h"
 #include "BatchStacking.h"
 #include "dss_settings.h"
@@ -230,7 +230,7 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 	if (!tasks.m_vStacks.empty())
 	{
 		bool bContinue = true;
-		CDSSProgressDlg dlg;
+		DSS::DSSProgressDlg dlg;
 		CStackingEngine StackingEngine;
 		CString strReferenceFrame;
 

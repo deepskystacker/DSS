@@ -40,7 +40,9 @@
 
 #include <chrono>
 #include <boost/interprocess/sync/named_mutex.hpp>
-using namespace boost::interprocess;
+#include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/asio.hpp>
+namespace bip = boost::interprocess;
 #include <gdiplus.h>
 using namespace Gdiplus;
 #include <QApplication>
@@ -51,6 +53,7 @@ using namespace Gdiplus;
 #include <QMessageBox>
 #include <QtGui>
 #include <QSettings>
+#include <QStatusBar>
 #include <QStyleFactory>
 #include <QTranslator>
 #include <QtWidgets/QHBoxLayout>
@@ -157,8 +160,6 @@ void	deleteRemainingTempFiles()
 	std::vector<QString>	vFiles;
 	qint64					totalSize = 0;
 
-	ZTRACE_RUNTIME("Finding remaining temp files\n");
-
 	QString folder(CAllStackingTasks::GetTemporaryFilesFolder());
 
 	QStringList nameFilters("DSS*.tmp");
@@ -174,14 +175,13 @@ void	deleteRemainingTempFiles()
 			totalSize += item.size();
 		}
 	}
-	ZTRACE_RUNTIME("Find remaining temp files - ok\n");
 
 	if (!vFiles.empty())
 	{
 		QString			strMsg;
 		QString			strSize;
 
-		ZTRACE_RUNTIME("Remove remaining temp files\n");
+		ZTRACE_RUNTIME("Remove remaining %d temp files", vFiles.size());
 
 		SpaceToQString(totalSize, strSize);
 
@@ -203,11 +203,22 @@ void	deleteRemainingTempFiles()
 			}
 		};
 
-		ZTRACE_RUNTIME("Remove remaining temp files - ok\n");
 	};
 
 
 };
+
+void DeepSkyStacker::createStatusBar()
+{
+	statusBarText->setAlignment(Qt::AlignHCenter);
+	statusBar()->addWidget(statusBarText, 1);
+	connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
+}
+
+void DeepSkyStacker::updateStatus(const QString& text)
+{
+	statusBarText->setText(text);
+}
 
 void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
 {
@@ -287,14 +298,26 @@ void DeepSkyStacker::onInitialise()
 	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+	//
+	// If the image list is floating, then make sure it is visible
+	//
+	stackingDlg->showImageList();
+
 	setWindowIcon(QIcon(":/DSSIcon.png"));
 
 	setWindowTitle(baseTitle);
 
+	//
+	// Set up the status bar
+	//
+	createStatusBar();
+
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
+	settings.beginGroup("MainWindow");
 	restoreGeometry(settings.value("geometry").toByteArray());
 	restoreState(settings.value("windowState").toByteArray());
+	settings.endGroup();
 
 	//
 	// Check to see if we were passed a filelist file to open
@@ -305,7 +328,7 @@ void DeepSkyStacker::onInitialise()
 		fs::path file{ name.toStdWString() };
 		if (fs::file_type::regular == status(file).type())
 		{
-			stackingDlg->setFileList(file); // TODO
+			stackingDlg->setFileList(file);
 		}
 		else
 			QMessageBox::warning(this,
@@ -315,25 +338,21 @@ void DeepSkyStacker::onInitialise()
 
 }
 
-void DeepSkyStacker::setTitleFilename(const fs::path file)
-{
-	fs::path filename{ file.filename() };
-	if (!filename.empty())
-	{
-		setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(filename.generic_string().c_str()));
-	}
-	else
-		setWindowTitle(baseTitle);
-}
-
-
 void DeepSkyStacker::closeEvent(QCloseEvent* e)
 {
 	ZFUNCTRACE_RUNTIME();
+	processingDlg.SaveOnClose();
 	processingDlg.DestroyWindow();
+	stackingDlg->saveOnClose();
+
 	QSettings settings;
+	settings.beginGroup("MainWindow");
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
+	settings.endGroup();
+	settings.beginGroup("Dialogs/StackingDlg");
+	settings.setValue("windowState", stackingDlg->saveState());
+	settings.endGroup();
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
 	settings.setValue("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState",
 		tableView->horizontalHeader()->saveState());
@@ -357,7 +376,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
-	m_progress{ false }
+	m_progress{ false },
+	statusBarText{ new QLabel("") }
 
 {
 	ZFUNCTRACE_RUNTIME();
@@ -371,10 +391,12 @@ void DeepSkyStacker::updateTab()
 	case IDD_REGISTERING:
 	case IDD_STACKING:
 		stackedWidget->setCurrentIndex(0);
+		stackingDlg->showImageList();
 		stackingDlg->update();
 		break;
 	case IDD_PROCESSING:
 		stackedWidget->setCurrentIndex(1);
+		stackingDlg->showImageList(false);
 		processingDlg.ShowWindow(SW_SHOW);
 		break;
 	};
@@ -481,7 +503,6 @@ BOOL DeepSkyStackerApp::InitInstance()
 int DeepSkyStackerApp::ExitInstance()
 {
 	ZFUNCTRACE_RUNTIME();
-	//TODO: handle additional resources you may have added
 
 	AfxOleTerm(FALSE);
 
@@ -506,8 +527,6 @@ int DeepSkyStackerApp::Run()
 	return 0;
 }
 
-named_mutex dssMutex{ open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
-
 DeepSkyStackerApp theApp;
 
 DeepSkyStackerApp *		GetDSSApp()
@@ -523,8 +542,10 @@ QTranslator theAppTranslator;
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+
+
+
 	int result{ 0 };
-	bool firstInstance = true;
 
 	//
 	// Silence the MFC memory leak dump as we use Visual Leak Detector.
@@ -539,10 +560,6 @@ int main(int argc, char* argv[])
 	if (hasExpired())
 		return FALSE;
 
-	ZTRACE_RUNTIME("Checking Mutex");
-	if (!dssMutex.try_lock()) firstInstance = false;
-	ZTRACE_RUNTIME("Checking Mutex - ok");
-
 	ZTRACE_RUNTIME("Initialize MFC");
 	// initialize MFC and print and error on failure
 	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
@@ -555,11 +572,6 @@ int main(int argc, char* argv[])
 	}
 	// initialize all the windows stuff we need for now
 	theApp.InitInstance();
-
-	QSettings		settings;
-
-	g_bShowRefStars = settings.value("ShowRefStars", false).toBool();
-
 
 	// High DPI support
 #if QT_VERSION < 0x060000
@@ -577,26 +589,19 @@ int main(int argc, char* argv[])
 	QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 	QCoreApplication::setApplicationName("DeepSkyStacker5");
 
+	QSettings		settings;
+
+	g_bShowRefStars = settings.value("ShowRefStars", false).toBool();
+
 	//
 	// Set the Qt Application Style
 	//
 	app.setStyle(QStyleFactory::create("Fusion"));
 
-	QString translatorFileName = QLatin1String("qt_");
-	translatorFileName += QLocale::system().name();
-	
-#if QT_VERSION >= 0x060000
-	qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
-	if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
-#else
-	qDebug() << "translationPath " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
-	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-#endif
-		app.installTranslator(&theQtTranslator);
-
 	ZTRACE_RUNTIME("Initialize Application - ok");
 
 	ZTRACE_RUNTIME("Set UI Language");
+
 	//
 	// Retrieve the Qt language name (e.g.) en_GB
 	//
@@ -610,12 +615,30 @@ int main(int argc, char* argv[])
 		language = QLocale::system().name();
 	}
 
+	QString translatorFileName = QLatin1String("qt_");
+	translatorFileName += language;
+	qDebug() << "qt translator filename: " << translatorFileName;
+	
+#if QT_VERSION >= 0x060000
+	qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+	if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+#else
+	qDebug() << "translationPath " << QLibraryInfo::location(QLibraryInfo::TranslationsPath);
+	if (theQtTranslator.load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+#endif
+	{
+		app.installTranslator(&theQtTranslator);
+	}
+
+	translatorFileName = QLatin1String("DSS.");
+	translatorFileName += language;
+	qDebug() << "app translator filename: " << translatorFileName;
 	//
 	// Install the language if it actually exists.
 	//
-	if (theAppTranslator.load("DSS." + language, ":/i18n/"))
+	if (theAppTranslator.load(translatorFileName, ":/i18n/"))
 	{
-		QCoreApplication::instance()->installTranslator(&theAppTranslator);
+		app.installTranslator(&theAppTranslator);
 	}
 
 	//
@@ -623,17 +646,33 @@ int main(int argc, char* argv[])
 	//
 	SetUILanguage();
 
+	ZTRACE_RUNTIME("Creating Main Window");
+	DeepSkyStacker mainWindow;
+	DeepSkyStacker::setInstance(&mainWindow);
+
 	ZTRACE_RUNTIME("Set UI Language - ok");
+	boost::asio::thread_pool ioc(1);
+	boost::asio::signal_set ss(ioc, SIGINT, SIGTERM);
+	ss.async_wait([](auto ec, int s) {
+		if (ec == boost::asio::error::operation_aborted)
+			return;
+		DeepSkyStacker::instance()->close();
+	});
+
+	ZTRACE_RUNTIME("Checking Mutex");
+	bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
+	bip::scoped_lock<bip::named_mutex> lk(dssMutex, bip::defer_lock);
+	const bool firstInstance{ lk.try_lock() };
+	ZTRACE_RUNTIME("  firstInstance: %s", firstInstance ? "true" : "false");
 
 	askIfVersionCheckWanted();
 	if (firstInstance)
 		deleteRemainingTempFiles();
 
-	ZTRACE_RUNTIME("Creating Main Window");
+	ZTRACE_RUNTIME("Invoking QApplication::exec()");
 	try
 	{
-		DeepSkyStacker mainWindow;
-		DeepSkyStacker::setInstance(&mainWindow);
+
 
 		mainWindow.show();
 		//result = app.run(&theApp);
@@ -685,7 +724,8 @@ int main(int argc, char* argv[])
 
 	}
 	theApp.ExitInstance();
-	dssMutex.unlock();
+	ss.cancel();
+	ioc.join();
 	return result;
 }
 /* ------------------------------------------------------------------- */

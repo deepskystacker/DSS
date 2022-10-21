@@ -775,7 +775,7 @@ bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBi
 			pProgress->Start2(nullptr, height);
 			pProgress->SetNrUsedProcessors(nrProcessors);
 		}
-#pragma omp parallel for schedule(dynamic) default(none) firstprivate(ahdVariables) if(nrProcessors > 1)
+#pragma omp parallel for schedule(dynamic, 50) default(none) firstprivate(ahdVariables) if(nrProcessors > 1)
 		for (int row = 0; row < height; row += AHDWS - 4)
 		{
 			for (int col = 0; col < width; col += AHDWS - 4)

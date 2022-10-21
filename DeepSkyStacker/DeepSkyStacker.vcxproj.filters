@@ -69,9 +69,6 @@
     <ClCompile Include="FileProperty.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
-    <ClCompile Include="ProgressDlg.cpp">
-      <Filter>Dialogs</Filter>
-    </ClCompile>
     <ClCompile Include="AlignmentParameters.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
@@ -144,9 +141,6 @@
     <ClCompile Include="RawDDPSettings.cpp">
       <Filter>Dialogs\Settings</Filter>
     </ClCompile>
-    <ClCompile Include="SaveEditChanges.cpp">
-      <Filter>Dialogs\ImageSinks</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\BitmapSlider.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -196,9 +190,6 @@
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ScrollDialog.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\SplitterControl.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="..\Tools\ThemeUtil.cpp">
@@ -396,6 +387,15 @@
     <ClCompile Include="mrulist.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="RenameGroup.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
+    <ClCompile Include="QtProgressDlg.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveEditChanges.cpp">
+      <Filter>Dialogs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -469,9 +469,6 @@
     <ClInclude Include="FileProperty.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="ProgressDlg.h">
-      <Filter>Dialogs</Filter>
-    </ClInclude>
     <ClInclude Include="BatchStacking.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
@@ -504,9 +501,6 @@
     </ClInclude>
     <ClInclude Include="StarMaskDlg.h">
       <Filter>Dialogs\Processing</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveEditChanges.h">
-      <Filter>Dialogs\ImageSinks</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\BitmapSlider.h">
       <Filter>Tools</Filter>
@@ -563,9 +557,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ScrollDialog.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\SplitterControl.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\ThemeUtil.h">
@@ -1217,6 +1208,15 @@
     <QtUic Include="ui\StackingDlg.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\RenameGroup.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\ProgressDlg.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
+    <QtUic Include="ui\SaveEditChanges.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1299,6 +1299,18 @@
     </QtMoc>
     <QtMoc Include="DropFilesDlg.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="baywindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RenameGroup.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="QtProgressDlg.h">
+      <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="SaveEditChanges.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

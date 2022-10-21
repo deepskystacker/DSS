@@ -547,7 +547,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 		};
 
 #if defined (_OPENMP)
-#pragma omp parallel for default(none) shared(lYMin)
+#pragma omp parallel for schedule(dynamic, 50) default(none) shared(lYMin)
 #endif
 		for (int j = lYMin;j<lYMax;j++)
 		{

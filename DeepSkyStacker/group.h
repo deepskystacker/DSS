@@ -39,7 +39,7 @@
 
 #include <QCoreApplication>
 #include <QString>
-#include "ImageListModel.h" 
+#include "ImageListModel.h"
 
 namespace DSS
 {
@@ -60,19 +60,19 @@ namespace DSS
 		//
 		// Qt Table Model class derived from QAbstractTableModel
 		//
-		ImageListModel	pictures;
+		std::unique_ptr<ImageListModel>	pictures;
 
 		explicit Group() :
-			Index(nextIndex++),		// First group is Main Group with Index of 0
-			Dirty(false)
-		{
+			pictures { std::make_unique<ImageListModel>() },
+			Index { nextIndex++ },		// First group is Main Group with Index of 0
+			Dirty{ false }		{
 			if (0 == Index)
 			{
-				Name = QCoreApplication::translate("StackingDlg", "Main Group");
+				Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
 			}
 			else
 			{
-				Name = QCoreApplication::translate("StackingDlg", "Group %1").arg(Index);
+				Name = QCoreApplication::translate("DSS::StackingDlg", "Group %1", "IDS_GROUPIDMASK").arg(Index);
 			}
 		}
 
@@ -83,6 +83,7 @@ namespace DSS
 		Group& operator = (const Group&) = delete;
 
 		Group(Group&& rhs) noexcept :
+			pictures { std::move(rhs.pictures) },
 			Index { std::exchange(rhs.Index, 0) },
 			Name { std::move(rhs.Name) },
 			Dirty { std::exchange(rhs.Dirty, false) }
@@ -93,6 +94,7 @@ namespace DSS
 		{
 			if (this != &rhs)
 			{
+				pictures = std::move(rhs.pictures);
 				Index = std::exchange(rhs.Index, 0);
 				Name = std::move(rhs.Name);
 				Dirty = std::exchange(rhs.Dirty, false);
@@ -100,9 +102,15 @@ namespace DSS
 			return *this;
 		}
 
+
 		//
 		// Accessors
 		//
+		inline size_t size() const noexcept
+		{
+			return pictures->rowCount();
+		}
+
 		inline QString name() const noexcept { return Name; };
 		inline Group& setName(QString const& name) noexcept { Name = name; return *this; };
 		inline bool dirty() const noexcept { return Dirty; };
@@ -120,7 +128,7 @@ namespace DSS
 		//
 		void addImage(ListBitMap image)
 		{
-			pictures.addImage(image);
+			pictures->addImage(image);
 			Dirty = true;
 		}
 

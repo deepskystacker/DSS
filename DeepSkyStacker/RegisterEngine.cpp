@@ -1086,7 +1086,7 @@ void CComputeLuminanceTask::process()
 
 	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
-#pragma omp parallel for schedule(dynamic) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 5) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)

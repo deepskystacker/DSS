@@ -37,6 +37,7 @@
 ****************************************************************************/
 #include <list>
 #include <QMainWindow>
+#include <QLabel>
 #include "commonresource.h"
 #include "DeepStack.h"
 
@@ -74,8 +75,10 @@ private:
 	std::uint32_t			currTab;
 	QStringList				args;
 	QString					baseTitle;
+	QString currentPathName;
 	//ITaskbarList3* m_taskbarList;
 	bool                    m_progress;
+	QLabel*	statusBarText;
 
 protected:
 	void showEvent(QShowEvent* event) override;
@@ -104,10 +107,20 @@ public:
 	{
 	}
 
+	inline QString statusMessage()
+	{
+		return statusBarText->text();
+	}
+
 	CDeepStack& deepStack()
 	{
 		return m_DeepStack;
 	};
+
+	qreal pixelRatio()
+	{
+		return devicePixelRatioF();
+	}
 
 	void	setTab(std::uint32_t dwTabID)
 	{
@@ -120,13 +133,6 @@ public:
 		currTab = dwTabID;
 		updateTab();
 	};
-
-	void setTitleFilename(fs::path file);
-
-	inline void setTitleFilename(char* name)
-	{
-		setTitleFilename(fs::path(name));
-	}
 
 	std::uint32_t tab()
 	{
@@ -173,10 +179,24 @@ public:
 		return *explorerBar;
 	};
 
+	inline void setWindowFilePath(const QString& name)
+	{
+		if (currentPathName == name) return;
+		currentPathName = name;
+		if (!name.isEmpty())
+			setWindowTitle(QString("%1 - %2").arg(baseTitle).arg(name));
+		else
+			setWindowTitle(baseTitle);
+	}
+
 protected:
 	void closeEvent(QCloseEvent* e) override;
 
+protected slots:
+	void updateStatus(const QString& text);
+
 private:
+	void createStatusBar();
 	void updateTab();
 	static inline DeepSkyStacker* theMainWindow{ nullptr };
 

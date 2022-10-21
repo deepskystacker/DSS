@@ -5,7 +5,9 @@
 #include "qevent.h"
 #include "ui/ui_ProgressDlg.h"
 
-CQtProgressDlg::CQtProgressDlg(QWidget* parent) : 
+using namespace DSS;
+
+ProgressDlg::ProgressDlg(QWidget* parent) : 
 	QDialog(parent),
 	ui(new Ui::ProgressDlg),
 	m_bCancelInProgress(false)
@@ -14,84 +16,87 @@ CQtProgressDlg::CQtProgressDlg(QWidget* parent) :
 	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
 	connect(ui->StopButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
 }
-CQtProgressDlg::~CQtProgressDlg()
+ProgressDlg::~ProgressDlg()
 {
 	if(ui)
 		delete ui;
 }
 
-const QString CQtProgressDlg::getStart1Text() const
+const QString ProgressDlg::getStart1Text() const
 {
 	return ui->ProcessText1->text();
 }
-const QString CQtProgressDlg::getStart2Text() const
+const QString ProgressDlg::getStart2Text() const
 {
 	return ui->ProcessText2->text();
 }
 
-void CQtProgressDlg::setStart1Text(const QString& strText)
+void ProgressDlg::setStart1Text(const QString& strText)
 {
 	ui->ProcessText1->setText(strText);
 }
-void CQtProgressDlg::setStart2Text(const QString& strText)
+void ProgressDlg::setStart2Text(const QString& strText)
 {
 	ui->ProcessText2->setText(strText);
 }
-void CQtProgressDlg::setProgress1(int lAchieved)
+void ProgressDlg::setProgress1(int lAchieved)
 {
 	ui->ProgressBar1->setValue(lAchieved);
 }
-void CQtProgressDlg::setProgress2(int lAchieved)
+void ProgressDlg::setProgress2(int lAchieved)
 {
 	ui->ProgressBar2->setValue(lAchieved);
 }
-void CQtProgressDlg::setTimeRemaining(const QString& strText)
+void ProgressDlg::setTimeRemaining(const QString& strText)
 {
 	ui->TimeRemaining->setText(strText);
 }
-void CQtProgressDlg::setProcessorsUsed(int lNrProcessors)
+void ProgressDlg::setProcessorsUsed(int lNrProcessors)
 {
 	if (lNrProcessors > 1)
 		ui->Processors->setText(QString::number(lNrProcessors) + " Processors Used");
 	else
 		ui->Processors->setText("");
 }
-void CQtProgressDlg::cancelPressed()
+void ProgressDlg::cancelPressed()
 {
-	m_bCancelInProgress = true;
-	ui->StopButton->setEnabled(false);
+	if (QMessageBox::question(this, "Are You Sure?", "Are you sure you wish to cancel this operation?", QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+	{
+		m_bCancelInProgress = true;
+		ui->StopButton->setEnabled(false);
+	}
 }
-void CQtProgressDlg::EnableCancelButton(bool bState)
+void ProgressDlg::EnableCancelButton(bool bState)
 {
 	ui->StopButton->setEnabled(bState);
 }
-void CQtProgressDlg::SetTitleText(const QString& strText)
+void ProgressDlg::SetTitleText(const QString& strText)
 {
 	setWindowTitle(strText);
 }
-void CQtProgressDlg::setProgress1Range(int nMin, int nMax)
+void ProgressDlg::setProgress1Range(int nMin, int nMax)
 {
 	ui->ProgressBar1->setRange(nMin, nMax);
 }
-void CQtProgressDlg::setProgress2Range(int nMin, int nMax)
+void ProgressDlg::setProgress2Range(int nMin, int nMax)
 {
 	ui->ProgressBar2->setRange(nMin, nMax);
 }
-void CQtProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
+void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 {
 	ui->ProcessText1->setVisible(bSet1);
 	ui->ProgressBar1->setVisible(bSet1);
 	
-	ui->ProcessText2->setVisible(bSet1);
-	ui->ProgressBar2->setVisible(bSet1);
+	ui->ProcessText2->setVisible(bSet2);
+	ui->ProgressBar2->setVisible(bSet2);
 }
-void CQtProgressDlg::RunDialog()
+void ProgressDlg::RunDialog()
 {
 	show();
 	QApplication::processEvents();
 }
 
-void CQtProgressDlg::closeEvent(QCloseEvent* pEvent)
+void ProgressDlg::closeEvent(QCloseEvent* pEvent)
 {
 	cancelPressed();
 	pEvent->ignore();
@@ -99,7 +104,7 @@ void CQtProgressDlg::closeEvent(QCloseEvent* pEvent)
 
 /////////////////////////////////////////////////////////////////
 
-CQtDSSProgressDlg::CQtDSSProgressDlg(QWidget* pParent/*= nullptr*/) :
+DSSProgressDlg::DSSProgressDlg(QWidget* pParent/*= nullptr*/) :
 	m_pParent(nullptr),
 	m_bEnableCancel{ false },
 	m_lTotal1{ 0 },
@@ -111,12 +116,12 @@ CQtDSSProgressDlg::CQtDSSProgressDlg(QWidget* pParent/*= nullptr*/) :
 	m_bFirstProgress{ false }
 {}
 
-CQtDSSProgressDlg::~CQtDSSProgressDlg()
+DSSProgressDlg::~DSSProgressDlg()
 {
 	Close();
 };
 
-void CQtDSSProgressDlg::SetNrUsedProcessors(int lNrProcessors/*=1*/)
+void DSSProgressDlg::SetNrUsedProcessors(int lNrProcessors/*=1*/)
 {
 	if (!m_pDlg)
 		return;
@@ -124,7 +129,7 @@ void CQtDSSProgressDlg::SetNrUsedProcessors(int lNrProcessors/*=1*/)
 	m_pDlg->setProcessorsUsed(lNrProcessors);
 }
 
-void CQtDSSProgressDlg::GetStartText(CString& strText)
+void DSSProgressDlg::GetStartText(CString& strText)
 {
 	if (!m_pDlg)
 		return;
@@ -132,7 +137,7 @@ void CQtDSSProgressDlg::GetStartText(CString& strText)
 	strText = m_pDlg->getStart1Text().toLatin1().constData();
 };
 
-void CQtDSSProgressDlg::GetStart2Text(CString& strText)
+void DSSProgressDlg::GetStart2Text(CString& strText)
 {
 	if (!m_pDlg)
 		return;
@@ -140,7 +145,7 @@ void CQtDSSProgressDlg::GetStart2Text(CString& strText)
 	strText = m_pDlg->getStart2Text().toLatin1().constData();
 };
 
-void CQtDSSProgressDlg::Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel/*=true*/)
+void DSSProgressDlg::Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel/*=true*/)
 {
 	const CString strTitle = szTitle;
 	const QString qStrTitle = QString::fromWCharArray((LPCTSTR)strTitle, strTitle.GetLength());
@@ -164,7 +169,7 @@ void CQtDSSProgressDlg::Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel/*
 	m_pDlg->RunDialog();
 }
 
-void CQtDSSProgressDlg::Progress1(LPCTSTR szText, int lAchieved1)
+void DSSProgressDlg::Progress1(LPCTSTR szText, int lAchieved1)
 {
 	const CString strTitle(szText);
 	const QString qStrTitle = QString::fromWCharArray((LPCTSTR)strTitle, strTitle.GetLength());
@@ -217,7 +222,7 @@ void CQtDSSProgressDlg::Progress1(LPCTSTR szText, int lAchieved1)
 	};
 }
 
-void CQtDSSProgressDlg::Start2(LPCTSTR szText, int lTotal2)
+void DSSProgressDlg::Start2(LPCTSTR szText, int lTotal2)
 {
 	if (!CreateProgressDialog())
 		return;
@@ -251,7 +256,7 @@ void CQtDSSProgressDlg::Start2(LPCTSTR szText, int lTotal2)
 	m_pDlg->RunDialog();
 }
 
-void CQtDSSProgressDlg::Progress2(LPCTSTR szText, int lAchieved2)
+void DSSProgressDlg::Progress2(LPCTSTR szText, int lAchieved2)
 {
 	if (static_cast<double>(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0))
 	{
@@ -272,17 +277,17 @@ void CQtDSSProgressDlg::Progress2(LPCTSTR szText, int lAchieved2)
 		Progress1(szText, lAchieved2);
 }
 
-void CQtDSSProgressDlg::End2()
+void DSSProgressDlg::End2()
 {
 	m_pDlg->setItemVisibility(true, false);
 }
 
-bool CQtDSSProgressDlg::IsCanceled()
+bool DSSProgressDlg::IsCanceled()
 {
 	return m_pDlg->IsCancelled();
 }
 
-bool CQtDSSProgressDlg::Warning(LPCTSTR szText)
+bool DSSProgressDlg::Warning(LPCTSTR szText)
 {
 	const CString strText = szText;
 	const QString qStrText = QString::fromWCharArray((LPCTSTR)strText, strText.GetLength());
@@ -290,7 +295,7 @@ bool CQtDSSProgressDlg::Warning(LPCTSTR szText)
 	return (QMessageBox::question(m_pDlg.get(), qStrTitle, qStrText) == QMessageBox::Yes);
 }
 
-bool CQtDSSProgressDlg::Close()
+bool DSSProgressDlg::Close()
 {
 	if (!m_pDlg)
 		return true;
@@ -300,12 +305,12 @@ bool CQtDSSProgressDlg::Close()
 	return true;
 }
 
-bool CQtDSSProgressDlg::CreateProgressDialog()
+bool DSSProgressDlg::CreateProgressDialog()
 {
 	if (m_pDlg)
 		return true;
 	
-	m_pDlg = std::make_unique<CQtProgressDlg>(m_pParent);
+	m_pDlg = std::make_unique<ProgressDlg>(m_pParent);
 	if (!m_pDlg)
 		return false;
 

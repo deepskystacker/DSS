@@ -34,46 +34,26 @@
 **
 **
 ****************************************************************************/
-// SaveEditChanges.h: definition file
+// RenameGroup.h  : header file
 //
-#include <QDialog>
-#include <QDialogButtonBox>
-#include "ui/ui_SaveEditChanges.h"
 
-enum class EditSaveMode
-{
-	AskAlways = 0,
-	SaveDontAsk = 1,
-	DiscardDontAsk = 2
-}; 
+#include <QDialog>
+#include "ui/ui_RenameGroup.h"
 
 namespace DSS
 {
-	class SaveEditChanges : 
-		public QDialog, public Ui::SaveEditChanges
-	{
-		Q_OBJECT
+    class RenameGroup :
+        public QDialog, public Ui::RenameGroup
+    {
+        Q_OBJECT
 
-		typedef QDialog
-			Inherited;
+        typedef QDialog
+            Inherited;
+    public:
+        explicit RenameGroup(QWidget* parent = nullptr, const QString& name = QString());
 
-	public:
-		explicit SaveEditChanges(QWidget* parent = nullptr);
-
-		// the role that is associated with the button that the user pressed
-		QDialogButtonBox::ButtonRole result;
-
-	private slots:
-		void buttonClicked(QAbstractButton* clicked);
-
-	private:
-		EditSaveMode getSaveEditMode();
-		void saveSettings();
-
-	};
+    private slots:
+        void on_lineEdit_textChanged();
+    };
 }
-
-QDialogButtonBox::ButtonRole askToSaveEditChangeMode();
-void	setSaveEditMode(EditSaveMode mode);
-
 

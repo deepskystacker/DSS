@@ -443,7 +443,7 @@ void ExplorerBar::LoadSettingFile()
 	fileDialog.setDefaultSuffix(extension);
 	fileDialog.setFileMode(QFileDialog::ExistingFile);
 
-	fileDialog.setNameFilter(tr("DSS Settings Files (*.settings *.dsssettings *.txt)"));
+	fileDialog.setNameFilter(tr("DSS Settings Files (*.settings *.dsssettings *.txt)", "IDS_FILTER_SETTINGFILE"));
 	fileDialog.selectFile(QString());		// No file(s) selected
 	fileDialog.setDirectory(directory);
 

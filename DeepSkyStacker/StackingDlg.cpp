@@ -64,7 +64,6 @@
 
 #include <filesystem>
 
-#include "ui/ui_StackingDlg.h"
 #include "mrupath.h"
 
 #include "DeepSkyStacker.h"
@@ -73,7 +72,7 @@
 #include "DeepStack.h"
 #include "FileProperty.h"
 #include "FrameInfoSupport.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include "CheckAbove.h"
 #include "Registry.h"
 #include "RegisterSettings.h"
@@ -90,8 +89,9 @@
 #include "editstars.h"
 #include "selectrect.h"
 #include "toolbar.h"
-#include "ui/ui_StackingDlg.h"
 #include "avx_support.h"
+#include "ui/ui_StackingDlg.h"
+#include "RenameGroup.h"
 
 #include <ZExcept.h>
 
@@ -147,22 +147,25 @@ namespace DSS
 	constexpr	DWORD					IDC_EDIT_COMET  = 3;
 	constexpr	DWORD					IDC_EDIT_SAVE   = 4;
 
-	const QStringList OUTPUTLIST_FILTERS({
-		QCoreApplication::translate("StackingDlg", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
-		QCoreApplication::translate("StackingDlg", "File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
-		QCoreApplication::translate("StackingDlg", "All Files (*)", "IDS_LISTFILTER_OUTPUT")
+	const QStringList OUTPUTLIST_FILTER_SOURCES({
+		QStringLiteral("File List (*.dssfilelist)"),
+		QStringLiteral("File List (*.txt)"),
+		QStringLiteral("All Files (*)")
 		});
 
+	QStringList OUTPUTLIST_FILTERS{};
 
-	const QStringList INPUTFILE_FILTERS({
-		QCoreApplication::translate("StackingDlg", "Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QCoreApplication::translate("StackingDlg", "Windows Bitmaps (*.bmp)"),
-		QCoreApplication::translate("StackingDlg", "JPEG or PNG Files (*.jpg *.jpeg *.png)"),
-		QCoreApplication::translate("StackingDlg", "TIFF Files (*.tif *.tiff)"),
-		QCoreApplication::translate("StackingDlg", "RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QCoreApplication::translate("StackingDlg", "FITS Files (*.fits *.fit *.fts)"),
-		QCoreApplication::translate("StackingDlg", "All Files (*)")
+	const QStringList INPUTFILE_FILTER_SOURCES({
+		QStringLiteral("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
+		QStringLiteral("Windows Bitmaps (*.bmp)"),
+		QStringLiteral("JPEG or PNG Files (*.jpg *.jpeg *.png)"),
+		QStringLiteral("TIFF Files (*.tif *.tiff)"),
+		QStringLiteral("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
+		QStringLiteral("FITS Files (*.fits *.fit *.fts)"),
+		QStringLiteral("All Files (*)")
 		});
+
+	QStringList INPUTFILE_FILTERS{};
 
 
 	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
@@ -507,7 +510,7 @@ namespace DSS
 	// StackingDlg dialog
 
 	StackingDlg::StackingDlg(QWidget* parent) :
-		QWidget(parent),
+		BayWindow(parent),
 		ui(new Ui::StackingDlg),
 		initialised(false),
 		markAsReference{ nullptr },
@@ -523,9 +526,11 @@ namespace DSS
 		copy{ nullptr },
 		erase{ nullptr },
 		networkManager{ nullptr },
-		m_tipShowCount{ 0 }
+		m_tipShowCount{ 0 },
+		dockTitle{ new QLabel(this) }
 	{
 		ui->setupUi(this);
+		retranslateUi();		// translate some of our stuff.
 
 		mruPath.readSettings();
 
@@ -533,7 +538,10 @@ namespace DSS
 		connect(&imageLoader, SIGNAL(imageLoaded()), this, SLOT(imageLoad()));
 		connect(ui->gamma, SIGNAL(pegMove(int)), this, SLOT(gammaChanging(int)));
 		connect(ui->gamma, SIGNAL(pegMoved(int)), this, SLOT(gammaChanged(int)));
-
+		//
+		// If user changes tab need to switch groups and table model
+		//
+		connect(ui->tabBar, SIGNAL(currentChanged(int)), this, SLOT(tabBar_currentChanged(int)));
 	}
 
 	StackingDlg::~StackingDlg()
@@ -568,16 +576,8 @@ namespace DSS
 				// Does the received key sequence match any of the key sequences for 
 				// "Select All"
 				//
-				const QList<QKeySequence> selectAll{ QKeySequence::keyBindings(QKeySequence::SelectAll) };
-				for (i = 0; i < selectAll.size(); i++)
+				if (QKeyEvent::matches(QKeySequence::keyBindings(QKeySequence::SelectAll))
 				{
-					//
-					// Does the key sequence (or single key) we received
-					// match one of the platform specific key sequences 
-					// for "Select All"
-					//
-					if (received == selectAll[i])
-					{
 						qDebug() << "Received key sequence " << received << " matched QKeySequence::SelectAll";
 						QItemSelection selection{
 							imageModel->createIndex(0, 0),
@@ -585,7 +585,6 @@ namespace DSS
 
 						qsm->select(selection, QItemSelectionModel::Select);
 						return true;
-					}
 				}
 #endif
 
@@ -667,6 +666,34 @@ namespace DSS
 		return Inherited::eventFilter(watched, event);
 	}
 	
+	void StackingDlg::changeEvent(QEvent* event)
+	{
+		if (event->type() == QEvent::LanguageChange)
+		{
+			ui->retranslateUi(this);
+			retranslateUi();
+		}
+
+		Inherited::changeEvent(event);
+	}
+
+	void StackingDlg::retranslateUi()
+	{
+		OUTPUTLIST_FILTERS.clear();
+		for (const QString& filter : OUTPUTLIST_FILTER_SOURCES)
+		{
+			OUTPUTLIST_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_LISTFILTER_OUTPUT"));
+		}
+		Q_ASSERT(OUTPUTLIST_FILTERS.size() == OUTPUTLIST_FILTER_SOURCES.size());
+
+		INPUTFILE_FILTERS.clear();
+		for (const QString& filter : INPUTFILE_FILTER_SOURCES)
+		{
+			INPUTFILE_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_FILTER_INPUT"));
+		}
+		Q_ASSERT(INPUTFILE_FILTERS.size() == INPUTFILE_FILTER_SOURCES.size());
+	}
+
 
 	bool StackingDlg::event(QEvent* event)
 	{
@@ -744,6 +771,29 @@ namespace DSS
 
 	}
 
+	void StackingDlg::on_tabBar_customContextMenuRequested(const QPoint& pos)
+	{
+		ZFUNCTRACE_RUNTIME();
+		auto tab = ui->tabBar->tabAt(pos);
+		if (tab > 0)
+		{
+			QMenu tabMenu;
+			QAction* rename = tabMenu.addAction(tr("Rename group"));
+			const QAction* a = tabMenu.exec(QCursor::pos());
+			if (a == rename)
+			{
+				qDebug() << "Rename requested";
+				RenameGroup dlg{ this, frameList.groupName(tab) };
+				if (dlg.exec())
+				{
+					QString newName{ dlg.lineEdit->text() };
+					frameList.setGroupName(tab, newName);
+					ui->tabBar->setTabText(tab, newName);
+				}
+			}
+		}
+	}
+
 	void StackingDlg::on_tableView_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -751,7 +801,6 @@ namespace DSS
 		QModelIndex ndx = ui->tableView->indexAt(pos);
 		int i{ 0 };
 
-		qDebug() << "Table View item clicked, row " << ndx.row();
 		//
 		// If the QSortFilterProxyModel is being used, need to map 
 		// to the model index in the base model (our ImageListModel)
@@ -761,7 +810,6 @@ namespace DSS
 
 		ImageListModel* imageModel = frameList.currentTableModel();
 		int row = ndx.row();
-		qDebug() << "The corresponding Model row is " << ndx.row();
 		bool indexValid = ndx.isValid();
 
 		if (indexValid)
@@ -884,6 +932,7 @@ namespace DSS
 	void StackingDlg::onInitDialog()
 	{
 		ZFUNCTRACE_RUNTIME();
+		// 
 		//
 		// Build the context menu for the tableview (list of images).
 		//
@@ -918,9 +967,21 @@ namespace DSS
 		if (!fileList.empty())
 			openFileList(fileList);
 
+		//
+		// Restore windowState of this and the table view's horizontal header
+		//
 		QSettings settings;
+		settings.beginGroup("Dialogs/StackingDlg");
+		restoreState(settings.value("windowState").toByteArray());
+		settings.endGroup();
 		ui->tableView->horizontalHeader()->restoreState(
 			settings.value("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState").toByteArray());
+		//
+		// If the model data changes let me know
+		//
+		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
+			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		
 		//
 		// Set up a QSortFilterProxyModel to allow sorting of the table view
 		// (it sits between the actual model and the view to provide sorting
@@ -931,6 +992,7 @@ namespace DSS
 
 		ui->tableView->setModel(proxyModel.get());
 		ui->tableView->setSortingEnabled(true);
+
 		//
 		// The default icon display is really rather small, so use a subclass
 		// of QStyledItemDelegate to handle the rendering for column zero of 
@@ -955,7 +1017,8 @@ namespace DSS
 		font.setPointSize(font.pointSize() - 1); font.setWeight(QFont::Medium);
 		ui->tableView->setFont(font);
 		font = ui->tableView->horizontalHeader()->font();
-		font.setPointSize(font.pointSize() - 1);  font.setWeight(QFont::Medium);
+		//font.setPointSize(font.pointSize() - 1);
+		font.setWeight(QFont::Medium);
 		ui->tableView->horizontalHeader()->setFont(font);
 		ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 		ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -978,6 +1041,38 @@ namespace DSS
 		ui->gamma->setColorAt(sqrt(0.5), QColor(qRgb(128, 128, 128)));
 		ui->gamma->setPegsOnLeftOrBottom(true).
 			setOrientation(QLinearGradientCtrl::Orientation::ForceHorizontal);
+
+		//
+		// Set an informative title bar on the dockable image list with a nice gradient
+		// as the background (like the old "listInfo" static control).
+		// 
+		QSize size{ 625, 25 };
+		dockTitle->setObjectName("dockTitle");
+		dockTitle->setMinimumSize(size);
+		dockTitle->resize(size);
+		dockTitle->setStyleSheet(QString::fromUtf8("QLabel {"
+			"background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, "
+			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))}"));
+		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
+			"IDS_LISTINFO")
+			.arg(0)
+			.arg(0)
+			.arg(0)
+			.arg(0)
+			.arg(0)
+		};
+		dockTitle->setText(text);
+		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
+		ui->dockWidget->setTitleBarWidget(dockTitle);
+
+		//
+		// Set up the tab bar (used to be a tab widget)
+		//
+		ui->tabBar->setShape(QTabBar::TriangularSouth);
+		ui->tabBar->setExpanding(false);
+		ui->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
+		ui->tabBar->setCurrentIndex(ui->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
+		updateListInfo();
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)
@@ -1008,11 +1103,23 @@ namespace DSS
 				}
 				frameList.endInsertRows();
 			}
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 			updateListInfo();
 			QGuiApplication::restoreOverrideCursor();
 		};
 
+	}
+
+	void StackingDlg::tableViewModel_dataChanged(const QModelIndex& first,
+		[[maybe_unused]] const QModelIndex& last, [[maybe_unused]] const QList<int>&)
+	{
+		//
+		// Only interested if the user has ticked the check box in column 0
+		//
+		if (first.isValid() && 0 == first.column())
+		{
+			updateListInfo();
+		}
 	}
 
 	void StackingDlg::tableView_selectionChanged([[maybe_unused]] const QItemSelection& selected, [[maybe_unused]] const QItemSelection& deselected)
@@ -1020,14 +1127,12 @@ namespace DSS
 
 		QItemSelectionModel * qsm = ui->tableView->selectionModel();
 		QModelIndexList selectedRows = qsm->selectedRows();
-		qDebug() << "Number of selected rows: " << selectedRows.count();
 		//
 		// If only one row is selected, we want to know the filename
 		//
 		if (1 == selectedRows.count())
 		{
 			QModelIndex& ndx = selectedRows[0];
-			qDebug() << "  Selected row: " << ndx.row();
 
 			//
 			// If the QSortFilterProxyModel is being used, need to map 
@@ -1041,21 +1146,11 @@ namespace DSS
 				QString  fileName;
 				const ImageListModel* model = dynamic_cast<const ImageListModel*>(ndx.model());
 				int row = ndx.row();
-				qDebug() << "  The corresponding Model row is: " << ndx.row();
 				fileName = model->selectedFileName(row);
 				//
-				// If the filename hasn't changed but we have changes to the stars that need to be saved
+				// If the filename has changed but we have changes to the stars that need to be saved
 				//
-				if (fileName == m_strShowFile && checkEditChanges())
-				{
-					ui->information->setText(m_strShowFile);
-					ui->information->setTextFormat(Qt::PlainText);
-					ui->information->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
-					ui->information->setOpenExternalLinks(false);
-					m_strShowFile = fileName;
-					imageLoad();
-				}
-				else if (fileName != m_strShowFile)
+				if (fileName != m_strShowFile && checkEditChanges())
 				{
 					ui->information->setText(m_strShowFile);
 					ui->information->setTextFormat(Qt::PlainText);
@@ -1097,7 +1192,7 @@ namespace DSS
 
 		if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
 		{
-			//ui->tableView->setEnabled(true);
+			ui->tableView->setEnabled(true);
 			//
 			// Disabling the tableview resulted in it loosing focus
 			// so put the focus back
@@ -1136,7 +1231,7 @@ namespace DSS
 		}
 		else if (!m_strShowFile.isEmpty())
 		{
-			//ui->tableView->setEnabled(false);
+			ui->tableView->setEnabled(false);
 			//
 			// Display the "Loading filename" with red background gradient while loading in background
 			//
@@ -1183,7 +1278,6 @@ namespace DSS
 
 	void StackingDlg::toolBar_starsButtonPressed([[maybe_unused]] bool checked)
 	{
-		qDebug() << "StackingDlg: starsButtonPressed";
 		checkAskRegister();
 		editStarsPtr->starsButtonPressed();
 		selectRectPtr->starsButtonPressed();
@@ -1191,7 +1285,6 @@ namespace DSS
 
 	void StackingDlg::toolBar_cometButtonPressed([[maybe_unused]] bool checked)
 	{
-		qDebug() << "StackingDlg: cometButtonPressed";
 		checkAskRegister();
 		editStarsPtr->cometButtonPressed();
 		selectRectPtr->cometButtonPressed();
@@ -1258,7 +1351,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Light Frames...", "IDS_TITLE_OPENLIGHTFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1329,7 +1422,7 @@ namespace DSS
 			settings.setValue("Folders/AddPictureExtension", extension);
 			settings.setValue("Folders/AddPictureIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		};
 		updateListInfo();
 	}
@@ -1359,7 +1452,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Dark Frames...", "IDS_TITLE_OPENDARKFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1419,7 +1512,6 @@ namespace DSS
 			}
 
 			QGuiApplication::restoreOverrideCursor();
-			// frameList.RefreshList(); TODO
 
 			//
 			// What filter has the user actually selected, or has been auto-selected?
@@ -1431,7 +1523,7 @@ namespace DSS
 			settings.setValue("Folders/AddDarkExtension", extension);
 			settings.setValue("Folders/AddDarkIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
@@ -1464,7 +1556,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Dark Flat Frames...", "IDS_TITLE_OPENDARKFLATFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1536,7 +1628,7 @@ namespace DSS
 			settings.setValue("Folders/AddDarkFlatExtension", extension);
 			settings.setValue("Folders/AddDarkFlatIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
@@ -1568,7 +1660,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Flat Frames...", "IDS_TITLE_OPENFLATFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1640,7 +1732,7 @@ namespace DSS
 			settings.setValue("Folders/AddFlatExtension", extension);
 			settings.setValue("Folders/AddFlatIndex", filterIndex);
 
-			//UpdateGroupTabs(); TODO
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
@@ -1673,7 +1765,7 @@ namespace DSS
 		if (extension.isEmpty())
 			extension = "bmp";			// Note that Qt doesn't want/ignores leading . in file extensions
 
-		fileDialog.setWindowTitle(QCoreApplication::translate("StackingDlg", "Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
+		fileDialog.setWindowTitle(tr("Open Bias Frames...", "IDS_TITLE_OPENBIASFRAMES"));
 		fileDialog.setDefaultSuffix(extension);
 		fileDialog.setFileMode(QFileDialog::ExistingFiles);
 
@@ -1745,41 +1837,43 @@ namespace DSS
 			settings.setValue("Folders/AddOffsetExtension", extension);
 			settings.setValue("Folders/AddOffsetIndex", filterIndex);
 
-			//UpdateGroupTabs();
+			updateGroupTabs();
 		}
 		updateListInfo();
 	}
 
 	bool StackingDlg::checkEditChanges()
 	{
-		return true;
-		// TODO
-		#if (0)
-		BOOL						bResult = FALSE;
+		bool result = false;
 
-		if (m_EditStarSink.IsDirty())
+		if (editStarsPtr->isDirty())
 		{
-			int			nResult;
+			auto dlgResult { askToSaveEditChangeMode() };
 
-			nResult = AskSaveEditChangesMode();
-
-			if (nResult == IDYES)
+			if (dlgResult == QDialogButtonBox::AcceptRole)
 			{
-				// Save the changes
-				bResult = TRUE;
-				m_EditStarSink.SaveRegisterSettings();
-				m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
+				//
+				// Save the changes as Save was pressed or defaulted
+				//
+				result = true;
+				editStarsPtr->saveRegisterSettings();
+				pToolBar->setSaveEnabled(false);
 				// Update the list with the new info
-				frameList.UpdateItemScores(m_strShowFile);
+				frameList.updateItemScores(m_strShowFile);
 			}
-			else if (nResult == IDNO)
-				bResult = TRUE;
+			else if (dlgResult == QDialogButtonBox::DestructiveRole)
+			{
+				//
+				// Discard changes as Discard was pressed or defaulted.
+				//
+				result = true;
+			}
+			// Must have pressed Cancel, so result remains as false
 		}
 		else
-			bResult = TRUE;
+			result = true;
 
-		return bResult;
-	#endif
+		return result;
 	}
 
 	/* ------------------------------------------------------------------- */
@@ -1828,9 +1922,9 @@ namespace DSS
 			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
 			};
 
-		ui->listInfo->setText(text);
+		dockTitle->setText(text);
 
-		for (int i = 0; i < ui->tabWidget->count(); i++)
+		for (int i = 0; i < ui->tabBar->count(); i++)
 		{
 			text = tr("Light Frames: %1\nDark Frames: %2\nFlat Frames: %3\nDark Flat Frames: %4\nOffset/Bias Frames: %5",
 				"IDS_LISTINFO2")
@@ -1839,8 +1933,7 @@ namespace DSS
 				.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME, i));
-			
-			ui->tabWidget->setTabToolTip(i, text);
+			ui->tabBar->setTabToolTip(i, text);
 		};
 	};
 
@@ -1857,11 +1950,11 @@ namespace DSS
 			ui->information->setText(m_strShowFile);
 			imageLoader.clearCache();
 			m_LoadedImage.reset();
-			//TODO: UpdateGroupTabs();
+			updateGroupTabs();
 			updateListInfo();
 			fileList.clear();
 			ui->picture->clear();
-			dssApp->setTitleFilename(fileList);
+			dssApp->setWindowFilePath(QString());
 			update();
 		}
 	}
@@ -1885,22 +1978,28 @@ namespace DSS
 		};
 	};
 
-	/* ------------------------------------------------------------------- */	void StackingDlg::loadList()
+	/* ------------------------------------------------------------------- */
+	
+	void StackingDlg::loadList()
 	{
+		bool openAnother{ true };
+
 		ZFUNCTRACE_RUNTIME();
 		if (checkWorkspaceChanges())
 		{
-			bool openAnother{ false };
-
-			if (m_MRUList.m_vLists.size())
+			if (mruPath.paths.size())
 			{
+				openAnother = false;
 				QMenu menu(this);
 
-				for (uint32_t i = 0; i < m_MRUList.m_vLists.size(); i++)
-				{ 
-					fs::path path{ m_MRUList.m_vLists[i].toStdU16String() };
+				for (uint32_t i = 0; i < mruPath.paths.size(); i++)
+				{
+					fs::path path{ mruPath.paths[i] };
+					fs::path display{ path };
+					display.replace_extension();
 					// Get the fileid without the extension
-					QString name{ QString::fromStdU16String(path.stem().generic_u16string()) };
+
+					QString name{ QString::fromStdU16String(display.generic_u16string()) };
 
 					QAction* action = menu.addAction(name);
 					action->setData(i);		// Index into the list of files
@@ -1915,33 +2014,31 @@ namespace DSS
 					openAnother = true;
 				else
 				{
-					QString			strList;
-
 					//
-					// Use the index we stored with the Menu Action to access the fill fileid
+					// Use the index we stored with the Menu Action to access the full fileid
 					//
-					strList = m_MRUList.m_vLists[a->data().toUInt()];
+					fs::path path{ mruPath.paths[a->data().toUInt()] };
 
-					frameList.loadFilesFromList(strList.toStdU16String().c_str());
-					// frameList.RefreshList(); TODO
-					m_MRUList.Add(strList);
-					fileList = strList.toStdU16String();
-					dssApp->setTitleFilename(fileList);
+					frameList.loadFilesFromList(path);
+					mruPath.Add(path);
+					fileList = path;
+					dssApp->setWindowFilePath(QString::fromStdU16String(path.generic_u16string()));
 				}
 			}
-
-			if (openAnother)
-			{
-				QString name;
-				loadList(m_MRUList, name);
-				dssApp->setTitleFilename(name.toStdWString().c_str());
-			};
-			// TODO UpdateGroupTabs();
-			updateListInfo();
 		}
+
+		if (openAnother)
+		{
+			QString name;
+			loadList(mruPath, name);
+			dssApp->setWindowFilePath(name);
+		};
+		updateGroupTabs();
+		updateListInfo();
+		raise(); show();
 	}
 
-	void StackingDlg::loadList(MRUList& MRUList, QString& strFileList)
+	void StackingDlg::loadList(MRUPath& MRUList, QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings settings;
@@ -1975,8 +2072,7 @@ namespace DSS
 				fs::path file(files.at(i).toStdU16String());		// as UTF-16
 
 				frameList.loadFilesFromList(file);
-				strFileList = QString::fromStdU16String(file.generic_u16string());
-				MRUList.Add(strFileList);
+				MRUList.Add(file);
 
 				if (file.has_parent_path())
 					directory = QString::fromStdU16String(file.parent_path().generic_u16string());
@@ -1987,7 +2083,6 @@ namespace DSS
 			}
 
 			QGuiApplication::restoreOverrideCursor();
-			// frameList.RefreshList(); TODO
 
 			const auto selectedIndex = OUTPUTLIST_FILTERS.indexOf(fileDialog.selectedNameFilter());
 
@@ -2001,13 +2096,13 @@ namespace DSS
 	{
 		QString name;
 
-		saveList(m_MRUList, name);
-		dssApp->setTitleFilename(name.toStdWString().c_str());
+		saveList(mruPath, name);
+		dssApp->setWindowFilePath(name);
 	};
 
 	/* ------------------------------------------------------------------- */
 
-	void StackingDlg::saveList(MRUList& MRUList, QString& strFileList)
+	void StackingDlg::saveList(MRUPath& MRUList, QString& strFileList)
 	{
 		ZFUNCTRACE_RUNTIME();
 		QSettings					settings;
@@ -2053,8 +2148,7 @@ namespace DSS
 				extension = QString::fromStdU16String(file.extension().generic_u16string());
 
 				frameList.saveListToFile(file);
-				strFileList = QString::fromStdU16String(file.generic_u16string());
-				MRUList.Add(strFileList);
+				MRUList.Add(file);
 			}
 
 			QGuiApplication::restoreOverrideCursor();
@@ -2138,7 +2232,7 @@ namespace DSS
 
 	void StackingDlg::registerCheckedImages()
 	{
-		CDSSProgressDlg			dlg;
+		DSS::DSSProgressDlg			dlg;
 		::RegisterSettings		dlgSettings(this);
 		bool					bContinue = true;
 		const auto start{ std::chrono::steady_clock::now() };
@@ -2148,6 +2242,7 @@ namespace DSS
 
 		if (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
 		{
+			emit statusMessage("");
 			//CString				strFirstLightFrame;
 
 			//frameList.GetFirstCheckedLightFrame(strFirstLightFrame);
@@ -2230,7 +2325,9 @@ namespace DSS
 					QString message{ tr("Total registering time: %1 %2")
 						.arg(exposureToString(elapsed.count()))
 						.arg(avxActive) };
-					QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
+					emit statusMessage(message);
+					QApplication::beep();
+					ZTRACE_RUNTIME(message);
 
 					if (bContinue && bStackAfter)
 					{
@@ -2256,6 +2353,8 @@ namespace DSS
 			CAllStackingTasks	tasks;
 			CRect				rcSelect;
 
+			emit statusMessage("");
+
 			frameList.fillTasks(tasks);
 
 			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
@@ -2277,7 +2376,7 @@ namespace DSS
 					if (frameList.countUnregisteredCheckedLightFrames())
 					{
 						CRegisterEngine	RegisterEngine;
-						CDSSProgressDlg	dlg;
+						DSS::DSSProgressDlg	dlg;
 
 						frameList.blankCheckedItemScores();
 						bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
@@ -2400,10 +2499,10 @@ namespace DSS
 						}
 						else
 						{
-							saveList(m_MRUList, name);
+							saveList(mruPath, name);
 						}
 
-						dssApp->setTitleFilename(name.toStdWString().c_str());
+						dssApp->setWindowFilePath(name);
 						[[fallthrough]];
 					case QMessageBox::No:
 						bResult = true;
@@ -2435,7 +2534,6 @@ namespace DSS
 
 		};
 
-		//frameList.Invalidate(FALSE); TODO
 	};
 
 	/* ------------------------------------------------------------------- */
@@ -2459,7 +2557,7 @@ namespace DSS
 		ZFUNCTRACE_RUNTIME();
 
 		bool bContinue = true;
-		CDSSProgressDlg dlg;
+		DSS::DSSProgressDlg dlg;
 		const auto start{ std::chrono::steady_clock::now() };
 
 		if (tasks.m_vStacks.empty())
@@ -2496,7 +2594,22 @@ namespace DSS
 			QString message{ tr("Total stacking time: %1 %2")
 				.arg(exposureToString(elapsed.count()))
 				.arg(avxActive) };
-			QMessageBox::information(this, "DeepSkyStacker", message, QMessageBox::Ok, QMessageBox::Ok);
+			ZTRACE_RUNTIME(message);
+
+			//
+			// Get current status message and append the stacking time 
+			//
+			QString statusMsg = dssApp->statusMessage();
+			if (statusMsg.isEmpty())
+			{
+				emit statusMessage(message);
+			}
+			else
+			{
+				statusMsg.append(" : ").append(message);
+				emit statusMessage(statusMsg);
+			}
+			QApplication::beep();
 
 			updateCheckedAndOffsets(StackingEngine);
 
@@ -2566,11 +2679,10 @@ namespace DSS
 			{
 				fclose(hFile);
 				frameList.loadFilesFromList(file);
-				// frameList.RefreshList(); TODO
-				m_MRUList.Add(QString::fromStdU16String(file.generic_u16string()));
-				// TODO UpdateGroupTabs();
+				mruPath.Add(file);
+				updateGroupTabs();
 				updateListInfo();
-				dssApp->setTitleFilename(file);
+				dssApp->setWindowFilePath(QString::fromStdU16String(file.generic_u16string().c_str()));
 			};
 		}
 		catch (const fs::filesystem_error& e)
@@ -2608,7 +2720,7 @@ namespace DSS
 			if (frameList.countUnregisteredCheckedLightFrames())
 			{
 				CRegisterEngine	RegisterEngine;
-				CDSSProgressDlg	dlg;
+				DSS::DSSProgressDlg	dlg;
 
 				frameList.blankCheckedItemScores();
 				bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
@@ -2618,7 +2730,7 @@ namespace DSS
 
 			if (bContinue)
 			{
-				CDSSProgressDlg			dlg;
+				DSS::DSSProgressDlg			dlg;
 				CStackingEngine			StackingEngine;
 
 				QString referenceFrame{ frameList.getReferenceFrame() };
@@ -2655,13 +2767,12 @@ namespace DSS
 	{
 		CBatchStacking			dlg; // TODO
 
-		dlg.setMRUList(m_MRUList);
+		//dlg.setMRUList(mruPath); TODO use MRUPath
 		dlg.DoModal();
 	};
 
 	void StackingDlg::gammaChanging(int peg)
 	{
-		qDebug() << "In StackingDlg::gammaChanging(int peg)";
 		double blackPoint{ 0.0 },
 			greyPoint{ 0.0 },
 			whitePoint{ 0.0 };
@@ -2733,7 +2844,6 @@ namespace DSS
 
 	void StackingDlg::gammaChanged(int peg)
 	{
-		qDebug() << "In StackingDlg::gammaChanged(int peg)";
 		//
 		// Before applying the changes, make any corrections necessary by invoking gammaChanging 
 		// on final time
@@ -2755,8 +2865,6 @@ namespace DSS
 		greyPoint = stops[2].first;
 		whitePoint = stops[3].first;
 
-		qDebug() << "    stops: " << stops;
-
 		// Adjust Gamma
 		m_GammaTransformation.InitTransformation(blackPoint * blackPoint, greyPoint * greyPoint, whitePoint * whitePoint);
 
@@ -2768,660 +2876,48 @@ namespace DSS
 		}
 	}
 
-	/* ------------------------------------------------------------------- */
-
-	#if (0)
-	CStackingDlg::CStackingDlg(CWnd* pParent /*=nullptr*/)
-		: CDialog(CStackingDlg::IDD, pParent),
-		m_cCtrlCache(this)
-	{
-		//{{AFX_DATA_INIT(CStackingDlg)
-			// NOTE: the ClassWizard will add member initialization here
-		//}}AFX_DATA_INIT
-		m_MRUList.readSettings();
-	}
-
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::DoDataExchange(CDataExchange* pDX)
-	{
-		CDialog::DoDataExchange(pDX);
-		//{{AFX_DATA_MAP(CStackingDlg)
-		DDX_Control(pDX, IDC_PICTURES, frameList);
-		DDX_Control(pDX, IDC_PICTURE, m_PictureStatic);
-		DDX_Control(pDX, IDC_INFOS, m_Infos);
-		DDX_Control(pDX, IDC_LISTINFO, m_ListInfo);
-		DDX_Control(pDX, IDC_GAMMA, m_Gamma);
-		DDX_Control(pDX, IDC_GROUPTAB, m_GroupTab);
-		DDX_Control(pDX, IDC_SHOWHIDEJOBS, m_ShowHideJobs);
-		DDX_Control(pDX, IDC_4CORNERS, m_4Corners);
-		//}}AFX_DATA_MAP
-	}
-
-	/* ------------------------------------------------------------------- */
-
-	BEGIN_MESSAGE_MAP(CStackingDlg, CDialog)
-		//{{AFX_MSG_MAP(CStackingDlg)
-		ON_NOTIFY(NM_CLICK, IDC_PICTURES, OnClickPictures)
-		ON_NOTIFY(NM_NOTIFYMODECHANGE, IDC_PICTURE, OnPictureChange)
-		ON_MESSAGE(WM_CHECKITEM, OnCheckItem)
-		ON_MESSAGE(WM_SELECTITEM, OnSelectItem)
-		ON_WM_SIZE()
-		ON_NOTIFY(GC_PEGMOVE, IDC_GAMMA, OnChangeGamma)
-		ON_NOTIFY(GC_PEGMOVED, IDC_GAMMA, OnChangeGamma)
-		ON_NOTIFY(CTCN_SELCHANGE, IDC_GROUPTAB, OnSelChangeGroup)
-		ON_NOTIFY(CTCN_SELCHANGE, IDC_JOBTAB, OnSelChangeJob)
-		ON_NOTIFY(NM_LINKCLICK, IDC_SHOWHIDEJOBS, OnShowHideJobs)
-		ON_NOTIFY(SPN_SIZED, IDC_SPLITTER, OnSplitter)
-	//}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_4CORNERS, &CStackingDlg::OnBnClicked4corners)
-	END_MESSAGE_MAP()
-
-	/* ------------------------------------------------------------------- */
-	/////////////////////////////////////////////////////////////////////////////
-	// CStackingDlg message handlers
-
-	BOOL CStackingDlg::OnInitDialog()
-	{
-		CDialog::OnInitDialog();
-
-		m_Infos.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-		m_ListInfo.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
-		m_Picture.CreateFromStatic(&m_PictureStatic);
-
-		{
-			CRect				rc;
-
-			GetDlgItem(IDC_SPLITTER)->GetWindowRect(rc);
-			ScreenToClient(rc);
-			m_Splitter.Create(WS_CHILD | WS_VISIBLE, rc, this, IDC_SPLITTER);
-		};
-
-		// Add controls to the control cache - this is just a container for helping calcualte sizes and
-		// positions when resizing the dialog.
-		m_cCtrlCache.AddToCtrlCache(IDC_INFOS);
-		m_cCtrlCache.AddToCtrlCache(IDC_4CORNERS);
-		m_cCtrlCache.AddToCtrlCache(IDC_GAMMA);
-		m_cCtrlCache.AddToCtrlCache(IDC_PICTURE);
-		m_cCtrlCache.AddToCtrlCache(IDC_SPLITTER);
-		m_cCtrlCache.AddToCtrlCache(IDC_LISTINFO);
-		m_cCtrlCache.AddToCtrlCache(IDC_PICTURES);
-		m_cCtrlCache.AddToCtrlCache(IDC_GROUPTAB);
-
-		frameList.Initialize();
-		m_Picture.SetBltMode(CWndImage::bltFitXY);
-		m_Picture.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
-		CString				strTooltip;
-
-		strTooltip.LoadString(IDS_TOOLTIP_SELECTRECT);
-		m_ButtonToolbar.AddCheck(IDC_EDIT_SELECT,	MBI(SELECT), IDB_BUTTONBASE_MASK, strTooltip);
-		strTooltip.LoadString(IDS_TOOLTIP_STAR);
-		m_ButtonToolbar.AddCheck(IDC_EDIT_STAR,	MBI(STAR), IDB_BUTTONBASE_MASK, strTooltip);
-		strTooltip.LoadString(IDS_TOOLTIP_COMET);
-		m_ButtonToolbar.AddCheck(IDC_EDIT_COMET,	MBI(COMET), IDB_BUTTONBASE_MASK, strTooltip);
-		strTooltip.LoadString(IDS_TOOLTIP_SAVE);
-		m_ButtonToolbar.AddButton(IDC_EDIT_SAVE,	MBI(SAVE), IDB_BUTTONBASE_MASK, strTooltip);
-
-		m_ButtonToolbar.Check(IDC_EDIT_SELECT);
-		m_ButtonToolbar.Enable(IDC_EDIT_SAVE, FALSE);
-
-		m_Picture.EnableZoom(TRUE);
-		m_Picture.SetButtonToolbar(&m_ButtonToolbar);
-		m_SelectRectSink.ShowDrizzleRectangles();
-		m_Picture.SetImageSink(&m_SelectRectSink);
-		m_ButtonToolbar.SetSink(this);
-
-		m_Gamma.SetBackgroundColor(GetSysColor(COLOR_3DFACE));
-		m_Gamma.ShowTooltips(FALSE);
-		m_Gamma.SetOrientation(CGradientCtrl::ForceHorizontal);
-		m_Gamma.SetPegSide(TRUE, FALSE);
-		m_Gamma.SetPegSide(FALSE, TRUE);
-		m_Gamma.GetGradient().SetStartPegColour(RGB(0, 0, 0));
-		m_Gamma.GetGradient().AddPeg(RGB(0, 0, 0), 0.0, 0);
-		m_Gamma.GetGradient().AddPeg(RGB(128, 128, 128), sqrt(0.5), 1);
-		m_Gamma.GetGradient().AddPeg(RGB(255, 255, 255), 1.0, 2);
-		m_Gamma.GetGradient().SetEndPegColour(RGB(255, 255, 255));
-		m_Gamma.GetGradient().SetBackgroundColour(RGB(255, 255, 255));
-		m_Gamma.GetGradient().SetInterpolationMethod(CGradient::Linear);
-
-
-		m_4Corners.SetBitmaps(IDB_4CORNERS, RGB(255,0, 255));
-		m_4Corners.SetFlat(TRUE);
-		//m_4Corners.DrawTransparent(TRUE);
-
-		QSettings			settings;
-		bool checkVersion = settings.value("InternetCheck", false).toBool();
-		if (checkVersion)
-			retrieveLatestVersionInfo();   // will update ui asynchronously
-
-
-		{
-			m_GroupTab.ModifyStyle(0, CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
-
-			UpdateGroupTabs();
-		};
-
-	/*
-		m_ShowHideJobs.SetLink(TRUE, TRUE);
-		m_ShowHideJobs.SetTransparent(TRUE);
-		m_ShowHideJobs.SetLinkCursor(LoadCursor(nullptr,MAKEINTRESOURCE(IDC_HAND)));
-		m_ShowHideJobs.SetFont3D(FALSE);
-		m_ShowHideJobs.SetTextColor(RGB(0, 0, 192));
-		m_ShowHideJobs.SetWindowText("Show/Hide Jobs");
-		{
-			m_JobTab.ModifyStyle(0, CTCS_RIGHT | CTCS_AUTOHIDEBUTTONS | CTCS_TOOLTIPS, 0);
-			m_JobTab.InsertItem(0, "Main Job");
-			m_JobTab.InsertItem(1, "Red");
-			m_JobTab.InsertItem(2, "Green");
-			m_JobTab.InsertItem(3, "Blue");
-			m_JobTab.InsertItem(4, "Lum");
-		};*/
-
-		if (m_strStartingFileList.GetLength())
-			OpenFileList(m_strStartingFileList);
-
-
-		return TRUE;  // return TRUE unless you set the focus to a control
-					  // EXCEPTION: OCX Property Pages should return FALSE
-	}
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::UpdateLayout()
-	{
-		// No controls present, nothing to do!
-		if (GetDlgItem(IDC_PICTURE) == nullptr)
-			return;
-
-		// Update the cache so all the sizes and positions are correct.
-		m_cCtrlCache.UpdateCtrlCache();
-
-		CRect rcCurrentDlgSize;
-		GetClientRect(rcCurrentDlgSize);
-
-		// Cache the controls that we can scale to make things fit.
-		// Work out vertical space change.
-		int nCtrlHeightSum = 0;
-		const int nTopSpacing = min(m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y, (min(m_cCtrlCache.GetCtrlOffset(IDC_GAMMA).y, m_cCtrlCache.GetCtrlOffset(IDC_4CORNERS).y)));
-		nCtrlHeightSum += nTopSpacing;
-		nCtrlHeightSum += max(m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height(), (max(m_cCtrlCache.GetCtrlSize(IDC_GAMMA).Height(), m_cCtrlCache.GetCtrlSize(IDC_4CORNERS).Height())));
-
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y - nCtrlHeightSum;
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height();
-
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_SPLITTER).y - nCtrlHeightSum;
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height();
-
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_LISTINFO).y - nCtrlHeightSum;
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height();
-
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_PICTURES).y - nCtrlHeightSum;
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height();
-
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlOffset(IDC_GROUPTAB).y - nCtrlHeightSum;
-		nCtrlHeightSum += m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height();
-
-		nCtrlHeightSum += nTopSpacing;
-
-		// Preferentially scale the picture first, then the list afterwards (if possible)
-		int nDiffPictureY = rcCurrentDlgSize.Height() - nCtrlHeightSum;
-		int nDiffListY = 0;
-
-		// Handle if there isn't enough space to handle the picture resizing alone.
-		if (m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() + nDiffPictureY <= sm_nMinImageHeight)
-		{
-			int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() - sm_nMinImageHeight;
-			if (nMaxMovement <= 0)
-			{
-				nDiffListY = nDiffPictureY;
-				nDiffPictureY = 0;
-			}
-			else
-			{
-				nDiffListY = nDiffPictureY + nMaxMovement;
-				nDiffPictureY = -nMaxMovement;
-			}
-			// Handle if there isn't enough space to handle the list resizing as well.
-			if (m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() + nDiffListY <= sm_nMinListHeight)
-			{
-				int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() - sm_nMinListHeight;
-				if (nMaxMovement <= 0)
-					nDiffListY = 0;
-				else
-					nDiffListY = -nMaxMovement;
-			}
-		}
-
-		// Perform the resizing and moving of the controls.
-		if (nDiffPictureY != 0)
-		{
-			m_cCtrlCache.SizeCtrlVert(IDC_PICTURE, m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Height() + nDiffPictureY);
-			m_Splitter.ChangePos(&m_Splitter, 0, nDiffPictureY);
-			m_cCtrlCache.MoveCtrlVert(IDC_LISTINFO, nDiffPictureY);
-			m_cCtrlCache.MoveCtrlVert(IDC_PICTURES, nDiffPictureY);
-			m_cCtrlCache.MoveCtrlVert(IDC_GROUPTAB, nDiffPictureY);
-		}
-		if (nDiffListY != 0)
-		{
-			m_cCtrlCache.SizeCtrlVert(IDC_PICTURES, m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Height() + nDiffListY);
-			m_cCtrlCache.MoveCtrlVert(IDC_GROUPTAB, nDiffListY);
-		}
-
-		// Now look at the widths
-		int nCtrlWidthSum = m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).x + m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).x; // Assume same padding at either end.
-		int nDiffX = rcCurrentDlgSize.Width() - nCtrlWidthSum;
-		if (m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + nDiffX <= sm_nMinListWidth)
-		{
-			int nMaxMovement = m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() - sm_nMinListWidth;
-			if (nMaxMovement <= 0)
-				nDiffX = 0;
-			else
-				nDiffX = -nMaxMovement;
-		}
-		if (nDiffX)
-		{
-			m_cCtrlCache.SizeCtrlHoriz(IDC_INFOS, m_cCtrlCache.GetCtrlSize(IDC_INFOS).Width() + nDiffX);
-			m_cCtrlCache.MoveCtrlHoriz(IDC_4CORNERS, nDiffX);
-			m_cCtrlCache.MoveCtrlHoriz(IDC_GAMMA, nDiffX);
-			m_cCtrlCache.SizeCtrlHoriz(IDC_PICTURE, m_cCtrlCache.GetCtrlSize(IDC_PICTURE).Width() + nDiffX);
-			m_Splitter.ChangeWidth(&m_Splitter, nDiffX);
-			m_cCtrlCache.SizeCtrlHoriz(IDC_LISTINFO, m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Width() + nDiffX);
-			m_cCtrlCache.SizeCtrlHoriz(IDC_PICTURES, m_cCtrlCache.GetCtrlSize(IDC_PICTURES).Width() + nDiffX);
-			m_cCtrlCache.SizeCtrlHoriz(IDC_GROUPTAB, m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Width() + nDiffX);
-		}
-
-		// Because we've resized things, we need to update the max splitter range accordingly.
-		// This is not quite right - couple of pixels out - but not sure why.
-		int nMinY = m_cCtrlCache.GetCtrlOffset(IDC_PICTURE).y + sm_nMinImageHeight;
-		int nMaxY = std::max(nMinY + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height(), rcCurrentDlgSize.Height() - (sm_nMinListHeight + m_cCtrlCache.GetCtrlSize(IDC_GROUPTAB).Height() + m_cCtrlCache.GetCtrlSize(IDC_LISTINFO).Height() + m_cCtrlCache.GetCtrlSize(IDC_SPLITTER).Height()));
-		m_Splitter.SetRange(nMinY, nMaxY);
-
-		// Update everything.
-		Invalidate();
-		UpdateWindow();
-		m_cCtrlCache.InvalidateCtrls();
-	}
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::UpdateGroupTabs()
-	{
-		int dwLastGroupID = static_cast<int>(frameList.GetLastGroupID());
-		if (frameList.GetNrFrames(dwLastGroupID) != 0)
-			dwLastGroupID++;
-
-		const auto lCurrentGroup = std::max(0, m_GroupTab.GetCurSel());
-
-		m_GroupTab.DeleteAllItems();
-
-		CString				strGroup;
-
-		strGroup.LoadString(IDS_MAINGROUP);
-
-		m_GroupTab.InsertItem(0, strGroup);
-
-		strGroup.LoadString(IDS_GROUPIDMASK);
-
-		for (int i = 1; i <= dwLastGroupID; i++)
-		{
-			CString			strName;
-
-			strName.Format(strGroup, i);
-			m_GroupTab.InsertItem(i, strName);
-		};
-
-		if (lCurrentGroup > dwLastGroupID)
-		{
-			m_GroupTab.SetCurSel(0);
-			frameList.SetCurrentGroupID(0);
-		}
-		else
-			m_GroupTab.SetCurSel(lCurrentGroup);
-	};
-
-	/* ------------------------------------------------------------------- */
-
-
-
-	/* ------------------------------------------------------------------- */
-
-	BOOL CStackingDlg::CheckDiskSpace(CAllStackingTasks & tasks)
-	{
-		BOOL				bResult = FALSE;
-		__int64				ulFlatSpace = 0,
-							ulDarkSpace = 0,
-							ulOffsetSpace = 0;
-		__int64				ulNeededSpace = 0;
-
-		for (size_t i = 0; i < tasks.m_vStacks.size(); i++)
-		{
-			int			lWidth,
-							lHeight,
-							lNrChannels,
-							lNrBytesPerChannel;
-			__int64			ulSpace;
-
-			lWidth		= tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lWidth;
-			lHeight		= tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lHeight;
-			lNrChannels = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
-			lNrBytesPerChannel = tasks.m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitPerChannels/8;
-
-			ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
-
-			if (tasks.m_vStacks[i].m_pOffsetTask)
-				ulOffsetSpace = max(ulOffsetSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
-
-			if (tasks.m_vStacks[i].m_pDarkTask)
-				ulDarkSpace = max(ulDarkSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
-
-			if (tasks.m_vStacks[i].m_pFlatTask)
-				ulFlatSpace = max(ulFlatSpace, static_cast<__int64>(ulSpace * tasks.m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
-		};
-
-		ulNeededSpace = max(ulFlatSpace, max(ulOffsetSpace, ulDarkSpace));
-		ulNeededSpace += ulNeededSpace / 10;
-
-		// Get available space from drive
-		TCHAR			szTempPath[1+_MAX_PATH];
-
-		szTempPath[0] = 0;
-		GetTempPath(sizeof(szTempPath)/sizeof(szTempPath[0]), szTempPath);
-
-		ULARGE_INTEGER			ulFreeSpace;
-		ULARGE_INTEGER			ulTotal;
-		ULARGE_INTEGER			ulTotalFree;
-
-		GetDiskFreeSpaceEx(szTempPath, &ulFreeSpace, &ulTotal, &ulTotalFree);
-
-		if (ulFreeSpace.QuadPart < ulNeededSpace)
-		{
-			ulFreeSpace.QuadPart /= 1024;
-			ulNeededSpace /= 1024;
-
-			int			lNeededSpace = static_cast<int>(ulNeededSpace);
-			auto			lFreeSpace = ulFreeSpace.LowPart;
-			CString			strDrive;
-
-			strDrive = szTempPath;
-			strDrive = strDrive.Left(2);
-
-			CString			strMessage;
-
-			strMessage.Format(IDS_ERROR_NOTENOUGHFREESPACE, lNeededSpace, lFreeSpace, strDrive);
-			if (AfxMessageBox(strMessage, MB_YESNO | MB_DEFBUTTON2 | MB_ICONQUESTION)==IDYES)
-				bResult = TRUE;
-			else
-				bResult = FALSE;
-		}
-		else
-			bResult = TRUE;
-
-		return bResult;
-	};
-
-	/* ------------------------------------------------------------------- */
-
-
-
-	void CStackingDlg::DropFiles(HDROP hDropInfo)
-	{
-		CDropFilesDlg			dlg;
-
-		dlg.SetDropInfo(hDropInfo);
-		if (dlg.DoModal() == IDOK)
-		{
-			std::vector<CString>	vFiles;
-
-			BeginWaitCursor();
-			dlg.GetDroppedFiles(vFiles);
-
-			for (size_t i = 0; i < vFiles.size(); i++)
-				frameList.addFile(vFiles[i], frameList.groupID(), dlg.GetDropType(), true);
-
-			frameList.RefreshList();
-			UpdateGroupTabs();
-			updateListInfo();
-			EndWaitCursor();
-		};
-	};
-
-	/* ------------------------------------------------------------------- */
-
-
-	/* ------------------------------------------------------------------- */
-
-
-	/* ------------------------------------------------------------------- */
-
-	CWndImageSink *	CStackingDlg::GetCurrentSink()
-	{
-		if (m_ButtonToolbar.IsChecked(IDC_EDIT_STAR))
-			return &m_EditStarSink;
-		else if (m_ButtonToolbar.IsChecked(IDC_EDIT_COMET))
-			return &m_EditStarSink;
-		else if (m_ButtonToolbar.IsChecked(IDC_EDIT_SELECT))
-			return &m_SelectRectSink;
-
-		return nullptr;
-	};
-
-	/* ------------------------------------------------------------------- */
-
-
-	/* ------------------------------------------------------------------- */
-
-	/* ------------------------------------------------------------------- */
-
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::OnClickPictures(NMHDR* pNMHDR, LRESULT* pResult)
-	{
-		CString				strFileName;
-
-		updateListInfo();
-		if (frameList.GetSelectedFileName(strFileName))
-		{
-			if (strFileName.CompareNoCase(m_strShowFile))
-			{
-				if (checkEditChanges())
-				{
-					BeginWaitCursor();
-					m_Infos.SetTextColor(RGB(0, 0, 0));
-					m_Infos.SetText(strFileName);
-					m_Infos.SetLink(FALSE, FALSE);
-					m_strShowFile = strFileName;
-					OnBackgroundImageLoaded(0, 0);
-				};
-			};
-		}
-		else
-		{
-			m_Infos.SetTextColor(RGB(0, 0, 0));
-			m_Infos.SetLink(FALSE, FALSE);
-			m_Infos.SetText("");
-		};
-
-		*pResult = 0;
-	}
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::ReloadCurrentImage()
-	{
-		if (m_strShowFile.GetLength())
-		{
-			BeginWaitCursor();
-			imageLoader.clearCache();
-			OnBackgroundImageLoaded(0, 0);
-			EndWaitCursor();
-		};
-
-		frameList.Invalidate(FALSE);
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::OnSelChangeGroup(NMHDR* pNMHDR, LRESULT* pResult)
-	{
-		frameList.SetCurrentGroupID(m_GroupTab.GetCurSel());
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::OnSelChangeJob(NMHDR* pNMHDR, LRESULT* pResult)
-	{
-		//frameList.SetCurrentGroupID(m_GroupTab.GetCurSel());
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::OnShowHideJobs( NMHDR * pNotifyStruct, LRESULT * result )
+	void StackingDlg::tabBar_currentChanged(int index)
 	{
 		//
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	LRESULT CStackingDlg::OnCheckItem(WPARAM, LPARAM)
-	{
-		updateListInfo();
-
-		return 0;
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	LRESULT CStackingDlg::OnSelectItem(WPARAM, LPARAM)
-	{
-		LRESULT				lResult;
-
-		OnClickPictures(nullptr, &lResult);
-
-		return 0;
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::OnSize(UINT nType, int cx, int cy)
-	{
-		CDialog::OnSize(nType, cx, cy);
-		if (!(cx == 0 && cy == 0))
-			UpdateLayout();
+		// User has changed tabs, so switch to the corresponding group
+		// and set the table model for the table view accordingly
+		//
+		if (-1 != index)
+		{
+			switchGroup(index);
+		}
 	}
 
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::OnSplitter(NMHDR* pNMHDR, LRESULT* pResult)
+	void StackingDlg::switchGroup(int index)
 	{
-		SPC_NMHDR* pHdr = reinterpret_cast<SPC_NMHDR*>(pNMHDR);
-
-		CSplitterControl::ChangeHeight(&m_Picture, pHdr->delta);
-		CSplitterControl::ChangeHeight(&frameList, -pHdr->delta, CW_BOTTOMALIGN);
-		CSplitterControl::ChangePos(&m_ListInfo, 0, pHdr->delta);
-		Invalidate();
-		UpdateWindow();
-		m_Picture.Invalidate();
-		frameList.Invalidate();
-		m_ListInfo.Invalidate();
-	};
-
-	/* ------------------------------------------------------------------- */
-
-
-
-
-	/* ------------------------------------------------------------------- */
-
-
-	/* ------------------------------------------------------------------- */
-
-	/* ------------------------------------------------------------------- */
-
-	/* ------------------------------------------------------------------- */
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::CheckAbove()
-	{
-		if (checkEditChanges())
-		{
-			CCheckAbove		dlg;
-			double			fThreshold;
-
-			if (dlg.DoModal() == IDOK)
-			{
-				fThreshold = dlg.GetThreshold();
-				if (dlg.IsPercent())
-					frameList.CheckBest(fThreshold);
-				else
-					frameList.CheckAbove(fThreshold);
-			};
-			updateListInfo();
-		};
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::CheckAll()
-	{
-		frameList.CheckAll(TRUE);
-		frameList.CheckAllDarks(TRUE);
-		updateListInfo();
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::UncheckAll()
-	{
-		frameList.CheckAll(FALSE);
-		frameList.CheckAllDarks(FALSE);
-		updateListInfo();
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::ClearList()
-	{
-		if (CheckEditChanges() && checkWorkspaceChanges())
-		{
-			frameList.Clear();
-			m_Picture.SetImg((CBitmap*)nullptr);
-			m_Picture.SetImageSink(nullptr);
-			m_Picture.SetButtonToolbar(nullptr);
-			m_EditStarSink.SetBitmap(std::shared_ptr<CMemoryBitmap>{});
-			m_strShowFile.Empty();
-			m_Infos.SetText(m_strShowFile);
-			m_BackgroundLoading.ClearList();
-			m_LoadedImage.Clear();
-			UpdateGroupTabs();
-			updateListInfo();
-			m_strCurrentFileList.Empty();
-			dssApp->setTitleFilename(m_strCurrentFileList);
-		};
-	};
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::CheckBests(double fPercent)
-	{
-		if (checkEditChanges())
-			frameList.CheckBest(fPercent);
-	};
-
-	/* ------------------------------------------------------------------- */
-
-
-
-	/* ------------------------------------------------------------------- */
-
-	void CStackingDlg::OnBnClicked4corners()
-	{
-		m_Picture.Set4CornersMode(!m_Picture.Get4CornersMode());
+		frameList.setGroup(index);
+		auto model{ frameList.currentTableModel() };
+		connect(frameList.currentTableModel(), SIGNAL(dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)),
+			this, SLOT(tableViewModel_dataChanged(const QModelIndex&, const QModelIndex&, const QList<int>&)));
+		proxyModel->setSourceModel(model);
 	}
 
+	void StackingDlg::updateGroupTabs()
+	{
+		auto lastGroup{ frameList.lastGroupId() };
+		if (frameList.groupSize(lastGroup) != 0)
+		{
+			//
+			// Need to add a group
+			//
+			lastGroup = frameList.addGroup();
+			ui->tabBar->addTab(frameList.groupName(lastGroup));
+		}
+
+	};
+
 	/* ------------------------------------------------------------------- */
 
-	#endif
+	void StackingDlg::showImageList(bool visible)
+	{
+		if (ui->dockWidget->isFloating())
+			ui->dockWidget->setVisible(visible);
+	}
+
+
 }

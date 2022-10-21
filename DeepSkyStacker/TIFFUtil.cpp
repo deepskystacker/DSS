@@ -334,7 +334,7 @@ bool CTIFFReader::Read()
 		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const auto& function) -> void
 		{
 			int progressCounter = 0;
-#pragma omp parallel for default(none) schedule(dynamic, 10) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
 			for (int row = 0; row < height; ++row)
 			{
 				for (int col = 0; col < width; ++col)

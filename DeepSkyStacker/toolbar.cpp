@@ -166,15 +166,15 @@ namespace DSS
     {
         onSaveAlways = new QAction(tr("Save without asking", "ID_SAVECONTEXT_SAVEWITHOUTASKING"), this);
         connect(onSaveAlways, &QAction::triggered, this,
-            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::SECM_SAVEDONTASK)); });
+            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::SaveDontAsk)); });
 
         onSaveNever = new QAction(tr("Don't save", "ID_SAVECONTEXT_DONTSAVEWITHOUTASKING"), this);
         connect(onSaveNever, &QAction::triggered, this,
-            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::SECM_DONTSAVEDONTASK)); });
+            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::DiscardDontAsk)); });
 
         onAskAlways = new QAction(tr("Ask always", "ID_SAVECONTEXT_ASKALWAYS"), this);
         connect(onAskAlways, &QAction::triggered, this,
-            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::SECM_DONTSAVEDONTASK)); });
+            [=]() { this->setSaveMode(static_cast<int>(EditSaveMode::AskAlways)); });
 
         return *this;
     }
@@ -193,7 +193,7 @@ namespace DSS
 
     void ToolBar::setSaveMode(int mode)
     {
-        ::SetSaveEditMode(static_cast<EditSaveMode>(mode));
+        ::setSaveEditMode(static_cast<EditSaveMode>(mode));
     }
 
     void ToolBar::mousePressEvent(QMouseEvent* event)

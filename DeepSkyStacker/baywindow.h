@@ -34,46 +34,20 @@
 **
 **
 ****************************************************************************/
-// SaveEditChanges.h: definition file
-//
-#include <QDialog>
-#include <QDialogButtonBox>
-#include "ui/ui_SaveEditChanges.h"
 
-enum class EditSaveMode
-{
-	AskAlways = 0,
-	SaveDontAsk = 1,
-	DiscardDontAsk = 2
-}; 
+// Class definition for DSS::BayWindow 
+//
+// I could have called the class DockingBay, but I couldn't resist :)
+
+#include <QMainWindow>
 
 namespace DSS
 {
-	class SaveEditChanges : 
-		public QDialog, public Ui::SaveEditChanges
+	class BayWindow : public QMainWindow
 	{
 		Q_OBJECT
 
-		typedef QDialog
-			Inherited;
-
 	public:
-		explicit SaveEditChanges(QWidget* parent = nullptr);
-
-		// the role that is associated with the button that the user pressed
-		QDialogButtonBox::ButtonRole result;
-
-	private slots:
-		void buttonClicked(QAbstractButton* clicked);
-
-	private:
-		EditSaveMode getSaveEditMode();
-		void saveSettings();
-
+		using QMainWindow::QMainWindow;
 	};
 }
-
-QDialogButtonBox::ButtonRole askToSaveEditChangeMode();
-void	setSaveEditMode(EditSaveMode mode);
-
-

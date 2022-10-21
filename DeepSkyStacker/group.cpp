@@ -142,7 +142,7 @@ namespace DSS
 
 		pathToGroup.emplace(file, Index);
 
-		pictures.addImage(lb);
+		pictures->addImage(lb);
 
 
 	};

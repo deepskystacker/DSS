@@ -49,12 +49,6 @@
 #include "StackingEngine.h"
 #include "imageloader.h"
 #include "FrameList.h"
-#include "mrulist.h"
-
-#include "GradientCtrl.h"
-#include "SplitterControl.h"
-
-#include "ImageSinks.h"
 
 class QNetworkAccessManager;
 class QNetworkReply;
@@ -63,6 +57,7 @@ class QNetworkReply;
 #include <QFileDialog>
 #include <QMenu>
 #include <QStyledItemDelegate>
+#include "baywindow.h"
 
 namespace DSS
 {
@@ -84,6 +79,7 @@ namespace std::filesystem
 
 class QTextOption;
 class QSortFilterProxyModel;
+class QLabel;
 
 namespace fs = std::filesystem;
 
@@ -144,12 +140,15 @@ namespace DSS
 	};
 
 
-	class StackingDlg : public QWidget
+	class StackingDlg : public BayWindow
 	{
-		typedef QWidget
+		typedef BayWindow
 			Inherited;
 
 		Q_OBJECT
+
+	signals:
+		void statusMessage(const QString& text);
 
 	public slots:
 		void setSelectionRect(QRectF rect);
@@ -160,9 +159,12 @@ namespace DSS
 		void toolBar_cometButtonPressed(bool checked);
 		void toolBar_saveButtonPressed(bool checked);
 		void on_tableView_customContextMenuRequested(const QPoint& pos);
+		void on_tabBar_customContextMenuRequested(const QPoint& pos);
 		void tableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
+		void tableViewModel_dataChanged(const QModelIndex& first, const QModelIndex& last, const QList<int>& roles);
 		void gammaChanging(int peg);
 		void gammaChanged(int peg);
+		void tabBar_currentChanged(int index);
 
 	public:
 		explicit StackingDlg(QWidget* parent = nullptr);
@@ -196,6 +198,8 @@ namespace DSS
 		{
 			fileList = file;
 		};
+
+		void showImageList(bool visible = true);
 
 		void computeOffsets();
 
@@ -231,7 +235,10 @@ namespace DSS
 
 		void pictureChanged();
 
+		bool saveOnClose();
+
 	protected:
+		void changeEvent(QEvent* e) override;
 		bool event(QEvent* event) override;
 		void showEvent(QShowEvent* event) override;
 
@@ -243,13 +250,10 @@ namespace DSS
 		CGammaTransformation	m_GammaTransformation;
 		fs::path		fileList;
 		FrameList		frameList;
-		MRUList		    m_MRUList;
 		std::unique_ptr<IconSizeDelegate> iconSizeDelegate;
 		std::unique_ptr<ItemEditDelegate> itemEditDelegate;
 		std::unique_ptr<QSortFilterProxyModel> proxyModel;
 		uint m_tipShowCount;
-
-
 
 		bool fileAlreadyLoaded(const fs::path& file);
 
@@ -284,6 +288,8 @@ namespace DSS
 		QAction* copy;
 		QAction* erase;
 
+		QLabel* dockTitle;
+
 		void checkAskRegister();
 
 		void onInitDialog();
@@ -292,18 +298,13 @@ namespace DSS
 
 		void retrieveLatestVersionInfo();
 
-		// void updateGroupTabs(); TODO
 		bool checkEditChanges();
 
 		bool checkReadOnlyFolders(CAllStackingTasks& tasks);
 
 		bool checkStacking(CAllStackingTasks& tasks);
 
-		void unCheckNonStackablePictures();
-
 		bool showRecap(CAllStackingTasks& tasks);
-
-		bool saveOnClose();
 
 		void doStacking(CAllStackingTasks& tasks, const double fPercent = 100.0);
 
@@ -313,11 +314,17 @@ namespace DSS
 		
 		void openFileList(const fs::path& file);
 
+		void updateGroupTabs();
+
 		void updateListInfo();
 
-		void loadList(MRUList& MRUList, QString& strFileList);
+		void switchGroup(int);
 
-		void saveList(MRUList& MRUList, QString& strFileList);
+		void loadList(MRUPath& MRUList, QString& strFileList);
+
+		void saveList(MRUPath& MRUList, QString& strFileList);
+
+		void retranslateUi();
 
 	};
 }

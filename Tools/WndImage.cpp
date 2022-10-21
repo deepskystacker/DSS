@@ -94,11 +94,9 @@ CWndImage::CWndImage(bool bDarkMode /*=false*/) :
 	m_4Corners		 = false;
 }
 
-
-CWndImage::~CWndImage()
+void CWndImage::OnDestroy()
 {
-	SetImg((HBITMAP) 0);
-
+	SetImg((HBITMAP)0);
 	if (m_pToolbarImage)
 		delete m_pToolbarImage;
 
@@ -115,12 +113,17 @@ CWndImage::~CWndImage()
 		delete m_pBufferImage;
 }
 
+CWndImage::~CWndImage()
+{
+
+}
 
 BEGIN_MESSAGE_MAP(CWndImage, CWnd)
 	//{{AFX_MSG_MAP(CWndImage)
 	ON_WM_ERASEBKGND()
 	ON_WM_PAINT()
 	ON_WM_SIZE()
+	ON_WM_DESTROY()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
 	ON_WM_LBUTTONUP()
@@ -212,8 +215,11 @@ BOOL CWndImage::CreateInternalBitmap()
 		CRect & src = m_srcRect;
 		CRect & dst = m_dstRect;
 
-		m_pBaseImage  = ::GetBitmap(r, (HBITMAP)m_bmp.GetSafeHandle(), src, dst, (m_zoomX < 1), m_pBaseImage, m_bDarkMode);
-		bResult = TRUE;
+		if (!src.IsRectEmpty() && !dst.IsRectEmpty())
+		{
+			m_pBaseImage = ::GetBitmap(r, (HBITMAP)m_bmp.GetSafeHandle(), src, dst, (m_zoomX < 1), m_pBaseImage, m_bDarkMode);
+			bResult = TRUE;
+		}
 	};
 	m_bInvalidateInternalBitmap = FALSE;
 
@@ -496,7 +502,7 @@ BOOL CWndImage::CreateBufferBitmap()
 
 
 			// Draw the internal Bitmap
-			graphics.DrawImage(m_pBaseImage, 0, 0);
+			//graphics.DrawImage(m_pBaseImage, 0, 0);
 			graphics.DrawImage(
 				m_pBaseImage,
 				destRect,
@@ -704,7 +710,20 @@ void CWndImage::SetImg(HBITMAP bmp, bool shared)
 			m_bmpSize.cy = bmp.bmHeight;
 		}
 		else
-			m_bmpSize = CSize(0,0);
+		{
+			m_bmpSize = CSize(0, 0);
+			if (m_pBaseImage)
+			{
+				delete m_pBaseImage;
+				m_pBaseImage = nullptr;
+			}
+
+			if (m_pBufferImage)
+			{
+				delete m_pBufferImage;
+				m_pBufferImage = nullptr;
+			}
+		}
 
 		SetSourceRect();      // use entire new image
 		Recalc();

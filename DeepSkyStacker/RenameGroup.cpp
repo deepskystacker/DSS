@@ -1,4 +1,3 @@
-#pragma once
 /****************************************************************************
 **
 ** Copyright (C) 2020, 2022 David C. Partridge
@@ -34,46 +33,27 @@
 **
 **
 ****************************************************************************/
-// SaveEditChanges.h: definition file
+// RenameGroup.cpp : implementation file
 //
-#include <QDialog>
-#include <QDialogButtonBox>
-#include "ui/ui_SaveEditChanges.h"
-
-enum class EditSaveMode
-{
-	AskAlways = 0,
-	SaveDontAsk = 1,
-	DiscardDontAsk = 2
-}; 
+#include "stdafx.h"
+#include <QPushButton>
+#include <QRegularExpressionValidator>
+#include "RenameGroup.h"
 
 namespace DSS
 {
-	class SaveEditChanges : 
-		public QDialog, public Ui::SaveEditChanges
+	RenameGroup::RenameGroup(QWidget* parent, const QString& name) :
+		QDialog(parent)
 	{
-		Q_OBJECT
+		setupUi(this);
+		lineEdit->setText(name);
+		QRegularExpression regExp("[A-Z][A-Za-z0-9 ]{0,11}");
+		lineEdit->setValidator(new QRegularExpressionValidator(regExp, this));
+		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
+	}
 
-		typedef QDialog
-			Inherited;
-
-	public:
-		explicit SaveEditChanges(QWidget* parent = nullptr);
-
-		// the role that is associated with the button that the user pressed
-		QDialogButtonBox::ButtonRole result;
-
-	private slots:
-		void buttonClicked(QAbstractButton* clicked);
-
-	private:
-		EditSaveMode getSaveEditMode();
-		void saveSettings();
-
-	};
+	void RenameGroup::on_lineEdit_textChanged()
+	{
+		buttonBox->button(QDialogButtonBox::Ok)->setEnabled(lineEdit->hasAcceptableInput());
+	}
 }
-
-QDialogButtonBox::ButtonRole askToSaveEditChangeMode();
-void	setSaveEditMode(EditSaveMode mode);
-
-

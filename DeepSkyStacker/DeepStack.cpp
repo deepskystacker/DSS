@@ -27,7 +27,7 @@ void CDeepStack::ComputeOriginalHistogram(CRGBHistogram & Histo)
 
 #pragma omp parallel default(none) firstprivate(maxValue) shared(fMax, redPixels, greenPixels, bluePixels) if(nrEnabledThreads - 1)
 	{
-#pragma omp for schedule(guided, 1)
+#pragma omp for schedule(guided, 50)
 		for (int row = 0; row < height; ++row)
 		{
 			size_t ndx = row * width;

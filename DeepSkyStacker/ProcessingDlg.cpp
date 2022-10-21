@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "ProcessingDlg.h"
-#include "ProgressDlg.h"
+#include "QtProgressDlg.h"
 #include <algorithm>
 #include "SettingsDlg.h"
 
@@ -80,33 +80,42 @@ END_MESSAGE_MAP()
 BOOL CProcessingDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+ 	CRect			rc;
 
- 	CRect			rcSettings;
-
+	CSize	size;
 	m_Info.SetBkColor(RGB(224, 244, 252), RGB(138, 185, 242), CLabel::Gradient);
 
-	m_SettingsRect.GetWindowRect(&rcSettings);
-	ScreenToClient(&rcSettings);
-	rcSettings.left = 0;
-	rcSettings.top -= 11;
+	m_Picture.CreateFromStatic(&m_PictureStatic);
+
+	m_SettingsRect.GetWindowRect(&rc);
+	ScreenToClient(&rc);
+	rc.left = 0;
+	rc.top -= 11; /* odd */
+	size = rc.Size();
+	size.cx += 45;
+	size.cy += 10;
+	rc = CRect(rc.TopLeft(), size);
 
 	m_Settings.AddPage(&m_tabRGB);
 	m_Settings.AddPage(&m_tabLuminance);
 	m_Settings.AddPage(&m_tabSaturation);
 
-	m_Settings.EnableStackedTabs( false );
-	m_Settings.Create (this, WS_VISIBLE | WS_CHILD | WS_TABSTOP, 0);
+	m_Settings.EnableStackedTabs(false);
+	m_Settings.Create(this, WS_VISIBLE | WS_CHILD | WS_TABSTOP, 0);
 
-	m_Settings.ModifyStyleEx (0, WS_EX_CONTROLPARENT);
-	m_Settings.ModifyStyle( 0, WS_TABSTOP );
-
-	// move to left upper corner
-
-	m_Settings.MoveWindow(&rcSettings, true);
+	m_Settings.ModifyStyleEx(0, WS_EX_CONTROLPARENT);
+	m_Settings.ModifyStyle(0, WS_TABSTOP);
+	m_Settings.MoveWindow(&rc, true);
 	m_Settings.ShowWindow(SW_SHOWNA);
 
-	m_Picture.CreateFromStatic(&m_PictureStatic);
-	m_ControlPos.SetParent(this);
+	m_OriginalHistogram.CreateFromStatic(&m_OriginalHistogramStatic);
+	m_OriginalHistogram.GetWindowRect(&rc);
+	ScreenToClient(&rc);
+	rc.left += 45;
+	m_OriginalHistogram.MoveWindow(&rc, true);
+
+	m_OriginalHistogram.SetBltMode(CWndImage::bltFitXY);
+	m_OriginalHistogram.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
 
 	m_tabLuminance.m_MidTone.SetRange(0, 1000, true);
 	m_tabLuminance.m_MidTone.SetPos(200);
@@ -129,9 +138,7 @@ BOOL CProcessingDlg::OnInitDialog()
 	m_tabSaturation.m_Saturation.SetPos(50);
 	m_tabSaturation.UpdateTexts();
 
-	m_OriginalHistogram.CreateFromStatic(&m_OriginalHistogramStatic);
-	m_OriginalHistogram.SetBltMode(CWndImage::bltFitXY);
-	m_OriginalHistogram.SetAlign(CWndImage::bltCenter, CWndImage::bltCenter);
+	m_ControlPos.SetParent(this);
 
 	m_ControlPos.AddControl(IDC_PICTURE, CP_RESIZE_VERTICAL | CP_RESIZE_HORIZONTAL);
 	m_ControlPos.AddControl(&m_Settings, CP_MOVE_VERTICAL);
@@ -404,6 +411,13 @@ void CProcessingDlg::OnSettings()
 
 void CProcessingDlg::OnSize(UINT nType, int cx, int cy)
 {
+	CRect rc;
+	CWnd* parent{ GetParent() };
+	if (parent)
+	{
+		parent->GetClientRect(&rc);
+	}
+
 	CDialog::OnSize(nType, cx, cy);
 
 	m_ControlPos.MoveControls();
@@ -512,7 +526,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 {
 	ZFUNCTRACE_RUNTIME();
-	CDSSProgressDlg		dlg;
+	DSS::DSSProgressDlg		dlg;
 	bool				bOk;
 
 	BeginWaitCursor();
@@ -570,7 +584,7 @@ void CProcessingDlg::OnLoaddsi()
 									strFilter,
 									this);
 		TCHAR				szBigBuffer[20000] = _T("");
-		CDSSProgressDlg		dlg;
+		DSS::DSSProgressDlg		dlg;
 
 		if (strBaseDirectory.GetLength())
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -684,7 +698,7 @@ void CProcessingDlg::SaveDSImage()
 	dlgOpen.m_ofn.nFilterIndex = filterIndex;
 
 	TCHAR				szBigBuffer[20000] = _T("");
-	CDSSProgressDlg		dlg;
+	DSS::DSSProgressDlg		dlg;
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
@@ -787,7 +801,7 @@ void CProcessingDlg::CreateStarMask()
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
 		if (dlgStarMask.DoModal() == IDOK)
 		{
-			CDSSProgressDlg dlg;
+			DSS::DSSProgressDlg dlg;
 			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
@@ -860,7 +874,7 @@ bool CProcessingDlg::SavePictureToFile()
 		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
 		TCHAR				szBigBuffer[20000] = _T("");
-		CDSSProgressDlg		dlg;
+		DSS::DSSProgressDlg		dlg;
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);

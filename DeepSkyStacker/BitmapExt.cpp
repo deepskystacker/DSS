@@ -234,7 +234,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			BitmapIterator<std::shared_ptr<CMemoryBitmap>> it{ pColorBitmap };
 
 #if defined(_OPENMP)
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1)
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
 #endif
 			for (int j = 0; j < lHeight; j++)
 			{
@@ -303,7 +303,7 @@ bool	CAllDepthBitmap::initQImage()
 		auto pImageData = m_Image->bits();
 		auto bytes_per_line = m_Image->bytesPerLine();
 
-#pragma omp parallel for schedule(guided) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -333,7 +333,7 @@ bool	CAllDepthBitmap::initQImage()
 		auto bytes_per_line = m_Image->bytesPerLine();
 		thread_vars threadVars(m_pBitmap.get());
 
-#pragma omp parallel for schedule(guided) firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
+#pragma omp parallel for schedule(guided, 50) firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -393,7 +393,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgre
 					std::shared_ptr<C48BitColorBitmap>	pColorBitmap = std::make_shared<C48BitColorBitmap>();
 					pColorBitmap->Init(lWidth, lHeight);
 
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 					for (int j = 0; j < lHeight; j++)
 					{
 						for (int i = 0; i < lWidth; i++)
@@ -985,7 +985,7 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 		auto pImageData = pImage->bits();
 		auto bytes_per_line = pImage->bytesPerLine();
 
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		for (int j = 0; j < height; j++)
 		{
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
@@ -1089,7 +1089,7 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 		{
 			double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 
-#pragma omp parallel for default(none) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 			for (int j = 0; j < lHeight; j++)
 			{
 				if constexpr (std::is_same_v<BitmapClass<T>, CColorBitmapT<T>>)
@@ -1552,7 +1552,7 @@ void CSubtractTask::process()
 
 	thread_init threadVars(m_pTarget.get(), m_pSource.get());
 
-#pragma omp parallel for schedule(guided) default(none) firstprivate(threadVars) if(nrProcessors > 1)
+#pragma omp parallel for schedule(guided, 50) default(none) firstprivate(threadVars) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
 	{
 		int lTgtStartX = 0, lTgtStartY = row, lSrcStartX = 0, lSrcStartY = row;
