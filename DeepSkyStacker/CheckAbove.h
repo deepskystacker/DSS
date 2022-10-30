@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QDialog>
+#include <QValidator>
 
 namespace Ui {
 	class CheckAbove;
@@ -41,5 +42,24 @@ namespace DSS
 
 	private:
 		Q_DISABLE_COPY(CheckAbove)
+	};
+
+	class CheckAboveValidator : public QValidator
+	{
+		Q_OBJECT
+
+	public:
+		CheckAboveValidator(QObject* parent = nullptr);
+
+		// By default, the pos parameter is not used by this validator - @see QDoubleValidator
+		QValidator::State validate(QString& input, int&) const override;
+		void fixup(QString& input) const override;
+
+	private:
+		QDoubleValidator* m_doubleValueValidator{ nullptr };
+		QDoubleValidator* m_percentValueValidator{ nullptr };
+
+	private:
+		Q_DISABLE_COPY(CheckAboveValidator)
 	};
 }
