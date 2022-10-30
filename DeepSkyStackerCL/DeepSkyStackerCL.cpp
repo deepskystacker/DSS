@@ -10,7 +10,7 @@ using namespace Gdiplus;
 
 static	BOOL				g_bRegistering = FALSE;
 static	BOOL				g_bStacking = FALSE;
-static	CString				g_strListFile;
+static	std::wstring		g_strListFile;
 static  CString				g_strOutputFile;
 static  BOOL				g_bForceRegister = FALSE;
 static  TIFFFORMAT			g_TIFFFormat = TF_32BITRGBFLOAT;
@@ -149,7 +149,7 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 
 	if (!g_bStacking && !g_bRegistering)
 		bResult = FALSE;
-	if (!g_strListFile.GetLength())
+	if (g_strListFile.empty())
 		bResult = FALSE;
 
 	return bResult;
@@ -157,54 +157,62 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 
 /* ------------------------------------------------------------------- */
 
-void ComputeStacks(CFrameList & FrameList, CAllStackingTasks & tasks)
+void ComputeStacks(DSS::FrameList & frameList, CAllStackingTasks & tasks)
 {
-	LONG				i;
-	LONG				lNrComets = 0;
-	BOOL				bReferenceFrameHasComet = FALSE;
+	size_t	comets = 0;
+	uint16_t group = 0;
+	bool				bReferenceFrameHasComet = false;
 	double				fMaxScore = -1.0;
 
 	tasks.Clear();
-	for (i = 0;i<FrameList.m_vFiles.size();i++)
+	// Iterate over all groups.
+	for (auto groupIter = frameList.groups_cbegin(); groupIter != frameList.groups_cend(); ++group)
 	{
-		if (FrameList.m_vFiles[i].m_bChecked)
+		// and then over each image in the group
+		for (auto it = groupIter->pictures->cbegin();
+			it != groupIter->pictures->cend(); ++it)
 		{
-			if (FrameList.m_vFiles[i].m_fOverallQuality>fMaxScore)
+			if (it->m_bChecked == Qt::Checked)
 			{
-				fMaxScore = FrameList.m_vFiles[i].m_fOverallQuality;
-				bReferenceFrameHasComet = FrameList.m_vFiles[i].m_bComet;
-			};
-			if (FrameList.m_vFiles[i].m_bComet)
-				lNrComets++;
-			tasks.AddFileToTask(FrameList.m_vFiles[i]);
-			if ((FrameList.m_vFiles[i].m_PictureType == PICTURETYPE_LIGHTFRAME) &&
-				!g_strOutputFile.GetLength())
-			{
-				CString			strPath = FrameList.m_vFiles[i].m_strFileName;
-				TCHAR			szDrive[_MAX_DRIVE];
-				TCHAR			szDir[_MAX_DIR];
+				if (it->m_fOverallQuality > fMaxScore)
+				{
+					fMaxScore = it->m_fOverallQuality;
+					bReferenceFrameHasComet = it->m_bComet;
+				}
+				tasks.AddFileToTask(*it, group);
+				if (it->m_bComet)
+					comets++;
 
-				_tsplitpath(strPath, szDrive, szDir, nullptr, nullptr);
-				strPath = szDrive;
-				strPath += szDir;
-				if (g_bFITSOutput)
-					strPath += "AutoSave.fts";
-				else
-					strPath += "AutoSave.tif";
+				if ((PICTURETYPE_LIGHTFRAME == it->m_PictureType) &&
+					!g_strOutputFile.GetLength())
+				{
+					CString			strPath = it->filePath.generic_wstring().c_str();
+					TCHAR			szDrive[_MAX_DRIVE];
+					TCHAR			szDir[_MAX_DIR];
 
-				g_strOutputFile = strPath;
-			};
-		};
-	};
+					_tsplitpath(strPath, szDrive, szDir, nullptr, nullptr);
+					strPath = szDrive;
+					strPath += szDir;
+					if (g_bFITSOutput)
+						strPath += "AutoSave.fts";
+					else
+						strPath += "AutoSave.tif";
 
-	tasks.ResolveTasks();
-	if (lNrComets>1 && bReferenceFrameHasComet)
+					g_strOutputFile = strPath;
+				}
+			}
+			++group;
+		}
+	}
+
+	if (comets > 1 && bReferenceFrameHasComet)
 		tasks.SetCometAvailable(TRUE);
+	tasks.ResolveTasks();
 };
 
 /* ------------------------------------------------------------------- */
 
-void SaveBitmap(CMemoryBitmap * pBitmap)
+void SaveBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
 {
 	if (pBitmap && g_strOutputFile.GetLength())
 	{
@@ -230,7 +238,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				break;
 			};
 
-			WriteFITS(g_strOutputFile, pBitmap, &progress, fitsformat, nullptr);
+			WriteFITS(g_strOutputFile, pBitmap.get(), &progress, fitsformat, nullptr);
 		}
 		else
 		{
@@ -250,7 +258,7 @@ void SaveBitmap(CMemoryBitmap * pBitmap)
 				};
 			};
 
-			WriteTIFF(g_strOutputFile, pBitmap, &progress, g_TIFFFormat, g_TIFFCompression, nullptr);
+			WriteTIFF(g_strOutputFile, pBitmap.get(), &progress, g_TIFFFormat, g_TIFFCompression, nullptr);
 		};
 	};
 };
@@ -314,15 +322,15 @@ int _tmain(int argc, _TCHAR* argv[])
 	else
 	{
 		CProgressConsole		progress;
-		CFrameList				FrameList;
+		DSS::FrameList			frameList;
 		BOOL					bContinue = TRUE;
 
 		if (g_bRegistering && g_bStacking)
-			_tprintf(_T("Registering and stacking %s list\n"), (LPCTSTR)g_strListFile);
+			_tprintf(_T("Registering and stacking %s list\n"), g_strListFile.c_str());
 		else if (g_bRegistering)
-			_tprintf(_T("Registering %s list\n"), (LPCTSTR)g_strListFile);
+			_tprintf(_T("Registering %s list\n"), g_strListFile.c_str());
 		else
-			_tprintf(_T("Stacking %s list\n"), (LPCTSTR)g_strListFile);
+			_tprintf(_T("Stacking %s list\n"), g_strListFile.c_str());
 
 		if (g_bRegistering)
 		{
@@ -333,15 +341,15 @@ int _tmain(int argc, _TCHAR* argv[])
 				_tprintf(_T(" no\n"));
 		};
 
-		FrameList.LoadFilesFromList(g_strListFile);
+		frameList.loadFilesFromList(g_strListFile);
 
 		CAllStackingTasks		tasks;
 
-		FrameList.FillTasks(tasks);
+		frameList.fillTasks(tasks);
 		tasks.ResolveTasks();
 
 		// Open list file
-		if (g_bRegistering || !FrameList.GetNrUnregisteredCheckedLightFrames())
+		if (g_bRegistering || !frameList.countUnregisteredCheckedLightFrames())
 		{
 			// Register checked light frames
 			CRegisterEngine	RegisterEngine;
@@ -352,14 +360,14 @@ int _tmain(int argc, _TCHAR* argv[])
 		{
 			// Stack register light frames
 			CStackingEngine				StackingEngine;
-			CSmartPtr<CMemoryBitmap>	pBitmap;
+			std::shared_ptr<CMemoryBitmap>	pBitmap;
 
 			StackingEngine.SetSaveIntermediate(g_bSaveIntermediate);
 			StackingEngine.SetSaveCalibrated(g_bSaveCalibrated);
-			bContinue = StackingEngine.StackLightFrames(tasks, &progress, &pBitmap);
+			bContinue = StackingEngine.StackLightFrames(tasks, &progress, pBitmap);
 			if (bContinue)
 			{
-				if (StackingEngine.GetDefaultOutputFileName(g_strOutputFile, g_strListFile, !g_bFITSOutput))
+				if (StackingEngine.GetDefaultOutputFileName(g_strOutputFile, g_strListFile.c_str(), !g_bFITSOutput))
 				{
 					StackingEngine.WriteDescription(tasks, g_strOutputFile);
 					SaveBitmap(pBitmap);

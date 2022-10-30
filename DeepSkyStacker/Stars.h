@@ -8,7 +8,7 @@
 class CStar
 {
 public :
-	CRect			m_rcStar;
+	QRect			m_rcStar;
 	double			m_fIntensity;
 	double			m_fPercentage;
 	double			m_fDeltaRadius;
@@ -63,7 +63,7 @@ public :
 		m_fQuality		  = 0.0;
 		m_fMeanRadius	  = 0.0;
 		m_fDeltaRadius	  = 0.0;
-		m_rcStar.SetRectEmpty();
+		m_rcStar.setSize(QSize(0, 0));
 	};
 	~CStar() {};
 
@@ -89,7 +89,7 @@ public :
 		m_fQuality		  = 0.0;
 		m_fMeanRadius	  = 0.0;
 		m_fDeltaRadius	  = 0.0;
-		m_rcStar.SetRectEmpty();
+		m_rcStar.setSize(QSize(0, 0));
 	};
 
 	CStar & operator = (const CStar & ms)

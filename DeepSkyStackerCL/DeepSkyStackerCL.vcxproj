@@ -195,8 +195,6 @@
     <ClCompile Include="..\DeepSkyStacker\StackingTasks.cpp" />
     <ClCompile Include="..\DeepSkyStacker\TIFFUtil.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Workspace.cpp" />
-    <ClCompile Include="..\Tools\Registry.cpp" />
-    <ClCompile Include="..\Tools\RegMFC.cpp" />
     <ClCompile Include="DeepSkyStackerCL.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -244,9 +242,6 @@
     <ClInclude Include="..\DeepSkyStacker\StackingTasks.h" />
     <ClInclude Include="..\DeepSkyStacker\TIFFUtil.h" />
     <ClInclude Include="..\DeepSkyStacker\Workspace.h" />
-    <ClInclude Include="..\Tools\Registry.h" />
-    <ClInclude Include="..\Tools\SmartPtr.h" />
-    <ClInclude Include="..\Tools\StdString.h" />
     <ClInclude Include="ProgressConsole.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
