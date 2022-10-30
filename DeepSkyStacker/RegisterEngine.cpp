@@ -1399,7 +1399,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared
 {
 	bool bResult = false;
 
-	if (!lfi.filePath.empty() != 0 && static_cast<bool>(pBitmap))
+	if (!lfi.filePath.empty() && static_cast<bool>(pBitmap))
 	{
 		TCHAR			szDrive[1+_MAX_DRIVE];
 		TCHAR			szDir[1+_MAX_DIR];
