@@ -94,6 +94,7 @@ extern "C"
 #include "zptr.h"
 
 #include <vector>
+#include <QString>
 
 #if defined(_MSC_VER)
 /////////////////////////////////////////////////////////////////////////////
