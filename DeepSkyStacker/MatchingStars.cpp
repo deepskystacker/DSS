@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <ZExcept.h>
 #include "MatchingStars.h"
 #include <algorithm>
 #include "Workspace.h"
@@ -179,7 +180,7 @@ void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTIN
 		// compute max votes for the same reference star
 		for (j = (vInVotingPairs[i].m_RefStar)*lNrTgtStars;j<(vInVotingPairs[i].m_RefStar+1)*lNrTgtStars;j++)
 		{
-			ASSERT(vInVotingPairs[j].m_RefStar == vInVotingPairs[i].m_RefStar);
+			ZASSERT(vInVotingPairs[j].m_RefStar == vInVotingPairs[i].m_RefStar);
 			if (vInVotingPairs[j].m_TgtStar != vInVotingPairs[i].m_TgtStar)
 				lMaxVotes1 = max(lMaxVotes1, vInVotingPairs[j].m_lNrVotes);
 		};
@@ -187,7 +188,7 @@ void CMatchingStars::AdjustVoting(const VOTINGPAIRVECTOR & vInVotingPairs, VOTIN
 		// compute max votes for the same target star
 		for (j = vInVotingPairs[i].m_TgtStar;j<vInVotingPairs.size();j+=lNrTgtStars)
 		{
-			ASSERT(vInVotingPairs[j].m_TgtStar == vInVotingPairs[i].m_TgtStar);
+			ZASSERT(vInVotingPairs[j].m_TgtStar == vInVotingPairs[i].m_TgtStar);
 			if (vInVotingPairs[j].m_RefStar != vInVotingPairs[i].m_RefStar)
 				lMaxVotes2 = max(lMaxVotes2, vInVotingPairs[j].m_lNrVotes);
 		};

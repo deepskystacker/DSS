@@ -1,9 +1,10 @@
 #include <stdafx.h>
+#include <iostream>
+#include <QSettings>
+#include <limits>
 #include "TIFFUtil.h"
 
 #include "zlib.h"
-#include <iostream>
-#include <QSettings>
 
 #include <omp.h>
 
@@ -273,7 +274,7 @@ bool CTIFFReader::Open()
 bool CTIFFReader::Read()
 {
 	constexpr double scaleFactorInt16 = double{ 1 + UCHAR_MAX };
-	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHORT_MAX);
+	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHRT_MAX);
 
 	ZFUNCTRACE_RUNTIME();
 
@@ -326,7 +327,7 @@ bool CTIFFReader::Read()
 
 		const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
 		{
-			constexpr double scaleFactor = double{ USHORT_MAX } / 256.0;
+			constexpr double scaleFactor = double{ USHRT_MAX } / 256.0;
 			const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
 			return (static_cast<double>(value) - sampleMin) * normalizationFactor;
 		};

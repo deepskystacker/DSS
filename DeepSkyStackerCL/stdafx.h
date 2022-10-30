@@ -26,7 +26,6 @@ using std::max;
 #include <atlbase.h>
 #include <atlstr.h>
 
-#include <Common.h>
 #include <DSSCommon.h>
 #include <resource.h>
 #include <ztrace.h>

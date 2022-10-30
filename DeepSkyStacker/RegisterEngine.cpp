@@ -550,7 +550,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 								//if (fabs(fMeanRadius1 - fMeanRadius2) > fDeltaRadius - 1)
 								//	bWanabeeStarOk = false;
 
-								CRect			rcStar;
+								QRect			rcStar;
 								int			lLeftRadius = 0;
 								int			lRightRadius = 0;
 								int			lTopRadius = 0;
@@ -568,10 +568,12 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 										lBottomRadius = std::max(lBottomRadius, static_cast<int>(vPixels[k].m_fRadius));
 								};
 
-								rcStar.left   = ptTest.x - lLeftRadius;
-								rcStar.right  = ptTest.x + lRightRadius;
-								rcStar.top	  = ptTest.y - lTopRadius;
-								rcStar.bottom = ptTest.y + lBottomRadius;
+								rcStar.setCoords(ptTest.x - lLeftRadius, ptTest.y - lTopRadius,
+									ptTest.x + lRightRadius, ptTest.y + lBottomRadius);
+								//rcStar.left   = ptTest.x - lLeftRadius;
+								//rcStar.right  = ptTest.x + lRightRadius;
+								//rcStar.top	= ptTest.y - lTopRadius;
+								//rcStar.bottom = ptTest.y + lBottomRadius;
 
 								if (bWanabeeStarOk)
 								{
@@ -655,7 +657,7 @@ bool	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 			fprintf(hFile, "Intensity = %.2f\n", m_vStars[i].m_fIntensity);
 			fprintf(hFile, "Quality = %.2f\n",  m_vStars[i].m_fQuality);
 			fprintf(hFile, "MeanRadius = %.2f\n",  m_vStars[i].m_fMeanRadius);
-			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n", m_vStars[i].m_rcStar.left, m_vStars[i].m_rcStar.top, m_vStars[i].m_rcStar.right, m_vStars[i].m_rcStar.bottom);
+			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n", m_vStars[i].m_rcStar.left(), m_vStars[i].m_rcStar.top(), m_vStars[i].m_rcStar.right() + 1 , m_vStars[i].m_rcStar.bottom() + 1);
 			fprintf(hFile, "Center = %.2f, %.2f\n", m_vStars[i].m_fX, m_vStars[i].m_fY);
 			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle,
 																	  m_vStars[i].m_fLargeMajorAxis,
@@ -710,6 +712,7 @@ static bool GetNextValue(FILE * hFile, CString & strVariable, CString & strValue
 
 bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 {
+	// TODO: Convert to use std::filepath/QFile and QStrings
 	ZFUNCTRACE_RUNTIME();
 	bool				bResult = false;
 	FILE *				hFile;
@@ -804,27 +807,27 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.left = _ttol(strCoord);
+					ms.m_rcStar.setLeft(_ttol(strCoord));
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Top
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.top = _ttol(strCoord);
+					ms.m_rcStar.setTop(_ttol(strCoord));
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Right
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.right = _ttol(strCoord);
+					ms.m_rcStar.setRight(_ttol(strCoord));
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Bottom
 					strCoord = strValue;
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.bottom = _ttol(strCoord);
+					ms.m_rcStar.setBottom(_ttol(strCoord));
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 				}
 				else if (!strVariable.CompareNoCase(_T("Axises")))
@@ -1086,7 +1089,7 @@ void CComputeLuminanceTask::process()
 
 	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
-#pragma omp parallel for schedule(dynamic, 50) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
+#pragma omp parallel for schedule(static, 5) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
@@ -1184,13 +1187,13 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 
 	int				lNrBlueLines = 0;
 	int				lNrRedLines = 0;
-	for (j = star.m_rcStar.top;j<=star.m_rcStar.bottom;j++)
+	for (j = star.m_rcStar.top(); j<=(1+ star.m_rcStar.bottom()); j++)
 	{
 		fSumRedX = 0;
 		fNrValuesRedX = 0;
 		fSumBlueX = 0;
 		fNrValuesBlueX = 0;
-		for (i = star.m_rcStar.left;i<=star.m_rcStar.right;i++)
+		for (i = star.m_rcStar.left(); i<=(1 + star.m_rcStar.right()); i++)
 		{
 			double			fRed, fGreen, fBlue;
 
@@ -1218,13 +1221,13 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 
 	int				lNrRedColumns = 0;
 	int				lNrBlueColumns = 0;
-	for (j = star.m_rcStar.left;j<=star.m_rcStar.right;j++)
+	for (j = star.m_rcStar.left(); j<=(1 + star.m_rcStar.right()); j++)
 	{
 		fSumRedY = 0;
 		fNrValuesRedY = 0;
 		fSumBlueY = 0;
 		fNrValuesBlueY = 0;
-		for (i = star.m_rcStar.top;i<=star.m_rcStar.bottom;i++)
+		for (i = star.m_rcStar.top(); i<=(1 + star.m_rcStar.bottom()); i++)
 		{
 			double			fRed, fGreen, fBlue;
 
@@ -1399,7 +1402,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared
 {
 	bool bResult = false;
 
-	if (!lfi.filePath.empty() != 0 && static_cast<bool>(pBitmap))
+	if (!lfi.filePath.empty() && static_cast<bool>(pBitmap))
 	{
 		TCHAR			szDrive[1+_MAX_DRIVE];
 		TCHAR			szDir[1+_MAX_DIR];

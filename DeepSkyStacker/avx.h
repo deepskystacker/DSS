@@ -1,13 +1,15 @@
 #pragma once
 
+#include <QRect>
+#include <vector>
+#include <tuple>
+
 #include "avx_cfa.h"
 #include "avx_entropy.h"
 #include "PixelTransform.h"
 #include "TaskInfo.h"
 #include "BackgroundCalibration.h"
 #include "BitmapBase.h"
-#include <vector>
-#include <tuple>
 
 
 class AvxStacking
@@ -27,7 +29,7 @@ private:
 	AvxEntropy& entropyData;
 public:
 	AvxStacking() = delete;
-	AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const CRect& resultRect, AvxEntropy& entrdat);
+	AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const QRect& resultRect, AvxEntropy& entrdat);
 	AvxStacking(const AvxStacking&) = default;
 	AvxStacking(AvxStacking&&) = delete;
 	AvxStacking& operator=(const AvxStacking&) = delete;

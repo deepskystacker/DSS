@@ -339,7 +339,7 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 
 	if (!m_pOffsetTask->m_bDone)
 	{
-		ASSERT(m_pOffsetTask->m_TaskType == PICTURETYPE_OFFSETFRAME);
+		ZASSERT(m_pOffsetTask->m_TaskType == PICTURETYPE_OFFSETFRAME);
 		if (m_pOffsetTask->m_vBitmaps.size() == 1)
 		{
 			m_pOffsetTask->m_strOutputFile = m_pOffsetTask->m_vBitmaps[0].filePath.c_str();
@@ -494,7 +494,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 
 	if (!m_pDarkTask->m_bDone)
 	{
-		ASSERT(m_pDarkTask->m_TaskType == PICTURETYPE_DARKFRAME);
+		ZASSERT(m_pDarkTask->m_TaskType == PICTURETYPE_DARKFRAME);
 
 		if (m_pDarkTask->m_vBitmaps.size() == 1)
 		{
@@ -675,7 +675,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 
 	if (!m_pDarkFlatTask->m_bDone)
 	{
-		ASSERT(m_pDarkFlatTask->m_TaskType == PICTURETYPE_DARKFLATFRAME);
+		ZASSERT(m_pDarkFlatTask->m_TaskType == PICTURETYPE_DARKFLATFRAME);
 
 		if (m_pDarkFlatTask->m_vBitmaps.size() == 1)
 		{
@@ -1096,7 +1096,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 
 	if (!m_pFlatTask->m_bDone)
 	{
-		ASSERT(m_pFlatTask->m_TaskType == PICTURETYPE_FLATFRAME);
+		ZASSERT(m_pFlatTask->m_TaskType == PICTURETYPE_FLATFRAME);
 
 		if (m_pFlatTask->m_vBitmaps.size() == 1)
 		{
@@ -1890,7 +1890,7 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 
 /* ------------------------------------------------------------------- */
 
-__int64	CAllStackingTasks::ComputeNecessaryDiskSpace(CRect & rcOutput)
+__int64	CAllStackingTasks::computeNecessaryDiskSpace(const QRectF & rcOutput)
 {
 	__int64				ulResult = 0;
 	__int64				ulLightSpace = 0,
@@ -1923,8 +1923,8 @@ __int64	CAllStackingTasks::ComputeNecessaryDiskSpace(CRect & rcOutput)
 			ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
 			ulLSpace	= lWidth * lHeight * 2 * 3;
 
-			if (!rcOutput.IsRectEmpty())
-				ulLSpace = rcOutput.Width() * rcOutput.Height() * 2 * 3;
+			if (!rcOutput.isEmpty())
+				ulLSpace = rcOutput.width() * rcOutput.height() * 2 * 3;
 
 			if ((m_vStacks[i].m_pLightTask->m_Method == MBP_AVERAGE)
 				&& (!IsCometAvailable() || (GetCometStackingMode() != CSM_COMETSTAR)))
@@ -1960,16 +1960,14 @@ __int64	CAllStackingTasks::ComputeNecessaryDiskSpace(CRect & rcOutput)
 
 /* ------------------------------------------------------------------- */
 
-__int64	CAllStackingTasks::ComputeNecessaryDiskSpace()
+__int64	CAllStackingTasks::computeNecessaryDiskSpace()
 {
-	CRect				rcOutput;
+	QRectF rcOutput;
 
 	if (m_bUseCustomRectangle)
 		rcOutput = m_rcCustom;
-	else
-		rcOutput.SetRectEmpty();
 
-	return ComputeNecessaryDiskSpace(rcOutput);
+	return computeNecessaryDiskSpace(rcOutput);
 };
 
 /* ------------------------------------------------------------------- */

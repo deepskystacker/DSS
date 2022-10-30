@@ -956,51 +956,55 @@ inline void ExpandWithPoint(int & lLeft, int & lRight, int & lTop, int & lBottom
 	lBottom = max(lBottom, static_cast<int>(pt.Y));
 };
 
-void CStackingEngine::ComputeLargestRectangle(CRect & rc)
+QRect CStackingEngine::computeLargestRectangle()
 {
 	ZFUNCTRACE_RUNTIME();
+	QRect result;
 
 	int				i;
-	bool				bFirst = true;
+	bool			bFirst = true;
 	int				lLeft = 0,
-						lRight = 0,
-						lTop = 0,
-						lBottom = 0;
+					lRight = 0,
+					lTop = 0,
+					lBottom = 0;
 
 	for (i = 0;i<m_vBitmaps.size();i++)
 	{
 		if (!m_vBitmaps[i].m_bDisabled)
 		{
-			CPointExt			pt1(0, 0),
-								pt2(0, m_vBitmaps[i].RenderedHeight()),
-								pt3(m_vBitmaps[i].RenderedWidth(), 0),
-								pt4(m_vBitmaps[i].RenderedWidth(), m_vBitmaps[i].RenderedHeight()),
-								pt5(0, m_vBitmaps[i].RenderedHeight()/2),
-								pt6(m_vBitmaps[i].RenderedWidth(), m_vBitmaps[i].RenderedHeight()/2),
-								pt7(m_vBitmaps[i].RenderedWidth()/2, 0),
-								pt8(m_vBitmaps[i].RenderedWidth()/2, m_vBitmaps[i].RenderedHeight());
+			QPointF			pt1(0, 0),
+							pt2(0, m_vBitmaps[i].RenderedHeight()),
+							pt3(m_vBitmaps[i].RenderedWidth(), 0),
+							pt4(m_vBitmaps[i].RenderedWidth(), m_vBitmaps[i].RenderedHeight()),
+							pt5(0, m_vBitmaps[i].RenderedHeight()/2),
+							pt6(m_vBitmaps[i].RenderedWidth(), m_vBitmaps[i].RenderedHeight()/2),
+							pt7(m_vBitmaps[i].RenderedWidth()/2, 0),
+							pt8(m_vBitmaps[i].RenderedWidth()/2, m_vBitmaps[i].RenderedHeight());
 
 			CPixelTransform		PixTransform(m_vBitmaps[i].m_BilinearParameters);
 
 			PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
 
-			pt1 = PixTransform.Transform(pt1);
-			pt2 = PixTransform.Transform(pt2);
-			pt3 = PixTransform.Transform(pt3);
-			pt4 = PixTransform.Transform(pt4);
-			pt5 = PixTransform.Transform(pt5);
-			pt6 = PixTransform.Transform(pt6);
-			pt7 = PixTransform.Transform(pt7);
-			pt8 = PixTransform.Transform(pt8);
+			pt1 = PixTransform.transform(pt1);
+			pt2 = PixTransform.transform(pt2);
+			pt3 = PixTransform.transform(pt3);
+			pt4 = PixTransform.transform(pt4);
+			pt5 = PixTransform.transform(pt5);
+			pt6 = PixTransform.transform(pt6);
+			pt7 = PixTransform.transform(pt7);
+			pt8 = PixTransform.transform(pt8);
 
 			if (bFirst)
 			{
-				lLeft = lRight = pt1.X;
-				lTop  = lBottom = pt1.Y;
+				lLeft = lRight = pt1.x();
+				lTop  = lBottom = pt1.y();
 				bFirst = false;
 			}
 			else
+			{
 				ExpandWithPoint(lLeft, lRight, lTop, lBottom, pt1);
+			}
+
 			ExpandWithPoint(lLeft, lRight, lTop, lBottom, pt2);
 			ExpandWithPoint(lLeft, lRight, lTop, lBottom, pt3);
 			ExpandWithPoint(lLeft, lRight, lTop, lBottom, pt4);
@@ -1011,15 +1015,13 @@ void CStackingEngine::ComputeLargestRectangle(CRect & rc)
 		};
 	};
 
-	rc.left		= lLeft;
-	rc.right	= lRight;
-	rc.top		= lTop;
-	rc.bottom	= lBottom;
+	result.setCoords(lLeft, lTop, lRight, lBottom);
+	return result;
 };
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::ComputeSmallestRectangle(CRect & rc)
+bool CStackingEngine::computeSmallestRectangle(QRectF & rc)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1035,42 +1037,43 @@ bool CStackingEngine::ComputeSmallestRectangle(CRect & rc)
 	{
 		if (!m_vBitmaps[i].m_bDisabled)
 		{
-			CPointExt			pt1(0, 0),
-								pt2(0, m_vBitmaps[i].RenderedHeight()),
-								pt3(m_vBitmaps[i].RenderedWidth(), 0),
-								pt4(m_vBitmaps[i].RenderedWidth(), m_vBitmaps[i].RenderedHeight());
+			QPointF			pt1(0, 0),
+							pt2(0, m_vBitmaps[i].RenderedHeight()),
+							pt3(m_vBitmaps[i].RenderedWidth(), 0),
+							pt4(m_vBitmaps[i].RenderedWidth(), m_vBitmaps[i].RenderedHeight());
 
 			CPixelTransform		PixTransform(m_vBitmaps[i].m_BilinearParameters);
 
 			PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
 
-			pt1 = PixTransform.Transform(pt1);
-			pt2 = PixTransform.Transform(pt2);
-			pt3 = PixTransform.Transform(pt3);
-			pt4 = PixTransform.Transform(pt4);
+			pt1 = PixTransform.transform(pt1);
+			pt2 = PixTransform.transform(pt2);
+			pt3 = PixTransform.transform(pt3);
+			pt4 = PixTransform.transform(pt4);
 
 			if (bFirst)
 			{
-				lLeft = pt1.X;		lRight = pt4.X;
-				lTop  = pt1.Y;		lBottom = pt4.Y;
+				lLeft = pt1.x();	lRight = pt4.x();
+				lTop  = pt1.y();	lBottom = pt4.y();
 				bFirst = false;
 			}
 			else
 			{
-				lLeft = max(max(lLeft, static_cast<int>(pt1.X)), static_cast<int>(pt2.X));
-				lRight = min(min(lRight, static_cast<int>(pt4.X)), static_cast<int>(pt3.X));
-				lTop = max(max(lTop, static_cast<int>(pt1.Y)), static_cast<int>(pt3.Y));
-				lBottom = min(min(lBottom, static_cast<int>(pt4.Y)), static_cast<int>(pt2.Y));
+				lLeft = max(max(lLeft, static_cast<int>(pt1.x())), static_cast<int>(pt2.x()));
+				lRight = min(min(lRight, static_cast<int>(pt4.x())), static_cast<int>(pt3.x()));
+				lTop = max(max(lTop, static_cast<int>(pt1.y())), static_cast<int>(pt3.y()));
+				lBottom = min(min(lBottom, static_cast<int>(pt4.y())), static_cast<int>(pt2.y()));
 			};
 		};
 	};
 
 	if ((lLeft+50 < lRight) && (lTop+50 < lBottom))
 	{
-		rc.left		= lLeft+2;
-		rc.right	= lRight-2;
-		rc.top		= lTop+2;
-		rc.bottom	= lBottom-2;
+		rc.setCoords(lLeft + 2, lTop + 2, lRight - 2, lBottom - 2);
+		//rc.left		= lLeft+2;
+		//rc.right	= lRight-2;
+		//rc.top		= lTop+2;
+		//rc.bottom	= lBottom-2;
 		bResult = true;
 	};
 
@@ -1206,7 +1209,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		CString strText;
 
 		std::unique_ptr<C96BitFloatColorBitmap> pCover = std::make_unique<C96BitFloatColorBitmap>();
-		pCover->Init(m_rcResult.Width(), m_rcResult.Height());
+		pCover->Init(m_rcResult.width(), m_rcResult.height());
 
 		strText.LoadString(IDS_STACKING_COMPUTINGADJUSTMENT);
 		if (m_pProgress)
@@ -1220,22 +1223,24 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			{
 				strText.Format(IDS_COMPUTINGADJUSTMENT, lNrBitmaps + 1, m_vPixelTransforms.size());
 				m_pProgress->Progress1(strText, lNrBitmaps + 1);
-				m_pProgress->Start2(_T(" "), m_rcResult.Width() * m_rcResult.Height());
+				m_pProgress->Start2(_T(" "), m_rcResult.width() * m_rcResult.height());
 			}
 
 			lProgress = 0;
-			for (int j = 0; j < m_rcResult.Height(); j++)
+			for (int j = 0; j < m_rcResult.height(); j++)
 			{
-				for (int i = 0; i < m_rcResult.Width(); i++)
+				for (int i = 0; i < m_rcResult.width(); i++)
 				{
-					CPointExt pt(i, j);
-					CPointExt ptOut;
+					QPointF pt(i, j);
+					QPointF ptOut;
 
 					lProgress++;
 
-					ptOut = PixTransform.Transform(pt);
+					ptOut = PixTransform.transform(pt);
+					QRectF rc{ 0, 0,
+						static_cast<qreal>(m_rcResult.width()), static_cast<qreal>(m_rcResult.height()) };
 
-					if (ptOut.IsInRect(0, 0, m_rcResult.Width(), m_rcResult.Height()))
+					if (rc.contains(ptOut))
 					{
 						PIXELDISPATCHVECTOR vPixels;
 						ComputePixelDispatch(ptOut, vPixels);
@@ -1243,7 +1248,10 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 						for (const CPixelDispatch& pixDispatch : vPixels)
 						{
 							// For each plane adjust the values
-							if (pixDispatch.m_lX >= 0 && pixDispatch.m_lX < m_rcResult.Width() && pixDispatch.m_lY >= 0 && pixDispatch.m_lY < m_rcResult.Height())
+							if (pixDispatch.m_lX >= 0 && 
+								pixDispatch.m_lX < m_rcResult.width() &&
+								pixDispatch.m_lY >= 0 &&
+								pixDispatch.m_lY < m_rcResult.height())
 							{
 								double fRedCover, fGreenCover, fBlueCover;
 								pCover->GetValue(pixDispatch.m_lX, pixDispatch.m_lY, fRedCover, fGreenCover, fBlueCover);
@@ -1277,13 +1285,13 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			strText.LoadString(IDS_STACKING_APPLYINGADJUSTMENT);
 			m_pProgress->Start(strText, 2, false);
 			strText.LoadString(IDS_STACKING_COMPUTEMAXADJUSTMENT);
-			m_pProgress->Start2(strText, m_rcResult.Width() * m_rcResult.Height());
+			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
 		};
 
 		// Compute the maximum coverage
-		for (int j = 0; j < m_rcResult.Height(); j++)
+		for (int j = 0; j < m_rcResult.height(); j++)
 		{
-			for (int i = 0; i < m_rcResult.Width(); i++)
+			for (int i = 0; i < m_rcResult.width(); i++)
 			{
 				double			fRedCover,
 								fGreenCover,
@@ -1312,13 +1320,13 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		if (m_pProgress != nullptr)
 		{
 			strText.LoadString(IDS_STACKING_APPLYADJUSTMENT);
-			m_pProgress->Start2(strText, m_rcResult.Width() * m_rcResult.Height());
+			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
 		}
 
 		// Adjust the coverage of all pixels
-		for (int j = 0; j < m_rcResult.Height(); j++)
+		for (int j = 0; j < m_rcResult.height(); j++)
 		{
-			for (int i = 0; i < m_rcResult.Width(); i++)
+			for (int i = 0; i < m_rcResult.width(); i++)
 			{
 				lProgress++;
 				double fRedCover, fGreenCover, fBlueCover;
@@ -1626,7 +1634,7 @@ public:
 	CPixelTransform m_PixTransform;
 	CTaskInfo* m_pLightTask;
 	CBackgroundCalibration m_BackgroundCalibration;
-	CRect m_rcResult;
+	QRect m_rcResult;
 	std::shared_ptr<CMemoryBitmap> m_pTempBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pOutput;
 	std::shared_ptr<CMemoryBitmap> m_pEntropyCoverage;
@@ -1681,7 +1689,7 @@ void CStackTask::process()
 
 void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 {
-	ZFUNCTRACE_RUNTIME();
+//	ZFUNCTRACE_RUNTIME();
 	const int width = m_pBitmap->Width();
 	PIXELDISPATCHVECTOR vPixels;
 	vPixels.reserve(16);
@@ -1690,7 +1698,7 @@ void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 	{
 		for (int i = 0; i < width; ++i)
 		{
-			const CPointExt ptOut = m_PixTransform.Transform(CPointExt(i, j));
+			const QPointF ptOut = m_PixTransform.transform(QPointF(i, j));
 
 			COLORREF16 crColor;
 			double fRedEntropy = 1.0, fGreenEntropy = 1.0, fBlueEntropy = 1.0;
@@ -1707,7 +1715,10 @@ void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 			if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 				m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
 
-			if ((Red || Green || Blue) && ptOut.IsInRect(0, 0, m_rcResult.Width() - 1, m_rcResult.Height() - 1))
+			QRectF rc{ 0, 0, 
+				static_cast<qreal>(m_rcResult.width() - 1),  static_cast<qreal>(m_rcResult.height() - 1) };
+
+			if ((Red || Green || Blue) && rc.contains(ptOut))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, m_lPixelSizeMultiplier, vPixels);
@@ -1715,7 +1726,7 @@ void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 				for (CPixelDispatch& Pixel : vPixels)
 				{
 					// For each plane adjust the values
-					if (Pixel.m_lX >= 0 && Pixel.m_lX < m_rcResult.Width() && Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.Height())
+					if (Pixel.m_lX >= 0 && Pixel.m_lX < m_rcResult.width() && Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.height())
 					{
 						// Special case for entropy average
 						if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
@@ -1847,7 +1858,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 				else
 					m_pEntropyCoverage = std::make_shared<C32BitFloatGrayBitmap>();
 
-				m_pEntropyCoverage->Init(m_rcResult.Width(), m_rcResult.Height());
+				m_pEntropyCoverage->Init(m_rcResult.width(), m_rcResult.height());
 			}
 		}
 
@@ -1893,7 +1904,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 			StackTask.m_pTempBitmap = m_pMasterLight->CreateNewMemoryBitmap();
 			if (static_cast<bool>(StackTask.m_pTempBitmap))
 			{
-				StackTask.m_pTempBitmap->Init(m_rcResult.Width(), m_rcResult.Height());
+				StackTask.m_pTempBitmap->Init(m_rcResult.width(), m_rcResult.height());
 				StackTask.m_pTempBitmap->SetISOSpeed(pBitmap->GetISOSpeed());
 				StackTask.m_pTempBitmap->SetGain(pBitmap->GetGain());
 				StackTask.m_pTempBitmap->SetExposure(pBitmap->GetExposure());
@@ -1912,7 +1923,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 				else
 					m_pOutput = std::make_shared<C32BitFloatGrayBitmap>();
 
-				m_pOutput->Init(m_rcResult.Width(), m_rcResult.Height());
+				m_pOutput->Init(m_rcResult.width(), m_rcResult.height());
 			}
 		}
 
@@ -1929,7 +1940,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 			StackTask.m_pLightTask				= m_pLightTask;
 			StackTask.m_bColor					= bColor;
 			StackTask.m_BackgroundCalibration	= m_BackgroundCalibration;
-			StackTask.m_rcResult				= m_rcResult;
+			StackTask.m_rcResult				= m_rcResult.toRect();
 			StackTask.m_lPixelSizeMultiplier	= m_lPixelSizeMultiplier;
 			StackTask.m_pOutput					= m_pOutput;
 			StackTask.m_pEntropyCoverage		= m_pEntropyCoverage;
@@ -1960,9 +1971,9 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 				if (avxResult != 0) // AVX code didn't run.
 				{
 					// Use the result to average
-					for (int j = 0; j < m_rcResult.Height(); j++)
+					for (int j = 0; j < m_rcResult.height(); j++)
 					{
-						for (int i = 0; i < m_rcResult.Width(); i++)
+						for (int i = 0; i < m_rcResult.width(); i++)
 						{
 							if (bColor)
 							{
@@ -1995,9 +2006,9 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 				if (avxResult != 0)
 				{
 					// Use the result to maximize
-					for (int j = 0; j < m_rcResult.Height(); j++)
+					for (int j = 0; j < m_rcResult.height(); j++)
 					{
-						for (int i = 0; i < m_rcResult.Width(); i++)
+						for (int i = 0; i < m_rcResult.width(); i++)
 						{
 							if (bColor)
 							{
@@ -2079,17 +2090,17 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 			CString strFreeSpace;
 			CString strNeededSpace;
 
-			ComputeLargestRectangle(m_rcResult);
+			m_rcResult = computeLargestRectangle();
 			__int64 ulNeededSpace;
 			__int64 ulFreeSpace;
-			CRect rcResult(m_rcResult);
+			QRectF rcResult(m_rcResult);
 
-			rcResult.left /= m_lPixelSizeMultiplier;
-			rcResult.right /= m_lPixelSizeMultiplier;
-			rcResult.top /= m_lPixelSizeMultiplier;
-			rcResult.bottom /= m_lPixelSizeMultiplier;
+			rcResult.setLeft(rcResult.left() / m_lPixelSizeMultiplier);
+			rcResult.setRight(rcResult.right() / m_lPixelSizeMultiplier);
+			rcResult.setTop(rcResult.top() / m_lPixelSizeMultiplier);
+			rcResult.setBottom(rcResult.bottom() / m_lPixelSizeMultiplier);
 
-			ulNeededSpace = tasks.ComputeNecessaryDiskSpace(rcResult);
+			ulNeededSpace = tasks.computeNecessaryDiskSpace(rcResult);
 			ulFreeSpace = tasks.AvailableDiskSpace(strDrive);
 
 			if (m_pProgress != nullptr && (ulNeededSpace > ulFreeSpace))
@@ -2110,39 +2121,51 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 		case SM_INTERSECTION:
 		{
-			if (!ComputeSmallestRectangle(m_rcResult))
+			if (!computeSmallestRectangle(m_rcResult))
 			{
 				// Fall back to normal rectangle
 				int            lBitmapIndice = 0;
 				if (m_vBitmaps[0].m_bDisabled)
 					lBitmapIndice = 1;
-
-				m_rcResult.left = m_rcResult.top = 0;
-				m_rcResult.right = m_vBitmaps[lBitmapIndice].RenderedWidth() * m_lPixelSizeMultiplier;
-				m_rcResult.bottom = m_vBitmaps[lBitmapIndice].RenderedHeight() * m_lPixelSizeMultiplier;
+				
+				m_rcResult.setCoords(0, 0,
+					m_vBitmaps[lBitmapIndice].RenderedWidth() * m_lPixelSizeMultiplier,
+					m_vBitmaps[lBitmapIndice].RenderedHeight() * m_lPixelSizeMultiplier);
+				//m_rcResult.left = m_rcResult.top = 0;
+				//m_rcResult.right = m_vBitmaps[lBitmapIndice].RenderedWidth() * m_lPixelSizeMultiplier;
+				//m_rcResult.bottom = m_vBitmaps[lBitmapIndice].RenderedHeight() * m_lPixelSizeMultiplier;
 			};
 		} break;
 
 		case SM_CUSTOM:
 		{
 			tasks.GetCustomRectangle(m_rcResult);
-			m_rcResult.left *= m_lPixelSizeMultiplier;
-			m_rcResult.right *= m_lPixelSizeMultiplier;
-			m_rcResult.top *= m_lPixelSizeMultiplier;
-			m_rcResult.bottom *= m_lPixelSizeMultiplier;
+			m_rcResult.setCoords(m_rcResult.left() * m_lPixelSizeMultiplier,
+				m_rcResult.top() * m_lPixelSizeMultiplier,
+				m_rcResult.right() * m_lPixelSizeMultiplier,
+				m_rcResult.bottom() * m_lPixelSizeMultiplier);
+			//m_rcResult.left *= m_lPixelSizeMultiplier;
+			//m_rcResult.right *= m_lPixelSizeMultiplier;
+			//m_rcResult.top *= m_lPixelSizeMultiplier;
+			//m_rcResult.bottom *= m_lPixelSizeMultiplier;
 		} break;
 
 		case SM_NORMAL:
 		{
 			const size_t lBitmapIndex = m_vBitmaps.cbegin()->m_bDisabled ? 1 : 0;
-			m_rcResult.left = m_rcResult.top = 0;
-			m_rcResult.right = m_vBitmaps[lBitmapIndex].RenderedWidth() * m_lPixelSizeMultiplier;
-			m_rcResult.bottom = m_vBitmaps[lBitmapIndex].RenderedHeight() * m_lPixelSizeMultiplier;
+
+			m_rcResult.setCoords(0, 0,
+				m_vBitmaps[lBitmapIndex].RenderedWidth() * m_lPixelSizeMultiplier,
+				m_vBitmaps[lBitmapIndex].RenderedHeight() * m_lPixelSizeMultiplier);
+			//m_rcResult.left = m_rcResult.top = 0;
+			//m_rcResult.right = m_vBitmaps[lBitmapIndex].RenderedWidth() * m_lPixelSizeMultiplier;
+			//m_rcResult.bottom = m_vBitmaps[lBitmapIndex].RenderedHeight() * m_lPixelSizeMultiplier;
 		} break;
 
 		}; // switch
 
-		ZTRACE_RUNTIME("Computed image rectangle m_rcResult left %ld, right %ld, top %ld, bottom %ld", m_rcResult.left, m_rcResult.right, m_rcResult.top, m_rcResult.bottom);
+		ZTRACE_RUNTIME("Computed image rectangle m_rcResult left %ld, top %ld, right %ld, bottom %ld",
+			m_rcResult.left(), m_rcResult.top(), m_rcResult.right(), m_rcResult.bottom());
 
 		if (bContinue)
 		{
@@ -2219,12 +2242,12 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 										PixTransform.ComputeCometShift(first->m_fXComet, first->m_fYComet, lfInfo.m_fXComet, lfInfo.m_fYComet, true, lfInfo.m_bTransformedCometPosition);
 								}
 
-								PixTransform.SetShift(-m_rcResult.left, -m_rcResult.top);
+								PixTransform.SetShift(-m_rcResult.left(), -m_rcResult.top());
 								PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
 
 								if (bStack)
 								{
-									ZTRACE_RUNTIME("Stack %s", lfInfo.filePath.generic_string());
+									ZTRACE_RUNTIME("Stack %s", lfInfo.filePath.generic_string().c_str());
 
 									if (m_pProgress != nullptr)
 									{

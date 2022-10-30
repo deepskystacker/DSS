@@ -1461,6 +1461,57 @@ public :
 		return ptResult;
 	}
 
+	QPointF transform(const QPointF& pt) const
+	{
+		QPointF ptResult;
+		qreal& x = ptResult.rx();
+		qreal& y = ptResult.ry();
+
+
+		if (Type == TT_BICUBIC)
+		{
+			qreal			X = pt.x() / fXWidth;
+			qreal			X2 = X * X;
+			qreal			X3 = X * X * X;
+			qreal			Y = pt.y() / fYWidth;
+			qreal			Y2 = Y * Y;
+			qreal			Y3 = Y * Y * Y;
+
+			x = a0 + a1 * X + a2 * Y + a3 * X * Y
+				+ a4 * X2 + a5 * Y2 + a6 * X2 * Y + a7 * X * Y2 + a8 * X2 * Y2
+				+ a9 * X3 + a10 * Y3 + a11 * X3 * Y + a12 * X * Y3 + a13 * X3 * Y2 + a14 * X2 * Y3 + a15 * X3 * Y3;
+			y = b0 + b1 * X + b2 * Y + b3 * X * Y
+				+ b4 * X2 + b5 * Y2 + b6 * X2 * Y + b7 * X * Y2 + b8 * X2 * Y2
+				+ b9 * X3 + b10 * Y3 + b11 * X3 * Y + b12 * X * Y3 + b13 * X3 * Y2 + b14 * X2 * Y3 + b15 * X3 * Y3;
+		}
+		else if (Type == TT_BISQUARED)
+		{
+			qreal			X = pt.x() / fXWidth;
+			qreal			X2 = X * X;
+			qreal			Y = pt.y() / fYWidth;
+			qreal			Y2 = Y * Y;
+
+			x = a0 + a1 * X + a2 * Y + a3 * X * Y
+				+ a4 * X2 + a5 * Y2 + a6 * X2 * Y + a7 * X * Y2 + a8 * X2 * Y2;
+			y = b0 + b1 * X + b2 * Y + b3 * X * Y
+				+ b4 * X2 + b5 * Y2 + b6 * X2 * Y + b7 * X * Y2 + b8 * X2 * Y2;
+		}
+		else
+		{
+			qreal			X = pt.x() / fXWidth;
+			qreal			Y = pt.y() / fYWidth;
+
+			x = a0 + a1 * X + a2 * Y + a3 * X * Y;
+			x = b0 + b1 * X + b2 * Y + b3 * X * Y;
+		};
+
+		x *= fXWidth;
+		y *= fYWidth;
+
+		return ptResult;
+	}
+
+
 	double Angle(int lWidth) const
 	{
 		double		fAngle;

@@ -30,12 +30,6 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\Registry.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Tools\RegMFC.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -143,15 +137,6 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Tools\Registry.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\SmartPtr.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\StdString.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\AHDDemosaicing.h">
       <Filter>Kernel</Filter>
     </ClInclude>
@@ -165,9 +150,6 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\ChannelAlign.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\Common.h">
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h">

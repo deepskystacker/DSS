@@ -94,6 +94,7 @@ extern "C"
 #include "zptr.h"
 
 #include <vector>
+#include <QString>
 
 #if defined(_MSC_VER)
 /////////////////////////////////////////////////////////////////////////////
@@ -308,6 +309,16 @@ void ZTrace :: write(const std::string& strString)
 
 }
 
+/*------------------------------------------------------------------------------
+| ZTrace::write                                                                |
+|                                                                              |
+| Write a QString by converting to a std::string and passing it on             |
+------------------------------------------------------------------------------*/
+void ZTrace::write(const QString& strString)
+{
+    write(strString.toStdString());
+}
+
 #if (0)
 /*------------------------------------------------------------------------------
 | ZTrace::write                                                                |
@@ -344,7 +355,7 @@ void ZTrace::write(const char* pszFormat, ...)
 | Write a formatted string using writeString.                             |
 ------------------------------------------------------------------------------*/
 void  ZTrace :: writeFormattedString(const std::string& strString,
-                                     char* pszMarker)
+                                     const char* pszMarker)
 {
    ZResourceLock aLock(traceFunction_Lock());
 

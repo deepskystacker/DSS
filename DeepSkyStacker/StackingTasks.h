@@ -201,7 +201,7 @@ private :
 	bool						m_bUsingFITS;
 	bool						m_bUseCustomRectangle;
 	bool						m_bCometAvailable;
-	CRect						m_rcCustom;
+	QRect						m_rcCustom;
 	bool						m_bDarkUsed;
 	bool						m_bBiasUsed;
 	bool						m_bFlatUsed;
@@ -335,9 +335,9 @@ public :
 	}
 
 	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
-	void SetCustomRectangle(const CRect& rcCustom)
+	void SetCustomRectangle(const QRect& rcCustom)
 	{
-		if (rcCustom.IsRectEmpty())
+		if (rcCustom.isEmpty())
 		{
 			m_bUseCustomRectangle = false;
 		}
@@ -350,15 +350,15 @@ public :
 
 	void UseCustomRectangle(bool bUse)
 	{
-		if (!m_rcCustom.IsRectEmpty())
+		if (!m_rcCustom.isEmpty())
 			m_bUseCustomRectangle = bUse;
 		else
 			m_bUseCustomRectangle = false;
 	}
 
-	bool GetCustomRectangle(CRect& rcCustom) const
+	bool GetCustomRectangle(QRectF& rcCustom) const
 	{
-		const bool bResult = !m_rcCustom.IsRectEmpty();
+		const bool bResult = !m_rcCustom.isEmpty();
 		rcCustom = m_rcCustom;
 		return bResult;
 	}
@@ -388,8 +388,8 @@ public :
 	bool DoDarkFlatTasks(CDSSProgress* pProgress);
 	bool DoAllPreTasks(CDSSProgress* pProgress);
 
-	__int64	ComputeNecessaryDiskSpace(CRect & rcOutput);
-	__int64	ComputeNecessaryDiskSpace();
+	__int64	computeNecessaryDiskSpace(const QRectF & rcOutput);
+	__int64	computeNecessaryDiskSpace();
 	__int64	AvailableDiskSpace(CString & strDrive);
 
 	bool	checkReadOnlyStatus(QStringList & folders);

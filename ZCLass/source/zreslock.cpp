@@ -551,7 +551,7 @@ ZSharedResource :: ZSharedResource(const char* pszKeyName)
   sa.lpSecurityDescriptor = &sd;
   sa.bInheritHandle = TRUE;
 
-  resourceHandleCl = CreateMutex( &sa, false, keyNameCl.c_str() );
+  resourceHandleCl = CreateMutexA( &sa, false, keyNameCl.c_str() );
 
   if (resourceHandleCl == 0)
   {
@@ -559,7 +559,7 @@ ZSharedResource :: ZSharedResource(const char* pszKeyName)
 
     if (ulRC == ERROR_ALREADY_EXISTS)
     {
-      resourceHandleCl = OpenMutex( MUTEX_ALL_ACCESS,
+      resourceHandleCl = OpenMutexA( MUTEX_ALL_ACCESS,
                                     true, keyNameCl.c_str());
       if (resourceHandleCl == 0)
       {

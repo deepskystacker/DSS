@@ -53,6 +53,7 @@ using namespace Gdiplus;
 #include <QMessageBox>
 #include <QtGui>
 #include <QSettings>
+#include <QStatusBar>
 #include <QStyleFactory>
 #include <QTranslator>
 #include <QtWidgets/QHBoxLayout>
@@ -207,6 +208,18 @@ void	deleteRemainingTempFiles()
 
 };
 
+void DeepSkyStacker::createStatusBar()
+{
+	statusBarText->setAlignment(Qt::AlignHCenter);
+	statusBar()->addWidget(statusBarText, 1);
+	connect(stackingDlg, SIGNAL(statusMessage(const QString&)), this, SLOT(updateStatus(const QString&)));
+}
+
+void DeepSkyStacker::updateStatus(const QString& text)
+{
+	statusBarText->setText(text);
+}
+
 void DeepSkyStacker::dragEnterEvent(QDragEnterEvent* e)
 {
 	if (e->mimeData()->hasFormat("text/uri-list"))
@@ -285,9 +298,19 @@ void DeepSkyStacker::onInitialise()
 	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
+	//
+	// If the image list is floating, then make sure it is visible
+	//
+	stackingDlg->showImageList();
+
 	setWindowIcon(QIcon(":/DSSIcon.png"));
 
 	setWindowTitle(baseTitle);
+
+	//
+	// Set up the status bar
+	//
+	createStatusBar();
 
 	ZTRACE_RUNTIME("Restoring Window State and Position");
 	QSettings settings;
@@ -353,7 +376,8 @@ DeepSkyStacker::DeepSkyStacker() :
 	args{ qApp->arguments() },
 	// m_taskbarList{ nullptr },
 	baseTitle{ QString("DeepSkyStacker %1").arg(VERSION_DEEPSKYSTACKER) },
-	m_progress{ false }
+	m_progress{ false },
+	statusBarText{ new QLabel("") }
 
 {
 	ZFUNCTRACE_RUNTIME();
@@ -367,10 +391,12 @@ void DeepSkyStacker::updateTab()
 	case IDD_REGISTERING:
 	case IDD_STACKING:
 		stackedWidget->setCurrentIndex(0);
+		stackingDlg->showImageList();
 		stackingDlg->update();
 		break;
 	case IDD_PROCESSING:
 		stackedWidget->setCurrentIndex(1);
+		stackingDlg->showImageList(false);
 		processingDlg.ShowWindow(SW_SHOW);
 		break;
 	};
