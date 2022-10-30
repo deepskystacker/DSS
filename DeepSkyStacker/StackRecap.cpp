@@ -203,7 +203,7 @@ void StackRecap::fillWithAllTasks()
 		STACKINGMODE		ResultMode;
 		bool				bSaveIntermediates;
 
-		ulNeededSpace = pStackingTasks->ComputeNecessaryDiskSpace();
+		ulNeededSpace = pStackingTasks->computeNecessaryDiskSpace();
 		CString				strDriveCString;
 		strDriveCString = CString((wchar_t*)strDrive.utf16());
 		ulFreeSpace = pStackingTasks->AvailableDiskSpace(strDriveCString);
@@ -772,7 +772,7 @@ void StackRecap::CallStackingSettings(int tab)
 	ZASSERT(nullptr != pStackingTasks);
 
 	StackSettings			dlg(this);
-	CRect					rcCustom;
+	QRectF					rcCustom;
 
 	if (pStackingTasks->GetCustomRectangle(rcCustom))
 	{

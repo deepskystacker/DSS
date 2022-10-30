@@ -2254,14 +2254,14 @@ namespace DSS
 			//dlgSettings.SetFirstLightFrame(strFirstLightFrame);
 
 			CAllStackingTasks	tasks;
-			CRect				rcSelect;
+			// QRect				rcSelect;
 
 			frameList.fillTasks(tasks);
 
 			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
 			if (!selectRect.isEmpty())
 			{
-				tasks.SetCustomRectangle(CRect(selectRect.left(), selectRect.top(), selectRect.right(), selectRect.bottom()));
+				tasks.SetCustomRectangle(selectRect.toRect());
 			}
 
 			dlgSettings.setStackingTasks(&tasks);
@@ -2360,7 +2360,7 @@ namespace DSS
 			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
 			if (!selectRect.isEmpty())
 			{
-				tasks.SetCustomRectangle(CRect(selectRect.left(), selectRect.top(), selectRect.right(), selectRect.bottom()));
+				tasks.SetCustomRectangle(selectRect.toRect());
 			}
 
 			if (checkReadOnlyFolders(tasks))
