@@ -151,8 +151,8 @@ public:
 class CDarkAmpGlowParameters
 {
 public :
-	CRect						m_rcHotest;
-	std::vector<CRect>			m_vrcColdest;
+	QRect						m_rcHotest;
+	std::vector<QRect>			m_vrcColdest;
 	std::vector<double>			m_vMedianColdest;
 	double						m_fMedianHotest;
 	double						m_fGrayValue;
@@ -169,43 +169,44 @@ private :
 		m_lColdestIndice	= dagp.m_lColdestIndice;
 	};
 
-	void	GetRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px, CRect & rc)
+	QRect getRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px)
 	{
-		rc.left		= std::max(0, px.m_lX - lSize);
-		rc.right	= std::min(lWidth - 1, px.m_lX + lSize);
-		rc.top		= std::max(0, px.m_lY - lSize);
-		rc.bottom	= std::min(lHeight - 1, px.m_lY + lSize);
+		QRect rc{ QPoint {std::max(0, px.m_lX - lSize), std::max(0, px.m_lY - lSize)},
+				QPoint {std::min(lWidth - 1, px.m_lX + lSize), std::min(lHeight - 1, px.m_lY + lSize) } };
+
+		return rc;
+
 	};
 
-	void	GetBorderRects(int lWidth, int lHeight, std::vector<CRect> & vRects)
+	void	GetBorderRects(int lWidth, int lHeight, std::vector<QRect> & vRects)
 	{
 		const int lSize = std::min(50, std::min(lWidth / 10, lHeight / 10)) / 2;
-		CRect rc;
+		QRect rc;
 
 		// Left side
-		rc.SetRect(0, 0, 2*lSize-1, 2*lSize-1);
+		rc.setCoords(0, 0, 2*lSize-1, 2*lSize-1);
 		vRects.push_back(rc);
-		rc.SetRect(0, lHeight/2-lSize, 2*lSize, lHeight/2+lSize-1);
+		rc.setCoords(0, lHeight/2-lSize, 2*lSize, lHeight/2+lSize-1);
 		vRects.push_back(rc);
-		rc.SetRect(0, lHeight-2*lSize, 2*lSize, lHeight-1);
+		rc.setCoords(0, lHeight-2*lSize, 2*lSize, lHeight-1);
 		vRects.push_back(rc);
 
 		// Right side
-		rc.SetRect(lWidth-2*lSize, 0, lWidth-1, 2*lSize-1);
+		rc.setCoords(lWidth-2*lSize, 0, lWidth-1, 2*lSize-1);
 		vRects.push_back(rc);
-		rc.SetRect(lWidth-2*lSize, lHeight/2-lSize, lWidth-1, lHeight/2+lSize-1);
+		rc.setCoords(lWidth-2*lSize, lHeight/2-lSize, lWidth-1, lHeight/2+lSize-1);
 		vRects.push_back(rc);
-		rc.SetRect(lWidth-2*lSize, lHeight-2*lSize, lWidth-1, lHeight-1);
+		rc.setCoords(lWidth-2*lSize, lHeight-2*lSize, lWidth-1, lHeight-1);
 		vRects.push_back(rc);
 
 		// Middle top/bottom
-		rc.SetRect(lWidth/2-lSize, 0, lWidth/2+lSize-1, 2*lSize-1);
+		rc.setCoords(lWidth/2-lSize, 0, lWidth/2+lSize-1, 2*lSize-1);
 		vRects.push_back(rc);
-		rc.SetRect(lWidth/2-lSize, lHeight-2*lSize, lWidth/2+lSize-1, lHeight-1);
+		rc.setCoords(lWidth/2-lSize, lHeight-2*lSize, lWidth/2+lSize-1, lHeight-1);
 		vRects.push_back(rc);
 	};
 
-	double ComputeMedianValueInRect(CMemoryBitmap* pBitmap, CRect& rc);
+	double computeMedianValueInRect(CMemoryBitmap* pBitmap, const QRect& rc);
 
 public :
 	CDarkAmpGlowParameters()

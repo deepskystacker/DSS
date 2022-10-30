@@ -7,56 +7,56 @@
 
 inline double LinearAdjust(double fValue)
 {
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
 
 inline double CubeRootAdjust(double fValue)
 {
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	fValue = pow(fValue, 1/3.0);
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
 
 inline double SquareRootAdjust(double fValue)
 {
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	fValue = pow(fValue, 1/2.0);
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
 
 inline double LogAdjust(double fValue)
 {
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	fValue = log(fValue * 1.7 + 1);
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
 
 inline double LogLogAdjust(double fValue)
 {
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	fValue = log(log(fValue * 1.7 + 1)*1.7+1);
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
 
 inline double LogSquareRootAdjust(double fValue)
 {
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	fValue = log(pow(fValue, 1/2.0)*1.7+1);
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
 
 inline double AsinHAdjust(double fValue)
 {
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	fValue *= 1.15;
 	fValue = log(fValue + sqrt(fValue * fValue + 1));
-	ASSERT(fValue >= 0 && fValue <= 1);
+	ZASSERT(fValue >= 0 && fValue <= 1);
 	return fValue;
 };
 

@@ -19,6 +19,9 @@ namespace DSS
 	public:
 		std::uint16_t index;		// Initially zero - is the group we are currently working with
 
+	typedef std::vector<Group>::const_iterator const_group_iterator;
+
+
 	private:
 		std::vector<Group>	imageGroups;
 		std::uint16_t lastGroup;
@@ -33,6 +36,9 @@ namespace DSS
 		virtual ~FrameList()
 		{
 		};
+
+		const_group_iterator groups_cbegin()const { return imageGroups.begin(); }
+		const_group_iterator groups_cend()const { return imageGroups.end(); }
 
 		void changePictureType(int nItem, PICTURETYPE PictureType);
 

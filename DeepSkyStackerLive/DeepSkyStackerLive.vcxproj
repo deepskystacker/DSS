@@ -231,7 +231,6 @@
     <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapBase.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />
-    <ClInclude Include="..\DeepSkyStacker\Common.h" />
     <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h" />
     <ClInclude Include="..\DeepSkyStacker\DarkFrame.h" />
     <ClInclude Include="..\DeepSkyStacker\DeBloom.h" />

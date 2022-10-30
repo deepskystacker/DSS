@@ -179,13 +179,13 @@ public :
 		// printf("\n");
 	};
 
-	virtual BOOL	IsCanceled()
+	virtual bool IsCanceled()
 	{
-		return FALSE;
+		return false;
 	};
-	virtual BOOL	Close()
+	virtual bool Close()
 	{
-		return TRUE;
+		return true;
 	};
 };
 

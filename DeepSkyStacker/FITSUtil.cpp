@@ -642,7 +642,7 @@ bool CFITSReader::Open()
 bool CFITSReader::Read()
 {
 	constexpr double scaleFactorInt16 = double{ 1 + UCHAR_MAX };
-	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHORT_MAX);
+	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHRT_MAX);
 
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
@@ -753,7 +753,7 @@ bool CFITSReader::Read()
 
 		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
 		{
-			constexpr double scaleFactor = double{ USHORT_MAX } / 256.0;
+			constexpr double scaleFactor = double{ USHRT_MAX } / 256.0;
 			const double normalizationFactor = scaleFactor / (fMax - fMin);
 			return (value - fMin) * normalizationFactor;
 		};

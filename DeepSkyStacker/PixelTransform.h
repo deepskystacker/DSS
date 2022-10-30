@@ -100,6 +100,30 @@ public :
 
 		return ppResult;
 	};
+
+	QPointF transform(const QPointF& pp) const
+	{
+		// First rotate
+		QPointF	ppResult = pp;
+		qreal& x = ppResult.rx();
+		qreal& y = ppResult.ry();
+
+
+		ppResult = m_BilinearParameters.transform(ppResult);
+		x *= m_lPixelSizeMultiplier;
+		y *= m_lPixelSizeMultiplier;
+
+		x += m_fXShift;
+		y += m_fYShift;
+
+		if (m_bUseCometShift)
+		{
+			x += m_fXCometShift;
+			y += m_fYCometShift;
+		};
+
+		return ppResult;
+	};
 };
 
 typedef std::vector<CPixelTransform>		PIXELTRANSFORMVECTOR;

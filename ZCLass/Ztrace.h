@@ -42,7 +42,7 @@
 #if defined(_AIX) && defined(__IBMCPP__)
 #pragma info(restore)
 #endif
-#include <QString>
+class QString;
 
 
 class ZExceptionLocation;
