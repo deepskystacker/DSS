@@ -1,7 +1,6 @@
 #ifndef __REGISTERENGINE_H__
 #define __REGISTERENGINE_H__
 
-#include "Common.h"
 #include "DSSProgress.h"
 #include "DSSTools.h"
 #include "BitmapExt.h"

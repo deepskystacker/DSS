@@ -152,9 +152,6 @@
     <ClInclude Include="..\DeepSkyStacker\ChannelAlign.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="..\DeepSkyStacker\Common.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h">
       <Filter>Kernel</Filter>
     </ClInclude>

@@ -583,9 +583,6 @@
     <ClInclude Include="ChannelAlign.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="Common.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
     <ClInclude Include="CosmeticEngine.h">
       <Filter>Kernel</Filter>
     </ClInclude>
