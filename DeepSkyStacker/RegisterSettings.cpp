@@ -319,7 +319,7 @@ void RegisterSettings::on_stackingSettings_clicked()
 {
 	StackSettings dlg(this);
 
-	QRectF	rcCustom;
+	QRect	rcCustom;
 
 	if (pStackingTasks)
 	{

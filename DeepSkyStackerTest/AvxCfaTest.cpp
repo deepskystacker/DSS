@@ -183,7 +183,7 @@ bool CMultitask::GetUseSimd() { return true; }
 
 void CMultiBitmap::DestroyTempFiles() {}
 void CMultiBitmap::SetBitmapModel(const CMemoryBitmap*) {}
-bool CMultiBitmap::AddBitmap(const CMemoryBitmap*, CDSSProgress*) { return true; }
+bool CMultiBitmap::AddBitmap(CMemoryBitmap*, CDSSProgress*) { return true; }
 std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(CDSSProgress*) { return std::shared_ptr<CMemoryBitmap>{}; }
 
 void CYMGToRGB(double, double, double, double, double&, double&, double&) {}

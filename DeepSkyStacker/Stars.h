@@ -108,14 +108,9 @@ public :
 			return (m_fY < ms.m_fY);
 	};
 
-	bool	IsInRect(const CRect& rc)
+	bool	IsInRadius(const QPoint& pt) const
 	{
-		return rc.PtInRect(CPoint(m_fX, m_fY));
-	};
-
-	bool	IsInRadius(const CPoint& pt) const
-	{
-		return Distance(CPointExt(m_fX, m_fY), CPointExt(pt)) <= m_fMeanRadius * 2.35 / 1.5;
+		return Distance(QPointF(m_fX, m_fY), QPointF(pt)) <= m_fMeanRadius * 2.35 / 1.5;
 	};
 
 	bool	IsInRect(const QRectF & rc)
@@ -125,12 +120,12 @@ public :
 
 	bool	IsInRadius(const QPointF & pt) const
 	{
-		return Distance(CPointExt(m_fX ,m_fY), CPointExt(pt))<=m_fMeanRadius*2.35/1.5;
+		return Distance(QPointF(m_fX ,m_fY), QPointF(pt))<=m_fMeanRadius*2.35/1.5;
 	};
 
 	bool	IsInRadius(double fX, double fY)
 	{
-		return Distance(CPointExt(m_fX ,m_fY), CPointExt(fX, fY))<=m_fMeanRadius*2.35/1.5;
+		return Distance(QPointF(m_fX ,m_fY), QPointF(fX, fY))<=m_fMeanRadius*2.35/1.5;
 	};
 
 	bool	IsValid()

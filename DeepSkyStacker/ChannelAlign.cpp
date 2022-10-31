@@ -52,13 +52,14 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 		for (int i = 0; i < lWidth; i++)
 		{
 			double fGray;
-			CPointExt pt(i, j);
-			CPointExt ptOut;
+			QPointF pt(i, j);
+			QPointF ptOut;
 
-			ptOut = PixTransform.Transform(pt);
+			ptOut = PixTransform.transform(pt);
 			pBitmap->GetPixel(i, j, fGray);
-
-			if (fGray != 0 && ptOut.IsInRect(0, 0, lWidth - 1, lHeight - 1))
+			QRectF rc{ 0, 0,
+				static_cast<qreal>(lWidth - 1), static_cast<qreal>(lHeight - 1) };
+			if (fGray != 0 && rc.contains(ptOut))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, 1.0, vPixels);

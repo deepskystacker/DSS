@@ -16,7 +16,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 		constexpr int H = 233;
 		typedef std::uint16_t T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -50,7 +50,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 		constexpr int H = 16 * 21 + 11;
 		typedef std::uint32_t T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -88,7 +88,7 @@ TEST_CASE("AVX Stacking, no transform, no calib", "[AVX][Stacking][simple]")
 		constexpr int H = 229;
 		typedef float T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -126,7 +126,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		constexpr int H = 199;
 		typedef float T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -171,7 +171,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		constexpr int H = 463;
 		typedef float T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -219,7 +219,7 @@ TEST_CASE("AVX Stacking, transform, no calib", "[AVX][Stacking][transform]")
 		constexpr int H = 5;
 		typedef float T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -282,7 +282,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 		constexpr int H = 79;
 		typedef float T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -320,7 +320,7 @@ TEST_CASE("AVX Stacking, no transform, calib", "[AVX][Stacking][calib]")
 		constexpr int H = 211;
 		typedef float T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -373,7 +373,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		constexpr int H = 37;
 		typedef float T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -426,7 +426,7 @@ TEST_CASE("AVX Stacking, Entropy", "[AVX][Stacking][Entropy]")
 		constexpr int H = 41;
 		typedef std::uint32_t T;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<T>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);

@@ -312,10 +312,10 @@ typedef VOTINGPAIRVECTOR::iterator		VOTINGPAIRITERATOR;
 class CMatchingStars
 {
 private:
-	POINTEXTVECTOR m_vRefStars;
-	POINTEXTVECTOR m_vTgtStars;
-	POINTEXTVECTOR m_vRefCorners;
-	POINTEXTVECTOR m_vTgtCorners;
+	POINTFVECTOR m_vRefStars;
+	POINTFVECTOR m_vTgtStars;
+	POINTFVECTOR m_vRefCorners;
+	POINTFVECTOR m_vTgtCorners;
 	STARTRIANGLEVECTOR m_vRefTriangles;
 	STARTRIANGLEVECTOR m_vTgtTriangles;
 	std::vector<int> m_vRefStarIndices;
@@ -327,20 +327,20 @@ private:
 	int m_lHeight;
 
 private:
-	CPointExt& RefStar(const CVotingPair& vp)
+	QPointF& RefStar(const CVotingPair& vp)
 	{
 		return vp.IsCorner() ? m_vRefCorners[vp.m_RefStar] : m_vRefStars[vp.m_RefStar];
 	}
 
-	CPointExt& TgtStar(const CVotingPair& vp)
+	QPointF& TgtStar(const CVotingPair& vp)
 	{
 		return vp.IsCorner() ? m_vTgtCorners[vp.m_TgtStar] : m_vTgtStars[vp.m_TgtStar];
 	}
 
 	void InitVotingGrid(VOTINGPAIRVECTOR& vVotingPairs);
 	void AdjustVoting(const VOTINGPAIRVECTOR& vInVotingPairs, VOTINGPAIRVECTOR& vOutVotingPairs, int lNrTgtStars);
-	void ComputeStarDistances(const POINTEXTVECTOR& vStars, STARDISTVECTOR& vStarDist);
-	void ComputeTriangles(const POINTEXTVECTOR& vStars, STARTRIANGLEVECTOR& vTriangles);
+	void ComputeStarDistances(const POINTFVECTOR& vStars, STARDISTVECTOR& vStarDist);
+	void ComputeTriangles(const POINTFVECTOR& vStars, STARTRIANGLEVECTOR& vTriangles);
 	double ValidateTransformation(const VOTINGPAIRVECTOR& vVotingPairs, const CBilinearParameters& BilinearParameters);
 	bool ComputeCoordinatesTransformation(VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);
 	bool ComputeTransformation(const VOTINGPAIRVECTOR& vVotingPairs, CBilinearParameters& BilinearParameters, TRANSFORMATIONTYPE TType);

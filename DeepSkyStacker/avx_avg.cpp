@@ -4,7 +4,7 @@
 #include "TaskInfo.h"
 #include <immintrin.h>
 
-AvxAccumulation::AvxAccumulation(const QRectF& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
+AvxAccumulation::AvxAccumulation(const QRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
 	resultWidth{ static_cast<int>(resultRect.width()) }, resultHeight{ static_cast<int>(resultRect.height()) },
 	tempBitmap{ tempbm },
 	outputBitmap{ outbm },

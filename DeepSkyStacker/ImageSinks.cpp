@@ -623,16 +623,16 @@ void CEditStarsSink::InitGrayBitmap(CRect& rc)
 	}
 }
 
-void CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECTOR & vStars)
+void CEditStarsSink::DetectStars(const QPointF & pt, CRect & rcCheck, STARVECTOR & vStars)
 {
 	// Create a 3*STARMAXSIZE + 1 square rectangle centered on the point
 	vStars.clear();
 	if (m_pImage)
 	{
-		rcCheck.left	= pt.X - RCCHECKSIZE/2;
-		rcCheck.right	= pt.X + RCCHECKSIZE/2;
-		rcCheck.top		= pt.Y - RCCHECKSIZE/2;
-		rcCheck.bottom	= pt.Y + RCCHECKSIZE/2;
+		rcCheck.left	= pt.x() - RCCHECKSIZE/2;
+		rcCheck.right	= pt.x() + RCCHECKSIZE/2;
+		rcCheck.top		= pt.y() - RCCHECKSIZE/2;
+		rcCheck.bottom	= pt.y() + RCCHECKSIZE/2;
 
 		if (rcCheck.left < 0)
 		{
@@ -660,11 +660,13 @@ void CEditStarsSink::DetectStars(const CPointExt & pt, CRect & rcCheck, STARVECT
 		InitGrayBitmap(rcCheck);
 
 		CRegisteredFrame		regFrame;
-		CRect					rcReg;
+		QRect					rcReg;
 		STARSET stars;
 
-		rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
-		rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
+		rcReg.setCoords(STARMAXSIZE, STARMAXSIZE, /* left, top */
+			rcCheck.Width() - (STARMAXSIZE + 1), rcCheck.Height() - (STARMAXSIZE + 1));
+		//rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
+		//rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
 
 		regFrame.m_fBackground = m_fBackground;
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
@@ -688,11 +690,11 @@ bool CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
 		{
 			// The point is in the image
 			bResult = true; // Refresh the overlay
-			m_ptCursor = pt;
+			m_ptCursor = QPointF(pt.x, pt.y);
 		}
-		else if (m_ptCursor.X >=0)
+		else if (m_ptCursor.x() >=0)
 		{
-			m_ptCursor.X = m_ptCursor.Y = -1;
+			m_ptCursor.rx() = m_ptCursor.ry() = -1;
 			bResult = true;
 		};
 	};
@@ -706,9 +708,9 @@ bool	CEditStarsSink::Image_OnMouseLeave()
 {
 	bool			bResult = false;
 
-	if (m_ptCursor.X >= 0)
+	if (m_ptCursor.x() >= 0)
 	{
-		m_ptCursor.X = m_ptCursor.Y = -1;
+		m_ptCursor.rx() = m_ptCursor.ry() = -1;
 		bResult = true;
 	};
 
@@ -980,46 +982,46 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 					if (g_bShowRefStars && m_vRefStars.size())
 					{
-						CPointExt			ptOrg;
-						CPointExt			ptDst;
+						QPointF			ptOrg;
+						QPointF			ptDst;
 
-						ptOrg.X = m_vStars[i].m_fX;
-						ptOrg.Y = m_vStars[i].m_fY;
+						ptOrg.rx() = m_vStars[i].m_fX;
+						ptOrg.ry() = m_vStars[i].m_fY;
 
 						ptDst = ptOrg;
 
-						ptDst = m_Transformation.Transform(ptOrg);
+						ptDst = m_Transformation.transform(ptOrg);
 
 						CPoint				ptOrgBmp;
 						CPoint				ptDstBmp;
 
-						ptOrg.X += 0.5; ptOrg.Y += 0.5;
-						ptDst.X += 0.5; ptDst.Y += 0.5;
+						ptOrg.rx() += 0.5; ptOrg.ry() += 0.5;
+						ptDst.rx() += 0.5; ptDst.ry() += 0.5;
 
-						m_pImage->BitmapToScreen(ptOrg.X, ptOrg.Y);
-						ptOrgBmp.x = ptOrg.X; ptOrgBmp.y = ptOrg.Y;
-						m_pImage->BitmapToScreen(ptDst.X, ptDst.Y);
-						ptDstBmp.x = ptDst.X; ptDstBmp.y = ptDst.Y;
+						m_pImage->BitmapToScreen(ptOrg.rx(), ptOrg.ry());
+						ptOrgBmp.x = ptOrg.x(); ptOrgBmp.y = ptOrg.y();
+						m_pImage->BitmapToScreen(ptDst.rx(), ptDst.ry());
+						ptDstBmp.x = ptDst.x(); ptDstBmp.y = ptDst.y();
 
 						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
 					};
 
 					if (g_bShowRefStars && m_vStars[i].m_fLargeMajorAxis > 0)
 					{
-						CPointExt			ptOrg(m_vStars[i].m_fX+ 0.5, m_vStars[i].m_fY+ 0.5);
-						CPointExt			ptDst;
+						QPointF			ptOrg(m_vStars[i].m_fX+ 0.5, m_vStars[i].m_fY+ 0.5);
+						QPointF			ptDst;
 
 						ptDst = ptOrg;
-						ptDst.X += m_vStars[i].m_fLargeMajorAxis * cos(m_vStars[i].m_fMajorAxisAngle/180.0*M_PI);
-						ptDst.Y += m_vStars[i].m_fLargeMajorAxis * sin(m_vStars[i].m_fMajorAxisAngle/180.0*M_PI);
+						ptDst.rx() += m_vStars[i].m_fLargeMajorAxis * cos(m_vStars[i].m_fMajorAxisAngle/180.0*M_PI);
+						ptDst.ry() += m_vStars[i].m_fLargeMajorAxis * sin(m_vStars[i].m_fMajorAxisAngle/180.0*M_PI);
 
 						CPoint				ptOrgBmp;
 						CPoint				ptDstBmp;
 
-						m_pImage->BitmapToScreen(ptOrg.X, ptOrg.Y);
-						m_pImage->BitmapToScreen(ptDst.X, ptDst.Y);
-						ptOrgBmp.x = ptOrg.X; ptOrgBmp.y = ptOrg.Y;
-						ptDstBmp.x = ptDst.X; ptDstBmp.y = ptDst.Y;
+						m_pImage->BitmapToScreen(ptOrg.rx(), ptOrg.ry());
+						m_pImage->BitmapToScreen(ptDst.rx(), ptDst.ry());
+						ptOrgBmp.x = ptOrg.x(); ptOrgBmp.y = ptOrg.y();
+						ptDstBmp.x = ptDst.x(); ptDstBmp.y = ptDst.y();
 
 						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
 					};
@@ -1043,7 +1045,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 			};
 
 			m_Action = ESA_NONE;
-			if (m_ptCursor.X >= 0 && m_ptCursor.Y>=0)
+			if (m_ptCursor.x() >= 0 && m_ptCursor.y() >= 0)
 			{
 				CRect					rcCheck;
 				STARVECTOR				vStars;
@@ -1062,10 +1064,10 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 				DetectStars(m_ptCursor, rcCheck, vStars);
 
-				auto lNearestNewStar = FindNearestStar(m_ptCursor.X - rcCheck.left, m_ptCursor.Y - rcCheck.top, vStars, bInNewStar, fNearestNewStarDistance);
+				auto lNearestNewStar = FindNearestStar(m_ptCursor.x() - rcCheck.left, m_ptCursor.y() - rcCheck.top, vStars, bInNewStar, fNearestNewStarDistance);
 
 				fNearestOldStarDistance = 50;
-				auto lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.X, m_ptCursor.Y, m_vStars, bInOldStar, fNearestOldStarDistance);
+				auto lNearestOldStar = FindNearestStarWithinDistance(m_ptCursor.x(), m_ptCursor.y(), m_vStars, bInOldStar, fNearestOldStarDistance);
 
 				m_lRemovedIndice = -1;
 				m_bRemoveComet	 = false;
@@ -1128,8 +1130,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 							if (bForceHere)
 							{
 								bAdd = true;
-								star.m_fX = m_ptCursor.X;
-								star.m_fY = m_ptCursor.Y;
+								star.m_fX = m_ptCursor.x();
+								star.m_fY = m_ptCursor.y();
 								bShowAction = true;
 							}
 						}
@@ -1137,8 +1139,8 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 					else if (bForceHere)
 					{
 						bAdd = true;
-						star.m_fX = m_ptCursor.X;
-						star.m_fY = m_ptCursor.Y;
+						star.m_fX = m_ptCursor.x();
+						star.m_fY = m_ptCursor.y();
 						bShowAction = true;
 					};
 					if (bAdd && m_lRemovedIndice<0)
@@ -1167,7 +1169,7 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						else // Both new and old star nearest
 						{
 							// If the new star is in an old star - remove
-							CPoint		pt(vStars[lNearestNewStar].m_fX + rcCheck.left, vStars[lNearestNewStar].m_fY + rcCheck.top);
+							QPoint		pt(vStars[lNearestNewStar].m_fX + rcCheck.left, vStars[lNearestNewStar].m_fY + rcCheck.top);
 							if (m_vStars[lNearestOldStar].IsInRadius(pt))
 								bAdd = false;
 							else if (fNearestNewStarDistance >= fNearestOldStarDistance*1.10)
@@ -1296,12 +1298,12 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 
 				{
 					CRect			rcText;
-					CPointExt		ptScreen = m_ptCursor;
+					QPointF		ptScreen{ m_ptCursor };
 
-					m_pImage->BitmapToScreen(ptScreen.X, ptScreen.Y);
+					m_pImage->BitmapToScreen(ptScreen.rx(), ptScreen.ry());
 
-					if ((ptScreen.X >= rcClient.right-150) &&
-						(ptScreen.Y <= 150))
+					if ((ptScreen.x() >= rcClient.right-150) &&
+						(ptScreen.y() <= 150))
 					{
 						// Draw the rectangle at the left bottom
 						rcText.left = 2;

@@ -165,7 +165,7 @@ private:
 	CBilinearParameters			m_Transformation;
 	VOTINGPAIRVECTOR			m_vVotedPairs;
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
-	CPointExt					m_ptCursor;
+	QPointF					m_ptCursor;
 	CGrayBitmap					m_GrayBitmap; // CGrayBitmapT<double>
 	EDITSTARACTION				m_Action;
 	CStar						m_AddedStar;
@@ -266,7 +266,7 @@ private:
 	}
 
 	void	InitGrayBitmap(CRect & rc);
-	void	DetectStars(const CPointExt & pt, CRect & rc, STARVECTOR & vStars);
+	void	DetectStars(const QPointF & pt, CRect & rc, STARVECTOR & vStars);
 
 	void	ComputeOverallQuality()
 	{
