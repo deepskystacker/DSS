@@ -270,19 +270,19 @@ void RemoveStars(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, const ST
 		for (const auto& star : vStars)
 		{
 			double			fRadius = star.m_fMeanRadius * 2.35 * 1.0;// /1.5;
-			CPointExt		ptCenter(star.m_fX, star.m_fY);
+			QPointF		ptCenter(star.m_fX, star.m_fY);
 			//double			fIntensity = 0;
 			//int			lNrIntensities = 0;
 
-			ptCenter = PixTransform.Transform(ptCenter);
+			ptCenter = PixTransform.transform(ptCenter);
 
-			for (double i = std::max(0.0, ptCenter.X - 2.0 * fRadius); i <= std::min(ptCenter.X + 2.0 * fRadius, fWidth - 1); i++)
+			for (double i = std::max(0.0, ptCenter.x() - 2.0 * fRadius); i <= std::min(ptCenter.x() + 2.0 * fRadius, fWidth - 1); i++)
 			{
-				for (double j = std::max(0.0, ptCenter.Y - 2.0 * fRadius); j <= std::min(ptCenter.Y + 2.0 * fRadius, fHeight - 1); j++)
+				for (double j = std::max(0.0, ptCenter.y() - 2.0 * fRadius); j <= std::min(ptCenter.y() + 2.0 * fRadius, fHeight - 1); j++)
 				{
 					// Compute the distance to the center
-					const double fXDistance = fabs(i - ptCenter.X);
-					const double fYDistance = fabs(j - ptCenter.Y);
+					const double fXDistance = fabs(i - ptCenter.x());
+					const double fYDistance = fabs(j - ptCenter.y());
 					const double fDistance = sqrt(fXDistance * fXDistance + fYDistance * fYDistance);
 
 					if (fDistance <= fRadius)
@@ -327,7 +327,7 @@ void RemoveStars(CMemoryBitmap* pBitmap, CPixelTransform& PixTransform, const ST
 		for (int k = 0;k<vStars.size();k++)
 		{
 			double			fRadius = vStars[k].m_fMeanRadius*2.35;// /1.5;
-			CPointExt		ptCenter(vStars[k].m_fX, vStars[k].m_fY);
+			QPointF		ptCenter(vStars[k].m_fX, vStars[k].m_fY);
 			double			fIntensity = 0;
 			int			lNrIntensities = 0;
 
@@ -704,11 +704,11 @@ bool CStackingEngine::ComputeMissingCometPositions()
 					} while (bContinue);
 
 					// Compute the comet position in the two frames
-					CPointExt			ptPreviousComet = CPointExt(pPreviousComet->m_fXComet, pPreviousComet->m_fYComet);
-					CPointExt			ptNextComet     = CPointExt(pNextComet->m_fXComet, pNextComet->m_fYComet);
+					QPointF			ptPreviousComet = QPointF(pPreviousComet->m_fXComet, pPreviousComet->m_fYComet);
+					QPointF			ptNextComet     = QPointF(pNextComet->m_fXComet, pNextComet->m_fYComet);
 
-					ptPreviousComet = pPreviousComet->m_BilinearParameters.Transform(ptPreviousComet);
-					ptNextComet		= pNextComet->m_BilinearParameters.Transform(ptNextComet);
+					ptPreviousComet = pPreviousComet->m_BilinearParameters.transform(ptPreviousComet);
+					ptNextComet		= pNextComet->m_BilinearParameters.transform(ptNextComet);
 
 					double				fElapsed2,
 										fElapsedCurrent;
@@ -718,23 +718,23 @@ bool CStackingEngine::ComputeMissingCometPositions()
 
 					if (fElapsed2)
 					{
-						CPointExt			ptCurrentComet;
+						QPointF			ptCurrentComet;
 						double				fAdvance = fElapsedCurrent/fElapsed2;
 
-						ptCurrentComet.X = ptPreviousComet.X + fAdvance * (ptNextComet.X - ptPreviousComet.X);
-						ptCurrentComet.Y = ptPreviousComet.Y + fAdvance * (ptNextComet.Y - ptPreviousComet.Y);
+						ptCurrentComet.rx() = ptPreviousComet.x() + fAdvance * (ptNextComet.x() - ptPreviousComet.x());
+						ptCurrentComet.ry() = ptPreviousComet.y() + fAdvance * (ptNextComet.y() - ptPreviousComet.y());
 
 						// Set the comet position - already shifted
 						vNewComet.push_back(static_cast<int>(i));
 						vpLightFrames[i]->m_bTransformedCometPosition = true;
-						vpLightFrames[i]->m_fXComet = ptCurrentComet.X;
-						vpLightFrames[i]->m_fYComet = ptCurrentComet.Y;
+						vpLightFrames[i]->m_fXComet = ptCurrentComet.x();
+						vpLightFrames[i]->m_fYComet = ptCurrentComet.y();
 
 						if (!vpLightFrames[i]->m_bComet)
 							m_lNrCometStackable++;
 					};
 
-					/*CPointExt			ptTestComet = CPointExt(vpLightFrames[i]->m_fXComet, vpLightFrames[i]->m_fYComet);
+					/*QPointF			ptTestComet = QPointF(vpLightFrames[i]->m_fXComet, vpLightFrames[i]->m_fYComet);
 					vpLightFrames[i]->m_BilinearParameters.Transform(ptTestComet);*/
 				}
 			}
@@ -948,12 +948,12 @@ void	CStackingEngine::GetResultExtraInfo()
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
 
-inline void ExpandWithPoint(int & lLeft, int & lRight, int & lTop, int & lBottom, const CPointExt & pt)
+inline void ExpandWithPoint(int & lLeft, int & lRight, int & lTop, int & lBottom, const QPointF & pt)
 {
-	lLeft	= min(lLeft, static_cast<int>(pt.X));
-	lRight	= max(lRight, static_cast<int>(pt.X));
-	lTop	= min(lTop, static_cast<int>(pt.Y));
-	lBottom = max(lBottom, static_cast<int>(pt.Y));
+	lLeft	= min(lLeft, static_cast<int>(pt.x()));
+	lRight	= max(lRight, static_cast<int>(pt.x()));
+	lTop	= min(lTop, static_cast<int>(pt.y()));
+	lBottom = max(lBottom, static_cast<int>(pt.y()));
 };
 
 QRect CStackingEngine::computeLargestRectangle()
@@ -1021,7 +1021,7 @@ QRect CStackingEngine::computeLargestRectangle()
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::computeSmallestRectangle(QRectF & rc)
+bool CStackingEngine::computeSmallestRectangle(QRect & rc)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -1626,7 +1626,7 @@ class CStackTask
 private:
 	CStackingEngine* m_pStackingEngine;
 	CDSSProgress* m_pProgress;
-	std::vector<CPoint> m_vLockedPixels;
+	std::vector<QPoint> m_vLockedPixels;
 
 public:
 	CEntropyInfo m_EntropyWindow;
@@ -1940,7 +1940,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 			StackTask.m_pLightTask				= m_pLightTask;
 			StackTask.m_bColor					= bColor;
 			StackTask.m_BackgroundCalibration	= m_BackgroundCalibration;
-			StackTask.m_rcResult				= m_rcResult.toRect();
+			StackTask.m_rcResult				= m_rcResult;
 			StackTask.m_lPixelSizeMultiplier	= m_lPixelSizeMultiplier;
 			StackTask.m_pOutput					= m_pOutput;
 			StackTask.m_pEntropyCoverage		= m_pEntropyCoverage;

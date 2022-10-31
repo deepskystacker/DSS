@@ -356,7 +356,7 @@ public :
 			m_bUseCustomRectangle = false;
 	}
 
-	bool GetCustomRectangle(QRectF& rcCustom) const
+	bool GetCustomRectangle(QRect& rcCustom) const
 	{
 		const bool bResult = !m_rcCustom.isEmpty();
 		rcCustom = m_rcCustom;

@@ -11,7 +11,7 @@
 class CEntropySquare
 {
 public :
-	CPointExt					m_ptCenter;
+	QPointF						m_ptCenter;
 	double						m_fRedEntropy;
 	double						m_fGreenEntropy;
 	double						m_fBlueEntropy;
@@ -33,7 +33,7 @@ public :
         m_fBlueEntropy = 0;
 	};
 
-	CEntropySquare(const CPointExt & pt, double fRedEntropy, double fGreenEntropy, double fBlueEntropy)
+	CEntropySquare(const QPointF & pt, double fRedEntropy, double fGreenEntropy, double fBlueEntropy)
 	{
 		m_ptCenter = pt;
 		m_fRedEntropy	= fRedEntropy;
@@ -73,10 +73,10 @@ private:
 private:
 	void InitSquareEntropies();
 	void ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy);
-	void GetSquareCenter(int lX, int lY, CPointExt & ptCenter)
+	void GetSquareCenter(int lX, int lY, QPointF & ptCenter)
 	{
-		ptCenter.X = lX * (m_lWindowSize * 2 + 1) + m_lWindowSize;
-		ptCenter.Y = lY * (m_lWindowSize * 2 + 1) + m_lWindowSize;
+		ptCenter.rx() = lX * (m_lWindowSize * 2 + 1) + m_lWindowSize;
+		ptCenter.ry() = lY * (m_lWindowSize * 2 + 1) + m_lWindowSize;
 	}
 
 	void AddSquare(CEntropySquare& Square, int lX, int lY)
@@ -123,29 +123,29 @@ public:
 		lSquareX = x / (m_lWindowSize * 2 + 1);
 		lSquareY = y / (m_lWindowSize * 2 + 1);
 
-		CPointExt			ptCenter;
+		QPointF				ptCenter;
 		CEntropySquare		Squares[3];
 		size_t				sizeSquares = 0;
 
 		GetSquareCenter(lSquareX, lSquareY, ptCenter);
 		AddSquare(Squares[sizeSquares++], lSquareX, lSquareY);
-		if (ptCenter.X > x)
+		if (ptCenter.x() > x)
 		{
 			if (lSquareX > 0)
 				AddSquare(Squares[sizeSquares++], lSquareX-1, lSquareY);
 		}
-		else if (ptCenter.X < x)
+		else if (ptCenter.x() < x)
 		{
 			if (lSquareX < m_lNrSquaresX - 1)
 				AddSquare(Squares[sizeSquares++], lSquareX+1, lSquareY);
 		};
 
-		if (ptCenter.Y > y)
+		if (ptCenter.y() > y)
 		{
 			if (lSquareY > 0)
 				AddSquare(Squares[sizeSquares++], lSquareX, lSquareY-1);
 		}
-		else if (ptCenter.Y < y)
+		else if (ptCenter.y() < y)
 		{
 			if (lSquareY < m_lNrSquaresY - 1)
 				AddSquare(Squares[sizeSquares++], lSquareX, lSquareY+1);
@@ -155,7 +155,7 @@ public:
 		fRedEntropy		= 0.0;
 		fGreenEntropy	= 0.0;
 		fBlueEntropy	= 0.0;
-		CPointExt			ptPixel(x, y);
+		QPointF			ptPixel(x, y);
 		double				fTotalWeight = 0.0;
 
 		for (size_t i = 0; i < sizeSquares; i++)

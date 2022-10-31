@@ -205,102 +205,16 @@ a = (b x0 +c )  y0 - x0;
 */
 /* ------------------------------------------------------------------- */
 
-class CPointExt
-{
-public :
-	double			X;
-	double			Y;
 
-public :
-	CPointExt(double x = 0, double y = 0)
-	{
-		X = x;
-		Y = y;
-	};
-
-	CPointExt(const CPointExt& pt) = default;
-
-	CPointExt(const CPoint& pt)
-	{
-		X = pt.x;
-		Y = pt.y;
-	};
-
-	CPointExt(const QPointF & pt)
-	{
-		X = pt.x();
-		Y = pt.y();
-	};
-
-	CPointExt(const QRectF & rc)
-	{
-		X = (double)(rc.left()+rc.right())/2.0;
-		Y = (double)(rc.top()+rc.bottom())/2.0;
-	};
-
-	CPointExt& operator = (const CPointExt& pt) = default;
-
-	void	Offset(const CPointExt & pt)
-	{
-		X -= pt.X;
-		Y -= pt.Y;
-	};
-
-//	void	CopyTo(CPoint & pt)
-//	{
-//		pt.x = X;
-//		pt.y = Y;
-//	};
-
-	bool operator != (const CPointExt & pt)
-	{
-		return (X != pt.X) || (Y!=pt.Y);
-	};
-
-	bool operator == (const CPointExt & pt)
-	{
-		return (X == pt.X) && (Y==pt.Y);
-	};
-
-	bool operator < (const CPointExt & pt)
-	{
-		return (X < pt.X);
-	};
-
-	bool	IsInRect(double fLeft, double fTop, double fRight, double fBottom) const
-	{
-		return (X>=fLeft) && (X <= fRight) && (Y>=fTop) && (Y<=fBottom);
-	};
-
-	bool	IsNear(const CPointExt & ptTest)
-	{
-		return (fabs(X-ptTest.X) <= 3) && (fabs(Y-ptTest.Y) <= 3);
-	};
-
-	void Rotate(double fAngle, const CPointExt & ptCenter)
-	{
-		CPointExt		ptResult;
-		double			fX, fY;
-
-		ptResult.X = X - ptCenter.X;
-		ptResult.Y = Y - ptCenter.Y;
-
-		fX = cos(fAngle) * ptResult.X - sin(fAngle) * ptResult.Y;
-		fY = sin(fAngle) * ptResult.X + cos(fAngle) * ptResult.Y;
-
-		X = fX + ptCenter.X;
-		Y = fY + ptCenter.Y;
-	};
-};
-
-typedef std::vector<CPointExt>		POINTEXTVECTOR;
-typedef POINTEXTVECTOR::iterator	POINTEXTITERATOR;
+typedef std::vector<QPointF>	POINTFVECTOR;
+typedef POINTFVECTOR::iterator	POINTFITERATOR;
 
 /* ------------------------------------------------------------------- */
 
-inline double	Distance(const CPointExt & pt1, const CPointExt & pt2)
+inline double	Distance(const QPointF & pt1, const QPointF & pt2)
 {
-	return sqrt((pt1.X-pt2.X)*(pt1.X-pt2.X) + (pt1.Y-pt2.Y)*(pt1.Y-pt2.Y));
+	double xdiff{ pt1.x() - pt2.x() }, ydiff{ pt1.y() - pt2.y() };
+	return sqrt((xdiff*xdiff) + (ydiff*ydiff));
 };
 
 inline double	Distance(double fX1, double fY1, double fX2, double fY2)
@@ -1414,6 +1328,7 @@ public :
 		return bResult;
 	}
 
+#if (0)
 	CPointExt Transform(const CPointExt& pt) const
 	{
 		CPointExt ptResult;
@@ -1460,6 +1375,7 @@ public :
 
 		return ptResult;
 	}
+#endif
 
 	QPointF transform(const QPointF& pt) const
 	{
@@ -1511,17 +1427,16 @@ public :
 		return ptResult;
 	}
 
-
 	double Angle(int lWidth) const
 	{
 		double		fAngle;
-		CPointExt	pt1 (0, 0),
-					pt2 (lWidth, 0);
+		QPointF	pt1 (0, 0),
+				pt2 (lWidth, 0);
 
-		pt1 = Transform(pt1);
-		pt2 = Transform(pt2);
+		pt1 = transform(pt1);
+		pt2 = transform(pt2);
 
-		fAngle = atan2(pt2.Y - pt1.Y, pt2.X - pt1.X);
+		fAngle = atan2(pt2.y() - pt1.y(), pt2.x() - pt1.x());
 
 		return fAngle;
 	}
@@ -1532,6 +1447,7 @@ public :
 		dY = b0 * fYWidth;
 	}
 
+#if (0)
 	void Footprint(CPointExt& pt1, CPointExt& pt2, CPointExt& pt3, CPointExt& pt4) const
 	{
 		pt1.X = pt1.Y = 0;
@@ -1544,6 +1460,7 @@ public :
 		pt3 = Transform(pt3);
 		pt4 = Transform(pt4);
 	}
+#endif
 };
 
 #endif // __DSSTOOLS_H__

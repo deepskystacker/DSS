@@ -772,7 +772,7 @@ void StackRecap::CallStackingSettings(int tab)
 	ZASSERT(nullptr != pStackingTasks);
 
 	StackSettings			dlg(this);
-	QRectF					rcCustom;
+	QRect					rcCustom;
 
 	if (pStackingTasks->GetCustomRectangle(rcCustom))
 	{

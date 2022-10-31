@@ -10,7 +10,7 @@
 class CBloomInfo
 {
 public :
-	CPointExt			m_ptRef;
+	QPointF			m_ptRef;
 	double				m_fBloom;
 	double				m_fRadius;
 	double				m_fAngle;
@@ -54,8 +54,8 @@ typedef std::vector<CBloomInfo>			BLOOMINFOVECTOR;
 class CBloomedStar
 {
 public :
-	CPointExt			m_ptStar;
-	std::vector<CPoint>	m_vBloomed;
+	QPointF			m_ptStar;
+	std::vector<QPointF> m_vBloomed;
 	BLOOMINFOVECTOR		m_vBlooms;
 	double				m_fRadius;
 	double				m_fBloom;
@@ -105,7 +105,7 @@ typedef std::vector<CBloomedStar>		BLOOMEDSTARVECTOR;
 class CBloomedStarGradient
 {
 public :
-	CPointExt			ptStar;
+	QPointF			ptStar;
 	double				fdX,
 						fdY;
 	double				fNW,
@@ -185,8 +185,8 @@ private:
 	double	ComputeValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y, bool & bDone);
 	void	DeBloom(CMemoryBitmap * pBitmap, std::shared_ptr<C8BitGrayBitmap> pMask);
 	void    SmoothMaskBorders(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask);
-	void	MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<CPointExt> & vBorders);
-	void	MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<CPoint> & vBloomed);
+	void	MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<QPointF> & vBorders);
+	void	MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<QPointF> & vBloomed);
 
 	double	ComputeBackgroundValue(CMemoryBitmap * pBitmap);
 	double	ComputeStarGradient(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStarGradient & bsg, double fRadius);

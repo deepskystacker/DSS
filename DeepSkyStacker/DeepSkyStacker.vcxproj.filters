@@ -472,9 +472,6 @@
     <ClInclude Include="BatchStacking.h">
       <Filter>Dialogs\Stacking</Filter>
     </ClInclude>
-    <ClInclude Include="CheckAbove.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="AskRegistering.h">
       <Filter>Dialogs\Registering</Filter>
     </ClInclude>
@@ -1308,6 +1305,9 @@
     </QtMoc>
     <QtMoc Include="SaveEditChanges.h">
       <Filter>Dialogs</Filter>
+    </QtMoc>
+    <QtMoc Include="CheckAbove.h">
+      <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

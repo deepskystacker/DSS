@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include <QPointF>
 #include "RunningStackingEngine.h"
 
 #include "MatchingStars.h"
@@ -117,15 +118,17 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 			for (int i = 0; i < lWidth; i++)
 			{
 				double fRed, fGreen, fBlue;
-				CPointExt pt(i, j);
+				QPointF pt(i, j);
 
-				const CPointExt ptOut = PixTransform.Transform(pt);
+				const QPointF ptOut = PixTransform.transform(pt);
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
 				if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 					m_BackgroundCalibration.ApplyCalibration(fRed, fGreen, fBlue);
 
-				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && ptOut.IsInRect(0, 0, lWidth-1, lHeight-1))
+				QRectF rc{ 0, 0,
+					static_cast<qreal>(lWidth - 1), static_cast<qreal>(lHeight - 1) };
+				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && rc.contains(ptOut))
 				{
 					vPixels.resize(0);
 					ComputePixelDispatch(ptOut, 1.0, vPixels);

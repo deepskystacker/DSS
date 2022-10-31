@@ -98,7 +98,7 @@ bool CRegisteredFrame::FindStarShape(CMemoryBitmap* pBitmap, CStar& star)
 
 			// Compute luminance at fX, fY
 			vPixels.resize(0);
-			ComputePixelDispatch(CPointExt(fX, fY), vPixels);
+			ComputePixelDispatch(QPointF(fX, fY), vPixels);
 
 			for (int k = 0;k<vPixels.size();k++)
 			{
@@ -396,7 +396,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc, STARSET& stars)
+size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const QRectF& rc, STARSET& stars)
 {
 	double				fMaxIntensity = 0;
 	int				i, j, k;
@@ -404,14 +404,14 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 	size_t nStars{ 0 };
 
 	// Work with a local buffer. Copy the pixel values for the rect.
-	const int width = (rc.right - rc.left);
-	std::vector<double> values(width * (rc.bottom - rc.top));
-	for (int j = rc.top, ndx = 0; j < rc.bottom; ++j)
-		for (int i = rc.left; i < rc.right; ++i, ++ndx)		
+	const int width = rc.width();
+	std::vector<double> values(width * rc.height());
+	for (int j = rc.top(), ndx = 0; j < rc.bottom(); ++j)
+		for (int i = rc.left(); i < rc.right(); ++i, ++ndx)		
 			pBitmap->GetPixel(i, j, values[ndx]);
 	const auto getValue = [&values, rc, width](const int x, const int y) -> double
 	{
-		return values[(y - rc.top) * width + x - rc.left];
+		return values[(y - rc.top()) * width + x - rc.left()];
 	};
 
 	// Read pixels from the memory bitmap
@@ -427,7 +427,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 			++vHistogram[std::min(value * 256.0, Maxvalue)];
 		}
 
-		const int lNrTotalValues = ((rc.Width() - 1) * (rc.Height() - 1)) / 2;
+		const int lNrTotalValues = ((rc.width() - 1) * (rc.height() - 1)) / 2;
 		int lNrValues = 0;
 		int lIndice = 0;
 		while (lNrValues < lNrTotalValues)
@@ -446,9 +446,9 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 
 		for (double fDeltaRadius = 0; fDeltaRadius < 4; ++fDeltaRadius)
 		{
-			for (j = rc.top; j < rc.bottom; j++)
+			for (j = rc.top(); j < rc.bottom(); j++)
 			{
-				for (i = rc.left; i < rc.right; i++)
+				for (i = rc.left(); i < rc.right(); i++)
 				{
 //					double			fIntensity;
 //					pBitmap->GetPixel(i, j, fIntensity);
@@ -458,13 +458,13 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 					{
 						// Check that this pixel is not already used in a wanabee star
 						bool bNew = true;
-						const POINT ptTest{ i, j };
+						const QPoint ptTest{ i, j };
 
-						for (auto it = stars.lower_bound(CStar(ptTest.x - STARMAXSIZE, 0)); it != stars.end() && bNew; ++it)
+						for (auto it = stars.lower_bound(CStar(ptTest.x() - STARMAXSIZE, 0)); it != stars.end() && bNew; ++it)
 						{
 							if (it->IsInRadius(ptTest))
 								bNew = false;
-							else if (it->m_fX > ptTest.x + STARMAXSIZE)
+							else if (it->m_fX > ptTest.x() + STARMAXSIZE)
 								break;
 						}
 
@@ -568,8 +568,8 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 										lBottomRadius = std::max(lBottomRadius, static_cast<int>(vPixels[k].m_fRadius));
 								};
 
-								rcStar.setCoords(ptTest.x - lLeftRadius, ptTest.y - lTopRadius,
-									ptTest.x + lRightRadius, ptTest.y + lBottomRadius);
+								rcStar.setCoords(ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius,
+									ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius);
 								//rcStar.left   = ptTest.x - lLeftRadius;
 								//rcStar.right  = ptTest.x + lRightRadius;
 								//rcStar.top	= ptTest.y - lTopRadius;
@@ -578,7 +578,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 								if (bWanabeeStarOk)
 								{
 									// Add the star
-									CStar ms(ptTest.x, ptTest.y);
+									CStar ms(ptTest.x(), ptTest.y());
 
 									ms.m_fIntensity	  = fIntensity;
 									ms.m_rcStar		  = rcStar;
@@ -593,7 +593,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const CRect& rc
 										{
 											for (auto it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * 2.35 / 1.5 - STARMAXSIZE, 0)); it != stars.end() && bWanabeeStarOk; ++it)
 											{
-												if (Distance(CPointExt(ms.m_fX, ms.m_fY), CPointExt(it->m_fX, it->m_fY)) < (ms.m_fMeanRadius + it->m_fMeanRadius) * 2.35 / 1.5)
+												if (Distance(QPointF(ms.m_fX, ms.m_fY), QPointF(it->m_fX, it->m_fY)) < (ms.m_fMeanRadius + it->m_fMeanRadius) * 2.35 / 1.5)
 													bWanabeeStarOk = false;
 												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * 2.35 / 1.5 + STARMAXSIZE)
 													break;
@@ -998,7 +998,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 			const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
 
 			for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
-				nStars += RegisterSubRect(&Bitmap, CRect(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+				nStars += RegisterSubRect(&Bitmap, QRectF(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
 		}
 	};
 

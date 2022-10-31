@@ -64,7 +64,7 @@ static bool AreCornersLocked()
 
 /* ------------------------------------------------------------------- */
 
-void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDISTVECTOR & vStarDist)
+void	CMatchingStars::ComputeStarDistances(const POINTFVECTOR & vStars, STARDISTVECTOR & vStarDist)
 {
 	int				i, j;
 
@@ -74,11 +74,11 @@ void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDIS
 
 	for (i = 0;i<vStars.size();i++)
 	{
-		CPointExt		pt1(vStars[i].X, vStars[i].Y);
+		QPointF		pt1(vStars[i].x(), vStars[i].y());
 
 		for (j = i+1;j<vStars.size();j++)
 		{
-			CPointExt		pt2(vStars[j].X, vStars[j].Y);
+			QPointF		pt2(vStars[j].x(), vStars[j].y());
 			double			fDistance;
 
 			fDistance = Distance(pt1, pt2);
@@ -93,7 +93,7 @@ void	CMatchingStars::ComputeStarDistances(const POINTEXTVECTOR & vStars, STARDIS
 
 /* ------------------------------------------------------------------- */
 
-void	CMatchingStars::ComputeTriangles(const POINTEXTVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles)
+void	CMatchingStars::ComputeTriangles(const POINTFVECTOR & vStars, STARTRIANGLEVECTOR & vTriangles)
 {
 	ZFUNCTRACE_RUNTIME();
 	STARDISTVECTOR			vStarDist;
@@ -221,18 +221,18 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = RefStar(vVotingPairs[i]);
-			X(i, 0) = Star.X/fXWidth;
-			Y(i, 0) = Star.Y/fYWidth;
+			QPointF &		Star = RefStar(vVotingPairs[i]);
+			X(i, 0) = Star.x()/fXWidth;
+			Y(i, 0) = Star.y()/fYWidth;
 		};
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = TgtStar(vVotingPairs[i]);
-			double			X = Star.X/fXWidth;
+			QPointF &		Star = TgtStar(vVotingPairs[i]);
+			double			X = Star.x()/fXWidth;
 			double			X2 = X * X;
 			double			X3 = X * X * X;
-			double			Y = Star.Y/fYWidth;
+			double			Y = Star.y()/fYWidth;
 			double			Y2 = Y * Y;
 			double			Y3 = Y * Y * Y;
 
@@ -315,19 +315,19 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = RefStar(vVotingPairs[i]);
+			QPointF &		Star = RefStar(vVotingPairs[i]);
 
-			X(i, 0) = Star.X/fXWidth;
-			Y(i, 0) = Star.Y/fYWidth;
+			X(i, 0) = Star.x()/fXWidth;
+			Y(i, 0) = Star.y()/fYWidth;
 		};
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = TgtStar(vVotingPairs[i]);
+			QPointF &		Star = TgtStar(vVotingPairs[i]);
 
-			double		X = Star.X/fXWidth;
+			double		X = Star.x()/fXWidth;
 			double		X2 = X * X;
-			double		Y = Star.Y/fYWidth;
+			double		Y = Star.y()/fYWidth;
 			double		Y2 = Y * Y;
 
 			M(i, 0) = 1;
@@ -388,18 +388,18 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = RefStar(vVotingPairs[i]);
+			QPointF &		Star = RefStar(vVotingPairs[i]);
 
-			X(i, 0) = Star.X/fXWidth;
-			Y(i, 0) = Star.Y/fYWidth;
+			X(i, 0) = Star.x()/fXWidth;
+			Y(i, 0) = Star.y()/fYWidth;
 		};
 
 		for (i = 0;i<vVotingPairs.size();i++)
 		{
-			CPointExt &		Star = TgtStar(vVotingPairs[i]);
+			QPointF &		Star = TgtStar(vVotingPairs[i]);
 
-			double		X = Star.X/fXWidth;
-			double		Y = Star.Y/fYWidth;
+			double		X = Star.x()/fXWidth;
+			double		Y = Star.y()/fYWidth;
 
 			M(i, 0) = 1;
 			M(i, 1) = X;
@@ -447,14 +447,14 @@ double CMatchingStars::ValidateTransformation(const VOTINGPAIRVECTOR & vTestedPa
 	// Compute the distance between the stars
 	for (int i = 0;i<vTestedPairs.size();i++)
 	{
-		CPointExt				ptExpected;
-		CPointExt				ptProjected;
+		QPointF				ptExpected;
+		QPointF				ptProjected;
 		double					fDistance;
 
 		ptExpected = RefStar(vTestedPairs[i]);
 		ptProjected = TgtStar(vTestedPairs[i]);
 
-		ptProjected = transform.Transform(ptProjected);
+		ptProjected = transform.transform(ptProjected);
 		fDistance = Distance(ptProjected, ptExpected);
 
 		if (!vTestedPairs[i].IsCorner())
@@ -537,14 +537,14 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 				// Compute the distance between the stars
 				for (i = 0;i<vTestedPairs.size();i++)
 				{
-					CPointExt				ptExpected;
-					CPointExt				ptProjected;
+					QPointF				ptExpected;
+					QPointF				ptProjected;
 					double					fDistance;
 
 					ptExpected = RefStar(vTestedPairs[i]);
 					ptProjected = TgtStar(vTestedPairs[i]);
 
-					ptProjected = transform.Transform(ptProjected);
+					ptProjected = transform.transform(ptProjected);
 					fDistance = Distance(ptProjected, ptExpected);
 
 					if (!vTestedPairs[i].IsCorner())
@@ -753,16 +753,16 @@ bool CMatchingStars::ComputeSigmaClippingTransformation(const VOTINGPAIRVECTOR &
 			m_vRefCorners.clear();
 			m_vTgtCorners.clear();
 
-			m_vTgtCorners.push_back(CPointExt(0, 0));
-			m_vTgtCorners.push_back(CPointExt(m_lWidth-1, 0));
-			m_vTgtCorners.push_back(CPointExt(0, m_lHeight-1));
-			m_vTgtCorners.push_back(CPointExt(m_lWidth-1, m_lHeight-1));
+			m_vTgtCorners.push_back(QPointF(0, 0));
+			m_vTgtCorners.push_back(QPointF(m_lWidth-1, 0));
+			m_vTgtCorners.push_back(QPointF(0, m_lHeight-1));
+			m_vTgtCorners.push_back(QPointF(m_lWidth-1, m_lHeight-1));
 
 			for (i = 0;i<m_vTgtCorners.size();i++)
 			{
-				CPointExt			ptProjected;
+				QPointF			ptProjected;
 
-				ptProjected = BaseTransformation.Transform(m_vTgtCorners[i]);
+				ptProjected = BaseTransformation.transform(m_vTgtCorners[i]);
 				m_vRefCorners.push_back(ptProjected);
 			};
 
@@ -1220,7 +1220,7 @@ void	CMatchingStars::AdjustSize()
 
 	for (int i = 0;(i<m_vTgtStars.size()) && bAllInTopLeft;i++)
 	{
-		if ((m_vTgtStars[i].X>m_lWidth/2) || (m_vTgtStars[i].Y>m_lHeight/2))
+		if ((m_vTgtStars[i].x() > m_lWidth/2) || (m_vTgtStars[i].y() > m_lHeight/2))
 			bAllInTopLeft = false;
 	};
 
@@ -1235,7 +1235,7 @@ void	CMatchingStars::AdjustSize()
 		bool			bOutside = false;
 		for (int i = 0;i<m_vTgtStars.size() && !bOutside;i++)
 		{
-			if ((m_vTgtStars[i].X>m_lWidth) || (m_vTgtStars[i].Y>m_lHeight))
+			if ((m_vTgtStars[i].x() > m_lWidth) || (m_vTgtStars[i].y() > m_lHeight))
 				bOutside = true;
 		};
 		if (bOutside)

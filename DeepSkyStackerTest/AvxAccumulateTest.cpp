@@ -20,7 +20,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 		constexpr int W = 256 + 7;
 		constexpr int H = 16 * 21 + 11;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -48,7 +48,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 		constexpr int W = 256 + 7;
 		constexpr int H = 32 + 11;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -78,7 +78,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 		constexpr int W = 16 * 18 + 3;
 		constexpr int H = 16 * 7 + 6;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CGrayBitmapT<float>> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -108,7 +108,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 		constexpr int W = 16 * 18 + 8;
 		constexpr int H = 16 * 27 + 13;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -140,7 +140,7 @@ TEST_CASE("AVX Accumulation FASTAVERAGE", "[AVX][Accumulation][FastAverage]")
 		constexpr int W = 16 * 69 + 2;
 		constexpr int H = 16 * 73 + 15;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CColorBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -182,7 +182,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 		constexpr int W = 256 + 7;
 		constexpr int H = 16 * 21 + 11;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint16_t>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);
@@ -210,7 +210,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 		constexpr int W = 256 + 7;
 		constexpr int H = 32 + 11;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -240,7 +240,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 		constexpr int W = 16 * 18 + 3;
 		constexpr int H = 16 * 7 + 6;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -270,7 +270,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 		constexpr int W = 16 * 18 + 8;
 		constexpr int H = 16 * 27 + 13;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CGrayBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -302,7 +302,7 @@ TEST_CASE("AVX Accumulation MAXIMUM", "[AVX][Accumulation][Maximum]")
 		constexpr int W = 16 * 69 + 2;
 		constexpr int H = 16 * 73 + 15;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pOutBitmap = std::make_shared<CColorBitmapT<float>>();
 		REQUIRE(pOutBitmap->Init(W, H) == true);
@@ -351,7 +351,7 @@ TEST_CASE("AVX Accumulation ENTROPY", "[AVX][Accumulation][Entropy]")
 		constexpr int H = 16 * 21 + 11;
 		constexpr int windowSize = 10;
 
-		CRect rect(0, 0, W, H); // left, top, right, bottom
+		QRect rect(0, 0, W, H); // left, top, right, bottom
 
 		std::shared_ptr<CMemoryBitmap> pTempBitmap = std::make_shared<CGrayBitmapT<std::uint32_t>>();
 		REQUIRE(pTempBitmap->Init(W, H) == true);

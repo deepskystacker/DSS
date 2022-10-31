@@ -181,19 +181,19 @@ inline double			distance(double x1, double y1, double x2, double y2)
 	return sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 };
 
-static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CPointExt pt, bool bNoBloom = false)
+static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, QPointF pt, bool bNoBloom = false)
 {
-	int				x0 = floor(pt.X - 0.5), x1 = 1 + x0,
-						y0 = floor(pt.Y - 0.5), y1 = 1 + y0;
+	int				x0 = floor(pt.x() - 0.5), x1 = 1 + x0,
+					y0 = floor(pt.y() - 0.5), y1 = 1 + y0;
 
 	int				width = pBitmap->Width(),
 						height = pBitmap->Height();
 
 
-	double				fd00 = distance(x0+0.5, y0+0.5, pt.X, pt.Y),
-						fd10 = distance(x0+1.5, y0+0.5, pt.X, pt.Y),
-						fd01 = distance(x0+0.5, y0+1.5, pt.X, pt.Y),
-						fd11 = distance(x0+1.5, y0+1.5, pt.X, pt.Y);
+	double				fd00 = distance(x0+0.5, y0+0.5, pt.x(), pt.y()),
+						fd10 = distance(x0+1.5, y0+0.5, pt.x(), pt.y()),
+						fd01 = distance(x0+0.5, y0+1.5, pt.x(), pt.y()),
+						fd11 = distance(x0+1.5, y0+1.5, pt.x(), pt.y());
 
 	double				fv00 = -1.0,
 						fv10 = -1.0,
@@ -285,17 +285,17 @@ static double	InterpolatePixelValue(CMemoryBitmap * pBitmap, C8BitGrayBitmap * p
 
 double	CDeBloom::ComputeStarGradient(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloomedStarGradient & bsg, double fRadius)
 {
-	CPointExt			ptNW,
+	QPointF			ptNW,
 						ptSW,
 						ptNE,
 						ptSE;
 
 	ptNW = ptSW = ptNE = ptSE = bsg.ptStar;
 
-	ptNW.X += -fRadius+bsg.fdX;		ptNW.Y += -fRadius+bsg.fdY;
-	ptNE.X +=  fRadius+bsg.fdX;		ptNE.Y += -fRadius+bsg.fdY;
-	ptSW.X += -fRadius+bsg.fdX;		ptSW.Y +=  fRadius+bsg.fdY;
-	ptSE.X +=  fRadius+bsg.fdX;		ptSE.Y +=  fRadius+bsg.fdY;
+	ptNW.rx() += -fRadius+bsg.fdX;		ptNW.ry() += -fRadius+bsg.fdY;
+	ptNE.rx() +=  fRadius+bsg.fdX;		ptNE.ry() += -fRadius+bsg.fdY;
+	ptSW.rx() += -fRadius+bsg.fdX;		ptSW.ry() +=  fRadius+bsg.fdY;
+	ptSE.rx() +=  fRadius+bsg.fdX;		ptSE.ry() +=  fRadius+bsg.fdY;
 
 	bsg.fNW = InterpolatePixelValue(pBitmap, pMask, ptNW, true);
 	bsg.fSW = InterpolatePixelValue(pBitmap, pMask, ptSW, true);
@@ -373,14 +373,14 @@ inline	double			GetEdgeAngle(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, d
 	//
 	//     5    6    7
 
-	fValue[0] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX-1.0, fY-1.0), true);
-	fValue[1] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX    , fY-1.0), true);
-	fValue[2] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX+1.0, fY-1.0), true);
-	fValue[3] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX-1.0, fY    ), true);
-	fValue[4] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX+1.0, fY    ), true);
-	fValue[5] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX-1.0, fY+1.0), true);
-	fValue[6] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX    , fY+1.0), true);
-	fValue[7] = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX+1.0, fY+1.0), true);
+	fValue[0] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX-1.0, fY-1.0), true);
+	fValue[1] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX    , fY-1.0), true);
+	fValue[2] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX+1.0, fY-1.0), true);
+	fValue[3] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX-1.0, fY    ), true);
+	fValue[4] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX+1.0, fY    ), true);
+	fValue[5] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX-1.0, fY+1.0), true);
+	fValue[6] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX    , fY+1.0), true);
+	fValue[7] = InterpolatePixelValue(pBitmap, pMask, QPointF(fX+1.0, fY+1.0), true);
 
 	for (int i = 0;i<8 && bOk;i++)
 		bOk = (fValue[i]>0);
@@ -427,8 +427,8 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 						fdYRight = 0;
 	double				fndX = 0,
 						fndY = 0;
-	double				fX = bs.m_ptStar.X,
-						fY = bs.m_ptStar.Y;
+	double				fX = bs.m_ptStar.x(),
+						fY = bs.m_ptStar.y();
 	bool				bFound = false;
 	double				fOffsetX = 0.0,
 						fOffsetY = 0.0;
@@ -477,10 +477,10 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 			double			fValueL2,
 							fValueR2;
 
-			fValueL1 = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX-fDistance+fndX, fY), true);
-			fValueL2 = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX-fDistance-1+fndX, fY), true);
-			fValueR1 = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX+fDistance+fndX, fY), true);
-			fValueR2 = InterpolatePixelValue(pBitmap, pMask, CPointExt(fX+fDistance+1+fndX, fY), true);
+			fValueL1 = InterpolatePixelValue(pBitmap, pMask, QPointF(fX-fDistance+fndX, fY), true);
+			fValueL2 = InterpolatePixelValue(pBitmap, pMask, QPointF(fX-fDistance-1+fndX, fY), true);
+			fValueR1 = InterpolatePixelValue(pBitmap, pMask, QPointF(fX+fDistance+fndX, fY), true);
+			fValueR2 = InterpolatePixelValue(pBitmap, pMask, QPointF(fX+fDistance+1+fndX, fY), true);
 
 			if  (fValueL1>0 && fValueL2>0 && fValueR1>0 && fValueR2>0 &&
 				 fValueL1>fValueL2 && fValueR1>fValueR2)
@@ -521,8 +521,8 @@ void	CDeBloom::RefineStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask
 		}
 		while (!bEnd);
 
-		fX = bs.m_ptStar.X + fdX;
-		bs.m_ptStar.X = fX;
+		fX = bs.m_ptStar.x() + fdX;
+		bs.m_ptStar.setX(fX);
 	};
 };
 
@@ -559,8 +559,10 @@ void	CDeBloom::RefineStarCenter2(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 		};
 	};
 
-	bs.m_ptStar.X += bsg.fdX;
-	bs.m_ptStar.Y += bsg.fdY;
+	qreal& x = bs.m_ptStar.rx();
+	qreal& y = bs.m_ptStar.ry();
+	x += bsg.fdX;
+	y += bsg.fdY;
 };
 
 /* ------------------------------------------------------------------- */
@@ -572,8 +574,8 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 						fdAverageY = 0;
 	std::vector<double>	vValues;
 	double				fRadius;
-	double				fX = bs.m_ptStar.X;
-	double				fY = bs.m_ptStar.Y;
+	double				fX = bs.m_ptStar.x();
+	double				fY = bs.m_ptStar.y();
 
 
 	fRadius=bs.m_fRadius;
@@ -595,7 +597,7 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 		{
 			double			fValue;
 
-			fValue = InterpolatePixelValue(pBitmap, pMask, CPointExt(i, fY+fdY), true);
+			fValue = InterpolatePixelValue(pBitmap, pMask, QPointF(i, fY+fdY), true);
 
 			if (fValue>0)
 			{
@@ -614,12 +616,13 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	};
 	fdAverageY = Median(vYCenters);
 
-	bs.m_ptStar.Y += fdAverageY;
+	qreal& y = bs.m_ptStar.ry();
+	y += fdAverageY;
 
 	RefineStarCenter(pBitmap, pMask, bs);
 
-	fX = bs.m_ptStar.X;
-	fY = bs.m_ptStar.Y;
+	fX = bs.m_ptStar.x();
+	fY = bs.m_ptStar.y();
 
 	bool				bFound = false;
 	double				fRadiusLeft  = -1.0,
@@ -661,8 +664,8 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 		x1L = fX-i;
 		x1R = fX+i;
 
-		fValueL1 = InterpolatePixelValue(pBitmap, pMask, CPointExt(std::max(0.0, x1L), fY), true)-m_fBackground;
-		fValueR1 = InterpolatePixelValue(pBitmap, pMask, CPointExt(std::max(0.0, x1R), fY), true)-m_fBackground;
+		fValueL1 = InterpolatePixelValue(pBitmap, pMask, QPointF(std::max(0.0, x1L), fY), true)-m_fBackground;
+		fValueR1 = InterpolatePixelValue(pBitmap, pMask, QPointF(std::max(0.0, x1R), fY), true)-m_fBackground;
 
 		if (fValueL1 > 0 && fValueR1 > 0)
 		{
@@ -672,8 +675,8 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 			x2L = x1L-1.0;
 			x2R = x1R+1.0;
 
-			fValueL2 = InterpolatePixelValue(pBitmap, pMask, CPointExt(std::max(0.0, x2L), fY), true)-m_fBackground;
-			fValueR2 = InterpolatePixelValue(pBitmap, pMask, CPointExt(std::max(0.0, x2R), fY), true)-m_fBackground;
+			fValueL2 = InterpolatePixelValue(pBitmap, pMask, QPointF(std::max(0.0, x2L), fY), true)-m_fBackground;
+			fValueR2 = InterpolatePixelValue(pBitmap, pMask, QPointF(std::max(0.0, x2R), fY), true)-m_fBackground;
 
 			if (fValueL2>0 && fValueR2>0 && (fValueL1>fValueL2) && (fValueR1>fValueR2))
 			{
@@ -715,13 +718,13 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 		{
 			double				fValue1,
 								fValue2;
-			CPointExt			pt1,
-								pt2;
+			QPointF			pt1,
+							pt2;
 
-			pt1.X = fX + (double)i*cos(vAngles[a]*M_PI/180.0);
-			pt1.Y = fY + (double)i*sin(vAngles[a]*M_PI/180.0);
-			pt2.X = fX + (double)(i+1)*cos(vAngles[a]*M_PI/180.0);
-			pt2.Y = fY + (double)(i+1)*sin(vAngles[a]*M_PI/180.0);
+			pt1.rx() = fX + (double)i*cos(vAngles[a]*M_PI/180.0);
+			pt1.ry() = fY + (double)i*sin(vAngles[a]*M_PI/180.0);
+			pt2.rx() = fX + (double)(i+1)*cos(vAngles[a]*M_PI/180.0);
+			pt2.ry() = fY + (double)(i+1)*sin(vAngles[a]*M_PI/180.0);
 
 			fValue1 = InterpolatePixelValue(pBitmap, pMask, pt1, true)-m_fBackground;
 			fValue2 = InterpolatePixelValue(pBitmap, pMask, pt2, true)-m_fBackground;
@@ -732,14 +735,15 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 								d2;
 				CBloomInfo		bi;
 
-				d1 = distance(fX, fY, pt1.X, pt1.Y);
-				d2 = distance(fX, fY, pt2.X, pt2.Y);
+				d1 = distance(fX, fY, pt1.x(), pt1.y());
+				d2 = distance(fX, fY, pt2.x(), pt2.y());
 
 				bi.m_fAngle  = vAngles[a];
 				bi.m_fRadius = sqrt(-(d2*d2-d1*d1)/2.0/log(fValue2/fValue1));
 				bi.m_fBloom  = fValue1/exp(-d1*d1/2.0/(bi.m_fRadius*bi.m_fRadius));
-				bi.m_ptRef.X = (pt1.X + pt2.X)/2.0;
-				bi.m_ptRef.Y = (pt1.Y + pt2.Y)/2.0;
+				
+				bi.m_ptRef.rx() = (pt1.x() + pt2.x())/2.0;
+				bi.m_ptRef.ry() = (pt1.y() + pt2.y())/2.0;
 
 				bs.m_vBlooms.push_back(bi);
 				bFound = true;
@@ -753,7 +757,7 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 
 /* ------------------------------------------------------------------- */
 
-void	CDeBloom::MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<CPointExt> & vBorders)
+void	CDeBloom::MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<QPointF> & vBorders)
 {
 	double						fMask;
 
@@ -763,19 +767,19 @@ void	CDeBloom::MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<
 		if (fMask<100)
 		{
 			pMask->SetPixel(x, y, 140.0);
-			vBorders.push_back(CPointExt(x, y));
+			vBorders.push_back(QPointF(x, y));
 		};
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<CPoint> & vBloomed)
+void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<QPointF> & vBloomed)
 {
 	if (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight)
 	{
 		bool					bBloomed = true;
-		std::vector<CPointExt>	vTests;
+		std::vector<QPointF>	vTests;
 
 		vTests.emplace_back(x - 1, y - 1);
 		vTests.emplace_back(x - 1, y - 0);
@@ -791,11 +795,11 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vec
 			//
 			// Don't attempt to check Pixel values that are out of bounds
 			//
-			if (false == (vTests[i].X >= 0 && vTests[i].X < m_lWidth && vTests[i].Y >= 0 && vTests[i].Y < m_lHeight))
+			if (false == (vTests[i].x() >= 0 && vTests[i].x() < m_lWidth && vTests[i].y() >= 0 && vTests[i].y() < m_lHeight))
 				continue;
 			double				fMask;
 
-			pMask->GetPixel(vTests[i].X, vTests[i].Y, fMask);
+			pMask->GetPixel(vTests[i].x(), vTests[i].y(), fMask);
 			bBloomed = fMask>0;
 		};
 
@@ -812,7 +816,7 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vec
 void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y)
 {
 	bool						bEnd = false;
-	std::vector<CPoint>			vBloomed;
+	std::vector<QPointF>		vBloomed;
 	int						lLargestY = y;
 	int						lTopY = 0;
 	int						lLargestWidth = 0;
@@ -944,8 +948,8 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 			{
 				lLargestWidth = lMaxX-lMinX+1;
 				lLargestY = j;
-				bs.m_ptStar.X = (lMaxX+lMinX)/2.0;
-				bs.m_ptStar.Y = lLargestY;
+				bs.m_ptStar.rx() = (lMaxX+lMinX)/2.0;
+				bs.m_ptStar.ry() = lLargestY;
 			};
 		};
 	};
@@ -966,26 +970,26 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	{
 		// Mark the possible star
 		double					fRadius = lLargestWidth/2.0+3.0;
-		std::vector<CPointExt>	vBorders;
+		std::vector<QPointF>	vBorders;
 
 		//ComputeStarCenter(ptStar.X, ptStar.Y, fRadius);
 
 		// Mark bloom area borders
 		for (int i = 0;i<vBloomed.size();i++)
 		{
-			MarkBloomBorder(pMask, vBloomed[i].x-1, vBloomed[i].y-1, vBorders);
-			MarkBloomBorder(pMask, vBloomed[i].x  , vBloomed[i].y-1, vBorders);
-			MarkBloomBorder(pMask, vBloomed[i].x+1, vBloomed[i].y-1, vBorders);
-			MarkBloomBorder(pMask, vBloomed[i].x-1, vBloomed[i].y  , vBorders);
-			MarkBloomBorder(pMask, vBloomed[i].x+1, vBloomed[i].y  , vBorders);
-			MarkBloomBorder(pMask, vBloomed[i].x-1, vBloomed[i].y+1, vBorders);
-			MarkBloomBorder(pMask, vBloomed[i].x  , vBloomed[i].y+1, vBorders);
-			MarkBloomBorder(pMask, vBloomed[i].x+1, vBloomed[i].y+1, vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()-1, vBloomed[i].y()-1, vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()  , vBloomed[i].y()-1, vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()+1, vBloomed[i].y()-1, vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()-1, vBloomed[i].y()  , vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()+1, vBloomed[i].y()  , vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()-1, vBloomed[i].y()+1, vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()  , vBloomed[i].y()+1, vBorders);
+			MarkBloomBorder(pMask, vBloomed[i].x()+1, vBloomed[i].y()+1, vBorders);
 		};
 
 		// And mark lonely borders as bloomed
 		for (int i = 0;i<vBorders.size();i++)
-			MarkBorderAsBloomed(pMask, vBorders[i].X, vBorders[i].Y, vBloomed);
+			MarkBorderAsBloomed(pMask, vBorders[i].x(), vBorders[i].y(), vBloomed);
 
 		bs.m_fRadius = fRadius;
 		bs.m_vBloomed  = vBloomed;
@@ -995,7 +999,7 @@ void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	{
 		// Reset the bloomed area
 		for (int i = 0;i<vBloomed.size();i++)
-			pMask->SetPixel(vBloomed[i].x, vBloomed[i].y, 0.0);
+			pMask->SetPixel(vBloomed[i].x(), vBloomed[i].y(), 0.0);
 	}
 }
 
@@ -1100,18 +1104,18 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 						fValue3,
 						fValue4;
 
-		pMask->GetPixel(bs.m_vBloomed[i].x, bs.m_vBloomed[i].y, fMask);
+		pMask->GetPixel(bs.m_vBloomed[i].x(), bs.m_vBloomed[i].y(), fMask);
 		if (IsBloomedValue(fMask))
 		{
 			double		fDistance,
 						fBaseValue;
 			double		fAverage = -1.0;
-			CPointExt	pt(bs.m_vBloomed[i].x+0.5, bs.m_vBloomed[i].y+0.5);
+			QPointF	pt(bs.m_vBloomed[i].x()+0.5, bs.m_vBloomed[i].y()+0.5);
 
-			fDistance = distance(pt.X, pt.Y, bs.m_ptStar.X, bs.m_ptStar.Y);
+			fDistance = distance(pt.x(), pt.y(), bs.m_ptStar.x(), bs.m_ptStar.y());
 
-			fValue3 = InterpolatePixelValue(pBitmap, pMask, CPointExt(bs.m_ptStar.X-fDistance, bs.m_ptStar.Y), true);
-			fValue4 = InterpolatePixelValue(pBitmap, pMask, CPointExt(bs.m_ptStar.X+fDistance, bs.m_ptStar.Y), true);
+			fValue3 = InterpolatePixelValue(pBitmap, pMask, QPointF(bs.m_ptStar.x()-fDistance, bs.m_ptStar.y()), true);
+			fValue4 = InterpolatePixelValue(pBitmap, pMask, QPointF(bs.m_ptStar.x()+fDistance, bs.m_ptStar.y()), true);
 
 			if (fValue3 > 0 && fValue4 > 0)
 				fAverage = std::min(fValue3,fValue4);
@@ -1126,7 +1130,7 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 			{
 				double	fBloomDistance;
 
-				fBloomDistance = distance(pt.X, pt.Y, bs.m_vBlooms[a].m_ptRef.X, bs.m_vBlooms[a].m_ptRef.X);
+				fBloomDistance = distance(pt.x(), pt.y(), bs.m_vBlooms[a].m_ptRef.x(), bs.m_vBlooms[a].m_ptRef.x());
 				fBloomWeight += 1.0/(fBloomDistance+1.0);
 
 				fFactor1 = 2.0*pow(bs.m_vBlooms[a].m_fRadius, 2);
@@ -1141,7 +1145,7 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 			//fValue1 = m_fBackground + exp(-(fDistance * fDistance)/fFactor1)*bs.m_fBloom;
 			//fValue2 = m_fBackground + exp(-(fDistance * fDistance)/fFactor2)*bs.m_fBloom2;
 
-			pBitmap->GetPixel(bs.m_vBloomed[i].x, bs.m_vBloomed[i].y, fBaseValue);
+			pBitmap->GetPixel(bs.m_vBloomed[i].x(), bs.m_vBloomed[i].y(), fBaseValue);
 
 			fValue = fBaseValue;
 			if (fAverage>0 && fBloomValue>0)
@@ -1156,7 +1160,7 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 				fValue = fValue*(1.0-fRatio)+fAverage*fRatio;
 			};*/
 
-			pBitmap->SetPixel(bs.m_vBloomed[i].x, bs.m_vBloomed[i].y, std::min(255.0, fValue));
+			pBitmap->SetPixel(bs.m_vBloomed[i].x(), bs.m_vBloomed[i].y(), std::min(255.0, fValue));
 		};
 	};
 };
@@ -1236,8 +1240,8 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 	if (m_pProgress != nullptr)
 		m_pProgress->Start2(nullptr, m_lWidth);
 
-	std::vector<CPoint> vUnprocessed;
-	std::vector<CPoint> vProcessed;
+	std::vector<QPoint> vUnprocessed;
+	std::vector<QPoint> vProcessed;
 
 	for (int i = 0; i < m_lWidth; i++)
 	{
@@ -1273,17 +1277,17 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 
 	if (vUnprocessed.size())
 	{
-		std::vector<CPoint>			vNewlyProcessed = vProcessed;
+		std::vector<QPoint>			vNewlyProcessed = vProcessed;
 
 		while (vUnprocessed.size() && (vUnprocessed.size() != lNrUnprocessed))
 		{
 			for (int i = 0;i<vNewlyProcessed.size();i++)
-				pMask->SetPixel(vNewlyProcessed[i].x, vNewlyProcessed[i].y, 190.0);
+				pMask->SetPixel(vNewlyProcessed[i].x(), vNewlyProcessed[i].y(), 190.0);
 			vNewlyProcessed.clear();
 
 			lNrUnprocessed = (int)vUnprocessed.size();
 
-			std::vector<CPoint>			vToProcess = vUnprocessed;
+			std::vector<QPoint>			vToProcess = vUnprocessed;
 
 			vUnprocessed.clear();
 
@@ -1292,11 +1296,11 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 				double				fValue;
 				bool				bDone;
 
-				fValue = ComputeValue(pBitmap, pMask.get(), vToProcess[i].x, vToProcess[i].y, bDone);
+				fValue = ComputeValue(pBitmap, pMask.get(), vToProcess[i].x(), vToProcess[i].y(), bDone);
 
 				if (bDone)
 				{
-					pBitmap->SetPixel(vToProcess[i].x, vToProcess[i].y, fValue);
+					pBitmap->SetPixel(vToProcess[i].x(), vToProcess[i].y(), fValue);
 					vProcessed.push_back(vToProcess[i]);
 					vNewlyProcessed.push_back(vToProcess[i]);
 				}
@@ -1309,8 +1313,8 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 		}
 
 		//for (int i = 0; i < vProcessed.size(); i++)
-		for (const CPoint& point : vProcessed)
-			pMask->SetPixel(point.x, point.y, 255.0);
+		for (const QPoint& point : vProcessed)
+			pMask->SetPixel(point.x(), point.y(), 255.0);
 	}
 
 	if (m_pProgress != nullptr)

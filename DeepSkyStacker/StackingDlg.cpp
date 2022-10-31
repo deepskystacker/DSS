@@ -1963,13 +1963,13 @@ namespace DSS
 	{
 		if (checkEditChanges())
 		{
-			CCheckAbove		dlg;
+			CheckAbove		dlg;
 			double			fThreshold;
 
-			if (dlg.DoModal() == IDOK)
+			if (dlg.exec() == QDialog::Accepted)
 			{
-				fThreshold = dlg.GetThreshold();
-				if (dlg.IsPercent())
+				fThreshold = dlg.threshold();
+				if (dlg.isPercent())
 					frameList.checkBest(fThreshold);
 				else
 					frameList.checkAbove(fThreshold);

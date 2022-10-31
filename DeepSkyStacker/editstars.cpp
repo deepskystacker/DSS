@@ -467,11 +467,13 @@ namespace DSS
 		initGrayBitmap(rcCheck);
 
 		CRegisteredFrame		regFrame;
-		CRect					rcReg;
+		QRectF					rcReg;
 		STARSET stars;
 
-		rcReg.left = STARMAXSIZE;		rcReg.right = rcCheck.width() - (STARMAXSIZE + 1);
-		rcReg.top = STARMAXSIZE;		rcReg.bottom = rcCheck.height() - (STARMAXSIZE + 1);
+		rcReg.setCoords(STARMAXSIZE, STARMAXSIZE,
+			static_cast<qreal>(rcCheck.width() - (STARMAXSIZE + 1)), static_cast<qreal>(rcCheck.width() - (STARMAXSIZE + 1)));
+		//rcReg.left = STARMAXSIZE;		rcReg.right = rcCheck.width() - (STARMAXSIZE + 1);
+		//rcReg.top = STARMAXSIZE;		rcReg.bottom = rcCheck.width() - (STARMAXSIZE + 1));
 
 		regFrame.m_fBackground = m_fBackground;
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
@@ -583,23 +585,23 @@ namespace DSS
 
 				if (g_bShowRefStars && refStars.size())
 				{
-					CPointExt			ptOrg;
-					CPointExt			ptDst;
+					QPointF			ptOrg;
+					QPointF			ptDst;
 
-					ptOrg.X = stars[i].m_fX;
-					ptOrg.Y = stars[i].m_fY;
+					ptOrg.rx() = stars[i].m_fX;
+					ptOrg.ry() = stars[i].m_fY;
 
 					ptDst = ptOrg;
 
-					ptDst = transformation.Transform(ptOrg);
+					ptDst = transformation.transform(ptOrg);
 
-					ptOrg.X += 0.5; ptOrg.Y += 0.5;
-					ptDst.X += 0.5; ptDst.Y += 0.5;
+					ptOrg.rx() += 0.5; ptOrg.ry() += 0.5;
+					ptDst.rx() += 0.5; ptDst.ry() += 0.5;
 
-					imageView->imageToScreen(ptOrg.X, ptOrg.Y);
-					imageView->imageToScreen(ptDst.X, ptDst.Y);
+					imageView->imageToScreen(ptOrg.rx(), ptOrg.ry());
+					imageView->imageToScreen(ptDst.rx(), ptDst.ry());
 
-					painter.drawLine(QPointF(ptOrg.X, ptOrg.Y), QPointF(ptDst.X, ptDst.Y));
+					painter.drawLine(ptOrg, ptDst);
 
 				};
 

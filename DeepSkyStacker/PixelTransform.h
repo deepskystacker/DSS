@@ -52,13 +52,13 @@ public :
 
 	void	ComputeCometShift(double fXOrgComet, double fYOrgComet, double fXTgtComet, double fYTgtComet, bool bDoNotUse, bool bAlreadyTransformed)
 	{
-		CPointExt		ptComet(fXTgtComet, fYTgtComet);
+		QPointF	ptComet(fXTgtComet, fYTgtComet);
 
 		if (!bAlreadyTransformed)
-			ptComet = m_BilinearParameters.Transform(ptComet);
+			ptComet = m_BilinearParameters.transform(ptComet);
 
-		m_fXCometShift = fXOrgComet - ptComet.X;
-		m_fYCometShift = fYOrgComet - ptComet.Y;
+		m_fXCometShift = fXOrgComet - ptComet.x();
+		m_fYCometShift = fYOrgComet - ptComet.y();
 		m_bUseCometShift = !bDoNotUse;
 	};
 
@@ -78,27 +78,6 @@ public :
 	{
 		CopyFrom(pt);
 		return (*this);
-	};
-
-	CPointExt Transform(const CPointExt & pp) const
-	{
-		// First rotate
-		CPointExt		ppResult = pp;
-
-		ppResult = m_BilinearParameters.Transform(ppResult);
-		ppResult.X *= m_lPixelSizeMultiplier;
-		ppResult.Y *= m_lPixelSizeMultiplier;
-
-		ppResult.X += m_fXShift;
-		ppResult.Y += m_fYShift;
-
-		if (m_bUseCometShift)
-		{
-			ppResult.X += m_fXCometShift;
-			ppResult.Y += m_fYCometShift;
-		};
-
-		return ppResult;
 	};
 
 	QPointF transform(const QPointF& pp) const
@@ -169,30 +148,30 @@ public :
 
 typedef std::vector<CPixelDispatch>			PIXELDISPATCHVECTOR;
 
-inline void ComputePixelDispatch(const CPointExt & pt, PIXELDISPATCHVECTOR & vPixels)
+inline void ComputePixelDispatch(const QPointF & pt, PIXELDISPATCHVECTOR & vPixels)
 {
 	int			lX,
 					lY;
 	double			fRemainX,
 					fRemainY;
 
-	lX = floor(pt.X);
-	lY = floor(pt.Y);
-	fRemainX = pt.X - lX;
-	fRemainY = pt.Y - lY;
+	lX = floor(pt.x());
+	lY = floor(pt.y());
+	fRemainX = pt.x() - lX;
+	fRemainY = pt.y() - lY;
 
-	if ((pt.X == lX) && (pt.Y == lY))
+	if ((pt.x() == lX) && (pt.y() == lY))
 	{
 		// Only one pixel with all the luminosity
 		vPixels.emplace_back(lX, lY, 1.0);
 	}
-	else if (pt.X == lX)
+	else if (pt.x() == lX)
 	{
 		// 2 pixels
 		vPixels.emplace_back(lX, lY, 1.0 - fRemainY);
 		vPixels.emplace_back(lX, lY+1, fRemainY);
 	}
-	else if (pt.Y == lY)
+	else if (pt.y() == lY)
 	{
 		// 2 pixels
 		vPixels.emplace_back(lX, lY, 1.0 - fRemainX);
@@ -213,16 +192,16 @@ inline void ComputePixelDispatch(const CPointExt & pt, PIXELDISPATCHVECTOR & vPi
 //  2 = pt(-0.5, -0.5) - pt(-0.5, 0.5) - pt(0.5, -0.5) - pt (0.5, 0.5) - 4 pixels
 //  3 = pt(-1, -1) - ... - pt (0, 0) - ... - pt (1, 1) - 9 pixels
 //  4 = pt(-1.5, -1.5) - ... - pt(1.5, 1.5) - 16 pixels
-inline void ComputePixelDispatch(const CPointExt & pt, int lPixelSize, PIXELDISPATCHVECTOR & vPixels)
+inline void ComputePixelDispatch(const QPointF & pt, int lPixelSize, PIXELDISPATCHVECTOR & vPixels)
 {
 	double			fStart = (double)(lPixelSize-1)/2.0;
 
 	for (double i = -fStart;i<=fStart;i++)
 		for (double j = -fStart;j<=fStart;j++)
 		{
-			CPointExt		pt2 = pt;
-			pt2.X += i;
-			pt2.Y += j;
+			QPointF		pt2 = pt;
+			pt2.rx() += i;
+			pt2.ry() += j;
 			ComputePixelDispatch(pt2, vPixels);
 		}
 };
