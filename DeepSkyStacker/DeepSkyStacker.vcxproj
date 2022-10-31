@@ -508,8 +508,8 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="BitMapFiller.h" />
     <ClInclude Include="BitmapIterator.h" />
     <ClInclude Include="ChannelAlign.h" />
-    <ClInclude Include="CheckAbove.h" />
     <QtMoc Include="CometStacking.h" />
+    <QtMoc Include="CheckAbove.h" />
     <ClInclude Include="commonresource.h" />
     <ClInclude Include="CosmeticEngine.h" />
     <ClInclude Include="DarkFrame.h" />
