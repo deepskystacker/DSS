@@ -1,4 +1,32 @@
-﻿Welcome to DeepSkyStacker 4.2.5
+﻿Welcome to DeepSkyStacker 5.0.1 Beta 1
+
+This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows
+Only 64 bit versions of Windows 7 and later are supported in this release.    So far the majority of the code for the stacking
+panel has been converted to use Qt.
+
+Here are the main changes that were made for DeepSkyStacker 5.0.1:
+
+1. The bulk of the code for the stacking panel has been converted to Qt.  This includes a completely reworked image display.
+
+2. The image list can now be undocked from the bottom of the stacking panel so that it operates as a separate window.
+
+3. It is now possible to rename all groups with the exception of the initial group (Main Group).
+
+4. Some fields in the image list (Type, ISO/Gain, and Exposure) can the double-clicked to change the values.
+
+5. A large number of internal changes have been made with the intent of facilitating future enhancements and/or to improve processing.
+
+6. SIMD (Single Instruction Multiple Data - also known as Advanced Vector Extensions or AVX) support for decoding raw images and for registration and stacking of RGGB images.  It delivers dramatic reductions in processing times.   As an example, Martin Toeltsch (who wrote the code) reports times to process 10 Nikon NEF files (on his computer):
+
+	Without SIMD	52s
+	Using SIMD		 8s
+	
+We hope to add support for GBRG images soon as this is important for Canon DSLR cameras.
+	
+7. Some further tuning of the OpenMP (multi-processor support) has been done.
+
+==============================================================================================================================================
+Welcome to DeepSkyStacker 4.2.5
 
 PLEASE SCROLL DOWN TO READ THE WARNING ABOUT LIBRAW 0.20.   Please note that version 5.1.0 of DeepSkyStacker will not run on 32 bit systems or Windows XP.
 
