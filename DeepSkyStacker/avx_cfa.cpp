@@ -36,7 +36,9 @@ int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, 
 	if (!AvxSupport{ inputBitmap }.isMonochromeCfaBitmapOfType<std::uint16_t>())
 		return 1;
 
-	return Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color(lineStart, lineEnd);
+	return AvxSupport{ inputBitmap }.getCfaType() == CFATYPE_RGGB
+		? Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<0>(lineStart, lineEnd)
+		: Avx256CfaProcessing{ *this }.interpolateGrayCFA2Color<1>(lineStart, lineEnd);
 }
 
 
@@ -44,6 +46,7 @@ int AvxCfaProcessing::interpolate(const size_t lineStart, const size_t lineEnd, 
 // ************ AVX-256 interpolation ************
 // ***********************************************
 
+template <int RG_ROW>
 int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd)
 {
 	if (const auto* const p{ dynamic_cast<const CGrayBitmapT<std::uint16_t>*>(&avxData.inputBitmap) })
@@ -119,14 +122,17 @@ int Avx256CfaProcessing::interpolateGrayCFA2Color(const size_t lineStart, const 
 			const __m256i UDinterpol = _mm256_avg_epu16(prevCurr, nextCurr);
 			const __m256i crossInterpol = _mm256_avg_epu16(_mm256_avg_epu16(prevRight, prevLeft), _mm256_avg_epu16(nextRight, nextLeft));
 			const __m256i greenInterpol = _mm256_avg_epu16(UDinterpol, LRinterpol);
-			if ((row % 2) == 0) // Even row -> RG-line
+
+			// RGGB pattern: RG_ROW==0 -> even row -> RG-line
+			// GBRG pattern: RG_ROW==1 ->  odd row -> RG-line
+			if ((row % 2) == RG_ROW)
 			{
 				const __m256i red = _mm256_blend_epi16(thisCurr, LRinterpol, 0xaa); // 0b10101010 = 0xaa
 				const __m256i green = _mm256_blend_epi16(greenInterpol, thisCurr, 0xaa);
 				const __m256i blue = _mm256_blend_epi16(crossInterpol, UDinterpol, 0xaa);
 				return { red, green, blue };
 			}
-			else // odd row -> GB-line
+			else // GB-line
 			{
 				const __m256i red = _mm256_blend_epi16(UDinterpol, crossInterpol, 0xaa);
 				const __m256i green = _mm256_blend_epi16(thisCurr, greenInterpol, 0xaa);

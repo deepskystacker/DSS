@@ -70,6 +70,14 @@ bool AvxSupport::isColorBitmapOrCfa() const
 	return isColorBitmap() || isMonochromeCfaBitmapOfType<std::uint16_t>();
 }
 
+CFATYPE AvxSupport::getCfaType() const
+{
+	if (auto* pGray = const_cast<AvxSupport*>(this)->getGrayPtr<std::uint16_t>()) // GetCFAType is a non-const funtion :-(
+		return pGray->GetCFAType();
+	else
+		return CFATYPE_NONE;
+}
+
 const int AvxSupport::width() const {
 	return bitmap.Width();
 }

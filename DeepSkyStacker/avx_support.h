@@ -29,6 +29,8 @@ public:
 	template <class T> bool isMonochromeCfaBitmapOfType() const;
 	bool isColorBitmapOrCfa() const;
 
+	CFATYPE getCfaType() const;
+
 	template <class T>
 	const std::vector<T>& redPixels() const { return getColorPtr<T>()->m_Red.m_vPixels; }
 	template <class T>
