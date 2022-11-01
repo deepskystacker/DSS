@@ -6,14 +6,17 @@
 class AvxCfaProcessing
 {
 private:
-	typedef __m256i VectorElementType;
+	typedef __m512i VectorElementType;
 	typedef std::vector<VectorElementType> VectorType;
+
+	friend class Avx256CfaProcessing;
 
 	VectorType redPixels;
 	VectorType greenPixels;
 	VectorType bluePixels;
 	CMemoryBitmap& inputBitmap;
 	size_t vectorsPerLine;
+	bool avxReady;
 public:
 	AvxCfaProcessing() = delete;
 	AvxCfaProcessing(const size_t lineStart, const size_t lineEnd, CMemoryBitmap& inputbm);
@@ -51,12 +54,26 @@ public:
 			return nullptr;
 	}
 
-	inline const VectorElementType* redCfaBlock() const { return &*this->redPixels.begin(); }
-	inline const VectorElementType* greenCfaBlock() const { return &*this->greenPixels.begin(); }
-	inline const VectorElementType* blueCfaBlock() const { return &*this->bluePixels.begin(); }
+	inline const VectorElementType* redCfaBlock() const { return this->redPixels.data(); }
+	inline const VectorElementType* greenCfaBlock() const { return this->greenPixels.data(); }
+	inline const VectorElementType* blueCfaBlock() const { return this->bluePixels.data(); }
 private:
-	int interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd);
 	std::uint16_t* redCfaLine(const size_t rowIndex) { return const_cast<std::uint16_t*>(static_cast<const AvxCfaProcessing*>(this)->redCfaLine<std::uint16_t>(rowIndex)); }
 	std::uint16_t* greenCfaLine(const size_t rowIndex) { return const_cast<std::uint16_t*>(static_cast<const AvxCfaProcessing*>(this)->greenCfaLine<std::uint16_t>(rowIndex)); }
 	std::uint16_t* blueCfaLine(const size_t rowIndex) { return const_cast<std::uint16_t*>(static_cast<const AvxCfaProcessing*>(this)->blueCfaLine<std::uint16_t>(rowIndex)); }
+};
+
+// *********************************
+// ************ AVX-256 ************
+// *********************************
+
+class Avx256CfaProcessing
+{
+private:
+	friend class AvxCfaProcessing;
+
+	AvxCfaProcessing& avxData;
+	Avx256CfaProcessing(AvxCfaProcessing& ad) : avxData{ ad } {}
+
+	int interpolateGrayCFA2Color(const size_t lineStart, const size_t lineEnd);
 };
