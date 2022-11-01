@@ -6,7 +6,15 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 {
 	const auto compare = [](const WORD* pColor, const std::initializer_list<WORD>& data)
 	{
-		return memcmp(pColor, data.begin(), data.size() * sizeof(WORD));
+		const int retval = memcmp(pColor, data.begin(), data.size() * sizeof(WORD));
+		if (retval != 0)
+		{
+			for (int n = 0; n < data.size(); ++n)
+			{
+				printf("first[%i] = %i, second[%i] = %i\n", n, pColor[n], n, *(data.begin() + n));
+			}
+		}
+		return retval;
 	};
 
 	std::shared_ptr<CMemoryBitmap> pBitmap = std::make_shared<CGrayBitmapT<WORD>>();
@@ -20,9 +28,9 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		REQUIRE(avxCfaProcessing.nrVectorsPerLine() == 1);
 	}
 
-	SECTION("Init sets nrVectorsPerLine to 2 for width 17")
+	SECTION("Init sets nrVectorsPerLine to 2 for width 33")
 	{
-		const bool b = pBitmap->Init(17, 1);
+		const bool b = pBitmap->Init(33, 1);
 		REQUIRE(b == true);
 		avxCfaProcessing.init(0, 1);
 		REQUIRE(avxCfaProcessing.nrVectorsPerLine() == 2);
@@ -70,18 +78,6 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
 	}
 
-	SECTION("Interpolate fails if CFA type is GBRG")
-	{
-		pBitmap->Init(64, 8);
-		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
-		REQUIRE(pGray != nullptr);
-		pGray->UseBilinear(true);
-		pGray->SetCFAType(CFATYPE_GBRG);
-		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
-		avxCfaProcessing.init(0, 8);
-		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
-	}
-
 	SECTION("Interpolate fails if CFA transform is superpixel although CFA type is RGGB")
 	{
 		pBitmap->Init(64, 8);
@@ -89,6 +85,18 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		REQUIRE(pGray != nullptr);
 		pGray->UseSuperPixels(true);
 		pGray->SetCFAType(CFATYPE_RGGB);
+		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
+	}
+
+	SECTION("Interpolate fails if CFA transform is superpixel although CFA type is GBRG")
+	{
+		pBitmap->Init(64, 8);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
+		REQUIRE(pGray != nullptr);
+		pGray->UseSuperPixels(true);
+		pGray->SetCFAType(CFATYPE_GBRG);
 		memset(pGray->m_vPixels.data(), 0, sizeof(WORD) * 64 * 8);
 		avxCfaProcessing.init(0, 8);
 		REQUIRE(avxCfaProcessing.interpolate(0, 1, 1) != 0);
@@ -152,8 +160,27 @@ TEST_CASE("AVX CFA", "[AVX][CFA]")
 		REQUIRE(avxCfaProcessing.interpolate(0, 8, 1) == 0);
 
 		REQUIRE(compare(avxCfaProcessing.redCfaLine<WORD>(2), { 128, 129, 130, 131, 132, 133 }) == 0);
-		REQUIRE(compare(avxCfaProcessing.greenCfaLine<WORD>(2), { (129 + 0 + 1) / 2, 129, 130, 131, 132, 133 }) == 0);
-		REQUIRE(compare(avxCfaProcessing.blueCfaLine<WORD>(2), { ((65 + 1) / 2 + (193 + 1) / 2 + 1) / 2, 129, 130, 131, 132, 133 }) == 0);
+		REQUIRE(compare(avxCfaProcessing.greenCfaLine<WORD>(2), { ((129 + 0 + 1/*due to avg_epu16*/) / 2 + (64 + 192) / 2 + 1) / 2, 129, 130, 131, 132, 133 }) == 0);
+		REQUIRE(compare(avxCfaProcessing.blueCfaLine<WORD>(2), { ((65 + 0 + 1) / 2 + (193 + 0 + 1) / 2) / 2, 129, 130, 131, 132, 133 }) == 0);
+	}
+
+	SECTION("Interpolate a RGRG line of a GBRG pattern")
+	{
+		REQUIRE(pBitmap->Init(64, 8) == true);
+		auto* pGray = dynamic_cast<CGrayBitmapT<WORD>*>(pBitmap.get());
+		pGray->UseBilinear(true);
+		pGray->SetCFAType(CFATYPE_GBRG);
+		WORD v = 0;
+		for (WORD& x : pGray->m_vPixels) {
+			x = v++;
+		}
+
+		avxCfaProcessing.init(0, 8);
+		REQUIRE(avxCfaProcessing.interpolate(0, 8, 1) == 0);
+
+		REQUIRE(compare(avxCfaProcessing.redCfaLine<WORD>(1), { 64, 65, 66, 67, 68, 69 }) == 0);
+		REQUIRE(compare(avxCfaProcessing.greenCfaLine<WORD>(1), { ((65 + 0 + 1/*due to avg_epu16*/) / 2 + (0 + 128) / 2 + 1) / 2, 65, 66, 67, 68, 69}) == 0);
+		REQUIRE(compare(avxCfaProcessing.blueCfaLine<WORD>(1), { ((1 + 0 + 1) / 2 + (129 + 0 + 1) / 2) / 2, 65, 66, 67, 68, 69 }) == 0);
 	}
 
 	SECTION("Interpolate a GBGB line")
