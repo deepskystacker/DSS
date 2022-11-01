@@ -58,7 +58,8 @@ bool AvxSupport::isMonochromeCfaBitmapOfType() const
 	{
 		auto* const pGray = const_cast<AvxSupport*>(this)->getGrayPtr<T>();
 		// We support CFA only for RGGB Bayer matrices with BILINEAR interpolation and no offsets.
-		return (pGray != nullptr && pGray->IsCFA() && pGray->GetCFATransformation() == CFAT_BILINEAR && pGray->GetCFAType() == CFATYPE_RGGB && pGray->xOffset() == 0 && pGray->yOffset() == 0);
+		return (pGray != nullptr && pGray->IsCFA() && pGray->GetCFATransformation() == CFAT_BILINEAR && pGray->xOffset() == 0 && pGray->yOffset() == 0
+			&& (pGray->GetCFAType() == CFATYPE_RGGB || pGray->GetCFAType() == CFATYPE_GBRG));
 	}
 	else
 		return false;
