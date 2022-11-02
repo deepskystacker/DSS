@@ -998,7 +998,8 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 			const int bottom = std::min(static_cast<int>(Bitmap.Height()) - StarMaxSize, top + rectSize);
 
 			for (int colNdx = xStart; colNdx < xEnd; ++colNdx, progress())
-				nStars += RegisterSubRect(&Bitmap, QRectF(StarMaxSize + colNdx * stepSize, top, std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom), stars);
+				nStars += RegisterSubRect(&Bitmap, QRectF(QPointF(StarMaxSize + colNdx * stepSize, top), 
+					QPointF(std::min(rightmostColumn, StarMaxSize + colNdx * stepSize + rectSize), bottom)), stars);
 		}
 	};
 
