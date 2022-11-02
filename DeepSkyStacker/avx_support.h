@@ -29,6 +29,8 @@ public:
 	template <class T> bool isMonochromeCfaBitmapOfType() const;
 	bool isColorBitmapOrCfa() const;
 
+	CFATYPE getCfaType() const;
+
 	template <class T>
 	const std::vector<T>& redPixels() const { return getColorPtr<T>()->m_Red.m_vPixels; }
 	template <class T>
@@ -432,6 +434,19 @@ public:
 	{
 		static_assert(N == 1);
 		return _mm256_permutevar8x32_epi32(x, _mm256_setr_epi32(0, 0, 1, 2, 3, 4, 5, 6));
+	}
+
+	inline static __m256i shl1Epi16(const __m256i x, const int value) noexcept // CPU cycles: 2/2 + 3/1 + 1/1 = 6/4
+	{
+		const __m128i src = _mm_insert_epi16(_mm_undefined_si128(), value, 7); // Value to the lowest 128bit-lane [highest element].
+		const __m256i b = _mm256_permute2x128_si256(x, _mm256_zextsi128_si256(src), 0x02); // [lo(x), src]
+		return _mm256_alignr_epi8(x, b, 16 - 2); // [x, b] >> (14 bytes) lane-by-lane
+	}
+	inline static __m256i shr1Epi16(const __m256i x, const int value) noexcept // CPU cycles: 2/1 + 3/1 + 1/1 = 6/3
+	{
+		const __m128i src = _mm_cvtsi32_si128(value); // Value to 128-bit-lane [lowest element].
+		const __m256i a = _mm256_permute2x128_si256(x, _mm256_zextsi128_si256(src), 0x21); // [src, hi(x)]
+		return _mm256_alignr_epi8(a, x, 2); // [a, x] >> (2 bytes) lane-by-lane
 	}
 
 	template <int N>
