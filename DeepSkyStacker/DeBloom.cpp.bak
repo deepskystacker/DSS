@@ -614,7 +614,8 @@ void	CDeBloom::ComputeStarCenter(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMas
 	};
 	fdAverageY = Median(vYCenters);
 
-	bs.m_ptStar.ry() += fdAverageY;
+	qreal& y = bs.m_ptStar.ry();
+	y += fdAverageY;
 
 	RefineStarCenter(pBitmap, pMask, bs);
 
