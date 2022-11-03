@@ -187,7 +187,7 @@ namespace DSS
                 else
                 {
                     if (file.m_bDeltaComputed)
-                        return QString("%1 °").arg(file.m_fAngle * 180.0 / M_PI, 0, 'f', 2);
+                        return QString("%1\xc2\xb0").arg(file.m_fAngle * 180.0 / M_PI, 0, 'f', 2);
                     else
                         return QString("NC");
                 };
