@@ -205,7 +205,7 @@ a = (b x0 +c )  y0 - x0;
 */
 /* ------------------------------------------------------------------- */
 
-class DSSRect
+class DSSRect final
 {
 
 public:
@@ -267,7 +267,7 @@ public:
 		return bottom - top;
 	};
 
-	virtual ~DSSRect()
+	~DSSRect()
 	{
 	};
 
