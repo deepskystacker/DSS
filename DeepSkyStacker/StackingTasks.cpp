@@ -5,6 +5,7 @@
 #include <set>
 #include "Settings.h"
 #include <QSettings>
+#include <QRectF>
 
 /* ------------------------------------------------------------------- */
 

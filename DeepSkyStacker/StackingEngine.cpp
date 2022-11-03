@@ -18,6 +18,7 @@
 #include "avx.h"
 #include "avx_avg.h"
 #include <omp.h>
+#include <QRectF>
 
 
 #define _USE_MATH_DEFINES

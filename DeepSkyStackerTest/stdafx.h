@@ -6,5 +6,3 @@
 #include "../ZCLass/zdefs.h"
 #include "../ZCLass/Ztrace.h"
 #include "../ZCLass/zexcept.h"
-#include <QRect>
-#include <QRectF>

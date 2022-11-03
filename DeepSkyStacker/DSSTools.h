@@ -217,10 +217,10 @@ public:
 public:
 	DSSRect(int l = 0, int t = 0, int r = 0, int b = 0)
 	{
-		left = min(l, r);
-		top = min(t, b);
-		right = max(l, r);
-		bottom = max(t, b);
+		left = std::min(l, r);
+		top = std::min(t, b);
+		right = std::max(l, r);
+		bottom = std::max(t, b);
 	};
 
 	DSSRect(QPoint topLeft, QPoint bottomRight)
