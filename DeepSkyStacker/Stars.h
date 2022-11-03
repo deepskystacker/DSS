@@ -8,7 +8,7 @@
 class CStar
 {
 public :
-	QRect			m_rcStar;
+	DSSRect			m_rcStar;
 	double			m_fIntensity;
 	double			m_fPercentage;
 	double			m_fDeltaRadius;
@@ -63,7 +63,7 @@ public :
 		m_fQuality		  = 0.0;
 		m_fMeanRadius	  = 0.0;
 		m_fDeltaRadius	  = 0.0;
-		m_rcStar.setSize(QSize(0, 0));
+		m_rcStar.setEmpty();
 	};
 	~CStar() {};
 
@@ -89,7 +89,7 @@ public :
 		m_fQuality		  = 0.0;
 		m_fMeanRadius	  = 0.0;
 		m_fDeltaRadius	  = 0.0;
-		m_rcStar.setSize(QSize(0, 0));
+		m_rcStar.setEmpty();
 	};
 
 	CStar & operator = (const CStar & ms)
@@ -113,10 +113,10 @@ public :
 		return Distance(QPointF(m_fX, m_fY), QPointF(pt)) <= m_fMeanRadius * 2.35 / 1.5;
 	};
 
-	bool	IsInRect(const QRectF & rc)
-	{
-		return rc.contains(QPointF(m_fX, m_fY));
-	};
+	//bool	IsInRect(const QRectF & rc)
+	//{
+	//	return rc.contains(QPointF(m_fX, m_fY));
+	//};
 
 	bool	IsInRadius(const QPointF & pt) const
 	{

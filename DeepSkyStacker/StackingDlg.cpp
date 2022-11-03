@@ -549,7 +549,7 @@ namespace DSS
 		delete ui;
 	}
 
-	void StackingDlg::setSelectionRect(QRectF rect)
+	void StackingDlg::setSelectionRect(const DSSRect& rect)
 	{
 		selectRect = rect;
 	}
@@ -2261,7 +2261,7 @@ namespace DSS
 			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
 			if (!selectRect.isEmpty())
 			{
-				tasks.SetCustomRectangle(selectRect.toRect());
+				tasks.SetCustomRectangle(selectRect);
 			}
 
 			dlgSettings.setStackingTasks(&tasks);
@@ -2360,7 +2360,7 @@ namespace DSS
 			// Set the selection rectangle if needed.   It is set by Qt signal from DSSSelectRect.cpp
 			if (!selectRect.isEmpty())
 			{
-				tasks.SetCustomRectangle(selectRect.toRect());
+				tasks.SetCustomRectangle(selectRect);
 			}
 
 			if (checkReadOnlyFolders(tasks))

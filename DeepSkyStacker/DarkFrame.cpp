@@ -2,7 +2,6 @@
 #include <set>
 #include <algorithm>
 #include <omp.h>
-#include <QRect>
 #include <ZExcept.h>
 #include "DarkFrame.h"
 
@@ -334,7 +333,7 @@ static void	RetrictValues(VALUEPAIRSET & sValuePairs)
 class CSubSquare
 {
 public :
-	QRect					m_rcSquare;
+	DSSRect					m_rcSquare;
 	double					m_fMean;
 	double					m_fStdDev;
 
@@ -399,11 +398,10 @@ public :
 		{
 			CSubSquare			sq;
 
-			sq.m_rcSquare.setRect(i, j, lSize, lSize);
-			//sq.m_rcSquare.left		= i;
-			//sq.m_rcSquare.right		= i+lSize-1;
-			//sq.m_rcSquare.top		= j;
-			//sq.m_rcSquare.bottom	= j+lSize-1;
+			sq.m_rcSquare.left		= i;
+			sq.m_rcSquare.right		= i+lSize-1;
+			sq.m_rcSquare.top		= j;
+			sq.m_rcSquare.bottom	= j+lSize-1;
 
 			m_vSubSquares.push_back(sq);
 
@@ -439,10 +437,10 @@ void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR 
 	{
 		for (i = 0;i<pStars->size();i++)
 		{
-			QRect &			rcStar = (*pStars)[i].m_rcStar;
+			DSSRect& rcStar = (*pStars)[i].m_rcStar;
 
-			for (int x = rcStar.left();x<=(1+rcStar.right());x++)
-				for (int y = rcStar.top();y<=(1 + rcStar.bottom());y++)
+			for (int x = rcStar.left; x <= rcStar.right; x++)
+				for (int y = rcStar.top; y <= rcStar.bottom; y++)
 				{
 					CExcludedPixel	ep(x, y);
 
@@ -673,8 +671,8 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		double				fPowSum = 0.0;
 		int				lNrValues = 0;
 
-		for (i = sq.m_rcSquare.left(); i<=(1 + sq.m_rcSquare.right()); i++)
-			for (j = sq.m_rcSquare.top(); j<=(1+ sq.m_rcSquare.bottom()); j++)
+		for (i = sq.m_rcSquare.left; i<=(sq.m_rcSquare.right); i++)
+			for (j = sq.m_rcSquare.top; j<=(sq.m_rcSquare.bottom); j++)
 			{
 				double		fValue;
 
@@ -721,9 +719,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 	{
 		VALUEPAIRSET		sValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left(); i<=(1 + SubSquare.m_rcSquare.right()); i++)
+		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top(); j<(1 + SubSquare.m_rcSquare.bottom()); j++)
+			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
 			{
 				VALUEPAIRITERATOR		it;
 				double					fLight;
@@ -772,9 +770,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		VALUEPAIRSET		sGreenValuePairs;
 		VALUEPAIRSET		sBlueValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left(); i<=(1 + SubSquare.m_rcSquare.right()); i++)
+		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top(); j<(1 + SubSquare.m_rcSquare.bottom()); j++)
+			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
 			{
 				VALUEPAIRITERATOR		it;
 				double					fLight;
@@ -875,9 +873,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		VALUEPAIRSET		sGreenValuePairs;
 		VALUEPAIRSET		sBlueValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left(); i<=(1 + SubSquare.m_rcSquare.right()); i++)
+		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top(); j<(1 + SubSquare.m_rcSquare.bottom()); j++)
+			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
 			{
 				VALUEPAIRITERATOR		it;
 				double					fRedLight, fGreenLight, fBlueLight;
@@ -1164,7 +1162,7 @@ void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap
 
 /* ------------------------------------------------------------------- */
 
-double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, const QRect& rc)
+double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, const DSSRect& rc)
 {
 	ZFUNCTRACE_RUNTIME();
 	double				fResult = 0;
@@ -1173,9 +1171,9 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 	bool				bCFA = pBitmap->IsCFA();
 
 	RGBHistogram.SetSize(256.0, 65536);
-	for (int i = rc.left(); i <= (1 + rc.right()); i++)
+	for (int i = rc.left; i <= rc.right; i++)
 	{
-		for (int j = rc.top(); j <= (1 + rc.bottom()); j++)
+		for (int j = rc.top; j <= rc.bottom; j++)
 		{
 			if (bCFA)
 			{
@@ -1340,7 +1338,7 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 		double			fMaxRed,
 						fMaxGreen,
 						fMaxBlue;
-		QRect			rcMaxRed,
+		DSSRect			rcMaxRed,
 						rcMaxGreen,
 						rcMaxBlue;
 
@@ -1372,7 +1370,7 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 	};
 
 	// Now find the coldest rectangle
-	std::vector<QRect>		vRects;
+	std::vector<DSSRect>	vRects;
 	double					m_fMedianColdest = -1;
 
 	GetBorderRects(lWidth, lHeight, vRects);
@@ -1487,10 +1485,10 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 
 			for (i = 0;i<pStars->size();i++)
 			{
-				QRect &			rcStar = (*pStars)[i].m_rcStar;
+				DSSRect &rcStar = (*pStars)[i].m_rcStar;
 
-				for (int x = rcStar.left(); x<=(1 + rcStar.right()); x++)
-					for (int y = rcStar.top(); y<=(1 + rcStar.bottom()); y++)
+				for (int x = rcStar.left; x <= rcStar.right; x++)
+					for (int y = rcStar.top; y <= rcStar.bottom; y++)
 					{
 						CExcludedPixel	ep(x, y);
 

@@ -15,7 +15,7 @@ class AvxAccumulation
 	AvxEntropy& avxEntropy;
 public:
 	AvxAccumulation() = delete;
-	AvxAccumulation(const QRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept;
+	AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept;
 	AvxAccumulation(const AvxAccumulation&) = delete;
 	AvxAccumulation(AvxAccumulation&&) = delete;
 	AvxAccumulation& operator=(const AvxAccumulation&) = delete;

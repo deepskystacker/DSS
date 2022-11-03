@@ -1,12 +1,11 @@
 #include "StdAfx.h"
-#include <QRect>
 #include "avx_support.h"
 #include "avx.h"
 #include <immintrin.h>
 #include <stdexcept>
 
 
-AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const QRect& resultRect, AvxEntropy& entrdat) :
+AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat) :
 	lineStart{ lStart }, lineEnd{ lEnd }, colEnd{ inputbm.Width() },
 	width{ colEnd }, height{ lineEnd - lineStart },
 	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },

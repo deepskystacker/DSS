@@ -151,7 +151,7 @@ namespace DSS
 		void statusMessage(const QString& text);
 
 	public slots:
-		void setSelectionRect(QRectF rect);
+		void setSelectionRect(const DSSRect& rect);
 		void imageLoad();
 		
 		void toolBar_rectButtonPressed(bool checked);
@@ -261,7 +261,7 @@ namespace DSS
 		std::unique_ptr<SelectRect> selectRectPtr;
 		std::unique_ptr<ToolBar> pToolBar;
 
-		QRectF	selectRect;
+		DSSRect	selectRect;
 
 		//QFileDialog			fileDialog;
 
