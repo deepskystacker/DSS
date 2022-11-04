@@ -40,4 +40,29 @@ TEST_CASE("DSSRect", "[DSSRect]")
 
 		REQUIRE(rect.contains(pixel) == false);
 	}
+
+	SECTION("Function contains() returns true for a point in the last row and column")
+	{
+		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		const QPointF point{ rightEdge - 1, bottomEdge - 1 };
+
+		REQUIRE(rect.contains(point) == true);
+	}
+
+	SECTION("Function contains() returns true for a point in the rightEdge column")
+	{
+		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		const QPointF point{ rightEdge, bottomEdge }; // x-index of the point is 'rightEdge'
+
+		REQUIRE(rect.contains(point) == true); // We must reproduce this buggy behaviour to be compatible with code prior to Qt switch.
+	}
+
+	SECTION("Function contains() returns false for a point just outside the rightEdge column")
+	{
+		constexpr double rightOffset = 1e-10;
+		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		const QPointF point{ rightEdge + rightOffset, bottomEdge }; // x-index of the point is 'rightEdge + 1e-10'
+
+		REQUIRE(rect.contains(point) == false); // We must reproduce this buggy behaviour to be compatible with code prior to Qt switch.
+	}
 }
