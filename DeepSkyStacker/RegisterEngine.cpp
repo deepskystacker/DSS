@@ -951,8 +951,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 	if (m_pProgress != nullptr)
 	{
-		CString			strText;
-		strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)filePath.c_str());
+		const QString strText(QObject::tr("Registering %1", "IDS_REGISTERINGNAME").arg(filePath.c_str()));
 		m_pProgress->Start2(strText, lNrSubRects);
 	}
 
@@ -980,9 +979,8 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		++nrSubrects;
 		if (omp_get_thread_num() == 0 && (++masterCount % 25) == 0) // Only master thread
 		{
-			CString str;
-			str.Format(IDS_REGISTERINGNAMEPLUSTARS, (LPCTSTR)filePath.c_str(), nStars.load());
-			m_pProgress->Progress2(str, nrSubrects.load());
+			const QString strText(QObject::tr("Registering %1 (%2 stars)", "IDS_REGISTERINGNAMEPLUSTARS").arg(filePath.c_str()).arg(nStars.load()));
+			m_pProgress->Progress2(strText, nrSubrects.load());
 		}
 	};
 
@@ -1132,8 +1130,7 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 	// Try to find star by studying the variation of luminosity
 	if (m_pProgress != nullptr)
 	{
-		CString strText;
-		strText.Format(IDS_COMPUTINGLUMINANCE, (LPCTSTR)filePath.c_str());
+		const QString strText(QObject::tr("Computing luminances %1", "IDS_COMPUTINGLUMINANCE").arg(filePath.c_str()));
 		m_pProgress->Start2(strText, m_lHeight);
 	}
 
@@ -1310,15 +1307,15 @@ void CLightFrameInfo::RegisterPicture()
 
 	if (GetPictureInfo(filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
 	{
-		CString						strText;
+		QString						strText;
 		CString						strDescription;
 
 		bmpInfo.GetDescription(strDescription);
 
 		if (bmpInfo.m_lNrChannels == 3)
-			strText.Format(IDS_LOADRGBPICTURE, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, filePath.c_str());
+			strText = QString(QObject::tr("Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(filePath.c_str());
 		else
-			strText.Format(IDS_LOADGRAYPICTURE, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, filePath.c_str());
+			strText = QString(QObject::tr("Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(filePath.c_str());
 
 		if (m_pProgress != nullptr)
 			m_pProgress->Start2(strText, 0);
@@ -1447,9 +1444,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared
 
 		if (pProgress)
 		{
-			CString				strText;
-
-			strText.Format(IDS_SAVINGCALIBRATED, strOutputFile);
+			const QString strText(QObject::tr("Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			pProgress->Start2(strText, 0);
 		}
 
@@ -1474,7 +1469,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 {
 	ZFUNCTRACE_RUNTIME();
 	bool					bResult = true;
-	CString					strText;
+	QString					strText;
 	int					lTotalRegistered = 0;
 
 	for (size_t i = 0; i < tasks.m_vStacks.size(); i++)
@@ -1487,7 +1482,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			lTotalRegistered += (int)pStackingInfo->m_pLightTask->m_vBitmaps.size();
 	};
 
-	strText.LoadString(IDS_REGISTERING);
+	strText = QString(QObject::tr("Registering pictures", "IDS_REGISTERING"));
 	if (pProgress)
 		pProgress->Start(strText, lTotalRegistered, true);
 
@@ -1522,7 +1517,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 				if (pProgress)
 				{
-					strText.Format(IDS_REGISTERINGPICTURE, static_cast<int>(j+1), lTotalRegistered);
+					strText = QString(QObject::tr("Registering %1 of %2", "IDS_REGISTERINGPICTURE")).arg(static_cast<int>(j + 1)).arg(lTotalRegistered);
 					pProgress->Progress1(strText, static_cast<int>(j));
 				};
 
@@ -1533,17 +1528,17 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 					if (GetPictureInfo(lfi.filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
 					{
 						
-						CString						strText;
+						QString						strText2;
 						CString						strDescription;
 
 						bmpInfo.GetDescription(strDescription);
 
 						if (bmpInfo.m_lNrChannels==3)
-							strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, lfi.filePath.c_str());
+							strText2 = QString(QObject::tr("Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
 						else
-							strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, lfi.filePath.c_str());
+							strText2 = QString(QObject::tr("Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
 						if (pProgress)
-							pProgress->Start2(strText, 0);
+							pProgress->Start2(strText2, 0);
 
 						std::shared_ptr<CMemoryBitmap> pBitmap;
 						if (::FetchPicture(lfi.filePath.c_str(), pBitmap, pProgress))

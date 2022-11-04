@@ -2615,8 +2615,6 @@ namespace DSS
 			if (bContinue)
 			{
 				CString strFileName;
-				CString strText;
-
 				Workspace workspace;
 				const auto iff = (INTERMEDIATEFILEFORMAT)workspace.value("Stacking/IntermediateFileFormat", (uint)IFF_TIFF).toUInt();
 
@@ -2624,7 +2622,7 @@ namespace DSS
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
-					strText.Format(IDS_SAVINGFINAL, strFileName);
+					const QString strText(QObject::tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
 					dlg.Start2(strText, 0);
 
 					if (iff == IFF_TIFF)

@@ -647,9 +647,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 	ZTRACE_RUNTIME("Compute Dark coefficients");
 	if (pProgress)
 	{
-		CString		strText;
-		strText.LoadString(IDS_COMPUTINGDARKOPTIMIZATIONFACTOR);
-
+		const QString strText(QObject::tr("Computing Dark Optimization parameters", "IDS_COMPUTINGDARKOPTIMIZATIONFACTOR"));
 		pProgress->Start2(strText, 0);
 	};
 
@@ -1400,8 +1398,6 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 void CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap* pBitmap, double& fHotDark, double& fAmpGlow, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CString strText;
-
 	if (!static_cast<bool>(m_pAmpGlow))
 	{
 		// First compute the median from the master dark
@@ -1411,7 +1407,7 @@ void CDarkFrame::ComputeDarkFactorFromMedian(CMemoryBitmap* pBitmap, double& fHo
 
 		if (pProgress != nullptr)
 		{
-			strText.LoadString(IDS_CREATINGMEDIANIMAGE);
+			const QString strText(QObject::tr("Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE"));
 			pProgress->Start2(strText, 0);
 		}
 
@@ -1815,9 +1811,7 @@ void CDarkFrame::FindHotPixels(CDSSProgress* pProgress)
 
 		if (pProgress)
 		{
-			CString		strText;
-			strText.LoadString(IDS_DETECTINGHOTPIXELS1);
-
+			const QString strText(QObject::tr("Detecting Hot Pixels (1/2)", "IDS_DETECTINGHOTPIXELS1"));
 			pProgress->Start2(strText, m_pMasterDark->RealHeight());
 		}
 
@@ -1827,9 +1821,7 @@ void CDarkFrame::FindHotPixels(CDSSProgress* pProgress)
 		if (pProgress)
 		{
 			pProgress->End2();
-			CString		strText;
-			strText.LoadString(IDS_DETECTINGHOTPIXELS2);
-
+			const QString strText(QObject::tr("Detecting Hot Pixels (2/2)", "IDS_DETECTINGHOTPIXELS2"));
 			pProgress->Start2(strText, m_pMasterDark->RealHeight());
 		}
 
@@ -1997,8 +1989,6 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress* 
 
 	if (m_pMasterDark && m_pMasterDark->IsOk())
 	{
-		CString			strText;
-
 		double fRedDarkFactor = 1.0;
 		double fGreenDarkFactor = 1.0;
 		double fBlueDarkFactor = 1.0;
@@ -2021,14 +2011,14 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress* 
 			//ComputeDarkFactor(pTarget, pStars, fRedDarkFactor, fGreenDarkFactor, fBlueDarkFactor, pProgress);
 			if (pProgress != nullptr)
 			{
-				strText.LoadString(IDS_OPTIMIZINGDARKMATCHING);
+				const QString strText(QObject::tr("Optimizing Dark Matching", "IDS_OPTIMIZINGDARKMATCHING"));
 				pProgress->Start2(strText, 0);
 			}
 			ComputeDarkFactorFromMedian(pTarget.get(), fHotDark, fAmpGlow, pProgress);
 
 			if (pProgress != nullptr)
 			{
-				strText.LoadString(IDS_SUBSTRACTINGDARK);
+				const QString strText(QObject::tr("Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK"));
 				pProgress->Start2(strText, 0);
 			}
 			::Subtract(pTarget, m_pAmpGlow, pProgress, fAmpGlow, fAmpGlow, fAmpGlow);
@@ -2038,7 +2028,7 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress* 
 		{
 			if (pProgress != nullptr)
 			{
-				strText.LoadString(IDS_SUBSTRACTINGDARK);
+				const QString strText(QObject::tr("Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK"));
 				pProgress->Start2(strText, 0);
 			}
 			::Subtract(pTarget, m_pMasterDark, pProgress, m_fDarkFactor, m_fDarkFactor, m_fDarkFactor);
@@ -2047,7 +2037,7 @@ bool CDarkFrame::Subtract(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress* 
 		{
 			if (pProgress != nullptr)
 			{
-				strText.LoadString(IDS_SUBSTRACTINGDARK);
+				const QString strText(QObject::tr("Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK"));
 				pProgress->Start2(strText, 0);
 			}
 			::Subtract(pTarget, m_pMasterDark, pProgress);
