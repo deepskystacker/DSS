@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QRect>
 #include <vector>
 #include <tuple>
 
@@ -29,7 +28,7 @@ private:
 	AvxEntropy& entropyData;
 public:
 	AvxStacking() = delete;
-	AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const QRect& resultRect, AvxEntropy& entrdat);
+	AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBitmap& tempbm, const DSSRect& resultRect, AvxEntropy& entrdat);
 	AvxStacking(const AvxStacking&) = default;
 	AvxStacking(AvxStacking&&) = delete;
 	AvxStacking& operator=(const AvxStacking&) = delete;

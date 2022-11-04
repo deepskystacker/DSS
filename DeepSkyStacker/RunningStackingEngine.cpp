@@ -126,8 +126,8 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 				if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 					m_BackgroundCalibration.ApplyCalibration(fRed, fGreen, fBlue);
 
-				QRectF rc{ 0, 0,
-					static_cast<qreal>(lWidth - 1), static_cast<qreal>(lHeight - 1) };
+				DSSRect rc{ 0, 0,
+					lWidth - 1, lHeight - 1 };
 				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && rc.contains(ptOut))
 				{
 					vPixels.resize(0);

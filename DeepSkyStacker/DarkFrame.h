@@ -151,8 +151,8 @@ public:
 class CDarkAmpGlowParameters
 {
 public :
-	QRect						m_rcHotest;
-	std::vector<QRect>			m_vrcColdest;
+	DSSRect						m_rcHotest;
+	std::vector<DSSRect>		m_vrcColdest;
 	std::vector<double>			m_vMedianColdest;
 	double						m_fMedianHotest;
 	double						m_fGrayValue;
@@ -169,19 +169,19 @@ private :
 		m_lColdestIndice	= dagp.m_lColdestIndice;
 	};
 
-	QRect getRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px)
+	DSSRect getRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px)
 	{
-		QRect rc{ QPoint {std::max(0, px.m_lX - lSize), std::max(0, px.m_lY - lSize)},
+		DSSRect rc{ QPoint {std::max(0, px.m_lX - lSize), std::max(0, px.m_lY - lSize)},
 				QPoint {std::min(lWidth - 1, px.m_lX + lSize), std::min(lHeight - 1, px.m_lY + lSize) } };
 
 		return rc;
 
 	};
 
-	void	GetBorderRects(int lWidth, int lHeight, std::vector<QRect> & vRects)
+	void	GetBorderRects(int lWidth, int lHeight, std::vector<DSSRect> & vRects)
 	{
 		const int lSize = std::min(50, std::min(lWidth / 10, lHeight / 10)) / 2;
-		QRect rc;
+		DSSRect rc;
 
 		// Left side
 		rc.setCoords(0, 0, 2*lSize-1, 2*lSize-1);
@@ -206,7 +206,7 @@ private :
 		vRects.push_back(rc);
 	};
 
-	double computeMedianValueInRect(CMemoryBitmap* pBitmap, const QRect& rc);
+	double computeMedianValueInRect(CMemoryBitmap* pBitmap, const DSSRect& rc);
 
 public :
 	CDarkAmpGlowParameters()

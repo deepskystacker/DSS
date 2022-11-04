@@ -201,7 +201,7 @@ private :
 	bool						m_bUsingFITS;
 	bool						m_bUseCustomRectangle;
 	bool						m_bCometAvailable;
-	QRect						m_rcCustom;
+	DSSRect						m_rcCustom;
 	bool						m_bDarkUsed;
 	bool						m_bBiasUsed;
 	bool						m_bFlatUsed;
@@ -335,7 +335,7 @@ public :
 	}
 
 	void AddFileToTask(const CFrameInfo& FrameInfo, std::uint16_t dwGroupID = 0);
-	void SetCustomRectangle(const QRect& rcCustom)
+	void SetCustomRectangle(const DSSRect& rcCustom)
 	{
 		if (rcCustom.isEmpty())
 		{
@@ -356,7 +356,7 @@ public :
 			m_bUseCustomRectangle = false;
 	}
 
-	bool GetCustomRectangle(QRect& rcCustom) const
+	bool GetCustomRectangle(DSSRect& rcCustom) const
 	{
 		const bool bResult = !m_rcCustom.isEmpty();
 		rcCustom = m_rcCustom;

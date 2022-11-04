@@ -5,6 +5,7 @@
 #include <set>
 #include "Settings.h"
 #include <QSettings>
+#include <QRectF>
 
 /* ------------------------------------------------------------------- */
 
@@ -1965,7 +1966,7 @@ __int64	CAllStackingTasks::computeNecessaryDiskSpace()
 	QRectF rcOutput;
 
 	if (m_bUseCustomRectangle)
-		rcOutput = m_rcCustom;
+		rcOutput.setCoords(m_rcCustom.left, m_rcCustom.top, m_rcCustom.right, m_rcCustom.bottom);
 
 	return computeNecessaryDiskSpace(rcOutput);
 };

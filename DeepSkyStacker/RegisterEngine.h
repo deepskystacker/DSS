@@ -187,7 +187,7 @@ public :
 	}
 
 	bool ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, double& fY, double& fRadius);
-	size_t RegisterSubRect(CMemoryBitmap* pBitmap, const QRectF& rc, STARSET& stars);
+	size_t RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars);
 
 	bool	SaveRegisteringInfo(LPCTSTR szInfoFileName);
 	bool	LoadRegisteringInfo(LPCTSTR szInfoFileName);

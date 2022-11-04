@@ -671,8 +671,8 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		double				fPowSum = 0.0;
 		int				lNrValues = 0;
 
-		for (i = sq.m_rcSquare.left; i<= sq.m_rcSquare.right; i++)
-			for (j = sq.m_rcSquare.top; j <= sq.m_rcSquare.bottom; j++)
+		for (i = sq.m_rcSquare.left; i<=(sq.m_rcSquare.right); i++)
+			for (j = sq.m_rcSquare.top; j<=(sq.m_rcSquare.bottom); j++)
 			{
 				double		fValue;
 

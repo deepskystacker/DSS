@@ -147,7 +147,7 @@ private :
 	int						m_lGain;
 	SYSTEMTIME					m_DateTime;
 	CBitmapExtraInfo			m_ExtraInfo;
-	QRect						m_rcResult;
+	DSSRect						m_rcResult;
 	double						m_fTotalExposure;
 	std::shared_ptr<CMemoryBitmap> m_pOutput;
 	std::shared_ptr<CMemoryBitmap> m_pEntropyCoverage;
@@ -192,8 +192,8 @@ private :
 	void	GetResultGain();
 	void	GetResultDateTime();
 	void	GetResultExtraInfo();
-	QRect	computeLargestRectangle();
-	bool	computeSmallestRectangle(QRect & rc);
+	DSSRect	computeLargestRectangle();
+	bool	computeSmallestRectangle(DSSRect & rc);
 	int	FindBitmapIndice(LPCTSTR szFile);
 	void	ComputeBitmap();
 	std::shared_ptr<CMultiBitmap> CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor);
