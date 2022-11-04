@@ -168,3 +168,16 @@ TEST_CASE("DSSRect", "[DSSRect]")
 		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == false);
 	}
 }
+
+#include <atltypes.h>
+
+TEST_CASE("CRect", "[CRect]")
+{
+	SECTION("CRect")
+	{
+		CRect rect{ 0, 0, 5, 5 };
+		CPoint point{ 5, 5 };
+
+		REQUIRE(rect.PtInRect(point) == FALSE);
+	}
+}
