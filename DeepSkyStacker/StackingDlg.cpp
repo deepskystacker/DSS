@@ -549,9 +549,9 @@ namespace DSS
 		delete ui;
 	}
 
-	void StackingDlg::setSelectionRect(const DSSRect& rect)
+	void StackingDlg::setSelectionRect(const QRectF& rect)
 	{
-		selectRect = rect;
+		selectRect = DSSRect(rect.x(), rect.y(), rect.right(), rect.bottom());
 	}
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
