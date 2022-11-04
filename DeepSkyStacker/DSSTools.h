@@ -316,8 +316,8 @@ typedef POINTFVECTOR::iterator	POINTFITERATOR;
 
 inline double	Distance(const QPointF & pt1, const QPointF & pt2)
 {
-	double xdiff{ pt1.x() - pt2.x() }, ydiff{ pt1.y() - pt2.y() };
-	return sqrt((xdiff*xdiff) + (ydiff*ydiff));
+	double dx{ pt1.x() - pt2.x() }, dy{ pt1.y() - pt2.y() };
+	return sqrt((dx*dx) + (dy*dy));
 };
 
 inline double	Distance(double fX1, double fY1, double fX2, double fY2)
@@ -1521,7 +1521,7 @@ public :
 			qreal			Y = pt.y() / fYWidth;
 
 			x = a0 + a1 * X + a2 * Y + a3 * X * Y;
-			x = b0 + b1 * X + b2 * Y + b3 * X * Y;
+			y = b0 + b1 * X + b2 * Y + b3 * X * Y;
 		};
 
 		x *= fXWidth;
