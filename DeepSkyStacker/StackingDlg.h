@@ -151,7 +151,7 @@ namespace DSS
 		void statusMessage(const QString& text);
 
 	public slots:
-		void setSelectionRect(const DSSRect& rect);
+		void setSelectionRect(const QRectF& rect);
 		void imageLoad();
 		
 		void toolBar_rectButtonPressed(bool checked);
