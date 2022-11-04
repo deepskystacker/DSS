@@ -2,6 +2,87 @@
 #include "catch.h"
 #include "../DeepSkyStacker/DSSTools.h"
 
+
+// Old CPointExt class
+class CPointExt
+{
+public:
+	double			X;
+	double			Y;
+private:
+	void	CopyFrom(const CPointExt& pt)
+	{
+		X = pt.X;
+		Y = pt.Y;
+	};
+public:
+	CPointExt(double x = 0, double y = 0)
+	{
+		X = x;
+		Y = y;
+	};
+	CPointExt(const CPointExt& pt)
+	{
+		CopyFrom(pt);
+	};
+	//CPointExt(const CPoint& pt)
+	//{
+	//	X = pt.x;
+	//	Y = pt.y;
+	//};
+	//CPointExt(const CRect& rc)
+	//{
+	//	X = (double)(rc.left + rc.right) / 2.0;
+	//	Y = (double)(rc.top + rc.bottom) / 2.0;
+	//};
+	CPointExt& operator = (const CPointExt& pt)
+	{
+		CopyFrom(pt);
+		return (*this);
+	};
+	void	Offset(const CPointExt& pt)
+	{
+		X -= pt.X;
+		Y -= pt.Y;
+	};
+	//void	CopyTo(CPoint& pt)
+	//{
+	//	pt.x = X;
+	//	pt.y = Y;
+	//};
+	bool operator != (const CPointExt& pt)
+	{
+		return (X != pt.X) || (Y != pt.Y);
+	};
+	bool operator == (const CPointExt& pt)
+	{
+		return (X == pt.X) && (Y == pt.Y);
+	};
+	bool operator < (const CPointExt& pt)
+	{
+		return (X < pt.X);
+	};
+	BOOL	IsInRect(double fLeft, double fTop, double fRight, double fBottom)
+	{
+		return (X >= fLeft) && (X <= fRight) && (Y >= fTop) && (Y <= fBottom);
+	};
+	BOOL	IsNear(const CPointExt& ptTest)
+	{
+		return (fabs(X - ptTest.X) <= 3) && (fabs(Y - ptTest.Y) <= 3);
+	};
+	void Rotate(double fAngle, const CPointExt& ptCenter)
+	{
+		CPointExt		ptResult;
+		double			fX, fY;
+		ptResult.X = X - ptCenter.X;
+		ptResult.Y = Y - ptCenter.Y;
+		fX = cos(fAngle) * ptResult.X - sin(fAngle) * ptResult.Y;
+		fY = sin(fAngle) * ptResult.X + cos(fAngle) * ptResult.Y;
+		X = fX + ptCenter.X;
+		Y = fY + ptCenter.Y;
+	};
+};
+
 TEST_CASE("DSSRect", "[DSSRect]")
 {
 	constexpr int leftEdge = 1;
@@ -64,5 +145,26 @@ TEST_CASE("DSSRect", "[DSSRect]")
 		const QPointF point{ rightEdge + rightOffset, bottomEdge }; // x-index of the point is 'rightEdge + 1e-10'
 
 		REQUIRE(rect.contains(point) == false); // We must reproduce this buggy behaviour to be compatible with code prior to Qt switch.
+	}
+
+	SECTION("DSSRect::contains and CPointExt::IsInRect are identical (true) for a point on the border")
+	{
+		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		const QPointF point{ rightEdge, bottomEdge };
+		CPointExt ptExt{ rightEdge, bottomEdge }; // Cannot be const as IsInRect is non-const :-(
+
+		REQUIRE(rect.contains(point) == true);
+		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == true);
+	}
+
+	SECTION("DSSRect::contains and CPointExt::IsInRect are identical (false) for a point just outside the border")
+	{
+		constexpr double offset = 1e-10;
+		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		const QPointF point{ rightEdge, bottomEdge + offset };
+		CPointExt ptExt{ rightEdge, bottomEdge + offset }; // Cannot be const as IsInRect is non-const :-(
+
+		REQUIRE(rect.contains(point) == false);
+		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == false);
 	}
 }
