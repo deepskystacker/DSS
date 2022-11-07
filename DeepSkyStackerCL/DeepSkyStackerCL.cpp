@@ -19,7 +19,7 @@ static  BOOL				g_bSaveIntermediate = FALSE;
 static  BOOL				g_bSaveCalibrated = FALSE;
 static  BOOL				g_bFITSOutput = FALSE;
 
-#include "ProgressConsole.h"
+#include "QtProgressConsole.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "TIFFUtil.h"
@@ -217,7 +217,7 @@ void SaveBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
 	if (pBitmap && g_strOutputFile.GetLength())
 	{
 		BOOL					bMonochrome;
-		CProgressConsole		progress;
+		DSS::QtProgressConsole		progress;
 
 		bMonochrome = pBitmap->IsMonochrome();
 
@@ -321,7 +321,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else
 	{
-		CProgressConsole		progress;
+		DSS::QtProgressConsole		progress;
 		DSS::FrameList			frameList;
 		BOOL					bContinue = TRUE;
 

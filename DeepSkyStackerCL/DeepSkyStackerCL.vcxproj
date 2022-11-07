@@ -24,7 +24,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <UseOfMfc>false</UseOfMfc>
+    <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -165,14 +165,18 @@
     <ClCompile Include="..\DeepSkyStacker\AHDDemosaicing.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_avg.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_cfa.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_filter.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_histogram.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_luminance.cpp" />
     <ClCompile Include="..\DeepSkyStacker\avx_output.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\avx_support.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BackgroundCalibration.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp" />
     <ClCompile Include="..\DeepSkyStacker\BitmapExt.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp" />
     <ClCompile Include="..\DeepSkyStacker\ChannelAlign.cpp" />
     <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp" />
     <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp" />
@@ -183,8 +187,17 @@
     <ClCompile Include="..\DeepSkyStacker\FlatFrame.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FrameList.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\group.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\ImageListModel.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MatchingStars.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp" />
     <ClCompile Include="..\DeepSkyStacker\MultiBitmapProcess.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Multitask.cpp" />
     <ClCompile Include="..\DeepSkyStacker\RAWUtils.cpp" />
@@ -205,15 +218,19 @@
     <ClInclude Include="..\DeepSkyStacker\AHDDemosaicing.h" />
     <ClInclude Include="..\DeepSkyStacker\avx.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_avg.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_bitmap_filler.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_cfa.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_entropy.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_filter.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_histogram.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_luminance.h" />
     <ClInclude Include="..\DeepSkyStacker\avx_output.h" />
+    <ClInclude Include="..\DeepSkyStacker\avx_support.h" />
     <ClInclude Include="..\DeepSkyStacker\BackgroundCalibration.h" />
     <ClInclude Include="..\DeepSkyStacker\BezierAdjust.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapBase.h" />
     <ClInclude Include="..\DeepSkyStacker\BitmapExt.h" />
+    <ClInclude Include="..\DeepSkyStacker\BitMapFiller.h" />
     <ClInclude Include="..\DeepSkyStacker\ChannelAlign.h" />
     <ClInclude Include="..\DeepSkyStacker\CosmeticEngine.h" />
     <ClInclude Include="..\DeepSkyStacker\DarkFrame.h" />
@@ -227,7 +244,9 @@
     <ClInclude Include="..\DeepSkyStacker\FlatFrame.h" />
     <ClInclude Include="..\DeepSkyStacker\FrameInfo.h" />
     <ClInclude Include="..\DeepSkyStacker\FrameList.h" />
+    <ClInclude Include="..\DeepSkyStacker\group.h" />
     <ClInclude Include="..\DeepSkyStacker\Histogram.h" />
+    <QtMoc Include="..\DeepSkyStacker\ImageListModel.h" />
     <ClInclude Include="..\DeepSkyStacker\MasterFrames.h" />
     <ClInclude Include="..\DeepSkyStacker\MatchingStars.h" />
     <ClInclude Include="..\DeepSkyStacker\MultiBitmapProcess.h" />
@@ -241,7 +260,7 @@
     <ClInclude Include="..\DeepSkyStacker\StackingTasks.h" />
     <ClInclude Include="..\DeepSkyStacker\TIFFUtil.h" />
     <ClInclude Include="..\DeepSkyStacker\Workspace.h" />
-    <ClInclude Include="ProgressConsole.h" />
+    <ClInclude Include="QtProgressConsole.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
