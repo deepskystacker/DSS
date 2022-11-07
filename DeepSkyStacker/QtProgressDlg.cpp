@@ -15,11 +15,23 @@ ProgressDlg::ProgressDlg(QWidget* parent) :
 	ui->setupUi(this);
 	setWindowFlags(windowFlags() & ~(Qt::WindowContextHelpButtonHint | Qt::WindowCloseButtonHint));
 	connect(ui->StopButton, SIGNAL(clicked()), this, SLOT(cancelPressed()));
+
+	retainHiddenWidgetSize(*ui->ProcessText1);
+	retainHiddenWidgetSize(*ui->ProcessText2);
+	retainHiddenWidgetSize(*ui->ProgressBar1);
+	retainHiddenWidgetSize(*ui->ProgressBar2);
 }
 ProgressDlg::~ProgressDlg()
 {
 	if(ui)
 		delete ui;
+}
+
+void ProgressDlg::retainHiddenWidgetSize(QWidget& rWidget)
+{
+	QSizePolicy sp_retain = rWidget.sizePolicy();
+	sp_retain.setRetainSizeWhenHidden(true);
+	rWidget.setSizePolicy(sp_retain);
 }
 
 const QString ProgressDlg::getStart1Text() const
@@ -103,7 +115,7 @@ void ProgressDlg::closeEvent(QCloseEvent* pEvent)
 }
 
 /////////////////////////////////////////////////////////////////
-
+const QString DSSProgressDlg::sm_EmptyString;
 DSSProgressDlg::DSSProgressDlg(QWidget* pParent/*= nullptr*/) :
 	m_pParent(nullptr),
 	m_bEnableCancel{ false },
@@ -129,27 +141,24 @@ void DSSProgressDlg::SetNrUsedProcessors(int lNrProcessors/*=1*/)
 	m_pDlg->setProcessorsUsed(lNrProcessors);
 }
 
-void DSSProgressDlg::GetStartText(CString& strText)
+const QString DSSProgressDlg::GetStartText() const
 {
 	if (!m_pDlg)
-		return;
+		return sm_EmptyString;
 
-	strText = m_pDlg->getStart1Text().toLatin1().constData();
+	return m_pDlg->getStart1Text();
 };
 
-void DSSProgressDlg::GetStart2Text(CString& strText)
+const QString DSSProgressDlg::GetStart2Text() const
 {
 	if (!m_pDlg)
-		return;
+		return sm_EmptyString;
 
-	strText = m_pDlg->getStart2Text().toLatin1().constData();
+	return m_pDlg->getStart2Text();
 };
 
-void DSSProgressDlg::Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel/*=true*/)
+void DSSProgressDlg::Start(const QString& szTitle, int lTotal1, bool bEnableCancel/*=true*/)
 {
-	const CString strTitle = szTitle;
-	const QString qStrTitle = QString::fromWCharArray((LPCTSTR)strTitle, strTitle.GetLength());
-
 	if(!CreateProgressDialog())
 		return;
 
@@ -160,8 +169,7 @@ void DSSProgressDlg::Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel/*=tr
 	m_bFirstProgress = true;
 	m_bEnableCancel = bEnableCancel;
 	m_pDlg->EnableCancelButton(bEnableCancel);
-	if (strTitle.GetLength())
-		m_pDlg->SetTitleText(qStrTitle);
+	m_pDlg->SetTitleText(szTitle);
 	m_pDlg->setProgress1Range(0, lTotal1);
 	m_pDlg->setItemVisibility(true, false);
 	m_pDlg->setFocus();
@@ -169,15 +177,10 @@ void DSSProgressDlg::Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel/*=tr
 	m_pDlg->RunDialog();
 }
 
-void DSSProgressDlg::Progress1(LPCTSTR szText, int lAchieved1)
-{
-	const CString strTitle(szText);
-	const QString qStrTitle = QString::fromWCharArray((LPCTSTR)strTitle, strTitle.GetLength());
-	
+void DSSProgressDlg::Progress1(const QString& szText, int lAchieved1)
+{	
 	unsigned long long dwCurrentTime = GetTickCount64();
-
-	if (!qStrTitle.isEmpty())
-		m_pDlg->setStart1Text(qStrTitle);
+	m_pDlg->setStart1Text(szText);
 
 	if (m_bFirstProgress || (static_cast<double>(lAchieved1 - m_lLastTotal1) > (m_lTotal1 / 100.0)) || ((dwCurrentTime - m_dwLastTime) > 1000))
 	{
@@ -197,24 +200,26 @@ void DSSProgressDlg::Progress1(LPCTSTR szText, int lAchieved1)
 			dwRemainingTime -= dwMin * 60;
 			const std::uint32_t dwSec = dwRemainingTime;
 
-			CString strText;
+			QString qStrText;
 			if (dwHour != 0)
-				strText.Format(IDS_ESTIMATED3, dwHour, dwMin, dwSec);
+				qStrText = QObject::tr("Estimated remaining time: %1 hr %2 mn %3 s ",
+										 "IDS_ESTIMATED3").arg(dwHour).arg(dwMin).arg(dwSec);
 			else if (dwMin != 0)
-				strText.Format(IDS_ESTIMATED2, dwMin, dwSec);
+				qStrText = QObject::tr("Estimated remaining time: %1 mn %2 s ",
+										 "IDS_ESTIMATED2").arg(dwMin).arg(dwSec);
 			else if (dwSec != 0)
-				strText.Format(IDS_ESTIMATED1, dwSec);
+				qStrText = QObject::tr("Estimated remaining time : %1 s ",
+										"IDS_ESTIMATED1").arg(dwSec);
 			else
-				strText.Format(IDS_ESTIMATED0);
+				qStrText = QObject::tr("Estimated remaining time: < 1 s ",
+										"IDS_ESTIMATED0");
 			
-			const QString qStrText = QString::fromWCharArray((LPCTSTR)strText, strText.GetLength());
 			m_pDlg->setTimeRemaining(qStrText);
 		}
 		else
 		{
-			CString strText;
-			strText.LoadString(IDS_ESTIMATEDUNKNOWN);
-			const QString qStrText = QString::fromWCharArray((LPCTSTR)strText, strText.GetLength());
+			const QString qStrText = QObject::tr("Estimated remaining Time: Unknown",
+												"IDS_ESTIMATEDUNKNOWN");
 			m_pDlg->setTimeRemaining(qStrText);
 		};
 
@@ -222,17 +227,13 @@ void DSSProgressDlg::Progress1(LPCTSTR szText, int lAchieved1)
 	};
 }
 
-void DSSProgressDlg::Start2(LPCTSTR szText, int lTotal2)
+void DSSProgressDlg::Start2(const QString& szText, int lTotal2)
 {
 	if (!CreateProgressDialog())
 		return;
 
-	const CString strText = szText;
-	const QString qStrText = QString::fromWCharArray((LPCTSTR)strText, strText.GetLength());
-
 	m_lLastTotal2 = 0;
-	if (!qStrText.isEmpty())
-		m_pDlg->setStart2Text(qStrText);
+	m_pDlg->setStart2Text(szText);
 
 	m_pDlg->setProgress2Range(0, lTotal2);
 	m_lTotal2 = lTotal2;
@@ -249,27 +250,19 @@ void DSSProgressDlg::Start2(LPCTSTR szText, int lTotal2)
 	if (m_bJointProgress)
 	{
 		Start(nullptr, lTotal2, m_bEnableCancel);
-		if (!qStrText.isEmpty())
-			m_pDlg->setStart1Text(qStrText);
+		m_pDlg->setStart1Text(szText);
 	};
 
 	m_pDlg->RunDialog();
 }
 
-void DSSProgressDlg::Progress2(LPCTSTR szText, int lAchieved2)
+void DSSProgressDlg::Progress2(const QString& szText, int lAchieved2)
 {
 	if (static_cast<double>(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0))
 	{
 		m_lLastTotal2 = lAchieved2;
-
-		const CString strText = szText;
-		const QString qStrText = QString::fromWCharArray((LPCTSTR)strText, strText.GetLength());
-
-		if (!qStrText.isEmpty())
-			m_pDlg->setStart2Text(qStrText);
-
+		m_pDlg->setStart2Text(szText);
 		m_pDlg->setProgress2(lAchieved2);
-		
 		m_pDlg->RunDialog();
 	};
 
@@ -287,12 +280,9 @@ bool DSSProgressDlg::IsCanceled()
 	return m_pDlg->IsCancelled();
 }
 
-bool DSSProgressDlg::Warning(LPCTSTR szText)
+bool DSSProgressDlg::Warning(const QString& szText)
 {
-	const CString strText = szText;
-	const QString qStrText = QString::fromWCharArray((LPCTSTR)strText, strText.GetLength());
-	const QString qStrTitle;
-	return (QMessageBox::question(m_pDlg.get(), qStrTitle, qStrText) == QMessageBox::Yes);
+	return (QMessageBox::question(m_pDlg.get(), "", szText) == QMessageBox::Yes);
 }
 
 bool DSSProgressDlg::Close()

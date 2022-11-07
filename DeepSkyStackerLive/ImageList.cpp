@@ -297,7 +297,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 			m_ImageList.SetItemText(i, COLUMN_DX, strValue);
 			strValue.Format(_T("%.2f"), fdY);
 			m_ImageList.SetItemText(i, COLUMN_DY, strValue);
-			strValue.Format(_T("%.2f °"), fAngle);
+			strValue.Format(_T("%.2f \xc2\xb0"), fAngle);
 			m_ImageList.SetItemText(i, COLUMN_ANGLE, strValue);
 		};
 	};

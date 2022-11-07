@@ -71,7 +71,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 	std::shared_ptr<CMemoryBitmap> pBitmap;
 	if (::LoadFrame(lfi.filePath.c_str(),PICTURETYPE_LIGHTFRAME, pProgress, pBitmap))
 	{
-		CString strText;
+		QString strText;
 		pBitmap->RemoveHotPixels(pProgress);
 		const int lWidth = pBitmap->Width();
 		const int lHeight = pBitmap->Height();
@@ -91,7 +91,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 		{
 			if (pProgress != nullptr)
 			{
-				strText.LoadString(IDS_COMPUTINGBACKGROUNDCALIBRATION);
+				strText = QObject::tr("Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
 				pProgress->Start2(strText, 0);
 			};
 			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), !m_lNrStacked, pProgress);
@@ -99,17 +99,17 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 
 		// Stack it (average)
 		CPixelTransform PixTransform(lfi.m_BilinearParameters);
-		CString strDescription;
+		QString strDescription;
 		PIXELDISPATCHVECTOR vPixels;
 
 		vPixels.reserve(16);
 
-		strDescription = lfi.m_strInfos;
-		if (lfi.m_lNrChannels==3)
-			strText.Format(IDS_STACKRGBLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.filePath.c_str());
+		strDescription = QString::fromWCharArray(lfi.m_strInfos.GetString());
+		if (lfi.m_lNrChannels == 3)
+			strText = QString(QObject::tr("Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT")).arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
 		else
-			strText.Format(IDS_STACKGRAYLIGHT, lfi.m_lBitPerChannels, (LPCTSTR)strDescription, (LPCTSTR)lfi.filePath.c_str());
-
+			strText = QString(QObject::tr("Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT")).arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+		
 		if (pProgress != nullptr)
 			pProgress->Start2(strText, lHeight);
 

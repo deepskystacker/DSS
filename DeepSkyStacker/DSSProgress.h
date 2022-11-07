@@ -19,16 +19,16 @@ public:
 	{
 		m_bJointProgress = bJointProgress;
 	};
-	virtual void GetStartText(CString& strText) = 0;
-	virtual void GetStart2Text(CString& strText) = 0;
-	virtual void Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel = true) = 0;
-	virtual void Progress1(LPCTSTR szText, int lAchieved1) = 0;
-	virtual void Start2(LPCTSTR szText, int lTotal2) = 0;
-	virtual void Progress2(LPCTSTR szText, int lAchieved2) = 0;
+	virtual const QString GetStartText() const = 0;
+	virtual const QString GetStart2Text() const = 0;
+	virtual void Start(const QString& szTitle, int lTotal1, bool bEnableCancel = true) = 0;
+	virtual void Progress1(const QString& szText, int lAchieved1) = 0;
+	virtual void Start2(const QString& szText, int lTotal2) = 0;
+	virtual void Progress2(const QString& szText, int lAchieved2) = 0;
 	virtual void End2() = 0;
 	virtual bool IsCanceled() = 0;
 	virtual bool Close() = 0;
-	virtual bool Warning(LPCTSTR szText) { return true; }
+	virtual bool Warning(const QString& szText) { return true; }
 };
 
 /* ------------------------------------------------------------------- */

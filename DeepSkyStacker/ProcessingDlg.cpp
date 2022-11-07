@@ -810,15 +810,14 @@ void CProcessingDlg::CreateStarMask()
 			{
 				// Save the star mask to a file
 				CString strFileName;
-				CString strText;
 				CString strDescription;
 				bool bFits;
 
 				strDescription.LoadString(IDS_STARMASKDESCRIPTION);
 
 				dlgStarMask.GetOutputFileName(strFileName, bFits);
-				strText.Format(IDS_SAVINGSTARMASK, (LPCTSTR)strFileName);
-				dlg.Start2(static_cast<LPCTSTR>(strText), 0);
+				const QString strText(QObject::tr("Saving the Star Mask in %1", "IDS_SAVINGSTARMASK").arg(QString::fromWCharArray(strFileName.GetString())));
+				dlg.Start2(strText, 0);
 				if (bFits)
 					WriteFITS(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);
 				else

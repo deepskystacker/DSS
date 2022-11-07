@@ -345,7 +345,6 @@ void PostCalibration::on_testCosmetic_clicked()
 			{
 				// Keep Only the first light frame
 				CString				strFileName;
-				CString				strText;
 
 				StackingInfo.m_pLightTask->m_vBitmaps.resize(1);
 				strFileName = StackingInfo.m_pLightTask->m_vBitmaps[0].filePath.generic_wstring().c_str();
@@ -367,7 +366,7 @@ void PostCalibration::on_testCosmetic_clicked()
 				if (StackingInfo.m_pLightTask)
 					StackingInfo.m_pLightTask->m_bDone = false;
 
-				strText.LoadString(IDS_COMPUTINGCOSMETICSTATS);
+				QString strText(QObject::tr("Computing Cosmetic", "IDS_COMPUTINGCOSMETICSTATS"));
 				dlg.Start(strText, 0, false);
 
 				dlg.SetJointProgress(true);
@@ -384,9 +383,9 @@ void PostCalibration::on_testCosmetic_clicked()
 					bmpInfo.GetDescription(strDescription);
 
 					if (bmpInfo.m_lNrChannels == 3)
-						strText.Format(IDS_LOADRGBLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)strFileName);
+						strText = QString(QObject::tr("Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName.GetString()));
 					else
-						strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, (LPCTSTR)strFileName);
+						strText = QString(QObject::tr("Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(QString::fromWCharArray(strFileName.GetString()));
 					dlg.Start2(strText, 0);
 
 					std::shared_ptr<CMemoryBitmap> pBitmap;

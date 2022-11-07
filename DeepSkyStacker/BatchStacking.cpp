@@ -251,7 +251,6 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 			if (bContinue)
 			{
 				CString strFileName;
-				CString strText;
 				TCHAR				szFileName[1 + _MAX_FNAME];
 				_tsplitpath(szList, nullptr, nullptr, szFileName, nullptr);
 
@@ -263,7 +262,7 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
-					strText.Format(IDS_SAVINGFINAL, strFileName);
+					const QString strText(QObject::tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
 					dlg.Start2(strText, 0);
 
 					if (iff == IFF_TIFF)
