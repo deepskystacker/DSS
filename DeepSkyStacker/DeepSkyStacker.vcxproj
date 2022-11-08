@@ -528,6 +528,8 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="DSSProgress.h" />
     <QtMoc Include="selectrect.h" />
     <QtMoc Include="toolbar.h" />
+    <ClInclude Include="DssRect.h" />
+    <ClInclude Include="DssRectUtils.h" />
     <ClInclude Include="DSSTools.h" />
     <ClInclude Include="DSSVersion.h" />
     <ClInclude Include="EntropyInfo.h" />

@@ -775,6 +775,12 @@
     <ClInclude Include="mrulist.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DssRect.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="DssRectUtils.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">

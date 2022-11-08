@@ -5,6 +5,7 @@
 #include "MatchingStars.h"
 #include "PixelTransform.h"
 #include "BitmapIterator.h"
+#include "DssRectUtils.h"
 #include <math.h>
 
 #define _USE_MATH_DEFINES
@@ -126,9 +127,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 				if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 					m_BackgroundCalibration.ApplyCalibration(fRed, fGreen, fBlue);
 
-				DSSRect rc{ 0, 0,
-					lWidth - 1, lHeight - 1 };
-				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && rc.contains(ptOut))
+				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && pointInRect(ptOut, DSSRect{ 0, 0, lWidth - 1, lHeight - 1 }))
 				{
 					vPixels.resize(0);
 					ComputePixelDispatch(ptOut, 1.0, vPixels);

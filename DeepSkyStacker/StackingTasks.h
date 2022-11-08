@@ -228,6 +228,7 @@ public :
 		m_bUsingFITS{ false },
 		m_bUseCustomRectangle{ false },
 		m_bCometAvailable{ false },
+		m_rcCustom{},
 		m_bDarkUsed{ false },
 		m_bBiasUsed{ false },
 		m_bFlatUsed{ false },

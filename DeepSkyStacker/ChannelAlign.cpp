@@ -3,6 +3,7 @@
 #include "RegisterEngine.h"
 #include "MatchingStars.h"
 #include "BitmapIterator.h"
+#include "DssRectUtils.h"
 
 /* ------------------------------------------------------------------- */
 
@@ -52,13 +53,9 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 		for (int i = 0; i < lWidth; i++)
 		{
 			double fGray;
-			QPointF pt(i, j);
-			QPointF ptOut;
-
-			ptOut = PixTransform.transform(pt);
+			const QPointF ptOut = PixTransform.transform(QPointF(i, j));
 			pBitmap->GetPixel(i, j, fGray);
-			DSSRect rc{ 0, 0, lWidth - 1, lHeight - 1 };
-			if (fGray != 0 && rc.contains(ptOut))
+			if (fGray != 0 && pointInRect(ptOut, DSSRect{ 0, 0, lWidth - 1, lHeight - 1 }))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, 1.0, vPixels);

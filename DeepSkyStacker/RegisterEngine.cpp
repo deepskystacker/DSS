@@ -406,12 +406,12 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 	// Work with a local buffer. Copy the pixel values for the rect.
 	const int width = rc.width();
 	std::vector<double> values(width * rc.height());
-	for (int j = rc.top, ndx = 0; j < rc.bottom; ++j)
-		for (int i = rc.left; i < rc.right; ++i, ++ndx)		
+	for (int j = rc.top(), ndx = 0; j < rc.bottom(); ++j)
+		for (int i = rc.left(); i < rc.right(); ++i, ++ndx)		
 			pBitmap->GetPixel(i, j, values[ndx]);
 	const auto getValue = [&values, rc, width](const int x, const int y) -> double
 	{
-		return values[(y - rc.top) * width + x - rc.left];
+		return values[(y - rc.top()) * width + x - rc.left()];
 	};
 
 	// Read pixels from the memory bitmap
@@ -446,9 +446,9 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 
 		for (double fDeltaRadius = 0; fDeltaRadius < 4; ++fDeltaRadius)
 		{
-			for (j = rc.top; j < rc.bottom; j++)
+			for (j = rc.top(); j < rc.bottom(); j++)
 			{
-				for (i = rc.left; i < rc.right; i++)
+				for (i = rc.left(); i < rc.right(); i++)
 				{
 //					double			fIntensity;
 //					pBitmap->GetPixel(i, j, fIntensity);
@@ -550,7 +550,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 								//if (fabs(fMeanRadius1 - fMeanRadius2) > fDeltaRadius - 1)
 								//	bWanabeeStarOk = false;
 
-								DSSRect		rcStar;
+								//DSSRect		rcStar;
 								int			lLeftRadius = 0;
 								int			lRightRadius = 0;
 								int			lTopRadius = 0;
@@ -568,10 +568,11 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 										lBottomRadius = std::max(lBottomRadius, static_cast<int>(vPixels[k].m_fRadius));
 								};
 
-								rcStar.left   = ptTest.x() - lLeftRadius;
-								rcStar.right  = ptTest.x() + lRightRadius;
-								rcStar.top	= ptTest.y() - lTopRadius;
-								rcStar.bottom = ptTest.y() + lBottomRadius;
+								const DSSRect rcStar{ ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius, ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius };
+								//rcStar.left   = ptTest.x() - lLeftRadius;
+								//rcStar.right  = ptTest.x() + lRightRadius;
+								//rcStar.top	= ptTest.y() - lTopRadius;
+								//rcStar.bottom = ptTest.y() + lBottomRadius;
 
 								if (bWanabeeStarOk)
 								{
@@ -655,7 +656,7 @@ bool	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 			fprintf(hFile, "Intensity = %.2f\n", m_vStars[i].m_fIntensity);
 			fprintf(hFile, "Quality = %.2f\n",  m_vStars[i].m_fQuality);
 			fprintf(hFile, "MeanRadius = %.2f\n",  m_vStars[i].m_fMeanRadius);
-			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n", m_vStars[i].m_rcStar.left, m_vStars[i].m_rcStar.top, m_vStars[i].m_rcStar.right, m_vStars[i].m_rcStar.bottom);
+			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n", m_vStars[i].m_rcStar.left(), m_vStars[i].m_rcStar.top(), m_vStars[i].m_rcStar.right(), m_vStars[i].m_rcStar.bottom());
 			fprintf(hFile, "Center = %.2f, %.2f\n", m_vStars[i].m_fX, m_vStars[i].m_fY);
 			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle,
 																	  m_vStars[i].m_fLargeMajorAxis,
@@ -805,28 +806,30 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.left = _ttol(strCoord);
+					const auto leftEdge = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Top
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.top = _ttol(strCoord);
+					const auto topEdge = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Right
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.right = _ttol(strCoord);
+					const auto rightEdge = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Bottom
 					strCoord = strValue;
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.bottom = _ttol(strCoord);
+					const auto bottomEdge = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
+
+					ms.m_rcStar.setCoords(leftEdge, topEdge, rightEdge, bottomEdge);
 				}
 				else if (!strVariable.CompareNoCase(_T("Axises")))
 				{
@@ -1182,13 +1185,13 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 
 	int				lNrBlueLines = 0;
 	int				lNrRedLines = 0;
-	for (j = star.m_rcStar.top; j <= star.m_rcStar.bottom; j++)
+	for (j = star.m_rcStar.top(); j <= star.m_rcStar.bottom(); j++)
 	{
 		fSumRedX = 0;
 		fNrValuesRedX = 0;
 		fSumBlueX = 0;
 		fNrValuesBlueX = 0;
-		for (i = star.m_rcStar.left; i <= star.m_rcStar.right; i++)
+		for (i = star.m_rcStar.left(); i <= star.m_rcStar.right(); i++)
 		{
 			double			fRed, fGreen, fBlue;
 
@@ -1216,13 +1219,13 @@ bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, dou
 
 	int				lNrRedColumns = 0;
 	int				lNrBlueColumns = 0;
-	for (j = star.m_rcStar.left; j <= star.m_rcStar.right; j++)
+	for (j = star.m_rcStar.left(); j <= star.m_rcStar.right(); j++)
 	{
 		fSumRedY = 0;
 		fNrValuesRedY = 0;
 		fSumBlueY = 0;
 		fNrValuesBlueY = 0;
-		for (i = star.m_rcStar.top; i <= star.m_rcStar.bottom; i++)
+		for (i = star.m_rcStar.top(); i <= star.m_rcStar.bottom(); i++)
 		{
 			double			fRed, fGreen, fBlue;
 

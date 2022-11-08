@@ -660,11 +660,12 @@ void CEditStarsSink::DetectStars(const QPointF & pt, CRect & rcCheck, STARVECTOR
 		InitGrayBitmap(rcCheck);
 
 		CRegisteredFrame		regFrame;
-		DSSRect					rcReg;
+		constexpr int maxSize{ static_cast<int>(STARMAXSIZE) };
+		const DSSRect rcReg{ maxSize, maxSize, rcCheck.Width() - (maxSize + 1), rcCheck.Height() - (maxSize + 1) };
 		STARSET stars;
 
-		rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
-		rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
+//		rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
+//		rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
 
 		regFrame.m_fBackground = m_fBackground;
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);

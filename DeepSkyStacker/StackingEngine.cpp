@@ -17,6 +17,7 @@
 #include "FrameInfoSupport.h"
 #include "avx.h"
 #include "avx_avg.h"
+#include "DssRectUtils.h"
 #include <omp.h>
 #include <QRectF>
 
@@ -1225,16 +1226,11 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			{
 				for (int i = 0; i < m_rcResult.width(); i++)
 				{
-					QPointF pt(i, j);
-					QPointF ptOut;
-
 					lProgress++;
 
-					ptOut = PixTransform.transform(pt);
-					DSSRect rc{ 0, 0,
-						m_rcResult.width(), m_rcResult.height() };
-
-					if (rc.contains(ptOut))
+					const QPointF ptOut = PixTransform.transform(QPointF(i, j));
+					// ### Bug? Shouldn't it be m_rcResult.width() - 1, m_rcResult.height() - 1 ?
+					if (pointInRect(ptOut, DSSRect{0, 0, m_rcResult.width(), m_rcResult.height()}))
 					{
 						PIXELDISPATCHVECTOR vPixels;
 						ComputePixelDispatch(ptOut, vPixels);
@@ -1702,10 +1698,7 @@ void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 			if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 				m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
 
-			DSSRect rc{ 0, 0, 
-				m_rcResult.width() - 1,  m_rcResult.height() - 1};
-
-			if ((Red || Green || Blue) && rc.contains(ptOut))
+			if ((Red || Green || Blue) && pointInRect(ptOut, DSSRect{ 0, 0, m_rcResult.width() - 1,  m_rcResult.height() - 1 }))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, m_lPixelSizeMultiplier, vPixels);
@@ -2079,7 +2072,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 			m_rcResult = computeLargestRectangle();
 			__int64 ulNeededSpace;
 			__int64 ulFreeSpace;
-			QRectF rcResult(m_rcResult.left, m_rcResult.top, m_rcResult.width(), m_rcResult.height());
+			QRectF rcResult(m_rcResult.left(), m_rcResult.top(), m_rcResult.width(), m_rcResult.height());
 
 			rcResult.setLeft(rcResult.left() / m_lPixelSizeMultiplier);
 			rcResult.setRight(rcResult.right() / m_lPixelSizeMultiplier);
@@ -2121,10 +2114,12 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 		case SM_CUSTOM:
 		{
 			tasks.GetCustomRectangle(m_rcResult);
-			m_rcResult.left *= m_lPixelSizeMultiplier;
-			m_rcResult.right *= m_lPixelSizeMultiplier;
-			m_rcResult.top *= m_lPixelSizeMultiplier;
-			m_rcResult.bottom *= m_lPixelSizeMultiplier;
+			m_rcResult.setCoords(m_rcResult.left() * m_lPixelSizeMultiplier, m_rcResult.top() * m_lPixelSizeMultiplier,
+				m_rcResult.right() * m_lPixelSizeMultiplier, m_rcResult.bottom() * m_lPixelSizeMultiplier);
+			//m_rcResult.left *= m_lPixelSizeMultiplier;
+			//m_rcResult.right *= m_lPixelSizeMultiplier;
+			//m_rcResult.top *= m_lPixelSizeMultiplier;
+			//m_rcResult.bottom *= m_lPixelSizeMultiplier;
 		} break;
 
 		case SM_NORMAL:
@@ -2142,7 +2137,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 		}; // switch
 
 		ZTRACE_RUNTIME("Computed image rectangle m_rcResult left %ld, top %ld, right %ld, bottom %ld",
-			m_rcResult.left, m_rcResult.top, m_rcResult.right, m_rcResult.bottom);
+			m_rcResult.left(), m_rcResult.top(), m_rcResult.right(), m_rcResult.bottom());
 
 		if (bContinue)
 		{
@@ -2219,7 +2214,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 										PixTransform.ComputeCometShift(first->m_fXComet, first->m_fYComet, lfInfo.m_fXComet, lfInfo.m_fYComet, true, lfInfo.m_bTransformedCometPosition);
 								}
 
-								PixTransform.SetShift(-m_rcResult.left, -m_rcResult.top);
+								PixTransform.SetShift(-m_rcResult.left(), -m_rcResult.top());
 								PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
 
 								if (bStack)
