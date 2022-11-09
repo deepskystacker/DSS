@@ -127,6 +127,7 @@
     <ClCompile Include="AvxStackingTest.cpp" />
     <ClCompile Include="BitMapFillerTest.cpp" />
     <ClCompile Include="DeepSkyStackerTest.cpp" />
+    <ClCompile Include="DssRectTest.cpp" />
     <ClCompile Include="OpenMpTest.cpp" />
     <ClCompile Include="PixelIteratorTest.cpp" />
     <ClCompile Include="stdafx.cpp">
