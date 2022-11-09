@@ -132,7 +132,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <CustomBuildStep />
     <CustomBuildStep />
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -206,7 +206,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <Message>Add necessary Qt stuff to the output directory</Message>
     </PostBuildEvent>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>

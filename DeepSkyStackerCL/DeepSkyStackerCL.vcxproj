@@ -106,7 +106,7 @@
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
     </Link>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -148,7 +148,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
