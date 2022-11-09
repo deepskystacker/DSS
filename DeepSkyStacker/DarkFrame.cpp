@@ -9,7 +9,6 @@
 #include "Histogram.h"
 #include "Filters.h"
 #include "BitmapIterator.h"
-#include "DssRectUtils.h"
 
 #include "TIFFUtil.h"
 
@@ -396,14 +395,18 @@ public :
 
 		for (int i = lSize;i<lWidth-2*lSize;i+=lSize)
 			for (int j = lSize;j<lHeight-2*lSize;j+=lSize)
-			{
-				CSubSquare sq;
-				sq.m_rcSquare.setCoords(i, j, i + lSize - 1, j + lSize - 1);
+		{
+			CSubSquare			sq;
 
-				m_vSubSquares.push_back(sq);
+			sq.m_rcSquare.left		= i;
+			sq.m_rcSquare.right		= i+lSize-1;
+			sq.m_rcSquare.top		= j;
+			sq.m_rcSquare.bottom	= j+lSize-1;
 
-				m_lNrPixels += lSize*lSize;
-			};
+			m_vSubSquares.push_back(sq);
+
+			m_lNrPixels += lSize*lSize;
+		};
 	};
 
 	int GetNrPixels()
@@ -436,8 +439,8 @@ void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR 
 		{
 			DSSRect& rcStar = (*pStars)[i].m_rcStar;
 
-			for (int x = rcStar.left(); x <= rcStar.right(); x++)
-				for (int y = rcStar.top(); y <= rcStar.bottom(); y++)
+			for (int x = rcStar.left; x <= rcStar.right; x++)
+				for (int y = rcStar.top; y <= rcStar.bottom; y++)
 				{
 					CExcludedPixel	ep(x, y);
 
@@ -666,8 +669,8 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		double				fPowSum = 0.0;
 		int				lNrValues = 0;
 
-		for (i = sq.m_rcSquare.left(); i<= sq.m_rcSquare.right(); i++)
-			for (j = sq.m_rcSquare.top(); j <= sq.m_rcSquare.bottom(); j++)
+		for (i = sq.m_rcSquare.left; i<= sq.m_rcSquare.right; i++)
+			for (j = sq.m_rcSquare.top; j <= sq.m_rcSquare.bottom; j++)
 			{
 				double		fValue;
 
@@ -683,7 +686,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 			VALUEPAIRITERATOR		it;
 			double					fValue;
 
-			if (rectContainsPoint(sq.m_rcSquare, QPoint{ vExcludedPixels[i].X, vExcludedPixels[i].Y }))
+			if (sq.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fValue);
 				fPowSum -= fValue*fValue;
@@ -714,9 +717,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 	{
 		VALUEPAIRSET		sValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left(); i <= SubSquare.m_rcSquare.right(); i++)
+		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top(); j < SubSquare.m_rcSquare.bottom(); j++)
+			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
 			{
 				VALUEPAIRITERATOR		it;
 				double					fLight;
@@ -741,7 +744,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 			double					fLight;
 			double					fDark;
 
-			if (rectContainsPoint(SubSquare.m_rcSquare, QPoint{ vExcludedPixels[i].X, vExcludedPixels[i].Y }))
+			if (SubSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fLight);
 				m_pMasterDark->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fDark);
@@ -765,9 +768,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		VALUEPAIRSET		sGreenValuePairs;
 		VALUEPAIRSET		sBlueValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left(); i <= SubSquare.m_rcSquare.right(); i++)
+		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top(); j < SubSquare.m_rcSquare.bottom(); j++)
+			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
 			{
 				VALUEPAIRITERATOR		it;
 				double					fLight;
@@ -817,7 +820,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 			double					fLight;
 			double					fDark;
 
-			if (rectContainsPoint(SubSquare.m_rcSquare, QPoint{ vExcludedPixels[i].X, vExcludedPixels[i].Y }))
+			if (SubSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fLight);
 				m_pMasterDark->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fDark);
@@ -868,9 +871,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		VALUEPAIRSET		sGreenValuePairs;
 		VALUEPAIRSET		sBlueValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left(); i <= SubSquare.m_rcSquare.right(); i++)
+		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top(); j < SubSquare.m_rcSquare.bottom(); j++)
+			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
 			{
 				VALUEPAIRITERATOR		it;
 				double					fRedLight, fGreenLight, fBlueLight;
@@ -910,7 +913,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 			double					fRedLight, fGreenLight, fBlueLight;
 			double					fRedDark, fGreenDark, fBlueDark;
 
-			if (rectContainsPoint(SubSquare.m_rcSquare, QPoint{ vExcludedPixels[i].X, vExcludedPixels[i].Y }))
+			if (SubSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fRedLight, fGreenLight, fBlueLight);
 				m_pMasterDark->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fRedDark, fGreenDark, fBlueDark);
@@ -1166,9 +1169,9 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 	bool				bCFA = pBitmap->IsCFA();
 
 	RGBHistogram.SetSize(256.0, 65536);
-	for (int i = rc.left(); i <= rc.right(); i++)
+	for (int i = rc.left; i <= rc.right; i++)
 	{
-		for (int j = rc.top(); j <= rc.bottom(); j++)
+		for (int j = rc.top; j <= rc.bottom; j++)
 		{
 			if (bCFA)
 			{
@@ -1480,8 +1483,8 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			{
 				DSSRect &rcStar = (*pStars)[i].m_rcStar;
 
-				for (int x = rcStar.left(); x <= rcStar.right(); x++)
-					for (int y = rcStar.top(); y <= rcStar.bottom(); y++)
+				for (int x = rcStar.left; x <= rcStar.right; x++)
+					for (int y = rcStar.top; y <= rcStar.bottom; y++)
 					{
 						CExcludedPixel	ep(x, y);
 

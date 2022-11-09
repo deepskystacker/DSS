@@ -467,13 +467,11 @@ namespace DSS
 		initGrayBitmap(rcCheck);
 
 		CRegisteredFrame		regFrame;
-		//DSSRect					rcReg;
+		DSSRect					rcReg;
 		STARSET stars;
 
-		constexpr int maxSize = static_cast<int>(STARMAXSIZE);
-		const DSSRect rcReg{ maxSize, maxSize, rcCheck.width() - (maxSize + 1), rcCheck.height() - (maxSize + 1) };
-		//rcReg.left = STARMAXSIZE;		rcReg.right = rcCheck.width() - (STARMAXSIZE + 1);
-		//rcReg.top = STARMAXSIZE;		rcReg.bottom = rcCheck.height() - (STARMAXSIZE + 1);
+		rcReg.left = STARMAXSIZE;		rcReg.right = rcCheck.width() - (STARMAXSIZE + 1);
+		rcReg.top = STARMAXSIZE;		rcReg.bottom = rcCheck.height() - (STARMAXSIZE + 1);
 
 		regFrame.m_fBackground = m_fBackground;
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);

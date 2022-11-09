@@ -5,7 +5,6 @@
 
 #include <vector>
 #include <memory>
-#include <QString>
 #include "Multitask.h"
 #include "DSSCommon.h"
 #include "DSSProgress.h"
