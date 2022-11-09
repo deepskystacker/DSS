@@ -220,6 +220,7 @@
     <ClInclude Include="..\DeepSkyStacker\DeBloom.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSCommon.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSProgress.h" />
+    <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSTools.h" />
     <ClInclude Include="..\DeepSkyStacker\EntropyInfo.h" />
     <ClInclude Include="..\DeepSkyStacker\Filters.h" />

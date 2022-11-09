@@ -1713,7 +1713,7 @@ void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 				m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
 
 			DSSRect rc{ 0, 0, 
-				m_rcResult.width() - 1,  m_rcResult.height() - 1};
+				m_rcResult.width(),  m_rcResult.height()};
 
 			if ((Red || Green || Blue) && rc.contains(ptOut))
 			{

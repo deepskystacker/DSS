@@ -74,14 +74,11 @@ void	CMatchingStars::ComputeStarDistances(const POINTFVECTOR & vStars, STARDISTV
 
 	for (i = 0;i<vStars.size();i++)
 	{
-		QPointF		pt1(vStars[i].x(), vStars[i].y());
-
 		for (j = i+1;j<vStars.size();j++)
 		{
-			QPointF		pt2(vStars[j].x(), vStars[j].y());
 			double			fDistance;
 
-			fDistance = Distance(pt1, pt2);
+			fDistance = Distance(vStars[i].x(), vStars[i].y(), vStars[j].x(), vStars[j].y());
 			fMaxDistance = max(fDistance, fMaxDistance);
 
 			vStarDist.emplace_back(i, j, fDistance);

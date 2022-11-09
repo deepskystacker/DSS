@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <omp.h>
 #include <ZExcept.h>
+#include "dssrect.h"
 #include "DarkFrame.h"
 
 #include "DSSProgress.h"
@@ -439,8 +440,8 @@ void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR 
 		{
 			DSSRect& rcStar = (*pStars)[i].m_rcStar;
 
-			for (int x = rcStar.left; x <= rcStar.right; x++)
-				for (int y = rcStar.top; y <= rcStar.bottom; y++)
+			for (int x = rcStar.left; x < rcStar.right; x++)
+				for (int y = rcStar.top; y < rcStar.bottom; y++)
 				{
 					CExcludedPixel	ep(x, y);
 
@@ -1171,9 +1172,9 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 	bool				bCFA = pBitmap->IsCFA();
 
 	RGBHistogram.SetSize(256.0, 65536);
-	for (int i = rc.left; i <= rc.right; i++)
+	for (int i = rc.left; i < rc.right; i++)
 	{
-		for (int j = rc.top; j <= rc.bottom; j++)
+		for (int j = rc.top; j < rc.bottom; j++)
 		{
 			if (bCFA)
 			{
@@ -1487,8 +1488,8 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			{
 				DSSRect &rcStar = (*pStars)[i].m_rcStar;
 
-				for (int x = rcStar.left; x <= rcStar.right; x++)
-					for (int y = rcStar.top; y <= rcStar.bottom; y++)
+				for (int x = rcStar.left; x < rcStar.right; x++)
+					for (int y = rcStar.top; y < rcStar.bottom; y++)
 					{
 						CExcludedPixel	ep(x, y);
 

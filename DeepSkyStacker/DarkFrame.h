@@ -171,8 +171,8 @@ private :
 
 	DSSRect getRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px)
 	{
-		DSSRect rc{ QPoint {std::max(0, px.m_lX - lSize), std::max(0, px.m_lY - lSize)},
-				QPoint {std::min(lWidth - 1, px.m_lX + lSize), std::min(lHeight - 1, px.m_lY + lSize) } };
+		DSSRect rc{ std::max(0, px.m_lX - lSize), std::max(0, px.m_lY - lSize),
+				std::min(lWidth, px.m_lX + lSize), std::min(lHeight, px.m_lY + lSize) };
 
 		return rc;
 
@@ -184,25 +184,25 @@ private :
 		DSSRect rc;
 
 		// Left side
-		rc.setCoords(0, 0, 2*lSize-1, 2*lSize-1);
+		rc.setCoords(0, 0, 2*lSize, 2*lSize);
 		vRects.push_back(rc);
-		rc.setCoords(0, lHeight/2-lSize, 2*lSize, lHeight/2+lSize-1);
+		rc.setCoords(0, lHeight/2-lSize, 2*lSize, lHeight/2+lSize);
 		vRects.push_back(rc);
-		rc.setCoords(0, lHeight-2*lSize, 2*lSize, lHeight-1);
+		rc.setCoords(0, lHeight-2*lSize, 2*lSize, lHeight);
 		vRects.push_back(rc);
 
 		// Right side
-		rc.setCoords(lWidth-2*lSize, 0, lWidth-1, 2*lSize-1);
+		rc.setCoords(lWidth-2*lSize, 0, lWidth, 2*lSize);
 		vRects.push_back(rc);
-		rc.setCoords(lWidth-2*lSize, lHeight/2-lSize, lWidth-1, lHeight/2+lSize-1);
+		rc.setCoords(lWidth-2*lSize, lHeight/2-lSize, lWidth, lHeight/2+lSize);
 		vRects.push_back(rc);
-		rc.setCoords(lWidth-2*lSize, lHeight-2*lSize, lWidth-1, lHeight-1);
+		rc.setCoords(lWidth-2*lSize, lHeight-2*lSize, lWidth, lHeight);
 		vRects.push_back(rc);
 
 		// Middle top/bottom
-		rc.setCoords(lWidth/2-lSize, 0, lWidth/2+lSize-1, 2*lSize-1);
+		rc.setCoords(lWidth/2-lSize, 0, lWidth/2+lSize, 2*lSize);
 		vRects.push_back(rc);
-		rc.setCoords(lWidth/2-lSize, lHeight-2*lSize, lWidth/2+lSize-1, lHeight-1);
+		rc.setCoords(lWidth/2-lSize, lHeight-2*lSize, lWidth/2+lSize, lHeight);
 		vRects.push_back(rc);
 	};
 

@@ -59,6 +59,7 @@
     <QtModules>core;gui;gui-private;widgets;network</QtModules>
     <QtRunLUpdateOnBuild>true</QtRunLUpdateOnBuild>
     <QtLUpdateOptions>-no-obsolete</QtLUpdateOptions>
+    <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
@@ -541,6 +542,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="FrameList.h" />
     <ClInclude Include="group.h" />
     <ClInclude Include="dss_settings.h" />
+    <ClInclude Include="dssrect.h" />
     <ClInclude Include="Histogram.h" />
     <QtMoc Include="IntermediateFiles.h" />
     <QtMoc Include="ImageListModel.h" />
