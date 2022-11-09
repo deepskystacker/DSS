@@ -44,7 +44,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 
 	if (pProgress != nullptr)
 	{
-		strText.LoadString(IDS_ALIGNINGCHANNEL);
+		const QString strText(QObject::tr("Aligning Channel", "IDS_ALIGNINGCHANNEL"));
 		pProgress->Start2(strText, lHeight);
 	}
 

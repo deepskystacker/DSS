@@ -576,7 +576,7 @@ namespace DSS
 								{
 									lb.m_groupId = groupId;
 									beginInsertRows(1);
-									addFile(filePath, Type, (checkState == Qt::Checked));
+									addFile(filePath, Type, (checkState == 1));
 									endInsertRows();
 								};
 							};

@@ -284,7 +284,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	QString string = tr("Registering %1", "IDS_REGISTERINGNAME").arg(fileName);
 
-	dlg.Start(CString((wchar_t*)string.utf16()), 0, false);
+	dlg.Start(string, 0, false);
 	dlg.SetJointProgress(true);
 	fi.RegisterPicture(CString(reinterpret_cast<const wchar_t*>(firstLightFrame.utf16())), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);

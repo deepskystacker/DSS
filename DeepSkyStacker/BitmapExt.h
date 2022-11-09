@@ -117,31 +117,60 @@ class CMemoryBitmap;
 
 /* ------------------------------------------------------------------- */
 
-inline void	FormatFromMethod(CString & strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
+inline void	FormatFromMethod(QString & strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
 {
-	strText.Empty();
+	strText = "";
 	switch (Method)
 	{
 	case MBP_FASTAVERAGE :
 	case MBP_AVERAGE :
-		strText.Format(IDS_RECAP_AVERAGE);
+		strText = QObject::tr("Average", "IDS_RECAP_AVERAGE");
 		break;
 	case MBP_MEDIAN :
-		strText.Format(IDS_RECAP_MEDIAN);
+		strText = QObject::tr("Median", "IDS_RECAP_MEDIAN");
 		break;
 	case MBP_MAXIMUM :
-		strText.Format(IDS_RECAP_MAXIMUM);
+		strText = QObject::tr("Maximum", "IDS_RECAP_MAXIMUM");
 		break;
 	case MBP_SIGMACLIP :
-		strText.Format(IDS_RECAP_KAPPASIGMA, fKappa, lNrIterations);
+		strText = QObject::tr("Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_KAPPASIGMA").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
 		break;
 	case MBP_AUTOADAPTIVE :
-		strText.Format(IDS_RECAP_AUTOADAPTIVE, lNrIterations);
+		strText = QObject::tr("Auto Adaptive Weighted Average (Iterations = %1)", "IDS_RECAP_AUTOADAPTIVE").arg(lNrIterations);
 		break;
 	case MBP_ENTROPYAVERAGE :
-		strText.Format(IDS_RECAP_ENTROPYAVERAGE);
+		strText = QObject::tr("Entropy Weighted Average", "IDS_RECAP_ENTROPYAVERAGE");
 		break;
 	case MBP_MEDIANSIGMACLIP :
+		strText = QObject::tr("Median Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_MEDIANSIGMACLIP").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
+	};
+};
+
+inline void	FormatFromMethod(CString& strText, MULTIBITMAPPROCESSMETHOD Method, double fKappa, int lNrIterations)
+{
+	strText.Empty();
+	switch (Method)
+	{
+	case MBP_FASTAVERAGE:
+	case MBP_AVERAGE:
+		strText.Format(IDS_RECAP_AVERAGE);
+		break;
+	case MBP_MEDIAN:
+		strText.Format(IDS_RECAP_MEDIAN);
+		break;
+	case MBP_MAXIMUM:
+		strText.Format(IDS_RECAP_MAXIMUM);
+		break;
+	case MBP_SIGMACLIP:
+		strText.Format(IDS_RECAP_KAPPASIGMA, fKappa, lNrIterations);
+		break;
+	case MBP_AUTOADAPTIVE:
+		strText.Format(IDS_RECAP_AUTOADAPTIVE, lNrIterations);
+		break;
+	case MBP_ENTROPYAVERAGE:
+		strText.Format(IDS_RECAP_ENTROPYAVERAGE);
+		break;
+	case MBP_MEDIANSIGMACLIP:
 		strText.Format(IDS_RECAP_MEDIANSIGMACLIP, fKappa, lNrIterations);
 	};
 };

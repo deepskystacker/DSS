@@ -44,15 +44,13 @@ bool CMasterFrames::LoadMasters(const CStackingInfo* pStackingInfo, CDSSProgress
 void	CMasterFrames::ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CString				strText;
-
 	ZTRACE_RUNTIME("Subtracting Offset Frame");
 
 	if (m_pMasterOffset && m_pMasterOffset->IsOk())
 	{
 		if (pProgress)
 		{
-			strText.LoadString(IDS_SUBSTRACTINGOFFSET);
+			const QString strText(QObject::tr("Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET"));
 			pProgress->Start2(strText, 0);
 		};
 		Subtract(pBitmap, m_pMasterOffset, pProgress);
@@ -71,14 +69,12 @@ void CMasterFrames::ApplyMasterDark(std::shared_ptr<CMemoryBitmap> pBitmap, cons
 void	CMasterFrames::ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	CString				strText;
-
 	if (m_MasterFlat.IsOk())
 	{
 		m_MasterFlat.ComputeFlatNormalization(pProgress);
 		if (pProgress)
 		{
-			strText.LoadString(IDS_APPLYINGFLAT);
+			const QString strText(QObject::tr("Applying Flat Frame", "IDS_APPLYINGFLAT"));
 			pProgress->Start2(strText, 0);
 		};
 		m_MasterFlat.ApplyFlat(pBitmap, pProgress);

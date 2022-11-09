@@ -352,21 +352,23 @@ public:
 	int argumentStart2 = -1;
 	std::vector<int> argumentsAchieved2;
 public:
-	void GetStartText(CString& strText) {}
-	void GetStart2Text(CString& strText) {}
-	void Start(LPCTSTR szTitle, int lTotal1, bool bEnableCancel = true) {}
-	void Progress1(LPCTSTR szText, int lAchieved1) {}
-	void Start2(LPCTSTR szText, int lTotal2) {
+	const QString GetStartText() const override { return strEmpty; }
+	const QString GetStart2Text() const override { return strEmpty; }
+	void Start(const QString& szTitle, int lTotal1, bool bEnableCancel = true) override {}
+	void Progress1(const QString& szText, int lAchieved1) override {}
+	void Start2(const QString& szText, int lTotal2) override {
 		++nrCallsStart2;
 		argumentStart2 = lTotal2;
 	}
-	void Progress2(LPCTSTR szText, int lAchieved2) {
+	void Progress2(const QString& szText, int lAchieved2) override {
 		++nrCallsProgress2;
 		argumentsAchieved2.push_back(lAchieved2);
 	}
-	void End2() {}
-	bool IsCanceled() { return false; }
-	bool Close() { return true; }
+	void End2() override {}
+	bool IsCanceled() override { return false; }
+	bool Close() override { return true; }
+private:
+	const QString strEmpty;
 };
 
 TEMPLATE_TEST_CASE("BitmapFiller progress check", "[Bitmap][BitmapFiller][progress]", AvxBitmapFiller, NonAvxBitmapFiller)

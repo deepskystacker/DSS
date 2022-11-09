@@ -103,13 +103,12 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress* pProgress)
 	if (IsOk() && !m_bComputed)
 	{
 		ZTRACE_RUNTIME("Compute Flat normalization");
-		CString			strStart2;
-		CString			strText;
+		QString	strStart2;
 
 		if (pProgress)
 		{
-			pProgress->GetStart2Text(strStart2);
-			strText.LoadString(IDS_NORMALIZINGMASTERFLAT);
+			strStart2 = pProgress->GetStart2Text();
+			const QString strText(QObject::tr("Calibrating Master Flat", "IDS_NORMALIZINGMASTERFLAT"));
 			pProgress->Start2(strText, m_pFlatFrame->RealHeight());
 		};
 
