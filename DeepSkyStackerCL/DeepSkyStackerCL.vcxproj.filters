@@ -66,9 +66,6 @@
     <ClCompile Include="..\DeepSkyStacker\FrameInfo.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="..\DeepSkyStacker\FrameList.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="..\DeepSkyStacker\MasterFrames.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -126,11 +123,32 @@
     <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_support.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\FrameList.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\ImageListModel.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\group.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ProgressConsole.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -249,6 +267,24 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="..\DeepSkyStacker\BitmapBase.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="QtProgressConsole.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_support.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_entropy.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BitMapFiller.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_bitmap_filler.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\group.h">
       <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
@@ -546,5 +582,10 @@
     <Image Include="..\DeepSkyStacker\res\RGBCalibration_Minimum.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\DeepSkyStacker\ImageListModel.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>
