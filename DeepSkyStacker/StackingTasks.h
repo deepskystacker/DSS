@@ -2,7 +2,7 @@
 #define _STACKINGTASKS_H__
 
 #include <QString>
-
+#include "dssrect.h"
 #include "BitmapExt.h"
 #include "FrameInfo.h"
 #include "TaskInfo.h"

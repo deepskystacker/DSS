@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include "dssrect.h"
 #include <QPointF>
 #include "RunningStackingEngine.h"
 
@@ -127,7 +128,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 					m_BackgroundCalibration.ApplyCalibration(fRed, fGreen, fBlue);
 
 				DSSRect rc{ 0, 0,
-					lWidth - 1, lHeight - 1 };
+					lWidth, lHeight };
 				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && rc.contains(ptOut))
 				{
 					vPixels.resize(0);

@@ -1,4 +1,5 @@
 #include <vld.h>
+#include <QPointF>
 
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 //

@@ -67,6 +67,7 @@
 #include "mrupath.h"
 
 #include "DeepSkyStacker.h"
+#include "dssrect.h"
 #include "StackingDlg.h"
 #include "ProcessingDlg.h"
 #include "DeepStack.h"

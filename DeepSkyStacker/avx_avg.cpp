@@ -1,4 +1,5 @@
 #include "StdAfx.h"
+#include "dssrect.h"
 #include "avx_avg.h"
 #include "avx_support.h"
 #include "TaskInfo.h"

@@ -49,6 +49,7 @@
 #include <math.h>
 
 #include "DeepSkyStacker.h"
+#include "dssrect.h"
 #include "editstars.h"
 #include "imageview.h"
 #include "Delaunay.h"

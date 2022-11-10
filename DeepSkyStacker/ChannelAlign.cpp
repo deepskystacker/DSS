@@ -1,4 +1,5 @@
 #include <stdafx.h>
+#include "dssrect.h"
 #include "ChannelAlign.h"
 #include "RegisterEngine.h"
 #include "MatchingStars.h"
@@ -57,7 +58,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 
 			ptOut = PixTransform.transform(pt);
 			pBitmap->GetPixel(i, j, fGray);
-			DSSRect rc{ 0, 0, lWidth - 1, lHeight - 1 };
+			DSSRect rc{ 0, 0, lWidth, lHeight};
 			if (fGray != 0 && rc.contains(ptOut))
 			{
 				vPixels.resize(0);

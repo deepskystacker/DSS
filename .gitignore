@@ -30,7 +30,7 @@ bld/
 #wwwroot/
 
 # Visual Studio 2017 auto generated files
-Generated\ Files/
+GeneratedFiles/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/

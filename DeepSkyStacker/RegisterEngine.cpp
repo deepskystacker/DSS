@@ -1,5 +1,6 @@
 
 #include <stdafx.h>
+#include "dssrect.h"
 #include "RegisterEngine.h"
 
 #include "MasterFrames.h"
@@ -591,7 +592,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 										{
 											for (auto it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * 2.35 / 1.5 - STARMAXSIZE, 0)); it != stars.end() && bWanabeeStarOk; ++it)
 											{
-												if (Distance(QPointF(ms.m_fX, ms.m_fY), QPointF(it->m_fX, it->m_fY)) < (ms.m_fMeanRadius + it->m_fMeanRadius) * 2.35 / 1.5)
+												if (Distance(ms.m_fX, ms.m_fY, it->m_fX, it->m_fY) < (ms.m_fMeanRadius + it->m_fMeanRadius) * 2.35 / 1.5)
 													bWanabeeStarOk = false;
 												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * 2.35 / 1.5 + STARMAXSIZE)
 													break;

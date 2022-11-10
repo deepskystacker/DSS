@@ -1,5 +1,6 @@
 #include <stdafx.h>
 #include <WndImage.h>
+#include "dssrect.h"
 #include "BitmapExt.h"
 #include "ImageSinks.h"
 #include "RegisterEngine.h"

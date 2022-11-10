@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "avx_support.h"
+#include "dssrect.h"
 #include "avx.h"
 #include <immintrin.h>
 #include <stdexcept>

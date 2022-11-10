@@ -4,6 +4,7 @@
 #include <set>
 #include <algorithm>
 #include "DSSTools.h"
+#include "dssrect.h"
 
 class CStar
 {
@@ -110,7 +111,7 @@ public :
 
 	bool	IsInRadius(const QPoint& pt) const
 	{
-		return Distance(QPointF(m_fX, m_fY), QPointF(pt)) <= m_fMeanRadius * 2.35 / 1.5;
+		return Distance(m_fX, m_fY, pt.x(), pt.y()) <= m_fMeanRadius * 2.35 / 1.5;
 	};
 
 	//bool	IsInRect(const QRectF & rc)
@@ -120,12 +121,12 @@ public :
 
 	bool	IsInRadius(const QPointF & pt) const
 	{
-		return Distance(QPointF(m_fX ,m_fY), QPointF(pt))<=m_fMeanRadius*2.35/1.5;
+		return Distance(m_fX ,m_fY, pt.x(), pt.y()) <= m_fMeanRadius*2.35/1.5;
 	};
 
 	bool	IsInRadius(double fX, double fY)
 	{
-		return Distance(QPointF(m_fX ,m_fY), QPointF(fX, fY))<=m_fMeanRadius*2.35/1.5;
+		return Distance(m_fX ,m_fY, fX, fY) <= m_fMeanRadius*2.35/1.5;
 	};
 
 	bool	IsValid()

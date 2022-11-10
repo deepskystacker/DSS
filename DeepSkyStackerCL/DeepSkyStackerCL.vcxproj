@@ -106,7 +106,7 @@
       <IgnoreSpecificDefaultLibraries>MSVCRT</IgnoreSpecificDefaultLibraries>
     </Link>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -148,7 +148,7 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
     <QtMoc>
-      <QtMocDir>.\GeneratedFiles\%(RelativeDir)</QtMocDir>
+      <QtMocDir>.\GeneratedFiles\</QtMocDir>
     </QtMoc>
     <QtRcc>
       <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
@@ -237,6 +237,7 @@
     <ClInclude Include="..\DeepSkyStacker\DeBloom.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSCommon.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSProgress.h" />
+    <ClInclude Include="..\DeepSkyStacker\dssrect.h" />
     <ClInclude Include="..\DeepSkyStacker\DSSTools.h" />
     <ClInclude Include="..\DeepSkyStacker\EntropyInfo.h" />
     <ClInclude Include="..\DeepSkyStacker\Filters.h" />
