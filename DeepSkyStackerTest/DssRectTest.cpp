@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "catch.h"
 #include "../DeepSkyStacker/DSSTools.h"
+#include "../DeepSkyStacker/dssrect.h"
 
 
 // Old CPointExt class
