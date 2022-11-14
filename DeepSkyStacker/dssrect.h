@@ -10,15 +10,14 @@ public:
 	int    bottom;
 
 public:
-	DSSRect(int l = 0, int t = 0, int r = 0, int b = 0)
-	{
-		left = std::min(l, r);
-		top = std::min(t, b);
-		right = std::max(l, r);
-		bottom = std::max(t, b);
-	};
+	DSSRect(const int l  = 0, const int t = 0, const int r = 0, const int b = 0) noexcept :
+		left{ l },
+		top{ t },
+		right{ r },
+		bottom{ b }
+	{} 
 
-	DSSRect(const DSSRect& rc)
+	DSSRect(const DSSRect& rc) noexcept
 	{
 		left = rc.left;
 		right = rc.right;
@@ -26,7 +25,7 @@ public:
 		bottom = rc.bottom;
 	};
 
-	const DSSRect& operator = (const DSSRect& rc)
+	const DSSRect& operator = (const DSSRect& rc) noexcept
 	{
 		left = rc.left;
 		right = rc.right;
@@ -58,8 +57,8 @@ public:
 
 	bool	contains(const QPointF& pt) const
 	{
-		return (pt.x() >= left) && (pt.x() < right) &&
-			(pt.y() >= top) && (pt.y() < bottom);
+		return (pt.x() >= left) && (pt.x() <= right-1) &&
+			(pt.y() >= top) && (pt.y() <= bottom-1);
 	};
 
 	void	setEmpty()
