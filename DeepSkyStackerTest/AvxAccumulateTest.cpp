@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "catch.h"
+#include "../DeepSkyStacker/dssrect.h"
 
 #define UNIT_TESTS
 
