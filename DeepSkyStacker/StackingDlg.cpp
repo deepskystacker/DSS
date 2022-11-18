@@ -92,6 +92,7 @@
 #include "toolbar.h"
 #include "avx_support.h"
 #include "ui/ui_StackingDlg.h"
+#include "picturelist.h"
 #include "RenameGroup.h"
 
 #include <ZExcept.h>
@@ -510,8 +511,9 @@ namespace DSS
 	/////////////////////////////////////////////////////////////////////////////
 	// StackingDlg dialog
 
-	StackingDlg::StackingDlg(QWidget* parent) :
-		BayWindow(parent),
+	StackingDlg::StackingDlg(QWidget* parent, PictureList* pictures) :
+		QWidget(parent),
+		pictureList{ pictures },
 		ui(new Ui::StackingDlg),
 		initialised(false),
 		markAsReference{ nullptr },
@@ -542,7 +544,16 @@ namespace DSS
 		//
 		// If user changes tab need to switch groups and table model
 		//
-		connect(ui->tabBar, SIGNAL(currentChanged(int)), this, SLOT(tabBar_currentChanged(int)));
+		connect(pictureList->tabBar, SIGNAL(currentChanged(int)), this, SLOT(tabBar_currentChanged(int)));
+
+		//
+		// Handle Menu requests for PictureList tableView and tabBar controls
+		//
+		connect(pictureList->tableView, SIGNAL(customContextMenuRequested(const QPoint&)),
+			this, SLOT(tableView_customContextMenuRequested(const QPoint&)));
+		connect(pictureList->tabBar, SIGNAL(customContextMenuRequested(const QPoint&)),
+			this, SLOT(tabBar_customContextMenuRequested(const QPoint&)));
+
 	}
 
 	StackingDlg::~StackingDlg()
@@ -557,14 +568,14 @@ namespace DSS
 
 	bool StackingDlg::eventFilter(QObject* watched, QEvent* event)
 	{
-		if (ui->tableView == watched)
+		if (pictureList->tableView == watched)
 		{
 			if (QEvent::KeyPress == event->type())
 			{
 				int i{ 0 };
 				QKeyEvent* keyEvent = static_cast<QKeyEvent*>(event);
 				const QKeySequence received(keyEvent->key() | keyEvent->modifiers());
-				QItemSelectionModel* qsm = ui->tableView->selectionModel();
+				QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
 				ImageListModel* imageModel{ frameList.currentTableModel() }; 
 
 				//
@@ -602,7 +613,7 @@ namespace DSS
 					// If the QSortFilterProxyModel is being used, need to map 
 					// to the imageModel index in the base imageModel (our ImageListModel)
 					//
-					if (ui->tableView->model() == proxyModel.get())
+					if (pictureList->tableView->model() == proxyModel.get())
 					{
 						for (i = 0; i < rowCount; i++)
 						{
@@ -637,7 +648,7 @@ namespace DSS
 					// If the QSortFilterProxyModel is being used, need to map 
 					// to the imageModel index in the base imageModel (our ImageListModel)
 					//
-					if (ui->tableView->model() == proxyModel.get())
+					if (pictureList->tableView->model() == proxyModel.get())
 					{
 						for (i = 0; i < rowCount; i++)
 						{
@@ -706,7 +717,7 @@ namespace DSS
 			//
 			const QPoint globalMouseLocation(QCursor::pos());
 			const QPointF mouseLocation(mapFromGlobal(globalMouseLocation));
-			if (ui->tableView->viewport()->underMouse())
+			if (pictureList->tableView->viewport()->underMouse())
 			{
 				const QString tip = toolTip();
 				if (!tip.isEmpty() && m_tipShowCount % 25 == 0)
@@ -761,7 +772,7 @@ namespace DSS
 					str += "\t";
 				QModelIndex ndx{ model->createIndex(i, j) };
 
-				if (ui->tableView->model() == proxyModel.get())
+				if (pictureList->tableView->model() == proxyModel.get())
 					ndx = proxyModel->mapFromSource(ndx);
 				str += model->data(ndx, Qt::DisplayRole).toString();
 			}
@@ -772,10 +783,10 @@ namespace DSS
 
 	}
 
-	void StackingDlg::on_tabBar_customContextMenuRequested(const QPoint& pos)
+	void StackingDlg::tabBar_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
-		auto tab = ui->tabBar->tabAt(pos);
+		auto tab = pictureList->tabBar->tabAt(pos);
 		if (tab > 0)
 		{
 			QMenu tabMenu;
@@ -789,24 +800,24 @@ namespace DSS
 				{
 					QString newName{ dlg.lineEdit->text() };
 					frameList.setGroupName(tab, newName);
-					ui->tabBar->setTabText(tab, newName);
+					pictureList->tabBar->setTabText(tab, newName);
 				}
 			}
 		}
 	}
 
-	void StackingDlg::on_tableView_customContextMenuRequested(const QPoint& pos)
+	void StackingDlg::tableView_customContextMenuRequested(const QPoint& pos)
 	{
 		ZFUNCTRACE_RUNTIME();
 
-		QModelIndex ndx = ui->tableView->indexAt(pos);
+		QModelIndex ndx = pictureList->tableView->indexAt(pos);
 		int i{ 0 };
 
 		//
 		// If the QSortFilterProxyModel is being used, need to map 
 		// to the model index in the base model (our ImageListModel)
 		//
-		if (ui->tableView->model() == proxyModel.get())
+		if (pictureList->tableView->model() == proxyModel.get())
 			ndx = proxyModel->mapToSource(ndx);
 
 		ImageListModel* imageModel = frameList.currentTableModel();
@@ -836,12 +847,12 @@ namespace DSS
 		}
 
 
-		QAction* action = menu.exec(ui->tableView->mapToGlobal(pos));
+		QAction* action = menu.exec(pictureList->tableView->mapToGlobal(pos));
 		if (!action)
 			return;
 		Menuitem item = static_cast<Menuitem>(action->data().toInt());
 
-		QItemSelectionModel* qsm = ui->tableView->selectionModel();
+		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
 		QModelIndexList selectedRows = qsm->selectedRows();
 
 		int rowCount = selectedRows.size();
@@ -850,7 +861,7 @@ namespace DSS
 		// If the QSortFilterProxyModel is being used, need to map 
 		// to the model index in the base model (our ImageListModel)
 		//
-		if (ui->tableView->model() == proxyModel.get())
+		if (pictureList->tableView->model() == proxyModel.get())
 		{
 			for (i = 0; i < rowCount; i++)
 			{
@@ -972,11 +983,8 @@ namespace DSS
 		// Restore windowState of this and the table view's horizontal header
 		//
 		QSettings settings;
-		settings.beginGroup("Dialogs/StackingDlg");
-		restoreState(settings.value("windowState").toByteArray());
-		settings.endGroup();
-		ui->tableView->horizontalHeader()->restoreState(
-			settings.value("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState").toByteArray());
+		pictureList->tableView->horizontalHeader()->restoreState(
+			settings.value("Dialogs/PictureList/TableView/HorizontalHeader/windowState").toByteArray());
 		//
 		// If the model data changes let me know
 		//
@@ -991,8 +999,8 @@ namespace DSS
 		proxyModel = std::make_unique<QSortFilterProxyModel>(this);
 		proxyModel->setSourceModel(frameList.currentTableModel());
 
-		ui->tableView->setModel(proxyModel.get());
-		ui->tableView->setSortingEnabled(true);
+		pictureList->tableView->setModel(proxyModel.get());
+		pictureList->tableView->setSortingEnabled(true);
 
 		//
 		// The default icon display is really rather small, so use a subclass
@@ -1001,38 +1009,38 @@ namespace DSS
 		//
 		iconSizeDelegate = std::make_unique<IconSizeDelegate>();
 
-		ui->tableView->setItemDelegateForColumn(0, iconSizeDelegate.get());
+		pictureList->tableView->setItemDelegateForColumn(0, iconSizeDelegate.get());
 
 		//
 		// Create an edit
 		//
 		itemEditDelegate = std::make_unique<ItemEditDelegate>();
-		ui->tableView->setItemDelegateForColumn(static_cast<int>(Column::Type), itemEditDelegate.get());
-		ui->tableView->setItemDelegateForColumn(static_cast<int>(Column::ISO), itemEditDelegate.get());
-		ui->tableView->setItemDelegateForColumn(static_cast<int>(Column::Exposure), itemEditDelegate.get());
+		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::Type), itemEditDelegate.get());
+		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::ISO), itemEditDelegate.get());
+		pictureList->tableView->setItemDelegateForColumn(static_cast<int>(Column::Exposure), itemEditDelegate.get());
 
 		//
 		// Reduce font size and increase weight
 		//
-		QFont font { ui->tableView->font() };
+		QFont font { pictureList->tableView->font() };
 		font.setPointSize(font.pointSize() - 1); font.setWeight(QFont::Medium);
-		ui->tableView->setFont(font);
-		font = ui->tableView->horizontalHeader()->font();
+		pictureList->tableView->setFont(font);
+		font = pictureList->tableView->horizontalHeader()->font();
 		//font.setPointSize(font.pointSize() - 1);
 		font.setWeight(QFont::Medium);
-		ui->tableView->horizontalHeader()->setFont(font);
-		ui->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
-		ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-		ui->tableView->setAlternatingRowColors(true);
-		ui->tableView->setTabKeyNavigation(true);
-		ui->tableView->horizontalHeader()->setSectionsMovable(true);
-		ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
-		ui->tableView->installEventFilter(this);
-		ui->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
+		pictureList->tableView->horizontalHeader()->setFont(font);
+		pictureList->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+		pictureList->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+		pictureList->tableView->setAlternatingRowColors(true);
+		pictureList->tableView->setTabKeyNavigation(true);
+		pictureList->tableView->horizontalHeader()->setSectionsMovable(true);
+		pictureList->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+		pictureList->tableView->installEventFilter(this);
+		pictureList->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
 			"Ctrl-A or equivalent to select all rows\n"
 			"Delete key to remove (not erase) selected rows\n"
 			"Right mouse button to display the menu"));
-		QItemSelectionModel* qsm = ui->tableView->selectionModel();
+		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
 		connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
 			this, SLOT(tableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
 
@@ -1064,15 +1072,15 @@ namespace DSS
 		};
 		dockTitle->setText(text);
 		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
-		ui->dockWidget->setTitleBarWidget(dockTitle);
+		pictureList->setTitleBarWidget(dockTitle);
 
 		//
 		// Set up the tab bar (used to be a tab widget)
 		//
-		ui->tabBar->setShape(QTabBar::TriangularSouth);
-		ui->tabBar->setExpanding(false);
-		ui->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
-		ui->tabBar->setCurrentIndex(ui->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
+		pictureList->tabBar->setShape(QTabBar::TriangularSouth);
+		pictureList->tabBar->setExpanding(false);
+		pictureList->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
+		pictureList->tabBar->setCurrentIndex(pictureList->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
 		updateListInfo();
 	}
 
@@ -1126,7 +1134,7 @@ namespace DSS
 	void StackingDlg::tableView_selectionChanged([[maybe_unused]] const QItemSelection& selected, [[maybe_unused]] const QItemSelection& deselected)
 	{
 
-		QItemSelectionModel * qsm = ui->tableView->selectionModel();
+		QItemSelectionModel * qsm = pictureList->tableView->selectionModel();
 		QModelIndexList selectedRows = qsm->selectedRows();
 		//
 		// If only one row is selected, we want to know the filename
@@ -1139,7 +1147,7 @@ namespace DSS
 			// If the QSortFilterProxyModel is being used, need to map 
 			// to the model index in the base model (our ImageListModel)
 			//
-			if (ui->tableView->model() == proxyModel.get())
+			if (pictureList->tableView->model() == proxyModel.get())
 				ndx = proxyModel->mapToSource(ndx);
 
 			if (ndx.isValid())
@@ -1193,12 +1201,12 @@ namespace DSS
 
 		if (!m_strShowFile.isEmpty() && imageLoader.load(m_strShowFile, pBitmap, pImage))
 		{
-			ui->tableView->setEnabled(true);
+			pictureList->tableView->setEnabled(true);
 			//
 			// Disabling the tableview resulted in it loosing focus
 			// so put the focus back
 			//
-			ui->tableView->setFocus(Qt::OtherFocusReason);
+			pictureList->tableView->setFocus(Qt::OtherFocusReason);
 			//
 			// The image we want is available in the cache
 			//
@@ -1232,7 +1240,7 @@ namespace DSS
 		}
 		else if (!m_strShowFile.isEmpty())
 		{
-			ui->tableView->setEnabled(false);
+			pictureList->tableView->setEnabled(false);
 			//
 			// Display the "Loading filename" with red background gradient while loading in background
 			//
@@ -1925,7 +1933,7 @@ namespace DSS
 
 		dockTitle->setText(text);
 
-		for (int i = 0; i < ui->tabBar->count(); i++)
+		for (int i = 0; i < pictureList->tabBar->count(); i++)
 		{
 			text = tr("Light Frames: %1\nDark Frames: %2\nFlat Frames: %3\nDark Flat Frames: %4\nOffset/Bias Frames: %5",
 				"IDS_LISTINFO2")
@@ -1934,7 +1942,7 @@ namespace DSS
 				.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME, i))
 				.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME, i));
-			ui->tabBar->setTabToolTip(i, text);
+			pictureList->tabBar->setTabToolTip(i, text);
 		};
 	};
 
@@ -2904,7 +2912,7 @@ namespace DSS
 			// Need to add a group
 			//
 			lastGroup = frameList.addGroup();
-			ui->tabBar->addTab(frameList.groupName(lastGroup));
+			pictureList->tabBar->addTab(frameList.groupName(lastGroup));
 		}
 
 	};
@@ -2913,9 +2921,7 @@ namespace DSS
 
 	void StackingDlg::showImageList(bool visible)
 	{
-		if (ui->dockWidget->isFloating())
-			ui->dockWidget->setVisible(visible);
+		if (pictureList->isFloating())
+			pictureList->setVisible(visible);
 	}
-
-
 }

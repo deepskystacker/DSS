@@ -48,6 +48,11 @@ class QStackedWidget;
 #include "StackingDlg.h"
 class QWinHost;
 
+namespace DSS
+{
+	class PictureList;
+}
+
 #include "ProcessingDlg.h"
 #include "dss_settings.h"
 
@@ -64,9 +69,8 @@ protected slots:
 
 private:
 	bool initialised;
-	QWidget* widget;
-	QSplitter* splitter;
 	ExplorerBar* explorerBar;
+	DSS::PictureList* pictureList;
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	QWinHost* winHost;

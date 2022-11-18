@@ -1,7 +1,7 @@
 #ifndef EXPLORERBAR_H
 #define EXPLORERBAR_H
 
-#include <QWidget>
+#include <QDockWidget>
 #include "mrupath.h"
 //#include "ClickLabel.h"
 
@@ -9,7 +9,7 @@ namespace Ui {
 class ExplorerBar;
 }
 
-class ExplorerBar : public QWidget
+class ExplorerBar : public QDockWidget
 {
 	Q_OBJECT
 
@@ -21,11 +21,11 @@ public:
     ~ExplorerBar();
 
 signals:
-	void onAddPictures();
-	void onAddDarks();
-	void onAddDarkFlats();
-	void onAddFlats();
-	void onAddOffsets();
+	void addPictures();
+	void addDarks();
+	void addDarkFlats();
+	void addFlats();
+	void addOffsets();
 
 	//
 	// dssfilelist operations

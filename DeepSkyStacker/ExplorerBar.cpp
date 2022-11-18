@@ -46,7 +46,7 @@ static void makeLink(QLabel *label, QString color)
 }
 
 ExplorerBar::ExplorerBar(QWidget *parent) :
-	QWidget(parent),
+	QDockWidget(parent),
 	initialised{ false },
 	ui(new Ui::ExplorerBar)
 {
@@ -57,6 +57,7 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	raise();
 	show();
 	activateWindow();
+
 	ZTRACE_RUNTIME("Creating Left Panel - ok");
 }
 
@@ -113,8 +114,8 @@ void ExplorerBar::onInitDialog()
 
 	ui->about->setFont(font);
 	ui->help->setFont(font);
-
 }
+
 void ExplorerBar::makeLinks()
 {
 	QString defColour = palette().color(QPalette::ColorRole::WindowText).name();
@@ -160,23 +161,23 @@ void ExplorerBar::makeLinks()
 
 void ExplorerBar::onOpenLights()
 {
-	emit onAddPictures();
+	emit addPictures();
 }
 void ExplorerBar::onOpenDarks()
 {
-	emit onAddDarks();
+	emit addDarks();
 }
 void ExplorerBar::onOpenFlats()
 {
-	emit onAddFlats();
+	emit addFlats();
 }
 void ExplorerBar::onOpenDarkFlats()
 {
-	emit onAddDarkFlats();
+	emit addDarkFlats();
 }
 void ExplorerBar::onOpenBias()
 {
-	emit onAddOffsets();
+	emit addOffsets();
 }
 
 /************************************************************************************/

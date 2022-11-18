@@ -57,7 +57,6 @@ class QNetworkReply;
 #include <QFileDialog>
 #include <QMenu>
 #include <QStyledItemDelegate>
-#include "baywindow.h"
 
 namespace DSS
 {
@@ -139,10 +138,11 @@ namespace DSS
 
 	};
 
+	class PictureList;
 
-	class StackingDlg : public BayWindow
+	class StackingDlg : public QWidget
 	{
-		typedef BayWindow
+		typedef QWidget
 			Inherited;
 
 		Q_OBJECT
@@ -158,8 +158,8 @@ namespace DSS
 		void toolBar_starsButtonPressed(bool checked);
 		void toolBar_cometButtonPressed(bool checked);
 		void toolBar_saveButtonPressed(bool checked);
-		void on_tableView_customContextMenuRequested(const QPoint& pos);
-		void on_tabBar_customContextMenuRequested(const QPoint& pos);
+		void tableView_customContextMenuRequested(const QPoint& pos);
+		void tabBar_customContextMenuRequested(const QPoint& pos);
 		void tableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 		void tableViewModel_dataChanged(const QModelIndex& first, const QModelIndex& last, const QList<int>& roles);
 		void gammaChanging(int peg);
@@ -195,7 +195,7 @@ namespace DSS
 		void batchStack();
 
 	public:
-		explicit StackingDlg(QWidget* parent = nullptr);
+		explicit StackingDlg(QWidget* parent = nullptr, PictureList* list = nullptr);
 		~StackingDlg();
 
 		bool eventFilter(QObject* watched, QEvent* event) override;
@@ -244,6 +244,7 @@ namespace DSS
 		void showEvent(QShowEvent* event) override;
 
 	private:
+		PictureList* pictureList;
 		Ui::StackingDlg* ui;
 		std::unique_ptr<Workspace> workspace;
 		bool initialised;
