@@ -92,8 +92,8 @@ BOOL CBatchStacking::OnInitDialog()
 
 	RestoreWindowPosition(this, "Dialogs/Batch/Position", true);
 
-	for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)
-		m_Lists.AddString(m_MRUList.m_vLists[i].toStdWString().c_str());
+	for (const auto& list : m_MRUList.m_vLists)
+		m_Lists.AddString(list.toStdWString().c_str());
 
 	UpdateListBoxWidth();
 	return TRUE;
@@ -189,28 +189,28 @@ void CBatchStacking::OnBnClickedClearList()
 
 void CBatchStacking::UpdateListBoxWidth()
 {
-	LONG				lWidth = 0;
-    CClientDC			dc(&m_Lists);
-	CRect				rcClient;
+	int lWidth = 0;
+    CClientDC dc(&m_Lists);
+	CRect rcClient;
 
 	m_Lists.GetClientRect(&rcClient);
 
-    CFont * f = m_Lists.GetFont();
+    CFont* f = m_Lists.GetFont();
     dc.SelectObject(f);
 
-	for (LONG i = 0;i<m_Lists.GetCount();i++)
+	for (int i = 0; i < m_Lists.GetCount(); i++)
 	{
 		CString			strText;
 
 		m_Lists.GetText(i, strText);
-		CSize			sz = dc.GetTextExtent(strText);
-		sz.cx += 3 * ::GetSystemMetrics(SM_CXBORDER)+20;
+		CSize sz = dc.GetTextExtent(strText);
+		sz.cx += 3 * ::GetSystemMetrics(SM_CXBORDER) + 20;
 
-		lWidth = max(lWidth, sz.cx);
-	};
+		lWidth = std::max(lWidth, static_cast<int>(sz.cx));
+	}
 
 	m_Lists.SetHorizontalExtent(lWidth);
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -297,12 +297,12 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 void CBatchStacking::OnOK()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL			bContinue  = TRUE;
-	LONG			lNrProcessedLists = 0;
+	bool bContinue = true;
+	int lNrProcessedLists = 0;
 
-	for (LONG i = 0;i<m_Lists.GetCount() && bContinue;i++)
+	for (int i = 0; i < m_Lists.GetCount() && bContinue; i++)
 	{
-		CString				strFile;
+		CString strFile;
 
 		if (m_Lists.GetCheck(i))
 		{
@@ -313,7 +313,7 @@ void CBatchStacking::OnOK()
 			m_Lists.SetCheck(i, FALSE);
 			if (bContinue)
 			{
-				CString			strText;
+				CString strText;
 
 				strText.Format(_T("->%s"), (LPCTSTR)strOutputFile);
 				m_Lists.InsertString(i, strText);
@@ -321,16 +321,16 @@ void CBatchStacking::OnOK()
 				m_Lists.Enable(i, FALSE);
 				m_Lists.DeleteString(i+1);
 				UpdateListBoxWidth();
-			};
+			}
 			lNrProcessedLists++;
-		};
-	};
+		}
+	}
 
-	if (!lNrProcessedLists)
+	if (lNrProcessedLists == 0)
 	{
 		SaveWindowPosition(this, "Dialogs/Batch/Position");
 		CDialog::OnOK();
-	};
+	}
 }
 
 /* ------------------------------------------------------------------- */

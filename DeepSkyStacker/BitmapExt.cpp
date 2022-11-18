@@ -233,9 +233,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			pColorBitmap->Init(lWidth, lHeight);
 			BitmapIterator<std::shared_ptr<CMemoryBitmap>> it{ pColorBitmap };
 
-#if defined(_OPENMP)
 #pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-#endif
 			for (int j = 0; j < lHeight; j++)
 			{
 				for (int i = 0; i < lWidth; i++, ++it)
@@ -259,11 +257,11 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 bool	CAllDepthBitmap::initQImage()
 {
 	ZFUNCTRACE_RUNTIME();
-	bool			bResult = false;
-	size_t			width = m_pBitmap->Width(), height = m_pBitmap->Height();
 	const int numberOfProcessors = CMultitask::GetNrProcessors();
+	const int width = m_pBitmap->Width();
+	const int height = m_pBitmap->Height();
 
-	m_Image = std::make_shared<QImage>((int)width, (int)height, QImage::Format_RGB32);
+	m_Image = std::make_shared<QImage>(width, height, QImage::Format_RGB32);
 
 	struct thread_vars {
 		const CMemoryBitmap* source;
@@ -300,8 +298,8 @@ bool	CAllDepthBitmap::initQImage()
 		// unsigned char * which is what QImage::bits() returns
 		//
 
-		auto pImageData = m_Image->bits();
-		auto bytes_per_line = m_Image->bytesPerLine();
+		auto* pImageData = m_Image->bits();
+		const auto bytes_per_line = m_Image->bytesPerLine();
 
 #pragma omp parallel for schedule(guided, 50) default(none) if(numberOfProcessors > 1)
 		for (int j = 0; j < height; j++)
@@ -309,12 +307,14 @@ bool	CAllDepthBitmap::initQImage()
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
 			for (int i = 0; i < width; i++)
 			{
-				double			fRed, fGreen, fBlue;
+				double fRed, fGreen, fBlue;
 				m_pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
-				*pOutPixel++ = qRgb(std::clamp(fRed, 0.0, 255.0),
+				*pOutPixel++ = qRgb(
+					std::clamp(fRed, 0.0, 255.0),
 					std::clamp(fGreen, 0.0, 255.0),
-					std::clamp(fBlue, 0.0, 255.0));
+					std::clamp(fBlue, 0.0, 255.0)
+				);
 			}
 		}
 	}
@@ -329,8 +329,8 @@ bool	CAllDepthBitmap::initQImage()
 		// unsigned char * which is what QImage::bits() returns
 		//
 
-		auto pImageData = m_Image->bits();
-		auto bytes_per_line = m_Image->bytesPerLine();
+		auto* pImageData = m_Image->bits();
+		const auto bytes_per_line = m_Image->bytesPerLine();
 		thread_vars threadVars(m_pBitmap.get());
 
 #pragma omp parallel for schedule(guided, 50) firstprivate(threadVars) default(none) if(numberOfProcessors > 1)
@@ -339,22 +339,22 @@ bool	CAllDepthBitmap::initQImage()
 			QRgb* pOutPixel = reinterpret_cast<QRgb*>(pImageData + (j * bytes_per_line));
 			threadVars.pixelItSrc.Reset(0, j);
 
-			for (int i = 0; i < width; i++, ++threadVars.pixelItSrc, ++pOutPixel)
+			for (int i = 0; i < width; ++i, ++threadVars.pixelItSrc, ++pOutPixel)
 			{
-				double			fRed, fGreen, fBlue;
+				double fRed, fGreen, fBlue;
 				threadVars.pixelItSrc.GetPixel(fRed, fGreen, fBlue);
 
-				*pOutPixel = qRgb(std::clamp(fRed, 0.0, 255.0),
+				*pOutPixel = qRgb(
+					std::clamp(fRed, 0.0, 255.0),
 					std::clamp(fGreen, 0.0, 255.0),
-					std::clamp(fBlue, 0.0, 255.0));
+					std::clamp(fBlue, 0.0, 255.0)
+				);
 			}
 		}
-	};
+	}
 
-	bResult = true;
-
-	return bResult;
-};
+	return true;
+}
 
 
 bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgress* pProgress)
@@ -965,25 +965,24 @@ template <template<class> class BitmapClass, class T>
 bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaTransformation& gammatrans)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool bResult = false;
 
 	if (pInBitmap != nullptr && gammatrans.IsInitialized())
 	{
-		const size_t width = pInBitmap->Width();
-		const size_t height = pInBitmap->Height();
+		const int width = pInBitmap->Width();
+		const int height = pInBitmap->Height();
 
 		// Check that the output bitmap size is matching the input bitmap
 		ZASSERTSTATE ((pImage->width() == width) && (pImage->height() == height));
 
-		double const fMultiplier = pInBitmap->GetMultiplier() / 256.0;
+		const double fMultiplier = pInBitmap->GetMultiplier() / 256.0;
 		//
 		// Point to the first RGB quad in the QImage which we
 		// need to cast to QRgb* (which is unsigned int*) from
 		// unsigned char * which is what QImage::bits() returns
 		//
 
-		auto pImageData = pImage->bits();
-		auto bytes_per_line = pImage->bytesPerLine();
+		auto* pImageData = pImage->bits();
+		const auto bytes_per_line = pImage->bytesPerLine();
 
 #pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // Returns 1 if multithreading disabled by user, otherwise # HW threads
 		for (int j = 0; j < height; j++)
@@ -1020,9 +1019,10 @@ bool ApplyGammaTransformation(QImage* pImage, BitmapClass<T>* pInBitmap, CGammaT
 				}
 			}
 		}
-		bResult = true;
+		return true;
 	}
-	return bResult;
+	else
+		return false;
 }
 
 /* ------------------------------------------------------------------- */

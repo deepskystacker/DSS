@@ -19,14 +19,7 @@
 #include "avx_avg.h"
 #include <omp.h>
 #include <QRectF>
-
-
-#define _USE_MATH_DEFINES
 #include <cmath>
-
-#ifndef M_PI
-#define M_PI			3.14159265358979323846
-#endif
 
 /* ------------------------------------------------------------------- */
 
@@ -949,10 +942,10 @@ void	CStackingEngine::GetResultExtraInfo()
 
 inline void ExpandWithPoint(int & lLeft, int & lRight, int & lTop, int & lBottom, const QPointF & pt)
 {
-	lLeft	= min(lLeft, static_cast<int>(pt.x()));
-	lRight	= max(lRight, static_cast<int>(pt.x()));
-	lTop	= min(lTop, static_cast<int>(pt.y()));
-	lBottom = max(lBottom, static_cast<int>(pt.y()));
+	lLeft	= std::min(lLeft, static_cast<int>(pt.x()));
+	lRight	= std::max(lRight, static_cast<int>(pt.x()));
+	lTop	= std::min(lTop, static_cast<int>(pt.y()));
+	lBottom = std::max(lBottom, static_cast<int>(pt.y()));
 };
 
 DSSRect CStackingEngine::computeLargestRectangle()
@@ -1058,10 +1051,10 @@ bool CStackingEngine::computeSmallestRectangle(DSSRect & rc)
 			}
 			else
 			{
-				lLeft = max(max(lLeft, static_cast<int>(pt1.x())), static_cast<int>(pt2.x()));
-				lRight = min(min(lRight, static_cast<int>(pt4.x())), static_cast<int>(pt3.x()));
-				lTop = max(max(lTop, static_cast<int>(pt1.y())), static_cast<int>(pt3.y()));
-				lBottom = min(min(lBottom, static_cast<int>(pt4.y())), static_cast<int>(pt2.y()));
+				lLeft = std::max(std::max(lLeft, static_cast<int>(pt1.x())), static_cast<int>(pt2.x()));
+				lRight = std::min(std::min(lRight, static_cast<int>(pt4.x())), static_cast<int>(pt3.x()));
+				lTop = std::max(std::max(lTop, static_cast<int>(pt1.y())), static_cast<int>(pt3.y()));
+				lBottom = std::min(std::min(lBottom, static_cast<int>(pt4.y())), static_cast<int>(pt2.y()));
 			};
 		};
 	};
@@ -1295,9 +1288,9 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 
 				pCover->GetValue(i, j, fRedCover, fGreenCover, fBlueCover);
 
-				fMaxCoverage = max(fMaxCoverage, fRedCover);
-				fMaxCoverage = max(fMaxCoverage, fGreenCover);
-				fMaxCoverage = max(fMaxCoverage, fBlueCover);
+				fMaxCoverage = std::max(fMaxCoverage, fRedCover);
+				fMaxCoverage = std::max(fMaxCoverage, fGreenCover);
+				fMaxCoverage = std::max(fMaxCoverage, fBlueCover);
 			}
 
 			if (m_pProgress != nullptr)
@@ -2003,9 +1996,9 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 
 								m_pOutput->GetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
 								StackTask.m_pTempBitmap->GetPixel(i, j, fNewRed, fNewGreen, fNewBlue);
-								fOutRed = max(fOutRed, fNewRed);
-								fOutGreen = max(fOutGreen, fNewGreen);
-								fOutBlue = max(fOutBlue, fNewBlue);;
+								fOutRed = std::max(fOutRed, fNewRed);
+								fOutGreen = std::max(fOutGreen, fNewGreen);
+								fOutBlue = std::max(fOutBlue, fNewBlue);;
 								m_pOutput->SetPixel(i, j, fOutRed, fOutGreen, fOutBlue);
 							}
 							else
@@ -2015,7 +2008,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 
 								m_pOutput->GetPixel(i, j, fOutGray);
 								StackTask.m_pTempBitmap->GetPixel(i, j, fNewGray);
-								fOutGray = max(fOutGray, fNewGray);
+								fOutGray = std::max(fOutGray, fNewGray);
 								m_pOutput->SetPixel(i, j, fOutGray);
 							};
 						};
@@ -2430,7 +2423,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 					pBitmap = p;
 
 					CDirectionalImageFilter Filter;
-					Filter.SetAngle(m_fStarTrailsAngle + M_PI / 2.0, 2);
+					Filter.SetAngle(m_fStarTrailsAngle + M_PI_2, 2);
 					m_pComet = Filter.ApplyFilter(pBitmap.get(), pProgress);
 				}
 				else
