@@ -166,19 +166,11 @@ namespace DSS
 		void gammaChanged(int peg);
 		void tabBar_currentChanged(int index);
 
-	public:
-		explicit StackingDlg(QWidget* parent = nullptr);
-		~StackingDlg();
-
-		bool eventFilter(QObject* watched, QEvent* event) override;
-
-		void dropFiles(QDropEvent* e);
-
-		void		onAddPictures();
-		void		onAddDarks();
-		void		onAddDarkFlats();
-		void		onAddFlats();
-		void		onAddOffsets();
+		void onAddPictures();
+		void onAddDarks();
+		void onAddDarkFlats();
+		void onAddFlats();
+		void onAddOffsets();
 
 		//
 		// dssfilelist operations
@@ -194,6 +186,23 @@ namespace DSS
 		void		checkAll();
 		void		unCheckAll();
 
+		//
+		// Registration
+		//
+		void registerCheckedImages();
+		void computeOffsets();
+		void stackCheckedImages();
+		void batchStack();
+
+	public:
+		explicit StackingDlg(QWidget* parent = nullptr);
+		~StackingDlg();
+
+		bool eventFilter(QObject* watched, QEvent* event) override;
+
+		void dropFiles(QDropEvent* e);
+
+
 		void setFileList(const fs::path& file)
 		{
 			fileList = file;
@@ -201,15 +210,7 @@ namespace DSS
 
 		void showImageList(bool visible = true);
 
-		void computeOffsets();
-
 		void copyToClipboard();
-
-		void registerCheckedImages();
-
-		void stackCheckedImages();
-
-		void batchStack();
 
 		inline void fillTasks(CAllStackingTasks& tasks)
 		{

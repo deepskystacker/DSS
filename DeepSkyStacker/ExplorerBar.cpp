@@ -160,72 +160,72 @@ void ExplorerBar::makeLinks()
 
 void ExplorerBar::onOpenLights()
 {
-	dssApp->getStackingDlg().onAddPictures();
+	emit onAddPictures();
 }
 void ExplorerBar::onOpenDarks()
 {
-	dssApp->getStackingDlg().onAddDarks();
+	emit onAddDarks();
 }
 void ExplorerBar::onOpenFlats()
 {
-	dssApp->getStackingDlg().onAddFlats();
+	emit onAddFlats();
 }
 void ExplorerBar::onOpenDarkFlats()
 {
-	dssApp->getStackingDlg().onAddDarkFlats();
+	emit onAddDarkFlats();
 }
 void ExplorerBar::onOpenBias()
 {
-	dssApp->getStackingDlg().onAddOffsets();
+	emit onAddOffsets();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onOpenFilelist()
 {
-	dssApp->getStackingDlg().loadList();
+	emit loadList();
 }
 void ExplorerBar::onSaveFilelist()
 {
-	dssApp->getStackingDlg().saveList();
+	emit saveList();
 }
 void ExplorerBar::onClearList()
 {
-	dssApp->getStackingDlg().clearList();
+	emit clearList();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onCheckAbove()
 {
-	dssApp->getStackingDlg().checkAbove();
+	emit checkAbove();
 }
 void ExplorerBar::onCheckAll()
 {
-	dssApp->getStackingDlg().checkAll();
+	emit checkAll();
 }
 void ExplorerBar::onUncheckAll()
 {
-	dssApp->getStackingDlg().unCheckAll();
+	emit unCheckAll();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onRegisterChecked()
 {
-	dssApp->getStackingDlg().registerCheckedImages();
+	emit registerCheckedImages();
 }
 void ExplorerBar::onComputeOffsets()
 {
-	dssApp->getStackingDlg().computeOffsets();
+	emit computeOffsets();
 }
 void ExplorerBar::onStackChecked()
 {
-	dssApp->getStackingDlg().stackCheckedImages();
+	emit stackCheckedImages();
 }
 void ExplorerBar::onBatchStacking()
 {
-	dssApp->getStackingDlg().batchStack();
+	emit batchStack();
 }
 
 /************************************************************************************/

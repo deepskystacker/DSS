@@ -20,8 +20,34 @@ public:
     explicit ExplorerBar(QWidget *parent = nullptr);
     ~ExplorerBar();
 
-public slots:
-	void onHelp();
+signals:
+	void onAddPictures();
+	void onAddDarks();
+	void onAddDarkFlats();
+	void onAddFlats();
+	void onAddOffsets();
+
+	//
+	// dssfilelist operations
+	//
+	void loadList();
+	void clearList();
+	void saveList();
+
+	//
+	// Check marks
+	//
+	void checkAbove();
+	void checkAll();
+	void unCheckAll();
+
+	//
+	// Registration
+	//
+	void registerCheckedImages();
+	void computeOffsets();
+	void stackCheckedImages();
+	void batchStack();
 
 protected:
 	void mousePressEvent(QMouseEvent*) override;
@@ -59,9 +85,8 @@ private slots:
 	void onRecommendedSettings();
 
     void onAbout();
+	void onHelp();
 
-
-    //void linkActivated();
 
 private:
     Ui::ExplorerBar *ui;

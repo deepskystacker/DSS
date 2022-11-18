@@ -249,6 +249,28 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 	return Inherited::showEvent(event);
 }
 
+void DeepSkyStacker::connectSignalsToSlots()
+{
+	connect(explorerBar, SIGNAL(addPictures()), stackingDlg, SLOT(addPictures()));
+	connect(explorerBar, SIGNAL(addDarks()), stackingDlg, SLOT(addDarks()));
+	connect(explorerBar, SIGNAL(addFlats()), stackingDlg, SLOT(addFlats()));
+	connect(explorerBar, SIGNAL(addDarkFlats()), stackingDlg, SLOT(addDarkFlats()));
+	connect(explorerBar, SIGNAL(addOffsets()), stackingDlg, SLOT(addOffsets()));
+
+	connect(explorerBar, SIGNAL(loadList()), stackingDlg, SLOT(loadList()));
+	connect(explorerBar, SIGNAL(saveList()), stackingDlg, SLOT(saveList()));
+	connect(explorerBar, SIGNAL(loadList()), stackingDlg, SLOT(clearList()));
+
+	connect(explorerBar, SIGNAL(checkAbove()), stackingDlg, SLOT(checkAbove()));
+	connect(explorerBar, SIGNAL(checkAll()), stackingDlg, SLOT(checkAll()));
+	connect(explorerBar, SIGNAL(unCheckAll()), stackingDlg, SLOT(unCheckAll()));
+
+	connect(explorerBar, SIGNAL(registerCheckedImages()), stackingDlg, SLOT(registerCheckedImages()));
+	connect(explorerBar, SIGNAL(computeOffsets()), stackingDlg, SLOT(computeOffsets()));
+	connect(explorerBar, SIGNAL(stackCheckedImages()), stackingDlg, SLOT(stackCheckedImages()));
+	connect(explorerBar, SIGNAL(batchStack()), stackingDlg, SLOT(batchStack()));
+}
+
 void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
@@ -297,6 +319,11 @@ void DeepSkyStacker::onInitialise()
 	horizontalLayout->addWidget(splitter);
 	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	//
+	// Connect Qt Signals to appropriate slots
+	//
+	connectSignalsToSlots();
 
 	//
 	// If the image list is floating, then make sure it is visible
