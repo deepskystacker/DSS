@@ -1127,7 +1127,7 @@ void	CDeBloom::AddStar(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, CBloome
 			{
 				double	fBloomDistance;
 
-				fBloomDistance = distance(pt.x(), pt.y(), bs.m_vBlooms[a].m_ptRef.x(), bs.m_vBlooms[a].m_ptRef.x());
+				fBloomDistance = distance(pt.x(), pt.y(), bs.m_vBlooms[a].m_ptRef.x(), bs.m_vBlooms[a].m_ptRef.y());
 				fBloomWeight += 1.0/(fBloomDistance+1.0);
 
 				fFactor1 = 2.0*pow(bs.m_vBlooms[a].m_fRadius, 2);
