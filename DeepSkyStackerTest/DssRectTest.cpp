@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "catch.h"
-#include "../DeepSkyStacker/DSSTools.h"
-#include "../DeepSkyStacker/dssrect.h"
+#include "../DeepSkyStacker/dssrect_utils.h"
 
 
 // Old CPointExt class
@@ -84,13 +83,14 @@ public:
 	};
 };
 
+
+constexpr int leftEdge = 1;
+constexpr int topEdge = 2;
+constexpr int rightEdge = 7;
+constexpr int bottomEdge = 10;
+
 TEST_CASE("DSSRect", "[DSSRect]")
 {
-	constexpr int leftEdge = 1;
-	constexpr int topEdge = 2;
-	constexpr int rightEdge = 7;
-	constexpr int bottomEdge = 10;
-
 	SECTION("Width and height return correct values")
 	{
 		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
@@ -99,74 +99,83 @@ TEST_CASE("DSSRect", "[DSSRect]")
 		REQUIRE(rect.height() == bottomEdge - topEdge);
 	}
 
-	SECTION("Function contains() returns true for a pixel in the middle of the block")
+	SECTION("setEmpty sets the DSSRect empty")
+	{
+		DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		REQUIRE(rect.getRight() == rightEdge);
+		rect.setEmpty();
+		REQUIRE(rect.getLeft() == 0);
+		REQUIRE(rect.getTop() == 0);
+		REQUIRE(rect.getRight() == 0);
+		REQUIRE(rect.getBottom() == 0);
+	}
+
+	SECTION("isEmpty returns true for an empty rect")
+	{
+		DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		rect.setCoords(leftEdge, 47, rightEdge, 47);
+		REQUIRE(rect.isEmpty() == true);
+	}
+
+	SECTION("Function blockContainsPixel() returns true for a pixel in the middle of the block")
 	{
 		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
 		const QPoint pixel{ (rightEdge - leftEdge) / 2, (bottomEdge - topEdge) / 2 };
 
-		REQUIRE(rect.contains(pixel) == true);
+		REQUIRE(DSS::blockContainsPixel(rect, pixel) == true);
 	}
 
-	SECTION("Function contains() returns true for a pixel in the last row and column")
+	SECTION("Function pointIsInRect() returns true for a pixel in the middle of the block")
+	{
+		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
+		const QPointF point{ (rightEdge - leftEdge) / 2, (bottomEdge - topEdge) / 2 };
+
+		REQUIRE(DSS::pointIsInRect(point, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom()) == true);
+	}
+
+	SECTION("Function blockContainsPixel() returns true for a pixel in the last row and column")
 	{
 		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
 		const QPoint pixel{ rightEdge - 1, bottomEdge - 1 };
 
-		REQUIRE(rect.contains(pixel) == true);
+		REQUIRE(DSS::blockContainsPixel(rect, pixel) == true);
 	}
 
-	SECTION("Function contains() returns false for a pixel in the rightEdge column")
+	SECTION("Function blockContainsPixel() returns true for a pixel in the rightEdge column")
 	{
 		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
 		const QPoint pixel{ rightEdge, bottomEdge - 1 }; // x-index of the pixel is 'rightEdge', so it's outside the block.
 
-		REQUIRE(rect.contains(pixel) == false);
+		REQUIRE(DSS::blockContainsPixel(rect, pixel) == true);
 	}
 
-	SECTION("Function contains() returns true for a point in the last row and column")
+	SECTION("Function pointIsInRect() returns true for a pixel in the rightEdge column")
 	{
 		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
-		const QPointF point{ rightEdge - 1, bottomEdge - 1 };
+		const QPointF pixel{ rightEdge, bottomEdge - 1 }; // x-index of the pixel is 'rightEdge', so it's outside the block.
 
-		REQUIRE(rect.contains(point) == true);
+		REQUIRE(DSS::pointIsInRect(pixel, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom()) == true);
 	}
 
-	SECTION("Function contains() returns true for a point in the rightEdge column")
-	{
-		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
-		const QPointF point{ rightEdge, bottomEdge }; // x-index of the point is 'rightEdge'
-
-		REQUIRE(rect.contains(point) == true); // We must reproduce this buggy behaviour to be compatible with code prior to Qt switch.
-	}
-
-	SECTION("Function contains() returns false for a point just outside the rightEdge column")
-	{
-		constexpr double rightOffset = 1e-10;
-		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
-		const QPointF point{ rightEdge + rightOffset, bottomEdge }; // x-index of the point is 'rightEdge + 1e-10'
-
-		REQUIRE(rect.contains(point) == false); // We must reproduce this buggy behaviour to be compatible with code prior to Qt switch.
-	}
-
-	SECTION("DSSRect::contains and CPointExt::IsInRect are identical (true) for a point on the border")
+	SECTION("pointIsInRect and CPointExt::IsInRect are identical (true) for a point on the border")
 	{
 		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
 		const QPointF point{ rightEdge, bottomEdge };
 		CPointExt ptExt{ rightEdge, bottomEdge }; // Cannot be const as IsInRect is non-const :-(
 
-		REQUIRE(rect.contains(point) == true);
-		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == true);
+		REQUIRE(DSS::pointIsInRect(point, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom()) == true);
+		REQUIRE(static_cast<bool>(ptExt.IsInRect(rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom())) == true);
 	}
 
-	SECTION("DSSRect::contains and CPointExt::IsInRect are identical (false) for a point just outside the border")
+	SECTION("pointIsInRect and CPointExt::IsInRect are identical (false) for a point just outside the border")
 	{
 		constexpr double offset = 1e-10;
 		const DSSRect rect{ leftEdge, topEdge, rightEdge, bottomEdge };
 		const QPointF point{ rightEdge, bottomEdge + offset };
 		CPointExt ptExt{ rightEdge, bottomEdge + offset }; // Cannot be const as IsInRect is non-const :-(
 
-		REQUIRE(rect.contains(point) == false);
-		REQUIRE(static_cast<bool>(ptExt.IsInRect(leftEdge, topEdge, rightEdge, bottomEdge)) == false);
+		REQUIRE(DSS::pointIsInRect(point, rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom()) == false);
+		REQUIRE(static_cast<bool>(ptExt.IsInRect(rect.getLeft(), rect.getTop(), rect.getRight(), rect.getBottom())) == false);
 	}
 }
 
@@ -174,7 +183,7 @@ TEST_CASE("DSSRect", "[DSSRect]")
 
 TEST_CASE("CRect", "[CRect]")
 {
-	SECTION("CRect")
+	SECTION("CRect::PtInRect returns false for a pixel on the column outside the rect")
 	{
 		CRect rect{ 0, 0, 5, 5 };
 		CPoint point{ 5, 5 };
@@ -182,6 +191,7 @@ TEST_CASE("CRect", "[CRect]")
 		REQUIRE(rect.PtInRect(point) == FALSE);
 	}
 }
+
 /*
 #include <iostream>
 
