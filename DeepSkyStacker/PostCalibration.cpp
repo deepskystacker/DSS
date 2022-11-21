@@ -1,12 +1,7 @@
+#include "stdafx.h"
 #include <algorithm>
 using std::min;
 using std::max;
-
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-#include <afx.h>
-#include <afxcmn.h>
-#include <afxcview.h>
-#include <afxwin.h>
 
 #include <ZExcept.h>
 #include <Ztrace.h>
