@@ -83,7 +83,6 @@ int QLinearGradientCtrl::getDrawWidth() const
 
 QColor QLinearGradientCtrl::colourFromPoint(const QPoint & point)
 {
-	ZFUNCTRACE_DEVELOP();
 	bool vertical = isVertical();
 	int drawwidth = getDrawWidth();
 	int w = drawwidth - (m_RightUpSide ? 24 : 5) - (m_LeftDownSide ? 24 : 5);
@@ -190,7 +189,6 @@ void QLinearGradientCtrl::drawEndPegs(QPainter & painter)
 
 void QLinearGradientCtrl::drawPegs(QPainter& painter)
 {
-	ZFUNCTRACE_DEVELOP();
 	// No stupid selection
 	if (selectedPeg > stops.size())
 		selectedPeg = -1;
@@ -215,7 +213,6 @@ void QLinearGradientCtrl::drawPegs(QPainter& painter)
 
 void QLinearGradientCtrl::drawPeg(QPainter & painter, QPoint point, QColor colour, int direction)
 {
-	ZFUNCTRACE_DEVELOP();
 	QBrush brush(colour);     // create a brush in the requested colour
 	QPoint points[3];
 
@@ -283,8 +280,6 @@ void QLinearGradientCtrl::drawPeg(QPainter & painter, QPoint point, QColor colou
 
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direction)
 {
-	ZFUNCTRACE_DEVELOP();
-
 	QPolygon poly{ 3 };
 
 	painter.save();
@@ -345,7 +340,6 @@ void QLinearGradientCtrl::drawSelPeg(QPainter & painter, QPoint point, int direc
 
 void QLinearGradientCtrl::drawSelPeg(QPainter & painter, int peg)
 {
-	ZFUNCTRACE_DEVELOP();
 	int drawwidth = getDrawWidth() - 23;
 	bool vertical = isVertical();
 
@@ -404,14 +398,12 @@ void QLinearGradientCtrl::drawSelPeg(QPainter & painter, int peg)
 
 void QLinearGradientCtrl::resizeEvent(QResizeEvent *event)
 {
-	ZFUNCTRACE_DEVELOP();
 	clientRect = contentsRect();
 	Inherited::resizeEvent(event);
 }
 
 void QLinearGradientCtrl::paintEvent(QPaintEvent *event)
 {
-	ZFUNCTRACE_DEVELOP();
 	QPainter painter(this);
 
 	// Draw it all here ...
@@ -972,7 +964,6 @@ int QLinearGradientCtrl::setSelected(int iSel)
 
 int QLinearGradientCtrl::moveSelected(qreal newpos, bool bUpdate)
 {
-	ZFUNCTRACE_DEVELOP();
 	if (selectedPeg < 0)
 		return -1;
 
