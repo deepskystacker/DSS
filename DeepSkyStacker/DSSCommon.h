@@ -5,8 +5,8 @@ constexpr auto PI = 3.14159265358979323846;
 
 #define REGENTRY_BASEKEY_LIVE_POSITION					_T("Software\\DeepSkyStacker\\DeepSkyStackerLive\\Position")
 
-constexpr unsigned int	STARMAXSIZE = 50;
-constexpr unsigned int 	RCCHECKSIZE = (5 * STARMAXSIZE) + 2; // 252
+constexpr int STARMAXSIZE = 50;
+constexpr int RCCHECKSIZE = (5 * STARMAXSIZE) + 2; // 252
 
 typedef enum tagSTACKINGMODE
 {

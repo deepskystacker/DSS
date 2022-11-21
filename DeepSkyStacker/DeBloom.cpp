@@ -771,7 +771,7 @@ void	CDeBloom::MarkBloomBorder(CMemoryBitmap * pMask, int x, int y, std::vector<
 
 /* ------------------------------------------------------------------- */
 
-void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<QPointF> & vBloomed)
+void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vector<QPoint>& vBloomed)
 {
 	if (x>=0 && x<m_lWidth && y>=0 && y<m_lHeight)
 	{
@@ -812,13 +812,13 @@ void	CDeBloom::MarkBorderAsBloomed(CMemoryBitmap * pMask, int x, int y, std::vec
 
 void	CDeBloom::ExpandBloomedArea(CMemoryBitmap * pBitmap, C8BitGrayBitmap * pMask, int x, int y)
 {
-	bool						bEnd = false;
-	std::vector<QPointF>		vBloomed;
+	bool					bEnd = false;
+	std::vector<QPoint>		vBloomed;
 	int						lLargestY = y;
 	int						lTopY = 0;
 	int						lLargestWidth = 0;
 	int						lBloomHeight = 0;
-	CBloomedStar				bs;
+	CBloomedStar			bs;
 
 	// Since it started at the bottom the bloomed are can only go up...well normally
 	// So go down a little to get everything that is above 90% of the threshold

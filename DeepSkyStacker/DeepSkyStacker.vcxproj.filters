@@ -778,6 +778,9 @@
     <ClInclude Include="dssrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dssrect_utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico">

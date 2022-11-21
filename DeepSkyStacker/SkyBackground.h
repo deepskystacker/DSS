@@ -3,49 +3,22 @@
 class CSkyBackground
 {
 public:
-	double				m_fLight;
-	double				m_fRed,
-		m_fGreen,
-		m_fBlue;
+	double m_fLight{ 0.0 };
+	double m_fRed{ 0.0 };
+	double m_fGreen{ 0.0 };
+	double m_fBlue{ 0.0 };
 
-private:
-	void	CopyFrom(const CSkyBackground& right)
-	{
-		m_fLight = right.m_fLight;
-		m_fRed = right.m_fRed;
-		m_fGreen = right.m_fGreen;
-		m_fBlue = right.m_fBlue;
-	};
+	CSkyBackground() noexcept = default;
+	CSkyBackground(const CSkyBackground&) noexcept = default;
+	CSkyBackground& operator=(const CSkyBackground&) noexcept = default;
 
-public:
-	CSkyBackground()
-	{
-		m_fLight = 0;
-		m_fRed = m_fGreen = m_fBlue = 0;
-	};
-	~CSkyBackground()
-	{
-	};
-
-	CSkyBackground(const CSkyBackground& right)
-	{
-		CopyFrom(right);
-	};
-
-	CSkyBackground& operator = (const CSkyBackground& right)
-	{
-		CopyFrom(right);
-		return (*this);
-	};
-
-	bool operator < (const CSkyBackground& right) const
+	bool operator<(const CSkyBackground& right) const noexcept
 	{
 		return m_fLight < right.m_fLight;
-	};
+	}
 
-	void	Reset()
+	void Reset() noexcept
 	{
-		m_fLight = 0;
-		m_fRed = m_fGreen = m_fBlue = 0;
-	};
+		*this = CSkyBackground{};
+	}
 };

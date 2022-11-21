@@ -2,86 +2,59 @@
 
 class DSSRect final
 {
+private:
+	int left{ 0 };
+	int top{ 0 };
+	int right{ 0 };
+	int bottom{ 0 };
 
 public:
-	int    left;
-	int    top;
-	int    right;
-	int    bottom;
+	constexpr DSSRect() noexcept = default;
 
-public:
-	DSSRect(const int l  = 0, const int t = 0, const int r = 0, const int b = 0) noexcept :
-		left{ l },
-		top{ t },
-		right{ r },
-		bottom{ b }
+	explicit constexpr DSSRect(const int xleft, const int ytop, const int xright, const int ybottom) noexcept :
+		left{ xleft },
+		top{ ytop },
+		right{ xright },
+		bottom{ ybottom }
 	{} 
 
-	DSSRect(const DSSRect& rc) noexcept
-	{
-		left = rc.left;
-		right = rc.right;
-		top = rc.top;
-		bottom = rc.bottom;
-	};
+	DSSRect(const DSSRect& rc) noexcept = default;
+	DSSRect& operator=(const DSSRect& rc) noexcept = default;
 
-	const DSSRect& operator = (const DSSRect& rc) noexcept
-	{
-		left = rc.left;
-		right = rc.right;
-		top = rc.top;
-		bottom = rc.bottom;
+	constexpr int getLeft() const noexcept { return left; }
+	constexpr int getTop() const noexcept { return top; }
+	constexpr int getRight() const noexcept { return right; }
+	constexpr int getBottom() const noexcept { return bottom; }
 
-		return (*this);
-	};
-
-	int	width() const
+	constexpr int width() const noexcept
 	{
 		return right - left;
-	};
-
-	int	height() const
+	}
+	constexpr int height() const noexcept
 	{
 		return bottom - top;
-	};
+	}
 
-	~DSSRect()
+	void setEmpty() noexcept
 	{
-	};
+		*this = DSSRect{};
+	}
 
-	bool	contains(const QPoint& pt) const
-	{
-		return (pt.x() >= left) && (pt.x() < right) &&
-			(pt.y() >= top) && (pt.y() < bottom);
-	};
-
-	bool	contains(const QPointF& pt) const
-	{
-		return (pt.x() >= left) && (pt.x() <= right-1) &&
-			(pt.y() >= top) && (pt.y() <= bottom-1);
-	};
-
-	void	setEmpty()
-	{
-		left = right = top = bottom = 0;
-	};
-
-	bool	isEmpty() const
+	constexpr bool isEmpty() const noexcept
 	{
 		return (left == right) || (top == bottom);
-	};
+	}
 
-	void	offsetRect(int dx, int dy)
+	void offsetRect(const int dx, const int dy) noexcept
 	{
 		left += dx;
 		right += dx;
 		top += dy;
 		bottom += dy;
-	};
+	}
 
-	void	setCoords(int x1, int y1, int x2, int y2)
+	void setCoords(const int xleft, const int ytop, const int xright, const int ybottom) noexcept
 	{
-		left = x1;		right = x2;
-		top = y1;		bottom = y2;
-	};
+		*this = DSSRect{ xleft, ytop, xright, ybottom };
+	}
 };

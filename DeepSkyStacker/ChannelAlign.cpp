@@ -1,5 +1,5 @@
 #include <stdafx.h>
-#include "dssrect.h"
+#include "dssrect_utils.h"
 #include "ChannelAlign.h"
 #include "RegisterEngine.h"
 #include "MatchingStars.h"
@@ -53,13 +53,10 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 		for (int i = 0; i < lWidth; i++)
 		{
 			double fGray;
-			QPointF pt(i, j);
-			QPointF ptOut;
+			const QPointF ptOut = PixTransform.transform(QPointF(i, j));
 
-			ptOut = PixTransform.transform(pt);
 			pBitmap->GetPixel(i, j, fGray);
-			DSSRect rc{ 0, 0, lWidth, lHeight};
-			if (fGray != 0 && rc.contains(ptOut))
+			if (fGray != 0 && DSS::pointIsInRect(ptOut, 0, 0, lWidth - 1, lHeight - 1))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, 1.0, vPixels);

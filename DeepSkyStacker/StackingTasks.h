@@ -358,9 +358,8 @@ public :
 
 	bool GetCustomRectangle(DSSRect& rcCustom) const
 	{
-		const bool bResult = !m_rcCustom.isEmpty();
 		rcCustom = m_rcCustom;
-		return bResult;
+		return !m_rcCustom.isEmpty();
 	}
 
 	bool IsCustomRectangleUsed() const
@@ -388,7 +387,7 @@ public :
 	bool DoDarkFlatTasks(CDSSProgress* pProgress);
 	bool DoAllPreTasks(CDSSProgress* pProgress);
 
-	__int64	computeNecessaryDiskSpace(const QRectF & rcOutput);
+	__int64	computeNecessaryDiskSpace(const DSSRect& rcOutput);
 	__int64	computeNecessaryDiskSpace();
 	__int64	AvailableDiskSpace(CString & strDrive);
 

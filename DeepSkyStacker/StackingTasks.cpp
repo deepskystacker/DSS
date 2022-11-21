@@ -1894,7 +1894,7 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 
 /* ------------------------------------------------------------------- */
 
-__int64	CAllStackingTasks::computeNecessaryDiskSpace(const QRectF & rcOutput)
+__int64	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutput)
 {
 	__int64				ulResult = 0;
 	__int64				ulLightSpace = 0,
@@ -1910,12 +1910,12 @@ __int64	CAllStackingTasks::computeNecessaryDiskSpace(const QRectF & rcOutput)
 
 	for (int i = 0;i<m_vStacks.size();i++)
 	{
-		int			lWidth,
-						lHeight,
-						lNrChannels,
-						lNrBytesPerChannel;
-		__int64			ulSpace;
-		__int64			ulLSpace;
+		int lWidth;
+		int lHeight;
+		int lNrChannels;
+		int lNrBytesPerChannel;
+		std::int64_t ulSpace;
+		std::int64_t ulLSpace;
 
 		if (m_vStacks[i].m_pLightTask && m_vStacks[i].m_pLightTask->m_vBitmaps.size())
 		{
@@ -1924,11 +1924,11 @@ __int64	CAllStackingTasks::computeNecessaryDiskSpace(const QRectF & rcOutput)
 			lNrChannels = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
 			lNrBytesPerChannel = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitPerChannels/8;
 
-			ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
-			ulLSpace	= lWidth * lHeight * 2 * 3;
+			ulSpace = static_cast<std::int64_t>(lWidth) * lHeight * lNrBytesPerChannel * lNrChannels;
+			ulLSpace = static_cast<std::int64_t>(lWidth) * lHeight * 2 * 3;
 
 			if (!rcOutput.isEmpty())
-				ulLSpace = rcOutput.width() * rcOutput.height() * 2 * 3;
+				ulLSpace = static_cast<std::int64_t>(rcOutput.width()) * rcOutput.height() * 2 * 3;
 
 			if ((m_vStacks[i].m_pLightTask->m_Method == MBP_AVERAGE)
 				&& (!IsCometAvailable() || (GetCometStackingMode() != CSM_COMETSTAR)))
@@ -1943,36 +1943,37 @@ __int64	CAllStackingTasks::computeNecessaryDiskSpace(const QRectF & rcOutput)
 				m_vStacks[i].m_pLightTask->m_Method = MBP_AVERAGE;
 
 			if (m_vStacks[i].m_pOffsetTask)
-				ulOffsetSpace = max(ulOffsetSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
+				ulOffsetSpace = std::max(ulOffsetSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkTask)
-				ulDarkSpace = max(ulDarkSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
+				ulDarkSpace = std::max(ulDarkSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkFlatTask)
-				ulDarkFlatSpace = max(ulDarkFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
+				ulDarkFlatSpace = std::max(ulDarkFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pFlatTask)
-				ulFlatSpace = max(ulFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
+				ulFlatSpace = std::max(ulFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
 		};
 	};
 
-	ulResult = max(ulLightSpace, max(ulFlatSpace, max(ulOffsetSpace, max(ulDarkSpace, ulDarkFlatSpace))));
-	ulResult *= 1.10;
+	ulResult = std::max(ulLightSpace, std::max(ulFlatSpace, std::max(ulOffsetSpace, std::max(ulDarkSpace, ulDarkFlatSpace))));
+	ulResult *= 11;
+	ulResult /= 10;
 
 	return ulResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 __int64	CAllStackingTasks::computeNecessaryDiskSpace()
 {
-	QRectF rcOutput;
+	DSSRect rcOutput;
 
 	if (m_bUseCustomRectangle)
-		rcOutput.setCoords(m_rcCustom.left, m_rcCustom.top, m_rcCustom.right, m_rcCustom.bottom);
+		rcOutput = m_rcCustom;
 
 	return computeNecessaryDiskSpace(rcOutput);
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1985,7 +1986,7 @@ __int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 	strDrive = CString((LPCTSTR)path.root_name().wstring().c_str());
 
 	return avail;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
