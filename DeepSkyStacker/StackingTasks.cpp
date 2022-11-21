@@ -1896,19 +1896,19 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 
 __int64	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutput)
 {
-	__int64				ulResult = 0;
-	__int64				ulLightSpace = 0,
+	std::int64_t		ulResult = 0;
+	std::int64_t		ulLightSpace = 0,
 						ulFlatSpace = 0,
 						ulDarkSpace = 0,
 						ulDarkFlatSpace = 0,
 						ulOffsetSpace = 0;
-	__int64				ulNeededSpace = 0;
-	__int64				ulPixelSize = 0;
+	std::int64_t		ulNeededSpace = 0;
+	std::int64_t		ulPixelSize = 0;
 
 	ulPixelSize = GetPixelSizeMultiplier();
 	ulPixelSize *= ulPixelSize;
 
-	for (int i = 0;i<m_vStacks.size();i++)
+	for (size_t i = 0; i < m_vStacks.size(); i++)
 	{
 		int lWidth;
 		int lHeight;
@@ -1943,16 +1943,16 @@ __int64	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutput)
 				m_vStacks[i].m_pLightTask->m_Method = MBP_AVERAGE;
 
 			if (m_vStacks[i].m_pOffsetTask)
-				ulOffsetSpace = std::max(ulOffsetSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
+				ulOffsetSpace = std::max(ulOffsetSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkTask)
-				ulDarkSpace = std::max(ulDarkSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
+				ulDarkSpace = std::max(ulDarkSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkFlatTask)
-				ulDarkFlatSpace = std::max(ulDarkFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
+				ulDarkFlatSpace = std::max(ulDarkFlatSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pFlatTask)
-				ulFlatSpace = std::max(ulFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
+				ulFlatSpace = std::max(ulFlatSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
 		};
 	};
 
