@@ -998,6 +998,7 @@ namespace DSS
 		//
 		proxyModel = std::make_unique<QSortFilterProxyModel>(this);
 		proxyModel->setSourceModel(frameList.currentTableModel());
+		proxyModel->setSortRole(Qt::EditRole);
 
 		pictureList->tableView->setModel(proxyModel.get());
 		pictureList->tableView->setSortingEnabled(true);
@@ -1390,8 +1391,12 @@ namespace DSS
 			// Before attempting to add the files prune out those that have already been loaded
 			// and issue an error message
 			//
-			auto it = std::remove_if(files.begin(), files.end(), 
-				[&](const QString& s) { return fileAlreadyLoaded(s.toStdU16String()); });
+			auto it = std::remove_if(files.begin(), files.end(),
+				[&](const QString& s) {
+					std::u16string u16s{ s.toStdU16String() };
+					fs::path path(u16s);
+					return fileAlreadyLoaded(path);
+				});
 			files.erase(it, files.end());
 
 			//
