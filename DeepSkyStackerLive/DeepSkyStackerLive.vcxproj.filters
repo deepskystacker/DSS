@@ -290,9 +290,6 @@
     <ClInclude Include="DeepSkyStackerLive.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -564,8 +561,5 @@
     <ResourceCompile Include="DeepSkyStackerLiveTR.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resource." />
   </ItemGroup>
 </Project>

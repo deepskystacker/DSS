@@ -1714,7 +1714,7 @@ void CPJNSMTPMessage::SaveToDisk(const CString& sFilename)
       CPJNSMTPConnection::ThrowPJNSMTPException(GetLastError(), FACILITY_WIN32);
 
 	  //Write out the separator
-    char* pszBodyHeader = "\r\n";
+    const char* pszBodyHeader = "\r\n";
     if (!WriteFile(hFile, pszBodyHeader, 2, &dwWritten, NULL))
       CPJNSMTPConnection::ThrowPJNSMTPException(GetLastError(), FACILITY_WIN32);
 
@@ -2234,8 +2234,8 @@ void CPJNSMTPConnection::ConnectESMTP(LPCTSTR pszLocalName, LPCTSTR pszUsername,
   {
     //Find the authentication methods supported by the SMTP server
     CString sResponse(GetLastCommandResponse());
-		TCHAR* sBegin = _T("250-AUTH ");
-		TCHAR* sEnd = _T("\r\n");
+		const TCHAR* sBegin = _T("250-AUTH ");
+		const TCHAR* sEnd = _T("\r\n");
 		int PosBegin = sResponse.Find(sBegin);
 		if (PosBegin >= 0)
 		{
@@ -2324,7 +2324,7 @@ void CPJNSMTPConnection::Disconnect(BOOL bGracefully)
   {
     if (bGracefully)
     {
-      char* sBuf = "QUIT\r\n";
+      const char* sBuf = "QUIT\r\n";
       try
       {
         _Send(sBuf, static_cast<int>(strlen(sBuf)));
@@ -2502,7 +2502,7 @@ void CPJNSMTPConnection::SendMessage(CPJNSMTPMessage& Message)
   }
 
   //Send the DATA command
-  char* szDataCommand = "DATA\r\n";
+  const char* szDataCommand = "DATA\r\n";
   try
   {
     _Send(szDataCommand, static_cast<int>(strlen(szDataCommand)));
@@ -2532,7 +2532,7 @@ void CPJNSMTPConnection::SendMessage(CPJNSMTPMessage& Message)
   }
 
 	//Send the Header / body Separator
-  char* szBodyHeader = "\r\n";
+  const char* szBodyHeader = "\r\n";
   try
   {
     _Send(szBodyHeader, static_cast<int>(strlen(szBodyHeader)));
@@ -2571,7 +2571,7 @@ void CPJNSMTPConnection::SendMessage(CPJNSMTPMessage& Message)
   }
 
   //Send the end of message indicator
-  char* szEOM = "\r\n.\r\n";
+  const char* szEOM = "\r\n.\r\n";
   try
   {
     _Send(szEOM, static_cast<int>(strlen(szEOM)));
@@ -2629,7 +2629,7 @@ void CPJNSMTPConnection::SendMessage(BYTE* pMessage, DWORD dwTotalBytes, CPJNSMT
   }
 
   //Send the DATA command
-  char* szDataCommand = "DATA\r\n";
+  const char* szDataCommand = "DATA\r\n";
   try
   {
     _Send(szDataCommand, static_cast<int>(strlen(szDataCommand)));
@@ -2684,7 +2684,7 @@ void CPJNSMTPConnection::SendMessage(BYTE* pMessage, DWORD dwTotalBytes, CPJNSMT
   if (bSuccess)
   {
     //Send the end of message indicator
-    char* szEOM = "\r\n.\r\n";
+    const char* szEOM = "\r\n.\r\n";
     try
     {
       _Send(szEOM, static_cast<int>(strlen(szEOM)));
@@ -2767,7 +2767,7 @@ void CPJNSMTPConnection::SendMessage(const CString& sMessageOnFile, CPJNSMTPAddr
     }
 
     //Send the DATA command
-    char* szDataCommand = "DATA\r\n";
+    const char* szDataCommand = "DATA\r\n";
     try
     {
       _Send(szDataCommand, static_cast<int>(strlen(szDataCommand)));
@@ -2830,7 +2830,7 @@ void CPJNSMTPConnection::SendMessage(const CString& sMessageOnFile, CPJNSMTPAddr
     if (bSuccess)
     {
       //Send the end of message indicator
-      char* szEOM = "\r\n.\r\n";
+      const char* szEOM = "\r\n.\r\n";
       try
       {
         _Send(szEOM, static_cast<int>(strlen(szEOM)));
@@ -2955,7 +2955,7 @@ BOOL CPJNSMTPConnection::ReadResponse(LPSTR pszBuffer, int nInitialBufSize, LPST
 	ASSERT(*ppszOverFlowBuffer == NULL); //Initially it must point to a NULL string
 
   //We always use a terminator of CR LF
-  LPSTR pszTerminator = "\r\n";
+  LPCSTR pszTerminator = "\r\n";
 	int nTerminatorLen = 2;
 
 	//must have been created first
@@ -3083,7 +3083,7 @@ BOOL CPJNSMTPConnection::ReadResponse(LPSTR pszBuffer, int nInitialBufSize, LPST
 void CPJNSMTPConnection::AuthLogin(LPCTSTR pszUsername, LPCTSTR pszPassword)
 {
   //Send the AUTH LOGIN command
-	char* szAuth = "AUTH LOGIN\r\n";
+	const char* szAuth = "AUTH LOGIN\r\n";
   try
   {
 	  _Send(szAuth, static_cast<int>(strlen(szAuth)));
@@ -3158,7 +3158,7 @@ void CPJNSMTPConnection::AuthLogin(LPCTSTR pszUsername, LPCTSTR pszPassword)
 void CPJNSMTPConnection::AuthPlain(LPCTSTR pszUsername, LPCTSTR pszPassword)
 {
   //Send the AUTH PLAIN command
-	char* szAuth = "AUTH PLAIN\r\n";
+  const	char* szAuth = "AUTH PLAIN\r\n";
   try
   {
 	  _Send(szAuth, static_cast<int>(strlen(szAuth)));
@@ -3228,7 +3228,7 @@ void CPJNSMTPConnection::AuthPlain(LPCTSTR pszUsername, LPCTSTR pszPassword)
 void CPJNSMTPConnection::AuthCramMD5(LPCTSTR pszUsername, LPCTSTR pszPassword)
 {
   //Send the AUTH CRAM-MD5 command
-	char* szAuth = "AUTH CRAM-MD5\r\n";
+  const	char* szAuth = "AUTH CRAM-MD5\r\n";
   try
   {
 	  _Send(szAuth, static_cast<int>(strlen(szAuth)));

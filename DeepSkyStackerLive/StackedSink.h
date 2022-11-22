@@ -9,10 +9,10 @@
 class CStackedSink : public CWndImageSink
 {
 private :
-	CPointExt		m_pt1,
-					m_pt2,
-					m_pt3,
-					m_pt4;
+	QPointF		m_pt1,
+				m_pt2,
+				m_pt3,
+				m_pt4;
 
 private :
 
@@ -25,7 +25,7 @@ public :
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 
-	void			SetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4);
+	void			SetFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4);
 	void			ClearFootprint();
 };
 
