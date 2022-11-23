@@ -53,10 +53,8 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 		for (int i = 0; i < lWidth; i++)
 		{
 			double fGray;
-			QPointF pt(i, j);
-			QPointF ptOut;
+			const QPointF ptOut = PixTransform.transform(QPointF(i, j));
 
-			ptOut = PixTransform.transform(pt);
 			pBitmap->GetPixel(i, j, fGray);
 			DSSRect rc{ 0, 0, lWidth, lHeight};
 			if (fGray != 0 && rc.contains(ptOut))
