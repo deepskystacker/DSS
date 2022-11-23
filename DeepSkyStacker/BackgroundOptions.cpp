@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <algorithm>
 using std::min;
 using std::max;

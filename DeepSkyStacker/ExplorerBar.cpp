@@ -46,7 +46,7 @@ static void makeLink(QLabel *label, QString color)
 }
 
 ExplorerBar::ExplorerBar(QWidget *parent) :
-	QWidget(parent),
+	QDockWidget(parent),
 	initialised{ false },
 	ui(new Ui::ExplorerBar)
 {
@@ -57,6 +57,7 @@ ExplorerBar::ExplorerBar(QWidget *parent) :
 	raise();
 	show();
 	activateWindow();
+
 	ZTRACE_RUNTIME("Creating Left Panel - ok");
 }
 
@@ -113,8 +114,8 @@ void ExplorerBar::onInitDialog()
 
 	ui->about->setFont(font);
 	ui->help->setFont(font);
-
 }
+
 void ExplorerBar::makeLinks()
 {
 	QString defColour = palette().color(QPalette::ColorRole::WindowText).name();
@@ -160,72 +161,72 @@ void ExplorerBar::makeLinks()
 
 void ExplorerBar::onOpenLights()
 {
-	dssApp->getStackingDlg().onAddPictures();
+	emit addPictures();
 }
 void ExplorerBar::onOpenDarks()
 {
-	dssApp->getStackingDlg().onAddDarks();
+	emit addDarks();
 }
 void ExplorerBar::onOpenFlats()
 {
-	dssApp->getStackingDlg().onAddFlats();
+	emit addFlats();
 }
 void ExplorerBar::onOpenDarkFlats()
 {
-	dssApp->getStackingDlg().onAddDarkFlats();
+	emit addDarkFlats();
 }
 void ExplorerBar::onOpenBias()
 {
-	dssApp->getStackingDlg().onAddOffsets();
+	emit addOffsets();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onOpenFilelist()
 {
-	dssApp->getStackingDlg().loadList();
+	emit loadList();
 }
 void ExplorerBar::onSaveFilelist()
 {
-	dssApp->getStackingDlg().saveList();
+	emit saveList();
 }
 void ExplorerBar::onClearList()
 {
-	dssApp->getStackingDlg().clearList();
+	emit clearList();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onCheckAbove()
 {
-	dssApp->getStackingDlg().checkAbove();
+	emit checkAbove();
 }
 void ExplorerBar::onCheckAll()
 {
-	dssApp->getStackingDlg().checkAll();
+	emit checkAll();
 }
 void ExplorerBar::onUncheckAll()
 {
-	dssApp->getStackingDlg().unCheckAll();
+	emit unCheckAll();
 }
 
 /************************************************************************************/
 
 void ExplorerBar::onRegisterChecked()
 {
-	dssApp->getStackingDlg().registerCheckedImages();
+	emit registerCheckedImages();
 }
 void ExplorerBar::onComputeOffsets()
 {
-	dssApp->getStackingDlg().computeOffsets();
+	emit computeOffsets();
 }
 void ExplorerBar::onStackChecked()
 {
-	dssApp->getStackingDlg().stackCheckedImages();
+	emit stackCheckedImages();
 }
 void ExplorerBar::onBatchStacking()
 {
-	dssApp->getStackingDlg().batchStack();
+	emit batchStack();
 }
 
 /************************************************************************************/

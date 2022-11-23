@@ -33,29 +33,9 @@
 **
 **
 ****************************************************************************/
-#include <vld.h>
-
-#define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
-//
-// Want to support windows 7 and up
-//
-#define _WIN32_WINNT _WIN32_WINNT_WIN7
-
-#include <afx.h>
-#include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
-#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
-#include <afxcview.h>
-#ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>			// MFC support for Windows Common Controls
-#endif // _AFX_NO_AFXCMN_SUPPORT
-
-#include <atlbase.h>
-
+#include "stdafx.h"
 #include <stdlib.h>
-
-#include <windows.h>
-#include <commctrl.h>
+#include "stdafx.h"
 
 #include <algorithm>
 using std::min;
@@ -143,11 +123,18 @@ namespace DSS
                 break;
             case Column::Score:
                 if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
-                    return QString("N/A");
+                {
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    else
+                        return QString("N/A");
+                }
                 else
                 {
                     if (file.m_bRegistered)
                     {
+                        if (Qt::EditRole == role)
+                            return file.m_fOverallQuality;
                         QString result;
                         if (file.m_bUseAsStarting)
                             result = "(*) %1";
@@ -156,40 +143,88 @@ namespace DSS
                         return result.arg(file.m_fOverallQuality, 0, 'f', 2);
                     }
                     else
-                        return QString("NC");
+                    {
+                        if (Qt::EditRole == role)
+                            return 0.0;
+                        else
+                            return QString("NC");
+                    }
                 };
                 break;
             case Column::dX:
                 if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
-                    return QString("N/A");
+                {
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    else
+                        return QString("N/A");
+                }
                 else
                 {
                     if (file.m_bDeltaComputed)
+                    {
+                        if (Qt::EditRole == role)
+                            return file.m_dX;
                         return QString("%1").arg(file.m_dX, 0, 'f', 2);
+                    }
                     else
-                        return QString("NC");
+                    {
+                        if (Qt::EditRole == role)
+                            return 0.0;
+                        else
+                            return QString("NC");
+                    }
                 };
                 break;
             case Column::dY:
                 if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
-                    return QString("N/A");
+                {
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    else
+                        return QString("N/A");
+                }
                 else
                 {
                     if (file.m_bDeltaComputed)
+                    {
+                        if (Qt::EditRole == role)
+                            return file.m_dY;
                         return QString("%1").arg(file.m_dY, 0, 'f', 2);
+                    }
                     else
-                        return QString("NC");
+                    {
+                        if (Qt::EditRole == role)
+                            return 0.0;
+                        else
+                            return QString("NC");
+                    }
                 };
                 break;
             case Column::Angle:
                 if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
-                    return QString("N/A");
+                {
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    else
+                        return QString("N/A");
+                }
                 else
                 {
                     if (file.m_bDeltaComputed)
-                        return QString("%1\xc2\xb0").arg(file.m_fAngle * 180.0 / M_PI, 0, 'f', 2);
+                    {
+                        if (Qt::EditRole == role)
+                            return file.m_fAngle;
+                        else
+                            return QString("%1\xc2\xb0").arg(file.m_fAngle * 180.0 / M_PI, 0, 'f', 2);
+                    }
                     else
-                        return QString("NC");
+                    {
+                        if (Qt::EditRole == role)
+                            return 0.0;
+                        else
+                            return QString("NC");
+                    }
                 };
                 break;
             case Column::FileTime:
@@ -209,12 +244,28 @@ namespace DSS
             case Column::ISO:
                 // ISO value, of if ISO is not available then the Gain value
                 if (file.m_lISOSpeed)
-                    return isoToString(file.m_lISOSpeed);
+                {
+                    if (Qt::EditRole == role)
+                        return file.m_lISOSpeed;
+                    else
+                        return isoToString(file.m_lISOSpeed);
+                }
                 else if (file.m_lGain >= 0)
-                    return gainToString(file.m_lGain);
+                {
+                    if (Qt::EditRole == role)
+                        return file.m_lGain;
+                    else
+                        return gainToString(file.m_lGain);
+                }
                 else
-                    return QString("0");
+                {
+                    if (Qt::EditRole == role)
+                        return QString("0");
+                    else
+                        return 0;
+                }
                 break;
+
             case Column::Exposure:
                 if (Qt::DisplayRole == role)
                     return exposureToString(file.m_fExposure);
@@ -222,43 +273,73 @@ namespace DSS
                     return file.m_fExposure;    // For edit role, just return the number
                 break;
             case Column::Aperture:
-                return QString("%1").arg(file.m_fAperture, 0, 'f', 1);
+                if (Qt::DisplayRole == role)
+                    return QString("%1").arg(file.m_fAperture, 0, 'f', 1);
+                else
+                    return file.m_fAperture;
                 break;
             case Column::FWHM:
                 if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
-                    return QString("N/A");
-                else
-                {
-                    if (file.m_bRegistered)
-                        return QString("%1").arg(file.m_fFWHM, 0, 'f', 2);
-                    else
-                        return QString("NC");
-                };
-                break;
-            case Column::Stars:
-                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
-                    return QString("N/A");
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    else return QString("N/A");
                 else
                 {
                     if (file.m_bRegistered)
                     {
-                        if (file.m_bComet)
+                        if (Qt::EditRole == role)
+                            return file.m_fFWHM;
+                        else
+                            return QString("%1").arg(file.m_fFWHM, 0, 'f', 2);
+                    }
+                    else
+                    {
+                        if (Qt::EditRole == role)
+                            return 0.0;
+                        else
+                            return QString("NC");
+                    }
+                };
+                break;
+            case Column::Stars:
+                if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    else return QString("N/A");
+                else
+                {
+                    if (file.m_bRegistered)
+                    {
+                        if (Qt::EditRole == role)
+                            return file.m_lNrStars;
+                        else if (file.m_bComet)
                             return QString("%1+(C)").arg(file.m_lNrStars);
                         else
                             return QString("%1").arg(file.m_lNrStars);
                     }
                     else
-                        return QString("NC");
+                    {
+                        if (Qt::EditRole == role)
+                            return 0.0;
+                        else
+                            return QString("NC");
+                    }
                 }
                 break;
 
             case Column::Background:
                 if (file.m_PictureType != PICTURETYPE_LIGHTFRAME)
-                    return QString("N/A");
+                    if (Qt::EditRole == role)
+                        return 0.0;
+                    else return QString("N/A");
                 else
                 {
-                    if (file.m_SkyBackground.m_fLight)
+                    if (Qt::EditRole == role)
+                        return file.m_SkyBackground.m_fLight;
+                    else if (file.m_SkyBackground.m_fLight)
+                    {
                         return QString("%1 %").arg(file.m_SkyBackground.m_fLight * 100.0, 0, 'f', 2);
+                    }
                     else
                         return QString("NC");
                 }

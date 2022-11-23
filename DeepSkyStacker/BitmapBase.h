@@ -9,7 +9,6 @@
 #include "DSSCommon.h"
 #include "DSSProgress.h"
 #include "DSSTools.h"
-#include "resource.h"
 
 
 class CMultiBitmap;

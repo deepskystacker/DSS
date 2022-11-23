@@ -155,7 +155,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.\;../Libraw;..\ZClass;..\tools;..\LibTIFF;..\CFitsIO;..\Zlib;$(Boost_1_80_0);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;UNICODE;NOMINMAX;LIBRAW_NODLL;WIN32;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_DEBUG;_CRT_SECURE_NO_DEPRECATE;USE_LIBTIFF_STATIC;Z_TRACE_DEVELOP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -189,6 +189,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
       <GenerateMapFile>true</GenerateMapFile>
       <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <Profile>true</Profile>
     </Link>
     <Bscmake>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -200,7 +201,7 @@ $(QtToolsPath)\windeployqt $(TargetPath)</Command>
     <PostBuildEvent>
       <Command>call $(QtToolsPath)\qtenv2.bat
 call "$(VCInstallDir)Auxiliary\Build\vcvars64.bat"
-$(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
+$(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Add necessary Qt stuff to the output directory</Message>
@@ -316,6 +317,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="picturelist.cpp" />
     <ClCompile Include="QtProgressDlg.cpp" />
     <ClCompile Include="RenameGroup.cpp" />
     <ClCompile Include="selectrect.cpp">
@@ -502,7 +504,6 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BackgroundLoading.h" />
     <ClInclude Include="BatchStacking.h" />
-    <QtMoc Include="baywindow.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="BitmapExt.h" />
@@ -560,6 +561,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <ClInclude Include="Multitask.h" />
     <QtMoc Include="OutputTab.h" />
     <ClInclude Include="PCLTools.h" />
+    <QtMoc Include="picturelist.h" />
     <ClInclude Include="PixelTransform.h" />
     <QtMoc Include="PostCalibration.h" />
     <ClInclude Include="ProcessingDlg.h" />
@@ -755,6 +757,7 @@ $(QtToolsPath)\windeployqt --pdb --debug $(TargetPath)</Command>
     <QtUic Include="ui\ExplorerBar.ui" />
     <QtUic Include="ui\IntermediateFiles.ui" />
     <QtUic Include="ui\OutputTab.ui" />
+    <QtUic Include="ui\PictureList.ui" />
     <QtUic Include="ui\PostCalibration.ui" />
     <QtUic Include="ui\ProgressDlg.ui" />
     <QtUic Include="ui\RawDDPSettings.ui" />

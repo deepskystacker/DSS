@@ -57,7 +57,6 @@ using namespace Gdiplus;
 #include <QStyleFactory>
 #include <QTranslator>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QSplitter>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QWidget>
 
@@ -67,6 +66,7 @@ using namespace Gdiplus;
 
 #include "DeepSkyStacker.h"
 #include "DeepStack.h"
+#include "picturelist.h"
 
 
 #include <afxinet.h>
@@ -249,32 +249,54 @@ void DeepSkyStacker::showEvent(QShowEvent* event)
 	return Inherited::showEvent(event);
 }
 
+void DeepSkyStacker::connectSignalsToSlots()
+{
+	connect(explorerBar, SIGNAL(addPictures()), stackingDlg, SLOT(onAddPictures()));
+	connect(explorerBar, SIGNAL(addDarks()), stackingDlg, SLOT(onAddDarks()));
+	connect(explorerBar, SIGNAL(addFlats()), stackingDlg, SLOT(onAddFlats()));
+	connect(explorerBar, SIGNAL(addDarkFlats()), stackingDlg, SLOT(onAddDarkFlats()));
+	connect(explorerBar, SIGNAL(addOffsets()), stackingDlg, SLOT(onAddOffsets()));
+
+	connect(explorerBar, SIGNAL(loadList()), stackingDlg, SLOT(loadList()));
+	connect(explorerBar, SIGNAL(saveList()), stackingDlg, SLOT(saveList()));
+	connect(explorerBar, SIGNAL(loadList()), stackingDlg, SLOT(clearList()));
+
+	connect(explorerBar, SIGNAL(checkAbove()), stackingDlg, SLOT(checkAbove()));
+	connect(explorerBar, SIGNAL(checkAll()), stackingDlg, SLOT(checkAll()));
+	connect(explorerBar, SIGNAL(unCheckAll()), stackingDlg, SLOT(unCheckAll()));
+
+	connect(explorerBar, SIGNAL(registerCheckedImages()), stackingDlg, SLOT(registerCheckedImages()));
+	connect(explorerBar, SIGNAL(computeOffsets()), stackingDlg, SLOT(computeOffsets()));
+	connect(explorerBar, SIGNAL(stackCheckedImages()), stackingDlg, SLOT(stackCheckedImages()));
+	connect(explorerBar, SIGNAL(batchStack()), stackingDlg, SLOT(batchStack()));
+}
+
 void DeepSkyStacker::onInitialise()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	widget = new QWidget(this);
-	widget->setObjectName("centralWidget");
-	setCentralWidget(widget);
-
-	QHBoxLayout* horizontalLayout{ new QHBoxLayout(widget) };
-	widget->setLayout(horizontalLayout);
-	ZTRACE_RUNTIME("Creating Horizontal Splitter");
-	splitter = new QSplitter(Qt::Horizontal, widget);
-	splitter->setObjectName("splitter");
+	//
+	// Set the Docking Area Corner Configuration so that the
+	// Explorer Bar takes the full left side docking area
+	//
+	setCorner(Qt::TopLeftCorner, Qt::LeftDockWidgetArea);
+	setCorner(Qt::BottomLeftCorner, Qt::LeftDockWidgetArea);
 
 	ZTRACE_RUNTIME("Creating Explorer Bar (Left Panel)");
-	explorerBar = new ExplorerBar(widget);
-	explorerBar->setObjectName("explorerBar");
-	splitter->addWidget(explorerBar);
+	explorerBar = new ExplorerBar(this);
+	addDockWidget(Qt::LeftDockWidgetArea, explorerBar);
+
+	ZTRACE_RUNTIME("Creating pictureList");
+	pictureList = new DSS::PictureList(this);
+	addDockWidget(Qt::BottomDockWidgetArea, pictureList);
 
 	ZTRACE_RUNTIME("Creating stackedWidget");
-	stackedWidget = new QStackedWidget(splitter);
+	stackedWidget = new QStackedWidget(this);
 	stackedWidget->setObjectName("stackedWidget");
-	splitter->addWidget(stackedWidget);
+	setCentralWidget(stackedWidget);
 
 	ZTRACE_RUNTIME("Creating Stacking Panel");
-	stackingDlg = new DSS::StackingDlg(widget);
+	stackingDlg = new DSS::StackingDlg(this, pictureList);
 	stackingDlg->setObjectName("stackingDlg");
 
 	ZTRACE_RUNTIME("Adding Stacking Panel to stackedWidget");
@@ -286,17 +308,23 @@ void DeepSkyStacker::onInitialise()
 
 	ZTRACE_RUNTIME("Creating Processing Panel");
 	BOOL result = processingDlg.Create(IDD_PROCESSING);
-	//processingDlg.OnInitDialog();
+	if (FALSE == result)
+	{
+		int lastErr = GetLastError();
+		ZTRACE_RUNTIME("lastErr = %d", lastErr);	
+	}
 
 	HWND hwnd{ processingDlg.GetSafeHwnd() };
 	Q_ASSERT(NULL != hwnd);
 	winHost->setWindow(hwnd);
-
-	splitter->setStretchFactor(1, 1);		// Want Stacking part to take any spare space.
-
-	horizontalLayout->addWidget(splitter);
-	widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	
+	stackedWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	winHost->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+	//
+	// Connect Qt Signals to appropriate slots
+	//
+	connectSignalsToSlots();
 
 	//
 	// If the image list is floating, then make sure it is visible
@@ -350,11 +378,8 @@ void DeepSkyStacker::closeEvent(QCloseEvent* e)
 	settings.setValue("geometry", saveGeometry());
 	settings.setValue("windowState", saveState());
 	settings.endGroup();
-	settings.beginGroup("Dialogs/StackingDlg");
-	settings.setValue("windowState", stackingDlg->saveState());
-	settings.endGroup();
 	QTableView* tableView = this->findChild<QTableView*>("tableView");
-	settings.setValue("Dialogs/StackingDlg/TableView/HorizontalHeader/windowState",
+	settings.setValue("Dialogs/PictureList/TableView/HorizontalHeader/windowState",
 		tableView->horizontalHeader()->saveState());
 };
 
@@ -366,8 +391,6 @@ ULONG_PTR gdiHookToken{ 0ULL };
 DeepSkyStacker::DeepSkyStacker() :
 	initialised{ false },
 	QMainWindow(),
-	widget{ nullptr },
-	splitter{ nullptr },
 	explorerBar{ nullptr },
 	stackedWidget{ nullptr },
 	stackingDlg{ nullptr },

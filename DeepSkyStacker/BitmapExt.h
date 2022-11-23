@@ -6,7 +6,6 @@
 
 #include "Multitask.h"
 #include <zexcept.h>
-#include "resource.h"
 #include "BitmapBase.h"
 
 #ifndef DSSFILEDECODING

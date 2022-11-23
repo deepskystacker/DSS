@@ -1382,7 +1382,7 @@ void	CMainBoard::InvalidateStats()
 
 LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg>		pMsg;
 
 	if (m_LiveEngine.GetMessage(&pMsg))
 	{
@@ -1431,18 +1431,18 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 			break;
 		case LEM_FILELOADED :
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
-				CSmartPtr<C32BitsBitmap>	pWndBitmap;
+				std::shared_ptr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<C32BitsBitmap>	pWndBitmap;
 				CString						strFileName;
 
-				if (pMsg->GetImage(&pBitmap, &pWndBitmap, strFileName))
+				if (pMsg->GetImage(pBitmap, &pWndBitmap, strFileName))
 					SetLastImage(pBitmap, pWndBitmap, strFileName);
 			}
 			break;
 		case LEM_SETSTACKEDIMAGE :
 			{
-				CSmartPtr<CMemoryBitmap>	pBitmap;
-				CSmartPtr<C32BitsBitmap>	pWndBitmap;
+				std::shared_ptr<CMemoryBitmap>	pBitmap;
+				std::shared_ptr<C32BitsBitmap>	pWndBitmap;
 				LONG						lNrStacked;
 				double						fExposure;
 
@@ -1457,7 +1457,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 			break;
 		case LEM_SETFOOTPRINT :
 			{
-				CPointExt					pt1, pt2, pt3, pt4;
+				QPointF					pt1, pt2, pt3, pt4;
 
 				if (pMsg->GetFootprint(pt1, pt2, pt3, pt4))
 					SetFootprintInStackedImage(pt1, pt2, pt3, pt4);
@@ -1560,7 +1560,8 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 								smtp.Connect(strSMTP);
 
 								CPJNSMTPMessage m;
-								m.m_To.Add(CPJNSMTPAddress(strEmail));
+								CPJNSMTPAddress emailAddress{ strEmail };
+								m.m_To.Add(emailAddress);
 								m.m_From = CPJNSMTPAddress(strAccount);
 								m.m_sSubject = strObject;
 								m.AddTextBody(strWarning);

@@ -1444,20 +1444,18 @@ public :
 		dY = b0 * fYWidth;
 	}
 
-#if (0)
-	void Footprint(CPointExt& pt1, CPointExt& pt2, CPointExt& pt3, CPointExt& pt4) const
+	void Footprint(QPointF& pt1, QPointF& pt2, QPointF& pt3, QPointF& pt4) const
 	{
-		pt1.X = pt1.Y = 0;
-		pt2.X = fXWidth;	pt2.Y = 0;
-		pt3.X = fXWidth;	pt3.Y = fYWidth;
-		pt4.X = 0;			pt4.Y = fYWidth;
+		pt1.rx() = pt1.ry() = 0;
+		pt2.rx() = fXWidth;	pt2.ry() = 0;
+		pt3.rx() = fXWidth;	pt3.ry() = fYWidth;
+		pt4.rx() = 0;		pt4.ry() = fYWidth;
 
-		pt1 = Transform(pt1);
-		pt2 = Transform(pt2);
-		pt3 = Transform(pt3);
-		pt4 = Transform(pt4);
+		pt1 = transform(pt1);
+		pt2 = transform(pt2);
+		pt3 = transform(pt3);
+		pt4 = transform(pt4);
 	}
-#endif
 };
 
 #endif // __DSSTOOLS_H__

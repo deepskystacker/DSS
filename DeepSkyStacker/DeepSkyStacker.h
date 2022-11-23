@@ -48,6 +48,11 @@ class QStackedWidget;
 #include "StackingDlg.h"
 class QWinHost;
 
+namespace DSS
+{
+	class PictureList;
+}
+
 #include "ProcessingDlg.h"
 #include "dss_settings.h"
 
@@ -59,11 +64,13 @@ class DeepSkyStacker :
 
 	Q_OBJECT
 
+protected slots:
+	void updateStatus(const QString& text);
+
 private:
 	bool initialised;
-	QWidget* widget;
-	QSplitter* splitter;
 	ExplorerBar* explorerBar;
+	DSS::PictureList* pictureList;
 	QStackedWidget* stackedWidget;
 	DSS::StackingDlg* stackingDlg;
 	QWinHost* winHost;
@@ -80,16 +87,20 @@ private:
 	bool                    m_progress;
 	QLabel*	statusBarText;
 
+	void createStatusBar();
+	void updateTab();
+	static inline DeepSkyStacker* theMainWindow{ nullptr };
+	void connectSignalsToSlots();
+
 protected:
-	void showEvent(QShowEvent* event) override;
+	void closeEvent(QCloseEvent* e) override;
 	void dragEnterEvent(QDragEnterEvent* e);
 	void dropEvent(QDropEvent* e);
+	void showEvent(QShowEvent* event) override;
 
 	void onInitialise();
 
 public:
-
-
 	inline static DeepSkyStacker* instance()
 	{
 		return theMainWindow;
@@ -188,17 +199,6 @@ public:
 		else
 			setWindowTitle(baseTitle);
 	}
-
-protected:
-	void closeEvent(QCloseEvent* e) override;
-
-protected slots:
-	void updateStatus(const QString& text);
-
-private:
-	void createStatusBar();
-	void updateTab();
-	static inline DeepSkyStacker* theMainWindow{ nullptr };
 
 };
 

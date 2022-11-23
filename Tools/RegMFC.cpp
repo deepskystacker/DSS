@@ -106,7 +106,7 @@ BOOL CRegVal :: GetValue( CStringArray & rArray_p ) const {
 
 	rArray_p.RemoveAll();
 
-	for( register LPCTSTR p = LPCTSTR(m_pbyteData); *p; p += _tcslen(p)+1 )
+	for( LPCTSTR p = LPCTSTR(m_pbyteData); *p; p += _tcslen(p)+1 )
 		rArray_p.Add( CString(p) );
 
 	return TRUE ;
@@ -115,7 +115,7 @@ BOOL CRegVal :: GetValue( CStringArray & rArray_p ) const {
 
 void CRegVal :: SetValue( const CStringArray & rArray_p ) {
 	// first step: calculate size ...
-	register int i ;
+	int i ;
 	DWORD nSize = 0 ;
 	const int nElem = rArray_p.GetSize();
 
@@ -126,14 +126,14 @@ void CRegVal :: SetValue( const CStringArray & rArray_p ) {
 	AllocateDataBuffer( nSize + (nElem ? 0 : sizeof(TCHAR))) ;
 	m_dwType = REG_MULTI_SZ ;
 
-	register LPTSTR p = LPTSTR(m_pbyteData);
+	LPTSTR p = LPTSTR(m_pbyteData);
 	if( ! nElem )
 		*p++ = TEXT('\0');
 
 	// last step: copy the strings together
 	for( i = 0 ; i < nElem ; ++i ) {
 		CString str = rArray_p[i];
-		register LPCTSTR c = LPCTSTR(str);
+		LPCTSTR c = LPCTSTR(str);
 		while( *p++ = *c++ );
 	}
 	*p = TEXT('\0');

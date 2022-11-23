@@ -396,6 +396,9 @@
     <ClCompile Include="SaveEditChanges.cpp">
       <Filter>Dialogs</Filter>
     </ClCompile>
+    <ClCompile Include="picturelist.cpp">
+      <Filter>Dialogs\Stacking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -1214,6 +1217,9 @@
     <QtUic Include="ui\SaveEditChanges.ui">
       <Filter>Qt\ui</Filter>
     </QtUic>
+    <QtUic Include="ui\PictureList.ui">
+      <Filter>Qt\ui</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="qwinwidget.h">
@@ -1297,9 +1303,6 @@
     <QtMoc Include="DropFilesDlg.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="baywindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="RenameGroup.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
@@ -1310,6 +1313,9 @@
       <Filter>Dialogs</Filter>
     </QtMoc>
     <QtMoc Include="CheckAbove.h">
+      <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="picturelist.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
   </ItemGroup>

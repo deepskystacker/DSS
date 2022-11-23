@@ -264,7 +264,7 @@ BOOL CRegistry ::	RegTreeWalk( LPCTSTR pszSubKey_p, HKEY hKey_p, UINT uFlags_p, 
 		RegVal.AllocateDataBuffer( dwMaxValueData ) ;
 		DWORD dwValueNameLen ;
 		LPTSTR pszValueName = new TCHAR [ dwMaxValueName + 1 ] ;
-		for( register DWORD i = 0 ; /*i < dwValueCnt*/ ; ++i ) {
+		for(DWORD i = 0 ; /*i < dwValueCnt*/ ; ++i ) {
 			dwValueNameLen = dwMaxValueName + 1 ;
 			lRet =	RegEnumValue(
 						hKey_p,
@@ -304,7 +304,7 @@ BOOL CRegistry ::	RegTreeWalk( LPCTSTR pszSubKey_p, HKEY hKey_p, UINT uFlags_p, 
 	// fails we have to break the enumeration (i.e. the user's function wants so)
 	LPTSTR pszKeyName = new TCHAR [ dwMaxSubKey + 1 ] ;
 	DWORD dwKeyNameLen = dwMaxSubKey ;
-	for( register DWORD i = 0 ; /*i < dwSubKeyCnt*/ ; ++i ) {
+	for(DWORD i = 0 ; /*i < dwSubKeyCnt*/ ; ++i ) {
 		lRet =	RegEnumKey(
 					hKey_p,
 					i,				// index
@@ -765,7 +765,7 @@ BOOL CRegVal :: GetValue( LPBYTE & rpbyteBuffer_p, DWORD dwBufferSize_p ) const 
 		return FALSE ;
 	}
 
-	for( register DWORD i = 0 ; i < m_dwDataSize ; ++i )
+	for(DWORD i = 0 ; i < m_dwDataSize ; ++i )
 		rpbyteBuffer_p[i] = m_pbyteData[i] ;
 
 	return TRUE ;
@@ -795,7 +795,7 @@ void CRegVal :: SetValue( LPCTSTR pszValue_p, BOOL bExpanded_p ) {
 
 void CRegVal :: SetValue( LPCTSTR pszValue_p [], const DWORD nArray_p ) {
 	// first step: calculate size ...
-	register DWORD i ;
+	DWORD i ;
 	DWORD nSize = 0 ;
 	for( i = 0 ; i < nArray_p ; ++i )
 		nSize += ((DWORD)_tcslen( pszValue_p[i] ) * (DWORD)sizeof(TCHAR)) + (DWORD)sizeof(TCHAR);
@@ -804,14 +804,14 @@ void CRegVal :: SetValue( LPCTSTR pszValue_p [], const DWORD nArray_p ) {
 	AllocateDataBuffer( nSize + (nArray_p ? 0 : sizeof(TCHAR)) ) ;
 	m_dwType = REG_MULTI_SZ ;
 
-	register LPTSTR p = LPTSTR(m_pbyteData);
+	LPTSTR p = LPTSTR(m_pbyteData);
 
 	if( ! nArray_p )
 		*p++ = TEXT('\0');
 
 	// last step: copy the strings together
 	for( i = 0 ; i < nArray_p ; ++i ) {
-		register LPCTSTR c = pszValue_p[i] ;
+		LPCTSTR c = pszValue_p[i] ;
 		while( *p++ = *c++ );
 	}
 	*p = TEXT('\0');

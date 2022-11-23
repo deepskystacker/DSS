@@ -2,6 +2,10 @@
 #define __MATCHINGSTARS_H__
 
 #include "DSSTools.h"
+#if !defined(NDEBUG)
+#include <boost/container/vector.hpp>
+namespace bc = boost::container;
+#endif
 
 #pragma pack(push, STARTRIANGLE, 1)
 
@@ -185,7 +189,11 @@ public :
 	};
 };
 
+#if !defined(NDEBUG)
+typedef bc::vector<CStarDist>			STARDISTVECTOR;
+#else
 typedef std::vector<CStarDist>			STARDISTVECTOR;
+#endif
 typedef STARDISTVECTOR::iterator		STARDISTITERATOR;
 
 /* ------------------------------------------------------------------- */

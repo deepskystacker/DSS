@@ -67,14 +67,14 @@ void	CLiveEngine::MoveImage(LPCTSTR szFileName)
 			CString				strMsg;
 
 			strMsg.Format(IDS_FILEMOVED, (LPCTSTR)strFileName, strSubFolder);
-			PostToLog(strMsg, TRUE, FALSE, FALSE, RGB(128, 0, 0));
+			PostToLog(QString::fromStdWString(strMsg.GetString()), true, false, false, RGB(128, 0, 0));
 		}
 		else
 		{
 			CString				strMsg;
 
 			strMsg.Format(IDS_ERRORMOVINGFILE, (LPCTSTR)strFileName, strSubFolder);
-			PostToLog(strMsg, TRUE, TRUE, FALSE, RGB(255, 0, 0));
+			PostToLog(QString::fromStdWString(strMsg.GetString()), true, true, false, RGB(255, 0, 0));
 		};
 	};
 };
@@ -285,7 +285,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 		else
 			strText.Format(IDS_LOADGRAYLIGHT, bmpInfo.m_lBitPerChannel, (LPCTSTR)strDescription, szFileName);
 
-		Start2(strText, 0);
+		Start2(QString::fromStdWString(strText.GetString()), 0);
 		CAllDepthBitmap				adb;
 		adb.SetDontUseAHD(TRUE);
 
@@ -300,10 +300,10 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 			CLightFrameInfo			lfi;
 
 			strText.Format(IDS_REGISTERINGNAME, (LPCTSTR)szFileName);
-			Start2(strText, 0);
+			Start2(QString::fromStdWString(strText.GetString()), 0);
 			lfi.SetBitmap(szFileName, FALSE, FALSE);
 			lfi.SetProgress(this);
-			lfi.RegisterPicture(adb.m_pBitmap);
+			lfi.RegisterPicture(adb.m_pBitmap.get());
 			lfi.SaveRegisteringInfo();
 			lfi.m_lISOSpeed = bmpInfo.m_lISOSpeed;
 			lfi.m_lGain = bmpInfo.m_lGain;
@@ -319,7 +319,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 			_tsplitpath(szFileName, nullptr, nullptr, szName, szExt);
 			strName.Format(_T("%s%s"), szName, szExt);
 			strText.Format(IDS_LOG_REGISTERRESULTS, (LPCTSTR)strName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality);
-			PostToLog(strText, TRUE);
+			PostToLog(QString::fromStdWString(strText.GetString()), true);
 
 			CString					strError;
 			BOOL					bWarning;
@@ -330,7 +330,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 			if (bWarning)
 			{
 				strText.Format(IDS_LOG_WARNING, (LPCTSTR)szFileName, (LPCTSTR) strWarning);
-				PostToLog(strText, TRUE, FALSE, TRUE, RGB(208, 127, 0));
+				PostToLog(QString::fromStdWString(strText.GetString()), true, false, false, RGB(208, 127, 0));
 				PostWarning(strWarning);
 			};
 			if (IsImageStackable1(szFileName, lfi.m_vStars.size(), lfi.m_fFWHM, lfi.m_fOverallQuality, lfi.m_SkyBackground.m_fLight*100.0, strError))
@@ -342,7 +342,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 			else
 			{
 				strText.Format(IDS_LOG_IMAGENOTSTACKABLE1, (LPCTSTR)szFileName, (LPCTSTR) strError);
-				PostToLog(strText, TRUE, TRUE, FALSE, RGB(255, 0, 0));
+				PostToLog(QString::fromStdWString(strText.GetString()), true, true, false, RGB(255, 0, 0));
 				PostChangeImageStatus(szFileName, IS_NOTSTACKABLE);
 				MoveImage(szFileName);
 			};
@@ -350,7 +350,7 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 		else
 		{
 			strText.Format(IDS_LOG_ERRORLOADINGFILE, szFileName);
-			PostToLog(strText, TRUE, TRUE, FALSE, RGB(255, 0, 0));
+			PostToLog(QString::fromStdWString(strText.GetString()), true, true, false, RGB(255, 0, 0));
 			MoveImage(szFileName);
 		};
 	};
@@ -359,17 +359,16 @@ BOOL CLiveEngine::LoadFile(LPCTSTR szFileName)
 };
 
 /* ------------------------------------------------------------------- */
-
-void CLiveEngine::SaveStackedImage(CMemoryBitmap * pBitmap)
+void CLiveEngine::SaveStackedImage()
 {
-	CSmartPtr<CMemoryBitmap>	pStackedImage;
+	std::shared_ptr<CMemoryBitmap> p;
+	m_RunningStackingEngine.GetStackedImage(p);
+	SaveStackedImage(p);
+}
 
+void CLiveEngine::SaveStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap)
+{
 	if (pBitmap)
-		pStackedImage = pBitmap;
-	else
-		m_RunningStackingEngine.GetStackedImage(&pStackedImage);
-
-	if (pStackedImage)
 	{
 		CString				strFolder;
 		CString				strOutputFile;
@@ -380,9 +379,9 @@ void CLiveEngine::SaveStackedImage(CMemoryBitmap * pBitmap)
 		CString				strText;
 
 		strText.Format(IDS_SAVINGSTACKEDIMAGE, (LPCTSTR)strFolder);
-		this->Start2(strText, 0);
+		this->Start2(QString::fromStdWString(strText.GetString()), 0);
 
-		WriteTIFF(strOutputFile, pStackedImage, this, _T("Autostacked Image"), 0, -1, m_RunningStackingEngine.GetTotalExposure(), 0.0);
+		WriteTIFF(strOutputFile, pBitmap.get(), this, _T("Autostacked Image"), 0, -1, m_RunningStackingEngine.GetTotalExposure(), 0.0);
 		this->End2();
 
 		PostStackedImageSaved();
@@ -391,11 +390,10 @@ void CLiveEngine::SaveStackedImage(CMemoryBitmap * pBitmap)
 
 /* ------------------------------------------------------------------- */
 
-void CLiveEngine::PostFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4)
+void CLiveEngine::PostFootprint(QPointF pt1, QPointF pt2, QPointF pt3, QPointF pt4)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetFootprint(pt1, pt2, pt3, pt4);
 	PostOutMessage(pMsg);
 };
@@ -404,19 +402,17 @@ void CLiveEngine::PostFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPo
 
 void CLiveEngine::PostStackedImage()
 {
-	CSmartPtr<CMemoryBitmap>	pStackedImage;
+	std::shared_ptr<CMemoryBitmap>	pStackedImage;
 
-	m_RunningStackingEngine.GetStackedImage(&pStackedImage);
+	m_RunningStackingEngine.GetStackedImage(pStackedImage);
 
 	// Transform the stacked image to a window one
-	CSmartPtr<C32BitsBitmap>	pWndImage;
+	std::shared_ptr<C32BitsBitmap>	pWndImage = std::make_shared<C32BitsBitmap>();
 
-	pWndImage.Create();
-	pWndImage->InitFrom(pStackedImage);
+	pWndImage->InitFrom(pStackedImage.get());
 
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetStackedImage(pStackedImage, pWndImage,
 						  m_RunningStackingEngine.GetNrStackedImages(),
 						  m_RunningStackingEngine.GetTotalExposure());
@@ -437,10 +433,9 @@ void CLiveEngine::PostStackedImage()
 
 void	CLiveEngine::PostWarning(LPCTSTR szWarning)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
-	pMsg->SetWarning(szWarning);
+	pMsg->SetWarning(QString::fromStdWString(szWarning));
 	PostOutMessage(pMsg);
 };
 
@@ -448,9 +443,8 @@ void	CLiveEngine::PostWarning(LPCTSTR szWarning)
 
 void CLiveEngine::PostStackedImageSaved()
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetStackedImageSaved();
 	PostOutMessage(pMsg);
 };
@@ -490,10 +484,10 @@ BOOL CLiveEngine::ProcessNext()
 				if (bestit != m_qToStack.end())
 				{
 					m_RunningStackingEngine.ComputeOffset((*bestit));
-					PostUpdateImageOffsets((*bestit).m_strFileName, 0, 0, 0);
+					PostUpdateImageOffsets((*bestit).filePath.c_str(), 0, 0, 0);
 					m_RunningStackingEngine.AddImage((*bestit), this);
-					PostChangeImageStatus((*bestit).m_strFileName, IS_STACKED);
-					PostChangeImageInfo((*bestit).m_strFileName, II_SETREFERENCE);
+					PostChangeImageStatus((*bestit).filePath.c_str(), IS_STACKED);
+					PostChangeImageInfo((*bestit).filePath.c_str(), II_SETREFERENCE);
 					m_qToStack.erase(bestit);
 					m_bReferenceFrameSet = TRUE;
 					PostStackedImage();
@@ -519,17 +513,17 @@ BOOL CLiveEngine::ProcessNext()
 			{
 				lfi.m_BilinearParameters.Offsets(fdX, fdY);
 				fAngle = lfi.m_BilinearParameters.Angle(lfi.RenderedWidth()) * 180.0/M_PI;
-				PostUpdateImageOffsets(lfi.m_strFileName, fdX, fdY, fAngle);
-				PostChangeImageInfo(lfi.m_strFileName, II_DONTSTACK_NONE);
-				bWarning = IsImageWarning2(lfi.m_strFileName, fdX, fdY, fAngle, strWarning);
+				PostUpdateImageOffsets(lfi.filePath.c_str(), fdX, fdY, fAngle);
+				PostChangeImageInfo(lfi.filePath.c_str(), II_DONTSTACK_NONE);
+				bWarning = IsImageWarning2(lfi.filePath.c_str(), fdX, fdY, fAngle, strWarning);
 				if (bWarning)
 					PostWarning(strWarning);
-				if (IsImageStackable2(lfi.m_strFileName, fdX, fdY, fAngle, strError))
+				if (IsImageStackable2(lfi.filePath.c_str(), fdX, fdY, fAngle, strError))
 				{
 					m_RunningStackingEngine.AddImage(lfi, this);
-					PostChangeImageStatus(lfi.m_strFileName, IS_STACKED);
+					PostChangeImageStatus(lfi.filePath.c_str(), IS_STACKED);
 
-					CPointExt		pt1, pt2, pt3, pt4;
+					QPointF		pt1, pt2, pt3, pt4;
 
 					lfi.m_BilinearParameters.Footprint(pt1, pt2, pt3, pt4);
 					PostFootprint(pt1, pt2, pt3, pt4);
@@ -549,15 +543,15 @@ BOOL CLiveEngine::ProcessNext()
 
 			if (bWarning)
 			{
-				strText.Format(IDS_LOG_WARNING, (LPCTSTR)lfi.m_strFileName, (LPCTSTR) strWarning);
-				PostToLog(strText, TRUE, FALSE, TRUE, RGB(208, 127, 0));
+				strText.Format(IDS_LOG_WARNING, (LPCTSTR)lfi.filePath.c_str(), (LPCTSTR) strWarning);
+				PostToLog(QString::fromStdWString(strText.GetString()), TRUE, FALSE, TRUE, RGB(208, 127, 0));
 			};
 			if (bError)
 			{
-				strText.Format(IDS_LOG_IMAGENOTSTACKABLE1, (LPCTSTR)lfi.m_strFileName, (LPCTSTR) strError);
-				PostToLog(strText, TRUE, TRUE, FALSE, RGB(255, 0, 0));
-				PostChangeImageStatus(lfi.m_strFileName, IS_NOTSTACKABLE);
-				MoveImage(lfi.m_strFileName);
+				strText.Format(IDS_LOG_IMAGENOTSTACKABLE1, (LPCTSTR)lfi.filePath.c_str(), (LPCTSTR) strError);
+				PostToLog(QString::fromStdWString(strText.GetString()), TRUE, TRUE, FALSE, RGB(255, 0, 0));
+				PostChangeImageStatus(lfi.filePath.c_str(), IS_NOTSTACKABLE);
+				MoveImage(lfi.filePath.c_str());
 			};
 
 			bResult = TRUE;
@@ -594,7 +588,7 @@ void CLiveEngine::LiveEngine()
 		// Check for settings update
 		if (msg.message == WM_LE_MESSAGE)
 		{
-			CSmartPtr<CLiveEngineMsg>	pMsg;
+			CLiveEngineMsg * pMsg;
 			if (GetMessage(&pMsg, m_InMessages))
 			{
 				// Do the stuff
@@ -689,9 +683,8 @@ void CLiveEngine::CloseEngine()
 		m_CriticalSection.Unlock();
 		WaitForMultipleObjects(1, &m_hEvent, TRUE, INFINITE);
 
-		CSmartPtr<CLiveEngineMsg>		pMsg;
+		std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-		pMsg.Create();
 		pMsg->SetStop();
 		m_CriticalSection.Lock();
 		m_InMessages.push_front(pMsg);
@@ -719,14 +712,14 @@ BOOL CLiveEngine::GetMessage(CLiveEngineMsg ** ppMsg, LIVEENGINEMSGLIST & msglis
 	m_CriticalSection.Lock();
 	if (msglist.size())
 	{
-		CSmartPtr<CLiveEngineMsg>	pMsg;
+		std::shared_ptr<CLiveEngineMsg>	pMsg;
 		pMsg = msglist.front();
 
 		// Remove the first item
 		msglist.pop_front();
 
 		bResult = TRUE;
-		pMsg.CopyTo(ppMsg);
+		*ppMsg = pMsg.get();
 	};
 
 	m_CriticalSection.Unlock();
@@ -736,7 +729,7 @@ BOOL CLiveEngine::GetMessage(CLiveEngineMsg ** ppMsg, LIVEENGINEMSGLIST & msglis
 
 /* ------------------------------------------------------------------- */
 
-void CLiveEngine::PostOutMessage(CLiveEngineMsg * pMsg)
+void CLiveEngine::PostOutMessage(const std::shared_ptr<CLiveEngineMsg>& pMsg)
 {
 	m_CriticalSection.Lock();
 	m_OutMessages.push_back(pMsg);
@@ -747,22 +740,20 @@ void CLiveEngine::PostOutMessage(CLiveEngineMsg * pMsg)
 
 /* ------------------------------------------------------------------- */
 
-void CLiveEngine::PostToLog(LPCTSTR szText, BOOL bDateTime, BOOL bBold, BOOL bItalic, COLORREF crColor)
+void CLiveEngine::PostToLog(const QString& text, BOOL bDateTime, BOOL bBold, BOOL bItalic, COLORREF crColor)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
-	pMsg->SetLog(szText, bDateTime, bBold, bItalic, crColor);
+	pMsg->SetLog(text, bDateTime, bBold, bItalic, crColor);
 	PostOutMessage(pMsg);
 };
 
 /* ------------------------------------------------------------------- */
 
-void CLiveEngine::PostProgress(LPCTSTR szText, LONG lAchieved, LONG lTotal)
+void CLiveEngine::PostProgress(const QString& szText, LONG lAchieved, LONG lTotal)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetProgress(szText, lAchieved, lTotal);
 	PostOutMessage(pMsg);
 };
@@ -771,20 +762,18 @@ void CLiveEngine::PostProgress(LPCTSTR szText, LONG lAchieved, LONG lTotal)
 
 void CLiveEngine::PostEndProgress()
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetEndProgress();
 	PostOutMessage(pMsg);
 };
 
 /* ------------------------------------------------------------------- */
 
-void CLiveEngine::PostFileLoaded(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName)
+void CLiveEngine::PostFileLoaded(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetFileLoaded(pBitmap, pWndBitmap, szFileName);
 	PostOutMessage(pMsg);
 };
@@ -793,9 +782,8 @@ void CLiveEngine::PostFileLoaded(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBi
 
 void CLiveEngine::PostFileRegistered(LPCTSTR szFileName)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetRegisteredImage(szFileName);
 	PostOutMessage(pMsg);
 };
@@ -804,9 +792,9 @@ void CLiveEngine::PostFileRegistered(LPCTSTR szFileName)
 
 void CLiveEngine::PostChangeImageStatus(LPCTSTR szFileName, IMAGESTATUS status)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
+
 	pMsg->SetImageStatus(szFileName, status);
 	PostOutMessage(pMsg);
 };
@@ -815,9 +803,8 @@ void CLiveEngine::PostChangeImageStatus(LPCTSTR szFileName, IMAGESTATUS status)
 
 void	CLiveEngine::PostChangeImageInfo(LPCTSTR szFileName, STACKIMAGEINFO info)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetImageInfo(szFileName, info);
 	PostOutMessage(pMsg);
 };
@@ -826,9 +813,8 @@ void	CLiveEngine::PostChangeImageInfo(LPCTSTR szFileName, STACKIMAGEINFO info)
 
 void CLiveEngine::PostUpdateImageOffsets(LPCTSTR szFileName, double fdX, double fdY, double fAngle)
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetImageOffsets(szFileName, fdX, fdY, fAngle);
 	PostOutMessage(pMsg);
 };
@@ -837,9 +823,8 @@ void CLiveEngine::PostUpdateImageOffsets(LPCTSTR szFileName, double fdX, double 
 
 void CLiveEngine::PostUpdatePending()
 {
-	CSmartPtr<CLiveEngineMsg>	pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetPending((LONG)(m_qToRegister.size()));
 	PostOutMessage(pMsg);
 };
@@ -881,9 +866,8 @@ BOOL	CLiveEngine::GetMessage(CLiveEngineMsg ** ppMsg)
 
 void	CLiveEngine::AddFileToProcess(LPCTSTR szFile)
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg> pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetNewFile(szFile);
 	m_CriticalSection.Lock();
 	m_InMessages.push_back(pMsg);
@@ -897,9 +881,8 @@ void	CLiveEngine::AddFileToProcess(LPCTSTR szFile)
 
 void	CLiveEngine::UpdateSettings()
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetUpdateSettings();
 	m_CriticalSection.Lock();
 	m_InMessages.push_front(pMsg);
@@ -913,10 +896,9 @@ void	CLiveEngine::UpdateSettings()
 
 void CLiveEngine::EnableRegistering(BOOL bEnable)
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 	BOOL							bRemoveEnable;
 
-	pMsg.Create();
 	if (bEnable)
 	{
 		pMsg->SetEnableRegistering();
@@ -959,10 +941,9 @@ void CLiveEngine::EnableRegistering(BOOL bEnable)
 
 void CLiveEngine::EnableStacking(BOOL bEnable)
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 	BOOL							bRemoveEnable;
 
-	pMsg.Create();
 	if (bEnable)
 	{
 		pMsg->SetEnableStacking();
@@ -1006,9 +987,8 @@ void CLiveEngine::EnableStacking(BOOL bEnable)
 
 void	CLiveEngine::PostSaveStackedImage()
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetSaveStackedImage();
 	m_CriticalSection.Lock();
 	m_InMessages.push_front(pMsg);
@@ -1022,9 +1002,8 @@ void	CLiveEngine::PostSaveStackedImage()
 
 void	CLiveEngine::ClearStackedImage()
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetClearStackedImage();
 	m_CriticalSection.Lock();
 	m_InMessages.push_back(pMsg);
@@ -1038,9 +1017,8 @@ void	CLiveEngine::ClearStackedImage()
 
 void	CLiveEngine::ClearPendingImages()
 {
-	CSmartPtr<CLiveEngineMsg>		pMsg;
+	std::shared_ptr<CLiveEngineMsg> pMsg = std::make_shared<CLiveEngineMsg>();
 
-	pMsg.Create();
 	pMsg->SetClearPendingImages();
 	m_CriticalSection.Lock();
 	m_InMessages.push_back(pMsg);
@@ -1061,30 +1039,29 @@ void	CLiveEngine::ClearAll()
 /* ------------------------------------------------------------------- */
 // DSSProgress methods
 
-void	CLiveEngine::GetStartText(CString & strText)
+const QString CLiveEngine::GetStartText() const
 {
-	strText = m_strProgress1;
+	return m_strProgress1;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CLiveEngine::GetStart2Text(CString & strText)
+const QString CLiveEngine::GetStart2Text() const
 {
-	strText = m_strProgress2;
+	return m_strProgress2;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CLiveEngine::Start(LPCTSTR szTitle, LONG lTotal1, BOOL bEnableCancel)
+void	CLiveEngine::Start(const QString& szTitle, int lTotal1, bool bEnableCancel)
 {
-	CString			strText = szTitle;
-
-	if (strText.GetLength())
+	QString text{ szTitle };
+	if (!text.isEmpty())
 	{
 		m_strProgress1 = szTitle;
-		strText.Replace(_T("\n"), _T(" "));
-		strText += "\n";
-		PostToLog(strText, TRUE);
+		text.replace('\n', ' ');
+		text += '\n';
+		PostToLog(text, TRUE);
 	};
 	if (lTotal1)
 		m_lTotal1      = lTotal1;
@@ -1093,7 +1070,7 @@ void	CLiveEngine::Start(LPCTSTR szTitle, LONG lTotal1, BOOL bEnableCancel)
 
 /* ------------------------------------------------------------------- */
 
-void	CLiveEngine::Progress1(LPCTSTR szText, LONG lAchieved1)
+void	CLiveEngine::Progress1(const QString& szText, int lAchieved1)
 {
 	if (szText)
 		m_strProgress1 = szText;

@@ -57,7 +57,6 @@ class QNetworkReply;
 #include <QFileDialog>
 #include <QMenu>
 #include <QStyledItemDelegate>
-#include "baywindow.h"
 
 namespace DSS
 {
@@ -139,10 +138,11 @@ namespace DSS
 
 	};
 
+	class PictureList;
 
-	class StackingDlg : public BayWindow
+	class StackingDlg : public QWidget
 	{
-		typedef BayWindow
+		typedef QWidget
 			Inherited;
 
 		Q_OBJECT
@@ -158,27 +158,19 @@ namespace DSS
 		void toolBar_starsButtonPressed(bool checked);
 		void toolBar_cometButtonPressed(bool checked);
 		void toolBar_saveButtonPressed(bool checked);
-		void on_tableView_customContextMenuRequested(const QPoint& pos);
-		void on_tabBar_customContextMenuRequested(const QPoint& pos);
+		void tableView_customContextMenuRequested(const QPoint& pos);
+		void tabBar_customContextMenuRequested(const QPoint& pos);
 		void tableView_selectionChanged(const QItemSelection& selected, const QItemSelection& deselected);
 		void tableViewModel_dataChanged(const QModelIndex& first, const QModelIndex& last, const QList<int>& roles);
 		void gammaChanging(int peg);
 		void gammaChanged(int peg);
 		void tabBar_currentChanged(int index);
 
-	public:
-		explicit StackingDlg(QWidget* parent = nullptr);
-		~StackingDlg();
-
-		bool eventFilter(QObject* watched, QEvent* event) override;
-
-		void dropFiles(QDropEvent* e);
-
-		void		onAddPictures();
-		void		onAddDarks();
-		void		onAddDarkFlats();
-		void		onAddFlats();
-		void		onAddOffsets();
+		void onAddPictures();
+		void onAddDarks();
+		void onAddDarkFlats();
+		void onAddFlats();
+		void onAddOffsets();
 
 		//
 		// dssfilelist operations
@@ -194,6 +186,23 @@ namespace DSS
 		void		checkAll();
 		void		unCheckAll();
 
+		//
+		// Registration
+		//
+		void registerCheckedImages();
+		void computeOffsets();
+		void stackCheckedImages();
+		void batchStack();
+
+	public:
+		explicit StackingDlg(QWidget* parent = nullptr, PictureList* list = nullptr);
+		~StackingDlg();
+
+		bool eventFilter(QObject* watched, QEvent* event) override;
+
+		void dropFiles(QDropEvent* e);
+
+
 		void setFileList(const fs::path& file)
 		{
 			fileList = file;
@@ -201,15 +210,7 @@ namespace DSS
 
 		void showImageList(bool visible = true);
 
-		void computeOffsets();
-
 		void copyToClipboard();
-
-		void registerCheckedImages();
-
-		void stackCheckedImages();
-
-		void batchStack();
 
 		inline void fillTasks(CAllStackingTasks& tasks)
 		{
@@ -243,6 +244,7 @@ namespace DSS
 		void showEvent(QShowEvent* event) override;
 
 	private:
+		PictureList* pictureList;
 		Ui::StackingDlg* ui;
 		std::unique_ptr<Workspace> workspace;
 		bool initialised;

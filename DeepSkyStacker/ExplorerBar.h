@@ -1,7 +1,7 @@
 #ifndef EXPLORERBAR_H
 #define EXPLORERBAR_H
 
-#include <QWidget>
+#include <QDockWidget>
 #include "mrupath.h"
 //#include "ClickLabel.h"
 
@@ -9,7 +9,7 @@ namespace Ui {
 class ExplorerBar;
 }
 
-class ExplorerBar : public QWidget
+class ExplorerBar : public QDockWidget
 {
 	Q_OBJECT
 
@@ -20,8 +20,34 @@ public:
     explicit ExplorerBar(QWidget *parent = nullptr);
     ~ExplorerBar();
 
-public slots:
-	void onHelp();
+signals:
+	void addPictures();
+	void addDarks();
+	void addDarkFlats();
+	void addFlats();
+	void addOffsets();
+
+	//
+	// dssfilelist operations
+	//
+	void loadList();
+	void clearList();
+	void saveList();
+
+	//
+	// Check marks
+	//
+	void checkAbove();
+	void checkAll();
+	void unCheckAll();
+
+	//
+	// Registration
+	//
+	void registerCheckedImages();
+	void computeOffsets();
+	void stackCheckedImages();
+	void batchStack();
 
 protected:
 	void mousePressEvent(QMouseEvent*) override;
@@ -59,9 +85,8 @@ private slots:
 	void onRecommendedSettings();
 
     void onAbout();
+	void onHelp();
 
-
-    //void linkActivated();
 
 private:
     Ui::ExplorerBar *ui;

@@ -82,7 +82,7 @@ private :
 	CString						m_strFile;
 	std::shared_ptr<CMemoryBitmap>	m_pBitmap;
 	std::shared_ptr<C32BitsBitmap>	m_pWndBitmap;
-	CString						m_strText;
+	QString						m_strText;
 	LONG						m_lMax;
 	LONG						m_lProgress;
 
@@ -101,7 +101,7 @@ private :
 	double						m_fdX,
 								m_fdY,
 								m_fAngle;
-	CPointExt					m_ptFootprint[4];
+	QPointF					m_ptFootprint[4];
 
 	STACKIMAGEINFO				m_ImageInfo;
 	LONG						m_lNrPending;
@@ -197,7 +197,7 @@ public :
 		m_strFile = szFile;
 	};
 
-	void	SetStackedImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LONG lNrStacked, double fExposure)
+	void	SetStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LONG lNrStacked, double fExposure)
 	{
 		m_Msg = LEM_SETSTACKEDIMAGE;
 		m_pBitmap = pBitmap;
@@ -215,7 +215,7 @@ public :
 		m_fAngle	= fAngle;
 	};
 
-	void	SetFootprint(CPointExt const& pt1, CPointExt const& pt2, CPointExt const& pt3, CPointExt const& pt4)
+	void	SetFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4)
 	{
 		m_Msg = LEM_SETFOOTPRINT;
 		m_ptFootprint[0] = pt1;
@@ -238,20 +238,20 @@ public :
 		m_strFile = szFile;
 	};
 
-	void	SetLog(LPCTSTR szText, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0))
+	void	SetLog(const QString& text, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0))
 	{
 		m_Msg = LEM_ADDTOLOG;
-		m_strText		= szText;
+		m_strText		= text;
 		m_bLogDateTime	= bDateTime;
 		m_bLogBold		= bBold;
 		m_bLogItalic	= bItalic;
 		m_crLogColor	= crColor;
 	};
 
-	void	SetProgress(LPCTSTR szText, LONG lAchieved, LONG lTotal)
+	void	SetProgress(const QString& text, LONG lAchieved, LONG lTotal)
 	{
 		m_Msg = LEM_PROGRESSING;
-		m_strText			= szText;
+		m_strText			= text;
 		m_lProgressAchieved = lAchieved;
 		m_lProgressTotal    = lTotal;
 	};
@@ -261,7 +261,7 @@ public :
 		m_Msg = LEM_ENDPROGRESS;
 	};
 
-	void	SetFileLoaded(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName)
+	void	SetFileLoaded(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName)
 	{
 		m_Msg			= LEM_FILELOADED;
 		m_pBitmap		= pBitmap;
@@ -275,10 +275,10 @@ public :
 		m_lNrPending	= lNrPending;
 	};
 
-	void	SetWarning(LPCTSTR szWarning)
+	void	SetWarning(const QString& warning)
 	{
 		m_Msg			= LEM_WARNING;
-		m_strText		= szWarning;
+		m_strText		= warning;
 	};
 
 	BOOL	GetNewFile(CString & strFileName)
@@ -323,7 +323,7 @@ public :
 		return bResult;
 	};
 
-	BOOL	GetFootprint(CPointExt & pt1, CPointExt & pt2, CPointExt & pt3, CPointExt & pt4)
+	BOOL	GetFootprint(QPointF & pt1, QPointF & pt2, QPointF & pt3, QPointF & pt4)
 	{
 		BOOL			bResult = FALSE;
 
@@ -353,19 +353,14 @@ public :
 		return bResult;
 	};
 
-	BOOL	GetImage(CMemoryBitmap ** ppBitmap, C32BitsBitmap ** ppWndBitmap, CString & strFileName)
+	BOOL	GetImage(std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap> pWndBitmap, CString& strFileName)
 	{
 		BOOL			bResult = FALSE;
 
-		if (ppBitmap)
-			*ppBitmap = nullptr;
-		if (ppWndBitmap)
-			*ppWndBitmap = nullptr;
-
 		if (m_Msg == LEM_FILELOADED)
 		{
-			m_pBitmap.CopyTo(ppBitmap);
-			m_pWndBitmap.CopyTo(ppWndBitmap);
+			pBitmap = m_pBitmap;
+			pWndBitmap = m_pWndBitmap;
 			strFileName = m_strFile;
 			bResult = TRUE;
 		};
@@ -373,19 +368,14 @@ public :
 		return bResult;
 	};
 
-	BOOL	GetStackedImage(CMemoryBitmap ** ppBitmap, C32BitsBitmap ** ppWndBitmap, LONG & lNrStacked, double & fExposure)
+	BOOL	GetStackedImage(std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap>& pWndBitmap, LONG & lNrStacked, double & fExposure)
 	{
 		BOOL			bResult = FALSE;
 
-		if (ppBitmap)
-			*ppBitmap = nullptr;
-		if (ppWndBitmap)
-			*ppWndBitmap = nullptr;
-
 		if (m_Msg == LEM_SETSTACKEDIMAGE)
 		{
-			m_pBitmap.CopyTo(ppBitmap);
-			m_pWndBitmap.CopyTo(ppWndBitmap);
+			pBitmap = m_pBitmap;
+			pWndBitmap = m_pWndBitmap;
 			lNrStacked = m_lNrStacked;
 			fExposure  = m_fExposure;
 			bResult = TRUE;
@@ -409,59 +399,59 @@ public :
 		return bResult;
 	};
 
-	BOOL	GetLog(CString & strText, BOOL & bDateTime, BOOL & bBold, BOOL & bItalic, COLORREF & crColor)
+	bool GetLog(QString & text, bool & bDateTime, bool & bBold, bool & bItalic, COLORREF & crColor)
 	{
-		BOOL			bResult = FALSE;
+		bool bResult = false;
 
 		if (m_Msg == LEM_ADDTOLOG)
 		{
-			strText		= m_strText;
+			text		= m_strText;
 			bDateTime	= m_bLogDateTime;
 			bBold		= m_bLogBold;
 			bItalic		= m_bLogItalic;
 			crColor		= m_crLogColor;
-			bResult		= TRUE;
+			bResult		= true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	GetProgress(CString & strText, LONG & lAchieved, LONG & lTotal)
+	bool	GetProgress(QString & strText, LONG & lAchieved, LONG & lTotal)
 	{
-		BOOL			bResult = FALSE;
+		bool bResult = false;
 
 		if (m_Msg == LEM_PROGRESSING)
 		{
 			strText		= m_strText;
 			lAchieved	= m_lProgressAchieved;
 			lTotal		= m_lProgressTotal;
-			bResult		= TRUE;
+			bResult		= true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	GetPending(LONG & lNrPending)
+	bool	GetPending(long & lNrPending)
 	{
-		BOOL			bResult = FALSE;
+		bool bResult = false;
 
 		if (m_Msg == LEM_UPDATEPENDING)
 		{
 			lNrPending = m_lNrPending;
-			bResult = TRUE;
+			bResult = true;
 		};
 
 		return bResult;
 	};
 
-	BOOL	GetWarning(CString & strWarning)
+	bool	GetWarning(QString & strWarning)
 	{
-		BOOL			bResult = FALSE;
+		bool bResult = false;
 
 		if (m_Msg == LEM_WARNING)
 		{
 			strWarning = m_strText;
-			bResult = TRUE;
+			bResult = false;
 		};
 
 		return bResult;
@@ -497,18 +487,19 @@ private :
 	void	StartEngine();
 	void	CloseEngine();
 	BOOL	GetMessage(CLiveEngineMsg ** ppMsg, LIVEENGINEMSGLIST & msglist);
-	void	PostOutMessage(CLiveEngineMsg * pMsg);
-	void	PostToLog(LPCTSTR szText, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
-	void	PostProgress(LPCTSTR szText, LONG lAchieved, LONG lTotal);
+	void	PostOutMessage(const std::shared_ptr<CLiveEngineMsg>& pMsg);
+	void	PostToLog(const QString& text, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
+	void	PostProgress(const QString& szText, LONG lAchieved, LONG lTotal);
 	void	PostEndProgress();
 	void	PostUpdatePending();
-	void	PostFileLoaded(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName);
+	void	PostFileLoaded(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName);
 	void	PostFileRegistered(LPCTSTR szFileName);
 	void	PostChangeImageStatus(LPCTSTR szFileName, IMAGESTATUS status);
 	void	PostChangeImageInfo(LPCTSTR szFileName, STACKIMAGEINFO info);
 	void	PostUpdateImageOffsets(LPCTSTR szFileName, double fdX, double fdY, double fAngle);
-	void	SaveStackedImage(CMemoryBitmap * pBitmap = nullptr);
-	void	PostFootprint(CPointExt pt1, CPointExt pt2, CPointExt pt3, CPointExt pt4);
+	void	SaveStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap);
+	void    SaveStackedImage();
+	void	PostFootprint(QPointF pt1, QPointF pt2, QPointF pt3, QPointF pt4);
 	void	PostStackedImage();
 	void	PostStackedImageSaved();
 	void	PostWarning(LPCTSTR szWarning);
@@ -547,24 +538,24 @@ public :
 
 // DSSProgress methods
 private :
-	CString						m_strProgress1;
-	CString						m_strProgress2;
+	QString						m_strProgress1;
+	QString						m_strProgress2;
 	LONG						m_lTotal1,
 								m_lTotal2;
 	LONG						m_lAchieved1,
 								m_lAchieved2;
 
 public :
-	virtual void	GetStartText(CString & strText);
-	virtual void	GetStart2Text(CString & strText);
-	virtual	void	Start(LPCTSTR szTitle, LONG lTotal1, BOOL bEnableCancel = TRUE);
-	virtual void	Progress1(LPCTSTR szText, LONG lAchieved1);
-	virtual void	Start2(LPCTSTR szText, LONG lTotal2);
-	virtual void	Progress2(LPCTSTR szText, LONG lAchieved2);
+	virtual const QString GetStartText() const;
+	virtual const QString GetStart2Text() const;
+	virtual void Start(const QString& szTitle, int lTotal1, bool bEnableCancel = true);
+	virtual void Progress1(const QString& szText, int lAchieved1);
+	virtual void Start2(const QString& szText, int lTotal2);
+	virtual void Progress2(const QString& szText, int lAchieved2);
 	virtual void	End2();
-	virtual BOOL	IsCanceled();
-	virtual BOOL	Close();
-	virtual BOOL	Warning(LPCTSTR szText);
+	virtual bool	IsCanceled();
+	virtual bool	Close();
+	virtual bool	Warning(LPCTSTR szText);
 };
 
 /* ------------------------------------------------------------------- */
