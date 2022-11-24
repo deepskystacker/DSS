@@ -588,8 +588,8 @@ void CLiveEngine::LiveEngine()
 		// Check for settings update
 		if (msg.message == WM_LE_MESSAGE)
 		{
-			CLiveEngineMsg * pMsg;
-			if (GetMessage(&pMsg, m_InMessages))
+			std::shared_ptr<CLiveEngineMsg> pMsg;
+			if (GetMessage(pMsg, m_InMessages))
 			{
 				// Do the stuff
 				switch (pMsg->GetMessage())
@@ -702,24 +702,21 @@ void CLiveEngine::CloseEngine()
 
 /* ------------------------------------------------------------------- */
 
-BOOL CLiveEngine::GetMessage(CLiveEngineMsg ** ppMsg, LIVEENGINEMSGLIST & msglist)
+BOOL CLiveEngine::GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg, LIVEENGINEMSGLIST & msglist)
 {
 	BOOL			bResult = FALSE;
 
-	if (ppMsg)
-		*ppMsg = nullptr;
+	rMsg.reset();
 
 	m_CriticalSection.Lock();
 	if (msglist.size())
 	{
-		std::shared_ptr<CLiveEngineMsg>	pMsg;
-		pMsg = msglist.front();
+		rMsg = msglist.front();
 
 		// Remove the first item
 		msglist.pop_front();
 
 		bResult = TRUE;
-		*ppMsg = pMsg.get();
 	};
 
 	m_CriticalSection.Unlock();
@@ -857,9 +854,9 @@ CLiveEngine::~CLiveEngine()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CLiveEngine::GetMessage(CLiveEngineMsg ** ppMsg)
+BOOL	CLiveEngine::GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg)
 {
-	return GetMessage(ppMsg, m_OutMessages);
+	return GetMessage(rMsg, m_OutMessages);
 };
 
 /* ------------------------------------------------------------------- */
@@ -1072,8 +1069,7 @@ void	CLiveEngine::Start(const QString& szTitle, int lTotal1, bool bEnableCancel)
 
 void	CLiveEngine::Progress1(const QString& szText, int lAchieved1)
 {
-	if (szText)
-		m_strProgress1 = szText;
+	m_strProgress1 = szText;
 	if (((double)(lAchieved1-m_lAchieved1)/(double)m_lTotal1) > 0.10)
 	{
 		PostProgress(m_strProgress1, lAchieved1, m_lTotal1);
@@ -1083,27 +1079,26 @@ void	CLiveEngine::Progress1(const QString& szText, int lAchieved1)
 
 /* ------------------------------------------------------------------- */
 
-void	CLiveEngine::Start2(LPCTSTR szText, LONG lTotal2)
+void	CLiveEngine::Start2(const QString& szText, int lAchieved2)
 {
-	CString			strText = szText;
-
-	if (strText.GetLength())
+	if (!szText.isEmpty())
 	{
 		m_strProgress2 = szText;
-		strText.Replace(_T("\n"), _T(" "));
+		QString strText(szText);
+		strText.replace(QChar('\n'), QChar(' '));
 		strText += "\n";
 		PostToLog(strText, TRUE);
 	};
-	if (lTotal2)
-		m_lTotal2      = lTotal2;
+	if (lAchieved2)
+		m_lTotal2      = lAchieved2;
 	m_lAchieved2   = 0;
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CLiveEngine::Progress2(LPCTSTR szText, LONG lAchieved2)
+void	CLiveEngine::Progress2(const QString& szText, int lAchieved2)
 {
-	if (szText)
+	if (!szText.isEmpty())
 		m_strProgress2 = szText;
 	if ((((double)(lAchieved2-m_lAchieved2)/(double)m_lTotal2) > 0.10) ||
 		 (lAchieved2 == m_lTotal2))
@@ -1122,24 +1117,24 @@ void	CLiveEngine::End2()
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CLiveEngine::IsCanceled()
+bool CLiveEngine::IsCanceled()
 {
-	return FALSE;
+	return false;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CLiveEngine::Close()
+bool CLiveEngine::Close()
 {
 	PostEndProgress();
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
 
-BOOL	CLiveEngine::Warning(LPCTSTR szText)
+bool CLiveEngine::Warning(LPCTSTR szText)
 {
-	return TRUE;
+	return true;
 };
 
 /* ------------------------------------------------------------------- */
