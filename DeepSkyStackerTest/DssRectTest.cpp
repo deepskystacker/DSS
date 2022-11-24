@@ -182,3 +182,46 @@ TEST_CASE("CRect", "[CRect]")
 		REQUIRE(rect.PtInRect(point) == FALSE);
 	}
 }
+/*
+#include <iostream>
+class XC
+{
+	int i{ -1 };
+	std::string s;
+public:
+	XC(const int x, std::string y) : i{ x }, s{ std::move(y) } {}
+	XC(const XC& rhs) : i{ rhs.i }, s{ rhs.s } {
+		std::cout << s << " copy constructor" << std::endl;
+	}
+	XC(XC&& rhs) : i{ rhs.i }, s{ rhs.s } {
+		std::cout << s << " move constructor" << std::endl;
+	}
+	int iget() const { return this->i; }
+};
+XC xc_factory1(const std::string s) {
+	const XC xc{ 1, s + " 1 const"};
+	return xc;
+}
+XC xc_factory2(const std::string s) {
+	XC xc{ 2, s + " 2 non-const" };
+	return xc;
+}
+XC xc_factory3(const std::string s) {
+	return XC{ 3, s + " 3 temp" };
+}
+TEST_CASE("RValue", "[rvalue]")
+{
+	XC x1 = xc_factory1("");
+	XC x2 = xc_factory2("");
+	XC x3 = xc_factory3("");
+	const XC xc1 = xc_factory1("CONST");
+	const XC xc2 = xc_factory2("CONST");
+	const XC xc3 = xc_factory3("CONST");
+	REQUIRE(x1.iget() == 1);
+	REQUIRE(x2.iget() == 2);
+	REQUIRE(x3.iget() == 3);
+	REQUIRE(xc1.iget() == 1);
+	REQUIRE(xc2.iget() == 2);
+	REQUIRE(xc3.iget() == 3);
+}
+*/
