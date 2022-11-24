@@ -6,7 +6,7 @@
 #include <immintrin.h>
 
 AvxAccumulation::AvxAccumulation(const DSSRect& resultRect, const CTaskInfo& tInfo, CMemoryBitmap& tempbm, CMemoryBitmap& outbm, AvxEntropy& entroinfo) noexcept :
-	resultWidth{ static_cast<int>(resultRect.width()) }, resultHeight{ static_cast<int>(resultRect.height()) },
+	resultWidth{ resultRect.width() }, resultHeight{ resultRect.height() },
 	tempBitmap{ tempbm },
 	outputBitmap{ outbm },
 	taskInfo{ tInfo },
