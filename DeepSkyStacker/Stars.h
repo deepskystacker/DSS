@@ -139,7 +139,7 @@ public :
 			bResult = true;
 
 		return bResult;
-	};
+	}
 };
 
 inline bool CompareStarLuminancy (const CStar & ms1, const CStar  & ms2)
