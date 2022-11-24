@@ -109,24 +109,26 @@ public :
 			return (m_fY < ms.m_fY);
 	};
 
-	bool	IsInRadius(const QPoint& pt) const
+	private:
+	bool inRadius(const double lx, const double ly, const double rx, const double ry) const noexcept
 	{
-		return Distance(m_fX, m_fY, pt.x(), pt.y()) <= m_fMeanRadius * 2.35 / 1.5;
+		return Distance(lx, ly, rx, ry) <= m_fMeanRadius * 2.35 / 1.5;
 	};
 
-	//bool	IsInRect(const QRectF & rc)
-	//{
-	//	return rc.contains(QPointF(m_fX, m_fY));
-	//};
-
-	bool	IsInRadius(const QPointF & pt) const
+	public:
+	bool IsInRadius(const QPoint& pt) const noexcept
 	{
-		return Distance(m_fX ,m_fY, pt.x(), pt.y()) <= m_fMeanRadius*2.35/1.5;
+		return inRadius(m_fX, m_fY, pt.x(), pt.y());
 	};
 
-	bool	IsInRadius(double fX, double fY)
+	bool IsInRadius(const QPointF & pt) const noexcept
 	{
-		return Distance(m_fX ,m_fY, fX, fY) <= m_fMeanRadius*2.35/1.5;
+		return inRadius(m_fX, m_fY, pt.x(), pt.y());
+	};
+
+	bool IsInRadius(double fX, double fY) const noexcept
+	{
+		return inRadius(m_fX, m_fY, fX, fY);
 	};
 
 	bool	IsValid()
