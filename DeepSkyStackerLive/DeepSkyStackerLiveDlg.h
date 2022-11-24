@@ -134,7 +134,7 @@ inline CDeepSkyStackerLiveDlg *	GetDSSLiveDlg(CWnd * pDialog)
 
 /* ------------------------------------------------------------------- */
 
-inline	void	AddToLog(LPCTSTR szString, BOOL bAddDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0))
+inline	void	AddToLog(QString szString, BOOL bAddDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0))
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 
@@ -156,7 +156,7 @@ inline	void	SetLastImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const st
 	{
 		CDeepSkyStackerLiveDlg *	pDlg = dynamic_cast<CDeepSkyStackerLiveDlg *>(pWnd);
 		if (pDlg)
-			pDlg->GetLastImageTab().SetImage(pBitmap, pWndBitmap, szFileName);
+			pDlg->GetLastImageTab().SetImage(pBitmap.get(), pWndBitmap.get(), szFileName);
 	};
 };
 

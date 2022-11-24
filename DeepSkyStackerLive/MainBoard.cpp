@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <FrameInfo.h>
 #include <..\SMTP\PJNSMTP.h>
+#include "FrameInfoSupport.h"
 
 const	DWORD			WM_FOLDERCHANGE	= WM_USER+100;
 
@@ -409,7 +410,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 		pGraphics->DrawPath(pPen, pOutlinePath);
 		delete pOutlinePath;
 
-		if (m_strProgress.GetLength())
+		if (!m_strProgress.isEmpty())
 		{
 			Font *				pFont;
 			StringFormat		format;
@@ -420,7 +421,7 @@ void CMainBoard::DrawProgress(CDC * pDC)
 			format.SetAlignment(StringAlignmentCenter);
 			format.SetLineAlignment(StringAlignmentCenter);
 
-			pGraphics->DrawString(CComBSTR(m_strProgress), -1, pFont, pf, &format, &brush);
+			pGraphics->DrawString(m_strProgress.toStdWString().c_str(), -1, pFont, pf, &format, &brush);
 
 			delete pFont;
 		};
@@ -1144,7 +1145,7 @@ LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)
 
 	if (vNewFiles.size())
 	{
-		CString						strNewFiles;
+		QString strNewFiles;
 		std::vector<CBitmapInfo>	vBitmapInfos;
 
 		// Sort the new files by date/time
@@ -1166,11 +1167,11 @@ LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)
 			m_vAllFiles.push_back(vNewFiles[i]);
 		std::sort(m_vAllFiles.begin(), m_vAllFiles.end());
 
-		strNewFiles.Format(IDS_LOG_NEWFILESFOUND, vNewFiles.size());
+		strNewFiles = QString(QObject::tr("%1 new file(s) found\n", "IDS_LOG_NEWFILESFOUND").arg(vNewFiles.size()));
 		AddToLog(strNewFiles, TRUE, FALSE, FALSE, LOG_GREEN_TEXT);
 		for (LONG i = 0;i<vNewFiles.size();i++)
 		{
-			strNewFiles.Format(IDS_LOG_NEWFILE, (LPCTSTR)vNewFiles[i]);
+			strNewFiles = QString(QObject::tr("-> New file: %1\n", "IDS_LOG_NEWFILE").arg(vNewFiles[i].GetString()));
 			AddToLog(strNewFiles, FALSE, FALSE, FALSE, LOG_GREEN_TEXT);
 			m_LiveEngine.AddFileToProcess(vNewFiles[i]);
 		};
@@ -1264,9 +1265,7 @@ void CMainBoard::OnMonitor()
 
 		//if (m_ulSHRegister)
 		{
-			CString			strText;
-
-			strText.Format(IDS_LOG_STARTMONITORING, (LPCTSTR)strFolder);
+			const QString strText(QObject::tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(strFolder.GetString()));
 			AddToLog(strText, TRUE, TRUE, FALSE, LOG_GREEN_TEXT);
 		}
 		/*else
@@ -1294,11 +1293,10 @@ void CMainBoard::OnStop()
 	{
 		CRegistry			reg;
 		CString				strFolder;
-		CString				strText;
 
 		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
-		strText.Format(IDS_LOG_STOPMONITORING, (LPCTSTR)strFolder);
+		const QString strText(QObject::tr("Stop monitoring folder %1\n", "IDS_LOG_STOPMONITORING").arg(strFolder.GetString()));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_RED_TEXT);
 
 		if (m_ulSHRegister)
@@ -1315,14 +1313,12 @@ void CMainBoard::OnStack()
 	{
 		CRegistry			reg;
 		CString				strFolder;
-		CString				strText;
 
 		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
-		if (m_bStacking)
-			strText.Format(IDS_LOG_STARTSTACKING, (LPCTSTR)strFolder);
-		else
-			strText.Format(IDS_LOG_STOPSTACKING, (LPCTSTR)strFolder);
+		const QString strText(m_bStacking ? 
+								QObject::tr("Start Stacking files\n", "IDS_LOG_STARTMONITORING") :
+								QObject::tr("Stop Stacking files\n", "IDS_LOG_STOPSTACKING"));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_YELLOW_TEXT);
 
 	};
@@ -1383,15 +1379,14 @@ void	CMainBoard::InvalidateStats()
 LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 {
 	std::shared_ptr<CLiveEngineMsg>		pMsg;
-
-	if (m_LiveEngine.GetMessage(&pMsg))
+	if (m_LiveEngine.GetMessage(pMsg))
 	{
 		switch (pMsg->GetMessage())
 		{
 		case LEM_ADDTOLOG:
 			{
-				CString				strText;
-				BOOL				bDateTime,
+				QString strText;
+				bool				bDateTime,
 									bBold,
 									bItalic;
 				COLORREF			crColor;
@@ -1403,13 +1398,13 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 		case LEM_STARTPROGRESS :
 		case LEM_PROGRESSING :
 			{
-				CString				strProgress;
+				QString strProgress;
 				LONG				lAchieved,
 									lTotal;
 
 				if (pMsg->GetProgress(strProgress, lAchieved, lTotal))
 				{
-					if (strProgress.GetLength())
+					if (!strProgress.isEmpty())
 						m_strProgress = strProgress;
 					if (lTotal)
 						m_lProgressTotal = lTotal;
@@ -1435,7 +1430,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 				std::shared_ptr<C32BitsBitmap>	pWndBitmap;
 				CString						strFileName;
 
-				if (pMsg->GetImage(pBitmap, &pWndBitmap, strFileName))
+				if (pMsg->GetImage(pBitmap, pWndBitmap, strFileName))
 					SetLastImage(pBitmap, pWndBitmap, strFileName);
 			}
 			break;
@@ -1446,9 +1441,9 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 				LONG						lNrStacked;
 				double						fExposure;
 
-				if (pMsg->GetStackedImage(&pBitmap, &pWndBitmap, lNrStacked, fExposure))
+				if (pMsg->GetStackedImage(pBitmap, pWndBitmap, lNrStacked, fExposure))
 				{
-					SetStackedImage(pBitmap, pWndBitmap);
+					SetStackedImage(pBitmap.get(), pWndBitmap.get());
 					m_lNrStacked = lNrStacked;
 					m_fTotalExposureTime = fExposure;
 					InvalidateStats();
@@ -1510,8 +1505,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 			};
 		case LEM_WARNING :
 			{
-				CString						strWarning;
-
+				QString strWarning;
 				if (pMsg->GetWarning(strWarning))
 				{
 
@@ -1532,7 +1526,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 						hFile = _tfopen(strFile, _T("at"));
 						if (hFile)
 						{
-							fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strWarning, CP_UTF8));
+							fprintf(hFile, "%s\n", (LPCSTR)CT2CA(strWarning.toStdWString().c_str(), CP_UTF8));
 							fclose(hFile);
 						};
 					};
@@ -1564,7 +1558,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 								m.m_To.Add(emailAddress);
 								m.m_From = CPJNSMTPAddress(strAccount);
 								m.m_sSubject = strObject;
-								m.AddTextBody(strWarning);
+								m.AddTextBody(strWarning.toStdWString().c_str());
 								smtp.SendMessage(m);
 
 								m_lNrEmails++;
@@ -1572,10 +1566,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 							}
 							catch (...)
 							{
-								CString		strError;
-
-								strError.LoadString(IDS_ERRORSENDINGEMAIL);
-								strError+="\n";
+								const QString strError(QObject::tr("An error occurred while sending the email!\n", "IDS_ERRORSENDINGEMAIL"));
 								AddToLog(strError, TRUE, TRUE, FALSE, RGB(255, 0, 0));
 							};
 						};

@@ -76,7 +76,7 @@ private :
 	CLiveEngine				m_LiveEngine;
 
 	BOOL					m_bProgressing;
-	CString					m_strProgress;
+	QString					m_strProgress;
 	LONG					m_lProgressAchieved;
 	LONG					m_lProgressTotal;
 	CString					m_strStatsMask;

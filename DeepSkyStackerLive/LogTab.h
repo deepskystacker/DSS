@@ -28,7 +28,7 @@ public:
 	enum { IDD = IDD_LOG };
 
 public :
-	void	AddToLog(LPCTSTR szText, BOOL bAddDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
+	void	AddToLog(QString szText, BOOL bAddDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
