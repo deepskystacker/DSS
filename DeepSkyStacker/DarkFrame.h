@@ -158,79 +158,46 @@ public :
 	double						m_fGrayValue;
 	int						m_lColdestIndice;
 
-private :
-	void	CopyFrom(const CDarkAmpGlowParameters & dagp)
-	{
-		m_rcHotest			= dagp.m_rcHotest;
-		m_vrcColdest		= dagp.m_vrcColdest;
-		m_fMedianHotest		= dagp.m_fMedianHotest;
-		m_vMedianColdest	= dagp.m_vMedianColdest;
-		m_fGrayValue		= dagp.m_fGrayValue;
-		m_lColdestIndice	= dagp.m_lColdestIndice;
-	};
-
 	DSSRect getRectAroundPoint(int lWidth, int lHeight, int lSize, const CHotPixel & px)
 	{
 		DSSRect rc{ std::max(0, px.m_lX - lSize), std::max(0, px.m_lY - lSize),
 				std::min(lWidth, px.m_lX + lSize), std::min(lHeight, px.m_lY + lSize) };
 
 		return rc;
-
 	};
 
-	void	GetBorderRects(int lWidth, int lHeight, std::vector<DSSRect> & vRects)
+	void getBorderRects(int lWidth, int lHeight, std::vector<DSSRect>& vRects)
 	{
 		const int lSize = std::min(50, std::min(lWidth / 10, lHeight / 10)) / 2;
-		DSSRect rc;
 
 		// Left side
-		rc.setCoords(0, 0, 2*lSize, 2*lSize);
-		vRects.push_back(rc);
-		rc.setCoords(0, lHeight/2-lSize, 2*lSize, lHeight/2+lSize);
-		vRects.push_back(rc);
-		rc.setCoords(0, lHeight-2*lSize, 2*lSize, lHeight);
-		vRects.push_back(rc);
+		vRects.emplace_back(0, 0, 2 * lSize, 2 * lSize);
+		vRects.emplace_back(0, lHeight / 2 - lSize, 2 * lSize, lHeight / 2 + lSize);
+		vRects.emplace_back(0, lHeight - 2 * lSize, 2 * lSize, lHeight);
 
 		// Right side
-		rc.setCoords(lWidth-2*lSize, 0, lWidth, 2*lSize);
-		vRects.push_back(rc);
-		rc.setCoords(lWidth-2*lSize, lHeight/2-lSize, lWidth, lHeight/2+lSize);
-		vRects.push_back(rc);
-		rc.setCoords(lWidth-2*lSize, lHeight-2*lSize, lWidth, lHeight);
-		vRects.push_back(rc);
+		vRects.emplace_back(lWidth - 2 * lSize, 0, lWidth, 2 * lSize);
+		vRects.emplace_back(lWidth - 2 * lSize, lHeight / 2 - lSize, lWidth, lHeight / 2 + lSize);
+		vRects.emplace_back(lWidth - 2 * lSize, lHeight - 2 * lSize, lWidth, lHeight);
 
 		// Middle top/bottom
-		rc.setCoords(lWidth/2-lSize, 0, lWidth/2+lSize, 2*lSize);
-		vRects.push_back(rc);
-		rc.setCoords(lWidth/2-lSize, lHeight-2*lSize, lWidth/2+lSize, lHeight);
-		vRects.push_back(rc);
+		vRects.emplace_back(lWidth / 2 - lSize, 0, lWidth / 2 + lSize, 2 * lSize);
+		vRects.emplace_back(lWidth / 2 - lSize, lHeight - 2 * lSize, lWidth / 2 + lSize, lHeight);
 	};
 
 	double computeMedianValueInRect(CMemoryBitmap* pBitmap, const DSSRect& rc);
 
 public :
-	CDarkAmpGlowParameters()
-    {
-        m_fMedianHotest = 0;
-        m_fGrayValue = 0;
-        m_lColdestIndice = 0;
-    }
-	CDarkAmpGlowParameters(const CDarkAmpGlowParameters & dagp)
-	{
-		CopyFrom(dagp);
-	};
+	CDarkAmpGlowParameters() = default;
+	CDarkAmpGlowParameters(const CDarkAmpGlowParameters&) = default;
 
-	CDarkAmpGlowParameters & operator = (const CDarkAmpGlowParameters & dagp)
-	{
-		CopyFrom(dagp);
-		return (*this);
-	};
+	CDarkAmpGlowParameters& operator = (const CDarkAmpGlowParameters&) = default;
 
 	virtual ~CDarkAmpGlowParameters() {};
 
-	void	ComputeParametersFromPoints(CMemoryBitmap * pBitmap);
+	void ComputeParametersFromPoints(CMemoryBitmap * pBitmap);
 	void FindPointsAndComputeParameters(CMemoryBitmap* pBitmap);
-	void	ComputeParametersFromIndice(int lIndice)
+	void ComputeParametersFromIndice(int lIndice)
 	{
 		m_fGrayValue = m_fMedianHotest - m_vMedianColdest[lIndice];
 	};
@@ -267,7 +234,7 @@ private :
 	}
 
 
-	void	FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
+	void	FillExcludedPixelList(const STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels);
 	void	GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
 
 protected :

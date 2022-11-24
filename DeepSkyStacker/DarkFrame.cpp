@@ -22,56 +22,46 @@
 
 class CValuePair
 {
-public :
-	WORD		m_wLightValue;
-	WORD		m_wDarkValue;
-	int		m_lCount;
+public:
+	std::uint16_t m_wLightValue;
+	std::uint16_t m_wDarkValue;
+	int	m_lCount;
 
-private :
-	void	CopyFrom(const CValuePair & vp)
+public:
+	explicit CValuePair(const std::uint16_t lightValue = 0, const std::uint16_t darkValue = 0) noexcept :
+		m_wLightValue{ lightValue },
+		m_wDarkValue{ darkValue },
+		m_lCount{ 1 }
 	{
-		m_wLightValue = vp.m_wLightValue;
-		m_wDarkValue  = vp.m_wDarkValue;
-		m_lCount	  = vp.m_lCount;
-	};
+	}
 
-public :
-	CValuePair(WORD wLightValue = 0, WORD wDarkValue = 0)
+	explicit CValuePair(double lightValue = 0, double darkValue = 0) noexcept :
+		m_wLightValue{ static_cast<std::uint16_t>(lightValue) },
+		m_wDarkValue{ static_cast<std::uint16_t>(darkValue) },
+		m_lCount{ 1 }
 	{
-		m_wLightValue = wLightValue;
-		m_wDarkValue  = wDarkValue;
-		m_lCount = 1;
-	};
+	}
 
-	CValuePair(const CValuePair & vp)
-	{
-		CopyFrom(vp);
-	};
+	CValuePair(const CValuePair&) = default;
 
-	const CValuePair & operator = (const CValuePair & vp)
-	{
-		CopyFrom(vp);
-		return (*this);
-	};
+	CValuePair& operator =(const CValuePair&) = default;
 
-	virtual ~CValuePair()
+	bool operator < (const CValuePair& rhs) const
 	{
-	};
-
-	bool operator < (const CValuePair & vp) const
-	{
-		if (m_wDarkValue > vp.m_wDarkValue)
-			return true;
-		else if (m_wDarkValue < vp.m_wDarkValue)
-			return false;
-		else
-			return (m_wLightValue > vp.m_wLightValue);
-	};
+		if (m_wDarkValue == rhs.m_wDarkValue)
+			return m_wLightValue > rhs.m_wLightValue;
+		return m_wDarkValue > rhs.m_wDarkValue;
+		//if (m_wDarkValue > rhs.m_wDarkValue)
+		//	return true;
+		//else if (m_wDarkValue < rhs.m_wDarkValue)
+		//	return false;
+		//else
+		//	return (m_wLightValue > rhs.m_wLightValue);
+	}
 };
 
 typedef std::vector<CValuePair>			VALUEPAIRVECTOR;
 typedef std::set<CValuePair>			VALUEPAIRSET;
-//typedef std::vector<CValuePair>			VALUEPAIRSET;
 typedef VALUEPAIRSET::iterator			VALUEPAIRITERATOR;
 
 /* ------------------------------------------------------------------- */
@@ -142,58 +132,54 @@ H(X) = 1/2 (1+ log(2*PI*(sigma*sigma)))
 static double	ComputeMinimumEntropyFactor(VALUEPAIRSET & sValuePairs)
 {
 	ZFUNCTRACE_RUNTIME();
-	int				lSize = static_cast<int>(sValuePairs.size());
 	double				fMinEntropy = -1.0;
-	double				fSelectedk	= 0.0;
+	double				fSelectedk = 0.0;
 	constexpr int			MINNEGATIVE = 128;
 	std::vector<double>	vValues;
 
-	for (double k = 0.00;k<=5.0;k+=0.01)
+	for (double k = 0.0; k <= 5.0; k += 0.01)
 	{
 		// Compute cumulated entropy
-		VALUEPAIRITERATOR		it;
-		std::vector<WORD>		vHisto;
-		int					lNrPixels = 0;
+		std::vector<std::uint16_t> vHisto(MINNEGATIVE * 2 + 1);
+		int lNrPixels = 0;
 
-		vHisto.resize(MINNEGATIVE * 2 + 1);
-
-		for (it = sValuePairs.begin(); it != sValuePairs.end();it++)
+		for (auto it = sValuePairs.cbegin(); it != sValuePairs.cend(); ++it)
 		{
-			if ((*it).m_wLightValue + MINNEGATIVE >= (double)(*it).m_wDarkValue * k)
+			if (it->m_wLightValue + MINNEGATIVE >= static_cast<double>(it->m_wDarkValue) * k)
 			{
-				int			lIndice = (double)(*it).m_wLightValue - (double)(*it).m_wDarkValue * k;
-				lIndice /= ((int)MAXWORD+1)/MINNEGATIVE;
+				int lIndice = static_cast<double>(it->m_wLightValue) - static_cast<double>(it->m_wDarkValue) * k;
+				lIndice /= (static_cast<int>(std::numeric_limits<std::uint16_t>::max()) + 1) / MINNEGATIVE;
 				lIndice += MINNEGATIVE;
 
 				if (lIndice >= 0)
 				{
-					vHisto[lIndice]+=(*it).m_lCount;
-					lNrPixels+=(*it).m_lCount;
-				};
+					vHisto[lIndice] += it->m_lCount;
+					lNrPixels += it->m_lCount;
+				}
 			}
-		};
+		}
 		// Compute Entropy
 		double					fEntropy = 0;
 
-		for (int i = 0;i<vHisto.size();i++)
+		for (int i = 0; i < vHisto.size(); i++)
 		{
 			if (vHisto[i])
 			{
 				double			fProbability;
 
-				fProbability = (double)vHisto[i]/(double)lNrPixels;
-				fEntropy += -fProbability * log(fProbability)/log(2.0);
-			};
-		};
+				fProbability = (double)vHisto[i] / (double)lNrPixels;
+				fEntropy += -fProbability * log(fProbability) / log(2.0);
+			}
+		}
 
 		vValues.push_back(fEntropy);
 
 		if ((fEntropy < fMinEntropy) || fSelectedk == 0)
 		{
 			fMinEntropy = fEntropy;
-			fSelectedk  = k;
-		};
-	};
+			fSelectedk = k;
+		}
+	}
 
 	return fSelectedk;
 };
@@ -333,131 +319,96 @@ static void	RetrictValues(VALUEPAIRSET & sValuePairs)
 
 class CSubSquare
 {
-public :
-	DSSRect					m_rcSquare;
-	double					m_fMean;
-	double					m_fStdDev;
+public:
+	DSSRect m_rcSquare{};
+	double m_fMean{ 0.0 };
+	double m_fStdDev{ 0.0 };
 
-private :
-	void	CopyFrom(const CSubSquare & sq)
-	{
-		m_rcSquare	  = sq.m_rcSquare;
-		m_fMean		  = sq.m_fMean;
-		m_fStdDev	  = sq.m_fStdDev;
-	};
-
-public :
-	CSubSquare()
-	{
-        m_fMean = 0;
-        m_fStdDev = 0;
-	};
-
-	CSubSquare(const CSubSquare & sq)
-	{
-		CopyFrom(sq);
-	};
-
-	const CSubSquare & operator = (const CSubSquare & sq)
-	{
-		CopyFrom(sq);
-		return (*this);
-	};
-
-	virtual ~CSubSquare()
-	{
-	};
+	CSubSquare(DSSRect&& r) :
+		m_rcSquare{ std::move(r) },
+		m_fMean{ 0.0 },
+		m_fStdDev{ 0.0 }
+	{}
+	CSubSquare(const CSubSquare&) = default;
+	CSubSquare(CSubSquare&&) = default;
+	CSubSquare& operator=(const CSubSquare&) = default;
 };
-
-/* ------------------------------------------------------------------- */
 
 class CSubSquares
 {
-public :
-	std::vector<CSubSquare>	m_vSubSquares;
-	int					m_lNrPixels;
-
-public :
-	CSubSquares()
+private:
+	std::vector<CSubSquare>	m_vSubSquares{};
+	int m_lNrPixels{ 0 };
+public:
+	explicit CSubSquares(const int lWidth, const int lHeight) :
+		m_vSubSquares{},
+		m_lNrPixels{ 0 }
 	{
-		m_lNrPixels = 0;
-	};
-
-	virtual ~CSubSquares()
-	{
-	};
-
-	void	Init(int lWidth, int lHeight)
-	{
-		int		lSize = std::min(lWidth, lHeight);
-
+		int lSize = std::min(lWidth, lHeight);
 		lSize = std::min(100, lSize / 10);
-		m_lNrPixels = 0;
 
-		for (int i = lSize;i<lWidth-2*lSize;i+=lSize)
-			for (int j = lSize;j<lHeight-2*lSize;j+=lSize)
-		{
-			CSubSquare			sq;
+		for (int i = lSize; i < lWidth - 2 * lSize; i += lSize)
+			for (int j = lSize; j < lHeight - 2 * lSize; j += lSize)
+			{
+				m_vSubSquares.emplace_back(CSubSquare{ DSSRect{ i, j, i + lSize, j + lSize } });
+				m_lNrPixels += (lSize-1) * (lSize-1);
+			}
+	}
 
-			sq.m_rcSquare.left		= i;
-			sq.m_rcSquare.right		= i+lSize-1;
-			sq.m_rcSquare.top		= j;
-			sq.m_rcSquare.bottom	= j+lSize-1;
+	const std::vector<CSubSquare>& GetSubSquares() const noexcept
+	{
+		return m_vSubSquares;
+	}
+	CSubSquare& GetSubSquare(const size_t k)
+	{
+		return m_vSubSquares[k];
+	}
 
-			m_vSubSquares.push_back(sq);
-
-			m_lNrPixels += lSize*lSize;
-		};
-	};
-
-	int GetNrPixels()
+	int GetNrPixels() const noexcept
 	{
 		return m_lNrPixels;
-	};
+	}
+
 };
 
 /* ------------------------------------------------------------------- */
 
-void	CDarkFrame::FillExcludedPixelList(STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels)
+void	CDarkFrame::FillExcludedPixelList(const STARVECTOR * pStars, EXCLUDEDPIXELVECTOR & vExcludedPixels)
 {
 	ZFUNCTRACE_RUNTIME();
-	EXCLUDEDPIXELSET			sExcludedPixels;
-	int						i;
+	EXCLUDEDPIXELSET sExcludedPixels;
 
 	vExcludedPixels.clear();
 	// First add hot pixels if any
-	for (i = 0;i<m_vHotPixels.size();i++)
+	for (const auto& hotPixel : m_vHotPixels)
 	{
-		CExcludedPixel		ep(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY);
-
-		sExcludedPixels.insert(ep);
-	};
+		sExcludedPixels.insert(CExcludedPixel{ hotPixel.m_lX, hotPixel.m_lY });
+	}
 
 	// Then add stars to the list
-	if (pStars)
+	if (pStars != nullptr)
 	{
-		for (i = 0;i<pStars->size();i++)
+		for (size_t i = 0; i < pStars->size(); i++)
 		{
-			DSSRect& rcStar = (*pStars)[i].m_rcStar;
+			const DSSRect& rcStar = (*pStars)[i].m_rcStar;
 
-			for (int x = rcStar.left; x < rcStar.right; x++)
+			for (int x = rcStar.left; x < rcStar.right; x++) 
 				for (int y = rcStar.top; y < rcStar.bottom; y++)
 				{
-					CExcludedPixel	ep(x, y);
-
-					if (sExcludedPixels.find(ep) == sExcludedPixels.end())
+					CExcludedPixel ep{ x, y };
+					if (sExcludedPixels.count(ep) == 0)
 						sExcludedPixels.insert(ep);
-				};
-		};
-	};
+				}
+		}
+	}
 
 	EXCLUDEDPIXELITERATOR		it;
 
-	for (it = sExcludedPixels.begin(); it != sExcludedPixels.end();it++)
+	for (it = sExcludedPixels.begin(); it != sExcludedPixels.end(); it++)
 		vExcludedPixels.push_back((*it));
 
 	std::sort(vExcludedPixels.begin(), vExcludedPixels.end());
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -517,13 +468,13 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 					else
 						sBlueValuePairs.insert(vp);
 					break;
-				};
+				}
 			}
-		};
+		}
 
 		if (pProgress)
 			pProgress->Progress2(nullptr, j+1);
-	};
+	}
 
 	// Remove the hot pixels
 	for (i = 0;i<m_vHotPixels.size();i++)
@@ -558,9 +509,9 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 					(const_cast<CValuePair&>(*it)).m_lCount--;
 					//(*it).m_lCount--;
 				break;
-			};
+			}
 		}
-	};
+	}
 
 	fRatio = 1.0;
 
@@ -596,7 +547,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 								fAvgBlue	= RedStats.Average();
 
 		fRatio -= 0.1;
-	};
+	}
 
     fRatio = 0.1;
 
@@ -627,8 +578,8 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 			if ((*it).m_lCount)
 				fprintf(hBlue, "%d\t%d\t%ld\n", (*it).m_wLightValue, (*it).m_wDarkValue, (*it).m_lCount);
 		fclose(hBlue);
-	};
-};
+	}
+}
 
 
 /* ------------------------------------------------------------------- */
@@ -637,41 +588,37 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 {
 	ZFUNCTRACE_RUNTIME();
 	EXCLUDEDPIXELVECTOR		vExcludedPixels;
-	int					i, j, k;
 
 	FillExcludedPixelList(pStars, vExcludedPixels);
 
-	fRedFactor		= 1.0;
-	fGreenFactor	= 1.0;
-	fBlueFactor		= 1.0;
+	fRedFactor = 1.0;
+	fGreenFactor = 1.0;
+	fBlueFactor = 1.0;
 
 	ZTRACE_RUNTIME("Compute Dark coefficients");
 	if (pProgress)
 	{
 		const QString strText(QObject::tr("Computing Dark Optimization parameters", "IDS_COMPUTINGDARKOPTIMIZATIONFACTOR"));
 		pProgress->Start2(strText, 0);
-	};
+	}
 
-	CSubSquares				SubSquares;
-	int					lBestSquare = -1;
-	double					fMinMean = 0.0;
-	int					lNrPixels = 0;
-	CSubSquare				SubSquare;
-
-	SubSquares.Init(pBitmap->RealWidth(), pBitmap->RealHeight());
+	int lBestSquare = -1;
+	double fMinMean = 0.0;
+	int lNrPixels = 0;
+	CSubSquares subSquareGrid{ pBitmap->RealWidth(), pBitmap->RealHeight() };
 
 	if (pProgress)
-		pProgress->Start2(nullptr, SubSquares.GetNrPixels());
+		pProgress->Start2(nullptr, subSquareGrid.GetNrPixels());
 
-	for (k = 0;k<SubSquares.m_vSubSquares.size();k++)
+	for (size_t k = 0;k < subSquareGrid.GetSubSquares().size(); k++)
 	{
-		CSubSquare &		sq = SubSquares.m_vSubSquares[k];
-		double				fSum = 0.0;
-		double				fPowSum = 0.0;
-		int				lNrValues = 0;
+		CSubSquare&	sq = subSquareGrid.GetSubSquare(k);
+		double fSum = 0.0;
+		double fPowSum = 0.0;
+		int lNrValues = 0;
 
-		for (i = sq.m_rcSquare.left; i<= sq.m_rcSquare.right; i++)
-			for (j = sq.m_rcSquare.top; j <= sq.m_rcSquare.bottom; j++)
+		for (int i = sq.m_rcSquare.left; i < sq.m_rcSquare.right; i++)
+			for (int j = sq.m_rcSquare.top; j < sq.m_rcSquare.bottom; j++)
 			{
 				double		fValue;
 
@@ -679,88 +626,83 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 				fPowSum += fValue * fValue;
 				fSum    += fValue;
 				lNrValues++;
-
 				lNrPixels++;
-			};
-		for (i = 0;i<vExcludedPixels.size();i++)
+			}
+		for (size_t i = 0; i < vExcludedPixels.size(); i++)
 		{
 			VALUEPAIRITERATOR		it;
 			double					fValue;
 
-			if (sq.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
+			if (sq.m_rcSquare.contains(QPoint{ vExcludedPixels[i].X, vExcludedPixels[i].Y }))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fValue);
 				fPowSum -= fValue*fValue;
 				fSum    -= fValue;
 				lNrValues--;
-			};
-		};
+			}
+		}
 		if (lNrValues)
 		{
-			sq.m_fMean = fSum/lNrValues;
-			sq.m_fStdDev = sqrt(fPowSum/lNrValues-pow(fSum/lNrValues, 2));
-		};
+			sq.m_fMean = fSum / lNrValues;
+			sq.m_fStdDev = sqrt(fPowSum / lNrValues - std::pow(fSum/lNrValues, 2));
+		}
 
 		if ((sq.m_fStdDev < fMinMean) || lBestSquare < 0)
 		{
-			lBestSquare = k;
+			lBestSquare = static_cast<int>(k);
 			fMinMean    = sq.m_fStdDev;
-		};
+		}
 
 		if (pProgress)
 			pProgress->Progress2(nullptr, lNrPixels);
-	};
+	}
 
-	SubSquare = SubSquares.m_vSubSquares[lBestSquare];
+	const CSubSquare subSquare = subSquareGrid.GetSubSquare(lBestSquare);
 
 	// From now on we work only with the best square
 	if (pBitmap->IsMonochrome() && !pBitmap->IsCFA())
 	{
 		VALUEPAIRSET		sValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
+		for (int i = subSquare.m_rcSquare.left; i < subSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
+			for (int j = subSquare.m_rcSquare.top; j < subSquare.m_rcSquare.bottom; j++)
 			{
-				VALUEPAIRITERATOR		it;
 				double					fLight;
 				double					fDark;
 
 				pBitmap->GetPixel(i, j, fLight);
 				m_pMasterDark->GetPixel(i, j, fDark);
 
-				it = sValuePairs.find(CValuePair(fLight*256.0, fDark * 256.0));
+				const CValuePair valuePair{ fLight * 256.0, fDark * 256.0 };
+				VALUEPAIRITERATOR it = sValuePairs.find(valuePair);
 				if (it != sValuePairs.end())
 					(const_cast<CValuePair&>(*it)).m_lCount++;
-					//(*it).m_lCount++;
 				else
-					sValuePairs.insert(CValuePair(fLight*256.0, fDark * 256.0));
-			};
-		};
+					sValuePairs.insert(valuePair);
+			}
+		}
 
 		// Remove excluded pixels
-		for (i = 0;i<vExcludedPixels.size();i++)
+		for (size_t i = 0; i < vExcludedPixels.size(); i++)
 		{
-			VALUEPAIRITERATOR		it;
 			double					fLight;
 			double					fDark;
 
-			if (SubSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
+			if (subSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fLight);
 				m_pMasterDark->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fDark);
 
-				CValuePair			vp(fLight*256.0, fDark * 256.0);
+				CValuePair vp{ fLight * 256.0, fDark * 256.0 };
 
-				it = sValuePairs.find(CValuePair(fLight*256.0, fDark * 256.0));
-				if (it != sValuePairs.end() && (*it).m_lCount>0)
+				VALUEPAIRITERATOR it = sValuePairs.find(vp);
+				if (it != sValuePairs.end() && it->m_lCount>0)
 					(const_cast<CValuePair&>(*it)).m_lCount++;
-					//(*it).m_lCount++;
 			};
-		};
+		}
 
 		fRedFactor = fGreenFactor = fBlueFactor = ComputeMinimumEntropyFactor(sValuePairs);
-		//fRedFactor = fGreenFactor = fBlueFactor = ComputeMinimumRMSFactor(sValuePairs);
 		ZTRACE_RUNTIME("Monochrome coefficient: %.2f", fRedFactor);
 	}
 	else if (pBitmap->IsMonochrome() && pBitmap->IsCFA())
@@ -769,9 +711,9 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		VALUEPAIRSET		sGreenValuePairs;
 		VALUEPAIRSET		sBlueValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
+		for (int i = subSquare.m_rcSquare.left; i < subSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
+			for (int j = subSquare.m_rcSquare.top; j < subSquare.m_rcSquare.bottom; j++)
 			{
 				VALUEPAIRITERATOR		it;
 				double					fLight;
@@ -789,7 +731,6 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						it = sRedValuePairs.find(vp);
 						if (it != sRedValuePairs.end())
 							(const_cast<CValuePair&>(*it)).m_lCount++;
-							//(*it).m_lCount++;
 						else
 							sRedValuePairs.insert(vp);
 						break;
@@ -797,7 +738,6 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						it = sGreenValuePairs.find(vp);
 						if (it != sGreenValuePairs.end())
 							(const_cast<CValuePair&>(*it)).m_lCount++;
-							//(*it).m_lCount++;
 						else
 							sGreenValuePairs.insert(vp);
 						break;
@@ -805,64 +745,57 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 						it = sBlueValuePairs.find(vp);
 						if (it != sBlueValuePairs.end())
 							(const_cast<CValuePair&>(*it)).m_lCount++;
-							//(*it).m_lCount++;
 						else
 							sBlueValuePairs.insert(vp);
 						break;
-					};
+					}
 				}
-			};
-		};
+			}
+		}
 
 		// Remove Hot pixels
-		for (i = 0;i<vExcludedPixels.size();i++)
+		for (size_t i = 0; i < vExcludedPixels.size(); i++)
 		{
-			VALUEPAIRITERATOR		it;
 			double					fLight;
 			double					fDark;
 
-			if (SubSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
+			if (subSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fLight);
 				m_pMasterDark->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fDark);
 
 				{
-					CValuePair			vp(fLight*256.0, fDark * 256.0);
+					const CValuePair vp{ fLight * 256.0, fDark * 256.0 };
+
+
+					const auto reduceCount = [vp](VALUEPAIRSET& valuePairs) {
+						VALUEPAIRITERATOR it = valuePairs.find(vp);
+						if (it != valuePairs.end() && it->m_lCount > 0)
+							(const_cast<CValuePair&>(*it)).m_lCount--;
+					};
 
 					switch (pBitmap->GetBayerColor(vExcludedPixels[i].X, vExcludedPixels[i].Y))
 					{
-					case BAYER_RED :
-						it = sRedValuePairs.find(vp);
-						if (it != sRedValuePairs.end() && (*it).m_lCount>0)
-							(const_cast<CValuePair&>(*it)).m_lCount--;
-							//(*it).m_lCount--;
+					case BAYER_RED:
+						reduceCount(sRedValuePairs);
 						break;
-					case BAYER_GREEN :
-						it = sGreenValuePairs.find(vp);
-						if (it != sGreenValuePairs.end() && (*it).m_lCount>0)
-							(const_cast<CValuePair&>(*it)).m_lCount--;
-							//(*it).m_lCount--;
+					case BAYER_GREEN:
+						reduceCount(sGreenValuePairs);
 						break;
-					case BAYER_BLUE :
-						it = sBlueValuePairs.find(vp);
-						if (it != sBlueValuePairs.end() && (*it).m_lCount>0)
-							(const_cast<CValuePair&>(*it)).m_lCount--;
-							//(*it).m_lCount--;
+					case BAYER_BLUE:
+						reduceCount(sBlueValuePairs);
 						break;
-					};
+					}
 				}
-			};
-		};
+			}
+		}
 
 		// Remove anything that is not between [mean-sigma, mean+sigma]
 		fRedFactor		= ComputeMinimumEntropyFactor(sRedValuePairs);
-		//fRedFactor		= ComputeMinimumRMSFactor(sRedValuePairs);
 
 		fGreenFactor	= ComputeMinimumEntropyFactor(sGreenValuePairs);
-		//fGreenFactor	= ComputeMinimumRMSFactor(sGreenValuePairs);
 
 		fBlueFactor		= ComputeMinimumEntropyFactor(sBlueValuePairs);
-		//fBlueFactor		= ComputeMinimumRMSFactor(sBlueValuePairs);
 
 		ZTRACE_RUNTIME("RGB coefficients: Red = %.2f - Green = %.2f - Blue = %.2f", fRedFactor, fGreenFactor, fBlueFactor);
 	}
@@ -872,49 +805,38 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		VALUEPAIRSET		sGreenValuePairs;
 		VALUEPAIRSET		sBlueValuePairs;
 
-		for (i = SubSquare.m_rcSquare.left; i <= SubSquare.m_rcSquare.right; i++)
+		for (int i = subSquare.m_rcSquare.left; i < subSquare.m_rcSquare.right; i++)
 		{
-			for (j = SubSquare.m_rcSquare.top; j < SubSquare.m_rcSquare.bottom; j++)
+			for (int j = subSquare.m_rcSquare.top; j < subSquare.m_rcSquare.bottom; j++)
 			{
-				VALUEPAIRITERATOR		it;
-				double					fRedLight, fGreenLight, fBlueLight;
-				double					fRedDark, fGreenDark, fBlueDark;
+				double fRedLight, fGreenLight, fBlueLight;
+				double fRedDark, fGreenDark, fBlueDark;
 
 				pBitmap->GetPixel(i, j, fRedLight, fGreenLight, fBlueLight);
 				m_pMasterDark->GetPixel(i, j, fRedDark, fGreenDark, fBlueDark);
 
-				it = sRedValuePairs.find(CValuePair(fRedLight*256.0, fRedDark * 256.0));
-				if (it != sRedValuePairs.end())
-					(const_cast<CValuePair&>(*it)).m_lCount++;
-					//(*it).m_lCount++;
-				else
-					sRedValuePairs.insert(CValuePair(fRedLight*256.0, fRedDark * 256.0));
+				const auto addValuePair = [](VALUEPAIRSET& valuePairs, const CValuePair& vp) {
+					VALUEPAIRITERATOR it = valuePairs.find(vp);
+					if (it != valuePairs.end())
+						(const_cast<CValuePair&>(*it)).m_lCount++;
+					else
+						valuePairs.insert(vp);
+				};
 
-				it = sGreenValuePairs.find(CValuePair(fGreenLight*256.0, fGreenDark * 256.0));
-				if (it != sGreenValuePairs.end())
-					(const_cast<CValuePair&>(*it)).m_lCount++;
-					//(*it).m_lCount++;
-				else
-					sGreenValuePairs.insert(CValuePair(fGreenLight*256.0, fGreenDark * 256.0));
-
-				it = sBlueValuePairs.find(CValuePair(fBlueLight*256.0, fBlueDark * 256.0));
-				if (it != sBlueValuePairs.end())
-					(const_cast<CValuePair&>(*it)).m_lCount++;
-					//(*it).m_lCount++;
-				else
-					sBlueValuePairs.insert(CValuePair(fBlueLight*256.0, fBlueDark * 256.0));
-			};
-		};
-
+				addValuePair(sRedValuePairs, CValuePair{ fRedLight * 256.0, fRedDark * 256.0 });
+				addValuePair(sGreenValuePairs, CValuePair{ fGreenLight * 256.0, fGreenDark * 256.0 });
+				addValuePair(sBlueValuePairs, CValuePair{ fBlueLight * 256.0, fBlueDark * 256.0 });
+			}
+		}
 
 		// Remove Hot pixels
-		for (i = 0;i<vExcludedPixels.size();i++)
+		for (size_t i = 0; i < vExcludedPixels.size(); i++)
 		{
 			VALUEPAIRITERATOR		it;
 			double					fRedLight, fGreenLight, fBlueLight;
 			double					fRedDark, fGreenDark, fBlueDark;
 
-			if (SubSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
+			if (subSquare.m_rcSquare.contains(QPoint(vExcludedPixels[i].X, vExcludedPixels[i].Y)))
 			{
 				pBitmap->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fRedLight, fGreenLight, fBlueLight);
 				m_pMasterDark->GetPixel(vExcludedPixels[i].X, vExcludedPixels[i].Y, fRedDark, fGreenDark, fBlueDark);
@@ -933,16 +855,16 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 				if (it != sBlueValuePairs.end() && (*it).m_lCount>0)
 					(const_cast<CValuePair&>(*it)).m_lCount--;
 					//(*it).m_lCount--;
-			};
-		};
+			}
+		}
 
 		fRedFactor		= ComputeMinimumEntropyFactor(sRedValuePairs);
 		fGreenFactor	= ComputeMinimumEntropyFactor(sGreenValuePairs);
 		fBlueFactor		= ComputeMinimumEntropyFactor(sBlueValuePairs);
 
 		ZTRACE_RUNTIME("RGB coefficients: Red = %.2f - Green = %.2f - Blue = %.2f", fRedFactor, fGreenFactor, fBlueFactor);
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -963,44 +885,44 @@ typedef enum tagIMAGEREGION
 
 class CHotCheckPixel
 {
-public :
+public:
 	double					m_fHot;
 	double					m_fMedian;
 	IMAGEREGION				m_Region;
 
-private :
-	void	CopyFrom(const CHotCheckPixel & hcp)
+private:
+	void	CopyFrom(const CHotCheckPixel& hcp)
 	{
 		m_fHot = hcp.m_fHot;
 		m_fMedian = hcp.m_fMedian;
-		m_Region  = hcp.m_Region;
-	};
+		m_Region = hcp.m_Region;
+	}
 
-public :
+public:
 	CHotCheckPixel(double fHot, double fMedian, IMAGEREGION Region)
 	{
-		m_fHot		= fHot;
-		m_fMedian	= fMedian;
-		m_Region	= Region;
-	};
-	~CHotCheckPixel() {};
+		m_fHot = fHot;
+		m_fMedian = fMedian;
+		m_Region = Region;
+	}
+	~CHotCheckPixel() {}
 
-	CHotCheckPixel(const CHotCheckPixel & hcp)
+	CHotCheckPixel(const CHotCheckPixel& hcp)
 	{
 		CopyFrom(hcp);
-	};
+	}
 
-	CHotCheckPixel & operator = (const CHotCheckPixel & hcp)
+	CHotCheckPixel& operator = (const CHotCheckPixel& hcp)
 	{
 		CopyFrom(hcp);
 
 		return (*this);
-	};
+	}
 
-	bool operator < (const CHotCheckPixel & hcp) const
+	bool operator < (const CHotCheckPixel& hcp) const
 	{
-		return hcp.m_fHot<m_fHot;
-	};
+		return hcp.m_fHot < m_fHot;
+	}
 };
 
 /* ------------------------------------------------------------------- */
@@ -1040,10 +962,10 @@ IMAGEREGION	GetPixelRegion(int lX, int lY, int lWidth, int lHeight)
 	case 33 :
 		Result = IR_BOTTOMRIGHT;
 		break;
-	};
+	}
 
 	return Result;
-};
+}
 
 
 void CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXELVECTOR& vHotPixels)
@@ -1087,7 +1009,7 @@ void CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXEL
 				pBitmap->GetPixel(X, Y, fHot);
 
 				vHots.emplace_back(fHot, fMedian, Region);
-			};
+			}
 		}
 		else
 		{
@@ -1098,8 +1020,8 @@ void CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXEL
 			pBitmap->GetPixel(X, Y, fHotRed, fHotGreen, fHotBlue);
 
 			vHots.emplace_back((fHotRed+fHotGreen+fHotBlue)/3.0, (fMedianRed+fMedianGreen+fMedianBlue)/3.0, Region);
-		};
-	};
+		}
+	}
 
 	int					lNrCovered = 0;
 	double					fSumHot    = 0,
@@ -1120,17 +1042,17 @@ void CDarkFrameHotParameters::ComputeParameters(CMemoryBitmap* pBitmap, HOTPIXEL
 				dwCovered1 |= vHots[i].m_Region;
 			else
 				dwCovered2 |= vHots[i].m_Region;
-		};
-	};
+		}
+	}
 
 	if (lNrCovered)
 	{
 		fSumHot /= lNrCovered;
 		fSumMedian /= lNrCovered;
-	};
+	}
 
 	m_fGrayValue = fSumHot - fSumMedian;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1153,11 +1075,11 @@ void	CDarkAmpGlowParameters::ComputeParametersFromPoints(CMemoryBitmap * pBitmap
 		{
 			m_fMedianColdest = fValue;
 			m_lColdestIndice = k;
-		};
-	};
+		}
+	}
 
 	m_fGrayValue = m_fMedianHotest-m_fMedianColdest;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1169,7 +1091,7 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 	bool				bMonochrome = pBitmap->IsMonochrome();
 	bool				bCFA = pBitmap->IsCFA();
 
-	RGBHistogram.SetSize(256.0, 65536);
+	RGBHistogram.SetSize(256.0, std::numeric_limits<std::uint16_t>::max() + 1);
 	for (int i = rc.left; i < rc.right; i++)
 	{
 		for (int j = rc.top; j < rc.bottom; j++)
@@ -1191,7 +1113,7 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 				case BAYER_BLUE :
 					RGBHistogram.GetBlueHistogram().AddValue(fGray);
 					break;
-				};
+				}
 			}
 			else if (bMonochrome)
 			{
@@ -1206,9 +1128,9 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 				RGBHistogram.AddValues(fRed, fGreen, fBlue);;
-			};
-		};
-	};
+			}
+		}
+	}
 
 	if (bMonochrome && !bCFA)
 		fResult = RGBHistogram.GetRedHistogram().GetMedian();
@@ -1217,10 +1139,10 @@ double CDarkAmpGlowParameters::computeMedianValueInRect(CMemoryBitmap* pBitmap, 
 		fResult = (RGBHistogram.GetRedHistogram().GetMedian()+
 				   RGBHistogram.GetGreenHistogram().GetMedian()+
 				   RGBHistogram.GetBlueHistogram().GetMedian())/3;
-	};
+	}
 
 	return fResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1273,23 +1195,23 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 						{
 							fMaxRed = fGray;
 							pxMaxRed.SetPixel(vColumns[i], j);
-						};
+						}
 						break;
 					case BAYER_GREEN :
 						if (fGray>fMaxGreen)
 						{
 							fMaxGreen = fGray;
 							pxMaxGreen.SetPixel(vColumns[i], j);
-						};
+						}
 						break;
 					case BAYER_BLUE :
 						if (fGray>fMaxBlue)
 						{
 							fMaxBlue = fGray;
 							pxMaxBlue.SetPixel(vColumns[i], j);
-						};
+						}
 						break;
-					};
+					}
 				}
 				else
 				{
@@ -1297,8 +1219,8 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 					{
 						fMaxGray = fGray;
 						pxMaxGray.SetPixel(vColumns[i], j);
-					};
-				};
+					}
+				}
 			}
 			else
 			{
@@ -1310,20 +1232,20 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 				{
 					fMaxRed = fRed;
 					pxMaxRed.SetPixel(vColumns[i], j);
-				};
+				}
 				if (fGreen>fMaxGreen)
 				{
 					fMaxGreen = fGreen;
 					pxMaxGreen.SetPixel(vColumns[i], j);
-				};
+				}
 				if (fBlue>fMaxBlue)
 				{
 					fMaxBlue = fBlue;
 					pxMaxBlue.SetPixel(vColumns[i], j);
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	// Now compute the median value around each pixel
 	if (bMonochrome && !bCFA)
@@ -1365,14 +1287,14 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 		{
 			m_rcHotest = rcMaxGreen;
 			m_fMedianHotest = fMaxGreen;
-		};
-	};
+		}
+	}
 
 	// Now find the coldest rectangle
 	std::vector<DSSRect>	vRects;
 	double					m_fMedianColdest = -1;
 
-	GetBorderRects(lWidth, lHeight, vRects);
+	getBorderRects(lWidth, lHeight, vRects);
 
 	m_vrcColdest = vRects;
 	m_vMedianColdest.clear();
@@ -1387,11 +1309,11 @@ void CDarkAmpGlowParameters::FindPointsAndComputeParameters(CMemoryBitmap* pBitm
 		{
 			m_fMedianColdest = fValue;
 			m_lColdestIndice = k;
-		};
-	};
+		}
+	}
 
 	m_fGrayValue = m_fMedianHotest-m_fMedianColdest;
-};
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -1466,8 +1388,7 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 {
 	ZFUNCTRACE_RUNTIME();
 
-	HOTPIXELVECTOR				vHotPixels;
-	int						i;
+	HOTPIXELVECTOR vHotPixels;
 
 	fRedFactor	 = 1.0;
 	fGreenFactor = 1.0;
@@ -1478,29 +1399,29 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 		// Remove hot pixels that are in stars
 		if (pStars)
 		{
-			EXCLUDEDPIXELSET			sStarPixels;
+			EXCLUDEDPIXELSET sStarPixels;
 
-			for (i = 0;i<pStars->size();i++)
+			for (size_t i = 0; i < pStars->size(); i++)
 			{
-				DSSRect &rcStar = (*pStars)[i].m_rcStar;
+				const DSSRect &rcStar = (*pStars)[i].m_rcStar;
 
 				for (int x = rcStar.left; x < rcStar.right; x++)
 					for (int y = rcStar.top; y < rcStar.bottom; y++)
 					{
-						CExcludedPixel	ep(x, y);
+						const CExcludedPixel ep(x, y);
 
-						if (sStarPixels.find(ep) == sStarPixels.end())
+						if (0 == sStarPixels.count(ep))
 							sStarPixels.insert(ep);
-					};
-			};
+					}
+			}
 
-			for (i = 0;i<m_vHotPixels.size();i++)
+			for (size_t i = 0; i < m_vHotPixels.size(); i++)
 			{
-				CExcludedPixel		ep(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY);
+				const CExcludedPixel ep(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY);
 
-				if (sStarPixels.find(ep) == sStarPixels.end())
+				if (0 == sStarPixels.count(ep))
 					vHotPixels.push_back(m_vHotPixels[i]);
-			};
+			}
 		}
 		else
 			vHotPixels = m_vHotPixels;
@@ -1508,12 +1429,12 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 		// For each hot pixel compare the value in the light and in the dark
 		if (pBitmap->IsMonochrome() && !pBitmap->IsCFA())
 		{
-			std::vector<double>		vRatios;
+			std::vector<double>	vRatios;
 
-			for (i = 0;i<vHotPixels.size();i++)
+			for (size_t i = 0; i < vHotPixels.size(); i++)
 			{
-				double				fLight,
-									fDark;
+				double fLight,
+					fDark;
 
 				pBitmap->GetPixel(vHotPixels[i].m_lX, vHotPixels[i].m_lY, fLight);
 				m_pMasterDark->GetPixel(vHotPixels[i].m_lX, vHotPixels[i].m_lY, fDark);
@@ -1524,8 +1445,8 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 
 					fRatio = fLight/fDark;
 					vRatios.push_back(fRatio);
-				};
-			};
+				}
+			}
 			std::sort(vRatios.begin(), vRatios.end());
 			std::vector<double> vWork;
 			vWork.reserve(vRatios.size());
@@ -1542,10 +1463,10 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 
 			vWork.reserve(vHotPixels.size());
 
-			for (i = 0;i<vHotPixels.size();i++)
+			for (size_t i = 0 ;i<vHotPixels.size();i++)
 			{
-				double				fLight,
-									fDark;
+				double fLight,
+					fDark;
 
 				pBitmap->GetPixel(vHotPixels[i].m_lX, vHotPixels[i].m_lY, fLight);
 				m_pMasterDark->GetPixel(vHotPixels[i].m_lX, vHotPixels[i].m_lY, fDark);
@@ -1566,9 +1487,9 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 					case BAYER_BLUE :
 						vBlueRatios.push_back(fRatio);
 						break;
-					};
-				};
-			};
+					}
+				}
+			}
 			std::sort(vRedRatios.begin(), vRedRatios.end());
 			std::sort(vGreenRatios.begin(), vGreenRatios.end());
 			std::sort(vBlueRatios.begin(), vBlueRatios.end());
@@ -1577,11 +1498,8 @@ void	CDarkFrame::ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVEC
 			fGreenFactor = KappaSigmaClip(vGreenRatios, 2.0, 5, vWork);
 			fBlueFactor = KappaSigmaClip(vBlueRatios, 2.0, 5, vWork);
 		}
-		else
-		{
-		};
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 /* ------------------------------------------------------------------- */
@@ -1647,10 +1565,10 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 								{
 									CHotPixel		hp(i, k);
 									m_vHotPixels.push_back(hp);
-								};
-							};
-						};
-					};
+								}
+							}
+						}
+					}
 				}
 				else if (bLighter || bDarker)
 				{
@@ -1660,8 +1578,8 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 					lNrConsecutiveOutPixels = 0;
 					bLineInProgress = true;
 					bLighterLine = bLighter;
-				};
-			};
+				}
+			}
 
 			if (bLineInProgress)
 			{
@@ -1671,13 +1589,13 @@ void CDarkFrame::FindBadVerticalLines(CDSSProgress * pProgress)
 					{
 						CHotPixel		hp(i, k);
 						m_vHotPixels.push_back(hp);
-					};
-				};
-			};
-		};
+					}
+				}
+			}
+		}
 		m_bHotPixelDetected = true;
-	};
-};
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1793,11 +1711,11 @@ void	CDarkFrame::RemoveContiguousHotPixels(bool bCFA)
 			vNewHotPixels.push_back(hp);
 		else
 			lNrDiscarded++;
-	};
+	}
 
 	if (lNrDiscarded)
 		m_vHotPixels = vNewHotPixels;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1871,9 +1789,9 @@ void CDarkFrame::FindHotPixels(CDSSProgress* pProgress)
 void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor)
 {
 	vPixels.clear();
-	for (int i = std::max(0, lX - lRadius); i <= std::min(m_pMasterDark->RealWidth() - 1, lX + lRadius); i++)
+	for (int i = std::max(0, lX - lRadius); i < std::min(m_pMasterDark->RealWidth(), 1+ lX + lRadius); i++)
 	{
-		for (int j = std::max(0, lY - lRadius); j <= std::min(m_pMasterDark->RealHeight() - 1, lY + lRadius); j++)
+		for (int j = std::max(0, lY - lRadius); j < std::min(m_pMasterDark->RealHeight(), 1 + lY + lRadius); j++)
 		{
 			if ((i != lX) || (j != lY))
 			{
@@ -1890,10 +1808,10 @@ void	CDarkFrame::GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int
 
 				if (bAdd)
 					vPixels.push_back(hp);
-			};
-		};
-	};
-};
+			}
+		}
+	}
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -1918,7 +1836,7 @@ void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, CD
 				CFATransform = pCFABitmapInfo->GetCFATransformation();
 				if (CFATransform == CFAT_SUPERPIXEL)
 					pCFABitmapInfo->UseBilinear(true);
-			};
+			}
 
 			// Interpolate with neighbor pixels (level 1)
 			const bool bCFA = pBitmap->IsCFA();
@@ -1942,12 +1860,12 @@ void	CDarkFrame::InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, CD
 					pBitmap->GetPixel(vPixels[j].m_lX, vPixels[j].m_lY, fGray);
 					fValue += fGray * vPixels[j].m_lWeight;
 					lTotalWeight += vPixels[j].m_lWeight;
-				};
+				}
 				if (lTotalWeight)
 					fValue /= lTotalWeight;
 				pBitmap->SetPixel(m_vHotPixels[i].m_lX, m_vHotPixels[i].m_lY, fValue);
 
-			};
+			}
 			if (CFATransform == CFAT_SUPERPIXEL)
 				pCFABitmapInfo->UseSuperPixels(true);
 		}
