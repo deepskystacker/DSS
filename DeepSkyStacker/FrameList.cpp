@@ -567,15 +567,9 @@ namespace DSS
 							// Check that the file exists
 							if (is_regular_file(filePath))
 							{
-								ListBitMap			lb;
-
-								if (lb.InitFromFile(filePath, Type))
-								{
-									lb.m_groupId = groupId;
-									beginInsertRows(1);
-									addFile(filePath, Type, (checkState == 1));
-									endInsertRows();
-								};
+								beginInsertRows(1);
+								addFile(filePath, Type, (checkState == 1));
+								endInsertRows();
 							};
 						}
 								

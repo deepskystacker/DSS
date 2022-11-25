@@ -126,7 +126,7 @@ namespace DSS
 		//
 		// Add an image (row) to the table
 		//
-		void addImage(ListBitMap image)
+		void addImage(const ListBitMap& image)
 		{
 			pictures->addImage(image);
 			Dirty = true;

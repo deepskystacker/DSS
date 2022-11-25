@@ -570,11 +570,11 @@ namespace DSS
     // beginInsertRows() be called, and once batch of images is added, then
     // endInsertRows() must be called.
     //
-    void ImageListModel::addImage(ListBitMap image)
+    void ImageListModel::addImage(const ListBitMap& image)
     {
         Q_ASSERT(std::find(mydata.begin(), mydata.end(), image) == mydata.end());
             
-        mydata.emplace_back(std::move(image));
+        mydata.push_back(image);
     }
 
     //
