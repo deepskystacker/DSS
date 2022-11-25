@@ -30,7 +30,7 @@ signals:
 	//
 	// dssfilelist operations
 	//
-	void loadList();
+	void loadList(const QPoint&);
 	void clearList();
 	void saveList();
 

@@ -459,17 +459,14 @@ namespace DSS
 				ec.value(), ec.message().c_str());
 		}
 		
-
 		if (std::FILE* hFile =
 #if defined(_WINDOWS)
-			_wfopen(fileList.c_str(), L"rt");
+			_wfopen(fileList.c_str(), L"rt")
 #else
-			std::fopen(fileList.c_ctr(), "rt");
+			std::fopen(fileList.c_ctr(), "rt")
 #endif
-			!ec
 			)
 		{
-
 			CHAR			szBuffer[2000];
 			QString			strValue;
 			bool			bContinue = false;

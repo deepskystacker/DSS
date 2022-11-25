@@ -257,9 +257,9 @@ void DeepSkyStacker::connectSignalsToSlots()
 	connect(explorerBar, SIGNAL(addDarkFlats()), stackingDlg, SLOT(onAddDarkFlats()));
 	connect(explorerBar, SIGNAL(addOffsets()), stackingDlg, SLOT(onAddOffsets()));
 
-	connect(explorerBar, SIGNAL(loadList()), stackingDlg, SLOT(loadList()));
+	connect(explorerBar, SIGNAL(loadList(const QPoint&)), stackingDlg, SLOT(loadList(const QPoint&)));
 	connect(explorerBar, SIGNAL(saveList()), stackingDlg, SLOT(saveList()));
-	connect(explorerBar, SIGNAL(loadList()), stackingDlg, SLOT(clearList()));
+	connect(explorerBar, SIGNAL(clearList()), stackingDlg, SLOT(clearList()));
 
 	connect(explorerBar, SIGNAL(checkAbove()), stackingDlg, SLOT(checkAbove()));
 	connect(explorerBar, SIGNAL(checkAll()), stackingDlg, SLOT(checkAll()));

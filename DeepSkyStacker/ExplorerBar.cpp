@@ -184,7 +184,8 @@ void ExplorerBar::onOpenBias()
 
 void ExplorerBar::onOpenFilelist()
 {
-	emit loadList();
+	QPoint point{ ui->openFilelist->mapToGlobal(QPoint(0, 2 + ui->openFilelist->height())) };
+	emit loadList(point);
 }
 void ExplorerBar::onSaveFilelist()
 {

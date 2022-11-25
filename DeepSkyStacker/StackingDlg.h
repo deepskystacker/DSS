@@ -176,7 +176,7 @@ namespace DSS
 		// dssfilelist operations
 		//
 		void		clearList();
-		void		loadList();
+		void		loadList(const QPoint&);
 		void		saveList();
 
 		//

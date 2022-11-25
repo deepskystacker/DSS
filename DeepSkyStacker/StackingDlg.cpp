@@ -1994,7 +1994,7 @@ namespace DSS
 
 	/* ------------------------------------------------------------------- */
 	
-	void StackingDlg::loadList()
+	void StackingDlg::loadList(const QPoint& pt)
 	{
 		bool openAnother{ true };
 
@@ -2022,7 +2022,7 @@ namespace DSS
 				menu.addSeparator();
 				QAction* loadAnother = menu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
 
-				QAction* a = menu.exec(QCursor::pos());
+				QAction* a = menu.exec(pt);
 
 				if (loadAnother == a)
 					openAnother = true;
