@@ -1225,16 +1225,10 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			{
 				for (int i = 0; i < m_rcResult.width(); i++)
 				{
-					QPointF pt(i, j);
-					QPointF ptOut;
-
 					lProgress++;
+					const QPointF ptOut = PixTransform.transform(QPointF(i, j));
 
-					ptOut = PixTransform.transform(pt);
-					DSSRect rc{ 0, 0,
-						m_rcResult.width(), m_rcResult.height() };
-
-					if (rc.contains(ptOut))
+					if (DSSRect{ 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut))
 					{
 						PIXELDISPATCHVECTOR vPixels;
 						ComputePixelDispatch(ptOut, vPixels);
@@ -1702,10 +1696,8 @@ void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 			if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 				m_BackgroundCalibration.ApplyCalibration(Red, Green, Blue);
 
-			DSSRect rc{ 0, 0, 
-				m_rcResult.width(),  m_rcResult.height()};
-
-			if ((Red || Green || Blue) && rc.contains(ptOut))
+			if ((0 != Red || 0 != Green || 0 != Blue) &&
+				DSSRect { 0, 0, m_rcResult.width(), m_rcResult.height() }.contains(ptOut))
 			{
 				vPixels.resize(0);
 				ComputePixelDispatch(ptOut, m_lPixelSizeMultiplier, vPixels);
@@ -1713,7 +1705,9 @@ void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 				for (CPixelDispatch& Pixel : vPixels)
 				{
 					// For each plane adjust the values
-					if (Pixel.m_lX >= 0 && Pixel.m_lX < m_rcResult.width() && Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.height())
+					if (Pixel.m_lX >= 0 &&
+						Pixel.m_lX < m_rcResult.width() &&
+						Pixel.m_lY >= 0 && Pixel.m_lY < m_rcResult.height())
 					{
 						// Special case for entropy average
 						if (m_pLightTask->m_Method == MBP_ENTROPYAVERAGE)
@@ -2077,14 +2071,12 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 			CString strNeededSpace;
 
 			m_rcResult = computeLargestRectangle();
-			__int64 ulNeededSpace;
-			__int64 ulFreeSpace;
-			QRectF rcResult(m_rcResult.left, m_rcResult.top, m_rcResult.width(), m_rcResult.height());
+			std::int64_t ulNeededSpace;
+			std::int64_t ulFreeSpace;
+			DSSRect rcResult;
 
-			rcResult.setLeft(rcResult.left() / m_lPixelSizeMultiplier);
-			rcResult.setRight(rcResult.right() / m_lPixelSizeMultiplier);
-			rcResult.setTop(rcResult.top() / m_lPixelSizeMultiplier);
-			rcResult.setBottom(rcResult.bottom() / m_lPixelSizeMultiplier);
+			rcResult.setCoords(m_rcResult.left / m_lPixelSizeMultiplier, m_rcResult.top / m_lPixelSizeMultiplier,
+				m_rcResult.right / m_lPixelSizeMultiplier, m_rcResult.bottom / m_lPixelSizeMultiplier);
 
 			ulNeededSpace = tasks.computeNecessaryDiskSpace(rcResult);
 			ulFreeSpace = tasks.AvailableDiskSpace(strDrive);

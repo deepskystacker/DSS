@@ -400,7 +400,6 @@ public :
 size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars)
 {
 	double				fMaxIntensity = 0;
-	int				i, j, k;
 	std::vector<int>	vHistogram;
 	size_t nStars{ 0 };
 
@@ -410,6 +409,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 	for (int j = rc.top, ndx = 0; j < rc.bottom; ++j)
 		for (int i = rc.left; i < rc.right; ++i, ++ndx)		
 			pBitmap->GetPixel(i, j, values[ndx]);
+
 	const auto getValue = [&values, rc, width](const int x, const int y) -> double
 	{
 		return values[(y - rc.top) * width + x - rc.left];
@@ -435,7 +435,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 		{
 			lNrValues += vHistogram[lIndice];
 			++lIndice;
-		};
+		}
 		m_fBackground = static_cast<double>(lIndice) / 256.0 / 256.0;
 	}
 	else
@@ -447,12 +447,10 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 
 		for (double fDeltaRadius = 0; fDeltaRadius < 4; ++fDeltaRadius)
 		{
-			for (j = rc.top; j < rc.bottom; j++)
+			for (int j = rc.top; j < rc.bottom; j++)
 			{
-				for (i = rc.left; i < rc.right; i++)
+				for (int i = rc.left; i < rc.right; i++)
 				{
-//					double			fIntensity;
-//					pBitmap->GetPixel(i, j, fIntensity);
 					const double fIntensity = getValue(i, j);
 
 					if (fIntensity >= m_fMinLuminancy + m_fBackground)
@@ -473,12 +471,15 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 						{
 							// Search around the point until intensity is divided by 2
 							// STARMAXSIZE pixels radius max search
-							std::vector<CPixelDirection> vPixels{ {0, -1, 2, 0.0}, {1, 0, 2, 0.0}, {0, 1, 2, 0.0}, {-1, 0, 2, 0.0}, {1, -1, 2, 0.0}, {1, 1, 2, 0.0}, {-1, 1, 2, 0.0}, {-1, -1, 2, 0.0} };
+							std::vector<CPixelDirection> vPixels{
+								{0, -1, 2, 0.0}, {1, 0, 2, 0.0}, {0, 1, 2, 0.0}, {-1, 0, 2, 0.0},
+								{1, -1, 2, 0.0}, {1, 1, 2, 0.0}, {-1, 1, 2, 0.0}, {-1, -1, 2, 0.0}
+							};
 
-							bool			bBrighterPixel = false;
-							bool			bMainOk = true;
-							int			lMaxRadius = 0;
-							int			lNrBrighterPixels = 0;
+							bool bBrighterPixel = false;
+							bool bMainOk = true;
+							int	lMaxRadius = 0;
+							int	lNrBrighterPixels = 0;
 
 							for (int r = 1; r < STARMAXSIZE && bMainOk && !bBrighterPixel; r++)
 							{
@@ -488,7 +489,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 								}
 
 								bMainOk = false;
-								for (k = 0; k < 8 && !bBrighterPixel; k++)
+								for (size_t k = 0; k < 8 && !bBrighterPixel; k++)
 								{
 									if (vPixels[k].m_Ok)
 									{
@@ -502,14 +503,14 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 											bBrighterPixel = true;
 										else if (vPixels[k].m_fIntensity > fIntensity)
 											++vPixels[k].m_lNrBrighterPixels;
-									};
+									}
 
 									if (vPixels[k].m_Ok)
 										bMainOk = true;
 									if (vPixels[k].m_lNrBrighterPixels > 2)
 										bBrighterPixel = true;
-								};
-							};
+								}
+							}
 
 							// Check the roundness of the wanabee star
 							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2))
@@ -518,32 +519,31 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 								//if (i>=1027 && i<=1035 && j>=2365 && j<=2372)
 								//	DebugBreak();
 
-								bool			bWanabeeStarOk = true;
-								int			k1, k2;
-								double			fMeanRadius1 = 0.0,
-												fMeanRadius2 = 0.0;
+								bool bWanabeeStarOk = true;
+								double fMeanRadius1 = 0.0;
+								double fMeanRadius2 = 0.0;
 
-								for (k1 = 0; (k1 < 4) && bWanabeeStarOk; k1++)
+								for (size_t k1 = 0; (k1 < 4) && bWanabeeStarOk; k1++)
 								{
-									for (k2 = 0; (k2 < 4) && bWanabeeStarOk; k2++)
+									for (size_t k2 = 0; (k2 < 4) && bWanabeeStarOk; k2++)
 									{
 										if ((k1 != k2) && labs(vPixels[k2].m_fRadius - vPixels[k1].m_fRadius) > fDeltaRadius)
 											bWanabeeStarOk = false;
 									};
 								};
-								for (k1 = 4; (k1 < 8) && bWanabeeStarOk; k1++)
+								for (size_t k1 = 4; (k1 < 8) && bWanabeeStarOk; k1++)
 								{
-									for (k2 = 4; (k2 < 8) && bWanabeeStarOk; k2++)
+									for (size_t k2 = 4; (k2 < 8) && bWanabeeStarOk; k2++)
 									{
 										if ((k1 != k2) && labs(vPixels[k2].m_fRadius - vPixels[k1].m_fRadius) > fDeltaRadius)
 											bWanabeeStarOk = false;
 									};
 								};
 
-								for (k1 = 0; k1 < 4; k1++)
+								for (size_t k1 = 0; k1 < 4; k1++)
 									fMeanRadius1 += vPixels[k1].m_fRadius;
 								fMeanRadius1 /= 4.0;
-								for (k1 = 4; k1 < 8; k1++)
+								for (size_t k1 = 4; k1 < 8; k1++)
 									fMeanRadius2 += vPixels[k1].m_fRadius;
 								fMeanRadius2 /= 4.0;
 								fMeanRadius2 *= sqrt(2.0);
@@ -551,13 +551,13 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 								//if (fabs(fMeanRadius1 - fMeanRadius2) > fDeltaRadius - 1)
 								//	bWanabeeStarOk = false;
 
-								DSSRect		rcStar;
-								int			lLeftRadius = 0;
-								int			lRightRadius = 0;
-								int			lTopRadius = 0;
-								int			lBottomRadius = 0;
+								DSSRect	rcStar;
+								int	lLeftRadius = 0;
+								int	lRightRadius = 0;
+								int	lTopRadius = 0;
+								int	lBottomRadius = 0;
 
-								for (k = 0; k < 8; k++)
+								for (size_t k = 0; k < 8; k++)
 								{
 									if (vPixels[k].m_lXDir < 0)
 										lLeftRadius = std::max(lLeftRadius, static_cast<int>(vPixels[k].m_fRadius));
@@ -567,12 +567,10 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 										lTopRadius = std::max(lTopRadius, static_cast<int>(vPixels[k].m_fRadius));
 									else if (vPixels[k].m_lYDir > 0)
 										lBottomRadius = std::max(lBottomRadius, static_cast<int>(vPixels[k].m_fRadius));
-								};
+								}
 
-								rcStar.left   = ptTest.x() - lLeftRadius;
-								rcStar.right  = ptTest.x() + lRightRadius;
-								rcStar.top	= ptTest.y() - lTopRadius;
-								rcStar.bottom = ptTest.y() + lBottomRadius;
+								rcStar.setCoords(ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius,
+									ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius);
 
 								if (bWanabeeStarOk)
 								{
@@ -597,14 +595,14 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * 2.35 / 1.5 + STARMAXSIZE)
 													break;
 											}
-										};
+										}
 
 										// Check comet intersection
 										if (m_bComet)
 										{
 											if (ms.IsInRadius(m_fXComet, m_fYComet))
 												bWanabeeStarOk = false;
-										};
+										}
 
 										if (bWanabeeStarOk)
 										{
@@ -612,22 +610,22 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 											FindStarShape(pBitmap, ms);
 											stars.insert(ms);
 											++nStars;
-										};
-									};
-								};
-							};
-						};
-					};
-				};
-			};
-		};
-	};
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 
 	if  (vHistogram.size())
 		m_fBackground = 0;
 
 	return nStars;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -656,7 +654,9 @@ bool	CRegisteredFrame::SaveRegisteringInfo(LPCTSTR szInfoFileName)
 			fprintf(hFile, "Intensity = %.2f\n", m_vStars[i].m_fIntensity);
 			fprintf(hFile, "Quality = %.2f\n",  m_vStars[i].m_fQuality);
 			fprintf(hFile, "MeanRadius = %.2f\n",  m_vStars[i].m_fMeanRadius);
-			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n", m_vStars[i].m_rcStar.left, m_vStars[i].m_rcStar.top, m_vStars[i].m_rcStar.right, m_vStars[i].m_rcStar.bottom);
+			fprintf(hFile, "Rect = %ld, %ld, %ld, %ld\n",
+				m_vStars[i].m_rcStar.left, m_vStars[i].m_rcStar.top,
+				m_vStars[i].m_rcStar.right, m_vStars[i].m_rcStar.bottom);
 			fprintf(hFile, "Center = %.2f, %.2f\n", m_vStars[i].m_fX, m_vStars[i].m_fY);
 			fprintf(hFile, "Axises = %.2f, %.2f, %.2f, %.2f, %.2f\n", m_vStars[i].m_fMajorAxisAngle,
 																	  m_vStars[i].m_fLargeMajorAxis,
@@ -806,28 +806,30 @@ bool	CRegisteredFrame::LoadRegisteringInfo(LPCTSTR szInfoFileName)
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.left = _ttol(strCoord);
+					const int left = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Top
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.top = _ttol(strCoord);
+					const int top = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Right
 					nPos = strValue.Find(_T(","));
 					strCoord = strValue.Left(nPos);
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.right = _ttol(strCoord);
+					const int right = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
 					// get Bottom
 					strCoord = strValue;
 					strCoord.TrimLeft();
 					strCoord.TrimRight();
-					ms.m_rcStar.bottom = _ttol(strCoord);
+					const int bottom = _ttol(strCoord);
 					strValue = strValue.Right(strValue.GetLength()-nPos-1);
+
+					ms.m_rcStar.setCoords(left, top, right, bottom);
 				}
 				else if (!strVariable.CompareNoCase(_T("Axises")))
 				{
@@ -1165,99 +1167,95 @@ void CLightFrameInfo::RegisterPicture(CMemoryBitmap* pBitmap)
 bool CLightFrameInfo::ComputeStarShifts(CMemoryBitmap* pBitmap, CStar& star, double& fRedXShift, double& fRedYShift, double& fBlueXShift, double& fBlueYShift)
 {
 	// Compute star center for blue and red
-	bool				bResult = false;
-	int				i, j;
-	double				fSumRedX = 0,
-						fSumRedY = 0;
-	double				fNrValuesRedX = 0,
-						fNrValuesRedY = 0;
-	double				fAverageRedX = 0,
-						fAverageRedY = 0;
-	double				fSumBlueX = 0,
-						fSumBlueY = 0;
-	double				fNrValuesBlueX = 0,
-						fNrValuesBlueY = 0;
-	double				fAverageBlueX = 0,
-						fAverageBlueY = 0;
+	double fSumRedX = 0;
+	double fSumRedY = 0;
+	double fNrValuesRedX = 0;
+	double fNrValuesRedY = 0;
+	double fAverageRedX = 0;
+	double fAverageRedY = 0;
+	double fSumBlueX = 0;
+	double fSumBlueY = 0;
+	double fNrValuesBlueX = 0;
+	double fNrValuesBlueY = 0;
+	double fAverageBlueX = 0;
+	double fAverageBlueY = 0;
 
+	int lNrBlueLines = 0;
+	int lNrRedLines = 0;
 
-	int				lNrBlueLines = 0;
-	int				lNrRedLines = 0;
-	for (j = star.m_rcStar.top; j <= star.m_rcStar.bottom; j++)
+	for (int j = star.m_rcStar.top; j <= star.m_rcStar.bottom; j++)
 	{
 		fSumRedX = 0;
 		fNrValuesRedX = 0;
 		fSumBlueX = 0;
 		fNrValuesBlueX = 0;
-		for (i = star.m_rcStar.left; i <= star.m_rcStar.right; i++)
+		for (int i = star.m_rcStar.left; i <= star.m_rcStar.right; i++)
 		{
-			double			fRed, fGreen, fBlue;
+			double fRed, fGreen, fBlue;
 
 			pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 			fSumRedX += fRed * i;
 			fNrValuesRedX += fRed;
 			fSumBlueX += fBlue * i;
 			fNrValuesBlueX += fBlue;
-		};
+		}
 		if (fNrValuesRedX)
 		{
-			fAverageRedX += fSumRedX/fNrValuesRedX;
+			fAverageRedX += fSumRedX / fNrValuesRedX;
 			lNrRedLines++;
 		}
 		if (fNrValuesBlueX)
 		{
-			fAverageBlueX += fSumBlueX/fNrValuesBlueX;
+			fAverageBlueX += fSumBlueX / fNrValuesBlueX;
 			lNrBlueLines++;
-		};
-	};
+		}
+	}
 	if (lNrRedLines)
-		fAverageRedX /= (double)lNrRedLines;
+		fAverageRedX /= static_cast<double>(lNrRedLines);
 	if (lNrBlueLines)
-		fAverageBlueX /= (double)lNrBlueLines;
+		fAverageBlueX /= static_cast<double>(lNrBlueLines);
 
-	int				lNrRedColumns = 0;
-	int				lNrBlueColumns = 0;
-	for (j = star.m_rcStar.left; j <= star.m_rcStar.right; j++)
+	int lNrRedColumns = 0;
+	int lNrBlueColumns = 0;
+	for (int j = star.m_rcStar.left; j <= star.m_rcStar.right; j++)
 	{
 		fSumRedY = 0;
 		fNrValuesRedY = 0;
 		fSumBlueY = 0;
 		fNrValuesBlueY = 0;
-		for (i = star.m_rcStar.top; i <= star.m_rcStar.bottom; i++)
+		for (int i = star.m_rcStar.top; i <= star.m_rcStar.bottom; i++)
 		{
-			double			fRed, fGreen, fBlue;
+			double fRed, fGreen, fBlue;
 
 			pBitmap->GetPixel(j, i, fRed, fGreen, fBlue);
 			fSumRedY += fRed * i;
 			fNrValuesRedY += fRed;
 			fSumBlueY += fBlue * i;
 			fNrValuesBlueY += fBlue;
-		};
+		}
 		if (fNrValuesRedY)
 		{
-			fAverageRedY += fSumRedY/fNrValuesRedY;
+			fAverageRedY += fSumRedY / fNrValuesRedY;
 			lNrRedColumns++;
-		};
+		}
 		if (fNrValuesBlueY)
 		{
-			fAverageBlueY += fSumBlueY/fNrValuesBlueY;
+			fAverageBlueY += fSumBlueY / fNrValuesBlueY;
 			lNrBlueColumns++;
-		};
-	};
+		}
+	}
 	if (lNrRedColumns)
-		fAverageRedY /= (double)lNrRedColumns;
+		fAverageRedY /= static_cast<double>(lNrRedColumns);
 	if (lNrBlueColumns)
-		fAverageBlueY /= (double)lNrBlueColumns;
+		fAverageBlueY /= static_cast<double>(lNrBlueColumns);
 
 	fRedXShift = fAverageRedX - star.m_fX;
 	fRedYShift = fAverageRedY - star.m_fY;
 	fBlueXShift = fAverageBlueX - star.m_fX;
 	fBlueYShift = fAverageBlueY - star.m_fY;
 
-	bResult = lNrRedColumns && lNrRedLines && lNrBlueLines && lNrBlueColumns;
-
-	return bResult;
-};
+	return (lNrRedColumns != 0) && (lNrRedLines != 0) && (lNrBlueLines != 0) && (lNrBlueColumns != 0);
+}
 
 /* ------------------------------------------------------------------- */
 /*

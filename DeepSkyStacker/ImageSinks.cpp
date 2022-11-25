@@ -661,11 +661,8 @@ void CEditStarsSink::DetectStars(const QPointF & pt, CRect & rcCheck, STARVECTOR
 		InitGrayBitmap(rcCheck);
 
 		CRegisteredFrame		regFrame;
-		DSSRect					rcReg;
+		const DSSRect rcReg{ STARMAXSIZE, STARMAXSIZE, rcCheck.Width() - (STARMAXSIZE + 1), rcCheck.Height() - (STARMAXSIZE + 1) };
 		STARSET stars;
-
-		rcReg.left = STARMAXSIZE;		rcReg.right  = rcCheck.Width() - (STARMAXSIZE + 1);
-		rcReg.top  = STARMAXSIZE;		rcReg.bottom = rcCheck.Height() - (STARMAXSIZE + 1);
 
 		regFrame.m_fBackground = m_fBackground;
 		regFrame.RegisterSubRect(&m_GrayBitmap, rcReg, stars);
@@ -855,7 +852,7 @@ void	CEditStarsSink::DrawQualityGrid(Graphics * pGraphics, CRect & rcClient)
 				path.AddPolygon(pt, 3);
 
 				Color			colors[3];
-				INT				nColors = 3;
+				int				nColors = 3;
 
 				colors[0] = tr.cr1;
 				colors[1] = tr.cr2;
@@ -932,8 +929,12 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 							fY = m_vRefStars[i].m_fY+0.5;
 							m_pImage->BitmapToScreen(fX, fY);
 							pt.x = fX; pt.y = fY;
-							graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
-							graphics.DrawLine(&pen, (INT)pt.x, (INT)pt.y-5, (INT)pt.x, (INT)pt.y+6);
+							graphics.DrawLine(&pen, 
+								static_cast<int>(pt.x) - 5, static_cast<int>(pt.y),
+								static_cast<int>(pt.x) + 6, static_cast<int>(pt.y));
+							graphics.DrawLine(&pen,
+								static_cast<int>(pt.x), static_cast<int>(pt.y) - 5,
+								static_cast<int>(pt.x), static_cast<int>(pt.y) + 6);
 						};
 					};
 				};
@@ -975,8 +976,12 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						fY = m_vStars[i].m_fY+0.5;
 						m_pImage->BitmapToScreen(fX, fY);
 						pt.x = fX; pt.y = fY;
-						graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
-						graphics.DrawLine(&pen, (INT)pt.x, (INT)pt.y-5, (INT)pt.x, (INT)pt.y+6);
+						graphics.DrawLine(&pen,
+							static_cast<int>(pt.x) - 5, static_cast<int>(pt.y),
+							static_cast<int>(pt.x) + 6, static_cast<int>(pt.y));
+						graphics.DrawLine(&pen,
+							static_cast<int>(pt.x), static_cast<int>(pt.y) - 5,
+							static_cast<int>(pt.x), static_cast<int>(pt.y) + 6);
 					};
 
 					if (g_bShowRefStars && m_vRefStars.size())
@@ -1002,7 +1007,9 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						m_pImage->BitmapToScreen(ptDst.rx(), ptDst.ry());
 						ptDstBmp.x = ptDst.x(); ptDstBmp.y = ptDst.y();
 
-						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
+						graphics.DrawLine(&pen,
+							static_cast<int>(ptOrgBmp.x), static_cast<int>(ptOrgBmp.y),
+							static_cast<int>(ptDstBmp.x), static_cast<int>(ptDstBmp.y));
 					};
 
 					if (g_bShowRefStars && m_vStars[i].m_fLargeMajorAxis > 0)
@@ -1022,7 +1029,9 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						ptOrgBmp.x = ptOrg.x(); ptOrgBmp.y = ptOrg.y();
 						ptDstBmp.x = ptDst.x(); ptDstBmp.y = ptDst.y();
 
-						graphics.DrawLine(&pen, (INT)ptOrgBmp.x, (INT)ptOrgBmp.y, (INT)ptDstBmp.x, (INT)ptDstBmp.y);
+						graphics.DrawLine(&pen,
+							static_cast<int>(ptOrgBmp.x), static_cast<int>(ptOrgBmp.y),
+							static_cast<int>(ptDstBmp.x), static_cast<int>(ptDstBmp.y));
 					};
 				};
 			};
@@ -1229,8 +1238,12 @@ Image *	CEditStarsSink::GetOverlayImage(CRect & rcClient)
 						fY = star.m_fY+0.5 + rcCheck.top;
 						m_pImage->BitmapToScreen(fX, fY);
 						pt.x = fX; pt.y = fY;
-						graphics.DrawLine(&pen, (INT)pt.x-5, (INT)pt.y, (INT)pt.x+6, (INT)pt.y);
-						graphics.DrawLine(&pen, (INT)pt.x, pt.y-5, pt.x, pt.y+6);
+						graphics.DrawLine(&pen,
+							static_cast<int>(pt.x) - 5, static_cast<int>(pt.y),
+							static_cast<int>(pt.x) + 6, static_cast<int>(pt.y));
+						graphics.DrawLine(&pen,
+							static_cast<int>(pt.x), static_cast<int>(pt.y) - 5,
+							static_cast<int>(pt.x), static_cast<int>(pt.y) + 6);
 					};
 				};
 

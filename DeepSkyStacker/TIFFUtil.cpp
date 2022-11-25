@@ -273,8 +273,8 @@ bool CTIFFReader::Open()
 
 bool CTIFFReader::Read()
 {
-	constexpr double scaleFactorInt16 = double{ 1 + UCHAR_MAX };
-	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHRT_MAX);
+	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();
+	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + std::numeric_limits<std::uint16_t>::max());
 
 	ZFUNCTRACE_RUNTIME();
 
@@ -327,7 +327,7 @@ bool CTIFFReader::Read()
 
 		const auto normalizeFloatValue = [sampleMin = this->samplemin, sampleMax = this->samplemax](const float value) -> double
 		{
-			constexpr double scaleFactor = double{ USHRT_MAX } / 256.0;
+			constexpr double scaleFactor = std::numeric_limits<std::uint16_t>::max() / 256.0;
 			const double normalizationFactor = scaleFactor / (sampleMax - sampleMin);
 			return (static_cast<double>(value) - sampleMin) * normalizationFactor;
 		};

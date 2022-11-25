@@ -1894,38 +1894,38 @@ bool CAllStackingTasks::checkReadOnlyStatus(QStringList & folders)
 
 /* ------------------------------------------------------------------- */
 
-__int64	CAllStackingTasks::computeNecessaryDiskSpace(const QRectF & rcOutput)
+std::int64_t	CAllStackingTasks::computeNecessaryDiskSpace(const DSSRect& rcOutput)
 {
-	__int64				ulResult = 0;
-	__int64				ulLightSpace = 0,
+	std::int64_t				ulResult = 0;
+	std::int64_t				ulLightSpace = 0,
 						ulFlatSpace = 0,
 						ulDarkSpace = 0,
 						ulDarkFlatSpace = 0,
 						ulOffsetSpace = 0;
-	__int64				ulNeededSpace = 0;
-	__int64				ulPixelSize = 0;
+	std::int64_t				ulNeededSpace = 0;
+	std::int64_t				ulPixelSize = 0;
 
 	ulPixelSize = GetPixelSizeMultiplier();
 	ulPixelSize *= ulPixelSize;
 
 	for (int i = 0;i<m_vStacks.size();i++)
 	{
-		int			lWidth,
-						lHeight,
-						lNrChannels,
-						lNrBytesPerChannel;
-		__int64			ulSpace;
-		__int64			ulLSpace;
+		int lWidth,
+			lHeight,
+			lNrChannels,
+			lNrBytesPerChannel;
+		std::int64_t	ulSpace;
+		std::int64_t	ulLSpace;
 
 		if (m_vStacks[i].m_pLightTask && m_vStacks[i].m_pLightTask->m_vBitmaps.size())
 		{
-			lWidth		= m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lWidth;
-			lHeight		= m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lHeight;
+			lWidth = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lWidth;
+			lHeight = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lHeight;
 			lNrChannels = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lNrChannels;
 			lNrBytesPerChannel = m_vStacks[i].m_pLightTask->m_vBitmaps[0].m_lBitPerChannels/8;
 
-			ulSpace		= lWidth * lHeight * lNrBytesPerChannel * lNrChannels;
-			ulLSpace	= lWidth * lHeight * 2 * 3;
+			ulSpace	= static_cast<std::int64_t>(lWidth) * lHeight * lNrBytesPerChannel * lNrChannels;
+			ulLSpace = static_cast<std::int64_t>(lWidth) * lHeight * 2 * 3;
 
 			if (!rcOutput.isEmpty())
 				ulLSpace = rcOutput.width() * rcOutput.height() * 2 * 3;
@@ -1943,40 +1943,40 @@ __int64	CAllStackingTasks::computeNecessaryDiskSpace(const QRectF & rcOutput)
 				m_vStacks[i].m_pLightTask->m_Method = MBP_AVERAGE;
 
 			if (m_vStacks[i].m_pOffsetTask)
-				ulOffsetSpace = max(ulOffsetSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
+				ulOffsetSpace = std::max(ulOffsetSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pOffsetTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkTask)
-				ulDarkSpace = max(ulDarkSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
+				ulDarkSpace = std::max(ulDarkSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pDarkTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pDarkFlatTask)
-				ulDarkFlatSpace = max(ulDarkFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
+				ulDarkFlatSpace = std::max(ulDarkFlatSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pDarkFlatTask->m_vBitmaps.size()));
 
 			if (m_vStacks[i].m_pFlatTask)
-				ulFlatSpace = max(ulFlatSpace, static_cast<__int64>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
+				ulFlatSpace = std::max(ulFlatSpace, static_cast<std::int64_t>(ulSpace * m_vStacks[i].m_pFlatTask->m_vBitmaps.size()));
 		};
 	};
 
-	ulResult = max(ulLightSpace, max(ulFlatSpace, max(ulOffsetSpace, max(ulDarkSpace, ulDarkFlatSpace))));
-	ulResult *= 1.10;
+	ulResult = std::max(ulLightSpace, std::max(ulFlatSpace, std::max(ulOffsetSpace, std::max(ulDarkSpace, ulDarkFlatSpace))));
+	ulResult *= 11; ulResult /= 10; // Times 1.10 but integers
 
 	return ulResult;
 };
 
 /* ------------------------------------------------------------------- */
 
-__int64	CAllStackingTasks::computeNecessaryDiskSpace()
+std::int64_t CAllStackingTasks::computeNecessaryDiskSpace()
 {
-	QRectF rcOutput;
+	DSSRect rcOutput;
 
 	if (m_bUseCustomRectangle)
-		rcOutput.setCoords(m_rcCustom.left, m_rcCustom.top, m_rcCustom.right, m_rcCustom.bottom);
+		rcOutput = m_rcCustom;
 
 	return computeNecessaryDiskSpace(rcOutput);
 };
 
 /* ------------------------------------------------------------------- */
 
-__int64	CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
+std::int64_t CAllStackingTasks::AvailableDiskSpace(CString & strDrive)
 {
 	fs::path path{ GetTemporaryFilesFolder().toStdU16String() };
 	

@@ -641,8 +641,8 @@ bool CFITSReader::Open()
 
 bool CFITSReader::Read()
 {
-	constexpr double scaleFactorInt16 = double{ 1 + UCHAR_MAX };
-	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1 + USHRT_MAX);
+	constexpr double scaleFactorInt16 = 1.0 + std::numeric_limits<std::uint8_t>::max();;
+	constexpr double scaleFactorInt32 = scaleFactorInt16 * (1.0 + std::numeric_limits<std::uint16_t>::max());
 
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
@@ -662,11 +662,11 @@ bool CFITSReader::Read()
 		if (m_pProgress)
 			m_pProgress->Start2(nullptr, m_lHeight);
 
-		LONGLONG fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
+		std::int64_t fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
 
 		ZTRACE_RUNTIME("FITS colours=%d, bps=%d, w=%d, h=%d", colours, m_lBitsPerPixel, m_lWidth, m_lHeight);
 
-		const LONGLONG nElements = static_cast<LONGLONG>(m_lWidth) * m_lHeight * colours;
+		const std::int64_t nElements = static_cast<std::int64_t>(m_lWidth) * m_lHeight * colours;
 		auto buff = std::make_unique<double[]>(nElements);
 		double* const doubleBuff = buff.get();
 		int status = 0;			// used for result of fits_read_pixll call
@@ -701,7 +701,7 @@ bool CFITSReader::Read()
 #pragma omp parallel default(none) shared(fMin, fMax) firstprivate(localMin, localMax) if(nrProcessors > 1)
 			{
 #pragma omp for schedule(dynamic, 10'000)
-				for (LONGLONG element = 0; element < nElements; ++element)
+				for (std::int64_t element = 0; element < nElements; ++element)
 				{
 					const double fValue = doubleBuff[element];	// int (8 byte) floating point
 					if (!std::isnan(fValue))
@@ -753,7 +753,7 @@ bool CFITSReader::Read()
 
 		const auto normalizeFloatValue = [fMin, fMax](const double value) -> double
 		{
-			constexpr double scaleFactor = double{ USHRT_MAX } / 256.0;
+			constexpr double scaleFactor = double{ std::numeric_limits<std::uint16_t>::max() } / 256.0;
 			const double normalizationFactor = scaleFactor / (fMax - fMin);
 			return (value - fMin) * normalizationFactor;
 		};

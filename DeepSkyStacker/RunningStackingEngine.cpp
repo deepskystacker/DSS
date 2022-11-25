@@ -119,17 +119,15 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 			for (int i = 0; i < lWidth; i++)
 			{
 				double fRed, fGreen, fBlue;
-				QPointF pt(i, j);
 
-				const QPointF ptOut = PixTransform.transform(pt);
+				const QPointF ptOut = PixTransform.transform(QPointF(i, j));
 				pBitmap->GetPixel(i, j, fRed, fGreen, fBlue);
 
 				if (m_BackgroundCalibration.m_BackgroundCalibrationMode != BCM_NONE)
 					m_BackgroundCalibration.ApplyCalibration(fRed, fGreen, fBlue);
 
-				DSSRect rc{ 0, 0,
-					lWidth, lHeight };
-				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && rc.contains(ptOut))
+				if ((fRed != 0.0 || fGreen != 0.0 || fBlue != 0.0) && 
+					DSSRect { 0, 0, lWidth, lHeight }.contains(ptOut))
 				{
 					vPixels.resize(0);
 					ComputePixelDispatch(ptOut, 1.0, vPixels);

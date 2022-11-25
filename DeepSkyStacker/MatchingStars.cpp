@@ -439,27 +439,20 @@ bool CMatchingStars::ComputeTransformation(const VOTINGPAIRVECTOR & vVotingPairs
 
 double CMatchingStars::ValidateTransformation(const VOTINGPAIRVECTOR & vTestedPairs, const CBilinearParameters & transform)
 {
-	double			fResult = 0.0;
+	double fResult = 0.0;
 
 	// Compute the distance between the stars
-	for (int i = 0;i<vTestedPairs.size();i++)
+	for (const auto& testedPair : vTestedPairs)
 	{
-		QPointF				ptExpected;
-		QPointF				ptProjected;
-		double					fDistance;
+		const QPointF ptProjected = transform.transform(TgtStar(testedPair));
+		const double fDistance = Distance(ptProjected, RefStar(testedPair));
 
-		ptExpected = RefStar(vTestedPairs[i]);
-		ptProjected = TgtStar(vTestedPairs[i]);
-
-		ptProjected = transform.transform(ptProjected);
-		fDistance = Distance(ptProjected, ptExpected);
-
-		if (!vTestedPairs[i].IsCorner())
+		if (!testedPair.IsCorner())
 		{
 			if (fDistance > fResult)
 				fResult = fDistance;
-		};
-	};
+		}
+	}
 
 	return fResult;
 };
@@ -471,11 +464,10 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 	bool								bResult = false;
 	bool								bEnd = false;
 	VOTINGPAIRVECTOR					vPairs;
-	int								i;
-	int								lNrExtraPairs = 0;
 	TRANSFORMATIONTYPE					TType = TT_BILINEAR;
 
-	int								lNrPairs;
+	size_t								nrPairs;
+	size_t								lNrExtraPairs = 0;
 	std::vector<int>					vAddedPairs;
 	VOTINGPAIRVECTOR					vTestedPairs;
 	VOTINGPAIRVECTOR					vOkPairs;
@@ -483,7 +475,7 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 	CBilinearParameters					OkTransformation;
 	TRANSFORMATIONTYPE					OkTType;
 
-	if (vVotingPairs.size() && vVotingPairs[0].IsCorner())
+	if (!vVotingPairs.empty() && vVotingPairs[0].IsCorner())
 		lNrExtraPairs = 4;
 
 	vPairs = vVotingPairs;
@@ -491,58 +483,51 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 	while (!bEnd && !bResult)
 	{
 		if (TType == TT_BICUBIC)
-			lNrPairs = 32+lNrExtraPairs;
+			nrPairs = 32 + lNrExtraPairs;
 		else if (TType == TT_BISQUARED)
-			lNrPairs = 18+lNrExtraPairs;
+			nrPairs = 18 + lNrExtraPairs;
 		else
-			lNrPairs = 8+lNrExtraPairs;
+			nrPairs = 8 + lNrExtraPairs;
 
 		// Get the top pairs
 		vAddedPairs.clear();
 		vTestedPairs.clear();
 		// First add the locked pairs
-		for (i = 0;i<vPairs.size();i++)
+		for (size_t i = 0; i < vPairs.size(); i++)
 		{
 			if (vPairs[i].IsActive() && vPairs[i].IsLocked())
 			{
 				vTestedPairs.push_back(vPairs[i]);
-				vAddedPairs.push_back(i);
-			};
-		};
+				vAddedPairs.push_back(static_cast<int>(i));
+			}
+		}
 
 		// Then add the other pairs up to the limit
-		for (i = 0;i<vPairs.size() && vTestedPairs.size() < lNrPairs;i++)
+		for (size_t i = 0; i < vPairs.size() && vTestedPairs.size() < nrPairs; i++)
 		{
 			if (vPairs[i].IsActive() && !vPairs[i].IsLocked())
 			{
 				vTestedPairs.push_back(vPairs[i]);
-				vAddedPairs.push_back(i);
-			};
-		};
+				vAddedPairs.push_back(static_cast<int>(i));
+			}
+		}
 
-		if (vTestedPairs.size() == lNrPairs)
+		if (vTestedPairs.size() == nrPairs)
 		{
 			// Compute the transformation
 			CBilinearParameters				transform;
 
 			if (ComputeTransformation(vTestedPairs, transform, TType))
 			{
-				std::vector<double>			vDistances;
-				double						fMaxDistance = 0.0;
-				int						lMaxDistanceIndice = 0;
+				std::vector<double> vDistances;
+				double fMaxDistance = 0.0;
+				size_t maxDistanceIndex = 0;
 
 				// Compute the distance between the stars
-				for (i = 0;i<vTestedPairs.size();i++)
+				for (size_t i = 0; i < vTestedPairs.size(); i++)
 				{
-					QPointF				ptExpected;
-					QPointF				ptProjected;
-					double					fDistance;
-
-					ptExpected = RefStar(vTestedPairs[i]);
-					ptProjected = TgtStar(vTestedPairs[i]);
-
-					ptProjected = transform.transform(ptProjected);
-					fDistance = Distance(ptProjected, ptExpected);
+					const QPointF ptProjected = transform.transform(TgtStar(vTestedPairs[i]));
+					const double fDistance = Distance(ptProjected, RefStar(vTestedPairs[i]));
 
 					if (!vTestedPairs[i].IsCorner())
 					{
@@ -550,10 +535,10 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						if (fDistance > fMaxDistance)
 						{
 							fMaxDistance = fDistance;
-							lMaxDistanceIndice = i;
-						};
-					};
-				};
+							maxDistanceIndex = i;
+						}
+					}
+				}
 
 				// If one star is far from the spot - deactivate the pair
 				if (fMaxDistance > 3)
@@ -566,9 +551,9 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 					fAverage = Average(vDistances);
 					fSigma = Sigma(vDistances);
 
-					for (i = 0;i<vDistances.size();i++)
+					for (size_t i = 0; i < vDistances.size(); i++)
 					{
-						if (fabs(vDistances[i]-fAverage) > 2 * fSigma)
+						if (fabs(vDistances[i] - fAverage) > 2 * fSigma)
 						{
 							lDeactivatedIndice = vAddedPairs[i];
 							if (vPairs[lDeactivatedIndice].IsCorner())
@@ -581,15 +566,15 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 								if (vDistances[i] < 7)
 									vPairs[lDeactivatedIndice].SetPossible(true);
 								bOneDeactivated = true;
-							};
-						};
-					};
+							}
+						}
+					}
 
 					if (!bOneDeactivated)
 					{
-						for (i = 0;i<vDistances.size();i++)
+						for (size_t i = 0; i < vDistances.size(); i++)
 						{
-							if (fabs(vDistances[i]-fAverage) > fSigma)
+							if (fabs(vDistances[i] - fAverage) > fSigma)
 							{
 								lDeactivatedIndice = vAddedPairs[i];
 								if (vPairs[lDeactivatedIndice].IsCorner())
@@ -600,13 +585,13 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 								{
 									vPairs[lDeactivatedIndice].SetActive(false);
 									bOneDeactivated = true;
-								};
-							};
-						};
-					};
+								}
+							}
+						}
+					}
 					if (!bOneDeactivated)
 					{
-						lDeactivatedIndice = vAddedPairs[lMaxDistanceIndice];
+						lDeactivatedIndice = vAddedPairs[maxDistanceIndex];
 						if (vPairs[lDeactivatedIndice].IsCorner())
 						{
 							// Trouble here (corner no good)
@@ -614,8 +599,8 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 						else
 						{
 							vPairs[lDeactivatedIndice].SetActive(false);
-						};
-					};
+						}
+					}
 				}
 				else
 				{
@@ -623,35 +608,35 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 					vOkPairs = vTestedPairs;
 					vOkAddedPairs = vAddedPairs;
 					OkTType = TType;
-					bResult = (TType==MaxTType);
+					bResult = (TType == MaxTType);
 					if (TType < MaxTType)
 					{
-						TType = (TRANSFORMATIONTYPE)(1+(int)TType);
+						TType = (TRANSFORMATIONTYPE)(1 + (int)TType);
 						// All the possible pairs are active again
-						for (i = 0;i<vPairs.size();i++)
+						for (auto& votingPair : vPairs)
 						{
-							if (vPairs[i].IsPossible())
+							if (votingPair.IsPossible())
 							{
-								vPairs[i].SetActive(true);
-								vPairs[i].SetPossible(false);
-							};
-						};
+								votingPair.SetActive(true);
+								votingPair.SetPossible(false);
+							}
+						}
 
 						// Lock the pairs
-						for (i = 0;i<vAddedPairs.size();i++)
-							vPairs[vAddedPairs[i]].SetLocked(true);
-					};
-				};
+						for (size_t index : vAddedPairs)
+							vPairs[index].SetLocked(true);
+					}
+				}
 			}
 			else
 			{
 				// Remove the last pair of the selected pairs
-				vPairs[vAddedPairs[lNrPairs-1]].SetActive(false);
-			};
+				vPairs[vAddedPairs[nrPairs - 1]].SetActive(false);
+			}
 		}
 		else
 			bEnd = true;
-	};
+	}
 
 	if (vOkPairs.size())
 		bResult = true;
@@ -667,28 +652,28 @@ bool CMatchingStars::ComputeCoordinatesTransformation(VOTINGPAIRVECTOR & vVoting
 		BilinearParameters = OkTransformation;
 
 		vTestedPairs = vOkPairs;
-		vAddedPairs  = vOkAddedPairs;
-		TType		 = OkTType;
+		vAddedPairs = vOkAddedPairs;
+		TType = OkTType;
 
-		for (i = 0;i<vAddedPairs.size();i++)
-			vVotingPairs[vAddedPairs[i]].SetUsed(true);
+		for (size_t index : vAddedPairs)
+			vVotingPairs[index].SetUsed(true);
 
 		while (!bEnd)
 		{
-			double				fMaxDistance;
-			bool				bTransformOk = false;
+			double			fMaxDistance;
+			bool			bTransformOk = false;
 			int				lAddedPair = -1;
 
 			vTempPairs = vTestedPairs;
-			for (i = 0;i<vVotingPairs.size() && lAddedPair<0;i++)
+			for (size_t i = 0; i < vVotingPairs.size() && lAddedPair < 0; i++)
 			{
 				if (vVotingPairs[i].IsActive() && !vVotingPairs[i].IsUsed())
 				{
-					lAddedPair = i;
+					lAddedPair = static_cast<int>(i);
 					vTempPairs.push_back(vVotingPairs[i]);
 					vVotingPairs[lAddedPair].SetUsed(true);
-				};
-			};
+				}
+			}
 
 			if (lAddedPair >= 0)
 			{

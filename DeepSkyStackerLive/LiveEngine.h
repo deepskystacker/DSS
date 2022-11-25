@@ -486,7 +486,7 @@ private :
 private :
 	void	StartEngine();
 	void	CloseEngine();
-	BOOL	GetMessage(CLiveEngineMsg ** ppMsg, LIVEENGINEMSGLIST & msglist);
+	BOOL	GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg, LIVEENGINEMSGLIST & msglist);
 	void	PostOutMessage(const std::shared_ptr<CLiveEngineMsg>& pMsg);
 	void	PostToLog(const QString& text, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
 	void	PostProgress(const QString& szText, LONG lAchieved, LONG lTotal);
@@ -524,7 +524,7 @@ public :
 
 	BOOL	IsFileAvailable(LPCTSTR szFileName);
 
-	BOOL	GetMessage(CLiveEngineMsg ** ppMsg);
+	BOOL	GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg);
 	void	AddFileToProcess(LPCTSTR szFile);
 
 	void	UpdateSettings();
