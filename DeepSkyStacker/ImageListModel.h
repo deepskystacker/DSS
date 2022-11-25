@@ -116,7 +116,7 @@ namespace DSS
         // Before adding a row to the model, Qt requires that
         // beginInsertRows() be called, and once batch of images is added, then
         // endInsertRows() must be called.
-        void addImage(ListBitMap& image);
+        void addImage(ListBitMap image);
 
         bool removeRows(int row, int count, const QModelIndex& parent = QModelIndex()) override;
         const_iterator cbegin()const { return mydata.begin(); }
