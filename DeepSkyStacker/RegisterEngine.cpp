@@ -577,8 +577,11 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 								// <= limit, not the more normal < limit.
 								// 
 								// It is not safe to change this as the data is saved in the .info.txt files
-								// that the code reads back in again later in the processing.  So, while technically
-								// incorrect, it must not be changed.
+								// that the code reads during "Compute Offsets" processing.
+								// 
+								// So, while technically incorrect, it must not be changed otherwise it would
+								// create an incompatibility with existing info.txt files that were created by
+								// earlier releases of the code.
 								//
 								rcStar.setCoords(ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius,
 									ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius);
