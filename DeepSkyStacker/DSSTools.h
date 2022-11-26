@@ -48,6 +48,8 @@ public :
 
 	CLinearInterpolation(const CLinearInterpolation&) = default;
 
+	CLinearInterpolation(CLinearInterpolation&&) = default;
+
 	CLinearInterpolation& operator = (const CLinearInterpolation&) = default;
 
 	double	Interpolate(double x) const noexcept
