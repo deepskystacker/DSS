@@ -35,7 +35,6 @@
 ****************************************************************************/
 #include "stdafx.h"
 #include <stdlib.h>
-#include "stdafx.h"
 
 #include <algorithm>
 using std::min;
