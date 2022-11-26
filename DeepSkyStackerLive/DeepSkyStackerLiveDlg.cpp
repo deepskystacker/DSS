@@ -168,22 +168,13 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	UpdateTab();
 	UpdateSizes();
 
-	m_Log.AddToLog(strTitle, TRUE, TRUE);
-	m_Log.AddToLog(_T("\n"));
-
-	CString			strText;
-	strText.LoadString(IDS_LOG_STARTING);
-	m_Log.AddToLog(strText, FALSE, TRUE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_1);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_2);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_3);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_4);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_5);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QString("%1\n").arg(strTitle.GetString()), TRUE, TRUE);
+	m_Log.AddToLog(QString(QObject::tr("\nHow to use  DeepSkyStacker Live?\n", "IDS_LOG_STARTING")), FALSE, TRUE, FALSE);
+	m_Log.AddToLog(QString(QObject::tr("Step 1\nCheck the Settings tabs for all the stacking and warning settings\n\n", "IDS_LOG_STARTING_1")), FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QString(QObject::tr("Step 2\nClick on the Monitor button to start monitoring the folder\nWhen the monitoring is on incoming images are only registered but not stacked.\n\n", "IDS_LOG_STARTING_2")), FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QString(QObject::tr("Step 3\nTo start stacking the images click on the Stack button\nAt this point all the incoming (and previously registered) images will be stacked.\n", "IDS_LOG_STARTING_3")), FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QString(QObject::tr("You can pause/start again the stacking process by clicking on the Stack button.\n", "IDS_LOG_STARTING_4")), FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QString(QObject::tr("To stop the monitoring and stacking click on the Stop button.\n\n", "IDS_LOG_STARTING_5")), FALSE, FALSE, FALSE);
 
 	{
 		Workspace			workspace;
