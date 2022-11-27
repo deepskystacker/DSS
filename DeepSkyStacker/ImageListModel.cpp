@@ -427,7 +427,7 @@ namespace DSS
             case Column::Info:
                 return tr("Info", "IDS_COLUMN_INFOS");
             case Column::ISO:
-                return tr("ISO/Gain", ""IDS_COLUMN_ISO_GAIN");
+                return tr("ISO/Gain", "IDS_COLUMN_ISO_GAIN");
             case Column::Exposure:
                 return tr("Exposure", "IDS_COLUMN_EXPOSURE");
             case Column::Aperture:
