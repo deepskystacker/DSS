@@ -246,6 +246,24 @@
     <ClCompile Include="..\DeepSkyStacker\BitmapBase.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_entropy.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_support.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\MedianFilterEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\BitMapFiller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\avx_bitmap_filler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\ImageListModel.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
@@ -506,6 +524,18 @@
     <ClInclude Include="..\DeepSkyStacker\dssrect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_entropy.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_support.h">
+      <Filter>Kernel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\BitMapFiller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DeepSkyStacker\avx_bitmap_filler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\DeepSkyStacker\res\4Corners.bmp">
@@ -561,5 +591,10 @@
     <ResourceCompile Include="DeepSkyStackerLiveTR.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="..\DeepSkyStacker\ImageListModel.h">
+      <Filter>Kernel</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

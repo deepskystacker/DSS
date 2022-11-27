@@ -353,7 +353,7 @@ public :
 		return bResult;
 	};
 
-	BOOL	GetImage(std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap> pWndBitmap, CString& strFileName)
+	BOOL	GetImage(std::shared_ptr<CMemoryBitmap>& pBitmap, std::shared_ptr<C32BitsBitmap>& pWndBitmap, CString& strFileName)
 	{
 		BOOL			bResult = FALSE;
 

@@ -7,7 +7,6 @@
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 
-#include "qmfcapp.h"
 
 #include <QLibraryInfo>
 #include <QDebug>
@@ -17,6 +16,8 @@
 #include <QSettings>
 #include <QStyleFactory>
 #include <QTranslator>
+#include <QApplication>
+#include "qmfcapp.h"
 
 #include <gdiplus.h>
 using namespace Gdiplus;
@@ -164,13 +165,14 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 		// Set the Qt Application Style
 		//
 		app->setStyle(QStyleFactory::create("Fusion"));
-
+#if (0)
 #ifndef QT_NO_TRANSLATION
 		QString translatorFileName = QLatin1String("qt_");
 		translatorFileName += QLocale::system().name();
 		theApp.qtTranslator = new QTranslator(app);
 		if (theApp.qtTranslator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
 			app->installTranslator(theApp.qtTranslator);
+#endif
 #endif
 		if (!hasExpired())
 		{

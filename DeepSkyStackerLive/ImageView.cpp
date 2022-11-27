@@ -211,7 +211,7 @@ void CImageViewTab::OnChangeGamma(NMHDR* pNMHDR, LRESULT* pResult)
 
 		if (m_pWndImage)
 		{
-			ApplyGammaTransformation(m_pWndImage, m_pBitmap, m_GammaTransformation);
+			ApplyGammaTransformation(m_pWndImage.get(), m_pBitmap.get(), m_GammaTransformation);
 			// Refresh
 			m_Picture.Invalidate(TRUE);
 		};
@@ -236,7 +236,7 @@ void CImageViewTab::SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, cons
 		m_pWndImage = pWndBitmap;
 		m_pBitmap	= pBitmap;
 		if (m_GammaTransformation.IsInitialized())
-			ApplyGammaTransformation(m_pWndImage, m_pBitmap, m_GammaTransformation);
+			ApplyGammaTransformation(m_pWndImage.get(), m_pBitmap.get(), m_GammaTransformation);
 
 		m_Picture.Invalidate(TRUE);
 		if (m_bStackedImage)
@@ -262,8 +262,8 @@ void CImageViewTab::SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, cons
 		m_StackedSink.ClearFootprint();
 		m_Picture.SetImg((HBITMAP)nullptr);
 		m_FileName.SetText(strText);
-		m_pWndImage.Release();
-		m_pBitmap.Release();
+		m_pWndImage.reset();
+		m_pBitmap.reset();
 	};
 };
 
@@ -320,7 +320,7 @@ void CImageViewTab::OnStackedImageSaved()
 
 void CImageViewTab::OnCopyToClipboard(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	if (m_pWndImage.m_p)
+	if (m_pWndImage.get())
 		m_pWndImage->CopyToClipboard();
 };
 

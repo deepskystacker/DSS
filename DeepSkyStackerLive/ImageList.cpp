@@ -1,4 +1,4 @@
-// ExplorerBar.cpp : implementation file
+// ImageList.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -6,6 +6,7 @@
 #include "DeepSkyStackerLiveDlg.h"
 #include "ImageList.h"
 #include "RegisterEngine.h"
+#include "FrameInfoSupport.h"
 
 const DWORD		COLUMN_STACKED	= 0;
 const DWORD 	COLUMN_FILE		= 1;
@@ -217,7 +218,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 			strText.LoadString(IDS_YES);
 		m_ImageList.SetItemText(nItem, COLUMN_CFA, strText);
 
-		AddScoreFWHMStarsToGraph(lfi.m_strFileName, lfi.m_fOverallQuality, lfi.m_fFWHM, lfi.m_vStars.size(), lfi.m_SkyBackground.m_fLight*100.0);
+		AddScoreFWHMStarsToGraph(lfi.filePath.generic_wstring().c_str(), lfi.m_fOverallQuality, lfi.m_fFWHM, lfi.m_vStars.size(), lfi.m_SkyBackground.m_fLight * 100.0);
 	};
 };
 
@@ -297,7 +298,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 			m_ImageList.SetItemText(i, COLUMN_DX, strValue);
 			strValue.Format(_T("%.2f"), fdY);
 			m_ImageList.SetItemText(i, COLUMN_DY, strValue);
-			strValue.Format(_T("%.2f \xc2\xb0"), fAngle);
+			strValue.Format(_T("%.2f°"), fAngle);
 			m_ImageList.SetItemText(i, COLUMN_ANGLE, strValue);
 		};
 	};

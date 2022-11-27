@@ -1443,7 +1443,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 
 				if (pMsg->GetStackedImage(pBitmap, pWndBitmap, lNrStacked, fExposure))
 				{
-					SetStackedImage(pBitmap.get(), pWndBitmap.get());
+					SetStackedImage(pBitmap, pWndBitmap);
 					m_lNrStacked = lNrStacked;
 					m_fTotalExposureTime = fExposure;
 					InvalidateStats();
