@@ -401,43 +401,43 @@ namespace DSS
             switch (Column(section))
             {
             case Column::Path:
-                return tr("Path");
+                return tr("Path", "IDS_COLUMN_PATH");
             case Column::File:
-                return tr("File");
+                return tr("File", "IDS_COLUMN_FILE");
             case Column::Type:
-                return tr("Type");
+                return tr("Type", "IDS_COLUMN_TYPE");
             case Column::Filter:
-                return tr("Filter");
+                return tr("Filter", "IDS_COLUMN_FILTER");
             case Column::Score:
-                return tr("Score");
+                return tr("Score", "IDS_COLUMN_SCORE");
             case Column::dX:
-                return tr("dX");
+                return tr("dX", "IDS_COLUMN_DX");
             case Column::dY:
-                return tr("dY");
+                return tr("dY", "IDS_COLUMN_DY");
             case Column::Angle:
-                return tr("Angle");
+                return tr("Angle", "IDS_COLUMN_ANGLE");
             case Column::FileTime:
-                return tr("Date/Time");
+                return tr("Date/Time", "IDS_COLUMN_DATETIME");
             case Column::Size:
-                return tr("Size");
+                return tr("Size", "IDS_COLUMN_SIZES");
             case Column::CFA:
-                return tr("CFA");
+                return tr("CFA", "IDS_COLUMN_CFA");
             case Column::Depth:
-                return tr("Depth");
+                return tr("Depth", "IDS_COLUMN_DEPTH");
             case Column::Info:
-                return tr("Info");
+                return tr("Info", "IDS_COLUMN_INFOS");
             case Column::ISO:
-                return tr("ISO/Gain");
+                return tr("ISO/Gain", ""IDS_COLUMN_ISO_GAIN");
             case Column::Exposure:
-                return tr("Exposure");
+                return tr("Exposure", "IDS_COLUMN_EXPOSURE");
             case Column::Aperture:
-                return tr("Aperture");
+                return tr("Aperture", "IDS_COLUMN_APERTURE");
             case Column::FWHM:
                 return tr("FWHM");
             case Column::Stars:
-                return tr("#Stars");
+                return tr("#Stars", "IDS_COLUMN_STARS");
             case Column::Background:
-                return tr("Sky Background");
+                return tr("Sky Background", "IDS_COLUMN_SKYBACKGROUND");
             }
         }
         return QVariant();
