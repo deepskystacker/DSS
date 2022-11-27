@@ -948,22 +948,22 @@ namespace DSS
 		//
 		// Build the context menu for the tableview (list of images).
 		//
-		markAsReference = menu.addAction(QString(tr("Use as reference frame", "IDM_USEASSTARTING")));
+		markAsReference = menu.addAction(tr("Use as reference frame", "IDM_USEASSTARTING"));
 		markAsReference->setCheckable(true);
 		markAsReference->setData(int(Menuitem::markAsReference));
 		menu.addSeparator();
-		check = menu.addAction(QString(tr("Check", "IDM_CHECK")));
+		check = menu.addAction(tr("Check", "IDM_CHECK"));
 		check->setData(int(Menuitem::check));
-		uncheck = menu.addAction(QString(tr("Uncheck", "IDM_UNCHECK")));
+		uncheck = menu.addAction(tr("Uncheck", "IDM_UNCHECK"));
 		uncheck->setData(int(Menuitem::uncheck));
 		menu.addSeparator();
-		remove = menu.addAction(QString(tr("Remove from list", "IDM_REMOVEFROMLIST")));
+		remove = menu.addAction(tr("Remove from list", "IDM_REMOVEFROMLIST"));
 		remove->setData(int(Menuitem::remove));
 		menu.addSeparator();
-		copy = menu.addAction(QString(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD")));
+		copy = menu.addAction(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD"));
 		copy->setData(int(Menuitem::copy));
 		menu.addSeparator();
-		erase = menu.addAction(QString(tr("Erase from disk...", "IDM_ERASEFROMDISK")));
+		erase = menu.addAction(tr("Erase from disk...", "IDM_ERASEFROMDISK"));
 		erase->setData(int(Menuitem::erase));
 
 		ui->picture->setVisible(true);
