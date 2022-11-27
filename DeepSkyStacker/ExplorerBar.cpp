@@ -259,8 +259,8 @@ void ExplorerBar::onSettings()
 	QAction *aRegisterSettings;
 	QAction *aStackingSettings;
 
-	aRegisterSettings = menu.addAction(QCoreApplication::translate("ExplorerBar", "Register Settings...", "ID_EDITSETTINGS_REGISTERSETTINGS"));
-	aStackingSettings = menu.addAction(QCoreApplication::translate("ExplorerBar", "Stacking Settings...", "ID_EDITSETTINGS_STACKINGSETTINGS"));
+	aRegisterSettings = menu.addAction(tr("Register Settings...", "ID_EDITSETTINGS_REGISTERSETTINGS"));
+	aStackingSettings = menu.addAction(tr("Stacking Settings...", "ID_EDITSETTINGS_STACKINGSETTINGS"));
 
 	QPoint point(ui->settings->mapToGlobal(QPoint(0, 2 + ui->settings->height())));
 	QAction *a = menu.exec(point);
