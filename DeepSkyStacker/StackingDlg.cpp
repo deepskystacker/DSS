@@ -578,28 +578,6 @@ namespace DSS
 				ImageListModel* imageModel{ frameList.currentTableModel() }; 
 
 				//
-				// ifdef out this block of code as "Select All" key sequence already works 
-				// for a table view.  Leaving the code here for reference purposes.
-				//
-#if (0)
-
-				//
-				// Does the received key sequence match any of the key sequences for 
-				// "Select All"
-				//
-				if (QKeyEvent::matches(QKeySequence::keyBindings(QKeySequence::SelectAll))
-				{
-						qDebug() << "Received key sequence " << received << " matched QKeySequence::SelectAll";
-						QItemSelection selection{
-							imageModel->createIndex(0, 0),
-							imageModel->createIndex(imageModel->rowCount() - 1,  imageModel->columnCount() - 1) };
-
-						qsm->select(selection, QItemSelectionModel::Select);
-						return true;
-				}
-#endif
-
-				//
 				// Was it the Space Bar?  If so toggle the checked state of all selected items
 				//
 				if (Qt::Key_Space == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
