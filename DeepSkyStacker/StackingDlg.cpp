@@ -75,7 +75,6 @@
 #include "FrameInfoSupport.h"
 #include "QtProgressDlg.h"
 #include "CheckAbove.h"
-#include "Registry.h"
 #include "RegisterSettings.h"
 #include "StackRecap.h"
 #include "TIFFUtil.h"
