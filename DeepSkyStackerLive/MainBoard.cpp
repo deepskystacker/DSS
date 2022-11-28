@@ -2,10 +2,11 @@
 //
 
 #include "stdafx.h"
+#include <QSettings>
+
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "MainBoard.h"
-#include "Registry.h"
 #include <gdiplus.h>
 #include "FolderDlg.h"
 #include "RestartMonitoring.h"
@@ -912,10 +913,11 @@ BOOL	CMainBoard::CheckRestartMonitoring()
 BOOL	CMainBoard::IsMonitoredFolderOk()
 {
 	BOOL					bResult = FALSE;
-	CString					strFolder;
-	CRegistry				reg;
 
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+	CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+	settings.endGroup();
 
 	if (strFolder.GetLength())
 	{
@@ -970,9 +972,12 @@ BOOL	CMainBoard::ChangeMonitoredFolder()
 			m_MonitoredFolder.SetWindowText(strFolder);
 			InvalidateRect(nullptr);
 
-			CRegistry			reg;
+			QSettings settings; 
 
-			reg.SaveKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
+			settings.beginGroup("DeepSkyStackerLive");
+			settings.setValue("MonitoredFolder", QString::fromStdWString(strFolder.GetString()));
+			settings.endGroup();
+
 			bResult = TRUE;
 		};	};
 
@@ -992,15 +997,16 @@ BOOL CMainBoard::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	CRegistry			reg;
-	CString				strFolder;
-
 	m_Stats.GetWindowText(m_strStatsMask);
 	m_LiveEngine.SetWindow(m_hWnd);
 
 	if (IsMonitoredFolderOk())
 	{
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+		settings.endGroup();
+
 		m_MonitoredFolder.SetWindowText(strFolder);
 	};
 
@@ -1029,19 +1035,23 @@ void CMainBoard::OnSize(UINT nType, int cx, int cy)
 
 void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 {
-	CString					strFolder;
 	WIN32_FIND_DATA			FindData;
 	CString					strFileMask;
 	HANDLE					hFindFiles;
-	CRegistry				reg;
 	std::vector<CString>	vDelayedFiles;
-	CString					strExcluded;
 
 	vFiles.clear();
-	reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
-	if (!reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("Excluded"), strExcluded))
+	QSettings settings;
+	settings.beginGroup("DeepSkyStackerLive");
+	CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+	CString strExcluded{ settings.value("Excluded", "").toString().toStdWString().c_str() };
+	// setting.endGroup(); is at end of function
+
+	if (strExcluded.IsEmpty())
+	{
 		strExcluded = _T(".TMP;.BAK;.TEMP;.TXT");
-	strExcluded.MakeUpper();
+		strExcluded.MakeUpper();
+	}
 
 	strFolder += _T("\\");
 	strFileMask = strFolder;
@@ -1109,14 +1119,14 @@ void	CMainBoard::GetNewFilesInMonitoredFolder(std::vector<CString> & vFiles)
 
 		if (vDelayedFiles.size() && m_ulSHRegister)
 		{
-			// Use and alternate method
-			DWORD			dwPollingTime = 10;
-
-			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
+			// Use an alternate method
+			std::uint32_t dwPollingTime{ settings.value("PollingTime", 10U).toUInt() };
 
 			SetTimer(1, dwPollingTime*1000, nullptr);
 		};
 	};
+	settings.endGroup();
+
 };
 
 /* ------------------------------------------------------------------- */
@@ -1211,11 +1221,13 @@ void CMainBoard::OnMonitor()
 	KillTimer(1);
 	try
 	{
-		CRegistry				reg;
-		CString					strFolder;
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		CString strFolder{ settings.value("MonitoredFolder", "").toString().toStdWString().c_str() };
+		settings.endGroup();
+
 		std::vector<CString>	vNewFiles;
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
 
 		m_vAllFiles.clear();
 		GetNewFilesInMonitoredFolder(vNewFiles);
@@ -1255,10 +1267,10 @@ void CMainBoard::OnMonitor()
 
 		if (!m_ulSHRegister)
 		{
-			// Use and alternate method
-			DWORD			dwPollingTime = 10;
-
-			reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("PollingTime"), dwPollingTime);
+			// Use an alternate method
+			settings.beginGroup("DeepSkyStackerLive");
+			std::uint32_t dwPollingTime{ settings.value("PollingTime", 10U).toUInt() };
+			settings.endGroup();
 
 			SetTimer(1, dwPollingTime*1000, nullptr);
 		};
@@ -1291,12 +1303,12 @@ void CMainBoard::OnStop()
 	KillTimer(1);
 	if (m_bMonitoring/*m_ulSHRegister*/)
 	{
-		CRegistry			reg;
-		CString				strFolder;
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		QString strFolder{ settings.value("MonitoredFolder", "").toString() };
+		settings.endGroup();
 
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
-
-		const QString strText(QObject::tr("Stop monitoring folder %1\n", "IDS_LOG_STOPMONITORING").arg(strFolder.GetString()));
+		const QString strText(QObject::tr("Stop monitoring folder %1\n", "IDS_LOG_STOPMONITORING").arg(strFolder));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_RED_TEXT);
 
 		if (m_ulSHRegister)
@@ -1311,11 +1323,6 @@ void CMainBoard::OnStack()
 {
 	if (m_bMonitoring/*m_ulSHRegister*/)
 	{
-		CRegistry			reg;
-		CString				strFolder;
-
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE, _T("MonitoredFolder"), strFolder);
-
 		const QString strText(m_bStacking ? 
 								QObject::tr("Start Stacking files\n", "IDS_LOG_STARTMONITORING") :
 								QObject::tr("Stop Stacking files\n", "IDS_LOG_STOPSTACKING"));

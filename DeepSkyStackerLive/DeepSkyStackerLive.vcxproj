@@ -112,6 +112,14 @@
     <ManifestResourceCompile>
       <ResourceOutputFileName />
     </ManifestResourceCompile>
+    <QtTranslation>
+      <NoObsolete>true</NoObsolete>
+      <BuildAction>lrelease</BuildAction>
+      <QmOutputDir>%(RelativeDir)</QmOutputDir>
+    </QtTranslation>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -145,6 +153,14 @@
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
+    <QtTranslation>
+      <NoObsolete>true</NoObsolete>
+      <BuildAction>lrelease</BuildAction>
+      <QmOutputDir>%(RelativeDir)</QmOutputDir>
+    </QtTranslation>
+    <QtRcc>
+      <QtRccDir>.\GeneratedFiles\%(RelativeDir)</QtRccDir>
+    </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\ChartCtrl\ChartAxis.cpp" />
@@ -208,8 +224,6 @@
     <ClCompile Include="..\Tools\GradientCtrlImpl.cpp" />
     <ClCompile Include="..\Tools\Label.cpp" />
     <ClCompile Include="..\Tools\ListViewCtrlEx.cpp" />
-    <ClCompile Include="..\Tools\Registry.cpp" />
-    <ClCompile Include="..\Tools\RegMFC.cpp" />
     <ClCompile Include="..\Tools\ToolTipButton.cpp" />
     <ClCompile Include="..\Tools\WndImage.cpp" />
     <ClCompile Include="DeepSkyStackerLive.cpp" />
@@ -310,7 +324,6 @@
     <ClInclude Include="..\Tools\Label.h" />
     <ClInclude Include="..\Tools\ListViewCtrlEx.h" />
     <ClInclude Include="..\Tools\memdc.h" />
-    <ClInclude Include="..\Tools\Registry.h" />
     <ClInclude Include="..\Tools\SmartPtr.h" />
     <ClInclude Include="..\Tools\ToolTipButton.h" />
     <ClInclude Include="..\Tools\WndImage.h" />
@@ -363,6 +376,27 @@
     <ProjectReference Include="..\ZCLass\ZCLass.vcxproj">
       <Project>{1747f255-9cb9-472b-8fee-9e0bbfbad49d}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtTranslation Include="i18n\DSSLive.ca.ts" />
+    <QtTranslation Include="i18n\DSSLive.cs.ts" />
+    <QtTranslation Include="i18n\DSSLive.de.ts" />
+    <QtTranslation Include="i18n\DSSLive.en.ts">
+      <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</NoObsolete>
+      <NoObsolete Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</NoObsolete>
+    </QtTranslation>
+    <QtTranslation Include="i18n\DSSLive.es.ts" />
+    <QtTranslation Include="i18n\DSSLive.fr.ts" />
+    <QtTranslation Include="i18n\DSSLive.it.ts" />
+    <QtTranslation Include="i18n\DSSLive.nl.ts" />
+    <QtTranslation Include="i18n\DSSLive.pt_BR.ts" />
+    <QtTranslation Include="i18n\DSSLive.ro.ts" />
+    <QtTranslation Include="i18n\DSSLive.ru.ts" />
+    <QtTranslation Include="i18n\DSSLive.tr.ts" />
+    <QtTranslation Include="i18n\DSSLive.zh_TW.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="i18n\translations.qrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

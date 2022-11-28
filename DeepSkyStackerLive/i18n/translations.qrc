@@ -1,0 +1,17 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="i18n">
+    <file>DSSLive.ca.qm</file>
+    <file>DSSLive.cs.qm</file>
+    <file>DSSLive.de.qm</file>
+    <file>DSSLive.en.qm</file>
+    <file>DSSLive.es.qm</file>
+    <file>DSSLive.fr.qm</file>
+    <file>DSSLive.it.qm</file>
+    <file>DSSLive.nl.qm</file>
+    <file>DSSLive.pt_BR.qm</file>
+    <file>DSSLive.ro.qm</file>
+    <file>DSSLive.ru.qm</file>
+    <file>DSSLive.tr.qm</file>
+    <file>DSSLive.zh_TW.qm</file>
+</qresource>
+</RCC>
