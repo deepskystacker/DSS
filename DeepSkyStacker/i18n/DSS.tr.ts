@@ -29,7 +29,7 @@
         <translation>&amp;Qt hakkında</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="100"/>
+        <location filename="../About.cpp" line="97"/>
         <source>Default</source>
         <translation>Varsayılan</translation>
     </message>
@@ -40,12 +40,6 @@
         <translation>DeepSkyStacker version %1</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="65"/>
-        <source>Qt Application Framework 6.4.0
-Copyright © 2022 The Qt Company Ltd.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../About.cpp" line="72"/>
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2019 LibRaw LLC</source>
@@ -54,7 +48,7 @@ Copyright © 1997-2019 LibRaw LLC</source>
 Copyright © 1997-2019 LibRaw LLC</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="83"/>
+        <location filename="../About.cpp" line="82"/>
         <source>TIFF file encoding/decoding by LibTIFF (version %1)
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
@@ -64,7 +58,7 @@ Telif Hakkı © 1988-1996 Sam Leffler
 Telif Hakkı © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="91"/>
+        <location filename="../About.cpp" line="89"/>
         <source>FITS decoding by CFitsIO (version %1)
 Copyright NASA</source>
         <comment>IDS_ABOUT_FITS</comment>
@@ -72,73 +66,73 @@ Copyright NASA</source>
 Telif Hakkı: NASA</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="114"/>
+        <location filename="../About.cpp" line="111"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
         <translation>İspanyolca Sürümü: Ricardo Contreras ve ekibi</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="118"/>
+        <location filename="../About.cpp" line="115"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
         <translation>Çekçe Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="122"/>
+        <location filename="../About.cpp" line="119"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
         <translation>İtalyanca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="126"/>
+        <location filename="../About.cpp" line="123"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
         <translation>Katalan Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="130"/>
+        <location filename="../About.cpp" line="127"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
         <translation>Almanca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="134"/>
+        <location filename="../About.cpp" line="131"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation>Hollandaca Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="135"/>
-        <location filename="../About.cpp" line="147"/>
+        <location filename="../About.cpp" line="132"/>
+        <location filename="../About.cpp" line="144"/>
         <source>and</source>
         <translation>ve</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="138"/>
+        <location filename="../About.cpp" line="135"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation>Geleneksel Çince Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="142"/>
+        <location filename="../About.cpp" line="139"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation>Portekizce Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="146"/>
+        <location filename="../About.cpp" line="143"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation>Romen sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="150"/>
+        <location filename="../About.cpp" line="147"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Rusça Sürümü:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="154"/>
+        <location filename="../About.cpp" line="151"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Türkçe Sürümü:</translation>
@@ -186,36 +180,36 @@ Telif Hakkı: NASA</translation>
         <source>Automatic
 
 The alignment method is automatically selected depending on the number of available stars.</source>
-        <translation>Otamatik
+        <comment>IDS_ALIGNMENT_AUTO</comment>
+        <translation type="unfinished">Otamatik
 
 Hizalama yöntemi yıldızların sayısına bağlı olarak otamatik olarak seçilir.</translation>
     </message>
     <message>
-        <location filename="../AlignmentParameters.cpp" line="38"/>
+        <location filename="../AlignmentParameters.cpp" line="39"/>
         <source>Bilinear Alignment
 
 The Bilinear Alignment is used in all cases.</source>
-        <translation>İki Çizgili Hizalama
+        <comment>IDS_ALIGNMENT_BILINEAR</comment>
+        <translation type="unfinished">İki Çizgili Hizalama
 
 İki Çizgili Hizalama her koşulda kullanılır.</translation>
     </message>
     <message>
-        <location filename="../AlignmentParameters.cpp" line="42"/>
+        <location filename="../AlignmentParameters.cpp" line="44"/>
         <source>Bisquared Alignment
 
-The Bisquared Alignment is used when at least 25 stars are available, else the Bilinear Alignment method is used.</source>
-        <translation>İki Kareli Hizalama
-
-İki Kareli Hizalama en az 25 yıldızın olduğu durumda yapılabilir, aksi takdirde İki Çizgili Hizalama yöntemi kullanılır.</translation>
+The Bisquared Alignment is used when at least 25 stars areavailable, else the Bilinear Alignment method is used.</source>
+        <comment>IDS_ALIGN_BISQUARED</comment>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../AlignmentParameters.cpp" line="46"/>
+        <location filename="../AlignmentParameters.cpp" line="50"/>
         <source>Bicubic Alignment
 
-The Bicubic method is used when at least 40 stars are available, then the Bisquared method is used if 25 to 39 stars are available, then the Bilinear method is used when less than 25 stars are available.</source>
-        <translation>İki Küplüi Hizalama
-
-İki Küplü Hizalama en az 40 yıldızın olduğu durumda yapılabilir, 25-39 yıldız varsa İki kareli Yöntem, aksi takdirde İki Çizgili Hizalama yöntemi kullanılır.</translation>
+The Bicubic method is used when at least 40 stars areavailable, then the Bisquared method is used if 25 to 39 stars are available, then theBilinear method is used when less than 25 stars are available.</source>
+        <comment>IDS_ALIGNMENT_BICUBIC</comment>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -394,212 +388,6 @@ Kuyrukluyıldız ve yıldızlar keskin olacak. Bu işlem iki kat daha uzun süre
     </message>
 </context>
 <context>
-    <name>DSS</name>
-    <message>
-        <location filename="../StackingDlg.cpp" line="794"/>
-        <source>Rename group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="883"/>
-        <source>Do you really want to permanently erase %n file(s)?
-This operation cannot be reversed or cancelled.</source>
-        <comment>IDS_WARNING_ERASEFILES</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-        </translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="952"/>
-        <source>Use as reference frame</source>
-        <comment>IDM_USEASSTARTING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="956"/>
-        <source>Check</source>
-        <comment>IDM_CHECK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="958"/>
-        <source>Uncheck</source>
-        <comment>IDM_UNCHECK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="961"/>
-        <source>Remove from list</source>
-        <comment>IDM_REMOVEFROMLIST</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="964"/>
-        <source>Copy to clipboard</source>
-        <comment>IDM_COPYTOCLIPBOARD</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="967"/>
-        <source>Erase from disk...</source>
-        <comment>IDM_ERASEFROMDISK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1041"/>
-        <source>Space Bar to check/uncheck selected rows
-Ctrl-A or equivalent to select all rows
-Delete key to remove (not erase) selected rows
-Right mouse button to display the menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1067"/>
-        <location filename="../StackingDlg.cpp" line="1931"/>
-        <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
-        <comment>IDS_LISTINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1076"/>
-        <source>Double click here to dock/undock the image list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1085"/>
-        <source>Main Group</source>
-        <comment>IDS_MAINGROUP</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1252"/>
-        <source>Loading %1</source>
-        <comment>IDS_LOADPICTURE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1329"/>
-        <source>File %1 has already been loaded in group %2 (%3)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1365"/>
-        <source>Open Light Frames...</source>
-        <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1470"/>
-        <source>Open Dark Frames...</source>
-        <comment>IDS_TITLE_OPENDARKFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1574"/>
-        <source>Open Dark Flat Frames...</source>
-        <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1678"/>
-        <source>Open Flat Frames...</source>
-        <comment>IDS_TITLE_OPENFLATFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1783"/>
-        <source>Open Bias Frames...</source>
-        <comment>IDS_TITLE_OPENBIASFRAMES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="1944"/>
-        <source>Light Frames: %1
-Dark Frames: %2
-Flat Frames: %3
-Dark Flat Frames: %4
-Offset/Bias Frames: %5</source>
-        <comment>IDS_LISTINFO2</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2024"/>
-        <source>Open another File List...</source>
-        <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2201"/>
-        <source>DeepSkyStacker version %1 is available for download.</source>
-        <comment>IDS_VERSIONAVAILABLE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2217"/>
-        <source>Internet version check error code %1:
-%2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2339"/>
-        <source>Total registering time: %1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2358"/>
-        <source>You must check light frames to register them.</source>
-        <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2419"/>
-        <source>The following folder(s) are read-only:
-%1
-DeepSkyStacker needs to create files in these folders during its processing.</source>
-        <comment>IDS_WARNINGREADONLY</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2439"/>
-        <source>The checked pictures are not compatible (width, height, number of colors, number of channels, only one master dark, offset and flat).</source>
-        <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2444"/>
-        <source>You must check light frames to stack them.</source>
-        <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2492"/>
-        <source>You have made some changes to the %1 file list and/or to the settings.
-
-Do you want to save the changes?</source>
-        <comment>IDS_WARNING_SAVECHANGES</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2608"/>
-        <source>Total stacking time: %1 %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2640"/>
-        <source>Saving Final image in %1</source>
-        <comment>IDS_SAVINGFINAL</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingDlg.cpp" line="2702"/>
-        <source>Exception caught in function: %1
-%2 (line %3):
-
-%4</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>DSS::EditStars</name>
     <message>
         <location filename="../editstars.cpp" line="846"/>
@@ -652,7 +440,7 @@ Comet:%1</source>
     <message>
         <location filename="../group.cpp" line="63"/>
         <location filename="../ImageListModel.cpp" line="480"/>
-        <location filename="../StackingDlg.cpp" line="356"/>
+        <location filename="../StackingDlg.cpp" line="354"/>
         <source>Dark</source>
         <comment>IDS_TYPE_DARK</comment>
         <translation>Siyah</translation>
@@ -660,7 +448,7 @@ Comet:%1</source>
     <message>
         <location filename="../group.cpp" line="67"/>
         <location filename="../ImageListModel.cpp" line="490"/>
-        <location filename="../StackingDlg.cpp" line="358"/>
+        <location filename="../StackingDlg.cpp" line="356"/>
         <source>Dark Flat</source>
         <comment>IDS_TYPE_DARKFLAT</comment>
         <translation>Siyah Düz</translation>
@@ -668,7 +456,7 @@ Comet:%1</source>
     <message>
         <location filename="../group.cpp" line="71"/>
         <location filename="../ImageListModel.cpp" line="485"/>
-        <location filename="../StackingDlg.cpp" line="357"/>
+        <location filename="../StackingDlg.cpp" line="355"/>
         <source>Flat</source>
         <comment>IDS_TYPE_FLAT</comment>
         <translation>Düz</translation>
@@ -676,7 +464,7 @@ Comet:%1</source>
     <message>
         <location filename="../group.cpp" line="75"/>
         <location filename="../ImageListModel.cpp" line="495"/>
-        <location filename="../StackingDlg.cpp" line="359"/>
+        <location filename="../StackingDlg.cpp" line="357"/>
         <source>Bias/Offset</source>
         <comment>IDS_TYPE_OFFSET</comment>
         <translation>Ofset</translation>
@@ -684,7 +472,7 @@ Comet:%1</source>
     <message>
         <location filename="../group.cpp" line="79"/>
         <location filename="../ImageListModel.cpp" line="476"/>
-        <location filename="../StackingDlg.cpp" line="355"/>
+        <location filename="../StackingDlg.cpp" line="353"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
         <translation type="unfinished">Görüntü</translation>
@@ -843,6 +631,12 @@ Comet:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../ImageListModel.cpp" line="430"/>
+        <source>ISO/Gain</source>
+        <comment>IDS_COLUMN_ISO_GAIN</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ImageListModel.cpp" line="432"/>
         <source>Exposure</source>
         <comment>IDS_COLUMN_EXPOSURE</comment>
@@ -867,11 +661,6 @@ Comet:%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ImageListModel.cpp" line="430"/>
-        <source>ISO/Gain</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../ImageListModel.cpp" line="436"/>
         <source>FWHM</source>
         <translation type="unfinished"></translation>
@@ -891,9 +680,207 @@ Ctrl+4 to toggle 4-Corners mode</source>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
+        <location filename="../StackingDlg.cpp" line="770"/>
+        <source>Rename group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../StackingDlg.cpp" line="859"/>
+        <source>Do you really want to permanently erase %n file(s)?
+This operation cannot be reversed or cancelled.</source>
+        <comment>IDS_WARNING_ERASEFILES</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="928"/>
+        <source>Use as reference frame</source>
+        <comment>IDM_USEASSTARTING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="932"/>
+        <source>Check</source>
+        <comment>IDM_CHECK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="934"/>
+        <source>Uncheck</source>
+        <comment>IDM_UNCHECK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="937"/>
+        <source>Remove from list</source>
+        <comment>IDM_REMOVEFROMLIST</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="940"/>
+        <source>Copy to clipboard</source>
+        <comment>IDM_COPYTOCLIPBOARD</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="943"/>
+        <source>Erase from disk...</source>
+        <comment>IDM_ERASEFROMDISK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1017"/>
+        <source>Space Bar to check/uncheck selected rows
+Ctrl-A or equivalent to select all rows
+Delete key to remove (not erase) selected rows
+Right mouse button to display the menu</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1043"/>
+        <location filename="../StackingDlg.cpp" line="1907"/>
+        <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
+        <comment>IDS_LISTINFO</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1052"/>
+        <source>Double click here to dock/undock the image list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1061"/>
         <location filename="../group.h" line="71"/>
         <source>Main Group</source>
         <comment>IDS_MAINGROUP</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1228"/>
+        <source>Loading %1</source>
+        <comment>IDS_LOADPICTURE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1305"/>
+        <source>File %1 has already been loaded in group %2 (%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1341"/>
+        <source>Open Light Frames...</source>
+        <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1446"/>
+        <source>Open Dark Frames...</source>
+        <comment>IDS_TITLE_OPENDARKFRAMES</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1550"/>
+        <source>Open Dark Flat Frames...</source>
+        <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1654"/>
+        <source>Open Flat Frames...</source>
+        <comment>IDS_TITLE_OPENFLATFRAMES</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1759"/>
+        <source>Open Bias Frames...</source>
+        <comment>IDS_TITLE_OPENBIASFRAMES</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1920"/>
+        <source>Light Frames: %1
+Dark Frames: %2
+Flat Frames: %3
+Dark Flat Frames: %4
+Offset/Bias Frames: %5</source>
+        <comment>IDS_LISTINFO2</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2000"/>
+        <source>Open another File List...</source>
+        <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2177"/>
+        <source>DeepSkyStacker version %1 is available for download.</source>
+        <comment>IDS_VERSIONAVAILABLE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2193"/>
+        <source>Internet version check error code %1:
+%2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2315"/>
+        <source>Total registering time: %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2334"/>
+        <source>You must check light frames to register them.</source>
+        <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2395"/>
+        <source>The following folder(s) are read-only:
+%1
+DeepSkyStacker needs to create files in these folders during its processing.</source>
+        <comment>IDS_WARNINGREADONLY</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2415"/>
+        <source>The checked pictures are not compatible (width, height, number of colors, number of channels, only one master dark, offset and flat).</source>
+        <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2420"/>
+        <source>You must check light frames to stack them.</source>
+        <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2468"/>
+        <source>You have made some changes to the %1 file list and/or to the settings.
+
+Do you want to save the changes?</source>
+        <comment>IDS_WARNING_SAVECHANGES</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2584"/>
+        <source>Total stacking time: %1 %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2616"/>
+        <source>Saving Final image in %1</source>
+        <comment>IDS_SAVINGFINAL</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="2678"/>
+        <source>Exception caught in function: %1
+%2 (line %3):
+
+%4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1536,7 +1523,7 @@ You can probably get another one or download the final release from the web site
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../BatchStacking.cpp" line="265"/>
+        <location filename="../BatchStacking.cpp" line="264"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation type="unfinished"></translation>
