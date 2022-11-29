@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <QSettings>
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "ImageList.h"
@@ -116,7 +117,14 @@ void CImageListTab::InitList()
 	strColumn.LoadString(IDS_COLUMN_SKYBACKGROUND);
 	m_ImageList.InsertColumn(COLUMN_SKYBACKGROUND, strColumn, LVCFMT_RIGHT, 50);
 
-	m_ImageList.RestoreState(_T("LivePictureList"), _T("Settings"));
+	QSettings settings;
+
+	settings.beginGroup("DeepSkyStackerLive/LivePictureList");
+	auto state = settings.value("Settings", QByteArray()).toByteArray();
+	settings.endGroup();
+
+	if (!state.isEmpty())
+		m_ImageList.SetState(reinterpret_cast<LPBYTE>(state.data()), state.size());
 };
 
 /* ------------------------------------------------------------------- */
@@ -136,8 +144,20 @@ BOOL CImageListTab::OnInitDialog()
 
 BOOL CImageListTab::Close()
 {
-	m_ImageList.SaveState(_T("LivePictureList"), _T("Settings"));
+	LPBYTE pState;
+	UINT   nStateLen;
 
+	if (m_ImageList.GetState(&pState, &nStateLen))
+	{
+		QByteArray theValue(reinterpret_cast<const char *>(pState), nStateLen);
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive/LivePictureList");
+
+		settings.setValue("Settings", theValue);
+		settings.endGroup();
+
+		delete[] pState;
+	}
 	return TRUE;
 };
 
