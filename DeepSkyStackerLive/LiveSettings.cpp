@@ -35,15 +35,18 @@ void	CLiveSettings::LoadFromRegistry()
 	m_strObject = settings.value("Object", "").toString().toStdWString().c_str();
 	settings.endGroup();
 
+#if defined (Q_OS_WIN)
 	if (!m_strSMTP.GetLength() && !m_strAccount.GetLength())
 	{
-		QSettings sysSettings(QSettings::UserScope, "Microsoft");
+		QSettings sysSettings("HKEY_CURRENT_USER\\Software\\Microsoft",
+			QSettings::NativeFormat);
 		sysSettings.beginGroup("Internet Account Manager/Accounts/00000001");
 		m_strSMTP = sysSettings.value("SMTP Server", "").toString().toStdWString().c_str();
 		m_strAccount = sysSettings.value("SMTP Email Address", "").toString().toStdWString().c_str();
-		sysSettings.endGroup();
 
+		sysSettings.endGroup();
 	};
+#endif
 };
 
 /* ------------------------------------------------------------------- */
