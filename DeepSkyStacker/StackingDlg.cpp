@@ -148,6 +148,31 @@ namespace DSS
 	constexpr	DWORD					IDC_EDIT_COMET  = 3;
 	constexpr	DWORD					IDC_EDIT_SAVE   = 4;
 
+	static struct { const char* const source; const char* comment; } OUTPUTLIST_FILTER_SOURCES[]{
+		QT_TRANSLATE_NOOP3("DSS", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "All Files (*)", "IDS_LISTFILTER_OUTPUT")
+		};
+
+	QStringList OUTPUTLIST_FILTERS{};
+
+	static struct { const char* const source; const char* comment; } INPUTFILE_FILTER_SOURCES [] {
+		QT_TRANSLATE_NOOP3("DSS",
+			"Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+			"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
+			"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS",
+			"RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr "
+			"*.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "All Files (*)", "IDS_FILTER_INPUT")
+		};
+
+	QStringList INPUTFILE_FILTERS{};
+
 	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
 		const QFont& font, const QRect& textRect, const Qt::Alignment valign,
 		Qt::TextElideMode textElideMode, int flags,
@@ -511,6 +536,7 @@ namespace DSS
 		dockTitle{ new QLabel(this) }
 	{
 		ui->setupUi(this);
+		retranslateUi();		// translate some of our stuff.
 
 		mruPath.readSettings();
 
@@ -638,10 +664,36 @@ namespace DSS
 		if (event->type() == QEvent::LanguageChange)
 		{
 			ui->retranslateUi(this);
+			retranslateUi();		// translate some of our stuff.
 		}
 
 		Inherited::changeEvent(event);
 	}
+
+
+	void StackingDlg::retranslateUi()
+	{
+		OUTPUTLIST_FILTERS.clear();
+		int i = 0;
+		int count = sizeof(OUTPUTLIST_FILTER_SOURCES) / sizeof(OUTPUTLIST_FILTER_SOURCES[0]);
+		for (i = 0; i < count; ++i)
+		{
+			OUTPUTLIST_FILTERS.append(
+				qApp->translate("DSS", OUTPUTLIST_FILTER_SOURCES[i].source, OUTPUTLIST_FILTER_SOURCES[i].comment));
+		}
+		Q_ASSERT(OUTPUTLIST_FILTERS.size() == count);
+
+		count = sizeof(INPUTFILE_FILTER_SOURCES) / sizeof(INPUTFILE_FILTER_SOURCES[0]);
+		INPUTFILE_FILTERS.clear();
+		for (i = 0; i < count; ++i)
+		{
+			INPUTFILE_FILTERS.append(
+				qApp->translate("DSS", INPUTFILE_FILTER_SOURCES[i].source, INPUTFILE_FILTER_SOURCES[i].comment));
+		}
+		Q_ASSERT(INPUTFILE_FILTERS.size() == count);
+	}
+
+
 
 	bool StackingDlg::event(QEvent* event)
 	{
@@ -1288,19 +1340,6 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		QStringList INPUTFILE_FILTERS{
-			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
-				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
-				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
-			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
-			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
-			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
-				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
-			tr("All Files (*)", "IDS_FILTER_INPUT")
-		};
-
 		directory = settings.value("Folders/AddPictureFolder").toString();
 		extension = settings.value("Folders/AddPictureExtension").toString();
 
@@ -1398,19 +1437,6 @@ namespace DSS
 		QString				extension;
 		uint				filterIndex = 0;
 		QString				strTitle;
-
-		QStringList INPUTFILE_FILTERS{
-			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
-				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
-				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
-			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
-			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
-			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
-				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
-			tr("All Files (*)", "IDS_FILTER_INPUT")
-		};
 
 		directory = settings.value("Folders/AddDarkFolder").toString();
 		if (directory.isEmpty())
@@ -1516,19 +1542,6 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		QStringList INPUTFILE_FILTERS{
-			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
-				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
-				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
-			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
-			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
-			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
-				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
-			tr("All Files (*)", "IDS_FILTER_INPUT")
-		};
-
 		directory = settings.value("Folders/AddDarkFlatFolder").toString();
 		if (directory.isEmpty())
 			directory = settings.value("Folders/AddPictureFolder").toString();
@@ -1632,19 +1645,6 @@ namespace DSS
 		QString				extension;
 		uint				filterIndex = 0;
 		QString				strTitle;
-
-		QStringList INPUTFILE_FILTERS{
-			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
-				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
-				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
-			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
-			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
-			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
-				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
-			tr("All Files (*)", "IDS_FILTER_INPUT")
-		};
 
 		directory = settings.value("Folders/AddFlatFolder").toString();
 		if (directory.isEmpty())
@@ -1751,20 +1751,6 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		QStringList INPUTFILE_FILTERS{
-			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
-				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
-				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
-			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
-			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
-			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
-				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
-			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
-			tr("All Files (*)", "IDS_FILTER_INPUT")
-		};
-
-		directory = settings.value("Folders/AddOffsetFolder").toString();
 		if (directory.isEmpty())
 			directory = settings.value("Folders/AddPictureFolder").toString();
 
@@ -2062,12 +2048,6 @@ namespace DSS
 		QFileDialog			fileDialog;
 		Workspace			workspace;
 
-		QStringList OUTPUTLIST_FILTERS{
-			tr("File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
-			tr("File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
-			tr("All Files (*)", "IDS_LISTFILTER_OUTPUT")
-		};
-
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
 		extension = settings.value("Folders/ListExtension").toString();
@@ -2131,12 +2111,6 @@ namespace DSS
 
 		QFileDialog			fileDialog;
 		Workspace			workspace;
-
-		QStringList OUTPUTLIST_FILTERS{
-			tr("File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
-			tr("File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
-			tr("All Files (*)", "IDS_LISTFILTER_OUTPUT")
-		};
 
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
