@@ -148,27 +148,6 @@ namespace DSS
 	constexpr	DWORD					IDC_EDIT_COMET  = 3;
 	constexpr	DWORD					IDC_EDIT_SAVE   = 4;
 
-	const QStringList OUTPUTLIST_FILTER_SOURCES({
-		QStringLiteral("File List (*.dssfilelist)"),
-		QStringLiteral("File List (*.txt)"),
-		QStringLiteral("All Files (*)")
-		});
-
-	QStringList OUTPUTLIST_FILTERS{};
-
-	const QStringList INPUTFILE_FILTER_SOURCES({
-		QStringLiteral("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QStringLiteral("Windows Bitmaps (*.bmp)"),
-		QStringLiteral("JPEG or PNG Files (*.jpg *.jpeg *.png)"),
-		QStringLiteral("TIFF Files (*.tif *.tiff)"),
-		QStringLiteral("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QStringLiteral("FITS Files (*.fits *.fit *.fts)"),
-		QStringLiteral("All Files (*)")
-		});
-
-	QStringList INPUTFILE_FILTERS{};
-
-
 	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
 		const QFont& font, const QRect& textRect, const Qt::Alignment valign,
 		Qt::TextElideMode textElideMode, int flags,
@@ -532,7 +511,6 @@ namespace DSS
 		dockTitle{ new QLabel(this) }
 	{
 		ui->setupUi(this);
-		retranslateUi();		// translate some of our stuff.
 
 		mruPath.readSettings();
 
@@ -660,29 +638,10 @@ namespace DSS
 		if (event->type() == QEvent::LanguageChange)
 		{
 			ui->retranslateUi(this);
-			retranslateUi();
 		}
 
 		Inherited::changeEvent(event);
 	}
-
-	void StackingDlg::retranslateUi()
-	{
-		OUTPUTLIST_FILTERS.clear();
-		for (const QString& filter : OUTPUTLIST_FILTER_SOURCES)
-		{
-			OUTPUTLIST_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_LISTFILTER_OUTPUT"));
-		}
-		Q_ASSERT(OUTPUTLIST_FILTERS.size() == OUTPUTLIST_FILTER_SOURCES.size());
-
-		INPUTFILE_FILTERS.clear();
-		for (const QString& filter : INPUTFILE_FILTER_SOURCES)
-		{
-			INPUTFILE_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_FILTER_INPUT"));
-		}
-		Q_ASSERT(INPUTFILE_FILTERS.size() == INPUTFILE_FILTER_SOURCES.size());
-	}
-
 
 	bool StackingDlg::event(QEvent* event)
 	{
@@ -1329,8 +1288,20 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		directory = settings.value("Folders/AddPictureFolder").toString();
+		QStringList INPUTFILE_FILTERS{
+			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
+				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
+			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
+			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
+			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
+				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
+			tr("All Files (*)", "IDS_FILTER_INPUT")
+		};
 
+		directory = settings.value("Folders/AddPictureFolder").toString();
 		extension = settings.value("Folders/AddPictureExtension").toString();
 
 		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
@@ -1427,6 +1398,19 @@ namespace DSS
 		QString				extension;
 		uint				filterIndex = 0;
 		QString				strTitle;
+
+		QStringList INPUTFILE_FILTERS{
+			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
+				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
+			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
+			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
+			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
+				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
+			tr("All Files (*)", "IDS_FILTER_INPUT")
+		};
 
 		directory = settings.value("Folders/AddDarkFolder").toString();
 		if (directory.isEmpty())
@@ -1532,6 +1516,19 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
+		QStringList INPUTFILE_FILTERS{
+			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
+				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
+			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
+			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
+			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
+				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
+			tr("All Files (*)", "IDS_FILTER_INPUT")
+		};
+
 		directory = settings.value("Folders/AddDarkFlatFolder").toString();
 		if (directory.isEmpty())
 			directory = settings.value("Folders/AddPictureFolder").toString();
@@ -1635,6 +1632,19 @@ namespace DSS
 		QString				extension;
 		uint				filterIndex = 0;
 		QString				strTitle;
+
+		QStringList INPUTFILE_FILTERS{
+			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
+				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
+			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
+			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
+			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
+				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
+			tr("All Files (*)", "IDS_FILTER_INPUT")
+		};
 
 		directory = settings.value("Folders/AddFlatFolder").toString();
 		if (directory.isEmpty())
@@ -1740,6 +1750,19 @@ namespace DSS
 		QString				extension;
 		uint				filterIndex = 0;
 		QString				strTitle;
+
+		QStringList INPUTFILE_FILTERS{
+			tr("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+				"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
+				"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
+			tr("JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
+			tr("TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
+			tr("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef "
+				"*.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+			tr("FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
+			tr("All Files (*)", "IDS_FILTER_INPUT")
+		};
 
 		directory = settings.value("Folders/AddOffsetFolder").toString();
 		if (directory.isEmpty())
@@ -2039,6 +2062,12 @@ namespace DSS
 		QFileDialog			fileDialog;
 		Workspace			workspace;
 
+		QStringList OUTPUTLIST_FILTERS{
+			tr("File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
+			tr("File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
+			tr("All Files (*)", "IDS_LISTFILTER_OUTPUT")
+		};
+
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
 		extension = settings.value("Folders/ListExtension").toString();
@@ -2102,6 +2131,12 @@ namespace DSS
 
 		QFileDialog			fileDialog;
 		Workspace			workspace;
+
+		QStringList OUTPUTLIST_FILTERS{
+			tr("File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
+			tr("File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
+			tr("All Files (*)", "IDS_LISTFILTER_OUTPUT")
+		};
 
 		directory = settings.value("Folders/ListFolder").toString();
 		const auto filterIndex = settings.value("Folders/ListIndex", uint(0)).toUInt();
