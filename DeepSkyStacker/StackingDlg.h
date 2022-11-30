@@ -327,6 +327,5 @@ namespace DSS
 		void saveList(MRUPath& MRUList, QString& strFileList);
 
 		void retranslateUi();
-
 	};
 }

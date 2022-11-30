@@ -75,7 +75,6 @@
 #include "FrameInfoSupport.h"
 #include "QtProgressDlg.h"
 #include "CheckAbove.h"
-#include "Registry.h"
 #include "RegisterSettings.h"
 #include "StackRecap.h"
 #include "TIFFUtil.h"
@@ -149,26 +148,30 @@ namespace DSS
 	constexpr	DWORD					IDC_EDIT_COMET  = 3;
 	constexpr	DWORD					IDC_EDIT_SAVE   = 4;
 
-	const QStringList OUTPUTLIST_FILTER_SOURCES({
-		QStringLiteral("File List (*.dssfilelist)"),
-		QStringLiteral("File List (*.txt)"),
-		QStringLiteral("All Files (*)")
-		});
+	static struct { const char* const source; const char* comment; } OUTPUTLIST_FILTER_SOURCES[]{
+		QT_TRANSLATE_NOOP3("DSS", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "All Files (*)", "IDS_LISTFILTER_OUTPUT")
+		};
 
 	QStringList OUTPUTLIST_FILTERS{};
 
-	const QStringList INPUTFILE_FILTER_SOURCES({
-		QStringLiteral("Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts *.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QStringLiteral("Windows Bitmaps (*.bmp)"),
-		QStringLiteral("JPEG or PNG Files (*.jpg *.jpeg *.png)"),
-		QStringLiteral("TIFF Files (*.tif *.tiff)"),
-		QStringLiteral("RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)"),
-		QStringLiteral("FITS Files (*.fits *.fit *.fts)"),
-		QStringLiteral("All Files (*)")
-		});
+	static struct { const char* const source; const char* comment; } INPUTFILE_FILTER_SOURCES [] {
+		QT_TRANSLATE_NOOP3("DSS",
+			"Picture Files (*.bmp *.jpg *.jpeg *.tif *.tiff *.png *.fit *.fits *.fts "
+			"*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr *.kdc *.srf "
+			"*.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "Windows Bitmaps (*.bmp)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "JPEG or PNG Files (*.jpg *.jpeg *.png)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "TIFF Files (*.tif *.tiff)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS",
+			"RAW Files (*.cr2 *.cr3 *.crw *.nef *.mrw *.orf *.raf *.pef *.x3f *.dcr "
+			"*.kdc *.srf *.arw *.raw *.dng *.ia *.rw2)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "FITS Files (*.fits *.fit *.fts)", "IDS_FILTER_INPUT"),
+		QT_TRANSLATE_NOOP3("DSS", "All Files (*)", "IDS_FILTER_INPUT")
+		};
 
 	QStringList INPUTFILE_FILTERS{};
-
 
 	QString IconSizeDelegate::calculateElidedText(const ::QString& text, const QTextOption& textOption,
 		const QFont& font, const QRect& textRect, const Qt::Alignment valign,
@@ -579,28 +582,6 @@ namespace DSS
 				ImageListModel* imageModel{ frameList.currentTableModel() }; 
 
 				//
-				// ifdef out this block of code as "Select All" key sequence already works 
-				// for a table view.  Leaving the code here for reference purposes.
-				//
-#if (0)
-
-				//
-				// Does the received key sequence match any of the key sequences for 
-				// "Select All"
-				//
-				if (QKeyEvent::matches(QKeySequence::keyBindings(QKeySequence::SelectAll))
-				{
-						qDebug() << "Received key sequence " << received << " matched QKeySequence::SelectAll";
-						QItemSelection selection{
-							imageModel->createIndex(0, 0),
-							imageModel->createIndex(imageModel->rowCount() - 1,  imageModel->columnCount() - 1) };
-
-						qsm->select(selection, QItemSelectionModel::Select);
-						return true;
-				}
-#endif
-
-				//
 				// Was it the Space Bar?  If so toggle the checked state of all selected items
 				//
 				if (Qt::Key_Space == keyEvent->key() && Qt::NoModifier == keyEvent->modifiers())
@@ -683,28 +664,35 @@ namespace DSS
 		if (event->type() == QEvent::LanguageChange)
 		{
 			ui->retranslateUi(this);
-			retranslateUi();
+			retranslateUi();		// translate some of our stuff.
 		}
 
 		Inherited::changeEvent(event);
 	}
 
+
 	void StackingDlg::retranslateUi()
 	{
 		OUTPUTLIST_FILTERS.clear();
-		for (const QString& filter : OUTPUTLIST_FILTER_SOURCES)
+		int i = 0;
+		int count = sizeof(OUTPUTLIST_FILTER_SOURCES) / sizeof(OUTPUTLIST_FILTER_SOURCES[0]);
+		for (i = 0; i < count; ++i)
 		{
-			OUTPUTLIST_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_LISTFILTER_OUTPUT"));
+			OUTPUTLIST_FILTERS.append(
+				qApp->translate("DSS", OUTPUTLIST_FILTER_SOURCES[i].source, OUTPUTLIST_FILTER_SOURCES[i].comment));
 		}
-		Q_ASSERT(OUTPUTLIST_FILTERS.size() == OUTPUTLIST_FILTER_SOURCES.size());
+		Q_ASSERT(OUTPUTLIST_FILTERS.size() == count);
 
+		count = sizeof(INPUTFILE_FILTER_SOURCES) / sizeof(INPUTFILE_FILTER_SOURCES[0]);
 		INPUTFILE_FILTERS.clear();
-		for (const QString& filter : INPUTFILE_FILTER_SOURCES)
+		for (i = 0; i < count; ++i)
 		{
-			INPUTFILE_FILTERS.append(tr(filter.toLocal8Bit(), "IDS_FILTER_INPUT"));
+			INPUTFILE_FILTERS.append(
+				qApp->translate("DSS", INPUTFILE_FILTER_SOURCES[i].source, INPUTFILE_FILTER_SOURCES[i].comment));
 		}
-		Q_ASSERT(INPUTFILE_FILTERS.size() == INPUTFILE_FILTER_SOURCES.size());
+		Q_ASSERT(INPUTFILE_FILTERS.size() == count);
 	}
+
 
 
 	bool StackingDlg::event(QEvent* event)
@@ -948,22 +936,22 @@ namespace DSS
 		//
 		// Build the context menu for the tableview (list of images).
 		//
-		markAsReference = menu.addAction(QString(tr("Use as reference frame", "IDM_USEASSTARTING")));
+		markAsReference = menu.addAction(tr("Use as reference frame", "IDM_USEASSTARTING"));
 		markAsReference->setCheckable(true);
 		markAsReference->setData(int(Menuitem::markAsReference));
 		menu.addSeparator();
-		check = menu.addAction(QString(tr("Check", "IDM_CHECK")));
+		check = menu.addAction(tr("Check", "IDM_CHECK"));
 		check->setData(int(Menuitem::check));
-		uncheck = menu.addAction(QString(tr("Uncheck", "IDM_UNCHECK")));
+		uncheck = menu.addAction(tr("Uncheck", "IDM_UNCHECK"));
 		uncheck->setData(int(Menuitem::uncheck));
 		menu.addSeparator();
-		remove = menu.addAction(QString(tr("Remove from list", "IDM_REMOVEFROMLIST")));
+		remove = menu.addAction(tr("Remove from list", "IDM_REMOVEFROMLIST"));
 		remove->setData(int(Menuitem::remove));
 		menu.addSeparator();
-		copy = menu.addAction(QString(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD")));
+		copy = menu.addAction(tr("Copy to clipboard", "IDM_COPYTOCLIPBOARD"));
 		copy->setData(int(Menuitem::copy));
 		menu.addSeparator();
-		erase = menu.addAction(QString(tr("Erase from disk...", "IDM_ERASEFROMDISK")));
+		erase = menu.addAction(tr("Erase from disk...", "IDM_ERASEFROMDISK"));
 		erase->setData(int(Menuitem::erase));
 
 		ui->picture->setVisible(true);
@@ -1353,7 +1341,6 @@ namespace DSS
 		QString				strTitle;
 
 		directory = settings.value("Folders/AddPictureFolder").toString();
-
 		extension = settings.value("Folders/AddPictureExtension").toString();
 
 		filterIndex = settings.value("Folders/AddPictureIndex", 0U).toUInt();
@@ -1764,7 +1751,6 @@ namespace DSS
 		uint				filterIndex = 0;
 		QString				strTitle;
 
-		directory = settings.value("Folders/AddOffsetFolder").toString();
 		if (directory.isEmpty())
 			directory = settings.value("Folders/AddPictureFolder").toString();
 
@@ -2636,7 +2622,7 @@ namespace DSS
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
-					const QString strText(QObject::tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
+					const QString strText(tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
 					dlg.Start2(strText, 0);
 
 					if (iff == IFF_TIFF)

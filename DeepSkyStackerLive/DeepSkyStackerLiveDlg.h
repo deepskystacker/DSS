@@ -156,13 +156,13 @@ inline	void	SetLastImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const st
 	{
 		CDeepSkyStackerLiveDlg *	pDlg = dynamic_cast<CDeepSkyStackerLiveDlg *>(pWnd);
 		if (pDlg)
-			pDlg->GetLastImageTab().SetImage(pBitmap.get(), pWndBitmap.get(), szFileName);
+			pDlg->GetLastImageTab().SetImage(pBitmap, pWndBitmap, szFileName);
 	};
 };
 
 /* ------------------------------------------------------------------- */
 
-inline	void	SetStackedImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap)
+inline	void	SetStackedImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap)
 {
 	CWnd *			pWnd = AfxGetApp()->GetMainWnd();
 

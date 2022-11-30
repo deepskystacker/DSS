@@ -329,3 +329,4 @@ CodeMaid.config
 /Installers/RunTime32
 /DeepSkyStacker/GeneratedFiles
 /DeepSkyStacker/i18n/*.qm
+/DeepSkyStackerLive/i18n/*.qm

@@ -9,7 +9,7 @@ namespace DSS
 {
 	class ProgressDlg : public QDialog
 	{
-		Q_OBJECT;
+		Q_OBJECT
 
 	public:
 		ProgressDlg(QWidget* parent = nullptr);

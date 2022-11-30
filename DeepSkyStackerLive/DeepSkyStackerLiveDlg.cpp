@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include <QSettings>
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 
@@ -132,19 +133,14 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	m_Settings.Create(IDD_SETTINGS, this);
 
 	{
-		DWORD		dwMaximized = 0;
-		CString		strTop = "";
-		CString		strLeft = "";
-		DWORD		dwWidth = 0;
-		DWORD		dwHeight = 0;
-
-		CRegistry	reg;
-
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Maximized"), dwMaximized);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Top"), strTop);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Left"), strLeft);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Width"), dwWidth);
-		reg.LoadKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Height"), dwHeight);
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive");
+		std::uint32_t dwMaximized { settings.value("Maximized", 0).toUInt() };
+		CString strLeft{ settings.value("Left", "").toString().toStdWString().c_str() };
+		CString strTop{ settings.value("Top", "").toString().toStdWString().c_str() };
+		std::uint32_t dwWidth { settings.value("Width", 0).toUInt() };
+		std::uint32_t dwHeight{ settings.value("Height", 0).toUInt() };
+		settings.endGroup();
 
 		if (strTop.GetLength() && strLeft.GetLength() && dwWidth && dwHeight)
 		{
@@ -168,22 +164,29 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 	UpdateTab();
 	UpdateSizes();
 
-	m_Log.AddToLog(strTitle, TRUE, TRUE);
-	m_Log.AddToLog(_T("\n"));
+	m_Log.AddToLog(QString::fromStdWString(strTitle.GetString()), TRUE, TRUE);
+	m_Log.AddToLog("\n");
 
-	CString			strText;
-	strText.LoadString(IDS_LOG_STARTING);
-	m_Log.AddToLog(strText, FALSE, TRUE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_1);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_2);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_3);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_4);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
-	strText.LoadString(IDS_LOG_STARTING_5);
-	m_Log.AddToLog(strText, FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
+		"\nHow to use  DeepSkyStacker Live ? \n","IDS_LOG_STARTING"),
+		FALSE, TRUE, FALSE);
+	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
+		"Step 1\nCheck the Settings tabs for all the stackingand warning settings\n\n", "IDS_LOG_STARTING_1"),
+		FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
+		"Step 2\nClick on the Monitor button to start monitoring the folder\n"
+		"When the monitoring is on incoming images are only registered but not stacked.\n\n", "IDS_LOG_STARTING_2"),
+		FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
+		"Step 3\nTo start stacking the images click on the Stack button\n"
+		"At this point all the incoming(and previously registered) images will be stacked.\n", "IDS_LOG_STARTING_3"),
+		FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
+		"You can pause/start again the stacking process by clicking on the Stack button.\n", "IDS_LOG_STARTING_4"),
+		FALSE, FALSE, FALSE);
+	m_Log.AddToLog(QCoreApplication::translate("DeepSkyStackerLive",
+		"To stop the monitoring and stacking click on the Stop button.\n\n", "IDS_LOG_STARTING_5"),
+		FALSE, FALSE, FALSE);
 
 	{
 		Workspace			workspace;
@@ -208,13 +211,13 @@ void CDeepSkyStackerLiveDlg::OnClose( )
 	m_ImageList.Close();
 
 	{
-		DWORD		dwMaximized = 0;
+		std::uint32_t dwMaximized = 0;
 		CString		strTop = "";
 		CString		strLeft = "";
-		DWORD		dwWidth = 0;
-		DWORD		dwHeight = 0;
+		std::uint32_t dwWidth = 0;
+		std::uint32_t dwHeight = 0;
 
-		CRegistry	reg;
+		QSettings settings;
 
 		WINDOWPLACEMENT		wp;
 
@@ -229,11 +232,13 @@ void CDeepSkyStackerLiveDlg::OnClose( )
 		dwWidth  = wp.rcNormalPosition.right-wp.rcNormalPosition.left;
 		dwHeight = wp.rcNormalPosition.bottom-wp.rcNormalPosition.top;
 
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Maximized"), dwMaximized);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Top"), strTop);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Left"), strLeft);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Width"), dwWidth);
-		reg.SaveKey(REGENTRY_BASEKEY_LIVE_POSITION, _T("Height"), dwHeight);
+		settings.beginGroup("DeepSkyStackerLive");
+		settings.setValue("Maximized", dwMaximized);
+		settings.setValue("Left", QString::fromStdWString(strLeft.GetString()));
+		settings.setValue("Top", QString::fromStdWString(strTop.GetString()));
+		settings.setValue("Width", dwWidth);
+		settings.setValue("Height", dwHeight);
+		settings.endGroup();
 	};
 
 

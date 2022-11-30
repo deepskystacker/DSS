@@ -568,7 +568,21 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 									else if (vPixels[k].m_lYDir > 0)
 										lBottomRadius = std::max(lBottomRadius, static_cast<int>(vPixels[k].m_fRadius));
 								}
-
+								//
+								// **********************************
+								// * Danger! Danger, Will Robinson! *
+								// **********************************
+								// 
+								// This rectangle is INCLUSIVE so the loops over the m_rcStar rectangle MUST use
+								// <= limit, not the more normal < limit.
+								// 
+								// It is not safe to change this as the data is saved in the .info.txt files
+								// that the code reads during "Compute Offsets" processing.
+								// 
+								// So, while technically incorrect, it must not be changed otherwise it would
+								// create an incompatibility with existing info.txt files that were created by
+								// earlier releases of the code.
+								//
 								rcStar.setCoords(ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius,
 									ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius);
 
@@ -954,7 +968,8 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 	if (m_pProgress != nullptr)
 	{
-		const QString strText(QObject::tr("Registering %1", "IDS_REGISTERINGNAME").arg(filePath.c_str()));
+		const QString strText(QObject::tr("Registering %1", "IDS_REGISTERINGNAME").
+			arg(QString::fromStdU16String(filePath.generic_u16string())));
 		m_pProgress->Start2(strText, lNrSubRects);
 	}
 
@@ -1133,7 +1148,8 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 	// Try to find star by studying the variation of luminosity
 	if (m_pProgress != nullptr)
 	{
-		const QString strText(QObject::tr("Computing luminances %1", "IDS_COMPUTINGLUMINANCE").arg(filePath.c_str()));
+		const QString strText(QObject::tr("Computing luminances %1", "IDS_COMPUTINGLUMINANCE")
+			.arg(QString::fromStdU16String(filePath.generic_u16string())));
 		m_pProgress->Start2(strText, m_lHeight);
 	}
 
@@ -1312,15 +1328,19 @@ void CLightFrameInfo::RegisterPicture()
 		bmpInfo.GetDescription(strDescription);
 
 		if (bmpInfo.m_lNrChannels == 3)
-			strText = QString(QObject::tr("Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(filePath.c_str());
+			strText = QString(QObject::tr("Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE")).arg(bmpInfo.m_lBitPerChannel)
+			.arg(QString::fromWCharArray(strDescription.GetString()))
+			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 		else
-			strText = QString(QObject::tr("Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription.GetString())).arg(filePath.c_str());
+			strText = QString(QObject::tr("Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE")).arg(bmpInfo.m_lBitPerChannel)
+			.arg(QString::fromWCharArray(strDescription.GetString()))
+			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 
 		if (m_pProgress != nullptr)
 			m_pProgress->Start2(strText, 0);
 
 		std::shared_ptr<CMemoryBitmap> pBitmap;
-		bLoaded = ::FetchPicture(filePath.c_str(), pBitmap, m_pProgress);
+		bLoaded = ::FetchPicture(filePath.generic_wstring().c_str(), pBitmap, m_pProgress);
 
 		if (m_pProgress != nullptr)
 			m_pProgress->End2();
@@ -1403,7 +1423,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared
 		TCHAR			szName[1+_MAX_FNAME];
 		CString			strOutputFile;
 
-		_tsplitpath(lfi.filePath.c_str(), szDrive, szDir, szName, nullptr);
+		_tsplitpath(lfi.filePath.generic_wstring().c_str(), szDrive, szDir, szName, nullptr);
 
 		strOutputFile = szDrive;
 		strOutputFile += szDir;

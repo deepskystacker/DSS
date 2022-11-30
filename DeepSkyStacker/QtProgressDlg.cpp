@@ -202,23 +202,23 @@ void DSSProgressDlg::Progress1(const QString& szText, int lAchieved1)
 
 			QString qStrText;
 			if (dwHour != 0)
-				qStrText = QObject::tr("Estimated remaining time: %1 hr %2 mn %3 s ",
+				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time: %1 hr %2 mn %3 s ",
 										 "IDS_ESTIMATED3").arg(dwHour).arg(dwMin).arg(dwSec);
 			else if (dwMin != 0)
-				qStrText = QObject::tr("Estimated remaining time: %1 mn %2 s ",
+				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time: %1 mn %2 s ",
 										 "IDS_ESTIMATED2").arg(dwMin).arg(dwSec);
 			else if (dwSec != 0)
-				qStrText = QObject::tr("Estimated remaining time : %1 s ",
+				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time : %1 s ",
 										"IDS_ESTIMATED1").arg(dwSec);
 			else
-				qStrText = QObject::tr("Estimated remaining time: < 1 s ",
+				qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining time: < 1 s ",
 										"IDS_ESTIMATED0");
 			
 			m_pDlg->setTimeRemaining(qStrText);
 		}
 		else
 		{
-			const QString qStrText = QObject::tr("Estimated remaining Time: Unknown",
+			const QString qStrText = QCoreApplication::translate("ProgressDlg", "Estimated remaining Time: Unknown",
 												"IDS_ESTIMATEDUNKNOWN");
 			m_pDlg->setTimeRemaining(qStrText);
 		};

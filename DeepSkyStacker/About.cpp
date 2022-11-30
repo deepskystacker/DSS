@@ -53,8 +53,8 @@ About::About(QWidget *parent) :
     }
     copyright = copyrightList.join(", ");
 
-    strText = QString(QCoreApplication::translate("About", "DeepSkyStacker version %1",
-		"IDS_ABOUT_DSS")).arg(VERSION_DEEPSKYSTACKER);
+    strText = tr("DeepSkyStacker version %1",
+		"IDS_ABOUT_DSS").arg(VERSION_DEEPSKYSTACKER);
     strText += "<br>";
     strText += copyright;
     strText = strText.replace("\n", "<br>");
@@ -62,16 +62,15 @@ About::About(QWidget *parent) :
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://deepskystacker.free.fr/");
     strHTML += strText;
 
-	strText = QString(tr("Qt Application Framework 6.4.0\nCopyright © 2022 The Qt Company Ltd."));
+	strText = "Qt Application Framework 6.4.0\nCopyright © 2022 The Qt Company Ltd.";
 	strText += "<br>";
 	strText = strText.replace("\n", "<br>");
 	strHTML += strText;
 	strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://www.qt.io/");
 	strHTML += strText;
 
-    strText = QString(QCoreApplication::translate("About",
-                "RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2019 LibRaw LLC",
-				"IDS_ABOUT_DCRAW")).arg(LIBRAW_VERSION_STR);
+    strText = tr("RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2019 LibRaw LLC",
+				"IDS_ABOUT_DCRAW").arg(LIBRAW_VERSION_STR);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://libraw.org/");
@@ -80,17 +79,15 @@ About::About(QWidget *parent) :
     copyright = TIFFGetVersion();
     copyright = copyright.remove(0, copyright.indexOf("Version ") + 8);
     copyright = copyright.left(copyright.indexOf("Copyright")-1);
-    strText = QString(QCoreApplication::translate("About",
-                "TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.",
-				"IDS_ABOUT_TIFF")).arg(copyright);
+    strText = tr("TIFF file encoding/decoding by LibTIFF (version %1)\nCopyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.",
+				"IDS_ABOUT_TIFF").arg(copyright);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
     strText = QString("<a href=\"%1\">%1</a><br><br>").arg("http://www.remotesensing.org/libtiff/");
     strHTML += strText;
 
-    strText = QString(QCoreApplication::translate("About",
-                "FITS decoding by CFitsIO (version %1)\nCopyright NASA",
-				"IDS_ABOUT_FITS")).arg(xstr(CFITSIO_VERSION));
+    strText = tr("FITS decoding by CFitsIO (version %1)\nCopyright NASA",
+				"IDS_ABOUT_FITS").arg(xstr(CFITSIO_VERSION));
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
     strText = QString("<a href=\"%1\">%1</a><br>").arg("http://heasarc.gsfc.nasa.gov/docs/software/fitsio/fitsio.html");

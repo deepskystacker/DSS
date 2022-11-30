@@ -3,7 +3,6 @@
 
 #include "stdafx.h"
 #include "deepskystacker.h"
-#include "Registry.h"
 #include "FrameList.h"
 #include "StackingEngine.h"
 #include "QtProgressDlg.h"

@@ -31,19 +31,26 @@ void AlignmentParameters::updateControls()
     switch (m_Alignment)
     {
         case ALIGN_AUTO:
-            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Automatic\n\nThe alignment method is automatically selected depending on the number of available stars."));
+            ui->text->setText(tr("Automatic\n\nThe alignment method is automatically selected depending on the number of available stars.",
+                "IDS_ALIGNMENT_AUTO"));
 			ui->alignAuto->setChecked(true);
             break;
         case ALIGN_BILINEAR:
-            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bilinear Alignment\n\nThe Bilinear Alignment is used in all cases."));
+            ui->text->setText(tr("Bilinear Alignment\n\nThe Bilinear Alignment is used in all cases.",
+                "IDS_ALIGNMENT_BILINEAR"));
 			ui->alignBilinear->setChecked(true);
 			break;
         case ALIGN_BISQUARED:
-            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bisquared Alignment\n\nThe Bisquared Alignment is used when at least 25 stars are available, else the Bilinear Alignment method is used."));
+            ui->text->setText(tr("Bisquared Alignment\n\nThe Bisquared Alignment is used when at least 25 stars are"
+                "available, else the Bilinear Alignment method is used.",
+                "IDS_ALIGN_BISQUARED"));
 			ui->alignBisquared->setChecked(true);
 			break;
         case ALIGN_BICUBIC:
-            ui->text->setText(QCoreApplication::translate("AlignmentParameters", "Bicubic Alignment\n\nThe Bicubic method is used when at least 40 stars are available, then the Bisquared method is used if 25 to 39 stars are available, then the Bilinear method is used when less than 25 stars are available."));
+            ui->text->setText(tr("Bicubic Alignment\n\nThe Bicubic method is used when at least 40 stars are"
+                "available, then the Bisquared method is used if 25 to 39 stars are available, then the"
+                "Bilinear method is used when less than 25 stars are available.",
+                "IDS_ALIGNMENT_BICUBIC"));
 			ui->alignBicubic->setChecked(true);
 			break;
         case ALIGN_NONE:

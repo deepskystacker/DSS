@@ -68,7 +68,7 @@ protected :
 //	afx_msg void OnHelp( NMHDR * pNotifyStruct, LRESULT * result );
 
 public :
-	void	SetImage(CMemoryBitmap * pBitmap, C32BitsBitmap * pWndBitmap, LPCTSTR szFileName);
+	void	SetImage(const std::shared_ptr<CMemoryBitmap>& pBitmap, const std::shared_ptr<C32BitsBitmap>& pWndBitmap, LPCTSTR szFileName);
 	void	OnStackedImageSaved();
 	void	OnSetFootprint(QPointF const& pt1, QPointF const& pt2, QPointF const& pt3, QPointF const& pt4);
 

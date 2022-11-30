@@ -1,50 +1,50 @@
 #ifndef __LIVESETTINGS_H__
 #define __LIVESETTINGS_H__
 
-const DWORD					LSWF_SCORE	= 0x00000001L;	// Warning Flags
-const DWORD					LSWF_STARS	= 0x00000002L;
-const DWORD					LSWF_FWHM	= 0x00000004L;
-const DWORD					LSWF_OFFSET = 0x00000008L;
-const DWORD					LSWF_ANGLE	= 0x00000010L;
-const DWORD					LSWF_SKY	= 0x00000020L;
+const std::uint32_t 	LSWF_SCORE	= 0x00000001L;	// Warning Flags
+const std::uint32_t 	LSWF_STARS	= 0x00000002L;
+const std::uint32_t 	LSWF_FWHM	= 0x00000004L;
+const std::uint32_t 	LSWF_OFFSET = 0x00000008L;
+const std::uint32_t 	LSWF_ANGLE	= 0x00000010L;
+const std::uint32_t 	LSWF_SKY	= 0x00000020L;
 
-const DWORD					LSSF_SCORE	= 0x00000001L;	// Stacking Flags
-const DWORD					LSSF_STARS	= 0x00000002L;
-const DWORD					LSSF_FWHM	= 0x00000004L;
-const DWORD					LSSF_OFFSET = 0x00000008L;
-const DWORD					LSSF_ANGLE	= 0x00000010L;
-const DWORD					LSSF_SKY	= 0x00000020L;
-const DWORD					LSSF_DELAYED= 0x00010000L;
-const DWORD					LSSF_SAVE	= 0x00020000L;
-const DWORD					LSSF_MOVE	= 0x00040000L;
+const std::uint32_t 	LSSF_SCORE	= 0x00000001L;	// Stacking Flags
+const std::uint32_t 	LSSF_STARS	= 0x00000002L;
+const std::uint32_t 	LSSF_FWHM	= 0x00000004L;
+const std::uint32_t 	LSSF_OFFSET = 0x00000008L;
+const std::uint32_t 	LSSF_ANGLE	= 0x00000010L;
+const std::uint32_t 	LSSF_SKY	= 0x00000020L;
+const std::uint32_t 	LSSF_DELAYED= 0x00010000L;
+const std::uint32_t 	LSSF_SAVE	= 0x00020000L;
+const std::uint32_t 	LSSF_MOVE	= 0x00040000L;
 
-const DWORD					LSWA_SOUND	= 0x00000001L;	// Warning Actions
-const DWORD					LSWA_FLASH	= 0x00000002L;
-const DWORD					LSWA_EMAIL	= 0x00000004L;
-const DWORD					LSWA_FILE	= 0x00000008L;
-const DWORD					LSWA_SENDMULTIPLEEMAILS = 0x00000010L;
+const std::uint32_t 	LSWA_SOUND	= 0x00000001L;	// Warning Actions
+const std::uint32_t 	LSWA_FLASH	= 0x00000002L;
+const std::uint32_t 	LSWA_EMAIL	= 0x00000004L;
+const std::uint32_t 	LSWA_FILE	= 0x00000008L;
+const std::uint32_t 	LSWA_SENDMULTIPLEEMAILS = 0x00000010L;
 
-const DWORD					LSPF_RAW	= 0x00000001L;  // Process Flags
-const DWORD					LSPF_FITS	= 0x00000002L;  // Process Flags
-const DWORD					LSPF_TIFF	= 0x00000004L;  // Process Flags
-const DWORD					LSPF_OTHERS	= 0x00000008L;  // Process Flags
-const DWORD					LSPF_ALL	= 0x0000000FL;  // Process Flags
+const std::uint32_t 	LSPF_RAW	= 0x00000001L;  // Process Flags
+const std::uint32_t 	LSPF_FITS	= 0x00000002L;  // Process Flags
+const std::uint32_t 	LSPF_TIFF	= 0x00000004L;  // Process Flags
+const std::uint32_t 	LSPF_OTHERS	= 0x00000008L;  // Process Flags
+const std::uint32_t 	LSPF_ALL	= 0x0000000FL;  // Process Flags
 
 class CLiveSettings
 {
 private :
-	DWORD				m_dwStackingFlags;
-	DWORD				m_dwWarningFlags;
-	DWORD				m_dwWarningActions;
-	DWORD				m_dwMinImages;
-	DWORD				m_dwScore;
-	DWORD				m_dwStars;
-	DWORD				m_dwFWHM;
-	DWORD				m_dwOffset;
-	DWORD				m_dwAngle;
-	DWORD				m_dwSaveCount;
-	DWORD				m_dwProcessFlags;
-	DWORD				m_dwSkyBackground;
+	std::uint32_t m_dwStackingFlags;
+	std::uint32_t m_dwWarningFlags;
+	std::uint32_t m_dwWarningActions;
+	std::uint32_t m_dwMinImages;
+	std::uint32_t m_dwScore;
+	std::uint32_t m_dwStars;
+	std::uint32_t m_dwFWHM;
+	std::uint32_t m_dwOffset;
+	std::uint32_t m_dwAngle;
+	std::uint32_t m_dwSaveCount;
+	std::uint32_t m_dwProcessFlags;
+	std::uint32_t m_dwSkyBackground;
 	CString				m_strFileFolder;
 	CString				m_strWarnFileFolder;
 	CString				m_strStackedOutputFolder;

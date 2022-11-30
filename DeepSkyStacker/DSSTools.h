@@ -39,34 +39,20 @@ private :
 						a0, b0,
 						a1, b1;
 
-	void	CopyFrom(const CLinearInterpolation & li)
-	{
-		xm = li.xm;
-		a0 = li.a0;
-		b0 = li.b0;
-		a1 = li.a1;
-		b1 = li.b1;
-	};
-
 public :
-	CLinearInterpolation()
+	CLinearInterpolation() noexcept
 	{
 		xm = 0;
 		a0 = b0 = a1 = b1 = 0;
 	};
 
-	CLinearInterpolation(const CLinearInterpolation & li)
-	{
-		CopyFrom(li);
-	};
+	CLinearInterpolation(const CLinearInterpolation&) = default;
 
-	CLinearInterpolation & operator = (const CLinearInterpolation & li)
-	{
-		CopyFrom(li);
-		return (*this);
-	};
+	CLinearInterpolation(CLinearInterpolation&&) = default;
 
-	double	Interpolate(double x) const
+	CLinearInterpolation& operator = (const CLinearInterpolation&) = default;
+
+	double	Interpolate(double x) const noexcept
 	{
 		if (x<xm)
 			return a0*x+b0;
@@ -74,7 +60,7 @@ public :
 			return a1*x+b1;
 	};
 
-	void	Initialize(double x0, double x1, double x2, double y0, double y1, double y2)
+	void Initialize(double x0, double x1, double x2, double y0, double y1, double y2) noexcept
 	{
 		xm = x1;
 		if (x0<x1)
@@ -91,11 +77,11 @@ public :
 		b1 = y1 - a1*x1;
 	};
 
-	float getParameterXm() const { return static_cast<float>(this->xm); }
-	float getParameterA0() const { return static_cast<float>(this->a0); }
-	float getParameterA1() const { return static_cast<float>(this->a1); }
-	float getParameterB0() const { return static_cast<float>(this->b0); }
-	float getParameterB1() const { return static_cast<float>(this->b1); }
+	float getParameterXm() const noexcept { return static_cast<float>(this->xm); }
+	float getParameterA0() const noexcept { return static_cast<float>(this->a0); }
+	float getParameterA1() const noexcept { return static_cast<float>(this->a1); }
+	float getParameterB0() const noexcept { return static_cast<float>(this->b0); }
+	float getParameterB1() const noexcept { return static_cast<float>(this->b1); }
 };
 
 /*
@@ -124,14 +110,6 @@ private :
 	double					fMin, fMax;
 
 private :
-	void	CopyFrom(const CRationalInterpolation & ri)
-	{
-		a = ri.a;
-		b = ri.b;
-		c = ri.c;
-		fMin = ri.fMin;
-		fMax = ri.fMax;
-	};
 
 public :
 	CRationalInterpolation()
@@ -142,18 +120,11 @@ public :
         fMax = 0;
 	};
 
-	CRationalInterpolation(const CRationalInterpolation & ri)
-	{
-		CopyFrom(ri);
-	};
+	CRationalInterpolation(const CRationalInterpolation&) = default;
 
-	CRationalInterpolation & operator = (const CRationalInterpolation & ri)
-	{
-		CopyFrom(ri);
-		return (*this);
-	};
+	CRationalInterpolation& operator = (const CRationalInterpolation&) = default;
 
-	double	Interpolate(double x) const
+	double	Interpolate(double x) const noexcept
 	{
 		if (b || c)
 			return std::max(std::min((x+a)/(b*x+c), fMax), fMin);
@@ -161,7 +132,7 @@ public :
 			return std::max(std::min(x+a, fMax), fMin);
 	};
 
-	void	Initialize(double x0, double x1, double x2, double y0, double y1, double y2)
+	void Initialize(double x0, double x1, double x2, double y0, double y1, double y2) noexcept
 	{
 		double				t1 = ((x0*y0 - x1*y1)*(y0-y2) - (x0*y0 - x2*y2)*(y0-y1));
 		double				t2 = ((x0-x1)*(y0-y2) - (x0-x2)*(y0-y1));
@@ -181,11 +152,11 @@ public :
 		fMax = std::max(std::max(y0, y1), y2);
 	};
 
-	float getParameterA() const { return static_cast<float>(this->a); }
-	float getParameterB() const { return static_cast<float>(this->b); }
-	float getParameterC() const { return static_cast<float>(this->c); }
-	float getParameterMin() const { return static_cast<float>(this->fMin); }
-	float getParameterMax() const { return static_cast<float>(this->fMax); }
+	float getParameterA() const noexcept { return static_cast<float>(this->a); }
+	float getParameterB() const noexcept { return static_cast<float>(this->b); }
+	float getParameterC() const noexcept { return static_cast<float>(this->c); }
+	float getParameterMin() const noexcept { return static_cast<float>(this->fMin); }
+	float getParameterMax() const noexcept { return static_cast<float>(this->fMax); }
 };
 
 /*
@@ -209,12 +180,12 @@ typedef POINTFVECTOR::iterator	POINTFITERATOR;
 
 /* ------------------------------------------------------------------- */
 
-inline double	Distance(double fX1, double fY1, double fX2, double fY2)
+inline double	Distance(double fX1, double fY1, double fX2, double fY2) noexcept
 {
 	return sqrt((fX1-fX2)*(fX1-fX2) + (fY1-fY2)*(fY1-fY2));
 };
 
-inline double Distance(const QPointF& pt1, const QPointF& pt2)
+inline double Distance(const QPointF& pt1, const QPointF& pt2) noexcept
 {
 	return Distance(pt1.x(), pt1.y(), pt2.x(), pt2.y());
 };
@@ -241,7 +212,7 @@ public :
 	};
 	virtual ~CDynamicStats() {};
 
-	void	AddValue(double fValue, int lNrValues = 1)
+	void AddValue(double fValue, int lNrValues = 1) noexcept
 	{
 		if (!m_lNrValues)
 		{
@@ -257,14 +228,14 @@ public :
 		m_fSum	  += fValue*lNrValues;
 	};
 
-	void	RemoveValue(double fValue, int lNrValues = 1)
+	void RemoveValue(double fValue, int lNrValues = 1) noexcept
 	{
 		m_lNrValues-=lNrValues;
 		m_fPowSum -= (fValue*fValue)*lNrValues;
 		m_fSum	  -= fValue*lNrValues;
 	};
 
-	double	Average()
+	double	Average() noexcept
 	{
 		if (m_lNrValues)
 			return m_fSum/(double)m_lNrValues;
@@ -272,7 +243,7 @@ public :
 			return 0;
 	};
 
-	double	Sigma()
+	double Sigma() noexcept
 	{
 		if (m_lNrValues)
 			return sqrt(m_fPowSum/m_lNrValues - pow(m_fSum/m_lNrValues, 2));
@@ -280,12 +251,12 @@ public :
 			return 0;
 	};
 
-	double	Min()
+	double Min() noexcept
 	{
 		return m_fMin;
 	};
 
-	double	Max()
+	double Max() noexcept
 	{
 		return m_fMax;
 	};
@@ -293,7 +264,7 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-inline double Median(double v1, double v2, double v3)
+inline double Median(double v1, double v2, double v3) noexcept
 {
   if (v1 > v2)
   {
@@ -442,17 +413,9 @@ public :
 	double			m_fAbsAverageVariation;
 
 private :
-	void	CopyFrom(const CFlatPart & fp)
-	{
-		m_lStart			= fp.m_lStart;
-		m_lEnd				= fp.m_lEnd;
-		m_fAverage			= fp.m_fAverage;
-		m_fAverageVariation = fp.m_fAverageVariation;
-		m_fAbsAverageVariation = fp.m_fAbsAverageVariation;
-	};
 
 public :
-	CFlatPart()
+	CFlatPart() noexcept
 	{
 		m_lStart = -1;
 		m_lEnd	 = -1;
@@ -461,23 +424,16 @@ public :
 		m_fAbsAverageVariation = 0;
 	};
 	~CFlatPart() {};
-	CFlatPart(const CFlatPart & fp)
-	{
-		CopyFrom(fp);
-	};
+	CFlatPart(const CFlatPart&) = default;
 
-	CFlatPart & operator = (const CFlatPart & fp)
-	{
-		CopyFrom(fp);
-		return (*this);
-	};
+	CFlatPart& operator = (const CFlatPart&) = default;
 
-	int	Length() const
+	int	Length() const noexcept
 	{
 		return m_lEnd-m_lStart+1;
 	};
 
-	double	Score() const
+	double Score() const noexcept
 	{
 		if (m_fAbsAverageVariation)
 			return (double)Length()/m_fAbsAverageVariation;//m_fAverageVariation;
@@ -485,7 +441,7 @@ public :
 			return 0;
 	};
 
-	bool operator < (const CFlatPart & fp) const
+	bool operator < (const CFlatPart & fp) const noexcept
 	{
 		return Score()>fp.Score();
 		/*
@@ -1165,7 +1121,7 @@ public :
 
 	CBilinearParameters& operator=(const CBilinearParameters& bp) = default;
 
-	void Clear()
+	void Clear() noexcept
 	{
 		Type = TT_BILINEAR;
 		a0 = a1 = a2 = a3 = a4 = a5 = a6 = a7 = a8 = 0.0;
@@ -1374,7 +1330,7 @@ public :
 	}
 #endif
 
-	QPointF transform(const QPointF& pt) const
+	QPointF transform(const QPointF& pt) const noexcept
 	{
 		QPointF ptResult;
 		qreal& x = ptResult.rx();
@@ -1424,7 +1380,7 @@ public :
 		return ptResult;
 	}
 
-	double Angle(int lWidth) const
+	double Angle(int lWidth) const noexcept
 	{
 		double		fAngle;
 		QPointF	pt1 (0, 0),
@@ -1438,13 +1394,13 @@ public :
 		return fAngle;
 	}
 
-	void Offsets(double& dX, double& dY) const
+	void Offsets(double& dX, double& dY) const noexcept
 	{
 		dX = a0 * fXWidth;
 		dY = b0 * fYWidth;
 	}
 
-	void Footprint(QPointF& pt1, QPointF& pt2, QPointF& pt3, QPointF& pt4) const
+	void Footprint(QPointF& pt1, QPointF& pt2, QPointF& pt3, QPointF& pt4) const noexcept
 	{
 		pt1.rx() = pt1.ry() = 0;
 		pt2.rx() = fXWidth;	pt2.ry() = 0;

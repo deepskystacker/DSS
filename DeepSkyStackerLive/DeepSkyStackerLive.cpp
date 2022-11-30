@@ -7,7 +7,6 @@
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 
-#include "qmfcapp.h"
 
 #include <QLibraryInfo>
 #include <QDebug>
@@ -17,12 +16,13 @@
 #include <QSettings>
 #include <QStyleFactory>
 #include <QTranslator>
+#include <QApplication>
+#include "qmfcapp.h"
 
 #include <gdiplus.h>
 using namespace Gdiplus;
 
 #pragma comment(lib, "gdiplus.lib")
-#include "registry.h"
 #include "SetUILanguage.h"
 
 // CDeepSkyStackerLiveApp
@@ -74,7 +74,7 @@ BOOL CDeepSkyStackerLiveApp::InitInstance()
 	CWinApp::InitInstance();
 
 	// Standard initialization
-	SetRegistryKey(_T("DeepSkyStacker"));
+	SetRegistryKey(_T("DeepSkyStacker5"));
 
 	return FALSE;
 }
@@ -115,6 +115,8 @@ bool	hasExpired()
 };
 
 /* ------------------------------------------------------------------- */
+QTranslator theQtTranslator;
+QTranslator theAppTranslator;
 
 int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 				   HINSTANCE hPrevInstance,  // handle to previous instance
@@ -150,6 +152,27 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	else
 	{
 		theApp.InitInstance();
+		QString cmdLine{ QString::fromWCharArray(theApp.m_lpCmdLine, wcslen(theApp.m_lpCmdLine)) };
+		QStringList argList{ cmdLine.split(' ') };
+		int argc = argList.count();
+		char** argv = new char* [1 + argc];
+		int i;
+		for (i = 0; i < argc; ++i)
+		{
+			QString arg = argList[i];
+			argv[i] = new char[arg.length() + 1];
+			qstrcpy(argv[i], arg.toLocal8Bit().data());
+		}
+		argv[i] = 0;
+
+		QApplication app(argc, argv);
+
+		for (i = 0; i < argc; ++i)
+		{
+			char* arg = argv[i];
+			delete[] arg;
+		}
+		delete[] argv;
 
 		//
 		// Set up organisation etc. for QSettings usage
@@ -158,20 +181,46 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 		QCoreApplication::setOrganizationDomain("deepskystacker.free.fr");
 		QCoreApplication::setApplicationName("DeepSkyStacker5");
 
-		QApplication* app = qApp;
-
 		//
 		// Set the Qt Application Style
 		//
-		app->setStyle(QStyleFactory::create("Fusion"));
+		app.setStyle(QStyleFactory::create("Fusion"));
 
-#ifndef QT_NO_TRANSLATION
+		QSettings settings;
+		//
+		// Retrieve the Qt language name (e.g.) en_GB
+		//
+		QString language = settings.value("Language").toString();
+
+		//
+		// Language was not defined in our preferences, so select the system default
+		//
+		if (language == "")
+		{
+			language = QLocale::system().name();
+		}
+
 		QString translatorFileName = QLatin1String("qt_");
-		translatorFileName += QLocale::system().name();
-		theApp.qtTranslator = new QTranslator(app);
-		if (theApp.qtTranslator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-			app->installTranslator(theApp.qtTranslator);
-#endif
+		translatorFileName += language;
+		qDebug() << "qt translator filename: " << translatorFileName;
+
+		qDebug() << "translationPath " << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+		if (theQtTranslator.load(translatorFileName, QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+		{
+			app.installTranslator(&theQtTranslator);
+		}
+
+		translatorFileName = QLatin1String("DSSLive.");
+		translatorFileName += language;
+		qDebug() << "app translator filename: " << translatorFileName;
+		//
+		// Install the language if it actually exists.
+		//
+		if (theAppTranslator.load(translatorFileName, ":/i18n/"))
+		{
+			app.installTranslator(&theAppTranslator);
+		}
+
 		if (!hasExpired())
 		{
 			CLiveSettings liveSettings;

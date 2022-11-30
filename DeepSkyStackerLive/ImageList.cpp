@@ -1,11 +1,13 @@
-// ExplorerBar.cpp : implementation file
+// ImageList.cpp : implementation file
 //
 
 #include "stdafx.h"
+#include <QSettings>
 #include "DeepSkyStackerLive.h"
 #include "DeepSkyStackerLiveDlg.h"
 #include "ImageList.h"
 #include "RegisterEngine.h"
+#include "FrameInfoSupport.h"
 
 const DWORD		COLUMN_STACKED	= 0;
 const DWORD 	COLUMN_FILE		= 1;
@@ -115,7 +117,14 @@ void CImageListTab::InitList()
 	strColumn.LoadString(IDS_COLUMN_SKYBACKGROUND);
 	m_ImageList.InsertColumn(COLUMN_SKYBACKGROUND, strColumn, LVCFMT_RIGHT, 50);
 
-	m_ImageList.RestoreState(_T("LivePictureList"), _T("Settings"));
+	QSettings settings;
+
+	settings.beginGroup("DeepSkyStackerLive/LivePictureList");
+	auto state = settings.value("Settings", QByteArray()).toByteArray();
+	settings.endGroup();
+
+	if (!state.isEmpty())
+		m_ImageList.SetState(reinterpret_cast<LPBYTE>(state.data()), state.size());
 };
 
 /* ------------------------------------------------------------------- */
@@ -135,8 +144,20 @@ BOOL CImageListTab::OnInitDialog()
 
 BOOL CImageListTab::Close()
 {
-	m_ImageList.SaveState(_T("LivePictureList"), _T("Settings"));
+	LPBYTE pState;
+	UINT   nStateLen;
 
+	if (m_ImageList.GetState(&pState, &nStateLen))
+	{
+		QByteArray theValue(reinterpret_cast<const char *>(pState), nStateLen);
+		QSettings settings;
+		settings.beginGroup("DeepSkyStackerLive/LivePictureList");
+
+		settings.setValue("Settings", theValue);
+		settings.endGroup();
+
+		delete[] pState;
+	}
 	return TRUE;
 };
 
@@ -217,7 +238,7 @@ void CImageListTab::AddImage(LPCTSTR szImage)
 			strText.LoadString(IDS_YES);
 		m_ImageList.SetItemText(nItem, COLUMN_CFA, strText);
 
-		AddScoreFWHMStarsToGraph(lfi.m_strFileName, lfi.m_fOverallQuality, lfi.m_fFWHM, lfi.m_vStars.size(), lfi.m_SkyBackground.m_fLight*100.0);
+		AddScoreFWHMStarsToGraph(lfi.filePath.generic_wstring().c_str(), lfi.m_fOverallQuality, lfi.m_fFWHM, lfi.m_vStars.size(), lfi.m_SkyBackground.m_fLight * 100.0);
 	};
 };
 
@@ -297,7 +318,7 @@ void CImageListTab::UpdateImageOffsets(LPCTSTR szImage, double fdX, double fdY, 
 			m_ImageList.SetItemText(i, COLUMN_DX, strValue);
 			strValue.Format(_T("%.2f"), fdY);
 			m_ImageList.SetItemText(i, COLUMN_DY, strValue);
-			strValue.Format(_T("%.2f \xc2\xb0"), fAngle);
+			strValue.Format(_T("%.2f°"), fAngle);
 			m_ImageList.SetItemText(i, COLUMN_ANGLE, strValue);
 		};
 	};
