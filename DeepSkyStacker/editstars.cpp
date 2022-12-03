@@ -909,7 +909,7 @@ namespace DSS
 
 				if (m_bComet)
 				{
-					QString			strComet{ tr("\nComet:%1", "IDS_LIGHTFRAMEINFOCOME").arg(tr("Yes", "IDS_YES")) };
+					QString			strComet{ tr("\nComet:%1", "IDS_LIGHTFRAMEINFOCOMET").arg(tr("Yes", "IDS_YES")) };
 
 					strText += strComet;
 				}
