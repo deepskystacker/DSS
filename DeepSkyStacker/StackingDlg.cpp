@@ -691,6 +691,24 @@ namespace DSS
 				qApp->translate("DSS", INPUTFILE_FILTER_SOURCES[i].source, INPUTFILE_FILTER_SOURCES[i].comment));
 		}
 		Q_ASSERT(INPUTFILE_FILTERS.size() == count);
+
+		pictureList->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
+			"Ctrl-A or equivalent to select all rows\n"
+			"Delete key to remove (not erase) selected rows\n"
+			"Right mouse button to display the menu"));
+
+		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
+			"IDS_LISTINFO")
+			.arg(frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME))
+			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
+		};
+		dockTitle->setText(text);
+		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
+
+		pictureList->tabBar->setTabText(0, tr("Main Group", "IDS_MAINGROUP"));
 	}
 
 
@@ -1025,10 +1043,7 @@ namespace DSS
 		pictureList->tableView->horizontalHeader()->setSectionsMovable(true);
 		pictureList->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
 		pictureList->tableView->installEventFilter(this);
-		pictureList->tableView->viewport()->setToolTip(tr("Space Bar to check/uncheck selected rows\n"
-			"Ctrl-A or equivalent to select all rows\n"
-			"Delete key to remove (not erase) selected rows\n"
-			"Right mouse button to display the menu"));
+
 		QItemSelectionModel* qsm = pictureList->tableView->selectionModel();
 		connect(qsm, SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
 			this, SLOT(tableView_selectionChanged(const QItemSelection&, const QItemSelection&)));
@@ -1051,16 +1066,6 @@ namespace DSS
 		dockTitle->setStyleSheet(QString::fromUtf8("QLabel {"
 			"background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, "
 			"stop:0 rgba(138, 185, 242, 0), stop:1 rgba(138, 185, 242, 255))}"));
-		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
-			"IDS_LISTINFO")
-			.arg(0)
-			.arg(0)
-			.arg(0)
-			.arg(0)
-			.arg(0)
-		};
-		dockTitle->setText(text);
-		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
 		pictureList->setTitleBarWidget(dockTitle);
 
 		//
