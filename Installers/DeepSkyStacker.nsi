@@ -90,7 +90,7 @@ ${ReadmeLanguage} "${LANG_ENGLISH}" \
 Section "Visual Studio Runtime"
   SetOutPath "$INSTDIR"
   File "..\x64\Release\vc_redist.x64.exe"
-  ExecWait "$INSTDIR\vc_redist.x64.exe"
+  ExecWait "$INSTDIR\vc_redist.x64.exe /install /passive /norestart"
   Delete "$INSTDIR\vc_redist.x64.exe"
 SectionEnd
 
