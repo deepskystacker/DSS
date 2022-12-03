@@ -7,7 +7,7 @@ majority of the code for the stacking panel has been converted to use Qt.
 
 **** Please note: The translation of messages and the UI may be incomplete.
 
-Here are the main changes that were made for DeepSkyStacker 5.0.1:
+Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 1. The bulk of the code for the "Stacking" panel has been converted to Qt.  This includes a completely reworked image display.
 
