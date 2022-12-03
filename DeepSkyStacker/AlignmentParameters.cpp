@@ -43,7 +43,7 @@ void AlignmentParameters::updateControls()
         case ALIGN_BISQUARED:
             ui->text->setText(tr("Bisquared Alignment\n\nThe Bisquared Alignment is used when at least 25 stars are"
                 "available, else the Bilinear Alignment method is used.",
-                "IDS_ALIGN_BISQUARED"));
+                "IDS_ALIGNMENT_BISQUARED"));
 			ui->alignBisquared->setChecked(true);
 			break;
         case ALIGN_BICUBIC:
