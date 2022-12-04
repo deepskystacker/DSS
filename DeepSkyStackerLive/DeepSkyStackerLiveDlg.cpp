@@ -194,10 +194,13 @@ BOOL CDeepSkyStackerLiveDlg::OnInitDialog()
 		TCHAR				szPath[_MAX_PATH];
 		CString				strPath;
 
-		SHGetFolderPath(nullptr, CSIDL_COMMON_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
+		//
+		// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+		//
+		SHGetFolderPath(nullptr, CSIDL_APPDATA, nullptr, SHGFP_TYPE_CURRENT, szPath);
 
 		strPath = szPath;
-		strPath += "\\DeepSkyStacker\\DSSLive.settings";
+		strPath += "\\DeepSkyStacker\\DeepSkyStacker5\\DSSLive.settings";
 		workspace.ReadFromFile(strPath);
 	};
 

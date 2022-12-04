@@ -982,9 +982,6 @@ namespace DSS
 		ui->picture->setToolBar(pToolBar.get());
 		pToolBar->setVisible(false); pToolBar->setEnabled(false);
 
-		if (!fileList.empty())
-			openFileList(fileList);
-
 		//
 		// Restore windowState of this and the table view's horizontal header
 		//
@@ -1075,7 +1072,11 @@ namespace DSS
 		pictureList->tabBar->setExpanding(false);
 		pictureList->tabBar->setContextMenuPolicy(Qt::CustomContextMenu);
 		pictureList->tabBar->setCurrentIndex(pictureList->tabBar->addTab(tr("Main Group", "IDS_MAINGROUP")));
-		updateListInfo();
+
+		if (!fileList.empty())
+			openFileList(fileList);			// Will call updateListInfo()
+		else
+			updateListInfo();
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)

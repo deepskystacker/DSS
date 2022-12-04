@@ -322,11 +322,15 @@ void ExplorerBar::onLoadSettings()
 		}
 		else if (a == loadLiveSettings)
 		{
-			// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker
-			fs::path fileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdU16String());
+			// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+			QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+			fs::path fileName(directory.toStdU16String());
+			create_directories(fileName);		// In case they don't exist
+
 			fileName /= "DSSLive.settings";		// Append the filename with a path separator
-			ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string());
-			workspace.ReadFromFile(fileName.generic_wstring().c_str());
+			ZTRACE_RUNTIME("Loading DSSLive settings from: %s", fileName.generic_string().c_str());
+			workspace.ReadFromFile(fileName);
 			workspace.saveSettings();
 		}
 		else if (a == loadAnother)
@@ -342,7 +346,7 @@ void ExplorerBar::onLoadSettings()
 			// In which case the action's text string is the fully qualified name of the file to load
 			//
 			fs::path fileName(a->text().toStdU16String());
-			workspace.ReadFromFile(fileName.generic_wstring().c_str());
+			workspace.ReadFromFile(fileName);
 			workspace.saveSettings();
 			mruPath.Add(fileName);
 			mruPath.saveSettings();
@@ -377,15 +381,19 @@ void ExplorerBar::onSaveSettings()
 	{
 		if (a == saveLiveSettings)
 		{
-			// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker
-			fs::path fileName(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation).toStdU16String());
+			// Save the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+			QString directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+			fs::path fileName(directory.toStdU16String());
+			create_directories(fileName);		// In case they don't exist
+
 			fileName /= "DSSLive.settings";		// Append the filename with a path separator
-			ZTRACE_RUNTIME("Saving DSSLive settings to: %s", fileName.generic_string());
-			workspace.SaveToFile(fileName.generic_wstring().c_str());
+			ZTRACE_RUNTIME("Saving DSSLive settings to: %s", fileName.generic_string().c_str());
+			workspace.SaveToFile(fileName);
 		}
 		else if (a == saveAnother)
 		{
-			ZTRACE_RUNTIME("Invoking dialog to load another settings file.");
+			ZTRACE_RUNTIME("Invoking dialog to save another settings file.");
 			SaveSettingFile();
 		}
 		else
@@ -396,7 +404,7 @@ void ExplorerBar::onSaveSettings()
 			// In which case the action's text string is the fully qualified name of the file to load
 			//
 			fs::path fileName(a->text().toStdU16String());
-			workspace.SaveToFile(fileName.generic_wstring().c_str());
+			workspace.SaveToFile(fileName);
 			mruPath.Add(fileName);
 			mruPath.saveSettings();
 		}
@@ -439,13 +447,16 @@ void ExplorerBar::LoadSettingFile()
 	QString				extension("settings");
 	bool				fileLoaded(false);
 
+	// Read the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+	// create the directory to avoid surprises
 	directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+	create_directories(fs::path{ directory.toStdU16String() });
 
 	fileDialog.setWindowTitle(tr("Load DeepSkyStacker Settings", "IDS_TITLE_LOADSETTINGS"));
 	fileDialog.setDefaultSuffix(extension);
 	fileDialog.setFileMode(QFileDialog::ExistingFile);
 
-	fileDialog.setNameFilter(tr("DSS Settings Files (*.settings *.dsssettings *.txt)", "IDS_FILTER_SETTINGFILE"));
+	fileDialog.setNameFilter(tr("DSS Settings Files (*.dsssettings)", "IDS_FILTER_SETTINGFILE"));
 	fileDialog.selectFile(QString());		// No file(s) selected
 	fileDialog.setDirectory(directory);
 
@@ -462,7 +473,7 @@ void ExplorerBar::LoadSettingFile()
 				ZTRACE_RUNTIME("Loading settings file: %s", fileName.generic_string());
 				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-				workspace.ReadFromFile(fileName.generic_wstring().c_str());
+				workspace.ReadFromFile(fileName);
 				workspace.saveSettings();
 				mruPath.Add(fileName);
 				mruPath.saveSettings();
@@ -483,13 +494,16 @@ void ExplorerBar::SaveSettingFile()
 	QString				extension("settings");
 	bool				fileSaved(false);
 
+	// Save the DSSLive setting file from the folder %AppData%/DeepSkyStacker/DeepSkyStacker5
+	// create the directory to avoid surprises
 	directory = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+	create_directories(fs::path{ directory.toStdU16String() });
 
 	fileDialog.setWindowTitle(tr("Save DeepSkyStacker Settings", "IDS_TITLE_SAVESETTINGS"));
 	fileDialog.setDefaultSuffix(extension);
 	fileDialog.setFileMode(QFileDialog::AnyFile);
 
-	fileDialog.setNameFilter(tr("DSS Settings Files (*.settings *.dsssettings *.txt)"));
+	fileDialog.setNameFilter(tr("DSS Settings Files (*.dsssettings)"));
 	fileDialog.setDirectory(directory);
 
 	ZTRACE_RUNTIME("About to show file open dlg");
@@ -500,17 +514,14 @@ void ExplorerBar::SaveSettingFile()
 		if (!file.isEmpty())
 		{
 			fs::path fileName(file.toStdU16String());		// as UTF-16
-			if (status(fileName).type() == fs::file_type::regular)
-			{
-				ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string());
-				QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+			ZTRACE_RUNTIME("Saving settings file: %s", fileName.generic_string());
+			QGuiApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-				workspace.SaveToFile(fileName.generic_wstring().c_str());
-				mruPath.Add(fileName);
-				mruPath.saveSettings();
-				fileSaved = true;
-				QGuiApplication::restoreOverrideCursor();
-			}
+			workspace.SaveToFile(fileName);
+			mruPath.Add(fileName);
+			mruPath.saveSettings();
+			fileSaved = true;
+			QGuiApplication::restoreOverrideCursor();
 		}
 	}
 	if (!fileSaved) ZTRACE_RUNTIME("No file specified to save settings");
