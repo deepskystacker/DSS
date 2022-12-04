@@ -1,9 +1,7 @@
 ﻿Welcome to DeepSkyStacker 5.1.0 Beta 1
 
-This release is the start of the process of converting the code to Qt so that it can be
-ported to platforms other than Windows.
-Only 64 bit versions of Windows 7 and later are supported in this release. So far the
-majority of the code for the stacking panel has been converted to use Qt.
+This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows.
+Only 64 bit versions of Windows 7 and later are supported in this release. So far the majority of the code for the stacking panel has been converted to use Qt.
 
 **** Please note: The translation of messages and the UI may be incomplete.
 
