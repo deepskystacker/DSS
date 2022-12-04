@@ -17,10 +17,45 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QSettings>
+#include <QShowEvent>
 
 
 namespace DSS
 {
+	static const QString DIALOG_GEOMETRY_SETTING = QStringLiteral("Dialogs/%1/geometry");
+
+	BaseDialog::BaseDialog(const QString& name, const Behaviours& behaviours /*= Behaviour::None*/, QWidget* parent /*= nullptr*/) :
+		Inherited(parent),
+		m_name{name},
+		m_behaviours{behaviours}
+	{
+		Q_ASSERT(!m_behaviours.testFlag(Behaviour::PersistGeometry) || !m_name.isEmpty());
+		connect(this, &QDialog::finished, this, &BaseDialog::saveState);
+	}
+
+	void BaseDialog::showEvent(QShowEvent* event)
+	{
+		if (!event->spontaneous()) {
+			restoreState();
+		}
+		Inherited::showEvent(event);
+	}
+
+	void BaseDialog::saveState() const
+	{
+		if (hasPersistentGeometry()) {
+			QSettings{}.setValue(DIALOG_GEOMETRY_SETTING.arg(m_name), saveGeometry());
+		}
+	}
+
+	void BaseDialog::restoreState()
+	{
+		if (hasPersistentGeometry()) {
+			restoreGeometry(QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(m_name)).toByteArray());
+		}
+	}
+
+
 	static bool processList(const fs::path& fileList, QString& outputFile)
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -97,7 +132,7 @@ namespace DSS
 
 
 	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
-		QDialog(parent),
+		Inherited(QStringLiteral("Batch"), Behaviour::PersistGeometry, parent),
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
 	{
@@ -140,8 +175,6 @@ namespace DSS
 
 		if (!processedListCount)
 		{
-			//TODO: if still necessary
-			//SaveWindowPosition(this, "Dialogs/Batch/Position");
 			Inherited::accept();
 		};
 	}
