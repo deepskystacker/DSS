@@ -1,4 +1,5 @@
 ##!include "MUI2.nsh"
+!include "FileAssociation.nsh"
 !verbose 4
 
 # Want to display Unicode readme
@@ -10,6 +11,12 @@ SetCompressor /SOLID lzma
 !include "MUI_EXTRAPAGES.nsh"
 !include "PathRemove.nsh"
 !include "FileFunc.nsh"
+
+# *************************************************************
+# Un-comment the !define NDEBUG below to ship a RELEASE build *
+#  or make it a comment to ship a DEBUG build                 *
+# *************************************************************
+#!define NDEBUG
 
 !define MUI_HEADERIMAGE
 
@@ -130,12 +137,56 @@ Section
   
   # specify the files that go in the output path
 
-  File "..\x64\Release\${DSS_FILE}.exe"
-  File "..\x64\Release\${DSS_FILE}.pdb"
-  File "..\x64\Release\${DSSCL_FILE}.exe"
-  File "..\x64\Release\${DSSCL_FILE}.pdb"
-  File "..\x64\Release\${DSSLIVE_FILE}.exe"
-  File "..\x64\Release\${DSSLIVE_FILE}.pdb"
+  #
+  # If NDEBUG is defined, ship the release build
+  # If not, ship the debug build
+  #
+  !ifdef NDEBUG
+		File "..\x64\Release\${DSS_FILE}.exe"
+		File "..\x64\Release\${DSS_FILE}.pdb"
+		File "..\x64\Release\${DSSCL_FILE}.exe"
+		File "..\x64\Release\${DSSCL_FILE}.pdb"
+		File "..\x64\Release\${DSSLIVE_FILE}.exe"
+		File "..\x64\Release\${DSSLIVE_FILE}.pdb"
+		 
+		File "..\x64\Release\Qt6Core.dll"
+		File "..\x64\Release\Qt6Gui.dll"
+		File "..\x64\Release\Qt6Network.dll"
+		File "..\x64\Release\Qt6Widgets.dll"
+		  
+		File /r "..\x64\Release\iconengines"
+		File /r "..\x64\Release\imageformats"
+		File /r "..\x64\Release\networkinformation"
+		File /r "..\x64\Release\platforms"
+		File /r "..\x64\Release\styles"
+		File /r "..\x64\Release\tls"
+		File /r "..\x64\Release\translations"
+  !else
+		File "..\x64\Debug\Qt6Cored.dll"
+		File "..\x64\Debug\Qt6Cored.pdb"
+		File "..\x64\Debug\Qt6Guid.dll"
+		File "..\x64\Debug\Qt6Guid.pdb"
+		File "..\x64\Debug\Qt6Networkd.dll"
+		File "..\x64\Debug\Qt6Networkd.pdb"
+		File "..\x64\Debug\Qt6Widgetsd.dll"
+		File "..\x64\Debug\Qt6Widgetsd.pdb"
+
+		File /r "..\x64\Debug\iconengines"
+		File /r "..\x64\Debug\imageformats"
+		File /r "..\x64\Debug\networkinformation"
+		File /r "..\x64\Debug\platforms"
+		File /r "..\x64\Debug\styles"
+		File /r "..\x64\Debug\tls"
+		File /r "..\x64\Debug\translations"
+
+		File "..\x64\Debug\${DSS_FILE}.exe"
+		File "..\x64\Debug\${DSS_FILE}.pdb"
+		File "..\x64\Debug\${DSSCL_FILE}.exe"
+		File "..\x64\Debug\${DSSCL_FILE}.pdb"
+		File "..\x64\Debug\${DSSLIVE_FILE}.exe"
+		File "..\x64\Debug\${DSSLIVE_FILE}.pdb"
+  !endif
+  
   File "..\Help\${DSS_HELP_FR}"
   File "..\Help\${DSS_HELP_ES}"
   File "..\Help\${DSS_HELP_EN}"
@@ -144,17 +195,6 @@ Section
   # File "..\Help\${DSS_HELP_NL}"
   File "${DSS_README_FILE}"
 
-  File "..\x64\Release\Qt6Core.dll"
-  File "..\x64\Release\Qt6Gui.dll"
-  File "..\x64\Release\Qt6Network.dll"
-  File "..\x64\Release\Qt6Widgets.dll"
-  File /r "..\x64\Release\iconengines"
-  File /r "..\x64\Release\imageformats"
-  File /r "..\x64\Release\networkinformation"
-  File /r "..\x64\Release\platforms"
-  File /r "..\x64\Release\styles"
-  File /r "..\x64\Release\tls"
-  File /r "..\x64\Release\translations"
   
   
   # define uninstaller name
@@ -177,6 +217,11 @@ Section
 
   CreateShortCut  "$SMPROGRAMS\${DSS_PRODUCT}\${DSS_UNINSTALL_NAME}.lnk" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" "" "$INSTDIR\${DSS_UNINSTALL_FILE}.exe" 0
 
+  #
+  # Create a file association for .dssfilelist
+  #
+  ${registerExtension} "$INSTDIR\${DSS_FILE}.exe" ".dssfilelist" "DeepSkyStacker Filelist"
+  
   # write uninstall information to the registry
  
   WriteRegStr HKLM "${DSS_REG_UNINSTALL_PATH}" "Publisher"            "${DSS_PUBLISHER}"
@@ -221,13 +266,29 @@ Section "Uninstall"
   Delete "$INSTDIR\${DSS_HELP_EN}"
   Delete "$INSTDIR\${DSS_HELP_DE}"
   Delete "$INSTDIR\${DSS_HELP_PT}"
-  Delete "$INSTDIR\${DSS_README_FILE}"
   # Delete "$INSTDIR\${DSS_HELP_NL}" 
-  Delete "$INSTDIR\Qt6Core.dll"
-  Delete "$INSTDIR\Qt6Gui.dll"
-  Delete "$INSTDIR\Qt6Network.dll"
-  Delete "$INSTDIR\Qt6Widgets.dll"
-	  
+  Delete "$INSTDIR\${DSS_README_FILE}"
+  
+  #
+  # If NDEBUG is defined, erase release build files
+  # If not, erase debug build files
+  #
+  !ifdef NDEBUG
+		Delete "$INSTDIR\Qt6Core.dll"
+		Delete "$INSTDIR\Qt6Gui.dll"
+		Delete "$INSTDIR\Qt6Network.dll"
+		Delete "$INSTDIR\Qt6Widgets.dll"
+  !else
+		Delete "$INSTDIR\Qt6Cored.dll"
+		Delete "$INSTDIR\Qt6Cored.pdb"
+		Delete "$INSTDIR\Qt6Guid.dll"
+		Delete "$INSTDIR\Qt6Guid.pdb"
+		Delete "$INSTDIR\Qt6Networkd.dll"
+		Delete "$INSTDIR\Qt6Networkd.pdb"
+		Delete "$INSTDIR\Qt6Widgetsd.dll"
+		Delete "$INSTDIR\Qt6Widgetsd.pdb"
+  !endif
+  
   Delete "$INSTDIR\iconengines\*"
   Delete "$INSTDIR\imageformats\*"
   Delete "$INSTDIR\networkinformation\*"
@@ -244,6 +305,11 @@ Section "Uninstall"
   RmDir  "$INSTDIR\translations"
 
   RmDir  "$INSTDIR"
+  
+  #
+  # de-register the .dssfilelist extension
+  #
+  ${unregisterExtension} ".dssfilelist" "DeepSkyStacker Filelist"
  
   # Delete Start Menu Shortcuts and Desktop shortcuts
    

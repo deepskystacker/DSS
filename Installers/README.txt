@@ -39,3 +39,5 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 10. The "Processing" panel is still running MFC code but has minor changes to allow it to work as a child of a Qt window.
 
 11. The location for storing DeepSkyStacker settings files has changed from %ProgramData%\DeepSkyStacker (typically C:\ProgramData\DeepSkyStacker) to %AppData%\DeepSkyStacker\DeepSkyStacker5 (typically C:\Users\<username>\AppData\Roaming\DeepSkyStacker\DeepSkyStacker5).  You may wish to copy any old settings files to the new location.
+
+12. A file association is now created during installation so that .dssfilelist files will be opened by DeepSkyStacker.
