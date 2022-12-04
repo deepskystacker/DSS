@@ -73,7 +73,6 @@ using namespace Gdiplus;
 #include "StackingTasks.h"
 #include "ui_StackingDlg.h"
 #include "StackRecap.h"
-#include "cgfiltyp.h"
 #include "SetUILanguage.h"
 #include <ZExcept.h>
 
@@ -487,39 +486,6 @@ BOOL DeepSkyStackerApp::InitInstance()
 	SETTINGFILE_FILTERS.LoadString(IDS_FILTER_SETTINGFILE);
 	STARMASKFILE_FILTERS.LoadString(IDS_FILTER_MASK);
 
-	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS\n");
-
-	CGCFileTypeAccess	FTA;
-	TCHAR				szPath[1 + _MAX_PATH];
-	CString				strPath;
-	CString				strTemp;
-
-	::GetModuleFileName(nullptr, szPath, sizeof(szPath) / sizeof(TCHAR));
-	strPath = szPath;
-
-	FTA.SetExtension(_T("dssfilelist"));
-
-	strTemp = strPath;
-	strTemp += _T(" \"%1\"");
-	FTA.SetShellOpenCommand(strTemp);
-	FTA.SetDocumentShellOpenCommand(strTemp);
-	FTA.SetDocumentClassName(_T("DeepSkyStacker.FileList"));
-
-	CString				strFileListDescription;
-
-	strFileListDescription.LoadString(IDS_FILELISTDESCRIPTION);
-
-	FTA.SetDocumentDescription(strFileListDescription);
-
-	// use first icon in program
-	strTemp = strPath;
-	strTemp += ",1";
-	FTA.SetDocumentDefaultIcon(strTemp);
-
-	// set the necessary registry entries
-	FTA.RegSetAllInfo();
-	ZTRACE_RUNTIME("Reset dssfilelist extension association with DSS - ok\n");
-
 	return TRUE;
 };
 
@@ -565,8 +531,6 @@ QTranslator theAppTranslator;
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
-
-
 
 	int result{ 0 };
 

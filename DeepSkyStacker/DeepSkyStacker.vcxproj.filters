@@ -156,9 +156,6 @@
     <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\cgfiltyp.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\childprop.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -515,9 +512,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\cdxCRotBevelLine.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\cgfiltyp.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\childprop.h">

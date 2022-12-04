@@ -229,7 +229,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="..\Tools\ButtonToolbar.cpp" />
     <ClCompile Include="..\Tools\cdxCRot90DC.cpp" />
     <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp" />
-    <ClCompile Include="..\Tools\cgfiltyp.cpp" />
     <ClCompile Include="..\Tools\childprop.cpp" />
     <ClCompile Include="..\Tools\ControlPos.cpp" />
     <ClCompile Include="..\Tools\CtrlCache.cpp" />
@@ -468,7 +467,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\ButtonToolbar.h" />
     <ClInclude Include="..\Tools\cdxCRot90DC.h" />
     <ClInclude Include="..\Tools\cdxCRotBevelLine.h" />
-    <ClInclude Include="..\Tools\cgfiltyp.h" />
     <ClInclude Include="..\Tools\childprop.h" />
     <ClInclude Include="..\Tools\ControlPos.h" />
     <ClInclude Include="..\Tools\CustomTabCtrl.h" />
