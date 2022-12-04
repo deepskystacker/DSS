@@ -505,7 +505,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="BackgroundCalibration.h" />
     <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BackgroundLoading.h" />
-    <ClInclude Include="BatchStacking.h" />
+    <QtMoc Include="BatchStacking.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="BitmapExt.h" />
