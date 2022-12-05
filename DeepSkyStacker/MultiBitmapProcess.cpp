@@ -207,7 +207,7 @@ void CCombineTask::process()
 	const auto handleError = [](const auto& errorMessage, const auto flags) -> void
 	{
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, flags);
 #endif

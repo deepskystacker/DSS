@@ -1093,7 +1093,7 @@ dng_skip:
       cam_mul[3] = 0;
     }
   }
-  if ((use_camera_matrix & (((use_camera_wb || dng_version)?0:1) | 0x2)) &&
+  if ((use_camera_matrix & (((use_camera_wb || dng_version)?1:0) | 0x2)) &&
       cmatrix[0][0] > 0.125)
   {
     memcpy(rgb_cam, cmatrix, sizeof cmatrix);
@@ -1155,6 +1155,8 @@ dng_skip:
     is_raw = 0;
    if(raw_width <= left_margin || raw_height <= top_margin)
        is_raw = 0;
+   if (dng_version && (tiff_samples < 1 || tiff_samples > 4))
+       is_raw = 0; // we do not handle DNGs with more than 4 values per pixel
 #ifdef NO_JASPER
   if (load_raw == &LibRaw::redcine_load_raw)
   {

@@ -553,7 +553,7 @@ int main(int argc, char* argv[])
 	{
 		ZTRACE_RUNTIME("Fatal Error: MFC initialization failed");
 		QString errorMessage{ "Fatal Error: MFC initialization failed" };
-		cerr << errorMessage.toStdWString().c_str() << endl;
+		wcerr << errorMessage.toStdWString().c_str() << endl;
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 		return 1;
 	}
@@ -669,7 +669,7 @@ int main(int argc, char* argv[])
 	{
 		QString errorMessage(e.what());
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
@@ -695,7 +695,7 @@ int main(int argc, char* argv[])
 			.arg(text);
 
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
@@ -704,7 +704,7 @@ int main(int argc, char* argv[])
 	{
 		QString errorMessage("Unknown exception caught");
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
