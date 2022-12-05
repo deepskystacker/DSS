@@ -22,7 +22,8 @@
 
 namespace DSS
 {
-	static const QString DIALOG_GEOMETRY_SETTING = QStringLiteral("Dialogs/%1/geometry");
+	static const QString DIALOG_GEOMETRY_SETTING	= QStringLiteral("Dialogs/%1/geometry");
+	static const QString DEFAULT_LIST_FILE_FILTER	= QStringLiteral("*.txt");
 
 	BaseDialog::BaseDialog(const QString& name, const Behaviours& behaviours /*= Behaviour::None*/, QWidget* parent /*= nullptr*/) :
 		Inherited(parent),
@@ -134,7 +135,8 @@ namespace DSS
 	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
 		Inherited(QStringLiteral("Batch"), Behaviour::PersistGeometry, parent),
 		ui(new Ui::BatchStacking),
-		m_fileListModel(new QStandardItemModel(this))
+		m_fileListModel(new QStandardItemModel(this)),
+		m_listFileFilters{ DEFAULT_LIST_FILE_FILTER }
 	{
 		ui->setupUi(this);
 
@@ -190,7 +192,7 @@ namespace DSS
 		QSettings settings;
 		static const QString settingKey = QStringLiteral("Folders/ListFolder");
 		const QString& baseDir = settings.value(settingKey, QString()).toString();
-		auto files = QFileDialog::getOpenFileNames(this, tr(""), baseDir, QStringLiteral("*.txt"));
+		auto files = QFileDialog::getOpenFileNames(this, tr(""), baseDir, m_listFileFilters.join(QStringLiteral(";;")));
 
 		const auto& filePaths = getFilePaths();
 		QStringList pathsToAdd;
@@ -218,7 +220,7 @@ namespace DSS
 		clearLists();
 		addItemsFor(filePaths, false);
 	}
-	
+
 	void BatchStacking::addItemsFor(const QStringList& paths, bool checked)
 	{
 		Q_ASSERT(m_fileListModel);

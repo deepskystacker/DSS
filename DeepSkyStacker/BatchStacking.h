@@ -62,6 +62,11 @@ namespace DSS
 		virtual ~BatchStacking();
 
 		void setMRUPaths(const std::vector<fs::path>& mruPaths);
+		void setListFileFilters(const QStringList& filters)
+		{
+			Q_ASSERT(!filters.isEmpty());
+			m_listFileFilters = filters;
+		}
 
 	public slots:
 		void accept() override;
@@ -75,6 +80,7 @@ namespace DSS
 	private:
 		Ui::BatchStacking*	ui{ nullptr };
 		QStandardItemModel*	m_fileListModel{ nullptr };
+		QStringList			m_listFileFilters;
 
 	private:
 		Q_DISABLE_COPY(BatchStacking)
