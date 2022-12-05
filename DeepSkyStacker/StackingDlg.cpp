@@ -1325,7 +1325,7 @@ namespace DSS
 					.arg(frameList.groupName(groupId)));
 
 	#if defined(_CONSOLE)
-				std::cerr << errorMessage;
+				std::wcerr << errorMessage;
 	#else
 				int ret = QMessageBox::warning(this, "DeepSkyStacker",
 					errorMessage,
@@ -2698,7 +2698,7 @@ namespace DSS
 				.arg(e.what())
 			);
 #if defined(_CONSOLE)
-			std::cerr << errorMessage;
+			std::wcerr << errorMessage.toStdWString().c_str();
 #else
 			int ret = QMessageBox::warning(this, "DeepSkyStacker",
 				errorMessage,

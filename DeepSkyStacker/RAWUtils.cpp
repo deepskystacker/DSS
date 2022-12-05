@@ -470,7 +470,7 @@ namespace { // Only use in this .cpp file
 			CString errorMessage;
 			errorMessage.Format(IDS_CAMERA_NOT_SUPPORTED, strModel);
 #if defined(_CONSOLE)
-			std::cerr << errorMessage;
+			std::wcerr << errorMessage;
 #else
 			AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
 #endif

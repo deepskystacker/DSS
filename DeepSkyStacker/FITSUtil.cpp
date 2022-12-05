@@ -288,7 +288,7 @@ bool CFITSReader::Open()
 		ZTRACE_RUNTIME(CT2CA(errorMessage));
 
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
 #endif
@@ -953,7 +953,7 @@ bool CFITSReadInMemoryBitmap::OnOpen()
 				CString errorMessage;
 				errorMessage.Format(IDS_8BIT_FITS_NODEBAYER);
 #if defined(_CONSOLE)
-				std::cerr << errorMessage;
+				std::wcerr << errorMessage;
 #else
 				AfxMessageBox(errorMessage, MB_OK | MB_ICONWARNING);
 #endif
@@ -1070,7 +1070,7 @@ bool CFITSReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 			e.locationAtIndex(0)->lineNumber(),
 			text);
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
@@ -1743,7 +1743,7 @@ bool CFITSWriteFromMemoryBitmap::OnWrite(int lX, int lY, double& fRed, double& f
 			e.locationAtIndex(0)->lineNumber(),
 			text);
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
