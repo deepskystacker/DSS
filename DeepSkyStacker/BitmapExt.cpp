@@ -427,7 +427,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgre
 	{
 		CString errorMessage(static_cast<LPCTSTR>(CA2CT(e.what())));
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
@@ -457,7 +457,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgre
 			ze.locationAtIndex(0)->lineNumber(),
 			text);
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
@@ -467,7 +467,7 @@ bool LoadPicture(LPCTSTR szFileName, CAllDepthBitmap& AllDepthBitmap, CDSSProgre
 	{
 		CString errorMessage(_T("Unknown exception caught"));
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
