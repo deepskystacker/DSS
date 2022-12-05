@@ -12,12 +12,6 @@ SetCompressor /SOLID lzma
 !include "PathRemove.nsh"
 !include "FileFunc.nsh"
 
-# *************************************************************
-# Un-comment the !define NDEBUG below to ship a RELEASE build *
-#  or make it a comment to ship a DEBUG build                 *
-# *************************************************************
-#!define NDEBUG
-
 !define MUI_HEADERIMAGE
 
 !define PRODUCT_NAME       "DeepSkyStacker"
@@ -137,55 +131,25 @@ Section
   
   # specify the files that go in the output path
 
-  #
-  # If NDEBUG is defined, ship the release build
-  # If not, ship the debug build
-  #
-  !ifdef NDEBUG
-		File "..\x64\Release\${DSS_FILE}.exe"
-		File "..\x64\Release\${DSS_FILE}.pdb"
-		File "..\x64\Release\${DSSCL_FILE}.exe"
-		File "..\x64\Release\${DSSCL_FILE}.pdb"
-		File "..\x64\Release\${DSSLIVE_FILE}.exe"
-		File "..\x64\Release\${DSSLIVE_FILE}.pdb"
-		 
-		File "..\x64\Release\Qt6Core.dll"
-		File "..\x64\Release\Qt6Gui.dll"
-		File "..\x64\Release\Qt6Network.dll"
-		File "..\x64\Release\Qt6Widgets.dll"
-		  
-		File /r "..\x64\Release\iconengines"
-		File /r "..\x64\Release\imageformats"
-		File /r "..\x64\Release\networkinformation"
-		File /r "..\x64\Release\platforms"
-		File /r "..\x64\Release\styles"
-		File /r "..\x64\Release\tls"
-		File /r "..\x64\Release\translations"
-  !else
-		File "..\x64\Debug\Qt6Cored.dll"
-		File "..\x64\Debug\Qt6Cored.pdb"
-		File "..\x64\Debug\Qt6Guid.dll"
-		File "..\x64\Debug\Qt6Guid.pdb"
-		File "..\x64\Debug\Qt6Networkd.dll"
-		File "..\x64\Debug\Qt6Networkd.pdb"
-		File "..\x64\Debug\Qt6Widgetsd.dll"
-		File "..\x64\Debug\Qt6Widgetsd.pdb"
-
-		File /r "..\x64\Debug\iconengines"
-		File /r "..\x64\Debug\imageformats"
-		File /r "..\x64\Debug\networkinformation"
-		File /r "..\x64\Debug\platforms"
-		File /r "..\x64\Debug\styles"
-		File /r "..\x64\Debug\tls"
-		File /r "..\x64\Debug\translations"
-
-		File "..\x64\Debug\${DSS_FILE}.exe"
-		File "..\x64\Debug\${DSS_FILE}.pdb"
-		File "..\x64\Debug\${DSSCL_FILE}.exe"
-		File "..\x64\Debug\${DSSCL_FILE}.pdb"
-		File "..\x64\Debug\${DSSLIVE_FILE}.exe"
-		File "..\x64\Debug\${DSSLIVE_FILE}.pdb"
-  !endif
+  File "..\x64\Release\${DSS_FILE}.exe"
+  File "..\x64\Release\${DSS_FILE}.pdb"
+  File "..\x64\Release\${DSSCL_FILE}.exe"
+  File "..\x64\Release\${DSSCL_FILE}.pdb"
+  File "..\x64\Release\${DSSLIVE_FILE}.exe"
+  File "..\x64\Release\${DSSLIVE_FILE}.pdb"
+	 
+  File "..\x64\Release\Qt6Core.dll"
+  File "..\x64\Release\Qt6Gui.dll"
+  File "..\x64\Release\Qt6Network.dll"
+  File "..\x64\Release\Qt6Widgets.dll"
+	  
+  File /r "..\x64\Release\iconengines"
+  File /r "..\x64\Release\imageformats"
+  File /r "..\x64\Release\networkinformation"
+  File /r "..\x64\Release\platforms"
+  File /r "..\x64\Release\styles"
+  File /r "..\x64\Release\tls"
+  File /r "..\x64\Release\translations"
   
   File "..\Help\${DSS_HELP_FR}"
   File "..\Help\${DSS_HELP_ES}"
@@ -194,8 +158,6 @@ Section
   File "..\Help\${DSS_HELP_PT}"
   # File "..\Help\${DSS_HELP_NL}"
   File "${DSS_README_FILE}"
-
-  
   
   # define uninstaller name
 
@@ -269,25 +231,10 @@ Section "Uninstall"
   # Delete "$INSTDIR\${DSS_HELP_NL}" 
   Delete "$INSTDIR\${DSS_README_FILE}"
   
-  #
-  # If NDEBUG is defined, erase release build files
-  # If not, erase debug build files
-  #
-  !ifdef NDEBUG
-		Delete "$INSTDIR\Qt6Core.dll"
-		Delete "$INSTDIR\Qt6Gui.dll"
-		Delete "$INSTDIR\Qt6Network.dll"
-		Delete "$INSTDIR\Qt6Widgets.dll"
-  !else
-		Delete "$INSTDIR\Qt6Cored.dll"
-		Delete "$INSTDIR\Qt6Cored.pdb"
-		Delete "$INSTDIR\Qt6Guid.dll"
-		Delete "$INSTDIR\Qt6Guid.pdb"
-		Delete "$INSTDIR\Qt6Networkd.dll"
-		Delete "$INSTDIR\Qt6Networkd.pdb"
-		Delete "$INSTDIR\Qt6Widgetsd.dll"
-		Delete "$INSTDIR\Qt6Widgetsd.pdb"
-  !endif
+  Delete "$INSTDIR\Qt6Core.dll"
+  Delete "$INSTDIR\Qt6Gui.dll"
+  Delete "$INSTDIR\Qt6Network.dll"
+  Delete "$INSTDIR\Qt6Widgets.dll"
   
   Delete "$INSTDIR\iconengines\*"
   Delete "$INSTDIR\imageformats\*"
