@@ -396,6 +396,9 @@
     <ClCompile Include="picturelist.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
+    <ClCompile Include="BaseDialog.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -1311,6 +1314,9 @@
     </QtMoc>
     <QtMoc Include="picturelist.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="BaseDialog.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
