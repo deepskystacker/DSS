@@ -12,6 +12,7 @@
 #include "FrameList.h"
 #include "QtProgressDlg.h"
 #include "StackingEngine.h"
+#include "DeepSkyStacker.h"
 
 #include <QStandardItemModel>
 #include <QFileDialog>
@@ -19,44 +20,8 @@
 #include <QSettings>
 #include <QShowEvent>
 
-
-namespace DSS
+namespace
 {
-	static const QString DIALOG_GEOMETRY_SETTING	= QStringLiteral("Dialogs/%1/geometry");
-	static const QString DEFAULT_LIST_FILE_FILTER	= QStringLiteral("*.txt");
-
-	BaseDialog::BaseDialog(const QString& name, const Behaviours& behaviours /*= Behaviour::None*/, QWidget* parent /*= nullptr*/) :
-		Inherited(parent),
-		m_name{name},
-		m_behaviours{behaviours}
-	{
-		Q_ASSERT(!m_behaviours.testFlag(Behaviour::PersistGeometry) || !m_name.isEmpty());
-		connect(this, &QDialog::finished, this, &BaseDialog::saveState);
-	}
-
-	void BaseDialog::showEvent(QShowEvent* event)
-	{
-		if (!event->spontaneous()) {
-			restoreState();
-		}
-		Inherited::showEvent(event);
-	}
-
-	void BaseDialog::saveState() const
-	{
-		if (hasPersistentGeometry()) {
-			QSettings{}.setValue(DIALOG_GEOMETRY_SETTING.arg(m_name), saveGeometry());
-		}
-	}
-
-	void BaseDialog::restoreState()
-	{
-		if (hasPersistentGeometry()) {
-			restoreGeometry(QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(m_name)).toByteArray());
-		}
-	}
-
-
 	static bool processList(const fs::path& fileList, QString& outputFile)
 	{
 		ZFUNCTRACE_RUNTIME();
@@ -130,6 +95,67 @@ namespace DSS
 
 		return bResult;
 	};
+}
+
+namespace DSS
+{
+	static const QString DIALOG_GEOMETRY_SETTING	= QStringLiteral("Dialogs/%1/geometry");
+	static const QString DEFAULT_LIST_FILE_FILTER	= QStringLiteral("*.txt");
+
+	BaseDialog::BaseDialog(const QString& name, const Behaviours& behaviours /*= Behaviour::None*/, QWidget* parent /*= nullptr*/) :
+		Inherited(parent),
+		m_name{name},
+		m_behaviours{behaviours}
+	{
+		Q_ASSERT(!m_behaviours.testFlag(Behaviour::PersistGeometry) || !m_name.isEmpty());
+		connect(this, &QDialog::finished, this, &BaseDialog::saveState);
+	}
+
+	void BaseDialog::showEvent(QShowEvent* event)
+	{
+		if (!event->spontaneous()) {
+			if (!m_initialised) {
+				onInitDialog();
+			}
+		}
+		Inherited::showEvent(event);
+	}
+
+	void BaseDialog::onInitDialog()
+	{
+		//
+		// Restore Window position etc..
+		//
+		bool geometryRestored = false;
+		if (hasPersistentGeometry()) {
+			QByteArray ba = QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(m_name)).toByteArray();
+			if (!ba.isEmpty()) {
+				restoreGeometry(ba);
+				geometryRestored = true;
+			}			
+		}
+		if (!geometryRestored)
+		{
+			//
+			// Center it in the main Window rectangle
+			//
+			const QRect r{ DeepSkyStacker::instance()->rect() };
+			const QSize size = this->size();
+
+			int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
+			int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
+			move(left, top);
+		}
+
+		m_initialised = true;
+	}
+
+	void BaseDialog::saveState() const
+	{
+		if (hasPersistentGeometry()) {
+			QSettings{}.setValue(DIALOG_GEOMETRY_SETTING.arg(m_name), saveGeometry());
+		}
+	}
 
 
 	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
@@ -192,7 +218,7 @@ namespace DSS
 		QSettings settings;
 		static const QString settingKey = QStringLiteral("Folders/ListFolder");
 		const QString& baseDir = settings.value(settingKey, QString()).toString();
-		auto files = QFileDialog::getOpenFileNames(this, tr(""), baseDir, m_listFileFilters.join(QStringLiteral(";;")));
+		auto files = QFileDialog::getOpenFileNames(this, QString(), baseDir, m_listFileFilters.join(QStringLiteral(";;")));
 
 		const auto& filePaths = getFilePaths();
 		QStringList pathsToAdd;

@@ -33,9 +33,9 @@ namespace DSS
 
 	private slots:
 		void saveState() const;
-		void restoreState();
 
 	private:
+		virtual void onInitDialog();
 		bool hasPersistentGeometry() const {
 			return m_behaviours.testFlag(Behaviour::PersistGeometry) && !m_name.isEmpty();
 		}
@@ -43,6 +43,7 @@ namespace DSS
 	private:
 		const QString	m_name;
 		Behaviours		m_behaviours{ Behaviour::None };
+		bool			m_initialised{ false };
 
 	private:
 		Q_DISABLE_COPY(BaseDialog)
