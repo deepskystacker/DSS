@@ -116,6 +116,7 @@ namespace DSS
 		if (!event->spontaneous()) {
 			if (!m_initialised) {
 				onInitDialog();
+				m_initialised = true;
 			}
 		}
 		Inherited::showEvent(event);
@@ -146,8 +147,6 @@ namespace DSS
 			int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
 			move(left, top);
 		}
-
-		m_initialised = true;
 	}
 
 	void BaseDialog::saveState() const
