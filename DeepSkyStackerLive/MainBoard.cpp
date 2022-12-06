@@ -1177,11 +1177,11 @@ LRESULT CMainBoard::OnFolderChange(WPARAM wParam, LPARAM lParam)
 			m_vAllFiles.push_back(vNewFiles[i]);
 		std::sort(m_vAllFiles.begin(), m_vAllFiles.end());
 
-		strNewFiles = QString(QObject::tr("%1 new file(s) found\n", "IDS_LOG_NEWFILESFOUND").arg(vNewFiles.size()));
+		strNewFiles = QCoreApplication::translate("MainBoard", "%1 new file(s) found\n", "IDS_LOG_NEWFILESFOUND").arg(vNewFiles.size());
 		AddToLog(strNewFiles, TRUE, FALSE, FALSE, LOG_GREEN_TEXT);
 		for (LONG i = 0;i<vNewFiles.size();i++)
 		{
-			strNewFiles = QString(QObject::tr("-> New file: %1\n", "IDS_LOG_NEWFILE").arg(vNewFiles[i].GetString()));
+			strNewFiles = QCoreApplication::translate("MainBoard", "-> New file: %1\n", "IDS_LOG_NEWFILE").arg(vNewFiles[i].GetString());
 			AddToLog(strNewFiles, FALSE, FALSE, FALSE, LOG_GREEN_TEXT);
 			m_LiveEngine.AddFileToProcess(vNewFiles[i]);
 		};
@@ -1277,7 +1277,7 @@ void CMainBoard::OnMonitor()
 
 		//if (m_ulSHRegister)
 		{
-			const QString strText(QObject::tr("Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(strFolder.GetString()));
+			const QString strText(QCoreApplication::translate("MainBoard", "Start monitoring folder %1\n", "IDS_LOG_STARTMONITORING").arg(strFolder.GetString()));
 			AddToLog(strText, TRUE, TRUE, FALSE, LOG_GREEN_TEXT);
 		}
 		/*else
@@ -1308,7 +1308,7 @@ void CMainBoard::OnStop()
 		QString strFolder{ settings.value("MonitoredFolder", "").toString() };
 		settings.endGroup();
 
-		const QString strText(QObject::tr("Stop monitoring folder %1\n", "IDS_LOG_STOPMONITORING").arg(strFolder));
+		const QString strText(QCoreApplication::translate("MainBoard", "Stop monitoring folder %1\n", "IDS_LOG_STOPMONITORING").arg(strFolder));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_RED_TEXT);
 
 		if (m_ulSHRegister)
@@ -1324,8 +1324,8 @@ void CMainBoard::OnStack()
 	if (m_bMonitoring/*m_ulSHRegister*/)
 	{
 		const QString strText(m_bStacking ? 
-								QObject::tr("Start Stacking files\n", "IDS_LOG_STARTMONITORING") :
-								QObject::tr("Stop Stacking files\n", "IDS_LOG_STOPSTACKING"));
+			QCoreApplication::translate("MainBoard", "Start Stacking files\n", "IDS_LOG_STARTMONITORING") :
+			QCoreApplication::translate("MainBoard", "Stop Stacking files\n", "IDS_LOG_STOPSTACKING"));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_YELLOW_TEXT);
 
 	};
@@ -1573,7 +1573,7 @@ LRESULT CMainBoard::OnLiveEngine(WPARAM, LPARAM)
 							}
 							catch (...)
 							{
-								const QString strError(QObject::tr("An error occurred while sending the email!\n", "IDS_ERRORSENDINGEMAIL"));
+								const QString strError(QCoreApplication::translate("MainBoard", "An error occurred while sending the email!\n", "IDS_ERRORSENDINGEMAIL"));
 								AddToLog(strError, TRUE, TRUE, FALSE, RGB(255, 0, 0));
 							};
 						};

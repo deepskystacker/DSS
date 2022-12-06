@@ -146,7 +146,7 @@ int WINAPI _tWinMain(HINSTANCE hInstance,  // handle to current instance
 	// initialize MFC and print and error on failure
 	if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0))
 	{
-		cerr << _T("Fatal Error: MFC initialization failed") << endl;
+		wcerr << _T("Fatal Error: MFC initialization failed") << endl;
 		nRetCode = 1;
 	}
 	else

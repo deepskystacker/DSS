@@ -156,9 +156,6 @@
     <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
-    <ClCompile Include="..\Tools\cgfiltyp.cpp">
-      <Filter>Tools</Filter>
-    </ClCompile>
     <ClCompile Include="..\Tools\childprop.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
@@ -399,6 +396,9 @@
     <ClCompile Include="picturelist.cpp">
       <Filter>Dialogs\Stacking</Filter>
     </ClCompile>
+    <ClCompile Include="BaseDialog.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -515,9 +515,6 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\cdxCRotBevelLine.h">
-      <Filter>Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Tools\cgfiltyp.h">
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\childprop.h">
@@ -1317,6 +1314,9 @@
     </QtMoc>
     <QtMoc Include="picturelist.h">
       <Filter>Dialogs\Stacking</Filter>
+    </QtMoc>
+    <QtMoc Include="BaseDialog.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

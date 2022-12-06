@@ -135,6 +135,7 @@ namespace DSS
 
     protected:
         bool event(QEvent* event) override;
+        void changeEvent(QEvent* e) override;
         void keyPressEvent(QKeyEvent* event) override;
         void leaveEvent(QEvent* event) override;
         void paintEvent(QPaintEvent* event) override;
@@ -165,5 +166,6 @@ namespace DSS
         void paintFourCorners(QPainter& painter);
         void paintZoomImage(QPainter& painter);
         void onInitDialog();
+        void retranslateUi();
     };
 }

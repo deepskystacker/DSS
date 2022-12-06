@@ -229,7 +229,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClCompile Include="..\Tools\ButtonToolbar.cpp" />
     <ClCompile Include="..\Tools\cdxCRot90DC.cpp" />
     <ClCompile Include="..\Tools\cdxCRotBevelLine.cpp" />
-    <ClCompile Include="..\Tools\cgfiltyp.cpp" />
     <ClCompile Include="..\Tools\childprop.cpp" />
     <ClCompile Include="..\Tools\ControlPos.cpp" />
     <ClCompile Include="..\Tools\CtrlCache.cpp" />
@@ -326,6 +325,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="BaseDialog.cpp" />
     <ClCompile Include="toolbar.cpp" />
     <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
@@ -468,7 +468,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="..\Tools\ButtonToolbar.h" />
     <ClInclude Include="..\Tools\cdxCRot90DC.h" />
     <ClInclude Include="..\Tools\cdxCRotBevelLine.h" />
-    <ClInclude Include="..\Tools\cgfiltyp.h" />
     <ClInclude Include="..\Tools\childprop.h" />
     <ClInclude Include="..\Tools\ControlPos.h" />
     <ClInclude Include="..\Tools\CustomTabCtrl.h" />
@@ -506,6 +505,8 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BackgroundLoading.h" />
     <QtMoc Include="BatchStacking.h" />
+    <QtMoc Include="BaseDialog.h" />
+    <ClInclude Include="BatchStacking.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
     <ClInclude Include="BitmapExt.h" />

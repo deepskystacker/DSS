@@ -310,12 +310,15 @@ void	WorkspaceSettings::ReadFromFile(FILE * hFile)
 
 /* ------------------------------------------------------------------- */
 
-void	WorkspaceSettings::ReadFromFile(const fs::path& fileName)
+void	WorkspaceSettings::ReadFromFile(const fs::path& file)
 {
-	FILE *				hFile;
-
-	hFile = fopen(fileName.generic_string().c_str(), "wt");
-	if (hFile)
+	if (std::FILE* hFile =
+#if defined _WINDOWS
+		_wfopen(file.c_str(), L"rt")
+#else
+		std::fopen(file.c_str(), "rt")
+#endif
+		)
 	{
 		ReadFromFile(hFile);
 		fclose(hFile);
@@ -336,12 +339,16 @@ void	WorkspaceSettings::SaveToFile(FILE * hFile)
 
 /* ------------------------------------------------------------------- */
 
-void	WorkspaceSettings::SaveToFile(const fs::path& fileName)
+void	WorkspaceSettings::SaveToFile(const fs::path& file)
 {
-	FILE *				hFile;
-
-	hFile = fopen(fileName.generic_string().c_str(), "wt");
-	if (hFile)
+	const wchar_t* ptr = file.c_str();
+	if (std::FILE* hFile =
+#if defined _WINDOWS
+		_wfopen(file.c_str(), L"wt")
+#else
+		std::fopen(file.c_str(), "wt")
+#endif
+		)
 	{
 		SaveToFile(hFile);
 		fclose(hFile);
@@ -533,10 +540,15 @@ void Workspace::ReadFromFile(FILE * hFile)
 	pSettings->ReadFromFile(hFile);
 }
 
-
-void Workspace::ReadFromFile(LPCTSTR szFile)
+void Workspace::ReadFromFile(LPCTSTR name)
 {
-	pSettings->ReadFromFile(szFile);
+	fs::path file(name);
+	pSettings->ReadFromFile(file);
+}
+
+void Workspace::ReadFromFile(const fs::path& file)
+{
+	pSettings->ReadFromFile(file);
 }
 
 
@@ -545,10 +557,16 @@ void Workspace::SaveToFile(FILE * hFile)
 	pSettings->SaveToFile(hFile);
 }
 
-
-void Workspace::SaveToFile(LPCTSTR szFile)
+void Workspace::SaveToFile(LPCTSTR name)
 {
-	pSettings->SaveToFile(szFile);
+	fs::path file(name);
+	pSettings->SaveToFile(file);
+}
+
+
+void Workspace::SaveToFile(const fs::path& file)
+{
+	pSettings->SaveToFile(file);
 }
 
 

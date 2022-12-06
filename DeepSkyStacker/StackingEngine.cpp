@@ -763,7 +763,7 @@ void computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const 
 	{
 		if (omp_get_thread_num() == 0 && pProg != nullptr)
 		{
-			const QString strText(QObject::tr("Computing stacking info for %1", "IDS_COMPUTINGSTACKINGINFO").arg(pStackingEngine->getBitmap(i).filePath.c_str()));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Computing stacking info for %1", "IDS_COMPUTINGSTACKINGINFO").arg(pStackingEngine->getBitmap(i).filePath.c_str()));
 			pProg->Progress1(strText, i + 1);
 			stop = pProg->IsCanceled();
 		}
@@ -808,7 +808,7 @@ bool CStackingEngine::ComputeOffsets()
 		else
 			m_lNrStackable = std::min(static_cast<int>(m_vBitmaps.size()), 1);
 		m_lNrCometStackable = 0;
-		const QString strText(QObject::tr("Computing offsets", "IDS_COMPUTINGOFFSETS"));
+		const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
 
 		const int lLast = static_cast<int>(m_vBitmaps.size() * m_fKeptPercentage / 100.0);
 		if (m_pProgress)
@@ -1104,7 +1104,7 @@ void CStackingEngine::ComputeBitmap()
 			QString strMethod;
 			FormatFromMethod(strMethod, m_pLightTask->m_Method, m_pLightTask->m_fKappa, m_pLightTask->m_lNrIterations);
 
-			const QString strText(QObject::tr("Computing Final Picture (%1)", "IDS_COMPUTINGMEDIANLIGHT").arg(strMethod));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Computing Final Picture (%1)", "IDS_COMPUTINGMEDIANLIGHT").arg(strMethod));
 
 			m_pProgress->Start(strText, 1, true);
 			m_pProgress->Progress1(strText, 0);
@@ -1205,7 +1205,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		std::unique_ptr<C96BitFloatColorBitmap> pCover = std::make_unique<C96BitFloatColorBitmap>();
 		pCover->Init(m_rcResult.width(), m_rcResult.height());
 
-		strText = QObject::tr("Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
+		strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
 		if (m_pProgress)
 			m_pProgress->Start(strText, static_cast<int>(m_vPixelTransforms.size()), false);
 
@@ -1215,7 +1215,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			++lNrBitmaps;
 			if (m_pProgress != nullptr)
 			{
-				strText = QString(QObject::tr("Compute adjustment %1 of %2", "IDS_COMPUTINGADJUSTMENT")).arg(lNrBitmaps + 1).arg(m_vPixelTransforms.size());
+				strText = QCoreApplication::translate("StackingEngine", "Compute adjustment %1 of %2", "IDS_COMPUTINGADJUSTMENT").arg(lNrBitmaps + 1).arg(m_vPixelTransforms.size());
 				m_pProgress->Progress1(strText, lNrBitmaps + 1);
 				m_pProgress->Start2(QString(" "), m_rcResult.width() * m_rcResult.height());
 			}
@@ -1270,9 +1270,9 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		lProgress = 0;
 		if (m_pProgress != nullptr)
 		{
-			strText = QObject::tr("Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
+			strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
 			m_pProgress->Start(strText, 2, false);
-			strText = QObject::tr("Compute maximum adjustment", "IDS_STACKING_COMPUTEMAXADJUSTMENT");
+			strText = QCoreApplication::translate("StackingEngine", "Compute maximum adjustment", "IDS_STACKING_COMPUTEMAXADJUSTMENT");
 			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
 		};
 
@@ -1307,7 +1307,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		lProgress = 0;
 		if (m_pProgress != nullptr)
 		{
-			strText = QObject::tr("Applying adjustment", "IDS_STACKING_APPLYADJUSTMENT");
+			strText = QCoreApplication::translate("StackingEngine", "Applying adjustment", "IDS_STACKING_APPLYADJUSTMENT");
 			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
 		}
 
@@ -1378,7 +1378,7 @@ bool CStackingEngine::SaveCalibratedAndRegisteredLightFrame(CMemoryBitmap* pBitm
 
 		if (m_pProgress)
 		{
-			const QString strText(QObject::tr("Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Registered and Calibrated image in %1", "IDS_SAVINGINTERMEDIATE").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1425,7 +1425,7 @@ bool CStackingEngine::SaveCalibratedLightFrame(std::shared_ptr<CMemoryBitmap> pB
 
 		if (m_pProgress)
 		{
-			const QString strText(QObject::tr("Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
 
@@ -1537,7 +1537,7 @@ bool CStackingEngine::SaveCometImage(CMemoryBitmap* pBitmap) const
 
 		if (m_pProgress)
 		{
-			const QString strText(QObject::tr("Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		};
 		if (m_IntermediateFileFormat == IFF_TIFF)
@@ -1583,7 +1583,7 @@ bool CStackingEngine::SaveCometlessImage(CMemoryBitmap* pBitmap) const
 
 		if (m_pProgress)
 		{
-			const QString strText(QObject::tr("Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("StackingEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			m_pProgress->Start2(strText, 0);
 		}
 
@@ -1805,7 +1805,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 			// Start by demosaicing the input bitmap
 			if (m_pProgress != nullptr)
 			{
-				QString strText(QObject::tr("Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING"));
+				QString strText(QCoreApplication::translate("StackingEngine", "Interpolating with Adaptive Homogeneity Directed (AHD)", "IDS_AHDDEMOSAICING"));
 				m_pProgress->Start2(strText, 0);
 			};
 			AHDDemosaicing<std::uint16_t>(pGrayBitmap, pBitmap, m_pProgress);
@@ -1848,7 +1848,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 		{
 			if (m_pProgress != nullptr)
 			{
-				strText = QObject::tr("Computing Entropy", "IDS_COMPUTINGENTROPY");
+				strText = QCoreApplication::translate("StackingEngine", "Computing Entropy", "IDS_COMPUTINGENTROPY");
 				m_pProgress->Start2(strText, 0);
 			}
 			StackTask.m_EntropyWindow.Init(pBitmap, 10, m_pProgress);
@@ -1860,7 +1860,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 		{
 			if (m_pProgress != nullptr)
 			{
-				strText = QObject::tr("Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
+				strText = QCoreApplication::translate("StackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
 				m_pProgress->Start2(strText, 0);
 			}
 			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), bFirst, m_pProgress);
@@ -2086,8 +2086,8 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 				SpaceToString(ulFreeSpace, strFreeSpace);
 				SpaceToString(ulNeededSpace, strNeededSpace);
 
-				const QString strText(QObject::tr("The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(QString::fromWCharArray(strNeededSpace)).arg(QString::fromWCharArray(strDrive)).arg(QString::fromWCharArray(strFreeSpace)) + 
-									  QObject::tr("\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
+				const QString strText(QCoreApplication::translate("StackingEngine", "The process needs temporarily %1 of free space on the %2 drive.\nOnly %3 are available on this drive.", "IDS_RECAP_WARNINGDISKSPACE").arg(QString::fromWCharArray(strNeededSpace)).arg(QString::fromWCharArray(strDrive)).arg(QString::fromWCharArray(strFreeSpace)) +
+									  QCoreApplication::translate("StackingEngine", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
 				bContinue = m_pProgress->Warning(strText);
 			}
 		} break;
@@ -2220,7 +2220,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 									if (m_pProgress != nullptr)
 									{
-										strText = QString(QObject::tr("Stacking %1 of %2 - Offset [%3,%4] - Angle : %5\xc2\xb0 ", "IDS_STACKING_PICTURE")).arg(m_lNrStacked + 1).arg(m_lNrCurrentStackable).arg(lfInfo.m_fXOffset, 0, 'f', 1).arg(lfInfo.m_fYOffset, 0, 'f', 1).arg(lfInfo.m_fAngle * 180 / M_PI, 0, 'f', 1);
+										strText = QCoreApplication::translate("StackingEngine", "Stacking %1 of %2 - Offset [%3,%4] - Angle : %5\xc2\xb0 ", "IDS_STACKING_PICTURE").arg(m_lNrStacked + 1).arg(m_lNrCurrentStackable).arg(lfInfo.m_fXOffset, 0, 'f', 1).arg(lfInfo.m_fYOffset, 0, 'f', 1).arg(lfInfo.m_fAngle * 180 / M_PI, 0, 'f', 1);
 										m_pProgress->Progress1(strText, m_lNrStacked + 1);
 									}
 
@@ -2230,9 +2230,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 									{
 										const CString strDescription = lfInfo.m_strInfos;
 										if (lfInfo.m_lNrChannels == 3)
-											strText = QString(QObject::tr("Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT")).arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
+											strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
 										else
-											strText = QString(QObject::tr("Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT")).arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
+											strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
 
 										ZTRACE_RUNTIME(strText);
 										// First apply transformations
@@ -2305,7 +2305,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	{
 		CString errorMessage(CA2CT(e.what()));
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
@@ -2333,7 +2333,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 			ze.locationAtIndex(0)->lineNumber(),
 			text);
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
@@ -2342,7 +2342,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 	{
 		CString errorMessage(_T("Unknown exception caught"));
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
@@ -2380,8 +2380,8 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 
 	if (pProgress != nullptr && (m_lNrStackable == 1) && (tasks.GetNrLightFrames() > 1))
 	{
-		const QString strText(QObject::tr("Only one frame (out of %1) will be stacked.\n\nYou should check/change the star detection threshold to detect more stars\nand help DeepSkyStacker find a transformation between the reference frame and the others.\n", "IDS_WARNING_ONLYONEFRAME").arg(tasks.GetNrLightFrames()) +
-							  QObject::tr("\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
+		const QString strText(QCoreApplication::translate("StackingEngine", "Only one frame (out of %1) will be stacked.\n\nYou should check/change the star detection threshold to detect more stars\nand help DeepSkyStacker find a transformation between the reference frame and the others.\n", "IDS_WARNING_ONLYONEFRAME").arg(tasks.GetNrLightFrames()) +
+							  QCoreApplication::translate("StackingEngine", "\nDo you really want to continue?", "IDS_WANTTOCONTINUE"));
 		bContinue = m_pProgress->Warning(strText);
 	}
 
@@ -2391,7 +2391,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 		if (tasks.IsCometAvailable() && tasks.GetCometStackingMode() == CSM_COMETSTAR)
 			 m_lNrCurrentStackable = m_lNrCometStackable;
 
-		const QString strText(QObject::tr("Stacking", "IDS_STACKING"));
+		const QString strText(QCoreApplication::translate("StackingEngine", "Stacking", "IDS_STACKING"));
 		if (pProgress != nullptr)
 			pProgress->Start(strText, m_lNrCurrentStackable, true);
 

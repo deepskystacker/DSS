@@ -508,10 +508,10 @@ std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBit
 
 			if (pcs.m_bHot)
 			{
-				const QString strCorrection(QObject::tr("Applying cosmetic - Hot Pixels", "IDS_APPLYINGCOSMETIC_HOT"));
+				const QString strCorrection(QCoreApplication::translate("BitmapExt", "Applying cosmetic - Hot Pixels", "IDS_APPLYINGCOSMETIC_HOT"));
 				if (pProgress != nullptr)
 				{
-					const QString strText(QString("%1 - %2").arg(strCorrection, QObject::tr("Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
+					const QString strText(QString("%1 - %2").arg(strCorrection, QCoreApplication::translate("CosmeticEngine", "Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
 					pProgress->Start2(strText, 0);
 				}
 
@@ -535,12 +535,12 @@ std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBit
 
 			if (pcs.m_bCold)
 			{
-				const QString strCorrection(QObject::tr("Applying cosmetic - Cold Pixels", "IDS_APPLYINGCOSMETIC_COLD"));
+				const QString strCorrection(QCoreApplication::translate("CosmeticEngine", "Applying cosmetic - Cold Pixels", "IDS_APPLYINGCOSMETIC_COLD"));
 				if (!static_cast<bool>(pMedian))
 				{
 					if (pProgress != nullptr)
 					{
-						const QString strText(QString("%1 - %2").arg(strCorrection, QObject::tr("Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
+						const QString strText(QString("%1 - %2").arg(strCorrection, QCoreApplication::translate("CosmeticEngine", "Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
 						pProgress->Start2(strText, 0);
 					}
 					pMedian = GetFilteredImage(pBitmap.get(), pcs.m_lColdFilter, pProgress);
@@ -593,10 +593,10 @@ void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibra
 
 			if (pcs.m_bHot)
 			{
-				const QString strCorrection(QObject::tr("Applying cosmetic - Hot Pixels", "IDS_APPLYINGCOSMETIC_HOT"));
+				const QString strCorrection(QCoreApplication::translate("CosmeticEngine", "Applying cosmetic - Hot Pixels", "IDS_APPLYINGCOSMETIC_HOT"));
 				if (pProgress != nullptr)
 				{
-					const QString strText(QString("%1 - %2").arg(strCorrection, QObject::tr("Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
+					const QString strText(QString("%1 - %2").arg(strCorrection, QCoreApplication::translate("CosmeticEngine", "Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
 					pProgress->Start2(strText, 0);
 				}
 
@@ -620,12 +620,12 @@ void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibra
 
 			if (pcs.m_bCold)
 			{
-				const QString strCorrection(QObject::tr("Applying cosmetic - Cold Pixels", "IDS_APPLYINGCOSMETIC_COLD"));
+				const QString strCorrection(QCoreApplication::translate("CosmeticEngine", "Applying cosmetic - Cold Pixels", "IDS_APPLYINGCOSMETIC_COLD"));
 				if (!static_cast<bool>(pMedian))
 				{
 					if (pProgress != nullptr)
 					{
-						const QString strText(QString("%1 - %2").arg(strCorrection, QObject::tr("Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
+						const QString strText(QString("%1 - %2").arg(strCorrection, QCoreApplication::translate("CosmeticEngine", "Creating Median Filtered Image", "IDS_CREATINGMEDIANIMAGE")));
 						pProgress->Start2(strText, 0);
 					}
 					pMedian = GetFilteredImage(pBitmap.get(), pcs.m_lColdFilter, pProgress);

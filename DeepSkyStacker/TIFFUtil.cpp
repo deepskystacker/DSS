@@ -950,7 +950,7 @@ void CTIFFWriteFromMemoryBitmap::OnWrite(int lX, int lY, double & fRed, double &
 			e.locationAtIndex(0)->lineNumber(),
 			text);
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
@@ -1194,7 +1194,7 @@ void CTIFFReadInMemoryBitmap::OnRead(int lX, int lY, double fRed, double fGreen,
 			e.locationAtIndex(0)->lineNumber(),
 			text);
 #if defined(_CONSOLE)
-		std::cerr << errorMessage;
+		std::wcerr << errorMessage;
 #else
 		AfxMessageBox(errorMessage, MB_OK | MB_ICONSTOP);
 #endif
