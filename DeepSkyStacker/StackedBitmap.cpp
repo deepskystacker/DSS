@@ -292,7 +292,7 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 	FILE *			hFile;
 	LPCSTR			strFile = CT2CA(szStackedFile, CP_UTF8); // Stacked fileid in ASCII
 
-	QString strText(QObject::tr("Loading DSImage", "IDS_LOADDSIMAGE"));
+	QString strText(QCoreApplication::translate("StackedBitmap", "Loading DSImage", "IDS_LOADDSIMAGE"));
 	if (pProgress)
 		pProgress->Start(strText, 0, false);
 
@@ -304,7 +304,7 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 
 		if (pProgress)
 		{
-			strText = QObject::tr("Loading %1", "IDS_LOADPICTURE").arg(szStackedFile);
+			strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(szStackedFile);
 			pProgress->Progress1(strText, 0);
 		};
 
@@ -407,9 +407,9 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 
 		if (pProgress)
 		{
-			QString strText(QObject::tr("Saving DSImage File", "IDS_SAVINGDSIMAGE"));
+			QString strText(QCoreApplication::translate("StackedBitmap", "Saving DSImage File", "IDS_SAVINGDSIMAGE"));
 			pProgress->Start(strText, lWidth * lHeight, false);
-			strText = QObject::tr("Saving stacked picture in %1 (DSImage)", "IDS_SAVEDSIMAGE").arg(szStackedFile);
+			strText = QCoreApplication::translate("StackedBitmap", "Saving stacked picture in %1 (DSImage)", "IDS_SAVEDSIMAGE").arg(szStackedFile);
 			pProgress->Progress1(strText, 1);
 		};
 
@@ -629,7 +629,7 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(CDSSProgress* const pPr
 		if (pProgress != nullptr)
 		{
 			QString			strText;
-			strText = QObject::tr("Processing Image...", "IDS_PROCESSINGIMAGE");
+			strText = QCoreApplication::translate("StackedBitmap", "Processing Image...", "IDS_PROCESSINGIMAGE");
 			pProgress->Start2(strText, lYMax - lYMin);
 		}
 
@@ -899,10 +899,10 @@ bool CTIFFWriterStacker::OnOpen()
 		QString		strText;
 
 		m_pProgress->SetJointProgress(true);
-		strText = QString(QObject::tr("Saving TIFF %1 bit", "IDS_SAVINGTIFF")).arg(bps);
+		strText = QCoreApplication::translate("StackedBitmap", "Saving TIFF %1 bit", "IDS_SAVINGTIFF").arg(bps);
 
 		m_pProgress->Start(strText, 0, false);
-		strText = QString(QObject::tr("Saving %1", "IDS_SAVINGPICTURE")).arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -951,9 +951,9 @@ void CStackedBitmap::SaveTIFF16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 		tiff.SetTIFFFormat(TF_16BITRGB, TiffComp);
 
 	if (bApplySettings)
-		strText = QObject::tr("Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
 	else
-		strText = QObject::tr("Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
 	tiff.SetDescription(strText.toStdWString().c_str());
 	if (tiff.Open())
@@ -990,9 +990,9 @@ void CStackedBitmap::SaveTIFF32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	};
 
 	if (bApplySettings)
-		strText = QObject::tr("Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
 	else
-		strText = QObject::tr("Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
 	tiff.SetDescription(strText.toStdWString().c_str());
 	tiff.SetExposureTime(m_lTotalTime);
@@ -1094,10 +1094,10 @@ bool CFITSWriterStacker::OnOpen()
 		QString		strText;
 
 		m_pProgress->SetJointProgress(true);
-		strText = QString(QObject::tr("Saving FITS %1 bit", "IDS_SAVINGFITS")).arg(m_lBitsPerPixel);
+		strText = QCoreApplication::translate("StackedBitmap", "Saving FITS %1 bit", "IDS_SAVINGFITS").arg(m_lBitsPerPixel);
 
 		m_pProgress->Start(strText, 0, false);
-		strText = QString(QObject::tr("Saving %1", "IDS_SAVINGPICTURE")).arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Saving %1", "IDS_SAVINGPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -1145,9 +1145,9 @@ void CStackedBitmap::SaveFITS16Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 		fits.SetFITSFormat(FF_16BITRGB);
 
 	if (bApplySettings)
-		strText = QObject::tr("Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
 	else
-		strText = QObject::tr("Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
 	fits.SetDescription(strText.toStdWString().c_str());
 	fits.m_fExposureTime	= m_lTotalTime;
@@ -1187,9 +1187,9 @@ void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	};
 
 	if (bApplySettings)
-		strText = QObject::tr("Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
 	else
-		strText = QObject::tr("Picture saved with settings embedded.", "(IDS_SAVEWITHSETTINGSEMBEDDED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "(IDS_SAVEWITHSETTINGSEMBEDDED");
 
 	fits.SetDescription(strText.toStdWString().c_str());
 	fits.m_fExposureTime	= m_lTotalTime;
@@ -1243,12 +1243,12 @@ bool CTIFFReadStacker::OnOpen()
 
 		m_pProgress->SetJointProgress(true);
 		if (spp == 1)
-			strText = QString(QObject::tr("Loading TIFF %1 bit monochrome", "IDS_LOADGRAYTIFF")).arg(bps);
+			strText = QCoreApplication::translate("StackedBitmap", "Loading TIFF %1 bit monochrome", "IDS_LOADGRAYTIFF").arg(bps);
 		else
-				strText = QString(QObject::tr("Loading TIFF %1 bit/ch", "IDS_LOADRGBTIFF")).arg(bps);
+			strText = QCoreApplication::translate("StackedBitmap", "Loading TIFF %1 bit/ch", "IDS_LOADRGBTIFF").arg(bps);
 
 		m_pProgress->Start(strText, 0, false);
-		strText = QString(QObject::tr("Loading %1", "IDS_LOADPICTURE")).arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
 
@@ -1340,12 +1340,12 @@ bool CFITSReadStacker::OnOpen()
 
 		m_pProgress->SetJointProgress(true);
 		if (m_lNrChannels == 1)
-			strText = QString(QObject::tr("Loading FITS %1 bit monochrome", "IDS_LOADGRAYFITS")).arg(m_lBitsPerPixel);
+			strText = QCoreApplication::translate("StackedBitmap", "Loading FITS %1 bit monochrome", "IDS_LOADGRAYFITS").arg(m_lBitsPerPixel);
 		else
-			strText = QString(QObject::tr("Loading FITS %1 bit/ch", "IDS_LOADRGBFITS")).arg(m_lBitsPerPixel);
+			strText = QCoreApplication::translate("StackedBitmap", "Loading FITS %1 bit/ch", "IDS_LOADRGBFITS").arg(m_lBitsPerPixel);
 
 		m_pProgress->Start(strText, 0, false);
-		strText = QString(QObject::tr("Loading %1", "IDS_LOADPICTURE")).arg(QString::fromWCharArray(m_strFileName.GetString()));
+		strText = QCoreApplication::translate("StackedBitmap", "Loading %1", "IDS_LOADPICTURE").arg(QString::fromWCharArray(m_strFileName.GetString()));
 		m_pProgress->Progress1(strText, 0);
 	};
 

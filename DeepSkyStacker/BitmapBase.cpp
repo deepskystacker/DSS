@@ -9,7 +9,7 @@ void CGrayBitmapT<T>::RemoveHotPixels(CDSSProgress* pProgress)
 
 	if (pProgress != nullptr)
 	{
-		const QString strText(QObject::tr("Detecting hot pixels", "IDS_REMOVINGHOTPIXELS"));
+		const QString strText(QCoreApplication::translate("BitmapBase", "Detecting hot pixels", "IDS_REMOVINGHOTPIXELS"));
 		pProgress->Start2(strText, m_lHeight);
 		pProgress->SetNrUsedProcessors(nrProcessors);
 	};

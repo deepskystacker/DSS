@@ -123,25 +123,25 @@ inline void	FormatFromMethod(QString & strText, MULTIBITMAPPROCESSMETHOD Method,
 	{
 	case MBP_FASTAVERAGE :
 	case MBP_AVERAGE :
-		strText = QObject::tr("Average", "IDS_RECAP_AVERAGE");
+		strText = QCoreApplication::translate("BitmapExt", "Average", "IDS_RECAP_AVERAGE");
 		break;
 	case MBP_MEDIAN :
-		strText = QObject::tr("Median", "IDS_RECAP_MEDIAN");
+		strText = QCoreApplication::translate("BitmapExt", "Median", "IDS_RECAP_MEDIAN");
 		break;
 	case MBP_MAXIMUM :
-		strText = QObject::tr("Maximum", "IDS_RECAP_MAXIMUM");
+		strText = QCoreApplication::translate("BitmapExt", "Maximum", "IDS_RECAP_MAXIMUM");
 		break;
 	case MBP_SIGMACLIP :
-		strText = QObject::tr("Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_KAPPASIGMA").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
+		strText = QCoreApplication::translate("BitmapExt", "Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_KAPPASIGMA").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
 		break;
 	case MBP_AUTOADAPTIVE :
-		strText = QObject::tr("Auto Adaptive Weighted Average (Iterations = %1)", "IDS_RECAP_AUTOADAPTIVE").arg(lNrIterations);
+		strText = QCoreApplication::translate("BitmapExt", "Auto Adaptive Weighted Average (Iterations = %1)", "IDS_RECAP_AUTOADAPTIVE").arg(lNrIterations);
 		break;
 	case MBP_ENTROPYAVERAGE :
-		strText = QObject::tr("Entropy Weighted Average", "IDS_RECAP_ENTROPYAVERAGE");
+		strText = QCoreApplication::translate("BitmapExt", "Entropy Weighted Average", "IDS_RECAP_ENTROPYAVERAGE");
 		break;
 	case MBP_MEDIANSIGMACLIP :
-		strText = QObject::tr("Median Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_MEDIANSIGMACLIP").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
+		strText = QCoreApplication::translate("BitmapExt", "Median Kappa-Sigma (Kappa = %1, Iterations = %2)", "IDS_RECAP_MEDIANSIGMACLIP").arg(fKappa, 0, 'f', 2).arg(lNrIterations);
 	};
 };
 

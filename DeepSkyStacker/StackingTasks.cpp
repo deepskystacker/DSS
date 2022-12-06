@@ -51,33 +51,33 @@ bool LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 		{
 		case PICTURETYPE_DARKFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText = QObject::tr("Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			else
-				strText = QObject::tr("Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			break;
 		case PICTURETYPE_DARKFLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QObject::tr("Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARKFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			else
-				strText = QObject::tr("Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark flat frame\n%3", "IDS_LOADGRAYDARKFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			break;
 		case PICTURETYPE_OFFSETFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QObject::tr("Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 offset frame\n%3", "IDS_LOADRGBOFFSET").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			else
-				strText = QObject::tr("Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 offset frame\n%3", "IDS_LOADGRAYOFFSET").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			break;
 		case PICTURETYPE_FLATFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QObject::tr("Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 flat frame\n%3", "IDS_LOADRGBFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			else
-				strText = QObject::tr("Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 flat frame\n%3", "IDS_LOADGRAYFLAT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			break;
 		case PICTURETYPE_LIGHTFRAME:
 			if (bmpInfo.m_lNrChannels == 3)
-				strText = QObject::tr("Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			else
-				strText = QObject::tr("Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			bOverrideRAW = false;
 			break;
 		};
@@ -355,7 +355,7 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 		else
 		{
 			// Else create the master offset
-			QString strText(QObject::tr("Create Master Offset Frame", "IDS_CREATEMASTEROFFSET"));
+			QString strText(QCoreApplication::translate("StackingTasks", "Create Master Offset Frame", "IDS_CREATEMASTEROFFSET"));
 			ZTRACE_RUNTIME(strText);
 
 			if (pProgress)
@@ -365,7 +365,7 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 			{
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				strText = QObject::tr("Adding Offset frame %1 of %2", "IDS_ADDOFFSET").arg(static_cast<int>(i)).arg(m_pOffsetTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Offset frame %1 of %2", "IDS_ADDOFFSET").arg(static_cast<int>(i)).arg(m_pOffsetTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress)
@@ -391,7 +391,7 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 				CString strMasterOffsetInfo;
 				QString strMethod;
 				FormatFromMethod(strMethod, m_pOffsetTask->m_Method, m_pOffsetTask->m_fKappa, m_pOffsetTask->m_lNrIterations);
-				strText = QObject::tr("Computing master offset (%1)", "IDS_COMPUTINGMEDIANOFFSET").arg(strMethod);
+				strText = QCoreApplication::translate("StackingTasks", "Computing master offset (%1)", "IDS_COMPUTINGMEDIANOFFSET").arg(strMethod);
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress != nullptr)
@@ -408,12 +408,12 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 				{
 					TCHAR szDrive[1+_MAX_DRIVE];
 					TCHAR szDir[1+_MAX_DIR];
-					const QString strInfo(QObject::tr("Master Offset created from %ld pictures (%1)", "IDS_MEDIANOFFSETINFO").arg(m_pOffsetTask->m_vBitmaps.size()).arg(strMethod));
+					const QString strInfo(QCoreApplication::translate("StackingTasks", "Master Offset created from %ld pictures (%1)", "IDS_MEDIANOFFSETINFO").arg(m_pOffsetTask->m_vBitmaps.size()).arg(strMethod));
 					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */false, szDrive, szDir, &strMasterOffset, &strMasterOffsetInfo);
 
-					strText = QObject::tr("Saving Master Offset", "IDS_SAVINGMASTEROFFSET");
+					strText = QCoreApplication::translate("StackingTasks", "Saving Master Offset", "IDS_SAVINGMASTEROFFSET");
 					ZTRACE_RUNTIME(strText);
 
 					if (pProgress != nullptr)
@@ -512,7 +512,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 			QString strText;
 			std::shared_ptr<CMemoryBitmap> pMasterOffset;
 
-			strText = QObject::tr("Create Master Dark Frame", "IDS_CREATEMASTERDARK");
+			strText = QCoreApplication::translate("StackingTasks", "Create Master Dark Frame", "IDS_CREATEMASTERDARK");
 			ZTRACE_RUNTIME(strText);
 
 			if (pProgress)
@@ -527,7 +527,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 			{
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				strText = QString(QObject::tr("Adding Dark frame %1 of %2", "IDS_ADDDARK")).arg(static_cast<int>(i)).arg(m_pDarkTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Dark frame %1 of %2", "IDS_ADDDARK").arg(static_cast<int>(i)).arg(m_pDarkTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress)
@@ -546,7 +546,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 						{
 							QString strText;
 							strStart2 = pProgress->GetStart2Text();
-							strText = QObject::tr("Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
+							strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
 							ZTRACE_RUNTIME(strText);
 							pProgress->Start2(strText, 0);
 						}
@@ -570,7 +570,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 				CString strMasterDarkInfo;
 				QString strMethod;
 				FormatFromMethod(strMethod, m_pDarkTask->m_Method, m_pDarkTask->m_fKappa, m_pDarkTask->m_lNrIterations);
-				strText = QString(QObject::tr("Computing master dark (%1)", "IDS_COMPUTINGMEDIANDARK")).arg(strMethod);
+				strText = QCoreApplication::translate("StackingTasks", "Computing master dark (%1)", "IDS_COMPUTINGMEDIANDARK").arg(strMethod);
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress != nullptr)
@@ -587,14 +587,14 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 				{
 					TCHAR szDrive[1+_MAX_DRIVE];
 					TCHAR szDir[1+_MAX_DIR];
-					QString strInfo = QString(QObject::tr("Master Dark created from %1 pictures (%2)", "IDS_MEDIANDARKINFO")).arg(m_pDarkTask->m_vBitmaps.size()).arg(strMethod);
+					QString strInfo = QCoreApplication::translate("StackingTasks", "Master Dark created from %1 pictures (%2)", "IDS_MEDIANDARKINFO").arg(m_pDarkTask->m_vBitmaps.size()).arg(strMethod);
 
 					_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
 						&strMasterDark, &strMasterDarkInfo);
 
-					strText = QObject::tr("Saving Master Dark", "IDS_SAVINGMASTERDARK");
+					strText = QCoreApplication::translate("StackingTasks", "Saving Master Dark", "IDS_SAVINGMASTERDARK");
 					ZTRACE_RUNTIME(strText);
 
 					if (pProgress != nullptr)
@@ -692,7 +692,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 		{
 			// Else create the master dark flat
 			std::shared_ptr<CMemoryBitmap> pMasterOffset;
-			QString strText(QObject::tr("Create Master Dark Flat Frame", "IDS_CREATEMASTERDARKFLAT"));
+			QString strText(QCoreApplication::translate("StackingTasks", "Create Master Dark Flat Frame", "IDS_CREATEMASTERDARKFLAT"));
 
 			ZTRACE_RUNTIME(strText);
 
@@ -708,7 +708,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 			{
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				strText = QString(QObject::tr("Adding Dark Flat frame %1 of %2", "IDS_ADDDARKFLAT")).arg(static_cast<int>(i)).arg(m_pDarkFlatTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Dark Flat frame %1 of %2", "IDS_ADDDARKFLAT").arg(static_cast<int>(i)).arg(m_pDarkFlatTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress)
@@ -727,7 +727,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 						{
 							QString strText;
 							strStart2 = pProgress->GetStart2Text();
-							strText = QObject::tr("Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
+							strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
 							ZTRACE_RUNTIME(strText);
 
 							pProgress->Start2(strText, 0);
@@ -753,7 +753,7 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 				QString						strMethod;
 
 				FormatFromMethod(strMethod, m_pDarkFlatTask->m_Method, m_pDarkFlatTask->m_fKappa, m_pDarkFlatTask->m_lNrIterations);
-				strText = QString(QObject::tr("Computing master dark flat (%1)", "IDS_COMPUTINGMEDIANDARKFLAT")).arg(strMethod);
+				strText = QCoreApplication::translate("StackingTasks", "Computing master dark flat (%1)", "IDS_COMPUTINGMEDIANDARKFLAT").arg(strMethod);
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress)
@@ -772,13 +772,13 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 					TCHAR			szDir[1+_MAX_DIR];
 					QString			strInfo;
 
-					strInfo = QString(QObject::tr("Master Dark Flat created from %1 pictures (%2)", "IDS_MEDIANDARKFLATINFO")).arg(m_pDarkFlatTask->m_vBitmaps.size()).arg(strMethod);
+					strInfo = QCoreApplication::translate("StackingTasks", "Master Dark Flat created from %1 pictures (%2)", "IDS_MEDIANDARKFLATINFO").arg(m_pDarkFlatTask->m_vBitmaps.size()).arg(strMethod);
 
 					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pDarkFlatTask, _T("MasterDarkFlat"), /* bExposure */ true, szDrive, szDir,
 						&strMasterDarkFlat, &strMasterDarkFlatInfo);
-					strText = QObject::tr("Saving Master Dark Flat", "IDS_SAVINGMASTERDARKFLAT");
+					strText = QCoreApplication::translate("StackingTasks", "Saving Master Dark Flat", "IDS_SAVINGMASTERDARKFLAT");
 					ZTRACE_RUNTIME(strText);
 
 					if (pProgress)
@@ -943,7 +943,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, CDSSP
 		QString			strText;
 
 		strStart2 = pProgress->GetStart2Text();
-		strText = QObject::tr("Computing Flat Calibration Parameters", "IDS_COMPUTINGFLATCALIBRATION");
+		strText = QCoreApplication::translate("StackingTasks", "Computing Flat Calibration Parameters", "IDS_COMPUTINGFLATCALIBRATION");
 		ZTRACE_RUNTIME(strText);
 
 		pProgress->Start2(strText, 0);
@@ -995,7 +995,7 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 		QString			strText;
 
 		strStart2 = pProgress->GetStart2Text();
-		strText = QObject::tr("Applying Flat Calibration Parameters", "IDS_APPLYINGFLATCALIBRATION");
+		strText = QCoreApplication::translate("StackingTasks", "Applying Flat Calibration Parameters", "IDS_APPLYINGFLATCALIBRATION");
 		ZTRACE_RUNTIME(strText);
 
 		pProgress->Start2(strText, 0);
@@ -1118,7 +1118,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 			std::shared_ptr<CMemoryBitmap> pMasterDarkFlat;
 			CFlatCalibrationParameters fcpBase;
 
-			strText = QObject::tr("Create Master Flat Frame", "IDS_CREATEMASTERFLAT");
+			strText = QCoreApplication::translate("StackingTasks", "Create Master Flat Frame", "IDS_CREATEMASTERFLAT");
 			ZTRACE_RUNTIME(strText);
 
 			if (pProgress != nullptr)
@@ -1134,7 +1134,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 			{
 				std::shared_ptr<CMemoryBitmap> pBitmap;
 
-				strText = QString(QObject::tr("Adding Flat frame %1 of %2", "IDS_ADDFLAT")).arg(static_cast<int>(i)).arg(m_pFlatTask->m_vBitmaps.size());
+				strText = QCoreApplication::translate("StackingTasks", "Adding Flat frame %1 of %2", "IDS_ADDFLAT").arg(static_cast<int>(i)).arg(m_pFlatTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress)
@@ -1152,7 +1152,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 						QString strText;
 						QString strStart2;
 
-						strText = QObject::tr("Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
+						strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
 						ZTRACE_RUNTIME(strText);
 
 						if (pProgress != nullptr)
@@ -1170,7 +1170,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 						QString strText;
 						QString strStart2;
 
-						strText = QObject::tr("Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK");
+						strText = QCoreApplication::translate("StackingTasks", "Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK");
 						ZTRACE_RUNTIME(strText);
 
 						if (pProgress != nullptr)
@@ -1210,7 +1210,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 				QString						strMethod;
 
 				FormatFromMethod(strMethod, m_pFlatTask->m_Method, m_pFlatTask->m_fKappa, m_pFlatTask->m_lNrIterations);
-				strText = QString(QObject::tr("Computing master flat (%1)","IDS_COMPUTINGMEDIANFLAT")).arg(strMethod);
+				strText = QCoreApplication::translate("StackingTasks", "Computing master flat (%1)","IDS_COMPUTINGMEDIANFLAT").arg(strMethod);
 				ZTRACE_RUNTIME(strText);
 
 				if (pProgress)
@@ -1229,13 +1229,13 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 					TCHAR			szDir[1+_MAX_DIR];
 					QString			strInfo;
 
-					strInfo = QString(QObject::tr("Master Flat created from %1 pictures (%2)", "IDS_MEDIANFLATINFO")).arg(m_pFlatTask->m_vBitmaps.size()).arg(strMethod);
+					strInfo = QCoreApplication::translate("StackingTasks", "Master Flat created from %1 pictures (%2)", "IDS_MEDIANFLATINFO").arg(m_pFlatTask->m_vBitmaps.size()).arg(strMethod);
 
 					_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
 						&strMasterFlat, &strMasterFlatInfo);
-					strText = QObject::tr("Saving Master Flat", "IDS_SAVINGMASTERFLAT");
+					strText = QCoreApplication::translate("StackingTasks", "Saving Master Flat", "IDS_SAVINGMASTERFLAT");
 					ZTRACE_RUNTIME(strText);
 
 					if (pProgress)

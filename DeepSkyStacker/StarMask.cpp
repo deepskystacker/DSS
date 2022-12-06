@@ -35,7 +35,7 @@ std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* p
 
 		if (pProgress != nullptr)
 		{
-			const QString strText(QObject::tr("Creating Star Mask...", "IDS_CREATINGSTARMASK"));
+			const QString strText(QCoreApplication::translate("StarMask", "Creating Star Mask...", "IDS_CREATINGSTARMASK"));
 			pProgress->Start2(strText, static_cast<int>(vStars.size()));
 		}
 

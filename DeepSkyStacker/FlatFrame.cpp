@@ -108,7 +108,7 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress* pProgress)
 		if (pProgress)
 		{
 			strStart2 = pProgress->GetStart2Text();
-			const QString strText(QObject::tr("Calibrating Master Flat", "IDS_NORMALIZINGMASTERFLAT"));
+			const QString strText(QCoreApplication::translate("FlatFrame", "Calibrating Master Flat", "IDS_NORMALIZINGMASTERFLAT"));
 			pProgress->Start2(strText, m_pFlatFrame->RealHeight());
 		};
 

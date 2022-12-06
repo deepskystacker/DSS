@@ -968,7 +968,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 	if (m_pProgress != nullptr)
 	{
-		const QString strText(QObject::tr("Registering %1", "IDS_REGISTERINGNAME").
+		const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1", "IDS_REGISTERINGNAME").
 			arg(QString::fromStdU16String(filePath.generic_u16string())));
 		m_pProgress->Start2(strText, lNrSubRects);
 	}
@@ -997,7 +997,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		++nrSubrects;
 		if (omp_get_thread_num() == 0 && (++masterCount % 25) == 0) // Only master thread
 		{
-			const QString strText(QObject::tr("Registering %1 (%2 stars)", "IDS_REGISTERINGNAMEPLUSTARS").arg(filePath.c_str()).arg(nStars.load()));
+			const QString strText(QCoreApplication::translate("RegisterEngine", "Registering %1 (%2 stars)", "IDS_REGISTERINGNAMEPLUSTARS").arg(filePath.c_str()).arg(nStars.load()));
 			m_pProgress->Progress2(strText, nrSubrects.load());
 		}
 	};
@@ -1148,7 +1148,7 @@ std::shared_ptr<CGrayBitmap> CLightFrameInfo::ComputeLuminanceBitmap(CMemoryBitm
 	// Try to find star by studying the variation of luminosity
 	if (m_pProgress != nullptr)
 	{
-		const QString strText(QObject::tr("Computing luminances %1", "IDS_COMPUTINGLUMINANCE")
+		const QString strText(QCoreApplication::translate("RegisterEngine", "Computing luminances %1", "IDS_COMPUTINGLUMINANCE")
 			.arg(QString::fromStdU16String(filePath.generic_u16string())));
 		m_pProgress->Start2(strText, m_lHeight);
 	}
@@ -1328,11 +1328,11 @@ void CLightFrameInfo::RegisterPicture()
 		bmpInfo.GetDescription(strDescription);
 
 		if (bmpInfo.m_lNrChannels == 3)
-			strText = QString(QObject::tr("Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE")).arg(bmpInfo.m_lBitPerChannel)
+			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 picture\n%3", "IDS_LOADRGBPICTURE").arg(bmpInfo.m_lBitPerChannel)
 			.arg(QString::fromWCharArray(strDescription.GetString()))
 			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 		else
-			strText = QString(QObject::tr("Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE")).arg(bmpInfo.m_lBitPerChannel)
+			strText = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 picture\n%3", "IDS_LOADGRAYPICTURE").arg(bmpInfo.m_lBitPerChannel)
 			.arg(QString::fromWCharArray(strDescription.GetString()))
 			.arg(QString::fromStdU16String(filePath.generic_u16string()));
 
@@ -1463,7 +1463,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared
 
 		if (pProgress)
 		{
-			const QString strText(QObject::tr("Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
+			const QString strText(QCoreApplication::translate("RegisterEngine", "Saving Calibrated image in %1", "IDS_SAVINGCALIBRATED").arg(QString::fromWCharArray(strOutputFile.GetString())));
 			pProgress->Start2(strText, 0);
 		}
 
@@ -1501,7 +1501,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			lTotalRegistered += (int)pStackingInfo->m_pLightTask->m_vBitmaps.size();
 	};
 
-	strText = QString(QObject::tr("Registering pictures", "IDS_REGISTERING"));
+	strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
 	if (pProgress)
 		pProgress->Start(strText, lTotalRegistered, true);
 
@@ -1536,7 +1536,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 				if (pProgress)
 				{
-					strText = QString(QObject::tr("Registering %1 of %2", "IDS_REGISTERINGPICTURE")).arg(static_cast<int>(j + 1)).arg(lTotalRegistered);
+					strText = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(static_cast<int>(j + 1)).arg(lTotalRegistered);
 					pProgress->Progress1(strText, static_cast<int>(j));
 				};
 
@@ -1553,9 +1553,9 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 						bmpInfo.GetDescription(strDescription);
 
 						if (bmpInfo.m_lNrChannels==3)
-							strText2 = QString(QObject::tr("Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
+							strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
 						else
-							strText2 = QString(QObject::tr("Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT")).arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
+							strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
 						if (pProgress)
 							pProgress->Start2(strText2, 0);
 
