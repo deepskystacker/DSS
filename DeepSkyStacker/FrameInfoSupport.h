@@ -59,22 +59,22 @@ inline QString exposureToString(double fExposure)
 			secs = remainingTime;
 
 			if (hours)
-				strText = QString(QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s", "IDS_EXPOSURETIME3"))
+				strText = QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s", "IDS_EXPOSURETIME3")
 				.arg(hours)
 				.arg(mins)
 				.arg(secs);
 			else if (mins)
-				strText = QString(QCoreApplication::translate("StackRecap", "%1 mn %2 s", "IDS_EXPOSURETIME2"))
+				strText = QCoreApplication::translate("StackRecap", "%1 mn %2 s", "IDS_EXPOSURETIME2")
 				.arg(mins)
 				.arg(secs);
 			else
-				strText = QString(QCoreApplication::translate("StackRecap", "%1 s", "IDS_EXPOSURETIME1"))
+				strText = QCoreApplication::translate("StackRecap", "%1 s", "IDS_EXPOSURETIME1")
 				.arg(secs);
 		}
 		else
 		{
 			exposure = 1.0 / fExposure + 0.5;
-			strText = QString(QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF"))
+			strText = QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF")
 				.arg(exposure);
 		};
 	}

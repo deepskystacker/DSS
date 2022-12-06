@@ -816,7 +816,7 @@ void CProcessingDlg::CreateStarMask()
 				strDescription.LoadString(IDS_STARMASKDESCRIPTION);
 
 				dlgStarMask.GetOutputFileName(strFileName, bFits);
-				const QString strText(QObject::tr("Saving the Star Mask in %1", "IDS_SAVINGSTARMASK").arg(QString::fromWCharArray(strFileName.GetString())));
+				const QString strText(QCoreApplication::translate("ProcessingDlg", "Saving the Star Mask in %1", "IDS_SAVINGSTARMASK").arg(QString::fromWCharArray(strFileName.GetString())));
 				dlg.Start2(strText, 0);
 				if (bFits)
 					WriteFITS(static_cast<LPCTSTR>(strFileName), pStarMask.get(), &dlg, strDescription);

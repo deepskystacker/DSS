@@ -92,7 +92,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 		{
 			if (pProgress != nullptr)
 			{
-				strText = QObject::tr("Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
+				strText = QCoreApplication::translate("RunningStackingEngine", "Computing Background Calibration parameters", "IDS_COMPUTINGBACKGROUNDCALIBRATION");
 				pProgress->Start2(strText, 0);
 			};
 			m_BackgroundCalibration.ComputeBackgroundCalibration(pBitmap.get(), !m_lNrStacked, pProgress);
@@ -107,9 +107,9 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 
 		strDescription = QString::fromWCharArray(lfi.m_strInfos.GetString());
 		if (lfi.m_lNrChannels == 3)
-			strText = QString(QObject::tr("Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT")).arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
 		else
-			strText = QString(QObject::tr("Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT")).arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
+			strText = QCoreApplication::translate("RunningStackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfi.m_lBitPerChannels).arg(strDescription).arg(lfi.filePath.c_str());
 		
 		if (pProgress != nullptr)
 			pProgress->Start2(strText, lHeight);

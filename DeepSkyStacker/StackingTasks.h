@@ -467,13 +467,13 @@ inline void	SpaceToQString(__int64 ulSpace, QString & strSpace)
 	double fGb(fMb / 1024.0);
 
 	if (fKb < 900)
-		strSpace = QString(QCoreApplication::translate("StackRecap", "%L1 kB", "IDS_RECAP_KILOBYTES"))
+		strSpace = QCoreApplication::translate("StackRecap", "%L1 kB", "IDS_RECAP_KILOBYTES")
 		.arg(fKb, 0, 'f', 1);
 	else if (fMb < 900)
-		strSpace = QString(QCoreApplication::translate("StackRecap", "%L1 MB", "IDS_RECAP_MEGABYTES"))
+		strSpace = QCoreApplication::translate("StackRecap", "%L1 MB", "IDS_RECAP_MEGABYTES")
 		.arg(fMb, 0, 'f', 1);
 	else
-		strSpace = QString(QCoreApplication::translate("StackRecap", "%L1 GB", "IDS_RECAP_GIGABYTES"))
+		strSpace = QCoreApplication::translate("StackRecap", "%L1 GB", "IDS_RECAP_GIGABYTES")
 		.arg(fGb, 0, 'f', 1);
 };
 

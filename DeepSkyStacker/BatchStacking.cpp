@@ -261,7 +261,7 @@ bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
 				{
 					StackingEngine.WriteDescription(tasks, strFileName);
 
-					const QString strText(QObject::tr("Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
+					const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
 					dlg.Start2(strText, 0);
 
 					if (iff == IFF_TIFF)

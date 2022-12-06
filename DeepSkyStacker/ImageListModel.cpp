@@ -368,11 +368,11 @@ namespace DSS
             switch (static_cast<Column>(index.column()))
             {
             case Column::Type:
-                return QString(tr("Double click to change the type"));
+                return tr("Double click to change the type");
                 break;
             case Column::ISO:
             case Column::Exposure:
-                return QString(tr("Double click to edit"));
+                return tr("Double click to edit");
                 break;
             }
 
@@ -380,11 +380,11 @@ namespace DSS
             switch (static_cast<Column>(index.column()))
             {
             case Column::Type:
-                return QString(tr("Double click to change the type"));
+                return tr("Double click to change the type");
                 break;
             case Column::ISO:
             case Column::Exposure:
-                return QString(tr("Double click to edit"));
+                return tr("Double click to edit");
                 break;
             }
         return QVariant();
@@ -656,22 +656,22 @@ namespace DSS
 
 
                 if (hours)
-                    strText = QString(QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s ", "IDS_EXPOSURETIME3"))
+                    strText = QCoreApplication::translate("StackRecap", "%1 hr %2 mn %3 s ", "IDS_EXPOSURETIME3")
                     .arg(hours)
                     .arg(mins)
                     .arg(secs);
                 else if (mins)
-                    strText = QString(QCoreApplication::translate("StackRecap", "%1 mn %2 s ", "IDS_EXPOSURETIME2"))
+                    strText = QCoreApplication::translate("StackRecap", "%1 mn %2 s ", "IDS_EXPOSURETIME2")
                     .arg(mins)
                     .arg(secs);
                 else
-                    strText = QString(QCoreApplication::translate("StackRecap", "%1 s ", "IDS_EXPOSURETIME1"))
+                    strText = QCoreApplication::translate("StackRecap", "%1 s ", "IDS_EXPOSURETIME1")
                     .arg(secs);
             }
             else
             {
                 exposure = 1.0 / exposure;
-                strText = QString(QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF"))
+                strText = QCoreApplication::translate("StackRecap", "1/%1 s", "IDS_EXPOSUREFORMAT_INF")
                     .arg(exposure);
             };
         }
