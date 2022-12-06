@@ -102,12 +102,10 @@ namespace DSS
 	static const QString DIALOG_GEOMETRY_SETTING	= QStringLiteral("Dialogs/%1/geometry");
 	extern QStringList OUTPUTLIST_FILTERS;
 
-	BaseDialog::BaseDialog(const QString& name, const Behaviours& behaviours /*= Behaviour::None*/, QWidget* parent /*= nullptr*/) :
+	BaseDialog::BaseDialog(const Behaviours& behaviours /*= Behaviour::None*/, QWidget* parent /*= nullptr*/) :
 		Inherited(parent),
-		m_name{name},
 		m_behaviours{behaviours}
 	{
-		Q_ASSERT(!m_behaviours.testFlag(Behaviour::PersistGeometry) || !m_name.isEmpty());
 		connect(this, &QDialog::finished, this, &BaseDialog::saveState);
 	}
 
@@ -129,7 +127,8 @@ namespace DSS
 		//
 		bool geometryRestored = false;
 		if (hasPersistentGeometry()) {
-			QByteArray ba = QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(m_name)).toByteArray();
+			Q_ASSERT(!objectName().isEmpty());
+			QByteArray ba = QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(objectName())).toByteArray();
 			if (!ba.isEmpty()) {
 				restoreGeometry(ba);
 				geometryRestored = true;
@@ -152,13 +151,14 @@ namespace DSS
 	void BaseDialog::saveState() const
 	{
 		if (hasPersistentGeometry()) {
-			QSettings{}.setValue(DIALOG_GEOMETRY_SETTING.arg(m_name), saveGeometry());
+			Q_ASSERT(!objectName().isEmpty());
+			QSettings{}.setValue(DIALOG_GEOMETRY_SETTING.arg(objectName()), saveGeometry());
 		}
 	}
 
 
 	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
-		Inherited(QStringLiteral("Batch"), Behaviour::PersistGeometry, parent),
+		Inherited(Behaviour::PersistGeometry, parent),
 		ui(new Ui::BatchStacking),
 		m_fileListModel(new QStandardItemModel(this))
 	{

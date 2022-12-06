@@ -26,7 +26,7 @@ namespace DSS
 		};
 		Q_DECLARE_FLAGS(Behaviours, Behaviour)
 	public:
-		BaseDialog(const QString& name, const Behaviours& behaviours = Behaviour::None, QWidget* parent = nullptr);
+		BaseDialog(const Behaviours& behaviours = Behaviour::None, QWidget* parent = nullptr);
 
 	protected:
 		void showEvent(QShowEvent* event) override;
@@ -37,11 +37,10 @@ namespace DSS
 	private:
 		virtual void onInitDialog();
 		bool hasPersistentGeometry() const {
-			return m_behaviours.testFlag(Behaviour::PersistGeometry) && !m_name.isEmpty();
+			return m_behaviours.testFlag(Behaviour::PersistGeometry);
 		}
 
 	private:
-		const QString	m_name;
 		Behaviours		m_behaviours{ Behaviour::None };
 		bool			m_initialised{ false };
 
