@@ -99,63 +99,7 @@ namespace
 
 namespace DSS
 {
-	static const QString DIALOG_GEOMETRY_SETTING	= QStringLiteral("Dialogs/%1/geometry");
 	extern QStringList OUTPUTLIST_FILTERS;
-
-	BaseDialog::BaseDialog(const Behaviours& behaviours /*= Behaviour::None*/, QWidget* parent /*= nullptr*/) :
-		Inherited(parent),
-		m_behaviours{behaviours}
-	{
-		connect(this, &QDialog::finished, this, &BaseDialog::saveState);
-	}
-
-	void BaseDialog::showEvent(QShowEvent* event)
-	{
-		if (!event->spontaneous()) {
-			if (!m_initialised) {
-				onInitDialog();
-				m_initialised = true;
-			}
-		}
-		Inherited::showEvent(event);
-	}
-
-	void BaseDialog::onInitDialog()
-	{
-		//
-		// Restore Window position etc..
-		//
-		bool geometryRestored = false;
-		if (hasPersistentGeometry()) {
-			Q_ASSERT(!objectName().isEmpty());
-			QByteArray ba = QSettings{}.value(DIALOG_GEOMETRY_SETTING.arg(objectName())).toByteArray();
-			if (!ba.isEmpty()) {
-				restoreGeometry(ba);
-				geometryRestored = true;
-			}			
-		}
-		if (!geometryRestored)
-		{
-			//
-			// Center it in the main Window rectangle
-			//
-			const QRect r{ DeepSkyStacker::instance()->rect() };
-			const QSize size = this->size();
-
-			int top = ((r.top() + (r.height() / 2) - (size.height() / 2)));
-			int left = ((r.left() + (r.width() / 2) - (size.width() / 2)));
-			move(left, top);
-		}
-	}
-
-	void BaseDialog::saveState() const
-	{
-		if (hasPersistentGeometry()) {
-			Q_ASSERT(!objectName().isEmpty());
-			QSettings{}.setValue(DIALOG_GEOMETRY_SETTING.arg(objectName()), saveGeometry());
-		}
-	}
-
 
 	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
 		Inherited(Behaviour::PersistGeometry, parent),
