@@ -2764,7 +2764,6 @@ namespace DSS
 	{
 		DSS::BatchStacking dlg(this);
 		dlg.setMRUPaths(mruPath.paths);
-		dlg.setListFileFilters(OUTPUTLIST_FILTERS);
 		dlg.exec();
 	};
 
