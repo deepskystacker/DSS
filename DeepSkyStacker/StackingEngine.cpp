@@ -3020,7 +3020,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 						strText.LoadString(IDS_TYPE_LIGHT);
 						fprintf(hFile, "<b>%s</b><br>\n", (LPCSTR)CT2CA(strText, CP_UTF8));
 						for (j = 0;j<si.m_pLightTask->m_vBitmaps.size();j++)
-							fprintf(hFile, "%s<br>", si.m_pLightTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+							fprintf(hFile, "%s<br>", si.m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
 
 						if (si.m_pOffsetTask && si.m_pOffsetTask->m_vBitmaps.size())
 						{
@@ -3032,7 +3032,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8), (LPCSTR)CT2CA(si.m_pOffsetTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pOffsetTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", si.m_pOffsetTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+								fprintf(hFile, "%s<br>", si.m_pOffsetTask->m_vBitmaps[j].filePath.generic_string().c_str());
 						};
 
 						if (si.m_pDarkTask && si.m_pDarkTask->m_vBitmaps.size())
@@ -3045,7 +3045,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 								fprintf(hFile, "%s -> %s<br>", (LPCSTR)CT2CA(strText, CP_UTF8), (LPCSTR)CT2CA(si.m_pDarkTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pDarkTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", si.m_pDarkTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+								fprintf(hFile, "%s<br>", si.m_pDarkTask->m_vBitmaps[j].filePath.generic_string().c_str());
 						};
 
 						if (si.m_pDarkFlatTask && si.m_pDarkFlatTask->m_vBitmaps.size())
@@ -3059,7 +3059,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 									(LPCSTR)CT2CA(si.m_pDarkFlatTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pDarkFlatTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", si.m_pDarkFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+								fprintf(hFile, "%s<br>", si.m_pDarkFlatTask->m_vBitmaps[j].filePath.generic_string().c_str());
 						};
 						if (si.m_pFlatTask && si.m_pFlatTask->m_vBitmaps.size())
 						{
@@ -3072,7 +3072,7 @@ void	CStackingEngine::WriteDescription(CAllStackingTasks& tasks, LPCTSTR szOutpu
 									(LPCSTR)CT2CA(si.m_pFlatTask->m_strOutputFile, CP_UTF8));
 							};
 							for (j = 0;j<si.m_pFlatTask->m_vBitmaps.size();j++)
-								fprintf(hFile, "%s<br>", si.m_pFlatTask->m_vBitmaps[j].filePath.generic_u8string().c_str());
+								fprintf(hFile, "%s<br>", si.m_pFlatTask->m_vBitmaps[j].filePath.generic_string().c_str());
 						};
 					};
 				};
