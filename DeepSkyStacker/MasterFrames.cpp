@@ -50,7 +50,7 @@ void	CMasterFrames::ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, CD
 	{
 		if (pProgress)
 		{
-			const QString strText(QObject::tr("Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET"));
+			const QString strText(QCoreApplication::translate("MasterFrame", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET"));
 			pProgress->Start2(strText, 0);
 		};
 		Subtract(pBitmap, m_pMasterOffset, pProgress);
@@ -74,7 +74,7 @@ void	CMasterFrames::ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, CDSS
 		m_MasterFlat.ComputeFlatNormalization(pProgress);
 		if (pProgress)
 		{
-			const QString strText(QObject::tr("Applying Flat Frame", "IDS_APPLYINGFLAT"));
+			const QString strText(QCoreApplication::translate("MasterFrame", "Applying Flat Frame", "IDS_APPLYINGFLAT"));
 			pProgress->Start2(strText, 0);
 		};
 		m_MasterFlat.ApplyFlat(pBitmap, pProgress);

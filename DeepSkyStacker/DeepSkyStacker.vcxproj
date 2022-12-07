@@ -325,6 +325,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="BaseDialog.cpp" />
     <ClCompile Include="toolbar.cpp" />
     <ClCompile Include="dss_settings.cpp" />
     <ClCompile Include="EntropyInfo.cpp" />
@@ -503,6 +504,7 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="BackgroundCalibration.h" />
     <QtMoc Include="BackgroundOptions.h" />
     <ClInclude Include="BackgroundLoading.h" />
+    <QtMoc Include="BaseDialog.h" />
     <ClInclude Include="BatchStacking.h" />
     <ClInclude Include="BezierAdjust.h" />
     <ClInclude Include="BitmapBase.h" />
