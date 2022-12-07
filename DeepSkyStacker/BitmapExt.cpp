@@ -1179,13 +1179,9 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitma
 #endif // DSSFILEDECODING
 
 /* ------------------------------------------------------------------- */
-#pragma warning( push )
-#pragma warning( disable: 4996 )
 
-#include <concurrent_unordered_set.h>
+#include <concurrent_unordered_map.h>
 #include <shared_mutex>
-
-#pragma warning( pop )
 
 namespace {
 	//
@@ -1218,7 +1214,9 @@ namespace {
 
 	//typedef std::set<CBitmapInfo> InfoCache;
 	// We absolutely must use a thread-safe cache, otherwise GetPictureInfo() crashes if used concurrently (e.g. with OpenMP).
-	typedef concurrency::concurrent_unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>> InfoCache;
+
+	// Note: concurrent_unordered_set is not compatible with std=c++20, so we use a concurrent_unordered_map and ignore the 'value' field (using an 'int' for it).
+	using InfoCache = concurrency::concurrent_unordered_map<CBitmapInfo, int, BitmapInfoHash<CBitmapInfo>>;
 	InfoCache g_sBitmapInfoCache;
 	SYSTEMTIME g_BitmapInfoTime;
 	std::shared_mutex bitmapInfoMutex;
@@ -1268,7 +1266,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(szFileName));
 			if (it != g_sBitmapInfoCache.cend())
 			{
-				BitmapInfo = *it;
+				BitmapInfo = it->first;
 				bResult = true;
 			}
 		}
@@ -1313,7 +1311,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
 				GetSystemTime(&g_BitmapInfoTime);
-			g_sBitmapInfoCache.insert(BitmapInfo);
+			g_sBitmapInfoCache.insert(std::make_pair(BitmapInfo, 0));
 		};
 	};
 #endif
