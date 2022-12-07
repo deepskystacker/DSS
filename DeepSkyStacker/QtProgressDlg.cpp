@@ -104,7 +104,7 @@ void ProgressDlg::setItemVisibility(bool bSet1, bool bSet2)
 }
 void ProgressDlg::RunDialog()
 {
-	show();
+	raise(); show(); 
 	QApplication::processEvents();
 }
 
