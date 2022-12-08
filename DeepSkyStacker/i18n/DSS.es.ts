@@ -42,10 +42,10 @@
     <message>
         <location filename="../About.cpp" line="72"/>
         <source>RAW file decoding by LibRaw (version %1)
-Copyright © 1997-2019 LibRaw LLC</source>
+Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>Decodificación de archivos RAW con LibRaw (versión %1)
-Copyright © 1997-2019 LibRaw LLC</translation>
+        <translation type="unfinished">Decodificación de archivos RAW con LibRaw (versión %1)
+Copyright © 1997-2019 LibRaw LLC {1)?} {1997-2022 ?}</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="82"/>
@@ -3130,6 +3130,7 @@ Do you want to save them?</source>
         <location filename="../StackedBitmap.cpp" line="956"/>
         <location filename="../StackedBitmap.cpp" line="995"/>
         <location filename="../StackedBitmap.cpp" line="1150"/>
+        <location filename="../StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation type="unfinished"></translation>
@@ -3138,12 +3139,6 @@ Do you want to save them?</source>
         <location filename="../StackedBitmap.cpp" line="1097"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackedBitmap.cpp" line="1192"/>
-        <source>Picture saved with settings embedded.</source>
-        <comment>(IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
