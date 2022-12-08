@@ -332,17 +332,12 @@ bool CTIFFReader::Read()
 			return (static_cast<double>(value) - sampleMin) * normalizationFactor;
 		};
 
-		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const auto& function) -> void
+		const auto loopOverPixels = [height = this->h, width = this->w, progress = this->m_pProgress](const int row, const auto& function) -> void
 		{
-			int progressCounter = 0;
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
-			for (int row = 0; row < height; ++row)
-			{
-				for (int col = 0; col < width; ++col)
-					function(col, row);
-				if (progress != nullptr && omp_get_thread_num() == 0 && (progressCounter++ % 25) == 0)
-					progress->Progress2(nullptr, (height + row) / 2);
-			}
+			for (int col = 0; col < width; ++col)
+				function(col);
+			if (progress != nullptr && omp_get_thread_num() == 0 && (row % 32) == 0)
+				progress->Progress2(nullptr, (height + row) / 2);
 		};
 
 		if (sampleformat == SAMPLEFORMAT_IEEEFP)
@@ -350,61 +345,89 @@ bool CTIFFReader::Read()
 			assert(bps == 32);
 
 			if (spp == 1)
-				loopOverPixels([&](const int x, const int y) {
-					const double gray = normalizeFloatValue(floatBuff[y * w + x]);
-					OnRead(x, y, gray, gray, gray);
-				});
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1) // GetNrProcessors() returns 1, if user selected single-thread.
+				for (int y = 0; y < this->h; ++y)
+					loopOverPixels(y, [&](const int x) {
+						const double gray = normalizeFloatValue(floatBuff[y * w + x]);
+						OnRead(x, y, gray, gray, gray);
+					});
 			else
-				loopOverPixels([&](const int x, const int y) {
-					const int index = (y * w + x) * spp;
-					const double red = normalizeFloatValue(floatBuff[index]);
-					const double green = normalizeFloatValue(floatBuff[index + 1]);
-					const double blue = normalizeFloatValue(floatBuff[index + 2]);
-					OnRead(x, y, red, green, blue);
-				});
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+				for (int y = 0; y < this->h; ++y)
+					loopOverPixels(y, [&](const int x) {
+						const int index = (y * w + x) * spp;
+						const double red = normalizeFloatValue(floatBuff[index]);
+						const double green = normalizeFloatValue(floatBuff[index + 1]);
+						const double blue = normalizeFloatValue(floatBuff[index + 2]);
+						OnRead(x, y, red, green, blue);
+					});
 		}
 		else
 		{
 			if (spp == 1)
 				switch (bps)
 				{
-				case 8: loopOverPixels([&](const int x, const int y) {
-					const double fGray = byteBuff[y * w + x];
-					OnRead(x, y, fGray, fGray, fGray);
-				}); break;
-				case 16: loopOverPixels([&](const int x, const int y) {
-					const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
-					OnRead(x, y, fGray, fGray, fGray);
-				}); break;
-				case 32: loopOverPixels([&](const int x, const int y) {
-					const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
-					OnRead(x, y, fGray, fGray, fGray);
-				}); break;
+				case 8: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+						loopOverPixels(y, [&](const int x) {
+							const double fGray = byteBuff[y * w + x];
+							OnRead(x, y, fGray, fGray, fGray);
+						});
+					} break;
+				case 16: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+						loopOverPixels(y, [&](const int x) {
+							const double fGray = shortBuff[y * w + x] / scaleFactorInt16;
+							OnRead(x, y, fGray, fGray, fGray);
+						});
+					} break;
+				case 32: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+						loopOverPixels(y, [&](const int x) {
+							const double fGray = u32Buff[y * w + x] / scaleFactorInt32;
+							OnRead(x, y, fGray, fGray, fGray);
+						});
+					} break;
 				}
 			else
 				switch (bps)
 				{
-				case 8: loopOverPixels([&](const int x, const int y) {
-					const int index = (y * w + x) * spp;
-					const double fRed = byteBuff[index];
-					const double fGreen = byteBuff[index + 1];
-					const double fBlue = byteBuff[index + 2];
-					OnRead(x, y, fRed, fGreen, fBlue);
-				}); break;
-				case 16: loopOverPixels([&](const int x, const int y) {
-					const int index = (y * w + x) * spp;
-					const double fRed = shortBuff[index] / scaleFactorInt16;
-					const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
-					const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
-					OnRead(x, y, fRed, fGreen, fBlue);
-				}); break;
-				case 32: loopOverPixels([&](const int x, const int y) {
-					const int index = (y * w + x) * spp;
-					const double fRed = u32Buff[index] / scaleFactorInt32;
-					const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
-					const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
-					OnRead(x, y, fRed, fGreen, fBlue);
-				}); break;
+				case 8: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+						loopOverPixels(y, [&](const int x) {
+							const int index = (y * w + x) * spp;
+							const double fRed = byteBuff[index];
+							const double fGreen = byteBuff[index + 1];
+							const double fBlue = byteBuff[index + 2];
+							OnRead(x, y, fRed, fGreen, fBlue);
+						});
+					} break;
+				case 16: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+						loopOverPixels(y, [&](const int x) {
+							const int index = (y * w + x) * spp;
+							const double fRed = shortBuff[index] / scaleFactorInt16;
+							const double fGreen = shortBuff[index + 1] / scaleFactorInt16;
+							const double fBlue = shortBuff[index + 2] / scaleFactorInt16;
+							OnRead(x, y, fRed, fGreen, fBlue);
+						});
+					} break;
+				case 32: {
+#pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
+					for (int y = 0; y < this->h; ++y)
+						loopOverPixels(y, [&](const int x) {
+							const int index = (y * w + x) * spp;
+							const double fRed = u32Buff[index] / scaleFactorInt32;
+							const double fGreen = u32Buff[index + 1] / scaleFactorInt32;
+							const double fBlue = u32Buff[index + 2] / scaleFactorInt32;
+							OnRead(x, y, fRed, fGreen, fBlue);
+						});
+					} break;
 				}
 		}
 
