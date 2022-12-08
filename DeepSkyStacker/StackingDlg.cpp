@@ -2768,10 +2768,9 @@ namespace DSS
 
 	void StackingDlg::batchStack()
 	{
-		CBatchStacking			dlg; // TODO
-
-		//dlg.setMRUList(mruPath); TODO use MRUPath
-		dlg.DoModal();
+		DSS::BatchStacking dlg(this);
+		dlg.setMRUPaths(mruPath.paths);
+		dlg.exec();
 	};
 
 	void StackingDlg::gammaChanging(int peg)

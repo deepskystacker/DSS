@@ -1,59 +1,46 @@
 #ifndef __BATCHSTACKING_H__
 #define __BATCHSTACKING_H__
 
-#include "EasySize.h"
-#include "mrulist.h"
+#include "BaseDialog.h"
 
-class CBatchStacking : public CDialog
+class QStandardItemModel;
+
+namespace Ui {
+	class BatchStacking;
+}
+
+namespace DSS
 {
-	DECLARE_DYNAMIC(CBatchStacking)
-	DECLARE_EASYSIZE
-
-private :
-	CCheckListBox			m_Lists;
-	MRUList				m_MRUList;
-	CScrollBar				m_Gripper;
-
-// Construction
-public:
-	CBatchStacking(CWnd* pParent = nullptr);   // standard constructor
-	void setMRUList(const MRUList& MRUList)
+	class BatchStacking : public BaseDialog
 	{
-		m_MRUList = MRUList;
+		Q_OBJECT
+
+			typedef BaseDialog
+			Inherited;
+
+	public:
+		BatchStacking(QWidget* parent = nullptr);
+		virtual ~BatchStacking();
+
+		void setMRUPaths(const std::vector<fs::path>& mruPaths);
+
+	public slots:
+		void accept() override;
+		void clearLists();
+		void addLists();
+
+	private:
+		void addItemsFor(const QStringList& paths, bool checked);
+		QStringList getFilePaths() const;
+
+	private:
+		Ui::BatchStacking*	ui{ nullptr };
+		QStandardItemModel*	m_fileListModel{ nullptr };
+
+	private:
+		Q_DISABLE_COPY(BatchStacking)
 	};
-
-// Dialog Data
-	//{{AFX_DATA(CBatchStacking)
-	enum { IDD = IDD_BATCHSTACKING };
-	//}}AFX_DATA
-
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CBatchStacking)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	virtual BOOL OnInitDialog();
-	//}}AFX_VIRTUAL
-	afx_msg void OnBnClickedAddLists();
-	afx_msg void OnBnClickedClearList();
-
-// Implementation
-private :
-	bool ProcessList(LPCTSTR szList, CString& strOutputFile);
-	void	UpdateListBoxWidth();
-
-protected:
-
-	virtual void OnSize(UINT nType, int cx, int cy);
-	virtual void OnSizing(UINT nSide, LPRECT lpRect);
-
-	// Generated message map functions
-	//{{AFX_MSG(CBatchStacking)
-	virtual void OnOK();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-};
+}
 
 
 #endif
