@@ -2,6 +2,91 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de_DE">
 <context>
+    <name>BitmapBase</name>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapBase.cpp" line="12"/>
+        <source>Detecting hot pixels</source>
+        <comment>IDS_REMOVINGHOTPIXELS</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BitmapExt</name>
+    <message>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="511"/>
+        <source>Applying cosmetic - Hot Pixels</source>
+        <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="126"/>
+        <source>Average</source>
+        <comment>IDS_RECAP_AVERAGE</comment>
+        <translation type="unfinished">Durchschnitt</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="129"/>
+        <source>Median</source>
+        <comment>IDS_RECAP_MEDIAN</comment>
+        <translation type="unfinished">Median</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="132"/>
+        <source>Maximum</source>
+        <comment>IDS_RECAP_MAXIMUM</comment>
+        <translation type="unfinished">Maximum</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="135"/>
+        <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
+        <comment>IDS_RECAP_KAPPASIGMA</comment>
+        <translation type="unfinished">Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="138"/>
+        <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
+        <comment>IDS_RECAP_AUTOADAPTIVE</comment>
+        <translation type="unfinished">Auto Adaptive Weighted Average (Wiederholungen = %1)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="141"/>
+        <source>Entropy Weighted Average</source>
+        <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
+        <translation type="unfinished">Entropy Weighted Average</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="144"/>
+        <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
+        <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
+        <translation type="unfinished">Median Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
+    </message>
+</context>
+<context>
+    <name>CosmeticEngine</name>
+    <message>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="514"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="543"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="599"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="628"/>
+        <source>Creating Median Filtered Image</source>
+        <comment>IDS_CREATINGMEDIANIMAGE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="538"/>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="623"/>
+        <source>Applying cosmetic - Cold Pixels</source>
+        <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="596"/>
+        <source>Applying cosmetic - Hot Pixels</source>
+        <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DSS::Group</name>
     <message>
         <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="480"/>
@@ -179,9 +264,50 @@
     </message>
 </context>
 <context>
+    <name>DarkFrame</name>
+    <message>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="601"/>
+        <source>Computing Dark Optimization parameters</source>
+        <comment>IDS_COMPUTINGDARKOPTIMIZATIONFACTOR</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1333"/>
+        <source>Creating Median Filtered Image</source>
+        <comment>IDS_CREATINGMEDIANIMAGE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1733"/>
+        <source>Detecting Hot Pixels (1/2)</source>
+        <comment>IDS_DETECTINGHOTPIXELS1</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1743"/>
+        <source>Detecting Hot Pixels (2/2)</source>
+        <comment>IDS_DETECTINGHOTPIXELS2</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1933"/>
+        <source>Optimizing Dark Matching</source>
+        <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1940"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1950"/>
+        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1959"/>
+        <source>Subtracting Dark Frame</source>
+        <comment>IDS_SUBSTRACTINGDARK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DeepSkyStackerLive</name>
     <message>
-        <location filename="../DeepSkyStackerLive.cpp" line="105"/>
+        <location filename="../DeepSkyStackerLive.cpp" line="104"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation type="unfinished"></translation>
@@ -254,81 +380,70 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapBase.cpp" line="12"/>
-        <source>Detecting hot pixels</source>
-        <comment>IDS_REMOVINGHOTPIXELS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="511"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="596"/>
-        <source>Applying cosmetic - Hot Pixels</source>
-        <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="514"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="543"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="599"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="628"/>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1333"/>
-        <source>Creating Median Filtered Image</source>
-        <comment>IDS_CREATINGMEDIANIMAGE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="538"/>
-        <location filename="../../DeepSkyStacker/CosmeticEngine.cpp" line="623"/>
-        <source>Applying cosmetic - Cold Pixels</source>
-        <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="601"/>
-        <source>Computing Dark Optimization parameters</source>
-        <comment>IDS_COMPUTINGDARKOPTIMIZATIONFACTOR</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1733"/>
-        <source>Detecting Hot Pixels (1/2)</source>
-        <comment>IDS_DETECTINGHOTPIXELS1</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1743"/>
-        <source>Detecting Hot Pixels (2/2)</source>
-        <comment>IDS_DETECTINGHOTPIXELS2</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1933"/>
-        <source>Optimizing Dark Matching</source>
-        <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1940"/>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1950"/>
-        <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="1959"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1173"/>
-        <source>Subtracting Dark Frame</source>
-        <comment>IDS_SUBSTRACTINGDARK</comment>
-        <translation type="unfinished"></translation>
-    </message>
+    <name>FlatFrame</name>
     <message>
         <location filename="../../DeepSkyStacker/FlatFrame.cpp" line="111"/>
         <source>Calibrating Master Flat</source>
         <comment>IDS_NORMALIZINGMASTERFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>MainBoard</name>
+    <message>
+        <location filename="../MainBoard.cpp" line="1180"/>
+        <source>%1 new file(s) found
+</source>
+        <comment>IDS_LOG_NEWFILESFOUND</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainBoard.cpp" line="1184"/>
+        <source>-&gt; New file: %1
+</source>
+        <comment>IDS_LOG_NEWFILE</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainBoard.cpp" line="1280"/>
+        <source>Start monitoring folder %1
+</source>
+        <comment>IDS_LOG_STARTMONITORING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainBoard.cpp" line="1311"/>
+        <source>Stop monitoring folder %1
+</source>
+        <comment>IDS_LOG_STOPMONITORING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainBoard.cpp" line="1327"/>
+        <source>Start Stacking files
+</source>
+        <comment>IDS_LOG_STARTMONITORING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainBoard.cpp" line="1328"/>
+        <source>Stop Stacking files
+</source>
+        <comment>IDS_LOG_STOPSTACKING</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../MainBoard.cpp" line="1576"/>
+        <source>An error occurred while sending the email!
+</source>
+        <comment>IDS_ERRORSENDINGEMAIL</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MasterFrame</name>
     <message>
         <location filename="../../DeepSkyStacker/MasterFrames.cpp" line="53"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="549"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="730"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1155"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation type="unfinished"></translation>
@@ -339,6 +454,9 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <comment>IDS_APPLYINGFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>RegisterEngine</name>
     <message>
         <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="971"/>
         <source>Registering %1</source>
@@ -391,7 +509,6 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
     </message>
     <message>
         <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1556"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="78"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -399,12 +516,14 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
     </message>
     <message>
         <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1558"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="80"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>RunningStackingEngine</name>
     <message>
         <location filename="../../DeepSkyStacker/RunningStackingEngine.cpp" line="95"/>
         <source>Computing Background Calibration parameters</source>
@@ -425,6 +544,96 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <comment>IDS_STACKGRAYLIGHT</comment>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StackRecap</name>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.h" line="470"/>
+        <source>%L1 kB</source>
+        <comment>IDS_RECAP_KILOBYTES</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.h" line="473"/>
+        <source>%L1 MB</source>
+        <comment>IDS_RECAP_MEGABYTES</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.h" line="476"/>
+        <source>%L1 GB</source>
+        <comment>IDS_RECAP_GIGABYTES</comment>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="185"/>
+        <source>Average</source>
+        <comment>IDS_RECAP_AVERAGE</comment>
+        <translation>Durchschnitt</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="188"/>
+        <source>Median</source>
+        <comment>IDS_RECAP_MEDIAN</comment>
+        <translation>Median</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="191"/>
+        <source>Maximum</source>
+        <comment>IDS_RECAP_MAXIMUM</comment>
+        <translation>Maximum</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="194"/>
+        <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
+        <comment>IDS_RECAP_KAPPASIGMA</comment>
+        <translation>Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="200"/>
+        <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
+        <comment>IDS_RECAP_AUTOADAPTIVE</comment>
+        <translation>Auto Adaptive Weighted Average (Wiederholungen = %1)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="206"/>
+        <source>Entropy Weighted Average</source>
+        <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
+        <translation>Entropy Weighted Average</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/BitmapExt.h" line="211"/>
+        <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
+        <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
+        <translation>Median Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="659"/>
+        <source>%1 hr %2 mn %3 s </source>
+        <comment>IDS_EXPOSURETIME3</comment>
+        <translation>%1 h %2 m %3 s </translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="664"/>
+        <source>%1 mn %2 s </source>
+        <comment>IDS_EXPOSURETIME2</comment>
+        <translation>%1 m %2 s </translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="668"/>
+        <source>%1 s </source>
+        <comment>IDS_EXPOSURETIME1</comment>
+        <translation>%1 s </translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="674"/>
+        <source>1/%1 s</source>
+        <comment>IDS_EXPOSUREFORMAT_INF</comment>
+        <translation>1/%1 s</translation>
+    </message>
+</context>
+<context>
+    <name>StackedBitmap</name>
     <message>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="295"/>
         <source>Loading DSImage</source>
@@ -523,6 +732,9 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <comment>IDS_LOADRGBFITS</comment>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>StackingTasks</name>
     <message>
         <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="54"/>
         <source>Loading %1 bit/ch %2 dark flat frame
@@ -580,6 +792,20 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="78"/>
+        <source>Loading %1 bit/ch %2 light frame
+%3</source>
+        <comment>IDS_LOADRGBLIGHT</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="80"/>
+        <source>Loading %1 bits gray %2 light frame
+%3</source>
+        <comment>IDS_LOADGRAYLIGHT</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="358"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
@@ -619,6 +845,14 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="530"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="549"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="730"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1155"/>
+        <source>Subtracting Offset Frame</source>
+        <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -694,6 +928,12 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1173"/>
+        <source>Subtracting Dark Frame</source>
+        <comment>IDS_SUBSTRACTINGDARK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1213"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
@@ -710,184 +950,6 @@ Ab jetzt werden alle eingehenden (und die zuvor bereits registrierten) Bilder ge
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainBoard.cpp" line="1176"/>
-        <source>%1 new file(s) found
-</source>
-        <comment>IDS_LOG_NEWFILESFOUND</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainBoard.cpp" line="1180"/>
-        <source>-&gt; New file: %1
-</source>
-        <comment>IDS_LOG_NEWFILE</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainBoard.cpp" line="1274"/>
-        <source>Start monitoring folder %1
-</source>
-        <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainBoard.cpp" line="1305"/>
-        <source>Stop monitoring folder %1
-</source>
-        <comment>IDS_LOG_STOPMONITORING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainBoard.cpp" line="1326"/>
-        <source>Start Stacking files
-</source>
-        <comment>IDS_LOG_STARTMONITORING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainBoard.cpp" line="1327"/>
-        <source>Stop Stacking files
-</source>
-        <comment>IDS_LOG_STOPSTACKING</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../MainBoard.cpp" line="1575"/>
-        <source>An error occurred while sending the email!
-</source>
-        <comment>IDS_ERRORSENDINGEMAIL</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="126"/>
-        <source>Average</source>
-        <comment>IDS_RECAP_AVERAGE</comment>
-        <translation type="unfinished">Durchschnitt</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="129"/>
-        <source>Median</source>
-        <comment>IDS_RECAP_MEDIAN</comment>
-        <translation type="unfinished">Median</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="132"/>
-        <source>Maximum</source>
-        <comment>IDS_RECAP_MAXIMUM</comment>
-        <translation type="unfinished">Maximum</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="135"/>
-        <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_KAPPASIGMA</comment>
-        <translation type="unfinished">Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="138"/>
-        <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
-        <comment>IDS_RECAP_AUTOADAPTIVE</comment>
-        <translation type="unfinished">Auto Adaptive Weighted Average (Wiederholungen = %1)</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="141"/>
-        <source>Entropy Weighted Average</source>
-        <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
-        <translation type="unfinished">Entropy Weighted Average</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="144"/>
-        <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
-        <translation type="unfinished">Median Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
-    </message>
-</context>
-<context>
-    <name>StackRecap</name>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.h" line="470"/>
-        <source>%L1 kB</source>
-        <comment>IDS_RECAP_KILOBYTES</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.h" line="473"/>
-        <source>%L1 MB</source>
-        <comment>IDS_RECAP_MEGABYTES</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.h" line="476"/>
-        <source>%L1 GB</source>
-        <comment>IDS_RECAP_GIGABYTES</comment>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="185"/>
-        <source>Average</source>
-        <comment>IDS_RECAP_AVERAGE</comment>
-        <translation>Durchschnitt</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="188"/>
-        <source>Median</source>
-        <comment>IDS_RECAP_MEDIAN</comment>
-        <translation>Median</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="191"/>
-        <source>Maximum</source>
-        <comment>IDS_RECAP_MAXIMUM</comment>
-        <translation>Maximum</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="194"/>
-        <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_KAPPASIGMA</comment>
-        <translation>Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="200"/>
-        <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
-        <comment>IDS_RECAP_AUTOADAPTIVE</comment>
-        <translation>Auto Adaptive Weighted Average (Wiederholungen = %1)</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="206"/>
-        <source>Entropy Weighted Average</source>
-        <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
-        <translation>Entropy Weighted Average</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/BitmapExt.h" line="211"/>
-        <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
-        <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
-        <translation>Median Kappa-Sigma (Kappa = %1, Wiederholungen = %2)</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="659"/>
-        <source>%1 hr %2 mn %3 s </source>
-        <comment>IDS_EXPOSURETIME3</comment>
-        <translation>%1 h %2 m %3 s </translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="664"/>
-        <source>%1 mn %2 s </source>
-        <comment>IDS_EXPOSURETIME2</comment>
-        <translation>%1 m %2 s </translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="668"/>
-        <source>%1 s </source>
-        <comment>IDS_EXPOSURETIME1</comment>
-        <translation>%1 s </translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="674"/>
-        <source>1/%1 s</source>
-        <comment>IDS_EXPOSUREFORMAT_INF</comment>
-        <translation>1/%1 s</translation>
     </message>
 </context>
 </TS>
