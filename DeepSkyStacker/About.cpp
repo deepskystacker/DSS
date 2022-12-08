@@ -69,7 +69,7 @@ About::About(QWidget *parent) :
 	strText = QString("<a href=\"%1\">%1</a><br><br>").arg("https://www.qt.io/");
 	strHTML += strText;
 
-    strText = tr("RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2019 LibRaw LLC",
+    strText = tr("RAW file decoding by LibRaw (version %1)\nCopyright © 1997-2022 LibRaw LLC",
 				"IDS_ABOUT_DCRAW").arg(LIBRAW_VERSION_STR);
     strText = strText.replace("\n", "<br>");
     strHTML += strText + "<br>";
