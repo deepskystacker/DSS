@@ -408,8 +408,12 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 				{
 					TCHAR szDrive[1+_MAX_DRIVE];
 					TCHAR szDir[1+_MAX_DIR];
-					const QString strInfo(QCoreApplication::translate("StackingTasks", "Master Offset created from %n pictures (%1)", "IDS_MEDIANOFFSETINFO",
-						static_cast<int>(m_pOffsetTask->m_vBitmaps.size())).arg(strMethod));
+
+					const QString strInfo{ tr("Master Offset created from %n picture(s) (%1)",
+						"IDS_MEDIANOFFSETINFO",
+						static_cast<int>(m_pOffsetTask->m_vBitmaps.size()))
+						.arg(strMethod) };
+
 					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */false, szDrive, szDir, &strMasterOffset, &strMasterOffsetInfo);
@@ -588,7 +592,11 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 				{
 					TCHAR szDrive[1+_MAX_DRIVE];
 					TCHAR szDir[1+_MAX_DIR];
-					QString strInfo = QCoreApplication::translate("StackingTasks", "Master Dark created from %1 pictures (%2)", "IDS_MEDIANDARKINFO").arg(m_pDarkTask->m_vBitmaps.size()).arg(strMethod);
+
+					const QString strInfo{ tr("Master Dark created from %n picture(s) (%1)",
+						"IDS_MEDIANDARKINFO",
+						static_cast<int>(m_pDarkTask->m_vBitmaps.size()))
+						.arg(strMethod) };
 
 					_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
@@ -771,9 +779,11 @@ bool	CStackingInfo::DoDarkFlatTask(CDSSProgress* const pProgress)
 				{
 					TCHAR			szDrive[1+_MAX_DRIVE];
 					TCHAR			szDir[1+_MAX_DIR];
-					QString			strInfo;
 
-					strInfo = QCoreApplication::translate("StackingTasks", "Master Dark Flat created from %1 pictures (%2)", "IDS_MEDIANDARKFLATINFO").arg(m_pDarkFlatTask->m_vBitmaps.size()).arg(strMethod);
+					const QString strInfo{ tr("Master Dark Flat created from %n picture(s) (%1)",
+						"IDS_MEDIANDARKFLATINFO",
+						static_cast<int>(m_pDarkFlatTask->m_vBitmaps.size()))
+						.arg(strMethod) };
 
 					_tsplitpath(m_pDarkFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
@@ -1228,9 +1238,10 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 				{
 					TCHAR			szDrive[1+_MAX_DRIVE];
 					TCHAR			szDir[1+_MAX_DIR];
-					QString			strInfo;
-
-					strInfo = QCoreApplication::translate("StackingTasks", "Master Flat created from %1 pictures (%2)", "IDS_MEDIANFLATINFO").arg(m_pFlatTask->m_vBitmaps.size()).arg(strMethod);
+					const QString strInfo{ tr("Master Flat created from %n picture(s) (%1)",
+						"IDS_MEDIANFLATINFO",
+						static_cast<int>(m_pFlatTask->m_vBitmaps.size()))
+						.arg(strMethod) };
 
 					_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 

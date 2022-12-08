@@ -137,6 +137,8 @@ void ClearTaskCache();
 
 class CStackingInfo
 {
+	Q_DECLARE_TR_FUNCTIONS(StackingTasks)
+
 public :
 	CTaskInfo *			m_pOffsetTask;
 	CTaskInfo *			m_pDarkTask;

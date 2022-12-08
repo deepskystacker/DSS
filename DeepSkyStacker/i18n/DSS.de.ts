@@ -2583,19 +2583,19 @@ Wollen sie diese speichern?</translation>
         <translation>Stacking Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.h" line="470"/>
+        <location filename="../StackingTasks.h" line="472"/>
         <source>%L1 kB</source>
         <comment>IDS_RECAP_KILOBYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.h" line="473"/>
+        <location filename="../StackingTasks.h" line="475"/>
         <source>%L1 MB</source>
         <comment>IDS_RECAP_MEGABYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.h" line="476"/>
+        <location filename="../StackingTasks.h" line="478"/>
         <source>%L1 GB</source>
         <comment>IDS_RECAP_GIGABYTES</comment>
         <translation></translation>
@@ -3561,124 +3561,142 @@ im Vergleich zur Standardabweichung (%1).</translation>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location filename="../StackingTasks.cpp" line="412"/>
+        <source>Master Offset created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANOFFSETINFO</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="417"/>
+        <location filename="../StackingTasks.cpp" line="421"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="516"/>
+        <location filename="../StackingTasks.cpp" line="520"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="531"/>
+        <location filename="../StackingTasks.cpp" line="535"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="550"/>
-        <location filename="../StackingTasks.cpp" line="731"/>
-        <location filename="../StackingTasks.cpp" line="1156"/>
+        <location filename="../StackingTasks.cpp" line="554"/>
+        <location filename="../StackingTasks.cpp" line="739"/>
+        <location filename="../StackingTasks.cpp" line="1166"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="574"/>
+        <location filename="../StackingTasks.cpp" line="578"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="591"/>
-        <source>Master Dark created from %1 pictures (%2)</source>
+    <message numerus="yes">
+        <location filename="../StackingTasks.cpp" line="596"/>
+        <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../StackingTasks.cpp" line="783"/>
+        <source>Master Dark Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANDARKFLATINFO</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../StackingTasks.cpp" line="1241"/>
+        <source>Master Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANFLATINFO</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="598"/>
+        <location filename="../StackingTasks.cpp" line="606"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="696"/>
+        <location filename="../StackingTasks.cpp" line="704"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="712"/>
+        <location filename="../StackingTasks.cpp" line="720"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="757"/>
+        <location filename="../StackingTasks.cpp" line="765"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="776"/>
-        <source>Master Dark Flat created from %1 pictures (%2)</source>
-        <comment>IDS_MEDIANDARKFLATINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="782"/>
+        <location filename="../StackingTasks.cpp" line="792"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="947"/>
+        <location filename="../StackingTasks.cpp" line="957"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="999"/>
+        <location filename="../StackingTasks.cpp" line="1009"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1122"/>
+        <location filename="../StackingTasks.cpp" line="1132"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1138"/>
+        <location filename="../StackingTasks.cpp" line="1148"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1174"/>
+        <location filename="../StackingTasks.cpp" line="1184"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1214"/>
+        <location filename="../StackingTasks.cpp" line="1224"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1233"/>
-        <source>Master Flat created from %1 pictures (%2)</source>
-        <comment>IDS_MEDIANFLATINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../StackingTasks.cpp" line="1239"/>
+        <location filename="../StackingTasks.cpp" line="1250"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation type="unfinished"></translation>
