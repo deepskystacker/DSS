@@ -301,12 +301,12 @@ Desitja...</translation>
 <context>
     <name>BatchStacking</name>
     <message>
-        <location filename="../ui/BatchStacking.ui" line="14"/>
+        <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
         <translation>Apilat per Lots</translation>
     </message>
     <message>
-        <location filename="../ui/BatchStacking.ui" line="20"/>
+        <location filename="../ui/BatchStacking.ui" line="23"/>
         <source>This dialog is used to launch the stacking process from existing image lists.
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
@@ -315,19 +315,19 @@ Add the file lists you want to stack and click OK to start the stacking processe
 Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar los procesos de apilado.</translation>
     </message>
     <message>
-        <location filename="../ui/BatchStacking.ui" line="34"/>
+        <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
         <translation>Agregar Llistes d&apos;Arxius...</translation>
     </message>
     <message>
-        <location filename="../ui/BatchStacking.ui" line="54"/>
+        <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
         <translation>Netejar llista</translation>
     </message>
     <message>
-        <location filename="../BatchStacking.cpp" line="264"/>
+        <location filename="../BatchStacking.cpp" line="69"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation type="unfinished">Guardant imatge Final en %1</translation>
