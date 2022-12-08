@@ -1189,7 +1189,7 @@ void CStackedBitmap::SaveFITS32Bitmap(LPCTSTR szBitmapFile, LPRECT pRect, CDSSPr
 	if (bApplySettings)
 		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings applied.", "IDS_SAVEWITHSETTINGSAPPLIED");
 	else
-		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "(IDS_SAVEWITHSETTINGSEMBEDDED");
+		strText = QCoreApplication::translate("StackedBitmap", "Picture saved with settings embedded.", "IDS_SAVEWITHSETTINGSEMBEDDED");
 
 	fits.SetDescription(strText.toStdWString().c_str());
 	fits.m_fExposureTime	= m_lTotalTime;

@@ -408,7 +408,8 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 				{
 					TCHAR szDrive[1+_MAX_DRIVE];
 					TCHAR szDir[1+_MAX_DIR];
-					const QString strInfo(QCoreApplication::translate("StackingTasks", "Master Offset created from %ld pictures (%1)", "IDS_MEDIANOFFSETINFO").arg(m_pOffsetTask->m_vBitmaps.size()).arg(strMethod));
+					const QString strInfo(QCoreApplication::translate("StackingTasks", "Master Offset created from %n pictures (%1)", "IDS_MEDIANOFFSETINFO",
+						static_cast<int>(m_pOffsetTask->m_vBitmaps.size())).arg(strMethod));
 					_tsplitpath(m_pOffsetTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
 					BuildMasterFileNames(m_pOffsetTask, _T("MasterOffset"), /* bExposure */false, szDrive, szDir, &strMasterOffset, &strMasterOffsetInfo);
