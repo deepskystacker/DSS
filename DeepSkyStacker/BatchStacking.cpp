@@ -1,335 +1,217 @@
-// CheckAbove.cpp : implementation file
+// BatchStacking.cpp : implementation file
 //
 
 #include "stdafx.h"
-#include "deepskystacker.h"
-#include "FrameList.h"
-#include "StackingEngine.h"
-#include "QtProgressDlg.h"
-#include "TIFFUtil.h"
 #include "BatchStacking.h"
-#include "dss_settings.h"
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-/* ------------------------------------------------------------------- */
-/////////////////////////////////////////////////////////////////////////////
-// CBatchStacking dialog
-
-IMPLEMENT_DYNAMIC(CBatchStacking, CDialog)
 
 
-CBatchStacking::CBatchStacking(CWnd* pParent /*=nullptr*/)
-	: CDialog(CBatchStacking::IDD, pParent)
+#include "ui/ui_BatchStacking.h"
+
+#include "StackingTasks.h"
+#include "Workspace.h"
+#include "FrameList.h"
+#include "QtProgressDlg.h"
+#include "StackingEngine.h"
+#include "DeepSkyStacker.h"
+
+#include <QStandardItemModel>
+#include <QFileDialog>
+#include <QDir>
+#include <QSettings>
+#include <QShowEvent>
+
+namespace
 {
-	//{{AFX_DATA_INIT(CBatchStacking)
-		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT
-}
-
-/* ------------------------------------------------------------------- */
-
-void CBatchStacking::DoDataExchange(CDataExchange* pDX)
-{
-	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CBatchStacking)
-	DDX_Control(pDX, IDC_FILELISTS, m_Lists);
-	//}}AFX_DATA_MAP
-}
-
-/* ------------------------------------------------------------------- */
-
-BEGIN_MESSAGE_MAP(CBatchStacking, CDialog)
-	//{{AFX_MSG_MAP(CBatchStacking)
-	ON_BN_CLICKED(IDC_ADDLISTS, OnBnClickedAddLists)
-	ON_BN_CLICKED(IDC_CLEARLIST, OnBnClickedClearList)
-	ON_WM_SIZE()
-	ON_WM_SIZING()
-	//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-
-BEGIN_EASYSIZE_MAP(CBatchStacking)
-    EASYSIZE(IDC_ADDLISTS,ES_BORDER,ES_BORDER,ES_KEEPSIZE,ES_KEEPSIZE,0)
-    EASYSIZE(IDC_CLEARLIST,ES_KEEPSIZE,ES_BORDER,ES_BORDER,ES_KEEPSIZE,0)
-    EASYSIZE(IDC_FILELISTS,ES_BORDER,ES_BORDER,ES_BORDER,ES_BORDER,0)
-    EASYSIZE(IDOK,ES_KEEPSIZE,ES_KEEPSIZE,ES_BORDER,ES_BORDER,0)
-    EASYSIZE(IDCANCEL,ES_KEEPSIZE, ES_KEEPSIZE,ES_BORDER,ES_BORDER,0)
-    EASYSIZE(AFX_IDW_SIZE_BOX,ES_KEEPSIZE,ES_KEEPSIZE, ES_BORDER,ES_BORDER,0)
-END_EASYSIZE_MAP
-
-/////////////////////////////////////////////////////////////////////////////
-// CBatchStacking message handlers
-
-#define GRIPPIE_SQUARE_SIZE 15
-
-/* ------------------------------------------------------------------- */
-
-BOOL CBatchStacking::OnInitDialog()
-{
-	ZFUNCTRACE_RUNTIME();
-	CDialog::OnInitDialog();
-
-    CRect			rcClient;
-    GetClientRect(&rcClient);
-
-    CRect			rcGrip;
-
-
-    rcGrip.right	= rcClient.right;
-    rcGrip.bottom	= rcClient.bottom;
-    rcGrip.left		= rcClient.right-GRIPPIE_SQUARE_SIZE;
-    rcGrip.top		= rcClient.bottom-GRIPPIE_SQUARE_SIZE;
-
-	m_Gripper.Create(WS_CHILD|WS_VISIBLE|SBS_SIZEGRIP|WS_CLIPSIBLINGS, rcGrip, this, AFX_IDW_SIZE_BOX);
-
-	INIT_EASYSIZE;
-
-	RestoreWindowPosition(this, "Dialogs/Batch/Position", true);
-
-	for (LONG i = 0;i<m_MRUList.m_vLists.size();i++)
-		m_Lists.AddString(m_MRUList.m_vLists[i].toStdWString().c_str());
-
-	UpdateListBoxWidth();
-	return TRUE;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBatchStacking::OnSize(UINT nType, int cx, int cy)
-{
-	CDialog::OnSize(nType, cx, cy);
-
-	UPDATE_EASYSIZE;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBatchStacking::OnSizing(UINT nSide, LPRECT lpRect)
-{
-	CDialog::OnSizing(nSide, lpRect);
-
-	EASYSIZE_MINSIZE(390,320,nSide,lpRect);
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBatchStacking::OnBnClickedAddLists()
-{
-	ZFUNCTRACE_RUNTIME();
-	QSettings			settings;
-	CString				strBaseDirectory;
-
-	strBaseDirectory = CString(settings.value("Folders/ListFolder", "").toString().toStdWString().c_str());
-
-	CFileDialog			dlgOpen(TRUE,
-								_T(".txt"),
-								nullptr,
-								OFN_ALLOWMULTISELECT | OFN_FILEMUSTEXIST | OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_ENABLESIZING,
-								OUTPUTLIST_FILTERS,
-								this);
-
-	if (strBaseDirectory.GetLength())
-		dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
-
-	TCHAR				szBigBuffer[20000] = _T("");
-
-	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
-	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
-
-	if (dlgOpen.DoModal() == IDOK)
+	static bool processList(const fs::path& fileList, QString& outputFile)
 	{
-		POSITION		pos;
+		ZFUNCTRACE_RUNTIME();
+		bool bResult = true;
+		Workspace workspace;
+		CAllStackingTasks tasks;
+		DSS::FrameList list;
 
-		BeginWaitCursor();
-		pos = dlgOpen.GetStartPosition();
-		while (pos)
+		workspace.Push();
+		list.loadFilesFromList(fileList);
+		list.fillTasks(tasks);
+		tasks.ResolveTasks();
+
+		if (!tasks.m_vStacks.empty())
 		{
-			CString		strFile;
-			TCHAR		szDir[1+_MAX_DIR];
-			TCHAR		szDrive[1+_MAX_DRIVE];
-			TCHAR		szExt[1+_MAX_EXT];
+			bool bContinue = true;
+			DSS::DSSProgressDlg dlg;
+			CStackingEngine StackingEngine;
+			CString strReferenceFrame;
 
-			strFile = dlgOpen.GetNextPathName(pos);
-
-			// Check that the file is not already in the list
-			if (m_Lists.FindStringExact(-1, (LPCTSTR)strFile) < 0)
+			// First check that the images are registered
+			if (list.countUnregisteredCheckedLightFrames() != 0)
 			{
-				int				nIndex;
+				CRegisterEngine	RegisterEngine;
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
+			}
 
-				nIndex = m_Lists.AddString(strFile);
-				m_Lists.SetCheck(nIndex, TRUE);
-			};
-
-			_tsplitpath(strFile, szDrive, szDir, nullptr, szExt);
-			strBaseDirectory = szDrive;
-			strBaseDirectory += szDir;
-		};
-		EndWaitCursor();
-
-		settings.setValue("ListFolder", QString::fromWCharArray(strBaseDirectory.GetString()));
-	};
-	UpdateListBoxWidth();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBatchStacking::OnBnClickedClearList()
-{
-	m_Lists.ResetContent();
-	UpdateListBoxWidth();
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBatchStacking::UpdateListBoxWidth()
-{
-	LONG				lWidth = 0;
-    CClientDC			dc(&m_Lists);
-	CRect				rcClient;
-
-	m_Lists.GetClientRect(&rcClient);
-
-    CFont * f = m_Lists.GetFont();
-    dc.SelectObject(f);
-
-	for (LONG i = 0;i<m_Lists.GetCount();i++)
-	{
-		CString			strText;
-
-		m_Lists.GetText(i, strText);
-		CSize			sz = dc.GetTextExtent(strText);
-		sz.cx += 3 * ::GetSystemMetrics(SM_CXBORDER)+20;
-
-		lWidth = max(lWidth, sz.cx);
-	};
-
-	m_Lists.SetHorizontalExtent(lWidth);
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CBatchStacking::ProcessList(LPCTSTR szList, CString& strOutputFile)
-{
-	ZFUNCTRACE_RUNTIME();
-	bool bResult = true;
-	Workspace workspace;
-	CAllStackingTasks tasks;
-	DSS::FrameList list;
-
-	workspace.Push();
-	list.loadFilesFromList(szList);
-	list.fillTasks(tasks);
-	tasks.ResolveTasks();
-
-	if (!tasks.m_vStacks.empty())
-	{
-		bool bContinue = true;
-		DSS::DSSProgressDlg dlg;
-		CStackingEngine StackingEngine;
-		CString strReferenceFrame;
-
-		// First check that the images are registered
-		if (list.countUnregisteredCheckedLightFrames() != 0)
-		{
-			CRegisterEngine	RegisterEngine;
-			bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
-		}
-
-		if (bContinue)
-		{
-			if (list.getReferenceFrame(strReferenceFrame))
-				StackingEngine.SetReferenceFrame(strReferenceFrame);
-
-			std::shared_ptr<CMemoryBitmap> pBitmap;
-			bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
 			if (bContinue)
 			{
-				CString strFileName;
-				TCHAR				szFileName[1 + _MAX_FNAME];
-				_tsplitpath(szList, nullptr, nullptr, szFileName, nullptr);
+				if (list.getReferenceFrame(strReferenceFrame))
+					StackingEngine.SetReferenceFrame(strReferenceFrame);
 
-				strFileName = szFileName;
-
-				const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
-
-				if (StackingEngine.GetDefaultOutputFileName(strFileName, szList, iff == IFF_TIFF))
+				std::shared_ptr<CMemoryBitmap> pBitmap;
+				bContinue = StackingEngine.StackLightFrames(tasks, &dlg, pBitmap);
+				if (bContinue)
 				{
-					StackingEngine.WriteDescription(tasks, strFileName);
+					CString strFileName{ fileList.stem().c_str() };
 
-					const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
-					dlg.Start2(strText, 0);
+					const auto iff = workspace.value("Stacking/IntermediateFileFormat").toUInt();
 
-					if (iff == IFF_TIFF)
+					if (StackingEngine.GetDefaultOutputFileName(strFileName, fileList.c_str(), iff == IFF_TIFF))
 					{
-						if (pBitmap->IsMonochrome())
-							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+						StackingEngine.WriteDescription(tasks, strFileName);
+
+						const QString strText(QCoreApplication::translate("BatchStacking", "Saving Final image in %1", "IDS_SAVINGFINAL").arg(QString::fromWCharArray(strFileName.GetString())));
+						dlg.Start2(strText, 0);
+
+						if (iff == IFF_TIFF)
+						{
+							if (pBitmap->IsMonochrome())
+								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITGRAYFLOAT, TC_DEFLATE, nullptr);
+							else
+								WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+						}
 						else
-							WriteTIFF(strFileName, pBitmap.get(), &dlg, TF_32BITRGBFLOAT, TC_DEFLATE, nullptr);
+						{
+							if (pBitmap->IsMonochrome())
+								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
+							else
+								WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
+						}
+						dlg.End2();
 					}
-					else
-					{
-						if (pBitmap->IsMonochrome())
-							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITGRAYFLOAT, nullptr);
-						else
-							WriteFITS(strFileName, pBitmap.get(), &dlg, FF_32BITRGBFLOAT, nullptr);
-					}
-					dlg.End2();
+					outputFile = QString::fromWCharArray(strFileName.GetString());
 				}
-				strOutputFile = strFileName;
+			}
+			dlg.Close();
+			bResult = bContinue;
+		}
+		workspace.Pop();
+
+		return bResult;
+	};
+}
+
+namespace DSS
+{
+	extern QStringList OUTPUTLIST_FILTERS;
+
+	BatchStacking::BatchStacking(QWidget* parent /*=nullptr*/) :
+		Inherited(Behaviour::PersistGeometry, parent),
+		ui(new Ui::BatchStacking),
+		m_fileListModel(new QStandardItemModel(this))
+	{
+		ui->setupUi(this);
+
+		ui->fileLists->setModel(m_fileListModel);
+	}
+
+	BatchStacking::~BatchStacking()
+	{
+		delete ui;
+	}
+
+	void BatchStacking::accept()
+	{
+		ZFUNCTRACE_RUNTIME();
+		long processedListCount = 0;
+		bool successfulProcessing = true;
+
+		Q_ASSERT(m_fileListModel);
+		const auto rows = m_fileListModel->rowCount();
+		for (auto i = 0; i < rows && successfulProcessing; ++i) {
+			auto item = m_fileListModel->item(i);
+			Q_ASSERT(item);
+			if (item->checkState() == Qt::Checked) {
+				const auto& file = item->text();
+				QString outputFile;
+				successfulProcessing = processList(file.toStdString(), outputFile);
+				item->setCheckState(Qt::Unchecked);
+				++processedListCount;
+
+				if (successfulProcessing) {
+					auto index = m_fileListModel->index(i, 0);
+					item->setText(QStringLiteral("->") + outputFile);
+					item->setEnabled(false);
+					item->setCheckState(Qt::Unchecked);
+				}
 			}
 		}
-		dlg.Close();
-		bResult = bContinue;
-	}
-	workspace.Pop();
 
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-void CBatchStacking::OnOK()
-{
-	ZFUNCTRACE_RUNTIME();
-	BOOL			bContinue  = TRUE;
-	LONG			lNrProcessedLists = 0;
-
-	for (LONG i = 0;i<m_Lists.GetCount() && bContinue;i++)
-	{
-		CString				strFile;
-
-		if (m_Lists.GetCheck(i))
+		if (!processedListCount)
 		{
-			m_Lists.GetText(i, strFile);
-			CString			strOutputFile;
-
-			bContinue = ProcessList(strFile, strOutputFile);
-			m_Lists.SetCheck(i, FALSE);
-			if (bContinue)
-			{
-				CString			strText;
-
-				strText.Format(_T("->%s"), (LPCTSTR)strOutputFile);
-				m_Lists.InsertString(i, strText);
-				m_Lists.SetCheck(i, FALSE);
-				m_Lists.Enable(i, FALSE);
-				m_Lists.DeleteString(i+1);
-				UpdateListBoxWidth();
-			};
-			lNrProcessedLists++;
+			Inherited::accept();
 		};
-	};
+	}
 
-	if (!lNrProcessedLists)
+	void BatchStacking::clearLists()
 	{
-		SaveWindowPosition(this, "Dialogs/Batch/Position");
-		CDialog::OnOK();
-	};
-}
+		Q_ASSERT(m_fileListModel);
+		m_fileListModel->clear();
+	}
 
-/* ------------------------------------------------------------------- */
+	void BatchStacking::addLists()
+	{
+		QSettings settings;
+		static const QString settingKey = QStringLiteral("Folders/ListFolder");
+		const QString& baseDir = settings.value(settingKey, QString()).toString();
+		auto files = QFileDialog::getOpenFileNames(this, QString(), baseDir, OUTPUTLIST_FILTERS.join(QStringLiteral(";;")));
+
+		const auto& filePaths = getFilePaths();
+		QStringList pathsToAdd;
+		for (const auto& file : files) {
+			//TODO: this is doesn't take into account fs case-sensitivity
+			//On the other hand filesystem::path::equivalent is probably way too heavy-duty for this purpose 
+			const auto& nativeFilePath = QDir::toNativeSeparators(file);
+			if (!filePaths.contains(file, Qt::CaseInsensitive)) {
+				pathsToAdd.append(nativeFilePath);
+			}
+		}
+		addItemsFor(pathsToAdd, true);
+
+		if (!files.isEmpty()) {
+			settings.setValue(settingKey, QDir{ files.last() }.absolutePath());
+		}
+	}
+
+	void BatchStacking::setMRUPaths(const std::vector<fs::path>& mruPaths)
+	{
+		QStringList filePaths;
+		for (const auto& path : mruPaths) {
+			filePaths.append(QString::fromStdWString(path.native()));
+		}
+		clearLists();
+		addItemsFor(filePaths, false);
+	}
+
+	void BatchStacking::addItemsFor(const QStringList& paths, bool checked)
+	{
+		Q_ASSERT(m_fileListModel);
+		for (const auto& path : paths) {
+			QStandardItem* item = new QStandardItem(path);
+			item->setCheckable(true);
+			item->setCheckState(checked ? Qt::Checked : Qt::Unchecked);
+			item->setFlags(item->flags() & (~Qt::ItemIsEditable));
+			m_fileListModel->appendRow(item);
+		}
+	}
+
+	QStringList BatchStacking::getFilePaths() const
+	{
+		Q_ASSERT(m_fileListModel);
+		QStringList filePaths;
+		const auto rows = m_fileListModel->rowCount();
+		for (auto i = 0; i < rows; ++i) {
+			auto item = m_fileListModel->item(i);
+			Q_ASSERT(item);
+			filePaths.append(item->text());
+		}
+		return filePaths;
+	}
+
+}
