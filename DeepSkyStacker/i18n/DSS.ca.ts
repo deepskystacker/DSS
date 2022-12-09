@@ -3146,7 +3146,7 @@ Desitja guardar-los?</translation>
         <location filename="../StackedBitmap.cpp" line="1246"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
-        <translation>Carregant TIFF %1 bit monocrom</translation>
+        <translation>Carregant TIFF %1 bit monocromàtic</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1248"/>
