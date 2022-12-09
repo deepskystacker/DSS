@@ -4,9 +4,11 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "StarMaskDlg.h"
+#include <dlgs.h>
 
 #include <QSettings>
 
+#define FILE_DIALOG_NAME cmb13
 
 // CStarMaskDlg dialog
 /* ------------------------------------------------------------------- */
@@ -19,7 +21,7 @@ public :
 	CSaveMaskDlg(bool bOpenFileDialog, // true for FileOpen, false for FileSaveAs
 		LPCTSTR lpszDefExt = nullptr,
 		LPCTSTR lpszFileName = nullptr,
-		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER,
 		LPCTSTR lpszFilter = nullptr,
 		CWnd* pParentWnd = nullptr):CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd)
 	{
@@ -40,7 +42,7 @@ protected:
 				strFileName += ".tif";
 			else
 				strFileName += ".fits";
-			SetControlText(0x047c, strFileName);
+			SetControlText(FILE_DIALOG_NAME, strFileName);
 		};
 	};
 };
