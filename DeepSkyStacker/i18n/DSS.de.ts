@@ -1780,7 +1780,7 @@ Sie können wahrscheinlich eine weitere bekommen oder die endgültige Version vo
         <location filename="../ProcessingDlg.cpp" line="819"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
-        <translation>Sternemaske in %1 speichern</translation>
+        <translation>Sternenmaske in %1 speichern</translation>
     </message>
 </context>
 <context>
