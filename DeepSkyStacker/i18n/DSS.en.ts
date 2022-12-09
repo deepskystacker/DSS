@@ -3409,13 +3409,6 @@ compared to the standard deviation (%1).</source>
 <context>
     <name>StackingTasks</name>
     <message>
-        <location filename="../StackingTasks.cpp" line="54"/>
-        <source>Loading %1 bit/ch %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingTasks.cpp" line="56"/>
         <source>Loading %1 bits gray %2 dark frame
 %3</source>
@@ -3500,9 +3493,9 @@ compared to the standard deviation (%1).</source>
         <location filename="../StackingTasks.cpp" line="412"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Master Offset created from %n picture (%1)</numerusform>
+            <numerusform>Master Offset created from %n pictures (%1)</numerusform>
         </translation>
     </message>
     <message>
@@ -3541,33 +3534,40 @@ compared to the standard deviation (%1).</source>
         <location filename="../StackingTasks.cpp" line="596"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Master Dark created from %n picture (%1)</numerusform>
+            <numerusform>Master Dark created from %n pictures (%1)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="783"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Master Dark Flat created from %n picture (%1)</numerusform>
+            <numerusform>Master Dark Flat created from %n pictures (%1)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="1241"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Master Flat created from %n picture (%1)</numerusform>
+            <numerusform>Master Flat created from %n pictures (%1)</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="606"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
