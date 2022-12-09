@@ -3146,7 +3146,7 @@ Desitja guardar-los?</translation>
         <location filename="../StackedBitmap.cpp" line="1246"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
-        <translation>Carregant TIFF %1 bit monocrom</translation>
+        <translation>Carregant TIFF %1 bit monocromàtic</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1248"/>
@@ -3483,14 +3483,6 @@ comparativament a la desviació estàndard (%1).</translation>
 <context>
     <name>StackingTasks</name>
     <message>
-        <location filename="../StackingTasks.cpp" line="54"/>
-        <source>Loading %1 bit/ch %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation>Carregant %1 bit/ch %2 dark frame
-%3</translation>
-    </message>
-    <message>
         <location filename="../StackingTasks.cpp" line="56"/>
         <source>Loading %1 bits gray %2 dark frame
 %3</source>
@@ -3653,6 +3645,14 @@ comparativament a la desviació estàndard (%1).</translation>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Guardant Dark Mestre</translation>
+    </message>
+    <message>
+        <location filename="../StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
+        <translation>Carregant %1 bit/ch %2 dark frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="704"/>

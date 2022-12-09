@@ -1324,7 +1324,7 @@ void CMainBoard::OnStack()
 	if (m_bMonitoring/*m_ulSHRegister*/)
 	{
 		const QString strText(m_bStacking ? 
-			QCoreApplication::translate("MainBoard", "Start Stacking files\n", "IDS_LOG_STARTMONITORING") :
+			QCoreApplication::translate("MainBoard", "Start Stacking files\n", "IDS_LOG_STARTSTACKING") :
 			QCoreApplication::translate("MainBoard", "Stop Stacking files\n", "IDS_LOG_STOPSTACKING"));
 		AddToLog(strText, TRUE, TRUE, FALSE, LOG_YELLOW_TEXT);
 
