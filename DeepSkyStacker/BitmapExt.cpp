@@ -1180,8 +1180,13 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, CMemoryBitmap* pInBitma
 
 /* ------------------------------------------------------------------- */
 
-#include <concurrent_unordered_map.h>
+#pragma warning( push )
+#pragma warning( disable: 4996 ) // Remove this as soon as having switched to c++20.
+
+#include <concurrent_unordered_set.h>
 #include <shared_mutex>
+
+#pragma warning( pop )
 
 namespace {
 	//
@@ -1208,15 +1213,14 @@ namespace {
 		size_t operator()(const CBitmapInfo& other) const
 		{
 			const auto& str = other.m_strFileName;
-			return fnv1a_hash((const unsigned char*)(LPCWSTR)str, str.GetLength() * sizeof(CString::XCHAR));
+			return fnv1a_hash(reinterpret_cast<const unsigned char*>(static_cast<LPCWSTR>(str)), str.GetLength() * sizeof(CString::XCHAR));
 		}
 	};
 
 	//typedef std::set<CBitmapInfo> InfoCache;
 	// We absolutely must use a thread-safe cache, otherwise GetPictureInfo() crashes if used concurrently (e.g. with OpenMP).
 
-	// Note: concurrent_unordered_set is not compatible with std=c++20, so we use a concurrent_unordered_map and ignore the 'value' field (using an 'int' for it).
-	using InfoCache = concurrency::concurrent_unordered_map<CBitmapInfo, int, BitmapInfoHash<CBitmapInfo>>;
+	using InfoCache = concurrency::concurrent_unordered_set<CBitmapInfo, BitmapInfoHash<CBitmapInfo>>;
 	InfoCache g_sBitmapInfoCache;
 	SYSTEMTIME g_BitmapInfoTime;
 	std::shared_mutex bitmapInfoMutex;
@@ -1266,7 +1270,7 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			InfoCache::const_iterator it = g_sBitmapInfoCache.find(CBitmapInfo(szFileName));
 			if (it != g_sBitmapInfoCache.cend())
 			{
-				BitmapInfo = it->first;
+				BitmapInfo = *it;
 				bResult = true;
 			}
 		}
@@ -1311,9 +1315,9 @@ bool GetPictureInfo(LPCTSTR szFileName, CBitmapInfo& BitmapInfo)
 			std::shared_lock<std::shared_mutex> readLock(bitmapInfoMutex);
 			if (g_sBitmapInfoCache.empty())
 				GetSystemTime(&g_BitmapInfoTime);
-			g_sBitmapInfoCache.insert(std::make_pair(BitmapInfo, 0));
-		};
-	};
+			g_sBitmapInfoCache.insert(BitmapInfo);
+		}
+	}
 #endif
 
 	return bResult;
