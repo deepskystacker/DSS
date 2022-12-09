@@ -738,285 +738,245 @@ En aquest moment, totes les imatges entrants (i prèviament registrades) seran a
         <translation>Carregant FITS %1 bit/ch</translation>
     </message>
 </context>
-  <context>
+<context>
     <name>StackingTasks</name>
     <message>
-      <location filename="../StackingTasks.cpp" line="54"/>
-      <source>
-        Loading %1 bit/ch %2 dark flat frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBDARK</comment>
-      <translation>
-        Carregant %1 bit/ch %2 dark frame
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="358"/>
+        <source>Create Master Offset Frame</source>
+        <comment>IDS_CREATEMASTEROFFSET</comment>
+        <translation>Crear Offset Frame Mestre</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="56"/>
-      <source>
-        Loading %1 bits gray %2 dark frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYDARK</comment>
-      <translation>
-        Carregant %1 bits gray %2 dark frame
-        %3
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="368"/>
+        <source>Adding Offset frame %1 of %2</source>
+        <comment>IDS_ADDOFFSET</comment>
+        <translation>Agregant Offset frame %1 a %2</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="60"/>
-      <source>
-        Loading %1 bit/ch %2 dark flat frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBDARKFLAT</comment>
-      <translation>
-        Carregant %1 bit/ch %2 dark flat frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="62"/>
-      <source>
-        Loading %1 bits gray %2 dark flat frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYDARKFLAT</comment>
-      <translation>
-        Carregant %1 bits gris %2 dark flat frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="66"/>
-      <source>
-        Loading %1 bit/ch %2 offset frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBOFFSET</comment>
-      <translation>
-        Carregant %1 bit/ch %2 offset frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="68"/>
-      <source>
-        Loading %1 bits gray %2 offset frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYOFFSET</comment>
-      <translation>
-        Carregant %1 bits gray %2 offset frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="72"/>
-      <source>
-        Loading %1 bit/ch %2 flat frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBFLAT</comment>
-      <translation>
-        Carregant %1 bit/ch %2 flat frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="74"/>
-      <source>
-        Loading %1 bits gray %2 flat frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYFLAT</comment>
-      <translation>
-        Carregant %1 bits gray %2 flat frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="78"/>
-      <source>
-        Loading %1 bit/ch %2 light frame
-        %3
-      </source>
-      <comment>IDS_LOADRGBLIGHT</comment>
-      <translation>
-        Carregant %1 bit/ch %2 light frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="80"/>
-      <source>
-        Loading %1 bits gray %2 light frame
-        %3
-      </source>
-      <comment>IDS_LOADGRAYLIGHT</comment>
-      <translation>
-        Carregant %1 bits gray %2 light frame
-        %3
-      </translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="358"/>
-      <source>Create Master Offset Frame</source>
-      <comment>IDS_CREATEMASTEROFFSET</comment>
-      <translation>Crear Offset Frame Mestre</translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="368"/>
-      <source>Adding Offset frame %1 of %2</source>
-      <comment>IDS_ADDOFFSET</comment>
-      <translation>Agregant Offset frame %1 a %2</translation>
-    </message>
-    <message>
-      <location filename="../StackingTasks.cpp" line="394"/>
-      <source>Computing master offset (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
-      <translation>Calculant offset mestre (%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="394"/>
+        <source>Computing master offset (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
+        <translation>Calculant offset mestre (%1)</translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="412"/>
-      <source>Master Offset created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANOFFSETINFO</comment>
-      <translation>
-        <numerusform>Offset Mestre creat a partir de %n imatge (%1)</numerusform>
-        <numerusform>Offset Mestre creat a partir de %n imatges (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="412"/>
+        <source>Master Offset created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANOFFSETINFO</comment>
+        <translation>
+            <numerusform>Offset Mestre creat a partir de %n imatge (%1)</numerusform>
+            <numerusform>Offset Mestre creat a partir de %n imatges (%1)</numerusform>
+        </translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="421"/>
-      <source>Saving Master Offset</source>
-      <comment>IDS_SAVINGMASTEROFFSET</comment>
-      <translation>Guardant Offset Mestre</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="421"/>
+        <source>Saving Master Offset</source>
+        <comment>IDS_SAVINGMASTEROFFSET</comment>
+        <translation>Guardant Offset Mestre</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="520"/>
-      <source>Create Master Dark Frame</source>
-      <comment>IDS_CREATEMASTERDARK</comment>
-      <translation>Crear Dark Frame Mestre</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="520"/>
+        <source>Create Master Dark Frame</source>
+        <comment>IDS_CREATEMASTERDARK</comment>
+        <translation>Crear Dark Frame Mestre</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="535"/>
-      <source>Adding Dark frame %1 of %2</source>
-      <comment>IDS_ADDDARK</comment>
-      <translation>Agregant Dark frame %1 a %2</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="535"/>
+        <source>Adding Dark frame %1 of %2</source>
+        <comment>IDS_ADDDARK</comment>
+        <translation>Agregant Dark frame %1 a %2</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="554"/>
-      <location filename="../StackingTasks.cpp" line="739"/>
-      <location filename="../StackingTasks.cpp" line="1166"/>
-      <source>Subtracting Offset Frame</source>
-      <comment>IDS_SUBSTRACTINGOFFSET</comment>
-      <translation>Restant Offset Frame</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="554"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="739"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1166"/>
+        <source>Subtracting Offset Frame</source>
+        <comment>IDS_SUBSTRACTINGOFFSET</comment>
+        <translation>Restant Offset Frame</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="578"/>
-      <source>Computing master dark (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANDARK</comment>
-      <translation>Calculant dark mestre (%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="578"/>
+        <source>Computing master dark (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANDARK</comment>
+        <translation>Calculant dark mestre (%1)</translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="596"/>
-      <source>Master Dark created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANDARKINFO</comment>
-      <translation>
-        <numerusform>Dark Mestre creat a partir de %n imatge (%1)</numerusform>
-        <numerusform>Dark Mestre creat a partir de %n imatges (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="596"/>
+        <source>Master Dark created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANDARKINFO</comment>
+        <translation>
+            <numerusform>Dark Mestre creat a partir de %n imatge (%1)</numerusform>
+            <numerusform>Dark Mestre creat a partir de %n imatges (%1)</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="783"/>
-      <source>Master Dark Flat created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANDARKFLATINFO</comment>
-      <translation>
-        <numerusform>Dark Flat Mestre creat a partir de %n imatge (%1)</numerusform>
-        <numerusform>Dark Flat Mestre creat a partir de %n imatges (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="783"/>
+        <source>Master Dark Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANDARKFLATINFO</comment>
+        <translation>
+            <numerusform>Dark Flat Mestre creat a partir de %n imatge (%1)</numerusform>
+            <numerusform>Dark Flat Mestre creat a partir de %n imatges (%1)</numerusform>
+        </translation>
     </message>
     <message numerus="yes">
-      <location filename="../StackingTasks.cpp" line="1241"/>
-      <source>Master Flat created from %n picture(s) (%1)</source>
-      <comment>IDS_MEDIANFLATINFO</comment>
-      <translation>
-        <numerusform>Flat Mestre creat a partir de %n imatge (%1)</numerusform>
-        <numerusform>Flat Mestre creat a partir de %n imatges (%1)</numerusform>
-      </translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1241"/>
+        <source>Master Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANFLATINFO</comment>
+        <translation>
+            <numerusform>Flat Mestre creat a partir de %n imatge (%1)</numerusform>
+            <numerusform>Flat Mestre creat a partir de %n imatges (%1)</numerusform>
+        </translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="606"/>
-      <source>Saving Master Dark</source>
-      <comment>IDS_SAVINGMASTERDARK</comment>
-      <translation>Guardant Dark Mestre</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="606"/>
+        <source>Saving Master Dark</source>
+        <comment>IDS_SAVINGMASTERDARK</comment>
+        <translation>Guardant Dark Mestre</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="704"/>
-      <source>Create Master Dark Flat Frame</source>
-      <comment>IDS_CREATEMASTERDARKFLAT</comment>
-      <translation>Crear Dark Flat Frame Mestre</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
+        <translation>Carregant %1 bit/ch %2 dark frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="720"/>
-      <source>Adding Dark Flat frame %1 of %2</source>
-      <comment>IDS_ADDDARKFLAT</comment>
-      <translation>Agregant Dark Flat frame %1 en %2</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="56"/>
+        <source>Loading %1 bits gray %2 dark frame
+%3</source>
+        <comment>IDS_LOADGRAYDARK</comment>
+        <translation>Carregant %1 bits gray %2 dark frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="765"/>
-      <source>Computing master dark flat (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
-      <translation>Calculant el dark flat mestre (%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="60"/>
+        <source>Loading %1 bit/ch %2 dark flat frame
+%3</source>
+        <comment>IDS_LOADRGBDARKFLAT</comment>
+        <translation>Carregant %1 bit/ch %2 dark flat frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="792"/>
-      <source>Saving Master Dark Flat</source>
-      <comment>IDS_SAVINGMASTERDARKFLAT</comment>
-      <translation>Guardant Dark Flat Mestre</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="62"/>
+        <source>Loading %1 bits gray %2 dark flat frame
+%3</source>
+        <comment>IDS_LOADGRAYDARKFLAT</comment>
+        <translation>Carregant %1 bits gray %2 dark flat frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="957"/>
-      <source>Computing Flat Calibration Parameters</source>
-      <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
-      <translation>Calculant Paràmetres de Calibració de Flats</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="66"/>
+        <source>Loading %1 bit/ch %2 offset frame
+%3</source>
+        <comment>IDS_LOADRGBOFFSET</comment>
+        <translation>Carregant %1 bit/ch %2 offset frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1009"/>
-      <source>Applying Flat Calibration Parameters</source>
-      <comment>IDS_APPLYINGFLATCALIBRATION</comment>
-      <translation>Aplicant Paràmetres de Calibració de Flats</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="68"/>
+        <source>Loading %1 bits gray %2 offset frame
+%3</source>
+        <comment>IDS_LOADGRAYOFFSET</comment>
+        <translation>Carregant %1 bits gray %2 offset frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1132"/>
-      <source>Create Master Flat Frame</source>
-      <comment>IDS_CREATEMASTERFLAT</comment>
-      <translation>Crear Flat Frame Mestre</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="72"/>
+        <source>Loading %1 bit/ch %2 flat frame
+%3</source>
+        <comment>IDS_LOADRGBFLAT</comment>
+        <translation>Carregant %1 bit/ch %2 flat frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1148"/>
-      <source>Adding Flat frame %1 of %2</source>
-      <comment>IDS_ADDFLAT</comment>
-      <translation>Agregant Flat frame %1 a %2</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="74"/>
+        <source>Loading %1 bits gray %2 flat frame
+%3</source>
+        <comment>IDS_LOADGRAYFLAT</comment>
+        <translation>Carregant %1 bits gray %2 flat frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1184"/>
-      <source>Subtracting Dark Frame</source>
-      <comment>IDS_SUBSTRACTINGDARK</comment>
-      <translation>Restant Dark Frame</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="78"/>
+        <source>Loading %1 bit/ch %2 light frame
+%3</source>
+        <comment>IDS_LOADRGBLIGHT</comment>
+        <translation>Carregant %1 bit/ch %2 light frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1224"/>
-      <source>Computing master flat (%1)</source>
-      <comment>IDS_COMPUTINGMEDIANFLAT</comment>
-      <translation>Calculant flat mestre (%1)</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="80"/>
+        <source>Loading %1 bits gray %2 light frame
+%3</source>
+        <comment>IDS_LOADGRAYLIGHT</comment>
+        <translation>Carregant %1 bits gray %2 light frame
+%3</translation>
     </message>
     <message>
-      <location filename="../StackingTasks.cpp" line="1250"/>
-      <source>Saving Master Flat</source>
-      <comment>IDS_SAVINGMASTERFLAT</comment>
-      <translation>Guardant Flat Mestre</translation>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="704"/>
+        <source>Create Master Dark Flat Frame</source>
+        <comment>IDS_CREATEMASTERDARKFLAT</comment>
+        <translation>Crear Dark Flat Frame Mestre</translation>
     </message>
-  </context>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="720"/>
+        <source>Adding Dark Flat frame %1 of %2</source>
+        <comment>IDS_ADDDARKFLAT</comment>
+        <translation>Agregant Dark Flat frame %1 en %2</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="765"/>
+        <source>Computing master dark flat (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
+        <translation>Calculant el dark flat mestre (%1)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="792"/>
+        <source>Saving Master Dark Flat</source>
+        <comment>IDS_SAVINGMASTERDARKFLAT</comment>
+        <translation>Guardant Dark Flat Mestre</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="957"/>
+        <source>Computing Flat Calibration Parameters</source>
+        <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
+        <translation>Calculant Paràmetres de Calibració de Flats</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1009"/>
+        <source>Applying Flat Calibration Parameters</source>
+        <comment>IDS_APPLYINGFLATCALIBRATION</comment>
+        <translation>Aplicant Paràmetres de Calibració de Flats</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1132"/>
+        <source>Create Master Flat Frame</source>
+        <comment>IDS_CREATEMASTERFLAT</comment>
+        <translation>Crear Flat Frame Mestre</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1148"/>
+        <source>Adding Flat frame %1 of %2</source>
+        <comment>IDS_ADDFLAT</comment>
+        <translation>Agregant Flat frame %1 a %2</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1184"/>
+        <source>Subtracting Dark Frame</source>
+        <comment>IDS_SUBSTRACTINGDARK</comment>
+        <translation>Restant Dark Frame</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1224"/>
+        <source>Computing master flat (%1)</source>
+        <comment>IDS_COMPUTINGMEDIANFLAT</comment>
+        <translation>Calculant flat mestre (%1)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1250"/>
+        <source>Saving Master Flat</source>
+        <comment>IDS_SAVINGMASTERFLAT</comment>
+        <translation>Guardant Flat Mestre</translation>
+    </message>
+</context>
 </TS>
