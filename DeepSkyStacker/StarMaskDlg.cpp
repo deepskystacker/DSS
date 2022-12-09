@@ -17,11 +17,19 @@ class CSaveMaskDlg : public CFileDialog
 {
 	DECLARE_DYNAMIC(CSaveMaskDlg)
 
+	// 
+	// 9 December 2022 David C. Partridge
+	// 
+	// I added OFN_EXPLORER to the open flags as per the note in the docs for CFileDialog::SetControlText
+	// that say:
+	//    To use this method, you must create the dialog box with the OFN_EXPLORER style.
+	//    Otherwise, the function will fail with an assertion.
+	//
 public :
 	CSaveMaskDlg(bool bOpenFileDialog, // true for FileOpen, false for FileSaveAs
 		LPCTSTR lpszDefExt = nullptr,
 		LPCTSTR lpszFileName = nullptr,
-		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER,
+		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER, // Add OFN_EXPLORER - see CFileDialog
 		LPCTSTR lpszFilter = nullptr,
 		CWnd* pParentWnd = nullptr):CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd)
 	{
