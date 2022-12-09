@@ -51,7 +51,7 @@ bool LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 		{
 		case PICTURETYPE_DARKFRAME:
 			if (bmpInfo.m_lNrChannels==3)
-				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark flat frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
+				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bit/ch %2 dark frame\n%3", "IDS_LOADRGBDARK").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			else
 				strText = QCoreApplication::translate("StackingTasks", "Loading %1 bits gray %2 dark frame\n%3", "IDS_LOADGRAYDARK").arg(bmpInfo.m_lBitPerChannel).arg(pDescription).arg(szFile);
 			break;
