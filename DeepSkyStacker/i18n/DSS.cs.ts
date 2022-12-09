@@ -44,8 +44,8 @@
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation type="unfinished">RAW soubory dekódovány pomocí LibRaw (verze %1)
-Copyright © 1997-2019 LibRaw LLC {1)?} {1997-2022 ?}</translation>
+        <translation>RAW soubory dekódovány pomocí LibRaw (verze %1)
+Copyright © 1997-2022 LibRaw LLC</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="82"/>
@@ -331,7 +331,7 @@ Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
         <location filename="../BatchStacking.cpp" line="69"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation type="unfinished">Ukládání výsledného obrazu do %1</translation>
+        <translation>Ukládání výsledného obrazu do %1</translation>
     </message>
 </context>
 <context>
@@ -340,7 +340,7 @@ Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
         <location filename="../BitmapBase.cpp" line="12"/>
         <source>Detecting hot pixels</source>
         <comment>IDS_REMOVINGHOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zjišťování přepálených bodů</translation>
     </message>
 </context>
 <context>
@@ -349,49 +349,49 @@ Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
         <location filename="../CosmeticEngine.cpp" line="511"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použití úpravy vzhledu - přepálené body</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="126"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
-        <translation type="unfinished">Průměr</translation>
+        <translation>Průměr</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="129"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
-        <translation type="unfinished">Střední</translation>
+        <translation>Střední</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="132"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
-        <translation type="unfinished">Maximum</translation>
+        <translation>Maximum</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="135"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
-        <translation type="unfinished">Kappa-Sigma (Kappa = %1, opakovaní = %2)</translation>
+        <translation>Kappa-Sigma (Kappa = %1, opakovaní = %2)</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="138"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
-        <translation type="unfinished">Automatický adaptivní vážený průměr (opakovaní = %1)</translation>
+        <translation>Automatický adaptivní vážený průměr (opakovaní = %1)</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="141"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
-        <translation type="unfinished">Entropický vážený průměr</translation>
+        <translation>Entropický vážený průměr</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="144"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
-        <translation type="unfinished">Střední Kappa-Sigma (Kappa = %1, opakovaní = %2)</translation>
+        <translation>Střední Kappa-Sigma (Kappa = %1, opakovaní = %2)</translation>
     </message>
 </context>
 <context>
@@ -400,7 +400,7 @@ Seznam můžete přidat a kliknutím na OK spustit slučování.</translation>
         <location filename="../ChannelAlign.cpp" line="47"/>
         <source>Aligning Channel</source>
         <comment>IDS_ALIGNINGCHANNEL</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnávání kanálu</translation>
     </message>
 </context>
 <context>
@@ -476,20 +476,20 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
         <location filename="../CosmeticEngine.cpp" line="628"/>
         <source>Creating Median Filtered Image</source>
         <comment>IDS_CREATINGMEDIANIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tvorba střední filtrace obrazu</translation>
     </message>
     <message>
         <location filename="../CosmeticEngine.cpp" line="538"/>
         <location filename="../CosmeticEngine.cpp" line="623"/>
         <source>Applying cosmetic - Cold Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použití úpravy vzhledu - mrtvé body</translation>
     </message>
     <message>
         <location filename="../CosmeticEngine.cpp" line="596"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použití úpravy vzhledu - přepálené body</translation>
     </message>
 </context>
 <context>
@@ -1156,31 +1156,31 @@ Kliknutím pravým tlačítkem změníte chování.</translation>
         <location filename="../DarkFrame.cpp" line="601"/>
         <source>Computing Dark Optimization parameters</source>
         <comment>IDS_COMPUTINGDARKOPTIMIZATIONFACTOR</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet parametrů optimalizace temného pozadí</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1333"/>
         <source>Creating Median Filtered Image</source>
         <comment>IDS_CREATINGMEDIANIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tvorba střední filtrace obrazu</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1733"/>
         <source>Detecting Hot Pixels (1/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS1</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zjišťování přepálených bodů (1/2)</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1743"/>
         <source>Detecting Hot Pixels (2/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS2</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zjišťování přepálených bodů (2/2)</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1933"/>
         <source>Optimizing Dark Matching</source>
         <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Optimalizace temného srovnání</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1940"/>
@@ -1188,7 +1188,7 @@ Kliknutím pravým tlačítkem změníte chování.</translation>
         <location filename="../DarkFrame.cpp" line="1959"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Odečítání snímku temného pozadí</translation>
     </message>
 </context>
 <context>
@@ -1536,7 +1536,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <location filename="../FlatFrame.cpp" line="111"/>
         <source>Calibrating Master Flat</source>
         <comment>IDS_NORMALIZINGMASTERFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Kalibrace základního snímku vyrovnání jasu</translation>
     </message>
 </context>
 <context>
@@ -1588,13 +1588,13 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <location filename="../MasterFrames.cpp" line="53"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Odečítání snímku zkreslení</translation>
     </message>
     <message>
         <location filename="../MasterFrames.cpp" line="77"/>
         <source>Applying Flat Frame</source>
         <comment>IDS_APPLYINGFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použití snímku vyrovnání jasu</translation>
     </message>
 </context>
 <context>
@@ -1764,21 +1764,23 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <location filename="../PostCalibration.cpp" line="364"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet úpravy vzhledu</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="381"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 aktivního snímku
+%3</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="383"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bitového %2 aktivního šedého snímku
+%3</translation>
     </message>
 </context>
 <context>
@@ -1787,7 +1789,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <location filename="../ProcessingDlg.cpp" line="819"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uložení masky hvězd do %1</translation>
     </message>
 </context>
 <context>
@@ -2230,65 +2232,69 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <location filename="../RegisterEngine.cpp" line="971"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Zarovnávání %1</translation>
+        <translation>Zarovnávání %1</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1000"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnávání %1 (%2 hvězd)</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1151"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet jasu %1</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1331"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 snímku
+%3</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1335"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bitového šedého %2 snímku
+%3</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1466"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání kalibrovaného obrazu do %1</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1504"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnání snímků</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1539"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zarovnávání %1 z %2</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1556"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 aktivního snímku
+%3</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1558"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bitového %2 aktivního šedého snímku
+%3</translation>
     </message>
 </context>
 <context>
@@ -2509,21 +2515,23 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <location filename="../RunningStackingEngine.cpp" line="95"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet kalibračních parametrů pozadí</translation>
     </message>
     <message>
         <location filename="../RunningStackingEngine.cpp" line="110"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slučování %1 bit/k %2 aktivního snímku
+%3</translation>
     </message>
     <message>
         <location filename="../RunningStackingEngine.cpp" line="112"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slučování %1 bitového šedého aktivního %2 snímku
+%3</translation>
     </message>
 </context>
 <context>
@@ -3085,7 +3093,7 @@ Chcete je uložit?</translation>
         <location filename="../StackedBitmap.cpp" line="295"/>
         <source>Loading DSImage</source>
         <comment>IDS_LOADDSIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání DSImage</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="307"/>
@@ -3093,38 +3101,38 @@ Chcete je uložit?</translation>
         <location filename="../StackedBitmap.cpp" line="1348"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
-        <translation type="unfinished">Načítání %1</translation>
+        <translation>Načítání %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="410"/>
         <source>Saving DSImage File</source>
         <comment>IDS_SAVINGDSIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání souboru DSImage</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="412"/>
         <source>Saving stacked picture in %1 (DSImage)</source>
         <comment>IDS_SAVEDSIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání sloučených obrazů do %1 (DSImage)</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="632"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zpracování obrazu...</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="902"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání TIFF %1 bit</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="905"/>
         <location filename="../StackedBitmap.cpp" line="1100"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="954"/>
@@ -3133,7 +3141,7 @@ Chcete je uložit?</translation>
         <location filename="../StackedBitmap.cpp" line="1190"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obraz byl uložen s použitím úprav.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="956"/>
@@ -3142,37 +3150,37 @@ Chcete je uložit?</translation>
         <location filename="../StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Obraz byl uložen bez použití úprav.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1097"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání FITS %1 bit</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1246"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání TIFF %1 bit jednobarevného</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1248"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání TIFF %1 bit/k</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1343"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání FITS %1 bit jednobarevný</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1345"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání FITS %1 bit/k</translation>
     </message>
 </context>
 <context>
@@ -3181,55 +3189,55 @@ Chcete je uložit?</translation>
         <location filename="../StackingEngine.cpp" line="766"/>
         <source>Computing stacking info for %1</source>
         <comment>IDS_COMPUTINGSTACKINGINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet informací pro sloučení %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="811"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet zkreslení</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1107"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Zpracování výsledného obrazu (%1)</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1208"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slučování - úprava Bayer - výpočet úpravy</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1218"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet úprav %1 z %2</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1273"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slučování - úprava Bayer - použití úpravy</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1275"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet maxima úprav</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1310"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použití úprav</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1381"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání zarovnaného a kalibrovaného obrazu do %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1428"/>
@@ -3237,32 +3245,33 @@ Chcete je uložit?</translation>
         <location filename="../StackingEngine.cpp" line="1586"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ukládání kalibrovaného obrazu do %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1808"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Interpolace a přizpůsobení směrové homogenity (AHD)</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1851"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet entropie</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1863"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet kalibračních parametrů pozadí</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2089"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pro zpracování je třeba %1 volného odkládacího prostoru na disku %2.
+Na tomto disku je dostupných jen %3.</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2090"/>
@@ -3270,27 +3279,30 @@ Only %3 are available on this drive.</source>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
-        <translation type="unfinished"></translation>
+        <translation>
+Opravdu chcete pokračovat?</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2223"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slučování %1 z %2 - posun [%3,%4] - úhel : %5°</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2233"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slučování %1 bit/k %2 aktivního snímku
+%3</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2235"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Slučování %1 bitového šedého aktivního %2 snímku
+%3</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2383"/>
@@ -3300,13 +3312,17 @@ You should check/change the star detection threshold to detect more stars
 and help DeepSkyStacker find a transformation between the reference frame and the others.
 </source>
         <comment>IDS_WARNING_ONLYONEFRAME</comment>
-        <translation type="unfinished"></translation>
+        <translation>Pouze jeden snímek (z %1) bude složen.
+
+Měli byste zkontrolovat/změnit práh detekce hvězd, aby se nalezlo více hvězd a
+pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a ostatními.
+</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2394"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
-        <translation type="unfinished">Slučování</translation>
+        <translation>Slučování</translation>
     </message>
 </context>
 <context>
@@ -3484,120 +3500,122 @@ vztaženou na směrodatnou odchylku (%1).</translation>
 <context>
     <name>StackingTasks</name>
     <message>
-        <location filename="../StackingTasks.cpp" line="54"/>
-        <source>Loading %1 bit/ch %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingTasks.cpp" line="56"/>
         <source>Loading %1 bits gray %2 dark frame
 %3</source>
         <comment>IDS_LOADGRAYDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bitového šedého %2 snímku temného pozadí
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="60"/>
         <source>Loading %1 bit/ch %2 dark flat frame
 %3</source>
         <comment>IDS_LOADRGBDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 snímku vyrovnání temného pozadí
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="62"/>
         <source>Loading %1 bits gray %2 dark flat frame
 %3</source>
         <comment>IDS_LOADGRAYDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Přidání %1 bitového šedého %2 snímku vyrovnání temného pozadí
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="66"/>
         <source>Loading %1 bit/ch %2 offset frame
 %3</source>
         <comment>IDS_LOADRGBOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 snímku zkreslení
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="68"/>
         <source>Loading %1 bits gray %2 offset frame
 %3</source>
         <comment>IDS_LOADGRAYOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bitového šedého %2 snímku zkreslení
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="72"/>
         <source>Loading %1 bit/ch %2 flat frame
 %3</source>
         <comment>IDS_LOADRGBFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 snímku vyrovnání jasu
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="74"/>
         <source>Loading %1 bits gray %2 flat frame
 %3</source>
         <comment>IDS_LOADGRAYFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 snímku vyrovnání jasu
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="78"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bit/k %2 aktivního snímku
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="80"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Načítání %1 bitového %2 aktivního šedého snímku
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="358"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vytvoření základního snímku zkreslení</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="368"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Přidávání snímku zkreslení %1 z %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="394"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet základního zkreslení (%1)</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="412"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Základní zkreslení vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní zkreslení vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní zkreslení vytvořeno z %n snímků (%1)</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="421"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uložení základního snímku zkreslení</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="520"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vytvoření základního snímku temného pozadí</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="535"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Přidávání snímku temného pozadí %1 z %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="554"/>
@@ -3605,115 +3623,123 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <location filename="../StackingTasks.cpp" line="1166"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Odečítání snímku zkreslení</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="578"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet základního temného pozadí (%1)</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="596"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Základní temné pozadí vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní temné pozadí vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní temné pozadí vytvořeno z %n snímků (%1)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="783"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Základní vyrovnání temného pozadí vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání temného pozadí vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání temného pozadí vytvořeno z %n snímků (%1)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="1241"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Základní vyrovnání jasu vytvořeno z %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání jasu vytvořeno ze %n snímků (%1)</numerusform>
+            <numerusform>Základní vyrovnání jasu vytvořeno z %n snímků (%1)</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="606"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uložení základního snímku temného pozadí</translation>
+    </message>
+    <message>
+        <location filename="../StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
+        <translation>Načítání %1 bit/k %2 snímku temného pozadí
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="704"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vytvoření základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="720"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Přidávání snímku vyrovnání temného pozadí %1 z %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="765"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet základního vyrovnání temného pozadí(%1)</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="792"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uložení základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="957"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1009"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Použití kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1132"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Vytvoření základního snímku vyrovnání jasu</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1148"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Přidávání snímku vyrovnání jasu %1 z %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1184"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Odečítání snímku temného pozadí</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1224"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Výpočet základního vyrovnání jasu (%1)</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1250"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Uložení základního snímku vyrovnání jasu</translation>
     </message>
 </context>
 <context>
@@ -3722,7 +3748,7 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         <location filename="../StarMask.cpp" line="38"/>
         <source>Creating Star Mask...</source>
         <comment>IDS_CREATINGSTARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Tvorba masky hvězd...</translation>
     </message>
 </context>
 </TS>
