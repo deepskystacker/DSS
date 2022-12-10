@@ -286,8 +286,8 @@ namespace DSS
 		//
 		QSize iconSize = opt.decorationSize;
 		iconSize.scale(2.5 * iconSize.width(), 2.5 * iconSize.height(), Qt::KeepAspectRatio);
-		iconRect.setWidth(iconSize.width()); iconRect.setHeight(iconSize.height());
 		iconRect.setTop(opt.rect.center().y() - (iconSize.height() / 2));
+		iconRect.setWidth(iconSize.width()); iconRect.setHeight(iconSize.height());
 		// draw the icon
 		QIcon::Mode mode = QIcon::Normal;
 		if (!(opt.state & QStyle::State_Enabled))
@@ -1033,6 +1033,17 @@ namespace DSS
 		//font.setPointSize(font.pointSize() - 1);
 		font.setWeight(QFont::Medium);
 		pictureList->tableView->horizontalHeader()->setFont(font);
+
+		//
+		// Reduce the row height somewhat, as the default is a bit "fat"
+		//
+		QHeaderView* verticalHeader = pictureList->tableView->verticalHeader();
+		double height = verticalHeader->defaultSectionSize();
+		height *= 0.734;		// reduce height (if the default is 30 this reduces it to 22)
+		// Need to set minimum size as well (otherwise default size may be smaller).
+		verticalHeader->setMinimumSectionSize(height);
+		verticalHeader->setDefaultSectionSize(height);
+
 		pictureList->tableView->setSelectionMode(QAbstractItemView::ExtendedSelection);
 		pictureList->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
 		pictureList->tableView->setAlternatingRowColors(true);
@@ -2917,7 +2928,6 @@ namespace DSS
 
 	void StackingDlg::showImageList(bool visible)
 	{
-		if (pictureList->isFloating())
-			pictureList->setVisible(visible);
+		pictureList->setVisible(visible);
 	}
 }
