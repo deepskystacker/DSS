@@ -125,7 +125,8 @@ About::About(QWidget *parent) :
 
     strHTML += "<img valign=center src=\":/flags/german.png\">&nbsp;&nbsp;";
     strHTML += tr("German version:", "IDS_ABOUT_LANG_GERMAN") + " ";
-    strHTML += QString("<a href=\"mailto:kasakow@arcor.de\">%1</a><br>").arg("Wilhelm-Michael Kasakow");
+    strHTML += QString("<a href=\"mailto:kasakow@arcor.de\">%1</a> %2<br>").arg("Wilhelm-Michael Kasakow")
+        .arg(tr("and") + " Martin Toeltsch");
 
     strHTML += "<img valign=center src=\":/flags/dutch.png\">&nbsp;&nbsp;";
     strHTML += tr("Dutch version:", "IDS_ABOUT_LANG_DUTCH") + " ";
