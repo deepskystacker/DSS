@@ -138,7 +138,7 @@ About::About(QWidget *parent) :
     strHTML += "<img valign=center src=\":/flags/portugal.png\">&nbsp;<img valign=center src=\":/flags/brazil.png\">&nbsp;&nbsp;";
     strHTML += tr("Portuguese version:", "IDS_ABOUT_LANG_PORTUGUESE") + " ";
     strHTML += QString("<a href=\"http://www.elfirmamento.com/\">%1</a> %2<br>").arg("Manuel Fernandes")
-        .arg("and Jose Mozart Fusco");
+        .arg(tr("and") + " Jose Mozart Fusco");
 
     strHTML += "<img valign=center src=\":/flags/romanian.png\">&nbsp;&nbsp;";
     strHTML += tr("Romanian version:", "IDS_ABOUT_LANG_ROMANIAN") + " ";
