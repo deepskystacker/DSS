@@ -1,7 +1,7 @@
-﻿Welcome to DeepSkyStacker 5.1.0 Beta 1
+﻿Welcome to DeepSkyStacker 5.1.0 Beta 2
 
 This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows.
-Only 64 bit versions of Windows 7 and later are supported in this release. So far the majority of the code for the stacking panel has been converted to use Qt.
+Only 64 bit versions of Windows 7 and later are supported in this release.  So far the majority of the code for the stacking panel has been converted to use Qt.
 
 **** Please note: The translation of messages and the UI may be incomplete.
 
@@ -9,7 +9,7 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 1. The bulk of the code for the "Stacking" panel has been converted to Qt.  This includes a completely reworked image display.
 
-2. The image list can now be undocked from the bottom of the stacking panel so that it operates as separate windows.  The "Explorer" bar (left panel) can also be undocked.
+2. The image list can now be undocked from the bottom of the Stacking panel so that it operates as a separate window.  The "Explorer" bar (left panel) can also be undocked.
 
 3. It is now possible to rename all groups with the exception of the initial group (Main Group).
 
@@ -32,7 +32,7 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
    HKCU\Software\DeepSkyStacker\DeepSkyStacker
 
-   so now the settings are held in a seperate registry hive:
+   so now the settings are held in a separate registry hive:
 
    HKCU\Software\DeepSkyStacker\DeepSkyStacker5
 
@@ -41,3 +41,10 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 11. The location for storing DeepSkyStacker settings files has changed from %ProgramData%\DeepSkyStacker (typically C:\ProgramData\DeepSkyStacker) to %AppData%\DeepSkyStacker\DeepSkyStacker5 (typically C:\Users\<username>\AppData\Roaming\DeepSkyStacker\DeepSkyStacker5).  You may wish to copy any old settings files to the new location.
 
 12. A file association is now created during installation so that .dssfilelist files will be opened by DeepSkyStacker.
+
+13. Update Libraw to 0.20.2
+
+14. Fix a problem where the image list wasn't always hidden when switching to the Processing panel.
+
+15. Reduce the depth of the rows in the image list so it takes less space.
+
