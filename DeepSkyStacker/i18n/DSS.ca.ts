@@ -117,25 +117,25 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="139"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation>Versió en portugès:</translation>
+        <translation>Versió en Portugès:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="143"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation>Versió romanesa:</translation>
+        <translation>Versió Romanesa:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="147"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation>Versió en rus:</translation>
+        <translation>Versió en Rus:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="151"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation>Versió turca:</translation>
+        <translation>Versió Turca:</translation>
     </message>
 </context>
 <context>
