@@ -44,7 +44,7 @@
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation type="unfinished">Decodificación de archivos RAW con LibRaw (versión %1)
+        <translation>Decodificación de archivos RAW con LibRaw (versión %1)
 Copyright © 1997-2019 LibRaw LLC {1)?} {1997-2022 ?}</translation>
     </message>
     <message>
@@ -93,13 +93,13 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="127"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation>Versión en alemán:</translation>
+        <translation>Versión en Alemán:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="131"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation>Versión holandesa:</translation>
+        <translation>Versión Holandesa:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="132"/>
@@ -117,25 +117,25 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="139"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation>Versión en portugés:</translation>
+        <translation>Versión en Portugés:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="143"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
-        <translation>Versión rumana:</translation>
+        <translation>Versión Rumana:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="147"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation>Versión en ruso:</translation>
+        <translation>Versión en Ruso:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="151"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation>Versión turca:</translation>
+        <translation>Versión Turca:</translation>
     </message>
 </context>
 <context>
@@ -330,7 +330,7 @@ Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar lo
         <location filename="../BatchStacking.cpp" line="69"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
-        <translation type="unfinished">Guardando imagen Final en %1</translation>
+        <translation>Guardando imagen Final en %1</translation>
     </message>
 </context>
 <context>
@@ -339,7 +339,7 @@ Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar lo
         <location filename="../BitmapBase.cpp" line="12"/>
         <source>Detecting hot pixels</source>
         <comment>IDS_REMOVINGHOTPIXELS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Detectando hot pixels</translation>
     </message>
 </context>
 <context>
@@ -348,49 +348,49 @@ Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar lo
         <location filename="../CosmeticEngine.cpp" line="511"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicando cosmética - Hot Pixels</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="126"/>
         <source>Average</source>
         <comment>IDS_RECAP_AVERAGE</comment>
-        <translation type="unfinished">Promedio</translation>
+        <translation>Promedio</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="129"/>
         <source>Median</source>
         <comment>IDS_RECAP_MEDIAN</comment>
-        <translation type="unfinished">Media</translation>
+        <translation>Media</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="132"/>
         <source>Maximum</source>
         <comment>IDS_RECAP_MAXIMUM</comment>
-        <translation type="unfinished">Máximo</translation>
+        <translation>Máximo</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="135"/>
         <source>Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_KAPPASIGMA</comment>
-        <translation type="unfinished">Kappa-Sigma (Kappa = %1, Iteraciones = %2)</translation>
+        <translation>Kappa-Sigma (Kappa = %1, Iteraciones = %2)</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="138"/>
         <source>Auto Adaptive Weighted Average (Iterations = %1)</source>
         <comment>IDS_RECAP_AUTOADAPTIVE</comment>
-        <translation type="unfinished">Auto Adaptive Weighted Average (Iteraciones = %1)</translation>
+        <translation>Auto Adaptive Weighted Average (Iteraciones = %1)</translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="141"/>
         <source>Entropy Weighted Average</source>
         <comment>IDS_RECAP_ENTROPYAVERAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../BitmapExt.h" line="144"/>
         <source>Median Kappa-Sigma (Kappa = %1, Iterations = %2)</source>
         <comment>IDS_RECAP_MEDIANSIGMACLIP</comment>
-        <translation type="unfinished">Median Kappa-Sigma (Kappa = %1, Iteraciones = %2)</translation>
+        <translation>Median Kappa-Sigma (Kappa = %1, Iteraciones = %2)</translation>
     </message>
 </context>
 <context>
@@ -399,7 +399,7 @@ Agregue las listas de archivos que desea apilar y pinche Aceptar para iniciar lo
         <location filename="../ChannelAlign.cpp" line="47"/>
         <source>Aligning Channel</source>
         <comment>IDS_ALIGNINGCHANNEL</comment>
-        <translation type="unfinished"></translation>
+        <translation>Alineando Canal</translation>
     </message>
 </context>
 <context>
@@ -475,20 +475,20 @@ El cometa y las estrellas se verán nítidos. Este proceso lleva el doble de tie
         <location filename="../CosmeticEngine.cpp" line="628"/>
         <source>Creating Median Filtered Image</source>
         <comment>IDS_CREATINGMEDIANIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Creando Imagen Filtrada por la Media</translation>
     </message>
     <message>
         <location filename="../CosmeticEngine.cpp" line="538"/>
         <location filename="../CosmeticEngine.cpp" line="623"/>
         <source>Applying cosmetic - Cold Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_COLD</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicando cosmética - Cold Pixels</translation>
     </message>
     <message>
         <location filename="../CosmeticEngine.cpp" line="596"/>
         <source>Applying cosmetic - Hot Pixels</source>
         <comment>IDS_APPLYINGCOSMETIC_HOT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicando cosmética - Hot Pixels</translation>
     </message>
 </context>
 <context>
@@ -1153,31 +1153,31 @@ Haga clic derecho para cambiar el comportamiento.</translation>
         <location filename="../DarkFrame.cpp" line="601"/>
         <source>Computing Dark Optimization parameters</source>
         <comment>IDS_COMPUTINGDARKOPTIMIZATIONFACTOR</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando parámetros de Optimización de Darks</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1333"/>
         <source>Creating Median Filtered Image</source>
         <comment>IDS_CREATINGMEDIANIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Creando Imagen Filtrada por la Media</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1733"/>
         <source>Detecting Hot Pixels (1/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS1</comment>
-        <translation type="unfinished"></translation>
+        <translation>Detectando Hot Pixels (1/2)</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1743"/>
         <source>Detecting Hot Pixels (2/2)</source>
         <comment>IDS_DETECTINGHOTPIXELS2</comment>
-        <translation type="unfinished"></translation>
+        <translation>Detectando Hot Pixels (2/2)</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1933"/>
         <source>Optimizing Dark Matching</source>
         <comment>IDS_OPTIMIZINGDARKMATCHING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Optimizando el emparejado de Darks</translation>
     </message>
     <message>
         <location filename="../DarkFrame.cpp" line="1940"/>
@@ -1185,7 +1185,7 @@ Haga clic derecho para cambiar el comportamiento.</translation>
         <location filename="../DarkFrame.cpp" line="1959"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sustrayendo Dark Frame</translation>
     </message>
 </context>
 <context>
@@ -1333,12 +1333,12 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <location filename="../ExplorerBar.cpp" line="459"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes de DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="506"/>
         <source>DSS Settings Files (*.dsssettings)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustes de DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
         <location filename="../ExplorerBar.cpp" line="502"/>
@@ -1527,7 +1527,7 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <location filename="../FlatFrame.cpp" line="111"/>
         <source>Calibrating Master Flat</source>
         <comment>IDS_NORMALIZINGMASTERFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calibrando Flat Maestro</translation>
     </message>
 </context>
 <context>
@@ -1579,13 +1579,13 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <location filename="../MasterFrames.cpp" line="53"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sustrayendo Offset Frame</translation>
     </message>
     <message>
         <location filename="../MasterFrames.cpp" line="77"/>
         <source>Applying Flat Frame</source>
         <comment>IDS_APPLYINGFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicando Flat Frame</translation>
     </message>
 </context>
 <context>
@@ -1755,21 +1755,23 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <location filename="../PostCalibration.cpp" line="364"/>
         <source>Computing Cosmetic</source>
         <comment>IDS_COMPUTINGCOSMETICSTATS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando Cosmética</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="381"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bit/ch %2 light frame
+%3</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="383"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gray %2 light frame
+%3</translation>
     </message>
 </context>
 <context>
@@ -1778,7 +1780,7 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <location filename="../ProcessingDlg.cpp" line="819"/>
         <source>Saving the Star Mask in %1</source>
         <comment>IDS_SAVINGSTARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando la Máscara de Estrellas en %1</translation>
     </message>
 </context>
 <context>
@@ -2221,65 +2223,68 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <location filename="../RegisterEngine.cpp" line="971"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
-        <translation type="unfinished">Registrando %1</translation>
+        <translation>Registrando %1</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1000"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Registrando %1 (%2 estrellas)</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1151"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando luminancias %1</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1331"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bit/ch %2 imagenes
+%3</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1335"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gray %2 imagenes%3</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1466"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando la imagen Calibrada en %1</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1504"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Registrando imágenes</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1539"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Registrando %1 de %2</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1556"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bit/ch %2 light frame
+%3</translation>
     </message>
     <message>
         <location filename="../RegisterEngine.cpp" line="1558"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gray %2 light frame
+%3</translation>
     </message>
 </context>
 <context>
@@ -2500,21 +2505,23 @@ Probablemente puedas obtener otra o desgarcar la versión final del sitio web.</
         <location filename="../RunningStackingEngine.cpp" line="95"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando parámetros de Calibración de Fondo</translation>
     </message>
     <message>
         <location filename="../RunningStackingEngine.cpp" line="110"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apilando %1 bit/ch %2 light frame
+%3</translation>
     </message>
     <message>
         <location filename="../RunningStackingEngine.cpp" line="112"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apilando %1 bits gray %2 light frame
+%3</translation>
     </message>
 </context>
 <context>
@@ -3076,7 +3083,7 @@ Do you want to save them?</source>
         <location filename="../StackedBitmap.cpp" line="295"/>
         <source>Loading DSImage</source>
         <comment>IDS_LOADDSIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando DSImage</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="307"/>
@@ -3084,38 +3091,38 @@ Do you want to save them?</source>
         <location filename="../StackedBitmap.cpp" line="1348"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
-        <translation type="unfinished">Cargando %1</translation>
+        <translation>Cargando %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="410"/>
         <source>Saving DSImage File</source>
         <comment>IDS_SAVINGDSIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando Archivo DSImage</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="412"/>
         <source>Saving stacked picture in %1 (DSImage)</source>
         <comment>IDS_SAVEDSIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando imagen apilada en %1 (DSImage)</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="632"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Procesando Imagen...</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="902"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando TIFF %1 bit</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="905"/>
         <location filename="../StackedBitmap.cpp" line="1100"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando %1</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="954"/>
@@ -3124,7 +3131,7 @@ Do you want to save them?</source>
         <location filename="../StackedBitmap.cpp" line="1190"/>
         <source>Picture saved with settings applied.</source>
         <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagen guardada con los ajustes aplicados.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="956"/>
@@ -3133,37 +3140,37 @@ Do you want to save them?</source>
         <location filename="../StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Imagen guardada con los ajustes integrados.</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1097"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando FITS %1 bit</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1246"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando TIFF %1 bit monocromo</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1248"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando TIFF %1 bit/ch</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1343"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando FITS %1 bit monocromática</translation>
     </message>
     <message>
         <location filename="../StackedBitmap.cpp" line="1345"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando FITS %1 bit/c</translation>
     </message>
 </context>
 <context>
@@ -3172,55 +3179,55 @@ Do you want to save them?</source>
         <location filename="../StackingEngine.cpp" line="766"/>
         <source>Computing stacking info for %1</source>
         <comment>IDS_COMPUTINGSTACKINGINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando info de apilado para %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="811"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando offsets</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1107"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando Imagen Final (%1)</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1208"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apilando - Ajuste Bayer - Cálculo del Ajuste</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1218"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calcular ajuste %1 en %2</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1273"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apilando - Ajuste Bayer - Aplicar Ajuste</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1275"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calcular ajuste máximo</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1310"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicando ajuste</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1381"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando imagen Registrada y Calibrada en %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1428"/>
@@ -3228,32 +3235,33 @@ Do you want to save them?</source>
         <location filename="../StackingEngine.cpp" line="1586"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando la imagen Calibrada en %1</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1808"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
-        <translation type="unfinished"></translation>
+        <translation>Interpolando con Adaptive Homogeneity Directed (AHD)</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1851"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando Entropía</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="1863"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando parámetros de Calibración de Fondo</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2089"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
-        <translation type="unfinished"></translation>
+        <translation>El proceso necesita temporariamente %1 de espacio libre en la unidad %2.
+Sólo %3 están disponibles en esta unidad.</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2090"/>
@@ -3261,27 +3269,30 @@ Only %3 are available on this drive.</source>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
-        <translation type="unfinished"></translation>
+        <translation>
+¿Realmente desea continuar?</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2223"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apilando %1 en %2 - Offset [%3,%4] - Angulo : %5° </translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2233"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apilando %1 bit/ch %2 light frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2235"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Apilando %1 bits gray %2 light frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2383"/>
@@ -3291,13 +3302,17 @@ You should check/change the star detection threshold to detect more stars
 and help DeepSkyStacker find a transformation between the reference frame and the others.
 </source>
         <comment>IDS_WARNING_ONLYONEFRAME</comment>
-        <translation type="unfinished"></translation>
+        <translation>Solo un cuadro (de %1) sera apilado.
+
+Debería chequear/cambiar el umbral de detección de estrellas para detectar mas estrellas
+y ayudar a DeepSkyStacker a encontrar una transformación entre el cuadro de referencia y los demás.
+</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2394"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
-        <translation type="unfinished">Apilando</translation>
+        <translation>Apilando</translation>
     </message>
 </context>
 <context>
@@ -3475,119 +3490,121 @@ comparativamente a la desviación estándar (%1).</translation>
 <context>
     <name>StackingTasks</name>
     <message>
-        <location filename="../StackingTasks.cpp" line="54"/>
-        <source>Loading %1 bit/ch %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingTasks.cpp" line="56"/>
         <source>Loading %1 bits gray %2 dark frame
 %3</source>
         <comment>IDS_LOADGRAYDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gray %2 dark frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="60"/>
         <source>Loading %1 bit/ch %2 dark flat frame
 %3</source>
         <comment>IDS_LOADRGBDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bit/ch %2 dark flat frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="62"/>
         <source>Loading %1 bits gray %2 dark flat frame
 %3</source>
         <comment>IDS_LOADGRAYDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gris %2 dark flat frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="66"/>
         <source>Loading %1 bit/ch %2 offset frame
 %3</source>
         <comment>IDS_LOADRGBOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bit/ch %2 offset frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="68"/>
         <source>Loading %1 bits gray %2 offset frame
 %3</source>
         <comment>IDS_LOADGRAYOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gray %2 offset frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="72"/>
         <source>Loading %1 bit/ch %2 flat frame
 %3</source>
         <comment>IDS_LOADRGBFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bit/ch %2 flat frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="74"/>
         <source>Loading %1 bits gray %2 flat frame
 %3</source>
         <comment>IDS_LOADGRAYFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gray %2 flat frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="78"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bit/ch %2 light frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="80"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Cargando %1 bits gray %2 light frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="358"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Crear Offset Frame Maestro</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="368"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Agregando Offset frame %1 a %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="394"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando offset maestro (%1)</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="412"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Offset Maestro creado a partir de una imágen (%1)</numerusform>
+            <numerusform>Offset Maestro creado a partir de %n imágenes (%1)</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="421"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando Offset Maestro</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="520"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Crear Dark Frame Maestro</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="535"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Agregando Dark frame %1 a %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="554"/>
@@ -3595,112 +3612,120 @@ comparativamente a la desviación estándar (%1).</translation>
         <location filename="../StackingTasks.cpp" line="1166"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sustrayendo Offset Frame</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="578"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando dark maestro (%1)</translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="596"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Dark Maestro creado a partir de una imágen (%1)</numerusform>
+            <numerusform>Dark Maestro creado a partir de %n imágenes (%1)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="783"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Dark Flat Maestro creado a partir de una imágen (%1)</numerusform>
+            <numerusform>Dark Flat Maestro creado a partir de %n imágenes (%1)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../StackingTasks.cpp" line="1241"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Flat Maestro creado a partir de una imágen (%1)</numerusform>
+            <numerusform>Flat Maestro creado a partir de %n imágenes (%1)</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="606"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando Dark Maestro</translation>
+    </message>
+    <message>
+        <location filename="../StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
+        <translation>Cargando %1 bit/ch %2 dark frame
+%3</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="704"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Crear Dark Flat Frame Maestro</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="720"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Agregando Dark Flat frame %1 en %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="765"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando el dark flat maestro (%1)</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="792"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando Dark Flat Maestro</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="957"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando Parámetros de Calibración de Flats</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1009"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
-        <translation type="unfinished"></translation>
+        <translation>Aplicando Parámetros de Calibración de Flats</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1132"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Crear Flat Frame Maestro</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1148"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Agregando Flat frame %1 a %2</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1184"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Sustrayendo Dark Frame</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1224"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Calculando  flat maestro (%1)</translation>
     </message>
     <message>
         <location filename="../StackingTasks.cpp" line="1250"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
-        <translation type="unfinished"></translation>
+        <translation>Guardando Flat Maestro</translation>
     </message>
 </context>
 <context>
@@ -3709,7 +3734,7 @@ comparativamente a la desviación estándar (%1).</translation>
         <location filename="../StarMask.cpp" line="38"/>
         <source>Creating Star Mask...</source>
         <comment>IDS_CREATINGSTARMASK</comment>
-        <translation type="unfinished"></translation>
+        <translation>Creando la Máscara de Estrellas...</translation>
     </message>
 </context>
 </TS>
