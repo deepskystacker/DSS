@@ -472,9 +472,6 @@
     <ClInclude Include="FileProperty.h">
       <Filter>Dialogs</Filter>
     </ClInclude>
-    <ClInclude Include="BatchStacking.h">
-      <Filter>Dialogs\Stacking</Filter>
-    </ClInclude>
     <ClInclude Include="AskRegistering.h">
       <Filter>Dialogs\Registering</Filter>
     </ClInclude>
@@ -1316,6 +1313,9 @@
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
     <QtMoc Include="BaseDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="BatchStacking.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

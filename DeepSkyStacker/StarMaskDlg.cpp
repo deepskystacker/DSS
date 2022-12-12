@@ -4,11 +4,8 @@
 #include "stdafx.h"
 #include "DeepSkyStacker.h"
 #include "StarMaskDlg.h"
-#include <dlgs.h>
 
 #include <QSettings>
-
-#define FILE_DIALOG_NAME cmb13
 
 // CStarMaskDlg dialog
 /* ------------------------------------------------------------------- */
@@ -17,19 +14,11 @@ class CSaveMaskDlg : public CFileDialog
 {
 	DECLARE_DYNAMIC(CSaveMaskDlg)
 
-	// 
-	// 9 December 2022 David C. Partridge
-	// 
-	// I added OFN_EXPLORER to the open flags as per the note in the docs for CFileDialog::SetControlText
-	// that say:
-	//    To use this method, you must create the dialog box with the OFN_EXPLORER style.
-	//    Otherwise, the function will fail with an assertion.
-	//
 public :
 	CSaveMaskDlg(bool bOpenFileDialog, // true for FileOpen, false for FileSaveAs
 		LPCTSTR lpszDefExt = nullptr,
 		LPCTSTR lpszFileName = nullptr,
-		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER, // Add OFN_EXPLORER - see CFileDialog
+		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 		LPCTSTR lpszFilter = nullptr,
 		CWnd* pParentWnd = nullptr):CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd)
 	{
@@ -38,21 +27,21 @@ public :
 	{
 	};
 
-protected:
-	virtual void OnTypeChange()
-	{
-		CFileDialog::OnTypeChange();
-		CString			strFileName = GetFileTitle();
-
-		if (strFileName.GetLength())
-		{
-			if (m_ofn.nFilterIndex == 1)
-				strFileName += ".tif";
-			else
-				strFileName += ".fits";
-			SetControlText(FILE_DIALOG_NAME, strFileName);
-		};
-	};
+//protected:
+//	virtual void OnTypeChange()
+//	{
+//		CFileDialog::OnTypeChange();
+//		CString			strFileName = GetFileTitle();
+//
+//		if (strFileName.GetLength())
+//		{
+//			if (m_ofn.nFilterIndex == 1)
+//				strFileName += ".tif";
+//			else
+//				strFileName += ".fits";
+//			SetControlText(FILE_DIALOG_NAME, strFileName);
+//		};
+//	};
 };
 IMPLEMENT_DYNAMIC(CSaveMaskDlg, CFileDialog)
 
