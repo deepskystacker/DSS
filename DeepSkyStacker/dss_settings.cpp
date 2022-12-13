@@ -40,35 +40,35 @@
 #include "dss_settings.h"
 #pragma pack(push, HDSETTINGS, 2)
 
-static BOOL	GetDefaultSettingsFileName(CString& strFile)
-{
-	CString			strBase;
-	TCHAR			szFileName[1 + _MAX_PATH];
-	TCHAR			szDrive[1 + _MAX_DRIVE];
-	TCHAR			szDir[1 + _MAX_DIR];
+namespace {
+	void GetDefaultSettingsFileName(CString& strFile)
+	{
+		CString			strBase;
+		TCHAR			szFileName[1 + _MAX_PATH];
+		TCHAR			szDrive[1 + _MAX_DRIVE];
+		TCHAR			szDir[1 + _MAX_DIR];
 
-	GetModuleFileName(nullptr, szFileName, sizeof(szFileName));
-	strBase = szFileName;
-	_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
+		GetModuleFileName(nullptr, szFileName, sizeof(szFileName));
+		strBase = szFileName;
+		_tsplitpath(strBase, szDrive, szDir, nullptr, nullptr);
 
-	strFile = szDrive;
-	strFile += szDir;
-	strFile += "DSSSettings.DSSSettings";
-
-	return TRUE;
-};
+		strFile = szDrive;
+		strFile += szDir;
+		strFile += "DSSSettings.DSSSettings";
+	}
+}
 
 /* ------------------------------------------------------------------- */
-const DWORD			HDSSETTINGS_MAGIC = 0x7ABC6F10L;
+constexpr std::uint32_t HDSSETTINGS_MAGIC = 0x7ABC6F10;
 
-typedef struct tagHDSETTINGSHEADER
+using HDSETTINGSHEADER = struct
 {
-	DWORD			dwMagic;		// Magic number (always HDSSETTINGS_MAGIC)
-	DWORD			dwHeaderSize;	// Always sizeof(HDSETTINGSHEADER);
-	LONG			lNrSettings;	// Number of settings
-	DWORD			dwFlags;		// Flags
+	std::uint32_t	dwMagic;		// Magic number (always HDSSETTINGS_MAGIC)
+	std::uint32_t	dwHeaderSize;	// Always sizeof(HDSETTINGSHEADER);
+	std::int32_t	lNrSettings;	// Number of settings
+	std::uint32_t	dwFlags;		// Flags
 	char			Reserved[32];	// Reserved (set to 0)
-}HDSETTINGSHEADER;
+};
 
 #pragma pack(pop, HDSETTINGS)
 
@@ -78,74 +78,67 @@ bool	CDSSSettings::Load(LPCTSTR szFile)
 {
 	bool			bResult = false;
 	CString			strFile = szFile;
-	FILE* hFile = nullptr;
 
 	if (!strFile.GetLength())
 		GetDefaultSettingsFileName(strFile);
 
-	hFile = _tfopen(strFile, _T("rb"));
-	if (hFile)
+	if (FILE* hFile = _tfopen(strFile, _T("rb")))
 	{
-		HDSETTINGSHEADER		Header;
-		LONG					i;
-
+		HDSETTINGSHEADER Header;
 		fread(&Header, sizeof(Header), 1, hFile);
+
 		if ((Header.dwMagic == HDSSETTINGS_MAGIC) &&
 			(Header.dwHeaderSize == sizeof(Header)))
 		{
 			m_lSettings.clear();
-			for (i = 0; i < Header.lNrSettings; i++)
+			for (std::int32_t i = 0; i < Header.lNrSettings; i++)
 			{
-				CDSSSetting		cds;
+				CDSSSetting cds;
 
 				cds.Load(hFile);
-				m_lSettings.push_back(cds);
-			};
+				m_lSettings.push_back(std::move(cds));
+			}
 
 			bResult = true;
 			m_lSettings.sort();
-		};
+		}
 
 		fclose(hFile);
-	};
+	}
 
-	m_bLoaded = TRUE;
+	m_bLoaded = true;
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
 bool	CDSSSettings::Save(LPCTSTR szFile)
 {
 	bool bResult = false;
-	CString			strFile = szFile;
-	FILE* hFile = nullptr;
+	CString strFile = szFile;
 
 	if (!strFile.GetLength())
 		GetDefaultSettingsFileName(strFile);
 
-	hFile = _tfopen(strFile, _T("wb"));
-	if (hFile)
+	if (FILE* hFile = _tfopen(strFile, _T("wb")))
 	{
 		m_lSettings.sort();
 
 		HDSETTINGSHEADER		Header;
-		DSSSETTINGITERATOR		it;
-
 		memset(&Header, 0, sizeof(Header));
 
 		Header.dwMagic = HDSSETTINGS_MAGIC;
 		Header.dwHeaderSize = sizeof(Header);
-		Header.lNrSettings = (LONG)m_lSettings.size();
+		Header.lNrSettings = static_cast<decltype(Header.lNrSettings)>(m_lSettings.size());
 
 		fwrite(&Header, sizeof(Header), 1, hFile);
-		for (it = m_lSettings.begin(); it != m_lSettings.end(); it++)
-			(*it).Save(hFile);
+		for (DSSSETTINGITERATOR it = m_lSettings.begin(); it != m_lSettings.end(); ++it)
+			it->Save(hFile);
 
 		fclose(hFile);
 		bResult = true;
-	};
+	}
 
 	return bResult;
-};
+}

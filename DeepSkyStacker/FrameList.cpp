@@ -609,11 +609,11 @@ namespace DSS
 	{
 		bool				bResult = true;
 		bool				bFirst = true;
-		const ListBitMap* lb;
-		LONG				lNrDarks = 0;
-		LONG				lNrDarkFlats = 0;
-		LONG				lNrFlats = 0;
-		LONG				lNrOffsets = 0;
+		const ListBitMap*	lb;
+		int					lNrDarks = 0;
+		int					lNrDarkFlats = 0;
+		int					lNrFlats = 0;
+		int					lNrOffsets = 0;
 		bool				bMasterDark = false;
 		bool				bMasterFlat = false;
 		bool				bMasterDarkFlat = false;

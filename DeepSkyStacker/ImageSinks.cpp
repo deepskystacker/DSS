@@ -50,7 +50,7 @@ HCURSOR	CSelectRectSink::GetCursorFromMode(SELECTRECTMODE Mode)
 
 /* ------------------------------------------------------------------- */
 
-SELECTRECTMODE	CSelectRectSink::GetModeFromPosition(LONG lX, LONG lY)
+SELECTRECTMODE	CSelectRectSink::GetModeFromPosition(long lX, long lY)
 {
 	SELECTRECTMODE	Result = SRM_NONE;
 	CRect			rcScreen;
@@ -185,7 +185,7 @@ void	CSelectRectSink::UpdateSelectRect()
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = std::min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
+		m_rcSelect.bottom = std::min(static_cast<decltype(m_rcSelect.bottom)>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	case SRM_MOVELEFT :
 		// Only fDeltaX is used
@@ -199,7 +199,7 @@ void	CSelectRectSink::UpdateSelectRect()
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = std::min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
+		m_rcSelect.right = std::min(static_cast<decltype(m_rcSelect.right)>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		break;
 	case SRM_MOVETOPLEFT :
 		// Only fDeltaY is used
@@ -223,7 +223,7 @@ void	CSelectRectSink::UpdateSelectRect()
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = std::min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
+		m_rcSelect.right = std::min(static_cast<decltype(m_rcSelect.right)>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		break;
 	case SRM_MOVEBOTTOMLEFT :
 		// Only fDeltaX is used
@@ -235,19 +235,19 @@ void	CSelectRectSink::UpdateSelectRect()
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = std::min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
+		m_rcSelect.bottom = std::min(static_cast<decltype(m_rcSelect.bottom)>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	case SRM_MOVEBOTTOMRIGHT :
 		// Only fDeltaX is used
 		if (-fDeltaX > m_rcSelect.Width()-1)
 			fDeltaX = -m_rcSelect.Width()+1;
 		m_rcSelect.right += fDeltaX;
-		m_rcSelect.right = std::min(static_cast<long>(m_pImage->GetImgSizeX()), m_rcSelect.right);
+		m_rcSelect.right = std::min(static_cast<decltype(m_rcSelect.right)>(m_pImage->GetImgSizeX()), m_rcSelect.right);
 		// Only fDeltaY is used
 		if (-fDeltaY > m_rcSelect.Height()-1)
 			fDeltaY = -m_rcSelect.Height()+1;
 		m_rcSelect.bottom += fDeltaY;
-		m_rcSelect.bottom = std::min(static_cast<long>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
+		m_rcSelect.bottom = std::min(static_cast<decltype(m_rcSelect.bottom)>(m_pImage->GetImgSizeY()), m_rcSelect.bottom);
 		break;
 	};
 
@@ -350,7 +350,7 @@ void CSelectRectSink::GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDriz
 
 /* ------------------------------------------------------------------- */
 
-bool	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
+bool	CSelectRectSink::Image_OnMouseMove(long lX, long lY)
 {
 	bool			bResult = false;
 
@@ -382,7 +382,7 @@ bool	CSelectRectSink::Image_OnMouseMove(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-bool	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
+bool	CSelectRectSink::Image_OnLButtonDown(long lX, long lY)
 {
 	bool			bResult = false;
 
@@ -405,7 +405,7 @@ bool	CSelectRectSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-bool	CSelectRectSink::Image_OnLButtonUp(LONG lX, LONG lY)
+bool	CSelectRectSink::Image_OnLButtonUp(long lX, long lY)
 {
 	bool			bResult = false;
 
@@ -672,7 +672,7 @@ void CEditStarsSink::DetectStars(const QPointF & pt, CRect & rcCheck, STARVECTOR
 }
 
 
-bool CEditStarsSink::Image_OnMouseMove(LONG lX, LONG lY)
+bool CEditStarsSink::Image_OnMouseMove(long lX, long lY)
 {
 	bool			bResult = false;
 
@@ -715,7 +715,7 @@ bool	CEditStarsSink::Image_OnMouseLeave()
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
+bool	CEditStarsSink::Image_OnLButtonDown(long lX, long lY)
 {
 	bool			bResult = false;
 
@@ -769,7 +769,7 @@ bool	CEditStarsSink::Image_OnLButtonDown(LONG lX, LONG lY)
 
 /* ------------------------------------------------------------------- */
 
-bool	CEditStarsSink::Image_OnLButtonUp(LONG lX, LONG lY)
+bool	CEditStarsSink::Image_OnLButtonUp(long lX, long lY)
 {
 	bool			bResult = true;
 

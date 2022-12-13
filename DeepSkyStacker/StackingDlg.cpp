@@ -2284,10 +2284,7 @@ namespace DSS
 
 			if (dlgSettings.exec())
 			{
-				double				fMinLuminancy = 0.10;
 				bool				bForceRegister = false;
-				LONG				lCount = 0;
-				LONG				lMaxCount = 0;
 				double				fPercent = 20.0;
 				bool				bStackAfter = false;
 

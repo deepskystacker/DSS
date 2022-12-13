@@ -33,7 +33,7 @@ private :
 	void	UpdateSelectRect();
 
 	HCURSOR			GetCursorFromMode(SELECTRECTMODE Mode);
-	SELECTRECTMODE	GetModeFromPosition(LONG lX, LONG lY);
+	SELECTRECTMODE	GetModeFromPosition(long lX, long lY);
 	void			GetDrizzleRectangles(CRect & rc2xDrizzle, CRect & rc3xDrizzle);
 
 public :
@@ -55,9 +55,9 @@ public :
 		m_bShowDrizzle = bShow;
 	};
 
-	virtual bool	Image_OnMouseMove(LONG lX, LONG lY) override;
-	virtual bool	Image_OnLButtonDown(LONG lX, LONG lY) override;
-	virtual bool	Image_OnLButtonUp(LONG lX, LONG lY) override;
+	virtual bool	Image_OnMouseMove(long lX, long lY) override;
+	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
+	virtual bool	Image_OnLButtonUp(long lX, long lY) override;
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 
@@ -357,9 +357,9 @@ public :
 
 	// Message handling
 	virtual bool	Image_OnMouseLeave() override;
-	virtual bool	Image_OnMouseMove(LONG lX, LONG lY) override;
-	virtual bool	Image_OnLButtonDown(LONG lX, LONG lY) override;
-	virtual bool	Image_OnLButtonUp(LONG lX, LONG lY);
+	virtual bool	Image_OnMouseMove(long lX, long lY) override;
+	virtual bool	Image_OnLButtonDown(long lX, long lY) override;
+	virtual bool	Image_OnLButtonUp(long lX, long lY);
 
 	virtual Image *	GetOverlayImage(CRect & rcClient);
 };
