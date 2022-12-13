@@ -124,41 +124,6 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 	fBlue = std::max(0.0, std::min (255.0, fBlue));
 };
 
-
-/* ------------------------------------------------------------------- */
-
-int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
-{
-	ZFUNCTRACE_RUNTIME();
-   unsigned int num = 0;          // number of image encoders
-   unsigned int size = 0;         // size of the image encoder array in bytes
-
-   ImageCodecInfo* pImageCodecInfo = nullptr;
-
-   GetImageEncodersSize(&num, &size);
-   if(size == 0)
-      return -1;  // Failure
-
-   pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
-   if(pImageCodecInfo == nullptr)
-      return -1;  // Failure
-
-   GetImageEncoders(num, size, pImageCodecInfo);
-
-   for(unsigned int j = 0; j < num; ++j)
-   {
-      if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
-      {
-         *pClsid = pImageCodecInfo[j].Clsid;
-         free(pImageCodecInfo);
-         return j;  // Success
-      }
-   }
-
-   free(pImageCodecInfo);
-   return -1;  // Failure
-}
-
 /* ------------------------------------------------------------------- */
 
 void CopyBitmapToClipboard(HBITMAP hBitmap)

@@ -13,10 +13,7 @@
 #include "RegisterEngine.h"
 
 #undef PI
-//constexpr double PI = 3.14159265358979323846;
 
-
-/* ------------------------------------------------------------------- */
 
 class CDeepStack
 {
@@ -117,12 +114,5 @@ public :
 		return GetWidth() && GetHeight();
 	};
 };
-
-/* ------------------------------------------------------------------- */
-
-HBITMAP		LoadPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap);
-void		CopyBitmapToClipboard(HBITMAP hBitmap);
-
-/* ------------------------------------------------------------------- */
 
 #endif // _DEEPSTACK_H__
