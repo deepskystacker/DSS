@@ -655,17 +655,17 @@ bool CTIFFWriter::Write()
         //
 		tmsize_t buffSize = scanLineSize * h;
 		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
-		buff = (tdata_t)malloc(buffSize);
+		buff = static_cast<tdata_t>(malloc(buffSize));
 
-		if (buff)
+		if (buff != nullptr)
 		{
 			if (m_pProgress)
 				m_pProgress->Start2(nullptr, h);
 
-			BYTE *  byteBuff = (BYTE *)buff;
-			WORD *	shortBuff = (WORD *)buff;
-			std::uint32_t* u32Buff = (std::uint32_t*)buff;
-			float *	floatBuff = (float *)buff;
+			auto* byteBuff = static_cast<std::uint8_t*>(buff);
+			auto* shortBuff = static_cast<WORD*>(buff);
+			auto* u32Buff = static_cast<std::uint32_t*>(buff);
+			float* floatBuff = static_cast<float*>(buff);
 
 			int	rowProgress = 0;
 
@@ -795,7 +795,7 @@ bool CTIFFWriter::Write()
 
 			ZTRACE_RUNTIME("Number of strips is %u", numStrips);
 
-			BYTE * curr = (BYTE *)buff;
+			auto* curr = static_cast<std::uint8_t*>(buff);
 			tsize_t stripSize = rowsPerStrip * scanLineSize;
 			tsize_t bytesRemaining = h * scanLineSize;
 			tsize_t size = stripSize;

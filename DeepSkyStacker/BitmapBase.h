@@ -2314,7 +2314,7 @@ public:
 
 		if (j < m_lHeight)
 		{
-			BYTE* const pTempScan = static_cast<BYTE*>(pScanLine);
+			auto* const pTempScan = static_cast<std::uint8_t*>(pScanLine);
 			const size_t w = static_cast<size_t>(m_lWidth);
 			const size_t index = static_cast<size_t>(j) * w;
 
@@ -2333,7 +2333,7 @@ public:
 
 		if (j < m_lHeight)
 		{
-			const BYTE* const pTempScan = static_cast<const BYTE*>(pScanLine);
+			const auto* const pTempScan = static_cast<const std::uint8_t*>(pScanLine);
 			const size_t w = static_cast<size_t>(m_lWidth);
 			const size_t index = static_cast<size_t>(j) * w;
 

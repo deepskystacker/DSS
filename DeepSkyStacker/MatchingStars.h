@@ -16,9 +16,9 @@ class CStarTriangle
 public :
 	float			m_fX,
 					m_fY;
-	BYTE			m_Star1,
-					m_Star2,
-					m_Star3;
+	std::uint8_t	m_Star1;
+	std::uint8_t	m_Star2;
+	std::uint8_t	m_Star3;
 
 private :
 	void	CopyFrom(const CStarTriangle & st)
@@ -40,7 +40,7 @@ public :
         m_Star3 = 0;
     }
 
-	CStarTriangle(BYTE Star1, BYTE Star2, BYTE Star3, float fX, float fY)
+	CStarTriangle(std::uint8_t Star1, std::uint8_t Star2, std::uint8_t Star3, float fX, float fY)
 	{
 		m_Star1 = Star1;
 		m_Star2 = Star2;
@@ -90,7 +90,7 @@ typedef enum BITMAPCORNER
 class CStarCornerDist
 {
 public :
-	BYTE			m_Star;
+	std::uint8_t	m_Star;
 	float			m_fCornerDist;
 	BITMAPCORNER	m_Corner;
 
@@ -134,8 +134,8 @@ typedef std::vector<CStarCornerDist>			STARCORNERDISTVECTOR;
 class CStarDist
 {
 public :
-	BYTE			m_Star1,
-					m_Star2;
+	std::uint8_t	m_Star1;
+	std::uint8_t	m_Star2;
 	float			m_fDistance;
 
 private :
@@ -147,7 +147,7 @@ private :
 	};
 
 public :
-	CStarDist(BYTE Star1, BYTE Star2, float fDistance = 0.0)
+	CStarDist(std::uint8_t Star1, std::uint8_t Star2, float fDistance = 0.0)
 	{
 		if (Star1 < Star2)
 		{
@@ -226,7 +226,7 @@ private :
 	};
 
 public :
-	CVotingPair(BYTE RefStar = 0, BYTE TgtStar = 0)
+	CVotingPair(std::uint8_t RefStar = 0, std::uint8_t TgtStar = 0)
 	{
 		m_RefStar	= RefStar;
 		m_TgtStar	= TgtStar;
