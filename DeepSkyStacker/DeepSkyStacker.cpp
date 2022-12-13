@@ -306,7 +306,7 @@ void DeepSkyStacker::onInitialise()
 	stackedWidget->addWidget(winHost);
 
 	ZTRACE_RUNTIME("Creating Processing Panel");
-	BOOL result = processingDlg.Create(IDD_PROCESSING);
+	auto result = processingDlg.Create(IDD_PROCESSING);
 	if (FALSE == result)
 	{
 		int lastErr = GetLastError();
@@ -430,7 +430,7 @@ void DeepSkyStacker::updateTab()
 BOOL DeepSkyStackerApp::InitInstance()
 {
 	ZFUNCTRACE_RUNTIME();
-	BOOL result = CWinApp::InitInstance();
+	auto result = CWinApp::InitInstance();
 
 	EnableHtmlHelp();
 

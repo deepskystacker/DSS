@@ -2362,7 +2362,7 @@ namespace DSS
 	{
 		if (checkEditChanges())
 		{
-			BOOL				bContinue;
+			bool				bContinue;
 			CAllStackingTasks	tasks;
 			CRect				rcSelect;
 
@@ -2392,7 +2392,7 @@ namespace DSS
 						DSS::DSSProgressDlg	dlg;
 
 						frameList.blankCheckedItemScores();
-						bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
+						bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
 						frameList.updateCheckedItemScores();
 						dlg.Close();
 					};
@@ -2421,7 +2421,7 @@ namespace DSS
 
 			QMessageBox::critical(this, "DeepSkyStacker",
 				message, QMessageBox::Ok);
-			result = FALSE;
+			result = false;
 		};
 
 		return result;
@@ -2454,7 +2454,7 @@ namespace DSS
 		// and ask accordingly
 		CLightFrameInfo			lfi;
 
-		lfi.SetBitmap(m_strShowFile.toStdU16String(), FALSE, FALSE);
+		lfi.SetBitmap(m_strShowFile.toStdU16String(), false, false);
 		if (!lfi.IsRegistered())
 		{
 			CAskRegistering		dlg;
@@ -2464,14 +2464,14 @@ namespace DSS
 				if (dlg.GetAction() == ARA_ONE)
 				{
 					// Register only this light frame
-					frameList.checkAllLights(FALSE);
-					frameList.checkImage(m_strShowFile, TRUE);
+					frameList.checkAllLights(false);
+					frameList.checkImage(m_strShowFile, true);
 					registerCheckedImages();
 				}
 				else if (dlg.GetAction() == ARA_ALL)
 				{
 					// Register all the checked light frames (including this one).
-					frameList.checkImage(m_strShowFile, TRUE);
+					frameList.checkImage(m_strShowFile, true);
 					registerCheckedImages();
 				};
 			};
@@ -2723,7 +2723,7 @@ namespace DSS
 
 		if (checkEditChanges() && (frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME) > 0))
 		{
-			BOOL					bContinue = TRUE;
+			bool					bContinue = true;
 			CAllStackingTasks		tasks;
 
 			frameList.fillTasks(tasks);
@@ -2734,7 +2734,7 @@ namespace DSS
 				DSS::DSSProgressDlg	dlg;
 
 				frameList.blankCheckedItemScores();
-				bContinue = RegisterEngine.RegisterLightFrames(tasks, FALSE, &dlg);
+				bContinue = RegisterEngine.RegisterLightFrames(tasks, false, &dlg);
 				frameList.updateCheckedItemScores();
 				dlg.Close();
 			};
