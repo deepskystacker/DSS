@@ -46,10 +46,10 @@ void	SetUILanguage(LANGID LangID)
 			const auto*			szRomanian = L"ro-RO";	// Romanian
 			const auto*			szRussian = L"ru-RU";	// Russian
 			const auto*			szTurkish = L"tr-TR";	// Turkish
-			ULONG			lNumLang = 5;
 
 			using char_type = std::remove_cv_t<std::remove_pointer_t<decltype(szEnglish)>>;
 
+			unsigned long lNumLang = 5;
 			const char_type* szLang1;
 			const char_type* szLang2;
 			const char_type* szLang3;
