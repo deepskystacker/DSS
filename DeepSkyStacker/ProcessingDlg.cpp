@@ -17,7 +17,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-constexpr UINT WM_INITNEWPICTURE = WM_USER + 1;
+constexpr unsigned int WM_INITNEWPICTURE = WM_USER + 1;
 
 #define dssApp DeepSkyStacker::instance()
 
@@ -518,7 +518,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 	CDialog::OnShowWindow(bShow, nStatus);
 
 	if (bShow && dssApp->deepStack().IsNewStackedBitmap(true))
-		OnInitNewPicture(0, 0);//PostMessage(WM_INITNEWPICTURE);
+		OnInitNewPicture(0, 0);
 }
 
 /* ------------------------------------------------------------------- */

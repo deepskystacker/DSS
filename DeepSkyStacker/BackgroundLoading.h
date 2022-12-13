@@ -8,7 +8,7 @@
 #include "BitmapExt.h"
 
 constexpr size_t MAXIMAGESINCACHE = 2;
-constexpr UINT WM_BACKGROUNDIMAGELOADED = WM_USER + 100;
+constexpr unsigned int WM_BACKGROUNDIMAGELOADED = WM_USER + 100;
 
 class CLoadedImage
 {

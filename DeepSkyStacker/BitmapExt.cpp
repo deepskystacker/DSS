@@ -130,8 +130,8 @@ void	CYMGToRGB(double fCyan, double fYellow, double fMagenta, double fGreen2, do
 int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 {
 	ZFUNCTRACE_RUNTIME();
-   UINT  num = 0;          // number of image encoders
-   UINT  size = 0;         // size of the image encoder array in bytes
+   unsigned int num = 0;          // number of image encoders
+   unsigned int size = 0;         // size of the image encoder array in bytes
 
    ImageCodecInfo* pImageCodecInfo = nullptr;
 
@@ -145,7 +145,7 @@ int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
 
    GetImageEncoders(num, size, pImageCodecInfo);
 
-   for(UINT j = 0; j < num; ++j)
+   for(unsigned int j = 0; j < num; ++j)
    {
       if( wcscmp(pImageCodecInfo[j].MimeType, format) == 0 )
       {
@@ -551,7 +551,7 @@ bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
 
 	const auto getExifItem = [pBitmap, &bResult](const PROPID propertyId, const unsigned short type, auto& field) -> void
 	{
-		const UINT dwPropertySize = pBitmap->GetPropertyItemSize(propertyId);
+		const auto dwPropertySize = pBitmap->GetPropertyItemSize(propertyId);
 		if (dwPropertySize != 0)
 		{
 			auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
