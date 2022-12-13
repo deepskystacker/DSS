@@ -663,7 +663,7 @@ bool CTIFFWriter::Write()
 				m_pProgress->Start2(nullptr, h);
 
 			auto* byteBuff = static_cast<std::uint8_t*>(buff);
-			auto* shortBuff = static_cast<WORD*>(buff);
+			auto* shortBuff = static_cast<std::uint16_t*>(buff);
 			auto* u32Buff = static_cast<std::uint32_t*>(buff);
 			float* floatBuff = static_cast<float*>(buff);
 
@@ -697,9 +697,9 @@ bool CTIFFWriter::Write()
 						fGrey = L * 255.0;
 					}
 
-					switch (bps)	// Bits per sample
+					switch (bps) // Bits per sample
 					{
-					case 8:			// One byte 
+					case 8: // One byte
 						switch (spp)
 						{
 						case 1:
@@ -713,7 +713,7 @@ bool CTIFFWriter::Write()
 							break;
 						}
 						break;
-					case 16:		// Unsigned short == WORD 
+					case 16: // Two bytes
 						switch (spp)
 						{
 						case 1:
@@ -727,7 +727,7 @@ bool CTIFFWriter::Write()
 							break;
 						}
 						break;
-					case 32:		// Unsigned int or 32 bit floating point 
+					case 32: // Unsigned int or 32 bit floating point 
 						if (sampleformat == SAMPLEFORMAT_IEEEFP)
 							switch (spp)
 							{

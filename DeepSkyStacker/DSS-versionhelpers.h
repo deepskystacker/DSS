@@ -50,7 +50,7 @@
 #endif // __cplusplus
 
 VERSIONHELPERAPI
-IsWindowsVersionOrGreater(WORD wMajorVersion, WORD wMinorVersion, WORD wServicePackMajor)
+IsWindowsVersionOrGreater(std::uint16_t wMajorVersion, std::uint16_t wMinorVersion, std::uint16_t wServicePackMajor)
 {
     OSVERSIONINFOEXW osvi = { sizeof(osvi), 0, 0, 0, 0, {0}, 0, 0 };
     DWORDLONG        const dwlConditionMask = VerSetConditionMask(

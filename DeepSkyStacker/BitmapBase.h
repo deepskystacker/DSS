@@ -344,9 +344,9 @@ public:
 		double fRed, fGreen, fBlue;
 		GetPixel(i, j, fRed, fGreen, fBlue);
 
-		crResult.red = static_cast<WORD>(std::min(fRed * scalingFactor, maxValue));
-		crResult.green = static_cast<WORD>(std::min(fGreen * scalingFactor, maxValue));
-		crResult.blue = static_cast<WORD>(std::min(fBlue * scalingFactor, maxValue));
+		crResult.red = static_cast<std::uint16_t>(std::min(fRed * scalingFactor, maxValue));
+		crResult.green = static_cast<std::uint16_t>(std::min(fGreen * scalingFactor, maxValue));
+		crResult.blue = static_cast<std::uint16_t>(std::min(fBlue * scalingFactor, maxValue));
 	}
 
 	virtual int Width() const = 0;
@@ -1529,7 +1529,7 @@ public:
 	CGrayBitmapT() :
 		m_lWidth{ 0 },
 		m_lHeight{ 0 },
-		m_bWord{ std::is_same_v<TType, WORD> },
+		m_bWord{ std::is_same_v<TType, std::uint16_t> },
 		m_bDouble{ std::is_same_v<TType, double> },
 		m_bDWord{ std::is_same_v<TType, std::uint32_t> },
 		m_bFloat{ std::is_same_v<TType, float> },

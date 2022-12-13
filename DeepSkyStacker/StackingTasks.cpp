@@ -2186,14 +2186,10 @@ bool CAllStackingTasks::GetSaveCalibratedDebayered()
 
 /* ------------------------------------------------------------------- */
 
-WORD	CAllStackingTasks::GetAlignmentMethod()
+std::uint16_t CAllStackingTasks::GetAlignmentMethod()
 {
-	Workspace			workspace;
-
-	WORD value = workspace.value("Stacking/AlignmentTransformation", 0).toUInt();
-
-	return value;
-};
+	return static_cast<std::uint16_t>(Workspace{}.value("Stacking/AlignmentTransformation", 0).toUInt());
+}
 
 /* ------------------------------------------------------------------- */
 
