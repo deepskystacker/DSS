@@ -829,7 +829,7 @@ bool C32BitsBitmap::InitFrom(CMemoryBitmap* pBitmap)
 				// Slow Method
 				for (int j = 0; j < m_lHeight; j++)
 				{
-					LPBYTE lpOut;
+					pByte lpOut;
 					LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
 
 					lpOut = GetPixelBase(0, j);
@@ -855,8 +855,8 @@ bool C32BitsBitmap::InitFrom(CMemoryBitmap* pBitmap)
 
 				for (int j = 0; j < m_lHeight; j++)
 				{
-					LPBYTE lpOut;
-					LPRGBQUAD& lpOutPixel = (LPRGBQUAD &)lpOut;
+					pByte lpOut;
+					LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
 
 					it.Reset(0, j);
 					lpOut = GetPixelBase(0, j);
@@ -1064,8 +1064,8 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 					T* pGreen = pInBitmap->GetGreenPixel(0, j);
 					T* pBlue = pInBitmap->GetBluePixel(0, j);
 
-					LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
-					LPRGBQUAD& pOutPixel = (LPRGBQUAD&)pOut;
+					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
+					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
 					for (int i = 0; i < lWidth; i++)
 					{
 						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pRed / fMultiplier];
@@ -1083,8 +1083,8 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 					// Init iterators
 					T* pGray = pInBitmap->GetGrayPixel(0, j);
 
-					LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
-					LPRGBQUAD& pOutPixel = (LPRGBQUAD&)pOut;
+					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
+					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
 					for (int i = 0; i < lWidth; i++)
 					{
 						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pGray / fMultiplier];
