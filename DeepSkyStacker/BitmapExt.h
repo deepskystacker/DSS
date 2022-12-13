@@ -489,11 +489,11 @@ public:
 
 		if( (x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
 		{
-			pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
-			const auto dwPixel = *reinterpret_cast<LPDWORD>(pPixel);
-			RGBQUAD rgbq = *(LPRGBQUAD)&dwPixel;
+			const pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
+			const auto dwPixel = *reinterpret_cast<std::uint32_t*>(pPixel);
+			const RGBQUAD rgbq = *reinterpret_cast<const RGBQUAD*>(&dwPixel);
 
-			crColor = RGB(rgbq.rgbRed,rgbq.rgbGreen,rgbq.rgbBlue);
+			crColor = RGB(rgbq.rgbRed, rgbq.rgbGreen, rgbq.rgbBlue);
 		};
 
 		return crColor;
@@ -508,15 +508,15 @@ public:
 	{
 		if( (x >= 0) && (x < m_lWidth) && (y >=0) && (y < m_lHeight))
 		{
-			pByte		pPixel = m_pLine[y] + ((x * 32) >> 3);
-			RGBQUAD		rgbq;
+			pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
+			RGBQUAD rgbq;
 
 			rgbq.rgbRed			= GetRValue(crColor);
 			rgbq.rgbGreen		= GetGValue(crColor);
 			rgbq.rgbBlue		= GetBValue(crColor);
 			rgbq.rgbReserved	= 0;
 
-			*(LPDWORD)pPixel = *(LPDWORD)(&rgbq);
+			*reinterpret_cast<std::uint32_t*>(pPixel) = *reinterpret_cast<std::uint32_t*>(&rgbq);
 		};
 	};
 };
