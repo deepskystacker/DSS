@@ -11,7 +11,7 @@
 IMPLEMENT_DYNAMIC(CSavePicture, CFileDialog)
 
 CSavePicture::CSavePicture(bool bOpenFileDialog, LPCTSTR lpszDefExt, LPCTSTR lpszFileName,
-		DWORD dwFlags, LPCTSTR lpszFilter, CWnd* pParentWnd) :
+		std::uint32_t dwFlags, LPCTSTR lpszFilter, CWnd* pParentWnd) :
 		CFileDialog(bOpenFileDialog, lpszDefExt, lpszFileName, dwFlags, lpszFilter, pParentWnd, 0, false)
 {
 	SetTemplate(IDD_SAVEPICTURE, IDD_SAVEPICTURE);

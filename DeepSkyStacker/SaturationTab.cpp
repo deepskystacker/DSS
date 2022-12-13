@@ -95,21 +95,23 @@ void CSaturationTab::OnUndo()
 
 BOOL CSaturationTab::OnSetActive()
 {
+	constexpr auto IconNumber = static_cast<int>(reinterpret_cast<std::uintptr_t>(BTNST_AUTO_GRAY));
+
 	if (m_bFirstActivation)
 	{
 		m_Redo.DrawTransparent(true);
 		m_Undo.DrawTransparent(true);
 		m_Redo.SetFlat(true);
 		m_Undo.SetFlat(true);
-		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
-		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Redo.SetIcon(IDI_REDO, IconNumber);
+		m_Undo.SetIcon(IDI_UNDO, IconNumber);
 
 		m_Redo.SetTooltipText(IDS_REDOLASTSETTINGS);
 		m_Undo.SetTooltipText(IDS_UNDOLASTSETTINGS);
 
 		m_Settings.DrawTransparent(true);
 		m_Settings.SetFlat(true);
-		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Settings.SetIcon(IDI_SETTINGS, IconNumber);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
 //		m_ST_Saturation.SetBorder(true);

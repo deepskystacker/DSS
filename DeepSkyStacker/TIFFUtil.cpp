@@ -741,7 +741,7 @@ bool CTIFFWriter::Write()
 								floatBuff[index + 2] = fBlue / (1.0 + UCHAR_MAX) * (samplemax - samplemin) + samplemin;
 								break;
 							}
-						else switch (spp)	// unsigned int == DWORD
+						else switch (spp)
 						{
 						case 1:
 							u32Buff[index] = fGrey * UCHAR_MAX * USHRT_MAX;

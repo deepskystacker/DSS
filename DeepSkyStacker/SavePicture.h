@@ -26,7 +26,7 @@ public:
 	CSavePicture(bool bOpenFileDialog, // true for FileOpen, false for FileSaveAs
 		LPCTSTR lpszDefExt = nullptr,
 		LPCTSTR lpszFileName = nullptr,
-		DWORD dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		std::uint32_t dwFlags = OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
 		LPCTSTR lpszFilter = nullptr,
 		CWnd* pParentWnd = nullptr);
 	virtual ~CSavePicture();

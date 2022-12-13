@@ -34,7 +34,7 @@ void	CBackgroundLoading::ClearList()
 
 /* ------------------------------------------------------------------- */
 
-DWORD	WINAPI	BackgroundLoadingThreadProc(LPVOID lpParameter)
+unsigned long WINAPI BackgroundLoadingThreadProc(LPVOID lpParameter)
 {
 	CBackgroundLoading *		pBackgroundLoading = reinterpret_cast<CBackgroundLoading *>(lpParameter);
 

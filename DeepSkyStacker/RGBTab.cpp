@@ -75,6 +75,8 @@ END_MESSAGE_MAP()
 
 BOOL CRGBTab::OnSetActive()
 {
+	constexpr auto IconNumber = static_cast<int>(reinterpret_cast<std::uintptr_t>(BTNST_AUTO_GRAY));
+
 	if (m_bFirstActivation)
 	{
 		m_RedGradient.ShowTooltips(false);
@@ -97,8 +99,8 @@ BOOL CRGBTab::OnSetActive()
 		SetGreenAdjustMethod(HAT_LINEAR);
 		SetBlueAdjustMethod(HAT_LINEAR);
 
-		m_Redo.SetIcon(IDI_REDO, (INT)(size_t)BTNST_AUTO_GRAY);
-		m_Undo.SetIcon(IDI_UNDO, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Redo.SetIcon(IDI_REDO, IconNumber);
+		m_Undo.SetIcon(IDI_UNDO, IconNumber);
 		m_Redo.SetFlat(true);
 		m_Undo.SetFlat(true);
 		m_Redo.DrawTransparent(true);
@@ -109,7 +111,7 @@ BOOL CRGBTab::OnSetActive()
 
 		m_Settings.DrawTransparent(true);
 		m_Settings.SetFlat(true);
-		m_Settings.SetIcon(IDI_SETTINGS, (INT)(size_t)BTNST_AUTO_GRAY);
+		m_Settings.SetIcon(IDI_SETTINGS, IconNumber);
 		m_Settings.SetTooltipText(IDS_MANAGESETTINGS);
 
 		m_bFirstActivation = false;

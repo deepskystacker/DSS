@@ -32,28 +32,29 @@ void	SetUILanguage(LANGID LangID)
 		if (SetThreadPreferredUILanguages)
 		{
 			// Set the preferred languages
-			WCHAR			szPrefLanguages[2000];
-			const WCHAR *			szEnglish = L"en-US";
-			const WCHAR *			szFrench  = L"fr-FR";
-			const WCHAR *			szCzech   = L"cs-CZ";
-			const WCHAR *			szSpanish = L"es-ES";
-			const WCHAR *			szItalian = L"it-IT";
-			const WCHAR *			szCatalan = L"ca-ES";	// Catalan - Espana
-			const WCHAR *			szGerman  = L"de-DE";
-			const WCHAR *			szDutch   = L"nl-NL";
-			const WCHAR *			szChinese = L"zh-TW";	// Traditional Chinese or zh-Hant
-			//const WCHAR *			szChinese = L"zh-CN";	// Simplified Chinese or zh-Hans
-			const WCHAR *			szPortuguese = L"pt-BR";	// Portuguese/Brazilian
-			const WCHAR *			szRomanian = L"ro-RO";	// Romanian
-			const WCHAR *			szRussian = L"ru-RU";	// Russian
-			const WCHAR *			szTurkish = L"tr-TR";	// Turkish
-			ULONG			lNumLang = 5;
+			const auto*			szEnglish = L"en-US";
+			const auto*			szFrench  = L"fr-FR";
+			const auto*			szCzech   = L"cs-CZ";
+			const auto*			szSpanish = L"es-ES";
+			const auto*			szItalian = L"it-IT";
+			const auto*			szCatalan = L"ca-ES";	// Catalan - Espana
+			const auto*			szGerman  = L"de-DE";
+			const auto*			szDutch   = L"nl-NL";
+			const auto*			szChinese = L"zh-TW";	// Traditional Chinese or zh-Hant
+			//const auto*		szChinese = L"zh-CN";	// Simplified Chinese or zh-Hans
+			const auto*			szPortuguese = L"pt-BR";	// Portuguese/Brazilian
+			const auto*			szRomanian = L"ro-RO";	// Romanian
+			const auto*			szRussian = L"ru-RU";	// Russian
+			const auto*			szTurkish = L"tr-TR";	// Turkish
 
-			const WCHAR *			szLang1;
-			const WCHAR *			szLang2;
-			const WCHAR *			szLang3;
-			const WCHAR *			szLang4;
-			const WCHAR *			szLang5;
+			using char_type = std::remove_cv_t<std::remove_pointer_t<decltype(szEnglish)>>;
+
+			unsigned long lNumLang = 5;
+			const char_type* szLang1;
+			const char_type* szLang2;
+			const char_type* szLang3;
+			const char_type* szLang4;
+			const char_type* szLang5;
 
 			switch (PRIMARYLANGID(LangID))
 			{
@@ -151,16 +152,18 @@ void	SetUILanguage(LANGID LangID)
 					break;
 			};
 
-			WCHAR *			szPtr = szPrefLanguages;
-			memcpy(szPtr, szLang1, sizeof(WCHAR)*6);
+			char_type szPrefLanguages[2000];
+			auto* szPtr = szPrefLanguages;
+
+			memcpy(szPtr, szLang1, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang2, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang2, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang3, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang3, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang4, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang4, sizeof(char_type)*6);
 			szPtr += 6;
-			memcpy(szPtr, szLang5, sizeof(WCHAR)*6);
+			memcpy(szPtr, szLang5, sizeof(char_type)*6);
 			szPtr += 6;
 			*szPtr = 0;
 
