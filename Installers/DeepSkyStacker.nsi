@@ -11,6 +11,13 @@ SetCompressor /SOLID lzma
 !include "MUI_EXTRAPAGES.nsh"
 !include "PathRemove.nsh"
 !include "FileFunc.nsh"
+!include "WinVer.nsh"
+Function .onInit
+${IfNot} ${AtLeastWin10}
+  MessageBox mb_iconStop "Windows 10 is required to install DeepSkyStacker 5.1.0"
+  Abort
+${EndIf}
+FunctionEnd
 
 !define MUI_HEADERIMAGE
 
@@ -27,7 +34,7 @@ SetCompressor /SOLID lzma
 
 !define DSS_PRODUCT        "DeepSkyStacker"		           # For start menu
 !define DSS_VERSION        "5.1.0"                         # For control panel
-!define DSS_VERSION_SUFFIX " Beta 1"		               # For control panel (e.g. " Beta 1" or "") - note leading space
+!define DSS_VERSION_SUFFIX " Beta 2"		               # For control panel (e.g. " Beta 1" or "") - note leading space
 !define DSS_PUBLISHER      "The DeepSkyStacker Team"       # For control panel
 
 !define DSS_NAME           "DeepSkyStacker"
@@ -97,7 +104,6 @@ SectionEnd
 
 # default installer section start
 Section
-
   # Want to use "all users" area of StartMenu/Programs
   SetShellVarContext	all
   
