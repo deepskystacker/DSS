@@ -143,11 +143,6 @@ enum class Menuitem
 };
 namespace DSS
 {
-	constexpr	DWORD					IDC_EDIT_SELECT = 1;
-	constexpr	DWORD					IDC_EDIT_STAR   = 2;
-	constexpr	DWORD					IDC_EDIT_COMET  = 3;
-	constexpr	DWORD					IDC_EDIT_SAVE   = 4;
-
 	static struct { const char* const source; const char* comment; } OUTPUTLIST_FILTER_SOURCES[]{
 		QT_TRANSLATE_NOOP3("DSS", "File List (*.dssfilelist)", "IDS_LISTFILTER_OUTPUT"),
 		QT_TRANSLATE_NOOP3("DSS", "File List (*.txt)", "IDS_LISTFILTER_OUTPUT"),

@@ -63,7 +63,7 @@ private:
 	LOADEDIMAGEVECTOR		m_vLoadedImages;
 	CString					m_strToLoad;
 	HANDLE					m_hThread;
-	DWORD					m_dwThreadID;
+	unsigned long			m_dwThreadID;
 	HANDLE					m_hEvent;
 	HWND					m_hWnd;
 
