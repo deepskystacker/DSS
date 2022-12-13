@@ -9,130 +9,56 @@
 #include <QSettings>
 #include "ZExcept.h"
 
-static bool ParseLine(LPCTSTR szLine, std::int32_t & lChecked, CString & strType, CString & strFile)
-{
-	bool				bResult = false;
-	LPCTSTR				szPos = szLine;
-	int				lPos = 0;
-	int				lTab1 = -1,
-						lTab2 = -1,
-						lEnd  = -1;
+namespace {
 
-	// Looking for 2 tabs '\t' and a new line '\n'
-	while (*szPos && *szPos != '\n' && lTab1<0)
+	bool parseLine(QString line, std::int32_t& lChecked, QString& strType, QString& strFile)
 	{
-		if (*szPos == '\t')
-			lTab1 = lPos;
-		szPos++;
-		lPos++;
-	};
-	while (*szPos && *szPos != '\n' && lTab2<0)
-	{
-		if (*szPos == '\t')
-			lTab2 = lPos;
-		szPos++;
-		lPos++;
-	};
-	while (*szPos && lEnd < 0)
-	{
-		if (*szPos == '\n')
-			lEnd = lPos;
-		szPos++;
-		lPos++;
-	};
+		bool result = false;
 
-	if (lTab1>0 && lTab2 > 0 && lEnd > 0)
-	{
-		CString			strLine = szLine;
-		CString			strChecked;
-
-		strChecked = strLine.Left(lTab1);
-
-		lChecked = _ttol(strChecked);
-		strType = strLine.Mid(lTab1+1, lTab2-lTab1-1);
-		strFile = strLine.Mid(lTab2+1, lEnd-lTab2-1);
-
-		bResult = true;
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-static bool parseLine(QString line, std::int32_t& lChecked, QString& strType, QString& strFile)
-{
-	bool result = false;
-	
-	//
-	// trailing \n has been removed by .trimmed() before calling this mf
-	//
-	auto list = line.split(QLatin1Char('\t'));
-
-	//
-	// line should now be split into three sections each in its own entry in the QStringList
-	// list = [ "checked", "Type", "File" ] 
-	//
-	if (list.size() == 3)
-	{
-		lChecked = list[0].toInt();
-		strType = list[1];
-		strFile = list[2];
-		result = true;
-	}
-	return result;
-};
-
-/* ------------------------------------------------------------------- */
-
-static bool	IsChangeGroupLine(LPCTSTR szLine, DWORD & groupId)
-{
-	bool				bResult = false;
-	CString				strLine = szLine;
-
-	if (strLine.Left(9) == _T("#GROUPID#"))
-	{
-		CString			strGroup;
-		LPCTSTR			szPos = szLine;
-
-		szPos += 9;
-		while (*szPos != '\n')
-		{
-			strGroup += *szPos;
-			szPos++;
-		};
-		groupId = _ttol(strGroup);
-		bResult = true;
-	};
-
-	return bResult;
-};
-
-/* ------------------------------------------------------------------- */
-
-static bool	isChangeGroupLine(QString line, uint16_t& groupId, QString& groupName)
-{
-	bool				bResult = false;
-
-	if (line.left(9) == "#GROUPID#")
-	{
-		line.remove(0, 9);	// Strip off the identifier
-
+		//
+		// trailing \n has been removed by .trimmed() before calling this mf
+		//
 		auto list = line.split(QLatin1Char('\t'));
+
 		//
-		// line should now be split into one or two sections each in its own entry in the QStringList
-		// list = [ "groupId", "groupName"] 
+		// line should now be split into three sections each in its own entry in the QStringList
+		// list = [ "checked", "Type", "File" ] 
 		//
+		if (list.size() == 3)
+		{
+			lChecked = list[0].toInt();
+			strType = list[1];
+			strFile = list[2];
+			result = true;
+		}
+		return result;
+	}
 
-		groupId = list[0].toUInt();
-		if (2 == list.size())
-			groupName = list[1];
+	bool	isChangeGroupLine(QString line, uint16_t& groupId, QString& groupName)
+	{
+		bool				bResult = false;
 
-		bResult = true;
-	};
+		if (line.left(9) == "#GROUPID#")
+		{
+			line.remove(0, 9);	// Strip off the identifier
 
-	return bResult;
-};
+			auto list = line.split(QLatin1Char('\t'));
+			//
+			// line should now be split into one or two sections each in its own entry in the QStringList
+			// list = [ "groupId", "groupName"] 
+			//
+
+			groupId = list[0].toUInt();
+			if (2 == list.size())
+				groupName = list[1];
+
+			bResult = true;
+		}
+
+		return bResult;
+	}
+
+} // namespace
 
 /* ------------------------------------------------------------------- */
 
