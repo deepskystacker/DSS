@@ -399,6 +399,9 @@
     <ClCompile Include="BaseDialog.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\Tools\StackWalker.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -774,6 +777,9 @@
     </ClInclude>
     <ClInclude Include="dssrect.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\StackWalker.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
