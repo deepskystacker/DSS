@@ -74,6 +74,7 @@ using namespace Gdiplus;
 #include "ui_StackingDlg.h"
 #include "StackRecap.h"
 #include "SetUILanguage.h"
+#include "StackWalker.h"
 #include <ZExcept.h>
 
 #pragma comment(lib, "gdiplus.lib")
@@ -87,6 +88,19 @@ bool	g_bShowRefStars = false;
 
 #include <string.h>
 #include <stdio.h>
+
+class DSSStackWalker : public StackWalker
+{
+public:
+	DSSStackWalker() : StackWalker() {}
+protected:
+	virtual void OnOutput(LPCSTR text)
+	{
+		fprintf(stderr, text);
+		ZTRACE_RUNTIME(text);
+		StackWalker::OnOutput(text);
+	};
+};
 
 bool	hasExpired()
 {
@@ -528,9 +542,30 @@ using namespace std;
 QTranslator theQtTranslator;
 QTranslator theAppTranslator;
 
+char* backPocket{ nullptr };
+constexpr int backPocketSize{ 1024 * 1024 };
+void terminating()
+{
+	if (backPocket)
+	{
+		free(backPocket);
+		backPocket = nullptr;
+	}
+
+	ZTRACE_RUNTIME("In terminating()");
+
+	DSSStackWalker sw;
+	sw.ShowCallstack();
+}
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+	backPocket = static_cast<char*>(malloc(backPocketSize));
+	for (auto p = backPocket; p < backPocket + backPocketSize; p += 4096)
+	{
+		*p = '\xff';
+	}
 
 	int result{ 0 };
 
@@ -543,6 +578,7 @@ int main(int argc, char* argv[])
 	AfxEnableMemoryLeakDump(false);
 #endif
 #endif
+	std::set_terminate(terminating);
 
 	if (hasExpired())
 		return FALSE;
@@ -667,20 +703,56 @@ int main(int argc, char* argv[])
 	}
 	catch (std::exception& e)
 	{
+		if (backPocket)
+		{
+			free(backPocket);
+			backPocket = nullptr;
+		}
+		ZTRACE_RUNTIME("std::exception caught: %s", e.what());
+
+		DSSStackWalker sw;
+		sw.ShowCallstack();
 		QString errorMessage(e.what());
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::cerr << errorMessage;
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
 	}
 	catch (CException& e)
 	{
+		if (backPocket)
+		{
+			free(backPocket);
+			backPocket = nullptr;
+		}
+		constexpr unsigned int msglen{ 255 };
+		TCHAR message[msglen]{ 0x00 };
+		e.GetErrorMessage(&message[0], msglen);
+		ZTRACE_RUNTIME("CException caught: %s", CT2CA(message));
+
+		DSSStackWalker sw;
+		sw.ShowCallstack();
 		e.ReportError();
 		e.Delete();
 	}
 	catch (ZException& ze)
 	{
+		if (backPocket)
+		{
+			free(backPocket);
+			backPocket = nullptr;
+		}
+
+		ZTRACE_RUNTIME("ZException %s thrown from: %s Function: %s() Line: %d\n\n%s",
+			ze.name(),
+			ze.locationAtIndex(0)->fileName(),
+			ze.locationAtIndex(0)->functionName(),
+			ze.locationAtIndex(0)->lineNumber(),
+			ze.text(0));
+
+		DSSStackWalker sw;
+		sw.ShowCallstack();
 		QString name(ze.name());
 		QString fileName(ze.locationAtIndex(0)->fileName());
 		QString functionName(ze.locationAtIndex(0)->functionName());
@@ -695,20 +767,34 @@ int main(int argc, char* argv[])
 			.arg(text);
 
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::cerr << errorMessage;
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
 	}
 	catch (...)
 	{
+		if (backPocket)
+		{
+			free(backPocket);
+			backPocket = nullptr;
+		}
+
+		ZTRACE_RUNTIME("Unknown exception caught");
+
+		DSSStackWalker sw;
+		sw.ShowCallstack();
 		QString errorMessage("Unknown exception caught");
 #if defined(_CONSOLE)
-		std::wcerr << errorMessage;
+		std::cerr << errorMessage;
 #else
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
 
+	}
+	if (backPocket)
+	{
+		free(backPocket); backPocket = nullptr;
 	}
 	theApp.ExitInstance();
 	ss.cancel();

@@ -96,43 +96,45 @@ Copyright NASA</translation>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="131"/>
+        <location filename="../About.cpp" line="132"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="132"/>
-        <location filename="../About.cpp" line="144"/>
+        <location filename="../About.cpp" line="129"/>
+        <location filename="../About.cpp" line="133"/>
+        <location filename="../About.cpp" line="142"/>
+        <location filename="../About.cpp" line="146"/>
         <source>and</source>
         <translation>и</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="135"/>
+        <location filename="../About.cpp" line="136"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="139"/>
+        <location filename="../About.cpp" line="140"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="143"/>
+        <location filename="../About.cpp" line="145"/>
         <source>Romanian version:</source>
         <comment>IDS_ABOUT_LANG_ROMANIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="147"/>
+        <location filename="../About.cpp" line="149"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="151"/>
+        <location filename="../About.cpp" line="153"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation></translation>
@@ -904,7 +906,7 @@ Right mouse button to display the menu</source>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="700"/>
-        <location filename="../StackingDlg.cpp" line="1922"/>
+        <location filename="../StackingDlg.cpp" line="1933"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation type="unfinished"></translation>
@@ -916,55 +918,55 @@ Right mouse button to display the menu</source>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="711"/>
-        <location filename="../StackingDlg.cpp" line="1074"/>
+        <location filename="../StackingDlg.cpp" line="1085"/>
         <location filename="../group.h" line="71"/>
         <source>Main Group</source>
         <comment>IDS_MAINGROUP</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1245"/>
+        <location filename="../StackingDlg.cpp" line="1256"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1322"/>
+        <location filename="../StackingDlg.cpp" line="1333"/>
         <source>File %1 has already been loaded in group %2 (%3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1357"/>
+        <location filename="../StackingDlg.cpp" line="1368"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1462"/>
+        <location filename="../StackingDlg.cpp" line="1473"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1566"/>
+        <location filename="../StackingDlg.cpp" line="1577"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1670"/>
+        <location filename="../StackingDlg.cpp" line="1681"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1774"/>
+        <location filename="../StackingDlg.cpp" line="1785"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1935"/>
+        <location filename="../StackingDlg.cpp" line="1946"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -974,36 +976,36 @@ Offset/Bias Frames: %5</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2015"/>
+        <location filename="../StackingDlg.cpp" line="2026"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2192"/>
+        <location filename="../StackingDlg.cpp" line="2203"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2208"/>
+        <location filename="../StackingDlg.cpp" line="2219"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2330"/>
+        <location filename="../StackingDlg.cpp" line="2341"/>
         <source>Total registering time: %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2349"/>
+        <location filename="../StackingDlg.cpp" line="2360"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2410"/>
+        <location filename="../StackingDlg.cpp" line="2421"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -1011,19 +1013,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2430"/>
+        <location filename="../StackingDlg.cpp" line="2441"/>
         <source>The checked pictures are not compatible (width, height, number of colors, number of channels, only one master dark, offset and flat).</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2435"/>
+        <location filename="../StackingDlg.cpp" line="2446"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2483"/>
+        <location filename="../StackingDlg.cpp" line="2494"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -1031,18 +1033,18 @@ Do you want to save the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2599"/>
+        <location filename="../StackingDlg.cpp" line="2610"/>
         <source>Total stacking time: %1 %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2631"/>
+        <location filename="../StackingDlg.cpp" line="2642"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2693"/>
+        <location filename="../StackingDlg.cpp" line="2704"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -3441,13 +3443,6 @@ compared to the standard deviation (%1).</source>
 <context>
     <name>StackingTasks</name>
     <message>
-        <location filename="../StackingTasks.cpp" line="54"/>
-        <source>Loading %1 bit/ch %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../StackingTasks.cpp" line="56"/>
         <source>Loading %1 bits gray %2 dark frame
 %3</source>
@@ -3604,6 +3599,13 @@ compared to the standard deviation (%1).</source>
         <location filename="../StackingTasks.cpp" line="606"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>

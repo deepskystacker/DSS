@@ -403,7 +403,7 @@ At this point all the incoming(and previously registered) images will be stacked
         <location filename="../MainBoard.cpp" line="1327"/>
         <source>Start Stacking files
 </source>
-        <comment>IDS_LOG_STARTMONITORING</comment>
+        <comment>IDS_LOG_STARTSTACKING</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -529,19 +529,19 @@ At this point all the incoming(and previously registered) images will be stacked
 <context>
     <name>StackRecap</name>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.h" line="470"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.h" line="472"/>
         <source>%L1 kB</source>
         <comment>IDS_RECAP_KILOBYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.h" line="473"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.h" line="475"/>
         <source>%L1 MB</source>
         <comment>IDS_RECAP_MEGABYTES</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.h" line="476"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.h" line="478"/>
         <source>%L1 GB</source>
         <comment>IDS_RECAP_GIGABYTES</comment>
         <translation></translation>
@@ -673,6 +673,7 @@ At this point all the incoming(and previously registered) images will be stacked
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="956"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="995"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1150"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation type="unfinished"></translation>
@@ -681,12 +682,6 @@ At this point all the incoming(and previously registered) images will be stacked
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1097"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1192"/>
-        <source>Picture saved with settings embedded.</source>
-        <comment>(IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -716,13 +711,6 @@ At this point all the incoming(and previously registered) images will be stacked
 </context>
 <context>
     <name>StackingTasks</name>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="54"/>
-        <source>Loading %1 bit/ch %2 dark flat frame
-%3</source>
-        <comment>IDS_LOADRGBDARK</comment>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="56"/>
         <source>Loading %1 bits gray %2 dark frame
@@ -804,130 +792,153 @@ At this point all the incoming(and previously registered) images will be stacked
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="411"/>
-        <source>Master Offset created from %ld pictures (%1)</source>
+    <message numerus="yes">
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="412"/>
+        <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="596"/>
+        <source>Master Dark created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANDARKINFO</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="783"/>
+        <source>Master Dark Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANDARKFLATINFO</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1241"/>
+        <source>Master Flat created from %n picture(s) (%1)</source>
+        <comment>IDS_MEDIANFLATINFO</comment>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="416"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="421"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="515"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="54"/>
+        <source>Loading %1 bit/ch %2 dark frame
+%3</source>
+        <comment>IDS_LOADRGBDARK</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="520"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="530"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="535"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="549"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="730"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1155"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="554"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="739"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1166"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="573"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="578"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="590"/>
-        <source>Master Dark created from %1 pictures (%2)</source>
-        <comment>IDS_MEDIANDARKINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="597"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="606"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="695"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="704"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="711"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="720"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="756"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="765"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="775"/>
-        <source>Master Dark Flat created from %1 pictures (%2)</source>
-        <comment>IDS_MEDIANDARKFLATINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="781"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="792"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="946"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="957"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="998"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1009"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1121"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1132"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1137"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1148"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1173"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1184"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1213"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1224"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1232"/>
-        <source>Master Flat created from %1 pictures (%2)</source>
-        <comment>IDS_MEDIANFLATINFO</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1238"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1250"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation type="unfinished"></translation>
