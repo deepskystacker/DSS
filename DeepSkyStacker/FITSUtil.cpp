@@ -715,9 +715,7 @@ bool CFITSReader::Read()
 					fMin = std::min(localMin, fMin); // For non-OMP case this is equal to fMin = localMin
 					fMax = std::max(localMax, fMax); // For non-OMP case this is equal to fMax = localMax
 				}
-#if defined(_OPENMP)
 			}
-#endif
 			double		fZero, fScale;
 
 			if (ReadKey("BZERO", fZero) && ReadKey("BSCALE", fScale))

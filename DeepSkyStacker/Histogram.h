@@ -310,7 +310,7 @@ public :
 	void	ToText(CString & strParameters) const
 	{
 		strParameters.Format(_T("Min=%2.f;Max=%.2f;Shift=%.2f;MinOrg=%.2f;MaxOrg=%2.f;MinUsed=%.2f;MaxUsed=%.2f;HAT=%ld;"),
-							m_fMin, m_fMax, m_fShift, m_fOrgMin, m_fOrgMax, m_fUsedMin, m_fUsedMax, (WORD)m_HAT);
+							m_fMin, m_fMax, m_fShift, m_fOrgMin, m_fOrgMax, m_fUsedMin, m_fUsedMax, static_cast<std::uint16_t>(m_HAT));
 	};
 
 	void	FromText(LPCTSTR szParameters)

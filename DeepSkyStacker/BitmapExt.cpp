@@ -198,9 +198,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			pColorBitmap->Init(lWidth, lHeight);
 			BitmapIterator<std::shared_ptr<CMemoryBitmap>> it{ pColorBitmap };
 
-#if defined(_OPENMP)
 #pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-#endif
 			for (int j = 0; j < lHeight; j++)
 			{
 				for (int i = 0; i < lWidth; i++, ++it)
@@ -580,125 +578,125 @@ bool RetrieveEXIFInfo(Gdiplus::Bitmap* pBitmap, CBitmapInfo& BitmapInfo)
 		BitmapInfo.m_DateTime.wMinute = _ttol(strDateTime.Mid(14, 2));
 		BitmapInfo.m_DateTime.wSecond = _ttol(strDateTime.Mid(17, 2));
 
-/*		UINT dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
-		if (dwPropertySize != 0)
-		{
-			auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
-			// PropertyTagTypeRational
-			Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
+		//UINT dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifExposureTime);
+		//if (dwPropertySize != 0)
+		//{
+		//	auto buffer = std::make_unique<std::uint8_t[]>(dwPropertySize);
+		//	// PropertyTagTypeRational
+		//	Gdiplus::PropertyItem* const propertyItem = reinterpret_cast<Gdiplus::PropertyItem*>(buffer.get());
 
-			if (pBitmap->GetPropertyItem(PropertyTagExifExposureTime, dwPropertySize, propertyItem) == Ok)
-			{
-				if(propertyItem->type == PropertyTagTypeRational)
-				{
-					std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
-					std::uint32_t dwNumerator, dwDenominator;
+		//	if (pBitmap->GetPropertyItem(PropertyTagExifExposureTime, dwPropertySize, propertyItem) == Ok)
+		//	{
+		//		if(propertyItem->type == PropertyTagTypeRational)
+		//		{
+		//			std::uint32_t* pValues = static_cast<std::uint32_t*>(propertyItem->value);
+		//			std::uint32_t dwNumerator, dwDenominator;
 
-					dwNumerator = *pValues;
-					dwDenominator = *(pValues + 1);
+		//			dwNumerator = *pValues;
+		//			dwDenominator = *(pValues + 1);
 
-					if (dwDenominator != 0)
-					{
-						BitmapInfo.m_fExposure = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
-						bResult = true;
-					};
-				};
-			};
-		};
-*/
-/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifFNumber);
-		if (dwPropertySize)
-		{
-			// PropertyTagTypeRational
-			PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
+		//			if (dwDenominator != 0)
+		//			{
+		//				BitmapInfo.m_fExposure = static_cast<double>(dwNumerator) / static_cast<double>(dwDenominator);
+		//				bResult = true;
+		//			};
+		//		};
+		//	};
+		//};
 
-			if (pBitmap->GetPropertyItem(PropertyTagExifFNumber, dwPropertySize, propertyItem) == Ok)
-			{
-				if (propertyItem->type == PropertyTagTypeRational)
-				{
-					UINT *			pValues = (UINT*)propertyItem->value;
-					UINT			dwNumerator,
-						dwDenominator;
+		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifFNumber);
+		//if (dwPropertySize)
+		//{
+		//	// PropertyTagTypeRational
+		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
 
-					dwNumerator = *pValues;
-					pValues++;
-					dwDenominator = *pValues;
+		//	if (pBitmap->GetPropertyItem(PropertyTagExifFNumber, dwPropertySize, propertyItem) == Ok)
+		//	{
+		//		if (propertyItem->type == PropertyTagTypeRational)
+		//		{
+		//			UINT *			pValues = (UINT*)propertyItem->value;
+		//			UINT			dwNumerator,
+		//				dwDenominator;
 
-					if (dwDenominator)
-					{
-						BitmapInfo.m_fAperture = (double)dwNumerator / (double)dwDenominator;
-						bResult = true;
-					};
-				};
-			};
+		//			dwNumerator = *pValues;
+		//			pValues++;
+		//			dwDenominator = *pValues;
 
-			free(propertyItem);
-		};
-*/
-/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifISOSpeed);
-		if (dwPropertySize)
-		{
-			// PropertyTagTypeShort
-			PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
+		//			if (dwDenominator)
+		//			{
+		//				BitmapInfo.m_fAperture = (double)dwNumerator / (double)dwDenominator;
+		//				bResult = true;
+		//			};
+		//		};
+		//	};
 
-			if (pBitmap->GetPropertyItem(PropertyTagExifISOSpeed, dwPropertySize, propertyItem) == Ok)
-			{
-				if(propertyItem->type == PropertyTagTypeShort)
-				{
-					BitmapInfo.m_lISOSpeed = *((WORD*)propertyItem->value);
-					bResult = true;
-				};
-			};
+		//	free(propertyItem);
+		//};
 
-			free(propertyItem);
-		};
-*/
-/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagEquipModel);
-		if (dwPropertySize)
-		{
-			// PropertyTagTypeASCII
-			PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-			if (pBitmap->GetPropertyItem(PropertyTagEquipModel, dwPropertySize, propertyItem) == Ok)
-			{
-				if(propertyItem->type == PropertyTagTypeASCII)
-				{
-					BitmapInfo.m_strModel = (char*)propertyItem->value;
-					BitmapInfo.m_strModel.TrimRight();
-					BitmapInfo.m_strModel.TrimLeft();
-					bResult = true;
-				};
-			};
+		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagExifISOSpeed);
+		//if (dwPropertySize)
+		//{
+		//	// PropertyTagTypeShort
+		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
 
-			free(propertyItem);
-		};
-*/
-/*		dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagDateTime);
-		if (dwPropertySize)
-		{
-			// PropertyTagTypeASCII
-			PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
-			if (pBitmap->GetPropertyItem(PropertyTagDateTime, dwPropertySize, propertyItem) == Ok)
-			{
-				if(propertyItem->type == PropertyTagTypeASCII)
-				{
-					CString				strDateTime = (char*)propertyItem->value;
+		//	if (pBitmap->GetPropertyItem(PropertyTagExifISOSpeed, dwPropertySize, propertyItem) == Ok)
+		//	{
+		//		if(propertyItem->type == PropertyTagTypeShort)
+		//		{
+		//			BitmapInfo.m_lISOSpeed = *((WORD*)propertyItem->value);
+		//			bResult = true;
+		//		};
+		//	};
 
-					// Parse the string : YYYY/MM/DD hh:mm:ss
-					//                    0123456789012345678
-					BitmapInfo.m_DateTime.wYear  = _ttol(strDateTime.Left(4));
-					BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
-					BitmapInfo.m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
-					BitmapInfo.m_DateTime.wHour	 = _ttol(strDateTime.Mid(11, 2));
-					BitmapInfo.m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
-					BitmapInfo.m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
+		//	free(propertyItem);
+		//};
 
-					bResult = true;
-				};
-			};
+		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagEquipModel);
+		//if (dwPropertySize)
+		//{
+		//	// PropertyTagTypeASCII
+		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
+		//	if (pBitmap->GetPropertyItem(PropertyTagEquipModel, dwPropertySize, propertyItem) == Ok)
+		//	{
+		//		if(propertyItem->type == PropertyTagTypeASCII)
+		//		{
+		//			BitmapInfo.m_strModel = (char*)propertyItem->value;
+		//			BitmapInfo.m_strModel.TrimRight();
+		//			BitmapInfo.m_strModel.TrimLeft();
+		//			bResult = true;
+		//		};
+		//	};
 
-			free(propertyItem);
-		};
-*/
+		//	free(propertyItem);
+		//};
+
+		//dwPropertySize = pBitmap->GetPropertyItemSize(PropertyTagDateTime);
+		//if (dwPropertySize)
+		//{
+		//	// PropertyTagTypeASCII
+		//	PropertyItem* propertyItem = (PropertyItem*)malloc(dwPropertySize);
+		//	if (pBitmap->GetPropertyItem(PropertyTagDateTime, dwPropertySize, propertyItem) == Ok)
+		//	{
+		//		if(propertyItem->type == PropertyTagTypeASCII)
+		//		{
+		//			CString				strDateTime = (char*)propertyItem->value;
+
+		//			// Parse the string : YYYY/MM/DD hh:mm:ss
+		//			//                    0123456789012345678
+		//			BitmapInfo.m_DateTime.wYear  = _ttol(strDateTime.Left(4));
+		//			BitmapInfo.m_DateTime.wMonth = _ttol(strDateTime.Mid(5, 2));
+		//			BitmapInfo.m_DateTime.wDay   = _ttol(strDateTime.Mid(8, 2));
+		//			BitmapInfo.m_DateTime.wHour	 = _ttol(strDateTime.Mid(11, 2));
+		//			BitmapInfo.m_DateTime.wMinute= _ttol(strDateTime.Mid(14, 2));
+		//			BitmapInfo.m_DateTime.wSecond= _ttol(strDateTime.Mid(17, 2));
+
+		//			bResult = true;
+		//		};
+		//	};
+
+		//	free(propertyItem);
+		//};
+
 	};
 
 	return bResult;
@@ -829,7 +827,7 @@ bool C32BitsBitmap::InitFrom(CMemoryBitmap* pBitmap)
 				// Slow Method
 				for (int j = 0; j < m_lHeight; j++)
 				{
-					LPBYTE lpOut;
+					pByte lpOut;
 					LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
 
 					lpOut = GetPixelBase(0, j);
@@ -855,8 +853,8 @@ bool C32BitsBitmap::InitFrom(CMemoryBitmap* pBitmap)
 
 				for (int j = 0; j < m_lHeight; j++)
 				{
-					LPBYTE lpOut;
-					LPRGBQUAD& lpOutPixel = (LPRGBQUAD &)lpOut;
+					pByte lpOut;
+					LPRGBQUAD& lpOutPixel = reinterpret_cast<LPRGBQUAD&>(lpOut);
 
 					it.Reset(0, j);
 					lpOut = GetPixelBase(0, j);
@@ -1064,8 +1062,8 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 					T* pGreen = pInBitmap->GetGreenPixel(0, j);
 					T* pBlue = pInBitmap->GetBluePixel(0, j);
 
-					LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
-					LPRGBQUAD& pOutPixel = (LPRGBQUAD&)pOut;
+					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
+					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
 					for (int i = 0; i < lWidth; i++)
 					{
 						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pRed / fMultiplier];
@@ -1083,8 +1081,8 @@ bool ApplyGammaTransformation(C32BitsBitmap* pOutBitmap, BitmapClass<T>* pInBitm
 					// Init iterators
 					T* pGray = pInBitmap->GetGrayPixel(0, j);
 
-					LPBYTE			pOut = pOutBitmap->GetPixelBase(0, j);
-					LPRGBQUAD& pOutPixel = (LPRGBQUAD&)pOut;
+					std::uint8_t* pOut = pOutBitmap->GetPixelBase(0, j);
+					LPRGBQUAD& pOutPixel = reinterpret_cast<LPRGBQUAD&>(pOut);
 					for (int i = 0; i < lWidth; i++)
 					{
 						pOutPixel->rgbRed = gammatrans.m_vTransformation[*pGray / fMultiplier];

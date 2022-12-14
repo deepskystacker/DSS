@@ -416,7 +416,7 @@ public :
 	static  bool	GetSaveCalibrated();
 	static  bool	GetSaveCalibratedDebayered();
 	static	void	ClearCache();
-	static  WORD	GetAlignmentMethod();
+	static std::uint16_t GetAlignmentMethod();
 	static  int	GetPixelSizeMultiplier();
 	static  bool	GetChannelAlign();
 	static  bool	GetSaveIntermediateCometImages();

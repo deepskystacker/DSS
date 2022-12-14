@@ -655,23 +655,21 @@ bool CTIFFWriter::Write()
         //
 		tmsize_t buffSize = scanLineSize * h;
 		ZTRACE_RUNTIME("Allocating buffer of %zu bytes", buffSize);
-		buff = (tdata_t)malloc(buffSize);
+		buff = static_cast<tdata_t>(malloc(buffSize));
 
-		if (buff)
+		if (buff != nullptr)
 		{
 			if (m_pProgress)
 				m_pProgress->Start2(nullptr, h);
 
-			BYTE *  byteBuff = (BYTE *)buff;
-			WORD *	shortBuff = (WORD *)buff;
-			std::uint32_t* u32Buff = (std::uint32_t*)buff;
-			float *	floatBuff = (float *)buff;
+			auto* byteBuff = static_cast<std::uint8_t*>(buff);
+			auto* shortBuff = static_cast<std::uint16_t*>(buff);
+			auto* u32Buff = static_cast<std::uint32_t*>(buff);
+			float* floatBuff = static_cast<float*>(buff);
 
 			int	rowProgress = 0;
 
-#if defined(_OPENMP)
 #pragma omp parallel for default(none)
-#endif
 			for (int row = 0; row < h; row++)
 			{
 				for (int col = 0; col < w; col++)
@@ -697,9 +695,9 @@ bool CTIFFWriter::Write()
 						fGrey = L * 255.0;
 					}
 
-					switch (bps)	// Bits per sample
+					switch (bps) // Bits per sample
 					{
-					case 8:			// One byte 
+					case 8: // One byte
 						switch (spp)
 						{
 						case 1:
@@ -713,7 +711,7 @@ bool CTIFFWriter::Write()
 							break;
 						}
 						break;
-					case 16:		// Unsigned short == WORD 
+					case 16: // Two bytes
 						switch (spp)
 						{
 						case 1:
@@ -727,7 +725,7 @@ bool CTIFFWriter::Write()
 							break;
 						}
 						break;
-					case 32:		// Unsigned int or 32 bit floating point 
+					case 32: // Unsigned int or 32 bit floating point 
 						if (sampleformat == SAMPLEFORMAT_IEEEFP)
 							switch (spp)
 							{
@@ -757,13 +755,8 @@ bool CTIFFWriter::Write()
 					}
 
 				}
-#if defined (_OPENMP)
-				if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+				if (m_pProgress != nullptr && 0 == omp_get_thread_num()) // Are we on the master thread? Without OPENMP omp_get_thread_num() returns always 0.
 					m_pProgress->Progress2(nullptr, row / 2);
-#else
-				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, row / 2);
-#endif
 			};
 
 			//
@@ -795,7 +788,7 @@ bool CTIFFWriter::Write()
 
 			ZTRACE_RUNTIME("Number of strips is %u", numStrips);
 
-			BYTE * curr = (BYTE *)buff;
+			auto* curr = static_cast<std::uint8_t*>(buff);
 			tsize_t stripSize = rowsPerStrip * scanLineSize;
 			tsize_t bytesRemaining = h * scanLineSize;
 			tsize_t size = stripSize;

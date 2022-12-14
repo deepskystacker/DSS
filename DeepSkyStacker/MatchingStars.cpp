@@ -156,7 +156,7 @@ void	CMatchingStars::InitVotingGrid(VOTINGPAIRVECTOR & vVotingPairs)
 
 /* ------------------------------------------------------------------- */
 
-inline void	AddVote(BYTE RefStar, BYTE TgtStar, VOTINGPAIRVECTOR & vVotingPairs, int lNrTgtStars)
+inline void	AddVote(std::uint8_t RefStar, std::uint8_t TgtStar, VOTINGPAIRVECTOR & vVotingPairs, int lNrTgtStars)
 {
 	int				lOffset = RefStar * lNrTgtStars + TgtStar;
 

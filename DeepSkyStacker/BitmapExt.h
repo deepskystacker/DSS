@@ -337,11 +337,13 @@ public :
 class C32BitsBitmap
 {
 private:
+	using pByte = std::uint8_t*;
+
 	HBITMAP m_hBitmap;
 	VOID* m_lpBits;
 	int m_lWidth;
 	int m_lHeight;
-	LPBYTE* m_pLine;
+	pByte* m_pLine;
 	std::uint32_t m_dwByteWidth;
 
 private:
@@ -350,7 +352,7 @@ private:
 		if (m_pLine)
 			free(m_pLine);
 
-		m_pLine = (LPBYTE *)malloc(m_lHeight * sizeof(LPBYTE));
+		m_pLine = static_cast<pByte*>(malloc(m_lHeight * sizeof(pByte)));
 		if (nullptr == m_pLine)
 		{
 			ZOutOfMemory e("Could not allocate storage for scanline pointers");
@@ -360,9 +362,9 @@ private:
 		m_dwByteWidth   = (((m_lWidth * 32 + 31) & ~31) >> 3);
 		int			y = m_lHeight - 1;
 
-		for( int i = 0; y >= 0; y--, i++ )
+		for (int i = 0; y >= 0; y--, i++)
 		{
-			m_pLine[i] = (LPBYTE)m_lpBits + y * m_dwByteWidth;
+			m_pLine[i] = static_cast<pByte>(m_lpBits) + y * m_dwByteWidth;
 		}
 	};
 
@@ -487,17 +489,17 @@ public:
 
 		if( (x >= 0) && (x < m_lWidth) && (y >= 0) && (y < m_lHeight))
 		{
-			LPBYTE pPixel = m_pLine[y] + ((x * 32) >> 3);
-			const auto dwPixel = *reinterpret_cast<LPDWORD>(pPixel);
-			RGBQUAD rgbq = *(LPRGBQUAD)&dwPixel;
+			const pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
+			const auto dwPixel = *reinterpret_cast<std::uint32_t*>(pPixel);
+			const RGBQUAD rgbq = *reinterpret_cast<const RGBQUAD*>(&dwPixel);
 
-			crColor = RGB(rgbq.rgbRed,rgbq.rgbGreen,rgbq.rgbBlue);
+			crColor = RGB(rgbq.rgbRed, rgbq.rgbGreen, rgbq.rgbBlue);
 		};
 
 		return crColor;
 	};
 
-	LPBYTE GetPixelBase(int x, int y)
+	pByte GetPixelBase(int x, int y)
 	{
 		return m_pLine[y] + x * 4;
 	};
@@ -506,15 +508,15 @@ public:
 	{
 		if( (x >= 0) && (x < m_lWidth) && (y >=0) && (y < m_lHeight))
 		{
-			LPBYTE		pPixel = m_pLine[y] + ((x * 32) >> 3);
-			RGBQUAD		rgbq;
+			pByte pPixel = m_pLine[y] + ((x * 32) >> 3);
+			RGBQUAD rgbq;
 
 			rgbq.rgbRed			= GetRValue(crColor);
 			rgbq.rgbGreen		= GetGValue(crColor);
 			rgbq.rgbBlue		= GetBValue(crColor);
 			rgbq.rgbReserved	= 0;
 
-			*(LPDWORD)pPixel = *(LPDWORD)(&rgbq);
+			*reinterpret_cast<std::uint32_t*>(pPixel) = *reinterpret_cast<std::uint32_t*>(&rgbq);
 		};
 	};
 };
@@ -522,7 +524,7 @@ public:
 class	CGammaTransformation
 {
 public :
-	std::vector<BYTE>		m_vTransformation;
+	std::vector<std::uint8_t> m_vTransformation;
 
 public :
 	CGammaTransformation() {};

@@ -68,25 +68,22 @@ void CEntropyInfo::InitSquareEntropies()
 
 void CEntropyInfo::ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, double & fRedEntropy, double & fGreenEntropy, double & fBlueEntropy)
 {
-	int						i, j;
-	std::vector<WORD>			vRedHisto;
-	std::vector<WORD>			vGreenHisto;
-	std::vector<WORD>			vBlueHisto;
-	int						lNrPixels;
+	std::vector<std::uint16_t> vRedHisto;
+	std::vector<std::uint16_t> vGreenHisto;
+	std::vector<std::uint16_t> vBlueHisto;
 
 	fRedEntropy = 0.0;
 	fGreenEntropy = 0.0;
 	fBlueEntropy = 0.0;
 
-	lNrPixels = (lMaxX-lMinX+1)*(lMaxY-lMinY+1);
 	vRedHisto.resize((int)MAXWORD+1);
 	vGreenHisto.resize((int)MAXWORD+1);
 	vBlueHisto.resize((int)MAXWORD+1);
 
 	COLORREF16		crColor;
-	for (i = lMinX;i<=lMaxX;i++)
+	for (int i = lMinX;i<=lMaxX;i++)
 	{
-		for (j = lMinY;j<=lMaxY;j++)
+		for (int j = lMinY;j<=lMaxY;j++)
 		{
 			m_pBitmap->GetPixel16(i, j, crColor);
 			vRedHisto[crColor.red]++;
@@ -95,19 +92,17 @@ void CEntropyInfo::ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, 
 		};
 	};
 
-	for (i = lMinX;i<=lMaxX;i++)
-	{
-		for (j = lMinY;j<=lMaxY;j++)
-		{
-			double			qRed,
-							qBlue,
-							qGreen;
+	const double lNrPixels = static_cast<double>(lMaxX - lMinX + 1) * static_cast<double>(lMaxY - lMinY + 1);
 
+	for (int i = lMinX;i<=lMaxX;i++)
+	{
+		for (int j = lMinY;j<=lMaxY;j++)
+		{
 			m_pBitmap->GetPixel16(i, j, crColor);
 
-			qRed	= (double)vRedHisto[crColor.red]/(double)lNrPixels;
-			qGreen	= (double)vGreenHisto[crColor.green]/(double)lNrPixels;
-			qBlue	= (double)vBlueHisto[crColor.blue]/(double)lNrPixels;
+			const double qRed = static_cast<double>(vRedHisto[crColor.red]) / lNrPixels;
+			const double qGreen = static_cast<double>(vGreenHisto[crColor.green]) / lNrPixels;
+			const double qBlue = static_cast<double>(vBlueHisto[crColor.blue]) / lNrPixels;
 
 			fRedEntropy += -qRed * log(qRed)/log(2.0);
 			fGreenEntropy += -qGreen * log(qGreen)/log(2.0);
@@ -115,5 +110,3 @@ void CEntropyInfo::ComputeEntropies(int lMinX, int lMinY, int lMaxX, int lMaxY, 
 		};
 	};
 };
-
-/* ------------------------------------------------------------------- */

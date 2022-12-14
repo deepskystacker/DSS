@@ -275,9 +275,9 @@ public :
 		m_lISOSpeed = lISOSpeed;
 	};
 
-	WORD	GetISOSpeed()
+	std::uint16_t GetISOSpeed()
 	{
-		return (WORD)m_lISOSpeed;
+		return static_cast<std::uint16_t>(m_lISOSpeed);
 	};
 
 	void	SetGain(int lGain)
