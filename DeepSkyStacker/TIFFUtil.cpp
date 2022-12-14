@@ -669,9 +669,7 @@ bool CTIFFWriter::Write()
 
 			int	rowProgress = 0;
 
-#if defined(_OPENMP)
 #pragma omp parallel for default(none)
-#endif
 			for (int row = 0; row < h; row++)
 			{
 				for (int col = 0; col < w; col++)
@@ -757,13 +755,8 @@ bool CTIFFWriter::Write()
 					}
 
 				}
-#if defined (_OPENMP)
-				if (m_pProgress && 0 == omp_get_thread_num())	// Are we on the master thread?
+				if (m_pProgress != nullptr && 0 == omp_get_thread_num()) // Are we on the master thread? Without OPENMP omp_get_thread_num() returns always 0.
 					m_pProgress->Progress2(nullptr, row / 2);
-#else
-				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, row / 2);
-#endif
 			};
 
 			//

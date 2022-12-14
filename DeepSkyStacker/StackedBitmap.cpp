@@ -544,9 +544,7 @@ HBITMAP CStackedBitmap::GetBitmap(C32BitsBitmap & Bitmap, RECT * pRect)
 			pBaseBluePixel	= &(m_vBluePlane[m_lWidth * lYMin + lXMin]);
 		};
 
-#if defined (_OPENMP)
 #pragma omp parallel for schedule(dynamic, 50) default(none) shared(lYMin)
-#endif
 		for (int j = lYMin;j<lYMax;j++)
 		{
 			std::uint8_t* lpOut = Bitmap.GetPixelBase(lXMin, j);

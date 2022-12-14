@@ -198,9 +198,7 @@ bool DebayerPicture(CMemoryBitmap* pInBitmap, std::shared_ptr<CMemoryBitmap>& rp
 			pColorBitmap->Init(lWidth, lHeight);
 			BitmapIterator<std::shared_ptr<CMemoryBitmap>> it{ pColorBitmap };
 
-#if defined(_OPENMP)
 #pragma omp parallel for default(none) schedule(dynamic, 50) if(CMultitask::GetNrProcessors() > 1)
-#endif
 			for (int j = 0; j < lHeight; j++)
 			{
 				for (int i = 0; i < lWidth; i++, ++it)
