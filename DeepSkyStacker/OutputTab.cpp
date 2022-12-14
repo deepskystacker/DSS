@@ -144,10 +144,8 @@ void OutputTab::on_otherFolder_clicked()
 	ui->outputFolder->setEnabled(true);
 }
 
-void OutputTab::on_outputFolder_linkActivated(const QString & str)
+void OutputTab::on_outputFolder_pressed()
 {
-	str;
-
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Output Folder", "IDS_SELECTOUTPUTFOLDER"),
 		QStandardPaths::standardLocations(QStandardPaths::HomeLocation).first(),
 		QFileDialog::ShowDirsOnly

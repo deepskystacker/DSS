@@ -41,7 +41,7 @@ private slots:
 	void on_refFrameFolder_clicked();
 	void on_fileListFolder_clicked();
 	void on_otherFolder_clicked();
-	void on_outputFolder_linkActivated(const QString &);
+	void on_outputFolder_pressed();
 };
 
 #endif // OUTPUTTAB_H
