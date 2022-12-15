@@ -55,7 +55,7 @@ public:
 	bool bitmapHasCorrectType() const;
 
 	static bool checkAvx2CpuSupport() noexcept;
-	static bool checkSimdAvailability() noexcept;
+	static bool checkSimdAvailability();
 
 	template <class ElementType, class VectorElementType>
 	inline static size_t numberOfAvxVectors(const size_t width)

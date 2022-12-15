@@ -815,13 +815,12 @@ public:
 		return *this;
 	};
 
-
 	inline int yOffset() noexcept
 	{
 		return m_yBayerOffset;
 	}
 
-	inline CFATYPE	GetCFAType() noexcept
+	inline CFATYPE GetCFAType() noexcept
 	{
 		return m_CFAType;
 	};

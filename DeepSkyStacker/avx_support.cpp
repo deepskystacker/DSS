@@ -110,7 +110,7 @@ bool AvxSupport::checkAvx2CpuSupport() noexcept
 	return (FMAsupported && AVX2supported && OSXSAVEsupported && AVXenabledInOS);
 };
 
-bool AvxSupport::checkSimdAvailability() noexcept
+bool AvxSupport::checkSimdAvailability()
 {
 	// If user has disabled SIMD vectorisation (settings dialog) -> return false;
 	return CMultitask::GetUseSimd() && checkAvx2CpuSupport();

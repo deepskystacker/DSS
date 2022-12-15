@@ -100,7 +100,7 @@ namespace DSS
 			return static_cast<uint16_t>(imageGroups.size() - 1);
 		}
 
-		inline size_t groupSize(uint16_t id) const noexcept
+		inline size_t groupSize(uint16_t id) const
 		{
 			ZASSERTSTATE(id < imageGroups.size());
 			return imageGroups[id].size();
@@ -136,7 +136,7 @@ namespace DSS
 		FrameList& saveListToFile(fs::path file);
 		FrameList& loadFilesFromList(fs::path fileList);
 
-		inline FrameList& beginInsertRows(int count) noexcept
+		inline FrameList& beginInsertRows(int count)
 		{
 			auto first{ imageGroups[index].pictures->rowCount() };	// Insert after end
 			auto last{ first + count - 1 };
@@ -144,7 +144,7 @@ namespace DSS
 			return (*this);
 		}
 
-		inline FrameList& endInsertRows() noexcept
+		inline FrameList& endInsertRows()
 		{
 			imageGroups[index].pictures->endInsertRows();
 			return *this;

@@ -177,7 +177,7 @@ namespace { // Only use in this .cpp file
 	class DSSLibRaw : public LibRaw
 	{
 	public:
-		DSSLibRaw() noexcept = default;
+		DSSLibRaw() = default;
 		~DSSLibRaw() = default;
 
 		void setBitMapFiller(BitmapFillerInterface* pFiller) noexcept
@@ -191,7 +191,7 @@ namespace { // Only use in this .cpp file
 			return libraw_internal_data.unpacker_data.fuji_layout;
 		};
 
-		void adjust_bl() noexcept { this->LibRaw::adjust_bl(); }
+		void adjust_bl() { this->LibRaw::adjust_bl(); }
 		virtual int is_phaseone_compressed() noexcept override {
 			return LibRaw::is_phaseone_compressed();
 		}
@@ -243,7 +243,7 @@ namespace { // Only use in this .cpp file
 #define IOParams	rawProcessor.imgdata.rawdata.ioparams
 
 	public:
-		CRawDecod(LPCTSTR szFile) noexcept :
+		CRawDecod(LPCTSTR szFile) :
 			m_strFileName(szFile),
 			m_bColorRAW{ false },
 			m_CFAType{ CFATYPE_NONE },
