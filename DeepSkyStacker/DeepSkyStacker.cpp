@@ -544,6 +544,8 @@ QTranslator theAppTranslator;
 
 char* backPocket{ nullptr };
 constexpr int backPocketSize{ 1024 * 1024 };
+DSSStackWalker sw;
+
 void terminating()
 {
 	if (backPocket)
@@ -554,7 +556,6 @@ void terminating()
 
 	ZTRACE_RUNTIME("In terminating()");
 
-	DSSStackWalker sw;
 	sw.ShowCallstack();
 }
 
@@ -710,8 +711,6 @@ int main(int argc, char* argv[])
 		}
 		ZTRACE_RUNTIME("std::exception caught: %s", e.what());
 
-		DSSStackWalker sw;
-		sw.ShowCallstack();
 		QString errorMessage(e.what());
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
@@ -731,8 +730,6 @@ int main(int argc, char* argv[])
 		e.GetErrorMessage(&message[0], msglen);
 		ZTRACE_RUNTIME("CException caught: %s", CT2CA(message));
 
-		DSSStackWalker sw;
-		sw.ShowCallstack();
 		e.ReportError();
 		e.Delete();
 	}
@@ -751,8 +748,6 @@ int main(int argc, char* argv[])
 			ze.locationAtIndex(0)->lineNumber(),
 			ze.text(0));
 
-		DSSStackWalker sw;
-		sw.ShowCallstack();
 		QString name(ze.name());
 		QString fileName(ze.locationAtIndex(0)->fileName());
 		QString functionName(ze.locationAtIndex(0)->functionName());
@@ -782,8 +777,6 @@ int main(int argc, char* argv[])
 
 		ZTRACE_RUNTIME("Unknown exception caught");
 
-		DSSStackWalker sw;
-		sw.ShowCallstack();
 		QString errorMessage("Unknown exception caught");
 #if defined(_CONSOLE)
 		std::cerr << errorMessage;
