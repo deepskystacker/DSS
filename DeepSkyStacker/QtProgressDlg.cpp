@@ -66,13 +66,13 @@ void ProgressDlg::setTimeRemaining(const QString& strText)
 void ProgressDlg::setProcessorsUsed(int lNrProcessors)
 {
 	if (lNrProcessors > 1)
-		ui->Processors->setText(QString::number(lNrProcessors) + " Processors Used");
+		ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processors Used"));
 	else
 		ui->Processors->setText("");
 }
 void ProgressDlg::cancelPressed()
 {
-	if (QMessageBox::question(this, "Are You Sure?", "Are you sure you wish to cancel this operation?", QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
+	if (QMessageBox::question(this, tr("Are You Sure?"), tr("Are you sure you wish to cancel this operation?"), QMessageBox::Yes | QMessageBox::No, QMessageBox::No) == QMessageBox::Yes)
 	{
 		m_bCancelInProgress = true;
 		ui->StopButton->setEnabled(false);
