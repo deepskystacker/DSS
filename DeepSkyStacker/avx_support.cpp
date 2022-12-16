@@ -88,7 +88,7 @@ bool AvxSupport::bitmapHasCorrectType() const
 	return (isColorBitmapOfType<T>() || isMonochromeBitmapOfType<T>());
 }
 
-bool AvxSupport::checkAvx2CpuSupport() noexcept
+bool AvxSupport::checkAvx2CpuSupport()
 {
 	int cpuid[4] = { -1 };
 	// FMA Flag

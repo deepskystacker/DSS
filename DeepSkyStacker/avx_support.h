@@ -54,7 +54,7 @@ public:
 	template <class T>
 	bool bitmapHasCorrectType() const;
 
-	static bool checkAvx2CpuSupport() noexcept;
+	static bool checkAvx2CpuSupport();
 	static bool checkSimdAvailability();
 
 	template <class ElementType, class VectorElementType>
