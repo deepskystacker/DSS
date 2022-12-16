@@ -662,8 +662,8 @@ int main(int argc, char* argv[])
 
 	ZTRACE_RUNTIME("Set UI Language - ok");
 	boost::asio::thread_pool ioc(1);
-	boost::asio::signal_set ss(ioc, SIGINT, SIGTERM, SIGFPE);
-	ss.add(SIGSEGV); ss.add(SIGFPE);
+	boost::asio::signal_set ss(ioc, SIGINT, SIGILL, SIGFPE);
+	ss.add(SIGSEGV); ss.add(SIGTERM);
 	ss.async_wait([](auto ec, int s) {
 		if (ec == boost::asio::error::operation_aborted)
 			return;
