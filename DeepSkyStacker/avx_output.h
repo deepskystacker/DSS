@@ -26,7 +26,7 @@ private:
 		MedianOnly = 2
 	};
 	template <class INPUTTYPE, class OUTPUTTYPE>
-	static bool bitmapColorOrGray(const CMultiBitmap& bitmap)  noexcept;
+	static bool bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept;
 
 	template <class T>
 	static float convertToFloat(const T value) noexcept;

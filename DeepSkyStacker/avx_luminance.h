@@ -11,7 +11,7 @@ private:
 	bool avxReady;
 public:
 	AvxLuminance() = delete;
-	AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm) noexcept;
+	AvxLuminance(CMemoryBitmap& inputbm, CMemoryBitmap& outbm);
 	AvxLuminance(const AvxLuminance&) = default;
 	AvxLuminance(AvxLuminance&&) = delete;
 	AvxLuminance& operator=(const AvxLuminance&) = delete;

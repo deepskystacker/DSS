@@ -47,14 +47,14 @@ public:
 	CFATYPE				m_CFAType;
 
 private:
-	void	CopyFrom(const CDSLR & cd) noexcept
+	void	CopyFrom(const CDSLR & cd)
 	{
 		m_strName = cd.m_strName;
 		m_CFAType = cd.m_CFAType;
 	};
 
 public:
-	CDSLR(QString name, CFATYPE CFAType) noexcept :
+	CDSLR(QString name, CFATYPE CFAType) :
 		m_strName(name),
 		m_CFAType(CFAType)
 	{

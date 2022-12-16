@@ -23,14 +23,14 @@ template <class INPUTTYPE, class OUTPUTTYPE>
 static bool AvxOutputComposition::bitmapColorOrGray(const CMultiBitmap& bitmap) noexcept
 {
 	return
-		(dynamic_cast<const CColorMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr) ||
-		(dynamic_cast<const CGrayMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr);
+		(dynamic_cast<const CColorMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr) || // dynamic_cast for pointers does not throw
+		(dynamic_cast<const CGrayMultiBitmapT<INPUTTYPE, OUTPUTTYPE>*>(&bitmap) != nullptr);    // (for references it could).
 }
 
 template <class T>
 inline static float AvxOutputComposition::convertToFloat(const T value) noexcept
 {
-	if constexpr (std::is_integral<T>::value && sizeof(T) == 4) // 32 bit integral type
+	if constexpr (std::is_integral_v<T> && sizeof(T) == 4) // 32 bit integral type
 		return static_cast<float>(value >> 16);
 	else
 		return static_cast<float>(value);

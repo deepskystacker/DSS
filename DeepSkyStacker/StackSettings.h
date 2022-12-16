@@ -39,14 +39,14 @@ public:
 		return *this;
 	};
 
-	inline StackSettings & setRegisteringOnly(bool bRegisteringOnly) noexcept
+	inline StackSettings & setRegisteringOnly(bool bRegisteringOnly)
 	{
 		registeringOnly = bRegisteringOnly;
 		updateControls();
 		return *this;
 	};
 
-	inline StackSettings & enableCometStacking(bool value) noexcept
+	inline StackSettings & enableCometStacking(bool value)
 	{
 		cometStacking = value;
 		updateControls();
@@ -59,7 +59,7 @@ public:
 		return *this;
 	};
 
-	inline StackSettings & setTabVisibility(bool bDark, bool bFlat, bool bBias) noexcept
+	inline StackSettings & setTabVisibility(bool bDark, bool bFlat, bool bBias)
 	{
 		enableDark = bDark;
 		enableFlat = bFlat;
@@ -68,7 +68,7 @@ public:
 		return *this;
 	};
 
-	inline StackSettings & setEnableAll(bool value) noexcept
+	inline StackSettings & setEnableAll(bool value)
 	{
 		enableAll = value;
 		updateControls();
