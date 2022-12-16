@@ -91,23 +91,26 @@ bool AvxSupport::bitmapHasCorrectType() const
 bool AvxSupport::checkAvx2CpuSupport()
 {
 	int cpuid[4] = { -1 };
-	// FMA Flag
+
 	__cpuidex(cpuid, 1, 0);
-	const bool FMAsupported = ((cpuid[2] & 0x01000) != 0);
-	// OS supports AVX (YMM registers)
+	const bool FMAsupported = ((cpuid[2] & (1 << 12)) != 0);
+	const bool XSAVEsupported = ((cpuid[2] & (1 << 26)) != 0);
 	const bool OSXSAVEsupported = ((cpuid[2] & (1 << 27)) != 0);
-	const bool AVXenabledInOS = ((_xgetbv(0) & 6) == 6); // 6 = SSE (0x2) + YMM (0x4)
-	// AVX2 Flag
+
 	__cpuidex(cpuid, 7, 0);
-	const bool AVX2supported = ((cpuid[1] & 0x020) != 0);
+	const bool AVX2supported = ((cpuid[1] & (1 << 5)) != 0);
+	//const bool BMI1supported = ((cpuid[1] & (1 << 3) != 0);
+	//const bool BMI2supported = ((cpuid[1] & (1 << 8)) != 0);
 
-	//const bool BMI1supported = ((cpuid[1] & 0x04) != 0);
-	//const bool BMI2supported = ((cpuid[1] & 0x0100) != 0);
+	const bool RequiredCpuFlags = FMAsupported && AVX2supported && XSAVEsupported && OSXSAVEsupported;
 
-	// Additionally set flush to zero and denormals to zero. 
+	// OS supports AVX (YMM registers) - Note: XGETBV may only be executed on CPUs with XSAVE flag set.
+	const bool AVXenabledOS = RequiredCpuFlags ? ((_xgetbv(0) & 6) == 6) : false; // 6 = SSE (0x2) + YMM (0x4)
+
+	// Additionally set flush to zero and denormals to zero - Note: (S)GETCSR are SSE instructions, so supported by all x64 CPUs.
 	_mm_setcsr(_mm_getcsr() | _MM_FLUSH_ZERO_ON | _MM_DENORMALS_ZERO_ON);
 
-	return (FMAsupported && AVX2supported && OSXSAVEsupported && AVXenabledInOS);
+	return (RequiredCpuFlags && AVXenabledOS);
 };
 
 bool AvxSupport::checkSimdAvailability()
