@@ -1351,6 +1351,7 @@ void StackWalker::OnLoadModule(LPCSTR    img,
                                LPCSTR    pdbName,
                                ULONGLONG fileVersion)
 {
+#if (0)
   CHAR   buffer[STACKWALK_MAX_NAMELEN];
   size_t maxLen = STACKWALK_MAX_NAMELEN;
 #if _MSC_VER >= 1400
@@ -1372,6 +1373,7 @@ void StackWalker::OnLoadModule(LPCSTR    img,
   }
   buffer[STACKWALK_MAX_NAMELEN - 1] = 0; // be sure it is NULL terminated
   OnOutput(buffer);
+#endif
 }
 
 void StackWalker::OnCallstackEntry(CallstackEntryType eType, CallstackEntry& entry)

@@ -38,10 +38,10 @@
 
 #include "stdafx.h"
 
+#include <csignal>
 #include <chrono>
 #include <boost/interprocess/sync/named_mutex.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
-#include <boost/asio.hpp>
 namespace bip = boost::interprocess;
 #include <gdiplus.h>
 using namespace Gdiplus;
@@ -76,6 +76,9 @@ using namespace Gdiplus;
 #include "SetUILanguage.h"
 #include "StackWalker.h"
 #include <ZExcept.h>
+#if !defined(_WINDOWS)
+#include <execinfo.h>
+#endif
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -544,11 +547,216 @@ QTranslator theAppTranslator;
 
 char* backPocket{ nullptr };
 constexpr int backPocketSize{ 1024 * 1024 };
-DSSStackWalker sw;
 
+static char const* global_program_name;
+
+namespace
+{
+	void writeOutput(const char* text)
+	{
+		fputs(text, stderr);
+		ZTRACE_RUNTIME(text);
+	};
+
+#if defined(_WINDOWS)
+	DSSStackWalker sw;
+
+	LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo)
+	{
+		switch (ExceptionInfo->ExceptionRecord->ExceptionCode)
+		{
+		case EXCEPTION_ACCESS_VIOLATION:
+			writeOutput("Error: EXCEPTION_ACCESS_VIOLATION\n");
+			break;
+		case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+			writeOutput("Error: EXCEPTION_ARRAY_BOUNDS_EXCEEDED\n");
+			break;
+		case EXCEPTION_BREAKPOINT:
+			writeOutput("Error: EXCEPTION_BREAKPOINT\n");
+			break;
+		case EXCEPTION_DATATYPE_MISALIGNMENT:
+			writeOutput("Error: EXCEPTION_DATATYPE_MISALIGNMENT\n");
+			break;
+		case EXCEPTION_FLT_DENORMAL_OPERAND:
+			writeOutput("Error: EXCEPTION_FLT_DENORMAL_OPERAND\n");
+			break;
+		case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+			writeOutput("Error: EXCEPTION_FLT_DIVIDE_BY_ZERO\n");
+			break;
+		case EXCEPTION_FLT_INEXACT_RESULT:
+			writeOutput("Error: EXCEPTION_FLT_INEXACT_RESULT\n");
+			break;
+		case EXCEPTION_FLT_INVALID_OPERATION:
+			writeOutput("Error: EXCEPTION_FLT_INVALID_OPERATION\n");
+			break;
+		case EXCEPTION_FLT_OVERFLOW:
+			writeOutput("Error: EXCEPTION_FLT_OVERFLOW\n");
+			break;
+		case EXCEPTION_FLT_STACK_CHECK:
+			writeOutput("Error: EXCEPTION_FLT_STACK_CHECK\n");
+			break;
+		case EXCEPTION_FLT_UNDERFLOW:
+			writeOutput("Error: EXCEPTION_FLT_UNDERFLOW\n");
+			break;
+		case EXCEPTION_ILLEGAL_INSTRUCTION:
+			writeOutput("Error: EXCEPTION_ILLEGAL_INSTRUCTION\n");
+			break;
+		case EXCEPTION_IN_PAGE_ERROR:
+			writeOutput("Error: EXCEPTION_IN_PAGE_ERROR\n");
+			break;
+		case EXCEPTION_INT_DIVIDE_BY_ZERO:
+			writeOutput("Error: EXCEPTION_INT_DIVIDE_BY_ZERO\n");
+			break;
+		case EXCEPTION_INT_OVERFLOW:
+			writeOutput("Error: EXCEPTION_INT_OVERFLOW\n");
+			break;
+		case EXCEPTION_INVALID_DISPOSITION:
+			writeOutput("Error: EXCEPTION_INVALID_DISPOSITION\n");
+			break;
+		case EXCEPTION_NONCONTINUABLE_EXCEPTION:
+			writeOutput("Error: EXCEPTION_NONCONTINUABLE_EXCEPTION\n");
+			break;
+		case EXCEPTION_PRIV_INSTRUCTION:
+			writeOutput("Error: EXCEPTION_PRIV_INSTRUCTION\n");
+			break;
+		case EXCEPTION_SINGLE_STEP:
+			writeOutput("Error: EXCEPTION_SINGLE_STEP\n");
+			break;
+		case EXCEPTION_STACK_OVERFLOW:
+			writeOutput("Error: EXCEPTION_STACK_OVERFLOW\n");
+			break;
+		default:
+			writeOutput("Error: Unrecognized Exception\n");
+			break;
+		}
+		fflush(stderr);
+		/* If this is a stack overflow then we can't walk the stack, so just show
+		  where the error happened */
+		if (EXCEPTION_STACK_OVERFLOW != ExceptionInfo->ExceptionRecord->ExceptionCode)
+		{
+			sw.ShowCallstack();
+		}
+		else
+		{
+			char buffer[128]{};
+			snprintf(buffer, sizeof(buffer), "Stack Overflow Exception address: %p\n", (void*)ExceptionInfo->ContextRecord->Rip);
+			writeOutput(buffer);
+		}
+		DeepSkyStacker::instance()->close();
+		return EXCEPTION_EXECUTE_HANDLER;
+	}
+
+#else
+	/* Resolve symbol name and source location given the path to the executable
+	   and an address */
+	int addr2line(char const* const program_name, void const* const addr)
+	{
+		char addr2line_cmd[512] { 0 };
+
+		/* have addr2line map the address to the relevant line in the code */
+	#ifdef __APPLE__
+	  /* apple does things differently... */
+		sprintf(addr2line_cmd, "atos -o %.256s %p", program_name, addr);
+	#else
+		sprintf(addr2line_cmd, "addr2line -f -p -e %.256s %p", program_name, addr);
+	#endif
+
+		/* This will print a nicely formatted string specifying the
+		   function and source line of the address */
+		FILE* in;
+		char buff[512];
+		// is this the check for command execution exited with not 0?
+		if (!(in = popen(addr2line_cmd, "r"))) {
+			// I want to return the exit code and error message too if any
+			return 1;
+		}
+		// this part echoes the output of the command that's executed
+		while (fgets(buff, sizeof(buff), in) != NULL)
+		{
+			writeOutput(buff);
+		}
+		return WEXITSTATUS(pclose(in));
+	}
+
+	constexpr size_t MAX_STACK_FRAMES{ 64 };
+	static void* stack_traces[MAX_STACK_FRAMES];
+	void posix_print_stack_trace()
+	{
+		int i, trace_size = 0;
+		char** messages = (char**)NULL;
+		char buffer[1024]{};	// buffer for error message
+
+
+		trace_size = backtrace(stack_traces, MAX_STACK_FRAMES);
+		messages = backtrace_symbols(stack_traces, trace_size);
+
+		/* skip the first couple stack frames (as they are this function and
+		   our handler) and also skip the last frame as it's (always?) junk. */
+		   // for (i = 3; i < (trace_size - 1); ++i)
+		   // we'll use this for now so you can see what's going on
+		for (i = 0; i < trace_size; ++i)
+		{
+			if (addr2line(global_program_name, stack_traces[i]) != 0)
+			{
+				snprintf(buffer, sizeof(buffer)/sizeof(char),
+					"  error determining line # for: %s\n", messages[i]);
+				writeOutput(buffer);
+			}
+
+		}
+		if (messages) { free(messages); }
+	}
+
+	void signalHandler(int signal)
+	{
+		if (backPocket)
+		{
+			free(backPocket);
+			backPocket = nullptr;
+		}
+
+		char name[8]{};
+		switch (signal)
+		{
+		case SIGINT:
+			strcpy(name, "SIGINT");
+			break;
+		case SIGILL:
+			strcpy(name, "SIGILL");
+			break;
+		case SIGFPE:
+			strcpy(name, "SIGFPE");
+			break;
+		case SIGSEGV:
+			strcpy(name, "SIGSEGV");
+			break;
+		case SIGTERM:
+			strcpy(name, "SIGTERM");
+			break;
+		default:
+			snprintf(name, sizeof(name)/sizeof(char), "%d", signal);
+		}
+
+		ZTRACE_RUNTIME("In signalHandler(%s)", name);
+
+		posix_print_stack_trace();
+		DeepSkyStacker::instance()->close();
+	}
+#endif
+}
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
+
+	//
+	// Save the program name in case we need it later
+	// 
+	global_program_name = argv[0];
+
+	//
+	// Create a storage cushion (aka back pocket storage)
+	// and ensure that it is actually touched.
+	//
 	backPocket = static_cast<char*>(malloc(backPocketSize));
 	for (auto p = backPocket; p < backPocket + backPocketSize; p += 4096)
 	{
@@ -565,6 +773,22 @@ int main(int argc, char* argv[])
 #if !defined(NDEBUG)
 	AfxEnableMemoryLeakDump(false);
 #endif
+#endif
+
+	//
+	// Set things up to capture terminal errors
+	//
+#if defined(_WINDOWS)
+	SetUnhandledExceptionFilter(windows_exception_handler);
+#else
+	//
+	// Set up to handle signals
+	//
+	std::signal(SIGINT, signalHandler);
+	std::signal(SIGILL, signalHandler);
+	std::signal(SIGFPE, signalHandler);
+	std::signal(SIGSEGV, signalHandler);
+	std::signal(SIGTERM, signalHandler);
 #endif
 
 	if (hasExpired())
@@ -659,25 +883,6 @@ int main(int argc, char* argv[])
 	ZTRACE_RUNTIME("Creating Main Window");
 	DeepSkyStacker mainWindow;
 	DeepSkyStacker::setInstance(&mainWindow);
-
-	ZTRACE_RUNTIME("Set UI Language - ok");
-	boost::asio::thread_pool ioc(1);
-	boost::asio::signal_set ss(ioc, SIGINT, SIGILL, SIGFPE);
-	ss.add(SIGSEGV); ss.add(SIGTERM);
-	ss.async_wait([](auto ec, int s) {
-		if (ec == boost::asio::error::operation_aborted)
-			return;
-		if (backPocket)
-		{
-			free(backPocket);
-			backPocket = nullptr;
-		}
-
-		ZTRACE_RUNTIME("In signal handler() %ld", s);
-
-		sw.ShowCallstack();
-		DeepSkyStacker::instance()->close();
-	});
 
 	ZTRACE_RUNTIME("Checking Mutex");
 	bip::named_mutex dssMutex{ bip::open_or_create, "DeepSkyStacker.Mutex.UniqueID.12354687" };
@@ -786,8 +991,6 @@ int main(int argc, char* argv[])
 		free(backPocket); backPocket = nullptr;
 	}
 	theApp.ExitInstance();
-	ss.cancel();
-	ioc.join();
 	return result;
 }
 /* ------------------------------------------------------------------- */
