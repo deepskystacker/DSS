@@ -48,3 +48,6 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 15. Reduce the depth of the rows in the image list so it takes less space.
 
+16. Change to AVX checking code to resolve a problem with SIGILL on older CPUs.
+
+17. Add code to capture non C++ exceptions (e.g. SIGINT, SIGILL, SIGFPE, SIGSEGV, and SIGTERM) and write a debugging backtrace to stderr and to the trace file if active.
