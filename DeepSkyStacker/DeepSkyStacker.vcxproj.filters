@@ -402,6 +402,9 @@
     <ClCompile Include="..\Tools\StackWalker.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="..\Tools\APIHook.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -779,6 +782,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\StackWalker.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\APIHook.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Tools\Toolhelp.h">
       <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>

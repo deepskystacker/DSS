@@ -80,6 +80,10 @@ using namespace Gdiplus;
 #include <execinfo.h>
 #endif
 
+#if defined(_WINDOWS)
+#include "APIHook.h"
+#endif
+
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -646,6 +650,12 @@ namespace
 		return EXCEPTION_EXECUTE_HANDLER;
 	}
 
+	LONG WINAPI RedirectedSetUnhandledExceptionFilter(EXCEPTION_POINTERS* /*ExceptionInfo*/)
+	{
+		// When the CRT calls SetUnhandledExceptionFilter with NULL parameter
+		// our handler will not get removed.
+		return 0;
+	}
 #else
 	/* Resolve symbol name and source location given the path to the executable
 	   and an address */
@@ -779,7 +789,15 @@ int main(int argc, char* argv[])
 	// Set things up to capture terminal errors
 	//
 #if defined(_WINDOWS)
-	SetUnhandledExceptionFilter(windows_exception_handler);
+	::SetUnhandledExceptionFilter(windows_exception_handler);
+
+	//
+	// Prevent anyone else from taking over our exception filter
+	//
+	CAPIHook apiHook("kernel32.dll",
+		"SetUnhandledExceptionFilter",
+		(PROC)RedirectedSetUnhandledExceptionFilter);
+
 #else
 	//
 	// Set up to handle signals
