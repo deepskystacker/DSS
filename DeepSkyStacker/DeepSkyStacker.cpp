@@ -563,76 +563,47 @@ namespace
 	};
 
 #if defined(_WINDOWS)
+#define EXCEPTION_CASE(code) \
+ case code: \
+  exceptionString = #code "\n"; \
+  break
+
 	DSSStackWalker sw;
 
 	LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo)
 	{
+		const char* exceptionString = NULL;
+
 		switch (ExceptionInfo->ExceptionRecord->ExceptionCode)
 		{
-		case EXCEPTION_ACCESS_VIOLATION:
-			writeOutput("Error: EXCEPTION_ACCESS_VIOLATION\n");
-			break;
-		case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
-			writeOutput("Error: EXCEPTION_ARRAY_BOUNDS_EXCEEDED\n");
-			break;
-		case EXCEPTION_BREAKPOINT:
-			writeOutput("Error: EXCEPTION_BREAKPOINT\n");
-			break;
-		case EXCEPTION_DATATYPE_MISALIGNMENT:
-			writeOutput("Error: EXCEPTION_DATATYPE_MISALIGNMENT\n");
-			break;
-		case EXCEPTION_FLT_DENORMAL_OPERAND:
-			writeOutput("Error: EXCEPTION_FLT_DENORMAL_OPERAND\n");
-			break;
-		case EXCEPTION_FLT_DIVIDE_BY_ZERO:
-			writeOutput("Error: EXCEPTION_FLT_DIVIDE_BY_ZERO\n");
-			break;
-		case EXCEPTION_FLT_INEXACT_RESULT:
-			writeOutput("Error: EXCEPTION_FLT_INEXACT_RESULT\n");
-			break;
-		case EXCEPTION_FLT_INVALID_OPERATION:
-			writeOutput("Error: EXCEPTION_FLT_INVALID_OPERATION\n");
-			break;
-		case EXCEPTION_FLT_OVERFLOW:
-			writeOutput("Error: EXCEPTION_FLT_OVERFLOW\n");
-			break;
-		case EXCEPTION_FLT_STACK_CHECK:
-			writeOutput("Error: EXCEPTION_FLT_STACK_CHECK\n");
-			break;
-		case EXCEPTION_FLT_UNDERFLOW:
-			writeOutput("Error: EXCEPTION_FLT_UNDERFLOW\n");
-			break;
-		case EXCEPTION_ILLEGAL_INSTRUCTION:
-			writeOutput("Error: EXCEPTION_ILLEGAL_INSTRUCTION\n");
-			break;
-		case EXCEPTION_IN_PAGE_ERROR:
-			writeOutput("Error: EXCEPTION_IN_PAGE_ERROR\n");
-			break;
-		case EXCEPTION_INT_DIVIDE_BY_ZERO:
-			writeOutput("Error: EXCEPTION_INT_DIVIDE_BY_ZERO\n");
-			break;
-		case EXCEPTION_INT_OVERFLOW:
-			writeOutput("Error: EXCEPTION_INT_OVERFLOW\n");
-			break;
-		case EXCEPTION_INVALID_DISPOSITION:
-			writeOutput("Error: EXCEPTION_INVALID_DISPOSITION\n");
-			break;
-		case EXCEPTION_NONCONTINUABLE_EXCEPTION:
-			writeOutput("Error: EXCEPTION_NONCONTINUABLE_EXCEPTION\n");
-			break;
-		case EXCEPTION_PRIV_INSTRUCTION:
-			writeOutput("Error: EXCEPTION_PRIV_INSTRUCTION\n");
-			break;
-		case EXCEPTION_SINGLE_STEP:
-			writeOutput("Error: EXCEPTION_SINGLE_STEP\n");
-			break;
-		case EXCEPTION_STACK_OVERFLOW:
-			writeOutput("Error: EXCEPTION_STACK_OVERFLOW\n");
+		EXCEPTION_CASE(EXCEPTION_ACCESS_VIOLATION);
+		EXCEPTION_CASE(EXCEPTION_ARRAY_BOUNDS_EXCEEDED);
+		EXCEPTION_CASE(EXCEPTION_BREAKPOINT);
+		EXCEPTION_CASE(EXCEPTION_DATATYPE_MISALIGNMENT);
+		EXCEPTION_CASE(EXCEPTION_FLT_DENORMAL_OPERAND);
+		EXCEPTION_CASE(EXCEPTION_FLT_DIVIDE_BY_ZERO);
+		EXCEPTION_CASE(EXCEPTION_FLT_INEXACT_RESULT);
+		EXCEPTION_CASE(EXCEPTION_FLT_INVALID_OPERATION);
+		EXCEPTION_CASE(EXCEPTION_FLT_OVERFLOW);
+		EXCEPTION_CASE(EXCEPTION_FLT_STACK_CHECK);
+		EXCEPTION_CASE(EXCEPTION_FLT_UNDERFLOW);
+		EXCEPTION_CASE(EXCEPTION_ILLEGAL_INSTRUCTION);
+		EXCEPTION_CASE(EXCEPTION_IN_PAGE_ERROR);
+		EXCEPTION_CASE(EXCEPTION_INT_DIVIDE_BY_ZERO);
+		EXCEPTION_CASE(EXCEPTION_INT_OVERFLOW);
+		EXCEPTION_CASE(EXCEPTION_INVALID_DISPOSITION);
+		EXCEPTION_CASE(EXCEPTION_NONCONTINUABLE_EXCEPTION);
+		EXCEPTION_CASE(EXCEPTION_PRIV_INSTRUCTION);
+		EXCEPTION_CASE(EXCEPTION_SINGLE_STEP);
+		EXCEPTION_CASE(EXCEPTION_STACK_OVERFLOW);
+		case 0xE06D7363:
+			exceptionString = "Unhandled C++ Exception ...\n";
 			break;
 		default:
-			writeOutput("Error: Unrecognized Exception\n");
+			exceptionString = "Error: Unrecognized Exception\n";
 			break;
 		}
+		writeOutput(exceptionString);
 		fflush(stderr);
 		/* If this is a stack overflow then we can't walk the stack, so just show
 		  where the error happened */
