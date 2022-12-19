@@ -405,6 +405,9 @@
     <ClCompile Include="..\Tools\APIHook.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="ExceptionHandling.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">
@@ -788,6 +791,9 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\Tools\Toolhelp.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="ExceptionHandling.h">
       <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
