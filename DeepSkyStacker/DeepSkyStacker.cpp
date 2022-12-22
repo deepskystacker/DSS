@@ -624,8 +624,7 @@ static char const* global_program_name;
 //
 //	LONG WINAPI RedirectedSetUnhandledExceptionFilter(EXCEPTION_POINTERS* /*ExceptionInfo*/)
 //	{
-//		// When the CRT calls SetUnhandledExceptionFilter with NULL parameter
-//		// our handler will not get removed.
+//		// When the CRT calls SetUnhandledExceptionFilter with NULL parameter, our handler will not get removed.
 //		return 0;
 //	}
 //#else
@@ -726,6 +725,7 @@ static char const* global_program_name;
 //	}
 //#endif
 //}
+
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
@@ -760,7 +760,6 @@ int main(int argc, char* argv[])
 	//
 	// Set things up to capture terminal errors
 	//
-
 	setDssExceptionHandling();
 
 //#if defined(_WINDOWS)
@@ -898,7 +897,6 @@ int main(int argc, char* argv[])
 	}
 	catch (std::exception& e)
 	{
-		backPocket.reset();
 		ZTRACE_RUNTIME("std::exception caught: %s", e.what());
 
 		QString errorMessage(e.what());
@@ -910,7 +908,6 @@ int main(int argc, char* argv[])
 	}
 	catch (CException& e)
 	{
-		backPocket.reset();
 		constexpr unsigned int msglen{ 255 };
 		TCHAR message[msglen]{ 0x00 };
 		e.GetErrorMessage(&message[0], msglen);
@@ -921,7 +918,6 @@ int main(int argc, char* argv[])
 	}
 	catch (ZException& ze)
 	{
-		backPocket.reset();
 
 		ZTRACE_RUNTIME("ZException %s thrown from: %s Function: %s() Line: %d\n\n%s",
 			ze.name(),
@@ -951,8 +947,6 @@ int main(int argc, char* argv[])
 	}
 	catch (...)
 	{
-		backPocket.reset();
-
 		ZTRACE_RUNTIME("Unknown exception caught");
 
 		QString errorMessage("Unknown exception caught");
@@ -963,7 +957,6 @@ int main(int argc, char* argv[])
 #endif
 
 	}
-	backPocket.reset();
 	theApp.ExitInstance();
 	return result;
 }

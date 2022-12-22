@@ -4,9 +4,9 @@
 
 #include <errhandlingapi.h>
 #include <ZExcept.h>
+#include <thread>
+#include <inttypes.h>
 #include "StackWalker.h"
-#include "DeepSkyStacker.h"
-
 
 extern std::unique_ptr<std::uint8_t[]> backPocket;
 
@@ -15,17 +15,55 @@ namespace {
 	class DSSStackWalker : public StackWalker
 	{
 	public:
-		DSSStackWalker() : StackWalker() {}
+		DSSStackWalker() : StackWalker{}
+		{}
 	protected:
 		virtual void OnOutput(LPCSTR text) override
 		{
 			fprintf(stderr, text);
 			ZTRACE_RUNTIME(text);
-			StackWalker::OnOutput(text);
+			//		StackWalker::OnOutput(text); // Just OutputDebugString()
 		}
 	};
 
 	DSSStackWalker sw;
+
+	thread_local char printBuffer[128];
+
+	const char* printException(const char* text, const std::uint32_t exceptionCode, const size_t threadId)
+	{
+		auto printExc = [text, exceptionCode, threadId](const char* excName) -> const char*
+		{
+			constexpr size_t maxSz = sizeof(printBuffer);
+			snprintf(printBuffer, maxSz, "%s Thread %" PRIx64 " ExCode 0x%08x %s\n", text, threadId, exceptionCode, excName);
+			return printBuffer;
+		};
+		switch (exceptionCode)
+		{
+		case STATUS_ACCESS_VIOLATION: return printExc("ACCESS_VIOLATION");
+		case STATUS_ARRAY_BOUNDS_EXCEEDED: return printExc("ARRAY_BOUNDS_EXCEEDED");
+		case STATUS_DATATYPE_MISALIGNMENT: return printExc("DATATYPE_MISALIGNMENT");
+		case STATUS_FLOAT_INVALID_OPERATION: return printExc("FLT_INVALID_OPERATION");
+		case STATUS_FLOAT_STACK_CHECK: return printExc("FLT_STACK_CHECK");
+		case STATUS_ILLEGAL_INSTRUCTION: return printExc("ILLEGAL_INSTRUCTION");
+		case STATUS_IN_PAGE_ERROR: return printExc("IN_PAGE_ERROR");
+		case STATUS_INTEGER_DIVIDE_BY_ZERO: return printExc("INT_DIVIDE_BY_ZERO");
+		case STATUS_NONCONTINUABLE_EXCEPTION: return printExc("NONCONTINUABLE_EXCEPTION");
+		case STATUS_PRIVILEGED_INSTRUCTION: return printExc("PRIV_INSTRUCTION");
+		case STATUS_STACK_OVERFLOW: return printExc("STACK_OVERFLOW");
+		case STATUS_INVALID_HANDLE: return printExc("INVALID_HANDLE");
+		case STATUS_NO_MEMORY: return printExc("NO_MEMORY");
+		case STATUS_CONTROL_STACK_VIOLATION: return printExc("CONTROL_STACK_VIOLATION");
+		case STATUS_HEAP_CORRUPTION: return printExc("HEAP_CORRUPTION");
+		case STATUS_STACK_BUFFER_OVERRUN: return printExc("STACK_BUFFER_OVERRUN");
+//		case STATUS_ASSERTION_FAILURE: return printExc("ASSERTION_FAILURE");
+		default: return nullptr;
+		}
+		return nullptr;
+	};
+
+	std::atomic<std::uint32_t> barrier{ 0 };
+	std::thread::id currentThreadId{};
 
 	void writeOutput(const char* text)
 	{
@@ -33,49 +71,55 @@ namespace {
 		ZTRACE_RUNTIME(text);
 	}
 
-	long WINAPI DssVectoredExceptionHandler(EXCEPTION_POINTERS* pointers)
+	void traceTheStack()
 	{
-		const EXCEPTION_RECORD* exc = pointers->ExceptionRecord;
+		sw.ShowCallstack();
+	}
 
-		auto traceAndterminate = [](const char* text, const bool stacktrace) -> long
+	long WINAPI DssCriticalExceptionHandler(EXCEPTION_POINTERS* pExc)
+	{
+		constexpr auto returnCode = EXCEPTION_CONTINUE_SEARCH; // should show the error pop-up message box
+		const EXCEPTION_RECORD* exc = pExc->ExceptionRecord;
+		const std::uint32_t excCode = exc->ExceptionCode;
+		const auto thisThreadId = std::this_thread::get_id();
+		const size_t myThreadId = std::hash<std::thread::id>{}(thisThreadId);
+
+		if (const char* str = printException("ExH - ", excCode, myThreadId); str != nullptr)
+			writeOutput(str);
+		else // don't care about the exception
+			return returnCode;
+
+		if (barrier.fetch_add(1) == 0) // We are the first one
 		{
+			currentThreadId = thisThreadId;
 			backPocket.reset();
-			writeOutput(text);
-			if (stacktrace)
-				sw.ShowCallstack();
+			fprintf(stderr, "Thread %" PRIx64 " beginning StackWalk\n", myThreadId);
+			if (excCode != EXCEPTION_STACK_OVERFLOW)
+				traceTheStack();
+			fprintf(stderr, "Thread %" PRIx64 " finished StackWalk\n", myThreadId);
 			fflush(stderr);
-			DeepSkyStacker::instance()->close();
-			return EXCEPTION_CONTINUE_SEARCH;
-		};
-
-		// These are the exceptions we handle. Each of them is so disastrous that the app cannot continue.
-		//   In those cases (except STACK_OVERFLOW), we try to print the stack trace.
-		// All other exceptions are ignored by our handler.
-		switch (exc->ExceptionCode)
+			std::terminate();
+		}
+		else // another stack walk is done
 		{
-		case EXCEPTION_ACCESS_VIOLATION: return traceAndterminate("Error: EXCEPTION_ACCESS_VIOLATION\n", true);
-		case EXCEPTION_ARRAY_BOUNDS_EXCEEDED: return traceAndterminate("Error: EXCEPTION_ARRAY_BOUNDS_EXCEEDED\n", true);
-		case EXCEPTION_DATATYPE_MISALIGNMENT: return traceAndterminate("Error: EXCEPTION_DATATYPE_MISALIGNMENT\n", true);
-		case EXCEPTION_FLT_INVALID_OPERATION: return traceAndterminate("Error: EXCEPTION_FLT_INVALID_OPERATION\n", true);
-		case EXCEPTION_FLT_STACK_CHECK: return traceAndterminate("Error: EXCEPTION_FLT_STACK_CHECK\n", true);
-		case EXCEPTION_ILLEGAL_INSTRUCTION: return traceAndterminate("Error: EXCEPTION_ILLEGAL_INSTRUCTION\n", true);
-		case EXCEPTION_IN_PAGE_ERROR: return traceAndterminate("Error: EXCEPTION_IN_PAGE_ERROR\n", true);
-		case EXCEPTION_INT_DIVIDE_BY_ZERO: return traceAndterminate("Error: EXCEPTION_INT_DIVIDE_BY_ZERO\n", true);
-		case EXCEPTION_NONCONTINUABLE_EXCEPTION: return traceAndterminate("Error: EXCEPTION_NONCONTINUABLE_EXCEPTION\n", true);
-		case EXCEPTION_PRIV_INSTRUCTION: return traceAndterminate("Error: EXCEPTION_PRIV_INSTRUCTION\n", true);
-		case EXCEPTION_STACK_OVERFLOW: return traceAndterminate("Error: EXCEPTION_STACK_OVERFLOW\n", false);
-		default: break;
+			if (currentThreadId == thisThreadId) // Exception while tracing the stack -> there's nothing we can do.
+			{
+				if (const char* str = printException("Second exception! ", excCode, myThreadId); str != nullptr)
+					writeOutput(str);
+				return returnCode;
+			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(5000));
 		}
 
-		// Ignore the exception and let the normal exception handling continue.
-		return EXCEPTION_CONTINUE_SEARCH;
+		return returnCode;
 	}
+
 } // namespace
 
 void setDssExceptionHandling()
 {
 	// Add our own vectored exception handler to the front of the handler chain, so it gets called early (ideally first).
-	AddVectoredExceptionHandler(1, DssVectoredExceptionHandler);
+	AddVectoredExceptionHandler(1, DssCriticalExceptionHandler);
 }
 
 #else
