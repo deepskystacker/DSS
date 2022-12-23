@@ -44,7 +44,7 @@
         <source>RAW file decoding by LibRaw (version %1)
 Copyright © 1997-2022 LibRaw LLC</source>
         <comment>IDS_ABOUT_DCRAW</comment>
-        <translation>Decodare fisire RAW de LibRaw (versiune %1)
+        <translation>Decodare fișire RAW de LibRaw (versiune %1)
 Copyright © 1997-2022 LibRaw LLC</translation>
     </message>
     <message>
@@ -53,7 +53,7 @@ Copyright © 1997-2022 LibRaw LLC</translation>
 Copyright © 1988-1996 Sam Leffler
 Copyright © 1991-1996 Silicon Graphics, Inc.</source>
         <comment>IDS_ABOUT_TIFF</comment>
-        <translation>Codare/decodare fisiere TIFF de LibTIFF (versiune %1)
+        <translation>Codare/decodare fișiere TIFF de LibTIFF (versiune %1)
 Copyright © 1988-1996 Sam Leffler\nCopyright © 1991-1996 Silicon Graphics, Inc.</translation>
     </message>
     <message>
@@ -68,37 +68,37 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="111"/>
         <source>Spanish version: Ricardo Contreras and the team from</source>
         <comment>IDS_ABOUT_LANG_SPANISH</comment>
-        <translation>Versiune spaniola: Ricardo Contreras si echipa</translation>
+        <translation>Versiune spaniolă: Ricardo Contreras și echipa</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="115"/>
         <source>Czech version:</source>
         <comment>IDS_ABOUT_LANG_CZECH</comment>
-        <translation>Versiune ceha:</translation>
+        <translation>Versiune cehă:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="119"/>
         <source>Italian version:</source>
         <comment>IDS_ABOUT_LANG_ITALIAN</comment>
-        <translation>Versiune italiana:</translation>
+        <translation>Versiune italiană:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="123"/>
         <source>Catalan version:</source>
         <comment>IDS_ABOUT_LANG_CATALAN</comment>
-        <translation>Versiune catalana:</translation>
+        <translation>Versiune catalană:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="127"/>
         <source>German version:</source>
         <comment>IDS_ABOUT_LANG_GERMAN</comment>
-        <translation>Versiune germana:</translation>
+        <translation>Versiune germană:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="132"/>
         <source>Dutch version:</source>
         <comment>IDS_ABOUT_LANG_DUTCH</comment>
-        <translation>Versiune olandeza:</translation>
+        <translation>Versiune olandeză:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="129"/>
@@ -106,19 +106,19 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="142"/>
         <location filename="../About.cpp" line="146"/>
         <source>and</source>
-        <translation>si</translation>
+        <translation>și</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="136"/>
         <source>Traditional Chinese version:</source>
         <comment>IDS_ABOUT_LANG_CHINESET</comment>
-        <translation>Versiunea Chineza Traditionala:</translation>
+        <translation>Versiunea Chineză Tradițională:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="140"/>
         <source>Portuguese version:</source>
         <comment>IDS_ABOUT_LANG_PORTUGUESE</comment>
-        <translation>Versiunea portugheza:</translation>
+        <translation>Versiunea portugheză:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="145"/>
@@ -130,13 +130,13 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="149"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
-        <translation>Versiunea rusa:</translation>
+        <translation>Versiunea rusă:</translation>
     </message>
     <message>
         <location filename="../About.cpp" line="153"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
-        <translation>Turcã Versiune:</translation>
+        <translation>Versiunea Turcă:</translation>
     </message>
 </context>
 <context>
@@ -222,7 +222,7 @@ Alinierea bicubică este folosită atunci când sunt disponibile cel puțin 40 d
     <message>
         <location filename="../ui/AskRegistering.ui" line="14"/>
         <source>Unregistered light frame</source>
-        <translation>Cadre light neinregistrate</translation>
+        <translation>Cadre light neînregistrate</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="37"/>
@@ -230,25 +230,25 @@ Alinierea bicubică este folosită atunci când sunt disponibile cel puțin 40 d
 (the stars have not been detected).
 
 Do you want...</source>
-        <translation>Cadrul light nu este inregistrat
+        <translation>Cadrul light nu este înregistrat
 (stelele nu au fost detectate).
 
-Vreti sa...</translation>
+Vreți să...</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="66"/>
         <source>to register this light frame</source>
-        <translation>pentru a inregistra acest cadru light</translation>
+        <translation>pentru a înregistra acest cadru light</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="73"/>
         <source>to register all the light frames</source>
-        <translation>pentru a inregistra toate cadrele light</translation>
+        <translation>pentru a înregistra toate cadrele light</translation>
     </message>
     <message>
         <location filename="../ui/AskRegistering.ui" line="80"/>
         <source>to continue without registering the light frame</source>
-        <translation>pentru a continua fara inregistrarea cadrului light</translation>
+        <translation>pentru a continua fără înregistrarea cadrului light</translation>
     </message>
 </context>
 <context>
@@ -256,32 +256,32 @@ Vreti sa...</translation>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="14"/>
         <source>Background Options</source>
-        <translation>Optiuni fundal</translation>
+        <translation>Opțiuni fundal</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="20"/>
         <source>Calibration Method</source>
-        <translation>Metoda calibrare</translation>
+        <translation>Metodă calibrare</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="28"/>
         <source>Linear</source>
-        <translation>Linear</translation>
+        <translation>Liniar</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="35"/>
         <source>Rational</source>
-        <translation>Rational</translation>
+        <translation>Rațional</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="60"/>
         <source>RGB Background Calibration Method</source>
-        <translation>Metoda calibrare fundal RGB</translation>
+        <translation>Metodă calibrare fundal RGB</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="68"/>
         <source>None</source>
-        <translation>Fara</translation>
+        <translation>Fară</translation>
     </message>
     <message>
         <location filename="../ui/BackgroundOptions.ui" line="75"/>
@@ -304,7 +304,7 @@ Vreti sa...</translation>
     <message>
         <location filename="../ui/BatchStacking.ui" line="17"/>
         <source>Batch Stacking</source>
-        <translation>Stackare mod batch</translation>
+        <translation>Stivuire mod batch</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="23"/>
@@ -312,20 +312,20 @@ Vreti sa...</translation>
 
 Add the file lists you want to stack and click OK to start the stacking processes.</source>
         <comment>IDC_STATIC</comment>
-        <translation>Acest dialog este utilizat pentru pornirea procesului de stackare folosind lista de imagini existente.
-Adaugati liste de fisiere dorite pentru stackare si apasati OK pentru a porni procesul de stackare.</translation>
+        <translation>Acest dialog este utilizat pentru pornirea procesului de stivuire folosind lista de imagini existente.
+Adăugați listele de fișiere dorite pentru stivuire și apăsați OK pentru a porni procesul de stivuire.</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="37"/>
         <source>Add File Lists...</source>
         <comment>IDC_ADDLISTS</comment>
-        <translation>Adauga lista fisiere...</translation>
+        <translation>Adaugă lista fișiere...</translation>
     </message>
     <message>
         <location filename="../ui/BatchStacking.ui" line="57"/>
         <source>Clear List</source>
         <comment>IDC_CLEARLIST</comment>
-        <translation>Goleste lista</translation>
+        <translation>Golește lista</translation>
     </message>
     <message>
         <location filename="../BatchStacking.cpp" line="69"/>
@@ -423,48 +423,48 @@ Adaugati liste de fisiere dorite pentru stackare si apasati OK pentru a porni pr
     <message>
         <location filename="../ui/CometStacking.ui" line="14"/>
         <source>Comet</source>
-        <translation>Cometa</translation>
+        <translation>Cometă</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="20"/>
         <source>Comet Stacking Parameters</source>
-        <translation>Parametrii stackare cometa</translation>
+        <translation>Parametrii stivuire cometă</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="37"/>
         <source>Standard Stacking</source>
-        <translation>Stackare Standard</translation>
+        <translation>Stivuire Standard</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="53"/>
         <source>The comet position is ignored.
 The comet will be fuzzy.</source>
-        <translation>Pozitia cometei va fi ignorata.
-Cometa va fi neclara.</translation>
+        <translation>Poziția cometei va fi ignorată.
+Cometa va fi neclară.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="102"/>
         <source>The comet position is used.
 The comet will be sharp and the stars will have trails.</source>
-        <translation>Este utilizata pozitia cometei.
-Cometa va fi reprezentata sharp iar stelele vor fi alungite.</translation>
+        <translation>Este utilizată poziția cometei.
+Cometa va fi clară iar stelele vor fi alungite.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="151"/>
         <source>The comet position is used.
 The comet and the stars will be sharp. This process takes twice as long.</source>
-        <translation>Este utilizata pozitia cometei.
-Aspectul cometei si stelelor va fi sharp. Durata procesului este dubla.</translation>
+        <translation>Este utilizată poziția cometei.
+Cometa și stelele vor fi clare. Procesarea durează dublu.</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="86"/>
         <source>Comet Stacking</source>
-        <translation>Stackare Cometa</translation>
+        <translation>Stivuire Cometă</translation>
     </message>
     <message>
         <location filename="../ui/CometStacking.ui" line="135"/>
         <source>Stars + Comet Stacking</source>
-        <translation>Stackare Stele + Cometa</translation>
+        <translation>Stivuire Stele + Cometă</translation>
     </message>
 </context>
 <context>
@@ -1436,37 +1436,37 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/ExplorerBar.ui" line="311"/>
         <source>Check above a threshold...</source>
         <comment>IDC_STACKING_CHECKABOVE</comment>
-        <translation>Stabiliti o limita...</translation>
+        <translation>Bifează peste un prag...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="318"/>
         <source>Uncheck all</source>
         <comment>IDC_STACKING_UNCHECKALL</comment>
-        <translation>Deselectati totul</translation>
+        <translation>Deselectează toate</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="355"/>
         <source>Register checked pictures...</source>
         <comment>IDC_REGISTERING_REGISTERCHECKED</comment>
-        <translation>Inregistreaza imaginile selectate...</translation>
+        <translation>Înregistrează imaginile selectate...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="362"/>
         <source>Compute offsets...</source>
         <comment>IDC_STACKING_COMPUTEOFFSETS</comment>
-        <translation>Calculeaza off-set-ul...</translation>
+        <translation>Calculează offset-urile...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="369"/>
         <source>Stack checked pictures...</source>
         <comment>IDC_STACKING_STACKCHECKED</comment>
-        <translation>Stackati imaginile selectate...</translation>
+        <translation>Stivuiește imaginile selectate...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="376"/>
         <source>Batch stacking...</source>
         <comment>IDC_STACKING_BATCHSTACK</comment>
-        <translation>Serie stackare...</translation>
+        <translation>Stivuire Serie...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="398"/>
@@ -1478,55 +1478,55 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/ExplorerBar.ui" line="419"/>
         <source>Open picture file...</source>
         <comment>IDC_PROCESSING_OPENFILE</comment>
-        <translation>Deschide fisiere imagine...</translation>
+        <translation>Deschide fișier imagine...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="426"/>
         <source>Copy current picture to clipboard</source>
         <comment>IDC_PROCESSING_COPYTOCLIPBOARD</comment>
-        <translation>Copiaza imaginea curenta in clipboard</translation>
+        <translation>Copiază imaginea curentă în clipboard</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="433"/>
         <source>Create a Star Mask...</source>
         <comment>IDC_PROCESSING_CREATESTARMASK</comment>
-        <translation>Creeaza un Star Mask...</translation>
+        <translation>Creează o Mască Stea...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="440"/>
         <source>Save picture to file...</source>
         <comment>IDC_PROCESSING_SAVEFILE</comment>
-        <translation>Salveaza imaginea in fisierul...</translation>
+        <translation>Salvează imaginea în fișierul...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="459"/>
         <source>Options</source>
         <comment>IDC_OPTIONS_TITLE</comment>
-        <translation>Optiuni</translation>
+        <translation>Opțiuni</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="480"/>
         <source>Settings...</source>
         <comment>IDC_OPTIONS_SETTINGS</comment>
-        <translation>Setari...</translation>
+        <translation>Setări...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="490"/>
         <source>Raw/FITS DDP Settings...</source>
         <comment>IDC_OPTIONS_RAWDDPSETTINGS</comment>
-        <translation>Setari Raw/FITS DDP...</translation>
+        <translation>Setări Raw/FITS DDP...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="500"/>
         <source>Load...</source>
         <comment>IDC_OPTIONS_LOADSETTINGS</comment>
-        <translation>Incarca...</translation>
+        <translation>Încarcă...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="510"/>
         <source>Save...</source>
         <comment>IDC_OPTIONS_SAVESETTINGS</comment>
-        <translation>Salveaza...</translation>
+        <translation>Salvează...</translation>
     </message>
     <message>
         <location filename="../ui/ExplorerBar.ui" line="520"/>
@@ -1561,42 +1561,42 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="14"/>
         <source>Intermediate Files</source>
-        <translation>Fisiere Intermediare</translation>
+        <translation>Fișiere Intermediare</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="29"/>
         <source>Intermediate files creation settings</source>
-        <translation>Setari creare fisiere intermediare</translation>
+        <translation>Setări creare fișiere intermediare</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="91"/>
         <source>Create a calibrated file for each light frame</source>
-        <translation>Creaza un fisier calibrat pentru fiecare cadru light</translation>
+        <translation>Creează un fișier calibrat pentru fiecare cadru light</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="69"/>
         <source>Save a debayered image when processing RAW images</source>
-        <translation>Salveaza o imagine debayerizata la procesarea fiserelor RAW</translation>
+        <translation>Salvează o imagine debayerizată la procesarea fișierelor RAW</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="38"/>
         <source>Create a registered/calibrated file for each light frame</source>
-        <translation>Creaza un fisier inregistrare/calibrare pentru fiecare cadru light</translation>
+        <translation>Creează un fișier înregistrare/calibrare pentru fiecare cadru light</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="113"/>
         <source>Intermediate and Final Image File Format</source>
-        <translation>Formatul fisierelor imagine intermediara si finala</translation>
+        <translation>Formatul fișierelor de imagini intermediare și finale</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="119"/>
         <source>TIFF Files</source>
-        <translation>Fisiere TIFF</translation>
+        <translation>Fișiere TIFF</translation>
     </message>
     <message>
         <location filename="../ui/IntermediateFiles.ui" line="126"/>
         <source>FITS Files</source>
-        <translation>Fisiere FITS</translation>
+        <translation>Fișiere FITS</translation>
     </message>
 </context>
 <context>
@@ -1619,24 +1619,24 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/OutputTab.ui" line="14"/>
         <source>Output</source>
-        <translation>Output</translation>
+        <translation>Rezultat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="20"/>
         <source>Output Files Settings</source>
-        <translation>Setari Fisiere Output</translation>
+        <translation>Setări Fișiere Rezultate</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="29"/>
         <source>Create Output file</source>
         <comment>IDC_CREATEOUTPUT</comment>
-        <translation>Creaza fisier Output</translation>
+        <translation>Creează fișier Rezultat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="36"/>
         <source>Create HTML Description file</source>
         <comment>IDC_CREATEHTML</comment>
-        <translation>Creaza fisier HTML de descriere</translation>
+        <translation>Creează fișier HTML de descriere</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="53"/>
@@ -1654,25 +1654,25 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/OutputTab.ui" line="71"/>
         <source>Append a number to avoid file overwrite (001, 002, ...)</source>
         <comment>IDC_APPENDNUMBER</comment>
-        <translation>Adauga un numar pentru a evita suprascrierea fisierelor (001,002,...)</translation>
+        <translation>Adaugă un număr pentru a evita suprascrierea fișierelor (001,002,...)</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="94"/>
         <source>Create Output file in the folder of the reference frame</source>
         <comment>IDC_USEREFERENCEFRAMEFOLDER</comment>
-        <translation>Creeaza fisierul Output in directorul cadrului de referinta</translation>
+        <translation>Creează fișierul Rezultat în directorul cadrului de referință</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="108"/>
         <source>Create Output file in the folder of the file list</source>
         <comment>IDC_USEFILELISTFOLDER</comment>
-        <translation>Creeaza fisierul Output in directorul listei de fisiere</translation>
+        <translation>Creează fișierul Rezultat în directorul listei de fișiere</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="122"/>
         <source>Create Output file in</source>
         <comment>IDC_USEANOTHERFOLDER</comment>
-        <translation>Creeaza fisierul Output in</translation>
+        <translation>Creează fișierul Rezultat în</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="132"/>
@@ -1683,18 +1683,18 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/OutputTab.ui" line="45"/>
         <source>Output File Name</source>
-        <translation>Nume fisier output</translation>
+        <translation>Nume fișier rezultat</translation>
     </message>
     <message>
         <location filename="../ui/OutputTab.ui" line="83"/>
         <source>Output Location</source>
-        <translation>Locatie Output</translation>
+        <translation>Locație Rezultat</translation>
     </message>
     <message>
         <location filename="../OutputTab.cpp" line="149"/>
         <source>Select Output Folder</source>
         <comment>IDS_SELECTOUTPUTFOLDER</comment>
-        <translation>Selecteaza director output</translation>
+        <translation>Selectează director rezultat</translation>
     </message>
 </context>
 <context>
@@ -1707,19 +1707,19 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/PostCalibration.ui" line="20"/>
         <source>Post Calibration Cosmetic settings</source>
-        <translation>Setari cosmetice postcalibrare</translation>
+        <translation>Setări cosmetice postcalibrare</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="87"/>
         <location filename="../ui/PostCalibration.ui" line="214"/>
         <source>Filter Size</source>
-        <translation>Marime filtru</translation>
+        <translation>Mărime filtru</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="27"/>
         <source>Detect and Clean remaining Hot Pixels</source>
         <comment>IDC_DETECTCLEANHOT</comment>
-        <translation>Detectia si eliminarea pixelilor hot ramasi</translation>
+        <translation>Detecția și eliminarea pixelilor fierbinți rămași</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="65"/>
@@ -1739,31 +1739,31 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/PostCalibration.ui" line="110"/>
         <location filename="../ui/PostCalibration.ui" line="237"/>
         <source>Detection Threshold</source>
-        <translation>Nivel detectie</translation>
+        <translation>Nivel detecție</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="160"/>
         <source>Detect and Clean remaining Cold Pixels</source>
         <comment>IDC_DETECTCLEANCOLD</comment>
-        <translation>Detectia si eliminarea pixelilor cold ramasi</translation>
+        <translation>Detecția și eliminarea pixelilor reci rămași</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="289"/>
         <source>Replace pixel value with</source>
         <comment>IDC_REPLACETEXT</comment>
-        <translation>Inlocuieste valoarea pixelului cu</translation>
+        <translation>Înlocuiește valoarea pixelului cu</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="327"/>
         <source>Test on first frame...</source>
         <comment>IDC_TESTCOSMETIC</comment>
-        <translation>Testeaza pe primul cadru...</translation>
+        <translation>Testează pe primul cadru...</translation>
     </message>
     <message>
         <location filename="../ui/PostCalibration.ui" line="339"/>
         <source>Save an image showing the cleaned pixels for each light frame</source>
         <comment>IDC_SAVEDELTAIMAGE</comment>
-        <translation>Salveaza o imagine indicand pixelii indepartati pentru fiecare cadru light</translation>
+        <translation>Salvează o imagine indicând pixelii îndepărtați pentru fiecare cadru light</translation>
     </message>
     <message>
         <location filename="../PostCalibration.cpp" line="37"/>
@@ -1857,12 +1857,12 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="14"/>
         <source>RAW/FITS Digital Development Process Settings</source>
-        <translation>Setari Proces Developare Digitala RAW/FITS</translation>
+        <translation>Setări Proces Developare Digitală RAW/FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="24"/>
         <source>Raw Files</source>
-        <translation>Fisiere RAW</translation>
+        <translation>Fișiere RAW</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
@@ -1873,7 +1873,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="76"/>
         <source>Red Scale</source>
-        <translation>Valoare rosu</translation>
+        <translation>Valoare roșu</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="99"/>
@@ -1888,12 +1888,12 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="137"/>
         <source>No White Balance Processing</source>
-        <translation>Fara procesare White Balance</translation>
+        <translation>Fără procesare White Balance</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="144"/>
         <source>Use Camera White Balance</source>
-        <translation>Foloseste White Balance camera</translation>
+        <translation>Folosește White Balance camera</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
@@ -1905,46 +1905,46 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
         <location filename="../ui/RawDDPSettings.ui" line="543"/>
         <source>Bilinear Interpolation</source>
-        <translation>Interpolare biliniara</translation>
+        <translation>Interpolare biliniară</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
         <location filename="../ui/RawDDPSettings.ui" line="563"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
-        <translation>Interpolare omogenitate adaptiva directata</translation>
+        <translation>Interpolare omogenitate adaptivă orientată</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
         <location filename="../ui/RawDDPSettings.ui" line="583"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
-        <translation>Foloseste algoritmul de drizzle Bayer (fara interpoare, fara debayerizare)</translation>
+        <translation>Folosește algoritmul de drizzle Bayer (fără interpoare, fără debayerizare)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
         <location filename="../ui/RawDDPSettings.ui" line="599"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
-        <translation>Aceasta optiune utilizeaza matricea Bayer asa cum este ea. Nu se face nici o interpolare si fiecarui pixel  se acorda componenta primara din matrice.</translation>
+        <translation>Această opțiune utilizează matricea Bayer așa cum este ea. Nu se face nici o interpolare și fiecărui pixel i se acordă componenta primară din matrice.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
         <location filename="../ui/RawDDPSettings.ui" line="641"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
-        <translation>Aceasta optiune foloseste matricea Bayer pentru a creea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultata este redusa la jumatate.</translation>
+        <translation>Această opțiune folosește matricea Bayer pentru a crea un super pixel din fiecare grup de 4 pixeli. Imaginea rezultată este redusă la jumătate.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="289"/>
         <source>Set the black point to 0</source>
-        <translation>Seteaza valoarea de negru la 0</translation>
+        <translation>Setează valoarea de negru la 0</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="297"/>
         <source>FITS Files</source>
-        <translation>Fisiere FITS</translation>
+        <translation>Fișiere FITS</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="318"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Fisierele FITS de 16 bit sunt fisiere RAW create cu un DSLR sau cu o camera CCD color.&lt;br&gt;Lăsați &lt;span style=&quot;font-style: italic;&quot;&gt;bifat&lt;/span&gt; pentru a încerca detectarea automată pe baza cuvintelor cheie FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Fișierele FITS de 16 bit sunt fișiere RAW create cu un DSLR sau cu o cameră CCD color.&lt;br&gt;Lăsați &lt;span style=&quot;font-style: italic;&quot;&gt;bifat&lt;/span&gt; pentru a încerca detectarea automată pe baza cuvintelor cheie FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="341"/>
@@ -1955,12 +1955,12 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
         <location filename="../ui/RawDDPSettings.ui" line="381"/>
         <source>Colour Adjustment</source>
-        <translation>Ajustari culori</translation>
+        <translation>Ajustări culori</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Red scale</source>
-        <translation>Valoare rosu</translation>
+        <translation>Valoare roșu</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="470"/>
@@ -1976,12 +1976,12 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
         <location filename="../ui/RawDDPSettings.ui" line="625"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
-        <translation>Creeaza super pixeli din matricea bruta Bayer (fara interpolare)</translation>
+        <translation>Creează super pixeli din matricea brută Bayer (fără interpolare)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="657"/>
         <source>Force use of unsigned values when signed values are stored</source>
-        <translation>Forteaza utilizarea valorilor fara semn (pozitive) atunci cand valorile cu semn sunt salvate</translation>
+        <translation>Forțează utilizarea valorilor fără semn (pozitive) atunci când valorile cu semn sunt salvate</translation>
     </message>
     <message>
         <location filename="../RawDDPSettings.cpp" line="85"/>
@@ -2014,24 +2014,24 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="14"/>
         <source>Recommended Settings</source>
-        <translation>Setari recomandate</translation>
+        <translation>Setări recomandate</translation>
     </message>
     <message>
         <location filename="../ui/RecommendedSettings.ui" line="41"/>
         <source>Show all recommendations</source>
-        <translation>Afiseaza toate recomandarile</translation>
+        <translation>Afișează toate recomandările</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="164"/>
         <source>These are recommended settings.&lt;br&gt;They may not work in all the situations but they are often a good starting point.</source>
         <comment>IDS_RECO_DISCLAIMER</comment>
-        <translation>Aceastea sunt setarile recomandate.&lt;br&gt;Este posibil sa nu fie corecte in toate situatiile dar sunt un bun punct de pornire.</translation>
+        <translation>Aceastea sunt setările recomandate.&lt;br&gt;Este posibil să nu fie corecte în toate situațiile dar sunt un bun punct de pornire.</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="168"/>
         <source>Click on the proposed link to change the setting accordingly</source>
         <comment>IDS_RECO_CLICKTOSET</comment>
-        <translation>Clic pe link-ul propus pentru a modifica setarile</translation>
+        <translation>Click pe link-ul propus pentru a modifica setările</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="172"/>
@@ -2044,13 +2044,13 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="264"/>
         <source>If you are processing narrowband images (especially H%1)</source>
         <comment>IDS_RECO_RAWNARROWBAND_REASON</comment>
-        <translation>Daca procesati imagini in banda ingusta (in special H%1)</translation>
+        <translation>Dacă procesați imagini în banda îngustă (în special H%1)</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="237"/>
         <source>Use super-pixel mode</source>
         <comment>IDS_RECO_RAWNARROWBAND_TEXT</comment>
-        <translation>Foloseste modul super-pixel</translation>
+        <translation>Folosește modul super-pixel</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="269"/>
@@ -2058,49 +2058,49 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="683"/>
         <source>Use Per Channel background calibration</source>
         <comment>IDS_RECO_USEPERCHANNEL</comment>
-        <translation>Utilizeaza calibrarea fundalului pe canal</translation>
+        <translation>Utilizează calibrarea fundalului pe canal</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="291"/>
         <source>You are processing long exposure and possibly good SNR images</source>
         <comment>IDS_RECO_RAWHIGHSNR_REASON</comment>
-        <translation>Procesati imagini de durata lunga cu un SNR probabil ridicat</translation>
+        <translation>Procesați imagini de durată lungă cu un SNR probabil ridicat</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="294"/>
         <source>Use AHD debayering</source>
         <comment>IDS_RECO_RAWHIGHSNR_TEXT</comment>
-        <translation>Utilizeaza de-bayerizarea AHD</translation>
+        <translation>Utilizează de-bayerizarea AHD</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="300"/>
         <source>You are processing short exposure and probably low SNR images</source>
         <comment>IDS_RECO_RAWLOWSNR_REASON</comment>
-        <translation>Procesati imagini de durata scurta cu un SNR probabil scazut</translation>
+        <translation>Procesați imagini de durată scurtă cu un SNR probabil scăzut</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="303"/>
         <source>Use Bilinear debayering</source>
         <comment>IDS_RECO_RAWLOWSNR_TEXT</comment>
-        <translation>Utilizeaza de-bayerizarea biliniara</translation>
+        <translation>Utilizează de-bayerizarea biliniară</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="346"/>
         <source>You are using bias frames</source>
         <comment>IDS_RECO_RAWSETBP_REASON</comment>
-        <translation>Folositi cadre bias</translation>
+        <translation>Folosiți cadre bias</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="349"/>
         <source>Set the black point to 0 to improve the calibration</source>
         <comment>IDS_RECO_RAWSETBP_TEXT</comment>
-        <translation>Seteaza punctul de negru pentru a imbunatati calibrarea</translation>
+        <translation>Setează punctul de negru pentru a îmbunătăți calibrarea</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="358"/>
         <source>You are using flat frames without bias frames</source>
         <comment>IDS_RECO_RAWCLEARBP_REASON</comment>
-        <translation>Folositi cadre Flat fara cadre Bias</translation>
+        <translation>Folosiți cadre Flat fără cadre Bias</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="361"/>
@@ -2112,51 +2112,51 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="381"/>
         <source>You are using a low star detection threshold</source>
         <comment>IDS_RECO_MEDIANFILTER_REASON</comment>
-        <translation>Folositi un prag scazut de detectie a stelelor</translation>
+        <translation>Folosiți un prag scăzut de detecție a stelelor</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="384"/>
         <source>Apply a Median Filter before registering the images to reduce the noise and improve the star detection</source>
         <comment>IDS_RECO_MEDIANFILTER_TEXT</comment>
-        <translation>Aplica un filtru median inainte de inregistrarea imaginilor pentru a reduce zgomotul si a imbunatati detectia stelelor</translation>
+        <translation>Aplică un filtru median înainte de înregistrarea imaginilor pentru a reduce zgomotul și a îmbunătăți detecția stelelor</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="401"/>
         <source>If you are using a modified DSLR</source>
         <comment>IDS_RECO_MODDEDDSLR_REASON</comment>
-        <translation>Daca folositi un DSLR modificat</translation>
+        <translation>Dacă folosiți un DSLR modificat</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="404"/>
         <source>Reset all white balance settings</source>
         <comment>IDS_RECO_MODDEDDSLR_TEXT</comment>
-        <translation>Reseteaza toate setarile de white balance</translation>
+        <translation>Resetează toate setările de white balance</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="441"/>
         <source>You are trying to create a comet image with star trails</source>
         <comment>IDS_RECO_COMETSTARTRAILS_REASON</comment>
-        <translation>Creati o imagine cometa cu dare de stele</translation>
+        <translation>Creați o imagine cometă cu dâre de stele</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="444"/>
         <location filename="../RecommendedSettings.cpp" line="514"/>
         <source>Use Average combination method</source>
         <comment>IDS_RECO_USEAVERAGECOMBINE</comment>
-        <translation>Utilizeaza metoda combinatiei medii</translation>
+        <translation>Utilizează metoda combinației medii</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="455"/>
         <source>You are trying to create a comet image aligned on the stars and the comet from %1 light frame(s)</source>
         <comment>IDS_RECO_COMETSTARSMANY_REASON</comment>
-        <translation>Creati o imagine tip cometa aliniata pe stele si cometa folosind %1 cadre light</translation>
+        <translation>Creați o imagine tip cometă aliniată cu stelele și cometa din %1 cadre light</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="462"/>
         <location filename="../RecommendedSettings.cpp" line="495"/>
         <source>Use Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMACLIPPING</comment>
-        <translation>Utilizeaza metoda combinatei Kappa-Sigma-Clipping</translation>
+        <translation>Utilizează metoda combinatei Kappa-Sigma-Clipping</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="470"/>
@@ -2166,7 +2166,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="618"/>
         <source>Use Median combination method</source>
         <comment>IDS_RECO_USEMEDIAN</comment>
-        <translation>Utilizeaza metoda combinatiei Mediane</translation>
+        <translation>Utilizează metoda combinației Mediane</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="488"/>
@@ -2178,13 +2178,13 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="504"/>
         <source>Use Auto Adaptive Weighted Average combination method</source>
         <comment>IDS_RECO_USEAUTOADAPTIVEAVERAGE</comment>
-        <translation>Utilizati metoda combinatiei medie ponderate auto adaptiva</translation>
+        <translation>Utilizați metoda combinației medie ponderată auto adaptivă</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="538"/>
         <source>You are creating a master dark from %1 dark frame(s)</source>
         <comment>IDS_RECO_DARK_REASON</comment>
-        <translation>Creati un cadru Master Dark folosind %1 cadre dark</translation>
+        <translation>Creați un cadru Master Dark folosind %1 cadre dark</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="545"/>
@@ -2192,13 +2192,13 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="609"/>
         <source>Use Median Kappa-Sigma clipping combination method</source>
         <comment>IDS_RECO_USESIGMAMEDIAN</comment>
-        <translation>Utilizeaza metoda combinatiei mediane Kappa-Sigma-Clipping</translation>
+        <translation>Utilizează metoda combinației Mediană Kappa-Sigma-Clipping</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="570"/>
         <source>You are creating a master bias from %1 bias frame(s)</source>
         <comment>IDS_RECO_BIAS_REASON</comment>
-        <translation>Creati un cadru Master Bias din %1 cadre bias</translation>
+        <translation>Creați un cadru Master Bias din %1 cadre bias</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="602"/>
@@ -2210,25 +2210,25 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="634"/>
         <source>If the resulting images look too gray</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATION_REASON</comment>
-        <translation>Daca imaginea rezultata este prea gri</translation>
+        <translation>Dacă imaginea rezultată este prea gri</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="657"/>
         <source>If the color balance in the resulting images is hard to fix in post-processing</source>
         <comment>IDS_RECO_RGBCALIBRATION_REASON</comment>
-        <translation>Daca balansul de culoare in imaginea rezultata este greu de corectat in post-procesare</translation>
+        <translation>Dacă balansul de culoare în imaginea rezultată este greu de corectat în post-procesare</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="660"/>
         <source>Use RGB background calibration</source>
         <comment>IDS_RECO_USERGBCALIBRATION</comment>
-        <translation>Utilizeaza calibrarea fundalului RGB</translation>
+        <translation>Utilizează calibrarea fundalului RGB</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="680"/>
         <source>You are stacking grayscale images and they may have slightly different background values</source>
         <comment>IDS_RECO_PERCHANNELCALIBRATIONGRAY_REASON</comment>
-        <translation>Stackati imagini A/N si pot sa aiba valori diferite ale nivelului de fundal</translation>
+        <translation>Stivuiți imagini A/N ce ar putea avea valori diferite pentru nivelul de fundal</translation>
     </message>
     <message>
         <location filename="../RecommendedSettings.cpp" line="767"/>
@@ -2240,7 +2240,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
         <location filename="../RecommendedSettings.cpp" line="828"/>
         <source>You must first add images to the list and check them.</source>
         <comment>IDS_RECO_PREREQUISITES</comment>
-        <translation>Trebuie sa adaugati imagini la lista si sa le selectati.</translation>
+        <translation>Trebuie să adăugați imagini la listă si să le bifați.</translation>
     </message>
 </context>
 <context>
@@ -2319,7 +2319,7 @@ Probabil că puteți obține alta sau puteți descărca versiunea finală de pe 
     <message>
         <location filename="../ui/RegisterSettings.ui" line="14"/>
         <source>Register Settings</source>
-        <translation>Inregistreaza setarile</translation>
+        <translation>Înregistrează setările</translation>
     </message>
     <message>
         <location filename="../ui/RegisterSettings.ui" line="60"/>
