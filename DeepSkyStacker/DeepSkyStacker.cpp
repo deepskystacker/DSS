@@ -65,7 +65,7 @@ using namespace Gdiplus;
 #include "qwinhost.h"
 
 #include "DeepSkyStacker.h"
-#include "DeepStack.h"
+//#include "DeepStack.h"
 #include "picturelist.h"
 
 
@@ -74,15 +74,16 @@ using namespace Gdiplus;
 #include "ui_StackingDlg.h"
 #include "StackRecap.h"
 #include "SetUILanguage.h"
-#include "StackWalker.h"
+//#include "StackWalker.h"
 #include <ZExcept.h>
 #if !defined(_WINDOWS)
 #include <execinfo.h>
 #endif
+#include "ExceptionHandling.h"
 
-#if defined(_WINDOWS)
-#include "APIHook.h"
-#endif
+//#if defined(_WINDOWS)
+//#include "APIHook.h"
+//#endif
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -96,18 +97,18 @@ bool	g_bShowRefStars = false;
 #include <string.h>
 #include <stdio.h>
 
-class DSSStackWalker : public StackWalker
-{
-public:
-	DSSStackWalker() : StackWalker() {}
-protected:
-	virtual void OnOutput(LPCSTR text)
-	{
-		fprintf(stderr, text);
-		ZTRACE_RUNTIME(text);
-		StackWalker::OnOutput(text);
-	};
-};
+//class DSSStackWalker : public StackWalker
+//{
+//public:
+//	DSSStackWalker() : StackWalker() {}
+//protected:
+//	virtual void OnOutput(LPCSTR text)
+//	{
+//		fprintf(stderr, text);
+//		ZTRACE_RUNTIME(text);
+//		StackWalker::OnOutput(text);
+//	};
+//};
 
 bool	hasExpired()
 {
@@ -549,182 +550,182 @@ using namespace std;
 QTranslator theQtTranslator;
 QTranslator theAppTranslator;
 
-char* backPocket{ nullptr };
-constexpr int backPocketSize{ 1024 * 1024 };
+std::unique_ptr<std::uint8_t[]> backPocket;
+constexpr size_t backPocketSize{ 1024 * 1024 };
 
 static char const* global_program_name;
 
-namespace
-{
-	void writeOutput(const char* text)
-	{
-		fputs(text, stderr);
-		ZTRACE_RUNTIME(text);
-	};
+//namespace
+//{
+//	void writeOutput(const char* text)
+//	{
+//		fputs(text, stderr);
+//		ZTRACE_RUNTIME(text);
+//	};
+//
+//#if defined(_WINDOWS)
+//#define EXCEPTION_CASE(code) \
+// case code: \
+//  exceptionString = #code "\n"; \
+//  break
+//
+//	DSSStackWalker sw;
+//
+//	LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo)
+//	{
+//		const char* exceptionString = NULL;
+//
+//		switch (ExceptionInfo->ExceptionRecord->ExceptionCode)
+//		{
+//		EXCEPTION_CASE(EXCEPTION_ACCESS_VIOLATION);
+//		EXCEPTION_CASE(EXCEPTION_ARRAY_BOUNDS_EXCEEDED);
+//		EXCEPTION_CASE(EXCEPTION_BREAKPOINT);
+//		EXCEPTION_CASE(EXCEPTION_DATATYPE_MISALIGNMENT);
+//		EXCEPTION_CASE(EXCEPTION_FLT_DENORMAL_OPERAND);
+//		EXCEPTION_CASE(EXCEPTION_FLT_DIVIDE_BY_ZERO);
+//		EXCEPTION_CASE(EXCEPTION_FLT_INEXACT_RESULT);
+//		EXCEPTION_CASE(EXCEPTION_FLT_INVALID_OPERATION);
+//		EXCEPTION_CASE(EXCEPTION_FLT_OVERFLOW);
+//		EXCEPTION_CASE(EXCEPTION_FLT_STACK_CHECK);
+//		EXCEPTION_CASE(EXCEPTION_FLT_UNDERFLOW);
+//		EXCEPTION_CASE(EXCEPTION_ILLEGAL_INSTRUCTION);
+//		EXCEPTION_CASE(EXCEPTION_IN_PAGE_ERROR);
+//		EXCEPTION_CASE(EXCEPTION_INT_DIVIDE_BY_ZERO);
+//		EXCEPTION_CASE(EXCEPTION_INT_OVERFLOW);
+//		EXCEPTION_CASE(EXCEPTION_INVALID_DISPOSITION);
+//		EXCEPTION_CASE(EXCEPTION_NONCONTINUABLE_EXCEPTION);
+//		EXCEPTION_CASE(EXCEPTION_PRIV_INSTRUCTION);
+//		EXCEPTION_CASE(EXCEPTION_SINGLE_STEP);
+//		EXCEPTION_CASE(EXCEPTION_STACK_OVERFLOW);
+//		case 0xE06D7363:
+//			exceptionString = "Unhandled C++ Exception ...\n";
+//			break;
+//		default:
+//			exceptionString = "Error: Unrecognized Exception\n";
+//			break;
+//		}
+//		writeOutput(exceptionString);
+//		fflush(stderr);
+//		/* If this is a stack overflow then we can't walk the stack, so just show
+//		  where the error happened */
+//		if (EXCEPTION_STACK_OVERFLOW != ExceptionInfo->ExceptionRecord->ExceptionCode)
+//		{
+//			sw.ShowCallstack();
+//		}
+//		else
+//		{
+//			char buffer[128]{};
+//			snprintf(buffer, sizeof(buffer), "Stack Overflow Exception address: %p\n", (void*)ExceptionInfo->ContextRecord->Rip);
+//			writeOutput(buffer);
+//		}
+//		DeepSkyStacker::instance()->close();
+//		return EXCEPTION_EXECUTE_HANDLER;
+//	}
+//
+//	LONG WINAPI RedirectedSetUnhandledExceptionFilter(EXCEPTION_POINTERS* /*ExceptionInfo*/)
+//	{
+//		// When the CRT calls SetUnhandledExceptionFilter with NULL parameter, our handler will not get removed.
+//		return 0;
+//	}
+//#else
+//	/* Resolve symbol name and source location given the path to the executable
+//	   and an address */
+//	int addr2line(char const* const program_name, void const* const addr)
+//	{
+//		char addr2line_cmd[512] { 0 };
+//
+//		/* have addr2line map the address to the relevant line in the code */
+//	#ifdef __APPLE__
+//	  /* apple does things differently... */
+//		sprintf(addr2line_cmd, "atos -o %.256s %p", program_name, addr);
+//	#else
+//		sprintf(addr2line_cmd, "addr2line -f -p -e %.256s %p", program_name, addr);
+//	#endif
+//
+//		/* This will print a nicely formatted string specifying the
+//		   function and source line of the address */
+//		FILE* in;
+//		char buff[512];
+//		// is this the check for command execution exited with not 0?
+//		if (!(in = popen(addr2line_cmd, "r"))) {
+//			// I want to return the exit code and error message too if any
+//			return 1;
+//		}
+//		// this part echoes the output of the command that's executed
+//		while (fgets(buff, sizeof(buff), in) != NULL)
+//		{
+//			writeOutput(buff);
+//		}
+//		return WEXITSTATUS(pclose(in));
+//	}
+//
+//	constexpr size_t MAX_STACK_FRAMES{ 64 };
+//	static void* stack_traces[MAX_STACK_FRAMES];
+//	void posix_print_stack_trace()
+//	{
+//		int i, trace_size = 0;
+//		char** messages = (char**)NULL;
+//		char buffer[1024]{};	// buffer for error message
+//
+//
+//		trace_size = backtrace(stack_traces, MAX_STACK_FRAMES);
+//		messages = backtrace_symbols(stack_traces, trace_size);
+//
+//		/* skip the first couple stack frames (as they are this function and
+//		   our handler) and also skip the last frame as it's (always?) junk. */
+//		   // for (i = 3; i < (trace_size - 1); ++i)
+//		   // we'll use this for now so you can see what's going on
+//		for (i = 0; i < trace_size; ++i)
+//		{
+//			if (addr2line(global_program_name, stack_traces[i]) != 0)
+//			{
+//				snprintf(buffer, sizeof(buffer)/sizeof(char),
+//					"  error determining line # for: %s\n", messages[i]);
+//				writeOutput(buffer);
+//			}
+//
+//		}
+//		if (messages) { free(messages); }
+//	}
+//
+//	void signalHandler(int signal)
+//	{
+//		if (backPocket)
+//		{
+//			free(backPocket);
+//			backPocket = nullptr;
+//		}
+//
+//		char name[8]{};
+//		switch (signal)
+//		{
+//		case SIGINT:
+//			strcpy(name, "SIGINT");
+//			break;
+//		case SIGILL:
+//			strcpy(name, "SIGILL");
+//			break;
+//		case SIGFPE:
+//			strcpy(name, "SIGFPE");
+//			break;
+//		case SIGSEGV:
+//			strcpy(name, "SIGSEGV");
+//			break;
+//		case SIGTERM:
+//			strcpy(name, "SIGTERM");
+//			break;
+//		default:
+//			snprintf(name, sizeof(name)/sizeof(char), "%d", signal);
+//		}
+//
+//		ZTRACE_RUNTIME("In signalHandler(%s)", name);
+//
+//		posix_print_stack_trace();
+//		DeepSkyStacker::instance()->close();
+//	}
+//#endif
+//}
 
-#if defined(_WINDOWS)
-#define EXCEPTION_CASE(code) \
- case code: \
-  exceptionString = #code "\n"; \
-  break
-
-	DSSStackWalker sw;
-
-	LONG WINAPI windows_exception_handler(EXCEPTION_POINTERS* ExceptionInfo)
-	{
-		const char* exceptionString = NULL;
-
-		switch (ExceptionInfo->ExceptionRecord->ExceptionCode)
-		{
-		EXCEPTION_CASE(EXCEPTION_ACCESS_VIOLATION);
-		EXCEPTION_CASE(EXCEPTION_ARRAY_BOUNDS_EXCEEDED);
-		EXCEPTION_CASE(EXCEPTION_BREAKPOINT);
-		EXCEPTION_CASE(EXCEPTION_DATATYPE_MISALIGNMENT);
-		EXCEPTION_CASE(EXCEPTION_FLT_DENORMAL_OPERAND);
-		EXCEPTION_CASE(EXCEPTION_FLT_DIVIDE_BY_ZERO);
-		EXCEPTION_CASE(EXCEPTION_FLT_INEXACT_RESULT);
-		EXCEPTION_CASE(EXCEPTION_FLT_INVALID_OPERATION);
-		EXCEPTION_CASE(EXCEPTION_FLT_OVERFLOW);
-		EXCEPTION_CASE(EXCEPTION_FLT_STACK_CHECK);
-		EXCEPTION_CASE(EXCEPTION_FLT_UNDERFLOW);
-		EXCEPTION_CASE(EXCEPTION_ILLEGAL_INSTRUCTION);
-		EXCEPTION_CASE(EXCEPTION_IN_PAGE_ERROR);
-		EXCEPTION_CASE(EXCEPTION_INT_DIVIDE_BY_ZERO);
-		EXCEPTION_CASE(EXCEPTION_INT_OVERFLOW);
-		EXCEPTION_CASE(EXCEPTION_INVALID_DISPOSITION);
-		EXCEPTION_CASE(EXCEPTION_NONCONTINUABLE_EXCEPTION);
-		EXCEPTION_CASE(EXCEPTION_PRIV_INSTRUCTION);
-		EXCEPTION_CASE(EXCEPTION_SINGLE_STEP);
-		EXCEPTION_CASE(EXCEPTION_STACK_OVERFLOW);
-		case 0xE06D7363:
-			exceptionString = "Unhandled C++ Exception ...\n";
-			break;
-		default:
-			exceptionString = "Error: Unrecognized Exception\n";
-			break;
-		}
-		writeOutput(exceptionString);
-		fflush(stderr);
-		/* If this is a stack overflow then we can't walk the stack, so just show
-		  where the error happened */
-		if (EXCEPTION_STACK_OVERFLOW != ExceptionInfo->ExceptionRecord->ExceptionCode)
-		{
-			sw.ShowCallstack();
-		}
-		else
-		{
-			char buffer[128]{};
-			snprintf(buffer, sizeof(buffer), "Stack Overflow Exception address: %p\n", (void*)ExceptionInfo->ContextRecord->Rip);
-			writeOutput(buffer);
-		}
-		DeepSkyStacker::instance()->close();
-		return EXCEPTION_EXECUTE_HANDLER;
-	}
-
-	LONG WINAPI RedirectedSetUnhandledExceptionFilter(EXCEPTION_POINTERS* /*ExceptionInfo*/)
-	{
-		// When the CRT calls SetUnhandledExceptionFilter with NULL parameter
-		// our handler will not get removed.
-		return 0;
-	}
-#else
-	/* Resolve symbol name and source location given the path to the executable
-	   and an address */
-	int addr2line(char const* const program_name, void const* const addr)
-	{
-		char addr2line_cmd[512] { 0 };
-
-		/* have addr2line map the address to the relevant line in the code */
-	#ifdef __APPLE__
-	  /* apple does things differently... */
-		sprintf(addr2line_cmd, "atos -o %.256s %p", program_name, addr);
-	#else
-		sprintf(addr2line_cmd, "addr2line -f -p -e %.256s %p", program_name, addr);
-	#endif
-
-		/* This will print a nicely formatted string specifying the
-		   function and source line of the address */
-		FILE* in;
-		char buff[512];
-		// is this the check for command execution exited with not 0?
-		if (!(in = popen(addr2line_cmd, "r"))) {
-			// I want to return the exit code and error message too if any
-			return 1;
-		}
-		// this part echoes the output of the command that's executed
-		while (fgets(buff, sizeof(buff), in) != NULL)
-		{
-			writeOutput(buff);
-		}
-		return WEXITSTATUS(pclose(in));
-	}
-
-	constexpr size_t MAX_STACK_FRAMES{ 64 };
-	static void* stack_traces[MAX_STACK_FRAMES];
-	void posix_print_stack_trace()
-	{
-		int i, trace_size = 0;
-		char** messages = (char**)NULL;
-		char buffer[1024]{};	// buffer for error message
-
-
-		trace_size = backtrace(stack_traces, MAX_STACK_FRAMES);
-		messages = backtrace_symbols(stack_traces, trace_size);
-
-		/* skip the first couple stack frames (as they are this function and
-		   our handler) and also skip the last frame as it's (always?) junk. */
-		   // for (i = 3; i < (trace_size - 1); ++i)
-		   // we'll use this for now so you can see what's going on
-		for (i = 0; i < trace_size; ++i)
-		{
-			if (addr2line(global_program_name, stack_traces[i]) != 0)
-			{
-				snprintf(buffer, sizeof(buffer)/sizeof(char),
-					"  error determining line # for: %s\n", messages[i]);
-				writeOutput(buffer);
-			}
-
-		}
-		if (messages) { free(messages); }
-	}
-
-	void signalHandler(int signal)
-	{
-		if (backPocket)
-		{
-			free(backPocket);
-			backPocket = nullptr;
-		}
-
-		char name[8]{};
-		switch (signal)
-		{
-		case SIGINT:
-			strcpy(name, "SIGINT");
-			break;
-		case SIGILL:
-			strcpy(name, "SIGILL");
-			break;
-		case SIGFPE:
-			strcpy(name, "SIGFPE");
-			break;
-		case SIGSEGV:
-			strcpy(name, "SIGSEGV");
-			break;
-		case SIGTERM:
-			strcpy(name, "SIGTERM");
-			break;
-		default:
-			snprintf(name, sizeof(name)/sizeof(char), "%d", signal);
-		}
-
-		ZTRACE_RUNTIME("In signalHandler(%s)", name);
-
-		posix_print_stack_trace();
-		DeepSkyStacker::instance()->close();
-	}
-#endif
-}
 int main(int argc, char* argv[])
 {
 	ZFUNCTRACE_RUNTIME();
@@ -738,8 +739,8 @@ int main(int argc, char* argv[])
 	// Create a storage cushion (aka back pocket storage)
 	// and ensure that it is actually touched.
 	//
-	backPocket = static_cast<char*>(malloc(backPocketSize));
-	for (auto p = backPocket; p < backPocket + backPocketSize; p += 4096)
+	backPocket = std::make_unique<std::uint8_t[]>(backPocketSize);
+	for (auto* p = backPocket.get(); p < backPocket.get() + backPocketSize; p += 4096)
 	{
 		*p = '\xff';
 	}
@@ -759,26 +760,28 @@ int main(int argc, char* argv[])
 	//
 	// Set things up to capture terminal errors
 	//
-#if defined(_WINDOWS)
-	::SetUnhandledExceptionFilter(windows_exception_handler);
+	setDssExceptionHandling();
+
+//#if defined(_WINDOWS)
+//	::SetUnhandledExceptionFilter(windows_exception_handler);
 
 	//
 	// Prevent anyone else from taking over our exception filter
 	//
-	CAPIHook apiHook("kernel32.dll",
-		"SetUnhandledExceptionFilter",
-		(PROC)RedirectedSetUnhandledExceptionFilter);
+//	CAPIHook apiHook("kernel32.dll",
+//		"SetUnhandledExceptionFilter",
+//		(PROC)RedirectedSetUnhandledExceptionFilter);
 
-#else
+//#else
 	//
 	// Set up to handle signals
 	//
-	std::signal(SIGINT, signalHandler);
-	std::signal(SIGILL, signalHandler);
-	std::signal(SIGFPE, signalHandler);
-	std::signal(SIGSEGV, signalHandler);
-	std::signal(SIGTERM, signalHandler);
-#endif
+//	std::signal(SIGINT, signalHandler);
+//	std::signal(SIGILL, signalHandler);
+//	std::signal(SIGFPE, signalHandler);
+//	std::signal(SIGSEGV, signalHandler);
+//	std::signal(SIGTERM, signalHandler);
+//#endif
 
 	if (hasExpired())
 		return FALSE;
@@ -894,11 +897,6 @@ int main(int argc, char* argv[])
 	}
 	catch (std::exception& e)
 	{
-		if (backPocket)
-		{
-			free(backPocket);
-			backPocket = nullptr;
-		}
 		ZTRACE_RUNTIME("std::exception caught: %s", e.what());
 
 		QString errorMessage(e.what());
@@ -910,11 +908,6 @@ int main(int argc, char* argv[])
 	}
 	catch (CException& e)
 	{
-		if (backPocket)
-		{
-			free(backPocket);
-			backPocket = nullptr;
-		}
 		constexpr unsigned int msglen{ 255 };
 		TCHAR message[msglen]{ 0x00 };
 		e.GetErrorMessage(&message[0], msglen);
@@ -925,11 +918,6 @@ int main(int argc, char* argv[])
 	}
 	catch (ZException& ze)
 	{
-		if (backPocket)
-		{
-			free(backPocket);
-			backPocket = nullptr;
-		}
 
 		ZTRACE_RUNTIME("ZException %s thrown from: %s Function: %s() Line: %d\n\n%s",
 			ze.name(),
@@ -959,12 +947,6 @@ int main(int argc, char* argv[])
 	}
 	catch (...)
 	{
-		if (backPocket)
-		{
-			free(backPocket);
-			backPocket = nullptr;
-		}
-
 		ZTRACE_RUNTIME("Unknown exception caught");
 
 		QString errorMessage("Unknown exception caught");
@@ -974,10 +956,6 @@ int main(int argc, char* argv[])
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
 
-	}
-	if (backPocket)
-	{
-		free(backPocket); backPocket = nullptr;
 	}
 	theApp.ExitInstance();
 	return result;
