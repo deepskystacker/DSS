@@ -28,14 +28,15 @@ namespace {
 
 	DSSStackWalker sw;
 
-	thread_local char printBuffer[128];
+	thread_local char printBuffer[192];
 
-	const char* printException(const char* text, const std::uint32_t exceptionCode, const size_t threadId)
+	const auto printException = [](const char* text, const std::uint32_t exceptionCode, const size_t threadId, const void* rip, const auto* excInfo) -> const char*
 	{
-		auto printExc = [text, exceptionCode, threadId](const char* excName) -> const char*
+		auto printExc = [text, exceptionCode, threadId, rip, excInfo](const char* excName) -> const char*
 		{
 			constexpr size_t maxSz = sizeof(printBuffer);
-			snprintf(printBuffer, maxSz, "%s Thread %" PRIx64 " ExCode 0x%08x %s\n", text, threadId, exceptionCode, excName);
+			const char* info = (exceptionCode == STATUS_ACCESS_VIOLATION || exceptionCode == STATUS_IN_PAGE_ERROR) ? ((excInfo[0] & 0x01) == 0 ? "READ" : "WRITE") : ("");
+			snprintf(printBuffer, maxSz, "%s Thread %" PRIx64 ", ExCode 0x%08x, RIP %p: %s %s\n", text, threadId, exceptionCode, rip, excName, info);
 			return printBuffer;
 		};
 		switch (exceptionCode)
@@ -81,10 +82,12 @@ namespace {
 		constexpr auto returnCode = EXCEPTION_CONTINUE_SEARCH; // should show the error pop-up message box
 		const EXCEPTION_RECORD* exc = pExc->ExceptionRecord;
 		const std::uint32_t excCode = exc->ExceptionCode;
+		const void* rip = exc->ExceptionAddress;
+		const auto* excInfo = exc->ExceptionInformation;
 		const auto thisThreadId = std::this_thread::get_id();
 		const size_t myThreadId = std::hash<std::thread::id>{}(thisThreadId);
 
-		if (const char* str = printException("ExH - ", excCode, myThreadId); str != nullptr)
+		if (const char* str = printException("ExH -", excCode, myThreadId, rip, excInfo); str != nullptr)
 			writeOutput(str);
 		else // don't care about the exception
 			return returnCode;
@@ -104,7 +107,7 @@ namespace {
 		{
 			if (currentThreadId == thisThreadId) // Exception while tracing the stack -> there's nothing we can do.
 			{
-				if (const char* str = printException("Second exception! ", excCode, myThreadId); str != nullptr)
+				if (const char* str = printException("Second exception!", excCode, myThreadId, rip, excInfo); str != nullptr)
 					writeOutput(str);
 				return returnCode;
 			}
