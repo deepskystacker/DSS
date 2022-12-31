@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw is free software; you can redistribute it and/or modify
  it under the terms of the one of two licenses as you choose:
@@ -40,6 +40,18 @@ const double LibRaw_constants::prophoto_rgb[3][3] = {
     {0.098368, 0.873465, 0.028169},
     {0.016879, 0.117663, 0.865457}};
 const double LibRaw_constants::aces_rgb[3][3] = {
-    {0.432996, 0.375380, 0.189317},
-    {0.089427, 0.816523, 0.102989},
-    {0.019165, 0.118150, 0.941914}};
+// Coffin's values (commented out) are not adapted from ACES "D60-like" WP to D65
+//     {0.432996, 0.375380, 0.189317},
+//     {0.089427, 0.816523, 0.102989},
+//     {0.019165, 0.118150, 0.941914}};
+    {0.43968015, 0.38295299, 0.17736686},
+    {0.08978964, 0.81343316, 0.09677734},
+    {0.01754827, 0.11156156, 0.87089017}};
+const double LibRaw_constants::dcip3d65_rgb[3][3] = {
+    {0.822488, 0.177511, 0.000000},
+    {0.033200, 0.966800, 0.000000},
+    {0.017089, 0.072411, 0.910499}};
+const double LibRaw_constants::rec2020_rgb[3][3] = {
+    {0.627452, 0.329249, 0.043299},
+    {0.069109, 0.919531, 0.011360},
+    {0.016398, 0.088030, 0.895572}};

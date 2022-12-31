@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw uses code from dcraw.c -- Dave Coffin's raw photo decoder,
  dcraw.c is copyright 1997-2018 by Dave Coffin, dcoffin a cybercom o net.
@@ -18,7 +18,7 @@
 
 #include "../../internal/dcraw_defs.h"
 
-void LibRaw::parseSigmaMakernote (int base, int uptag, unsigned dng_writer) {
+void LibRaw::parseSigmaMakernote (int base, int /*uptag*/, unsigned /*dng_writer*/) {
 unsigned wb_table1 [] = {
   LIBRAW_WBI_Auto, LIBRAW_WBI_Daylight, LIBRAW_WBI_Shade, LIBRAW_WBI_Cloudy,
   LIBRAW_WBI_Tungsten, LIBRAW_WBI_Fluorescent, LIBRAW_WBI_Flash,
@@ -60,9 +60,6 @@ unsigned wb_table1 [] = {
 void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
 {
 
-  if (imgdata.params.raw_processing_options & LIBRAW_PROCESSING_SKIP_MAKERNOTES)
-    return;
-
   if (metadata_blocks++ > LIBRAW_MAX_METADATA_BLOCKS)
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
 
@@ -96,7 +93,7 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
 
   unsigned entries, tag, type, len, save, c;
 
-  uchar *CanonCameraInfo;
+  uchar *CanonCameraInfo = NULL;
   unsigned lenCanonCameraInfo = 0;
   unsigned typeCanonCameraInfo = 0;
 
@@ -119,7 +116,7 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
   uchar *table_buf_0x940e;
   ushort table_buf_0x940e_len = 0;
 
-  if (!strcmp(buf, "OLYMPUS") || !strcmp(buf, "PENTAX ") ||
+  if (!strcmp(buf, "OLYMPUS") || !strcmp(buf, "PENTAX ") || !strncmp(buf,"OM SYS",6)||
       (!strncmp(make, "SAMSUNG", 7) && (dng_writer == CameraDNG)))
   {
     base = ftell(ifp) - 10;
@@ -127,13 +124,14 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
     order = get2();
     if (buf[0] == 'O')
       get2();
+    else if (buf[0] == 'P')
+      is_PentaxRicohMakernotes = 1;
   }
   else if (is_PentaxRicohMakernotes && (dng_writer == CameraDNG))
   {
     base = ftell(ifp) - 10;
     fseek(ifp, -4, SEEK_CUR);
     order = get2();
-    is_PentaxRicohMakernotes = 1;
   }
   else if (!strncmp(buf, "SONY", 4) ||
            !strcmp(buf, "Panasonic"))
@@ -177,6 +175,16 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
         !strncasecmp(model, "HV", 2))))
     is_Sony = 1;
 
+  if (!is_Olympus &&
+      (!strncmp(make, "OLYMPUS", 7) || !strncmp(make, "OM Digi", 7) ||
+      (!strncasecmp(make, "CLAUSS", 6) && !strncasecmp(model, "piX 5oo", 7)))) {
+    is_Olympus = 1;
+    OlympusDNG_SubDirOffsetValid =
+          strncmp(model, "E-300", 5) && strncmp(model, "E-330", 5) &&
+          strncmp(model, "E-400", 5) && strncmp(model, "E-500", 5) &&
+          strncmp(model, "E-1", 3);
+  }
+
   morder = order;
   while (entries--)
   {
@@ -212,8 +220,8 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
         typeCanonCameraInfo = type;
       }
 
-      else if (tag == 0x0010)
-      { // Canon ModelID
+      else if (tag == 0x0010) // Canon ModelID
+      {
         unique_id = get4();
         setCanonBodyFeatures(unique_id);
         if (lenCanonCameraInfo)
@@ -238,28 +246,31 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
         imHassy.SensorCode = getint(type);
       } else if ((tag == 0x0015) && tagtypeIs(LIBRAW_EXIFTAG_TYPE_ASCII)) {
         stmread (imHassy.SensorUnitConnector, len, ifp);
+        for (int i=0; i<(int)len; i++) {
+          if(!isalnum(imHassy.SensorUnitConnector[i]) &&
+             (imHassy.SensorUnitConnector[i]!=' ')    &&
+             (imHassy.SensorUnitConnector[i]!='/')    &&
+             (imHassy.SensorUnitConnector[i]!='-')) {
+            imHassy.SensorUnitConnector[0] = 0;
+            break;
+          }
+        }
       } else if (tag == 0x0016) {
         imHassy.CoatingCode = getint(type);
       } else if ((tag == 0x002a) &&
                  tagtypeIs(LIBRAW_EXIFTAG_TYPE_SRATIONAL) &&
-                 (len == 12)) {
+                 (len == 12) &&
+                 imHassy.SensorUnitConnector[0]) {
         FORC4 for (int i = 0; i < 3; i++)
                 imHassy.mnColorMatrix[c][i] = getreal(type);
 
-      } else if (tag == 0x0031) {
+      } else if ((tag == 0x0031) &&
+                 imHassy.SensorUnitConnector[0]) {
         imHassy.RecommendedCrop[0] = getint(type);
         imHassy.RecommendedCrop[1] = getint(type);
       }
 
-    } else if (!strncmp(make, "OLYMPUS", 7) ||
-             (!strncasecmp(make, "CLAUSS", 6) &&
-              !strncasecmp(model, "piX 5oo", 7)))
-    {
-
-      int SubDirOffsetValid =
-          strncmp(model, "E-300", 5) && strncmp(model, "E-330", 5) &&
-          strncmp(model, "E-400", 5) && strncmp(model, "E-500", 5) &&
-          strncmp(model, "E-1", 3);
+    } else if (is_Olympus) {
 
       if ((tag == 0x2010) || (tag == 0x2020) || (tag == 0x2030) ||
           (tag == 0x2031) || (tag == 0x2040) || (tag == 0x2050) ||
@@ -270,70 +281,24 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
         parse_makernote_0xc634(base, tag, dng_writer);
       }
 
-      if (!SubDirOffsetValid &&
+      if (!OlympusDNG_SubDirOffsetValid &&
           ((len > 4) ||
            ((tagtypeIs(LIBRAW_EXIFTAG_TYPE_SHORT) ||
             tagtypeIs(LIBRAW_EXIFTAG_TYPE_SSHORT)) && (len > 2)) ||
            ((tagtypeIs(LIBRAW_EXIFTAG_TYPE_LONG) ||
              tagtypeIs(LIBRAW_EXIFTAG_TYPE_SLONG)) && (len > 1)) ||
            tagtypeIs(LIBRAW_EXIFTAG_TYPE_RATIONAL) ||
-           (type > LIBRAW_EXIFTAG_TYPE_SLONG)))
+           (type > LIBRAW_EXIFTAG_TYPE_SLONG))) {
         goto skip_Oly_broken_tags;
-
-      else if ((tag >= 0x20100000) && (tag <= 0x2010ffff))
-        parseOlympus_Equipment((tag & 0x0000ffff), type, len, AdobeDNG);
-
-      else if ((tag >= 0x20200000) && (tag <= 0x2020ffff))
-        parseOlympus_CameraSettings(base, (tag & 0x0000ffff), type, len,
-                                    AdobeDNG);
-
-      else if ((tag == 0x20300108) || (tag == 0x20310109)) {
-        imOly.ColorSpace = get2();
-        switch (imOly.ColorSpace) {
-        case 0:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_sRGB;
-          break;
-        case 1:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_AdobeRGB;
-          break;
-        case 2:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_ProPhotoRGB;
-          break;
-        default:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_Unknown;
-          break;
-        }
-
-      } else if ((tag >= 0x20400000) && (tag <= 0x2040ffff))
-        parseOlympus_ImageProcessing((tag & 0x0000ffff), type, len, AdobeDNG);
-
-      else if ((tag >= 0x30000000) && (tag <= 0x3000ffff))
-        parseOlympus_RawInfo((tag & 0x0000ffff), type, len, AdobeDNG);
-
-      else
-        switch (tag)
-        {
-        case 0x0207:
-          getOlympus_CameraType2();
-          break;
-        case 0x1002:
-          ilm.CurAp = libraw_powf64l(2.0f, getreal(type) / 2);
-          break;
-        case 0x1007:
-          imCommon.SensorTemperature = (float)get2();
-          break;
-        case 0x1008:
-          imCommon.LensTemperature = (float)get2();
-          break;
-        case 0x20501500:
-          getOlympus_SensorTemperature(len);
-          break;
-        }
-
+      }
+      else {
+        parseOlympusMakernotes(base, tag, type, len, AdobeDNG);
+      }
     skip_Oly_broken_tags:;
     }
 
-    else if (!strncmp(make, "PENTAX", 6) || !strncmp(model, "PENTAX", 6) ||
+    else if (!strncmp(make, "PENTAX", 6)  ||
+             !strncmp(model, "PENTAX", 6) ||
              is_PentaxRicohMakernotes)
     {
       parsePentaxMakernotes(base, tag, type, len, dng_writer);
@@ -348,12 +313,15 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
     else if (is_Sony)
     {
       parseSonyMakernotes(
-          base, tag, type, len, AdobeDNG, table_buf_0x0116,
-          table_buf_0x0116_len, table_buf_0x2010, table_buf_0x2010_len,
-          table_buf_0x9050, table_buf_0x9050_len, table_buf_0x9400,
-          table_buf_0x9400_len, table_buf_0x9402, table_buf_0x9402_len,
-          table_buf_0x9403, table_buf_0x9403_len, table_buf_0x9406,
-          table_buf_0x9406_len, table_buf_0x940c, table_buf_0x940c_len,
+          base, tag, type, len, AdobeDNG,
+          table_buf_0x0116, table_buf_0x0116_len,
+          table_buf_0x2010, table_buf_0x2010_len,
+          table_buf_0x9050, table_buf_0x9050_len,
+          table_buf_0x9400, table_buf_0x9400_len,
+          table_buf_0x9402, table_buf_0x9402_len,
+          table_buf_0x9403, table_buf_0x9403_len,
+          table_buf_0x9406, table_buf_0x9406_len,
+          table_buf_0x940c, table_buf_0x940c_len,
           table_buf_0x940e, table_buf_0x940e_len);
     }
   next:
@@ -365,9 +333,6 @@ void LibRaw::parse_makernote_0xc634(int base, int uptag, unsigned dng_writer)
 
 void LibRaw::parse_makernote(int base, int uptag)
 {
-
-  if (imgdata.params.raw_processing_options & LIBRAW_PROCESSING_SKIP_MAKERNOTES)
-    return;
 
   if (metadata_blocks++ > LIBRAW_MAX_METADATA_BLOCKS)
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
@@ -420,7 +385,7 @@ void LibRaw::parse_makernote(int base, int uptag)
   unsigned i, wb[4] = {0, 0, 0, 0};
   short morder, sorder = order;
 
-  uchar *CanonCameraInfo;
+  uchar *CanonCameraInfo = 0;;
   unsigned lenCanonCameraInfo = 0;
   unsigned typeCanonCameraInfo = 0;
   imCanon.wbi = 0;
@@ -460,6 +425,8 @@ void LibRaw::parse_makernote(int base, int uptag)
       wb[0] = wb[2];
       wb[2] = wb[1];
       wb[1] = wb[3];
+	  if (feof(ifp))
+		  break;
       wb[3] = get2();
       if (wb[1] == 256 && wb[3] == 256 && wb[0] > 256 && wb[0] < 640 &&
           wb[2] > 256 && wb[2] < 640)
@@ -468,11 +435,13 @@ void LibRaw::parse_makernote(int base, int uptag)
     goto quit;
   }
 
-  if (!strcmp(buf, "OLYMPUS") ||
+  if (!strcmp(buf, "OLYMPUS") || !strncmp(buf, "OM SYS",6) ||
       !strcmp(buf, "PENTAX "))
   {
     base = ftell(ifp) - 10;
     fseek(ifp, -2, SEEK_CUR);
+	if (buf[1] == 'M')
+		get4();
     order = get2();
     if (buf[0] == 'O')
       get2();
@@ -518,6 +487,12 @@ void LibRaw::parse_makernote(int base, int uptag)
       base = ftell(ifp);
   }
 
+  if (!is_Olympus &&
+      (!strncasecmp(make, "Olympus", 7) || !strncmp(make, "OM Digi", 7) ||
+      (!strncasecmp(make, "CLAUSS", 6) && !strncasecmp(model, "piX 5oo", 7)))) {
+    is_Olympus = 1;
+  }
+
   if (!is_Sony &&
       (!strncasecmp(make, "SONY", 4) ||
        !strncasecmp(make, "Konica", 6) ||
@@ -551,7 +526,6 @@ void LibRaw::parse_makernote(int base, int uptag)
     tag |= uptag << 16;
 
     INT64 _pos = ftell(ifp);
-    INT64 _pos2;
     if (len > 100 * 1024 * 1024)
 	goto next; // 100Mb tag? No!
     if (len > 8 && _pos + len > 2 * fsize)
@@ -607,7 +581,8 @@ void LibRaw::parse_makernote(int base, int uptag)
         {
           processCanonCameraInfo(unique_id, CanonCameraInfo, lenCanonCameraInfo,
                                  typeCanonCameraInfo, nonDNG);
-          free(CanonCameraInfo);
+	  if(CanonCameraInfo)
+            free(CanonCameraInfo);
           CanonCameraInfo = 0;
           lenCanonCameraInfo = 0;
         }
@@ -659,8 +634,8 @@ void LibRaw::parse_makernote(int base, int uptag)
 
     else if (is_Sony)
     {
-      if ((tag == 0xb028) && (len == 1) && tagtypeIs(LIBRAW_EXIFTAG_TYPE_LONG))
-      { // DSLR-A100
+      if ((tag == 0xb028) && (len == 1) && tagtypeIs(LIBRAW_EXIFTAG_TYPE_LONG)) // DSLR-A100
+      {
         if ((c = get4()))
         {
           fseek(ifp, c, SEEK_SET);
@@ -670,12 +645,15 @@ void LibRaw::parse_makernote(int base, int uptag)
       else
       {
         parseSonyMakernotes(
-            base, tag, type, len, nonDNG, table_buf_0x0116,
-            table_buf_0x0116_len, table_buf_0x2010, table_buf_0x2010_len,
-            table_buf_0x9050, table_buf_0x9050_len, table_buf_0x9400,
-            table_buf_0x9400_len, table_buf_0x9402, table_buf_0x9402_len,
-            table_buf_0x9403, table_buf_0x9403_len, table_buf_0x9406,
-            table_buf_0x9406_len, table_buf_0x940c, table_buf_0x940c_len,
+            base, tag, type, len, nonDNG,
+            table_buf_0x0116, table_buf_0x0116_len,
+            table_buf_0x2010, table_buf_0x2010_len,
+            table_buf_0x9050, table_buf_0x9050_len,
+            table_buf_0x9400, table_buf_0x9400_len,
+            table_buf_0x9402, table_buf_0x9402_len,
+            table_buf_0x9403, table_buf_0x9403_len,
+            table_buf_0x9406, table_buf_0x9406_len,
+            table_buf_0x940c, table_buf_0x940c_len,
             table_buf_0x940e, table_buf_0x940e_len);
       }
     }
@@ -689,8 +667,8 @@ void LibRaw::parse_makernote(int base, int uptag)
       else if ((tag == 0x002a) &&
                tagtypeIs(LIBRAW_EXIFTAG_TYPE_SRATIONAL) &&
                (len == 12)) {
-        FORC4 for (int i = 0; i < 3; i++)
-                imHassy.mnColorMatrix[c][i] = getreal(type);
+        FORC4 for (int ii = 0; ii < 3; ii++)
+                imHassy.mnColorMatrix[c][ii] = getreal(type);
 
       } else if (tag == 0x0031) {
         imHassy.RecommendedCrop[0] = getint(type);
@@ -715,112 +693,26 @@ void LibRaw::parse_makernote(int base, int uptag)
       }
     }
 
-    _pos2 = ftell(ifp);
-    if (!strncasecmp(make, "Olympus", 7) ||
-        (!strncasecmp(make, "CLAUSS", 6) && !strncasecmp(model, "piX 5oo", 7)))
-    {
+    if (is_Olympus) {
+      INT64 _pos2 = ftell(ifp);
       if ((tag == 0x2010) || (tag == 0x2020) || (tag == 0x2030) ||
           (tag == 0x2031) || (tag == 0x2040) || (tag == 0x2050) ||
           (tag == 0x3000))
       {
-        if (tagtypeIs(LIBRAW_EXIFTOOLTAGTYPE_binary))
-        {
+        if (tagtypeIs(LIBRAW_EXIFTOOLTAGTYPE_binary)) {
           parse_makernote(base, tag);
-        }
-        else if (tagtypeIs(LIBRAW_EXIFTAG_TYPE_IFD))
-        {
+
+        } else if (tagtypeIs(LIBRAW_EXIFTOOLTAGTYPE_ifd) ||
+                   tagtypeIs(LIBRAW_EXIFTOOLTAGTYPE_int32u)) {
           fseek(ifp, base + get4(), SEEK_SET);
           parse_makernote(base, tag);
         }
+
+      } else {
+        parseOlympusMakernotes(base, tag, type, len, nonDNG);
       }
-      else if (tag == 0x0207)
-      {
-        getOlympus_CameraType2();
-      }
-      else if ((tag == 0x0404) || (tag == 0x101a))
-      {
-        if (!imgdata.shootinginfo.BodySerial[0])
-          stmread(imgdata.shootinginfo.BodySerial, len, ifp);
-      }
-      else if (tag == 0x1002)
-      {
-        ilm.CurAp = libraw_powf64l(2.0f, getreal(type) / 2);
-      }
-      else if (tag == 0x1007)
-      {
-        imCommon.SensorTemperature = (float)get2();
-      }
-      else if (tag == 0x1008)
-      {
-        imCommon.LensTemperature = (float)get2();
-      }
-      else if ((tag == 0x1011) && strcmp(software, "v757-71"))
-      {
-        for (i = 0; i < 3; i++)
-        {
-          if (!imOly.ColorSpace)
-          {
-            FORC3 cmatrix[i][c] = ((short)get2()) / 256.0;
-          }
-          else
-          {
-            FORC3 imgdata.color.ccm[i][c] = ((short)get2()) / 256.0;
-          }
-        }
-      }
-      else if (tag == 0x1012)
-      {
-        FORC4 cblack[RGGB_2_RGBG(c)] = get2();
-      }
-      else if (tag == 0x1017)
-      {
-        cam_mul[0] = get2() / 256.0;
-      }
-      else if (tag == 0x1018)
-      {
-        cam_mul[2] = get2() / 256.0;
-      }
-      else if ((tag >= 0x20100000) && (tag <= 0x2010ffff))
-      {
-        parseOlympus_Equipment((tag & 0x0000ffff), type, len, nonDNG);
-      }
-      else if ((tag >= 0x20200000) && (tag <= 0x2020ffff))
-      {
-        parseOlympus_CameraSettings(base, (tag & 0x0000ffff), type, len,
-                                    nonDNG);
-      }
-      else if ((tag == 0x20300108) || (tag == 0x20310109))
-      {
-        imOly.ColorSpace = get2();
-        switch (imOly.ColorSpace) {
-        case 0:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_sRGB;
-          break;
-        case 1:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_AdobeRGB;
-          break;
-        case 2:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_ProPhotoRGB;
-          break;
-        default:
-          imCommon.ColorSpace = LIBRAW_COLORSPACE_Unknown;
-          break;
-        }
-      }
-      else if ((tag >= 0x20400000) && (tag <= 0x2040ffff))
-      {
-        parseOlympus_ImageProcessing((tag & 0x0000ffff), type, len, nonDNG);
-      }
-      else if (tag == 0x20501500)
-      {
-        getOlympus_SensorTemperature(len);
-      }
-      else if ((tag >= 0x30000000) && (tag <= 0x3000ffff))
-      {
-        parseOlympus_RawInfo((tag & 0x0000ffff), type, len, nonDNG);
-      }
+      fseek(ifp, _pos2, SEEK_SET);
     }
-    fseek(ifp, _pos2, SEEK_SET);
 
     if ((tag == 0x0015) &&
         tagtypeIs(LIBRAW_EXIFTAG_TYPE_ASCII) &&

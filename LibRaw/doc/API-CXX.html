@@ -17,10 +17,10 @@
               *rawfile[,INT64 bigfile_size])</a></li>
           <li><a href="#open_buffer">int LibRaw::open_buffer(void *buffer,
               size_t bufsize)</a></li>
-          <li><a href="#open_bayer">int
-              LibRaw::open_bayer(...)</a></li>
+          <li><a href="#open_bayer">int LibRaw::open_bayer(...)</a></li>
           <li><a href="#unpack">int LibRaw::unpack(void)</a></li>
           <li><a href="#unpack_thumb">int LibRaw::unpack_thumb(void)</a></li>
+          <li><a href="#unpack_thumb_ex">int LibRaw::unpack_thumb_ex(int)</a></li>
         </ul>
       </li>
       <li><a href="#utility">Auxiliary Functions</a>
@@ -50,6 +50,8 @@
           <li><a href="#setCancelFlag">void LibRaw::setCancelFlag()</a></li>
           <li><a href="#clearCancelFlag">void LibRaw::clearCancelFlag()</a></li>
           <li><a href="#subtract_black">int LibRaw::subtract_black()</a></li>
+          <li><a href="#adjust_to_raw_inset_crop">int
+              LibRaw::adjust_to_raw_inset_crop()</a></li>
           <li><a href="#floatingpoint">Support for Floating Point data</a></li>
           <li><a href="#ycc">Support for YCC formats</a></li>
           <li><a href="#recycle">void LibRaw::recycle_datastream(void)</a></li>
@@ -66,7 +68,6 @@
                   indication/interruption</a></li>
               <li><a href="#exif">User callback for exif/makernotes parser
                   routines</a></li>
-              <li><a href="#memerror">Out-of-Memory Notifier</a></li>
               <li><a href="#dataerror">File Read Error Notifier</a></li>
             </ul>
           </li>
@@ -141,9 +142,6 @@
     <pre>#include "libraw/libraw.h"<br>...<br><br>   LibRaw ImageProcessor(unsigned int flags=0);<br>...<br>    </pre>
     <p>Flags (several flags are combined via operator |, i.e., bitwise OR):</p>
     <ul>
-      <li><strong>LIBRAW_OPTIONS_NO_MEMERR_CALLBACK</strong>: do not set the
-        standard <a href="#callbacks">out-of-memory error handler</a> (standard
-        handler outputs the error report in stderr);</li>
       <li><strong>LIBRAW_OPTIONS_NO_DATAERR_CALLBACK</strong>: do not set the
         standard <a href="#callbacks">file read error handler</a> (standard
         handler outputs the error report in stderr).</li>
@@ -218,41 +216,47 @@
       negative (from the <a href="API-datastruct.html#LibRaw_errors">LibRaw
         error list</a>) if there has been an error situation within LibRaw.</p>
     <p><a name="open_bayer"></a></p>
-
-    <h3>int LibRaw::open_bayer(unsigned char *data, unsigned datalen,
-	  ushort _raw_width, ushort _raw_height, ushort _left_margin, ushort _top_margin,
-	  ushort _right_margin, ushort _bottom_margin,
-	  unsigned char procflags, unsigned char bayer_pattern, unsigned unused_bits, unsigned otherflags,
-	  unsigned black_level)</h3>
-    <p>Parameters:
-<ul>
-<li>data, datalen - buffer passed
-<li>_raw_width/_raw_height/*margin - image size and margins
-<li> procflags:
- <ul>
- <li>for 10-bit format:
-  <ul>
-   <li>1: "4 pixels in 5 bytes" packing is used
-   <li>0: "6 pixels in 8 bytes" packing is used
-  </ul>
- <li>for 16-bit format:
-  <ul>
-   <li>1: Big-endian data
-  </ul>
- </ul>
- <li>bayer_pattern: one of LIBRAW_OPENBAYER_RGGB,LIBRAW_OPENBAYER_BGGR,
-                          LIBRAW_OPENBAYER_GRBG,LIBRAW_OPENBAYER_GBRG
- <li>unused_bits: count of upper zero bits
- <li>otherflags:
-  <ul>
-      <li>Bit 1 - filter (average neighbors) for pixels with values of zero
-      <li>Bits 2-4 - the orientation of the image (0=do not rotate, 3=180, 5=90CCW, 6=90CW)
-  </ul>
- <li>black_level: file black level (it also may be specified via imgdata.params)
-</ul>
-    See samples/openbayer_sample.cpp for usage sample (note, this sample is 'sample only', suited for
-    Kodak KAI-0340 sensor, you'll need change open_bayer() params for your data).
-
+    <h3>int LibRaw::open_bayer(unsigned char *data, unsigned datalen, ushort
+      _raw_width, ushort _raw_height, ushort _left_margin, ushort _top_margin,
+      ushort _right_margin, ushort _bottom_margin, unsigned char procflags,
+      unsigned char bayer_pattern, unsigned unused_bits, unsigned otherflags,
+      unsigned black_level)</h3>
+    <p>Parameters: </p>
+    <ul>
+      <li>data, datalen - buffer passed </li>
+      <li>_raw_width/_raw_height/*margin - image size and margins </li>
+      <li> procflags:
+        <ul>
+          <li>for 10-bit format:
+            <ul>
+              <li>1: "4 pixels in 5 bytes" packing is used </li>
+              <li>0: "6 pixels in 8 bytes" packing is used </li>
+            </ul>
+          </li>
+          <li>for 16-bit format:
+            <ul>
+              <li>1: Big-endian data </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>bayer_pattern: one of LIBRAW_OPENBAYER_RGGB,LIBRAW_OPENBAYER_BGGR,
+        LIBRAW_OPENBAYER_GRBG,LIBRAW_OPENBAYER_GBRG </li>
+      <li>unused_bits: count of upper zero bits </li>
+      <li>otherflags:
+        <ul>
+          <li>Bit 1 - filter (average neighbors) for pixels with values of zero
+          </li>
+          <li>Bits 2-4 - the orientation of the image (0=do not rotate, 3=180,
+            5=90CCW, 6=90CW) </li>
+        </ul>
+      </li>
+      <li>black_level: file black level (it also may be specified via
+        imgdata.params) </li>
+    </ul>
+    See samples/openbayer_sample.cpp for usage sample (note, this sample is
+    'sample only', suited for Kodak KAI-0340 sensor, you'll need change
+    open_bayer() params for your data).
     <p><a name="unpack"></a></p>
     <h3>int LibRaw::unpack(void)</h3>
     <p>Unpacks the RAW files of the image, calculates the black level (not for
@@ -264,11 +268,15 @@
         code convention</a>: positive if any system call has returned an error,
       negative (from the <a href="API-datastruct.html#LibRaw_errors">LibRaw
         error list</a>) if there has been an error situation within LibRaw.</p>
-    <p><a name="unpack_thumb"></a></p>
+    <p><a name="unpack_thumb"></a><a name="unpack_thumb_ex"></a></p>
     <h3>int LibRaw::unpack_thumb(void)</h3>
-    <p>Reads (or unpacks) the image preview (thumbnail), placing the result into
-      the imgdata.thumbnail.thumb buffer.<br>
-      JPEG previews are placed into this buffer without any changes (with the
+    <h3>int LibRaw::unpack_thumb_ex(int i)</h3>
+    <p></p>
+    <p>unpack_thumb(): reads (or unpacks) the default (largest) image preview
+      (thumbnail), placing the result into the imgdata.thumbnail.thumb buffer.</p>
+    <p>unpack_thumb_ex(int i): reads i-th thumbnail (thumbnails list is
+      available in imgdata.thumbs_list structure).</p>
+    <p> JPEG previews are placed into this buffer without any changes (with the
       header etc.). Other preview formats are placed into the buffer in the form
       of the unpacked bitmap image (three components, 8 bits per component).<br>
       The thumbnail format is written to the imgdata.thumbnail.tformat field;
@@ -278,6 +286,8 @@
         code convention</a>: positive if any system call has returned an error,
       negative (from the <a href="API-datastruct.html#LibRaw_errors">LibRaw
         error list</a>) if there has been an error situation within LibRaw.</p>
+    <h3></h3>
+    <p></p>
     <p><a name="utility"></a></p>
     <h2>Auxiliary Functions</h2>
     <h3>Library version check</h3>
@@ -332,7 +342,7 @@
       decoder may work again.</p>
     <p><a name="COLOR"></a></p>
     <h4>int LibRaw::COLOR(int row, int col)</h4>
-    <p>This call returns pixel color (color component number) in bayer patter at
+    <p>This call returns pixel color (color component number) in bayer pattern at
       row,col. The returned value is in 0..3 range for 4-component Bayer (RGBG2,
       CMYG and so on) and in 0..2 range for 3-color data.</p>
     <p>Color indexes returned could be used as index in imgdata.idata.cdesc
@@ -340,7 +350,7 @@
     <p><a name="error_count"></a></p>
     <h4>int LibRaw::error_count()</h4>
     <p>This call returns count of non-fatal data errors (out of range, etc)
-      occured in unpack() stage.</p>
+      occurred in unpack() stage.</p>
     <p><a name="subtract_black"></a></p>
     <h4>int LibRaw::subtract_black()</h4>
     <p>This call will subtract black level values from RAW data (for suitable
@@ -354,6 +364,29 @@
         code convention</a>: positive if any system call has returned an error,
       negative (from the <a href="API-datastruct.html#LibRaw_errors">LibRaw
         error list</a>) if there has been an error situation within LibRaw.</p>
+    <a name="adjust_to_raw_inset_crop"></a>
+    <h4>int LibRaw::adjust_to_raw_inset_crop(unsigned mask, float maxcrop =
+      0.55f)</h4>
+    <p> Promotes imgdata.sizes.raw_inset_crops[] values to imgdata.sizes.*margin
+      and imgdata.sizes.width/height fields</p>
+    <p> Parameters<br>
+      mask: </p>
+    <ul>
+      <li>if bit 1 is set: prefer raw_inset_crops[1] </li>
+      <li>if bit 0 is set: prefer raw_inset_crops[0] </li>
+    </ul>
+    <p>maxcrop: limits crop to not less than (original width/height)*maxcrop; if
+      raw_inset_crops[i] data results in tighter crop, than this item is
+      ignored. </p>
+    <p>return value: index in raw_inset_crops[] used increased by one, so </p>
+    <ul>
+      <li>0: no changes made </li>
+      <li>1: [0]th data used </li>
+      <li>2: [1]th data used </li>
+    </ul>
+    <p>Note: this call SHOULD be used after LibRaw::unpack(), otherwise black
+      level calculation from masked area may be fooled resulting in wrong black
+      levels. </p>
     <p><a name="floatingpoint"></a></p>
     <h4>Support for floating point data</h4>
     <p>Libraw can read floating point DNG files (no other RAW formats may use
@@ -475,39 +508,6 @@
       <li>void *ifp - pointer to LibRaw_abstract_datastream, positioned to tag
         data</li>
     </ul>
-    <p>&nbsp;</p>
-    <p><a name="memerror"></a></p>
-    <h4>Out-of-Memory Notifier</h4>
-    <pre>        typedef void (* memory_callback)(void *callback_data,const char *file, const char *where);<br>        void LibRaw::set_memerror_handler(memory_callback func,void *callback_data);<br>    </pre>
-    <p>The user may set his or her own function called in the case of memory
-      shortage. It is a void function receiving two string parameters:</p>
-    <ul>
-      <li><strong>void *callback_data</strong> - void*-pointer, passed as 2nd
-        argument to set_progress_handler(). This pointer should be used to pass
-        additional data to callback (i.e. thread local data and so on).</li>
-      <li><strong>file</strong> is the name of the RAW file whose processing
-        evoked the out-of-memory error. This name <strong>can be NULL</strong>
-        if underlying data input layer does not know the name. So, if calling
-        application sets own callback, this callback should work with NULL file
-        name.</li>
-      <li><strong>where</strong> is the name of the function where memory
-        shortage occurred.</li>
-    </ul>
-    <p>The callback function is intended for information purposes: it notifies
-      the user or the program code that processing is impossible.</p>
-    <p>If the user does not set his or her own handler, the standard one (output
-      of error message in stderr) will be used.</p>
-    <p>One can set the null handler by passing NULL to set_memerror_handler;
-      then no notifier function will be called. The same effect can be achieved
-      by creating a LibRaw object with the LIBRAW_OPTIONS_NO_MEMERR_CALLBACK
-      flag in the contructor.</p>
-    <p>In the case of memory shortage, processing of the current file is
-      terminated and a notifier is called; all allocated resources are freed,
-      and <a href="#recycle">recycle()</a> is performed. The current call will
-      return LIBRAW_UNSUFFICIENT_MEMORY. <br>
-      At an attempt to continue data processing, all subsequent calls will
-      return LIBRAW_OUT_OF_ORDER_CALL. Processing of a new file may be started
-      in the usual way, by calling LibRaw::open_file().</p>
     <p><a name="dataerror"></a></p>
     <h4>File Read Error Notifier</h4>
     <pre>        typedef void (*data_callback)(void *callback_data,const char *file, const int offset);<br>        void LibRaw::set_dataerror_handler(data_callback func, void *callback_data); <br>    </pre>
@@ -530,10 +530,10 @@
       the user or the program code that processing is impossible.</p>
     <p>If the user does not set his or her own handler, the standard one (output
       of error message in stderr) will be used.</p>
-    <p>One can set the null handler by passing NULL to set_memerror_handler;
+    <p>One can set the null handler by passing NULL to set_dataerror_handler;
       then no notifier function will be called. The same effect can be achieved
       by creating a LibRaw object with the LIBRAW_OPTIONS_NO_DATAERR_CALLBACK
-      flag in the contructor.</p>
+      flag in the constructor.</p>
     <p>In the case of error in the input data, processing of the current file is
       terminated and a notifier is called; all allocated resources are freed,
       and <a href="#recycle">recycle()</a> is performed. The current call will
@@ -663,7 +663,7 @@
         image_width*(bit_per_pixel/8)*image_colors, but may be more if you wish
         to align image rows to, for example, 8 or 16 or 32 bytes to make CPU
         more happy.</li>
-      <li>int bgr - pixel copy order. RGB if bgr==0 and BGR overwise.</li>
+      <li>int bgr - pixel copy order. RGB if bgr==0 and BGR otherwise.</li>
     </ul>
     <p>The function returns an integer number in accordance with the <a href="API-notes.html#errors">error
         code convention</a>: positive if any system call has returned an error,
@@ -780,7 +780,7 @@
         This call is not implemented for <a href="#buffer_datastream">LibRaw_buffer_datastream</a>,
         so external JPEG processing is not possible when buffer datastream used.
         <br>
-        This functon should be implemented in real input class, base class call
+        This function should be implemented in real input class, base class call
         always return error. <br>
         Working implementation sample can be found in <a href="#file_datastream">LibRaw_file_datastream</a>
         implementation in <strong>libraw/libraw_datastream.h</strong> file.</dd>
@@ -830,7 +830,7 @@
     </dl>
     <p>All other class methods are <a href="#datastream_methods">described
         above</a>.<br>
-      This class implements all possble methods, including fname() and
+      This class implements all possible methods, including fname() and
       subfile_open().</p>
     <p><a name="bigfile_datastream"></a></p>
     <h4>class LibRaw_bigfile_datastream - file input interface</h4>
@@ -850,7 +850,7 @@
       interface which is limited to 2Gb on many systems.</p>
     <p>All other class methods are <a href="#datastream_methods">described
         above</a>.<br>
-      This class implements all possble methods, including fname() and
+      This class implements all possible methods, including fname() and
       subfile_open().</p>
     <p><a name="buffer_datastream"></a></p>
     <h4>class LibRaw_buffer_datastream - memory buffer input interface</h4>

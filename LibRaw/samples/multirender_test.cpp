@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * File: multirender_test.cpp
- * Copyright 2008-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2008-2021 LibRaw LLC (info@libraw.org)
  * Created: Jul 10, 2011
  *
  * LibRaw simple C++ API:  creates 8 different renderings from 1 source file.
@@ -46,7 +46,7 @@ int process_once(LibRaw &RawProcessor, int half_mode, int camera_wb,
 
   if (LIBRAW_SUCCESS != ret)
   {
-    fprintf(stderr, "Cannot do postpocessing on %s: %s\n", fname,
+    fprintf(stderr, "Cannot do postprocessing on %s: %s\n", fname,
             libraw_strerror(ret));
     return ret;
   }

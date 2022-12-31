@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
 
  LibRaw is free software; you can redistribute it and/or modify
@@ -14,6 +14,9 @@
  */
 
 #include "../../internal/libraw_cxx_defs.h"
+#ifdef USE_RAWSPEED3
+#include "rawspeed3_capi.h"
+#endif
 
 static void cleargps(libraw_gps_info_t *q)
 {
@@ -36,6 +39,7 @@ LibRaw::LibRaw(unsigned int flags) : memmgr(1024)
   ZERO(callbacks);
 
   _rawspeed_camerameta = _rawspeed_decoder = NULL;
+  _rawspeed3_handle = NULL;
   dnghost = NULL;
   dngnegative = NULL;
   dngimage = NULL;
@@ -47,10 +51,7 @@ LibRaw::LibRaw(unsigned int flags) : memmgr(1024)
                               // make_camera_metadata()
   _rawspeed_camerameta = static_cast<void *>(camerameta);
 #endif
-  callbacks.mem_cb = (flags & LIBRAW_OPIONS_NO_MEMERR_CALLBACK)
-                         ? NULL
-                         : &default_memory_callback;
-  callbacks.data_cb = (flags & LIBRAW_OPIONS_NO_DATAERR_CALLBACK)
+  callbacks.data_cb = (flags & LIBRAW_OPTIONS_NO_DATAERR_CALLBACK)
                           ? NULL
                           : &default_data_callback;
   callbacks.exif_cb = NULL; // no default callback
@@ -81,18 +82,17 @@ LibRaw::LibRaw(unsigned int flags) : memmgr(1024)
   imgdata.params.exp_shift = 1.0;
   imgdata.params.auto_bright_thr = LIBRAW_DEFAULT_AUTO_BRIGHTNESS_THRESHOLD;
   imgdata.params.adjust_maximum_thr = LIBRAW_DEFAULT_ADJUST_MAXIMUM_THRESHOLD;
-  imgdata.params.use_rawspeed = 1;
-  imgdata.params.use_dngsdk = LIBRAW_DNG_DEFAULT;
+  imgdata.rawparams.use_rawspeed = 1;
+  imgdata.rawparams.use_dngsdk = LIBRAW_DNG_DEFAULT;
   imgdata.params.no_auto_scale = 0;
   imgdata.params.no_interpolation = 0;
-  imgdata.params.raw_processing_options = LIBRAW_PROCESSING_DP2Q_INTERPOLATERG |
-                                          LIBRAW_PROCESSING_DP2Q_INTERPOLATEAF |
-                                          LIBRAW_PROCESSING_CONVERTFLOAT_TO_INT;
-  imgdata.params.sony_arw2_posterization_thr = 0;
-  imgdata.params.max_raw_memory_mb = LIBRAW_MAX_ALLOC_MB_DEFAULT;
+  imgdata.rawparams.specials = 0; /* was inverted : LIBRAW_PROCESSING_DP2Q_INTERPOLATERG |      LIBRAW_PROCESSING_DP2Q_INTERPOLATEAF; */
+  imgdata.rawparams.options = LIBRAW_RAWOPTIONS_CONVERTFLOAT_TO_INT;
+  imgdata.rawparams.sony_arw2_posterization_thr = 0;
+  imgdata.rawparams.max_raw_memory_mb = LIBRAW_MAX_ALLOC_MB_DEFAULT;
   imgdata.params.green_matching = 0;
-  imgdata.params.custom_camera_strings = 0;
-  imgdata.params.coolscan_nef_gamma = 1.0f;
+  imgdata.rawparams.custom_camera_strings = 0;
+  imgdata.rawparams.coolscan_nef_gamma = 1.0f;
   imgdata.parent_class = this;
   imgdata.progress_flags = 0;
   imgdata.color.dng_levels.baseline_exposure = -999.f;
@@ -109,6 +109,12 @@ LibRaw::~LibRaw()
 {
   recycle();
   delete tls;
+#ifdef USE_RAWSPEED3
+  if (_rawspeed3_handle)
+      rawspeed3_close(_rawspeed3_handle);
+  _rawspeed3_handle = NULL;
+#endif
+
 #ifdef USE_RAWSPEED
   if (_rawspeed_camerameta)
   {
@@ -137,6 +143,10 @@ void LibRaw::recycle()
 
   FREE(imgdata.image);
 
+  // explicit cleanup of afdata allocations; entire array is zeroed below
+  for (int i = 0; i < LIBRAW_AFDATA_MAXCOUNT; i++)
+      FREE(MN.common.afdata[i].AFInfoData);
+
   FREE(imgdata.thumbnail.thumb);
   FREE(libraw_internal_data.internal_data.meta_data);
   FREE(libraw_internal_data.output_data.histogram);
@@ -147,27 +157,45 @@ void LibRaw::recycle()
   FREE(imgdata.rawdata.raw_alloc);
   FREE(imgdata.idata.xmpdata);
 
+  parseCR3_Free();
+
 #undef FREE
 
   ZERO(imgdata.sizes);
-  imgdata.sizes.raw_inset_crop.cleft = 0xffff;
-  imgdata.sizes.raw_inset_crop.ctop = 0xffff;
+  imgdata.sizes.raw_inset_crops[0].cleft = imgdata.sizes.raw_inset_crops[1].cleft = 0xffff;
+  imgdata.sizes.raw_inset_crops[0].ctop  = imgdata.sizes.raw_inset_crops[1].ctop = 0xffff;
 
   ZERO(imgdata.idata);
-  ZERO(MN);
   ZERO(imgdata.color);
+  ZERO(imgdata.lens);
   ZERO(imgdata.other);
-  ZERO(imgdata.thumbnail);
   ZERO(imgdata.rawdata);
+  ZERO(imgdata.shootinginfo);
+  ZERO(imgdata.thumbnail);
+  ZERO(imgdata.thumbs_list);
+  ZERO(MN);
   cleargps(&imgdata.other.parsed_gps);
+  ZERO(libraw_internal_data);
+
+  imgdata.lens.makernotes.FocalUnits = 1;
+  imgdata.lens.makernotes.LensID = LIBRAW_LENS_NOT_SET;
+  imgdata.shootinginfo.DriveMode = -1;
+  imgdata.shootinginfo.FocusMode = -1;
+  imgdata.shootinginfo.MeteringMode = -1;
+  imgdata.shootinginfo.AFPoint = -1;
+  imgdata.shootinginfo.ExposureMode = -1;
+  imgdata.shootinginfo.ExposureProgram = -1;
+  imgdata.shootinginfo.ImageStabilization = -1;
+
   imgdata.color.dng_levels.baseline_exposure = -999.f;
   imgdata.color.dng_levels.LinearResponseLimit = 1.f;
+  imgdata.color.dng_color[0].illuminant =
+      imgdata.color.dng_color[1].illuminant = LIBRAW_WBI_None;
+  for (int i = 0; i < 4; i++) imgdata.color.dng_levels.analogbalance[i] = 1.0f;
 
-  MN.canon.SensorLeftBorder = -1;
-  MN.canon.SensorTopBorder = -1;
-
-  MN.nikon.SensorHighSpeedCrop.cleft = 0xffff;
-  MN.nikon.SensorHighSpeedCrop.ctop = 0xffff;
+  MN.canon.DefaultCropAbsolute.l = -1;
+  MN.canon.DefaultCropAbsolute.t = -1;
+  MN.canon.AutoLightingOptimizer =  3; // 'off' value
 
   MN.fuji.WB_Preset = 0xffff;
   MN.fuji.ExpoMidPointShift = -999.f;
@@ -178,54 +206,92 @@ void LibRaw::recycle()
   MN.fuji.AutoDynamicRange = 0xffff;
   MN.fuji.DRangePriority = 0xffff;
   MN.fuji.FocusMode = 0xffff;
-  MN.fuji.DriveMode = -1;
   MN.fuji.AFMode = 0xffff;
   MN.fuji.FocusPixel[0] = MN.fuji.FocusPixel[1] = 0xffff;
-  MN.fuji.ImageStabilization[0] =
-      MN.fuji.ImageStabilization[1] =
-      MN.fuji.ImageStabilization[2] = 0xffff;
+  MN.fuji.FocusSettings = 0xffffffff;
+  MN.fuji.AF_C_Settings = 0xffffffff;
+  MN.fuji.FocusWarning = 0xffff;
+  for (int i = 0; i < 3; i++) MN.fuji.ImageStabilization[i] = 0xffff;
+  MN.fuji.DriveMode = -1;
+  MN.fuji.ImageCount = -1;
+  MN.fuji.AutoBracketing = -1;
+  MN.fuji.SequenceNumber = -1;
+  MN.fuji.SeriesLength = -1;
+  MN.fuji.PixelShiftOffset[0] = MN.fuji.PixelShiftOffset[1] = -999.f;
 
-  MN.samsung.ColorSpace[0] = MN.samsung.ColorSpace[1] = -1;
-
-  MN.sony.CameraType = 0xffff;
-  MN.sony.real_iso_offset = 0xffff;
-  MN.sony.ImageCount3_offset = 0xffff;
-  MN.sony.ElectronicFrontCurtainShutter = 0xffff;
-  MN.sony.MinoltaCamID = 0xffffffff;
-  MN.sony.RAWFileType = 0xffff;
-  MN.sony.AFAreaModeSetting = 0xff;
-  MN.sony.FlexibleSpotPosition[0] =
-      MN.sony.FlexibleSpotPosition[1] = 0xffff;
-  MN.sony.AFPointSelected = 0xff;
-  MN.sony.LongExposureNoiseReduction = 0xffffffff;
-  MN.sony.Quality = 0xffffffff;
-  MN.sony.HighISONoiseReduction = 0xffff;
-  MN.sony.SonyRawFileType = 0xffff;
+  MN.hasselblad.nIFD_CM[0] = MN.hasselblad.nIFD_CM[1] = -1;
 
   MN.kodak.BlackLevelTop = 0xffff;
   MN.kodak.BlackLevelBottom = 0xffff;
   MN.kodak.ISOCalibrationGain = 1.0f;
 
-  MN.hasselblad.nIFD_CM[0] = MN.hasselblad.nIFD_CM[1] = -1;
+  MN.nikon.SensorHighSpeedCrop.cleft = 0xffff;
+  MN.nikon.SensorHighSpeedCrop.ctop = 0xffff;
 
-  imgdata.color.dng_color[0].illuminant =
-      imgdata.color.dng_color[1].illuminant = LIBRAW_WBI_None;
+  MN.olympus.FocusMode[0] = 0xffff;
+  MN.olympus.AutoFocus    = 0xffff;
+  MN.olympus.AFPoint      = 0xffff;
+  MN.olympus.AFResult     = 0xffff;
+  MN.olympus.AFFineTune   = 0xff;
+  for (int i = 0; i < 3; i++) {
+    MN.olympus.AFFineTuneAdj[i] = -32768;
+    MN.olympus.SpecialMode[i] = 0xffffffff;
+  }
+  MN.olympus.ZoomStepCount = 0xffff;
+  MN.olympus.FocusStepCount = 0xffff;
+  MN.olympus.FocusStepInfinity = 0xffff;
+  MN.olympus.FocusStepNear = 0xffff;
+  MN.olympus.FocusDistance = -999.0;
+  for (int i = 0; i < 4; i++) MN.olympus.AspectFrame[i] = 0xffff;
+  MN.olympus.StackedImage[0] = 0xffffffff;
 
-  for (int i = 0; i < 4; i++)
-    imgdata.color.dng_levels.analogbalance[i] = 1.0f;
+  MN.panasonic.LensManufacturer = 0xffffffff;
 
-  ZERO(libraw_internal_data);
-  ZERO(imgdata.lens);
-  imgdata.lens.makernotes.FocalUnits = 1;
-  imgdata.lens.makernotes.LensID = LIBRAW_LENS_NOT_SET;
-  ZERO(imgdata.shootinginfo);
-  imgdata.shootinginfo.DriveMode = -1;
-  imgdata.shootinginfo.FocusMode = -1;
-  imgdata.shootinginfo.MeteringMode = -1;
-  imgdata.shootinginfo.AFPoint = -1;
-  imgdata.shootinginfo.ExposureMode = -1;
-  imgdata.shootinginfo.ExposureProgram = -1;
-  imgdata.shootinginfo.ImageStabilization = -1;
+  MN.pentax.FocusMode[0] =
+    MN.pentax.FocusMode[1] = 0xffff;
+  MN.pentax.AFPointSelected[1] = 0xffff;
+  MN.pentax.AFPointSelected_Area = 0xffff;
+  MN.pentax.AFPointsInFocus = 0xffffffff;
+  MN.pentax.AFPointMode = 0xff;
+
+  MN.ricoh.AFStatus = 0xffff;
+  MN.ricoh.AFAreaMode = 0xffff;
+  MN.ricoh.WideAdapter = 0xffff;
+  MN.ricoh.CropMode = 0xffff;
+  MN.ricoh.NDFilter = 0xffff;
+  MN.ricoh.AutoBracketing = 0xffff;
+  MN.ricoh.MacroMode = 0xffff;
+  MN.ricoh.FlashMode = 0xffff;
+  MN.ricoh.FlashExposureComp = -999.0;
+  MN.ricoh.ManualFlashOutput = -999.0;
+
+  MN.samsung.ColorSpace[0] = MN.samsung.ColorSpace[1] = -1;
+
+  MN.sony.CameraType = LIBRAW_SONY_CameraType_UNKNOWN;
+  MN.sony.group2010 = 0;
+  MN.sony.real_iso_offset = 0xffff;
+  MN.sony.ImageCount3_offset = 0xffff;
+  MN.sony.MeteringMode_offset = 0xffff;
+  MN.sony.ExposureProgram_offset = 0xffff;
+  MN.sony.ReleaseMode2_offset = 0xffff;
+  MN.sony.ElectronicFrontCurtainShutter = 0xffffffff;
+  MN.sony.MinoltaCamID = 0xffffffff;
+  MN.sony.RAWFileType = 0xffff;
+  MN.sony.AFAreaModeSetting = 0xff;
+  MN.sony.AFAreaMode = 0xffff;
+  MN.sony.FlexibleSpotPosition[0] =
+      MN.sony.FlexibleSpotPosition[1] = 0xffff;
+  MN.sony.AFPointSelected = MN.sony.AFPointSelected_0x201e = 0xff;
+  MN.sony.AFTracking = 0xff;
+  MN.sony.FocusPosition = 0xffff;
+  MN.sony.LongExposureNoiseReduction = 0xffffffff;
+  MN.sony.Quality = 0xffffffff;
+  MN.sony.HighISONoiseReduction = 0xffff;
+  MN.sony.SonyRawFileType = 0xffff;
+  MN.sony.RawSizeType = 0xffff;
+  MN.sony.AFMicroAdjValue = 0x7f;
+  MN.sony.AFMicroAdjOn = -1;
+  MN.sony.AFMicroAdjRegisteredLenses = 0xff;
 
   _exitflag = 0;
 #ifdef USE_RAWSPEED
@@ -236,6 +302,10 @@ void LibRaw::recycle()
     delete d;
   }
   _rawspeed_decoder = 0;
+#endif
+#ifdef USE_RAWSPEED3
+  if (_rawspeed3_handle)
+      rawspeed3_release(_rawspeed3_handle);
 #endif
 #ifdef USE_DNGSDK
   if (dngnegative)
@@ -261,9 +331,10 @@ void LibRaw::recycle()
   memmgr.cleanup();
 
   imgdata.thumbnail.tformat = LIBRAW_THUMBNAIL_UNKNOWN;
+  libraw_internal_data.unpacker_data.thumb_format = LIBRAW_INTERNAL_THUMBNAIL_UNKNOWN;
   imgdata.progress_flags = 0;
 
-  load_raw = thumb_load_raw = 0;
+  load_raw =  0;
 
   tls->init();
 }

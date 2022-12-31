@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw uses code from dcraw.c -- Dave Coffin's raw photo decoder,
  dcraw.c is copyright 1997-2018 by Dave Coffin, dcoffin a cybercom o net.
@@ -49,7 +49,6 @@ void LibRaw::apply_profile(const char *input, const char *output)
     fread(&size, 4, 1, fp);
     fseek(fp, 0, SEEK_SET);
     oprof = (unsigned *)malloc(size = ntohl(size));
-    merror(oprof, "apply_profile()");
     fread(oprof, 1, size, fp);
     fclose(fp);
     if (!(hOutProfile = cmsOpenProfileFromMem(oprof, size)))

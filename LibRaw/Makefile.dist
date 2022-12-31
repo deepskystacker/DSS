@@ -13,6 +13,10 @@ CXX=g++
 #LDADD+=-L../RawSpeed/RawSpeed -lrawspeed -L/usr/local/lib -ljpeg -lxml2
 #RAWSPEED_DATA=../RawSpeed/data/cameras.xml
 
+# RawSpeed3 Support
+#CFLAGS+=-DUSE_RAWSPEED3 -DUSE_RAWSPEED_BITS -I./RawSpeed3/
+#LDADD+=-L../RawSpeed-v3/release -lrawspeed3 -L/usr/local/lib -ljpeg -lz
+
 # DNG SDK Support
 # CFLAGS+=-DUSE_DNGSDK -I../dng_sdk/source
 # LDADDD+=-L../dng_sdk/release -ldng -lXMPCore -ljpeg -lz
@@ -20,6 +24,10 @@ CXX=g++
 # Jasper support for RedCine
 #CFLAGS+=-DUSE_JASPER -I/usr/local/include
 #LDADD+=-L/usr/local/lib -ljasper
+
+# ZLIB support (FP dng)
+CFLAGS+=-DUSE_ZLIB
+LDADD+=-lz
 
 # JPEG support for lossy DNG
 #CFLAGS+=-DUSE_JPEG -I/usr/local/include
@@ -195,10 +203,6 @@ object/libraw_c_api.o: src/libraw_c_api.cpp
 	${CXX} -c -DLIBRAW_NOTHREADS  ${CFLAGS} -o object/libraw_c_api.o src/libraw_c_api.cpp
 object/libraw_c_api.mt.o: src/libraw_c_api.cpp
 	${CXX} -c ${CFLAGS} -o object/libraw_c_api.mt.o src/libraw_c_api.cpp
-object/libraw_cxx.o: src/libraw_cxx.cpp
-	${CXX} -c -DLIBRAW_NOTHREADS  ${CFLAGS} -o object/libraw_cxx.o src/libraw_cxx.cpp
-object/libraw_cxx.mt.o: src/libraw_cxx.cpp
-	${CXX} -c ${CFLAGS} -o object/libraw_cxx.mt.o src/libraw_cxx.cpp
 object/libraw_datastream.o: src/libraw_datastream.cpp
 	${CXX} -c -DLIBRAW_NOTHREADS  ${CFLAGS} -o object/libraw_datastream.o src/libraw_datastream.cpp
 object/libraw_datastream.mt.o: src/libraw_datastream.cpp

@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
 
  LibRaw is free software; you can redistribute it and/or modify
@@ -15,7 +15,7 @@
 
 #include "../../internal/dcraw_defs.h"
 
-void LibRaw::parseSamsungMakernotes(int base, unsigned tag, unsigned type,
+void LibRaw::parseSamsungMakernotes(int /*base*/, unsigned tag, unsigned type,
                                     unsigned len, unsigned dng_writer)
 {
   int i, c;

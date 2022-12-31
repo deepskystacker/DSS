@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
 
  LibRaw is free software; you can redistribute it and/or modify
@@ -53,6 +53,7 @@ void LibRaw::setPentaxBodyFeatures(unsigned long long id)
   case PentaxID_K_S1:
   case PentaxID_K_S2:
   case PentaxID_K_3_II:
+  case PentaxID_K_3_III:
   case PentaxID_K_70:
   case PentaxID_KP:
     ilm.CameraMount = LIBRAW_MOUNT_Pentax_K;
@@ -85,6 +86,7 @@ void LibRaw::setPentaxBodyFeatures(unsigned long long id)
     ilm.FocalType = LIBRAW_FT_ZOOM_LENS;
     break;
   case PentaxID_GR_III:
+  case PentaxID_GR_IIIx:
     ilm.CameraMount = LIBRAW_MOUNT_FixedLens;
     ilm.LensMount = LIBRAW_MOUNT_FixedLens;
     ilm.CameraFormat = LIBRAW_FORMAT_APSC;
@@ -233,11 +235,13 @@ void LibRaw::PentaxLensInfo(unsigned long long id, unsigned len) // tag 0x0207
   return;
 }
 
-void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
+void LibRaw::parsePentaxMakernotes(int /*base*/, unsigned tag, unsigned type,
                                    unsigned len, unsigned dng_writer)
 {
 
   int c;
+// printf ("==>> =%s= tag:0x%x, type: %d, len:%d\n", model, tag, type, len);
+
   if (tag == 0x0005)
   {
     unique_id = get4();
@@ -249,15 +253,29 @@ void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
   }
   else if (tag == 0x000d)
   {
-    imgdata.shootinginfo.FocusMode = imPentax.FocusMode = get2();
+    imgdata.shootinginfo.FocusMode = imPentax.FocusMode[0] = get2();
   }
   else if (tag == 0x000e)
   {
-    imgdata.shootinginfo.AFPoint = imPentax.AFPointSelected = get2();
+    imgdata.shootinginfo.AFPoint = imPentax.AFPointSelected[0] = get2();
+    if (len == 2)
+      imPentax.AFPointSelected_Area = get2();
   }
   else if (tag == 0x000f)
   {
-    imPentax.AFPointsInFocus = getint(type);
+    if (tagtypeIs(LIBRAW_EXIFTAG_TYPE_LONG))
+    {
+      imPentax.AFPointsInFocus = get4();
+      if (!imPentax.AFPointsInFocus) imPentax.AFPointsInFocus = 0xffffffff;
+      else imPentax.AFPointsInFocus_version = 3;
+    }
+    else if (tagtypeIs(LIBRAW_EXIFTAG_TYPE_SHORT))
+    {
+      imPentax.AFPointsInFocus = (unsigned) get2();
+      if (imPentax.AFPointsInFocus == 0x0000ffff)
+        imPentax.AFPointsInFocus = 0xffffffff;
+      else imPentax.AFPointsInFocus_version = 2;
+    }
   }
   else if (tag == 0x0010)
   {
@@ -310,13 +328,25 @@ void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
   }
   else if (tag == 0x0038)
   {
-    imgdata.sizes.raw_inset_crop.cleft = get2();
-    imgdata.sizes.raw_inset_crop.ctop = get2();
+    imgdata.sizes.raw_inset_crops[0].cleft = get2();
+    imgdata.sizes.raw_inset_crops[0].ctop = get2();
   }
   else if (tag == 0x0039)
   {
-    imgdata.sizes.raw_inset_crop.cwidth = get2();
-    imgdata.sizes.raw_inset_crop.cheight = get2();
+    imgdata.sizes.raw_inset_crops[0].cwidth = get2();
+    imgdata.sizes.raw_inset_crops[0].cheight = get2();
+  }
+  else if (tag == 0x003c)
+  {
+    if ((len == 4) && tagtypeIs(LIBRAW_EXIFTAG_TYPE_UNDEFINED)) {
+      imPentax.AFPointsInFocus = get4() & 0x7ff;
+      if (!imPentax.AFPointsInFocus) {
+        imPentax.AFPointsInFocus = 0xffffffff;
+      }
+      else {
+        imPentax.AFPointsInFocus_version = 1;
+      }
+    }
   }
   else if (tag == 0x003f)
   {
@@ -355,16 +385,16 @@ void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
     switch (a)
     {
     case 0:
-      imgdata.sizes.raw_inset_crop.aspect = LIBRAW_IMAGE_ASPECT_4to3;
+      imgdata.sizes.raw_aspect = LIBRAW_IMAGE_ASPECT_4to3;
       break;
     case 1:
-      imgdata.sizes.raw_inset_crop.aspect = LIBRAW_IMAGE_ASPECT_3to2;
+      imgdata.sizes.raw_aspect = LIBRAW_IMAGE_ASPECT_3to2;
       break;
     case 2:
-      imgdata.sizes.raw_inset_crop.aspect = LIBRAW_IMAGE_ASPECT_16to9;
+      imgdata.sizes.raw_aspect = LIBRAW_IMAGE_ASPECT_16to9;
       break;
     case 3:
-      imgdata.sizes.raw_inset_crop.aspect = LIBRAW_IMAGE_ASPECT_1to1;
+      imgdata.sizes.raw_aspect = LIBRAW_IMAGE_ASPECT_1to1;
       break;
     }
   }
@@ -383,11 +413,23 @@ void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
       FORC3 cmatrix[i][c] = ((short)get2()) / 8192.0;
   }
   else if (tag == 0x0205)
-  { // Pentax K-m has multiexposure set to 8 when no multi-exposure is in effect
-    if (len < 25)
+  {
+    if (imCommon.afcount < LIBRAW_AFDATA_MAXCOUNT)
     {
-      fseek(ifp, 10, SEEK_CUR);
-      imPentax.MultiExposure = fgetc(ifp) & 0x0f;
+      imCommon.afdata[imCommon.afcount].AFInfoData_tag = tag;
+      imCommon.afdata[imCommon.afcount].AFInfoData_order = order;
+      imCommon.afdata[imCommon.afcount].AFInfoData_length = len;
+      imCommon.afdata[imCommon.afcount].AFInfoData = (uchar *)malloc(imCommon.afdata[imCommon.afcount].AFInfoData_length);
+      fread(imCommon.afdata[imCommon.afcount].AFInfoData, imCommon.afdata[imCommon.afcount].AFInfoData_length, 1, ifp);
+      if ((len < 25) && (len >= 11))
+      {
+        imPentax.AFPointMode = (imCommon.afdata[imCommon.afcount].AFInfoData[3] >>4) & 0x0f;
+        imPentax.FocusMode[1] = imCommon.afdata[imCommon.afcount].AFInfoData[3] & 0x0f;
+        imPentax.AFPointSelected[1] = sget2(imCommon.afdata[imCommon.afcount].AFInfoData+4);
+// Pentax K-m has multiexposure set to 8 when no multi-exposure is in effect
+        imPentax.MultiExposure = imCommon.afdata[imCommon.afcount].AFInfoData[10] & 0x0f;
+      }
+      imCommon.afcount++;
     }
   }
   else if (tag == 0x0207)
@@ -399,11 +441,28 @@ void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
   {
     FORC4 icWBC[Pentax_wb_list1[tag - 0x020d]][RGGB_2_RGBG(c)] = get2();
   }
-
+  else if ((tag == 0x021d) && (len == 18) &&
+           tagtypeIs(LIBRAW_EXIFTAG_TYPE_UNDEFINED) && (dng_writer == nonDNG))
+  {
+    for (int i = 0; i < 3; i++)
+      FORC3 cmatrix[i][c] = ((short)get2()) / 8192.0;
+  }
+  else if (tag == 0x021f)
+  {
+    if ((unique_id != PentaxID_K_1)    &&
+        (unique_id != PentaxID_K_3)    &&
+        (unique_id != PentaxID_K_3_II) &&
+        (unique_id != PentaxID_K_1_Mark_II))
+    {
+      fseek (ifp, 0x0b, SEEK_CUR);
+      imPentax.AFPointsInFocus = (unsigned) fgetc(ifp);
+      if (!imPentax.AFPointsInFocus) imPentax.AFPointsInFocus = 0xffffffff;
+      else imPentax.AFPointsInFocus_version = 4;
+    }
+  }
   else if ((tag == 0x0220) && (dng_writer == nonDNG)) {
     meta_offset = ftell(ifp);
   }
-
   else if (tag == 0x0221)
   {
     int nWB = get2();
@@ -430,15 +489,15 @@ void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
   {
     int wb_ind;
     getc(ifp);
-    for (int wb_cnt = 0; wb_cnt < Pentax_wb_list2.size(); wb_cnt++)
+    for (int wb_cnt = 0; wb_cnt < (int)Pentax_wb_list2.size(); wb_cnt++)
     {
       wb_ind = getc(ifp);
-      if (wb_ind >= 0 && wb_ind < Pentax_wb_list2.size() )
+      if (wb_ind >= 0 && wb_ind < (int)Pentax_wb_list2.size() )
         FORC4 icWBC[Pentax_wb_list2[wb_ind]][RGGB_2_RGBG(c)] = get2();
     }
   }
-  else if (tag == 0x0239)
-  { // Q-series lens info (LensInfoQ)
+  else if (tag == 0x0239) // Q-series lens info (LensInfoQ)
+  {
     char LensInfo[20];
     fseek(ifp, 12, SEEK_CUR);
     stread(ilm.Lens, 30, ifp);
@@ -446,10 +505,21 @@ void LibRaw::parsePentaxMakernotes(int base, unsigned tag, unsigned type,
     stread(LensInfo, 20, ifp);
     strcat(ilm.Lens, LensInfo);
   }
+  else if (tag == 0x0245)
+  {
+    if (imCommon.afcount < LIBRAW_AFDATA_MAXCOUNT) {
+      imCommon.afdata[imCommon.afcount].AFInfoData_tag = tag;
+      imCommon.afdata[imCommon.afcount].AFInfoData_order = order;
+      imCommon.afdata[imCommon.afcount].AFInfoData_length = len;
+      imCommon.afdata[imCommon.afcount].AFInfoData = (uchar *)malloc(imCommon.afdata[imCommon.afcount].AFInfoData_length);
+      fread(imCommon.afdata[imCommon.afcount].AFInfoData, imCommon.afdata[imCommon.afcount].AFInfoData_length, 1, ifp);
+      imCommon.afcount++;
+    }
+  }
 }
 
-void LibRaw::parseRicohMakernotes(int base, unsigned tag, unsigned type,
-                                  unsigned len, unsigned dng_writer)
+void LibRaw::parseRicohMakernotes(int /*base*/, unsigned tag, unsigned type,
+                                  unsigned /*len*/, unsigned /*dng_writer */)
 {
   char buffer[17];
   if (tag == 0x0005)
@@ -491,7 +561,7 @@ void LibRaw::parseRicohMakernotes(int base, unsigned tag, unsigned type,
     ilm.FocalType = LIBRAW_FT_PRIME_LENS;
     imgdata.shootinginfo.ExposureProgram = get2();
   }
-  else if (tag == 0x1002)
+  else if ((tag == 0x1002) && tagtypeIs(LIBRAW_EXIFTAG_TYPE_SHORT))
   {
     imgdata.shootinginfo.DriveMode = get2();
   }
@@ -499,17 +569,85 @@ void LibRaw::parseRicohMakernotes(int base, unsigned tag, unsigned type,
   {
     imgdata.shootinginfo.FocusMode = get2();
   }
+  else if (tag == 0x1007)
+  {
+    imRicoh.AutoBracketing = get2();
+  }
+  else if (tag == 0x1009)
+  {
+    imRicoh.MacroMode = get2();
+  }
+  else if (tag == 0x100a)
+  {
+    imRicoh.FlashMode = get2();
+  }
+  else if (tag == 0x100b)
+  {
+    imRicoh.FlashExposureComp = getreal(type);
+  }
+  else if (tag == 0x100c)
+  {
+    imRicoh.ManualFlashOutput = getreal(type);
+  }
   else if ((tag == 0x100b) && tagtypeIs(LIBRAW_EXIFTAG_TYPE_SRATIONAL))
   {
     imCommon.FlashEC = getreal(type);
   }
-  else if ((tag == 0x1017) && (get2() == 2))
+  else if ((tag == 0x1017) && ((imRicoh.WideAdapter = get2()) == 2))
   {
     strcpy(ilm.Attachment, "Wide-Angle Adapter");
+  }
+  else if (tag == 0x1018)
+  {
+    imRicoh.CropMode = get2();
+  }
+  else if (tag == 0x1019)
+  {
+    imRicoh.NDFilter = get2();
+  }
+  else if (tag == 0x1200)
+  {
+    imRicoh.AFStatus = get2();
+  }
+  else if (tag == 0x1201)
+  {
+    imRicoh.AFAreaXPosition[1] = get4();
+  }
+  else if (tag == 0x1202)
+  {
+    imRicoh.AFAreaYPosition[1] = get4();
+  }
+  else if (tag == 0x1203)
+  {
+    imRicoh.AFAreaXPosition[0] = get4();
+  }
+  else if (tag == 0x1204)
+  {
+    imRicoh.AFAreaYPosition[0] = get4();
+  }
+  else if (tag == 0x1205)
+  {
+    imRicoh.AFAreaMode = get2();
   }
   else if (tag == 0x1500)
   {
     ilm.CurFocal = getreal(type);
+  }
+  else if (tag == 0x1601)
+  {
+    imRicoh.SensorWidth = get4();
+  }
+  else if (tag == 0x1602)
+  {
+    imRicoh.SensorHeight = get4();
+  }
+  else if (tag == 0x1603)
+  {
+    imRicoh.CroppedImageWidth = get4();
+  }
+  else if (tag == 0x1604)
+  {
+    imRicoh.CroppedImageHeight= get4();
   }
   else if ((tag == 0x2001) && !strncmp(model, "GXR", 3))
   {

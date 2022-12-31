@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
 
  LibRaw is free software; you can redistribute it and/or modify
@@ -19,11 +19,6 @@
 extern "C"
 {
 #endif
-  void default_memory_callback(void *, const char *file, const char *where)
-  {
-    fprintf(stderr, "%s: Out of memory in %s\n", file ? file : "unknown file",
-            where);
-  }
 
   void default_data_callback(void *, const char *file, const int offset)
   {
@@ -55,6 +50,10 @@ extern "C"
       return "Unsupported thumbnail format";
     case LIBRAW_INPUT_CLOSED:
       return "No input stream, or input stream closed";
+    case LIBRAW_NOT_IMPLEMENTED:
+      return "Decoder not implemented for this data format";
+    case LIBRAW_REQUEST_FOR_NONEXISTENT_THUMBNAIL:
+      return "Request for nonexisting thumbnail number";
     case LIBRAW_MEMPOOL_OVERFLOW:
       return "Libraw internal mempool overflowed";
     case LIBRAW_UNSUFFICIENT_MEMORY:
@@ -197,6 +196,12 @@ unsigned LibRaw::capabilities()
 #ifdef USE_RAWSPEED
   ret |= LIBRAW_CAPS_RAWSPEED;
 #endif
+#ifdef USE_RAWSPEED3
+  ret |= LIBRAW_CAPS_RAWSPEED3;
+#endif
+#ifdef USE_RAWSPEED_BITS
+  ret |= LIBRAW_CAPS_RAWSPEED_BITS;
+#endif
 #ifdef USE_DNGSDK
   ret |= LIBRAW_CAPS_DNGSDK;
 #ifdef USE_GPRSDK
@@ -212,6 +217,12 @@ unsigned LibRaw::capabilities()
 #ifdef USE_6BY9RPI
   ret |= LIBRAW_CAPS_RPI6BY9;
 #endif
+#ifdef USE_ZLIB
+  ret |= LIBRAW_CAPS_ZLIB;
+#endif
+#ifdef USE_JPEG
+  ret |= LIBRAW_CAPS_JPEG;
+#endif
   return ret;
 }
 
@@ -226,7 +237,7 @@ int LibRaw::is_coolscan_nef()
 }
 int LibRaw::is_jpeg_thumb()
 {
-  return thumb_load_raw == 0 && write_thumb == &LibRaw::jpeg_thumb;
+  return libraw_internal_data.unpacker_data.thumb_format == LIBRAW_INTERNAL_THUMBNAIL_JPEG;
 }
 
 int LibRaw::is_nikon_sraw() { return load_raw == &LibRaw::nikon_load_sraw; }
@@ -273,18 +284,6 @@ void LibRaw::recycle_datastream()
     libraw_internal_data.internal_data.input = NULL;
   }
   libraw_internal_data.internal_data.input_internal = 0;
-}
-void LibRaw::merror(void *ptr, const char *where)
-{
-  if (ptr)
-    return;
-  if (callbacks.mem_cb)
-    (*callbacks.mem_cb)(callbacks.memcb_data,
-                        libraw_internal_data.internal_data.input
-                            ? libraw_internal_data.internal_data.input->fname()
-                            : NULL,
-                        where);
-  throw LIBRAW_EXCEPTION_ALLOC;
 }
 
 void LibRaw::clearCancelFlag()
@@ -356,6 +355,7 @@ void LibRaw::free_image(void)
 int LibRaw::is_phaseone_compressed()
 {
   return (load_raw == &LibRaw::phase_one_load_raw_c ||
+		  load_raw == &LibRaw::phase_one_load_raw_s ||
           load_raw == &LibRaw::phase_one_load_raw);
 }
 
@@ -546,7 +546,7 @@ void LibRaw::adjust_bl()
 int LibRaw::getwords(char *line, char *words[], int maxwords, int maxlen)
 {
   line[maxlen - 1] = 0;
-  char *p = line;
+  unsigned char *p = (unsigned char*)line;
   int nwords = 0;
 
   while (1)
@@ -555,7 +555,7 @@ int LibRaw::getwords(char *line, char *words[], int maxwords, int maxlen)
       p++;
     if (*p == '\0')
       return nwords;
-    words[nwords++] = p;
+    words[nwords++] = (char*)p;
     while (!isspace(*p) && *p != '\0')
       p++;
     if (*p == '\0')
@@ -604,4 +604,70 @@ short LibRaw::tiff_sget (unsigned save, uchar *buf, unsigned buf_len, INT64 *tag
   } else *tag_dataoffset = *tag_offset + 8;
   *tag_offset += 12;
   return 0;
+}
+
+#define rICC  imgdata.sizes.raw_inset_crops
+#define S imgdata.sizes
+#define RS imgdata.rawdata.sizes
+int LibRaw::adjust_to_raw_inset_crop(unsigned mask, float maxcrop)
+
+{
+    int adjindex = -1;
+	int limwidth = S.width * maxcrop;
+	int limheight = S.height * maxcrop;
+
+    for(int i = 1; i >= 0; i--)
+        if (mask & (1<<i))
+            if (rICC[i].ctop < 0xffff && rICC[i].cleft < 0xffff
+                && rICC[i].cleft + rICC[i].cwidth <= S.raw_width
+                && rICC[i].ctop + rICC[i].cheight <= S.raw_height
+				&& rICC[i].cwidth >= limwidth && rICC[i].cheight >= limheight)
+            {
+                adjindex = i;
+                break;
+            }
+
+    if (adjindex >= 0)
+    {
+        RS.left_margin = S.left_margin = rICC[adjindex].cleft;
+        RS.top_margin = S.top_margin = rICC[adjindex].ctop;
+        RS.width = S.width = MIN(rICC[adjindex].cwidth, int(S.raw_width) - int(S.left_margin));
+        RS.height = S.height = MIN(rICC[adjindex].cheight, int(S.raw_height) - int(S.top_margin));
+    }
+    return adjindex + 1;
+}
+
+char** LibRaw::malloc_omp_buffers(int buffer_count, size_t buffer_size)
+{
+    char** buffers = (char**)calloc(sizeof(char*), buffer_count);
+
+    for (int i = 0; i < buffer_count; i++)
+    {
+        buffers[i] = (char*)malloc(buffer_size);
+    }
+    return buffers;
+}
+
+void LibRaw::free_omp_buffers(char** buffers, int buffer_count)
+{
+    for (int i = 0; i < buffer_count; i++)
+        if(buffers[i])
+            free(buffers[i]);
+    free(buffers);
+}
+
+void 	LibRaw::libraw_swab(void *arr, size_t len)
+{
+#ifdef LIBRAW_OWN_SWAB
+	uint16_t *array = (uint16_t*)arr;
+	size_t bytes = len/2;
+	for(; bytes; --bytes)
+	{
+		*array = ((*array << 8) & 0xff00) | ((*array >> 8) & 0xff);
+		array++;
+	}
+#else
+	swab((char*)arr,(char*)arr,len);
+#endif
+
 }
