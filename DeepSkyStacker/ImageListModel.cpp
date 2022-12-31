@@ -622,15 +622,15 @@ namespace DSS
             return QVariant();      // we're outta here
         }
 
-        // if (file.m_lNrChannels == 3)
-        // index +=0;               // Use xxxxColour Icons
-        if (IsCYMGType(file.GetCFAType()))
+        if (file.m_lNrChannels == 3)
+            index +=0;              // Use xxxxColour Icons
+        else if (IsCYMGType(file.GetCFAType()))
             index += 4;             // Use xxxxCMYG Icons
         else if (file.GetCFAType() != CFATYPE_NONE)
             index += 8;             // Use xxxxRGB Icons
         else
             index += 12;            // Use xxxxGreyscale Icons
-        
+       
         if (ImageListModel::icons[index].isNull())
         {
             qDebug("null icon");
