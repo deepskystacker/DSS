@@ -869,7 +869,7 @@ namespace DSS
 
 				constexpr double ninetyDegrees { 90.0 * 16.0 };
 				constexpr double oneeightyDegrees{ 180.0 * 16.0 };
-				//painter.drawArc(QRectF((fX - fRectSize), (fY - fRectSize), fDiameter, fDiameter), -ninetyDegrees, -ninetyDegrees);
+
 				painter.drawArc(QRectF((fX - fRectSize), (fY - fRectSize), fDiameter, fDiameter), -oneeightyDegrees, -ninetyDegrees);
 				painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY - fRectSize), fDiameter, fDiameter), 0.0, ninetyDegrees);
 				painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY + fRectSize - fDiameter), fDiameter, fDiameter), 0.0, -ninetyDegrees);
