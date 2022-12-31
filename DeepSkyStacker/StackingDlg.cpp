@@ -1221,6 +1221,13 @@ namespace DSS
 			{
 				editStarsPtr->setLightFrame(m_strShowFile);
 				editStarsPtr->setBitmap(pBitmap);
+				if (pToolBar->rectAction->isChecked())
+					editStarsPtr->rectButtonPressed();
+				else if (pToolBar->starsAction->isChecked())
+					editStarsPtr->starsButtonPressed();
+				else if (pToolBar->cometAction->isChecked())
+					editStarsPtr->cometButtonPressed();
+
 				pToolBar->setVisible(true); pToolBar->setEnabled(true);
 			}
 			else
