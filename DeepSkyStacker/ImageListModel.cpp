@@ -644,7 +644,7 @@ namespace DSS
 
         if (exposure)
         {
-            if (exposure > 66399.999) exposure = 86399.999;		// 24 hours less 1 ms
+            if (exposure > 86399.999) exposure = 86399.999;		// 24 hours less 1 ms
             double msecs = exposure * 1000.0;
             QTime time{ QTime(0, 0) };
             time = time.addMSecs(msecs);
