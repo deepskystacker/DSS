@@ -692,15 +692,8 @@ namespace DSS
 			"Delete key to remove (not erase) selected rows\n"
 			"Right mouse button to display the menu"));
 
-		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
-			"IDS_LISTINFO")
-			.arg(frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
-		};
-		dockTitle->setText(text);
+		updateListInfo();  // Update information bar and tooltip
+
 		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
 
 		pictureList->tabBar->setTabText(0, tr("Main Group", "IDS_MAINGROUP"));
