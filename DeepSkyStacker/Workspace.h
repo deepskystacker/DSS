@@ -90,7 +90,7 @@ public:
 	QVariant value(const QString& key, const QVariant& defaultValue = QVariant{}) const;
 
 	bool isDirty();
-	void setDirty();
+	void resetDirty();
 
 	void readSettings();
 	void saveSettings();
