@@ -887,6 +887,10 @@ namespace DSS
 				message, (QMessageBox::Yes | QMessageBox::No), QMessageBox::No );
 			if (QMessageBox::Yes == result)
 				eraseOK = true;
+			//
+			// Don't remove any entries from the list if the user says no.
+			//
+			else return;
 		}
 
 		if (Menuitem::copy == item)
@@ -938,6 +942,10 @@ namespace DSS
 					imageModel->removeRows(row, 1);
 					imageModel->endRemoveRows();
 				}
+				//
+				// Update the information in the information bar and tip text.
+				//
+				updateListInfo();
 			}
 		}
 	}
