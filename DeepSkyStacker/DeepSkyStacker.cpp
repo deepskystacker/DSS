@@ -911,7 +911,7 @@ int main(int argc, char* argv[])
 		constexpr unsigned int msglen{ 255 };
 		TCHAR message[msglen]{ 0x00 };
 		e.GetErrorMessage(&message[0], msglen);
-		ZTRACE_RUNTIME("CException caught: %s", CT2CA(message));
+		ZTRACE_RUNTIME("CException caught: %s", (LPCSTR)CT2CA(message));
 
 		e.ReportError();
 		e.Delete();

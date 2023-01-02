@@ -1727,7 +1727,7 @@ bool CAllStackingTasks::DoOffsetTasks(CDSSProgress * pProgress)
 			{
 				ZTRACE_RUNTIME("------------------------------\nCreate Master Offset");
 				bResult = m_vStacks[i].DoOffsetTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1755,14 +1755,14 @@ bool CAllStackingTasks::DoDarkTasks(CDSSProgress * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
+					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkTask;
 
 				bResult = m_vStacks[i].DoDarkTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pDarkTask->m_strOutputFile,CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pDarkTask->m_strOutputFile,CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1788,14 +1788,14 @@ bool CAllStackingTasks::DoDarkFlatTasks(CDSSProgress * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile,CP_ACP));
+					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile,CP_ACP));
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pDarkFlatTask;
 
 				bResult = m_vStacks[i].DoDarkFlatTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pDarkFlatTask->m_strOutputFile, CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pDarkFlatTask->m_strOutputFile, CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
@@ -1830,14 +1830,14 @@ bool CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 
 				if (m_vStacks[i].m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
+					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
 				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pFlatTask;
 
 				bResult = m_vStacks[i].DoFlatTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", CT2CA(m_vStacks[i].m_pFlatTask->m_strOutputFile, CP_ACP));
+				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pFlatTask->m_strOutputFile, CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
 			};
