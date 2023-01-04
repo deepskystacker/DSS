@@ -692,15 +692,8 @@ namespace DSS
 			"Delete key to remove (not erase) selected rows\n"
 			"Right mouse button to display the menu"));
 
-		QString	text{ tr("Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5",
-			"IDS_LISTINFO")
-			.arg(frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_FLATFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_DARKFLATFRAME))
-			.arg(frameList.checkedImageCount(PICTURETYPE_OFFSETFRAME))
-		};
-		dockTitle->setText(text);
+		updateListInfo();  // Update information bar and tooltip
+
 		dockTitle->setToolTip(tr("Double click here to dock/undock the image list"));
 
 		pictureList->tabBar->setTabText(0, tr("Main Group", "IDS_MAINGROUP"));
@@ -887,6 +880,10 @@ namespace DSS
 				message, (QMessageBox::Yes | QMessageBox::No), QMessageBox::No );
 			if (QMessageBox::Yes == result)
 				eraseOK = true;
+			//
+			// Don't remove any entries from the list if the user says no.
+			//
+			else return;
 		}
 
 		if (Menuitem::copy == item)
@@ -938,6 +935,10 @@ namespace DSS
 					imageModel->removeRows(row, 1);
 					imageModel->endRemoveRows();
 				}
+				//
+				// Update the information in the information bar and tip text.
+				//
+				updateListInfo();
 			}
 		}
 	}
@@ -1221,6 +1222,13 @@ namespace DSS
 			{
 				editStarsPtr->setLightFrame(m_strShowFile);
 				editStarsPtr->setBitmap(pBitmap);
+				if (pToolBar->rectAction->isChecked())
+					editStarsPtr->rectButtonPressed();
+				else if (pToolBar->starsAction->isChecked())
+					editStarsPtr->starsButtonPressed();
+				else if (pToolBar->cometAction->isChecked())
+					editStarsPtr->cometButtonPressed();
+
 				pToolBar->setVisible(true); pToolBar->setEnabled(true);
 			}
 			else

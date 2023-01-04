@@ -52,7 +52,7 @@ public:
 
 	WORKSPACESETTINGITERATOR	findSetting(const QString& key);
 	bool	isDirty();
-	void	setDirty();
+	void	resetDirty();
 	WORKSPACESETTINGITERATOR	end()
 	{
 		return m_vSettings.end();
@@ -95,7 +95,7 @@ WorkspaceSetting & WorkspaceSetting::saveSetting()
 		QSettings settings;
 
 		settings.setValue(keyName, Value);
-		dirty = false;
+		//dirty = false;		DO NOT RESET DIRTY BIT - that is done by resetDirty()
 	}
 	return *this;
 };
@@ -276,7 +276,7 @@ bool WorkspaceSettings::isDirty()
 
 /* ------------------------------------------------------------------- */
 
-void	WorkspaceSettings::setDirty()
+void	WorkspaceSettings::resetDirty()
 {
 	for (size_t i = 0; i < m_vSettings.size(); i++)
 		m_vSettings[i].isDirty(true);
@@ -517,9 +517,9 @@ bool Workspace::isDirty()
 }
 
 
-void Workspace::setDirty()
+void Workspace::resetDirty()
 {
-	pSettings->setDirty();
+	pSettings->resetDirty();
 }
 
 

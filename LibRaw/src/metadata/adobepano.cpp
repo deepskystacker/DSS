@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
 
  LibRaw is free software; you can redistribute it and/or modify
@@ -64,6 +64,11 @@ void LibRaw::parseAdobePanoMakernote()
 
       PrivateTagBytes = PrivateTagCount *
           tagtype_dataunit_bytes[(PrivateTagType <= LIBRAW_EXIFTAG_TYPE_IFD8) ? PrivateTagType : 0];
+      if(PrivateTagBytes > 10240000u)
+      {
+         free(PrivateMknBuf);
+         return;
+      }
       if (PrivateTagID == 0x0002)
       {
         posPrivateMknBuf += 2;

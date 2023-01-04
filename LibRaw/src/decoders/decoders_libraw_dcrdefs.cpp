@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw is free software; you can redistribute it and/or modify
  it under the terms of the one of two licenses as you choose:
@@ -14,57 +14,193 @@
 
 #include "../../internal/dcraw_defs.h"
 
+void LibRaw::packed_tiled_dng_load_raw()
+{
+  ushort *rp;
+  unsigned row, col;
+
+  int ss = shot_select;
+  shot_select = libraw_internal_data.unpacker_data.dng_frames[LIM(ss, 0, (LIBRAW_IFD_MAXCOUNT * 2 - 1))] & 0xff;
+  std::vector<ushort> pixel;
+
+  try
+  {
+    int ntiles = 1 + (raw_width) / tile_width;
+    if ((unsigned)ntiles * tile_width > raw_width * 2u) throw LIBRAW_EXCEPTION_ALLOC;
+    pixel.resize(tile_width * ntiles * tiff_samples);
+  }
+  catch (...)
+  {
+    throw LIBRAW_EXCEPTION_ALLOC; // rethrow
+  }
+  try
+  {
+      unsigned trow = 0, tcol = 0;
+      INT64 save;
+      while (trow < raw_height)
+      {
+        checkCancel();
+        save = ftell(ifp);
+        if (tile_length < INT_MAX)
+          fseek(ifp, get4(), SEEK_SET);
+
+        for (row = 0; row < tile_length && (row + trow) < raw_height; row++)
+        {
+          if (tiff_bps == 16)
+            read_shorts(pixel.data(), tile_width * tiff_samples);
+          else
+          {
+            getbits(-1);
+            for (col = 0; col < tile_width * tiff_samples; col++)
+              pixel[col] = getbits(tiff_bps);
+          }
+          for (rp = pixel.data(), col = 0; col < tile_width; col++)
+            adobe_copy_pixel(trow+row, tcol+col, &rp);
+        }
+        fseek(ifp, save + 4, SEEK_SET);
+        if ((tcol += tile_width) >= raw_width)
+          trow += tile_length + (tcol = 0);
+      }
+  }
+  catch (...)
+  {
+    shot_select = ss;
+    throw;
+  }
+  shot_select = ss;
+}
+
+
+
+void LibRaw::sony_ljpeg_load_raw()
+{
+  unsigned trow = 0, tcol = 0, jrow, jcol, row, col;
+  INT64 save;
+  struct jhead jh;
+
+  while (trow < raw_height)
+  {
+    checkCancel();
+    save = ftell(ifp); // We're at
+    if (tile_length < INT_MAX)
+      fseek(ifp, get4(), SEEK_SET);
+    if (!ljpeg_start(&jh, 0))
+      break;
+    try
+    {
+      for (row = jrow = 0; jrow < (unsigned)jh.high; jrow++, row += 2)
+      {
+        checkCancel();
+        ushort(*rowp)[4] = (ushort(*)[4])ljpeg_row(jrow, &jh);
+        for (col = jcol = 0; jcol < (unsigned)jh.wide; jcol++, col += 2)
+        {
+          RAW(trow + row, tcol + col) = rowp[jcol][0];
+          RAW(trow + row, tcol + col + 1) = rowp[jcol][1];
+          RAW(trow + row + 1, tcol + col) = rowp[jcol][2];
+          RAW(trow + row + 1, tcol + col + 1) = rowp[jcol][3];
+        }
+      }
+    }
+    catch (...)
+    {
+      ljpeg_end(&jh);
+      throw;
+    }
+    fseek(ifp, save + 4, SEEK_SET);
+    if ((tcol += tile_width) >= raw_width)
+      trow += tile_length + (tcol = 0);
+    ljpeg_end(&jh);
+  }
+}
+
+void LibRaw::nikon_he_load_raw_placeholder()
+{
+    throw LIBRAW_EXCEPTION_UNSUPPORTED_FORMAT;
+}
+
 void LibRaw::nikon_coolscan_load_raw()
 {
-  if (!image)
+  int clrs = colors == 3 ? 3 : 1;
+
+  if (clrs == 3 && !image)
+    throw LIBRAW_EXCEPTION_IO_CORRUPT;
+
+  if(clrs == 1 && !raw_image)
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
 
   int bypp = tiff_bps <= 8 ? 1 : 2;
-  int bufsize = width * 3 * bypp;
+  int bufsize = width * clrs * bypp;
   unsigned char *buf = (unsigned char *)malloc(bufsize);
   unsigned short *ubuf = (unsigned short *)buf;
 
   if (tiff_bps <= 8)
-    gamma_curve(1.0 / imgdata.params.coolscan_nef_gamma, 0., 1, 255);
+    gamma_curve(1.0 / imgdata.rawparams.coolscan_nef_gamma, 0., 1, 255);
   else
-    gamma_curve(1.0 / imgdata.params.coolscan_nef_gamma, 0., 1, 65535);
+    gamma_curve(1.0 / imgdata.rawparams.coolscan_nef_gamma, 0., 1, 65535);
   fseek(ifp, data_offset, SEEK_SET);
   for (int row = 0; row < raw_height; row++)
   {
       if(tiff_bps <=8)
         fread(buf, 1, bufsize, ifp);
       else
-          read_shorts(ubuf,width*3);
+          read_shorts(ubuf,width*clrs);
+
     unsigned short(*ip)[4] = (unsigned short(*)[4])image + row * width;
+    unsigned short *rp =  raw_image + row * raw_width;
+
     if (is_NikonTransfer == 2)
     { // it is also (tiff_bps == 8)
-      for (int col = 0; col < width; col++)
-      {
-        ip[col][0] = ((float)curve[buf[col * 3]]) / 255.0f;
-        ip[col][1] = ((float)curve[buf[col * 3 + 1]]) / 255.0f;
-        ip[col][2] = ((float)curve[buf[col * 3 + 2]]) / 255.0f;
-        ip[col][3] = 0;
-      }
+        if (clrs == 3)
+        {
+          for (int col = 0; col < width; col++)
+          {
+            ip[col][0] = ((float)curve[buf[col * 3]]) / 255.0f;
+            ip[col][1] = ((float)curve[buf[col * 3 + 1]]) / 255.0f;
+            ip[col][2] = ((float)curve[buf[col * 3 + 2]]) / 255.0f;
+            ip[col][3] = 0;
+          }
+        }
+        else
+        {
+          for (int col = 0; col < width; col++)
+            rp[col] = ((float)curve[buf[col]]) / 255.0f;
+        }
     }
     else if (tiff_bps <= 8)
     {
-      for (int col = 0; col < width; col++)
-      {
-        ip[col][0] = curve[buf[col * 3]];
-        ip[col][1] = curve[buf[col * 3 + 1]];
-        ip[col][2] = curve[buf[col * 3 + 2]];
-        ip[col][3] = 0;
-      }
+        if (clrs == 3)
+        {
+          for (int col = 0; col < width; col++)
+          {
+            ip[col][0] = curve[buf[col * 3]];
+            ip[col][1] = curve[buf[col * 3 + 1]];
+            ip[col][2] = curve[buf[col * 3 + 2]];
+            ip[col][3] = 0;
+          }
+        }
+        else
+        {
+          for (int col = 0; col < width; col++)
+            rp[col] = curve[buf[col]];
+        }
     }
     else
     {
-      for (int col = 0; col < width; col++)
-      {
-        ip[col][0] = curve[ubuf[col * 3]];
-        ip[col][1] = curve[ubuf[col * 3 + 1]];
-        ip[col][2] = curve[ubuf[col * 3 + 2]];
-        ip[col][3] = 0;
-      }
+        if (clrs == 3)
+        {
+          for (int col = 0; col < width; col++)
+          {
+            ip[col][0] = curve[ubuf[col * 3]];
+            ip[col][1] = curve[ubuf[col * 3 + 1]];
+            ip[col][2] = curve[ubuf[col * 3 + 2]];
+            ip[col][3] = 0;
+          }
+        }
+        else
+        {
+          for (int col = 0; col < width; col++)
+            rp[col] = curve[ubuf[col]];
+        }
     }
   }
   free(buf);
@@ -72,23 +208,19 @@ void LibRaw::nikon_coolscan_load_raw()
 
 void LibRaw::broadcom_load_raw()
 {
-
-  uchar *data, *dp;
+  uchar *dp;
   int rev, row, col, c;
-  ushort _raw_stride = (ushort)load_flags;
   rev = 3 * (order == 0x4949);
-  data = (uchar *)malloc(raw_stride * 2);
-  merror(data, "broadcom_load_raw()");
+  std::vector<uchar> data(raw_stride * 2);
 
   for (row = 0; row < raw_height; row++)
   {
-    if (fread(data + _raw_stride, 1, _raw_stride, ifp) < _raw_stride)
+    if (fread(data.data() + raw_stride, 1, raw_stride, ifp) < raw_stride)
       derror();
-    FORC(_raw_stride) data[c] = data[_raw_stride + (c ^ rev)];
-    for (dp = data, col = 0; col < raw_width; dp += 5, col += 4)
+    FORC(raw_stride) data[c] = data[raw_stride + (c ^ rev)];
+    for (dp = data.data(), col = 0; col < raw_width; dp += 5, col += 4)
       FORC4 RAW(row, col + c) = (dp[c] << 2) | (dp[4] >> (c << 1) & 3);
   }
-  free(data);
 }
 
 void LibRaw::android_tight_load_raw()
@@ -98,7 +230,6 @@ void LibRaw::android_tight_load_raw()
 
   bwide = -(-5 * raw_width >> 5) << 3;
   data = (uchar *)malloc(bwide);
-  merror(data, "android_tight_load_raw()");
   for (row = 0; row < raw_height; row++)
   {
     if (fread(data, 1, bwide, ifp) < bwide)
@@ -117,7 +248,6 @@ void LibRaw::android_loose_load_raw()
 
   bwide = (raw_width + 5) / 6 << 3;
   data = (uchar *)malloc(bwide);
-  merror(data, "android_loose_load_raw()");
   for (row = 0; row < raw_height; row++)
   {
     if (fread(data, 1, bwide, ifp) < bwide)
@@ -161,7 +291,6 @@ void LibRaw::rpi_load_raw8()
 	else
 		dwide = raw_stride;
 	data = (uchar *)malloc(dwide * 2);
-	merror(data, "rpi_load_raw8()");
 	for (row = 0; row < raw_height; row++) {
 		if (fread(data + dwide, 1, dwide, ifp) < dwide) derror();
 		FORC(dwide) data[c] = data[dwide + (c ^ rev)];
@@ -193,7 +322,6 @@ void LibRaw::rpi_load_raw12()
 	else
 		dwide = raw_stride;
 	data = (uchar *)malloc(dwide * 2);
-	merror(data, "rpi_load_raw12()");
 	for (row = 0; row < raw_height; row++) {
 		if (fread(data + dwide, 1, dwide, ifp) < dwide) derror();
 		FORC(dwide) data[c] = data[dwide + (c ^ rev)];
@@ -225,7 +353,6 @@ void LibRaw::rpi_load_raw14()
 	else
 		dwide = raw_stride;
 	data = (uchar *)malloc(dwide * 2);
-	merror(data, "rpi_load_raw14()");
 	for (row = 0; row < raw_height; row++) {
 		if (fread(data + dwide, 1, dwide, ifp) < dwide) derror();
 		FORC(dwide) data[c] = data[dwide + (c ^ rev)];
@@ -261,7 +388,6 @@ void LibRaw::rpi_load_raw16()
 	else
 		dwide = raw_stride;
 	data = (uchar *)malloc(dwide * 2);
-	merror(data, "rpi_load_raw16()");
 	for (row = 0; row < raw_height; row++) {
 		if (fread(data + dwide, 1, dwide, ifp) < dwide) derror();
 		FORC(dwide) data[c] = data[dwide + (c ^ rev)];

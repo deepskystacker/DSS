@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw uses code from dcraw.c -- Dave Coffin's raw photo decoder,
  dcraw.c is copyright 1997-2018 by Dave Coffin, dcoffin a cybercom o net.
@@ -18,9 +18,120 @@
 
 #include "../../internal/dcraw_defs.h"
 
+inline uint32_t abs32(int32_t x)
+{
+  // Branchless version.
+  uint32_t sm = x >> 31;
+  return (uint32_t) ((x + sm) ^ sm);
+}
+
+inline uint32_t min32(uint32_t x, uint32_t y)
+{
+  return x < y ? x : y;
+}
+
+inline uint32_t max32(uint32_t x, uint32_t y)
+{
+  return x > y ? x : y;
+}
+
+inline uint32_t constain32(uint32_t x, uint32_t l, uint32_t u)
+{
+  return x < l ? l : (x > u ? u : x);
+}
+
+int unsigned_cmp(const void *a, const void *b)
+{
+  if (!a || !b)
+    return 0;
+
+  return *(unsigned *)a > *(unsigned *)b ? 1 : (*(unsigned *)a < *(unsigned *)b ? -1 : 0);
+}
+
+int LibRaw::p1rawc(unsigned row, unsigned col, unsigned& count)
+{
+  return (row < raw_height && col < raw_width) ? (++count, RAW(row, col)) : 0;
+}
+
 int LibRaw::p1raw(unsigned row, unsigned col)
 {
   return (row < raw_height && col < raw_width) ? RAW(row, col) : 0;
+}
+
+
+// DNG SDK version of fixing pixels in bad column using averages sets
+// corrected not to use pixels in the same column
+void LibRaw::phase_one_fix_col_pixel_avg(unsigned row, unsigned col)
+{
+  static const int8_t dir[3][8][2] = {
+  { {-2,-2}, {-2, 2}, {2,-2}, {2, 2}, { 0, 0}, { 0, 0}, {0, 0}, {0, 0} },
+  { {-2,-4}, {-4,-2}, {2,-4}, {4,-2}, {-2, 4}, {-4, 2}, {2, 4}, {4, 2} },
+  { {-4,-4}, {-4, 4}, {4,-4}, {4, 4}, { 0, 0}, { 0, 0}, {0, 0}, {0, 0} } };
+
+  for (int set=0; set < 3; ++set)
+  {
+    uint32_t total = 0;
+    uint32_t count = 0;
+    for (int i = 0; i < 8; ++i)
+    {
+      if (!dir[set][i][0] && !dir[set][i][1])
+        break;
+
+      total += p1rawc(row+dir[set][i][0], col+dir[set][i][1], count);
+    }
+
+    if (count)
+    {
+      RAW(row,col) = (uint16_t)((total + (count >> 1)) / count);
+      break;
+    }
+  }
+}
+
+// DNG SDK version of fixing pixels in bad column using gradient prediction
+void LibRaw::phase_one_fix_pixel_grad(unsigned row, unsigned col)
+{
+  static const int8_t grad_sets[7][12][2] = {
+    { {-4,-2}, { 4, 2}, {-3,-1}, { 1, 1}, {-1,-1}, { 3, 1}, 
+      {-4,-1}, { 0, 1}, {-2,-1}, { 2, 1}, { 0,-1}, { 4, 1} },
+    { {-2,-2}, { 2, 2}, {-3,-1}, {-1, 1}, {-1,-1}, { 1, 1}, 
+      { 1,-1}, { 3, 1}, {-2,-1}, { 0, 1}, { 0,-1}, { 2, 1} },
+    { {-2,-4}, { 2, 4}, {-1,-3}, { 1, 1}, {-1,-1}, { 1, 3}, 
+      {-2,-1}, { 0, 3}, {-1,-2}, { 1, 2}, { 0,-3}, { 2, 1} },
+    { { 0,-2}, { 0, 2}, {-1,-1}, {-1, 1}, { 1,-1}, { 1, 1}, 
+      {-1,-2}, {-1, 2}, { 0,-1}, { 0,-1}, { 1,-2}, { 1, 2} },
+    { {-2, 4}, { 2,-4}, {-1, 3}, { 1,-1}, {-1, 1}, { 1,-3}, 
+      {-2, 1}, { 0,-3}, {-1, 2}, { 1,-2}, { 0, 3}, { 2,-1} },
+    { {-2, 2}, { 2,-2}, {-3, 1}, {-1,-1}, {-1, 1}, { 1,-1}, 
+      { 1, 1}, { 3,-1}, {-2, 1}, { 0,-1}, { 0, 1}, { 2,-1} },
+    { {-4, 2}, { 4,-2}, {-3, 1}, { 1,-1}, {-1, 1}, { 3,-1}, 
+      {-4, 1}, { 0,-1}, {-2, 1}, { 2,-1}, { 0, 1}, { 4,-1} } };
+
+  uint32_t est[7], grad[7];
+  uint32_t lower = min32(p1raw(row,col-2), p1raw(row, col+2));
+  uint32_t upper = max32(p1raw(row,col-2), p1raw(row, col+2));
+  uint32_t minGrad = 0xFFFFFFFF;
+  for (int i = 0; i<7; ++i)
+  {
+    est[i] = p1raw(row+grad_sets[i][0][0], col+grad_sets[i][0][1]) +
+             p1raw(row+grad_sets[i][1][0], col+grad_sets[i][1][1]);
+    grad[i] = 0;
+    for (int j=0; j<12; j+=2)
+      grad[i] += abs32(p1raw(row+grad_sets[i][j][0], col+grad_sets[i][j][1]) -
+                       p1raw(row+grad_sets[i][j+1][0], col+grad_sets[i][j+1][1]));
+    minGrad = min32(minGrad, grad[i]);
+  }
+
+  uint32_t limit = (minGrad * 3) >> 1;
+  uint32_t total = 0;
+  uint32_t count = 0;
+  for (int i = 0; i<7; ++i)
+    if (grad[i] <= limit)
+    {
+      total += est[i];
+      count += 2;
+    }
+  RAW(row, col) = constain32((total + (count >> 1)) / count, lower, upper);
 }
 
 void LibRaw::phase_one_flat_field(int is_float, int nc)
@@ -35,7 +146,6 @@ void LibRaw::phase_one_flat_field(int is_float, int nc)
   wide = head[2] / head[4] + (head[2] % head[4] != 0);
   high = head[3] / head[5] + (head[3] % head[5] != 0);
   mrow = (float *)calloc(nc * wide, sizeof *mrow);
-  merror(mrow, "phase_one_flat_field()");
   for (y = 0; y < high; y++)
   {
     checkCancel();
@@ -88,7 +198,10 @@ void LibRaw::phase_one_flat_field(int is_float, int nc)
 int LibRaw::phase_one_correct()
 {
   unsigned entries, tag, data, save, col, row, type;
-  int len, i, j, k, cip, val[4], dev[4], sum, max;
+  int len, i, j, k, cip, sum;
+#if 0
+  int val[4], dev[4], max;
+#endif
   int head[9], diff, mindiff = INT_MAX, off_412 = 0;
   /* static */ const signed char dir[12][2] = {
       {-1, -1}, {-1, 1}, {1, -1},  {1, 1},  {-2, 0}, {0, -2},
@@ -96,6 +209,7 @@ int LibRaw::phase_one_correct()
   float poly[8], num, cfrac, frac, mult[2], *yval[2] = {NULL, NULL};
   ushort *xval[2];
   int qmult_applied = 0, qlin_applied = 0;
+  std::vector<unsigned> badCols;
 
   if (!meta_length)
     return 0;
@@ -116,8 +230,73 @@ int LibRaw::phase_one_correct()
       data = get4();
       save = ftell(ifp);
       fseek(ifp, meta_offset + data, SEEK_SET);
-      if (tag == 0x0419)
-      { /* Polynomial curve */
+#if 1
+	  if (ifp->eof())
+	  {
+		  // skip bad or unknown tag
+		  fseek(ifp, save, SEEK_SET);
+		  continue;
+	  }
+#endif
+      if (tag == 0x0400)
+      { /* Sensor defects */
+        while ((len -= 8) >= 0)
+        {
+          col = get2();
+          row = get2();
+          type = get2();
+          get2();
+          if (col >= raw_width)
+            continue;
+          if (type == 131 || type == 137) /* Bad column */
+#if 0
+            // Original code by Dave Coffin - it works better by
+            // not employing special logic for G1 channel below.
+            // Alternatively this column remap (including G1 channel
+            // logic) should be called prior to black subtraction
+            // unlike other corrections
+            for (row = 0; row < raw_height; row++)
+            {
+              if (FC(row - top_margin, col - left_margin)==1)
+              {
+                for (sum = i = 0; i < 4; i++)
+                  sum += val[i] = p1raw(row + dir[i][0], col + dir[i][1]);
+                for (max = i = 0; i < 4; i++)
+                {
+                  dev[i] = abs((val[i] << 2) - sum);
+                  if (dev[max] < dev[i])
+                    max = i;
+                }
+                RAW(row, col) = (sum - val[max]) / 3.0 + 0.5;
+              }
+              else
+              {
+                for (sum = 0, i = 8; i < 12; i++)
+                  sum += p1raw(row + dir[i][0], col + dir[i][1]);
+                RAW(row, col) =
+                  0.5 + sum * 0.0732233 +
+                  (p1raw(row, col - 2) + p1raw(row, col + 2)) * 0.3535534;
+              }
+            }
+#else
+            // accumulae bad columns to be sorted later
+            badCols.push_back(col);
+#endif
+          else if (type == 129)
+          { /* Bad pixel */
+            if (row >= raw_height)
+              continue;
+            j = (FC(row - top_margin, col - left_margin) != 1) * 4;
+            unsigned count = 0;
+            for (sum = 0, i = j; i < j + 8; i++)
+              sum += p1rawc(row + dir[i][0], col + dir[i][1], count);
+            if (count)
+              RAW(row, col) = (sum + (count >> 1)) / count;
+          }
+        }
+      }
+      else if (tag == 0x0419)
+      { /* Polynomial curve - output calibraion */
         for (get4(), i = 0; i < 8; i++)
           poly[i] = getreal(LIBRAW_EXIFTAG_TYPE_FLOAT);
         poly[3] += (ph1.tag_210 - poly[7]) * poly[6] + 1;
@@ -146,59 +325,17 @@ int LibRaw::phase_one_correct()
             RAW(row, col) = curve[RAW(row, col)];
         }
       }
-      else if (tag == 0x0400)
-      { /* Sensor defects */
-        while ((len -= 8) >= 0)
-        {
-          col = get2();
-          row = get2();
-          type = get2();
-          get2();
-          if (col >= raw_width)
-            continue;
-          if (type == 131 || type == 137) /* Bad column */
-            for (row = 0; row < raw_height; row++)
-              if (FC(row - top_margin, col - left_margin) == 1)
-              {
-                for (sum = i = 0; i < 4; i++)
-                  sum += val[i] = p1raw(row + dir[i][0], col + dir[i][1]);
-                for (max = i = 0; i < 4; i++)
-                {
-                  dev[i] = abs((val[i] << 2) - sum);
-                  if (dev[max] < dev[i])
-                    max = i;
-                }
-                RAW(row, col) = (sum - val[max]) / 3.0 + 0.5;
-              }
-              else
-              {
-                for (sum = 0, i = 8; i < 12; i++)
-                  sum += p1raw(row + dir[i][0], col + dir[i][1]);
-                RAW(row, col) =
-                    0.5 + sum * 0.0732233 +
-                    (p1raw(row, col - 2) + p1raw(row, col + 2)) * 0.3535534;
-              }
-          else if (type == 129)
-          { /* Bad pixel */
-            if (row >= raw_height)
-              continue;
-            j = (FC(row - top_margin, col - left_margin) != 1) * 4;
-            for (sum = 0, i = j; i < j + 8; i++)
-              sum += p1raw(row + dir[i][0], col + dir[i][1]);
-            RAW(row, col) = (sum + 4) >> 3;
-          }
-        }
-      }
       else if (tag == 0x0401)
-      { /* All-color flat fields */
+      { /* All-color flat fields - luma calibration*/
         phase_one_flat_field(1, 2);
       }
       else if (tag == 0x0416 || tag == 0x0410)
       {
+        // 0x410 - luma calibration
         phase_one_flat_field(0, 2);
       }
       else if (tag == 0x040b)
-      { /* Red+blue flat field */
+      { /* Red+blue flat field - croma calibration */
         phase_one_flat_field(0, 4);
       }
       else if (tag == 0x0412)
@@ -255,7 +392,7 @@ int LibRaw::phase_one_correct()
         qlin_applied = 1;
       }
       else if (tag == 0x041e && !qmult_applied)
-      { /* Quadrant multipliers */
+      { /* Quadrant multipliers - output calibraion */
         float qmult[2][2] = {{1, 1}, {1, 1}};
         get4();
         get4();
@@ -289,7 +426,7 @@ int LibRaw::phase_one_correct()
         qmult_applied = 1;
       }
       else if (tag == 0x0431 && !qmult_applied)
-      { /* Quadrant combined */
+      { /* Quadrant combined - four tile gain calibration */
         ushort lc[2][2][7], ref[7];
         int qr, qc;
         for (i = 0; i < 7; i++)
@@ -326,13 +463,27 @@ int LibRaw::phase_one_correct()
       }
       fseek(ifp, save, SEEK_SET);
     }
+    if (!badCols.empty())
+    {
+      qsort(badCols.data(), badCols.size(), sizeof(unsigned), unsigned_cmp);
+      bool prevIsolated = true;
+      for (i = 0; i < (int)badCols.size(); ++i)
+      {
+        bool nextIsolated = i == ((int)(badCols.size()-1)) || badCols[i+1]>badCols[i]+4;
+        for (row = 0; row < raw_height; ++row)
+          if (prevIsolated && nextIsolated)
+            phase_one_fix_pixel_grad(row,badCols[i]);
+          else
+            phase_one_fix_col_pixel_avg(row,badCols[i]);
+        prevIsolated = nextIsolated;
+      }
+    }
     if (off_412)
     {
       fseek(ifp, off_412, SEEK_SET);
       for (i = 0; i < 9; i++)
         head[i] = get4() & 0x7fff;
       yval[0] = (float *)calloc(head[1] * head[3] + head[2] * head[4], 6);
-      merror(yval[0], "phase_one_correct()");
       yval[1] = (float *)(yval[0] + head[1] * head[3]);
       xval[0] = (ushort *)(yval[1] + head[2] * head[4]);
       xval[1] = (ushort *)(xval[0] + head[1] * head[3]);
@@ -390,10 +541,8 @@ void LibRaw::phase_one_load_raw()
   {
     imgdata.rawdata.ph1_cblack =
         (short(*)[2])calloc(raw_height * 2, sizeof(ushort));
-    merror(imgdata.rawdata.ph1_cblack, "phase_one_load_raw()");
     imgdata.rawdata.ph1_rblack =
         (short(*)[2])calloc(raw_width * 2, sizeof(ushort));
-    merror(imgdata.rawdata.ph1_rblack, "phase_one_load_raw()");
     if (ph1.black_col)
     {
       fseek(ifp, ph1.black_col, SEEK_SET);
@@ -461,7 +610,6 @@ void LibRaw::phase_one_load_raw_c()
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
 
   pixel = (ushort *)calloc(raw_width * 3 + raw_height * 4, 2);
-  merror(pixel, "phase_one_load_raw_c()");
   offset = (int *)(pixel + raw_width);
   fseek(ifp, strip_offset, SEEK_SET);
   for (row = 0; row < raw_height; row++)
@@ -480,12 +628,10 @@ void LibRaw::phase_one_load_raw_c()
   {
     imgdata.rawdata.ph1_cblack =
         (short(*)[2])calloc(raw_height * 2, sizeof(ushort));
-    merror(imgdata.rawdata.ph1_cblack, "phase_one_load_raw_c()");
     memmove(imgdata.rawdata.ph1_cblack, (ushort *)c_black[0],
             raw_height * 2 * sizeof(ushort));
     imgdata.rawdata.ph1_rblack =
         (short(*)[2])calloc(raw_width * 2, sizeof(ushort));
-    merror(imgdata.rawdata.ph1_rblack, "phase_one_load_raw_c()");
     memmove(imgdata.rawdata.ph1_rblack, (ushort *)r_black[0],
             raw_width * 2 * sizeof(ushort));
   }
@@ -540,7 +686,8 @@ void LibRaw::phase_one_load_raw_c()
 void LibRaw::hasselblad_load_raw()
 {
   struct jhead jh;
-  int shot, row, col, *back[5], len[2], diff[12], pred, sh, f, c;
+  int shot, row, col, *back[5]={0,0,0,0,0},
+ 	 len[2], diff[12], pred, sh, f, c;
   unsigned s;
   unsigned upix, urow, ucol;
   ushort *ip;
@@ -552,7 +699,6 @@ void LibRaw::hasselblad_load_raw()
   try
   {
     back[4] = (int *)calloc(raw_width, 3 * sizeof **back);
-    merror(back[4], "hasselblad_load_raw()");
     FORC3 back[c] = back[4] + c * raw_width;
     cblack[6] >>= sh = tiff_samples > 1;
     shot = LIM(shot_select, 1, tiff_samples) - 1;
@@ -609,11 +755,13 @@ void LibRaw::hasselblad_load_raw()
   }
   catch (...)
   {
-    free(back[4]);
+    if(back[4])
+    	free(back[4]);
     ljpeg_end(&jh);
     throw;
   }
-  free(back[4]);
+  if(back[4])
+    free(back[4]);
   ljpeg_end(&jh);
   if (image)
     mix_green = 1;
@@ -629,7 +777,6 @@ void LibRaw::leaf_hdr_load_raw()
     if (!image)
       throw LIBRAW_EXCEPTION_IO_CORRUPT;
     pixel = (ushort *)calloc(raw_width, sizeof *pixel);
-    merror(pixel, "leaf_hdr_load_raw()");
   }
   try
   {
@@ -712,7 +859,6 @@ void LibRaw::sinar_4shot_load_raw()
   if (!image)
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
   pixel = (ushort *)calloc(raw_width, sizeof *pixel);
-  merror(pixel, "sinar_4shot_load_raw()");
   try
   {
     for (shot = 0; shot < 4; shot++)
@@ -751,7 +897,6 @@ void LibRaw::imacon_full_load_raw()
 
   unsigned short *buf =
       (unsigned short *)malloc(width * 3 * sizeof(unsigned short));
-  merror(buf, "imacon_full_load_raw");
 
   for (row = 0; row < height; row++)
   {

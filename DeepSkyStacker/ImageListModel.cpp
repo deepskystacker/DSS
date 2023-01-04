@@ -622,15 +622,15 @@ namespace DSS
             return QVariant();      // we're outta here
         }
 
-        // if (file.m_lNrChannels == 3)
-        // index +=0;               // Use xxxxColour Icons
-        if (IsCYMGType(file.GetCFAType()))
+        if (file.m_lNrChannels == 3)
+            index +=0;              // Use xxxxColour Icons
+        else if (IsCYMGType(file.GetCFAType()))
             index += 4;             // Use xxxxCMYG Icons
         else if (file.GetCFAType() != CFATYPE_NONE)
             index += 8;             // Use xxxxRGB Icons
         else
             index += 12;            // Use xxxxGreyscale Icons
-        
+       
         if (ImageListModel::icons[index].isNull())
         {
             qDebug("null icon");
@@ -644,7 +644,7 @@ namespace DSS
 
         if (exposure)
         {
-            if (exposure > 66399.999) exposure = 86399.999;		// 24 hours less 1 ms
+            if (exposure > 86399.999) exposure = 86399.999;		// 24 hours less 1 ms
             double msecs = exposure * 1000.0;
             QTime time{ QTime(0, 0) };
             time = time.addMSecs(msecs);

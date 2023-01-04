@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * File: internal/libraw_cxx_defs.h
- * Copyright 2008-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2008-2021 LibRaw LLC (info@libraw.org)
  * Created: Sat Aug  17, 2020
 
 LibRaw is free software; you can redistribute it and/or modify
@@ -111,6 +111,9 @@ CameraMetaDataLR *make_camera_metadata();
     case LIBRAW_EXCEPTION_BAD_CROP:                                            \
       recycle();                                                               \
       return LIBRAW_BAD_CROP;                                                  \
+    case LIBRAW_EXCEPTION_UNSUPPORTED_FORMAT:                                  \
+      recycle();                                                               \
+      return LIBRAW_FILE_UNSUPPORTED;                                          \
     default:                                                                   \
       return LIBRAW_UNSPECIFIED_ERROR;                                         \
     }                                                                          \

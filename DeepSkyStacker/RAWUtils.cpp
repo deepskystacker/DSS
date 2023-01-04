@@ -1083,7 +1083,7 @@ int DSSLibRaw::dcraw_ppm_tiff_writer(const char *filename)
 		{
 			libraw_internal_data.output_data.histogram =
 				(int(*)[LIBRAW_HISTOGRAM_SIZE]) malloc(sizeof(*libraw_internal_data.output_data.histogram) * 4);
-			merror(libraw_internal_data.output_data.histogram, "LibRaw::dcraw_ppm_tiff_writer()");
+		//	merror(libraw_internal_data.output_data.histogram, "LibRaw::dcraw_ppm_tiff_writer()");
 		}
 		write_ppm_tiff();
 		SET_PROC_FLAG(LIBRAW_PROGRESS_FLIP);
@@ -1123,8 +1123,9 @@ void DSSLibRaw::write_ppm_tiff()
 	iwidth = width;
 	if (flip & 4) SWAP(height, width);
 	ppm = (uchar *)calloc(width, colors*output_bps / 8);
+	if (nullptr == ppm) throw LIBRAW_EXCEPTION_ALLOC;
 	ppm2 = (ushort *)ppm;
-	merror(ppm, "write_ppm_tiff()");
+	// merror(ppm, "write_ppm_tiff()");
 
 	//
 	// Neither need nor want to write TIFF/PPM headers

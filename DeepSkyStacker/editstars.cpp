@@ -175,8 +175,9 @@ namespace DSS
 		m_fFWHM{ 0 },
 		m_lRemovedIndice{ 0 },
 		m_bRemoveComet{ false },
-		forceHere {false},
-		displayGrid {false}
+		forceHere { false },
+		displayGrid { false },
+		m_tipShowCount{ 0 }
 	{
 		imageView = dynamic_cast<ImageView*>(parent);
 		Q_ASSERT(nullptr != imageView);
@@ -254,6 +255,7 @@ namespace DSS
 
 	void EditStars::rectButtonPressed()
 	{
+		qDebug() << __FUNCTION__;
 		//
 		// No longer interested in signals from the imageView object
 		//
@@ -278,7 +280,7 @@ namespace DSS
 
 	void EditStars::cometButtonPressed()
 	{
-		qDebug() << "In EditStars: comet button checked";
+		qDebug() << __FUNCTION__;
 		connect(imageView, SIGNAL(Image_leaveEvent(QEvent*)), this, SLOT(leaveEvent(QEvent*)));
 		connect(imageView, SIGNAL(Image_mousePressEvent(QMouseEvent*)), this, SLOT(mousePressEvent(QMouseEvent*)));
 		connect(imageView, SIGNAL(Image_mouseMoveEvent(QMouseEvent*)), this, SLOT(mouseMoveEvent(QMouseEvent*)));
@@ -292,7 +294,7 @@ namespace DSS
 
 	void EditStars::saveButtonPressed()
 	{
-		qDebug() << "In EditStars: save pressed";
+		qDebug() << __FUNCTION__;
 		saveRegisterSettings();
 	}
 
@@ -867,7 +869,7 @@ namespace DSS
 
 				constexpr double ninetyDegrees { 90.0 * 16.0 };
 				constexpr double oneeightyDegrees{ 180.0 * 16.0 };
-				//painter.drawArc(QRectF((fX - fRectSize), (fY - fRectSize), fDiameter, fDiameter), -ninetyDegrees, -ninetyDegrees);
+
 				painter.drawArc(QRectF((fX - fRectSize), (fY - fRectSize), fDiameter, fDiameter), -oneeightyDegrees, -ninetyDegrees);
 				painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY - fRectSize), fDiameter, fDiameter), 0.0, ninetyDegrees);
 				painter.drawArc(QRectF((fX + fRectSize - fDiameter), (fY + fRectSize - fDiameter), fDiameter, fDiameter), 0.0, -ninetyDegrees);

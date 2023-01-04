@@ -275,7 +275,7 @@ bool CFITSReader::Open()
 	int					status = 0;
 	char error_text[31] = "";			// Error text for FITS errors.
 
-	fits_open_diskfile(&m_fits, CT2CA(m_strFileName, CP_ACP), READONLY, &status);
+	fits_open_diskfile(&m_fits, (LPCSTR)CT2CA(m_strFileName, CP_ACP), READONLY, &status);
 	if (0 != status)
 	{
 		fits_get_errstatus(status, error_text);
@@ -285,7 +285,7 @@ bool CFITSReader::Open()
 			status,
 			CString(error_text));
 
-		ZTRACE_RUNTIME(CT2CA(errorMessage));
+		ZTRACE_RUNTIME((LPCSTR)CT2CA(errorMessage));
 
 #if defined(_CONSOLE)
 		std::wcerr << errorMessage;

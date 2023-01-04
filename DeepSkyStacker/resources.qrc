@@ -43,8 +43,8 @@
         <file alias="BiasColour@2x.png">res/BiasColour@2x.png</file>
         <file alias="BiasCYMG.png">res/BiasCYMG.png</file>
         <file alias="BiasCYMG@2x.png">res/BiasCYMG@2x.png</file>
-        <file alias="BiasGreyScale.png">res/BiasGreyScale.png</file>
-        <file alias="BiasGreyScale@2x.png">res/BiasGreyScale@2x.png</file>
+        <file alias="BiasGreyscale.png">res/BiasGreyscale.png</file>
+        <file alias="BiasGreyscale@2x.png">res/BiasGreyscale@2x.png</file>
         <file alias="BiasRGB.png">res/BiasRGB.png</file>
         <file alias="BiasRGB@2x.png">res/BiasRGB@2x.png</file>
         <file alias="DarkColour.png">res/DarkColour.png</file>

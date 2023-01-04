@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw uses code from dcraw.c -- Dave Coffin's raw photo decoder,
  dcraw.c is copyright 1997-2018 by Dave Coffin, dcoffin a cybercom o net.
@@ -97,7 +97,6 @@ ushort *LibRaw::make_decoder_ref(const uchar **source)
   for (max = 16; max && !count[max]; max--)
     ;
   huff = (ushort *)calloc(1 + (1 << max), sizeof *huff);
-  merror(huff, "make_decoder()");
   huff[0] = max;
   for (h = len = 1; len <= max; len++)
     for (i = 0; i < count[len]; i++, ++*source)
@@ -203,7 +202,8 @@ int LibRaw::canon_has_lowbits()
 void LibRaw::canon_load_raw()
 {
   ushort *pixel, *prow, *huff[2];
-  int nblocks, lowbits, i, c, row, r, save, val;
+  int nblocks, lowbits, i, c, row, r, val;
+  INT64 save;
   int block, diffbuf[64], leaf, len, diff, carry = 0, pnum = 0, base[2];
 
   crw_init_tables(tiff_compress, huff);
@@ -348,7 +348,6 @@ int LibRaw::ljpeg_start(struct jhead *jh, int info_only)
     FORC(jh->sraw) jh->huff[1 + c] = jh->huff[0];
   }
   jh->row = (ushort *)calloc(jh->wide * jh->clrs, 16);
-  merror(jh->row, "ljpeg_start()");
   return zero_after_ff = 1;
 }
 
@@ -552,6 +551,10 @@ void LibRaw::lossless_jpeg_load_raw()
 
   if (jh.wide < 1 || jh.high < 1 || jh.clrs < 1 || jh.bits < 1)
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
+
+  if(cr2_slice[0] && !cr2_slice[1])
+    throw LIBRAW_EXCEPTION_IO_CORRUPT;
+
   jwide = jh.wide * jh.clrs;
   jhigh = jh.high;
   if (jh.clrs == 4 && jwide >= raw_width * 2)
@@ -634,8 +637,7 @@ void LibRaw::canon_sraw_load_raw()
             rp = (short *)ljpeg_row(jrow++, &jh);
           if (col >= width)
             continue;
-          if (imgdata.params.raw_processing_options &
-              LIBRAW_PROCESSING_SRAW_NO_INTERPOLATE)
+          if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SRAW_NO_INTERPOLATE)
           {
             FORC(jh.clrs - 2)
             {
@@ -646,8 +648,7 @@ void LibRaw::canon_sraw_load_raw()
             ip[col][1] = rp[jcol + jh.clrs - 2] - 8192;
             ip[col][2] = rp[jcol + jh.clrs - 1] - 8192;
           }
-          else if (imgdata.params.raw_processing_options &
-                   LIBRAW_PROCESSING_SRAW_NO_RGB)
+          else if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SRAW_NO_RGB)
           {
             FORC(jh.clrs - 2)
             ip[col + (c >> 1) * width + (c & 1)][0] = rp[jcol + c];
@@ -671,8 +672,7 @@ void LibRaw::canon_sraw_load_raw()
     throw;
   }
 
-  if (imgdata.params.raw_processing_options &
-      LIBRAW_PROCESSING_SRAW_NO_INTERPOLATE)
+  if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SRAW_NO_INTERPOLATE)
   {
     ljpeg_end(&jh);
     maximum = 0x3fff;
@@ -716,8 +716,7 @@ void LibRaw::canon_sraw_load_raw()
           else
             ip[col][c] = (ip[col - 1][c] + ip[col + 1][c] + 1) >> 1;
     }
-    if (!(imgdata.params.raw_processing_options &
-          LIBRAW_PROCESSING_SRAW_NO_RGB))
+    if (!(imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SRAW_NO_RGB))
       for (; rp < ip[0]; rp += 4)
       {
         checkCancel();
@@ -782,8 +781,8 @@ void LibRaw::ljpeg_idct(struct jhead *jh)
       coef -= (1 << len) - 1;
     ((float *)work)[zigzag[i]] = coef * jh->quant[i];
   }
-  FORC(8) work[0][0][c] *= M_SQRT1_2;
-  FORC(8) work[0][c][0] *= M_SQRT1_2;
+  FORC(8) work[0][0][c] *= float(M_SQRT1_2);
+  FORC(8) work[0][c][0] *= float(M_SQRT1_2);
   for (i = 0; i < 8; i++)
     for (j = 0; j < 8; j++)
       FORC(8) work[1][i][j] += work[0][i][c] * cs[(j * 2 + 1) * c];
@@ -838,7 +837,7 @@ void LibRaw::nikon_read_curve()
   if (ver0 == 0x49 || ver1 == 0x58)
     fseek(ifp, 2110, SEEK_CUR);
   read_shorts(vpred[0], 4);
-  max = 1 << tiff_bps & 0x7fff;
+  step = max = 1 << tiff_bps & 0x7fff;
   if ((csize = get2()) > 1)
     step = max / (csize - 1);
   if (ver0 == 0x44 && (ver1 == 0x20 || (ver1 == 0x40 && step > 3)) && step > 0)
@@ -945,7 +944,7 @@ void LibRaw::nikon_yuv_load_raw()
 {
   if (!image)
     throw LIBRAW_EXCEPTION_IO_CORRUPT;
-  int row, col, yuv[4], rgb[3], b, c;
+  int row, col, yuv[4]={0,0,0,0}, rgb[3], b, c;
   UINT64 bitbuf = 0;
   float cmul[4];
   FORC4 { cmul[c] = cam_mul[c] > 0.001f ? cam_mul[c] : 1.f; }
@@ -1004,7 +1003,7 @@ void LibRaw::rollei_load_raw()
 
 void LibRaw::nokia_load_raw()
 {
-  uchar *data, *dp;
+  uchar *dp;
   int rev, dwide, row, col, c;
   double sum[] = {0, 0};
 
@@ -1014,26 +1013,16 @@ void LibRaw::nokia_load_raw()
   if (raw_stride)
 	  dwide = raw_stride;
 #endif
-  data = (uchar *)malloc(dwide * 2);
-  merror(data, "nokia_load_raw()");
-  try
+  std::vector<uchar> data(dwide * 2 + 4);
+  for (row = 0; row < raw_height; row++)
   {
-    for (row = 0; row < raw_height; row++)
-    {
       checkCancel();
-      if (fread(data + dwide, 1, dwide, ifp) < dwide)
-        derror();
+      if (fread(data.data() + dwide, 1, dwide, ifp) < dwide)
+          derror();
       FORC(dwide) data[c] = data[dwide + (c ^ rev)];
-      for (dp = data, col = 0; col < raw_width; dp += 5, col += 4)
-        FORC4 RAW(row, col + c) = (dp[c] << 2) | (dp[4] >> (c << 1) & 3);
-    }
+      for (dp = data.data(), col = 0; col < raw_width; dp += 5, col += 4)
+          FORC4 RAW(row, col + c) = (dp[c] << 2) | (dp[4] >> (c << 1) & 3);
   }
-  catch (...)
-  {
-    free(data);
-    throw;
-  }
-  free(data);
   maximum = 0x3ff;
 #ifdef USE_6BY9RPI
   if (!strcmp(make, "OmniVision") ||
@@ -1053,12 +1042,13 @@ void LibRaw::nokia_load_raw()
     filters = 0x4b4b4b4b;
 }
 
+#ifdef LIBRAW_OLD_VIDEO_SUPPORT
+
 void LibRaw::canon_rmf_load_raw()
 {
   int row, col, bits, orow, ocol, c;
 
   int *words = (int *)malloc(sizeof(int) * (raw_width / 3 + 1));
-  merror(words, "canon_rmf_load_raw");
   for (row = 0; row < raw_height; row++)
   {
     checkCancel();
@@ -1082,6 +1072,7 @@ void LibRaw::canon_rmf_load_raw()
   free(words);
   maximum = curve[0x3ff];
 }
+#endif
 
 unsigned LibRaw::pana_data(int nb, unsigned *bytes)
 {
@@ -1128,6 +1119,7 @@ void LibRaw::panasonic_load_raw()
 {
   int row, col, i, j, sh = 0, pred[2], nonz[2];
   unsigned bytes[16];
+  memset(bytes,0,sizeof(bytes)); // make gcc11 happy
   ushort *raw_block_data;
 
   pana_data(0, 0);
@@ -1468,7 +1460,6 @@ void LibRaw::sony_arw2_load_raw()
   int row, col, val, max, min, imax, imin, sh, bit, i;
 
   data = (uchar *)malloc(raw_width + 1);
-  merror(data, "sony_arw2_load_raw()");
   try
   {
     for (row = 0; row < height; row++)
@@ -1484,10 +1475,8 @@ void LibRaw::sony_arw2_load_raw()
         for (sh = 0; sh < 4 && 0x80 << sh <= max - min; sh++)
           ;
         /* flag checks if outside of loop */
-        if (!(imgdata.params.raw_processing_options &
-              LIBRAW_PROCESSING_SONYARW2_ALLFLAGS) // no flag set
-            || (imgdata.params.raw_processing_options &
-                LIBRAW_PROCESSING_SONYARW2_DELTATOVALUE))
+        if (!(imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SONYARW2_ALLFLAGS) // no flag set
+            || (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SONYARW2_DELTATOVALUE))
         {
           for (bit = 30, i = 0; i < 16; i++)
             if (i == imax)
@@ -1503,8 +1492,7 @@ void LibRaw::sony_arw2_load_raw()
               bit += 7;
             }
         }
-        else if (imgdata.params.raw_processing_options &
-                 LIBRAW_PROCESSING_SONYARW2_BASEONLY)
+        else if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SONYARW2_BASEONLY)
         {
           for (bit = 30, i = 0; i < 16; i++)
             if (i == imax)
@@ -1514,8 +1502,7 @@ void LibRaw::sony_arw2_load_raw()
             else
               pix[i] = 0;
         }
-        else if (imgdata.params.raw_processing_options &
-                 LIBRAW_PROCESSING_SONYARW2_DELTAONLY)
+        else if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SONYARW2_DELTAONLY)
         {
           for (bit = 30, i = 0; i < 16; i++)
             if (i == imax)
@@ -1531,8 +1518,7 @@ void LibRaw::sony_arw2_load_raw()
               bit += 7;
             }
         }
-        else if (imgdata.params.raw_processing_options &
-                 LIBRAW_PROCESSING_SONYARW2_DELTAZEROBASE)
+        else if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SONYARW2_DELTAZEROBASE)
         {
           for (bit = 30, i = 0; i < 16; i++)
             if (i == imax)
@@ -1548,8 +1534,7 @@ void LibRaw::sony_arw2_load_raw()
             }
         }
 
-        if (imgdata.params.raw_processing_options &
-            LIBRAW_PROCESSING_SONYARW2_DELTATOVALUE)
+        if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SONYARW2_DELTATOVALUE)
         {
           for (i = 0; i < 16; i++, col += 2)
           {
@@ -1559,7 +1544,7 @@ void LibRaw::sony_arw2_load_raw()
             unsigned step = 1 << sh;
             RAW(row, col) =
                 curve[pix[i] << 1] >
-                        black + imgdata.params.sony_arw2_posterization_thr
+                        black + imgdata.rawparams.sony_arw2_posterization_thr
                     ? LIM(((slope * step * 1000) /
                            (curve[pix[i] << 1] - black)),
                           0, 10000)
@@ -1578,8 +1563,7 @@ void LibRaw::sony_arw2_load_raw()
     free(data);
     throw;
   }
-  if (imgdata.params.raw_processing_options &
-      LIBRAW_PROCESSING_SONYARW2_DELTATOVALUE)
+  if (imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_SONYARW2_DELTATOVALUE)
     maximum = 10000;
   free(data);
 }
@@ -1624,7 +1608,7 @@ void LibRaw::samsung_load_raw()
         if (idest < maxpixels &&
             isrc <
                 maxpixels) // less than zero is handled by unsigned conversion
-          RAW(row, col + c) = (i > 0 ? ((signed)ph1_bits(i) << (32 - i) >> (32 - i)) : 0) + 			                
+          RAW(row, col + c) = (i > 0 ? ((signed)ph1_bits(i) << (32 - i) >> (32 - i)) : 0) +
             (dir ? RAW(row + (~c | -2), col + c) : col ? RAW(row, col + (c | -2)) : 128);
         else
           derror();
@@ -1733,6 +1717,7 @@ void LibRaw::samsung3_load_raw()
   }
 }
 
+#ifdef LIBRAW_OLD_VIDEO_SUPPORT
 void LibRaw::redcine_load_raw()
 {
 #ifndef NO_JASPER
@@ -1755,9 +1740,7 @@ void LibRaw::redcine_load_raw()
     throw LIBRAW_EXCEPTION_DECODE_JPEG2000;
   }
   jmat = jas_matrix_create(height / 2, width / 2);
-  merror(jmat, "redcine_load_raw()");
   img = (ushort *)calloc((height + 2), (width + 2) * 2);
-  merror(img, "redcine_load_raw()");
   bool fastexitflag = false;
   try
   {
@@ -1813,3 +1796,4 @@ void LibRaw::redcine_load_raw()
     throw LIBRAW_EXCEPTION_CANCELLED_BY_CALLBACK;
 #endif
 }
+#endif

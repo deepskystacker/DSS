@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
 
  LibRaw is free software; you can redistribute it and/or modify
@@ -137,18 +137,18 @@ void LibRaw::parse_x3f()
     {
       int i;
       x3f_property_t *P = PL->property_table.element;
-      for (i = 0; i < PL->num_properties; i++)
+      for (i = 0; i < (int)PL->num_properties; i++)
       {
         char name[100], value[100];
         int noffset = (P[i].name - datap);
         int voffset = (P[i].value - datap);
-        if (noffset < 0 || noffset > maxitems || voffset < 0 ||
-            voffset > maxitems)
+        if (noffset < 0 || noffset > (int)maxitems || voffset < 0 ||
+            voffset > (int)maxitems)
           throw LIBRAW_EXCEPTION_IO_CORRUPT;
         int maxnsize = maxitems - (P[i].name - datap);
         int maxvsize = maxitems - (P[i].value - datap);
-        utf2char(P[i].name, name, MIN(maxnsize, sizeof(name)));
-        utf2char(P[i].value, value, MIN(maxvsize, sizeof(value)));
+        utf2char(P[i].name, name, MIN(maxnsize, ((int)sizeof(name))));
+        utf2char(P[i].value, value, MIN(maxvsize, ((int)sizeof(value))));
         if (!strcmp(name, "ISO"))
           imgdata.other.iso_speed = atoi(value);
         if (!strcmp(name, "CAMMANUF"))
@@ -170,7 +170,7 @@ void LibRaw::parse_x3f()
         if (!strcmp(name, "FLEQ35MM"))
           imgdata.lens.makernotes.FocalLengthIn35mmFormat = atof(value);
         if (!strcmp(name, "IMAGERTEMP"))
-          imgdata.makernotes.common.SensorTemperature = atof(value);
+          MN.common.SensorTemperature = atof(value);
         if (!strcmp(name, "LENSARANGE"))
         {
           char *sp;
@@ -278,14 +278,14 @@ void LibRaw::parse_x3f()
   }
   if (DE)
   {
-    x3f_directory_entry_header_t *DEH = &DE->header;
-    x3f_image_data_t *ID = &DEH->data_subsection.image_data;
-    imgdata.thumbnail.twidth = ID->columns;
-    imgdata.thumbnail.theight = ID->rows;
+    x3f_directory_entry_header_t *_DEH = &DE->header;
+    x3f_image_data_t *_ID = &_DEH->data_subsection.image_data;
+    imgdata.thumbnail.twidth = _ID->columns;
+    imgdata.thumbnail.theight = _ID->rows;
     imgdata.thumbnail.tcolors = 3;
     imgdata.thumbnail.tformat = format;
     libraw_internal_data.internal_data.toffset = DE->input.offset;
-    write_thumb = &LibRaw::x3f_thumb_loader;
+    libraw_internal_data.unpacker_data.thumb_format = LIBRAW_INTERNAL_THUMBNAIL_X3F;
   }
   DE = x3f_get_camf(x3f);
   if (DE && DE->input.size > 28)
@@ -340,7 +340,6 @@ void LibRaw::x3f_thumb_loader()
     if (imgdata.thumbnail.tformat == LIBRAW_THUMBNAIL_JPEG)
     {
       imgdata.thumbnail.thumb = (char *)malloc(ID->data_size);
-      merror(imgdata.thumbnail.thumb, "LibRaw::x3f_thumb_loader()");
       memmove(imgdata.thumbnail.thumb, ID->data, ID->data_size);
       imgdata.thumbnail.tlength = ID->data_size;
     }
@@ -348,9 +347,8 @@ void LibRaw::x3f_thumb_loader()
     {
       imgdata.thumbnail.tlength = ID->columns * ID->rows * 3;
       imgdata.thumbnail.thumb = (char *)malloc(ID->columns * ID->rows * 3);
-      merror(imgdata.thumbnail.thumb, "LibRaw::x3f_thumb_loader()");
       char *src0 = (char *)ID->data;
-      for (int row = 0; row < ID->rows; row++)
+      for (int row = 0; row < (int)ID->rows; row++)
       {
         int offset = row * ID->row_stride;
         if (offset + ID->columns * 3 > ID->data_size)
@@ -367,14 +365,6 @@ void LibRaw::x3f_thumb_loader()
   }
 }
 
-static inline uint32_t _clampbits(int x, uint32_t n)
-{
-  uint32_t _y_temp;
-  if ((_y_temp = x >> n))
-    x = ~_y_temp >> (32 - n);
-  return x;
-}
-
 void LibRaw::x3f_dpq_interpolate_rg()
 {
   int w = imgdata.sizes.raw_width / 2;
@@ -387,10 +377,8 @@ void LibRaw::x3f_dpq_interpolate_rg()
     {
       uint16_t *row0 =
           &image[imgdata.sizes.raw_width * 3 * (y * 2) + color]; // dst[1]
-      uint16_t row0_3 = row0[3];
       uint16_t *row1 =
           &image[imgdata.sizes.raw_width * 3 * (y * 2 + 1) + color]; // dst1[1]
-      uint16_t row1_3 = row1[3];
       for (int x = 2; x < (w - 2); x++)
       {
         row1[0] = row1[3] = row0[3] = row0[0];
@@ -412,9 +400,6 @@ void LibRaw::x3f_dpq_interpolate_rg()
 void LibRaw::x3f_dpq_interpolate_af(int xstep, int ystep, int scale)
 {
   unsigned short *image = (ushort *)imgdata.rawdata.color3_image;
-  unsigned int rowpitch =
-      imgdata.rawdata.sizes.raw_pitch / 2; // in 16-bit words
-                                           // Interpolate single pixel
   for (int y = 0;
        y < imgdata.rawdata.sizes.height + imgdata.rawdata.sizes.top_margin;
        y += ystep)
@@ -453,7 +438,7 @@ void LibRaw::x3f_dpq_interpolate_af(int xstep, int ystep, int scale)
       if (_ABS(pixf[2] - pixel0[2]) > _ABS(pixel_right[2] - pixel0[2]))
         pixf = pixel_right;
       int blocal = pixel0[2], bnear = pixf[2];
-      if (blocal < imgdata.color.black + 16 || bnear < imgdata.color.black + 16)
+      if (blocal < (int)imgdata.color.black + 16 || bnear < (int)imgdata.color.black + 16)
       {
         if (pixel0[0] < imgdata.color.black)
           pixel0[0] = imgdata.color.black;
@@ -503,9 +488,6 @@ void LibRaw::x3f_dpq_interpolate_af_sd(int xstart, int ystart, int xend,
                                        int scale)
 {
   unsigned short *image = (ushort *)imgdata.rawdata.color3_image;
-  unsigned int rowpitch =
-      imgdata.rawdata.sizes.raw_pitch / 2; // in 16-bit words
-  // Interpolate single pixel
   for (int y = ystart; y <= yend && y < imgdata.rawdata.sizes.height +
                                            imgdata.rawdata.sizes.top_margin;
        y += ystep)
@@ -548,21 +530,24 @@ void LibRaw::x3f_dpq_interpolate_af_sd(int xstart, int ystart, int xend,
         uint16_t *pixel0B = &row0[x * 3 + 3]; // right pixel
         uint16_t *pixel1B = &row1[x * 3 + 3]; // right pixel
         float sumG0 = 0, sumG1 = 0.f;
-        float cnt = 0.f;
+        float _cnt = 0.f;
         for (int xx = -scale; xx <= scale; xx += scale)
         {
           sumG0 += row_minus1[(x + xx) * 3 + 2];
           sumG1 += row_plus[(x + xx) * 3 + 2];
-          cnt += 1.f;
+          _cnt += 1.f;
           if (xx)
           {
             sumG0 += row0[(x + xx) * 3 + 2];
             sumG1 += row1[(x + xx) * 3 + 2];
-            cnt += 1.f;
+            _cnt += 1.f;
           }
         }
-        pixel0B[2] = sumG0 / cnt;
-        pixel1B[2] = sumG1 / cnt;
+        if (_cnt > 1.0)
+        {
+          pixel0B[2] = sumG0 / _cnt;
+          pixel1B[2] = sumG1 / _cnt;
+        }
       }
 
       //			uint16_t* pixel10 = &row1[x*3]; // Pixel below current
@@ -629,7 +614,7 @@ void LibRaw::x3f_load_raw()
     {
       // Move quattro data in place
       // R/B plane
-      for (int prow = 0; prow < TRU->x3rgb16.rows && prow < S.raw_height / 2;
+      for (int prow = 0; prow < (int)TRU->x3rgb16.rows && prow < S.raw_height / 2;
            prow++)
       {
         ushort(*destrow)[3] =
@@ -639,29 +624,28 @@ void LibRaw::x3f_load_raw()
         ushort(*srcrow)[3] =
             (unsigned short(*)[3]) & data[prow * TRU->x3rgb16.row_stride];
         for (int pcol = 0;
-             pcol < TRU->x3rgb16.columns && pcol < S.raw_width / 2; pcol++)
+             pcol < (int)TRU->x3rgb16.columns && pcol < S.raw_width / 2; pcol++)
         {
           destrow[pcol * 2][0] = srcrow[pcol][0];
           destrow[pcol * 2][1] = srcrow[pcol][1];
         }
       }
-      for (int row = 0; row < Q->top16.rows && row < S.raw_height; row++)
+      for (int row = 0; row < (int)Q->top16.rows && row < S.raw_height; row++)
       {
         ushort(*destrow)[3] =
             (unsigned short(*)[3]) &
             imgdata.rawdata
                 .color3_image[row * S.raw_pitch / 3 / sizeof(ushort)][0];
-        ushort(*srcrow) =
+        ushort *srcrow =
             (unsigned short *)&Q->top16.data[row * Q->top16.columns];
-        for (int col = 0; col < Q->top16.columns && col < S.raw_width; col++)
+        for (int col = 0; col < (int)Q->top16.columns && col < S.raw_width; col++)
           destrow[col][2] = srcrow[col];
       }
     }
 
 #if 1
     if (TRU && Q &&
-        (imgdata.params.raw_processing_options &
-         LIBRAW_PROCESSING_DP2Q_INTERPOLATEAF))
+        !(imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_NODP2Q_INTERPOLATEAF))
     {
       if (imgdata.sizes.raw_width == 5888 &&
           imgdata.sizes.raw_height == 3672) // dpN Quattro normal
@@ -712,8 +696,7 @@ void LibRaw::x3f_load_raw()
     }
 #endif
     if (TRU && Q && Q->quattro_layout &&
-        (imgdata.params.raw_processing_options &
-         LIBRAW_PROCESSING_DP2Q_INTERPOLATERG))
+        !(imgdata.rawparams.specials & LIBRAW_RAWSPECIAL_NODP2Q_INTERPOLATERG))
       x3f_dpq_interpolate_rg();
   }
   else

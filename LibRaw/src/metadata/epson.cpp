@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw is free software; you can redistribute it and/or modify
  it under the terms of the one of two licenses as you choose:
@@ -17,7 +17,7 @@
 void LibRaw::parseEpsonMakernote(int base, int uptag, unsigned dng_writer)
 {
 
-#define isRIC imgdata.sizes.raw_inset_crop
+#define isRIC imgdata.sizes.raw_inset_crops[0]
 
   unsigned entries, tag, type, len, save;
   short morder, sorder = order;

@@ -1,6 +1,6 @@
 /* -*- C++ -*-
  * File: libraw_internal.h
- * Copyright 2008-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2008-2021 LibRaw LLC (info@libraw.org)
  * Created: Sat Mar  8 , 2008
  *
  * LibRaw internal data structures (not visible outside)
@@ -76,6 +76,8 @@ public:
   static const double wide_rgb[3][3];
   static const double prophoto_rgb[3][3];
   static const double aces_rgb[3][3];
+  static const double dcip3d65_rgb[3][3];
+  static const double rec2020_rgb[3][3];
 };
 #endif /* __cplusplus */
 
@@ -111,6 +113,13 @@ typedef struct
   int metadata_blocks;
 } identify_data_t;
 
+typedef struct
+{
+  uint32_t first;
+  uint32_t count;
+  uint32_t id;
+} crx_sample_to_chunk_t;
+
 // contents of tag CMP1 for relevant track in CR3 file
 typedef struct
 {
@@ -127,10 +136,18 @@ typedef struct
   int32_t hasTileCols;
   int32_t hasTileRows;
   int32_t mdatHdrSize;
+  int32_t medianBits;
   // Not from header, but from datastream
   uint32_t MediaSize;
   INT64 MediaOffset;
-  uint32_t MediaType; /* 1 -> /C/RAW, 2-> JPEG */
+  uint32_t MediaType; /* 1 -> /C/RAW, 2-> JPEG, 3-> CTMD metadata*/
+  crx_sample_to_chunk_t * stsc_data; /* samples to chunk */
+  uint32_t stsc_count;
+  uint32_t sample_count;
+  uint32_t sample_size; /* zero if not fixed sample size */
+  int32_t *sample_sizes;
+  uint32_t chunk_count;
+  INT64  *chunk_offsets;
 } crx_data_header_t;
 
 typedef struct
@@ -140,9 +157,12 @@ typedef struct
   unsigned kodak_cbpp;
   INT64 strip_offset, data_offset;
   INT64 meta_offset;
+  INT64 exif_offset, exif_subdir_offset, ifd0_offset;
   unsigned data_size;
   unsigned meta_length;
+  unsigned cr3_exif_length, cr3_ifd0_length;
   unsigned thumb_misc;
+  enum LibRaw_internal_thumbnail_formats thumb_format;
   unsigned fuji_layout;
   unsigned tiff_samples;
   unsigned tiff_bps;
@@ -155,18 +175,19 @@ typedef struct
   long long posRAFData;
   unsigned lenRAFData;
   int fuji_total_lines, fuji_total_blocks, fuji_block_width, fuji_bits,
-      fuji_raw_type;
+      fuji_raw_type, fuji_lossless;
   int pana_encoding, pana_bpp;
   crx_data_header_t crx_header[LIBRAW_CRXTRACKS_MAXCOUNT];
   int crx_track_selected;
+  int crx_track_count;
   short CR3_CTMDtag;
   short CR3_Version;
   int CM_found;
   unsigned is_NikonTransfer;
+  unsigned is_Olympus;
+  int OlympusDNG_SubDirOffsetValid;
   unsigned is_Sony;
   unsigned is_pana_raw;
-  unsigned
-      is_4K_RAFdata; /* =1 for Fuji X-A3, X-A5, X-A7, X-A10, X-A20, X-T100, XF10 */
   unsigned is_PentaxRicohMakernotes; /* =1 for Ricoh software by Pentax, Camera DNG */
 
   unsigned dng_frames[LIBRAW_IFD_MAXCOUNT*2]; /* bits: 0-7: shot_select, 8-15: IFD#, 16-31: low 16 bit of newsubfile type */

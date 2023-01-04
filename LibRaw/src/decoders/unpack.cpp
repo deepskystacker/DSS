@@ -1,5 +1,5 @@
 /* -*- C++ -*-
- * Copyright 2019-2020 LibRaw LLC (info@libraw.org)
+ * Copyright 2019-2021 LibRaw LLC (info@libraw.org)
  *
  LibRaw is free software; you can redistribute it and/or modify
  it under the terms of the one of two licenses as you choose:
@@ -14,6 +14,11 @@
 #include "../../internal/libraw_cameraids.h"
 #include "../../internal/libraw_cxx_defs.h"
 
+#ifdef USE_RAWSPEED3
+#include "rawspeed3_capi.h"
+#include <array>
+#endif
+
 int LibRaw::unpack(void)
 {
   CHECK_ORDER_HIGH(LIBRAW_PROGRESS_LOAD_RAW);
@@ -25,7 +30,7 @@ int LibRaw::unpack(void)
       return LIBRAW_INPUT_CLOSED;
 
     RUN_CALLBACK(LIBRAW_PROGRESS_LOAD_RAW, 0, 2);
-    if (O.shot_select >= P1.raw_count)
+    if (imgdata.rawparams.shot_select >= P1.raw_count)
       return LIBRAW_REQUEST_FOR_NONEXISTENT_IMAGE;
 
     if (!load_raw)
@@ -44,9 +49,12 @@ int LibRaw::unpack(void)
     }
     if (libraw_internal_data.unpacker_data.meta_length)
     {
+      if (libraw_internal_data.unpacker_data.meta_length >
+          INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
+        throw LIBRAW_EXCEPTION_TOOBIG;
+
       libraw_internal_data.internal_data.meta_data =
           (char *)malloc(libraw_internal_data.unpacker_data.meta_length);
-      merror(libraw_internal_data.internal_data.meta_data, "LibRaw::unpack()");
     }
 
     libraw_decoder_info_t decoder_info;
@@ -86,16 +94,116 @@ int LibRaw::unpack(void)
           (imgdata.idata.filters || P1.colors == 1) ? 1 : LIM(P1.colors, 3, 4);
       INT64 samplesize = is_floating_point() ? 4 : 2;
       INT64 bytes = pixcount * planecount * samplesize;
-      if (bytes > INT64(imgdata.params.max_raw_memory_mb) * INT64(1024 * 1024))
+      if (bytes + INT64(libraw_internal_data.unpacker_data.meta_length )
+			> INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
         throw LIBRAW_EXCEPTION_TOOBIG;
 
       // find ifd to check sample
-      int rr = try_dngsdk();
+      try_dngsdk();
       if (raw_was_read())
         imgdata.process_warnings |= LIBRAW_WARN_DNGSDK_PROCESSED;
     }
 #endif
+#ifdef USE_RAWSPEED3
+    if (!raw_was_read()
+        && (!IO.fuji_width) // Do not use for fuji rotated
+        && ((imgdata.idata.raw_count == 1) 
+            // Canon dual pixel, 1st frame
+            || (makeIs(LIBRAW_CAMERAMAKER_Canon) && imgdata.idata.raw_count == 2 && imgdata.rawparams.shot_select==0)
+            )
+#ifdef USE_RAWSPEED_BITS
+        && (imgdata.rawparams.use_rawspeed & LIBRAW_RAWSPEEDV3_USE)
+#else
+        && imgdata.rawparams.use_rawspeed
+#endif
+        && (decoder_info.decoder_flags & LIBRAW_DECODER_TRYRAWSPEED3)
+        )
+    {
+      INT64 pixcount = INT64(MAX(S.width, S.raw_width)) * INT64(MAX(S.height, S.raw_height));
+      INT64 planecount = (imgdata.idata.filters || P1.colors == 1) ? 1 : LIM(P1.colors, 3, 4);
+      INT64 bytes = pixcount * planecount * 2; // sample size is always 2 for rawspeed
+      if (bytes + INT64(libraw_internal_data.unpacker_data.meta_length) 
+				> INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
+        throw LIBRAW_EXCEPTION_TOOBIG;
 
+        if (!_rawspeed3_handle)
+            _rawspeed3_handle = rawspeed3_initdefault();
+
+        if (_rawspeed3_handle && ID.input->size() > 0) // large bound is checked at identify
+        {
+            void *_rawspeed_buffer = 0;
+            try {
+                ID.input->seek(0, SEEK_SET);
+                INT64 _rawspeed_buffer_sz = ID.input->size() + 32;
+                _rawspeed_buffer = malloc(_rawspeed_buffer_sz);
+                if (!_rawspeed_buffer)
+                    throw LIBRAW_EXCEPTION_ALLOC;
+                ID.input->read(_rawspeed_buffer, ID.input->size(), 1);
+
+                rawspeed3_ret_t rs3ret;
+                rawspeed3_clearresult(&rs3ret);
+                int status = rawspeed3_decodefile(_rawspeed3_handle, &rs3ret, _rawspeed_buffer, ID.input->size(),
+#ifdef USE_RAWSPEED_BITS
+                    !(imgdata.rawparams.use_rawspeed & LIBRAW_RAWSPEEDV3_FAILONUNKNOWN)
+#else
+                    false
+#endif
+                );
+                if (status != rawspeed3_ok)
+                  imgdata.process_warnings |= LIBRAW_WARN_RAWSPEED_UNSUPPORTED;
+
+                if (status == rawspeed3_not_supported)
+                  imgdata.process_warnings |= LIBRAW_WARN_RAWSPEED3_NOTLISTED;
+
+                if (status == rawspeed3_ok
+#ifdef USE_RAWSPEED_BITS
+                    ||
+                    (status == rawspeed3_ok_warnings && (imgdata.rawparams.use_rawspeed & LIBRAW_RAWSPEEDV3_IGNOREERRORS))
+#endif
+                    )
+                {
+
+                  if ((S.raw_width != rs3ret.width) || (S.raw_height != rs3ret.height))
+                      throw "Size mismatch";
+
+                    // DECODED w/ success
+                  if (rs3ret.filters>1) // Fuji or bayer
+                      imgdata.rawdata.raw_image = (ushort*)rs3ret.pixeldata;
+                  else if (rs3ret.cpp == 4)
+                  {
+                      imgdata.rawdata.color4_image = (ushort(*)[4])rs3ret.pixeldata;
+                    //if (r->whitePoint > 0 && r->whitePoint < 65536)
+                    //  C.maximum = r->whitePoint;
+                  }
+                  else if (rs3ret.cpp == 3)
+                  {
+                      imgdata.rawdata.color3_image = (ushort(*)[3])rs3ret.pixeldata;
+                    //if (r->whitePoint > 0 && r->whitePoint < 65536)
+                    //  C.maximum = r->whitePoint;
+                  }
+
+                  if (raw_was_read()) // buffers are assigned above
+                  {
+                    // set sizes
+                    S.raw_pitch = rs3ret.pitch;
+                    S.raw_width = rs3ret.width;
+                    S.raw_height = rs3ret.height;
+                    imgdata.process_warnings |= LIBRAW_WARN_RAWSPEED3_PROCESSED;
+                    // if (r->whitePoint > 0 && r->whitePoint < 65536)
+                    // C.maximum = r->whitePoint;
+                  }
+                }
+                free(_rawspeed_buffer);
+            }
+            catch (...)
+            {
+                imgdata.process_warnings |= LIBRAW_WARN_RAWSPEED3_PROBLEM;
+                if (_rawspeed_buffer)
+                    free(_rawspeed_buffer);
+            }
+         }
+    }
+#endif
 #ifdef USE_RAWSPEED
     if (!raw_was_read())
     {
@@ -122,7 +230,7 @@ int LibRaw::unpack(void)
         rawspeed_enabled = 0;
 
       if (makeIs(LIBRAW_CAMERAMAKER_Canon) &&
-          (libraw_internal_data.identify_data.unique_id == CanonID_EOS_6D_Mark_II)) 
+          (libraw_internal_data.identify_data.unique_id == CanonID_EOS_6D_Mark_II))
         rawspeed_enabled = 0;
 
       if (imgdata.idata.dng_version && imgdata.idata.filters == 0 &&
@@ -137,8 +245,12 @@ int LibRaw::unpack(void)
            !strncasecmp(imgdata.idata.model, "COOLPIX P1000", 13)))
         rawspeed_enabled = 0;
 
+      if (load_raw == &LibRaw::nikon_load_raw && makeIs(LIBRAW_CAMERAMAKER_Nikon) &&
+          !strcasecmp(imgdata.idata.model, "D6"))
+        rawspeed_enabled = 0;
+
 	if (load_raw == &LibRaw::lossless_jpeg_load_raw &&
-		imgdata.makernotes.canon.RecordMode && makeIs(LIBRAW_CAMERAMAKER_Kodak) &&
+		MN.canon.RecordMode && makeIs(LIBRAW_CAMERAMAKER_Kodak) &&
 		/* Not normalized models here, it is intentional */
 		(!strncasecmp(imgdata.idata.model, "EOS D2000", 9) ||
 		 !strncasecmp(imgdata.idata.model, "EOS D6000", 9)))
@@ -154,10 +266,16 @@ int LibRaw::unpack(void)
         rawspeed_enabled = 0;
 
       // RawSpeed Supported,
-      if (O.use_rawspeed && rawspeed_enabled &&
-          !(is_sraw() && (O.raw_processing_options &
-                          (LIBRAW_PROCESSING_SRAW_NO_RGB |
-                           LIBRAW_PROCESSING_SRAW_NO_INTERPOLATE))) &&
+      if (
+#ifdef USE_RAWSPEED_BITS
+          (imgdata.rawparams.use_rawspeed & LIBRAW_RAWSPEEDV1_USE)
+#else
+          imgdata.rawparams.use_rawspeed 
+#endif
+          && rawspeed_enabled &&
+          !(is_sraw() && (imgdata.rawparams.specials &
+                          (LIBRAW_RAWSPECIAL_SRAW_NO_RGB |
+                           LIBRAW_RAWSPECIAL_SRAW_NO_INTERPOLATE))) &&
           (decoder_info.decoder_flags & LIBRAW_DECODER_TRYRAWSPEED) &&
           _rawspeed_camerameta)
       {
@@ -168,11 +286,12 @@ int LibRaw::unpack(void)
                                : LIM(P1.colors, 3, 4);
         INT64 bytes =
             pixcount * planecount * 2; // sample size is always 2 for rawspeed
-        if (bytes >
-            INT64(imgdata.params.max_raw_memory_mb) * INT64(1024 * 1024))
+        if (bytes + +INT64(libraw_internal_data.unpacker_data.meta_length) >
+            INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
           throw LIBRAW_EXCEPTION_TOOBIG;
 
-        int rr = try_rawspeed();
+        /*int rr = */ try_rawspeed();
+
       }
     }
 #endif
@@ -187,11 +306,12 @@ int LibRaw::unpack(void)
       }
       if (decoder_info.decoder_flags & LIBRAW_DECODER_SINAR4SHOT)
       {
-        if (imgdata.params.shot_select) // single image extract
+        if (imgdata.rawparams.shot_select) // single image extract
         {
           if (INT64(rwidth) * INT64(rheight + 8) *
-                  sizeof(imgdata.rawdata.raw_image[0]) >
-              INT64(imgdata.params.max_raw_memory_mb) * INT64(1024 * 1024))
+                  INT64(sizeof(imgdata.rawdata.raw_image[0])) 
+				+ +INT64(libraw_internal_data.unpacker_data.meta_length) >
+              INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
             throw LIBRAW_EXCEPTION_TOOBIG;
           imgdata.rawdata.raw_alloc = malloc(
               rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]));
@@ -202,8 +322,9 @@ int LibRaw::unpack(void)
         else // Full image extract
         {
           if (INT64(rwidth) * INT64(rheight + 8) *
-                  sizeof(imgdata.rawdata.raw_image[0]) * 4 >
-              INT64(imgdata.params.max_raw_memory_mb) * INT64(1024 * 1024))
+                  INT64(sizeof(imgdata.rawdata.raw_image[0])) * 4 
+				+INT64(libraw_internal_data.unpacker_data.meta_length) >
+              INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
             throw LIBRAW_EXCEPTION_TOOBIG;
           S.raw_pitch = S.raw_width * 8;
           imgdata.rawdata.raw_alloc = 0;
@@ -216,8 +337,9 @@ int LibRaw::unpack(void)
       else if (decoder_info.decoder_flags & LIBRAW_DECODER_3CHANNEL)
       {
         if (INT64(rwidth) * INT64(rheight + 8) *
-                sizeof(imgdata.rawdata.raw_image[0]) * 3 >
-            INT64(imgdata.params.max_raw_memory_mb) * INT64(1024 * 1024))
+                INT64(sizeof(imgdata.rawdata.raw_image[0])) * 3 
+			+ INT64(libraw_internal_data.unpacker_data.meta_length) >
+            INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
           throw LIBRAW_EXCEPTION_TOOBIG;
 
         imgdata.rawdata.raw_alloc = malloc(
@@ -231,8 +353,9 @@ int LibRaw::unpack(void)
                    1) // Bayer image or single color -> decode to raw_image
       {
         if (INT64(rwidth) * INT64(rheight + 8) *
-                sizeof(imgdata.rawdata.raw_image[0]) >
-            INT64(imgdata.params.max_raw_memory_mb) * INT64(1024 * 1024))
+                INT64(sizeof(imgdata.rawdata.raw_image[0])) 
+			+ INT64(libraw_internal_data.unpacker_data.meta_length) >
+            INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
           throw LIBRAW_EXCEPTION_TOOBIG;
         imgdata.rawdata.raw_alloc = malloc(
             rwidth * (rheight + 8) * sizeof(imgdata.rawdata.raw_image[0]));
@@ -262,8 +385,9 @@ int LibRaw::unpack(void)
         // allocate image as temporary buffer, size
         if (INT64(MAX(S.width, S.raw_width)) *
                 INT64(MAX(S.height, S.raw_height) + 8) *
-                sizeof(*imgdata.image) >
-            INT64(imgdata.params.max_raw_memory_mb) * INT64(1024 * 1024))
+                INT64(sizeof(*imgdata.image)) 
+			+ INT64(libraw_internal_data.unpacker_data.meta_length) >
+            INT64(imgdata.rawparams.max_raw_memory_mb) * INT64(1024 * 1024))
           throw LIBRAW_EXCEPTION_TOOBIG;
 
         imgdata.rawdata.raw_alloc = 0;
@@ -296,7 +420,7 @@ int LibRaw::unpack(void)
         // x3f foveon decoder only: do nothing
       }
       else if (decoder_info.decoder_flags & LIBRAW_DECODER_SINAR4SHOT &&
-               imgdata.params.shot_select == 0)
+               imgdata.rawparams.shot_select == 0)
       {
         imgdata.rawdata.raw_alloc = imgdata.image;
         imgdata.rawdata.color4_image = (ushort(*)[4])imgdata.rawdata.raw_alloc;
@@ -354,11 +478,15 @@ int LibRaw::unpack(void)
 
     return 0;
   }
+  catch (const std::bad_alloc&)
+  {
+      EXCEPTION_HANDLER(LIBRAW_EXCEPTION_ALLOC);
+  }
   catch (const LibRaw_exceptions& err)
   {
     EXCEPTION_HANDLER(err);
   }
-  catch (const std::exception& ee)
+  catch (const std::exception& )
   {
     EXCEPTION_HANDLER(LIBRAW_EXCEPTION_IO_CORRUPT);
   }

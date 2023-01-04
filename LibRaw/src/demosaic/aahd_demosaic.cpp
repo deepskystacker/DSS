@@ -293,12 +293,6 @@ void AAHD::hide_hots()
   }
 }
 
-const static double xyz_rgb[3][3] = {{0.412453, 0.357580, 0.180423},
-                                     {0.212671, 0.715160, 0.072169},
-                                     {0.019334, 0.119193, 0.950227}};
-
-const static float d65_white[3] = {0.950456f, 1.0f, 1.088754f};
-
 void AAHD::evaluate_ahd()
 {
   int hvdir[4] = {Pw, Pe, Pn, Ps};
@@ -733,7 +727,7 @@ void AAHD::make_ahd_rb_last(int i)
         // строчному цвет
         c ^= d << 1;
       }
-      int bh, bk;
+      int bh = 0, bk = 0;
       int bgd = 0;
       for (int k = 0; k < 3; ++k)
         for (int h = 0; h < 3; ++h)

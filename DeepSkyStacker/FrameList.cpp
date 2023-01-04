@@ -353,7 +353,7 @@ namespace DSS
 			Workspace				workspace;
 
 			workspace.SaveToFile(hFile);
-			workspace.setDirty();
+			workspace.resetDirty();
 
 			fclose(hFile);
 		}
@@ -502,7 +502,7 @@ namespace DSS
 					};
 				};
 
-				workspace.setDirty();
+				workspace.resetDirty();
 			};
 
 			fclose(hFile);

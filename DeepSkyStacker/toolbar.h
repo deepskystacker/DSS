@@ -48,6 +48,7 @@ namespace DSS
 
         typedef QToolBar
             Inherited;
+        friend class StackingDlg;
 
     public:
         explicit ToolBar(QWidget* parent);

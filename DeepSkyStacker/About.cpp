@@ -143,7 +143,8 @@ About::About(QWidget *parent) :
 
     strHTML += "<img valign=center src=\":/flags/romanian.png\">&nbsp;&nbsp;";
     strHTML += tr("Romanian version:", "IDS_ABOUT_LANG_ROMANIAN") + " ";
-    strHTML += QString("<a href=\"http://www.astronomy.ro/\">%1</a><br>").arg("Emil Kolbert " + tr("and") + " Valentin Stoica");
+    strHTML += QString("<a href=\"http://www.astronomy.ro/\">%1</a> %2<br>").arg("Emil Kolbert " + tr("and") + " Valentin Stoica")
+        .arg(tr("and") + " Iustin Amihaesei");
 
     strHTML += "<img valign=center src=\":/flags/russian.png\">&nbsp;&nbsp;";
     strHTML += tr("Russian version:", "IDS_ABOUT_LANG_RUSSIAN") + " ";
