@@ -369,9 +369,6 @@
     <ClCompile Include="imageloader.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
-    <ClCompile Include="BackgroundLoading.cpp">
-      <Filter>Kernel</Filter>
-    </ClCompile>
     <ClCompile Include="toolbar.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
@@ -764,9 +761,6 @@
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="group.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
-    <ClInclude Include="BackgroundLoading.h">
       <Filter>Kernel</Filter>
     </ClInclude>
     <ClInclude Include="BitmapIterator.h">
