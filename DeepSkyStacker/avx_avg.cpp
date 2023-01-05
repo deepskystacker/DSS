@@ -47,6 +47,8 @@ int AvxAccumulation::doAccumulate(const int nrStackedBitmaps)
 	if (!AvxSupport{outputBitmap}.bitmapHasCorrectType<T_OUT>())
 		return 1;
 
+	ZFUNCTRACE_RUNTIME();
+
 	constexpr size_t vectorLen = 16;
 	const int nrVectors = resultWidth / vectorLen;
 

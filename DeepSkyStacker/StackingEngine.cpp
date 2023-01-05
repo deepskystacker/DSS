@@ -1643,13 +1643,14 @@ void CStackTask::process()
 	const int nrProcessors = CMultitask::GetNrProcessors();
 	constexpr int lineBlockSize = 20;
 	int progress = 0;
+	std::atomic_bool runOnlyOnce{ false };
 
 	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
 	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
 
-#pragma omp parallel for default(none) firstprivate(avxStacking) schedule(guided, 5) if(nrProcessors > 1)
+#pragma omp parallel for default(none) firstprivate(avxStacking) shared(runOnlyOnce) schedule(guided, 5) if(nrProcessors > 1)
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		const int endRow = std::min(row + lineBlockSize, height);
@@ -1658,6 +1659,10 @@ void CStackTask::process()
 		if (avxStacking.stack(m_PixTransform, *m_pLightTask, m_BackgroundCalibration, m_lPixelSizeMultiplier) != 0)
 		{
 			this->processNonAvx(row, endRow);
+		}
+		else {
+			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
+				ZTRACE_RUNTIME("AvxStacking::stack");
 		}
 
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
@@ -1670,7 +1675,6 @@ void CStackTask::process()
 
 void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 {
-//	ZFUNCTRACE_RUNTIME();
 	const int width = m_pBitmap->Width();
 	PIXELDISPATCHVECTOR vPixels;
 	vPixels.reserve(16);
