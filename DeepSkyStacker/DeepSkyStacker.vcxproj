@@ -286,7 +286,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     </ClCompile>
     <ClCompile Include="avx_support.cpp" />
     <ClCompile Include="BackgroundCalibration.cpp" />
-    <ClCompile Include="BackgroundLoading.cpp" />
     <ClCompile Include="BackgroundOptions.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
@@ -510,7 +509,6 @@ $(QtToolsPath)\windeployqt --pdb $(TargetPath)</Command>
     <ClInclude Include="avx_support.h" />
     <ClInclude Include="BackgroundCalibration.h" />
     <QtMoc Include="BackgroundOptions.h" />
-    <ClInclude Include="BackgroundLoading.h" />
     <QtMoc Include="BatchStacking.h" />
     <QtMoc Include="BaseDialog.h" />
     <ClInclude Include="BezierAdjust.h" />
