@@ -71,7 +71,7 @@ int AvxStacking::stack(const CPixelTransform& pixelTransformDef, const CTaskInfo
 template <class T>
 int AvxStacking::doStack(const CPixelTransform& pixelTransformDef, const CTaskInfo& taskInfo, const CBackgroundCalibration& backgroundCalibrationDef, const int pixelSizeMultiplier)
 {
-	if (pixelSizeMultiplier != 1 || pixelTransformDef.m_lPixelSizeMultiplier != 1)
+	if (pixelSizeMultiplier != 1 || pixelTransformDef.m_lPixelSizeMultiplier != 1 || pixelTransformDef.m_bUseCometShift) // At the moment we cannot consider comet shifts.
 		return 1;
 
 	// Check input bitmap.
