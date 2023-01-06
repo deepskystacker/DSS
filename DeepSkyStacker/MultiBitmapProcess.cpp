@@ -214,7 +214,7 @@ void CCombineTask::process()
 		exit(1);
 	};
 
-#pragma omp parallel for schedule(dynamic, 50)  default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1)
+#pragma omp parallel for default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1) // No "schedule" clause gives fastest result.
 	for (int row = m_lStartRow; row <= m_lEndRow; ++row)
 	{
 		if (stop)

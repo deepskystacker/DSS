@@ -1641,7 +1641,7 @@ void CStackTask::process()
 	ZFUNCTRACE_RUNTIME();
 	const int height = m_pBitmap->Height();
 	const int nrProcessors = CMultitask::GetNrProcessors();
-	constexpr int lineBlockSize = 20;
+	constexpr int lineBlockSize = 50;
 	int progress = 0;
 	std::atomic_bool runOnlyOnce{ false };
 
@@ -1650,7 +1650,7 @@ void CStackTask::process()
 
 	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
 
-#pragma omp parallel for default(none) firstprivate(avxStacking) shared(runOnlyOnce) schedule(guided, 5) if(nrProcessors > 1)
+#pragma omp parallel for default(none) firstprivate(avxStacking) shared(runOnlyOnce) if(nrProcessors > 1) // No "schedule" clause gives fastest result.
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		const int endRow = std::min(row + lineBlockSize, height);
@@ -1662,7 +1662,7 @@ void CStackTask::process()
 		}
 		else {
 			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
-				ZTRACE_RUNTIME("AvxStacking::stack");
+				ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
 		}
 
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
