@@ -38,7 +38,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress 
 			const bool bUseCFA = IsCFA();
 			
 			if (pProgress != nullptr)
-				pProgress->Start2(nullptr, height);
+				pProgress->Start2(height);
 			bResult = true;
 
 			int	rowProgress = 0;
@@ -75,7 +75,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress 
 				}
 
 				if (omp_get_thread_num() == 0 && pProgress != nullptr)
-					pProgress->Progress2(nullptr, rowProgress += nrProcessors);
+					pProgress->Progress2(rowProgress += nrProcessors);
 			}
 
 			if (pProgress != nullptr)
@@ -196,7 +196,7 @@ void CFlatFrame::ComputeFlatNormalization(CDSSProgress* pProgress)
 			};
 
 			if (pProgress)
-				pProgress->Progress2(nullptr, j+1);
+				pProgress->Progress2(j+1);
 		};
 
 		if (m_pFlatFrame->IsMonochrome() && !bCFA)

@@ -148,7 +148,7 @@ bool CRunningStackingEngine::AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgr
 				}
 			}
 			if (pProgress != nullptr)
-				pProgress->Progress2(nullptr, j+1);
+				pProgress->Progress2(j+1);
 		}
 
 		if (pProgress != nullptr)

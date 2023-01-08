@@ -1004,7 +1004,7 @@ void CComputeLuminanceTask::process()
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += nrProcessors * lineBlockSize);
+			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
 
 		const int endRow = std::min(row + lineBlockSize, height);
 		if (avxLuminance.computeLuminanceBitmap(row, endRow) != 0)

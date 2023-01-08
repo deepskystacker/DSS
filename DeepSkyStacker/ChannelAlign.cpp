@@ -74,7 +74,7 @@ std::shared_ptr<CMemoryBitmap> CChannelAlign::AlignChannel(CMemoryBitmap* pBitma
 			}
 		}
 		if (pProgress != nullptr)
-			pProgress->Progress2(nullptr, j+1);
+			pProgress->Progress2(j+1);
 	}
 
 	if (pProgress != nullptr)
@@ -100,8 +100,8 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgres
 		if (pProgress)
 		{
 			// We will advance the progress1 bar for each channel (3 of them)
-			pProgress->Start(nullptr, 3, false);
-			pProgress->Progress1(nullptr, 0);
+			pProgress->Start(3, false);
+			pProgress->Progress1(0);
 		}
 
 		// Register each channels
@@ -115,13 +115,13 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgres
 
 		lfiRed.RegisterPicture(pRed);
 		if (pProgress)
-			pProgress->Progress1(nullptr, 1);
+			pProgress->Progress1(1);
 		lfiGreen.RegisterPicture(pGreen);
 		if (pProgress)
-			pProgress->Progress1(nullptr, 2);
+			pProgress->Progress1(2);
 		lfiBlue.RegisterPicture(pBlue);
 		if (pProgress)
-			pProgress->Progress1(nullptr, 3);
+			pProgress->Progress1(3);
 
 		// Get the best one to align the others
 		CLightFrameInfo* pReference;
@@ -204,8 +204,8 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgres
 			if (pProgress != nullptr)
 			{
 				// Advance the progress1 bar for each alignment step (2 of them)
-				pProgress->Start(nullptr, 2, false);
-				pProgress->Progress1(nullptr, 0);
+				pProgress->Start(2, false);
+				pProgress->Progress1(0);
 			}
 
 			CPixelTransform pixTransform;
@@ -213,13 +213,13 @@ bool CChannelAlign::AlignChannels(CMemoryBitmap* pBitmap, CDSSProgress* pProgres
 			std::shared_ptr<CMemoryBitmap> pOutSecondBitmap = AlignChannel(pSecondBitmap, pixTransform, pProgress);
 
 			if (pProgress != nullptr)
-				pProgress->Progress1(nullptr, 1);
+				pProgress->Progress1(1);
 
 			pixTransform.m_BilinearParameters = pThird->m_BilinearParameters;
 			std::shared_ptr<CMemoryBitmap> pOutThirdBitmap = AlignChannel(pThirdBitmap, pixTransform, pProgress);
 
 			if (pProgress != nullptr)
-				pProgress->Progress1(nullptr, 2);
+				pProgress->Progress1(2);
 
 			// Dump the resulting modified channels in the image
 			CopyBitmap(pOutSecondBitmap.get(), pSecondBitmap);

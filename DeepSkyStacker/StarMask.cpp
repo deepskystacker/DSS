@@ -77,7 +77,7 @@ std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* p
 				}
 			}
 			if (pProgress != nullptr)
-				pProgress->Progress2(nullptr, static_cast<int>(k+1));
+				pProgress->Progress2(static_cast<int>(k+1));
 		}
 		if (pProgress != nullptr)
 			pProgress->End2();

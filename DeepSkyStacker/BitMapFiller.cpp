@@ -90,7 +90,7 @@ void BitmapFillerBase::setHeight(int height)
 {
 	this->height = height;
 	if (pProgress != nullptr)
-		pProgress->Start2(nullptr, pBitmap->Height());
+		pProgress->Start2(pBitmap->Height());
 }
 
 void BitmapFillerBase::setMaxColors(int maxcolors)
@@ -200,7 +200,7 @@ size_t NonAvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel,
 	}
 
 	//if (((rowIndex + 1) % 32) == 0 && this->pProgress != nullptr)
-	//	this->pProgress->Progress2(nullptr, static_cast<int>(rowIndex + 1));
+	//	this->pProgress->Progress2(static_cast<int>(rowIndex + 1));
 
 	return nrPixels;
 }

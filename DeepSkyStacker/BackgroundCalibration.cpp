@@ -41,7 +41,7 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgre
 				for (int j = startNdx; j < endNdx; ++j)
 				{
 					if (pProgress != nullptr && omp_get_thread_num() == 0) // Only master thread
-						pProgress->Progress2(nullptr, startNdx);
+						pProgress->Progress2(startNdx);
 					for (int i = 0, width = pBitmap->Width(); i < width; ++i)
 					{
 						COLORREF16 crColor;
@@ -91,7 +91,7 @@ void CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap* pBitmap
 	const int height = pBitmap->Height();
 
 	if (pProgress != nullptr)
-		pProgress->Start2(nullptr, height);
+		pProgress->Start2(height);
 
 	std::vector<int> vRedHisto(HistogramSize());
 	std::vector<int> vGreenHisto(HistogramSize());

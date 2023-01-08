@@ -205,7 +205,7 @@ size_t AvxBitmapFiller::Write(const void* source, const size_t bytesPerPixel, co
 	}
 
 	//if (((rowIndex + 1) % 32) == 0 && this->pProgress != nullptr)
-	//	this->pProgress->Progress2(nullptr, static_cast<int>(rowIndex + 1));
+	//	this->pProgress->Progress2(static_cast<int>(rowIndex + 1));
 
 	return AvxSupport::zeroUpper(nrPixels);
 }
