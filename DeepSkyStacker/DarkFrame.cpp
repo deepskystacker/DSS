@@ -425,7 +425,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 	VALUEPAIRSET			sBlueValuePairs;
 
 	if (pProgress)
-		pProgress->Start2(nullptr, lHeight);
+		pProgress->Start2(lHeight);
 
 
 	for (j = 0;j<pBitmap->RealHeight();j++)
@@ -473,7 +473,7 @@ void	CDarkFrame::ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemor
 		}
 
 		if (pProgress)
-			pProgress->Progress2(nullptr, j+1);
+			pProgress->Progress2(j+1);
 	}
 
 	// Remove the hot pixels
@@ -608,7 +608,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 	CSubSquares subSquareGrid{ pBitmap->RealWidth(), pBitmap->RealHeight() };
 
 	if (pProgress)
-		pProgress->Start2(nullptr, subSquareGrid.GetNrPixels());
+		pProgress->Start2(subSquareGrid.GetNrPixels());
 
 	for (size_t k = 0;k < subSquareGrid.GetSubSquares().size(); k++)
 	{
@@ -654,7 +654,7 @@ void	CDarkFrame::ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars,
 		}
 
 		if (pProgress)
-			pProgress->Progress2(nullptr, lNrPixels);
+			pProgress->Progress2(lNrPixels);
 	}
 
 	const CSubSquare subSquare = subSquareGrid.GetSubSquare(lBestSquare);
@@ -1653,7 +1653,7 @@ void CFindHotPixelTask1::process()
 		for (int row = 0; row < height; ++row)
 		{
 			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-				m_pProgress->Progress2(nullptr, progress += nrProcessors);
+				m_pProgress->Progress2(progress += nrProcessors);
 
 			threadVars.PixelIt.Reset(0, row);
 			double r, g, b;
@@ -1772,7 +1772,7 @@ void CDarkFrame::FindHotPixels(CDSSProgress* pProgress)
 				}
 			}
 			if (pProgress)
-				pProgress->Progress2(nullptr, j+1);
+				pProgress->Progress2(j+1);
 		}
 		if (pProgress)
 			pProgress->End2();

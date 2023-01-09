@@ -1016,7 +1016,7 @@ std::shared_ptr<C8BitGrayBitmap> CDeBloom::CreateMask(CMemoryBitmap* pBitmap)
 		m_fBackground = ComputeBackgroundValue(pBitmap);
 
 		if (m_pProgress != nullptr)
-			m_pProgress->Start2(nullptr, m_lHeight);
+			m_pProgress->Start2(m_lHeight);
 
 		// Start at the bottom
 		for (int j = m_lHeight-1;j>=0;j--)
@@ -1035,7 +1035,7 @@ std::shared_ptr<C8BitGrayBitmap> CDeBloom::CreateMask(CMemoryBitmap* pBitmap)
 				}
 			}
 			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(nullptr, j+1);
+				m_pProgress->Progress2(j+1);
 		}
 
 		if (m_pProgress != nullptr)
@@ -1221,12 +1221,12 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 
 	{
 		if (m_pProgress != nullptr)
-			m_pProgress->Start2(nullptr, static_cast<int>(m_vBloomedStars.size()));
+			m_pProgress->Start2(static_cast<int>(m_vBloomedStars.size()));
 
 		for (size_t i = 0; i < m_vBloomedStars.size(); i++)
 		{
 			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(nullptr, static_cast<int>(i) + 1);
+				m_pProgress->Progress2(static_cast<int>(i) + 1);
 			ComputeStarCenter(pBitmap, pMask.get(), m_vBloomedStars[i]);
 		}
 
@@ -1235,7 +1235,7 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 	}
 
 	if (m_pProgress != nullptr)
-		m_pProgress->Start2(nullptr, m_lWidth);
+		m_pProgress->Start2(m_lWidth);
 
 	std::vector<QPoint> vUnprocessed;
 	std::vector<QPoint> vProcessed;
@@ -1266,7 +1266,7 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 			}
 		}
 		if (m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, i+1);
+			m_pProgress->Progress2(i+1);
 	}
 
 	// Process recursively unprocessed

@@ -123,7 +123,7 @@ void CDetectCosmeticTask::doProcess()
 	for (int row = 0; row < height; ++row)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += nrProcessors);
+			m_pProgress->Progress2(progress += nrProcessors);
 
 		const auto countColdHotPixels = [&](const int col, const int row, const bool changed) -> void
 		{
@@ -271,7 +271,7 @@ void CCleanCosmeticTask::process()
 	for (int row = 0; row < m_lHeight; ++row)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += nrProcessors);
+			m_pProgress->Progress2(progress += nrProcessors);
 
 		for (int col = 0; col < m_lWidth; ++col)
 		{
@@ -563,7 +563,7 @@ std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBit
 			{
 				// Now fix it - Use pDelta to retrieve the pixels that need to be fixed
 				if (pProgress != nullptr)
-					pProgress->Start2(nullptr, lHeight);
+					pProgress->Start2(lHeight);
 
 				CCleanCosmeticTask{ pBitmap, pBitmap->Clone(), pDelta, pcs, pProgress }.process();
 

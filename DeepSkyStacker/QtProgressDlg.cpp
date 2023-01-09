@@ -45,11 +45,13 @@ const QString ProgressDlg::getStart2Text() const
 
 void ProgressDlg::setStart1Text(const QString& strText)
 {
-	ui->ProcessText1->setText(strText);
+	if(!strText.isEmpty())
+		ui->ProcessText1->setText(strText);
 }
 void ProgressDlg::setStart2Text(const QString& strText)
 {
-	ui->ProcessText2->setText(strText);
+	if (!strText.isEmpty())
+		ui->ProcessText2->setText(strText);
 }
 void ProgressDlg::setProgress1(int lAchieved)
 {
@@ -61,14 +63,15 @@ void ProgressDlg::setProgress2(int lAchieved)
 }
 void ProgressDlg::setTimeRemaining(const QString& strText)
 {
-	ui->TimeRemaining->setText(strText);
+	if (!strText.isEmpty())
+		ui->TimeRemaining->setText(strText);
 }
 void ProgressDlg::setProcessorsUsed(int lNrProcessors)
 {
-	if (lNrProcessors > 1)
-		ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processors Used"));
+	if (lNrProcessors == 1)
+		ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processor Used"));
 	else
-		ui->Processors->setText("");
+		ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processors Used"));
 }
 void ProgressDlg::cancelPressed()
 {
@@ -84,7 +87,8 @@ void ProgressDlg::EnableCancelButton(bool bState)
 }
 void ProgressDlg::SetTitleText(const QString& strText)
 {
-	setWindowTitle(strText);
+	if (!strText.isEmpty())
+		setWindowTitle(strText);
 }
 void ProgressDlg::setProgress1Range(int nMin, int nMax)
 {
@@ -114,10 +118,18 @@ void ProgressDlg::closeEvent(QCloseEvent* pEvent)
 	pEvent->ignore();
 }
 
+QMainWindow* GetMainApplicationWindow()
+{
+	for (QWidget* pWnd : QApplication::topLevelWidgets())
+		if (pWnd && pWnd->inherits(QMainWindow::staticMetaObject.className()))
+			return dynamic_cast<QMainWindow*>(pWnd);
+	return nullptr;
+}
+
 /////////////////////////////////////////////////////////////////
 const QString DSSProgressDlg::sm_EmptyString;
-DSSProgressDlg::DSSProgressDlg(QWidget* pParent/*= nullptr*/) :
-	m_pParent(nullptr),
+DSSProgressDlg::DSSProgressDlg() :
+	m_pParent(GetMainApplicationWindow()),
 	m_bEnableCancel{ false },
 	m_lTotal1{ 0 },
 	m_lTotal2{ 0 },
@@ -249,7 +261,7 @@ void DSSProgressDlg::Start2(const QString& szText, int lTotal2)
 
 	if (m_bJointProgress)
 	{
-		Start(nullptr, lTotal2, m_bEnableCancel);
+		Start("", lTotal2, m_bEnableCancel);
 		m_pDlg->setStart1Text(szText);
 	};
 

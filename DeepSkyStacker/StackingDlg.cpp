@@ -2029,20 +2029,22 @@ namespace DSS
 				QAction* loadAnother = menu.addAction(tr("Open another File List...", "ID_FILELIST_OPENANOTHERFILELIST"));
 
 				QAction* a = menu.exec(pt);
-
-				if (loadAnother == a)
-					openAnother = true;
-				else
+				if (a)
 				{
-					//
-					// Use the index we stored with the Menu Action to access the full fileid
-					//
-					fs::path path{ mruPath.paths[a->data().toUInt()] };
+					if (loadAnother == a)
+						openAnother = true;
+					else
+					{
+						//
+						// Use the index we stored with the Menu Action to access the full fileid
+						//
+						fs::path path{ mruPath.paths[a->data().toUInt()] };
 
-					frameList.loadFilesFromList(path);
-					mruPath.Add(path);
-					fileList = path;
-					dssApp->setWindowFilePath(QString::fromStdU16String(path.generic_u16string()));
+						frameList.loadFilesFromList(path);
+						mruPath.Add(path);
+						fileList = path;
+						dssApp->setWindowFilePath(QString::fromStdU16String(path.generic_u16string()));
+					}
 				}
 			}
 		}

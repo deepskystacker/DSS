@@ -958,7 +958,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, CDSSP
 		ZTRACE_RUNTIME(strText);
 
 		pProgress->Start2(strText, 0);
-		pProgress->Start2(nullptr, pBitmap->RealWidth());
+		pProgress->Start2(pBitmap->RealWidth());
 	};
 
 	for (int i = 0;i<pBitmap->RealWidth();i++)
@@ -984,7 +984,7 @@ void	CFlatCalibrationParameters::ComputeParameters(CMemoryBitmap* pBitmap, CDSSP
 		};
 
 		if (pProgress)
-			pProgress->Progress2(nullptr, i+1);
+			pProgress->Progress2(i+1);
 	};
 
 	if (pProgress)
@@ -1010,7 +1010,7 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 		ZTRACE_RUNTIME(strText);
 
 		pProgress->Start2(strText, 0);
-		pProgress->Start2(nullptr, pBitmap->RealWidth());
+		pProgress->Start2(pBitmap->RealWidth());
 	};
 
 	for (int i = 0;i<pBitmap->RealWidth();i++)
@@ -1046,7 +1046,7 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 		};
 
 		if (pProgress)
-			pProgress->Progress2(nullptr, i+1);
+			pProgress->Progress2(i+1);
 	};
 
 	if (pProgress)

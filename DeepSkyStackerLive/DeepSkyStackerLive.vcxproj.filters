@@ -264,6 +264,9 @@
     <ClCompile Include="..\DeepSkyStacker\ImageListModel.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeepSkyStackerLiveDlg.h">
