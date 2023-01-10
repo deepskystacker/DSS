@@ -134,7 +134,7 @@ void	CLightFramesStackingInfo::SetReferenceFrame(LPCTSTR szReferenceFrame)
 
 void	CLightFramesStackingInfo::GetInfoFileName(LPCTSTR szLightFrame, CString& strInfoFileName)
 {
-	ZFUNCTRACE_RUNTIME();
+	//ZFUNCTRACE_RUNTIME();
 
 	TCHAR				szDrive[1+_MAX_DRIVE];
 	TCHAR				szDir[1+_MAX_DIR];
@@ -197,7 +197,7 @@ void	CLightFramesStackingInfo::AddLightFrame(LPCTSTR szLightFrame, const CBiline
 
 bool CLightFramesStackingInfo::GetParameters(LPCTSTR szLightFrame, CBilinearParameters& bp)
 {
-	ZFUNCTRACE_RUNTIME();
+	// ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
 
 	LIGHTFRAMESTACKINGINFOITERATOR it = std::lower_bound(m_vLightFrameStackingInfo.begin(), m_vLightFrameStackingInfo.end(), CLightFrameStackingInfo(szLightFrame));
@@ -489,7 +489,7 @@ bool CStackingEngine::AddLightFramesToList(CAllStackingTasks& tasks)
 
 bool CStackingEngine::ComputeLightFrameOffset(int lBitmapIndice)
 {
-	ZFUNCTRACE_RUNTIME();
+	// ZFUNCTRACE_RUNTIME();
 
 	bool				bResult = false;
 	CBilinearParameters	BilinearParameters;
@@ -2407,15 +2407,20 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 		{
 			if (tasks.IsCometAvailable() && (tasks.GetCometStackingMode() == CSM_COMETONLY || tasks.GetCometStackingMode() == CSM_COMETSTAR))
 			{
+				ZTRACE_RUNTIME("Doing Comet +/- Star stacking");
 				m_bCometStacking = true;
 				m_bCreateCometImage = (tasks.GetCometStackingMode()==CSM_COMETSTAR);
 			}
 
+			ZTRACE_RUNTIME("CreateCometImage: %s", m_bCreateCometImage ? "true" : "false");
 			std::shared_ptr<CMemoryBitmap> pBitmap;
 			bResult = StackAll(tasks, pBitmap);
+			ZTRACE_RUNTIME("StackAll returned %s", bResult ? "true" : "false");
+
 
 			if (bResult && tasks.IsCometAvailable() && tasks.GetCometStackingMode() == CSM_COMETSTAR)
 			{
+				ZTRACE_RUNTIME("Doing Comet and Star");
 				if (m_bApplyFilterToCometImage)
 				{
 					auto p = GetFilteredImage(pBitmap.get(), 1, pProgress);
@@ -2423,6 +2428,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 
 					CDirectionalImageFilter Filter;
 					Filter.SetAngle(m_fStarTrailsAngle + M_PI / 2.0, 2);
+					ZTRACE_RUNTIME("Applying Comet Angle filter");
 					m_pComet = Filter.ApplyFilter(pBitmap.get(), pProgress);
 				}
 				else
@@ -2441,6 +2447,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 				// Stack again but remove the comet before stacking
 				tasks.ResetTasksStatus();
 				bResult = StackAll(tasks, pBitmap);
+				ZTRACE_RUNTIME("StackAll returned %s", bResult ? "true" : "false");
 
 				if (m_bSaveIntermediateCometImages)
 					SaveCometlessImage(pBitmap.get());
