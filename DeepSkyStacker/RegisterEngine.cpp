@@ -273,142 +273,42 @@ bool CRegisteredFrame::ComputeStarCenter(CMemoryBitmap* pBitmap, double& fX, dou
 
 /* ------------------------------------------------------------------- */
 
-class CPixelDirection
-{
-public :
-	int				m_Ok;
-	double				m_fIntensity;
-	int				m_lXDir;
-	int				m_lYDir;
-	double				m_fRadius;
-	int				m_lNrBrighterPixels;
-
-private :
-	void	CopyFrom(const CPixelDirection & pd)
+namespace {
+	struct PixelDirection
 	{
-		m_Ok		 = pd.m_Ok;
-		m_fIntensity = pd.m_fIntensity;
-		m_lXDir		 = pd.m_lXDir;
-		m_lYDir		 = pd.m_lYDir;
-		m_fRadius	 = pd.m_fRadius;
-		m_lNrBrighterPixels = pd.m_lNrBrighterPixels;
+		double m_fIntensity{ 0.0 };
+		int m_Radius{ 0 };
+		std::int8_t m_lNrBrighterPixels{ 0 };
+		std::int8_t m_Ok{ 2 };
+		std::int8_t m_lXDir{ 0 };
+		std::int8_t m_lYDir{ 0 };
+
+		constexpr PixelDirection(const std::int8_t x, const std::int8_t y) noexcept : m_lXDir{ x }, m_lYDir{ y } {}
+		constexpr PixelDirection(const PixelDirection&) noexcept = default;
+		constexpr PixelDirection(PixelDirection&&) noexcept = default;
+		template <typename T> PixelDirection& operator=(T&&) = delete;
 	};
-
-public :
-	CPixelDirection(int lXDir = 0, int lYDir = 0)
-	{
-		m_Ok = 2;
-		m_fIntensity = 0;
-		m_lXDir      = lXDir;
-		m_lYDir      = lYDir;
-		m_fRadius	 = 0;
-		m_lNrBrighterPixels = 0;
-	};
-
-	CPixelDirection(const int xd, const int yd, const int ok, const double r) :
-		m_Ok{ ok },
-		m_fIntensity{ 0.0 },
-		m_lXDir{ xd },
-		m_lYDir{ yd },
-		m_fRadius{ r },
-		m_lNrBrighterPixels{ 0 }
-	{}
-
-	CPixelDirection(const CPixelDirection & pd)
-	{
-		CopyFrom(pd);
-	};
-
-	const CPixelDirection & operator = (const CPixelDirection & pd)
-	{
-		CopyFrom(pd);
-		return (*this);
-	};
-
-	virtual ~CPixelDirection() {};
-};
-
-/* ------------------------------------------------------------------- */
-
-class CPixelDirections
-{
-public :
-	bool			bBrighterPixel;
-	bool			bMainOk;
-	double			fMaxRadius;
-	double			m_fBackground;
-	double			fIntensity;
-
-public :
-	CPixelDirections()
-	{
-		bBrighterPixel = false;
-		bMainOk		   = true;
-		fMaxRadius	   = 0;
-        m_fBackground  = 0;
-        fIntensity     = 0;
-	};
-	bool	FillPixelDirection(double fX, double fY, CGrayBitmap & Bitmap, std::vector<CPixelDirection> & vPixels)
-	{
-		int			k;
-
-		bMainOk = true;
-		fMaxRadius = 0;
-
-		for (k = 0;k<8;k++)
-		{
-			vPixels[k].m_Ok = 2;
-			vPixels[k].m_fRadius = 0;
-		};
-
-		for (int r = 1;(r<STARMAXSIZE) && (bMainOk) && !bBrighterPixel;r++)
-		{
-			for (k = 0;k<8;k++)
-			{
-				int		ldX = vPixels[k].m_lXDir*r;
-				int		ldY = vPixels[k].m_lYDir*r;
-
-				Bitmap.GetPixel(fX+ldX+0.5, fY+ldY+0.5, vPixels[k].m_fIntensity);
-			};
-
-			bMainOk = false;
-			for (k = 0;(k<8) && !bBrighterPixel;k++)
-			{
-				if (vPixels[k].m_Ok)
-				{
-					if (vPixels[k].m_fIntensity-m_fBackground < 0.25 * (fIntensity - m_fBackground))
-					{
-						vPixels[k].m_fRadius = r;
-						vPixels[k].m_Ok--;
-						fMaxRadius = std::max(fMaxRadius, static_cast<double>(r));
-					}
-					else if (vPixels[k].m_fIntensity > fIntensity)
-						bBrighterPixel = true;
-				};
-
-				if (vPixels[k].m_Ok)
-					bMainOk = true;
-			};
-		};
-
-		return fMaxRadius>2;
-	};
-};
-
-/* ------------------------------------------------------------------- */
+}
 
 size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& rc, STARSET& stars)
 {
-	double				fMaxIntensity = 0;
-	std::vector<int>	vHistogram;
+	double fMaxIntensity = std::numeric_limits<double>::min();
+	std::vector<int> vHistogram;
 	size_t nStars{ 0 };
 
 	// Work with a local buffer. Copy the pixel values for the rect.
 	const int width = rc.width();
 	std::vector<double> values(width * rc.height());
 	for (int j = rc.top, ndx = 0; j < rc.bottom; ++j)
-		for (int i = rc.left; i < rc.right; ++i, ++ndx)		
-			pBitmap->GetPixel(i, j, values[ndx]);
+	{
+		for (int i = rc.left; i < rc.right; ++i, ++ndx)
+		{
+			double value;
+			pBitmap->GetPixel(i, j, value);
+			values[ndx] = value;
+			fMaxIntensity = std::max(fMaxIntensity, value);
+		}
+	}
 
 	const auto getValue = [&values, rc, width](const int x, const int y) -> double
 	{
@@ -419,33 +319,32 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 	// First find the top luminance
 	if (m_fBackground == 0.0)
 	{
-		constexpr size_t Maxsize = size_t{ MAXWORD } + 1;
-		constexpr double Maxvalue = double{ MAXWORD };
+		constexpr size_t Maxsize = size_t{ std::numeric_limits<std::uint16_t>::max() } + 1;
+		constexpr double Maxvalue = double{ std::numeric_limits<std::uint16_t>::max() };
 		vHistogram.resize(Maxsize);
 		for (const auto value : values)
 		{
-			fMaxIntensity = std::max(fMaxIntensity, value);
 			++vHistogram[std::min(value * 256.0, Maxvalue)];
 		}
 
-		const int lNrTotalValues = ((rc.width() - 1) * (rc.height() - 1)) / 2;
-		int lNrValues = 0;
-		int lIndice = 0;
-		while (lNrValues < lNrTotalValues)
+		const int fiftyPercentValues = ((rc.width() - 1) * (rc.height() - 1)) / 2;
+		int nrValues = 0;
+		int fiftyPercentQuantile = 0;
+		while (nrValues < fiftyPercentValues)
 		{
-			lNrValues += vHistogram[lIndice];
-			++lIndice;
+			nrValues += vHistogram[fiftyPercentQuantile];
+			++fiftyPercentQuantile;
 		}
-		m_fBackground = static_cast<double>(lIndice) / 256.0 / 256.0;
+		m_fBackground = static_cast<double>(fiftyPercentQuantile) / static_cast<double>(Maxsize);
 	}
-	else
-		fMaxIntensity = *std::max_element(values.cbegin(), values.cend());
 
-	if (fMaxIntensity >= m_fMinLuminancy + m_fBackground)
+	const double intensityThreshold = m_fMinLuminancy + m_fBackground;
+
+	if (fMaxIntensity >= intensityThreshold)
 	{
 		// Find how many wanabee stars are existing above 90% maximum luminance
 
-		for (double fDeltaRadius = 0; fDeltaRadius < 4; ++fDeltaRadius)
+		for (int deltaRadius = 0; deltaRadius < 4; ++deltaRadius)
 		{
 			for (int j = rc.top; j < rc.bottom; j++)
 			{
@@ -453,13 +352,13 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 				{
 					const double fIntensity = getValue(i, j);
 
-					if (fIntensity >= m_fMinLuminancy + m_fBackground)
+					if (fIntensity >= intensityThreshold)
 					{
 						// Check that this pixel is not already used in a wanabee star
 						bool bNew = true;
 						const QPoint ptTest{ i, j };
 
-						for (auto it = stars.lower_bound(CStar(ptTest.x() - STARMAXSIZE, 0)); it != stars.end() && bNew; ++it)
+						for (STARSET::const_iterator it = stars.lower_bound(CStar(ptTest.x() - STARMAXSIZE, 0)); it != stars.cend() && bNew; ++it)
 						{
 							if (it->IsInRadius(ptTest))
 								bNew = false;
@@ -471,43 +370,43 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 						{
 							// Search around the point until intensity is divided by 2
 							// STARMAXSIZE pixels radius max search
-							std::vector<CPixelDirection> vPixels{
-								{0, -1, 2, 0.0}, {1, 0, 2, 0.0}, {0, 1, 2, 0.0}, {-1, 0, 2, 0.0},
-								{1, -1, 2, 0.0}, {1, 1, 2, 0.0}, {-1, 1, 2, 0.0}, {-1, -1, 2, 0.0}
-							};
+							std::array<PixelDirection, 8> directions{ {
+								{0, -1}, {1, 0}, {0, 1}, {-1, 0}, {1, -1}, {1, 1}, {-1, 1}, {-1, -1}
+							} };
 
 							bool bBrighterPixel = false;
 							bool bMainOk = true;
 							int	lMaxRadius = 0;
 							int	lNrBrighterPixels = 0;
 
-							for (int r = 1; r < STARMAXSIZE && bMainOk && !bBrighterPixel; r++)
+							for (int testedRadius = 1; testedRadius < STARMAXSIZE && bMainOk && !bBrighterPixel; ++testedRadius)
 							{
-								for (auto& pixel : vPixels)
+								for (auto& pixel : directions)
 								{
-									pBitmap->GetPixel(i + pixel.m_lXDir * r, j + pixel.m_lYDir * r, pixel.m_fIntensity);
+									pBitmap->GetPixel(i + pixel.m_lXDir * testedRadius, j + pixel.m_lYDir * testedRadius, pixel.m_fIntensity);
 								}
 
 								bMainOk = false;
-								for (size_t k = 0; k < 8 && !bBrighterPixel; k++)
+								for (auto& pixel : directions)
 								{
-									if (vPixels[k].m_Ok)
+									if (bBrighterPixel) break;
+									if (pixel.m_Ok)
 									{
-										if (vPixels[k].m_fIntensity - m_fBackground < 0.25 * (fIntensity - m_fBackground))
+										if (pixel.m_fIntensity - m_fBackground < 0.25 * (fIntensity - m_fBackground))
 										{
-											vPixels[k].m_fRadius = r;
-											--vPixels[k].m_Ok;
-											lMaxRadius = std::max(lMaxRadius, r);
+											pixel.m_Radius = testedRadius;
+											--pixel.m_Ok;
+											lMaxRadius = std::max(lMaxRadius, testedRadius);
 										}
-										else if (vPixels[k].m_fIntensity > 1.05 * fIntensity)
+										else if (pixel.m_fIntensity > 1.05 * fIntensity)
 											bBrighterPixel = true;
-										else if (vPixels[k].m_fIntensity > fIntensity)
-											++vPixels[k].m_lNrBrighterPixels;
+										else if (pixel.m_fIntensity > fIntensity)
+											++pixel.m_lNrBrighterPixels;
 									}
 
-									if (vPixels[k].m_Ok)
+									if (pixel.m_Ok)
 										bMainOk = true;
-									if (vPixels[k].m_lNrBrighterPixels > 2)
+									if (pixel.m_lNrBrighterPixels > 2)
 										bBrighterPixel = true;
 								}
 							}
@@ -515,7 +414,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 							// Check the roundness of the wanabee star
 							if (!bMainOk && !bBrighterPixel && (lMaxRadius > 2))
 							{
-								// Radiuses should be within fDeltaRadius pixels of each others
+								// Radiuses should be within deltaRadius pixels of each others
 								//if (i>=1027 && i<=1035 && j>=2365 && j<=2372)
 								//	DebugBreak();
 
@@ -527,46 +426,45 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 								{
 									for (size_t k2 = 0; (k2 < 4) && bWanabeeStarOk; k2++)
 									{
-										if ((k1 != k2) && labs(vPixels[k2].m_fRadius - vPixels[k1].m_fRadius) > fDeltaRadius)
+										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius)
 											bWanabeeStarOk = false;
-									};
-								};
+									}
+								}
 								for (size_t k1 = 4; (k1 < 8) && bWanabeeStarOk; k1++)
 								{
 									for (size_t k2 = 4; (k2 < 8) && bWanabeeStarOk; k2++)
 									{
-										if ((k1 != k2) && labs(vPixels[k2].m_fRadius - vPixels[k1].m_fRadius) > fDeltaRadius)
+										if ((k1 != k2) && std::abs(directions[k2].m_Radius - directions[k1].m_Radius) > deltaRadius)
 											bWanabeeStarOk = false;
-									};
-								};
+									}
+								}
 
 								for (size_t k1 = 0; k1 < 4; k1++)
-									fMeanRadius1 += vPixels[k1].m_fRadius;
+									fMeanRadius1 += directions[k1].m_Radius;
 								fMeanRadius1 /= 4.0;
 								for (size_t k1 = 4; k1 < 8; k1++)
-									fMeanRadius2 += vPixels[k1].m_fRadius;
+									fMeanRadius2 += directions[k1].m_Radius;
 								fMeanRadius2 /= 4.0;
 								fMeanRadius2 *= sqrt(2.0);
 
-								//if (fabs(fMeanRadius1 - fMeanRadius2) > fDeltaRadius - 1)
+								//if (fabs(fMeanRadius1 - fMeanRadius2) > deltaRadius - 1)
 								//	bWanabeeStarOk = false;
 
-								DSSRect	rcStar;
 								int	lLeftRadius = 0;
 								int	lRightRadius = 0;
 								int	lTopRadius = 0;
 								int	lBottomRadius = 0;
 
-								for (size_t k = 0; k < 8; k++)
+								for (const auto& pixel : directions)
 								{
-									if (vPixels[k].m_lXDir < 0)
-										lLeftRadius = std::max(lLeftRadius, static_cast<int>(vPixels[k].m_fRadius));
-									else if (vPixels[k].m_lXDir > 0)
-										lRightRadius = std::max(lRightRadius, static_cast<int>(vPixels[k].m_fRadius));
-									if (vPixels[k].m_lYDir < 0)
-										lTopRadius = std::max(lTopRadius, static_cast<int>(vPixels[k].m_fRadius));
-									else if (vPixels[k].m_lYDir > 0)
-										lBottomRadius = std::max(lBottomRadius, static_cast<int>(vPixels[k].m_fRadius));
+									if (pixel.m_lXDir < 0)
+										lLeftRadius = std::max(lLeftRadius, static_cast<int>(pixel.m_Radius));
+									else if (pixel.m_lXDir > 0)
+										lRightRadius = std::max(lRightRadius, static_cast<int>(pixel.m_Radius));
+									if (pixel.m_lYDir < 0)
+										lTopRadius = std::max(lTopRadius, static_cast<int>(pixel.m_Radius));
+									else if (pixel.m_lYDir > 0)
+										lBottomRadius = std::max(lBottomRadius, static_cast<int>(pixel.m_Radius));
 								}
 								//
 								// **********************************
@@ -583,30 +481,29 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 								// create an incompatibility with existing info.txt files that were created by
 								// earlier releases of the code.
 								//
-								rcStar.setCoords(ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius,
-									ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius);
 
 								if (bWanabeeStarOk)
 								{
 									// Add the star
 									CStar ms(ptTest.x(), ptTest.y());
-
 									ms.m_fIntensity	  = fIntensity;
-									ms.m_rcStar		  = rcStar;
+									ms.m_rcStar =		DSSRect{ ptTest.x() - lLeftRadius, ptTest.y() - lTopRadius, ptTest.x() + lRightRadius, ptTest.y() + lBottomRadius };
 									ms.m_fPercentage  = 1.0;
-									ms.m_fDeltaRadius = fDeltaRadius;
+									ms.m_fDeltaRadius = deltaRadius;
 									ms.m_fMeanRadius  = (fMeanRadius1 + fMeanRadius2) / 2.0;
+
+									constexpr double radiusFactor = 2.35 / 1.5;
 
 									// Compute the real position
 									if (ComputeStarCenter(pBitmap, ms.m_fX, ms.m_fY, ms.m_fMeanRadius))
 									{
 										// Check last overlap condition
 										{
-											for (auto it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * 2.35 / 1.5 - STARMAXSIZE, 0)); it != stars.end() && bWanabeeStarOk; ++it)
+											for (STARSET::const_iterator it = stars.lower_bound(CStar(ms.m_fX - ms.m_fMeanRadius * radiusFactor - STARMAXSIZE, 0)); it != stars.cend() && bWanabeeStarOk; ++it)
 											{
-												if (Distance(ms.m_fX, ms.m_fY, it->m_fX, it->m_fY) < (ms.m_fMeanRadius + it->m_fMeanRadius) * 2.35 / 1.5)
+												if (Distance(ms.m_fX, ms.m_fY, it->m_fX, it->m_fY) < (ms.m_fMeanRadius + it->m_fMeanRadius) * radiusFactor)
 													bWanabeeStarOk = false;
-												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * 2.35 / 1.5 + STARMAXSIZE)
+												else if (it->m_fX > ms.m_fX + ms.m_fMeanRadius * radiusFactor + STARMAXSIZE)
 													break;
 											}
 										}
@@ -620,9 +517,9 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 
 										if (bWanabeeStarOk)
 										{
-											ms.m_fQuality = (10 - fDeltaRadius) + fIntensity - ms.m_fMeanRadius;
+											ms.m_fQuality = (10 - deltaRadius) + fIntensity - ms.m_fMeanRadius;
 											FindStarShape(pBitmap, ms);
-											stars.insert(ms);
+											stars.insert(std::move(ms));
 											++nStars;
 										}
 									}
@@ -635,7 +532,7 @@ size_t CRegisteredFrame::RegisterSubRect(CMemoryBitmap* pBitmap, const DSSRect& 
 		}
 	}
 
-	if  (vHistogram.size())
+	if  (!vHistogram.empty())
 		m_fBackground = 0;
 
 	return nStars;
@@ -1107,7 +1004,7 @@ void CComputeLuminanceTask::process()
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += nrProcessors * lineBlockSize);
+			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
 
 		const int endRow = std::min(row + lineBlockSize, height);
 		if (avxLuminance.computeLuminanceBitmap(row, endRow) != 0)

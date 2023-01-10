@@ -147,6 +147,9 @@
     <ClCompile Include="..\DeepSkyStacker\group.cpp">
       <Filter>Kernel</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DeepSkyStacker\SetUILanguage.h">

@@ -381,7 +381,7 @@ std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(CMemoryBitma
 	const bool monochrome = pInBitmap->IsMonochrome();
 
 	if (pProgress)
-		pProgress->Start2(nullptr, lWidth);
+		pProgress->Start2(lWidth);
 
 	std::shared_ptr<CMemoryBitmap> pOutBitmap{ pInBitmap->Clone() };
 
@@ -430,7 +430,7 @@ std::shared_ptr<CMemoryBitmap> CDirectionalImageFilter::ApplyFilter(CMemoryBitma
 		}
 
 		if (pProgress)
-			pProgress->Progress2(nullptr, i+1);
+			pProgress->Progress2(i+1);
 	}
 
 	if (pProgress)

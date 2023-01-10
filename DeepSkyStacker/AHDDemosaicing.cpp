@@ -752,6 +752,8 @@ void InterpolateBorders(CGrayBitmapT<T>* pGrayBitmap, std::shared_ptr<CColorBitm
 template <class T>
 bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress)
 {
+	ZFUNCTRACE_RUNTIME();
+
 	auto& grayInputBitmap{ *pGrayInputBitmap };
 	const int height = grayInputBitmap.Height();
 	const int width = grayInputBitmap.Width();
@@ -763,7 +765,7 @@ bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBi
 	const auto progressCallback = [pProgress](const int p, const int threadNumber) -> void
 	{
 		if (threadNumber == 0 && pProgress != nullptr)
-			pProgress->Progress2(nullptr, p);
+			pProgress->Progress2(p);
 	};
 
 	if (pColorBitmap->Init(width, height) && ahdVariables.Init())
@@ -771,7 +773,7 @@ bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBi
 		const auto nrProcessors = CMultitask::GetNrProcessors();
 		if (pProgress != nullptr)
 		{
-			pProgress->Start2(nullptr, height);
+			pProgress->Start2(height);
 			pProgress->SetNrUsedProcessors(nrProcessors);
 		}
 #pragma omp parallel for schedule(dynamic, 50) default(none) firstprivate(ahdVariables) if(nrProcessors > 1)
@@ -797,6 +799,5 @@ bool AHDDemosaicing(CGrayBitmapT<T>* pGrayInputBitmap, std::shared_ptr<CMemoryBi
 
 	return false;
 }
-
 
 template bool AHDDemosaicing<std::uint16_t>(CGrayBitmapT<std::uint16_t>* pGrayInputBitmap, std::shared_ptr<CMemoryBitmap>& rpColorBitmap, CDSSProgress* pProgress);

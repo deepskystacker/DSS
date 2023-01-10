@@ -126,7 +126,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 		if (pScanLine)
 			bResult = true;
 		if (pProgress)
-			pProgress->Start2(nullptr, m_lHeight);
+			pProgress->Start2(m_lHeight);
 
 		for (int k = 0;k<m_vFiles.size() && bResult;k++)
 		{
@@ -144,7 +144,7 @@ bool CMultiBitmap::AddBitmap(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
 				bResult = (fwrite(pScanLine, lScanLineSize, 1, hFile) == 1);
 
 				if (pProgress)
-					pProgress->Progress2(nullptr, j+1);
+					pProgress->Progress2(j+1);
 			};
 			if (hFile)
 				fclose(hFile);
@@ -214,7 +214,7 @@ void CCombineTask::process()
 		exit(1);
 	};
 
-#pragma omp parallel for schedule(dynamic, 50)  default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1)
+#pragma omp parallel for default(none) shared(stop) firstprivate(scanLines, avxOutputComposition) if(nrProcessors > 1 && nrRows > 1) // No "schedule" clause gives fastest result.
 	for (int row = m_lStartRow; row <= m_lEndRow; ++row)
 	{
 		if (stop)
@@ -225,7 +225,7 @@ void CCombineTask::process()
 			if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 			{
 				stop = m_pProgress->IsCanceled();
-				m_pProgress->Progress2(nullptr, progress += nrProcessors);
+				m_pProgress->Progress2(progress += nrProcessors);
 			}
 
 			for (size_t k = 0, offset = (row - m_lStartRow) * m_lScanLineSize; k < nrBitmaps; ++k, offset += nrRows * m_lScanLineSize)
@@ -381,7 +381,7 @@ std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(CDSSProgress* pProgress)
 		}
 
 		if (pProgress != nullptr && bResult)
-			pProgress->Start2(nullptr, m_lHeight);
+			pProgress->Start2(m_lHeight);
 
 		const size_t lScanLineSize = static_cast<size_t>(m_lWidth) * GetNrBytesPerChannel() * GetNrChannels();
 		std::vector<std::uint8_t> buffer;

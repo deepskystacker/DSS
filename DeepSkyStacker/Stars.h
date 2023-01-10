@@ -112,7 +112,7 @@ public :
 	private:
 	bool inRadius(const double lx, const double ly, const double rx, const double ry) const noexcept
 	{
-		return Distance(lx, ly, rx, ry) <= m_fMeanRadius * 2.35 / 1.5;
+		return Distance(lx, ly, rx, ry) <= m_fMeanRadius * (2.35 / 1.5);
 	};
 
 	public:

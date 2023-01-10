@@ -461,7 +461,7 @@ bool LoadOtherPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 			Gdiplus::BitmapData bitmapData;
 
 			if (pProgress != nullptr)
-				pProgress->Start2(nullptr, lHeight);
+				pProgress->Start2(lHeight);
 
 			pBitmap->Init(lWidth, lHeight);
 
@@ -484,7 +484,7 @@ bool LoadOtherPicture(LPCTSTR szFileName, std::shared_ptr<CMemoryBitmap>& rpBitm
 						*pRedPixel++ = *pPixel++;
 					}
 					if (pProgress != nullptr)
-						pProgress->Progress2(nullptr, j+1);
+						pProgress->Progress2(j+1);
 					pBasePixels += std::abs(bitmapData.Stride);
 				}
 
@@ -1456,7 +1456,7 @@ public :
 		m_fGrayFactor = m_bMonochrome ? std::max(fRedFactor, std::max(fGreenFactor, fBlueFactor)) : 1.0;
 
 		if (pProgress != nullptr)
-			pProgress->Start2(nullptr, pTarget->RealWidth());
+			pProgress->Start2(pTarget->RealWidth());
 	}
 
 	CSubtractTask& SetShift(const double fXShift, const double fYShift)
@@ -1508,7 +1508,7 @@ void CSubtractTask::process()
 
 	if (m_pProgress != nullptr)
 	{
-		m_pProgress->Start2(nullptr, height);
+		m_pProgress->Start2(height);
 		m_pProgress->SetNrUsedProcessors(nrProcessors);
 	}
 
@@ -1588,7 +1588,7 @@ void CSubtractTask::process()
 		threadVars.PixelItSrc += extraWidth;
 
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, row);
+			m_pProgress->Progress2(row);
 	}
 
 	if (m_pProgress != nullptr)

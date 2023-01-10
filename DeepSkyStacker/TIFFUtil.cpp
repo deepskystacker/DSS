@@ -286,7 +286,7 @@ bool CTIFFReader::Read()
 		tmsize_t		scanLineSize;
 
 		if (m_pProgress)
-			m_pProgress->Start2(nullptr, h);
+			m_pProgress->Start2(h);
 
 		scanLineSize = TIFFScanlineSize(m_tiff);
 		ZTRACE_RUNTIME("TIFF Scan Line Size %zu", scanLineSize);
@@ -317,7 +317,7 @@ bool CTIFFReader::Read()
 			}
 			curr += count; // Increment current buffer pointer
 			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(nullptr, (this->h / 2 * i) / stripCount);
+				m_pProgress->Progress2((this->h / 2 * i) / stripCount);
 		}
 
 		std::uint8_t* byteBuff = buffer.get();
@@ -337,7 +337,7 @@ bool CTIFFReader::Read()
 			for (int col = 0; col < width; ++col)
 				function(col);
 			if (progress != nullptr && omp_get_thread_num() == 0 && (row % 32) == 0)
-				progress->Progress2(nullptr, (height + row) / 2);
+				progress->Progress2((height + row) / 2);
 		};
 
 		if (sampleformat == SAMPLEFORMAT_IEEEFP)
@@ -660,7 +660,7 @@ bool CTIFFWriter::Write()
 		if (buff != nullptr)
 		{
 			if (m_pProgress)
-				m_pProgress->Start2(nullptr, h);
+				m_pProgress->Start2(h);
 
 			auto* byteBuff = static_cast<std::uint8_t*>(buff);
 			auto* shortBuff = static_cast<std::uint16_t*>(buff);
@@ -756,7 +756,7 @@ bool CTIFFWriter::Write()
 
 				}
 				if (m_pProgress != nullptr && 0 == omp_get_thread_num()) // Are we on the master thread? Without OPENMP omp_get_thread_num() returns always 0.
-					m_pProgress->Progress2(nullptr, row / 2);
+					m_pProgress->Progress2(row / 2);
 			};
 
 			//
@@ -808,7 +808,7 @@ bool CTIFFWriter::Write()
 				bytesRemaining -= result;
 
 				if (m_pProgress != nullptr)
-					m_pProgress->Progress2(nullptr, h / 2 + (h * strip) / (2 * numStrips));
+					m_pProgress->Progress2(h / 2 + (h * strip) / (2 * numStrips));
 			}
 
 			free(buff);

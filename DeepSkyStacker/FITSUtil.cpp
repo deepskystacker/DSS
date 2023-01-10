@@ -660,7 +660,7 @@ bool CFITSReader::Read()
 		double dNULL = 0;
 
 		if (m_pProgress)
-			m_pProgress->Start2(nullptr, m_lHeight);
+			m_pProgress->Start2(m_lHeight);
 
 		std::int64_t fPixel[3] = { 1, 1, 1 };		// want to start reading at column 1, row 1, plane 1
 
@@ -814,7 +814,7 @@ bool CFITSReader::Read()
 			}
 
 			if (m_pProgress != nullptr && 0 == omp_get_thread_num() && (rowProgress++ % 25) == 0)	// Are we on the master thread?
-				m_pProgress->Progress2(nullptr, row);
+				m_pProgress->Progress2(row);
 		}
 
 	} while (false);
@@ -1453,7 +1453,7 @@ bool CFITSWriter::Write()
 			};
 
 			if (m_pProgress)
-				m_pProgress->Start2(nullptr, m_lHeight);
+				m_pProgress->Start2(m_lHeight);
 
 			for (int j = 0; j < m_lHeight; j++)
 			{
@@ -1582,7 +1582,7 @@ bool CFITSWriter::Write()
 				};
 
 				if (m_pProgress)
-					m_pProgress->Progress2(nullptr, j + 1);
+					m_pProgress->Progress2(j + 1);
 			};
 
 			if (m_pProgress)

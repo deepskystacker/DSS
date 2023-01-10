@@ -405,6 +405,9 @@
     <ClCompile Include="ExceptionHandling.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
+    <ClCompile Include="DSSProgress.cpp">
+      <Filter>Kernel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DeepSkyStacker.rc">

@@ -322,13 +322,13 @@ bool CStackedBitmap::LoadDSImage(LPCTSTR szStackedFile, CDSSProgress * pProgress
 			Allocate(Header.lWidth, Header.lHeight, false);
 
 			if (pProgress)
-				pProgress->Start(nullptr, m_lWidth * m_lHeight, false);
+				pProgress->Start(m_lWidth * m_lHeight, false);
 
 			for (int i = 0;i<m_vRedPlane.size();i++)
 			{
 				lProgress++;
 				if (pProgress)
-					pProgress->Progress1(nullptr, lProgress);
+					pProgress->Progress1(lProgress);
 
 				fread(&m_vRedPlane[i], sizeof(float), 1, hFile);
 				fread(&m_vGreenPlane[i], sizeof(float), 1, hFile);
@@ -445,7 +445,7 @@ void CStackedBitmap::SaveDSImage(LPCTSTR szStackedFile, LPRECT pRect, CDSSProgre
 			};
 
 			if (pProgress)
-				pProgress->Progress1(nullptr, lProgress);
+				pProgress->Progress1(lProgress);
 		};
 
 		fclose(hFile);
@@ -670,7 +670,7 @@ std::shared_ptr<CMemoryBitmap> CStackedBitmap::GetBitmap(CDSSProgress* const pPr
 			if (pProgress != nullptr && 0 == omp_get_thread_num())	// Are we on the master thread?
 			{
 				iProgress += omp_get_num_threads();
-				pProgress->Progress2(nullptr, iProgress);
+				pProgress->Progress2(iProgress);
 			}
 		}
 		if (pProgress != nullptr)

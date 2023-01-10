@@ -749,7 +749,7 @@ bool CStackingEngine::ComputeMissingCometPositions()
 };
 
 
-void computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const pProg, const int nrBitmaps)
+bool computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const pProg, const int nrBitmaps)
 {
 	ZFUNCTRACE_RUNTIME();
 	const int nrProcessors = CMultitask::GetNrProcessors();
@@ -758,18 +758,18 @@ void computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const 
 		pProg->SetNrUsedProcessors(nrProcessors);
 
 	bool stop = false;
-#pragma omp parallel for schedule(dynamic) default(none) shared(stop) if(nrProcessors > 1)
+	int nLoopCount = 1;
+	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
+	pProg->Progress1(strText, 0);
+
+#pragma omp parallel for schedule(dynamic) default(none) shared(stop, nLoopCount, strText) if(nrProcessors > 1)
 	for (int i = 1; i < nrBitmaps; ++i)
 	{
-		if (omp_get_thread_num() == 0 && pProg != nullptr)
+#pragma omp critical(OmpLockOffsetTask)
 		{
-			const QString strText(QCoreApplication::translate("StackingEngine", "Computing stacking info for %1", "IDS_COMPUTINGSTACKINGINFO").arg(pStackingEngine->getBitmap(i).filePath.c_str()));
-			pProg->Progress1(strText, i + 1);
-			stop = pProg->IsCanceled();
+			if (omp_get_thread_num() == 0 && pProg)
+				pProg->Progress1(strText, nLoopCount);
 		}
-
-		if (stop)
-			continue;
 
 		if (pStackingEngine->ComputeLightFrameOffset(i))
 		{
@@ -779,14 +779,41 @@ void computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const 
 				pStackingEngine->incStackable();
 				if (pStackingEngine->getBitmap(i).m_bComet)
 					pStackingEngine->incCometStackable();
+
+ 				if (omp_get_thread_num() == 0 && pProg)
+ 				{
+					pProg->Progress1(strText, nLoopCount);
+ 					stop = pProg->IsCanceled();
+ 				}
+				nLoopCount++;
 			}
+			if(stop)
+				continue;
 		}
 		else
+		{
+#pragma omp critical(OmpLockOffsetTask)
+			{
+				if (omp_get_thread_num() == 0 && pProg)
+				{
+					{
+						pProg->Progress1(strText, nLoopCount);
+						stop = pProg->IsCanceled();
+					}
+				}
+				nLoopCount++;
+			}
 			pStackingEngine->getBitmap(i).m_bDisabled = true;
+			
+			if (stop)
+				continue;
+		}
 	}
 
 	if (pProg != nullptr)
 		pProg->SetNrUsedProcessors();
+
+	return stop;
 }
 
 
@@ -794,7 +821,7 @@ bool CStackingEngine::ComputeOffsets()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool bResult = false;
+	bool bResult = true;
 	int lTotalStacked = 1;
 	int lNrStacked = 0;
 	bool bStop = false;
@@ -827,15 +854,16 @@ bool CStackingEngine::ComputeOffsets()
 
 			m_StackingInfo.SetReferenceFrame(bitmapZero.filePath.c_str());
 
-			computeOffsets(this, this->m_pProgress, lLast);
-
-			ComputeMissingCometPositions();
-			m_StackingInfo.Save();
+			bResult = computeOffsets(this, this->m_pProgress, lLast);
+			if (bResult)
+			{
+				bResult = ComputeMissingCometPositions();
+				if(bResult)
+					m_StackingInfo.Save();
+			}
 		}
-
-		m_bOffsetComputed = true;
+		m_bOffsetComputed = bResult;
 	}
-
 	return bResult;
 }
 
@@ -1257,7 +1285,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 					}
 				}
 				if (m_pProgress != nullptr)
-					m_pProgress->Progress2(nullptr, lProgress);
+					m_pProgress->Progress2(lProgress);
 			}
 
 			if (m_pProgress != nullptr)
@@ -1295,13 +1323,13 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			}
 
 			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(nullptr, lProgress);
+				m_pProgress->Progress2(lProgress);
 		}
 
 		if (m_pProgress != nullptr)
 		{
 			m_pProgress->End2();
-			m_pProgress->Progress1(nullptr, 1);
+			m_pProgress->Progress1(1);
 		}
 
 		lProgress = 0;
@@ -1334,7 +1362,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 			}
 
 			if (m_pProgress != nullptr)
-				m_pProgress->Progress2(nullptr, lProgress);
+				m_pProgress->Progress2(lProgress);
 		}
 
 		if (m_pProgress != nullptr)
@@ -1494,7 +1522,7 @@ bool CStackingEngine::SaveDeltaImage( CMemoryBitmap* pBitmap) const
 		};
 
 		if (m_pProgress)
-			m_pProgress->Start2(nullptr, 0);
+			m_pProgress->Start2(0);
 		if (m_IntermediateFileFormat == IFF_TIFF)
 			bResult = WriteTIFF(strOutputFile, pBitmap, m_pProgress, _T("Delta Cosmetic Image"));
 		else
@@ -1641,15 +1669,16 @@ void CStackTask::process()
 	ZFUNCTRACE_RUNTIME();
 	const int height = m_pBitmap->Height();
 	const int nrProcessors = CMultitask::GetNrProcessors();
-	constexpr int lineBlockSize = 20;
+	constexpr int lineBlockSize = 50;
 	int progress = 0;
+	std::atomic_bool runOnlyOnce{ false };
 
 	if (m_pProgress != nullptr)
 		m_pProgress->SetNrUsedProcessors(nrProcessors);
 
 	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
 
-#pragma omp parallel for default(none) firstprivate(avxStacking) schedule(guided, 5) if(nrProcessors > 1)
+#pragma omp parallel for default(none) firstprivate(avxStacking) shared(runOnlyOnce) if(nrProcessors > 1) // No "schedule" clause gives fastest result.
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		const int endRow = std::min(row + lineBlockSize, height);
@@ -1659,9 +1688,13 @@ void CStackTask::process()
 		{
 			this->processNonAvx(row, endRow);
 		}
+		else {
+			if (runOnlyOnce.exchange(true) == false) // If it was false before -> we are the first one.
+				ZTRACE_RUNTIME("AvxStacking::stack %d rows in chunks of size %d", height, lineBlockSize);
+		}
 
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += nrProcessors * lineBlockSize);
+			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
 	}
 
 	if (m_pProgress != nullptr)
@@ -1670,7 +1703,6 @@ void CStackTask::process()
 
 void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
 {
-//	ZFUNCTRACE_RUNTIME();
 	const int width = m_pBitmap->Width();
 	PIXELDISPATCHVECTOR vPixels;
 	vPixels.reserve(16);
@@ -2400,7 +2432,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 
 		// Again - in case pretasks change the progress settings
 		if (pProgress != nullptr)
-			pProgress->Start(strText, m_lNrCurrentStackable, true);
+			pProgress->Start(strText, m_lNrCurrentStackable+1, true);	// SCS: Add one so we don't sit at 100% whilst processing the last one.
 
 		// 4. Stack everything
 		if (bResult)

@@ -67,7 +67,7 @@ namespace DSS
 		bool CreateProgressDialog();
 
 	public:
-		DSSProgressDlg(QWidget* pParent = nullptr);
+		DSSProgressDlg();
 		virtual ~DSSProgressDlg() override;
 
 		virtual void SetNrUsedProcessors(int lNrProcessors = 1) override;

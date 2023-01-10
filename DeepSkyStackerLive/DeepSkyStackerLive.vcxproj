@@ -191,6 +191,7 @@
     <ClCompile Include="..\DeepSkyStacker\CosmeticEngine.cpp" />
     <ClCompile Include="..\DeepSkyStacker\DarkFrame.cpp" />
     <ClCompile Include="..\DeepSkyStacker\DeBloom.cpp" />
+    <ClCompile Include="..\DeepSkyStacker\DSSProgress.cpp" />
     <ClCompile Include="..\DeepSkyStacker\EntropyInfo.cpp" />
     <ClCompile Include="..\DeepSkyStacker\Filters.cpp" />
     <ClCompile Include="..\DeepSkyStacker\FITSUtil.cpp" />

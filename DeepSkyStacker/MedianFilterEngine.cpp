@@ -23,7 +23,7 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::process()
 	for (int row = 0; row < height; row += lineBlockSize)
 	{
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
-			m_pProgress->Progress2(nullptr, progress += nrProcessors * lineBlockSize);
+			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
 
 		const int endRow = std::min(row + lineBlockSize, height);
 		if (avxFilter.filter(row, endRow) != 0)
@@ -116,7 +116,7 @@ template <typename TType>
 void CInternalMedianFilterEngineT<TType>::ApplyFilter(CDSSProgress* pProgress)
 {
 	if (pProgress != nullptr)
-		pProgress->Start2(nullptr, m_lHeight);
+		pProgress->Start2(m_lHeight);
 
 	CFilterTask{ this, pProgress }.process();
 
