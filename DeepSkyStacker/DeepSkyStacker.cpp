@@ -945,6 +945,7 @@ int main(int argc, char* argv[])
 		QMessageBox::critical(nullptr, "DeepSkyStacker", errorMessage);
 #endif
 	}
+#if (0)
 	catch (...)
 	{
 		ZTRACE_RUNTIME("Unknown exception caught");
@@ -957,6 +958,7 @@ int main(int argc, char* argv[])
 #endif
 
 	}
+#endif
 	theApp.ExitInstance();
 	return result;
 }
