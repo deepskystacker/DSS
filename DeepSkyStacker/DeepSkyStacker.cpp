@@ -347,11 +347,6 @@ void DeepSkyStacker::onInitialise()
 	//
 	connectSignalsToSlots();
 
-	//
-	// If the image list is floating, then make sure it is visible
-	//
-	stackingDlg->showImageList();
-
 	setWindowIcon(QIcon(":/DSSIcon.png"));
 
 	setWindowTitle(baseTitle);
