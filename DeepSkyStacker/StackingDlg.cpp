@@ -1086,7 +1086,7 @@ namespace DSS
 			updateListInfo();
 
 		//
-		// If the image list is floating, then make sure it is visible
+		// Make sure the image list is visible
 		//
 		pictureList->raise(); pictureList->show();
 	}
