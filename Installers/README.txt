@@ -61,3 +61,5 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 21. Fix for incorrect output when Comet Stacking with SIMD (it just did a normal stack).
 
 22. Fix for some issues with the progress dialog.   More to come.
+
+23. Ensure that the image list as always displayed when opening DSS.

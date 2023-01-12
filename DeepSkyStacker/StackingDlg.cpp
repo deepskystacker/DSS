@@ -1088,7 +1088,7 @@ namespace DSS
 		//
 		// If the image list is floating, then make sure it is visible
 		//
-		pictureList->raise(); pictureList->show(); pictureList->activateWindow();
+		pictureList->raise(); pictureList->show();
 	}
 
 	void StackingDlg::dropFiles(QDropEvent* e)
