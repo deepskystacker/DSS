@@ -1,6 +1,7 @@
 #pragma once
 
 #include "avx_support.h" 
+#include "avx_cfa.h"
 #include <vector>
 
 class AvxHistogram
@@ -8,12 +9,13 @@ class AvxHistogram
 public:
 	typedef std::vector<int> HistogramVectorType;
 private:
+	bool avxReady;
+	bool allRunsSuccessful;
 	HistogramVectorType redHisto;
 	HistogramVectorType greenHisto;
 	HistogramVectorType blueHisto;
+	AvxCfaProcessing avxCfa;
 	CMemoryBitmap& inputBitmap;
-	bool avxReady;
-	bool allRunsSuccessful;
 public:
 	AvxHistogram() = delete;
 	AvxHistogram(CMemoryBitmap& inputbm);
@@ -24,6 +26,7 @@ public:
 	int calcHistogram(const size_t lineStart, const size_t lineEnd);
 	int mergeHistograms(HistogramVectorType& red, HistogramVectorType& green, HistogramVectorType& blue);
 	bool histogramSuccessful() const;
+	inline bool isAvxReady() const { return this->avxReady; }
 private:
 	static constexpr size_t HistogramSize() { return std::numeric_limits<std::uint16_t>::max() + size_t{1}; }
 	template <class T>

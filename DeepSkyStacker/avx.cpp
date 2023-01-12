@@ -28,6 +28,9 @@ AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBi
 
 void AvxStacking::init(const int lStart, const int lEnd)
 {
+	if (!AvxSupport::checkSimdAvailability())
+		return;
+
 	lineStart = lStart;
 	lineEnd = lEnd;
 	height = lineEnd - lineStart;
