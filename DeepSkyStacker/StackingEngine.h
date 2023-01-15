@@ -132,17 +132,16 @@ public :
 
 /* ------------------------------------------------------------------- */
 
-class CStackingEngine
+class CStackingEngine final
 {
-private :
+private:
 	LIGHTFRAMEINFOVECTOR		m_vBitmaps;
 	CLightFramesStackingInfo	m_StackingInfo;
 	CDSSProgress *				m_pProgress;
-	bool						m_bOffsetComputed;
 	CString						m_strReferenceFrame;
 	int						m_lNrCurrentStackable;
-	int						m_lNrStackable;
-	int						m_lNrCometStackable;
+	std::atomic<int>		m_lNrStackable;
+	std::atomic<int>		m_lNrCometStackable;
 	int						m_lISOSpeed;
 	int						m_lGain;
 	SYSTEMTIME					m_DateTime;
@@ -178,14 +177,46 @@ private :
 	CComAutoCriticalSection		m_CriticalSection;
 
 public:
-	bool ComputeLightFrameOffset(int lBitmapIndice);
-	void incStackable() { ++m_lNrStackable; }
-	void incCometStackable() { ++m_lNrCometStackable; }
+	CStackingEngine() :
+		m_lNrStackable{ 0 },
+		m_lNrCometStackable{ 0 },
+		m_lISOSpeed{ 0 },
+		m_lGain{ -1 },
+		m_pLightTask{ nullptr },
+		m_lNrStacked{ 0 },
+		m_fTotalExposure{ 0 },
+		m_fKeptPercentage{ 100.0 },
+		m_bSaveCalibrated{ CAllStackingTasks::GetSaveCalibrated() },
+		m_bSaveCalibratedDebayered{ CAllStackingTasks::GetSaveCalibratedDebayered() },
+		m_bSaveIntermediate{ CAllStackingTasks::GetCreateIntermediates() },
+		m_InputCFAType{ CFATYPE_NONE },
+		m_lPixelSizeMultiplier{ CAllStackingTasks::GetPixelSizeMultiplier() },
+		m_IntermediateFileFormat{ CAllStackingTasks::GetIntermediateFileFormat() },
+		m_bCometStacking{ false },
+		m_bCreateCometImage{ false },
+		m_bSaveIntermediateCometImages{ CAllStackingTasks::GetSaveIntermediateCometImages() },
+		m_bApplyFilterToCometImage{ CAllStackingTasks::GetApplyMedianFilterToCometImage() },
+		m_bChannelAlign{ CAllStackingTasks::GetChannelAlign() },
+		m_bCometInterpolating{ false }
 
-private :
+	{
+		m_DateTime.wYear = 0;
+		CAllStackingTasks::GetPostCalibrationSettings(m_PostCalibrationSettings);
+	}
+
+	~CStackingEngine() = default;
+
+	bool ComputeLightFrameOffset(int lBitmapIndice);
+	inline void incStackable() { ++m_lNrStackable; }
+	inline void incCometStackableIfBitmapHasComet(const int n) {
+		if (this->m_vBitmaps[n].m_bComet)
+			++m_lNrCometStackable;
+	}
+
+private:
 	bool	AddLightFramesToList(CAllStackingTasks & tasks);
-	bool	ComputeMissingCometPositions();
-	bool	ComputeOffsets();
+	void	ComputeMissingCometPositions();
+	void	ComputeOffsets();
 	bool	IsLightFrameStackable(LPCTSTR szFile);
 	bool	RemoveNonStackableLightFrames(CAllStackingTasks & tasks);
 	void	GetResultISOSpeed();
@@ -208,36 +239,7 @@ private :
 	bool	SaveCometlessImage(CMemoryBitmap* pBitmap) const;
 	TRANSFORMATIONTYPE GetTransformationType();
 
-public :
-	CStackingEngine() :
-		m_lNrStackable{ 0 },
-		m_lNrCometStackable{ 0 },
-		m_lISOSpeed{ 0 },
-		m_lGain{ -1 },
-		m_pLightTask{ nullptr },
-		m_lNrStacked{ 0 },
-		m_fTotalExposure{ 0 },
-		m_fKeptPercentage{ 100.0 },
-		m_bSaveCalibrated{ CAllStackingTasks::GetSaveCalibrated() },
-		m_bSaveCalibratedDebayered{ CAllStackingTasks::GetSaveCalibratedDebayered() },
-		m_bSaveIntermediate{ CAllStackingTasks::GetCreateIntermediates() },
-		m_InputCFAType{ CFATYPE_NONE },
-		m_lPixelSizeMultiplier{ CAllStackingTasks::GetPixelSizeMultiplier() },
-		m_IntermediateFileFormat{ CAllStackingTasks::GetIntermediateFileFormat() },
-		m_bCometStacking{ false },
-		m_bCreateCometImage{ false },
-		m_bSaveIntermediateCometImages{ CAllStackingTasks::GetSaveIntermediateCometImages() },
-		m_bApplyFilterToCometImage{ CAllStackingTasks::GetApplyMedianFilterToCometImage() },
-		m_bChannelAlign{ CAllStackingTasks::GetChannelAlign() },
-		m_bCometInterpolating{ false }
-		
-	{
-		m_DateTime.wYear = 0;
-		CAllStackingTasks::GetPostCalibrationSettings(m_PostCalibrationSettings);
-	}
-
-	virtual ~CStackingEngine() = default;
-
+public:
 	CLightFrameInfo& getBitmap(const int n)
 	{
 		return this->m_vBitmaps[n];
@@ -263,7 +265,7 @@ public :
 		m_fKeptPercentage = fPercent;
 	}
 
-	bool ComputeOffsets(CAllStackingTasks& tasks, CDSSProgress* pProgress);
+	void ComputeOffsets(CAllStackingTasks& tasks, CDSSProgress* pProgress);
 	bool StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 
 	LIGHTFRAMEINFOVECTOR& LightFrames()
