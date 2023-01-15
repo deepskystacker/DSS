@@ -80,6 +80,7 @@ using namespace Gdiplus;
 #include <execinfo.h>
 #endif
 #include "ExceptionHandling.h"
+#include "DSSVersion.h"
 
 #pragma comment(lib, "gdiplus.lib")
 #pragma comment(linker,"\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
@@ -766,6 +767,15 @@ int main(int argc, char* argv[])
 //	std::signal(SIGTERM, signalHandler);
 //#endif
 
+	// High DPI support
+#if QT_VERSION < 0x060000
+	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
+
+	//QMfcApp app(&theApp, argc, argv);
+	QApplication app(argc, argv);
+
 	if (hasExpired())
 		return FALSE;
 
@@ -782,14 +792,6 @@ int main(int argc, char* argv[])
 	// initialize all the windows stuff we need for now
 	theApp.InitInstance();
 
-	// High DPI support
-#if QT_VERSION < 0x060000
-	QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-#endif
-
-	//QMfcApp app(&theApp, argc, argv);
-	QApplication app(argc, argv);
 
 	//
 	// Set up organisation etc. for QSettings usage
