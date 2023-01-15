@@ -28,6 +28,9 @@ AvxStacking::AvxStacking(int lStart, int lEnd, CMemoryBitmap& inputbm, CMemoryBi
 
 void AvxStacking::init(const int lStart, const int lEnd)
 {
+	if (!AvxSupport::checkSimdAvailability())
+		return;
+
 	lineStart = lStart;
 	lineEnd = lEnd;
 	height = lineEnd - lineStart;
@@ -118,8 +121,8 @@ int AvxStacking::pixelTransform(const CPixelTransform& pixelTransformDef)
 
 	// Number of vectors with 8 pixels each to process.
 	const size_t nrVectors = AvxSupport::numberOfAvxVectors<float, __m256>(width);
-	const float fxShift = static_cast<float>(pixelTransformDef.m_fXShift + pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fXCometShift : 0.0);
-	const float fyShift = static_cast<float>(pixelTransformDef.m_fYShift + pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fYCometShift : 0.0);
+	const float fxShift = static_cast<float>(pixelTransformDef.m_fXShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fXCometShift : 0.0));
+	const float fyShift = static_cast<float>(pixelTransformDef.m_fYShift + (pixelTransformDef.m_bUseCometShift ? pixelTransformDef.m_fYCometShift : 0.0));
 	const __m256 fxShiftVec = _mm256_set1_ps(fxShift);
 
 	// Superfast version if no transformation required: indices = coordinates.

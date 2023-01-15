@@ -1,15 +1,15 @@
 #include "StdAfx.h"
 #include "avx_histogram.h"
-#include "avx_cfa.h"
 #include <immintrin.h>
 
 AvxHistogram::AvxHistogram(CMemoryBitmap& inputbm) :
-	redHisto(HistogramSize(), 0),
+	avxReady{ AvxSupport::checkSimdAvailability() },
+	allRunsSuccessful{ true },
+	redHisto(avxReady ? HistogramSize() : 0, 0),
 	greenHisto{},
 	blueHisto{},
-	inputBitmap{ inputbm },
-	avxReady{ AvxSupport::checkSimdAvailability() },
-	allRunsSuccessful{ true }
+	avxCfa{ 0, 0, inputbm },
+	inputBitmap{ inputbm }
 {
 	if (avxReady && AvxSupport{ inputBitmap }.isColorBitmapOrCfa())
 	{
@@ -75,7 +75,6 @@ int AvxHistogram::doCalcHistogram(const size_t lineStart, const size_t lineEnd)
 		if constexpr (std::is_same<T, double>::value) // color-double not supported.
 			return 1;
 
-		AvxCfaProcessing avxCfa{ 0, 0, inputBitmap };
 		if (isCFA)
 		{
 			avxCfa.init(lineStart, lineEnd);

@@ -17,9 +17,9 @@ CBackgroundCalibration::CBackgroundCalibration() :
 void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, CDSSProgress* pProgress, std::vector<int>& redHisto, std::vector<int>& greenHisto, std::vector<int>& blueHisto) const
 {
 	AvxHistogram avxHistogram(*pBitmap);
-	std::vector<int> redLocalHist(HistogramSize());
-	std::vector<int> greenLocalHist(HistogramSize());
-	std::vector<int> blueLocalHist(HistogramSize());
+	std::vector<int> redLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize()); // Only allocate mem if AVX will not be used (see below).
+	std::vector<int> greenLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
+	std::vector<int> blueLocalHist(avxHistogram.isAvxReady() ? 0 : HistogramSize());
 	const int height = pBitmap->Height();
 	const auto nrProcessors = CMultitask::GetNrProcessors();
 
