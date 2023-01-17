@@ -614,11 +614,9 @@ inline bool CompareLightFrameDate (const CLightFrameInfo * plfi1, const CLightFr
 	return CompareDateTime(plfi2->m_DateTime, plfi1->m_DateTime);
 };
 
-bool CStackingEngine::ComputeMissingCometPositions()
+void CStackingEngine::ComputeMissingCometPositions()
 {
 	ZFUNCTRACE_RUNTIME();
-
-	bool bResult = true;
 
 	if (m_lNrCometStackable >= 2)
 	{
@@ -744,11 +742,12 @@ bool CStackingEngine::ComputeMissingCometPositions()
 		for (const int cometIndex : vNewComet)
 			vpLightFrames[cometIndex]->m_bComet = true;
 	}
-
-	return bResult;
-};
+}
 
 
+// Returns:
+//   true:  offsets have been computed.
+//   false: offset calculation was stopped by pressing "Cancel".
 bool computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const pProg, const int nrBitmaps)
 {
 	ZFUNCTRACE_RUNTIME();
@@ -757,114 +756,94 @@ bool computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const 
 	if (pProg != nullptr)
 		pProg->SetNrUsedProcessors(nrProcessors);
 
-	bool stop = false;
-	int nLoopCount = 1;
+	std::atomic_bool stop{ false };
+	std::atomic<int> nLoopCount{ 1 };
 	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
-	pProg->Progress1(strText, 0);
+	if (pProg != nullptr)
+		pProg->Progress1(strText, 0);
 
 #pragma omp parallel for schedule(dynamic) default(none) shared(stop, nLoopCount, strText) if(nrProcessors > 1)
 	for (int i = 1; i < nrBitmaps; ++i)
 	{
-#pragma omp critical(OmpLockOffsetTask)
-		{
-			if (omp_get_thread_num() == 0 && pProg)
-				pProg->Progress1(strText, nLoopCount);
-		}
+		// OpenMP loops need to loop till the end, breaking earlier is difficult. 
+		// Therefore, if "Cancel" has been pressed, we finish the loop by calling continue.
+		if (stop.load())
+			continue;
+
+		if (omp_get_thread_num() == 0 && pProg != nullptr)
+			pProg->Progress1(strText, nLoopCount.load());
 
 		if (pStackingEngine->ComputeLightFrameOffset(i))
 		{
 			pStackingEngine->getBitmap(i).m_bDisabled = false;
-#pragma omp critical(OmpLockOffsetTask)
-			{
-				pStackingEngine->incStackable();
-				if (pStackingEngine->getBitmap(i).m_bComet)
-					pStackingEngine->incCometStackable();
+			pStackingEngine->incStackable();
+			pStackingEngine->incCometStackableIfBitmapHasComet(i);
 
- 				if (omp_get_thread_num() == 0 && pProg)
- 				{
-					pProg->Progress1(strText, nLoopCount);
- 					stop = pProg->IsCanceled();
- 				}
-				nLoopCount++;
-			}
-			if(stop)
-				continue;
+ 			if (omp_get_thread_num() == 0 && pProg != nullptr)
+ 			{
+				pProg->Progress1(strText, nLoopCount.load());
+ 				stop = pProg->IsCanceled();
+ 			}
 		}
 		else
 		{
-#pragma omp critical(OmpLockOffsetTask)
+			if (omp_get_thread_num() == 0 && pProg != nullptr)
 			{
-				if (omp_get_thread_num() == 0 && pProg)
-				{
-					{
-						pProg->Progress1(strText, nLoopCount);
-						stop = pProg->IsCanceled();
-					}
-				}
-				nLoopCount++;
+				pProg->Progress1(strText, nLoopCount.load());
+				stop = pProg->IsCanceled();
 			}
-			pStackingEngine->getBitmap(i).m_bDisabled = true;
-			
-			if (stop)
-				continue;
+			pStackingEngine->getBitmap(i).m_bDisabled = true;			
 		}
+
+		++nLoopCount; // Note: For atomic<> ++x is faster than x++.
 	}
 
 	if (pProg != nullptr)
 		pProg->SetNrUsedProcessors();
 
-	return stop;
+	return !stop;
 }
 
 
-bool CStackingEngine::ComputeOffsets()
+void CStackingEngine::ComputeOffsets()
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool bResult = true;
-	int lTotalStacked = 1;
-	int lNrStacked = 0;
-	bool bStop = false;
+	if (m_vBitmaps.empty())
+		return;
 
 	std::sort(m_vBitmaps.begin(), m_vBitmaps.end());
 
-	if (!m_vBitmaps.empty())
+	if (m_vBitmaps[0].m_bDisabled)
+		m_lNrStackable = 0;
+	else
+		m_lNrStackable = std::min(static_cast<int>(m_vBitmaps.size()), 1);
+	m_lNrCometStackable = 0;
+	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
+
+	const int lLast = static_cast<int>(m_vBitmaps.size() * m_fKeptPercentage / 100.0);
+	if (m_pProgress)
+		m_pProgress->Start(strText, lLast, false);
+
+	// The first bitmap is the best one
+	if (m_vBitmaps.size() > 1)
 	{
-		if (m_vBitmaps[0].m_bDisabled)
-			m_lNrStackable = 0;
-		else
-			m_lNrStackable = std::min(static_cast<int>(m_vBitmaps.size()), 1);
-		m_lNrCometStackable = 0;
-		const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
+		auto& bitmapZero = m_vBitmaps[0];
+		std::sort(bitmapZero.m_vStars.begin(), bitmapZero.m_vStars.end());
 
-		const int lLast = static_cast<int>(m_vBitmaps.size() * m_fKeptPercentage / 100.0);
-		if (m_pProgress)
-			m_pProgress->Start(strText, lLast, false);
+		std::for_each(m_vBitmaps.begin() + 1, m_vBitmaps.end(), [](auto& bitmap) { bitmap.m_bDisabled = true; });
 
-		// The first bitmap is the best one
-		if (m_vBitmaps.size() > 1)
+		if (bitmapZero.m_bComet)
+			++m_lNrCometStackable;
+
+		m_StackingInfo.SetReferenceFrame(bitmapZero.filePath.c_str());
+
+		if (computeOffsets(this, this->m_pProgress, lLast)) // Offset calculation was successful (not stopped by pressing "Cancel")
 		{
-			auto& bitmapZero = m_vBitmaps[0];
-			std::sort(bitmapZero.m_vStars.begin(), bitmapZero.m_vStars.end());
-
-			std::for_each(m_vBitmaps.begin() + 1, m_vBitmaps.end(), [](auto& bitmap) { bitmap.m_bDisabled = true; });
-
-			if (bitmapZero.m_bComet)
-				m_lNrCometStackable++;
-
-			m_StackingInfo.SetReferenceFrame(bitmapZero.filePath.c_str());
-
-			bResult = computeOffsets(this, this->m_pProgress, lLast);
-			if (bResult)
-			{
-				bResult = ComputeMissingCometPositions();
-				if(bResult)
-					m_StackingInfo.Save();
-			}
+			ComputeMissingCometPositions();
+			m_StackingInfo.Save();
 		}
-		m_bOffsetComputed = bResult;
 	}
-	return bResult;
 }
 
 /* ------------------------------------------------------------------- */
@@ -2507,10 +2486,9 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::ComputeOffsets(CAllStackingTasks & tasks, CDSSProgress * pProgress)
+void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
 
 	m_pProgress = pProgress;
 
@@ -2518,9 +2496,7 @@ bool CStackingEngine::ComputeOffsets(CAllStackingTasks & tasks, CDSSProgress * p
 	ComputeOffsets();
 
 	m_pProgress = nullptr;
-
-	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
