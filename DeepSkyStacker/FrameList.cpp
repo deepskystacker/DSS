@@ -1,11 +1,13 @@
 #include <stdafx.h>
 
 #include <QDebug>
+#include <QMessageBox>
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include <direct.h>
+#include "DeepSkyStacker.h"
 #include <QSettings>
 #include "ZExcept.h"
 
@@ -437,7 +439,7 @@ namespace DSS
 					std::int32_t checkState(Qt::Unchecked);
 					QString			strType;
 					QString			strFile;
-					QString groupName;
+					QString			strGroupName;
 					QString			strLine{ QString::fromUtf8(szLine).trimmed() };
 
 					bool			bUseAsStarting = false;
@@ -445,11 +447,19 @@ namespace DSS
 					if (workspace.ReadFromString(strLine))
 					{
 					}
-					else if (isChangeGroupLine(strLine, groupId, groupName))
+					else if (isChangeGroupLine(strLine, groupId, strGroupName))
 					{
+						//
+						// Zero index groupId must be same as count of groups when adding
+						// a group
+						//
+						if (groupId == imageGroups.size())
+							static_cast<void>(addGroup());
+						ZASSERTSTATE(groupId < (1 + imageGroups.size()));
+
 						setGroup(groupId);	// Select the group in question
-						if (!groupName.isEmpty())
-							imageGroups[groupId].setName(groupName);
+						if (!strGroupName.isEmpty())
+							imageGroups[groupId].setName(strGroupName);
 					}
 					else if (parseLine(strLine, checkState, strType, strFile))
 					{
@@ -490,13 +500,39 @@ namespace DSS
 									filePath.generic_u8string().c_str(), ec.value(), ec.message().c_str());
 							}
 
-							// Check that the file exists
+							// Check that the file exists and that it hasn't already been loaded
 							if (is_regular_file(filePath))
 							{
-								beginInsertRows(1);
-								addFile(filePath, Type, (checkState == 1));
-								endInsertRows();
-							};
+								//
+								// Check all groups to see if this file has already been loaded
+								//
+								if (auto groupId = Group::whichGroupContains(filePath); groupId != -1)
+								{
+									//
+									// If the file has already been loaded complain
+									//
+									QString errorMessage(
+										QCoreApplication::translate("StackingDlg", "File %1 has already been loaded in group %2 (%3)")
+										.arg(filePath.generic_string().c_str())
+										.arg(groupId)
+										.arg(groupName(groupId)));
+
+#if defined(_CONSOLE)
+									std::wcerr << errorMessage;
+#else
+									int ret = QMessageBox::warning(&(dssApp->getStackingDlg()), "DeepSkyStacker",
+										errorMessage,
+										QMessageBox::Ok);
+#endif
+									return *this;
+								}
+								else
+								{
+									beginInsertRows(1);
+									addFile(filePath, Type, (checkState == 1));
+									endInsertRows();
+								}
+							}
 						}
 								
 					};

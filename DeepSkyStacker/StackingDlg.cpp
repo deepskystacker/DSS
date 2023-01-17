@@ -99,8 +99,6 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#define dssApp DeepSkyStacker::instance()
-
 namespace
 {
 	static QSizeF viewItemTextLayout(QTextLayout& textLayout, int lineWidth, int maxHeight = -1, int* lastVisibleLine = nullptr)
@@ -2919,14 +2917,22 @@ namespace DSS
 
 	void StackingDlg::updateGroupTabs()
 	{
-		auto lastGroup{ frameList.lastGroupId() };
-		if (frameList.groupSize(lastGroup) != 0)
+		auto count { frameList.groupCount() };
+
+		//
+		// Remove tabs (last to first)
+		//
+		for (int i = pictureList->tabBar->count() - 1; i >= 0; i--)
 		{
-			//
-			// Need to add a group
-			//
-			lastGroup = frameList.addGroup();
-			pictureList->tabBar->addTab(frameList.groupName(lastGroup));
+			pictureList->tabBar->removeTab(i);
+		}
+
+		//
+		// Add all tabs needed
+		//
+		for (int i = 0; i < frameList.groupCount(); i++)
+		{
+			pictureList->tabBar->addTab(frameList.groupName(i));
 		}
 
 	};

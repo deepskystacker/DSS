@@ -76,8 +76,9 @@ namespace DSS
 			{
 				group.pictures->clear();
 			}
-			Group::clearMap();
-		};
+			imageGroups.resize(1);
+			Group::reset();
+		}
 
 		std::uint16_t groupId() const noexcept
 		{
@@ -104,6 +105,11 @@ namespace DSS
 		{
 			ZASSERTSTATE(id < imageGroups.size());
 			return imageGroups[id].size();
+		}
+
+		inline size_t groupCount() const
+		{
+			return imageGroups.size();
 		}
 
 		QString getFirstCheckedLightFrame();
