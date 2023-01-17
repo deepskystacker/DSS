@@ -19,8 +19,6 @@
 
 constexpr unsigned int WM_INITNEWPICTURE = WM_USER + 1;
 
-#define dssApp DeepSkyStacker::instance()
-
 /* ------------------------------------------------------------------- */
 /////////////////////////////////////////////////////////////////////////////
 // CProcessingDlg dialog
