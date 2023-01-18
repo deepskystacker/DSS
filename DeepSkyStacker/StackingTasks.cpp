@@ -1011,15 +1011,15 @@ void	CFlatCalibrationParameters::ApplyParameters(CMemoryBitmap * pBitmap, const 
 
 /* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
+bool CStackingInfo::CheckForExistingFlat(CString& strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (m_pFlatTask && m_pFlatTask->m_vBitmaps.size())
+	if (m_pFlatTask != nullptr && !m_pFlatTask->m_vBitmaps.empty())
 	{
-		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
+		if (m_pOffsetTask == nullptr || (m_pOffsetTask != nullptr && m_pOffsetTask->m_bUnmodified))
 		{
 			TCHAR			szDrive[1+_MAX_DRIVE];
 			TCHAR			szDir[1+_MAX_DIR];
@@ -1028,15 +1028,13 @@ bool	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 
 			_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
-			BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
-				&strMasterFlat, &strMasterFlatInfo);
+			BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir, &strMasterFlat, &strMasterFlatInfo);
 
 			// Check that the Master Offset File is existing
-			CFlatSettings		bmpSettings;
-			CFlatSettings		newSettings;
+			CFlatSettings bmpSettings;
+			CFlatSettings newSettings;
 
-			if (newSettings.InitFromCurrent(m_pFlatTask, strMasterFlat) &&
-				bmpSettings.ReadFromFile(strMasterFlatInfo))
+			if (newSettings.InitFromCurrent(m_pFlatTask, strMasterFlat) && bmpSettings.ReadFromFile(strMasterFlatInfo))
 			{
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				newSettings.SetMasterDarkFlat(m_pDarkFlatTask);
@@ -1044,21 +1042,20 @@ bool	CStackingInfo::CheckForExistingFlat(CString & strMasterFile)
 				{
 					strMasterFile = strMasterFlat;
 					bResult = true;
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
+bool CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = true;
+	bool bResult = true;
 
 	if (!m_pFlatTask->m_bDone)
 	{
@@ -1071,7 +1068,7 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 		}
 		else if (CheckForExistingFlat(m_pFlatTask->m_strOutputFile))
 		{
-			m_pFlatTask->m_bDone	   = true;
+			m_pFlatTask->m_bDone = true;
 			m_pFlatTask->m_bUnmodified = true;
 		}
 		else
@@ -1089,14 +1086,29 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 				pProgress->Start(strText, static_cast<int>(m_pFlatTask->m_vBitmaps.size()), true);
 
 			// First load the master offset if available
-			if (m_pOffsetTask)
+			if (m_pOffsetTask != nullptr)
 				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
-			if (m_pDarkFlatTask)
+			if (m_pDarkFlatTask != nullptr)
 				g_BitmapCache.GetTaskResult(m_pDarkFlatTask, pProgress, pMasterDarkFlat);
+
+			const auto readTask = [this](const size_t bitmapNdx, CDSSProgress* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			{
+				if (bitmapNdx >= m_pFlatTask->m_vBitmaps.size())
+					return { {}, false };
+				std::shared_ptr<CMemoryBitmap> pBitmap;
+				const bool success = ::LoadFrame(m_pFlatTask->m_vBitmaps[bitmapNdx].filePath.c_str(), PICTURETYPE_FLATFRAME, pProgress, pBitmap);
+				return { pBitmap, success };
+			};
+
+			auto futureForRead = std::async(std::launch::deferred, readTask, 0, pProgress); // First frame synchronously.
 
 			for (size_t i = 0; i < m_pFlatTask->m_vBitmaps.size() && bResult; i++)
 			{
-				std::shared_ptr<CMemoryBitmap> pBitmap;
+				auto [pBitmap, success] = futureForRead.get();
+				futureForRead = std::async(std::launch::async, readTask, i + 1, nullptr); // Other frames asynchronously.
+
+				if (!success)
+					continue;
 
 				strText = QCoreApplication::translate("StackingTasks", "Adding Flat frame %1 of %2", "IDS_ADDFLAT").arg(static_cast<int>(i)).arg(m_pFlatTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
@@ -1104,93 +1116,91 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pFlatTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_FLATFRAME, pProgress, pBitmap))
+				if (!m_pFlatTask->m_pMaster)
+					m_pFlatTask->CreateEmptyMaster(pBitmap.get());
+
+				// Subtract the offset frame from the dark frame
+				if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
+				{
+					QString strText;
+					QString strStart2;
+
+					strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
+					ZTRACE_RUNTIME(strText);
+
+					if (pProgress != nullptr)
+					{
+						strStart2 = pProgress->GetStart2Text();
+						pProgress->Start2(strText, 0);
+					}
+					Subtract(pBitmap, pMasterOffset, pProgress);
+					if (pProgress != nullptr)
+						pProgress->Start2(strStart2, 0);
+				}
+
+				if (static_cast<bool>(pMasterDarkFlat) && !pBitmap->IsMaster())
+				{
+					QString strText;
+					QString strStart2;
+
+					strText = QCoreApplication::translate("StackingTasks", "Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK");
+					ZTRACE_RUNTIME(strText);
+
+					if (pProgress != nullptr)
+					{
+						strStart2 = pProgress->GetStart2Text();
+						pProgress->Start2(strText, 0);
+					}
+					Subtract(pBitmap, pMasterDarkFlat, pProgress);
+					if (pProgress != nullptr)
+						pProgress->Start2(strStart2, 0);
+				}
+
+				if (!fcpBase.IsInitialized())
+				{
+					// This is the first flat
+					fcpBase.ComputeParameters(pBitmap.get(), pProgress);
+				}
+				else
 				{
 					CFlatCalibrationParameters fcpBitmap;
-					if (!m_pFlatTask->m_pMaster)
-						m_pFlatTask->CreateEmptyMaster(pBitmap.get());
+					fcpBitmap.ComputeParameters(pBitmap.get(), pProgress);
+					fcpBase.ApplyParameters(pBitmap.get(), fcpBitmap, pProgress);
+				}
 
-					// Subtract the offset frame from the dark frame
-					if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
-					{
-						QString strText;
-						QString strStart2;
+				// Add the dark frame
+				m_pFlatTask->AddToMaster(pBitmap.get(), pProgress);
 
-						strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
-						ZTRACE_RUNTIME(strText);
-
-						if (pProgress != nullptr)
-						{
-							strStart2 = pProgress->GetStart2Text();
-							pProgress->Start2(strText, 0);
-						}
-						Subtract(pBitmap, pMasterOffset, pProgress);
-						if (pProgress != nullptr)
-							pProgress->Start2(strStart2, 0);
-					}
-
-					if (static_cast<bool>(pMasterDarkFlat) && !pBitmap->IsMaster())
-					{
-						QString strText;
-						QString strStart2;
-
-						strText = QCoreApplication::translate("StackingTasks", "Subtracting Dark Frame", "IDS_SUBSTRACTINGDARK");
-						ZTRACE_RUNTIME(strText);
-
-						if (pProgress != nullptr)
-						{
-							strStart2 = pProgress->GetStart2Text();
-							pProgress->Start2(strText, 0);
-						}
-						Subtract(pBitmap, pMasterDarkFlat, pProgress);
-						if (pProgress != nullptr)
-							pProgress->Start2(strStart2, 0);
-					}
-
-					if (!fcpBase.IsInitialized())
-					{
-						// This is the first flat
-						fcpBase.ComputeParameters(pBitmap.get(), pProgress);
-					}
-					else
-					{
-						fcpBitmap.ComputeParameters(pBitmap.get(), pProgress);
-						fcpBase.ApplyParameters(pBitmap.get(), fcpBitmap, pProgress);
-					}
-
-					// Add the dark frame
-					m_pFlatTask->AddToMaster(pBitmap.get(), pProgress);
-				};
-
-				if (pProgress)
+				if (pProgress != nullptr)
 					bResult = !pProgress->IsCanceled();
-			};
+			}
 
 			if (bResult)
 			{
 				// Save Master Flat Frame
-				CString						strMasterFlat;
-				CString						strMasterFlatInfo;
-				QString						strMethod;
+				CString strMasterFlat;
+				CString strMasterFlatInfo;
+				QString strMethod;
 
 				FormatFromMethod(strMethod, m_pFlatTask->m_Method, m_pFlatTask->m_fKappa, m_pFlatTask->m_lNrIterations);
 				strText = QCoreApplication::translate("StackingTasks", "Computing master flat (%1)","IDS_COMPUTINGMEDIANFLAT").arg(strMethod);
 				ZTRACE_RUNTIME(strText);
 
-				if (pProgress)
+				if (pProgress != nullptr)
 				{
 					pProgress->Start(strText, 1, false);
 					pProgress->Progress1(strText, 0);
 					pProgress->SetJointProgress(true);
-				};
+				}
+
 				std::shared_ptr<CMemoryBitmap> pFlatBitmap = m_pFlatTask->GetMaster(pProgress);
-				if (pProgress)
+				if (pProgress != nullptr)
 					pProgress->SetJointProgress(false);
 
 				if (static_cast<bool>(pFlatBitmap))
 				{
-					TCHAR			szDrive[1+_MAX_DRIVE];
-					TCHAR			szDir[1+_MAX_DIR];
+					TCHAR szDrive[1 + _MAX_DRIVE];
+					TCHAR szDir[1 + _MAX_DIR];
 					const QString strInfo{ tr("Master Flat created from %n picture(s) (%1)",
 						"IDS_MEDIANFLATINFO",
 						static_cast<int>(m_pFlatTask->m_vBitmaps.size()))
@@ -1198,17 +1208,16 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 
 					_tsplitpath(m_pFlatTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
-					BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir,
-						&strMasterFlat, &strMasterFlatInfo);
+					BuildMasterFileNames(m_pFlatTask, _T("MasterFlat"), /* bExposure */ false, szDrive, szDir, &strMasterFlat, &strMasterFlatInfo);
 					strText = QCoreApplication::translate("StackingTasks", "Saving Master Flat", "IDS_SAVINGMASTERFLAT");
 					ZTRACE_RUNTIME(strText);
 
-					if (pProgress)
+					if (pProgress != nullptr)
 					{
 						pProgress->Start(strText, 1, false);
 						pProgress->Progress1(strText, 1);
 						pProgress->Start2(QString::fromWCharArray(strMasterFlat.GetString()), 0);
-					};
+					}
 
 					CString strInfo2(strInfo.toStdWString().c_str());
 					WriteMasterTIFF(strMasterFlat, pFlatBitmap.get(), pProgress, strInfo2, m_pFlatTask);
@@ -1217,21 +1226,19 @@ bool	CStackingInfo::DoFlatTask(CDSSProgress* const pProgress)
 					m_pFlatTask->m_bDone = true;
 
 					// Save the description
-					CFlatSettings		s;
-
+					CFlatSettings s;
 					s.InitFromCurrent(m_pFlatTask, strMasterFlat);
 					s.SetMasterOffset(m_pOffsetTask);
 					s.SetMasterDarkFlat(m_pDarkFlatTask);
 					s.WriteToFile(strMasterFlatInfo);
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
 inline bool	IsTaskGroupOk(const CTaskInfo & BaseTask, CTaskInfo * pCurrentTask, CTaskInfo * pNewTask)
 {
@@ -1769,34 +1776,37 @@ bool CAllStackingTasks::DoAllPreTasks(CDSSProgress* pProgress)
 bool CAllStackingTasks::DoFlatTasks(CDSSProgress * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
+	bool bResult = true;
 
 	// 3. create all the flat masters (using the offset master if necessary)
-	for (int i = 0;i<m_vStacks.size() && bResult;i++)
+	for (auto& stack : m_vStacks)
 	{
-		if (m_vStacks[i].m_pFlatTask)
+		if (!bResult)
+			break;
+
+		if (stack.m_pFlatTask)
 		{
-			if (!m_vStacks[i].m_pFlatTask->m_bDone)
+			if (!stack.m_pFlatTask->m_bDone)
 			{
 				ZTRACE_RUNTIME("------------------------------\nCreate Master Flat");
 
-				if (m_vStacks[i].m_pOffsetTask)
+				if (stack.m_pOffsetTask)
 					// Load the master offset
-					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pOffsetTask->m_strOutputFile, CP_ACP));
+					ZTRACE_RUNTIME("Load Master Offset: %s", (LPCSTR)CT2CA(stack.m_pOffsetTask->m_strOutputFile, CP_ACP));
 				else
 					ZTRACE_RUNTIME("No Master Offset");
 
-				CTaskInfo *			pTaskInfo = m_vStacks[i].m_pFlatTask;
+				CTaskInfo* pTaskInfo = stack.m_pFlatTask;
 
-				bResult = m_vStacks[i].DoFlatTask(pProgress);
-				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(m_vStacks[i].m_pFlatTask->m_strOutputFile, CP_ACP));
+				bResult = stack.DoFlatTask(pProgress);
+				ZTRACE_RUNTIME("--> Output File: %s", (LPCSTR)CT2CA(stack.m_pFlatTask->m_strOutputFile, CP_ACP));
 				if (!bResult)
 					ZTRACE_RUNTIME("Abort");
-			};
-		};
-	};
+			}
+		}
+	}
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
