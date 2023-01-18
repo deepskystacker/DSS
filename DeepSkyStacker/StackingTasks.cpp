@@ -105,42 +105,41 @@ bool LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 
 class CTaskBitmapCache
 {
-public :
-	std::uint32_t				m_dwOffsetTaskID;
+public:
+	std::uint32_t m_dwOffsetTaskID;
 	std::shared_ptr<CMemoryBitmap> m_pOffsetBitmap;
-	std::uint32_t				m_dwDarkTaskID;
+	std::uint32_t m_dwDarkTaskID;
 	std::shared_ptr<CMemoryBitmap> m_pDarkBitmap;
-	std::uint32_t				m_dwDarkFlatTaskID;
+	std::uint32_t m_dwDarkFlatTaskID;
 	std::shared_ptr<CMemoryBitmap> m_pDarkFlatBitmap;
-	std::uint32_t				m_dwFlatTaskID;
+	std::uint32_t m_dwFlatTaskID;
 	std::shared_ptr<CMemoryBitmap> m_pFlatBitmap;
 
-public :
+public:
 	CTaskBitmapCache()
 	{
 		m_dwOffsetTaskID = 0;
-		m_dwDarkTaskID   = 0;
-		m_dwDarkFlatTaskID   = 0;
-		m_dwFlatTaskID   = 0;
-	};
+		m_dwDarkTaskID = 0;
+		m_dwDarkFlatTaskID = 0;
+		m_dwFlatTaskID = 0;
+	}
 	~CTaskBitmapCache() {};
 
-	void	ClearCache()
+	void ClearCache()
 	{
 		m_dwOffsetTaskID = 0;
-		m_dwDarkTaskID   = 0;
-		m_dwDarkFlatTaskID   = 0;
-		m_dwFlatTaskID   = 0;
+		m_dwDarkTaskID = 0;
+		m_dwDarkFlatTaskID = 0;
+		m_dwFlatTaskID = 0;
 		m_pOffsetBitmap.reset();
 		m_pDarkBitmap.reset();
 		m_pDarkFlatBitmap.reset();
 		m_pFlatBitmap.reset();
-	};
+	}
 
 	bool GetTaskResult(const CTaskInfo* pTaskInfo, CDSSProgress* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 	{
 		ZFUNCTRACE_RUNTIME();
-		bool bResult = false;
 
 		const auto checkFrame = [&rpBitmap, pTaskInfo, pProgress](std::uint32_t& taskId, std::shared_ptr<CMemoryBitmap>& pSrcBitmap) -> bool
 		{
@@ -166,84 +165,24 @@ public :
 			}
 		};
 
-//#		*ppBitmap = nullptr;
+		bool bResult = false;
 		rpBitmap.reset();
 		if (pTaskInfo != nullptr && pTaskInfo->m_strOutputFile.GetLength() != 0)
 		{
 			switch (pTaskInfo->m_TaskType)
 			{
-			case PICTURETYPE_OFFSETFRAME :
+			case PICTURETYPE_OFFSETFRAME:
 				bResult = checkFrame(this->m_dwOffsetTaskID, this->m_pOffsetBitmap);
 				break;
-/*				if ((m_dwOffsetTaskID == pTaskInfo->m_dwTaskID) && m_pOffsetBitmap)
-					bResult = m_pOffsetBitmap.CopyTo(ppBitmap);
-				else
-				{
-					m_pOffsetBitmap.Release();
-					bResult = LoadFrame(pTaskInfo->m_strOutputFile, pTaskInfo->m_TaskType, pProgress, &m_pOffsetBitmap);
-					if (bResult)
-					{
-						m_dwOffsetTaskID = pTaskInfo->m_dwTaskID;
-						bResult = m_pOffsetBitmap.CopyTo(ppBitmap);
-					}
-					else
-						m_dwDarkTaskID = 0; // ### BUG! m_dwOffsetTaskID ###
-				};
-				break;*/
-			case PICTURETYPE_DARKFRAME :
+			case PICTURETYPE_DARKFRAME:
 				bResult = checkFrame(this->m_dwDarkTaskID, this->m_pDarkBitmap);
 				break;
-/*				if ((m_dwDarkTaskID == pTaskInfo->m_dwTaskID) && m_pDarkBitmap)
-					bResult = m_pDarkBitmap.CopyTo(ppBitmap);
-				else
-				{
-					m_pDarkBitmap.Release();
-					bResult = LoadFrame(pTaskInfo->m_strOutputFile, pTaskInfo->m_TaskType, pProgress, &m_pDarkBitmap);
-					if (bResult)
-					{
-						m_dwDarkTaskID = pTaskInfo->m_dwTaskID;
-						bResult = m_pDarkBitmap.CopyTo(ppBitmap);
-					}
-					else
-						m_dwDarkTaskID = 0;
-				};
-				break;*/
-			case PICTURETYPE_DARKFLATFRAME :
+			case PICTURETYPE_DARKFLATFRAME:
 				bResult = checkFrame(this->m_dwDarkFlatTaskID, this->m_pDarkFlatBitmap);
 				break;
-/*				if ((m_dwDarkFlatTaskID == pTaskInfo->m_dwTaskID) && m_pDarkFlatBitmap)
-					bResult = m_pDarkFlatBitmap.CopyTo(ppBitmap);
-				else
-				{
-					m_pDarkFlatBitmap.Release();
-					bResult = LoadFrame(pTaskInfo->m_strOutputFile, pTaskInfo->m_TaskType, pProgress, &m_pDarkFlatBitmap);
-					if (bResult)
-					{
-						m_dwDarkFlatTaskID = pTaskInfo->m_dwTaskID;
-						bResult = m_pDarkFlatBitmap.CopyTo(ppBitmap);
-					}
-					else
-						m_dwDarkFlatTaskID = 0;
-				};
-				break;*/
-			case PICTURETYPE_FLATFRAME :
+			case PICTURETYPE_FLATFRAME:
 				bResult = checkFrame(this->m_dwFlatTaskID, this->m_pFlatBitmap);
 				break;
-/*				if ((m_dwFlatTaskID == pTaskInfo->m_dwTaskID) && m_pFlatBitmap)
-					bResult = m_pFlatBitmap.CopyTo(ppBitmap);
-				else
-				{
-					m_pFlatBitmap.Release();
-					bResult = LoadFrame(pTaskInfo->m_strOutputFile, pTaskInfo->m_TaskType, pProgress, &m_pFlatBitmap);
-					if (bResult)
-					{
-						m_dwFlatTaskID = pTaskInfo->m_dwTaskID;
-						bResult = m_pFlatBitmap.CopyTo(ppBitmap);
-					}
-					else
-						m_dwFlatTaskID = 0;
-				};
-				break;*/
 			}
 		}
 
