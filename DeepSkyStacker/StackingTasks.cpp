@@ -89,17 +89,16 @@ bool LoadFrame(LPCTSTR szFile, PICTURETYPE PictureType, CDSSProgress * pProgress
 			PushRAWSettings(false, true); // Allways use Raw Bayer for dark, offset, and flat frames
 
 		bResult = ::FetchPicture(szFile, rpBitmap, pProgress);
-//#			bResult = pBitmap.CopyTo(ppBitmap); // *ppBitmap = pBitmap.m_p; pBitmap.m_p->Addref();
 
 		if (bOverrideRAW)
 			PopRAWSettings();
 
 		if (pProgress)
 			pProgress->End2();
-	};
+	}
 
 	return bResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
@@ -238,9 +237,9 @@ static void WriteMasterTIFF(LPCTSTR szMasterFileName, CMemoryBitmap * pMasterBit
 bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (m_pOffsetTask && m_pOffsetTask->m_vBitmaps.size())
+	if (!m_pOffsetTask && m_pOffsetTask->m_vBitmaps.empty())
 	{
 		TCHAR			szDrive[1+_MAX_DRIVE];
 		TCHAR			szDir[1+_MAX_DIR];
@@ -253,29 +252,28 @@ bool	CStackingInfo::CheckForExistingOffset(CString & strMasterFile)
 			&strMasterOffset, &strMasterOffsetInfo);
 
 		// Check that the Master Offset File is existing
-		COffsetSettings		bmpSettings;
-		COffsetSettings		newSettings;
+		COffsetSettings bmpSettings;
+		COffsetSettings newSettings;
 
-		if (newSettings.InitFromCurrent(m_pOffsetTask, strMasterOffset) &&
-			bmpSettings.ReadFromFile(strMasterOffsetInfo))
+		if (newSettings.InitFromCurrent(m_pOffsetTask, strMasterOffset) && bmpSettings.ReadFromFile(strMasterOffsetInfo))
 		{
 			if (newSettings == bmpSettings)
 			{
 				strMasterFile = strMasterOffset;
 				bResult = true;
-			};
-		};
-	};
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
+#include <future>
 
 bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = true;
+	bool bResult = true;
 
 	if (!m_pOffsetTask->m_bDone)
 	{
@@ -300,9 +298,24 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 			if (pProgress)
 				pProgress->Start(strText, (int)m_pOffsetTask->m_vBitmaps.size(), true);
 
+			const auto readTask = [this](const size_t bitmapNdx, CDSSProgress* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			{
+				if (bitmapNdx >= m_pOffsetTask->m_vBitmaps.size())
+					return { {}, false };
+				std::shared_ptr<CMemoryBitmap> pBitmap;
+				const bool success = ::LoadFrame(m_pOffsetTask->m_vBitmaps[bitmapNdx].filePath.c_str(), PICTURETYPE_OFFSETFRAME, pProgress, pBitmap);
+				return { pBitmap, success };
+			};
+
+			auto futureForRead = std::async(std::launch::deferred, readTask, 0, pProgress); // Load first frame synchronously.
+
 			for (size_t i = 0; i < m_pOffsetTask->m_vBitmaps.size() && bResult; i++)
 			{
-				std::shared_ptr<CMemoryBitmap> pBitmap;
+				auto [pBitmap, success] = futureForRead.get();
+				futureForRead = std::async(std::launch::async, readTask, i + 1, nullptr); // Immediately load next frame asynchronously (need to set progress pointer to null).
+
+				if (!success)
+					continue;
 
 				strText = QCoreApplication::translate("StackingTasks", "Adding Offset frame %1 of %2", "IDS_ADDOFFSET").arg(static_cast<int>(i)).arg(m_pOffsetTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
@@ -310,14 +323,11 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pOffsetTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_OFFSETFRAME, pProgress, pBitmap))
-				{
-					// Load the bitmap
-					if (!m_pOffsetTask->m_pMaster)
-						m_pOffsetTask->CreateEmptyMaster(pBitmap.get());
+				// Load the bitmap
+				if (!m_pOffsetTask->m_pMaster)
+					m_pOffsetTask->CreateEmptyMaster(pBitmap.get());
 
-					m_pOffsetTask->AddToMaster(pBitmap.get(), pProgress);
-				};
+				m_pOffsetTask->AddToMaster(pBitmap.get(), pProgress);
 
 				if (pProgress)
 					bResult = !pProgress->IsCanceled();
@@ -1569,24 +1579,23 @@ void CAllStackingTasks::ResetTasksStatus()
 
 int CAllStackingTasks::FindStackID(LPCTSTR szLightFrame)
 {
-	int			lResult = 0;
-	int			i, j;
+	int lResult = 0;
 
 	// Find in which stack this light frame is located
-	for (i = 0;(i<m_vStacks.size()) && !lResult;i++)
+	for (size_t i = 0; i < m_vStacks.size() && lResult == 0; i++)
 	{
 		if (m_vStacks[i].m_pLightTask)
 		{
-			for (j = 0;j<m_vStacks[i].m_pLightTask->m_vBitmaps.size() && !lResult;j++)
+			for (size_t j = 0; j < m_vStacks[i].m_pLightTask->m_vBitmaps.size() && lResult == 0; j++)
 			{
 				if (!m_vStacks[i].m_pLightTask->m_vBitmaps[j].filePath.compare(szLightFrame))
-					lResult = m_vStacks[i].m_pLightTask->m_dwTaskID;
-			};
-		};
-	};
+					lResult = static_cast<int>(m_vStacks[i].m_pLightTask->m_dwTaskID);
+			}
+		}
+	}
 
 	return lResult;
-};
+}
 
 /* ------------------------------------------------------------------- */
 
