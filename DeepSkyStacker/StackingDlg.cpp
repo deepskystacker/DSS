@@ -2919,20 +2919,28 @@ namespace DSS
 
 	void StackingDlg::updateGroupTabs()
 	{
-		auto count { frameList.groupCount() };
+		//
+		// Remove all tabs
+		//
+		auto tabCount{ pictureList->tabBar->count() };
+		for (int i = 0; i < tabCount; i++)
+		{
+			pictureList->tabBar->removeTab(0);
+		}
 
 		//
-		// Remove tabs (last to first)
+		// If the last group isn't empty auto-add a new empty group
 		//
-		for (int i = pictureList->tabBar->count() - 1; i >= 0; i--)
+		if (frameList.groupSize(frameList.lastGroupId()) != 0)
 		{
-			pictureList->tabBar->removeTab(i);
+			static_cast<void>(frameList.addGroup());
 		}
 
 		//
 		// Add all tabs needed
 		//
-		for (int i = 0; i < frameList.groupCount(); i++)
+		auto groupCount = frameList.groupCount();
+		for (int i = 0; i < groupCount; i++)
 		{
 			pictureList->tabBar->addTab(frameList.groupName(i));
 		}
