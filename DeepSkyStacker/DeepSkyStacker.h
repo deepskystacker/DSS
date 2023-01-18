@@ -48,8 +48,6 @@ class QStackedWidget;
 #include "StackingDlg.h"
 class QWinHost;
 
-#define dssApp DeepSkyStacker::instance()
-
 namespace DSS
 {
 	class PictureList;

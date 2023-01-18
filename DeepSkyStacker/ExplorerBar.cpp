@@ -34,6 +34,8 @@ extern bool		g_bShowRefStars;
 #include "ExplorerBar.h"
 #include "ui/ui_ExplorerBar.h"
 
+#define dssApp DeepSkyStacker::instance()
+
 static void makeLink(QLabel *label, QString color, QString text)
 {
 	label->setText(QString("<a href='.' style='text-decoration: none; color: %1'>%2</a>").arg(color, text));

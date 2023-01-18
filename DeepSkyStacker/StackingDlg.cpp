@@ -99,6 +99,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#define dssApp DeepSkyStacker::instance()
+
 namespace
 {
 	static QSizeF viewItemTextLayout(QTextLayout& textLayout, int lineWidth, int maxHeight = -1, int* lastVisibleLine = nullptr)

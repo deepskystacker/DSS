@@ -17,6 +17,8 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 
+#define dssApp DeepSkyStacker::instance()
+
 constexpr unsigned int WM_INITNEWPICTURE = WM_USER + 1;
 
 /* ------------------------------------------------------------------- */

@@ -1,13 +1,16 @@
 #include <stdafx.h>
 
 #include <QDebug>
+#if defined (_CONSOLE)
+#include <iostream>
+#else
 #include <QMessageBox>
+#endif
 #include "FrameList.h"
 #include "ImageListModel.h"
 #include "RegisterEngine.h"
 #include "Workspace.h"
 #include <direct.h>
-#include "DeepSkyStacker.h"
 #include <QSettings>
 #include "ZExcept.h"
 
@@ -518,9 +521,9 @@ namespace DSS
 										.arg(groupName(groupId)));
 
 #if defined(_CONSOLE)
-									std::wcerr << errorMessage;
+									std::cerr << errorMessage.toStdString();
 #else
-									int ret = QMessageBox::warning(&(dssApp->getStackingDlg()), "DeepSkyStacker",
+									int ret = QMessageBox::warning(nullptr, "DeepSkyStacker",
 										errorMessage,
 										QMessageBox::Ok);
 #endif
