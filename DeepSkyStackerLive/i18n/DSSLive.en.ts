@@ -116,7 +116,7 @@
         <location filename="../../DeepSkyStacker/ImageListModel.cpp" line="476"/>
         <source>Light</source>
         <comment>IDS_TYPE_LIGHT</comment>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>

@@ -65,7 +65,8 @@ namespace DSS
 		explicit Group() :
 			pictures { std::make_unique<ImageListModel>() },
 			Index { nextIndex++ },		// First group is Main Group with Index of 0
-			Dirty{ false }		{
+			Dirty{ false }		
+		{
 			if (0 == Index)
 			{
 				Name = QCoreApplication::translate("DSS::StackingDlg", "Main Group", "IDS_MAINGROUP");
@@ -146,8 +147,12 @@ namespace DSS
 			return static_cast<int32_t>(pathToGroup.size());
 		}
 
-		static void clearMap()
+		//
+		// Reset to initial conditions - one group that is empty
+		//
+		static void reset()
 		{
+			nextIndex = 1;
 			pathToGroup.clear();
 		}
 

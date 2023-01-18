@@ -62,6 +62,7 @@ namespace DSS
 		bool				m_bEnableCancel;
 		
 		static const QString sm_EmptyString;
+		static const float sm_fMinProgressStep;
 
 	private:
 		bool CreateProgressDialog();

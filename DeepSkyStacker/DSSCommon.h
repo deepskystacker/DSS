@@ -134,7 +134,6 @@ enum class Column
 #pragma warning( disable : 4018 )
 
 #include "DSSVersion.h"
-#define VERSION_DCRAW						"0.20"
 #define VERSION_LIBTIFF						"4.0.9"
 #define VERSION_CFITSIO						"3.43"
 

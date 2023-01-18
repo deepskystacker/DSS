@@ -128,6 +128,8 @@ QMainWindow* GetMainApplicationWindow()
 
 /////////////////////////////////////////////////////////////////
 const QString DSSProgressDlg::sm_EmptyString;
+const float DSSProgressDlg::sm_fMinProgressStep = 5.0f;	// Percentage minimum step size.
+
 DSSProgressDlg::DSSProgressDlg() :
 	m_pParent(GetMainApplicationWindow()),
 	m_bEnableCancel{ false },
@@ -194,7 +196,10 @@ void DSSProgressDlg::Progress1(const QString& szText, int lAchieved1)
 	unsigned long long dwCurrentTime = GetTickCount64();
 	m_pDlg->setStart1Text(szText);
 
-	if (m_bFirstProgress || (static_cast<double>(lAchieved1 - m_lLastTotal1) > (m_lTotal1 / 100.0)) || ((dwCurrentTime - m_dwLastTime) > 1000))
+	if (m_bFirstProgress || 
+		(static_cast<double>(lAchieved1 - m_lLastTotal1) > (m_lTotal1 / 100.0)* sm_fMinProgressStep) ||	// Update only if diff is sm_fMinProgressStep %age change
+		((dwCurrentTime - m_dwLastTime) > 1000)	// Ensures time is updated every second.
+		)
 	{
 		m_bFirstProgress = false;
 		m_lLastTotal1 = lAchieved1;
@@ -270,7 +275,7 @@ void DSSProgressDlg::Start2(const QString& szText, int lTotal2)
 
 void DSSProgressDlg::Progress2(const QString& szText, int lAchieved2)
 {
-	if (static_cast<double>(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0))
+	if (static_cast<double>(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0) * sm_fMinProgressStep) // Update only if diff is sm_fMinProgressStep %age change
 	{
 		m_lLastTotal2 = lAchieved2;
 		m_pDlg->setStart2Text(szText);
