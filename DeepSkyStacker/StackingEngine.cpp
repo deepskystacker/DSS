@@ -1083,7 +1083,7 @@ bool CStackingEngine::computeSmallestRectangle(DSSRect & rc)
 };
 
 /* ------------------------------------------------------------------- */
-int CStackingEngine::FindBitmapIndice(LPCTSTR szFile)
+int CStackingEngine::FindBitmapIndex(LPCTSTR szFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -2056,7 +2056,7 @@ bool CStackingEngine::StackLightFrame(std::shared_ptr<CMemoryBitmap> pInBitmap, 
 	return bResult;
 }
 
-/* ------------------------------------------------------------------- */
+#include <future>
 
 bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
@@ -2193,89 +2193,100 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 					if ((m_pLightTask->m_Method == MBP_AVERAGE) && !m_bCreateCometImage && !static_cast<bool>(m_pComet))
 						m_pLightTask->m_Method = MBP_FASTAVERAGE;
 
-					for (size_t i = 0; i < pStackingInfo->m_pLightTask->m_vBitmaps.size() && !bStop; i++)
+					const auto readTask = [this, pStackingInfo, firstBitmap = m_vBitmaps.cbegin()](const size_t lightTaskNdx, CDSSProgress* pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
 					{
-						// Stack this bitmap
-						const int lIndice = FindBitmapIndice(pStackingInfo->m_pLightTask->m_vBitmaps[i].filePath.c_str());
-						if (lIndice >= 0)
+						if (lightTaskNdx >= pStackingInfo->m_pLightTask->m_vBitmaps.size())
+							return { {}, -1 };
+						const int bitmapNdx = FindBitmapIndex(pStackingInfo->m_pLightTask->m_vBitmaps[lightTaskNdx].filePath.c_str());
+						if (bitmapNdx < 0)
+							return { {}, -1 };
+						const auto& lightframeInfo = m_vBitmaps[bitmapNdx];
+						if (lightframeInfo.m_bDisabled)
+							return { {}, -1 };
+						const bool hasComet = lightframeInfo.m_bComet;
+						bool doStack = true;
+						CPixelTransform PixTransform{ lightframeInfo.m_BilinearParameters };
+						if (m_bCometStacking || m_bCreateCometImage)
 						{
-							const CLightFrameInfo& lfInfo = m_vBitmaps[lIndice];
+							if (firstBitmap->m_bComet && lightframeInfo.m_bComet)
+								PixTransform.ComputeCometShift(firstBitmap->m_fXComet, firstBitmap->m_fYComet,
+									lightframeInfo.m_fXComet, lightframeInfo.m_fYComet, false, lightframeInfo.m_bTransformedCometPosition);
+							else
+								doStack &= (!m_bCreateCometImage);
+						}
+						else if (static_cast<bool>(m_pComet))
+						{
+							if (firstBitmap->m_bComet && lightframeInfo.m_bComet)
+								PixTransform.ComputeCometShift(firstBitmap->m_fXComet, firstBitmap->m_fYComet,
+									lightframeInfo.m_fXComet, lightframeInfo.m_fYComet, true, lightframeInfo.m_bTransformedCometPosition);
+						}
+						PixTransform.SetShift(-m_rcResult.left, -m_rcResult.top);
+						PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
 
-							if (!lfInfo.m_bDisabled)
-							{
-								bool bComet = lfInfo.m_bComet;
-								bool bStack = true;
+						if (!doStack)
+							return { {}, -1 };
 
-								CPixelTransform PixTransform{ lfInfo.m_BilinearParameters };
-								const auto first = m_vBitmaps.cbegin();
+						ZTRACE_RUNTIME("Stack %s", lightframeInfo.filePath.generic_string().c_str());
 
-								if (m_bCometStacking || m_bCreateCometImage)
-								{
-									if (first->m_bComet && lfInfo.m_bComet)
-										PixTransform.ComputeCometShift(first->m_fXComet, first->m_fYComet, lfInfo.m_fXComet, lfInfo.m_fYComet, false, lfInfo.m_bTransformedCometPosition);
-									else if (m_bCreateCometImage)
-										bStack = false;
-								}
-								else if (static_cast<bool>(m_pComet))
-								{
-									if (first->m_bComet && lfInfo.m_bComet)
-										PixTransform.ComputeCometShift(first->m_fXComet, first->m_fYComet, lfInfo.m_fXComet, lfInfo.m_fYComet, true, lfInfo.m_bTransformedCometPosition);
-								}
+						std::shared_ptr<CMemoryBitmap> rpBitmap;
+						::LoadFrame(lightframeInfo.filePath.c_str(), PICTURETYPE_LIGHTFRAME, pProgress, rpBitmap);
+						return { rpBitmap, bitmapNdx };
+					};
 
-								PixTransform.SetShift(-m_rcResult.left, -m_rcResult.top);
-								PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
+					auto futureForRead = std::async(std::launch::deferred, readTask, 0, m_pProgress); // Load first lightframe synchronously.
 
-								if (bStack)
-								{
-									ZTRACE_RUNTIME("Stack %s", lfInfo.filePath.generic_string().c_str());
+					for (size_t i = 0; i < pStackingInfo->m_pLightTask->m_vBitmaps.size() && !bStop; ++i)
+					{
+						auto [pBitmap, bitmapNdx] = futureForRead.get();
+						futureForRead = std::async(std::launch::async, readTask, i + 1, nullptr); // Immediately load next lightframe asynchronously (need to set progress pointer to null).
 
-									if (m_pProgress != nullptr)
-									{
-										strText = QCoreApplication::translate("StackingEngine", "Stacking %1 of %2 - Offset [%3,%4] - Angle : %5\xc2\xb0 ", "IDS_STACKING_PICTURE").arg(m_lNrStacked + 1).arg(m_lNrCurrentStackable).arg(lfInfo.m_fXOffset, 0, 'f', 1).arg(lfInfo.m_fYOffset, 0, 'f', 1).arg(lfInfo.m_fAngle * 180 / M_PI, 0, 'f', 1);
-										m_pProgress->Progress1(strText, m_lNrStacked + 1);
-									}
+						if (bitmapNdx < 0)
+							continue;
 
-									std::shared_ptr<CMemoryBitmap> pBitmap;
+						const CLightFrameInfo& lfInfo = m_vBitmaps[bitmapNdx];
+						CPixelTransform PixTransform{ lfInfo.m_BilinearParameters };
 
-									if (::LoadFrame(lfInfo.filePath.c_str(), PICTURETYPE_LIGHTFRAME, m_pProgress, pBitmap))
-									{
-										const CString strDescription = lfInfo.m_strInfos;
-										if (lfInfo.m_lNrChannels == 3)
-											strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
-										else
-											strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
+						if (m_pProgress != nullptr)
+						{
+							m_pProgress->Progress1(QCoreApplication::translate(
+								"StackingEngine", "Stacking %1 of %2 - Offset [%3,%4] - Angle : %5\xc2\xb0 ", "IDS_STACKING_PICTURE")
+								.arg(m_lNrStacked + 1).arg(m_lNrCurrentStackable).arg(lfInfo.m_fXOffset, 0, 'f', 1).arg(lfInfo.m_fYOffset, 0, 'f', 1)
+								.arg(lfInfo.m_fAngle * 180 / M_PI, 0, 'f', 1), m_lNrStacked + 1);
+						}
 
-										ZTRACE_RUNTIME(strText);
-										// First apply transformations
-										MasterFrames.ApplyAllMasters(pBitmap, std::addressof(lfInfo.m_vStars), m_pProgress);
+						const auto strDescription = lfInfo.m_strInfos;
+						if (lfInfo.m_lNrChannels == 3)
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bit/ch %2 light frame\n%3", "IDS_STACKRGBLIGHT").arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
+						else
+							strText = QCoreApplication::translate("StackingEngine", "Stacking %1 bits gray %2 light frame\n%3", "IDS_STACKGRAYLIGHT").arg(lfInfo.m_lBitPerChannels).arg(static_cast<LPCTSTR>(strDescription)).arg(static_cast<LPCTSTR>(lfInfo.filePath.c_str()));
 
-										// Here save the calibrated light frame if needed
-										m_strCurrentLightFrame = lfInfo.filePath.c_str();
+						ZTRACE_RUNTIME(strText);
+						// First apply transformations
+						MasterFrames.ApplyAllMasters(pBitmap, std::addressof(lfInfo.m_vStars), m_pProgress);
 
-										std::shared_ptr<CMemoryBitmap> pDelta = ApplyCosmetic(pBitmap, m_PostCalibrationSettings, m_pProgress);
-										if (m_bSaveCalibrated)
-											SaveCalibratedLightFrame(pBitmap);
-										if (static_cast<bool>(pDelta))
-											SaveDeltaImage(pDelta.get());
+						// Here save the calibrated light frame if needed
+						m_strCurrentLightFrame = lfInfo.filePath.c_str();
 
-										if (m_pProgress != nullptr)
-											m_pProgress->Start2(strText, 0);
+						std::shared_ptr<CMemoryBitmap> pDelta = ApplyCosmetic(pBitmap, m_PostCalibrationSettings, m_pProgress);
+						if (m_bSaveCalibrated)
+							SaveCalibratedLightFrame(pBitmap);
+						if (static_cast<bool>(pDelta))
+							SaveDeltaImage(pDelta.get());
 
-										// Stack
-										bStop = !StackLightFrame(pBitmap, PixTransform, lfInfo.m_fExposure, bComet);
-										m_lNrStacked++;
+						if (m_pProgress != nullptr)
+							m_pProgress->Start2(strText, 0);
 
-										if (m_bCreateCometImage)
-											m_vCometShifts.emplace_back((int)m_vCometShifts.size(), PixTransform.m_fXCometShift, PixTransform.m_fYCometShift);
+						// Stack
+						bStop = !StackLightFrame(pBitmap, PixTransform, lfInfo.m_fExposure, lfInfo.m_bComet);
+						m_lNrStacked++;
 
-										if (m_pProgress != nullptr)
-										{
-											m_pProgress->End2();
-											bStop = bStop || m_pProgress->IsCanceled();
-										}
-									}
-								}
-							}
+						if (m_bCreateCometImage)
+							m_vCometShifts.emplace_back((int)m_vCometShifts.size(), PixTransform.m_fXCometShift, PixTransform.m_fYCometShift);
+
+						if (m_pProgress != nullptr)
+						{
+							m_pProgress->End2();
+							bStop = bStop || m_pProgress->IsCanceled();
 						}
 					}
 					pStackingInfo->m_pLightTask->m_bDone = true;

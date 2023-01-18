@@ -225,7 +225,7 @@ private:
 	void	GetResultExtraInfo();
 	DSSRect	computeLargestRectangle();
 	bool	computeSmallestRectangle(DSSRect & rc);
-	int	FindBitmapIndice(LPCTSTR szFile);
+	int	FindBitmapIndex(LPCTSTR szFile);
 	void	ComputeBitmap();
 	std::shared_ptr<CMultiBitmap> CreateMasterLightMultiBitmap(const CMemoryBitmap* pInBitmap, const bool bColor);
 	bool StackAll(CAllStackingTasks & tasks, std::shared_ptr<CMemoryBitmap>& rpBitmap);
