@@ -396,55 +396,50 @@ bool CStackingInfo::DoOffsetTask(CDSSProgress* const pProgress)
 	return bResult;
 }
 
-/* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::CheckForExistingDark(CString & strMasterFile)
+bool CStackingInfo::CheckForExistingDark(CString& strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool				bResult = false;
+	bool bResult = false;
 
-	if (m_pDarkTask && m_pDarkTask->m_vBitmaps.size())
+	if (m_pDarkTask != nullptr && !m_pDarkTask->m_vBitmaps.empty())
 	{
-		if (!m_pOffsetTask || (m_pOffsetTask && m_pOffsetTask->m_bUnmodified))
+		if (m_pOffsetTask == nullptr || (m_pOffsetTask != nullptr && m_pOffsetTask->m_bUnmodified))
 		{
 			TCHAR			szDrive[1+_MAX_DRIVE];
 			TCHAR			szDir[1+_MAX_DIR];
 			CString			strMasterDark;
 			CString			strMasterDarkInfo;
-			int			lExposure = m_pDarkTask->m_fExposure;
 
 			_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
-			BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
-				&strMasterDark, &strMasterDarkInfo);
+			BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir, &strMasterDark, &strMasterDarkInfo);
 
 			// Check that the Master Offset File is existing
-			CDarkSettings		bmpSettings;
-			CDarkSettings		newSettings;
+			CDarkSettings bmpSettings;
+			CDarkSettings newSettings;
 
-			if (newSettings.InitFromCurrent(m_pDarkTask, strMasterDark) &&
-				bmpSettings.ReadFromFile(strMasterDarkInfo))
+			if (newSettings.InitFromCurrent(m_pDarkTask, strMasterDark) && bmpSettings.ReadFromFile(strMasterDarkInfo))
 			{
 				newSettings.SetMasterOffset(m_pOffsetTask);
 				if (newSettings == bmpSettings)
 				{
 					strMasterFile = strMasterDark;
 					bResult = true;
-				};
-			};
-		};
-	};
+				}
+			}
+		}
+	}
 
 	return bResult;
-};
+}
 
-/* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
+bool CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
-	bool				bResult = true;
+	bool bResult = true;
 
 	if (!m_pDarkTask->m_bDone)
 	{
@@ -457,15 +452,13 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 		}
 		else if (CheckForExistingDark(m_pDarkTask->m_strOutputFile))
 		{
-			m_pDarkTask->m_bDone	   = true;
+			m_pDarkTask->m_bDone = true;
 			m_pDarkTask->m_bUnmodified = true;
 		}
 		else
 		{
 			// Else create the master dark
 			QString strText;
-			std::shared_ptr<CMemoryBitmap> pMasterOffset;
-
 			strText = QCoreApplication::translate("StackingTasks", "Create Master Dark Frame", "IDS_CREATEMASTERDARK");
 			ZTRACE_RUNTIME(strText);
 
@@ -473,13 +466,29 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 				pProgress->Start(strText, (int)m_pDarkTask->m_vBitmaps.size(), true);
 
 			// First load the master offset if available
+			std::shared_ptr<CMemoryBitmap> pMasterOffset;
 			if (m_pOffsetTask)
 				g_BitmapCache.GetTaskResult(m_pOffsetTask, pProgress, pMasterOffset);
+
+			const auto readTask = [this](const size_t bitmapNdx, CDSSProgress* const pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, bool>
+			{
+				if (bitmapNdx >= m_pDarkTask->m_vBitmaps.size())
+					return { {}, false };
+				std::shared_ptr<CMemoryBitmap> pBitmap;
+				const bool success = ::LoadFrame(m_pDarkTask->m_vBitmaps[bitmapNdx].filePath.c_str(), PICTURETYPE_DARKFRAME, pProgress, pBitmap);
+				return { pBitmap, success };
+			};
+
+			auto futureForRead = std::async(std::launch::deferred, readTask, 0, pProgress); // Load first frame synchronously.
 
 			// First Add Dark frame
 			for (size_t i = 0; i < m_pDarkTask->m_vBitmaps.size() && bResult; i++)
 			{
-				std::shared_ptr<CMemoryBitmap> pBitmap;
+				auto [pBitmap, success] = futureForRead.get();
+				futureForRead = std::async(std::launch::async, readTask, i + 1, nullptr); // Immediately load next frame asynchronously (need to set progress pointer to null).
+
+				if (!success)
+					continue;
 
 				strText = QCoreApplication::translate("StackingTasks", "Adding Dark frame %1 of %2", "IDS_ADDDARK").arg(static_cast<int>(i)).arg(m_pDarkTask->m_vBitmaps.size());
 				ZTRACE_RUNTIME(strText);
@@ -487,35 +496,32 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 				if (pProgress)
 					pProgress->Progress1(strText, static_cast<int>(i));
 
-				if (::LoadFrame(m_pDarkTask->m_vBitmaps[i].filePath.c_str(), PICTURETYPE_DARKFRAME, pProgress, pBitmap))
+				if (!m_pDarkTask->m_pMaster)
+					m_pDarkTask->CreateEmptyMaster(pBitmap.get());
+
+				// Subtract the offset frame from the dark frame
+				if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
 				{
-					if (!m_pDarkTask->m_pMaster)
-						m_pDarkTask->CreateEmptyMaster(pBitmap.get());
-
-					// Subtract the offset frame from the dark frame
-					if (static_cast<bool>(pMasterOffset) && !pBitmap->IsMaster())
+					QString strStart2;
+					if (pProgress != nullptr)
 					{
-						QString strStart2;
-						if (pProgress != nullptr)
-						{
-							QString strText;
-							strStart2 = pProgress->GetStart2Text();
-							strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
-							ZTRACE_RUNTIME(strText);
-							pProgress->Start2(strText, 0);
-						}
-						Subtract(pBitmap, pMasterOffset, pProgress);
-						if (pProgress)
-							pProgress->Start2(strStart2, 0);
-					};
+						QString strText;
+						strStart2 = pProgress->GetStart2Text();
+						strText = QCoreApplication::translate("StackingTasks", "Subtracting Offset Frame", "IDS_SUBSTRACTINGOFFSET");
+						ZTRACE_RUNTIME(strText);
+						pProgress->Start2(strText, 0);
+					}
+					Subtract(pBitmap, pMasterOffset, pProgress);
+					if (pProgress)
+						pProgress->Start2(strStart2, 0);
+				}
 
-					// Add the dark frame
-					m_pDarkTask->AddToMaster(pBitmap.get(), pProgress);
-				};
+				// Add the dark frame
+				m_pDarkTask->AddToMaster(pBitmap.get(), pProgress);
 
 				if (pProgress)
 					bResult = !pProgress->IsCanceled();
-			};
+			}
 
 			if (bResult)
 			{
@@ -549,8 +555,7 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 
 					_tsplitpath(m_pDarkTask->m_vBitmaps[0].filePath.c_str(), szDrive, szDir, nullptr, nullptr);
 
-					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir,
-						&strMasterDark, &strMasterDarkInfo);
+					BuildMasterFileNames(m_pDarkTask, _T("MasterDark"), /* bExposure */ true, szDrive, szDir, &strMasterDark, &strMasterDarkInfo);
 
 					strText = QCoreApplication::translate("StackingTasks", "Saving Master Dark", "IDS_SAVINGMASTERDARK");
 					ZTRACE_RUNTIME(strText);
@@ -581,9 +586,8 @@ bool	CStackingInfo::DoDarkTask(CDSSProgress* const pProgress)
 	return bResult;
 }
 
-/* ------------------------------------------------------------------- */
 
-bool	CStackingInfo::CheckForExistingDarkFlat(CString & strMasterFile)
+bool CStackingInfo::CheckForExistingDarkFlat(CString& strMasterFile)
 {
 	ZFUNCTRACE_RUNTIME();
 
