@@ -880,7 +880,7 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 	const int nrSubrectsY = (calcHeight - 1) / stepSize + 1;
 	const int calcWidth = Bitmap.Width() - 2 * StarMaxSize;
 	const int nrSubrectsX = (calcWidth - 1) / stepSize + 1;
-	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads
+	const int nrEnabledThreads = CMultitask::GetNrProcessors(); // Returns 1 if multithreading disabled by user, otherwise # HW threads.
 
 	STARSET stars1, stars2, stars3, stars4;
 	std::atomic<int> nrSubrects{ 0 };
@@ -913,8 +913,10 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 		}
 	};
 
-#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4) if(nrEnabledThreads - 1)
+#pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
+#pragma omp master // There is no implied barrier.
+		ZTRACE_RUNTIME("Registering with %d OpenMP threads.", omp_get_num_threads());
 #pragma omp sections
 	{
 		// Upper left area
@@ -1309,7 +1311,7 @@ void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bF
 
 /* ------------------------------------------------------------------- */
 
-bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile)
+bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile)
 {
 	bool bResult = false;
 
@@ -1379,119 +1381,113 @@ bool CRegisterEngine::SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared
 	return bResult;
 }
 
-/* ------------------------------------------------------------------- */
+#include <future>
 
 bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, CDSSProgress* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
-	bool					bResult = true;
-	QString					strText;
-	int					lTotalRegistered = 0;
+	bool bResult = true;
+	int nrRegisteredPictures = 0;
 
-	for (size_t i = 0; i < tasks.m_vStacks.size(); i++)
-	{
-		CStackingInfo *		pStackingInfo = nullptr;
+	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks); ++it)
+		nrRegisteredPictures += it->m_pLightTask == nullptr ? 0 : static_cast<int>(it->m_pLightTask->m_vBitmaps.size());
 
-		if (tasks.m_vStacks[i].m_pLightTask)
-			pStackingInfo = &(tasks.m_vStacks[i]);
-		if (pStackingInfo)
-			lTotalRegistered += (int)pStackingInfo->m_pLightTask->m_vBitmaps.size();
-	};
-
-	strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
-	if (pProgress)
-		pProgress->Start(strText, lTotalRegistered, true);
+	const QString strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
+	if (pProgress != nullptr)
+		pProgress->Start(strText, nrRegisteredPictures, true);
 
 	bResult = tasks.DoAllPreTasks(pProgress);
 
 	// Do it again in case pretasks change the progress
-	if (pProgress)
-		pProgress->Start(strText, lTotalRegistered, true);
+	if (pProgress != nullptr)
+		pProgress->Start(strText, nrRegisteredPictures, true);
 
-	for (size_t i = 0; i < tasks.m_vStacks.size() && bResult; i++)
+	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
 	{
-		CStackingInfo *		pStackingInfo = nullptr;
+		if (it->m_pLightTask == nullptr)
+			continue;
 
-		if (tasks.m_vStacks[i].m_pLightTask)
-			pStackingInfo = &(tasks.m_vStacks[i]);
+		CMasterFrames MasterFrames;
+		MasterFrames.LoadMasters(std::addressof(*it), pProgress);
 
-		if (pStackingInfo)
+		const auto readTask = [&bitmaps = it->m_pLightTask->m_vBitmaps, bForce](const size_t bitmapNdx, CDSSProgress* pTaskProgress)
+			-> std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>
 		{
-			CMasterFrames				MasterFrames;
+			if (bitmapNdx >= bitmaps.size())
+				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo >{});
 
-			MasterFrames.LoadMasters(pStackingInfo, pProgress);
+			const auto& bitmap{ bitmaps[bitmapNdx] };
+			auto lfInfo = std::make_unique<CLightFrameInfo>();
+			lfInfo->SetBitmap(bitmap.filePath, false, false);
+			if (!bForce && lfInfo->IsRegistered())
+				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo >{});
 
-			for (size_t j = 0; j < pStackingInfo->m_pLightTask->m_vBitmaps.size() && bResult; j++)
+			auto bmpInfo = std::make_unique<CBitmapInfo>();
+			if (!GetPictureInfo(lfInfo->filePath.c_str(), *bmpInfo) || !bmpInfo->CanLoad())
+				return std::make_tuple(std::shared_ptr<CMemoryBitmap>{}, false, std::unique_ptr<CLightFrameInfo>{}, std::unique_ptr<CBitmapInfo >{});
+
+			std::shared_ptr<CMemoryBitmap> pBitmap;
+			bool success = ::FetchPicture(lfInfo->filePath.c_str(), pBitmap, pTaskProgress);
+			return std::make_tuple(std::move(pBitmap), success, std::move(lfInfo), std::move(bmpInfo));
+		};
+
+		auto future = std::async(std::launch::deferred, readTask, 0, pProgress);
+
+		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++)
+		{
+			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
+
+			auto [pBitmap, success, lfInfo, bmpInfo] = future.get();
+			future = std::async(std::launch::async, readTask, j + 1, nullptr);
+
+			if (pProgress != nullptr)
 			{
-				// Register this bitmap
-				CLightFrameInfo lfi;
+				const QString strText = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(static_cast<int>(j + 1)).arg(nrRegisteredPictures);
+				pProgress->Progress1(strText, static_cast<int>(j));
+			}
 
-				ZTRACE_RUNTIME("Register %s", pStackingInfo->m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
+			if (!success)
+				continue;
 
-				lfi.SetProgress(pProgress);
-				lfi.SetBitmap(pStackingInfo->m_pLightTask->m_vBitmaps[j].filePath.c_str(), false, false);
+			CString strDescription;
+			bmpInfo->GetDescription(strDescription);
+			QString strText2;
+			if (bmpInfo->m_lNrChannels == 3)
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
+			else
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
+			if (pProgress != nullptr)
+				pProgress->Start2(strText2, 0);
 
-				if (pProgress)
-				{
-					strText = QCoreApplication::translate("RegisterEngine", "Registering %1 of %2", "IDS_REGISTERINGPICTURE").arg(static_cast<int>(j + 1)).arg(lTotalRegistered);
-					pProgress->Progress1(strText, static_cast<int>(j));
-				};
+			// Apply offset, dark and flat to lightframe
+			MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
 
-				if (bForce || !lfi.IsRegistered())
-				{
-					CBitmapInfo		bmpInfo;
-					// Load the bitmap
-					if (GetPictureInfo(lfi.filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
-					{
-						
-						QString						strText2;
-						CString						strDescription;
+			CString strCalibratedFile;
 
-						bmpInfo.GetDescription(strDescription);
+			if (m_bSaveCalibrated && (it->m_pDarkTask != nullptr || it->m_pDarkFlatTask != nullptr || it->m_pFlatTask != nullptr || it->m_pOffsetTask != nullptr))
+				SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
 
-						if (bmpInfo.m_lNrChannels==3)
-							strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
-						else
-							strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo.m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfi.filePath.c_str());
-						if (pProgress)
-							pProgress->Start2(strText2, 0);
+			// Then register the light frame
+			lfInfo->SetProgress(pProgress);
+			lfInfo->RegisterPicture(pBitmap.get());
+			lfInfo->SaveRegisteringInfo();
 
-						std::shared_ptr<CMemoryBitmap> pBitmap;
-						if (::FetchPicture(lfi.filePath.c_str(), pBitmap, pProgress))
-						{
-							// Apply offset, dark and flat to lightframe
-							MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
+			if (strCalibratedFile.GetLength())
+			{
+				CString strInfoFileName;
+				TCHAR szDrive[1 + _MAX_DRIVE];
+				TCHAR szDir[1 + _MAX_DIR];
+				TCHAR szFile[1 + _MAX_FNAME];
 
-							CString strCalibratedFile;
+				_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
+				strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
+				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
+			}
 
-							if (m_bSaveCalibrated && (pStackingInfo->m_pDarkTask || pStackingInfo->m_pDarkFlatTask || pStackingInfo->m_pFlatTask || pStackingInfo->m_pOffsetTask))
-								SaveCalibratedLightFrame(lfi, pBitmap, pProgress, strCalibratedFile);
-
-							// Then register the light frame
-							lfi.SetProgress(pProgress);
-							lfi.RegisterPicture(pBitmap.get());
-							lfi.SaveRegisteringInfo();
-
-							if (strCalibratedFile.GetLength())
-							{
-								CString				strInfoFileName;
-								TCHAR				szDrive[1+_MAX_DRIVE];
-								TCHAR				szDir[1+_MAX_DIR];
-								TCHAR				szFile[1+_MAX_FNAME];
-
-								_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
-								strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
-								lfi.CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
-							};
-						};
-
-						if (pProgress)
-						{
-							pProgress->End2();
-							bResult = !pProgress->IsCanceled();
-						}
-					}
-				}
+			if (pProgress != nullptr)
+			{
+				pProgress->End2();
+				bResult = !pProgress->IsCanceled();
 			}
 		}
 	}
@@ -1501,5 +1497,3 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 	return bResult;
 }
-
-/* ------------------------------------------------------------------- */

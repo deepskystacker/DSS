@@ -234,8 +234,7 @@ public :
 	};
 };
 
-typedef std::vector<CFrameInfo>				FRAMEINFOVECTOR;
-typedef std::vector<CFrameInfo *>			PFRAMEINFOVECTOR;
+using FRAMEINFOVECTOR = std::vector<CFrameInfo>;
 
 
 class ListBitMap : public CFrameInfo

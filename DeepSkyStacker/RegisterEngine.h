@@ -180,7 +180,7 @@ public :
 		}
 	}
 
-	bool	IsRegistered()
+	bool IsRegistered() const
 	{
 		return m_bInfoOk;
 	}
@@ -197,45 +197,25 @@ public :
 class CLightFrameInfo : public CFrameInfo,
 						public CRegisteredFrame
 {
-public :
-	CString			m_strInfoFileName;
-	bool			m_bStartingFrame;
-	bool			m_bTransformedCometPosition;
+public:
+	CString m_strInfoFileName;
+	bool m_bStartingFrame;
+	bool m_bTransformedCometPosition;
 
-	CBilinearParameters	m_BilinearParameters;
-	VOTINGPAIRVECTOR	m_vVotedPairs;
+	CBilinearParameters m_BilinearParameters;
+	VOTINGPAIRVECTOR m_vVotedPairs;
 
-	double			m_fXOffset,
-					m_fYOffset;
-	double			m_fAngle;
+	double m_fXOffset;
+	double m_fYOffset;
+	double m_fAngle;
 
-	bool			m_bDisabled;
-	CDSSProgress *	m_pProgress;
+	bool m_bDisabled;
+	CDSSProgress* m_pProgress;
 
-	bool			m_bRemoveHotPixels;
+	bool m_bRemoveHotPixels;
 
-private :
-	void CopyFrom(const CLightFrameInfo & cbi)
-	{
-		CFrameInfo::CopyFrom(cbi);
-		CRegisteredFrame::CopyFrom(cbi);
-
-		m_bStartingFrame  = cbi.m_bStartingFrame;
-		m_strInfoFileName = cbi.m_strInfoFileName;
-		m_bTransformedCometPosition = cbi.m_bTransformedCometPosition;
-
-		m_fXOffset		  = cbi.m_fXOffset;
-		m_fYOffset		  = cbi.m_fYOffset;
-		m_fAngle		  = cbi.m_fAngle;
-		m_BilinearParameters = cbi.m_BilinearParameters;
-		m_vVotedPairs	  = cbi.m_vVotedPairs;
-
-		m_bDisabled		  = cbi.m_bDisabled;
-		m_pProgress		  = cbi.m_pProgress;
-		m_bRemoveHotPixels= cbi.m_bRemoveHotPixels;
-	};
-
-	void	Reset()
+private:
+	void Reset()
 	{
 		CFrameInfo::Reset();
 		CRegisteredFrame::Reset();
@@ -250,53 +230,50 @@ private :
 
 		m_bTransformedCometPosition = false;
 
-		Workspace			workspace;
-	
-		m_bRemoveHotPixels = workspace.value("Register/DetectHotPixels", false).toBool();
-	};
+		m_bRemoveHotPixels = Workspace{}.value("Register/DetectHotPixels", false).toBool();
+	}
 
 public:
 	CLightFrameInfo()
 	{
 		Reset();
-	};
-	CLightFrameInfo(const CLightFrameInfo & cbi)
-	{
-		CopyFrom(cbi);
-	};
+	}
 
-	CLightFrameInfo(const CFrameInfo & cbi)
+	CLightFrameInfo(const CLightFrameInfo&) = default;
+
+	explicit CLightFrameInfo(const CFrameInfo& cbi)
 	{
         Reset();
-
 		CFrameInfo::CopyFrom(cbi);
-	};
+	}
 
-	CLightFrameInfo & operator = (const CLightFrameInfo & cbi)
+	explicit CLightFrameInfo(CDSSProgress* const pPrg)
 	{
-		CopyFrom(cbi);
-		return (*this);
-	};
+		Reset();
+		this->SetProgress(pPrg);
+	}
 
-	CLightFrameInfo & operator = (const CFrameInfo & cbi)
+	CLightFrameInfo& operator=(const CLightFrameInfo&) = default;
+
+	CLightFrameInfo& operator=(const CFrameInfo& cbi)
 	{
-		CFrameInfo::CopyFrom(cbi);
+		CFrameInfo::operator=(cbi);
 		return (*this);
-	};
+	}
 
-	void	SetHotPixelRemoval(bool bHotPixels)
+	void SetHotPixelRemoval(const bool bHotPixels)
 	{
 		m_bRemoveHotPixels = bHotPixels;
-	};
+	}
 
-	void	SetProgress(CDSSProgress * pProgress)
+	void SetProgress(CDSSProgress* pProgress)
 	{
 		m_pProgress = pProgress;
-	};
+	}
 
-	void	SetBitmap(fs::path path, bool bProcessIfNecessary = true, bool bForceRegister = false);
+	void SetBitmap(fs::path path, bool bProcessIfNecessary = true, bool bForceRegister = false);
 
-	bool operator < (const CLightFrameInfo & cbi) const
+	bool operator<(const CLightFrameInfo& cbi) const
 	{
 		if (m_bStartingFrame)
 			return true;
@@ -306,7 +283,7 @@ public:
 			return true;
 		else
 			return false;
-	};
+	}
 
 	void RegisterPicture(CMemoryBitmap* pBitmap);
 	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, CDSSProgress * pProgress = nullptr);
@@ -419,7 +396,7 @@ private :
 	bool						m_bSaveCalibratedDebayered;
 
 private :
-	bool SaveCalibratedLightFrame(CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile);
+	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile);
 
 public :
 	CRegisterEngine()
