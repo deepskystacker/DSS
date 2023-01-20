@@ -732,9 +732,7 @@ namespace { // Only use in this .cpp file
 
 				if (!rawProcessor.is_phaseone_compressed() && (C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
 				{
-					int cblk[4];
-					for (int i = 0; i < 4; i++)
-						cblk[i] = C.cblack[i];
+					const int cblk[4] = { static_cast<int>(C.cblack[0]), static_cast<int>(C.cblack[1]), static_cast<int>(C.cblack[2]), static_cast<int>(C.cblack[3]) };
 
 					int dmax = 0;	// Maximum value of pixels in entire image.
 					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loops below. For OMP.
@@ -742,7 +740,7 @@ namespace { // Only use in this .cpp file
 					{
 #pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
-#pragma omp for schedule(dynamic, 10'000) 
+#pragma omp for schedule(dynamic, 1'000'000) 
 							for (int i = 0; i < size; i++)
 							{
 								int val = raw_image[i];
@@ -759,7 +757,7 @@ namespace { // Only use in this .cpp file
 					{
 #pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 						{
-#pragma omp for schedule(dynamic, 10'000) 
+#pragma omp for schedule(dynamic, 1'000'000) 
 							for (int i = 0; i < size; i++)
 							{
 								int val = raw_image[i];
@@ -784,7 +782,7 @@ namespace { // Only use in this .cpp file
 					int lmax = 0;	// Local (or Loop) maximum value found in the 'for' loop below. For OMP.
 #pragma omp parallel default(none) shared(dmax) firstprivate(lmax) if(numberOfProcessors > 1)
 					{
-#pragma omp for schedule(dynamic, 10'000) 
+#pragma omp for schedule(dynamic, 1'000'000) 
 						for (int i = 0; i < size; i++)
 							if (lmax < raw_image[i])
 								lmax = raw_image[i];
