@@ -1433,15 +1433,10 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 		for (size_t j = 0; j < it->m_pLightTask->m_vBitmaps.size() && bResult; j++)
 		{
-			const auto& bitmap{ it->m_pLightTask->m_vBitmaps[j] };
-
-			ZTRACE_RUNTIME("Register %s", bitmap.filePath.generic_string().c_str());
+			ZTRACE_RUNTIME("Register %s", it->m_pLightTask->m_vBitmaps[j].filePath.generic_string().c_str());
 
 			auto [pBitmap, success, lfInfo, bmpInfo] = future.get();
 			future = std::async(std::launch::async, readTask, j + 1, nullptr);
-
-			// Register this bitmap
-//			lfInfo.SetBitmap(bitmap.filePath, false, false);
 
 			if (pProgress != nullptr)
 			{
@@ -1452,58 +1447,45 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 			if (!success)
 				continue;
 
-//			if (bForce || !lfInfo.IsRegistered())
+			CString strDescription;
+			bmpInfo->GetDescription(strDescription);
+			QString strText2;
+			if (bmpInfo->m_lNrChannels == 3)
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
+			else
+				strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
+			if (pProgress != nullptr)
+				pProgress->Start2(strText2, 0);
+
+			// Apply offset, dark and flat to lightframe
+			MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
+
+			CString strCalibratedFile;
+
+			if (m_bSaveCalibrated && (it->m_pDarkTask != nullptr || it->m_pDarkFlatTask != nullptr || it->m_pFlatTask != nullptr || it->m_pOffsetTask != nullptr))
+				SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
+
+			// Then register the light frame
+			lfInfo->SetProgress(pProgress);
+			lfInfo->RegisterPicture(pBitmap.get());
+			lfInfo->SaveRegisteringInfo();
+
+			if (strCalibratedFile.GetLength())
 			{
-				// Load the bitmap
-//				CBitmapInfo bmpInfo;
-//				if (GetPictureInfo(lfInfo.filePath.c_str(), bmpInfo) && bmpInfo.CanLoad())
-				{
-					CString strDescription;
-					bmpInfo->GetDescription(strDescription);
+				CString strInfoFileName;
+				TCHAR szDrive[1 + _MAX_DRIVE];
+				TCHAR szDir[1 + _MAX_DIR];
+				TCHAR szFile[1 + _MAX_FNAME];
 
-					QString strText2;
-					if (bmpInfo->m_lNrChannels == 3)
-						strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bit/ch %2 light frame\n%3", "IDS_LOADRGBLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
-					else
-						strText2 = QCoreApplication::translate("RegisterEngine", "Loading %1 bits gray %2 light frame\n%3", "IDS_LOADGRAYLIGHT").arg(bmpInfo->m_lBitPerChannel).arg(QString::fromWCharArray(strDescription)).arg(lfInfo->filePath.c_str());
-					if (pProgress != nullptr)
-						pProgress->Start2(strText2, 0);
+				_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
+				strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
+				lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
+			}
 
-//					std::shared_ptr<CMemoryBitmap> pBitmap;
-//					if (::FetchPicture(lfInfo.filePath.c_str(), pBitmap, pProgress))
-					{
-						// Apply offset, dark and flat to lightframe
-						MasterFrames.ApplyAllMasters(pBitmap, nullptr, pProgress);
-
-						CString strCalibratedFile;
-
-						if (m_bSaveCalibrated && (it->m_pDarkTask != nullptr || it->m_pDarkFlatTask != nullptr || it->m_pFlatTask != nullptr || it->m_pOffsetTask != nullptr))
-							SaveCalibratedLightFrame(*lfInfo, pBitmap, pProgress, strCalibratedFile);
-
-						// Then register the light frame
-						lfInfo->SetProgress(pProgress);
-						lfInfo->RegisterPicture(pBitmap.get());
-						lfInfo->SaveRegisteringInfo();
-
-						if (strCalibratedFile.GetLength())
-						{
-							CString strInfoFileName;
-							TCHAR szDrive[1 + _MAX_DRIVE];
-							TCHAR szDir[1 + _MAX_DIR];
-							TCHAR szFile[1 + _MAX_FNAME];
-
-							_tsplitpath(strCalibratedFile, szDrive, szDir, szFile, nullptr);
-							strInfoFileName.Format(_T("%s%s%s%s"), szDrive, szDir, szFile, _T(".Info.txt"));
-							lfInfo->CRegisteredFrame::SaveRegisteringInfo(strInfoFileName);
-						}
-					}
-
-					if (pProgress != nullptr)
-					{
-						pProgress->End2();
-						bResult = !pProgress->IsCanceled();
-					}
-				}
+			if (pProgress != nullptr)
+			{
+				pProgress->End2();
+				bResult = !pProgress->IsCanceled();
 			}
 		}
 	}
