@@ -730,8 +730,7 @@ namespace { // Only use in this .cpp file
 
 				const int size = static_cast<int>(S.height) * static_cast<int>(S.width);
 
-				if (!rawProcessor.is_phaseone_compressed() &&
-					(C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
+				if (!rawProcessor.is_phaseone_compressed() && (C.cblack[0] || C.cblack[1] || C.cblack[2] || C.cblack[3] || (C.cblack[4] && C.cblack[5])))
 				{
 					int cblk[4];
 					for (int i = 0; i < 4; i++)
@@ -852,22 +851,27 @@ namespace { // Only use in this .cpp file
 					scale_mul[0], scale_mul[1], scale_mul[2], scale_mul[3]);
 
 				//Timer timer;
-#pragma omp parallel for default(none) schedule(dynamic, 50) if(numberOfProcessors > 1) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
-				for (int row = 0; row < S.height; row++)
+#pragma omp parallel default(none) if(numberOfProcessors > 1) // No OPENMP: 240ms, with OPENMP: 92ms, schedule static: 78ms, schedule dynamic: 35ms
 				{
-					for (int col = 0; col < S.width; col++)
+#pragma omp master // There is no implied barrier.
+					ZTRACE_RUNTIME("RAW file processing with %d OpenMP threads, little_endian is %s", omp_get_num_threads(), littleEndian ? "true" : "false");
+#pragma omp for schedule(dynamic, 50)
+					for (int row = 0; row < S.height; row++)
 					{
-						// What colour will this pixel become
-						const int colour = rawProcessor.COLOR(row, col);
-						const float val = scale_mul[colour] * static_cast<float>(RAW(row, col));
-						RAW(row, col) = static_cast<std::uint16_t>(std::clamp(static_cast<int>(val), 0, 65535));
+						for (int col = 0; col < S.width; col++)
+						{
+							// What colour will this pixel become
+							const int colour = rawProcessor.COLOR(row, col);
+							const float val = scale_mul[colour] * static_cast<float>(RAW(row, col));
+							RAW(row, col) = static_cast<std::uint16_t>(std::clamp(static_cast<int>(val), 0, 65535));
+						}
 					}
 				}
 				//timer.printDiff(); 
 
 				// Convert raw data to big-endian
 				if (littleEndian)
-#pragma omp parallel for default(none) schedule(dynamic, 10'000) if(numberOfProcessors > 1)
+#pragma omp parallel for default(none) schedule(static, 1'000'000) if(numberOfProcessors > 1)
 					for (int i = 0; i < size; i++)
 					{
 						raw_image[i] = _byteswap_ushort(raw_image[i]);

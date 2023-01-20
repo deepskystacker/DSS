@@ -915,6 +915,8 @@ void CLightFrameInfo::RegisterPicture(CGrayBitmap& Bitmap)
 
 #pragma omp parallel default(none) shared(stars1, stars2, stars3, stars4) num_threads(std::min(nrEnabledThreads, 4)) if(nrEnabledThreads > 1)
 {
+#pragma omp master // There is no implied barrier.
+		ZTRACE_RUNTIME("Registering with %d OpenMP threads.", omp_get_num_threads());
 #pragma omp sections
 	{
 		// Upper left area
