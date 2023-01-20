@@ -663,10 +663,10 @@ public:
 	{
 	};
 
-	bool	CanLoad()
+	bool CanLoad() const
 	{
 		return m_bCanLoad;
-	};
+	}
 
 	bool	IsCFA()
 	{

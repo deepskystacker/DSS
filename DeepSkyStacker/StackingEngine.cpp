@@ -2190,8 +2190,9 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 					m_pLightTask = pStackingInfo->m_pLightTask;
 
-					if ((m_pLightTask->m_Method == MBP_AVERAGE) && !m_bCreateCometImage && !static_cast<bool>(m_pComet))
+					if ((m_pLightTask->m_Method == MBP_AVERAGE) && !m_bCreateCometImage && !static_cast<bool>(m_pComet)) {
 						m_pLightTask->m_Method = MBP_FASTAVERAGE;
+					}
 
 					const auto readTask = [this, pStackingInfo, firstBitmap = m_vBitmaps.cbegin()](const size_t lightTaskNdx, CDSSProgress* pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
 					{
