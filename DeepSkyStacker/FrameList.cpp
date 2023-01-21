@@ -1,5 +1,6 @@
 #include <stdafx.h>
 
+#include <QCoreApplication>
 #include <QDebug>
 #if defined (_CONSOLE)
 #include <iostream>
@@ -515,7 +516,7 @@ namespace DSS
 									// If the file has already been loaded complain
 									//
 									QString errorMessage(
-										QCoreApplication::translate("StackingDlg", "File %1 has already been loaded in group %2 (%3)")
+										QCoreApplication::translate("DSS::StackingDlg", "File %1 has already been loaded in group %2 (%3)")
 										.arg(filePath.generic_string().c_str())
 										.arg(groupId)
 										.arg(groupName(groupId)));
@@ -570,7 +571,7 @@ namespace DSS
 
 	};
 
-	bool FrameList::areCheckedImagesCompatible()
+	bool FrameList::areCheckedImagesCompatible(QString& reason)
 	{
 		bool				bResult = true;
 		bool				bFirst = true;
@@ -585,7 +586,7 @@ namespace DSS
 		bool				bMasterOffset = false;
 
 		// Iterate over all groups.
-		for (uint16_t group = 0; group != imageGroups.size(); ++group)
+		for (uint16_t group = 0; group != imageGroups.size() && true == bResult; ++group)
 		{
 			// and then over each image in the group
 			for (auto it = imageGroups[group].pictures->cbegin();
@@ -599,7 +600,14 @@ namespace DSS
 						bFirst = false;
 					}
 					else
+					{
 						bResult = lb->IsCompatible(*it);
+						if (false == bResult)
+						{
+							reason = lb->incompatibilityReason;
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -607,13 +615,25 @@ namespace DSS
 		if (bResult)
 		{
 			if (bMasterDark && lNrDarks > 1)
+			{
+				reason = QCoreApplication::translate("DSS::StackingDlg", "Master dark used and more than one dark loaded");
 				bResult = false;
+			}
 			if (bMasterDarkFlat && lNrDarkFlats > 1)
+			{
+				reason = QCoreApplication::translate("DSS::StackingDlg", "Master dark flat used and more than one dark flat loaded");
 				bResult = false;
+			}
 			if (bMasterFlat && lNrFlats > 1)
+			{
+				reason = QCoreApplication::translate("DSS::StackingDlg", "Master flat used and more than one flat loaded");
 				bResult = false;
+			}
 			if (bMasterOffset && lNrOffsets > 1)
+			{
+				reason = QCoreApplication::translate("DSS::StackingDlg", "Master offset used and more than one offset loaded");
 				bResult = false;
+			}
 		};
 
 		return bResult;

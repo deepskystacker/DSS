@@ -2442,12 +2442,12 @@ namespace DSS
 	bool StackingDlg::checkStacking(CAllStackingTasks& tasks)
 	{
 		bool result = false;
+		QString reason;
 
-		if (!frameList.areCheckedImagesCompatible())
+		if (!frameList.areCheckedImagesCompatible(reason))
 			QMessageBox::critical(this, "DeepSkyStacker",
-				tr("The checked pictures are not compatible (width, height, number of colors,"
-					" number of channels, only one master dark, offset and flat).",
-					"IDS_ERROR_NOTCOMPATIBLE"));
+				tr("The checked pictures are not compatible: %1.",
+					"IDS_ERROR_NOTCOMPATIBLE").arg(reason));
 		else if (!frameList.checkedImageCount(PICTURETYPE_LIGHTFRAME))
 			QMessageBox::critical(this, "DeepSkyStacker",
 				tr("You must check light frames to stack them.",

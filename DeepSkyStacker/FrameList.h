@@ -164,7 +164,7 @@ namespace DSS
 
 		void blankCheckedItemScores();
 
-		bool areCheckedImagesCompatible();
+		bool areCheckedImagesCompatible(QString& reason);
 
 		void updateCheckedItemScores();
 

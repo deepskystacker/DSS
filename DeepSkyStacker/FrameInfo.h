@@ -37,6 +37,8 @@ public :
 	bool				m_bFITS16bit;
 	CBitmapExtraInfo	m_ExtraInfo;
 	QString				m_filterName;
+    mutable	QString	incompatibilityReason;
+
 
 private :
 	mutable CFATYPE			m_CFAType;
@@ -145,16 +147,28 @@ public :
 
 	bool	IsCompatible(int lWidth, int lHeight, int lBitPerChannels, int lNrChannels, CFATYPE CFAType) const
 	{
-		bool			bResult;
+		bool			result = true;
 
-		bResult = (m_lWidth == lWidth) &&
-				  (m_lHeight == lHeight) &&
-				  (m_lBitPerChannels == lBitPerChannels);
-
-		if (bResult)
+		if (m_lWidth != lWidth)
 		{
-			bResult = (m_lNrChannels == lNrChannels) && (m_CFAType == CFAType);
-			if (!bResult)
+			incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Width mismatch");
+			return false;
+		}
+		if (m_lHeight != lHeight)
+		{
+			incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Height mismatch");
+			return false;
+		}
+		if (m_lBitPerChannels != lBitPerChannels)
+		{
+			incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Colour depth mismatch");
+			return false;
+		}
+
+		if (result)
+		{
+			result = (m_lNrChannels == lNrChannels) && (m_CFAType == CFAType);
+			if (!result)
 			{
 				// Check that if CFA if Off then the number of channels may be
 				// 3 instead of 1 if BayerDrizzle and SuperPixels are off
@@ -163,15 +177,17 @@ public :
 					if (m_CFAType != CFAType)
 					{
 						if ((m_CFAType != CFATYPE_NONE) && (m_lNrChannels==1))
-							bResult = (CFAType != CFATYPE_NONE) && (lNrChannels == 3);
+							result = (CFAType != CFATYPE_NONE) && (lNrChannels == 3);
 						else if ((CFAType == CFATYPE_NONE) && (lNrChannels == 1))
-							bResult = (m_CFAType == CFATYPE_NONE) && (m_lNrChannels == 3);
+							result = (m_CFAType == CFATYPE_NONE) && (m_lNrChannels == 3);
 					};
+					if (false == result)
+						incompatibilityReason = QCoreApplication::translate("DSS::StackingDlg", "Number of channels mismatch");
 				};
 			};
 		};
 
-		return  bResult;
+		return  result;
 	};
 
 	bool	IsCompatible(const CFrameInfo & cfi) const
