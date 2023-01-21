@@ -1,9 +1,7 @@
-﻿Welcome to DeepSkyStacker 5.1.0 Beta 2
+﻿Welcome to DeepSkyStacker 5.1.0 Beta 3
 
 This release is the start of the process of converting the code to Qt so that it can be ported to platforms other than Windows.
 Only 64 bit versions of Windows 10 and later are supported in this release.
-
-The translation of messages and the UI should now be complete.
 
 Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
@@ -42,24 +40,28 @@ Here are the main changes that were made for DeepSkyStacker 5.1.0:
 
 12. A file association is now created during installation so that .dssfilelist files will be opened by DeepSkyStacker.
 
-13. Update Libraw to 0.20.2
+13. Fix a problem where the image list wasn't always hidden when switching to the Processing panel.
 
-14. Fix a problem where the image list wasn't always hidden when switching to the Processing panel.
+14. Reduce the depth of the rows in the image list so it takes less space.
 
-15. Reduce the depth of the rows in the image list so it takes less space.
+15. Change to AVX checking code to resolve a problem with SIGILL on older CPUs.
 
-16. Change to AVX checking code to resolve a problem with SIGILL on older CPUs.
+16. Add code to capture non C++ exceptions (e.g. SIGINT, SIGILL, SIGFPE, SIGSEGV, and SIGTERM) and write a debugging backtrace to stderr and to the trace file if active.
 
-17. Add code to capture non C++ exceptions (e.g. SIGINT, SIGILL, SIGFPE, SIGSEGV, and SIGTERM) and write a debugging backtrace to stderr and to the trace file if active.
+17. Update Libraw to 0.21.0
 
-18. Update Libraw to 0.21.0
+18. Bug fix for Comet/Star editing mode being forgotten when switching between images.
 
-19. Bug fix for Comet/Star editing mode being forgotten when switching between images.
+19. Don't remove files from image list if user says not to erase them.  Ensure image list information is updated.
 
-20. Don't remove files from image list if user says not to erase them.  Ensure image list information is updated.
+20. Fix for incorrect output when Comet Stacking with SIMD (it just did a normal stack).
 
-21. Fix for incorrect output when Comet Stacking with SIMD (it just did a normal stack).
+21. Fix for some issues with the progress dialog.
 
-22. Fix for some issues with the progress dialog.   More to come.
+22. Ensure that the image list as always displayed when opening DSS.
 
-23. Ensure that the image list as always displayed when opening DSS.
+23. Resolve problems with loading file lists.
+
+24. Change message for incompatible images to report the reason.
+
+25. Registering and stacking now overlap processing with reading the images.   For n images where time to load each image is L and time to process each image is P, the total time will now typically be n*L + P (when L > P) or L + n*P.   I think this is a far as we can push the performance!!!
