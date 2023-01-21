@@ -106,6 +106,7 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="133"/>
         <location filename="../About.cpp" line="142"/>
         <location filename="../About.cpp" line="146"/>
+        <location filename="../About.cpp" line="147"/>
         <source>and</source>
         <translation>und</translation>
     </message>
@@ -128,13 +129,13 @@ Copyright NASA</translation>
         <translation>Rumänische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="149"/>
+        <location filename="../About.cpp" line="150"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Russische Version:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="153"/>
+        <location filename="../About.cpp" line="154"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Türkische Version:</translation>
@@ -559,31 +560,31 @@ Sowohl Komet als auch Sterne werden scharf. Dieser Prozess dauert doppelt so lan
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="846"/>
+        <location filename="../editstars.cpp" line="848"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Klicken, um den Kometen hier festzulegen</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="848"/>
+        <location filename="../editstars.cpp" line="850"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Zum Hinzufügen dieses Sterns anklicken</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="855"/>
+        <location filename="../editstars.cpp" line="857"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Zum Entfernen des Kometen anklicken</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="857"/>
+        <location filename="../editstars.cpp" line="859"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Zum Entfernen des Sterns anklicken</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="905"/>
+        <location filename="../editstars.cpp" line="907"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -593,7 +594,7 @@ Score: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="912"/>
+        <location filename="../editstars.cpp" line="914"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -601,7 +602,7 @@ Comet:%1</source>
 Komet:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="912"/>
+        <location filename="../editstars.cpp" line="914"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ja</translation>
@@ -855,17 +856,22 @@ Strg+4 zum Umschalten des 4-Ecken-Modus</translation>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="69"/>
+        <location filename="../QtProgressDlg.cpp" line="72"/>
+        <source> Processor Used</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="74"/>
         <source> Processors Used</source>
         <translation> Prozessoren verwendet</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="75"/>
+        <location filename="../QtProgressDlg.cpp" line="78"/>
         <source>Are You Sure?</source>
         <translation>Sind Sie sicher?</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="75"/>
+        <location filename="../QtProgressDlg.cpp" line="78"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>Möchten Sie diesen Vorgang wirklich abbrechen?</translation>
     </message>
@@ -873,12 +879,12 @@ Strg+4 zum Umschalten des 4-Ecken-Modus</translation>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="794"/>
+        <location filename="../StackingDlg.cpp" line="787"/>
         <source>Rename group</source>
         <translation>Gruppe umbenennen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="883"/>
+        <location filename="../StackingDlg.cpp" line="876"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -890,37 +896,37 @@ Dieser Vorgang kann nicht rückgängig gemacht werden.</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="952"/>
+        <location filename="../StackingDlg.cpp" line="953"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Als Referenzbild verwenden</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="956"/>
+        <location filename="../StackingDlg.cpp" line="957"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Auswählen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="958"/>
+        <location filename="../StackingDlg.cpp" line="959"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Deselektieren</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="961"/>
+        <location filename="../StackingDlg.cpp" line="962"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Von der Liste entfernen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="964"/>
+        <location filename="../StackingDlg.cpp" line="965"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>In Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="967"/>
+        <location filename="../StackingDlg.cpp" line="968"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Von der Festplatte löschen...</translation>
@@ -937,68 +943,88 @@ Entfernen-Taste, um ausgewählte Zeilen zu entfernen (nicht zu löschen).
 Rechte Maustaste, um das Menü anzuzeigen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="695"/>
-        <location filename="../StackingDlg.cpp" line="1928"/>
+        <location filename="../StackingDlg.cpp" line="1941"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Lightframes: %1      -      Darkframes: %2      -      Flatframes: %3      -   Dark-Flatframes: %4   -      Offset/Biasframes: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="704"/>
+        <location filename="../StackingDlg.cpp" line="697"/>
         <source>Double click here to dock/undock the image list</source>
         <translation>Doppelklicken Sie hier, um die Bildliste anzudocken/zu lösen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="706"/>
-        <location filename="../StackingDlg.cpp" line="1080"/>
-        <location filename="../group.h" line="71"/>
+        <location filename="../StackingDlg.cpp" line="699"/>
+        <location filename="../StackingDlg.cpp" line="1081"/>
+        <location filename="../group.h" line="72"/>
         <source>Main Group</source>
         <comment>IDS_MAINGROUP</comment>
         <translation>Haupt-Gruppe</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1251"/>
+        <location filename="../StackingDlg.cpp" line="1264"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Lade %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1328"/>
+        <location filename="../FrameList.cpp" line="519"/>
+        <location filename="../StackingDlg.cpp" line="1341"/>
         <source>File %1 has already been loaded in group %2 (%3)</source>
         <translation>Datei %1 wurde bereits in Gruppe %2 (%3) geladen</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1363"/>
+        <location filename="../FrameList.cpp" line="619"/>
+        <source>Master dark used and more than one dark loaded</source>
+        <translation>Master Dark wird verwendet, aber mehr als ein Dark wurde geladen</translation>
+    </message>
+    <message>
+        <location filename="../FrameList.cpp" line="624"/>
+        <source>Master dark flat used and more than one dark flat loaded</source>
+        <translation>Master Dark-Flat wird verwendet, aber mehr als ein Dark-Flat wurde geladen</translation>
+    </message>
+    <message>
+        <location filename="../FrameList.cpp" line="629"/>
+        <source>Master flat used and more than one flat loaded</source>
+        <translation>Master Flat wird verwendet, aber mehr als ein Flat wurde geladen</translation>
+    </message>
+    <message>
+        <location filename="../FrameList.cpp" line="634"/>
+        <source>Master offset used and more than one offset loaded</source>
+        <translation>Master Offset wird verwendet, aber mehr als ein Offset wurde geladen</translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1376"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Lightframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1468"/>
+        <location filename="../StackingDlg.cpp" line="1481"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Darkframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1572"/>
+        <location filename="../StackingDlg.cpp" line="1585"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Dark-Flatframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1676"/>
+        <location filename="../StackingDlg.cpp" line="1689"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Flatframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1780"/>
+        <location filename="../StackingDlg.cpp" line="1793"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Biasframes öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1941"/>
+        <location filename="../StackingDlg.cpp" line="1954"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -1012,37 +1038,37 @@ Dark-Flatframes: %4
 Offset/Biasframes: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2021"/>
+        <location filename="../StackingDlg.cpp" line="2034"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Andere Dateiliste öffnen...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2198"/>
+        <location filename="../StackingDlg.cpp" line="2213"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>DeepSkyStacker Version %1 zum Download verfügbar.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2214"/>
+        <location filename="../StackingDlg.cpp" line="2229"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Internet-Fehlercode %1 der Versionsprüfung:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2333"/>
+        <location filename="../StackingDlg.cpp" line="2348"/>
         <source>Total registering time: %1 %2</source>
         <translation>Gesamtzeit für Registrierung: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2352"/>
+        <location filename="../StackingDlg.cpp" line="2367"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Bitte Lightframes zum Registrieren auswählen!</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2413"/>
+        <location filename="../StackingDlg.cpp" line="2428"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -1052,19 +1078,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 DeepSkyStacker benötigt sie zum Erstellen von Dateien während des Prozesses.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2433"/>
-        <source>The checked pictures are not compatible (width, height, number of colors, number of channels, only one master dark, offset and flat).</source>
+        <location filename="../StackingDlg.cpp" line="2449"/>
+        <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation>Die ausgewählten Bilder sind nicht kompatibel (Breite, Höhe, Anzahl der Farben, Anzahl der Kanäle, nur ein Master-Dark, Offset und Flat).</translation>
+        <translation>Die selektierten Bilder sind inkompatibel: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2438"/>
+        <location filename="../StackingDlg.cpp" line="2453"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Bitte Lightframes zum Stacken auswählen!</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2486"/>
+        <location filename="../StackingDlg.cpp" line="2501"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -1074,18 +1100,18 @@ Do you want to save the changes?</source>
 Wollen Sie die Änderungen speichern?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2602"/>
+        <location filename="../StackingDlg.cpp" line="2617"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Gesamtzeit für Stapeln: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2634"/>
+        <location filename="../StackingDlg.cpp" line="2649"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Fertiges Bild speichern in %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2696"/>
+        <location filename="../StackingDlg.cpp" line="2711"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -1096,10 +1122,30 @@ Wollen Sie die Änderungen speichern?</translation>
 %4</translation>
     </message>
     <message>
-        <location filename="../group.h" line="75"/>
+        <location filename="../group.h" line="76"/>
         <source>Group %1</source>
         <comment>IDS_GROUPIDMASK</comment>
         <translation>Gruppe %1</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="154"/>
+        <source>Width mismatch</source>
+        <translation>Breite ungleich</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="159"/>
+        <source>Height mismatch</source>
+        <translation>Höhe ungleich</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="164"/>
+        <source>Colour depth mismatch</source>
+        <translation>Farbtiefe ungleich</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="185"/>
+        <source>Number of channels mismatch</source>
+        <translation>Anzahl der Kanäle ungleich</translation>
     </message>
 </context>
 <context>
@@ -1211,14 +1257,14 @@ Rechts-Klick, um das Verhalten zu ändern.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="125"/>
+        <location filename="../DeepSkyStacker.cpp" line="130"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Diese Beta-Version von DeepSkyStacker ist abgelaufen
 Sie können möglicherweise eine weitere bekommen oder die endgültige Version von der Webseite herunterladen.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="153"/>
+        <location filename="../DeepSkyStacker.cpp" line="158"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -1296,72 +1342,72 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
 <context>
     <name>ExplorerBar</name>
     <message>
-        <location filename="../ExplorerBar.cpp" line="262"/>
+        <location filename="../ExplorerBar.cpp" line="263"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Registrierungs-Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="263"/>
+        <location filename="../ExplorerBar.cpp" line="264"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Stacking Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="305"/>
+        <location filename="../ExplorerBar.cpp" line="306"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Standardeinstellungen wiederherstellen</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="307"/>
+        <location filename="../ExplorerBar.cpp" line="308"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>DeepSkyStacker Live Einstellungen laden</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="311"/>
+        <location filename="../ExplorerBar.cpp" line="312"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Lade...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="372"/>
+        <location filename="../ExplorerBar.cpp" line="373"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Als DeepSkyStacker Live Einstellung speichern</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="376"/>
+        <location filename="../ExplorerBar.cpp" line="377"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Speichern als...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="433"/>
+        <location filename="../ExplorerBar.cpp" line="434"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation>DeepSkyStacker Help.chm</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="455"/>
+        <location filename="../ExplorerBar.cpp" line="456"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>DeepSkyStacker Einstellungen laden</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="459"/>
+        <location filename="../ExplorerBar.cpp" line="460"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>DeepSkyStacker Einstellungen (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="506"/>
+        <location filename="../ExplorerBar.cpp" line="507"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <translation>DeepSkyStacker Einstellungen (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="502"/>
+        <location filename="../ExplorerBar.cpp" line="503"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>DeepSkyStacker Einstellungen speichern</translation>
@@ -1816,31 +1862,31 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
         <translation>Abbrechen</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="205"/>
+        <location filename="../QtProgressDlg.cpp" line="222"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
         <translation>Geschätzte verbleibende Zeit: %1 h %2 m %3 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="208"/>
+        <location filename="../QtProgressDlg.cpp" line="225"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
         <translation>Geschätzte verbleibende Zeit: %1 m %2 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="211"/>
+        <location filename="../QtProgressDlg.cpp" line="228"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
         <translation>Geschätzte verbleibende Zeit: %1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="214"/>
+        <location filename="../QtProgressDlg.cpp" line="231"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
         <translation>Geschätzte verbleibende Zeit: &lt; 1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="221"/>
+        <location filename="../QtProgressDlg.cpp" line="238"/>
         <source>Estimated remaining Time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Geschätzte verbleibende Zeit: Unbekannt</translation>
@@ -2240,25 +2286,25 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../RegisterEngine.cpp" line="971"/>
+        <location filename="../RegisterEngine.cpp" line="868"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registrierung %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1000"/>
+        <location filename="../RegisterEngine.cpp" line="897"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Registrierung %1 (%2 Sterne)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1151"/>
+        <location filename="../RegisterEngine.cpp" line="1048"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Luminanz-Berechnung %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1331"/>
+        <location filename="../RegisterEngine.cpp" line="1228"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2266,7 +2312,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1335"/>
+        <location filename="../RegisterEngine.cpp" line="1232"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2274,25 +2320,25 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1466"/>
+        <location filename="../RegisterEngine.cpp" line="1363"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Kalibriertes Bild speichern in %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1504"/>
+        <location filename="../RegisterEngine.cpp" line="1401"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Bilder registrieren</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1539"/>
+        <location filename="../RegisterEngine.cpp" line="1436"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Registriere %1 von %2</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1556"/>
+        <location filename="../RegisterEngine.cpp" line="1453"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2300,7 +2346,7 @@ Sie können möglicherweise eine weitere bekommen oder die endgültige Version v
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1558"/>
+        <location filename="../RegisterEngine.cpp" line="1455"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3197,87 +3243,82 @@ Wollen sie diese speichern?</translation>
 <context>
     <name>StackingEngine</name>
     <message>
-        <location filename="../StackingEngine.cpp" line="766"/>
-        <source>Computing stacking info for %1</source>
-        <comment>IDS_COMPUTINGSTACKINGINFO</comment>
-        <translation>Stacking-Info berechnen für %1</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="811"/>
+        <location filename="../StackingEngine.cpp" line="761"/>
+        <location filename="../StackingEngine.cpp" line="822"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
         <translation>Offsets berechnen</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1107"/>
+        <location filename="../StackingEngine.cpp" line="1114"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
         <translation>Fertiges Bild berechnen (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1208"/>
+        <location filename="../StackingEngine.cpp" line="1215"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
         <translation>Stacking - Bayer Anpassung - Ausrichtung berechnen</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1218"/>
+        <location filename="../StackingEngine.cpp" line="1225"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
         <translation>Ausrichtung berechnen %1 von %2</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1273"/>
+        <location filename="../StackingEngine.cpp" line="1280"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
         <translation>Stacking - Bayer Anpassung - Ausrichtung anwenden</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1275"/>
+        <location filename="../StackingEngine.cpp" line="1282"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
         <translation>Maximale Ausrichtung berechnen</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1310"/>
+        <location filename="../StackingEngine.cpp" line="1317"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
         <translation>Ausrichtung anwenden</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1381"/>
+        <location filename="../StackingEngine.cpp" line="1388"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
         <translation>Registriertes und kalibriertes Bild speichern in %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1428"/>
-        <location filename="../StackingEngine.cpp" line="1540"/>
-        <location filename="../StackingEngine.cpp" line="1586"/>
+        <location filename="../StackingEngine.cpp" line="1435"/>
+        <location filename="../StackingEngine.cpp" line="1547"/>
+        <location filename="../StackingEngine.cpp" line="1593"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Kalibriertes Bild speichern in %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1808"/>
+        <location filename="../StackingEngine.cpp" line="1819"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
         <translation>Interpolierung mit Adaptive Homogeneity Directed (AHD)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1851"/>
+        <location filename="../StackingEngine.cpp" line="1862"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
         <translation>Entropie Berechnung</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1863"/>
+        <location filename="../StackingEngine.cpp" line="1874"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
         <translation>Berechnung der Hintergrund Kalibrierungs-Parameter</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2089"/>
+        <location filename="../StackingEngine.cpp" line="2100"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
@@ -3285,8 +3326,8 @@ Only %3 are available on this drive.</source>
 Es sind nur %3 auf diesem Laufwerk verfügbar.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2090"/>
-        <location filename="../StackingEngine.cpp" line="2384"/>
+        <location filename="../StackingEngine.cpp" line="2101"/>
+        <location filename="../StackingEngine.cpp" line="2395"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -3294,13 +3335,13 @@ Do you really want to continue?</source>
 Wollen Sie wirklich fortfahren?</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2223"/>
+        <location filename="../StackingEngine.cpp" line="2234"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>Stacking %1 von %2 - Offset [%3,%4] - Winkel : %5°</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2233"/>
+        <location filename="../StackingEngine.cpp" line="2244"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -3308,7 +3349,7 @@ Wollen Sie wirklich fortfahren?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2235"/>
+        <location filename="../StackingEngine.cpp" line="2246"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -3316,7 +3357,7 @@ Wollen Sie wirklich fortfahren?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2383"/>
+        <location filename="../StackingEngine.cpp" line="2394"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -3330,7 +3371,7 @@ und DeepSkyStacker eine passende Ausrichtungsmethode zum Referenzframe findet.
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2394"/>
+        <location filename="../StackingEngine.cpp" line="2405"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>Stacking</translation>
