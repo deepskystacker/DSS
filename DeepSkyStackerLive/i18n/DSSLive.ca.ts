@@ -260,6 +260,54 @@
     </message>
 </context>
 <context>
+    <name>DSS::StackingDlg</name>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="519"/>
+        <source>File %1 has already been loaded in group %2 (%3)</source>
+        <translation>El fitxer %1 ja s&apos;ha carregat al grup %2 (%3)</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="619"/>
+        <source>Master dark used and more than one dark loaded</source>
+        <translation>Dark mestre utilitzat i més d&apos;un dark carregat</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="624"/>
+        <source>Master dark flat used and more than one dark flat loaded</source>
+        <translation>Dark flat mestre utilitzat i més d&apos;un dark flat carregat</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="629"/>
+        <source>Master flat used and more than one flat loaded</source>
+        <translation>Flat mestre utilitzat i més d&apos;un flat carregat</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="634"/>
+        <source>Master offset used and more than one offset loaded</source>
+        <translation>Offset mestre utilitzat i més d&apos;un offsett carregat</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="154"/>
+        <source>Width mismatch</source>
+        <translation>Desajust d&apos;amplada</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="159"/>
+        <source>Height mismatch</source>
+        <translation>Desajust d&apos;alçada</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="164"/>
+        <source>Colour depth mismatch</source>
+        <translation>Desajust de profunditat de color</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="185"/>
+        <source>Number of channels mismatch</source>
+        <translation>El nombre de canals no coincideix</translation>
+    </message>
+</context>
+<context>
     <name>DarkFrame</name>
     <message>
         <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="601"/>
@@ -462,25 +510,25 @@ En aquest moment, totes les imatges entrants (i prèviament registrades) seran a
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="971"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="868"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Registrant %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1000"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="897"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Registrant %1 (%2 estrelles)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1151"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1048"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Calculant lluminàncies %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1331"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1228"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -488,7 +536,7 @@ En aquest moment, totes les imatges entrants (i prèviament registrades) seran a
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1335"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1232"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -496,25 +544,25 @@ En aquest moment, totes les imatges entrants (i prèviament registrades) seran a
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1466"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1363"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Guardant la imatge Calibrada en %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1504"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1401"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Registrant imatges</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1539"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1436"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Registant %1 de %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1556"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1453"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -522,7 +570,7 @@ En aquest moment, totes les imatges entrants (i prèviament registrades) seran a
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1558"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1455"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -652,8 +700,8 @@ En aquest moment, totes les imatges entrants (i prèviament registrades) seran a
     </message>
     <message>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="307"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1251"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1348"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1249"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1346"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Carregant %1</translation>
@@ -671,68 +719,68 @@ En aquest moment, totes les imatges entrants (i prèviament registrades) seran a
         <translation>Guardant imatge apilada en %1 (DSImage)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="632"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="630"/>
         <source>Processing Image...</source>
         <comment>IDS_PROCESSINGIMAGE</comment>
         <translation>Processant Imatge...</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="902"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="900"/>
         <source>Saving TIFF %1 bit</source>
         <comment>IDS_SAVINGTIFF</comment>
         <translation>Guardant TIFF %1 bit</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="905"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1100"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="903"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1098"/>
         <source>Saving %1</source>
         <comment>IDS_SAVINGPICTURE</comment>
         <translation>Guardant %1</translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="952"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="991"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1146"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1188"/>
+        <source>Picture saved with settings applied.</source>
+        <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
+        <translation>Imatge guardada amb els ajustaments aplicats.</translation>
     </message>
     <message>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="954"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="993"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1148"/>
         <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1190"/>
-        <source>Picture saved with settings applied.</source>
-        <comment>IDS_SAVEWITHSETTINGSAPPLIED</comment>
-        <translation>Imatge guardada amb els ajustaments aplicats.</translation>
-    </message>
-    <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="956"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="995"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1150"/>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1192"/>
         <source>Picture saved with settings embedded.</source>
         <comment>IDS_SAVEWITHSETTINGSEMBEDDED</comment>
         <translation>Imatge guardada amb els ajustaments integrats.</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1097"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1095"/>
         <source>Saving FITS %1 bit</source>
         <comment>IDS_SAVINGFITS</comment>
         <translation>Guardant FITS %1 bit</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1246"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1244"/>
         <source>Loading TIFF %1 bit monochrome</source>
         <comment>IDS_LOADGRAYTIFF</comment>
         <translation>Carregant TIFF %1 bit monocromàtic</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1248"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1246"/>
         <source>Loading TIFF %1 bit/ch</source>
         <comment>IDS_LOADRGBTIFF</comment>
         <translation>Carregant TIFF %1 bit/ch</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1343"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1341"/>
         <source>Loading FITS %1 bit monochrome</source>
         <comment>IDS_LOADGRAYFITS</comment>
         <translation>Carregant FITS %1 bit monocromàtic</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1345"/>
+        <location filename="../../DeepSkyStacker/StackedBitmap.cpp" line="1343"/>
         <source>Loading FITS %1 bit/ch</source>
         <comment>IDS_LOADRGBFITS</comment>
         <translation>Carregant FITS %1 bit/ch</translation>
