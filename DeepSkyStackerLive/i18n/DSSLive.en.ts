@@ -260,6 +260,54 @@
     </message>
 </context>
 <context>
+    <name>DSS::StackingDlg</name>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="519"/>
+        <source>File %1 has already been loaded in group %2 (%3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="619"/>
+        <source>Master dark used and more than one dark loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="624"/>
+        <source>Master dark flat used and more than one dark flat loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="629"/>
+        <source>Master flat used and more than one flat loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameList.cpp" line="634"/>
+        <source>Master offset used and more than one offset loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="154"/>
+        <source>Width mismatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="159"/>
+        <source>Height mismatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="164"/>
+        <source>Colour depth mismatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../DeepSkyStacker/FrameInfo.h" line="185"/>
+        <source>Number of channels mismatch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>DarkFrame</name>
     <message>
         <location filename="../../DeepSkyStacker/DarkFrame.cpp" line="601"/>
