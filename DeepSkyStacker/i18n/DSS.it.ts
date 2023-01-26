@@ -1187,7 +1187,7 @@ in Edit Stars and Edit Comet modes.
 
 Right Click to change behaviour.</source>
         <comment>IDS_TOOLTIP_SAVE</comment>
-        <translation>Salva cambiamenti
+        <translation type="unfinished">Salva modifiche
 Salva tutti i cambiamenti (Stelle e Cometa) per l&apos;immagine corrente.
 
 Fare clic con il tasto destro per modificare il comportamento.</translation>
