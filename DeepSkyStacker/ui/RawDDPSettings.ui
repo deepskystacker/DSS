@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>456</width>
-    <height>540</height>
+    <height>574</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -281,13 +281,6 @@
            </widget>
           </item>
          </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCheckBox" name="blackPointToZero">
-         <property name="text">
-          <string>Set the black point to 0</string>
-         </property>
         </widget>
        </item>
       </layout>

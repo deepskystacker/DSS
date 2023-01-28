@@ -1537,6 +1537,7 @@ CTaskInfo *	CAllStackingTasks::FindBestMatchingTask(const CTaskInfo & BaseTask, 
 void CAllStackingTasks::ResolveTasks()
 {
 	ZFUNCTRACE_RUNTIME();
+	Workspace workspace;
 
 	m_vStacks.clear();
 	for (auto& task : this->m_vTasks)
@@ -1553,6 +1554,16 @@ void CAllStackingTasks::ResolveTasks()
 			// else the closest ISO (gain), else 0
 			// (tie breaker is number of frames in the offset task)
 			si.m_pOffsetTask = FindBestMatchingTask(task, PICTURETYPE_OFFSETFRAME);
+
+			//
+			// If there's an offset/bias task then set black point to zero
+			//
+			bool blackPointToZero = (si.m_pOffsetTask == nullptr) ? false : true;
+			ZTRACE_RUNTIME("***************************************");
+			ZTRACE_RUNTIME(" Offset task was %s therefore",(blackPointToZero ? "found," : "not found,"));
+			ZTRACE_RUNTIME(" Setting RawDDP/BlackPointTo0 %s",(blackPointToZero ? "true" : "false"));
+			ZTRACE_RUNTIME("***************************************");
+			workspace.setValue("RawDDP/BlackPointTo0", blackPointToZero);
 
 			// Try to find the best dark task for this task
 			// same ISO (gain) and exposure, else same ISO (gain) and closest exposure
