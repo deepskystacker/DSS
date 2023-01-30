@@ -2205,27 +2205,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						if (lightframeInfo.m_bDisabled)
 							return { {}, -1 };
 						const bool hasComet = lightframeInfo.m_bComet;
-						bool doStack = true;
 						CPixelTransform PixTransform{ lightframeInfo.m_BilinearParameters };
-						if (m_bCometStacking || m_bCreateCometImage)
-						{
-							if (firstBitmap->m_bComet && lightframeInfo.m_bComet)
-								PixTransform.ComputeCometShift(firstBitmap->m_fXComet, firstBitmap->m_fYComet,
-									lightframeInfo.m_fXComet, lightframeInfo.m_fYComet, false, lightframeInfo.m_bTransformedCometPosition);
-							else
-								doStack &= (!m_bCreateCometImage);
-						}
-						else if (static_cast<bool>(m_pComet))
-						{
-							if (firstBitmap->m_bComet && lightframeInfo.m_bComet)
-								PixTransform.ComputeCometShift(firstBitmap->m_fXComet, firstBitmap->m_fYComet,
-									lightframeInfo.m_fXComet, lightframeInfo.m_fYComet, true, lightframeInfo.m_bTransformedCometPosition);
-						}
-						PixTransform.SetShift(-m_rcResult.left, -m_rcResult.top);
-						PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
-
-						if (!doStack)
-							return { {}, -1 };
 
 						ZTRACE_RUNTIME("Stack %s", lightframeInfo.filePath.generic_string().c_str());
 
@@ -2246,6 +2226,27 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 						const CLightFrameInfo& lfInfo = m_vBitmaps[bitmapNdx];
 						CPixelTransform PixTransform{ lfInfo.m_BilinearParameters };
+						auto firstBitmap = m_vBitmaps.cbegin();
+						const auto& lightframeInfo = m_vBitmaps[bitmapNdx];
+						bool doStack = true;
+						if (m_bCometStacking || m_bCreateCometImage)
+						{
+							if (firstBitmap->m_bComet && lightframeInfo.m_bComet)
+								PixTransform.ComputeCometShift(firstBitmap->m_fXComet, firstBitmap->m_fYComet,
+									lightframeInfo.m_fXComet, lightframeInfo.m_fYComet, false, lightframeInfo.m_bTransformedCometPosition);
+							else
+								doStack &= (!m_bCreateCometImage);
+							if (!doStack)
+								continue;
+						}
+						else if (static_cast<bool>(m_pComet))
+						{
+							if (firstBitmap->m_bComet && lightframeInfo.m_bComet)
+								PixTransform.ComputeCometShift(firstBitmap->m_fXComet, firstBitmap->m_fYComet,
+									lightframeInfo.m_fXComet, lightframeInfo.m_fYComet, true, lightframeInfo.m_bTransformedCometPosition);
+						}
+						PixTransform.SetShift(-m_rcResult.left, -m_rcResult.top);
+						PixTransform.SetPixelSizeMultiplier(m_lPixelSizeMultiplier);
 
 						if (m_pProgress != nullptr)
 						{
