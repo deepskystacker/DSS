@@ -495,57 +495,62 @@ void StackingParameters::on_useDarkFactor_stateChanged(int state)
 
 void StackingParameters::on_darkMultiplicationFactor_textEdited(const QString &text)
 {
+	bool convertedOK { false };
 	double factor(0.0);
 	QLocale locale;
 
-	factor = locale.toDouble(text);
-
-	workspace->setValue("Stacking/DarkFactor", text);
+	factor = locale.toDouble(text, &convertedOK);
+	if (convertedOK) workspace->setValue("Stacking/DarkFactor", text);
 }
 
 void StackingParameters::on_iterations_textEdited(const QString &text)
 {
-	bool convertedOK = false;
+	bool convertedOK { false };
 	uint value = text.toUInt(&convertedOK);
-	
-	ZASSERTSTATE(convertedOK);
 
-	switch (type)
+	if (convertedOK)
 	{
-	case PICTURETYPE_LIGHTFRAME:
-		workspace->setValue("Stacking/Light_Iteration", value);
-		break;
-	case PICTURETYPE_DARKFRAME:
-		workspace->setValue("Stacking/Dark_Iteration", value);
-		break;
-	case PICTURETYPE_FLATFRAME:
-		workspace->setValue("Stacking/Flat_Iteration", value);
-		break;
-	case PICTURETYPE_OFFSETFRAME:
-		workspace->setValue("Stacking/Offset_Iteration", value);
-		break;
+		switch (type)
+		{
+		case PICTURETYPE_LIGHTFRAME:
+			workspace->setValue("Stacking/Light_Iteration", value);
+			break;
+		case PICTURETYPE_DARKFRAME:
+			workspace->setValue("Stacking/Dark_Iteration", value);
+			break;
+		case PICTURETYPE_FLATFRAME:
+			workspace->setValue("Stacking/Flat_Iteration", value);
+			break;
+		case PICTURETYPE_OFFSETFRAME:
+			workspace->setValue("Stacking/Offset_Iteration", value);
+			break;
+		}
 	}
 }
 
 void StackingParameters::on_kappa_textEdited(const QString &text)
 {
-	double kappa(0.0);
+	bool convertedOK{ false };
+	double kappa{ 0.0 };
 	QLocale locale;
 
-	kappa = locale.toDouble(text);
-	switch (type)
+	kappa = locale.toDouble(text, &convertedOK);
+	if (convertedOK)
 	{
-	case PICTURETYPE_LIGHTFRAME:
-		workspace->setValue("Stacking/Light_Kappa", kappa);
-		break;
-	case PICTURETYPE_DARKFRAME:
-		workspace->setValue("Stacking/Dark_Kappa", kappa);
-		break;
-	case PICTURETYPE_FLATFRAME:
-		workspace->setValue("Stacking/Flat_Kappa", kappa);
-		break;
-	case PICTURETYPE_OFFSETFRAME:
-		workspace->setValue("Stacking/Offset_Kappa", kappa);
-		break;
+		switch (type)
+		{
+		case PICTURETYPE_LIGHTFRAME:
+			workspace->setValue("Stacking/Light_Kappa", kappa);
+			break;
+		case PICTURETYPE_DARKFRAME:
+			workspace->setValue("Stacking/Dark_Kappa", kappa);
+			break;
+		case PICTURETYPE_FLATFRAME:
+			workspace->setValue("Stacking/Flat_Kappa", kappa);
+			break;
+		case PICTURETYPE_OFFSETFRAME:
+			workspace->setValue("Stacking/Offset_Kappa", kappa);
+			break;
+		}
 	}
 }
