@@ -1065,10 +1065,24 @@ bool CStackingEngine::computeSmallestRectangle(DSSRect & rc)
 			}
 			else
 			{
-				lLeft = max(max(lLeft, static_cast<int>(pt1.x())), static_cast<int>(pt2.x()));
-				lRight = min(min(lRight, static_cast<int>(pt4.x())), static_cast<int>(pt3.x()));
-				lTop = max(max(lTop, static_cast<int>(pt1.y())), static_cast<int>(pt3.y()));
-				lBottom = min(min(lBottom, static_cast<int>(pt4.y())), static_cast<int>(pt2.y()));
+				//
+				// Code changes contributed by Peter Wolsley to correct incorrect image cropping
+				// of intersection mode stacking where a meridian flip has been done. 
+				//
+				if (pt1.x() > pt4.x())	// Meridian flipped image
+				{
+					lLeft = max(max(lLeft, static_cast<int>(pt4.x())), static_cast<int>(pt3.x()));
+					lRight = min(min(lRight, static_cast<int>(pt1.x())), static_cast<int>(pt2.x()));
+					lTop = max(max(lTop, static_cast<int>(pt4.y())), static_cast<int>(pt2.y()));
+					lBottom = min(min(lBottom, static_cast<int>(pt1.y())), static_cast<int>(pt3.y()));
+				}
+				else                    // Same orientation as reference frame
+				{
+					lLeft = max(max(lLeft, static_cast<int>(pt1.x())), static_cast<int>(pt2.x()));
+					lRight = min(min(lRight, static_cast<int>(pt4.x())), static_cast<int>(pt3.x()));
+					lTop = max(max(lTop, static_cast<int>(pt1.y())), static_cast<int>(pt3.y()));
+					lBottom = min(min(lBottom, static_cast<int>(pt4.y())), static_cast<int>(pt2.y()));
+				}
 			};
 		};
 	};
