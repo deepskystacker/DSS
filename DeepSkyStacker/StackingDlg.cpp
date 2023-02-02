@@ -2902,6 +2902,12 @@ namespace DSS
 		// User has changed tabs, so switch to the corresponding group
 		// and set the table model for the table view accordingly
 		//
+
+		// Before switching validate that the chosen index is valid
+		if (index > (frameList.groupCount()-1))
+		{
+			index = 0;
+		}
 		if (-1 != index)
 		{
 			switchGroup(index);
