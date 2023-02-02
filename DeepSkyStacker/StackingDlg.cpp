@@ -1969,6 +1969,8 @@ namespace DSS
 	{
 		if (checkEditChanges() && checkWorkspaceChanges())
 		{
+			// Select the main group tab which will in turn select group 0
+			pictureList->tabBar->setCurrentIndex(0);
 			frameList.clear();
 			editStarsPtr->setBitmap(nullptr);
 			m_strShowFile.clear();
@@ -2902,12 +2904,6 @@ namespace DSS
 		// User has changed tabs, so switch to the corresponding group
 		// and set the table model for the table view accordingly
 		//
-
-		// Before switching validate that the chosen index is valid
-		if (index > (frameList.groupCount()-1))
-		{
-			index = 0;
-		}
 		if (-1 != index)
 		{
 			switchGroup(index);
