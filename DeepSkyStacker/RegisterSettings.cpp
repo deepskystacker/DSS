@@ -336,6 +336,12 @@ void RegisterSettings::on_stackingSettings_clicked()
 		dlg.setTabVisibility(pStackingTasks->AreDarkUsed(),
 			pStackingTasks->AreFlatUsed(),
 			pStackingTasks->AreBiasUsed());
+		
+		//
+		// Is comet data available?
+		//
+		if (pStackingTasks->IsCometAvailable())
+			dlg.enableCometStacking(true);
 	}
 	else
 	{
