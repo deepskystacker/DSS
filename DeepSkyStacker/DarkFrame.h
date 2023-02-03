@@ -238,14 +238,14 @@ private :
 	void	GetValidNeighbors(int lX, int lY, HOTPIXELVECTOR & vPixels, int lRadius, BAYERCOLOR BayerColor = BAYER_UNKNOWN);
 
 protected :
-	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, CDSSProgress * pProgress);
+	void	ComputeOptimalDistributionRatio(CMemoryBitmap * pBitmap, CMemoryBitmap * pDark, double & fRatio, ProgressBase * pProgress);
 
-	void	ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, CDSSProgress * pProgress);
-	void	ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, CDSSProgress * pProgress);
+	void	ComputeDarkFactorFromMedian(CMemoryBitmap * pBitmap, double & fHotDark, double & fAmpGlow, ProgressBase * pProgress);
+	void	ComputeDarkFactor(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor, ProgressBase * pProgress);
 	void	ComputeDarkFactorFromHotPixels(CMemoryBitmap * pBitmap, STARVECTOR * pStars, double & fRedFactor, double & fGreenFactor, double & fBlueFactor);
 	void	RemoveContiguousHotPixels(bool bCFA);
-	void	FindHotPixels(CDSSProgress * pProgress);
-	void	FindBadVerticalLines(CDSSProgress * pProgress);
+	void	FindHotPixels(ProgressBase * pProgress);
+	void	FindBadVerticalLines(ProgressBase * pProgress);
 
 public :
 	CDarkFrame(std::shared_ptr<CMemoryBitmap> pMaster = std::shared_ptr<CMemoryBitmap>{})
@@ -262,8 +262,8 @@ public :
 		//m_pMasterDark = pMaster; // pMaster.Addref(); m_pMasterDark.m_p->Release(); m_pMasterDark.m_p = pMaster;
 	}
 
-	bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress * pProgress = nullptr);
-	void InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress = nullptr);
+	bool Subtract(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress = nullptr);
+	void InterpolateHotPixels(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress = nullptr);
 
 	bool IsOk() const
 	{

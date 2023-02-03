@@ -23,7 +23,7 @@ public:
 	~CRunningStackingEngine() = default;
 
 	bool ComputeOffset(CLightFrameInfo& lfi);
-	bool AddImage(CLightFrameInfo& lfi, CDSSProgress* pProgress);
+	bool AddImage(CLightFrameInfo& lfi, ProgressBase* pProgress);
 	bool GetStackedImage(std::shared_ptr<CMemoryBitmap>& rpBitmap)
 	{
 		rpBitmap = m_pPublicBitmap;

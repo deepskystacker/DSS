@@ -7,160 +7,130 @@ namespace Ui {
 
 namespace DSS
 {
-	class QtProgressConsole : public CDSSProgress
+	class ProgressConsole : public ProgressBase
 	{
 	private:
-		LONG m_lTotal1;
-		LONG m_lTotal2;
-		DWORD m_dwStartTime;
-		DWORD m_dwLastTime;
-		LONG m_lLastTotal1;
-		LONG m_lLastTotal2;
-		bool m_bFirstProgress;
-		QString m_strTitle;
-		QString m_strStartText;
-		QString m_strStart2Text;
-		bool m_bTitleDone;
-		bool m_bStartTextDone;
-		bool m_bStart2TextDone;
-		QString m_strLastOut;
-
-	private:
-		void	PrintText(const QString& szText)
-		{
-			if (!szText.isEmpty() && m_strLastOut.compare(szText, Qt::CaseInsensitive) != 0)
-			{
-				_tprintf(_T("%s\n"), szText.toStdWString().c_str());
-				m_strLastOut = szText;
-			}
-		}
+		QTextStream m_out;
+		TERMINAL_OUTPUT_MODE m_style;
+		QString m_strLastSent[3];
 
 	public:
-		QtProgressConsole()
+		ProgressConsole(TERMINAL_OUTPUT_MODE mode) :
+			ProgressBase(),
+			m_out(stdout),
+			m_style(mode)
 		{
-			m_bTitleDone = false;
-			m_bStartTextDone = false;
-			m_bStart2TextDone = false;
 		}
-		virtual ~QtProgressConsole()
+		virtual ~ProgressConsole()
 		{
 			Close();
 		}
 
-		virtual const QString GetStartText() const override
+		virtual void initialise() override{};
+		virtual void applyStart1Text(const QString& strText) override { PrintText(strText, OT_TEXT1); }
+		virtual void applyStart2Text(const QString& strText) override 
 		{
-			return m_strStartText;
+			if(m_total2>0)
+				PrintText(strText, OT_TEXT2); 
 		}
-
-		virtual const QString GetStart2Text() const override
+		virtual void applyProgress1(int lAchieved) override
 		{
-			return m_strStart2Text;
+			PrintText(GetProgress1Text(), OT_PROGRESS1);
 		}
-
-		virtual	void Start(const QString& szTitle, int lTotal1, bool bEnableCancel = true) override
+		virtual void applyProgress2(int lAchieved) override
 		{
-			m_lLastTotal1 = 0;
-			m_lTotal1 = lTotal1;
-			m_dwStartTime = GetTickCount();
-			m_dwLastTime = m_dwStartTime;
-			m_bFirstProgress = true;
-			if (!szTitle.isEmpty())
+			PrintText(GetProgress2Text(), OT_PROGRESS2);
+		}
+		virtual void applyTitleText(const QString& strText) override { PrintText(strText, OT_TITLE); }
+
+		virtual void endProgress2() override {}
+		virtual bool hasBeenCanceled() override { return false; }
+		virtual void closeProgress() { }
+		virtual bool doWarning(const QString& szText) override { return true; }
+		virtual void setProcessorsUsed(int lNrProcessors) override {};
+
+	private:
+		void PrintText(const QString& szText, eOutputType type)
+		{
+			QString singleLineText(szText);
+			singleLineText.replace('\n', ' ');
+
+			switch (g_TerminalOutputMode)
 			{
-				if (m_strTitle.compare(szTitle, Qt::CaseInsensitive) != 0)
-					m_bTitleDone = false;
-				m_strTitle = szTitle;
-				if (!m_bTitleDone)
+			case TERMINAL_OUTPUT_MODE::BASIC:
+				PrintBasic(singleLineText, type, false);
+				break;
+			case TERMINAL_OUTPUT_MODE::COLOURED:
+				PrintBasic(singleLineText, type, true);
+				break;
+			case TERMINAL_OUTPUT_MODE::FORMATTED:
+				PrintFormatted(singleLineText, type);
+				break;
+			}
+		}
+		void PrintBasic(const QString& szText, eOutputType type, bool bColour)
+		{
+			switch(type)
+			{
+			case OT_TITLE:
+				if (m_strLastSent[0].compare(szText) != 0)
 				{
-					PrintText(m_strTitle);
-					m_bTitleDone = true;
+					m_out << (bColour ? "\033[036m" : "") << szText << "\n";
+					m_strLastSent[0] = szText;
 				}
-			}
-		}
-		virtual void Progress1(const QString& szText, int lAchieved1) override
-		{
-			DWORD			dwCurrentTime = GetTickCount();
-			if (!szText.isEmpty())
-			{
-				if (m_strStartText.compare(szText, Qt::CaseInsensitive) != 0)
-					m_bStartTextDone = false;
-				m_strStartText = szText;
-			}
-
-			if (m_bFirstProgress || ((double)(lAchieved1 - m_lLastTotal1) > (m_lTotal1 / 100.0)) || ((dwCurrentTime - m_dwLastTime) > 1000))
-			{
-				m_bFirstProgress = false;
-				m_lLastTotal1 = lAchieved1;
-				m_dwLastTime = dwCurrentTime;
-
-				double			fAchieved = 0.0;
-				if (m_lTotal1)
-					fAchieved = (double)lAchieved1 / (double)m_lTotal1 * 100.0;
-
-				// Update progress
-				if (!m_bStartTextDone && !m_strStartText.isEmpty())
+				break;
+			case OT_TEXT1:
+				if (m_strLastSent[1].compare(szText) != 0)
 				{
-					PrintText(m_strStartText);
-					m_bStartTextDone = true;
+					// Don't echo out if the same as the title text.
+					if (m_strLastSent[1].compare(m_strLastSent[0]) != 0)
+						m_out << (bColour ? "\033[1;33m" : "") << szText << "\n";
+					m_strLastSent[1] = szText;
 				}
-				printf("%.1f %%   \r", fAchieved);
+				break;
+			case OT_TEXT2:
+				if (m_strLastSent[2].compare(szText) != 0)
+				{
+					// Don't echo out if the same as the detail text
+					if(m_strLastSent[2].compare(m_strLastSent[1]) != 0)
+						m_out << (bColour ? "\033[1;33m" : "") << szText << "\n";
+					m_strLastSent[2] = szText;
+				}
+					
+				break;
+			case OT_PROGRESS1:
+			case OT_PROGRESS2:
+				m_out << (bColour ? "\033[32m" : "") << szText << "\r";
+				break;
 			}
+			m_out.flush();
 		}
-
-		virtual void Start2(const QString& szText, int lTotal2) override
+		void PrintFormatted(const QString& szText, eOutputType type)
 		{
-			m_lLastTotal2 = 0;
-			if (!szText.isEmpty())
-			{
-				if (m_strStart2Text.compare(szText, Qt::CaseInsensitive) != 0)
-					m_bStart2TextDone = false;
-
-				m_strStart2Text = szText;
-				if (!m_bStart2TextDone && !m_strStart2Text.isEmpty())
-				{
-					PrintText(m_strStart2Text);
-					m_bStart2TextDone = true;
-				};
-			};
-
-			m_lTotal2 = lTotal2;
-		}
-
-		virtual void Progress2(const QString& szText, int lAchieved2) override
-		{
-			if ((double)(lAchieved2 - m_lLastTotal2) > (m_lTotal2 / 100.0))
-			{
-				m_lLastTotal2 = lAchieved2;
-				if (!szText.isEmpty())
-				{
-					if (m_strStart2Text.compare(szText, Qt::CaseInsensitive) != 0)
-						m_bStart2TextDone = false;
-					m_strStart2Text = szText;
-				};
-
-				double			fAchieved = 0.0;
-				if (m_lTotal2)
-					fAchieved = (double)lAchieved2 / (double)m_lTotal2 * 100.0;
-
-				if (!m_bStart2TextDone && !m_strStart2Text.isEmpty())
-				{
-					PrintText(m_strStart2Text);
-					m_bStart2TextDone = true;
-				};
-				printf("%.1f %%   \r", fAchieved);
-			}
-		}
-
-		virtual void End2() override
-		{
-		}
-
-		virtual bool IsCanceled() override
-		{
-			return false;
-		}
-		virtual bool Close() override
-		{
-			return true;
+			m_out << "\033[7;0H";
+			m_out << "\033[036m--------------------------------------------------------------------------------";
+			m_out << "\033[8;0H";
+			m_out << "\033[2K";
+			m_out << "\033[036m" << GetTitleText();
+			m_out << "\033[9;0H";
+			m_out << "\033[036m--------------------------------------------------------------------------------";
+			m_out << "\033[10;0H";
+			m_out << "\033[2K";
+			m_out << "\033[1;33m" << GetStart1Text();
+			m_out << "\033[11;0H";
+			m_out << "\033[2K";
+			m_out << "\033[1;33m" << GetProgress1Text();
+			m_out << "\033[12;0H";
+			m_out << "\033[2K";
+			m_out << "\033[32m" << (m_jointProgress ? "" : GetStart2Text());
+			m_out << "\033[13;0H";
+			m_out << "\033[2K";
+			m_out << "\033[32m" << (m_jointProgress ? "" : GetProgress2Text());
+			m_out << "\033[14;0H";
+			m_out << "\033[036m--------------------------------------------------------------------------------";
+			m_out << "\033[15;0H";
+			//m_out << "\033[2K";
+			m_out.flush();
 		}
 	};
 }

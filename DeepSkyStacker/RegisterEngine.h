@@ -210,7 +210,7 @@ public:
 	double m_fAngle;
 
 	bool m_bDisabled;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 
 	bool m_bRemoveHotPixels;
 
@@ -247,7 +247,7 @@ public:
 		CFrameInfo::CopyFrom(cbi);
 	}
 
-	explicit CLightFrameInfo(CDSSProgress* const pPrg)
+	explicit CLightFrameInfo(ProgressBase* const pPrg)
 	{
 		Reset();
 		this->SetProgress(pPrg);
@@ -266,7 +266,7 @@ public:
 		m_bRemoveHotPixels = bHotPixels;
 	}
 
-	void SetProgress(CDSSProgress* pProgress)
+	void SetProgress(ProgressBase* pProgress)
 	{
 		m_pProgress = pProgress;
 	}
@@ -286,7 +286,7 @@ public:
 	}
 
 	void RegisterPicture(CMemoryBitmap* pBitmap);
-	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, CDSSProgress * pProgress = nullptr);
+	void RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy = 0.10, bool bRemoveHotPixels = true, bool bApplyMedianFilter = false, ProgressBase * pProgress = nullptr);
 	void SaveRegisteringInfo();
 
 private:
@@ -396,7 +396,7 @@ private :
 	bool						m_bSaveCalibratedDebayered;
 
 private :
-	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile);
+	bool SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, CString& strCalibratedFile);
 
 public :
 	CRegisterEngine()
@@ -410,7 +410,7 @@ public :
 	{
 	};
 
-	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, CDSSProgress * pProgress);
+	bool	RegisterLightFrames(CAllStackingTasks & tasks, bool bForceRegister, ProgressBase * pProgress);
 };
 
 /* ------------------------------------------------------------------- */

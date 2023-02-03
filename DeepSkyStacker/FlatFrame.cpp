@@ -7,7 +7,7 @@
 #include <omp.h>
 
 
-bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress * pProgress)
+bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -97,7 +97,7 @@ bool CFlatFrame::ApplyFlat(std::shared_ptr<CMemoryBitmap> pTarget, CDSSProgress 
 
 /* ------------------------------------------------------------------- */
 
-void CFlatFrame::ComputeFlatNormalization(CDSSProgress* pProgress)
+void CFlatFrame::ComputeFlatNormalization(ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (IsOk() && !m_bComputed)

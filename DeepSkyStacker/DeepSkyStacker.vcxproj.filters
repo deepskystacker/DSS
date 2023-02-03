@@ -598,9 +598,6 @@
     <ClInclude Include="DSSCommon.h">
       <Filter>Kernel</Filter>
     </ClInclude>
-    <ClInclude Include="DSSProgress.h">
-      <Filter>Kernel</Filter>
-    </ClInclude>
     <ClInclude Include="DSSTools.h">
       <Filter>Kernel</Filter>
     </ClInclude>
@@ -786,6 +783,9 @@
     </ClInclude>
     <ClInclude Include="ExceptionHandling.h">
       <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="DSSProgress.h">
+      <Filter>Kernel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1312,9 +1312,6 @@
     <QtMoc Include="RenameGroup.h">
       <Filter>Dialogs\Stacking</Filter>
     </QtMoc>
-    <QtMoc Include="QtProgressDlg.h">
-      <Filter>Dialogs</Filter>
-    </QtMoc>
     <QtMoc Include="SaveEditChanges.h">
       <Filter>Dialogs</Filter>
     </QtMoc>
@@ -1329,6 +1326,9 @@
     </QtMoc>
     <QtMoc Include="BatchStacking.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QtProgressDlg.h">
+      <Filter>Dialogs</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

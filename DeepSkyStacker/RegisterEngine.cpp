@@ -974,10 +974,10 @@ class CComputeLuminanceTask
 public:
 	CGrayBitmap* m_pGrayBitmap;
 	CMemoryBitmap* m_pBitmap;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 
 public:
-	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, CDSSProgress* pPrg) :
+	CComputeLuminanceTask(CMemoryBitmap* pBm, CGrayBitmap* pGb, ProgressBase* pPrg) :
 		m_pGrayBitmap{ pGb },
 		m_pBitmap{ pBm },
 		m_pProgress{ pPrg }
@@ -1254,7 +1254,7 @@ void CLightFrameInfo::RegisterPicture()
 
 /* ------------------------------------------------------------------- */
 
-void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, CDSSProgress* pProgress)
+void CLightFrameInfo::RegisterPicture(LPCTSTR szBitmap, double fMinLuminancy, bool bRemoveHotPixels, bool bApplyMedianFilter, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	Reset();
@@ -1311,7 +1311,7 @@ void CLightFrameInfo::SetBitmap(fs::path path, bool bProcessIfNecessary, bool bF
 
 /* ------------------------------------------------------------------- */
 
-bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress* pProgress, CString& strCalibratedFile)
+bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase* pProgress, CString& strCalibratedFile)
 {
 	bool bResult = false;
 
@@ -1383,7 +1383,7 @@ bool CRegisterEngine::SaveCalibratedLightFrame(const CLightFrameInfo& lfi, std::
 
 #include <future>
 
-bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, CDSSProgress* pProgress)
+bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
@@ -1394,13 +1394,13 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 
 	const QString strText = QCoreApplication::translate("RegisterEngine", "Registering pictures", "IDS_REGISTERING");
 	if (pProgress != nullptr)
-		pProgress->Start(strText, nrRegisteredPictures, true);
+		pProgress->Start1(strText, nrRegisteredPictures, true);
 
 	bResult = tasks.DoAllPreTasks(pProgress);
 
 	// Do it again in case pretasks change the progress
 	if (pProgress != nullptr)
-		pProgress->Start(strText, nrRegisteredPictures, true);
+		pProgress->Start1(strText, nrRegisteredPictures, true);
 
 	for (auto it = std::cbegin(tasks.m_vStacks); it != std::cend(tasks.m_vStacks) && bResult; ++it)
 	{
@@ -1410,7 +1410,7 @@ bool CRegisterEngine::RegisterLightFrames(CAllStackingTasks& tasks, bool bForce,
 		CMasterFrames MasterFrames;
 		MasterFrames.LoadMasters(std::addressof(*it), pProgress);
 
-		const auto readTask = [&bitmaps = it->m_pLightTask->m_vBitmaps, bForce](const size_t bitmapNdx, CDSSProgress* pTaskProgress)
+		const auto readTask = [&bitmaps = it->m_pLightTask->m_vBitmaps, bForce](const size_t bitmapNdx, ProgressBase* pTaskProgress)
 			-> std::tuple<std::shared_ptr<CMemoryBitmap>, bool, std::unique_ptr<CLightFrameInfo>, std::unique_ptr<CBitmapInfo>>
 		{
 			if (bitmapNdx >= bitmaps.size())

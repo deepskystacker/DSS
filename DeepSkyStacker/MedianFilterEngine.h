@@ -18,10 +18,10 @@ public :
 	{
 	private :
 		CInternalMedianFilterEngineT<TType>* m_pEngine = nullptr;
-		CDSSProgress* m_pProgress = nullptr;
+		ProgressBase* m_pProgress = nullptr;
 
 	public :
-		CFilterTask(CInternalMedianFilterEngineT<TType>* peng, CDSSProgress* pprg) :
+		CFilterTask(CInternalMedianFilterEngineT<TType>* peng, ProgressBase* pprg) :
 			m_pEngine{ peng },
 			m_pProgress{ pprg }
 		{}
@@ -45,12 +45,12 @@ public:
 
 	virtual ~CInternalMedianFilterEngineT() {};
 
-	void ApplyFilter(CDSSProgress* pProgress);
+	void ApplyFilter(ProgressBase* pProgress);
 };
 
 
 template <typename TType>
-inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilteredImage(const int lFilterSize, CDSSProgress* pProgress) const
+inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilteredImage(const int lFilterSize, ProgressBase* pProgress) const
 {
 	if (m_pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};
@@ -79,7 +79,7 @@ inline std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<TType>::GetFilter
 
 
 template <typename TType>
-inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilteredImage(int lFilterSize, CDSSProgress* pProgress) const
+inline std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<TType>::GetFilteredImage(int lFilterSize, ProgressBase* pProgress) const
 {
 	if (m_pInBitmap == nullptr)
 		return std::shared_ptr<CMemoryBitmap>{};

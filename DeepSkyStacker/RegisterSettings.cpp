@@ -276,7 +276,7 @@ void RegisterSettings::on_luminanceThreshold_valueChanged(int newValue)
 void RegisterSettings::on_computeDetectedStars_clicked()
 {
 	// Retrieve the first checked light frame of the list
-	DSS::DSSProgressDlg				dlg;
+	DSS::ProgressDlg				dlg;
 	CLightFrameInfo				fi;
 
 	QFileInfo info(firstLightFrame);
@@ -284,7 +284,7 @@ void RegisterSettings::on_computeDetectedStars_clicked()
 
 	QString string = tr("Registering %1", "IDS_REGISTERINGNAME").arg(fileName);
 
-	dlg.Start(string, 0, false);
+	dlg.Start1(string, 0, false);
 	dlg.SetJointProgress(true);
 	fi.RegisterPicture(CString(firstLightFrame.toStdWString().c_str()), static_cast<double>(detectionThreshold) / 100.0, true, medianFilter, &dlg);
 	dlg.SetJointProgress(false);

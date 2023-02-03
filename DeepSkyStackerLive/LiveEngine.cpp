@@ -747,6 +747,16 @@ void CLiveEngine::PostToLog(const QString& text, BOOL bDateTime, BOOL bBold, BOO
 
 /* ------------------------------------------------------------------- */
 
+void CLiveEngine::PostStrippedToLogWithDateStamp(const QString& text)
+{
+	QString strStrippedText{ text };
+	strStrippedText.replace('\n', ' ');
+	strStrippedText += '\n';
+	PostToLog(strStrippedText, TRUE);
+}
+
+/* ------------------------------------------------------------------- */
+
 void CLiveEngine::PostProgress(const QString& szText, LONG lAchieved, LONG lTotal)
 {
 	std::shared_ptr<CLiveEngineMsg>	pMsg = std::make_shared<CLiveEngineMsg>();
@@ -1033,108 +1043,56 @@ void	CLiveEngine::ClearAll()
 	ClearPendingImages();
 };
 
-/* ------------------------------------------------------------------- */
-// DSSProgress methods
-
-const QString CLiveEngine::GetStartText() const
+//////////////////////////////////////////////////////////////////////////
+// ProgressBase
+void CLiveEngine::applyStart1Text(const QString& strText)
 {
-	return m_strProgress1;
-};
-
-/* ------------------------------------------------------------------- */
-
-const QString CLiveEngine::GetStart2Text() const
-{
-	return m_strProgress2;
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CLiveEngine::Start(const QString& szTitle, int lTotal1, bool bEnableCancel)
-{
-	QString text{ szTitle };
-	if (!text.isEmpty())
+	if (m_strLastSent[0].compare(strText) != 0)
 	{
-		m_strProgress1 = szTitle;
-		text.replace('\n', ' ');
-		text += '\n';
-		PostToLog(text, TRUE);
-	};
-	if (lTotal1)
-		m_lTotal1      = lTotal1;
-	m_lAchieved1   = 0;
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CLiveEngine::Progress1(const QString& szText, int lAchieved1)
+		PostStrippedToLogWithDateStamp(strText);
+		m_strLastSent[0] = strText;
+	}
+}
+void CLiveEngine::applyStart2Text(const QString& strText)
 {
-	m_strProgress1 = szText;
-	if (((double)(lAchieved1-m_lAchieved1)/(double)m_lTotal1) > 0.10)
+	if (m_strLastSent[1].compare(strText) != 0)
 	{
-		PostProgress(m_strProgress1, lAchieved1, m_lTotal1);
-		m_lAchieved1 = lAchieved1;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CLiveEngine::Start2(const QString& szText, int lAchieved2)
+		PostStrippedToLogWithDateStamp(strText);
+		m_strLastSent[1] = strText;
+	}
+}
+void CLiveEngine::applyProgress1(int lAchieved)
 {
-	if (!szText.isEmpty())
-	{
-		m_strProgress2 = szText;
-		QString strText(szText);
-		strText.replace(QChar('\n'), QChar(' '));
-		strText += "\n";
-		PostToLog(strText, TRUE);
-	};
-	if (lAchieved2)
-		m_lTotal2      = lAchieved2;
-	m_lAchieved2   = 0;
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CLiveEngine::Progress2(const QString& szText, int lAchieved2)
+	PostProgress(m_strProgress1, lAchieved, m_lTotal1);
+}
+void CLiveEngine::applyProgress2(int lAchieved)
 {
-	if (!szText.isEmpty())
-		m_strProgress2 = szText;
-	if ((((double)(lAchieved2-m_lAchieved2)/(double)m_lTotal2) > 0.10) ||
-		 (lAchieved2 == m_lTotal2))
-	{
-		PostProgress(m_strProgress2, lAchieved2, m_lTotal2);
-		m_lAchieved2 = lAchieved2;
-	};
-};
-
-/* ------------------------------------------------------------------- */
-
-void	CLiveEngine::End2()
+	PostProgress(m_strProgress2, lAchieved, m_lTotal2);
+}
+void CLiveEngine::applyTitleText(const QString& strText)
+{
+	PostStrippedToLogWithDateStamp(strText);
+}
+void CLiveEngine::initialise()
+{
+}
+void CLiveEngine::endProgress2()
 {
 	PostEndProgress();
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CLiveEngine::IsCanceled()
+}
+bool CLiveEngine::hasBeenCanceled()
 {
 	return false;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CLiveEngine::Close()
+}
+void CLiveEngine::closeProgress()
 {
 	PostEndProgress();
-	return true;
-};
-
-/* ------------------------------------------------------------------- */
-
-bool CLiveEngine::Warning(LPCTSTR szText)
+}
+bool CLiveEngine::doWarning(const QString& szText)
 {
 	return true;
-};
+}
+void CLiveEngine::setProcessorsUsed(int lNrProcessors /* = 1 */)
+{
+}
 
-/* ------------------------------------------------------------------- */

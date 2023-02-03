@@ -38,7 +38,7 @@ namespace
 		if (!tasks.m_vStacks.empty())
 		{
 			bool bContinue = true;
-			DSS::DSSProgressDlg dlg;
+			DSS::ProgressDlg dlg;
 			CStackingEngine StackingEngine;
 			CString strReferenceFrame;
 

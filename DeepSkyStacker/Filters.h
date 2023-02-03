@@ -12,7 +12,7 @@ class CImageFilter
 {
 public :
 	virtual ~CImageFilter() = default;
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) = 0;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) = 0;
 };
 
 /* ------------------------------------------------------------------- */
@@ -95,7 +95,7 @@ public:
 		}
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -115,7 +115,7 @@ private :
 
 private :
 	void AnalyzeImage(CMemoryBitmap * pInBitmap, bool bComputeThresholds);
-	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, CDSSProgress* pProgress = nullptr);
+	void ApplyFilterInternal(const CMemoryBitmap* pInBitmap, CMemoryBitmap* pOutBitmap, ProgressBase* pProgress = nullptr);
 
 public :
 	CExtendedMedianImageFilter()
@@ -151,7 +151,7 @@ public :
 		m_bUseRejectThreshold  = false;
 	};
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) override;
 };
 
 /* ------------------------------------------------------------------- */
@@ -177,7 +177,7 @@ public :
 		m_lSize  = lSize;
 	}
 
-	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, CDSSProgress* pProgress = nullptr) override;
+	virtual std::shared_ptr<CMemoryBitmap> ApplyFilter(CMemoryBitmap* pInBitmap, ProgressBase* pProgress = nullptr) override;
 };
 
 #endif

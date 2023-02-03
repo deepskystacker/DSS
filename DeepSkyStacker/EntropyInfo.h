@@ -68,7 +68,7 @@ private:
 	std::vector<float> m_vRedEntropies;
 	std::vector<float> m_vGreenEntropies;
 	std::vector<float> m_vBlueEntropies;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 
 private:
 	void InitSquareEntropies();
@@ -106,7 +106,7 @@ public:
 	const int nrSquaresY() const { return m_lNrSquaresY; }
 	const int windowSize() const { return m_lWindowSize; }
 
-	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, CDSSProgress* pProgress = nullptr)
+	void Init(std::shared_ptr<CMemoryBitmap> pBitmap, int lWindowSize = 10, ProgressBase* pProgress = nullptr)
 	{
 		m_pBitmap = pBitmap;
 		m_lWindowSize = lWindowSize;
