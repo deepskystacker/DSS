@@ -253,13 +253,13 @@ bool CMultitask::GetUseSimd() { return true; }
 
 void CMultiBitmap::DestroyTempFiles() {}
 void CMultiBitmap::SetBitmapModel(const CMemoryBitmap*) {}
-bool CMultiBitmap::AddBitmap(CMemoryBitmap*, CDSSProgress*) { return true; }
-std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(CDSSProgress*) { return std::shared_ptr<CMemoryBitmap>{}; }
+bool CMultiBitmap::AddBitmap(CMemoryBitmap*, ProgressBase*) { return true; }
+std::shared_ptr<CMemoryBitmap> CMultiBitmap::GetResult(ProgressBase*) { return std::shared_ptr<CMemoryBitmap>{}; }
 
 void CYMGToRGB(double, double, double, double, double&, double&, double&) {}
 std::shared_ptr<CMemoryBitmap> CreateBitmap(const CBitmapCharacteristics&) { return std::shared_ptr<CMemoryBitmap>{}; }
-std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+std::shared_ptr<CMemoryBitmap> CGrayMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 
-std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class CDSSProgress*) const { return std::shared_ptr<CMemoryBitmap>{}; }
+std::shared_ptr<CMemoryBitmap> CColorMedianFilterEngineT<unsigned short>::GetFilteredImage(int, class ProgressBase*) const { return std::shared_ptr<CMemoryBitmap>{}; }
 
-void CGrayBitmapT<unsigned short>::RemoveHotPixels(class CDSSProgress*) {}
+void CGrayBitmapT<unsigned short>::RemoveHotPixels(class ProgressBase*) {}

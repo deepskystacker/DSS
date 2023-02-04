@@ -10,7 +10,7 @@
 
 /* ------------------------------------------------------------------- */
 
-bool LoadFrame(LPCTSTR szFile, PICTURETYPE PistureType, CDSSProgress * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool LoadFrame(LPCTSTR szFile, PICTURETYPE PistureType, ProgressBase * pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 bool AreExposureEquals(double fExposure1, double fExposure2);
 
 /* ------------------------------------------------------------------- */
@@ -130,7 +130,7 @@ public:
 
 /* ------------------------------------------------------------------- */
 
-bool GetTaskResult(const CTaskInfo* pTaskInfo, CDSSProgress* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
+bool GetTaskResult(const CTaskInfo* pTaskInfo, ProgressBase* pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap);
 void ClearTaskCache();
 
 /* ------------------------------------------------------------------- */
@@ -187,10 +187,10 @@ public :
 		return (*this);
 	};
 
-	bool	DoOffsetTask(CDSSProgress* const pProgress);
-	bool	DoDarkTask(CDSSProgress* const pProgress);
-	bool	DoFlatTask(CDSSProgress* const pProgress);
-	bool	DoDarkFlatTask(CDSSProgress* const pProgress);
+	bool	DoOffsetTask(ProgressBase* const pProgress);
+	bool	DoDarkTask(ProgressBase* const pProgress);
+	bool	DoFlatTask(ProgressBase* const pProgress);
+	bool	DoDarkFlatTask(ProgressBase* const pProgress);
 };
 
 /* ------------------------------------------------------------------- */
@@ -383,11 +383,11 @@ public :
 			return GetResultMode();
 	}
 
-	bool DoOffsetTasks(CDSSProgress* pProgress);
-	bool DoDarkTasks(CDSSProgress* pProgress);
-	bool DoFlatTasks(CDSSProgress* pProgress);
-	bool DoDarkFlatTasks(CDSSProgress* pProgress);
-	bool DoAllPreTasks(CDSSProgress* pProgress);
+	bool DoOffsetTasks(ProgressBase* pProgress);
+	bool DoDarkTasks(ProgressBase* pProgress);
+	bool DoFlatTasks(ProgressBase* pProgress);
+	bool DoDarkFlatTasks(ProgressBase* pProgress);
+	bool DoAllPreTasks(ProgressBase* pProgress);
 
 	std::int64_t computeNecessaryDiskSpace(const DSSRect& rcOutput);
 	std::int64_t computeNecessaryDiskSpace();

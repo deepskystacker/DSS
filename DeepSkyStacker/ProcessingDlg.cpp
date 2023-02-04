@@ -526,7 +526,7 @@ void CProcessingDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 void	CProcessingDlg::LoadFile(LPCTSTR szFileName)
 {
 	ZFUNCTRACE_RUNTIME();
-	DSS::DSSProgressDlg		dlg;
+	DSS::ProgressDlg		dlg;
 	bool				bOk;
 
 	BeginWaitCursor();
@@ -584,7 +584,7 @@ void CProcessingDlg::OnLoaddsi()
 									strFilter,
 									this);
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::DSSProgressDlg		dlg;
+		DSS::ProgressDlg		dlg;
 
 		if (strBaseDirectory.GetLength())
 			dlgOpen.m_ofn.lpstrInitialDir = strBaseDirectory.GetBuffer(_MAX_PATH);
@@ -698,7 +698,7 @@ void CProcessingDlg::SaveDSImage()
 	dlgOpen.m_ofn.nFilterIndex = filterIndex;
 
 	TCHAR				szBigBuffer[20000] = _T("");
-	DSS::DSSProgressDlg		dlg;
+	DSS::ProgressDlg		dlg;
 
 	dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 	dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);
@@ -801,7 +801,7 @@ void CProcessingDlg::CreateStarMask()
 		dlgStarMask.SetBaseFileName(m_strCurrentFile);
 		if (dlgStarMask.DoModal() == IDOK)
 		{
-			DSS::DSSProgressDlg dlg;
+			DSS::ProgressDlg dlg;
 			CStarMaskEngine starmask;
 
 			dlg.SetJointProgress(true);
@@ -873,7 +873,7 @@ bool CProcessingDlg::SavePictureToFile()
 		dlgOpen.m_ofn.nFilterIndex = dwFilterIndex;
 
 		TCHAR				szBigBuffer[20000] = _T("");
-		DSS::DSSProgressDlg		dlg;
+		DSS::ProgressDlg		dlg;
 
 		dlgOpen.m_ofn.lpstrFile = szBigBuffer;
 		dlgOpen.m_ofn.nMaxFile  = sizeof(szBigBuffer) / sizeof(szBigBuffer[0]);

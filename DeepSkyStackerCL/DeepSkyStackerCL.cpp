@@ -15,6 +15,7 @@ static  CString				g_strOutputFile;
 static  BOOL				g_bForceRegister = FALSE;
 static  TIFFFORMAT			g_TIFFFormat = TF_32BITRGBFLOAT;
 static	TIFFCOMPRESSION		g_TIFFCompression = TC_NONE;
+static	TERMINAL_OUTPUT_MODE g_TerminalOutputMode = TERMINAL_OUTPUT_MODE::FORMATTED;
 static  BOOL				g_bSaveIntermediate = FALSE;
 static  BOOL				g_bSaveCalibrated = FALSE;
 static  BOOL				g_bFITSOutput = FALSE;
@@ -131,6 +132,28 @@ BOOL	DecodeCommandLine(int argc, _TCHAR* argv[])
 				bResult = FALSE;
 			};
 		}
+		else if (!vCommandLine[i].Left(3).CompareNoCase(_T("/OS")))
+		{
+			CString strOutputMode;
+			strOutputMode = vCommandLine[i].Right(vCommandLine[i].GetLength() - 3);
+			if (strOutputMode == _T("0"))
+			{
+				g_TerminalOutputMode = TERMINAL_OUTPUT_MODE::BASIC;
+			}
+			else if (strOutputMode == _T("1"))
+			{
+				g_TerminalOutputMode = TERMINAL_OUTPUT_MODE::COLOURED;
+			}
+			else if (strOutputMode == _T("2"))
+			{
+				g_TerminalOutputMode = TERMINAL_OUTPUT_MODE::FORMATTED;
+			}
+			else
+			{
+				_tprintf(_T("Unrecognized or unsupported output format %s\n"), (LPCTSTR)strOutputMode);
+				bResult = FALSE;
+			};
+		}
 		else
 		{
 			// Check that it is a file
@@ -217,7 +240,7 @@ void SaveBitmap(std::shared_ptr<CMemoryBitmap> pBitmap)
 	if (pBitmap && g_strOutputFile.GetLength())
 	{
 		BOOL					bMonochrome;
-		DSS::QtProgressConsole		progress;
+		DSS::ProgressConsole		progress(g_TerminalOutputMode);
 
 		bMonochrome = pBitmap->IsMonochrome();
 
@@ -309,6 +332,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		_tprintf(_T("           0: no compression (default)\n"));
 		_tprintf(_T("           1: LZW compression\n"));
 		_tprintf(_T("           2: ZIP (Deflate) compression\n"));
+		_tprintf(_T(" /OSx    - Output style\n"));
+		_tprintf(_T("           0: simple\n"));
+		_tprintf(_T("           1: coloured\n"));
+		_tprintf(_T("           2: compact (default)\n"));
 		_tprintf(_T(" /FITS     Output file format is FITS (default is TIFF)\n"));
 		_tprintf(_T("<ListFileName> is the name of a file list saved by DeepSkyStacker\n\n"));
 		_tprintf(_T("Exemples:\n"));
@@ -321,7 +348,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	else
 	{
-		DSS::QtProgressConsole		progress;
+		DSS::ProgressConsole		progress(g_TerminalOutputMode);
 		DSS::FrameList			frameList;
 		BOOL					bContinue = TRUE;
 

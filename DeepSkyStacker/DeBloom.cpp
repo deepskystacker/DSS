@@ -1333,14 +1333,14 @@ void CDeBloom::DeBloom(CMemoryBitmap* pBitmap, std::shared_ptr<C8BitGrayBitmap> 
 }
 
 
-void CDeBloom::CreateBloomMask(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+void CDeBloom::CreateBloomMask(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 {
 	m_pProgress = pProgress;
 	this->m_pMask = CreateMask(pBitmap);
 }
 
 
-void CDeBloom::DeBloomImage(CMemoryBitmap * pBitmap, CDSSProgress * pProgress)
+void CDeBloom::DeBloomImage(CMemoryBitmap * pBitmap, ProgressBase * pProgress)
 {
 	m_pProgress = pProgress;
 	if (static_cast<bool>(m_pMask))

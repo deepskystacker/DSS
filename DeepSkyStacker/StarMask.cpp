@@ -11,7 +11,7 @@
 using namespace Gdiplus;
 
 // Can't be const due to RegisterPicture(pBitmap).
-std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+std::shared_ptr<CMemoryBitmap> CStarMaskEngine::CreateStarMask2(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 {
 	CLightFrameInfo LightFrame;
 

@@ -61,13 +61,13 @@ public:
 		m_pMaster->SetProcessingMethod(m_Method, m_fKappa, m_lNrIterations);
 	}
 
-	void AddToMaster(CMemoryBitmap* pBitmap, CDSSProgress* pProgress)
+	void AddToMaster(CMemoryBitmap* pBitmap, ProgressBase* pProgress)
 	{
 		if (static_cast<bool>(m_pMaster))
 			m_pMaster->AddBitmap(pBitmap, pProgress);
 	}
 
-	std::shared_ptr<CMemoryBitmap> GetMaster(CDSSProgress* const pProgress)
+	std::shared_ptr<CMemoryBitmap> GetMaster(ProgressBase* const pProgress)
 	{
 		std::shared_ptr<CMemoryBitmap> pBitmap;
 

@@ -5,7 +5,7 @@
 
 /* ------------------------------------------------------------------- */
 
-bool CMasterFrames::LoadMasters(const CStackingInfo* pStackingInfo, CDSSProgress * pProgress)
+bool CMasterFrames::LoadMasters(const CStackingInfo* pStackingInfo, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = true;
@@ -41,7 +41,7 @@ bool CMasterFrames::LoadMasters(const CStackingInfo* pStackingInfo, CDSSProgress
 
 /* ------------------------------------------------------------------- */
 
-void	CMasterFrames::ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress)
+void	CMasterFrames::ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Subtracting Offset Frame");
@@ -57,7 +57,7 @@ void	CMasterFrames::ApplyMasterOffset(std::shared_ptr<CMemoryBitmap> pBitmap, CD
 	};
 }
 
-void CMasterFrames::ApplyMasterDark(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR*, CDSSProgress * pProgress)
+void CMasterFrames::ApplyMasterDark(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR*, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	ZTRACE_RUNTIME("Subtracting Dark Frame");
@@ -66,7 +66,7 @@ void CMasterFrames::ApplyMasterDark(std::shared_ptr<CMemoryBitmap> pBitmap, cons
 		m_MasterDark.Subtract(pBitmap, pProgress);
 }
 
-void	CMasterFrames::ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress)
+void	CMasterFrames::ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (m_MasterFlat.IsOk())
@@ -81,14 +81,14 @@ void	CMasterFrames::ApplyMasterFlat(std::shared_ptr<CMemoryBitmap> pBitmap, CDSS
 	}
 }
 
-void	CMasterFrames::ApplyHotPixelInterpolation(std::shared_ptr<CMemoryBitmap> pBitmap, CDSSProgress * pProgress)
+void	CMasterFrames::ApplyHotPixelInterpolation(std::shared_ptr<CMemoryBitmap> pBitmap, ProgressBase * pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	if (m_MasterDark.IsOk())
 		m_MasterDark.InterpolateHotPixels(pBitmap, pProgress);
 }
 
-void CMasterFrames::ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR* pStars, CDSSProgress* pProgress)
+void CMasterFrames::ApplyAllMasters(std::shared_ptr<CMemoryBitmap> pBitmap, const STARVECTOR* pStars, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 	CDeBloom debloom;

@@ -60,7 +60,7 @@ bool	LoadPCLImageInMemoryBitmap(CMemoryBitmap * pBitmap, PCLImage * pImage, int 
 
 /* ------------------------------------------------------------------- */
 
-bool	LoadPCLPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, CDSSProgress * pProgress)
+bool	LoadPCLPicture(LPCTSTR szFileName, CMemoryBitmap ** ppBitmap, ProgressBase * pProgress)
 {
 	bool					bResult = false;
 	CString					strFileName = szFileName;

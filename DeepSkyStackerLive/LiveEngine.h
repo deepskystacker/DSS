@@ -464,7 +464,7 @@ typedef LIVEENGINEMSGLIST::iterator				LIVEENGINEMSGITERATOR;
 
 /* ------------------------------------------------------------------- */
 
-class CLiveEngine : public CDSSProgress
+class CLiveEngine : public ProgressBase
 {
 private :
 	CComAutoCriticalSection		m_CriticalSection;
@@ -489,6 +489,7 @@ private :
 	BOOL	GetMessage(std::shared_ptr<CLiveEngineMsg>& rMsg, LIVEENGINEMSGLIST & msglist);
 	void	PostOutMessage(const std::shared_ptr<CLiveEngineMsg>& pMsg);
 	void	PostToLog(const QString& text, BOOL bDateTime = FALSE, BOOL bBold = FALSE, BOOL bItalic = FALSE, COLORREF crColor = RGB(0, 0, 0));
+	void	PostStrippedToLogWithDateStamp(const QString& text);
 	void	PostProgress(const QString& szText, LONG lAchieved, LONG lTotal);
 	void	PostEndProgress();
 	void	PostUpdatePending();
@@ -538,24 +539,38 @@ public :
 
 // DSSProgress methods
 private :
-	QString						m_strProgress1;
-	QString						m_strProgress2;
-	LONG						m_lTotal1,
-								m_lTotal2;
-	LONG						m_lAchieved1,
-								m_lAchieved2;
+	QString m_strProgress1;
+	QString m_strProgress2;
+	LONG m_lTotal1;
+	LONG m_lTotal2;
+	LONG m_lAchieved1;
+	LONG m_lAchieved2;
+	QString m_strLastSent[2];
 
-public :
-	virtual const QString GetStartText() const;
-	virtual const QString GetStart2Text() const;
-	virtual void Start(const QString& szTitle, int lTotal1, bool bEnableCancel = true);
-	virtual void Progress1(const QString& szText, int lAchieved1);
-	virtual void Start2(const QString& szText, int lTotal2);
-	virtual void Progress2(const QString& szText, int lAchieved2);
-	virtual void	End2();
-	virtual bool	IsCanceled();
-	virtual bool	Close();
-	virtual bool	Warning(LPCTSTR szText);
+	// ProgressBase
+	virtual void applyStart1Text(const QString& strText) override;
+	virtual void applyStart2Text(const QString& strText) override;
+	virtual void applyProgress1(int lAchieved) override;
+	virtual void applyProgress2(int lAchieved) override;
+	virtual void applyTitleText(const QString& strText) override;
+	virtual void initialise() override;
+	virtual void endProgress2() override;
+	virtual bool hasBeenCanceled() override;
+	virtual void closeProgress() override;
+	virtual bool doWarning(const QString& szText) override;
+	virtual void setProcessorsUsed(int lNrProcessors = 1) override;
+
+private:
+	enum eOutputType
+	{
+		OT_TITLE = 0,
+		OT_HEADING,
+		OT_DETAIL,
+		OT_PROGRESS,
+		OT_MAX,
+	};
+
+	QString m_strLastOut[OT_MAX];
 };
 
 /* ------------------------------------------------------------------- */

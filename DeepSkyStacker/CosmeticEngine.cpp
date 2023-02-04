@@ -13,7 +13,7 @@ private:
 	std::shared_ptr<CMemoryBitmap> m_pBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pMedian;
 	std::shared_ptr<CMemoryBitmap> m_pDelta;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 	CCosmeticStats m_Stats;
 	double m_fThreshold;
 	bool m_bHot;
@@ -68,7 +68,7 @@ private:
 	}
 
 public:
-	CDetectCosmeticTask(std::shared_ptr<CMemoryBitmap> pB, std::shared_ptr<CMemoryBitmap> pM, std::shared_ptr<CMemoryBitmap> pD, bool bHot, double fThr, CDSSProgress* pPr) :
+	CDetectCosmeticTask(std::shared_ptr<CMemoryBitmap> pB, std::shared_ptr<CMemoryBitmap> pM, std::shared_ptr<CMemoryBitmap> pD, bool bHot, double fThr, ProgressBase* pPr) :
 		m_pBitmap{ pB },
 		m_pMedian{ pM },
 		m_pDelta{ pD },
@@ -178,7 +178,7 @@ private:
 	std::shared_ptr<CMemoryBitmap> m_pOutBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pOrgBitmap;
 	std::shared_ptr<CMemoryBitmap> m_pDelta;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 	CPostCalibrationSettings m_pcs;
 	int m_lWidth;
 	int m_lHeight;
@@ -232,7 +232,7 @@ private:
 	}
 
 public:
-    CCleanCosmeticTask(std::shared_ptr<CMemoryBitmap> pOut, std::shared_ptr<CMemoryBitmap> pOrg, std::shared_ptr<CMemoryBitmap> pD, const CPostCalibrationSettings& pcs, CDSSProgress* pPr) :
+    CCleanCosmeticTask(std::shared_ptr<CMemoryBitmap> pOut, std::shared_ptr<CMemoryBitmap> pOrg, std::shared_ptr<CMemoryBitmap> pD, const CPostCalibrationSettings& pcs, ProgressBase* pPr) :
 		m_pOutBitmap{ pOut },
 		m_pOrgBitmap{ pOrg },
 		m_pDelta{ pD },
@@ -491,7 +491,7 @@ void CCleanCosmeticTask::ComputeGaussian(int x, int y, int lFilterSize, double& 
 }
 
 
-std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CDSSProgress* const pProgress)
+std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
@@ -579,7 +579,7 @@ std::shared_ptr<CMemoryBitmap> ApplyCosmetic(std::shared_ptr<CMemoryBitmap> pBit
 }
 
 
-void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, CDSSProgress* const pProgress)
+void SimulateCosmetic(std::shared_ptr<CMemoryBitmap> pBitmap, const CPostCalibrationSettings& pcs, CCosmeticStats& cs, ProgressBase* const pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 

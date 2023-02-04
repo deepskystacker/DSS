@@ -748,7 +748,7 @@ void CStackingEngine::ComputeMissingCometPositions()
 // Returns:
 //   true:  offsets have been computed.
 //   false: offset calculation was stopped by pressing "Cancel".
-bool computeOffsets(CStackingEngine* const pStackingEngine, CDSSProgress* const pProg, const int nrBitmaps)
+bool computeOffsets(CStackingEngine* const pStackingEngine, ProgressBase* const pProg, const int nrBitmaps)
 {
 	ZFUNCTRACE_RUNTIME();
 	const int nrProcessors = CMultitask::GetNrProcessors();
@@ -823,7 +823,7 @@ void CStackingEngine::ComputeOffsets()
 
 	const int lLast = static_cast<int>(m_vBitmaps.size() * m_fKeptPercentage / 100.0);
 	if (m_pProgress)
-		m_pProgress->Start(strText, lLast, false);
+		m_pProgress->Start1(strText, lLast, false);
 
 	// The first bitmap is the best one
 	if (m_vBitmaps.size() > 1)
@@ -1127,7 +1127,7 @@ void CStackingEngine::ComputeBitmap()
 
 			const QString strText(QCoreApplication::translate("StackingEngine", "Computing Final Picture (%1)", "IDS_COMPUTINGMEDIANLIGHT").arg(strMethod));
 
-			m_pProgress->Start(strText, 1, true);
+			m_pProgress->Start1(strText, 1, true);
 			m_pProgress->Progress1(strText, 0);
 			m_pProgress->SetJointProgress(true);
 		}
@@ -1228,7 +1228,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 
 		strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Compute adjustment", "IDS_STACKING_COMPUTINGADJUSTMENT");
 		if (m_pProgress)
-			m_pProgress->Start(strText, static_cast<int>(m_vPixelTransforms.size()), false);
+			m_pProgress->Start1(strText, static_cast<int>(m_vPixelTransforms.size()), false);
 
 		int lNrBitmaps = 0;
 		for (const CPixelTransform& PixTransform : m_vPixelTransforms)
@@ -1292,7 +1292,7 @@ bool CStackingEngine::AdjustBayerDrizzleCoverage()
 		if (m_pProgress != nullptr)
 		{
 			strText = QCoreApplication::translate("StackingEngine", "Stacking - Adjust Bayer - Apply adjustment", "IDS_STACKING_APPLYINGADJUSTMENT");
-			m_pProgress->Start(strText, 2, false);
+			m_pProgress->Start1(strText, 2, false);
 			strText = QCoreApplication::translate("StackingEngine", "Compute maximum adjustment", "IDS_STACKING_COMPUTEMAXADJUSTMENT");
 			m_pProgress->Start2(strText, m_rcResult.width() * m_rcResult.height());
 		};
@@ -1627,7 +1627,7 @@ class CStackTask
 {
 private:
 	CStackingEngine* m_pStackingEngine;
-	CDSSProgress* m_pProgress;
+	ProgressBase* m_pProgress;
 	std::vector<QPoint> m_vLockedPixels;
 
 public:
@@ -1647,7 +1647,7 @@ public:
 public:
 	CStackTask() = delete;
 	~CStackTask() = default;
-	CStackTask(CMemoryBitmap* pBitmap, CDSSProgress* pProgress) :
+	CStackTask(CMemoryBitmap* pBitmap, ProgressBase* pProgress) :
 		m_pBitmap{ pBitmap },
 		m_pProgress{ pProgress }
 	{}
@@ -2208,7 +2208,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 						m_pLightTask->m_Method = MBP_FASTAVERAGE;
 					}
 
-					const auto readTask = [this, pStackingInfo, firstBitmap = m_vBitmaps.cbegin()](const size_t lightTaskNdx, CDSSProgress* pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
+					const auto readTask = [this, pStackingInfo, firstBitmap = m_vBitmaps.cbegin()](const size_t lightTaskNdx, ProgressBase* pProgress) -> std::pair<std::shared_ptr<CMemoryBitmap>, int>
 					{
 						if (lightTaskNdx >= pStackingInfo->m_pLightTask->m_vBitmaps.size())
 							return { {}, -1 };
@@ -2398,7 +2398,7 @@ bool CStackingEngine::StackAll(CAllStackingTasks& tasks, std::shared_ptr<CMemory
 
 /* ------------------------------------------------------------------- */
 
-bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
+bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, ProgressBase* const pProgress, std::shared_ptr<CMemoryBitmap>& rpBitmap)
 {
 	ZFUNCTRACE_RUNTIME();
 	bool bResult = false;
@@ -2430,14 +2430,14 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 
 		const QString strText(QCoreApplication::translate("StackingEngine", "Stacking", "IDS_STACKING"));
 		if (pProgress != nullptr)
-			pProgress->Start(strText, m_lNrCurrentStackable, true);
+			pProgress->Start1(strText, m_lNrCurrentStackable, true);
 
 		// 3. do all pre-tasks (the one not already done by the registering process)
 		bResult = m_lNrStackable != 0 && tasks.DoAllPreTasks(pProgress);
 
 		// Again - in case pretasks change the progress settings
 		if (pProgress != nullptr)
-			pProgress->Start(strText, m_lNrCurrentStackable+1, true);	// SCS: Add one so we don't sit at 100% whilst processing the last one.
+			pProgress->Start1(strText, m_lNrCurrentStackable+1, true);	// SCS: Add one so we don't sit at 100% whilst processing the last one.
 
 		// 4. Stack everything
 		if (bResult)
@@ -2479,7 +2479,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 				m_lNrCurrentStackable = m_lNrStackable;
 
 				if (pProgress != nullptr)
-					pProgress->Start(strText, m_lNrCurrentStackable, true);
+					pProgress->Start1(strText, m_lNrCurrentStackable, true);
 
 				// Stack again but remove the comet before stacking
 				tasks.ResetTasksStatus();
@@ -2512,7 +2512,7 @@ bool CStackingEngine::StackLightFrames(CAllStackingTasks& tasks, CDSSProgress* c
 
 /* ------------------------------------------------------------------- */
 
-void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, CDSSProgress* pProgress)
+void CStackingEngine::ComputeOffsets(CAllStackingTasks& tasks, ProgressBase* pProgress)
 {
 	ZFUNCTRACE_RUNTIME();
 
