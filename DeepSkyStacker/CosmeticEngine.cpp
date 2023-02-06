@@ -116,9 +116,6 @@ void CDetectCosmeticTask::doProcess()
 	int nrColdPixels = 0;
 	int progress = 0;
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 #pragma omp parallel for schedule(static, 100) default(none) reduction(+: nrHotPixels, nrColdPixels) if(nrProcessors > 1)
 	for (int row = 0; row < height; ++row)
 	{
@@ -166,9 +163,6 @@ void CDetectCosmeticTask::doProcess()
 
 	m_Stats.m_lNrDetectedHotPixels += nrHotPixels;
 	m_Stats.m_lNrDetectedColdPixels += nrColdPixels;
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 
@@ -264,9 +258,6 @@ void CCleanCosmeticTask::process()
 	const int nrProcessors = CMultitask::GetNrProcessors();
 	int progress = 0;
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 #pragma omp parallel for schedule(guided, 100) default(none) if(nrProcessors > 1)
 	for (int row = 0; row < m_lHeight; ++row)
 	{
@@ -284,9 +275,6 @@ void CCleanCosmeticTask::process()
 				FixColdPixel(col, row);
 		}
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 void CCleanCosmeticTask::ComputeMedian(int x, int y, int lFilterSize, double& fGray)

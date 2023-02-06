@@ -13,9 +13,6 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::process()
 	const size_t filterSize = m_pEngine->m_lFilterSize;
 	int progress = 0;
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 	AvxImageFilter avxFilter(m_pEngine);
 	std::vector<T> values((filterSize * 2 + 1) * (filterSize * 2 + 1));
 
@@ -31,9 +28,6 @@ void CInternalMedianFilterEngineT<T>::CFilterTask::process()
 			this->processNonAvx(row, endRow, values);
 		}
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 template <typename T>

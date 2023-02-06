@@ -41,8 +41,7 @@ namespace DSS
 		virtual bool hasBeenCanceled() override;
 		virtual void closeProgress() override;
 		virtual bool doWarning(const QString& szText) override;
-		virtual void setProcessorsUsed(int lNrProcessors = 1) override;
-
+		virtual void applyProcessorsUsed(int nCount) override;
 
 	private slots:
 		void cancelPressed();

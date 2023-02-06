@@ -997,9 +997,6 @@ void CComputeLuminanceTask::process()
 	int progress = 0;
 	constexpr int lineBlockSize = 20;
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 	AvxLuminance avxLuminance{ *m_pBitmap, *m_pGrayBitmap };
 
 #pragma omp parallel for schedule(static, 5) default(none) firstprivate(avxLuminance) if(nrProcessors > 1)
@@ -1014,9 +1011,6 @@ void CComputeLuminanceTask::process()
 			processNonAvx(row, endRow);
 		}
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 void CComputeLuminanceTask::processNonAvx(const int lineStart, const int lineEnd)

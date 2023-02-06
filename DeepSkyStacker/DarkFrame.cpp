@@ -1642,9 +1642,6 @@ void CFindHotPixelTask1::process()
 	const int width = m_pBitmap->RealWidth();
 	int progress = 0;
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 	threadLocals threadVars(m_pBitmap.get());
 
 #pragma omp parallel default(none) firstprivate(threadVars) if(nrProcessors > 1)
@@ -1670,9 +1667,6 @@ void CFindHotPixelTask1::process()
 			m_RGBHistogram.AddValues(threadVars.RGBHistogram);
 		}
 	} // omp parallel
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 

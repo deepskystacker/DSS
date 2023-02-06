@@ -45,7 +45,6 @@ namespace DSS
 
 		virtual ~ProgressBase() = default;
 
-		void SetNrUsedProcessors(int lNrProcessors = 1);
 		void Start1(const QString& szTitle, int lTotal1, bool bEnableCancel = true);
 		bool Progress1(const QString& szText, int lAchieved1);
 		void Start2(const QString& szText, int lTotal2);
@@ -68,6 +67,9 @@ namespace DSS
 		bool Progress1(int lAchieved1) { return Progress1(m_strEmptyString, lAchieved1); }
 		bool Progress2(int lAchieved2) { return Progress2(m_strEmptyString, lAchieved2); }
 
+	protected:
+		void UpdateProcessorsUsed();
+
 	protected: // Pure virtual - implementation of the progress bar will fill these in.
 		virtual void applyStart1Text(const QString& strText) = 0;
 		virtual void applyStart2Text(const QString& strText) = 0;
@@ -79,7 +81,7 @@ namespace DSS
 		virtual bool hasBeenCanceled() = 0;
 		virtual void closeProgress() = 0;
 		virtual bool doWarning(const QString& szText) = 0;
-		virtual void setProcessorsUsed(int lNrProcessors) = 0;
+		virtual void applyProcessorsUsed(int nCount) = 0;
 	};
 }
 /* ------------------------------------------------------------------- */

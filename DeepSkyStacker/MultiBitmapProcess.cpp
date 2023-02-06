@@ -201,9 +201,6 @@ void CCombineTask::process()
 	std::vector<void*> scanLines(nrBitmaps, nullptr);
 	AvxOutputComposition avxOutputComposition(*m_pMultiBitmap, *m_pBitmap);
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 	const auto handleError = [](const auto& errorMessage, const auto flags) -> void
 	{
 #if defined(_CONSOLE)
@@ -262,9 +259,6 @@ void CCombineTask::process()
 			handleError(errorMessage, MB_OK | MB_ICONSTOP);
 		}
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 /* ------------------------------------------------------------------- */

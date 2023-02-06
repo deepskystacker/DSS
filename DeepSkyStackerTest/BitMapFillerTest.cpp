@@ -368,7 +368,7 @@ public:
 	virtual bool hasBeenCanceled() override { return false; }
 	virtual void closeProgress() override { }
 	virtual bool doWarning(const QString& szText) override { return true; }
-	virtual void setProcessorsUsed(int lNrProcessors) override {}
+	virtual void applyProcessorsUsed(int nCount) override {};
 };
 
 TEMPLATE_TEST_CASE("BitmapFiller progress check", "[Bitmap][BitmapFiller][progress]", AvxBitmapFiller, NonAvxBitmapFiller)

@@ -661,10 +661,7 @@ bool CTIFFWriter::Write()
 		{
 			const int nrProcessors = CMultitask::GetNrProcessors();
 			if (m_pProgress)
-			{
 				m_pProgress->Start2(h);
-				m_pProgress->SetNrUsedProcessors(nrProcessors);
-			}
 
 			auto* byteBuff = static_cast<std::uint8_t*>(buff);
 			auto* shortBuff = static_cast<std::uint16_t*>(buff);
@@ -762,9 +759,6 @@ bool CTIFFWriter::Write()
 				if (m_pProgress != nullptr && 0 == omp_get_thread_num()) // Are we on the master thread? Without OPENMP omp_get_thread_num() returns always 0.
 					m_pProgress->Progress2( (row * nrProcessors) / 2);	// Half the progress on the conversion, the other below on the writing.
 			};
-
-			if (m_pProgress)
-				m_pProgress->SetNrUsedProcessors();
 
 			//
 			// Write the image out as Strips (i.e. not scanline by scanline)

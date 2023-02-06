@@ -47,7 +47,7 @@ namespace DSS
 		virtual bool hasBeenCanceled() override { return false; }
 		virtual void closeProgress() { }
 		virtual bool doWarning(const QString& szText) override { return true; }
-		virtual void setProcessorsUsed(int lNrProcessors) override {};
+		virtual void applyProcessorsUsed(int nCount) override {};
 
 	private:
 		void PrintText(const QString& szText, eOutputType type)

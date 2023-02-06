@@ -1,6 +1,7 @@
 #include <stdafx.h>
 #include "DSSProgress.h"
 #include "boost/winapi/time.hpp"
+#include "Multitask.h"
 
 using namespace DSS;
 
@@ -19,6 +20,7 @@ void ProgressBase::Start1(const QString& szTitle, int lTotal1, bool bEnableCance
 		m_strLastOut[OT_TITLE] = szTitle;
 		applyTitleText(GetTitleText());
 	}
+	UpdateProcessorsUsed();
 	initialise();
 }
 
@@ -35,7 +37,8 @@ void ProgressBase::Start2(const QString& szText, int lTotal2)
 
 	if (m_jointProgress)
 		Start1(GetStart2Text(), m_total2, m_enableCancel);
-		//Start(GetTitleText(), m_total2, m_enableCancel);
+	
+	UpdateProcessorsUsed();
 }
 
 bool ProgressBase::Progress1(const QString& szText, int lAchieved1)
@@ -63,6 +66,7 @@ bool ProgressBase::Progress1(const QString& szText, int lAchieved1)
 		m_strLastOut[OT_PROGRESS1] = QString("%1%").arg(percentage, 0, 'f', 0);
 		applyProgress1(lAchieved1);
 	}
+	UpdateProcessorsUsed();
 	return true;
 }
 
@@ -106,6 +110,7 @@ bool ProgressBase::Progress2(const QString& szText, int lAchieved2)
 		m_strLastOut[OT_PROGRESS2] = QString("%1%").arg(percentage, 0, 'f', 0);
 		applyProgress2(lAchieved2);
 	}
+	UpdateProcessorsUsed();
 
 	return true;
 }
@@ -113,6 +118,7 @@ bool ProgressBase::Progress2(const QString& szText, int lAchieved2)
 void ProgressBase::End2()
 {
 	Progress2(m_total2);	// Set to 100% is ending.
+	UpdateProcessorsUsed();
 	endProgress2();
 }
 bool ProgressBase::IsCanceled()
@@ -127,7 +133,8 @@ bool ProgressBase::Warning(const QString& szText)
 {
 	return doWarning(szText);
 }
-void ProgressBase::SetNrUsedProcessors(int lNrProcessors /* = 1 */)
+void ProgressBase::UpdateProcessorsUsed()
 {
-	setProcessorsUsed(lNrProcessors);
+	int nCurrentThreadCount = CMultitask::GetNrCurrentOmpThreads();
+	applyProcessorsUsed(nCurrentThreadCount);
 }

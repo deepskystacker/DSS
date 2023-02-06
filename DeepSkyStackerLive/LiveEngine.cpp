@@ -1092,7 +1092,4 @@ bool CLiveEngine::doWarning(const QString& szText)
 {
 	return true;
 }
-void CLiveEngine::setProcessorsUsed(int lNrProcessors /* = 1 */)
-{
-}
 

@@ -11,7 +11,6 @@ void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
 	{
 		const QString strText(QCoreApplication::translate("BitmapBase", "Detecting hot pixels", "IDS_REMOVINGHOTPIXELS"));
 		pProgress->Start2(strText, m_lHeight);
-		pProgress->SetNrUsedProcessors(nrProcessors);
 	};
 
 	const int height = this->Height();
@@ -50,10 +49,7 @@ void CGrayBitmapT<T>::RemoveHotPixels(ProgressBase* pProgress)
 		this->m_vPixels[hotOffset] = 0;
 
 	if (pProgress != nullptr)
-	{
-		pProgress->SetNrUsedProcessors(1);
 		pProgress->End2();
-	}
 }
 
 template void CGrayBitmapT<std::uint8_t>::RemoveHotPixels(ProgressBase*);

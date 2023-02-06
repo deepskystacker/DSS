@@ -93,6 +93,7 @@ void ProgressDlg::setTimeRemaining(const QString& strText)
 	m_ui->TimeRemaining->setText(strText);
 	QApplication::processEvents();
 }
+
 //////////////////////////////////////////////////////////////////////////
 // ProgressBase
 void ProgressDlg::initialise()
@@ -109,14 +110,6 @@ void ProgressDlg::initialise()
 	raise();
 	show();
 	QApplication::processEvents();
-}
-
-void ProgressDlg::setProcessorsUsed(int lNrProcessors/*=1*/)
-{
-	if (lNrProcessors == 1)
-		m_ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processor Used"));
-	else
-		m_ui->Processors->setText(QString::number(lNrProcessors) + tr(" Processors Used"));
 }
 
 void ProgressDlg::applyStart1Text(const QString& strText)
@@ -191,6 +184,15 @@ void ProgressDlg::applyProgress1(int lAchieved)
 void ProgressDlg::applyProgress2(int lAchieved)
 {
 	m_ui->ProgressBar2->setValue(lAchieved);
+	QApplication::processEvents();
+}
+
+void ProgressDlg::applyProcessorsUsed(int nCount)
+{
+	if (nCount == 1)
+		m_ui->Processors->setText(QString::number(nCount) + tr(" Processor Used"));
+	else
+		m_ui->Processors->setText(QString::number(nCount) + tr(" Processors Used"));
 	QApplication::processEvents();
 }
 

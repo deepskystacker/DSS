@@ -23,9 +23,6 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBa
 	const int height = pBitmap->Height();
 	const auto nrProcessors = CMultitask::GetNrProcessors();
 
-	if (pProgress != nullptr)
-		pProgress->SetNrUsedProcessors(nrProcessors);
-
 #pragma omp parallel default(none) shared(redHisto, greenHisto, blueHisto) firstprivate(avxHistogram, redLocalHist, greenLocalHist, blueLocalHist) if(nrProcessors > 1)
 	{
 		constexpr int Bulksize = 10;
@@ -78,9 +75,6 @@ void CBackgroundCalibration::ompCalcHistogram(CMemoryBitmap* pBitmap, ProgressBa
 				}
 		}
 	} // omp parallel
-
-	if (pProgress != nullptr)
-		pProgress->SetNrUsedProcessors(1);
 }
 
 void CBackgroundCalibration::ComputeBackgroundCalibration(CMemoryBitmap* pBitmap, bool bFirst, ProgressBase* pProgress)

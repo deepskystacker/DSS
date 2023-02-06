@@ -1507,10 +1507,7 @@ void CSubtractTask::process()
 	const int nrProcessors = CMultitask::GetNrProcessors();
 
 	if (m_pProgress != nullptr)
-	{
 		m_pProgress->Start2(height);
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-	}
 
 	const int extraWidth = m_fXShift == 0 ? 0 : static_cast<int>(std::abs(m_fXShift) + 0.5);
 	const int width = m_pTarget->RealWidth() - extraWidth;
@@ -1592,10 +1589,7 @@ void CSubtractTask::process()
 	}
 
 	if (m_pProgress != nullptr)
-	{
-		m_pProgress->SetNrUsedProcessors();
 		m_pProgress->End2();
-	}
 }
 
 

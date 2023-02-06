@@ -753,9 +753,6 @@ bool computeOffsets(CStackingEngine* const pStackingEngine, ProgressBase* const 
 	ZFUNCTRACE_RUNTIME();
 	const int nrProcessors = CMultitask::GetNrProcessors();
 
-	if (pProg != nullptr)
-		pProg->SetNrUsedProcessors(nrProcessors);
-
 	std::atomic_bool stop{ false };
 	std::atomic<int> nLoopCount{ 1 };
 	const QString strText(QCoreApplication::translate("StackingEngine", "Computing offsets", "IDS_COMPUTINGOFFSETS"));
@@ -797,10 +794,6 @@ bool computeOffsets(CStackingEngine* const pStackingEngine, ProgressBase* const 
 
 		++nLoopCount; // Note: For atomic<> ++x is faster than x++.
 	}
-
-	if (pProg != nullptr)
-		pProg->SetNrUsedProcessors();
-
 	return !stop;
 }
 
@@ -1666,9 +1659,6 @@ void CStackTask::process()
 	int progress = 0;
 	std::atomic_bool runOnlyOnce{ false };
 
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors(nrProcessors);
-
 	AvxStacking avxStacking(0, 0, *m_pBitmap, *m_pTempBitmap, m_rcResult, *m_pAvxEntropy);
 
 #pragma omp parallel for default(none) firstprivate(avxStacking) shared(runOnlyOnce) if(nrProcessors > 1) // No "schedule" clause gives fastest result.
@@ -1689,9 +1679,6 @@ void CStackTask::process()
 		if (omp_get_thread_num() == 0 && m_pProgress != nullptr)
 			m_pProgress->Progress2(progress += nrProcessors * lineBlockSize);
 	}
-
-	if (m_pProgress != nullptr)
-		m_pProgress->SetNrUsedProcessors();
 }
 
 void CStackTask::processNonAvx(const int lineStart, const int lineEnd)
