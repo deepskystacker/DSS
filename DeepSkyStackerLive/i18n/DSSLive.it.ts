@@ -268,23 +268,23 @@
     </message>
     <message>
         <location filename="../../DeepSkyStacker/FrameList.cpp" line="619"/>
-        <source>Master dark used and more than one dark loaded</source>
-        <translation>Master Dark usato, ma più di un Dark è stato caricato</translation>
+        <source>A Master Dark must be the only Dark frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DeepSkyStacker/FrameList.cpp" line="624"/>
-        <source>Master dark flat used and more than one dark flat loaded</source>
-        <translation>Master Dark-Flat usato, ma più di un Dark-Flat è stato caricato</translation>
+        <source>A Master Dark Flat must be the only Dark Flat frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DeepSkyStacker/FrameList.cpp" line="629"/>
-        <source>Master flat used and more than one flat loaded</source>
-        <translation>Master Flat usato, ma più di un Flat è stato caricato</translation>
+        <source>A Master Flat must be the only Flat frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DeepSkyStacker/FrameList.cpp" line="634"/>
-        <source>Master offset used and more than one offset loaded</source>
-        <translation>Master Offset usato, ma più di un Offset è stato caricato</translation>
+        <source>A Master Offset must be the only Offset frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../DeepSkyStacker/FrameInfo.h" line="154"/>
@@ -521,13 +521,13 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         <translation>Allineo %1 (%2 stelle)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1048"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1050"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Calcolo la luminanza %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1228"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1230"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -535,7 +535,7 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1232"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1234"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -543,7 +543,7 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1453"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1456"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -551,7 +551,7 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1455"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1458"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -559,19 +559,19 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1363"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1365"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Salvataggio immagine calibrata in %1</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1401"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1395"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Allineamento immagini</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1436"/>
+        <location filename="../../DeepSkyStacker/RegisterEngine.cpp" line="1445"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Allineo %1 su %2</translation>
@@ -868,25 +868,25 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
 %3</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="358"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="295"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>Crea il Master Offset</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="368"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="320"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>Aggiunta dell&apos;Offset %1 su %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="394"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="343"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>Calcolo il master offset (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="412"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="361"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -895,39 +895,39 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         </translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="421"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="370"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>Salvataggio Master Offset</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="520"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="462"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>Crea il Master Dark</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="535"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="493"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>Aggiunta del Dark %1 su %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="554"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="739"/>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1166"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="510"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="692"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1128"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Sottraggo l&apos;Offset</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="578"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="533"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Calcolo il master dark (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="596"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="551"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -936,7 +936,7 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="783"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="736"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -945,7 +945,7 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1241"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1204"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -954,73 +954,73 @@ A questo punto tutte le immagini che arrivano (e che sono allineate) vengono com
         </translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="606"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="560"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Salvataggio Master Dark</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="704"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="657"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Crea Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="720"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="673"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Aggiunta del Dark Flat %1 su %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="765"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="718"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Calcolo il master dark flat (%1)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="792"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="745"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Salvataggio del Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="957"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="910"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Calcolo i parametri di calibrazione del flat</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1009"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="962"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Applico i parametri di calibrazione del flat</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1132"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1082"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Crea il Master Flat</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1148"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1113"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Aggiunta del Flat %1 su %2</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1184"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1146"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Sottraggo il Dark</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1224"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1186"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Calcolo il master flat (%1)</translation>
     </message>
     <message>
-        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1250"/>
+        <location filename="../../DeepSkyStacker/StackingTasks.cpp" line="1212"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Salvataggio del Master Flat</translation>

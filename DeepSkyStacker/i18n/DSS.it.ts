@@ -974,23 +974,23 @@ Tasto destro del mouse per visualizzare il menu</translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="619"/>
-        <source>Master dark used and more than one dark loaded</source>
-        <translation>Master Dark usato, ma più di un Dark è stato caricato</translation>
+        <source>A Master Dark must be the only Dark frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="624"/>
-        <source>Master dark flat used and more than one dark flat loaded</source>
-        <translation>Master Dark-Flat usato, ma più di un Dark-Flat è stato caricato</translation>
+        <source>A Master Dark Flat must be the only Dark Flat frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="629"/>
-        <source>Master flat used and more than one flat loaded</source>
-        <translation>Master Flat usato, ma più di un Flat è stato caricato</translation>
+        <source>A Master Flat must be the only Flat frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../FrameList.cpp" line="634"/>
-        <source>Master offset used and more than one offset loaded</source>
-        <translation>Master Offset usato, ma più di un Offset è stato caricato</translation>
+        <source>A Master Offset must be the only Offset frame</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../StackingDlg.cpp" line="1376"/>
@@ -1270,7 +1270,7 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
 (Puoi abilitare questa funzione in futuro dalla finestra Info su)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="382"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 non esiste o non è un file</translation>
     </message>
@@ -1904,7 +1904,7 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
         <translation>Luminosità</translation>
     </message>
@@ -1935,89 +1935,84 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="534"/>
+        <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Trasformazione della matrice di Bayer</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="543"/>
+        <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
         <translation>Interpolazione bilineare</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="563"/>
+        <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>Interpolazione adattiva diretta dall&apos;omogeneità (AHD)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="583"/>
+        <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>Usa l&apos;algoritmo Bayer Drizzle (no interpolazione ne debayerizzazione)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="599"/>
+        <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>Questa opzione usa la matrice di Bayer cosi com&apos;è. Non viene eseguita alcuna interpolazione e ad ogni pixel viene dato il componente primario dalla matrice.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="641"/>
+        <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>Questa opzione usa la matrice di Bayer per creare un super-pixel per ogni gruppo di 4 pixels (RGBG). La dimensione dell&apos;immagine risultante è divisa per due.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="289"/>
-        <source>Set the black point to 0</source>
-        <translation>Setta il punto del nero a 0</translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="297"/>
+        <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
         <translation>File FITS</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="318"/>
+        <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;I files FITS a 16bit monocromatici sono RAW creati da una DSLR o da una camera CCD a colori.&lt;br&gt;Lascia &lt;span style=&quot;font-style: italic;&quot;&gt;deselezionato&lt;/span&gt; per tentare il rilevamento automatico basato sulle parole chiave FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="341"/>
+        <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
         <translation>Camera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="381"/>
+        <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
         <translation>Correzione Colori</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
         <translation>Rosso</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="470"/>
+        <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
         <translation>Blu</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="492"/>
+        <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
         <translation>Schema del filtro Bayer usato</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="625"/>
+        <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>Crea super-pixels dalla matrice di Bayer (no interpolazione)</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="657"/>
+        <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>Forza l&apos;uso di valori non segnati quando vengono memorizzati valori segnati</translation>
     </message>
@@ -2296,13 +2291,13 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
         <translation>Allineo %1 (%2 stelle)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1048"/>
+        <location filename="../RegisterEngine.cpp" line="1050"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Calcolo la luminanza %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1228"/>
+        <location filename="../RegisterEngine.cpp" line="1230"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2310,7 +2305,7 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1232"/>
+        <location filename="../RegisterEngine.cpp" line="1234"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2318,25 +2313,25 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1363"/>
+        <location filename="../RegisterEngine.cpp" line="1365"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Salvataggio immagine calibrata in %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1401"/>
+        <location filename="../RegisterEngine.cpp" line="1395"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Allineamento immagini</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1436"/>
+        <location filename="../RegisterEngine.cpp" line="1445"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Allineo %1 su %2</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1453"/>
+        <location filename="../RegisterEngine.cpp" line="1456"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2344,7 +2339,7 @@ Probabilmente puoi ottenerne un altro o scaricare la versione finale dal sito we
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1455"/>
+        <location filename="../RegisterEngine.cpp" line="1458"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3325,7 +3320,7 @@ Ci sono solamente %3 disponibili su questo disco.</translation>
     </message>
     <message>
         <location filename="../StackingEngine.cpp" line="2101"/>
-        <location filename="../StackingEngine.cpp" line="2395"/>
+        <location filename="../StackingEngine.cpp" line="2407"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -3333,13 +3328,13 @@ Do you really want to continue?</source>
 Vuoi veramente continuare?</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2234"/>
+        <location filename="../StackingEngine.cpp" line="2252"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>Combino %1 su %2 - Offset [%3,%4] - Angolo : %5°</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2244"/>
+        <location filename="../StackingEngine.cpp" line="2260"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -3347,7 +3342,7 @@ Vuoi veramente continuare?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2246"/>
+        <location filename="../StackingEngine.cpp" line="2262"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -3355,7 +3350,7 @@ Vuoi veramente continuare?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2394"/>
+        <location filename="../StackingEngine.cpp" line="2406"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -3369,7 +3364,7 @@ di pi e aiutare DeepSkyStacker a trovare le differenze tra l&apos;immagine di ri
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2405"/>
+        <location filename="../StackingEngine.cpp" line="2417"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>Combinazione</translation>
@@ -3621,25 +3616,25 @@ confrontato al normale scostamento (%1).</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="358"/>
+        <location filename="../StackingTasks.cpp" line="295"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>Crea il Master Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../StackingTasks.cpp" line="320"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>Aggiunta dell&apos;Offset %1 su %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../StackingTasks.cpp" line="343"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>Calcolo il master offset (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="412"/>
+        <location filename="../StackingTasks.cpp" line="361"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -3648,39 +3643,39 @@ confrontato al normale scostamento (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="421"/>
+        <location filename="../StackingTasks.cpp" line="370"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>Salvataggio Master Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="520"/>
+        <location filename="../StackingTasks.cpp" line="462"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>Crea il Master Dark</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
+        <location filename="../StackingTasks.cpp" line="493"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>Aggiunta del Dark %1 su %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="554"/>
-        <location filename="../StackingTasks.cpp" line="739"/>
-        <location filename="../StackingTasks.cpp" line="1166"/>
+        <location filename="../StackingTasks.cpp" line="510"/>
+        <location filename="../StackingTasks.cpp" line="692"/>
+        <location filename="../StackingTasks.cpp" line="1128"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Sottraggo l&apos;Offset</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="578"/>
+        <location filename="../StackingTasks.cpp" line="533"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Calcolo il master dark (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="596"/>
+        <location filename="../StackingTasks.cpp" line="551"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -3689,7 +3684,7 @@ confrontato al normale scostamento (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="783"/>
+        <location filename="../StackingTasks.cpp" line="736"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -3698,7 +3693,7 @@ confrontato al normale scostamento (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1241"/>
+        <location filename="../StackingTasks.cpp" line="1204"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -3707,7 +3702,7 @@ confrontato al normale scostamento (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="606"/>
+        <location filename="../StackingTasks.cpp" line="560"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Salvataggio Master Dark</translation>
@@ -3721,67 +3716,67 @@ confrontato al normale scostamento (%1).</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="704"/>
+        <location filename="../StackingTasks.cpp" line="657"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Crea Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="720"/>
+        <location filename="../StackingTasks.cpp" line="673"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Aggiunta del Dark Flat %1 su %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="765"/>
+        <location filename="../StackingTasks.cpp" line="718"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Calcolo il master dark flat (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="792"/>
+        <location filename="../StackingTasks.cpp" line="745"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Salvataggio del Master Dark Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="957"/>
+        <location filename="../StackingTasks.cpp" line="910"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Calcolo i parametri di calibrazione del flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1009"/>
+        <location filename="../StackingTasks.cpp" line="962"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Applico i parametri di calibrazione del flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1132"/>
+        <location filename="../StackingTasks.cpp" line="1082"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Crea il Master Flat</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1148"/>
+        <location filename="../StackingTasks.cpp" line="1113"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Aggiunta del Flat %1 su %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1184"/>
+        <location filename="../StackingTasks.cpp" line="1146"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Sottraggo il Dark</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1224"/>
+        <location filename="../StackingTasks.cpp" line="1186"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Calcolo il master flat (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1250"/>
+        <location filename="../StackingTasks.cpp" line="1212"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Salvataggio del Master Flat</translation>

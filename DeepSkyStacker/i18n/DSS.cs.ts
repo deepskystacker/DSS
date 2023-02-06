@@ -106,6 +106,7 @@ Copyright NASA</translation>
         <location filename="../About.cpp" line="133"/>
         <location filename="../About.cpp" line="142"/>
         <location filename="../About.cpp" line="146"/>
+        <location filename="../About.cpp" line="147"/>
         <source>and</source>
         <translation>a</translation>
     </message>
@@ -128,13 +129,13 @@ Copyright NASA</translation>
         <translation>Rumunská verze:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="149"/>
+        <location filename="../About.cpp" line="150"/>
         <source>Russian version:</source>
         <comment>IDS_ABOUT_LANG_RUSSIAN</comment>
         <translation>Ruská verze:</translation>
     </message>
     <message>
-        <location filename="../About.cpp" line="153"/>
+        <location filename="../About.cpp" line="154"/>
         <source>Turkish version:</source>
         <comment>IDS_ABOUT_LANG_TURKISH</comment>
         <translation>Turecká verze:</translation>
@@ -560,31 +561,31 @@ Kometa i hvězdy budou ostré. Zpracováni bude trvat dvojnásobnou dobu.</trans
 <context>
     <name>DSS::EditStars</name>
     <message>
-        <location filename="../editstars.cpp" line="846"/>
+        <location filename="../editstars.cpp" line="848"/>
         <source>Click to set the comet here</source>
         <comment>IDS_TIP_SETCOMET</comment>
         <translation>Klikněte pro nastavení komety</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="848"/>
+        <location filename="../editstars.cpp" line="850"/>
         <source>Click to add this star</source>
         <comment>IDS_TIP_ADDSTAR</comment>
         <translation>Klikněte pro přidání hvězdy</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="855"/>
+        <location filename="../editstars.cpp" line="857"/>
         <source>Click to remove the comet</source>
         <comment>IDS_TIP_REMOVECOMET</comment>
         <translation>Klikněte pro odstranění komety</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="857"/>
+        <location filename="../editstars.cpp" line="859"/>
         <source>Click to remove this star</source>
         <comment>IDS_TIP_REMOVESTAR</comment>
         <translation>Klikněte pro odstranění hvězdy</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="905"/>
+        <location filename="../editstars.cpp" line="907"/>
         <source>#Stars: %1
 Score: %2
 FWHM: %3</source>
@@ -594,7 +595,7 @@ Kvalita: %2
 FWHM: %3</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="912"/>
+        <location filename="../editstars.cpp" line="914"/>
         <source>
 Comet:%1</source>
         <comment>IDS_LIGHTFRAMEINFOCOMET</comment>
@@ -602,7 +603,7 @@ Comet:%1</source>
 Kometa:%1</translation>
     </message>
     <message>
-        <location filename="../editstars.cpp" line="912"/>
+        <location filename="../editstars.cpp" line="914"/>
         <source>Yes</source>
         <comment>IDS_YES</comment>
         <translation>Ano</translation>
@@ -856,17 +857,22 @@ Ctrl+4 přepne režim 4 rohů</translation>
 <context>
     <name>DSS::ProgressDlg</name>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="69"/>
+        <location filename="../QtProgressDlg.cpp" line="72"/>
+        <source> Processor Used</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../QtProgressDlg.cpp" line="74"/>
         <source> Processors Used</source>
         <translation> použité procesory</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="75"/>
+        <location filename="../QtProgressDlg.cpp" line="78"/>
         <source>Are You Sure?</source>
         <translation>Jsi si jistá?</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="75"/>
+        <location filename="../QtProgressDlg.cpp" line="78"/>
         <source>Are you sure you wish to cancel this operation?</source>
         <translation>Opravdu chcete tuto operaci zrušit?</translation>
     </message>
@@ -874,12 +880,12 @@ Ctrl+4 přepne režim 4 rohů</translation>
 <context>
     <name>DSS::StackingDlg</name>
     <message>
-        <location filename="../StackingDlg.cpp" line="794"/>
+        <location filename="../StackingDlg.cpp" line="787"/>
         <source>Rename group</source>
         <translation>Skupinové jméno</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingDlg.cpp" line="883"/>
+        <location filename="../StackingDlg.cpp" line="876"/>
         <source>Do you really want to permanently erase %n file(s)?
 This operation cannot be reversed or cancelled.</source>
         <comment>IDS_WARNING_ERASEFILES</comment>
@@ -893,37 +899,37 @@ Tuto činnost nelze obnovit nebo zrušit!</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="952"/>
+        <location filename="../StackingDlg.cpp" line="953"/>
         <source>Use as reference frame</source>
         <comment>IDM_USEASSTARTING</comment>
         <translation>Použít jako souřadnicový systém</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="956"/>
+        <location filename="../StackingDlg.cpp" line="957"/>
         <source>Check</source>
         <comment>IDM_CHECK</comment>
         <translation>Zvolit</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="958"/>
+        <location filename="../StackingDlg.cpp" line="959"/>
         <source>Uncheck</source>
         <comment>IDM_UNCHECK</comment>
         <translation>Nezvolit</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="961"/>
+        <location filename="../StackingDlg.cpp" line="962"/>
         <source>Remove from list</source>
         <comment>IDM_REMOVEFROMLIST</comment>
         <translation>Odstranit ze seznamu</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="964"/>
+        <location filename="../StackingDlg.cpp" line="965"/>
         <source>Copy to clipboard</source>
         <comment>IDM_COPYTOCLIPBOARD</comment>
         <translation>Kopie do schránky</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="967"/>
+        <location filename="../StackingDlg.cpp" line="968"/>
         <source>Erase from disk...</source>
         <comment>IDM_ERASEFROMDISK</comment>
         <translation>Vymazat z disku...</translation>
@@ -940,68 +946,88 @@ Klávesa Delete pro odstranění (ne vymazání) vybraných řádků
 Pravým tlačítkem myši zobrazíte nabídku</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="695"/>
-        <location filename="../StackingDlg.cpp" line="1928"/>
+        <location filename="../StackingDlg.cpp" line="1941"/>
         <source>Light Frames: %1      -      Dark Frames: %2      -      Flat Frames: %3      -   Dark Flat Frames: %4   -      Offset/Bias Frames: %5</source>
         <comment>IDS_LISTINFO</comment>
         <translation>Aktivní snímky: %1      -      Temné pozadí: %2      -      Vyrovnání jasu: %3      -   Vyrovnání temného pozadí: %4   -      Vyrovnání zkreslení: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="704"/>
+        <location filename="../StackingDlg.cpp" line="697"/>
         <source>Double click here to dock/undock the image list</source>
         <translation>Dvojitým kliknutím sem ukotvíte/odemknete seznam obrázků</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="706"/>
-        <location filename="../StackingDlg.cpp" line="1080"/>
-        <location filename="../group.h" line="71"/>
+        <location filename="../StackingDlg.cpp" line="699"/>
+        <location filename="../StackingDlg.cpp" line="1081"/>
+        <location filename="../group.h" line="72"/>
         <source>Main Group</source>
         <comment>IDS_MAINGROUP</comment>
         <translation>Hlavní seznam</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1251"/>
+        <location filename="../StackingDlg.cpp" line="1264"/>
         <source>Loading %1</source>
         <comment>IDS_LOADPICTURE</comment>
         <translation>Načítání %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1328"/>
+        <location filename="../FrameList.cpp" line="519"/>
+        <location filename="../StackingDlg.cpp" line="1341"/>
         <source>File %1 has already been loaded in group %2 (%3)</source>
         <translation>Soubor %1 již byl načten ve skupině %2 (%3)</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1363"/>
+        <location filename="../FrameList.cpp" line="619"/>
+        <source>A Master Dark must be the only Dark frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../FrameList.cpp" line="624"/>
+        <source>A Master Dark Flat must be the only Dark Flat frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../FrameList.cpp" line="629"/>
+        <source>A Master Flat must be the only Flat frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../FrameList.cpp" line="634"/>
+        <source>A Master Offset must be the only Offset frame</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../StackingDlg.cpp" line="1376"/>
         <source>Open Light Frames...</source>
         <comment>IDS_TITLE_OPENLIGHTFRAMES</comment>
         <translation>Otevřít aktivní snímky...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1468"/>
+        <location filename="../StackingDlg.cpp" line="1481"/>
         <source>Open Dark Frames...</source>
         <comment>IDS_TITLE_OPENDARKFRAMES</comment>
         <translation>Otevřít snímky temného pozadí...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1572"/>
+        <location filename="../StackingDlg.cpp" line="1585"/>
         <source>Open Dark Flat Frames...</source>
         <comment>IDS_TITLE_OPENDARKFLATFRAMES</comment>
         <translation>Otevřít snímky vyrovnání temného pozadí...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1676"/>
+        <location filename="../StackingDlg.cpp" line="1689"/>
         <source>Open Flat Frames...</source>
         <comment>IDS_TITLE_OPENFLATFRAMES</comment>
         <translation>Otevřít snímky vyrovnání jasu...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1780"/>
+        <location filename="../StackingDlg.cpp" line="1793"/>
         <source>Open Bias Frames...</source>
         <comment>IDS_TITLE_OPENBIASFRAMES</comment>
         <translation>Otevřít snímky vyrovnání zkreslení...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="1941"/>
+        <location filename="../StackingDlg.cpp" line="1954"/>
         <source>Light Frames: %1
 Dark Frames: %2
 Flat Frames: %3
@@ -1015,37 +1041,37 @@ Vyrovnání temného pozadí: %4
 Vyrovnání zkreslení: %5</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2021"/>
+        <location filename="../StackingDlg.cpp" line="2034"/>
         <source>Open another File List...</source>
         <comment>ID_FILELIST_OPENANOTHERFILELIST</comment>
         <translation>Otevřít jiný seznam...</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2198"/>
+        <location filename="../StackingDlg.cpp" line="2213"/>
         <source>DeepSkyStacker version %1 is available for download.</source>
         <comment>IDS_VERSIONAVAILABLE</comment>
         <translation>Ke stažení je dostupná verze programu DeepSkyStacker %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2214"/>
+        <location filename="../StackingDlg.cpp" line="2229"/>
         <source>Internet version check error code %1:
 %2</source>
         <translation>Kontrola verze Internetový kód chyby %1:
 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2333"/>
+        <location filename="../StackingDlg.cpp" line="2348"/>
         <source>Total registering time: %1 %2</source>
         <translation>Celkový čas registrace: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2352"/>
+        <location filename="../StackingDlg.cpp" line="2367"/>
         <source>You must check light frames to register them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED2</comment>
         <translation>Pro zarovnání musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2413"/>
+        <location filename="../StackingDlg.cpp" line="2428"/>
         <source>The following folder(s) are read-only:
 %1
 DeepSkyStacker needs to create files in these folders during its processing.</source>
@@ -1055,19 +1081,19 @@ DeepSkyStacker needs to create files in these folders during its processing.</so
 Program DeepSkyStacker potřebuje při své práci v nich vytvářet soubory.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2433"/>
-        <source>The checked pictures are not compatible (width, height, number of colors, number of channels, only one master dark, offset and flat).</source>
+        <location filename="../StackingDlg.cpp" line="2449"/>
+        <source>The checked pictures are not compatible: %1.</source>
         <comment>IDS_ERROR_NOTCOMPATIBLE</comment>
-        <translation>Vybrané obrazy nejsou slučitelné (šířkou, výšku, počtem barev, počtem kanálů, může být jen jeden základní snímek temného pozadí, posunu a vyrovnání jasu).</translation>
+        <translation>Vybrané obrázky nejsou kompatibilní: %1.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2438"/>
+        <location filename="../StackingDlg.cpp" line="2453"/>
         <source>You must check light frames to stack them.</source>
         <comment>IDS_ERROR_NOTLIGHTCHECKED</comment>
         <translation>Pro sloučení musíte vybrat snímek.</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2486"/>
+        <location filename="../StackingDlg.cpp" line="2501"/>
         <source>You have made some changes to the %1 file list and/or to the settings.
 
 Do you want to save the changes?</source>
@@ -1077,18 +1103,18 @@ Do you want to save the changes?</source>
 Chcete změny uložit?</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2602"/>
+        <location filename="../StackingDlg.cpp" line="2617"/>
         <source>Total stacking time: %1 %2</source>
         <translation>Celková doba skládání: %1 %2</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2634"/>
+        <location filename="../StackingDlg.cpp" line="2649"/>
         <source>Saving Final image in %1</source>
         <comment>IDS_SAVINGFINAL</comment>
         <translation>Ukládání výsledného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingDlg.cpp" line="2696"/>
+        <location filename="../StackingDlg.cpp" line="2711"/>
         <source>Exception caught in function: %1
 %2 (line %3):
 
@@ -1099,10 +1125,30 @@ Chcete změny uložit?</translation>
 %4</translation>
     </message>
     <message>
-        <location filename="../group.h" line="75"/>
+        <location filename="../group.h" line="76"/>
         <source>Group %1</source>
         <comment>IDS_GROUPIDMASK</comment>
         <translation>Seznam %1</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="154"/>
+        <source>Width mismatch</source>
+        <translation>Rozdílná šířka</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="159"/>
+        <source>Height mismatch</source>
+        <translation>Rozdílná výška</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="164"/>
+        <source>Colour depth mismatch</source>
+        <translation>Rozdílná barevná hloubka</translation>
+    </message>
+    <message>
+        <location filename="../FrameInfo.h" line="185"/>
+        <source>Number of channels mismatch</source>
+        <translation>Rozdílný počet kanálů</translation>
     </message>
 </context>
 <context>
@@ -1214,14 +1260,14 @@ Kliknutím pravým tlačítkem změníte chování.</translation>
 <context>
     <name>DeepSkyStacker</name>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="125"/>
+        <location filename="../DeepSkyStacker.cpp" line="130"/>
         <source>This beta version of DeepSkyStacker has expired
 You can probably get another one or download the final release from the web site.</source>
         <translation>Platnost této beta verze DeepSkyStacker vypršela
 Pravděpodobně můžete získat další nebo stáhnout finální verzi z webových stránek.</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="153"/>
+        <location filename="../DeepSkyStacker.cpp" line="158"/>
         <source>Do you want DeepSkyStacker to check if a newer version is available at startup?
 (You can enable or disable this option later from the About box)</source>
         <comment>IDS_CHECKVERSION</comment>
@@ -1229,7 +1275,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 (Tuto volbu můžete nastavit nebo vyřadit kdykoliv později v okně informace o programu)</translation>
     </message>
     <message>
-        <location filename="../DeepSkyStacker.cpp" line="377"/>
+        <location filename="../DeepSkyStacker.cpp" line="382"/>
         <source>%1 does not exist or is not a file</source>
         <translation>%1 neexistuje nebo to není soubor</translation>
     </message>
@@ -1305,72 +1351,72 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 <context>
     <name>ExplorerBar</name>
     <message>
-        <location filename="../ExplorerBar.cpp" line="262"/>
+        <location filename="../ExplorerBar.cpp" line="263"/>
         <source>Register Settings...</source>
         <comment>ID_EDITSETTINGS_REGISTERSETTINGS</comment>
         <translation>Nastavení zpracování...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="263"/>
+        <location filename="../ExplorerBar.cpp" line="264"/>
         <source>Stacking Settings...</source>
         <comment>ID_EDITSETTINGS_STACKINGSETTINGS</comment>
         <translation>Parametry slučování...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="305"/>
+        <location filename="../ExplorerBar.cpp" line="306"/>
         <source>Restore Default settings</source>
         <comment>ID_LOADSETTINGS_RESTOREDEFAULTSETTINGS</comment>
         <translation>Obnovit výchozí nastavení</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="307"/>
+        <location filename="../ExplorerBar.cpp" line="308"/>
         <source>Load DeepSkyStacker Live settings</source>
         <comment>ID_LOADSETTINGS_LOADDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Načíst nastavení DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="311"/>
+        <location filename="../ExplorerBar.cpp" line="312"/>
         <source>Load...</source>
         <comment>ID_LOADSETTINGS_LOAD</comment>
         <translation>Načíst...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="372"/>
+        <location filename="../ExplorerBar.cpp" line="373"/>
         <source>Save as DeepSkyStacker Live settings</source>
         <comment>ID_SAVESETTINGS_SAVEASDEEPSKYSTACKERLIVESETTINGS</comment>
         <translation>Uložit jako nastavení DeepSkyStacker Live</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="376"/>
+        <location filename="../ExplorerBar.cpp" line="377"/>
         <source>Save as...</source>
         <comment>ID_SAVESETTINGS_SAVEAS</comment>
         <translation>Uložit jako...</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="433"/>
+        <location filename="../ExplorerBar.cpp" line="434"/>
         <source>DeepSkyStacker Help.chm</source>
         <comment>IDS_HELPFILE</comment>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="455"/>
+        <location filename="../ExplorerBar.cpp" line="456"/>
         <source>Load DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_LOADSETTINGS</comment>
         <translation>Načtení nastavení DeepSkyStacker</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="459"/>
+        <location filename="../ExplorerBar.cpp" line="460"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <comment>IDS_FILTER_SETTINGFILE</comment>
         <translation>Nastavení DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="506"/>
+        <location filename="../ExplorerBar.cpp" line="507"/>
         <source>DSS Settings Files (*.dsssettings)</source>
         <translation>Nastavení DeepSkyStacker (*.dsssettings)</translation>
     </message>
     <message>
-        <location filename="../ExplorerBar.cpp" line="502"/>
+        <location filename="../ExplorerBar.cpp" line="503"/>
         <source>Save DeepSkyStacker Settings</source>
         <comment>IDS_TITLE_SAVESETTINGS</comment>
         <translation>Uložení nastavení DeepSkyStacker</translation>
@@ -1825,31 +1871,31 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
         <translation>Zrušení</translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="205"/>
+        <location filename="../QtProgressDlg.cpp" line="222"/>
         <source>Estimated remaining time: %1 hr %2 mn %3 s </source>
         <comment>IDS_ESTIMATED3</comment>
         <translation>Odhadovaný zbývající čas: %1 hod  %2 min  %3 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="208"/>
+        <location filename="../QtProgressDlg.cpp" line="225"/>
         <source>Estimated remaining time: %1 mn %2 s </source>
         <comment>IDS_ESTIMATED2</comment>
         <translation>Odhadovaný zbývající čas: %1 min  %2 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="211"/>
+        <location filename="../QtProgressDlg.cpp" line="228"/>
         <source>Estimated remaining time : %1 s </source>
         <comment>IDS_ESTIMATED1</comment>
         <translation>Odhadovaný zbývající čas: %1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="214"/>
+        <location filename="../QtProgressDlg.cpp" line="231"/>
         <source>Estimated remaining time: &lt; 1 s </source>
         <comment>IDS_ESTIMATED0</comment>
         <translation>Odhadovaný zbývající čas: &lt; 1 s </translation>
     </message>
     <message>
-        <location filename="../QtProgressDlg.cpp" line="221"/>
+        <location filename="../QtProgressDlg.cpp" line="238"/>
         <source>Estimated remaining Time: Unknown</source>
         <comment>IDS_ESTIMATEDUNKNOWN</comment>
         <translation>Odhadovaný zbývající čas: Neznámý</translation>
@@ -1869,7 +1915,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="53"/>
-        <location filename="../ui/RawDDPSettings.ui" line="456"/>
+        <location filename="../ui/RawDDPSettings.ui" line="449"/>
         <source>Brightness</source>
         <translation>Jas</translation>
     </message>
@@ -1900,89 +1946,84 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="169"/>
-        <location filename="../ui/RawDDPSettings.ui" line="534"/>
+        <location filename="../ui/RawDDPSettings.ui" line="527"/>
         <source>Bayer Matrix Transformation</source>
         <translation>Bayerova převodní matice</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="175"/>
-        <location filename="../ui/RawDDPSettings.ui" line="543"/>
+        <location filename="../ui/RawDDPSettings.ui" line="536"/>
         <source>Bilinear Interpolation</source>
         <translation>Bilineární interpolace</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="195"/>
-        <location filename="../ui/RawDDPSettings.ui" line="563"/>
+        <location filename="../ui/RawDDPSettings.ui" line="556"/>
         <source>Adaptive Homogeneity-Directed (AHD) Interpolation</source>
         <translation>Adaptivní Homogeneity-Directed (AHD) interpolace</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="215"/>
-        <location filename="../ui/RawDDPSettings.ui" line="583"/>
+        <location filename="../ui/RawDDPSettings.ui" line="576"/>
         <source>Use Bayer Drizzle algorithm (no interpolation, no debayering</source>
         <translation>Použít Bayerův algoritmus (bez interpolace a odmaticování)</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="231"/>
-        <location filename="../ui/RawDDPSettings.ui" line="599"/>
+        <location filename="../ui/RawDDPSettings.ui" line="592"/>
         <source>This option uses the Bayer matrix as is. No interpolation is done and each pixel is given only primary components from the matrix.</source>
         <translation>Tato volba používá Bayerovu matici tak jak je. Neprovádí žádnou interpolaci a každý obrazový bod je součástí matice.</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="273"/>
-        <location filename="../ui/RawDDPSettings.ui" line="641"/>
+        <location filename="../ui/RawDDPSettings.ui" line="634"/>
         <source>This option uses the Bayer matrix to create one super-pixel from each group of 4 pixels (RGBG). The sizes of the resulting image are thus divided by two.</source>
         <translation>Tato volba používá Bayerovu matici pro vytvoření jednoho super bodu ze skupiny 4 obrazových bodů (RGBG). Velikost výsledného obrazu je pak poloviční.</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="289"/>
-        <source>Set the black point to 0</source>
-        <translation>Nastavit černý bod na 0</translation>
-    </message>
-    <message>
-        <location filename="../ui/RawDDPSettings.ui" line="297"/>
+        <location filename="../ui/RawDDPSettings.ui" line="290"/>
         <source>FITS Files</source>
         <translation>FITS soubory</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="318"/>
+        <location filename="../ui/RawDDPSettings.ui" line="311"/>
         <source>&lt;html&gt;&lt;body&gt;&lt;p&gt;Monochrome 16 bit FITS Files are RAW files created by a DSLR or a color CCD camera.&lt;br&gt;Leave &lt;span style=&quot; font-style:italic;&quot;&gt;unchecked&lt;/span&gt; to attempt automatic detection based on FITS keywords.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;&lt;p&gt;Jednobarevný 16ti bitový FITS a RAW soubor vytvořený DSLR nebo barevnou CCD kamerou.&lt;br&gt;Ponechte &lt;span style = &quot;font-style: italic;&quot;&gt;nezaškrtnuté&lt;/span&gt; a pokuste se o automatickou detekci na základě klíčových slov FITS. &lt;/p&gt; &lt;/body&gt; &lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="341"/>
+        <location filename="../ui/RawDDPSettings.ui" line="334"/>
         <source>Camera:</source>
         <translation>Kamera:</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="44"/>
-        <location filename="../ui/RawDDPSettings.ui" line="381"/>
+        <location filename="../ui/RawDDPSettings.ui" line="374"/>
         <source>Colour Adjustment</source>
         <translation>Úprava barev</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="463"/>
+        <location filename="../ui/RawDDPSettings.ui" line="456"/>
         <source>Red scale</source>
         <translation>Červená stupnice</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="470"/>
+        <location filename="../ui/RawDDPSettings.ui" line="463"/>
         <source>Blue scale</source>
         <translation>Modrá stupnice</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="492"/>
+        <location filename="../ui/RawDDPSettings.ui" line="485"/>
         <source>Bayer Pattern Filter used</source>
         <translation>Použít Bayerův filtr</translation>
     </message>
     <message>
         <location filename="../ui/RawDDPSettings.ui" line="257"/>
-        <location filename="../ui/RawDDPSettings.ui" line="625"/>
+        <location filename="../ui/RawDDPSettings.ui" line="618"/>
         <source>Create super-pixels from the raw Bayer matrix (no interpolation)</source>
         <translation>Vytvoří super body přímo z RAW matice (bez interpolace)</translation>
     </message>
     <message>
-        <location filename="../ui/RawDDPSettings.ui" line="657"/>
+        <location filename="../ui/RawDDPSettings.ui" line="650"/>
         <source>Force use of unsigned values when signed values are stored</source>
         <translation>Nucené použití neoznačených hodnot, když označené hodnoty jsou uloženy</translation>
     </message>
@@ -2249,25 +2290,25 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 <context>
     <name>RegisterEngine</name>
     <message>
-        <location filename="../RegisterEngine.cpp" line="971"/>
+        <location filename="../RegisterEngine.cpp" line="868"/>
         <source>Registering %1</source>
         <comment>IDS_REGISTERINGNAME</comment>
         <translation>Zarovnávání %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1000"/>
+        <location filename="../RegisterEngine.cpp" line="897"/>
         <source>Registering %1 (%2 stars)</source>
         <comment>IDS_REGISTERINGNAMEPLUSTARS</comment>
         <translation>Zarovnávání %1 (%2 hvězd)</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1151"/>
+        <location filename="../RegisterEngine.cpp" line="1050"/>
         <source>Computing luminances %1</source>
         <comment>IDS_COMPUTINGLUMINANCE</comment>
         <translation>Výpočet jasu %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1331"/>
+        <location filename="../RegisterEngine.cpp" line="1230"/>
         <source>Loading %1 bit/ch %2 picture
 %3</source>
         <comment>IDS_LOADRGBPICTURE</comment>
@@ -2275,7 +2316,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1335"/>
+        <location filename="../RegisterEngine.cpp" line="1234"/>
         <source>Loading %1 bits gray %2 picture
 %3</source>
         <comment>IDS_LOADGRAYPICTURE</comment>
@@ -2283,25 +2324,25 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1466"/>
+        <location filename="../RegisterEngine.cpp" line="1365"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Ukládání kalibrovaného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1504"/>
+        <location filename="../RegisterEngine.cpp" line="1395"/>
         <source>Registering pictures</source>
         <comment>IDS_REGISTERING</comment>
         <translation>Zarovnání snímků</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1539"/>
+        <location filename="../RegisterEngine.cpp" line="1445"/>
         <source>Registering %1 of %2</source>
         <comment>IDS_REGISTERINGPICTURE</comment>
         <translation>Zarovnávání %1 z %2</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1556"/>
+        <location filename="../RegisterEngine.cpp" line="1456"/>
         <source>Loading %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_LOADRGBLIGHT</comment>
@@ -2309,7 +2350,7 @@ Pravděpodobně můžete získat další nebo stáhnout finální verzi z webov�
 %3</translation>
     </message>
     <message>
-        <location filename="../RegisterEngine.cpp" line="1558"/>
+        <location filename="../RegisterEngine.cpp" line="1458"/>
         <source>Loading %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_LOADGRAYLIGHT</comment>
@@ -3206,87 +3247,82 @@ Chcete je uložit?</translation>
 <context>
     <name>StackingEngine</name>
     <message>
-        <location filename="../StackingEngine.cpp" line="766"/>
-        <source>Computing stacking info for %1</source>
-        <comment>IDS_COMPUTINGSTACKINGINFO</comment>
-        <translation>Výpočet informací pro sloučení %1</translation>
-    </message>
-    <message>
-        <location filename="../StackingEngine.cpp" line="811"/>
+        <location filename="../StackingEngine.cpp" line="761"/>
+        <location filename="../StackingEngine.cpp" line="822"/>
         <source>Computing offsets</source>
         <comment>IDS_COMPUTINGOFFSETS</comment>
         <translation>Výpočet zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1107"/>
+        <location filename="../StackingEngine.cpp" line="1114"/>
         <source>Computing Final Picture (%1)</source>
         <comment>IDS_COMPUTINGMEDIANLIGHT</comment>
         <translation>Zpracování výsledného obrazu (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1208"/>
+        <location filename="../StackingEngine.cpp" line="1215"/>
         <source>Stacking - Adjust Bayer - Compute adjustment</source>
         <comment>IDS_STACKING_COMPUTINGADJUSTMENT</comment>
         <translation>Slučování - úprava Bayer - výpočet úpravy</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1218"/>
+        <location filename="../StackingEngine.cpp" line="1225"/>
         <source>Compute adjustment %1 of %2</source>
         <comment>IDS_COMPUTINGADJUSTMENT</comment>
         <translation>Výpočet úprav %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1273"/>
+        <location filename="../StackingEngine.cpp" line="1280"/>
         <source>Stacking - Adjust Bayer - Apply adjustment</source>
         <comment>IDS_STACKING_APPLYINGADJUSTMENT</comment>
         <translation>Slučování - úprava Bayer - použití úpravy</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1275"/>
+        <location filename="../StackingEngine.cpp" line="1282"/>
         <source>Compute maximum adjustment</source>
         <comment>IDS_STACKING_COMPUTEMAXADJUSTMENT</comment>
         <translation>Výpočet maxima úprav</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1310"/>
+        <location filename="../StackingEngine.cpp" line="1317"/>
         <source>Applying adjustment</source>
         <comment>IDS_STACKING_APPLYADJUSTMENT</comment>
         <translation>Použití úprav</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1381"/>
+        <location filename="../StackingEngine.cpp" line="1388"/>
         <source>Saving Registered and Calibrated image in %1</source>
         <comment>IDS_SAVINGINTERMEDIATE</comment>
         <translation>Ukládání zarovnaného a kalibrovaného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1428"/>
-        <location filename="../StackingEngine.cpp" line="1540"/>
-        <location filename="../StackingEngine.cpp" line="1586"/>
+        <location filename="../StackingEngine.cpp" line="1435"/>
+        <location filename="../StackingEngine.cpp" line="1547"/>
+        <location filename="../StackingEngine.cpp" line="1593"/>
         <source>Saving Calibrated image in %1</source>
         <comment>IDS_SAVINGCALIBRATED</comment>
         <translation>Ukládání kalibrovaného obrazu do %1</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1808"/>
+        <location filename="../StackingEngine.cpp" line="1819"/>
         <source>Interpolating with Adaptive Homogeneity Directed (AHD)</source>
         <comment>IDS_AHDDEMOSAICING</comment>
         <translation>Interpolace a přizpůsobení směrové homogenity (AHD)</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1851"/>
+        <location filename="../StackingEngine.cpp" line="1862"/>
         <source>Computing Entropy</source>
         <comment>IDS_COMPUTINGENTROPY</comment>
         <translation>Výpočet entropie</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="1863"/>
+        <location filename="../StackingEngine.cpp" line="1874"/>
         <source>Computing Background Calibration parameters</source>
         <comment>IDS_COMPUTINGBACKGROUNDCALIBRATION</comment>
         <translation>Výpočet kalibračních parametrů pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2089"/>
+        <location filename="../StackingEngine.cpp" line="2100"/>
         <source>The process needs temporarily %1 of free space on the %2 drive.
 Only %3 are available on this drive.</source>
         <comment>IDS_RECAP_WARNINGDISKSPACE</comment>
@@ -3294,8 +3330,8 @@ Only %3 are available on this drive.</source>
 Na tomto disku je dostupných jen %3.</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2090"/>
-        <location filename="../StackingEngine.cpp" line="2384"/>
+        <location filename="../StackingEngine.cpp" line="2101"/>
+        <location filename="../StackingEngine.cpp" line="2407"/>
         <source>
 Do you really want to continue?</source>
         <comment>IDS_WANTTOCONTINUE</comment>
@@ -3303,13 +3339,13 @@ Do you really want to continue?</source>
 Opravdu chcete pokračovat?</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2223"/>
+        <location filename="../StackingEngine.cpp" line="2252"/>
         <source>Stacking %1 of %2 - Offset [%3,%4] - Angle : %5° </source>
         <comment>IDS_STACKING_PICTURE</comment>
         <translation>Slučování %1 z %2 - posun [%3,%4] - úhel : %5°</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2233"/>
+        <location filename="../StackingEngine.cpp" line="2260"/>
         <source>Stacking %1 bit/ch %2 light frame
 %3</source>
         <comment>IDS_STACKRGBLIGHT</comment>
@@ -3317,7 +3353,7 @@ Opravdu chcete pokračovat?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2235"/>
+        <location filename="../StackingEngine.cpp" line="2262"/>
         <source>Stacking %1 bits gray %2 light frame
 %3</source>
         <comment>IDS_STACKGRAYLIGHT</comment>
@@ -3325,7 +3361,7 @@ Opravdu chcete pokračovat?</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2383"/>
+        <location filename="../StackingEngine.cpp" line="2406"/>
         <source>Only one frame (out of %1) will be stacked.
 
 You should check/change the star detection threshold to detect more stars
@@ -3339,7 +3375,7 @@ pomohlo to programu DeepSkyStacke najít přechod mezi referenčním snímkem a 
 </translation>
     </message>
     <message>
-        <location filename="../StackingEngine.cpp" line="2394"/>
+        <location filename="../StackingEngine.cpp" line="2417"/>
         <source>Stacking</source>
         <comment>IDS_STACKING</comment>
         <translation>Slučování</translation>
@@ -3592,25 +3628,25 @@ vztaženou na směrodatnou odchylku (%1).</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="358"/>
+        <location filename="../StackingTasks.cpp" line="295"/>
         <source>Create Master Offset Frame</source>
         <comment>IDS_CREATEMASTEROFFSET</comment>
         <translation>Vytvoření základního snímku zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="368"/>
+        <location filename="../StackingTasks.cpp" line="320"/>
         <source>Adding Offset frame %1 of %2</source>
         <comment>IDS_ADDOFFSET</comment>
         <translation>Přidávání snímku zkreslení %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="394"/>
+        <location filename="../StackingTasks.cpp" line="343"/>
         <source>Computing master offset (%1)</source>
         <comment>IDS_COMPUTINGMEDIANOFFSET</comment>
         <translation>Výpočet základního zkreslení (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="412"/>
+        <location filename="../StackingTasks.cpp" line="361"/>
         <source>Master Offset created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANOFFSETINFO</comment>
         <translation>
@@ -3620,39 +3656,39 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="421"/>
+        <location filename="../StackingTasks.cpp" line="370"/>
         <source>Saving Master Offset</source>
         <comment>IDS_SAVINGMASTEROFFSET</comment>
         <translation>Uložení základního snímku zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="520"/>
+        <location filename="../StackingTasks.cpp" line="462"/>
         <source>Create Master Dark Frame</source>
         <comment>IDS_CREATEMASTERDARK</comment>
         <translation>Vytvoření základního snímku temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="535"/>
+        <location filename="../StackingTasks.cpp" line="493"/>
         <source>Adding Dark frame %1 of %2</source>
         <comment>IDS_ADDDARK</comment>
         <translation>Přidávání snímku temného pozadí %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="554"/>
-        <location filename="../StackingTasks.cpp" line="739"/>
-        <location filename="../StackingTasks.cpp" line="1166"/>
+        <location filename="../StackingTasks.cpp" line="510"/>
+        <location filename="../StackingTasks.cpp" line="692"/>
+        <location filename="../StackingTasks.cpp" line="1128"/>
         <source>Subtracting Offset Frame</source>
         <comment>IDS_SUBSTRACTINGOFFSET</comment>
         <translation>Odečítání snímku zkreslení</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="578"/>
+        <location filename="../StackingTasks.cpp" line="533"/>
         <source>Computing master dark (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARK</comment>
         <translation>Výpočet základního temného pozadí (%1)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="596"/>
+        <location filename="../StackingTasks.cpp" line="551"/>
         <source>Master Dark created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKINFO</comment>
         <translation>
@@ -3662,7 +3698,7 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="783"/>
+        <location filename="../StackingTasks.cpp" line="736"/>
         <source>Master Dark Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANDARKFLATINFO</comment>
         <translation>
@@ -3672,7 +3708,7 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../StackingTasks.cpp" line="1241"/>
+        <location filename="../StackingTasks.cpp" line="1204"/>
         <source>Master Flat created from %n picture(s) (%1)</source>
         <comment>IDS_MEDIANFLATINFO</comment>
         <translation>
@@ -3682,7 +3718,7 @@ vztaženou na směrodatnou odchylku (%1).</translation>
         </translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="606"/>
+        <location filename="../StackingTasks.cpp" line="560"/>
         <source>Saving Master Dark</source>
         <comment>IDS_SAVINGMASTERDARK</comment>
         <translation>Uložení základního snímku temného pozadí</translation>
@@ -3696,67 +3732,67 @@ vztaženou na směrodatnou odchylku (%1).</translation>
 %3</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="704"/>
+        <location filename="../StackingTasks.cpp" line="657"/>
         <source>Create Master Dark Flat Frame</source>
         <comment>IDS_CREATEMASTERDARKFLAT</comment>
         <translation>Vytvoření základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="720"/>
+        <location filename="../StackingTasks.cpp" line="673"/>
         <source>Adding Dark Flat frame %1 of %2</source>
         <comment>IDS_ADDDARKFLAT</comment>
         <translation>Přidávání snímku vyrovnání temného pozadí %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="765"/>
+        <location filename="../StackingTasks.cpp" line="718"/>
         <source>Computing master dark flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANDARKFLAT</comment>
         <translation>Výpočet základního vyrovnání temného pozadí(%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="792"/>
+        <location filename="../StackingTasks.cpp" line="745"/>
         <source>Saving Master Dark Flat</source>
         <comment>IDS_SAVINGMASTERDARKFLAT</comment>
         <translation>Uložení základního snímku vyrovnání temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="957"/>
+        <location filename="../StackingTasks.cpp" line="910"/>
         <source>Computing Flat Calibration Parameters</source>
         <comment>IDS_COMPUTINGFLATCALIBRATION</comment>
         <translation>Výpočet kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1009"/>
+        <location filename="../StackingTasks.cpp" line="962"/>
         <source>Applying Flat Calibration Parameters</source>
         <comment>IDS_APPLYINGFLATCALIBRATION</comment>
         <translation>Použití kalibračních parametrů vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1132"/>
+        <location filename="../StackingTasks.cpp" line="1082"/>
         <source>Create Master Flat Frame</source>
         <comment>IDS_CREATEMASTERFLAT</comment>
         <translation>Vytvoření základního snímku vyrovnání jasu</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1148"/>
+        <location filename="../StackingTasks.cpp" line="1113"/>
         <source>Adding Flat frame %1 of %2</source>
         <comment>IDS_ADDFLAT</comment>
         <translation>Přidávání snímku vyrovnání jasu %1 z %2</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1184"/>
+        <location filename="../StackingTasks.cpp" line="1146"/>
         <source>Subtracting Dark Frame</source>
         <comment>IDS_SUBSTRACTINGDARK</comment>
         <translation>Odečítání snímku temného pozadí</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1224"/>
+        <location filename="../StackingTasks.cpp" line="1186"/>
         <source>Computing master flat (%1)</source>
         <comment>IDS_COMPUTINGMEDIANFLAT</comment>
         <translation>Výpočet základního vyrovnání jasu (%1)</translation>
     </message>
     <message>
-        <location filename="../StackingTasks.cpp" line="1250"/>
+        <location filename="../StackingTasks.cpp" line="1212"/>
         <source>Saving Master Flat</source>
         <comment>IDS_SAVINGMASTERFLAT</comment>
         <translation>Uložení základního snímku vyrovnání jasu</translation>
